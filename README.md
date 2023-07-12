@@ -38,24 +38,40 @@ base attributes vs required attributess
 
 <!-- TODO: Add explanations -->
 PolityUnit objects
+
 PolityUnit PersonUnit objects
+
 PolityUnit PersonUnit AgentLink objects
+
 PolityUnit Bank objects
 
 <!-- TODO: Add explanations -->
 AgentUnit objects
+
 AgentUnit AllyUnit objects
+
 AgentUnit BrandUnit objects
+
 AgentUnit IdeaUnit objects
+
 AgentUnit IdeaUnit hierarchical structure
+
 AgentUnit IdeaUnit BrandLink objects
+
 AgentUnit IdeaUnit BrandLine objects
+
 AgentUnit IdeaUnit BrandHeir objects
+
 AgentUnit IdeaUnit BrandHeir objects
+
 AgentUnit IdeaUnit RequiredFactUnit objects
+
 AgentUnit IdeaUnit RequiredFactHeir objects
+
 AgentUnit IdeaUnit AcptFactUnit objects
+
 AgentUnit IdeaUnit AcptFactHeir objects
+
 
 ## 0.2 About the Examples
 
@@ -73,7 +89,7 @@ screenshots and explanatory text.)
 
 <!-- TODO: add dependencies -->
 
-`jaar` can be installed using `pip`
+Future enhancement: `jaar` can be installed using `pip`
 
 <!-- TODO: Get pip install working 
 
