@@ -1,10 +1,10 @@
 from lib.polity.person import personunit_shop, PersonUnit
 from lib.agent.agent import AgentUnit
 from lib.agent.idea import IdeaRoot
-import lib.polity.test_person.example_persons as example_persons
+import lib.polity.examples.example_persons as example_persons
 from lib.polity.test_person.env_tools import (
     env_dir_setup_cleanup,
-    get_temp_env_dir,
+    get_temp_person_dir,
     create_agent_file_for_person,
 )
 from os import path as os_path, scandir as os_scandir
@@ -17,7 +17,7 @@ from lib.agent.x_func import (
 
 def test_personunit_exists(env_dir_setup_cleanup):
     person_text = "test1"
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
     px = personunit_shop(
         name=person_text, env_dir=env_dir, _auto_dest_agent_to_public_agent=True
     )
@@ -51,7 +51,7 @@ def test_personunit_exists(env_dir_setup_cleanup):
 def test_personunit_creates_files(env_dir_setup_cleanup):
     # GIVEN create person
     person1_text = "person1"
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
 
     persons_dir = f"{env_dir}/persons"
     agents_dir = f"{env_dir}/agents"
@@ -93,7 +93,7 @@ def test_personunit_creates_files(env_dir_setup_cleanup):
 
 def test_personunit_set_person_name_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN create person
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
 
     old_person_text = "person1"
     old_person_dir = f"{env_dir}/persons/{old_person_text}"
@@ -129,7 +129,7 @@ def test_personunit_set_dest_agent_to_public_agent_SavesAgentToPublicDir(
     env_dir_setup_cleanup,
 ):
     # GIVEN create person
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
 
     person_text = "person1"
     px = personunit_shop(name=person_text, env_dir=env_dir)
@@ -150,11 +150,11 @@ def test_personunit_auto_dest_agent_to_public_agent_SavesAgentToPublicDir(
     env_dir_setup_cleanup,
 ):
     # GIVEN create person
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
 
     person_text = "person1"
     public_file_name = f"{person_text}.json"
-    public_file_path = f"lib/polity/test_person/ex_env/agents/{public_file_name}"
+    public_file_path = f"lib/polity/examples/ex_env/agents/{public_file_name}"
     px = personunit_shop(
         name=person_text, env_dir=env_dir, _auto_dest_agent_to_public_agent=True
     )

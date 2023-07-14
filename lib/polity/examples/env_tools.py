@@ -10,7 +10,7 @@ from lib.agent.examples.example_agents import (
     get_agent_base_time_example as example_agents_get_agent_base_time_example,
     get_agent_x1_3levels_1required_1acptfacts as example_agents_get_agent_x1_3levels_1required_1acptfacts,
 )
-from lib.polity.test_person.example_persons import (
+from lib.polity.examples.example_persons import (
     get_1node_agent as example_persons_get_1node_agent,
     get_7nodeJRootWithH_agent as example_persons_get_7nodeJRootWithH_agent,
     get_agent_2CleanNodesRandomWeights as example_persons_get_agent_2CleanNodesRandomWeights,

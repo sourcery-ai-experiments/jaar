@@ -4,13 +4,13 @@ from lib.agent.agent import AgentUnit
 from lib.agent.x_func import delete_dir, save_file as x_func_save_file
 
 
-def get_temp_env_dir():
-    return "lib/polity/test_person/ex_env"
+def get_temp_person_dir():
+    return "lib/polity/examples/ex_env"
 
 
 @pytest_fixture()
 def env_dir_setup_cleanup():
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
     delete_dir(dir=env_dir)
     yield env_dir
     delete_dir(dir=env_dir)

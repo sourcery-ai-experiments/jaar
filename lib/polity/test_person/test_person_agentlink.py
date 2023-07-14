@@ -1,8 +1,8 @@
 from lib.polity.person import personunit_shop
-import lib.polity.test_person.example_persons as example_persons
+import lib.polity.examples.example_persons as example_persons
 from lib.polity.test_person.env_tools import (
     env_dir_setup_cleanup,
-    get_temp_env_dir,
+    get_temp_person_dir,
     create_agent_file_for_person,
 )
 from lib.polity.examples.env_tools import get_temp_env_name
@@ -20,7 +20,7 @@ def test_personunit__set_src_agentlinks_RaisesErrorWhenAgentDoesNotExist(
 ):
     # GIVEN
     person1_text = "person1"
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
     px = personunit_shop(name=person1_text, env_dir=env_dir)
     swim_text = "swim"
     assert px._src_agentlinks == {}
@@ -34,7 +34,7 @@ def test_personunit__set_src_agentlinks_RaisesErrorWhenAgentDoesNotExist(
 def test_personunit__set_src_agentlinks_CorrectlyUsed(env_dir_setup_cleanup):
     # GIVEN
     person1_text = "person1"
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
     px = personunit_shop(name=person1_text, env_dir=env_dir)
     swim_text = "swim"
     create_agent_file_for_person(
@@ -52,7 +52,7 @@ def test_personunit__set_src_agentlinks_CorrectlyUsed(env_dir_setup_cleanup):
 def test_personunit_delete_agentlink_CorrectlyDeletesObj(env_dir_setup_cleanup):
     # GIVEN
     person1_text = "person1"
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
     px = personunit_shop(name=person1_text, env_dir=env_dir)
     swim_text = "swim"
     create_agent_file_for_person(
@@ -73,7 +73,7 @@ def test_personunit_delete_agentlink_CorrectlyDeletesBlindTrustFile(
 ):
     # GIVEN
     person1_text = "person1"
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
     px = personunit_shop(name=person1_text, env_dir=env_dir)
     swim_text = "swim"
     create_agent_file_for_person(
@@ -94,7 +94,7 @@ def test_personunit_delete_agentlink_CorrectlyDeletesBlindTrustFile(
 def test_personunit_receive_src_agentunit_obj_SavesFileCorrectly(env_dir_setup_cleanup):
     # GIVEN
     person_name = "person1"
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
     px = personunit_shop(name=person_name, env_dir=env_dir)
     assert x_func_count_files(px._person_agents_dir) is None
 
@@ -113,7 +113,7 @@ def test_personunit_receive_src_agentunit_file_SavesFileCorrectly(
 ):
     # GIVEN
     person_name = "person1"
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
     px = personunit_shop(name=person_name, env_dir=env_dir)
     s1 = example_persons.get_2node_agent()
     sx_json = s1.get_json()
@@ -132,7 +132,7 @@ def test_personunit_receive_src_agentunit_file_SavesFileCorrectly(
 def test_personunit_delete_ignore_agentlink_CorrectlyDeletesObj(env_dir_setup_cleanup):
     # GIVEN
     person1_text = "person1"
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
     px = personunit_shop(name=person1_text, env_dir=env_dir)
     swim_text = "swim"
     create_agent_file_for_person(
@@ -153,7 +153,7 @@ def test_personunit_delete_agentlink_CorrectlyDoesNotDeletesIgnoreFile(
 ):
     # GIVEN
     person1_text = "person1"
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
     px = personunit_shop(name=person1_text, env_dir=env_dir)
     swim_text = "swim"
     create_agent_file_for_person(px._person_agents_dir, swim_text)
@@ -176,7 +176,7 @@ def test_personunit_delete_agentlink_CorrectlyDoesNotDeletesIgnoreFile(
 # ):
 #     # GIVEN
 #     person1_text = "person1"
-#     env_dir = get_temp_env_dir()
+#     env_dir = get_temp_person_dir()
 #     px = personunit_shop(name=person1_text, env_dir=env_dir)
 #     swim_text = "swim"
 #     create_agent_file_for_person(px._person_agents_dir, swim_text)
@@ -201,7 +201,7 @@ def test_personunit_refresh_agentlinks_CorrectlyPullsAllPublicAgents(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
     polity_name = get_temp_env_name()
     e1 = PolityUnit(name=polity_name, politys_dir=env_dir)
     e1.create_dirs_if_null()

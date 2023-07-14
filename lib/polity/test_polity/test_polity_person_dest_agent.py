@@ -5,7 +5,7 @@ from lib.agent.examples.example_agents import (
     agent_v001 as ex_cxs_agent_v001,
     agent_v002 as ex_cxs_agent_v002,
 )
-from lib.polity.test_person.example_persons import (
+from lib.polity.examples.example_persons import (
     get_1node_agent as example_persons_get_1node_agent,
     get_6node_agent as example_persons_get_6node_agent,
 )

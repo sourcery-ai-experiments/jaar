@@ -4,7 +4,7 @@ from lib.agent.examples.example_agents import (
     get_agent_1Task_1CE0MinutesRequired_1AcptFact as example_agents_get_agent_1Task_1CE0MinutesRequired_1AcptFact,
     agent_v001 as example_agents_agent_v001,
 )
-import lib.polity.test_person.example_persons as example_persons
+import lib.polity.examples.example_persons as example_persons
 from os import path as os_path
 from lib.polity.examples.env_tools import (
     get_temp_env_name,

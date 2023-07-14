@@ -3,10 +3,10 @@ from lib.agent.agent import AgentUnit, get_from_json as agentunit_get_from_json
 from lib.agent.examples.example_agents import (
     get_agent_with_4_levels as example_agents_get_agent_with_4_levels,
 )
-import lib.polity.test_person.example_persons as example_persons
+import lib.polity.examples.example_persons as example_persons
 from lib.polity.test_person.env_tools import (
     env_dir_setup_cleanup,
-    get_temp_env_dir,
+    get_temp_person_dir,
 )
 from os import path as os_path, scandir as os_scandir
 from lib.agent.x_func import (
@@ -21,7 +21,7 @@ def test_person_set_starting_digest_agent_CreateStartingAgentFile(
 ):
     # GIVEN
     p_name = "Game1"
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
     px = personunit_shop(name=p_name, env_dir=env_dir)
     file_name = "starting_digest_agent.json"
     with pytest_raises(Exception) as excinfo:
@@ -43,7 +43,7 @@ def test_personget_starting_digest_agent_WhenStartingAgentFileDoesNotExists(
 ):
     # GIVEN
     p_name = "Game1"
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
     px = personunit_shop(name=p_name, env_dir=env_dir)
 
     # WHEN
@@ -78,7 +78,7 @@ def test_person_get_starting_digest_agent_WhenStartingAgentFileExists(
 ):
     # GIVEN
     p_name = "Game1"
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
     px = personunit_shop(name=p_name, env_dir=env_dir)
     px.set_starting_digest_agent(agentunit=example_agents_get_agent_with_4_levels())
 
@@ -104,7 +104,7 @@ def test_person_del_starting_digest_agent_file_DeletesFileCorrectly(
 ):
     # GIVEN
     p_name = "Game1"
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
     px = personunit_shop(name=p_name, env_dir=env_dir)
     px.set_starting_digest_agent(agentunit=example_agents_get_agent_with_4_levels())
     file_name = "starting_digest_agent.json"
@@ -127,7 +127,7 @@ def test_personunit_save_digest_agent_file_SavesFileCorrectly(
 ):
     # GIVEN
     person_name = "person1"
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
     px = personunit_shop(name=person_name, env_dir=env_dir)
     px.create_core_dir_and_files()
     cx = example_persons.get_2node_agent()
@@ -156,7 +156,7 @@ def test_presonunit_set_src_agentlinks_CorrectlySets_blind_trust_DigestAgent(
 ):
     # GIVEN
     person_name = "person1"
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
     px = personunit_shop(name=person_name, env_dir=env_dir)
     px.create_core_dir_and_files()
     cx = example_persons.get_2node_agent()
@@ -185,7 +185,7 @@ def test_person_get_dest_agent_from_digest_agent_files_withEmptyDigestDict(
 ):
     # GIVEN
     person_name_x = "boots3"
-    px = personunit_shop(name=person_name_x, env_dir=get_temp_env_dir())
+    px = personunit_shop(name=person_name_x, env_dir=get_temp_person_dir())
     px.create_core_dir_and_files()
     sx_output_before = px.get_dest_agent_from_digest_agent_files()
     assert str(type(sx_output_before)).find(".agent.AgentUnit'>")
@@ -223,7 +223,7 @@ def test_person_get_dest_agent_from_digest_agent_files_with1DigestedAgent(
 ):
     # GIVEN
     person_name_x = "boots3"
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
     px = personunit_shop(name=person_name_x, env_dir=env_dir)
     px.create_core_dir_and_files()
     sx_output_old = px.get_dest_agent_from_digest_agent_files()
@@ -258,7 +258,7 @@ def test_person_get_dest_agent_from_digest_agent_files_with1DigestedAgent(
 
 # def test_person_set_digested_agent_with2Brands(env_dir_setup_cleanup):
 #     # GIVEN
-#     env_dir = get_temp_env_dir()
+#     env_dir = get_temp_person_dir()
 #     px = personunit_shop(name="test8", env_dir=env_dir)
 #     sx_output_old = px.get_dest_agent_from_digest_agent_files()
 #     assert str(type(sx_output_old)).find(".agent.AgentUnit'>")

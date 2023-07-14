@@ -1,4 +1,4 @@
-import lib.polity.test_person.example_persons as person_examples
+import lib.polity.examples.example_persons as person_examples
 from lib.polity.person import (
     get_from_json as get_person_from_json,
     agentlink_shop,
@@ -7,14 +7,14 @@ from lib.agent.x_func import x_is_json, x_get_dict
 from json import loads as json_loads
 from lib.polity.test_person.env_tools import (
     env_dir_setup_cleanup,
-    get_temp_env_dir,
+    get_temp_person_dir,
 )
 from lib.agent.agent import AgentUnit
 
 
 def test_person_receive_src_agentunit_obj_SetsCorrectInfo():
     # GIVEN
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
     person_x = person_examples.get_person_2agent(env_dir=env_dir)
     assert len(person_x.get_agent_from_agents_dirlinks_dict()) == 2
 
@@ -30,7 +30,7 @@ def test_person_receive_src_agentunit_obj_SetsCorrectInfo():
 
 def test_person_get_agent_from_agents_dirlinks_dict_ReturnsCorrectInfo():
     # GIVEN
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
     person_x = person_examples.get_person_2agent(env_dir=env_dir)
     assert len(person_x.get_agent_from_agents_dirlinks_dict()) == 2
     swim_text = "swim1"
@@ -52,7 +52,7 @@ def test_person_get_agent_from_agents_dirlinks_dict_ReturnsCorrectInfo():
 
 def test_person_get_dict_ReturnsDictObject(env_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
     person_x = person_examples.get_person_2agent(env_dir=env_dir)
     person_x.receive_src_agentunit_obj(agent_x=AgentUnit(_desc="swim8"))
 
@@ -85,7 +85,7 @@ def test_person_get_dict_ReturnsDictObject(env_dir_setup_cleanup):
 
 def test_person_export_to_JSON_simple_example_works(env_dir_setup_cleanup):
     x_json = None
-    env_dir = get_temp_env_dir()
+    env_dir = get_temp_person_dir()
     x_person = person_examples.get_person_2agent(env_dir=env_dir)
 
     assert x_json is None
@@ -110,7 +110,7 @@ def test_person_get_json_CorrectlyWorksForSimpleExample(
 ):
     # GIVEN
     x_json = None
-    person_algo = person_examples.get_person_2agent(env_dir=get_temp_env_dir())
+    person_algo = person_examples.get_person_2agent(env_dir=get_temp_person_dir())
 
     # WHEN
     x_json = person_algo.get_json()
