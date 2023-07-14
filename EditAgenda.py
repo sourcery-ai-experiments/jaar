@@ -26,7 +26,7 @@ class EditAgenda(qw, Ui_Form):
             self.refreshAgendaTable
         )
         self.cb_acptfactbase_display.stateChanged.connect(self.refresh_all)
-        self.acptfact_base_update_init_road = f"time,jajatime"
+        self.acptfact_base_update_init_road = "time,jajatime"
         # self.refresh_all()
 
     def select_agenda_item(self):
@@ -51,21 +51,22 @@ class EditAgenda(qw, Ui_Form):
         self.refreshAgendaTable()
 
     def refreshRequiredBaseCombo(self):
-        if self.acptfact_base_update_init_road == None:
+        if self.acptfact_base_update_init_road is None:
             temp_x = self.acptfact_base_update_combo.currentText()
 
         self.acptfact_base_update_combo.clear()
         required_bases = list(self.agent_x.get_required_bases())
         required_bases.sort(key=lambda x: x, reverse=False)
         self.acptfact_base_update_combo.addItems(required_bases)
-        if self.acptfact_base_update_init_road != None:
+        if self.acptfact_base_update_init_road is None:
+            self.acptfact_base_update_combo.setCurrentText(temp_x)
+
+        else:
             self.acptfact_base_update_init_road = f"{self.agent_x._desc},time,jajatime"
             self.acptfact_base_update_combo.setCurrentText(
                 self.acptfact_base_update_init_road
             )
             self.acptfact_base_update_init_road = None
-        else:
-            self.acptfact_base_update_combo.setCurrentText(temp_x)
 
     def refreshAgendaTable(self):
         self.agenda_table.clear()
@@ -111,18 +112,13 @@ class EditAgenda(qw, Ui_Form):
             and sufffact_nigh_x != None
             and (
                 sufffact_need_x == f"{self.agent_x._desc},time,jajatime"
-                or sufffact_need_x[0:21] == f"{self.agent_x._desc},time,jajatime"
+                or sufffact_need_x[:21] == f"{self.agent_x._desc},time,jajatime"
             )
         ):
             readable_x_text = self.agent_x.get_jajatime_repeating_readable_text(
                 open=sufffact_open_x, nigh=sufffact_nigh_x, divisor=sufffact_divisor_x
             )
-        elif (
-            sufffact_open_x != None
-            and sufffact_nigh_x != None
-            # and sufffact_need_x == f"{self.agent_x._desc},time,jajatime"
-            and sufffact_need_x[0:21] != f"{self.agent_x._desc},time,jajatime"
-        ):
+        elif sufffact_open_x != None and sufffact_nigh_x != None:
             text_x = f"{self.agent_x._desc},time,jajatime"
             readable_x_text = (
                 f"sufffact {sufffact_open_x}-{sufffact_nigh_x} {sufffact_divisor_x=}"
@@ -164,7 +160,7 @@ class EditAgenda(qw, Ui_Form):
         self.agenda_table.setColumnHidden(5, display_acptfactbase)
         self.agenda_table.setColumnHidden(6, display_acptfactbase)
         self.agenda_table.setColumnHidden(7, display_acptfactbase)
-        self.agenda_table.setColumnHidden(8, display_acptfactbase == False)
+        self.agenda_table.setColumnHidden(8, not display_acptfactbase)
         self.agenda_table.setHorizontalHeaderLabels(
             [
                 "_desc",

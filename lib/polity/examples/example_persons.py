@@ -159,10 +159,7 @@ def get_person_2agent(env_dir):
 
 
 def get_agent_2CleanNodesRandomWeights(_desc: str = None):
-    if _desc != None:
-        desc_text = _desc
-    else:
-        desc_text = "ernie"
+    desc_text = _desc if _desc != None else "ernie"
     agent_x = AgentUnit(_desc=desc_text)
     casa_text = "casa"
     agent_x.add_idea(idea_kid=IdeaKid(_desc=casa_text), walk="")
@@ -178,10 +175,7 @@ def get_agent_2CleanNodesRandomWeights(_desc: str = None):
 
 
 def get_agent_3CleanNodesRandomWeights(_desc: str = None):
-    if _desc != None:
-        desc_text = _desc
-    else:
-        desc_text = "ernie"
+    desc_text = _desc if _desc != None else "ernie"
     agent_x = AgentUnit(_desc=desc_text)
     casa_text = "casa"
     agent_x.add_idea(idea_kid=IdeaKid(_desc=casa_text), walk="")

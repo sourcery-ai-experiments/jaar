@@ -63,8 +63,8 @@ def test_agentunit_get_bond_status_ReturnsCorrectBool():
     cx.del_idea_kid(road=clean_kitchen_road)
     assert cx.get_bond_status() == False
 
-    for idea_kid in cx._idearoot._kids.values():
-        print(f"after {idea_kid._desc=} {idea_kid.promise=}")
+    # for idea_kid in cx._idearoot._kids.values():
+    #     print(f"after {idea_kid._desc=} {idea_kid.promise=}")
 
 
 def test_agentunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaBrandheirsMatchAgentBrands():
@@ -252,7 +252,7 @@ def test_agentunit_export_all_bonds_ExportsFileOfBonds_2files(env_dir_setup_clea
     # GIVEN
     cx = example_agents_get_agent_with_4_levels_and_2requireds_2acptfacts()
     cx_idea_list = cx.get_idea_list()
-    action_count = sum(1 for yx in cx_idea_list if yx.promise)
+    action_count = sum(bool(yx.promise) for yx in cx_idea_list)
     assert action_count == 2
     with pytest_raises(Exception) as excinfo:
         x_func_dir_files(dir_path=get_temp_env_dir())
@@ -265,8 +265,8 @@ def test_agentunit_export_all_bonds_ExportsFileOfBonds_2files(env_dir_setup_clea
     cx.export_all_bonds(dir=get_temp_env_dir())
 
     # THEN
-    for bond_file_x in x_func_dir_files(dir_path=get_temp_env_dir()).keys():
-        print(f"files exported {bond_file_x=}")
+    # for bond_file_x in x_func_dir_files(dir_path=get_temp_env_dir()).keys():
+    #     print(f"files exported {bond_file_x=}")
 
     assert len(x_func_dir_files(dir_path=get_temp_env_dir())) == 2
 
@@ -303,7 +303,7 @@ def test_agentunit_export_all_bonds_ReturnsDictOfBonds(env_dir_setup_cleanup):
     # GIVEN
     cx = example_agents_get_agent_with_4_levels_and_2requireds_2acptfacts()
     cx_idea_list = cx.get_idea_list()
-    action_count = sum(1 for yx in cx_idea_list if yx.promise)
+    action_count = sum(bool(yx.promise) for yx in cx_idea_list)
     assert action_count == 2
 
     # WHEN

@@ -611,10 +611,10 @@ def test_agent_AllyUnit_CorrectlyCreatesNewName():
     # THEN
     assert a_x._allys.get(beto_text) != None
     assert a_x._allys.get(beto_text).creditor_weight == 13
-    assert a_x._allys.get(rico_text) == None
+    assert a_x._allys.get(rico_text) is None
     assert len(a_x._allys) == 3
     assert len(a_x._brands) == 3
-    assert a_x._brands.get(rico_text) == None
+    assert a_x._brands.get(rico_text) is None
     assert a_x._brands.get(beto_text) != None
     assert a_x._brands.get(beto_text)._single_ally == True
 
@@ -732,7 +732,7 @@ def test_agent_AllyUnit_CorrectlyMergesNames():
     # THEN
     assert a_x._allys.get(carm_text) != None
     assert a_x._allys.get(carm_text).creditor_weight == 16
-    assert a_x._allys.get(rico_text) == None
+    assert a_x._allys.get(rico_text) is None
     assert len(a_x._allys) == 2
 
 
@@ -972,17 +972,22 @@ def test_agent_get_allyunits_name_list_CorrectlyReturnsListOfAllyUnits():
     sx.set_allyunit(allyunit=allyunit_shop(name=sam_text))
     sx.set_allyunit(allyunit=allyunit_shop(name=will_text))
     sx.set_allyunit(allyunit=allyunit_shop(name=fry_text))
-    assert len(sx._brands) == 3
+    fun_text = "fun people"
+    fun_brand = brandunit_shop(name=fun_text)
+    fun_brand.set_allylink(allylink=allylink_shop(name=will_text))
+    sx.set_brandunit(brandunit=fun_brand)
+    assert len(sx._brands) == 4
+    assert len(sx._allys) == 3
 
     # WHEN
     allyunit_list_x = sx.get_allyunits_name_list()
 
     # THEN
+    assert len(allyunit_list_x) == 4
     assert allyunit_list_x[0] == ""
     assert allyunit_list_x[1] == fry_text
     assert allyunit_list_x[2] == sam_text
     assert allyunit_list_x[3] == will_text
-    assert len(allyunit_list_x) == 4
 
 
 def test_agent_set_banking_data_allyunits_CorrectlySetsAllyUnitBankingAttr():
@@ -1013,11 +1018,11 @@ def test_agent_set_banking_data_allyunits_CorrectlySetsAllyUnitBankingAttr():
     river_tally_sam = RiverTallyUnit(bob_text, sam_text, 0.209, 0, 0.034)
     river_tally_wil = RiverTallyUnit(bob_text, wil_text, 0.501, 0, 0.024)
     river_tally_fry = RiverTallyUnit(bob_text, fry_text, 0.111, 0, 0.006)
-    river_tallys = {}
-    river_tallys[river_tally_sam.tax_name] = river_tally_sam
-    river_tallys[river_tally_wil.tax_name] = river_tally_wil
-    river_tallys[river_tally_fry.tax_name] = river_tally_fry
-
+    river_tallys = {
+        river_tally_sam.tax_name: river_tally_sam,
+        river_tally_wil.tax_name: river_tally_wil,
+        river_tally_fry.tax_name: river_tally_fry,
+    }
     # WHEN
     ax.set_banking_attr_allyunits(river_tallys=river_tallys)
 

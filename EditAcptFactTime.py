@@ -111,19 +111,18 @@ class EditAcptFactTime(qtw.QTableWidget, Ui_Form):
         root_dt_open = datetime()
         root_dt_nigh = datetime()
 
-        dict_x = {}
-        dict_x["curr_hour"] = root_dt_open.hour
-        dict_x["curr_min"] = root_dt_open.minute
-        dict_x["curr_month"] = root_dt_open.month
-        dict_x["curr_monthday"] = root_dt_open.day
-        dict_x["curr_year"] = root_dt_open.year
-        dict_x["prev_hour"] = root_dt_nigh.hour
-        dict_x["prev_min"] = root_dt_nigh.minute
-        dict_x["prev_month"] = root_dt_nigh.month
-        dict_x["prev_monthday"] = root_dt_nigh.day
-        dict_x["prev_year"] = root_dt_nigh.year
-
-        return dict_x
+        return {
+            "curr_hour": root_dt_open.hour,
+            "curr_min": root_dt_open.minute,
+            "curr_month": root_dt_open.month,
+            "curr_monthday": root_dt_open.day,
+            "curr_year": root_dt_open.year,
+            "prev_hour": root_dt_nigh.hour,
+            "prev_min": root_dt_nigh.minute,
+            "prev_month": root_dt_nigh.month,
+            "prev_monthday": root_dt_nigh.day,
+            "prev_year": root_dt_nigh.year,
+        }
 
     def closeRootChanges(self):
         self.root_changes_submitted.emit(True)

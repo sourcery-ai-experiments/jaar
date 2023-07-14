@@ -165,10 +165,10 @@ class PolityUnit:
                     cur.execute(sqlstr)
 
     def get_bank_conn(self) -> Connection:
-        if self._bank_db != None:
-            return self._bank_db
-        else:
+        if self._bank_db is None:
             return sqlite3_connect(self.get_bank_db_path())
+        else:
+            return self._bank_db
 
     def _create_bank_db_if_null(self, in_memory: bool = None) -> Connection:
         bank_file_new = True
@@ -233,17 +233,13 @@ class PolityUnit:
         self._personunits[px.name] = px
 
     def get_person_obj_from_polity(self, name: str) -> PersonUnit:
-        if self._personunits.get(name) is None:
-            return None
-        else:
-            return self._personunits[name]
+        return None if self._personunits.get(name) is None else self._personunits[name]
 
     def get_person_obj_from_file(self, name: str) -> PersonUnit:
         person_json = x_func_open_file(
             dest_dir=f"{self.get_persons_dir()}/{name}", file_name=f"{name}.json"
         )
-        personunit_x = get_person_from_json(person_json=person_json)
-        return personunit_x
+        return get_person_from_json(person_json=person_json)
 
     def load_personunit(self, name: str):
         person_x = self.get_person_obj_from_file(name=name)

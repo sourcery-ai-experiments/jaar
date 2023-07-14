@@ -115,15 +115,12 @@ class AgentUnit:
         if self._are_all_allys_brands_are_in_idea_kid(road=promise_idea_road) == False:
             return False
 
-        if self.all_ideas_relevant_to_promise_idea(road=promise_idea_road) == False:
-            return False
-
-        return True
+        return self.all_ideas_relevant_to_promise_idea(road=promise_idea_road) != False
 
     def export_all_bonds(self, dir: str):
         self.set_all_idea_uids_unique()
         self.set_agent_metrics()
-        dict_x = {}
+        # dict_x = {}
         for yx in self.get_idea_list():
             if yx.promise:
                 cx = self.get_agent_sprung_from_single_idea(yx.get_road())
@@ -134,7 +131,7 @@ class AgentUnit:
                     file_text=cx.get_json(),
                     replace=True,
                 )
-        return dict_x
+        return {}
 
     def get_agent_sprung_from_single_idea(self, road: Road):
         self.set_agent_metrics()
@@ -164,8 +161,7 @@ class AgentUnit:
             requiredunit_base_road_list.extend(get_ancestor_roads(required_base))
             requiredunit_base_road_list.extend(self.get_heir_road_list(required_base))
 
-        idea_assoc_list = []
-        idea_assoc_list.append(road)
+        idea_assoc_list = [road]
         idea_assoc_list.extend(idea_ancestor_list)
         idea_assoc_list.extend(requiredunit_base_road_list)
         return set(idea_assoc_list)
@@ -173,25 +169,18 @@ class AgentUnit:
     def all_ideas_relevant_to_promise_idea(self, road: Road) -> bool:
         promise_idea_assoc_set = set(self._get_all_idea_assoc_roads(road=road))
         all_ideas_set = set(self.get_idea_tree_ordered_road_list())
-
-        if all_ideas_set != all_ideas_set.intersection(promise_idea_assoc_set):
-            return False
-
-        return True
+        return all_ideas_set == all_ideas_set.intersection(promise_idea_assoc_set)
 
     def _are_all_allys_brands_are_in_idea_kid(self, road: Road) -> bool:
         idea_kid = self.get_idea_kid(road=road)
         # get dict of all idea brandheirs
         brandheir_list = idea_kid._brandheirs.keys()
-        brandheir_dict = {}
-        for brandheir_name in brandheir_list:
-            brandheir_dict[brandheir_name] = 1
-
-        # get dict all brands that are not single_ally_brands
-        non_single_brandunits = {}
-        for brandunit in self._brands.values():
-            if brandunit._single_ally != True:
-                non_single_brandunits[brandunit.name] = brandunit
+        brandheir_dict = {brandheir_name: 1 for brandheir_name in brandheir_list}
+        non_single_brandunits = {
+            brandunit.name: brandunit
+            for brandunit in self._brands.values()
+            if brandunit._single_ally != True
+        }
         # check all non_single_ally_brandunits are in brandheirs
         for non_single_brand in non_single_brandunits.values():
             if brandheir_dict.get(non_single_brand.name) is None:
@@ -199,16 +188,13 @@ class AgentUnit:
 
         # get dict of all allylinks that are in all brandheirs
         brandheir_allyunits = {}
-        for brandheir_name in brandheir_dict.keys():
+        for brandheir_name in brandheir_dict:
             brandunit = self._brands.get(brandheir_name)
             for allylink in brandunit._allys.values():
                 brandheir_allyunits[allylink.name] = self._allys.get(allylink.name)
 
         # check all agent._allys are in brandheir_allyunits
-        if len(self._allys) != len(brandheir_allyunits):
-            return False
-
-        return True
+        return len(self._allys) == len(brandheir_allyunits)
 
     def get_time_min_from_dt(self, dt: datetime) -> float:
         return hreg_get_time_min_from_dt(dt=dt)
@@ -292,23 +278,9 @@ class AgentUnit:
             str_x = self.get_jajatime_readable_one_time_event(jajatime_min=open)
             # str_x = f"Weekday, monthname monthday year"
         elif divisor != None and divisor % 10080 == 0:
-            open_in_week = open % divisor
-            week_road = f"{self._desc},time,tech,week"
-            weekday_ideas_dict = self.get_idea_ranged_kids(
-                idea_road=week_road, begin=open_in_week
-            )
-            weekday_idea_node = None
-            for idea in weekday_ideas_dict.values():
-                weekday_idea_node = idea
-
-            if divisor / 10080 == 1:
-                str_x = f"every {weekday_idea_node._desc} at {convert1440toReadableTime(min1440=open%1440)}"
-            else:
-                num_weeks = int(divisor / 10080)
-                num_with_postfix = get_number_with_postfix(num=num_weeks)
-                str_x = f"every {num_with_postfix} {weekday_idea_node._desc} at {convert1440toReadableTime(min1440=open%1440)}"
+            str_x = self._get_jajatime_week_readable_text(open, divisor)
         elif divisor != None and divisor % 1440 == 0:
-            if divisor / 1440 == 1:
+            if divisor == 1440:
                 str_x = f"every day at {convert1440toReadableTime(min1440=open)}"
             else:
                 num_days = int(divisor / 1440)
@@ -318,6 +290,21 @@ class AgentUnit:
             str_x = "unkonwn"
 
         return str_x
+
+    def _get_jajatime_week_readable_text(self, open: int, divisor: int) -> str:
+        open_in_week = open % divisor
+        week_road = f"{self._desc},time,tech,week"
+        weekday_ideas_dict = self.get_idea_ranged_kids(
+            idea_road=week_road, begin=open_in_week
+        )
+        weekday_idea_node = None
+        for idea in weekday_ideas_dict.values():
+            weekday_idea_node = idea
+
+        if divisor == 10080:
+            return f"every {weekday_idea_node._desc} at {convert1440toReadableTime(min1440=open % 1440)}"
+        num_with_postfix = get_number_with_postfix(num=divisor // 10080)
+        return f"every {num_with_postfix} {weekday_idea_node._desc} at {convert1440toReadableTime(min1440=open % 1440)}"
 
     def get_allys_metrics(self):
         tree_metrics = self.get_tree_metrics()
@@ -427,12 +414,12 @@ class AgentUnit:
         allow_nonsingle_brand_overwrite: bool,
     ):
         old_name_creditor_weight = self._allys.get(old_name).creditor_weight
-        if allow_ally_overwite != True and self._allys.get(new_name) != None:
+        if not allow_ally_overwite and self._allys.get(new_name) != None:
             raise Exception(
                 f"Ally '{old_name}' change to '{new_name}' failed since it already exists."
             )
         elif (
-            allow_nonsingle_brand_overwrite != True
+            not allow_nonsingle_brand_overwrite
             and self._brands.get(new_name) != None
             and self._brands.get(new_name)._single_ally == False
         ):
@@ -451,10 +438,11 @@ class AgentUnit:
         self.add_allyunit(name=new_name, creditor_weight=old_name_creditor_weight)
         brands_affected_list = []
         for brand in self._brands.values():
-            for ally_x in brand._allys.values():
-                if ally_x.name == old_name:
-                    brands_affected_list.append(brand.name)
-
+            brands_affected_list.extend(
+                brand.name
+                for ally_x in brand._allys.values()
+                if ally_x.name == old_name
+            )
         for brand_x in brands_affected_list:
             allylink_creditor_weight = (
                 self._brands.get(brand_x)._allys.get(old_name).creditor_weight
@@ -482,23 +470,19 @@ class AgentUnit:
         self.del_allyunit(name=old_name)
 
     def get_allyunits_name_list(self):
-        allyname_list = list(self._brands.keys())
+        allyname_list = list(self._allys.keys())
         allyname_list.append("")
-        allyname_dict = {brandname.lower(): brandname for brandname in allyname_list}
+        allyname_dict = {allyname.lower(): allyname for allyname in allyname_list}
         allyname_lowercase_ordered_list = sorted(list(allyname_dict))
-        allyname_orginalcase_ordered_list = [
-            allyname_dict[brand_l] for brand_l in allyname_lowercase_ordered_list
+        return [
+            allyname_dict[allyname_l] for allyname_l in allyname_lowercase_ordered_list
         ]
-        return allyname_orginalcase_ordered_list
 
     def get_allyunits_uid_max(self) -> int:
         uid_max = 1
         for allyunit_x in self._allys.values():
-            try:
-                if allyunit_x.uid > uid_max:
-                    uid_max = allyunit_x.uid
-            except:
-                pass
+            if allyunit_x.uid != None and allyunit_x.uid > uid_max:
+                uid_max = allyunit_x.uid
         return uid_max
 
     def get_allyunits_uid_dict(self) -> dict[int:int]:
@@ -520,21 +504,16 @@ class AgentUnit:
                 uid_max = allyunit_x.uid
 
     def all_allyunits_uids_are_unique(self):
-        bool_x = True
         uid_dict = self.get_allyunits_uid_dict()
-        for uid, uid_count in uid_dict.items():
-            if uid_count > 1 or uid == None:
-                bool_x = False
-        return bool_x
+        return not any(
+            uid_count > 1 or uid is None for uid, uid_count in uid_dict.items()
+        )
 
     def get_brandunits_uid_max(self) -> int:
         uid_max = 1
         for brandunit_x in self._brands.values():
-            try:
-                if brandunit_x.uid > uid_max:
-                    uid_max = brandunit_x.uid
-            except:
-                pass
+            if brandunit_x.uid != None and brandunit_x.uid > uid_max:
+                uid_max = brandunit_x.uid
         return uid_max
 
     def get_brandunits_uid_dict(self) -> dict[int:int]:
@@ -556,12 +535,10 @@ class AgentUnit:
                 uid_max = brandunit_x.uid
 
     def all_brandunits_uids_are_unique(self):
-        bool_x = True
         uid_dict = self.get_brandunits_uid_dict()
-        for uid, uid_count in uid_dict.items():
-            if uid_count > 1 or uid == None:
-                bool_x = False
-        return bool_x
+        return not any(
+            uid_count > 1 or uid is None for uid, uid_count in uid_dict.items()
+        )
 
     def set_brandunit(self, brandunit: BrandUnit, create_missing_allys: bool = None):
         self.set_brandunits_empty_if_null()
@@ -588,7 +565,7 @@ class AgentUnit:
     def edit_brandunit_name(
         self, old_name: BrandName, new_name: BrandName, allow_brand_overwite: bool
     ):
-        if allow_brand_overwite != True and self._brands.get(new_name) != None:
+        if not allow_brand_overwite and self._brands.get(new_name) != None:
             raise Exception(
                 f"Brand '{old_name}' change to '{new_name}' failed since it already exists."
             )
@@ -653,10 +630,7 @@ class AgentUnit:
         brandname_list.append("")
         brandname_dict = {brandname.lower(): brandname for brandname in brandname_list}
         brandname_lowercase_ordered_list = sorted(list(brandname_dict))
-        brandname_orginalcase_ordered_list = [
-            brandname_dict[brand_l] for brand_l in brandname_lowercase_ordered_list
-        ]
-        return brandname_orginalcase_ordered_list
+        return [brandname_dict[brand_l] for brand_l in brandname_lowercase_ordered_list]
 
     def set_time_acptfacts(self, open: datetime = None, nigh: datetime = None) -> None:
         open_minutes = self.get_time_min_from_dt(dt=open) if open != None else None
@@ -846,8 +820,10 @@ class AgentUnit:
         ]
 
         list_x = [["", ""]]
-        for acptfact_x in node_orginalcase_ordered_list:
-            list_x.append([acptfact_x.base, acptfact_x.pick])
+        list_x.extend(
+            [acptfact_x.base, acptfact_x.pick]
+            for acptfact_x in node_orginalcase_ordered_list
+        )
         return list_x
 
     def del_acptfact(self, base: Road):
@@ -985,7 +961,7 @@ class AgentUnit:
     def _set_ideakid_if_empty(self, road: Road):
         try:
             self.get_idea_kid(road)
-        except:
+        except Exception:
             base_idea = IdeaKid(
                 _desc=get_terminus_node_from_road(road=road),
                 _walk=get_walk_from_road(road=road),
@@ -1062,13 +1038,7 @@ class AgentUnit:
                 self._idearoot._desc = new_desc
                 self._idearoot._walk = walk
             else:
-                idea_z = self.get_idea_kid(road=old_road)
-                idea_z._desc = new_desc
-                idea_z._walk = walk
-                idea_parent = self.get_idea_kid(road=get_walk_from_road(old_road))
-                idea_parent._kids.pop(get_terminus_node_from_road(old_road))
-                idea_parent._kids[idea_z._desc] = idea_z
-
+                self._non_root_idea_desc_edit(old_road, new_desc, walk)
             self._idearoot_find_replace_road(old_road=old_road, new_road=new_road)
             self._set_acptfacts_empty_if_null()
             self._idearoot._acptfactunits = find_replace_road_key_dict(
@@ -1076,6 +1046,14 @@ class AgentUnit:
                 old_road=old_road,
                 new_road=new_road,
             )
+
+    def _non_root_idea_desc_edit(self, old_road, new_desc, walk):
+        idea_z = self.get_idea_kid(road=old_road)
+        idea_z._desc = new_desc
+        idea_z._walk = walk
+        idea_parent = self.get_idea_kid(road=get_walk_from_road(old_road))
+        idea_parent._kids.pop(get_terminus_node_from_road(old_road))
+        idea_parent._kids[idea_z._desc] = idea_z
 
     def _idearoot_find_replace_road(self, old_road, new_road):
         self._idearoot.find_replace_road(old_road=old_road, new_road=new_road)
@@ -1315,7 +1293,7 @@ class AgentUnit:
             problem_bool=problem_bool,
             on_meld_weight_action=on_meld_weight_action,
         )
-        if not (f"{type(temp_idea)}".find("'.idea.IdeaRoot'>") > 0):
+        if f"{type(temp_idea)}".find("'.idea.IdeaRoot'>") <= 0:
             temp_idea._set_ideakid_attr(acptfactunit=acptfactunit)
 
         # deleting a brandlink reqquires a tree traverse to correctly set brandheirs and brandlines
@@ -1496,15 +1474,18 @@ class AgentUnit:
             # distribute agent_importance via general allyunit
             # credit ratio and debt ratio
             # if idea.is_agenda_item() and idea._brandlines == {}:
-            if idea.is_agenda_item() and idea._brandlines == {}:
-                self._add_to_allyunits_agent_agenda_credit_debt(idea._agent_importance)
-            elif idea.is_agenda_item() and idea._brandlines != {}:
-                for brandline_x in idea._brandlines.values():
-                    self.add_to_brand_agent_agenda_credit_debt(
-                        brandname=brandline_x.name,
-                        brandline_agent_credit=brandline_x._agent_credit,
-                        brandline_agent_debt=brandline_x._agent_debt,
+            if idea.is_agenda_item():
+                if idea._brandlines == {}:
+                    self._add_to_allyunits_agent_agenda_credit_debt(
+                        idea._agent_importance
                     )
+                else:
+                    for brandline_x in idea._brandlines.values():
+                        self.add_to_brand_agent_agenda_credit_debt(
+                            brandname=brandline_x.name,
+                            brandline_agent_credit=brandline_x._agent_credit,
+                            brandline_agent_debt=brandline_x._agent_debt,
+                        )
 
     def _distribute_brands_agent_importance(self):
         for brand_obj in self._brands.values():
@@ -1606,10 +1587,7 @@ class AgentUnit:
             close = begin
 
         idea_list = parent_idea.get_kids_in_range(begin=begin, close=close)
-        dict_x = {}
-        for idea_x in idea_list:
-            dict_x[idea_x._desc] = idea_x
-        return dict_x
+        return {idea_x._desc: idea_x for idea_x in idea_list}
 
     def _set_ancestor_metrics(self, road: Road):
         da_count = 0
@@ -1774,12 +1752,10 @@ class AgentUnit:
 
         self._rational = False
         self._tree_traverse_count = 0
-        self._idea_dict = {}
-        self._idea_dict[self._idearoot.get_road()] = self._idearoot
+        self._idea_dict = {self._idearoot.get_road(): self._idearoot}
 
         while (
-            self._rational == False
-            and self._tree_traverse_count < self._max_tree_traverse
+            not self._rational and self._tree_traverse_count < self._max_tree_traverse
         ):
             self._execute_tree_traverse()
             self._run_after_each_tree_traverse()

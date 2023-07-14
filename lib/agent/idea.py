@@ -226,8 +226,7 @@ class IdeaCore:
         self._agent_importance = parent_agent_importance * sibling_ratio
         self._agent_coin_onset = coin_onset_x
         self._agent_coin_cease = self._agent_coin_onset + self._agent_importance
-        if self._agent_coin_cease > parent_coin_cease:
-            self._agent_coin_cease = parent_coin_cease
+        self._agent_coin_cease = min(self._agent_coin_cease, parent_coin_cease)
         self.set_brandheirs_agent_credit_debit()
 
     def get_kids_in_range(self, begin: float, close: float) -> list:
@@ -368,10 +367,10 @@ class IdeaCore:
         self.set_requiredunits_empty_if_null()
         other_idea.set_requiredunits_empty_if_null()
         for lx in other_idea._requiredunits.values():
-            if self._requiredunits.get(lx.base) != None:
-                self._requiredunits.get(lx.base).meld(lx)
-            else:
+            if self._requiredunits.get(lx.base) is None:
                 self._requiredunits[lx.base] = lx
+            else:
+                self._requiredunits.get(lx.base).meld(lx)
 
     def meld_brandlinks(self, other_idea):
         self.set_brandlink_empty_if_null()
@@ -390,10 +389,10 @@ class IdeaCore:
         self.set_acptfactunits_empty_if_null()
         other_idea.set_acptfactunits_empty_if_null()
         for hc in other_idea._acptfactunits.values():
-            if self._acptfactunits.get(hc.base) != None:
-                self._acptfactunits.get(hc.base).meld(hc)
-            else:
+            if self._acptfactunits.get(hc.base) is None:
                 self._acptfactunits[hc.base] = hc
+            else:
+                self._acptfactunits.get(hc.base).meld(hc)
 
     def meld(self, other_idea, _idearoot: bool = None):
         if _idearoot and self._desc != other_idea._desc:
@@ -415,19 +414,19 @@ class IdeaCore:
         self.meld_attributes_that_will_be_equal(other_idea=other_idea)
 
     def meld_attributes_that_will_be_equal(self, other_idea):
-        xl = []
-        xl.append(("_uid", self._uid, other_idea._uid))
-        xl.append(("_begin", self._begin, other_idea._begin))
-        xl.append(("_close", self._close, other_idea._close))
-        xl.append(("_addin", self._addin, other_idea._addin))
-        xl.append(("_denom", self._denom, other_idea._denom))
-        xl.append(("_numor", self._numor, other_idea._numor))
-        xl.append(("_reest", self._reest, other_idea._reest))
-        xl.append(("_special_road", self._special_road, other_idea._special_road))
-        xl.append(("_numeric_road", self._numeric_road, other_idea._numeric_road))
-        xl.append(("promise", self.promise, other_idea.promise))
-        xl.append(("_is_expanded", self._is_expanded, other_idea._is_expanded))
-
+        xl = [
+            ("_uid", self._uid, other_idea._uid),
+            ("_begin", self._begin, other_idea._begin),
+            ("_close", self._close, other_idea._close),
+            ("_addin", self._addin, other_idea._addin),
+            ("_denom", self._denom, other_idea._denom),
+            ("_numor", self._numor, other_idea._numor),
+            ("_reest", self._reest, other_idea._reest),
+            ("_special_road", self._special_road, other_idea._special_road),
+            ("_numeric_road", self._numeric_road, other_idea._numeric_road),
+            ("promise", self.promise, other_idea.promise),
+            ("_is_expanded", self._is_expanded, other_idea._is_expanded),
+        ]
         while xl != []:
             attrs = xl.pop()
             if attrs[1] != attrs[2]:
@@ -648,10 +647,7 @@ class IdeaCore:
 
     def set_active_status(self, tree_traverse_count: int):
         self.clear_requiredheirs_status()
-        if self._active_status:
-            prev_to_now_active_status = True
-        else:
-            prev_to_now_active_status = False
+        prev_to_now_active_status = bool(self._active_status)
         self._active_status = True
         self._task = False
         self.set_acptfactheirs_empty_if_null()

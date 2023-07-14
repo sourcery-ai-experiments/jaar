@@ -146,10 +146,7 @@ def bool_val(bool_x):
 
 
 def emptystring_returns_none(str_x: str) -> str:
-    if str_x == "":
-        return None
-    else:
-        return str_x
+    return None if not str_x else str_x
 
 
 def lw_diplay(agent_importance: float):
@@ -177,7 +174,7 @@ def lw_diplay(agent_importance: float):
     elif agent_importance >= 0.000001:
         return f"{agent_importance:.8f}%"
     elif agent_importance == 0:
-        return f"0%"
+        return "0%"
     else:
         return f"{agent_importance:.15f}%"
 
@@ -230,27 +227,26 @@ def _create_treenode_label(
     elif acptfactheir_view_flag and idea_core._walk != "":
         acptfactheir = idea_core._acptfactheirs.get(required_view_name)
         time_road = f"{src_agent._idearoot._desc},time,jajatime"
-        if (
-            acptfactheir != None
-            and acptfactheir.base == time_road
-            and acptfactheir.open != None
-            and acptfactheir.nigh != None
-        ):
-            hc_open_str = src_agent.get_jajatime_readable_one_time_event(
-                jajatime_min=acptfactheir.open
-            )
-            hc_nigh_str = src_agent.get_jajatime_readable_one_time_event(
-                jajatime_min=acptfactheir.nigh
-            )
-            # treenode_label += f"{get_terminus_node_from_road(acptfactheir.base)}"
-            treenode_label += f" ({hc_open_str}-{hc_nigh_str})"
-        elif (
-            acptfactheir != None
-            and acptfactheir.base != time_road
-            and acptfactheir.open != None
-            and acptfactheir.nigh != None
-        ):
-            treenode_label += f" ({acptfactheir.open}-{acptfactheir.nigh})"
+        if acptfactheir != None:
+            if (
+                acptfactheir.base == time_road
+                and acptfactheir.open != None
+                and acptfactheir.nigh != None
+            ):
+                hc_open_str = src_agent.get_jajatime_readable_one_time_event(
+                    jajatime_min=acptfactheir.open
+                )
+                hc_nigh_str = src_agent.get_jajatime_readable_one_time_event(
+                    jajatime_min=acptfactheir.nigh
+                )
+                # treenode_label += f"{get_terminus_node_from_road(acptfactheir.base)}"
+                treenode_label += f" ({hc_open_str}-{hc_nigh_str})"
+            elif (
+                acptfactheir.base != time_road
+                and acptfactheir.open != None
+                and acptfactheir.nigh != None
+            ):
+                treenode_label += f" ({acptfactheir.open}-{acptfactheir.nigh})"
 
     elif yo_action_flag and idea_core.action:
         treenode_label += " (task)" if idea_core._task else " (state)"
@@ -260,10 +256,11 @@ def _create_treenode_label(
         treenode_label += f" ({len(idea_core._acptfactheirs)})"
 
     if requiredheir_count_flag and idea_core._walk not in (None, ""):
-        requiredunit_count = 0
-        for requiredheir in idea_core._requiredheirs.values():
-            if str(type(requiredheir)) == "<class 'lib.agent.required.RequiredUnit'>":
-                requiredunit_count += 1
+        requiredunit_count = sum(
+            1
+            for requiredheir in idea_core._requiredheirs.values()
+            if str(type(requiredheir)) == "<class 'lib.agent.required.RequiredUnit'>"
+        )
         treenode_label += f" (RequiredHeirs {len(idea_core._requiredheirs)})"
 
     if yo_acptfactunit_time_flag:

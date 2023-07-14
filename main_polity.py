@@ -47,13 +47,13 @@ class MainApp(QApplication):
         self.main_window.open_edit5issue.connect(self.edit5issue_show)
 
     def editmain_show(self):
-        if self.main_window.ignore_agent_x != None:
-            self.editmain_view.agent_x = self.main_window.ignore_agent_x
-        else:
+        if self.main_window.ignore_agent_x is None:
             self.main_window.starting_digest = (
                 self.main_window.person_x.get_starting_digest_agent()
             )
             self.editmain_view.agent_x = self.main_window.starting_digest
+        else:
+            self.editmain_view.agent_x = self.main_window.ignore_agent_x
         self.editmain_view.refresh_all()
         self.editmain_view.show()
 
@@ -311,15 +311,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def get_agent_desc_list(self):
         agents_desc_list = []
         if self.polity_x != None:
-            for agent in self.polity_x.get_agents_dir_list_of_obj():
-                agents_desc_list.append([agent._desc])
+            agents_desc_list.extend(
+                [agent._desc] for agent in self.polity_x.get_agents_dir_list_of_obj()
+            )
         return agents_desc_list
 
     def get_person_desc_list(self):
         persons_desc_list = []
         if self.polity_x != None:
-            for person_dir in self.polity_x.get_person_dir_paths_list():
-                persons_desc_list.append([person_dir])
+            persons_desc_list.extend(
+                [person_dir] for person_dir in self.polity_x.get_person_dir_paths_list()
+            )
         return persons_desc_list
 
     def get_agentlink_list(self):
@@ -343,9 +345,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 include_dirs=False,
                 include_files=True,
             )
-            for file in digest_file_list:
-                x_list.append([file])
-
+            x_list.extend([file] for file in digest_file_list)
         return x_list
 
     def get_ignores_list(self):
@@ -357,9 +357,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 include_dirs=False,
                 include_files=True,
             )
-            for file in digest_file_list:
-                x_list.append([file])
-
+            x_list.extend([file] for file in digest_file_list)
         return x_list
 
     def get_p_ideas_list(self):
@@ -384,29 +382,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def get_p_allys_list(self):
         x_list = []
         if self.person_dest_agent != None:
-            for allyunit in self.person_dest_agent._allys.values():
-                x_list.append(
-                    [
-                        lw_diplay(allyunit._agent_importance),
-                        allyunit.name,
-                        allyunit.weight,
-                    ]
-                )
-
+            x_list.extend(
+                [
+                    lw_diplay(allyunit._agent_importance),
+                    allyunit.name,
+                    allyunit.weight,
+                ]
+                for allyunit in self.person_dest_agent._allys.values()
+            )
         return x_list
 
     def get_p_brands_list(self):
         x_list = []
         if self.person_dest_agent != None:
-            for brandunit in self.person_dest_agent._brands.values():
-                x_list.append(
-                    [
-                        lw_diplay(brandunit._agent_importance),
-                        brandunit.name,
-                        len(brandunit._allys),
-                    ]
-                )
-
+            x_list.extend(
+                [
+                    lw_diplay(brandunit._agent_importance),
+                    brandunit.name,
+                    len(brandunit._allys),
+                ]
+                for brandunit in self.person_dest_agent._brands.values()
+            )
         return x_list
 
     def get_p_acptfacts_list(self):
@@ -435,14 +431,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.person_dest_agent != None:
             agenda_list = self.person_dest_agent.get_agenda_items()
             agenda_list.sort(key=lambda x: x._agent_importance, reverse=True)
-            for agenda_item in agenda_list:
-                x_list.append(
-                    [
-                        lw_diplay(agenda_item._agent_importance),
-                        agenda_item._desc,
-                        agenda_item._walk,
-                    ]
-                )
+            x_list.extend(
+                [
+                    lw_diplay(agenda_item._agent_importance),
+                    agenda_item._desc,
+                    agenda_item._walk,
+                ]
+                for agenda_item in agenda_list
+            )
         return x_list
 
     def refresh_all(self):
@@ -461,7 +457,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.link_type_combo.setCurrentText("")
         column_header = ""
         if self.person_x is None:
-            column_header = f"Agentlinks Table"
+            column_header = "Agentlinks Table"
         elif self.person_x != None:
             column_header = f"'{self.person_x.name}' Agentlinks"
         self.refresh_x(
@@ -539,11 +535,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def _sub_refresh_p_acptfacts_table(self):
         p_acptfacts_list = self.get_p_acptfacts_list()
-        column_headers = [
-            f"Bases ({len(p_acptfacts_list)})",
-            f"AcptFacts",
-            "Open-Nigh",
-        ]
+        column_headers = [f"Bases ({len(p_acptfacts_list)})", "AcptFacts", "Open-Nigh"]
 
         self.refresh_x(
             table_x=self.w_acptfacts_table,
@@ -555,7 +547,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _sub_refresh_p_agenda_table(self):
         p_agenda_list = self.get_p_agenda_list()
         column_headers = [
-            f"agent_importance",
+            "agent_importance",
             f"Agenda ({len(p_agenda_list)})",
             "Idea Walk",
         ]

@@ -120,10 +120,9 @@ class EditAlly(qtw.QTableWidget, Ui_Form):
             # )
 
     def ally_in_brand(self, allyunit, brandunit):
-        for allylink in brandunit._allys.values():
-            if allylink.name == allyunit.name:
-                return True
-        return False
+        return any(
+            allylink.name == allyunit.name for allylink in brandunit._allys.values()
+        )
 
     def refresh_brands_in_table(self):
         self.brands_in_table.setObjectName("Brands Linked")
@@ -135,14 +134,15 @@ class EditAlly(qtw.QTableWidget, Ui_Form):
         self.brands_in_table.setColumnWidth(4, 40)
         self.brands_in_table.setRowCount(0)
 
-        brands_in_list = []
-        for brandunit in self.agent_x._brands.values():
+        brands_in_list = [
+            brandunit
+            for brandunit in self.agent_x._brands.values()
             if (
                 self.allyunit_x != None
                 and self.ally_in_brand(allyunit=self.allyunit_x, brandunit=brandunit)
                 and self.allyunit_x.name != brandunit.name
-            ):
-                brands_in_list.append(brandunit)
+            )
+        ]
         brands_in_list.sort(key=lambda x: x.name, reverse=False)
 
         self.brands_in_table.setHorizontalHeaderLabels(
@@ -165,8 +165,9 @@ class EditAlly(qtw.QTableWidget, Ui_Form):
         self.brands_out_table.setColumnWidth(4, 40)
         self.brands_out_table.setRowCount(0)
 
-        brands_out_list = []
-        for brandunit in self.agent_x._brands.values():
+        brands_out_list = [
+            brandunit
+            for brandunit in self.agent_x._brands.values()
             if (
                 self.allyunit_x != None
                 and brandunit._allys.get(brandunit.name) is None
@@ -174,8 +175,9 @@ class EditAlly(qtw.QTableWidget, Ui_Form):
                     self.ally_in_brand(allyunit=self.allyunit_x, brandunit=brandunit)
                     == False
                 )
-            ) or self.allyunit_x is None:
-                brands_out_list.append(brandunit)
+            )
+            or self.allyunit_x is None
+        ]
         brands_out_list.sort(key=lambda x: x.name, reverse=False)
         self.brands_out_table.setHorizontalHeaderLabels(
             [f"Brands ({len(brands_out_list)})", "Brand", "Brand Count"]
@@ -197,13 +199,15 @@ class EditAlly(qtw.QTableWidget, Ui_Form):
         self.brands_stan_table.setColumnWidth(4, 40)
         self.brands_stan_table.setRowCount(0)
 
-        brands_stand_list = []
-        for brandunit in self.agent_x._brands.values():
-            if self.allyunit_x != None and (
+        brands_stand_list = [
+            brandunit
+            for brandunit in self.agent_x._brands.values()
+            if self.allyunit_x != None
+            and (
                 brandunit._allys.get(brandunit.name) != None
                 and self.allyunit_x.name == brandunit.name
-            ):
-                brands_stand_list.append(brandunit)
+            )
+        ]
         brands_stand_list.sort(key=lambda x: x.name, reverse=False)
         self.brands_stan_table.setHorizontalHeaderLabels(
             [f"Brands ({len(brands_stand_list)})", "Brand", "Brand Count"]

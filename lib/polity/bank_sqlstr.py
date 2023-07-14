@@ -44,10 +44,7 @@ class RiverFlowUnit:
     river_tree_level: int
 
     def flow_returned(self) -> bool:
-        if self.currency_agent_name == self.dst_name:
-            return True
-        else:
-            return False
+        return self.currency_agent_name == self.dst_name
 
 
 def get_river_flow_table_insert_sqlstr(
@@ -100,8 +97,7 @@ def get_river_flow_dict(
     results_cursor_x = cursor_x.execute(sqlstr)
     results_x = results_cursor_x.fetchall()
 
-    count_x = 0
-    for row in results_x:
+    for count_x, row in enumerate(results_x):
         river_flow_x = RiverFlowUnit(
             currency_agent_name=row[0],
             src_name=row[1],
@@ -113,7 +109,6 @@ def get_river_flow_dict(
             river_tree_level=row[7],
         )
         dict_x[count_x] = river_flow_x
-        count_x += 1
     return dict_x
 
 
@@ -342,7 +337,7 @@ def get_ledger_table_create_sqlstr() -> str:
 
 
 def get_ledger_table_insert_sqlstr(agent_x: AgentUnit, allyunit_x: AllyUnit) -> str:
-    sqlstr = f"""
+    return f"""
         INSERT INTO ledger (
               agent_name
             , ally_name
@@ -369,9 +364,6 @@ def get_ledger_table_insert_sqlstr(agent_x: AgentUnit, allyunit_x: AllyUnit) -> 
         )
         ;
         """
-    # x_str = sqlstr.replace("\n        ", "")
-    # print(f"{x_str=}")
-    return sqlstr
 
 
 @dataclass
@@ -442,7 +434,7 @@ def get_river_ledger_unit(
     db_conn: Connection, river_flow_x: RiverFlowUnit = None
 ) -> RiverLedgerUnit:
     ledger_x = get_ledger_dict(db_conn, river_flow_x.dst_name)
-    river_ledger_unit = RiverLedgerUnit(
+    return RiverLedgerUnit(
         agent_name=river_flow_x.dst_name,
         currency_onset=river_flow_x.currency_start,
         currency_cease=river_flow_x.currency_close,
@@ -450,12 +442,10 @@ def get_river_ledger_unit(
         river_tree_level=river_flow_x.river_tree_level,
         flow_num=river_flow_x.flow_num,
     )
-    return river_ledger_unit
 
 
 def get_create_table_if_not_exist_sqlstrs() -> list[str]:
-    list_x = []
-    list_x.append(get_agent_table_create_sqlstr())
+    list_x = [get_agent_table_create_sqlstr()]
     list_x.append(get_ledger_table_create_sqlstr())
     list_x.append(get_river_flow_table_create_sqlstr())
     list_x.append(get_river_bucket_table_create_sqlstr())

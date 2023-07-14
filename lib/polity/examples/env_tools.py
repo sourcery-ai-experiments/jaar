@@ -82,10 +82,9 @@ def get_test_politys_dir():
 
 
 def create_test_politys_list():
-    x_list = x_func_dir_files(
+    return x_func_dir_files(
         dir_path=get_test_politys_dir(), include_dirs=True, include_files=False
     )
-    return x_list
 
 
 def setup_test_example_environment():

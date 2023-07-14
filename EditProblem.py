@@ -131,7 +131,7 @@ class EditProblem(qtw.QWidget, Ui_Form):
             self.agent_x.set_dominate_promise_idea(idea_kid=prob_idea)
 
     def add_brand(self):
-        if not self.add_brand_text in (None, ""):
+        if self.add_brand_text not in (None, ""):
             self.agent_x.set_brandunit(brandunit_shop(name=self.add_brand_text.text()))
         self.refresh_all()
 
@@ -178,9 +178,10 @@ class EditProblem(qtw.QWidget, Ui_Form):
         self.agenda_table.setRowCount(0)
         self.set_agenda_table_gui_attr()
         # base_x = self.acptfact_base_update_combo.currentText()
-        base_x = ""
-        if base_x == "":
-            base_x = None
+        # base_x = ""
+        # if base_x == "":
+        #     base_x = None
+        base_x = None
 
         agenda_list = self.agent_x.get_agenda_items(
             agenda_todo=True, agenda_state=True, base=base_x

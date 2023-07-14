@@ -36,10 +36,7 @@ class MainApp(QApplication):
     def __init__(self, argv):
         super().__init__(argv)
 
-        file_open_path = None
-        if len(argv) >= 2:
-            file_open_path = argv[1]
-
+        file_open_path = argv[1] if len(argv) >= 2 else None
         self.main_window = MainWindow(file_open_path)
         self.main_window.show()
 
@@ -151,7 +148,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agent_x_json = None
         # if "delete me this is for dev only":
         self.file_path = None
-        if file_open_path == None:
+        if file_open_path is None:
             self.file_path = f"{get_agent_examples_dir()}/example_agent2.json"
         else:
             self.file_path = file_open_path
@@ -361,12 +358,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def get_acptfacts_list(self):
         x_list = []
         if self.display_problem_acptfacts_cb.checkState() == 2:
-            for acptfact in self.agent_x._idearoot._acptfactunits.values():
+            x_list.extend(
+                acptfact
+                for acptfact in self.agent_x._idearoot._acptfactunits.values()
                 if (
                     self.agent_x.get_idea_kid(road=acptfact.base)._problem_bool
                     or self.agent_x.get_idea_kid(road=acptfact.pick)._problem_bool
-                ):
-                    x_list.append(acptfact)
+                )
+            )
         else:
             x_list = self.agent_x._idearoot._acptfactunits.values()
         return x_list
@@ -382,13 +381,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             acptfact_text = acptfact_text[1:]
             if acptfact.open is None:
                 acptfact_text = f"{acptfact_text}"
+            elif base_text == "time,jajatime":
+                acptfact_text = f"{self.agent_x.get_jajatime_readable_one_time_event(acptfact.open)}-{self.agent_x.get_jajatime_repeating_readable_text(acptfact.nigh)}"
             else:
-                if base_text == "time,jajatime":
-                    acptfact_text = f"{self.agent_x.get_jajatime_readable_one_time_event(acptfact.open)}-{self.agent_x.get_jajatime_repeating_readable_text(acptfact.nigh)}"
-                else:
-                    acptfact_text = (
-                        f"{acptfact_text} Open-Nigh {acptfact.open}-{acptfact.nigh}"
-                    )
+                acptfact_text = (
+                    f"{acptfact_text} Open-Nigh {acptfact.open}-{acptfact.nigh}"
+                )
 
             self._acptfacts_table_set_row_and_2_columns(row, base_text, acptfact_text)
             self.acptfacts_table.setItem(row, 2, qtw1(acptfact.base))
