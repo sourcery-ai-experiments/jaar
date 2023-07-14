@@ -6,14 +6,14 @@ from lib.agent.x_func import (
     return1ifnone as x_func_return1ifnone,
 )
 from lib.polity.test_person.env_tools import (
-    env_dir_setup_cleanup,
+    person_dir_setup_cleanup,
     get_temp_person_dir,
     create_agent_file_for_person,
 )
 from pytest import raises as pytest_raises
 
 
-def test_x_func_dir_files_correctlyGrabsFileData(env_dir_setup_cleanup):
+def test_x_func_dir_files_correctlyGrabsFileData(person_dir_setup_cleanup):
     # GIVEN
     env_dir = get_temp_person_dir()
     x1_file_name = "x1.txt"
@@ -32,7 +32,7 @@ def test_x_func_dir_files_correctlyGrabsFileData(env_dir_setup_cleanup):
     assert files_dict.get(x2_file_name) == x2_file_text
 
 
-def test_x_func_dir_files_removesFileExtension(env_dir_setup_cleanup):
+def test_x_func_dir_files_removesFileExtension(person_dir_setup_cleanup):
     # GIVEN
     env_dir = get_temp_person_dir()
     x1_name = "x1"
@@ -54,7 +54,7 @@ def test_x_func_dir_files_removesFileExtension(env_dir_setup_cleanup):
     assert files_dict.get(x2_name) == x2_file_text
 
 
-def test_x_func_dir_files_returnsSubDirs(env_dir_setup_cleanup):
+def test_x_func_dir_files_returnsSubDirs(person_dir_setup_cleanup):
     # GIVEN
     env_dir = get_temp_person_dir()
     x1_name = "x1"
@@ -82,7 +82,7 @@ def test_x_func_dir_files_returnsSubDirs(env_dir_setup_cleanup):
     assert files_dict.get(x2_name) == True
 
 
-def test_x_func_dir_files_doesNotReturnsFiles(env_dir_setup_cleanup):
+def test_x_func_dir_files_doesNotReturnsFiles(person_dir_setup_cleanup):
     # GIVEN
     env_dir = get_temp_person_dir()
     x1_name = "x1"
@@ -110,7 +110,7 @@ def test_x_func_dir_files_doesNotReturnsFiles(env_dir_setup_cleanup):
     assert len(files_dict) == 1
 
 
-def test_x_func_open_file_OpensFilesCorrectly(env_dir_setup_cleanup):
+def test_x_func_open_file_OpensFilesCorrectly(person_dir_setup_cleanup):
     # GIVEN
     env_dir = get_temp_person_dir()
     x1_name = "x1"
@@ -130,7 +130,7 @@ def test_x_func_open_file_OpensFilesCorrectly(env_dir_setup_cleanup):
     assert x_func_open_file(dest_dir=env_dir, file_name=x2_file_name) == x2_file_text
 
 
-def test_x_func_save_file_ReplacesFileAsDefault(env_dir_setup_cleanup):
+def test_x_func_save_file_ReplacesFileAsDefault(person_dir_setup_cleanup):
     # GIVEN
     env_dir = get_temp_person_dir()
     x_old_name = "x_old"
@@ -163,7 +163,7 @@ def test_x_func_save_file_ReplacesFileAsDefault(env_dir_setup_cleanup):
     )
 
 
-def test_x_func_save_file_DoesNotreplaceFile(env_dir_setup_cleanup):
+def test_x_func_save_file_DoesNotreplaceFile(person_dir_setup_cleanup):
     # GIVEN
     env_dir = get_temp_person_dir()
     x_old_name = "x_old"
@@ -196,7 +196,9 @@ def test_x_func_save_file_DoesNotreplaceFile(env_dir_setup_cleanup):
     )
 
 
-def test_x_func_count_files_ReturnsNoneIfDirectoryDoesNotExist(env_dir_setup_cleanup):
+def test_x_func_count_files_ReturnsNoneIfDirectoryDoesNotExist(
+    person_dir_setup_cleanup,
+):
     # GIVEN
     env_dir = get_temp_person_dir()
     does_not_exist_dir = f"{env_dir}/swim"

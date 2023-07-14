@@ -6,7 +6,7 @@ from lib.polity.person import (
 from lib.agent.x_func import x_is_json, x_get_dict
 from json import loads as json_loads
 from lib.polity.test_person.env_tools import (
-    env_dir_setup_cleanup,
+    person_dir_setup_cleanup,
     get_temp_person_dir,
 )
 from lib.agent.agent import AgentUnit
@@ -50,7 +50,7 @@ def test_person_get_agent_from_agents_dirlinks_dict_ReturnsCorrectInfo():
     assert swim_dict.get("link_type") == "blind_trust"
 
 
-def test_person_get_dict_ReturnsDictObject(env_dir_setup_cleanup):
+def test_person_get_dict_ReturnsDictObject(person_dir_setup_cleanup):
     # GIVEN
     env_dir = get_temp_person_dir()
     person_x = person_examples.get_person_2agent(env_dir=env_dir)
@@ -83,7 +83,7 @@ def test_person_get_dict_ReturnsDictObject(env_dir_setup_cleanup):
     assert x_dict["_dest_agent"] == person_x._dest_agent.get_dict()
 
 
-def test_person_export_to_JSON_simple_example_works(env_dir_setup_cleanup):
+def test_person_export_to_JSON_simple_example_works(person_dir_setup_cleanup):
     x_json = None
     env_dir = get_temp_person_dir()
     x_person = person_examples.get_person_2agent(env_dir=env_dir)
@@ -106,7 +106,7 @@ def test_person_export_to_JSON_simple_example_works(env_dir_setup_cleanup):
 
 
 def test_person_get_json_CorrectlyWorksForSimpleExample(
-    env_dir_setup_cleanup,
+    person_dir_setup_cleanup,
 ):
     # GIVEN
     x_json = None

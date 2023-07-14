@@ -5,7 +5,7 @@ from lib.agent.examples.example_agents import (
 )
 import lib.polity.examples.example_persons as example_persons
 from lib.polity.test_person.env_tools import (
-    env_dir_setup_cleanup,
+    person_dir_setup_cleanup,
     get_temp_person_dir,
 )
 from os import path as os_path, scandir as os_scandir
@@ -17,7 +17,7 @@ from pytest import raises as pytest_raises
 
 
 def test_person_set_starting_digest_agent_CreateStartingAgentFile(
-    env_dir_setup_cleanup,
+    person_dir_setup_cleanup,
 ):
     # GIVEN
     p_name = "Game1"
@@ -39,7 +39,7 @@ def test_person_set_starting_digest_agent_CreateStartingAgentFile(
 
 
 def test_personget_starting_digest_agent_WhenStartingAgentFileDoesNotExists(
-    env_dir_setup_cleanup,
+    person_dir_setup_cleanup,
 ):
     # GIVEN
     p_name = "Game1"
@@ -74,7 +74,7 @@ def test_personget_starting_digest_agent_WhenStartingAgentFileDoesNotExists(
 
 
 def test_person_get_starting_digest_agent_WhenStartingAgentFileExists(
-    env_dir_setup_cleanup,
+    person_dir_setup_cleanup,
 ):
     # GIVEN
     p_name = "Game1"
@@ -100,7 +100,7 @@ def test_person_get_starting_digest_agent_WhenStartingAgentFileExists(
 
 
 def test_person_del_starting_digest_agent_file_DeletesFileCorrectly(
-    env_dir_setup_cleanup,
+    person_dir_setup_cleanup,
 ):
     # GIVEN
     p_name = "Game1"
@@ -123,7 +123,7 @@ def test_person_del_starting_digest_agent_file_DeletesFileCorrectly(
 
 
 def test_personunit_save_digest_agent_file_SavesFileCorrectly(
-    env_dir_setup_cleanup,
+    person_dir_setup_cleanup,
 ):
     # GIVEN
     person_name = "person1"
@@ -152,7 +152,7 @@ def test_personunit_save_digest_agent_file_SavesFileCorrectly(
 
 
 def test_presonunit_set_src_agentlinks_CorrectlySets_blind_trust_DigestAgent(
-    env_dir_setup_cleanup,
+    person_dir_setup_cleanup,
 ):
     # GIVEN
     person_name = "person1"
@@ -181,7 +181,7 @@ def test_presonunit_set_src_agentlinks_CorrectlySets_blind_trust_DigestAgent(
 
 
 def test_person_get_dest_agent_from_digest_agent_files_withEmptyDigestDict(
-    env_dir_setup_cleanup,
+    person_dir_setup_cleanup,
 ):
     # GIVEN
     person_name_x = "boots3"
@@ -219,7 +219,7 @@ def test_person_get_dest_agent_from_digest_agent_files_withEmptyDigestDict(
 
 
 def test_person_get_dest_agent_from_digest_agent_files_with1DigestedAgent(
-    env_dir_setup_cleanup,
+    person_dir_setup_cleanup,
 ):
     # GIVEN
     person_name_x = "boots3"
@@ -256,7 +256,7 @@ def test_person_get_dest_agent_from_digest_agent_files_with1DigestedAgent(
     assert sx_output_new != input_agent
 
 
-# def test_person_set_digested_agent_with2Brands(env_dir_setup_cleanup):
+# def test_person_set_digested_agent_with2Brands(person_dir_setup_cleanup):
 #     # GIVEN
 #     env_dir = get_temp_person_dir()
 #     px = personunit_shop(name="test8", env_dir=env_dir)

@@ -9,11 +9,11 @@ def get_temp_person_dir():
 
 
 @pytest_fixture()
-def env_dir_setup_cleanup():
-    env_dir = get_temp_person_dir()
-    delete_dir(dir=env_dir)
-    yield env_dir
-    delete_dir(dir=env_dir)
+def person_dir_setup_cleanup():
+    person_dir = get_temp_person_dir()
+    delete_dir(dir=person_dir)
+    yield person_dir
+    delete_dir(dir=person_dir)
 
 
 def create_agent_file_for_person(person_agent_dir: str, agent_desc: str):

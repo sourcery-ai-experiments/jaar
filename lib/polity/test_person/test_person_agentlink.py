@@ -1,7 +1,7 @@
 from lib.polity.person import personunit_shop
 import lib.polity.examples.example_persons as example_persons
 from lib.polity.test_person.env_tools import (
-    env_dir_setup_cleanup,
+    person_dir_setup_cleanup,
     get_temp_person_dir,
     create_agent_file_for_person,
 )
@@ -16,7 +16,7 @@ from lib.agent.x_func import (
 
 
 def test_personunit__set_src_agentlinks_RaisesErrorWhenAgentDoesNotExist(
-    env_dir_setup_cleanup,
+    person_dir_setup_cleanup,
 ):
     # GIVEN
     person1_text = "person1"
@@ -31,7 +31,7 @@ def test_personunit__set_src_agentlinks_RaisesErrorWhenAgentDoesNotExist(
     assert str(excinfo.value) == f"Person {person1_text} cannot find agent {swim_text}"
 
 
-def test_personunit__set_src_agentlinks_CorrectlyUsed(env_dir_setup_cleanup):
+def test_personunit__set_src_agentlinks_CorrectlyUsed(person_dir_setup_cleanup):
     # GIVEN
     person1_text = "person1"
     env_dir = get_temp_person_dir()
@@ -49,7 +49,7 @@ def test_personunit__set_src_agentlinks_CorrectlyUsed(env_dir_setup_cleanup):
     assert list(px._src_agentlinks.keys()) == [swim_text]
 
 
-def test_personunit_delete_agentlink_CorrectlyDeletesObj(env_dir_setup_cleanup):
+def test_personunit_delete_agentlink_CorrectlyDeletesObj(person_dir_setup_cleanup):
     # GIVEN
     person1_text = "person1"
     env_dir = get_temp_person_dir()
@@ -69,7 +69,7 @@ def test_personunit_delete_agentlink_CorrectlyDeletesObj(env_dir_setup_cleanup):
 
 
 def test_personunit_delete_agentlink_CorrectlyDeletesBlindTrustFile(
-    env_dir_setup_cleanup,
+    person_dir_setup_cleanup,
 ):
     # GIVEN
     person1_text = "person1"
@@ -91,7 +91,9 @@ def test_personunit_delete_agentlink_CorrectlyDeletesBlindTrustFile(
     assert x_func_count_files(dir_path=px._digest_agents_dir) == 0
 
 
-def test_personunit_receive_src_agentunit_obj_SavesFileCorrectly(env_dir_setup_cleanup):
+def test_personunit_receive_src_agentunit_obj_SavesFileCorrectly(
+    person_dir_setup_cleanup,
+):
     # GIVEN
     person_name = "person1"
     env_dir = get_temp_person_dir()
@@ -109,7 +111,7 @@ def test_personunit_receive_src_agentunit_obj_SavesFileCorrectly(env_dir_setup_c
 
 
 def test_personunit_receive_src_agentunit_file_SavesFileCorrectly(
-    env_dir_setup_cleanup,
+    person_dir_setup_cleanup,
 ):
     # GIVEN
     person_name = "person1"
@@ -129,7 +131,9 @@ def test_personunit_receive_src_agentunit_file_SavesFileCorrectly(
     assert x_func_count_files(px._person_agents_dir) == 1
 
 
-def test_personunit_delete_ignore_agentlink_CorrectlyDeletesObj(env_dir_setup_cleanup):
+def test_personunit_delete_ignore_agentlink_CorrectlyDeletesObj(
+    person_dir_setup_cleanup,
+):
     # GIVEN
     person1_text = "person1"
     env_dir = get_temp_person_dir()
@@ -149,7 +153,7 @@ def test_personunit_delete_ignore_agentlink_CorrectlyDeletesObj(env_dir_setup_cl
 
 
 def test_personunit_delete_agentlink_CorrectlyDoesNotDeletesIgnoreFile(
-    env_dir_setup_cleanup,
+    person_dir_setup_cleanup,
 ):
     # GIVEN
     person1_text = "person1"
@@ -172,7 +176,7 @@ def test_personunit_delete_agentlink_CorrectlyDoesNotDeletesIgnoreFile(
 
 
 # def test_personunit_set_ignore_agent_file_CorrectlyUpdatesIgnoreFile(
-#     env_dir_setup_cleanup,
+#     person_dir_setup_cleanup,
 # ):
 #     # GIVEN
 #     person1_text = "person1"
@@ -198,7 +202,7 @@ def test_personunit_delete_agentlink_CorrectlyDoesNotDeletesIgnoreFile(
 
 
 def test_personunit_refresh_agentlinks_CorrectlyPullsAllPublicAgents(
-    env_dir_setup_cleanup,
+    person_dir_setup_cleanup,
 ):
     # GIVEN
     env_dir = get_temp_person_dir()

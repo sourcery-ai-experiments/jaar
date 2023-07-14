@@ -3,7 +3,7 @@ from lib.agent.agent import AgentUnit
 from lib.agent.idea import IdeaRoot
 import lib.polity.examples.example_persons as example_persons
 from lib.polity.test_person.env_tools import (
-    env_dir_setup_cleanup,
+    person_dir_setup_cleanup,
     get_temp_person_dir,
     create_agent_file_for_person,
 )
@@ -15,7 +15,7 @@ from lib.agent.x_func import (
 )
 
 
-def test_personunit_exists(env_dir_setup_cleanup):
+def test_personunit_exists(person_dir_setup_cleanup):
     person_text = "test1"
     env_dir = get_temp_person_dir()
     px = personunit_shop(
@@ -48,7 +48,7 @@ def test_personunit_exists(env_dir_setup_cleanup):
     assert px._digest_agents_dir != None
 
 
-def test_personunit_creates_files(env_dir_setup_cleanup):
+def test_personunit_creates_files(person_dir_setup_cleanup):
     # GIVEN create person
     person1_text = "person1"
     env_dir = get_temp_person_dir()
@@ -91,7 +91,7 @@ def test_personunit_creates_files(env_dir_setup_cleanup):
     assert os_path.exists(bond_agents_dir)
 
 
-def test_personunit_set_person_name_WorksCorrectly(env_dir_setup_cleanup):
+def test_personunit_set_person_name_WorksCorrectly(person_dir_setup_cleanup):
     # GIVEN create person
     env_dir = get_temp_person_dir()
 
@@ -126,7 +126,7 @@ def test_personunit_set_person_name_WorksCorrectly(env_dir_setup_cleanup):
 
 
 def test_personunit_set_dest_agent_to_public_agent_SavesAgentToPublicDir(
-    env_dir_setup_cleanup,
+    person_dir_setup_cleanup,
 ):
     # GIVEN create person
     env_dir = get_temp_person_dir()
@@ -147,7 +147,7 @@ def test_personunit_set_dest_agent_to_public_agent_SavesAgentToPublicDir(
 
 
 def test_personunit_auto_dest_agent_to_public_agent_SavesAgentToPublicDir(
-    env_dir_setup_cleanup,
+    person_dir_setup_cleanup,
 ):
     # GIVEN create person
     env_dir = get_temp_person_dir()
