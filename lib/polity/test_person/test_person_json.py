@@ -5,7 +5,7 @@ from lib.polity.person import (
 )
 from lib.agent.x_func import x_is_json, x_get_dict
 from json import loads as json_loads
-from lib.polity.test_person.env_tools import (
+from lib.polity.examples.person_env_tools import (
     person_dir_setup_cleanup,
     get_temp_person_dir,
 )

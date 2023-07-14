@@ -2,7 +2,7 @@ from lib.polity.person import personunit_shop, PersonUnit
 from lib.agent.agent import AgentUnit
 from lib.agent.idea import IdeaRoot
 import lib.polity.examples.example_persons as example_persons
-from lib.polity.test_person.env_tools import (
+from lib.polity.examples.person_env_tools import (
     person_dir_setup_cleanup,
     get_temp_person_dir,
     create_agent_file_for_person,
