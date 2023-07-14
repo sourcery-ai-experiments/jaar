@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import (
     QMainWindow,
 )
 from lib.polity.polity import PolityUnit
-from lib.polity.test_polity.env_tools import (
+from lib.polity.examples.env_tools import (
     create_test_politys_list,
     setup_test_example_environment,
     create_test_polity,

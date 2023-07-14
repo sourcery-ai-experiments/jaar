@@ -1,6 +1,6 @@
 from lib.polity.polity import PolityUnit
 from lib.polity.person import personunit_shop
-from lib.polity.test_polity.env_tools import (
+from lib.polity.examples.env_tools import (
     get_temp_env_dir,
     get_temp_env_name,
     env_dir_setup_cleanup,

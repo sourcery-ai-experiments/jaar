@@ -1,7 +1,7 @@
 from lib.polity.polity import PolityUnit
 from lib.agent.x_func import delete_dir as x_func_delete_dir
 from os import path as os_path
-from lib.polity.test_polity.env_tools import (
+from lib.polity.examples.env_tools import (
     get_temp_env_name,
     get_test_politys_dir,
     rename_test_polity,
@@ -24,7 +24,7 @@ def test_polity_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     print(f"{get_test_politys_dir()=} {e1.politys_dir=}")
     # x_func_delete_dir(e1.get_object_root_dir())
     print(f"delete {e1.get_object_root_dir()=}")
-    polity_dir = f"lib/polity/test_polity/politys/{polity_name}"
+    polity_dir = f"lib/polity/examples/politys/{polity_name}"
     polity_file_name = "polity.json"
     polity_file_path = f"{polity_dir}/{polity_file_name}"
     agents_dir = f"{polity_dir}/agents"
@@ -58,14 +58,14 @@ def test_polity_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
 def test_rename_test_polity_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup):
     # GIVEN create polity
     old_polity_name = get_temp_env_name()
-    old_polity_dir = f"lib/polity/test_polity/politys/{old_polity_name}"
+    old_polity_dir = f"lib/polity/examples/politys/{old_polity_name}"
     old_polity_file_name = "polity.json"
     old_polity_file_path = f"{old_polity_dir}/{old_polity_file_name}"
     old_agents_dir = f"{old_polity_dir}/agents"
     old_persons_dir = f"{old_polity_dir}/persons"
 
     new_polity_name = "ex_env1"
-    new_polity_dir = f"lib/polity/test_polity/politys/{new_polity_name}"
+    new_polity_dir = f"lib/polity/examples/politys/{new_polity_name}"
     new_polity_file_name = "polity.json"
     new_polity_file_path = f"{new_polity_dir}/{new_polity_file_name}"
     new_agents_dir = f"{new_polity_dir}/agents"
@@ -127,7 +127,7 @@ def test_rename_test_polity_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup):
 def test_copy_test_polity_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup):
     # GIVEN create polity
     old_polity_name = get_temp_env_name()
-    old_polity_dir = f"lib/polity/test_polity/politys/{old_polity_name}"
+    old_polity_dir = f"lib/polity/examples/politys/{old_polity_name}"
     old_polity_file_name = "polity.json"
     old_polity_file_path = f"{old_polity_dir}/{old_polity_file_name}"
     old_agents_dir = f"{old_polity_dir}/agents"
@@ -145,7 +145,7 @@ def test_copy_test_polity_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup):
     assert e1.get_persons_dir() == old_persons_dir
 
     new_polity_name = "ex_env1"
-    new_polity_dir = f"lib/polity/test_polity/politys/{new_polity_name}"
+    new_polity_dir = f"lib/polity/examples/politys/{new_polity_name}"
     new_polity_file_name = "polity.json"
     new_polity_file_path = f"{new_polity_dir}/{new_polity_file_name}"
     new_agents_dir = f"{new_polity_dir}/agents"

@@ -2,7 +2,7 @@ from lib.polity.polity import PolityUnit
 from lib.agent.agent import AgentUnit
 from lib.agent.x_func import delete_dir as x_func_delete_dir
 from os import path as os_path
-from lib.polity.test_polity.env_tools import (
+from lib.polity.examples.env_tools import (
     get_temp_env_name,
     get_test_politys_dir,
     env_dir_setup_cleanup,

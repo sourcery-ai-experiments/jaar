@@ -37,7 +37,7 @@ def get_temp_env_dir():
 
 
 def get_test_politys_dir():
-    return "lib/polity/test_polity/politys"
+    return "lib/polity/examples/politys"
 
 
 @pytest_fixture()
@@ -78,7 +78,7 @@ def create_person_file_for_politys(polity_dir: str, person_name: str):
 
 
 def get_test_politys_dir():
-    return "lib/polity/test_polity/politys"
+    return "lib/polity/examples/politys"
 
 
 def create_test_politys_list():
@@ -276,7 +276,7 @@ def delete_dir_test_polity(polity_obj: PolityUnit):
 
 def rename_test_polity(polity_obj: PolityUnit, new_name):
     # base_dir = polity_obj.get_object_root_dir()
-    base_dir = "lib/polity/test_polity/politys"
+    base_dir = "lib/polity/examples/politys"
     src_dir = f"{base_dir}/{polity_obj.name}"
     dst_dir = f"{base_dir}/{new_name}"
     os_rename(src=src_dir, dst=dst_dir)
@@ -284,7 +284,7 @@ def rename_test_polity(polity_obj: PolityUnit, new_name):
 
 
 def copy_test_polity(src_name: str, dest_name: str):
-    base_dir = "lib/polity/test_polity/politys"
+    base_dir = "lib/polity/examples/politys"
     new_dir = f"{base_dir}/{dest_name}"
     if os_path.exists(new_dir):
         raise Exception(f"Cannot copy polity to '{new_dir}' dir already exists.")

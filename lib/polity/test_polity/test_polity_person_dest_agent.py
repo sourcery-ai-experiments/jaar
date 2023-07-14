@@ -10,7 +10,7 @@ from lib.polity.test_person.example_persons import (
     get_6node_agent as example_persons_get_6node_agent,
 )
 from os import path as os_path
-from lib.polity.test_polity.env_tools import (
+from lib.polity.examples.env_tools import (
     get_temp_env_name,
     get_test_politys_dir,
     create_person_file_for_politys,

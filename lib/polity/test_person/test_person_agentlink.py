@@ -5,7 +5,7 @@ from lib.polity.test_person.env_tools import (
     get_temp_env_dir,
     create_agent_file_for_person,
 )
-from lib.polity.test_polity.env_tools import get_temp_env_name
+from lib.polity.examples.env_tools import get_temp_env_name
 from lib.polity.polity import PolityUnit
 from os import path as os_path, scandir as os_scandir
 from pytest import raises as pytest_raises

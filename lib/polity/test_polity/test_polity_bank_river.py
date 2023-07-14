@@ -1,6 +1,6 @@
 from lib.polity.polity import PolityUnit
 from lib.agent.agent import AgentUnit
-from lib.polity.test_polity.env_tools import (
+from lib.polity.examples.env_tools import (
     get_temp_env_name,
     get_test_politys_dir,
     env_dir_setup_cleanup,

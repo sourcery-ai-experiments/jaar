@@ -1,4 +1,4 @@
-from lib.polity.test_polity.env_tools import (
+from lib.polity.examples.env_tools import (
     _delete_and_set_ex3,
     _delete_and_set_ex4,
     _delete_and_set_ex5,
