@@ -1,6 +1,6 @@
 from lib.agent.agent import AgentUnit
 from lib.agent.idea import IdeaKid
-from lib.agent.test_agent.example_agents import (
+from lib.agent.examples.example_agents import (
     get_agent_with_4_levels_and_2requireds_2acptfacts,
 )
 from pytest import raises as pytest_raises

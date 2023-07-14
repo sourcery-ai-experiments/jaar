@@ -1,6 +1,6 @@
 from lib.agent.ally import AllyName, allylink_shop, allyunit_shop
 from lib.agent.brand import BrandName, brandunit_shop, brandlink_shop
-from lib.agent.test_agent.example_agents import (
+from lib.agent.examples.example_agents import (
     agent_v001 as examples_agent_v001,
     agent_v001_with_large_agenda as examples_agent_v001_with_large_agenda,
 )

@@ -1,5 +1,5 @@
 from lib.agent.x_func import from_list_get_active_status
-from lib.agent.test_agent.example_agents import (
+from lib.agent.examples.example_agents import (
     get_agent_with_4_levels_and_2requireds,
     get_agent_with7amCleanTableRequired,
     agent_v001,

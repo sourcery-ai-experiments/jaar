@@ -1,6 +1,6 @@
 from lib.polity.polity import PolityUnit
 from lib.agent.agent import AgentUnit
-from lib.agent.test_agent.example_agents import (
+from lib.agent.examples.example_agents import (
     get_agent_1Task_1CE0MinutesRequired_1AcptFact as ex_cxs_get_agent_1Task_1CE0MinutesRequired_1AcptFact,
     agent_v001 as ex_cxs_agent_v001,
     agent_v002 as ex_cxs_agent_v002,

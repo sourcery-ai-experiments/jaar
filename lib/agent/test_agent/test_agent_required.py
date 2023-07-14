@@ -1,5 +1,5 @@
 from pytest import raises as pytest_raises
-from lib.agent.test_agent.example_agents import (
+from lib.agent.examples.example_agents import (
     get_agent_with_4_levels as example_agents_get_agent_with_4_levels,
     get_agent_irrational_example as example_agents_get_agent_irrational_example,
 )

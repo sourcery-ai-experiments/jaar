@@ -3,7 +3,7 @@ from lib.agent.agent import AgentUnit
 from lib.agent.brand import brandunit_shop
 from lib.agent.ally import allyunit_shop
 from pytest import raises as pytest_raises
-from lib.agent.test_agent.example_agents import agent_v001
+from lib.agent.examples.example_agents import agent_v001
 from lib.agent.x_func import get_on_meld_weight_actions
 
 

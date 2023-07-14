@@ -1,6 +1,6 @@
 from lib.agent.required import acptfactunit_shop, acptfactunit_shop, acptfactheir_shop
 from lib.agent.idea import IdeaKid, Road
-from lib.agent.test_agent.example_agents import (
+from lib.agent.examples.example_agents import (
     get_agent_with_4_levels as examples_get_agent_with_4_levels,
 )
 from lib.agent.agent import AgentUnit

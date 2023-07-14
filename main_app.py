@@ -7,7 +7,7 @@ from EditAcptFactTime import EditAcptFactTime
 from EditAgenda import EditAgenda
 from EditProblem import EditProblem
 from lib.agent.agent import AgentUnit, get_from_json
-from lib.agent.test_agent.get_test_agent_dir import get_test_agent_dir
+from lib.agent.examples.get_agent_examples_dir import get_agent_examples_dir
 from lib.agent.hreg_time import convert1440toHHMM
 from lib.pyqt5_tools.pyqt_func import (
     lw_diplay as pyqt_func_lw_diplay,
@@ -152,7 +152,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # if "delete me this is for dev only":
         self.file_path = None
         if file_open_path == None:
-            self.file_path = f"{get_test_agent_dir()}/example_agent2.json"
+            self.file_path = f"{get_agent_examples_dir()}/example_agent2.json"
         else:
             self.file_path = file_open_path
         self.open_file()
@@ -286,7 +286,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def save_file(self):
         if self.file_path is None:
-            self.file_path = f"{get_test_agent_dir()}/agent_{self.agent_x._desc}.json"
+            self.file_path = (
+                f"{get_agent_examples_dir()}/agent_{self.agent_x._desc}.json"
+            )
         self._commit_file_save()
 
     def _commit_file_save(self):

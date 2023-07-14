@@ -1,4 +1,4 @@
-from lib.agent.test_agent.example_agents import agent_v001 as example_agents_agent_v001
+from lib.agent.examples.example_agents import agent_v001 as example_agents_agent_v001
 from lib.agent.ally import AllyUnitExternalMetrics
 
 

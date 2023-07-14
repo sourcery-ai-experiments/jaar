@@ -1,6 +1,6 @@
 from lib.polity.person import personunit_shop
 from lib.agent.agent import AgentUnit, get_from_json as agentunit_get_from_json
-from lib.agent.test_agent.example_agents import (
+from lib.agent.examples.example_agents import (
     get_agent_with_4_levels as example_agents_get_agent_with_4_levels,
 )
 import lib.polity.test_person.example_persons as example_persons

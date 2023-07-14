@@ -1,11 +1,11 @@
 from datetime import datetime
 from lib.agent.agent import AgentUnit, get_from_json
-from lib.agent.test_agent.get_test_agent_dir import get_test_agent_dir
+from lib.agent.examples.get_agent_examples_dir import get_agent_examples_dir
 from lib.agent.idea import IdeaCore, IdeaKid
 from lib.agent.road import Road
 from lib.agent.required import RequiredUnit, SuffFactStatusFinder
 from lib.agent.brand import brandunit_shop, brandlink_shop
-from lib.agent.test_agent.example_agents import (
+from lib.agent.examples.example_agents import (
     get_agent_with_4_levels as example_agents_get_agent_with_4_levels,
     get_agent_with_4_levels_and_2requireds as example_agents_get_agent_with_4_levels_and_2requireds,
     get_agent_with7amCleanTableRequired as example_agents_get_agent_with7amCleanTableRequired,
@@ -359,7 +359,7 @@ def test_set_agenda_task_as_complete_DivisionWorksCorrectly():
 
 def test_agent_get_from_json_LoadsActionFromJSONCorrectly():
     # GIVEN
-    file_dir = get_test_agent_dir()
+    file_dir = get_agent_examples_dir()
     file_name = "example_agent1.json"
     a1_json = x_func_open_file(dest_dir=file_dir, file_name=file_name)
 

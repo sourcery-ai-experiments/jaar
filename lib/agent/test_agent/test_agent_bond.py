@@ -3,13 +3,13 @@ from lib.agent.agent import (
     get_from_json as agent_get_from_json,
     get_meld_of_agent_files,
 )
-from lib.agent.test_agent.get_test_agent_dir import get_test_agent_dir
+from lib.agent.examples.get_agent_examples_dir import get_agent_examples_dir
 from lib.agent.idea import IdeaCore, IdeaKid
 from lib.agent.road import Road
 from lib.agent.required import RequiredUnit
 from lib.agent.ally import allylink_shop
 from lib.agent.brand import brandunit_shop, brandlink_shop
-from lib.agent.test_agent.example_agents import (
+from lib.agent.examples.example_agents import (
     get_agent_with_4_levels as example_agents_get_agent_with_4_levels,
     get_agent_with_4_levels_and_2requireds as example_agents_get_agent_with_4_levels_and_2requireds,
     get_agent_with7amCleanTableRequired as example_agents_get_agent_with7amCleanTableRequired,

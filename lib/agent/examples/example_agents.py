@@ -7,12 +7,14 @@ from lib.agent.required import (
 )
 from lib.agent.agent import AgentUnit, get_from_json
 from lib.agent.x_func import open_file as x_func_open_file
-from lib.agent.test_agent.get_test_agent_dir import get_test_agent_dir
+from lib.agent.examples.get_agent_examples_dir import get_agent_examples_dir
 
 
 def agent_v001() -> AgentUnit:
     return get_from_json(
-        x_func_open_file(dest_dir=get_test_agent_dir(), file_name="example_agent1.json")
+        x_func_open_file(
+            dest_dir=get_agent_examples_dir(), file_name="example_agent1.json"
+        )
     )
 
 
@@ -61,7 +63,9 @@ def agent_v001_with_large_agenda() -> AgentUnit:
 
 def agent_v002() -> AgentUnit:
     return get_from_json(
-        x_func_open_file(dest_dir=get_test_agent_dir(), file_name="example_agent2.json")
+        x_func_open_file(
+            dest_dir=get_agent_examples_dir(), file_name="example_agent2.json"
+        )
     )
 
 

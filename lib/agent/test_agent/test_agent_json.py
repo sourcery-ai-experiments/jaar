@@ -1,6 +1,6 @@
 import contextlib
 from lib.agent.required import acptfactunit_shop
-from lib.agent.test_agent.example_agents import (
+from lib.agent.examples.example_agents import (
     agent_v001 as example_agents_agent_v001,
     get_agent_x1_3levels_1required_1acptfacts as example_agents_get_agent_x1_3levels_1required_1acptfacts,
     get_agent_base_time_example as example_agents_get_agent_base_time_example,
@@ -9,7 +9,7 @@ from lib.agent.agent import (
     get_from_json as agent_get_from_json,
     get_dict_of_agent_from_dict,
 )
-from lib.agent.test_agent.get_test_agent_dir import get_test_agent_dir
+from lib.agent.examples.get_agent_examples_dir import get_agent_examples_dir
 from lib.agent.brand import BrandLink, BrandName
 from lib.agent.x_func import (
     x_is_json,
@@ -181,7 +181,7 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
                 assert len(requireds) == len(kid._requiredunits)
     # Test if save works
     x_func_save_file(
-        dest_dir=get_test_agent_dir(),
+        dest_dir=get_agent_examples_dir(),
         file_name="example_agent1.json",
         file_text=x_lw_json,
     )
@@ -231,7 +231,7 @@ def test_agent_get_json_CorrectlyWorksForNotSimpleExample():
     assert x_is_json(json_x=lw1_json)
 
     file_name = "example_agent1.json"
-    file_dir = get_test_agent_dir()
+    file_dir = get_agent_examples_dir()
     print("File may fail since example_agent1.json is created by a later test")
     lw3_json = x_func_open_file(dest_dir=file_dir, file_name=file_name)
     # print(lw3_json[299000:299155])

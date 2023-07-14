@@ -1,4 +1,4 @@
-from lib.agent.test_agent.example_agents import (
+from lib.agent.examples.example_agents import (
     get_agent_with_4_levels as example_agents_get_agent_with_4_levels,
 )
 from lib.agent.ally import AllyName

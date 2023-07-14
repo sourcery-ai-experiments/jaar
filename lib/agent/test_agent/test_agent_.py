@@ -1,4 +1,4 @@
-from lib.agent.test_agent.example_agents import (
+from lib.agent.examples.example_agents import (
     get_agent_1Task_1CE0MinutesRequired_1AcptFact,
 )
 from lib.agent.agent import AgentUnit

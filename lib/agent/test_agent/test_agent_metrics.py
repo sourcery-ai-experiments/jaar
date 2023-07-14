@@ -1,4 +1,4 @@
-from lib.agent.test_agent.example_agents import agent_v001 as example_agents_agent_v001
+from lib.agent.examples.example_agents import agent_v001 as example_agents_agent_v001
 from lib.agent.ally import AllyName, allyunit_shop
 from lib.agent.brand import BrandName, brandlink_shop, brandunit_shop
 from lib.agent.agent import AgentUnit

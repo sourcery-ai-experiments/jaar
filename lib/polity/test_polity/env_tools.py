@@ -2,7 +2,7 @@
 from lib.polity.polity import PolityUnit
 from os import listdir as os_listdir, rename as os_rename, path as os_path
 from pytest import fixture as pytest_fixture
-from lib.agent.test_agent.example_agents import (
+from lib.agent.examples.example_agents import (
     agent_v001 as example_agents_agent_v001,
     agent_v002 as example_agents_agent_v002,
     get_agent_1Task_1CE0MinutesRequired_1AcptFact as example_agents_get_agent_1Task_1CE0MinutesRequired_1AcptFact,

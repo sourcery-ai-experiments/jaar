@@ -1,4 +1,4 @@
-from lib.agent.test_agent.example_agents import get_agent_with_4_levels
+from lib.agent.examples.example_agents import get_agent_with_4_levels
 from lib.agent.idea import IdeaKid
 from lib.agent.required import RequiredUnit, acptfactunit_shop
 from lib.agent.agent import AgentUnit

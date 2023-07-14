@@ -1,4 +1,4 @@
-from lib.agent.test_agent.example_agents import agent_v001, get_agent_with_4_levels
+from lib.agent.examples.example_agents import agent_v001, get_agent_with_4_levels
 from lib.agent.agent import AgentUnit
 from lib.agent.tree_metrics import TreeMetrics
 from lib.agent.idea import IdeaKid
