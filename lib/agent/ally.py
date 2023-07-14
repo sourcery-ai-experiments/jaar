@@ -240,10 +240,7 @@ def allyunit_shop(
     _bank_tax_paid: float = None,
     _bank_tax_diff: float = None,
 ) -> AllyUnit:
-    if _allyrings is None:
-        final_allyrings = {}
-    else:
-        final_allyrings = _allyrings
+    final_allyrings = {} if _allyrings is None else _allyrings
 
     return AllyUnit(
         name=name,
@@ -311,9 +308,8 @@ class AllyLink(AllyCore):
             raise Exception(
                 f"Meld fail AllyLink='{self.name}' not the same as AllyLink='{other_allylink.name}"
             )
-        else:
-            self.creditor_weight += other_allylink.creditor_weight
-            self.debtor_weight += other_allylink.debtor_weight
+        self.creditor_weight += other_allylink.creditor_weight
+        self.debtor_weight += other_allylink.debtor_weight
 
 
 # class AllyLinkshop:

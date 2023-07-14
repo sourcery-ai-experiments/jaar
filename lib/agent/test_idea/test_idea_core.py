@@ -94,13 +94,15 @@ def test_idea_core_get_inherited_brandheirs_weight_sum_WorksCorrectlyWithValues(
     # GIVEN
     biker_creditor_weight = 12
     biker_debtor_weight = 15
+    biker_text = "bikers2"
     biker_link = brandheir_shop(
-        name=BrandName("bikers2"),
+        name=BrandName(biker_text),
         creditor_weight=biker_creditor_weight,
         debtor_weight=biker_debtor_weight,
     )
 
-    swimmer_name = BrandName("swimmers")
+    swimmer_text = "swimmers"
+    swimmer_name = BrandName(swimmer_text)
     swimmer_creditor_weight = 29
     swimmer_debtor_weight = 32
     swimmer_link = brandheir_shop(
@@ -120,14 +122,27 @@ def test_idea_core_get_inherited_brandheirs_weight_sum_WorksCorrectlyWithValues(
     assert idea_core.get_brandheirs_debtor_weight_sum() != None
     assert idea_core.get_brandheirs_debtor_weight_sum() == 47
 
-    for brandlink in idea_core._brandheirs.values():
-        assert brandlink._agent_credit is None
-        assert brandlink._agent_debt is None
+    assert len(idea_core._brandheirs) == 2
+
+    swimmer_brandheir = idea_core._brandheirs.get(swimmer_text)
+    assert swimmer_brandheir._agent_credit is None
+    assert swimmer_brandheir._agent_debt is None
+    biker_brandheir = idea_core._brandheirs.get(biker_text)
+    assert biker_brandheir._agent_credit is None
+    assert biker_brandheir._agent_debt is None
+
+    # WHEN
     idea_core._agent_importance = 0.25
     idea_core.set_brandheirs_agent_credit_debit()
-    for brandlink in idea_core._brandheirs.values():
-        assert brandlink._agent_credit != None
-        assert brandlink._agent_debt != None
+
+    # THEN
+    print(f"{len(idea_core._brandheirs)=}")
+    swimmer_brandheir = idea_core._brandheirs.get(swimmer_text)
+    assert swimmer_brandheir._agent_credit != None
+    assert swimmer_brandheir._agent_debt != None
+    biker_brandheir = idea_core._brandheirs.get(biker_text)
+    assert biker_brandheir._agent_credit != None
+    assert biker_brandheir._agent_debt != None
 
 
 def test_idea_core_get_brandlinks_weight_sum_WorksCorrectlyNoValues():

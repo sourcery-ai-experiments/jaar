@@ -88,5 +88,5 @@ def test_agent_set_max_tree_traverse_CorrectlyRaisesError():
         sx.set_max_tree_traverse(int_x=1)
     assert (
         str(excinfo.value)
-        == f"set_max_tree_traverse: input '1' must be number that is 2 or greater"
+        == "set_max_tree_traverse: input '1' must be number that is 2 or greater"
     )

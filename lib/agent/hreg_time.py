@@ -205,8 +205,7 @@ def _get_time_hreg_ced(local_root: str, tech: str, c400_count: int):
     week_road = f"{tech_root},week"
     c400 = c400_count
 
-    list_x = []
-    list_x.append(YB(n=jaja, b=0, c=146097 * c400_count * m, rr=local_root))
+    list_x = [YB(n=jaja, b=0, c=146097 * c400_count * m, rr=local_root)]
     list_x.append(YB(mn=1, md=c400, mr=True, sr=c4, rr=st, n="400 year cycle"))
     list_x.append(YB(mn=1, md=210379680, mr=False, sr=c4, rr=st, n="400 year cycles"))
     list_x.append(YB(mn=1, md=1 * m, mr=False, sr=None, rr=st, n="days"))
@@ -281,8 +280,7 @@ def _get_time_hreg_weekday_idea(local_root: str, multipler: int, jajatime: str):
     week = "week"
     nr = f"{local_root},{jajatime},week"
     tech_root = Road(f"{local_root},tech")
-    hreg_list = []
-    hreg_list.append(YB(n=week, b=0 * m, c=7 * m, nr=nr, rr=tech_root))
+    hreg_list = [YB(n=week, b=0 * m, c=7 * m, nr=nr, rr=tech_root)]
     week_road = f"{tech_root},{week}"
     hreg_list.append(YB(b=1 * m, c=2 * m, rr=week_road, n="Sunday"))
     hreg_list.append(YB(b=2 * m, c=3 * m, rr=week_road, n="Monday"))
@@ -665,7 +663,7 @@ def get_jajatime_readable_from_dt(dt: datetime) -> str:
     hour_int = int(dt.strftime("%H"))
     min_int = int(dt.strftime("%M"))
     min1440 = (hour_int * 60) + min_int
-    return f"{weekday_text[0:3]} {monthname_text[0:3]} {monthday_text}, {year_text} at {convert1440toReadableTime(min1440)}"
+    return f"{weekday_text[:3]} {monthname_text[:3]} {monthday_text}, {year_text} at {convert1440toReadableTime(min1440)}"
 
 
 def convert1440toHHMM(min1440: int):
@@ -715,13 +713,11 @@ def get_60min():
 def get_number_with_postfix(num: int) -> str:
     tens_digit = num % 100
     singles_digit = num % 10
-    if tens_digit == 11 or tens_digit == 12 or tens_digit == 13:
+    if tens_digit in [11, 12, 13] or singles_digit not in [1, 2, 3]:
         return f"{num}th"
     elif singles_digit == 1:
         return f"{num}st"
     elif singles_digit == 2:
         return f"{num}nd"
-    elif singles_digit == 3:
-        return f"{num}rd"
     else:
-        return f"{num}th"
+        return f"{num}rd"

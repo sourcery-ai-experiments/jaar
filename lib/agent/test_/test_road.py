@@ -139,25 +139,21 @@ def test_road_get_walk_from_road_works():
 
 def test_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
     # GIVEN
-    old_seasons = "src,person,seasons"
-    old_sufffact_x = sufffactunit_shop(need=old_seasons)
+    old_seasons_road = "src,person,seasons"
+    old_sufffact_x = sufffactunit_shop(need=old_seasons_road)
     old_sufffacts_x = {old_sufffact_x.need: old_sufffact_x}
 
-    for sufffact_key, sufffact_obj in old_sufffacts_x.items():
-        assert sufffact_key == old_seasons
-        assert sufffact_obj == old_sufffact_x
+    assert old_sufffacts_x.get(old_seasons_road) == old_sufffact_x
 
     # WHEN
-    new_seasons = "src,person,kookies"
+    new_seasons_road = "src,person,kookies"
     new_sufffacts_x = find_replace_road_key_dict(
-        dict_x=old_sufffacts_x, old_road=old_seasons, new_road=new_seasons
+        dict_x=old_sufffacts_x, old_road=old_seasons_road, new_road=new_seasons_road
     )
-    new_sufffact_x = sufffactunit_shop(need=new_seasons)
+    new_sufffact_x = sufffactunit_shop(need=new_seasons_road)
 
-    for sufffact_key, sufffact_obj in new_sufffacts_x.items():
-        assert sufffact_key == new_seasons
-        assert sufffact_obj == new_sufffact_x
-    assert new_sufffacts_x.get(old_seasons) is None
+    assert new_sufffacts_x.get(new_seasons_road) == new_sufffact_x
+    assert new_sufffacts_x.get(old_seasons_road) is None
 
 
 # def test_find_replace_road_key_dict_ReturnsCorrectDict_Scenario2():

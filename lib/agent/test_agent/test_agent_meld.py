@@ -104,7 +104,7 @@ def test_agent_idearoot_meld_IdeaRootAttrCorrectlyMelded():
         ax1.meld(ax2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea=None,spirit _uid:1 with None,spirit _uid:4"
+        == "Meld fail idea=None,spirit _uid:1 with None,spirit _uid:4"
     )
 
 

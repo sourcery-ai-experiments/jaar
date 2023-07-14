@@ -111,11 +111,14 @@ def test_idea_find_replace_road_Changes_requiredunits():
     new_water_rain_l_sufffact = new_water_rain_required.sufffacts[new_rain_road]
     assert new_water_rain_l_sufffact.need == new_rain_road
 
-    for required_key, required_obj in idea_x._requiredunits.items():
-        assert required_key == new_water_road
-        for sufffact_key, sufffact_obj in required_obj.sufffacts.items():
-            assert sufffact_key == new_rain_road
-            assert sufffact_obj.need == new_rain_road
+    print(f"{len(idea_x._requiredunits)=}")
+    required_obj = idea_x._requiredunits.get(new_water_road)
+    assert required_obj != None
+
+    print(f"{len(required_obj.sufffacts)=}")
+    sufffact_obj = required_obj.sufffacts.get(new_rain_road)
+    assert sufffact_obj != None
+    assert sufffact_obj.need == new_rain_road
 
 
 def test_idea_find_replace_road_Changes_acptfactunits():
@@ -153,10 +156,11 @@ def test_idea_find_replace_road_Changes_acptfactunits():
     new_rain_road = f"{src},{new_water_text},{rain_text}"
     assert new_water_rain_acptfactunit.pick == new_rain_road
 
-    for acptfactunit_key, acptfactunit_obj in idea_x._acptfactunits.items():
-        assert acptfactunit_key == new_water_road
-        assert acptfactunit_obj.base == new_water_road
-        assert acptfactunit_obj.pick == new_rain_road
+    print(f"{len(idea_x._acptfactunits)=}")
+    acptfactunit_obj = idea_x._acptfactunits.get(new_water_road)
+    assert acptfactunit_obj != None
+    assert acptfactunit_obj.base == new_water_road
+    assert acptfactunit_obj.pick == new_rain_road
 
 
 def test_idea_get_key_road_returnsCorrectInfo():

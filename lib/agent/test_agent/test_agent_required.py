@@ -546,7 +546,7 @@ def test_agent_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus():
     # 3. idea(...,weekdays,thursday) exists
     agent_x = example_agents_get_agent_with_4_levels()
     src_road = agent_x._desc
-    work_text = f"work"
+    work_text = "work"
     work_road = f"{src_road},{work_text}"
     weekdays_text = "weekdays"
     weekdays_road = f"{src_road},{weekdays_text}"

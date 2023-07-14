@@ -108,10 +108,10 @@ def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen1():
     )
 
     # THEN
-    for idea_x in ranged_ideas.values():
-        print(
-            f"{begin_x=} {close_x=} {idea_x._desc=} {idea_x._begin=} {idea_x._close=} "
-        )
+    # for idea_x in ranged_ideas.values():
+    #     print(
+    #         f"{begin_x=} {close_x=} {idea_x._desc=} {idea_x._begin=} {idea_x._close=} "
+    #     )
     assert len(ranged_ideas) == 3
 
 

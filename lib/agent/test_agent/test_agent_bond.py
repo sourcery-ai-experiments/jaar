@@ -252,10 +252,7 @@ def test_agentunit_export_all_bonds_ExportsFileOfBonds_2files(env_dir_setup_clea
     # GIVEN
     cx = example_agents_get_agent_with_4_levels_and_2requireds_2acptfacts()
     cx_idea_list = cx.get_idea_list()
-    action_count = 0
-    for yx in cx_idea_list:
-        if yx.promise:
-            action_count += 1
+    action_count = sum(1 for yx in cx_idea_list if yx.promise)
     assert action_count == 2
     with pytest_raises(Exception) as excinfo:
         x_func_dir_files(dir_path=get_temp_env_dir())
@@ -306,10 +303,7 @@ def test_agentunit_export_all_bonds_ReturnsDictOfBonds(env_dir_setup_cleanup):
     # GIVEN
     cx = example_agents_get_agent_with_4_levels_and_2requireds_2acptfacts()
     cx_idea_list = cx.get_idea_list()
-    action_count = 0
-    for yx in cx_idea_list:
-        if yx.promise:
-            action_count += 1
+    action_count = sum(1 for yx in cx_idea_list if yx.promise)
     assert action_count == 2
 
     # WHEN

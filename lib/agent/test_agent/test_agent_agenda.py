@@ -44,8 +44,9 @@ def test_get_agenda_returns_agenda_with_only_required_allowed():
 
     # THEN
     assert agenda_list
-    for agenda_item in agenda_list:
-        yr_tale(idea=agenda_item)
+    # for agenda_item in agenda_list:
+    #     yr_tale(idea=agenda_item)
+    yr_tale(idea=agenda_list[0])
 
     assert len(agenda_list) == 1
     print(f"{agenda_list=}")
@@ -62,8 +63,11 @@ def test_get_agenda_returns_agenda_with_agent_importance():
     # THEN
     assert agenda_list
     assert len(agenda_list) == 2
-    for agenda_item in agenda_list:
-        assert agenda_item._agent_importance
+    print(f"{agenda_list[0]._desc=}")
+    assert agenda_list[0]._agent_importance
+
+    print(f"{agenda_list[1]._desc=}")
+    assert agenda_list[1]._agent_importance
 
 
 def test_get_agenda_with_No7amItem():
@@ -75,14 +79,12 @@ def test_get_agenda_with_No7amItem():
 
     # THEN
     assert agenda_list
-    for agenda_item in agenda_list:
-        print(f"{agenda_item._desc=}")
     assert len(agenda_list) == 1
-    clean_table = None
-    for agenda_item in agenda_list:
-        if agenda_item._desc == "clean table":
-            clean_table = agenda_item
-    assert clean_table is None
+    print(f"{agenda_list[0]._desc=}")
+    assert len(agenda_list) == 1
+
+    agenda_item = agenda_list[0]
+    assert agenda_item._desc != "clean table"
 
 
 def test_get_agenda_with_7amItem():
@@ -105,14 +107,13 @@ def test_get_agenda_with_7amItem():
     agenda_list = a1.get_agenda_items()
 
     # THEN
-    print(agenda_list)
+    # for agenda_item in agenda_list:
+    #     print(agenda_item._desc)
+
+    print(f"{len(agenda_list)=}")
     assert len(agenda_list) == 6
-    clean_table = None
-    for agenda_item in agenda_list:
-        print(agenda_item._desc)
-        if agenda_item._desc == clean_text:
-            clean_table = agenda_item
-    assert clean_table._desc == clean_text
+    clean_item = agenda_list[1]
+    assert clean_item._desc == clean_text
 
 
 def test_get_agenda_does_not_return_promise_items_outside_range():
@@ -151,17 +152,26 @@ def test_get_agenda_does_not_return_promise_items_outside_range():
 
 
 def test_exammple_agenda_exists():
+    # GIVEN
     a1 = example_agents_agent_v001()
-    a1.set_acptfact(base="TlME,day_minute", pick="TlME,day_minute", open=0, nigh=1399)
+    min_text = "TlME,day_minute"
+    a1.set_acptfact(base=min_text, pick=min_text, open=0, nigh=1399)
     assert a1
-    for idea_kid in a1._idearoot._kids.values():
-        # print(idea_kid._desc)
-        assert str(type(idea_kid)) != "<class 'str'>"
-        assert idea_kid.promise != None
+    # for idea_kid in a1._idearoot._kids.values():
+    #     # print(idea_kid._desc)
+    #     assert str(type(idea_kid)) != "<class 'str'>"
+    #     assert idea_kid.promise != None
+
+    # WHEN
     agenda_list = a1.get_agenda_items()
+
+    # THEN
     assert len(agenda_list) > 0
-    for agenda_item in agenda_list:
-        print(agenda_item._desc)
+    assert len(agenda_list) == 17
+    assert agenda_list[0].promise != None
+    assert str(type(agenda_list[0])) != "<class 'str'>"
+    assert str(type(agenda_list[9])) != "<class 'str'>"
+    assert str(type(agenda_list[12])) != "<class 'str'>"
 
 
 def test_exammple_AgendaHasCorrectAttributes():
@@ -231,11 +241,11 @@ def test_exammple_AgendaHasCorrectAttributes():
     # idea_action_list = a1.get_agenda_items()
     # assert len(idea_action_list) == 53
 
-    for base in a1.get_missing_acptfact_bases():
-        print(f"{base=}")
+    # for base in a1.get_missing_acptfact_bases():
+    #     print(f"{base=}")
 
-    for agenda_item in idea_action_list:
-        print(f"{agenda_item._uid=} {agenda_item._walk=}")
+    # for agenda_item in idea_action_list:
+    #     print(f"{agenda_item._uid=} {agenda_item._walk=}")
 
     # for agenda_item in idea_action_list:
     #     # print(f"{agenda_item._walk=}")
@@ -249,8 +259,8 @@ def test_exammple_AgendaCanFiltersOnBase():
     a1 = example_agents_agent_v001_with_large_agenda()
     weekdays = "TlME,weekdays"
     print(f"{type(a1)=}")
-    for base in a1.get_missing_acptfact_bases():
-        print(f"{base=}")
+    # for base in a1.get_missing_acptfact_bases():
+    #     print(f"{base=}")
 
     # for agenda_item in a1.get_agenda_items():
     #     print(

@@ -118,14 +118,9 @@ def test_agent_get_idea_list_AcptFactHeirsCorrectlyInherited():
 
     # WHEN
     agent_x.set_acptfact(base=earth_road, pick=earth_road, open=1.0, nigh=5.0)
-    acptfactheir_set_range = acptfactheir_shop(
-        base=earth_road, pick=earth_road, open=1.0, nigh=5.0
-    )
+    acptfactheir_set_range = acptfactheir_shop(earth_road, earth_road, 1.0, 5.0)
     acptfactheirs_set_range = {acptfactheir_set_range.base: acptfactheir_set_range}
-
-    acptfact_none_range = acptfactheir_shop(
-        base=earth_road, pick=earth_road, open=None, nigh=None
-    )
+    acptfact_none_range = acptfactheir_shop(earth_road, earth_road, None, None)
     acptfacts_none_range = {acptfact_none_range.base: acptfact_none_range}
 
     # THEN
@@ -135,15 +130,21 @@ def test_agent_get_idea_list_AcptFactHeirsCorrectlyInherited():
     assert swim_idea._acptfactheirs == acptfactheirs_set_range
     assert fast_idea._acptfactheirs == acptfactheirs_set_range
     assert slow_idea._acptfactheirs == acptfactheirs_set_range
-    for acptfact in swim_idea._acptfactheirs.values():
-        acptfact.set_range_null()
+    print(f"{swim_idea._acptfactheirs=}")
+    assert len(swim_idea._acptfactheirs) == 1
+
+    # WHEN
+    swim_idea._acptfactheirs.get(earth_road).set_range_null()
+
+    # THEN
     assert swim_idea._acptfactheirs == acptfacts_none_range
     assert fast_idea._acptfactheirs == acptfactheirs_set_range
     assert slow_idea._acptfactheirs == acptfactheirs_set_range
-    for acptfact in swim_idea._acptfactheirs.values():
-        acptfact.set_range_null()
-        print(type(acptfact))
-        assert str(type(acptfact)).find(".required.AcptFactHeir'>")
+
+    acptfact_x1 = swim_idea._acptfactheirs.get(earth_road)
+    acptfact_x1.set_range_null()
+    print(type(acptfact_x1))
+    assert str(type(acptfact_x1)).find(".required.AcptFactHeir'>")
 
 
 def test_agent_get_idea_list_AcptFactUnitCorrectlyTransformsacptfactheir_shop():

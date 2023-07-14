@@ -323,36 +323,43 @@ def test_lemmas_is_lemmas_incomplete_ReturnsCorrectBoolWhenPopulated():
     lemmas_z.lemmas = {}
     src_idea = IdeaKid(_desc="whatever", _walk="src", _begin=-13, _close=500)
 
-    for lemma in lemmas_z.lemmas.values():
-        print(f"Does not exist: {lemma.eval_status=} {lemma.calc_acptfact=}")
+    # for lemma in lemmas_z.lemmas.values():
+    #     print(f"Does not exist: {lemma.eval_status=} {lemma.calc_acptfact=}")
 
     tr1_idea = IdeaKid(_desc="timerange1", _walk="src", _begin=7, _close=12)
-    tr1 = f"{tr1_idea._walk},{tr1_idea._desc}"
-    src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
+    tr1_road = f"{tr1_idea._walk},{tr1_idea._desc}"
+    src_acptfact = acptfactunit_shop(base=tr1_road, pick=tr1_road, open=0, nigh=30)
     lemmas_z.eval(idea_x=tr1_idea, src_acptfact=src_acptfact, src_idea=src_idea)
 
     tr2_idea = IdeaKid(_desc="timerange2", _walk="src", _begin=40, _close=60)
-    tr2 = f"{tr2_idea._walk},{tr2_idea._desc}"
-    src_acptfact = acptfactunit_shop(base=tr2, pick=tr2, open=55, nigh=60)
+    tr2_road = f"{tr2_idea._walk},{tr2_idea._desc}"
+    src_acptfact = acptfactunit_shop(base=tr2_road, pick=tr2_road, open=55, nigh=60)
     lemmas_z.eval(idea_x=tr2_idea, src_acptfact=src_acptfact, src_idea=src_idea)
 
     # When/Then
-    for lemma in lemmas_z.lemmas.values():
-        print(f"0 changes: {lemma.eval_status=}")
+    assert len(lemmas_z.lemmas) == 2
+    tr1_lemma = lemmas_z.lemmas.get(tr1_road)
+    tr2_lemma = lemmas_z.lemmas.get(tr2_road)
+    tr1_src_acptfact = tr1_lemma.src_acptfact
+    tr2_src_acptfact = tr2_lemma.src_acptfact
+    print(f"0 changes: {tr1_src_acptfact.base=} {tr1_lemma.eval_status=}")
+    print(f"0 changes: {tr2_src_acptfact.base=} {tr2_lemma.eval_status=}")
     assert lemmas_z.is_lemmas_evaluated() == False
 
     # When
     lem1 = lemmas_z.get_unevaluated_lemma()
     # Then
-    for lemma in lemmas_z.lemmas.values():
-        print(f"1 changes: {lemma.eval_status=}")
+    assert len(lemmas_z.lemmas) == 2
+    print(f"1 changes: {tr1_src_acptfact.base=} {tr1_lemma.eval_status=}")
+    print(f"1 changes: {tr2_src_acptfact.base=} {tr2_lemma.eval_status=}")
     assert lemmas_z.is_lemmas_evaluated() == False
 
     # When
     lem2 = lemmas_z.get_unevaluated_lemma()
     # Then
-    for lemma in lemmas_z.lemmas.values():
-        print(f"2 changes: {lemma.eval_status=}")
+    assert len(lemmas_z.lemmas) == 2
+    print(f"2 changes: {tr1_src_acptfact.base=} {tr1_lemma.eval_status=}")
+    print(f"2 changes: {tr2_src_acptfact.base=} {tr2_lemma.eval_status=}")
     assert lemmas_z.is_lemmas_evaluated() == True
 
 
@@ -360,8 +367,7 @@ def test_lemmas_is_lemmas_incomplete_ReturnsCorrectBoolWhenEmpty():
     # Given
     lemmas_z = Lemmas()
     lemmas_z.lemmas = {}
-    for lemma in lemmas_z.lemmas.values():
-        print(f"Does not exist: {lemma.eval_status=} {lemma.calc_acptfact=}")
+    print(f"Does not exist: {lemmas_z=}")
 
     # When/Then
     assert not lemmas_z.lemmas

@@ -36,8 +36,8 @@ def test_kid_can_have_kids():
     weekdays_kids = agent_x._idearoot._kids["weekdays"]._kids
     weekdays_len = len(weekdays_kids)
     print(f"{weekdays_len=} {agent_x._idearoot._walk=}")
-    for idea in weekdays_kids.values():
-        print(f"{idea._desc=}")
+    # for idea in weekdays_kids.values():
+    #     print(f"{idea._desc=}")
     assert agent_x.get_node_count() == 17
     assert agent_x.get_level_count(level=1) == 4
     assert agent_x.get_level_count(level=2) == 10
@@ -160,8 +160,8 @@ def test_agent_add_idea_creates_requireds_ideas():
 
     # THEN
     print(f"{(len(new_idea_parent_road) == 1)=}")
-    for idea_kid in agent_x._idearoot._kids.values():
-        print(f"{idea_kid._desc=}")
+    # for idea_kid in agent_x._idearoot._kids.values():
+    #     print(f"{idea_kid._desc=}")
     assert agent_x._idearoot._kids.get(buildings_text) != None
     assert agent_x.get_idea_kid(road=buildings_road) != None
     assert agent_x.get_idea_kid(road=kitchen_dirty_road) != None
@@ -524,11 +524,9 @@ def test_agent_add_idea_MustReorderKidsDictToBeAlphabetical():
     src_text = "src"
     ax = AgentUnit(_desc=src_text)
     work_text = "work"
-    work_idea = IdeaKid(_desc=work_text)
-    ax.add_idea(work_idea, walk=src_text)
+    ax.add_idea(IdeaKid(_desc=work_text), walk=src_text)
     swim_text = "swim"
-    swim_idea = IdeaKid(_desc=swim_text)
-    ax.add_idea(swim_idea, walk=src_text)
+    ax.add_idea(IdeaKid(_desc=swim_text), walk=src_text)
 
     # WHEN
     idea_list = list(ax._idearoot._kids.values())

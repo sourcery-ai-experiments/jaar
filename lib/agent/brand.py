@@ -115,16 +115,16 @@ class BrandUnit(BrandCore):
     def meld_allylinks(self, other_brand):
         self._set_allylinks_empty_if_null()
         for oba in other_brand._allys.values():
-            if self._allys.get(oba.name) != None:
-                self._allys[oba.name].meld(oba)
-            else:
+            if self._allys.get(oba.name) is None:
                 self._allys[oba.name] = oba
+            else:
+                self._allys[oba.name].meld(oba)
 
     def meld_attributes_that_will_be_equal(self, other_brand):
-        xl = []
-        xl.append(("name", self.name, other_brand.name))
-        xl.append(("uid", self.uid, other_brand.uid))
-
+        xl = [
+            ("name", self.name, other_brand.name),
+            ("uid", self.uid, other_brand.uid),
+        ]
         while xl != []:
             attrs = xl.pop()
             if attrs[1] != attrs[2]:
@@ -171,7 +171,7 @@ def brandunit_shop(
 ) -> BrandUnit:
     if _allys is None:
         _allys = {}
-    if _single_ally == None:
+    if _single_ally is None:
         _single_ally = False
     return BrandUnit(
         name=name,

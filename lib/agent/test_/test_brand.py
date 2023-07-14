@@ -138,21 +138,30 @@ def test_Brandunit_reset_agent_importance_reset_allylinks():
     bikers_brand.set_allylink(allylink=todd_ally)
     bikers_brand.set_allylink(allylink=mery_ally)
     print(f"{bikers_brand}")
-    for allylink in bikers_brand._allys.values():
-        assert allylink._agent_credit in [0.13, 0.23]
-        assert allylink._agent_debt in [0.7, 0.5]
-        assert allylink._agent_agenda_credit in [0.53, 0.54]
-        assert allylink._agent_agenda_debt in [0.77, 0.57]
+    biker_allylink_todd = bikers_brand._allys.get(todd_text)
+    assert biker_allylink_todd._agent_credit == 0.13
+    assert biker_allylink_todd._agent_debt == 0.7
+    assert biker_allylink_todd._agent_agenda_credit == 0.53
+    assert biker_allylink_todd._agent_agenda_debt == 0.77
+
+    biker_allylink_mery = bikers_brand._allys.get(mery_text)
+    assert biker_allylink_mery._agent_credit == 0.23
+    assert biker_allylink_mery._agent_debt == 0.5
+    assert biker_allylink_mery._agent_agenda_credit == 0.54
+    assert biker_allylink_mery._agent_agenda_debt == 0.57
 
     # WHEN
     bikers_brand.reset_agent_credit_debt()
 
     # THEN
-    for allylink in bikers_brand._allys.values():
-        assert allylink._agent_credit == 0
-        assert allylink._agent_debt == 0
-        assert allylink._agent_agenda_credit == 0
-        assert allylink._agent_agenda_debt == 0
+    assert biker_allylink_todd._agent_credit == 0
+    assert biker_allylink_todd._agent_debt == 0
+    assert biker_allylink_todd._agent_agenda_credit == 0
+    assert biker_allylink_todd._agent_agenda_debt == 0
+    assert biker_allylink_mery._agent_credit == 0
+    assert biker_allylink_mery._agent_debt == 0
+    assert biker_allylink_mery._agent_agenda_credit == 0
+    assert biker_allylink_mery._agent_agenda_debt == 0
 
 
 def test_BrandUnit_allylink_meld_BaseScenarioWorks():

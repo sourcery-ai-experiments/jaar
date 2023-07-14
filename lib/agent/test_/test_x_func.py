@@ -105,7 +105,7 @@ def test_x_func_dir_files_doesNotReturnsFiles(person_dir_setup_cleanup):
     print(f"{files_dict.get(x1_file_name)=}")
     with pytest_raises(Exception) as excinfo:
         files_dict[x1_file_name]
-    assert str(excinfo.value) == f"'x1.txt'"
+    assert str(excinfo.value) == "'x1.txt'"
     assert files_dict.get(x2_name) == True
     assert len(files_dict) == 1
 

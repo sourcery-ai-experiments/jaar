@@ -55,21 +55,24 @@ def test_example_has_brands():
     assert lw_x._brands != None
     assert len(lw_x._brands) == 34
     everyone_allys_len = None
-    for brand in lw_x._brands.values():
-        if brand.name == "Everyone":
-            everyone_allys_len = len(brand._allys)
+    everyone_brand = lw_x._brands.get("Everyone")
+    everyone_allys_len = len(everyone_brand._allys)
     assert everyone_allys_len == 22
 
     # WHEN
-    idea_list = lw_x.get_idea_list()
+    lw_x.set_agent_metrics()
+    idea_dict = lw_x._idea_dict
 
     # THEN
-    db_brand_list = None
-    for idea in idea_list:
-        if idea._desc == "D&B":
-            print(f"{idea._desc=} {idea._brandlinks=}")
-            db_brand_list = len(idea._brandlinks)
-    assert db_brand_list == 3
+    db_idea = idea_dict.get("TlME,D&B")
+    print(f"{db_idea._desc=} {db_idea._brandlinks=}")
+    assert len(db_idea._brandlinks) == 3
+    # for idea_key in idea_dict:
+    #     print(f"{idea_key=}")
+    #     if idea._desc == "D&B":
+    #         print(f"{idea._desc=} {idea._brandlinks=}")
+    #         db_brandlink_len = len(idea._brandlinks)
+    # assert db_brandlink_len == 3
 
 
 def test_agent_set_brandlink_correctly_sets_brandlinks():

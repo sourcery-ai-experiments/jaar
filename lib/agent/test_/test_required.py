@@ -273,13 +273,14 @@ def test_RequiredCore_find_replace_road_works():
     sunday_text = "Sunday"
     old_weekday_road = f"{src},{weekday_text}"
     old_sunday_road = f"{src},{weekday_text},{sunday_text}"
-    sunday_sufffact_x = sufffactunit_shop(need=old_sunday_road)
+    # sunday_sufffact_x = sufffactunit_shop(need=old_sunday_road)
     required_x = RequiredCore(base=old_weekday_road, sufffacts=None)
     required_x.set_sufffact(sufffact=old_sunday_road)
     # print(f"{required_x=}")
     assert required_x.base == old_weekday_road
-    for sufffact in required_x.sufffacts.values():
-        assert sufffact.need == old_sunday_road
+    assert len(required_x.sufffacts) == 1
+    print(f"{required_x.sufffacts=}")
+    assert required_x.sufffacts.get(old_sunday_road).need == old_sunday_road
 
     # WHEN
     old_road = f"{src}"
@@ -290,12 +291,11 @@ def test_RequiredCore_find_replace_road_works():
 
     # THEN
     assert required_x.base == new_weekday_road
+    assert len(required_x.sufffacts) == 1
     assert required_x.sufffacts.get(new_sunday_road) != None
     assert required_x.sufffacts.get(old_sunday_road) is None
-
-    for sufffact_key, sufffact_obj in required_x.sufffacts.items():
-        assert sufffact_key == new_sunday_road
-        assert sufffact_obj.need == new_sunday_road
+    print(f"{required_x.sufffacts=}")
+    assert required_x.sufffacts.get(new_sunday_road).need == new_sunday_road
 
 
 def test_RequiredCore_get_key_road():
