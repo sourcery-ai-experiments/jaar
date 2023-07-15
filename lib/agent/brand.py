@@ -7,6 +7,10 @@ from lib.agent.x_func import (
 )
 
 
+class InvalidBrandException(Exception):
+    pass
+
+
 class BrandName(str):
     pass
 
@@ -128,12 +132,12 @@ class BrandUnit(BrandCore):
         while xl != []:
             attrs = xl.pop()
             if attrs[1] != attrs[2]:
-                raise Exception(
+                raise InvalidBrandException(
                     f"Meld fail BrandUnit {self.name} .{attrs[0]}='{attrs[1]}' not the same as .{attrs[0]}='{attrs[2]}"
                 )
 
         # if self.name != other_brand.name:
-        #     raise Exception(
+        #     raise InvalidBrandException(
         #             f"Meld fail idea={self._walk},{self._desc} {attrs[0]}:{attrs[1]} with {other_idea._walk},{other_idea._desc} {attrs[0]}:{attrs[2]}"
         #     )
 

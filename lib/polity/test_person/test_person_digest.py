@@ -142,8 +142,8 @@ def test_personunit_save_digest_agent_file_SavesFileCorrectly(
     digest_file_path = f"{px._digest_agents_dir}/{cx_file_name}"
     print(f"Saving to {digest_file_path=}")
     assert os_path.exists(digest_file_path)
-    for path_x in os_scandir(px._digest_agents_dir):
-        print(f"{path_x=}")
+    # for path_x in os_scandir(px._digest_agents_dir):
+    #     print(f"{path_x=}")
     assert x_func_count_files(px._digest_agents_dir) == 1
     digest_cx_json = x_func_open_file(
         dest_dir=px._digest_agents_dir, file_name=f"{src_agent_desc}.json"
@@ -171,8 +171,8 @@ def test_presonunit_set_src_agentlinks_CorrectlySets_blind_trust_DigestAgent(
     digest_file_path = f"{px._digest_agents_dir}/{cx_file_name}"
     print(f"Saving to {digest_file_path=}")
     assert os_path.exists(digest_file_path)
-    for path_x in os_scandir(px._digest_agents_dir):
-        print(f"{path_x=}")
+    # for path_x in os_scandir(px._digest_agents_dir):
+    #     print(f"{path_x=}")
     assert x_func_count_files(px._digest_agents_dir) == 1
     digest_cx_json = x_func_open_file(
         dest_dir=px._digest_agents_dir, file_name=f"{src_agent_desc}.json"

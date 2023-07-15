@@ -2,6 +2,10 @@ from dataclasses import dataclass
 from lib.agent.x_func import x_get_dict, return1ifnone as x_func_return1ifnone
 
 
+class InvalidAllyException(Exception):
+    pass
+
+
 class AllyName(str):
     pass
 
@@ -169,7 +173,7 @@ class AllyUnit(AllyCore):
 
     def meld(self, other_allyunit):
         if self.name != other_allyunit.name:
-            raise Exception(
+            raise InvalidAllyException(
                 f"Meld fail AllyUnit='{self.name}' not the same as AllyUnit='{other_allyunit.name}"
             )
 
@@ -305,7 +309,7 @@ class AllyLink(AllyCore):
 
     def meld(self, other_allylink):
         if self.name != other_allylink.name:
-            raise Exception(
+            raise InvalidAllyException(
                 f"Meld fail AllyLink='{self.name}' not the same as AllyLink='{other_allylink.name}"
             )
         self.creditor_weight += other_allylink.creditor_weight

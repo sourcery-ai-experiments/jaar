@@ -4,6 +4,10 @@ from dataclasses import dataclass
 from datetime import datetime
 
 
+class InvalidSuffFactUnitException(Exception):
+    pass
+
+
 @dataclass
 class SuffFactUnitHregTime:
     _weekday: str = None
@@ -34,7 +38,7 @@ class SuffFactUnitHregTime:
         event_minutes: int,
     ):
         if every_x_weeks <= remainder_weeks:
-            raise Exception(
+            raise InvalidSuffFactUnitException(
                 "remainder_weeks reqquires being at least 1 less than every_x_weeks"
             )
 
@@ -57,7 +61,7 @@ class SuffFactUnitHregTime:
         event_minutes: int,
     ):
         if every_x_days <= remainder_days:
-            raise Exception(
+            raise InvalidSuffFactUnitException(
                 "remainder_weeks reqquires being at least 1 less than every_x_weeks"
             )
 
@@ -72,12 +76,12 @@ class SuffFactUnitHregTime:
 
     def set_x_remainder_weeks(self, remainder_weeks: int):
         if remainder_weeks < 0:
-            raise Exception("remainder_weeks reqquires being >= 0")
+            raise InvalidSuffFactUnitException("remainder_weeks reqquires being >= 0")
         self._x_week_remainder = remainder_weeks
 
     def set_x_remainder_days(self, remainder_days: int):
         if remainder_days < 0:
-            raise Exception("remainder_weeks reqquires being >= 0")
+            raise InvalidSuffFactUnitException("remainder_weeks reqquires being >= 0")
         self._x_days_remainder = remainder_days
 
     def _set_every_x_days(
