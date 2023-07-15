@@ -2,18 +2,12 @@ from sqlite3 import connect as sqlite3_connect, Connection
 
 
 def sqlite_null(obj_x):
-    if obj_x is None:
-        return "NULL"
-    else:
-        return obj_x
+    return "NULL" if obj_x is None else obj_x
 
 
 def sqlite_bool(int_x) -> bool:
     """convert_sqlite_true_to_python_true"""
-    if int_x is None:
-        return "NULL"
-    else:
-        return int_x == 1
+    return "NULL" if int_x is None else int_x == 1
 
 
 def sqlite_text(bool_x) -> str:
@@ -37,5 +31,4 @@ def check_connection(conn) -> bool:
 
 def get_single_result_back(db_conn: Connection, sqlstr: str) -> str:
     results = db_conn.execute(sqlstr)
-    int_x = results.fetchone()[0]
-    return int_x
+    return results.fetchone()[0]

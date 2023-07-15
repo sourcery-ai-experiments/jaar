@@ -3,6 +3,10 @@ from lib.agent.required import AcptFactUnit, Road, acptfactunit_shop
 from lib.agent.idea import IdeaKid
 
 
+class InvalidLemmaException(Exception):
+    pass
+
+
 @dataclass
 class Lemma:
     src_acptfact: AcptFactUnit
@@ -69,7 +73,7 @@ class Lemmas:
         idea_close,
         src_open,
         src_nigh,
-    ):
+    ):  # sourcery skip: remove-redundant-if
         acptfact_open = None
         acptfact_nigh = None
         if src_open <= idea_begin and src_nigh >= idea_close:
@@ -134,7 +138,9 @@ class Lemmas:
         self, idea_x: IdeaKid, src_acptfact: AcptFactUnit, src_idea: IdeaKid
     ) -> AcptFactUnit:
         if idea_x._begin is None or idea_x._close is None:
-            raise Exception(f"Idea {idea_x._walk},{idea_x._desc} does not have range")
+            raise InvalidLemmaException(
+                f"Idea {idea_x._walk},{idea_x._desc} does not have range"
+            )
 
         idea_begin = idea_x._begin
         idea_close = idea_x._close
@@ -187,10 +193,7 @@ class Lemmas:
                 src_nigh=src_nigh,
             )
 
-        active_status = False
-        if acptfact_open is not None and acptfact_nigh is not None:
-            active_status = True
-
+        active_status = acptfact_open is not None and acptfact_nigh is not None
         return acptfactunit_shop(
             base=idea_road,
             pick=idea_road,
@@ -224,21 +227,21 @@ class Lemmas:
                 eval_status=False,
                 eval_count=1,
             )
-        else:
-            # if new acptfactunit is inactive (acptfact.open == None and acptfact.nigh == None)
-            # or current lemma acptfactunit acptfact.open == idea._being and acptfact.acptfact == idea._close
-            # do nothing
-            pass
-            # current_lemma_acptfact = lemma_dict.get(road_x)[1]
-            # if (
-            #     acptfact_open != None
-            #     and acptfact_nigh != None
-            #     and (
-            #         current_lemma_acptfact.open != acptfact_open
-            #         or current_lemma_acptfact.nigh != acptfact_nigh
-            #     )
-            # ):
-            #     prin(f"{current_lemma_acptfact=} {acptfact_open=} {acptfact_nigh=}")
+        # else:
+        #     # if new acptfactunit is inactive (acptfact.open == None and acptfact.nigh == None)
+        #     # or current lemma acptfactunit acptfact.open == idea._being and acptfact.acptfact == idea._close
+        #     # do nothing
+        #     pass
+        #     # current_lemma_acptfact = lemma_dict.get(road_x)[1]
+        #     # if (
+        #     #     acptfact_open != None
+        #     #     and acptfact_nigh != None
+        #     #     and (
+        #     #         current_lemma_acptfact.open != acptfact_open
+        #     #         or current_lemma_acptfact.nigh != acptfact_nigh
+        #     #     )
+        #     # ):
+        #     #     prin(f"{current_lemma_acptfact=} {acptfact_open=} {acptfact_nigh=}")
 
-            # if current_lemma_acptfact.base == "src,time,week":
-            #     prin(f"{current_lemma_acptfact=} {acptfact_open=} {acptfact_nigh=}")
+        #     # if current_lemma_acptfact.base == "src,time,week":
+        #     #     prin(f"{current_lemma_acptfact=} {acptfact_open=} {acptfact_nigh=}")

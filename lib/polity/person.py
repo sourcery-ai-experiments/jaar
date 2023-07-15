@@ -26,6 +26,10 @@ from os import path as os_path
 from json import loads as json_loads
 
 
+class InvalidPersonException(Exception):
+    pass
+
+
 @dataclass
 class PersonUnit:
     name: str
@@ -140,7 +144,9 @@ class PersonUnit:
         cx_file_name = f"{agent_desc}.json"
         cx_file_path = f"{self._person_agents_dir}/{cx_file_name}"
         if not os_path.exists(cx_file_path):
-            raise Exception(f"Person {self.name} cannot find agent {agent_desc}")
+            raise InvalidPersonException(
+                f"Person {self.name} cannot find agent {agent_desc}"
+            )
 
         # if not agentlink_x.link_type in list(get_agentlink_types().keys()):
         #     raise Exception(f"{agentlink_x.link_type=} not allowed.")
@@ -241,7 +247,7 @@ class PersonUnit:
             empty_cx = self._get_empty_starting_digest_agent()
             cx.agent_and_idearoot_desc_edit(new_desc=empty_cx._desc)
             cx.set_agent_metrics()
-        except:
+        except Exception:
             cx = self._get_empty_starting_digest_agent()
             cx.set_agent_metrics()
         return cx

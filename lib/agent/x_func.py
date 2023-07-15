@@ -28,9 +28,13 @@ def rename_dir(src, dst):
     os_rename(src=src, dst=dst)
 
 
+class InvalidFileCopyException(Exception):
+    pass
+
+
 def copy_dir(src_dir: str, dest_dir: str):
     if os_path.exists(dest_dir):
-        raise Exception(
+        raise InvalidFileCopyException(
             f"Cannot copy '{src_dir}' to '{dest_dir}' since destination already exists"
         )
     else:
@@ -55,6 +59,7 @@ def save_file(dest_dir: str, file_name: str, file_text: str, replace: bool = Non
 
 
 def open_file(dest_dir: str, file_name: str):
+    # sourcery skip: raise-specific-error
     file_path = f"{dest_dir}/{file_name}"
     text_x = ""
     try:
@@ -62,20 +67,16 @@ def open_file(dest_dir: str, file_name: str):
             text_x = f.read()
             f.close()
     except Exception as e:
-        raise Exception(f"Could not load file {file_path} {e.args}")
+        raise Exception(f"Could not load file {file_path} {e.args}") from e
     return text_x
 
 
 def count_files(dir_path: str) -> int:
-    count = None
-    if not os_path.exists(path=dir_path):
-        count = None
-    else:
-        count = 0
-        for path_x in os_scandir(dir_path):
-            if path_x.is_file():
-                count += 1
-    return count
+    return (
+        sum(bool(path_x.is_file()) for path_x in os_scandir(dir_path))
+        if os_path.exists(path=dir_path)
+        else None
+    )
 
 
 def dir_files(
@@ -98,10 +99,9 @@ def dir_files(
             file_path = f"{dir_path}/{file_name}"
             # print(f" {os_path.isdir(file_path)=}")
             file_text = open_file(dest_dir=dir_path, file_name=file_name)
-            if remove_extensions:
-                dict_key = os_path.splitext(file_name)[0]
-            else:
-                dict_key = file_name
+            dict_key = (
+                os_path.splitext(file_name)[0] if remove_extensions else file_name
+            )
             dict_x[dict_key] = file_text
 
         if os_path.isdir(obj_path) and include_dirs:
@@ -289,17 +289,12 @@ def get_meld_weight(
     other_on_meld_weight_action: float,
 ) -> float:
     if (
-        src_on_meld_weight_action == "default"
-        and other_on_meld_weight_action != "ignore"
+        src_on_meld_weight_action != "default"
+        or other_on_meld_weight_action == "ignore"
     ):
-        pass
-    else:
         src_weight += other_weight
     return src_weight
 
 
 def return1ifnone(x_obj):
-    if x_obj is None:
-        return 1
-    else:
-        return x_obj
+    return 1 if x_obj is None else x_obj

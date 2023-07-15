@@ -4,6 +4,10 @@ from PyQt5.QtWidgets import QTreeWidgetItem
 from lib.agent.road import get_terminus_node_from_road
 
 
+class InvalidPyQtException(Exception):
+    pass
+
+
 def get_pyqttree(
     idearoot: IdeaCore,
     root_percent_flag: bool = None,
@@ -94,7 +98,7 @@ def _create_node(
     else:
         item.setData(2, 21, len(idea_core._requiredunits))
     if idea_core._kids is None:
-        raise Exception(f"Idea {idea_core._desc} has null kids.")
+        raise InvalidPyQtException(f"Idea {idea_core._desc} has null kids.")
 
     sort_ideas_list = list(idea_core._kids.values())
     # print(f"{len(sort_ideas_list)=}")
@@ -257,9 +261,8 @@ def _create_treenode_label(
 
     if requiredheir_count_flag and idea_core._walk not in (None, ""):
         requiredunit_count = sum(
-            1
+            str(type(requiredheir)) == "<class 'lib.agent.required.RequiredUnit'>"
             for requiredheir in idea_core._requiredheirs.values()
-            if str(type(requiredheir)) == "<class 'lib.agent.required.RequiredUnit'>"
         )
         treenode_label += f" (RequiredHeirs {len(idea_core._requiredheirs)})"
 
