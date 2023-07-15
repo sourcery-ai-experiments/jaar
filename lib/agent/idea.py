@@ -31,6 +31,10 @@ from lib.agent.x_func import (
 from copy import deepcopy
 
 
+class InvalidIdeaException(Exception):
+    pass
+
+
 @dataclasses.dataclass
 class IdeaBare:
     n: str = None  # name
@@ -396,7 +400,7 @@ class IdeaCore:
 
     def meld(self, other_idea, _idearoot: bool = None):
         if _idearoot and self._desc != other_idea._desc:
-            raise Exception(
+            raise InvalidIdeaException(
                 f"Meld fail idearoot _desc '{self._desc}' not the same as '{other_idea._desc}'"
             )
         if _idearoot:
@@ -430,7 +434,7 @@ class IdeaCore:
         while xl != []:
             attrs = xl.pop()
             if attrs[1] != attrs[2]:
-                raise Exception(
+                raise InvalidIdeaException(
                     f"Meld fail idea={self._walk},{self._desc} {attrs[0]}:{attrs[1]} with {other_idea._walk},{other_idea._desc} {attrs[0]}:{attrs[2]}"
                 )
 
@@ -584,7 +588,7 @@ class IdeaCore:
         try:
             self._requiredunits.pop(base)
         except KeyError as e:
-            raise Exception(f"No RequiredUnit at '{base}'") from e
+            raise InvalidIdeaException(f"No RequiredUnit at '{base}'") from e
 
     def del_requiredunit_sufffact(self, base: Road, sufffact: Road):
         required_unit = self._requiredunits[base]
@@ -595,7 +599,7 @@ class IdeaCore:
             # if idea_kid._denom != None:
             # if idea_kid._reest != None:
             if self._begin is None or self._close is None:
-                raise Exception(
+                raise InvalidIdeaException(
                     f"Idea {idea_kid._walk},{idea_kid._desc} cannot have numor,denom,reest if parent does not have begin/close range"
                 )
 
@@ -627,7 +631,7 @@ class IdeaCore:
         try:
             self._brandlinks.pop(brandname)
         except KeyError as e:
-            raise Exception(f"Cannot delete brandlink '{brandname}'.") from e
+            raise (f"Cannot delete brandlink '{brandname}'.") from e
 
     def set_required_unit(self, required: RequiredUnit):
         self.set_requiredunits_empty_if_null()

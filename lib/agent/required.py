@@ -2,6 +2,10 @@ import dataclasses
 from lib.agent.road import Road, change_road, find_replace_road_key_dict
 
 
+class InvalidRequiredException(Exception):
+    pass
+
+
 @dataclasses.dataclass
 class AcptFactCore:
     base: Road
@@ -38,19 +42,19 @@ class AcptFactCore:
 
     def meld(self, other_acptfactcore):
         if other_acptfactcore.base != self.base:
-            raise Exception(
+            raise InvalidRequiredException(
                 f"Meld fail: base={other_acptfactcore.base} is different {self.base=}"
             )
         if other_acptfactcore.pick != self.pick:
-            raise Exception(
+            raise InvalidRequiredException(
                 f"Meld fail: pick={other_acptfactcore.pick} is different {self.pick=}"
             )
         elif other_acptfactcore.open != self.open:
-            raise Exception(
+            raise InvalidRequiredException(
                 f"Meld fail: base={other_acptfactcore.base} open={other_acptfactcore.open} is different {self.open=}"
             )
         elif other_acptfactcore.nigh != self.nigh:
-            raise Exception(
+            raise InvalidRequiredException(
                 f"Meld fail: base={other_acptfactcore.base} nigh={other_acptfactcore.nigh} is different {self.nigh=}"
             )
         return self
@@ -315,19 +319,19 @@ class SuffFactUnit:
 
     def meld(self, other_sufffact):
         if other_sufffact.need != self.need:
-            raise Exception(
+            raise InvalidRequiredException(
                 f"Meld fail: need={other_sufffact.need} is different {self.need=}"
             )
         elif other_sufffact.open != self.open:
-            raise Exception(
+            raise InvalidRequiredException(
                 f"Meld fail: need={other_sufffact.need} open={other_sufffact.open} is different {self.open=}"
             )
         elif other_sufffact.nigh != self.nigh:
-            raise Exception(
+            raise InvalidRequiredException(
                 f"Meld fail: need={other_sufffact.need} nigh={other_sufffact.nigh} is different {self.nigh=}"
             )
         elif other_sufffact.divisor != self.divisor:
-            raise Exception(
+            raise InvalidRequiredException(
                 f"Meld fail: need={other_sufffact.need} divisor={other_sufffact.divisor} is different {self.divisor=}"
             )
 
@@ -398,7 +402,9 @@ class RequiredCore:
         try:
             self.sufffacts.pop(sufffact)
         except KeyError as e:
-            raise Exception(f"Required unable to delete sufffact {e}") from e
+            raise InvalidRequiredException(
+                f"Required unable to delete sufffact {e}"
+            ) from e
 
     def find_replace_road(self, old_road: Road, new_road: Road):
         self.base = change_road(self.base, old_road, new_road)
@@ -408,13 +414,12 @@ class RequiredCore:
 
     def meld(self, other_required):
         for sufffact_x in other_required.sufffacts.values():
-            if self.sufffacts.get(sufffact_x.need) != None:
-                self.sufffacts.get(sufffact_x.need).meld(sufffact_x)
-            else:
+            if self.sufffacts.get(sufffact_x.need) is None:
                 self.sufffacts[sufffact_x.need] = sufffact_x
-
+            else:
+                self.sufffacts.get(sufffact_x.need).meld(sufffact_x)
         if other_required.base != self.base:
-            raise Exception(
+            raise InvalidRequiredException(
                 f"Meld fail: required={other_required.base} is different {self.base=}"
             )
 

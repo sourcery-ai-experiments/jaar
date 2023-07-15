@@ -84,11 +84,8 @@ class TreeMetrics:
             self.uid_dict = {}
 
     def evaluate_uid_max(self, uid):
-        try:
-            if self.uid_max < uid:
-                self.uid_max = uid
-        except:
-            pass
+        if uid != None and self.uid_max < uid:
+            self.uid_max = uid
 
         if self.uid_dict.get(uid) is None:
             self.uid_dict[uid] = 1
