@@ -150,6 +150,7 @@ def bool_val(bool_x):
 
 
 def emptystring_returns_none(str_x: str) -> str:
+    # sourcery skip: swap-if-expression
     return None if not str_x else str_x
 
 

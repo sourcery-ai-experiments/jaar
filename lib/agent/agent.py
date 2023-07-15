@@ -61,6 +61,10 @@ from lib.agent.x_func import (
 )
 
 
+class InvalidAgentException(Exception):
+    pass
+
+
 @dataclasses.dataclass
 class AgentUnit:
     _desc: str = None
@@ -99,7 +103,7 @@ class AgentUnit:
 
     def set_max_tree_traverse(self, int_x: int):
         if int_x < 2:
-            raise Exception(
+            raise InvalidAgentException(
                 f"set_max_tree_traverse: input '{int_x}' must be number that is 2 or greater"
             )
         else:
@@ -415,7 +419,7 @@ class AgentUnit:
     ):
         old_name_creditor_weight = self._allys.get(old_name).creditor_weight
         if not allow_ally_overwite and self._allys.get(new_name) != None:
-            raise Exception(
+            raise InvalidAgentException(
                 f"Ally '{old_name}' change to '{new_name}' failed since it already exists."
             )
         elif (
@@ -423,7 +427,7 @@ class AgentUnit:
             and self._brands.get(new_name) != None
             and self._brands.get(new_name)._single_ally == False
         ):
-            raise Exception(
+            raise InvalidAgentException(
                 f"Ally '{old_name}' change to '{new_name}' failed since non-single brand '{new_name}' already exists."
             )
         elif (
@@ -566,7 +570,7 @@ class AgentUnit:
         self, old_name: BrandName, new_name: BrandName, allow_brand_overwite: bool
     ):
         if not allow_brand_overwite and self._brands.get(new_name) != None:
-            raise Exception(
+            raise InvalidAgentException(
                 f"Brand '{old_name}' change to '{new_name}' failed since it already exists."
             )
         elif self._brands.get(new_name) != None:
@@ -700,7 +704,7 @@ class AgentUnit:
         while lemmas_x.is_lemmas_evaluated() == False or count_x > 10000:
             count_x += 1
             if count_x == 9998:
-                raise Exception("lemma loop failed")
+                raise InvalidAgentException("lemma loop failed")
 
             lemma_y = lemmas_x.get_unevaluated_lemma()
             idea_x = lemma_y.idea_x
@@ -747,7 +751,7 @@ class AgentUnit:
             and acptfact_idea._close != None
             and self._is_idea_rangeroot(idea_road=base) == False
         ):
-            raise Exception(
+            raise InvalidAgentException(
                 f"Non range-root acptfact:{base} can only be set by range-root acptfact"
             )
 
@@ -961,7 +965,7 @@ class AgentUnit:
     def _set_ideakid_if_empty(self, road: Road):
         try:
             self.get_idea_kid(road)
-        except Exception:
+        except InvalidAgentException:
             base_idea = IdeaKid(
                 _desc=get_terminus_node_from_road(road=road),
                 _walk=get_walk_from_road(road=road),
@@ -996,7 +1000,7 @@ class AgentUnit:
         temps_d = [temp_desc]
 
         if x_road == []:
-            raise Exception("Object cannot delete itself")
+            raise InvalidAgentException("Object cannot delete itself")
         temp_desc = x_road.pop(0)
         temps_d.append(temp_desc)
 
@@ -1027,7 +1031,7 @@ class AgentUnit:
     ):
         # confirm idea exists
         if self.get_idea_kid(road=old_road) is None:
-            raise Exception(f"Idea {old_road=} does not exist")
+            raise InvalidAgentException(f"Idea {old_road=} does not exist")
 
         walk = get_walk_from_road(road=old_road)
         new_road = road_validate(Road(f"{walk},{new_desc}"))
@@ -1091,7 +1095,7 @@ class AgentUnit:
         if (addin != None or numor != None or denom != None or reest != None) and len(
             anc_roads
         ) == 1:
-            raise Exception("Root Idea cannot have numor denom reest.")
+            raise InvalidAgentException("Root Idea cannot have numor denom reest.")
         parent_road = self._desc if len(anc_roads) == 1 else anc_roads[1]
 
         parent_has_range = None
@@ -1128,11 +1132,11 @@ class AgentUnit:
         )
 
         if parent_has_range and numeric_range:
-            raise Exception(
+            raise InvalidAgentException(
                 "Idea has begin-close range parent, cannot have numeric_road"
             )
         elif not parent_has_range and not numeric_range and numor != None:
-            raise Exception(
+            raise InvalidAgentException(
                 f"Idea cannot edit {numor=}/denom/reest of '{idea_road}' if parent '{parent_road}' or ideacore._numeric_road does not have begin/close range"
             )
         return begin, close
@@ -1551,14 +1555,14 @@ class AgentUnit:
 
     def get_idea_kid(self, road: Road) -> IdeaKid:
         if road is None:
-            raise Exception("get_idea_kid received road=None")
+            raise InvalidAgentException("get_idea_kid received road=None")
         nodes = road.split(",")
         src = nodes.pop(0)
         temp_idea = None
 
         if nodes == [] and src == self._idearoot._desc:
             temp_idea = self._idearoot
-            # raise Exception(f"Cannot return root '{src}'")
+            # raise InvalidAgentException(f"Cannot return root '{src}'")
         else:
             idea_desc = src if nodes == [] else nodes.pop(0)
             try:
@@ -1568,11 +1572,13 @@ class AgentUnit:
                     idea_desc = nodes.pop(0)
                     temp_idea = temp_idea._kids[idea_desc]
                 if temp_idea is None:
-                    raise Exception(
+                    raise InvalidAgentException(
                         f"Temp_idea is None {idea_desc=}. No item at '{road}'"
                     )
             except:
-                raise Exception(f"Getting {idea_desc=} failed no item at '{road}'")
+                raise InvalidAgentException(
+                    f"Getting {idea_desc=} failed no item at '{road}'"
+                )
 
         return temp_idea
 
