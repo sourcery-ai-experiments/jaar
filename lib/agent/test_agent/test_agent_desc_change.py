@@ -147,10 +147,12 @@ def test_agent_edit_idea_desc_Changes_acptfactunits():
     new_rain_road = f"{src},{new_water_text},{rain_text}"
     assert new_water_rain_acptfactunit.pick == new_rain_road
 
-    for acptfactunit_key, acptfactunit_obj in sx._idearoot._acptfactunits.items():
-        assert acptfactunit_key == new_water_road
-        assert acptfactunit_obj.base == new_water_road
-        assert acptfactunit_obj.pick == new_rain_road
+    assert sx._idearoot._acptfactunits.get(new_water_road)
+    acptfactunit_obj = sx._idearoot._acptfactunits.get(new_water_road)
+    # for acptfactunit_key, acptfactunit_obj in sx._idearoot._acptfactunits.items():
+    #     assert acptfactunit_key == new_water_road
+    assert acptfactunit_obj.base == new_water_road
+    assert acptfactunit_obj.pick == new_rain_road
 
 
 def test_agent_edit_idea_desc_ChangesIdeaRoot_special_road():
@@ -199,14 +201,14 @@ def test_agent_edit_idea_desc_ChangesIdeaKidN_special_road():
     sx.edit_idea_desc(old_road=old_water_road, new_desc=new_water_text)
 
     # THEN
-    for idea_x in sx._idearoot._kids.values():
-        print(f"{idea_x._walk=} {idea_x._desc=}")
-        idea_x.set_kids_empty_if_null()
-        for idea_y in idea_x._kids.values():
-            print(f"{idea_y._walk=} {idea_y._desc=}")
-            idea_y.set_kids_empty_if_null()
-            for idea_z in idea_y._kids.values():
-                print(f"{idea_z._walk=} {idea_z._desc=}")
+    # for idea_x in sx._idearoot._kids.values():
+    #     print(f"{idea_x._walk=} {idea_x._desc=}")
+    #     idea_x.set_kids_empty_if_null()
+    #     for idea_y in idea_x._kids.values():
+    #         print(f"{idea_y._walk=} {idea_y._desc=}")
+    #         idea_y.set_kids_empty_if_null()
+    #         for idea_z in idea_y._kids.values():
+    #             print(f"{idea_z._walk=} {idea_z._desc=}")
     assert mood_idea._special_road == new_rain_road
 
 

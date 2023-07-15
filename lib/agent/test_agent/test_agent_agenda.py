@@ -377,22 +377,27 @@ def test_agent_get_from_json_LoadsActionFromJSONCorrectly():
     a1 = get_from_json(lw_json=a1_json)
 
     # THEN
-    assert len(a1.get_idea_list()) > 0
-    idea_list = a1.get_idea_list()
-    action_true_count = 0
-    for idea in idea_list:
-        if str(type(idea)).find(".idea.IdeaKid'>") > 0:
-            assert idea._active_status in (True, False)
-        assert idea.promise in (True, False)
-        # if idea._active_status == True:
-        #     print(idea._desc)
-        if idea.promise == True:
-            action_true_count += 1
-            # if idea.promise == False:
-            #     print(f"action is false {idea._desc}")
-            # for required in idea._requiredunits.values():
-            #     assert required._status in (True, False)
-    assert action_true_count > 0
+    assert len(a1.get_idea_list()) == 253
+    print(f"{len(a1.get_idea_list())=}")
+    veg_idea = a1._idea_dict.get("TlME,casa,body care,make veggies every morning")
+    assert not veg_idea._active_status
+    assert veg_idea.promise
+
+    # idea_list = a1.get_idea_list()
+    # action_true_count = 0
+    # for idea in idea_list:
+    #     if str(type(idea)).find(".idea.IdeaKid'>") > 0:
+    #         assert idea._active_status in (True, False)
+    #     assert idea.promise in (True, False)
+    #     # if idea._active_status == True:
+    #     #     print(idea._desc)
+    #     if idea.promise == True:
+    #         action_true_count += 1
+    #         # if idea.promise == False:
+    #         #     print(f"action is false {idea._desc}")
+    #         # for required in idea._requiredunits.values():
+    #         #     assert required._status in (True, False)
+    # assert action_true_count > 0
 
     a1.set_acptfact(base="TlME,day_minute", pick="TlME,day_minute", open=0, nigh=1399)
     assert len(a1.get_agenda_items()) > 0
@@ -469,14 +474,14 @@ def test_weekdayAgendaItemsCorrectlyReturned():
 
     c_idea = a1.get_idea_kid(road=c_road)
     c_required = c_idea._requiredunits
-    for required_y in c_required.values():
-        for sufffact_y in required_y.sufffacts.values():
-            print(
-                f"Idea: {c_idea._walk},{c_idea._desc}  Required: {required_y.base} open:{sufffact_y.open} nigh:{sufffact_y.nigh} diff:{sufffact_y.nigh-sufffact_y.open}"
-            )
+    # for required_y in c_required.values():
+    #     for sufffact_y in required_y.sufffacts.values():
+    #         print(
+    #             f"Idea: {c_idea._walk},{c_idea._desc}  Required: {required_y.base} open:{sufffact_y.open} nigh:{sufffact_y.nigh} diff:{sufffact_y.nigh-sufffact_y.open}"
+    #         )
 
-    for base, count_x in a1.get_required_bases().items():
-        print(f"Requireds: {base=} Count: {count_x}")
+    # for base, count_x in a1.get_required_bases().items():
+    #     print(f"Requireds: {base=} Count: {count_x}")
 
     mon_dt = datetime(2000, 1, 3)
     tue_dt = datetime(2000, 1, 4)
@@ -646,8 +651,8 @@ def test_agent_create_agenda_item_CorrectlyCreatesAllAgentAttributes():
     a1.set_dominate_promise_idea(idea_kid=clean_kitchen_idea)
 
     # THEN
-    for idea_kid in a1._idearoot._kids.keys():
-        print(f"  {idea_kid=}")
+    # for idea_kid in a1._idearoot._kids.keys():
+    #     print(f"  {idea_kid=}")
 
     print(f"{clean_kitchen_idea.get_road()=}")
     assert a1.get_idea_kid(road=clean_kitchen_road) != None
@@ -667,12 +672,7 @@ def test_agent_create_agenda_item_CorrectlyCreatesAllAgentAttributes():
 
 
 def get_tasks_count(idea_list: list[IdeaCore]) -> int:
-    task_count = 0
-    for ideacore in idea_list:
-        if ideacore._task:
-            task_count += 1
-
-    return task_count
+    return sum(bool(ideacore._task) for ideacore in idea_list)
 
 
 def test_Issue116Resolved_correctlySetsTaskAsTrue():
@@ -691,15 +691,17 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
     # THEN
     assert len(action_idea_list) == 66
     jajatime_road = "Myagent,time,jajatime"
-    night_desc = "late_night_go_to_sleep"
-    night_idea = None
-    for idea_x in a1.get_agenda_items():
-        if idea_x._task != True:
-            print(f"{len(action_idea_list)=} {idea_x._task=} {idea_x.get_road()}")
-        if idea_x._desc == night_desc:
-            night_idea = idea_x
+    night_text = "late_night_go_to_sleep"
+    night_road = f"Myagent,D&B,{night_text}"
+    night_idea = a1._idea_dict.get(night_road)
+    # for idea_x in a1.get_agenda_items():
+    #     # if idea_x._task != True:
+    #     #     print(f"{len(action_idea_list)=} {idea_x._task=} {idea_x.get_road()}")
+    #     if idea_x._desc == night_desc:
+    #         night_idea = idea_x
+    #         print(f"{idea_x.get_road()=}")
 
-    print(f"\nIdea = '{night_desc}' and required '{jajatime_road}'")
+    print(f"\nIdea = '{night_text}' and required '{jajatime_road}'")
     acptfactheir_jajatime = night_idea._acptfactheirs.get(jajatime_road)
     print(f"\n{acptfactheir_jajatime=}")
     print(f"      {a1.get_jajatime_repeating_readable_text(open=1063998720)}")
