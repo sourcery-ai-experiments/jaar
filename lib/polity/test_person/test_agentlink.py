@@ -37,20 +37,38 @@ def test_agentlink_shop_ifAttrNoneAutoFill():
 
 
 def test_agentlink_shop_checkAllowed_link_types():
-    # GIVEN
+    # GIVEN / WHEN
     agent_text = "test1"
+    blind_trust_text = "blind_trust"
+    bond_filter_text = "bond_filter"
+    tributary_text = "tributary"
+    ignore_text = "ignore"
+
     link_types = {
-        "blind_trust": None,
-        "bond_filter": None,
-        "tributary": None,
-        "ignore": None,
+        blind_trust_text: None,
+        bond_filter_text: None,
+        tributary_text: None,
+        ignore_text: None,
     }
 
-    # WHEN/THEN
-    for link_type_x in link_types.keys():
-        print(f"{link_type_x=} assert attempted.")
-        assert agentlink_shop(agent_text, link_type_x).link_type == link_type_x
-        print(f"{link_type_x=} assert succeeded.")
+    # THEN
+    # for link_type_x in link_types:
+    #     print(f"{link_type_x=} assert attempted.")
+    #     assert agentlink_shop(agent_text, link_type_x).link_type == link_type_x
+    #     print(f"{link_type_x=} assert succeeded.")
+    # assert agentlink_shop(agent_text, link_type_x).link_type == link_type_x
+
+    agentlink_blind_trust = agentlink_shop(agent_text, blind_trust_text)
+    assert agentlink_blind_trust.link_type == blind_trust_text
+
+    agentlink_bond_filter = agentlink_shop(agent_text, bond_filter_text)
+    assert agentlink_bond_filter.link_type == bond_filter_text
+
+    agentlink_tributary = agentlink_shop(agent_text, tributary_text)
+    assert agentlink_tributary.link_type == tributary_text
+
+    agentlink_ignore = agentlink_shop(agent_text, ignore_text)
+    assert agentlink_ignore.link_type == ignore_text
 
 
 def test_agentlink_shop_raisesErrorIfByTypeIsEntered():

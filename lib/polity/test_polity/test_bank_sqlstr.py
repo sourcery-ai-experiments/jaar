@@ -57,11 +57,13 @@ def test_polity_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
         bank_conn.execute(insert_sqlstr)
 
     ledger_dict = get_ledger_dict(db_conn=e1.get_bank_conn(), payer_name=bob_text)
-    ledger_x = None
-    for value in ledger_dict.values():
-        ledger_x = value
+    # ledger_x = None
+    # for key, value in ledger_dict.items():
+    #     print(f"{key=} {value=}")
+    #     ledger_x = value
 
     # THEN
+    ledger_x = ledger_dict.get(tim_text)
     assert ledger_x.agent_name == bob_text
     assert ledger_x.ally_name == tim_text
     assert ledger_x._agent_credit == 0.9
@@ -242,15 +244,17 @@ def test_river_flow_insert_CorrectlyPopulatesTable01(
         print(f"{river_flows=}")
 
     # THEN
-    for value in river_flows.values():
-        assert value.currency_agent_name == bob_text
-        assert value.src_name == tim_text
-        assert value.dst_name == sal_text
-        assert value.currency_start == 0.2
-        assert value.currency_close == 0.5
-        assert value.flow_num == 5
-        assert value.river_tree_level == 6
-        assert value.parent_flow_num == 8
+    print(f"{river_flows.keys()=}")
+    # for value in river_flows.values():
+    flow_0 = river_flows.get(0)
+    assert flow_0.currency_agent_name == bob_text
+    assert flow_0.src_name == tim_text
+    assert flow_0.dst_name == sal_text
+    assert flow_0.currency_start == 0.2
+    assert flow_0.currency_close == 0.5
+    assert flow_0.flow_num == 5
+    assert flow_0.river_tree_level == 6
+    assert flow_0.parent_flow_num == 8
 
 
 def test_RiverLedgerUnit_Exists():
@@ -379,12 +383,26 @@ def test_get_river_tally_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     assert len(river_tallys) == 2
 
-    for value in river_tallys.values():
-        assert value.currency_name == bob_text
-        assert value.tax_name in [tom_text, sal_text]
-        assert value.tax_total in [0.2, 0.8]
-        assert value.debt in [0.411, 0.455]
-        assert round(value.tax_diff, 15) in [0.211, -0.345]
+    bob_tom_x = river_tallys.get(tom_text)
+    assert bob_tom_x.currency_name == bob_text
+    assert bob_tom_x.tax_name == tom_text
+    assert bob_tom_x.tax_total == 0.2
+    assert bob_tom_x.debt == 0.411
+    assert round(bob_tom_x.tax_diff, 15) == 0.211
+
+    bob_sal_x = river_tallys.get(sal_text)
+    assert bob_sal_x.currency_name == bob_text
+    assert bob_sal_x.tax_name == sal_text
+    assert bob_sal_x.tax_total == 0.8
+    assert bob_sal_x.debt == 0.455
+    assert round(bob_sal_x.tax_diff, 15) == -0.345
+
+    # for value in river_tallys.values():
+    #     assert value.currency_name == bob_text
+    #     assert value.tax_name in [tom_text, sal_text]
+    #     assert value.tax_total in [0.2, 0.8]
+    #     assert value.debt in [0.411, 0.455]
+    #     assert round(value.tax_diff, 15) in [0.211, -0.345]
 
 
 def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
@@ -484,14 +502,30 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     # THEN
     with e1.get_bank_conn() as bank_conn:
         river_buckets = get_river_bucket_dict(bank_conn, currency_agent_name=sal_text)
-        for river_bucket in river_buckets.values():
-            print(f"huh {river_bucket=}")
+        # for river_bucket in river_buckets.values():
+        #     print(f"huh {river_bucket=}")
 
     assert len(river_buckets) == 2
+    # for river_bucket in river_buckets:
+    #     print(f"{river_bucket=}")
 
-    for value in river_buckets.values():
-        assert value.currency_name == sal_text
-        assert value.dst_name == sal_text
-        assert value.bucket_num in [0, 1]
-        assert value.curr_start in [0.12316456150798766, 0.04401266686517654]
-        assert value.curr_close in [0.1, 1.0]
+    bucket_0 = river_buckets[0]
+    assert bucket_0.currency_name == sal_text
+    assert bucket_0.dst_name == sal_text
+    assert bucket_0.bucket_num == 0
+    assert bucket_0.curr_start == 0.04401266686517654
+    assert bucket_0.curr_close == 0.1
+
+    bucket_1 = river_buckets[1]
+    assert bucket_1.currency_name == sal_text
+    assert bucket_1.dst_name == sal_text
+    assert bucket_1.bucket_num == 1
+    assert bucket_1.curr_start == 0.12316456150798766
+    assert bucket_1.curr_close == 1.0
+
+    # for value in river_buckets.values():
+    #     assert value.currency_name == sal_text
+    #     assert value.dst_name == sal_text
+    #     assert value.bucket_num in [0, 1]
+    #     assert value.curr_start in [0.12316456150798766, 0.04401266686517654]
+    #     assert value.curr_close in [0.1, 1.0]

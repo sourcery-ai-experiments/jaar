@@ -1,6 +1,10 @@
 from dataclasses import dataclass
 
 
+class InvalidAgentLinkException(Exception):
+    pass
+
+
 @dataclass
 class AgentLink:
     agent_desc: str
@@ -9,7 +13,7 @@ class AgentLink:
 
     def set_link_type(self, link_type: str):
         if link_type not in (list(get_agentlink_types())):
-            raise Exception(
+            raise InvalidAgentLinkException(
                 f"Agentlink '{self.agent_desc}' cannot have type '{link_type}'."
             )
         self.link_type = link_type

@@ -483,18 +483,15 @@ class RequiredHeir(RequiredCore):
                 if sufffact._task == True:
                     is_single_task_true = True
 
-        self._status = False
-        self._task = None
-        if is_single_sufffact_true or (
-            self._curr_idea_active_status != None
-            and self._curr_idea_active_status == self.suff_idea_active_status
-        ):
-            self._status = True
-
-        if is_single_task_true:
-            self._task = True
-
-        if self._status == True and self._task is None:
+        self._status = bool(
+            is_single_sufffact_true
+            or (
+                self._curr_idea_active_status != None
+                and self._curr_idea_active_status == self.suff_idea_active_status
+            )
+        )
+        self._task = True if is_single_task_true else None
+        if self._status and self._task is None:
             self._task = False
 
 

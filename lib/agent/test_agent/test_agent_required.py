@@ -614,7 +614,7 @@ def test_agent_set_agent_metrics_InitiallySetsRationalAttrToFalse():
     agent_x.set_agent_metrics()
 
     # THEN
-    assert agent_x._rational == False
+    assert not agent_x._rational
 
 
 def test_agent_tree_traverses_StopWhenNoChangeInStatusIsDetected():

@@ -125,8 +125,8 @@ def test_polity_set_river_sphere_for_agent_CorrectlyPopulatesriver_tallyTable02(
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 9
     with e1.get_bank_conn() as bank_conn:
         river_flows = get_river_flow_dict(bank_conn, currency_agent_name=sal_text)
-    for river_flow in river_flows.values():
-        print(f"{river_flow=}")
+    # for river_flow in river_flows.values():
+    #     print(f"{river_flow=}")
 
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tally) == 1
 
@@ -188,8 +188,8 @@ def test_polity_set_river_sphere_for_agent_CorrectlyPopulatesriver_tallyTable03(
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 6
     with e1.get_bank_conn() as bank_conn:
         river_flows = get_river_flow_dict(bank_conn, currency_agent_name=sal_text)
-    for river_flow in river_flows.values():
-        print(f"{river_flow=}")
+    # for river_flow in river_flows.values():
+    #     print(f"{river_flow=}")
 
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tally) == 2
 
@@ -261,10 +261,10 @@ def test_polity_set_river_sphere_for_agent_CorrectlyPopulatesriver_tallyTable04(
 
     # THEN
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 40
-    with e1.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_agent_name=sal_text)
-    for river_flow in river_flows.values():
-        print(f"{river_flow=}")
+    # with e1.get_bank_conn() as bank_conn:
+    #     river_flows = get_river_flow_dict(bank_conn, currency_agent_name=sal_text)
+    # for river_flow in river_flows.values():
+    #     print(f"{river_flow=}")
 
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tally) == 2
 
@@ -337,10 +337,10 @@ def test_polity_set_river_sphere_for_agent_CorrectlyPopulatesriver_tallyTable05(
 
     # THEN
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 40
-    with e1.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_agent_name=sal_text)
-    for river_flow in river_flows.values():
-        print(f"{river_flow=}")
+    # with e1.get_bank_conn() as bank_conn:
+    #     river_flows = get_river_flow_dict(bank_conn, currency_agent_name=sal_text)
+    # for river_flow in river_flows.values():
+    #     print(f"{river_flow=}")
 
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tally) == 3
 
@@ -406,8 +406,8 @@ def test_polity_set_river_sphere_for_agent_CorrectlyDeletesPreviousRiver(
 
     with e1.get_bank_conn() as bank_conn:
         river_flows = get_river_flow_dict(bank_conn, currency_agent_name=sal_text)
-    for river_flow in river_flows.values():
-        print(f"{river_flow=}")
+    # for river_flow in river_flows.values():
+    #     print(f"{river_flow=}")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tally) == 3
 
     # WHEN
@@ -418,8 +418,8 @@ def test_polity_set_river_sphere_for_agent_CorrectlyDeletesPreviousRiver(
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 16
     with e1.get_bank_conn() as bank_conn:
         river_flows = get_river_flow_dict(bank_conn, currency_agent_name=sal_text)
-    for river_flow in river_flows.values():
-        print(f"{river_flow=}")
+    # for river_flow in river_flows.values():
+    #     print(f"{river_flow=}")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tally) == 3
 
 
@@ -478,8 +478,8 @@ def test_polity_set_river_sphere_for_agent_CorrectlyUsesMaxFlowsCount(
     # THEN
     with e1.get_bank_conn() as bank_conn:
         river_flows = get_river_flow_dict(bank_conn, currency_agent_name=sal_text)
-    for river_flow in river_flows.values():
-        print(f"{river_flow=}")
+    # for river_flow in river_flows.values():
+    #     print(f"{river_flow=}")
 
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == mtc
 
@@ -539,8 +539,8 @@ def test_polity_set_river_sphere_for_agent_CorrectlyPopulatesriver_tallyTable05(
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 40
     with e1.get_bank_conn() as bank_conn:
         river_flows = get_river_flow_dict(bank_conn, currency_agent_name=sal_text)
-    for river_flow in river_flows.values():
-        print(f"{river_flow=}")
+    # for river_flow in river_flows.values():
+    #     print(f"{river_flow=}")
 
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tally) == 3
 
@@ -710,11 +710,10 @@ def test_polity_set_river_sphere_for_agent_CorrectlyUpatesAgentAllyUnits(
 
     for allyunit_x in sal_agent_after._allys.values():
         river_tally_x = sal_river_tallys.get(allyunit_x.name)
-        if river_tally_x != None:
-            assert allyunit_x._bank_tax_paid != None
-            assert allyunit_x._bank_tax_diff != None
-        else:
+        if river_tally_x is None:
             assert allyunit_x._bank_tax_paid is None
             assert allyunit_x._bank_tax_diff is None
-
+        else:
+            assert allyunit_x._bank_tax_paid != None
+            assert allyunit_x._bank_tax_diff != None
     assert sal_agent_after != sal_agent_before

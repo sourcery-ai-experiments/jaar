@@ -105,8 +105,8 @@ def test_personunit_receive_src_agentunit_obj_SavesFileCorrectly(
 
     # THEN
     print(f"Saving to {px._person_agents_dir=}")
-    for path_x in os_scandir(px._person_agents_dir):
-        print(f"{path_x=}")
+    # for path_x in os_scandir(px._person_agents_dir):
+    #     print(f"{path_x=}")
     assert x_func_count_files(px._person_agents_dir) == 1
 
 
@@ -126,8 +126,8 @@ def test_personunit_receive_src_agentunit_file_SavesFileCorrectly(
 
     # THEN
     print(f"Saving to {px._person_agents_dir=}")
-    for path_x in os_scandir(px._person_agents_dir):
-        print(f"{path_x=}")
+    # for path_x in os_scandir(px._person_agents_dir):
+    #     print(f"{path_x=}")
     assert x_func_count_files(px._person_agents_dir) == 1
 
 
@@ -224,11 +224,11 @@ def test_personunit_refresh_agentlinks_CorrectlyPullsAllPublicAgents(
     new_steve_agent = example_persons.get_agent_3CleanNodesRandomWeights(_desc="steve")
     e1.save_agentunit_obj_to_agents_dir(agent_x=new_steve_agent)
     print(f"{env_dir=} {px._public_agents_dir=}")
-    for file_name in x_func_dir_files(dir_path=env_dir):
-        print(f"{px._public_agents_dir=} {file_name=}")
+    # for file_name in x_func_dir_files(dir_path=env_dir):
+    #     print(f"{px._public_agents_dir=} {file_name=}")
 
-    for file_name in x_func_dir_files(dir_path=px._public_agents_dir):
-        print(f"{px._public_agents_dir=} {file_name=}")
+    # for file_name in x_func_dir_files(dir_path=px._public_agents_dir):
+    #     print(f"{px._public_agents_dir=} {file_name=}")
 
     # WHEN
     px.receive_all_src_agentunit_files()
