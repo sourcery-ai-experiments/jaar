@@ -731,7 +731,7 @@ class AgentUnit:
         open: float = None,
         nigh: float = None,
         create_missing_ideas: bool = None,
-    ):
+    ):  # sourcery skip: low-code-quality
         if create_missing_ideas:
             self._set_ideakid_if_empty(road=base)
             self._set_ideakid_if_empty(road=pick)
@@ -1217,7 +1217,7 @@ class AgentUnit:
         brandlink_del: BrandName = None,
         is_expanded: bool = None,
         on_meld_weight_action: str = None,
-    ):
+    ):  # sourcery skip: low-code-quality
         if denom != None or numor != None or reest or addin != None:
             if addin is None:
                 addin = 0
@@ -1276,7 +1276,7 @@ class AgentUnit:
             problem_bool=problem_bool,
             on_meld_weight_action=on_meld_weight_action,
         )
-        if required_sufffact != None:
+        if idea_attr.required_sufffact != None:
             suffact_idea = self.get_idea_kid(road=required_sufffact)
             idea_attr.set_sufffact_range_attributes_influenced_by_sufffact_idea(
                 sufffact_open=suffact_idea._begin,
@@ -1521,6 +1521,7 @@ class AgentUnit:
         return {idea_x._desc: idea_x for idea_x in idea_list}
 
     def _set_ancestor_metrics(self, road: Road):
+        # sourcery skip: low-code-quality
         da_count = 0
         child_brandlines = None
         if road is None:
@@ -1537,7 +1538,6 @@ class AgentUnit:
             while ancestor_roads != []:
                 # youngest_untouched_idea
                 yu_idea_obj = self.get_idea_kid(road=ancestor_roads.pop(0))
-
                 yu_idea_obj.set_descendant_promise_count_zero_if_null()
                 yu_idea_obj._descendant_promise_count += da_count
                 if yu_idea_obj.is_kidless():
@@ -1576,6 +1576,7 @@ class AgentUnit:
                 brand_everyone = False
             elif brand_everyone != False and yu_idea_obj._brandheirs == {}:
                 brand_everyone = True
+
         self._idearoot._all_ally_credit = brand_everyone
         self._idearoot._all_ally_debt = brand_everyone
 
