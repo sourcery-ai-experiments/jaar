@@ -51,6 +51,39 @@ class IdeaBare:
 
 
 @dataclasses.dataclass
+class IdeaAttrHolder:
+    weight: int = None
+    uid: int = None
+    required: RequiredUnit = None
+    required_base: Road = None
+    required_sufffact: Road = None
+    required_sufffact_open: float = None
+    required_sufffact_nigh: float = None
+    required_sufffact_divisor: int = None
+    required_del_sufffact_base: Road = None
+    required_del_sufffact_need: Road = None
+    required_suff_idea_active_status: str = None
+    begin: float = None
+    close: float = None
+    addin: float = None
+    numor: float = None
+    denom: float = None
+    reest: bool = None
+    numeric_road: Road = None
+    special_road: float = None
+    promise: bool = None
+    problem_bool: bool = None
+    acptfactunit: AcptFactUnit = None
+    descendant_promise_count: int = None
+    all_ally_credit: bool = None
+    all_ally_debt: bool = None
+    brandlink: BrandLink = None
+    brandlink_del: BrandName = None
+    is_expanded: bool = None
+    on_meld_weight_action: str = None
+
+
+@dataclasses.dataclass
 class IdeaCore:
     _desc: str = None
     _uid: int = None
@@ -438,94 +471,68 @@ class IdeaCore:
                     f"Meld fail idea={self._walk},{self._desc} {attrs[0]}:{attrs[1]} with {other_idea._walk},{other_idea._desc} {attrs[0]}:{attrs[2]}"
                 )
 
-    def _set_idea_attr(
-        self,
-        weight: int,
-        uid: int,
-        required: RequiredUnit,  # delete/replace RequiredUnit
-        required_base: Road,
-        required_sufffact: Road,
-        required_sufffact_open: float,
-        required_sufffact_nigh: float,
-        required_sufffact_divisor: int,
-        required_del_sufffact_base: Road,
-        required_del_sufffact_need: Road,
-        required_suff_idea_active_status: str,
-        begin: float,
-        close: float,
-        addin: int,
-        numor: int,
-        denom: int,
-        reest: bool,
-        numeric_road: Road,
-        special_road: float,
-        descendant_promise_count: int,
-        all_ally_credit: bool,
-        all_ally_debt: bool,
-        brandlink: BrandLink,
-        brandlink_del: BrandName,
-        is_expanded: bool,
-        promise: bool,
-        problem_bool: bool,
-        on_meld_weight_action: str,
-    ):
-        if weight != None:
-            self._weight = weight
-        if uid != None:
-            self._uid = uid
-        if required != None:
-            self.set_required_unit(required=required)
-        if required_base != None and required_sufffact != None:
+    def _set_idea_attr(self, idea_attr: IdeaAttrHolder):
+        if idea_attr.weight != None:
+            self._weight = idea_attr.weight
+        if idea_attr.uid != None:
+            self._uid = idea_attr.uid
+        if idea_attr.required != None:
+            self.set_required_unit(required=idea_attr.required)
+        if idea_attr.required_base != None and idea_attr.required_sufffact != None:
             self.set_required_sufffact(
-                base=required_base,
-                sufffact=required_sufffact,
-                open=required_sufffact_open,
-                nigh=required_sufffact_nigh,
-                divisor=required_sufffact_divisor,
+                base=idea_attr.required_base,
+                sufffact=idea_attr.required_sufffact,
+                open=idea_attr.required_sufffact_open,
+                nigh=idea_attr.required_sufffact_nigh,
+                divisor=idea_attr.required_sufffact_divisor,
             )
-        if required_base != None and required_suff_idea_active_status != None:
+        if (
+            idea_attr.required_base != None
+            and idea_attr.required_suff_idea_active_status != None
+        ):
             self.set_required_suff_idea_active_status(
-                base=required_base,
-                suff_idea_active_status=required_suff_idea_active_status,
+                base=idea_attr.required_base,
+                suff_idea_active_status=idea_attr.required_suff_idea_active_status,
             )
-        if begin != None:
-            self._begin = begin
-        if close != None:
-            self._close = close
-        if addin != None:
-            self._addin = addin
-        if numor != None:
-            self._numor = numor
-        if denom != None:
-            self._denom = denom
-        if reest != None:
-            self._reest = reest
-        if numeric_road != None:
-            self._numeric_road = numeric_road
-        if special_road != None:
-            self._special_road = special_road
-        if descendant_promise_count != None:
-            self._descendant_promise_count = descendant_promise_count
-        if all_ally_credit != None:
-            self._all_ally_credit = all_ally_credit
-        if all_ally_debt != None:
-            self._all_ally_debt = all_ally_debt
-        if brandlink != None:
-            self.set_brandlink(brandlink=brandlink)
-        if brandlink_del != None:
-            self.del_brandlink(brandname=brandlink_del)
-        if is_expanded != None:
-            self._is_expanded = is_expanded
-        if promise != None:
-            self.promise = promise
-        if problem_bool != None:
-            self._problem_bool = problem_bool
-        if on_meld_weight_action != None:
-            self._check_get_on_meld_weight_actions(on_meld_weight_action)
-            self._on_meld_weight_action = on_meld_weight_action
+        if idea_attr.begin != None:
+            self._begin = idea_attr.begin
+        if idea_attr.close != None:
+            self._close = idea_attr.close
+        if idea_attr.addin != None:
+            self._addin = idea_attr.addin
+        if idea_attr.numor != None:
+            self._numor = idea_attr.numor
+        if idea_attr.denom != None:
+            self._denom = idea_attr.denom
+        if idea_attr.reest != None:
+            self._reest = idea_attr.reest
+        if idea_attr.numeric_road != None:
+            self._numeric_road = idea_attr.numeric_road
+        if idea_attr.special_road != None:
+            self._special_road = idea_attr.special_road
+        if idea_attr.descendant_promise_count != None:
+            self._descendant_promise_count = idea_attr.descendant_promise_count
+        if idea_attr.all_ally_credit != None:
+            self._all_ally_credit = idea_attr.all_ally_credit
+        if idea_attr.all_ally_debt != None:
+            self._all_ally_debt = idea_attr.all_ally_debt
+        if idea_attr.brandlink != None:
+            self.set_brandlink(brandlink=idea_attr.brandlink)
+        if idea_attr.brandlink_del != None:
+            self.del_brandlink(brandname=idea_attr.brandlink_del)
+        if idea_attr.is_expanded != None:
+            self._is_expanded = idea_attr.is_expanded
+        if idea_attr.promise != None:
+            self.promise = idea_attr.promise
+        if idea_attr.problem_bool != None:
+            self._problem_bool = idea_attr.problem_bool
+        if idea_attr.on_meld_weight_action != None:
+            self._check_get_on_meld_weight_actions(idea_attr.on_meld_weight_action)
+            self._on_meld_weight_action = idea_attr.on_meld_weight_action
 
         self._del_requiredunit_all_cases(
-            base=required_del_sufffact_base, sufffact=required_del_sufffact_need
+            base=idea_attr.required_del_sufffact_base,
+            sufffact=idea_attr.required_del_sufffact_need,
         )
         self._set_addin_to_zero_if_any_transformations_exist()
 

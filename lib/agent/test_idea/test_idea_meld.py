@@ -1,4 +1,4 @@
-from lib.agent.idea import IdeaCore
+from lib.agent.idea import IdeaCore, IdeaAttrHolder
 from lib.agent.brand import BrandLink, BrandName, brandlink_shop
 from lib.agent.required import RequiredUnit, acptfactunit_shop as c_acptfactunit, Road
 from pytest import raises as pytest_raises
@@ -35,7 +35,7 @@ def custom_set_idea_attr(
     problem_bool: bool = None,
     on_meld_weight_action: str = None,
 ):
-    idea._set_idea_attr(
+    idea_attr = IdeaAttrHolder(
         weight=weight,
         uid=uid,
         required=required,
@@ -65,6 +65,8 @@ def custom_set_idea_attr(
         problem_bool=problem_bool,
         on_meld_weight_action=on_meld_weight_action,
     )
+
+    idea._set_idea_attr(idea_attr=idea_attr)
 
 
 def test_idea_required_meld_BaseScenarioWorks():

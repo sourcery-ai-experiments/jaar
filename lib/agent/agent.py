@@ -34,7 +34,7 @@ from lib.agent.required import (
 )
 from lib.agent.tree_metrics import TreeMetrics
 from lib.agent.x_func import x_get_json
-from lib.agent.idea import IdeaCore, IdeaKid, IdeaRoot
+from lib.agent.idea import IdeaCore, IdeaKid, IdeaRoot, IdeaAttrHolder
 from lib.agent.hreg_time import (
     _get_time_hreg_src_idea,
     get_time_min_from_dt as hreg_get_time_min_from_dt,
@@ -1267,7 +1267,7 @@ class AgentUnit:
         )
 
         temp_idea = self.get_idea_kid(road=road)
-        temp_idea._set_idea_attr(
+        idea_attr = IdeaAttrHolder(
             weight=weight,
             uid=uid,
             required=required,
@@ -1297,6 +1297,7 @@ class AgentUnit:
             problem_bool=problem_bool,
             on_meld_weight_action=on_meld_weight_action,
         )
+        temp_idea._set_idea_attr(idea_attr=idea_attr)
         if f"{type(temp_idea)}".find("'.idea.IdeaRoot'>") <= 0:
             temp_idea._set_ideakid_attr(acptfactunit=acptfactunit)
 
