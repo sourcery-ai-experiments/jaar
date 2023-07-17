@@ -100,26 +100,30 @@ def test_agent_get_idea_list_CorrectlySetsAllyLinkAgentCreditAndDebt():
     a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(rico_text)))
     a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(carm_text)))
     a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(patr_text)))
-    a_x._idearoot.set_brandlink(
-        brandlink=brandlink_shop(
-            name=BrandName(rico_text), creditor_weight=20, debtor_weight=40
-        )
-    )
-    a_x._idearoot.set_brandlink(
-        brandlink=brandlink_shop(
-            name=BrandName(carm_text), creditor_weight=10, debtor_weight=5
-        )
-    )
-    a_x._idearoot.set_brandlink(
-        brandlink=brandlink_shop(
-            name=BrandName(patr_text), creditor_weight=10, debtor_weight=5
-        )
-    )
+    bl_rico = brandlink_shop(name=rico_text, creditor_weight=20, debtor_weight=40)
+    bl_carm = brandlink_shop(name=carm_text, creditor_weight=10, debtor_weight=5)
+    bl_patr = brandlink_shop(name=patr_text, creditor_weight=10, debtor_weight=5)
+    a_x._idearoot.set_brandlink(brandlink=bl_rico)
+    a_x._idearoot.set_brandlink(brandlink=bl_carm)
+    a_x._idearoot.set_brandlink(brandlink=bl_patr)
 
-    for brand in a_x._brands.values():
-        for allylink in brand._allys.values():
-            assert allylink._agent_credit is None
-            assert allylink._agent_debt is None
+    rico_brandunit = a_x._brands.get(rico_text)
+    carm_brandunit = a_x._brands.get(carm_text)
+    patr_brandunit = a_x._brands.get(patr_text)
+    rico_allylink = rico_brandunit._allys.get(rico_text)
+    carm_allylink = carm_brandunit._allys.get(carm_text)
+    patr_allylink = patr_brandunit._allys.get(patr_text)
+    rico_allylink._agent_credit is None
+    rico_allylink._agent_debt is None
+    carm_allylink._agent_credit is None
+    carm_allylink._agent_debt is None
+    patr_allylink._agent_credit is None
+    patr_allylink._agent_debt is None
+
+    # for brand in a_x._brands.values():
+    #     for allylink in brand._allys.values():
+    #         assert allylink._agent_credit is None
+    #         assert allylink._agent_debt is None
 
     a_x.set_agent_metrics()
 
@@ -128,58 +132,112 @@ def test_agent_get_idea_list_CorrectlySetsAllyLinkAgentCreditAndDebt():
     #         f"{a_x._agent_importance=} {brandlink.name=} {brandlink._agent_credit=} {brandlink._agent_debt=}"
     #     )
 
-    allylink_agent_credit_sum = 0.0
-    allylink_agent_debt_sum = 0.0
-    for brand in a_x._brands.values():
-        # print(f"{brand.name=} {brand._allys=}")
+    assert rico_allylink._agent_credit == 0.5
+    assert rico_allylink._agent_debt == 0.8
+    assert carm_allylink._agent_credit == 0.25
+    assert carm_allylink._agent_debt == 0.1
+    assert patr_allylink._agent_credit == 0.25
+    assert patr_allylink._agent_debt == 0.1
 
-        for allylink in brand._allys.values():
-            assert allylink._agent_credit != None
-            assert allylink._agent_credit in [0.25, 0.5]
-            assert allylink._agent_debt != None
-            assert allylink._agent_debt in [0.8, 0.1]
-            # print(
-            #     f"{brand.name=} {allylink._agent_importance=} {brand._agent_importance=}"
-            # )
-            allylink_agent_credit_sum += allylink._agent_credit
-            allylink_agent_debt_sum += allylink._agent_debt
+    # allylink_agent_credit_sum = 0.0
+    # allylink_agent_debt_sum = 0.0
+    # for brand in a_x._brands.values():
+    #     # print(f"{brand.name=} {brand._allys=}")
 
-            # print(f"{allylink_agent_importance_sum=}")
+    #     for allylink in brand._allys.values():
+    #         assert allylink._agent_credit != None
+    #         assert allylink._agent_credit in [0.25, 0.5]
+    #         assert allylink._agent_debt != None
+    #         assert allylink._agent_debt in [0.8, 0.1]
+    #         # print(
+    #         #     f"{brand.name=} {allylink._agent_importance=} {brand._agent_importance=}"
+    #         # )
+    #         allylink_agent_credit_sum += allylink._agent_credit
+    #         allylink_agent_debt_sum += allylink._agent_debt
 
-    assert allylink_agent_credit_sum == 1.0
-    assert allylink_agent_debt_sum == 1.0
+    #         # print(f"{allylink_agent_importance_sum=}")
+    # assert allylink_agent_credit_sum == 1.0
+    # assert allylink_agent_debt_sum == 1.0
+
+    assert (
+        rico_allylink._agent_credit
+        + carm_allylink._agent_credit
+        + patr_allylink._agent_credit
+        == 1.0
+    )
+    assert (
+        rico_allylink._agent_debt
+        + carm_allylink._agent_debt
+        + patr_allylink._agent_debt
+        == 1.0
+    )
 
     # WHEN another action, make sure metrics are as expected
-    a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName("selena")))
+    selena_text = "selena"
+    a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(selena_text)))
     a_x._idearoot.set_brandlink(
         brandlink=brandlink_shop(
-            name=BrandName("selena"), creditor_weight=20, debtor_weight=13
+            name=BrandName(selena_text), creditor_weight=20, debtor_weight=13
         )
     )
     a_x.set_agent_metrics()
 
     # THEN
-    allylink_agent_credit_sum = 0.0
-    allylink_agent_debt_sum = 0.0
-    for brand in a_x._brands.values():
-        # print(f"{brand.name=} {brand._allys=}")
+    selena_brandunit = a_x._brands.get(selena_text)
+    selena_allylink = selena_brandunit._allys.get(selena_text)
 
-        for allylink in brand._allys.values():
-            assert allylink._agent_credit != None
-            assert allylink._agent_credit not in [0.25, 0.5]
-            assert allylink._agent_debt != None
-            assert allylink._agent_debt not in [0.8, 0.1]
-            # print(
-            #     f"{brand.name=} {allylink._agent_importance=} {brand._agent_importance=}"
-            # )
-            allylink_agent_credit_sum += allylink._agent_credit
-            allylink_agent_debt_sum += allylink._agent_debt
+    assert rico_allylink._agent_credit != 0.25
+    assert rico_allylink._agent_debt != 0.8
+    assert carm_allylink._agent_credit != 0.25
+    assert carm_allylink._agent_debt != 0.1
+    assert patr_allylink._agent_credit != 0.5
+    assert patr_allylink._agent_debt != 0.1
+    assert selena_allylink._agent_credit != None
+    assert selena_allylink._agent_debt != None
 
-            # print(f"{allylink_agent_importance_sum=}")
+    # allylink_agent_credit_sum = 0.0
+    # allylink_agent_debt_sum = 0.0
 
-    assert allylink_agent_credit_sum == 1.0
-    assert allylink_agent_debt_sum > 0.9999999
-    assert allylink_agent_debt_sum < 1.00000001
+    # for brand in a_x._brands.values():
+    #     # print(f"{brand.name=} {brand._allys=}")
+
+    #     for allylink in brand._allys.values():
+    #         assert allylink._agent_credit != None
+    #         assert allylink._agent_credit not in [0.25, 0.5]
+    #         assert allylink._agent_debt != None
+    #         assert allylink._agent_debt not in [0.8, 0.1]
+    #         # print(
+    #         #     f"{brand.name=} {allylink._agent_importance=} {brand._agent_importance=}"
+    #         # )
+    #         allylink_agent_credit_sum += allylink._agent_credit
+    #         allylink_agent_debt_sum += allylink._agent_debt
+
+    #         # print(f"{allylink_agent_importance_sum=}")
+    # assert allylink_agent_credit_sum == 1.0
+    # assert allylink_agent_debt_sum > 0.9999999
+    # assert allylink_agent_debt_sum < 1.00000001
+
+    assert (
+        rico_allylink._agent_credit
+        + carm_allylink._agent_credit
+        + patr_allylink._agent_credit
+        + selena_allylink._agent_credit
+        == 1.0
+    )
+    assert (
+        rico_allylink._agent_debt
+        + carm_allylink._agent_debt
+        + patr_allylink._agent_debt
+        + selena_allylink._agent_debt
+        > 0.9999999
+    )
+    assert (
+        rico_allylink._agent_debt
+        + carm_allylink._agent_debt
+        + patr_allylink._agent_debt
+        + selena_allylink._agent_debt
+        < 1.0
+    )
 
 
 def test_agent_get_idea_list_CorrectlySetsAllyUnitAgentImportance():
@@ -194,22 +252,23 @@ def test_agent_get_idea_list_CorrectlySetsAllyUnitAgentImportance():
     a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(rico_text)))
     a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(carm_text)))
     a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(patr_text)))
-    bl_rico = brandlink_shop(
-        name=BrandName(rico_text), creditor_weight=20, debtor_weight=40
-    )
-    bl_carm = brandlink_shop(
-        name=BrandName(carm_text), creditor_weight=10, debtor_weight=5
-    )
-    bl_patr = brandlink_shop(
-        name=BrandName(patr_text), creditor_weight=10, debtor_weight=5
-    )
+    bl_rico = brandlink_shop(name=rico_text, creditor_weight=20, debtor_weight=40)
+    bl_carm = brandlink_shop(name=carm_text, creditor_weight=10, debtor_weight=5)
+    bl_patr = brandlink_shop(name=patr_text, creditor_weight=10, debtor_weight=5)
     a_x._idearoot._kids[swim_text].set_brandlink(brandlink=bl_rico)
     a_x._idearoot._kids[swim_text].set_brandlink(brandlink=bl_carm)
     a_x._idearoot._kids[swim_text].set_brandlink(brandlink=bl_patr)
 
-    for allyunit in a_x._allys.values():
-        assert allyunit._agent_credit is None
-        assert allyunit._agent_debt is None
+    rico_allyunit = a_x._allys.get(rico_text)
+    carm_allyunit = a_x._allys.get(carm_text)
+    patr_allyunit = a_x._allys.get(patr_text)
+
+    assert rico_allyunit._agent_credit is None
+    assert rico_allyunit._agent_debt is None
+    assert carm_allyunit._agent_credit is None
+    assert carm_allyunit._agent_debt is None
+    assert patr_allyunit._agent_credit is None
+    assert patr_allyunit._agent_debt is None
 
     # WHEN
     a_x.set_agent_metrics()
@@ -218,54 +277,111 @@ def test_agent_get_idea_list_CorrectlySetsAllyUnitAgentImportance():
     allyunit_agent_credit_sum = 0.0
     allyunit_agent_debt_sum = 0.0
 
-    for allyunit in a_x._allys.values():
-        assert allyunit._agent_credit != None
-        assert allyunit._agent_credit in [0.25, 0.5]
-        assert allyunit._agent_debt != None
-        assert allyunit._agent_debt in [0.8, 0.1]
-        # print(
-        #     f"{brand.name=} {allyunit._agent_creditor=} {brand._agent_creditor=}"
-        # )
-        print(f"{allyunit.name=} {allyunit._agent_credit=} {allyunit._agent_debt=} ")
-        # print(f"{allyunit_agent_credit_sum=}")
-        # print(f"{allyunit_agent_debt_sum=}")
-        allyunit_agent_credit_sum += allyunit._agent_credit
-        allyunit_agent_debt_sum += allyunit._agent_debt
+    assert rico_allyunit._agent_credit == 0.5
+    assert rico_allyunit._agent_debt == 0.8
+    assert carm_allyunit._agent_credit == 0.25
+    assert carm_allyunit._agent_debt == 0.1
+    assert patr_allyunit._agent_credit == 0.25
+    assert patr_allyunit._agent_debt == 0.1
 
-    assert allyunit_agent_credit_sum == 1.0
-    assert allyunit_agent_debt_sum > 0.9999999
-    assert allyunit_agent_debt_sum < 1.00000001
+    assert (
+        rico_allyunit._agent_credit
+        + carm_allyunit._agent_credit
+        + patr_allyunit._agent_credit
+        == 1.0
+    )
+    assert (
+        rico_allyunit._agent_debt
+        + carm_allyunit._agent_debt
+        + patr_allyunit._agent_debt
+        == 1.0
+    )
+
+    # for allyunit in a_x._allys.values():
+    #     assert allyunit._agent_credit != None
+    #     assert allyunit._agent_credit in [0.25, 0.5]
+    #     assert allyunit._agent_debt != None
+    #     assert allyunit._agent_debt in [0.8, 0.1]
+    #     # print(
+    #     #     f"{brand.name=} {allyunit._agent_creditor=} {brand._agent_creditor=}"
+    #     # )
+    #     print(f"{allyunit.name=} {allyunit._agent_credit=} {allyunit._agent_debt=} ")
+    #     # print(f"{allyunit_agent_credit_sum=}")
+    #     # print(f"{allyunit_agent_debt_sum=}")
+    #     allyunit_agent_credit_sum += allyunit._agent_credit
+    #     allyunit_agent_debt_sum += allyunit._agent_debt
+
+    # assert allyunit_agent_credit_sum == 1.0
+    # assert allyunit_agent_debt_sum > 0.9999999
+    # assert allyunit_agent_debt_sum < 1.00000001
 
     # WHEN another action, make sure metrics are as expected
-    a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName("selena")))
+    selena_text = "selena"
+    a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(selena_text)))
     a_x._idearoot.set_brandlink(
-        brandlink=brandlink_shop(
-            name=BrandName("selena"), creditor_weight=20, debtor_weight=10
-        )
+        brandlink=brandlink_shop(name=selena_text, creditor_weight=20, debtor_weight=10)
     )
     a_x.set_agent_metrics()
 
     # THEN
-    allyunit_agent_credit_sum = 0.0
-    allyunit_agent_debt_sum = 0.0
+    selena_allyunit = a_x._allys.get(selena_text)
 
-    for allyunit in a_x._allys.values():
-        assert allyunit._agent_credit != None
-        assert allyunit._agent_credit not in [0.25, 0.5]
-        assert allyunit._agent_debt != None
-        assert allyunit._agent_debt not in [0.8, 0.1]
-        # print(
-        #     f"{brand.name=} {allyunit._agent_creditor=} {brand._agent_creditor=}"
-        # )
-        print(f"{allyunit.name=} {allyunit._agent_credit=} {allyunit._agent_debt=} ")
-        # print(f"{allyunit_agent_credit_sum=}")
-        # print(f"{allyunit_agent_debt_sum=}")
-        allyunit_agent_credit_sum += allyunit._agent_credit
-        allyunit_agent_debt_sum += allyunit._agent_debt
+    assert rico_allyunit._agent_credit != 0.5
+    assert rico_allyunit._agent_debt != 0.8
+    assert carm_allyunit._agent_credit != 0.25
+    assert carm_allyunit._agent_debt != 0.1
+    assert patr_allyunit._agent_credit != 0.25
+    assert patr_allyunit._agent_debt != 0.1
+    assert selena_allyunit._agent_credit != None
+    assert selena_allyunit._agent_debt != None
 
-    assert allyunit_agent_credit_sum == 1.0
-    assert allyunit_agent_debt_sum > 0.9999999
-    assert allyunit_agent_debt_sum < 1.00000001
+    assert (
+        rico_allyunit._agent_credit
+        + carm_allyunit._agent_credit
+        + patr_allyunit._agent_credit
+        < 1.0
+    )
+    assert (
+        rico_allyunit._agent_credit
+        + carm_allyunit._agent_credit
+        + patr_allyunit._agent_credit
+        + selena_allyunit._agent_credit
+        == 1.0
+    )
+    assert (
+        rico_allyunit._agent_debt
+        + carm_allyunit._agent_debt
+        + patr_allyunit._agent_debt
+        < 1.0
+    )
+    assert (
+        rico_allyunit._agent_debt
+        + carm_allyunit._agent_debt
+        + patr_allyunit._agent_debt
+        + selena_allyunit._agent_debt
+        == 1.0
+    )
+
+    # allyunit_agent_credit_sum = 0.0
+    # allyunit_agent_debt_sum = 0.0
+
+    # for allyunit in a_x._allys.values():
+    #     assert allyunit._agent_credit != None
+    #     assert allyunit._agent_credit not in [0.25, 0.5]
+    #     assert allyunit._agent_debt != None
+    #     assert allyunit._agent_debt not in [0.8, 0.1]
+    #     # print(
+    #     #     f"{brand.name=} {allyunit._agent_creditor=} {brand._agent_creditor=}"
+    #     # )
+    #     print(f"{allyunit.name=} {allyunit._agent_credit=} {allyunit._agent_debt=} ")
+    #     # print(f"{allyunit_agent_credit_sum=}")
+    #     # print(f"{allyunit_agent_debt_sum=}")
+    #     allyunit_agent_credit_sum += allyunit._agent_credit
+    #     allyunit_agent_debt_sum += allyunit._agent_debt
+
+    # assert allyunit_agent_credit_sum == 1.0
+    # assert allyunit_agent_debt_sum > 0.9999999
+    # assert allyunit_agent_debt_sum < 1.00000001
 
 
 def test_agent_get_idea_list_CorrectlySetsPartBrandedLWAllyUnitAgentImportance():
@@ -280,15 +396,9 @@ def test_agent_get_idea_list_CorrectlySetsPartBrandedLWAllyUnitAgentImportance()
     a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(rico_text)))
     a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(carm_text)))
     a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(patr_text)))
-    bl_rico = brandlink_shop(
-        name=BrandName(rico_text), creditor_weight=20, debtor_weight=40
-    )
-    bl_carm = brandlink_shop(
-        name=BrandName(carm_text), creditor_weight=10, debtor_weight=5
-    )
-    bl_patr = brandlink_shop(
-        name=BrandName(patr_text), creditor_weight=10, debtor_weight=5
-    )
+    bl_rico = brandlink_shop(name=rico_text, creditor_weight=20, debtor_weight=40)
+    bl_carm = brandlink_shop(name=carm_text, creditor_weight=10, debtor_weight=5)
+    bl_patr = brandlink_shop(name=patr_text, creditor_weight=10, debtor_weight=5)
     a_x._idearoot._kids[swim_text].set_brandlink(brandlink=bl_rico)
     a_x._idearoot._kids[swim_text].set_brandlink(brandlink=bl_carm)
     a_x._idearoot._kids[swim_text].set_brandlink(brandlink=bl_patr)
@@ -303,45 +413,88 @@ def test_agent_get_idea_list_CorrectlySetsPartBrandedLWAllyUnitAgentImportance()
     a_x.set_agent_metrics()
 
     # THEN
-    brandunit_agent_credit_sum = 0.0
-    brandunit_agent_debt_sum = 0.0
+    rico_brandunit = a_x._brands.get(rico_text)
+    carm_brandunit = a_x._brands.get(carm_text)
+    patr_brandunit = a_x._brands.get(patr_text)
+    assert rico_brandunit._agent_credit != 0.5
+    assert rico_brandunit._agent_debt != 0.8
+    assert carm_brandunit._agent_credit != 0.25
+    assert carm_brandunit._agent_debt != 0.1
+    assert patr_brandunit._agent_credit != 0.25
+    assert patr_brandunit._agent_debt != 0.1
+    assert (
+        rico_brandunit._agent_credit
+        + carm_brandunit._agent_credit
+        + patr_brandunit._agent_credit
+        == 0.25
+    )
+    assert (
+        rico_brandunit._agent_debt
+        + carm_brandunit._agent_debt
+        + patr_brandunit._agent_debt
+        == 0.25
+    )
 
-    for brandunit in a_x._brands.values():
-        assert brandunit._agent_credit != None
-        assert brandunit._agent_credit not in [0.25, 0.5]
-        assert brandunit._agent_debt != None
-        assert brandunit._agent_debt not in [0.8, 0.1]
-        # print(
-        #     f"{brand.name=} {brandunit._agent_creditor=} {brand._agent_creditor=}"
-        # )
-        print(f"{brandunit.name=} {brandunit._agent_credit=} {brandunit._agent_debt=} ")
-        # print(f"{brandunit_agent_credit_sum=}")
-        # print(f"{brandunit_agent_debt_sum=}")
-        brandunit_agent_credit_sum += brandunit._agent_credit
-        brandunit_agent_debt_sum += brandunit._agent_debt
+    # brandunit_agent_credit_sum = 0.0
+    # brandunit_agent_debt_sum = 0.0
+    # for brandunit in a_x._brands.values():
+    #     assert brandunit._agent_credit != None
+    #     assert brandunit._agent_credit not in [0.25, 0.5]
+    #     assert brandunit._agent_debt != None
+    #     assert brandunit._agent_debt not in [0.8, 0.1]
+    #     # print(
+    #     #     f"{brand.name=} {brandunit._agent_creditor=} {brand._agent_creditor=}"
+    #     # )
+    #     print(f"{brandunit.name=} {brandunit._agent_credit=} {brandunit._agent_debt=} ")
+    #     # print(f"{brandunit_agent_credit_sum=}")
+    #     # print(f"{brandunit_agent_debt_sum=}")
+    #     brandunit_agent_credit_sum += brandunit._agent_credit
+    #     brandunit_agent_debt_sum += brandunit._agent_debt
+    # assert brandunit_agent_credit_sum == 0.25
+    # assert brandunit_agent_debt_sum == 0.25
 
-    assert brandunit_agent_credit_sum == 0.25
-    assert brandunit_agent_debt_sum == 0.25
+    rico_allyunit = a_x._allys.get(rico_text)
+    carm_allyunit = a_x._allys.get(carm_text)
+    patr_allyunit = a_x._allys.get(patr_text)
 
-    allyunit_agent_credit_sum = 0.0
-    allyunit_agent_debt_sum = 0.0
-    for allyunit in a_x._allys.values():
-        assert allyunit._agent_credit != None
-        assert allyunit._agent_credit not in [0.25, 0.5]
-        assert allyunit._agent_debt != None
-        assert allyunit._agent_debt not in [0.8, 0.1]
-        # print(
-        #     f"{brand.name=} {allyunit._agent_creditor=} {brand._agent_creditor=}"
-        # )
-        print(f"{allyunit.name=} {allyunit._agent_credit=} {allyunit._agent_debt=} ")
-        # print(f"{allyunit_agent_credit_sum=}")
-        # print(f"{allyunit_agent_debt_sum=}")
-        allyunit_agent_credit_sum += allyunit._agent_credit
-        allyunit_agent_debt_sum += allyunit._agent_debt
+    assert rico_allyunit._agent_credit == 0.375
+    assert rico_allyunit._agent_debt == 0.45
+    assert carm_allyunit._agent_credit == 0.3125
+    assert carm_allyunit._agent_debt == 0.275
+    assert patr_allyunit._agent_credit == 0.3125
+    assert patr_allyunit._agent_debt == 0.275
 
-    assert allyunit_agent_credit_sum == 1.0
-    assert allyunit_agent_debt_sum > 0.9999999
-    assert allyunit_agent_debt_sum < 1.00000001
+    assert (
+        rico_allyunit._agent_credit
+        + carm_allyunit._agent_credit
+        + patr_allyunit._agent_credit
+        == 1.0
+    )
+    assert (
+        rico_allyunit._agent_debt
+        + carm_allyunit._agent_debt
+        + patr_allyunit._agent_debt
+        == 1.0
+    )
+
+    # allyunit_agent_credit_sum = 0.0
+    # allyunit_agent_debt_sum = 0.0
+    # for allyunit in a_x._allys.values():
+    #     assert allyunit._agent_credit != None
+    #     assert allyunit._agent_credit not in [0.25, 0.5]
+    #     assert allyunit._agent_debt != None
+    #     assert allyunit._agent_debt not in [0.8, 0.1]
+    #     # print(
+    #     #     f"{brand.name=} {allyunit._agent_creditor=} {brand._agent_creditor=}"
+    #     # )
+    #     print(f"{allyunit.name=} {allyunit._agent_credit=} {allyunit._agent_debt=} ")
+    #     # print(f"{allyunit_agent_credit_sum=}")
+    #     # print(f"{allyunit_agent_debt_sum=}")
+    #     allyunit_agent_credit_sum += allyunit._agent_credit
+    #     allyunit_agent_debt_sum += allyunit._agent_debt
+    # assert allyunit_agent_credit_sum == 1.0
+    # assert allyunit_agent_debt_sum > 0.9999999
+    # assert allyunit_agent_debt_sum < 1.00000001
 
 
 def test_agent_get_idea_list_WithAllAllysWeighted():

@@ -106,5 +106,3 @@ def test_sufffactstatusfinder_correctlyReturnsActiveStatus_Scenario02():
 #     # THEN
 #     assert segr_obj._active_status
 #     assert segr_obj._task_status
-
-#     assert 1 == 2

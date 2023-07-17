@@ -575,8 +575,6 @@ def test_exammple_idea_list_Every6WeeksRequired():
     # print(f"{idea._requiredunits=}")
     assert clean_sheet_idea._active_status == False
 
-    assert 1 == 2
-
     # for idea in idea_list:
     #     # print(f"{idea._walk=}")
     #     if idea._desc == "clean sheets couch blankets":
@@ -658,16 +656,16 @@ def test_exammple_idea_list_EveryIdeaHasSatiateStatus():
     # print(f"{first_idea_kid_true_count=}")
     # print(f"{first_idea_kid_false_count=}")
 
-    idea_sum_count = sum(idea._active_status for idea in idea_list)
-    assert idea_sum_count == len(idea_list)
-
     # idea_kid_count = 0
-    # for idea in idea_list:
+    # for idea in idea_list_without_idearoot:
     #     idea_kid_count += 1
     #     print(f"{idea._desc=} {idea_kid_count=}")
     #     assert idea._active_status != None
     #     assert idea._active_status in (True, False)
-    # assert idea_kid_count == len(idea_list) - 1
+    # assert idea_kid_count == len(idea_list_without_idearoot)
+
+    assert len(idea_list) - 1 == sum(idea._active_status != None for idea in idea_list)
+    assert 1 == sum(idea._active_status is None for idea in idea_list)
 
 
 def test_exammple_idea_list_EveryOtherMonthWorks():

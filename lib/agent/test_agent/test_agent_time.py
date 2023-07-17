@@ -300,7 +300,6 @@ def test_get_time_():
 # assert work_idea._requiredunits[weekday_road] != None
 # assert work_idea._requiredunits[weekday_road] == work_wk_required
 
-# assert 1 == 2
 # g_lw = examples.get_agent_gregorian_years()
 
 

@@ -245,9 +245,28 @@ def test_TreeTraverseSetsBrandlineestorFromRootCorrectly():
     print(f"{sandy_brandline._agent_credit=} {root_idea._agent_importance=} ")
     print(f"  {sandy_brandline._agent_debt=} {root_idea._agent_importance=} ")
     sum_x = 0
-    for kid_idea in root_idea._kids.values():
-        sum_x += kid_idea._agent_importance
-        print(f"  {kid_idea._agent_importance=} {sum_x=} {kid_idea._desc=}")
+    cat_road = "src,feed cat"
+    cat_idea = a_x.get_idea_kid(cat_road)
+    week_road = "src,weekdays"
+    week_idea = a_x.get_idea_kid(week_road)
+    work_road = "src,work"
+    work_idea = a_x.get_idea_kid(work_road)
+    nation_road = "src,nation-state"
+    nation_idea = a_x.get_idea_kid(nation_road)
+    sum_x = cat_idea._agent_importance
+    print(f"{cat_idea._agent_importance=} {sum_x} ")
+    sum_x += week_idea._agent_importance
+    print(f"{week_idea._agent_importance=} {sum_x} ")
+    sum_x += work_idea._agent_importance
+    print(f"{work_idea._agent_importance=} {sum_x} ")
+    sum_x += nation_idea._agent_importance
+    print(f"{nation_idea._agent_importance=} {sum_x} ")
+    assert sum_x >= 1.0
+    assert sum_x < 1.00000000001
+
+    # for kid_idea in root_idea._kids.values():
+    #     sum_x += kid_idea._agent_importance
+    #     print(f"  {kid_idea._agent_importance=} {sum_x=} {kid_idea.get_road()=}")
     assert round(sandy_brandline._agent_credit, 15) == 1
     assert round(sandy_brandline._agent_debt, 15) == 1
     x_brandline = Brandline(
@@ -340,8 +359,8 @@ def test_agent_get_orderd_node_list_WorksCorrectly():
     lw_x = example_agents_get_agent_with_4_levels()
     assert lw_x.get_idea_tree_ordered_road_list()
     ordered_node_list = lw_x.get_idea_tree_ordered_road_list()
-    for node in ordered_node_list:
-        print(f"{node}")
+    # for node in ordered_node_list:
+    #     print(f"{node}")
     assert len(ordered_node_list) == 17
     assert lw_x.get_idea_tree_ordered_road_list()[0] == "src"
     assert lw_x.get_idea_tree_ordered_road_list()[8] == "src,weekdays"
@@ -368,8 +387,8 @@ def test_agent_get_heir_road_list_returnsCorrectList():
     weekdays = "src,weekdays"
     assert lw_x.get_heir_road_list(src_road=weekdays)
     heir_node_road_list = lw_x.get_heir_road_list(src_road=weekdays)
-    for node in heir_node_road_list:
-        print(f"{node}")
+    # for node in heir_node_road_list:
+    #     print(f"{node}")
     assert len(heir_node_road_list) == 8
     assert heir_node_road_list[0] == weekdays
     assert heir_node_road_list[3] == f"{weekdays},Saturday"
@@ -438,5 +457,3 @@ def test_agent_get_heir_road_list_returnsCorrectList():
 #     )
 #     gen_sandy_list = gen_sandy.get_idea_list()
 #     assert len(gen_sandy_list) == 5
-
-#     assert 1 == 2
