@@ -326,9 +326,13 @@ def test_agent_get_idea_list_without_root_CorrectlyCalculatesIdeaAttributes():
     agent_x = get_agent_with7amCleanTableRequired()
 
     # THEN
+    assert len(agent_x.get_idea_list_without_idearoot()) == 29
+
     for idea in agent_x.get_idea_list_without_idearoot():
-        print(f"{idea._desc=}")
         assert str(type(idea)).find(".idea.IdeaKid'>") > 0
+
+    # for idea in agent_x.get_idea_list_without_idearoot():
+    #     print(f"{idea._desc=}")
 
 
 def test_agent_get_idea_list_CorrectlyCalculatesRangeAttributes():
@@ -574,18 +578,15 @@ def test_exammple_idea_list_Every6WeeksRequired():
     idea_list = agent_x.get_idea_list()
 
     # THEN
-    clean_sheets_status = None
-    for idea in idea_list:
-        if idea._desc == "clean sheets couch blankets":
-            for required in idea._requiredunits.values():
-                if required.base == ced_week_base:
-                    for sufffact_x in required.sufffacts.values():
-                        print(f"{idea._desc=} {required.base=} {sufffact_x=}")
-                        assert sufffact_x.divisor == 6 and sufffact_x.open == 1
-            print(f"{agent_x._idearoot._acptfactunits=}")
-            clean_sheets_status = True
-    print(f"{len(idea_list)=}")
-    assert clean_sheets_status == True
+    week_text = "ced_week"
+    week_road = f"TlME,{week_text}"
+    clean_couch_text = "clean sheets couch blankets"
+    clean_couch_road = f"TlME,casa,cleaning,{clean_couch_text}"
+    clean_couch_idea = agent_x.get_idea_kid(road=clean_couch_road)
+    week_required = clean_couch_idea._requiredunits.get(week_road)
+    week_sufffact = week_required.sufffacts.get(week_road)
+    print(f"{clean_couch_idea._desc=} {week_required.base=} {week_sufffact=}")
+    assert week_sufffact.divisor == 6 and week_sufffact.open == 1
 
 
 def print_sufffact_info(road: str, idea_list):
@@ -612,25 +613,26 @@ def test_exammple_idea_list_EveryIdeaHasSatiateStatus():
 
     # THEN
     print(f"{len(idea_list)=}")
-    first_idea_kid_count = 0
-    first_idea_kid_none_count = 0
-    first_idea_kid_true_count = 0
-    first_idea_kid_false_count = 0
-    idea_kid_count = 0
-    for idea in idea_list:
-        if str(type(idea)).find(".idea.IdeaKid'>") > 0:
-            first_idea_kid_count += 1
-            if idea._active_status is None:
-                first_idea_kid_none_count += 1
-            elif idea._active_status:
-                first_idea_kid_true_count += 1
-            elif idea._active_status == False:
-                first_idea_kid_false_count += 1
+    # first_idea_kid_count = 0
+    # first_idea_kid_none_count = 0
+    # first_idea_kid_true_count = 0
+    # first_idea_kid_false_count = 0
+    # for idea in idea_list:
+    #     if str(type(idea)).find(".idea.IdeaKid'>") > 0:
+    #         first_idea_kid_count += 1
+    #         if idea._active_status is None:
+    #             first_idea_kid_none_count += 1
+    #         elif idea._active_status:
+    #             first_idea_kid_true_count += 1
+    #         elif idea._active_status == False:
+    #             first_idea_kid_false_count += 1
 
-    print(f"{first_idea_kid_count=}")
-    print(f"{first_idea_kid_none_count=}")
-    print(f"{first_idea_kid_true_count=}")
-    print(f"{first_idea_kid_false_count=}")
+    # print(f"{first_idea_kid_count=}")
+    # print(f"{first_idea_kid_none_count=}")
+    # print(f"{first_idea_kid_true_count=}")
+    # print(f"{first_idea_kid_false_count=}")
+
+    idea_kid_count = 0
     for idea in idea_list:
         if str(type(idea)).find(".idea.IdeaKid'>") > 0:
             idea_kid_count += 1

@@ -81,73 +81,80 @@ def get_agent_with_4_levels() -> AgentUnit:
     idea_kid_feedcat = IdeaKid(_weight=30, _desc=cat, promise=True)
     agent_x.add_idea(idea_kid=idea_kid_feedcat, walk=src_road)
 
-    weekdays = "weekdays"
-    idea_kid_weekdays = IdeaKid(_weight=40, _desc=weekdays)
+    week_text = "weekdays"
+    week_road = f"{src_road},{week_text}"
+    idea_kid_weekdays = IdeaKid(_weight=40, _desc=week_text)
     agent_x.add_idea(idea_kid=idea_kid_weekdays, walk=src_road)
 
-    Sunday = "Sunday"
-    Monday = "Monday"
-    Tuesday = "Tuesday"
-    Wednesday = "Wednesday"
-    Thursday = "Thursday"
-    Friday = "Friday"
-    Saturday = "Saturday"
+    sun_text = "Sunday"
+    mon_text = "Monday"
+    tue_text = "Tuesday"
+    wed_text = "Wednesday"
+    thu_text = "Thursday"
+    fri_text = "Friday"
+    sat_text = "Saturday"
 
-    idea_grandkidU = IdeaKid(_weight=20, _desc=Sunday)
-    idea_grandkidM = IdeaKid(_weight=20, _desc=Monday)
-    idea_grandkidT = IdeaKid(_weight=20, _desc=Tuesday)
-    idea_grandkidW = IdeaKid(_weight=20, _desc=Wednesday)
-    idea_grandkidR = IdeaKid(_weight=30, _desc=Thursday)
-    idea_grandkidF = IdeaKid(_weight=40, _desc=Friday)
-    idea_grandkidA = IdeaKid(_weight=50, _desc=Saturday)
+    idea_grandkidU = IdeaKid(_weight=20, _desc=sun_text)
+    idea_grandkidM = IdeaKid(_weight=20, _desc=mon_text)
+    idea_grandkidT = IdeaKid(_weight=20, _desc=tue_text)
+    idea_grandkidW = IdeaKid(_weight=20, _desc=wed_text)
+    idea_grandkidR = IdeaKid(_weight=30, _desc=thu_text)
+    idea_grandkidF = IdeaKid(_weight=40, _desc=fri_text)
+    idea_grandkidA = IdeaKid(_weight=50, _desc=sat_text)
 
-    agent_x.add_idea(idea_grandkidU, f"{src_road},{weekdays}")
-    agent_x.add_idea(idea_grandkidM, f"{src_road},{weekdays}")
-    agent_x.add_idea(idea_grandkidT, f"{src_road},{weekdays}")
-    agent_x.add_idea(idea_grandkidW, f"{src_road},{weekdays}")
-    agent_x.add_idea(idea_grandkidR, f"{src_road},{weekdays}")
-    agent_x.add_idea(idea_grandkidF, f"{src_road},{weekdays}")
-    agent_x.add_idea(idea_grandkidA, f"{src_road},{weekdays}")
+    agent_x.add_idea(idea_grandkidU, week_road)
+    agent_x.add_idea(idea_grandkidM, week_road)
+    agent_x.add_idea(idea_grandkidT, week_road)
+    agent_x.add_idea(idea_grandkidW, week_road)
+    agent_x.add_idea(idea_grandkidR, week_road)
+    agent_x.add_idea(idea_grandkidF, week_road)
+    agent_x.add_idea(idea_grandkidA, week_road)
 
-    states = "nation-state"
-    idea_kid_states = IdeaKid(_weight=30, _desc=states)
+    states_text = "nation-state"
+    states_road = f"{src_road},{states_text}"
+    idea_kid_states = IdeaKid(_weight=30, _desc=states_text)
     agent_x.add_idea(idea_kid=idea_kid_states, walk=f"{src_road}")
 
-    USA = "USA"
-    France = "France"
-    Brazil = "Brazil"
-    idea_grandkid_usa = IdeaKid(_weight=50, _desc=USA)
-    idea_grandkid_france = IdeaKid(_weight=50, _desc=France)
-    idea_grandkid_brazil = IdeaKid(_weight=50, _desc=Brazil)
-    agent_x.add_idea(idea_grandkid_france, f"{src_road},{states}")
-    agent_x.add_idea(idea_grandkid_brazil, f"{src_road},{states}")
-    agent_x.add_idea(idea_grandkid_usa, f"{src_road},{states}")
+    usa_text = "USA"
+    usa_road = f"{states_road},{usa_text}"
+    france_text = "France"
+    brazil_text = "Brazil"
+    idea_grandkid_usa = IdeaKid(_weight=50, _desc=usa_text)
+    idea_grandkid_france = IdeaKid(_weight=50, _desc=france_text)
+    idea_grandkid_brazil = IdeaKid(_weight=50, _desc=brazil_text)
+    agent_x.add_idea(idea_grandkid_france, states_road)
+    agent_x.add_idea(idea_grandkid_brazil, states_road)
+    agent_x.add_idea(idea_grandkid_usa, states_road)
 
-    Texas = "Texas"
-    Oregon = "Oregon"
-    idea_grandgrandkid_usa_texas = IdeaKid(_weight=50, _desc=Texas)
-    idea_grandgrandkid_usa_oregon = IdeaKid(_weight=50, _desc=Oregon)
-    agent_x.add_idea(idea_grandgrandkid_usa_texas, f"{src_road},{states},{USA}")
-    agent_x.add_idea(idea_grandgrandkid_usa_oregon, f"{src_road},{states},{USA}")
+    texas_text = "Texas"
+    oregon_text = "Oregon"
+    idea_grandgrandkid_usa_texas = IdeaKid(_weight=50, _desc=texas_text)
+    idea_grandgrandkid_usa_oregon = IdeaKid(_weight=50, _desc=oregon_text)
+    agent_x.add_idea(idea_grandgrandkid_usa_texas, usa_road)
+    agent_x.add_idea(idea_grandgrandkid_usa_oregon, usa_road)
     return agent_x
 
 
 def get_agent_with_4_levels_and_2requireds() -> AgentUnit:
     agent_x = get_agent_with_4_levels()
-    wednesday = f"{agent_x._desc},weekdays,Wednesday"
-    weekday = f"{agent_x._desc},weekdays"
-    wed_sufffact = sufffactunit_shop(need=wednesday)
-    usa = f"{agent_x._desc},nation-state,USA"
-    nationstate = f"{agent_x._desc},nation-state"
-    usa_sufffact_x = sufffactunit_shop(need=usa)
+    week_road = f"{agent_x._desc},weekdays"
+    wed_text = "Wednesday"
+    wed_road = f"{week_road},{wed_text}"
+    wed_sufffact = sufffactunit_shop(need=wed_road)
+
+    nation_road = f"{agent_x._desc},nation-state"
+    usa_road = f"{nation_road},USA"
+    usa_sufffact_x = sufffactunit_shop(need=usa_road)
     work_wk_required = RequiredUnit(
-        base=weekday, sufffacts={wed_sufffact.need: wed_sufffact}
+        base=week_road, sufffacts={wed_sufffact.need: wed_sufffact}
     )
     nation_required = RequiredUnit(
-        base=nationstate, sufffacts={usa_sufffact_x.need: usa_sufffact_x}
+        base=nation_road, sufffacts={usa_sufffact_x.need: usa_sufffact_x}
     )
-    agent_x.edit_idea_attr(road=f"{agent_x._desc},work", required=work_wk_required)
-    agent_x.edit_idea_attr(road=f"{agent_x._desc},work", required=nation_required)
+    work_text = "work"
+    work_road = f"{agent_x._desc},{work_text}"
+    agent_x.edit_idea_attr(road=work_road, required=work_wk_required)
+    agent_x.edit_idea_attr(road=work_road, required=nation_required)
     return agent_x
 
 
