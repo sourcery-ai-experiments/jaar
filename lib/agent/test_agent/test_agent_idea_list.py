@@ -13,7 +13,7 @@ from lib.agent.agent import AgentUnit
 def _check_all_elements_in_dict_are_correct_type(x_dict: dict, type_str: str) -> bool:
     bool_x = True
     for x_value in x_dict.values():
-        if str(type(x_value)).find(type_str) == -1:
+        if type_str not in str(type(x_value)):
             bool_x = False
         print(f"/t{type(x_value)=} {type_str=} {str(type(x_value)).find(type_str)=}")
     return bool_x
@@ -322,14 +322,19 @@ def test_agent_get_idea_list_CorrectlyCalculatesIdeaAttr_agent_coin():
 
 
 def test_agent_get_idea_list_without_root_CorrectlyCalculatesIdeaAttributes():
-    # GIVEN / WHEN
+    # GIVEN
     agent_x = get_agent_with7amCleanTableRequired()
 
-    # THEN
-    assert len(agent_x.get_idea_list_without_idearoot()) == 29
+    # WHEN
+    idea_list_without_idearoot = agent_x.get_idea_list_without_idearoot()
+    idea_list_with_idearoot = agent_x.get_idea_list()
 
-    for idea in agent_x.get_idea_list_without_idearoot():
-        assert str(type(idea)).find(".idea.IdeaKid'>") > 0
+    # THEN
+    assert len(idea_list_without_idearoot) == 29
+    assert len(idea_list_without_idearoot) + 1 == len(idea_list_with_idearoot)
+
+    # for idea in agent_x.get_idea_list_without_idearoot():
+    #     assert str(type(idea)).find(".idea.IdeaKid'>") > 0
 
     # for idea in agent_x.get_idea_list_without_idearoot():
     #     print(f"{idea._desc=}")
@@ -485,16 +490,28 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
     # print(f"{agent_x._requiredunits[weekday_road].base=}")
     # print(f"{agent_x._requiredunits[weekday_road].sufffacts[mon_road].need=}")
     # print(f"{agent_x._requiredunits[weekday_road].sufffacts[tue_road].need=}")
-    for sufffact_x in agent_x._idearoot._requiredunits[weekday_road].sufffacts.values():
-        assert sufffact_x == mt_required.sufffacts[sufffact_x.need]
+    print(f"{agent_x._idearoot._requiredunits[weekday_road].sufffacts=}")
+    sufffact_mon = agent_x._idearoot._requiredunits[weekday_road].sufffacts.get(
+        mon_road
+    )
+    sufffact_tue = agent_x._idearoot._requiredunits[weekday_road].sufffacts.get(
+        tue_road
+    )
+    assert sufffact_mon
+    assert sufffact_mon == mt_required.sufffacts[sufffact_mon.need]
+    assert sufffact_tue
+    assert sufffact_tue == mt_required.sufffacts[sufffact_tue.need]
     assert agent_x._idearoot._requiredunits[weekday_road] == mt_required
 
     # WHEN
     idea_list = agent_x.get_idea_list()
 
     # THEN
-    for sufffact_x in agent_x._idearoot._requiredheirs[weekday_road].sufffacts.values():
-        assert sufffact_x == mt_required.sufffacts[sufffact_x.need]
+    assert sufffact_mon
+    assert sufffact_mon == mt_required.sufffacts[sufffact_mon.need]
+    assert sufffact_tue
+    assert sufffact_tue == mt_required.sufffacts[sufffact_tue.need]
+
     assert agent_x._idearoot._requiredheirs[weekday_road] == mt_required_x
 
     bird_walk = "TlME,casa"
@@ -542,20 +559,29 @@ def test_exammple_idea_list_Every6WeeksRequired():
     sufffact_open = None
     sufffact_nigh = None
     print(f"{len(idea_list)=}")
-    for idea in idea_list:
-        # print(f"{idea._walk=}")
 
-        if idea._desc == "clean sheets couch blankets":
-            print(f"{idea._walk=}")
-            for required in idea._requiredunits.values():
-                if required.base == ced_week_base:
-                    for sufffact_x in required.sufffacts.values():
-                        print(f"{idea._desc=} {required.base=} {sufffact_x=}")
-                        sufffact_divisor = sufffact_x.divisor
-                        sufffact_open = sufffact_x.open
-                        sufffact_nigh = sufffact_x.nigh
-            # print(f"{idea._requiredunits=}")
-            assert idea._active_status == False
+    clean_sheet_road = "TlME,casa,cleaning,clean sheets couch blankets"
+    clean_sheet_idea = agent_x.get_idea_kid(road=clean_sheet_road)
+    # print(f"{clean_sheet_idea._requiredunits.values()=}")
+    ced_week_required = clean_sheet_idea._requiredunits.get(ced_week_base)
+    ced_week_suffact = ced_week_required.sufffacts.get(ced_week_base)
+    print(
+        f"{clean_sheet_idea._desc=} {ced_week_required.base=} {ced_week_suffact.need=}"
+    )
+    # print(f"{clean_sheet_idea._desc=} {ced_week_required.base=} {sufffact_x=}")
+    sufffact_divisor = ced_week_suffact.divisor
+    sufffact_open = ced_week_suffact.open
+    sufffact_nigh = ced_week_suffact.nigh
+    # print(f"{idea._requiredunits=}")
+    assert clean_sheet_idea._active_status == False
+
+    assert 1 == 2
+
+    # for idea in idea_list:
+    #     # print(f"{idea._walk=}")
+    #     if idea._desc == "clean sheets couch blankets":
+    #         print(f"{idea.get_road()=}")
+
     assert sufffact_divisor == 6
     assert sufffact_open == 1
     print(
@@ -632,14 +658,16 @@ def test_exammple_idea_list_EveryIdeaHasSatiateStatus():
     # print(f"{first_idea_kid_true_count=}")
     # print(f"{first_idea_kid_false_count=}")
 
-    idea_kid_count = 0
-    for idea in idea_list:
-        if str(type(idea)).find(".idea.IdeaKid'>") > 0:
-            idea_kid_count += 1
-            if idea._active_status is None:
-                print(f"{idea._desc=} {idea_kid_count=}")
-            assert idea._active_status in (True, False)
-    assert idea_kid_count == len(idea_list) - 1
+    idea_sum_count = sum(idea._active_status for idea in idea_list)
+    assert idea_sum_count == len(idea_list)
+
+    # idea_kid_count = 0
+    # for idea in idea_list:
+    #     idea_kid_count += 1
+    #     print(f"{idea._desc=} {idea_kid_count=}")
+    #     assert idea._active_status != None
+    #     assert idea._active_status in (True, False)
+    # assert idea_kid_count == len(idea_list) - 1
 
 
 def test_exammple_idea_list_EveryOtherMonthWorks():

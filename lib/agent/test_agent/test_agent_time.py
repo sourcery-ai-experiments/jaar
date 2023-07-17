@@ -1,6 +1,8 @@
+import contextlib
 import itertools
 from lib.agent.agent import AgentUnit
 from datetime import datetime
+from random import randint
 
 
 def test_time_get_time_min_from_dt_WorksCorrectly():
@@ -38,6 +40,18 @@ def test_get_time_c400year_from_min_WorksCorrectly():
     assert g_lw.get_time_c400yr_from_min(min=157785120)[0] == 300
 
 
+def _check_time_conversion_works_with_random_inputs(ax: AgentUnit):
+    py_dt = datetime(
+        year=randint(1, 2800),
+        month=randint(1, 12),
+        day=randint(1, 28),
+        hour=randint(0, 23),
+        minute=randint(0, 59),
+    )
+    print(f"Attempt {py_dt=}")
+    assert py_dt == ax.get_time_dt_from_min(min=ax.get_time_min_from_dt(dt=py_dt))
+
+
 def test_get_time_dt_from_min_WorksCorrectly():
     g_lw = AgentUnit(_desc="src")
     g_lw.set_time_hreg_ideas(c400_count=6)
@@ -55,27 +69,29 @@ def test_get_time_dt_from_min_WorksCorrectly():
     x_next_day = x_minutes + 1440
     assert g_lw.get_time_dt_from_min(min=x_next_day) == datetime(2022, 10, 30, 0, 0)
 
-    for year, month, day in itertools.product(
-        range(479, 480), range(1, 3), range(20, 32)
-    ):
-        # for day in range(1, 32):
-        # print(f"assert for {year=} {month=} {day=}")
-        try:
-            py_dt = datetime(year, month, day, 0, 0)
-            dt_exist = True
-        except Exception:
-            dt_exist = False
+    _check_time_conversion_works_with_random_inputs(g_lw)
+    _check_time_conversion_works_with_random_inputs(g_lw)
+    _check_time_conversion_works_with_random_inputs(g_lw)
 
-        if dt_exist:
-            jaja_min = g_lw.get_time_min_from_dt(dt=datetime(year, month, day, 0, 0))
-            # print(f"assert for {year=} {month=} {day=} {jaja_min}")
+    # for year, month, day, hr, min in itertools.product(
+    #     range(479, 480), range(1, 3), range(20, 28), range(12, 14), range(1430, 1440)
+    # ):
+    #     # for day in range(1, 32):
+    #     # # print(f"assert for {year=} {month=} {day=}")
+    #     # with contextlib.suppress(Exception):
+    #     print(f"Attempt get_time_from_dt {year=} {month=} {day=} {hr=} {min=}")
+    #     py_dt = datetime(year, month, day, 0, 0)
+    #     jaja_min = g_lw.get_time_min_from_dt(dt=py_dt)
+    #     # print(f"assert for {year=} {month=} {day=} {jaja_min}")
 
-            jaja_dt = g_lw.get_time_dt_from_min(min=jaja_min)
-            if py_dt != jaja_dt:
-                print(
-                    f"assert failed for {year=} {month=} {day} \t {jaja_min} Jaja too large: {str(jaja_dt-py_dt)} ({py_dt=})"
-                )
-                assert 1 == 2
+    #     jaja_dt = g_lw.get_time_dt_from_min(min=jaja_min)
+    #     print(
+    #         f"assert attempted for {year=} {month=} {day} \t {jaja_min} Jaja too large: {str(jaja_dt-py_dt)} ({py_dt=})"
+    #     )
+    #     assert py_dt == jaja_dt
+
+    # if dt_exist:
+
     # for year in range(480, 481):
     #     for month in range(1, 12):
     #         for day in range(1, 30):

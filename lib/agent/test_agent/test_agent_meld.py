@@ -81,8 +81,8 @@ def test_agent_meld_BrandUnits():
     ax1.meld(other_agent=ax2)
 
     # THEN
-    for brand_name in ax1._brands.values():
-        print(f"ax1 {brand_name.name=}")
+    # for brand_name in ax1._brands.values():
+    #     print(f"ax1 {brand_name.name=}")
 
     assert len(ax1._brands) == 2
     assert ax1._brands.get(x1_name) != None
@@ -329,9 +329,11 @@ def test_agent_meld_worksCorrectlyForLargeExample():
     assert len(ax1._idearoot._acptfactunits) == 2
     assert len(ax1._idearoot._acptfactunits) == len(ax2._idearoot._acptfactunits)
     assert ax1._desc == ax2._desc
-    for ax1_brand_key, ax1_brand_obj in ax1._brands.items():
-        assert ax1_brand_obj.uid == ax2._brands[ax1_brand_key].uid
-        assert ax1_brand_obj == ax2._brands[ax1_brand_key]
+    print(f"{len(ax1._brands.items())=}")
+    # for ax1_brand_key, ax1_brand_obj in ax1._brands.items():
+    #     print(f"{ax1_brand_key=}")
+    #     assert ax1_brand_obj.uid == ax2._brands[ax1_brand_key].uid
+    #     assert ax1_brand_obj == ax2._brands[ax1_brand_key]
     assert ax1._brands == ax2._brands
     assert len(ax1.get_idea_list()) == len(ax2.get_idea_list())
 
@@ -355,9 +357,11 @@ def test_agent_meld_worksCorrectlyForLargeExample():
         abs(ax1r_bl.get(fam_text)._agent_debt - ax2r_bl.get(fam_text)._agent_debt)
         < 0.0001
     )
-    for brandline in ax1r_bl.values():
-        if brandline.name != fam_text:
-            assert brandline == ax2r_bl.get(brandline.name)
+
+    # for brandline in ax1r_bl.values():
+    #     if brandline.name != fam_text:
+    #         assert brandline == ax2r_bl.get(brandline.name)
+    assert ax1r_bl == ax2r_bl
     # assert ax1._idearoot._brandlines == ax2._idearoot._brandlines
     # assert ax1._idearoot == ax2._idearoot
 

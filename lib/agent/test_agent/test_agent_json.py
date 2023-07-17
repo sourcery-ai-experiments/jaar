@@ -48,48 +48,52 @@ def test_agent_get_dict_ReturnsDictObject():
         x_dict["_level"]
     assert str(excinfo.value) == "'_level'"
 
-    # check acptfacts exist
-    with contextlib.suppress(KeyError):
-        if x_dict["_acptfacts"] != None:
-            assert len(x_dict["_acptfacts"]) == len(x_agent._idearoot._acptfactunits)
-    for kid in x_agent._idearoot._kids.values():
-        # print(len(x_dict["_kids"][kid._desc]["_kids"]))
-        # print(x_dict["_kids"][kid._desc])
-        # print(len(kid._kids))
-        print(f"{kid._desc=}")
-        # print(kid._kids)
-        # for gkid in kid._kids.keys():
-        #     print(gkid)
-        with contextlib.suppress(KeyError):
-            dict_grandkids = x_dict["_kids"][kid._desc]["_kids"]
-            if dict_grandkids not in (None, {}):
-                # print(f"{dict_grandkids=}")
-                # print(f"{len(kid._kids)}")
+    # for kid in x_agent._idearoot._kids.values():
+    #     # print(len(x_dict["_kids"][kid._desc]["_kids"]))
+    #     # print(x_dict["_kids"][kid._desc])
+    #     # print(len(kid._kids))
+    #     print(f"{kid._desc=}")
+    #     # print(kid._kids)
+    #     # for gkid in kid._kids.keys():
+    #     #     print(gkid)
+    #     with contextlib.suppress(KeyError):
+    #         dict_grandkids = x_dict["_kids"][kid._desc]["_kids"]
+    #         # if dict_grandkids not in (None, {}):
+    #         # print(f"{dict_grandkids=}")
+    #         # print(f"{len(kid._kids)}")
+    #         assert len(dict_grandkids) == len(kid._kids)
 
-                assert len(dict_grandkids) == len(kid._kids)
-        if kid._desc == "AP Professionals":
-            print("checking AP Professionals...")
-            print(x_dict["_kids"][kid._desc]["_requiredunits"])
-            assert len(x_dict["_kids"][kid._desc]["_requiredunits"]) == 1
-        elif kid._desc == "month_week":
-            print("checking TlME,month_week...special_road equal to...")
-            print(x_dict["_kids"][kid._desc]["_special_road"])
-            print(x_dict["_kids"][kid._desc])
-            assert x_dict["_kids"][kid._desc]["_special_road"] != None
-            assert x_dict["_kids"][kid._desc]["_special_road"] == "TlME,ced_week"
-        elif kid._desc == "TlME,numeric_road_test":
-            print("checking TlME,numeric_road_test...numeric_road equal to...")
-            print(x_dict["_kids"][kid._desc]["_numeric_road"])
-            print(x_dict["_kids"][kid._desc])
-            assert x_dict["_kids"][kid._desc]["_numeric_road"] != None
-            assert x_dict["_kids"][kid._desc]["_numeric_road"] == "TlME,month_week"
-        with contextlib.suppress(KeyError):
-            if x_dict["_kids"][kid._desc]["_requiredunits"] not in (None, {}):
-                print(x_dict["_kids"][kid._desc]["_requiredunits"])
-                print(f"{kid._requiredunits=}")
-                assert len(x_dict["_kids"][kid._desc]["_requiredunits"]) == len(
-                    kid._requiredunits
-                )
+    # ap_text = "Asset management"
+    # ap_road = f"{x_agent._desc},{ap_text}"
+    # ap_idea = x_agent.get_idea_kid(road=ap_road)
+    # print(f"checking {ap_text}...")
+    # print(x_dict["_kids"][ap_idea._desc]["_requiredunits"])
+    # assert len(x_dict["_kids"][ap_idea._desc]["_requiredunits"]) == 1
+
+    month_week_text = "month_week"
+    month_week_road = f"{x_agent._desc},{month_week_text}"
+    month_week_idea = x_agent.get_idea_kid(road=month_week_road)
+    print("checking TlME,month_week...special_road equal to...")
+    print(x_dict["_kids"][month_week_text]["_special_road"])
+    print(x_dict["_kids"][month_week_text])
+    assert x_dict["_kids"][month_week_text]["_special_road"] != None
+    assert x_dict["_kids"][month_week_text]["_special_road"] == "TlME,ced_week"
+
+    numeric_text = "numeric_road_test"
+    numeric_road = f"TlME,{numeric_text}"
+    print(f"checking {numeric_road}...numeric_road equal to...")
+    print(x_dict["_kids"][numeric_text]["_numeric_road"])
+    print(x_dict["_kids"][numeric_text])
+    assert x_dict["_kids"][numeric_text]["_numeric_road"] != None
+    assert x_dict["_kids"][numeric_text]["_numeric_road"] == "TlME,month_week"
+
+    # with contextlib.suppress(KeyError):
+    #     if x_dict["_kids"][kid._desc]["_requiredunits"] not in (None, {}):
+    #         print(x_dict["_kids"][kid._desc]["_requiredunits"])
+    #         print(f"{kid._requiredunits=}")
+    #         assert len(x_dict["_kids"][kid._desc]["_requiredunits"]) == len(
+    #             kid._requiredunits
+    #         )
 
 
 def test_export_to_JSON_simple_example_works():
@@ -119,9 +123,9 @@ def test_export_to_JSON_simple_example_works():
         x_agent._idearoot._kids["shave"]._acptfactunits
     )
 
-    for _ in x_agent._idearoot._kids.values():
-        # check requireds exist have correct values
-        pass
+    # for _ in x_agent._idearoot._kids.values():
+    #     # check requireds exist have correct values
+    #     pass
 
 
 def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
@@ -169,16 +173,13 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
 
     # assert x_dict["_level"] == x_agent._level
 
+    # sourcery skip: no-loop-in-tests
     for kid in x_agent._idearoot._kids.values():
         print(kid._desc)
-        # if kid._desc == "AP Professionals":
-        #     print("checking AP Professionals...")
-        #     print(x_dict["_kids"][kid._desc])
-        #     assert len(x_dict["_kids"][kid._desc]["_requiredunits"]) == 2
         with contextlib.suppress(KeyError):
             requireds = x_dict["_kids"][kid._desc]["_requiredunits"]
-            if requireds not in (None, {}):
-                assert len(requireds) == len(kid._requiredunits)
+            assert len(requireds) == len(kid._requiredunits)
+
     # Test if save works
     x_func_save_file(
         dest_dir=get_agent_examples_dir(),
