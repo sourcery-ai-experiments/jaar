@@ -180,19 +180,12 @@ def test_agent_set_brandlink_CorrectlyCalculatesInheritedBrandLinkAgentImportanc
     a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(rico_text)))
     a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(carm_text)))
     a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(patr_text)))
-    a_x._idearoot.set_brandlink(
-        brandlink=brandlink_shop(
-            name=BrandName(rico_text), creditor_weight=20, debtor_weight=6
-        )
-    )
-    a_x._idearoot.set_brandlink(
-        brandlink=brandlink_shop(
-            name=BrandName(carm_text), creditor_weight=10, debtor_weight=1
-        )
-    )
-    a_x._idearoot.set_brandlink(
-        brandlink=brandlink_shop(name=BrandName(patr_text), creditor_weight=10)
-    )
+    blink_rico = brandlink_shop(name=rico_text, creditor_weight=20, debtor_weight=6)
+    blink_carm = brandlink_shop(name=carm_text, creditor_weight=10, debtor_weight=1)
+    blink_patr = brandlink_shop(name=patr_text, creditor_weight=10)
+    a_x._idearoot.set_brandlink(brandlink=blink_rico)
+    a_x._idearoot.set_brandlink(brandlink=blink_carm)
+    a_x._idearoot.set_brandlink(brandlink=blink_patr)
     assert len(a_x._idearoot._brandlinks) == 3
 
     # WHEN
@@ -202,19 +195,34 @@ def test_agent_set_brandlink_CorrectlyCalculatesInheritedBrandLinkAgentImportanc
     idea_prom = idea_list[0]
     assert len(idea_prom._brandheirs) == 3
 
-    agent_credit_sum = 0
-    agent_debt_sum = 0
-    for brand in a_x._idearoot._brandheirs.values():
-        print(f"{brand=}")
-        assert brand._agent_credit != None
-        assert brand._agent_credit in [0.25, 0.5]
-        assert brand._agent_debt != None
-        assert brand._agent_debt in [0.75, 0.125]
-        agent_credit_sum += brand._agent_credit
-        agent_debt_sum += brand._agent_debt
+    bheir_rico = idea_prom._brandheirs.get(rico_text)
+    bheir_carm = idea_prom._brandheirs.get(carm_text)
+    bheir_patr = idea_prom._brandheirs.get(patr_text)
+    assert bheir_rico._agent_credit == 0.5
+    assert bheir_rico._agent_debt == 0.75
+    assert bheir_carm._agent_credit == 0.25
+    assert bheir_carm._agent_debt == 0.125
+    assert bheir_patr._agent_credit == 0.25
+    assert bheir_patr._agent_debt == 0.125
+    assert (
+        bheir_rico._agent_credit + bheir_carm._agent_credit + bheir_patr._agent_credit
+        == 1
+    )
+    assert bheir_rico._agent_debt + bheir_carm._agent_debt + bheir_patr._agent_debt == 1
 
-    assert agent_credit_sum == 1
-    assert agent_debt_sum == 1
+    # agent_credit_sum = 0
+    # agent_debt_sum = 0
+    # for brand in a_x._idearoot._brandheirs.values():
+    #     print(f"{brand=}")
+    #     assert brand._agent_credit != None
+    #     assert brand._agent_credit in [0.25, 0.5]
+    #     assert brand._agent_debt != None
+    #     assert brand._agent_debt in [0.75, 0.125]
+    #     agent_credit_sum += brand._agent_credit
+    #     agent_debt_sum += brand._agent_debt
+
+    # assert agent_credit_sum == 1
+    # assert agent_debt_sum == 1
 
 
 def test_agent_get_idea_list_CorrectlyCalculates1LevelAgentBrandAgentImportance():
@@ -228,19 +236,12 @@ def test_agent_get_idea_list_CorrectlyCalculates1LevelAgentBrandAgentImportance(
     a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(rico_text)))
     a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(carm_text)))
     a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(patr_text)))
-    a_x._idearoot.set_brandlink(
-        brandlink=brandlink_shop(
-            name=BrandName(rico_text), creditor_weight=20, debtor_weight=6
-        )
-    )
-    a_x._idearoot.set_brandlink(
-        brandlink=brandlink_shop(
-            name=BrandName(carm_text), creditor_weight=10, debtor_weight=1
-        )
-    )
-    a_x._idearoot.set_brandlink(
-        brandlink=brandlink_shop(name=BrandName(patr_text), creditor_weight=10)
-    )
+    blink_rico = brandlink_shop(name=rico_text, creditor_weight=20, debtor_weight=6)
+    blink_carm = brandlink_shop(name=carm_text, creditor_weight=10, debtor_weight=1)
+    blink_patr = brandlink_shop(name=patr_text, creditor_weight=10)
+    a_x._idearoot.set_brandlink(brandlink=blink_rico)
+    a_x._idearoot.set_brandlink(brandlink=blink_carm)
+    a_x._idearoot.set_brandlink(brandlink=blink_patr)
 
     assert len(a_x._brands) == 3
 
@@ -248,42 +249,52 @@ def test_agent_get_idea_list_CorrectlyCalculates1LevelAgentBrandAgentImportance(
     a_x.set_agent_metrics()
 
     # THEN
-    agent_credit_sum = 0
-    agent_debt_sum = 0
-    for brand in a_x._brands.values():
-        # print(f"{brand=}")
-        assert brand._agent_credit != None
-        assert brand._agent_credit in [0.25, 0.5]
-        assert brand._agent_debt != None
-        assert brand._agent_debt in [0.75, 0.125]
-        agent_credit_sum += brand._agent_credit
-        agent_debt_sum += brand._agent_debt
-
-    assert agent_credit_sum == 1
-    assert agent_debt_sum == 1
+    brand_rico = a_x._brands.get(rico_text)
+    brand_carm = a_x._brands.get(carm_text)
+    brand_patr = a_x._brands.get(patr_text)
+    assert brand_rico._agent_credit == 0.5
+    assert brand_rico._agent_debt == 0.75
+    assert brand_carm._agent_credit == 0.25
+    assert brand_carm._agent_debt == 0.125
+    assert brand_patr._agent_credit == 0.25
+    assert brand_patr._agent_debt == 0.125
+    assert (
+        brand_rico._agent_credit + brand_carm._agent_credit + brand_patr._agent_credit
+        == 1
+    )
+    assert brand_rico._agent_debt + brand_carm._agent_debt + brand_patr._agent_debt == 1
 
     # WHEN
     a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(sele_text)))
-    a_x._idearoot.set_brandlink(
-        brandlink=brandlink_shop(name=BrandName(sele_text), creditor_weight=37)
-    )
+    bl_sele = brandlink_shop(name=sele_text, creditor_weight=37)
+    a_x._idearoot.set_brandlink(brandlink=bl_sele)
     assert len(a_x._brands) == 4
     a_x.set_agent_metrics()
 
     # THEN
-    agent_credit_sum = 0
-    agent_debt_sum = 0
-    for brand in a_x._brands.values():
-        print(f"{brand._agent_credit=} {brand._agent_debt=}")
-        assert brand._agent_credit != None
-        assert brand._agent_credit not in [0.25, 0.5]
-        assert brand._agent_debt != None
-        assert brand._agent_debt not in [0.75, 0.125]
-        agent_credit_sum += brand._agent_credit
-        agent_debt_sum += brand._agent_debt
-
-    assert agent_credit_sum == 1
-    assert agent_debt_sum == 1
+    brand_sele = a_x._brands.get(sele_text)
+    assert brand_rico._agent_credit != 0.5
+    assert brand_rico._agent_debt != 0.75
+    assert brand_carm._agent_credit != 0.25
+    assert brand_carm._agent_debt != 0.125
+    assert brand_patr._agent_credit != 0.25
+    assert brand_patr._agent_debt != 0.125
+    assert brand_sele._agent_credit != None
+    assert brand_sele._agent_debt != None
+    assert (
+        brand_rico._agent_credit
+        + brand_carm._agent_credit
+        + brand_patr._agent_credit
+        + brand_sele._agent_credit
+        == 1
+    )
+    assert (
+        brand_rico._agent_debt
+        + brand_carm._agent_debt
+        + brand_patr._agent_debt
+        + brand_sele._agent_debt
+        == 1
+    )
 
 
 def test_agent_get_idea_list_CorrectlyCalculates3levelAgentBrandAgentImportance():
@@ -299,14 +310,9 @@ def test_agent_get_idea_list_CorrectlyCalculates3levelAgentBrandAgentImportance(
     a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(rico_text)))
     a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(carm_text)))
     a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(patr_text)))
-    rico_brandlink = brandlink_shop(
-        name=BrandName(rico_text), creditor_weight=20, debtor_weight=6
-    )
-    carm_brandlink = brandlink_shop(
-        name=BrandName(carm_text), creditor_weight=10, debtor_weight=1
-    )
-    parm_brandlink = brandlink_shop(name=BrandName(patr_text), creditor_weight=10)
-
+    rico_brandlink = brandlink_shop(name=rico_text, creditor_weight=20, debtor_weight=6)
+    carm_brandlink = brandlink_shop(name=carm_text, creditor_weight=10, debtor_weight=1)
+    parm_brandlink = brandlink_shop(name=patr_text, creditor_weight=10)
     a_x._idearoot._kids[swim_text].set_brandlink(brandlink=rico_brandlink)
     a_x._idearoot._kids[swim_text].set_brandlink(brandlink=carm_brandlink)
     a_x._idearoot._kids[swim_text].set_brandlink(brandlink=parm_brandlink)
@@ -316,19 +322,20 @@ def test_agent_get_idea_list_CorrectlyCalculates3levelAgentBrandAgentImportance(
     a_x.set_agent_metrics()
 
     # THEN
-    agent_credit_sum = 0
-    agent_debt_sum = 0
-    for brand in a_x._brands.values():
-        print(f"{brand._agent_credit=} {brand._agent_debt=}")
-        assert brand._agent_credit != None
-        assert brand._agent_credit in [0.25, 0.5]
-        assert brand._agent_debt != None
-        assert brand._agent_debt in [0.75, 0.125]
-        agent_credit_sum += brand._agent_credit
-        agent_debt_sum += brand._agent_debt
-
-    assert agent_credit_sum == 1
-    assert agent_debt_sum == 1
+    brand_rico = a_x._brands.get(rico_text)
+    brand_carm = a_x._brands.get(carm_text)
+    brand_patr = a_x._brands.get(patr_text)
+    assert brand_rico._agent_credit == 0.5
+    assert brand_rico._agent_debt == 0.75
+    assert brand_carm._agent_credit == 0.25
+    assert brand_carm._agent_debt == 0.125
+    assert brand_patr._agent_credit == 0.25
+    assert brand_patr._agent_debt == 0.125
+    assert (
+        brand_rico._agent_credit + brand_carm._agent_credit + brand_patr._agent_credit
+        == 1
+    )
+    assert brand_rico._agent_debt + brand_carm._agent_debt + brand_patr._agent_debt == 1
 
 
 def test_agent_get_idea_list_CorrectlyCalculatesBrandAgentImportanceLWwithBrandEmptyBranch():
@@ -344,14 +351,9 @@ def test_agent_get_idea_list_CorrectlyCalculatesBrandAgentImportanceLWwithBrandE
     a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(rico_text)))
     a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(carm_text)))
     a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(patr_text)))
-    rico_brandlink = brandlink_shop(
-        name=BrandName(rico_text), creditor_weight=20, debtor_weight=6
-    )
-    carm_brandlink = brandlink_shop(
-        name=BrandName(carm_text), creditor_weight=10, debtor_weight=1
-    )
-    parm_brandlink = brandlink_shop(name=BrandName(patr_text), creditor_weight=10)
-
+    rico_brandlink = brandlink_shop(name=rico_text, creditor_weight=20, debtor_weight=6)
+    carm_brandlink = brandlink_shop(name=carm_text, creditor_weight=10, debtor_weight=1)
+    parm_brandlink = brandlink_shop(name=patr_text, creditor_weight=10)
     a_x._idearoot._kids[swim_text].set_brandlink(brandlink=rico_brandlink)
     a_x._idearoot._kids[swim_text].set_brandlink(brandlink=carm_brandlink)
     a_x._idearoot._kids[swim_text].set_brandlink(brandlink=parm_brandlink)
@@ -387,19 +389,22 @@ def test_agent_get_idea_list_CorrectlyCalculatesBrandAgentImportanceLWwithBrandE
     assert str(excinfo.value) == f"'{patr_text}'"
 
     # THEN
-    agent_credit_sum = 0
-    agent_debt_sum = 0
-    for brand in a_x._brands.values():
-        print(f"{brand._agent_credit=} {brand._agent_debt=}")
-        assert brand._agent_credit != None
-        assert brand._agent_credit in [0.125, 0.0625]
-        assert brand._agent_debt != None
-        assert brand._agent_debt in [0.1875, 0.03125]
-        agent_credit_sum += brand._agent_credit
-        agent_debt_sum += brand._agent_debt
-
-    assert agent_credit_sum == 0.25
-    assert agent_debt_sum == 0.25
+    brand_rico = a_x._brands.get(rico_text)
+    brand_carm = a_x._brands.get(carm_text)
+    brand_patr = a_x._brands.get(patr_text)
+    assert brand_rico._agent_credit == 0.125
+    assert brand_rico._agent_debt == 0.1875
+    assert brand_carm._agent_credit == 0.0625
+    assert brand_carm._agent_debt == 0.03125
+    assert brand_patr._agent_credit == 0.0625
+    assert brand_patr._agent_debt == 0.03125
+    assert (
+        brand_rico._agent_credit + brand_carm._agent_credit + brand_patr._agent_credit
+        == 0.25
+    )
+    assert (
+        brand_rico._agent_debt + brand_carm._agent_debt + brand_patr._agent_debt == 0.25
+    )
 
 
 def test_agent_edit_brandunit_name_CorrectlyCreatesNewName():

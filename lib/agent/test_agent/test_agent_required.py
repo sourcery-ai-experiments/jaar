@@ -102,12 +102,20 @@ def test_agent_requiredheirs_AreCorrectlyInherited():
     from_list_get_active_status(road=work_road, idea_list=idea_list)
 
     work_wk_cal_requiredheir = work_idea._requiredheirs[weekday_road]
-    for sufffact in work_wk_cal_requiredheir.sufffacts.values():
-        # assert sufffact_task == work_wk_built_requiredheir.sufffacts[sufffact.need]._task
-        assert (
-            sufffact._task == work_wk_built_requiredheir.sufffacts[sufffact.need]._task
-        )
-        assert sufffact == work_wk_built_requiredheir.sufffacts[sufffact.need]
+    print(f"{len(work_wk_cal_requiredheir.sufffacts)=}")
+    assert len(work_wk_cal_requiredheir.sufffacts) == 1
+    sufffact_wed = work_wk_cal_requiredheir.sufffacts.get("src,weekdays,Wednesday")
+    assert (
+        sufffact_wed._task
+        == work_wk_built_requiredheir.sufffacts[sufffact_wed.need]._task
+    )
+    assert sufffact_wed == work_wk_built_requiredheir.sufffacts[sufffact_wed.need]
+    # for sufffact in work_wk_cal_requiredheir.sufffacts.values():
+    #     # assert sufffact_task == work_wk_built_requiredheir.sufffacts[sufffact.need]._task
+    #     assert (
+    #         sufffact._task == work_wk_built_requiredheir.sufffacts[sufffact.need]._task
+    #     )
+    #     assert sufffact == work_wk_built_requiredheir.sufffacts[sufffact.need]
     assert work_wk_cal_requiredheir.sufffacts == work_wk_built_requiredheir.sufffacts
     assert work_wk_cal_requiredheir == work_wk_built_requiredheir
 
@@ -624,8 +632,8 @@ def test_agent_tree_traverses_StopWhenNoChangeInStatusIsDetected():
 
     # WHEN
     agent_x.set_agent_metrics()
-    for idea_key in agent_x._idea_dict.keys():
-        print(f"{idea_key=}")
+    # for idea_key in agent_x._idea_dict.keys():
+    #     print(f"{idea_key=}")
 
     # THEN
     assert agent_x._tree_traverse_count == 2

@@ -7,11 +7,18 @@ def test_agent_import_debtor_info_CorrectlyWorks():
     agent_x = example_agents_agent_v001()
     jane_text = "Jane Randolph"
 
-    for ally_x in agent_x._allys.values():
-        if ally_x.name == jane_text:
-            print(f"Before Ally {ally_x.name} {ally_x._debtor_active=} ")
-        assert ally_x._creditor_active is None
-        assert ally_x._debtor_active is None
+    jane_ally = agent_x._allys.get(jane_text)
+    print(f"Before Ally {jane_ally.name} {jane_ally._debtor_active=} ")
+    assert jane_ally._debtor_active is None
+    assert jane_ally._creditor_active is None
+
+    assert sum(
+        ally_x._creditor_active is None for ally_x in agent_x._allys.values()
+    ) == len(agent_x._allys)
+    assert sum(
+        ally_x._debtor_active is None for ally_x in agent_x._allys.values()
+    ) == len(agent_x._allys)
+
     # WHEN
     jane_debtor_status = True
     jane_creditor_status = True
@@ -23,12 +30,18 @@ def test_agent_import_debtor_info_CorrectlyWorks():
     agent_x.import_external_allyunit_metrics(jane_metr)
 
     # THEN
-    for ally_x in agent_x._allys.values():
-        if ally_x.name == jane_text:
-            print(f"After  Ally {ally_x.name} {ally_x._debtor_active=} ")
-            assert ally_x._debtor_active == jane_debtor_status
-            assert ally_x._creditor_active == jane_creditor_status
-        else:
-            # print(f"Ally {ally_x.name} {ally_x._debtor_active=} ")
-            assert ally_x._debtor_active is None
-            assert ally_x._creditor_active is None
+    assert jane_ally._debtor_active == jane_debtor_status
+    assert jane_ally._creditor_active == jane_creditor_status
+
+    assert (
+        sum(ally_x._creditor_active is None for ally_x in agent_x._allys.values())
+        == len(agent_x._allys) - 1
+    )
+    assert (
+        sum(ally_x._debtor_active is None for ally_x in agent_x._allys.values())
+        == len(agent_x._allys) - 1
+    )
+    assert (
+        sum(ally_x._creditor_active != None for ally_x in agent_x._allys.values()) == 1
+    )
+    assert sum(ally_x._debtor_active != None for ally_x in agent_x._allys.values()) == 1

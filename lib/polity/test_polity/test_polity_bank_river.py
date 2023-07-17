@@ -52,16 +52,19 @@ def test_polity_set_river_sphere_for_agent_CorrectlyPopulatesriver_tallyTable01(
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 4
     with e1.get_bank_conn() as bank_conn:
         river_flows = get_river_flow_dict(bank_conn, currency_agent_name=sal_text)
-    for river_flow in river_flows.values():
-        print(f"{river_flow=}")
-        if river_flow.src_name == "sal" and river_flow.dst_name == "tom":
-            assert river_flow.river_tree_level == 1
-            assert river_flow.currency_start == 0.25
-            assert river_flow.currency_close == 1
-            assert river_flow.parent_flow_num is None
-        elif river_flow.src_name == "tom" and river_flow.dst_name == "sal":
-            assert river_flow.river_tree_level == 2
-            assert river_flow.parent_flow_num == 1
+
+    flow_0 = river_flows.get(0)
+    flow_1 = river_flows.get(1)
+    assert flow_1.src_name == "sal" and flow_1.dst_name == "tom"
+    assert flow_1.river_tree_level == 1
+    assert flow_1.currency_start == 0.25
+    assert flow_1.currency_close == 1
+    assert flow_1.parent_flow_num is None
+    flow_2 = river_flows.get(2)
+    flow_3 = river_flows.get(3)
+    assert flow_3.src_name == "tom" and flow_3.dst_name == "sal"
+    assert flow_3.river_tree_level == 2
+    assert flow_3.parent_flow_num == 1
 
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tally) == 2
 
@@ -679,9 +682,16 @@ def test_polity_set_river_sphere_for_agent_CorrectlyUpatesAgentAllyUnits(
 
     e1.set_river_sphere_for_agent(agent_name=sal_text, max_flows_count=100)
     assert len(sal_agent_before._allys) == 3
-    for allyunit_x in sal_agent_before._allys.values():
-        assert allyunit_x._bank_tax_paid is None
-        assert allyunit_x._bank_tax_diff is None
+    print(f"{len(sal_agent_before._allys)=}")
+    bob_ally = sal_agent_before._allys.get(bob_text)
+    tom_ally = sal_agent_before._allys.get(tom_text)
+    ava_ally = sal_agent_before._allys.get(ava_text)
+    assert bob_ally._bank_tax_paid is None
+    assert bob_ally._bank_tax_diff is None
+    assert tom_ally._bank_tax_paid is None
+    assert tom_ally._bank_tax_diff is None
+    assert ava_ally._bank_tax_paid is None
+    assert ava_ally._bank_tax_diff is None
 
     # WHEN
     e1.set_river_sphere_for_agent(agent_name=sal_text)
@@ -692,28 +702,55 @@ def test_polity_set_river_sphere_for_agent_CorrectlyUpatesAgentAllyUnits(
 
     sal_agent_after = e1.get_agent_from_agents_dir(_desc=sal_text)
 
-    for sal_river_tally in sal_river_tallys.values():
-        # print(f"{sal_river_tally=}")
-        assert sal_river_tally.currency_name == sal_text
-        assert sal_river_tally.tax_name in [bob_text, tom_text, elu_text]
+    bob_tally = sal_river_tallys.get(bob_text)
+    tom_tally = sal_river_tallys.get(tom_text)
+    elu_tally = sal_river_tallys.get(elu_text)
+    assert bob_tally.tax_name == bob_text
+    assert tom_tally.tax_name == tom_text
+    assert elu_tally.tax_name == elu_text
+    assert bob_tally.currency_name == sal_text
+    assert tom_tally.currency_name == sal_text
+    assert elu_tally.currency_name == sal_text
 
-        allyunit_x = sal_agent_after._allys.get(sal_river_tally.tax_name)
-        if allyunit_x != None:
-            # print(
-            #     f"{sal_river_tally.currency_name=} {sal_river_tally.tax_name=} {allyunit_x.name=} tax_total: {sal_river_tally.tax_total} Tax Paid: {allyunit_x._bank_tax_paid}"
-            # )
-            # print(
-            #     f"{sal_river_tally.currency_name=} {sal_river_tally.tax_name=} {allyunit_x.name=} tax_diff:  {sal_river_tally.tax_diff} Tax Paid: {allyunit_x._bank_tax_diff}"
-            # )
-            assert sal_river_tally.tax_total == allyunit_x._bank_tax_paid
-            assert sal_river_tally.tax_diff == allyunit_x._bank_tax_diff
+    bob_ally = sal_agent_after._allys.get(bob_text)
+    tom_ally = sal_agent_after._allys.get(tom_text)
+    ava_ally = sal_agent_after._allys.get(ava_text)
+    elu_ally = sal_agent_after._allys.get(elu_text)
 
-    for allyunit_x in sal_agent_after._allys.values():
-        river_tally_x = sal_river_tallys.get(allyunit_x.name)
-        if river_tally_x is None:
-            assert allyunit_x._bank_tax_paid is None
-            assert allyunit_x._bank_tax_diff is None
-        else:
-            assert allyunit_x._bank_tax_paid != None
-            assert allyunit_x._bank_tax_diff != None
-    assert sal_agent_after != sal_agent_before
+    assert bob_tally.tax_total == bob_ally._bank_tax_paid
+    assert bob_tally.tax_diff == bob_ally._bank_tax_diff
+    assert tom_tally.tax_total == tom_ally._bank_tax_paid
+    assert tom_tally.tax_diff == tom_ally._bank_tax_diff
+    assert elu_ally is None
+    assert elu_tally.tax_total < 0.31 and elu_tally.tax_total > 0.3
+    assert elu_tally.tax_diff is None
+
+    # for tally_uid, sal_river_tally in sal_river_tallys.items():
+    #     print(f"{tally_uid=} {sal_river_tally=}")
+    #     assert sal_river_tally.currency_name == sal_text
+    #     assert sal_river_tally.tax_name in [bob_text, tom_text, elu_text]
+    #     allyunit_x = sal_agent_after._allys.get(sal_river_tally.tax_name)
+    #     if allyunit_x != None:
+    #         # print(
+    #         #     f"{sal_river_tally.currency_name=} {sal_river_tally.tax_name=} {allyunit_x.name=} tax_total: {sal_river_tally.tax_total} Tax Paid: {allyunit_x._bank_tax_paid}"
+    #         # )
+    #         # print(
+    #         #     f"{sal_river_tally.currency_name=} {sal_river_tally.tax_name=} {allyunit_x.name=} tax_diff:  {sal_river_tally.tax_diff} Tax Paid: {allyunit_x._bank_tax_diff}"
+    #         # )
+    #         assert sal_river_tally.tax_total == allyunit_x._bank_tax_paid
+    #         assert sal_river_tally.tax_diff == allyunit_x._bank_tax_diff
+
+    assert sal_river_tallys.get(ava_text) is None
+    assert ava_ally._bank_tax_paid is None
+    assert ava_ally._bank_tax_diff is None
+
+    # for allyunit_x in sal_agent_after._allys.values():
+    #     print(f"sal_agent_after {allyunit_x.name=} {allyunit_x._bank_tax_paid=}")
+    #     river_tally_x = sal_river_tallys.get(allyunit_x.name)
+    #     if river_tally_x is None:
+    #         assert allyunit_x._bank_tax_paid is None
+    #         assert allyunit_x._bank_tax_diff is None
+    #     else:
+    #         assert allyunit_x._bank_tax_paid != None
+    #         assert allyunit_x._bank_tax_diff != None
+    # assert sal_agent_after != sal_agent_before

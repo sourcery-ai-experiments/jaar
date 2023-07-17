@@ -223,28 +223,52 @@ def test_agentunit_get_agent_sprung_from_single_idea_ReturnsCorrectAgentScenario
 
     # THEN
     # assert bond_agent._desc == clean_kitchen_text
-    bond_agent_idea_list = bond_agent.get_idea_list()
-    for byx in bond_agent_idea_list:
-        cyx = cx.get_idea_kid(road=byx.get_road())
-        assert byx._uid == cyx._uid
-        print(f"{byx._walk=} {byx._desc=} {byx._begin=} {byx._close=}")
-        print(f"{cyx._walk=} {cyx._desc=} {cyx._begin=} {cyx._close=}")
-        assert byx._begin == cyx._begin
-        assert byx._close == cyx._close
-        for yx4 in byx._kids.values():
-            assert yx4._desc == cyx._kids.get(yx4._desc)._desc
-        for cx3 in cyx._kids.values():
-            if cx3._desc == water_text:
-                print(f"checking src agent idea kid_desc='{cx3._desc}'")
-                assert byx._kids.get(cx3._desc) is None
-            else:
-                assert cx3._desc == byx._kids.get(cx3._desc)._desc
-        # assert len(byx._kids) != len(cyx._kids)
-        # assert byx._kids_total_weight != cyx._kids_total_weight
-        # assert byx._kids != cyx._kids
-        assert byx != cyx
+    print(f"{len(bond_agent._idea_dict)=}")
+    assert len(bond_agent._idea_dict) == 3
+    b_src_idea = bond_agent.get_idea_kid(road=jessi_text)
+    src_src_idea = cx.get_idea_kid(road=jessi_text)
+    assert b_src_idea._uid == src_src_idea._uid
+    assert b_src_idea._begin == src_src_idea._begin
+    assert b_src_idea._close == src_src_idea._close
+    assert b_src_idea != src_src_idea
 
-    assert len(bond_agent_idea_list) == 3
+    b_casa_idea = bond_agent.get_idea_kid(road=casa_road)
+    src_casa_idea = cx.get_idea_kid(road=casa_road)
+    assert b_casa_idea._uid == src_casa_idea._uid
+    assert b_casa_idea._begin == src_casa_idea._begin
+    assert b_casa_idea._close == src_casa_idea._close
+    assert b_casa_idea != src_casa_idea
+
+    b_clean_kitchen_idea = bond_agent.get_idea_kid(road=clean_kitchen_road)
+    src_clean_kitchen_idea = cx.get_idea_kid(road=clean_kitchen_road)
+    assert b_clean_kitchen_idea._uid == src_clean_kitchen_idea._uid
+    assert b_clean_kitchen_idea._begin == src_clean_kitchen_idea._begin
+    assert b_clean_kitchen_idea._close == src_clean_kitchen_idea._close
+    assert b_clean_kitchen_idea != src_clean_kitchen_idea
+
+    assert bond_agent._idearoot._kids.get(water_text) is None
+
+    # for byx in bond_agent._idea_dict.values():
+    #     cyx = cx.get_idea_kid(road=byx.get_road())
+    #     assert byx._uid == cyx._uid
+    #     print(f"{byx.get_road()=} {byx._begin=} {byx._close=}")
+    #     print(f"{cyx.get_road()=} {cyx._begin=} {cyx._close=}")
+    #     assert byx._begin == cyx._begin
+    #     assert byx._close == cyx._close
+    #     for yx4 in byx._kids.values():
+    #         assert yx4._desc == cyx._kids.get(yx4._desc)._desc
+    #     for cx3 in cyx._kids.values():
+    #         if cx3._desc == water_text:
+    #             print(f"checking src agent idea kid_desc='{cx3._desc}'")
+    #             assert byx._kids.get(cx3._desc) is None
+    #         else:
+    #             assert cx3._desc == byx._kids.get(cx3._desc)._desc
+    #     # assert len(byx._kids) != len(cyx._kids)
+    #     # assert byx._kids_total_weight != cyx._kids_total_weight
+    #     # assert byx._kids != cyx._kids
+    #     assert byx != cyx
+
+    assert len(bond_agent._idea_dict) == 3
     assert bond_agent._idearoot._kids.get(water_text) is None
 
 
@@ -310,12 +334,18 @@ def test_agentunit_export_all_bonds_ReturnsDictOfBonds(env_dir_setup_cleanup):
     cx.export_all_bonds(dir=get_temp_env_dir())
 
     # THEN
-    for bond_file_x in x_func_dir_files(dir_path=get_temp_env_dir()).keys():
-        print(f"files exported {bond_file_x=}")
-        bond_x = agent_get_from_json(
-            lw_json=x_func_open_file(dest_dir=get_temp_env_dir(), file_name=bond_file_x)
-        )
-        assert bond_x.get_bond_status()
+    dir_files = x_func_dir_files(dir_path=get_temp_env_dir())
+    file_17_name = "17.json"
+    assert dir_files[file_17_name]
+    json_17 = x_func_open_file(dest_dir=get_temp_env_dir(), file_name=file_17_name)
+    bond_17 = agent_get_from_json(lw_json=json_17)
+    assert bond_17.get_bond_status()
+
+    file_2_name = "2.json"
+    assert dir_files[file_2_name]
+    json_2 = x_func_open_file(dest_dir=get_temp_env_dir(), file_name=file_2_name)
+    bond_2 = agent_get_from_json(lw_json=json_2)
+    assert bond_2.get_bond_status()
 
 
 def test_agentunit_get_meld_of_agent_files_MeldsIntoSourceAgent_Scenario1(
