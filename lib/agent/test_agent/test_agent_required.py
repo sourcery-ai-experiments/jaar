@@ -336,34 +336,6 @@ def test_agent_requiredunits_set_UnCoupledMethod():
     assert len(work_idea1._requiredunits[weekday_road].sufffacts) == 2
 
 
-def test_get_idea_defined_required_attributes_correctlyChangesOpenNighNumorDenomReest():
-    # Given
-    agent_x = example_agents_get_agent_with_4_levels()
-    work = "work"
-    work_road = f"{agent_x._desc},{work}"
-    time = "time"
-    time_road = f"{agent_x._desc},{time}"
-    week = "week"
-    week_road = f"{agent_x._desc},{time},{week}"
-    agent_x.add_idea(
-        idea_kid=IdeaKid(_desc=time, _begin=77, _close=280), walk=agent_x._desc
-    )
-    agent_x.add_idea(
-        idea_kid=IdeaKid(_desc=week, _numor=1, _denom=7, _reest=False), walk=time_road
-    )
-
-    # When/Then
-    assert (11.0, 40.0, 1, 7, False) == agent_x.get_idea_defined_required_attributes(
-        base=time_road,
-        sufffact=week_road,
-        open=None,
-        nigh=None,
-        numor=None,
-        denom=None,
-        reest=None,
-    )
-
-
 def test_agent_requiredunits_set_sufffactIdeaWithDenomSetsSuffFactDivision():
     # Given
     agent_x = example_agents_get_agent_with_4_levels()

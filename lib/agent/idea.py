@@ -82,6 +82,26 @@ class IdeaAttrHolder:
     is_expanded: bool = None
     on_meld_weight_action: str = None
 
+    def set_sufffact_range_attributes_influenced_by_sufffact_idea(
+        self,
+        sufffact_open,
+        sufffact_nigh,
+        # sufffact_numor,
+        sufffact_denom,
+        # sufffact_reest,
+    ):
+        if self.required_sufffact != None:
+            if self.required_sufffact_open is None:
+                self.required_sufffact_open = sufffact_open
+            if self.required_sufffact_nigh is None:
+                self.required_sufffact_nigh = sufffact_nigh
+            # if self.required_sufffact_numor is None:
+            #     numor_x = sufffact_numor
+            if self.required_sufffact_divisor is None:
+                self.required_sufffact_divisor = sufffact_denom
+            # if self.required_sufffact_reest is None:
+            #     self.required_sufffact_reest = sufffact_reest
+
 
 @dataclasses.dataclass
 class IdeaCore:

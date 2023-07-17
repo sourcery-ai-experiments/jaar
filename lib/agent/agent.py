@@ -1246,27 +1246,6 @@ class AgentUnit:
                 numeric_road=numeric_road,
             )
 
-        required_sufffact_numor = None
-        required_sufffact_denom = required_sufffact_divisor
-        required_sufffact_reest = None
-
-        (
-            required_sufffact_open,
-            required_sufffact_nigh,
-            required_sufffact_numor,
-            required_sufffact_denom,
-            required_sufffact_reest,
-        ) = self.get_idea_defined_required_attributes(
-            base=required_base,
-            sufffact=required_sufffact,
-            open=required_sufffact_open,
-            nigh=required_sufffact_nigh,
-            numor=required_sufffact_numor,
-            denom=required_sufffact_denom,
-            reest=required_sufffact_reest,
-        )
-
-        temp_idea = self.get_idea_kid(road=road)
         idea_attr = IdeaAttrHolder(
             weight=weight,
             uid=uid,
@@ -1275,7 +1254,7 @@ class AgentUnit:
             required_sufffact=required_sufffact,
             required_sufffact_open=required_sufffact_open,
             required_sufffact_nigh=required_sufffact_nigh,
-            required_sufffact_divisor=required_sufffact_denom,
+            required_sufffact_divisor=required_sufffact_divisor,
             required_del_sufffact_base=required_del_sufffact_base,
             required_del_sufffact_need=required_del_sufffact_need,
             required_suff_idea_active_status=required_suff_idea_active_status,
@@ -1297,6 +1276,16 @@ class AgentUnit:
             problem_bool=problem_bool,
             on_meld_weight_action=on_meld_weight_action,
         )
+        if required_sufffact != None:
+            suffact_idea = self.get_idea_kid(road=required_sufffact)
+            idea_attr.set_sufffact_range_attributes_influenced_by_sufffact_idea(
+                sufffact_open=suffact_idea._begin,
+                sufffact_nigh=suffact_idea._close,
+                # suffact_numor=suffact_idea.anc_numor,
+                sufffact_denom=suffact_idea._denom,
+                # anc_reest=suffact_idea.anc_reest,
+            )
+        temp_idea = self.get_idea_kid(road=road)
         temp_idea._set_idea_attr(idea_attr=idea_attr)
         if f"{type(temp_idea)}".find("'.idea.IdeaRoot'>") <= 0:
             temp_idea._set_ideakid_attr(acptfactunit=acptfactunit)
@@ -1304,71 +1293,6 @@ class AgentUnit:
         # deleting a brandlink reqquires a tree traverse to correctly set brandheirs and brandlines
         if brandlink_del != None or brandlink != None:
             self.set_agent_metrics()
-
-    def get_idea_defined_required_attributes(
-        self,
-        base: Road,
-        sufffact: Road,
-        open: float,
-        nigh: float,
-        numor: int,
-        denom: int,
-        reest: bool,
-    ):
-        # this might be XXXX simplier after #51: spllts automatically set idea open and nigh
-        # thus there cannot exist a idea with a spllt but no open/nigh.
-        open_x = open
-        nigh_x = nigh
-        numor_x = numor
-        denom_x = denom
-        reest_x = reest
-
-        anc_open = None
-        anc_nigh = None
-        anc_numor = None
-        anc_denom = None
-        anc_reest = None
-        # if base != None and sufffact != None:
-        #     # evaluate all ideas between base and sufffact, get deepest non-none data
-        #     base_roads = get_ancestor_roads(road=base)
-        #     sufffact_roads = get_ancestor_roads(road=sufffact)
-        #     between_roads = [x for x in sufffact_roads if x not in base_roads]
-        #     between_roads.append(base)
-
-        #     # while between_roads != []:
-        #     #     x_road = between_roads.pop()
-        #     #     x_idea = self.get_idea_kid(road=x_road)
-        #     #     if x_idea._spllt != None:
-        #     #         anc_divisor = x_idea._spllt
-        #     #         if x_idea._begin != None:
-        #     #             anc_open = 0
-        #     #         if x_idea._close != None:
-        #     #             anc_nigh = x_idea._spllt
-
-        #     #     if x_idea._begin != None:
-        #     #         anc_open = x_idea._begin
-        #     #     if x_idea._close != None:
-        #     #         anc_nigh = x_idea._close
-        if sufffact != None:
-            x_idea = self.get_idea_kid(road=sufffact)
-            anc_open = x_idea._begin
-            anc_nigh = x_idea._close
-            anc_numor = x_idea._numor
-            anc_denom = x_idea._denom
-            anc_reest = x_idea._reest
-
-        if open_x is None:
-            open_x = anc_open
-        if nigh_x is None:
-            nigh_x = anc_nigh
-        if numor_x is None:
-            numor_x = anc_numor
-        if denom_x is None:
-            denom_x = anc_denom
-        if reest_x is None:
-            reest_x = anc_reest
-
-        return open_x, nigh_x, numor_x, denom_x, reest_x
 
     def del_idea_required_sufffact(
         self, road: Road, required_base: Road, required_sufffact: Road
