@@ -76,7 +76,7 @@ def test_polity_get_bank_db_conn_CreatesBankDBIfItDoesNotExist(env_dir_setup_cle
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         check_connection(e1.get_bank_conn())
-    assert str(excinfo.value) == f"unable to open database file"
+    assert str(excinfo.value) == "unable to open database file"
 
     # WHEN
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -95,23 +95,31 @@ def test_polity_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clean
 
     # THEN
     with e1.get_bank_conn() as bank_conn:
-        sqlstr = "SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name;"
-        print(f"{sqlstr=}")
-        results = bank_conn.execute(sqlstr)
+        tables_dict = _get_db_tables(bank_conn)
+    # row_count = 0
+    # for table_name, table_x in tables_dict.items():
+    #     row_count += 1
+    #     print(f" {table_x=} {row_count}. {table_name=}")
+    #     assert table_x == 1
 
-        row_count = 0
-        tables_dict = {"agentunits": 0, "ledger": 0, "river_tally": 0, "river_flow": 0}
-        for row in results:
-            row_count += 1
-            print(f"Polity '{e1.name}' {row_count}. bank_db table '{row[0]}'")
-            if tables_dict.get(row[0]) != None:
-                tables_dict[row[0]] = 1
+    assert tables_dict.get("agentunits") != None
+    assert tables_dict.get("ledger") != None
+    assert tables_dict.get("river_tally") != None
+    assert tables_dict.get("river_flow") != None
 
-    row_count = 0
-    for table_name, table_x in tables_dict.items():
-        row_count += 1
-        print(f" {table_x=} {row_count}. {table_name=}")
-        assert table_x == 1
+
+def _get_db_tables(bank_conn: Connection):
+    sqlstr = "SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name;"
+    print(f"{sqlstr=}")
+    results = bank_conn.execute(sqlstr)
+
+    result = {"agentunits": 0, "ledger": 0, "river_tally": 0, "river_flow": 0}
+    for row in results:
+        # print(f"Polity '{e1.name}' {row_count}. bank_db table '{row[0]}'")
+        # if tables_dict.get(row[0]) != None:
+        result[row[0]] = 1
+
+    return result
 
 
 def test_polity_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(

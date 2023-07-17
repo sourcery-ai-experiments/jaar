@@ -10,13 +10,8 @@ def test_agent_import_debtor_info_CorrectlyWorks():
     for ally_x in agent_x._allys.values():
         if ally_x.name == jane_text:
             print(f"Before Ally {ally_x.name} {ally_x._debtor_active=} ")
-            assert ally_x._debtor_active is None
-            assert ally_x._creditor_active is None
-        else:
-            # print(f"Ally {ally_x.name} {ally_x._debtor_active=} ")
-            assert ally_x._debtor_active is None
-            assert ally_x._creditor_active is None
-
+        assert ally_x._creditor_active is None
+        assert ally_x._debtor_active is None
     # WHEN
     jane_debtor_status = True
     jane_creditor_status = True

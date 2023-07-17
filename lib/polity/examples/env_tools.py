@@ -282,11 +282,17 @@ def rename_test_polity(polity_obj: PolityUnit, new_name):
     polity_obj.set_polityunit_name(name=new_name)
 
 
+class InvalidPolityCopyException(Exception):
+    pass
+
+
 def copy_test_polity(src_name: str, dest_name: str):
     base_dir = "lib/polity/examples/politys"
     new_dir = f"{base_dir}/{dest_name}"
     if os_path.exists(new_dir):
-        raise Exception(f"Cannot copy polity to '{new_dir}' dir already exists.")
+        raise InvalidPolityCopyException(
+            f"Cannot copy polity to '{new_dir}' dir already exists."
+        )
     # base_dir = polity_obj.get_object_root_dir()
     src_dir = f"{base_dir}/{src_name}"
     dest_dir = f"{base_dir}/{dest_name}"

@@ -531,7 +531,7 @@ class IdeaCore:
 
     def _check_get_on_meld_weight_actions(self, on_meld_weight_action: str):
         if on_meld_weight_action not in (list(get_on_meld_weight_actions())):
-            raise Exception(
+            raise InvalidIdeaException(
                 f"IdeaCore unit '{self._desc}' cannot have on_meld_weight_action '{on_meld_weight_action}'."
             )
 

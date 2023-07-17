@@ -14,7 +14,7 @@ def test_sqlite_text_WorksCorrectly():
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         sqlite_text("bob")
-    assert str(excinfo.value) == f"function requires boolean"
+    assert str(excinfo.value) == "function requires boolean"
 
 
 def test_sqlite_null_WorksCorrectly():

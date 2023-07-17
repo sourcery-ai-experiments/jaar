@@ -1,3 +1,4 @@
+import itertools
 from lib.agent.agent import AgentUnit
 from datetime import datetime
 
@@ -54,35 +55,27 @@ def test_get_time_dt_from_min_WorksCorrectly():
     x_next_day = x_minutes + 1440
     assert g_lw.get_time_dt_from_min(min=x_next_day) == datetime(2022, 10, 30, 0, 0)
 
-    for year in range(479, 480):  # --previously-- 20 days error
-        # for year in range(479, 481):  # --previously-- 20 days error
-        # for year in range(349, 350):  # 12 days error
-        # for year in range(320, 320):  # no error
-        # for year in range(340, 349):  # no error 9 days error
-        # for year in range(4, 5):  # no error 9 days error
-        for month in range(1, 3):
-            # for month in range(1, 13):
-            for day in range(20, 32):
-                # for day in range(1, 32):
-                # print(f"assert for {year=} {month=} {day=}")
-                try:
-                    py_dt = datetime(year, month, day, 0, 0)
-                    dt_exist = True
-                except Exception:
-                    dt_exist = False
+    for year, month, day in itertools.product(
+        range(479, 480), range(1, 3), range(20, 32)
+    ):
+        # for day in range(1, 32):
+        # print(f"assert for {year=} {month=} {day=}")
+        try:
+            py_dt = datetime(year, month, day, 0, 0)
+            dt_exist = True
+        except Exception:
+            dt_exist = False
 
-                if dt_exist:
-                    jaja_min = g_lw.get_time_min_from_dt(
-                        dt=datetime(year, month, day, 0, 0)
-                    )
-                    # print(f"assert for {year=} {month=} {day=} {jaja_min}")
+        if dt_exist:
+            jaja_min = g_lw.get_time_min_from_dt(dt=datetime(year, month, day, 0, 0))
+            # print(f"assert for {year=} {month=} {day=} {jaja_min}")
 
-                    jaja_dt = g_lw.get_time_dt_from_min(min=jaja_min)
-                    if py_dt != jaja_dt:
-                        print(
-                            f"assert failed for {year=} {month=} {day} \t {jaja_min} Jaja too large: {str(jaja_dt-py_dt)} ({py_dt=})"
-                        )
-                        assert 1 == 2
+            jaja_dt = g_lw.get_time_dt_from_min(min=jaja_min)
+            if py_dt != jaja_dt:
+                print(
+                    f"assert failed for {year=} {month=} {day} \t {jaja_min} Jaja too large: {str(jaja_dt-py_dt)} ({py_dt=})"
+                )
+                assert 1 == 2
     # for year in range(480, 481):
     #     for month in range(1, 12):
     #         for day in range(1, 30):
@@ -97,11 +90,11 @@ def test_get_time_():
     g_lw.set_time_hreg_ideas(c400_count=6)
 
     idea_list = g_lw.get_idea_list()
-    for idea_x in idea_list:
-        if idea_x._desc in ["min2010", "years"]:
-            print(
-                f"{idea_x._walk=} \t{idea_x._desc=} {idea_x._begin=} {idea_x._close=} {idea_x._addin=}"
-            )
+    # for idea_x in idea_list:
+    #     if idea_x._desc in ["min2010", "years"]:
+    #         print(
+    #             f"{idea_x._walk=} \t{idea_x._desc=} {idea_x._begin=} {idea_x._close=} {idea_x._addin=}"
+    #         )
 
     # When
     g_lw.set_time_acptfacts(

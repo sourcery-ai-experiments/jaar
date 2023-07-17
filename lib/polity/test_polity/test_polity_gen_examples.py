@@ -8,7 +8,7 @@ from lib.polity.examples.env_tools import (
 
 def test_polity_delete_and_set_ex3_andOthersRunWithOutError():
     # WHEN/THEN
-    assert _delete_and_set_ex3() == None
-    assert _delete_and_set_ex4() == None
-    assert _delete_and_set_ex5() == None
-    assert _delete_and_set_ex6() == None
+    assert _delete_and_set_ex3() is None
+    assert _delete_and_set_ex4() is None
+    assert _delete_and_set_ex5() is None
+    assert _delete_and_set_ex6() is None
