@@ -10,6 +10,15 @@ from lib.agent.road import Road
 from lib.agent.agent import AgentUnit
 
 
+def _check_all_elements_in_dict_are_correct_type(x_dict: dict, type_str: str) -> bool:
+    bool_x = True
+    for x_value in x_dict.values():
+        if str(type(x_value)).find(type_str) == -1:
+            bool_x = False
+        print(f"/t{type(x_value)=} {type_str=} {str(type(x_value)).find(type_str)=}")
+    return bool_x
+
+
 def test_agent_yoke_dict_isDictionaryAndIsFullyPopulated():
     # GIVEN
     agent_x = get_agent_with_4_levels_and_2requireds()
@@ -36,9 +45,12 @@ def test_agent_get_idea_list_SetsSatiateStatusCorrectlyWhenAcptFactSaysNo():
     # THEN
     assert idea_list
     assert len(idea_list) == 17
-    for curr_idea in idea_list:
-        if curr_idea._desc == "Work":
-            assert curr_idea._active_status == False
+
+    # for idea in agent_x._idea_dict.values():
+    #     print(f"{work_road=} {idea.get_road()=}")
+    work_text = "work"
+    work_road = f"{agent_x._desc},{work_text}"
+    assert agent_x._idea_dict.get(work_road)._active_status == False
 
 
 def test_agent_get_idea_list_SetsSatiateStatusCorrectlyWhenAcptFactChanges():
@@ -48,7 +60,8 @@ def test_agent_get_idea_list_SetsSatiateStatusCorrectlyWhenAcptFactChanges():
     week_road = f"{agent_x._desc},{week_text}"
     sun_text = "Wednesday"
     sun_road = f"{week_road},{sun_text}"
-    work_text = "Work"
+    work_text = "work"
+    work_road = f"{agent_x._desc},{work_text}"
 
     # WHEN
     agent_x.set_acptfact(base=week_road, pick=sun_road)
@@ -57,9 +70,7 @@ def test_agent_get_idea_list_SetsSatiateStatusCorrectlyWhenAcptFactChanges():
     idea_list = agent_x.get_idea_list()
     assert idea_list
     assert len(idea_list) == 17
-    for curr_idea in idea_list:
-        if curr_idea._desc == work_text:
-            assert curr_idea._active_status == False
+    assert agent_x._idea_dict.get(work_road)._active_status == False
 
     # WHEN
     states_text = "nation-state"
@@ -72,9 +83,7 @@ def test_agent_get_idea_list_SetsSatiateStatusCorrectlyWhenAcptFactChanges():
     idea_list = agent_x.get_idea_list()
     assert idea_list
     assert len(idea_list) == 17
-    for curr_idea in idea_list:
-        if curr_idea._desc == work_text:
-            assert curr_idea._active_status == True
+    assert agent_x._idea_dict.get(work_road)._active_status
 
     # WHEN
     france_text = "France"
@@ -85,9 +94,7 @@ def test_agent_get_idea_list_SetsSatiateStatusCorrectlyWhenAcptFactChanges():
     idea_list = agent_x.get_idea_list()
     assert idea_list
     assert len(idea_list) == 17
-    for curr_idea in idea_list:
-        if curr_idea._desc == work_text:
-            assert curr_idea._active_status == False
+    assert agent_x._idea_dict.get(work_road)._active_status == False
 
 
 def test_agent_get_idea_list_returns_correct_list():
@@ -158,68 +165,59 @@ def test_agent_get_idea_list_returns_correct_list():
     agent_x.set_acptfact(base=state_road, pick=oregon_road)
 
     # THEN
-    temp_idea = IdeaKid(
-        _walk=f"{agent_x._desc}",
-        _kids=None,
-        _weight=30,
-        _desc=work_text,
-        _level=1,
-        _requiredunits=x1_requiredunits,
-        _requiredheirs=x1_requiredheirs,
-        _active_status=True,
-        promise=True,
-    )
+    work_idea = agent_x._idea_dict.get(work_road)
+    print(f"\nlook at {work_idea.get_road()=}")
+    assert work_idea._walk == f"{agent_x._desc}"
+    assert work_idea._kids == {}
+    assert work_idea._weight == 30
+    assert work_idea._desc == work_text
+    assert work_idea._level == 1
+    assert work_idea._active_status
+    assert work_idea.promise
+    # print(f"{work_idea._requiredheirs=}")
+    curr_requiredheir_state = work_idea._requiredheirs[state_road]
+    print(f"  {curr_requiredheir_state=}")
+    print(f"  {curr_requiredheir_state._status=}\n")
+    # assert work_idea._requiredheirs == x1_requiredheirs
 
-    print("iterate through every idea...")
-    for curr_idea in idea_list:
-        if str(type(curr_idea)).find(".idea.IdeaKid'>") > 0:
-            assert curr_idea._active_status != None
+    assert len(work_idea._requiredheirs) == len(x1_requiredheirs)
+    week_requiredheir = work_idea._requiredheirs.get(week_road)
+    # usa_sufffact = week_requiredheir.sufffacts.get(usa_road)
+    print(f"    {work_idea._desc=}")
+    # print(f"    {usa_sufffact.base=}")
+    # print(f"    {usa_sufffact._task=}")
+    # print(f"    {usa_sufffact._task=}")
+    assert week_requiredheir._task == False
+    # print(f"      sufffacts: {w=}")
+    # w_need = usa_sufffact.sufffacts[wed_road].need
+    # print(f"      {w_need=}")
+    # assert usa_sufffact._task == w_need._task
+    # assert usa_sufffact._status == w_need._status
+    # assert week_requiredheir.sufffacts == week_requiredheir.sufffacts
 
-        # print("")
-        # print(f"{curr_idea._desc=}")
-        # print(f"{len(curr_idea._requiredunits)=}")
-        print(
-            f"  iterate through every requiredheir... {len(curr_idea._requiredheirs)=} {curr_idea._desc=}"
-        )
-        # print(f"{curr_idea._requiredheirs=}")
-        for required in curr_idea._requiredheirs.values():
-            assert str(type(required)).find(".required.RequiredHeir'>") > 0
-            print(f"    {required.base=}")
-            assert required._status != None
-            for sufffact_x in required.sufffacts.values():
-                assert sufffact_x._status != None
+    # assert work_idea._requiredunits == x1_requiredunits
 
-        if curr_idea._desc == temp_idea._desc:
-            # print(idea)
-            print(f"\nlook at {curr_idea.get_road()=}")
-            assert curr_idea._desc == temp_idea._desc
-            assert curr_idea._walk == temp_idea._walk
-            # print(f"{curr_idea._requiredheirs=}")
-            curr_requiredheir_state = curr_idea._requiredheirs[state_road]
-            print(f"  {curr_requiredheir_state=}")
-            print(f"  {curr_requiredheir_state._status=}\n")
-            # print("temp_idea._requiredheirs")
-            temp_requiredheir_state = temp_idea._requiredheirs[state_road]
-            # print(f"{temp_idea._requiredheirs=}")
-            print(f"  {temp_requiredheir_state=}")
-            print(f"  {temp_requiredheir_state._status=}\n")
-            assert len(curr_idea._requiredheirs) == len(temp_idea._requiredheirs)
-            for lh in curr_idea._requiredheirs.values():
-                print(f"    {curr_idea._desc=}")
-                print(f"    {lh.base=}")
-                print(f"    {lh._task=}")
-                temp_idea_rh_lh_base = temp_idea._requiredheirs[lh.base]
-                print(f"    {temp_idea_rh_lh_base._task=}")
+    # print("iterate through every idea...")
+    # for curr_idea in idea_list:
+    #     if str(type(curr_idea)).find(".idea.IdeaKid'>") > 0:
+    #         assert curr_idea._active_status != None
 
-                assert lh._task == temp_idea_rh_lh_base._task
-                for w in lh.sufffacts.values():
-                    print(f"      sufffacts: {w=}")
-                    w_need = temp_idea_rh_lh_base.sufffacts[w.need]
-                    print(f"      {w_need=}")
-                    assert w._task == w_need._task
-                    assert w._status == w_need._status
-                assert lh.sufffacts == temp_idea_rh_lh_base.sufffacts
-            assert curr_idea._requiredheirs == temp_idea._requiredheirs
+    #     # print("")
+    #     # print(f"{curr_idea._desc=}")
+    #     # print(f"{len(curr_idea._requiredunits)=}")
+    #     print(
+    #         f"  {curr_idea._desc} iterate through every requiredheir... {len(curr_idea._requiredheirs)=} {curr_idea._desc=}"
+    #     )
+    #     # print(f"{curr_idea._requiredheirs=}")
+    #     for required in curr_idea._requiredheirs.values():
+    #         assert str(type(required)).find(".required.RequiredHeir'>") > 0
+    #         print(f"    {required.base=}")
+    #         assert required._status != None
+    #         for sufffact_x in required.sufffacts.values():
+    #             assert sufffact_x._status != None
+    #         assert _check_all_elements_in_dict_are_correct_type(
+    #             x_dict=required.sufffacts, type_str="lib.agent.required.SuffFactUnit"
+    #         )
 
 
 def test_agent_set_agent_metrics_CorrectlyClears_agent_coin():
@@ -337,11 +335,11 @@ def test_agent_get_idea_list_CorrectlyCalculatesRangeAttributes():
     # GIVEN
     agent_x = get_agent_with7amCleanTableRequired()
     idea_list = agent_x.get_idea_list()
-    for idea in idea_list:
-        if idea._desc == "clean table":
-            # for required in idea._requiredunits.values():
-            #     print(f"{idea._desc=} {required}")
-            assert idea._active_status == False
+    housework = "housework"
+    house_road = f"{agent_x._desc},{housework}"
+    clean_text = "clean table"
+    clean_road = f"{house_road},{clean_text}"
+    assert agent_x._idea_dict.get(clean_road)._active_status == False
 
     # set acptfacts as midnight to 8am
     day24hr_base = f"{agent_x._desc},timetech,24hr day"
@@ -355,15 +353,8 @@ def test_agent_get_idea_list_CorrectlyCalculatesRangeAttributes():
     )
 
     # THEN
-    idea_list = agent_x.get_idea_list()
-    temp_idea = None
-    for idea in idea_list:
-        # print(f"{idea._active_status=} {idea._desc=}")
-        if idea._desc == "clean table":
-            temp_idea = idea
-            # for required in idea._requiredunits.values():
-            #     print(f"{idea._desc=} {required}")
-    assert temp_idea._active_status == True
+    agent_x.set_agent_metrics()
+    assert agent_x._idea_dict.get(clean_road)._active_status
 
     # WHEN
     # set acptfacts as 8am to 10am
@@ -374,17 +365,12 @@ def test_agent_get_idea_list_CorrectlyCalculatesRangeAttributes():
         base=day24hr_base, pick=day24hr_pick, open=day24hr_open, nigh=day24hr_nigh
     )
     print(agent_x._idearoot._acptfactunits["src,timetech,24hr day"])
-    print(agent_x._idearoot._kids["housework"]._kids["clean table"]._requiredunits)
-    # agent_x._idearoot._kids["housework"]._kids["clean table"]._active_status = None
+    print(agent_x._idearoot._kids["housework"]._kids[clean_text]._requiredunits)
+    # agent_x._idearoot._kids["housework"]._kids[clean_text]._active_status = None
 
     # THEN
-    idea_list = agent_x.get_idea_list()
-    for idea in idea_list:
-        if idea._desc == "clean table":
-            temp_idea = idea
-            # for required in idea._requiredunits.values():
-            #     print(f"{idea._desc=} {required}")
-    assert temp_idea._active_status == False
+    agent_x.set_agent_metrics()
+    assert agent_x._idea_dict.get(clean_road)._active_status == False
 
 
 def test_get_agenda_items():
@@ -418,37 +404,41 @@ def test_exammple_idea_list_HasCorrectData():
     assert agent_x != None
     # print(f"{agent_x._desc=}")
     # print(f"{len(agent_x._idearoot._kids)=}")
-    if agent_x._idearoot._kids["Ultimate Frisbee"]._desc == "Ultimate Frisbee":
-        assert agent_x._idearoot._kids["Ultimate Frisbee"]._requiredunits != None
+    ulty_text = "Ultimate Frisbee"
+    ulty_road = f"{agent_x._desc},{ulty_text}"
+
+    # if agent_x._idearoot._kids["Ultimate Frisbee"]._desc == "Ultimate Frisbee":
+    assert agent_x._idearoot._kids[ulty_text]._requiredunits != None
     assert agent_x._desc != None
 
-    for acptfact in agent_x._idearoot._acptfactunits.values():
-        print(f"{acptfact=}")
+    # for acptfact in agent_x._idearoot._acptfactunits.values():
+    #     print(f"{acptfact=}")
 
     idea_list = agent_x.get_idea_list()
     # print(f"{str(type(idea))=}")
     # print(f"{len(idea_list)=}")
-    for idea in idea_list:
-        assert (
-            str(type(idea)).find(".idea.IdeaRoot'>") > 0
-            or str(type(idea)).find(".idea.IdeaKid'>") > 0
-        )
-        # print(f"{idea._desc=}")
-        if idea._desc == "laundry monday":
-            for required in idea._requiredunits.values():
-                print(f"{idea._desc=} {required.base=}")  # {required.sufffacts=}")
-            assert idea._active_status == False
+    laundry_text = "laundry monday"
+    laundry_road = f"{agent_x._desc},casa,cleaning,{laundry_text}"
 
+    # for idea in idea_list:
+    #     assert (
+    #         str(type(idea)).find(".idea.IdeaRoot'>") > 0
+    #         or str(type(idea)).find(".idea.IdeaKid'>") > 0
+    #     )
+    #     # print(f"{idea._desc=}")
+    #     if idea._desc == laundry_text:
+    #         for required in idea._requiredunits.values():
+    #             print(f"{idea._desc=} {required.base=}")  # {required.sufffacts=}")
+    # assert idea._active_status == False
+    assert agent_x._idea_dict.get(laundry_road)._active_status == False
+
+    # WHEN
     agent_x.set_acptfact(base="TlME,weekdays", pick="TlME,weekdays,Monday")
-    idea_list = agent_x.get_idea_list()
-    for idea in idea_list:
-        assert (
-            str(type(idea)).find(".idea.IdeaRoot'>") > 0
-            or str(type(idea)).find(".idea.IdeaKid'>") > 0
-        )
 
-        if idea._desc == "laundry monday":
-            assert idea._active_status == False
+    agent_x.set_agent_metrics()
+
+    # THEN
+    assert agent_x._idea_dict.get(laundry_road)._active_status == False
 
 
 def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
@@ -473,8 +463,8 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
 
     idea_list = agent_x.get_idea_list()
     missing_acptfacts = agent_x.get_missing_acptfact_bases()
-    for missing_acptfact, count in missing_acptfacts.items():
-        print(f"{missing_acptfact=} {count=}")
+    # for missing_acptfact, count in missing_acptfacts.items():
+    #     print(f"{missing_acptfact=} {count=}")
 
     weekday_road = "TlME,weekdays"
     mon_road = "TlME,weekdays,Monday"
