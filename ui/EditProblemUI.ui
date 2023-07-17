@@ -288,7 +288,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Add people to groups in other interface</string>
+    <string>Add people to groups in oter interface</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>

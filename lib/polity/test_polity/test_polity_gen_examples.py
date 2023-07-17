@@ -6,7 +6,7 @@ from lib.polity.examples.env_tools import (
 )
 
 
-def test_polity_delete_and_set_ex3_andOthersRunWithOutError():
+def test_polity_delete_and_set_ex3_thru_6_RunWithOutError():
     # WHEN/THEN
     assert _delete_and_set_ex3() is None
     assert _delete_and_set_ex4() is None

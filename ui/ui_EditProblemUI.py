@@ -193,7 +193,7 @@ class Ui_Form(object):
         self.label_7.setText(_translate("Form", "2."))
         self.label_8.setText(_translate("Form", "3."))
         self.label_9.setText(
-            _translate("Form", "Add people to groups in other interface")
+            _translate("Form", "Add people to groups in oter interface")
         )
         self.label_10.setText(_translate("Form", "weight"))
         self.label_11.setText(

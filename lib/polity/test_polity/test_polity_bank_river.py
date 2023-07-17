@@ -215,7 +215,7 @@ def test_polity_set_river_sphere_for_agent_CorrectlyPopulatesriver_tallyTable03(
 def test_polity_set_river_sphere_for_agent_CorrectlyPopulatesriver_tallyTable04(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 agents, 85% of river flows to sal, other %15 goes on endless loop
+    # GIVEN 5 agents, 85% of river flows to sal, left over %15 goes on endless loop
     polity_name = get_temp_env_name()
     e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -290,7 +290,7 @@ def test_polity_set_river_sphere_for_agent_CorrectlyPopulatesriver_tallyTable04(
 def test_polity_set_river_sphere_for_agent_CorrectlyPopulatesriver_tallyTable05(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 agents, 85% of river flows to sal, other %15 goes on endless loop that slowly bleeds to sal
+    # GIVEN 5 agents, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     polity_name = get_temp_env_name()
     e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -429,7 +429,7 @@ def test_polity_set_river_sphere_for_agent_CorrectlyDeletesPreviousRiver(
 def test_polity_set_river_sphere_for_agent_CorrectlyUsesMaxFlowsCount(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 agents, 85% of river flows to sal, other %15 goes on endless loop that slowly bleeds to sal
+    # GIVEN 5 agents, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     polity_name = get_temp_env_name()
     e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -490,7 +490,7 @@ def test_polity_set_river_sphere_for_agent_CorrectlyUsesMaxFlowsCount(
 def test_polity_set_river_sphere_for_agent_CorrectlyPopulatesriver_tallyTable05(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 agents, 85% of river flows to sal, other %15 goes on endless loop that slowly bleeds to sal
+    # GIVEN 5 agents, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     polity_name = get_temp_env_name()
     e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -572,7 +572,7 @@ def test_polity_set_river_sphere_for_agent_CorrectlyPopulatesriver_tallyTable05(
 def test_polity_set_river_sphere_for_agent_CorrectlyBuildsASingleContinuousRange(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 agents, 85% of river flows to sal, other %15 goes on endless loop that slowly bleeds to sal
+    # GIVEN 5 agents, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     polity_name = get_temp_env_name()
     e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -642,7 +642,7 @@ def test_polity_set_river_sphere_for_agent_CorrectlyBuildsASingleContinuousRange
 def test_polity_set_river_sphere_for_agent_CorrectlyUpatesAgentAllyUnits(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 agents, 85% of river flows to sal, other %15 goes on endless loop that slowly bleeds to sal
+    # GIVEN 5 agents, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     polity_name = get_temp_env_name()
     e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
     e1.create_dirs_if_null(in_memory_bank=True)

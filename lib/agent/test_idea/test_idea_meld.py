@@ -535,11 +535,11 @@ def test_idea_attributes_meld_FailRaisesError_action():
 def test_idea_attributes_meld_FailRaisesError_is_expanded():
     x_name = "_is_expanded"
     x_val = False
-    other_val = True
+    outside_val = True
     yx1 = IdeaCore(_desc="spirit")
     custom_set_idea_attr(idea=yx1, is_expanded=x_val)
     yx2 = IdeaCore(_desc="fun")
-    custom_set_idea_attr(idea=yx2, is_expanded=other_val)
+    custom_set_idea_attr(idea=yx2, is_expanded=outside_val)
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
