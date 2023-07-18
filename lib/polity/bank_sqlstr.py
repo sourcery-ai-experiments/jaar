@@ -444,10 +444,64 @@ def get_river_ledger_unit(
     )
 
 
+def get_idea_catalog_table_create_sqlstr() -> str:
+    return """
+        CREATE TABLE IF NOT EXISTS idea_catalog (
+          agent_name VARCHAR(255) NOT NULL
+        , idea_road VARCHAR(1000) NOT NULL
+        )
+        ;
+    """
+
+
+def get_idea_catalog_table_count(db_conn: Connection, agent_name: str) -> str:
+    sqlstr = f"""
+        SELECT COUNT(*) FROM idea_catalog WHERE agent_name = '{agent_name}'
+        ;
+    """
+    results = db_conn.execute(sqlstr)
+    agent_row_count = 0
+    for row in results.fetchall():
+        agent_row_count = row[0]
+    return agent_row_count
+
+
+@dataclass
+class IdeaCatalog:
+    agent_name: str
+    idea_road: str
+
+
+def get_idea_catalog_table_insert_sqlstr(
+    idea_catalog: IdeaCatalog,
+) -> str:
+    # return f"""INSERT INTO idea_catalog (agent_name, idea_road) VALUES ('{idea_catalog.agent_name}', '{idea_catalog.idea_road}');"""
+    return f"""
+        INSERT INTO idea_catalog (
+          agent_name
+        , idea_road
+        )
+        VALUES (
+          '{idea_catalog.agent_name}'
+        , '{idea_catalog.idea_road}'
+        )
+        ;
+    """
+
+
 def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x = [get_agent_table_create_sqlstr()]
+    list_x.append(get_idea_catalog_table_create_sqlstr())
     list_x.append(get_ledger_table_create_sqlstr())
     list_x.append(get_river_flow_table_create_sqlstr())
     list_x.append(get_river_bucket_table_create_sqlstr())
     list_x.append(get_river_tally_table_create_sqlstr())
     return list_x
+
+
+def get_db_tables(bank_conn: Connection):
+    sqlstr = "SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name;"
+    print(f"{sqlstr=}")
+    results = bank_conn.execute(sqlstr)
+
+    return {row[0]: 1 for row in results}

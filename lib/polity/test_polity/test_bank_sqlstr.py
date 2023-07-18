@@ -20,6 +20,14 @@ from lib.polity.bank_sqlstr import (
     RiverLedgerUnit,
     RiverFlowUnit,
     get_river_ledger_unit,
+    get_idea_catalog_table_count,
+    IdeaCatalog,
+    get_idea_catalog_table_insert_sqlstr,
+)
+from lib.polity.examples.example_persons import (
+    get_3node_agent,
+    get_6node_agent,
+    get_agent_3CleanNodesRandomWeights,
 )
 
 
@@ -529,3 +537,96 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     #     assert value.bucket_num in [0, 1]
     #     assert value.curr_start in [0.12316456150798766, 0.04401266686517654]
     #     assert value.curr_close in [0.1, 1.0]
+
+
+def test_polity_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
+    env_dir_setup_cleanup,
+):
+    # GIVEN Create example polity with 4 Persons, each with 3 Allyunits = 12 ledger rows
+    polity_name = get_temp_env_name()
+    e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
+    e1.create_dirs_if_null(in_memory_bank=True)
+    e1.refresh_bank_metrics()
+
+    bob_text = "bob"
+    with e1.get_bank_conn() as bank_conn:
+        assert get_idea_catalog_table_count(bank_conn, bob_text) == 0
+
+    # WHEN
+    water_road = "src,elements,water"
+    water_idea_catalog = IdeaCatalog(agent_name=bob_text, idea_road=water_road)
+    water_insert_sqlstr = get_idea_catalog_table_insert_sqlstr(water_idea_catalog)
+    with e1.get_bank_conn() as bank_conn:
+        print(water_insert_sqlstr)
+        bank_conn.execute(water_insert_sqlstr)
+
+    # THEN
+    assert get_idea_catalog_table_count(bank_conn, bob_text) == 1
+
+
+def test_refresh_bank_metrics_Populates_idea_catalog_table(
+    env_dir_setup_cleanup,
+):
+    # GIVEN Create example polity with 4 Persons, each with 3 Allyunits = 12 ledger rows
+    polity_name = get_temp_env_name()
+    e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
+    e1.create_dirs_if_null(in_memory_bank=True)
+    e1.refresh_bank_metrics()
+
+    bob_text = "bob"
+    sal_text = "sal"
+    tim_text = "tim"
+    bob_agent = get_3node_agent()
+    tim_agent = get_6node_agent()
+    sal_agent = get_agent_3CleanNodesRandomWeights()
+    bob_agent.agent_and_idearoot_desc_edit(new_desc=bob_text)
+    tim_agent.agent_and_idearoot_desc_edit(new_desc=tim_text)
+    sal_agent.agent_and_idearoot_desc_edit(new_desc=sal_text)
+    e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
+    e1.save_agentunit_obj_to_agents_dir(agent_x=tim_agent)
+    e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
+
+    with e1.get_bank_conn() as bank_conn:
+        assert get_idea_catalog_table_count(bank_conn, bob_text) == 0
+
+    # WHEN
+    e1.refresh_bank_metrics()
+
+    # THEN
+    assert get_idea_catalog_table_count(bank_conn, bob_text) == 3
+    assert get_idea_catalog_table_count(bank_conn, tim_text) == 6
+    assert get_idea_catalog_table_count(bank_conn, sal_text) == 5
+
+
+def test_refresh_bank_metrics_Populates_idea_count_table(
+    env_dir_setup_cleanup,
+):
+    # GIVEN Create example polity with 4 Persons, each with 3 Allyunits = 12 ledger rows
+    polity_name = get_temp_env_name()
+    e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
+    e1.create_dirs_if_null(in_memory_bank=True)
+    e1.refresh_bank_metrics()
+
+    bob_text = "bob"
+    sal_text = "sal"
+    tim_text = "tim"
+    bob_agent = get_3node_agent()
+    tim_agent = get_6node_agent()
+    sal_agent = get_agent_3CleanNodesRandomWeights()
+    bob_agent.agent_and_idearoot_desc_edit(new_desc=bob_text)
+    tim_agent.agent_and_idearoot_desc_edit(new_desc=tim_text)
+    sal_agent.agent_and_idearoot_desc_edit(new_desc=sal_text)
+    e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
+    e1.save_agentunit_obj_to_agents_dir(agent_x=tim_agent)
+    e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
+
+    with e1.get_bank_conn() as bank_conn:
+        assert get_idea_catalog_table_count(bank_conn, bob_text) == 0
+
+    # WHEN
+    e1.refresh_bank_metrics()
+
+    # THEN
+    assert get_idea_catalog_table_count(bank_conn, bob_text) == 3
+    assert get_idea_catalog_table_count(bank_conn, tim_text) == 6
+    assert get_idea_catalog_table_count(bank_conn, sal_text) == 5

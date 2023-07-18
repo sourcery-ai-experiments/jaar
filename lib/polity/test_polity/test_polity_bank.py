@@ -10,6 +10,7 @@ from lib.polity.examples.env_tools import (
 from pytest import raises as pytest_raises
 from lib.polity.y_func import check_connection, get_single_result_back
 from sqlite3 import connect as sqlite3_connect, Connection
+from lib.polity.bank_sqlstr import get_db_tables
 
 
 def test_polity_create_bank_db_if_null_CreatesBankDBIfItDoesNotExist(
@@ -95,31 +96,29 @@ def test_polity_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clean
 
     # THEN
     with e1.get_bank_conn() as bank_conn:
-        tables_dict = _get_db_tables(bank_conn)
+        tables_dict = get_db_tables(bank_conn)
+
     # row_count = 0
     # for table_name, table_x in tables_dict.items():
     #     row_count += 1
     #     print(f" {table_x=} {row_count}. {table_name=}")
-    #     assert table_x == 1
 
-    assert tables_dict.get("agentunits") != None
-    assert tables_dict.get("ledger") != None
-    assert tables_dict.get("river_tally") != None
-    assert tables_dict.get("river_flow") != None
+    curr_tables = {
+        0: "agentunits",
+        1: "ledger",
+        2: "river_tally",
+        3: "river_flow",
+        4: "river_bucket",
+        5: "idea_catalog",
+    }
 
-
-def _get_db_tables(bank_conn: Connection):
-    sqlstr = "SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name;"
-    print(f"{sqlstr=}")
-    results = bank_conn.execute(sqlstr)
-
-    result = {"agentunits": 0, "ledger": 0, "river_tally": 0, "river_flow": 0}
-    for row in results:
-        # print(f"Polity '{e1.name}' {row_count}. bank_db table '{row[0]}'")
-        # if tables_dict.get(row[0]) != None:
-        result[row[0]] = 1
-
-    return result
+    assert tables_dict.get(curr_tables[0]) != None
+    assert tables_dict.get(curr_tables[1]) != None
+    assert tables_dict.get(curr_tables[2]) != None
+    assert tables_dict.get(curr_tables[3]) != None
+    assert tables_dict.get(curr_tables[4]) != None
+    assert tables_dict.get(curr_tables[5]) != None
+    assert len(tables_dict) == len(curr_tables)
 
 
 def test_polity_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
