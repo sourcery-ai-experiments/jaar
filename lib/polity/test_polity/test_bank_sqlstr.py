@@ -23,6 +23,9 @@ from lib.polity.bank_sqlstr import (
     get_idea_catalog_table_count,
     IdeaCatalog,
     get_idea_catalog_table_insert_sqlstr,
+    get_acptfact_catalog_table_count,
+    AcptFactCatalog,
+    get_acptfact_catalog_table_insert_sqlstr,
 )
 from lib.polity.examples.example_persons import (
     get_3node_agent,
@@ -598,7 +601,7 @@ def test_refresh_bank_metrics_Populates_idea_catalog_table(
     assert get_idea_catalog_table_count(bank_conn, sal_text) == 5
 
 
-def test_refresh_bank_metrics_Populates_idea_count_table(
+def test_polity_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example polity with 4 Persons, each with 3 Allyunits = 12 ledger rows
@@ -608,6 +611,33 @@ def test_refresh_bank_metrics_Populates_idea_count_table(
     e1.refresh_bank_metrics()
 
     bob_text = "bob"
+    with e1.get_bank_conn() as bank_conn:
+        assert get_acptfact_catalog_table_count(bank_conn, bob_text) == 0
+
+    # WHEN
+    weather_rain = AcptFactCatalog(
+        agent_name=bob_text, base="src,weather", pick="src,weather,rain"
+    )
+    water_insert_sqlstr = get_acptfact_catalog_table_insert_sqlstr(weather_rain)
+    with e1.get_bank_conn() as bank_conn:
+        print(water_insert_sqlstr)
+        bank_conn.execute(water_insert_sqlstr)
+
+    # THEN
+    assert get_acptfact_catalog_table_count(bank_conn, bob_text) == 1
+
+
+def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
+    env_dir_setup_cleanup,
+):
+    # GIVEN Create example polity with 4 Persons, each with 3 Allyunits = 12 ledger rows
+    polity_name = get_temp_env_name()
+    e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
+    e1.create_dirs_if_null(in_memory_bank=True)
+    e1.refresh_bank_metrics()
+
+    # TODO create 3 agents with varying numbers of acpt facts
+    bob_text = "bob"
     sal_text = "sal"
     tim_text = "tim"
     bob_agent = get_3node_agent()
@@ -616,17 +646,42 @@ def test_refresh_bank_metrics_Populates_idea_count_table(
     bob_agent.agent_and_idearoot_desc_edit(new_desc=bob_text)
     tim_agent.agent_and_idearoot_desc_edit(new_desc=tim_text)
     sal_agent.agent_and_idearoot_desc_edit(new_desc=sal_text)
+    c_text = "C"
+    c_road = f"{tim_agent._desc},{c_text}"
+    f_text = "F"
+    f_road = f"{c_road},{f_text}"
+    b_text = "B"
+    b_road = f"{tim_agent._desc},{b_text}"
+    # for idea_x in tim_agent._idea_dict.values():
+    #     print(f"{f_road=} {idea_x.get_road()=}")
+    tim_agent.set_acptfact(base=c_road, pick=f_road)
+
+    bob_agent.set_acptfact(base=c_road, pick=f_road)
+    bob_agent.set_acptfact(base=b_road, pick=b_road)
+
+    casa_text = "casa"
+    casa_road = f"{sal_agent._desc},{casa_text}"
+    kitchen_text = "clean kitchen"
+    kitchen_road = f"{casa_road},{kitchen_text}"
+    sal_agent.set_acptfact(base=kitchen_road, pick=kitchen_road)
+
     e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
     e1.save_agentunit_obj_to_agents_dir(agent_x=tim_agent)
     e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
 
     with e1.get_bank_conn() as bank_conn:
-        assert get_idea_catalog_table_count(bank_conn, bob_text) == 0
+        assert get_acptfact_catalog_table_count(bank_conn, bob_text) == 0
+        assert get_acptfact_catalog_table_count(bank_conn, tim_text) == 0
+        assert get_acptfact_catalog_table_count(bank_conn, sal_text) == 0
 
     # WHEN
     e1.refresh_bank_metrics()
 
     # THEN
-    assert get_idea_catalog_table_count(bank_conn, bob_text) == 3
-    assert get_idea_catalog_table_count(bank_conn, tim_text) == 6
-    assert get_idea_catalog_table_count(bank_conn, sal_text) == 5
+    print(f"{get_acptfact_catalog_table_count(bank_conn, bob_text)=}")
+    print(f"{get_acptfact_catalog_table_count(bank_conn, tim_text)=}")
+    print(f"{get_acptfact_catalog_table_count(bank_conn, sal_text)=}")
+    with e1.get_bank_conn() as bank_conn:
+        assert get_acptfact_catalog_table_count(bank_conn, bob_text) == 2
+        assert get_acptfact_catalog_table_count(bank_conn, tim_text) == 1
+        assert get_acptfact_catalog_table_count(bank_conn, sal_text) == 1

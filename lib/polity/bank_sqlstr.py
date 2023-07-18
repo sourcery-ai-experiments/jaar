@@ -489,8 +489,57 @@ def get_idea_catalog_table_insert_sqlstr(
     """
 
 
+def get_acptfact_catalog_table_create_sqlstr() -> str:
+    return """
+        CREATE TABLE IF NOT EXISTS acptfact_catalog (
+          agent_name VARCHAR(255) NOT NULL
+        , base VARCHAR(1000) NOT NULL
+        , pick VARCHAR(1000) NOT NULL
+        )
+        ;
+    """
+
+
+def get_acptfact_catalog_table_count(db_conn: Connection, agent_name: str) -> str:
+    sqlstr = f"""
+        SELECT COUNT(*) FROM acptfact_catalog WHERE agent_name = '{agent_name}'
+        ;
+    """
+    results = db_conn.execute(sqlstr)
+    agent_row_count = 0
+    for row in results.fetchall():
+        agent_row_count = row[0]
+    return agent_row_count
+
+
+@dataclass
+class AcptFactCatalog:
+    agent_name: str
+    base: str
+    pick: str
+
+
+def get_acptfact_catalog_table_insert_sqlstr(
+    acptfact_catalog: AcptFactCatalog,
+) -> str:
+    return f"""
+        INSERT INTO acptfact_catalog (
+          agent_name
+        , base
+        , pick
+        )
+        VALUES (
+          '{acptfact_catalog.agent_name}'
+        , '{acptfact_catalog.base}'
+        , '{acptfact_catalog.pick}'
+        )
+        ;
+    """
+
+
 def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x = [get_agent_table_create_sqlstr()]
+    list_x.append(get_acptfact_catalog_table_create_sqlstr())
     list_x.append(get_idea_catalog_table_create_sqlstr())
     list_x.append(get_ledger_table_create_sqlstr())
     list_x.append(get_river_flow_table_create_sqlstr())
@@ -501,7 +550,6 @@ def get_create_table_if_not_exist_sqlstrs() -> list[str]:
 
 def get_db_tables(bank_conn: Connection):
     sqlstr = "SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name;"
-    print(f"{sqlstr=}")
     results = bank_conn.execute(sqlstr)
 
     return {row[0]: 1 for row in results}

@@ -31,6 +31,8 @@ from lib.polity.bank_sqlstr import (
     RiverTallyUnit,
     IdeaCatalog,
     get_idea_catalog_table_insert_sqlstr,
+    AcptFactCatalog,
+    get_acptfact_catalog_table_insert_sqlstr,
 )
 
 
@@ -169,6 +171,17 @@ class PolityUnit:
                 for idea_x in agentunit_x._idea_dict.values():
                     idea_catalog_x = IdeaCatalog(agentunit_x._desc, idea_x.get_road())
                     sqlstr = get_idea_catalog_table_insert_sqlstr(idea_catalog_x)
+                    cur.execute(sqlstr)
+
+                for acptfact_x in agentunit_x._idearoot._acptfactunits.values():
+                    acptfact_catalog_x = AcptFactCatalog(
+                        agent_name=agentunit_x._desc,
+                        base=acptfact_x.base,
+                        pick=acptfact_x.pick,
+                    )
+                    sqlstr = get_acptfact_catalog_table_insert_sqlstr(
+                        acptfact_catalog_x
+                    )
                     cur.execute(sqlstr)
 
     def get_bank_conn(self) -> Connection:
