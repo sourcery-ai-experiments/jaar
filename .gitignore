@@ -147,6 +147,6 @@ lib/polity/examples/politys/ex3/
 lib/polity/examples/politys/ex4/
 lib/polity/examples/politys/ex5/
 lib/polity/examples/politys/ex6/
-lib/agent/test_agent/js_agent.json
 lib/polity/examples/politys/river_env/
 lib/polity/test_polity/sql_worksheet01.sql
+lib/agent/examples/js_agent.json
