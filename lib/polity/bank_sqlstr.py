@@ -537,6 +537,54 @@ def get_acptfact_catalog_table_insert_sqlstr(
     """
 
 
+def get_brandunit_catalog_table_create_sqlstr() -> str:
+    return """
+        CREATE TABLE IF NOT EXISTS brandunit_catalog (
+          agent_name VARCHAR(255) NOT NULL
+        , brandunit_name VARCHAR(1000) NOT NULL
+        , allylinks_set_by_polity_road VARCHAR(1000) NULL
+        )
+        ;
+    """
+
+
+def get_brandunit_catalog_table_count(db_conn: Connection, agent_name: str) -> str:
+    sqlstr = f"""
+        SELECT COUNT(*) FROM brandunit_catalog WHERE agent_name = '{agent_name}'
+        ;
+    """
+    results = db_conn.execute(sqlstr)
+    agent_row_count = 0
+    for row in results.fetchall():
+        agent_row_count = row[0]
+    return agent_row_count
+
+
+@dataclass
+class BrandUnitCatalog:
+    agent_name: str
+    brandunit_name: str
+    allylinks_set_by_polity_road: str
+
+
+def get_brandunit_catalog_table_insert_sqlstr(
+    brandunit_catalog: BrandUnitCatalog,
+) -> str:
+    return f"""
+        INSERT INTO brandunit_catalog (
+          agent_name
+        , brandunit_name
+        , allylinks_set_by_polity_road
+        )
+        VALUES (
+          '{brandunit_catalog.agent_name}'
+        , '{brandunit_catalog.brandunit_name}'
+        , '{brandunit_catalog.allylinks_set_by_polity_road}'
+        )
+        ;
+    """
+
+
 def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x = [get_agent_table_create_sqlstr()]
     list_x.append(get_acptfact_catalog_table_create_sqlstr())
@@ -545,6 +593,7 @@ def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x.append(get_river_flow_table_create_sqlstr())
     list_x.append(get_river_bucket_table_create_sqlstr())
     list_x.append(get_river_tally_table_create_sqlstr())
+    list_x.append(get_brandunit_catalog_table_create_sqlstr())
     return list_x
 
 

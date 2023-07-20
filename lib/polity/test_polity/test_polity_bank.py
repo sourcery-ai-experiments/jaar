@@ -111,6 +111,7 @@ def test_polity_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clean
         4: "river_bucket",
         5: "idea_catalog",
         6: "acptfact_catalog",
+        7: "brandunit_catalog",
     }
 
     assert tables_dict.get(curr_tables[0]) != None
@@ -120,6 +121,7 @@ def test_polity_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clean
     assert tables_dict.get(curr_tables[4]) != None
     assert tables_dict.get(curr_tables[5]) != None
     assert tables_dict.get(curr_tables[6]) != None
+    assert tables_dict.get(curr_tables[7]) != None
     assert len(tables_dict) == len(curr_tables)
 
 

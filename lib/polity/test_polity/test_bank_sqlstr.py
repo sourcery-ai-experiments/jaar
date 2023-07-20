@@ -26,6 +26,9 @@ from lib.polity.bank_sqlstr import (
     get_acptfact_catalog_table_count,
     AcptFactCatalog,
     get_acptfact_catalog_table_insert_sqlstr,
+    get_brandunit_catalog_table_count,
+    BrandUnitCatalog,
+    get_brandunit_catalog_table_insert_sqlstr,
 )
 from lib.polity.examples.example_persons import (
     get_3node_agent,
@@ -685,3 +688,31 @@ def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
         assert get_acptfact_catalog_table_count(bank_conn, bob_text) == 2
         assert get_acptfact_catalog_table_count(bank_conn, tim_text) == 1
         assert get_acptfact_catalog_table_count(bank_conn, sal_text) == 1
+
+
+def test_polity_get_brandunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
+    env_dir_setup_cleanup,
+):
+    # GIVEN Create example polity with 4 Persons, each with 3 Allyunits = 12 ledger rows
+    polity_name = get_temp_env_name()
+    e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
+    e1.create_dirs_if_null(in_memory_bank=True)
+    e1.refresh_bank_metrics()
+
+    bob_text = "bob"
+    with e1.get_bank_conn() as bank_conn:
+        assert get_brandunit_catalog_table_count(bank_conn, bob_text) == 0
+
+    # WHEN
+    bob_brand_x = BrandUnitCatalog(
+        agent_name=bob_text,
+        brandunit_name="US Dollar",
+        allylinks_set_by_polity_road="src,USA",
+    )
+    bob_brand_sqlstr = get_brandunit_catalog_table_insert_sqlstr(bob_brand_x)
+    with e1.get_bank_conn() as bank_conn:
+        print(bob_brand_sqlstr)
+        bank_conn.execute(bob_brand_sqlstr)
+
+    # THEN
+    assert get_brandunit_catalog_table_count(bank_conn, bob_text) == 1
