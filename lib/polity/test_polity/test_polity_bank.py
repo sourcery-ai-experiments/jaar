@@ -10,7 +10,7 @@ from lib.polity.examples.env_tools import (
 from pytest import raises as pytest_raises
 from lib.polity.y_func import check_connection, get_single_result_back
 from sqlite3 import connect as sqlite3_connect, Connection
-from lib.polity.bank_sqlstr import get_db_tables
+from lib.polity.bank_sqlstr import get_db_tables, get_brandunit_catalog_table_count
 
 
 def test_polity_create_bank_db_if_null_CreatesBankDBIfItDoesNotExist(
@@ -226,3 +226,32 @@ def test_polity_refresh_bank_metrics_CorrectlyPopulatesAgentTable01(
 
     # THEN
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_agents) == 4
+
+
+def test_polity_refresh_bank_metrics_CorrectlyPopulates_brandunit_catalog(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    polity_name = get_temp_env_name()
+    e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
+    e1.create_dirs_if_null(in_memory_bank=True)
+
+    bob_text = "bob"
+    tom_text = "tom"
+    elu_text = "elu"
+    bob_agent = AgentUnit(_desc=bob_text)
+    tom_agent = AgentUnit(_desc=tom_text)
+    bob_agent.add_allyunit(name=tom_text)
+    tom_agent.add_allyunit(name=bob_text)
+    tom_agent.add_allyunit(name=elu_text)
+    e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
+    e1.save_agentunit_obj_to_agents_dir(agent_x=tom_agent)
+
+    sqlstr = "SELECT COUNT(*) FROM brandunit_catalog;"
+    assert get_single_result_back(e1.get_bank_conn(), sqlstr) == 0
+
+    # WHEN
+    e1.refresh_bank_metrics()
+
+    # THEN
+    assert get_single_result_back(e1.get_bank_conn(), sqlstr) == 3

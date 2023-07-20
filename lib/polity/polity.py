@@ -33,6 +33,8 @@ from lib.polity.bank_sqlstr import (
     get_idea_catalog_table_insert_sqlstr,
     AcptFactCatalog,
     get_acptfact_catalog_table_insert_sqlstr,
+    BrandUnitCatalog,
+    get_brandunit_catalog_table_insert_sqlstr,
 )
 
 
@@ -150,39 +152,64 @@ class PolityUnit:
         return river_tallys
 
     def refresh_bank_metrics(self):
+        # Go to each agent file in agents dir
+        # Load agent,
+        # agent: run "set_agent_metrics"
+        # grab agent relevant metrics
+        for file_name in self.get_agents_dir_file_names_list():
+            agent_json = x_func_open_file(self.get_agents_dir(), file_name)
+            agentunit_x = get_agent_from_json(lw_json=agent_json)
+            agentunit_x.set_agent_metrics()
+
+            self._bank_insert_agentunit(agentunit_x)
+            self._bank_insert_allyunit(agentunit_x)
+            self._bank_insert_brandunit(agentunit_x)
+            self._bank_insert_ideaunit(agentunit_x)
+            self._bank_insert_acptfact(agentunit_x)
+
+    def _bank_insert_agentunit(self, agentunit_x: AgentUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
+            cur.execute(get_agent_table_insert_sqlstr(agent_x=agentunit_x))
 
-            # Go to each agent file in agents dir
-            # Load agent,
-            # agent: run "set_agent_metrics"
-            # grab agent relevant metrics
-            for file_name in self.get_agents_dir_file_names_list():
-                agent_json = x_func_open_file(self.get_agents_dir(), file_name)
-                agentunit_x = get_agent_from_json(lw_json=agent_json)
-                agentunit_x.set_agent_metrics()
+    def _bank_insert_allyunit(self, agentunit_x: AgentUnit):
+        with self.get_bank_conn() as bank_conn:
+            cur = bank_conn.cursor()
+            for allyunit_x in agentunit_x._allys.values():
+                sqlstr = get_ledger_table_insert_sqlstr(agentunit_x, allyunit_x)
+                cur.execute(sqlstr)
 
-                cur.execute(get_agent_table_insert_sqlstr(agent_x=agentunit_x))
+    def _bank_insert_brandunit(self, agentunit_x: AgentUnit):
+        with self.get_bank_conn() as bank_conn:
+            cur = bank_conn.cursor()
+            for brandunit_x in agentunit_x._brands.values():
+                brandunit_catalog_x = BrandUnitCatalog(
+                    agent_name=agentunit_x._desc,
+                    brandunit_name=brandunit_x.name,
+                    allylinks_set_by_polity_road=brandunit_x._allylinks_set_by_polity_road,
+                )
+                sqlstr = get_brandunit_catalog_table_insert_sqlstr(brandunit_catalog_x)
+                cur.execute(sqlstr)
 
-                for allyunit_x in agentunit_x._allys.values():
-                    sqlstr = get_ledger_table_insert_sqlstr(agentunit_x, allyunit_x)
-                    cur.execute(sqlstr)
+    def _bank_insert_ideaunit(self, agentunit_x: AgentUnit):
+        with self.get_bank_conn() as bank_conn:
+            cur = bank_conn.cursor()
+            for idea_x in agentunit_x._idea_dict.values():
+                idea_catalog_x = IdeaCatalog(agentunit_x._desc, idea_x.get_road())
+                sqlstr = get_idea_catalog_table_insert_sqlstr(idea_catalog_x)
+                cur.execute(sqlstr)
 
-                for idea_x in agentunit_x._idea_dict.values():
-                    idea_catalog_x = IdeaCatalog(agentunit_x._desc, idea_x.get_road())
-                    sqlstr = get_idea_catalog_table_insert_sqlstr(idea_catalog_x)
-                    cur.execute(sqlstr)
-
-                for acptfact_x in agentunit_x._idearoot._acptfactunits.values():
-                    acptfact_catalog_x = AcptFactCatalog(
-                        agent_name=agentunit_x._desc,
-                        base=acptfact_x.base,
-                        pick=acptfact_x.pick,
-                    )
-                    sqlstr = get_acptfact_catalog_table_insert_sqlstr(
-                        acptfact_catalog_x
-                    )
-                    cur.execute(sqlstr)
+    def _bank_insert_acptfact(self, agentunit_x: AgentUnit):
+        with self.get_bank_conn() as bank_conn:
+            cur = bank_conn.cursor()
+            for acptfact_x in agentunit_x._idearoot._acptfactunits.values():
+                acptfact_catalog_x = AcptFactCatalog(
+                    agent_name=agentunit_x._desc,
+                    base=acptfact_x.base,
+                    pick=acptfact_x.pick,
+                )
+                sqlstr = get_acptfact_catalog_table_insert_sqlstr(acptfact_catalog_x)
+                cur.execute(sqlstr)
 
     def get_bank_conn(self) -> Connection:
         if self._bank_db is None:
