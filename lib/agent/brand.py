@@ -185,6 +185,11 @@ def brandunit_shop(
     _agent_agenda_debt: float = None,
     _allylinks_set_by_polity_road: Road = None,
 ) -> BrandUnit:
+    if _single_ally and _allylinks_set_by_polity_road != None:
+        raise InvalidBrandException(
+            f"_allylinks_set_by_polity_road cannot be '{_allylinks_set_by_polity_road}' for a single_ally BrandUnit. It must have no value."
+        )
+
     if _allys is None:
         _allys = {}
     if _single_ally is None:

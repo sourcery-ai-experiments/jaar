@@ -45,6 +45,26 @@ def test_brandunit_exists():
     assert swimmers_brand._allylinks_set_by_polity_road == usa_road
 
 
+def test_brandunit_shop_WhenSingleAllyCorrectlyRemoves_allylinks_set_by_polity_road():
+    # GIVEN
+    swimmers = "swimmers"
+    usa_road = "src,nation-states,USA"
+
+    # WHEN
+
+    # WHEN/THEN
+    with pytest_raises(Exception) as excinfo:
+        swimmers_brand = brandunit_shop(
+            name=swimmers,
+            _single_ally=True,
+            _allylinks_set_by_polity_road=usa_road,
+        )
+    assert (
+        str(excinfo.value)
+        == f"_allylinks_set_by_polity_road cannot be '{usa_road}' for a single_ally BrandUnit. It must have no value."
+    )
+
+
 def test_brandunit_set_allylink_worksCorrectly():
     # GIVEN
     todd_text = "Todd"
