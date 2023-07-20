@@ -50,8 +50,6 @@ def test_brandunit_shop_WhenSingleAllyCorrectlyRemoves_allylinks_set_by_polity_r
     swimmers = "swimmers"
     usa_road = "src,nation-states,USA"
 
-    # WHEN
-
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         swimmers_brand = brandunit_shop(
