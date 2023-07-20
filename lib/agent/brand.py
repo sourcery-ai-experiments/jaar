@@ -53,6 +53,7 @@ class BrandUnit(BrandCore):
             "single_member_ally_id": self.single_member_ally_id,
             "_single_ally": self._single_ally,
             "_allys": self.get_allys_dict(),
+            "_allylinks_set_by_polity_road": self._allylinks_set_by_polity_road,
         }
 
     def set_empty_agent_credit_debt_to_zero(self):
@@ -153,12 +154,20 @@ def get_from_json(brandunits_json: str):
 def get_from_dict(x_dict: dict):
     brandunits = {}
     for brandunits_dict in x_dict.values():
+        try:
+            ex_allylinks_set_by_polity_road = brandunits_dict[
+                "_allylinks_set_by_polity_road"
+            ]
+        except KeyError:
+            ex_allylinks_set_by_polity_road = None
+
         x_brand = brandunit_shop(
             name=brandunits_dict["name"],
             uid=brandunits_dict["uid"],
             _single_ally=brandunits_dict["_single_ally"],
             single_member_ally_id=brandunits_dict["single_member_ally_id"],
             _allys=allylinks_get_from_dict(x_dict=brandunits_dict["_allys"]),
+            _allylinks_set_by_polity_road=ex_allylinks_set_by_polity_road,
         )
         brandunits[x_brand.name] = x_brand
     return brandunits

@@ -256,6 +256,7 @@ def test_brandUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         "single_member_ally_id": None,
         "_single_ally": False,
         "_allys": {},
+        "_allylinks_set_by_polity_road": None,
     }
 
     # GIVEN
@@ -268,7 +269,10 @@ def test_brandUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     }
 
     str_teacher = "teachers"
-    teachers_brand = brandunit_shop(name=str_teacher, _allys=allylinks_dict)
+    swim_road = "road_str"
+    teachers_brand = brandunit_shop(
+        name=str_teacher, _allys=allylinks_dict, _allylinks_set_by_polity_road=swim_road
+    )
 
     # WHEN
     teachers_dict = teachers_brand.get_dict()
@@ -281,6 +285,7 @@ def test_brandUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         "single_member_ally_id": None,
         "_single_ally": False,
         "_allys": marie_json_dict,
+        "_allylinks_set_by_polity_road": swim_road,
     }
 
 
@@ -292,11 +297,17 @@ def test_brandunit_get_from_JSON_SimpleExampleWorks():
     allylinks_dict = {marie_allylink.name: marie_allylink}
 
     str_teacher = "teachers"
-    teacher_brand = brandunit_shop(name=str_teacher, _allys=allylinks_dict)
+    swim_road = "road_str"
+    teacher_brand = brandunit_shop(
+        name=str_teacher, _allys=allylinks_dict, _allylinks_set_by_polity_road=swim_road
+    )
     teacher_dict = teacher_brand.get_dict()
+    _allylinks_set_by_polity_road_text = "_allylinks_set_by_polity_road"
+    print(f"{teacher_dict.get(_allylinks_set_by_polity_road_text)=}")
     brands_dict = {"teachers": teacher_dict}
 
     teachers_json = x_get_json(dict_x=brands_dict)
+    print(f"{teachers_json.find(_allylinks_set_by_polity_road_text)=}")
     assert teachers_json != None
     assert x_is_json(json_x=teachers_json)
 
@@ -307,6 +318,8 @@ def test_brandunit_get_from_JSON_SimpleExampleWorks():
     assert brandunits_obj_dict != None
     teachers_obj_check_dict = {teacher_brand.name: teacher_brand}
     print(f"    {brandunits_obj_dict=}")
+    allylinks_set_by_polity_road_text = "_allylinks_set_by_polity_road"
+    print(f"{teachers_obj_check_dict.get(allylinks_set_by_polity_road_text)=}")
     print(f"{teachers_obj_check_dict=}")
     assert brandunits_obj_dict == teachers_obj_check_dict
 

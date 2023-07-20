@@ -273,7 +273,7 @@ def test_person_get_dest_agent_from_digest_agent_files_with1DigestedAgent(
 #     ceci_text = "Ceci"
 #     s1.set_allyunit(allyunit=AllyUnit(name=ceci_text))
 #     swim_text = "swimmers"
-#     swim_brand = BrandUnit(name=swim_text)
+#     swim_brand = BraUnit(name=swim_text)
 #     swim_brand.set_allylink(allylink=allylink_shop(name=ceci_text))
 #     s1.set_brandunit(brandunit=swim_brand)
 
