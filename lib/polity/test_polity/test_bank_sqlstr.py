@@ -29,12 +29,14 @@ from lib.polity.bank_sqlstr import (
     get_brandunit_catalog_table_count,
     BrandUnitCatalog,
     get_brandunit_catalog_table_insert_sqlstr,
+    get_brandunit_catalog_dict,
 )
 from lib.polity.examples.example_persons import (
     get_3node_agent,
     get_6node_agent,
     get_agent_3CleanNodesRandomWeights,
 )
+from lib.polity.y_func import get_single_result_back
 
 
 def test_polity_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
@@ -716,3 +718,40 @@ def test_polity_get_brandunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTabl
 
     # THEN
     assert get_brandunit_catalog_table_count(bank_conn, bob_text) == 1
+
+
+def test_get_brandunit_catalog_dict_CorrectlyReturnsBrandUnitData(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    polity_name = get_temp_env_name()
+    e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
+    e1.create_dirs_if_null(in_memory_bank=True)
+
+    bob_text = "bob"
+    tom_text = "tom"
+    elu_text = "elu"
+    bob_agent = AgentUnit(_desc=bob_text)
+    tom_agent = AgentUnit(_desc=tom_text)
+    bob_agent.add_allyunit(name=tom_text)
+    tom_agent.add_allyunit(name=bob_text)
+    tom_agent.add_allyunit(name=elu_text)
+    e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
+    e1.save_agentunit_obj_to_agents_dir(agent_x=tom_agent)
+    e1.refresh_bank_metrics()
+    sqlstr = "SELECT COUNT(*) FROM brandunit_catalog;"
+    assert get_single_result_back(e1.get_bank_conn(), sqlstr) == 3
+
+    # WHEN
+    with e1.get_bank_conn() as bank_conn:
+        print("try to grab BrandUnit data")
+        brandunit_catalog_dict = get_brandunit_catalog_dict(db_conn=bank_conn)
+
+    # THEN
+    assert len(brandunit_catalog_dict) == 3
+    bob_agent_tom_brand = f"{bob_text} {tom_text}"
+    tom_agent_bob_brand = f"{tom_text} {bob_text}"
+    tom_agent_elu_brand = f"{tom_text} {elu_text}"
+    assert brandunit_catalog_dict.get(bob_agent_tom_brand) != None
+    assert brandunit_catalog_dict.get(tom_agent_bob_brand) != None
+    assert brandunit_catalog_dict.get(tom_agent_elu_brand) != None

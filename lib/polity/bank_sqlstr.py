@@ -585,6 +585,31 @@ def get_brandunit_catalog_table_insert_sqlstr(
     """
 
 
+def get_brandunit_catalog_dict(db_conn: Connection) -> dict[str:BrandUnitCatalog]:
+    sqlstr = """
+        SELECT 
+          agent_name
+        , brandunit_name
+        , allylinks_set_by_polity_road
+        FROM brandunit_catalog
+        ;
+    """
+    results = db_conn.execute(sqlstr)
+
+    dict_x = {}
+    for row in results.fetchall():
+        brandunit_catalog_x = BrandUnitCatalog(
+            agent_name=row[0],
+            brandunit_name=row[1],
+            allylinks_set_by_polity_road=row[2],
+        )
+        dict_key = (
+            f"{brandunit_catalog_x.agent_name} {brandunit_catalog_x.brandunit_name}"
+        )
+        dict_x[dict_key] = brandunit_catalog_x
+    return dict_x
+
+
 def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x = [get_agent_table_create_sqlstr()]
     list_x.append(get_acptfact_catalog_table_create_sqlstr())
