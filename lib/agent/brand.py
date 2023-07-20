@@ -5,6 +5,7 @@ from lib.agent.x_func import (
     get_meld_weight,
     return1ifnone as x_func_return1ifnone,
 )
+from lib.agent.road import Road
 
 
 class InvalidBrandException(Exception):
@@ -30,6 +31,7 @@ class BrandUnit(BrandCore):
     _agent_debt: float = None
     _agent_agenda_credit: float = None
     _agent_agenda_debt: float = None
+    _allylinks_set_by_polity_road: Road = None
 
     def edit_attr(
         self,
@@ -172,6 +174,7 @@ def brandunit_shop(
     _agent_debt: float = None,
     _agent_agenda_credit: float = None,
     _agent_agenda_debt: float = None,
+    _allylinks_set_by_polity_road: Road = None,
 ) -> BrandUnit:
     if _allys is None:
         _allys = {}
@@ -187,6 +190,7 @@ def brandunit_shop(
         _agent_debt=_agent_debt,
         _agent_agenda_credit=_agent_agenda_credit,
         _agent_agenda_debt=_agent_agenda_debt,
+        _allylinks_set_by_polity_road=_allylinks_set_by_polity_road,
     )
 
 

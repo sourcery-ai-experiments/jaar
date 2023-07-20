@@ -21,6 +21,7 @@ def test_brandName_exists():
 def test_brandunit_exists():
     # GIVEN
     swimmers = "swimmers"
+    usa_road = "src,nation-states,USA"
 
     # WHEN
     swimmers_brand = brandunit_shop(
@@ -29,6 +30,7 @@ def test_brandunit_exists():
         _agent_debt=0.44,
         _agent_agenda_credit=0.66,
         _agent_agenda_debt=0.77,
+        _allylinks_set_by_polity_road=usa_road,
     )
 
     # THEN
@@ -40,6 +42,7 @@ def test_brandunit_exists():
     assert swimmers_brand._agent_debt != None
     assert swimmers_brand._agent_agenda_credit != None
     assert swimmers_brand._agent_agenda_debt != None
+    assert swimmers_brand._allylinks_set_by_polity_road == usa_road
 
 
 def test_brandunit_set_allylink_worksCorrectly():
