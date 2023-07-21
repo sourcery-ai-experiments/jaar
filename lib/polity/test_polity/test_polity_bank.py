@@ -151,6 +151,30 @@ def test_polity_refresh_bank_metrics_CorrectlyDeletesOldBankInMemory(
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 1
 
 
+def test_polity_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    e1 = PolityUnit(name=get_temp_env_name(), politys_dir=get_test_politys_dir())
+    e1.create_dirs_if_null(in_memory_bank=False)
+
+    bob_text = "bob"
+    tom_text = "tom"
+
+    bob = AgentUnit(_desc=bob_text)
+    bob.add_allyunit(name=tom_text, creditor_weight=3, debtor_weight=1)
+    e1.save_agentunit_obj_to_agents_dir(agent_x=bob)
+    e1.refresh_bank_metrics()
+    sqlstr_count_ledger = get_table_count_sqlstr("ledger")
+    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 1
+
+    # WHEN
+    e1.refresh_bank_metrics()
+
+    # THEN
+    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 1
+
+
 def test_polity_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     env_dir_setup_cleanup,
 ):
@@ -337,6 +361,8 @@ def test_polity_refresh_bank_metrics_CorrectlyPopulates_Agent_brandunit_allylink
     # change brandunit "swimming expert" _allylinks_set_by_polity_road ==  "root_desc,sports,swimmer"
     sal_swim_road = f"{sal_sports_road},{swim_text}"
     swim_brand_unit.set_attr(_allylinks_set_by_polity_road=sal_swim_road)
+    sal_agent.set_brandunit(brandunit=swim_brand_unit)
+    e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
 
     # THEN
     e1.refresh_bank_metrics()

@@ -1,3 +1,7 @@
+class InvalidRoadException(Exception):
+    pass
+
+
 class Road(str):
     pass
 
@@ -54,6 +58,15 @@ def get_terminus_node_from_road(road: Road):
 
 def get_walk_from_road(road: Road):  # road without terminus node
     return ",".join(get_all_road_nodes_in_list(road=road)[:-1])
+
+
+def get_road_without_root_node(road: Road):  # road without terminus node
+    if road[:1] == ",":
+        raise InvalidRoadException(
+            f"Cannot get_road_without_root_node of '{road}' because it has no root node."
+        )
+    road_without_root_node = ",".join(get_all_road_nodes_in_list(road=road)[1:])
+    return f",{road_without_root_node}"
 
 
 def road_validate(road: Road):

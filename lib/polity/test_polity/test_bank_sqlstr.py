@@ -23,6 +23,7 @@ from lib.polity.bank_sqlstr import (
     get_idea_catalog_table_count,
     IdeaCatalog,
     get_idea_catalog_table_insert_sqlstr,
+    get_idea_catalog_dict,
     get_acptfact_catalog_table_count,
     AcptFactCatalog,
     get_acptfact_catalog_table_insert_sqlstr,
@@ -30,6 +31,7 @@ from lib.polity.bank_sqlstr import (
     BrandUnitCatalog,
     get_brandunit_catalog_table_insert_sqlstr,
     get_brandunit_catalog_dict,
+    get_table_count_sqlstr,
 )
 from lib.polity.examples.example_persons import (
     get_3node_agent,
@@ -43,8 +45,8 @@ def test_polity_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example polity with 4 Persons, each with 3 Allyunits = 12 ledger rows
-    polity_name = get_temp_env_name()
-    e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
+
+    e1 = PolityUnit(name=get_temp_env_name(), politys_dir=get_test_politys_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
     e1.refresh_bank_metrics()
 
@@ -161,8 +163,8 @@ def test_RiverFlowUnit_flow_returned_WorksCorrectly():
 
 def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cleanup):
     # GIVEN Create example polity with 4 Persons, each with 3 Allyunits = 12 ledger rows
-    polity_name = get_temp_env_name()
-    e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
+
+    e1 = PolityUnit(name=get_temp_env_name(), politys_dir=get_test_politys_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
     e1.refresh_bank_metrics()
 
@@ -232,8 +234,8 @@ def test_river_flow_insert_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example polity with 4 Persons, each with 3 Allyunits = 12 ledger rows
-    polity_name = get_temp_env_name()
-    e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
+
+    e1 = PolityUnit(name=get_temp_env_name(), politys_dir=get_test_politys_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -331,8 +333,8 @@ def test_get_river_tally_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example polity with 4 Persons, each with 3 Allyunits = 12 ledger rows
-    polity_name = get_temp_env_name()
-    e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
+
+    e1 = PolityUnit(name=get_temp_env_name(), politys_dir=get_test_politys_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -425,8 +427,8 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example polity with 4 Persons, each with 3 Allyunits = 12 ledger rows
-    polity_name = get_temp_env_name()
-    e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
+
+    e1 = PolityUnit(name=get_temp_env_name(), politys_dir=get_test_politys_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -466,8 +468,8 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example polity with 4 Persons, each with 3 Allyunits = 12 ledger rows
-    polity_name = get_temp_env_name()
-    e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
+
+    e1 = PolityUnit(name=get_temp_env_name(), politys_dir=get_test_politys_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -550,9 +552,8 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
 def test_polity_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example polity with 4 Persons, each with 3 Allyunits = 12 ledger rows
-    polity_name = get_temp_env_name()
-    e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
+    # GIVEN
+    e1 = PolityUnit(name=get_temp_env_name(), politys_dir=get_test_politys_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
     e1.refresh_bank_metrics()
 
@@ -572,12 +573,9 @@ def test_polity_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     assert get_idea_catalog_table_count(bank_conn, bob_text) == 1
 
 
-def test_refresh_bank_metrics_Populates_idea_catalog_table(
-    env_dir_setup_cleanup,
-):
+def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup):
     # GIVEN Create example polity with 4 Persons, each with 3 Allyunits = 12 ledger rows
-    polity_name = get_temp_env_name()
-    e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
+    e1 = PolityUnit(name=get_temp_env_name(), politys_dir=get_test_politys_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
     e1.refresh_bank_metrics()
 
@@ -607,12 +605,50 @@ def test_refresh_bank_metrics_Populates_idea_catalog_table(
         assert get_idea_catalog_table_count(bank_conn, sal_text) == 5
 
 
+def test_polity_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
+    # GIVEN
+    e1 = PolityUnit(name=get_temp_env_name(), politys_dir=get_test_politys_dir())
+    e1.create_dirs_if_null(in_memory_bank=True)
+    e1.refresh_bank_metrics()
+
+    bob_text = "bob"
+    sal_text = "sal"
+    tim_text = "tim"
+    elu_text = "elu"
+    bob_agent = get_3node_agent()
+    tim_agent = get_6node_agent()
+    sal_agent = get_agent_3CleanNodesRandomWeights()
+    elu_agent = get_6node_agent()
+    bob_agent.agent_and_idearoot_desc_edit(new_desc=bob_text)
+    tim_agent.agent_and_idearoot_desc_edit(new_desc=tim_text)
+    sal_agent.agent_and_idearoot_desc_edit(new_desc=sal_text)
+    elu_agent.agent_and_idearoot_desc_edit(new_desc=elu_text)
+    e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
+    e1.save_agentunit_obj_to_agents_dir(agent_x=tim_agent)
+    e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
+    e1.save_agentunit_obj_to_agents_dir(agent_x=elu_agent)
+    e1.refresh_bank_metrics()
+    i_count_sqlstr = get_table_count_sqlstr("idea_catalog")
+    with e1.get_bank_conn() as bank_conn:
+        print(f"{i_count_sqlstr=}")
+        assert get_single_result_back(e1.get_bank_conn(), i_count_sqlstr) == 20
+
+    # WHEN / THEN
+    assert len(get_idea_catalog_dict(e1.get_bank_conn())) == 20
+    b_road = "src,B"
+    assert len(get_idea_catalog_dict(e1.get_bank_conn(), b_road)) == 3
+    ce_road = "src,C,E"
+    assert len(get_idea_catalog_dict(e1.get_bank_conn(), ce_road)) == 2
+    src_road = "src"
+    assert len(get_idea_catalog_dict(e1.get_bank_conn(), src_road)) == 4
+
+
 def test_polity_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example polity with 4 Persons, each with 3 Allyunits = 12 ledger rows
-    polity_name = get_temp_env_name()
-    e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
+
+    e1 = PolityUnit(name=get_temp_env_name(), politys_dir=get_test_politys_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
     e1.refresh_bank_metrics()
 
@@ -637,8 +673,8 @@ def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example polity with 4 Persons, each with 3 Allyunits = 12 ledger rows
-    polity_name = get_temp_env_name()
-    e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
+
+    e1 = PolityUnit(name=get_temp_env_name(), politys_dir=get_test_politys_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
     e1.refresh_bank_metrics()
 
@@ -697,8 +733,8 @@ def test_polity_get_brandunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTabl
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example polity with 4 Persons, each with 3 Allyunits = 12 ledger rows
-    polity_name = get_temp_env_name()
-    e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
+
+    e1 = PolityUnit(name=get_temp_env_name(), politys_dir=get_test_politys_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
     e1.refresh_bank_metrics()
 
@@ -725,8 +761,7 @@ def test_get_brandunit_catalog_dict_CorrectlyReturnsBrandUnitData(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    polity_name = get_temp_env_name()
-    e1 = PolityUnit(name=polity_name, politys_dir=get_test_politys_dir())
+    e1 = PolityUnit(name=get_temp_env_name(), politys_dir=get_test_politys_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -740,7 +775,7 @@ def test_get_brandunit_catalog_dict_CorrectlyReturnsBrandUnitData(
     e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
     e1.save_agentunit_obj_to_agents_dir(agent_x=tom_agent)
     e1.refresh_bank_metrics()
-    sqlstr = "SELECT COUNT(*) FROM brandunit_catalog;"
+    sqlstr = get_table_count_sqlstr("brandunit_catalog")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr) == 3
 
     # WHEN

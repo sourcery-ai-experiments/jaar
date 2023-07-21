@@ -100,88 +100,12 @@ class EditAlly2bd(qtw.QWidget, Ui_Form):
         self.bd_member_yes.setColumnWidth(4, 30)
         self.bd_member_yes.setColumnHidden(4, True)
 
-        # sqlstr = f"""
-        #     SELECT bd.name group_name
-        #     , ally2bd.weight
-        #     , ally2bd.relative_weight
-        #     , (SELECT COUNT(*) FROM ally2brand x WHERE x.bd_id = bd.id) group_member_count
-        #     , bd.id ID
-        #     FROM brand bd
-        #     JOIN ally2brand ally2bd ON ally2bd.bd_id = bd.id
-        #     WHERE ally2bd.ally_id = {ally_id}
-        #     ;
-        #     """
-        # tablerow = 0
-        # query = QSqlQuery()
-        # query.exec_(sqlstr)
-        # while query.next():
-        #     group_relative_weight = query.value(2) * 100
-        #     if group_relative_weight == 100:
-        #         branch_percent = str(group_relative_weight)[:3]
-        #     if group_relative_weight >= 10:
-        #         branch_percent = str(group_relative_weight)[:2]
-        #     elif group_relative_weight >= 1:
-        #         branch_percent = str(group_relative_weight)[:4]
-        #     elif group_relative_weight > 0.1:
-        #         branch_percent = str(group_relative_weight)[:5]
-        #     else:
-        #         branch_percent = str(group_relative_weight)[:6]
-
-        #     self.bd_member_yes.setRowCount(tablerow + 1)
-        #     self.bd_member_yes.setItem(
-        #         tablerow, 0, qtw.QTableWidgetItem(query.value(0))
-        #     )
-        #     self.bd_member_yes.setItem(
-        #         tablerow, 1, qtw.QTableWidgetItem(str(query.value(1)))
-        #     )
-        #     self.bd_member_yes.setItem(
-        #         tablerow, 2, qtw.QTableWidgetItem(f"{branch_percent}%")
-        #     )
-
-        #     self.bd_member_yes.setItem(
-        #         tablerow, 3, qtw.QTableWidgetItem(str(query.value(3)))
-        #     )
-        #     self.bd_member_yes.setItem(
-        #         tablerow, 4, qtw.QTableWidgetItem(str(query.value(4)))
-        #     )
-        #     tablerow += 1
-
     def refreshMemberNo(self):
         ally_id = self.ally_id
         self.bd_member_no.setColumnWidth(0, 110)
         self.bd_member_no.setColumnWidth(1, 110)
         self.bd_member_no.setColumnWidth(2, 30)
         self.bd_member_no.setColumnHidden(2, True)
-
-        # sqlstr = f"""
-        #     SELECT bd.name group_name
-        #     , (SELECT COUNT(*) FROM ally2brand x WHERE x.bd_id = bd.id) group_member_count
-        #     , bd.id ID
-        #     FROM brand bd
-        #     LEFT JOIN (
-        #         SELECT bd.id
-        #         FROM brand bd
-        #         JOIN ally2brand ally2bd ON ally2bd.bd_id = bd.id
-        #         WHERE ally2bd.ally_id = {ally_id}
-        #     ) x_bd on x_bd.id = bd.id
-        #     LEFT JOIN ally2brand ally2bd ON ally2bd.bd_id = x_bd.id
-        #     WHERE x_bd.id IS NULL
-        #         AND bd.single_member_ally_id IS NULL
-        # ;
-        # """
-        # tablerow = 0
-        # query = QSqlQuery()
-        # query.exec_(sqlstr)
-        # while query.next():
-        #     self.bd_member_no.setRowCount(tablerow + 1)
-        #     self.bd_member_no.setItem(tablerow, 0, qtw.QTableWidgetItem(query.value(0)))
-        #     self.bd_member_no.setItem(
-        #         tablerow, 1, qtw.QTableWidgetItem(str(query.value(1)))
-        #     )
-        #     self.bd_member_no.setItem(
-        #         tablerow, 2, qtw.QTableWidgetItem(str(query.value(2)))
-        #     )
-        #     tablerow += 1
 
     def bd_member_yes_clicked(self):
         self.ally2brand_weight_edit.setText(

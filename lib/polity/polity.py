@@ -35,6 +35,7 @@ from lib.polity.bank_sqlstr import (
     get_acptfact_catalog_table_insert_sqlstr,
     BrandUnitCatalog,
     get_brandunit_catalog_table_insert_sqlstr,
+    get_brandunit_catalog_dict,
 )
 
 
@@ -170,6 +171,11 @@ class PolityUnit:
             self._bank_insert_ideaunit(agentunit_x)
             self._bank_insert_acptfact(agentunit_x)
 
+        for buc in get_brandunit_catalog_dict(self.get_bank_conn()).values():
+            if buc.allylinks_set_by_polity_road != None:
+                print(f"{buc.allylinks_set_by_polity_road=}")
+            print(f"{buc=}")
+
     def _bank_insert_agentunit(self, agentunit_x: AgentUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
@@ -239,6 +245,7 @@ class PolityUnit:
 
     def _delete_bank(self):
         self._bank_db = None
+        x_func_delete_dir(dir=self.get_bank_db_path())
 
     def set_polityunit_name(self, name: str):
         self.name = name

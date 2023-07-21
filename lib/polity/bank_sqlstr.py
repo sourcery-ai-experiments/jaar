@@ -1,6 +1,8 @@
 from lib.agent.agent import AgentUnit
 from lib.agent.ally import AllyUnit
+from lib.agent.road import get_road_without_root_node
 from lib.polity.y_func import sqlite_bool, sqlite_null
+from lib.agent.road import Road
 from dataclasses import dataclass
 from sqlite3 import Connection
 
@@ -487,10 +489,34 @@ def get_idea_catalog_table_insert_sqlstr(
         )
         VALUES (
           '{idea_catalog.agent_name}'
-        , '{idea_catalog.idea_road}'
+        , '{get_road_without_root_node(idea_catalog.idea_road)}'
         )
         ;
     """
+
+
+def get_idea_catalog_dict(db_conn: Connection, search_road: Road = None):
+    if search_road is None:
+        where_clause = ""
+    else:
+        search_road_without_root_node = get_road_without_root_node(search_road)
+        where_clause = f"WHERE idea_road = '{search_road_without_root_node}'"
+    sqlstr = f"""
+        SELECT 
+          agent_name
+        , idea_road
+        FROM idea_catalog
+        {where_clause}
+        ;
+    """
+    results = db_conn.execute(sqlstr)
+
+    dict_x = {}
+    for row in results.fetchall():
+        idea_catalog_x = IdeaCatalog(agent_name=row[0], idea_road=row[1])
+        dict_key = f"{idea_catalog_x.agent_name} {idea_catalog_x.idea_road}"
+        dict_x[dict_key] = idea_catalog_x
+    return dict_x
 
 
 def get_acptfact_catalog_table_create_sqlstr() -> str:
