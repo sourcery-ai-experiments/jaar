@@ -303,7 +303,7 @@ def test_polity_refresh_bank_metrics_CorrectlyPopulates_brandunit_catalog(
     assert get_single_result_back(e1.get_bank_conn(), sqlstr) == 3
 
 
-def test_polity_refresh_bank_metrics_CorrectlyPopulates_Agent_brandunit_allylinks(
+def test_polity_set_agent_attr_defined_by_polity_CorrectlyPopulatesAgent_Brandunit_Allylinks(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -353,7 +353,7 @@ def test_polity_refresh_bank_metrics_CorrectlyPopulates_Agent_brandunit_allylink
     e1.save_agentunit_obj_to_agents_dir(agent_x=tom_agent)
     e1.save_agentunit_obj_to_agents_dir(agent_x=ava_agent)
 
-    e1.refresh_bank_metrics()
+    e1.set_agent_attr_defined_by_polity(agent_name=sal_text)
     e1_sal_agent = e1.get_agent_from_agents_dir(_desc=sal_text)
     assert len(e1_sal_agent._brands.get(swim_brand_text)._allys) == 1
 
@@ -363,10 +363,8 @@ def test_polity_refresh_bank_metrics_CorrectlyPopulates_Agent_brandunit_allylink
     swim_brand_unit.set_attr(_allylinks_set_by_polity_road=sal_swim_road)
     sal_agent.set_brandunit(brandunit=swim_brand_unit)
     e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
+    e1.set_agent_attr_defined_by_polity(agent_name=sal_text)
 
     # THEN
-    e1.refresh_bank_metrics()
     e1_sal_agent = e1.get_agent_from_agents_dir(_desc=sal_text)
     assert len(e1_sal_agent._brands.get(swim_brand_text)._allys) == 2
-
-    assert 1 == 2

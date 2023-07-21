@@ -130,6 +130,27 @@ def test_brandunit_del_allylink_worksCorrectly():
     assert swimmers_brand._allys.get(todd_text) is None
 
 
+def test_brandunit_clear_allylinks_worksCorrectly():
+    # GIVEN
+    todd_text = "Todd"
+    mery_text = "Merry"
+    todd_ally = allylink_shop(name=todd_text)
+    mery_ally = allylink_shop(name=mery_text)
+    swimmers_allys = {todd_ally.name: todd_ally, mery_ally.name: mery_ally}
+    swimmers_brand = brandunit_shop(name="swimmers", _allys={})
+    swimmers_brand.set_allylink(todd_ally)
+    swimmers_brand.set_allylink(mery_ally)
+    assert len(swimmers_brand._allys) == 2
+    assert swimmers_brand._allys == swimmers_allys
+
+    # WHEN
+    swimmers_brand.clear_allylinks()
+
+    # THEN
+    assert len(swimmers_brand._allys) == 0
+    assert swimmers_brand._allys.get(todd_text) is None
+
+
 def test_Brandunit_reset_agent_importance_WorkCorrectly():
     # GIVEN
     maria_name = "maria"

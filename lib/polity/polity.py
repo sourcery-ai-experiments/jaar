@@ -1,4 +1,5 @@
 from lib.agent.agent import AgentUnit, get_from_json as get_agent_from_json
+from lib.agent.ally import allylink_shop
 from lib.polity.person import (
     PersonUnit,
     personunit_shop,
@@ -31,6 +32,7 @@ from lib.polity.bank_sqlstr import (
     RiverTallyUnit,
     IdeaCatalog,
     get_idea_catalog_table_insert_sqlstr,
+    get_idea_catalog_dict,
     AcptFactCatalog,
     get_acptfact_catalog_table_insert_sqlstr,
     BrandUnitCatalog,
@@ -45,6 +47,24 @@ class PolityUnit:
     politys_dir: str
     _personunits: dict[str:PersonUnit] = None
     _bank_db = None
+
+    def set_agent_attr_defined_by_polity(self, agent_name: str):
+        agent_obj = self.get_agent_from_agents_dir(agent_name)
+
+        for brandunit_x in agent_obj._brands.values():
+            if brandunit_x._allylinks_set_by_polity_road != None:
+                brandunit_x.clear_allylinks()
+                ic = get_idea_catalog_dict(
+                    self.get_bank_conn(), brandunit_x._allylinks_set_by_polity_road
+                )
+                for idea_catalog in ic.values():
+                    if agent_name != idea_catalog.agent_name:
+                        allylink_x = allylink_shop(name=idea_catalog.agent_name)
+                        brandunit_x.set_allylink(allylink_x)
+        self.save_agentunit_obj_to_agents_dir(agent_obj)
+
+        # refresh bank metrics
+        self.refresh_bank_metrics()
 
     # figure out who is paying taxes and how much
     def set_river_sphere_for_agent(self, agent_name: str, max_flows_count: int = None):
@@ -156,10 +176,9 @@ class PolityUnit:
         if in_memory is None and self._bank_db != None:
             in_memory = True
         self._create_bank_db(in_memory=in_memory, overwrite=True)
-        # Go to each agent file in agents dir
-        # Load agent,
-        # agent: run "set_agent_metrics"
-        # grab agent relevant metrics
+        self._bank_populate_agents_data()
+
+    def _bank_populate_agents_data(self):
         for file_name in self.get_agents_dir_file_names_list():
             agent_json = x_func_open_file(self.get_agents_dir(), file_name)
             agentunit_x = get_agent_from_json(lw_json=agent_json)
@@ -170,11 +189,6 @@ class PolityUnit:
             self._bank_insert_brandunit(agentunit_x)
             self._bank_insert_ideaunit(agentunit_x)
             self._bank_insert_acptfact(agentunit_x)
-
-        for buc in get_brandunit_catalog_dict(self.get_bank_conn()).values():
-            if buc.allylinks_set_by_polity_road != None:
-                print(f"{buc.allylinks_set_by_polity_road=}")
-            print(f"{buc=}")
 
     def _bank_insert_agentunit(self, agentunit_x: AgentUnit):
         with self.get_bank_conn() as bank_conn:

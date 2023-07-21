@@ -92,13 +92,15 @@ class BrandUnit(BrandCore):
                 brand_agent_agenda_debt=self._agent_agenda_debt,
             )
 
+    def clear_allylinks(self):
+        self._allys = {}
+
     def _set_allylinks_empty_if_null(self):
         if self._allys is None:
             self._allys = {}
 
     def get_allys_dict(self):
-        if self._allys is None:
-            self._allys = {}
+        self._set_allylinks_empty_if_null()
 
         x_allys_dict = {}
         for ally in self._allys.values():
