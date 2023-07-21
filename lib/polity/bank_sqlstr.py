@@ -5,6 +5,10 @@ from dataclasses import dataclass
 from sqlite3 import Connection
 
 
+def get_table_count_sqlstr(table_name: str) -> str:
+    return f"SELECT COUNT(*) FROM {table_name}"
+
+
 def get_river_flow_table_delete_sqlstr(currency_agent_name: str) -> str:
     return f"""
         DELETE FROM river_flow
@@ -456,7 +460,7 @@ def get_idea_catalog_table_create_sqlstr() -> str:
 
 def get_idea_catalog_table_count(db_conn: Connection, agent_name: str) -> str:
     sqlstr = f"""
-        SELECT COUNT(*) FROM idea_catalog WHERE agent_name = '{agent_name}'
+        {get_table_count_sqlstr("idea_catalog")} WHERE agent_name = '{agent_name}'
         ;
     """
     results = db_conn.execute(sqlstr)
@@ -502,7 +506,7 @@ def get_acptfact_catalog_table_create_sqlstr() -> str:
 
 def get_acptfact_catalog_table_count(db_conn: Connection, agent_name: str) -> str:
     sqlstr = f"""
-        SELECT COUNT(*) FROM acptfact_catalog WHERE agent_name = '{agent_name}'
+        {get_table_count_sqlstr("acptfact_catalog")} WHERE agent_name = '{agent_name}'
         ;
     """
     results = db_conn.execute(sqlstr)
@@ -550,7 +554,7 @@ def get_brandunit_catalog_table_create_sqlstr() -> str:
 
 def get_brandunit_catalog_table_count(db_conn: Connection, agent_name: str) -> str:
     sqlstr = f"""
-        SELECT COUNT(*) FROM brandunit_catalog WHERE agent_name = '{agent_name}'
+        {get_table_count_sqlstr("brandunit_catalog")} WHERE agent_name = '{agent_name}'
         ;
     """
     results = db_conn.execute(sqlstr)

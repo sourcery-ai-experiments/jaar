@@ -151,7 +151,10 @@ class PolityUnit:
             river_tallys = get_river_tally_dict(bank_conn, agent_name)
         return river_tallys
 
-    def refresh_bank_metrics(self):
+    def refresh_bank_metrics(self, in_memory: bool = None):
+        if in_memory is None and self._bank_db != None:
+            in_memory = True
+        self._create_bank_db(in_memory=in_memory, overwrite=True)
         # Go to each agent file in agents dir
         # Load agent,
         # agent: run "set_agent_metrics"
@@ -217,7 +220,12 @@ class PolityUnit:
         else:
             return self._bank_db
 
-    def _create_bank_db_if_null(self, in_memory: bool = None) -> Connection:
+    def _create_bank_db(
+        self, in_memory: bool = None, overwrite: bool = None
+    ) -> Connection:
+        if overwrite:
+            self._delete_bank()
+
         bank_file_new = True
         if in_memory:
             self._bank_db = sqlite3_connect(":memory:")
@@ -228,6 +236,9 @@ class PolityUnit:
             with self.get_bank_conn() as bank_conn:
                 for sqlstr in get_create_table_if_not_exist_sqlstrs():
                     bank_conn.execute(sqlstr)
+
+    def _delete_bank(self):
+        self._bank_db = None
 
     def set_polityunit_name(self, name: str):
         self.name = name
@@ -254,7 +265,7 @@ class PolityUnit:
         single_dir_create_if_null(x_path=agents_dir)
         single_dir_create_if_null(x_path=persons_dir)
         self._create_main_file_if_null(x_dir=polity_dir)
-        self._create_bank_db_if_null(in_memory=in_memory_bank)
+        self._create_bank_db(in_memory=in_memory_bank, overwrite=True)
 
     # PersonUnit management
     def get_persons_dir(self):

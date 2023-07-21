@@ -601,9 +601,10 @@ def test_refresh_bank_metrics_Populates_idea_catalog_table(
     e1.refresh_bank_metrics()
 
     # THEN
-    assert get_idea_catalog_table_count(bank_conn, bob_text) == 3
-    assert get_idea_catalog_table_count(bank_conn, tim_text) == 6
-    assert get_idea_catalog_table_count(bank_conn, sal_text) == 5
+    with e1.get_bank_conn() as bank_conn:
+        assert get_idea_catalog_table_count(bank_conn, bob_text) == 3
+        assert get_idea_catalog_table_count(bank_conn, tim_text) == 6
+        assert get_idea_catalog_table_count(bank_conn, sal_text) == 5
 
 
 def test_polity_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(

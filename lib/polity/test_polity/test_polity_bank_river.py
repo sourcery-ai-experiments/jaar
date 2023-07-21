@@ -7,7 +7,11 @@ from lib.polity.examples.env_tools import (
 )
 from pytest import raises as pytest_raises
 from lib.polity.y_func import check_connection, get_single_result_back
-from lib.polity.bank_sqlstr import get_river_tally_dict, get_river_flow_dict
+from lib.polity.bank_sqlstr import (
+    get_river_tally_dict,
+    get_river_flow_dict,
+    get_table_count_sqlstr,
+)
 
 
 def test_polity_set_river_sphere_for_agent_CorrectlyPopulatesriver_tallyTable01(
@@ -37,11 +41,11 @@ def test_polity_set_river_sphere_for_agent_CorrectlyPopulatesriver_tallyTable01(
 
     e1.refresh_bank_metrics()
 
-    sqlstr_count_ledger = "SELECT COUNT(*) FROM ledger;"
+    sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 4
 
-    sqlstr_count_river_tally = "SELECT COUNT(*) FROM river_tally;"
-    sqlstr_count_river_flow = "SELECT COUNT(*) FROM river_flow;"
+    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
+    sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 0
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tally) == 0
 
@@ -113,11 +117,11 @@ def test_polity_set_river_sphere_for_agent_CorrectlyPopulatesriver_tallyTable02(
     e1.save_agentunit_obj_to_agents_dir(agent_x=elu)
     e1.refresh_bank_metrics()
 
-    sqlstr_count_ledger = "SELECT COUNT(*) FROM ledger;"
+    sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 6
 
-    sqlstr_count_river_tally = "SELECT COUNT(*) FROM river_tally;"
-    sqlstr_count_river_flow = "SELECT COUNT(*) FROM river_flow;"
+    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
+    sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 0
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tally) == 0
 
@@ -176,11 +180,11 @@ def test_polity_set_river_sphere_for_agent_CorrectlyPopulatesriver_tallyTable03(
     e1.save_agentunit_obj_to_agents_dir(agent_x=ava_agent)
     e1.refresh_bank_metrics()
 
-    sqlstr_count_ledger = "SELECT COUNT(*) FROM ledger;"
+    sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 6
 
-    sqlstr_count_river_tally = "SELECT COUNT(*) FROM river_tally;"
-    sqlstr_count_river_flow = "SELECT COUNT(*) FROM river_flow;"
+    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
+    sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 0
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tally) == 0
 
@@ -251,11 +255,11 @@ def test_polity_set_river_sphere_for_agent_CorrectlyPopulatesriver_tallyTable04(
 
     e1.refresh_bank_metrics()
 
-    sqlstr_count_ledger = "SELECT COUNT(*) FROM ledger;"
+    sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 8
 
-    sqlstr_count_river_tally = "SELECT COUNT(*) FROM river_tally;"
-    sqlstr_count_river_flow = "SELECT COUNT(*) FROM river_flow;"
+    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
+    sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 0
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tally) == 0
 
@@ -327,11 +331,11 @@ def test_polity_set_river_sphere_for_agent_CorrectlyPopulatesriver_tallyTable05(
 
     e1.refresh_bank_metrics()
 
-    sqlstr_count_ledger = "SELECT COUNT(*) FROM ledger;"
+    sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 9
 
-    sqlstr_count_river_tally = "SELECT COUNT(*) FROM river_tally;"
-    sqlstr_count_river_flow = "SELECT COUNT(*) FROM river_flow;"
+    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
+    sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 0
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tally) == 0
 
@@ -403,8 +407,8 @@ def test_polity_set_river_sphere_for_agent_CorrectlyDeletesPreviousRiver(
     e1.set_river_sphere_for_agent(agent_name=sal_text)
     e1.set_river_sphere_for_agent(agent_name=elu_text)
 
-    sqlstr_count_river_tally = "SELECT COUNT(*) FROM river_tally;"
-    sqlstr_count_river_flow = "SELECT COUNT(*) FROM river_flow;"
+    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
+    sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 16
 
     with e1.get_bank_conn() as bank_conn:
@@ -466,11 +470,11 @@ def test_polity_set_river_sphere_for_agent_CorrectlyUsesMaxFlowsCount(
 
     e1.refresh_bank_metrics()
 
-    sqlstr_count_ledger = "SELECT COUNT(*) FROM ledger;"
+    sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 9
 
-    sqlstr_count_river_tally = "SELECT COUNT(*) FROM river_tally;"
-    sqlstr_count_river_flow = "SELECT COUNT(*) FROM river_flow;"
+    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
+    sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 0
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tally) == 0
 
@@ -527,11 +531,11 @@ def test_polity_set_river_sphere_for_agent_CorrectlyPopulatesriver_tallyTable05(
 
     e1.refresh_bank_metrics()
 
-    sqlstr_count_ledger = "SELECT COUNT(*) FROM ledger;"
+    sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 9
 
-    sqlstr_count_river_tally = "SELECT COUNT(*) FROM river_tally;"
-    sqlstr_count_river_flow = "SELECT COUNT(*) FROM river_flow;"
+    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
+    sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 0
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tally) == 0
 

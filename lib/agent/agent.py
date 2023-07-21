@@ -575,7 +575,7 @@ class AgentUnit:
             )
         elif self._brands.get(new_name) != None:
             old_brandunit = self._brands.get(old_name)
-            old_brandunit.edit_attr(name=new_name)
+            old_brandunit.set_name(name=new_name)
             self._brands.get(new_name).meld(other_brand=old_brandunit)
             self.del_brandunit(brandname=old_name)
         elif self._brands.get(new_name) is None:

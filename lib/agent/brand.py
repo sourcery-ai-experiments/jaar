@@ -33,18 +33,17 @@ class BrandUnit(BrandCore):
     _agent_agenda_debt: float = None
     _allylinks_set_by_polity_road: Road = None
 
-    def edit_attr(
-        self,
-        name: BrandName = None,
-        uid: float = None,
-        single_member_ally_id: bool = None,
-    ):
+    def set_name(self, name: BrandName = None):
         if name != None:
             self.name = name
-        if uid != None:
-            self.uid = uid
-        if single_member_ally_id != None:
-            self.single_member_ally_id = single_member_ally_id
+
+    def set_attr(self, _allylinks_set_by_polity_road: Road):
+        # if uid != None:
+        #     self.uid = uid
+        # if single_member_ally_id != None:
+        #     self.single_member_ally_id = single_member_ally_id
+        if _allylinks_set_by_polity_road != None:
+            self._allylinks_set_by_polity_road = _allylinks_set_by_polity_road
 
     def get_dict(self):
         return {

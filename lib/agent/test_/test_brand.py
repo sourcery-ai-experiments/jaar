@@ -45,6 +45,34 @@ def test_brandunit_exists():
     assert swimmers_brand._allylinks_set_by_polity_road == usa_road
 
 
+def test_brandunit_set_name_WorksCorrectly():
+    # GIVEN
+    swim_text = "swimmers"
+    swim_brand = brandunit_shop(name=swim_text)
+    assert swim_brand.name == swim_text
+
+    # WHEN
+    water_text = "water people"
+    swim_brand.set_name(name=water_text)
+
+    # THEN
+    assert swim_brand.name == water_text
+
+
+def test_brandunit_set_attr_WorksCorrectly():
+    # GIVEN
+    swim_text = "swimmers"
+    swim_brand = brandunit_shop(name=swim_text)
+    assert swim_brand._allylinks_set_by_polity_road is None
+
+    # WHEN
+    water_road = "src,sports,water"
+    swim_brand.set_attr(_allylinks_set_by_polity_road=water_road)
+
+    # THEN
+    assert swim_brand._allylinks_set_by_polity_road == water_road
+
+
 def test_brandunit_shop_WhenSingleAllyCorrectlyRemoves_allylinks_set_by_polity_road():
     # GIVEN
     swimmers = "swimmers"
