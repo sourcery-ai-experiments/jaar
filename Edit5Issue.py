@@ -1,6 +1,6 @@
-# command to for converting ui form to python file: pyuic5 ui\Polity5IssueUI.ui -o ui\Polity5IssueUI.py
+# command to for converting ui form to python file: pyuic5 ui\World5IssueUI.ui -o ui\World5IssueUI.py
 import sys
-from ui.Polity5IssueUI import Ui_Form
+from ui.World5IssueUI import Ui_Form
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from lib.pyqt5_tools.pyqt_func import lw_diplay

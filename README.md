@@ -37,13 +37,13 @@ This is currently a one-man project.
 base attributes vs required attributess
 
 <!-- TODO: Add explanations -->
-PolityUnit objects
+WorldUnit objects
 
-PolityUnit PersonUnit objects
+WorldUnit PersonUnit objects
 
-PolityUnit PersonUnit AgentLink objects
+WorldUnit PersonUnit AgentLink objects
 
-PolityUnit Bank objects
+WorldUnit Bank objects
 
 <!-- TODO: Add explanations -->
 AgentUnit objects
@@ -102,7 +102,7 @@ If you have installed `jaar` before, and you want to ensure `pip` downloads the 
 
 -->
 
-### 1.1 Hello World
+### 1.1 Hello 
 
 <!-- TODO: Add simplest example
 

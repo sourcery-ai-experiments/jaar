@@ -7,7 +7,7 @@ from lib.agent.examples.example_agents import (
 from lib.agent.agent import AgentUnit
 from lib.agent.idea import IdeaKid
 from pytest import raises as pytest_raises
-from lib.polity.bank_sqlstr import RiverTallyUnit
+from lib.world.bank_sqlstr import RiverTallyUnit
 
 
 def test_agent_allys_exists():

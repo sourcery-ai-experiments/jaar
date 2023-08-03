@@ -143,10 +143,10 @@ dmypy.json
 cython_debug/
 
 # automatically generated testing environments on each run
-lib/polity/examples/politys/ex3/
-lib/polity/examples/politys/ex4/
-lib/polity/examples/politys/ex5/
-lib/polity/examples/politys/ex6/
-lib/polity/examples/politys/river_env/
-lib/polity/test_polity/sql_worksheet01.sql
+lib/world/examples/worlds/ex3/
+lib/world/examples/worlds/ex4/
+lib/world/examples/worlds/ex5/
+lib/world/examples/worlds/ex6/
+lib/world/examples/worlds/river_env/
+lib/world/test_world/sql_worksheet01.sql
 lib/agent/examples/js_agent.json

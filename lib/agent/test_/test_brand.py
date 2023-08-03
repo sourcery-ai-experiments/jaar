@@ -30,7 +30,7 @@ def test_brandunit_exists():
         _agent_debt=0.44,
         _agent_agenda_credit=0.66,
         _agent_agenda_debt=0.77,
-        _allylinks_set_by_polity_road=usa_road,
+        _allylinks_set_by_world_road=usa_road,
     )
 
     # THEN
@@ -42,7 +42,7 @@ def test_brandunit_exists():
     assert swimmers_brand._agent_debt != None
     assert swimmers_brand._agent_agenda_credit != None
     assert swimmers_brand._agent_agenda_debt != None
-    assert swimmers_brand._allylinks_set_by_polity_road == usa_road
+    assert swimmers_brand._allylinks_set_by_world_road == usa_road
 
 
 def test_brandunit_set_name_WorksCorrectly():
@@ -63,17 +63,17 @@ def test_brandunit_set_attr_WorksCorrectly():
     # GIVEN
     swim_text = "swimmers"
     swim_brand = brandunit_shop(name=swim_text)
-    assert swim_brand._allylinks_set_by_polity_road is None
+    assert swim_brand._allylinks_set_by_world_road is None
 
     # WHEN
     water_road = "src,sports,water"
-    swim_brand.set_attr(_allylinks_set_by_polity_road=water_road)
+    swim_brand.set_attr(_allylinks_set_by_world_road=water_road)
 
     # THEN
-    assert swim_brand._allylinks_set_by_polity_road == water_road
+    assert swim_brand._allylinks_set_by_world_road == water_road
 
 
-def test_brandunit_shop_WhenSingleAllyCorrectlyRemoves_allylinks_set_by_polity_road():
+def test_brandunit_shop_WhenSingleAllyCorrectlyRemoves_allylinks_set_by_world_road():
     # GIVEN
     swimmers = "swimmers"
     usa_road = "src,nation-states,USA"
@@ -83,11 +83,11 @@ def test_brandunit_shop_WhenSingleAllyCorrectlyRemoves_allylinks_set_by_polity_r
         swimmers_brand = brandunit_shop(
             name=swimmers,
             _single_ally=True,
-            _allylinks_set_by_polity_road=usa_road,
+            _allylinks_set_by_world_road=usa_road,
         )
     assert (
         str(excinfo.value)
-        == f"_allylinks_set_by_polity_road cannot be '{usa_road}' for a single_ally BrandUnit. It must have no value."
+        == f"_allylinks_set_by_world_road cannot be '{usa_road}' for a single_ally BrandUnit. It must have no value."
     )
 
 
@@ -323,7 +323,7 @@ def test_brandUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         "single_member_ally_id": None,
         "_single_ally": False,
         "_allys": {},
-        "_allylinks_set_by_polity_road": None,
+        "_allylinks_set_by_world_road": None,
     }
 
     # GIVEN
@@ -338,7 +338,7 @@ def test_brandUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     str_teacher = "teachers"
     swim_road = "road_str"
     teachers_brand = brandunit_shop(
-        name=str_teacher, _allys=allylinks_dict, _allylinks_set_by_polity_road=swim_road
+        name=str_teacher, _allys=allylinks_dict, _allylinks_set_by_world_road=swim_road
     )
 
     # WHEN
@@ -352,7 +352,7 @@ def test_brandUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         "single_member_ally_id": None,
         "_single_ally": False,
         "_allys": marie_json_dict,
-        "_allylinks_set_by_polity_road": swim_road,
+        "_allylinks_set_by_world_road": swim_road,
     }
 
 
@@ -366,15 +366,15 @@ def test_brandunit_get_from_JSON_SimpleExampleWorks():
     str_teacher = "teachers"
     swim_road = "road_str"
     teacher_brand = brandunit_shop(
-        name=str_teacher, _allys=allylinks_dict, _allylinks_set_by_polity_road=swim_road
+        name=str_teacher, _allys=allylinks_dict, _allylinks_set_by_world_road=swim_road
     )
     teacher_dict = teacher_brand.get_dict()
-    _allylinks_set_by_polity_road_text = "_allylinks_set_by_polity_road"
-    print(f"{teacher_dict.get(_allylinks_set_by_polity_road_text)=}")
+    _allylinks_set_by_world_road_text = "_allylinks_set_by_world_road"
+    print(f"{teacher_dict.get(_allylinks_set_by_world_road_text)=}")
     brands_dict = {"teachers": teacher_dict}
 
     teachers_json = x_get_json(dict_x=brands_dict)
-    print(f"{teachers_json.find(_allylinks_set_by_polity_road_text)=}")
+    print(f"{teachers_json.find(_allylinks_set_by_world_road_text)=}")
     assert teachers_json != None
     assert x_is_json(json_x=teachers_json)
 
@@ -385,8 +385,8 @@ def test_brandunit_get_from_JSON_SimpleExampleWorks():
     assert brandunits_obj_dict != None
     teachers_obj_check_dict = {teacher_brand.name: teacher_brand}
     print(f"    {brandunits_obj_dict=}")
-    allylinks_set_by_polity_road_text = "_allylinks_set_by_polity_road"
-    print(f"{teachers_obj_check_dict.get(allylinks_set_by_polity_road_text)=}")
+    allylinks_set_by_world_road_text = "_allylinks_set_by_world_road"
+    print(f"{teachers_obj_check_dict.get(allylinks_set_by_world_road_text)=}")
     print(f"{teachers_obj_check_dict=}")
     assert brandunits_obj_dict == teachers_obj_check_dict
 

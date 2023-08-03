@@ -5,7 +5,7 @@ from lib.agent.x_func import (
     count_files as x_func_count_files,
     return1ifnone as x_func_return1ifnone,
 )
-from lib.polity.examples.person_env_tools import (
+from lib.world.examples.person_env_tools import (
     person_dir_setup_cleanup,
     get_temp_person_dir,
     create_agent_file_for_person,

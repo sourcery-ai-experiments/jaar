@@ -31,19 +31,19 @@ class BrandUnit(BrandCore):
     _agent_debt: float = None
     _agent_agenda_credit: float = None
     _agent_agenda_debt: float = None
-    _allylinks_set_by_polity_road: Road = None
+    _allylinks_set_by_world_road: Road = None
 
     def set_name(self, name: BrandName = None):
         if name != None:
             self.name = name
 
-    def set_attr(self, _allylinks_set_by_polity_road: Road):
+    def set_attr(self, _allylinks_set_by_world_road: Road):
         # if uid != None:
         #     self.uid = uid
         # if single_member_ally_id != None:
         #     self.single_member_ally_id = single_member_ally_id
-        if _allylinks_set_by_polity_road != None:
-            self._allylinks_set_by_polity_road = _allylinks_set_by_polity_road
+        if _allylinks_set_by_world_road != None:
+            self._allylinks_set_by_world_road = _allylinks_set_by_world_road
 
     def get_dict(self):
         return {
@@ -52,7 +52,7 @@ class BrandUnit(BrandCore):
             "single_member_ally_id": self.single_member_ally_id,
             "_single_ally": self._single_ally,
             "_allys": self.get_allys_dict(),
-            "_allylinks_set_by_polity_road": self._allylinks_set_by_polity_road,
+            "_allylinks_set_by_world_road": self._allylinks_set_by_world_road,
         }
 
     def set_empty_agent_credit_debt_to_zero(self):
@@ -156,11 +156,11 @@ def get_from_dict(x_dict: dict):
     brandunits = {}
     for brandunits_dict in x_dict.values():
         try:
-            ex_allylinks_set_by_polity_road = brandunits_dict[
-                "_allylinks_set_by_polity_road"
+            ex_allylinks_set_by_world_road = brandunits_dict[
+                "_allylinks_set_by_world_road"
             ]
         except KeyError:
-            ex_allylinks_set_by_polity_road = None
+            ex_allylinks_set_by_world_road = None
 
         x_brand = brandunit_shop(
             name=brandunits_dict["name"],
@@ -168,7 +168,7 @@ def get_from_dict(x_dict: dict):
             _single_ally=brandunits_dict["_single_ally"],
             single_member_ally_id=brandunits_dict["single_member_ally_id"],
             _allys=allylinks_get_from_dict(x_dict=brandunits_dict["_allys"]),
-            _allylinks_set_by_polity_road=ex_allylinks_set_by_polity_road,
+            _allylinks_set_by_world_road=ex_allylinks_set_by_world_road,
         )
         brandunits[x_brand.name] = x_brand
     return brandunits
@@ -184,11 +184,11 @@ def brandunit_shop(
     _agent_debt: float = None,
     _agent_agenda_credit: float = None,
     _agent_agenda_debt: float = None,
-    _allylinks_set_by_polity_road: Road = None,
+    _allylinks_set_by_world_road: Road = None,
 ) -> BrandUnit:
-    if _single_ally and _allylinks_set_by_polity_road != None:
+    if _single_ally and _allylinks_set_by_world_road != None:
         raise InvalidBrandException(
-            f"_allylinks_set_by_polity_road cannot be '{_allylinks_set_by_polity_road}' for a single_ally BrandUnit. It must have no value."
+            f"_allylinks_set_by_world_road cannot be '{_allylinks_set_by_world_road}' for a single_ally BrandUnit. It must have no value."
         )
 
     if _allys is None:
@@ -205,7 +205,7 @@ def brandunit_shop(
         _agent_debt=_agent_debt,
         _agent_agenda_credit=_agent_agenda_credit,
         _agent_agenda_debt=_agent_agenda_debt,
-        _allylinks_set_by_polity_road=_allylinks_set_by_polity_road,
+        _allylinks_set_by_world_road=_allylinks_set_by_world_road,
     )
 
 

@@ -21,7 +21,7 @@ from lib.agent.x_func import (
     save_file as x_func_save_file,
     open_file as x_func_open_file,
 )
-from lib.polity.examples.env_tools import (
+from lib.world.examples.env_tools import (
     env_dir_setup_cleanup,
     get_temp_env_dir,
 )
