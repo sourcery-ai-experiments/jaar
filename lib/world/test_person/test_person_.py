@@ -1,4 +1,4 @@
-from lib.world.person import personunit_shop, PersonUnit
+from lib.world.person import personunit_shop
 from lib.agent.agent import AgentUnit
 from lib.agent.idea import IdeaRoot
 import lib.world.examples.example_persons as example_persons
@@ -62,7 +62,7 @@ def test_personunit_creates_files(person_dir_setup_cleanup):
     ignore_agents_dir = f"{persons_dir}/{person1_text}/ignores/"
     bond_agents_dir = f"{persons_dir}/{person1_text}/bonds/"
     person_file_path = f"{person1_dir}/{person_file_name}"
-    px = PersonUnit(name=person1_text)
+    px = personunit_shop(name=person1_text, env_dir=env_dir)
     px._set_env_dir(env_dir=env_dir)
     px._set_src_agentlinks_empty_if_null()
     px._set_emtpy_dest_agent()
