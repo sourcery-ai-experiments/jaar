@@ -1,6 +1,6 @@
 # command to for converting ui form to python file: pyuic5 ui\EditIdeaUnitUI.ui -o ui\EditIdeaUnitUI.py
 import sys
-from lib.agent.idea import IdeaKid
+from lib.agent.idea import IdeaKid, IdeaAttrHolder
 from ui.EditIdeaUnitUI import Ui_Form
 from PyQt5 import QtWidgets as qtw, QtCore
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1, QTableWidget as qtw0
@@ -755,7 +755,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.idea2brand_table.setItem(
                 row - 1,
                 2,
-                qtw1(lw_diplay(brandheir._agent_importance)),
+                qtw1(lw_diplay(brandheir._agent_credit)),
             )
 
         self.idea2brand_table.sortItems(1, QtCore.Qt.AscendingOrder)
@@ -892,7 +892,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
     def idea_insert(self):
         new_idea = IdeaKid(_desc=self.yo_description.toPlainText())
-        new_idea._set_idea_attr(
+        idea_attr_x = IdeaAttrHolder(
             weight=float(self.yo_weight.toPlainText()),
             begin=str2float(self.yo_begin.toPlainText()),
             close=str2float(self.yo_close.toPlainText()),
@@ -921,6 +921,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             problem_bool=None,
             on_meld_weight_action=None,
         )
+        new_idea._set_idea_attr(idea_attr=idea_attr_x)
         new_idea.set_kids_empty_if_null()
         take_parent_children_bool = self.cb_yo_insert_allChildren.checkState() == 2
         new_walk = f"{self.yo_x._desc}"
