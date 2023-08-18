@@ -13,15 +13,13 @@
 [![Downloads](https://pepy.tech/badge/borb/month)](https://pepy.tech/project/borb)
 -->
 
-`jaar` is a python library for aggregating the voices of a community to support Justice.
+`jaar` is a python library for listening to the climate of a community.
 
 ## 0.0 About jaar
 
-`jaar` is a python library for aggregating the voices of a community to support Justice.
-
-This library helps persons listen to their community and set their acts accordingly. To
-serve Justice a person needs to act for Justice. To know what act best supports Justice 
-a person needs to listen to their community. 
+`jaar` is a python library for listening to the climate of a community. Individual 
+voices are aggregated by a listener into a coherant agenda that can include promises 
+of actions and/or promises of being. Listening and acting on it.
 
 A person's agenda in the community is built by the the weighted intreprtation of
 1. Other persons agendas 
@@ -31,7 +29,35 @@ Each agenda is saved as a JSON file.
 
 This is currently a one-man project.
 
-## 0.1 Notes about data structure
+ 
+### 1.0 Installing `jaar`
+
+<!-- TODO: add dependencies -->
+
+Future enhancement: `jaar` can be installed using `pip`
+
+<!-- TODO: Get pip install working 
+
+    pip install jaar
+
+If you have installed `jaar` before, and you want to ensure `pip` downloads the latest version (rather than using its internal cache) you can use the following commands:
+
+    pip uninstall jaar
+    pip install --no-cache jaar
+
+-->
+
+### 1.1 Hello 
+
+<!-- TODO: Add simplest example
+
+Should examples be found in a separate repository to ensure the `jaar` repository stays 
+relatively small, whilst still providing a thorough knowledgebase of code-samples, 
+screenshots and explanatory text.
+
+-->
+
+## 1.2 Notes about data structure
 
 <!-- TODO: Add explanations -->
 base attributes vs required attributess
@@ -73,7 +99,7 @@ AgentUnit IdeaUnit AcptFactUnit objects
 AgentUnit IdeaUnit AcptFactHeir objects
 
 
-## 0.2 About the Examples
+## 1.3 Test-Driven-Development
 
 Jaar was developed using Test-Driven-Development so every feature should have a test
 that could represent an example. Tests can be hard to read. Some tests have many 
@@ -84,33 +110,8 @@ Should examples be in a separate repository to ensure the `jaar` repository stay
 relatively small? (whilst still providing a thorough knowledgebase of code-samples, 
 screenshots and explanatory text.)
 -->
- 
-### 1.0 Installing `jaar`
 
-<!-- TODO: add dependencies -->
 
-Future enhancement: `jaar` can be installed using `pip`
-
-<!-- TODO: Get pip install working 
-
-    pip install jaar
-
-If you have installed `jaar` before, and you want to ensure `pip` downloads the latest version (rather than using its internal cache) you can use the following commands:
-
-    pip uninstall jaar
-    pip install --no-cache jaar
-
--->
-
-### 1.1 Hello 
-
-<!-- TODO: Add simplest example
-
-Should examples be found in a separate repository to ensure the `jaar` repository stays 
-relatively small, whilst still providing a thorough knowledgebase of code-samples, 
-screenshots and explanatory text.
-
--->
 
 ## 2. License
 
