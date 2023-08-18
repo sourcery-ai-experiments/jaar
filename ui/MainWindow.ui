@@ -157,19 +157,6 @@
      <string>Description</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_5">
-    <property name="geometry">
-     <rect>
-      <x>1100</x>
-      <y>10</y>
-      <width>141</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Change AcptFacts</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="root_datetime_view">
     <property name="geometry">
      <rect>
@@ -256,9 +243,9 @@
    <widget class="QTableWidget" name="acptfacts_table">
     <property name="geometry">
      <rect>
-      <x>1020</x>
-      <y>130</y>
-      <width>641</width>
+      <x>1270</x>
+      <y>390</y>
+      <width>391</width>
       <height>461</height>
      </rect>
     </property>
@@ -629,16 +616,6 @@
      </font>
     </property>
    </widget>
-   <widget class="QComboBox" name="acptfact_base_update_combo">
-    <property name="geometry">
-     <rect>
-      <x>1090</x>
-      <y>30</y>
-      <width>421</width>
-      <height>26</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QPushButton" name="acptfact_open_soft_spec1">
     <property name="geometry">
      <rect>
@@ -656,9 +633,9 @@
     <property name="geometry">
      <rect>
       <x>1020</x>
-      <y>600</y>
+      <y>30</y>
       <width>641</width>
-      <height>251</height>
+      <height>351</height>
      </rect>
     </property>
     <property name="sizeAdjustPolicy">
@@ -716,114 +693,6 @@
     </property>
     <property name="text">
      <string>Things you promised to be right now</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="acptfact_pick_update_combo">
-    <property name="geometry">
-     <rect>
-      <x>1090</x>
-      <y>60</y>
-      <width>421</width>
-      <height>26</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_6">
-    <property name="geometry">
-     <rect>
-      <x>1020</x>
-      <y>30</y>
-      <width>61</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>AcptFact Base:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_9">
-    <property name="geometry">
-     <rect>
-      <x>1020</x>
-      <y>60</y>
-      <width>61</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>AcptFact Pick:</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="acptfact_open">
-    <property name="geometry">
-     <rect>
-      <x>1090</x>
-      <y>90</y>
-      <width>161</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="acptfact_nigh">
-    <property name="geometry">
-     <rect>
-      <x>1360</x>
-      <y>90</y>
-      <width>151</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_10">
-    <property name="geometry">
-     <rect>
-      <x>1030</x>
-      <y>90</y>
-      <width>71</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Open</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_11">
-    <property name="geometry">
-     <rect>
-      <x>1280</x>
-      <y>90</y>
-      <width>71</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Nigh</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="acptfact_update_button">
-    <property name="geometry">
-     <rect>
-      <x>1520</x>
-      <y>30</y>
-      <width>131</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Set AcptFact</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="acptfact_delete_button">
-    <property name="geometry">
-     <rect>
-      <x>1520</x>
-      <y>60</y>
-      <width>131</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Del AcptFact</string>
     </property>
    </widget>
    <widget class="QPushButton" name="acptfact_open_5daysago">
@@ -893,24 +762,6 @@
     </property>
     <property name="text">
      <string>Problem Creation</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="display_problem_acptfacts_cb">
-    <property name="geometry">
-     <rect>
-      <x>1520</x>
-      <y>90</y>
-      <width>161</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>8</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Only Problem AcptFacts</string>
     </property>
    </widget>
    <widget class="QLabel" name="current_file_path_label">

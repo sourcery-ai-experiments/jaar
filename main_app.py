@@ -107,7 +107,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.acptfact_open_soft_spec1.clicked.connect(self.set_acptfact_time_open_soft)
         self.root_datetime_view.clicked.connect(self.open_edittime)
         self.agenda_task_complete.clicked.connect(self.set_agenda_item_complete)
-        self.display_problem_acptfacts_cb.clicked.connect(self.refresh_all)
         self.cb_update_now_repeat.clicked.connect(self.startTimer)
         self.timer = qtc.QTimer()
         self.timer.timeout.connect(self.showTime)
@@ -136,12 +135,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             ["AcptFactBase", "AcptFactSelect", "Base", "AcptFact", "Open", "Nigh"]
         )
         self.acptfacts_table.setRowCount(0)
-        self.acptfacts_table.itemClicked.connect(self.acptfact_table_select)
-        self.acptfact_base_update_combo.currentTextChanged.connect(
-            self.acptfact_pick_combo_load
-        )
-        self.acptfact_update_button.clicked.connect(self.acptfact_set_action)
-        self.acptfact_delete_button.clicked.connect(self.acptfact_del_action)
         self.agenda_states.itemClicked.connect(self.agenda_task_display)
         # self.acptfact_update_combo.activated.connect(self.acptfact_update_heir)
 
@@ -253,19 +246,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.refresh_all()
 
-    def acptfact_set_action(self):
-        self.agent_x.set_acptfact(
-            base=self.acptfact_base_update_combo.currentText(),
-            pick=self.acptfact_pick_update_combo.currentText(),
-            open=pyqt_func_str2float(self.acptfact_open.text()),
-            nigh=pyqt_func_str2float(self.acptfact_nigh.text()),
-        )
-        self.refresh_all()
-
-    def acptfact_del_action(self):
-        self.agent_x.del_acptfact(base=self.acptfact_base_update_combo.currentText())
-        self.refresh_all()
-
     def emit_agent(self):
         self.agent_x_signal.emit(self.agent_x)
 
@@ -356,19 +336,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_all()
 
     def get_acptfacts_list(self):
-        x_list = []
-        if self.display_problem_acptfacts_cb.checkState() == 2:
-            x_list.extend(
-                acptfact
-                for acptfact in self.agent_x._idearoot._acptfactunits.values()
-                if (
-                    self.agent_x.get_idea_kid(road=acptfact.base)._problem_bool
-                    or self.agent_x.get_idea_kid(road=acptfact.pick)._problem_bool
-                )
-            )
-        else:
-            x_list = self.agent_x._idearoot._acptfactunits.values()
-        return x_list
+        return self.agent_x._idearoot._acptfactunits.values()
 
     def acptfacts_table_load(self):
         self.acptfacts_table.setRowCount(0)
@@ -406,7 +374,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.acptfacts_table.setItem(row, 4, qtw1(""))
             self.acptfacts_table.setItem(row, 5, qtw1(""))
             row += 1
-        self.acptfact_clear_fields()
 
     def _acptfacts_table_set_row_and_2_columns(self, row, base_text, acptfact_text):
         self.acptfacts_table.setRowCount(row + 1)
@@ -414,48 +381,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.acptfacts_table.setItem(row, 1, qtw1(acptfact_text))
         self.acptfacts_table.setColumnWidth(0, 140)
         self.acptfacts_table.setColumnWidth(1, 450)
-
-    def acptfact_clear_fields(self):
-        self.acptfact_base_update_combo.clear()
-        self.acptfact_pick_update_combo.clear()
-        self.acptfact_open.clear()
-        self.acptfact_nigh.clear()
-
-    def acptfact_table_select(self):
-        self.acptfact_base_update_combo.clear()
-        self.acptfact_base_update_combo.addItems(
-            self.agent_x.get_idea_tree_ordered_road_list()
-        )
-        self.acptfact_base_update_combo.setCurrentText(
-            self.acptfacts_table.item(self.acptfacts_table.currentRow(), 2).text()
-        )
-
-        self.acptfact_pick_combo_load()
-        self.acptfact_pick_update_combo.setCurrentText(
-            self.acptfacts_table.item(self.acptfacts_table.currentRow(), 3).text()
-        )
-
-        self.acptfact_open.clear()
-        self.acptfact_open.setText(
-            pyqt_func_num2str(
-                self.acptfacts_table.item(self.acptfacts_table.currentRow(), 4).text()
-            )
-        )
-
-        self.acptfact_nigh.clear()
-        self.acptfact_nigh.setText(
-            pyqt_func_num2str(
-                self.acptfacts_table.item(self.acptfacts_table.currentRow(), 5).text()
-            )
-        )
-
-    def acptfact_pick_combo_load(self):
-        self.acptfact_pick_update_combo.clear()
-        self.acptfact_pick_update_combo.addItems(
-            self.agent_x.get_heir_road_list(
-                src_road=self.acptfact_base_update_combo.currentText()
-            )
-        )
 
     def acptfact_update_heir(self, base_road):
         if self.acptfact_update_combo.currentText() == "":
