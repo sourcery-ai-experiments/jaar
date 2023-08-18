@@ -1,14 +1,14 @@
 # command to for converting ui form to python file: pyuic5 ui\EditIdeaUnitUI.ui -o ui\EditIdeaUnitUI.py
 import sys
-from lib.agent.idea import IdeaKid, IdeaAttrHolder
+from src.agent.idea import IdeaKid, IdeaAttrHolder
 from ui.EditIdeaUnitUI import Ui_Form
 from PyQt5 import QtWidgets as qtw, QtCore
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1, QTableWidget as qtw0
-from lib.agent.hreg_time import SuffFactUnitHregTime
-from lib.agent.brand import BrandLink, BrandName
-from lib.agent.required import Road
-from lib.agent.hreg_time import get_24hr, get_60min
-from lib.pyqt5_tools.pyqt_func import (
+from src.agent.hreg_time import SuffFactUnitHregTime
+from src.agent.brand import BrandLink, BrandName
+from src.agent.required import Road
+from src.agent.hreg_time import get_24hr, get_60min
+from src.pyqt5_tools.pyqt_func import (
     num2str,
     bool_val,
     str2float,

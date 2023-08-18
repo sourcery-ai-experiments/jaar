@@ -6,10 +6,10 @@ from PyQt5 import QtCore as qtc
 from PyQt5.QtWidgets import QTableWidgetItem as qti
 from EditIdeaUnit import EditIdeaUnit
 from EditAlly import EditAlly
-from lib.pyqt5_tools.pyqt_func import lw_diplay, get_pyqttree, num2str
-from lib.agent.brand import brandunit_shop, brandlink_shop
-from lib.agent.idea import IdeaKid
-from lib.agent.road import Road, get_walk_from_road, get_terminus_node_from_road
+from src.pyqt5_tools.pyqt_func import lw_diplay, get_pyqttree, num2str
+from src.agent.brand import brandunit_shop, brandlink_shop
+from src.agent.idea import IdeaKid
+from src.agent.road import Road, get_walk_from_road, get_terminus_node_from_road
 from sys import exit as sys_exit
 
 # self.problem_name_text

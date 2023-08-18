@@ -4,10 +4,10 @@ from ui.EditAllyUI import Ui_Form
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from EditAlly2bd import EditAlly2bd
-from lib.pyqt5_tools.pyqt_func import lw_diplay
-from lib.agent.agent import AgentUnit
-from lib.agent.brand import brandunit_shop
-from lib.agent.ally import allylink_shop
+from src.pyqt5_tools.pyqt_func import lw_diplay
+from src.agent.agent import AgentUnit
+from src.agent.brand import brandunit_shop
+from src.agent.ally import allylink_shop
 
 
 class EditAlly(qtw.QTableWidget, Ui_Form):

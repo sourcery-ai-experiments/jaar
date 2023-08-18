@@ -3,15 +3,15 @@ from ui.WorldMainUI import Ui_MainWindow
 from Edit5Issue import Edit5Issue
 from EditMain import EditMainView
 from PyQt5 import QtCore as qtc
-from lib.agent.agent import AgentUnit
+from src.agent.agent import AgentUnit
 from sys import argv as sys_argv, exit as sys_exit
 from PyQt5.QtWidgets import (
     QTableWidgetItem as qtw1,
     QApplication,
     QMainWindow,
 )
-from lib.world.world import WorldUnit
-from lib.world.examples.env_tools import (
+from src.world.world import WorldUnit
+from src.world.examples.env_tools import (
     create_test_worlds_list,
     setup_test_example_environment,
     create_test_world,
@@ -19,12 +19,12 @@ from lib.world.examples.env_tools import (
     rename_test_world,
     get_test_worlds_dir,
 )
-from lib.world.agentlink import get_agentlink_types, agentlink_shop
-from lib.agent.x_func import (
+from src.world.agentlink import get_agentlink_types, agentlink_shop
+from src.agent.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
 )
-from lib.pyqt5_tools.pyqt_func import lw_diplay
+from src.pyqt5_tools.pyqt_func import lw_diplay
 
 
 class MainApp(QApplication):

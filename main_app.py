@@ -6,15 +6,15 @@ from EditMain import EditMainView
 from EditAcptFactTime import EditAcptFactTime
 from EditAgenda import EditAgenda
 from EditProblem import EditProblem
-from lib.agent.agent import AgentUnit, get_from_json
-from lib.agent.examples.get_agent_examples_dir import get_agent_examples_dir
-from lib.agent.hreg_time import convert1440toHHMM
-from lib.pyqt5_tools.pyqt_func import (
+from src.agent.agent import AgentUnit, get_from_json
+from src.agent.examples.get_agent_examples_dir import get_agent_examples_dir
+from src.agent.hreg_time import convert1440toHHMM
+from src.pyqt5_tools.pyqt_func import (
     lw_diplay as pyqt_func_lw_diplay,
     str2float as pyqt_func_str2float,
     num2str as pyqt_func_num2str,
 )
-from lib.agent.x_func import save_file as x_func_save_file
+from src.agent.x_func import save_file as x_func_save_file
 from sys import exit as sys_exit
 
 # """Simple test application for dealing with multiple windows"""
