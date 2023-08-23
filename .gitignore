@@ -146,6 +146,7 @@ cython_debug/
 src/world/examples/worlds/ex3/
 src/world/examples/worlds/ex4/
 src/world/examples/worlds/ex5/
+src/world/examples/worlds/ex5/agents/clay.json
 src/world/examples/worlds/ex6/
 src/world/examples/worlds/river_env/
 src/world/test_world/sql_worksheet01.sql
