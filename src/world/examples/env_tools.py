@@ -37,7 +37,7 @@ def get_temp_env_dir():
 
 
 def get_test_worlds_dir():
-    return "lib/world/examples/worlds"
+    return "src/world/examples/worlds"
 
 
 @pytest_fixture()
@@ -78,7 +78,7 @@ def create_person_file_for_worlds(world_dir: str, person_name: str):
 
 
 def get_test_worlds_dir():
-    return "lib/world/examples/worlds"
+    return "src/world/examples/worlds"
 
 
 def create_test_worlds_list():
@@ -275,7 +275,7 @@ def delete_dir_test_world(world_obj: WorldUnit):
 
 def rename_test_world(world_obj: WorldUnit, new_name):
     # base_dir = world_obj.get_object_root_dir()
-    base_dir = "lib/world/examples/worlds"
+    base_dir = "src/world/examples/worlds"
     src_dir = f"{base_dir}/{world_obj.name}"
     dst_dir = f"{base_dir}/{new_name}"
     os_rename(src=src_dir, dst=dst_dir)
@@ -287,7 +287,7 @@ class InvalidWorldCopyException(Exception):
 
 
 def copy_test_world(src_name: str, dest_name: str):
-    base_dir = "lib/world/examples/worlds"
+    base_dir = "src/world/examples/worlds"
     new_dir = f"{base_dir}/{dest_name}"
     if os_path.exists(new_dir):
         raise InvalidWorldCopyException(

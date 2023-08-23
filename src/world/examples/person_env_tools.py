@@ -5,7 +5,7 @@ from src.agent.x_func import delete_dir, save_file as x_func_save_file
 
 
 def get_temp_person_dir():
-    return "lib/world/examples/ex_env"
+    return "src/world/examples/ex_env"
 
 
 @pytest_fixture()

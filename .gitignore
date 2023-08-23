@@ -19,7 +19,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-# lib/
+# src/
 lib64/
 parts/
 sdist/
@@ -143,10 +143,10 @@ dmypy.json
 cython_debug/
 
 # automatically generated testing environments on each run
-lib/world/examples/worlds/ex3/
-lib/world/examples/worlds/ex4/
-lib/world/examples/worlds/ex5/
-lib/world/examples/worlds/ex6/
-lib/world/examples/worlds/river_env/
-lib/world/test_world/sql_worksheet01.sql
-lib/agent/examples/js_agent.json
+src/world/examples/worlds/ex3/
+src/world/examples/worlds/ex4/
+src/world/examples/worlds/ex5/
+src/world/examples/worlds/ex6/
+src/world/examples/worlds/river_env/
+src/world/test_world/sql_worksheet01.sql
+src/agent/examples/js_agent.json

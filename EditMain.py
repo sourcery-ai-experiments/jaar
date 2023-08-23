@@ -14,6 +14,10 @@ from src.pyqt5_tools.pyqt_func import (
 )
 
 
+class EditMainViewException(Exception):
+    pass
+
+
 class EditMainView(qtw.QWidget, Ui_Form):
     """The settings dialog window"""
 
@@ -173,12 +177,12 @@ class EditMainView(qtw.QWidget, Ui_Form):
 
     def acptfact_update_heir(self, base_road):
         if self.acptfact_update_combo.currentText() == "":
-            raise Exception("No comboup selection for acptfact update.")
+            raise EditMainViewException("No comboup selection for acptfact update.")
         if (
             self.acptfacts_table.item(self.acptfacts_table.currentRow(), 2).text()
             is None
         ):
-            raise Exception("No table selection for acptfact update.")
+            raise EditMainViewException("No table selection for acptfact update.")
         acptfact_update_combo_text = self.acptfact_update_combo.currentText()
         self.agent_x._idearoot._acptfactunits[
             base_road

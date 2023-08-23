@@ -24,7 +24,7 @@ def test_world_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     print(f"{get_test_worlds_dir()=} {e1.worlds_dir=}")
     # x_func_delete_dir(e1.get_object_root_dir())
     print(f"delete {e1.get_object_root_dir()=}")
-    world_dir = f"lib/world/examples/worlds/{world_name}"
+    world_dir = f"src/world/examples/worlds/{world_name}"
     world_file_name = "world.json"
     world_file_path = f"{world_dir}/{world_file_name}"
     agents_dir = f"{world_dir}/agents"
@@ -58,14 +58,14 @@ def test_world_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
 def test_rename_test_world_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup):
     # GIVEN create world
     old_world_name = get_temp_env_name()
-    old_world_dir = f"lib/world/examples/worlds/{old_world_name}"
+    old_world_dir = f"src/world/examples/worlds/{old_world_name}"
     old_world_file_name = "world.json"
     old_world_file_path = f"{old_world_dir}/{old_world_file_name}"
     old_agents_dir = f"{old_world_dir}/agents"
     old_persons_dir = f"{old_world_dir}/persons"
 
     new_world_name = "ex_env1"
-    new_world_dir = f"lib/world/examples/worlds/{new_world_name}"
+    new_world_dir = f"src/world/examples/worlds/{new_world_name}"
     new_world_file_name = "world.json"
     new_world_file_path = f"{new_world_dir}/{new_world_file_name}"
     new_agents_dir = f"{new_world_dir}/agents"
@@ -127,7 +127,7 @@ def test_rename_test_world_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup):
 def test_copy_test_world_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup):
     # GIVEN create world
     old_world_name = get_temp_env_name()
-    old_world_dir = f"lib/world/examples/worlds/{old_world_name}"
+    old_world_dir = f"src/world/examples/worlds/{old_world_name}"
     old_world_file_name = "world.json"
     old_world_file_path = f"{old_world_dir}/{old_world_file_name}"
     old_agents_dir = f"{old_world_dir}/agents"
@@ -145,7 +145,7 @@ def test_copy_test_world_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup):
     assert e1.get_persons_dir() == old_persons_dir
 
     new_world_name = "ex_env1"
-    new_world_dir = f"lib/world/examples/worlds/{new_world_name}"
+    new_world_dir = f"src/world/examples/worlds/{new_world_name}"
     new_world_file_name = "world.json"
     new_world_file_path = f"{new_world_dir}/{new_world_file_name}"
     new_agents_dir = f"{new_world_dir}/agents"

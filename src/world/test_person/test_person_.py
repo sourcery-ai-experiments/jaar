@@ -154,7 +154,7 @@ def test_personunit_auto_dest_agent_to_public_agent_SavesAgentToPublicDir(
 
     person_text = "person1"
     public_file_name = f"{person_text}.json"
-    public_file_path = f"lib/world/examples/ex_env/agents/{public_file_name}"
+    public_file_path = f"src/world/examples/ex_env/agents/{public_file_name}"
     px = personunit_shop(
         name=person_text, env_dir=env_dir, _auto_dest_agent_to_public_agent=True
     )

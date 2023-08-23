@@ -30,6 +30,10 @@ from PyQt5.QtWidgets import (
 from PyQt5 import QtCore as qtc
 
 
+class MainAppException(Exception):
+    pass
+
+
 class MainApp(QApplication):
     """The main application object"""
 
@@ -384,12 +388,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def acptfact_update_heir(self, base_road):
         if self.acptfact_update_combo.currentText() == "":
-            raise Exception("No comboup selection for acptfact update.")
+            raise MainAppException("No comboup selection for acptfact update.")
         if (
             self.acptfacts_table.item(self.acptfacts_table.currentRow(), 2).text()
             is None
         ):
-            raise Exception("No table selection for acptfact update.")
+            raise MainAppException("No table selection for acptfact update.")
         acptfact_update_combo_text = self.acptfact_update_combo.currentText()
         self.agent_x._idearoot._acptfactunits[
             base_road
