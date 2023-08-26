@@ -29,8 +29,8 @@ def test_idea_attr_holder_exists():
     assert new_obj.descendant_promise_count is None
     assert new_obj.all_ally_credit is None
     assert new_obj.all_ally_debt is None
-    assert new_obj.brandlink is None
-    assert new_obj.brandlink_del is None
+    assert new_obj.tribelink is None
+    assert new_obj.tribelink_del is None
     assert new_obj.is_expanded is None
     assert new_obj.on_meld_weight_action is None
 

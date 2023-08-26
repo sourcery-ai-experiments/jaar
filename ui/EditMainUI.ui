@@ -74,7 +74,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="open_brandedit_button">
+  <widget class="QPushButton" name="open_tribeedit_button">
    <property name="geometry">
     <rect>
      <x>430</x>
@@ -84,7 +84,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Open Brand Edit</string>
+    <string>Open Tribe Edit</string>
    </property>
   </widget>
   <widget class="QTableWidget" name="acptfacts_table">

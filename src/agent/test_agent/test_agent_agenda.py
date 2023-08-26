@@ -4,7 +4,7 @@ from src.agent.examples.get_agent_examples_dir import get_agent_examples_dir
 from src.agent.idea import IdeaCore, IdeaKid
 from src.agent.road import Road
 from src.agent.required import RequiredUnit, SuffFactStatusFinder
-from src.agent.brand import brandunit_shop, brandlink_shop
+from src.agent.tribe import tribeunit_shop, tribelink_shop
 from src.agent.examples.example_agents import (
     get_agent_with_4_levels as example_agents_get_agent_with_4_levels,
     get_agent_with_4_levels_and_2requireds as example_agents_get_agent_with_4_levels_and_2requireds,
@@ -596,7 +596,7 @@ def test_agent_create_agenda_item_CorrectlyCreatesAllAgentAttributes():
 
     a1.set_agent_metrics()
     assert len(a1._allys) == 0
-    assert len(a1._brands) == 0
+    assert len(a1._tribes) == 0
     assert len(a1._idearoot._kids) == 0
 
     clean_things_text = "cleaning things"
@@ -634,14 +634,14 @@ def test_agent_create_agenda_item_CorrectlyCreatesAllAgentAttributes():
     # beto_allylink = allylink_shop(name=beto_text)
 
     family_text = "family"
-    # brandunit_z = brandunit_shop(name=family_text)
-    # brandunit_z.set_allylink(allylink=anna_allylink)
-    # brandunit_z.set_allylink(allylink=beto_allylink)
-    brandlink_z = brandlink_shop(name=family_text)
-    clean_kitchen_idea.set_brandlink(brandlink=brandlink_z)
+    # tribeunit_z = tribeunit_shop(name=family_text)
+    # tribeunit_z.set_allylink(allylink=anna_allylink)
+    # tribeunit_z.set_allylink(allylink=beto_allylink)
+    tribelink_z = tribelink_shop(name=family_text)
+    clean_kitchen_idea.set_tribelink(tribelink=tribelink_z)
 
     assert len(a1._allys) == 0
-    assert len(a1._brands) == 0
+    assert len(a1._tribes) == 0
     assert len(a1._idearoot._kids) == 1
     assert a1.get_idea_kid(road=daytime_road)._begin == 0
     assert a1.get_idea_kid(road=daytime_road)._close == 1440
@@ -664,9 +664,9 @@ def test_agent_create_agenda_item_CorrectlyCreatesAllAgentAttributes():
     assert a1.get_idea_kid(road=kit_dirty_road) != None
     assert a1.get_idea_kid(road=daytime_road)._begin == 0
     assert a1.get_idea_kid(road=daytime_road)._close == 1440
-    assert len(a1._brands) == 1
-    assert a1._brands.get(family_text) != None
-    assert a1._brands.get(family_text)._allys in (None, {})
+    assert len(a1._tribes) == 1
+    assert a1._tribes.get(family_text) != None
+    assert a1._tribes.get(family_text)._allys in (None, {})
 
     assert len(a1._idearoot._kids) == 3
 

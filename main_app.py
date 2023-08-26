@@ -301,7 +301,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agent_x = AgentUnit(_desc="new")
         self.agent_x._set_acptfacts_empty_if_null()
         self.agent_x.set_allys_empty_if_null()
-        self.agent_x.set_brandunits_empty_if_null()
+        self.agent_x.set_tribeunits_empty_if_null()
         self.agent_x.set_time_hreg_ideas(c400_count=7)
         road_minute = f"{self.agent_x._desc},time,jajatime"
         self.agent_x.set_acptfact(

@@ -286,20 +286,20 @@ class AllyLink(AllyCore):
         self,
         allylinks_creditor_weight_sum: float,
         allylinks_debtor_weight_sum: float,
-        brand_agent_credit: float,
-        brand_agent_debt: float,
-        brand_agent_agenda_credit: float,
-        brand_agent_agenda_debt: float,
+        tribe_agent_credit: float,
+        tribe_agent_debt: float,
+        tribe_agent_agenda_credit: float,
+        tribe_agent_agenda_debt: float,
     ):
-        brand_agent_credit = x_func_return1ifnone(brand_agent_credit)
-        brand_agent_debt = x_func_return1ifnone(brand_agent_debt)
+        tribe_agent_credit = x_func_return1ifnone(tribe_agent_credit)
+        tribe_agent_debt = x_func_return1ifnone(tribe_agent_debt)
         creditor_ratio = self.creditor_weight / allylinks_creditor_weight_sum
         debtor_ratio = self.debtor_weight / allylinks_debtor_weight_sum
 
-        self._agent_credit = brand_agent_credit * creditor_ratio
-        self._agent_debt = brand_agent_debt * debtor_ratio
-        self._agent_agenda_credit = brand_agent_agenda_credit * creditor_ratio
-        self._agent_agenda_debt = brand_agent_agenda_debt * debtor_ratio
+        self._agent_credit = tribe_agent_credit * creditor_ratio
+        self._agent_debt = tribe_agent_debt * debtor_ratio
+        self._agent_agenda_credit = tribe_agent_agenda_credit * creditor_ratio
+        self._agent_agenda_debt = tribe_agent_agenda_debt * debtor_ratio
 
     def reset_agent_credit_debt(self):
         self._agent_credit = 0

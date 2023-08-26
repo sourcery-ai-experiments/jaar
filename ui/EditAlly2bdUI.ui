@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Add Brand</string>
+    <string>Add Tribe</string>
    </property>
   </widget>
   <widget class="QPushButton" name="bd_remove_button">
@@ -36,7 +36,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Remove Brand</string>
+    <string>Remove Tribe</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -49,7 +49,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Ally is member of these Brands</string>
+    <string>Ally is member of these Tribes</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
@@ -65,7 +65,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Ally is not member of these Brands</string>
+    <string>Ally is not member of these Tribes</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
@@ -102,7 +102,7 @@
    </property>
    <column>
     <property name="text">
-     <string>Brand</string>
+     <string>Tribe</string>
     </property>
    </column>
    <column>
@@ -137,7 +137,7 @@
    </property>
    <column>
     <property name="text">
-     <string>Brand</string>
+     <string>Tribe</string>
     </property>
    </column>
    <column>
@@ -177,7 +177,7 @@
     <string>Quit App</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="ally2brand_weight_edit">
+  <widget class="QLineEdit" name="ally2tribe_weight_edit">
    <property name="geometry">
     <rect>
      <x>240</x>
@@ -197,7 +197,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Update Ally's Weight in Group to:</string>
+    <string>Update Ally's Weight in Tribe to:</string>
    </property>
   </widget>
   <widget class="QPushButton" name="bd_insert_button">
@@ -210,7 +210,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Create Brand</string>
+    <string>Create Tribe</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="bd_new_edit">
@@ -233,7 +233,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Delete Brand</string>
+    <string>Delete Tribe</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
@@ -246,7 +246,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>New Brand Name:</string>
+    <string>New Tribe Name:</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -262,7 +262,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Change Brand Name:</string>
+    <string>Change Tribe Name:</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -288,7 +288,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Update Brand</string>
+    <string>Update Tribe</string>
    </property>
   </widget>
  </widget>

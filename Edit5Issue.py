@@ -5,7 +5,7 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from src.pyqt5_tools.pyqt_func import lw_diplay
 from src.agent.agent import AgentUnit
-from src.agent.brand import brandunit_shop
+from src.agent.tribe import tribeunit_shop
 from src.agent.ally import allylink_shop
 
 
@@ -17,12 +17,12 @@ class Edit5Issue(qtw.QTableWidget, Ui_Form):
 
         self.setupUi(self)
 
-        # self.brand_update_button.clicked.connect(self.brand_update)
+        # self.tribe_update_button.clicked.connect(self.tribe_update)
         self.close_button.clicked.connect(self.close)
         self.quit_button.clicked.connect(sys.exit)
         self.selected_ally_name = None
         self.allyunit_x = None
-        self.brandunit_x = None
+        self.tribeunit_x = None
 
     def refresh_all(self):
         pass

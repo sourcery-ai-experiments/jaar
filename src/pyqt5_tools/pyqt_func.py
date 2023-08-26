@@ -227,7 +227,7 @@ def _create_treenode_label(pth: PYQTTreeHolder):
     if pth.root_percent_flag:
         treenode_label += f" ({lw_diplay(pth.ideacore._agent_importance)})"
     elif pth.yo2bd_count_flag:
-        treenode_label += f" ({len(pth.ideacore._brandlinks)})"
+        treenode_label += f" ({len(pth.ideacore._tribelinks)})"
     elif pth.required_count_flag:
         treenode_label = _get_treenode_label_required_count(treenode_label, pth)
     elif pth.required_view_flag:

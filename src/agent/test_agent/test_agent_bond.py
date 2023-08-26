@@ -8,7 +8,7 @@ from src.agent.idea import IdeaCore, IdeaKid
 from src.agent.road import Road
 from src.agent.required import RequiredUnit
 from src.agent.ally import allylink_shop
-from src.agent.brand import brandunit_shop, brandlink_shop
+from src.agent.tribe import tribeunit_shop, tribelink_shop
 from src.agent.examples.example_agents import (
     get_agent_with_4_levels as example_agents_get_agent_with_4_levels,
     get_agent_with_4_levels_and_2requireds as example_agents_get_agent_with_4_levels_and_2requireds,
@@ -67,7 +67,7 @@ def test_agentunit_get_bond_status_ReturnsCorrectBool():
     #     print(f"after {idea_kid._desc=} {idea_kid.promise=}")
 
 
-def test_agentunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaBrandheirsMatchAgentBrands():
+def test_agentunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaTribeheirsMatchAgentTribes():
     # GIVEN
     jessi_text = "jessi"
     cx = AgentUnit(_desc=jessi_text)
@@ -84,7 +84,7 @@ def test_agentunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaBrandheir
     assert cx.get_bond_status() == False
 
     # WHEN
-    cx.edit_idea_attr(road=clean_kitchen_road, brandlink=brandlink_shop(name=tom_text))
+    cx.edit_idea_attr(road=clean_kitchen_road, tribelink=tribelink_shop(name=tom_text))
     # THEN
     assert cx.get_bond_status()
 
@@ -95,7 +95,7 @@ def test_agentunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaBrandheir
     assert cx.get_bond_status() == False
 
 
-def test_agentunit_get_bond_status_ChecksActionIdeaBrandsheirsEqualAgentBrandunits():
+def test_agentunit_get_bond_status_ChecksActionIdeaTribesheirsEqualAgentTribeunits():
     # GIVEN
     jessi_text = "jessi"
     cx = AgentUnit(_desc=jessi_text)
@@ -112,9 +112,9 @@ def test_agentunit_get_bond_status_ChecksActionIdeaBrandsheirsEqualAgentBranduni
     assert cx.get_bond_status() == False
 
     # WHEN
-    cx.edit_idea_attr(road=clean_kitchen_road, brandlink=brandlink_shop(name=tom_text))
+    cx.edit_idea_attr(road=clean_kitchen_road, tribelink=tribelink_shop(name=tom_text))
     clean_kitchen_idea = cx.get_idea_kid(road=clean_kitchen_road)
-    assert len(clean_kitchen_idea._brandheirs) == 1
+    assert len(clean_kitchen_idea._tribeheirs) == 1
     # THEN
     assert cx.get_bond_status()
 
@@ -125,7 +125,7 @@ def test_agentunit_get_bond_status_ChecksActionIdeaBrandsheirsEqualAgentBranduni
     assert cx.get_bond_status() == False
 
 
-def test_agentunit_get_bond_status_ChecksActionIdeaBrandsheirsEqualAgentBrandunits2():
+def test_agentunit_get_bond_status_ChecksActionIdeaTribesheirsEqualAgentTribeunits2():
     # GIVEN
     jessi_text = "jessi"
     cx = AgentUnit(_desc=jessi_text)
@@ -144,15 +144,15 @@ def test_agentunit_get_bond_status_ChecksActionIdeaBrandsheirsEqualAgentBranduni
     bob_text = "bob"
     cx.add_allyunit(name=bob_text)
     home_occupants_text = "home occupants"
-    home_occupants_brandunit = brandunit_shop(name=home_occupants_text)
-    home_occupants_brandunit.set_allylink(allylink=allylink_shop(name=tom_text))
-    home_occupants_brandunit.set_allylink(allylink=allylink_shop(name=bob_text))
-    cx.set_brandunit(brandunit=home_occupants_brandunit)
+    home_occupants_tribeunit = tribeunit_shop(name=home_occupants_text)
+    home_occupants_tribeunit.set_allylink(allylink=allylink_shop(name=tom_text))
+    home_occupants_tribeunit.set_allylink(allylink=allylink_shop(name=bob_text))
+    cx.set_tribeunit(tribeunit=home_occupants_tribeunit)
     assert cx.get_bond_status() == False
 
     # WHEN
     cx.edit_idea_attr(
-        road=clean_kitchen_road, brandlink=brandlink_shop(name=home_occupants_text)
+        road=clean_kitchen_road, tribelink=tribelink_shop(name=home_occupants_text)
     )
     # THEN
     assert cx.get_bond_status()

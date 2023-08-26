@@ -5,7 +5,7 @@ from ui.EditIdeaUnitUI import Ui_Form
 from PyQt5 import QtWidgets as qtw, QtCore
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1, QTableWidget as qtw0
 from src.agent.hreg_time import SuffFactUnitHregTime
-from src.agent.brand import BrandLink, BrandName
+from src.agent.tribe import TribeLink, TribeName
 from src.agent.required import Road
 from src.agent.hreg_time import get_24hr, get_60min
 from src.pyqt5_tools.pyqt_func import (
@@ -51,9 +51,9 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.cb_yo2bd_count.stateChanged.connect(self.refresh_tree)
         self.combo_dim_root.currentTextChanged.connect(self.refresh_tree)
 
-        self.idea2brand_table.itemClicked.connect(self.idea2brand_table_select)
-        self.idea2brand_delete_button.clicked.connect(self.idea2brand_delete)
-        self.idea2brand_insert_button.clicked.connect(self.idea2brand_update)
+        self.idea2tribe_table.itemClicked.connect(self.idea2tribe_table_select)
+        self.idea2tribe_delete_button.clicked.connect(self.idea2tribe_delete)
+        self.idea2tribe_insert_button.clicked.connect(self.idea2tribe_update)
         self.required_table.itemClicked.connect(self.required_table_select)
         self.required_base_combo.currentTextChanged.connect(
             self.required_sufffact_combo_load
@@ -142,12 +142,12 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.hreg_length_hr.setHidden(setHiddenBool)
         self.hreg_length_min.setHidden(setHiddenBool)
         self.submit_child_insert.setHidden(setHiddenBool)
-        self.idea2brand_table.setHidden(setHiddenBool)
-        self.idea2brand_table.clear()
-        self.idea2brand_table.setRowCount(1)
-        self.idea2brand_insert_combo.setHidden(setHiddenBool)
-        self.idea2brand_delete_button.setHidden(setHiddenBool)
-        self.idea2brand_insert_button.setHidden(setHiddenBool)
+        self.idea2tribe_table.setHidden(setHiddenBool)
+        self.idea2tribe_table.clear()
+        self.idea2tribe_table.setRowCount(1)
+        self.idea2tribe_insert_combo.setHidden(setHiddenBool)
+        self.idea2tribe_delete_button.setHidden(setHiddenBool)
+        self.idea2tribe_insert_button.setHidden(setHiddenBool)
         self.requiredheir_table.setHidden(True)
         self.required_table.setHidden(setHiddenBool)
         self.required_base_combo.setHidden(setHiddenBool)
@@ -215,7 +215,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.required_sufffact_open_combo.clear()
         self.required_sufffact_nigh_combo.clear()
         self.required_sufffact_divisor_combo.clear()
-        self.idea2brand_insert_combo.clear()
+        self.idea2tribe_insert_combo.clear()
 
         if setHiddenBool == False:
             self.yo_x_populate()
@@ -240,8 +240,8 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.required_table_load()
         self.requiredheir_table_load()
         self.required_base_combo_load()
-        self.idea2brand_table_load()
-        self.idea2brand_insert_combo_load()
+        self.idea2tribe_table_load()
+        self.idea2tribe_insert_combo_load()
         if self.combo_dim_root.currentText() == "":
             self.combo_dim_root.addItems(list(self.agent_x.get_required_bases()))
 
@@ -717,87 +717,87 @@ class EditIdeaUnit(qtw0, Ui_Form):
             )
             self.required_table_load()
 
-    def idea2brand_table_select(self):
-        self.idea2brand_delete_button.setText(
-            f"""Remove {self.idea2brand_table.item(self.idea2brand_table.currentRow(), 1).text()}"""
+    def idea2tribe_table_select(self):
+        self.idea2tribe_delete_button.setText(
+            f"""Remove {self.idea2tribe_table.item(self.idea2tribe_table.currentRow(), 1).text()}"""
         )
 
-    def idea2brand_table_load(self):
-        # idea2brand_table is qtw.QTableWidget()
-        self.idea2brand_table.clear()
-        self.idea2brand_table.sortItems(1, QtCore.Qt.AscendingOrder)
-        self.idea2brand_table.horizontalHeaderVisible = False
-        self.idea2brand_table.verticalHeaderVisible = False
-        self.idea2brand_table.setColumnWidth(0, 150)
-        self.idea2brand_table.setColumnHidden(1, True)
-        self.idea2brand_table.setColumnWidth(1, 50)
-        self.idea2brand_table.setColumnWidth(2, 70)
-        self.idea2brand_table.setHorizontalHeaderLabels(
-            ["Brand display", "brand_name", "LW Force"]
+    def idea2tribe_table_load(self):
+        # idea2tribe_table is qtw.QTableWidget()
+        self.idea2tribe_table.clear()
+        self.idea2tribe_table.sortItems(1, QtCore.Qt.AscendingOrder)
+        self.idea2tribe_table.horizontalHeaderVisible = False
+        self.idea2tribe_table.verticalHeaderVisible = False
+        self.idea2tribe_table.setColumnWidth(0, 150)
+        self.idea2tribe_table.setColumnHidden(1, True)
+        self.idea2tribe_table.setColumnWidth(1, 50)
+        self.idea2tribe_table.setColumnWidth(2, 70)
+        self.idea2tribe_table.setHorizontalHeaderLabels(
+            ["Tribe display", "tribe_name", "LW Force"]
         )
-        # print(f"{self.yo_x._brandlinks=}")
-        # print(f"{self.yo_x._brandheirs=}")
-        brandlinks_list = list(self.yo_x._brandlinks.values())
-        brandlinks_list.sort(key=lambda x: x.name, reverse=False)
-        brandheirs_list = list(self.yo_x._brandheirs.values())
-        brandheirs_list.sort(key=lambda x: x.name, reverse=False)
-        # print(f"{brandlinks_list=}")
-        # print(f"{brandheirs_list=}")
+        # print(f"{self.yo_x._tribelinks=}")
+        # print(f"{self.yo_x._tribeheirs=}")
+        tribelinks_list = list(self.yo_x._tribelinks.values())
+        tribelinks_list.sort(key=lambda x: x.name, reverse=False)
+        tribeheirs_list = list(self.yo_x._tribeheirs.values())
+        tribeheirs_list.sort(key=lambda x: x.name, reverse=False)
+        # print(f"{tribelinks_list=}")
+        # print(f"{tribeheirs_list=}")
 
-        for row, brandheir in enumerate(brandheirs_list, start=1):
-            self.idea2brand_table.setRowCount(row)
-            x_text = f"  Heir: {brandheir.name}"
-            for brandlink in brandlinks_list:
-                if brandlink.name == brandheir.name:
-                    x_text = f"{brandheir.name}"
-            self.idea2brand_table.setItem(row - 1, 0, qtw1(x_text))
-            self.idea2brand_table.setItem(row - 1, 1, qtw1(brandheir.name))
-            self.idea2brand_table.setItem(
+        for row, tribeheir in enumerate(tribeheirs_list, start=1):
+            self.idea2tribe_table.setRowCount(row)
+            x_text = f"  Heir: {tribeheir.name}"
+            for tribelink in tribelinks_list:
+                if tribelink.name == tribeheir.name:
+                    x_text = f"{tribeheir.name}"
+            self.idea2tribe_table.setItem(row - 1, 0, qtw1(x_text))
+            self.idea2tribe_table.setItem(row - 1, 1, qtw1(tribeheir.name))
+            self.idea2tribe_table.setItem(
                 row - 1,
                 2,
-                qtw1(lw_diplay(brandheir._agent_credit)),
+                qtw1(lw_diplay(tribeheir._agent_credit)),
             )
 
-        self.idea2brand_table.sortItems(1, QtCore.Qt.AscendingOrder)
+        self.idea2tribe_table.sortItems(1, QtCore.Qt.AscendingOrder)
 
-    def idea2brand_insert_combo_load(self):
-        # brandunits_list = list(self.agent_x._brandunits.values())
-        brandunits_names_list = []
-        for brandunit in self.agent_x._brands.values():
-            brand_already_selected = any(
-                brandunit.name == brandlink.name
-                for brandlink in self.yo_x._brandlinks.values()
+    def idea2tribe_insert_combo_load(self):
+        # tribeunits_list = list(self.agent_x._tribeunits.values())
+        tribeunits_names_list = []
+        for tribeunit in self.agent_x._tribes.values():
+            tribe_already_selected = any(
+                tribeunit.name == tribelink.name
+                for tribelink in self.yo_x._tribelinks.values()
             )
-            if not brand_already_selected:
-                brandunits_names_list.append(brandunit.name)
-        brandunits_names_list.sort(key=lambda x: x.lower(), reverse=False)
+            if not tribe_already_selected:
+                tribeunits_names_list.append(tribeunit.name)
+        tribeunits_names_list.sort(key=lambda x: x.lower(), reverse=False)
 
-        self.idea2brand_insert_combo.clear()
-        self.idea2brand_insert_combo.addItems(brandunits_names_list)
+        self.idea2tribe_insert_combo.clear()
+        self.idea2tribe_insert_combo.addItems(tribeunits_names_list)
 
-    def idea2brand_update(self):
-        bd_name_new = self.idea2brand_insert_combo.currentText()
+    def idea2tribe_update(self):
+        bd_name_new = self.idea2tribe_insert_combo.currentText()
         if bd_name_new == "":
             raise Exception("bd_name is empty, idea2bd cannot be updated")
-        brandlink_new = BrandLink(name=BrandName(bd_name_new), weight=1)
+        tribelink_new = TribeLink(name=TribeName(bd_name_new), weight=1)
         self.agent_x.edit_idea_attr(
-            road=f"{self.yo_x._walk},{self.yo_x._desc}", brandlink=brandlink_new
+            road=f"{self.yo_x._walk},{self.yo_x._desc}", tribelink=tribelink_new
         )
-        self.idea2brand_insert_combo_load()
-        self.idea2brand_table_load()
+        self.idea2tribe_insert_combo_load()
+        self.idea2tribe_table_load()
 
-    def idea2brand_delete(self):
-        delete_brand_name = ""
-        if self.idea2brand_table.currentRow() != None:
-            delete_brand_name = self.idea2brand_table.item(
-                self.idea2brand_table.currentRow(), 1
+    def idea2tribe_delete(self):
+        delete_tribe_name = ""
+        if self.idea2tribe_table.currentRow() != None:
+            delete_tribe_name = self.idea2tribe_table.item(
+                self.idea2tribe_table.currentRow(), 1
             ).text()
             self.agent_x.edit_idea_attr(
                 road=f"{self.yo_x._walk},{self.yo_x._desc}",
-                brandlink_del=delete_brand_name,
+                tribelink_del=delete_tribe_name,
             )
-            self.idea2brand_insert_combo_load()
-            self.idea2brand_table_load()
+            self.idea2tribe_insert_combo_load()
+            self.idea2tribe_table_load()
 
     def idea_delete(self):
         self.agent_x.del_idea_kid(road=f"{self.yo_x._walk},{self.yo_x._desc}")
@@ -830,7 +830,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             descendant_promise_count=None,
             all_ally_credit=None,
             all_ally_debt=None,
-            brandlink=None,
+            tribelink=None,
             is_expanded=None,
         )
 
@@ -915,8 +915,8 @@ class EditIdeaUnit(qtw0, Ui_Form):
             descendant_promise_count=None,
             all_ally_credit=None,
             all_ally_debt=None,
-            brandlink=None,
-            brandlink_del=None,
+            tribelink=None,
+            tribelink_del=None,
             is_expanded=None,
             problem_bool=None,
             on_meld_weight_action=None,

@@ -90,9 +90,9 @@ class Ui_Form(object):
         self.ally2allyTrue.setHorizontalHeaderItem(5, item)
         item = QtWidgets.QTableWidgetItem()
         self.ally2allyTrue.setHorizontalHeaderItem(6, item)
-        self.edit_brand_button = QtWidgets.QPushButton(Form)
-        self.edit_brand_button.setGeometry(QtCore.QRect(500, 320, 181, 31))
-        self.edit_brand_button.setObjectName("edit_brand_button")
+        self.edit_tribe_button = QtWidgets.QPushButton(Form)
+        self.edit_tribe_button.setGeometry(QtCore.QRect(500, 320, 181, 31))
+        self.edit_tribe_button.setObjectName("edit_tribe_button")
         self.label_2 = QtWidgets.QLabel(Form)
         self.label_2.setGeometry(QtCore.QRect(20, 680, 47, 13))
         self.label_2.setObjectName("label_2")
@@ -104,7 +104,7 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.ally_insert_button.setText(_translate("Form", "Add new Ally"))
-        self.label.setText(_translate("Form", "Click to see Brand membership"))
+        self.label.setText(_translate("Form", "Click to see Tribe membership"))
         self.ally_update_button.setText(
             _translate("Form", "update old ally name to new")
         )
@@ -144,5 +144,5 @@ class Ui_Form(object):
         item.setText(_translate("Form", "relative_weight"))
         item = self.ally2allyTrue.horizontalHeaderItem(6)
         item.setText(_translate("Form", "huh_name_for_target"))
-        self.edit_brand_button.setText(_translate("Form", "Edit Brand Membership"))
+        self.edit_tribe_button.setText(_translate("Form", "Edit Tribe Membership"))
         self.label_2.setText(_translate("Form", "ally_id ="))

@@ -30,7 +30,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.baseideaunit.itemClicked.connect(self.open_editideaunit)
         self.ally_list.itemClicked.connect(self.open_edit_ally)
         self.close_button.clicked.connect(self.close)
-        self.open_brandedit_button.clicked.connect(self.open_edit_ally)
+        self.open_tribeedit_button.clicked.connect(self.open_edit_ally)
 
         # self.acptfacts_table.itemClicked.connect(self.acptfact_base_combo_set)
         self.acptfacts_table.setObjectName("Agent AcptFacts")
@@ -207,14 +207,14 @@ class EditMainView(qtw.QWidget, Ui_Form):
         allys_list.sort(key=lambda x: x._agent_credit, reverse=True)
 
         for row, ally in enumerate(allys_list, start=1):
-            brands_count = 0
-            for brand in self.agent_x._brands.values():
-                for allylink in brand._allys.values():
+            tribes_count = 0
+            for tribe in self.agent_x._tribes.values():
+                for allylink in tribe._allys.values():
                     if allylink.name == ally.name:
-                        brands_count += 1
+                        tribes_count += 1
 
             qt_agent_credit = qtw.QTableWidgetItem(lw_diplay(ally._agent_credit))
-            qt_brand = qtw.QTableWidgetItem(f"{brands_count}")
+            qt_tribe = qtw.QTableWidgetItem(f"{tribes_count}")
             self.ally_list.setRowCount(row)
             self.ally_list.setItem(row - 1, 0, qtw.QTableWidgetItem(ally.name))
             self.ally_list.setItem(row - 1, 1, qt_agent_credit)

@@ -532,7 +532,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="w_brands_table">
+   <widget class="QTableWidget" name="w_tribes_table">
     <property name="geometry">
      <rect>
       <x>1000</x>
@@ -548,7 +548,7 @@
     </property>
     <column>
      <property name="text">
-      <string>Persons Brands</string>
+      <string>Persons Tribes</string>
      </property>
     </column>
     <column>

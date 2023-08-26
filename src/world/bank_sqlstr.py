@@ -567,20 +567,20 @@ def get_acptfact_catalog_table_insert_sqlstr(
     """
 
 
-def get_brandunit_catalog_table_create_sqlstr() -> str:
+def get_tribeunit_catalog_table_create_sqlstr() -> str:
     return """
-        CREATE TABLE IF NOT EXISTS brandunit_catalog (
+        CREATE TABLE IF NOT EXISTS tribeunit_catalog (
           agent_name VARCHAR(255) NOT NULL
-        , brandunit_name VARCHAR(1000) NOT NULL
+        , tribeunit_name VARCHAR(1000) NOT NULL
         , allylinks_set_by_world_road VARCHAR(1000) NULL
         )
         ;
     """
 
 
-def get_brandunit_catalog_table_count(db_conn: Connection, agent_name: str) -> str:
+def get_tribeunit_catalog_table_count(db_conn: Connection, agent_name: str) -> str:
     sqlstr = f"""
-        {get_table_count_sqlstr("brandunit_catalog")} WHERE agent_name = '{agent_name}'
+        {get_table_count_sqlstr("tribeunit_catalog")} WHERE agent_name = '{agent_name}'
         ;
     """
     results = db_conn.execute(sqlstr)
@@ -591,52 +591,52 @@ def get_brandunit_catalog_table_count(db_conn: Connection, agent_name: str) -> s
 
 
 @dataclass
-class BrandUnitCatalog:
+class TribeUnitCatalog:
     agent_name: str
-    brandunit_name: str
+    tribeunit_name: str
     allylinks_set_by_world_road: str
 
 
-def get_brandunit_catalog_table_insert_sqlstr(
-    brandunit_catalog: BrandUnitCatalog,
+def get_tribeunit_catalog_table_insert_sqlstr(
+    tribeunit_catalog: TribeUnitCatalog,
 ) -> str:
     return f"""
-        INSERT INTO brandunit_catalog (
+        INSERT INTO tribeunit_catalog (
           agent_name
-        , brandunit_name
+        , tribeunit_name
         , allylinks_set_by_world_road
         )
         VALUES (
-          '{brandunit_catalog.agent_name}'
-        , '{brandunit_catalog.brandunit_name}'
-        , '{brandunit_catalog.allylinks_set_by_world_road}'
+          '{tribeunit_catalog.agent_name}'
+        , '{tribeunit_catalog.tribeunit_name}'
+        , '{tribeunit_catalog.allylinks_set_by_world_road}'
         )
         ;
     """
 
 
-def get_brandunit_catalog_dict(db_conn: Connection) -> dict[str:BrandUnitCatalog]:
+def get_tribeunit_catalog_dict(db_conn: Connection) -> dict[str:TribeUnitCatalog]:
     sqlstr = """
         SELECT 
           agent_name
-        , brandunit_name
+        , tribeunit_name
         , allylinks_set_by_world_road
-        FROM brandunit_catalog
+        FROM tribeunit_catalog
         ;
     """
     results = db_conn.execute(sqlstr)
 
     dict_x = {}
     for row in results.fetchall():
-        brandunit_catalog_x = BrandUnitCatalog(
+        tribeunit_catalog_x = TribeUnitCatalog(
             agent_name=row[0],
-            brandunit_name=row[1],
+            tribeunit_name=row[1],
             allylinks_set_by_world_road=row[2],
         )
         dict_key = (
-            f"{brandunit_catalog_x.agent_name} {brandunit_catalog_x.brandunit_name}"
+            f"{tribeunit_catalog_x.agent_name} {tribeunit_catalog_x.tribeunit_name}"
         )
-        dict_x[dict_key] = brandunit_catalog_x
+        dict_x[dict_key] = tribeunit_catalog_x
     return dict_x
 
 
@@ -648,7 +648,7 @@ def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x.append(get_river_flow_table_create_sqlstr())
     list_x.append(get_river_bucket_table_create_sqlstr())
     list_x.append(get_river_tally_table_create_sqlstr())
-    list_x.append(get_brandunit_catalog_table_create_sqlstr())
+    list_x.append(get_tribeunit_catalog_table_create_sqlstr())
     return list_x
 
 

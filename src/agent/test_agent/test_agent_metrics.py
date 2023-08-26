@@ -1,6 +1,6 @@
 from src.agent.examples.example_agents import agent_v001 as example_agents_agent_v001
 from src.agent.ally import AllyName, allyunit_shop
-from src.agent.brand import BrandName, brandlink_shop, brandunit_shop
+from src.agent.tribe import TribeName, tribelink_shop, tribeunit_shop
 from src.agent.agent import AgentUnit
 
 
@@ -44,14 +44,14 @@ def test_agent_3AdvocatesNoIdeaKid():
     a_x.set_allyunit(allyunit=au_rico)
     a_x.set_allyunit(allyunit=au_carm)
     a_x.set_allyunit(allyunit=au_patr)
-    a_x._idearoot.set_brandlink(
-        brandlink=brandlink_shop(name=BrandName(rico_text), creditor_weight=10)
+    a_x._idearoot.set_tribelink(
+        tribelink=tribelink_shop(name=TribeName(rico_text), creditor_weight=10)
     )
-    a_x._idearoot.set_brandlink(
-        brandlink=brandlink_shop(name=BrandName(carm_text), creditor_weight=10)
+    a_x._idearoot.set_tribelink(
+        tribelink=tribelink_shop(name=TribeName(carm_text), creditor_weight=10)
     )
-    a_x._idearoot.set_brandlink(
-        brandlink=brandlink_shop(name=BrandName(patr_text), creditor_weight=10)
+    a_x._idearoot.set_tribelink(
+        tribelink=tribelink_shop(name=TribeName(patr_text), creditor_weight=10)
     )
 
     # WHEN
@@ -59,22 +59,22 @@ def test_agent_3AdvocatesNoIdeaKid():
     allys_metrics = a_x.get_allys_metrics()
 
     # THEN
-    brandlink_rico = allys_metrics[rico_text]
-    brandlink_carm = allys_metrics[carm_text]
-    brandlink_patr = allys_metrics[patr_text]
-    assert brandlink_rico.name != None
-    assert brandlink_carm.name != None
-    assert brandlink_patr.name != None
-    assert brandlink_rico.name == rico_text
-    assert brandlink_carm.name == carm_text
-    assert brandlink_patr.name == patr_text
-    all_brands = a_x._brands
-    brandunit_rico = all_brands[rico_text]
-    brandunit_carm = all_brands[carm_text]
-    brandunit_patr = all_brands[patr_text]
-    assert brandunit_rico._single_ally == True
-    assert brandunit_carm._single_ally == True
-    assert brandunit_patr._single_ally == True
+    tribelink_rico = allys_metrics[rico_text]
+    tribelink_carm = allys_metrics[carm_text]
+    tribelink_patr = allys_metrics[patr_text]
+    assert tribelink_rico.name != None
+    assert tribelink_carm.name != None
+    assert tribelink_patr.name != None
+    assert tribelink_rico.name == rico_text
+    assert tribelink_carm.name == carm_text
+    assert tribelink_patr.name == patr_text
+    all_tribes = a_x._tribes
+    tribeunit_rico = all_tribes[rico_text]
+    tribeunit_carm = all_tribes[carm_text]
+    tribeunit_patr = all_tribes[patr_text]
+    assert tribeunit_rico._single_ally == True
+    assert tribeunit_carm._single_ally == True
+    assert tribeunit_patr._single_ally == True
 
 
 def test_agent_get_allyunits_uid_max_WorksCorrectly():
@@ -92,16 +92,16 @@ def test_agent_get_allyunits_uid_max_WorksCorrectly():
     assert lw_x.get_allyunits_uid_max() == 13
 
 
-def test_agent_get_brandunits_uid_max_WorksCorrectly():
+def test_agent_get_tribeunits_uid_max_WorksCorrectly():
     # GIVEN
     rico_text = "rico"
     carr_text = "carmen"
     patr_text = "patrick"
 
     lw_x = AgentUnit(_desc="prom")
-    lw_x.set_brandunit(brandunit=brandunit_shop(name=rico_text, uid=4))
-    lw_x.set_brandunit(brandunit=brandunit_shop(name=carr_text, uid=12))
-    lw_x.set_brandunit(brandunit=brandunit_shop(name=patr_text, uid=7))
+    lw_x.set_tribeunit(tribeunit=tribeunit_shop(name=rico_text, uid=4))
+    lw_x.set_tribeunit(tribeunit=tribeunit_shop(name=carr_text, uid=12))
+    lw_x.set_tribeunit(tribeunit=tribeunit_shop(name=patr_text, uid=7))
 
     # WHEN/THEN
-    assert lw_x.get_brandunits_uid_max() == 12
+    assert lw_x.get_tribeunits_uid_max() == 12

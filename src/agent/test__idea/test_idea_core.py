@@ -1,5 +1,5 @@
 from src.agent.idea import IdeaCore
-from src.agent.brand import BrandName, brandlink_shop, brandheir_shop
+from src.agent.tribe import TribeName, tribelink_shop, tribeheir_shop
 from src.agent.required import (
     RequiredUnit,
     RequiredHeir,
@@ -30,8 +30,8 @@ def test_idea_core_exists():
     assert new_obj.promise is False
     assert new_obj._problem_bool is False
     assert new_obj._descendant_promise_count is None
-    assert new_obj._brandlines is None
-    assert new_obj._brandheirs is None
+    assert new_obj._tribelines is None
+    assert new_obj._tribeheirs is None
     assert new_obj._is_expanded == True
     assert new_obj._acptfactheirs is None
     assert new_obj._acptfactunits is None
@@ -59,101 +59,101 @@ def test_idea_core_is_heir_CorrectlyIdentifiesHeirs():
     assert idea_core.is_heir(src="earth,sea", heir="earth,seaside") == False
 
 
-def test_idea_core_brandlinks_exist():
+def test_idea_core_tribelinks_exist():
     # GIVEN
     biker_creditor_weight = 12
     biker_debtor_weight = 15
-    biker_link = brandlink_shop(
-        name=BrandName("bikers2"),
+    biker_link = tribelink_shop(
+        name=TribeName("bikers2"),
         creditor_weight=biker_creditor_weight,
         debtor_weight=biker_debtor_weight,
     )
 
-    swimmer_name = BrandName("swimmers")
+    swimmer_name = TribeName("swimmers")
     swimmer_creditor_weight = 29
     swimmer_debtor_weight = 32
-    swimmer_link = brandlink_shop(
+    swimmer_link = tribelink_shop(
         name=swimmer_name,
         creditor_weight=swimmer_creditor_weight,
         debtor_weight=swimmer_debtor_weight,
     )
 
-    brand_links = {swimmer_link.name: swimmer_link, biker_link.name: biker_link}
+    tribe_links = {swimmer_link.name: swimmer_link, biker_link.name: biker_link}
 
     # WHEN
-    idea_core = IdeaCore(_desc="exercising", _brandlinks=brand_links)
+    idea_core = IdeaCore(_desc="exercising", _tribelinks=tribe_links)
 
     # THEN
-    assert idea_core._brandlinks == brand_links
-    # assert brand_link_x.weight == 1.0
-    # brand_link_x = brandlink_shop(name=bikers_name, weight=bikers_weight)
-    # assert brand_link_x.weight == 3.0
+    assert idea_core._tribelinks == tribe_links
+    # assert tribe_link_x.weight == 1.0
+    # tribe_link_x = tribelink_shop(name=bikers_name, weight=bikers_weight)
+    # assert tribe_link_x.weight == 3.0
 
 
-def test_idea_core_get_inherited_brandheirs_weight_sum_WorksCorrectlyWithValues():
+def test_idea_core_get_inherited_tribeheirs_weight_sum_WorksCorrectlyWithValues():
     # GIVEN
     biker_creditor_weight = 12
     biker_debtor_weight = 15
     biker_text = "bikers2"
-    biker_link = brandheir_shop(
-        name=BrandName(biker_text),
+    biker_link = tribeheir_shop(
+        name=TribeName(biker_text),
         creditor_weight=biker_creditor_weight,
         debtor_weight=biker_debtor_weight,
     )
 
     swimmer_text = "swimmers"
-    swimmer_name = BrandName(swimmer_text)
+    swimmer_name = TribeName(swimmer_text)
     swimmer_creditor_weight = 29
     swimmer_debtor_weight = 32
-    swimmer_link = brandheir_shop(
+    swimmer_link = tribeheir_shop(
         name=swimmer_name,
         creditor_weight=swimmer_creditor_weight,
         debtor_weight=swimmer_debtor_weight,
     )
 
-    brand_links = {swimmer_link.name: swimmer_link, biker_link.name: biker_link}
+    tribe_links = {swimmer_link.name: swimmer_link, biker_link.name: biker_link}
 
     # WHEN
-    idea_core = IdeaCore(_desc="exercising", _brandheirs=brand_links)
+    idea_core = IdeaCore(_desc="exercising", _tribeheirs=tribe_links)
 
     # THEN
-    assert idea_core.get_brandheirs_creditor_weight_sum() != None
-    assert idea_core.get_brandheirs_creditor_weight_sum() == 41
-    assert idea_core.get_brandheirs_debtor_weight_sum() != None
-    assert idea_core.get_brandheirs_debtor_weight_sum() == 47
+    assert idea_core.get_tribeheirs_creditor_weight_sum() != None
+    assert idea_core.get_tribeheirs_creditor_weight_sum() == 41
+    assert idea_core.get_tribeheirs_debtor_weight_sum() != None
+    assert idea_core.get_tribeheirs_debtor_weight_sum() == 47
 
-    assert len(idea_core._brandheirs) == 2
+    assert len(idea_core._tribeheirs) == 2
 
-    swimmer_brandheir = idea_core._brandheirs.get(swimmer_text)
-    assert swimmer_brandheir._agent_credit is None
-    assert swimmer_brandheir._agent_debt is None
-    biker_brandheir = idea_core._brandheirs.get(biker_text)
-    assert biker_brandheir._agent_credit is None
-    assert biker_brandheir._agent_debt is None
+    swimmer_tribeheir = idea_core._tribeheirs.get(swimmer_text)
+    assert swimmer_tribeheir._agent_credit is None
+    assert swimmer_tribeheir._agent_debt is None
+    biker_tribeheir = idea_core._tribeheirs.get(biker_text)
+    assert biker_tribeheir._agent_credit is None
+    assert biker_tribeheir._agent_debt is None
 
     # WHEN
     idea_core._agent_importance = 0.25
-    idea_core.set_brandheirs_agent_credit_debit()
+    idea_core.set_tribeheirs_agent_credit_debit()
 
     # THEN
-    print(f"{len(idea_core._brandheirs)=}")
-    swimmer_brandheir = idea_core._brandheirs.get(swimmer_text)
-    assert swimmer_brandheir._agent_credit != None
-    assert swimmer_brandheir._agent_debt != None
-    biker_brandheir = idea_core._brandheirs.get(biker_text)
-    assert biker_brandheir._agent_credit != None
-    assert biker_brandheir._agent_debt != None
+    print(f"{len(idea_core._tribeheirs)=}")
+    swimmer_tribeheir = idea_core._tribeheirs.get(swimmer_text)
+    assert swimmer_tribeheir._agent_credit != None
+    assert swimmer_tribeheir._agent_debt != None
+    biker_tribeheir = idea_core._tribeheirs.get(biker_text)
+    assert biker_tribeheir._agent_credit != None
+    assert biker_tribeheir._agent_debt != None
 
 
-def test_idea_core_get_brandlinks_weight_sum_WorksCorrectlyNoValues():
+def test_idea_core_get_tribelinks_weight_sum_WorksCorrectlyNoValues():
     # GIVEN /WHEN
     idea_core = IdeaCore(_desc="exercising")
 
     # THEN
-    assert idea_core.get_brandheirs_creditor_weight_sum() != None
-    assert idea_core.get_brandheirs_debtor_weight_sum() != None
+    assert idea_core.get_tribeheirs_creditor_weight_sum() != None
+    assert idea_core.get_tribeheirs_debtor_weight_sum() != None
     # does not crash with empty set
-    idea_core.set_brandheirs_agent_credit_debit()
+    idea_core.set_tribeheirs_agent_credit_debit()
 
 
 def test_idea_core_set_requiredheirsCorrectlyTakesFromOutside():
@@ -257,23 +257,23 @@ def test_idea_get_dict_ReturnsDict():
             base=states_road, sufffacts={usa_sufffact.need: usa_sufffact}, _status=False
         ),
     }
-    biker_name = BrandName("bikers")
+    biker_name = TribeName("bikers")
     biker_creditor_weight = 3.0
     biker_debtor_weight = 7.0
-    biker_link = brandlink_shop(
+    biker_link = tribelink_shop(
         name=biker_name,
         creditor_weight=biker_creditor_weight,
         debtor_weight=biker_debtor_weight,
     )
-    flyer_name = BrandName("flyers")
+    flyer_name = TribeName("flyers")
     flyer_creditor_weight = 6.0
     flyer_debtor_weight = 9.0
-    flyer_link = brandlink_shop(
+    flyer_link = tribelink_shop(
         name=flyer_name,
         creditor_weight=flyer_creditor_weight,
         debtor_weight=flyer_debtor_weight,
     )
-    biker_and_flyer_brandlinks = {
+    biker_and_flyer_tribelinks = {
         biker_link.name: biker_link,
         flyer_link.name: flyer_link,
     }
@@ -287,12 +287,12 @@ def test_idea_get_dict_ReturnsDict():
         "creditor_weight": flyer_link.creditor_weight,
         "debtor_weight": flyer_link.debtor_weight,
     }
-    x1_brandlinks = {biker_name: biker_get_dict, flyer_name: flyer_get_dict}
+    x1_tribelinks = {biker_name: biker_get_dict, flyer_name: flyer_get_dict}
 
     temp_idea = IdeaCore(
         _walk="src,work",
         _kids=None,
-        _brandlinks=biker_and_flyer_brandlinks,
+        _tribelinks=biker_and_flyer_tribelinks,
         _weight=30,
         _desc="work",
         _level=1,
@@ -313,8 +313,8 @@ def test_idea_get_dict_ReturnsDict():
     assert ideakid_dict != None
     assert ideakid_dict["_kids"] == temp_idea.get_kids_dict()
     assert ideakid_dict["_requiredunits"] == temp_idea.get_requiredunits_dict()
-    assert ideakid_dict["_brandlinks"] == temp_idea.get_brandlinks_dict()
-    assert ideakid_dict["_brandlinks"] == x1_brandlinks
+    assert ideakid_dict["_tribelinks"] == temp_idea.get_tribelinks_dict()
+    assert ideakid_dict["_tribelinks"] == x1_tribelinks
     assert ideakid_dict["_weight"] == temp_idea._weight
     assert ideakid_dict["_desc"] == temp_idea._desc
     assert ideakid_dict["_uid"] == temp_idea._uid

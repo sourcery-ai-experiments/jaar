@@ -1,7 +1,7 @@
 from src.world.world import WorldUnit
 from src.agent.agent import AgentUnit
 from src.agent.idea import IdeaKid
-from src.agent.brand import brandunit_shop
+from src.agent.tribe import tribeunit_shop
 from src.agent.ally import allylink_shop
 from src.agent.x_func import delete_dir as x_func_delete_dir
 from os import path as os_path
@@ -15,7 +15,7 @@ from src.world.y_func import check_connection, get_single_result_back
 from sqlite3 import connect as sqlite3_connect, Connection
 from src.world.bank_sqlstr import (
     get_db_tables,
-    get_brandunit_catalog_table_count,
+    get_tribeunit_catalog_table_count,
     get_table_count_sqlstr,
 )
 
@@ -113,7 +113,7 @@ def test_world_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_cleanu
         4: "river_bucket",
         5: "idea_catalog",
         6: "acptfact_catalog",
-        7: "brandunit_catalog",
+        7: "tribeunit_catalog",
     }
 
     assert tables_dict.get(curr_tables[0]) != None
@@ -275,7 +275,7 @@ def test_world_refresh_bank_metrics_CorrectlyPopulatesAgentTable01(
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_agents) == 4
 
 
-def test_world_refresh_bank_metrics_CorrectlyPopulates_brandunit_catalog(
+def test_world_refresh_bank_metrics_CorrectlyPopulates_tribeunit_catalog(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -293,7 +293,7 @@ def test_world_refresh_bank_metrics_CorrectlyPopulates_brandunit_catalog(
     e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
     e1.save_agentunit_obj_to_agents_dir(agent_x=tom_agent)
 
-    sqlstr = get_table_count_sqlstr("brandunit_catalog")
+    sqlstr = get_table_count_sqlstr("tribeunit_catalog")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr) == 0
 
     # WHEN
@@ -303,22 +303,22 @@ def test_world_refresh_bank_metrics_CorrectlyPopulates_brandunit_catalog(
     assert get_single_result_back(e1.get_bank_conn(), sqlstr) == 3
 
 
-def test_world_set_agent_attr_defined_by_world_CorrectlyPopulatesAgent_Brandunit_Allylinks(
+def test_world_set_agent_attr_defined_by_world_CorrectlyPopulatesAgent_Tribeunit_Allylinks(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     e1 = WorldUnit(name=get_temp_env_name(), worlds_dir=get_test_worlds_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
 
-    # create 4 agents, 1 with brand "swimming expert" linked to 1 ally
+    # create 4 agents, 1 with tribe "swimming expert" linked to 1 ally
     # two others have idea "src,sports,swimming"
     # run set_bank_metrics
     # assert
     # _allylinks_set_by_world_road
-    # assert brand "swimming expert" has 1 ally
-    # change brandunit "swimming expert" _allylinks_set_by_world_road ==  "root_desc,sports,swimmer"
+    # assert tribe "swimming expert" has 1 ally
+    # change tribeunit "swimming expert" _allylinks_set_by_world_road ==  "root_desc,sports,swimmer"
     # run set_bank_metrics
-    # assert brand "swimming expert" has 2 different ally
+    # assert tribe "swimming expert" has 2 different ally
 
     sal_text = "sal"
     bob_text = "bob"
@@ -342,11 +342,11 @@ def test_world_set_agent_attr_defined_by_world_CorrectlyPopulatesAgent_Brandunit
 
     sal_agent.add_allyunit(name=bob_text, creditor_weight=2, debtor_weight=2)
 
-    swim_brand_text = "swimming expert"
-    swim_brand_unit = brandunit_shop(name=swim_brand_text)
+    swim_tribe_text = "swimming expert"
+    swim_tribe_unit = tribeunit_shop(name=swim_tribe_text)
     bob_link = allylink_shop(name=bob_text)
-    swim_brand_unit.set_allylink(allylink=bob_link)
-    sal_agent.set_brandunit(brandunit=swim_brand_unit)
+    swim_tribe_unit.set_allylink(allylink=bob_link)
+    sal_agent.set_tribeunit(tribeunit=swim_tribe_unit)
 
     e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
     e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
@@ -355,16 +355,16 @@ def test_world_set_agent_attr_defined_by_world_CorrectlyPopulatesAgent_Brandunit
 
     e1.set_agent_attr_defined_by_world(agent_name=sal_text)
     e1_sal_agent = e1.get_agent_from_agents_dir(_desc=sal_text)
-    assert len(e1_sal_agent._brands.get(swim_brand_text)._allys) == 1
+    assert len(e1_sal_agent._tribes.get(swim_tribe_text)._allys) == 1
 
     # WHEN
-    # change brandunit "swimming expert" _allylinks_set_by_world_road ==  "root_desc,sports,swimmer"
+    # change tribeunit "swimming expert" _allylinks_set_by_world_road ==  "root_desc,sports,swimmer"
     sal_swim_road = f"{sal_sports_road},{swim_text}"
-    swim_brand_unit.set_attr(_allylinks_set_by_world_road=sal_swim_road)
-    sal_agent.set_brandunit(brandunit=swim_brand_unit)
+    swim_tribe_unit.set_attr(_allylinks_set_by_world_road=sal_swim_road)
+    sal_agent.set_tribeunit(tribeunit=swim_tribe_unit)
     e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
     e1.set_agent_attr_defined_by_world(agent_name=sal_text)
 
     # THEN
     e1_sal_agent = e1.get_agent_from_agents_dir(_desc=sal_text)
-    assert len(e1_sal_agent._brands.get(swim_brand_text)._allys) == 2
+    assert len(e1_sal_agent._tribes.get(swim_tribe_text)._allys) == 2

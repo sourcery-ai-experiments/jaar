@@ -54,10 +54,10 @@ def test_personget_starting_digest_agent_WhenStartingAgentFileDoesNotExists(
     x_agent = AgentUnit(_desc=p_name)
     x_agent.set_agent_metrics()
     # x_idearoot = IdeaRoot(_desc=p_name, _walk="")
-    # x_idearoot.set_brandlines_empty_if_null()
+    # x_idearoot.set_tribelines_empty_if_null()
     # x_idearoot.set_kids_empty_if_null()
-    # x_idearoot.set_brandlink_empty_if_null()
-    # x_idearoot.set_brandheir_empty_if_null()
+    # x_idearoot.set_tribelink_empty_if_null()
+    # x_idearoot.set_tribeheir_empty_if_null()
     # x_idearoot.set_requiredunits_empty_if_null()
     # x_idearoot.set_requiredheirs_empty_if_null()
     # x_idearoot._agent_importance = 1
@@ -70,7 +70,7 @@ def test_personget_starting_digest_agent_WhenStartingAgentFileDoesNotExists(
     assert starting_dest_agent._idearoot == x_agent._idearoot
     assert starting_dest_agent._idearoot._acptfactunits == {}
     assert starting_dest_agent._allys == {}
-    assert starting_dest_agent._brands == {}
+    assert starting_dest_agent._tribes == {}
 
 
 def test_person_get_starting_digest_agent_WhenStartingAgentFileExists(
@@ -95,7 +95,7 @@ def test_person_get_starting_digest_agent_WhenStartingAgentFileExists(
     assert starting_dest_agent._idearoot == x_agent._idearoot
     assert starting_dest_agent._idearoot._acptfactunits == {}
     assert starting_dest_agent._allys == {}
-    assert starting_dest_agent._brands == {}
+    assert starting_dest_agent._tribes == {}
     assert starting_dest_agent._desc == px.name
 
 
@@ -201,9 +201,9 @@ def test_person_get_dest_agent_from_digest_agent_files_withEmptyDigestDict(
     person_agent_x._idearoot._walk = ""
     person_agent_x.set_agent_metrics()
     # person_agent_x.set_allys_empty_if_null()
-    # person_agent_x.set_brandunits_empty_if_null()
+    # person_agent_x.set_tribeunits_empty_if_null()
     # person_agent_x._set_acptfacts_empty_if_null()
-    # person_agent_x._idearoot.set_brandlink_empty_if_null()
+    # person_agent_x._idearoot.set_tribelink_empty_if_null()
     # person_agent_x._idearoot.set_requiredunits_empty_if_null()
     # person_agent_x._idearoot.set_acptfactunits_empty_if_null()
     # person_agent_x._idearoot.set_kids_empty_if_null()
@@ -256,13 +256,13 @@ def test_person_get_dest_agent_from_digest_agent_files_with1DigestedAgent(
     assert sx_output_new != input_agent
 
 
-# def test_person_set_digested_agent_with2Brands(person_dir_setup_cleanup):
+# def test_person_set_digested_agent_with2Tribes(person_dir_setup_cleanup):
 #     # GIVEN
 #     env_dir = get_temp_person_dir()
 #     px = personunit_shop(name="test8", env_dir=env_dir)
 #     sx_output_old = px.get_dest_agent_from_digest_agent_files()
 #     assert str(type(sx_output_old)).find(".agent.AgentUnit'>")
-#     assert sx_output_old._brands == {}
+#     assert sx_output_old._tribes == {}
 #     assert sx_output_old._allys == {}
 #     assert sx_output_old._acptfacts == {}
 
@@ -273,16 +273,16 @@ def test_person_get_dest_agent_from_digest_agent_files_with1DigestedAgent(
 #     ceci_text = "Ceci"
 #     s1.set_allyunit(allyunit=AllyUnit(name=ceci_text))
 #     swim_text = "swimmers"
-#     swim_brand = BraUnit(name=swim_text)
-#     swim_brand.set_allylink(allylink=allylink_shop(name=ceci_text))
-#     s1.set_brandunit(brandunit=swim_brand)
+#     swim_tribe = BraUnit(name=swim_text)
+#     swim_tribe.set_allylink(allylink=allylink_shop(name=ceci_text))
+#     s1.set_tribeunit(tribeunit=swim_tribe)
 
 #     yaya_text = "yaya"
 #     yaya_road = Road(f"{src1},{yaya_text}")
 #     s1.add_idea(idea_kid=IdeaKid(_desc=yaya_text), walk=src1_road)
 #     s1.set_acptfact(base=yaya_road, acptfact=yaya_road)
 
-#     assert s1._brands.get(swim_text).name == swim_text
+#     assert s1._tribes.get(swim_text).name == swim_text
 #     assert s1._allys.get(ceci_text).name == ceci_text
 #     assert s1._idearoot._desc == src1
 #     assert s1._acptfacts.get(yaya_road).base == yaya_road
@@ -295,7 +295,7 @@ def test_person_get_dest_agent_from_digest_agent_files_with1DigestedAgent(
 #     assert str(type(sx_output_new)).find(".agent.AgentUnit'>")
 #     assert sx_output_new._acptfacts == s1._acptfacts
 #     assert sx_output_new._allys == s1._allys
-#     assert sx_output_new._brands == s1._brands
+#     assert sx_output_new._tribes == s1._tribes
 #     assert sx_output_new._weight == s1._weight
 #     assert sx_output_new._weight == s1._weight
 #     assert sx_output_new._idearoot._walk == s1._idearoot._walk

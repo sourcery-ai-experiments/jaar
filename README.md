@@ -76,19 +76,19 @@ AgentUnit objects
 
 AgentUnit AllyUnit objects
 
-AgentUnit BrandUnit objects
+AgentUnit TribeUnit objects
 
 AgentUnit IdeaUnit objects
 
 AgentUnit IdeaUnit hierarchical structure
 
-AgentUnit IdeaUnit BrandLink objects
+AgentUnit IdeaUnit TribeLink objects
 
-AgentUnit IdeaUnit BrandLine objects
+AgentUnit IdeaUnit TribeLine objects
 
-AgentUnit IdeaUnit BrandHeir objects
+AgentUnit IdeaUnit TribeHeir objects
 
-AgentUnit IdeaUnit BrandHeir objects
+AgentUnit IdeaUnit TribeHeir objects
 
 AgentUnit IdeaUnit RequiredFactUnit objects
 
