@@ -1,4 +1,4 @@
-from sqlite3 import connect as sqlite3_connect, Connection
+from sqlite3 import Connection
 
 
 def sqlite_null(obj_x):
@@ -21,7 +21,7 @@ def sqlite_text(bool_x) -> str:
     return return_str
 
 
-def check_connection(conn) -> bool:
+def check_connection(conn: Connection) -> bool:
     try:
         conn.cursor()
         return True
