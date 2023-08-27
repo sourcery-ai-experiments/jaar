@@ -26,8 +26,8 @@ def custom_set_idea_attr(
     numeric_road: Road = None,
     special_road: float = None,
     descendant_promise_count: int = None,
-    all_ally_credit: bool = None,
-    all_ally_debt: bool = None,
+    all_member_credit: bool = None,
+    all_member_debt: bool = None,
     grouplink: GroupLink = None,
     grouplink_del: GroupName = None,
     is_expanded: bool = None,
@@ -56,8 +56,8 @@ def custom_set_idea_attr(
         numeric_road=numeric_road,
         special_road=special_road,
         descendant_promise_count=descendant_promise_count,
-        all_ally_credit=all_ally_credit,
-        all_ally_debt=all_ally_debt,
+        all_member_credit=all_member_credit,
+        all_member_debt=all_member_debt,
         grouplink=grouplink,
         grouplink_del=grouplink_del,
         is_expanded=is_expanded,
@@ -308,8 +308,8 @@ def test_idea_attributes_meld_Works():
         special_road=plate_road,
         numeric_road=bowl_road,
         promise=True,
-        all_ally_credit="testgroup1",
-        all_ally_debt="testgroup1",
+        all_member_credit="testgroup1",
+        all_member_debt="testgroup1",
         is_expanded=True,
     )
 
@@ -327,8 +327,8 @@ def test_idea_attributes_meld_Works():
         special_road=plate_road,
         numeric_road=bowl_road,
         promise=True,
-        all_ally_credit="testgroup1",
-        all_ally_debt="testgroup1",
+        all_member_credit="testgroup1",
+        all_member_debt="testgroup1",
         is_expanded=True,
     )
 
@@ -347,8 +347,8 @@ def test_idea_attributes_meld_Works():
     assert yx1._special_road == plate_road
     assert yx1._numeric_road == bowl_road
     assert yx1.promise == True
-    assert yx1._all_ally_credit == "testgroup1"
-    assert yx1._all_ally_debt == "testgroup1"
+    assert yx1._all_member_credit == "testgroup1"
+    assert yx1._all_member_debt == "testgroup1"
     assert yx1._is_expanded == True
 
 
@@ -512,15 +512,15 @@ def test_idea_attributes_meld_FailRaisesError_action():
     )
 
 
-# def test_idea_attributes_meld_FailRaisesError_all_ally_credit():
-# def test_idea_attributes_meld_FailRaisesError_all_ally_debt():
-#     x_name = "_all_ally_credit"
-#     x_name = "_all_ally_debt"
-#     x_val = "test_all_ally_credit1"
-#     x_val = "test_all_ally_debt1"
+# def test_idea_attributes_meld_FailRaisesError_all_member_credit():
+# def test_idea_attributes_meld_FailRaisesError_all_member_debt():
+#     x_name = "_all_member_credit"
+#     x_name = "_all_member_debt"
+#     x_val = "test_all_member_credit1"
+#     x_val = "test_all_member_debt1"
 #     yx1 = IdeaCore(_desc="spirit")
-#     custom_set_idea_attr(idea=yx1, all_ally_credit=x_val)
-#     custom_set_idea_attr(idea=yx1, all_ally_debt=x_val)
+#     custom_set_idea_attr(idea=yx1, all_member_credit=x_val)
+#     custom_set_idea_attr(idea=yx1, all_member_debt=x_val)
 #     yx2 = IdeaCore(_desc="fun")
 
 #     # WHEN/THEN

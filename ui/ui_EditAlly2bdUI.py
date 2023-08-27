@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui\EditAlly2bdUI.ui'
+# Form implementation generated from reading ui file 'ui\EditMember2bdUI.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -29,14 +29,14 @@ class Ui_Form(object):
         self.label_2.setGeometry(QtCore.QRect(640, 50, 281, 41))
         self.label_2.setWordWrap(True)
         self.label_2.setObjectName("label_2")
-        self.source_ally = QtWidgets.QLabel(Form)
-        self.source_ally.setGeometry(QtCore.QRect(20, 30, 561, 20))
+        self.source_member = QtWidgets.QLabel(Form)
+        self.source_member.setGeometry(QtCore.QRect(20, 30, 561, 20))
         font = QtGui.QFont()
         font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
-        self.source_ally.setFont(font)
-        self.source_ally.setObjectName("source_ally")
+        self.source_member.setFont(font)
+        self.source_member.setObjectName("source_member")
         self.gp_member_yes = QtWidgets.QTableWidget(Form)
         self.gp_member_yes.setGeometry(QtCore.QRect(10, 90, 481, 581))
         self.gp_member_yes.setObjectName("gp_member_yes")
@@ -69,9 +69,9 @@ class Ui_Form(object):
         self.quit_button = QtWidgets.QPushButton(Form)
         self.quit_button.setGeometry(QtCore.QRect(830, 10, 93, 28))
         self.quit_button.setObjectName("quit_button")
-        self.ally2group_weight_edit = QtWidgets.QLineEdit(Form)
-        self.ally2group_weight_edit.setGeometry(QtCore.QRect(240, 690, 113, 21))
-        self.ally2group_weight_edit.setObjectName("ally2group_weight_edit")
+        self.member2group_weight_edit = QtWidgets.QLineEdit(Form)
+        self.member2group_weight_edit.setGeometry(QtCore.QRect(240, 690, 113, 21))
+        self.member2group_weight_edit.setObjectName("member2group_weight_edit")
         self.update_weight_button = QtWidgets.QPushButton(Form)
         self.update_weight_button.setGeometry(QtCore.QRect(10, 690, 221, 28))
         self.update_weight_button.setObjectName("update_weight_button")
@@ -111,9 +111,9 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.gp_add_button.setText(_translate("Form", "Add Group"))
         self.gp_remove_button.setText(_translate("Form", "Remove Group"))
-        self.label.setText(_translate("Form", "Ally is member of these Groups"))
-        self.label_2.setText(_translate("Form", "Ally is not member of these Groups"))
-        self.source_ally.setText(_translate("Form", "Ally (ID): "))
+        self.label.setText(_translate("Form", "Member is member of these Groups"))
+        self.label_2.setText(_translate("Form", "Member is not member of these Groups"))
+        self.source_member.setText(_translate("Form", "Member (ID): "))
         item = self.gp_member_yes.horizontalHeaderItem(0)
         item.setText(_translate("Form", "Group"))
         item = self.gp_member_yes.horizontalHeaderItem(1)
@@ -133,7 +133,7 @@ class Ui_Form(object):
         self.close_button.setText(_translate("Form", "Close"))
         self.quit_button.setText(_translate("Form", "Quit App"))
         self.update_weight_button.setText(
-            _translate("Form", "Update Ally's Weight in Group to:")
+            _translate("Form", "Update Member's Weight in Group to:")
         )
         self.gp_insert_button.setText(_translate("Form", "Create Group"))
         self.gp_delete_button.setText(_translate("Form", "Delete Group"))

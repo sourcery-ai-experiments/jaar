@@ -1,5 +1,10 @@
 import dataclasses
-from src.agent.ally import AllyName, AllyUnit, AllyLink, allylinks_get_from_dict
+from src.agent.member import (
+    MemberName,
+    MemberUnit,
+    MemberLink,
+    memberlinks_get_from_dict,
+)
 from src.agent.x_func import (
     x_get_dict,
     get_meld_weight,
@@ -25,30 +30,30 @@ class GroupCore:
 class GroupUnit(GroupCore):
     uid: int = None
     single_member_id: int = None
-    _single_ally: bool = None
-    _allys: dict[AllyName:AllyLink] = None
+    _single_member: bool = None
+    _members: dict[MemberName:MemberLink] = None
     _agent_credit: float = None
     _agent_debt: float = None
     _agent_agenda_credit: float = None
     _agent_agenda_debt: float = None
-    _allylinks_set_by_world_road: Road = None
+    _memberlinks_set_by_world_road: Road = None
 
     def set_name(self, name: GroupName = None):
         if name != None:
             self.name = name
 
-    def set_attr(self, _allylinks_set_by_world_road: Road):
-        if _allylinks_set_by_world_road != None:
-            self._allylinks_set_by_world_road = _allylinks_set_by_world_road
+    def set_attr(self, _memberlinks_set_by_world_road: Road):
+        if _memberlinks_set_by_world_road != None:
+            self._memberlinks_set_by_world_road = _memberlinks_set_by_world_road
 
     def get_dict(self):
         return {
             "name": self.name,
             "uid": self.uid,
             "single_member_id": self.single_member_id,
-            "_single_ally": self._single_ally,
-            "_allys": self.get_allys_dict(),
-            "_allylinks_set_by_world_road": self._allylinks_set_by_world_road,
+            "_single_member": self._single_member,
+            "_members": self.get_members_dict(),
+            "_memberlinks_set_by_world_road": self._memberlinks_set_by_world_road,
         }
 
     def set_empty_agent_credit_debt_to_zero(self):
@@ -66,63 +71,63 @@ class GroupUnit(GroupCore):
         self._agent_debt = 0
         self._agent_agenda_credit = 0
         self._agent_agenda_debt = 0
-        self._set_allylinks_empty_if_null()
-        for allylink in self._allys.values():
-            allylink.reset_agent_credit_debt()
+        self._set_memberlinks_empty_if_null()
+        for memberlink in self._members.values():
+            memberlink.reset_agent_credit_debt()
 
-    def _set_allylink_agent_credit_debt(self):
-        allylinks_creditor_weight_sum = sum(
-            allylink.creditor_weight for allylink in self._allys.values()
+    def _set_memberlink_agent_credit_debt(self):
+        memberlinks_creditor_weight_sum = sum(
+            memberlink.creditor_weight for memberlink in self._members.values()
         )
-        allylinks_debtor_weight_sum = sum(
-            allylink.debtor_weight for allylink in self._allys.values()
+        memberlinks_debtor_weight_sum = sum(
+            memberlink.debtor_weight for memberlink in self._members.values()
         )
 
-        for allylink in self._allys.values():
-            allylink.set_agent_credit_debt(
-                allylinks_creditor_weight_sum=allylinks_creditor_weight_sum,
-                allylinks_debtor_weight_sum=allylinks_debtor_weight_sum,
+        for memberlink in self._members.values():
+            memberlink.set_agent_credit_debt(
+                memberlinks_creditor_weight_sum=memberlinks_creditor_weight_sum,
+                memberlinks_debtor_weight_sum=memberlinks_debtor_weight_sum,
                 group_agent_credit=self._agent_credit,
                 group_agent_debt=self._agent_debt,
                 group_agent_agenda_credit=self._agent_agenda_credit,
                 group_agent_agenda_debt=self._agent_agenda_debt,
             )
 
-    def clear_allylinks(self):
-        self._allys = {}
+    def clear_memberlinks(self):
+        self._members = {}
 
-    def _set_allylinks_empty_if_null(self):
-        if self._allys is None:
-            self._allys = {}
+    def _set_memberlinks_empty_if_null(self):
+        if self._members is None:
+            self._members = {}
 
-    def get_allys_dict(self):
-        self._set_allylinks_empty_if_null()
+    def get_members_dict(self):
+        self._set_memberlinks_empty_if_null()
 
-        x_allys_dict = {}
-        for ally in self._allys.values():
-            ally_dict = ally.get_dict()
-            x_allys_dict[ally_dict["name"]] = ally_dict
+        x_members_dict = {}
+        for member in self._members.values():
+            member_dict = member.get_dict()
+            x_members_dict[member_dict["name"]] = member_dict
 
-        return x_allys_dict
+        return x_members_dict
 
-    def set_allylink(self, allylink: AllyLink):
-        self._set_allylinks_empty_if_null()
-        self._allys[allylink.name] = allylink
+    def set_memberlink(self, memberlink: MemberLink):
+        self._set_memberlinks_empty_if_null()
+        self._members[memberlink.name] = memberlink
 
-    def del_allylink(self, name):
-        self._allys.pop(name)
+    def del_memberlink(self, name):
+        self._members.pop(name)
 
     def meld(self, other_group):
         self.meld_attributes_that_will_be_equal(other_group=other_group)
-        self.meld_allylinks(other_group=other_group)
+        self.meld_memberlinks(other_group=other_group)
 
-    def meld_allylinks(self, other_group):
-        self._set_allylinks_empty_if_null()
-        for oba in other_group._allys.values():
-            if self._allys.get(oba.name) is None:
-                self._allys[oba.name] = oba
+    def meld_memberlinks(self, other_group):
+        self._set_memberlinks_empty_if_null()
+        for oba in other_group._members.values():
+            if self._members.get(oba.name) is None:
+                self._members[oba.name] = oba
             else:
-                self._allys[oba.name].meld(oba)
+                self._members[oba.name].meld(oba)
 
     def meld_attributes_that_will_be_equal(self, other_group):
         xl = [
@@ -152,19 +157,19 @@ def get_from_dict(x_dict: dict):
     groupunits = {}
     for groupunits_dict in x_dict.values():
         try:
-            ex_allylinks_set_by_world_road = groupunits_dict[
-                "_allylinks_set_by_world_road"
+            ex_memberlinks_set_by_world_road = groupunits_dict[
+                "_memberlinks_set_by_world_road"
             ]
         except KeyError:
-            ex_allylinks_set_by_world_road = None
+            ex_memberlinks_set_by_world_road = None
 
         x_group = groupunit_shop(
             name=groupunits_dict["name"],
             uid=groupunits_dict["uid"],
-            _single_ally=groupunits_dict["_single_ally"],
+            _single_member=groupunits_dict["_single_member"],
             single_member_id=groupunits_dict["single_member_id"],
-            _allys=allylinks_get_from_dict(x_dict=groupunits_dict["_allys"]),
-            _allylinks_set_by_world_road=ex_allylinks_set_by_world_road,
+            _members=memberlinks_get_from_dict(x_dict=groupunits_dict["_members"]),
+            _memberlinks_set_by_world_road=ex_memberlinks_set_by_world_road,
         )
         groupunits[x_group.name] = x_group
     return groupunits
@@ -174,34 +179,34 @@ def groupunit_shop(
     name: GroupName,
     uid: int = None,
     single_member_id: int = None,
-    _single_ally: bool = None,
-    _allys: dict[AllyName:AllyUnit] = None,
+    _single_member: bool = None,
+    _members: dict[MemberName:MemberUnit] = None,
     _agent_credit: float = None,
     _agent_debt: float = None,
     _agent_agenda_credit: float = None,
     _agent_agenda_debt: float = None,
-    _allylinks_set_by_world_road: Road = None,
+    _memberlinks_set_by_world_road: Road = None,
 ) -> GroupUnit:
-    if _single_ally and _allylinks_set_by_world_road != None:
+    if _single_member and _memberlinks_set_by_world_road != None:
         raise InvalidGroupException(
-            f"_allylinks_set_by_world_road cannot be '{_allylinks_set_by_world_road}' for a single_ally GroupUnit. It must have no value."
+            f"_memberlinks_set_by_world_road cannot be '{_memberlinks_set_by_world_road}' for a single_member GroupUnit. It must have no value."
         )
 
-    if _allys is None:
-        _allys = {}
-    if _single_ally is None:
-        _single_ally = False
+    if _members is None:
+        _members = {}
+    if _single_member is None:
+        _single_member = False
     return GroupUnit(
         name=name,
         uid=uid,
         single_member_id=single_member_id,
-        _single_ally=_single_ally,
-        _allys=_allys,
+        _single_member=_single_member,
+        _members=_members,
         _agent_credit=_agent_credit,
         _agent_debt=_agent_debt,
         _agent_agenda_credit=_agent_agenda_credit,
         _agent_agenda_debt=_agent_agenda_debt,
-        _allylinks_set_by_world_road=_allylinks_set_by_world_road,
+        _memberlinks_set_by_world_road=_memberlinks_set_by_world_road,
     )
 
 

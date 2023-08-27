@@ -41,7 +41,7 @@ def test_agent_get_dict_ReturnsDictObject():
     assert x_dict["_reest"] == x_agent._idearoot._reest
     assert x_dict["_problem_bool"] == x_agent._idearoot._problem_bool
     assert x_dict["_on_meld_weight_action"] == x_agent._idearoot._on_meld_weight_action
-    assert len(x_dict["_allys"]) == len(x_agent._allys)
+    assert len(x_dict["_members"]) == len(x_agent._members)
     assert len(x_dict["_groups"]) == len(x_agent._groups)
     assert len(x_dict["_kids"]) == len(x_agent._idearoot._kids)
     with pytest_raises(KeyError) as excinfo:
@@ -249,7 +249,7 @@ def test_agent_get_json_CorrectlyWorksForNotSimpleExample():
     assert lw3._idearoot._walk == lw1._idearoot._walk
     assert len(lw3._idearoot._kids) == len(lw1._idearoot._kids)
     assert len(lw3._groups) == 34
-    assert len(lw3._allys) == 22
+    assert len(lw3._members) == 22
     # for kid in lw3._kids.values():
     #     print(f"{kid._desc=}")
 

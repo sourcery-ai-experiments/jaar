@@ -595,7 +595,7 @@ def test_agent_create_agenda_item_CorrectlyCreatesAllAgentAttributes():
     a1 = AgentUnit(_desc=src_text)
 
     a1.set_agent_metrics()
-    assert len(a1._allys) == 0
+    assert len(a1._members) == 0
     assert len(a1._groups) == 0
     assert len(a1._idearoot._kids) == 0
 
@@ -627,20 +627,20 @@ def test_agent_create_agenda_item_CorrectlyCreatesAllAgentAttributes():
     clean_kitchen_idea.set_required_unit(required=daytime_required)
 
     # anna_text = "anna"
-    # anna_allyunit = allyunit_shop(name=anna_text)
-    # anna_allylink = allylink_shop(name=anna_text)
+    # anna_memberunit = memberunit_shop(name=anna_text)
+    # anna_memberlink = memberlink_shop(name=anna_text)
     # beto_text = "beto"
-    # beto_allyunit = allyunit_shop(name=beto_text)
-    # beto_allylink = allylink_shop(name=beto_text)
+    # beto_memberunit = memberunit_shop(name=beto_text)
+    # beto_memberlink = memberlink_shop(name=beto_text)
 
     family_text = "family"
     # groupunit_z = groupunit_shop(name=family_text)
-    # groupunit_z.set_allylink(allylink=anna_allylink)
-    # groupunit_z.set_allylink(allylink=beto_allylink)
+    # groupunit_z.set_memberlink(memberlink=anna_memberlink)
+    # groupunit_z.set_memberlink(memberlink=beto_memberlink)
     grouplink_z = grouplink_shop(name=family_text)
     clean_kitchen_idea.set_grouplink(grouplink=grouplink_z)
 
-    assert len(a1._allys) == 0
+    assert len(a1._members) == 0
     assert len(a1._groups) == 0
     assert len(a1._idearoot._kids) == 1
     assert a1.get_idea_kid(road=daytime_road)._begin == 0
@@ -666,7 +666,7 @@ def test_agent_create_agenda_item_CorrectlyCreatesAllAgentAttributes():
     assert a1.get_idea_kid(road=daytime_road)._close == 1440
     assert len(a1._groups) == 1
     assert a1._groups.get(family_text) != None
-    assert a1._groups.get(family_text)._allys in (None, {})
+    assert a1._groups.get(family_text)._members in (None, {})
 
     assert len(a1._idearoot._kids) == 3
 

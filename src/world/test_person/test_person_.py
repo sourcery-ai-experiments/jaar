@@ -39,8 +39,8 @@ def test_personunit_exists(person_dir_setup_cleanup):
     # assert px._re_idearoot._special_road is None
     # assert px._re_idearoot._numeric_road is None
     # assert px._re_idearoot.promise == False
-    # assert px._re_idearoot._all_ally_credit is None
-    # assert px._re_idearoot._all_ally_debt is None
+    # assert px._re_idearoot._all_member_credit is None
+    # assert px._re_idearoot._all_member_debt is None
     # assert px._re_idearoot._is_expanded == True
     assert px._dest_agent != None
     assert px._person_dir != None

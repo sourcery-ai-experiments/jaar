@@ -2,50 +2,50 @@ from dataclasses import dataclass
 from src.agent.x_func import x_get_dict, return1ifnone as x_func_return1ifnone
 
 
-class InvalidAllyException(Exception):
+class InvalidMemberException(Exception):
     pass
 
 
-class AllyName(str):
+class MemberName(str):
     pass
 
 
 @dataclass
-class AllyRing:
-    name: AllyName
+class MemberRing:
+    name: MemberName
 
     def get_dict(self):
         return {"name": self.name}
 
 
 @dataclass
-class AllyCore:
-    name: AllyName
+class MemberCore:
+    name: MemberName
 
 
-# class AllyRingsshop:
-def allyrings_get_from_json(allyrings_json: str) -> dict[str:AllyRing]:
-    allyrings_dict = x_get_dict(json_x=allyrings_json)
-    return allyrings_get_from_dict(x_dict=allyrings_dict)
+# class MemberRingsshop:
+def memberrings_get_from_json(memberrings_json: str) -> dict[str:MemberRing]:
+    memberrings_dict = x_get_dict(json_x=memberrings_json)
+    return memberrings_get_from_dict(x_dict=memberrings_dict)
 
 
-def allyrings_get_from_dict(x_dict: dict) -> dict[str:AllyRing]:
-    allyrings = {}
+def memberrings_get_from_dict(x_dict: dict) -> dict[str:MemberRing]:
+    memberrings = {}
     if x_dict != None:
-        for allyrings_dict in x_dict.values():
-            x_allyring = allyrings_get_allyring(
-                name=allyrings_dict["name"],
+        for memberrings_dict in x_dict.values():
+            x_memberring = memberrings_get_memberring(
+                name=memberrings_dict["name"],
             )
-            allyrings[x_allyring.name] = x_allyring
-    return allyrings
+            memberrings[x_memberring.name] = x_memberring
+    return memberrings
 
 
-def allyrings_get_allyring(name: AllyName) -> AllyRing:
-    return AllyRing(name=name)
+def memberrings_get_memberring(name: MemberName) -> MemberRing:
+    return MemberRing(name=name)
 
 
 @dataclass
-class AllyUnit(AllyCore):
+class MemberUnit(MemberCore):
     uid: int = None
     creditor_weight: int = None
     debtor_weight: int = None
@@ -58,7 +58,7 @@ class AllyUnit(AllyCore):
     _agent_agenda_ratio_debt: float = None
     _creditor_active: bool = None
     _debtor_active: bool = None
-    _allyrings: dict[AllyName:AllyRing] = None
+    _memberrings: dict[MemberName:MemberRing] = None
     _bank_tax_paid: float = None
     _bank_tax_diff: float = None
 
@@ -81,7 +81,7 @@ class AllyUnit(AllyCore):
         #     self._bank_tax_diff = tax_diff
         # else:
         #     raise Exception(
-        #         f"AllyUnit.set_banking_data fail: tax_paid={tax_paid} + tax_diff={tax_diff} not equal to _agent_agenda_ratio_credit={self._agent_agenda_ratio_credit}"
+        #         f"MemberUnit.set_banking_data fail: tax_paid={tax_paid} + tax_diff={tax_diff} not equal to _agent_agenda_ratio_credit={self._agent_agenda_ratio_credit}"
         #     )
 
     def get_dict(self):
@@ -92,17 +92,17 @@ class AllyUnit(AllyCore):
             "debtor_weight": self.debtor_weight,
             "_creditor_active": self._creditor_active,
             "_debtor_active": self._debtor_active,
-            "_allyrings": self.get_allyrings_dict(),
+            "_memberrings": self.get_memberrings_dict(),
             "external_name": self.external_name,
             "_bank_tax_paid": self._bank_tax_paid,
             "_bank_tax_diff": self._bank_tax_diff,
         }
 
-    def get_allyrings_dict(self):
+    def get_memberrings_dict(self):
         x_dict = {}
-        if self._allyrings != None:
-            for allyring in self._allyrings.values():
-                x_dict[allyring.name] = allyring.get_dict()
+        if self._memberrings != None:
+            for memberring in self._memberrings.values():
+                x_dict[memberring.name] = memberring.get_dict()
         return x_dict
 
     def get_creditor_weight(self):
@@ -150,12 +150,12 @@ class AllyUnit(AllyCore):
         self,
         agent_agenda_ratio_credit_sum: float,
         agent_agenda_ratio_debt_sum: float,
-        agent_allyunit_total_creditor_weight: float,
-        agent_allyunit_total_debtor_weight: float,
+        agent_memberunit_total_creditor_weight: float,
+        agent_memberunit_total_debtor_weight: float,
     ):
         if agent_agenda_ratio_credit_sum == 0:
             self._agent_agenda_ratio_credit = (
-                self.get_creditor_weight() / agent_allyunit_total_creditor_weight
+                self.get_creditor_weight() / agent_memberunit_total_creditor_weight
             )
         else:
             self._agent_agenda_ratio_credit = (
@@ -164,76 +164,76 @@ class AllyUnit(AllyCore):
 
         if agent_agenda_ratio_debt_sum == 0:
             self._agent_agenda_ratio_debt = (
-                self.get_debtor_weight() / agent_allyunit_total_debtor_weight
+                self.get_debtor_weight() / agent_memberunit_total_debtor_weight
             )
         else:
             self._agent_agenda_ratio_debt = (
                 self._agent_agenda_debt / agent_agenda_ratio_debt_sum
             )
 
-    def meld(self, other_allyunit):
-        if self.name != other_allyunit.name:
-            raise InvalidAllyException(
-                f"Meld fail AllyUnit='{self.name}' not the same as AllyUnit='{other_allyunit.name}"
+    def meld(self, other_memberunit):
+        if self.name != other_memberunit.name:
+            raise InvalidMemberException(
+                f"Meld fail MemberUnit='{self.name}' not the same as MemberUnit='{other_memberunit.name}"
             )
 
-        self.creditor_weight += other_allyunit.creditor_weight
-        self.debtor_weight += other_allyunit.debtor_weight
+        self.creditor_weight += other_memberunit.creditor_weight
+        self.debtor_weight += other_memberunit.debtor_weight
 
 
-# class AllyUnitsshop:
-def allyunits_get_from_json(allyunits_json: str) -> dict[str:AllyUnit]:
-    allyunits_dict = x_get_dict(json_x=allyunits_json)
-    return allyunits_get_from_dict(x_dict=allyunits_dict)
+# class MemberUnitsshop:
+def memberunits_get_from_json(memberunits_json: str) -> dict[str:MemberUnit]:
+    memberunits_dict = x_get_dict(json_x=memberunits_json)
+    return memberunits_get_from_dict(x_dict=memberunits_dict)
 
 
-def allyunits_get_from_dict(x_dict: dict) -> dict[str:AllyUnit]:
-    allyunits = {}
-    for allyunits_dict in x_dict.values():
+def memberunits_get_from_dict(x_dict: dict) -> dict[str:MemberUnit]:
+    memberunits = {}
+    for memberunits_dict in x_dict.values():
         try:
-            allyrings = allyunits_dict["_allyrings"]
+            memberrings = memberunits_dict["_memberrings"]
         except KeyError:
-            allyrings = {}
+            memberrings = {}
 
         try:
-            external_name = allyunits_dict["external_name"]
+            external_name = memberunits_dict["external_name"]
         except KeyError:
             external_name = {}
 
         try:
-            _bank_tax_paid = allyunits_dict["_bank_tax_paid"]
+            _bank_tax_paid = memberunits_dict["_bank_tax_paid"]
         except KeyError:
             _bank_tax_paid = None
 
         try:
-            _bank_tax_diff = allyunits_dict["_bank_tax_diff"]
+            _bank_tax_diff = memberunits_dict["_bank_tax_diff"]
         except KeyError:
             _bank_tax_diff = None
 
-        x_allyunit = allyunit_shop(
-            name=allyunits_dict["name"],
-            uid=allyunits_dict["uid"],
-            creditor_weight=allyunits_dict["creditor_weight"],
-            debtor_weight=allyunits_dict["debtor_weight"],
-            _creditor_active=allyunits_dict["_creditor_active"],
-            _debtor_active=allyunits_dict["_debtor_active"],
-            _allyrings=allyrings_get_from_dict(x_dict=allyrings),
+        x_memberunit = memberunit_shop(
+            name=memberunits_dict["name"],
+            uid=memberunits_dict["uid"],
+            creditor_weight=memberunits_dict["creditor_weight"],
+            debtor_weight=memberunits_dict["debtor_weight"],
+            _creditor_active=memberunits_dict["_creditor_active"],
+            _debtor_active=memberunits_dict["_debtor_active"],
+            _memberrings=memberrings_get_from_dict(x_dict=memberrings),
             external_name=external_name,
             _bank_tax_paid=_bank_tax_paid,
             _bank_tax_diff=_bank_tax_diff,
         )
-        allyunits[x_allyunit.name] = x_allyunit
-    return allyunits
+        memberunits[x_memberunit.name] = x_memberunit
+    return memberunits
 
 
-def allyunit_shop(
-    name: AllyName,
+def memberunit_shop(
+    name: MemberName,
     uid: int = None,
     creditor_weight: int = None,
     debtor_weight: int = None,
     _creditor_active: bool = None,
     _debtor_active: bool = None,
-    _allyrings: dict[AllyName:AllyRing] = None,
+    _memberrings: dict[MemberName:MemberRing] = None,
     _agent_credit: float = None,
     _agent_debt: float = None,
     _agent_agenda_credit: float = None,
@@ -243,10 +243,10 @@ def allyunit_shop(
     external_name: str = None,
     _bank_tax_paid: float = None,
     _bank_tax_diff: float = None,
-) -> AllyUnit:
-    final_allyrings = {} if _allyrings is None else _allyrings
+) -> MemberUnit:
+    final_memberrings = {} if _memberrings is None else _memberrings
 
-    return AllyUnit(
+    return MemberUnit(
         name=name,
         uid=uid,
         creditor_weight=x_func_return1ifnone(creditor_weight),
@@ -259,7 +259,7 @@ def allyunit_shop(
         _agent_agenda_debt=_agent_agenda_debt,
         _agent_agenda_ratio_credit=_agent_agenda_ratio_credit,
         _agent_agenda_ratio_debt=_agent_agenda_ratio_debt,
-        _allyrings=final_allyrings,
+        _memberrings=final_memberrings,
         external_name=external_name,
         _bank_tax_paid=_bank_tax_paid,
         _bank_tax_diff=_bank_tax_diff,
@@ -267,7 +267,7 @@ def allyunit_shop(
 
 
 @dataclass
-class AllyLink(AllyCore):
+class MemberLink(MemberCore):
     creditor_weight: float = 1.0
     debtor_weight: float = 1.0
     _agent_credit: float = None
@@ -284,8 +284,8 @@ class AllyLink(AllyCore):
 
     def set_agent_credit_debt(
         self,
-        allylinks_creditor_weight_sum: float,
-        allylinks_debtor_weight_sum: float,
+        memberlinks_creditor_weight_sum: float,
+        memberlinks_debtor_weight_sum: float,
         group_agent_credit: float,
         group_agent_debt: float,
         group_agent_agenda_credit: float,
@@ -293,8 +293,8 @@ class AllyLink(AllyCore):
     ):
         group_agent_credit = x_func_return1ifnone(group_agent_credit)
         group_agent_debt = x_func_return1ifnone(group_agent_debt)
-        creditor_ratio = self.creditor_weight / allylinks_creditor_weight_sum
-        debtor_ratio = self.debtor_weight / allylinks_debtor_weight_sum
+        creditor_ratio = self.creditor_weight / memberlinks_creditor_weight_sum
+        debtor_ratio = self.debtor_weight / memberlinks_debtor_weight_sum
 
         self._agent_credit = group_agent_credit * creditor_ratio
         self._agent_debt = group_agent_debt * debtor_ratio
@@ -307,45 +307,45 @@ class AllyLink(AllyCore):
         self._agent_agenda_credit = 0
         self._agent_agenda_debt = 0
 
-    def meld(self, other_allylink):
-        if self.name != other_allylink.name:
-            raise InvalidAllyException(
-                f"Meld fail AllyLink='{self.name}' not the same as AllyLink='{other_allylink.name}"
+    def meld(self, other_memberlink):
+        if self.name != other_memberlink.name:
+            raise InvalidMemberException(
+                f"Meld fail MemberLink='{self.name}' not the same as MemberLink='{other_memberlink.name}"
             )
-        self.creditor_weight += other_allylink.creditor_weight
-        self.debtor_weight += other_allylink.debtor_weight
+        self.creditor_weight += other_memberlink.creditor_weight
+        self.debtor_weight += other_memberlink.debtor_weight
 
 
-# class AllyLinkshop:
-def allylinks_get_from_json(allylinks_json: str) -> dict[str:AllyLink]:
-    allylinks_dict = x_get_dict(json_x=allylinks_json)
-    return allylinks_get_from_dict(x_dict=allylinks_dict)
+# class MemberLinkshop:
+def memberlinks_get_from_json(memberlinks_json: str) -> dict[str:MemberLink]:
+    memberlinks_dict = x_get_dict(json_x=memberlinks_json)
+    return memberlinks_get_from_dict(x_dict=memberlinks_dict)
 
 
-def allylinks_get_from_dict(x_dict: dict) -> dict[str:AllyLink]:
-    allylinks = {}
-    for allylinks_dict in x_dict.values():
-        x_ally = allylink_shop(
-            name=allylinks_dict["name"],
-            creditor_weight=allylinks_dict["creditor_weight"],
-            debtor_weight=allylinks_dict["debtor_weight"],
+def memberlinks_get_from_dict(x_dict: dict) -> dict[str:MemberLink]:
+    memberlinks = {}
+    for memberlinks_dict in x_dict.values():
+        x_member = memberlink_shop(
+            name=memberlinks_dict["name"],
+            creditor_weight=memberlinks_dict["creditor_weight"],
+            debtor_weight=memberlinks_dict["debtor_weight"],
         )
-        allylinks[x_ally.name] = x_ally
-    return allylinks
+        memberlinks[x_member.name] = x_member
+    return memberlinks
 
 
-def allylink_shop(
-    name: AllyName,
+def memberlink_shop(
+    name: MemberName,
     creditor_weight: float = None,
     debtor_weight: float = None,
     _agent_credit: float = None,
     _agent_debt: float = None,
     _agent_agenda_credit: float = None,
     _agent_agenda_debt: float = None,
-) -> AllyLink:
+) -> MemberLink:
     creditor_weight = x_func_return1ifnone(creditor_weight)
     debtor_weight = x_func_return1ifnone(debtor_weight)
-    return AllyLink(
+    return MemberLink(
         name=name,
         creditor_weight=creditor_weight,
         debtor_weight=debtor_weight,
@@ -357,8 +357,8 @@ def allylink_shop(
 
 
 @dataclass
-class AllyUnitExternalMetrics:
+class MemberUnitExternalMetrics:
     external_name: str = None
-    internal_name: AllyName = None
+    internal_name: MemberName = None
     creditor_active: bool = None
     debtor_active: bool = None

@@ -1,14 +1,14 @@
 import dataclasses
 import json
 from datetime import datetime
-from src.agent.ally import (
-    AllyName,
-    AllyUnit,
-    AllyLink,
-    allyunits_get_from_dict,
-    allyunit_shop,
-    allylink_shop,
-    AllyUnitExternalMetrics,
+from src.agent.member import (
+    MemberName,
+    MemberUnit,
+    MemberLink,
+    memberunits_get_from_dict,
+    memberunit_shop,
+    memberlink_shop,
+    MemberUnitExternalMetrics,
 )
 from src.agent.group import (
     GroupLink,
@@ -69,7 +69,7 @@ class InvalidAgentException(Exception):
 class AgentUnit:
     _desc: str = None
     _weight: float = None
-    _allys: dict[AllyName:AllyUnit] = None
+    _members: dict[MemberName:MemberUnit] = None
     _groups: dict[GroupName:GroupUnit] = None
     _idearoot: IdeaRoot = None
     _idea_dict: dict[Road:IdeaCore] = None
@@ -86,20 +86,22 @@ class AgentUnit:
         self._idearoot = IdeaRoot(_desc=_desc, _uid=1)
         self._desc = _desc
 
-    def set_banking_attr_allyunits(self, river_tallys: dict):
-        for allyunit_x in self._allys.values():
-            allyunit_x.clear_banking_data()
-            river_tally = river_tallys.get(allyunit_x.name)
-            if river_tally != None:
-                allyunit_x.set_banking_data(river_tally.tax_total, river_tally.tax_diff)
+    def set_banking_attr_memberunits(self, river_tmembers: dict):
+        for memberunit_x in self._members.values():
+            memberunit_x.clear_banking_data()
+            river_tmember = river_tmembers.get(memberunit_x.name)
+            if river_tmember != None:
+                memberunit_x.set_banking_data(
+                    river_tmember.tax_total, river_tmember.tax_diff
+                )
 
-    def import_external_allyunit_metrics(
-        self, external_metrics: AllyUnitExternalMetrics
+    def import_external_memberunit_metrics(
+        self, external_metrics: MemberUnitExternalMetrics
     ):
-        ally_x = self._allys.get(external_metrics.internal_name)
-        ally_x._creditor_active = external_metrics.creditor_active
-        ally_x._debtor_active = external_metrics.debtor_active
-        # self.set_allyunit(allyunit=ally_x)
+        member_x = self._members.get(external_metrics.internal_name)
+        member_x._creditor_active = external_metrics.creditor_active
+        member_x._debtor_active = external_metrics.debtor_active
+        # self.set_memberunit(memberunit=member_x)
 
     def set_max_tree_traverse(self, int_x: int):
         if int_x < 2:
@@ -116,7 +118,10 @@ class AgentUnit:
             return False
 
         promise_idea_road = tree_metrics_x.an_promise_idea_road
-        if self._are_all_allys_groups_are_in_idea_kid(road=promise_idea_road) == False:
+        if (
+            self._are_all_members_groups_are_in_idea_kid(road=promise_idea_road)
+            == False
+        ):
             return False
 
         return self.all_ideas_relevant_to_promise_idea(road=promise_idea_road) != False
@@ -151,7 +156,7 @@ class AgentUnit:
             cx.set_agent_metrics()
 
         # TODO grab groups
-        # TODO grab all group allys
+        # TODO grab all group members
         # TODO grab acptfacts
         return cx
 
@@ -175,7 +180,7 @@ class AgentUnit:
         all_ideas_set = set(self.get_idea_tree_ordered_road_list())
         return all_ideas_set == all_ideas_set.intersection(promise_idea_assoc_set)
 
-    def _are_all_allys_groups_are_in_idea_kid(self, road: Road) -> bool:
+    def _are_all_members_groups_are_in_idea_kid(self, road: Road) -> bool:
         idea_kid = self.get_idea_kid(road=road)
         # get dict of all idea groupheirs
         groupheir_list = idea_kid._groupheirs.keys()
@@ -183,22 +188,24 @@ class AgentUnit:
         non_single_groupunits = {
             groupunit.name: groupunit
             for groupunit in self._groups.values()
-            if groupunit._single_ally != True
+            if groupunit._single_member != True
         }
-        # check all non_single_ally_groupunits are in groupheirs
+        # check all non_single_member_groupunits are in groupheirs
         for non_single_group in non_single_groupunits.values():
             if groupheir_dict.get(non_single_group.name) is None:
                 return False
 
-        # get dict of all allylinks that are in all groupheirs
-        groupheir_allyunits = {}
+        # get dict of all memberlinks that are in all groupheirs
+        groupheir_memberunits = {}
         for groupheir_name in groupheir_dict:
             groupunit = self._groups.get(groupheir_name)
-            for allylink in groupunit._allys.values():
-                groupheir_allyunits[allylink.name] = self._allys.get(allylink.name)
+            for memberlink in groupunit._members.values():
+                groupheir_memberunits[memberlink.name] = self._members.get(
+                    memberlink.name
+                )
 
-        # check all agent._allys are in groupheir_allyunits
-        return len(self._allys) == len(groupheir_allyunits)
+        # check all agent._members are in groupheir_memberunits
+        return len(self._members) == len(groupheir_memberunits)
 
     def get_time_min_from_dt(self, dt: datetime) -> float:
         return hreg_get_time_min_from_dt(dt=dt)
@@ -310,13 +317,13 @@ class AgentUnit:
         num_with_postfix = get_number_with_postfix(num=divisor // 10080)
         return f"every {num_with_postfix} {weekday_idea_node._desc} at {convert1440toReadableTime(min1440=open % 1440)}"
 
-    def get_allys_metrics(self):
+    def get_members_metrics(self):
         tree_metrics = self.get_tree_metrics()
         return tree_metrics.grouplinks_metrics
 
-    def set_allys_empty_if_null(self):
-        if self._allys is None:
-            self._allys = {}
+    def set_members_empty_if_null(self):
+        if self._members is None:
+            self._members = {}
 
     def add_to_group_agent_credit_debt(
         self,
@@ -346,17 +353,17 @@ class AgentUnit:
                 group._agent_agenda_credit += groupline_agent_credit
                 group._agent_agenda_debt += groupline_agent_debt
 
-    def add_to_allyunit_agent_credit_debt(
+    def add_to_memberunit_agent_credit_debt(
         self,
-        allyunit_name: AllyName,
+        memberunit_name: MemberName,
         agent_credit,
         agent_debt: float,
         agent_agenda_credit: float,
         agent_agenda_debt: float,
     ):
-        for allyunit in self._allys.values():
-            if allyunit.name == allyunit_name:
-                allyunit.add_agent_credit_debt(
+        for memberunit in self._members.values():
+            if memberunit.name == memberunit_name:
+                memberunit.add_agent_credit_debt(
                     agent_credit=agent_credit,
                     agent_debt=agent_debt,
                     agent_agenda_credit=agent_agenda_credit,
@@ -367,148 +374,151 @@ class AgentUnit:
         if self._groups is None:
             self._groups = {}
 
-    def del_allyunit(self, name: str):
+    def del_memberunit(self, name: str):
         self._groups.pop(name)
-        self._allys.pop(name)
+        self._members.pop(name)
 
-    def add_allyunit(
+    def add_memberunit(
         self,
         name: str,
         uid: int = None,
         creditor_weight: int = None,
         debtor_weight: int = None,
     ):
-        allyunit = allyunit_shop(
-            name=AllyName(name),
+        memberunit = memberunit_shop(
+            name=MemberName(name),
             uid=uid,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
         )
-        self.set_allyunit(allyunit=allyunit)
+        self.set_memberunit(memberunit=memberunit)
 
-    def set_allyunit(self, allyunit: AllyUnit):
-        self.set_allys_empty_if_null()
+    def set_memberunit(self, memberunit: MemberUnit):
+        self.set_members_empty_if_null()
         self.set_groupunits_empty_if_null()
-        # future: if ally is new check group does not already have that name
+        # future: if member is new check group does not already have that name
 
-        self._allys[allyunit.name] = allyunit
+        self._members[memberunit.name] = memberunit
 
         existing_group = None
         try:
-            existing_group = self._groups[allyunit.name]
+            existing_group = self._groups[memberunit.name]
         except KeyError:
-            allylink = allylink_shop(
-                name=AllyName(allyunit.name), creditor_weight=1, debtor_weight=1
+            memberlink = memberlink_shop(
+                name=MemberName(memberunit.name), creditor_weight=1, debtor_weight=1
             )
-            allylinks = {allylink.name: allylink}
+            memberlinks = {memberlink.name: memberlink}
             group_unit = groupunit_shop(
-                name=allyunit.name,
-                _single_ally=True,
-                _allys=allylinks,
+                name=memberunit.name,
+                _single_member=True,
+                _members=memberlinks,
                 uid=None,
                 single_member_id=None,
             )
             self.set_groupunit(groupunit=group_unit)
 
-    def edit_allyunit_name(
+    def edit_memberunit_name(
         self,
         old_name: str,
         new_name: str,
-        allow_ally_overwite: bool,
+        allow_member_overwite: bool,
         allow_nonsingle_group_overwrite: bool,
     ):
-        old_name_creditor_weight = self._allys.get(old_name).creditor_weight
-        if not allow_ally_overwite and self._allys.get(new_name) != None:
+        old_name_creditor_weight = self._members.get(old_name).creditor_weight
+        if not allow_member_overwite and self._members.get(new_name) != None:
             raise InvalidAgentException(
-                f"Ally '{old_name}' change to '{new_name}' failed since it already exists."
+                f"Member '{old_name}' change to '{new_name}' failed since it already exists."
             )
         elif (
             not allow_nonsingle_group_overwrite
             and self._groups.get(new_name) != None
-            and self._groups.get(new_name)._single_ally == False
+            and self._groups.get(new_name)._single_member == False
         ):
             raise InvalidAgentException(
-                f"Ally '{old_name}' change to '{new_name}' failed since non-single group '{new_name}' already exists."
+                f"Member '{old_name}' change to '{new_name}' failed since non-single group '{new_name}' already exists."
             )
         elif (
             allow_nonsingle_group_overwrite
             and self._groups.get(new_name) != None
-            and self._groups.get(new_name)._single_ally == False
+            and self._groups.get(new_name)._single_member == False
         ):
             self.del_groupunit(groupname=new_name)
-        elif self._allys.get(new_name) != None:
-            old_name_creditor_weight += self._allys.get(new_name).creditor_weight
+        elif self._members.get(new_name) != None:
+            old_name_creditor_weight += self._members.get(new_name).creditor_weight
 
-        self.add_allyunit(name=new_name, creditor_weight=old_name_creditor_weight)
+        self.add_memberunit(name=new_name, creditor_weight=old_name_creditor_weight)
         groups_affected_list = []
         for group in self._groups.values():
             groups_affected_list.extend(
                 group.name
-                for ally_x in group._allys.values()
-                if ally_x.name == old_name
+                for member_x in group._members.values()
+                if member_x.name == old_name
             )
         for group_x in groups_affected_list:
-            allylink_creditor_weight = (
-                self._groups.get(group_x)._allys.get(old_name).creditor_weight
+            memberlink_creditor_weight = (
+                self._groups.get(group_x)._members.get(old_name).creditor_weight
             )
-            allylink_debtor_weight = (
-                self._groups.get(group_x)._allys.get(old_name).debtor_weight
+            memberlink_debtor_weight = (
+                self._groups.get(group_x)._members.get(old_name).debtor_weight
             )
-            if self._groups.get(group_x)._allys.get(new_name) != None:
-                allylink_creditor_weight += (
-                    self._groups.get(group_x)._allys.get(new_name).creditor_weight
+            if self._groups.get(group_x)._members.get(new_name) != None:
+                memberlink_creditor_weight += (
+                    self._groups.get(group_x)._members.get(new_name).creditor_weight
                 )
-                allylink_debtor_weight += (
-                    self._groups.get(group_x)._allys.get(new_name).debtor_weight
+                memberlink_debtor_weight += (
+                    self._groups.get(group_x)._members.get(new_name).debtor_weight
                 )
 
-            self._groups.get(group_x).set_allylink(
-                allylink=allylink_shop(
+            self._groups.get(group_x).set_memberlink(
+                memberlink=memberlink_shop(
                     name=new_name,
-                    creditor_weight=allylink_creditor_weight,
-                    debtor_weight=allylink_debtor_weight,
+                    creditor_weight=memberlink_creditor_weight,
+                    debtor_weight=memberlink_debtor_weight,
                 )
             )
-            self._groups.get(group_x).del_allylink(name=old_name)
+            self._groups.get(group_x).del_memberlink(name=old_name)
 
-        self.del_allyunit(name=old_name)
+        self.del_memberunit(name=old_name)
 
-    def get_allyunits_name_list(self):
-        allyname_list = list(self._allys.keys())
-        allyname_list.append("")
-        allyname_dict = {allyname.lower(): allyname for allyname in allyname_list}
-        allyname_lowercase_ordered_list = sorted(list(allyname_dict))
+    def get_memberunits_name_list(self):
+        membername_list = list(self._members.keys())
+        membername_list.append("")
+        membername_dict = {
+            membername.lower(): membername for membername in membername_list
+        }
+        membername_lowercase_ordered_list = sorted(list(membername_dict))
         return [
-            allyname_dict[allyname_l] for allyname_l in allyname_lowercase_ordered_list
+            membername_dict[membername_l]
+            for membername_l in membername_lowercase_ordered_list
         ]
 
-    def get_allyunits_uid_max(self) -> int:
+    def get_memberunits_uid_max(self) -> int:
         uid_max = 1
-        for allyunit_x in self._allys.values():
-            if allyunit_x.uid != None and allyunit_x.uid > uid_max:
-                uid_max = allyunit_x.uid
+        for memberunit_x in self._members.values():
+            if memberunit_x.uid != None and memberunit_x.uid > uid_max:
+                uid_max = memberunit_x.uid
         return uid_max
 
-    def get_allyunits_uid_dict(self) -> dict[int:int]:
+    def get_memberunits_uid_dict(self) -> dict[int:int]:
         uid_dict = {}
-        for allyunit_x in self._allys.values():
-            if uid_dict.get(allyunit_x.uid) is None:
-                uid_dict[allyunit_x.uid] = 1
+        for memberunit_x in self._members.values():
+            if uid_dict.get(memberunit_x.uid) is None:
+                uid_dict[memberunit_x.uid] = 1
             else:
-                uid_dict[allyunit_x.uid] += 1
+                uid_dict[memberunit_x.uid] += 1
         return uid_dict
 
-    def set_all_allyunits_uids_unique(self) -> int:
-        uid_max = self.get_allyunits_uid_max()
-        uid_dict = self.get_allyunits_uid_dict()
-        for allyunit_x in self._allys.values():
-            if uid_dict.get(allyunit_x.uid) > 0:
+    def set_all_memberunits_uids_unique(self) -> int:
+        uid_max = self.get_memberunits_uid_max()
+        uid_dict = self.get_memberunits_uid_dict()
+        for memberunit_x in self._members.values():
+            if uid_dict.get(memberunit_x.uid) > 0:
                 new_uid_max = uid_max + 1
-                allyunit_x.uid = new_uid_max
-                uid_max = allyunit_x.uid
+                memberunit_x.uid = new_uid_max
+                uid_max = memberunit_x.uid
 
-    def all_allyunits_uids_are_unique(self):
-        uid_dict = self.get_allyunits_uid_dict()
+    def all_memberunits_uids_are_unique(self):
+        uid_dict = self.get_memberunits_uid_dict()
         return not any(
             uid_count > 1 or uid is None for uid, uid_count in uid_dict.items()
         )
@@ -544,22 +554,22 @@ class AgentUnit:
             uid_count > 1 or uid is None for uid, uid_count in uid_dict.items()
         )
 
-    def set_groupunit(self, groupunit: GroupUnit, create_missing_allys: bool = None):
+    def set_groupunit(self, groupunit: GroupUnit, create_missing_members: bool = None):
         self.set_groupunits_empty_if_null()
-        groupunit._set_allylinks_empty_if_null()
+        groupunit._set_memberlinks_empty_if_null()
         self._groups[groupunit.name] = groupunit
 
-        if create_missing_allys:
-            self._create_missing_allys(allylinks=groupunit._allys)
+        if create_missing_members:
+            self._create_missing_members(memberlinks=groupunit._members)
 
-    def _create_missing_allys(self, allylinks: dict[AllyName:AllyLink]):
-        for allylink_x in allylinks.values():
-            if self._allys.get(allylink_x.name) is None:
-                self.set_allyunit(
-                    allyunit=allyunit_shop(
-                        name=allylink_x.name,
-                        creditor_weight=allylink_x.creditor_weight,
-                        debtor_weight=allylink_x.debtor_weight,
+    def _create_missing_members(self, memberlinks: dict[MemberName:MemberLink]):
+        for memberlink_x in memberlinks.values():
+            if self._members.get(memberlink_x.name) is None:
+                self.set_memberunit(
+                    memberunit=memberunit_shop(
+                        name=memberlink_x.name,
+                        creditor_weight=memberlink_x.creditor_weight,
+                        debtor_weight=memberlink_x.debtor_weight,
                     )
                 )
 
@@ -583,9 +593,9 @@ class AgentUnit:
             groupunit_x = groupunit_shop(
                 name=new_name,
                 uid=old_groupunit.uid,
-                _allys=old_groupunit._allys,
+                _members=old_groupunit._members,
                 single_member_id=old_groupunit.single_member_id,
-                _single_ally=old_groupunit._single_ally,
+                _single_member=old_groupunit._single_member,
             )
             self.set_groupunit(groupunit=groupunit_x)
             self.del_groupunit(groupname=old_name)
@@ -941,12 +951,12 @@ class AgentUnit:
 
         if create_missing_ideas_groups:
             self._create_missing_ideas(road=Road(f"{walk},{idea_kid._desc}"))
-            self._create_missing_groups_allys(grouplinks=idea_kid._grouplinks)
+            self._create_missing_groups_members(grouplinks=idea_kid._grouplinks)
 
-    def _create_missing_groups_allys(self, grouplinks: dict[GroupName:GroupLink]):
+    def _create_missing_groups_members(self, grouplinks: dict[GroupName:GroupLink]):
         for grouplink_x in grouplinks.values():
             if self._groups.get(grouplink_x.name) is None:
-                groupunit_x = groupunit_shop(name=grouplink_x.name, _allys={})
+                groupunit_x = groupunit_shop(name=grouplink_x.name, _members={})
                 self.set_groupunit(groupunit=groupunit_x)
 
     def _create_missing_ideas(self, road):
@@ -1211,8 +1221,8 @@ class AgentUnit:
         problem_bool: bool = None,
         acptfactunit: AcptFactUnit = None,
         descendant_promise_count: int = None,
-        all_ally_credit: bool = None,
-        all_ally_debt: bool = None,
+        all_member_credit: bool = None,
+        all_member_debt: bool = None,
         grouplink: GroupLink = None,
         grouplink_del: GroupName = None,
         is_expanded: bool = None,
@@ -1267,8 +1277,8 @@ class AgentUnit:
             numeric_road=numeric_road,
             special_road=special_road,
             descendant_promise_count=descendant_promise_count,
-            all_ally_credit=all_ally_credit,
-            all_ally_debt=all_ally_debt,
+            all_member_credit=all_member_credit,
+            all_member_debt=all_member_debt,
             grouplink=grouplink,
             grouplink_del=grouplink_del,
             is_expanded=is_expanded,
@@ -1319,66 +1329,72 @@ class AgentUnit:
             base_acptfactunit=self._idearoot._acptfactunits[base]
         )
 
-    def get_allyunit_total_creditor_weight(self):
-        return sum(allyunit.get_creditor_weight() for allyunit in self._allys.values())
+    def get_memberunit_total_creditor_weight(self):
+        return sum(
+            memberunit.get_creditor_weight() for memberunit in self._members.values()
+        )
 
-    def get_allyunit_total_debtor_weight(self):
-        return sum(allyunit.get_debtor_weight() for allyunit in self._allys.values())
+    def get_memberunit_total_debtor_weight(self):
+        return sum(
+            memberunit.get_debtor_weight() for memberunit in self._members.values()
+        )
 
-    def _add_to_allyunits_agent_credit_debt(self, idea_agent_importance: float):
-        sum_allyunit_creditor_weight = self.get_allyunit_total_creditor_weight()
-        sum_allyunit_debtor_weight = self.get_allyunit_total_debtor_weight()
+    def _add_to_memberunits_agent_credit_debt(self, idea_agent_importance: float):
+        sum_memberunit_creditor_weight = self.get_memberunit_total_creditor_weight()
+        sum_memberunit_debtor_weight = self.get_memberunit_total_debtor_weight()
 
-        for allyunit_x in self._allys.values():
+        for memberunit_x in self._members.values():
             au_agent_credit = (
-                idea_agent_importance * allyunit_x.get_creditor_weight()
-            ) / sum_allyunit_creditor_weight
+                idea_agent_importance * memberunit_x.get_creditor_weight()
+            ) / sum_memberunit_creditor_weight
 
             au_agent_debt = (
-                idea_agent_importance * allyunit_x.get_debtor_weight()
-            ) / sum_allyunit_debtor_weight
+                idea_agent_importance * memberunit_x.get_debtor_weight()
+            ) / sum_memberunit_debtor_weight
 
-            allyunit_x.add_agent_credit_debt(
+            memberunit_x.add_agent_credit_debt(
                 agent_credit=au_agent_credit,
                 agent_debt=au_agent_debt,
                 agent_agenda_credit=0,
                 agent_agenda_debt=0,
             )
 
-    def _add_to_allyunits_agent_agenda_credit_debt(self, idea_agent_importance: float):
-        sum_allyunit_creditor_weight = self.get_allyunit_total_creditor_weight()
-        sum_allyunit_debtor_weight = self.get_allyunit_total_debtor_weight()
+    def _add_to_memberunits_agent_agenda_credit_debt(
+        self, idea_agent_importance: float
+    ):
+        sum_memberunit_creditor_weight = self.get_memberunit_total_creditor_weight()
+        sum_memberunit_debtor_weight = self.get_memberunit_total_debtor_weight()
 
-        for allyunit_x in self._allys.values():
+        for memberunit_x in self._members.values():
             au_agent_agenda_credit = (
-                idea_agent_importance * allyunit_x.get_creditor_weight()
-            ) / sum_allyunit_creditor_weight
+                idea_agent_importance * memberunit_x.get_creditor_weight()
+            ) / sum_memberunit_creditor_weight
 
             au_agent_agenda_debt = (
-                idea_agent_importance * allyunit_x.get_debtor_weight()
-            ) / sum_allyunit_debtor_weight
+                idea_agent_importance * memberunit_x.get_debtor_weight()
+            ) / sum_memberunit_debtor_weight
 
-            allyunit_x.add_agent_credit_debt(
+            memberunit_x.add_agent_credit_debt(
                 agent_credit=0,
                 agent_debt=0,
                 agent_agenda_credit=au_agent_agenda_credit,
                 agent_agenda_debt=au_agent_agenda_debt,
             )
 
-    def _set_allyunits_agent_agenda_importance(self, agent_agenda_importance: float):
-        sum_allyunit_creditor_weight = self.get_allyunit_total_creditor_weight()
-        sum_allyunit_debtor_weight = self.get_allyunit_total_debtor_weight()
+    def _set_memberunits_agent_agenda_importance(self, agent_agenda_importance: float):
+        sum_memberunit_creditor_weight = self.get_memberunit_total_creditor_weight()
+        sum_memberunit_debtor_weight = self.get_memberunit_total_debtor_weight()
 
-        for allyunit_x in self._allys.values():
+        for memberunit_x in self._members.values():
             au_agent_agenda_credit = (
-                agent_agenda_importance * allyunit_x.get_creditor_weight()
-            ) / sum_allyunit_creditor_weight
+                agent_agenda_importance * memberunit_x.get_creditor_weight()
+            ) / sum_memberunit_creditor_weight
 
             au_agent_agenda_debt = (
-                agent_agenda_importance * allyunit_x.get_debtor_weight()
-            ) / sum_allyunit_debtor_weight
+                agent_agenda_importance * memberunit_x.get_debtor_weight()
+            ) / sum_memberunit_debtor_weight
 
-            allyunit_x.add_agent_agenda_credit_debt(
+            memberunit_x.add_agent_agenda_credit_debt(
                 agent_agenda_credit=au_agent_agenda_credit,
                 agent_agenda_debt=au_agent_agenda_debt,
             )
@@ -1400,12 +1416,12 @@ class AgentUnit:
     def _distribute_agent_agenda_importance(self):
         for idea in self._idea_dict.values():
             # If there are no grouplines associated with idea
-            # distribute agent_importance via general allyunit
+            # distribute agent_importance via general memberunit
             # credit ratio and debt ratio
             # if idea.is_agenda_item() and idea._grouplines == {}:
             if idea.is_agenda_item():
                 if idea._grouplines == {}:
-                    self._add_to_allyunits_agent_agenda_credit_debt(
+                    self._add_to_memberunits_agent_agenda_credit_debt(
                         idea._agent_importance
                     )
                 else:
@@ -1418,47 +1434,47 @@ class AgentUnit:
 
     def _distribute_groups_agent_importance(self):
         for group_obj in self._groups.values():
-            group_obj._set_allylink_agent_credit_debt()
-            for allylink in group_obj._allys.values():
-                self.add_to_allyunit_agent_credit_debt(
-                    allyunit_name=allylink.name,
-                    agent_credit=allylink._agent_credit,
-                    agent_debt=allylink._agent_debt,
-                    agent_agenda_credit=allylink._agent_agenda_credit,
-                    agent_agenda_debt=allylink._agent_agenda_debt,
+            group_obj._set_memberlink_agent_credit_debt()
+            for memberlink in group_obj._members.values():
+                self.add_to_memberunit_agent_credit_debt(
+                    memberunit_name=memberlink.name,
+                    agent_credit=memberlink._agent_credit,
+                    agent_debt=memberlink._agent_debt,
+                    agent_agenda_credit=memberlink._agent_agenda_credit,
+                    agent_agenda_debt=memberlink._agent_agenda_debt,
                 )
 
     def _set_agent_agenda_ratio_credit_debt(self):
         agent_agenda_ratio_credit_sum = 0
         agent_agenda_ratio_debt_sum = 0
 
-        for allyunit_x in self._allys.values():
-            agent_agenda_ratio_credit_sum += allyunit_x._agent_agenda_credit
-            agent_agenda_ratio_debt_sum += allyunit_x._agent_agenda_debt
+        for memberunit_x in self._members.values():
+            agent_agenda_ratio_credit_sum += memberunit_x._agent_agenda_credit
+            agent_agenda_ratio_debt_sum += memberunit_x._agent_agenda_debt
 
-        for allyunit_x in self._allys.values():
-            allyunit_x.set_agent_agenda_ratio_credit_debt(
+        for memberunit_x in self._members.values():
+            memberunit_x.set_agent_agenda_ratio_credit_debt(
                 agent_agenda_ratio_credit_sum=agent_agenda_ratio_credit_sum,
                 agent_agenda_ratio_debt_sum=agent_agenda_ratio_debt_sum,
-                agent_allyunit_total_creditor_weight=self.get_allyunit_total_creditor_weight(),
-                agent_allyunit_total_debtor_weight=self.get_allyunit_total_debtor_weight(),
+                agent_memberunit_total_creditor_weight=self.get_memberunit_total_creditor_weight(),
+                agent_memberunit_total_debtor_weight=self.get_memberunit_total_debtor_weight(),
             )
 
-    def get_ally_groups(self, ally_name: AllyName):
+    def get_member_groups(self, member_name: MemberName):
         groups = []
         for group in self._groups.values():
             groups.extend(
                 group.name
-                for allylink in group._allys.values()
-                if allylink.name == ally_name
+                for memberlink in group._members.values()
+                if memberlink.name == member_name
             )
 
         return groups
 
-    def _reset_allyunit_agent_credit_debt(self):
-        self.set_allys_empty_if_null()
-        for allyunit in self._allys.values():
-            allyunit.reset_agent_credit_debt()
+    def _reset_memberunit_agent_credit_debt(self):
+        self.set_members_empty_if_null()
+        for memberunit in self._members.values():
+            memberunit.reset_agent_credit_debt()
 
     def _idearoot_inherit_requiredheirs(self):
         self._idearoot.set_requiredunits_empty_if_null()
@@ -1551,34 +1567,34 @@ class AgentUnit:
 
                 if (
                     group_everyone != False
-                    and yu_idea_obj._all_ally_credit != False
-                    and yu_idea_obj._all_ally_debt != False
+                    and yu_idea_obj._all_member_credit != False
+                    and yu_idea_obj._all_member_debt != False
                     and yu_idea_obj._groupheirs != {}
                     or group_everyone != False
-                    and yu_idea_obj._all_ally_credit == False
-                    and yu_idea_obj._all_ally_debt == False
+                    and yu_idea_obj._all_member_credit == False
+                    and yu_idea_obj._all_member_debt == False
                 ):
                     group_everyone = False
                 elif group_everyone != False:
                     group_everyone = True
-                yu_idea_obj._all_ally_credit = group_everyone
-                yu_idea_obj._all_ally_debt = group_everyone
+                yu_idea_obj._all_member_credit = group_everyone
+                yu_idea_obj._all_member_debt = group_everyone
 
             if (
                 group_everyone != False
-                and self._idearoot._all_ally_credit != False
-                and self._idearoot._all_ally_debt != False
+                and self._idearoot._all_member_credit != False
+                and self._idearoot._all_member_debt != False
                 and self._idearoot._groupheirs != {}
                 or group_everyone != False
-                and self._idearoot._all_ally_credit == False
-                and self._idearoot._all_ally_debt == False
+                and self._idearoot._all_member_credit == False
+                and self._idearoot._all_member_debt == False
             ):
                 group_everyone = False
             elif group_everyone != False and yu_idea_obj._groupheirs == {}:
                 group_everyone = True
 
-        self._idearoot._all_ally_credit = group_everyone
-        self._idearoot._all_ally_debt = group_everyone
+        self._idearoot._all_member_credit = group_everyone
+        self._idearoot._all_member_debt = group_everyone
 
         if self._idearoot.is_kidless():
             self._idearoot.set_kidless_grouplines()
@@ -1604,7 +1620,7 @@ class AgentUnit:
         self._idearoot.set_groupheirs_agent_credit_debit()
         self._idearoot.set_ancestor_promise_count(0, False)
         self._idearoot.clear_descendant_promise_count()
-        self._idearoot.clear_all_ally_credit_debt()
+        self._idearoot.clear_all_member_credit_debt()
         self._idearoot.promise = False
 
         if self._idearoot.is_kidless():
@@ -1652,7 +1668,7 @@ class AgentUnit:
             parent_idea._ancestor_promise_count, parent_idea.promise
         )
         idea_kid.clear_descendant_promise_count()
-        idea_kid.clear_all_ally_credit_debt()
+        idea_kid.clear_all_member_credit_debt()
 
         if idea_kid.is_kidless():
             # set idea's ancestor metrics using agent root as common reference
@@ -1665,7 +1681,7 @@ class AgentUnit:
         if idea.is_groupheirless() == False:
             self._set_groupunits_agent_importance(groupheirs=idea._groupheirs)
         elif idea.is_groupheirless():
-            self._add_to_allyunits_agent_credit_debt(
+            self._add_to_memberunits_agent_credit_debt(
                 idea_agent_importance=idea._agent_importance
             )
 
@@ -1748,7 +1764,7 @@ class AgentUnit:
     def _run_before_idea_tree_traverse(self):
         self._reset_groupunits_agent_credit_debt()
         self._reset_groupunits_agent_credit_debt()
-        self._reset_allyunit_agent_credit_debt()
+        self._reset_memberunit_agent_credit_debt()
 
     def get_heir_road_list(self, src_road: Road):
         # create list of all idea roads (road+desc)
@@ -1791,11 +1807,11 @@ class AgentUnit:
                 x_dict[acptfact_road] = acptfact_obj.get_dict()
         return x_dict
 
-    def get_allys_dict(self):
+    def get_members_dict(self):
         x_dict = {}
-        if self._allys != None:
-            for ally_name, ally_obj in self._allys.items():
-                x_dict[ally_name] = ally_obj.get_dict()
+        if self._members != None:
+            for member_name, member_obj in self._members.items():
+                x_dict[member_name] = member_obj.get_dict()
         return x_dict
 
     def groupunit_shops_dict(self):
@@ -1811,7 +1827,7 @@ class AgentUnit:
             "_kids": self._idearoot.get_kids_dict(),
             "_requiredunits": self._idearoot.get_requiredunits_dict(),
             "_acptfactunits": self.get_acptfactunits_dict(),
-            "_allys": self.get_allys_dict(),
+            "_members": self.get_members_dict(),
             "_groups": self.groupunit_shops_dict(),
             "_grouplinks": self._idearoot.get_grouplinks_dict(),
             "_weight": self._weight,
@@ -1871,22 +1887,24 @@ class AgentUnit:
 
         self.set_agent_metrics()
 
-    def get_agent4ally(self, ally_name: AllyName, acptfacts: dict[Road:AcptFactCore]):
+    def get_agent4member(
+        self, member_name: MemberName, acptfacts: dict[Road:AcptFactCore]
+    ):
         self.set_agent_metrics()
-        agent4ally = AgentUnit(_desc=ally_name)
-        agent4ally._idearoot._agent_importance = self._idearoot._agent_importance
-        # get ally's allys: allyzone
+        agent4member = AgentUnit(_desc=member_name)
+        agent4member._idearoot._agent_importance = self._idearoot._agent_importance
+        # get member's members: memberzone
 
-        # get allyzone groups
-        ally_groups = self.get_ally_groups(ally_name=ally_name)
+        # get memberzone groups
+        member_groups = self.get_member_groups(member_name=member_name)
 
-        # set agent4ally by traversing the idea tree and selecting associated groups
+        # set agent4member by traversing the idea tree and selecting associated groups
         # set root
         not_included_agent_importance = 0
-        agent4ally._idearoot._kids = {}
+        agent4member._idearoot._kids = {}
         for ykx in self._idearoot._kids.values():
             y4a_included = any(
-                group_ancestor.name in ally_groups
+                group_ancestor.name in member_groups
                 for group_ancestor in ykx._grouplines.values()
             )
 
@@ -1901,7 +1919,7 @@ class AgentUnit:
                     promise=ykx.promise,
                     _task=ykx._task,
                 )
-                agent4ally._idearoot._kids[ykx._desc] = y4a_new
+                agent4member._idearoot._kids[ykx._desc] = y4a_new
             else:
                 not_included_agent_importance += ykx._agent_importance
 
@@ -1910,9 +1928,9 @@ class AgentUnit:
                 _desc="__other__",
                 _agent_importance=not_included_agent_importance,
             )
-            agent4ally._idearoot._kids[y4a_other._desc] = y4a_other
+            agent4member._idearoot._kids[y4a_other._desc] = y4a_other
 
-        return agent4ally
+        return agent4member
 
     # def get_agenda_items(
     #     self, agenda_todo: bool = True, agenda_state: bool = True, base: Road = None
@@ -1940,7 +1958,7 @@ class AgentUnit:
 
     def meld(self, other_agent):
         self.meld_groups(other_agent=other_agent)
-        self.meld_allys(other_agent=other_agent)
+        self.meld_members(other_agent=other_agent)
         self.meld_idearoot(other_agent=other_agent)
         self.meld_acptfacts(other_agent=other_agent)
         self._weight = get_meld_weight(
@@ -1961,14 +1979,14 @@ class AgentUnit:
             except Exception:
                 self.add_idea(walk=oyx._walk, idea_kid=oyx)
 
-    def meld_allys(self, other_agent):
-        self.set_allys_empty_if_null()
-        other_agent.set_allys_empty_if_null()
-        for allyunit in other_agent._allys.values():
-            if self._allys.get(allyunit.name) is None:
-                self.set_allyunit(allyunit=allyunit)
+    def meld_members(self, other_agent):
+        self.set_members_empty_if_null()
+        other_agent.set_members_empty_if_null()
+        for memberunit in other_agent._members.values():
+            if self._members.get(memberunit.name) is None:
+                self.set_memberunit(memberunit=memberunit)
             else:
-                self._allys.get(allyunit.name).meld(allyunit)
+                self._members.get(memberunit.name).meld(memberunit)
 
     def meld_groups(self, other_agent):
         self.set_groupunits_empty_if_null()
@@ -2006,7 +2024,7 @@ def get_from_dict(lw_dict: dict) -> AgentUnit:
     )
     c_x._groups = groupunits_get_from_dict(x_dict=lw_dict["_groups"])
     c_x._idearoot._grouplinks = grouplinks_get_from_dict(x_dict=lw_dict["_grouplinks"])
-    c_x._allys = allyunits_get_from_dict(x_dict=lw_dict["_allys"])
+    c_x._members = memberunits_get_from_dict(x_dict=lw_dict["_members"])
     c_x._desc = lw_dict["_desc"]
     c_x._idearoot._desc = lw_dict["_desc"]
     c_x._weight = lw_dict["_weight"]

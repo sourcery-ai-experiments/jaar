@@ -49,7 +49,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Ally is member of these Groups</string>
+    <string>Member is member of these Groups</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
@@ -65,13 +65,13 @@
     </rect>
    </property>
    <property name="text">
-    <string>Ally is not member of these Groups</string>
+    <string>Member is not member of these Groups</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="source_ally">
+  <widget class="QLabel" name="source_member">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -88,7 +88,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Ally (ID): </string>
+    <string>Member (ID): </string>
    </property>
   </widget>
   <widget class="QTableWidget" name="bd_member_yes">
@@ -177,7 +177,7 @@
     <string>Quit App</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="ally2group_weight_edit">
+  <widget class="QLineEdit" name="member2group_weight_edit">
    <property name="geometry">
     <rect>
      <x>240</x>
@@ -197,7 +197,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Update Ally's Weight in Group to:</string>
+    <string>Update Member's Weight in Group to:</string>
    </property>
   </widget>
   <widget class="QPushButton" name="bd_insert_button">

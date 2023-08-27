@@ -5,7 +5,7 @@ from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
 from PyQt5.QtWidgets import QTableWidgetItem as qti
 from EditIdeaUnit import EditIdeaUnit
-from EditAlly import EditAlly
+from EditMember import EditMember
 from src.pyqt5_tools.pyqt_func import lw_diplay, get_pyqttree, num2str
 from src.agent.group import groupunit_shop, grouplink_shop
 from src.agent.idea import IdeaKid
@@ -262,11 +262,11 @@ class EditProblem(qtw.QWidget, Ui_Form):
         self.EditIdeaunit.refresh_tree()
         self.EditIdeaunit.show()
 
-    def open_edit_ally(self):
-        self.edit_ally = EditAlly()
-        self.edit_ally.agent_x = self.agent_x
-        self.edit_ally.refresh_all()
-        self.edit_ally.show()
+    def open_edit_member(self):
+        self.edit_member = EditMember()
+        self.edit_member.agent_x = self.agent_x
+        self.edit_member.refresh_all()
+        self.edit_member.show()
 
     def refresh_idea_tree(self):
         tree_root = get_pyqttree(idearoot=self.agent_x._idearoot)

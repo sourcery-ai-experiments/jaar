@@ -237,27 +237,27 @@ def _delete_and_set_ex6():
     elu_text = "elu"
 
     sal_agent = AgentUnit(_desc=sal_text)
-    sal_agent.add_allyunit(name=bob_text, creditor_weight=2)
-    sal_agent.add_allyunit(name=tom_text, creditor_weight=7)
-    sal_agent.add_allyunit(name=ava_text, creditor_weight=1)
+    sal_agent.add_memberunit(name=bob_text, creditor_weight=2)
+    sal_agent.add_memberunit(name=tom_text, creditor_weight=7)
+    sal_agent.add_memberunit(name=ava_text, creditor_weight=1)
     ex.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
 
     bob_agent = AgentUnit(_desc=bob_text)
-    bob_agent.add_allyunit(name=sal_text, creditor_weight=3)
-    bob_agent.add_allyunit(name=ava_text, creditor_weight=1)
+    bob_agent.add_memberunit(name=sal_text, creditor_weight=3)
+    bob_agent.add_memberunit(name=ava_text, creditor_weight=1)
     ex.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
 
     tom_agent = AgentUnit(_desc=tom_text)
-    tom_agent.add_allyunit(name=sal_text, creditor_weight=2)
+    tom_agent.add_memberunit(name=sal_text, creditor_weight=2)
     ex.save_agentunit_obj_to_agents_dir(agent_x=tom_agent)
 
     ava_agent = AgentUnit(_desc=ava_text)
-    ava_agent.add_allyunit(name=elu_text, creditor_weight=2)
+    ava_agent.add_memberunit(name=elu_text, creditor_weight=2)
     ex.save_agentunit_obj_to_agents_dir(agent_x=ava_agent)
 
     elu_agent = AgentUnit(_desc=elu_text)
-    elu_agent.add_allyunit(name=ava_text, creditor_weight=19)
-    elu_agent.add_allyunit(name=sal_text, creditor_weight=1)
+    elu_agent.add_memberunit(name=ava_text, creditor_weight=19)
+    elu_agent.add_memberunit(name=sal_text, creditor_weight=1)
     ex.save_agentunit_obj_to_agents_dir(agent_x=elu_agent)
 
     ex.refresh_bank_metrics()

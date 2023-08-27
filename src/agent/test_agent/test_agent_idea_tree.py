@@ -1,7 +1,7 @@
 from src.agent.examples.example_agents import (
     get_agent_with_4_levels as example_agents_get_agent_with_4_levels,
 )
-from src.agent.ally import AllyName
+from src.agent.member import MemberName
 from src.agent.idea import IdeaKid
 from src.agent.agent import AgentUnit
 from src.agent.group import Groupline, GroupLink
@@ -32,34 +32,34 @@ def test_set_agent_metrics_CorrectlyClearsDescendantAttributes():
     # test root init status:
     yrx = agent_x._idearoot
     assert yrx._descendant_promise_count is None
-    assert yrx._all_ally_credit is None
-    assert yrx._all_ally_debt is None
+    assert yrx._all_member_credit is None
+    assert yrx._all_member_debt is None
     assert yrx._kids["work"]._descendant_promise_count is None
-    assert yrx._kids["work"]._all_ally_credit is None
-    assert yrx._kids["work"]._all_ally_debt is None
+    assert yrx._kids["work"]._all_member_credit is None
+    assert yrx._kids["work"]._all_member_debt is None
     assert yrx._kids["weekdays"]._kids["Monday"]._descendant_promise_count is None
-    assert yrx._kids["weekdays"]._kids["Monday"]._all_ally_credit is None
-    assert yrx._kids["weekdays"]._kids["Monday"]._all_ally_debt is None
+    assert yrx._kids["weekdays"]._kids["Monday"]._all_member_credit is None
+    assert yrx._kids["weekdays"]._kids["Monday"]._all_member_debt is None
 
     yrx._descendant_promise_count = -2
-    yrx._all_ally_credit = -2
-    yrx._all_ally_debt = -2
+    yrx._all_member_credit = -2
+    yrx._all_member_debt = -2
     yrx._kids["work"]._descendant_promise_count = -2
-    yrx._kids["work"]._all_ally_credit = -2
-    yrx._kids["work"]._all_ally_debt = -2
+    yrx._kids["work"]._all_member_credit = -2
+    yrx._kids["work"]._all_member_debt = -2
     yrx._kids["weekdays"]._kids["Monday"]._descendant_promise_count = -2
-    yrx._kids["weekdays"]._kids["Monday"]._all_ally_credit = -2
-    yrx._kids["weekdays"]._kids["Monday"]._all_ally_debt = -2
+    yrx._kids["weekdays"]._kids["Monday"]._all_member_credit = -2
+    yrx._kids["weekdays"]._kids["Monday"]._all_member_debt = -2
 
     assert yrx._descendant_promise_count == -2
-    assert yrx._all_ally_credit == -2
-    assert yrx._all_ally_debt == -2
+    assert yrx._all_member_credit == -2
+    assert yrx._all_member_debt == -2
     assert yrx._kids["work"]._descendant_promise_count == -2
-    assert yrx._kids["work"]._all_ally_credit == -2
-    assert yrx._kids["work"]._all_ally_debt == -2
+    assert yrx._kids["work"]._all_member_credit == -2
+    assert yrx._kids["work"]._all_member_debt == -2
     assert yrx._kids["weekdays"]._kids["Monday"]._descendant_promise_count == -2
-    assert yrx._kids["weekdays"]._kids["Monday"]._all_ally_credit == -2
-    assert yrx._kids["weekdays"]._kids["Monday"]._all_ally_debt == -2
+    assert yrx._kids["weekdays"]._kids["Monday"]._all_member_credit == -2
+    assert yrx._kids["weekdays"]._kids["Monday"]._all_member_debt == -2
 
     agent_x.set_agent_metrics()
 
@@ -67,12 +67,12 @@ def test_set_agent_metrics_CorrectlyClearsDescendantAttributes():
     assert yrx._kids["work"]._descendant_promise_count == 0
     assert yrx._kids["weekdays"]._kids["Monday"]._descendant_promise_count == 0
 
-    assert yrx._kids["weekdays"]._kids["Monday"]._all_ally_credit == True
-    assert yrx._kids["weekdays"]._kids["Monday"]._all_ally_debt == True
-    assert yrx._kids["work"]._all_ally_credit == True
-    assert yrx._kids["work"]._all_ally_debt == True
-    assert yrx._all_ally_credit == True
-    assert yrx._all_ally_debt == True
+    assert yrx._kids["weekdays"]._kids["Monday"]._all_member_credit == True
+    assert yrx._kids["weekdays"]._kids["Monday"]._all_member_debt == True
+    assert yrx._kids["work"]._all_member_credit == True
+    assert yrx._kids["work"]._all_member_debt == True
+    assert yrx._all_member_credit == True
+    assert yrx._all_member_debt == True
 
 
 def test_get_idea_kid_CorrectlyReturnsIdea():
@@ -109,13 +109,13 @@ def test_get_idea_kid_CorrectlyReturnsIdea():
 def test_set_agent_metrics_RootOnlyCorrectlySetsDescendantAttributes():
     lw_x = AgentUnit(_desc="src")
     assert lw_x._idearoot._descendant_promise_count is None
-    assert lw_x._idearoot._all_ally_credit is None
-    assert lw_x._idearoot._all_ally_debt is None
+    assert lw_x._idearoot._all_member_credit is None
+    assert lw_x._idearoot._all_member_debt is None
 
     lw_x.set_agent_metrics()
     assert lw_x._idearoot._descendant_promise_count == 0
-    assert lw_x._idearoot._all_ally_credit == True
-    assert lw_x._idearoot._all_ally_debt == True
+    assert lw_x._idearoot._all_member_credit == True
+    assert lw_x._idearoot._all_member_debt == True
 
 
 def test_set_agent_metrics_NLevelCorrectlySetsDescendantAttributes_1():
@@ -143,17 +143,17 @@ def test_set_agent_metrics_NLevelCorrectlySetsDescendantAttributes_1():
 
     # test root init status:
     assert lw_x._idearoot._descendant_promise_count is None
-    assert lw_x._idearoot._all_ally_credit is None
-    assert lw_x._idearoot._all_ally_debt is None
+    assert lw_x._idearoot._all_member_credit is None
+    assert lw_x._idearoot._all_member_debt is None
     assert lw_x._idearoot._kids["work"]._descendant_promise_count is None
-    assert lw_x._idearoot._kids["work"]._all_ally_credit is None
-    assert lw_x._idearoot._kids["work"]._all_ally_debt is None
+    assert lw_x._idearoot._kids["work"]._all_member_credit is None
+    assert lw_x._idearoot._kids["work"]._all_member_debt is None
     assert (
         lw_x._idearoot._kids["weekdays"]._kids["Monday"]._descendant_promise_count
         is None
     )
-    assert lw_x._idearoot._kids["weekdays"]._kids["Monday"]._all_ally_credit is None
-    assert lw_x._idearoot._kids["weekdays"]._kids["Monday"]._all_ally_debt is None
+    assert lw_x._idearoot._kids["weekdays"]._kids["Monday"]._all_member_credit is None
+    assert lw_x._idearoot._kids["weekdays"]._kids["Monday"]._all_member_debt is None
 
     lw_x.set_agent_metrics()
     assert lw_x._idearoot._descendant_promise_count == 3
@@ -162,12 +162,12 @@ def test_set_agent_metrics_NLevelCorrectlySetsDescendantAttributes_1():
     assert (
         lw_x._idearoot._kids["weekdays"]._kids["Monday"]._descendant_promise_count == 0
     )
-    assert lw_x._idearoot._all_ally_credit == True
-    assert lw_x._idearoot._all_ally_debt == True
-    assert lw_x._idearoot._kids["work"]._all_ally_credit == True
-    assert lw_x._idearoot._kids["work"]._all_ally_debt == True
-    assert lw_x._idearoot._kids["weekdays"]._kids["Monday"]._all_ally_credit == True
-    assert lw_x._idearoot._kids["weekdays"]._kids["Monday"]._all_ally_debt == True
+    assert lw_x._idearoot._all_member_credit == True
+    assert lw_x._idearoot._all_member_debt == True
+    assert lw_x._idearoot._kids["work"]._all_member_credit == True
+    assert lw_x._idearoot._kids["work"]._all_member_debt == True
+    assert lw_x._idearoot._kids["weekdays"]._kids["Monday"]._all_member_credit == True
+    assert lw_x._idearoot._kids["weekdays"]._kids["Monday"]._all_member_debt == True
 
 
 def test_set_agent_metrics_NLevelCorrectlySetsDescendantAttributes_2():
@@ -177,7 +177,7 @@ def test_set_agent_metrics_NLevelCorrectlySetsDescendantAttributes_2():
     x2_idea = IdeaKid(_desc="sweep", promise=True)
     lw_x.add_idea(idea_kid=x2_idea, walk="src,work")
 
-    lw_x.add_allyunit(name="sandy")
+    lw_x.add_memberunit(name="sandy")
     x_grouplink = GroupLink(name="sandy")
     lw_x._idearoot._kids["work"]._kids["email"].set_grouplink(grouplink=x_grouplink)
     # print(lw_x._kids["work"]._kids["email"])
@@ -186,20 +186,20 @@ def test_set_agent_metrics_NLevelCorrectlySetsDescendantAttributes_2():
     # print(lw_x._kids["work"]._kids["email"])
     # print(lw_x._kids["work"]._kids["email"]._grouplink)
 
-    assert lw_x._idearoot._all_ally_credit == False
-    assert lw_x._idearoot._all_ally_debt == False
-    assert lw_x._idearoot._kids["work"]._all_ally_credit == False
-    assert lw_x._idearoot._kids["work"]._all_ally_debt == False
-    assert lw_x._idearoot._kids["work"]._kids["email"]._all_ally_credit == False
-    assert lw_x._idearoot._kids["work"]._kids["email"]._all_ally_debt == False
-    assert lw_x._idearoot._kids["work"]._kids["sweep"]._all_ally_credit == True
-    assert lw_x._idearoot._kids["work"]._kids["sweep"]._all_ally_debt == True
-    assert lw_x._idearoot._kids["weekdays"]._all_ally_credit == True
-    assert lw_x._idearoot._kids["weekdays"]._all_ally_debt == True
-    assert lw_x._idearoot._kids["weekdays"]._kids["Monday"]._all_ally_credit == True
-    assert lw_x._idearoot._kids["weekdays"]._kids["Monday"]._all_ally_debt == True
-    assert lw_x._idearoot._kids["weekdays"]._kids["Tuesday"]._all_ally_credit == True
-    assert lw_x._idearoot._kids["weekdays"]._kids["Tuesday"]._all_ally_debt == True
+    assert lw_x._idearoot._all_member_credit == False
+    assert lw_x._idearoot._all_member_debt == False
+    assert lw_x._idearoot._kids["work"]._all_member_credit == False
+    assert lw_x._idearoot._kids["work"]._all_member_debt == False
+    assert lw_x._idearoot._kids["work"]._kids["email"]._all_member_credit == False
+    assert lw_x._idearoot._kids["work"]._kids["email"]._all_member_debt == False
+    assert lw_x._idearoot._kids["work"]._kids["sweep"]._all_member_credit == True
+    assert lw_x._idearoot._kids["work"]._kids["sweep"]._all_member_debt == True
+    assert lw_x._idearoot._kids["weekdays"]._all_member_credit == True
+    assert lw_x._idearoot._kids["weekdays"]._all_member_debt == True
+    assert lw_x._idearoot._kids["weekdays"]._kids["Monday"]._all_member_credit == True
+    assert lw_x._idearoot._kids["weekdays"]._kids["Monday"]._all_member_debt == True
+    assert lw_x._idearoot._kids["weekdays"]._kids["Tuesday"]._all_member_credit == True
+    assert lw_x._idearoot._kids["weekdays"]._kids["Tuesday"]._all_member_debt == True
 
 
 def test_TreeTraverseSetsClearsGrouplineestorsCorrectly():
@@ -228,7 +228,7 @@ def test_TreeTraverseSetsGrouplineestorFromRootCorrectly():
     assert a_x._idearoot._grouplines == {}
     sandy_text = "sandy"
     sandy_grouplink = GroupLink(name=sandy_text)
-    a_x.add_allyunit(name=sandy_text)
+    a_x.add_memberunit(name=sandy_text)
     a_x._idearoot.set_grouplink(grouplink=sandy_grouplink)
     # idea tree has grouplines
     assert a_x._idearoot._groupheirs.get(sandy_text) is None
@@ -282,7 +282,7 @@ def test_TreeTraverseSetsGrouplineestorFromNonRootCorrectly():
     lw_x.set_agent_metrics()
     # idea tree has no grouplinks
     assert lw_x._idearoot._grouplines == {}
-    lw_x.add_allyunit(name="sandy")
+    lw_x.add_memberunit(name="sandy")
     x_grouplink = GroupLink(name="sandy")
     lw_x._idearoot._kids["work"].set_grouplink(grouplink=x_grouplink)
 
@@ -297,57 +297,63 @@ def test_TreeTraverseSetsGrouplineestorFromNonRootCorrectly():
     assert lw_x._idearoot._kids["work"]._grouplines == {x_groupline.name: x_groupline}
 
 
-def test_agent4ally_Exists():
+def test_agent4member_Exists():
     agent_x = example_agents_get_agent_with_4_levels()
     x1_idea = IdeaKid(_desc="email", promise=True)
     agent_x.add_idea(idea_kid=x1_idea, walk="src,work")
     x2_idea = IdeaKid(_desc="sweep", promise=True)
     agent_x.add_idea(idea_kid=x2_idea, walk="src,work")
 
-    sandy_name = AllyName("sandy")
-    agent_x.add_allyunit(name=sandy_name)
+    sandy_name = MemberName("sandy")
+    agent_x.add_memberunit(name=sandy_name)
     x_grouplink = GroupLink(name=sandy_name)
     yrx = agent_x._idearoot
     yrx._kids["work"]._kids["email"].set_grouplink(grouplink=x_grouplink)
-    sandy_agent4ally = agent_x.get_agent4ally(acptfacts=None, ally_name=sandy_name)
-    assert sandy_agent4ally
-    assert str(type(sandy_agent4ally)).find(".agent.AgentUnit'>")
-    assert sandy_agent4ally._desc == sandy_name
+    sandy_agent4member = agent_x.get_agent4member(
+        acptfacts=None, member_name=sandy_name
+    )
+    assert sandy_agent4member
+    assert str(type(sandy_agent4member)).find(".agent.AgentUnit'>")
+    assert sandy_agent4member._desc == sandy_name
 
 
-def test_agent4ally_hasCorrectLevel1StructureNoGrouplessBranches():
+def test_agent4member_hasCorrectLevel1StructureNoGrouplessBranches():
     agent_x = example_agents_get_agent_with_4_levels()
     x1_idea = IdeaKid(_desc="email", promise=True)
     agent_x.add_idea(idea_kid=x1_idea, walk="src,work")
     x2_idea = IdeaKid(_desc="sweep", promise=True)
     agent_x.add_idea(idea_kid=x2_idea, walk="src,work")
 
-    billy_name = AllyName("billy")
-    agent_x.add_allyunit(name=billy_name)
+    billy_name = MemberName("billy")
+    agent_x.add_memberunit(name=billy_name)
     billy_bl = GroupLink(name=billy_name)
     yrx = agent_x._idearoot
     yrx._kids["weekdays"].set_grouplink(grouplink=billy_bl)
     yrx._kids["feed cat"].set_grouplink(grouplink=billy_bl)
     yrx._kids["nation-state"].set_grouplink(grouplink=billy_bl)
 
-    sandy_name = AllyName("sandy")
-    agent_x.add_allyunit(name=sandy_name)
+    sandy_name = MemberName("sandy")
+    agent_x.add_memberunit(name=sandy_name)
     sandy_bl = GroupLink(name=sandy_name)
     yrx._kids["work"]._kids["email"].set_grouplink(grouplink=sandy_bl)
 
-    sandy_agent4ally = agent_x.get_agent4ally(acptfacts=None, ally_name=sandy_name)
-    assert len(sandy_agent4ally._idearoot._kids) > 0
-    print(f"{len(sandy_agent4ally._idearoot._kids)=}")
+    sandy_agent4member = agent_x.get_agent4member(
+        acptfacts=None, member_name=sandy_name
+    )
+    assert len(sandy_agent4member._idearoot._kids) > 0
+    print(f"{len(sandy_agent4member._idearoot._kids)=}")
     assert (
-        str(type(sandy_agent4ally._idearoot._kids.get("work"))).find(".idea.IdeaKid'>")
+        str(type(sandy_agent4member._idearoot._kids.get("work"))).find(
+            ".idea.IdeaKid'>"
+        )
         > 0
     )
-    assert sandy_agent4ally._idearoot._kids.get("feed cat") is None
-    assert sandy_agent4ally._idearoot._agent_importance == 1
-    y4a_work = sandy_agent4ally._idearoot._kids.get("work")
+    assert sandy_agent4member._idearoot._kids.get("feed cat") is None
+    assert sandy_agent4member._idearoot._agent_importance == 1
+    y4a_work = sandy_agent4member._idearoot._kids.get("work")
     assert y4a_work._agent_importance == yrx._kids["work"]._agent_importance
-    assert sandy_agent4ally._idearoot._kids.get("__other__") != None
-    y4a_others = sandy_agent4ally._idearoot._kids.get("__other__")
+    assert sandy_agent4member._idearoot._kids.get("__other__") != None
+    y4a_others = sandy_agent4member._idearoot._kids.get("__other__")
     others_agent_importance = yrx._kids["weekdays"]._agent_importance
     others_agent_importance += yrx._kids["feed cat"]._agent_importance
     others_agent_importance += yrx._kids["nation-state"]._agent_importance
@@ -395,7 +401,7 @@ def test_agent_get_heir_road_list_returnsCorrectList():
     assert heir_node_road_list[4] == f"{weekdays},Sunday"
 
 
-# def test_agent4ally_hasCorrectLevel1StructureWithGrouplessBranches_2():
+# def test_agent4member_hasCorrectLevel1StructureWithGrouplessBranches_2():
 #     lw_desc = "src"
 #     lw_x = AgentUnit(_desc=lw_desc)
 #     lw_x.add_idea(idea_kid=IdeaKid(_desc="A", _weight=7), walk="src")
@@ -411,14 +417,14 @@ def test_agent_get_heir_road_list_returnsCorrectList():
 #     lw_x.add_idea(idea_kid=IdeaKid(_desc="K"), walk="src,G,I")
 #     lw_x.add_idea(idea_kid=IdeaKid(_desc="M"), walk="src,G,H")
 
-#     billy_name = AllyName("billy")
-#     lw_x.add_allyunit(name=billy_name)
+#     billy_name = MemberName("billy")
+#     lw_x.add_memberunit(name=billy_name)
 #     billy_bl = GroupLink(name=billy_name)
 #     lw_x.edit_idea_attr(road="src,G", grouplink=billy_bl)
 #     lw_x.edit_idea_attr(road="src,G,H,M", grouplink=billy_bl)
 
-#     sandy_name = AllyName("sandy")
-#     lw_x.add_allyunit(name=sandy_name)
+#     sandy_name = MemberName("sandy")
+#     lw_x.add_memberunit(name=sandy_name)
 #     sandy_bl = GroupLink(name=sandy_name)
 #     lw_x.edit_idea_attr(road="src,A", grouplink=sandy_bl)
 #     lw_x.edit_idea_attr(road="src,B", grouplink=sandy_bl)
@@ -432,7 +438,7 @@ def test_agent_get_heir_road_list_returnsCorrectList():
 #     exp_sandy.add_idea(idea_kid=IdeaKid(_desc="B", _agent_importance=0.13), walk="src")
 
 #     # generated sandy
-#     gen_sandy = lw_x.get_agent4ally(acptfacts=None, ally_name=sandy_name)
+#     gen_sandy = lw_x.get_agent4member(acptfacts=None, member_name=sandy_name)
 
 #     # confirm generated sandy is correct
 #     assert gen_sandy.get_idea_kid(road="src,A")._agent_importance == 0.07

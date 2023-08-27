@@ -6,11 +6,11 @@ from PyQt5 import QtCore as qtc
 from src.pyqt5_tools.pyqt_func import lw_diplay
 from src.agent.agent import AgentUnit
 from src.agent.group import groupunit_shop
-from src.agent.ally import allylink_shop
+from src.agent.member import memberlink_shop
 
 
 class Edit5Issue(qtw.QTableWidget, Ui_Form):
-    ally_selected = qtc.pyqtSignal(int)
+    member_selected = qtc.pyqtSignal(int)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -20,8 +20,8 @@ class Edit5Issue(qtw.QTableWidget, Ui_Form):
         # self.group_update_button.clicked.connect(self.group_update)
         self.close_button.clicked.connect(self.close)
         self.quit_button.clicked.connect(sys.exit)
-        self.selected_ally_name = None
-        self.allyunit_x = None
+        self.selected_member_name = None
+        self.memberunit_x = None
         self.groupunit_x = None
 
     def refresh_all(self):

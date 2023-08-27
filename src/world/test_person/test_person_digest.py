@@ -64,12 +64,12 @@ def test_personget_starting_digest_agent_WhenStartingAgentFileDoesNotExists(
     # x_idearoot._level = 0
     # x_idearoot._ancestor_promise_count = 0
     # x_idearoot._descendant_promise_count = 0
-    # x_idearoot._all_ally_credit = True
-    # x_idearoot._all_ally_debt = True
+    # x_idearoot._all_member_credit = True
+    # x_idearoot._all_member_debt = True
 
     assert starting_dest_agent._idearoot == x_agent._idearoot
     assert starting_dest_agent._idearoot._acptfactunits == {}
-    assert starting_dest_agent._allys == {}
+    assert starting_dest_agent._members == {}
     assert starting_dest_agent._groups == {}
 
 
@@ -94,7 +94,7 @@ def test_person_get_starting_digest_agent_WhenStartingAgentFileExists(
     assert starting_dest_agent._idearoot._kids == x_agent._idearoot._kids
     assert starting_dest_agent._idearoot == x_agent._idearoot
     assert starting_dest_agent._idearoot._acptfactunits == {}
-    assert starting_dest_agent._allys == {}
+    assert starting_dest_agent._members == {}
     assert starting_dest_agent._groups == {}
     assert starting_dest_agent._desc == px.name
 
@@ -200,7 +200,7 @@ def test_person_get_dest_agent_from_digest_agent_files_withEmptyDigestDict(
     person_agent_x = AgentUnit(_desc=person_name_x, _weight=0.0)
     person_agent_x._idearoot._walk = ""
     person_agent_x.set_agent_metrics()
-    # person_agent_x.set_allys_empty_if_null()
+    # person_agent_x.set_members_empty_if_null()
     # person_agent_x.set_groupunits_empty_if_null()
     # person_agent_x._set_acptfacts_empty_if_null()
     # person_agent_x._idearoot.set_grouplink_empty_if_null()
@@ -263,7 +263,7 @@ def test_person_get_dest_agent_from_digest_agent_files_with1DigestedAgent(
 #     sx_output_old = px.get_dest_agent_from_digest_agent_files()
 #     assert str(type(sx_output_old)).find(".agent.AgentUnit'>")
 #     assert sx_output_old._groups == {}
-#     assert sx_output_old._allys == {}
+#     assert sx_output_old._members == {}
 #     assert sx_output_old._acptfacts == {}
 
 #     src1 = "test1"
@@ -271,10 +271,10 @@ def test_person_get_dest_agent_from_digest_agent_files_with1DigestedAgent(
 #     s1 = AgentUnit(_desc=src1)
 
 #     ceci_text = "Ceci"
-#     s1.set_allyunit(allyunit=AllyUnit(name=ceci_text))
+#     s1.set_memberunit(memberunit=MemberUnit(name=ceci_text))
 #     swim_text = "swimmers"
 #     swim_group = BraUnit(name=swim_text)
-#     swim_group.set_allylink(allylink=allylink_shop(name=ceci_text))
+#     swim_group.set_memberlink(memberlink=memberlink_shop(name=ceci_text))
 #     s1.set_groupunit(groupunit=swim_group)
 
 #     yaya_text = "yaya"
@@ -283,7 +283,7 @@ def test_person_get_dest_agent_from_digest_agent_files_with1DigestedAgent(
 #     s1.set_acptfact(base=yaya_road, acptfact=yaya_road)
 
 #     assert s1._groups.get(swim_text).name == swim_text
-#     assert s1._allys.get(ceci_text).name == ceci_text
+#     assert s1._members.get(ceci_text).name == ceci_text
 #     assert s1._idearoot._desc == src1
 #     assert s1._acptfacts.get(yaya_road).base == yaya_road
 
@@ -294,7 +294,7 @@ def test_person_get_dest_agent_from_digest_agent_files_with1DigestedAgent(
 #     # THEN
 #     assert str(type(sx_output_new)).find(".agent.AgentUnit'>")
 #     assert sx_output_new._acptfacts == s1._acptfacts
-#     assert sx_output_new._allys == s1._allys
+#     assert sx_output_new._members == s1._members
 #     assert sx_output_new._groups == s1._groups
 #     assert sx_output_new._weight == s1._weight
 #     assert sx_output_new._weight == s1._weight

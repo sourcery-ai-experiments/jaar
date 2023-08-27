@@ -336,21 +336,21 @@ def test_agent_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     ]._descendant_promise_count
     assert _descendant_promise_count_new == 67
 
-    # _all_ally_credit: bool = None,
-    agent_x._idearoot._kids[work_text]._all_ally_credit = 74
-    _all_ally_credit_curr = agent_x._idearoot._kids[work_text]._all_ally_credit
-    assert _all_ally_credit_curr == 74
-    agent_x.edit_idea_attr(road=work_road, all_ally_credit=59)
-    _all_ally_credit_new = agent_x._idearoot._kids[work_text]._all_ally_credit
-    assert _all_ally_credit_new == 59
+    # _all_member_credit: bool = None,
+    agent_x._idearoot._kids[work_text]._all_member_credit = 74
+    _all_member_credit_curr = agent_x._idearoot._kids[work_text]._all_member_credit
+    assert _all_member_credit_curr == 74
+    agent_x.edit_idea_attr(road=work_road, all_member_credit=59)
+    _all_member_credit_new = agent_x._idearoot._kids[work_text]._all_member_credit
+    assert _all_member_credit_new == 59
 
-    # _all_ally_debt: bool = None,
-    agent_x._idearoot._kids[work_text]._all_ally_debt = 74
-    _all_ally_debt_curr = agent_x._idearoot._kids[work_text]._all_ally_debt
-    assert _all_ally_debt_curr == 74
-    agent_x.edit_idea_attr(road=work_road, all_ally_debt=59)
-    _all_ally_debt_new = agent_x._idearoot._kids[work_text]._all_ally_debt
-    assert _all_ally_debt_new == 59
+    # _all_member_debt: bool = None,
+    agent_x._idearoot._kids[work_text]._all_member_debt = 74
+    _all_member_debt_curr = agent_x._idearoot._kids[work_text]._all_member_debt
+    assert _all_member_debt_curr == 74
+    agent_x.edit_idea_attr(road=work_road, all_member_debt=59)
+    _all_member_debt_new = agent_x._idearoot._kids[work_text]._all_member_debt
+    assert _all_member_debt_new == 59
 
     # _grouplink: dict = None,
     agent_x._idearoot._kids[work_text]._grouplinks = {

@@ -371,7 +371,7 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "TextLabel"))
         self.settings_button.setText(_translate("MainWindow", "Settings"))
         self.editmain_button.setText(
-            _translate("MainWindow", "Agents /  Ally /  dimension")
+            _translate("MainWindow", "Agents /  Member /  dimension")
         )
         self.root_datetime_prev_update.setText(
             _translate("MainWindow", "Update Lowerbound DateTime to next midnight")
@@ -390,8 +390,8 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "Description")
         )
         self.label_5.setText(_translate("MainWindow", "Change where I am:"))
-        self.root_datetime_view.setText(_translate("MainWindow", "Manually change"))
-        self.pushButton_2.setText(_translate("MainWindow", "Manually change"))
+        self.root_datetime_view.setText(_translate("MainWindow", "Manumember change"))
+        self.pushButton_2.setText(_translate("MainWindow", "Manumember change"))
         self.lobby_button.setText(_translate("MainWindow", "Lobby Someone"))
         item = self.completeness_status.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "ID"))

@@ -1,5 +1,5 @@
 from src.agent.agent import AgentUnit
-from src.agent.ally import AllyUnit
+from src.agent.member import MemberUnit
 from src.agent.road import get_road_without_root_node
 from src.world.y_func import sqlite_bool, sqlite_null
 from src.agent.road import Road
@@ -215,17 +215,17 @@ def get_river_bucket_dict(
     return dict_x
 
 
-def get_river_tally_table_delete_sqlstr(currency_agent_name: str) -> str:
+def get_river_tmember_table_delete_sqlstr(currency_agent_name: str) -> str:
     return f"""
-        DELETE FROM river_tally
+        DELETE FROM river_tmember
         WHERE currency_name = '{currency_agent_name}' 
         ;
     """
 
 
-def get_river_tally_table_create_sqlstr() -> str:
+def get_river_tmember_table_create_sqlstr() -> str:
     return """
-        CREATE TABLE IF NOT EXISTS river_tally (
+        CREATE TABLE IF NOT EXISTS river_tmember (
           currency_name VARCHAR(255) NOT NULL
         , tax_name VARCHAR(255) NOT NULL
         , tax_total FLOAT NOT NULL
@@ -238,9 +238,9 @@ def get_river_tally_table_create_sqlstr() -> str:
     """
 
 
-def get_river_tally_table_insert_sqlstr(currency_agent_name: str) -> str:
+def get_river_tmember_table_insert_sqlstr(currency_agent_name: str) -> str:
     return f"""
-        INSERT INTO river_tally (
+        INSERT INTO river_tmember (
           currency_name
         , tax_name
         , tax_total
@@ -254,7 +254,7 @@ def get_river_tally_table_insert_sqlstr(currency_agent_name: str) -> str:
         , l._agent_agenda_ratio_debt
         , l._agent_agenda_ratio_debt - SUM(rt.currency_close-rt.currency_start)
         FROM river_flow rt
-        LEFT JOIN ledger l ON l.agent_name = rt.currency_name AND l.ally_name = rt.src_name
+        LEFT JOIN ledger l ON l.agent_name = rt.currency_name AND l.member_name = rt.src_name
         WHERE rt.currency_name='{currency_agent_name}' and rt.dst_name=rt.currency_name
         GROUP BY rt.currency_name, rt.src_name
         ;
@@ -262,7 +262,7 @@ def get_river_tally_table_insert_sqlstr(currency_agent_name: str) -> str:
 
 
 @dataclass
-class RiverTallyUnit:
+class RiverTmemberUnit:
     currency_name: str
     tax_name: str
     tax_total: float
@@ -270,9 +270,9 @@ class RiverTallyUnit:
     tax_diff: float
 
 
-def get_river_tally_dict(
+def get_river_tmember_dict(
     db_conn: Connection, currency_agent_name: str
-) -> dict[str:RiverTallyUnit]:
+) -> dict[str:RiverTmemberUnit]:
     sqlstr = f"""
         SELECT
           currency_name
@@ -280,7 +280,7 @@ def get_river_tally_dict(
         , tax_total
         , debt
         , tax_diff
-        FROM river_tally
+        FROM river_tmember
         WHERE currency_name = '{currency_agent_name}'
         ;
     """
@@ -288,14 +288,14 @@ def get_river_tally_dict(
     results = db_conn.execute(sqlstr)
 
     for row in results.fetchall():
-        river_tally_x = RiverTallyUnit(
+        river_tmember_x = RiverTmemberUnit(
             currency_name=row[0],
             tax_name=row[1],
             tax_total=row[2],
             debt=row[3],
             tax_diff=row[4],
         )
-        dict_x[river_tally_x.tax_name] = river_tally_x
+        dict_x[river_tmember_x.tax_name] = river_tmember_x
     return dict_x
 
 
@@ -325,7 +325,7 @@ def get_ledger_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS ledger (
           agent_name INTEGER 
-        , ally_name INTEGER
+        , member_name INTEGER
         , _agent_credit FLOAT
         , _agent_debt FLOAT
         , _agent_agenda_credit FLOAT
@@ -335,18 +335,18 @@ def get_ledger_table_create_sqlstr() -> str:
         , _creditor_active INT
         , _debtor_active INT
         , FOREIGN KEY(agent_name) REFERENCES agentunits(name)
-        , FOREIGN KEY(ally_name) REFERENCES agentunits(name)
-        , UNIQUE(agent_name, ally_name)
+        , FOREIGN KEY(member_name) REFERENCES agentunits(name)
+        , UNIQUE(agent_name, member_name)
         )
     ;
     """
 
 
-def get_ledger_table_insert_sqlstr(agent_x: AgentUnit, allyunit_x: AllyUnit) -> str:
+def get_ledger_table_insert_sqlstr(agent_x: AgentUnit, memberunit_x: MemberUnit) -> str:
     return f"""
         INSERT INTO ledger (
               agent_name
-            , ally_name
+            , member_name
             , _agent_credit
             , _agent_debt
             , _agent_agenda_credit
@@ -358,15 +358,15 @@ def get_ledger_table_insert_sqlstr(agent_x: AgentUnit, allyunit_x: AllyUnit) -> 
             )
         VALUES (
             '{agent_x._desc}' 
-            , '{allyunit_x.name}'
-            , {sqlite_null(allyunit_x._agent_credit)} 
-            , {sqlite_null(allyunit_x._agent_debt)}
-            , {sqlite_null(allyunit_x._agent_agenda_credit)}
-            , {sqlite_null(allyunit_x._agent_agenda_debt)}
-            , {sqlite_null(allyunit_x._agent_agenda_ratio_credit)}
-            , {sqlite_null(allyunit_x._agent_agenda_ratio_debt)}
-            , {sqlite_bool(allyunit_x._creditor_active)}
-            , {sqlite_bool(allyunit_x._debtor_active)}
+            , '{memberunit_x.name}'
+            , {sqlite_null(memberunit_x._agent_credit)} 
+            , {sqlite_null(memberunit_x._agent_debt)}
+            , {sqlite_null(memberunit_x._agent_agenda_credit)}
+            , {sqlite_null(memberunit_x._agent_agenda_debt)}
+            , {sqlite_null(memberunit_x._agent_agenda_ratio_credit)}
+            , {sqlite_null(memberunit_x._agent_agenda_ratio_debt)}
+            , {sqlite_bool(memberunit_x._creditor_active)}
+            , {sqlite_bool(memberunit_x._debtor_active)}
         )
         ;
         """
@@ -375,7 +375,7 @@ def get_ledger_table_insert_sqlstr(agent_x: AgentUnit, allyunit_x: AllyUnit) -> 
 @dataclass
 class LedgerUnit:
     agent_name: str
-    ally_name: str
+    member_name: str
     _agent_credit: float
     _agent_debt: float
     _agent_agenda_credit: float
@@ -390,7 +390,7 @@ def get_ledger_dict(db_conn: Connection, payer_name: str) -> dict[str:LedgerUnit
     sqlstr = f"""
         SELECT 
           agent_name
-        , ally_name
+        , member_name
         , _agent_credit
         , _agent_debt
         , _agent_agenda_credit
@@ -409,7 +409,7 @@ def get_ledger_dict(db_conn: Connection, payer_name: str) -> dict[str:LedgerUnit
     for row in results.fetchall():
         ledger_x = LedgerUnit(
             agent_name=row[0],
-            ally_name=row[1],
+            member_name=row[1],
             _agent_credit=row[2],
             _agent_debt=row[3],
             _agent_agenda_credit=row[4],
@@ -419,7 +419,7 @@ def get_ledger_dict(db_conn: Connection, payer_name: str) -> dict[str:LedgerUnit
             _creditor_active=row[8],
             _debtor_active=row[9],
         )
-        dict_x[ledger_x.ally_name] = ledger_x
+        dict_x[ledger_x.member_name] = ledger_x
     return dict_x
 
 
@@ -572,7 +572,7 @@ def get_groupunit_catalog_table_create_sqlstr() -> str:
         CREATE TABLE IF NOT EXISTS groupunit_catalog (
           agent_name VARCHAR(255) NOT NULL
         , groupunit_name VARCHAR(1000) NOT NULL
-        , allylinks_set_by_world_road VARCHAR(1000) NULL
+        , memberlinks_set_by_world_road VARCHAR(1000) NULL
         )
         ;
     """
@@ -594,7 +594,7 @@ def get_groupunit_catalog_table_count(db_conn: Connection, agent_name: str) -> s
 class GroupUnitCatalog:
     agent_name: str
     groupunit_name: str
-    allylinks_set_by_world_road: str
+    memberlinks_set_by_world_road: str
 
 
 def get_groupunit_catalog_table_insert_sqlstr(
@@ -604,12 +604,12 @@ def get_groupunit_catalog_table_insert_sqlstr(
         INSERT INTO groupunit_catalog (
           agent_name
         , groupunit_name
-        , allylinks_set_by_world_road
+        , memberlinks_set_by_world_road
         )
         VALUES (
           '{groupunit_catalog.agent_name}'
         , '{groupunit_catalog.groupunit_name}'
-        , '{groupunit_catalog.allylinks_set_by_world_road}'
+        , '{groupunit_catalog.memberlinks_set_by_world_road}'
         )
         ;
     """
@@ -620,7 +620,7 @@ def get_groupunit_catalog_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog
         SELECT 
           agent_name
         , groupunit_name
-        , allylinks_set_by_world_road
+        , memberlinks_set_by_world_road
         FROM groupunit_catalog
         ;
     """
@@ -631,7 +631,7 @@ def get_groupunit_catalog_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog
         groupunit_catalog_x = GroupUnitCatalog(
             agent_name=row[0],
             groupunit_name=row[1],
-            allylinks_set_by_world_road=row[2],
+            memberlinks_set_by_world_road=row[2],
         )
         dict_key = (
             f"{groupunit_catalog_x.agent_name} {groupunit_catalog_x.groupunit_name}"
@@ -647,7 +647,7 @@ def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x.append(get_ledger_table_create_sqlstr())
     list_x.append(get_river_flow_table_create_sqlstr())
     list_x.append(get_river_bucket_table_create_sqlstr())
-    list_x.append(get_river_tally_table_create_sqlstr())
+    list_x.append(get_river_tmember_table_create_sqlstr())
     list_x.append(get_groupunit_catalog_table_create_sqlstr())
     return list_x
 

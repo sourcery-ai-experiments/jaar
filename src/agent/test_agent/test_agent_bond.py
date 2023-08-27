@@ -7,7 +7,7 @@ from src.agent.examples.get_agent_examples_dir import get_agent_examples_dir
 from src.agent.idea import IdeaCore, IdeaKid
 from src.agent.road import Road
 from src.agent.required import RequiredUnit
-from src.agent.ally import allylink_shop
+from src.agent.member import memberlink_shop
 from src.agent.group import groupunit_shop, grouplink_shop
 from src.agent.examples.example_agents import (
     get_agent_with_4_levels as example_agents_get_agent_with_4_levels,
@@ -80,7 +80,7 @@ def test_agentunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaGroupheir
         idea_kid=IdeaKid(_desc=clean_kitchen_text, promise=True), walk=casa_road
     )
     tom_text = "tom"
-    cx.add_allyunit(name=tom_text)
+    cx.add_memberunit(name=tom_text)
     assert cx.get_bond_status() == False
 
     # WHEN
@@ -90,7 +90,7 @@ def test_agentunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaGroupheir
 
     # WHEN
     bob_text = "bob"
-    cx.add_allyunit(name=bob_text)
+    cx.add_memberunit(name=bob_text)
     # THEN
     assert cx.get_bond_status() == False
 
@@ -108,7 +108,7 @@ def test_agentunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualAgentGroupuni
         idea_kid=IdeaKid(_desc=clean_kitchen_text, promise=True), walk=casa_road
     )
     tom_text = "tom"
-    cx.add_allyunit(name=tom_text)
+    cx.add_memberunit(name=tom_text)
     assert cx.get_bond_status() == False
 
     # WHEN
@@ -120,7 +120,7 @@ def test_agentunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualAgentGroupuni
 
     # WHEN
     bob_text = "bob"
-    cx.add_allyunit(name=bob_text)
+    cx.add_memberunit(name=bob_text)
     # THEN
     assert cx.get_bond_status() == False
 
@@ -140,13 +140,13 @@ def test_agentunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualAgentGroupuni
     assert cx.get_bond_status()
 
     tom_text = "tom"
-    cx.add_allyunit(name=tom_text)
+    cx.add_memberunit(name=tom_text)
     bob_text = "bob"
-    cx.add_allyunit(name=bob_text)
+    cx.add_memberunit(name=bob_text)
     home_occupants_text = "home occupants"
     home_occupants_groupunit = groupunit_shop(name=home_occupants_text)
-    home_occupants_groupunit.set_allylink(allylink=allylink_shop(name=tom_text))
-    home_occupants_groupunit.set_allylink(allylink=allylink_shop(name=bob_text))
+    home_occupants_groupunit.set_memberlink(memberlink=memberlink_shop(name=tom_text))
+    home_occupants_groupunit.set_memberlink(memberlink=memberlink_shop(name=bob_text))
     cx.set_groupunit(groupunit=home_occupants_groupunit)
     assert cx.get_bond_status() == False
 
@@ -159,7 +159,7 @@ def test_agentunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualAgentGroupuni
 
     # WHEN
     yuri_text = "yuri"
-    cx.add_allyunit(name=yuri_text)
+    cx.add_memberunit(name=yuri_text)
 
     # THEN
     assert cx.get_bond_status() == False

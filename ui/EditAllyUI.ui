@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="ally_insert_button">
+  <widget class="QPushButton" name="member_insert_button">
    <property name="geometry">
     <rect>
      <x>170</x>
@@ -23,10 +23,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>Add Ally</string>
+    <string>Add Member</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="ally_update_button">
+  <widget class="QPushButton" name="member_update_button">
    <property name="geometry">
     <rect>
      <x>170</x>
@@ -55,7 +55,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="ally_delete_button">
+  <widget class="QPushButton" name="member_delete_button">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -65,10 +65,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>delete Ally</string>
+    <string>delete Member</string>
    </property>
   </widget>
-  <widget class="QTableWidget" name="ally_table">
+  <widget class="QTableWidget" name="member_table">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -129,7 +129,7 @@
     <string>Quit App</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="ally_name">
+  <widget class="QLineEdit" name="member_name">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -224,7 +224,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Allys</string>
+    <string>Members</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
@@ -316,7 +316,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="ally_group_set_button">
+  <widget class="QPushButton" name="member_group_set_button">
    <property name="geometry">
     <rect>
      <x>1060</x>
@@ -333,10 +333,10 @@
     </font>
    </property>
    <property name="text">
-    <string>add group to ally</string>
+    <string>add group to member</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="ally_group_del_button">
+  <widget class="QPushButton" name="member_group_del_button">
    <property name="geometry">
     <rect>
      <x>530</x>
@@ -353,7 +353,7 @@
     </font>
    </property>
    <property name="text">
-    <string>remove group from ally</string>
+    <string>remove group from member</string>
    </property>
   </widget>
   <widget class="QTableWidget" name="groups_stan_table">
@@ -391,7 +391,7 @@
     </property>
    </column>
   </widget>
-  <widget class="QLineEdit" name="ally_weight">
+  <widget class="QLineEdit" name="member_weight">
    <property name="geometry">
     <rect>
      <x>70</x>

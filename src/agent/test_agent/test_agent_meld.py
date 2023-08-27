@@ -1,7 +1,7 @@
 from src.agent.idea import IdeaKid
 from src.agent.agent import AgentUnit
 from src.agent.group import groupunit_shop
-from src.agent.ally import allyunit_shop
+from src.agent.member import memberunit_shop
 from pytest import raises as pytest_raises
 from src.agent.examples.example_agents import agent_v001
 from src.agent.x_func import get_on_meld_weight_actions
@@ -36,29 +36,29 @@ def test_agent_meld_WeightDoesNotCombine():
     assert ax1._weight == 3
 
 
-def test_agent_meld_AllyUnits():
+def test_agent_meld_MemberUnits():
     # GIVEN
-    x1_name = "x1_ally"
-    x1_ally = allyunit_shop(name=x1_name)
+    x1_name = "x1_member"
+    x1_member = memberunit_shop(name=x1_name)
 
     agent_text = "x_agent"
     ax1 = AgentUnit(_desc=agent_text)
-    ax1.set_allyunit(allyunit=x1_ally)
+    ax1.set_memberunit(memberunit=x1_member)
 
     ax2 = AgentUnit(_desc=agent_text)
-    ax2.set_allyunit(allyunit=x1_ally)
-    x2_name = "x2_ally"
-    x2_ally = allyunit_shop(name=x2_name)
-    ax2.set_allyunit(allyunit=x2_ally)
-    assert len(ax1._allys) == 1
+    ax2.set_memberunit(memberunit=x1_member)
+    x2_name = "x2_member"
+    x2_member = memberunit_shop(name=x2_name)
+    ax2.set_memberunit(memberunit=x2_member)
+    assert len(ax1._members) == 1
 
     # WHEN
     ax1.meld(other_agent=ax2)
 
     # THEN
-    assert len(ax1._allys) == 2
-    assert ax1._allys.get(x1_name) != None
-    assert ax1._allys.get(x2_name) != None
+    assert len(ax1._members) == 2
+    assert ax1._members.get(x1_name) != None
+    assert ax1._members.get(x2_name) != None
 
 
 def test_agent_meld_GroupUnits():
@@ -248,13 +248,13 @@ def test_agent_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
     assert ax1._idearoot._acptfactunits == ax2._idearoot._acptfactunits
 
 
-def test_agent_acptfactunits_meld_GroupsMeldedBefore_Allys():
+def test_agent_acptfactunits_meld_GroupsMeldedBefore_Members():
     # GIVEN
     src = "casa"
     ax1 = AgentUnit(_desc=src)
     ax2 = AgentUnit(_desc=src)
     bob = "bob"
-    ax2.set_allyunit(allyunit_shop(name=bob))
+    ax2.set_memberunit(memberunit_shop(name=bob))
     assert ax2._groups.get(bob) != None
     assert ax2._groups.get(bob).uid is None
     ax2.set_groupunit(groupunit_shop(name=bob, uid=13))
@@ -324,7 +324,7 @@ def test_agent_meld_worksCorrectlyForLargeExample():
     assert ax1._idearoot._uid == ax2._idearoot._uid
     assert ax1._idearoot._acptfactunits == ax2._idearoot._acptfactunits
     assert ax1._groups == ax2._groups
-    assert ax1._allys == ax2._allys
+    assert ax1._members == ax2._members
 
     assert len(ax1._idearoot._acptfactunits) == 2
     assert len(ax1._idearoot._acptfactunits) == len(ax2._idearoot._acptfactunits)

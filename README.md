@@ -74,7 +74,7 @@ WorldUnit Bank objects
 <!-- TODO: Add explanations -->
 AgentUnit objects
 
-AgentUnit AllyUnit objects
+AgentUnit MemberUnit objects
 
 AgentUnit GroupUnit objects
 

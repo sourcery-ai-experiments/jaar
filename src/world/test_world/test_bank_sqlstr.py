@@ -1,6 +1,6 @@
 from src.world.world import WorldUnit
 from src.agent.agent import AgentUnit
-from src.agent.ally import allyunit_shop
+from src.agent.member import memberunit_shop
 from src.world.examples.env_tools import (
     get_temp_env_name,
     get_test_worlds_dir,
@@ -12,8 +12,8 @@ from src.world.bank_sqlstr import (
     get_river_bucket_table_insert_sqlstr,
     get_river_bucket_dict,
     get_river_bucket_table_delete_sqlstr,
-    get_river_tally_table_insert_sqlstr,
-    get_river_tally_dict,
+    get_river_tmember_table_insert_sqlstr,
+    get_river_tmember_dict,
     get_ledger_table_insert_sqlstr,
     get_ledger_dict,
     LedgerUnit,
@@ -44,7 +44,7 @@ from src.world.y_func import get_single_result_back
 def test_world_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example world with 4 Persons, each with 3 Allyunits = 12 ledger rows
+    # GIVEN Create example world with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
     e1 = WorldUnit(name=get_temp_env_name(), worlds_dir=get_test_worlds_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -53,7 +53,7 @@ def test_world_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
     bob_text = "bob"
     tim_text = "tim"
     agent_x = AgentUnit(_desc=bob_text)
-    allyunit_x = allyunit_shop(
+    memberunit_x = memberunit_shop(
         name=tim_text,
         _agent_credit=0.9,
         _agent_debt=0.8,
@@ -66,7 +66,7 @@ def test_world_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
     )
 
     insert_sqlstr = get_ledger_table_insert_sqlstr(
-        agent_x=agent_x, allyunit_x=allyunit_x
+        agent_x=agent_x, memberunit_x=memberunit_x
     )
     print(insert_sqlstr)
 
@@ -83,7 +83,7 @@ def test_world_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
     # THEN
     ledger_x = ledger_dict.get(tim_text)
     assert ledger_x.agent_name == bob_text
-    assert ledger_x.ally_name == tim_text
+    assert ledger_x.member_name == tim_text
     assert ledger_x._agent_credit == 0.9
     assert ledger_x._agent_debt == 0.8
     assert ledger_x._agent_agenda_credit == 0.7
@@ -162,7 +162,7 @@ def test_RiverFlowUnit_flow_returned_WorksCorrectly():
 
 
 def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cleanup):
-    # GIVEN Create example world with 4 Persons, each with 3 Allyunits = 12 ledger rows
+    # GIVEN Create example world with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
     e1 = WorldUnit(name=get_temp_env_name(), worlds_dir=get_test_worlds_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -171,7 +171,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
     bob_text = "bob"
     sal_text = "sal"
     agent_bob = AgentUnit(_desc=bob_text)
-    allyunit_sal = allyunit_shop(
+    memberunit_sal = memberunit_shop(
         name=sal_text,
         _agent_credit=0.9,
         _agent_debt=0.8,
@@ -183,11 +183,11 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
         _debtor_active=False,
     )
     insert_sqlstr_sal = get_ledger_table_insert_sqlstr(
-        agent_x=agent_bob, allyunit_x=allyunit_sal
+        agent_x=agent_bob, memberunit_x=memberunit_sal
     )
 
     tim_text = "tim"
-    allyunit_tim = allyunit_shop(
+    memberunit_tim = memberunit_shop(
         name=tim_text,
         _agent_credit=0.012,
         _agent_debt=0.017,
@@ -199,7 +199,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
         _debtor_active=False,
     )
     insert_sqlstr_tim = get_ledger_table_insert_sqlstr(
-        agent_x=agent_bob, allyunit_x=allyunit_tim
+        agent_x=agent_bob, memberunit_x=memberunit_tim
     )
 
     with e1.get_bank_conn() as bank_conn:
@@ -233,7 +233,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
 def test_river_flow_insert_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example world with 4 Persons, each with 3 Allyunits = 12 ledger rows
+    # GIVEN Create example world with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
     e1 = WorldUnit(name=get_temp_env_name(), worlds_dir=get_test_worlds_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -282,7 +282,7 @@ def test_RiverLedgerUnit_Exists():
     tom_text = "tom"
     ledger_unit_01 = LedgerUnit(
         agent_name=bob_text,
-        ally_name=sal_text,
+        member_name=sal_text,
         _agent_credit=0.66,
         _agent_debt=0.2,
         _agent_agenda_credit=0.4,
@@ -294,7 +294,7 @@ def test_RiverLedgerUnit_Exists():
     )
     ledger_unit_02 = LedgerUnit(
         agent_name=bob_text,
-        ally_name=tom_text,
+        member_name=tom_text,
         _agent_credit=0.05,
         _agent_debt=0.09,
         _agent_agenda_credit=0.055,
@@ -305,8 +305,8 @@ def test_RiverLedgerUnit_Exists():
         _debtor_active=True,
     )
     ledger_dict = {
-        ledger_unit_01.ally_name: ledger_unit_01,
-        ledger_unit_02.ally_name: ledger_unit_02,
+        ledger_unit_01.member_name: ledger_unit_01,
+        ledger_unit_02.member_name: ledger_unit_02,
     }
 
     # WHEN
@@ -329,10 +329,10 @@ def test_RiverLedgerUnit_Exists():
     assert abs(river_ledger_unit.get_range() - 0.2) < 0.00000001
 
 
-def test_get_river_tally_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example world with 4 Persons, each with 3 Allyunits = 12 ledger rows
+    # GIVEN Create example world with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
     e1 = WorldUnit(name=get_temp_env_name(), worlds_dir=get_test_worlds_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -342,7 +342,7 @@ def test_get_river_tally_table_insert_sqlstr_CorrectlyPopulatesTable01(
     sal_text = "sal"
 
     agent_bob = AgentUnit(_desc=bob_text)
-    allyunit_tom = allyunit_shop(
+    memberunit_tom = memberunit_shop(
         name=tom_text,
         _agent_credit=0.9,
         _agent_debt=0.8,
@@ -354,9 +354,9 @@ def test_get_river_tally_table_insert_sqlstr_CorrectlyPopulatesTable01(
         _debtor_active=False,
     )
     insert_sqlstr_tom = get_ledger_table_insert_sqlstr(
-        agent_x=agent_bob, allyunit_x=allyunit_tom
+        agent_x=agent_bob, memberunit_x=memberunit_tom
     )
-    allyunit_sal = allyunit_shop(
+    memberunit_sal = memberunit_shop(
         name=sal_text,
         _agent_credit=0.9,
         _agent_debt=0.8,
@@ -368,7 +368,7 @@ def test_get_river_tally_table_insert_sqlstr_CorrectlyPopulatesTable01(
         _debtor_active=False,
     )
     insert_sqlstr_sal = get_ledger_table_insert_sqlstr(
-        agent_x=agent_bob, allyunit_x=allyunit_sal
+        agent_x=agent_bob, memberunit_x=memberunit_sal
     )
 
     river_flow_1 = RiverFlowUnit(bob_text, bob_text, tom_text, 0.0, 0.2, 0, None, 1)
@@ -389,33 +389,33 @@ def test_get_river_tally_table_insert_sqlstr_CorrectlyPopulatesTable01(
         bank_conn.execute(ss0)
 
     # WHEN
-    mstr_sqlstr = get_river_tally_table_insert_sqlstr(currency_agent_name=bob_text)
+    mstr_sqlstr = get_river_tmember_table_insert_sqlstr(currency_agent_name=bob_text)
     with e1.get_bank_conn() as bank_conn:
         print(mstr_sqlstr)
         bank_conn.execute(mstr_sqlstr)
 
     # THEN
     with e1.get_bank_conn() as bank_conn:
-        river_tallys = get_river_tally_dict(bank_conn, currency_agent_name=bob_text)
-        print(f"{river_tallys=}")
+        river_tmembers = get_river_tmember_dict(bank_conn, currency_agent_name=bob_text)
+        print(f"{river_tmembers=}")
 
-    assert len(river_tallys) == 2
+    assert len(river_tmembers) == 2
 
-    bob_tom_x = river_tallys.get(tom_text)
+    bob_tom_x = river_tmembers.get(tom_text)
     assert bob_tom_x.currency_name == bob_text
     assert bob_tom_x.tax_name == tom_text
     assert bob_tom_x.tax_total == 0.2
     assert bob_tom_x.debt == 0.411
     assert round(bob_tom_x.tax_diff, 15) == 0.211
 
-    bob_sal_x = river_tallys.get(sal_text)
+    bob_sal_x = river_tmembers.get(sal_text)
     assert bob_sal_x.currency_name == bob_text
     assert bob_sal_x.tax_name == sal_text
     assert bob_sal_x.tax_total == 0.8
     assert bob_sal_x.debt == 0.455
     assert round(bob_sal_x.tax_diff, 15) == -0.345
 
-    # for value in river_tallys.values():
+    # for value in river_tmembers.values():
     #     assert value.currency_name == bob_text
     #     assert value.tax_name in [tom_text, sal_text]
     #     assert value.tax_total in [0.2, 0.8]
@@ -426,7 +426,7 @@ def test_get_river_tally_table_insert_sqlstr_CorrectlyPopulatesTable01(
 def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example world with 4 Persons, each with 3 Allyunits = 12 ledger rows
+    # GIVEN Create example world with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
     e1 = WorldUnit(name=get_temp_env_name(), worlds_dir=get_test_worlds_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -438,14 +438,14 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
     elu_text = "elu"
 
     sal_agent = AgentUnit(_desc=sal_text)
-    sal_agent.add_allyunit(name=bob_text, creditor_weight=2)
-    sal_agent.add_allyunit(name=tom_text, creditor_weight=7)
-    sal_agent.add_allyunit(name=ava_text, creditor_weight=1)
+    sal_agent.add_memberunit(name=bob_text, creditor_weight=2)
+    sal_agent.add_memberunit(name=tom_text, creditor_weight=7)
+    sal_agent.add_memberunit(name=ava_text, creditor_weight=1)
     e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
 
     bob_agent = AgentUnit(_desc=bob_text)
-    bob_agent.add_allyunit(name=sal_text, creditor_weight=3)
-    bob_agent.add_allyunit(name=ava_text, creditor_weight=1)
+    bob_agent.add_memberunit(name=sal_text, creditor_weight=3)
+    bob_agent.add_memberunit(name=ava_text, creditor_weight=1)
     e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
 
     e1.refresh_bank_metrics()
@@ -467,7 +467,7 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
 def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example world with 4 Persons, each with 3 Allyunits = 12 ledger rows
+    # GIVEN Create example world with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
     e1 = WorldUnit(name=get_temp_env_name(), worlds_dir=get_test_worlds_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -479,27 +479,27 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     elu_text = "elu"
 
     sal_agent = AgentUnit(_desc=sal_text)
-    sal_agent.add_allyunit(name=bob_text, creditor_weight=2)
-    sal_agent.add_allyunit(name=tom_text, creditor_weight=7)
-    sal_agent.add_allyunit(name=ava_text, creditor_weight=1)
+    sal_agent.add_memberunit(name=bob_text, creditor_weight=2)
+    sal_agent.add_memberunit(name=tom_text, creditor_weight=7)
+    sal_agent.add_memberunit(name=ava_text, creditor_weight=1)
     e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
 
     bob_agent = AgentUnit(_desc=bob_text)
-    bob_agent.add_allyunit(name=sal_text, creditor_weight=3)
-    bob_agent.add_allyunit(name=ava_text, creditor_weight=1)
+    bob_agent.add_memberunit(name=sal_text, creditor_weight=3)
+    bob_agent.add_memberunit(name=ava_text, creditor_weight=1)
     e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
 
     tom_agent = AgentUnit(_desc=tom_text)
-    tom_agent.add_allyunit(name=sal_text, creditor_weight=2)
+    tom_agent.add_memberunit(name=sal_text, creditor_weight=2)
     e1.save_agentunit_obj_to_agents_dir(agent_x=tom_agent)
 
     ava_agent = AgentUnit(_desc=ava_text)
-    ava_agent.add_allyunit(name=elu_text, creditor_weight=2)
+    ava_agent.add_memberunit(name=elu_text, creditor_weight=2)
     e1.save_agentunit_obj_to_agents_dir(agent_x=ava_agent)
 
     elu_agent = AgentUnit(_desc=elu_text)
-    elu_agent.add_allyunit(name=ava_text, creditor_weight=19)
-    elu_agent.add_allyunit(name=sal_text, creditor_weight=1)
+    elu_agent.add_memberunit(name=ava_text, creditor_weight=19)
+    elu_agent.add_memberunit(name=sal_text, creditor_weight=1)
     e1.save_agentunit_obj_to_agents_dir(agent_x=elu_agent)
 
     e1.refresh_bank_metrics()
@@ -574,7 +574,7 @@ def test_world_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
 
 def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup):
-    # GIVEN Create example world with 4 Persons, each with 3 Allyunits = 12 ledger rows
+    # GIVEN Create example world with 4 Persons, each with 3 Memberunits = 12 ledger rows
     e1 = WorldUnit(name=get_temp_env_name(), worlds_dir=get_test_worlds_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
     e1.refresh_bank_metrics()
@@ -646,7 +646,7 @@ def test_world_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
 def test_world_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example world with 4 Persons, each with 3 Allyunits = 12 ledger rows
+    # GIVEN Create example world with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
     e1 = WorldUnit(name=get_temp_env_name(), worlds_dir=get_test_worlds_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -672,7 +672,7 @@ def test_world_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable0
 def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example world with 4 Persons, each with 3 Allyunits = 12 ledger rows
+    # GIVEN Create example world with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
     e1 = WorldUnit(name=get_temp_env_name(), worlds_dir=get_test_worlds_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -732,7 +732,7 @@ def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
 def test_world_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example world with 4 Persons, each with 3 Allyunits = 12 ledger rows
+    # GIVEN Create example world with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
     e1 = WorldUnit(name=get_temp_env_name(), worlds_dir=get_test_worlds_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -746,7 +746,7 @@ def test_world_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTable
     bob_group_x = GroupUnitCatalog(
         agent_name=bob_text,
         groupunit_name="US Dollar",
-        allylinks_set_by_world_road="src,USA",
+        memberlinks_set_by_world_road="src,USA",
     )
     bob_group_sqlstr = get_groupunit_catalog_table_insert_sqlstr(bob_group_x)
     with e1.get_bank_conn() as bank_conn:
@@ -769,9 +769,9 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     elu_text = "elu"
     bob_agent = AgentUnit(_desc=bob_text)
     tom_agent = AgentUnit(_desc=tom_text)
-    bob_agent.add_allyunit(name=tom_text)
-    tom_agent.add_allyunit(name=bob_text)
-    tom_agent.add_allyunit(name=elu_text)
+    bob_agent.add_memberunit(name=tom_text)
+    tom_agent.add_memberunit(name=bob_text)
+    tom_agent.add_memberunit(name=elu_text)
     e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
     e1.save_agentunit_obj_to_agents_dir(agent_x=tom_agent)
     e1.refresh_bank_metrics()

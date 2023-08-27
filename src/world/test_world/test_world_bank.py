@@ -2,7 +2,7 @@ from src.world.world import WorldUnit
 from src.agent.agent import AgentUnit
 from src.agent.idea import IdeaKid
 from src.agent.group import groupunit_shop
-from src.agent.ally import allylink_shop
+from src.agent.member import memberlink_shop
 from src.agent.x_func import delete_dir as x_func_delete_dir
 from os import path as os_path
 from src.world.examples.env_tools import (
@@ -108,7 +108,7 @@ def test_world_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_cleanu
     curr_tables = {
         0: "agentunits",
         1: "ledger",
-        2: "river_tally",
+        2: "river_tmember",
         3: "river_flow",
         4: "river_bucket",
         5: "idea_catalog",
@@ -138,7 +138,7 @@ def test_world_refresh_bank_metrics_CorrectlyDeletesOldBankInMemory(
     tom_text = "tom"
 
     bob = AgentUnit(_desc=bob_text)
-    bob.add_allyunit(name=tom_text, creditor_weight=3, debtor_weight=1)
+    bob.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
     e1.save_agentunit_obj_to_agents_dir(agent_x=bob)
     e1.refresh_bank_metrics()
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
@@ -162,7 +162,7 @@ def test_world_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
     tom_text = "tom"
 
     bob = AgentUnit(_desc=bob_text)
-    bob.add_allyunit(name=tom_text, creditor_weight=3, debtor_weight=1)
+    bob.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
     e1.save_agentunit_obj_to_agents_dir(agent_x=bob)
     e1.refresh_bank_metrics()
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
@@ -178,7 +178,7 @@ def test_world_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
 def test_world_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example world with 4 Persons, each with 3 Allyunits = 12 ledger rows
+    # GIVEN Create example world with 4 Persons, each with 3 Memberunits = 12 ledger rows
     e1 = WorldUnit(name=get_temp_env_name(), worlds_dir=get_test_worlds_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
 
@@ -188,27 +188,27 @@ def test_world_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     elu_text = "elu"
 
     bob = AgentUnit(_desc=bob_text)
-    bob.add_allyunit(name=tom_text, creditor_weight=3, debtor_weight=1)
-    bob.add_allyunit(name=sal_text, creditor_weight=1, debtor_weight=4)
-    bob.add_allyunit(name=elu_text, creditor_weight=1, debtor_weight=4)
+    bob.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
+    bob.add_memberunit(name=sal_text, creditor_weight=1, debtor_weight=4)
+    bob.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
     e1.save_agentunit_obj_to_agents_dir(agent_x=bob)
 
     sal = AgentUnit(_desc=sal_text)
-    sal.add_allyunit(name=bob_text, creditor_weight=1, debtor_weight=4)
-    sal.add_allyunit(name=tom_text, creditor_weight=3, debtor_weight=1)
-    sal.add_allyunit(name=elu_text, creditor_weight=1, debtor_weight=4)
+    sal.add_memberunit(name=bob_text, creditor_weight=1, debtor_weight=4)
+    sal.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
+    sal.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
     e1.save_agentunit_obj_to_agents_dir(agent_x=sal)
 
     tom = AgentUnit(_desc=tom_text)
-    tom.add_allyunit(name=bob_text, creditor_weight=3, debtor_weight=1)
-    tom.add_allyunit(name=sal_text, creditor_weight=1, debtor_weight=4)
-    tom.add_allyunit(name=elu_text, creditor_weight=1, debtor_weight=4)
+    tom.add_memberunit(name=bob_text, creditor_weight=3, debtor_weight=1)
+    tom.add_memberunit(name=sal_text, creditor_weight=1, debtor_weight=4)
+    tom.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
     e1.save_agentunit_obj_to_agents_dir(agent_x=tom)
 
     elu = AgentUnit(_desc=elu_text)
-    elu.add_allyunit(name=bob_text, creditor_weight=3, debtor_weight=1)
-    elu.add_allyunit(name=tom_text, creditor_weight=1, debtor_weight=4)
-    elu.add_allyunit(name=elu_text, creditor_weight=1, debtor_weight=4)
+    elu.add_memberunit(name=bob_text, creditor_weight=3, debtor_weight=1)
+    elu.add_memberunit(name=tom_text, creditor_weight=1, debtor_weight=4)
+    elu.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
     e1.save_agentunit_obj_to_agents_dir(agent_x=elu)
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
@@ -224,7 +224,7 @@ def test_world_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
 def test_world_refresh_bank_metrics_CorrectlyPopulatesAgentTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example world with 4 Persons, each with 3 Allyunits = 12 ledger rows
+    # GIVEN Create example world with 4 Persons, each with 3 Memberunits = 12 ledger rows
     e1 = WorldUnit(name=get_temp_env_name(), worlds_dir=get_test_worlds_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
 
@@ -251,7 +251,7 @@ def test_world_refresh_bank_metrics_CorrectlyPopulatesAgentTable01(
 def test_world_refresh_bank_metrics_CorrectlyPopulatesAgentTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example world with 4 Persons, each with 3 Allyunits = 12 ledger rows
+    # GIVEN Create example world with 4 Persons, each with 3 Memberunits = 12 ledger rows
     e1 = WorldUnit(name=get_temp_env_name(), worlds_dir=get_test_worlds_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
 
@@ -287,9 +287,9 @@ def test_world_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     elu_text = "elu"
     bob_agent = AgentUnit(_desc=bob_text)
     tom_agent = AgentUnit(_desc=tom_text)
-    bob_agent.add_allyunit(name=tom_text)
-    tom_agent.add_allyunit(name=bob_text)
-    tom_agent.add_allyunit(name=elu_text)
+    bob_agent.add_memberunit(name=tom_text)
+    tom_agent.add_memberunit(name=bob_text)
+    tom_agent.add_memberunit(name=elu_text)
     e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
     e1.save_agentunit_obj_to_agents_dir(agent_x=tom_agent)
 
@@ -303,22 +303,22 @@ def test_world_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     assert get_single_result_back(e1.get_bank_conn(), sqlstr) == 3
 
 
-def test_world_set_agent_attr_defined_by_world_CorrectlyPopulatesAgent_Groupunit_Allylinks(
+def test_world_set_agent_attr_defined_by_world_CorrectlyPopulatesAgent_Groupunit_Memberlinks(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     e1 = WorldUnit(name=get_temp_env_name(), worlds_dir=get_test_worlds_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
 
-    # create 4 agents, 1 with group "swimming expert" linked to 1 ally
+    # create 4 agents, 1 with group "swimming expert" linked to 1 member
     # two others have idea "src,sports,swimming"
     # run set_bank_metrics
     # assert
-    # _allylinks_set_by_world_road
-    # assert group "swimming expert" has 1 ally
-    # change groupunit "swimming expert" _allylinks_set_by_world_road ==  "root_desc,sports,swimmer"
+    # _memberlinks_set_by_world_road
+    # assert group "swimming expert" has 1 member
+    # change groupunit "swimming expert" _memberlinks_set_by_world_road ==  "root_desc,sports,swimmer"
     # run set_bank_metrics
-    # assert group "swimming expert" has 2 different ally
+    # assert group "swimming expert" has 2 different member
 
     sal_text = "sal"
     bob_text = "bob"
@@ -340,12 +340,12 @@ def test_world_set_agent_attr_defined_by_world_CorrectlyPopulatesAgent_Groupunit
     bob_agent.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=bob_sports_road)
     tom_agent.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=tom_sports_road)
 
-    sal_agent.add_allyunit(name=bob_text, creditor_weight=2, debtor_weight=2)
+    sal_agent.add_memberunit(name=bob_text, creditor_weight=2, debtor_weight=2)
 
     swim_group_text = "swimming expert"
     swim_group_unit = groupunit_shop(name=swim_group_text)
-    bob_link = allylink_shop(name=bob_text)
-    swim_group_unit.set_allylink(allylink=bob_link)
+    bob_link = memberlink_shop(name=bob_text)
+    swim_group_unit.set_memberlink(memberlink=bob_link)
     sal_agent.set_groupunit(groupunit=swim_group_unit)
 
     e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
@@ -355,16 +355,16 @@ def test_world_set_agent_attr_defined_by_world_CorrectlyPopulatesAgent_Groupunit
 
     e1.set_agent_attr_defined_by_world(agent_name=sal_text)
     e1_sal_agent = e1.get_agent_from_agents_dir(_desc=sal_text)
-    assert len(e1_sal_agent._groups.get(swim_group_text)._allys) == 1
+    assert len(e1_sal_agent._groups.get(swim_group_text)._members) == 1
 
     # WHEN
-    # change groupunit "swimming expert" _allylinks_set_by_world_road ==  "root_desc,sports,swimmer"
+    # change groupunit "swimming expert" _memberlinks_set_by_world_road ==  "root_desc,sports,swimmer"
     sal_swim_road = f"{sal_sports_road},{swim_text}"
-    swim_group_unit.set_attr(_allylinks_set_by_world_road=sal_swim_road)
+    swim_group_unit.set_attr(_memberlinks_set_by_world_road=sal_swim_road)
     sal_agent.set_groupunit(groupunit=swim_group_unit)
     e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
     e1.set_agent_attr_defined_by_world(agent_name=sal_text)
 
     # THEN
     e1_sal_agent = e1.get_agent_from_agents_dir(_desc=sal_text)
-    assert len(e1_sal_agent._groups.get(swim_group_text)._allys) == 2
+    assert len(e1_sal_agent._groups.get(swim_group_text)._members) == 2

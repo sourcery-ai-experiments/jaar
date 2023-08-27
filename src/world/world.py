@@ -1,5 +1,5 @@
 from src.agent.agent import AgentUnit, get_from_json as get_agent_from_json
-from src.agent.ally import allylink_shop
+from src.agent.member import memberlink_shop
 from src.world.person import (
     PersonUnit,
     personunit_shop,
@@ -18,9 +18,9 @@ from sqlite3 import connect as sqlite3_connect, Connection
 from src.world.bank_sqlstr import (
     get_river_flow_table_delete_sqlstr,
     get_river_flow_table_insert_sqlstr,
-    get_river_tally_table_delete_sqlstr,
-    get_river_tally_table_insert_sqlstr,
-    get_river_tally_dict,
+    get_river_tmember_table_delete_sqlstr,
+    get_river_tmember_table_insert_sqlstr,
+    get_river_tmember_dict,
     get_river_bucket_table_insert_sqlstr,
     get_create_table_if_not_exist_sqlstrs,
     get_ledger_table_insert_sqlstr,
@@ -29,7 +29,7 @@ from src.world.bank_sqlstr import (
     LedgerUnit,
     RiverLedgerUnit,
     RiverFlowUnit,
-    RiverTallyUnit,
+    RiverTmemberUnit,
     IdeaCatalog,
     get_idea_catalog_table_insert_sqlstr,
     get_idea_catalog_dict,
@@ -52,15 +52,15 @@ class WorldUnit:
         agent_obj = self.get_agent_from_agents_dir(agent_name)
 
         for groupunit_x in agent_obj._groups.values():
-            if groupunit_x._allylinks_set_by_world_road != None:
-                groupunit_x.clear_allylinks()
+            if groupunit_x._memberlinks_set_by_world_road != None:
+                groupunit_x.clear_memberlinks()
                 ic = get_idea_catalog_dict(
-                    self.get_bank_conn(), groupunit_x._allylinks_set_by_world_road
+                    self.get_bank_conn(), groupunit_x._memberlinks_set_by_world_road
                 )
                 for idea_catalog in ic.values():
                     if agent_name != idea_catalog.agent_name:
-                        allylink_x = allylink_shop(name=idea_catalog.agent_name)
-                        groupunit_x.set_allylink(allylink_x)
+                        memberlink_x = memberlink_shop(name=idea_catalog.agent_name)
+                        groupunit_x.set_memberlink(memberlink_x)
         self.save_agentunit_obj_to_agents_dir(agent_obj)
 
         # refresh bank metrics
@@ -97,7 +97,7 @@ class WorldUnit:
                 river_flow_x = RiverFlowUnit(
                     currency_agent_name=agent_name,
                     src_name=led_x.agent_name,
-                    dst_name=led_x.ally_name,
+                    dst_name=led_x.member_name,
                     currency_start=curr_onset,
                     currency_close=curr_close,
                     flow_num=flows_count,
@@ -115,7 +115,7 @@ class WorldUnit:
                 # change curr_onset for next
                 curr_onset += curr_range
 
-        self._set_river_tallys_buckets(agent_name)
+        self._set_river_tmembers_buckets(agent_name)
 
     def _insert_river_flow_grab_river_ledger(
         self, river_flow_x: RiverFlowUnit
@@ -133,7 +133,7 @@ class WorldUnit:
     def _clear_all_source_river_data(self, agent_name: str):
         with self.get_bank_conn() as bank_conn:
             flow_s = get_river_flow_table_delete_sqlstr(agent_name)
-            mstr_s = get_river_tally_table_delete_sqlstr(agent_name)
+            mstr_s = get_river_tmember_table_delete_sqlstr(agent_name)
             bank_conn.execute(flow_s)
             bank_conn.execute(mstr_s)
 
@@ -157,20 +157,20 @@ class WorldUnit:
             source_river_ledger = get_river_ledger_unit(bank_conn, root_river_flow)
         return source_river_ledger
 
-    def _set_river_tallys_buckets(self, agent_name: str):
+    def _set_river_tmembers_buckets(self, agent_name: str):
         with self.get_bank_conn() as bank_conn:
-            bank_conn.execute(get_river_tally_table_insert_sqlstr(agent_name))
+            bank_conn.execute(get_river_tmember_table_insert_sqlstr(agent_name))
             bank_conn.execute(get_river_bucket_table_insert_sqlstr(agent_name))
 
-            sal_river_tallys = get_river_tally_dict(bank_conn, agent_name)
+            sal_river_tmembers = get_river_tmember_dict(bank_conn, agent_name)
             agent_x = self.get_agent_from_agents_dir(_desc=agent_name)
-            agent_x.set_banking_attr_allyunits(sal_river_tallys)
+            agent_x.set_banking_attr_memberunits(sal_river_tmembers)
             self.save_agentunit_obj_to_agents_dir(agent_x=agent_x)
 
-    def get_river_tallys(self, agent_name: str) -> dict[str:RiverTallyUnit]:
+    def get_river_tmembers(self, agent_name: str) -> dict[str:RiverTmemberUnit]:
         with self.get_bank_conn() as bank_conn:
-            river_tallys = get_river_tally_dict(bank_conn, agent_name)
-        return river_tallys
+            river_tmembers = get_river_tmember_dict(bank_conn, agent_name)
+        return river_tmembers
 
     def refresh_bank_metrics(self, in_memory: bool = None):
         if in_memory is None and self._bank_db != None:
@@ -185,7 +185,7 @@ class WorldUnit:
             agentunit_x.set_agent_metrics()
 
             self._bank_insert_agentunit(agentunit_x)
-            self._bank_insert_allyunit(agentunit_x)
+            self._bank_insert_memberunit(agentunit_x)
             self._bank_insert_groupunit(agentunit_x)
             self._bank_insert_ideaunit(agentunit_x)
             self._bank_insert_acptfact(agentunit_x)
@@ -195,11 +195,11 @@ class WorldUnit:
             cur = bank_conn.cursor()
             cur.execute(get_agent_table_insert_sqlstr(agent_x=agentunit_x))
 
-    def _bank_insert_allyunit(self, agentunit_x: AgentUnit):
+    def _bank_insert_memberunit(self, agentunit_x: AgentUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            for allyunit_x in agentunit_x._allys.values():
-                sqlstr = get_ledger_table_insert_sqlstr(agentunit_x, allyunit_x)
+            for memberunit_x in agentunit_x._members.values():
+                sqlstr = get_ledger_table_insert_sqlstr(agentunit_x, memberunit_x)
                 cur.execute(sqlstr)
 
     def _bank_insert_groupunit(self, agentunit_x: AgentUnit):
@@ -209,7 +209,7 @@ class WorldUnit:
                 groupunit_catalog_x = GroupUnitCatalog(
                     agent_name=agentunit_x._desc,
                     groupunit_name=groupunit_x.name,
-                    allylinks_set_by_world_road=groupunit_x._allylinks_set_by_world_road,
+                    memberlinks_set_by_world_road=groupunit_x._memberlinks_set_by_world_road,
                 )
                 sqlstr = get_groupunit_catalog_table_insert_sqlstr(groupunit_catalog_x)
                 cur.execute(sqlstr)

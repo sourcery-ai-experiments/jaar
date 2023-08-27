@@ -580,7 +580,7 @@ def test_agent_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus():
     assert commute_idea._active_status == True
 
 
-def test_agent_set_agent_metrics_InitiallySetsRationalAttrToFalse():
+def test_agent_set_agent_metrics_InitimemberSetsRationalAttrToFalse():
     # GIVEN
     agent_x = example_agents_get_agent_with_4_levels()
     assert agent_x._rational == False

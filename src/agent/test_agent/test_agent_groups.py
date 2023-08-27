@@ -1,5 +1,5 @@
 from src.agent.group import GroupName, grouplink_shop, groupunit_shop
-from src.agent.ally import AllyName, allyunit_shop, allylink_shop
+from src.agent.member import MemberName, memberunit_shop, memberlink_shop
 from src.agent.idea import IdeaKid
 from src.agent.required import Road
 from src.agent.examples.example_agents import agent_v001 as examples_agent_v001
@@ -22,7 +22,9 @@ def test_agent_groups_set_groupunit_worksCorrectly():
     # THEN
     assert len(lw_x2._groups) == 1
     assert len(lw_x2._groups) == len(every1_groups)
-    assert lw_x2._groups.get(swim_text)._allys == every1_groups.get(swim_text)._allys
+    assert (
+        lw_x2._groups.get(swim_text)._members == every1_groups.get(swim_text)._members
+    )
     assert lw_x2._groups.get(swim_text) == every1_groups.get(swim_text)
     assert lw_x2._groups == every1_groups
 
@@ -54,10 +56,10 @@ def test_example_has_groups():
     # THEN
     assert lw_x._groups != None
     assert len(lw_x._groups) == 34
-    everyone_allys_len = None
+    everyone_members_len = None
     everyone_group = lw_x._groups.get("Everyone")
-    everyone_allys_len = len(everyone_group._allys)
-    assert everyone_allys_len == 22
+    everyone_members_len = len(everyone_group._members)
+    assert everyone_members_len == 22
 
     # WHEN
     lw_x.set_agent_metrics()
@@ -82,11 +84,11 @@ def test_agent_set_grouplink_correctly_sets_grouplinks():
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    lw_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(rico_text)))
-    lw_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(carm_text)))
-    lw_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(patr_text)))
+    lw_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(rico_text)))
+    lw_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
+    lw_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
 
-    assert len(lw_x._allys) == 3
+    assert len(lw_x._members) == 3
     assert len(lw_x._groups) == 3
     swim_text = "swim"
     lw_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=prom_text)
@@ -129,9 +131,9 @@ def test_agent_set_grouplink_correctly_deletes_grouplinks():
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(rico_text)))
-    a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(carm_text)))
-    a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(patr_text)))
+    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(rico_text)))
+    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
+    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
 
     swim_text = "swim"
     swim_road = f"{prom_text},{swim_text}"
@@ -177,9 +179,9 @@ def test_agent_set_grouplink_CorrectlyCalculatesInheritedGroupLinkAgentImportanc
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(rico_text)))
-    a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(carm_text)))
-    a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(patr_text)))
+    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(rico_text)))
+    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
+    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
     blink_rico = grouplink_shop(name=rico_text, creditor_weight=20, debtor_weight=6)
     blink_carm = grouplink_shop(name=carm_text, creditor_weight=10, debtor_weight=1)
     blink_patr = grouplink_shop(name=patr_text, creditor_weight=10)
@@ -233,9 +235,9 @@ def test_agent_get_idea_list_CorrectlyCalculates1LevelAgentGroupAgentImportance(
     carm_text = "carmen"
     patr_text = "patrick"
     sele_text = "selena"
-    a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(rico_text)))
-    a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(carm_text)))
-    a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(patr_text)))
+    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(rico_text)))
+    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
+    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
     blink_rico = grouplink_shop(name=rico_text, creditor_weight=20, debtor_weight=6)
     blink_carm = grouplink_shop(name=carm_text, creditor_weight=10, debtor_weight=1)
     blink_patr = grouplink_shop(name=patr_text, creditor_weight=10)
@@ -265,7 +267,7 @@ def test_agent_get_idea_list_CorrectlyCalculates1LevelAgentGroupAgentImportance(
     assert group_rico._agent_debt + group_carm._agent_debt + group_patr._agent_debt == 1
 
     # WHEN
-    a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(sele_text)))
+    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(sele_text)))
     bl_sele = grouplink_shop(name=sele_text, creditor_weight=37)
     a_x._idearoot.set_grouplink(grouplink=bl_sele)
     assert len(a_x._groups) == 4
@@ -307,9 +309,9 @@ def test_agent_get_idea_list_CorrectlyCalculates3levelAgentGroupAgentImportance(
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(rico_text)))
-    a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(carm_text)))
-    a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(patr_text)))
+    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(rico_text)))
+    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
+    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
     rico_grouplink = grouplink_shop(name=rico_text, creditor_weight=20, debtor_weight=6)
     carm_grouplink = grouplink_shop(name=carm_text, creditor_weight=10, debtor_weight=1)
     parm_grouplink = grouplink_shop(name=patr_text, creditor_weight=10)
@@ -348,9 +350,9 @@ def test_agent_get_idea_list_CorrectlyCalculatesGroupAgentImportanceLWwithGroupE
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(rico_text)))
-    a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(carm_text)))
-    a_x.set_allyunit(allyunit=allyunit_shop(name=AllyName(patr_text)))
+    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(rico_text)))
+    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
+    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
     rico_grouplink = grouplink_shop(name=rico_text, creditor_weight=20, debtor_weight=6)
     carm_grouplink = grouplink_shop(name=carm_text, creditor_weight=10, debtor_weight=1)
     parm_grouplink = grouplink_shop(name=patr_text, creditor_weight=10)
@@ -411,17 +413,17 @@ def test_agent_edit_groupunit_name_CorrectlyCreatesNewName():
     # GIVEN
     sx = AgentUnit(_desc="prom")
     rico_text = "rico"
-    sx.add_allyunit(name=rico_text)
+    sx.add_memberunit(name=rico_text)
     swim_text = "swim"
     swim_group = groupunit_shop(name=swim_text, uid=13)
-    swim_group.set_allylink(allylink=allylink_shop(name=rico_text))
+    swim_group.set_memberlink(memberlink=memberlink_shop(name=rico_text))
     sx.set_groupunit(swim_group)
-    assert len(sx._allys) == 1
+    assert len(sx._members) == 1
     assert len(sx._groups) == 2
     assert sx._groups.get(swim_text) != None
     assert sx._groups.get(swim_text).uid == 13
-    assert sx._groups.get(swim_text)._single_ally == False
-    assert len(sx._groups.get(swim_text)._allys) == 1
+    assert sx._groups.get(swim_text)._single_member == False
+    assert len(sx._groups.get(swim_text)._members) == 1
 
     # WHEN
     jog_text = "jog"
@@ -433,17 +435,17 @@ def test_agent_edit_groupunit_name_CorrectlyCreatesNewName():
     assert sx._groups.get(jog_text) != None
     assert sx._groups.get(jog_text).uid == 13
     assert sx._groups.get(swim_text) is None
-    assert len(sx._allys) == 1
+    assert len(sx._members) == 1
     assert len(sx._groups) == 2
-    assert sx._groups.get(jog_text)._single_ally == False
-    assert len(sx._groups.get(jog_text)._allys) == 1
+    assert sx._groups.get(jog_text)._single_member == False
+    assert len(sx._groups.get(jog_text)._members) == 1
 
 
 def test_agent_edit_groupunit_name_raiseErrorNewNameAlreadyExists():
     # GIVEN
     sx = AgentUnit(_desc="prom")
     rico_text = "rico"
-    sx.add_allyunit(name=rico_text)
+    sx.add_memberunit(name=rico_text)
     swim_text = "swim"
     sx.set_groupunit(groupunit_shop(name=swim_text, uid=13))
     jog_text = "jog"
@@ -466,20 +468,20 @@ def test_agent_edit_groupunit_name_CorrectlyMeldNames():
     # GIVEN
     sx = AgentUnit(_desc="prom")
     rico_text = "rico"
-    sx.add_allyunit(name=rico_text)
+    sx.add_memberunit(name=rico_text)
     swim_text = "swim"
     swim_group = groupunit_shop(name=swim_text, uid=13)
-    swim_group.set_allylink(
-        allylink=allylink_shop(name=rico_text, creditor_weight=5, debtor_weight=3)
+    swim_group.set_memberlink(
+        memberlink=memberlink_shop(name=rico_text, creditor_weight=5, debtor_weight=3)
     )
     sx.set_groupunit(swim_group)
     jog_text = "jog"
     jog_group = groupunit_shop(name=jog_text, uid=13)
-    jog_group.set_allylink(
-        allylink=allylink_shop(name=rico_text, creditor_weight=7, debtor_weight=10)
+    jog_group.set_memberlink(
+        memberlink=memberlink_shop(name=rico_text, creditor_weight=7, debtor_weight=10)
     )
     sx.set_groupunit(jog_group)
-    print(f"{sx._groups.get(jog_text)._allys.get(rico_text)=}")
+    print(f"{sx._groups.get(jog_text)._members.get(rico_text)=}")
     assert sx._groups.get(jog_text) != None
     assert sx._groups.get(jog_text).uid == 13
 
@@ -493,19 +495,19 @@ def test_agent_edit_groupunit_name_CorrectlyMeldNames():
     # THEN
     assert sx._groups.get(jog_text) != None
     assert sx._groups.get(swim_text) is None
-    assert len(sx._allys) == 1
+    assert len(sx._members) == 1
     assert len(sx._groups) == 2
-    assert sx._groups.get(jog_text)._single_ally == False
-    assert len(sx._groups.get(jog_text)._allys) == 1
-    assert sx._groups.get(jog_text)._allys.get(rico_text).creditor_weight == 12
-    assert sx._groups.get(jog_text)._allys.get(rico_text).debtor_weight == 13
+    assert sx._groups.get(jog_text)._single_member == False
+    assert len(sx._groups.get(jog_text)._members) == 1
+    assert sx._groups.get(jog_text)._members.get(rico_text).creditor_weight == 12
+    assert sx._groups.get(jog_text)._members.get(rico_text).debtor_weight == 13
 
 
 def test_agent_edit_groupUnit_name_CorrectlyChangesGroupLinks():
     # GIVEN
     a_x = AgentUnit(_desc="prom")
     rico_text = "rico"
-    a_x.add_allyunit(name=rico_text)
+    a_x.add_memberunit(name=rico_text)
     swim_text = "swim"
     swim_groupunit = groupunit_shop(name=swim_text, uid=13)
     a_x.set_groupunit(swim_groupunit)
@@ -541,7 +543,7 @@ def test_agent_edit_groupUnit_name_CorrectlyMeldsGroupLinesGroupLinksGroupHeirs(
     # GIVEN
     a_x = AgentUnit(_desc="prom")
     rico_text = "rico"
-    a_x.add_allyunit(name=rico_text)
+    a_x.add_memberunit(name=rico_text)
     swim_text = "swim"
     swim_groupunit = groupunit_shop(name=swim_text, uid=13)
     a_x.set_groupunit(swim_groupunit)
@@ -609,7 +611,7 @@ def test_agent_add_idea_CreatesMissingGroups():
     # THEN
     assert len(a_x._groups) == 1
     assert a_x._groups.get(family_text) != None
-    assert a_x._groups.get(family_text)._allys in (None, {})
+    assert a_x._groups.get(family_text)._members in (None, {})
 
 
 def test_agent_add_idea_DoesNotOverwriteGroups():
@@ -626,14 +628,14 @@ def test_agent_add_idea_DoesNotOverwriteGroups():
     clean_kitchen_idea.set_grouplink(grouplink=grouplink_z)
 
     groupunit_z = groupunit_shop(name=family_text)
-    groupunit_z.set_allylink(allylink=allylink_shop(name="ann1"))
-    groupunit_z.set_allylink(allylink=allylink_shop(name="bet1"))
+    groupunit_z.set_memberlink(memberlink=memberlink_shop(name="ann1"))
+    groupunit_z.set_memberlink(memberlink=memberlink_shop(name="bet1"))
     a_x.set_groupunit(groupunit=groupunit_z)
 
     # assert len(a_x._groups) == 0
     # assert a_x._groups.get(family_text) is None
     assert len(a_x._groups) == 1
-    assert len(a_x._groups.get(family_text)._allys) == 2
+    assert len(a_x._groups.get(family_text)._members) == 2
 
     # WHEN
     a_x.add_idea(
@@ -645,103 +647,103 @@ def test_agent_add_idea_DoesNotOverwriteGroups():
     # THEN
 
     # assert len(a_x._groups) == 1
-    # assert len(a_x._groups.get(family_text)._allys) == 0
+    # assert len(a_x._groups.get(family_text)._members) == 0
     # groupunit_z = groupunit_shop(name=family_text)
-    # groupunit_z.set_allylink(allylink=allylink_shop(name="ann2"))
-    # groupunit_z.set_allylink(allylink=allylink_shop(name="bet2"))
+    # groupunit_z.set_memberlink(memberlink=memberlink_shop(name="ann2"))
+    # groupunit_z.set_memberlink(memberlink=memberlink_shop(name="bet2"))
     # a_x.set_groupunit(groupunit=groupunit_z)
 
     assert len(a_x._groups) == 1
-    assert len(a_x._groups.get(family_text)._allys) == 2
+    assert len(a_x._groups.get(family_text)._members) == 2
 
 
-def test_agent_set_groupunits_create_missing_allys_DoesCreateMissingAllys():
+def test_agent_set_groupunits_create_missing_members_DoesCreateMissingMembers():
     # GIVEN
     src_text = "src"
     a_x = AgentUnit(_desc=src_text)
-    a_x.set_allys_empty_if_null()
+    a_x.set_members_empty_if_null()
     a_x.set_groupunits_empty_if_null()
     family_text = "family"
     anna_text = "anna"
     beto_text = "beto"
     groupunit_z = groupunit_shop(name=family_text)
-    groupunit_z.set_allylink(
-        allylink=allylink_shop(name=anna_text, creditor_weight=3, debtor_weight=7)
+    groupunit_z.set_memberlink(
+        memberlink=memberlink_shop(name=anna_text, creditor_weight=3, debtor_weight=7)
     )
-    groupunit_z.set_allylink(
-        allylink=allylink_shop(name=beto_text, creditor_weight=5, debtor_weight=11)
+    groupunit_z.set_memberlink(
+        memberlink=memberlink_shop(name=beto_text, creditor_weight=5, debtor_weight=11)
     )
 
-    assert groupunit_z._allys.get(anna_text).creditor_weight == 3
-    assert groupunit_z._allys.get(anna_text).debtor_weight == 7
+    assert groupunit_z._members.get(anna_text).creditor_weight == 3
+    assert groupunit_z._members.get(anna_text).debtor_weight == 7
 
-    assert groupunit_z._allys.get(beto_text).creditor_weight == 5
-    assert groupunit_z._allys.get(beto_text).debtor_weight == 11
+    assert groupunit_z._members.get(beto_text).creditor_weight == 5
+    assert groupunit_z._members.get(beto_text).debtor_weight == 11
 
-    assert len(a_x._allys) == 0
+    assert len(a_x._members) == 0
     assert len(a_x._groups) == 0
 
     # WHEN
-    a_x.set_groupunit(groupunit=groupunit_z, create_missing_allys=True)
+    a_x.set_groupunit(groupunit=groupunit_z, create_missing_members=True)
 
     # THEN
-    assert len(a_x._allys) == 2
+    assert len(a_x._members) == 2
     assert len(a_x._groups) == 3
-    assert a_x._allys.get(anna_text).creditor_weight == 3
-    assert a_x._allys.get(anna_text).debtor_weight == 7
+    assert a_x._members.get(anna_text).creditor_weight == 3
+    assert a_x._members.get(anna_text).debtor_weight == 7
 
-    assert a_x._allys.get(beto_text).creditor_weight == 5
-    assert a_x._allys.get(beto_text).debtor_weight == 11
+    assert a_x._members.get(beto_text).creditor_weight == 5
+    assert a_x._members.get(beto_text).debtor_weight == 11
 
 
-def test_agent_set_groupunits_create_missing_allys_DoesNotReplaceAllys():
+def test_agent_set_groupunits_create_missing_members_DoesNotReplaceMembers():
     # GIVEN
     src_text = "src"
     a_x = AgentUnit(_desc=src_text)
-    a_x.set_allys_empty_if_null()
+    a_x.set_members_empty_if_null()
     family_text = "family"
     anna_text = "anna"
     beto_text = "beto"
-    a_x.set_allyunit(
-        allyunit_shop(name=anna_text, creditor_weight=17, debtor_weight=88)
+    a_x.set_memberunit(
+        memberunit_shop(name=anna_text, creditor_weight=17, debtor_weight=88)
     )
-    a_x.set_allyunit(
-        allyunit_shop(name=beto_text, creditor_weight=46, debtor_weight=71)
+    a_x.set_memberunit(
+        memberunit_shop(name=beto_text, creditor_weight=46, debtor_weight=71)
     )
     groupunit_z = groupunit_shop(name=family_text)
-    groupunit_z.set_allylink(
-        allylink=allylink_shop(name=anna_text, creditor_weight=3, debtor_weight=7)
+    groupunit_z.set_memberlink(
+        memberlink=memberlink_shop(name=anna_text, creditor_weight=3, debtor_weight=7)
     )
-    groupunit_z.set_allylink(
-        allylink=allylink_shop(name=beto_text, creditor_weight=5, debtor_weight=11)
+    groupunit_z.set_memberlink(
+        memberlink=memberlink_shop(name=beto_text, creditor_weight=5, debtor_weight=11)
     )
 
-    assert groupunit_z._allys.get(anna_text).creditor_weight == 3
-    assert groupunit_z._allys.get(anna_text).debtor_weight == 7
-    assert groupunit_z._allys.get(beto_text).creditor_weight == 5
-    assert groupunit_z._allys.get(beto_text).debtor_weight == 11
-    assert len(a_x._allys) == 2
-    assert a_x._allys.get(anna_text).creditor_weight == 17
-    assert a_x._allys.get(anna_text).debtor_weight == 88
-    assert a_x._allys.get(beto_text).creditor_weight == 46
-    assert a_x._allys.get(beto_text).debtor_weight == 71
+    assert groupunit_z._members.get(anna_text).creditor_weight == 3
+    assert groupunit_z._members.get(anna_text).debtor_weight == 7
+    assert groupunit_z._members.get(beto_text).creditor_weight == 5
+    assert groupunit_z._members.get(beto_text).debtor_weight == 11
+    assert len(a_x._members) == 2
+    assert a_x._members.get(anna_text).creditor_weight == 17
+    assert a_x._members.get(anna_text).debtor_weight == 88
+    assert a_x._members.get(beto_text).creditor_weight == 46
+    assert a_x._members.get(beto_text).debtor_weight == 71
 
     # WHEN
-    a_x.set_groupunit(groupunit=groupunit_z, create_missing_allys=True)
+    a_x.set_groupunit(groupunit=groupunit_z, create_missing_members=True)
 
     # THEN
-    assert len(a_x._allys) == 2
-    assert a_x._allys.get(anna_text).creditor_weight == 17
-    assert a_x._allys.get(anna_text).debtor_weight == 88
-    assert a_x._allys.get(beto_text).creditor_weight == 46
-    assert a_x._allys.get(beto_text).debtor_weight == 71
+    assert len(a_x._members) == 2
+    assert a_x._members.get(anna_text).creditor_weight == 17
+    assert a_x._members.get(anna_text).debtor_weight == 88
+    assert a_x._members.get(beto_text).creditor_weight == 46
+    assert a_x._members.get(beto_text).debtor_weight == 71
 
 
 def test_agent_get_groupunits_dict_CorrectlyReturnsDictOfGroups():
     # GIVEN
     src_text = "src"
     sx = AgentUnit(_desc=src_text)
-    sx.set_allys_empty_if_null()
+    sx.set_members_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
     fly_text = "fly"
@@ -765,7 +767,7 @@ def test_agent_set_all_groupunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
     # GIVEN
     src_text = "src"
     sx = AgentUnit(_desc=src_text)
-    sx.set_allys_empty_if_null()
+    sx.set_members_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
     fly_text = "fly"
@@ -789,7 +791,7 @@ def test_agent_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs(
     # GIVEN
     src_text = "src"
     sx = AgentUnit(_desc=src_text)
-    sx.set_allys_empty_if_null()
+    sx.set_members_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
     fly_text = "fly"
@@ -816,7 +818,7 @@ def test_agent_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs(
     # GIVEN
     src_text = "src"
     sx = AgentUnit(_desc=src_text)
-    sx.set_allys_empty_if_null()
+    sx.set_members_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
     fly_text = "fly"
@@ -843,7 +845,7 @@ def test_agent_all_groupunits_uids_are_unique_ReturnsCorrectBoolean():
     # GIVEN
     src_text = "src"
     sx = AgentUnit(_desc=src_text)
-    sx.set_allys_empty_if_null()
+    sx.set_members_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
     fly_text = "fly"

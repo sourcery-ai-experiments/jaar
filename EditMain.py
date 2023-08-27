@@ -5,7 +5,7 @@ from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1
 from EditIdeaUnit import EditIdeaUnit
-from EditAlly import EditAlly
+from EditMember import EditMember
 from src.pyqt5_tools.pyqt_func import (
     lw_diplay,
     get_pyqttree,
@@ -28,9 +28,9 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.setupUi(self)
         self.refresh_button.clicked.connect(self.refresh_all)
         self.baseideaunit.itemClicked.connect(self.open_editideaunit)
-        self.ally_list.itemClicked.connect(self.open_edit_ally)
+        self.member_list.itemClicked.connect(self.open_edit_member)
         self.close_button.clicked.connect(self.close)
-        self.open_groupedit_button.clicked.connect(self.open_edit_ally)
+        self.open_groupedit_button.clicked.connect(self.open_edit_member)
 
         # self.acptfacts_table.itemClicked.connect(self.acptfact_base_combo_set)
         self.acptfacts_table.setObjectName("Agent AcptFacts")
@@ -192,32 +192,32 @@ class EditMainView(qtw.QWidget, Ui_Form):
 
     def refresh_all(self):
         if self.agent_x != None:
-            self.refresh_ally_list()
+            self.refresh_member_list()
             self.refresh_idea_tree()
             self.acptfacts_table_load()
 
-    def refresh_ally_list(self):
-        # ally_list is qtw.QTableWidget()
-        self.ally_list.setObjectName("Ally Calculated Weight")
-        self.ally_list.setColumnCount(2)
-        self.ally_list.setColumnWidth(0, 170)
-        self.ally_list.setColumnWidth(1, 70)
-        self.ally_list.setHorizontalHeaderLabels(["Name", "LW Force"])
-        allys_list = list(self.agent_x._allys.values())
-        allys_list.sort(key=lambda x: x._agent_credit, reverse=True)
+    def refresh_member_list(self):
+        # member_list is qtw.QTableWidget()
+        self.member_list.setObjectName("Member Calculated Weight")
+        self.member_list.setColumnCount(2)
+        self.member_list.setColumnWidth(0, 170)
+        self.member_list.setColumnWidth(1, 70)
+        self.member_list.setHorizontalHeaderLabels(["Name", "LW Force"])
+        members_list = list(self.agent_x._members.values())
+        members_list.sort(key=lambda x: x._agent_credit, reverse=True)
 
-        for row, ally in enumerate(allys_list, start=1):
+        for row, member in enumerate(members_list, start=1):
             groups_count = 0
             for group in self.agent_x._groups.values():
-                for allylink in group._allys.values():
-                    if allylink.name == ally.name:
+                for memberlink in group._members.values():
+                    if memberlink.name == member.name:
                         groups_count += 1
 
-            qt_agent_credit = qtw.QTableWidgetItem(lw_diplay(ally._agent_credit))
+            qt_agent_credit = qtw.QTableWidgetItem(lw_diplay(member._agent_credit))
             qt_group = qtw.QTableWidgetItem(f"{groups_count}")
-            self.ally_list.setRowCount(row)
-            self.ally_list.setItem(row - 1, 0, qtw.QTableWidgetItem(ally.name))
-            self.ally_list.setItem(row - 1, 1, qt_agent_credit)
+            self.member_list.setRowCount(row)
+            self.member_list.setItem(row - 1, 0, qtw.QTableWidgetItem(member.name))
+            self.member_list.setItem(row - 1, 1, qt_agent_credit)
 
     def open_editideaunit(self):
         self.EditIdeaunit = EditIdeaUnit()
@@ -225,11 +225,11 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.EditIdeaunit.refresh_tree()
         self.EditIdeaunit.show()
 
-    def open_edit_ally(self):
-        self.edit_ally = EditAlly()
-        self.edit_ally.agent_x = self.agent_x
-        self.edit_ally.refresh_all()
-        self.edit_ally.show()
+    def open_edit_member(self):
+        self.edit_member = EditMember()
+        self.edit_member.agent_x = self.agent_x
+        self.edit_member.refresh_all()
+        self.edit_member.show()
 
     def refresh_idea_tree(self):
         tree_root = get_pyqttree(idearoot=self.agent_x._idearoot)

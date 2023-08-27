@@ -377,16 +377,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return x_list
 
-    def get_p_allys_list(self):
+    def get_p_members_list(self):
         x_list = []
         if self.person_dest_agent != None:
             x_list.extend(
                 [
-                    lw_diplay(allyunit._agent_importance),
-                    allyunit.name,
-                    allyunit.weight,
+                    lw_diplay(memberunit._agent_importance),
+                    memberunit.name,
+                    memberunit.weight,
                 ]
-                for allyunit in self.person_dest_agent._allys.values()
+                for memberunit in self.person_dest_agent._members.values()
             )
         return x_list
 
@@ -397,7 +397,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 [
                     lw_diplay(groupunit._agent_importance),
                     groupunit.name,
-                    len(groupunit._allys),
+                    len(groupunit._members),
                 ]
                 for groupunit in self.person_dest_agent._groups.values()
             )
@@ -501,18 +501,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             column_width=[50, 300, 50],
         )
 
-    def _sub_refresh_p_allys_table(self):
-        p_allys_list = self.get_p_allys_list()
+    def _sub_refresh_p_members_table(self):
+        p_members_list = self.get_p_members_list()
         column_headers = [
             "agent_importance",
-            f"Allys ({len(p_allys_list)})",
+            f"Members ({len(p_members_list)})",
             "Weight",
         ]
 
         self.refresh_x(
-            table_x=self.w_allys_table,
+            table_x=self.w_members_table,
             column_header=column_headers,
-            populate_list=p_allys_list,
+            populate_list=p_members_list,
             column_width=[50, 300, 50],
         )
 
@@ -521,7 +521,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         column_headers = [
             "agent_importance",
             f"groups ({len(p_groups_list)})",
-            "Allys",
+            "Members",
         ]
 
         self.refresh_x(
@@ -576,7 +576,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.person_x.get_dest_agent_from_digest_agent_files()
             )
         self._sub_refresh_p_ideas_table()
-        self._sub_refresh_p_allys_table()
+        self._sub_refresh_p_members_table()
         self._sub_refresh_p_groups_table()
         self._sub_refresh_p_acptfacts_table()
         self._sub_refresh_p_agenda_table()

@@ -1,5 +1,5 @@
 from src.agent.examples.example_agents import agent_v001 as example_agents_agent_v001
-from src.agent.ally import AllyName, allyunit_shop
+from src.agent.member import MemberName, memberunit_shop
 from src.agent.group import GroupName, grouplink_shop, groupunit_shop
 from src.agent.agent import AgentUnit
 
@@ -37,13 +37,13 @@ def test_agent_3AdvocatesNoIdeaKid():
     patr_text = "patrick"
 
     a_x = AgentUnit(_desc="prom")
-    au_rico = allyunit_shop(name=rico_text, uid=7)
-    au_carm = allyunit_shop(name=carm_text, uid=2)
-    au_patr = allyunit_shop(name=patr_text, uid=13)
+    au_rico = memberunit_shop(name=rico_text, uid=7)
+    au_carm = memberunit_shop(name=carm_text, uid=2)
+    au_patr = memberunit_shop(name=patr_text, uid=13)
     # print(f"{rico=}")
-    a_x.set_allyunit(allyunit=au_rico)
-    a_x.set_allyunit(allyunit=au_carm)
-    a_x.set_allyunit(allyunit=au_patr)
+    a_x.set_memberunit(memberunit=au_rico)
+    a_x.set_memberunit(memberunit=au_carm)
+    a_x.set_memberunit(memberunit=au_patr)
     a_x._idearoot.set_grouplink(
         grouplink=grouplink_shop(name=GroupName(rico_text), creditor_weight=10)
     )
@@ -55,13 +55,13 @@ def test_agent_3AdvocatesNoIdeaKid():
     )
 
     # WHEN
-    assert a_x.get_allys_metrics() != None
-    allys_metrics = a_x.get_allys_metrics()
+    assert a_x.get_members_metrics() != None
+    members_metrics = a_x.get_members_metrics()
 
     # THEN
-    grouplink_rico = allys_metrics[rico_text]
-    grouplink_carm = allys_metrics[carm_text]
-    grouplink_patr = allys_metrics[patr_text]
+    grouplink_rico = members_metrics[rico_text]
+    grouplink_carm = members_metrics[carm_text]
+    grouplink_patr = members_metrics[patr_text]
     assert grouplink_rico.name != None
     assert grouplink_carm.name != None
     assert grouplink_patr.name != None
@@ -72,24 +72,24 @@ def test_agent_3AdvocatesNoIdeaKid():
     groupunit_rico = all_groups[rico_text]
     groupunit_carm = all_groups[carm_text]
     groupunit_patr = all_groups[patr_text]
-    assert groupunit_rico._single_ally == True
-    assert groupunit_carm._single_ally == True
-    assert groupunit_patr._single_ally == True
+    assert groupunit_rico._single_member == True
+    assert groupunit_carm._single_member == True
+    assert groupunit_patr._single_member == True
 
 
-def test_agent_get_allyunits_uid_max_WorksCorrectly():
+def test_agent_get_memberunits_uid_max_WorksCorrectly():
     # GIVEN
     rico_text = "rico"
     carr_text = "carmen"
     patr_text = "patrick"
 
     lw_x = AgentUnit(_desc="prom")
-    lw_x.set_allyunit(allyunit=allyunit_shop(name=rico_text, uid=4))
-    lw_x.set_allyunit(allyunit=allyunit_shop(name=carr_text, uid=13))
-    lw_x.set_allyunit(allyunit=allyunit_shop(name=patr_text, uid=7))
+    lw_x.set_memberunit(memberunit=memberunit_shop(name=rico_text, uid=4))
+    lw_x.set_memberunit(memberunit=memberunit_shop(name=carr_text, uid=13))
+    lw_x.set_memberunit(memberunit=memberunit_shop(name=patr_text, uid=7))
 
     # WHEN/THEN
-    assert lw_x.get_allyunits_uid_max() == 13
+    assert lw_x.get_memberunits_uid_max() == 13
 
 
 def test_agent_get_groupunits_uid_max_WorksCorrectly():

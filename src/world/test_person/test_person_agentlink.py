@@ -187,16 +187,16 @@ def test_personunit_delete_agentlink_CorrectlyDoesNotDeletesIgnoreFile(
 #     px._set_src_agentlinks(agent_desc=swim_text, link_type="ignore")
 #     assert x_func_count_files(dir_path=px._ignore_agents_dir) == 1
 #     cx1 = px.get_ignore_agent_from_ignore_agent_files(_desc=swim_text)
-#     assert len(cx1._allys) == 0
-#     cx1.add_allyunit(name="tim")
-#     assert len(cx1._allys) == 1
+#     assert len(cx1._members) == 0
+#     cx1.add_memberunit(name="tim")
+#     assert len(cx1._members) == 1
 
 #     # WHEN
 #     px.set_ignore_agent_file()
 
 #     # THEN
 #     cx2 = px.get_ignore_agent_from_ignore_agent_files(_desc=swim_text)
-#     assert len(cx2._allys) == 0
+#     assert len(cx2._members) == 0
 
 #     assert x_func_count_files(dir_path=px._ignore_agents_dir) == 1
 

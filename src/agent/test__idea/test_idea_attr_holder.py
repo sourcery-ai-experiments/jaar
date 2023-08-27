@@ -27,8 +27,8 @@ def test_idea_attr_holder_exists():
     assert new_obj.problem_bool is None
     assert new_obj.acptfactunit is None
     assert new_obj.descendant_promise_count is None
-    assert new_obj.all_ally_credit is None
-    assert new_obj.all_ally_debt is None
+    assert new_obj.all_member_credit is None
+    assert new_obj.all_member_debt is None
     assert new_obj.grouplink is None
     assert new_obj.grouplink_del is None
     assert new_obj.is_expanded is None

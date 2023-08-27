@@ -75,8 +75,8 @@ class IdeaAttrHolder:
     problem_bool: bool = None
     acptfactunit: AcptFactUnit = None
     descendant_promise_count: int = None
-    all_ally_credit: bool = None
-    all_ally_debt: bool = None
+    all_member_credit: bool = None
+    all_member_debt: bool = None
     grouplink: GroupLink = None
     grouplink_del: GroupName = None
     is_expanded: bool = None
@@ -134,8 +134,8 @@ class IdeaCore:
     _active_status: bool = None
     _ancestor_promise_count: int = None
     _descendant_promise_count: int = None
-    _all_ally_credit: bool = None
-    _all_ally_debt: bool = None
+    _all_member_credit: bool = None
+    _all_member_debt: bool = None
     _is_expanded: bool = True
     _active_status: bool = None
     _sibling_total_weight: int = None
@@ -310,9 +310,9 @@ class IdeaCore:
         if self._descendant_promise_count is None:
             self._descendant_promise_count = 0
 
-    def clear_all_ally_credit_debt(self):
-        self._all_ally_credit = None
-        self._all_ally_debt = None
+    def clear_all_member_credit_debt(self):
+        self._all_member_credit = None
+        self._all_member_debt = None
 
     def set_ancestor_promise_count(
         self, parent_ancestor_promise_count: int, parent_promise: bool
@@ -532,10 +532,10 @@ class IdeaCore:
             self._special_road = idea_attr.special_road
         if idea_attr.descendant_promise_count != None:
             self._descendant_promise_count = idea_attr.descendant_promise_count
-        if idea_attr.all_ally_credit != None:
-            self._all_ally_credit = idea_attr.all_ally_credit
-        if idea_attr.all_ally_debt != None:
-            self._all_ally_debt = idea_attr.all_ally_debt
+        if idea_attr.all_member_credit != None:
+            self._all_member_credit = idea_attr.all_member_credit
+        if idea_attr.all_member_debt != None:
+            self._all_member_debt = idea_attr.all_member_debt
         if idea_attr.grouplink != None:
             self.set_grouplink(grouplink=idea_attr.grouplink)
         if idea_attr.grouplink_del != None:

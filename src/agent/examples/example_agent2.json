@@ -56,12 +56,12 @@
         }
     },
     "_addin": null,
-    "_allys": {
+    "_members": {
         "A a ron Jones": {
             "_creditor_active": null,
             "_debtor_active": null,
             "debtor_weight": 1,
-            "allyrings": {},
+            "memberrings": {},
             "creditor_weight": 1,
             "external_name": "A a ron Jones",
             "name": "A a ron Jones",
@@ -80,7 +80,7 @@
             "_creditor_active": null,
             "_debtor_active": null,
             "debtor_weight": 1,
-            "allyrings": {},
+            "memberrings": {},
             "creditor_weight": 1,
             "external_name": "Anna",
             "name": "Anna",
@@ -90,7 +90,7 @@
             "_creditor_active": null,
             "_debtor_active": null,
             "debtor_weight": 1,
-            "allyrings": {},
+            "memberrings": {},
             "creditor_weight": 1,
             "external_name": "Benjamin Stoddert",
             "name": "Benjamin Stoddert",
@@ -100,7 +100,7 @@
             "_creditor_active": null,
             "_debtor_active": null,
             "debtor_weight": 1,
-            "allyrings": {},
+            "memberrings": {},
             "creditor_weight": 1,
             "external_name": "Bob302",
             "name": "Bob302",
@@ -110,7 +110,7 @@
             "_creditor_active": null,
             "_debtor_active": null,
             "debtor_weight": 1,
-            "allyrings": {},
+            "memberrings": {},
             "creditor_weight": 1,
             "external_name": "Charles Lee",
             "name": "Charles Lee",
@@ -120,7 +120,7 @@
             "_creditor_active": null,
             "_debtor_active": null,
             "debtor_weight": 1,
-            "allyrings": {},
+            "memberrings": {},
             "creditor_weight": 1,
             "external_name": "Ernesto Chavez",
             "name": "Ernesto Chavez",
@@ -130,7 +130,7 @@
             "_creditor_active": null,
             "_debtor_active": null,
             "debtor_weight": 1,
-            "allyrings": {},
+            "memberrings": {},
             "creditor_weight": 1,
             "external_name": "Jacque Chirac",
             "name": "Jacque Chirac",
@@ -140,7 +140,7 @@
             "_creditor_active": null,
             "_debtor_active": null,
             "debtor_weight": 1,
-            "allyrings": {},
+            "memberrings": {},
             "creditor_weight": 1,
             "external_name": "Jane Randolph",
             "name": "Jane Randolph",
@@ -150,7 +150,7 @@
             "_creditor_active": null,
             "_debtor_active": null,
             "debtor_weight": 1,
-            "allyrings": {},
+            "memberrings": {},
             "creditor_weight": 1,
             "external_name": "Maria Reynolds",
             "name": "Maria Reynolds",
@@ -160,7 +160,7 @@
             "_creditor_active": null,
             "_debtor_active": null,
             "debtor_weight": 1,
-            "allyrings": {},
+            "memberrings": {},
             "creditor_weight": 1,
             "external_name": "Mark Reynolds",
             "name": "Mark Reynolds",
@@ -170,7 +170,7 @@
             "_creditor_active": null,
             "_debtor_active": null,
             "debtor_weight": 1,
-            "allyrings": {},
+            "memberrings": {},
             "creditor_weight": 1,
             "external_name": "Martha Wayles",
             "name": "Martha Wayles",
@@ -180,7 +180,7 @@
             "_creditor_active": null,
             "_debtor_active": null,
             "debtor_weight": 1,
-            "allyrings": {},
+            "memberrings": {},
             "creditor_weight": 1,
             "external_name": "Mikayla",
             "name": "Mikayla",
@@ -190,7 +190,7 @@
             "_creditor_active": null,
             "_debtor_active": null,
             "debtor_weight": 1,
-            "allyrings": {},
+            "memberrings": {},
             "creditor_weight": 1,
             "external_name": {},
             "name": "Norberto",
@@ -200,7 +200,7 @@
             "_creditor_active": null,
             "_debtor_active": null,
             "debtor_weight": 1,
-            "allyrings": {},
+            "memberrings": {},
             "creditor_weight": 1,
             "external_name": "Perrison",
             "name": "Perrison",
@@ -210,7 +210,7 @@
             "_creditor_active": null,
             "_debtor_active": null,
             "debtor_weight": 1,
-            "allyrings": {},
+            "memberrings": {},
             "creditor_weight": 1,
             "external_name": "Philipa",
             "name": "Philipa",
@@ -220,7 +220,7 @@
             "_creditor_active": null,
             "_debtor_active": null,
             "debtor_weight": 1,
-            "allyrings": {},
+            "memberrings": {},
             "creditor_weight": 1,
             "external_name": "Prashant",
             "name": "Prashant",
@@ -230,7 +230,7 @@
             "_creditor_active": null,
             "_debtor_active": null,
             "debtor_weight": 1,
-            "allyrings": {},
+            "memberrings": {},
             "creditor_weight": 1,
             "external_name": "Renee Elise Goldsberry",
             "name": "Renee Elise Goldsberry",
@@ -240,7 +240,7 @@
             "_creditor_active": null,
             "_debtor_active": null,
             "debtor_weight": 1,
-            "allyrings": {},
+            "memberrings": {},
             "creditor_weight": 1,
             "external_name": "Shadwell Harris",
             "name": "Shadwell Harris",
@@ -250,7 +250,7 @@
             "_creditor_active": null,
             "_debtor_active": null,
             "debtor_weight": 1,
-            "allyrings": {},
+            "memberrings": {},
             "creditor_weight": 1,
             "external_name": "Thomas OSU",
             "name": "Thomas OSU",
@@ -260,7 +260,7 @@
             "_creditor_active": null,
             "_debtor_active": null,
             "debtor_weight": 1,
-            "allyrings": {},
+            "memberrings": {},
             "creditor_weight": 1,
             "external_name": "Travis Fox",
             "name": "Travis Fox",
@@ -270,7 +270,7 @@
             "_creditor_active": null,
             "_debtor_active": null,
             "debtor_weight": 1,
-            "allyrings": {},
+            "memberrings": {},
             "creditor_weight": 1,
             "external_name": "WIlliam Wallace",
             "name": "WIlliam Wallace",
@@ -281,20 +281,20 @@
     "_grouplinks": {},
     "_groups": {
         "A a ron Jones": {
-            "_allys": {
+            "_members": {
                 "A a ron Jones": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "A a ron Jones"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "A a ron Jones",
             "single_member_id": 21,
             "uid": 32
         },
         "ACME DevOps": {
-            "_allys": {
+            "_members": {
                 "Benjamin Stoddert": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
@@ -346,13 +346,13 @@
                     "name": "WIlliam Wallace"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "ACME DevOps",
             "single_member_id": null,
             "uid": 12
         },
         "ACME General": {
-            "_allys": {
+            "_members": {
                 "Benjamin Stoddert": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
@@ -374,78 +374,78 @@
                     "name": "Martha Wayles"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "ACME General",
             "single_member_id": null,
             "uid": 29
         },
         "America": {
-            "_allys": {
+            "_members": {
                 "America": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "America"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "America",
             "single_member_id": 1,
             "uid": 1
         },
         "Anna": {
-            "_allys": {
+            "_members": {
                 "Anna": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "Anna"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Anna",
             "single_member_id": 2,
             "uid": 2
         },
         "Benjamin Stoddert": {
-            "_allys": {
+            "_members": {
                 "Benjamin Stoddert": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "Benjamin Stoddert"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Benjamin Stoddert",
             "single_member_id": 14,
             "uid": 23
         },
         "Bob302": {
-            "_allys": {
+            "_members": {
                 "Bob302": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "Bob302"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Bob302",
             "single_member_id": 6,
             "uid": 6
         },
         "Charles Lee": {
-            "_allys": {
+            "_members": {
                 "Charles Lee": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "Charles Lee"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Charles Lee",
             "single_member_id": 13,
             "uid": 22
         },
         "Climate Change": {
-            "_allys": {
+            "_members": {
                 "Philipa": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
@@ -462,26 +462,26 @@
                     "name": "Thomas OSU"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Climate Change",
             "single_member_id": null,
             "uid": 20
         },
         "Ernesto Chavez": {
-            "_allys": {
+            "_members": {
                 "Ernesto Chavez": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "Ernesto Chavez"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Ernesto Chavez",
             "single_member_id": 10,
             "uid": 10
         },
         "Everyone": {
-            "_allys": {
+            "_members": {
                 "A a ron Jones": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
@@ -593,13 +593,13 @@
                     "name": "WIlliam Wallace"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Everyone",
             "single_member_id": null,
             "uid": 15
         },
         "Family": {
-            "_allys": {
+            "_members": {
                 "America": {
                     "creditor_weight": 6.45,
                     "debtor_weight": 1,
@@ -616,13 +616,13 @@
                     "name": "Travis Fox"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Family",
             "single_member_id": null,
             "uid": 13
         },
         "Friends": {
-            "_allys": {
+            "_members": {
                 "America": {
                     "creditor_weight": 6.1,
                     "debtor_weight": 1,
@@ -639,52 +639,52 @@
                     "name": "Renee Elise Goldsberry"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Friends",
             "single_member_id": null,
             "uid": 14
         },
         "hurt by us dollar": {
-            "_allys": {
+            "_members": {
                 "Renee Elise Goldsberry": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "Renee Elise Goldsberry"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "hurt by us dollar",
             "single_member_id": null,
             "uid": 30
         },
         "Jacque Chirac": {
-            "_allys": {
+            "_members": {
                 "Jacque Chirac": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "Jacque Chirac"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Jacque Chirac",
             "single_member_id": 20,
             "uid": 31
         },
         "Jane Randolph": {
-            "_allys": {
+            "_members": {
                 "Jane Randolph": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "Jane Randolph"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Jane Randolph",
             "single_member_id": 17,
             "uid": 26
         },
         "likes US DOLLAR": {
-            "_allys": {
+            "_members": {
                 "Bob302": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
@@ -706,78 +706,78 @@
                     "name": "Renee Elise Goldsberry"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "likes US DOLLAR",
             "single_member_id": null,
             "uid": 16
         },
         "Maria Reynolds": {
-            "_allys": {
+            "_members": {
                 "Maria Reynolds": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "Maria Reynolds"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Maria Reynolds",
             "single_member_id": 7,
             "uid": 7
         },
         "Mark Reynolds": {
-            "_allys": {
+            "_members": {
                 "Mark Reynolds": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "Mark Reynolds"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Mark Reynolds",
             "single_member_id": 16,
             "uid": 25
         },
         "Martha Wayles": {
-            "_allys": {
+            "_members": {
                 "Martha Wayles": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "Martha Wayles"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Martha Wayles",
             "single_member_id": 15,
             "uid": 24
         },
         "Mikayla": {
-            "_allys": {
+            "_members": {
                 "Mikayla": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "Mikayla"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Mikayla",
             "single_member_id": 12,
             "uid": 21
         },
         "Norberto": {
-            "_allys": {
+            "_members": {
                 "Norberto": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "Norberto"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Norberto",
             "single_member_id": 22,
             "uid": 33
         },
         "OceanView Apt": {
-            "_allys": {
+            "_members": {
                 "A a ron Jones": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
@@ -794,52 +794,52 @@
                     "name": "Norberto"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "OceanView Apt",
             "single_member_id": null,
             "uid": 34
         },
         "People who care about UTEP": {
-            "_allys": {
+            "_members": {
                 "Renee Elise Goldsberry": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "Renee Elise Goldsberry"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "People who care about UTEP",
             "single_member_id": null,
             "uid": 18
         },
         "Perrison": {
-            "_allys": {
+            "_members": {
                 "Perrison": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "Perrison"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Perrison",
             "single_member_id": 9,
             "uid": 9
         },
         "Philipa": {
-            "_allys": {
+            "_members": {
                 "Philipa": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "Philipa"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Philipa",
             "single_member_id": 5,
             "uid": 5
         },
         "Philosophy": {
-            "_allys": {
+            "_members": {
                 "Ernesto Chavez": {
                     "creditor_weight": 6.5,
                     "debtor_weight": 1,
@@ -861,98 +861,98 @@
                     "name": "Renee Elise Goldsberry"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Philosophy",
             "single_member_id": null,
             "uid": 11
         },
         "Prashant": {
-            "_allys": {
+            "_members": {
                 "Prashant": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "Prashant"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Prashant",
             "single_member_id": 8,
             "uid": 8
         },
         "Renee Elise Goldsberry": {
-            "_allys": {
+            "_members": {
                 "Renee Elise Goldsberry": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "Renee Elise Goldsberry"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Renee Elise Goldsberry",
             "single_member_id": 4,
             "uid": 4
         },
         "Shadwell Harris": {
-            "_allys": {
+            "_members": {
                 "Shadwell Harris": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "Shadwell Harris"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Shadwell Harris",
             "single_member_id": 18,
             "uid": 27
         },
         "SHOW ME2": {
-            "_allys": {
+            "_members": {
                 "Renee Elise Goldsberry": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "Renee Elise Goldsberry"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "SHOW ME2",
             "single_member_id": null,
             "uid": 17
         },
         "Thomas OSU": {
-            "_allys": {
+            "_members": {
                 "Thomas OSU": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "Thomas OSU"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Thomas OSU",
             "single_member_id": 11,
             "uid": 19
         },
         "Travis Fox": {
-            "_allys": {
+            "_members": {
                 "Travis Fox": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "Travis Fox"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "Travis Fox",
             "single_member_id": 3,
             "uid": 3
         },
         "WIlliam Wallace": {
-            "_allys": {
+            "_members": {
                 "WIlliam Wallace": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
                     "name": "WIlliam Wallace"
                 }
             },
-            "_single_ally": false,
+            "_single_member": false,
             "name": "WIlliam Wallace",
             "single_member_id": 19,
             "uid": 28

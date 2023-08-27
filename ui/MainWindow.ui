@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Agents /  Ally /  dimension</string>
+     <string>Agents /  Member /  dimension</string>
     </property>
    </widget>
    <widget class="QPushButton" name="acptfact_open_lower_spec1">
@@ -167,7 +167,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Manually change</string>
+     <string>Manumember change</string>
     </property>
    </widget>
    <widget class="QPushButton" name="lobby_button">
