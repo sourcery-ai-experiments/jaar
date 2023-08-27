@@ -4,7 +4,7 @@ from os import path as os_path
 from src.world.examples.env_tools import (
     get_temp_env_name,
     get_test_worlds_dir,
-    rename_test_world,
+    rename_example_world,
     copy_test_world,
     env_dir_setup_cleanup,
 )
@@ -55,7 +55,7 @@ def test_world_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert e1.get_bank_db_path() == bank_file_path
 
 
-def test_rename_test_world_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup):
+def test_rename_example_world_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup):
     # GIVEN create world
     old_world_name = get_temp_env_name()
     old_world_dir = f"src/world/examples/worlds/{old_world_name}"
@@ -97,7 +97,7 @@ def test_rename_test_world_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup):
     assert e1.name != new_world_name
 
     # WHEN
-    rename_test_world(world_obj=e1, new_name=new_world_name)
+    rename_example_world(world_obj=e1, new_name=new_world_name)
 
     # THEN confirm agents src directory created
     assert os_path.exists(old_world_dir) is False

@@ -12,11 +12,11 @@ from PyQt5.QtWidgets import (
 )
 from src.world.world import WorldUnit
 from src.world.examples.env_tools import (
-    create_test_worlds_list,
+    create_example_worlds_list,
     setup_test_example_environment,
-    create_test_world,
-    delete_dir_test_world,
-    rename_test_world,
+    create_example_world,
+    delete_dir_example_world,
+    rename_example_world,
     get_test_worlds_dir,
 )
 from src.world.agentlink import get_agentlink_types, agentlink_shop
@@ -207,15 +207,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.digests_table.setHidden(False)
 
     def world_insert(self):
-        create_test_world(world_name=self.world_name.text())
+        create_example_world(world_name=self.world_name.text())
         self.world_name_combo_refresh()
 
     def world_update_name(self):
-        rename_test_world(world_obj=self.world_x, new_name=self.world_name.text())
+        rename_example_world(world_obj=self.world_x, new_name=self.world_name.text())
         self.world_name_combo_refresh()
 
     def world_delete(self):
-        delete_dir_test_world(world_obj=self.world_x)
+        delete_dir_example_world(world_obj=self.world_x)
         self.world_x = None
         self.world_name_combo_refresh()
         self.refresh_world()
@@ -559,7 +559,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def world_name_combo_refresh(self):
         self.world_name_combo.clear()
-        self.world_name_combo.addItems(create_test_worlds_list())
+        self.world_name_combo.addItems(create_example_worlds_list())
 
     def refresh_persons(self):
         self.person_x = None

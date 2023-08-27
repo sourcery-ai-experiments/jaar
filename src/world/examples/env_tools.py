@@ -20,7 +20,7 @@ from src.agent.agent import AgentUnit
 from src.world.person import personunit_shop
 from src.agent.x_func import (
     single_dir_create_if_null,
-    delete_dir,
+    delete_dir as x_func_delete_dir,
     copy_dir,
     save_file as x_func_save_file,
     open_file as x_func_open_file,
@@ -43,9 +43,9 @@ def get_test_worlds_dir():
 @pytest_fixture()
 def env_dir_setup_cleanup():
     env_dir = get_temp_env_dir()
-    delete_dir(dir=env_dir)
+    x_func_delete_dir(dir=env_dir)
     yield env_dir
-    delete_dir(dir=env_dir)
+    x_func_delete_dir(dir=env_dir)
 
 
 def create_agent_file_for_worlds(world_dir: str, agent_desc: str):
@@ -81,7 +81,7 @@ def get_test_worlds_dir():
     return "src/world/examples/worlds"
 
 
-def create_test_worlds_list():
+def create_example_worlds_list():
     return x_func_dir_files(
         dir_path=get_test_worlds_dir(), include_dirs=True, include_files=False
     )
@@ -97,7 +97,7 @@ def setup_test_example_environment():
 def _delete_and_set_ex3():
     world_name = "ex3"
     ex = WorldUnit(name=world_name, worlds_dir=get_test_worlds_dir())
-    delete_dir(ex.get_object_root_dir())
+    x_func_delete_dir(ex.get_object_root_dir())
     ex.create_dirs_if_null(in_memory_bank=True)
 
     ex.save_agentunit_obj_to_agents_dir(agent_x=example_persons_get_1node_agent())
@@ -150,7 +150,7 @@ def _delete_and_set_ex3():
 def _delete_and_set_ex4():
     world_name = "ex4"
     ex = WorldUnit(name=world_name, worlds_dir=get_test_worlds_dir())
-    delete_dir(ex.get_object_root_dir())
+    x_func_delete_dir(ex.get_object_root_dir())
     ex.create_dirs_if_null(in_memory_bank=True)
     ex.save_agentunit_obj_to_agents_dir(example_persons_get_7nodeJRootWithH_agent())
     ex.save_agentunit_obj_to_agents_dir(
@@ -165,7 +165,7 @@ def _delete_and_set_ex4():
 def _delete_and_set_ex5():
     world_name = "ex5"
     ex = WorldUnit(name=world_name, worlds_dir=get_test_worlds_dir())
-    delete_dir(ex.get_object_root_dir())
+    x_func_delete_dir(ex.get_object_root_dir())
     ex.create_dirs_if_null(in_memory_bank=True)
 
     # ethical code ernie
@@ -227,7 +227,7 @@ def _delete_and_set_ex5():
 def _delete_and_set_ex6():
     world_name = "ex6"
     ex = WorldUnit(name=world_name, worlds_dir=get_test_worlds_dir())
-    delete_dir(ex.get_object_root_dir())
+    x_func_delete_dir(ex.get_object_root_dir())
     ex.create_dirs_if_null(in_memory_bank=False)
 
     sal_text = "sal"
@@ -264,16 +264,16 @@ def _delete_and_set_ex6():
     ex.set_river_sphere_for_agent(agent_name=sal_text, max_flows_count=100)
 
 
-def create_test_world(world_name: str):
+def create_example_world(world_name: str):
     ex = WorldUnit(name=world_name, worlds_dir=get_test_worlds_dir())
     ex.create_dirs_if_null(in_memory_bank=True)
 
 
-def delete_dir_test_world(world_obj: WorldUnit):
-    delete_dir(world_obj.get_object_root_dir())
+def delete_dir_example_world(world_obj: WorldUnit):
+    x_func_delete_dir(world_obj.get_object_root_dir())
 
 
-def rename_test_world(world_obj: WorldUnit, new_name):
+def rename_example_world(world_obj: WorldUnit, new_name):
     # base_dir = world_obj.get_object_root_dir()
     base_dir = "src/world/examples/worlds"
     src_dir = f"{base_dir}/{world_obj.name}"
