@@ -74,8 +74,8 @@ def test_world_get_person_dest_agent_from_digest_agent_files_ReturnsCorrectAgent
     assert dest_agent._idearoot._acptfactunits == input_agent._idearoot._acptfactunits
     assert dest_agent._allys == {}
     assert dest_agent._allys == input_agent._allys
-    assert dest_agent._tribes == {}
-    assert dest_agent._tribes == input_agent._tribes
+    assert dest_agent._groups == {}
+    assert dest_agent._groups == input_agent._groups
     assert dest_agent._idearoot == input_agent._idearoot
 
 
@@ -134,7 +134,7 @@ def test_world_get_person_dest_agent_from_digest_agent_files_ReturnsCorrectAgent
     )
     assert len(dest_agent._allys) == 22
     assert len(dest_agent._allys) == len(agent2._allys)
-    assert len(dest_agent._tribes) == 34
-    assert len(dest_agent._tribes) == len(agent2._tribes)
+    assert len(dest_agent._groups) == 34
+    assert len(dest_agent._groups) == len(agent2._groups)
     assert dest_agent._idearoot != agent1._idearoot
     assert dest_agent._idearoot != agent2._idearoot

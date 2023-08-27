@@ -27,10 +27,10 @@ from src.world.bank_sqlstr import (
     get_acptfact_catalog_table_count,
     AcptFactCatalog,
     get_acptfact_catalog_table_insert_sqlstr,
-    get_tribeunit_catalog_table_count,
-    TribeUnitCatalog,
-    get_tribeunit_catalog_table_insert_sqlstr,
-    get_tribeunit_catalog_dict,
+    get_groupunit_catalog_table_count,
+    GroupUnitCatalog,
+    get_groupunit_catalog_table_insert_sqlstr,
+    get_groupunit_catalog_dict,
     get_table_count_sqlstr,
 )
 from src.world.examples.example_persons import (
@@ -729,7 +729,7 @@ def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
         assert get_acptfact_catalog_table_count(bank_conn, sal_text) == 1
 
 
-def test_world_get_tribeunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_world_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example world with 4 Persons, each with 3 Allyunits = 12 ledger rows
@@ -740,24 +740,24 @@ def test_world_get_tribeunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTable
 
     bob_text = "bob"
     with e1.get_bank_conn() as bank_conn:
-        assert get_tribeunit_catalog_table_count(bank_conn, bob_text) == 0
+        assert get_groupunit_catalog_table_count(bank_conn, bob_text) == 0
 
     # WHEN
-    bob_tribe_x = TribeUnitCatalog(
+    bob_group_x = GroupUnitCatalog(
         agent_name=bob_text,
-        tribeunit_name="US Dollar",
+        groupunit_name="US Dollar",
         allylinks_set_by_world_road="src,USA",
     )
-    bob_tribe_sqlstr = get_tribeunit_catalog_table_insert_sqlstr(bob_tribe_x)
+    bob_group_sqlstr = get_groupunit_catalog_table_insert_sqlstr(bob_group_x)
     with e1.get_bank_conn() as bank_conn:
-        print(bob_tribe_sqlstr)
-        bank_conn.execute(bob_tribe_sqlstr)
+        print(bob_group_sqlstr)
+        bank_conn.execute(bob_group_sqlstr)
 
     # THEN
-    assert get_tribeunit_catalog_table_count(bank_conn, bob_text) == 1
+    assert get_groupunit_catalog_table_count(bank_conn, bob_text) == 1
 
 
-def test_get_tribeunit_catalog_dict_CorrectlyReturnsTribeUnitData(
+def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -775,19 +775,19 @@ def test_get_tribeunit_catalog_dict_CorrectlyReturnsTribeUnitData(
     e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
     e1.save_agentunit_obj_to_agents_dir(agent_x=tom_agent)
     e1.refresh_bank_metrics()
-    sqlstr = get_table_count_sqlstr("tribeunit_catalog")
+    sqlstr = get_table_count_sqlstr("groupunit_catalog")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr) == 3
 
     # WHEN
     with e1.get_bank_conn() as bank_conn:
-        print("try to grab TribeUnit data")
-        tribeunit_catalog_dict = get_tribeunit_catalog_dict(db_conn=bank_conn)
+        print("try to grab GroupUnit data")
+        groupunit_catalog_dict = get_groupunit_catalog_dict(db_conn=bank_conn)
 
     # THEN
-    assert len(tribeunit_catalog_dict) == 3
-    bob_agent_tom_tribe = f"{bob_text} {tom_text}"
-    tom_agent_bob_tribe = f"{tom_text} {bob_text}"
-    tom_agent_elu_tribe = f"{tom_text} {elu_text}"
-    assert tribeunit_catalog_dict.get(bob_agent_tom_tribe) != None
-    assert tribeunit_catalog_dict.get(tom_agent_bob_tribe) != None
-    assert tribeunit_catalog_dict.get(tom_agent_elu_tribe) != None
+    assert len(groupunit_catalog_dict) == 3
+    bob_agent_tom_group = f"{bob_text} {tom_text}"
+    tom_agent_bob_group = f"{tom_text} {bob_text}"
+    tom_agent_elu_group = f"{tom_text} {elu_text}"
+    assert groupunit_catalog_dict.get(bob_agent_tom_group) != None
+    assert groupunit_catalog_dict.get(tom_agent_bob_group) != None
+    assert groupunit_catalog_dict.get(tom_agent_elu_group) != None

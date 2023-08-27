@@ -1,6 +1,6 @@
 from src.agent.idea import IdeaKid
 from src.agent.agent import AgentUnit
-from src.agent.tribe import tribeunit_shop
+from src.agent.group import groupunit_shop
 from src.agent.ally import allyunit_shop
 from pytest import raises as pytest_raises
 from src.agent.examples.example_agents import agent_v001
@@ -61,33 +61,33 @@ def test_agent_meld_AllyUnits():
     assert ax1._allys.get(x2_name) != None
 
 
-def test_agent_meld_TribeUnits():
+def test_agent_meld_GroupUnits():
     # GIVEN
-    x1_name = "x1_tribe"
-    x1_tribe = tribeunit_shop(name=x1_name)
+    x1_name = "x1_group"
+    x1_group = groupunit_shop(name=x1_name)
 
     agent_text = "x_agent"
     ax1 = AgentUnit(_desc=agent_text)
-    ax1.set_tribeunit(tribeunit=x1_tribe)
+    ax1.set_groupunit(groupunit=x1_group)
 
     ax2 = AgentUnit(_desc=agent_text)
-    ax2.set_tribeunit(tribeunit=x1_tribe)
-    x2_name = "x2_tribe"
-    x2_tribe = tribeunit_shop(name=x2_name, uid=5)
-    ax2.set_tribeunit(tribeunit=x2_tribe)
-    assert len(ax1._tribes) == 1
+    ax2.set_groupunit(groupunit=x1_group)
+    x2_name = "x2_group"
+    x2_group = groupunit_shop(name=x2_name, uid=5)
+    ax2.set_groupunit(groupunit=x2_group)
+    assert len(ax1._groups) == 1
 
     # WHEN
     ax1.meld(other_agent=ax2)
 
     # THEN
-    # for tribe_name in ax1._tribes.values():
-    #     print(f"ax1 {tribe_name.name=}")
+    # for group_name in ax1._groups.values():
+    #     print(f"ax1 {group_name.name=}")
 
-    assert len(ax1._tribes) == 2
-    assert ax1._tribes.get(x1_name) != None
-    assert ax1._tribes.get(x2_name) != None
-    # assert ax1._tribes.get(x2_name).uid == 5
+    assert len(ax1._groups) == 2
+    assert ax1._groups.get(x1_name) != None
+    assert ax1._groups.get(x2_name) != None
+    # assert ax1._groups.get(x2_name).uid == 5
 
 
 def test_agent_idearoot_meld_IdeaRootAttrCorrectlyMelded():
@@ -248,17 +248,17 @@ def test_agent_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
     assert ax1._idearoot._acptfactunits == ax2._idearoot._acptfactunits
 
 
-def test_agent_acptfactunits_meld_TribesMeldedBefore_Allys():
+def test_agent_acptfactunits_meld_GroupsMeldedBefore_Allys():
     # GIVEN
     src = "casa"
     ax1 = AgentUnit(_desc=src)
     ax2 = AgentUnit(_desc=src)
     bob = "bob"
     ax2.set_allyunit(allyunit_shop(name=bob))
-    assert ax2._tribes.get(bob) != None
-    assert ax2._tribes.get(bob).uid is None
-    ax2.set_tribeunit(tribeunit_shop(name=bob, uid=13))
-    assert ax2._tribes.get(bob).uid == 13
+    assert ax2._groups.get(bob) != None
+    assert ax2._groups.get(bob).uid is None
+    ax2.set_groupunit(groupunit_shop(name=bob, uid=13))
+    assert ax2._groups.get(bob).uid == 13
 
     # WHEN/THEN
     assert ax1.meld(ax2) is None  # No error raised
@@ -266,7 +266,7 @@ def test_agent_acptfactunits_meld_TribesMeldedBefore_Allys():
     #     ax1.meld(ax2)
     # assert (
     #     str(excinfo.value)
-    #     == f"Meld fail TribeUnit bob .uid='None' not the same as .uid='13"
+    #     == f"Meld fail GroupUnit bob .uid='None' not the same as .uid='13"
     # )
 
 
@@ -304,7 +304,7 @@ def test_agent_meld_worksCorrectlyForLargeExample():
     ax1._idearoot._uid = 1
     ax2 = agent_v001()
 
-    ax2r_bl = ax2._idearoot._tribelines
+    ax2r_bl = ax2._idearoot._grouplines
     fam_text = "Family"
 
     print(
@@ -323,21 +323,21 @@ def test_agent_meld_worksCorrectlyForLargeExample():
     assert ax1._idearoot._kids == ax2._idearoot._kids
     assert ax1._idearoot._uid == ax2._idearoot._uid
     assert ax1._idearoot._acptfactunits == ax2._idearoot._acptfactunits
-    assert ax1._tribes == ax2._tribes
+    assert ax1._groups == ax2._groups
     assert ax1._allys == ax2._allys
 
     assert len(ax1._idearoot._acptfactunits) == 2
     assert len(ax1._idearoot._acptfactunits) == len(ax2._idearoot._acptfactunits)
     assert ax1._desc == ax2._desc
-    print(f"{len(ax1._tribes.items())=}")
-    # for ax1_tribe_key, ax1_tribe_obj in ax1._tribes.items():
-    #     print(f"{ax1_tribe_key=}")
-    #     assert ax1_tribe_obj.uid == ax2._tribes[ax1_tribe_key].uid
-    #     assert ax1_tribe_obj == ax2._tribes[ax1_tribe_key]
-    assert ax1._tribes == ax2._tribes
+    print(f"{len(ax1._groups.items())=}")
+    # for ax1_group_key, ax1_group_obj in ax1._groups.items():
+    #     print(f"{ax1_group_key=}")
+    #     assert ax1_group_obj.uid == ax2._groups[ax1_group_key].uid
+    #     assert ax1_group_obj == ax2._groups[ax1_group_key]
+    assert ax1._groups == ax2._groups
     assert len(ax1.get_idea_list()) == len(ax2.get_idea_list())
 
-    ax1r_bl = ax1._idearoot._tribelines
+    ax1r_bl = ax1._idearoot._grouplines
     print(
         f"Melded   {ax1r_bl.get(fam_text)._agent_debt=} {ax1._idearoot._kids_total_weight=}"
     )
@@ -358,11 +358,11 @@ def test_agent_meld_worksCorrectlyForLargeExample():
         < 0.0001
     )
 
-    # for tribeline in ax1r_bl.values():
-    #     if tribeline.name != fam_text:
-    #         assert tribeline == ax2r_bl.get(tribeline.name)
+    # for groupline in ax1r_bl.values():
+    #     if groupline.name != fam_text:
+    #         assert groupline == ax2r_bl.get(groupline.name)
     assert ax1r_bl == ax2r_bl
-    # assert ax1._idearoot._tribelines == ax2._idearoot._tribelines
+    # assert ax1._idearoot._grouplines == ax2._idearoot._grouplines
     # assert ax1._idearoot == ax2._idearoot
 
 

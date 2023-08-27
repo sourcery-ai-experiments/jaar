@@ -151,7 +151,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Which tribe is this for?</string>
+    <string>Which group is this for?</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
@@ -177,7 +177,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="add_tribe_button">
+  <widget class="QPushButton" name="add_group_button">
    <property name="geometry">
     <rect>
      <x>500</x>
@@ -187,10 +187,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>add Tribe/Tribe</string>
+    <string>add Group/Group</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="tribe1_name_combo">
+  <widget class="QComboBox" name="group1_name_combo">
    <property name="geometry">
     <rect>
      <x>80</x>
@@ -200,7 +200,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="add_tribe_text">
+  <widget class="QLineEdit" name="add_group_text">
    <property name="geometry">
     <rect>
      <x>500</x>
@@ -258,7 +258,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QComboBox" name="tribe2_name_combo">
+  <widget class="QComboBox" name="group2_name_combo">
    <property name="geometry">
     <rect>
      <x>80</x>
@@ -268,7 +268,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QComboBox" name="tribe3_name_combo">
+  <widget class="QComboBox" name="group3_name_combo">
    <property name="geometry">
     <rect>
      <x>80</x>
@@ -288,13 +288,13 @@
     </rect>
    </property>
    <property name="text">
-    <string>Add people to tribes in oter interface</string>
+    <string>Add people to groups in oter interface</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLineEdit" name="tribe1_weight_text">
+  <widget class="QLineEdit" name="group1_weight_text">
    <property name="geometry">
     <rect>
      <x>380</x>
@@ -320,7 +320,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLineEdit" name="tribe2_weight_text">
+  <widget class="QLineEdit" name="group2_weight_text">
    <property name="geometry">
     <rect>
      <x>380</x>
@@ -330,7 +330,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="tribe3_weight_text">
+  <widget class="QLineEdit" name="group3_weight_text">
    <property name="geometry">
     <rect>
      <x>380</x>

@@ -16,12 +16,12 @@ from src.agent.required import (
     find_replace_road_key_dict,
 )
 from src.agent.road import is_sub_road_in_src_road
-from src.agent.tribe import (
-    TribeHeir,
-    TribeLink,
-    TribeName,
-    Tribeline,
-    tribeheir_shop,
+from src.agent.group import (
+    GroupHeir,
+    GroupLink,
+    GroupName,
+    Groupline,
+    groupheir_shop,
 )
 from src.agent.x_func import (
     get_on_meld_weight_actions,
@@ -77,8 +77,8 @@ class IdeaAttrHolder:
     descendant_promise_count: int = None
     all_ally_credit: bool = None
     all_ally_debt: bool = None
-    tribelink: TribeLink = None
-    tribelink_del: TribeName = None
+    grouplink: GroupLink = None
+    grouplink_del: GroupName = None
     is_expanded: bool = None
     on_meld_weight_action: str = None
 
@@ -110,9 +110,9 @@ class IdeaCore:
     _walk: str = None
     _kids: dict = None  # dict[]
     _weight: int = 1
-    _tribelinks: dict[TribeName:TribeLink] = None
-    _tribeheirs: dict[TribeName:TribeHeir] = None
-    _tribelines: dict[TribeName:TribeLink] = None
+    _grouplinks: dict[GroupName:GroupLink] = None
+    _groupheirs: dict[GroupName:GroupHeir] = None
+    _grouplines: dict[GroupName:GroupLink] = None
     _level: int = None
     _requiredunits: dict[Road:RequiredUnit] = None
     _requiredheirs: dict[Road:RequiredHeir] = None
@@ -284,7 +284,7 @@ class IdeaCore:
         self._agent_coin_onset = coin_onset_x
         self._agent_coin_cease = self._agent_coin_onset + self._agent_importance
         self._agent_coin_cease = min(self._agent_coin_cease, parent_coin_cease)
-        self.set_tribeheirs_agent_credit_debit()
+        self.set_groupheirs_agent_credit_debit()
 
     def get_kids_in_range(self, begin: float, close: float) -> list:
         return [
@@ -335,51 +335,51 @@ class IdeaCore:
         else:
             self._walk = f"{parent_road},{parent_desc}"
 
-    def inherit_tribeheirs(self, parent_tribeheirs: dict[TribeName:TribeHeir] = None):
-        if parent_tribeheirs is None:
-            parent_tribeheirs = {}
+    def inherit_groupheirs(self, parent_groupheirs: dict[GroupName:GroupHeir] = None):
+        if parent_groupheirs is None:
+            parent_groupheirs = {}
 
-        self._tribeheirs = {}
-        for ib in parent_tribeheirs.values():
-            tribeheir = tribeheir_shop(
+        self._groupheirs = {}
+        for ib in parent_groupheirs.values():
+            groupheir = groupheir_shop(
                 name=ib.name,
                 creditor_weight=ib.creditor_weight,
                 debtor_weight=ib.debtor_weight,
             )
-            self._tribeheirs[tribeheir.name] = tribeheir
+            self._groupheirs[groupheir.name] = groupheir
 
-        self.set_tribelink_empty_if_null()
-        for ib in self._tribelinks.values():
-            tribeheir = tribeheir_shop(
+        self.set_grouplink_empty_if_null()
+        for ib in self._grouplinks.values():
+            groupheir = groupheir_shop(
                 name=ib.name,
                 creditor_weight=ib.creditor_weight,
                 debtor_weight=ib.debtor_weight,
             )
-            self._tribeheirs[tribeheir.name] = tribeheir
+            self._groupheirs[groupheir.name] = groupheir
 
-    def set_kidless_tribelines(self):
-        # get tribelines from self
-        for bh in self._tribeheirs.values():
-            tribeline_x = Tribeline(
+    def set_kidless_grouplines(self):
+        # get grouplines from self
+        for bh in self._groupheirs.values():
+            groupline_x = Groupline(
                 name=bh.name, _agent_credit=bh._agent_credit, _agent_debt=bh._agent_debt
             )
-            self._tribelines[tribeline_x.name] = tribeline_x
+            self._grouplines[groupline_x.name] = groupline_x
 
-    def set_tribelines(self, child_tribelines: dict[TribeName:Tribeline] = None):
-        self.set_tribelines_empty_if_null()
-        if child_tribelines is None:
-            child_tribelines = {}
+    def set_grouplines(self, child_grouplines: dict[GroupName:Groupline] = None):
+        self.set_grouplines_empty_if_null()
+        if child_grouplines is None:
+            child_grouplines = {}
 
-        # get tribelines from child
-        for bl in child_tribelines.values():
-            if self._tribelines.get(bl.name) is None:
-                self._tribelines[bl.name] = Tribeline(
+        # get grouplines from child
+        for bl in child_grouplines.values():
+            if self._grouplines.get(bl.name) is None:
+                self._grouplines[bl.name] = Groupline(
                     name=bl.name,
                     _agent_credit=0,
                     _agent_debt=0,
                 )
 
-            self._tribelines[bl.name].add_agent_credit_debt(
+            self._grouplines[bl.name].add_agent_credit_debt(
                 agent_credit=bl._agent_credit, agent_debt=bl._agent_debt
             )
 
@@ -389,32 +389,32 @@ class IdeaCore:
         for idea_x in self._kids.values():
             self._kids_total_weight += idea_x._weight
 
-    def get_tribeheirs_creditor_weight_sum(self):
-        self.set_tribelink_empty_if_null()
-        self.set_tribeheir_empty_if_null()
-        return sum(tribelink.creditor_weight for tribelink in self._tribeheirs.values())
+    def get_groupheirs_creditor_weight_sum(self):
+        self.set_grouplink_empty_if_null()
+        self.set_groupheir_empty_if_null()
+        return sum(grouplink.creditor_weight for grouplink in self._groupheirs.values())
 
-    def get_tribeheirs_debtor_weight_sum(self):
-        self.set_tribelink_empty_if_null()
-        self.set_tribeheir_empty_if_null()
-        return sum(tribelink.debtor_weight for tribelink in self._tribeheirs.values())
+    def get_groupheirs_debtor_weight_sum(self):
+        self.set_grouplink_empty_if_null()
+        self.set_groupheir_empty_if_null()
+        return sum(grouplink.debtor_weight for grouplink in self._groupheirs.values())
 
-    def set_tribeheirs_agent_credit_debit(self):
-        tribeheirs_creditor_weight_sum = self.get_tribeheirs_creditor_weight_sum()
-        tribeheirs_debtor_weight_sum = self.get_tribeheirs_debtor_weight_sum()
-        for tribeheir_x in self._tribeheirs.values():
-            tribeheir_x.set_agent_credit_debt(
+    def set_groupheirs_agent_credit_debit(self):
+        groupheirs_creditor_weight_sum = self.get_groupheirs_creditor_weight_sum()
+        groupheirs_debtor_weight_sum = self.get_groupheirs_debtor_weight_sum()
+        for groupheir_x in self._groupheirs.values():
+            groupheir_x.set_agent_credit_debt(
                 idea_agent_importance=self._agent_importance,
-                tribeheirs_creditor_weight_sum=tribeheirs_creditor_weight_sum,
-                tribeheirs_debtor_weight_sum=tribeheirs_debtor_weight_sum,
+                groupheirs_creditor_weight_sum=groupheirs_creditor_weight_sum,
+                groupheirs_debtor_weight_sum=groupheirs_debtor_weight_sum,
             )
 
     def set_kids_empty_if_null(self):
         if self._kids is None:
             self._kids = {}
 
-    def clear_tribelines(self):
-        self._tribelines = {}
+    def clear_grouplines(self):
+        self._grouplines = {}
 
     def _set_idea_desc(self, desc):
         if desc != None:
@@ -429,18 +429,18 @@ class IdeaCore:
             else:
                 self._requiredunits.get(lx.base).meld(lx)
 
-    def meld_tribelinks(self, other_idea):
-        self.set_tribelink_empty_if_null()
-        other_idea.set_tribelink_empty_if_null()
-        for bl in other_idea._tribelinks.values():
-            if self._tribelinks.get(bl.name) != None:
-                self._tribelinks.get(bl.name).meld(
-                    other_tribelink=bl,
+    def meld_grouplinks(self, other_idea):
+        self.set_grouplink_empty_if_null()
+        other_idea.set_grouplink_empty_if_null()
+        for bl in other_idea._grouplinks.values():
+            if self._grouplinks.get(bl.name) != None:
+                self._grouplinks.get(bl.name).meld(
+                    other_grouplink=bl,
                     other_on_meld_weight_action=other_idea._on_meld_weight_action,
                     src_on_meld_weight_action=self._on_meld_weight_action,
                 )
             else:
-                self._tribelinks[bl.name] = bl
+                self._grouplinks[bl.name] = bl
 
     def meld_acptfactunits(self, other_idea):
         self.set_acptfactunits_empty_if_null()
@@ -466,7 +466,7 @@ class IdeaCore:
                 other_on_meld_weight_action=other_idea._on_meld_weight_action,
             )
         self.meld_requiredunits(other_idea=other_idea)
-        self.meld_tribelinks(other_idea=other_idea)
+        self.meld_grouplinks(other_idea=other_idea)
         self.meld_acptfactunits(other_idea=other_idea)
         self.meld_attributes_that_will_be_equal(other_idea=other_idea)
 
@@ -536,10 +536,10 @@ class IdeaCore:
             self._all_ally_credit = idea_attr.all_ally_credit
         if idea_attr.all_ally_debt != None:
             self._all_ally_debt = idea_attr.all_ally_debt
-        if idea_attr.tribelink != None:
-            self.set_tribelink(tribelink=idea_attr.tribelink)
-        if idea_attr.tribelink_del != None:
-            self.del_tribelink(tribename=idea_attr.tribelink_del)
+        if idea_attr.grouplink != None:
+            self.set_grouplink(grouplink=idea_attr.grouplink)
+        if idea_attr.grouplink_del != None:
+            self.del_grouplink(groupname=idea_attr.grouplink_del)
         if idea_attr.is_expanded != None:
             self._is_expanded = idea_attr.is_expanded
         if idea_attr.promise != None:
@@ -637,28 +637,28 @@ class IdeaCore:
         self._kids[idea_kid._desc] = idea_kid
         self._kids = dict(sorted(self._kids.items()))
 
-    def set_tribelink_empty_if_null(self):
-        if self._tribelinks is None:
-            self._tribelinks = {}
+    def set_grouplink_empty_if_null(self):
+        if self._grouplinks is None:
+            self._grouplinks = {}
 
-    def set_tribeheir_empty_if_null(self):
-        if self._tribeheirs is None:
-            self._tribeheirs = {}
+    def set_groupheir_empty_if_null(self):
+        if self._groupheirs is None:
+            self._groupheirs = {}
 
-    def set_tribelines_empty_if_null(self):
-        if self._tribelines is None:
-            self._tribelines = {}
+    def set_grouplines_empty_if_null(self):
+        if self._grouplines is None:
+            self._grouplines = {}
 
-    def set_tribelink(self, tribelink: TribeLink):
-        self.set_tribelink_empty_if_null()
-        self._tribelinks[tribelink.name] = tribelink
+    def set_grouplink(self, grouplink: GroupLink):
+        self.set_grouplink_empty_if_null()
+        self._grouplinks[grouplink.name] = grouplink
 
-    def del_tribelink(self, tribename: TribeName):
-        self.set_tribelink_empty_if_null()
+    def del_grouplink(self, groupname: GroupName):
+        self.set_grouplink_empty_if_null()
         try:
-            self._tribelinks.pop(tribename)
+            self._grouplinks.pop(groupname)
         except KeyError as e:
-            raise (f"Cannot delete tribelink '{tribename}'.") from e
+            raise (f"Cannot delete grouplink '{groupname}'.") from e
 
     def set_required_unit(self, required: RequiredUnit):
         self.set_requiredunits_empty_if_null()
@@ -777,12 +777,12 @@ class IdeaCore:
                 x_dict[c_road] = kid.get_dict()
         return x_dict
 
-    def get_tribelinks_dict(self):
-        tribelinks_dict = {}
-        if self._tribelinks != None:
-            for tribe_name, tribelink in self._tribelinks.items():
-                tribelinks_dict[tribe_name] = tribelink.get_dict()
-        return tribelinks_dict
+    def get_grouplinks_dict(self):
+        grouplinks_dict = {}
+        if self._grouplinks != None:
+            for group_name, grouplink in self._grouplinks.items():
+                grouplinks_dict[group_name] = grouplink.get_dict()
+        return grouplinks_dict
 
     def _get_empty_dict_if_null(self, x_dict: dict) -> dict:
         if x_dict is None:
@@ -792,11 +792,11 @@ class IdeaCore:
     def is_kidless(self):
         return self._kids == {}
 
-    def is_tribeheirless(self):
+    def is_groupheirless(self):
         x_bool = None
-        if self._tribeheirs in [{}, None]:
+        if self._groupheirs in [{}, None]:
             x_bool = True
-        elif self._tribeheirs != [{}, None]:
+        elif self._groupheirs != [{}, None]:
             x_bool = False
         return x_bool
 
@@ -804,7 +804,7 @@ class IdeaCore:
         return {
             "_kids": self.get_kids_dict(),
             "_requiredunits": self.get_requiredunits_dict(),
-            "_tribelinks": self.get_tribelinks_dict(),
+            "_grouplinks": self.get_grouplinks_dict(),
             "_weight": self._weight,
             "_desc": self._desc,
             "_uid": self._uid,

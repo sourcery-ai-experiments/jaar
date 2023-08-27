@@ -4,7 +4,7 @@ from src.agent.examples.example_agents import (
 from src.agent.ally import AllyName
 from src.agent.idea import IdeaKid
 from src.agent.agent import AgentUnit
-from src.agent.tribe import Tribeline, TribeLink
+from src.agent.group import Groupline, GroupLink
 from pytest import raises as pytest_raises
 
 
@@ -178,13 +178,13 @@ def test_set_agent_metrics_NLevelCorrectlySetsDescendantAttributes_2():
     lw_x.add_idea(idea_kid=x2_idea, walk="src,work")
 
     lw_x.add_allyunit(name="sandy")
-    x_tribelink = TribeLink(name="sandy")
-    lw_x._idearoot._kids["work"]._kids["email"].set_tribelink(tribelink=x_tribelink)
+    x_grouplink = GroupLink(name="sandy")
+    lw_x._idearoot._kids["work"]._kids["email"].set_grouplink(grouplink=x_grouplink)
     # print(lw_x._kids["work"]._kids["email"])
-    # print(lw_x._kids["work"]._kids["email"]._tribelink)
+    # print(lw_x._kids["work"]._kids["email"]._grouplink)
     lw_x.set_agent_metrics()
     # print(lw_x._kids["work"]._kids["email"])
-    # print(lw_x._kids["work"]._kids["email"]._tribelink)
+    # print(lw_x._kids["work"]._kids["email"]._grouplink)
 
     assert lw_x._idearoot._all_ally_credit == False
     assert lw_x._idearoot._all_ally_debt == False
@@ -202,48 +202,48 @@ def test_set_agent_metrics_NLevelCorrectlySetsDescendantAttributes_2():
     assert lw_x._idearoot._kids["weekdays"]._kids["Tuesday"]._all_ally_debt == True
 
 
-def test_TreeTraverseSetsClearsTribelineestorsCorrectly():
+def test_TreeTraverseSetsClearsGrouplineestorsCorrectly():
     # sourcery skip: simplify-empty-collection-comparison
     agent_x = example_agents_get_agent_with_4_levels()
     agent_x.set_agent_metrics()
-    # idea tree has no tribelinks
-    assert agent_x._idearoot._tribelines == {}
-    agent_x._idearoot._tribelines = {1: "testtest"}
-    assert agent_x._idearoot._tribelines != {}
+    # idea tree has no grouplinks
+    assert agent_x._idearoot._grouplines == {}
+    agent_x._idearoot._grouplines = {1: "testtest"}
+    assert agent_x._idearoot._grouplines != {}
     agent_x.set_agent_metrics()
-    assert agent_x._idearoot._tribelines == {}
+    assert agent_x._idearoot._grouplines == {}
 
     # test for level 1 and level n
-    agent_x._idearoot._kids["work"]._tribelines = {1: "testtest"}
-    assert agent_x._idearoot._kids["work"]._tribelines != {}
+    agent_x._idearoot._kids["work"]._grouplines = {1: "testtest"}
+    assert agent_x._idearoot._kids["work"]._grouplines != {}
     agent_x.set_agent_metrics()
-    assert agent_x._idearoot._kids["work"]._tribelines == {}
+    assert agent_x._idearoot._kids["work"]._grouplines == {}
 
 
-def test_TreeTraverseSetsTribelineestorFromRootCorrectly():
+def test_TreeTraverseSetsGrouplineestorFromRootCorrectly():
     # GIVEN
     a_x = example_agents_get_agent_with_4_levels()
     a_x.set_agent_metrics()
-    # idea tree has no tribelinks
-    assert a_x._idearoot._tribelines == {}
+    # idea tree has no grouplinks
+    assert a_x._idearoot._grouplines == {}
     sandy_text = "sandy"
-    sandy_tribelink = TribeLink(name=sandy_text)
+    sandy_grouplink = GroupLink(name=sandy_text)
     a_x.add_allyunit(name=sandy_text)
-    a_x._idearoot.set_tribelink(tribelink=sandy_tribelink)
-    # idea tree has tribelines
-    assert a_x._idearoot._tribeheirs.get(sandy_text) is None
+    a_x._idearoot.set_grouplink(grouplink=sandy_grouplink)
+    # idea tree has grouplines
+    assert a_x._idearoot._groupheirs.get(sandy_text) is None
 
     # WHEN
     a_x.set_agent_metrics()
 
     # THEN
-    assert a_x._idearoot._tribeheirs.get(sandy_text) != None
-    assert a_x._idearoot._tribeheirs.get(sandy_text).name == sandy_text
-    assert a_x._idearoot._tribelines != {}
+    assert a_x._idearoot._groupheirs.get(sandy_text) != None
+    assert a_x._idearoot._groupheirs.get(sandy_text).name == sandy_text
+    assert a_x._idearoot._grouplines != {}
     root_idea = a_x.get_idea_kid(road=f"{a_x._idearoot._desc}")
-    sandy_tribeline = a_x._idearoot._tribelines.get(sandy_text)
-    print(f"{sandy_tribeline._agent_credit=} {root_idea._agent_importance=} ")
-    print(f"  {sandy_tribeline._agent_debt=} {root_idea._agent_importance=} ")
+    sandy_groupline = a_x._idearoot._grouplines.get(sandy_text)
+    print(f"{sandy_groupline._agent_credit=} {root_idea._agent_importance=} ")
+    print(f"  {sandy_groupline._agent_debt=} {root_idea._agent_importance=} ")
     sum_x = 0
     cat_road = "src,feed cat"
     cat_idea = a_x.get_idea_kid(cat_road)
@@ -267,34 +267,34 @@ def test_TreeTraverseSetsTribelineestorFromRootCorrectly():
     # for kid_idea in root_idea._kids.values():
     #     sum_x += kid_idea._agent_importance
     #     print(f"  {kid_idea._agent_importance=} {sum_x=} {kid_idea.get_road()=}")
-    assert round(sandy_tribeline._agent_credit, 15) == 1
-    assert round(sandy_tribeline._agent_debt, 15) == 1
-    x_tribeline = Tribeline(
+    assert round(sandy_groupline._agent_credit, 15) == 1
+    assert round(sandy_groupline._agent_debt, 15) == 1
+    x_groupline = Groupline(
         name=sandy_text,
         _agent_credit=0.9999999999999998,
         _agent_debt=0.9999999999999998,
     )
-    assert a_x._idearoot._tribelines == {x_tribeline.name: x_tribeline}
+    assert a_x._idearoot._grouplines == {x_groupline.name: x_groupline}
 
 
-def test_TreeTraverseSetsTribelineestorFromNonRootCorrectly():
+def test_TreeTraverseSetsGrouplineestorFromNonRootCorrectly():
     lw_x = example_agents_get_agent_with_4_levels()
     lw_x.set_agent_metrics()
-    # idea tree has no tribelinks
-    assert lw_x._idearoot._tribelines == {}
+    # idea tree has no grouplinks
+    assert lw_x._idearoot._grouplines == {}
     lw_x.add_allyunit(name="sandy")
-    x_tribelink = TribeLink(name="sandy")
-    lw_x._idearoot._kids["work"].set_tribelink(tribelink=x_tribelink)
+    x_grouplink = GroupLink(name="sandy")
+    lw_x._idearoot._kids["work"].set_grouplink(grouplink=x_grouplink)
 
-    # idea tree has tribelinks
+    # idea tree has grouplinks
     lw_x.set_agent_metrics()
-    assert lw_x._idearoot._tribelines != {}
-    x_tribeline = Tribeline(
+    assert lw_x._idearoot._grouplines != {}
+    x_groupline = Groupline(
         name="sandy", _agent_credit=0.23076923076923078, _agent_debt=0.23076923076923078
     )
-    assert lw_x._idearoot._tribelines == {x_tribeline.name: x_tribeline}
-    assert lw_x._idearoot._kids["work"]._tribelines != {}
-    assert lw_x._idearoot._kids["work"]._tribelines == {x_tribeline.name: x_tribeline}
+    assert lw_x._idearoot._grouplines == {x_groupline.name: x_groupline}
+    assert lw_x._idearoot._kids["work"]._grouplines != {}
+    assert lw_x._idearoot._kids["work"]._grouplines == {x_groupline.name: x_groupline}
 
 
 def test_agent4ally_Exists():
@@ -306,16 +306,16 @@ def test_agent4ally_Exists():
 
     sandy_name = AllyName("sandy")
     agent_x.add_allyunit(name=sandy_name)
-    x_tribelink = TribeLink(name=sandy_name)
+    x_grouplink = GroupLink(name=sandy_name)
     yrx = agent_x._idearoot
-    yrx._kids["work"]._kids["email"].set_tribelink(tribelink=x_tribelink)
+    yrx._kids["work"]._kids["email"].set_grouplink(grouplink=x_grouplink)
     sandy_agent4ally = agent_x.get_agent4ally(acptfacts=None, ally_name=sandy_name)
     assert sandy_agent4ally
     assert str(type(sandy_agent4ally)).find(".agent.AgentUnit'>")
     assert sandy_agent4ally._desc == sandy_name
 
 
-def test_agent4ally_hasCorrectLevel1StructureNoTribelessBranches():
+def test_agent4ally_hasCorrectLevel1StructureNoGrouplessBranches():
     agent_x = example_agents_get_agent_with_4_levels()
     x1_idea = IdeaKid(_desc="email", promise=True)
     agent_x.add_idea(idea_kid=x1_idea, walk="src,work")
@@ -324,16 +324,16 @@ def test_agent4ally_hasCorrectLevel1StructureNoTribelessBranches():
 
     billy_name = AllyName("billy")
     agent_x.add_allyunit(name=billy_name)
-    billy_bl = TribeLink(name=billy_name)
+    billy_bl = GroupLink(name=billy_name)
     yrx = agent_x._idearoot
-    yrx._kids["weekdays"].set_tribelink(tribelink=billy_bl)
-    yrx._kids["feed cat"].set_tribelink(tribelink=billy_bl)
-    yrx._kids["nation-state"].set_tribelink(tribelink=billy_bl)
+    yrx._kids["weekdays"].set_grouplink(grouplink=billy_bl)
+    yrx._kids["feed cat"].set_grouplink(grouplink=billy_bl)
+    yrx._kids["nation-state"].set_grouplink(grouplink=billy_bl)
 
     sandy_name = AllyName("sandy")
     agent_x.add_allyunit(name=sandy_name)
-    sandy_bl = TribeLink(name=sandy_name)
-    yrx._kids["work"]._kids["email"].set_tribelink(tribelink=sandy_bl)
+    sandy_bl = GroupLink(name=sandy_name)
+    yrx._kids["work"]._kids["email"].set_grouplink(grouplink=sandy_bl)
 
     sandy_agent4ally = agent_x.get_agent4ally(acptfacts=None, ally_name=sandy_name)
     assert len(sandy_agent4ally._idearoot._kids) > 0
@@ -395,7 +395,7 @@ def test_agent_get_heir_road_list_returnsCorrectList():
     assert heir_node_road_list[4] == f"{weekdays},Sunday"
 
 
-# def test_agent4ally_hasCorrectLevel1StructureWithTribelessBranches_2():
+# def test_agent4ally_hasCorrectLevel1StructureWithGrouplessBranches_2():
 #     lw_desc = "src"
 #     lw_x = AgentUnit(_desc=lw_desc)
 #     lw_x.add_idea(idea_kid=IdeaKid(_desc="A", _weight=7), walk="src")
@@ -413,16 +413,16 @@ def test_agent_get_heir_road_list_returnsCorrectList():
 
 #     billy_name = AllyName("billy")
 #     lw_x.add_allyunit(name=billy_name)
-#     billy_bl = TribeLink(name=billy_name)
-#     lw_x.edit_idea_attr(road="src,G", tribelink=billy_bl)
-#     lw_x.edit_idea_attr(road="src,G,H,M", tribelink=billy_bl)
+#     billy_bl = GroupLink(name=billy_name)
+#     lw_x.edit_idea_attr(road="src,G", grouplink=billy_bl)
+#     lw_x.edit_idea_attr(road="src,G,H,M", grouplink=billy_bl)
 
 #     sandy_name = AllyName("sandy")
 #     lw_x.add_allyunit(name=sandy_name)
-#     sandy_bl = TribeLink(name=sandy_name)
-#     lw_x.edit_idea_attr(road="src,A", tribelink=sandy_bl)
-#     lw_x.edit_idea_attr(road="src,B", tribelink=sandy_bl)
-#     lw_x.edit_idea_attr(road="src,A,C,E", tribelink=sandy_bl)
+#     sandy_bl = GroupLink(name=sandy_name)
+#     lw_x.edit_idea_attr(road="src,A", grouplink=sandy_bl)
+#     lw_x.edit_idea_attr(road="src,B", grouplink=sandy_bl)
+#     lw_x.edit_idea_attr(road="src,A,C,E", grouplink=sandy_bl)
 
 #     # expected sandy
 #     exp_sandy = AgentUnit(_desc=lw_desc)

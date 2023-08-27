@@ -8,21 +8,21 @@ from src.agent.x_func import (
 from src.agent.road import Road
 
 
-class InvalidTribeException(Exception):
+class InvalidGroupException(Exception):
     pass
 
 
-class TribeName(str):
+class GroupName(str):
     pass
 
 
 @dataclasses.dataclass
-class TribeCore:
-    name: TribeName
+class GroupCore:
+    name: GroupName
 
 
 @dataclasses.dataclass
-class TribeUnit(TribeCore):
+class GroupUnit(GroupCore):
     uid: int = None
     single_member_ally_id: int = None
     _single_ally: bool = None
@@ -33,7 +33,7 @@ class TribeUnit(TribeCore):
     _agent_agenda_debt: float = None
     _allylinks_set_by_world_road: Road = None
 
-    def set_name(self, name: TribeName = None):
+    def set_name(self, name: GroupName = None):
         if name != None:
             self.name = name
 
@@ -86,10 +86,10 @@ class TribeUnit(TribeCore):
             allylink.set_agent_credit_debt(
                 allylinks_creditor_weight_sum=allylinks_creditor_weight_sum,
                 allylinks_debtor_weight_sum=allylinks_debtor_weight_sum,
-                tribe_agent_credit=self._agent_credit,
-                tribe_agent_debt=self._agent_debt,
-                tribe_agent_agenda_credit=self._agent_agenda_credit,
-                tribe_agent_agenda_debt=self._agent_agenda_debt,
+                group_agent_credit=self._agent_credit,
+                group_agent_debt=self._agent_debt,
+                group_agent_agenda_credit=self._agent_agenda_credit,
+                group_agent_agenda_debt=self._agent_agenda_debt,
             )
 
     def clear_allylinks(self):
@@ -116,66 +116,66 @@ class TribeUnit(TribeCore):
     def del_allylink(self, name):
         self._allys.pop(name)
 
-    def meld(self, other_tribe):
-        self.meld_attributes_that_will_be_equal(other_tribe=other_tribe)
-        self.meld_allylinks(other_tribe=other_tribe)
+    def meld(self, other_group):
+        self.meld_attributes_that_will_be_equal(other_group=other_group)
+        self.meld_allylinks(other_group=other_group)
 
-    def meld_allylinks(self, other_tribe):
+    def meld_allylinks(self, other_group):
         self._set_allylinks_empty_if_null()
-        for oba in other_tribe._allys.values():
+        for oba in other_group._allys.values():
             if self._allys.get(oba.name) is None:
                 self._allys[oba.name] = oba
             else:
                 self._allys[oba.name].meld(oba)
 
-    def meld_attributes_that_will_be_equal(self, other_tribe):
+    def meld_attributes_that_will_be_equal(self, other_group):
         xl = [
-            ("name", self.name, other_tribe.name),
-            ("uid", self.uid, other_tribe.uid),
+            ("name", self.name, other_group.name),
+            ("uid", self.uid, other_group.uid),
         ]
         while xl != []:
             attrs = xl.pop()
             if attrs[1] != attrs[2]:
-                raise InvalidTribeException(
-                    f"Meld fail TribeUnit {self.name} .{attrs[0]}='{attrs[1]}' not the same as .{attrs[0]}='{attrs[2]}"
+                raise InvalidGroupException(
+                    f"Meld fail GroupUnit {self.name} .{attrs[0]}='{attrs[1]}' not the same as .{attrs[0]}='{attrs[2]}"
                 )
 
-        # if self.name != other_tribe.name:
-        #     raise InvalidTribeException(
+        # if self.name != other_group.name:
+        #     raise InvalidGroupException(
         #             f"Meld fail idea={self._walk},{self._desc} {attrs[0]}:{attrs[1]} with {other_idea._walk},{other_idea._desc} {attrs[0]}:{attrs[2]}"
         #     )
 
 
-# class TribeUnitsshop:
-def get_from_json(tribeunits_json: str):
-    tribeunits_dict = x_get_dict(json_x=tribeunits_json)
-    return get_from_dict(x_dict=tribeunits_dict)
+# class GroupUnitsshop:
+def get_from_json(groupunits_json: str):
+    groupunits_dict = x_get_dict(json_x=groupunits_json)
+    return get_from_dict(x_dict=groupunits_dict)
 
 
 def get_from_dict(x_dict: dict):
-    tribeunits = {}
-    for tribeunits_dict in x_dict.values():
+    groupunits = {}
+    for groupunits_dict in x_dict.values():
         try:
-            ex_allylinks_set_by_world_road = tribeunits_dict[
+            ex_allylinks_set_by_world_road = groupunits_dict[
                 "_allylinks_set_by_world_road"
             ]
         except KeyError:
             ex_allylinks_set_by_world_road = None
 
-        x_tribe = tribeunit_shop(
-            name=tribeunits_dict["name"],
-            uid=tribeunits_dict["uid"],
-            _single_ally=tribeunits_dict["_single_ally"],
-            single_member_ally_id=tribeunits_dict["single_member_ally_id"],
-            _allys=allylinks_get_from_dict(x_dict=tribeunits_dict["_allys"]),
+        x_group = groupunit_shop(
+            name=groupunits_dict["name"],
+            uid=groupunits_dict["uid"],
+            _single_ally=groupunits_dict["_single_ally"],
+            single_member_ally_id=groupunits_dict["single_member_ally_id"],
+            _allys=allylinks_get_from_dict(x_dict=groupunits_dict["_allys"]),
             _allylinks_set_by_world_road=ex_allylinks_set_by_world_road,
         )
-        tribeunits[x_tribe.name] = x_tribe
-    return tribeunits
+        groupunits[x_group.name] = x_group
+    return groupunits
 
 
-def tribeunit_shop(
-    name: TribeName,
+def groupunit_shop(
+    name: GroupName,
     uid: int = None,
     single_member_ally_id: int = None,
     _single_ally: bool = None,
@@ -185,17 +185,17 @@ def tribeunit_shop(
     _agent_agenda_credit: float = None,
     _agent_agenda_debt: float = None,
     _allylinks_set_by_world_road: Road = None,
-) -> TribeUnit:
+) -> GroupUnit:
     if _single_ally and _allylinks_set_by_world_road != None:
-        raise InvalidTribeException(
-            f"_allylinks_set_by_world_road cannot be '{_allylinks_set_by_world_road}' for a single_ally TribeUnit. It must have no value."
+        raise InvalidGroupException(
+            f"_allylinks_set_by_world_road cannot be '{_allylinks_set_by_world_road}' for a single_ally GroupUnit. It must have no value."
         )
 
     if _allys is None:
         _allys = {}
     if _single_ally is None:
         _single_ally = False
-    return TribeUnit(
+    return GroupUnit(
         name=name,
         uid=uid,
         single_member_ally_id=single_member_ally_id,
@@ -210,7 +210,7 @@ def tribeunit_shop(
 
 
 @dataclasses.dataclass
-class TribeLink(TribeCore):
+class GroupLink(GroupCore):
     creditor_weight: float = 1.0
     debtor_weight: float = 1.0
 
@@ -223,54 +223,54 @@ class TribeLink(TribeCore):
 
     def meld(
         self,
-        other_tribelink,
+        other_grouplink,
         other_on_meld_weight_action: str,
         src_on_meld_weight_action: str,
     ):
         self.creditor_weight = get_meld_weight(
             src_weight=self.creditor_weight,
             src_on_meld_weight_action=src_on_meld_weight_action,
-            other_weight=other_tribelink.creditor_weight,
+            other_weight=other_grouplink.creditor_weight,
             other_on_meld_weight_action=other_on_meld_weight_action,
         )
         self.debtor_weight = get_meld_weight(
             src_weight=self.debtor_weight,
             src_on_meld_weight_action=src_on_meld_weight_action,
-            other_weight=other_tribelink.debtor_weight,
+            other_weight=other_grouplink.debtor_weight,
             other_on_meld_weight_action=other_on_meld_weight_action,
         )
 
 
-# class TribeLinksshop:
-def tribelinks_get_from_json(tribelinks_json: str) -> dict[TribeName, TribeLink]:
-    tribelinks_dict = x_get_dict(json_x=tribelinks_json)
-    return tribelinks_get_from_dict(x_dict=tribelinks_dict)
+# class GroupLinksshop:
+def grouplinks_get_from_json(grouplinks_json: str) -> dict[GroupName, GroupLink]:
+    grouplinks_dict = x_get_dict(json_x=grouplinks_json)
+    return grouplinks_get_from_dict(x_dict=grouplinks_dict)
 
 
-def tribelinks_get_from_dict(x_dict: dict) -> dict[TribeName, TribeLink]:
-    tribelinks = {}
-    for tribelinks_dict in x_dict.values():
-        x_tribe = tribelink_shop(
-            name=tribelinks_dict["name"],
-            creditor_weight=tribelinks_dict["creditor_weight"],
-            debtor_weight=tribelinks_dict["debtor_weight"],
+def grouplinks_get_from_dict(x_dict: dict) -> dict[GroupName, GroupLink]:
+    grouplinks = {}
+    for grouplinks_dict in x_dict.values():
+        x_group = grouplink_shop(
+            name=grouplinks_dict["name"],
+            creditor_weight=grouplinks_dict["creditor_weight"],
+            debtor_weight=grouplinks_dict["debtor_weight"],
         )
-        tribelinks[x_tribe.name] = x_tribe
-    return tribelinks
+        grouplinks[x_group.name] = x_group
+    return grouplinks
 
 
-def tribelink_shop(
-    name: TribeName, creditor_weight: float = None, debtor_weight: float = None
-) -> TribeLink:
+def grouplink_shop(
+    name: GroupName, creditor_weight: float = None, debtor_weight: float = None
+) -> GroupLink:
     creditor_weight = x_func_return1ifnone(creditor_weight)
     debtor_weight = x_func_return1ifnone(debtor_weight)
-    return TribeLink(
+    return GroupLink(
         name=name, creditor_weight=creditor_weight, debtor_weight=debtor_weight
     )
 
 
 @dataclasses.dataclass
-class TribeHeir(TribeCore):
+class GroupHeir(GroupCore):
     creditor_weight: float = 1.0
     debtor_weight: float = 1.0
     _agent_credit: float = None
@@ -279,27 +279,27 @@ class TribeHeir(TribeCore):
     def set_agent_credit_debt(
         self,
         idea_agent_importance,
-        tribeheirs_creditor_weight_sum: float,
-        tribeheirs_debtor_weight_sum: float,
+        groupheirs_creditor_weight_sum: float,
+        groupheirs_debtor_weight_sum: float,
     ):
         self._agent_credit = idea_agent_importance * (
-            self.creditor_weight / tribeheirs_creditor_weight_sum
+            self.creditor_weight / groupheirs_creditor_weight_sum
         )
         self._agent_debt = idea_agent_importance * (
-            self.debtor_weight / tribeheirs_debtor_weight_sum
+            self.debtor_weight / groupheirs_debtor_weight_sum
         )
 
 
-def tribeheir_shop(
-    name: TribeName,
+def groupheir_shop(
+    name: GroupName,
     creditor_weight: float = None,
     debtor_weight: float = None,
     _agent_credit: float = None,
     _agent_debt: float = None,
-) -> TribeHeir:
+) -> GroupHeir:
     creditor_weight = x_func_return1ifnone(creditor_weight)
     debtor_weight = x_func_return1ifnone(debtor_weight)
-    return TribeHeir(
+    return GroupHeir(
         name=name,
         creditor_weight=creditor_weight,
         debtor_weight=debtor_weight,
@@ -309,7 +309,7 @@ def tribeheir_shop(
 
 
 @dataclasses.dataclass
-class Tribeline(TribeCore):
+class Groupline(GroupCore):
     _agent_credit: float
     _agent_debt: float
 
@@ -325,5 +325,5 @@ class Tribeline(TribeCore):
             self._agent_debt = 0
 
 
-class TribeMetrics:
+class GroupMetrics:
     pass

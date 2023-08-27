@@ -217,7 +217,7 @@
     <string>Quit App</string>
    </property>
   </widget>
-  <widget class="QTableWidget" name="idea2tribe_table">
+  <widget class="QTableWidget" name="idea2group_table">
    <property name="geometry">
     <rect>
      <x>1050</x>
@@ -233,12 +233,12 @@
    </property>
    <column>
     <property name="text">
-     <string>Tribe_ID</string>
+     <string>Group_ID</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Tribe</string>
+     <string>Group</string>
     </property>
    </column>
    <column>
@@ -247,7 +247,7 @@
     </property>
    </column>
   </widget>
-  <widget class="QPushButton" name="idea2tribe_delete_button">
+  <widget class="QPushButton" name="idea2group_delete_button">
    <property name="geometry">
     <rect>
      <x>1440</x>
@@ -262,10 +262,10 @@
     </font>
    </property>
    <property name="text">
-    <string>De-link Tribe</string>
+    <string>De-link Group</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="idea2tribe_insert_button">
+  <widget class="QPushButton" name="idea2group_insert_button">
    <property name="geometry">
     <rect>
      <x>1050</x>
@@ -280,10 +280,10 @@
     </font>
    </property>
    <property name="text">
-    <string>Add Tribe to Idea</string>
+    <string>Add Group to Idea</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="idea2tribe_insert_combo">
+  <widget class="QComboBox" name="idea2group_insert_combo">
    <property name="geometry">
     <rect>
      <x>1200</x>
@@ -334,7 +334,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Tribe count</string>
+    <string>Group count</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="cb_yo_agenda">

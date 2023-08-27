@@ -139,7 +139,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QTableWidget" name="tribes_in_table">
+  <widget class="QTableWidget" name="groups_in_table">
    <property name="geometry">
     <rect>
      <x>530</x>
@@ -174,7 +174,7 @@
     </property>
    </column>
   </widget>
-  <widget class="QTableWidget" name="tribes_out_table">
+  <widget class="QTableWidget" name="groups_out_table">
    <property name="geometry">
     <rect>
      <x>920</x>
@@ -245,13 +245,13 @@
     </font>
    </property>
    <property name="text">
-    <string>Tribes</string>
+    <string>Groups</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="tribe_update_button">
+  <widget class="QPushButton" name="group_update_button">
    <property name="geometry">
     <rect>
      <x>880</x>
@@ -261,10 +261,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>Update Tribe</string>
+    <string>Update Group</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="tribe_delete_button">
+  <widget class="QPushButton" name="group_delete_button">
    <property name="geometry">
     <rect>
      <x>720</x>
@@ -274,7 +274,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>delete Tribe</string>
+    <string>delete Group</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_6">
@@ -293,7 +293,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="tribe_insert_button">
+  <widget class="QPushButton" name="group_insert_button">
    <property name="geometry">
     <rect>
      <x>880</x>
@@ -303,10 +303,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>Add Tribe</string>
+    <string>Add Group</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="tribe_name">
+  <widget class="QLineEdit" name="group_name">
    <property name="geometry">
     <rect>
      <x>720</x>
@@ -316,7 +316,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="ally_tribe_set_button">
+  <widget class="QPushButton" name="ally_group_set_button">
    <property name="geometry">
     <rect>
      <x>1060</x>
@@ -333,10 +333,10 @@
     </font>
    </property>
    <property name="text">
-    <string>add tribe to ally</string>
+    <string>add group to ally</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="ally_tribe_del_button">
+  <widget class="QPushButton" name="ally_group_del_button">
    <property name="geometry">
     <rect>
      <x>530</x>
@@ -353,10 +353,10 @@
     </font>
    </property>
    <property name="text">
-    <string>remove tribe from ally</string>
+    <string>remove group from ally</string>
    </property>
   </widget>
-  <widget class="QTableWidget" name="tribes_stan_table">
+  <widget class="QTableWidget" name="groups_stan_table">
    <property name="geometry">
     <rect>
      <x>530</x>

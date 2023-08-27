@@ -412,13 +412,13 @@ def test_allylink_shop_set_agent_credit_debt_CorrectlyWorks():
     bikers_name = AllyName("Marie")
     bikers_creditor_weight = 3.0
     allylinks_sum_creditor_weight = 60
-    tribe_agent_credit = 0.5
-    tribe_agent_agenda_credit = 0.98
+    group_agent_credit = 0.5
+    group_agent_agenda_credit = 0.98
 
     bikers_debtor_weight = 13.0
     allylinks_sum_debtor_weight = 26.0
-    tribe_agent_debt = 0.9
-    tribe_agent_agenda_debt = 0.5151
+    group_agent_debt = 0.9
+    group_agent_agenda_debt = 0.5151
 
     ally_link_x = allylink_shop(
         name=bikers_name,
@@ -434,10 +434,10 @@ def test_allylink_shop_set_agent_credit_debt_CorrectlyWorks():
     ally_link_x.set_agent_credit_debt(
         allylinks_creditor_weight_sum=allylinks_sum_creditor_weight,
         allylinks_debtor_weight_sum=allylinks_sum_debtor_weight,
-        tribe_agent_credit=tribe_agent_credit,
-        tribe_agent_debt=tribe_agent_debt,
-        tribe_agent_agenda_credit=tribe_agent_agenda_credit,
-        tribe_agent_agenda_debt=tribe_agent_agenda_debt,
+        group_agent_credit=group_agent_credit,
+        group_agent_debt=group_agent_debt,
+        group_agent_agenda_credit=group_agent_agenda_credit,
+        group_agent_agenda_debt=group_agent_agenda_debt,
     )
 
     # THEN

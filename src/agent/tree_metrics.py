@@ -1,6 +1,6 @@
 import dataclasses
 from src.agent.required import RequiredUnit, Road
-from src.agent.tribe import TribeLink, TribeName, TribeMetrics
+from src.agent.group import GroupLink, GroupName, GroupMetrics
 
 
 @dataclasses.dataclass
@@ -8,7 +8,7 @@ class TreeMetrics:
     nodeCount: int = None
     levelCount: dict[int:int] = None
     required_bases: dict[Road:int] = None
-    tribelinks_metrics: dict[TribeName:TribeMetrics] = None
+    grouplinks_metrics: dict[GroupName:GroupMetrics] = None
     uid_max: int = None
     uid_dict: dict[int:int] = None
     all_idea_uids_are_unique: bool = None
@@ -22,21 +22,21 @@ class TreeMetrics:
             self.levelCount = {}
         if self.required_bases is None:
             self.required_bases = {}
-        self.set_tribelinks_empty_if_null()
+        self.set_grouplinks_empty_if_null()
         if self.uid_max is None:
             self.uid_max = 0
         self.set_uid_dict_emtpy_if_null()
         self.all_idea_uids_are_unique = True
 
-    def set_tribelinks_empty_if_null(self):
-        if self.tribelinks_metrics is None:
-            self.tribelinks_metrics = {}
+    def set_grouplinks_empty_if_null(self):
+        if self.grouplinks_metrics is None:
+            self.grouplinks_metrics = {}
 
     def evaluate_node(
         self,
         level: int,
         requireds: dict[Road:RequiredUnit],
-        tribelinks: dict[TribeName:TribeLink],
+        grouplinks: dict[GroupName:GroupLink],
         uid: int,
         promise: bool,
         idea_road: Road,
@@ -45,7 +45,7 @@ class TreeMetrics:
         self.evaluate_action(promise=promise, idea_road=idea_road)
         self.evaluate_level(level=level)
         self.evaluate_requiredunits(requireds=requireds)
-        self.evaluate_tribelinks(tribelinks=tribelinks)
+        self.evaluate_grouplinks(grouplinks=grouplinks)
         self.evaluate_uid_max(uid=uid)
 
     def evaluate_action(self, promise: bool, idea_road: Road):
@@ -74,10 +74,10 @@ class TreeMetrics:
                     self.required_bases[required.base] + 1
                 )
 
-    def evaluate_tribelinks(self, tribelinks: dict[TribeName:TribeLink]):
-        if tribelinks != None:
-            for tribelink in tribelinks.values():
-                self.tribelinks_metrics[tribelink.name] = tribelink
+    def evaluate_grouplinks(self, grouplinks: dict[GroupName:GroupLink]):
+        if grouplinks != None:
+            for grouplink in grouplinks.values():
+                self.grouplinks_metrics[grouplink.name] = grouplink
 
     def set_uid_dict_emtpy_if_null(self):
         if self.uid_dict is None:

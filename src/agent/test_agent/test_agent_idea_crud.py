@@ -2,7 +2,7 @@ from src.agent.examples.example_agents import get_agent_with_4_levels
 from src.agent.idea import IdeaKid
 from src.agent.required import RequiredUnit, acptfactunit_shop
 from src.agent.agent import AgentUnit
-from src.agent.tribe import tribelink_shop
+from src.agent.group import grouplink_shop
 from pytest import raises as pytest_raises
 from src.agent.road import Road
 
@@ -155,7 +155,7 @@ def test_agent_add_idea_creates_requireds_ideas():
     agent_x.add_idea(
         idea_kid=clean_kitchen_idea,
         walk=new_idea_parent_road,
-        create_missing_ideas_tribes=True,
+        create_missing_ideas_groups=True,
     )
 
     # THEN
@@ -352,20 +352,20 @@ def test_agent_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     _all_ally_debt_new = agent_x._idearoot._kids[work_text]._all_ally_debt
     assert _all_ally_debt_new == 59
 
-    # _tribelink: dict = None,
-    agent_x._idearoot._kids[work_text]._tribelinks = {
-        "fun": tribelink_shop(name="fun", creditor_weight=1, debtor_weight=7)
+    # _grouplink: dict = None,
+    agent_x._idearoot._kids[work_text]._grouplinks = {
+        "fun": grouplink_shop(name="fun", creditor_weight=1, debtor_weight=7)
     }
-    _tribelinks = agent_x._idearoot._kids[work_text]._tribelinks
-    assert _tribelinks == {
-        "fun": tribelink_shop(name="fun", creditor_weight=1, debtor_weight=7)
+    _grouplinks = agent_x._idearoot._kids[work_text]._grouplinks
+    assert _grouplinks == {
+        "fun": grouplink_shop(name="fun", creditor_weight=1, debtor_weight=7)
     }
     agent_x.edit_idea_attr(
         road=work_road,
-        tribelink=tribelink_shop(name="fun", creditor_weight=4, debtor_weight=8),
+        grouplink=grouplink_shop(name="fun", creditor_weight=4, debtor_weight=8),
     )
-    assert agent_x._idearoot._kids[work_text]._tribelinks == {
-        "fun": tribelink_shop(name="fun", creditor_weight=4, debtor_weight=8)
+    assert agent_x._idearoot._kids[work_text]._grouplinks == {
+        "fun": grouplink_shop(name="fun", creditor_weight=4, debtor_weight=8)
     }
 
     # _is_expanded: dict = None,

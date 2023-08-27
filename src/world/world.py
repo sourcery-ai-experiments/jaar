@@ -35,9 +35,9 @@ from src.world.bank_sqlstr import (
     get_idea_catalog_dict,
     AcptFactCatalog,
     get_acptfact_catalog_table_insert_sqlstr,
-    TribeUnitCatalog,
-    get_tribeunit_catalog_table_insert_sqlstr,
-    get_tribeunit_catalog_dict,
+    GroupUnitCatalog,
+    get_groupunit_catalog_table_insert_sqlstr,
+    get_groupunit_catalog_dict,
 )
 
 
@@ -51,16 +51,16 @@ class WorldUnit:
     def set_agent_attr_defined_by_world(self, agent_name: str):
         agent_obj = self.get_agent_from_agents_dir(agent_name)
 
-        for tribeunit_x in agent_obj._tribes.values():
-            if tribeunit_x._allylinks_set_by_world_road != None:
-                tribeunit_x.clear_allylinks()
+        for groupunit_x in agent_obj._groups.values():
+            if groupunit_x._allylinks_set_by_world_road != None:
+                groupunit_x.clear_allylinks()
                 ic = get_idea_catalog_dict(
-                    self.get_bank_conn(), tribeunit_x._allylinks_set_by_world_road
+                    self.get_bank_conn(), groupunit_x._allylinks_set_by_world_road
                 )
                 for idea_catalog in ic.values():
                     if agent_name != idea_catalog.agent_name:
                         allylink_x = allylink_shop(name=idea_catalog.agent_name)
-                        tribeunit_x.set_allylink(allylink_x)
+                        groupunit_x.set_allylink(allylink_x)
         self.save_agentunit_obj_to_agents_dir(agent_obj)
 
         # refresh bank metrics
@@ -186,7 +186,7 @@ class WorldUnit:
 
             self._bank_insert_agentunit(agentunit_x)
             self._bank_insert_allyunit(agentunit_x)
-            self._bank_insert_tribeunit(agentunit_x)
+            self._bank_insert_groupunit(agentunit_x)
             self._bank_insert_ideaunit(agentunit_x)
             self._bank_insert_acptfact(agentunit_x)
 
@@ -202,16 +202,16 @@ class WorldUnit:
                 sqlstr = get_ledger_table_insert_sqlstr(agentunit_x, allyunit_x)
                 cur.execute(sqlstr)
 
-    def _bank_insert_tribeunit(self, agentunit_x: AgentUnit):
+    def _bank_insert_groupunit(self, agentunit_x: AgentUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            for tribeunit_x in agentunit_x._tribes.values():
-                tribeunit_catalog_x = TribeUnitCatalog(
+            for groupunit_x in agentunit_x._groups.values():
+                groupunit_catalog_x = GroupUnitCatalog(
                     agent_name=agentunit_x._desc,
-                    tribeunit_name=tribeunit_x.name,
-                    allylinks_set_by_world_road=tribeunit_x._allylinks_set_by_world_road,
+                    groupunit_name=groupunit_x.name,
+                    allylinks_set_by_world_road=groupunit_x._allylinks_set_by_world_road,
                 )
-                sqlstr = get_tribeunit_catalog_table_insert_sqlstr(tribeunit_catalog_x)
+                sqlstr = get_groupunit_catalog_table_insert_sqlstr(groupunit_catalog_x)
                 cur.execute(sqlstr)
 
     def _bank_insert_ideaunit(self, agentunit_x: AgentUnit):

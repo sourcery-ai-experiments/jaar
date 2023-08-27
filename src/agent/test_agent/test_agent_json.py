@@ -10,7 +10,7 @@ from src.agent.agent import (
     get_dict_of_agent_from_dict,
 )
 from src.agent.examples.get_agent_examples_dir import get_agent_examples_dir
-from src.agent.tribe import TribeLink, TribeName
+from src.agent.group import GroupLink, GroupName
 from src.agent.x_func import (
     x_is_json,
     save_file as x_func_save_file,
@@ -42,7 +42,7 @@ def test_agent_get_dict_ReturnsDictObject():
     assert x_dict["_problem_bool"] == x_agent._idearoot._problem_bool
     assert x_dict["_on_meld_weight_action"] == x_agent._idearoot._on_meld_weight_action
     assert len(x_dict["_allys"]) == len(x_agent._allys)
-    assert len(x_dict["_tribes"]) == len(x_agent._tribes)
+    assert len(x_dict["_groups"]) == len(x_agent._groups)
     assert len(x_dict["_kids"]) == len(x_agent._idearoot._kids)
     with pytest_raises(KeyError) as excinfo:
         x_dict["_level"]
@@ -193,14 +193,14 @@ def test_agent_get_json_CorrectlyWorksForSimpleExample():
     agent_y = example_agents_get_agent_x1_3levels_1required_1acptfacts()
     agent_y.set_max_tree_traverse(23)
 
-    bikers_link = TribeLink(name=TribeName("bikers"))
-    tribelinks_dict = {bikers_link.name: bikers_link}
-    agent_y._idearoot._tribelinks = tribelinks_dict
+    bikers_link = GroupLink(name=GroupName("bikers"))
+    grouplinks_dict = {bikers_link.name: bikers_link}
+    agent_y._idearoot._grouplinks = grouplinks_dict
 
-    flyers_name = TribeName("flyers")
-    flyers_link = TribeLink(name=flyers_name)
-    tribelinks_dict_f = {flyers_link.name: flyers_link, bikers_link.name: bikers_link}
-    agent_y._idearoot._kids["shave"]._tribelinks = tribelinks_dict_f
+    flyers_name = GroupName("flyers")
+    flyers_link = GroupLink(name=flyers_name)
+    grouplinks_dict_f = {flyers_link.name: flyers_link, bikers_link.name: bikers_link}
+    agent_y._idearoot._kids["shave"]._grouplinks = grouplinks_dict_f
 
     x_json = agent_y.get_json()
     assert x_is_json(x_json) == True
@@ -219,8 +219,8 @@ def test_agent_get_json_CorrectlyWorksForSimpleExample():
     # print(agent_y.get_dict())
     assert len(agent_x._idearoot._kids["shave"]._requiredunits) == 1
     assert len(agent_x._idearoot._acptfactunits) == 1
-    assert len(agent_x._idearoot._tribelinks) == 1
-    assert len(agent_x._idearoot._kids["shave"]._tribelinks) == 2
+    assert len(agent_x._idearoot._grouplinks) == 1
+    assert len(agent_x._idearoot._kids["shave"]._grouplinks) == 2
     print(agent_x._idearoot._kids["shave"]._acptfactunits)
     assert len(agent_x._idearoot._kids["shave"]._acptfactunits) == 1
 
@@ -248,7 +248,7 @@ def test_agent_get_json_CorrectlyWorksForNotSimpleExample():
     assert lw3._idearoot._walk == ""
     assert lw3._idearoot._walk == lw1._idearoot._walk
     assert len(lw3._idearoot._kids) == len(lw1._idearoot._kids)
-    assert len(lw3._tribes) == 34
+    assert len(lw3._groups) == 34
     assert len(lw3._allys) == 22
     # for kid in lw3._kids.values():
     #     print(f"{kid._desc=}")

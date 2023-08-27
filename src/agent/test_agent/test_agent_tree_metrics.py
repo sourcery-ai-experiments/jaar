@@ -17,7 +17,7 @@ def test_agent_get_tree_metrics_exists():
     assert sx_tree_metrics.nodeCount != None
     assert sx_tree_metrics.required_bases != None
     assert sx_tree_metrics.levelCount != None
-    assert sx_tree_metrics.tribelinks_metrics != None
+    assert sx_tree_metrics.grouplinks_metrics != None
 
 
 def test_agent_get_tree_metrics_get_idea_uid_max_correctlyGetsMaxIdeaUID():

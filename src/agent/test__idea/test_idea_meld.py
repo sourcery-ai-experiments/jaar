@@ -1,5 +1,5 @@
 from src.agent.idea import IdeaCore, IdeaAttrHolder
-from src.agent.tribe import TribeLink, TribeName, tribelink_shop
+from src.agent.group import GroupLink, GroupName, grouplink_shop
 from src.agent.required import RequiredUnit, acptfactunit_shop as c_acptfactunit, Road
 from pytest import raises as pytest_raises
 
@@ -28,8 +28,8 @@ def custom_set_idea_attr(
     descendant_promise_count: int = None,
     all_ally_credit: bool = None,
     all_ally_debt: bool = None,
-    tribelink: TribeLink = None,
-    tribelink_del: TribeName = None,
+    grouplink: GroupLink = None,
+    grouplink_del: GroupName = None,
     is_expanded: bool = None,
     promise: bool = None,
     problem_bool: bool = None,
@@ -58,8 +58,8 @@ def custom_set_idea_attr(
         descendant_promise_count=descendant_promise_count,
         all_ally_credit=all_ally_credit,
         all_ally_debt=all_ally_debt,
-        tribelink=tribelink,
-        tribelink_del=tribelink_del,
+        grouplink=grouplink,
+        grouplink_del=grouplink_del,
         is_expanded=is_expanded,
         promise=promise,
         problem_bool=problem_bool,
@@ -161,74 +161,74 @@ def test_idea_required_meld_TwoRequiredsMeldScenarioWorks():
     assert yx1._requiredunits[required_base_x2] != None
 
 
-def test_idea_tribelink_meld_BaseScenarioWorks_on_meld_weight_actionEquals_default():
+def test_idea_grouplink_meld_BaseScenarioWorks_on_meld_weight_actionEquals_default():
     # GIVEN
     yx1 = IdeaCore(_desc="spirit")
     br1 = "Running"
     custom_set_idea_attr(idea=yx1, on_meld_weight_action="default")
     custom_set_idea_attr(
-        idea=yx1, tribelink=tribelink_shop(name=br1, creditor_weight=2)
+        idea=yx1, grouplink=grouplink_shop(name=br1, creditor_weight=2)
     )
     yx2 = IdeaCore(_desc="Rocking")
     custom_set_idea_attr(idea=yx2, on_meld_weight_action="default")
     custom_set_idea_attr(
-        idea=yx2, tribelink=tribelink_shop(name=br1, creditor_weight=3)
+        idea=yx2, grouplink=grouplink_shop(name=br1, creditor_weight=3)
     )
 
     # WHEN
     yx1.meld(other_idea=yx2)
 
     # THEN
-    bl_x = tribelink_shop(name=br1, creditor_weight=2)
-    assert yx1._tribelinks[br1] == bl_x
+    bl_x = grouplink_shop(name=br1, creditor_weight=2)
+    assert yx1._grouplinks[br1] == bl_x
 
 
-def test_idea_tribelink_meld_BaseScenarioWorks_on_meld_weight_actionEquals_sum():
+def test_idea_grouplink_meld_BaseScenarioWorks_on_meld_weight_actionEquals_sum():
     # GIVEN
     yx1 = IdeaCore(_desc="spirit")
     br1 = "Running"
     custom_set_idea_attr(idea=yx1, on_meld_weight_action="sum")
     custom_set_idea_attr(
-        idea=yx1, tribelink=tribelink_shop(name=br1, creditor_weight=2, debtor_weight=3)
+        idea=yx1, grouplink=grouplink_shop(name=br1, creditor_weight=2, debtor_weight=3)
     )
     yx2 = IdeaCore(_desc="Rocking")
     custom_set_idea_attr(idea=yx2, on_meld_weight_action="sum")
     custom_set_idea_attr(
-        idea=yx2, tribelink=tribelink_shop(name=br1, creditor_weight=2, debtor_weight=3)
+        idea=yx2, grouplink=grouplink_shop(name=br1, creditor_weight=2, debtor_weight=3)
     )
 
     # WHEN
     yx1.meld(other_idea=yx2)
 
     # THEN
-    lu_x = tribelink_shop(name=br1, creditor_weight=4, debtor_weight=6)
-    assert yx1._tribelinks[br1] == lu_x
+    lu_x = grouplink_shop(name=br1, creditor_weight=4, debtor_weight=6)
+    assert yx1._grouplinks[br1] == lu_x
 
 
-def test_idea_tribelink_meld_TwoTribesScenarioWorks():
+def test_idea_grouplink_meld_TwoGroupsScenarioWorks():
     # GIVEN
     yx1 = IdeaCore(_desc="spirit")
     br1 = "Running"
     custom_set_idea_attr(idea=yx1, on_meld_weight_action="sum")
     custom_set_idea_attr(
-        idea=yx1, tribelink=tribelink_shop(name=br1, creditor_weight=2)
+        idea=yx1, grouplink=grouplink_shop(name=br1, creditor_weight=2)
     )
 
     br2 = "Bears"
     yx2 = IdeaCore(_desc="Rocking")
     custom_set_idea_attr(idea=yx1, on_meld_weight_action="sum")
     custom_set_idea_attr(
-        idea=yx2, tribelink=tribelink_shop(name=br2, creditor_weight=2)
+        idea=yx2, grouplink=grouplink_shop(name=br2, creditor_weight=2)
     )
 
     # WHEN
     yx1.meld(other_idea=yx2)
 
     # THEN
-    lu_x1 = tribelink_shop(name=br1, creditor_weight=2)
-    lu_x2 = tribelink_shop(name=br2, creditor_weight=2)
-    assert yx1._tribelinks[br1] == lu_x1
-    assert yx1._tribelinks[br2] == lu_x2
+    lu_x1 = grouplink_shop(name=br1, creditor_weight=2)
+    lu_x2 = grouplink_shop(name=br2, creditor_weight=2)
+    assert yx1._grouplinks[br1] == lu_x1
+    assert yx1._grouplinks[br2] == lu_x2
 
 
 def test_idea_acptfactunits_meld_BaseScenarioWorks():
@@ -308,8 +308,8 @@ def test_idea_attributes_meld_Works():
         special_road=plate_road,
         numeric_road=bowl_road,
         promise=True,
-        all_ally_credit="testtribe1",
-        all_ally_debt="testtribe1",
+        all_ally_credit="testgroup1",
+        all_ally_debt="testgroup1",
         is_expanded=True,
     )
 
@@ -327,8 +327,8 @@ def test_idea_attributes_meld_Works():
         special_road=plate_road,
         numeric_road=bowl_road,
         promise=True,
-        all_ally_credit="testtribe1",
-        all_ally_debt="testtribe1",
+        all_ally_credit="testgroup1",
+        all_ally_debt="testgroup1",
         is_expanded=True,
     )
 
@@ -347,8 +347,8 @@ def test_idea_attributes_meld_Works():
     assert yx1._special_road == plate_road
     assert yx1._numeric_road == bowl_road
     assert yx1.promise == True
-    assert yx1._all_ally_credit == "testtribe1"
-    assert yx1._all_ally_debt == "testtribe1"
+    assert yx1._all_ally_credit == "testgroup1"
+    assert yx1._all_ally_debt == "testgroup1"
     assert yx1._is_expanded == True
 
 

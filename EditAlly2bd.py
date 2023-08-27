@@ -26,9 +26,9 @@ class EditAlly2bd(qtw.QWidget, Ui_Form):
         self.bd_member_yes.clicked.connect(self.bd_member_yes_clicked)
         self.bd_member_no.clicked.connect(self.bd_member_no_clicked)
 
-        self.bd_remove_button.clicked.connect(self.ally2tribe_remove)
-        self.bd_add_button.clicked.connect(self.ally2tribe_add)
-        self.update_weight_button.clicked.connect(self.ally2tribe_update)
+        self.bd_remove_button.clicked.connect(self.ally2group_remove)
+        self.bd_add_button.clicked.connect(self.ally2group_add)
+        self.update_weight_button.clicked.connect(self.ally2group_update)
 
         self.bd_insert_button.clicked.connect(self.bd_insert)
         self.bd_delete_button.clicked.connect(self.bd_delete)
@@ -60,32 +60,32 @@ class EditAlly2bd(qtw.QWidget, Ui_Form):
         #     .bd_update(bd_id=bd_id, bd_name=bd_name)
         # self.refreshAll()
 
-    def ally2tribe_update(self):
+    def ally2group_update(self):
         currentRowInt = self.bd_member_yes.currentRow()
         # if self.bd_member_yes.rowCount() > 0:
         #     currentRowInt = max(currentRowInt, 0)
         #     ally_id = self.ally_id
         #     bd_id = int(self.bd_member_yes.item(currentRowInt, 4).text())
-        #     weight = int(self.ally2tribe_weight_edit.text())
-        #     Ally2OG.ally2tribe_update(ally_id=ally_id, bd_id=bd_id, weight=weight)
+        #     weight = int(self.ally2group_weight_edit.text())
+        #     Ally2OG.ally2group_update(ally_id=ally_id, bd_id=bd_id, weight=weight)
         #     self.refreshAll()
 
-    def ally2tribe_remove(self):
+    def ally2group_remove(self):
         currentRowInt = self.bd_member_yes.currentRow()
         # if self.bd_member_yes.rowCount() > 0:
         #     currentRowInt = max(currentRowInt, 0)
         #     ally_id = self.ally_id
         #     bd_id = int(self.bd_member_yes.item(currentRowInt, 4).text())
-        #     Ally2OG.ally2tribe_delete(ally_id=ally_id, bd_id=bd_id)
+        #     Ally2OG.ally2group_delete(ally_id=ally_id, bd_id=bd_id)
         #     self.refreshAll()
 
-    def ally2tribe_add(self):
+    def ally2group_add(self):
         currentRowInt = self.bd_member_no.currentRow()
         # if self.bd_member_no.rowCount() > 0:
         #     currentRowInt = max(currentRowInt, 0)
         #     ally_id = self.ally_id
         #     bd_id = int(self.bd_member_no.item(currentRowInt, 2).text())
-        #     Ally2OG.ally2tribe_insert(ally_id=ally_id, bd_id=bd_id, weight=1)
+        #     Ally2OG.ally2group_insert(ally_id=ally_id, bd_id=bd_id, weight=1)
         # self.refreshAll()
 
     def refreshAll(self):
@@ -108,11 +108,11 @@ class EditAlly2bd(qtw.QWidget, Ui_Form):
         self.bd_member_no.setColumnHidden(2, True)
 
     def bd_member_yes_clicked(self):
-        self.ally2tribe_weight_edit.setText(
+        self.ally2group_weight_edit.setText(
             self.bd_member_yes.item(self.bd_member_yes.currentRow(), 1).text()
         )
 
     def bd_member_no_clicked(self):
         name = self.bd_member_no.item(self.bd_member_no.currentRow(), 0).text()
         self.bd_update_name_edit.setText(name)
-        self.bd_delete_button.setText(f'Delete Ally Tribe " {name} "')
+        self.bd_delete_button.setText(f'Delete Ally Group " {name} "')

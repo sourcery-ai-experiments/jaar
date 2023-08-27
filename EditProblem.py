@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QTableWidgetItem as qti
 from EditIdeaUnit import EditIdeaUnit
 from EditAlly import EditAlly
 from src.pyqt5_tools.pyqt_func import lw_diplay, get_pyqttree, num2str
-from src.agent.tribe import tribeunit_shop, tribelink_shop
+from src.agent.group import groupunit_shop, grouplink_shop
 from src.agent.idea import IdeaKid
 from src.agent.road import Road, get_walk_from_road, get_terminus_node_from_road
 from sys import exit as sys_exit
@@ -18,9 +18,9 @@ from sys import exit as sys_exit
 # self.problem_context_text
 # self.problem_context_combo
 
-# self.tribe1_name_combo self.tribe1_weight_text
-# self.tribe2_name_combo self.tribe2_weight_text
-# self.tribe3_name_combo self.tribe3_weight_text
+# self.group1_name_combo self.group1_weight_text
+# self.group2_name_combo self.group2_weight_text
+# self.group3_name_combo self.group3_weight_text
 
 # self.action1_combo
 # self.action2_combo
@@ -30,8 +30,8 @@ from sys import exit as sys_exit
 # self.action3_text
 
 # self.agenda_display
-# self.add_tribe_text
-# self.add_tribe_button
+# self.add_group_text
+# self.add_group_button
 # load_problem_button
 # refresh_button
 
@@ -48,7 +48,7 @@ class EditProblem(qtw.QWidget, Ui_Form):
         self.quit_button.clicked.connect(sys_exit)
         self.refresh_button.clicked.connect(self.refresh_all)
         self.baseideaunit.itemClicked.connect(self.open_editideaunit)
-        self.add_tribe_button.clicked.connect(self.add_tribe)
+        self.add_group_button.clicked.connect(self.add_group)
         self.load_problem_button.clicked.connect(self.load_problem)
 
         self.problem_name_combo.currentTextChanged.connect(
@@ -82,37 +82,37 @@ class EditProblem(qtw.QWidget, Ui_Form):
     def select_action3_combo(self):
         self.action3_text.setText(self.action3_combo.currentText())
 
-    def create_tribelinks_list(self):
-        tribelinks_x_list = []
-        if self.tribe1_name_combo.currentText() != "":
+    def create_grouplinks_list(self):
+        grouplinks_x_list = []
+        if self.group1_name_combo.currentText() != "":
             weight1 = 1
-            if self.tribe1_weight_text.text() != "":
-                weight1 = float(self.tribe1_weight_text.text())
-            tribelinks_x_list.append(
-                tribelink_shop(
-                    name=self.tribe1_name_combo.currentText(), weight=weight1
+            if self.group1_weight_text.text() != "":
+                weight1 = float(self.group1_weight_text.text())
+            grouplinks_x_list.append(
+                grouplink_shop(
+                    name=self.group1_name_combo.currentText(), weight=weight1
                 )
             )
-        if self.tribe2_name_combo.currentText() != "":
+        if self.group2_name_combo.currentText() != "":
             weight2 = 1
-            if self.tribe2_weight_text.text() != "":
-                weight2 = float(self.tribe2_weight_text.text())
+            if self.group2_weight_text.text() != "":
+                weight2 = float(self.group2_weight_text.text())
 
-            tribelinks_x_list.append(
-                tribelink_shop(
-                    name=self.tribe2_name_combo.currentText(), weight=weight2
+            grouplinks_x_list.append(
+                grouplink_shop(
+                    name=self.group2_name_combo.currentText(), weight=weight2
                 )
             )
-        if self.tribe3_name_combo.currentText() != "":
+        if self.group3_name_combo.currentText() != "":
             weight3 = 1
-            if self.tribe3_weight_text.text() != "":
-                weight3 = float(self.tribe3_weight_text.text())
-            tribelinks_x_list.append(
-                tribelink_shop(
-                    name=self.tribe3_name_combo.currentText(), weight=weight3
+            if self.group3_weight_text.text() != "":
+                weight3 = float(self.group3_weight_text.text())
+            grouplinks_x_list.append(
+                grouplink_shop(
+                    name=self.group3_name_combo.currentText(), weight=weight3
                 )
             )
-        return tribelinks_x_list
+        return grouplinks_x_list
 
     def load_problem(self):
         self.set_problem_dominate_action_idea(road=self.problem_name_text.text())
@@ -126,25 +126,25 @@ class EditProblem(qtw.QWidget, Ui_Form):
             prob_walk = get_walk_from_road(road)
             prob_desc = get_terminus_node_from_road(road)
             prob_idea = IdeaKid(_desc=prob_desc, _walk=prob_walk)
-            for tribelink_x in self.create_tribelinks_list():
-                prob_idea.set_tribelink(tribelink_x)
+            for grouplink_x in self.create_grouplinks_list():
+                prob_idea.set_grouplink(grouplink_x)
             self.agent_x.set_dominate_promise_idea(idea_kid=prob_idea)
 
-    def add_tribe(self):
-        if self.add_tribe_text not in (None, ""):
-            self.agent_x.set_tribeunit(tribeunit_shop(name=self.add_tribe_text.text()))
+    def add_group(self):
+        if self.add_group_text not in (None, ""):
+            self.agent_x.set_groupunit(groupunit_shop(name=self.add_group_text.text()))
         self.refresh_all()
 
     def refresh_all(self):
         self.problem_name_text.setText("")
         self.problem_context_text.setText("")
-        self.tribe1_weight_text.setText("")
-        self.tribe2_weight_text.setText("")
-        self.tribe3_weight_text.setText("")
+        self.group1_weight_text.setText("")
+        self.group2_weight_text.setText("")
+        self.group3_weight_text.setText("")
         self.action1_text.setText("")
         self.action2_text.setText("")
         self.action3_text.setText("")
-        self.add_tribe_text.setText("")
+        self.add_group_text.setText("")
 
         if self.agent_x != None:
             self.refresh_agenda_list()
@@ -157,12 +157,12 @@ class EditProblem(qtw.QWidget, Ui_Form):
             self.problem_name_combo.addItems(idea_road_list)
             self.problem_context_combo.clear()
             self.problem_context_combo.addItems(idea_road_list)
-            self.tribe1_name_combo.clear()
-            self.tribe2_name_combo.clear()
-            self.tribe3_name_combo.clear()
-            self.tribe1_name_combo.addItems(self.agent_x.get_tribeunits_name_list())
-            self.tribe2_name_combo.addItems(self.agent_x.get_tribeunits_name_list())
-            self.tribe3_name_combo.addItems(self.agent_x.get_tribeunits_name_list())
+            self.group1_name_combo.clear()
+            self.group2_name_combo.clear()
+            self.group3_name_combo.clear()
+            self.group1_name_combo.addItems(self.agent_x.get_groupunits_name_list())
+            self.group2_name_combo.addItems(self.agent_x.get_groupunits_name_list())
+            self.group3_name_combo.addItems(self.agent_x.get_groupunits_name_list())
             self.action1_combo.clear()
             self.action2_combo.clear()
             self.action3_combo.clear()

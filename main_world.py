@@ -371,7 +371,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         [
                             lw_diplay(idea_obj._agent_importance),
                             idea_road,
-                            len(idea_obj._tribelinks),
+                            len(idea_obj._grouplinks),
                         ]
                     )
 
@@ -390,16 +390,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             )
         return x_list
 
-    def get_p_tribes_list(self):
+    def get_p_groups_list(self):
         x_list = []
         if self.person_dest_agent != None:
             x_list.extend(
                 [
-                    lw_diplay(tribeunit._agent_importance),
-                    tribeunit.name,
-                    len(tribeunit._allys),
+                    lw_diplay(groupunit._agent_importance),
+                    groupunit.name,
+                    len(groupunit._allys),
                 ]
-                for tribeunit in self.person_dest_agent._tribes.values()
+                for groupunit in self.person_dest_agent._groups.values()
             )
         return x_list
 
@@ -481,13 +481,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             column_headers = [
                 "agent_importance",
                 f"Ideas Table ({len(p_ideas_list)})",
-                "tribelinks",
+                "grouplinks",
             ]
         else:
             column_headers = [
                 "agent_importance",
                 "Ideas Table",
-                "tribelinks",
+                "grouplinks",
             ]
 
         self.w_ideas_table.setObjectName("Ideas Table")
@@ -516,18 +516,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             column_width=[50, 300, 50],
         )
 
-    def _sub_refresh_p_tribes_table(self):
-        p_tribes_list = self.get_p_tribes_list()
+    def _sub_refresh_p_groups_table(self):
+        p_groups_list = self.get_p_groups_list()
         column_headers = [
             "agent_importance",
-            f"tribes ({len(p_tribes_list)})",
+            f"groups ({len(p_groups_list)})",
             "Allys",
         ]
 
         self.refresh_x(
-            table_x=self.w_tribes_table,
+            table_x=self.w_groups_table,
             column_header=column_headers,
-            populate_list=p_tribes_list,
+            populate_list=p_groups_list,
             column_width=[50, 300, 100],
         )
 
@@ -577,7 +577,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             )
         self._sub_refresh_p_ideas_table()
         self._sub_refresh_p_allys_table()
-        self._sub_refresh_p_tribes_table()
+        self._sub_refresh_p_groups_table()
         self._sub_refresh_p_acptfacts_table()
         self._sub_refresh_p_agenda_table()
 

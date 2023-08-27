@@ -76,19 +76,19 @@ AgentUnit objects
 
 AgentUnit AllyUnit objects
 
-AgentUnit TribeUnit objects
+AgentUnit GroupUnit objects
 
 AgentUnit IdeaUnit objects
 
 AgentUnit IdeaUnit hierarchical structure
 
-AgentUnit IdeaUnit TribeLink objects
+AgentUnit IdeaUnit GroupLink objects
 
-AgentUnit IdeaUnit TribeLine objects
+AgentUnit IdeaUnit GroupLine objects
 
-AgentUnit IdeaUnit TribeHeir objects
+AgentUnit IdeaUnit GroupHeir objects
 
-AgentUnit IdeaUnit TribeHeir objects
+AgentUnit IdeaUnit GroupHeir objects
 
 AgentUnit IdeaUnit RequiredFactUnit objects
 

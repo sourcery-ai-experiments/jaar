@@ -10,14 +10,14 @@ from src.agent.ally import (
     allylink_shop,
     AllyUnitExternalMetrics,
 )
-from src.agent.tribe import (
-    TribeLink,
-    TribeName,
-    TribeUnit,
-    tribelinks_get_from_dict,
-    get_from_dict as tribeunits_get_from_dict,
-    tribeunit_shop,
-    tribelink_shop,
+from src.agent.group import (
+    GroupLink,
+    GroupName,
+    GroupUnit,
+    grouplinks_get_from_dict,
+    get_from_dict as groupunits_get_from_dict,
+    groupunit_shop,
+    grouplink_shop,
 )
 from src.agent.required import (
     AcptFactCore,
@@ -70,7 +70,7 @@ class AgentUnit:
     _desc: str = None
     _weight: float = None
     _allys: dict[AllyName:AllyUnit] = None
-    _tribes: dict[TribeName:TribeUnit] = None
+    _groups: dict[GroupName:GroupUnit] = None
     _idearoot: IdeaRoot = None
     _idea_dict: dict[Road:IdeaCore] = None
     _max_tree_traverse: int = 3
@@ -116,7 +116,7 @@ class AgentUnit:
             return False
 
         promise_idea_road = tree_metrics_x.an_promise_idea_road
-        if self._are_all_allys_tribes_are_in_idea_kid(road=promise_idea_road) == False:
+        if self._are_all_allys_groups_are_in_idea_kid(road=promise_idea_road) == False:
             return False
 
         return self.all_ideas_relevant_to_promise_idea(road=promise_idea_road) != False
@@ -150,8 +150,8 @@ class AgentUnit:
                 cx.add_idea(idea_kid=new_yx, walk=new_yx._walk)
             cx.set_agent_metrics()
 
-        # TODO grab tribes
-        # TODO grab all tribe allys
+        # TODO grab groups
+        # TODO grab all group allys
         # TODO grab acptfacts
         return cx
 
@@ -175,30 +175,30 @@ class AgentUnit:
         all_ideas_set = set(self.get_idea_tree_ordered_road_list())
         return all_ideas_set == all_ideas_set.intersection(promise_idea_assoc_set)
 
-    def _are_all_allys_tribes_are_in_idea_kid(self, road: Road) -> bool:
+    def _are_all_allys_groups_are_in_idea_kid(self, road: Road) -> bool:
         idea_kid = self.get_idea_kid(road=road)
-        # get dict of all idea tribeheirs
-        tribeheir_list = idea_kid._tribeheirs.keys()
-        tribeheir_dict = {tribeheir_name: 1 for tribeheir_name in tribeheir_list}
-        non_single_tribeunits = {
-            tribeunit.name: tribeunit
-            for tribeunit in self._tribes.values()
-            if tribeunit._single_ally != True
+        # get dict of all idea groupheirs
+        groupheir_list = idea_kid._groupheirs.keys()
+        groupheir_dict = {groupheir_name: 1 for groupheir_name in groupheir_list}
+        non_single_groupunits = {
+            groupunit.name: groupunit
+            for groupunit in self._groups.values()
+            if groupunit._single_ally != True
         }
-        # check all non_single_ally_tribeunits are in tribeheirs
-        for non_single_tribe in non_single_tribeunits.values():
-            if tribeheir_dict.get(non_single_tribe.name) is None:
+        # check all non_single_ally_groupunits are in groupheirs
+        for non_single_group in non_single_groupunits.values():
+            if groupheir_dict.get(non_single_group.name) is None:
                 return False
 
-        # get dict of all allylinks that are in all tribeheirs
-        tribeheir_allyunits = {}
-        for tribeheir_name in tribeheir_dict:
-            tribeunit = self._tribes.get(tribeheir_name)
-            for allylink in tribeunit._allys.values():
-                tribeheir_allyunits[allylink.name] = self._allys.get(allylink.name)
+        # get dict of all allylinks that are in all groupheirs
+        groupheir_allyunits = {}
+        for groupheir_name in groupheir_dict:
+            groupunit = self._groups.get(groupheir_name)
+            for allylink in groupunit._allys.values():
+                groupheir_allyunits[allylink.name] = self._allys.get(allylink.name)
 
-        # check all agent._allys are in tribeheir_allyunits
-        return len(self._allys) == len(tribeheir_allyunits)
+        # check all agent._allys are in groupheir_allyunits
+        return len(self._allys) == len(groupheir_allyunits)
 
     def get_time_min_from_dt(self, dt: datetime) -> float:
         return hreg_get_time_min_from_dt(dt=dt)
@@ -312,39 +312,39 @@ class AgentUnit:
 
     def get_allys_metrics(self):
         tree_metrics = self.get_tree_metrics()
-        return tree_metrics.tribelinks_metrics
+        return tree_metrics.grouplinks_metrics
 
     def set_allys_empty_if_null(self):
         if self._allys is None:
             self._allys = {}
 
-    def add_to_tribe_agent_credit_debt(
+    def add_to_group_agent_credit_debt(
         self,
-        tribename: TribeName,
-        tribeheir_agent_credit: float,
-        tribeheir_agent_debt: float,
+        groupname: GroupName,
+        groupheir_agent_credit: float,
+        groupheir_agent_debt: float,
     ):
-        for tribe in self._tribes.values():
-            if tribe.name == tribename:
-                tribe.set_empty_agent_credit_debt_to_zero()
-                tribe._agent_credit += tribeheir_agent_credit
-                tribe._agent_debt += tribeheir_agent_debt
+        for group in self._groups.values():
+            if group.name == groupname:
+                group.set_empty_agent_credit_debt_to_zero()
+                group._agent_credit += groupheir_agent_credit
+                group._agent_debt += groupheir_agent_debt
 
-    def add_to_tribe_agent_agenda_credit_debt(
+    def add_to_group_agent_agenda_credit_debt(
         self,
-        tribename: TribeName,
-        tribeline_agent_credit: float,
-        tribeline_agent_debt: float,
+        groupname: GroupName,
+        groupline_agent_credit: float,
+        groupline_agent_debt: float,
     ):
-        for tribe in self._tribes.values():
+        for group in self._groups.values():
             if (
-                tribe.name == tribename
-                and tribeline_agent_credit != None
-                and tribeline_agent_debt != None
+                group.name == groupname
+                and groupline_agent_credit != None
+                and groupline_agent_debt != None
             ):
-                tribe.set_empty_agent_credit_debt_to_zero()
-                tribe._agent_agenda_credit += tribeline_agent_credit
-                tribe._agent_agenda_debt += tribeline_agent_debt
+                group.set_empty_agent_credit_debt_to_zero()
+                group._agent_agenda_credit += groupline_agent_credit
+                group._agent_agenda_debt += groupline_agent_debt
 
     def add_to_allyunit_agent_credit_debt(
         self,
@@ -363,12 +363,12 @@ class AgentUnit:
                     agent_agenda_debt=agent_agenda_debt,
                 )
 
-    def set_tribeunits_empty_if_null(self):
-        if self._tribes is None:
-            self._tribes = {}
+    def set_groupunits_empty_if_null(self):
+        if self._groups is None:
+            self._groups = {}
 
     def del_allyunit(self, name: str):
-        self._tribes.pop(name)
+        self._groups.pop(name)
         self._allys.pop(name)
 
     def add_allyunit(
@@ -388,34 +388,34 @@ class AgentUnit:
 
     def set_allyunit(self, allyunit: AllyUnit):
         self.set_allys_empty_if_null()
-        self.set_tribeunits_empty_if_null()
-        # future: if ally is new check tribe does not already have that name
+        self.set_groupunits_empty_if_null()
+        # future: if ally is new check group does not already have that name
 
         self._allys[allyunit.name] = allyunit
 
-        existing_tribe = None
+        existing_group = None
         try:
-            existing_tribe = self._tribes[allyunit.name]
+            existing_group = self._groups[allyunit.name]
         except KeyError:
             allylink = allylink_shop(
                 name=AllyName(allyunit.name), creditor_weight=1, debtor_weight=1
             )
             allylinks = {allylink.name: allylink}
-            tribe_unit = tribeunit_shop(
+            group_unit = groupunit_shop(
                 name=allyunit.name,
                 _single_ally=True,
                 _allys=allylinks,
                 uid=None,
                 single_member_ally_id=None,
             )
-            self.set_tribeunit(tribeunit=tribe_unit)
+            self.set_groupunit(groupunit=group_unit)
 
     def edit_allyunit_name(
         self,
         old_name: str,
         new_name: str,
         allow_ally_overwite: bool,
-        allow_nonsingle_tribe_overwrite: bool,
+        allow_nonsingle_group_overwrite: bool,
     ):
         old_name_creditor_weight = self._allys.get(old_name).creditor_weight
         if not allow_ally_overwite and self._allys.get(new_name) != None:
@@ -423,53 +423,53 @@ class AgentUnit:
                 f"Ally '{old_name}' change to '{new_name}' failed since it already exists."
             )
         elif (
-            not allow_nonsingle_tribe_overwrite
-            and self._tribes.get(new_name) != None
-            and self._tribes.get(new_name)._single_ally == False
+            not allow_nonsingle_group_overwrite
+            and self._groups.get(new_name) != None
+            and self._groups.get(new_name)._single_ally == False
         ):
             raise InvalidAgentException(
-                f"Ally '{old_name}' change to '{new_name}' failed since non-single tribe '{new_name}' already exists."
+                f"Ally '{old_name}' change to '{new_name}' failed since non-single group '{new_name}' already exists."
             )
         elif (
-            allow_nonsingle_tribe_overwrite
-            and self._tribes.get(new_name) != None
-            and self._tribes.get(new_name)._single_ally == False
+            allow_nonsingle_group_overwrite
+            and self._groups.get(new_name) != None
+            and self._groups.get(new_name)._single_ally == False
         ):
-            self.del_tribeunit(tribename=new_name)
+            self.del_groupunit(groupname=new_name)
         elif self._allys.get(new_name) != None:
             old_name_creditor_weight += self._allys.get(new_name).creditor_weight
 
         self.add_allyunit(name=new_name, creditor_weight=old_name_creditor_weight)
-        tribes_affected_list = []
-        for tribe in self._tribes.values():
-            tribes_affected_list.extend(
-                tribe.name
-                for ally_x in tribe._allys.values()
+        groups_affected_list = []
+        for group in self._groups.values():
+            groups_affected_list.extend(
+                group.name
+                for ally_x in group._allys.values()
                 if ally_x.name == old_name
             )
-        for tribe_x in tribes_affected_list:
+        for group_x in groups_affected_list:
             allylink_creditor_weight = (
-                self._tribes.get(tribe_x)._allys.get(old_name).creditor_weight
+                self._groups.get(group_x)._allys.get(old_name).creditor_weight
             )
             allylink_debtor_weight = (
-                self._tribes.get(tribe_x)._allys.get(old_name).debtor_weight
+                self._groups.get(group_x)._allys.get(old_name).debtor_weight
             )
-            if self._tribes.get(tribe_x)._allys.get(new_name) != None:
+            if self._groups.get(group_x)._allys.get(new_name) != None:
                 allylink_creditor_weight += (
-                    self._tribes.get(tribe_x)._allys.get(new_name).creditor_weight
+                    self._groups.get(group_x)._allys.get(new_name).creditor_weight
                 )
                 allylink_debtor_weight += (
-                    self._tribes.get(tribe_x)._allys.get(new_name).debtor_weight
+                    self._groups.get(group_x)._allys.get(new_name).debtor_weight
                 )
 
-            self._tribes.get(tribe_x).set_allylink(
+            self._groups.get(group_x).set_allylink(
                 allylink=allylink_shop(
                     name=new_name,
                     creditor_weight=allylink_creditor_weight,
                     debtor_weight=allylink_debtor_weight,
                 )
             )
-            self._tribes.get(tribe_x).del_allylink(name=old_name)
+            self._groups.get(group_x).del_allylink(name=old_name)
 
         self.del_allyunit(name=old_name)
 
@@ -513,44 +513,44 @@ class AgentUnit:
             uid_count > 1 or uid is None for uid, uid_count in uid_dict.items()
         )
 
-    def get_tribeunits_uid_max(self) -> int:
+    def get_groupunits_uid_max(self) -> int:
         uid_max = 1
-        for tribeunit_x in self._tribes.values():
-            if tribeunit_x.uid != None and tribeunit_x.uid > uid_max:
-                uid_max = tribeunit_x.uid
+        for groupunit_x in self._groups.values():
+            if groupunit_x.uid != None and groupunit_x.uid > uid_max:
+                uid_max = groupunit_x.uid
         return uid_max
 
-    def get_tribeunits_uid_dict(self) -> dict[int:int]:
+    def get_groupunits_uid_dict(self) -> dict[int:int]:
         uid_dict = {}
-        for tribeunit_x in self._tribes.values():
-            if uid_dict.get(tribeunit_x.uid) is None:
-                uid_dict[tribeunit_x.uid] = 1
+        for groupunit_x in self._groups.values():
+            if uid_dict.get(groupunit_x.uid) is None:
+                uid_dict[groupunit_x.uid] = 1
             else:
-                uid_dict[tribeunit_x.uid] += 1
+                uid_dict[groupunit_x.uid] += 1
         return uid_dict
 
-    def set_all_tribeunits_uids_unique(self) -> int:
-        uid_max = self.get_tribeunits_uid_max()
-        uid_dict = self.get_tribeunits_uid_dict()
-        for tribeunit_x in self._tribes.values():
-            if uid_dict.get(tribeunit_x.uid) > 0:
+    def set_all_groupunits_uids_unique(self) -> int:
+        uid_max = self.get_groupunits_uid_max()
+        uid_dict = self.get_groupunits_uid_dict()
+        for groupunit_x in self._groups.values():
+            if uid_dict.get(groupunit_x.uid) > 0:
                 new_uid_max = uid_max + 1
-                tribeunit_x.uid = new_uid_max
-                uid_max = tribeunit_x.uid
+                groupunit_x.uid = new_uid_max
+                uid_max = groupunit_x.uid
 
-    def all_tribeunits_uids_are_unique(self):
-        uid_dict = self.get_tribeunits_uid_dict()
+    def all_groupunits_uids_are_unique(self):
+        uid_dict = self.get_groupunits_uid_dict()
         return not any(
             uid_count > 1 or uid is None for uid, uid_count in uid_dict.items()
         )
 
-    def set_tribeunit(self, tribeunit: TribeUnit, create_missing_allys: bool = None):
-        self.set_tribeunits_empty_if_null()
-        tribeunit._set_allylinks_empty_if_null()
-        self._tribes[tribeunit.name] = tribeunit
+    def set_groupunit(self, groupunit: GroupUnit, create_missing_allys: bool = None):
+        self.set_groupunits_empty_if_null()
+        groupunit._set_allylinks_empty_if_null()
+        self._groups[groupunit.name] = groupunit
 
         if create_missing_allys:
-            self._create_missing_allys(allylinks=tribeunit._allys)
+            self._create_missing_allys(allylinks=groupunit._allys)
 
     def _create_missing_allys(self, allylinks: dict[AllyName:AllyLink]):
         for allylink_x in allylinks.values():
@@ -563,78 +563,78 @@ class AgentUnit:
                     )
                 )
 
-    def del_tribeunit(self, tribename: TribeName):
-        self._tribes.pop(tribename)
+    def del_groupunit(self, groupname: GroupName):
+        self._groups.pop(groupname)
 
-    def edit_tribeunit_name(
-        self, old_name: TribeName, new_name: TribeName, allow_tribe_overwite: bool
+    def edit_groupunit_name(
+        self, old_name: GroupName, new_name: GroupName, allow_group_overwite: bool
     ):
-        if not allow_tribe_overwite and self._tribes.get(new_name) != None:
+        if not allow_group_overwite and self._groups.get(new_name) != None:
             raise InvalidAgentException(
-                f"Tribe '{old_name}' change to '{new_name}' failed since it already exists."
+                f"Group '{old_name}' change to '{new_name}' failed since it already exists."
             )
-        elif self._tribes.get(new_name) != None:
-            old_tribeunit = self._tribes.get(old_name)
-            old_tribeunit.set_name(name=new_name)
-            self._tribes.get(new_name).meld(other_tribe=old_tribeunit)
-            self.del_tribeunit(tribename=old_name)
-        elif self._tribes.get(new_name) is None:
-            old_tribeunit = self._tribes.get(old_name)
-            tribeunit_x = tribeunit_shop(
+        elif self._groups.get(new_name) != None:
+            old_groupunit = self._groups.get(old_name)
+            old_groupunit.set_name(name=new_name)
+            self._groups.get(new_name).meld(other_group=old_groupunit)
+            self.del_groupunit(groupname=old_name)
+        elif self._groups.get(new_name) is None:
+            old_groupunit = self._groups.get(old_name)
+            groupunit_x = groupunit_shop(
                 name=new_name,
-                uid=old_tribeunit.uid,
-                _allys=old_tribeunit._allys,
-                single_member_ally_id=old_tribeunit.single_member_ally_id,
-                _single_ally=old_tribeunit._single_ally,
+                uid=old_groupunit.uid,
+                _allys=old_groupunit._allys,
+                single_member_ally_id=old_groupunit.single_member_ally_id,
+                _single_ally=old_groupunit._single_ally,
             )
-            self.set_tribeunit(tribeunit=tribeunit_x)
-            self.del_tribeunit(tribename=old_name)
+            self.set_groupunit(groupunit=groupunit_x)
+            self.del_groupunit(groupname=old_name)
 
-        self._edit_tribelinks_name(
+        self._edit_grouplinks_name(
             old_name=old_name,
             new_name=new_name,
-            allow_tribe_overwite=allow_tribe_overwite,
+            allow_group_overwite=allow_group_overwite,
         )
 
-    def _edit_tribelinks_name(
+    def _edit_grouplinks_name(
         self,
-        old_name: TribeName,
-        new_name: TribeName,
-        allow_tribe_overwite: bool,
+        old_name: GroupName,
+        new_name: GroupName,
+        allow_group_overwite: bool,
     ):
         for idea_x in self.get_idea_list():
             if (
-                idea_x._tribelinks.get(new_name) != None
-                and idea_x._tribelinks.get(old_name) != None
+                idea_x._grouplinks.get(new_name) != None
+                and idea_x._grouplinks.get(old_name) != None
             ):
-                old_tribelink = idea_x._tribelinks.get(old_name)
-                old_tribelink.name = new_name
-                idea_x._tribelinks.get(new_name).meld(
-                    other_tribelink=old_tribelink,
+                old_grouplink = idea_x._grouplinks.get(old_name)
+                old_grouplink.name = new_name
+                idea_x._grouplinks.get(new_name).meld(
+                    other_grouplink=old_grouplink,
                     other_on_meld_weight_action="sum",
                     src_on_meld_weight_action="sum",
                 )
 
-                idea_x.del_tribelink(tribename=old_name)
+                idea_x.del_grouplink(groupname=old_name)
             elif (
-                idea_x._tribelinks.get(new_name) is None
-                and idea_x._tribelinks.get(old_name) != None
+                idea_x._grouplinks.get(new_name) is None
+                and idea_x._grouplinks.get(old_name) != None
             ):
-                old_tribelink = idea_x._tribelinks.get(old_name)
-                new_tribelink = tribelink_shop(
+                old_grouplink = idea_x._grouplinks.get(old_name)
+                new_grouplink = grouplink_shop(
                     name=new_name,
-                    creditor_weight=old_tribelink.creditor_weight,
-                    debtor_weight=old_tribelink.debtor_weight,
+                    creditor_weight=old_grouplink.creditor_weight,
+                    debtor_weight=old_grouplink.debtor_weight,
                 )
-                idea_x.set_tribelink(tribelink=new_tribelink)
-                idea_x.del_tribelink(tribename=old_name)
+                idea_x.set_grouplink(grouplink=new_grouplink)
+                idea_x.del_grouplink(groupname=old_name)
 
-    def get_tribeunits_name_list(self):
-        tribename_list = list(self._tribes.keys())
-        tribename_list.append("")
-        tribename_dict = {tribename.lower(): tribename for tribename in tribename_list}
-        tribename_lowercase_ordered_list = sorted(list(tribename_dict))
-        return [tribename_dict[tribe_l] for tribe_l in tribename_lowercase_ordered_list]
+    def get_groupunits_name_list(self):
+        groupname_list = list(self._groups.keys())
+        groupname_list.append("")
+        groupname_dict = {groupname.lower(): groupname for groupname in groupname_list}
+        groupname_lowercase_ordered_list = sorted(list(groupname_dict))
+        return [groupname_dict[group_l] for group_l in groupname_lowercase_ordered_list]
 
     def set_time_acptfacts(self, open: datetime = None, nigh: datetime = None) -> None:
         open_minutes = self.get_time_min_from_dt(dt=open) if open != None else None
@@ -840,7 +840,7 @@ class AgentUnit:
         tree_metrics.evaluate_node(
             level=self._idearoot._level,
             requireds=self._idearoot._requiredunits,
-            tribelinks=self._idearoot._tribelinks,
+            grouplinks=self._idearoot._grouplinks,
             uid=self._idearoot._uid,
             promise=self._idearoot.promise,
             idea_road=self._idearoot.get_road(),
@@ -859,7 +859,7 @@ class AgentUnit:
         tree_metrics.evaluate_node(
             level=idea_kid._level,
             requireds=idea_kid._requiredunits,
-            tribelinks=idea_kid._tribelinks,
+            grouplinks=idea_kid._grouplinks,
             uid=idea_kid._uid,
             promise=idea_kid.promise,
             idea_road=idea_kid.get_road(),
@@ -917,7 +917,7 @@ class AgentUnit:
         self,
         idea_kid: IdeaCore,
         walk: Road,
-        create_missing_ideas_tribes: bool = None,
+        create_missing_ideas_groups: bool = None,
     ):
         temp_idea = self._idearoot
         _road = walk.split(",")
@@ -939,15 +939,15 @@ class AgentUnit:
 
         temp_idea.add_kid(idea_kid)
 
-        if create_missing_ideas_tribes:
+        if create_missing_ideas_groups:
             self._create_missing_ideas(road=Road(f"{walk},{idea_kid._desc}"))
-            self._create_missing_tribes_allys(tribelinks=idea_kid._tribelinks)
+            self._create_missing_groups_allys(grouplinks=idea_kid._grouplinks)
 
-    def _create_missing_tribes_allys(self, tribelinks: dict[TribeName:TribeLink]):
-        for tribelink_x in tribelinks.values():
-            if self._tribes.get(tribelink_x.name) is None:
-                tribeunit_x = tribeunit_shop(name=tribelink_x.name, _allys={})
-                self.set_tribeunit(tribeunit=tribeunit_x)
+    def _create_missing_groups_allys(self, grouplinks: dict[GroupName:GroupLink]):
+        for grouplink_x in grouplinks.values():
+            if self._groups.get(grouplink_x.name) is None:
+                groupunit_x = groupunit_shop(name=grouplink_x.name, _allys={})
+                self.set_groupunit(groupunit=groupunit_x)
 
     def _create_missing_ideas(self, road):
         self.set_agent_metrics()
@@ -1213,8 +1213,8 @@ class AgentUnit:
         descendant_promise_count: int = None,
         all_ally_credit: bool = None,
         all_ally_debt: bool = None,
-        tribelink: TribeLink = None,
-        tribelink_del: TribeName = None,
+        grouplink: GroupLink = None,
+        grouplink_del: GroupName = None,
         is_expanded: bool = None,
         on_meld_weight_action: str = None,
     ):  # sourcery skip: low-code-quality
@@ -1269,8 +1269,8 @@ class AgentUnit:
             descendant_promise_count=descendant_promise_count,
             all_ally_credit=all_ally_credit,
             all_ally_debt=all_ally_debt,
-            tribelink=tribelink,
-            tribelink_del=tribelink_del,
+            grouplink=grouplink,
+            grouplink_del=grouplink_del,
             is_expanded=is_expanded,
             promise=promise,
             problem_bool=problem_bool,
@@ -1290,8 +1290,8 @@ class AgentUnit:
         if f"{type(temp_idea)}".find("'.idea.IdeaRoot'>") <= 0:
             temp_idea._set_ideakid_attr(acptfactunit=acptfactunit)
 
-        # deleting a tribelink reqquires a tree traverse to correctly set tribeheirs and tribelines
-        if tribelink_del != None or tribelink != None:
+        # deleting a grouplink reqquires a tree traverse to correctly set groupheirs and grouplines
+        if grouplink_del != None or grouplink != None:
             self.set_agent_metrics()
 
     def del_idea_required_sufffact(
@@ -1383,43 +1383,43 @@ class AgentUnit:
                 agent_agenda_debt=au_agent_agenda_debt,
             )
 
-    def _reset_tribeunits_agent_credit_debt(self):
-        self.set_tribeunits_empty_if_null()
-        for tribelink_obj in self._tribes.values():
-            tribelink_obj.reset_agent_credit_debt()
+    def _reset_groupunits_agent_credit_debt(self):
+        self.set_groupunits_empty_if_null()
+        for grouplink_obj in self._groups.values():
+            grouplink_obj.reset_agent_credit_debt()
 
-    def _set_tribeunits_agent_importance(self, tribeheirs: dict[TribeName:TribeLink]):
-        self.set_tribeunits_empty_if_null()
-        for tribelink_obj in tribeheirs.values():
-            self.add_to_tribe_agent_credit_debt(
-                tribename=tribelink_obj.name,
-                tribeheir_agent_credit=tribelink_obj._agent_credit,
-                tribeheir_agent_debt=tribelink_obj._agent_debt,
+    def _set_groupunits_agent_importance(self, groupheirs: dict[GroupName:GroupLink]):
+        self.set_groupunits_empty_if_null()
+        for grouplink_obj in groupheirs.values():
+            self.add_to_group_agent_credit_debt(
+                groupname=grouplink_obj.name,
+                groupheir_agent_credit=grouplink_obj._agent_credit,
+                groupheir_agent_debt=grouplink_obj._agent_debt,
             )
 
     def _distribute_agent_agenda_importance(self):
         for idea in self._idea_dict.values():
-            # If there are no tribelines associated with idea
+            # If there are no grouplines associated with idea
             # distribute agent_importance via general allyunit
             # credit ratio and debt ratio
-            # if idea.is_agenda_item() and idea._tribelines == {}:
+            # if idea.is_agenda_item() and idea._grouplines == {}:
             if idea.is_agenda_item():
-                if idea._tribelines == {}:
+                if idea._grouplines == {}:
                     self._add_to_allyunits_agent_agenda_credit_debt(
                         idea._agent_importance
                     )
                 else:
-                    for tribeline_x in idea._tribelines.values():
-                        self.add_to_tribe_agent_agenda_credit_debt(
-                            tribename=tribeline_x.name,
-                            tribeline_agent_credit=tribeline_x._agent_credit,
-                            tribeline_agent_debt=tribeline_x._agent_debt,
+                    for groupline_x in idea._grouplines.values():
+                        self.add_to_group_agent_agenda_credit_debt(
+                            groupname=groupline_x.name,
+                            groupline_agent_credit=groupline_x._agent_credit,
+                            groupline_agent_debt=groupline_x._agent_debt,
                         )
 
-    def _distribute_tribes_agent_importance(self):
-        for tribe_obj in self._tribes.values():
-            tribe_obj._set_allylink_agent_credit_debt()
-            for allylink in tribe_obj._allys.values():
+    def _distribute_groups_agent_importance(self):
+        for group_obj in self._groups.values():
+            group_obj._set_allylink_agent_credit_debt()
+            for allylink in group_obj._allys.values():
                 self.add_to_allyunit_agent_credit_debt(
                     allyunit_name=allylink.name,
                     agent_credit=allylink._agent_credit,
@@ -1444,16 +1444,16 @@ class AgentUnit:
                 agent_allyunit_total_debtor_weight=self.get_allyunit_total_debtor_weight(),
             )
 
-    def get_ally_tribes(self, ally_name: AllyName):
-        tribes = []
-        for tribe in self._tribes.values():
-            tribes.extend(
-                tribe.name
-                for allylink in tribe._allys.values()
+    def get_ally_groups(self, ally_name: AllyName):
+        groups = []
+        for group in self._groups.values():
+            groups.extend(
+                group.name
+                for allylink in group._allys.values()
                 if allylink.name == ally_name
             )
 
-        return tribes
+        return groups
 
     def _reset_allyunit_agent_credit_debt(self):
         self.set_allys_empty_if_null()
@@ -1523,13 +1523,13 @@ class AgentUnit:
     def _set_ancestor_metrics(self, road: Road):
         # sourcery skip: low-code-quality
         da_count = 0
-        child_tribelines = None
+        child_grouplines = None
         if road is None:
             road = ""
 
-        tribe_everyone = None
+        group_everyone = None
         if len(road.split(",")) <= 1:
-            tribe_everyone = self._idearoot._tribeheirs in [None, {}]
+            group_everyone = self._idearoot._groupheirs in [None, {}]
         else:
             ancestor_roads = get_ancestor_roads(road=road)
             # remove root road
@@ -1541,49 +1541,49 @@ class AgentUnit:
                 yu_idea_obj.set_descendant_promise_count_zero_if_null()
                 yu_idea_obj._descendant_promise_count += da_count
                 if yu_idea_obj.is_kidless():
-                    yu_idea_obj.set_kidless_tribelines()
-                    child_tribelines = yu_idea_obj._tribelines
+                    yu_idea_obj.set_kidless_grouplines()
+                    child_grouplines = yu_idea_obj._grouplines
                 else:
-                    yu_idea_obj.set_tribelines(child_tribelines=child_tribelines)
+                    yu_idea_obj.set_grouplines(child_grouplines=child_grouplines)
 
                 if yu_idea_obj._task == True:
                     da_count += 1
 
                 if (
-                    tribe_everyone != False
+                    group_everyone != False
                     and yu_idea_obj._all_ally_credit != False
                     and yu_idea_obj._all_ally_debt != False
-                    and yu_idea_obj._tribeheirs != {}
-                    or tribe_everyone != False
+                    and yu_idea_obj._groupheirs != {}
+                    or group_everyone != False
                     and yu_idea_obj._all_ally_credit == False
                     and yu_idea_obj._all_ally_debt == False
                 ):
-                    tribe_everyone = False
-                elif tribe_everyone != False:
-                    tribe_everyone = True
-                yu_idea_obj._all_ally_credit = tribe_everyone
-                yu_idea_obj._all_ally_debt = tribe_everyone
+                    group_everyone = False
+                elif group_everyone != False:
+                    group_everyone = True
+                yu_idea_obj._all_ally_credit = group_everyone
+                yu_idea_obj._all_ally_debt = group_everyone
 
             if (
-                tribe_everyone != False
+                group_everyone != False
                 and self._idearoot._all_ally_credit != False
                 and self._idearoot._all_ally_debt != False
-                and self._idearoot._tribeheirs != {}
-                or tribe_everyone != False
+                and self._idearoot._groupheirs != {}
+                or group_everyone != False
                 and self._idearoot._all_ally_credit == False
                 and self._idearoot._all_ally_debt == False
             ):
-                tribe_everyone = False
-            elif tribe_everyone != False and yu_idea_obj._tribeheirs == {}:
-                tribe_everyone = True
+                group_everyone = False
+            elif group_everyone != False and yu_idea_obj._groupheirs == {}:
+                group_everyone = True
 
-        self._idearoot._all_ally_credit = tribe_everyone
-        self._idearoot._all_ally_debt = tribe_everyone
+        self._idearoot._all_ally_credit = group_everyone
+        self._idearoot._all_ally_debt = group_everyone
 
         if self._idearoot.is_kidless():
-            self._idearoot.set_kidless_tribelines()
+            self._idearoot.set_kidless_grouplines()
         else:
-            self._idearoot.set_tribelines(child_tribelines=child_tribelines)
+            self._idearoot.set_grouplines(child_grouplines=child_grouplines)
         self._idearoot.set_descendant_promise_count_zero_if_null()
         self._idearoot._descendant_promise_count += da_count
 
@@ -1593,15 +1593,15 @@ class AgentUnit:
         self._idearoot.set_requiredheirs(
             requiredheirs=self._idearoot._requiredunits, agent_idea_dict=self._idea_dict
         )
-        self._idearoot.inherit_tribeheirs()
-        self._idearoot.clear_tribelines()
+        self._idearoot.inherit_groupheirs()
+        self._idearoot.clear_grouplines()
         self._idearoot.set_acptfactunits_empty_if_null()
         self._idearoot._weight = 1
         self._idearoot._kids_total_weight = 0
         self._idearoot.set_kids_total_weight()
         self._idearoot.set_sibling_total_weight(1)
         self._idearoot.set_agent_importance(coin_onset_x=0, parent_coin_cease=1)
-        self._idearoot.set_tribeheirs_agent_credit_debit()
+        self._idearoot.set_groupheirs_agent_credit_debit()
         self._idearoot.set_ancestor_promise_count(0, False)
         self._idearoot.clear_descendant_promise_count()
         self._idearoot.clear_all_ally_credit_debt()
@@ -1634,8 +1634,8 @@ class AgentUnit:
         idea_kid.set_acptfactunits_empty_if_null()
         idea_kid.set_acptfactheirs(acptfacts=parent_acptfacts)
         idea_kid.set_requiredheirs(parent_requiredheirs, self._idea_dict)
-        idea_kid.inherit_tribeheirs(parent_tribeheirs=parent_idea._tribeheirs)
-        idea_kid.clear_tribelines()
+        idea_kid.inherit_groupheirs(parent_groupheirs=parent_idea._groupheirs)
+        idea_kid.clear_grouplines()
         idea_kid.set_active_status(tree_traverse_count=self._tree_traverse_count)
         idea_kid.set_sibling_total_weight(parent_idea._kids_total_weight)
         # idea_kid.set_agent_importance(
@@ -1660,11 +1660,11 @@ class AgentUnit:
             self._distribute_agent_importance(idea=idea_kid)
 
     def _distribute_agent_importance(self, idea: IdeaCore):
-        # TODO manage situations where tribeheir.creditor_weight is None for all tribeheirs
-        # TODO manage situations where tribeheir.debtor_weight is None for all tribeheirs
-        if idea.is_tribeheirless() == False:
-            self._set_tribeunits_agent_importance(tribeheirs=idea._tribeheirs)
-        elif idea.is_tribeheirless():
+        # TODO manage situations where groupheir.creditor_weight is None for all groupheirs
+        # TODO manage situations where groupheir.debtor_weight is None for all groupheirs
+        if idea.is_groupheirless() == False:
+            self._set_groupunits_agent_importance(groupheirs=idea._groupheirs)
+        elif idea.is_groupheirless():
             self._add_to_allyunits_agent_credit_debt(
                 idea_agent_importance=idea._agent_importance
             )
@@ -1742,12 +1742,12 @@ class AgentUnit:
 
     def _run_after_idea_all_tree_traverses(self):
         self._distribute_agent_agenda_importance()
-        self._distribute_tribes_agent_importance()
+        self._distribute_groups_agent_importance()
         self._set_agent_agenda_ratio_credit_debt()
 
     def _run_before_idea_tree_traverse(self):
-        self._reset_tribeunits_agent_credit_debt()
-        self._reset_tribeunits_agent_credit_debt()
+        self._reset_groupunits_agent_credit_debt()
+        self._reset_groupunits_agent_credit_debt()
         self._reset_allyunit_agent_credit_debt()
 
     def get_heir_road_list(self, src_road: Road):
@@ -1798,11 +1798,11 @@ class AgentUnit:
                 x_dict[ally_name] = ally_obj.get_dict()
         return x_dict
 
-    def tribeunit_shops_dict(self):
+    def groupunit_shops_dict(self):
         x_dict = {}
-        if self._tribes != None:
-            for tribe_name, tribe_obj in self._tribes.items():
-                x_dict[tribe_name] = tribe_obj.get_dict()
+        if self._groups != None:
+            for group_name, group_obj in self._groups.items():
+                x_dict[group_name] = group_obj.get_dict()
         return x_dict
 
     def get_dict(self):
@@ -1812,8 +1812,8 @@ class AgentUnit:
             "_requiredunits": self._idearoot.get_requiredunits_dict(),
             "_acptfactunits": self.get_acptfactunits_dict(),
             "_allys": self.get_allys_dict(),
-            "_tribes": self.tribeunit_shops_dict(),
-            "_tribelinks": self._idearoot.get_tribelinks_dict(),
+            "_groups": self.groupunit_shops_dict(),
+            "_grouplinks": self._idearoot.get_grouplinks_dict(),
             "_weight": self._weight,
             "_desc": self._desc,
             "_uid": self._idearoot._uid,
@@ -1877,17 +1877,17 @@ class AgentUnit:
         agent4ally._idearoot._agent_importance = self._idearoot._agent_importance
         # get ally's allys: allyzone
 
-        # get allyzone tribes
-        ally_tribes = self.get_ally_tribes(ally_name=ally_name)
+        # get allyzone groups
+        ally_groups = self.get_ally_groups(ally_name=ally_name)
 
-        # set agent4ally by traversing the idea tree and selecting associated tribes
+        # set agent4ally by traversing the idea tree and selecting associated groups
         # set root
         not_included_agent_importance = 0
         agent4ally._idearoot._kids = {}
         for ykx in self._idearoot._kids.values():
             y4a_included = any(
-                tribe_ancestor.name in ally_tribes
-                for tribe_ancestor in ykx._tribelines.values()
+                group_ancestor.name in ally_groups
+                for group_ancestor in ykx._grouplines.values()
             )
 
             if y4a_included:
@@ -1895,7 +1895,7 @@ class AgentUnit:
                     _desc=ykx._desc,
                     _agent_importance=ykx._agent_importance,
                     _requiredunits=ykx._requiredunits,
-                    _tribelinks=ykx._tribelinks,
+                    _grouplinks=ykx._grouplinks,
                     _begin=ykx._begin,
                     _close=ykx._close,
                     promise=ykx.promise,
@@ -1924,7 +1924,7 @@ class AgentUnit:
         self.add_idea(
             idea_kid=idea_kid,
             walk=Road(f"{idea_kid._walk}"),
-            create_missing_ideas_tribes=True,
+            create_missing_ideas_groups=True,
         )
 
     def get_idea_list_without_idearoot(self):
@@ -1939,7 +1939,7 @@ class AgentUnit:
         )
 
     def meld(self, other_agent):
-        self.meld_tribes(other_agent=other_agent)
+        self.meld_groups(other_agent=other_agent)
         self.meld_allys(other_agent=other_agent)
         self.meld_idearoot(other_agent=other_agent)
         self.meld_acptfacts(other_agent=other_agent)
@@ -1970,14 +1970,14 @@ class AgentUnit:
             else:
                 self._allys.get(allyunit.name).meld(allyunit)
 
-    def meld_tribes(self, other_agent):
-        self.set_tribeunits_empty_if_null()
-        other_agent.set_tribeunits_empty_if_null()
-        for brx in other_agent._tribes.values():
-            if self._tribes.get(brx.name) is None:
-                self.set_tribeunit(tribeunit=brx)
+    def meld_groups(self, other_agent):
+        self.set_groupunits_empty_if_null()
+        other_agent.set_groupunits_empty_if_null()
+        for brx in other_agent._groups.values():
+            if self._groups.get(brx.name) is None:
+                self.set_groupunit(groupunit=brx)
             else:
-                self._tribes.get(brx.name).meld(brx)
+                self._groups.get(brx.name).meld(brx)
 
     def meld_acptfacts(self, other_agent):
         self._set_acptfacts_empty_if_null()
@@ -2004,8 +2004,8 @@ def get_from_dict(lw_dict: dict) -> AgentUnit:
     c_x._idearoot._acptfactunits = acptfactunits_get_from_dict(
         x_dict=lw_dict["_acptfactunits"]
     )
-    c_x._tribes = tribeunits_get_from_dict(x_dict=lw_dict["_tribes"])
-    c_x._idearoot._tribelinks = tribelinks_get_from_dict(x_dict=lw_dict["_tribelinks"])
+    c_x._groups = groupunits_get_from_dict(x_dict=lw_dict["_groups"])
+    c_x._idearoot._grouplinks = grouplinks_get_from_dict(x_dict=lw_dict["_grouplinks"])
     c_x._allys = allyunits_get_from_dict(x_dict=lw_dict["_allys"])
     c_x._desc = lw_dict["_desc"]
     c_x._idearoot._desc = lw_dict["_desc"]
@@ -2050,7 +2050,7 @@ def get_from_dict(lw_dict: dict) -> AgentUnit:
             _requiredunits=requireds_get_from_dict(
                 requireds_dict=idea_dict["_requiredunits"]
             ),
-            _tribelinks=tribelinks_get_from_dict(idea_dict["_tribelinks"]),
+            _grouplinks=grouplinks_get_from_dict(idea_dict["_grouplinks"]),
             _acptfactunits=acptfactunits_get_from_dict(idea_dict["_acptfactunits"]),
             _is_expanded=idea_dict["_is_expanded"],
             _special_road=idea_dict["_special_road"],
