@@ -142,7 +142,7 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-# automatically generated testing environments on each run
+# automatica_lly generated testing environments on each run
 src/world/examples/worlds/ex3/
 src/world/examples/worlds/ex4/
 src/world/examples/worlds/ex5/

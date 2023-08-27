@@ -768,7 +768,7 @@ class AgentUnit:
             # and (1,2) divisor=2 (every other week)
             #
             # user should not set "timeline,weeks" acptfact, only "timeline" acptfact and
-            # "timeline,weeks" should be set automatically since there exists a required
+            # "timeline,weeks" should be set automatica_lly since there exists a required
             # that has that base.
             self._edit_set_idearoot_acptfactunits(
                 base=base, pick=pick, open=open, nigh=nigh
