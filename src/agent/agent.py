@@ -406,7 +406,7 @@ class AgentUnit:
                 _single_ally=True,
                 _allys=allylinks,
                 uid=None,
-                single_member_ally_id=None,
+                single_member_id=None,
             )
             self.set_groupunit(groupunit=group_unit)
 
@@ -584,7 +584,7 @@ class AgentUnit:
                 name=new_name,
                 uid=old_groupunit.uid,
                 _allys=old_groupunit._allys,
-                single_member_ally_id=old_groupunit.single_member_ally_id,
+                single_member_id=old_groupunit.single_member_id,
                 _single_ally=old_groupunit._single_ally,
             )
             self.set_groupunit(groupunit=groupunit_x)

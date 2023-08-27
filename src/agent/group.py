@@ -24,7 +24,7 @@ class GroupCore:
 @dataclasses.dataclass
 class GroupUnit(GroupCore):
     uid: int = None
-    single_member_ally_id: int = None
+    single_member_id: int = None
     _single_ally: bool = None
     _allys: dict[AllyName:AllyLink] = None
     _agent_credit: float = None
@@ -38,10 +38,6 @@ class GroupUnit(GroupCore):
             self.name = name
 
     def set_attr(self, _allylinks_set_by_world_road: Road):
-        # if uid != None:
-        #     self.uid = uid
-        # if single_member_ally_id != None:
-        #     self.single_member_ally_id = single_member_ally_id
         if _allylinks_set_by_world_road != None:
             self._allylinks_set_by_world_road = _allylinks_set_by_world_road
 
@@ -49,7 +45,7 @@ class GroupUnit(GroupCore):
         return {
             "name": self.name,
             "uid": self.uid,
-            "single_member_ally_id": self.single_member_ally_id,
+            "single_member_id": self.single_member_id,
             "_single_ally": self._single_ally,
             "_allys": self.get_allys_dict(),
             "_allylinks_set_by_world_road": self._allylinks_set_by_world_road,
@@ -166,7 +162,7 @@ def get_from_dict(x_dict: dict):
             name=groupunits_dict["name"],
             uid=groupunits_dict["uid"],
             _single_ally=groupunits_dict["_single_ally"],
-            single_member_ally_id=groupunits_dict["single_member_ally_id"],
+            single_member_id=groupunits_dict["single_member_id"],
             _allys=allylinks_get_from_dict(x_dict=groupunits_dict["_allys"]),
             _allylinks_set_by_world_road=ex_allylinks_set_by_world_road,
         )
@@ -177,7 +173,7 @@ def get_from_dict(x_dict: dict):
 def groupunit_shop(
     name: GroupName,
     uid: int = None,
-    single_member_ally_id: int = None,
+    single_member_id: int = None,
     _single_ally: bool = None,
     _allys: dict[AllyName:AllyUnit] = None,
     _agent_credit: float = None,
@@ -198,7 +194,7 @@ def groupunit_shop(
     return GroupUnit(
         name=name,
         uid=uid,
-        single_member_ally_id=single_member_ally_id,
+        single_member_id=single_member_id,
         _single_ally=_single_ally,
         _allys=_allys,
         _agent_credit=_agent_credit,

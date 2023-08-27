@@ -290,7 +290,7 @@
             },
             "_single_ally": false,
             "name": "A a ron Jones",
-            "single_member_ally_id": 21,
+            "single_member_id": 21,
             "uid": 32
         },
         "ACME DevOps": {
@@ -348,7 +348,7 @@
             },
             "_single_ally": false,
             "name": "ACME DevOps",
-            "single_member_ally_id": null,
+            "single_member_id": null,
             "uid": 12
         },
         "ACME General": {
@@ -376,7 +376,7 @@
             },
             "_single_ally": false,
             "name": "ACME General",
-            "single_member_ally_id": null,
+            "single_member_id": null,
             "uid": 29
         },
         "America": {
@@ -389,7 +389,7 @@
             },
             "_single_ally": false,
             "name": "America",
-            "single_member_ally_id": 1,
+            "single_member_id": 1,
             "uid": 1
         },
         "Anna": {
@@ -402,7 +402,7 @@
             },
             "_single_ally": false,
             "name": "Anna",
-            "single_member_ally_id": 2,
+            "single_member_id": 2,
             "uid": 2
         },
         "Benjamin Stoddert": {
@@ -415,7 +415,7 @@
             },
             "_single_ally": false,
             "name": "Benjamin Stoddert",
-            "single_member_ally_id": 14,
+            "single_member_id": 14,
             "uid": 23
         },
         "Bob302": {
@@ -428,7 +428,7 @@
             },
             "_single_ally": false,
             "name": "Bob302",
-            "single_member_ally_id": 6,
+            "single_member_id": 6,
             "uid": 6
         },
         "Charles Lee": {
@@ -441,7 +441,7 @@
             },
             "_single_ally": false,
             "name": "Charles Lee",
-            "single_member_ally_id": 13,
+            "single_member_id": 13,
             "uid": 22
         },
         "Climate Change": {
@@ -464,7 +464,7 @@
             },
             "_single_ally": false,
             "name": "Climate Change",
-            "single_member_ally_id": null,
+            "single_member_id": null,
             "uid": 20
         },
         "Ernesto Chavez": {
@@ -477,7 +477,7 @@
             },
             "_single_ally": false,
             "name": "Ernesto Chavez",
-            "single_member_ally_id": 10,
+            "single_member_id": 10,
             "uid": 10
         },
         "Everyone": {
@@ -595,7 +595,7 @@
             },
             "_single_ally": false,
             "name": "Everyone",
-            "single_member_ally_id": null,
+            "single_member_id": null,
             "uid": 15
         },
         "Family": {
@@ -618,7 +618,7 @@
             },
             "_single_ally": false,
             "name": "Family",
-            "single_member_ally_id": null,
+            "single_member_id": null,
             "uid": 13
         },
         "Friends": {
@@ -641,7 +641,7 @@
             },
             "_single_ally": false,
             "name": "Friends",
-            "single_member_ally_id": null,
+            "single_member_id": null,
             "uid": 14
         },
         "hurt by us dollar": {
@@ -654,7 +654,7 @@
             },
             "_single_ally": false,
             "name": "hurt by us dollar",
-            "single_member_ally_id": null,
+            "single_member_id": null,
             "uid": 30
         },
         "Jacque Chirac": {
@@ -667,7 +667,7 @@
             },
             "_single_ally": false,
             "name": "Jacque Chirac",
-            "single_member_ally_id": 20,
+            "single_member_id": 20,
             "uid": 31
         },
         "Jane Randolph": {
@@ -680,7 +680,7 @@
             },
             "_single_ally": false,
             "name": "Jane Randolph",
-            "single_member_ally_id": 17,
+            "single_member_id": 17,
             "uid": 26
         },
         "likes US DOLLAR": {
@@ -708,7 +708,7 @@
             },
             "_single_ally": false,
             "name": "likes US DOLLAR",
-            "single_member_ally_id": null,
+            "single_member_id": null,
             "uid": 16
         },
         "Maria Reynolds": {
@@ -721,7 +721,7 @@
             },
             "_single_ally": false,
             "name": "Maria Reynolds",
-            "single_member_ally_id": 7,
+            "single_member_id": 7,
             "uid": 7
         },
         "Mark Reynolds": {
@@ -734,7 +734,7 @@
             },
             "_single_ally": false,
             "name": "Mark Reynolds",
-            "single_member_ally_id": 16,
+            "single_member_id": 16,
             "uid": 25
         },
         "Martha Wayles": {
@@ -747,7 +747,7 @@
             },
             "_single_ally": false,
             "name": "Martha Wayles",
-            "single_member_ally_id": 15,
+            "single_member_id": 15,
             "uid": 24
         },
         "Mikayla": {
@@ -760,7 +760,7 @@
             },
             "_single_ally": false,
             "name": "Mikayla",
-            "single_member_ally_id": 12,
+            "single_member_id": 12,
             "uid": 21
         },
         "Norberto": {
@@ -773,7 +773,7 @@
             },
             "_single_ally": false,
             "name": "Norberto",
-            "single_member_ally_id": 22,
+            "single_member_id": 22,
             "uid": 33
         },
         "OceanView Apt": {
@@ -796,7 +796,7 @@
             },
             "_single_ally": false,
             "name": "OceanView Apt",
-            "single_member_ally_id": null,
+            "single_member_id": null,
             "uid": 34
         },
         "People who care about UTEP": {
@@ -809,7 +809,7 @@
             },
             "_single_ally": false,
             "name": "People who care about UTEP",
-            "single_member_ally_id": null,
+            "single_member_id": null,
             "uid": 18
         },
         "Perrison": {
@@ -822,7 +822,7 @@
             },
             "_single_ally": false,
             "name": "Perrison",
-            "single_member_ally_id": 9,
+            "single_member_id": 9,
             "uid": 9
         },
         "Philipa": {
@@ -835,7 +835,7 @@
             },
             "_single_ally": false,
             "name": "Philipa",
-            "single_member_ally_id": 5,
+            "single_member_id": 5,
             "uid": 5
         },
         "Philosophy": {
@@ -863,7 +863,7 @@
             },
             "_single_ally": false,
             "name": "Philosophy",
-            "single_member_ally_id": null,
+            "single_member_id": null,
             "uid": 11
         },
         "Prashant": {
@@ -876,7 +876,7 @@
             },
             "_single_ally": false,
             "name": "Prashant",
-            "single_member_ally_id": 8,
+            "single_member_id": 8,
             "uid": 8
         },
         "Renee Elise Goldsberry": {
@@ -889,7 +889,7 @@
             },
             "_single_ally": false,
             "name": "Renee Elise Goldsberry",
-            "single_member_ally_id": 4,
+            "single_member_id": 4,
             "uid": 4
         },
         "Shadwell Harris": {
@@ -902,7 +902,7 @@
             },
             "_single_ally": false,
             "name": "Shadwell Harris",
-            "single_member_ally_id": 18,
+            "single_member_id": 18,
             "uid": 27
         },
         "SHOW ME2": {
@@ -915,7 +915,7 @@
             },
             "_single_ally": false,
             "name": "SHOW ME2",
-            "single_member_ally_id": null,
+            "single_member_id": null,
             "uid": 17
         },
         "Thomas OSU": {
@@ -928,7 +928,7 @@
             },
             "_single_ally": false,
             "name": "Thomas OSU",
-            "single_member_ally_id": 11,
+            "single_member_id": 11,
             "uid": 19
         },
         "Travis Fox": {
@@ -941,7 +941,7 @@
             },
             "_single_ally": false,
             "name": "Travis Fox",
-            "single_member_ally_id": 3,
+            "single_member_id": 3,
             "uid": 3
         },
         "WIlliam Wallace": {
@@ -954,7 +954,7 @@
             },
             "_single_ally": false,
             "name": "WIlliam Wallace",
-            "single_member_ally_id": 19,
+            "single_member_id": 19,
             "uid": 28
         }
     },

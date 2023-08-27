@@ -320,7 +320,7 @@ def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     assert ee_dict == {
         "name": swimmers,
         "uid": None,
-        "single_member_ally_id": None,
+        "single_member_id": None,
         "_single_ally": False,
         "_allys": {},
         "_allylinks_set_by_world_road": None,
@@ -349,7 +349,7 @@ def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     assert teachers_dict == {
         "name": str_teacher,
         "uid": None,
-        "single_member_ally_id": None,
+        "single_member_id": None,
         "_single_ally": False,
         "_allys": marie_json_dict,
         "_allylinks_set_by_world_road": swim_road,

@@ -26,9 +26,9 @@ def test_agent_groups_set_groupunit_worksCorrectly():
     assert lw_x2._groups.get(swim_text) == every1_groups.get(swim_text)
     assert lw_x2._groups == every1_groups
 
-    bill_single_member_ally_id = 30
+    bill_single_member_id = 30
     bill_group = groupunit_shop(
-        name=GroupName("bill"), uid=45, single_member_ally_id=bill_single_member_ally_id
+        name=GroupName("bill"), uid=45, single_member_id=bill_single_member_id
     )
     assert bill_group != None
 
