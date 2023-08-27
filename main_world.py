@@ -382,9 +382,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.person_dest_agent != None:
             x_list.extend(
                 [
-                    lw_diplay(memberunit._agent_importance),
+                    f"{lw_diplay(memberunit._agent_credit)}/{lw_diplay(memberunit._agent_debt)}",
                     memberunit.name,
-                    memberunit.weight,
+                    f"{memberunit.creditor_weight}/{memberunit.debtor_weight}",
                 ]
                 for memberunit in self.person_dest_agent._members.values()
             )
@@ -395,7 +395,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.person_dest_agent != None:
             x_list.extend(
                 [
-                    lw_diplay(groupunit._agent_importance),
+                    f"{lw_diplay(groupunit._agent_debt)}/{lw_diplay(groupunit._agent_credit)}",
                     groupunit.name,
                     len(groupunit._members),
                 ]
@@ -504,9 +504,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _sub_refresh_p_members_table(self):
         p_members_list = self.get_p_members_list()
         column_headers = [
-            "agent_importance",
+            "agent_debt/agent_credit",
             f"Members ({len(p_members_list)})",
-            "Weight",
+            "creditor_weight/debtor_weight",
         ]
 
         self.refresh_x(
@@ -519,7 +519,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _sub_refresh_p_groups_table(self):
         p_groups_list = self.get_p_groups_list()
         column_headers = [
-            "agent_importance",
+            "agent_debt/agent_credit",
             f"groups ({len(p_groups_list)})",
             "Members",
         ]
