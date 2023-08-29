@@ -8,7 +8,7 @@ from src.agent.hreg_time import SuffFactUnitHregTime
 from src.agent.group import GroupLink, GroupName
 from src.agent.required import Road
 from src.agent.hreg_time import get_24hr, get_60min
-from src.pyqt5_tools.pyqt_func import (
+from src.pyqt5_kit.pyqt_func import (
     num2str,
     bool_val,
     str2float,

@@ -4,7 +4,7 @@ from src.agent.examples.example_agents import (
     get_agent_with_4_levels as example_agents_get_agent_with_4_levels,
 )
 import src.system.examples.example_persons as example_persons
-from src.system.examples.person_env_tools import (
+from src.system.examples.person_env_kit import (
     person_dir_setup_cleanup,
     get_temp_person_dir,
 )

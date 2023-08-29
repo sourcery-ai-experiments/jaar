@@ -5,7 +5,7 @@ from src.agent.x_func import (
     count_files as x_func_count_files,
     return1ifnone as x_func_return1ifnone,
 )
-from src.system.examples.person_env_tools import (
+from src.system.examples.person_env_kit import (
     person_dir_setup_cleanup,
     get_temp_person_dir,
     create_agent_file_for_person,

@@ -9,7 +9,7 @@ from EditProblem import EditProblem
 from src.agent.agent import AgentUnit, get_from_json
 from src.agent.examples.get_agent_examples_dir import get_agent_examples_dir
 from src.agent.hreg_time import convert1440toHHMM
-from src.pyqt5_tools.pyqt_func import (
+from src.pyqt5_kit.pyqt_func import (
     lw_diplay as pyqt_func_lw_diplay,
     str2float as pyqt_func_str2float,
     num2str as pyqt_func_num2str,

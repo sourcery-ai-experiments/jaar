@@ -1,6 +1,6 @@
 from src.system.system import SystemUnit
 from src.system.person import personunit_shop
-from src.system.examples.env_tools import (
+from src.system.examples.env_kit import (
     get_temp_env_dir,
     get_temp_env_name,
     env_dir_setup_cleanup,
@@ -47,7 +47,7 @@ def test_system_load_personunit_RaisesErrorWhenPersonDoesNotExist(
     )
 
 
-def test_system_env_tools_create_person_file_for_systems_WorksCorrectly(
+def test_system_env_kit_create_person_file_for_systems_WorksCorrectly(
     env_dir_setup_cleanup,
 ):
     # GIVEN

@@ -6,7 +6,7 @@ from PyQt5 import QtCore as qtc
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1
 from EditIdeaUnit import EditIdeaUnit
 from EditMember import EditMember
-from src.pyqt5_tools.pyqt_func import (
+from src.pyqt5_kit.pyqt_func import (
     lw_diplay,
     get_pyqttree,
     str2float as pyqt_func_str2float,

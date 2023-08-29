@@ -3,7 +3,7 @@ from ui.EditAgendaUI import Ui_Form
 from PyQt5.QtCore import pyqtSignal as qsig
 from PyQt5.QtWidgets import QWidget as qw
 from PyQt5.QtWidgets import QTableWidgetItem as qti
-from src.pyqt5_tools.pyqt_func import num2str, lw_diplay
+from src.pyqt5_kit.pyqt_func import num2str, lw_diplay
 from src.agent.hreg_time import (
     SuffFactUnitHregTime,
     _get_time_hreg_weekday_idea,

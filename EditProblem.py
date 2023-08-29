@@ -6,7 +6,7 @@ from PyQt5 import QtCore as qtc
 from PyQt5.QtWidgets import QTableWidgetItem as qti
 from EditIdeaUnit import EditIdeaUnit
 from EditMember import EditMember
-from src.pyqt5_tools.pyqt_func import lw_diplay, get_pyqttree, num2str
+from src.pyqt5_kit.pyqt_func import lw_diplay, get_pyqttree, num2str
 from src.agent.group import groupunit_shop, grouplink_shop
 from src.agent.idea import IdeaKid
 from src.agent.road import Road, get_walk_from_road, get_terminus_node_from_road

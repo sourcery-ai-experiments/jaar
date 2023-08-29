@@ -4,7 +4,7 @@ from ui.EditMemberUI import Ui_Form
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from EditMember2bd import EditMember2bd
-from src.pyqt5_tools.pyqt_func import lw_diplay
+from src.pyqt5_kit.pyqt_func import lw_diplay
 from src.agent.agent import AgentUnit
 from src.agent.group import groupunit_shop
 from src.agent.member import memberlink_shop

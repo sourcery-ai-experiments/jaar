@@ -1,5 +1,3 @@
-import contextlib
-import itertools
 from src.agent.agent import AgentUnit
 from datetime import datetime
 from random import randint
@@ -73,7 +71,7 @@ def test_get_time_dt_from_min_WorksCorrectly():
     _check_time_conversion_works_with_random_inputs(g_lw)
     _check_time_conversion_works_with_random_inputs(g_lw)
 
-    # for year, month, day, hr, min in itertools.product(
+    # for year, month, day, hr, min in .product(
     #     range(479, 480), range(1, 3), range(20, 28), range(12, 14), range(1430, 1440)
     # ):
     #     # for day in range(1, 32):
