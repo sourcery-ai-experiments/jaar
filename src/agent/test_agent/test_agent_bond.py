@@ -21,7 +21,7 @@ from src.agent.x_func import (
     save_file as x_func_save_file,
     open_file as x_func_open_file,
 )
-from src.world.examples.env_tools import (
+from src.system.examples.env_tools import (
     env_dir_setup_cleanup,
     get_temp_env_dir,
 )
@@ -280,9 +280,12 @@ def test_agentunit_export_all_bonds_ExportsFileOfBonds_2files(env_dir_setup_clea
     assert action_count == 2
     with pytest_raises(Exception) as excinfo:
         x_func_dir_files(dir_path=get_temp_env_dir())
+
+    sys_word_part1 = "sys"  # the built word might be find and replaced in the future.
+    sys_word_part2 = "tem"  # the built word might be find and replaced in the future.
     assert (
         str(excinfo.value)
-        == f"[WinError 3] Cannot find the path specified: '{get_temp_env_dir()}'"
+        == f"[WinError 3] The {sys_word_part1}{sys_word_part2} cannot find the path specified: '{get_temp_env_dir()}'"
     )
 
     # WHEN

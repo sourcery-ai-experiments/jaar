@@ -36,15 +36,15 @@ class GroupUnit(GroupCore):
     _agent_debt: float = None
     _agent_agenda_credit: float = None
     _agent_agenda_debt: float = None
-    _memberlinks_set_by_world_road: Road = None
+    _memberlinks_set_by_system_road: Road = None
 
     def set_name(self, name: GroupName = None):
         if name != None:
             self.name = name
 
-    def set_attr(self, _memberlinks_set_by_world_road: Road):
-        if _memberlinks_set_by_world_road != None:
-            self._memberlinks_set_by_world_road = _memberlinks_set_by_world_road
+    def set_attr(self, _memberlinks_set_by_system_road: Road):
+        if _memberlinks_set_by_system_road != None:
+            self._memberlinks_set_by_system_road = _memberlinks_set_by_system_road
 
     def get_dict(self):
         return {
@@ -53,7 +53,7 @@ class GroupUnit(GroupCore):
             "single_member_id": self.single_member_id,
             "_single_member": self._single_member,
             "_members": self.get_members_dict(),
-            "_memberlinks_set_by_world_road": self._memberlinks_set_by_world_road,
+            "_memberlinks_set_by_system_road": self._memberlinks_set_by_system_road,
         }
 
     def set_empty_agent_credit_debt_to_zero(self):
@@ -157,11 +157,11 @@ def get_from_dict(x_dict: dict):
     groupunits = {}
     for groupunits_dict in x_dict.values():
         try:
-            ex_memberlinks_set_by_world_road = groupunits_dict[
-                "_memberlinks_set_by_world_road"
+            ex_memberlinks_set_by_system_road = groupunits_dict[
+                "_memberlinks_set_by_system_road"
             ]
         except KeyError:
-            ex_memberlinks_set_by_world_road = None
+            ex_memberlinks_set_by_system_road = None
 
         x_group = groupunit_shop(
             name=groupunits_dict["name"],
@@ -169,7 +169,7 @@ def get_from_dict(x_dict: dict):
             _single_member=groupunits_dict["_single_member"],
             single_member_id=groupunits_dict["single_member_id"],
             _members=memberlinks_get_from_dict(x_dict=groupunits_dict["_members"]),
-            _memberlinks_set_by_world_road=ex_memberlinks_set_by_world_road,
+            _memberlinks_set_by_system_road=ex_memberlinks_set_by_system_road,
         )
         groupunits[x_group.name] = x_group
     return groupunits
@@ -185,11 +185,11 @@ def groupunit_shop(
     _agent_debt: float = None,
     _agent_agenda_credit: float = None,
     _agent_agenda_debt: float = None,
-    _memberlinks_set_by_world_road: Road = None,
+    _memberlinks_set_by_system_road: Road = None,
 ) -> GroupUnit:
-    if _single_member and _memberlinks_set_by_world_road != None:
+    if _single_member and _memberlinks_set_by_system_road != None:
         raise InvalidGroupException(
-            f"_memberlinks_set_by_world_road cannot be '{_memberlinks_set_by_world_road}' for a single_member GroupUnit. It must have no value."
+            f"_memberlinks_set_by_system_road cannot be '{_memberlinks_set_by_system_road}' for a single_member GroupUnit. It must have no value."
         )
 
     if _members is None:
@@ -206,7 +206,7 @@ def groupunit_shop(
         _agent_debt=_agent_debt,
         _agent_agenda_credit=_agent_agenda_credit,
         _agent_agenda_debt=_agent_agenda_debt,
-        _memberlinks_set_by_world_road=_memberlinks_set_by_world_road,
+        _memberlinks_set_by_system_road=_memberlinks_set_by_system_road,
     )
 
 

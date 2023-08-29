@@ -63,13 +63,13 @@ screenshots and explanatory text.
 base attributes vs required attributess
 
 <!-- TODO: Add explanations -->
-WorldUnit objects
+SystemUnit objects
 
-WorldUnit PersonUnit objects
+SystemUnit PersonUnit objects
 
-WorldUnit PersonUnit AgentLink objects
+SystemUnit PersonUnit AgentLink objects
 
-WorldUnit Bank objects
+SystemUnit Bank objects
 
 <!-- TODO: Add explanations -->
 AgentUnit objects

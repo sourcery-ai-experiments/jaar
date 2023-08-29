@@ -143,10 +143,10 @@ dmypy.json
 cython_debug/
 
 # automatica_lly generated testing environments on each run
-src/world/examples/worlds/ex3/
-src/world/examples/worlds/ex4/
-src/world/examples/worlds/ex5/
-src/world/examples/worlds/ex6/
-src/world/examples/worlds/river_env/
-src/world/test_world/sql_worksheet01.sql
+src/system/examples/systems/ex3/
+src/system/examples/systems/ex4/
+src/system/examples/systems/ex5/
+src/system/examples/systems/ex6/
+src/system/examples/systems/river_env/
+src/system/test_system/sql_worksheet01.sql
 src/agent/examples/js_agent.json

@@ -7,7 +7,7 @@ from src.agent.examples.example_agents import (
 from src.agent.agent import AgentUnit
 from src.agent.idea import IdeaKid
 from pytest import raises as pytest_raises
-from src.world.bank_sqlstr import RiverTmemberUnit
+from src.system.bank_sqlstr import RiverTmemberUnit
 
 
 def test_agent_members_exists():
