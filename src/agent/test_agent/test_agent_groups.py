@@ -592,18 +592,18 @@ def test_agent_add_idea_CreatesMissingGroups():
     a_x = AgentUnit(_desc=src_text)
     a_x.set_groupunits_empty_if_null()
     new_idea_parent_road = f"{src_text},work,cleaning"
-    clean_kitchen_text = "clean_kitchen"
-    clean_kitchen_idea = IdeaKid(_weight=40, _desc=clean_kitchen_text, promise=True)
+    clean_cookery_text = "clean_cookery"
+    clean_cookery_idea = IdeaKid(_weight=40, _desc=clean_cookery_text, promise=True)
 
     family_text = "family"
     grouplink_z = grouplink_shop(name=family_text)
-    clean_kitchen_idea.set_grouplink(grouplink=grouplink_z)
+    clean_cookery_idea.set_grouplink(grouplink=grouplink_z)
     assert len(a_x._groups) == 0
     assert a_x._groups.get(family_text) is None
 
     # WHEN
     a_x.add_idea(
-        idea_kid=clean_kitchen_idea,
+        idea_kid=clean_cookery_idea,
         walk=new_idea_parent_road,
         create_missing_ideas_groups=True,
     )
@@ -620,12 +620,12 @@ def test_agent_add_idea_DoesNotOverwriteGroups():
     a_x = AgentUnit(_desc=src_text)
     a_x.set_groupunits_empty_if_null()
     new_idea_parent_road = f"{src_text},work,cleaning"
-    clean_kitchen_text = "clean_kitchen"
-    clean_kitchen_idea = IdeaKid(_weight=40, _desc=clean_kitchen_text, promise=True)
+    clean_cookery_text = "clean_cookery"
+    clean_cookery_idea = IdeaKid(_weight=40, _desc=clean_cookery_text, promise=True)
 
     family_text = "family"
     grouplink_z = grouplink_shop(name=family_text)
-    clean_kitchen_idea.set_grouplink(grouplink=grouplink_z)
+    clean_cookery_idea.set_grouplink(grouplink=grouplink_z)
 
     groupunit_z = groupunit_shop(name=family_text)
     groupunit_z.set_memberlink(memberlink=memberlink_shop(name="ann1"))
@@ -639,7 +639,7 @@ def test_agent_add_idea_DoesNotOverwriteGroups():
 
     # WHEN
     a_x.add_idea(
-        idea_kid=clean_kitchen_idea,
+        idea_kid=clean_cookery_idea,
         walk=new_idea_parent_road,
         create_missing_ideas_groups=True,
     )

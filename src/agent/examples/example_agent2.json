@@ -4675,14 +4675,14 @@
                             "_weight": 1,
                             "promise": true
                         },
-                        "morning kitchen clean-up": {
+                        "morning cookery clean-up": {
                             "_acptfactunits": {},
                             "_addin": null,
                             "_begin": null,
                             "_grouplinks": {},
                             "_close": null,
                             "_denom": null,
-                            "_desc": "morning kitchen clean-up",
+                            "_desc": "morning cookery clean-up",
                             "_is_expanded": true,
                             "_kids": {},
                             "_numeric_road": null,
@@ -5389,14 +5389,14 @@
                                     "_weight": 1,
                                     "promise": false
                                 },
-                                "kitchen": {
+                                "cookery": {
                                     "_acptfactunits": {},
                                     "_addin": null,
                                     "_begin": null,
                                     "_grouplinks": {},
                                     "_close": null,
                                     "_denom": null,
-                                    "_desc": "kitchen",
+                                    "_desc": "cookery",
                                     "_is_expanded": true,
                                     "_kids": {},
                                     "_numeric_road": null,

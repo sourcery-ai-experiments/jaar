@@ -136,24 +136,24 @@ def test_agent_add_idea_creates_requireds_ideas():
     assert agent_x.get_level_count(level=3) == 2
     src_text = agent_x._idearoot._desc
     new_idea_parent_road = f"{src_text},work,cleaning"
-    clean_kitchen_text = "clean_kitchen"
-    clean_kitchen_idea = IdeaKid(_weight=40, _desc=clean_kitchen_text, promise=True)
+    clean_cookery_text = "clean_cookery"
+    clean_cookery_idea = IdeaKid(_weight=40, _desc=clean_cookery_text, promise=True)
 
     buildings_text = "buildings"
     buildings_road = Road(f"{src_text},{buildings_text}")
-    kitchen_room_text = "kitchen"
-    kitchen_room_road = Road(f"{src_text},{buildings_text},{kitchen_room_text}")
-    kitchen_dirty_text = "dirty"
-    kitchen_dirty_road = Road(f"{kitchen_room_road},{kitchen_dirty_text}")
-    required_x = RequiredUnit(base=kitchen_room_road, sufffacts={})
-    required_x.set_sufffact(sufffact=kitchen_dirty_road)
-    clean_kitchen_idea.set_required_unit(required=required_x)
+    cookery_room_text = "cookery"
+    cookery_room_road = Road(f"{src_text},{buildings_text},{cookery_room_text}")
+    cookery_dirty_text = "dirty"
+    cookery_dirty_road = Road(f"{cookery_room_road},{cookery_dirty_text}")
+    required_x = RequiredUnit(base=cookery_room_road, sufffacts={})
+    required_x.set_sufffact(sufffact=cookery_dirty_road)
+    clean_cookery_idea.set_required_unit(required=required_x)
 
     assert agent_x._idearoot._kids.get(buildings_text) is None
 
     # WHEN
     agent_x.add_idea(
-        idea_kid=clean_kitchen_idea,
+        idea_kid=clean_cookery_idea,
         walk=new_idea_parent_road,
         create_missing_ideas_groups=True,
     )
@@ -164,7 +164,7 @@ def test_agent_add_idea_creates_requireds_ideas():
     #     print(f"{idea_kid._desc=}")
     assert agent_x._idearoot._kids.get(buildings_text) != None
     assert agent_x.get_idea_kid(road=buildings_road) != None
-    assert agent_x.get_idea_kid(road=kitchen_dirty_road) != None
+    assert agent_x.get_idea_kid(road=cookery_dirty_road) != None
     assert agent_x.get_node_count() == 22
     assert agent_x.get_level_count(level=3) == 4
 

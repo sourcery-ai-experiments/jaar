@@ -40,9 +40,9 @@ def test_agentunit_get_bond_status_ReturnsCorrectBool():
     assert cx.get_bond_status() == False
 
     # WHEN\THEN 1 action idea exists
-    clean_kitchen_text = "clean kitchen"
+    clean_cookery_text = "clean cookery"
     cx.add_idea(
-        idea_kid=IdeaKid(_desc=clean_kitchen_text, promise=True), walk=casa_road
+        idea_kid=IdeaKid(_desc=clean_cookery_text, promise=True), walk=casa_road
     )
     assert cx.get_bond_status()
 
@@ -59,8 +59,8 @@ def test_agentunit_get_bond_status_ReturnsCorrectBool():
     assert cx.get_bond_status()
 
     # WHEN\THEN 1 action idea deleted (0 total)
-    clean_kitchen_road = Road(f"{jessi_text},{casa_text},{clean_kitchen_text}")
-    cx.del_idea_kid(road=clean_kitchen_road)
+    clean_cookery_road = Road(f"{jessi_text},{casa_text},{clean_cookery_text}")
+    cx.del_idea_kid(road=clean_cookery_road)
     assert cx.get_bond_status() == False
 
     # for idea_kid in cx._idearoot._kids.values():
@@ -74,17 +74,17 @@ def test_agentunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaGroupheir
     casa_text = "case"
     casa_road = Road(f"{jessi_text},{casa_text}")
     cx.add_idea(idea_kid=IdeaKid(_desc=casa_text), walk=jessi_text)
-    clean_kitchen_text = "clean kitchen"
-    clean_kitchen_road = Road(f"{jessi_text},{casa_text},{clean_kitchen_text}")
+    clean_cookery_text = "clean cookery"
+    clean_cookery_road = Road(f"{jessi_text},{casa_text},{clean_cookery_text}")
     cx.add_idea(
-        idea_kid=IdeaKid(_desc=clean_kitchen_text, promise=True), walk=casa_road
+        idea_kid=IdeaKid(_desc=clean_cookery_text, promise=True), walk=casa_road
     )
     tom_text = "tom"
     cx.add_memberunit(name=tom_text)
     assert cx.get_bond_status() == False
 
     # WHEN
-    cx.edit_idea_attr(road=clean_kitchen_road, grouplink=grouplink_shop(name=tom_text))
+    cx.edit_idea_attr(road=clean_cookery_road, grouplink=grouplink_shop(name=tom_text))
     # THEN
     assert cx.get_bond_status()
 
@@ -102,19 +102,19 @@ def test_agentunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualAgentGroupuni
     casa_text = "case"
     casa_road = Road(f"{jessi_text},{casa_text}")
     cx.add_idea(idea_kid=IdeaKid(_desc=casa_text), walk=jessi_text)
-    clean_kitchen_text = "clean kitchen"
-    clean_kitchen_road = Road(f"{jessi_text},{casa_text},{clean_kitchen_text}")
+    clean_cookery_text = "clean cookery"
+    clean_cookery_road = Road(f"{jessi_text},{casa_text},{clean_cookery_text}")
     cx.add_idea(
-        idea_kid=IdeaKid(_desc=clean_kitchen_text, promise=True), walk=casa_road
+        idea_kid=IdeaKid(_desc=clean_cookery_text, promise=True), walk=casa_road
     )
     tom_text = "tom"
     cx.add_memberunit(name=tom_text)
     assert cx.get_bond_status() == False
 
     # WHEN
-    cx.edit_idea_attr(road=clean_kitchen_road, grouplink=grouplink_shop(name=tom_text))
-    clean_kitchen_idea = cx.get_idea_kid(road=clean_kitchen_road)
-    assert len(clean_kitchen_idea._groupheirs) == 1
+    cx.edit_idea_attr(road=clean_cookery_road, grouplink=grouplink_shop(name=tom_text))
+    clean_cookery_idea = cx.get_idea_kid(road=clean_cookery_road)
+    assert len(clean_cookery_idea._groupheirs) == 1
     # THEN
     assert cx.get_bond_status()
 
@@ -132,10 +132,10 @@ def test_agentunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualAgentGroupuni
     casa_text = "case"
     casa_road = Road(f"{jessi_text},{casa_text}")
     cx.add_idea(idea_kid=IdeaKid(_desc=casa_text), walk=jessi_text)
-    clean_kitchen_text = "clean kitchen"
-    clean_kitchen_road = Road(f"{jessi_text},{casa_text},{clean_kitchen_text}")
+    clean_cookery_text = "clean cookery"
+    clean_cookery_road = Road(f"{jessi_text},{casa_text},{clean_cookery_text}")
     cx.add_idea(
-        idea_kid=IdeaKid(_desc=clean_kitchen_text, promise=True), walk=casa_road
+        idea_kid=IdeaKid(_desc=clean_cookery_text, promise=True), walk=casa_road
     )
     assert cx.get_bond_status()
 
@@ -152,7 +152,7 @@ def test_agentunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualAgentGroupuni
 
     # WHEN
     cx.edit_idea_attr(
-        road=clean_kitchen_road, grouplink=grouplink_shop(name=home_occupants_text)
+        road=clean_cookery_road, grouplink=grouplink_shop(name=home_occupants_text)
     )
     # THEN
     assert cx.get_bond_status()
@@ -172,12 +172,12 @@ def test_agentunit_get_bond_status_ChecksOnlyNecessaryIdeasExist_MultipleScenari
     casa_text = "case"
     casa_road = Road(f"{jessi_text},{casa_text}")
     cx.add_idea(idea_kid=IdeaKid(_desc=casa_text), walk=jessi_text)
-    clean_kitchen_text = "clean kitchen"
-    clean_kitchen_road = Road(f"{jessi_text},{casa_text},{clean_kitchen_text}")
+    clean_cookery_text = "clean cookery"
+    clean_cookery_road = Road(f"{jessi_text},{casa_text},{clean_cookery_text}")
 
     # WHEN/THEN
     cx.add_idea(
-        idea_kid=IdeaKid(_desc=clean_kitchen_text, promise=True), walk=casa_road
+        idea_kid=IdeaKid(_desc=clean_cookery_text, promise=True), walk=casa_road
     )
     assert cx.get_bond_status()
 
@@ -193,7 +193,7 @@ def test_agentunit_get_bond_status_ChecksOnlyNecessaryIdeasExist_MultipleScenari
 
     # WHEN/THEN
     cx.edit_idea_attr(
-        road=clean_kitchen_road, required_base=water_road, required_sufffact=rain_road
+        road=clean_cookery_road, required_base=water_road, required_sufffact=rain_road
     )
     assert cx.get_bond_status()
 
@@ -207,10 +207,10 @@ def test_agentunit_get_agent_sprung_from_single_idea_ReturnsCorrectAgentScenario
     cx.add_idea(
         idea_kid=IdeaKid(_desc=casa_text, _begin=-1, _close=19), walk=jessi_text
     )
-    clean_kitchen_text = "clean kitchen"
-    clean_kitchen_road = Road(f"{jessi_text},{casa_text},{clean_kitchen_text}")
+    clean_cookery_text = "clean cookery"
+    clean_cookery_road = Road(f"{jessi_text},{casa_text},{clean_cookery_text}")
     cx.add_idea(
-        idea_kid=IdeaKid(_desc=clean_kitchen_text, promise=True, _begin=2, _close=4),
+        idea_kid=IdeaKid(_desc=clean_cookery_text, promise=True, _begin=2, _close=4),
         walk=casa_road,
     )
     water_text = "water"
@@ -219,10 +219,10 @@ def test_agentunit_get_agent_sprung_from_single_idea_ReturnsCorrectAgentScenario
     assert cx.get_bond_status() == False
 
     # WHEN
-    bond_agent = cx.get_agent_sprung_from_single_idea(road=clean_kitchen_road)
+    bond_agent = cx.get_agent_sprung_from_single_idea(road=clean_cookery_road)
 
     # THEN
-    # assert bond_agent._desc == clean_kitchen_text
+    # assert bond_agent._desc == clean_cookery_text
     print(f"{len(bond_agent._idea_dict)=}")
     assert len(bond_agent._idea_dict) == 3
     b_src_idea = bond_agent.get_idea_kid(road=jessi_text)
@@ -239,12 +239,12 @@ def test_agentunit_get_agent_sprung_from_single_idea_ReturnsCorrectAgentScenario
     assert b_casa_idea._close == src_casa_idea._close
     assert b_casa_idea != src_casa_idea
 
-    b_clean_kitchen_idea = bond_agent.get_idea_kid(road=clean_kitchen_road)
-    src_clean_kitchen_idea = cx.get_idea_kid(road=clean_kitchen_road)
-    assert b_clean_kitchen_idea._uid == src_clean_kitchen_idea._uid
-    assert b_clean_kitchen_idea._begin == src_clean_kitchen_idea._begin
-    assert b_clean_kitchen_idea._close == src_clean_kitchen_idea._close
-    assert b_clean_kitchen_idea != src_clean_kitchen_idea
+    b_clean_cookery_idea = bond_agent.get_idea_kid(road=clean_cookery_road)
+    src_clean_cookery_idea = cx.get_idea_kid(road=clean_cookery_road)
+    assert b_clean_cookery_idea._uid == src_clean_cookery_idea._uid
+    assert b_clean_cookery_idea._begin == src_clean_cookery_idea._begin
+    assert b_clean_cookery_idea._close == src_clean_cookery_idea._close
+    assert b_clean_cookery_idea != src_clean_cookery_idea
 
     assert bond_agent._idearoot._kids.get(water_text) is None
 

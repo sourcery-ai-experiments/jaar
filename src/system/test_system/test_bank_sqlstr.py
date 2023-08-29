@@ -703,9 +703,9 @@ def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
 
     casa_text = "casa"
     casa_road = f"{sal_agent._desc},{casa_text}"
-    kitchen_text = "clean kitchen"
-    kitchen_road = f"{casa_road},{kitchen_text}"
-    sal_agent.set_acptfact(base=kitchen_road, pick=kitchen_road)
+    cookery_text = "clean cookery"
+    cookery_road = f"{casa_road},{cookery_text}"
+    sal_agent.set_acptfact(base=cookery_road, pick=cookery_road)
 
     e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
     e1.save_agentunit_obj_to_agents_dir(agent_x=tim_agent)

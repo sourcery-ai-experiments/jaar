@@ -586,7 +586,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
 
 
 def test_agent_create_agenda_item_CorrectlyCreatesAllAgentAttributes():
-    # WHEN "I am cleaning the kitchen since I'm in the apartment and it's 8am and it's dirty and I'm doing this for my family"
+    # WHEN "I am cleaning the cookery since I'm in the apartment and it's 8am and it's dirty and I'm doing this for my family"
 
     # GIVEN
     src_text = "mysun"
@@ -601,16 +601,16 @@ def test_agent_create_agenda_item_CorrectlyCreatesAllAgentAttributes():
 
     clean_things_text = "cleaning things"
     clean_things_road = Road(f"{src_text},{clean_things_text}")
-    clean_kitchen_text = "clean kitchen"
-    clean_kitchen_road = Road(f"{src_text},{clean_things_text},{clean_kitchen_text}")
-    clean_kitchen_idea = IdeaKid(_desc=clean_kitchen_text, _walk=clean_things_road)
-    print(f"{clean_kitchen_idea.get_road()=}")
+    clean_cookery_text = "clean cookery"
+    clean_cookery_road = Road(f"{src_text},{clean_things_text},{clean_cookery_text}")
+    clean_cookery_idea = IdeaKid(_desc=clean_cookery_text, _walk=clean_things_road)
+    print(f"{clean_cookery_idea.get_road()=}")
     home_text = "home"
     home_road = Road(f"{src_text},{home_text}")
-    kitchen_room_text = "kitchen room"
-    kitchen_room_road = Road(f"{src_text},{home_text},{kitchen_room_text}")
-    kit_dirty_text = "dirty"
-    kit_dirty_road = Road(f"{kitchen_room_road},{kit_dirty_text}")
+    cookery_room_text = "cookery room"
+    cookery_room_road = Road(f"{src_text},{home_text},{cookery_room_text}")
+    cookery_dirty_text = "dirty"
+    cookery_dirty_road = Road(f"{cookery_room_road},{cookery_dirty_text}")
 
     # create gregorian timeline
     a1.set_time_hreg_ideas(c400_count=7)
@@ -618,13 +618,13 @@ def test_agent_create_agenda_item_CorrectlyCreatesAllAgentAttributes():
     open_8am = 480
     nigh_8am = 480
 
-    dirty_kitchen_required = RequiredUnit(base=kitchen_room_road, sufffacts={})
-    dirty_kitchen_required.set_sufffact(sufffact=kit_dirty_road)
-    clean_kitchen_idea.set_required_unit(required=dirty_kitchen_required)
+    dirty_cookery_required = RequiredUnit(base=cookery_room_road, sufffacts={})
+    dirty_cookery_required.set_sufffact(sufffact=cookery_dirty_road)
+    clean_cookery_idea.set_required_unit(required=dirty_cookery_required)
 
     daytime_required = RequiredUnit(base=daytime_road, sufffacts={})
     daytime_required.set_sufffact(sufffact=daytime_road, open=open_8am, nigh=nigh_8am)
-    clean_kitchen_idea.set_required_unit(required=daytime_required)
+    clean_cookery_idea.set_required_unit(required=daytime_required)
 
     # anna_text = "anna"
     # anna_memberunit = memberunit_shop(name=anna_text)
@@ -638,30 +638,30 @@ def test_agent_create_agenda_item_CorrectlyCreatesAllAgentAttributes():
     # groupunit_z.set_memberlink(memberlink=anna_memberlink)
     # groupunit_z.set_memberlink(memberlink=beto_memberlink)
     grouplink_z = grouplink_shop(name=family_text)
-    clean_kitchen_idea.set_grouplink(grouplink=grouplink_z)
+    clean_cookery_idea.set_grouplink(grouplink=grouplink_z)
 
     assert len(a1._members) == 0
     assert len(a1._groups) == 0
     assert len(a1._idearoot._kids) == 1
     assert a1.get_idea_kid(road=daytime_road)._begin == 0
     assert a1.get_idea_kid(road=daytime_road)._close == 1440
-    print(f"{clean_kitchen_idea.get_road()=}")
+    print(f"{clean_cookery_idea.get_road()=}")
 
     # GIVEN
-    a1.set_dominate_promise_idea(idea_kid=clean_kitchen_idea)
+    a1.set_dominate_promise_idea(idea_kid=clean_cookery_idea)
 
     # THEN
     # for idea_kid in a1._idearoot._kids.keys():
     #     print(f"  {idea_kid=}")
 
-    print(f"{clean_kitchen_idea.get_road()=}")
-    assert a1.get_idea_kid(road=clean_kitchen_road) != None
-    assert a1.get_idea_kid(road=clean_kitchen_road)._desc == clean_kitchen_text
-    assert a1.get_idea_kid(road=clean_kitchen_road).promise
-    assert len(a1.get_idea_kid(road=clean_kitchen_road)._requiredunits) == 2
+    print(f"{clean_cookery_idea.get_road()=}")
+    assert a1.get_idea_kid(road=clean_cookery_road) != None
+    assert a1.get_idea_kid(road=clean_cookery_road)._desc == clean_cookery_text
+    assert a1.get_idea_kid(road=clean_cookery_road).promise
+    assert len(a1.get_idea_kid(road=clean_cookery_road)._requiredunits) == 2
     assert a1.get_idea_kid(road=clean_things_road) != None
-    assert a1.get_idea_kid(road=kitchen_room_road) != None
-    assert a1.get_idea_kid(road=kit_dirty_road) != None
+    assert a1.get_idea_kid(road=cookery_room_road) != None
+    assert a1.get_idea_kid(road=cookery_dirty_road) != None
     assert a1.get_idea_kid(road=daytime_road)._begin == 0
     assert a1.get_idea_kid(road=daytime_road)._close == 1440
     assert len(a1._groups) == 1

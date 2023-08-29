@@ -164,11 +164,11 @@ def get_agent_2CleanNodesRandomWeights(_desc: str = None):
     casa_text = "casa"
     agent_x.add_idea(idea_kid=IdeaKid(_desc=casa_text), walk="")
     casa_road = Road(f"{desc_text},{casa_text}")
-    kitchen_text = "clean kitchen"
+    cookery_text = "clean cookery"
     bedroom_text = "clean bedroom"
-    kitchen_idea = IdeaKid(_desc=kitchen_text, _weight=randrange(1, 50), promise=True)
+    cookery_idea = IdeaKid(_desc=cookery_text, _weight=randrange(1, 50), promise=True)
     bedroom_idea = IdeaKid(_desc=bedroom_text, _weight=randrange(1, 50), promise=True)
-    agent_x.add_idea(idea_kid=kitchen_idea, walk=casa_road)
+    agent_x.add_idea(idea_kid=cookery_idea, walk=casa_road)
     agent_x.add_idea(idea_kid=bedroom_idea, walk=casa_road)
     agent_x.set_agent_metrics()
     return agent_x
@@ -180,13 +180,13 @@ def get_agent_3CleanNodesRandomWeights(_desc: str = None):
     casa_text = "casa"
     agent_x.add_idea(idea_kid=IdeaKid(_desc=casa_text), walk="")
     casa_road = Road(f"{desc_text},{casa_text}")
-    kitchen_text = "clean kitchen"
+    cookery_text = "clean cookery"
     bedroom_text = "clean bedroom"
     hallway_text = "clean hallway"
-    kitchen_idea = IdeaKid(_desc=kitchen_text, _weight=randrange(1, 50), promise=True)
+    cookery_idea = IdeaKid(_desc=cookery_text, _weight=randrange(1, 50), promise=True)
     bedroom_idea = IdeaKid(_desc=bedroom_text, _weight=randrange(1, 50), promise=True)
     hallway_idea = IdeaKid(_desc=hallway_text, _weight=randrange(1, 50), promise=True)
-    agent_x.add_idea(idea_kid=kitchen_idea, walk=casa_road)
+    agent_x.add_idea(idea_kid=cookery_idea, walk=casa_road)
     agent_x.add_idea(idea_kid=bedroom_idea, walk=casa_road)
     agent_x.add_idea(idea_kid=hallway_idea, walk=casa_road)
     agent_x.set_agent_metrics()
