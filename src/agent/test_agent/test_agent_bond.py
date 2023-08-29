@@ -282,7 +282,7 @@ def test_agentunit_export_all_bonds_ExportsFileOfBonds_2files(env_dir_setup_clea
         x_func_dir_files(dir_path=get_temp_env_dir())
     assert (
         str(excinfo.value)
-        == f"[WinError 3] The system cannot find the path specified: '{get_temp_env_dir()}'"
+        == f"[WinError 3] Cannot find the path specified: '{get_temp_env_dir()}'"
     )
 
     # WHEN
