@@ -11,9 +11,9 @@ class TreeMetrics:
     grouplinks_metrics: dict[GroupName:GroupMetrics] = None
     uid_max: int = None
     uid_dict: dict[int:int] = None
-    all_idea_uids_are_unique: bool = None
+    all_tool_uids_are_unique: bool = None
     bond_promise_count: int = None
-    an_promise_idea_road: Road = None
+    an_promise_tool_road: Road = None
 
     def __init__(self):
         if self.nodeCount is None:
@@ -26,7 +26,7 @@ class TreeMetrics:
         if self.uid_max is None:
             self.uid_max = 0
         self.set_uid_dict_emtpy_if_null()
-        self.all_idea_uids_are_unique = True
+        self.all_tool_uids_are_unique = True
 
     def set_grouplinks_empty_if_null(self):
         if self.grouplinks_metrics is None:
@@ -39,23 +39,23 @@ class TreeMetrics:
         grouplinks: dict[GroupName:GroupLink],
         uid: int,
         promise: bool,
-        idea_road: Road,
+        tool_road: Road,
     ):
         self.nodeCount += 1
-        self.evaluate_action(promise=promise, idea_road=idea_road)
+        self.evaluate_action(promise=promise, tool_road=tool_road)
         self.evaluate_level(level=level)
         self.evaluate_requiredunits(requireds=requireds)
         self.evaluate_grouplinks(grouplinks=grouplinks)
         self.evaluate_uid_max(uid=uid)
 
-    def evaluate_action(self, promise: bool, idea_road: Road):
+    def evaluate_action(self, promise: bool, tool_road: Road):
         if self.bond_promise_count is None and promise:
             self.bond_promise_count = 1
         elif self.bond_promise_count != None and promise:
             self.bond_promise_count += 1
 
         if promise:
-            self.an_promise_idea_road = idea_road
+            self.an_promise_tool_road = tool_road
 
     def evaluate_level(self, level):
         if self.levelCount.get(level) is None:
@@ -91,4 +91,4 @@ class TreeMetrics:
             self.uid_dict[uid] = 1
         else:
             self.uid_dict[uid] += 1
-            self.all_idea_uids_are_unique = False
+            self.all_tool_uids_are_unique = False

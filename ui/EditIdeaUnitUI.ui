@@ -34,7 +34,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Ideas: Edit or Add Children </string>
+    <string>Tools: Edit or Add Children </string>
    </property>
   </widget>
   <widget class="QTextEdit" name="yo_description">
@@ -147,7 +147,7 @@
     <string>Current Node ID:</string>
    </property>
   </widget>
-  <widget class="QTreeWidget" name="baseideaunit">
+  <widget class="QTreeWidget" name="basetoolunit">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -161,7 +161,7 @@
    </property>
    <column>
     <property name="text">
-     <string>ideaunit</string>
+     <string>toolunit</string>
     </property>
    </column>
   </widget>
@@ -217,7 +217,7 @@
     <string>Quit App</string>
    </property>
   </widget>
-  <widget class="QTableWidget" name="idea2group_table">
+  <widget class="QTableWidget" name="tool2group_table">
    <property name="geometry">
     <rect>
      <x>1050</x>
@@ -247,7 +247,7 @@
     </property>
    </column>
   </widget>
-  <widget class="QPushButton" name="idea2group_delete_button">
+  <widget class="QPushButton" name="tool2group_delete_button">
    <property name="geometry">
     <rect>
      <x>1440</x>
@@ -265,7 +265,7 @@
     <string>De-link Group</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="idea2group_insert_button">
+  <widget class="QPushButton" name="tool2group_insert_button">
    <property name="geometry">
     <rect>
      <x>1050</x>
@@ -280,10 +280,10 @@
     </font>
    </property>
    <property name="text">
-    <string>Add Group to Idea</string>
+    <string>Add Group to Tool</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="idea2group_insert_combo">
+  <widget class="QComboBox" name="tool2group_insert_combo">
    <property name="geometry">
     <rect>
      <x>1200</x>
@@ -1827,7 +1827,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Add Duty child idea</string>
+    <string>Add Duty child tool</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_39">

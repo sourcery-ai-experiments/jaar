@@ -65,10 +65,10 @@ class EditAcptFactTime(qtw.QTableWidget, Ui_Form):
         self.close()
 
     def display_acptfact_time(self):
-        # minutes_idea = self.agent_x.get_idea_kid(
+        # minutes_tool = self.agent_x.get_tool_kid(
         #     road=f"{self.agent_x._desc},time,jajatime"
         # )
-        minutes_acptfact = self.agent_x._idearoot._acptfactunits[
+        minutes_acptfact = self.agent_x._toolroot._acptfactunits[
             f"{self.agent_x._desc},time,jajatime"
         ]
 

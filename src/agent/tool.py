@@ -31,12 +31,12 @@ from src.agent.x_func import (
 from copy import deepcopy
 
 
-class InvalidIdeaException(Exception):
+class InvalidToolException(Exception):
     pass
 
 
 @dataclasses.dataclass
-class IdeaBare:
+class ToolBare:
     n: str = None  # name
     weight: int = 1
     b: float = None  # begin
@@ -51,7 +51,7 @@ class IdeaBare:
 
 
 @dataclasses.dataclass
-class IdeaAttrHolder:
+class ToolAttrHolder:
     weight: int = None
     uid: int = None
     required: RequiredUnit = None
@@ -62,7 +62,7 @@ class IdeaAttrHolder:
     required_sufffact_divisor: int = None
     required_del_sufffact_base: Road = None
     required_del_sufffact_need: Road = None
-    required_suff_idea_active_status: str = None
+    required_suff_tool_active_status: str = None
     begin: float = None
     close: float = None
     addin: float = None
@@ -82,7 +82,7 @@ class IdeaAttrHolder:
     is_expanded: bool = None
     on_meld_weight_action: str = None
 
-    def set_sufffact_range_attributes_influenced_by_sufffact_idea(
+    def set_sufffact_range_attributes_influenced_by_sufffact_tool(
         self,
         sufffact_open,
         sufffact_nigh,
@@ -104,7 +104,7 @@ class IdeaAttrHolder:
 
 
 @dataclasses.dataclass
-class IdeaCore:
+class ToolCore:
     _desc: str = None
     _uid: int = None
     _walk: str = None
@@ -229,7 +229,7 @@ class IdeaCore:
         self.set_acptfactunits_empty_if_null()
         self._acptfactunits[acptfactunit.base] = acptfactunit
 
-    def _set_ideakid_attr(
+    def _set_toolkid_attr(
         self,
         acptfactunit: AcptFactUnit = None,
         acptfactunit_base: Road = None,
@@ -255,10 +255,10 @@ class IdeaCore:
         return acptfactunits_dict
 
     def set_acptfactunit_to_complete(self, base_acptfactunit: AcptFactUnit):
-        # if a idea is considered a task that means a acptfactheir.open attribute can be increased to
-        # a number <= acptfactheir.nighmake that makes the idea no longer a task. This method finds
-        # the minimal acptfactheir.open to change idea._task == False. idea_core._acptfactheir cannot be straight up manpulated
-        # so idea._acptfactunit reqquires being changed.
+        # if a tool is considered a task that means a acptfactheir.open attribute can be increased to
+        # a number <= acptfactheir.nighmake that makes the tool no longer a task. This method finds
+        # the minimal acptfactheir.open to change tool._task == False. tool_core._acptfactheir cannot be straight up manpulated
+        # so tool._acptfactunit reqquires being changed.
         # self.set_acptfactunits(base=acptfact, acptfact=base, open=sufffact_nigh, nigh=acptfact_nigh)
         acptfact_curb_x = acptfactunit_shop(
             base=base_acptfactunit.base,
@@ -288,12 +288,12 @@ class IdeaCore:
 
     def get_kids_in_range(self, begin: float, close: float) -> list:
         return [
-            idea_x
-            for idea_x in self._kids.values()
+            tool_x
+            for tool_x in self._kids.values()
             if (
-                (begin >= idea_x._begin and begin < idea_x._close)
-                or (close > idea_x._begin and close < idea_x._close)
-                or (begin <= idea_x._begin and close >= idea_x._close)
+                (begin >= tool_x._begin and begin < tool_x._close)
+                or (close > tool_x._begin and close < tool_x._close)
+                or (begin <= tool_x._begin and close >= tool_x._close)
             )
         ]
 
@@ -386,8 +386,8 @@ class IdeaCore:
     def set_kids_total_weight(self):
         self._kids_total_weight = 0
         self.set_kids_empty_if_null()
-        for idea_x in self._kids.values():
-            self._kids_total_weight += idea_x._weight
+        for tool_x in self._kids.values():
+            self._kids_total_weight += tool_x._weight
 
     def get_groupheirs_creditor_weight_sum(self):
         self.set_grouplink_empty_if_null()
@@ -404,7 +404,7 @@ class IdeaCore:
         groupheirs_debtor_weight_sum = self.get_groupheirs_debtor_weight_sum()
         for groupheir_x in self._groupheirs.values():
             groupheir_x.set_agent_credit_debt(
-                idea_agent_importance=self._agent_importance,
+                tool_agent_importance=self._agent_importance,
                 groupheirs_creditor_weight_sum=groupheirs_creditor_weight_sum,
                 groupheirs_debtor_weight_sum=groupheirs_debtor_weight_sum,
             )
@@ -416,150 +416,150 @@ class IdeaCore:
     def clear_grouplines(self):
         self._grouplines = {}
 
-    def _set_idea_desc(self, desc):
+    def _set_tool_desc(self, desc):
         if desc != None:
             self._desc = desc
 
-    def meld_requiredunits(self, other_idea):
+    def meld_requiredunits(self, other_tool):
         self.set_requiredunits_empty_if_null()
-        other_idea.set_requiredunits_empty_if_null()
-        for lx in other_idea._requiredunits.values():
+        other_tool.set_requiredunits_empty_if_null()
+        for lx in other_tool._requiredunits.values():
             if self._requiredunits.get(lx.base) is None:
                 self._requiredunits[lx.base] = lx
             else:
                 self._requiredunits.get(lx.base).meld(lx)
 
-    def meld_grouplinks(self, other_idea):
+    def meld_grouplinks(self, other_tool):
         self.set_grouplink_empty_if_null()
-        other_idea.set_grouplink_empty_if_null()
-        for bl in other_idea._grouplinks.values():
+        other_tool.set_grouplink_empty_if_null()
+        for bl in other_tool._grouplinks.values():
             if self._grouplinks.get(bl.name) != None:
                 self._grouplinks.get(bl.name).meld(
                     other_grouplink=bl,
-                    other_on_meld_weight_action=other_idea._on_meld_weight_action,
+                    other_on_meld_weight_action=other_tool._on_meld_weight_action,
                     src_on_meld_weight_action=self._on_meld_weight_action,
                 )
             else:
                 self._grouplinks[bl.name] = bl
 
-    def meld_acptfactunits(self, other_idea):
+    def meld_acptfactunits(self, other_tool):
         self.set_acptfactunits_empty_if_null()
-        other_idea.set_acptfactunits_empty_if_null()
-        for hc in other_idea._acptfactunits.values():
+        other_tool.set_acptfactunits_empty_if_null()
+        for hc in other_tool._acptfactunits.values():
             if self._acptfactunits.get(hc.base) is None:
                 self._acptfactunits[hc.base] = hc
             else:
                 self._acptfactunits.get(hc.base).meld(hc)
 
-    def meld(self, other_idea, _idearoot: bool = None):
-        if _idearoot and self._desc != other_idea._desc:
-            raise InvalidIdeaException(
-                f"Meld fail idearoot _desc '{self._desc}' not the same as '{other_idea._desc}'"
+    def meld(self, other_tool, _toolroot: bool = None):
+        if _toolroot and self._desc != other_tool._desc:
+            raise InvalidToolException(
+                f"Meld fail toolroot _desc '{self._desc}' not the same as '{other_tool._desc}'"
             )
-        if _idearoot:
+        if _toolroot:
             self._weight = 1
         else:
             self._weight = get_meld_weight(
                 src_weight=self._weight,
                 src_on_meld_weight_action=self._on_meld_weight_action,
-                other_weight=other_idea._weight,
-                other_on_meld_weight_action=other_idea._on_meld_weight_action,
+                other_weight=other_tool._weight,
+                other_on_meld_weight_action=other_tool._on_meld_weight_action,
             )
-        self.meld_requiredunits(other_idea=other_idea)
-        self.meld_grouplinks(other_idea=other_idea)
-        self.meld_acptfactunits(other_idea=other_idea)
-        self.meld_attributes_that_will_be_equal(other_idea=other_idea)
+        self.meld_requiredunits(other_tool=other_tool)
+        self.meld_grouplinks(other_tool=other_tool)
+        self.meld_acptfactunits(other_tool=other_tool)
+        self.meld_attributes_that_will_be_equal(other_tool=other_tool)
 
-    def meld_attributes_that_will_be_equal(self, other_idea):
+    def meld_attributes_that_will_be_equal(self, other_tool):
         xl = [
-            ("_uid", self._uid, other_idea._uid),
-            ("_begin", self._begin, other_idea._begin),
-            ("_close", self._close, other_idea._close),
-            ("_addin", self._addin, other_idea._addin),
-            ("_denom", self._denom, other_idea._denom),
-            ("_numor", self._numor, other_idea._numor),
-            ("_reest", self._reest, other_idea._reest),
-            ("_special_road", self._special_road, other_idea._special_road),
-            ("_numeric_road", self._numeric_road, other_idea._numeric_road),
-            ("promise", self.promise, other_idea.promise),
-            ("_is_expanded", self._is_expanded, other_idea._is_expanded),
+            ("_uid", self._uid, other_tool._uid),
+            ("_begin", self._begin, other_tool._begin),
+            ("_close", self._close, other_tool._close),
+            ("_addin", self._addin, other_tool._addin),
+            ("_denom", self._denom, other_tool._denom),
+            ("_numor", self._numor, other_tool._numor),
+            ("_reest", self._reest, other_tool._reest),
+            ("_special_road", self._special_road, other_tool._special_road),
+            ("_numeric_road", self._numeric_road, other_tool._numeric_road),
+            ("promise", self.promise, other_tool.promise),
+            ("_is_expanded", self._is_expanded, other_tool._is_expanded),
         ]
         while xl != []:
             attrs = xl.pop()
             if attrs[1] != attrs[2]:
-                raise InvalidIdeaException(
-                    f"Meld fail idea={self._walk},{self._desc} {attrs[0]}:{attrs[1]} with {other_idea._walk},{other_idea._desc} {attrs[0]}:{attrs[2]}"
+                raise InvalidToolException(
+                    f"Meld fail tool={self._walk},{self._desc} {attrs[0]}:{attrs[1]} with {other_tool._walk},{other_tool._desc} {attrs[0]}:{attrs[2]}"
                 )
 
-    def _set_idea_attr(self, idea_attr: IdeaAttrHolder):
-        if idea_attr.weight != None:
-            self._weight = idea_attr.weight
-        if idea_attr.uid != None:
-            self._uid = idea_attr.uid
-        if idea_attr.required != None:
-            self.set_required_unit(required=idea_attr.required)
-        if idea_attr.required_base != None and idea_attr.required_sufffact != None:
+    def _set_tool_attr(self, tool_attr: ToolAttrHolder):
+        if tool_attr.weight != None:
+            self._weight = tool_attr.weight
+        if tool_attr.uid != None:
+            self._uid = tool_attr.uid
+        if tool_attr.required != None:
+            self.set_required_unit(required=tool_attr.required)
+        if tool_attr.required_base != None and tool_attr.required_sufffact != None:
             self.set_required_sufffact(
-                base=idea_attr.required_base,
-                sufffact=idea_attr.required_sufffact,
-                open=idea_attr.required_sufffact_open,
-                nigh=idea_attr.required_sufffact_nigh,
-                divisor=idea_attr.required_sufffact_divisor,
+                base=tool_attr.required_base,
+                sufffact=tool_attr.required_sufffact,
+                open=tool_attr.required_sufffact_open,
+                nigh=tool_attr.required_sufffact_nigh,
+                divisor=tool_attr.required_sufffact_divisor,
             )
         if (
-            idea_attr.required_base != None
-            and idea_attr.required_suff_idea_active_status != None
+            tool_attr.required_base != None
+            and tool_attr.required_suff_tool_active_status != None
         ):
-            self.set_required_suff_idea_active_status(
-                base=idea_attr.required_base,
-                suff_idea_active_status=idea_attr.required_suff_idea_active_status,
+            self.set_required_suff_tool_active_status(
+                base=tool_attr.required_base,
+                suff_tool_active_status=tool_attr.required_suff_tool_active_status,
             )
-        if idea_attr.begin != None:
-            self._begin = idea_attr.begin
-        if idea_attr.close != None:
-            self._close = idea_attr.close
-        if idea_attr.addin != None:
-            self._addin = idea_attr.addin
-        if idea_attr.numor != None:
-            self._numor = idea_attr.numor
-        if idea_attr.denom != None:
-            self._denom = idea_attr.denom
-        if idea_attr.reest != None:
-            self._reest = idea_attr.reest
-        if idea_attr.numeric_road != None:
-            self._numeric_road = idea_attr.numeric_road
-        if idea_attr.special_road != None:
-            self._special_road = idea_attr.special_road
-        if idea_attr.descendant_promise_count != None:
-            self._descendant_promise_count = idea_attr.descendant_promise_count
-        if idea_attr.all_member_credit != None:
-            self._all_member_credit = idea_attr.all_member_credit
-        if idea_attr.all_member_debt != None:
-            self._all_member_debt = idea_attr.all_member_debt
-        if idea_attr.grouplink != None:
-            self.set_grouplink(grouplink=idea_attr.grouplink)
-        if idea_attr.grouplink_del != None:
-            self.del_grouplink(groupname=idea_attr.grouplink_del)
-        if idea_attr.is_expanded != None:
-            self._is_expanded = idea_attr.is_expanded
-        if idea_attr.promise != None:
-            self.promise = idea_attr.promise
-        if idea_attr.problem_bool != None:
-            self._problem_bool = idea_attr.problem_bool
-        if idea_attr.on_meld_weight_action != None:
-            self._check_get_on_meld_weight_actions(idea_attr.on_meld_weight_action)
-            self._on_meld_weight_action = idea_attr.on_meld_weight_action
+        if tool_attr.begin != None:
+            self._begin = tool_attr.begin
+        if tool_attr.close != None:
+            self._close = tool_attr.close
+        if tool_attr.addin != None:
+            self._addin = tool_attr.addin
+        if tool_attr.numor != None:
+            self._numor = tool_attr.numor
+        if tool_attr.denom != None:
+            self._denom = tool_attr.denom
+        if tool_attr.reest != None:
+            self._reest = tool_attr.reest
+        if tool_attr.numeric_road != None:
+            self._numeric_road = tool_attr.numeric_road
+        if tool_attr.special_road != None:
+            self._special_road = tool_attr.special_road
+        if tool_attr.descendant_promise_count != None:
+            self._descendant_promise_count = tool_attr.descendant_promise_count
+        if tool_attr.all_member_credit != None:
+            self._all_member_credit = tool_attr.all_member_credit
+        if tool_attr.all_member_debt != None:
+            self._all_member_debt = tool_attr.all_member_debt
+        if tool_attr.grouplink != None:
+            self.set_grouplink(grouplink=tool_attr.grouplink)
+        if tool_attr.grouplink_del != None:
+            self.del_grouplink(groupname=tool_attr.grouplink_del)
+        if tool_attr.is_expanded != None:
+            self._is_expanded = tool_attr.is_expanded
+        if tool_attr.promise != None:
+            self.promise = tool_attr.promise
+        if tool_attr.problem_bool != None:
+            self._problem_bool = tool_attr.problem_bool
+        if tool_attr.on_meld_weight_action != None:
+            self._check_get_on_meld_weight_actions(tool_attr.on_meld_weight_action)
+            self._on_meld_weight_action = tool_attr.on_meld_weight_action
 
         self._del_requiredunit_all_cases(
-            base=idea_attr.required_del_sufffact_base,
-            sufffact=idea_attr.required_del_sufffact_need,
+            base=tool_attr.required_del_sufffact_base,
+            sufffact=tool_attr.required_del_sufffact_need,
         )
         self._set_addin_to_zero_if_any_transformations_exist()
 
     def _check_get_on_meld_weight_actions(self, on_meld_weight_action: str):
         if on_meld_weight_action not in (list(get_on_meld_weight_actions())):
-            raise InvalidIdeaException(
-                f"IdeaCore unit '{self._desc}' cannot have on_meld_weight_action '{on_meld_weight_action}'."
+            raise InvalidToolException(
+                f"ToolCore unit '{self._desc}' cannot have on_meld_weight_action '{on_meld_weight_action}'."
             )
 
     def _set_addin_to_zero_if_any_transformations_exist(self):
@@ -577,16 +577,16 @@ class IdeaCore:
             if len(self._requiredunits[base].sufffacts) == 0:
                 self.del_requiredunit_base(base=base)
 
-    def set_required_suff_idea_active_status(
-        self, base: Road, suff_idea_active_status: str
+    def set_required_suff_tool_active_status(
+        self, base: Road, suff_tool_active_status: str
     ):
         requiredunit_x = self._get_or_create_requiredunit(base=base)
-        if suff_idea_active_status == False:
-            requiredunit_x.suff_idea_active_status = False
-        elif suff_idea_active_status == "Set to Ignore":
-            requiredunit_x.suff_idea_active_status = None
-        elif suff_idea_active_status == True:
-            requiredunit_x.suff_idea_active_status = True
+        if suff_tool_active_status == False:
+            requiredunit_x.suff_tool_active_status = False
+        elif suff_tool_active_status == "Set to Ignore":
+            requiredunit_x.suff_tool_active_status = None
+        elif suff_tool_active_status == True:
+            requiredunit_x.suff_tool_active_status = True
 
     def _get_or_create_requiredunit(self, base: Road):
         self.set_requiredunits_empty_if_null()
@@ -615,26 +615,26 @@ class IdeaCore:
         try:
             self._requiredunits.pop(base)
         except KeyError as e:
-            raise InvalidIdeaException(f"No RequiredUnit at '{base}'") from e
+            raise InvalidToolException(f"No RequiredUnit at '{base}'") from e
 
     def del_requiredunit_sufffact(self, base: Road, sufffact: Road):
         required_unit = self._requiredunits[base]
         required_unit.del_sufffact(sufffact=sufffact)
 
-    def add_kid(self, idea_kid):
-        if idea_kid._numor != None:
-            # if idea_kid._denom != None:
-            # if idea_kid._reest != None:
+    def add_kid(self, tool_kid):
+        if tool_kid._numor != None:
+            # if tool_kid._denom != None:
+            # if tool_kid._reest != None:
             if self._begin is None or self._close is None:
-                raise InvalidIdeaException(
-                    f"Idea {idea_kid._walk},{idea_kid._desc} cannot have numor,denom,reest if parent does not have begin/close range"
+                raise InvalidToolException(
+                    f"Tool {tool_kid._walk},{tool_kid._desc} cannot have numor,denom,reest if parent does not have begin/close range"
                 )
 
-            idea_kid._begin = self._begin * idea_kid._numor / idea_kid._denom
-            idea_kid._close = self._close * idea_kid._numor / idea_kid._denom
+            tool_kid._begin = self._begin * tool_kid._numor / tool_kid._denom
+            tool_kid._close = self._close * tool_kid._numor / tool_kid._denom
 
         self.set_kids_empty_if_null()
-        self._kids[idea_kid._desc] = idea_kid
+        self._kids[tool_kid._desc] = tool_kid
         self._kids = dict(sorted(self._kids.items()))
 
     def set_grouplink_empty_if_null(self):
@@ -685,10 +685,10 @@ class IdeaCore:
         self.set_requiredheirs_status()
 
         for requiredheir in self._requiredheirs.values():
-            # one required.status is false, idea.active_status is false
+            # one required.status is false, tool.active_status is false
             if requiredheir._status == False:
                 self._active_status = False
-            # one required.task is true, idea._task is True
+            # one required.task is true, tool._task is True
             if requiredheir._task == True:
                 self._task = True
 
@@ -723,7 +723,7 @@ class IdeaCore:
     def set_requiredheirs(
         self,
         requiredheirs: dict[Road:RequiredCore],
-        agent_idea_dict: dict[Road:] = None,
+        agent_tool_dict: dict[Road:] = None,
     ):
         coalesced_requireds = self._coalesce_with_requiredunits(requiredheirs)
 
@@ -732,7 +732,7 @@ class IdeaCore:
             requiredheir_x = RequiredHeir(
                 base=required.base,
                 sufffacts=None,
-                suff_idea_active_status=required.suff_idea_active_status,
+                suff_tool_active_status=required.suff_tool_active_status,
             )
             sufffacts_x = {}
             for w in required.sufffacts.values():
@@ -745,11 +745,11 @@ class IdeaCore:
                 sufffacts_x[sufffact_x.need] = sufffact_x
             requiredheir_x.sufffacts = sufffacts_x
 
-            if agent_idea_dict != None:
-                base_idea = agent_idea_dict.get(required.base)
-                if base_idea != None:
-                    requiredheir_x.set_curr_idea_active_status(
-                        bool_x=base_idea._active_status
+            if agent_tool_dict != None:
+                base_tool = agent_tool_dict.get(required.base)
+                if base_tool != None:
+                    requiredheir_x.set_curr_tool_active_status(
+                        bool_x=base_tool._active_status
                     )
 
             x_dict[requiredheir_x.base] = requiredheir_x
@@ -843,10 +843,10 @@ class IdeaCore:
 
 
 @dataclasses.dataclass
-class IdeaKid(IdeaCore):
+class ToolKid(ToolCore):
     pass
 
 
 @dataclasses.dataclass
-class IdeaRoot(IdeaCore):
+class ToolRoot(ToolCore):
     pass

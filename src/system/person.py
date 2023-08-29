@@ -9,7 +9,7 @@ from src.agent.agent import (
     get_dict_of_agent_from_dict,
     get_meld_of_agent_files,
 )
-from src.agent.idea import IdeaRoot
+from src.agent.tool import ToolRoot
 from src.agent.road import Road
 from src.agent.agent import AgentUnit, get_from_json as agentunit_get_from_json
 from src.agent.x_func import (
@@ -245,7 +245,7 @@ class PersonUnit:
             ct = x_func_open_file(self._person_dir, "starting_digest_agent.json")
             cx = agentunit_get_from_json(lw_json=ct)
             empty_cx = self._get_empty_starting_digest_agent()
-            cx.agent_and_idearoot_desc_edit(new_desc=empty_cx._desc)
+            cx.agent_and_toolroot_desc_edit(new_desc=empty_cx._desc)
             cx.set_agent_metrics()
         except Exception:
             cx = self._get_empty_starting_digest_agent()

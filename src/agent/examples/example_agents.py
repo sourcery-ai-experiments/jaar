@@ -1,4 +1,4 @@
-from src.agent.idea import IdeaKid
+from src.agent.tool import ToolKid
 from src.agent.required import (
     acptfactunit_shop,
     sufffactunit_shop,
@@ -74,17 +74,17 @@ def get_agent_with_4_levels() -> AgentUnit:
     agent_x = AgentUnit(_weight=10, _desc=src_road)
 
     work = "work"
-    idea_kid_work = IdeaKid(_weight=30, _desc=work, promise=True)
-    agent_x.add_idea(idea_kid=idea_kid_work, walk=src_road)
+    tool_kid_work = ToolKid(_weight=30, _desc=work, promise=True)
+    agent_x.add_tool(tool_kid=tool_kid_work, walk=src_road)
 
     cat = "feed cat"
-    idea_kid_feedcat = IdeaKid(_weight=30, _desc=cat, promise=True)
-    agent_x.add_idea(idea_kid=idea_kid_feedcat, walk=src_road)
+    tool_kid_feedcat = ToolKid(_weight=30, _desc=cat, promise=True)
+    agent_x.add_tool(tool_kid=tool_kid_feedcat, walk=src_road)
 
     week_text = "weekdays"
     week_road = f"{src_road},{week_text}"
-    idea_kid_weekdays = IdeaKid(_weight=40, _desc=week_text)
-    agent_x.add_idea(idea_kid=idea_kid_weekdays, walk=src_road)
+    tool_kid_weekdays = ToolKid(_weight=40, _desc=week_text)
+    agent_x.add_tool(tool_kid=tool_kid_weekdays, walk=src_road)
 
     sun_text = "Sunday"
     mon_text = "Monday"
@@ -94,44 +94,44 @@ def get_agent_with_4_levels() -> AgentUnit:
     fri_text = "Friday"
     sat_text = "Saturday"
 
-    idea_grandkidU = IdeaKid(_weight=20, _desc=sun_text)
-    idea_grandkidM = IdeaKid(_weight=20, _desc=mon_text)
-    idea_grandkidT = IdeaKid(_weight=20, _desc=tue_text)
-    idea_grandkidW = IdeaKid(_weight=20, _desc=wed_text)
-    idea_grandkidR = IdeaKid(_weight=30, _desc=thu_text)
-    idea_grandkidF = IdeaKid(_weight=40, _desc=fri_text)
-    idea_grandkidA = IdeaKid(_weight=50, _desc=sat_text)
+    tool_grandkidU = ToolKid(_weight=20, _desc=sun_text)
+    tool_grandkidM = ToolKid(_weight=20, _desc=mon_text)
+    tool_grandkidT = ToolKid(_weight=20, _desc=tue_text)
+    tool_grandkidW = ToolKid(_weight=20, _desc=wed_text)
+    tool_grandkidR = ToolKid(_weight=30, _desc=thu_text)
+    tool_grandkidF = ToolKid(_weight=40, _desc=fri_text)
+    tool_grandkidA = ToolKid(_weight=50, _desc=sat_text)
 
-    agent_x.add_idea(idea_grandkidU, week_road)
-    agent_x.add_idea(idea_grandkidM, week_road)
-    agent_x.add_idea(idea_grandkidT, week_road)
-    agent_x.add_idea(idea_grandkidW, week_road)
-    agent_x.add_idea(idea_grandkidR, week_road)
-    agent_x.add_idea(idea_grandkidF, week_road)
-    agent_x.add_idea(idea_grandkidA, week_road)
+    agent_x.add_tool(tool_grandkidU, week_road)
+    agent_x.add_tool(tool_grandkidM, week_road)
+    agent_x.add_tool(tool_grandkidT, week_road)
+    agent_x.add_tool(tool_grandkidW, week_road)
+    agent_x.add_tool(tool_grandkidR, week_road)
+    agent_x.add_tool(tool_grandkidF, week_road)
+    agent_x.add_tool(tool_grandkidA, week_road)
 
     states_text = "nation-state"
     states_road = f"{src_road},{states_text}"
-    idea_kid_states = IdeaKid(_weight=30, _desc=states_text)
-    agent_x.add_idea(idea_kid=idea_kid_states, walk=f"{src_road}")
+    tool_kid_states = ToolKid(_weight=30, _desc=states_text)
+    agent_x.add_tool(tool_kid=tool_kid_states, walk=f"{src_road}")
 
     usa_text = "USA"
     usa_road = f"{states_road},{usa_text}"
     france_text = "France"
     brazil_text = "Brazil"
-    idea_grandkid_usa = IdeaKid(_weight=50, _desc=usa_text)
-    idea_grandkid_france = IdeaKid(_weight=50, _desc=france_text)
-    idea_grandkid_brazil = IdeaKid(_weight=50, _desc=brazil_text)
-    agent_x.add_idea(idea_grandkid_france, states_road)
-    agent_x.add_idea(idea_grandkid_brazil, states_road)
-    agent_x.add_idea(idea_grandkid_usa, states_road)
+    tool_grandkid_usa = ToolKid(_weight=50, _desc=usa_text)
+    tool_grandkid_france = ToolKid(_weight=50, _desc=france_text)
+    tool_grandkid_brazil = ToolKid(_weight=50, _desc=brazil_text)
+    agent_x.add_tool(tool_grandkid_france, states_road)
+    agent_x.add_tool(tool_grandkid_brazil, states_road)
+    agent_x.add_tool(tool_grandkid_usa, states_road)
 
     texas_text = "Texas"
     oregon_text = "Oregon"
-    idea_grandgrandkid_usa_texas = IdeaKid(_weight=50, _desc=texas_text)
-    idea_grandgrandkid_usa_oregon = IdeaKid(_weight=50, _desc=oregon_text)
-    agent_x.add_idea(idea_grandgrandkid_usa_texas, usa_road)
-    agent_x.add_idea(idea_grandgrandkid_usa_oregon, usa_road)
+    tool_grandgrandkid_usa_texas = ToolKid(_weight=50, _desc=texas_text)
+    tool_grandgrandkid_usa_oregon = ToolKid(_weight=50, _desc=oregon_text)
+    agent_x.add_tool(tool_grandgrandkid_usa_texas, usa_road)
+    agent_x.add_tool(tool_grandgrandkid_usa_oregon, usa_road)
     return agent_x
 
 
@@ -153,8 +153,8 @@ def get_agent_with_4_levels_and_2requireds() -> AgentUnit:
     )
     work_text = "work"
     work_road = f"{agent_x._desc},{work_text}"
-    agent_x.edit_idea_attr(road=work_road, required=work_wk_required)
-    agent_x.edit_idea_attr(road=work_road, required=nation_required)
+    agent_x.edit_tool_attr(road=work_road, required=work_wk_required)
+    agent_x.edit_tool_attr(road=work_road, required=nation_required)
     return agent_x
 
 
@@ -176,24 +176,24 @@ def get_agent_with7amCleanTableRequired() -> AgentUnit:
     day_24hr = "24hr day"
     am = "am"
     pm = "pm"
-    idea_timeline = IdeaKid(_weight=40, _desc=timetech)
-    idea_24hr_day = IdeaKid(_weight=40, _desc=day_24hr, _begin=0.0, _close=24.0)
-    idea_am = IdeaKid(_weight=50, _desc=am, _begin=0, _close=12)
-    idea_01 = IdeaKid(_weight=50, _desc="1", _begin=1, _close=2)
-    idea_02 = IdeaKid(_weight=50, _desc="2", _begin=2, _close=3)
-    idea_03 = IdeaKid(_weight=50, _desc="3", _begin=3, _close=4)
-    idea_pm = IdeaKid(_weight=50, _desc=pm, _begin=12, _close=24)
+    tool_timeline = ToolKid(_weight=40, _desc=timetech)
+    tool_24hr_day = ToolKid(_weight=40, _desc=day_24hr, _begin=0.0, _close=24.0)
+    tool_am = ToolKid(_weight=50, _desc=am, _begin=0, _close=12)
+    tool_01 = ToolKid(_weight=50, _desc="1", _begin=1, _close=2)
+    tool_02 = ToolKid(_weight=50, _desc="2", _begin=2, _close=3)
+    tool_03 = ToolKid(_weight=50, _desc="3", _begin=3, _close=4)
+    tool_pm = ToolKid(_weight=50, _desc=pm, _begin=12, _close=24)
 
     time_road = f"{src},{timetech}"
     day24hr_road = f"{time_road},{day_24hr}"
     am_road = f"{day_24hr},{am}"
-    agent_x.add_idea(idea_timeline, src)
-    agent_x.add_idea(idea_24hr_day, time_road)
-    agent_x.add_idea(idea_am, day24hr_road)
-    agent_x.add_idea(idea_pm, day24hr_road)
-    agent_x.add_idea(idea_01, am_road)  # idea_am
-    agent_x.add_idea(idea_02, am_road)  # idea_am
-    agent_x.add_idea(idea_03, am_road)  # idea_am
+    agent_x.add_tool(tool_timeline, src)
+    agent_x.add_tool(tool_24hr_day, time_road)
+    agent_x.add_tool(tool_am, day24hr_road)
+    agent_x.add_tool(tool_pm, day24hr_road)
+    agent_x.add_tool(tool_01, am_road)  # tool_am
+    agent_x.add_tool(tool_02, am_road)  # tool_am
+    agent_x.add_tool(tool_03, am_road)  # tool_am
 
     housework = "housework"
     house_road = f"{src},{housework}"
@@ -203,17 +203,17 @@ def get_agent_with7amCleanTableRequired() -> AgentUnit:
     get_soap = "get soap"
     get_soap_road = f"{clean_road},{get_soap}"
     remove_dish = "remove dishs"
-    idea_housework = IdeaKid(_weight=40, _desc=housework)
-    idea_cleantable = IdeaKid(_weight=40, _desc=clean_table, promise=True)
-    idea_tabledishs = IdeaKid(_weight=40, _desc=remove_dish, promise=True)
-    idea_tablesoap = IdeaKid(_weight=40, _desc=get_soap, promise=True)
-    idea_grabsoap = IdeaKid(_weight=40, _desc="grab soap", promise=True)
+    tool_housework = ToolKid(_weight=40, _desc=housework)
+    tool_cleantable = ToolKid(_weight=40, _desc=clean_table, promise=True)
+    tool_tabledishs = ToolKid(_weight=40, _desc=remove_dish, promise=True)
+    tool_tablesoap = ToolKid(_weight=40, _desc=get_soap, promise=True)
+    tool_grabsoap = ToolKid(_weight=40, _desc="grab soap", promise=True)
 
-    agent_x.add_idea(idea_kid=idea_housework, walk=src)
-    agent_x.add_idea(idea_kid=idea_cleantable, walk=house_road)
-    agent_x.add_idea(idea_kid=idea_tabledishs, walk=clean_road)
-    agent_x.add_idea(idea_kid=idea_tablesoap, walk=clean_road)
-    agent_x.add_idea(idea_kid=idea_grabsoap, walk=get_soap_road)
+    agent_x.add_tool(tool_kid=tool_housework, walk=src)
+    agent_x.add_tool(tool_kid=tool_cleantable, walk=house_road)
+    agent_x.add_tool(tool_kid=tool_tabledishs, walk=clean_road)
+    agent_x.add_tool(tool_kid=tool_tablesoap, walk=clean_road)
+    agent_x.add_tool(tool_kid=tool_grabsoap, walk=get_soap_road)
 
     clean_table_7am_base = day24hr_road
     clean_table_7am_sufffact_road = day24hr_road
@@ -228,10 +228,10 @@ def get_agent_with7amCleanTableRequired() -> AgentUnit:
         base=clean_table_7am_base,
         sufffacts={clean_table_7am_sufffact_x.need: clean_table_7am_sufffact_x},
     )
-    agent_x.edit_idea_attr(
+    agent_x.edit_tool_attr(
         road=f"{agent_x._desc},housework,clean table", required=clean_table_7am_required
     )
-    agent_x.edit_idea_attr(
+    agent_x.edit_tool_attr(
         road=f"{agent_x._desc},work", required=clean_table_7am_required
     )
     return agent_x
@@ -241,23 +241,23 @@ def get_agent_1Task_1CE0MinutesRequired_1AcptFact() -> AgentUnit:
     lw_desc = "test45"
     agent_x = AgentUnit(_weight=10, _desc=lw_desc)
     ced_min_desc = "CE0_minutes"
-    ced_minutes = IdeaKid(_desc=ced_min_desc)
+    ced_minutes = ToolKid(_desc=ced_min_desc)
     ced_road = f"{lw_desc},{ced_min_desc}"
-    agent_x.add_idea(idea_kid=ced_minutes, walk=lw_desc)
+    agent_x.add_tool(tool_kid=ced_minutes, walk=lw_desc)
     mail_desc = "obtain mail"
-    mail_task = IdeaKid(_desc=mail_desc, promise=True)
-    agent_x.add_idea(idea_kid=mail_task, walk=lw_desc)
+    mail_task = ToolKid(_desc=mail_desc, promise=True)
+    agent_x.add_tool(tool_kid=mail_task, walk=lw_desc)
 
     sufffact_x = sufffactunit_shop(need=ced_road, open=80, nigh=90)
     x_task_required = RequiredUnit(
         base=sufffact_x.need, sufffacts={sufffact_x.need: sufffact_x}
     )
     mail_road = f"{lw_desc},{mail_desc}"
-    agent_x.edit_idea_attr(road=mail_road, required=x_task_required)
+    agent_x.edit_tool_attr(road=mail_road, required=x_task_required)
 
     x_acptfact = acptfactunit_shop(base=ced_road, pick=ced_road, open=85, nigh=95)
     # print(
-    #     f"1Task_1CE0MinutesRequired_1AcptFact 2. {len(agent_x._idearoot._kids)=} {x_acptfact.base=}"
+    #     f"1Task_1CE0MinutesRequired_1AcptFact 2. {len(agent_x._toolroot._kids)=} {x_acptfact.base=}"
     # )
     agent_x.set_acptfact(
         base=x_acptfact.base,
@@ -265,7 +265,7 @@ def get_agent_1Task_1CE0MinutesRequired_1AcptFact() -> AgentUnit:
         open=x_acptfact.open,
         nigh=x_acptfact.nigh,
     )
-    # print(f"1Task_1CE0MinutesRequired_1AcptFact 3. {len(agent_x._idearoot._kids)=}")
+    # print(f"1Task_1CE0MinutesRequired_1AcptFact 3. {len(agent_x._toolroot._kids)=}")
 
     return agent_x
 
@@ -273,17 +273,17 @@ def get_agent_1Task_1CE0MinutesRequired_1AcptFact() -> AgentUnit:
 def get_agent_x1_3levels_1required_1acptfacts() -> AgentUnit:
     prom = "prom"
     x_agent = AgentUnit(_weight=10, _desc=prom)
-    idea_kid_shave = IdeaKid(_weight=30, _desc="shave", promise=True)
-    x_agent.add_idea(idea_kid=idea_kid_shave, walk=prom)
+    tool_kid_shave = ToolKid(_weight=30, _desc="shave", promise=True)
+    x_agent.add_tool(tool_kid=tool_kid_shave, walk=prom)
     weekdays = "weekdays"
-    idea_kid_weekdays = IdeaKid(_weight=40, _desc=weekdays)
-    x_agent.add_idea(idea_kid=idea_kid_weekdays, walk=prom)
+    tool_kid_weekdays = ToolKid(_weight=40, _desc=weekdays)
+    x_agent.add_tool(tool_kid=tool_kid_weekdays, walk=prom)
 
-    idea_grandkidU = IdeaKid(_weight=20, _desc="Sunday")
-    idea_grandkidM = IdeaKid(_weight=20, _desc="Monday")
+    tool_grandkidU = ToolKid(_weight=20, _desc="Sunday")
+    tool_grandkidM = ToolKid(_weight=20, _desc="Monday")
     week_road = f"{prom},{weekdays}"
-    x_agent.add_idea(idea_kid=idea_grandkidU, walk=week_road)
-    x_agent.add_idea(idea_kid=idea_grandkidM, walk=week_road)
+    x_agent.add_tool(tool_kid=tool_grandkidU, walk=week_road)
+    x_agent.add_tool(tool_kid=tool_grandkidM, walk=week_road)
 
     shave_base = "prom,weekdays"
     shave_sufffact_road = "prom,weekdays,Monday"
@@ -293,12 +293,12 @@ def get_agent_x1_3levels_1required_1acptfacts() -> AgentUnit:
         sufffacts={shave_sufffact_x.need: shave_sufffact_x},
     )
 
-    x_agent.edit_idea_attr(road="prom,shave", required=shave_required)
+    x_agent.edit_tool_attr(road="prom,shave", required=shave_required)
     x_agent.set_acptfact(base="prom,weekdays", pick="prom,weekdays,Sunday")
     acptfactunit_x = acptfactunit_shop(
         base="prom,weekdays", pick="prom,weekdays,Sunday,church"
     )
-    x_agent.edit_idea_attr(road="prom,shave", acptfactunit=acptfactunit_x)
+    x_agent.edit_tool_attr(road="prom,shave", acptfactunit=acptfactunit_x)
     return x_agent
 
 
@@ -306,14 +306,14 @@ def get_agent_base_time_example() -> AgentUnit:
     g_src = "src"
     g_lw = AgentUnit(_desc=g_src)
     plant = "plant"
-    x_idea = IdeaKid(_desc=plant)
-    g_lw.add_idea(x_idea, walk=g_src)
+    x_tool = ToolKid(_desc=plant)
+    g_lw.add_tool(x_tool, walk=g_src)
 
     return g_lw
 
 
 def get_agent_irrational_example() -> AgentUnit:
-    # this agent has no conclusive agenda because 2 promise ideas are in contradiction
+    # this agent has no conclusive agenda because 2 promise tools are in contradiction
     # "egg first" is true when "chicken first" is false
     # "chicken first" is true when "egg first" is true
     # Step 0: if chicken._active_status == True, egg._active_status is set to False
@@ -331,26 +331,26 @@ def get_agent_irrational_example() -> AgentUnit:
 
     egg_text = "egg first"
     egg_road = f"{src_road},{egg_text}"
-    agent_x.add_idea(idea_kid=IdeaKid(_desc=egg_text), walk=src_road)
+    agent_x.add_tool(tool_kid=ToolKid(_desc=egg_text), walk=src_road)
 
     chicken_text = "chicken first"
     chicken_road = f"{src_road},{chicken_text}"
-    agent_x.add_idea(idea_kid=IdeaKid(_desc=chicken_text), walk=src_road)
+    agent_x.add_tool(tool_kid=ToolKid(_desc=chicken_text), walk=src_road)
 
     # set egg promise is True when chicken first is False
-    agent_x.edit_idea_attr(
+    agent_x.edit_tool_attr(
         road=egg_road,
         promise=True,
         required_base=chicken_road,
-        required_suff_idea_active_status=True,
+        required_suff_tool_active_status=True,
     )
 
     # set chick promise is True when egg first is False
-    agent_x.edit_idea_attr(
+    agent_x.edit_tool_attr(
         road=chicken_road,
         promise=True,
         required_base=egg_road,
-        required_suff_idea_active_status=False,
+        required_suff_tool_active_status=False,
     )
 
     return agent_x

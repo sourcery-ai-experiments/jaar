@@ -1,4 +1,4 @@
-from src.agent.idea import IdeaCore
+from src.agent.tool import ToolCore
 from src.agent.group import GroupName, grouplink_shop, groupheir_shop
 from src.agent.required import (
     RequiredUnit,
@@ -10,8 +10,8 @@ from src.agent.required import (
 from pytest import raises as pytest_raise
 
 
-def test_idea_core_exists():
-    new_obj = IdeaCore()
+def test_tool_core_exists():
+    new_obj = ToolCore()
     assert new_obj
     assert new_obj._kids is None
     assert new_obj._weight >= 1
@@ -42,24 +42,24 @@ def test_idea_core_exists():
     assert new_obj._agent_coin_cease is None
 
 
-def test_idea_core_get_key_road_works():
+def test_tool_core_get_key_road_works():
     x_walk = "src,round_things"
     x_desc = "ball"
-    idea = IdeaCore(_desc=x_desc, _walk=x_walk)
-    assert idea.get_key_road() == f"{x_desc}"
+    tool = ToolCore(_desc=x_desc, _walk=x_walk)
+    assert tool.get_key_road() == f"{x_desc}"
 
 
-def test_idea_core_is_heir_CorrectlyIdentifiesHeirs():
-    idea_core = IdeaCore()
+def test_tool_core_is_heir_CorrectlyIdentifiesHeirs():
+    tool_core = ToolCore()
     texas_road = "prom,Nation-States,USA,Texas"
     usa_road = "prom,Nation-States,USA"
-    assert idea_core.is_heir(src=usa_road, heir=usa_road)
-    assert idea_core.is_heir(src=usa_road, heir=texas_road)
-    assert idea_core.is_heir(src="earth,sea", heir="earth,seaside,beach") == False
-    assert idea_core.is_heir(src="earth,sea", heir="earth,seaside") == False
+    assert tool_core.is_heir(src=usa_road, heir=usa_road)
+    assert tool_core.is_heir(src=usa_road, heir=texas_road)
+    assert tool_core.is_heir(src="earth,sea", heir="earth,seaside,beach") == False
+    assert tool_core.is_heir(src="earth,sea", heir="earth,seaside") == False
 
 
-def test_idea_core_grouplinks_exist():
+def test_tool_core_grouplinks_exist():
     # GIVEN
     biker_creditor_weight = 12
     biker_debtor_weight = 15
@@ -81,16 +81,16 @@ def test_idea_core_grouplinks_exist():
     group_links = {swimmer_link.name: swimmer_link, biker_link.name: biker_link}
 
     # WHEN
-    idea_core = IdeaCore(_desc="exercising", _grouplinks=group_links)
+    tool_core = ToolCore(_desc="exercising", _grouplinks=group_links)
 
     # THEN
-    assert idea_core._grouplinks == group_links
+    assert tool_core._grouplinks == group_links
     # assert group_link_x.weight == 1.0
     # group_link_x = grouplink_shop(name=bikers_name, weight=bikers_weight)
     # assert group_link_x.weight == 3.0
 
 
-def test_idea_core_get_inherited_groupheirs_weight_sum_WorksCorrectlyWithValues():
+def test_tool_core_get_inherited_groupheirs_weight_sum_WorksCorrectlyWithValues():
     # GIVEN
     biker_creditor_weight = 12
     biker_debtor_weight = 15
@@ -114,113 +114,113 @@ def test_idea_core_get_inherited_groupheirs_weight_sum_WorksCorrectlyWithValues(
     group_links = {swimmer_link.name: swimmer_link, biker_link.name: biker_link}
 
     # WHEN
-    idea_core = IdeaCore(_desc="exercising", _groupheirs=group_links)
+    tool_core = ToolCore(_desc="exercising", _groupheirs=group_links)
 
     # THEN
-    assert idea_core.get_groupheirs_creditor_weight_sum() != None
-    assert idea_core.get_groupheirs_creditor_weight_sum() == 41
-    assert idea_core.get_groupheirs_debtor_weight_sum() != None
-    assert idea_core.get_groupheirs_debtor_weight_sum() == 47
+    assert tool_core.get_groupheirs_creditor_weight_sum() != None
+    assert tool_core.get_groupheirs_creditor_weight_sum() == 41
+    assert tool_core.get_groupheirs_debtor_weight_sum() != None
+    assert tool_core.get_groupheirs_debtor_weight_sum() == 47
 
-    assert len(idea_core._groupheirs) == 2
+    assert len(tool_core._groupheirs) == 2
 
-    swimmer_groupheir = idea_core._groupheirs.get(swimmer_text)
+    swimmer_groupheir = tool_core._groupheirs.get(swimmer_text)
     assert swimmer_groupheir._agent_credit is None
     assert swimmer_groupheir._agent_debt is None
-    biker_groupheir = idea_core._groupheirs.get(biker_text)
+    biker_groupheir = tool_core._groupheirs.get(biker_text)
     assert biker_groupheir._agent_credit is None
     assert biker_groupheir._agent_debt is None
 
     # WHEN
-    idea_core._agent_importance = 0.25
-    idea_core.set_groupheirs_agent_credit_debit()
+    tool_core._agent_importance = 0.25
+    tool_core.set_groupheirs_agent_credit_debit()
 
     # THEN
-    print(f"{len(idea_core._groupheirs)=}")
-    swimmer_groupheir = idea_core._groupheirs.get(swimmer_text)
+    print(f"{len(tool_core._groupheirs)=}")
+    swimmer_groupheir = tool_core._groupheirs.get(swimmer_text)
     assert swimmer_groupheir._agent_credit != None
     assert swimmer_groupheir._agent_debt != None
-    biker_groupheir = idea_core._groupheirs.get(biker_text)
+    biker_groupheir = tool_core._groupheirs.get(biker_text)
     assert biker_groupheir._agent_credit != None
     assert biker_groupheir._agent_debt != None
 
 
-def test_idea_core_get_grouplinks_weight_sum_WorksCorrectlyNoValues():
+def test_tool_core_get_grouplinks_weight_sum_WorksCorrectlyNoValues():
     # GIVEN /WHEN
-    idea_core = IdeaCore(_desc="exercising")
+    tool_core = ToolCore(_desc="exercising")
 
     # THEN
-    assert idea_core.get_groupheirs_creditor_weight_sum() != None
-    assert idea_core.get_groupheirs_debtor_weight_sum() != None
+    assert tool_core.get_groupheirs_creditor_weight_sum() != None
+    assert tool_core.get_groupheirs_debtor_weight_sum() != None
     # does not crash with empty set
-    idea_core.set_groupheirs_agent_credit_debit()
+    tool_core.set_groupheirs_agent_credit_debit()
 
 
-def test_idea_core_set_requiredheirsCorrectlyTakesFromOutside():
+def test_tool_core_set_requiredheirsCorrectlyTakesFromOutside():
     # GIVEN
-    idea = IdeaCore(_desc="ball")
+    tool = ToolCore(_desc="ball")
     sufffact_x = sufffactunit_shop(need="ball,run", open=0, nigh=7)
     sufffacts = {sufffact_x.need: sufffact_x}
     requiredunit = RequiredUnit(base="ball,run", sufffacts=sufffacts)
     requiredunits = {requiredunit.base: requiredunit}
     requiredheir = RequiredHeir(base="ball,run", sufffacts=sufffacts)
     requiredheirs = {requiredheir.base: requiredheir}
-    assert idea._requiredunits is None
-    assert idea._requiredheirs is None
-    idea.set_requiredheirs(requiredheirs=requiredheirs)
-    assert idea._requiredunits == {}
-    assert idea._requiredheirs == requiredheirs
-    assert id(idea._requiredheirs) != id(requiredheirs)
+    assert tool._requiredunits is None
+    assert tool._requiredheirs is None
+    tool.set_requiredheirs(requiredheirs=requiredheirs)
+    assert tool._requiredunits == {}
+    assert tool._requiredheirs == requiredheirs
+    assert id(tool._requiredheirs) != id(requiredheirs)
 
 
-def test_idea_core_set_requiredheirsCorrectlyTakesFromSelf():
+def test_tool_core_set_requiredheirsCorrectlyTakesFromSelf():
     sufffact_x = sufffactunit_shop(need="ball,run", open=0, nigh=7)
     sufffacts = {sufffact_x.need: sufffact_x}
     requiredunit = RequiredUnit(base="ball,run", sufffacts=sufffacts)
     requiredunits = {requiredunit.base: requiredunit}
-    idea = IdeaCore(_desc="ball", _requiredunits=requiredunits)
+    tool = ToolCore(_desc="ball", _requiredunits=requiredunits)
 
     requiredheir = RequiredHeir(base="ball,run", sufffacts=sufffacts)
     requiredheirs = {requiredheir.base: requiredheir}
 
-    assert idea._requiredunits != None
-    assert idea._requiredheirs is None
-    idea.set_requiredheirs(requiredheirs=None)
-    assert idea._requiredheirs == requiredheirs
+    assert tool._requiredunits != None
+    assert tool._requiredheirs is None
+    tool.set_requiredheirs(requiredheirs=None)
+    assert tool._requiredheirs == requiredheirs
 
 
-def test_idea_core_clear_descendant_promise_count_ClearsCorrectly():
-    idea = IdeaCore(_desc="ball", _descendant_promise_count=55)
-    assert idea._descendant_promise_count == 55
-    idea.clear_descendant_promise_count()
-    assert idea._descendant_promise_count is None
+def test_tool_core_clear_descendant_promise_count_ClearsCorrectly():
+    tool = ToolCore(_desc="ball", _descendant_promise_count=55)
+    assert tool._descendant_promise_count == 55
+    tool.clear_descendant_promise_count()
+    assert tool._descendant_promise_count is None
 
 
-def test_idea_core_clear_all_member_credit_debt_ClearsCorrectly():
-    idea = IdeaCore(_desc="ball", _all_member_credit=55, _all_member_debt=33)
-    assert idea._all_member_credit == 55
-    assert idea._all_member_debt == 33
-    idea.clear_all_member_credit_debt()
-    assert idea._all_member_credit is None
-    assert idea._all_member_debt is None
+def test_tool_core_clear_all_member_credit_debt_ClearsCorrectly():
+    tool = ToolCore(_desc="ball", _all_member_credit=55, _all_member_debt=33)
+    assert tool._all_member_credit == 55
+    assert tool._all_member_debt == 33
+    tool.clear_all_member_credit_debt()
+    assert tool._all_member_credit is None
+    assert tool._all_member_debt is None
 
 
-def test_get_kids_in_range_GetsCorrectIdeas():
+def test_get_kids_in_range_GetsCorrectTools():
     # Given
-    idea_x = IdeaCore(_desc="366months", _begin=0, _close=366)
-    idea_x.add_kid(idea_kid=IdeaCore(_desc="Jan", _begin=0, _close=31))
-    idea_x.add_kid(idea_kid=IdeaCore(_desc="Feb29", _begin=31, _close=60))
-    idea_x.add_kid(idea_kid=IdeaCore(_desc="Mar", _begin=31, _close=91))
+    tool_x = ToolCore(_desc="366months", _begin=0, _close=366)
+    tool_x.add_kid(tool_kid=ToolCore(_desc="Jan", _begin=0, _close=31))
+    tool_x.add_kid(tool_kid=ToolCore(_desc="Feb29", _begin=31, _close=60))
+    tool_x.add_kid(tool_kid=ToolCore(_desc="Mar", _begin=31, _close=91))
 
     # When/Then
-    assert len(idea_x.get_kids_in_range(begin=100, close=120)) == 0
-    assert len(idea_x.get_kids_in_range(begin=0, close=31)) == 1
-    assert len(idea_x.get_kids_in_range(begin=5, close=5)) == 1
-    assert len(idea_x.get_kids_in_range(begin=0, close=61)) == 3
-    assert idea_x.get_kids_in_range(begin=31, close=31)[0]._desc == "Feb29"
+    assert len(tool_x.get_kids_in_range(begin=100, close=120)) == 0
+    assert len(tool_x.get_kids_in_range(begin=0, close=31)) == 1
+    assert len(tool_x.get_kids_in_range(begin=5, close=5)) == 1
+    assert len(tool_x.get_kids_in_range(begin=0, close=61)) == 3
+    assert tool_x.get_kids_in_range(begin=31, close=31)[0]._desc == "Feb29"
 
 
-def test_idea_get_dict_ReturnsDict():
+def test_tool_get_dict_ReturnsDict():
     # GIVEN
     src_text = "src"
     week_text = "weekdays"
@@ -289,7 +289,7 @@ def test_idea_get_dict_ReturnsDict():
     }
     x1_grouplinks = {biker_name: biker_get_dict, flyer_name: flyer_get_dict}
 
-    temp_idea = IdeaCore(
+    temp_tool = ToolCore(
         _walk="src,work",
         _kids=None,
         _grouplinks=biker_and_flyer_grouplinks,
@@ -304,186 +304,186 @@ def test_idea_get_dict_ReturnsDict():
         _problem_bool=True,
     )
     acptfactunit_x = acptfactunit_shop(base=week_road, pick=week_road, open=5, nigh=59)
-    temp_idea._set_ideakid_attr(acptfactunit=acptfactunit_x)
+    temp_tool._set_toolkid_attr(acptfactunit=acptfactunit_x)
 
     # WHEN
-    ideakid_dict = temp_idea.get_dict()
+    toolkid_dict = temp_tool.get_dict()
 
     # THEN
-    assert ideakid_dict != None
-    assert ideakid_dict["_kids"] == temp_idea.get_kids_dict()
-    assert ideakid_dict["_requiredunits"] == temp_idea.get_requiredunits_dict()
-    assert ideakid_dict["_grouplinks"] == temp_idea.get_grouplinks_dict()
-    assert ideakid_dict["_grouplinks"] == x1_grouplinks
-    assert ideakid_dict["_weight"] == temp_idea._weight
-    assert ideakid_dict["_desc"] == temp_idea._desc
-    assert ideakid_dict["_uid"] == temp_idea._uid
-    assert ideakid_dict["_begin"] == temp_idea._begin
-    assert ideakid_dict["_close"] == temp_idea._close
-    assert ideakid_dict["_numor"] == temp_idea._numor
-    assert ideakid_dict["_denom"] == temp_idea._denom
-    assert ideakid_dict["_reest"] == temp_idea._reest
-    assert ideakid_dict["_special_road"] == temp_idea._special_road
-    assert ideakid_dict["promise"] == temp_idea.promise
-    assert ideakid_dict["_problem_bool"] == temp_idea._problem_bool
-    assert ideakid_dict["_is_expanded"] == temp_idea._is_expanded
-    assert len(ideakid_dict["_acptfactunits"]) == len(
-        temp_idea.get_acptfactunits_dict()
+    assert toolkid_dict != None
+    assert toolkid_dict["_kids"] == temp_tool.get_kids_dict()
+    assert toolkid_dict["_requiredunits"] == temp_tool.get_requiredunits_dict()
+    assert toolkid_dict["_grouplinks"] == temp_tool.get_grouplinks_dict()
+    assert toolkid_dict["_grouplinks"] == x1_grouplinks
+    assert toolkid_dict["_weight"] == temp_tool._weight
+    assert toolkid_dict["_desc"] == temp_tool._desc
+    assert toolkid_dict["_uid"] == temp_tool._uid
+    assert toolkid_dict["_begin"] == temp_tool._begin
+    assert toolkid_dict["_close"] == temp_tool._close
+    assert toolkid_dict["_numor"] == temp_tool._numor
+    assert toolkid_dict["_denom"] == temp_tool._denom
+    assert toolkid_dict["_reest"] == temp_tool._reest
+    assert toolkid_dict["_special_road"] == temp_tool._special_road
+    assert toolkid_dict["promise"] == temp_tool.promise
+    assert toolkid_dict["_problem_bool"] == temp_tool._problem_bool
+    assert toolkid_dict["_is_expanded"] == temp_tool._is_expanded
+    assert len(toolkid_dict["_acptfactunits"]) == len(
+        temp_tool.get_acptfactunits_dict()
     )
-    assert ideakid_dict["_on_meld_weight_action"] == temp_idea._on_meld_weight_action
+    assert toolkid_dict["_on_meld_weight_action"] == temp_tool._on_meld_weight_action
 
 
-def test_idea_vaild_DenomCorrectInheritsBeginAndClose():
-    parent_idea = IdeaCore(_desc="work", _begin=22.0, _close=66.0)
-    kid_idea_given = IdeaCore(_desc="clean", _numor=1, _denom=11.0, _reest=False)
-    kid_idea_expected = IdeaCore(
+def test_tool_vaild_DenomCorrectInheritsBeginAndClose():
+    parent_tool = ToolCore(_desc="work", _begin=22.0, _close=66.0)
+    kid_tool_given = ToolCore(_desc="clean", _numor=1, _denom=11.0, _reest=False)
+    kid_tool_expected = ToolCore(
         _desc="clean", _numor=1, _denom=11.0, _reest=False, _begin=2, _close=6
     )
-    parent_idea.add_kid(idea_kid=kid_idea_given)
-    assert parent_idea._kids["clean"]._begin == 2
-    assert parent_idea._kids["clean"]._close == 6
-    assert parent_idea._kids["clean"] == kid_idea_expected
+    parent_tool.add_kid(tool_kid=kid_tool_given)
+    assert parent_tool._kids["clean"]._begin == 2
+    assert parent_tool._kids["clean"]._close == 6
+    assert parent_tool._kids["clean"] == kid_tool_expected
 
 
-def test_idea_invaild_DenomThrowsError():
-    parent_idea = IdeaCore(_desc="work")
-    kid_idea = IdeaCore(_desc="clean", _walk="src", _numor=1, _denom=11.0, _reest=False)
+def test_tool_invaild_DenomThrowsError():
+    parent_tool = ToolCore(_desc="work")
+    kid_tool = ToolCore(_desc="clean", _walk="src", _numor=1, _denom=11.0, _reest=False)
     # When/Then
     with pytest_raise(Exception) as excinfo:
-        parent_idea.add_kid(idea_kid=kid_idea)
+        parent_tool.add_kid(tool_kid=kid_tool)
     assert (
         str(excinfo.value)
-        == "Idea src,clean cannot have numor,denom,reest if parent does not have begin/close range"
+        == "Tool src,clean cannot have numor,denom,reest if parent does not have begin/close range"
     )
 
 
-def test_idea_get_requiredheir_correctlyReturnsRequiredHeir():
+def test_tool_get_requiredheir_correctlyReturnsRequiredHeir():
     # GIVEN
-    idea_x = IdeaCore(_desc="test4")
+    tool_x = ToolCore(_desc="test4")
     test5_text = "test5"
     required_heir_x = RequiredHeir(base=test5_text, sufffacts={})
     required_heirs_x = {required_heir_x.base: required_heir_x}
-    idea_x.set_requiredheirs(requiredheirs=required_heirs_x)
+    tool_x.set_requiredheirs(requiredheirs=required_heirs_x)
 
     # WHEN
-    required_heir_z = idea_x.get_requiredheir(base=test5_text)
+    required_heir_z = tool_x.get_requiredheir(base=test5_text)
 
     # THEN
     assert required_heir_z != None
     assert required_heir_z.base == test5_text
 
 
-def test_idea_get_requiredheir_correctlyReturnsNone():
+def test_tool_get_requiredheir_correctlyReturnsNone():
     # GIVEN
-    idea_x = IdeaCore(_desc="test4")
+    tool_x = ToolCore(_desc="test4")
     test5_text = "test5"
     required_heir_x = RequiredHeir(base=test5_text, sufffacts={})
     required_heirs_x = {required_heir_x.base: required_heir_x}
-    idea_x.set_requiredheirs(requiredheirs=required_heirs_x)
+    tool_x.set_requiredheirs(requiredheirs=required_heirs_x)
 
     # WHEN
     test6_text = "test6"
-    required_heir_test6 = idea_x.get_requiredheir(base=test6_text)
+    required_heir_test6 = tool_x.get_requiredheir(base=test6_text)
 
     # THEN
     assert required_heir_test6 is None
 
 
-def test_idea_set_active_status_SetsNullactive_status_hxToNonEmpty():
+def test_tool_set_active_status_SetsNullactive_status_hxToNonEmpty():
     # GIVEN
-    idea_x = IdeaCore(_desc="test4")
-    assert idea_x._active_status_hx is None
+    tool_x = ToolCore(_desc="test4")
+    assert tool_x._active_status_hx is None
 
     # WHEN
-    idea_x.set_active_status(tree_traverse_count=3)
+    tool_x.set_active_status(tree_traverse_count=3)
     # THEN
-    assert idea_x._active_status_hx == {3: True}
+    assert tool_x._active_status_hx == {3: True}
 
 
-def test_idea_set_active_status_IfFullactive_status_hxResetToTrue():
+def test_tool_set_active_status_IfFullactive_status_hxResetToTrue():
     # GIVEN
-    idea_x = IdeaCore(_desc="test4")
-    idea_x._active_status_hx = {0: True, 4: False}
-    assert idea_x._active_status_hx != {0: True}
+    tool_x = ToolCore(_desc="test4")
+    tool_x._active_status_hx = {0: True, 4: False}
+    assert tool_x._active_status_hx != {0: True}
     # WHEN
-    idea_x.set_active_status(tree_traverse_count=0)
+    tool_x.set_active_status(tree_traverse_count=0)
     # THEN
-    assert idea_x._active_status_hx == {0: True}
+    assert tool_x._active_status_hx == {0: True}
 
 
-# def test_idea_set_active_status_IfFullactive_status_hxResetToFalse():
+# def test_tool_set_active_status_IfFullactive_status_hxResetToFalse():
 #     # GIVEN
-#     idea_x = IdeaCore(_desc="test4")
-#     idea_x.set_required_sufffact(
+#     tool_x = ToolCore(_desc="test4")
+#     tool_x.set_required_sufffact(
 #         base="testing1,second",
 #         sufffact="testing1,second,next",
 #         open=None,
 #         nigh=None,
 #         divisor=None,
 #     )
-#     idea_x._active_status_hx = {0: True, 4: False}
-#     assert idea_x._active_status_hx != {0: False}
+#     tool_x._active_status_hx = {0: True, 4: False}
+#     assert tool_x._active_status_hx != {0: False}
 #     # WHEN
-#     idea_x.set_active_status(tree_traverse_count=0)
+#     tool_x.set_active_status(tree_traverse_count=0)
 #     # THEN
-#     assert idea_x._active_status_hx == {0: False}
+#     assert tool_x._active_status_hx == {0: False}
 
 
-def test_idea_record_active_status_hx_CorrectlyRecordsHistory():
+def test_tool_record_active_status_hx_CorrectlyRecordsHistory():
     # GIVEN
-    idea_x = IdeaCore(_desc="test4")
-    assert idea_x._active_status_hx is None
+    tool_x = ToolCore(_desc="test4")
+    assert tool_x._active_status_hx is None
 
     # WHEN
-    idea_x.record_active_status_hx(
+    tool_x.record_active_status_hx(
         tree_traverse_count=0,
         prev_active_status=None,
         curr_active_status=True,
     )
     # THEN
-    assert idea_x._active_status_hx == {0: True}
+    assert tool_x._active_status_hx == {0: True}
 
     # WHEN
-    idea_x.record_active_status_hx(
+    tool_x.record_active_status_hx(
         tree_traverse_count=1,
         prev_active_status=True,
         curr_active_status=True,
     )
     # THEN
-    assert idea_x._active_status_hx == {0: True}
+    assert tool_x._active_status_hx == {0: True}
 
     # WHEN
-    idea_x.record_active_status_hx(
+    tool_x.record_active_status_hx(
         tree_traverse_count=2,
         prev_active_status=True,
         curr_active_status=False,
     )
     # THEN
-    assert idea_x._active_status_hx == {0: True, 2: False}
+    assert tool_x._active_status_hx == {0: True, 2: False}
 
     # WHEN
-    idea_x.record_active_status_hx(
+    tool_x.record_active_status_hx(
         tree_traverse_count=3,
         prev_active_status=False,
         curr_active_status=False,
     )
     # THEN
-    assert idea_x._active_status_hx == {0: True, 2: False}
+    assert tool_x._active_status_hx == {0: True, 2: False}
 
     # WHEN
-    idea_x.record_active_status_hx(
+    tool_x.record_active_status_hx(
         tree_traverse_count=4,
         prev_active_status=False,
         curr_active_status=True,
     )
     # THEN
-    assert idea_x._active_status_hx == {0: True, 2: False, 4: True}
+    assert tool_x._active_status_hx == {0: True, 2: False, 4: True}
 
     # WHEN
-    idea_x.record_active_status_hx(
+    tool_x.record_active_status_hx(
         tree_traverse_count=0,
         prev_active_status=False,
         curr_active_status=False,
     )
     # THEN
-    assert idea_x._active_status_hx == {0: False}
+    assert tool_x._active_status_hx == {0: False}

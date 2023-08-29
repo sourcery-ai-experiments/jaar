@@ -1,9 +1,9 @@
-from src.agent.idea import IdeaAttrHolder
+from src.agent.tool import ToolAttrHolder
 from pytest import raises as pytest_raise
 
 
-def test_idea_attr_holder_exists():
-    new_obj = IdeaAttrHolder()
+def test_tool_attr_holder_exists():
+    new_obj = ToolAttrHolder()
     assert new_obj.weight is None
     assert new_obj.uid is None
     assert new_obj.required is None
@@ -14,7 +14,7 @@ def test_idea_attr_holder_exists():
     assert new_obj.required_sufffact_divisor is None
     assert new_obj.required_del_sufffact_base is None
     assert new_obj.required_del_sufffact_need is None
-    assert new_obj.required_suff_idea_active_status is None
+    assert new_obj.required_suff_tool_active_status is None
     assert new_obj.begin is None
     assert new_obj.close is None
     assert new_obj.addin is None
@@ -35,25 +35,25 @@ def test_idea_attr_holder_exists():
     assert new_obj.on_meld_weight_action is None
 
 
-def test_idea_attr_holder_CorrectlyCalculatesSuffFactRanges():
+def test_tool_attr_holder_CorrectlyCalculatesSuffFactRanges():
     # Given
-    idea_attr = IdeaAttrHolder(required_sufffact="some_road")
-    assert idea_attr.required_sufffact_open is None
-    assert idea_attr.required_sufffact_nigh is None
-    # assert idea_attr.required_sufffact_numor is None
-    assert idea_attr.required_sufffact_divisor is None
-    # assert idea_attr.required_sufffact_reest is None
+    tool_attr = ToolAttrHolder(required_sufffact="some_road")
+    assert tool_attr.required_sufffact_open is None
+    assert tool_attr.required_sufffact_nigh is None
+    # assert tool_attr.required_sufffact_numor is None
+    assert tool_attr.required_sufffact_divisor is None
+    # assert tool_attr.required_sufffact_reest is None
 
     # WHEN
-    idea_attr.set_sufffact_range_attributes_influenced_by_sufffact_idea(
+    tool_attr.set_sufffact_range_attributes_influenced_by_sufffact_tool(
         sufffact_open=5.0,
         sufffact_nigh=20.0,
         # sufffact_numor,
         sufffact_denom=4.0,
         # sufffact_reest,
     )
-    assert idea_attr.required_sufffact_open == 5.0
-    assert idea_attr.required_sufffact_nigh == 20.0
-    # assert idea_attr.required_sufffact_numor is None
-    assert idea_attr.required_sufffact_divisor == 4.0
-    # assert idea_attr.required_sufffact_reest is None
+    assert tool_attr.required_sufffact_open == 5.0
+    assert tool_attr.required_sufffact_nigh == 20.0
+    # assert tool_attr.required_sufffact_numor is None
+    assert tool_attr.required_sufffact_divisor == 4.0
+    # assert tool_attr.required_sufffact_reest is None

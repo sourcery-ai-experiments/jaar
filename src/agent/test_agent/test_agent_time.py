@@ -5,7 +5,7 @@ from random import randint
 
 def test_time_get_time_min_from_dt_WorksCorrectly():
     g_lw = AgentUnit(_desc="src")
-    g_lw.set_time_hreg_ideas(c400_count=6)
+    g_lw.set_time_hreg_tools(c400_count=6)
     assert g_lw.get_time_min_from_dt(dt=datetime(2000, 1, 1, 0, 0))
     assert g_lw.get_time_min_from_dt(dt=datetime(1, 1, 1, 0, 0)) == 527040
     assert g_lw.get_time_min_from_dt(dt=datetime(1, 1, 2, 0, 0)) == 527040 + 1440
@@ -16,7 +16,7 @@ def test_time_get_time_min_from_dt_WorksCorrectly():
 
 def test_get_time_400YearCycle_from_min_WorksCorrectly():
     g_lw = AgentUnit(_desc="src")
-    g_lw.set_time_hreg_ideas(c400_count=6)
+    g_lw.set_time_hreg_tools(c400_count=6)
     assert g_lw.get_time_c400_from_min(min=0)[0] == 0
     assert g_lw.get_time_c400_from_min(min=210379680)[0] == 1
     assert g_lw.get_time_c400_from_min(min=210379681)[0] == 1
@@ -25,7 +25,7 @@ def test_get_time_400YearCycle_from_min_WorksCorrectly():
 
 def test_get_time_c400year_from_min_WorksCorrectly():
     g_lw = AgentUnit(_desc="src")
-    g_lw.set_time_hreg_ideas(c400_count=6)
+    g_lw.set_time_hreg_tools(c400_count=6)
     assert g_lw.get_time_c400yr_from_min(min=0)[0] == 0
     assert g_lw.get_time_c400yr_from_min(min=1)[0] == 0
     assert g_lw.get_time_c400yr_from_min(min=1)[2] == 1
@@ -52,7 +52,7 @@ def _check_time_conversion_works_with_random_inputs(ax: AgentUnit):
 
 def test_get_time_dt_from_min_WorksCorrectly():
     g_lw = AgentUnit(_desc="src")
-    g_lw.set_time_hreg_ideas(c400_count=6)
+    g_lw.set_time_hreg_tools(c400_count=6)
     assert g_lw.get_time_dt_from_min(min=5000000)
     # assert g_lw.get_time_dt_from_min(
     #     min=g_lw.get_time_min_from_dt(dt=datetime(2000, 1, 1, 0, 0))
@@ -101,13 +101,13 @@ def test_get_time_dt_from_min_WorksCorrectly():
 def test_get_time_():
     # Given
     g_lw = AgentUnit(_desc="src")
-    g_lw.set_time_hreg_ideas(c400_count=6)
+    g_lw.set_time_hreg_tools(c400_count=6)
 
-    idea_list = g_lw.get_idea_list()
-    # for idea_x in idea_list:
-    #     if idea_x._desc in ["min2010", "years"]:
+    tool_list = g_lw.get_tool_list()
+    # for tool_x in tool_list:
+    #     if tool_x._desc in ["min2010", "years"]:
     #         print(
-    #             f"{idea_x._walk=} \t{idea_x._desc=} {idea_x._begin=} {idea_x._close=} {idea_x._addin=}"
+    #             f"{tool_x._walk=} \t{tool_x._desc=} {tool_x._begin=} {tool_x._close=} {tool_x._addin=}"
     #         )
 
     # When
@@ -116,20 +116,20 @@ def test_get_time_():
     )
 
     # Then
-    assert g_lw._idearoot._acptfactunits[f"{g_lw._desc},time,jajatime"]
+    assert g_lw._toolroot._acptfactunits[f"{g_lw._desc},time,jajatime"]
     assert (
-        g_lw._idearoot._acptfactunits[f"{g_lw._desc},time,jajatime"].open == 1051898400
+        g_lw._toolroot._acptfactunits[f"{g_lw._desc},time,jajatime"].open == 1051898400
     )  # - 1440
     assert (
-        g_lw._idearoot._acptfactunits[f"{g_lw._desc},time,jajatime"].nigh == 1053934800
+        g_lw._toolroot._acptfactunits[f"{g_lw._desc},time,jajatime"].nigh == 1053934800
     )  # - 1440
 
 
 # def test_time_hreg_set_exists():
 #     g_lw = AgentUnit(_desc="src")
-#     g_lw.set_time_hreg_ideas(c400_count=6)
-#     idea_x = g_lw.get_idea_kid(road="src,hreg")
-#     assert idea_x != None
+#     g_lw.set_time_hreg_tools(c400_count=6)
+#     tool_x = g_lw.get_tool_kid(road="src,hreg")
+#     assert tool_x != None
 #     assert g_lw._kids["hreg"]
 #     for kid in g_lw._kids["hreg"]._kids.values():
 #         print(f"hreg kid= {kid._desc=}")
@@ -137,7 +137,7 @@ def test_get_time_():
 #     assert len(g_lw._kids["hreg"]._kids) > 0
 
 
-# def test_time_hreg_set_creates_idea():
+# def test_time_hreg_set_creates_tool():
 #     g_lw = examples.get_agent_base_time_example()
 
 #     hreg_name = "hreg"
@@ -145,18 +145,18 @@ def test_get_time_():
 #         g_lw._kids[hreg_name]
 #     assert str(excinfo.value) == f"'{hreg_name}'"
 #     print(f"added {hreg_name}")
-#     g_lw.set_time_hreg_ideas(c400_count=6)
-#     hreg_idea = g_lw._kids[hreg_name]
-#     assert hreg_idea != None
-#     assert hreg_idea._begin == 0
-#     assert hreg_idea._close == 1262278080
+#     g_lw.set_time_hreg_tools(c400_count=6)
+#     hreg_tool = g_lw._kids[hreg_name]
+#     assert hreg_tool != None
+#     assert hreg_tool._begin == 0
+#     assert hreg_tool._close == 1262278080
 
 
-# def test_time_hreg_set_CorrectlyCreatesWeekdayIdea():
+# def test_time_hreg_set_CorrectlyCreatesWeekdayTool():
 #     g_lw = examples.get_agent_base_time_example()
-#     g_lw.set_time_hreg_ideas(c400_count=6)
+#     g_lw.set_time_hreg_tools(c400_count=6)
 #     weekday_name = "weekday"
-#     weekday = g_lw.get_idea_kid(road=f"src,hreg,{weekday_name}")
+#     weekday = g_lw.get_tool_kid(road=f"src,hreg,{weekday_name}")
 #     assert weekday != None
 #     assert weekday._begin == 0
 #     assert weekday._close == 7
@@ -172,12 +172,12 @@ def test_get_time_():
 # def test_time_hreg_set_CorrectlyCreates400YearCycleCount():
 #     g_lw = examples.get_agent_base_time_example()
 #     c400_count = 6
-#     g_lw.set_time_hreg_ideas(c400_count=c400_count)
+#     g_lw.set_time_hreg_tools(c400_count=c400_count)
 
 #     timetech_name = "400 year cycle"
 #     timetech_road = f"src,hreg,{timetech_name}"
 #     print(f"{timetech_road=}")
-#     timetech = g_lw.get_idea_kid(road=timetech_road)
+#     timetech = g_lw.get_tool_kid(road=timetech_road)
 #     assert timetech != None
 #     assert timetech._begin == 0
 #     assert timetech._close == c400_count
@@ -186,117 +186,117 @@ def test_get_time_():
 # def test_time_hreg_set_CorrectlyCreates400YearCycleYears():
 #     h_lw = examples.get_agent_base_time_example()
 #     c400_count = 6
-#     h_lw.set_time_hreg_ideas(c400_count=c400_count)
+#     h_lw.set_time_hreg_tools(c400_count=c400_count)
 
 #     hy400_name = "cycle400year_years"
 #     hy400_road = f"src,hreg,{hy400_name}"
 #     print(f"{hy400_road=}")
-#     hy400_idea = h_lw.get_idea_kid(road=hy400_road)
-#     assert hy400_idea != None
-#     assert hy400_idea._begin is None
-#     assert hy400_idea._close is None
-#     assert hy400_idea.divisor == 400
+#     hy400_tool = h_lw.get_tool_kid(road=hy400_road)
+#     assert hy400_tool != None
+#     assert hy400_tool._begin is None
+#     assert hy400_tool._close is None
+#     assert hy400_tool.divisor == 400
 
 #     hy400c1_name = "100yr regular"
 #     hy400c1_road = f"{hy400_road},{hy400c1_name}"
 #     print(f"{hy400c1_road=}")
-#     hy400c1_idea = hy400_idea._kids[hy400c1_name]
-#     assert hy400c1_idea != None
-#     assert hy400c1_idea._begin == 0
-#     assert hy400c1_idea._close == 100
-#     assert hy400c1_idea.divisor is None
+#     hy400c1_tool = hy400_tool._kids[hy400c1_name]
+#     assert hy400c1_tool != None
+#     assert hy400c1_tool._begin == 0
+#     assert hy400c1_tool._close == 100
+#     assert hy400c1_tool.divisor is None
 
 #     hy400c14y_name = "regular 4yr"
 #     hy400c14y_road = f"{hy400c1_road},{hy400c14y_name}"
 #     print(f"{hy400c14y_road=}")
-#     hy400c14y_idea = hy400c1_idea._kids[hy400c14y_name]
-#     assert hy400c14y_idea != None
-#     assert hy400c14y_idea._begin is None
-#     assert hy400c14y_idea._close is None
-#     assert hy400c14y_idea.divisor == 4
+#     hy400c14y_tool = hy400c1_tool._kids[hy400c14y_name]
+#     assert hy400c14y_tool != None
+#     assert hy400c14y_tool._begin is None
+#     assert hy400c14y_tool._close is None
+#     assert hy400c14y_tool.divisor == 4
 
 #     hy400c3_name = "300yr range"
 #     hy400c3_road = f"{hy400_road},{hy400c3_name}"
 #     print(f"{hy400c3_road=}")
-#     hy400c3_idea = hy400_idea._kids[hy400c3_name]
-#     assert hy400c3_idea != None
-#     assert hy400c3_idea._begin == 100
-#     assert hy400c3_idea._close == 400
-#     assert hy400c3_idea.divisor is None
+#     hy400c3_tool = hy400_tool._kids[hy400c3_name]
+#     assert hy400c3_tool != None
+#     assert hy400c3_tool._begin == 100
+#     assert hy400c3_tool._close == 400
+#     assert hy400c3_tool.divisor is None
 
 #     hy400c3c1_name = "100yr no century leap"
 #     hy400c3c1_road = f"{hy400c3_road},{hy400c3c1_name}"
 #     print(f"{hy400c3c1_road=}")
-#     hy400c3c1_idea = hy400c3_idea._kids[hy400c3c1_name]
-#     assert hy400c3c1_idea != None
-#     assert hy400c3c1_idea._begin is None
-#     assert hy400c3c1_idea._close is None
-#     assert hy400c3c1_idea.divisor == 100
+#     hy400c3c1_tool = hy400c3_tool._kids[hy400c3c1_name]
+#     assert hy400c3c1_tool != None
+#     assert hy400c3c1_tool._begin is None
+#     assert hy400c3c1_tool._close is None
+#     assert hy400c3c1_tool.divisor == 100
 
 #     hy400c3c14y_name = "4yr no leap"
 #     hy400c3c14y_road = f"{hy400c3c1_road},{hy400c3c14y_name}"
 #     print(f"{hy400c3c14y_road=}")
-#     hy400c3c14y_idea = hy400c3c1_idea._kids[hy400c3c14y_name]
-#     assert hy400c3c14y_idea != None
-#     assert hy400c3c14y_idea._begin == 0
-#     assert hy400c3c14y_idea._close == 4
-#     assert hy400c3c14y_idea.divisor is None
+#     hy400c3c14y_tool = hy400c3c1_tool._kids[hy400c3c14y_name]
+#     assert hy400c3c14y_tool != None
+#     assert hy400c3c14y_tool._begin == 0
+#     assert hy400c3c14y_tool._close == 4
+#     assert hy400c3c14y_tool.divisor is None
 
 #     hy400c3c196_name = "96yr range"
 #     hy400c3c196_road = f"{hy400c3c1_road},{hy400c3c196_name}"
 #     print(f"{hy400c3c196_road=}")
-#     hy400c3c196_idea = hy400c3c1_idea._kids[hy400c3c196_name]
-#     assert hy400c3c196_idea != None
-#     assert hy400c3c196_idea._begin == 4
-#     assert hy400c3c196_idea._close == 100
-#     assert hy400c3c196_idea.divisor is None
+#     hy400c3c196_tool = hy400c3c1_tool._kids[hy400c3c196_name]
+#     assert hy400c3c196_tool != None
+#     assert hy400c3c196_tool._begin == 4
+#     assert hy400c3c196_tool._close == 100
+#     assert hy400c3c196_tool.divisor is None
 
 #     hy400c3c196ry_name = "regular 4yr"
 #     hy400c3c196ry_road = f"{hy400c3c196_road},{hy400c3c196ry_name}"
 #     print(f"{hy400c3c196ry_road=}")
-#     hy400c3c196ry_idea = hy400c3c196_idea._kids[hy400c3c196ry_name]
-#     assert hy400c3c196ry_idea != None
-#     assert hy400c3c196ry_idea._begin is None
-#     assert hy400c3c196ry_idea._close is None
-#     assert hy400c3c196ry_idea.divisor == 4
+#     hy400c3c196ry_tool = hy400c3c196_tool._kids[hy400c3c196ry_name]
+#     assert hy400c3c196ry_tool != None
+#     assert hy400c3c196ry_tool._begin is None
+#     assert hy400c3c196ry_tool._close is None
+#     assert hy400c3c196ry_tool.divisor == 4
 
 
 # def test_time_hreg_set_CorrectlyCreates400YearCycleYears():
 #     h_lw = examples.get_agent_base_time_example()
 #     c400_count = 6
-#     h_lw.set_time_hreg_ideas(c400_count=c400_count)
+#     h_lw.set_time_hreg_tools(c400_count=c400_count)
 
 #     hy400_name = "cycle400year_days"
 #     hy400_road = f"src,hreg,{hy400_name}"
 #     print(f"{hy400_road=}")
-#     hy400_idea = h_lw.get_idea_kid(road=hy400_road)
-#     assert hy400_idea != None
-#     assert hy400_idea._begin is None
-#     assert hy400_idea._close is None
-#     assert hy400_idea.divisor == 146097
+#     hy400_tool = h_lw.get_tool_kid(road=hy400_road)
+#     assert hy400_tool != None
+#     assert hy400_tool._begin is None
+#     assert hy400_tool._close is None
+#     assert hy400_tool.divisor == 146097
 
 
 # def test_time_hreg_set_CorrectlyCreatesDayRange():
 #     g_lw = examples.get_agent_base_time_example()
-#     g_lw.set_time_hreg_ideas(c400_count=6)
-#     timetech = g_lw.get_idea_kid(road="src,hreg,day_range")
+#     g_lw.set_time_hreg_tools(c400_count=6)
+#     timetech = g_lw.get_tool_kid(road="src,hreg,day_range")
 #     assert timetech != None
 #     assert timetech._begin == 0
 #     assert timetech._close == 876582
 
 # x_lw = AgentUnit()
-# g_lw.get_idea_kid(road={"src,hreg,weekday"})
+# g_lw.get_tool_kid(road={"src,hreg,weekday"})
 
 # wed_sufffact_x = sufffactunit_shop(need=wednesday_road)
 # work_wk_required = RequiredUnit(base=weekday_road, sufffacts={wed_sufffact.need: wed_sufffact})
 # print(f"{type(work_wk_required.base)=}")
 # print(f"{work_wk_required.base=}")
-# agent_x.edit_idea_attr(road=work_road, required=work_wk_required)
-# work_idea = agent_x._kids["work"]
-# assert work_idea._requiredunits != None
-# print(work_idea._requiredunits)
-# assert work_idea._requiredunits[weekday_road] != None
-# assert work_idea._requiredunits[weekday_road] == work_wk_required
+# agent_x.edit_tool_attr(road=work_road, required=work_wk_required)
+# work_tool = agent_x._kids["work"]
+# assert work_tool._requiredunits != None
+# print(work_tool._requiredunits)
+# assert work_tool._requiredunits[weekday_road] != None
+# assert work_tool._requiredunits[weekday_road] == work_wk_required
 
 # g_lw = examples.get_agent_gregorian_years()
 
@@ -305,7 +305,7 @@ def test_get_jajatime_repeating_readable_text_correctlyText():
     # GIVEN
     src_text = "src"
     cx = AgentUnit(_desc=src_text)
-    cx.set_time_hreg_ideas(c400_count=7)
+    cx.set_time_hreg_tools(c400_count=7)
 
     # WHEN / THEN
     print("ReturnsDailyText")

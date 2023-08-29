@@ -199,10 +199,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _set_acptfact_time_open_midnight_attr(self):
         road_minute = f"{self.agent_x._desc},time,jajatime"
         open_dt = self.agent_x.get_time_dt_from_min(
-            self.agent_x._idearoot._acptfactunits[road_minute].open
+            self.agent_x._toolroot._acptfactunits[road_minute].open
         )
         nigh_dt = self.agent_x.get_time_dt_from_min(
-            self.agent_x._idearoot._acptfactunits[road_minute].nigh
+            self.agent_x._toolroot._acptfactunits[road_minute].nigh
         )
         open_midnight = datetime(
             year=open_dt.year,
@@ -302,7 +302,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agent_x._set_acptfacts_empty_if_null()
         self.agent_x.set_members_empty_if_null()
         self.agent_x.set_groupunits_empty_if_null()
-        self.agent_x.set_time_hreg_ideas(c400_count=7)
+        self.agent_x.set_time_hreg_tools(c400_count=7)
         road_minute = f"{self.agent_x._desc},time,jajatime"
         self.agent_x.set_acptfact(
             base=road_minute, pick=road_minute, open=1000000, nigh=1000000
@@ -312,10 +312,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def refresh_datetime_display(self):
         road_minute = f"{self.agent_x._desc},time,jajatime"
         jajatime_open = self.agent_x.get_time_dt_from_min(
-            self.agent_x._idearoot._acptfactunits[road_minute].open
+            self.agent_x._toolroot._acptfactunits[road_minute].open
         )
         jajatime_nigh = self.agent_x.get_time_dt_from_min(
-            self.agent_x._idearoot._acptfactunits[road_minute].nigh
+            self.agent_x._toolroot._acptfactunits[road_minute].nigh
         )
         week_days = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
         self.root_datetime_curr_label.setText(
@@ -340,7 +340,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_all()
 
     def get_acptfacts_list(self):
-        return self.agent_x._idearoot._acptfactunits.values()
+        return self.agent_x._toolroot._acptfactunits.values()
 
     def acptfacts_table_load(self):
         self.acptfacts_table.setRowCount(0)
@@ -395,7 +395,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ):
             raise MainAppException("No table selection for acptfact update.")
         acptfact_update_combo_text = self.acptfact_update_combo.currentText()
-        self.agent_x._idearoot._acptfactunits[
+        self.agent_x._toolroot._acptfactunits[
             base_road
         ].acptfact = acptfact_update_combo_text
         self.base_road = None
@@ -478,7 +478,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 "jajatime",
                 "jaja_nigh",
                 "agent_importance",
-                "idea_road",
+                "tool_road",
                 "branch_percent",
             ]
         )

@@ -1,5 +1,5 @@
 from src.agent.agent import AgentUnit
-from src.agent.idea import IdeaCore
+from src.agent.tool import ToolCore
 from PyQt5.QtWidgets import QTreeWidgetItem
 from src.agent.road import get_terminus_node_from_road
 from dataclasses import dataclass
@@ -11,7 +11,7 @@ class InvalidPyQtException(Exception):
 
 @dataclass
 class PYQTTreeHolder:
-    ideacore: IdeaCore
+    toolcore: ToolCore
     yo_action_flag: str
     yo_agenda_flag: str
     yo_complete_flag: str
@@ -31,7 +31,7 @@ class PYQTTreeHolder:
 
 
 def get_pyqttree(
-    idearoot: IdeaCore,
+    toolroot: ToolCore,
     root_percent_flag: bool = None,
     yo2bd_count_flag: bool = None,
     yo2bd_view_bd_flag: bool = None,
@@ -50,7 +50,7 @@ def get_pyqttree(
     src_agent: AgentUnit = None,
 ) -> QTreeWidgetItem:
     pyqttree_holder = PYQTTreeHolder(
-        ideacore=idearoot,
+        toolcore=toolroot,
         yo_action_flag=yo_action_flag,
         yo_agenda_flag=yo_agenda_flag,
         yo_complete_flag=yo_complete_flag,
@@ -75,30 +75,30 @@ def get_pyqttree(
 def _create_node(pth: PYQTTreeHolder) -> QTreeWidgetItem:
     treenode_label = _create_treenode_label(pth)
     item = QTreeWidgetItem([treenode_label])
-    item.setData(2, 10, pth.ideacore._desc)
-    item.setData(2, 11, pth.ideacore._walk)
-    # item.setData(2, 12, ideacore._weight)
-    # item.setData(2, 13, ideacore._begin)
-    # item.setData(2, 14, ideacore._close)
-    item.setData(2, 20, pth.ideacore._is_expanded)
-    if pth.ideacore._requiredunits is None:
+    item.setData(2, 10, pth.toolcore._desc)
+    item.setData(2, 11, pth.toolcore._walk)
+    # item.setData(2, 12, toolcore._weight)
+    # item.setData(2, 13, toolcore._begin)
+    # item.setData(2, 14, toolcore._close)
+    item.setData(2, 20, pth.toolcore._is_expanded)
+    if pth.toolcore._requiredunits is None:
         item.setData(2, 21, 0)
     else:
-        item.setData(2, 21, len(pth.ideacore._requiredunits))
-    if pth.ideacore._kids is None:
-        raise InvalidPyQtException(f"Idea {pth.ideacore._desc} has null kids.")
+        item.setData(2, 21, len(pth.toolcore._requiredunits))
+    if pth.toolcore._kids is None:
+        raise InvalidPyQtException(f"Tool {pth.toolcore._desc} has null kids.")
 
-    sort_ideas_list = list(pth.ideacore._kids.values())
-    # print(f"{len(sort_ideas_list)=}")
-    # print(f"{type(sort_ideas_list)=}")
-    # print(f"{len(unsorted_ideas_list.sort(key=lambda x: x._desc, reverse=False))=}")
-    sort_ideas_list.sort(key=lambda x: x._desc.lower(), reverse=False)
-    # print(f"{len(sorted_ideas_list)=}")
+    sort_tools_list = list(pth.toolcore._kids.values())
+    # print(f"{len(sort_tools_list)=}")
+    # print(f"{type(sort_tools_list)=}")
+    # print(f"{len(unsorted_tools_list.sort(key=lambda x: x._desc, reverse=False))=}")
+    sort_tools_list.sort(key=lambda x: x._desc.lower(), reverse=False)
+    # print(f"{len(sorted_tools_list)=}")
 
-    for kid_idea in sort_ideas_list:
-        # for kid_idea in sort_ideas_list.sort(key=lambda x: x._agent_importance, reverse=True):
+    for kid_tool in sort_tools_list:
+        # for kid_tool in sort_tools_list.sort(key=lambda x: x._agent_importance, reverse=True):
         child_pth = PYQTTreeHolder(
-            ideacore=kid_idea,
+            toolcore=kid_tool,
             yo_action_flag=pth.yo_action_flag,
             yo_agenda_flag=pth.yo_agenda_flag,
             yo_complete_flag=pth.yo_complete_flag,
@@ -174,16 +174,16 @@ def lw_diplay(agent_importance: float):
 def _get_treenode_label_required_count(treenode_label, pth: PYQTTreeHolder) -> str:
     sufffact_count = sum(
         required.get_sufffacts_count()
-        for required in pth.ideacore._requiredunits.values()
+        for required in pth.toolcore._requiredunits.values()
     )
-    required_count = len(pth.ideacore._requiredunits)
+    required_count = len(pth.toolcore._requiredunits)
     if required_count != 0:
-        treenode_label += f" (lim {len(pth.ideacore._requiredunits)}/c{sufffact_count})"
+        treenode_label += f" (lim {len(pth.toolcore._requiredunits)}/c{sufffact_count})"
     return treenode_label
 
 
 def _get_treenode_label_required_view(treenode_label, pth: PYQTTreeHolder) -> str:
-    requiredheir = pth.ideacore._requiredheirs.get(pth.required_view_name)
+    requiredheir = pth.toolcore._requiredheirs.get(pth.required_view_name)
     if requiredheir != None:
         # treenode_label += f"{get_terminus_node_from_road(requiredheir.base)}"
         grabed_sufffact = None
@@ -196,9 +196,9 @@ def _get_treenode_label_required_view(treenode_label, pth: PYQTTreeHolder) -> st
 
 
 def _get_treenode_label_acptfactheir_view(treenode_label, pth: PYQTTreeHolder) -> str:
-    acptfactheir = pth.ideacore._acptfactheirs.get(pth.required_view_name)
+    acptfactheir = pth.toolcore._acptfactheirs.get(pth.required_view_name)
     if acptfactheir != None:
-        time_road = f"{pth.src_agent._idearoot._desc},time,jajatime"
+        time_road = f"{pth.src_agent._toolroot._desc},time,jajatime"
         if (
             acptfactheir.base == time_road
             and acptfactheir.open != None
@@ -222,35 +222,35 @@ def _get_treenode_label_acptfactheir_view(treenode_label, pth: PYQTTreeHolder) -
 
 
 def _create_treenode_label(pth: PYQTTreeHolder):
-    treenode_label = pth.ideacore._desc
+    treenode_label = pth.toolcore._desc
 
     if pth.root_percent_flag:
-        treenode_label += f" ({lw_diplay(pth.ideacore._agent_importance)})"
+        treenode_label += f" ({lw_diplay(pth.toolcore._agent_importance)})"
     elif pth.yo2bd_count_flag:
-        treenode_label += f" ({len(pth.ideacore._grouplinks)})"
+        treenode_label += f" ({len(pth.toolcore._grouplinks)})"
     elif pth.required_count_flag:
         treenode_label = _get_treenode_label_required_count(treenode_label, pth)
     elif pth.required_view_flag:
         treenode_label = _get_treenode_label_required_view(treenode_label, pth)
-    elif pth.acptfactheir_view_flag and pth.ideacore._walk != "":
+    elif pth.acptfactheir_view_flag and pth.toolcore._walk != "":
         treenode_label = _get_treenode_label_acptfactheir_view(treenode_label, pth)
-    elif pth.yo_action_flag and pth.ideacore.promise:
-        treenode_label += " (task)" if pth.ideacore._task else " (state)"
+    elif pth.yo_action_flag and pth.toolcore.promise:
+        treenode_label += " (task)" if pth.toolcore._task else " (state)"
     elif pth.yo_acptfactunit_count_flag:
-        treenode_label += f" ({len(pth.ideacore._acptfactunits)})"
-    elif pth.yo_acptfactheir_count_flag and pth.ideacore._walk != "":
-        treenode_label += f" ({len(pth.ideacore._acptfactheirs)})"
+        treenode_label += f" ({len(pth.toolcore._acptfactunits)})"
+    elif pth.yo_acptfactheir_count_flag and pth.toolcore._walk != "":
+        treenode_label += f" ({len(pth.toolcore._acptfactheirs)})"
 
-    if pth.requiredheir_count_flag and pth.ideacore._walk not in (None, ""):
+    if pth.requiredheir_count_flag and pth.toolcore._walk not in (None, ""):
         # requiredunit_count = sum(
         #     str(type(requiredheir)) == "<class 'src.agent.required.RequiredUnit'>"
-        #     for requiredheir in pth.ideacore._requiredheirs.values()
+        #     for requiredheir in pth.toolcore._requiredheirs.values()
         # )
-        treenode_label += f" (RequiredHeirs {len(pth.ideacore._requiredheirs)})"
+        treenode_label += f" (RequiredHeirs {len(pth.toolcore._requiredheirs)})"
 
     if pth.yo_acptfactunit_time_flag:
-        time_road = f"{pth.src_agent._idearoot._desc},time,jajatime"
-        acptfactunit_time_obj = pth.ideacore._acptfactunits.get(time_road)
+        time_road = f"{pth.src_agent._toolroot._desc},time,jajatime"
+        acptfactunit_time_obj = pth.toolcore._acptfactunits.get(time_road)
         if acptfactunit_time_obj != None:
             hc_open_str = pth.src_agent.get_jajatime_readable_one_time_event(
                 jajatime_min=acptfactunit_time_obj.open

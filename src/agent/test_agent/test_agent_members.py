@@ -5,7 +5,7 @@ from src.agent.examples.example_agents import (
     agent_v001_with_large_agenda as examples_agent_v001_with_large_agenda,
 )
 from src.agent.agent import AgentUnit
-from src.agent.idea import IdeaKid
+from src.agent.tool import ToolKid
 from pytest import raises as pytest_raises
 from src.system.bank_sqlstr import RiverTmemberUnit
 
@@ -57,16 +57,16 @@ def test_agent_set_member_correctly_sets_members_1():
     assert a_x._groups["rico"]._single_member == True
 
     # WHEN
-    a_x._idearoot.set_grouplink(
+    a_x._toolroot.set_grouplink(
         grouplink=grouplink_shop(name=GroupName("rico"), creditor_weight=10)
     )
-    a_x._idearoot.set_grouplink(
+    a_x._toolroot.set_grouplink(
         grouplink=grouplink_shop(name=GroupName("carmen"), creditor_weight=10)
     )
-    a_x._idearoot.set_grouplink(
+    a_x._toolroot.set_grouplink(
         grouplink=grouplink_shop(name=GroupName("patrick"), creditor_weight=10)
     )
-    assert len(a_x._idearoot._grouplinks) == 3
+    assert len(a_x._toolroot._grouplinks) == 3
 
 
 def test_agent_set_member_correctly_sets_members_2():
@@ -90,7 +90,7 @@ def test_agent_set_member_correctly_sets_members_2():
     assert a_x._members[carm_text].debtor_weight == 5
 
 
-def test_agent_get_idea_list_CorrectlySetsMemberLinkAgentCreditAndDebt():
+def test_agent_get_tool_list_CorrectlySetsMemberLinkAgentCreditAndDebt():
     # GIVEN
     prom_text = "prom"
     a_x = AgentUnit(_desc=prom_text)
@@ -103,9 +103,9 @@ def test_agent_get_idea_list_CorrectlySetsMemberLinkAgentCreditAndDebt():
     bl_rico = grouplink_shop(name=rico_text, creditor_weight=20, debtor_weight=40)
     bl_carm = grouplink_shop(name=carm_text, creditor_weight=10, debtor_weight=5)
     bl_patr = grouplink_shop(name=patr_text, creditor_weight=10, debtor_weight=5)
-    a_x._idearoot.set_grouplink(grouplink=bl_rico)
-    a_x._idearoot.set_grouplink(grouplink=bl_carm)
-    a_x._idearoot.set_grouplink(grouplink=bl_patr)
+    a_x._toolroot.set_grouplink(grouplink=bl_rico)
+    a_x._toolroot.set_grouplink(grouplink=bl_carm)
+    a_x._toolroot.set_grouplink(grouplink=bl_patr)
 
     rico_groupunit = a_x._groups.get(rico_text)
     carm_groupunit = a_x._groups.get(carm_text)
@@ -175,7 +175,7 @@ def test_agent_get_idea_list_CorrectlySetsMemberLinkAgentCreditAndDebt():
     # WHEN another action, make sure metrics are as expected
     selena_text = "selena"
     a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(selena_text)))
-    a_x._idearoot.set_grouplink(
+    a_x._toolroot.set_grouplink(
         grouplink=grouplink_shop(
             name=GroupName(selena_text), creditor_weight=20, debtor_weight=13
         )
@@ -240,12 +240,12 @@ def test_agent_get_idea_list_CorrectlySetsMemberLinkAgentCreditAndDebt():
     )
 
 
-def test_agent_get_idea_list_CorrectlySetsMemberUnitAgentImportance():
+def test_agent_get_tool_list_CorrectlySetsMemberUnitAgentImportance():
     # GIVEN
     prom_text = "prom"
     a_x = AgentUnit(_desc=prom_text)
     swim_text = "swim"
-    a_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=prom_text)
+    a_x.add_tool(tool_kid=ToolKid(_desc=swim_text), walk=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -255,9 +255,9 @@ def test_agent_get_idea_list_CorrectlySetsMemberUnitAgentImportance():
     bl_rico = grouplink_shop(name=rico_text, creditor_weight=20, debtor_weight=40)
     bl_carm = grouplink_shop(name=carm_text, creditor_weight=10, debtor_weight=5)
     bl_patr = grouplink_shop(name=patr_text, creditor_weight=10, debtor_weight=5)
-    a_x._idearoot._kids[swim_text].set_grouplink(grouplink=bl_rico)
-    a_x._idearoot._kids[swim_text].set_grouplink(grouplink=bl_carm)
-    a_x._idearoot._kids[swim_text].set_grouplink(grouplink=bl_patr)
+    a_x._toolroot._kids[swim_text].set_grouplink(grouplink=bl_rico)
+    a_x._toolroot._kids[swim_text].set_grouplink(grouplink=bl_carm)
+    a_x._toolroot._kids[swim_text].set_grouplink(grouplink=bl_patr)
 
     rico_memberunit = a_x._members.get(rico_text)
     carm_memberunit = a_x._members.get(carm_text)
@@ -318,7 +318,7 @@ def test_agent_get_idea_list_CorrectlySetsMemberUnitAgentImportance():
     # WHEN another action, make sure metrics are as expected
     selena_text = "selena"
     a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(selena_text)))
-    a_x._idearoot.set_grouplink(
+    a_x._toolroot.set_grouplink(
         grouplink=grouplink_shop(name=selena_text, creditor_weight=20, debtor_weight=10)
     )
     a_x.set_agent_metrics()
@@ -384,12 +384,12 @@ def test_agent_get_idea_list_CorrectlySetsMemberUnitAgentImportance():
     # assert memberunit_agent_debt_sum < 1.00000001
 
 
-def test_agent_get_idea_list_CorrectlySetsPartGroupedLWMemberUnitAgentImportance():
+def test_agent_get_tool_list_CorrectlySetsPartGroupedLWMemberUnitAgentImportance():
     # GIVEN
     prom_text = "prom"
     a_x = AgentUnit(_desc=prom_text)
     swim_text = "swim"
-    a_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=prom_text)
+    a_x.add_tool(tool_kid=ToolKid(_desc=swim_text), walk=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -399,15 +399,15 @@ def test_agent_get_idea_list_CorrectlySetsPartGroupedLWMemberUnitAgentImportance
     bl_rico = grouplink_shop(name=rico_text, creditor_weight=20, debtor_weight=40)
     bl_carm = grouplink_shop(name=carm_text, creditor_weight=10, debtor_weight=5)
     bl_patr = grouplink_shop(name=patr_text, creditor_weight=10, debtor_weight=5)
-    a_x._idearoot._kids[swim_text].set_grouplink(grouplink=bl_rico)
-    a_x._idearoot._kids[swim_text].set_grouplink(grouplink=bl_carm)
-    a_x._idearoot._kids[swim_text].set_grouplink(grouplink=bl_patr)
+    a_x._toolroot._kids[swim_text].set_grouplink(grouplink=bl_rico)
+    a_x._toolroot._kids[swim_text].set_grouplink(grouplink=bl_carm)
+    a_x._toolroot._kids[swim_text].set_grouplink(grouplink=bl_patr)
 
     # no grouplinks attached to this one
     hunt_text = "hunt"
-    a_x.add_idea(idea_kid=IdeaKid(_desc=hunt_text, _weight=3), walk=prom_text)
+    a_x.add_tool(tool_kid=ToolKid(_desc=hunt_text, _weight=3), walk=prom_text)
 
-    assert a_x._idearoot._grouplinks is None
+    assert a_x._toolroot._grouplinks is None
 
     # WHEN
     a_x.set_agent_metrics()
@@ -497,10 +497,10 @@ def test_agent_get_idea_list_CorrectlySetsPartGroupedLWMemberUnitAgentImportance
     # assert memberunit_agent_debt_sum < 1.00000001
 
 
-def test_agent_get_idea_list_WithAllMembersWeighted():
+def test_agent_get_tool_list_WithAllMembersWeighted():
     # GIVEN
     a_x = AgentUnit(_desc="prom")
-    a_x.add_idea(idea_kid=IdeaKid(_desc="swim"), walk="prom")
+    a_x.add_tool(tool_kid=ToolKid(_desc="swim"), walk="prom")
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -629,7 +629,7 @@ def test_agent_agenda_credit_debt_IsCorrectlySet():
         else:
             agenda_yes_grouplines_count += 1
             agenda_yes_grouplines_agent_i_sum += agenda_item._agent_importance
-        # print(f"idea importance: {agenda_item._agent_importance:.7f} {sum_agent_agenda_importance:.5f} {agenda_item._desc=} ")
+        # print(f"tool importance: {agenda_item._agent_importance:.7f} {sum_agent_agenda_importance:.5f} {agenda_item._desc=} ")
         # print(f"{agenda_item.get_road()}")
     print(f"{sum_agent_agenda_importance=}")
     assert agenda_no_grouplines_count == 20
@@ -745,7 +745,7 @@ def test_agent_agenda_ratio_credit_debt_IsCorrectlySetWhenAgendaIsEmpty():
 
 def test_agent_get_member_groups_returnsCorrectData():
     a_x = AgentUnit(_desc="prom")
-    a_x.add_idea(idea_kid=IdeaKid(_desc="swim"), walk="prom")
+    a_x.add_tool(tool_kid=ToolKid(_desc="swim"), walk="prom")
     rico = "rico"
     carmen = "carmen"
     patrick = "patrick"

@@ -78,25 +78,25 @@ AgentUnit MemberUnit objects
 
 AgentUnit GroupUnit objects
 
-AgentUnit IdeaUnit objects
+AgentUnit ToolUnit objects
 
-AgentUnit IdeaUnit hierarchical structure
+AgentUnit ToolUnit hierarchical structure
 
-AgentUnit IdeaUnit GroupLink objects
+AgentUnit ToolUnit GroupLink objects
 
-AgentUnit IdeaUnit GroupLine objects
+AgentUnit ToolUnit GroupLine objects
 
-AgentUnit IdeaUnit GroupHeir objects
+AgentUnit ToolUnit GroupHeir objects
 
-AgentUnit IdeaUnit GroupHeir objects
+AgentUnit ToolUnit GroupHeir objects
 
-AgentUnit IdeaUnit RequiredFactUnit objects
+AgentUnit ToolUnit RequiredFactUnit objects
 
-AgentUnit IdeaUnit RequiredFactHeir objects
+AgentUnit ToolUnit RequiredFactHeir objects
 
-AgentUnit IdeaUnit AcptFactUnit objects
+AgentUnit ToolUnit AcptFactUnit objects
 
-AgentUnit IdeaUnit AcptFactHeir objects
+AgentUnit ToolUnit AcptFactHeir objects
 
 
 ## 1.3 Test-Driven-Development

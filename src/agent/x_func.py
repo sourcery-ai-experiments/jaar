@@ -130,101 +130,101 @@ def x_get_dict(json_x: str) -> dict:
 
 # class YR:
 def from_list_get_active_status(
-    road: Road, idea_list: list, asse_bool: bool = None
+    road: Road, tool_list: list, asse_bool: bool = None
 ) -> bool:
     active_status = None
-    temp_idea = None
+    temp_tool = None
 
     active_true_count = 0
     active_false_count = 0
-    for idea in idea_list:
-        if idea.get_road() == road:
-            temp_idea = idea
+    for tool in tool_list:
+        if tool.get_road() == road:
+            temp_tool = tool
             print(
-                f"searched for IdeaKid {temp_idea.get_road()} found {temp_idea._active_status=}"
+                f"searched for ToolKid {temp_tool.get_road()} found {temp_tool._active_status=}"
             )
 
-        if idea._active_status:
+        if tool._active_status:
             active_true_count += 1
-        elif idea._active_status == False:
+        elif tool._active_status == False:
             active_false_count += 1
 
-    active_status = temp_idea._active_status
+    active_status = temp_tool._active_status
     print(
-        f"Set Active_status: {idea._desc=} {active_status} {active_true_count=} {active_false_count=}"
+        f"Set Active_status: {tool._desc=} {active_status} {active_true_count=} {active_false_count=}"
     )
 
     if asse_bool in {True, False}:
         if active_status != asse_bool:
-            yr_tale(temp_idea)
+            yr_tale(temp_tool)
 
         assert active_status == asse_bool
     else:
-        yr_tale(temp_idea)
+        yr_tale(temp_tool)
     return active_status
 
 
-def yr_print_idea_base_info(idea, filter: bool):
-    for l in idea._requiredheirs.values():
+def yr_print_tool_base_info(tool, filter: bool):
+    for l in tool._requiredheirs.values():
         if l._status == filter:
             print(
                 f"  RequiredHeir '{l.base}' Base LH:{l._status} W:{len(l.sufffacts)}"  # \t_task {l._task}"
             )
-            if str(type(idea)).find(".idea.IdeaKid'>") > 0:
+            if str(type(tool)).find(".tool.ToolKid'>") > 0:
                 yr_print_acptfact(
                     lh_base=l.base,
                     lh_status=l._status,
                     sufffacts=l.sufffacts,
-                    acptfactheirs=idea._acptfactheirs,
+                    acptfactheirs=tool._acptfactheirs,
                 )
 
 
-def yr_tale(idea):
-    str1 = f"'{yr_d(idea._walk)}' idea"
-    str2 = f" has RequiredU:{yr_x(idea._requiredunits)} LH:{yr_x(idea._requiredheirs)}"
-    str3 = f" {str(type(idea))}"
+def yr_tale(tool):
+    str1 = f"'{yr_d(tool._walk)}' tool"
+    str2 = f" has RequiredU:{yr_x(tool._requiredunits)} LH:{yr_x(tool._requiredheirs)}"
+    str3 = f" {str(type(tool))}"
     str4 = " "
-    if str(type(idea)).find(".idea.IdeaKid'>") > 0:
-        str3 = f" AcptFacts:{yr_x(idea._acptfactheirs)} Status: {idea._active_status}"
+    if str(type(tool)).find(".tool.ToolKid'>") > 0:
+        str3 = f" AcptFacts:{yr_x(tool._acptfactheirs)} Status: {tool._active_status}"
 
         print(f"\n{str1}{str2}{str3}")
         hh_wo_matched_required = []
-        for hh in idea._acptfactheirs.values():
+        for hh in tool._acptfactheirs.values():
             hh_wo_matched_required = []
             try:
-                idea._requiredheirs[hh.base]
+                tool._requiredheirs[hh.base]
             except Exception:
                 hh_wo_matched_required.append(hh.base)
 
         for base in hh_wo_matched_required:
-            print(f"AcptFacts that don't matter to this Idea: {base}")
+            print(f"AcptFacts that don't matter to this Tool: {base}")
 
-    # if idea._requiredunits != None:
-    #     for lu in idea._requiredunits.values():
+    # if tool._requiredunits != None:
+    #     for lu in tool._requiredunits.values():
     #         print(f"  RequiredUnit   '{lu.base}' sufffacts: {len(lu.sufffacts)} ")
-    if idea._requiredheirs != None:
+    if tool._requiredheirs != None:
         filter_x = True
-        yr_print_idea_base_info(idea=idea, filter=True)
+        yr_print_tool_base_info(tool=tool, filter=True)
 
         filter_x = False
         print("\nRequireds that failed:")
 
-        for l in idea._requiredheirs.values():
+        for l in tool._requiredheirs.values():
             if l._status == filter_x:
                 print(
                     f"  RequiredHeir '{l.base}' Base LH:{l._status} W:{len(l.sufffacts)}"  # \t_task {l._task}"
                 )
-                if str(type(idea)).find(".idea.IdeaKid'>") > 0:
+                if str(type(tool)).find(".tool.ToolKid'>") > 0:
                     yr_print_acptfact(
                         lh_base=l.base,
                         lh_status=l._status,
                         sufffacts=l.sufffacts,
-                        acptfactheirs=idea._acptfactheirs,
+                        acptfactheirs=tool._acptfactheirs,
                     )
                 print("")
-    # print(idea._acptfactheirs)
-    # print(f"{(idea._acptfactheirs != None)=}")
-    # print(f"{len(idea._acptfactheirs)=} ")
+    # print(tool._acptfactheirs)
+    # print(f"{(tool._acptfactheirs != None)=}")
+    # print(f"{len(tool._acptfactheirs)=} ")
 
     print("")
 

@@ -362,20 +362,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             x_list.extend([file] for file in digest_file_list)
         return x_list
 
-    def get_p_ideas_list(self):
+    def get_p_tools_list(self):
         x_list = []
         if self.person_dest_agent != None:
-            idea_list = self.person_dest_agent.get_idea_tree_ordered_road_list()
+            tool_list = self.person_dest_agent.get_tool_tree_ordered_road_list()
 
-            for idea_road in idea_list:
-                idea_obj = self.person_dest_agent.get_idea_kid(idea_road)
+            for tool_road in tool_list:
+                tool_obj = self.person_dest_agent.get_tool_kid(tool_road)
 
-                if idea_obj._walk.find("time") != 3:
+                if tool_obj._walk.find("time") != 3:
                     x_list.append(
                         [
-                            lw_diplay(idea_obj._agent_importance),
-                            idea_road,
-                            len(idea_obj._grouplinks),
+                            lw_diplay(tool_obj._agent_importance),
+                            tool_road,
+                            len(tool_obj._grouplinks),
                         ]
                     )
 
@@ -412,7 +412,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.person_dest_agent != None:
             for (
                 acptfactunit
-            ) in self.person_dest_agent._idearoot._acptfactunits.values():
+            ) in self.person_dest_agent._toolroot._acptfactunits.values():
                 open_nigh = ""
                 if acptfactunit.open is None and acptfactunit.nigh is None:
                     open_nigh = ""
@@ -479,29 +479,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             ]
         self.refresh_x(self.ignores_table, column_headers, ignores_list)
 
-    def _sub_refresh_p_ideas_table(self):
-        p_ideas_list = self.get_p_ideas_list()
-        if len(p_ideas_list) >= 0:
+    def _sub_refresh_p_tools_table(self):
+        p_tools_list = self.get_p_tools_list()
+        if len(p_tools_list) >= 0:
             column_headers = [
                 "agent_importance",
-                f"Ideas Table ({len(p_ideas_list)})",
+                f"Tools Table ({len(p_tools_list)})",
                 "grouplinks",
             ]
         else:
             column_headers = [
                 "agent_importance",
-                "Ideas Table",
+                "Tools Table",
                 "grouplinks",
             ]
 
-        self.w_ideas_table.setObjectName("Ideas Table")
-        self.w_ideas_table.setColumnHidden(0, False)
-        self.w_ideas_table.setColumnHidden(1, False)
-        self.w_ideas_table.setColumnHidden(2, False)
+        self.w_tools_table.setObjectName("Tools Table")
+        self.w_tools_table.setColumnHidden(0, False)
+        self.w_tools_table.setColumnHidden(1, False)
+        self.w_tools_table.setColumnHidden(2, False)
         self.refresh_x(
-            table_x=self.w_ideas_table,
+            table_x=self.w_tools_table,
             column_header=column_headers,
-            populate_list=p_ideas_list,
+            populate_list=p_tools_list,
             column_width=[50, 300, 50],
         )
 
@@ -551,7 +551,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         column_headers = [
             "agent_importance",
             f"Agenda ({len(p_agenda_list)})",
-            "Idea Walk",
+            "Tool Walk",
         ]
 
         self.refresh_x(
@@ -579,7 +579,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.person_dest_agent = (
                 self.person_x.get_dest_agent_from_digest_agent_files()
             )
-        self._sub_refresh_p_ideas_table()
+        self._sub_refresh_p_tools_table()
         self._sub_refresh_p_members_table()
         self._sub_refresh_p_groups_table()
         self._sub_refresh_p_acptfacts_table()

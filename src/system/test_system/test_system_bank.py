@@ -1,6 +1,6 @@
 from src.system.system import SystemUnit
 from src.agent.agent import AgentUnit
-from src.agent.idea import IdeaKid
+from src.agent.tool import ToolKid
 from src.agent.group import groupunit_shop
 from src.agent.member import memberlink_shop
 from src.agent.x_func import delete_dir as x_func_delete_dir
@@ -111,7 +111,7 @@ def test_system_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clean
         2: "river_tmember",
         3: "river_flow",
         4: "river_bucket",
-        5: "idea_catalog",
+        5: "tool_catalog",
         6: "acptfact_catalog",
         7: "groupunit_catalog",
     }
@@ -311,7 +311,7 @@ def test_system_set_agent_attr_defined_by_system_CorrectlyPopulatesAgent_Groupun
     e1.create_dirs_if_null(in_memory_bank=True)
 
     # create 4 agents, 1 with group "swimming expert" linked to 1 member
-    # two others have idea "src,sports,swimming"
+    # two others have tool "src,sports,swimming"
     # run set_bank_metrics
     # assert
     # _memberlinks_set_by_system_road
@@ -336,9 +336,9 @@ def test_system_set_agent_attr_defined_by_system_CorrectlyPopulatesAgent_Groupun
     bob_sports_road = f"{bob_agent._desc},{sports_text}"
     tom_sports_road = f"{tom_agent._desc},{sports_text}"
 
-    sal_agent.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=sal_sports_road)
-    bob_agent.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=bob_sports_road)
-    tom_agent.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=tom_sports_road)
+    sal_agent.add_tool(tool_kid=ToolKid(_desc=swim_text), walk=sal_sports_road)
+    bob_agent.add_tool(tool_kid=ToolKid(_desc=swim_text), walk=bob_sports_road)
+    tom_agent.add_tool(tool_kid=ToolKid(_desc=swim_text), walk=tom_sports_road)
 
     sal_agent.add_memberunit(name=bob_text, creditor_weight=2, debtor_weight=2)
 

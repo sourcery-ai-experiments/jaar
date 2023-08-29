@@ -4,7 +4,7 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1
-from EditIdeaUnit import EditIdeaUnit
+from EditToolUnit import EditToolUnit
 from EditMember import EditMember
 from src.pyqt5_kit.pyqt_func import (
     lw_diplay,
@@ -21,13 +21,13 @@ class EditMainViewException(Exception):
 class EditMainView(qtw.QWidget, Ui_Form):
     """The settings dialog window"""
 
-    refresh_ideaunit_submitted = qtc.pyqtSignal(bool)
+    refresh_toolunit_submitted = qtc.pyqtSignal(bool)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
         self.refresh_button.clicked.connect(self.refresh_all)
-        self.baseideaunit.itemClicked.connect(self.open_editideaunit)
+        self.basetoolunit.itemClicked.connect(self.open_edittoolunit)
         self.member_list.itemClicked.connect(self.open_edit_member)
         self.close_button.clicked.connect(self.close)
         self.open_groupedit_button.clicked.connect(self.open_edit_member)
@@ -78,14 +78,14 @@ class EditMainView(qtw.QWidget, Ui_Form):
         if self.display_problem_acptfacts_cb.checkState() == 2:
             x_list.extend(
                 acptfact
-                for acptfact in self.agent_x._idearoot._acptfactunits.values()
+                for acptfact in self.agent_x._toolroot._acptfactunits.values()
                 if (
-                    self.agent_x.get_idea_kid(road=acptfact.base)._problem_bool
-                    or self.agent_x.get_idea_kid(road=acptfact.pick)._problem_bool
+                    self.agent_x.get_tool_kid(road=acptfact.base)._problem_bool
+                    or self.agent_x.get_tool_kid(road=acptfact.pick)._problem_bool
                 )
             )
         else:
-            x_list = self.agent_x._idearoot._acptfactunits.values()
+            x_list = self.agent_x._toolroot._acptfactunits.values()
         return x_list
 
     def acptfacts_table_load(self):
@@ -142,7 +142,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
     def acptfact_table_select(self):
         self.acptfact_base_update_combo.clear()
         self.acptfact_base_update_combo.addItems(
-            self.agent_x.get_idea_tree_ordered_road_list()
+            self.agent_x.get_tool_tree_ordered_road_list()
         )
         self.acptfact_base_update_combo.setCurrentText(
             self.acptfacts_table.item(self.acptfacts_table.currentRow(), 2).text()
@@ -184,7 +184,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
         ):
             raise EditMainViewException("No table selection for acptfact update.")
         acptfact_update_combo_text = self.acptfact_update_combo.currentText()
-        self.agent_x._idearoot._acptfactunits[
+        self.agent_x._toolroot._acptfactunits[
             base_road
         ].acptfact = acptfact_update_combo_text
         self.base_road = None
@@ -193,7 +193,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
     def refresh_all(self):
         if self.agent_x != None:
             self.refresh_member_list()
-            self.refresh_idea_tree()
+            self.refresh_tool_tree()
             self.acptfacts_table_load()
 
     def refresh_member_list(self):
@@ -219,11 +219,11 @@ class EditMainView(qtw.QWidget, Ui_Form):
             self.member_list.setItem(row - 1, 0, qtw.QTableWidgetItem(member.name))
             self.member_list.setItem(row - 1, 1, qt_agent_credit)
 
-    def open_editideaunit(self):
-        self.EditIdeaunit = EditIdeaUnit()
-        self.EditIdeaunit.agent_x = self.agent_x
-        self.EditIdeaunit.refresh_tree()
-        self.EditIdeaunit.show()
+    def open_edittoolunit(self):
+        self.EditToolunit = EditToolUnit()
+        self.EditToolunit.agent_x = self.agent_x
+        self.EditToolunit.refresh_tree()
+        self.EditToolunit.show()
 
     def open_edit_member(self):
         self.edit_member = EditMember()
@@ -231,10 +231,10 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.edit_member.refresh_all()
         self.edit_member.show()
 
-    def refresh_idea_tree(self):
-        tree_root = get_pyqttree(idearoot=self.agent_x._idearoot)
-        self.baseideaunit.clear()
-        self.baseideaunit.insertTopLevelItems(0, [tree_root])
+    def refresh_tool_tree(self):
+        tree_root = get_pyqttree(toolroot=self.agent_x._toolroot)
+        self.basetoolunit.clear()
+        self.basetoolunit.insertTopLevelItems(0, [tree_root])
 
         # expand to depth set by agent
         def yo_tree_setExpanded(root):
@@ -244,5 +244,5 @@ class EditMainView(qtw.QWidget, Ui_Form):
                 item.setExpanded(item.data(2, 20))
                 yo_tree_setExpanded(item)
 
-        root = self.baseideaunit.invisibleRootItem()
+        root = self.basetoolunit.invisibleRootItem()
         yo_tree_setExpanded(root)

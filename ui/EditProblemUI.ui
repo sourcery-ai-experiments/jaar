@@ -464,7 +464,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QTreeWidget" name="baseideaunit">
+  <widget class="QTreeWidget" name="basetoolunit">
    <property name="geometry">
     <rect>
      <x>1420</x>
@@ -478,7 +478,7 @@
    </property>
    <column>
     <property name="text">
-     <string>ideaunit</string>
+     <string>toolunit</string>
     </property>
    </column>
   </widget>

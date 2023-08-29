@@ -30,7 +30,7 @@ def test_agent_get_missing_acptfact_bases_ReturnsAllBasesNotCoveredByAcptFacts()
     assert len(missing_bases) == 11
 
 
-def test_agent_3AdvocatesNoIdeaKid():
+def test_agent_3AdvocatesNoToolKid():
     # GIVEN
     rico_text = "rico"
     carm_text = "carmen"
@@ -44,13 +44,13 @@ def test_agent_3AdvocatesNoIdeaKid():
     a_x.set_memberunit(memberunit=au_rico)
     a_x.set_memberunit(memberunit=au_carm)
     a_x.set_memberunit(memberunit=au_patr)
-    a_x._idearoot.set_grouplink(
+    a_x._toolroot.set_grouplink(
         grouplink=grouplink_shop(name=GroupName(rico_text), creditor_weight=10)
     )
-    a_x._idearoot.set_grouplink(
+    a_x._toolroot.set_grouplink(
         grouplink=grouplink_shop(name=GroupName(carm_text), creditor_weight=10)
     )
-    a_x._idearoot.set_grouplink(
+    a_x._toolroot.set_grouplink(
         grouplink=grouplink_shop(name=GroupName(patr_text), creditor_weight=10)
     )
 

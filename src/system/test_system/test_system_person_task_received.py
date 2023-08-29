@@ -32,9 +32,9 @@ def test_system_person1_set_laundry_fact_create_person2_laundry_task(
 
     # wx_path = f"{e1.get_persons_dir()}/{timmy_text}"
 
-    # person1 has necessary ideas for laundry basket full != True or Not True
+    # person1 has necessary tools for laundry basket full != True or Not True
 
-    # Have person2 receive laundry idea and status from person1
+    # Have person2 receive laundry tool and status from person1
 
     # confirm person1 laundry_full == False
     # confirm person2 agenda is empty

@@ -368,9 +368,9 @@ class RequiredCore:
     base: Road
     sufffacts: dict[Road:SuffFactUnit]
     # None: ignore,
-    # True: base idea._active_status required be True,
-    # False: base idea._active_status required be False
-    suff_idea_active_status: bool = None
+    # True: base tool._active_status required be True,
+    # False: base tool._active_status required be False
+    suff_tool_active_status: bool = None
 
     def get_key_road(self):
         return self.base
@@ -444,7 +444,7 @@ class RequiredUnit(RequiredCore):
 class RequiredHeir(RequiredCore):
     _status: bool = None
     _task: bool = None
-    _curr_idea_active_status: bool = None
+    _curr_tool_active_status: bool = None
 
     def clear_status(self):
         self._status = None
@@ -466,8 +466,8 @@ class RequiredHeir(RequiredCore):
 
         return x_acptfact
 
-    def set_curr_idea_active_status(self, bool_x: bool):
-        self._curr_idea_active_status = bool_x
+    def set_curr_tool_active_status(self, bool_x: bool):
+        self._curr_tool_active_status = bool_x
 
     def set_status(self, acptfacts: dict[Road:AcptFactHeir]):
         self.clear_status()
@@ -486,8 +486,8 @@ class RequiredHeir(RequiredCore):
         self._status = bool(
             is_single_sufffact_true
             or (
-                self._curr_idea_active_status != None
-                and self._curr_idea_active_status == self.suff_idea_active_status
+                self._curr_tool_active_status != None
+                and self._curr_tool_active_status == self.suff_tool_active_status
             )
         )
         self._task = True if is_single_task_true else None

@@ -1,7 +1,7 @@
 from src.agent.examples.example_agents import agent_v001, get_agent_with_4_levels
 from src.agent.agent import AgentUnit
 from src.agent.tree_metrics import TreeMetrics
-from src.agent.idea import IdeaKid
+from src.agent.tool import ToolKid
 
 
 def test_agent_get_tree_metrics_exists():
@@ -20,7 +20,7 @@ def test_agent_get_tree_metrics_exists():
     assert sx_tree_metrics.grouplinks_metrics != None
 
 
-def test_agent_get_tree_metrics_get_idea_uid_max_correctlyGetsMaxIdeaUID():
+def test_agent_get_tree_metrics_get_tool_uid_max_correctlyGetsMaxToolUID():
     # GIVEN
     sx = agent_v001()
 
@@ -29,10 +29,10 @@ def test_agent_get_tree_metrics_get_idea_uid_max_correctlyGetsMaxIdeaUID():
 
     # THEN
     assert tree_metrics_x.uid_max == 279
-    assert sx.get_idea_uid_max() == 279
+    assert sx.get_tool_uid_max() == 279
 
 
-def test_agent_get_tree_metrics_all_idea_uids_are_unique_IsCorrectBoolean():
+def test_agent_get_tree_metrics_all_tool_uids_are_unique_IsCorrectBoolean():
     # GIVEN
     sx = agent_v001()
 
@@ -40,26 +40,26 @@ def test_agent_get_tree_metrics_all_idea_uids_are_unique_IsCorrectBoolean():
     tree_metrics_x = sx.get_tree_metrics()
 
     # THEN
-    assert tree_metrics_x.all_idea_uids_are_unique == False
+    assert tree_metrics_x.all_tool_uids_are_unique == False
     assert len(tree_metrics_x.uid_dict) == 219
 
 
-def test_agent_get_tree_set_all_idea_uids_unique():
+def test_agent_get_tree_set_all_tool_uids_unique():
     # GIVEN
     sx = agent_v001()
     tree_metrics_before = sx.get_tree_metrics()
     assert len(tree_metrics_before.uid_dict) == 219
 
     # WHEN
-    sx.set_all_idea_uids_unique()
+    sx.set_all_tool_uids_unique()
 
     # THEN
     tree_metrics_after = sx.get_tree_metrics()
     # for uid, uid_count in tree_metrics_after.uid_dict.items():
-    #     # print(f"{uid=} {uid_count=} {len(sx.get_idea_list())=}")
+    #     # print(f"{uid=} {uid_count=} {len(sx.get_tool_list())=}")
     #     print(f"{uid=} {uid_count=} ")
     assert len(tree_metrics_after.uid_dict) == 253
-    assert tree_metrics_after.all_idea_uids_are_unique == True
+    assert tree_metrics_after.all_tool_uids_are_unique == True
 
 
 def test_agent_agent_get_tree_metrics_assigns_uids_correctly():
@@ -69,48 +69,48 @@ def test_agent_agent_get_tree_metrics_assigns_uids_correctly():
     sx = AgentUnit(_desc=src_text)
     swim_text = "swim"
     walk_text = "walk"
-    sx.add_idea(idea_kid=IdeaKid(_desc=swim_text, _uid=None), walk=src_road)
-    sx.add_idea(idea_kid=IdeaKid(_desc=walk_text, _uid=2), walk=src_road)
-    assert sx.get_idea_kid(road=f"{src_road},{swim_text}")._uid is None
+    sx.add_tool(tool_kid=ToolKid(_desc=swim_text, _uid=None), walk=src_road)
+    sx.add_tool(tool_kid=ToolKid(_desc=walk_text, _uid=2), walk=src_road)
+    assert sx.get_tool_kid(road=f"{src_road},{swim_text}")._uid is None
 
-    sx.set_all_idea_uids_unique()
+    sx.set_all_tool_uids_unique()
 
     # THEN
-    assert sx.get_idea_kid(road=f"{src_road},{swim_text}")._uid != None
+    assert sx.get_tool_kid(road=f"{src_road},{swim_text}")._uid != None
 
 
-def test_agent_get_tree_metrics_ReturnsAccurateActionIdeaCount():
+def test_agent_get_tree_metrics_ReturnsAccurateActionToolCount():
     # GIVEN
     cx = agent_v001()
     tree_metrics_before = cx.get_tree_metrics()
     assert tree_metrics_before.bond_promise_count == 69
 
     # WHEN
-    cx.add_idea(idea_kid=IdeaKid(_desc="clean", promise=True), walk=f"{cx._desc}")
+    cx.add_tool(tool_kid=ToolKid(_desc="clean", promise=True), walk=f"{cx._desc}")
 
     # THEN
     tree_metrics_after = cx.get_tree_metrics()
     assert tree_metrics_after.bond_promise_count == 70
 
 
-def test_agent_get_tree_metrics_ReturnsANoneActionIdeaRoad():
+def test_agent_get_tree_metrics_ReturnsANoneActionToolRoad():
     # GIVEN
     src = "src"
     cx = AgentUnit(_weight=10, _desc=src)
     weekdays = "weekdays"
-    idea_kid_weekdays = IdeaKid(_weight=40, _desc=weekdays)
-    cx.add_idea(idea_kid=idea_kid_weekdays, walk=f"{src}")
+    tool_kid_weekdays = ToolKid(_weight=40, _desc=weekdays)
+    cx.add_tool(tool_kid=tool_kid_weekdays, walk=f"{src}")
     tree_metrics_before = cx.get_tree_metrics()
     # WHEN/THEN
-    assert tree_metrics_before.an_promise_idea_road is None
+    assert tree_metrics_before.an_promise_tool_road is None
 
 
-def test_agent_get_tree_metrics_ReturnsAnActionIdeaRoad():
+def test_agent_get_tree_metrics_ReturnsAnActionToolRoad():
     # GIVEN
     cx = agent_v001()
     tree_metrics_before = cx.get_tree_metrics()
     # WHEN/THEN
     assert (
-        tree_metrics_before.an_promise_idea_road
+        tree_metrics_before.an_promise_tool_road
         == "TlME,ACME,ACME Employee Responsiblities,Know Abuse Prevention and Reporting guildlines,Take Fall 2021 training"
     )

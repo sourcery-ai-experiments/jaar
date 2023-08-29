@@ -20,10 +20,10 @@ from src.system.bank_sqlstr import (
     RiverLedgerUnit,
     RiverFlowUnit,
     get_river_ledger_unit,
-    get_idea_catalog_table_count,
-    IdeaCatalog,
-    get_idea_catalog_table_insert_sqlstr,
-    get_idea_catalog_dict,
+    get_tool_catalog_table_count,
+    ToolCatalog,
+    get_tool_catalog_table_insert_sqlstr,
+    get_tool_catalog_dict,
     get_acptfact_catalog_table_count,
     AcptFactCatalog,
     get_acptfact_catalog_table_insert_sqlstr,
@@ -549,7 +549,7 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     #     assert value.curr_close in [0.1, 1.0]
 
 
-def test_system_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_system_get_tool_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -559,21 +559,21 @@ def test_system_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     bob_text = "bob"
     with e1.get_bank_conn() as bank_conn:
-        assert get_idea_catalog_table_count(bank_conn, bob_text) == 0
+        assert get_tool_catalog_table_count(bank_conn, bob_text) == 0
 
     # WHEN
     water_road = "src,elements,water"
-    water_idea_catalog = IdeaCatalog(agent_name=bob_text, idea_road=water_road)
-    water_insert_sqlstr = get_idea_catalog_table_insert_sqlstr(water_idea_catalog)
+    water_tool_catalog = ToolCatalog(agent_name=bob_text, tool_road=water_road)
+    water_insert_sqlstr = get_tool_catalog_table_insert_sqlstr(water_tool_catalog)
     with e1.get_bank_conn() as bank_conn:
         print(water_insert_sqlstr)
         bank_conn.execute(water_insert_sqlstr)
 
     # THEN
-    assert get_idea_catalog_table_count(bank_conn, bob_text) == 1
+    assert get_tool_catalog_table_count(bank_conn, bob_text) == 1
 
 
-def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup):
+def test_refresh_bank_metrics_Populates_tool_catalog_table(env_dir_setup_cleanup):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
     e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -585,27 +585,27 @@ def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup
     bob_agent = get_3node_agent()
     tim_agent = get_6node_agent()
     sal_agent = get_agent_3CleanNodesRandomWeights()
-    bob_agent.agent_and_idearoot_desc_edit(new_desc=bob_text)
-    tim_agent.agent_and_idearoot_desc_edit(new_desc=tim_text)
-    sal_agent.agent_and_idearoot_desc_edit(new_desc=sal_text)
+    bob_agent.agent_and_toolroot_desc_edit(new_desc=bob_text)
+    tim_agent.agent_and_toolroot_desc_edit(new_desc=tim_text)
+    sal_agent.agent_and_toolroot_desc_edit(new_desc=sal_text)
     e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
     e1.save_agentunit_obj_to_agents_dir(agent_x=tim_agent)
     e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
 
     with e1.get_bank_conn() as bank_conn:
-        assert get_idea_catalog_table_count(bank_conn, bob_text) == 0
+        assert get_tool_catalog_table_count(bank_conn, bob_text) == 0
 
     # WHEN
     e1.refresh_bank_metrics()
 
     # THEN
     with e1.get_bank_conn() as bank_conn:
-        assert get_idea_catalog_table_count(bank_conn, bob_text) == 3
-        assert get_idea_catalog_table_count(bank_conn, tim_text) == 6
-        assert get_idea_catalog_table_count(bank_conn, sal_text) == 5
+        assert get_tool_catalog_table_count(bank_conn, bob_text) == 3
+        assert get_tool_catalog_table_count(bank_conn, tim_text) == 6
+        assert get_tool_catalog_table_count(bank_conn, sal_text) == 5
 
 
-def test_system_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
+def test_system_get_tool_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     # GIVEN
     e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -619,28 +619,28 @@ def test_system_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     tim_agent = get_6node_agent()
     sal_agent = get_agent_3CleanNodesRandomWeights()
     elu_agent = get_6node_agent()
-    bob_agent.agent_and_idearoot_desc_edit(new_desc=bob_text)
-    tim_agent.agent_and_idearoot_desc_edit(new_desc=tim_text)
-    sal_agent.agent_and_idearoot_desc_edit(new_desc=sal_text)
-    elu_agent.agent_and_idearoot_desc_edit(new_desc=elu_text)
+    bob_agent.agent_and_toolroot_desc_edit(new_desc=bob_text)
+    tim_agent.agent_and_toolroot_desc_edit(new_desc=tim_text)
+    sal_agent.agent_and_toolroot_desc_edit(new_desc=sal_text)
+    elu_agent.agent_and_toolroot_desc_edit(new_desc=elu_text)
     e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
     e1.save_agentunit_obj_to_agents_dir(agent_x=tim_agent)
     e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
     e1.save_agentunit_obj_to_agents_dir(agent_x=elu_agent)
     e1.refresh_bank_metrics()
-    i_count_sqlstr = get_table_count_sqlstr("idea_catalog")
+    i_count_sqlstr = get_table_count_sqlstr("tool_catalog")
     with e1.get_bank_conn() as bank_conn:
         print(f"{i_count_sqlstr=}")
         assert get_single_result_back(e1.get_bank_conn(), i_count_sqlstr) == 20
 
     # WHEN / THEN
-    assert len(get_idea_catalog_dict(e1.get_bank_conn())) == 20
+    assert len(get_tool_catalog_dict(e1.get_bank_conn())) == 20
     b_road = "src,B"
-    assert len(get_idea_catalog_dict(e1.get_bank_conn(), b_road)) == 3
+    assert len(get_tool_catalog_dict(e1.get_bank_conn(), b_road)) == 3
     ce_road = "src,C,E"
-    assert len(get_idea_catalog_dict(e1.get_bank_conn(), ce_road)) == 2
+    assert len(get_tool_catalog_dict(e1.get_bank_conn(), ce_road)) == 2
     src_road = "src"
-    assert len(get_idea_catalog_dict(e1.get_bank_conn(), src_road)) == 4
+    assert len(get_tool_catalog_dict(e1.get_bank_conn(), src_road)) == 4
 
 
 def test_system_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
@@ -685,17 +685,17 @@ def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
     bob_agent = get_3node_agent()
     tim_agent = get_6node_agent()
     sal_agent = get_agent_3CleanNodesRandomWeights()
-    bob_agent.agent_and_idearoot_desc_edit(new_desc=bob_text)
-    tim_agent.agent_and_idearoot_desc_edit(new_desc=tim_text)
-    sal_agent.agent_and_idearoot_desc_edit(new_desc=sal_text)
+    bob_agent.agent_and_toolroot_desc_edit(new_desc=bob_text)
+    tim_agent.agent_and_toolroot_desc_edit(new_desc=tim_text)
+    sal_agent.agent_and_toolroot_desc_edit(new_desc=sal_text)
     c_text = "C"
     c_road = f"{tim_agent._desc},{c_text}"
     f_text = "F"
     f_road = f"{c_road},{f_text}"
     b_text = "B"
     b_road = f"{tim_agent._desc},{b_text}"
-    # for idea_x in tim_agent._idea_dict.values():
-    #     print(f"{f_road=} {idea_x.get_road()=}")
+    # for tool_x in tim_agent._tool_dict.values():
+    #     print(f"{f_road=} {tool_x.get_road()=}")
     tim_agent.set_acptfact(base=c_road, pick=f_road)
 
     bob_agent.set_acptfact(base=c_road, pick=f_road)

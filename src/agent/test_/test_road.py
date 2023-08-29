@@ -11,7 +11,7 @@ from src.agent.road import (
     get_ancestor_roads,
 )
 from src.agent.required import sufffactunit_shop
-from src.agent.idea import IdeaCore
+from src.agent.tool import ToolCore
 from pytest import raises as pytest_raises
 
 
@@ -196,30 +196,30 @@ def test_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
 #     bloomers_road = Road(f"{src},{person_text},{bloomers_text}")
 #     old_roses_text = "roses"
 #     old_roses_road = Road(f"{src},{person_text},{bloomers_text},{old_roses_text}")
-#     idea_roses = IdeaCore(_desc=old_roses_text, _walk=bloomers_road)
-#     idea_bloomers = IdeaCore(_desc=bloomers_text, _walk=person_road)
-#     idea_bloomers.add_kid(idea_kid=idea_roses)
+#     tool_roses = ToolCore(_desc=old_roses_text, _walk=bloomers_road)
+#     tool_bloomers = ToolCore(_desc=bloomers_text, _walk=person_road)
+#     tool_bloomers.add_kid(tool_kid=tool_roses)
 
-#     for idea_key, idea_obj in idea_bloomers._kids.items():
-#         assert idea_key == old_roses_text
-#         assert idea_obj.get_key_road() == old_roses_text
-#         assert idea_obj._desc == old_roses_text
+#     for tool_key, tool_obj in tool_bloomers._kids.items():
+#         assert tool_key == old_roses_text
+#         assert tool_obj.get_key_road() == old_roses_text
+#         assert tool_obj._desc == old_roses_text
 
 #     # WHEN
 #     new_roses_text = "roses2"
 #     new_roses_road = Road(f"src,person,{new_roses_text}")
 #     new_kids_x = find_replace_road_key_dict(
-#         dict_x=idea_bloomers._kids,
+#         dict_x=tool_bloomers._kids,
 #         old_road=old_roses_road,
 #         new_road=new_roses_road,
 #         key_is_last_node=True,
 #     )
 
 #     # THEN
-#     for idea_key, idea_obj in new_kids_x.items():
-#         assert idea_key == new_roses_text
-#         assert idea_obj.get_key_road() == new_roses_text
-#         assert idea_obj._desc == new_roses_text
+#     for tool_key, tool_obj in new_kids_x.items():
+#         assert tool_key == new_roses_text
+#         assert tool_obj.get_key_road() == new_roses_text
+#         assert tool_obj._desc == new_roses_text
 #     assert new_kids_x.get(old_roses_road) is None
 
 

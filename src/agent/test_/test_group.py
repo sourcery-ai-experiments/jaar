@@ -433,7 +433,7 @@ def test_brankLink_set_agent_importanceCorrectly():
     bikers_debt_weight = 6.0
     grouplinks_sum_creditor_weight = 60
     grouplinks_sum_debtor_weight = 60
-    idea_agent_importance = 1
+    tool_agent_importance = 1
     group_heir_x = groupheir_shop(
         name=bikers_name,
         creditor_weight=bikers_creditor_weight,
@@ -442,7 +442,7 @@ def test_brankLink_set_agent_importanceCorrectly():
 
     # WHEN
     group_heir_x.set_agent_credit_debt(
-        idea_agent_importance=idea_agent_importance,
+        tool_agent_importance=tool_agent_importance,
         groupheirs_creditor_weight_sum=grouplinks_sum_creditor_weight,
         groupheirs_debtor_weight_sum=grouplinks_sum_debtor_weight,
     )

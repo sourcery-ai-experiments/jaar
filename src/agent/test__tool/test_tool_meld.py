@@ -1,11 +1,11 @@
-from src.agent.idea import IdeaCore, IdeaAttrHolder
+from src.agent.tool import ToolCore, ToolAttrHolder
 from src.agent.group import GroupLink, GroupName, grouplink_shop
 from src.agent.required import RequiredUnit, acptfactunit_shop as c_acptfactunit, Road
 from pytest import raises as pytest_raises
 
 
-def custom_set_idea_attr(
-    idea: IdeaCore,
+def custom_set_tool_attr(
+    tool: ToolCore,
     weight: int = None,
     uid: int = None,
     required: RequiredUnit = None,  # delete/replace RequiredUnit
@@ -16,7 +16,7 @@ def custom_set_idea_attr(
     required_sufffact_divisor: int = None,
     required_del_sufffact_base: Road = None,
     required_del_sufffact_need: Road = None,
-    required_suff_idea_active_status: str = None,
+    required_suff_tool_active_status: str = None,
     begin: float = None,
     close: float = None,
     addin: int = None,
@@ -35,7 +35,7 @@ def custom_set_idea_attr(
     problem_bool: bool = None,
     on_meld_weight_action: str = None,
 ):
-    idea_attr = IdeaAttrHolder(
+    tool_attr = ToolAttrHolder(
         weight=weight,
         uid=uid,
         required=required,
@@ -46,7 +46,7 @@ def custom_set_idea_attr(
         required_sufffact_divisor=required_sufffact_divisor,
         required_del_sufffact_base=required_del_sufffact_base,
         required_del_sufffact_need=required_del_sufffact_need,
-        required_suff_idea_active_status=required_suff_idea_active_status,
+        required_suff_tool_active_status=required_suff_tool_active_status,
         begin=begin,
         close=close,
         addin=addin,
@@ -66,28 +66,28 @@ def custom_set_idea_attr(
         on_meld_weight_action=on_meld_weight_action,
     )
 
-    idea._set_idea_attr(idea_attr=idea_attr)
+    tool._set_tool_attr(tool_attr=tool_attr)
 
 
-def test_idea_required_meld_BaseScenarioWorks():
+def test_tool_required_meld_BaseScenarioWorks():
     # GIVEN
     required_base_x1 = "src,ball,run"
-    yx1 = IdeaCore(_desc="spirit")
-    custom_set_idea_attr(
-        idea=yx1,
+    yx1 = ToolCore(_desc="spirit")
+    custom_set_tool_attr(
+        tool=yx1,
         required_base=required_base_x1,
         required_sufffact=required_base_x1,
     )
 
-    yx2 = IdeaCore(_desc="spirit")
-    custom_set_idea_attr(
-        idea=yx2,
+    yx2 = ToolCore(_desc="spirit")
+    custom_set_tool_attr(
+        tool=yx2,
         required_base=required_base_x1,
         required_sufffact=required_base_x1,
     )
 
     # WHEN
-    yx1.meld(other_idea=yx2)
+    yx1.meld(other_tool=yx2)
 
     # THEN
     lu_x = RequiredUnit(base=required_base_x1, sufffacts={})
@@ -98,26 +98,26 @@ def test_idea_required_meld_BaseScenarioWorks():
     assert yx1._weight == 1
 
 
-def test_idea_required_meld_TwoRequiredsScenarioWorks():
+def test_tool_required_meld_TwoRequiredsScenarioWorks():
     # GIVEN
     required_base_x1 = "src,ball,run"
     required_base_x2 = "src,ball,swim"
-    yx1 = IdeaCore(_desc="spirit")
-    custom_set_idea_attr(
-        idea=yx1,
+    yx1 = ToolCore(_desc="spirit")
+    custom_set_tool_attr(
+        tool=yx1,
         required_base=required_base_x1,
         required_sufffact=required_base_x1,
     )
 
-    yx2 = IdeaCore(_desc="spirit")
-    custom_set_idea_attr(
-        idea=yx2,
+    yx2 = ToolCore(_desc="spirit")
+    custom_set_tool_attr(
+        tool=yx2,
         required_base=required_base_x2,
         required_sufffact=required_base_x2,
     )
 
     # WHEN
-    yx1.meld(other_idea=yx2)
+    yx1.meld(other_tool=yx2)
 
     # THEN
     assert len(yx1._requiredunits) == 2
@@ -125,31 +125,31 @@ def test_idea_required_meld_TwoRequiredsScenarioWorks():
     assert yx1._requiredunits[required_base_x2] != None
 
 
-def test_idea_required_meld_TwoRequiredsMeldScenarioWorks():
+def test_tool_required_meld_TwoRequiredsMeldScenarioWorks():
     # GIVEN
     required_base_x1 = "src,ball,run"
     required_base_x2 = "src,ball,swim"
-    yx1 = IdeaCore(_desc="spirit")
-    custom_set_idea_attr(
-        idea=yx1,
+    yx1 = ToolCore(_desc="spirit")
+    custom_set_tool_attr(
+        tool=yx1,
         required_base=required_base_x1,
         required_sufffact=required_base_x1,
     )
-    custom_set_idea_attr(
-        idea=yx1,
+    custom_set_tool_attr(
+        tool=yx1,
         required_base=required_base_x2,
         required_sufffact=required_base_x2,
     )
 
-    yx2 = IdeaCore(_desc="spirit")
-    custom_set_idea_attr(
-        idea=yx2,
+    yx2 = ToolCore(_desc="spirit")
+    custom_set_tool_attr(
+        tool=yx2,
         required_base=required_base_x2,
         required_sufffact=required_base_x2,
     )
 
     # WHEN
-    yx1.meld(other_idea=yx2)
+    yx1.meld(other_tool=yx2)
 
     # THEN
     # lu_x = RequiredUnit(base=required_base_x1, sufffacts={})
@@ -161,68 +161,68 @@ def test_idea_required_meld_TwoRequiredsMeldScenarioWorks():
     assert yx1._requiredunits[required_base_x2] != None
 
 
-def test_idea_grouplink_meld_BaseScenarioWorks_on_meld_weight_actionEquals_default():
+def test_tool_grouplink_meld_BaseScenarioWorks_on_meld_weight_actionEquals_default():
     # GIVEN
-    yx1 = IdeaCore(_desc="spirit")
+    yx1 = ToolCore(_desc="spirit")
     br1 = "Running"
-    custom_set_idea_attr(idea=yx1, on_meld_weight_action="default")
-    custom_set_idea_attr(
-        idea=yx1, grouplink=grouplink_shop(name=br1, creditor_weight=2)
+    custom_set_tool_attr(tool=yx1, on_meld_weight_action="default")
+    custom_set_tool_attr(
+        tool=yx1, grouplink=grouplink_shop(name=br1, creditor_weight=2)
     )
-    yx2 = IdeaCore(_desc="Rocking")
-    custom_set_idea_attr(idea=yx2, on_meld_weight_action="default")
-    custom_set_idea_attr(
-        idea=yx2, grouplink=grouplink_shop(name=br1, creditor_weight=3)
+    yx2 = ToolCore(_desc="Rocking")
+    custom_set_tool_attr(tool=yx2, on_meld_weight_action="default")
+    custom_set_tool_attr(
+        tool=yx2, grouplink=grouplink_shop(name=br1, creditor_weight=3)
     )
 
     # WHEN
-    yx1.meld(other_idea=yx2)
+    yx1.meld(other_tool=yx2)
 
     # THEN
     bl_x = grouplink_shop(name=br1, creditor_weight=2)
     assert yx1._grouplinks[br1] == bl_x
 
 
-def test_idea_grouplink_meld_BaseScenarioWorks_on_meld_weight_actionEquals_sum():
+def test_tool_grouplink_meld_BaseScenarioWorks_on_meld_weight_actionEquals_sum():
     # GIVEN
-    yx1 = IdeaCore(_desc="spirit")
+    yx1 = ToolCore(_desc="spirit")
     br1 = "Running"
-    custom_set_idea_attr(idea=yx1, on_meld_weight_action="sum")
-    custom_set_idea_attr(
-        idea=yx1, grouplink=grouplink_shop(name=br1, creditor_weight=2, debtor_weight=3)
+    custom_set_tool_attr(tool=yx1, on_meld_weight_action="sum")
+    custom_set_tool_attr(
+        tool=yx1, grouplink=grouplink_shop(name=br1, creditor_weight=2, debtor_weight=3)
     )
-    yx2 = IdeaCore(_desc="Rocking")
-    custom_set_idea_attr(idea=yx2, on_meld_weight_action="sum")
-    custom_set_idea_attr(
-        idea=yx2, grouplink=grouplink_shop(name=br1, creditor_weight=2, debtor_weight=3)
+    yx2 = ToolCore(_desc="Rocking")
+    custom_set_tool_attr(tool=yx2, on_meld_weight_action="sum")
+    custom_set_tool_attr(
+        tool=yx2, grouplink=grouplink_shop(name=br1, creditor_weight=2, debtor_weight=3)
     )
 
     # WHEN
-    yx1.meld(other_idea=yx2)
+    yx1.meld(other_tool=yx2)
 
     # THEN
     lu_x = grouplink_shop(name=br1, creditor_weight=4, debtor_weight=6)
     assert yx1._grouplinks[br1] == lu_x
 
 
-def test_idea_grouplink_meld_TwoGroupsScenarioWorks():
+def test_tool_grouplink_meld_TwoGroupsScenarioWorks():
     # GIVEN
-    yx1 = IdeaCore(_desc="spirit")
+    yx1 = ToolCore(_desc="spirit")
     br1 = "Running"
-    custom_set_idea_attr(idea=yx1, on_meld_weight_action="sum")
-    custom_set_idea_attr(
-        idea=yx1, grouplink=grouplink_shop(name=br1, creditor_weight=2)
+    custom_set_tool_attr(tool=yx1, on_meld_weight_action="sum")
+    custom_set_tool_attr(
+        tool=yx1, grouplink=grouplink_shop(name=br1, creditor_weight=2)
     )
 
     br2 = "Bears"
-    yx2 = IdeaCore(_desc="Rocking")
-    custom_set_idea_attr(idea=yx1, on_meld_weight_action="sum")
-    custom_set_idea_attr(
-        idea=yx2, grouplink=grouplink_shop(name=br2, creditor_weight=2)
+    yx2 = ToolCore(_desc="Rocking")
+    custom_set_tool_attr(tool=yx1, on_meld_weight_action="sum")
+    custom_set_tool_attr(
+        tool=yx2, grouplink=grouplink_shop(name=br2, creditor_weight=2)
     )
 
     # WHEN
-    yx1.meld(other_idea=yx2)
+    yx1.meld(other_tool=yx2)
 
     # THEN
     lu_x1 = grouplink_shop(name=br1, creditor_weight=2)
@@ -231,7 +231,7 @@ def test_idea_grouplink_meld_TwoGroupsScenarioWorks():
     assert yx1._grouplinks[br2] == lu_x2
 
 
-def test_idea_acptfactunits_meld_BaseScenarioWorks():
+def test_tool_acptfactunits_meld_BaseScenarioWorks():
     # GIVEN
     src = "casa"
     tech_text = "tech"
@@ -239,12 +239,12 @@ def test_idea_acptfactunits_meld_BaseScenarioWorks():
     bowl_text = "bowl"
     bowl_road = f"{src},{tech_text},{bowl_text}"
     hc_1 = c_acptfactunit(base=tech_road, pick=bowl_road)
-    yx1 = IdeaCore(_desc="spirit")
+    yx1 = ToolCore(_desc="spirit")
     yx1.set_acptfactunits_empty_if_null()
     yx1.set_acptfactunit(acptfactunit=hc_1)
 
     hc_2 = c_acptfactunit(base=tech_road, pick=bowl_road)
-    yx2 = IdeaCore(_desc="fun")
+    yx2 = ToolCore(_desc="fun")
     yx2.set_acptfactunits_empty_if_null()
     yx2.set_acptfactunit(acptfactunit=hc_2)
 
@@ -257,7 +257,7 @@ def test_idea_acptfactunits_meld_BaseScenarioWorks():
     assert yx1._acptfactunits == yx2._acptfactunits
 
 
-def test_idea_acptfactunits_meld_2AcptFactUnitsWorks():
+def test_tool_acptfactunits_meld_2AcptFactUnitsWorks():
     # GIVEN
     src = "casa"
     tech_text = "tech"
@@ -268,15 +268,15 @@ def test_idea_acptfactunits_meld_2AcptFactUnitsWorks():
     plate_road = f"{src},{tech_text},{plate_text}"
 
     hc_1 = c_acptfactunit(base=tech_road, pick=bowl_road)
-    yx1 = IdeaCore(_desc="spirit")
+    yx1 = ToolCore(_desc="spirit")
     yx1.set_acptfactunit(acptfactunit=hc_1)
 
     hc_2 = c_acptfactunit(base=plate_road, pick=plate_road)
-    yx2 = IdeaCore(_desc="fun")
+    yx2 = ToolCore(_desc="fun")
     yx2.set_acptfactunit(acptfactunit=hc_2)
 
     # WHEN
-    yx1.meld(other_idea=yx2)
+    yx1.meld(other_tool=yx2)
 
     # THEN
     assert len(yx1._acptfactunits) == 2
@@ -284,7 +284,7 @@ def test_idea_acptfactunits_meld_2AcptFactUnitsWorks():
     assert yx1._acptfactunits != yx2._acptfactunits
 
 
-def test_idea_attributes_meld_Works():
+def test_tool_attributes_meld_Works():
     # GIVEN
     src = "casa"
     tech_text = "tech"
@@ -294,9 +294,9 @@ def test_idea_attributes_meld_Works():
     plate_text = "plate"
     plate_road = f"{src},{tech_text},{plate_text}"
 
-    yx1 = IdeaCore(_desc="spirit")
-    custom_set_idea_attr(
-        idea=yx1,
+    yx1 = ToolCore(_desc="spirit")
+    custom_set_tool_attr(
+        tool=yx1,
         uid="test_uid1",
         weight=7,
         begin=1,
@@ -313,9 +313,9 @@ def test_idea_attributes_meld_Works():
         is_expanded=True,
     )
 
-    yx2 = IdeaCore(_desc="fun")
-    custom_set_idea_attr(
-        idea=yx2,
+    yx2 = ToolCore(_desc="fun")
+    custom_set_tool_attr(
+        tool=yx2,
         uid="test_uid1",
         weight=7,
         begin=1,
@@ -352,199 +352,199 @@ def test_idea_attributes_meld_Works():
     assert yx1._is_expanded == True
 
 
-def test_idea_attributes_meld_FailRaisesError_uid():
+def test_tool_attributes_meld_FailRaisesError_uid():
     x_name = "_uid"
     x_val = "test_uid1"
-    yx1 = IdeaCore(_desc="spirit")
-    custom_set_idea_attr(idea=yx1, uid=x_val)
-    yx2 = IdeaCore(_desc="fun")
+    yx1 = ToolCore(_desc="spirit")
+    custom_set_tool_attr(tool=yx1, uid=x_val)
+    yx2 = ToolCore(_desc="fun")
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:None"
+        == f"Meld fail tool={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:None"
     )
 
 
-def test_idea_attributes_meld_FailRaisesError_begin():
+def test_tool_attributes_meld_FailRaisesError_begin():
     x_name = "_begin"
     x_val = 77
-    yx1 = IdeaCore(_desc="spirit")
-    custom_set_idea_attr(idea=yx1, begin=x_val)
-    yx2 = IdeaCore(_desc="fun")
+    yx1 = ToolCore(_desc="spirit")
+    custom_set_tool_attr(tool=yx1, begin=x_val)
+    yx2 = ToolCore(_desc="fun")
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:None"
+        == f"Meld fail tool={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:None"
     )
 
 
-def test_idea_attributes_meld_FailRaisesError_close():
+def test_tool_attributes_meld_FailRaisesError_close():
     x_name = "_close"
     x_val = 77
-    yx1 = IdeaCore(_desc="spirit")
-    custom_set_idea_attr(idea=yx1, close=x_val)
-    yx2 = IdeaCore(_desc="fun")
+    yx1 = ToolCore(_desc="spirit")
+    custom_set_tool_attr(tool=yx1, close=x_val)
+    yx2 = ToolCore(_desc="fun")
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:None"
+        == f"Meld fail tool={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:None"
     )
 
 
-def test_idea_attributes_meld_FailRaisesError_addin():
+def test_tool_attributes_meld_FailRaisesError_addin():
     x_name = "_addin"
     x_val = 77
-    yx1 = IdeaCore(_desc="spirit")
-    custom_set_idea_attr(idea=yx1, addin=x_val)
-    yx2 = IdeaCore(_desc="fun")
+    yx1 = ToolCore(_desc="spirit")
+    custom_set_tool_attr(tool=yx1, addin=x_val)
+    yx2 = ToolCore(_desc="fun")
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:None"
+        == f"Meld fail tool={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:None"
     )
 
 
-def test_idea_attributes_meld_FailRaisesError_denom():
+def test_tool_attributes_meld_FailRaisesError_denom():
     x_name = "_denom"
     x_val = 15
-    yx1 = IdeaCore(_desc="spirit")
-    custom_set_idea_attr(idea=yx1, denom=x_val)
-    yx2 = IdeaCore(_desc="fun")
+    yx1 = ToolCore(_desc="spirit")
+    custom_set_tool_attr(tool=yx1, denom=x_val)
+    yx2 = ToolCore(_desc="fun")
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:None"
+        == f"Meld fail tool={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:None"
     )
 
 
-def test_idea_attributes_meld_FailRaisesError_numor():
+def test_tool_attributes_meld_FailRaisesError_numor():
     x_name = "_numor"
     x_val = 77
-    yx1 = IdeaCore(_desc="spirit")
-    custom_set_idea_attr(idea=yx1, numor=x_val)
-    yx2 = IdeaCore(_desc="fun")
+    yx1 = ToolCore(_desc="spirit")
+    custom_set_tool_attr(tool=yx1, numor=x_val)
+    yx2 = ToolCore(_desc="fun")
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:None"
+        == f"Meld fail tool={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:None"
     )
 
 
-def test_idea_attributes_meld_FailRaisesError_reest():
+def test_tool_attributes_meld_FailRaisesError_reest():
     x_name = "_reest"
     x_val = 77
-    yx1 = IdeaCore(_desc="spirit")
-    custom_set_idea_attr(idea=yx1, reest=x_val)
-    yx2 = IdeaCore(_desc="fun")
+    yx1 = ToolCore(_desc="spirit")
+    custom_set_tool_attr(tool=yx1, reest=x_val)
+    yx2 = ToolCore(_desc="fun")
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:None"
+        == f"Meld fail tool={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:None"
     )
 
 
-def test_idea_attributes_meld_FailRaisesError_special_road():
+def test_tool_attributes_meld_FailRaisesError_special_road():
     x_name = "_special_road"
     x_val = "test_special_road1"
-    yx1 = IdeaCore(_desc="spirit")
-    custom_set_idea_attr(idea=yx1, special_road=x_val)
-    yx2 = IdeaCore(_desc="fun")
+    yx1 = ToolCore(_desc="spirit")
+    custom_set_tool_attr(tool=yx1, special_road=x_val)
+    yx2 = ToolCore(_desc="fun")
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:None"
+        == f"Meld fail tool={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:None"
     )
 
 
-def test_idea_attributes_meld_FailRaisesError_numeric_road():
+def test_tool_attributes_meld_FailRaisesError_numeric_road():
     x_name = "_numeric_road"
     x_val = "test_numeric_road1"
-    yx1 = IdeaCore(_desc="spirit")
-    custom_set_idea_attr(idea=yx1, numeric_road=x_val)
-    yx2 = IdeaCore(_desc="fun")
+    yx1 = ToolCore(_desc="spirit")
+    custom_set_tool_attr(tool=yx1, numeric_road=x_val)
+    yx2 = ToolCore(_desc="fun")
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:None"
+        == f"Meld fail tool={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:None"
     )
 
 
-def test_idea_attributes_meld_FailRaisesError_action():
+def test_tool_attributes_meld_FailRaisesError_action():
     x_name = "promise"
     x_val = True
-    yx1 = IdeaCore(_desc="spirit")
-    custom_set_idea_attr(idea=yx1, promise=x_val)
-    yx2 = IdeaCore(_desc="fun")
+    yx1 = ToolCore(_desc="spirit")
+    custom_set_tool_attr(tool=yx1, promise=x_val)
+    yx2 = ToolCore(_desc="fun")
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:False"
+        == f"Meld fail tool={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:False"
     )
 
 
-# def test_idea_attributes_meld_FailRaisesError_all_member_credit():
-# def test_idea_attributes_meld_FailRaisesError_all_member_debt():
+# def test_tool_attributes_meld_FailRaisesError_all_member_credit():
+# def test_tool_attributes_meld_FailRaisesError_all_member_debt():
 #     x_name = "_all_member_credit"
 #     x_name = "_all_member_debt"
 #     x_val = "test_all_member_credit1"
 #     x_val = "test_all_member_debt1"
-#     yx1 = IdeaCore(_desc="spirit")
-#     custom_set_idea_attr(idea=yx1, all_member_credit=x_val)
-#     custom_set_idea_attr(idea=yx1, all_member_debt=x_val)
-#     yx2 = IdeaCore(_desc="fun")
+#     yx1 = ToolCore(_desc="spirit")
+#     custom_set_tool_attr(tool=yx1, all_member_credit=x_val)
+#     custom_set_tool_attr(tool=yx1, all_member_debt=x_val)
+#     yx2 = ToolCore(_desc="fun")
 
 #     # WHEN/THEN
 #     with pytest_raises(Exception) as excinfo:
 #         yx1.meld(yx2)
 #     assert (
 #         str(excinfo.value)
-#         == f"Meld fail idea={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:None"
+#         == f"Meld fail tool={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:None"
 #     )
 
 
-def test_idea_attributes_meld_FailRaisesError_is_expanded():
+def test_tool_attributes_meld_FailRaisesError_is_expanded():
     x_name = "_is_expanded"
     x_val = False
     outside_val = True
-    yx1 = IdeaCore(_desc="spirit")
-    custom_set_idea_attr(idea=yx1, is_expanded=x_val)
-    yx2 = IdeaCore(_desc="fun")
-    custom_set_idea_attr(idea=yx2, is_expanded=outside_val)
+    yx1 = ToolCore(_desc="spirit")
+    custom_set_tool_attr(tool=yx1, is_expanded=x_val)
+    yx2 = ToolCore(_desc="fun")
+    custom_set_tool_attr(tool=yx2, is_expanded=outside_val)
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:True"
+        == f"Meld fail tool={yx1._walk},{yx1._desc} {x_name}:{x_val} with {yx2._walk},{yx2._desc} {x_name}:True"
     )
