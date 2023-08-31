@@ -130,7 +130,7 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.label.setText(
             _translate(
-                "Form", "Reset Current Date for entire ideaunit (American calendar)"
+                "Form", "Reset Current Date for entire ideaunit (American standard)"
             )
         )
         self.label_2.setText(_translate("Form", "Year"))
@@ -142,7 +142,7 @@ class Ui_Form(object):
         self.label_11.setText(_translate("Form", "Day"))
         self.label_14.setText(
             _translate(
-                "Form", "Reset Previous Date for entire ideaunit (American calendar)"
+                "Form", "Reset Previous Date for entire ideaunit (American standard)"
             )
         )
         self.label_15.setText(_translate("Form", "Year"))
