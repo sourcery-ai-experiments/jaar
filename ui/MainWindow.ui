@@ -498,7 +498,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Tool_id:</string>
+     <string>Idea_id:</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_agenda_family_data">
@@ -658,7 +658,7 @@
     </column>
     <column>
      <property name="text">
-      <string>tool_road</string>
+      <string>idea_road</string>
      </property>
     </column>
     <column>

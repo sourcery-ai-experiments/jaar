@@ -30,9 +30,9 @@ from src.system.bank_sqlstr import (
     RiverLedgerUnit,
     RiverFlowUnit,
     RiverTmemberUnit,
-    ToolCatalog,
-    get_tool_catalog_table_insert_sqlstr,
-    get_tool_catalog_dict,
+    IdeaCatalog,
+    get_idea_catalog_table_insert_sqlstr,
+    get_idea_catalog_dict,
     AcptFactCatalog,
     get_acptfact_catalog_table_insert_sqlstr,
     GroupUnitCatalog,
@@ -54,12 +54,12 @@ class SystemUnit:
         for groupunit_x in agent_obj._groups.values():
             if groupunit_x._memberlinks_set_by_system_road != None:
                 groupunit_x.clear_memberlinks()
-                ic = get_tool_catalog_dict(
+                ic = get_idea_catalog_dict(
                     self.get_bank_conn(), groupunit_x._memberlinks_set_by_system_road
                 )
-                for tool_catalog in ic.values():
-                    if agent_name != tool_catalog.agent_name:
-                        memberlink_x = memberlink_shop(name=tool_catalog.agent_name)
+                for idea_catalog in ic.values():
+                    if agent_name != idea_catalog.agent_name:
+                        memberlink_x = memberlink_shop(name=idea_catalog.agent_name)
                         groupunit_x.set_memberlink(memberlink_x)
         self.save_agentunit_obj_to_agents_dir(agent_obj)
 
@@ -187,7 +187,7 @@ class SystemUnit:
             self._bank_insert_agentunit(agentunit_x)
             self._bank_insert_memberunit(agentunit_x)
             self._bank_insert_groupunit(agentunit_x)
-            self._bank_insert_toolunit(agentunit_x)
+            self._bank_insert_ideaunit(agentunit_x)
             self._bank_insert_acptfact(agentunit_x)
 
     def _bank_insert_agentunit(self, agentunit_x: AgentUnit):
@@ -214,18 +214,18 @@ class SystemUnit:
                 sqlstr = get_groupunit_catalog_table_insert_sqlstr(groupunit_catalog_x)
                 cur.execute(sqlstr)
 
-    def _bank_insert_toolunit(self, agentunit_x: AgentUnit):
+    def _bank_insert_ideaunit(self, agentunit_x: AgentUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            for tool_x in agentunit_x._tool_dict.values():
-                tool_catalog_x = ToolCatalog(agentunit_x._desc, tool_x.get_road())
-                sqlstr = get_tool_catalog_table_insert_sqlstr(tool_catalog_x)
+            for idea_x in agentunit_x._idea_dict.values():
+                idea_catalog_x = IdeaCatalog(agentunit_x._desc, idea_x.get_road())
+                sqlstr = get_idea_catalog_table_insert_sqlstr(idea_catalog_x)
                 cur.execute(sqlstr)
 
     def _bank_insert_acptfact(self, agentunit_x: AgentUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            for acptfact_x in agentunit_x._toolroot._acptfactunits.values():
+            for acptfact_x in agentunit_x._idearoot._acptfactunits.values():
                 acptfact_catalog_x = AcptFactCatalog(
                     agent_name=agentunit_x._desc,
                     base=acptfact_x.base,
@@ -379,7 +379,7 @@ class SystemUnit:
 
     def rename_agent_in_agents_dir(self, old_desc: str, new_desc: str):
         agent_x = self.get_agent_from_agents_dir(_desc=old_desc)
-        agent_x.agent_and_toolroot_desc_edit(new_desc=new_desc)
+        agent_x.agent_and_idearoot_desc_edit(new_desc=new_desc)
         self.save_agentunit_obj_to_agents_dir(agent_x=agent_x)
         self.del_agentunit_from_agents_dir(agent_x_desc=old_desc)
 

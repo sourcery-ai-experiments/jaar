@@ -1,7 +1,7 @@
-# command to for converting ui form to python file: pyuic5 ui\EditToolUnitUI.ui -o ui\EditToolUnitUI.py
+# command to for converting ui form to python file: pyuic5 ui\EditIdeaUnitUI.ui -o ui\EditIdeaUnitUI.py
 import sys
-from src.agent.tool import ToolKid, ToolAttrHolder
-from ui.EditToolUnitUI import Ui_Form
+from src.agent.idea import IdeaKid, IdeaAttrHolder
+from ui.EditIdeaUnitUI import Ui_Form
 from PyQt5 import QtWidgets as qtw, QtCore
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1, QTableWidget as qtw0
 from src.agent.hreg_time import SuffFactUnitHregTime
@@ -19,7 +19,7 @@ from src.pyqt5_kit.pyqt_func import (
 )
 
 
-class EditToolUnit(qtw0, Ui_Form):
+class EditIdeaUnit(qtw0, Ui_Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -29,12 +29,12 @@ class EditToolUnit(qtw0, Ui_Form):
         self.close_button.clicked.connect(self.close)
         self.quit_button.clicked.connect(sys.exit)
 
-        self.basetoolunit.itemClicked.connect(self.yo_tree_item_selected)
-        self.basetoolunit.itemActivated.connect(self.yo_tree_item_expanded)
-        self.submit_node_update.clicked.connect(self.tool_update)
-        self.submit_node_delete.clicked.connect(self.tool_delete)
-        self.submit_child_insert.clicked.connect(self.tool_insert)
-        self.submit_duty_insert.clicked.connect(self.tool_duty_insert)
+        self.baseideaunit.itemClicked.connect(self.yo_tree_item_selected)
+        self.baseideaunit.itemActivated.connect(self.yo_tree_item_expanded)
+        self.submit_node_update.clicked.connect(self.idea_update)
+        self.submit_node_delete.clicked.connect(self.idea_delete)
+        self.submit_child_insert.clicked.connect(self.idea_insert)
+        self.submit_duty_insert.clicked.connect(self.idea_duty_insert)
 
         self.cb_rootrank.stateChanged.connect(self.refresh_tree)
         self.cb_yo_id.stateChanged.connect(self.refresh_tree)
@@ -51,9 +51,9 @@ class EditToolUnit(qtw0, Ui_Form):
         self.cb_yo2bd_count.stateChanged.connect(self.refresh_tree)
         self.combo_dim_root.currentTextChanged.connect(self.refresh_tree)
 
-        self.tool2group_table.itemClicked.connect(self.tool2group_table_select)
-        self.tool2group_delete_button.clicked.connect(self.tool2group_delete)
-        self.tool2group_insert_button.clicked.connect(self.tool2group_update)
+        self.idea2group_table.itemClicked.connect(self.idea2group_table_select)
+        self.idea2group_delete_button.clicked.connect(self.idea2group_delete)
+        self.idea2group_insert_button.clicked.connect(self.idea2group_update)
         self.required_table.itemClicked.connect(self.required_table_select)
         self.required_base_combo.currentTextChanged.connect(
             self.required_sufffact_combo_load
@@ -95,7 +95,7 @@ class EditToolUnit(qtw0, Ui_Form):
         self.required_base_combo.setCurrentText("Myagent,time,jajatime")
 
     def add_hreg_to_agent(self):
-        self.agent_x.set_time_hreg_tools(c400_count=7)
+        self.agent_x.set_time_hreg_ideas(c400_count=7)
         self.refresh_tree()
 
     def yo_tree_item_setHidden(self, setHiddenBool):
@@ -142,12 +142,12 @@ class EditToolUnit(qtw0, Ui_Form):
         self.hreg_length_hr.setHidden(setHiddenBool)
         self.hreg_length_min.setHidden(setHiddenBool)
         self.submit_child_insert.setHidden(setHiddenBool)
-        self.tool2group_table.setHidden(setHiddenBool)
-        self.tool2group_table.clear()
-        self.tool2group_table.setRowCount(1)
-        self.tool2group_insert_combo.setHidden(setHiddenBool)
-        self.tool2group_delete_button.setHidden(setHiddenBool)
-        self.tool2group_insert_button.setHidden(setHiddenBool)
+        self.idea2group_table.setHidden(setHiddenBool)
+        self.idea2group_table.clear()
+        self.idea2group_table.setRowCount(1)
+        self.idea2group_insert_combo.setHidden(setHiddenBool)
+        self.idea2group_delete_button.setHidden(setHiddenBool)
+        self.idea2group_insert_button.setHidden(setHiddenBool)
         self.requiredheir_table.setHidden(True)
         self.required_table.setHidden(setHiddenBool)
         self.required_base_combo.setHidden(setHiddenBool)
@@ -201,7 +201,7 @@ class EditToolUnit(qtw0, Ui_Form):
         self.prom_label_02.setText("")
         self.yo_action_cb.setChecked(False)
         self.yo_description.setText("")
-        self.tool_desc_on_populate = ""
+        self.idea_desc_on_populate = ""
         self.yo_weight.setText("")
         # self.required_base_combo.setText("")
         # self.required_sufffact_combo.setText("")
@@ -215,7 +215,7 @@ class EditToolUnit(qtw0, Ui_Form):
         self.required_sufffact_open_combo.clear()
         self.required_sufffact_nigh_combo.clear()
         self.required_sufffact_divisor_combo.clear()
-        self.tool2group_insert_combo.clear()
+        self.idea2group_insert_combo.clear()
 
         if setHiddenBool == False:
             self.yo_x_populate()
@@ -223,14 +223,14 @@ class EditToolUnit(qtw0, Ui_Form):
     def yo_x_populate(self):
         self.label_parent_id.setText(f"Current Node road : {self.yo_x._walk}")
         self.yo_description.setText(self.yo_x._desc)
-        # self.tool_desc_on_populate = self.yo_x._desc
+        # self.idea_desc_on_populate = self.yo_x._desc
         self.yo_walk.setText(self.yo_x._walk)
         self.yo_weight.setText(num2str(self.yo_x._weight))
         self.yo_begin.setText(num2str(self.yo_x._begin))
         self.yo_special_road.clear()
         self.yo_numeric_road.clear()
         if f"{type(self.yo_x)}" != "<class 'lw.agent.AgentUnit'>":
-            self.populate_tool_kid_actions()
+            self.populate_idea_kid_actions()
         self.yo_close.setText(num2str(self.yo_x._close))
         self.yo_action_cb.setChecked(self.yo_x.promise)
         self.yo_problem_bool_cb.setChecked(self.yo_x._problem_bool)
@@ -240,42 +240,42 @@ class EditToolUnit(qtw0, Ui_Form):
         self.required_table_load()
         self.requiredheir_table_load()
         self.required_base_combo_load()
-        self.tool2group_table_load()
-        self.tool2group_insert_combo_load()
+        self.idea2group_table_load()
+        self.idea2group_insert_combo_load()
         if self.combo_dim_root.currentText() == "":
             self.combo_dim_root.addItems(list(self.agent_x.get_required_bases()))
 
-    def populate_tool_kid_actions(self):
+    def populate_idea_kid_actions(self):
         self.yo_addin.setText(num2str(self.yo_x._addin))
         self.yo_numor.setText(num2str(self.yo_x._numor))
         self.yo_denom.setText(num2str(self.yo_x._denom))
         self.yo_reest.setChecked(bool_val(self.yo_x._reest))
-        tool_road_list = self.agent_x.get_tool_tree_ordered_road_list()
-        tool_road_list.append("")
-        self.yo_special_road.addItems(tool_road_list)
+        idea_road_list = self.agent_x.get_idea_tree_ordered_road_list()
+        idea_road_list.append("")
+        self.yo_special_road.addItems(idea_road_list)
         self.yo_special_road.setCurrentText(self.yo_x._special_road)
-        self.yo_numeric_road.addItems(tool_road_list)
+        self.yo_numeric_road.addItems(idea_road_list)
         self.yo_numeric_road.setCurrentText(self.yo_x._numeric_road)
 
     def yo_tree_item_selected(self):
-        tool_desc = self.basetoolunit.currentItem().data(2, 10)
-        tool_walk = self.basetoolunit.currentItem().data(2, 11)
-        if tool_walk not in ("", None):
-            self.yo_x = self.agent_x.get_tool_kid(road=f"{tool_walk},{tool_desc}")
+        idea_desc = self.baseideaunit.currentItem().data(2, 10)
+        idea_walk = self.baseideaunit.currentItem().data(2, 11)
+        if idea_walk not in ("", None):
+            self.yo_x = self.agent_x.get_idea_kid(road=f"{idea_walk},{idea_desc}")
         else:
-            self.yo_x = self.agent_x._toolroot
+            self.yo_x = self.agent_x._idearoot
         self.yo_tree_item_setHidden(setHiddenBool=False)
 
     def yo_tree_item_expanded(self):
-        root = self.basetoolunit.invisibleRootItem()
-        self.tool_tree_set_is_expanded(root)
+        root = self.baseideaunit.invisibleRootItem()
+        self.idea_tree_set_is_expanded(root)
 
     def required_base_combo_load(self):
-        # create list of all tool roads (road+desc)
+        # create list of all idea roads (road+desc)
         self.required_base_combo.clear()
         self.required_base_combo.addItems([""])
         self.required_base_combo.addItems(
-            self.agent_x.get_tool_tree_ordered_road_list()
+            self.agent_x.get_idea_tree_ordered_road_list()
         )
 
     def required_sufffact_combo_load(self):
@@ -290,12 +290,12 @@ class EditToolUnit(qtw0, Ui_Form):
     def required_sufffact_xxxx_combo_load(self):
         filtered_list = []
         if self.required_sufffact_combo.currentText() not in [self.agent_x._desc, ""]:
-            sufffact_tool = self.agent_x.get_tool_kid(
+            sufffact_idea = self.agent_x.get_idea_kid(
                 road=self.required_sufffact_combo.currentText()
             )
-            if sufffact_tool._special_road != None:
+            if sufffact_idea._special_road != None:
                 filtered_list = self.agent_x.get_heir_road_list(
-                    sufffact_tool._special_road
+                    sufffact_idea._special_road
                 )
         self.required_sufffact_open_combo.clear()
         self.required_sufffact_nigh_combo.clear()
@@ -319,40 +319,40 @@ class EditToolUnit(qtw0, Ui_Form):
             self.required_sufffact_open_combo_sel_actions()
 
     def required_sufffact_open_combo_sel_actions(self):
-        open_tool_x = self.agent_x.get_tool_kid(
+        open_idea_x = self.agent_x.get_idea_kid(
             road=self.required_sufffact_open_combo.currentText()
         )
-        if open_tool_x._begin != None:
-            self.required_sufffact_open.setText(str(open_tool_x._begin))
-        if open_tool_x._close != None:
-            self.required_sufffact_nigh.setText(str(open_tool_x._close))
-        if open_tool_x._addin != None:
-            self.required_sufffact_divisor.setText(str(open_tool_x._addin))
-        if open_tool_x._numor != None:
-            self.required_sufffact_divisor.setText(str(open_tool_x._numor))
-        if open_tool_x._denom != None:
-            self.required_sufffact_divisor.setText(str(open_tool_x._denom))
-        if open_tool_x._reest != None:
-            self.required_sufffact_divisor.setText(str(open_tool_x._reest))
+        if open_idea_x._begin != None:
+            self.required_sufffact_open.setText(str(open_idea_x._begin))
+        if open_idea_x._close != None:
+            self.required_sufffact_nigh.setText(str(open_idea_x._close))
+        if open_idea_x._addin != None:
+            self.required_sufffact_divisor.setText(str(open_idea_x._addin))
+        if open_idea_x._numor != None:
+            self.required_sufffact_divisor.setText(str(open_idea_x._numor))
+        if open_idea_x._denom != None:
+            self.required_sufffact_divisor.setText(str(open_idea_x._denom))
+        if open_idea_x._reest != None:
+            self.required_sufffact_divisor.setText(str(open_idea_x._reest))
 
     def numeric_road_combo_select(self):
         if self.required_sufffact_open_combo.currentText() not in [
             self.agent_x._desc,
             "",
         ]:
-            open_tool_x = self.agent_x.get_tool_kid(
+            open_idea_x = self.agent_x.get_idea_kid(
                 road=self.required_sufffact_open_combo.currentText()
             )
-            # nigh_tool_x = self.agent_x.get_tool_kid(
+            # nigh_idea_x = self.agent_x.get_idea_kid(
             #     road=self.required_sufffact_nigh_combo.currentText()
             # )
-            # divisor_tool_x = self.agent_x.get_tool_kid(
+            # divisor_idea_x = self.agent_x.get_idea_kid(
             #     road=self.required_sufffact_divisor_combo.currentText()
             # )
-            # if open_tool_x._begin != None:
-            #     self.required_sufffact_open.setText(str(open_tool_x._begin))
-            # if open_tool_x._close != None:
-            #     self.required_sufffact_nigh.setText(str(open_tool_x._close))
+            # if open_idea_x._begin != None:
+            #     self.required_sufffact_open.setText(str(open_idea_x._begin))
+            # if open_idea_x._close != None:
+            #     self.required_sufffact_nigh.setText(str(open_idea_x._close))
 
     def set_sufffact_open_combo(self):
         if (
@@ -363,15 +363,15 @@ class EditToolUnit(qtw0, Ui_Form):
             ]
             and self.required_sufffact_open.toPlainText() != ""
         ):
-            open_tool_x = self.agent_x.get_tool_kid(
+            open_idea_x = self.agent_x.get_idea_kid(
                 road=self.required_sufffact_open_combo.currentText()
             )
             open_int = str2float(self.required_sufffact_open.toPlainText())
-            open_kids = open_tool_x.get_kids_in_range(begin=open_int, close=open_int)
+            open_kids = open_idea_x.get_kids_in_range(begin=open_int, close=open_int)
             if len(open_kids) == 1:
-                tool_x = open_kids[0]
+                idea_x = open_kids[0]
                 self.required_sufffact_open_combo.setCurrentText(
-                    f"{tool_x._walk},{tool_x._desc}"
+                    f"{idea_x._walk},{idea_x._desc}"
                 )
 
     def set_sufffact_nigh_combo(self):
@@ -383,15 +383,15 @@ class EditToolUnit(qtw0, Ui_Form):
             ]
             and self.required_sufffact_nigh.toPlainText() != ""
         ):
-            nigh_tool_x = self.agent_x.get_tool_kid(
+            nigh_idea_x = self.agent_x.get_idea_kid(
                 road=self.required_sufffact_nigh_combo.currentText()
             )
             nigh_int = int(self.required_sufffact_nigh.toPlainText())
-            nigh_kids = nigh_tool_x.get_kids_in_range(begin=nigh_int, close=nigh_int)
+            nigh_kids = nigh_idea_x.get_kids_in_range(begin=nigh_int, close=nigh_int)
             if len(nigh_kids) == 1:
-                tool_x = nigh_kids[0]
+                idea_x = nigh_kids[0]
                 self.required_sufffact_nigh_combo.setCurrentText(
-                    f"{tool_x._walk},{tool_x._desc}"
+                    f"{idea_x._walk},{idea_x._desc}"
                 )
 
     def set_sufffact_divisor_combo(self):
@@ -403,17 +403,17 @@ class EditToolUnit(qtw0, Ui_Form):
             ]
             and self.required_sufffact_divisor.toPlainText() != ""
         ):
-            divisor_tool_x = self.agent_x.get_tool_kid(
+            divisor_idea_x = self.agent_x.get_idea_kid(
                 road=self.required_sufffact_divisor_combo.currentText()
             )
             divisor_int = int(self.required_sufffact_divisor.toPlainText())
-            divisor_kids = divisor_tool_x.get_kids_in_range(
+            divisor_kids = divisor_idea_x.get_kids_in_range(
                 begin=divisor_int, close=divisor_int
             )
             if len(divisor_kids) == 1:
-                tool_x = divisor_kids[0]
+                idea_x = divisor_kids[0]
                 self.required_sufffact_divisor_combo.setCurrentText(
-                    f"{tool_x._walk},{tool_x._desc}"
+                    f"{idea_x._walk},{idea_x._desc}"
                 )
 
     def required_sufffact_nigh_combo_select(self):
@@ -422,11 +422,11 @@ class EditToolUnit(qtw0, Ui_Form):
             self.agent_x._desc,
             "",
         ]:
-            nigh_tool_x = self.agent_x.get_tool_kid(
+            nigh_idea_x = self.agent_x.get_idea_kid(
                 road=self.required_sufffact_nigh_combo.currentText()
             )
-            if nigh_tool_x._close != None:
-                self.required_sufffact_nigh.setText(str(nigh_tool_x._close))
+            if nigh_idea_x._close != None:
+                self.required_sufffact_nigh.setText(str(nigh_idea_x._close))
 
     def required_sufffact_divisor_combo_select(self):
         self.required_sufffact_divisor.setText("")
@@ -434,11 +434,11 @@ class EditToolUnit(qtw0, Ui_Form):
             self.agent_x._desc,
             "",
         ]:
-            divisor_tool_x = self.agent_x.get_tool_kid(
+            divisor_idea_x = self.agent_x.get_idea_kid(
                 road=self.required_sufffact_divisor_combo.currentText()
             )
-            if divisor_tool_x._denom != None:
-                self.required_sufffact_divisor.setText(str(divisor_tool_x._denom))
+            if divisor_idea_x._denom != None:
+                self.required_sufffact_divisor.setText(str(divisor_idea_x._denom))
 
     def required_table_load(self):
         self.required_table.clear()
@@ -685,10 +685,10 @@ class EditToolUnit(qtw0, Ui_Form):
             open_x = str2float(self.required_sufffact_open.toPlainText())
             nigh_x = str2float(self.required_sufffact_nigh.toPlainText())
             divisor_x = str2float(self.required_sufffact_divisor.toPlainText())
-            tool_desc = self.basetoolunit.currentItem().data(2, 10)
-            tool_walk = self.basetoolunit.currentItem().data(2, 11)
-            self.agent_x.edit_tool_attr(
-                road=f"{tool_walk},{tool_desc}",
+            idea_desc = self.baseideaunit.currentItem().data(2, 10)
+            idea_walk = self.baseideaunit.currentItem().data(2, 11)
+            self.agent_x.edit_idea_attr(
+                road=f"{idea_walk},{idea_desc}",
                 required_base=base_x,
                 required_sufffact=sufffact_x,
                 required_sufffact_open=open_x,
@@ -703,7 +703,7 @@ class EditToolUnit(qtw0, Ui_Form):
             #     nigh=nigh_x,
             #     divisor=divisor_x,
             # )
-            self.agent_x.get_tool_list()
+            self.agent_x.get_idea_list()
             self.required_table_load()
 
     def required_delete(self):
@@ -717,22 +717,22 @@ class EditToolUnit(qtw0, Ui_Form):
             )
             self.required_table_load()
 
-    def tool2group_table_select(self):
-        self.tool2group_delete_button.setText(
-            f"""Remove {self.tool2group_table.item(self.tool2group_table.currentRow(), 1).text()}"""
+    def idea2group_table_select(self):
+        self.idea2group_delete_button.setText(
+            f"""Remove {self.idea2group_table.item(self.idea2group_table.currentRow(), 1).text()}"""
         )
 
-    def tool2group_table_load(self):
-        # tool2group_table is qtw.QTableWidget()
-        self.tool2group_table.clear()
-        self.tool2group_table.sortItems(1, QtCore.Qt.AscendingOrder)
-        self.tool2group_table.horizontalHeaderVisible = False
-        self.tool2group_table.verticalHeaderVisible = False
-        self.tool2group_table.setColumnWidth(0, 150)
-        self.tool2group_table.setColumnHidden(1, True)
-        self.tool2group_table.setColumnWidth(1, 50)
-        self.tool2group_table.setColumnWidth(2, 70)
-        self.tool2group_table.setHorizontalHeaderLabels(
+    def idea2group_table_load(self):
+        # idea2group_table is qtw.QTableWidget()
+        self.idea2group_table.clear()
+        self.idea2group_table.sortItems(1, QtCore.Qt.AscendingOrder)
+        self.idea2group_table.horizontalHeaderVisible = False
+        self.idea2group_table.verticalHeaderVisible = False
+        self.idea2group_table.setColumnWidth(0, 150)
+        self.idea2group_table.setColumnHidden(1, True)
+        self.idea2group_table.setColumnWidth(1, 50)
+        self.idea2group_table.setColumnWidth(2, 70)
+        self.idea2group_table.setHorizontalHeaderLabels(
             ["Group display", "group_name", "LW Force"]
         )
         # print(f"{self.yo_x._grouplinks=}")
@@ -745,22 +745,22 @@ class EditToolUnit(qtw0, Ui_Form):
         # print(f"{groupheirs_list=}")
 
         for row, groupheir in enumerate(groupheirs_list, start=1):
-            self.tool2group_table.setRowCount(row)
+            self.idea2group_table.setRowCount(row)
             x_text = f"  Heir: {groupheir.name}"
             for grouplink in grouplinks_list:
                 if grouplink.name == groupheir.name:
                     x_text = f"{groupheir.name}"
-            self.tool2group_table.setItem(row - 1, 0, qtw1(x_text))
-            self.tool2group_table.setItem(row - 1, 1, qtw1(groupheir.name))
-            self.tool2group_table.setItem(
+            self.idea2group_table.setItem(row - 1, 0, qtw1(x_text))
+            self.idea2group_table.setItem(row - 1, 1, qtw1(groupheir.name))
+            self.idea2group_table.setItem(
                 row - 1,
                 2,
                 qtw1(lw_diplay(groupheir._agent_credit)),
             )
 
-        self.tool2group_table.sortItems(1, QtCore.Qt.AscendingOrder)
+        self.idea2group_table.sortItems(1, QtCore.Qt.AscendingOrder)
 
-    def tool2group_insert_combo_load(self):
+    def idea2group_insert_combo_load(self):
         # groupunits_list = list(self.agent_x._groupunits.values())
         groupunits_names_list = []
         for groupunit in self.agent_x._groups.values():
@@ -772,41 +772,41 @@ class EditToolUnit(qtw0, Ui_Form):
                 groupunits_names_list.append(groupunit.name)
         groupunits_names_list.sort(key=lambda x: x.lower(), reverse=False)
 
-        self.tool2group_insert_combo.clear()
-        self.tool2group_insert_combo.addItems(groupunits_names_list)
+        self.idea2group_insert_combo.clear()
+        self.idea2group_insert_combo.addItems(groupunits_names_list)
 
-    def tool2group_update(self):
-        bd_name_new = self.tool2group_insert_combo.currentText()
+    def idea2group_update(self):
+        bd_name_new = self.idea2group_insert_combo.currentText()
         if bd_name_new == "":
-            raise Exception("bd_name is empty, tool2bd cannot be updated")
+            raise Exception("bd_name is empty, idea2bd cannot be updated")
         grouplink_new = GroupLink(name=GroupName(bd_name_new), weight=1)
-        self.agent_x.edit_tool_attr(
+        self.agent_x.edit_idea_attr(
             road=f"{self.yo_x._walk},{self.yo_x._desc}", grouplink=grouplink_new
         )
-        self.tool2group_insert_combo_load()
-        self.tool2group_table_load()
+        self.idea2group_insert_combo_load()
+        self.idea2group_table_load()
 
-    def tool2group_delete(self):
+    def idea2group_delete(self):
         delete_group_name = ""
-        if self.tool2group_table.currentRow() != None:
-            delete_group_name = self.tool2group_table.item(
-                self.tool2group_table.currentRow(), 1
+        if self.idea2group_table.currentRow() != None:
+            delete_group_name = self.idea2group_table.item(
+                self.idea2group_table.currentRow(), 1
             ).text()
-            self.agent_x.edit_tool_attr(
+            self.agent_x.edit_idea_attr(
                 road=f"{self.yo_x._walk},{self.yo_x._desc}",
                 grouplink_del=delete_group_name,
             )
-            self.tool2group_insert_combo_load()
-            self.tool2group_table_load()
+            self.idea2group_insert_combo_load()
+            self.idea2group_table_load()
 
-    def tool_delete(self):
-        self.agent_x.del_tool_kid(road=f"{self.yo_x._walk},{self.yo_x._desc}")
-        self.basetoolunit.clear()
+    def idea_delete(self):
+        self.agent_x.del_idea_kid(road=f"{self.yo_x._walk},{self.yo_x._desc}")
+        self.baseideaunit.clear()
         self.refresh_tree(disable_is_expanded=True)
 
-    def tool_edit_nonroad_data(self, tool_road):
-        self.agent_x.edit_tool_attr(
-            road=tool_road,
+    def idea_edit_nonroad_data(self, idea_road):
+        self.agent_x.edit_idea_attr(
+            road=idea_road,
             weight=float(self.yo_weight.toPlainText()),
             begin=str2float(self.yo_begin.toPlainText()),
             close=str2float(self.yo_close.toPlainText()),
@@ -834,9 +834,9 @@ class EditToolUnit(qtw0, Ui_Form):
             is_expanded=None,
         )
 
-    def tool_edit_road(self, tool_road):
-        self.agent_x.edit_tool_desc(
-            old_road=tool_road,
+    def idea_edit_road(self, idea_road):
+        self.agent_x.edit_idea_desc(
+            old_road=idea_road,
             new_desc=self.yo_description.toPlainText(),
         )
 
@@ -844,42 +844,42 @@ class EditToolUnit(qtw0, Ui_Form):
         self.refresh_tree(disable_is_expanded=True)
         self.yo_tree_item_setHidden(setHiddenBool=True)
 
-    def tool_update(self):
-        tool_road = None
+    def idea_update(self):
+        idea_road = None
         if self.yo_x._walk not in (None, ""):
-            tool_road = Road(f"{self.yo_x._walk},{self.yo_x._desc}")
+            idea_road = Road(f"{self.yo_x._walk},{self.yo_x._desc}")
         else:
-            tool_road = Road(f"{self.yo_x._desc}")
-        self.tool_edit_nonroad_data(tool_road=tool_road)
+            idea_road = Road(f"{self.yo_x._desc}")
+        self.idea_edit_nonroad_data(idea_road=idea_road)
         # if (
-        #     self.tool_desc_on_populate != self.yo_description.toPlainText()
-        #     and self.tool_desc_on_populate != ""
-        #     and self.tool_desc_on_populate != None
+        #     self.idea_desc_on_populate != self.yo_description.toPlainText()
+        #     and self.idea_desc_on_populate != ""
+        #     and self.idea_desc_on_populate != None
         # ):
-        #     self.tool_edit_road()
+        #     self.idea_edit_road()
         if self.yo_x._desc != self.yo_description.toPlainText():
-            self.tool_edit_road(tool_road=tool_road)
+            self.idea_edit_road(idea_road=idea_road)
 
-    def tool_duty_insert(self):
+    def idea_duty_insert(self):
         new_walk = f"{self.yo_x._desc}"
         if self.yo_x._walk not in ("", None):
             new_walk = f"{self.yo_x._walk},{self.yo_x._desc}"
         new_road = f"{new_walk},{self.yo_description.toPlainText()}"
-        self.tool_insert()
+        self.idea_insert()
 
         # add done/not_done children
         not_done_text = "not done"
-        self.agent_x.add_tool(
-            tool_kid=ToolKid(_desc=not_done_text),
+        self.agent_x.add_idea(
+            idea_kid=IdeaKid(_desc=not_done_text),
             walk=new_road,
         )
         done_text = "done"
-        self.agent_x.add_tool(
-            tool_kid=ToolKid(_desc=done_text),
+        self.agent_x.add_idea(
+            idea_kid=IdeaKid(_desc=done_text),
             walk=new_road,
         )
         # set required to "not done"
-        self.agent_x.edit_tool_attr(
+        self.agent_x.edit_idea_attr(
             road=new_road,
             required_base=new_road,
             required_sufffact=f"{new_road},{not_done_text}",
@@ -890,9 +890,9 @@ class EditToolUnit(qtw0, Ui_Form):
         )
         self.refresh_tree()
 
-    def tool_insert(self):
-        new_tool = ToolKid(_desc=self.yo_description.toPlainText())
-        tool_attr_x = ToolAttrHolder(
+    def idea_insert(self):
+        new_idea = IdeaKid(_desc=self.yo_description.toPlainText())
+        idea_attr_x = IdeaAttrHolder(
             weight=float(self.yo_weight.toPlainText()),
             begin=str2float(self.yo_begin.toPlainText()),
             close=str2float(self.yo_close.toPlainText()),
@@ -921,14 +921,14 @@ class EditToolUnit(qtw0, Ui_Form):
             problem_bool=None,
             on_meld_weight_action=None,
         )
-        new_tool._set_tool_attr(tool_attr=tool_attr_x)
-        new_tool.set_kids_empty_if_null()
+        new_idea._set_idea_attr(idea_attr=idea_attr_x)
+        new_idea.set_kids_empty_if_null()
         take_parent_children_bool = self.cb_yo_insert_allChildren.checkState() == 2
         new_walk = f"{self.yo_x._desc}"
         if self.yo_x._walk not in ("", None):
             new_walk = f"{self.yo_x._walk},{self.yo_x._desc}"
-        self.agent_x.add_tool(
-            tool_kid=new_tool,
+        self.agent_x.add_idea(
+            idea_kid=new_idea,
             walk=new_walk,
         )
         self.refresh_tree()
@@ -950,14 +950,14 @@ class EditToolUnit(qtw0, Ui_Form):
         required_view_base = self.combo_dim_root.currentText()
         acptfactheir_view_flag = self.cb_acptfactheir_view.checkState() == 2
 
-        # root = self.basetoolunit.invisibleRootItem()
+        # root = self.baseideaunit.invisibleRootItem()
         # self.yo_tree_isExpanded(node=root, level=1)
-        root = self.basetoolunit.invisibleRootItem()
+        root = self.baseideaunit.invisibleRootItem()
         if not disable_is_expanded:
-            self.tool_tree_set_is_expanded(root)
+            self.idea_tree_set_is_expanded(root)
 
         tree_root = get_pyqttree(
-            toolroot=self.agent_x._toolroot,
+            idearoot=self.agent_x._idearoot,
             yo_agenda_flag=yo_agenda_flag,
             yo_action_flag=yo_action_flag,
             yo_acptfactunit_time_flag=yo_acptfactunit_time_flag,
@@ -974,10 +974,10 @@ class EditToolUnit(qtw0, Ui_Form):
             src_agent=self.agent_x,
         )
 
-        self.basetoolunit.clear()
-        self.basetoolunit.insertTopLevelItems(0, [tree_root])
+        self.baseideaunit.clear()
+        self.baseideaunit.insertTopLevelItems(0, [tree_root])
 
-        root = self.basetoolunit.invisibleRootItem()
+        root = self.baseideaunit.invisibleRootItem()
         self.pyqt_tree_setExpanded(root)
         # self.yo_tree_item_setHidden(setHiddenBool=True)
 
@@ -989,7 +989,7 @@ class EditToolUnit(qtw0, Ui_Form):
             item.setExpanded(item.data(2, 20))
             self.pyqt_tree_setExpanded(item)
 
-    def tool_tree_set_is_expanded(self, root):
+    def idea_tree_set_is_expanded(self, root):
         child_count = root.childCount()
         for i in range(child_count):
             item = root.child(i)
@@ -1001,8 +1001,8 @@ class EditToolUnit(qtw0, Ui_Form):
             # print(f"road={road_x},{desc_x}")
             # print(f"{_road=}")
 
-            self.agent_x.edit_tool_attr(road=_road, is_expanded=is_expanded)
-            self.tool_tree_set_is_expanded(item)
+            self.agent_x.edit_idea_attr(road=_road, is_expanded=is_expanded)
+            self.idea_tree_set_is_expanded(item)
 
     def required_table_select(self):
         self.required_base_combo_load()

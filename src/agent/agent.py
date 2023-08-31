@@ -34,9 +34,9 @@ from src.agent.required import (
 )
 from src.agent.tree_metrics import TreeMetrics
 from src.agent.x_func import x_get_json
-from src.agent.tool import ToolCore, ToolKid, ToolRoot, ToolAttrHolder
+from src.agent.idea import IdeaCore, IdeaKid, IdeaRoot, IdeaAttrHolder
 from src.agent.hreg_time import (
-    _get_time_hreg_src_tool,
+    _get_time_hreg_src_idea,
     get_time_min_from_dt as hreg_get_time_min_from_dt,
     convert1440toReadableTime,
     get_number_with_postfix,
@@ -71,8 +71,8 @@ class AgentUnit:
     _weight: float = None
     _members: dict[MemberName:MemberUnit] = None
     _groups: dict[GroupName:GroupUnit] = None
-    _toolroot: ToolRoot = None
-    _tool_dict: dict[Road:ToolCore] = None
+    _idearoot: IdeaRoot = None
+    _idea_dict: dict[Road:IdeaCore] = None
     _max_tree_traverse: int = 3
     _tree_traverse_count: int = None
     _rational: bool = False
@@ -83,7 +83,7 @@ class AgentUnit:
         self._weight = _weight
         if _desc is None:
             _desc = ""
-        self._toolroot = ToolRoot(_desc=_desc, _uid=1)
+        self._idearoot = IdeaRoot(_desc=_desc, _uid=1)
         self._desc = _desc
 
     def set_banking_attr_memberunits(self, river_tmembers: dict):
@@ -117,22 +117,22 @@ class AgentUnit:
         if tree_metrics_x.bond_promise_count != 1:
             return False
 
-        promise_tool_road = tree_metrics_x.an_promise_tool_road
+        promise_idea_road = tree_metrics_x.an_promise_idea_road
         if (
-            self._are_all_members_groups_are_in_tool_kid(road=promise_tool_road)
+            self._are_all_members_groups_are_in_idea_kid(road=promise_idea_road)
             == False
         ):
             return False
 
-        return self.all_tools_relevant_to_promise_tool(road=promise_tool_road) != False
+        return self.all_ideas_relevant_to_promise_idea(road=promise_idea_road) != False
 
     def export_all_bonds(self, dir: str):
-        self.set_all_tool_uids_unique()
+        self.set_all_idea_uids_unique()
         self.set_agent_metrics()
         # dict_x = {}
-        for yx in self.get_tool_list():
+        for yx in self.get_idea_list():
             if yx.promise:
-                cx = self.get_agent_sprung_from_single_tool(yx.get_road())
+                cx = self.get_agent_sprung_from_single_idea(yx.get_road())
                 file_name = f"{yx._uid}.json"
                 x_func_save_file(
                     dest_dir=dir,
@@ -142,17 +142,17 @@ class AgentUnit:
                 )
         return {}
 
-    def get_agent_sprung_from_single_tool(self, road: Road):
+    def get_agent_sprung_from_single_idea(self, road: Road):
         self.set_agent_metrics()
-        tool_x = self.get_tool_kid(road=road)
-        new_weight = self._weight * tool_x._agent_importance
-        cx = AgentUnit(_desc=self._toolroot._desc, _weight=new_weight)
+        idea_x = self.get_idea_kid(road=road)
+        new_weight = self._weight * idea_x._agent_importance
+        cx = AgentUnit(_desc=self._idearoot._desc, _weight=new_weight)
 
-        for road_assc in sorted(list(self._get_all_tool_assoc_roads(road))):
-            src_yx = self.get_tool_kid(road=road_assc)
+        for road_assc in sorted(list(self._get_all_idea_assoc_roads(road))):
+            src_yx = self.get_idea_kid(road=road_assc)
             new_yx = copy_deepcopy(src_yx)
             if new_yx._walk != "":
-                cx.add_tool(tool_kid=new_yx, walk=new_yx._walk)
+                cx.add_idea(idea_kid=new_yx, walk=new_yx._walk)
             cx.set_agent_metrics()
 
         # TODO grab groups
@@ -160,30 +160,30 @@ class AgentUnit:
         # TODO grab acptfacts
         return cx
 
-    def _get_all_tool_assoc_roads(self, road: Road) -> set[Road]:
-        tool_ancestor_list = get_ancestor_roads(road=road)
-        tool_x = self.get_tool_kid(road=road)
+    def _get_all_idea_assoc_roads(self, road: Road) -> set[Road]:
+        idea_ancestor_list = get_ancestor_roads(road=road)
+        idea_x = self.get_idea_kid(road=road)
         requiredunit_base_road_list = []
 
-        for requiredunit_obj in tool_x._requiredunits.values():
+        for requiredunit_obj in idea_x._requiredunits.values():
             required_base = requiredunit_obj.base
             requiredunit_base_road_list.extend(get_ancestor_roads(required_base))
             requiredunit_base_road_list.extend(self.get_heir_road_list(required_base))
 
-        tool_assoc_list = [road]
-        tool_assoc_list.extend(tool_ancestor_list)
-        tool_assoc_list.extend(requiredunit_base_road_list)
-        return set(tool_assoc_list)
+        idea_assoc_list = [road]
+        idea_assoc_list.extend(idea_ancestor_list)
+        idea_assoc_list.extend(requiredunit_base_road_list)
+        return set(idea_assoc_list)
 
-    def all_tools_relevant_to_promise_tool(self, road: Road) -> bool:
-        promise_tool_assoc_set = set(self._get_all_tool_assoc_roads(road=road))
-        all_tools_set = set(self.get_tool_tree_ordered_road_list())
-        return all_tools_set == all_tools_set.intersection(promise_tool_assoc_set)
+    def all_ideas_relevant_to_promise_idea(self, road: Road) -> bool:
+        promise_idea_assoc_set = set(self._get_all_idea_assoc_roads(road=road))
+        all_ideas_set = set(self.get_idea_tree_ordered_road_list())
+        return all_ideas_set == all_ideas_set.intersection(promise_idea_assoc_set)
 
-    def _are_all_members_groups_are_in_tool_kid(self, road: Road) -> bool:
-        tool_kid = self.get_tool_kid(road=road)
-        # get dict of all tool groupheirs
-        groupheir_list = tool_kid._groupheirs.keys()
+    def _are_all_members_groups_are_in_idea_kid(self, road: Road) -> bool:
+        idea_kid = self.get_idea_kid(road=road)
+        # get dict of all idea groupheirs
+        groupheir_list = idea_kid._groupheirs.keys()
         groupheir_dict = {groupheir_name: 1 for groupheir_name in groupheir_list}
         non_single_groupunits = {
             groupunit.name: groupunit
@@ -211,14 +211,14 @@ class AgentUnit:
         return hreg_get_time_min_from_dt(dt=dt)
 
     def get_time_c400_from_min(self, min: int) -> int:
-        c400_tool = self.get_tool_kid(f"{self._desc},time,tech,400 year cycle")
-        c400_min = c400_tool._close
-        return int(min / c400_min), c400_tool, min % c400_min
+        c400_idea = self.get_idea_kid(f"{self._desc},time,tech,400 year cycle")
+        c400_min = c400_idea._close
+        return int(min / c400_min), c400_idea, min % c400_min
 
     def get_time_c400yr_from_min(self, min: int):
         # given int minutes within 400 year range return year and remainder minutes
-        c400_count, c400_tool, c400yr_min = self.get_time_c400_from_min(min=min)
-        c100_4_96y = c400_tool.get_kids_in_range(begin=c400yr_min, close=c400yr_min)[0]
+        c400_count, c400_idea, c400yr_min = self.get_time_c400_from_min(min=min)
+        c100_4_96y = c400_idea.get_kids_in_range(begin=c400yr_min, close=c400yr_min)[0]
         cXXXyr_min = c400yr_min - c100_4_96y._begin
 
         # identify which range the time is in
@@ -226,34 +226,34 @@ class AgentUnit:
             50492160,
             52596000,
         ):  # 96 year and 100 year spans
-            yr4_1461 = self.get_tool_kid(f"{self._desc},time,tech,4year with leap")
+            yr4_1461 = self.get_idea_kid(f"{self._desc},time,tech,4year with leap")
             yr4_cycles = int(cXXXyr_min / yr4_1461._close)
             cXyr_min = cXXXyr_min % yr4_1461._close
-            yr1_tool = yr4_1461.get_kids_in_range(begin=cXyr_min, close=cXyr_min)[0]
+            yr1_idea = yr4_1461.get_kids_in_range(begin=cXyr_min, close=cXyr_min)[0]
         elif c100_4_96y._close - c100_4_96y._begin == 2102400:
-            yr4_1460 = self.get_tool_kid(f"{self._desc},time,tech,4year wo leap")
+            yr4_1460 = self.get_idea_kid(f"{self._desc},time,tech,4year wo leap")
             yr4_cycles = 0
-            yr1_tool = yr4_1460.get_kids_in_range(begin=cXXXyr_min, close=cXXXyr_min)[0]
+            yr1_idea = yr4_1460.get_kids_in_range(begin=cXXXyr_min, close=cXXXyr_min)[0]
             cXyr_min = cXXXyr_min % yr4_1460._close
 
-        yr1_rem_min = cXyr_min - yr1_tool._begin
-        yr1_tool_begin = int(yr1_tool._desc.split("-")[0]) - 1
+        yr1_rem_min = cXyr_min - yr1_idea._begin
+        yr1_idea_begin = int(yr1_idea._desc.split("-")[0]) - 1
 
         c100_4_96y_begin = int(c100_4_96y._desc.split("-")[0])
-        year_num = c100_4_96y_begin + (4 * yr4_cycles) + yr1_tool_begin
-        return year_num, yr1_tool, yr1_rem_min
+        year_num = c100_4_96y_begin + (4 * yr4_cycles) + yr1_idea_begin
+        return year_num, yr1_idea, yr1_rem_min
 
     def get_time_month_from_min(self, min: int):
-        year_num, yr1_tool, yr1_tool_rem_min = self.get_time_c400yr_from_min(min=min)
+        year_num, yr1_idea, yr1_idea_rem_min = self.get_time_c400yr_from_min(min=min)
         yrx = None
-        if yr1_tool._close - yr1_tool._begin == 525600:
-            yrx = self.get_tool_kid(f"{self._desc},time,tech,365 year")
-        elif yr1_tool._close - yr1_tool._begin == 527040:
-            yrx = self.get_tool_kid(f"{self._desc},time,tech,366 year")
-        mon_x = yrx.get_kids_in_range(begin=yr1_tool_rem_min, close=yr1_tool_rem_min)[0]
-        month_rem_min = yr1_tool_rem_min - mon_x._begin
+        if yr1_idea._close - yr1_idea._begin == 525600:
+            yrx = self.get_idea_kid(f"{self._desc},time,tech,365 year")
+        elif yr1_idea._close - yr1_idea._begin == 527040:
+            yrx = self.get_idea_kid(f"{self._desc},time,tech,366 year")
+        mon_x = yrx.get_kids_in_range(begin=yr1_idea_rem_min, close=yr1_idea_rem_min)[0]
+        month_rem_min = yr1_idea_rem_min - mon_x._begin
         month_num = int(mon_x._desc.split("-")[0])
-        day_x = self.get_tool_kid(f"{self._desc},time,tech,day")
+        day_x = self.get_idea_kid(f"{self._desc},time,tech,day")
         day_num = int(month_rem_min / day_x._close)
         day_rem_min = month_rem_min % day_x._close
         return month_num, day_num, day_rem_min, day_x
@@ -305,17 +305,17 @@ class AgentUnit:
     def _get_jajatime_week_readable_text(self, open: int, divisor: int) -> str:
         open_in_week = open % divisor
         week_road = f"{self._desc},time,tech,week"
-        weekday_tools_dict = self.get_tool_ranged_kids(
-            tool_road=week_road, begin=open_in_week
+        weekday_ideas_dict = self.get_idea_ranged_kids(
+            idea_road=week_road, begin=open_in_week
         )
-        weekday_tool_node = None
-        for tool in weekday_tools_dict.values():
-            weekday_tool_node = tool
+        weekday_idea_node = None
+        for idea in weekday_ideas_dict.values():
+            weekday_idea_node = idea
 
         if divisor == 10080:
-            return f"every {weekday_tool_node._desc} at {convert1440toReadableTime(min1440=open % 1440)}"
+            return f"every {weekday_idea_node._desc} at {convert1440toReadableTime(min1440=open % 1440)}"
         num_with_postfix = get_number_with_postfix(num=divisor // 10080)
-        return f"every {num_with_postfix} {weekday_tool_node._desc} at {convert1440toReadableTime(min1440=open % 1440)}"
+        return f"every {num_with_postfix} {weekday_idea_node._desc} at {convert1440toReadableTime(min1440=open % 1440)}"
 
     def get_members_metrics(self):
         tree_metrics = self.get_tree_metrics()
@@ -612,32 +612,32 @@ class AgentUnit:
         new_name: GroupName,
         allow_group_overwite: bool,
     ):
-        for tool_x in self.get_tool_list():
+        for idea_x in self.get_idea_list():
             if (
-                tool_x._grouplinks.get(new_name) != None
-                and tool_x._grouplinks.get(old_name) != None
+                idea_x._grouplinks.get(new_name) != None
+                and idea_x._grouplinks.get(old_name) != None
             ):
-                old_grouplink = tool_x._grouplinks.get(old_name)
+                old_grouplink = idea_x._grouplinks.get(old_name)
                 old_grouplink.name = new_name
-                tool_x._grouplinks.get(new_name).meld(
+                idea_x._grouplinks.get(new_name).meld(
                     other_grouplink=old_grouplink,
                     other_on_meld_weight_action="sum",
                     src_on_meld_weight_action="sum",
                 )
 
-                tool_x.del_grouplink(groupname=old_name)
+                idea_x.del_grouplink(groupname=old_name)
             elif (
-                tool_x._grouplinks.get(new_name) is None
-                and tool_x._grouplinks.get(old_name) != None
+                idea_x._grouplinks.get(new_name) is None
+                and idea_x._grouplinks.get(old_name) != None
             ):
-                old_grouplink = tool_x._grouplinks.get(old_name)
+                old_grouplink = idea_x._grouplinks.get(old_name)
                 new_grouplink = grouplink_shop(
                     name=new_name,
                     creditor_weight=old_grouplink.creditor_weight,
                     debtor_weight=old_grouplink.debtor_weight,
                 )
-                tool_x.set_grouplink(grouplink=new_grouplink)
-                tool_x.del_grouplink(groupname=old_name)
+                idea_x.set_grouplink(grouplink=new_grouplink)
+                idea_x.del_grouplink(groupname=old_name)
 
     def get_groupunits_name_list(self):
         groupname_list = list(self._groups.keys())
@@ -657,8 +657,8 @@ class AgentUnit:
             nigh=nigh_minutes,
         )
 
-    def _is_tool_rangeroot(self, tool_road: Road):
-        anc_roads = get_ancestor_roads(road=tool_road)
+    def _is_idea_rangeroot(self, idea_road: Road):
+        anc_roads = get_ancestor_roads(road=idea_road)
         parent_road = self._desc if len(anc_roads) == 1 else anc_roads[1]
 
         # figure out if parent is range
@@ -666,39 +666,39 @@ class AgentUnit:
         if len(parent_road.split(",")) == 1:
             parent_range = False
         else:
-            parent_tool = self.get_tool_kid(road=parent_road)
-            parent_range = parent_tool._begin != None and parent_tool._close != None
+            parent_idea = self.get_idea_kid(road=parent_road)
+            parent_range = parent_idea._begin != None and parent_idea._close != None
 
         # figure out if numeric source exists
-        tool_x = self.get_tool_kid(road=tool_road)
+        idea_x = self.get_idea_kid(road=idea_road)
         numeric_src_road = None
-        numeric_src_road = tool_x._numeric_road != None
+        numeric_src_road = idea_x._numeric_road != None
 
         return not numeric_src_road and not parent_range
 
     def _get_rangeroot_acptfactunits(self):
         return [
             acptfact
-            for acptfact in self._toolroot._acptfactunits.values()
+            for acptfact in self._idearoot._acptfactunits.values()
             if acptfact.open != None
             and acptfact.nigh != None
-            and self._is_tool_rangeroot(tool_road=acptfact.base)
+            and self._is_idea_rangeroot(idea_road=acptfact.base)
         ]
 
-    def _get_rangeroot_1stlevel_associates(self, ranged_acptfactunits: list[ToolCore]):
+    def _get_rangeroot_1stlevel_associates(self, ranged_acptfactunits: list[IdeaCore]):
         lemmas_x = Lemmas()
         lemmas_x.set_empty_if_null()
-        # lemma_tools = {}
+        # lemma_ideas = {}
         for acptfact in ranged_acptfactunits:
-            acptfact_tool = self.get_tool_kid(road=acptfact.base)
-            for kid in acptfact_tool._kids.values():
-                lemmas_x.eval(tool_x=kid, src_acptfact=acptfact, src_tool=acptfact_tool)
+            acptfact_idea = self.get_idea_kid(road=acptfact.base)
+            for kid in acptfact_idea._kids.values():
+                lemmas_x.eval(idea_x=kid, src_acptfact=acptfact, src_idea=acptfact_idea)
 
-            if acptfact_tool._special_road != None:
+            if acptfact_idea._special_road != None:
                 lemmas_x.eval(
-                    tool_x=self.get_tool_kid(road=acptfact_tool._special_road),
+                    idea_x=self.get_idea_kid(road=acptfact_idea._special_road),
                     src_acptfact=acptfact,
-                    src_tool=acptfact_tool,
+                    src_idea=acptfact_idea,
                 )
         return lemmas_x
 
@@ -717,19 +717,19 @@ class AgentUnit:
                 raise InvalidAgentException("lemma loop failed")
 
             lemma_y = lemmas_x.get_unevaluated_lemma()
-            tool_x = lemma_y.tool_x
+            idea_x = lemma_y.idea_x
             acptfact_x = lemma_y.calc_acptfact
 
-            road_x = f"{tool_x._walk},{tool_x._desc}"
+            road_x = f"{idea_x._walk},{idea_x._desc}"
             lemma_acptfactunits[road_x] = acptfact_x
 
-            for kid2 in tool_x._kids.values():
-                lemmas_x.eval(tool_x=kid2, src_acptfact=acptfact_x, src_tool=tool_x)
-            if tool_x._special_road not in [None, ""]:
+            for kid2 in idea_x._kids.values():
+                lemmas_x.eval(idea_x=kid2, src_acptfact=acptfact_x, src_idea=idea_x)
+            if idea_x._special_road not in [None, ""]:
                 lemmas_x.eval(
-                    tool_x=self.get_tool_kid(road=tool_x._special_road),
+                    idea_x=self.get_idea_kid(road=idea_x._special_road),
                     src_acptfact=acptfact_x,
-                    src_tool=tool_x,
+                    src_idea=idea_x,
                 )
 
         return lemma_acptfactunits
@@ -740,37 +740,37 @@ class AgentUnit:
         pick: Road,
         open: float = None,
         nigh: float = None,
-        create_missing_tools: bool = None,
+        create_missing_ideas: bool = None,
     ):  # sourcery skip: low-code-quality
-        if create_missing_tools:
-            self._set_toolkid_if_empty(road=base)
-            self._set_toolkid_if_empty(road=pick)
+        if create_missing_ideas:
+            self._set_ideakid_if_empty(road=base)
+            self._set_ideakid_if_empty(road=pick)
 
         self._set_acptfacts_empty_if_null()
         self._execute_tree_traverse()
-        acptfact_tool = self.get_tool_kid(road=base)
+        acptfact_idea = self.get_idea_kid(road=base)
 
-        if acptfact_tool._begin is None and acptfact_tool._close is None:
-            self._edit_set_toolroot_acptfactunits(
+        if acptfact_idea._begin is None and acptfact_idea._close is None:
+            self._edit_set_idearoot_acptfactunits(
                 base=base, pick=pick, open=open, nigh=nigh
             )
 
-        # if acptfact's tool no range or is a "range-root" then allow acptfact to be set by user
+        # if acptfact's idea no range or is a "range-root" then allow acptfact to be set by user
         elif (
-            acptfact_tool._begin != None
-            and acptfact_tool._close != None
-            and self._is_tool_rangeroot(tool_road=base) == False
+            acptfact_idea._begin != None
+            and acptfact_idea._close != None
+            and self._is_idea_rangeroot(idea_road=base) == False
         ):
             raise InvalidAgentException(
                 f"Non range-root acptfact:{base} can only be set by range-root acptfact"
             )
 
         elif (
-            acptfact_tool._begin != None
-            and acptfact_tool._close != None
-            and self._is_tool_rangeroot(tool_road=base) == True
+            acptfact_idea._begin != None
+            and acptfact_idea._close != None
+            and self._is_idea_rangeroot(idea_road=base) == True
         ):
-            # when tool is "range-root" identify any required.bases that are descendents
+            # when idea is "range-root" identify any required.bases that are descendents
             # calculate and set those descendent acptfacts
             # example: timeline range (0-, 1.5e9) is range-root
             # example: "timeline,weeks" (spllt 10080) is range-descendent
@@ -780,40 +780,40 @@ class AgentUnit:
             # user should not set "timeline,weeks" acptfact, only "timeline" acptfact and
             # "timeline,weeks" should be set automatica_lly since there exists a required
             # that has that base.
-            self._edit_set_toolroot_acptfactunits(
+            self._edit_set_idearoot_acptfactunits(
                 base=base, pick=pick, open=open, nigh=nigh
             )
 
             # Find all AcptFact descendents and any special_road connections "Lemmas"
             lemmas_dict = self._get_lemma_acptfactunits()
-            for current_acptfact in self._toolroot._acptfactunits.values():
+            for current_acptfact in self._idearoot._acptfactunits.values():
                 for lemma_acptfact in lemmas_dict.values():
                     if lemma_acptfact.base == current_acptfact.base:
-                        self._edit_set_toolroot_acptfactunits(
+                        self._edit_set_idearoot_acptfactunits(
                             base=lemma_acptfact.base,
                             pick=lemma_acptfact.pick,
                             open=lemma_acptfact.open,
                             nigh=lemma_acptfact.nigh,
                         )
-                        self._toolroot._acptfactunits[
+                        self._idearoot._acptfactunits[
                             lemma_acptfact.base
                         ] = lemma_acptfact
 
             for missing_acptfact in self.get_missing_acptfact_bases().keys():
                 for lemma_acptfact in lemmas_dict.values():
                     if lemma_acptfact.base == missing_acptfact:
-                        self._toolroot._acptfactunits[
+                        self._idearoot._acptfactunits[
                             lemma_acptfact.base
                         ] = lemma_acptfact
 
         self.set_agent_metrics()
 
-    def _edit_set_toolroot_acptfactunits(
+    def _edit_set_idearoot_acptfactunits(
         self, pick: Road, base: Road, open: float, nigh: float
     ):
         acptfactunit = acptfactunit_shop(base=base, pick=pick, open=open, nigh=nigh)
         try:
-            acptfact_obj = self._toolroot._acptfactunits[base]
+            acptfact_obj = self._idearoot._acptfactunits[base]
             if pick != None:
                 acptfact_obj.set_attr(pick=pick)
             if open != None:
@@ -821,10 +821,10 @@ class AgentUnit:
             if nigh != None:
                 acptfact_obj.set_attr(nigh=nigh)
         except KeyError as e:
-            self._toolroot._acptfactunits[acptfactunit.base] = acptfactunit
+            self._idearoot._acptfactunits[acptfactunit.base] = acptfactunit
 
     def get_acptfactunits_base_and_acptfact_list(self):
-        acptfact_list = list(self._toolroot._acptfactunits.values())
+        acptfact_list = list(self._idearoot._acptfactunits.values())
         node_dict = {
             acptfact_x.base.lower(): acptfact_x for acptfact_x in acptfact_list
         }
@@ -842,54 +842,54 @@ class AgentUnit:
 
     def del_acptfact(self, base: Road):
         self._set_acptfacts_empty_if_null()
-        self._toolroot._acptfactunits.pop(base)
+        self._idearoot._acptfactunits.pop(base)
 
     def get_tree_metrics(self) -> TreeMetrics:
         tree_metrics = TreeMetrics()
-        self._toolroot._level = 0
+        self._idearoot._level = 0
         tree_metrics.evaluate_node(
-            level=self._toolroot._level,
-            requireds=self._toolroot._requiredunits,
-            grouplinks=self._toolroot._grouplinks,
-            uid=self._toolroot._uid,
-            promise=self._toolroot.promise,
-            tool_road=self._toolroot.get_road(),
+            level=self._idearoot._level,
+            requireds=self._idearoot._requiredunits,
+            grouplinks=self._idearoot._grouplinks,
+            uid=self._idearoot._uid,
+            promise=self._idearoot.promise,
+            idea_road=self._idearoot.get_road(),
         )
 
-        tool_list = [self._toolroot]
-        while tool_list != []:
-            tool_x = tool_list.pop()
-            if tool_x._kids != None:
-                for tool_kid in tool_x._kids.values():
-                    self._eval_tree_metrics(tool_x, tool_kid, tree_metrics, tool_list)
+        idea_list = [self._idearoot]
+        while idea_list != []:
+            idea_x = idea_list.pop()
+            if idea_x._kids != None:
+                for idea_kid in idea_x._kids.values():
+                    self._eval_tree_metrics(idea_x, idea_kid, tree_metrics, idea_list)
         return tree_metrics
 
-    def _eval_tree_metrics(self, tool_x, tool_kid, tree_metrics, tool_list):
-        tool_kid._level = tool_x._level + 1
+    def _eval_tree_metrics(self, idea_x, idea_kid, tree_metrics, idea_list):
+        idea_kid._level = idea_x._level + 1
         tree_metrics.evaluate_node(
-            level=tool_kid._level,
-            requireds=tool_kid._requiredunits,
-            grouplinks=tool_kid._grouplinks,
-            uid=tool_kid._uid,
-            promise=tool_kid.promise,
-            tool_road=tool_kid.get_road(),
+            level=idea_kid._level,
+            requireds=idea_kid._requiredunits,
+            grouplinks=idea_kid._grouplinks,
+            uid=idea_kid._uid,
+            promise=idea_kid.promise,
+            idea_road=idea_kid.get_road(),
         )
-        tool_list.append(tool_kid)
+        idea_list.append(idea_kid)
 
-    def get_tool_uid_max(self) -> int:
+    def get_idea_uid_max(self) -> int:
         tree_metrics = self.get_tree_metrics()
         return tree_metrics.uid_max
 
-    def set_all_tool_uids_unique(self):
+    def set_all_idea_uids_unique(self):
         tree_metrics = self.get_tree_metrics()
-        tool_uid_max = tree_metrics.uid_max
-        tool_uid_dict = tree_metrics.uid_dict
+        idea_uid_max = tree_metrics.uid_max
+        idea_uid_dict = tree_metrics.uid_dict
 
-        for tool_x in self.get_tool_list():
-            if tool_x._uid is None or tool_uid_dict.get(tool_x._uid) > 1:
-                new_tool_uid_max = tool_uid_max + 1
-                self.edit_tool_attr(road=tool_x.get_road(), uid=new_tool_uid_max)
-                tool_uid_max = new_tool_uid_max
+        for idea_x in self.get_idea_list():
+            if idea_x._uid is None or idea_uid_dict.get(idea_x._uid) > 1:
+                new_idea_uid_max = idea_uid_max + 1
+                self.edit_idea_attr(road=idea_x.get_road(), uid=new_idea_uid_max)
+                idea_uid_max = new_idea_uid_max
 
     def get_node_count(self):
         tree_metrics = self.get_tree_metrics()
@@ -912,46 +912,46 @@ class AgentUnit:
         tree_metrics = self.get_tree_metrics()
         required_bases = tree_metrics.required_bases
         missing_bases = {}
-        if self._toolroot._acptfactunits is None:
+        if self._idearoot._acptfactunits is None:
             missing_bases = required_bases
-        elif self._toolroot._acptfactunits != None:
+        elif self._idearoot._acptfactunits != None:
             for base, base_count in required_bases.items():
                 try:
-                    levelCount = self._toolroot._acptfactunits[base]
+                    levelCount = self._idearoot._acptfactunits[base]
                 except KeyError:
                     missing_bases[base] = base_count
 
         return missing_bases
 
-    def add_tool(
+    def add_idea(
         self,
-        tool_kid: ToolCore,
+        idea_kid: IdeaCore,
         walk: Road,
-        create_missing_tools_groups: bool = None,
+        create_missing_ideas_groups: bool = None,
     ):
-        temp_tool = self._toolroot
+        temp_idea = self._idearoot
         _road = walk.split(",")
         temp_road = _road.pop(0)
 
-        # toolroot cannot be replaced
+        # idearoot cannot be replaced
         if temp_road == self._desc and _road == []:
-            tool_kid.set_road(parent_road=Road(self._desc))
+            idea_kid.set_road(parent_road=Road(self._desc))
         else:
             parent_road = [temp_road]
             while _road != []:
                 temp_road = _road.pop(0)
-                temp_tool = self._get_or_create_leveln_tool(
-                    parent_tool=temp_tool, tool_desc=temp_road
+                temp_idea = self._get_or_create_leveln_idea(
+                    parent_idea=temp_idea, idea_desc=temp_road
                 )
                 parent_road.append(temp_road)
 
-            tool_kid.set_road(parent_road=",".join(parent_road))
+            idea_kid.set_road(parent_road=",".join(parent_road))
 
-        temp_tool.add_kid(tool_kid)
+        temp_idea.add_kid(idea_kid)
 
-        if create_missing_tools_groups:
-            self._create_missing_tools(road=Road(f"{walk},{tool_kid._desc}"))
-            self._create_missing_groups_members(grouplinks=tool_kid._grouplinks)
+        if create_missing_ideas_groups:
+            self._create_missing_ideas(road=Road(f"{walk},{idea_kid._desc}"))
+            self._create_missing_groups_members(grouplinks=idea_kid._grouplinks)
 
     def _create_missing_groups_members(self, grouplinks: dict[GroupName:GroupLink]):
         for grouplink_x in grouplinks.values():
@@ -959,52 +959,52 @@ class AgentUnit:
                 groupunit_x = groupunit_shop(name=grouplink_x.name, _members={})
                 self.set_groupunit(groupunit=groupunit_x)
 
-    def _create_missing_tools(self, road):
+    def _create_missing_ideas(self, road):
         self.set_agent_metrics()
-        posted_tool = self.get_tool_kid(road)
+        posted_idea = self.get_idea_kid(road)
 
-        for required_x in posted_tool._requiredunits.values():
-            self._set_toolkid_if_empty(road=required_x.base)
+        for required_x in posted_idea._requiredunits.values():
+            self._set_ideakid_if_empty(road=required_x.base)
             for sufffact_x in required_x.sufffacts.values():
-                self._set_toolkid_if_empty(road=sufffact_x.need)
-        if posted_tool._special_road != None:
-            self._set_toolkid_if_empty(road=posted_tool._special_road)
-        if posted_tool._numeric_road != None:
-            self._set_toolkid_if_empty(road=posted_tool._numeric_road)
+                self._set_ideakid_if_empty(road=sufffact_x.need)
+        if posted_idea._special_road != None:
+            self._set_ideakid_if_empty(road=posted_idea._special_road)
+        if posted_idea._numeric_road != None:
+            self._set_ideakid_if_empty(road=posted_idea._numeric_road)
 
-    def _set_toolkid_if_empty(self, road: Road):
+    def _set_ideakid_if_empty(self, road: Road):
         try:
-            self.get_tool_kid(road)
+            self.get_idea_kid(road)
         except InvalidAgentException:
-            base_tool = ToolKid(
+            base_idea = IdeaKid(
                 _desc=get_terminus_node_from_road(road=road),
                 _walk=get_walk_from_road(road=road),
             )
-            self.add_tool(tool_kid=base_tool, walk=base_tool._walk)
+            self.add_idea(idea_kid=base_idea, walk=base_idea._walk)
 
-    # def _get_or_create_level1_tool(self, tool_desc: str) -> ToolKid:
-    #     return_tool = None
+    # def _get_or_create_level1_idea(self, idea_desc: str) -> IdeaKid:
+    #     return_idea = None
     #     try:
-    #         return_tool = self._kids[tool_desc]
+    #         return_idea = self._kids[idea_desc]
     #     except Exception:
     #         KeyError
-    #         self.add_kid(ToolKid(_desc=tool_desc))
-    #         return_tool = self._kids[tool_desc]
+    #         self.add_kid(IdeaKid(_desc=idea_desc))
+    #         return_idea = self._kids[idea_desc]
 
-    #     return return_tool
+    #     return return_idea
 
-    def _get_or_create_leveln_tool(self, parent_tool: ToolCore, tool_desc: str):
-        return_tool = None
+    def _get_or_create_leveln_idea(self, parent_idea: IdeaCore, idea_desc: str):
+        return_idea = None
         try:
-            return_tool = parent_tool._kids[tool_desc]
+            return_idea = parent_idea._kids[idea_desc]
         except Exception:
             KeyError
-            parent_tool.add_kid(ToolKid(_desc=tool_desc))
-            return_tool = parent_tool._kids[tool_desc]
+            parent_idea.add_kid(IdeaKid(_desc=idea_desc))
+            return_idea = parent_idea._kids[idea_desc]
 
-        return return_tool
+        return return_idea
 
-    def del_tool_kid(self, road: Road, del_children: bool = True):
+    def del_idea_kid(self, road: Road, del_children: bool = True):
         x_road = road.split(",")
         temp_desc = x_road.pop(0)
         temps_d = [temp_desc]
@@ -1016,32 +1016,32 @@ class AgentUnit:
 
         if x_road == []:
             if not del_children:
-                d_temp_tool = self.get_tool_kid(road=",".join(temps_d))
-                for kid in d_temp_tool._kids.values():
-                    self.add_tool(tool_kid=kid, walk=",".join(temps_d[:-1]))
-            self._toolroot._kids.pop(temp_desc)
+                d_temp_idea = self.get_idea_kid(road=",".join(temps_d))
+                for kid in d_temp_idea._kids.values():
+                    self.add_idea(idea_kid=kid, walk=",".join(temps_d[:-1]))
+            self._idearoot._kids.pop(temp_desc)
         elif x_road != []:
-            i_temp_tool = self._toolroot._kids[temp_desc]
+            i_temp_idea = self._idearoot._kids[temp_desc]
             while x_road != []:
                 temp_desc = x_road.pop(0)
-                parent_temp_tool = i_temp_tool
-                i_temp_tool = i_temp_tool._kids[temp_desc]
+                parent_temp_idea = i_temp_idea
+                i_temp_idea = i_temp_idea._kids[temp_desc]
 
-            parent_temp_tool._kids.pop(temp_desc)
+            parent_temp_idea._kids.pop(temp_desc)
         self.set_agent_metrics()
 
-    def agent_and_toolroot_desc_edit(self, new_desc):
+    def agent_and_idearoot_desc_edit(self, new_desc):
         self._desc = new_desc
-        self.edit_tool_desc(old_road=self._toolroot._desc, new_desc=new_desc)
+        self.edit_idea_desc(old_road=self._idearoot._desc, new_desc=new_desc)
 
-    def edit_tool_desc(
+    def edit_idea_desc(
         self,
         old_road: Road,
         new_desc: str,
     ):
-        # confirm tool exists
-        if self.get_tool_kid(road=old_road) is None:
-            raise InvalidAgentException(f"Tool {old_road=} does not exist")
+        # confirm idea exists
+        if self.get_idea_kid(road=old_road) is None:
+            raise InvalidAgentException(f"Idea {old_road=} does not exist")
 
         walk = get_walk_from_road(road=old_road)
         new_road = road_validate(Road(f"{walk},{new_desc}"))
@@ -1049,46 +1049,46 @@ class AgentUnit:
         if old_road != new_road:
             # if root _desc is changed
             if walk == "":
-                self._toolroot._desc = new_desc
-                self._toolroot._walk = walk
+                self._idearoot._desc = new_desc
+                self._idearoot._walk = walk
             else:
-                self._non_root_tool_desc_edit(old_road, new_desc, walk)
-            self._toolroot_find_replace_road(old_road=old_road, new_road=new_road)
+                self._non_root_idea_desc_edit(old_road, new_desc, walk)
+            self._idearoot_find_replace_road(old_road=old_road, new_road=new_road)
             self._set_acptfacts_empty_if_null()
-            self._toolroot._acptfactunits = find_replace_road_key_dict(
-                dict_x=self._toolroot._acptfactunits,
+            self._idearoot._acptfactunits = find_replace_road_key_dict(
+                dict_x=self._idearoot._acptfactunits,
                 old_road=old_road,
                 new_road=new_road,
             )
 
-    def _non_root_tool_desc_edit(self, old_road, new_desc, walk):
-        tool_z = self.get_tool_kid(road=old_road)
-        tool_z._desc = new_desc
-        tool_z._walk = walk
-        tool_parent = self.get_tool_kid(road=get_walk_from_road(old_road))
-        tool_parent._kids.pop(get_terminus_node_from_road(old_road))
-        tool_parent._kids[tool_z._desc] = tool_z
+    def _non_root_idea_desc_edit(self, old_road, new_desc, walk):
+        idea_z = self.get_idea_kid(road=old_road)
+        idea_z._desc = new_desc
+        idea_z._walk = walk
+        idea_parent = self.get_idea_kid(road=get_walk_from_road(old_road))
+        idea_parent._kids.pop(get_terminus_node_from_road(old_road))
+        idea_parent._kids[idea_z._desc] = idea_z
 
-    def _toolroot_find_replace_road(self, old_road, new_road):
-        self._toolroot.find_replace_road(old_road=old_road, new_road=new_road)
+    def _idearoot_find_replace_road(self, old_road, new_road):
+        self._idearoot.find_replace_road(old_road=old_road, new_road=new_road)
 
-        tool_iter_list = [self._toolroot]
-        while tool_iter_list != []:
-            listed_tool = tool_iter_list.pop()
-            # put all tool_children in tool list
-            if listed_tool._kids != None:
-                for tool_kid in listed_tool._kids.values():
-                    tool_iter_list.append(tool_kid)
+        idea_iter_list = [self._idearoot]
+        while idea_iter_list != []:
+            listed_idea = idea_iter_list.pop()
+            # put all idea_children in idea list
+            if listed_idea._kids != None:
+                for idea_kid in listed_idea._kids.values():
+                    idea_iter_list.append(idea_kid)
                     if is_sub_road_in_src_road(
-                        src_road=tool_kid._walk,
+                        src_road=idea_kid._walk,
                         sub_road=old_road,
                     ):
-                        tool_kid._walk = change_road(
-                            current_road=tool_kid._walk,
+                        idea_kid._walk = change_road(
+                            current_road=idea_kid._walk,
                             old_road=old_road,
                             new_road=new_road,
                         )
-                    tool_kid.find_replace_road(old_road=old_road, new_road=new_road)
+                    idea_kid.find_replace_road(old_road=old_road, new_road=new_road)
 
     def get_begin_close_if_denom_or_numeric_road(
         self,
@@ -1098,29 +1098,29 @@ class AgentUnit:
         numor: float,
         denom: float,
         reest: bool,
-        tool_road: Road,
+        idea_road: Road,
         numeric_road: Road,
     ):
-        anc_roads = get_ancestor_roads(road=tool_road)
+        anc_roads = get_ancestor_roads(road=idea_road)
         if (addin != None or numor != None or denom != None or reest != None) and len(
             anc_roads
         ) == 1:
-            raise InvalidAgentException("Root Tool cannot have numor denom reest.")
+            raise InvalidAgentException("Root Idea cannot have numor denom reest.")
         parent_road = self._desc if len(anc_roads) == 1 else anc_roads[1]
 
         parent_has_range = None
-        parent_tool_x = self.get_tool_kid(road=parent_road)
-        parent_begin = parent_tool_x._begin
-        parent_close = parent_tool_x._close
+        parent_idea_x = self.get_idea_kid(road=parent_road)
+        parent_begin = parent_idea_x._begin
+        parent_close = parent_idea_x._close
         parent_has_range = parent_begin is not None and parent_close is not None
 
         numeric_begin = None
         numeric_close = None
         numeric_range = None
         if numeric_road != None:
-            numeric_tool_x = self.get_tool_kid(road=numeric_road)
-            numeric_begin = numeric_tool_x._begin
-            numeric_close = numeric_tool_x._close
+            numeric_idea_x = self.get_idea_kid(road=numeric_road)
+            numeric_begin = numeric_idea_x._begin
+            numeric_close = numeric_idea_x._close
             numeric_range = numeric_begin != None and numeric_close != None
 
         if parent_has_range and addin not in [None, 0]:
@@ -1143,11 +1143,11 @@ class AgentUnit:
 
         if parent_has_range and numeric_range:
             raise InvalidAgentException(
-                "Tool has begin-close range parent, cannot have numeric_road"
+                "Idea has begin-close range parent, cannot have numeric_road"
             )
         elif not parent_has_range and not numeric_range and numor != None:
             raise InvalidAgentException(
-                f"Tool cannot edit {numor=}/denom/reest of '{tool_road}' if parent '{parent_road}' or toolcore._numeric_road does not have begin/close range"
+                f"Idea cannot edit {numor=}/denom/reest of '{idea_road}' if parent '{parent_road}' or ideacore._numeric_road does not have begin/close range"
             )
         return begin, close
 
@@ -1195,7 +1195,7 @@ class AgentUnit:
 
         return begin, close
 
-    def edit_tool_attr(
+    def edit_idea_attr(
         self,
         road: Road,
         weight: int = None,
@@ -1208,7 +1208,7 @@ class AgentUnit:
         required_sufffact_divisor: int = None,
         required_del_sufffact_base: Road = None,
         required_del_sufffact_need: Road = None,
-        required_suff_tool_active_status: str = None,
+        required_suff_idea_active_status: str = None,
         begin: float = None,
         close: float = None,
         addin: float = None,
@@ -1252,11 +1252,11 @@ class AgentUnit:
                 numor=numor,
                 denom=denom,
                 reest=reest,
-                tool_road=road,
+                idea_road=road,
                 numeric_road=numeric_road,
             )
 
-        tool_attr = ToolAttrHolder(
+        idea_attr = IdeaAttrHolder(
             weight=weight,
             uid=uid,
             required=required,
@@ -1267,7 +1267,7 @@ class AgentUnit:
             required_sufffact_divisor=required_sufffact_divisor,
             required_del_sufffact_base=required_del_sufffact_base,
             required_del_sufffact_need=required_del_sufffact_need,
-            required_suff_tool_active_status=required_suff_tool_active_status,
+            required_suff_idea_active_status=required_suff_idea_active_status,
             begin=begin,
             close=close,
             addin=addin,
@@ -1286,47 +1286,47 @@ class AgentUnit:
             problem_bool=problem_bool,
             on_meld_weight_action=on_meld_weight_action,
         )
-        if tool_attr.required_sufffact != None:
-            suffact_tool = self.get_tool_kid(road=required_sufffact)
-            tool_attr.set_sufffact_range_attributes_influenced_by_sufffact_tool(
-                sufffact_open=suffact_tool._begin,
-                sufffact_nigh=suffact_tool._close,
-                # suffact_numor=suffact_tool.anc_numor,
-                sufffact_denom=suffact_tool._denom,
-                # anc_reest=suffact_tool.anc_reest,
+        if idea_attr.required_sufffact != None:
+            suffact_idea = self.get_idea_kid(road=required_sufffact)
+            idea_attr.set_sufffact_range_attributes_influenced_by_sufffact_idea(
+                sufffact_open=suffact_idea._begin,
+                sufffact_nigh=suffact_idea._close,
+                # suffact_numor=suffact_idea.anc_numor,
+                sufffact_denom=suffact_idea._denom,
+                # anc_reest=suffact_idea.anc_reest,
             )
-        temp_tool = self.get_tool_kid(road=road)
-        temp_tool._set_tool_attr(tool_attr=tool_attr)
-        if f"{type(temp_tool)}".find("'.tool.ToolRoot'>") <= 0:
-            temp_tool._set_toolkid_attr(acptfactunit=acptfactunit)
+        temp_idea = self.get_idea_kid(road=road)
+        temp_idea._set_idea_attr(idea_attr=idea_attr)
+        if f"{type(temp_idea)}".find("'.idea.IdeaRoot'>") <= 0:
+            temp_idea._set_ideakid_attr(acptfactunit=acptfactunit)
 
         # deleting a grouplink reqquires a tree traverse to correctly set groupheirs and grouplines
         if grouplink_del != None or grouplink != None:
             self.set_agent_metrics()
 
-    def del_tool_required_sufffact(
+    def del_idea_required_sufffact(
         self, road: Road, required_base: Road, required_sufffact: Road
     ):
-        self.edit_tool_attr(
+        self.edit_idea_attr(
             road=road,
             required_del_sufffact_base=required_base,
             required_del_sufffact_need=required_sufffact,
         )
 
     def _set_acptfacts_empty_if_null(self):
-        self._toolroot.set_acptfactunits_empty_if_null()
+        self._idearoot.set_acptfactunits_empty_if_null()
 
     def get_agenda_items(
         self, base: Road = None, agenda_todo: bool = True, agenda_state: bool = True
-    ) -> list[ToolCore]:
+    ) -> list[IdeaCore]:
         return [
-            tool for tool in self.get_tool_list() if tool.is_agenda_item(base_x=base)
+            idea for idea in self.get_idea_list() if idea.is_agenda_item(base_x=base)
         ]
 
     def set_agenda_task_complete(self, task_road: Road, base: Road):
-        promise_item = self.get_tool_kid(road=task_road)
+        promise_item = self.get_idea_kid(road=task_road)
         promise_item.set_acptfactunit_to_complete(
-            base_acptfactunit=self._toolroot._acptfactunits[base]
+            base_acptfactunit=self._idearoot._acptfactunits[base]
         )
 
     def get_memberunit_total_creditor_weight(self):
@@ -1339,17 +1339,17 @@ class AgentUnit:
             memberunit.get_debtor_weight() for memberunit in self._members.values()
         )
 
-    def _add_to_memberunits_agent_credit_debt(self, tool_agent_importance: float):
+    def _add_to_memberunits_agent_credit_debt(self, idea_agent_importance: float):
         sum_memberunit_creditor_weight = self.get_memberunit_total_creditor_weight()
         sum_memberunit_debtor_weight = self.get_memberunit_total_debtor_weight()
 
         for memberunit_x in self._members.values():
             au_agent_credit = (
-                tool_agent_importance * memberunit_x.get_creditor_weight()
+                idea_agent_importance * memberunit_x.get_creditor_weight()
             ) / sum_memberunit_creditor_weight
 
             au_agent_debt = (
-                tool_agent_importance * memberunit_x.get_debtor_weight()
+                idea_agent_importance * memberunit_x.get_debtor_weight()
             ) / sum_memberunit_debtor_weight
 
             memberunit_x.add_agent_credit_debt(
@@ -1360,18 +1360,18 @@ class AgentUnit:
             )
 
     def _add_to_memberunits_agent_agenda_credit_debt(
-        self, tool_agent_importance: float
+        self, idea_agent_importance: float
     ):
         sum_memberunit_creditor_weight = self.get_memberunit_total_creditor_weight()
         sum_memberunit_debtor_weight = self.get_memberunit_total_debtor_weight()
 
         for memberunit_x in self._members.values():
             au_agent_agenda_credit = (
-                tool_agent_importance * memberunit_x.get_creditor_weight()
+                idea_agent_importance * memberunit_x.get_creditor_weight()
             ) / sum_memberunit_creditor_weight
 
             au_agent_agenda_debt = (
-                tool_agent_importance * memberunit_x.get_debtor_weight()
+                idea_agent_importance * memberunit_x.get_debtor_weight()
             ) / sum_memberunit_debtor_weight
 
             memberunit_x.add_agent_credit_debt(
@@ -1414,18 +1414,18 @@ class AgentUnit:
             )
 
     def _distribute_agent_agenda_importance(self):
-        for tool in self._tool_dict.values():
-            # If there are no grouplines associated with tool
+        for idea in self._idea_dict.values():
+            # If there are no grouplines associated with idea
             # distribute agent_importance via general memberunit
             # credit ratio and debt ratio
-            # if tool.is_agenda_item() and tool._grouplines == {}:
-            if tool.is_agenda_item():
-                if tool._grouplines == {}:
+            # if idea.is_agenda_item() and idea._grouplines == {}:
+            if idea.is_agenda_item():
+                if idea._grouplines == {}:
                     self._add_to_memberunits_agent_agenda_credit_debt(
-                        tool._agent_importance
+                        idea._agent_importance
                     )
                 else:
-                    for groupline_x in tool._grouplines.values():
+                    for groupline_x in idea._grouplines.values():
                         self.add_to_group_agent_agenda_credit_debt(
                             groupname=groupline_x.name,
                             groupline_agent_credit=groupline_x._agent_credit,
@@ -1476,10 +1476,10 @@ class AgentUnit:
         for memberunit in self._members.values():
             memberunit.reset_agent_credit_debt()
 
-    def _toolroot_inherit_requiredheirs(self):
-        self._toolroot.set_requiredunits_empty_if_null()
+    def _idearoot_inherit_requiredheirs(self):
+        self._idearoot.set_requiredunits_empty_if_null()
         x_dict = {}
-        for required in self._toolroot._requiredunits.values():
+        for required in self._idearoot._requiredunits.values():
             x_required = RequiredHeir(base=required.base, sufffacts=None)
             x_sufffacts = {}
             for w in required.sufffacts.values():
@@ -1492,49 +1492,49 @@ class AgentUnit:
                 x_sufffacts[sufffact_x.need] = sufffact_x
             x_required.sufffacts = x_sufffacts
             x_dict[x_required.base] = x_required
-        self._toolroot._requiredheirs = x_dict
+        self._idearoot._requiredheirs = x_dict
 
-    def get_tool_kid(self, road: Road) -> ToolKid:
+    def get_idea_kid(self, road: Road) -> IdeaKid:
         if road is None:
-            raise InvalidAgentException("get_tool_kid received road=None")
+            raise InvalidAgentException("get_idea_kid received road=None")
         nodes = road.split(",")
         src = nodes.pop(0)
-        temp_tool = None
+        temp_idea = None
 
-        if nodes == [] and src == self._toolroot._desc:
-            temp_tool = self._toolroot
+        if nodes == [] and src == self._idearoot._desc:
+            temp_idea = self._idearoot
             # raise InvalidAgentException(f"Cannot return root '{src}'")
         else:
-            tool_desc = src if nodes == [] else nodes.pop(0)
+            idea_desc = src if nodes == [] else nodes.pop(0)
             try:
-                temp_tool = self._toolroot._kids.get(tool_desc)
+                temp_idea = self._idearoot._kids.get(idea_desc)
 
                 while nodes != []:
-                    tool_desc = nodes.pop(0)
-                    temp_tool = temp_tool._kids[tool_desc]
-                if temp_tool is None:
+                    idea_desc = nodes.pop(0)
+                    temp_idea = temp_idea._kids[idea_desc]
+                if temp_idea is None:
                     raise InvalidAgentException(
-                        f"Temp_tool is None {tool_desc=}. No item at '{road}'"
+                        f"Temp_idea is None {idea_desc=}. No item at '{road}'"
                     )
             except:
                 raise InvalidAgentException(
-                    f"Getting {tool_desc=} failed no item at '{road}'"
+                    f"Getting {idea_desc=} failed no item at '{road}'"
                 )
 
-        return temp_tool
+        return temp_idea
 
-    def get_tool_ranged_kids(
-        self, tool_road: str, begin: float = None, close: float = None
-    ) -> dict[ToolCore]:
-        parent_tool = self.get_tool_kid(road=tool_road)
+    def get_idea_ranged_kids(
+        self, idea_road: str, begin: float = None, close: float = None
+    ) -> dict[IdeaCore]:
+        parent_idea = self.get_idea_kid(road=idea_road)
         if begin is None and close is None:
-            begin = parent_tool._begin
-            close = parent_tool._close
+            begin = parent_idea._begin
+            close = parent_idea._close
         elif begin != None and close is None:
             close = begin
 
-        tool_list = parent_tool.get_kids_in_range(begin=begin, close=close)
-        return {tool_x._desc: tool_x for tool_x in tool_list}
+        idea_list = parent_idea.get_kids_in_range(begin=begin, close=close)
+        return {idea_x._desc: idea_x for idea_x in idea_list}
 
     def _set_ancestor_metrics(self, road: Road):
         # sourcery skip: low-code-quality
@@ -1545,144 +1545,144 @@ class AgentUnit:
 
         group_everyone = None
         if len(road.split(",")) <= 1:
-            group_everyone = self._toolroot._groupheirs in [None, {}]
+            group_everyone = self._idearoot._groupheirs in [None, {}]
         else:
             ancestor_roads = get_ancestor_roads(road=road)
             # remove root road
             ancestor_roads.pop(len(ancestor_roads) - 1)
 
             while ancestor_roads != []:
-                # youngest_untouched_tool
-                yu_tool_obj = self.get_tool_kid(road=ancestor_roads.pop(0))
-                yu_tool_obj.set_descendant_promise_count_zero_if_null()
-                yu_tool_obj._descendant_promise_count += da_count
-                if yu_tool_obj.is_kidless():
-                    yu_tool_obj.set_kidless_grouplines()
-                    child_grouplines = yu_tool_obj._grouplines
+                # youngest_untouched_idea
+                yu_idea_obj = self.get_idea_kid(road=ancestor_roads.pop(0))
+                yu_idea_obj.set_descendant_promise_count_zero_if_null()
+                yu_idea_obj._descendant_promise_count += da_count
+                if yu_idea_obj.is_kidless():
+                    yu_idea_obj.set_kidless_grouplines()
+                    child_grouplines = yu_idea_obj._grouplines
                 else:
-                    yu_tool_obj.set_grouplines(child_grouplines=child_grouplines)
+                    yu_idea_obj.set_grouplines(child_grouplines=child_grouplines)
 
-                if yu_tool_obj._task == True:
+                if yu_idea_obj._task == True:
                     da_count += 1
 
                 if (
                     group_everyone != False
-                    and yu_tool_obj._all_member_credit != False
-                    and yu_tool_obj._all_member_debt != False
-                    and yu_tool_obj._groupheirs != {}
+                    and yu_idea_obj._all_member_credit != False
+                    and yu_idea_obj._all_member_debt != False
+                    and yu_idea_obj._groupheirs != {}
                     or group_everyone != False
-                    and yu_tool_obj._all_member_credit == False
-                    and yu_tool_obj._all_member_debt == False
+                    and yu_idea_obj._all_member_credit == False
+                    and yu_idea_obj._all_member_debt == False
                 ):
                     group_everyone = False
                 elif group_everyone != False:
                     group_everyone = True
-                yu_tool_obj._all_member_credit = group_everyone
-                yu_tool_obj._all_member_debt = group_everyone
+                yu_idea_obj._all_member_credit = group_everyone
+                yu_idea_obj._all_member_debt = group_everyone
 
             if (
                 group_everyone != False
-                and self._toolroot._all_member_credit != False
-                and self._toolroot._all_member_debt != False
-                and self._toolroot._groupheirs != {}
+                and self._idearoot._all_member_credit != False
+                and self._idearoot._all_member_debt != False
+                and self._idearoot._groupheirs != {}
                 or group_everyone != False
-                and self._toolroot._all_member_credit == False
-                and self._toolroot._all_member_debt == False
+                and self._idearoot._all_member_credit == False
+                and self._idearoot._all_member_debt == False
             ):
                 group_everyone = False
-            elif group_everyone != False and yu_tool_obj._groupheirs == {}:
+            elif group_everyone != False and yu_idea_obj._groupheirs == {}:
                 group_everyone = True
 
-        self._toolroot._all_member_credit = group_everyone
-        self._toolroot._all_member_debt = group_everyone
+        self._idearoot._all_member_credit = group_everyone
+        self._idearoot._all_member_debt = group_everyone
 
-        if self._toolroot.is_kidless():
-            self._toolroot.set_kidless_grouplines()
+        if self._idearoot.is_kidless():
+            self._idearoot.set_kidless_grouplines()
         else:
-            self._toolroot.set_grouplines(child_grouplines=child_grouplines)
-        self._toolroot.set_descendant_promise_count_zero_if_null()
-        self._toolroot._descendant_promise_count += da_count
+            self._idearoot.set_grouplines(child_grouplines=child_grouplines)
+        self._idearoot.set_descendant_promise_count_zero_if_null()
+        self._idearoot._descendant_promise_count += da_count
 
     def _set_root_attributes(self):
-        self._toolroot._level = 0
-        self._toolroot.set_road(parent_road="")
-        self._toolroot.set_requiredheirs(
-            requiredheirs=self._toolroot._requiredunits, agent_tool_dict=self._tool_dict
+        self._idearoot._level = 0
+        self._idearoot.set_road(parent_road="")
+        self._idearoot.set_requiredheirs(
+            requiredheirs=self._idearoot._requiredunits, agent_idea_dict=self._idea_dict
         )
-        self._toolroot.inherit_groupheirs()
-        self._toolroot.clear_grouplines()
-        self._toolroot.set_acptfactunits_empty_if_null()
-        self._toolroot._weight = 1
-        self._toolroot._kids_total_weight = 0
-        self._toolroot.set_kids_total_weight()
-        self._toolroot.set_sibling_total_weight(1)
-        self._toolroot.set_agent_importance(coin_onset_x=0, parent_coin_cease=1)
-        self._toolroot.set_groupheirs_agent_credit_debit()
-        self._toolroot.set_ancestor_promise_count(0, False)
-        self._toolroot.clear_descendant_promise_count()
-        self._toolroot.clear_all_member_credit_debt()
-        self._toolroot.promise = False
+        self._idearoot.inherit_groupheirs()
+        self._idearoot.clear_grouplines()
+        self._idearoot.set_acptfactunits_empty_if_null()
+        self._idearoot._weight = 1
+        self._idearoot._kids_total_weight = 0
+        self._idearoot.set_kids_total_weight()
+        self._idearoot.set_sibling_total_weight(1)
+        self._idearoot.set_agent_importance(coin_onset_x=0, parent_coin_cease=1)
+        self._idearoot.set_groupheirs_agent_credit_debit()
+        self._idearoot.set_ancestor_promise_count(0, False)
+        self._idearoot.clear_descendant_promise_count()
+        self._idearoot.clear_all_member_credit_debt()
+        self._idearoot.promise = False
 
-        if self._toolroot.is_kidless():
-            self._set_ancestor_metrics(road=self._toolroot._walk)
-            self._distribute_agent_importance(tool=self._toolroot)
+        if self._idearoot.is_kidless():
+            self._set_ancestor_metrics(road=self._idearoot._walk)
+            self._distribute_agent_importance(idea=self._idearoot)
 
     def _set_kids_attributes(
         self,
-        tool_kid: ToolKid,
+        idea_kid: IdeaKid,
         coin_onset: float,
         parent_coin_cease: float,
-        parent_tool: ToolKid = None,
-    ) -> ToolKid:
+        parent_idea: IdeaKid = None,
+    ) -> IdeaKid:
         parent_acptfacts = None
         parent_requiredheirs = None
 
-        if parent_tool is None:
-            parent_tool = self._toolroot
-            parent_acptfacts = self._toolroot._acptfactunits
-            parent_requiredheirs = self._toolroot_inherit_requiredheirs()
+        if parent_idea is None:
+            parent_idea = self._idearoot
+            parent_acptfacts = self._idearoot._acptfactunits
+            parent_requiredheirs = self._idearoot_inherit_requiredheirs()
         else:
-            parent_acptfacts = parent_tool._acptfactheirs
-            parent_requiredheirs = parent_tool._requiredheirs
+            parent_acptfacts = parent_idea._acptfactheirs
+            parent_requiredheirs = parent_idea._requiredheirs
 
-        tool_kid.set_level(parent_level=parent_tool._level)
-        tool_kid.set_road(parent_road=parent_tool._walk, parent_desc=parent_tool._desc)
-        tool_kid.set_acptfactunits_empty_if_null()
-        tool_kid.set_acptfactheirs(acptfacts=parent_acptfacts)
-        tool_kid.set_requiredheirs(parent_requiredheirs, self._tool_dict)
-        tool_kid.inherit_groupheirs(parent_groupheirs=parent_tool._groupheirs)
-        tool_kid.clear_grouplines()
-        tool_kid.set_active_status(tree_traverse_count=self._tree_traverse_count)
-        tool_kid.set_sibling_total_weight(parent_tool._kids_total_weight)
-        # tool_kid.set_agent_importance(
-        #     parent_agent_importance=parent_tool._agent_importance,
+        idea_kid.set_level(parent_level=parent_idea._level)
+        idea_kid.set_road(parent_road=parent_idea._walk, parent_desc=parent_idea._desc)
+        idea_kid.set_acptfactunits_empty_if_null()
+        idea_kid.set_acptfactheirs(acptfacts=parent_acptfacts)
+        idea_kid.set_requiredheirs(parent_requiredheirs, self._idea_dict)
+        idea_kid.inherit_groupheirs(parent_groupheirs=parent_idea._groupheirs)
+        idea_kid.clear_grouplines()
+        idea_kid.set_active_status(tree_traverse_count=self._tree_traverse_count)
+        idea_kid.set_sibling_total_weight(parent_idea._kids_total_weight)
+        # idea_kid.set_agent_importance(
+        #     parent_agent_importance=parent_idea._agent_importance,
         #     coin_onset_x=coin_onset_x,
-        #     parent_coin_cease=parent_tool._agent_coin_cease,
+        #     parent_coin_cease=parent_idea._agent_coin_cease,
         # )
-        tool_kid.set_agent_importance(
+        idea_kid.set_agent_importance(
             coin_onset_x=coin_onset,
-            parent_agent_importance=parent_tool._agent_importance,
+            parent_agent_importance=parent_idea._agent_importance,
             parent_coin_cease=parent_coin_cease,
         )
-        tool_kid.set_ancestor_promise_count(
-            parent_tool._ancestor_promise_count, parent_tool.promise
+        idea_kid.set_ancestor_promise_count(
+            parent_idea._ancestor_promise_count, parent_idea.promise
         )
-        tool_kid.clear_descendant_promise_count()
-        tool_kid.clear_all_member_credit_debt()
+        idea_kid.clear_descendant_promise_count()
+        idea_kid.clear_all_member_credit_debt()
 
-        if tool_kid.is_kidless():
-            # set tool's ancestor metrics using agent root as common reference
-            self._set_ancestor_metrics(road=tool_kid.get_road())
-            self._distribute_agent_importance(tool=tool_kid)
+        if idea_kid.is_kidless():
+            # set idea's ancestor metrics using agent root as common reference
+            self._set_ancestor_metrics(road=idea_kid.get_road())
+            self._distribute_agent_importance(idea=idea_kid)
 
-    def _distribute_agent_importance(self, tool: ToolCore):
+    def _distribute_agent_importance(self, idea: IdeaCore):
         # TODO manage situations where groupheir.creditor_weight is None for all groupheirs
         # TODO manage situations where groupheir.debtor_weight is None for all groupheirs
-        if tool.is_groupheirless() == False:
-            self._set_groupunits_agent_importance(groupheirs=tool._groupheirs)
-        elif tool.is_groupheirless():
+        if idea.is_groupheirless() == False:
+            self._set_groupunits_agent_importance(groupheirs=idea._groupheirs)
+        elif idea.is_groupheirless():
             self._add_to_memberunits_agent_credit_debt(
-                tool_agent_importance=tool._agent_importance
+                idea_agent_importance=idea._agent_importance
             )
 
     def get_agent_importance(
@@ -1691,16 +1691,16 @@ class AgentUnit:
         sibling_ratio = weight / sibling_total_weight
         return parent_agent_importance * sibling_ratio
 
-    def get_tool_list(self):
+    def get_idea_list(self):
         self.set_agent_metrics()
-        return list(self._tool_dict.values())
+        return list(self._idea_dict.values())
 
     def set_agent_metrics(self):
         self._set_acptfacts_empty_if_null()
 
         self._rational = False
         self._tree_traverse_count = 0
-        self._tool_dict = {self._toolroot.get_road(): self._toolroot}
+        self._idea_dict = {self._idearoot.get_road(): self._idearoot}
 
         while (
             not self._rational and self._tree_traverse_count < self._max_tree_traverse
@@ -1708,75 +1708,75 @@ class AgentUnit:
             self._execute_tree_traverse()
             self._run_after_each_tree_traverse()
             self._tree_traverse_count += 1
-        self._run_after_tool_all_tree_traverses()
+        self._run_after_idea_all_tree_traverses()
 
     def _execute_tree_traverse(self):
-        self._run_before_tool_tree_traverse()
+        self._run_before_idea_tree_traverse()
         self._set_root_attributes()
 
-        coin_onset = self._toolroot._agent_coin_onset
-        parent_coin_cease = self._toolroot._agent_coin_cease
+        coin_onset = self._idearoot._agent_coin_onset
+        parent_coin_cease = self._idearoot._agent_coin_cease
 
-        cache_tool_list = []
-        for tool_kid in self._toolroot._kids.values():
+        cache_idea_list = []
+        for idea_kid in self._idearoot._kids.values():
             self._set_kids_attributes(
-                tool_kid=tool_kid,
+                idea_kid=idea_kid,
                 coin_onset=coin_onset,
                 parent_coin_cease=parent_coin_cease,
             )
-            cache_tool_list.append(tool_kid)
-            coin_onset += tool_kid._agent_importance
+            cache_idea_list.append(idea_kid)
+            coin_onset += idea_kid._agent_importance
 
         # no function recursion, recursion by iterateing over list that can be added to by iterations
-        while cache_tool_list != []:
-            parent_tool = cache_tool_list.pop()
+        while cache_idea_list != []:
+            parent_idea = cache_idea_list.pop()
             if self._tree_traverse_count == 0:
-                self._tool_dict[parent_tool.get_road()] = parent_tool
+                self._idea_dict[parent_idea.get_road()] = parent_idea
 
-            if parent_tool._kids != None:
-                coin_onset = parent_tool._agent_coin_onset
-                parent_coin_cease = parent_tool._agent_coin_cease
-                for tool_kid in parent_tool._kids.values():
+            if parent_idea._kids != None:
+                coin_onset = parent_idea._agent_coin_onset
+                parent_coin_cease = parent_idea._agent_coin_cease
+                for idea_kid in parent_idea._kids.values():
                     self._set_kids_attributes(
-                        tool_kid=tool_kid,
+                        idea_kid=idea_kid,
                         coin_onset=coin_onset,
                         parent_coin_cease=parent_coin_cease,
-                        parent_tool=parent_tool,
+                        parent_idea=parent_idea,
                     )
-                    cache_tool_list.append(tool_kid)
-                    coin_onset += tool_kid._agent_importance
+                    cache_idea_list.append(idea_kid)
+                    coin_onset += idea_kid._agent_importance
 
     def _run_after_each_tree_traverse(self):
-        any_tool_active_status_changed = False
-        for tool in self._tool_dict.values():
-            tool.set_active_status_hx_empty_if_null()
-            if tool._active_status_hx.get(self._tree_traverse_count) != None:
-                any_tool_active_status_changed = True
+        any_idea_active_status_changed = False
+        for idea in self._idea_dict.values():
+            idea.set_active_status_hx_empty_if_null()
+            if idea._active_status_hx.get(self._tree_traverse_count) != None:
+                any_idea_active_status_changed = True
 
-        if any_tool_active_status_changed == False:
+        if any_idea_active_status_changed == False:
             self._rational = True
 
-    def _run_after_tool_all_tree_traverses(self):
+    def _run_after_idea_all_tree_traverses(self):
         self._distribute_agent_agenda_importance()
         self._distribute_groups_agent_importance()
         self._set_agent_agenda_ratio_credit_debt()
 
-    def _run_before_tool_tree_traverse(self):
+    def _run_before_idea_tree_traverse(self):
         self._reset_groupunits_agent_credit_debt()
         self._reset_groupunits_agent_credit_debt()
         self._reset_memberunit_agent_credit_debt()
 
     def get_heir_road_list(self, src_road: Road):
-        # create list of all tool roads (road+desc)
+        # create list of all idea roads (road+desc)
         return [
             road
-            for road in self.get_tool_tree_ordered_road_list()
+            for road in self.get_idea_tree_ordered_road_list()
             if road.find(src_road) == 0
         ]
 
-    def get_tool_tree_ordered_road_list(self, no_range_descendents: bool = False):
-        tool_list = self.get_tool_list()
-        node_dict = {tool.get_road().lower(): tool.get_road() for tool in tool_list}
+    def get_idea_tree_ordered_road_list(self, no_range_descendents: bool = False):
+        idea_list = self.get_idea_list()
+        node_dict = {idea.get_road().lower(): idea.get_road() for idea in idea_list}
         node_lowercase_ordered_list = sorted(list(node_dict))
         node_orginalcase_ordered_list = [
             node_dict[node_l] for node_l in node_lowercase_ordered_list
@@ -1791,19 +1791,19 @@ class AgentUnit:
                 if len(anc_list) == 1:
                     list_x.append(road)
                 elif len(anc_list) == 2:
-                    if self._toolroot._begin is None and self._toolroot._close is None:
+                    if self._idearoot._begin is None and self._idearoot._close is None:
                         list_x.append(road)
                 else:
-                    parent_tool = self.get_tool_kid(road=anc_list[1])
-                    if parent_tool._begin is None and parent_tool._close is None:
+                    parent_idea = self.get_idea_kid(road=anc_list[1])
+                    if parent_idea._begin is None and parent_idea._close is None:
                         list_x.append(road)
 
         return list_x
 
     def get_acptfactunits_dict(self):
         x_dict = {}
-        if self._toolroot._acptfactunits != None:
-            for acptfact_road, acptfact_obj in self._toolroot._acptfactunits.items():
+        if self._idearoot._acptfactunits != None:
+            for acptfact_road, acptfact_obj in self._idearoot._acptfactunits.items():
                 x_dict[acptfact_road] = acptfact_obj.get_dict()
         return x_dict
 
@@ -1824,26 +1824,26 @@ class AgentUnit:
     def get_dict(self):
         self.set_agent_metrics()
         return {
-            "_kids": self._toolroot.get_kids_dict(),
-            "_requiredunits": self._toolroot.get_requiredunits_dict(),
+            "_kids": self._idearoot.get_kids_dict(),
+            "_requiredunits": self._idearoot.get_requiredunits_dict(),
             "_acptfactunits": self.get_acptfactunits_dict(),
             "_members": self.get_members_dict(),
             "_groups": self.groupunit_shops_dict(),
-            "_grouplinks": self._toolroot.get_grouplinks_dict(),
+            "_grouplinks": self._idearoot.get_grouplinks_dict(),
             "_weight": self._weight,
             "_desc": self._desc,
-            "_uid": self._toolroot._uid,
-            "_begin": self._toolroot._begin,
-            "_close": self._toolroot._close,
-            "_addin": self._toolroot._addin,
-            "_numor": self._toolroot._numor,
-            "_denom": self._toolroot._denom,
-            "_reest": self._toolroot._reest,
-            "_problem_bool": self._toolroot._problem_bool,
-            "_is_expanded": self._toolroot._is_expanded,
-            "_special_road": self._toolroot._special_road,
-            "_numeric_road": self._toolroot._numeric_road,
-            "_on_meld_weight_action": self._toolroot._on_meld_weight_action,
+            "_uid": self._idearoot._uid,
+            "_begin": self._idearoot._begin,
+            "_close": self._idearoot._close,
+            "_addin": self._idearoot._addin,
+            "_numor": self._idearoot._numor,
+            "_denom": self._idearoot._denom,
+            "_reest": self._idearoot._reest,
+            "_problem_bool": self._idearoot._problem_bool,
+            "_is_expanded": self._idearoot._is_expanded,
+            "_special_road": self._idearoot._special_road,
+            "_numeric_road": self._idearoot._numeric_road,
+            "_on_meld_weight_action": self._idearoot._on_meld_weight_action,
             "_max_tree_traverse": self._max_tree_traverse,
         }
 
@@ -1851,15 +1851,15 @@ class AgentUnit:
         x_dict = self.get_dict()
         return x_get_json(dict_x=x_dict)
 
-    def set_time_hreg_tools(self, c400_count):
-        toolbase_list = _get_time_hreg_src_tool(c400_count=c400_count)
-        while len(toolbase_list) != 0:
-            yb = toolbase_list.pop(0)
+    def set_time_hreg_ideas(self, c400_count):
+        ideabase_list = _get_time_hreg_src_idea(c400_count=c400_count)
+        while len(ideabase_list) != 0:
+            yb = ideabase_list.pop(0)
             special_road_x = None
             if yb.sr != None:
                 special_road_x = f"{self._desc},{yb.sr}"
 
-            tool_x = ToolKid(
+            idea_x = IdeaKid(
                 _desc=yb.n,
                 _begin=yb.b,
                 _close=yb.c,
@@ -1872,16 +1872,16 @@ class AgentUnit:
                 _special_road=special_road_x,
             )
             road_x = f"{self._desc},{yb.rr}"
-            self.add_tool(tool_kid=tool_x, walk=road_x)
+            self.add_idea(idea_kid=idea_x, walk=road_x)
 
             numeric_road_x = None
             if yb.nr != None:
                 numeric_road_x = f"{self._desc},{yb.nr}"
-                self.edit_tool_attr(
+                self.edit_idea_attr(
                     road=f"{road_x},{yb.n}", numeric_road=numeric_road_x
                 )
             if yb.a != None:
-                self.edit_tool_attr(
+                self.edit_idea_attr(
                     road=f"{road_x},{yb.n}", addin=yb.a, denom=yb.md, numor=yb.mn
                 )
 
@@ -1892,24 +1892,24 @@ class AgentUnit:
     ):
         self.set_agent_metrics()
         agent4member = AgentUnit(_desc=member_name)
-        agent4member._toolroot._agent_importance = self._toolroot._agent_importance
+        agent4member._idearoot._agent_importance = self._idearoot._agent_importance
         # get member's members: memberzone
 
         # get memberzone groups
         member_groups = self.get_member_groups(member_name=member_name)
 
-        # set agent4member by traversing the tool tree and selecting associated groups
+        # set agent4member by traversing the idea tree and selecting associated groups
         # set root
         not_included_agent_importance = 0
-        agent4member._toolroot._kids = {}
-        for ykx in self._toolroot._kids.values():
+        agent4member._idearoot._kids = {}
+        for ykx in self._idearoot._kids.values():
             y4a_included = any(
                 group_ancestor.name in member_groups
                 for group_ancestor in ykx._grouplines.values()
             )
 
             if y4a_included:
-                y4a_new = ToolKid(
+                y4a_new = IdeaKid(
                     _desc=ykx._desc,
                     _agent_importance=ykx._agent_importance,
                     _requiredunits=ykx._requiredunits,
@@ -1919,47 +1919,47 @@ class AgentUnit:
                     promise=ykx.promise,
                     _task=ykx._task,
                 )
-                agent4member._toolroot._kids[ykx._desc] = y4a_new
+                agent4member._idearoot._kids[ykx._desc] = y4a_new
             else:
                 not_included_agent_importance += ykx._agent_importance
 
         if not_included_agent_importance > 0:
-            y4a_other = ToolKid(
+            y4a_other = IdeaKid(
                 _desc="__other__",
                 _agent_importance=not_included_agent_importance,
             )
-            agent4member._toolroot._kids[y4a_other._desc] = y4a_other
+            agent4member._idearoot._kids[y4a_other._desc] = y4a_other
 
         return agent4member
 
     # def get_agenda_items(
     #     self, agenda_todo: bool = True, agenda_state: bool = True, base: Road = None
-    # ) -> list[ToolCore]:
+    # ) -> list[IdeaCore]:
     #     return list(self.get_agenda_items(base=base))
 
-    def set_dominate_promise_tool(self, tool_kid: ToolKid):
-        tool_kid.promise = True
-        self.add_tool(
-            tool_kid=tool_kid,
-            walk=Road(f"{tool_kid._walk}"),
-            create_missing_tools_groups=True,
+    def set_dominate_promise_idea(self, idea_kid: IdeaKid):
+        idea_kid.promise = True
+        self.add_idea(
+            idea_kid=idea_kid,
+            walk=Road(f"{idea_kid._walk}"),
+            create_missing_ideas_groups=True,
         )
 
-    def get_tool_list_without_toolroot(self):
-        x_list = self.get_tool_list()
+    def get_idea_list_without_idearoot(self):
+        x_list = self.get_idea_list()
         x_list.pop(0)
         return x_list
 
     def make_meldable(self, starting_digest_agent):
-        self.edit_tool_desc(
-            old_road=Road(f"{self._toolroot._desc}"),
-            new_desc=starting_digest_agent._toolroot._desc,
+        self.edit_idea_desc(
+            old_road=Road(f"{self._idearoot._desc}"),
+            new_desc=starting_digest_agent._idearoot._desc,
         )
 
     def meld(self, other_agent):
         self.meld_groups(other_agent=other_agent)
         self.meld_members(other_agent=other_agent)
-        self.meld_toolroot(other_agent=other_agent)
+        self.meld_idearoot(other_agent=other_agent)
         self.meld_acptfacts(other_agent=other_agent)
         self._weight = get_meld_weight(
             src_weight=self._weight,
@@ -1968,16 +1968,16 @@ class AgentUnit:
             other_on_meld_weight_action="default",
         )
 
-    def meld_toolroot(self, other_agent):
-        self._toolroot.meld(other_tool=other_agent._toolroot, _toolroot=True)
-        o_tool_list = other_agent.get_tool_list_without_toolroot()
-        for oyx in o_tool_list:
+    def meld_idearoot(self, other_agent):
+        self._idearoot.meld(other_idea=other_agent._idearoot, _idearoot=True)
+        o_idea_list = other_agent.get_idea_list_without_idearoot()
+        for oyx in o_idea_list:
             o_road = road_validate(f"{oyx._walk},{oyx._desc}")
             try:
-                main_tool = self.get_tool_kid(o_road)
-                main_tool.meld(other_tool=oyx)
+                main_idea = self.get_idea_kid(o_road)
+                main_idea.meld(other_idea=oyx)
             except Exception:
-                self.add_tool(walk=oyx._walk, tool_kid=oyx)
+                self.add_idea(walk=oyx._walk, idea_kid=oyx)
 
     def meld_members(self, other_agent):
         self.set_members_empty_if_null()
@@ -2000,13 +2000,13 @@ class AgentUnit:
     def meld_acptfacts(self, other_agent):
         self._set_acptfacts_empty_if_null()
         other_agent._set_acptfacts_empty_if_null()
-        for hx in other_agent._toolroot._acptfactunits.values():
-            if self._toolroot._acptfactunits.get(hx.base) is None:
+        for hx in other_agent._idearoot._acptfactunits.values():
+            if self._idearoot._acptfactunits.get(hx.base) is None:
                 self.set_acptfact(
                     base=hx.base, acptfact=hx.acptfact, open=hx.open, nigh=hx.nigh
                 )
             else:
-                self._toolroot._acptfactunits.get(hx.base).meld(hx)
+                self._idearoot._acptfactunits.get(hx.base).meld(hx)
 
 
 # class Agentshop:
@@ -2016,65 +2016,65 @@ def get_from_json(lw_json: str) -> AgentUnit:
 
 def get_from_dict(lw_dict: dict) -> AgentUnit:
     c_x = AgentUnit()
-    c_x._toolroot._requiredunits = requireds_get_from_dict(
+    c_x._idearoot._requiredunits = requireds_get_from_dict(
         requireds_dict=lw_dict["_requiredunits"]
     )
-    c_x._toolroot._acptfactunits = acptfactunits_get_from_dict(
+    c_x._idearoot._acptfactunits = acptfactunits_get_from_dict(
         x_dict=lw_dict["_acptfactunits"]
     )
     c_x._groups = groupunits_get_from_dict(x_dict=lw_dict["_groups"])
-    c_x._toolroot._grouplinks = grouplinks_get_from_dict(x_dict=lw_dict["_grouplinks"])
+    c_x._idearoot._grouplinks = grouplinks_get_from_dict(x_dict=lw_dict["_grouplinks"])
     c_x._members = memberunits_get_from_dict(x_dict=lw_dict["_members"])
     c_x._desc = lw_dict["_desc"]
-    c_x._toolroot._desc = lw_dict["_desc"]
+    c_x._idearoot._desc = lw_dict["_desc"]
     c_x._weight = lw_dict["_weight"]
     c_x._max_tree_traverse = lw_dict.get("_max_tree_traverse")
     if lw_dict.get("_max_tree_traverse") is None:
         c_x._max_tree_traverse = 20
-    c_x._toolroot._weight = lw_dict["_weight"]
-    c_x._toolroot._uid = lw_dict["_uid"]
-    c_x._toolroot._begin = lw_dict["_begin"]
-    c_x._toolroot._close = lw_dict["_close"]
-    c_x._toolroot._numor = lw_dict["_numor"]
-    c_x._toolroot._denom = lw_dict["_denom"]
-    c_x._toolroot._reest = lw_dict["_reest"]
-    c_x._toolroot._special_road = lw_dict["_special_road"]
-    c_x._toolroot._numeric_road = lw_dict["_numeric_road"]
-    c_x._toolroot._is_expanded = lw_dict["_is_expanded"]
+    c_x._idearoot._weight = lw_dict["_weight"]
+    c_x._idearoot._uid = lw_dict["_uid"]
+    c_x._idearoot._begin = lw_dict["_begin"]
+    c_x._idearoot._close = lw_dict["_close"]
+    c_x._idearoot._numor = lw_dict["_numor"]
+    c_x._idearoot._denom = lw_dict["_denom"]
+    c_x._idearoot._reest = lw_dict["_reest"]
+    c_x._idearoot._special_road = lw_dict["_special_road"]
+    c_x._idearoot._numeric_road = lw_dict["_numeric_road"]
+    c_x._idearoot._is_expanded = lw_dict["_is_expanded"]
 
-    tool_dict_list = []
+    idea_dict_list = []
     for x_dict in lw_dict["_kids"].values():
         x_dict["temp_road"] = c_x._desc
-        tool_dict_list.append(x_dict)
+        idea_dict_list.append(x_dict)
 
-    while tool_dict_list != []:
-        tool_dict = tool_dict_list.pop(0)
-        for x_dict in tool_dict["_kids"].values():
-            temp_road = tool_dict["temp_road"]
-            temp_desc = tool_dict["_desc"]
+    while idea_dict_list != []:
+        idea_dict = idea_dict_list.pop(0)
+        for x_dict in idea_dict["_kids"].values():
+            temp_road = idea_dict["temp_road"]
+            temp_desc = idea_dict["_desc"]
             x_dict["temp_road"] = f"{temp_road},{temp_desc}"
-            tool_dict_list.append(x_dict)
+            idea_dict_list.append(x_dict)
 
-        tool_obj = ToolKid(
-            _desc=tool_dict["_desc"],
-            _weight=tool_dict["_weight"],
-            _uid=tool_dict["_uid"],
-            _begin=tool_dict["_begin"],
-            _close=tool_dict["_close"],
-            _numor=tool_dict["_numor"],
-            _denom=tool_dict["_denom"],
-            _reest=tool_dict["_reest"],
-            promise=tool_dict["promise"],
+        idea_obj = IdeaKid(
+            _desc=idea_dict["_desc"],
+            _weight=idea_dict["_weight"],
+            _uid=idea_dict["_uid"],
+            _begin=idea_dict["_begin"],
+            _close=idea_dict["_close"],
+            _numor=idea_dict["_numor"],
+            _denom=idea_dict["_denom"],
+            _reest=idea_dict["_reest"],
+            promise=idea_dict["promise"],
             _requiredunits=requireds_get_from_dict(
-                requireds_dict=tool_dict["_requiredunits"]
+                requireds_dict=idea_dict["_requiredunits"]
             ),
-            _grouplinks=grouplinks_get_from_dict(tool_dict["_grouplinks"]),
-            _acptfactunits=acptfactunits_get_from_dict(tool_dict["_acptfactunits"]),
-            _is_expanded=tool_dict["_is_expanded"],
-            _special_road=tool_dict["_special_road"],
-            _numeric_road=tool_dict["_numeric_road"],
+            _grouplinks=grouplinks_get_from_dict(idea_dict["_grouplinks"]),
+            _acptfactunits=acptfactunits_get_from_dict(idea_dict["_acptfactunits"]),
+            _is_expanded=idea_dict["_is_expanded"],
+            _special_road=idea_dict["_special_road"],
+            _numeric_road=idea_dict["_numeric_road"],
         )
-        c_x.add_tool(tool_kid=tool_obj, walk=tool_dict["temp_road"])
+        c_x.add_idea(idea_kid=idea_obj, walk=idea_dict["temp_road"])
 
     c_x.set_agent_metrics()  # clean up tree traverse defined fields
     return c_x

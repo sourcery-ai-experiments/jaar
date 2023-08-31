@@ -53,22 +53,22 @@ def test_personget_starting_digest_agent_WhenStartingAgentFileDoesNotExists(
     # THEN
     x_agent = AgentUnit(_desc=p_name)
     x_agent.set_agent_metrics()
-    # x_toolroot = ToolRoot(_desc=p_name, _walk="")
-    # x_toolroot.set_grouplines_empty_if_null()
-    # x_toolroot.set_kids_empty_if_null()
-    # x_toolroot.set_grouplink_empty_if_null()
-    # x_toolroot.set_groupheir_empty_if_null()
-    # x_toolroot.set_requiredunits_empty_if_null()
-    # x_toolroot.set_requiredheirs_empty_if_null()
-    # x_toolroot._agent_importance = 1
-    # x_toolroot._level = 0
-    # x_toolroot._ancestor_promise_count = 0
-    # x_toolroot._descendant_promise_count = 0
-    # x_toolroot._all_member_credit = True
-    # x_toolroot._all_member_debt = True
+    # x_idearoot = IdeaRoot(_desc=p_name, _walk="")
+    # x_idearoot.set_grouplines_empty_if_null()
+    # x_idearoot.set_kids_empty_if_null()
+    # x_idearoot.set_grouplink_empty_if_null()
+    # x_idearoot.set_groupheir_empty_if_null()
+    # x_idearoot.set_requiredunits_empty_if_null()
+    # x_idearoot.set_requiredheirs_empty_if_null()
+    # x_idearoot._agent_importance = 1
+    # x_idearoot._level = 0
+    # x_idearoot._ancestor_promise_count = 0
+    # x_idearoot._descendant_promise_count = 0
+    # x_idearoot._all_member_credit = True
+    # x_idearoot._all_member_debt = True
 
-    assert starting_dest_agent._toolroot == x_agent._toolroot
-    assert starting_dest_agent._toolroot._acptfactunits == {}
+    assert starting_dest_agent._idearoot == x_agent._idearoot
+    assert starting_dest_agent._idearoot._acptfactunits == {}
     assert starting_dest_agent._members == {}
     assert starting_dest_agent._groups == {}
 
@@ -88,12 +88,12 @@ def test_person_get_starting_digest_agent_WhenStartingAgentFileExists(
 
     # THEN
     x_agent = example_agents_get_agent_with_4_levels()
-    x_agent.agent_and_toolroot_desc_edit(new_desc=p_name)
+    x_agent.agent_and_idearoot_desc_edit(new_desc=p_name)
     x_agent.set_agent_metrics()
 
-    assert starting_dest_agent._toolroot._kids == x_agent._toolroot._kids
-    assert starting_dest_agent._toolroot == x_agent._toolroot
-    assert starting_dest_agent._toolroot._acptfactunits == {}
+    assert starting_dest_agent._idearoot._kids == x_agent._idearoot._kids
+    assert starting_dest_agent._idearoot == x_agent._idearoot
+    assert starting_dest_agent._idearoot._acptfactunits == {}
     assert starting_dest_agent._members == {}
     assert starting_dest_agent._groups == {}
     assert starting_dest_agent._desc == px.name
@@ -190,7 +190,7 @@ def test_person_get_dest_agent_from_digest_agent_files_withEmptyDigestDict(
     sx_output_before = px.get_dest_agent_from_digest_agent_files()
     assert str(type(sx_output_before)).find(".agent.AgentUnit'>")
     assert sx_output_before._desc == person_name_x
-    assert sx_output_before._toolroot._desc == person_name_x
+    assert sx_output_before._idearoot._desc == person_name_x
     # px.set_digested_agent(agent_x=AgentUnit(_desc="digested1"))
 
     # WHEN
@@ -198,24 +198,24 @@ def test_person_get_dest_agent_from_digest_agent_files_withEmptyDigestDict(
 
     # THEN
     person_agent_x = AgentUnit(_desc=person_name_x, _weight=0.0)
-    person_agent_x._toolroot._walk = ""
+    person_agent_x._idearoot._walk = ""
     person_agent_x.set_agent_metrics()
     # person_agent_x.set_members_empty_if_null()
     # person_agent_x.set_groupunits_empty_if_null()
     # person_agent_x._set_acptfacts_empty_if_null()
-    # person_agent_x._toolroot.set_grouplink_empty_if_null()
-    # person_agent_x._toolroot.set_requiredunits_empty_if_null()
-    # person_agent_x._toolroot.set_acptfactunits_empty_if_null()
-    # person_agent_x._toolroot.set_kids_empty_if_null()
+    # person_agent_x._idearoot.set_grouplink_empty_if_null()
+    # person_agent_x._idearoot.set_requiredunits_empty_if_null()
+    # person_agent_x._idearoot.set_acptfactunits_empty_if_null()
+    # person_agent_x._idearoot.set_kids_empty_if_null()
 
     assert str(type(sx_output_after)).find(".agent.AgentUnit'>")
     assert sx_output_after._weight == person_agent_x._weight
-    assert sx_output_after._toolroot._walk == person_agent_x._toolroot._walk
+    assert sx_output_after._idearoot._walk == person_agent_x._idearoot._walk
     assert (
-        sx_output_after._toolroot._acptfactunits
-        == person_agent_x._toolroot._acptfactunits
+        sx_output_after._idearoot._acptfactunits
+        == person_agent_x._idearoot._acptfactunits
     )
-    assert sx_output_after._toolroot == person_agent_x._toolroot
+    assert sx_output_after._idearoot == person_agent_x._idearoot
 
 
 def test_person_get_dest_agent_from_digest_agent_files_with1DigestedAgent(
@@ -229,7 +229,7 @@ def test_person_get_dest_agent_from_digest_agent_files_with1DigestedAgent(
     sx_output_old = px.get_dest_agent_from_digest_agent_files()
     assert str(type(sx_output_old)).find(".agent.AgentUnit'>")
     assert sx_output_old._desc == person_name_x
-    assert sx_output_old._toolroot._desc == person_name_x
+    assert sx_output_old._idearoot._desc == person_name_x
     input_agent = example_persons.get_2node_agent()
     px.receive_src_agentunit_obj(agent_x=input_agent, link_type="blind_trust")
 
@@ -242,16 +242,16 @@ def test_person_get_dest_agent_from_digest_agent_files_with1DigestedAgent(
     input_agent.make_meldable(px.get_starting_digest_agent())
     assert sx_output_new._weight == 0
     assert sx_output_new._weight != input_agent._weight
-    assert sx_output_new._toolroot._walk == input_agent._toolroot._walk
+    assert sx_output_new._idearoot._walk == input_agent._idearoot._walk
     assert (
-        sx_output_new._toolroot._acptfactunits == input_agent._toolroot._acptfactunits
+        sx_output_new._idearoot._acptfactunits == input_agent._idearoot._acptfactunits
     )
-    assert sx_output_new._toolroot._kids == input_agent._toolroot._kids
+    assert sx_output_new._idearoot._kids == input_agent._idearoot._kids
     assert (
-        sx_output_new._toolroot._kids_total_weight
-        == input_agent._toolroot._kids_total_weight
+        sx_output_new._idearoot._kids_total_weight
+        == input_agent._idearoot._kids_total_weight
     )
-    assert sx_output_new._toolroot == input_agent._toolroot
+    assert sx_output_new._idearoot == input_agent._idearoot
     assert sx_output_new._desc != input_agent._desc
     assert sx_output_new != input_agent
 
@@ -279,12 +279,12 @@ def test_person_get_dest_agent_from_digest_agent_files_with1DigestedAgent(
 
 #     yaya_text = "yaya"
 #     yaya_road = Road(f"{src1},{yaya_text}")
-#     s1.add_tool(tool_kid=ToolKid(_desc=yaya_text), walk=src1_road)
+#     s1.add_idea(idea_kid=IdeaKid(_desc=yaya_text), walk=src1_road)
 #     s1.set_acptfact(base=yaya_road, acptfact=yaya_road)
 
 #     assert s1._groups.get(swim_text).name == swim_text
 #     assert s1._members.get(ceci_text).name == ceci_text
-#     assert s1._toolroot._desc == src1
+#     assert s1._idearoot._desc == src1
 #     assert s1._acptfacts.get(yaya_road).base == yaya_road
 
 #     # WHEN
@@ -298,10 +298,10 @@ def test_person_get_dest_agent_from_digest_agent_files_with1DigestedAgent(
 #     assert sx_output_new._groups == s1._groups
 #     assert sx_output_new._weight == s1._weight
 #     assert sx_output_new._weight == s1._weight
-#     assert sx_output_new._toolroot._walk == s1._toolroot._walk
-#     assert sx_output_new._toolroot._acptfactunits == s1._toolroot._acptfactunits
-#     assert sx_output_new._toolroot._kids == s1._toolroot._kids
-#     assert sx_output_new._toolroot._kids_total_weight == s1._toolroot._kids_total_weight
-#     assert sx_output_new._toolroot == s1._toolroot
+#     assert sx_output_new._idearoot._walk == s1._idearoot._walk
+#     assert sx_output_new._idearoot._acptfactunits == s1._idearoot._acptfactunits
+#     assert sx_output_new._idearoot._kids == s1._idearoot._kids
+#     assert sx_output_new._idearoot._kids_total_weight == s1._idearoot._kids_total_weight
+#     assert sx_output_new._idearoot == s1._idearoot
 #     assert sx_output_new._desc != s1._desc
 #     assert sx_output_new != s1

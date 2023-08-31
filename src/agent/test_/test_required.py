@@ -14,11 +14,11 @@ def test_RequiredCore_attributesExist():
     sufffact_x = sufffactunit_shop(need="casa,weekday,wednesday")
     sufffacts = {sufffact_x.need: sufffact_x}
     required = RequiredCore(
-        base=ced_day, sufffacts=sufffacts, suff_tool_active_status=False
+        base=ced_day, sufffacts=sufffacts, suff_idea_active_status=False
     )
     assert required.base == ced_day
     assert required.sufffacts == sufffacts
-    assert required.suff_tool_active_status == False
+    assert required.suff_idea_active_status == False
 
 
 def test_RequiredHeir_clear_works():
@@ -31,7 +31,7 @@ def test_RequiredHeir_clear_works():
     assert required._status
     required.clear_status()
     assert required._status is None
-    assert required._curr_tool_active_status is None
+    assert required._curr_idea_active_status is None
 
 
 def test_RequiredHeir_set_status_CorrectlySetsStatus():
@@ -78,25 +78,25 @@ def test_RequiredHeir_set_status_EmptyAcptFactCorrectlySetsStatus():
     assert required._status == False
 
 
-def test_RequiredHeir_set_curr_tool_active_status_Correctly():
+def test_RequiredHeir_set_curr_idea_active_status_Correctly():
     # GIVEN
     ced_day = "casa,ced_day"
     required = RequiredHeir(base=ced_day, sufffacts=None)
-    assert required._curr_tool_active_status is None
+    assert required._curr_idea_active_status is None
 
     # WHEN
-    required.set_curr_tool_active_status(bool_x=True)
+    required.set_curr_idea_active_status(bool_x=True)
 
     # THEN
-    assert required._curr_tool_active_status
+    assert required._curr_idea_active_status
 
 
 def test_RequiredHeir_set_status_AgendaTrueCorrectlySetsStatusTrue():
     # GIVEN
     required = RequiredHeir(
-        base="casa,weekday", sufffacts={}, suff_tool_active_status=True
+        base="casa,weekday", sufffacts={}, suff_idea_active_status=True
     )
-    required.set_curr_tool_active_status(bool_x=True)
+    required.set_curr_idea_active_status(bool_x=True)
     assert required._status is None
 
     # WHEN
@@ -109,9 +109,9 @@ def test_RequiredHeir_set_status_AgendaTrueCorrectlySetsStatusTrue():
 def test_RequiredHeir_set_status_AgendaFalseCorrectlySetsStatusTrue():
     # GIVEN
     required = RequiredHeir(
-        base="casa,weekday", sufffacts={}, suff_tool_active_status=False
+        base="casa,weekday", sufffacts={}, suff_idea_active_status=False
     )
-    required.set_curr_tool_active_status(bool_x=False)
+    required.set_curr_idea_active_status(bool_x=False)
     assert required._status is None
     # WHEN
     required.set_status(acptfacts=None)
@@ -122,9 +122,9 @@ def test_RequiredHeir_set_status_AgendaFalseCorrectlySetsStatusTrue():
 def test_RequiredHeir_set_status_AgendaTrueCorrectlySetsStatusFalse():
     # GIVEN
     required = RequiredHeir(
-        base="casa,weekday", sufffacts={}, suff_tool_active_status=True
+        base="casa,weekday", sufffacts={}, suff_idea_active_status=True
     )
-    required.set_curr_tool_active_status(bool_x=False)
+    required.set_curr_idea_active_status(bool_x=False)
     assert required._status is None
     # WHEN
     required.set_status(acptfacts=None)
@@ -135,9 +135,9 @@ def test_RequiredHeir_set_status_AgendaTrueCorrectlySetsStatusFalse():
 def test_RequiredHeir_set_status_AgendaNoneCorrectlySetsStatusFalse():
     # GIVEN
     required = RequiredHeir(
-        base="casa,weekday", sufffacts={}, suff_tool_active_status=True
+        base="casa,weekday", sufffacts={}, suff_idea_active_status=True
     )
-    required.set_curr_tool_active_status(bool_x=None)
+    required.set_curr_idea_active_status(bool_x=None)
     assert required._status is None
     # WHEN
     required.set_status(acptfacts={})

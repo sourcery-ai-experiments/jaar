@@ -450,19 +450,19 @@ def get_river_ledger_unit(
     )
 
 
-def get_tool_catalog_table_create_sqlstr() -> str:
+def get_idea_catalog_table_create_sqlstr() -> str:
     return """
-        CREATE TABLE IF NOT EXISTS tool_catalog (
+        CREATE TABLE IF NOT EXISTS idea_catalog (
           agent_name VARCHAR(255) NOT NULL
-        , tool_road VARCHAR(1000) NOT NULL
+        , idea_road VARCHAR(1000) NOT NULL
         )
         ;
     """
 
 
-def get_tool_catalog_table_count(db_conn: Connection, agent_name: str) -> str:
+def get_idea_catalog_table_count(db_conn: Connection, agent_name: str) -> str:
     sqlstr = f"""
-        {get_table_count_sqlstr("tool_catalog")} WHERE agent_name = '{agent_name}'
+        {get_table_count_sqlstr("idea_catalog")} WHERE agent_name = '{agent_name}'
         ;
     """
     results = db_conn.execute(sqlstr)
@@ -473,39 +473,39 @@ def get_tool_catalog_table_count(db_conn: Connection, agent_name: str) -> str:
 
 
 @dataclass
-class ToolCatalog:
+class IdeaCatalog:
     agent_name: str
-    tool_road: str
+    idea_road: str
 
 
-def get_tool_catalog_table_insert_sqlstr(
-    tool_catalog: ToolCatalog,
+def get_idea_catalog_table_insert_sqlstr(
+    idea_catalog: IdeaCatalog,
 ) -> str:
-    # return f"""INSERT INTO tool_catalog (agent_name, tool_road) VALUES ('{tool_catalog.agent_name}', '{tool_catalog.tool_road}');"""
+    # return f"""INSERT INTO idea_catalog (agent_name, idea_road) VALUES ('{idea_catalog.agent_name}', '{idea_catalog.idea_road}');"""
     return f"""
-        INSERT INTO tool_catalog (
+        INSERT INTO idea_catalog (
           agent_name
-        , tool_road
+        , idea_road
         )
         VALUES (
-          '{tool_catalog.agent_name}'
-        , '{get_road_without_root_node(tool_catalog.tool_road)}'
+          '{idea_catalog.agent_name}'
+        , '{get_road_without_root_node(idea_catalog.idea_road)}'
         )
         ;
     """
 
 
-def get_tool_catalog_dict(db_conn: Connection, search_road: Road = None):
+def get_idea_catalog_dict(db_conn: Connection, search_road: Road = None):
     if search_road is None:
         where_clause = ""
     else:
         search_road_without_root_node = get_road_without_root_node(search_road)
-        where_clause = f"WHERE tool_road = '{search_road_without_root_node}'"
+        where_clause = f"WHERE idea_road = '{search_road_without_root_node}'"
     sqlstr = f"""
         SELECT 
           agent_name
-        , tool_road
-        FROM tool_catalog
+        , idea_road
+        FROM idea_catalog
         {where_clause}
         ;
     """
@@ -513,9 +513,9 @@ def get_tool_catalog_dict(db_conn: Connection, search_road: Road = None):
 
     dict_x = {}
     for row in results.fetchall():
-        tool_catalog_x = ToolCatalog(agent_name=row[0], tool_road=row[1])
-        dict_key = f"{tool_catalog_x.agent_name} {tool_catalog_x.tool_road}"
-        dict_x[dict_key] = tool_catalog_x
+        idea_catalog_x = IdeaCatalog(agent_name=row[0], idea_road=row[1])
+        dict_key = f"{idea_catalog_x.agent_name} {idea_catalog_x.idea_road}"
+        dict_x[dict_key] = idea_catalog_x
     return dict_x
 
 
@@ -643,7 +643,7 @@ def get_groupunit_catalog_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog
 def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x = [get_agent_table_create_sqlstr()]
     list_x.append(get_acptfact_catalog_table_create_sqlstr())
-    list_x.append(get_tool_catalog_table_create_sqlstr())
+    list_x.append(get_idea_catalog_table_create_sqlstr())
     list_x.append(get_ledger_table_create_sqlstr())
     list_x.append(get_river_flow_table_create_sqlstr())
     list_x.append(get_river_bucket_table_create_sqlstr())

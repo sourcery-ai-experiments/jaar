@@ -65,7 +65,7 @@ def test_system_get_agents_dir_list_of_obj_CreatesAgentFilesList(
     assert ex.get_agents_dir_file_names_list()[0] == f"{sx1_obj._desc}.json"
     assert ex.get_agents_dir_list_of_obj()[0]._desc == sx1_obj._desc
     assert ex.get_agents_dir_list_of_obj()[0] == sx1_obj
-    assert ex.get_agents_dir_list_of_obj()[1]._toolroot == sx2_obj._toolroot
+    assert ex.get_agents_dir_list_of_obj()[1]._idearoot == sx2_obj._idearoot
     assert ex.get_agents_dir_list_of_obj()[1] == sx2_obj
     assert ex.get_agents_dir_list_of_obj()[2] == sx3_obj
 
@@ -136,9 +136,9 @@ def test_personunit_refresh_agentlinks_CorrectlyPullsAllPublicAgents(
     px_jessi.receive_src_agentunit_obj(agent_x=old_steve_cx)
     # px_steve.receive_src_agentunit_obj(agent_x=ernie_agent)
     # px_steve.receive_src_agentunit_obj(agent_x=jessi_agent)
-    assert len(px_ernie.get_dest_agent_from_digest_agent_files().get_tool_list()) == 4
-    assert len(px_jessi.get_dest_agent_from_digest_agent_files().get_tool_list()) == 4
-    # assert len(px_steve.get_dest_agent_from_digest_agent_files().get_tool_list()) == 4
+    assert len(px_ernie.get_dest_agent_from_digest_agent_files().get_idea_list()) == 4
+    assert len(px_jessi.get_dest_agent_from_digest_agent_files().get_idea_list()) == 4
+    # assert len(px_steve.get_dest_agent_from_digest_agent_files().get_idea_list()) == 4
     new_steve_agent = example_persons.get_agent_3CleanNodesRandomWeights(_desc="steve")
     e1.save_agentunit_obj_to_agents_dir(agent_x=new_steve_agent)
     # print(f"{env_dir=} {px._public_agents_dir=}")
@@ -152,5 +152,5 @@ def test_personunit_refresh_agentlinks_CorrectlyPullsAllPublicAgents(
     e1.reload_all_persons_src_agentunits()
 
     # THEN
-    assert len(px_ernie.get_dest_agent_from_digest_agent_files().get_tool_list()) == 5
-    assert len(px_jessi.get_dest_agent_from_digest_agent_files().get_tool_list()) == 5
+    assert len(px_ernie.get_dest_agent_from_digest_agent_files().get_idea_list()) == 5
+    assert len(px_jessi.get_dest_agent_from_digest_agent_files().get_idea_list()) == 5

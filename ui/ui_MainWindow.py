@@ -417,7 +417,7 @@ class Ui_MainWindow(object):
         self.label_agenda_agent_importance_header2.setText(
             _translate("MainWindow", "weight:")
         )
-        self.label_agenda_road_data.setText(_translate("MainWindow", "Tool_id:"))
+        self.label_agenda_road_data.setText(_translate("MainWindow", "Idea_id:"))
         self.label_agenda_family_data.setText(_translate("MainWindow", "Agenda"))
         self.label_agenda_agent_importance_data.setText(
             _translate("MainWindow", "weight:")
@@ -435,7 +435,7 @@ class Ui_MainWindow(object):
         item = self.agenda_states.horizontalHeaderItem(2)
         item.setText(_translate("MainWindow", "agent_importance"))
         item = self.agenda_states.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "tool_road"))
+        item.setText(_translate("MainWindow", "idea_road"))
         item = self.agenda_states.horizontalHeaderItem(4)
         item.setText(_translate("MainWindow", "branch_percent"))
         item = self.agenda_states.horizontalHeaderItem(5)

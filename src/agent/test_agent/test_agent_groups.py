@@ -1,6 +1,6 @@
 from src.agent.group import GroupName, grouplink_shop, groupunit_shop
 from src.agent.member import MemberName, memberunit_shop, memberlink_shop
-from src.agent.tool import ToolKid
+from src.agent.idea import IdeaKid
 from src.agent.required import Road
 from src.agent.examples.example_agents import agent_v001 as examples_agent_v001
 from src.agent.agent import AgentUnit
@@ -63,17 +63,17 @@ def test_example_has_groups():
 
     # WHEN
     lw_x.set_agent_metrics()
-    tool_dict = lw_x._tool_dict
+    idea_dict = lw_x._idea_dict
 
     # THEN
-    db_tool = tool_dict.get("TlME,D&B")
-    print(f"{db_tool._desc=} {db_tool._grouplinks=}")
-    assert len(db_tool._grouplinks) == 3
-    # for tool_key in tool_dict:
-    #     print(f"{tool_key=}")
-    #     if tool._desc == "D&B":
-    #         print(f"{tool._desc=} {tool._grouplinks=}")
-    #         db_grouplink_len = len(tool._grouplinks)
+    db_idea = idea_dict.get("TlME,D&B")
+    print(f"{db_idea._desc=} {db_idea._grouplinks=}")
+    assert len(db_idea._grouplinks) == 3
+    # for idea_key in idea_dict:
+    #     print(f"{idea_key=}")
+    #     if idea._desc == "D&B":
+    #         print(f"{idea._desc=} {idea._grouplinks=}")
+    #         db_grouplink_len = len(idea._grouplinks)
     # assert db_grouplink_len == 3
 
 
@@ -91,37 +91,37 @@ def test_agent_set_grouplink_correctly_sets_grouplinks():
     assert len(lw_x._members) == 3
     assert len(lw_x._groups) == 3
     swim_text = "swim"
-    lw_x.add_tool(tool_kid=ToolKid(_desc=swim_text), walk=prom_text)
+    lw_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=prom_text)
     grouplink_rico = grouplink_shop(name=GroupName(rico_text), creditor_weight=10)
     grouplink_carm = grouplink_shop(name=GroupName(carm_text), creditor_weight=10)
     grouplink_patr = grouplink_shop(name=GroupName(patr_text), creditor_weight=10)
     swim_road = f"{prom_text},{swim_text}"
-    lw_x.edit_tool_attr(road=swim_road, grouplink=grouplink_rico)
-    lw_x.edit_tool_attr(road=swim_road, grouplink=grouplink_carm)
-    lw_x.edit_tool_attr(road=swim_road, grouplink=grouplink_patr)
+    lw_x.edit_idea_attr(road=swim_road, grouplink=grouplink_rico)
+    lw_x.edit_idea_attr(road=swim_road, grouplink=grouplink_carm)
+    lw_x.edit_idea_attr(road=swim_road, grouplink=grouplink_patr)
 
-    assert lw_x._toolroot._grouplinks in (None, {})
-    assert len(lw_x._toolroot._kids[swim_text]._grouplinks) == 3
+    assert lw_x._idearoot._grouplinks in (None, {})
+    assert len(lw_x._idearoot._kids[swim_text]._grouplinks) == 3
 
-    lw_x.add_tool(tool_kid=ToolKid(_desc="streets"), walk=swim_road)
+    lw_x.add_idea(idea_kid=IdeaKid(_desc="streets"), walk=swim_road)
 
     # WHEN
-    tool_list = lw_x.get_tool_list()
+    idea_list = lw_x.get_idea_list()
 
     # THEN
-    tool_prom = tool_list[1]
-    tool_prom_swim = tool_list[2]
+    idea_prom = idea_list[1]
+    idea_prom_swim = idea_list[2]
 
-    assert len(tool_prom._grouplinks) == 3
-    assert len(tool_prom._groupheirs) == 3
-    assert tool_prom_swim._grouplinks in (None, {})
-    assert len(tool_prom_swim._groupheirs) == 3
+    assert len(idea_prom._grouplinks) == 3
+    assert len(idea_prom._groupheirs) == 3
+    assert idea_prom_swim._grouplinks in (None, {})
+    assert len(idea_prom_swim._groupheirs) == 3
 
-    print(f"{len(tool_list)}")
-    print(f"{tool_list[0]._grouplinks}")
-    print(f"{tool_list[0]._groupheirs}")
-    print(f"{tool_list[1]._groupheirs}")
-    assert len(lw_x._toolroot._kids["swim"]._groupheirs) == 3
+    print(f"{len(idea_list)}")
+    print(f"{idea_list[0]._grouplinks}")
+    print(f"{idea_list[0]._groupheirs}")
+    print(f"{idea_list[1]._groupheirs}")
+    assert len(lw_x._idearoot._kids["swim"]._groupheirs) == 3
 
 
 def test_agent_set_grouplink_correctly_deletes_grouplinks():
@@ -138,39 +138,39 @@ def test_agent_set_grouplink_correctly_deletes_grouplinks():
     swim_text = "swim"
     swim_road = f"{prom_text},{swim_text}"
 
-    a_x.add_tool(tool_kid=ToolKid(_desc=swim_text), walk=prom_text)
+    a_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=prom_text)
     grouplink_rico = grouplink_shop(name=GroupName(rico_text), creditor_weight=10)
     grouplink_carm = grouplink_shop(name=GroupName(carm_text), creditor_weight=10)
     grouplink_patr = grouplink_shop(name=GroupName(patr_text), creditor_weight=10)
 
-    swim_tool = a_x.get_tool_kid(road=swim_road)
-    a_x.edit_tool_attr(road=swim_road, grouplink=grouplink_rico)
-    a_x.edit_tool_attr(road=swim_road, grouplink=grouplink_carm)
-    a_x.edit_tool_attr(road=swim_road, grouplink=grouplink_patr)
+    swim_idea = a_x.get_idea_kid(road=swim_road)
+    a_x.edit_idea_attr(road=swim_road, grouplink=grouplink_rico)
+    a_x.edit_idea_attr(road=swim_road, grouplink=grouplink_carm)
+    a_x.edit_idea_attr(road=swim_road, grouplink=grouplink_patr)
 
-    # tool_list = a_x.get_tool_list()
-    # tool_prom = tool_list[1]
-    assert len(swim_tool._grouplinks) == 3
-    assert len(swim_tool._groupheirs) == 3
+    # idea_list = a_x.get_idea_list()
+    # idea_prom = idea_list[1]
+    assert len(swim_idea._grouplinks) == 3
+    assert len(swim_idea._groupheirs) == 3
 
-    # print(f"{len(tool_list)}")
-    # print(f"{tool_list[0]._grouplinks}")
-    # print(f"{tool_list[0]._groupheirs}")
-    # print(f"{tool_list[1]._groupheirs}")
-    assert len(a_x._toolroot._kids[swim_text]._grouplinks) == 3
-    assert len(a_x._toolroot._kids[swim_text]._groupheirs) == 3
+    # print(f"{len(idea_list)}")
+    # print(f"{idea_list[0]._grouplinks}")
+    # print(f"{idea_list[0]._groupheirs}")
+    # print(f"{idea_list[1]._groupheirs}")
+    assert len(a_x._idearoot._kids[swim_text]._grouplinks) == 3
+    assert len(a_x._idearoot._kids[swim_text]._groupheirs) == 3
 
     # WHEN
-    a_x.edit_tool_attr(road=swim_road, grouplink_del=rico_text)
+    a_x.edit_idea_attr(road=swim_road, grouplink_del=rico_text)
 
     # THEN
-    swim_tool = a_x.get_tool_kid(road=swim_road)
-    print(f"{swim_tool._desc=}")
-    print(f"{swim_tool._grouplinks=}")
-    print(f"{swim_tool._groupheirs=}")
+    swim_idea = a_x.get_idea_kid(road=swim_road)
+    print(f"{swim_idea._desc=}")
+    print(f"{swim_idea._grouplinks=}")
+    print(f"{swim_idea._groupheirs=}")
 
-    assert len(a_x._toolroot._kids[swim_text]._grouplinks) == 2
-    assert len(a_x._toolroot._kids[swim_text]._groupheirs) == 2
+    assert len(a_x._idearoot._kids[swim_text]._grouplinks) == 2
+    assert len(a_x._idearoot._kids[swim_text]._groupheirs) == 2
 
 
 def test_agent_set_grouplink_CorrectlyCalculatesInheritedGroupLinkAgentImportance():
@@ -185,21 +185,21 @@ def test_agent_set_grouplink_CorrectlyCalculatesInheritedGroupLinkAgentImportanc
     blink_rico = grouplink_shop(name=rico_text, creditor_weight=20, debtor_weight=6)
     blink_carm = grouplink_shop(name=carm_text, creditor_weight=10, debtor_weight=1)
     blink_patr = grouplink_shop(name=patr_text, creditor_weight=10)
-    a_x._toolroot.set_grouplink(grouplink=blink_rico)
-    a_x._toolroot.set_grouplink(grouplink=blink_carm)
-    a_x._toolroot.set_grouplink(grouplink=blink_patr)
-    assert len(a_x._toolroot._grouplinks) == 3
+    a_x._idearoot.set_grouplink(grouplink=blink_rico)
+    a_x._idearoot.set_grouplink(grouplink=blink_carm)
+    a_x._idearoot.set_grouplink(grouplink=blink_patr)
+    assert len(a_x._idearoot._grouplinks) == 3
 
     # WHEN
-    tool_list = a_x.get_tool_list()
+    idea_list = a_x.get_idea_list()
 
     # THEN
-    tool_prom = tool_list[0]
-    assert len(tool_prom._groupheirs) == 3
+    idea_prom = idea_list[0]
+    assert len(idea_prom._groupheirs) == 3
 
-    bheir_rico = tool_prom._groupheirs.get(rico_text)
-    bheir_carm = tool_prom._groupheirs.get(carm_text)
-    bheir_patr = tool_prom._groupheirs.get(patr_text)
+    bheir_rico = idea_prom._groupheirs.get(rico_text)
+    bheir_carm = idea_prom._groupheirs.get(carm_text)
+    bheir_patr = idea_prom._groupheirs.get(patr_text)
     assert bheir_rico._agent_credit == 0.5
     assert bheir_rico._agent_debt == 0.75
     assert bheir_carm._agent_credit == 0.25
@@ -214,7 +214,7 @@ def test_agent_set_grouplink_CorrectlyCalculatesInheritedGroupLinkAgentImportanc
 
     # agent_credit_sum = 0
     # agent_debt_sum = 0
-    # for group in a_x._toolroot._groupheirs.values():
+    # for group in a_x._idearoot._groupheirs.values():
     #     print(f"{group=}")
     #     assert group._agent_credit != None
     #     assert group._agent_credit in [0.25, 0.5]
@@ -227,7 +227,7 @@ def test_agent_set_grouplink_CorrectlyCalculatesInheritedGroupLinkAgentImportanc
     # assert agent_debt_sum == 1
 
 
-def test_agent_get_tool_list_CorrectlyCalculates1LevelAgentGroupAgentImportance():
+def test_agent_get_idea_list_CorrectlyCalculates1LevelAgentGroupAgentImportance():
     # GIVEN
     prom_text = "prom"
     a_x = AgentUnit(_desc=prom_text)
@@ -241,9 +241,9 @@ def test_agent_get_tool_list_CorrectlyCalculates1LevelAgentGroupAgentImportance(
     blink_rico = grouplink_shop(name=rico_text, creditor_weight=20, debtor_weight=6)
     blink_carm = grouplink_shop(name=carm_text, creditor_weight=10, debtor_weight=1)
     blink_patr = grouplink_shop(name=patr_text, creditor_weight=10)
-    a_x._toolroot.set_grouplink(grouplink=blink_rico)
-    a_x._toolroot.set_grouplink(grouplink=blink_carm)
-    a_x._toolroot.set_grouplink(grouplink=blink_patr)
+    a_x._idearoot.set_grouplink(grouplink=blink_rico)
+    a_x._idearoot.set_grouplink(grouplink=blink_carm)
+    a_x._idearoot.set_grouplink(grouplink=blink_patr)
 
     assert len(a_x._groups) == 3
 
@@ -269,7 +269,7 @@ def test_agent_get_tool_list_CorrectlyCalculates1LevelAgentGroupAgentImportance(
     # WHEN
     a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(sele_text)))
     bl_sele = grouplink_shop(name=sele_text, creditor_weight=37)
-    a_x._toolroot.set_grouplink(grouplink=bl_sele)
+    a_x._idearoot.set_grouplink(grouplink=bl_sele)
     assert len(a_x._groups) == 4
     a_x.set_agent_metrics()
 
@@ -299,12 +299,12 @@ def test_agent_get_tool_list_CorrectlyCalculates1LevelAgentGroupAgentImportance(
     )
 
 
-def test_agent_get_tool_list_CorrectlyCalculates3levelAgentGroupAgentImportance():
+def test_agent_get_idea_list_CorrectlyCalculates3levelAgentGroupAgentImportance():
     # GIVEN
     prom_text = "prom"
     a_x = AgentUnit(_desc=prom_text)
     swim_text = "swim"
-    a_x.add_tool(tool_kid=ToolKid(_desc=swim_text), walk=prom_text)
+    a_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=prom_text)
 
     rico_text = "rico"
     carm_text = "carmen"
@@ -315,9 +315,9 @@ def test_agent_get_tool_list_CorrectlyCalculates3levelAgentGroupAgentImportance(
     rico_grouplink = grouplink_shop(name=rico_text, creditor_weight=20, debtor_weight=6)
     carm_grouplink = grouplink_shop(name=carm_text, creditor_weight=10, debtor_weight=1)
     parm_grouplink = grouplink_shop(name=patr_text, creditor_weight=10)
-    a_x._toolroot._kids[swim_text].set_grouplink(grouplink=rico_grouplink)
-    a_x._toolroot._kids[swim_text].set_grouplink(grouplink=carm_grouplink)
-    a_x._toolroot._kids[swim_text].set_grouplink(grouplink=parm_grouplink)
+    a_x._idearoot._kids[swim_text].set_grouplink(grouplink=rico_grouplink)
+    a_x._idearoot._kids[swim_text].set_grouplink(grouplink=carm_grouplink)
+    a_x._idearoot._kids[swim_text].set_grouplink(grouplink=parm_grouplink)
     assert len(a_x._groups) == 3
 
     # WHEN
@@ -340,12 +340,12 @@ def test_agent_get_tool_list_CorrectlyCalculates3levelAgentGroupAgentImportance(
     assert group_rico._agent_debt + group_carm._agent_debt + group_patr._agent_debt == 1
 
 
-def test_agent_get_tool_list_CorrectlyCalculatesGroupAgentImportanceLWwithGroupEmptyBranch():
+def test_agent_get_idea_list_CorrectlyCalculatesGroupAgentImportanceLWwithGroupEmptyBranch():
     # GIVEN
     prom_text = "prom"
     a_x = AgentUnit(_desc=prom_text)
     swim_text = "swim"
-    a_x.add_tool(tool_kid=ToolKid(_desc=swim_text), walk=prom_text)
+    a_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=prom_text)
 
     rico_text = "rico"
     carm_text = "carmen"
@@ -356,38 +356,38 @@ def test_agent_get_tool_list_CorrectlyCalculatesGroupAgentImportanceLWwithGroupE
     rico_grouplink = grouplink_shop(name=rico_text, creditor_weight=20, debtor_weight=6)
     carm_grouplink = grouplink_shop(name=carm_text, creditor_weight=10, debtor_weight=1)
     parm_grouplink = grouplink_shop(name=patr_text, creditor_weight=10)
-    a_x._toolroot._kids[swim_text].set_grouplink(grouplink=rico_grouplink)
-    a_x._toolroot._kids[swim_text].set_grouplink(grouplink=carm_grouplink)
-    a_x._toolroot._kids[swim_text].set_grouplink(grouplink=parm_grouplink)
+    a_x._idearoot._kids[swim_text].set_grouplink(grouplink=rico_grouplink)
+    a_x._idearoot._kids[swim_text].set_grouplink(grouplink=carm_grouplink)
+    a_x._idearoot._kids[swim_text].set_grouplink(grouplink=parm_grouplink)
 
     # no grouplinks attached to this one
-    a_x.add_tool(tool_kid=ToolKid(_desc="hunt", _weight=3), walk="prom")
+    a_x.add_idea(idea_kid=IdeaKid(_desc="hunt", _weight=3), walk="prom")
 
-    assert a_x._toolroot._grouplinks is None
+    assert a_x._idearoot._grouplinks is None
 
     # WHEN
     a_x.set_agent_metrics()
 
     # THEN
-    assert a_x._toolroot._grouplinks == {}
+    assert a_x._idearoot._grouplinks == {}
 
     with pytest_raises(Exception) as excinfo:
-        a_x._toolroot._grouplinks[rico_text]
+        a_x._idearoot._grouplinks[rico_text]
     assert str(excinfo.value) == f"'{rico_text}'"
     with pytest_raises(Exception) as excinfo:
-        a_x._toolroot._grouplinks[carm_text]
+        a_x._idearoot._grouplinks[carm_text]
     assert str(excinfo.value) == f"'{carm_text}'"
     with pytest_raises(Exception) as excinfo:
-        a_x._toolroot._grouplinks[patr_text]
+        a_x._idearoot._grouplinks[patr_text]
     assert str(excinfo.value) == f"'{patr_text}'"
     with pytest_raises(Exception) as excinfo:
-        a_x._toolroot._kids["hunt"]._groupheirs[rico_text]
+        a_x._idearoot._kids["hunt"]._groupheirs[rico_text]
     assert str(excinfo.value) == f"'{rico_text}'"
     with pytest_raises(Exception) as excinfo:
-        a_x._toolroot._kids["hunt"]._groupheirs[carm_text]
+        a_x._idearoot._kids["hunt"]._groupheirs[carm_text]
     assert str(excinfo.value) == f"'{carm_text}'"
     with pytest_raises(Exception) as excinfo:
-        a_x._toolroot._kids["hunt"]._groupheirs[patr_text]
+        a_x._idearoot._kids["hunt"]._groupheirs[patr_text]
     assert str(excinfo.value) == f"'{patr_text}'"
 
     # THEN
@@ -515,16 +515,16 @@ def test_agent_edit_groupUnit_name_CorrectlyChangesGroupLinks():
     outdoor_road = Road(f"{a_x._desc},{outdoor_text}")
     camping_text = "camping"
     camping_road = Road(f"{a_x._desc},{outdoor_text},{camping_text}")
-    a_x.add_tool(walk=outdoor_road, tool_kid=ToolKid(_desc=camping_text))
+    a_x.add_idea(walk=outdoor_road, idea_kid=IdeaKid(_desc=camping_text))
 
-    camping_tool = a_x.get_tool_kid(camping_road)
+    camping_idea = a_x.get_idea_kid(camping_road)
     swim_grouplink = grouplink_shop(
         name=swim_groupunit.name, creditor_weight=5, debtor_weight=3
     )
-    camping_tool.set_grouplink(swim_grouplink)
-    assert camping_tool._grouplinks.get(swim_text) != None
-    assert camping_tool._grouplinks.get(swim_text).creditor_weight == 5
-    assert camping_tool._grouplinks.get(swim_text).debtor_weight == 3
+    camping_idea.set_grouplink(swim_grouplink)
+    assert camping_idea._grouplinks.get(swim_text) != None
+    assert camping_idea._grouplinks.get(swim_text).creditor_weight == 5
+    assert camping_idea._grouplinks.get(swim_text).debtor_weight == 3
 
     # WHEN
     jog_text = "jog"
@@ -533,10 +533,10 @@ def test_agent_edit_groupUnit_name_CorrectlyChangesGroupLinks():
     )
 
     # THEN
-    assert camping_tool._grouplinks.get(swim_text) is None
-    assert camping_tool._grouplinks.get(jog_text) != None
-    assert camping_tool._grouplinks.get(jog_text).creditor_weight == 5
-    assert camping_tool._grouplinks.get(jog_text).debtor_weight == 3
+    assert camping_idea._grouplinks.get(swim_text) is None
+    assert camping_idea._grouplinks.get(jog_text) != None
+    assert camping_idea._grouplinks.get(jog_text).creditor_weight == 5
+    assert camping_idea._grouplinks.get(jog_text).debtor_weight == 3
 
 
 def test_agent_edit_groupUnit_name_CorrectlyMeldsGroupLinesGroupLinksGroupHeirs():
@@ -556,23 +556,23 @@ def test_agent_edit_groupUnit_name_CorrectlyMeldsGroupLinesGroupLinksGroupHeirs(
     outdoor_road = Road(f"{a_x._desc},{outdoor_text}")
     camping_text = "camping"
     camping_road = Road(f"{a_x._desc},{outdoor_text},{camping_text}")
-    a_x.add_tool(walk=outdoor_road, tool_kid=ToolKid(_desc=camping_text))
+    a_x.add_idea(walk=outdoor_road, idea_kid=IdeaKid(_desc=camping_text))
 
-    camping_tool = a_x.get_tool_kid(camping_road)
+    camping_idea = a_x.get_idea_kid(camping_road)
     swim_grouplink = grouplink_shop(
         name=swim_groupunit.name, creditor_weight=5, debtor_weight=3
     )
-    camping_tool.set_grouplink(swim_grouplink)
+    camping_idea.set_grouplink(swim_grouplink)
     jog_grouplink = grouplink_shop(
         name=jog_groupunit.name, creditor_weight=7, debtor_weight=10
     )
-    camping_tool.set_grouplink(jog_grouplink)
-    assert camping_tool._grouplinks.get(swim_text) != None
-    assert camping_tool._grouplinks.get(swim_text).creditor_weight == 5
-    assert camping_tool._grouplinks.get(swim_text).debtor_weight == 3
-    assert camping_tool._grouplinks.get(jog_text) != None
-    assert camping_tool._grouplinks.get(jog_text).creditor_weight == 7
-    assert camping_tool._grouplinks.get(jog_text).debtor_weight == 10
+    camping_idea.set_grouplink(jog_grouplink)
+    assert camping_idea._grouplinks.get(swim_text) != None
+    assert camping_idea._grouplinks.get(swim_text).creditor_weight == 5
+    assert camping_idea._grouplinks.get(swim_text).debtor_weight == 3
+    assert camping_idea._grouplinks.get(jog_text) != None
+    assert camping_idea._grouplinks.get(jog_text).creditor_weight == 7
+    assert camping_idea._grouplinks.get(jog_text).debtor_weight == 10
 
     # WHEN
     a_x.edit_groupunit_name(
@@ -580,32 +580,32 @@ def test_agent_edit_groupUnit_name_CorrectlyMeldsGroupLinesGroupLinksGroupHeirs(
     )
 
     # THEN
-    assert camping_tool._grouplinks.get(swim_text) is None
-    assert camping_tool._grouplinks.get(jog_text) != None
-    assert camping_tool._grouplinks.get(jog_text).creditor_weight == 12
-    assert camping_tool._grouplinks.get(jog_text).debtor_weight == 13
+    assert camping_idea._grouplinks.get(swim_text) is None
+    assert camping_idea._grouplinks.get(jog_text) != None
+    assert camping_idea._grouplinks.get(jog_text).creditor_weight == 12
+    assert camping_idea._grouplinks.get(jog_text).debtor_weight == 13
 
 
-def test_agent_add_tool_CreatesMissingGroups():
+def test_agent_add_idea_CreatesMissingGroups():
     # GIVEN
     src_text = "src"
     a_x = AgentUnit(_desc=src_text)
     a_x.set_groupunits_empty_if_null()
-    new_tool_parent_road = f"{src_text},work,cleaning"
+    new_idea_parent_road = f"{src_text},work,cleaning"
     clean_cookery_text = "clean_cookery"
-    clean_cookery_tool = ToolKid(_weight=40, _desc=clean_cookery_text, promise=True)
+    clean_cookery_idea = IdeaKid(_weight=40, _desc=clean_cookery_text, promise=True)
 
     family_text = "family"
     grouplink_z = grouplink_shop(name=family_text)
-    clean_cookery_tool.set_grouplink(grouplink=grouplink_z)
+    clean_cookery_idea.set_grouplink(grouplink=grouplink_z)
     assert len(a_x._groups) == 0
     assert a_x._groups.get(family_text) is None
 
     # WHEN
-    a_x.add_tool(
-        tool_kid=clean_cookery_tool,
-        walk=new_tool_parent_road,
-        create_missing_tools_groups=True,
+    a_x.add_idea(
+        idea_kid=clean_cookery_idea,
+        walk=new_idea_parent_road,
+        create_missing_ideas_groups=True,
     )
 
     # THEN
@@ -614,18 +614,18 @@ def test_agent_add_tool_CreatesMissingGroups():
     assert a_x._groups.get(family_text)._members in (None, {})
 
 
-def test_agent_add_tool_DoesNotOverwriteGroups():
+def test_agent_add_idea_DoesNotOverwriteGroups():
     # GIVEN
     src_text = "src"
     a_x = AgentUnit(_desc=src_text)
     a_x.set_groupunits_empty_if_null()
-    new_tool_parent_road = f"{src_text},work,cleaning"
+    new_idea_parent_road = f"{src_text},work,cleaning"
     clean_cookery_text = "clean_cookery"
-    clean_cookery_tool = ToolKid(_weight=40, _desc=clean_cookery_text, promise=True)
+    clean_cookery_idea = IdeaKid(_weight=40, _desc=clean_cookery_text, promise=True)
 
     family_text = "family"
     grouplink_z = grouplink_shop(name=family_text)
-    clean_cookery_tool.set_grouplink(grouplink=grouplink_z)
+    clean_cookery_idea.set_grouplink(grouplink=grouplink_z)
 
     groupunit_z = groupunit_shop(name=family_text)
     groupunit_z.set_memberlink(memberlink=memberlink_shop(name="ann1"))
@@ -638,10 +638,10 @@ def test_agent_add_tool_DoesNotOverwriteGroups():
     assert len(a_x._groups.get(family_text)._members) == 2
 
     # WHEN
-    a_x.add_tool(
-        tool_kid=clean_cookery_tool,
-        walk=new_tool_parent_road,
-        create_missing_tools_groups=True,
+    a_x.add_idea(
+        idea_kid=clean_cookery_idea,
+        walk=new_idea_parent_road,
+        create_missing_ideas_groups=True,
     )
 
     # THEN

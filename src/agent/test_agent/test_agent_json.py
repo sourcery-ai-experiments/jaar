@@ -31,24 +31,24 @@ def test_agent_get_dict_ReturnsDictObject():
     assert x_dict != None
     assert str(type(x_dict)) == "<class 'dict'>"
     assert x_dict["_desc"] == x_agent._desc
-    assert x_dict["_desc"] == x_agent._toolroot._desc
+    assert x_dict["_desc"] == x_agent._idearoot._desc
     assert x_dict["_weight"] == x_agent._weight
-    assert x_dict["_weight"] == x_agent._toolroot._weight
+    assert x_dict["_weight"] == x_agent._idearoot._weight
     assert x_dict["_max_tree_traverse"] == x_agent._max_tree_traverse
-    assert x_dict["_addin"] == x_agent._toolroot._addin
-    assert x_dict["_numor"] == x_agent._toolroot._numor
-    assert x_dict["_denom"] == x_agent._toolroot._denom
-    assert x_dict["_reest"] == x_agent._toolroot._reest
-    assert x_dict["_problem_bool"] == x_agent._toolroot._problem_bool
-    assert x_dict["_on_meld_weight_action"] == x_agent._toolroot._on_meld_weight_action
+    assert x_dict["_addin"] == x_agent._idearoot._addin
+    assert x_dict["_numor"] == x_agent._idearoot._numor
+    assert x_dict["_denom"] == x_agent._idearoot._denom
+    assert x_dict["_reest"] == x_agent._idearoot._reest
+    assert x_dict["_problem_bool"] == x_agent._idearoot._problem_bool
+    assert x_dict["_on_meld_weight_action"] == x_agent._idearoot._on_meld_weight_action
     assert len(x_dict["_members"]) == len(x_agent._members)
     assert len(x_dict["_groups"]) == len(x_agent._groups)
-    assert len(x_dict["_kids"]) == len(x_agent._toolroot._kids)
+    assert len(x_dict["_kids"]) == len(x_agent._idearoot._kids)
     with pytest_raises(KeyError) as excinfo:
         x_dict["_level"]
     assert str(excinfo.value) == "'_level'"
 
-    # for kid in x_agent._toolroot._kids.values():
+    # for kid in x_agent._idearoot._kids.values():
     #     # print(len(x_dict["_kids"][kid._desc]["_kids"]))
     #     # print(x_dict["_kids"][kid._desc])
     #     # print(len(kid._kids))
@@ -65,14 +65,14 @@ def test_agent_get_dict_ReturnsDictObject():
 
     # ap_text = "Asset management"
     # ap_road = f"{x_agent._desc},{ap_text}"
-    # ap_tool = x_agent.get_tool_kid(road=ap_road)
+    # ap_idea = x_agent.get_idea_kid(road=ap_road)
     # print(f"checking {ap_text}...")
-    # print(x_dict["_kids"][ap_tool._desc]["_requiredunits"])
-    # assert len(x_dict["_kids"][ap_tool._desc]["_requiredunits"]) == 1
+    # print(x_dict["_kids"][ap_idea._desc]["_requiredunits"])
+    # assert len(x_dict["_kids"][ap_idea._desc]["_requiredunits"]) == 1
 
     month_week_text = "month_week"
     month_week_road = f"{x_agent._desc},{month_week_text}"
-    month_week_tool = x_agent.get_tool_kid(road=month_week_road)
+    month_week_idea = x_agent.get_idea_kid(road=month_week_road)
     print("checking TlME,month_week...special_road equal to...")
     print(x_dict["_kids"][month_week_text]["_special_road"])
     print(x_dict["_kids"][month_week_text])
@@ -108,22 +108,22 @@ def test_export_to_JSON_simple_example_works():
     # print(x_dict)
     assert x_dict["_desc"] == x_agent._desc
     assert x_dict["_weight"] == x_agent._weight
-    assert x_dict["_addin"] == x_agent._toolroot._addin
-    assert x_dict["_numor"] == x_agent._toolroot._numor
-    assert x_dict["_denom"] == x_agent._toolroot._denom
-    assert x_dict["_reest"] == x_agent._toolroot._reest
-    assert x_dict["_problem_bool"] == x_agent._toolroot._problem_bool
-    assert len(x_dict["_kids"]) == len(x_agent._toolroot._kids)
+    assert x_dict["_addin"] == x_agent._idearoot._addin
+    assert x_dict["_numor"] == x_agent._idearoot._numor
+    assert x_dict["_denom"] == x_agent._idearoot._denom
+    assert x_dict["_reest"] == x_agent._idearoot._reest
+    assert x_dict["_problem_bool"] == x_agent._idearoot._problem_bool
+    assert len(x_dict["_kids"]) == len(x_agent._idearoot._kids)
     kids = x_dict["_kids"]
     shave_dict = kids["shave"]
     shave_acptfactunits = shave_dict["_acptfactunits"]
     print(f"{shave_acptfactunits=}")
     assert len(shave_acptfactunits) == 1
     assert len(shave_acptfactunits) == len(
-        x_agent._toolroot._kids["shave"]._acptfactunits
+        x_agent._idearoot._kids["shave"]._acptfactunits
     )
 
-    # for _ in x_agent._toolroot._kids.values():
+    # for _ in x_agent._idearoot._kids.values():
     #     # check requireds exist have correct values
     #     pass
 
@@ -140,7 +140,7 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
         base=hour_min_road, pick=hour_min_road, open=5, nigh=59
     )
     print("step 2")
-    x_agent.edit_tool_attr(road=acptfactunit_x.base, acptfactunit=acptfactunit_x)
+    x_agent.edit_idea_attr(road=acptfactunit_x.base, acptfactunit=acptfactunit_x)
     print("step 3")
 
     x_agent.set_max_tree_traverse(int_x=2)
@@ -156,25 +156,25 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     assert x_dict["_desc"] == x_agent._desc
     assert x_dict["_max_tree_traverse"] == 2
     assert x_dict["_max_tree_traverse"] == x_agent._max_tree_traverse
-    assert x_dict["_addin"] == x_agent._toolroot._addin
-    assert x_dict["_numor"] == x_agent._toolroot._numor
-    assert x_dict["_denom"] == x_agent._toolroot._denom
-    assert x_dict["_reest"] == x_agent._toolroot._reest
-    assert x_dict["_problem_bool"] == x_agent._toolroot._problem_bool
-    assert len(x_dict["_kids"]) == len(x_agent._toolroot._kids)
+    assert x_dict["_addin"] == x_agent._idearoot._addin
+    assert x_dict["_numor"] == x_agent._idearoot._numor
+    assert x_dict["_denom"] == x_agent._idearoot._denom
+    assert x_dict["_reest"] == x_agent._idearoot._reest
+    assert x_dict["_problem_bool"] == x_agent._idearoot._problem_bool
+    assert len(x_dict["_kids"]) == len(x_agent._idearoot._kids)
     kids = x_dict["_kids"]
     shave_dict = kids["day_minute"]
     shave_acptfactunits = shave_dict["_acptfactunits"]
     print(f"{shave_acptfactunits=}")
     assert len(shave_acptfactunits) == 1
     assert len(shave_acptfactunits) == len(
-        x_agent._toolroot._kids["day_minute"]._acptfactunits
+        x_agent._idearoot._kids["day_minute"]._acptfactunits
     )
 
     # assert x_dict["_level"] == x_agent._level
 
     # sourcery skip: no-loop-in-tests
-    for kid in x_agent._toolroot._kids.values():
+    for kid in x_agent._idearoot._kids.values():
         print(kid._desc)
         with contextlib.suppress(KeyError):
             requireds = x_dict["_kids"][kid._desc]["_requiredunits"]
@@ -195,12 +195,12 @@ def test_agent_get_json_CorrectlyWorksForSimpleExample():
 
     bikers_link = GroupLink(name=GroupName("bikers"))
     grouplinks_dict = {bikers_link.name: bikers_link}
-    agent_y._toolroot._grouplinks = grouplinks_dict
+    agent_y._idearoot._grouplinks = grouplinks_dict
 
     flyers_name = GroupName("flyers")
     flyers_link = GroupLink(name=flyers_name)
     grouplinks_dict_f = {flyers_link.name: flyers_link, bikers_link.name: bikers_link}
-    agent_y._toolroot._kids["shave"]._grouplinks = grouplinks_dict_f
+    agent_y._idearoot._kids["shave"]._grouplinks = grouplinks_dict_f
 
     x_json = agent_y.get_json()
     assert x_is_json(x_json) == True
@@ -210,24 +210,24 @@ def test_agent_get_json_CorrectlyWorksForSimpleExample():
     assert agent_x._desc == agent_y._desc
     assert agent_x._max_tree_traverse == 23
     assert agent_x._max_tree_traverse == agent_y._max_tree_traverse
-    assert agent_x._toolroot._walk == ""
-    assert agent_x._toolroot._walk == agent_y._toolroot._walk
-    assert agent_x._toolroot._requiredunits == {}
-    assert len(agent_x._toolroot._kids) == 2
-    assert len(agent_x._toolroot._kids["weekdays"]._kids) == 2
-    assert agent_x._toolroot._kids["weekdays"]._kids["Sunday"]._weight == 20
+    assert agent_x._idearoot._walk == ""
+    assert agent_x._idearoot._walk == agent_y._idearoot._walk
+    assert agent_x._idearoot._requiredunits == {}
+    assert len(agent_x._idearoot._kids) == 2
+    assert len(agent_x._idearoot._kids["weekdays"]._kids) == 2
+    assert agent_x._idearoot._kids["weekdays"]._kids["Sunday"]._weight == 20
     # print(agent_y.get_dict())
-    assert len(agent_x._toolroot._kids["shave"]._requiredunits) == 1
-    assert len(agent_x._toolroot._acptfactunits) == 1
-    assert len(agent_x._toolroot._grouplinks) == 1
-    assert len(agent_x._toolroot._kids["shave"]._grouplinks) == 2
-    print(agent_x._toolroot._kids["shave"]._acptfactunits)
-    assert len(agent_x._toolroot._kids["shave"]._acptfactunits) == 1
+    assert len(agent_x._idearoot._kids["shave"]._requiredunits) == 1
+    assert len(agent_x._idearoot._acptfactunits) == 1
+    assert len(agent_x._idearoot._grouplinks) == 1
+    assert len(agent_x._idearoot._kids["shave"]._grouplinks) == 2
+    print(agent_x._idearoot._kids["shave"]._acptfactunits)
+    assert len(agent_x._idearoot._kids["shave"]._acptfactunits) == 1
 
 
 def test_agent_get_json_CorrectlyWorksForNotSimpleExample():
     lw1 = example_agents_agent_v001()
-    lw1.set_agent_metrics()  # clean up tool _road defintions
+    lw1.set_agent_metrics()  # clean up idea _road defintions
     lw1_json = lw1.get_json()
     assert x_is_json(json_x=lw1_json)
 
@@ -243,11 +243,11 @@ def test_agent_get_json_CorrectlyWorksForNotSimpleExample():
     assert lw3._desc == lw1._desc
     assert lw3._max_tree_traverse == 2
     assert lw3._max_tree_traverse == lw1._max_tree_traverse
-    assert lw3._toolroot._desc != None
-    assert lw3._toolroot._desc == lw1._toolroot._desc
-    assert lw3._toolroot._walk == ""
-    assert lw3._toolroot._walk == lw1._toolroot._walk
-    assert len(lw3._toolroot._kids) == len(lw1._toolroot._kids)
+    assert lw3._idearoot._desc != None
+    assert lw3._idearoot._desc == lw1._idearoot._desc
+    assert lw3._idearoot._walk == ""
+    assert lw3._idearoot._walk == lw1._idearoot._walk
+    assert len(lw3._idearoot._kids) == len(lw1._idearoot._kids)
     assert len(lw3._groups) == 34
     assert len(lw3._members) == 22
     # for kid in lw3._kids.values():
@@ -308,8 +308,8 @@ def test_agent_jsonExportCorrectyExportsWeights():
     cx1 = example_agents_agent_v001()
     cx1._weight = 15
     assert 15 == cx1._weight
-    assert cx1._toolroot._weight != cx1._weight
-    assert cx1._toolroot._weight == 1
+    assert cx1._idearoot._weight != cx1._weight
+    assert cx1._idearoot._weight == 1
 
     # WHEN
     cx2 = agent_get_from_json(cx1.get_json())
@@ -317,6 +317,6 @@ def test_agent_jsonExportCorrectyExportsWeights():
     # THEN
     assert cx1._weight == 15
     assert cx1._weight == cx2._weight
-    assert cx1._toolroot._weight == 1
-    assert cx1._toolroot._weight == cx2._toolroot._weight
-    assert cx1._toolroot._kids == cx2._toolroot._kids
+    assert cx1._idearoot._weight == 1
+    assert cx1._idearoot._weight == cx2._idearoot._weight
+    assert cx1._idearoot._kids == cx2._idearoot._kids

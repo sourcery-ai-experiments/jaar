@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QTableWidgetItem as qti
 from src.pyqt5_kit.pyqt_func import num2str, lw_diplay
 from src.agent.hreg_time import (
     SuffFactUnitHregTime,
-    _get_time_hreg_weekday_tool,
+    _get_time_hreg_weekday_idea,
     convert1440toHHMM,
 )
 

@@ -1,6 +1,6 @@
 from src.system.person import personunit_shop
 from src.agent.agent import AgentUnit
-from src.agent.tool import ToolRoot
+from src.agent.idea import IdeaRoot
 import src.system.examples.example_persons as example_persons
 from src.system.examples.person_env_kit import (
     person_dir_setup_cleanup,
@@ -24,24 +24,24 @@ def test_personunit_exists(person_dir_setup_cleanup):
     assert px.name == person_text
     assert px._src_agentlinks == {}
     assert px._auto_dest_agent_to_public_agent
-    # assert px._re_toolroot != None
-    # assert str(type(px._re_toolroot)).find(".tool.ToolRoot'>") > 0
-    # assert px._re_toolroot._desc == person_text
-    # assert px._re_toolroot._weight == 1
+    # assert px._re_idearoot != None
+    # assert str(type(px._re_idearoot)).find(".idea.IdeaRoot'>") > 0
+    # assert px._re_idearoot._desc == person_text
+    # assert px._re_idearoot._weight == 1
 
-    # assert px._re_toolroot._uid == -1
-    # assert px._re_toolroot._begin is None
-    # assert px._re_toolroot._close is None
-    # assert px._re_toolroot._addin is None
-    # assert px._re_toolroot._denom is None
-    # assert px._re_toolroot._numor is None
-    # assert px._re_toolroot._reest is None
-    # assert px._re_toolroot._special_road is None
-    # assert px._re_toolroot._numeric_road is None
-    # assert px._re_toolroot.promise == False
-    # assert px._re_toolroot._all_member_credit is None
-    # assert px._re_toolroot._all_member_debt is None
-    # assert px._re_toolroot._is_expanded == True
+    # assert px._re_idearoot._uid == -1
+    # assert px._re_idearoot._begin is None
+    # assert px._re_idearoot._close is None
+    # assert px._re_idearoot._addin is None
+    # assert px._re_idearoot._denom is None
+    # assert px._re_idearoot._numor is None
+    # assert px._re_idearoot._reest is None
+    # assert px._re_idearoot._special_road is None
+    # assert px._re_idearoot._numeric_road is None
+    # assert px._re_idearoot.promise == False
+    # assert px._re_idearoot._all_member_credit is None
+    # assert px._re_idearoot._all_member_debt is None
+    # assert px._re_idearoot._is_expanded == True
     assert px._dest_agent != None
     assert px._person_dir != None
     assert px._person_agents_dir != None

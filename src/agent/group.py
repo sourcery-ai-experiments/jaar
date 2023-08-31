@@ -143,7 +143,7 @@ class GroupUnit(GroupCore):
 
         # if self.name != other_group.name:
         #     raise InvalidGroupException(
-        #             f"Meld fail tool={self._walk},{self._desc} {attrs[0]}:{attrs[1]} with {other_tool._walk},{other_tool._desc} {attrs[0]}:{attrs[2]}"
+        #             f"Meld fail idea={self._walk},{self._desc} {attrs[0]}:{attrs[1]} with {other_idea._walk},{other_idea._desc} {attrs[0]}:{attrs[2]}"
         #     )
 
 
@@ -279,14 +279,14 @@ class GroupHeir(GroupCore):
 
     def set_agent_credit_debt(
         self,
-        tool_agent_importance,
+        idea_agent_importance,
         groupheirs_creditor_weight_sum: float,
         groupheirs_debtor_weight_sum: float,
     ):
-        self._agent_credit = tool_agent_importance * (
+        self._agent_credit = idea_agent_importance * (
             self.creditor_weight / groupheirs_creditor_weight_sum
         )
-        self._agent_debt = tool_agent_importance * (
+        self._agent_debt = idea_agent_importance * (
             self.debtor_weight / groupheirs_debtor_weight_sum
         )
 

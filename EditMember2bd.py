@@ -8,7 +8,7 @@ from PyQt5 import QtCore as qtc
 class EditMember2bd(qtw.QWidget, Ui_Form):
     """The settings dialog window"""
 
-    refresh_toolunit_submitted = qtc.pyqtSignal(bool)
+    refresh_ideaunit_submitted = qtc.pyqtSignal(bool)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

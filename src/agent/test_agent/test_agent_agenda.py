@@ -1,7 +1,7 @@
 from datetime import datetime
 from src.agent.agent import AgentUnit, get_from_json
 from src.agent.examples.get_agent_examples_dir import get_agent_examples_dir
-from src.agent.tool import ToolCore, ToolKid
+from src.agent.idea import IdeaCore, IdeaKid
 from src.agent.road import Road
 from src.agent.required import RequiredUnit, SuffFactStatusFinder
 from src.agent.group import groupunit_shop, grouplink_shop
@@ -45,8 +45,8 @@ def test_get_agenda_returns_agenda_with_only_required_allowed():
     # THEN
     assert agenda_list
     # for agenda_item in agenda_list:
-    #     yr_tale(tool=agenda_item)
-    yr_tale(tool=agenda_list[0])
+    #     yr_tale(idea=agenda_item)
+    yr_tale(idea=agenda_list[0])
 
     assert len(agenda_list) == 1
     print(f"{agenda_list=}")
@@ -99,9 +99,9 @@ def test_get_agenda_with_7amItem():
     a1.set_acptfact(
         base=day24hr_road, pick=day24hr_road, open=day24hr_open, nigh=day24hr_nigh
     )
-    print(a1._toolroot._acptfactunits[day24hr_road])
-    print(a1._toolroot._kids[housework_text]._kids[clean_text]._requiredunits)
-    print(a1._toolroot._kids[housework_text]._kids[clean_text]._active_status)
+    print(a1._idearoot._acptfactunits[day24hr_road])
+    print(a1._idearoot._kids[housework_text]._kids[clean_text]._requiredunits)
+    print(a1._idearoot._kids[housework_text]._kids[clean_text]._active_status)
 
     # WHEN
     agenda_list = a1.get_agenda_items()
@@ -119,15 +119,15 @@ def test_get_agenda_with_7amItem():
 def test_get_agenda_does_not_return_promise_items_outside_range():
     src = "src"
     a1 = AgentUnit(_desc=src)
-    a1.set_time_hreg_tools(c400_count=7)
+    a1.set_time_hreg_ideas(c400_count=7)
     c_desc = "clean"
-    c_tool = ToolKid(_desc=c_desc, promise=True)
-    a1.add_tool(tool_kid=c_tool, walk=src)
+    c_idea = IdeaKid(_desc=c_desc, promise=True)
+    a1.add_idea(idea_kid=c_idea, walk=src)
     c_road = f"{src},{c_desc}"
     jajatime = "src,time,jajatime"
     jajaday = "src,time,jajatime,day"
 
-    a1.edit_tool_attr(
+    a1.edit_idea_attr(
         road=c_road,
         required_base=jajatime,
         required_sufffact=jajaday,
@@ -157,10 +157,10 @@ def test_exammple_agenda_exists():
     min_text = "TlME,day_minute"
     a1.set_acptfact(base=min_text, pick=min_text, open=0, nigh=1399)
     assert a1
-    # for tool_kid in a1._toolroot._kids.values():
-    #     # print(tool_kid._desc)
-    #     assert str(type(tool_kid)) != "<class 'str'>"
-    #     assert tool_kid.promise != None
+    # for idea_kid in a1._idearoot._kids.values():
+    #     # print(idea_kid._desc)
+    #     assert str(type(idea_kid)) != "<class 'str'>"
+    #     assert idea_kid.promise != None
 
     # WHEN
     agenda_list = a1.get_agenda_items()
@@ -214,15 +214,15 @@ def test_exammple_AgendaHasCorrectAttributes():
     # a1.set_acptfact(base=movie_road, pick=movie_text)
 
     # WHEN
-    tool_action_list = a1.get_agenda_items()
+    idea_action_list = a1.get_agenda_items()
 
     # THEN
     print("Test might be deprecated if it's not worthy it to fix this test source.")
-    assert len(tool_action_list) == 27
+    assert len(idea_action_list) == 27
 
     a1.set_acptfact(base=month_week_road, pick=f"{month_week_road},1st week")
-    tool_action_list = a1.get_agenda_items()
-    assert len(tool_action_list) == 27
+    idea_action_list = a1.get_agenda_items()
+    assert len(idea_action_list) == 27
 
     weekday_text = "weekdays"
     weekday_road = f"{src_road},{weekday_text}"
@@ -230,28 +230,28 @@ def test_exammple_AgendaHasCorrectAttributes():
     monday_road = f"{weekday_road},{monday_text}"
 
     a1.set_acptfact(base=weekday_road, pick=monday_road)
-    tool_action_list = a1.get_agenda_items()
-    assert len(tool_action_list) == 39
+    idea_action_list = a1.get_agenda_items()
+    assert len(idea_action_list) == 39
 
     a1.set_acptfact(base=weekday_road, pick=weekday_road)
-    tool_action_list = a1.get_agenda_items()
-    assert len(tool_action_list) == 53
+    idea_action_list = a1.get_agenda_items()
+    assert len(idea_action_list) == 53
 
     # a1.set_acptfact(base=nations_road, pick=nations_road)
-    # tool_action_list = a1.get_agenda_items()
-    # assert len(tool_action_list) == 53
+    # idea_action_list = a1.get_agenda_items()
+    # assert len(idea_action_list) == 53
 
     # for base in a1.get_missing_acptfact_bases():
     #     print(f"{base=}")
 
-    # for agenda_item in tool_action_list:
+    # for agenda_item in idea_action_list:
     #     print(f"{agenda_item._uid=} {agenda_item._walk=}")
 
-    # for agenda_item in tool_action_list:
+    # for agenda_item in idea_action_list:
     #     # print(f"{agenda_item._walk=}")
     #     pass
 
-    print(len(tool_action_list))
+    print(len(idea_action_list))
 
 
 def test_exammple_AgendaCanFiltersOnBase():
@@ -270,7 +270,7 @@ def test_exammple_AgendaCanFiltersOnBase():
     #         if required.base == weekdays:
     #             print(f"         {weekdays}")
 
-    # a1.edit_tool_attr(
+    # a1.edit_idea_attr(
     #     road="TlME,sufffacts,cleaning,laundry wednesday",
     #     required_del_sufffact_base=weekdays,
     #     required_del_sufffact_need=weekdays,
@@ -296,9 +296,9 @@ def test_set_agenda_task_as_complete_RangeWorksCorrectly():
     day_road = f"{time_road},{day_text}"
     a1 = AgentUnit(_desc=src_text)
 
-    a1.add_tool(tool_kid=ToolKid(_desc=run_text, promise=True), walk=src_text)
-    a1.add_tool(tool_kid=ToolKid(_desc=day_text, _begin=0, _close=500), walk=time_road)
-    a1.edit_tool_attr(
+    a1.add_idea(idea_kid=IdeaKid(_desc=run_text, promise=True), walk=src_text)
+    a1.add_idea(idea_kid=IdeaKid(_desc=day_text, _begin=0, _close=500), walk=time_road)
+    a1.edit_idea_attr(
         road=run_road,
         required_base=day_road,
         required_sufffact=day_road,
@@ -307,12 +307,12 @@ def test_set_agenda_task_as_complete_RangeWorksCorrectly():
     )
     a1.set_acptfact(base=day_road, pick=day_road, open=30, nigh=87)
     a1.get_agenda_items()
-    run_requiredunits = a1._toolroot._kids[run_text]._requiredunits[day_road]
+    run_requiredunits = a1._idearoot._kids[run_text]._requiredunits[day_road]
     print(f"{run_requiredunits=}")
     print(f"{run_requiredunits.sufffacts[day_road]._status=}")
     print(f"{run_requiredunits.sufffacts[day_road]._task=}")
     print(f"{a1.get_required_bases()=}")
-    assert len(a1.get_tool_list()) == 4
+    assert len(a1.get_idea_list()) == 4
     assert len(a1.get_agenda_items()) == 1
     assert a1.get_agenda_items()[0]._task == True
 
@@ -336,9 +336,9 @@ def test_set_agenda_task_as_complete_DivisionWorksCorrectly():
     day_road = f"{time_road},{day_text}"
     a1 = AgentUnit(_desc=src_text)
 
-    a1.add_tool(tool_kid=ToolKid(_desc=run_text, promise=True), walk=src_text)
-    a1.add_tool(tool_kid=ToolKid(_desc=day_text, _begin=0, _close=500), walk=time_road)
-    a1.edit_tool_attr(
+    a1.add_idea(idea_kid=IdeaKid(_desc=run_text, promise=True), walk=src_text)
+    a1.add_idea(idea_kid=IdeaKid(_desc=day_text, _begin=0, _close=500), walk=time_road)
+    a1.edit_idea_attr(
         road=run_road,
         required_base=day_road,
         required_sufffact=day_road,
@@ -347,8 +347,8 @@ def test_set_agenda_task_as_complete_DivisionWorksCorrectly():
         required_sufffact_divisor=2,
     )
 
-    run_tool = a1.get_tool_kid(road=run_road)
-    # print(f"{run_tool._acptfactheirs=}")
+    run_idea = a1.get_idea_kid(road=run_road)
+    # print(f"{run_idea._acptfactheirs=}")
     a1.set_acptfact(base=day_road, pick=day_road, open=1, nigh=2)
     assert len(a1.get_agenda_items()) == 1
     a1.set_acptfact(base=day_road, pick=day_road, open=2, nigh=2)
@@ -357,13 +357,13 @@ def test_set_agenda_task_as_complete_DivisionWorksCorrectly():
     assert len(a1.get_agenda_items()) == 0
     a1.set_acptfact(base=day_road, pick=day_road, open=401, nigh=402)
     assert len(a1.get_agenda_items()) == 1
-    # print(f"{run_tool._acptfactheirs=}")
-    print(f"{run_tool._acptfactunits=}")
+    # print(f"{run_idea._acptfactheirs=}")
+    print(f"{run_idea._acptfactunits=}")
 
     # When
     a1.set_agenda_task_complete(task_road=run_road, base=day_road)
-    print(f"{run_tool._acptfactunits=}")
-    # print(f"{run_tool._acptfactheirs=}")
+    print(f"{run_idea._acptfactunits=}")
+    # print(f"{run_idea._acptfactheirs=}")
     assert len(a1.get_agenda_items()) == 0
 
 
@@ -377,25 +377,25 @@ def test_agent_get_from_json_LoadsActionFromJSONCorrectly():
     a1 = get_from_json(lw_json=a1_json)
 
     # THEN
-    assert len(a1.get_tool_list()) == 253
-    print(f"{len(a1.get_tool_list())=}")
-    veg_tool = a1._tool_dict.get("TlME,casa,body care,make veggies every morning")
-    assert not veg_tool._active_status
-    assert veg_tool.promise
+    assert len(a1.get_idea_list()) == 253
+    print(f"{len(a1.get_idea_list())=}")
+    veg_idea = a1._idea_dict.get("TlME,casa,body care,make veggies every morning")
+    assert not veg_idea._active_status
+    assert veg_idea.promise
 
-    # tool_list = a1.get_tool_list()
+    # idea_list = a1.get_idea_list()
     # action_true_count = 0
-    # for tool in tool_list:
-    #     if str(type(tool)).find(".tool.ToolKid'>") > 0:
-    #         assert tool._active_status in (True, False)
-    #     assert tool.promise in (True, False)
-    #     # if tool._active_status == True:
-    #     #     print(tool._desc)
-    #     if tool.promise == True:
+    # for idea in idea_list:
+    #     if str(type(idea)).find(".idea.IdeaKid'>") > 0:
+    #         assert idea._active_status in (True, False)
+    #     assert idea.promise in (True, False)
+    #     # if idea._active_status == True:
+    #     #     print(idea._desc)
+    #     if idea.promise == True:
     #         action_true_count += 1
-    #         # if tool.promise == False:
-    #         #     print(f"action is false {tool._desc}")
-    #         # for required in tool._requiredunits.values():
+    #         # if idea.promise == False:
+    #         #     print(f"action is false {idea._desc}")
+    #         # for required in idea._requiredunits.values():
     #         #     assert required._status in (True, False)
     # assert action_true_count > 0
 
@@ -408,10 +408,10 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     a1 = AgentUnit(_desc="src")
 
     a1._set_acptfacts_empty_if_null()
-    a1.set_time_hreg_tools(c400_count=7)
+    a1.set_time_hreg_ideas(c400_count=7)
 
     things_text = "things to do"
-    a1.add_tool(ToolKid(_desc=things_text), walk=a1._desc)
+    a1.add_idea(IdeaKid(_desc=things_text), walk=a1._desc)
     t_road = f"{a1._desc},{things_text}"
     clean = "clean"
     run = "run"
@@ -419,12 +419,12 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     jog = "job"
     veg = "veg"
     lift = "life"
-    a1.add_tool(ToolKid(_desc=clean, promise=True), walk=t_road)
-    a1.add_tool(ToolKid(_desc=run, promise=True), walk=t_road)
-    a1.add_tool(ToolKid(_desc=swim, promise=True), walk=t_road)
-    a1.add_tool(ToolKid(_desc=jog, promise=True), walk=t_road)
-    a1.add_tool(ToolKid(_desc=veg, promise=True), walk=t_road)
-    a1.add_tool(ToolKid(_desc=lift, promise=True), walk=t_road)
+    a1.add_idea(IdeaKid(_desc=clean, promise=True), walk=t_road)
+    a1.add_idea(IdeaKid(_desc=run, promise=True), walk=t_road)
+    a1.add_idea(IdeaKid(_desc=swim, promise=True), walk=t_road)
+    a1.add_idea(IdeaKid(_desc=jog, promise=True), walk=t_road)
+    a1.add_idea(IdeaKid(_desc=veg, promise=True), walk=t_road)
+    a1.add_idea(IdeaKid(_desc=lift, promise=True), walk=t_road)
     w_word = f"{a1._desc},time,tech,week"
     mon_road = f"{w_word},Monday"
     tue_road = f"{w_word},Tuesday"
@@ -441,43 +441,43 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     v_road = f"{t_road},{veg}"
     l_road = f"{t_road},{lift}"
 
-    a1.edit_tool_attr(
+    a1.edit_idea_attr(
         road=c_road,
         required_base=tue_road,
         required_sufffact=tue_road,
     )
-    a1.edit_tool_attr(
+    a1.edit_idea_attr(
         road=r_road,
         required_base=wed_road,
         required_sufffact=wed_road,
     )
-    a1.edit_tool_attr(
+    a1.edit_idea_attr(
         road=s_road,
         required_base=thu_road,
         required_sufffact=thu_road,
     )
-    a1.edit_tool_attr(
+    a1.edit_idea_attr(
         road=j_road,
         required_base=fri_road,
         required_sufffact=fri_road,
     )
-    a1.edit_tool_attr(
+    a1.edit_idea_attr(
         road=v_road,
         required_base=sat_road,
         required_sufffact=sat_road,
     )
-    a1.edit_tool_attr(
+    a1.edit_idea_attr(
         road=l_road,
         required_base=sun_road,
         required_sufffact=sun_road,
     )
 
-    c_tool = a1.get_tool_kid(road=c_road)
-    c_required = c_tool._requiredunits
+    c_idea = a1.get_idea_kid(road=c_road)
+    c_required = c_idea._requiredunits
     # for required_y in c_required.values():
     #     for sufffact_y in required_y.sufffacts.values():
     #         print(
-    #             f"Tool: {c_tool._walk},{c_tool._desc}  Required: {required_y.base} open:{sufffact_y.open} nigh:{sufffact_y.nigh} diff:{sufffact_y.nigh-sufffact_y.open}"
+    #             f"Idea: {c_idea._walk},{c_idea._desc}  Required: {required_y.base} open:{sufffact_y.open} nigh:{sufffact_y.nigh} diff:{sufffact_y.nigh-sufffact_y.open}"
     #         )
 
     # for base, count_x in a1.get_required_bases().items():
@@ -497,73 +497,73 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     fri_min = a1.get_time_min_from_dt(dt=fri_dt)
     sat_min = a1.get_time_min_from_dt(dt=sat_dt)
     sun_min = a1.get_time_min_from_dt(dt=sun_dt)
-    assert a1._toolroot._acptfactunits.get("src,time,jajatime") is None
+    assert a1._idearoot._acptfactunits.get("src,time,jajatime") is None
 
     # When
     print("\nset acptfact for Sunday")
     road_minute = f"{a1._desc},time,jajatime"
     a1.set_acptfact(base=road_minute, pick=road_minute, open=sun_min, nigh=sun_min)
-    # for acptfact in a1._toolroot._acptfactunits.values():
+    # for acptfact in a1._idearoot._acptfactunits.values():
     #     print(f"{acptfact.base=} (H: {acptfact.acptfact}) {acptfact.active=} {acptfact.open=} {acptfact.nigh=}")
 
     # Then
     tech_root = "src,time,tech"
 
-    assert len(a1._toolroot._acptfactunits) == 7
-    print(a1._toolroot._acptfactunits["src,time,jajatime"])
-    print(a1._toolroot._acptfactunits[f"{tech_root},week,Saturday"])
-    print(a1._toolroot._acptfactunits[f"{tech_root},week,Sunday"])
-    print(a1._toolroot._acptfactunits[f"{tech_root},week,Tuesday"])
-    print(a1._toolroot._acptfactunits[f"{tech_root},week,Wednesday"])
-    print(a1._toolroot._acptfactunits[f"{tech_root},week,Thursday"])
-    print(a1._toolroot._acptfactunits[f"{tech_root},week,Friday"])
-    assert a1._toolroot._acptfactunits[f"{tech_root},week,Sunday"]
-    assert a1._toolroot._acptfactunits[f"{tech_root},week,Sunday"].open == 1440
-    assert a1._toolroot._acptfactunits[f"{tech_root},week,Sunday"].nigh == 1440
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Sunday"].active == True
+    assert len(a1._idearoot._acptfactunits) == 7
+    print(a1._idearoot._acptfactunits["src,time,jajatime"])
+    print(a1._idearoot._acptfactunits[f"{tech_root},week,Saturday"])
+    print(a1._idearoot._acptfactunits[f"{tech_root},week,Sunday"])
+    print(a1._idearoot._acptfactunits[f"{tech_root},week,Tuesday"])
+    print(a1._idearoot._acptfactunits[f"{tech_root},week,Wednesday"])
+    print(a1._idearoot._acptfactunits[f"{tech_root},week,Thursday"])
+    print(a1._idearoot._acptfactunits[f"{tech_root},week,Friday"])
+    assert a1._idearoot._acptfactunits[f"{tech_root},week,Sunday"]
+    assert a1._idearoot._acptfactunits[f"{tech_root},week,Sunday"].open == 1440
+    assert a1._idearoot._acptfactunits[f"{tech_root},week,Sunday"].nigh == 1440
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Sunday"].active == True
 
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Tuesday"].active == False
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Wednesday"].active == False
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Thursday"].active == False
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Friday"].active == False
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Saturday"].active == False
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Tuesday"].active == False
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Wednesday"].active == False
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Thursday"].active == False
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Friday"].active == False
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Saturday"].active == False
 
     # When
     print("\nset acptfact for Sat through Monday")
     a1.set_acptfact(base=road_minute, pick=road_minute, open=sat_min, nigh=mon_min)
-    # for acptfact in a1._toolroot._acptfactunits.values():
+    # for acptfact in a1._idearoot._acptfactunits.values():
     #     print(f"{acptfact.base=} (H: {acptfact.acptfact}) {acptfact.active=} {acptfact.open=} {acptfact.nigh=}")
 
     # Then
-    assert a1._toolroot._acptfactunits[f"{tech_root},week,Saturday"]
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Saturday"].active == True
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Sunday"].active == True
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Tuesday"].active == False
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Wednesday"].active == False
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Thursday"].active == False
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Friday"].active == False
+    assert a1._idearoot._acptfactunits[f"{tech_root},week,Saturday"]
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Saturday"].active == True
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Sunday"].active == True
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Tuesday"].active == False
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Wednesday"].active == False
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Thursday"].active == False
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Friday"].active == False
 
-    assert a1._toolroot._acptfactunits[f"{tech_root},week,Saturday"].open == 0
-    assert a1._toolroot._acptfactunits[f"{tech_root},week,Saturday"].nigh == 1440
-    assert a1._toolroot._acptfactunits[f"{tech_root},week,Sunday"].open == 1440
-    assert a1._toolroot._acptfactunits[f"{tech_root},week,Sunday"].nigh == 2880
+    assert a1._idearoot._acptfactunits[f"{tech_root},week,Saturday"].open == 0
+    assert a1._idearoot._acptfactunits[f"{tech_root},week,Saturday"].nigh == 1440
+    assert a1._idearoot._acptfactunits[f"{tech_root},week,Sunday"].open == 1440
+    assert a1._idearoot._acptfactunits[f"{tech_root},week,Sunday"].nigh == 2880
 
     # When
     print("\nset acptfacts for Sunday through Friday")
     a1.set_acptfact(base=road_minute, pick=road_minute, open=sun_min, nigh=fri_min)
-    # for acptfact in a1._toolroot._acptfactunits.values():
+    # for acptfact in a1._idearoot._acptfactunits.values():
     #     print(f"{acptfact.base=} (H: {acptfact.acptfact}) {acptfact.active=} {acptfact.open=} {acptfact.nigh=}")
 
     # Then
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Saturday"].active == False
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Sunday"].active == True
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Tuesday"].active == True
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Wednesday"].active == True
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Thursday"].active == True
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Friday"].active == False
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Saturday"].active == False
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Sunday"].active == True
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Tuesday"].active == True
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Wednesday"].active == True
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Thursday"].active == True
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Friday"].active == False
 
-    assert a1._toolroot._acptfactunits[f"{tech_root},week,Sunday"].open == 1440
-    assert a1._toolroot._acptfactunits[f"{tech_root},week,Sunday"].nigh == 2880
+    assert a1._idearoot._acptfactunits[f"{tech_root},week,Sunday"].open == 1440
+    assert a1._idearoot._acptfactunits[f"{tech_root},week,Sunday"].nigh == 2880
 
     # When
     print("\nset acptfacts for 10 day stretch")
@@ -574,15 +574,15 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     a1.set_acptfact(
         base=road_minute, pick=road_minute, open=dayzero_min, nigh=dayten_min
     )
-    # for acptfact in a1._toolroot._acptfactunits.values():
+    # for acptfact in a1._idearoot._acptfactunits.values():
     #     print(f"{acptfact.base=} (H: {acptfact.acptfact}) {acptfact.active=} {acptfact.open=} {acptfact.nigh=}")
 
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Saturday"].active == True
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Sunday"].active == True
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Tuesday"].active == True
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Wednesday"].active == True
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Thursday"].active == True
-    # assert a1._toolroot._acptfactunits[f"{tech_root},week,Friday"].active == True
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Saturday"].active == True
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Sunday"].active == True
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Tuesday"].active == True
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Wednesday"].active == True
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Thursday"].active == True
+    # assert a1._idearoot._acptfactunits[f"{tech_root},week,Friday"].active == True
 
 
 def test_agent_create_agenda_item_CorrectlyCreatesAllAgentAttributes():
@@ -597,14 +597,14 @@ def test_agent_create_agenda_item_CorrectlyCreatesAllAgentAttributes():
     a1.set_agent_metrics()
     assert len(a1._members) == 0
     assert len(a1._groups) == 0
-    assert len(a1._toolroot._kids) == 0
+    assert len(a1._idearoot._kids) == 0
 
     clean_things_text = "cleaning things"
     clean_things_road = Road(f"{src_text},{clean_things_text}")
     clean_cookery_text = "clean cookery"
     clean_cookery_road = Road(f"{src_text},{clean_things_text},{clean_cookery_text}")
-    clean_cookery_tool = ToolKid(_desc=clean_cookery_text, _walk=clean_things_road)
-    print(f"{clean_cookery_tool.get_road()=}")
+    clean_cookery_idea = IdeaKid(_desc=clean_cookery_text, _walk=clean_things_road)
+    print(f"{clean_cookery_idea.get_road()=}")
     home_text = "home"
     home_road = Road(f"{src_text},{home_text}")
     cookery_room_text = "cookery room"
@@ -613,18 +613,18 @@ def test_agent_create_agenda_item_CorrectlyCreatesAllAgentAttributes():
     cookery_dirty_road = Road(f"{cookery_room_road},{cookery_dirty_text}")
 
     # create gregorian timeline
-    a1.set_time_hreg_tools(c400_count=7)
+    a1.set_time_hreg_ideas(c400_count=7)
     daytime_road = Road(f"{src_text},time,jajatime,day")
     open_8am = 480
     nigh_8am = 480
 
     dirty_cookery_required = RequiredUnit(base=cookery_room_road, sufffacts={})
     dirty_cookery_required.set_sufffact(sufffact=cookery_dirty_road)
-    clean_cookery_tool.set_required_unit(required=dirty_cookery_required)
+    clean_cookery_idea.set_required_unit(required=dirty_cookery_required)
 
     daytime_required = RequiredUnit(base=daytime_road, sufffacts={})
     daytime_required.set_sufffact(sufffact=daytime_road, open=open_8am, nigh=nigh_8am)
-    clean_cookery_tool.set_required_unit(required=daytime_required)
+    clean_cookery_idea.set_required_unit(required=daytime_required)
 
     # anna_text = "anna"
     # anna_memberunit = memberunit_shop(name=anna_text)
@@ -638,41 +638,41 @@ def test_agent_create_agenda_item_CorrectlyCreatesAllAgentAttributes():
     # groupunit_z.set_memberlink(memberlink=anna_memberlink)
     # groupunit_z.set_memberlink(memberlink=beto_memberlink)
     grouplink_z = grouplink_shop(name=family_text)
-    clean_cookery_tool.set_grouplink(grouplink=grouplink_z)
+    clean_cookery_idea.set_grouplink(grouplink=grouplink_z)
 
     assert len(a1._members) == 0
     assert len(a1._groups) == 0
-    assert len(a1._toolroot._kids) == 1
-    assert a1.get_tool_kid(road=daytime_road)._begin == 0
-    assert a1.get_tool_kid(road=daytime_road)._close == 1440
-    print(f"{clean_cookery_tool.get_road()=}")
+    assert len(a1._idearoot._kids) == 1
+    assert a1.get_idea_kid(road=daytime_road)._begin == 0
+    assert a1.get_idea_kid(road=daytime_road)._close == 1440
+    print(f"{clean_cookery_idea.get_road()=}")
 
     # GIVEN
-    a1.set_dominate_promise_tool(tool_kid=clean_cookery_tool)
+    a1.set_dominate_promise_idea(idea_kid=clean_cookery_idea)
 
     # THEN
-    # for tool_kid in a1._toolroot._kids.keys():
-    #     print(f"  {tool_kid=}")
+    # for idea_kid in a1._idearoot._kids.keys():
+    #     print(f"  {idea_kid=}")
 
-    print(f"{clean_cookery_tool.get_road()=}")
-    assert a1.get_tool_kid(road=clean_cookery_road) != None
-    assert a1.get_tool_kid(road=clean_cookery_road)._desc == clean_cookery_text
-    assert a1.get_tool_kid(road=clean_cookery_road).promise
-    assert len(a1.get_tool_kid(road=clean_cookery_road)._requiredunits) == 2
-    assert a1.get_tool_kid(road=clean_things_road) != None
-    assert a1.get_tool_kid(road=cookery_room_road) != None
-    assert a1.get_tool_kid(road=cookery_dirty_road) != None
-    assert a1.get_tool_kid(road=daytime_road)._begin == 0
-    assert a1.get_tool_kid(road=daytime_road)._close == 1440
+    print(f"{clean_cookery_idea.get_road()=}")
+    assert a1.get_idea_kid(road=clean_cookery_road) != None
+    assert a1.get_idea_kid(road=clean_cookery_road)._desc == clean_cookery_text
+    assert a1.get_idea_kid(road=clean_cookery_road).promise
+    assert len(a1.get_idea_kid(road=clean_cookery_road)._requiredunits) == 2
+    assert a1.get_idea_kid(road=clean_things_road) != None
+    assert a1.get_idea_kid(road=cookery_room_road) != None
+    assert a1.get_idea_kid(road=cookery_dirty_road) != None
+    assert a1.get_idea_kid(road=daytime_road)._begin == 0
+    assert a1.get_idea_kid(road=daytime_road)._close == 1440
     assert len(a1._groups) == 1
     assert a1._groups.get(family_text) != None
     assert a1._groups.get(family_text)._members in (None, {})
 
-    assert len(a1._toolroot._kids) == 3
+    assert len(a1._idearoot._kids) == 3
 
 
-def get_tasks_count(tool_list: list[ToolCore]) -> int:
-    return sum(bool(toolcore._task) for toolcore in tool_list)
+def get_tasks_count(idea_list: list[IdeaCore]) -> int:
+    return sum(bool(ideacore._task) for ideacore in idea_list)
 
 
 def test_Issue116Resolved_correctlySetsTaskAsTrue():
@@ -686,30 +686,30 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
     a1.set_acptfact(
         base=jajatime_road, pick=jajatime_road, open=1063998720, nigh=1064130373
     )
-    action_tool_list = a1.get_agenda_items()
+    action_idea_list = a1.get_agenda_items()
 
     # THEN
-    assert len(action_tool_list) == 66
+    assert len(action_idea_list) == 66
     jajatime_road = "Myagent,time,jajatime"
     night_text = "late_night_go_to_sleep"
     night_road = f"Myagent,D&B,{night_text}"
-    night_tool = a1._tool_dict.get(night_road)
-    # for tool_x in a1.get_agenda_items():
-    #     # if tool_x._task != True:
-    #     #     print(f"{len(action_tool_list)=} {tool_x._task=} {tool_x.get_road()}")
-    #     if tool_x._desc == night_desc:
-    #         night_tool = tool_x
-    #         print(f"{tool_x.get_road()=}")
+    night_idea = a1._idea_dict.get(night_road)
+    # for idea_x in a1.get_agenda_items():
+    #     # if idea_x._task != True:
+    #     #     print(f"{len(action_idea_list)=} {idea_x._task=} {idea_x.get_road()}")
+    #     if idea_x._desc == night_desc:
+    #         night_idea = idea_x
+    #         print(f"{idea_x.get_road()=}")
 
-    print(f"\nTool = '{night_text}' and required '{jajatime_road}'")
-    acptfactheir_jajatime = night_tool._acptfactheirs.get(jajatime_road)
+    print(f"\nIdea = '{night_text}' and required '{jajatime_road}'")
+    acptfactheir_jajatime = night_idea._acptfactheirs.get(jajatime_road)
     print(f"\n{acptfactheir_jajatime=}")
     print(f"      {a1.get_jajatime_repeating_readable_text(open=1063998720)}")
     print(f"      {a1.get_jajatime_repeating_readable_text(open=1064130373)}")
 
     # for requiredheir in agenda_item._requiredheirs.values():
     #     print(f"{requiredheir.base=} {requiredheir._status=} {requiredheir._task=}")
-    requiredheir_jajatime = night_tool._requiredheirs.get(jajatime_road)
+    requiredheir_jajatime = night_idea._requiredheirs.get(jajatime_road)
     requiredheir_text = f"\nrequiredheir_jajatime= '{requiredheir_jajatime.base}', status={requiredheir_jajatime._status}, task={requiredheir_jajatime._task}"
     print(requiredheir_text)
 
@@ -736,4 +736,4 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
 
     print(f"  {segr_obj.sufffact_open_trans=}  {segr_obj.sufffact_nigh_trans=}")
     print(f"  {segr_obj._active_status=}  {segr_obj._task_status=}")
-    assert get_tasks_count(action_tool_list) == 64
+    assert get_tasks_count(action_idea_list) == 64

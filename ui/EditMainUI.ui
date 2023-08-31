@@ -36,7 +36,7 @@
     <string>Refresh All</string>
    </property>
   </widget>
-  <widget class="QTreeWidget" name="basetoolunit">
+  <widget class="QTreeWidget" name="baseideaunit">
    <property name="geometry">
     <rect>
      <x>10</x>

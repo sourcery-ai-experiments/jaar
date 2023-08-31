@@ -220,7 +220,7 @@ def test_personunit_refresh_agentlinks_CorrectlyPullsAllPublicAgents(
     e1.save_agentunit_obj_to_agents_dir(agent_x=old_steve_agent)
     px.receive_src_agentunit_obj(agent_x=ernie_agent)
     px.receive_src_agentunit_obj(agent_x=old_steve_agent)
-    assert len(px.get_dest_agent_from_digest_agent_files().get_tool_list()) == 4
+    assert len(px.get_dest_agent_from_digest_agent_files().get_idea_list()) == 4
     new_steve_agent = example_persons.get_agent_3CleanNodesRandomWeights(_desc="steve")
     e1.save_agentunit_obj_to_agents_dir(agent_x=new_steve_agent)
     print(f"{env_dir=} {px._public_agents_dir=}")
@@ -234,4 +234,4 @@ def test_personunit_refresh_agentlinks_CorrectlyPullsAllPublicAgents(
     px.receive_all_src_agentunit_files()
 
     # THEN
-    assert len(px.get_dest_agent_from_digest_agent_files().get_tool_list()) == 5
+    assert len(px.get_dest_agent_from_digest_agent_files().get_idea_list()) == 5

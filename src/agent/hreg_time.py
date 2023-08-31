@@ -1,5 +1,5 @@
 from src.agent.required import Road, SuffFactUnit
-from src.agent.tool import ToolBare as YB
+from src.agent.idea import IdeaBare as YB
 from dataclasses import dataclass
 from datetime import datetime
 
@@ -185,7 +185,7 @@ class SuffFactUnitHregTime:
         return self.get_jajatime_open() + self._event_minutes
 
 
-def _get_time_hreg_src_tool(c400_count: int):
+def _get_time_hreg_src_idea(c400_count: int):
     src = "time"
     list_x = []
     list_x += _get_time_hreg_ced(local_root=src, tech="minutes", c400_count=c400_count)
@@ -228,7 +228,7 @@ def _get_time_hreg_ced(local_root: str, tech: str, c400_count: int):
     list_x += _get_time_hreg_month(local_root=rt, multipler=m)
     list_x += _get_time_hreg_day(local_root=rt, multipler=m)
     list_x += _get_time_hreg_hour(local_root=rt, multipler=m)
-    list_x += _get_time_hreg_weekday_tool(local_root=rt, multipler=m, jajatime=jaja)
+    list_x += _get_time_hreg_weekday_idea(local_root=rt, multipler=m, jajatime=jaja)
 
     return list_x
 
@@ -279,7 +279,7 @@ def _get_time_hreg_years(local_root: str, jajatime: str):
     return hreg_list
 
 
-def _get_time_hreg_weekday_tool(local_root: str, multipler: int, jajatime: str):
+def _get_time_hreg_weekday_idea(local_root: str, multipler: int, jajatime: str):
     m = multipler
     week = "week"
     nr = f"{local_root},{jajatime},week"

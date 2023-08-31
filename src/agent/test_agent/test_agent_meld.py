@@ -1,4 +1,4 @@
-from src.agent.tool import ToolKid
+from src.agent.idea import IdeaKid
 from src.agent.agent import AgentUnit
 from src.agent.group import groupunit_shop
 from src.agent.member import memberunit_shop
@@ -90,25 +90,25 @@ def test_agent_meld_GroupUnits():
     # assert ax1._groups.get(x2_name).uid == 5
 
 
-def test_agent_toolroot_meld_ToolRootAttrCorrectlyMelded():
+def test_agent_idearoot_meld_IdeaRootAttrCorrectlyMelded():
     # GIVEN
     src = "casa"
     ax1 = AgentUnit(_desc="spirit")
     ax2 = AgentUnit(_desc="spirit")
-    ax2._toolroot._uid = 4
-    assert ax1._toolroot._uid == 1
-    assert ax2._toolroot._uid == 4
+    ax2._idearoot._uid = 4
+    assert ax1._idearoot._uid == 1
+    assert ax2._idearoot._uid == 4
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         ax1.meld(ax2)
     assert (
         str(excinfo.value)
-        == "Meld fail tool=None,spirit _uid:1 with None,spirit _uid:4"
+        == "Meld fail idea=None,spirit _uid:1 with None,spirit _uid:4"
     )
 
 
-def test_agent_toolroot_meld_Add4ToolsScenario():
+def test_agent_idearoot_meld_Add4IdeasScenario():
     # GIVEN
     src = "casa"
     tech_text = "tech"
@@ -123,22 +123,22 @@ def test_agent_toolroot_meld_Add4ToolsScenario():
     ax1 = AgentUnit(_desc="spirit")
 
     ax2 = AgentUnit(_desc="spirit")
-    ax2.add_tool(walk=src, tool_kid=ToolKid(_desc=tech_text))
-    ax2.add_tool(walk=tech_road, tool_kid=ToolKid(_desc=bowl_text))
-    ax2.add_tool(walk=swim_road, tool_kid=ToolKid(_desc=free_text))
+    ax2.add_idea(walk=src, idea_kid=IdeaKid(_desc=tech_text))
+    ax2.add_idea(walk=tech_road, idea_kid=IdeaKid(_desc=bowl_text))
+    ax2.add_idea(walk=swim_road, idea_kid=IdeaKid(_desc=free_text))
 
     # WHEN
     ax1.meld(ax2)
 
     # THEN
-    assert len(ax1.get_tool_list()) == 5
-    assert ax1.get_tool_kid(road=tech_road)._desc == tech_text
-    assert ax1.get_tool_kid(road=bowl_road)._desc == bowl_text
-    assert ax1.get_tool_kid(road=swim_road)._desc == swim_text
-    assert ax1.get_tool_kid(road=free_road)._desc == free_text
+    assert len(ax1.get_idea_list()) == 5
+    assert ax1.get_idea_kid(road=tech_road)._desc == tech_text
+    assert ax1.get_idea_kid(road=bowl_road)._desc == bowl_text
+    assert ax1.get_idea_kid(road=swim_road)._desc == swim_text
+    assert ax1.get_idea_kid(road=free_road)._desc == free_text
 
 
-def test_agent_toolroot_meld_2SameToolsScenario():
+def test_agent_idearoot_meld_2SameIdeasScenario():
     # GIVEN
     src = "casa"
     tech_text = "tech"
@@ -147,20 +147,20 @@ def test_agent_toolroot_meld_2SameToolsScenario():
     bowl_road = f"{src},{tech_text},{bowl_text}"
 
     ax1 = AgentUnit(_desc=src)
-    ax1.add_tool(walk=src, tool_kid=ToolKid(_desc=tech_text))
-    ax1.add_tool(walk=tech_road, tool_kid=ToolKid(_desc=bowl_text))
+    ax1.add_idea(walk=src, idea_kid=IdeaKid(_desc=tech_text))
+    ax1.add_idea(walk=tech_road, idea_kid=IdeaKid(_desc=bowl_text))
 
     ax2 = AgentUnit(_desc=src)
-    ax2.add_tool(walk=src, tool_kid=ToolKid(_desc=tech_text))
-    ax2.add_tool(walk=tech_road, tool_kid=ToolKid(_desc=bowl_text))
+    ax2.add_idea(walk=src, idea_kid=IdeaKid(_desc=tech_text))
+    ax2.add_idea(walk=tech_road, idea_kid=IdeaKid(_desc=bowl_text))
 
-    assert ax1.get_tool_kid(road=bowl_road)._weight == 1
+    assert ax1.get_idea_kid(road=bowl_road)._weight == 1
     # WHEN
     ax1.meld(ax2)
 
     # THEN
-    assert ax1.get_tool_kid(road=bowl_road)._weight == 1
-    assert len(ax1.get_tool_list()) == 3
+    assert ax1.get_idea_kid(road=bowl_road)._weight == 1
+    assert len(ax1.get_idea_list()) == 3
 
 
 def test_agent_acptfactunits_meld_BaseScenarioWorks():
@@ -172,22 +172,22 @@ def test_agent_acptfactunits_meld_BaseScenarioWorks():
     bowl_road = f"{src},{tech_text},{bowl_text}"
 
     ax1 = AgentUnit(_desc="test7")
-    ax1.add_tool(walk=src, tool_kid=ToolKid(_desc=tech_text))
-    ax1.add_tool(walk=tech_road, tool_kid=ToolKid(_desc=bowl_text))
+    ax1.add_idea(walk=src, idea_kid=IdeaKid(_desc=tech_text))
+    ax1.add_idea(walk=tech_road, idea_kid=IdeaKid(_desc=bowl_text))
     ax1.set_acptfact(base=tech_road, pick=bowl_road)
 
     ax2 = AgentUnit(_desc="test7")
-    ax2.add_tool(walk=src, tool_kid=ToolKid(_desc=tech_text))
-    ax2.add_tool(walk=tech_road, tool_kid=ToolKid(_desc=bowl_text))
+    ax2.add_idea(walk=src, idea_kid=IdeaKid(_desc=tech_text))
+    ax2.add_idea(walk=tech_road, idea_kid=IdeaKid(_desc=bowl_text))
     ax2.set_acptfact(base=tech_road, pick=bowl_road)
 
     # WHEN
     ax1.meld(ax2)
 
     # THEN
-    assert len(ax1._toolroot._acptfactunits) == 1
-    assert len(ax1._toolroot._acptfactunits) == len(ax2._toolroot._acptfactunits)
-    assert ax1._toolroot._acptfactunits == ax2._toolroot._acptfactunits
+    assert len(ax1._idearoot._acptfactunits) == 1
+    assert len(ax1._idearoot._acptfactunits) == len(ax2._idearoot._acptfactunits)
+    assert ax1._idearoot._acptfactunits == ax2._idearoot._acptfactunits
 
 
 def test_agent_acptfactunits_meld_2AcptFactUnitsWorks():
@@ -202,15 +202,15 @@ def test_agent_acptfactunits_meld_2AcptFactUnitsWorks():
     free_text = "freestyle"
 
     ax1 = AgentUnit(_desc="test7")
-    ax1.add_tool(walk=src, tool_kid=ToolKid(_desc=tech_text))
-    ax1.add_tool(walk=tech_road, tool_kid=ToolKid(_desc=bowl_text))
-    ax1.add_tool(walk=swim_road, tool_kid=ToolKid(_desc=free_text))
+    ax1.add_idea(walk=src, idea_kid=IdeaKid(_desc=tech_text))
+    ax1.add_idea(walk=tech_road, idea_kid=IdeaKid(_desc=bowl_text))
+    ax1.add_idea(walk=swim_road, idea_kid=IdeaKid(_desc=free_text))
     ax1.set_acptfact(base=tech_road, pick=bowl_road)
 
     ax2 = AgentUnit(_desc="test7")
-    ax2.add_tool(walk=src, tool_kid=ToolKid(_desc=tech_text))
-    ax2.add_tool(walk=tech_road, tool_kid=ToolKid(_desc=bowl_text))
-    ax2.add_tool(walk=swim_road, tool_kid=ToolKid(_desc=free_text))
+    ax2.add_idea(walk=src, idea_kid=IdeaKid(_desc=tech_text))
+    ax2.add_idea(walk=tech_road, idea_kid=IdeaKid(_desc=bowl_text))
+    ax2.add_idea(walk=swim_road, idea_kid=IdeaKid(_desc=free_text))
     ax2.set_acptfact(base=tech_road, pick=bowl_road)
     ax2.set_acptfact(base=swim_road, pick=swim_road)
 
@@ -218,12 +218,12 @@ def test_agent_acptfactunits_meld_2AcptFactUnitsWorks():
     ax1.meld(ax2)
 
     # THEN
-    assert len(ax1._toolroot._acptfactunits) == 2
-    assert len(ax1._toolroot._acptfactunits) == len(ax2._toolroot._acptfactunits)
-    assert ax1._toolroot._acptfactunits == ax2._toolroot._acptfactunits
+    assert len(ax1._idearoot._acptfactunits) == 2
+    assert len(ax1._idearoot._acptfactunits) == len(ax2._idearoot._acptfactunits)
+    assert ax1._idearoot._acptfactunits == ax2._idearoot._acptfactunits
 
 
-def test_agent_acptfactunits_meld_ToolsMeldedBeforeAcptFacts():
+def test_agent_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
     # GIVEN
     src = "casa"
     swim_text = "swim"
@@ -233,7 +233,7 @@ def test_agent_acptfactunits_meld_ToolsMeldedBeforeAcptFacts():
     ax1 = AgentUnit(_desc="test7")
 
     ax2 = AgentUnit(_desc="test7")
-    ax2.add_tool(walk=swim_road, tool_kid=ToolKid(_desc=free_text))
+    ax2.add_idea(walk=swim_road, idea_kid=IdeaKid(_desc=free_text))
     ax2.set_acptfact(base=swim_road, pick=swim_road)
 
     # WHEN
@@ -241,11 +241,11 @@ def test_agent_acptfactunits_meld_ToolsMeldedBeforeAcptFacts():
 
     # THEN
     print()
-    assert len(ax1._toolroot._acptfactunits) == 1
-    assert ax1.get_tool_kid(swim_road)._desc == swim_text
-    assert ax1._toolroot._kids[swim_text]._desc == swim_text
-    assert len(ax1._toolroot._acptfactunits) == len(ax2._toolroot._acptfactunits)
-    assert ax1._toolroot._acptfactunits == ax2._toolroot._acptfactunits
+    assert len(ax1._idearoot._acptfactunits) == 1
+    assert ax1.get_idea_kid(swim_road)._desc == swim_text
+    assert ax1._idearoot._kids[swim_text]._desc == swim_text
+    assert len(ax1._idearoot._acptfactunits) == len(ax2._idearoot._acptfactunits)
+    assert ax1._idearoot._acptfactunits == ax2._idearoot._acptfactunits
 
 
 def test_agent_acptfactunits_meld_GroupsMeldedBefore_Members():
@@ -279,10 +279,10 @@ def test_agent_acptfactunits_meld_AcptFactsAttributeCorrectlySet():
     free_road = f"{src},{free_text}"
 
     ax1 = AgentUnit(_desc="test7")
-    ax1.add_tool(walk=swim_road, tool_kid=ToolKid(_desc=free_text))
+    ax1.add_idea(walk=swim_road, idea_kid=IdeaKid(_desc=free_text))
 
     ax2 = AgentUnit(_desc="test7")
-    ax2.add_tool(walk=swim_road, tool_kid=ToolKid(_desc=free_text))
+    ax2.add_idea(walk=swim_road, idea_kid=IdeaKid(_desc=free_text))
     ax2.set_acptfact(base=swim_road, pick=free_road, open=23, nigh=27)
 
     # WHEN
@@ -290,25 +290,25 @@ def test_agent_acptfactunits_meld_AcptFactsAttributeCorrectlySet():
 
     # THEN
     print()
-    assert len(ax1._toolroot._acptfactunits) == 1
-    assert ax1._toolroot._acptfactunits[swim_road].base == swim_road
-    assert ax1._toolroot._acptfactunits[swim_road].pick == free_road
-    assert ax1._toolroot._acptfactunits[swim_road].open == 23
-    assert ax1._toolroot._acptfactunits[swim_road].nigh == 27
+    assert len(ax1._idearoot._acptfactunits) == 1
+    assert ax1._idearoot._acptfactunits[swim_road].base == swim_road
+    assert ax1._idearoot._acptfactunits[swim_road].pick == free_road
+    assert ax1._idearoot._acptfactunits[swim_road].open == 23
+    assert ax1._idearoot._acptfactunits[swim_road].nigh == 27
 
 
 def test_agent_meld_worksCorrectlyForLargeExample():
     # GIVEN
     src = "TlME"
     ax1 = AgentUnit(_desc=src)
-    ax1._toolroot._uid = 1
+    ax1._idearoot._uid = 1
     ax2 = agent_v001()
 
-    ax2r_bl = ax2._toolroot._grouplines
+    ax2r_bl = ax2._idearoot._grouplines
     fam_text = "Family"
 
     print(
-        f"Before {ax2r_bl.get(fam_text)._agent_credit=} {ax2._toolroot._kids_total_weight=}"
+        f"Before {ax2r_bl.get(fam_text)._agent_credit=} {ax2._idearoot._kids_total_weight=}"
     )
 
     # WHEN
@@ -317,17 +317,17 @@ def test_agent_meld_worksCorrectlyForLargeExample():
 
     # THEN
     print(
-        f"After    {ax2r_bl.get(fam_text)._agent_debt=} {ax2._toolroot._kids_total_weight=}"
+        f"After    {ax2r_bl.get(fam_text)._agent_debt=} {ax2._idearoot._kids_total_weight=}"
     )
     assert ax1._weight == ax2._weight
-    assert ax1._toolroot._kids == ax2._toolroot._kids
-    assert ax1._toolroot._uid == ax2._toolroot._uid
-    assert ax1._toolroot._acptfactunits == ax2._toolroot._acptfactunits
+    assert ax1._idearoot._kids == ax2._idearoot._kids
+    assert ax1._idearoot._uid == ax2._idearoot._uid
+    assert ax1._idearoot._acptfactunits == ax2._idearoot._acptfactunits
     assert ax1._groups == ax2._groups
     assert ax1._members == ax2._members
 
-    assert len(ax1._toolroot._acptfactunits) == 2
-    assert len(ax1._toolroot._acptfactunits) == len(ax2._toolroot._acptfactunits)
+    assert len(ax1._idearoot._acptfactunits) == 2
+    assert len(ax1._idearoot._acptfactunits) == len(ax2._idearoot._acptfactunits)
     assert ax1._desc == ax2._desc
     print(f"{len(ax1._groups.items())=}")
     # for ax1_group_key, ax1_group_obj in ax1._groups.items():
@@ -335,20 +335,20 @@ def test_agent_meld_worksCorrectlyForLargeExample():
     #     assert ax1_group_obj.uid == ax2._groups[ax1_group_key].uid
     #     assert ax1_group_obj == ax2._groups[ax1_group_key]
     assert ax1._groups == ax2._groups
-    assert len(ax1.get_tool_list()) == len(ax2.get_tool_list())
+    assert len(ax1.get_idea_list()) == len(ax2.get_idea_list())
 
-    ax1r_bl = ax1._toolroot._grouplines
+    ax1r_bl = ax1._idearoot._grouplines
     print(
-        f"Melded   {ax1r_bl.get(fam_text)._agent_debt=} {ax1._toolroot._kids_total_weight=}"
+        f"Melded   {ax1r_bl.get(fam_text)._agent_debt=} {ax1._idearoot._kids_total_weight=}"
     )
 
     assert ax1r_bl.get(fam_text) != None
     # assert ax1r_bl.get(fam_text) == ax2r_bl.get(fam_text)
     # assert ax1r_bl.get(fam_text).agent_credit == ax2r_bl.get(fam_text).agent_credit
-    print(f"{ax1r_bl.get(fam_text)._agent_credit=} {ax1._toolroot._kids_total_weight=}")
-    print(f"{ax2r_bl.get(fam_text)._agent_credit=} {ax1._toolroot._kids_total_weight=}")
-    print(f"  {ax1r_bl.get(fam_text)._agent_debt=} {ax1._toolroot._kids_total_weight=}")
-    print(f"  {ax2r_bl.get(fam_text)._agent_debt=} {ax1._toolroot._kids_total_weight=}")
+    print(f"{ax1r_bl.get(fam_text)._agent_credit=} {ax1._idearoot._kids_total_weight=}")
+    print(f"{ax2r_bl.get(fam_text)._agent_credit=} {ax1._idearoot._kids_total_weight=}")
+    print(f"  {ax1r_bl.get(fam_text)._agent_debt=} {ax1._idearoot._kids_total_weight=}")
+    print(f"  {ax2r_bl.get(fam_text)._agent_debt=} {ax1._idearoot._kids_total_weight=}")
     assert (
         abs(ax1r_bl.get(fam_text)._agent_credit - ax2r_bl.get(fam_text)._agent_credit)
         < 0.0001
@@ -362,29 +362,29 @@ def test_agent_meld_worksCorrectlyForLargeExample():
     #     if groupline.name != fam_text:
     #         assert groupline == ax2r_bl.get(groupline.name)
     assert ax1r_bl == ax2r_bl
-    # assert ax1._toolroot._grouplines == ax2._toolroot._grouplines
-    # assert ax1._toolroot == ax2._toolroot
+    # assert ax1._idearoot._grouplines == ax2._idearoot._grouplines
+    # assert ax1._idearoot == ax2._idearoot
 
 
 def test_agent_meld_make_meldable():
     # GIVEN
     src = "Yahoo"
     ax1 = AgentUnit(_desc=src)
-    ax1._toolroot._uid = 1
+    ax1._idearoot._uid = 1
 
     ax2 = agent_v001()
-    assert ax2._toolroot._desc != ax1._toolroot._desc
+    assert ax2._idearoot._desc != ax1._idearoot._desc
     with pytest_raises(Exception) as excinfo:
         assert ax2.meld(other_agent=ax1)
     assert (
         str(excinfo.value)
-        == f"Meld fail toolroot _desc '{ax2._desc}' not the same as '{ax1._desc}'"
+        == f"Meld fail idearoot _desc '{ax2._desc}' not the same as '{ax1._desc}'"
     )
 
     # WHEN
     assert ax2._weight == 1
     ax1.make_meldable(starting_digest_agent=ax2)
-    assert ax2._toolroot._desc == ax1._toolroot._desc
+    assert ax2._idearoot._desc == ax1._idearoot._desc
 
     # THEN
     assert ax2._weight == 1

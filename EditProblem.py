@@ -4,11 +4,11 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
 from PyQt5.QtWidgets import QTableWidgetItem as qti
-from EditToolUnit import EditToolUnit
+from EditIdeaUnit import EditIdeaUnit
 from EditMember import EditMember
 from src.pyqt5_kit.pyqt_func import lw_diplay, get_pyqttree, num2str
 from src.agent.group import groupunit_shop, grouplink_shop
-from src.agent.tool import ToolKid
+from src.agent.idea import IdeaKid
 from src.agent.road import Road, get_walk_from_road, get_terminus_node_from_road
 from sys import exit as sys_exit
 
@@ -39,7 +39,7 @@ from sys import exit as sys_exit
 class EditProblem(qtw.QWidget, Ui_Form):
     """The settings dialog window"""
 
-    refresh_toolunit_submitted = qtc.pyqtSignal(bool)
+    refresh_ideaunit_submitted = qtc.pyqtSignal(bool)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -47,7 +47,7 @@ class EditProblem(qtw.QWidget, Ui_Form):
         self.close_button.clicked.connect(self.close)
         self.quit_button.clicked.connect(sys_exit)
         self.refresh_button.clicked.connect(self.refresh_all)
-        self.basetoolunit.itemClicked.connect(self.open_edittoolunit)
+        self.baseideaunit.itemClicked.connect(self.open_editideaunit)
         self.add_group_button.clicked.connect(self.add_group)
         self.load_problem_button.clicked.connect(self.load_problem)
 
@@ -115,20 +115,20 @@ class EditProblem(qtw.QWidget, Ui_Form):
         return grouplinks_x_list
 
     def load_problem(self):
-        self.set_problem_dominate_action_tool(road=self.problem_name_text.text())
-        self.set_problem_dominate_action_tool(road=self.action1_text.text())
-        self.set_problem_dominate_action_tool(road=self.action2_text.text())
-        self.set_problem_dominate_action_tool(road=self.action3_text.text())
+        self.set_problem_dominate_action_idea(road=self.problem_name_text.text())
+        self.set_problem_dominate_action_idea(road=self.action1_text.text())
+        self.set_problem_dominate_action_idea(road=self.action2_text.text())
+        self.set_problem_dominate_action_idea(road=self.action3_text.text())
         self.refresh_all()
 
-    def set_problem_dominate_action_tool(self, road):
+    def set_problem_dominate_action_idea(self, road):
         if road != "":
             prob_walk = get_walk_from_road(road)
             prob_desc = get_terminus_node_from_road(road)
-            prob_tool = ToolKid(_desc=prob_desc, _walk=prob_walk)
+            prob_idea = IdeaKid(_desc=prob_desc, _walk=prob_walk)
             for grouplink_x in self.create_grouplinks_list():
-                prob_tool.set_grouplink(grouplink_x)
-            self.agent_x.set_dominate_promise_tool(tool_kid=prob_tool)
+                prob_idea.set_grouplink(grouplink_x)
+            self.agent_x.set_dominate_promise_idea(idea_kid=prob_idea)
 
     def add_group(self):
         if self.add_group_text not in (None, ""):
@@ -148,15 +148,15 @@ class EditProblem(qtw.QWidget, Ui_Form):
 
         if self.agent_x != None:
             self.refresh_agenda_list()
-            self.refresh_tool_tree()
+            self.refresh_idea_tree()
 
-            tool_road_list = self.agent_x.get_tool_tree_ordered_road_list()
-            tool_road_list.insert(0, "")
+            idea_road_list = self.agent_x.get_idea_tree_ordered_road_list()
+            idea_road_list.insert(0, "")
 
             self.problem_name_combo.clear()
-            self.problem_name_combo.addItems(tool_road_list)
+            self.problem_name_combo.addItems(idea_road_list)
             self.problem_context_combo.clear()
-            self.problem_context_combo.addItems(tool_road_list)
+            self.problem_context_combo.addItems(idea_road_list)
             self.group1_name_combo.clear()
             self.group2_name_combo.clear()
             self.group3_name_combo.clear()
@@ -166,9 +166,9 @@ class EditProblem(qtw.QWidget, Ui_Form):
             self.action1_combo.clear()
             self.action2_combo.clear()
             self.action3_combo.clear()
-            self.action1_combo.addItems(tool_road_list)
-            self.action2_combo.addItems(tool_road_list)
-            self.action3_combo.addItems(tool_road_list)
+            self.action1_combo.addItems(idea_road_list)
+            self.action2_combo.addItems(idea_road_list)
+            self.action3_combo.addItems(idea_road_list)
 
     def select_agenda_item(self):
         pass
@@ -256,11 +256,11 @@ class EditProblem(qtw.QWidget, Ui_Form):
             ]
         )
 
-    def open_edittoolunit(self):
-        self.EditToolunit = EditToolUnit()
-        self.EditToolunit.agent_x = self.agent_x
-        self.EditToolunit.refresh_tree()
-        self.EditToolunit.show()
+    def open_editideaunit(self):
+        self.EditIdeaunit = EditIdeaUnit()
+        self.EditIdeaunit.agent_x = self.agent_x
+        self.EditIdeaunit.refresh_tree()
+        self.EditIdeaunit.show()
 
     def open_edit_member(self):
         self.edit_member = EditMember()
@@ -268,10 +268,10 @@ class EditProblem(qtw.QWidget, Ui_Form):
         self.edit_member.refresh_all()
         self.edit_member.show()
 
-    def refresh_tool_tree(self):
-        tree_root = get_pyqttree(toolroot=self.agent_x._toolroot)
-        self.basetoolunit.clear()
-        self.basetoolunit.insertTopLevelItems(0, [tree_root])
+    def refresh_idea_tree(self):
+        tree_root = get_pyqttree(idearoot=self.agent_x._idearoot)
+        self.baseideaunit.clear()
+        self.baseideaunit.insertTopLevelItems(0, [tree_root])
 
         # expand to depth set by agent
         def yo_tree_setExpanded(root):
@@ -281,5 +281,5 @@ class EditProblem(qtw.QWidget, Ui_Form):
                 item.setExpanded(item.data(2, 20))
                 yo_tree_setExpanded(item)
 
-        root = self.basetoolunit.invisibleRootItem()
+        root = self.baseideaunit.invisibleRootItem()
         yo_tree_setExpanded(root)

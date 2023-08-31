@@ -46,37 +46,37 @@ def test_system_get_person_dest_agent_from_digest_agent_files_ReturnsCorrectAgen
     input_agent.make_meldable(person_x_obj.get_starting_digest_agent())
     # print(f"After meldable= {person_x_obj._src_agentlinks} ")
 
-    dest_agent_d_tool = dest_agent.get_tool_kid(road="A,C,D")
-    print(f" {dest_agent_d_tool._weight=} {len(input_agent._toolroot._kids)=} ")
+    dest_agent_d_idea = dest_agent.get_idea_kid(road="A,C,D")
+    print(f" {dest_agent_d_idea._weight=} {len(input_agent._idearoot._kids)=} ")
     assert dest_agent != None
-    assert len(input_agent._toolroot._kids) == 2
-    # tool_a = dest_agent.get_tool_kid(road="A")
-    # tool_b = dest_agent.get_tool_kid(road="B")
-    # for tool_kid_x1 in input_agent._toolroot._kids.values():
-    #     print(f"{tool_kid_x1._desc=}")
-    #     dest_agent_counterpart_x1 = dest_agent._toolroot._kids.get(tool_kid_x1._desc)
-    #     for tool_kid_x2 in tool_kid_x1._kids.values():
+    assert len(input_agent._idearoot._kids) == 2
+    # idea_a = dest_agent.get_idea_kid(road="A")
+    # idea_b = dest_agent.get_idea_kid(road="B")
+    # for idea_kid_x1 in input_agent._idearoot._kids.values():
+    #     print(f"{idea_kid_x1._desc=}")
+    #     dest_agent_counterpart_x1 = dest_agent._idearoot._kids.get(idea_kid_x1._desc)
+    #     for idea_kid_x2 in idea_kid_x1._kids.values():
     #         dest_agent_counterpart_x2 = dest_agent_counterpart_x1._kids.get(
-    #             tool_kid_x2._desc
+    #             idea_kid_x2._desc
     #         )
     #         print(
-    #             f"{tool_kid_x2._desc=} {tool_kid_x2._weight=} {dest_agent_counterpart_x2._weight=}"
+    #             f"{idea_kid_x2._desc=} {idea_kid_x2._weight=} {dest_agent_counterpart_x2._weight=}"
     #         )
-    #         # assert dest_agent_counterpart_x2 == tool_kid_x2
-    #         assert dest_agent_counterpart_x2._desc == tool_kid_x2._desc
+    #         # assert dest_agent_counterpart_x2 == idea_kid_x2
+    #         assert dest_agent_counterpart_x2._desc == idea_kid_x2._desc
 
     #     print(
-    #         f"{tool_kid_x1._desc=} {tool_kid_x1._weight=} {dest_agent_counterpart_x1._weight=}"
+    #         f"{idea_kid_x1._desc=} {idea_kid_x1._weight=} {dest_agent_counterpart_x1._weight=}"
     #     )
-    #     assert dest_agent_counterpart_x1._desc == tool_kid_x1._desc
-    # assert dest_agent._toolroot._kids == input_agent._toolroot._kids
-    assert dest_agent._toolroot._acptfactunits == {}
-    assert dest_agent._toolroot._acptfactunits == input_agent._toolroot._acptfactunits
+    #     assert dest_agent_counterpart_x1._desc == idea_kid_x1._desc
+    # assert dest_agent._idearoot._kids == input_agent._idearoot._kids
+    assert dest_agent._idearoot._acptfactunits == {}
+    assert dest_agent._idearoot._acptfactunits == input_agent._idearoot._acptfactunits
     assert dest_agent._members == {}
     assert dest_agent._members == input_agent._members
     assert dest_agent._groups == {}
     assert dest_agent._groups == input_agent._groups
-    assert dest_agent._toolroot == input_agent._toolroot
+    assert dest_agent._idearoot == input_agent._idearoot
 
 
 def test_system_get_person_dest_agent_from_digest_agent_files_ReturnsCorrectAgentObjScenario2(
@@ -108,33 +108,33 @@ def test_system_get_person_dest_agent_from_digest_agent_files_ReturnsCorrectAgen
     agent1.make_meldable(person_x_obj.get_starting_digest_agent())
     # print(f"After meldable= {person_x_obj._src_agentlinks} ")
 
-    dest_agent_d_tool = dest_agent.get_tool_kid(road="A,C,D")
-    print(f" {dest_agent_d_tool._weight=} ")
+    dest_agent_d_idea = dest_agent.get_idea_kid(road="A,C,D")
+    print(f" {dest_agent_d_idea._weight=} ")
     assert dest_agent != None
-    # for tool_kid_x1 in agent1._toolroot._kids.values():
-    #     dest_agent_counterpart_x1 = dest_agent._toolroot._kids.get(tool_kid_x1._desc)
-    #     for tool_kid_x2 in tool_kid_x1._kids.values():
+    # for idea_kid_x1 in agent1._idearoot._kids.values():
+    #     dest_agent_counterpart_x1 = dest_agent._idearoot._kids.get(idea_kid_x1._desc)
+    #     for idea_kid_x2 in idea_kid_x1._kids.values():
     #         dest_agent_counterpart_x2 = dest_agent_counterpart_x1._kids.get(
-    #             tool_kid_x2._desc
+    #             idea_kid_x2._desc
     #         )
     #         print(
-    #             f"{tool_kid_x2._desc=} {tool_kid_x2._weight=} {dest_agent_counterpart_x2._weight=}"
+    #             f"{idea_kid_x2._desc=} {idea_kid_x2._weight=} {dest_agent_counterpart_x2._weight=}"
     #         )
-    #         # assert dest_agent_counterpart_x2 == tool_kid_x2
-    #         assert dest_agent_counterpart_x2._desc == tool_kid_x2._desc
+    #         # assert dest_agent_counterpart_x2 == idea_kid_x2
+    #         assert dest_agent_counterpart_x2._desc == idea_kid_x2._desc
 
     #     print(
-    #         f"{tool_kid_x1._desc=} {tool_kid_x1._weight=} {dest_agent_counterpart_x1._weight=}"
+    #         f"{idea_kid_x1._desc=} {idea_kid_x1._weight=} {dest_agent_counterpart_x1._weight=}"
     #     )
-    #     assert dest_agent_counterpart_x1._desc == tool_kid_x1._desc
-    # assert dest_agent._toolroot._kids == agent1._toolroot._kids
-    assert len(dest_agent._toolroot._acptfactunits) == 9
-    assert len(dest_agent._toolroot._acptfactunits) == len(
-        agent2._toolroot._acptfactunits
+    #     assert dest_agent_counterpart_x1._desc == idea_kid_x1._desc
+    # assert dest_agent._idearoot._kids == agent1._idearoot._kids
+    assert len(dest_agent._idearoot._acptfactunits) == 9
+    assert len(dest_agent._idearoot._acptfactunits) == len(
+        agent2._idearoot._acptfactunits
     )
     assert len(dest_agent._members) == 22
     assert len(dest_agent._members) == len(agent2._members)
     assert len(dest_agent._groups) == 34
     assert len(dest_agent._groups) == len(agent2._groups)
-    assert dest_agent._toolroot != agent1._toolroot
-    assert dest_agent._toolroot != agent2._toolroot
+    assert dest_agent._idearoot != agent1._idearoot
+    assert dest_agent._idearoot != agent2._idearoot

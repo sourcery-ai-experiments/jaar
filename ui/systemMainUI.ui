@@ -562,7 +562,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="w_tools_table">
+   <widget class="QTableWidget" name="w_ideas_table">
     <property name="geometry">
      <rect>
       <x>600</x>
@@ -578,12 +578,12 @@
     </property>
     <column>
      <property name="text">
-      <string>Person Tools</string>
+      <string>Person Ideas</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Tool walk</string>
+      <string>Idea walk</string>
      </property>
     </column>
     <column>
