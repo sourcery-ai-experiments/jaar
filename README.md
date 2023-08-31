@@ -67,36 +67,36 @@ SystemUnit objects
 
 SystemUnit PersonUnit objects
 
-SystemUnit PersonUnit AgentLink objects
+SystemUnit PersonUnit CalendarLink objects
 
 SystemUnit Bank objects
 
 <!-- TODO: Add explanations -->
-AgentUnit objects
+CalendarUnit objects
 
-AgentUnit MemberUnit objects
+CalendarUnit MemberUnit objects
 
-AgentUnit GroupUnit objects
+CalendarUnit GroupUnit objects
 
-AgentUnit IdeaUnit objects
+CalendarUnit IdeaUnit objects
 
-AgentUnit IdeaUnit hierarchical structure
+CalendarUnit IdeaUnit hierarchical structure
 
-AgentUnit IdeaUnit GroupLink objects
+CalendarUnit IdeaUnit GroupLink objects
 
-AgentUnit IdeaUnit GroupLine objects
+CalendarUnit IdeaUnit GroupLine objects
 
-AgentUnit IdeaUnit GroupHeir objects
+CalendarUnit IdeaUnit GroupHeir objects
 
-AgentUnit IdeaUnit GroupHeir objects
+CalendarUnit IdeaUnit GroupHeir objects
 
-AgentUnit IdeaUnit RequiredFactUnit objects
+CalendarUnit IdeaUnit RequiredFactUnit objects
 
-AgentUnit IdeaUnit RequiredFactHeir objects
+CalendarUnit IdeaUnit RequiredFactHeir objects
 
-AgentUnit IdeaUnit AcptFactUnit objects
+CalendarUnit IdeaUnit AcptFactUnit objects
 
-AgentUnit IdeaUnit AcptFactHeir objects
+CalendarUnit IdeaUnit AcptFactHeir objects
 
 
 ## 1.3 Test-Driven-Development

@@ -149,4 +149,4 @@ src/system/examples/systems/ex5/
 src/system/examples/systems/ex6/
 src/system/examples/systems/river_env/
 src/system/test_system/sql_worksheet01.sql
-src/agent/examples/js_agent.json
+src/calendar/examples/js_calendar.json

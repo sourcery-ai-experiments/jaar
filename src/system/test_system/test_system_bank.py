@@ -1,9 +1,9 @@
 from src.system.system import SystemUnit
-from src.agent.agent import AgentUnit
-from src.agent.idea import IdeaKid
-from src.agent.group import groupunit_shop
-from src.agent.member import memberlink_shop
-from src.agent.x_func import delete_dir as x_func_delete_dir
+from src.calendar.calendar import CalendarUnit
+from src.calendar.idea import IdeaKid
+from src.calendar.group import groupunit_shop
+from src.calendar.member import memberlink_shop
+from src.calendar.x_func import delete_dir as x_func_delete_dir
 from os import path as os_path
 from src.system.examples.env_kit import (
     get_temp_env_name,
@@ -106,7 +106,7 @@ def test_system_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clean
     #     print(f" {table_x=} {row_count}. {table_name=}")
 
     curr_tables = {
-        0: "agentunits",
+        0: "calendarunits",
         1: "ledger",
         2: "river_tmember",
         3: "river_flow",
@@ -137,9 +137,9 @@ def test_system_refresh_bank_metrics_CorrectlyDeletesOldBankInMemory(
     bob_text = "bob"
     tom_text = "tom"
 
-    bob = AgentUnit(_desc=bob_text)
+    bob = CalendarUnit(_desc=bob_text)
     bob.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=bob)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob)
     e1.refresh_bank_metrics()
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 1
@@ -161,9 +161,9 @@ def test_system_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
     bob_text = "bob"
     tom_text = "tom"
 
-    bob = AgentUnit(_desc=bob_text)
+    bob = CalendarUnit(_desc=bob_text)
     bob.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=bob)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob)
     e1.refresh_bank_metrics()
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 1
@@ -187,29 +187,29 @@ def test_system_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     sal_text = "sal"
     elu_text = "elu"
 
-    bob = AgentUnit(_desc=bob_text)
+    bob = CalendarUnit(_desc=bob_text)
     bob.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
     bob.add_memberunit(name=sal_text, creditor_weight=1, debtor_weight=4)
     bob.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=bob)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob)
 
-    sal = AgentUnit(_desc=sal_text)
+    sal = CalendarUnit(_desc=sal_text)
     sal.add_memberunit(name=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
     sal.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=sal)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal)
 
-    tom = AgentUnit(_desc=tom_text)
+    tom = CalendarUnit(_desc=tom_text)
     tom.add_memberunit(name=bob_text, creditor_weight=3, debtor_weight=1)
     tom.add_memberunit(name=sal_text, creditor_weight=1, debtor_weight=4)
     tom.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=tom)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom)
 
-    elu = AgentUnit(_desc=elu_text)
+    elu = CalendarUnit(_desc=elu_text)
     elu.add_memberunit(name=bob_text, creditor_weight=3, debtor_weight=1)
     elu.add_memberunit(name=tom_text, creditor_weight=1, debtor_weight=4)
     elu.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=elu)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu)
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 0
@@ -221,7 +221,7 @@ def test_system_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 12
 
 
-def test_system_refresh_bank_metrics_CorrectlyPopulatesAgentTable01(
+def test_system_refresh_bank_metrics_CorrectlyPopulatesCalendarTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
@@ -233,22 +233,22 @@ def test_system_refresh_bank_metrics_CorrectlyPopulatesAgentTable01(
     sal_text = "sal"
     elu_text = "elu"
 
-    e1.save_agentunit_obj_to_agents_dir(agent_x=AgentUnit(_desc=bob_text))
-    e1.save_agentunit_obj_to_agents_dir(agent_x=AgentUnit(_desc=tom_text))
-    e1.save_agentunit_obj_to_agents_dir(agent_x=AgentUnit(_desc=sal_text))
-    e1.save_agentunit_obj_to_agents_dir(agent_x=AgentUnit(_desc=elu_text))
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_desc=bob_text))
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_desc=tom_text))
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_desc=sal_text))
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_desc=elu_text))
 
-    sqlstr_count_agents = get_table_count_sqlstr("agentunits")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_agents) == 0
+    sqlstr_count_calendars = get_table_count_sqlstr("calendarunits")
+    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_calendars) == 0
 
     # WHEN
     e1.refresh_bank_metrics()
 
     # THEN
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_agents) == 4
+    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_calendars) == 4
 
 
-def test_system_refresh_bank_metrics_CorrectlyPopulatesAgentTable01(
+def test_system_refresh_bank_metrics_CorrectlyPopulatesCalendarTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
@@ -260,19 +260,19 @@ def test_system_refresh_bank_metrics_CorrectlyPopulatesAgentTable01(
     sal_text = "sal"
     elu_text = "elu"
 
-    e1.save_agentunit_obj_to_agents_dir(agent_x=AgentUnit(_desc=bob_text))
-    e1.save_agentunit_obj_to_agents_dir(agent_x=AgentUnit(_desc=tom_text))
-    e1.save_agentunit_obj_to_agents_dir(agent_x=AgentUnit(_desc=sal_text))
-    e1.save_agentunit_obj_to_agents_dir(agent_x=AgentUnit(_desc=elu_text))
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_desc=bob_text))
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_desc=tom_text))
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_desc=sal_text))
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_desc=elu_text))
 
-    sqlstr_count_agents = get_table_count_sqlstr("agentunits")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_agents) == 0
+    sqlstr_count_calendars = get_table_count_sqlstr("calendarunits")
+    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_calendars) == 0
 
     # WHEN
     e1.refresh_bank_metrics()
 
     # THEN
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_agents) == 4
+    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_calendars) == 4
 
 
 def test_system_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
@@ -285,13 +285,13 @@ def test_system_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     bob_text = "bob"
     tom_text = "tom"
     elu_text = "elu"
-    bob_agent = AgentUnit(_desc=bob_text)
-    tom_agent = AgentUnit(_desc=tom_text)
-    bob_agent.add_memberunit(name=tom_text)
-    tom_agent.add_memberunit(name=bob_text)
-    tom_agent.add_memberunit(name=elu_text)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=tom_agent)
+    bob_calendar = CalendarUnit(_desc=bob_text)
+    tom_calendar = CalendarUnit(_desc=tom_text)
+    bob_calendar.add_memberunit(name=tom_text)
+    tom_calendar.add_memberunit(name=bob_text)
+    tom_calendar.add_memberunit(name=elu_text)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom_calendar)
 
     sqlstr = get_table_count_sqlstr("groupunit_catalog")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr) == 0
@@ -303,14 +303,14 @@ def test_system_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     assert get_single_result_back(e1.get_bank_conn(), sqlstr) == 3
 
 
-def test_system_set_agent_attr_defined_by_system_CorrectlyPopulatesAgent_Groupunit_Memberlinks(
+def test_system_set_calendar_attr_defined_by_system_CorrectlyPopulatesCalendar_Groupunit_Memberlinks(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
 
-    # create 4 agents, 1 with group "swimming expert" linked to 1 member
+    # create 4 calendars, 1 with group "swimming expert" linked to 1 member
     # two others have idea "src,sports,swimming"
     # run set_bank_metrics
     # assert
@@ -325,46 +325,46 @@ def test_system_set_agent_attr_defined_by_system_CorrectlyPopulatesAgent_Groupun
     tom_text = "tom"
     ava_text = "ava"
 
-    sal_agent = AgentUnit(_desc=sal_text)
-    bob_agent = AgentUnit(_desc=bob_text)
-    tom_agent = AgentUnit(_desc=tom_text)
-    ava_agent = AgentUnit(_desc=ava_text)
+    sal_calendar = CalendarUnit(_desc=sal_text)
+    bob_calendar = CalendarUnit(_desc=bob_text)
+    tom_calendar = CalendarUnit(_desc=tom_text)
+    ava_calendar = CalendarUnit(_desc=ava_text)
 
     swim_text = "swimming"
     sports_text = "sports"
-    sal_sports_road = f"{sal_agent._desc},{sports_text}"
-    bob_sports_road = f"{bob_agent._desc},{sports_text}"
-    tom_sports_road = f"{tom_agent._desc},{sports_text}"
+    sal_sports_road = f"{sal_calendar._desc},{sports_text}"
+    bob_sports_road = f"{bob_calendar._desc},{sports_text}"
+    tom_sports_road = f"{tom_calendar._desc},{sports_text}"
 
-    sal_agent.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=sal_sports_road)
-    bob_agent.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=bob_sports_road)
-    tom_agent.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=tom_sports_road)
+    sal_calendar.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=sal_sports_road)
+    bob_calendar.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=bob_sports_road)
+    tom_calendar.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=tom_sports_road)
 
-    sal_agent.add_memberunit(name=bob_text, creditor_weight=2, debtor_weight=2)
+    sal_calendar.add_memberunit(name=bob_text, creditor_weight=2, debtor_weight=2)
 
     swim_group_text = "swimming expert"
     swim_group_unit = groupunit_shop(name=swim_group_text)
     bob_link = memberlink_shop(name=bob_text)
     swim_group_unit.set_memberlink(memberlink=bob_link)
-    sal_agent.set_groupunit(groupunit=swim_group_unit)
+    sal_calendar.set_groupunit(groupunit=swim_group_unit)
 
-    e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=tom_agent)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=ava_agent)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom_calendar)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ava_calendar)
 
-    e1.set_agent_attr_defined_by_system(agent_name=sal_text)
-    e1_sal_agent = e1.get_agent_from_agents_dir(_desc=sal_text)
-    assert len(e1_sal_agent._groups.get(swim_group_text)._members) == 1
+    e1.set_calendar_attr_defined_by_system(calendar_name=sal_text)
+    e1_sal_calendar = e1.get_calendar_from_calendars_dir(_desc=sal_text)
+    assert len(e1_sal_calendar._groups.get(swim_group_text)._members) == 1
 
     # WHEN
     # change groupunit "swimming expert" _memberlinks_set_by_system_road ==  "root_desc,sports,swimmer"
     sal_swim_road = f"{sal_sports_road},{swim_text}"
     swim_group_unit.set_attr(_memberlinks_set_by_system_road=sal_swim_road)
-    sal_agent.set_groupunit(groupunit=swim_group_unit)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
-    e1.set_agent_attr_defined_by_system(agent_name=sal_text)
+    sal_calendar.set_groupunit(groupunit=swim_group_unit)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
+    e1.set_calendar_attr_defined_by_system(calendar_name=sal_text)
 
     # THEN
-    e1_sal_agent = e1.get_agent_from_agents_dir(_desc=sal_text)
-    assert len(e1_sal_agent._groups.get(swim_group_text)._members) == 2
+    e1_sal_calendar = e1.get_calendar_from_calendars_dir(_desc=sal_text)
+    assert len(e1_sal_calendar._groups.get(swim_group_text)._members) == 2

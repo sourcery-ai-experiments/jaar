@@ -5,9 +5,9 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from EditMember2bd import EditMember2bd
 from src.pyqt5_kit.pyqt_func import lw_diplay
-from src.agent.agent import AgentUnit
-from src.agent.group import groupunit_shop
-from src.agent.member import memberlink_shop
+from src.calendar.calendar import CalendarUnit
+from src.calendar.group import groupunit_shop
+from src.calendar.member import memberlink_shop
 
 
 class EditMember(qtw.QTableWidget, Ui_Form):
@@ -37,7 +37,7 @@ class EditMember(qtw.QTableWidget, Ui_Form):
 
     def member_select(self):
         member_name = self.member_table.item(self.member_table.currentRow(), 0).text()
-        self.memberunit_x = self.agent_x._members.get(member_name)
+        self.memberunit_x = self.calendar_x._members.get(member_name)
         self.member_name.setText(self.memberunit_x.name)
         self.refresh_groups()
 
@@ -45,14 +45,14 @@ class EditMember(qtw.QTableWidget, Ui_Form):
         group_name = self.groups_in_table.item(
             self.groups_in_table.currentRow(), 0
         ).text()
-        self.groupunit_x = self.agent_x._groups.get(group_name)
+        self.groupunit_x = self.calendar_x._groups.get(group_name)
         self.group_name.setText(self.groupunit_x.name)
 
     def groups_out_select(self):
         group_name = self.groups_out_table.item(
             self.groups_out_table.currentRow(), 0
         ).text()
-        self.groupunit_x = self.agent_x._groups.get(group_name)
+        self.groupunit_x = self.calendar_x._groups.get(group_name)
         self.group_name.setText(self.groupunit_x.name)
 
     def member_group_set(self):
@@ -70,7 +70,7 @@ class EditMember(qtw.QTableWidget, Ui_Form):
         single_group = ""
         groups_count = 0
         group_memberlinks = []
-        for group in self.agent_x._groups.values():
+        for group in self.calendar_x._groups.values():
             for memberlink in group._members.values():
                 if memberlink.name == member_name and group.name != memberlink.name:
                     groups_count += 1
@@ -88,16 +88,16 @@ class EditMember(qtw.QTableWidget, Ui_Form):
         self.member_table.setColumnWidth(3, 60)
         self.member_table.setColumnWidth(4, 40)
         self.member_table.setHorizontalHeaderLabels(
-            ["Member", "Group", "Group Count", "AGENT_Importance", "Weight"]
+            ["Member", "Group", "Group Count", "CALENDAR_Importance", "Weight"]
         )
         self.member_table.setRowCount(0)
 
-        members_list = list(self.agent_x._members.values())
+        members_list = list(self.calendar_x._members.values())
         members_list.sort(key=lambda x: x.name, reverse=False)
 
         for row, member in enumerate(members_list, start=1):
             # groups_count = 0
-            # for group in self.agent_x._groups.values():
+            # for group in self.calendar_x._groups.values():
             #     for memberlink in group._members.values():
             #         if memberlink.name == member.name:
             #             groups_count += 1
@@ -108,12 +108,14 @@ class EditMember(qtw.QTableWidget, Ui_Form):
 
             self.member_table.setRowCount(row)
             self.member_table.setItem(row - 1, 0, qtw.QTableWidgetItem(member.name))
-            qt_agent_credit = qtw.QTableWidgetItem(lw_diplay(member._agent_credit))
-            qt_agent_debt = qtw.QTableWidgetItem(lw_diplay(member._agent_debt))
+            qt_calendar_credit = qtw.QTableWidgetItem(
+                lw_diplay(member._calendar_credit)
+            )
+            qt_calendar_debt = qtw.QTableWidgetItem(lw_diplay(member._calendar_debt))
             self.member_table.setItem(row - 1, 1, qtw.QTableWidgetItem(single_group))
             self.member_table.setItem(row - 1, 2, qtw.QTableWidgetItem("#"))
-            self.member_table.setItem(row - 1, 3, qt_agent_credit)
-            # self.member_table.setItem(row - 1, 3, qt_agent_debt)
+            self.member_table.setItem(row - 1, 3, qt_calendar_credit)
+            # self.member_table.setItem(row - 1, 3, qt_calendar_debt)
             self.member_table.setItem(
                 row - 1, 4, qtw.QTableWidgetItem(f"{member.creditor_weight}")
             )
@@ -139,7 +141,7 @@ class EditMember(qtw.QTableWidget, Ui_Form):
 
         groups_in_list = [
             groupunit
-            for groupunit in self.agent_x._groups.values()
+            for groupunit in self.calendar_x._groups.values()
             if (
                 self.memberunit_x != None
                 and self.member_in_group(
@@ -172,7 +174,7 @@ class EditMember(qtw.QTableWidget, Ui_Form):
 
         groups_out_list = [
             groupunit
-            for groupunit in self.agent_x._groups.values()
+            for groupunit in self.calendar_x._groups.values()
             if (
                 self.memberunit_x != None
                 and groupunit._members.get(groupunit.name) is None
@@ -208,7 +210,7 @@ class EditMember(qtw.QTableWidget, Ui_Form):
 
         groups_stand_list = [
             groupunit
-            for groupunit in self.agent_x._groups.values()
+            for groupunit in self.calendar_x._groups.values()
             if self.memberunit_x != None
             and (
                 groupunit._members.get(groupunit.name) != None
@@ -239,17 +241,17 @@ class EditMember(qtw.QTableWidget, Ui_Form):
         self.refresh_groups_stan_table()
 
     def member_insert(self):
-        self.agent_x.add_memberunit(name=self.member_name.text())
+        self.calendar_x.add_memberunit(name=self.member_name.text())
         self.refresh_all()
 
     def member_delete(self):
-        self.agent_x.del_memberunit(name=self.member_name.text())
+        self.calendar_x.del_memberunit(name=self.member_name.text())
         self.member_name.setText("")
         self.memberunit_x = None
         self.refresh_all()
 
     def member_update(self):
-        self.agent_x.edit_memberunit_name(
+        self.calendar_x.edit_memberunit_name(
             old_name=self.member_table.item(self.member_table.currentRow(), 0).text(),
             new_name=self.member_name.text(),
             allow_member_overwite=True,
@@ -260,17 +262,17 @@ class EditMember(qtw.QTableWidget, Ui_Form):
 
     def group_insert(self):
         bu = groupunit_shop(name=self.group_name.text())
-        self.agent_x.set_groupunit(groupunit=bu)
+        self.calendar_x.set_groupunit(groupunit=bu)
         self.refresh_groups()
 
     def group_delete(self):
-        self.agent_x.del_groupunit(groupname=self.group_name.text())
+        self.calendar_x.del_groupunit(groupname=self.group_name.text())
         self.group_name.setText("")
         self.refresh_groups()
 
     def group_update(self):
         if self.group_name != None:
-            self.agent_x.edit_groupunit_name(
+            self.calendar_x.edit_groupunit_name(
                 old_name=self.groups_in_table.item(
                     self.groups_in_table.currentRow(), 0
                 ).text(),

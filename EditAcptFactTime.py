@@ -60,20 +60,20 @@ class EditAcptFactTime(qtw.QTableWidget, Ui_Form):
             minute=int(nigh_minute),
         )
 
-        self.agent_x.set_time_acptfacts(open=open_dt_x, nigh=nigh_dt_x)
+        self.calendar_x.set_time_acptfacts(open=open_dt_x, nigh=nigh_dt_x)
         self.root_changes_submitted.emit(True)
         self.close()
 
     def display_acptfact_time(self):
-        # minutes_idea = self.agent_x.get_idea_kid(
-        #     road=f"{self.agent_x._desc},time,jajatime"
+        # minutes_idea = self.calendar_x.get_idea_kid(
+        #     road=f"{self.calendar_x._desc},time,jajatime"
         # )
-        minutes_acptfact = self.agent_x._idearoot._acptfactunits[
-            f"{self.agent_x._desc},time,jajatime"
+        minutes_acptfact = self.calendar_x._idearoot._acptfactunits[
+            f"{self.calendar_x._desc},time,jajatime"
         ]
 
-        dt_open = self.agent_x.get_time_dt_from_min(min=minutes_acptfact.open)
-        dt_nigh = self.agent_x.get_time_dt_from_min(min=minutes_acptfact.nigh)
+        dt_open = self.calendar_x.get_time_dt_from_min(min=minutes_acptfact.open)
+        dt_nigh = self.calendar_x.get_time_dt_from_min(min=minutes_acptfact.nigh)
 
         self.curr_hour.setCurrentIndex(self.curr_hour.findText(str(dt_nigh.hour)))
         self.curr_min.setCurrentIndex(self.curr_min.findText(str(dt_nigh.minute)))

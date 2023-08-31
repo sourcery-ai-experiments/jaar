@@ -4,9 +4,9 @@ from ui.System5IssueUI import Ui_Form
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from src.pyqt5_kit.pyqt_func import lw_diplay
-from src.agent.agent import AgentUnit
-from src.agent.group import groupunit_shop
-from src.agent.member import memberlink_shop
+from src.calendar.calendar import CalendarUnit
+from src.calendar.group import groupunit_shop
+from src.calendar.member import memberlink_shop
 
 
 class Edit5Issue(qtw.QTableWidget, Ui_Form):

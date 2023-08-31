@@ -1,7 +1,7 @@
-from src.agent.agent import AgentUnit
-from src.agent.idea import IdeaCore
+from src.calendar.calendar import CalendarUnit
+from src.calendar.idea import IdeaCore
 from PyQt5.QtWidgets import QTreeWidgetItem
-from src.agent.road import get_terminus_node_from_road
+from src.calendar.road import get_terminus_node_from_road
 from dataclasses import dataclass
 
 
@@ -27,7 +27,7 @@ class PYQTTreeHolder:
     required_view_name: str
     acptfactheir_view_flag: str
     root_percent_flag: str
-    src_agent: str
+    src_calendar: str
 
 
 def get_pyqttree(
@@ -47,7 +47,7 @@ def get_pyqttree(
     required_view_flag: bool = None,
     required_view_name: bool = None,
     acptfactheir_view_flag: bool = None,
-    src_agent: AgentUnit = None,
+    src_calendar: CalendarUnit = None,
 ) -> QTreeWidgetItem:
     pyqttree_holder = PYQTTreeHolder(
         ideacore=idearoot,
@@ -66,7 +66,7 @@ def get_pyqttree(
         required_view_name=required_view_name,
         acptfactheir_view_flag=acptfactheir_view_flag,
         root_percent_flag=root_percent_flag,
-        src_agent=src_agent,
+        src_calendar=src_calendar,
     )
 
     return _create_node(pth=pyqttree_holder)
@@ -96,7 +96,7 @@ def _create_node(pth: PYQTTreeHolder) -> QTreeWidgetItem:
     # print(f"{len(sorted_ideas_list)=}")
 
     for kid_idea in sort_ideas_list:
-        # for kid_idea in sort_ideas_list.sort(key=lambda x: x._agent_importance, reverse=True):
+        # for kid_idea in sort_ideas_list.sort(key=lambda x: x._calendar_importance, reverse=True):
         child_pth = PYQTTreeHolder(
             ideacore=kid_idea,
             yo_action_flag=pth.yo_action_flag,
@@ -114,7 +114,7 @@ def _create_node(pth: PYQTTreeHolder) -> QTreeWidgetItem:
             required_view_name=pth.required_view_name,
             acptfactheir_view_flag=pth.acptfactheir_view_flag,
             root_percent_flag=pth.root_percent_flag,
-            src_agent=pth.src_agent,
+            src_calendar=pth.src_calendar,
         )
         item.addChild(_create_node(child_pth))
     return item
@@ -141,34 +141,34 @@ def emptystring_returns_none(str_x: str) -> str:
     return None if not str_x else str_x
 
 
-def lw_diplay(agent_importance: float):
-    if agent_importance is None:
+def lw_diplay(calendar_importance: float):
+    if calendar_importance is None:
         return "None"
-    if str(type(agent_importance)) == "<class 'set'>":
-        return f"ERROR {agent_importance} {type(agent_importance)=}"
-    agent_importance *= 100
-    if agent_importance == 1:
+    if str(type(calendar_importance)) == "<class 'set'>":
+        return f"ERROR {calendar_importance} {type(calendar_importance)=}"
+    calendar_importance *= 100
+    if calendar_importance == 1:
         return "100%"
-    elif agent_importance >= 10:
-        return f"{agent_importance:.1f}%"
-    elif agent_importance >= 1:
-        return f"{agent_importance:.2f}%"
-    elif agent_importance >= 0.1:
-        return f"{agent_importance:.3f}%"
-    elif agent_importance >= 0.01:
-        return f"{agent_importance:.4f}%"
-    elif agent_importance >= 0.001:
-        return f"{agent_importance:.5f}%"
-    elif agent_importance >= 0.0001:
-        return f"{agent_importance:.6f}%"
-    elif agent_importance >= 0.00001:
-        return f"{agent_importance:.7f}%"
-    elif agent_importance >= 0.000001:
-        return f"{agent_importance:.8f}%"
-    elif agent_importance == 0:
+    elif calendar_importance >= 10:
+        return f"{calendar_importance:.1f}%"
+    elif calendar_importance >= 1:
+        return f"{calendar_importance:.2f}%"
+    elif calendar_importance >= 0.1:
+        return f"{calendar_importance:.3f}%"
+    elif calendar_importance >= 0.01:
+        return f"{calendar_importance:.4f}%"
+    elif calendar_importance >= 0.001:
+        return f"{calendar_importance:.5f}%"
+    elif calendar_importance >= 0.0001:
+        return f"{calendar_importance:.6f}%"
+    elif calendar_importance >= 0.00001:
+        return f"{calendar_importance:.7f}%"
+    elif calendar_importance >= 0.000001:
+        return f"{calendar_importance:.8f}%"
+    elif calendar_importance == 0:
         return "0%"
     else:
-        return f"{agent_importance:.15f}%"
+        return f"{calendar_importance:.15f}%"
 
 
 def _get_treenode_label_required_count(treenode_label, pth: PYQTTreeHolder) -> str:
@@ -198,16 +198,16 @@ def _get_treenode_label_required_view(treenode_label, pth: PYQTTreeHolder) -> st
 def _get_treenode_label_acptfactheir_view(treenode_label, pth: PYQTTreeHolder) -> str:
     acptfactheir = pth.ideacore._acptfactheirs.get(pth.required_view_name)
     if acptfactheir != None:
-        time_road = f"{pth.src_agent._idearoot._desc},time,jajatime"
+        time_road = f"{pth.src_calendar._idearoot._desc},time,jajatime"
         if (
             acptfactheir.base == time_road
             and acptfactheir.open != None
             and acptfactheir.nigh != None
         ):
-            hc_open_str = pth.src_agent.get_jajatime_readable_one_time_event(
+            hc_open_str = pth.src_calendar.get_jajatime_readable_one_time_event(
                 jajatime_min=acptfactheir.open
             )
-            hc_nigh_str = pth.src_agent.get_jajatime_readable_one_time_event(
+            hc_nigh_str = pth.src_calendar.get_jajatime_readable_one_time_event(
                 jajatime_min=acptfactheir.nigh
             )
             # treenode_label += f"{get_terminus_node_from_road(acptfactheir.base)}"
@@ -225,7 +225,7 @@ def _create_treenode_label(pth: PYQTTreeHolder):
     treenode_label = pth.ideacore._desc
 
     if pth.root_percent_flag:
-        treenode_label += f" ({lw_diplay(pth.ideacore._agent_importance)})"
+        treenode_label += f" ({lw_diplay(pth.ideacore._calendar_importance)})"
     elif pth.yo2bd_count_flag:
         treenode_label += f" ({len(pth.ideacore._grouplinks)})"
     elif pth.required_count_flag:
@@ -243,19 +243,19 @@ def _create_treenode_label(pth: PYQTTreeHolder):
 
     if pth.requiredheir_count_flag and pth.ideacore._walk not in (None, ""):
         # requiredunit_count = sum(
-        #     str(type(requiredheir)) == "<class 'src.agent.required.RequiredUnit'>"
+        #     str(type(requiredheir)) == "<class 'src.calendar.required.RequiredUnit'>"
         #     for requiredheir in pth.ideacore._requiredheirs.values()
         # )
         treenode_label += f" (RequiredHeirs {len(pth.ideacore._requiredheirs)})"
 
     if pth.yo_acptfactunit_time_flag:
-        time_road = f"{pth.src_agent._idearoot._desc},time,jajatime"
+        time_road = f"{pth.src_calendar._idearoot._desc},time,jajatime"
         acptfactunit_time_obj = pth.ideacore._acptfactunits.get(time_road)
         if acptfactunit_time_obj != None:
-            hc_open_str = pth.src_agent.get_jajatime_readable_one_time_event(
+            hc_open_str = pth.src_calendar.get_jajatime_readable_one_time_event(
                 jajatime_min=acptfactunit_time_obj.open
             )
-            hc_nigh_str = pth.src_agent.get_jajatime_readable_one_time_event(
+            hc_nigh_str = pth.src_calendar.get_jajatime_readable_one_time_event(
                 jajatime_min=acptfactunit_time_obj.nigh
             )
             # treenode_label += f" ({acptfactunit.base=} {acptfactunit.open}-{acptfactunit.nigh})"

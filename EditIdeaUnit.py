@@ -1,13 +1,13 @@
 # command to for converting ui form to python file: pyuic5 ui\EditIdeaUnitUI.ui -o ui\EditIdeaUnitUI.py
 import sys
-from src.agent.idea import IdeaKid, IdeaAttrHolder
+from src.calendar.idea import IdeaKid, IdeaAttrHolder
 from ui.EditIdeaUnitUI import Ui_Form
 from PyQt5 import QtWidgets as qtw, QtCore
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1, QTableWidget as qtw0
-from src.agent.hreg_time import SuffFactUnitHregTime
-from src.agent.group import GroupLink, GroupName
-from src.agent.required import Road
-from src.agent.hreg_time import get_24hr, get_60min
+from src.calendar.hreg_time import SuffFactUnitHregTime
+from src.calendar.group import GroupLink, GroupName
+from src.calendar.required import Road
+from src.calendar.hreg_time import get_24hr, get_60min
 from src.pyqt5_kit.pyqt_func import (
     num2str,
     bool_val,
@@ -79,7 +79,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.sufffactunit_hreg_update_weeks
         )
         self.button_hreg_base.clicked.connect(self.set_base_to_hregtime)
-        self.create_hreg_button.clicked.connect(self.add_hreg_to_agent)
+        self.create_hreg_button.clicked.connect(self.add_hreg_to_calendar)
         self.button_view_requiredheirs.clicked.connect(self.toogle_requiredheir_tables)
         self.requiredheir_table_hidden = True
 
@@ -92,10 +92,10 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.requiredheir_table.setHidden(self.requiredheir_table_hidden)
 
     def set_base_to_hregtime(self):
-        self.required_base_combo.setCurrentText("Myagent,time,jajatime")
+        self.required_base_combo.setCurrentText("Mycalendar,time,jajatime")
 
-    def add_hreg_to_agent(self):
-        self.agent_x.set_time_hreg_ideas(c400_count=7)
+    def add_hreg_to_calendar(self):
+        self.calendar_x.set_time_hreg_ideas(c400_count=7)
         self.refresh_tree()
 
     def yo_tree_item_setHidden(self, setHiddenBool):
@@ -229,7 +229,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.yo_begin.setText(num2str(self.yo_x._begin))
         self.yo_special_road.clear()
         self.yo_numeric_road.clear()
-        if f"{type(self.yo_x)}" != "<class 'lw.agent.AgentUnit'>":
+        if f"{type(self.yo_x)}" != "<class 'lw.calendar.CalendarUnit'>":
             self.populate_idea_kid_actions()
         self.yo_close.setText(num2str(self.yo_x._close))
         self.yo_action_cb.setChecked(self.yo_x.promise)
@@ -243,14 +243,14 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.idea2group_table_load()
         self.idea2group_insert_combo_load()
         if self.combo_dim_root.currentText() == "":
-            self.combo_dim_root.addItems(list(self.agent_x.get_required_bases()))
+            self.combo_dim_root.addItems(list(self.calendar_x.get_required_bases()))
 
     def populate_idea_kid_actions(self):
         self.yo_addin.setText(num2str(self.yo_x._addin))
         self.yo_numor.setText(num2str(self.yo_x._numor))
         self.yo_denom.setText(num2str(self.yo_x._denom))
         self.yo_reest.setChecked(bool_val(self.yo_x._reest))
-        idea_road_list = self.agent_x.get_idea_tree_ordered_road_list()
+        idea_road_list = self.calendar_x.get_idea_tree_ordered_road_list()
         idea_road_list.append("")
         self.yo_special_road.addItems(idea_road_list)
         self.yo_special_road.setCurrentText(self.yo_x._special_road)
@@ -261,9 +261,9 @@ class EditIdeaUnit(qtw0, Ui_Form):
         idea_desc = self.baseideaunit.currentItem().data(2, 10)
         idea_walk = self.baseideaunit.currentItem().data(2, 11)
         if idea_walk not in ("", None):
-            self.yo_x = self.agent_x.get_idea_kid(road=f"{idea_walk},{idea_desc}")
+            self.yo_x = self.calendar_x.get_idea_kid(road=f"{idea_walk},{idea_desc}")
         else:
-            self.yo_x = self.agent_x._idearoot
+            self.yo_x = self.calendar_x._idearoot
         self.yo_tree_item_setHidden(setHiddenBool=False)
 
     def yo_tree_item_expanded(self):
@@ -275,26 +275,29 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.required_base_combo.clear()
         self.required_base_combo.addItems([""])
         self.required_base_combo.addItems(
-            self.agent_x.get_idea_tree_ordered_road_list()
+            self.calendar_x.get_idea_tree_ordered_road_list()
         )
 
     def required_sufffact_combo_load(self):
         self.required_sufffact_combo.clear()
         self.required_sufffact_combo.addItems([""])
         self.required_sufffact_combo.addItems(
-            self.agent_x.get_heir_road_list(
+            self.calendar_x.get_heir_road_list(
                 src_road=self.required_base_combo.currentText()
             )
         )
 
     def required_sufffact_xxxx_combo_load(self):
         filtered_list = []
-        if self.required_sufffact_combo.currentText() not in [self.agent_x._desc, ""]:
-            sufffact_idea = self.agent_x.get_idea_kid(
+        if self.required_sufffact_combo.currentText() not in [
+            self.calendar_x._desc,
+            "",
+        ]:
+            sufffact_idea = self.calendar_x.get_idea_kid(
                 road=self.required_sufffact_combo.currentText()
             )
             if sufffact_idea._special_road != None:
-                filtered_list = self.agent_x.get_heir_road_list(
+                filtered_list = self.calendar_x.get_heir_road_list(
                     sufffact_idea._special_road
                 )
         self.required_sufffact_open_combo.clear()
@@ -313,13 +316,13 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.required_sufffact_divisor.setText("")
 
         if self.required_sufffact_open_combo.currentText() not in [
-            self.agent_x._desc,
+            self.calendar_x._desc,
             "",
         ]:
             self.required_sufffact_open_combo_sel_actions()
 
     def required_sufffact_open_combo_sel_actions(self):
-        open_idea_x = self.agent_x.get_idea_kid(
+        open_idea_x = self.calendar_x.get_idea_kid(
             road=self.required_sufffact_open_combo.currentText()
         )
         if open_idea_x._begin != None:
@@ -337,16 +340,16 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
     def numeric_road_combo_select(self):
         if self.required_sufffact_open_combo.currentText() not in [
-            self.agent_x._desc,
+            self.calendar_x._desc,
             "",
         ]:
-            open_idea_x = self.agent_x.get_idea_kid(
+            open_idea_x = self.calendar_x.get_idea_kid(
                 road=self.required_sufffact_open_combo.currentText()
             )
-            # nigh_idea_x = self.agent_x.get_idea_kid(
+            # nigh_idea_x = self.calendar_x.get_idea_kid(
             #     road=self.required_sufffact_nigh_combo.currentText()
             # )
-            # divisor_idea_x = self.agent_x.get_idea_kid(
+            # divisor_idea_x = self.calendar_x.get_idea_kid(
             #     road=self.required_sufffact_divisor_combo.currentText()
             # )
             # if open_idea_x._begin != None:
@@ -358,12 +361,12 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if (
             self.required_sufffact_open_combo.currentText()
             not in [
-                self.agent_x._desc,
+                self.calendar_x._desc,
                 "",
             ]
             and self.required_sufffact_open.toPlainText() != ""
         ):
-            open_idea_x = self.agent_x.get_idea_kid(
+            open_idea_x = self.calendar_x.get_idea_kid(
                 road=self.required_sufffact_open_combo.currentText()
             )
             open_int = str2float(self.required_sufffact_open.toPlainText())
@@ -378,12 +381,12 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if (
             self.required_sufffact_nigh_combo.currentText()
             not in [
-                self.agent_x._desc,
+                self.calendar_x._desc,
                 "",
             ]
             and self.required_sufffact_nigh.toPlainText() != ""
         ):
-            nigh_idea_x = self.agent_x.get_idea_kid(
+            nigh_idea_x = self.calendar_x.get_idea_kid(
                 road=self.required_sufffact_nigh_combo.currentText()
             )
             nigh_int = int(self.required_sufffact_nigh.toPlainText())
@@ -398,12 +401,12 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if (
             self.required_sufffact_divisor_combo.currentText()
             not in [
-                self.agent_x._desc,
+                self.calendar_x._desc,
                 "",
             ]
             and self.required_sufffact_divisor.toPlainText() != ""
         ):
-            divisor_idea_x = self.agent_x.get_idea_kid(
+            divisor_idea_x = self.calendar_x.get_idea_kid(
                 road=self.required_sufffact_divisor_combo.currentText()
             )
             divisor_int = int(self.required_sufffact_divisor.toPlainText())
@@ -419,10 +422,10 @@ class EditIdeaUnit(qtw0, Ui_Form):
     def required_sufffact_nigh_combo_select(self):
         self.required_sufffact_nigh.setText("")
         if self.required_sufffact_nigh_combo.currentText() not in [
-            self.agent_x._desc,
+            self.calendar_x._desc,
             "",
         ]:
-            nigh_idea_x = self.agent_x.get_idea_kid(
+            nigh_idea_x = self.calendar_x.get_idea_kid(
                 road=self.required_sufffact_nigh_combo.currentText()
             )
             if nigh_idea_x._close != None:
@@ -431,10 +434,10 @@ class EditIdeaUnit(qtw0, Ui_Form):
     def required_sufffact_divisor_combo_select(self):
         self.required_sufffact_divisor.setText("")
         if self.required_sufffact_divisor_combo.currentText() not in [
-            self.agent_x._desc,
+            self.calendar_x._desc,
             "",
         ]:
-            divisor_idea_x = self.agent_x.get_idea_kid(
+            divisor_idea_x = self.calendar_x.get_idea_kid(
                 road=self.required_sufffact_divisor_combo.currentText()
             )
             if divisor_idea_x._denom != None:
@@ -446,15 +449,19 @@ class EditIdeaUnit(qtw0, Ui_Form):
         for required in self.yo_x._requiredunits.values():
             requiredheir = self.yo_x._requiredheirs.get(required.base)
             for sufffact in required.sufffacts.values():
-                required_text = required.base.replace(f"{self.agent_x._desc}", "")
+                required_text = required.base.replace(f"{self.calendar_x._desc}", "")
                 required_text = required_text[1:]
                 sufffact_text = sufffact.need.replace(required.base, "")
                 sufffact_text = sufffact_text[1:]
                 sufffact_open = sufffact.open
                 sufffact_nigh = sufffact.nigh
                 if required_text == "time,jajatime":
-                    sufffact_open = self.agent_x.get_jajatime_repeating_readable_text(
-                        open=sufffact.open, nigh=sufffact.nigh, divisor=sufffact.divisor
+                    sufffact_open = (
+                        self.calendar_x.get_jajatime_repeating_readable_text(
+                            open=sufffact.open,
+                            nigh=sufffact.nigh,
+                            divisor=sufffact.divisor,
+                        )
                     )
                     sufffact_nigh = ""
                     sufffact_text = f"{sufffact_open}"
@@ -528,7 +535,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         for requiredheir in self.yo_x._requiredheirs.values():
             for sufffact in requiredheir.sufffacts.values():
                 requiredheir_text = requiredheir.base.replace(
-                    f"{self.agent_x._desc}", ""
+                    f"{self.calendar_x._desc}", ""
                 )
                 requiredheir_text = requiredheir_text[1:]
                 sufffact_text = sufffact.need.replace(requiredheir.base, "")
@@ -536,8 +543,12 @@ class EditIdeaUnit(qtw0, Ui_Form):
                 sufffact_open = sufffact.open
                 sufffact_nigh = sufffact.nigh
                 if requiredheir_text == "time,jajatime":
-                    sufffact_open = self.agent_x.get_jajatime_repeating_readable_text(
-                        open=sufffact.open, nigh=sufffact.nigh, divisor=sufffact.divisor
+                    sufffact_open = (
+                        self.calendar_x.get_jajatime_repeating_readable_text(
+                            open=sufffact.open,
+                            nigh=sufffact.nigh,
+                            divisor=sufffact.divisor,
+                        )
                     )
                     sufffact_nigh = ""
                     sufffact_text = f"{sufffact_open}"
@@ -687,7 +698,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             divisor_x = str2float(self.required_sufffact_divisor.toPlainText())
             idea_desc = self.baseideaunit.currentItem().data(2, 10)
             idea_walk = self.baseideaunit.currentItem().data(2, 11)
-            self.agent_x.edit_idea_attr(
+            self.calendar_x.edit_idea_attr(
                 road=f"{idea_walk},{idea_desc}",
                 required_base=base_x,
                 required_sufffact=sufffact_x,
@@ -703,7 +714,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             #     nigh=nigh_x,
             #     divisor=divisor_x,
             # )
-            self.agent_x.get_idea_list()
+            self.calendar_x.get_idea_list()
             self.required_table_load()
 
     def required_delete(self):
@@ -755,15 +766,15 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.idea2group_table.setItem(
                 row - 1,
                 2,
-                qtw1(lw_diplay(groupheir._agent_credit)),
+                qtw1(lw_diplay(groupheir._calendar_credit)),
             )
 
         self.idea2group_table.sortItems(1, QtCore.Qt.AscendingOrder)
 
     def idea2group_insert_combo_load(self):
-        # groupunits_list = list(self.agent_x._groupunits.values())
+        # groupunits_list = list(self.calendar_x._groupunits.values())
         groupunits_names_list = []
-        for groupunit in self.agent_x._groups.values():
+        for groupunit in self.calendar_x._groups.values():
             group_already_selected = any(
                 groupunit.name == grouplink.name
                 for grouplink in self.yo_x._grouplinks.values()
@@ -780,7 +791,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if bd_name_new == "":
             raise Exception("bd_name is empty, idea2bd cannot be updated")
         grouplink_new = GroupLink(name=GroupName(bd_name_new), weight=1)
-        self.agent_x.edit_idea_attr(
+        self.calendar_x.edit_idea_attr(
             road=f"{self.yo_x._walk},{self.yo_x._desc}", grouplink=grouplink_new
         )
         self.idea2group_insert_combo_load()
@@ -792,7 +803,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             delete_group_name = self.idea2group_table.item(
                 self.idea2group_table.currentRow(), 1
             ).text()
-            self.agent_x.edit_idea_attr(
+            self.calendar_x.edit_idea_attr(
                 road=f"{self.yo_x._walk},{self.yo_x._desc}",
                 grouplink_del=delete_group_name,
             )
@@ -800,12 +811,12 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.idea2group_table_load()
 
     def idea_delete(self):
-        self.agent_x.del_idea_kid(road=f"{self.yo_x._walk},{self.yo_x._desc}")
+        self.calendar_x.del_idea_kid(road=f"{self.yo_x._walk},{self.yo_x._desc}")
         self.baseideaunit.clear()
         self.refresh_tree(disable_is_expanded=True)
 
     def idea_edit_nonroad_data(self, idea_road):
-        self.agent_x.edit_idea_attr(
+        self.calendar_x.edit_idea_attr(
             road=idea_road,
             weight=float(self.yo_weight.toPlainText()),
             begin=str2float(self.yo_begin.toPlainText()),
@@ -835,7 +846,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         )
 
     def idea_edit_road(self, idea_road):
-        self.agent_x.edit_idea_desc(
+        self.calendar_x.edit_idea_desc(
             old_road=idea_road,
             new_desc=self.yo_description.toPlainText(),
         )
@@ -869,22 +880,22 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
         # add done/not_done children
         not_done_text = "not done"
-        self.agent_x.add_idea(
+        self.calendar_x.add_idea(
             idea_kid=IdeaKid(_desc=not_done_text),
             walk=new_road,
         )
         done_text = "done"
-        self.agent_x.add_idea(
+        self.calendar_x.add_idea(
             idea_kid=IdeaKid(_desc=done_text),
             walk=new_road,
         )
         # set required to "not done"
-        self.agent_x.edit_idea_attr(
+        self.calendar_x.edit_idea_attr(
             road=new_road,
             required_base=new_road,
             required_sufffact=f"{new_road},{not_done_text}",
         )
-        self.agent_x.set_acptfact(
+        self.calendar_x.set_acptfact(
             base=new_road,
             pick=f"{new_road},{not_done_text}",
         )
@@ -927,7 +938,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         new_walk = f"{self.yo_x._desc}"
         if self.yo_x._walk not in ("", None):
             new_walk = f"{self.yo_x._walk},{self.yo_x._desc}"
-        self.agent_x.add_idea(
+        self.calendar_x.add_idea(
             idea_kid=new_idea,
             walk=new_walk,
         )
@@ -957,7 +968,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.idea_tree_set_is_expanded(root)
 
         tree_root = get_pyqttree(
-            idearoot=self.agent_x._idearoot,
+            idearoot=self.calendar_x._idearoot,
             yo_agenda_flag=yo_agenda_flag,
             yo_action_flag=yo_action_flag,
             yo_acptfactunit_time_flag=yo_acptfactunit_time_flag,
@@ -971,7 +982,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             required_view_name=required_view_base,
             acptfactheir_view_flag=acptfactheir_view_flag,
             root_percent_flag=root_percent_flag,
-            src_agent=self.agent_x,
+            src_calendar=self.calendar_x,
         )
 
         self.baseideaunit.clear()
@@ -981,7 +992,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.pyqt_tree_setExpanded(root)
         # self.yo_tree_item_setHidden(setHiddenBool=True)
 
-    # expand to depth set by agent
+    # expand to depth set by calendar
     def pyqt_tree_setExpanded(self, root):
         child_count = root.childCount()
         for i in range(child_count):
@@ -1001,7 +1012,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             # print(f"road={road_x},{desc_x}")
             # print(f"{_road=}")
 
-            self.agent_x.edit_idea_attr(road=_road, is_expanded=is_expanded)
+            self.calendar_x.edit_idea_attr(road=_road, is_expanded=is_expanded)
             self.idea_tree_set_is_expanded(item)
 
     def required_table_select(self):

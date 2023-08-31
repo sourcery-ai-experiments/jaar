@@ -1,5 +1,5 @@
 from src.system.system import SystemUnit
-from src.agent.agent import AgentUnit
+from src.calendar.calendar import CalendarUnit
 from src.system.examples.env_kit import (
     get_temp_env_name,
     get_test_systems_dir,
@@ -14,7 +14,7 @@ from src.system.bank_sqlstr import (
 )
 
 
-def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable01(
+def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
@@ -26,18 +26,18 @@ def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable0
     tom_text = "tom"
     sal_text = "sal"
 
-    sal = AgentUnit(_desc=sal_text)
+    sal = CalendarUnit(_desc=sal_text)
     sal.add_memberunit(name=bob_text, creditor_weight=1)
     sal.add_memberunit(name=tom_text, creditor_weight=3)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=sal)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal)
 
-    bob = AgentUnit(_desc=bob_text)
+    bob = CalendarUnit(_desc=bob_text)
     bob.add_memberunit(name=sal_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=bob)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob)
 
-    tom = AgentUnit(_desc=tom_text)
+    tom = CalendarUnit(_desc=tom_text)
     tom.add_memberunit(name=sal_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=tom)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom)
 
     e1.refresh_bank_metrics()
 
@@ -50,12 +50,12 @@ def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable0
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    e1.set_river_sphere_for_agent(agent_name=sal_text)
+    e1.set_river_sphere_for_calendar(calendar_name=sal_text)
 
     # THEN
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 4
     with e1.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_agent_name=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
 
     flow_0 = river_flows.get(0)
     flow_1 = river_flows.get(1)
@@ -85,10 +85,10 @@ def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable0
     assert river_sal_tax_tom.tax_total == 0.75
 
 
-def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable02(
+def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable02(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 4 agents, 100% of river flows to sal
+    # GIVEN 4 calendars, 100% of river flows to sal
     system_name = get_temp_env_name()
     e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -98,23 +98,23 @@ def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable0
     tom_text = "tom"
     elu_text = "elu"
 
-    sal = AgentUnit(_desc=sal_text)
+    sal = CalendarUnit(_desc=sal_text)
     sal.add_memberunit(name=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=sal)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal)
 
-    bob = AgentUnit(_desc=bob_text)
+    bob = CalendarUnit(_desc=bob_text)
     bob.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=1)
     bob.add_memberunit(name=tom_text, creditor_weight=1, debtor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=bob)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob)
 
-    tom = AgentUnit(_desc=tom_text)
+    tom = CalendarUnit(_desc=tom_text)
     tom.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=8)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=tom)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom)
 
-    elu = AgentUnit(_desc=elu_text)
+    elu = CalendarUnit(_desc=elu_text)
     elu.add_memberunit(name=sal_text, creditor_weight=1, debtor_weight=8)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=elu)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu)
     e1.refresh_bank_metrics()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
@@ -126,12 +126,12 @@ def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable0
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    e1.set_river_sphere_for_agent(agent_name=sal_text)
+    e1.set_river_sphere_for_calendar(calendar_name=sal_text)
 
     # THEN
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 9
     with e1.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_agent_name=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
@@ -148,10 +148,10 @@ def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable0
     assert river_sal_tax_elu.tax_total == 1.0
 
 
-def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable03(
+def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable03(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 4 agents, 85% of river flows to sal
+    # GIVEN 4 calendars, 85% of river flows to sal
     system_name = get_temp_env_name()
     e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -161,23 +161,23 @@ def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable0
     tom_text = "tom"
     ava_text = "ava"
 
-    sal_agent = AgentUnit(_desc=sal_text)
-    sal_agent.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_agent.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_agent.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
+    sal_calendar = CalendarUnit(_desc=sal_text)
+    sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
+    sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
+    sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
 
-    bob_agent = AgentUnit(_desc=bob_text)
-    bob_agent.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_agent.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
+    bob_calendar = CalendarUnit(_desc=bob_text)
+    bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
+    bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
 
-    tom_agent = AgentUnit(_desc=tom_text)
-    tom_agent.add_memberunit(name=sal_text, creditor_weight=2)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=tom_agent)
+    tom_calendar = CalendarUnit(_desc=tom_text)
+    tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom_calendar)
 
-    ava_agent = AgentUnit(_desc=ava_text)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=ava_agent)
+    ava_calendar = CalendarUnit(_desc=ava_text)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ava_calendar)
     e1.refresh_bank_metrics()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
@@ -189,12 +189,12 @@ def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable0
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    e1.set_river_sphere_for_agent(agent_name=sal_text)
+    e1.set_river_sphere_for_calendar(calendar_name=sal_text)
 
     # THEN
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 6
     with e1.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_agent_name=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
@@ -216,10 +216,10 @@ def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable0
     assert river_sal_tax_tom.tax_total == 0.7
 
 
-def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable04(
+def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable04(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 agents, 85% of river flows to sal, left over %15 goes on endless loop
+    # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop
     system_name = get_temp_env_name()
     e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -230,28 +230,28 @@ def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable0
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_agent = AgentUnit(_desc=sal_text)
-    sal_agent.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_agent.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_agent.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
+    sal_calendar = CalendarUnit(_desc=sal_text)
+    sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
+    sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
+    sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
 
-    bob_agent = AgentUnit(_desc=bob_text)
-    bob_agent.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_agent.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
+    bob_calendar = CalendarUnit(_desc=bob_text)
+    bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
+    bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
 
-    tom_agent = AgentUnit(_desc=tom_text)
-    tom_agent.add_memberunit(name=sal_text, creditor_weight=2)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=tom_agent)
+    tom_calendar = CalendarUnit(_desc=tom_text)
+    tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom_calendar)
 
-    ava_agent = AgentUnit(_desc=ava_text)
-    ava_agent.add_memberunit(name=elu_text, creditor_weight=2)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=ava_agent)
+    ava_calendar = CalendarUnit(_desc=ava_text)
+    ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ava_calendar)
 
-    elu_agent = AgentUnit(_desc=elu_text)
-    elu_agent.add_memberunit(name=ava_text, creditor_weight=2)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=elu_agent)
+    elu_calendar = CalendarUnit(_desc=elu_text)
+    elu_calendar.add_memberunit(name=ava_text, creditor_weight=2)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu_calendar)
 
     e1.refresh_bank_metrics()
 
@@ -264,12 +264,12 @@ def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable0
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    e1.set_river_sphere_for_agent(agent_name=sal_text)
+    e1.set_river_sphere_for_calendar(calendar_name=sal_text)
 
     # THEN
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 40
     # with e1.get_bank_conn() as bank_conn:
-    #     river_flows = get_river_flow_dict(bank_conn, currency_agent_name=sal_text)
+    #     river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
@@ -291,10 +291,10 @@ def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable0
     assert river_sal_tax_tom.tax_total == 0.7
 
 
-def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable05(
+def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable05(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 agents, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
+    # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     system_name = get_temp_env_name()
     e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -305,29 +305,29 @@ def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable0
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_agent = AgentUnit(_desc=sal_text)
-    sal_agent.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_agent.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_agent.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
+    sal_calendar = CalendarUnit(_desc=sal_text)
+    sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
+    sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
+    sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
 
-    bob_agent = AgentUnit(_desc=bob_text)
-    bob_agent.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_agent.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
+    bob_calendar = CalendarUnit(_desc=bob_text)
+    bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
+    bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
 
-    tom_agent = AgentUnit(_desc=tom_text)
-    tom_agent.add_memberunit(name=sal_text, creditor_weight=2)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=tom_agent)
+    tom_calendar = CalendarUnit(_desc=tom_text)
+    tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom_calendar)
 
-    ava_agent = AgentUnit(_desc=ava_text)
-    ava_agent.add_memberunit(name=elu_text, creditor_weight=2)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=ava_agent)
+    ava_calendar = CalendarUnit(_desc=ava_text)
+    ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ava_calendar)
 
-    elu_agent = AgentUnit(_desc=elu_text)
-    elu_agent.add_memberunit(name=ava_text, creditor_weight=19)
-    elu_agent.add_memberunit(name=sal_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=elu_agent)
+    elu_calendar = CalendarUnit(_desc=elu_text)
+    elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
+    elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu_calendar)
 
     e1.refresh_bank_metrics()
 
@@ -340,12 +340,12 @@ def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable0
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    e1.set_river_sphere_for_agent(agent_name=sal_text)
+    e1.set_river_sphere_for_calendar(calendar_name=sal_text)
 
     # THEN
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 40
     # with e1.get_bank_conn() as bank_conn:
-    #     river_flows = get_river_flow_dict(bank_conn, currency_agent_name=sal_text)
+    #     river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
@@ -372,10 +372,10 @@ def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable0
     assert round(river_sal_tax_elu.tax_total, 15) == 0.0378017640625
 
 
-def test_system_set_river_sphere_for_agent_CorrectlyDeletesPreviousRiver(
+def test_system_set_river_sphere_for_calendar_CorrectlyDeletesPreviousRiver(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 4 agents, 100% of river flows to sal
+    # GIVEN 4 calendars, 100% of river flows to sal
     system_name = get_temp_env_name()
     e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -385,55 +385,55 @@ def test_system_set_river_sphere_for_agent_CorrectlyDeletesPreviousRiver(
     tom_text = "tom"
     elu_text = "elu"
 
-    sal = AgentUnit(_desc=sal_text)
+    sal = CalendarUnit(_desc=sal_text)
     sal.add_memberunit(name=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=sal)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal)
 
-    bob = AgentUnit(_desc=bob_text)
+    bob = CalendarUnit(_desc=bob_text)
     bob.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=1)
     bob.add_memberunit(name=tom_text, creditor_weight=1, debtor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=bob)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob)
 
-    tom = AgentUnit(_desc=tom_text)
+    tom = CalendarUnit(_desc=tom_text)
     tom.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=8)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=tom)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom)
 
-    elu = AgentUnit(_desc=elu_text)
+    elu = CalendarUnit(_desc=elu_text)
     elu.add_memberunit(name=sal_text, creditor_weight=1, debtor_weight=8)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=elu)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu)
     e1.refresh_bank_metrics()
 
-    e1.set_river_sphere_for_agent(agent_name=sal_text)
-    e1.set_river_sphere_for_agent(agent_name=elu_text)
+    e1.set_river_sphere_for_calendar(calendar_name=sal_text)
+    e1.set_river_sphere_for_calendar(calendar_name=elu_text)
 
     sqlstr_count_river_tmember = get_table_count_sqlstr("river_tmember")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 16
 
     with e1.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_agent_name=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 3
 
     # WHEN
     # sal.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
-    # e1.save_agentunit_obj_to_agents_dir(agent_x=sal)
-    e1.set_river_sphere_for_agent(agent_name=sal_text)
+    # e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal)
+    e1.set_river_sphere_for_calendar(calendar_name=sal_text)
 
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 16
     with e1.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_agent_name=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 3
 
 
-def test_system_set_river_sphere_for_agent_CorrectlyUsesMaxFlowsCount(
+def test_system_set_river_sphere_for_calendar_CorrectlyUsesMaxFlowsCount(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 agents, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
+    # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     system_name = get_temp_env_name()
     e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -444,29 +444,29 @@ def test_system_set_river_sphere_for_agent_CorrectlyUsesMaxFlowsCount(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_agent = AgentUnit(_desc=sal_text)
-    sal_agent.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_agent.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_agent.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
+    sal_calendar = CalendarUnit(_desc=sal_text)
+    sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
+    sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
+    sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
 
-    bob_agent = AgentUnit(_desc=bob_text)
-    bob_agent.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_agent.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
+    bob_calendar = CalendarUnit(_desc=bob_text)
+    bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
+    bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
 
-    tom_agent = AgentUnit(_desc=tom_text)
-    tom_agent.add_memberunit(name=sal_text, creditor_weight=2)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=tom_agent)
+    tom_calendar = CalendarUnit(_desc=tom_text)
+    tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom_calendar)
 
-    ava_agent = AgentUnit(_desc=ava_text)
-    ava_agent.add_memberunit(name=elu_text, creditor_weight=2)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=ava_agent)
+    ava_calendar = CalendarUnit(_desc=ava_text)
+    ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ava_calendar)
 
-    elu_agent = AgentUnit(_desc=elu_text)
-    elu_agent.add_memberunit(name=ava_text, creditor_weight=19)
-    elu_agent.add_memberunit(name=sal_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=elu_agent)
+    elu_calendar = CalendarUnit(_desc=elu_text)
+    elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
+    elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu_calendar)
 
     e1.refresh_bank_metrics()
 
@@ -480,21 +480,21 @@ def test_system_set_river_sphere_for_agent_CorrectlyUsesMaxFlowsCount(
 
     # WHEN
     mtc = 13
-    e1.set_river_sphere_for_agent(agent_name=sal_text, max_flows_count=mtc)
+    e1.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=mtc)
 
     # THEN
     with e1.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_agent_name=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == mtc
 
 
-def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable05(
+def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable05(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 agents, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
+    # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     system_name = get_temp_env_name()
     e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -505,29 +505,29 @@ def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable0
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_agent = AgentUnit(_desc=sal_text)
-    sal_agent.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_agent.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_agent.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
+    sal_calendar = CalendarUnit(_desc=sal_text)
+    sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
+    sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
+    sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
 
-    bob_agent = AgentUnit(_desc=bob_text)
-    bob_agent.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_agent.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
+    bob_calendar = CalendarUnit(_desc=bob_text)
+    bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
+    bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
 
-    tom_agent = AgentUnit(_desc=tom_text)
-    tom_agent.add_memberunit(name=sal_text, creditor_weight=2)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=tom_agent)
+    tom_calendar = CalendarUnit(_desc=tom_text)
+    tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom_calendar)
 
-    ava_agent = AgentUnit(_desc=ava_text)
-    ava_agent.add_memberunit(name=elu_text, creditor_weight=2)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=ava_agent)
+    ava_calendar = CalendarUnit(_desc=ava_text)
+    ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ava_calendar)
 
-    elu_agent = AgentUnit(_desc=elu_text)
-    elu_agent.add_memberunit(name=ava_text, creditor_weight=19)
-    elu_agent.add_memberunit(name=sal_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=elu_agent)
+    elu_calendar = CalendarUnit(_desc=elu_text)
+    elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
+    elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu_calendar)
 
     e1.refresh_bank_metrics()
 
@@ -540,12 +540,12 @@ def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable0
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    e1.set_river_sphere_for_agent(agent_name=sal_text)
+    e1.set_river_sphere_for_calendar(calendar_name=sal_text)
 
     # THEN
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 40
     with e1.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_agent_name=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
@@ -573,10 +573,10 @@ def test_system_set_river_sphere_for_agent_CorrectlyPopulatesriver_tmemberTable0
     assert round(river_sal_tax_elu.tax_total, 15) == 0.0378017640625
 
 
-def test_system_set_river_sphere_for_agent_CorrectlyBuildsASingleContinuousRange(
+def test_system_set_river_sphere_for_calendar_CorrectlyBuildsASingleContinuousRange(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 agents, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
+    # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     system_name = get_temp_env_name()
     e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -587,34 +587,34 @@ def test_system_set_river_sphere_for_agent_CorrectlyBuildsASingleContinuousRange
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_agent = AgentUnit(_desc=sal_text)
-    sal_agent.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_agent.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_agent.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
+    sal_calendar = CalendarUnit(_desc=sal_text)
+    sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
+    sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
+    sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
 
-    bob_agent = AgentUnit(_desc=bob_text)
-    bob_agent.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_agent.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
+    bob_calendar = CalendarUnit(_desc=bob_text)
+    bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
+    bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
 
-    tom_agent = AgentUnit(_desc=tom_text)
-    tom_agent.add_memberunit(name=sal_text, creditor_weight=2)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=tom_agent)
+    tom_calendar = CalendarUnit(_desc=tom_text)
+    tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom_calendar)
 
-    ava_agent = AgentUnit(_desc=ava_text)
-    ava_agent.add_memberunit(name=elu_text, creditor_weight=2)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=ava_agent)
+    ava_calendar = CalendarUnit(_desc=ava_text)
+    ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ava_calendar)
 
-    elu_agent = AgentUnit(_desc=elu_text)
-    elu_agent.add_memberunit(name=ava_text, creditor_weight=19)
-    elu_agent.add_memberunit(name=sal_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=elu_agent)
+    elu_calendar = CalendarUnit(_desc=elu_text)
+    elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
+    elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu_calendar)
 
     e1.refresh_bank_metrics()
 
     # WHEN
-    e1.set_river_sphere_for_agent(agent_name=sal_text, max_flows_count=100)
+    e1.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=100)
 
     # THEN
     count_range_fails_sql = """
@@ -643,10 +643,10 @@ def test_system_set_river_sphere_for_agent_CorrectlyBuildsASingleContinuousRange
         assert get_single_result_back(bank_conn, count_range_fails_sql) == 0
 
 
-def test_system_set_river_sphere_for_agent_CorrectlyUpatesAgentMemberUnits(
+def test_system_set_river_sphere_for_calendar_CorrectlyUpatesCalendarMemberUnits(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 agents, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
+    # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     system_name = get_temp_env_name()
     e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
     e1.create_dirs_if_null(in_memory_bank=True)
@@ -657,39 +657,39 @@ def test_system_set_river_sphere_for_agent_CorrectlyUpatesAgentMemberUnits(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_agent_src = AgentUnit(_desc=sal_text)
-    sal_agent_src.add_memberunit(name=bob_text, creditor_weight=2, debtor_weight=2)
-    sal_agent_src.add_memberunit(name=tom_text, creditor_weight=2, debtor_weight=1)
-    sal_agent_src.add_memberunit(name=ava_text, creditor_weight=2, debtor_weight=2)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent_src)
+    sal_calendar_src = CalendarUnit(_desc=sal_text)
+    sal_calendar_src.add_memberunit(name=bob_text, creditor_weight=2, debtor_weight=2)
+    sal_calendar_src.add_memberunit(name=tom_text, creditor_weight=2, debtor_weight=1)
+    sal_calendar_src.add_memberunit(name=ava_text, creditor_weight=2, debtor_weight=2)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar_src)
 
-    bob_agent = AgentUnit(_desc=bob_text)
-    bob_agent.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_agent.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
+    bob_calendar = CalendarUnit(_desc=bob_text)
+    bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
+    bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
 
-    tom_agent = AgentUnit(_desc=tom_text)
-    tom_agent.add_memberunit(name=sal_text)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=tom_agent)
+    tom_calendar = CalendarUnit(_desc=tom_text)
+    tom_calendar.add_memberunit(name=sal_text)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom_calendar)
 
-    ava_agent = AgentUnit(_desc=ava_text)
-    ava_agent.add_memberunit(name=elu_text, creditor_weight=2)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=ava_agent)
+    ava_calendar = CalendarUnit(_desc=ava_text)
+    ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ava_calendar)
 
-    elu_agent = AgentUnit(_desc=elu_text)
-    elu_agent.add_memberunit(name=ava_text, creditor_weight=8)
-    elu_agent.add_memberunit(name=sal_text, creditor_weight=2)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=elu_agent)
+    elu_calendar = CalendarUnit(_desc=elu_text)
+    elu_calendar.add_memberunit(name=ava_text, creditor_weight=8)
+    elu_calendar.add_memberunit(name=sal_text, creditor_weight=2)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu_calendar)
 
     e1.refresh_bank_metrics()
-    sal_agent_before = e1.get_agent_from_agents_dir(_desc=sal_text)
+    sal_calendar_before = e1.get_calendar_from_calendars_dir(_desc=sal_text)
 
-    e1.set_river_sphere_for_agent(agent_name=sal_text, max_flows_count=100)
-    assert len(sal_agent_before._members) == 3
-    print(f"{len(sal_agent_before._members)=}")
-    bob_member = sal_agent_before._members.get(bob_text)
-    tom_member = sal_agent_before._members.get(tom_text)
-    ava_member = sal_agent_before._members.get(ava_text)
+    e1.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=100)
+    assert len(sal_calendar_before._members) == 3
+    print(f"{len(sal_calendar_before._members)=}")
+    bob_member = sal_calendar_before._members.get(bob_text)
+    tom_member = sal_calendar_before._members.get(tom_text)
+    ava_member = sal_calendar_before._members.get(ava_text)
     assert bob_member._bank_tax_paid is None
     assert bob_member._bank_tax_diff is None
     assert tom_member._bank_tax_paid is None
@@ -698,13 +698,13 @@ def test_system_set_river_sphere_for_agent_CorrectlyUpatesAgentMemberUnits(
     assert ava_member._bank_tax_diff is None
 
     # WHEN
-    e1.set_river_sphere_for_agent(agent_name=sal_text)
+    e1.set_river_sphere_for_calendar(calendar_name=sal_text)
 
     # THEN
-    sal_river_tmembers = e1.get_river_tmembers(agent_name=sal_text)
+    sal_river_tmembers = e1.get_river_tmembers(calendar_name=sal_text)
     assert len(sal_river_tmembers) == 3
 
-    sal_agent_after = e1.get_agent_from_agents_dir(_desc=sal_text)
+    sal_calendar_after = e1.get_calendar_from_calendars_dir(_desc=sal_text)
 
     bob_tmember = sal_river_tmembers.get(bob_text)
     tom_tmember = sal_river_tmembers.get(tom_text)
@@ -716,10 +716,10 @@ def test_system_set_river_sphere_for_agent_CorrectlyUpatesAgentMemberUnits(
     assert tom_tmember.currency_name == sal_text
     assert elu_tmember.currency_name == sal_text
 
-    bob_member = sal_agent_after._members.get(bob_text)
-    tom_member = sal_agent_after._members.get(tom_text)
-    ava_member = sal_agent_after._members.get(ava_text)
-    elu_member = sal_agent_after._members.get(elu_text)
+    bob_member = sal_calendar_after._members.get(bob_text)
+    tom_member = sal_calendar_after._members.get(tom_text)
+    ava_member = sal_calendar_after._members.get(ava_text)
+    elu_member = sal_calendar_after._members.get(elu_text)
 
     assert bob_tmember.tax_total == bob_member._bank_tax_paid
     assert bob_tmember.tax_diff == bob_member._bank_tax_diff
@@ -733,7 +733,7 @@ def test_system_set_river_sphere_for_agent_CorrectlyUpatesAgentMemberUnits(
     #     print(f"{tmember_uid=} {sal_river_tmember=}")
     #     assert sal_river_tmember.currency_name == sal_text
     #     assert sal_river_tmember.tax_name in [bob_text, tom_text, elu_text]
-    #     memberunit_x = sal_agent_after._members.get(sal_river_tmember.tax_name)
+    #     memberunit_x = sal_calendar_after._members.get(sal_river_tmember.tax_name)
     #     if memberunit_x != None:
     #         # print(
     #         #     f"{sal_river_tmember.currency_name=} {sal_river_tmember.tax_name=} {memberunit_x.name=} tax_total: {sal_river_tmember.tax_total} Tax Paid: {memberunit_x._bank_tax_paid}"
@@ -748,8 +748,8 @@ def test_system_set_river_sphere_for_agent_CorrectlyUpatesAgentMemberUnits(
     assert ava_member._bank_tax_paid is None
     assert ava_member._bank_tax_diff is None
 
-    # for memberunit_x in sal_agent_after._members.values():
-    #     print(f"sal_agent_after {memberunit_x.name=} {memberunit_x._bank_tax_paid=}")
+    # for memberunit_x in sal_calendar_after._members.values():
+    #     print(f"sal_calendar_after {memberunit_x.name=} {memberunit_x._bank_tax_paid=}")
     #     river_tmember_x = sal_river_tmembers.get(memberunit_x.name)
     #     if river_tmember_x is None:
     #         assert memberunit_x._bank_tax_paid is None
@@ -757,4 +757,4 @@ def test_system_set_river_sphere_for_agent_CorrectlyUpatesAgentMemberUnits(
     #     else:
     #         assert memberunit_x._bank_tax_paid != None
     #         assert memberunit_x._bank_tax_diff != None
-    # assert sal_agent_after != sal_agent_before
+    # assert sal_calendar_after != sal_calendar_before

@@ -7,9 +7,9 @@ from PyQt5.QtWidgets import QTableWidgetItem as qti
 from EditIdeaUnit import EditIdeaUnit
 from EditMember import EditMember
 from src.pyqt5_kit.pyqt_func import lw_diplay, get_pyqttree, num2str
-from src.agent.group import groupunit_shop, grouplink_shop
-from src.agent.idea import IdeaKid
-from src.agent.road import Road, get_walk_from_road, get_terminus_node_from_road
+from src.calendar.group import groupunit_shop, grouplink_shop
+from src.calendar.idea import IdeaKid
+from src.calendar.road import Road, get_walk_from_road, get_terminus_node_from_road
 from sys import exit as sys_exit
 
 # self.problem_name_text
@@ -65,7 +65,7 @@ class EditProblem(qtw.QWidget, Ui_Form):
         self.agenda_table.setObjectName("Current Agenda")
         self.agenda_table.setRowCount(0)
 
-        self.agent_x = None
+        self.calendar_x = None
 
     def select_problem_name_combo(self):
         self.problem_name_text.setText(self.problem_name_combo.currentText())
@@ -128,11 +128,13 @@ class EditProblem(qtw.QWidget, Ui_Form):
             prob_idea = IdeaKid(_desc=prob_desc, _walk=prob_walk)
             for grouplink_x in self.create_grouplinks_list():
                 prob_idea.set_grouplink(grouplink_x)
-            self.agent_x.set_dominate_promise_idea(idea_kid=prob_idea)
+            self.calendar_x.set_dominate_promise_idea(idea_kid=prob_idea)
 
     def add_group(self):
         if self.add_group_text not in (None, ""):
-            self.agent_x.set_groupunit(groupunit_shop(name=self.add_group_text.text()))
+            self.calendar_x.set_groupunit(
+                groupunit_shop(name=self.add_group_text.text())
+            )
         self.refresh_all()
 
     def refresh_all(self):
@@ -146,11 +148,11 @@ class EditProblem(qtw.QWidget, Ui_Form):
         self.action3_text.setText("")
         self.add_group_text.setText("")
 
-        if self.agent_x != None:
+        if self.calendar_x != None:
             self.refresh_agenda_list()
             self.refresh_idea_tree()
 
-            idea_road_list = self.agent_x.get_idea_tree_ordered_road_list()
+            idea_road_list = self.calendar_x.get_idea_tree_ordered_road_list()
             idea_road_list.insert(0, "")
 
             self.problem_name_combo.clear()
@@ -160,9 +162,9 @@ class EditProblem(qtw.QWidget, Ui_Form):
             self.group1_name_combo.clear()
             self.group2_name_combo.clear()
             self.group3_name_combo.clear()
-            self.group1_name_combo.addItems(self.agent_x.get_groupunits_name_list())
-            self.group2_name_combo.addItems(self.agent_x.get_groupunits_name_list())
-            self.group3_name_combo.addItems(self.agent_x.get_groupunits_name_list())
+            self.group1_name_combo.addItems(self.calendar_x.get_groupunits_name_list())
+            self.group2_name_combo.addItems(self.calendar_x.get_groupunits_name_list())
+            self.group3_name_combo.addItems(self.calendar_x.get_groupunits_name_list())
             self.action1_combo.clear()
             self.action2_combo.clear()
             self.action3_combo.clear()
@@ -183,10 +185,10 @@ class EditProblem(qtw.QWidget, Ui_Form):
         #     base_x = None
         base_x = None
 
-        agenda_list = self.agent_x.get_agenda_items(
+        agenda_list = self.calendar_x.get_agenda_items(
             agenda_todo=True, agenda_state=True, base=base_x
         )
-        agenda_list.sort(key=lambda x: x._agent_importance, reverse=True)
+        agenda_list.sort(key=lambda x: x._calendar_importance, reverse=True)
 
         row = 0
         for agenda_item in agenda_list:
@@ -202,7 +204,7 @@ class EditProblem(qtw.QWidget, Ui_Form):
         sufffact_open_x = None
         sufffact_nigh_x = None
         sufffact_divisor_x = None
-        lw_display_x = lw_diplay(agent_importance=a._agent_importance)
+        lw_display_x = lw_diplay(calendar_importance=a._calendar_importance)
 
         if requiredheir_x != None:
             for sufffact in requiredheir_x.sufffacts.values():
@@ -247,7 +249,7 @@ class EditProblem(qtw.QWidget, Ui_Form):
             [
                 "_desc",
                 "road",
-                "agent_importance",
+                "calendar_importance",
                 "weight",
                 "acptfact",
                 "open",
@@ -258,22 +260,22 @@ class EditProblem(qtw.QWidget, Ui_Form):
 
     def open_editideaunit(self):
         self.EditIdeaunit = EditIdeaUnit()
-        self.EditIdeaunit.agent_x = self.agent_x
+        self.EditIdeaunit.calendar_x = self.calendar_x
         self.EditIdeaunit.refresh_tree()
         self.EditIdeaunit.show()
 
     def open_edit_member(self):
         self.edit_member = EditMember()
-        self.edit_member.agent_x = self.agent_x
+        self.edit_member.calendar_x = self.calendar_x
         self.edit_member.refresh_all()
         self.edit_member.show()
 
     def refresh_idea_tree(self):
-        tree_root = get_pyqttree(idearoot=self.agent_x._idearoot)
+        tree_root = get_pyqttree(idearoot=self.calendar_x._idearoot)
         self.baseideaunit.clear()
         self.baseideaunit.insertTopLevelItems(0, [tree_root])
 
-        # expand to depth set by agent
+        # expand to depth set by calendar
         def yo_tree_setExpanded(root):
             child_count = root.childCount()
             for i in range(child_count):

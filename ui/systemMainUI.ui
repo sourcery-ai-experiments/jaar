@@ -64,7 +64,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="agents_table">
+   <widget class="QTableWidget" name="calendars_table">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -89,7 +89,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="agentlinks_table">
+   <widget class="QTableWidget" name="calendarlinks_table">
     <property name="geometry">
      <rect>
       <x>340</x>
@@ -105,7 +105,7 @@
     </property>
     <column>
      <property name="text">
-      <string>Agentlinks</string>
+      <string>Calendarlinks</string>
      </property>
     </column>
     <column>
@@ -193,7 +193,7 @@
      <string>Change Name</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="agent_update_button">
+   <widget class="QPushButton" name="calendar_update_button">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -208,10 +208,10 @@
      </font>
     </property>
     <property name="text">
-     <string>Change Agent Name</string>
+     <string>Change Calendar Name</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="agent_insert_button">
+   <widget class="QPushButton" name="calendar_insert_button">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -226,10 +226,10 @@
      </font>
     </property>
     <property name="text">
-     <string>Add new Agent</string>
+     <string>Add new Calendar</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="agent_delete_button">
+   <widget class="QPushButton" name="calendar_delete_button">
     <property name="geometry">
      <rect>
       <x>80</x>
@@ -247,7 +247,7 @@
      <string>Delete</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="agent_name">
+   <widget class="QLineEdit" name="calendar_name">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -331,7 +331,7 @@
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" name="agentlink_delete_button">
+   <widget class="QPushButton" name="calendarlink_delete_button">
     <property name="geometry">
      <rect>
       <x>480</x>
@@ -346,10 +346,10 @@
      </font>
     </property>
     <property name="text">
-     <string>delete AgentLink</string>
+     <string>delete CalendarLink</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="agentlink_name">
+   <widget class="QLineEdit" name="calendarlink_name">
     <property name="geometry">
      <rect>
       <x>340</x>
@@ -364,7 +364,7 @@
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" name="agentlink_insert_button">
+   <widget class="QPushButton" name="calendarlink_insert_button">
     <property name="geometry">
      <rect>
       <x>376</x>
@@ -379,10 +379,10 @@
      </font>
     </property>
     <property name="text">
-     <string>Add new AgentLink</string>
+     <string>Add new CalendarLink</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="agentlink_update_button">
+   <widget class="QPushButton" name="calendarlink_update_button">
     <property name="geometry">
      <rect>
       <x>376</x>
@@ -397,7 +397,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Update AgentLink</string>
+     <string>Update CalendarLink</string>
     </property>
    </widget>
    <widget class="QPushButton" name="refresh_all_button">
@@ -418,7 +418,7 @@
      <string>refresh</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="agent_edit_button">
+   <widget class="QPushButton" name="calendar_edit_button">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -454,7 +454,7 @@
      <string>Edit Person</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="agentlink_edit_button">
+   <widget class="QPushButton" name="calendarlink_edit_button">
     <property name="geometry">
      <rect>
       <x>340</x>
@@ -469,7 +469,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Edit AgentLink</string>
+     <string>Edit CalendarLink</string>
     </property>
    </widget>
    <widget class="QTableWidget" name="w_agenda_table">
@@ -688,7 +688,7 @@
      <string>load</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="agentlink_weight">
+   <widget class="QLineEdit" name="calendarlink_weight">
     <property name="geometry">
      <rect>
       <x>460</x>
@@ -718,7 +718,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Agentlink Weight:</string>
+     <string>Calendarlink Weight:</string>
     </property>
    </widget>
    <widget class="QTableWidget" name="ignores_table">
@@ -818,7 +818,7 @@
      <string>s</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="set_public_agent_button">
+   <widget class="QPushButton" name="set_public_calendar_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -833,10 +833,10 @@
      </font>
     </property>
     <property name="text">
-     <string>dest_agent to public_dir</string>
+     <string>dest_calendar to public_dir</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="reload_all_src_agents_button">
+   <widget class="QPushButton" name="reload_all_src_calendars_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -851,7 +851,7 @@
      </font>
     </property>
     <property name="text">
-     <string>refresh_all_src_agents</string>
+     <string>refresh_all_src_calendars</string>
     </property>
    </widget>
    <widget class="QPushButton" name="set_public_and_reload_srcs_button">

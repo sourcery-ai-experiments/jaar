@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Agents /  Member /  dimension</string>
+     <string>Calendars /  Member /  dimension</string>
     </property>
    </widget>
    <widget class="QPushButton" name="acptfact_open_lower_spec1">
@@ -280,7 +280,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QLabel" name="agent_label">
+   <widget class="QLabel" name="calendar_label">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -290,7 +290,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>AGENT: </string>
+     <string>CALENDAR: </string>
     </property>
    </widget>
    <widget class="QPushButton" name="lw_desc_update_button">
@@ -306,7 +306,7 @@
      <string>Update</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="agent_desc">
+   <widget class="QLineEdit" name="calendar_desc">
     <property name="geometry">
      <rect>
       <x>100</x>
@@ -370,7 +370,7 @@
      <string>End:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_agenda_agent_importance_header1">
+   <widget class="QLabel" name="label_agenda_calendar_importance_header1">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -463,7 +463,7 @@
      <string>Family:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_agenda_agent_importance_header2">
+   <widget class="QLabel" name="label_agenda_calendar_importance_header2">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -521,7 +521,7 @@
      <string>Agenda</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_agenda_agent_importance_data">
+   <widget class="QLabel" name="label_agenda_calendar_importance_data">
     <property name="geometry">
      <rect>
       <x>130</x>
@@ -653,7 +653,7 @@
     </column>
     <column>
      <property name="text">
-      <string>agent_importance</string>
+      <string>calendar_importance</string>
      </property>
     </column>
     <column>

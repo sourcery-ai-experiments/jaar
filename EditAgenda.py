@@ -4,7 +4,7 @@ from PyQt5.QtCore import pyqtSignal as qsig
 from PyQt5.QtWidgets import QWidget as qw
 from PyQt5.QtWidgets import QTableWidgetItem as qti
 from src.pyqt5_kit.pyqt_func import num2str, lw_diplay
-from src.agent.hreg_time import (
+from src.calendar.hreg_time import (
     SuffFactUnitHregTime,
     _get_time_hreg_weekday_idea,
     convert1440toHHMM,
@@ -32,9 +32,11 @@ class EditAgenda(qw, Ui_Form):
     def select_agenda_item(self):
         _road = self.agenda_table.item(self.agenda_table.currentRow(), 1).text()
         _desc = self.agenda_table.item(self.agenda_table.currentRow(), 0).text()
-        # base_x = "Myagent,time,jajatime"
+        # base_x = "Mycalendar,time,jajatime"
         base_x = self.acptfact_base_update_combo.currentText()
-        self.agent_x.set_agenda_task_complete(task_road=f"{_road},{_desc}", base=base_x)
+        self.calendar_x.set_agenda_task_complete(
+            task_road=f"{_road},{_desc}", base=base_x
+        )
         self.refresh_all()
 
         # yo_id_greater = int(self.agenda_table.item(0, 6).text())
@@ -55,14 +57,16 @@ class EditAgenda(qw, Ui_Form):
             temp_x = self.acptfact_base_update_combo.currentText()
 
         self.acptfact_base_update_combo.clear()
-        required_bases = list(self.agent_x.get_required_bases())
+        required_bases = list(self.calendar_x.get_required_bases())
         required_bases.sort(key=lambda x: x, reverse=False)
         self.acptfact_base_update_combo.addItems(required_bases)
         if self.acptfact_base_update_init_road is None:
             self.acptfact_base_update_combo.setCurrentText(temp_x)
 
         else:
-            self.acptfact_base_update_init_road = f"{self.agent_x._desc},time,jajatime"
+            self.acptfact_base_update_init_road = (
+                f"{self.calendar_x._desc},time,jajatime"
+            )
             self.acptfact_base_update_combo.setCurrentText(
                 self.acptfact_base_update_init_road
             )
@@ -75,10 +79,10 @@ class EditAgenda(qw, Ui_Form):
         if base_x == "":
             base_x = None
 
-        agenda_list = self.agent_x.get_agenda_items(
+        agenda_list = self.calendar_x.get_agenda_items(
             agenda_todo=True, agenda_state=False, base=base_x
         )
-        agenda_list.sort(key=lambda x: x._agent_importance, reverse=True)
+        agenda_list.sort(key=lambda x: x._calendar_importance, reverse=True)
 
         row = 0
         for agenda_item in agenda_list:
@@ -94,7 +98,7 @@ class EditAgenda(qw, Ui_Form):
         sufffact_open_x = None
         sufffact_nigh_x = None
         sufffact_divisor_x = None
-        lw_display_x = lw_diplay(agent_importance=a._agent_importance)
+        lw_display_x = lw_diplay(calendar_importance=a._calendar_importance)
 
         display_acptfactbase = self.cb_acptfactbase_display.checkState() != 2
 
@@ -111,15 +115,15 @@ class EditAgenda(qw, Ui_Form):
             sufffact_open_x != None
             and sufffact_nigh_x != None
             and (
-                sufffact_need_x == f"{self.agent_x._desc},time,jajatime"
-                or sufffact_need_x[:21] == f"{self.agent_x._desc},time,jajatime"
+                sufffact_need_x == f"{self.calendar_x._desc},time,jajatime"
+                or sufffact_need_x[:21] == f"{self.calendar_x._desc},time,jajatime"
             )
         ):
-            readable_x_text = self.agent_x.get_jajatime_repeating_readable_text(
+            readable_x_text = self.calendar_x.get_jajatime_repeating_readable_text(
                 open=sufffact_open_x, nigh=sufffact_nigh_x, divisor=sufffact_divisor_x
             )
         elif sufffact_open_x != None and sufffact_nigh_x != None:
-            text_x = f"{self.agent_x._desc},time,jajatime"
+            text_x = f"{self.calendar_x._desc},time,jajatime"
             readable_x_text = (
                 f"sufffact {sufffact_open_x}-{sufffact_nigh_x} {sufffact_divisor_x=}"
             )
@@ -165,7 +169,7 @@ class EditAgenda(qw, Ui_Form):
             [
                 "_desc",
                 "road",
-                "agent_importance",
+                "calendar_importance",
                 "weight",
                 "acptfact",
                 "open",

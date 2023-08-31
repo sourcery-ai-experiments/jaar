@@ -6,15 +6,15 @@ from EditMain import EditMainView
 from EditAcptFactTime import EditAcptFactTime
 from EditAgenda import EditAgenda
 from EditProblem import EditProblem
-from src.agent.agent import AgentUnit, get_from_json
-from src.agent.examples.get_agent_examples_dir import get_agent_examples_dir
-from src.agent.hreg_time import convert1440toHHMM
+from src.calendar.calendar import CalendarUnit, get_from_json
+from src.calendar.examples.get_calendar_examples_dir import get_calendar_examples_dir
+from src.calendar.hreg_time import convert1440toHHMM
 from src.pyqt5_kit.pyqt_func import (
     lw_diplay as pyqt_func_lw_diplay,
     str2float as pyqt_func_str2float,
     num2str as pyqt_func_num2str,
 )
-from src.agent.x_func import save_file as x_func_save_file
+from src.calendar.x_func import save_file as x_func_save_file
 from sys import exit as sys_exit
 
 # """Simple test application for dealing with multiple windows"""
@@ -63,22 +63,22 @@ class MainApp(QApplication):
         self.edittime_view.root_changes_submitted.connect(self.main_window.refresh_all)
 
     def editmain_show(self):
-        self.editmain_view.agent_x = self.main_window.agent_x
+        self.editmain_view.calendar_x = self.main_window.calendar_x
         self.editmain_view.refresh_all()
         self.editmain_view.show()
 
     def editproblem_show(self):
-        self.editproblem_view.agent_x = self.main_window.agent_x
+        self.editproblem_view.calendar_x = self.main_window.calendar_x
         self.editproblem_view.refresh_all()
         self.editproblem_view.show()
 
     def editagenda_show(self):
-        self.editagenda_view.agent_x = self.main_window.agent_x
+        self.editagenda_view.calendar_x = self.main_window.calendar_x
         self.editagenda_view.refresh_all()
         self.editagenda_view.show()
 
     def editacptfact_show(self):
-        self.edittime_view.agent_x = self.main_window.agent_x
+        self.edittime_view.calendar_x = self.main_window.calendar_x
         self.edittime_view.display_acptfact_time()
         self.edittime_view.show()
 
@@ -90,7 +90,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     open_editproblem = qtc.pyqtSignal(bool)
     open_editagenda = qtc.pyqtSignal(bool)
     open_edittime = qtc.pyqtSignal(bool)
-    agent_x_signal = qtc.pyqtSignal(AgentUnit)
+    calendar_x_signal = qtc.pyqtSignal(CalendarUnit)
 
     def __init__(self, file_open_path):
         super().__init__()
@@ -118,10 +118,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.fm_open.triggered.connect(self.get_file_path)
         self.fm_save.triggered.connect(self.save_file)
         self.save_as.triggered.connect(self.save_as_file)
-        self.fm_new.triggered.connect(self.agent_new)
+        self.fm_new.triggered.connect(self.calendar_new)
 
         # self.acptfacts_table.itemClicked.connect(self.acptfact_base_combo_set)
-        self.acptfacts_table.setObjectName("Agent AcptFacts")
+        self.acptfacts_table.setObjectName("Calendar AcptFacts")
         self.acptfacts_table.setColumnWidth(0, 300)
         self.acptfacts_table.setColumnWidth(1, 300)
         self.acptfacts_table.setColumnWidth(2, 30)
@@ -142,17 +142,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agenda_states.itemClicked.connect(self.agenda_task_display)
         # self.acptfact_update_combo.activated.connect(self.acptfact_update_heir)
 
-        self.agent_x_json = None
+        self.calendar_x_json = None
         # if "delete me this is for dev only":
         self.file_path = None
         if file_open_path is None:
-            self.file_path = f"{get_agent_examples_dir()}/example_agent2.json"
+            self.file_path = f"{get_calendar_examples_dir()}/example_calendar2.json"
         else:
             self.file_path = file_open_path
         self.open_file()
 
         self.refresh_all()
-        self.emit_agent()
+        self.emit_calendar()
 
     def save_file_and_quit(self):
         self.save_file()
@@ -178,8 +178,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.current_task_road is None:
             self.label_last_desc.setText("")
         else:
-            base_x = "Myagent,time,jajatime"
-            self.agent_x.set_agenda_task_complete(
+            base_x = "Mycalendar,time,jajatime"
+            self.calendar_x.set_agenda_task_complete(
                 task_road=self.current_task_road, base=base_x
             )
         self.label_last_desc.setText(self.current_task_road)
@@ -187,22 +187,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_acptfact_time_open_5daysago(self):
         days5ago_x = datetime.now() - timedelta(days=5)
-        road_minute = f"{self.agent_x._desc},time,jajatime"
+        road_minute = f"{self.calendar_x._desc},time,jajatime"
         # self.root_datetime_curr_label.setText(f"Now: {str(now_x)}")
-        self.agent_x.set_acptfact(
+        self.calendar_x.set_acptfact(
             base=road_minute,
             pick=road_minute,
-            open=self.agent_x.get_time_min_from_dt(dt=days5ago_x),
+            open=self.calendar_x.get_time_min_from_dt(dt=days5ago_x),
         )
         self.refresh_all()
 
     def _set_acptfact_time_open_midnight_attr(self):
-        road_minute = f"{self.agent_x._desc},time,jajatime"
-        open_dt = self.agent_x.get_time_dt_from_min(
-            self.agent_x._idearoot._acptfactunits[road_minute].open
+        road_minute = f"{self.calendar_x._desc},time,jajatime"
+        open_dt = self.calendar_x.get_time_dt_from_min(
+            self.calendar_x._idearoot._acptfactunits[road_minute].open
         )
-        nigh_dt = self.agent_x.get_time_dt_from_min(
-            self.agent_x._idearoot._acptfactunits[road_minute].nigh
+        nigh_dt = self.calendar_x.get_time_dt_from_min(
+            self.calendar_x._idearoot._acptfactunits[road_minute].nigh
         )
         open_midnight = datetime(
             year=open_dt.year,
@@ -213,10 +213,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ) + timedelta(days=1)
         open_minutes = None
         if open_dt < nigh_dt and open_midnight < nigh_dt:
-            open_minutes = self.agent_x.get_time_min_from_dt(open_midnight)
+            open_minutes = self.calendar_x.get_time_min_from_dt(open_midnight)
         else:
-            open_minutes = self.agent_x.get_time_min_from_dt(dt=nigh_dt)
-        self.agent_x.set_acptfact(
+            open_minutes = self.calendar_x.get_time_min_from_dt(dt=nigh_dt)
+        self.calendar_x.set_acptfact(
             base=road_minute,
             pick=road_minute,
             open=open_minutes,
@@ -226,32 +226,32 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         try:
             self._set_acptfact_time_open_midnight_attr()
         except Exception:
-            print("agent does not have jajatime framework")
+            print("calendar does not have jajatime framework")
         self.refresh_all()
 
     def set_acptfact_time_open_soft(self):
         # now_x = datetime.now()
-        # road_minute = f"{self.agent_x._desc},time,jajatime"
+        # road_minute = f"{self.calendar_x._desc},time,jajatime"
         # self.root_datetime_curr_label.setText(f"Now: {str(now_x)}")
-        # self.agent_x.set_acptfact(
+        # self.calendar_x.set_acptfact(
         #     base=road_minute,
         #     pick=road_minute,
-        #     open=self.agent_x.get_time_min_from_dt(dt=now_x),
+        #     open=self.calendar_x.get_time_min_from_dt(dt=now_x),
         # )
         self.refresh_all()
 
     def set_acptfact_time_nigh_now(self):
         now_x = datetime.now()
-        road_minute = f"{self.agent_x._desc},time,jajatime"
-        self.agent_x.set_acptfact(
+        road_minute = f"{self.calendar_x._desc},time,jajatime"
+        self.calendar_x.set_acptfact(
             base=road_minute,
             pick=road_minute,
-            nigh=self.agent_x.get_time_min_from_dt(dt=now_x),
+            nigh=self.calendar_x.get_time_min_from_dt(dt=now_x),
         )
         self.refresh_all()
 
-    def emit_agent(self):
-        self.agent_x_signal.emit(self.agent_x)
+    def emit_calendar(self):
+        self.calendar_x_signal.emit(self.calendar_x)
 
     def get_file_path(self):
         x_file_path, _ = QFileDialog.getOpenFileName()
@@ -268,19 +268,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def save_file(self):
         if self.file_path is None:
             self.file_path = (
-                f"{get_agent_examples_dir()}/agent_{self.agent_x._desc}.json"
+                f"{get_calendar_examples_dir()}/calendar_{self.calendar_x._desc}.json"
             )
         self._commit_file_save()
 
     def _commit_file_save(self):
-        agent_x_json = self.agent_x.get_json()
+        calendar_x_json = self.calendar_x.get_json()
         with open(f"{self.file_path}", "w") as f:
-            f.write(agent_x_json)
+            f.write(calendar_x_json)
         self.current_file_path_label.setText(self.file_path)
         # x_func_save_file(
-        #     dest_dir=person_agent_dir,
-        #     file_name=f"{agent_x._desc}.json",
-        #     file_text=agent_x.get_json(),
+        #     dest_dir=person_calendar_dir,
+        #     file_name=f"{calendar_x._desc}.json",
+        #     file_text=calendar_x.get_json(),
         # )
 
     def load_file(self):
@@ -294,28 +294,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return x_json
 
     def open_file(self):
-        self.agent_x_json = self.load_file()
-        self.agent_load(lw_json=self.agent_x_json)
+        self.calendar_x_json = self.load_file()
+        self.calendar_load(lw_json=self.calendar_x_json)
 
-    def agent_new(self):
-        self.agent_x = AgentUnit(_desc="new")
-        self.agent_x._set_acptfacts_empty_if_null()
-        self.agent_x.set_members_empty_if_null()
-        self.agent_x.set_groupunits_empty_if_null()
-        self.agent_x.set_time_hreg_ideas(c400_count=7)
-        road_minute = f"{self.agent_x._desc},time,jajatime"
-        self.agent_x.set_acptfact(
+    def calendar_new(self):
+        self.calendar_x = CalendarUnit(_desc="new")
+        self.calendar_x._set_acptfacts_empty_if_null()
+        self.calendar_x.set_members_empty_if_null()
+        self.calendar_x.set_groupunits_empty_if_null()
+        self.calendar_x.set_time_hreg_ideas(c400_count=7)
+        road_minute = f"{self.calendar_x._desc},time,jajatime"
+        self.calendar_x.set_acptfact(
             base=road_minute, pick=road_minute, open=1000000, nigh=1000000
         )
         self.refresh_all()
 
     def refresh_datetime_display(self):
-        road_minute = f"{self.agent_x._desc},time,jajatime"
-        jajatime_open = self.agent_x.get_time_dt_from_min(
-            self.agent_x._idearoot._acptfactunits[road_minute].open
+        road_minute = f"{self.calendar_x._desc},time,jajatime"
+        jajatime_open = self.calendar_x.get_time_dt_from_min(
+            self.calendar_x._idearoot._acptfactunits[road_minute].open
         )
-        jajatime_nigh = self.agent_x.get_time_dt_from_min(
-            self.agent_x._idearoot._acptfactunits[road_minute].nigh
+        jajatime_nigh = self.calendar_x.get_time_dt_from_min(
+            self.calendar_x._idearoot._acptfactunits[road_minute].nigh
         )
         week_days = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
         self.root_datetime_curr_label.setText(
@@ -330,31 +330,31 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.root_datetime_prev_label.setText("")
         with contextlib.suppress(Exception):
             self.refresh_datetime_display()
-        self.agent_desc.setText(self.agent_x._desc)
+        self.calendar_desc.setText(self.calendar_x._desc)
         self.acptfacts_table_load()
         self.agenda_states_load()
 
-    def agent_load(self, lw_json: str):
-        self.agent_x = get_from_json(lw_json=lw_json)
-        self.promise_items = self.agent_x.get_agenda_items()
+    def calendar_load(self, lw_json: str):
+        self.calendar_x = get_from_json(lw_json=lw_json)
+        self.promise_items = self.calendar_x.get_agenda_items()
         self.refresh_all()
 
     def get_acptfacts_list(self):
-        return self.agent_x._idearoot._acptfactunits.values()
+        return self.calendar_x._idearoot._acptfactunits.values()
 
     def acptfacts_table_load(self):
         self.acptfacts_table.setRowCount(0)
 
         row = 0
         for acptfact in self.get_acptfacts_list():
-            base_text = acptfact.base.replace(f"{self.agent_x._desc}", "")
+            base_text = acptfact.base.replace(f"{self.calendar_x._desc}", "")
             base_text = base_text[1:]
             acptfact_text = acptfact.pick.replace(acptfact.base, "")
             acptfact_text = acptfact_text[1:]
             if acptfact.open is None:
                 acptfact_text = f"{acptfact_text}"
             elif base_text == "time,jajatime":
-                acptfact_text = f"{self.agent_x.get_jajatime_readable_one_time_event(acptfact.open)}-{self.agent_x.get_jajatime_repeating_readable_text(acptfact.nigh)}"
+                acptfact_text = f"{self.calendar_x.get_jajatime_readable_one_time_event(acptfact.open)}-{self.calendar_x.get_jajatime_repeating_readable_text(acptfact.nigh)}"
             else:
                 acptfact_text = (
                     f"{acptfact_text} Open-Nigh {acptfact.open}-{acptfact.nigh}"
@@ -367,8 +367,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.acptfacts_table.setItem(row, 5, qtw1(pyqt_func_num2str(acptfact.nigh)))
             row += 1
 
-        for base, count in self.agent_x.get_missing_acptfact_bases().items():
-            base_text = base.replace(f"{self.agent_x._desc}", "")
+        for base, count in self.calendar_x.get_missing_acptfact_bases().items():
+            base_text = base.replace(f"{self.calendar_x._desc}", "")
             base_text = base_text[1:]
 
             base_explain_text = f"{base_text} ({count} nodes)"
@@ -395,16 +395,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ):
             raise MainAppException("No table selection for acptfact update.")
         acptfact_update_combo_text = self.acptfact_update_combo.currentText()
-        self.agent_x._idearoot._acptfactunits[
+        self.calendar_x._idearoot._acptfactunits[
             base_road
         ].acptfact = acptfact_update_combo_text
         self.base_road = None
         self.refresh_all
 
     def agenda_states_load(self):
-        self.agent_x.get_tree_metrics()
-        agenda_list = self.agent_x.get_agenda_items()
-        agenda_list.sort(key=lambda x: x._agent_importance, reverse=True)
+        self.calendar_x.get_tree_metrics()
+        agenda_list = self.calendar_x.get_agenda_items()
+        agenda_list.sort(key=lambda x: x._calendar_importance, reverse=True)
         self.agenda_states.setSortingEnabled(True)
         self.agenda_states.setRowCount(0)
         self.set_agenda_states_table_properties()
@@ -430,16 +430,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agenda_states.setItem(row, 0, qtw1(str(ax._uid)))
         self.agenda_states.setItem(row, 1, qtw1(ax._desc))
 
-        if ax._requiredunits.get(f"{self.agent_x._desc},time,jajatime") != None:
+        if ax._requiredunits.get(f"{self.calendar_x._desc},time,jajatime") != None:
             jajatime_required = ax._requiredunits.get(
-                f"{self.agent_x._desc},time,jajatime"
+                f"{self.calendar_x._desc},time,jajatime"
             )
             sufffact_x = jajatime_required.sufffacts.get(
-                f"{self.agent_x._desc},time,jajatime"
+                f"{self.calendar_x._desc},time,jajatime"
             )
             if sufffact_x != None and sufffact_x.open != 0:
                 tw_open = qtw1(
-                    self.agent_x.get_jajatime_repeating_readable_text(
+                    self.calendar_x.get_jajatime_repeating_readable_text(
                         open=sufffact_x.open,
                         nigh=sufffact_x.nigh,
                         divisor=sufffact_x.divisor,
@@ -450,7 +450,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.agenda_states.setItem(row, 3, tw_nigh)
 
         self.agenda_states.setItem(
-            row, 4, qtw1(pyqt_func_lw_diplay(ax._agent_importance))
+            row, 4, qtw1(pyqt_func_lw_diplay(ax._calendar_importance))
         )
         self.agenda_states.setItem(row, 5, qtw1(ax._walk))
         self.agenda_states.setItem(row, 6, qtw1(""))
@@ -477,7 +477,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 "description",
                 "jajatime",
                 "jaja_nigh",
-                "agent_importance",
+                "calendar_importance",
                 "idea_road",
                 "branch_percent",
             ]
@@ -486,14 +486,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def agenda_task_display(self, agenda_item):
         self.label_agenda_desc_data.setText(agenda_item._desc)
         if (
-            agenda_item._requiredunits.get(f"{self.agent_x._desc},time,jajatime")
+            agenda_item._requiredunits.get(f"{self.calendar_x._desc},time,jajatime")
             != None
         ):
             jajatime_required = agenda_item._requiredunits.get(
-                f"{self.agent_x._desc},time,jajatime"
+                f"{self.calendar_x._desc},time,jajatime"
             )
             sufffact_x = jajatime_required.sufffacts.get(
-                f"{self.agent_x._desc},time,jajatime,day"
+                f"{self.calendar_x._desc},time,jajatime,day"
             )
             if sufffact_x != None:
                 self.label_agenda_day_data.setText("day_stuff")
@@ -503,18 +503,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.label_agenda_end_data.setText(
                     convert1440toHHMM(min1440=sufffact_x.nigh)
                 )
-        self.label_agenda_agent_importance_data.setText(
-            str(agenda_item._agent_importance)
+        self.label_agenda_calendar_importance_data.setText(
+            str(agenda_item._calendar_importance)
         )
         self.label_agenda_family_data.setText("")
         self.label_agenda_road_data.setText(agenda_item._walk)
 
     def get_jajaday_open_nigh(self, agenda_item):
         jajatime_required = agenda_item._requiredunits.get(
-            f"{self.agent_x._desc},time,jajatime"
+            f"{self.calendar_x._desc},time,jajatime"
         )
         sufffact_x = jajatime_required.sufffacts.get(
-            f"{self.agent_x._desc},time,jajatime,day"
+            f"{self.calendar_x._desc},time,jajatime,day"
         )
         if sufffact_x != None:
             open_x = sufffact_x.open

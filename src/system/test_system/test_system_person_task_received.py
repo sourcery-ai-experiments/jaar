@@ -27,8 +27,8 @@ def test_system_person1_set_laundry_fact_create_person2_laundry_task(
     joachim_text = "Joachim"
     ex.create_new_personunit(person_name=america_text)
     ex.create_new_personunit(person_name=joachim_text)
-    # ex.save_agentunit_obj_to_agents_dir(agent_x=agent1)
-    # ex.save_agentunit_obj_to_agents_dir(agent_x=agent2)
+    # ex.save_calendarunit_obj_to_calendars_dir(calendar_x=calendar1)
+    # ex.save_calendarunit_obj_to_calendars_dir(calendar_x=calendar2)
 
     # wx_path = f"{e1.get_persons_dir()}/{timmy_text}"
 

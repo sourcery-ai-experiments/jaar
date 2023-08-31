@@ -1,15 +1,15 @@
 from src.system.person import personunit_shop
-from src.agent.agent import AgentUnit
-from src.agent.idea import IdeaRoot
+from src.calendar.calendar import CalendarUnit
+from src.calendar.idea import IdeaRoot
 import src.system.examples.example_persons as example_persons
 from src.system.examples.person_env_kit import (
     person_dir_setup_cleanup,
     get_temp_person_dir,
-    create_agent_file_for_person,
+    create_calendar_file_for_person,
 )
 from os import path as os_path, scandir as os_scandir
 from pytest import raises as pytest_raises
-from src.agent.x_func import (
+from src.calendar.x_func import (
     count_files as x_func_count_files,
     open_file as x_func_open_file,
 )
@@ -19,11 +19,11 @@ def test_personunit_exists(person_dir_setup_cleanup):
     person_text = "test1"
     env_dir = get_temp_person_dir()
     px = personunit_shop(
-        name=person_text, env_dir=env_dir, _auto_dest_agent_to_public_agent=True
+        name=person_text, env_dir=env_dir, _auto_dest_calendar_to_public_calendar=True
     )
     assert px.name == person_text
-    assert px._src_agentlinks == {}
-    assert px._auto_dest_agent_to_public_agent
+    assert px._src_calendarlinks == {}
+    assert px._auto_dest_calendar_to_public_calendar
     # assert px._re_idearoot != None
     # assert str(type(px._re_idearoot)).find(".idea.IdeaRoot'>") > 0
     # assert px._re_idearoot._desc == person_text
@@ -42,10 +42,10 @@ def test_personunit_exists(person_dir_setup_cleanup):
     # assert px._re_idearoot._all_member_credit is None
     # assert px._re_idearoot._all_member_debt is None
     # assert px._re_idearoot._is_expanded == True
-    assert px._dest_agent != None
+    assert px._dest_calendar != None
     assert px._person_dir != None
-    assert px._person_agents_dir != None
-    assert px._digest_agents_dir != None
+    assert px._person_calendars_dir != None
+    assert px._digest_calendars_dir != None
 
 
 def test_personunit_creates_files(person_dir_setup_cleanup):
@@ -54,41 +54,41 @@ def test_personunit_creates_files(person_dir_setup_cleanup):
     env_dir = get_temp_person_dir()
 
     persons_dir = f"{env_dir}/persons"
-    agents_dir = f"{env_dir}/agents"
+    calendars_dir = f"{env_dir}/calendars"
     person1_dir = f"{persons_dir}/{person1_text}"
     person_file_name = f"{person1_text}.json"
-    person_agents_dir = f"{persons_dir}/{person1_text}/agents/"
-    digest_agents_dir = f"{persons_dir}/{person1_text}/digests/"
-    ignore_agents_dir = f"{persons_dir}/{person1_text}/ignores/"
-    bond_agents_dir = f"{persons_dir}/{person1_text}/bonds/"
+    person_calendars_dir = f"{persons_dir}/{person1_text}/calendars/"
+    digest_calendars_dir = f"{persons_dir}/{person1_text}/digests/"
+    ignore_calendars_dir = f"{persons_dir}/{person1_text}/ignores/"
+    bond_calendars_dir = f"{persons_dir}/{person1_text}/bonds/"
     person_file_path = f"{person1_dir}/{person_file_name}"
     px = personunit_shop(name=person1_text, env_dir=env_dir)
     px._set_env_dir(env_dir=env_dir)
-    px._set_src_agentlinks_empty_if_null()
-    px._set_emtpy_dest_agent()
+    px._set_src_calendarlinks_empty_if_null()
+    px._set_emtpy_dest_calendar()
     assert os_path.exists(persons_dir) is False
-    assert os_path.exists(agents_dir) is False
+    assert os_path.exists(calendars_dir) is False
     assert os_path.exists(person1_dir) is False
     assert os_path.isdir(person1_dir) is False
-    assert os_path.exists(person_agents_dir) is False
-    assert os_path.exists(digest_agents_dir) is False
-    assert os_path.exists(ignore_agents_dir) is False
-    assert os_path.exists(bond_agents_dir) is False
+    assert os_path.exists(person_calendars_dir) is False
+    assert os_path.exists(digest_calendars_dir) is False
+    assert os_path.exists(ignore_calendars_dir) is False
+    assert os_path.exists(bond_calendars_dir) is False
 
     # WHEN
     px.create_core_dir_and_files()
 
-    # THEN confirm agents src directory created
+    # THEN confirm calendars src directory created
     assert os_path.exists(persons_dir)
-    assert os_path.exists(agents_dir)
+    assert os_path.exists(calendars_dir)
     assert os_path.exists(person1_dir)
     assert os_path.isdir(person1_dir)
-    assert os_path.exists(person_agents_dir)
+    assert os_path.exists(person_calendars_dir)
     print(f"{person_file_path=}")
     assert os_path.exists(person_file_path)
-    assert os_path.exists(digest_agents_dir)
-    assert os_path.exists(ignore_agents_dir)
-    assert os_path.exists(bond_agents_dir)
+    assert os_path.exists(digest_calendars_dir)
+    assert os_path.exists(ignore_calendars_dir)
+    assert os_path.exists(bond_calendars_dir)
 
 
 def test_personunit_set_person_name_WorksCorrectly(person_dir_setup_cleanup):
@@ -125,7 +125,7 @@ def test_personunit_set_person_name_WorksCorrectly(person_dir_setup_cleanup):
     assert os_path.exists(new_person_file_path)
 
 
-def test_personunit_set_dest_agent_to_public_agent_SavesAgentToPublicDir(
+def test_personunit_set_dest_calendar_to_public_calendar_SavesCalendarToPublicDir(
     person_dir_setup_cleanup,
 ):
     # GIVEN create person
@@ -135,18 +135,18 @@ def test_personunit_set_dest_agent_to_public_agent_SavesAgentToPublicDir(
     px = personunit_shop(name=person_text, env_dir=env_dir)
     px.create_core_dir_and_files()
     public_file_name = f"{person_text}.json"
-    public_file_path = f"{px._public_agents_dir}/{public_file_name}"
+    public_file_path = f"{px._public_calendars_dir}/{public_file_name}"
     assert os_path.exists(public_file_path) is False
 
     # WHEN
-    px.set_dest_agent_to_public_agent()
+    px.set_dest_calendar_to_public_calendar()
 
     # THEN
     assert os_path.exists(public_file_path)
     print(f"{public_file_path=}")
 
 
-def test_personunit_auto_dest_agent_to_public_agent_SavesAgentToPublicDir(
+def test_personunit_auto_dest_calendar_to_public_calendar_SavesCalendarToPublicDir(
     person_dir_setup_cleanup,
 ):
     # GIVEN create person
@@ -154,15 +154,15 @@ def test_personunit_auto_dest_agent_to_public_agent_SavesAgentToPublicDir(
 
     person_text = "person1"
     public_file_name = f"{person_text}.json"
-    public_file_path = f"src/system/examples/ex_env/agents/{public_file_name}"
+    public_file_path = f"src/system/examples/ex_env/calendars/{public_file_name}"
     px = personunit_shop(
-        name=person_text, env_dir=env_dir, _auto_dest_agent_to_public_agent=True
+        name=person_text, env_dir=env_dir, _auto_dest_calendar_to_public_calendar=True
     )
     px.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
 
     # WHEN
-    px.receive_src_agentunit_obj(agent_x=AgentUnit(_desc="bobs agentunit"))
+    px.receive_src_calendarunit_obj(calendar_x=CalendarUnit(_desc="bobs calendarunit"))
 
     # THEN
     assert os_path.exists(public_file_path)

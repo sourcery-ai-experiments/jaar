@@ -3,7 +3,7 @@ from ui.SystemMainUI import Ui_MainWindow
 from Edit5Issue import Edit5Issue
 from EditMain import EditMainView
 from PyQt5 import QtCore as qtc
-from src.agent.agent import AgentUnit
+from src.calendar.calendar import CalendarUnit
 from sys import argv as sys_argv, exit as sys_exit
 from PyQt5.QtWidgets import (
     QTableWidgetItem as qtw1,
@@ -19,8 +19,8 @@ from src.system.examples.env_kit import (
     rename_example_system,
     get_test_systems_dir,
 )
-from src.system.agentlink import get_agentlink_types, agentlink_shop
-from src.agent.x_func import (
+from src.system.calendarlink import get_calendarlink_types, calendarlink_shop
+from src.calendar.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
 )
@@ -47,13 +47,13 @@ class MainApp(QApplication):
         self.main_window.open_edit5issue.connect(self.edit5issue_show)
 
     def editmain_show(self):
-        if self.main_window.ignore_agent_x is None:
+        if self.main_window.ignore_calendar_x is None:
             self.main_window.starting_digest = (
-                self.main_window.person_x.get_starting_digest_agent()
+                self.main_window.person_x.get_starting_digest_calendar()
             )
-            self.editmain_view.agent_x = self.main_window.starting_digest
+            self.editmain_view.calendar_x = self.main_window.starting_digest
         else:
-            self.editmain_view.agent_x = self.main_window.ignore_agent_x
+            self.editmain_view.calendar_x = self.main_window.ignore_calendar_x
         self.editmain_view.refresh_all()
         self.editmain_view.show()
 
@@ -80,39 +80,41 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.system_load_button.clicked.connect(self.system_load_from_file)
         self.system_update_button.clicked.connect(self.system_update_name)
         self.system_delete_button.clicked.connect(self.system_delete)
-        self.agent_insert_button.clicked.connect(self.agent_insert)
-        self.agent_update_button.clicked.connect(self.agent_update_name)
-        self.agent_delete_button.clicked.connect(self.agent_delete)
-        self.agents_table.itemClicked.connect(self.agents_table_select)
+        self.calendar_insert_button.clicked.connect(self.calendar_insert)
+        self.calendar_update_button.clicked.connect(self.calendar_update_name)
+        self.calendar_delete_button.clicked.connect(self.calendar_delete)
+        self.calendars_table.itemClicked.connect(self.calendars_table_select)
         self.person_insert_button.clicked.connect(self.person_insert)
         self.person_update_button.clicked.connect(self.person_update_name)
         self.person_delete_button.clicked.connect(self.person_delete)
         self.persons_table.itemClicked.connect(self.persons_table_select)
-        self.reload_all_src_agents_button.clicked.connect(self.reload_all_src_agents)
-        self.set_public_agent_button.clicked.connect(
-            self.set_dest_agent_to_public_agent
+        self.reload_all_src_calendars_button.clicked.connect(
+            self.reload_all_src_calendars
+        )
+        self.set_public_calendar_button.clicked.connect(
+            self.set_dest_calendar_to_public_calendar
         )
         self.set_public_and_reload_srcs_button.clicked.connect(
             self.set_public_and_reload_srcs
         )
         self.ignores_table.itemClicked.connect(self.ignores_table_select)
         self.open_ignore_button.clicked.connect(self.open_editmain)
-        self.save_ignore_button.clicked.connect(self.ignore_agent_file_update)
+        self.save_ignore_button.clicked.connect(self.ignore_calendar_file_update)
         self.ignores_table.setHidden(True)
         self.show_ignores_button.clicked.connect(self.show_ignores_table)
         self.show_digests_button.clicked.connect(self.show_digests_table)
         self.starting_digest_open_button.clicked.connect(self.open_editmain)
         self.starting_digest_save_button.clicked.connect(self.save_starting_digest)
 
-        self.agentlink_insert_button.clicked.connect(self.agentlink_insert)
-        self.agentlink_update_button.clicked.connect(self.agentlink_update)
-        self.agentlink_delete_button.clicked.connect(self.agentlink_delete)
-        self.agentlinks_table.itemClicked.connect(self.agentlinks_table_select)
+        self.calendarlink_insert_button.clicked.connect(self.calendarlink_insert)
+        self.calendarlink_update_button.clicked.connect(self.calendarlink_update)
+        self.calendarlink_delete_button.clicked.connect(self.calendarlink_delete)
+        self.calendarlinks_table.itemClicked.connect(self.calendarlinks_table_select)
         self.five_issue_button.clicked.connect(self.open_edit5issue)
 
         self.system_x = None
         self.person_x = None
-        self.ignore_agent_x = None
+        self.ignore_calendar_x = None
         setup_test_example_environment()
         first_env = "ex5"
         self.system_x = SystemUnit(name=first_env, systems_dir=get_test_systems_dir())
@@ -123,20 +125,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def save_starting_digest(self):
         if self.starting_digest != None:
-            self.person_x.set_starting_digest_agent(self.starting_digest)
+            self.person_x.set_starting_digest_calendar(self.starting_digest)
         self.refresh_person()
 
-    def reload_all_src_agents(self):
+    def reload_all_src_calendars(self):
         if self.system_x != None:
-            self.system_x.reload_all_persons_src_agentunits()
+            self.system_x.reload_all_persons_src_calendarunits()
 
     def set_public_and_reload_srcs(self):
-        self.set_dest_agent_to_public_agent()
-        self.reload_all_src_agents()
+        self.set_dest_calendar_to_public_calendar()
+        self.reload_all_src_calendars()
 
-    def set_dest_agent_to_public_agent(self):
+    def set_dest_calendar_to_public_calendar(self):
         if self.person_x != None:
-            self.person_x.set_dest_agent_to_public_agent()
+            self.person_x.set_dest_calendar_to_public_calendar()
         self.refresh_system()
 
     def system_load_from_file(self):
@@ -148,18 +150,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.system_name.setText(system_selected)
         self.refresh_system()
 
-    def agents_table_select(self):
-        self.agent_name.setText(
-            self.agents_table.item(self.agents_table.currentRow(), 0).text()
+    def calendars_table_select(self):
+        self.calendar_name.setText(
+            self.calendars_table.item(self.calendars_table.currentRow(), 0).text()
         )
         if self.persons_table.currentRow() != -1:
             selected_person = self.persons_table.item(
                 self.persons_table.currentRow(), 0
             ).text()
-            selected_agent = self.agents_table.item(
-                self.agents_table.currentRow(), 0
+            selected_calendar = self.calendars_table.item(
+                self.calendars_table.currentRow(), 0
             ).text()
-            self.agentlink_name.setText(f"{selected_person} - {selected_agent}")
+            self.calendarlink_name.setText(f"{selected_person} - {selected_calendar}")
 
     def persons_table_select(self):
         person_x_name = self.persons_table.item(
@@ -173,30 +175,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.person_name.setText(self.person_x.name)
         self.refresh_person()
 
-    def agentlinks_table_select(self):
-        self.agentlink_name.setText(
-            self.agentlinks_table.item(self.agentlinks_table.currentRow(), 0).text()
+    def calendarlinks_table_select(self):
+        self.calendarlink_name.setText(
+            self.calendarlinks_table.item(
+                self.calendarlinks_table.currentRow(), 0
+            ).text()
         )
         self.link_type_combo.setCurrentText(
-            self.agentlinks_table.item(self.agentlinks_table.currentRow(), 1).text()
+            self.calendarlinks_table.item(
+                self.calendarlinks_table.currentRow(), 1
+            ).text()
         )
-        self.agentlink_weight.setText(
-            self.agentlinks_table.item(self.agentlinks_table.currentRow(), 2).text()
+        self.calendarlink_weight.setText(
+            self.calendarlinks_table.item(
+                self.calendarlinks_table.currentRow(), 2
+            ).text()
         )
 
     def ignores_table_select(self):
-        ignore_agent_desc = self.ignores_table.item(
+        ignore_calendar_desc = self.ignores_table.item(
             self.ignores_table.currentRow(), 0
         ).text()
-        # self.ignore_agent_x = self.system_x.get_agent_from_agents_dir(
-        self.ignore_agent_x = self.system_x.get_agent_from_ignores_dir(
-            person_name=self.person_x.name, _desc=ignore_agent_desc
+        # self.ignore_calendar_x = self.system_x.get_calendar_from_calendars_dir(
+        self.ignore_calendar_x = self.system_x.get_calendar_from_ignores_dir(
+            person_name=self.person_x.name, _desc=ignore_calendar_desc
         )
-        self.edit_agent = self.ignore_agent_x
+        self.edit_calendar = self.ignore_calendar_x
 
-    def ignore_agent_file_update(self):
-        self.system_x.set_ignore_agent_file(
-            person_name=self.person_x.name, agent_obj=self.ignore_agent_x
+    def ignore_calendar_file_update(self):
+        self.system_x.set_ignore_calendar_file(
+            person_name=self.person_x.name, calendar_obj=self.ignore_calendar_x
         )
         self.refresh_person()
 
@@ -224,27 +232,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.system_name_combo_refresh()
         self.refresh_system()
 
-    def agent_insert(self):
-        self.system_x.save_agentunit_obj_to_agents_dir(
-            agent_x=AgentUnit(_desc=self.agent_name.text())
+    def calendar_insert(self):
+        self.system_x.save_calendarunit_obj_to_calendars_dir(
+            calendar_x=CalendarUnit(_desc=self.calendar_name.text())
         )
         self.refresh_system()
 
-    def agent_update_name(self):
-        currently_selected = self.agents_table.item(
-            self.agents_table.currentRow(), 0
+    def calendar_update_name(self):
+        currently_selected = self.calendars_table.item(
+            self.calendars_table.currentRow(), 0
         ).text()
-        typed_in = self.agent_name.text()
+        typed_in = self.calendar_name.text()
         if currently_selected != typed_in:
-            self.system_x.rename_agent_in_agents_dir(
+            self.system_x.rename_calendar_in_calendars_dir(
                 old_desc=currently_selected, new_desc=typed_in
             )
             self.refresh_system()
 
-    def agent_delete(self):
-        self.system_x.del_agentunit_from_agents_dir(
-            agent_x_desc=self.agents_table.item(
-                self.agents_table.currentRow(), 0
+    def calendar_delete(self):
+        self.system_x.del_calendarunit_from_calendars_dir(
+            calendar_x_desc=self.calendars_table.item(
+                self.calendars_table.currentRow(), 0
             ).text()
         )
         self.refresh_system()
@@ -272,51 +280,54 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.refresh_persons()
 
-    def agentlink_insert(self):
-        agent_desc = self.agents_table.item(self.agents_table.currentRow(), 0).text()
+    def calendarlink_insert(self):
+        calendar_desc = self.calendars_table.item(
+            self.calendars_table.currentRow(), 0
+        ).text()
         if self.person_x != None:
-            agent_json = x_func_open_file(
-                dest_dir=self.person_x._public_agents_dir,
-                file_name=f"{agent_desc}.json",
+            calendar_json = x_func_open_file(
+                dest_dir=self.person_x._public_calendars_dir,
+                file_name=f"{calendar_desc}.json",
             )
-            self.person_x.receive_src_agentunit_file(
-                agent_json=agent_json,
+            self.person_x.receive_src_calendarunit_file(
+                calendar_json=calendar_json,
                 link_type=self.link_type_combo.currentText(),
-                weight=self.agentlink_weight.text(),
+                weight=self.calendarlink_weight.text(),
             )
             self.system_x.save_person_file(person_name=self.person_x.name)
         self.refresh_person()
 
-    def agentlink_update(self):
+    def calendarlink_update(self):
         person_name_x = self.person_x.name
-        new_agentlink = agentlink_shop(
-            agent_desc=self.agentlink_name.text(),
+        new_calendarlink = calendarlink_shop(
+            calendar_desc=self.calendarlink_name.text(),
             link_type=self.link_type_combo.currentText(),
-            weight=self.agentlink_weight.text(),
+            weight=self.calendarlink_weight.text(),
         )
 
-        self.system_x.update_agentlink(
+        self.system_x.update_calendarlink(
             person_name=person_name_x,
-            agentlink=new_agentlink,
+            calendarlink=new_calendarlink,
         )
         self.system_x.save_person_file(person_name=person_name_x)
         self.refresh_person()
 
-    def agentlink_delete(self):
+    def calendarlink_delete(self):
         person_name_x = self.person_x.name
-        self.system_x.del_agentlink(
-            person_name=person_name_x, agentunit_desc=self.agentlink_name.text()
+        self.system_x.del_calendarlink(
+            person_name=person_name_x, calendarunit_desc=self.calendarlink_name.text()
         )
         self.system_x.save_person_file(person_name=person_name_x)
         self.refresh_person()
 
-    def get_agent_desc_list(self):
-        agents_desc_list = []
+    def get_calendar_desc_list(self):
+        calendars_desc_list = []
         if self.system_x != None:
-            agents_desc_list.extend(
-                [agent._desc] for agent in self.system_x.get_agents_dir_list_of_obj()
+            calendars_desc_list.extend(
+                [calendar._desc]
+                for calendar in self.system_x.get_calendars_dir_list_of_obj()
             )
-        return agents_desc_list
+        return calendars_desc_list
 
     def get_person_desc_list(self):
         persons_desc_list = []
@@ -326,23 +337,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             )
         return persons_desc_list
 
-    def get_agentlink_list(self):
-        agentlinks_list = []
+    def get_calendarlink_list(self):
+        calendarlinks_list = []
         if self.person_x != None:
-            for cl_val in self.person_x._src_agentlinks.values():
-                agentlink_row = [
-                    cl_val.agent_desc,
+            for cl_val in self.person_x._src_calendarlinks.values():
+                calendarlink_row = [
+                    cl_val.calendar_desc,
                     cl_val.link_type,
                     str(cl_val.weight),
                 ]
-                agentlinks_list.append(agentlink_row)
-        return agentlinks_list
+                calendarlinks_list.append(calendarlink_row)
+        return calendarlinks_list
 
     def get_digests_list(self):
         x_list = []
         if self.person_x != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.person_x._digest_agents_dir,
+                dir_path=self.person_x._digest_calendars_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -354,7 +365,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         x_list = []
         if self.person_x != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.person_x._ignore_agents_dir,
+                dir_path=self.person_x._ignore_calendars_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -364,16 +375,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_ideas_list(self):
         x_list = []
-        if self.person_dest_agent != None:
-            idea_list = self.person_dest_agent.get_idea_tree_ordered_road_list()
+        if self.person_dest_calendar != None:
+            idea_list = self.person_dest_calendar.get_idea_tree_ordered_road_list()
 
             for idea_road in idea_list:
-                idea_obj = self.person_dest_agent.get_idea_kid(idea_road)
+                idea_obj = self.person_dest_calendar.get_idea_kid(idea_road)
 
                 if idea_obj._walk.find("time") != 3:
                     x_list.append(
                         [
-                            lw_diplay(idea_obj._agent_importance),
+                            lw_diplay(idea_obj._calendar_importance),
                             idea_road,
                             len(idea_obj._grouplinks),
                         ]
@@ -383,36 +394,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_members_list(self):
         x_list = []
-        if self.person_dest_agent != None:
+        if self.person_dest_calendar != None:
             x_list.extend(
                 [
-                    f"{lw_diplay(memberunit._agent_credit)}/{lw_diplay(memberunit._agent_debt)}",
+                    f"{lw_diplay(memberunit._calendar_credit)}/{lw_diplay(memberunit._calendar_debt)}",
                     memberunit.name,
                     f"{memberunit.creditor_weight}/{memberunit.debtor_weight}",
                 ]
-                for memberunit in self.person_dest_agent._members.values()
+                for memberunit in self.person_dest_calendar._members.values()
             )
         return x_list
 
     def get_p_groups_list(self):
         x_list = []
-        if self.person_dest_agent != None:
+        if self.person_dest_calendar != None:
             x_list.extend(
                 [
-                    f"{lw_diplay(groupunit._agent_debt)}/{lw_diplay(groupunit._agent_credit)}",
+                    f"{lw_diplay(groupunit._calendar_debt)}/{lw_diplay(groupunit._calendar_credit)}",
                     groupunit.name,
                     len(groupunit._members),
                 ]
-                for groupunit in self.person_dest_agent._groups.values()
+                for groupunit in self.person_dest_calendar._groups.values()
             )
         return x_list
 
     def get_p_acptfacts_list(self):
         x_list = []
-        if self.person_dest_agent != None:
+        if self.person_dest_calendar != None:
             for (
                 acptfactunit
-            ) in self.person_dest_agent._idearoot._acptfactunits.values():
+            ) in self.person_dest_calendar._idearoot._acptfactunits.values():
                 open_nigh = ""
                 if acptfactunit.open is None and acptfactunit.nigh is None:
                     open_nigh = ""
@@ -430,12 +441,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_agenda_list(self):
         x_list = []
-        if self.person_dest_agent != None:
-            agenda_list = self.person_dest_agent.get_agenda_items()
-            agenda_list.sort(key=lambda x: x._agent_importance, reverse=True)
+        if self.person_dest_calendar != None:
+            agenda_list = self.person_dest_calendar.get_agenda_items()
+            agenda_list.sort(key=lambda x: x._calendar_importance, reverse=True)
             x_list.extend(
                 [
-                    lw_diplay(agenda_item._agent_importance),
+                    lw_diplay(agenda_item._calendar_importance),
                     agenda_item._desc,
                     agenda_item._walk,
                 ]
@@ -451,21 +462,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.persons_table, ["Persons Table"], self.get_person_desc_list()
         )
 
-    def _sub_refresh_agentlinks_table(self):
-        agentlink_types = list(get_agentlink_types())
-        agentlink_types.insert(0, "")
+    def _sub_refresh_calendarlinks_table(self):
+        calendarlink_types = list(get_calendarlink_types())
+        calendarlink_types.insert(0, "")
         self.link_type_combo.clear()
-        self.link_type_combo.addItems(agentlink_types)
+        self.link_type_combo.addItems(calendarlink_types)
         self.link_type_combo.setCurrentText("")
         column_header = ""
         if self.person_x is None:
-            column_header = "Agentlinks Table"
+            column_header = "Calendarlinks Table"
         elif self.person_x != None:
-            column_header = f"'{self.person_x.name}' Agentlinks"
+            column_header = f"'{self.person_x.name}' Calendarlinks"
         self.refresh_x(
-            self.agentlinks_table,
+            self.calendarlinks_table,
             [column_header, "Link Type", "Weight"],
-            self.get_agentlink_list(),
+            self.get_calendarlink_list(),
         )
 
     def _sub_refresh_digests_table(self):
@@ -483,13 +494,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         p_ideas_list = self.get_p_ideas_list()
         if len(p_ideas_list) >= 0:
             column_headers = [
-                "agent_importance",
+                "calendar_importance",
                 f"Ideas Table ({len(p_ideas_list)})",
                 "grouplinks",
             ]
         else:
             column_headers = [
-                "agent_importance",
+                "calendar_importance",
                 "Ideas Table",
                 "grouplinks",
             ]
@@ -508,7 +519,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _sub_refresh_p_members_table(self):
         p_members_list = self.get_p_members_list()
         column_headers = [
-            "agent_debt/agent_credit",
+            "calendar_debt/calendar_credit",
             f"Members ({len(p_members_list)})",
             "creditor_weight/debtor_weight",
         ]
@@ -523,7 +534,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _sub_refresh_p_groups_table(self):
         p_groups_list = self.get_p_groups_list()
         column_headers = [
-            "agent_debt/agent_credit",
+            "calendar_debt/calendar_credit",
             f"groups ({len(p_groups_list)})",
             "Members",
         ]
@@ -549,7 +560,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _sub_refresh_p_agenda_table(self):
         p_agenda_list = self.get_p_agenda_list()
         column_headers = [
-            "agent_importance",
+            "calendar_importance",
             f"Agenda ({len(p_agenda_list)})",
             "Idea Walk",
         ]
@@ -571,13 +582,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_person()
 
     def refresh_person(self):
-        self._sub_refresh_agentlinks_table()
+        self._sub_refresh_calendarlinks_table()
         self._sub_refresh_digests_table()
         self._sub_refresh_ignores_table()
-        self.person_dest_agent = None
+        self.person_dest_calendar = None
         if self.person_x != None:
-            self.person_dest_agent = (
-                self.person_x.get_dest_agent_from_digest_agent_files()
+            self.person_dest_calendar = (
+                self.person_x.get_dest_calendar_from_digest_calendar_files()
             )
         self._sub_refresh_p_ideas_table()
         self._sub_refresh_p_members_table()
@@ -586,7 +597,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._sub_refresh_p_agenda_table()
 
     def refresh_system(self):
-        self.refresh_x(self.agents_table, ["Agents Table"], self.get_agent_desc_list())
+        self.refresh_x(
+            self.calendars_table, ["Calendars Table"], self.get_calendar_desc_list()
+        )
         self.refresh_persons()
 
     def refresh_x(

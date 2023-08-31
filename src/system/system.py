@@ -1,13 +1,13 @@
-from src.agent.agent import AgentUnit, get_from_json as get_agent_from_json
-from src.agent.member import memberlink_shop
+from src.calendar.calendar import CalendarUnit, get_from_json as get_calendar_from_json
+from src.calendar.member import memberlink_shop
 from src.system.person import (
     PersonUnit,
     personunit_shop,
     get_from_json as get_person_from_json,
 )
-from src.system.agentlink import AgentLink
+from src.system.calendarlink import CalendarLink
 from dataclasses import dataclass
-from src.agent.x_func import (
+from src.calendar.x_func import (
     single_dir_create_if_null,
     delete_dir as x_func_delete_dir,
     save_file as x_func_save_file,
@@ -24,7 +24,7 @@ from src.system.bank_sqlstr import (
     get_river_bucket_table_insert_sqlstr,
     get_create_table_if_not_exist_sqlstrs,
     get_ledger_table_insert_sqlstr,
-    get_agent_table_insert_sqlstr,
+    get_calendar_table_insert_sqlstr,
     get_river_ledger_unit,
     LedgerUnit,
     RiverLedgerUnit,
@@ -48,46 +48,48 @@ class SystemUnit:
     _personunits: dict[str:PersonUnit] = None
     _bank_db = None
 
-    def set_agent_attr_defined_by_system(self, agent_name: str):
-        agent_obj = self.get_agent_from_agents_dir(agent_name)
+    def set_calendar_attr_defined_by_system(self, calendar_name: str):
+        calendar_obj = self.get_calendar_from_calendars_dir(calendar_name)
 
-        for groupunit_x in agent_obj._groups.values():
+        for groupunit_x in calendar_obj._groups.values():
             if groupunit_x._memberlinks_set_by_system_road != None:
                 groupunit_x.clear_memberlinks()
                 ic = get_idea_catalog_dict(
                     self.get_bank_conn(), groupunit_x._memberlinks_set_by_system_road
                 )
                 for idea_catalog in ic.values():
-                    if agent_name != idea_catalog.agent_name:
-                        memberlink_x = memberlink_shop(name=idea_catalog.agent_name)
+                    if calendar_name != idea_catalog.calendar_name:
+                        memberlink_x = memberlink_shop(name=idea_catalog.calendar_name)
                         groupunit_x.set_memberlink(memberlink_x)
-        self.save_agentunit_obj_to_agents_dir(agent_obj)
+        self.save_calendarunit_obj_to_calendars_dir(calendar_obj)
 
         # refresh bank metrics
         self.refresh_bank_metrics()
 
     # figure out who is paying taxes and how much
-    def set_river_sphere_for_agent(self, agent_name: str, max_flows_count: int = None):
-        self._clear_all_source_river_data(agent_name)
-        general_bucket = [self._get_root_river_ledger_unit(agent_name)]
+    def set_river_sphere_for_calendar(
+        self, calendar_name: str, max_flows_count: int = None
+    ):
+        self._clear_all_source_river_data(calendar_name)
+        general_bucket = [self._get_root_river_ledger_unit(calendar_name)]
 
         if max_flows_count is None:
             max_flows_count = 40
 
         flows_count = 0
         while flows_count < max_flows_count and general_bucket != []:
-            parent_agent_ledger = general_bucket.pop(0)
+            parent_calendar_ledger = general_bucket.pop(0)
 
-            parent_range = parent_agent_ledger.get_range()
-            parent_close = parent_agent_ledger.currency_cease
-            curr_onset = parent_agent_ledger.currency_onset
+            parent_range = parent_calendar_ledger.get_range()
+            parent_close = parent_calendar_ledger.currency_cease
+            curr_onset = parent_calendar_ledger.currency_onset
 
-            ledgers_len = len(parent_agent_ledger._ledgers.values())
+            ledgers_len = len(parent_calendar_ledger._ledgers.values())
             ledgers_count = 0
-            for led_x in parent_agent_ledger._ledgers.values():
+            for led_x in parent_calendar_ledger._ledgers.values():
                 ledgers_count += 1
 
-                curr_range = parent_range * led_x._agent_agenda_ratio_credit
+                curr_range = parent_range * led_x._calendar_agenda_ratio_credit
                 curr_close = curr_onset + curr_range
 
                 # implies last element in dict
@@ -95,14 +97,14 @@ class SystemUnit:
                     curr_close = parent_close
 
                 river_flow_x = RiverFlowUnit(
-                    currency_agent_name=agent_name,
-                    src_name=led_x.agent_name,
+                    currency_calendar_name=calendar_name,
+                    src_name=led_x.calendar_name,
                     dst_name=led_x.member_name,
                     currency_start=curr_onset,
                     currency_close=curr_close,
                     flow_num=flows_count,
-                    parent_flow_num=parent_agent_ledger.flow_num,
-                    river_tree_level=parent_agent_ledger.river_tree_level + 1,
+                    parent_flow_num=parent_calendar_ledger.flow_num,
+                    river_tree_level=parent_calendar_ledger.river_tree_level + 1,
                 )
                 river_ledger_x = self._insert_river_flow_grab_river_ledger(river_flow_x)
                 if river_ledger_x != None:
@@ -115,7 +117,7 @@ class SystemUnit:
                 # change curr_onset for next
                 curr_onset += curr_range
 
-        self._set_river_tmembers_buckets(agent_name)
+        self._set_river_tmembers_buckets(calendar_name)
 
     def _insert_river_flow_grab_river_ledger(
         self, river_flow_x: RiverFlowUnit
@@ -130,23 +132,23 @@ class SystemUnit:
 
         return river_ledger_x
 
-    def _clear_all_source_river_data(self, agent_name: str):
+    def _clear_all_source_river_data(self, calendar_name: str):
         with self.get_bank_conn() as bank_conn:
-            flow_s = get_river_flow_table_delete_sqlstr(agent_name)
-            mstr_s = get_river_tmember_table_delete_sqlstr(agent_name)
+            flow_s = get_river_flow_table_delete_sqlstr(calendar_name)
+            mstr_s = get_river_tmember_table_delete_sqlstr(calendar_name)
             bank_conn.execute(flow_s)
             bank_conn.execute(mstr_s)
 
-    def _get_root_river_ledger_unit(self, agent_name: str) -> RiverLedgerUnit:
+    def _get_root_river_ledger_unit(self, calendar_name: str) -> RiverLedgerUnit:
         default_currency_onset = 0.0
         default_currency_cease = 1.0
         default_root_river_tree_level = 0
         default_root_flow_num = None  # maybe change to 1?
         default_root_parent_flow_num = None
         root_river_flow = RiverFlowUnit(
-            currency_agent_name=agent_name,
+            currency_calendar_name=calendar_name,
             src_name=None,
-            dst_name=agent_name,
+            dst_name=calendar_name,
             currency_start=default_currency_onset,
             currency_close=default_currency_cease,
             flow_num=default_root_flow_num,
@@ -157,77 +159,77 @@ class SystemUnit:
             source_river_ledger = get_river_ledger_unit(bank_conn, root_river_flow)
         return source_river_ledger
 
-    def _set_river_tmembers_buckets(self, agent_name: str):
+    def _set_river_tmembers_buckets(self, calendar_name: str):
         with self.get_bank_conn() as bank_conn:
-            bank_conn.execute(get_river_tmember_table_insert_sqlstr(agent_name))
-            bank_conn.execute(get_river_bucket_table_insert_sqlstr(agent_name))
+            bank_conn.execute(get_river_tmember_table_insert_sqlstr(calendar_name))
+            bank_conn.execute(get_river_bucket_table_insert_sqlstr(calendar_name))
 
-            sal_river_tmembers = get_river_tmember_dict(bank_conn, agent_name)
-            agent_x = self.get_agent_from_agents_dir(_desc=agent_name)
-            agent_x.set_banking_attr_memberunits(sal_river_tmembers)
-            self.save_agentunit_obj_to_agents_dir(agent_x=agent_x)
+            sal_river_tmembers = get_river_tmember_dict(bank_conn, calendar_name)
+            calendar_x = self.get_calendar_from_calendars_dir(_desc=calendar_name)
+            calendar_x.set_banking_attr_memberunits(sal_river_tmembers)
+            self.save_calendarunit_obj_to_calendars_dir(calendar_x=calendar_x)
 
-    def get_river_tmembers(self, agent_name: str) -> dict[str:RiverTmemberUnit]:
+    def get_river_tmembers(self, calendar_name: str) -> dict[str:RiverTmemberUnit]:
         with self.get_bank_conn() as bank_conn:
-            river_tmembers = get_river_tmember_dict(bank_conn, agent_name)
+            river_tmembers = get_river_tmember_dict(bank_conn, calendar_name)
         return river_tmembers
 
     def refresh_bank_metrics(self, in_memory: bool = None):
         if in_memory is None and self._bank_db != None:
             in_memory = True
         self._create_bank_db(in_memory=in_memory, overwrite=True)
-        self._bank_populate_agents_data()
+        self._bank_populate_calendars_data()
 
-    def _bank_populate_agents_data(self):
-        for file_name in self.get_agents_dir_file_names_list():
-            agent_json = x_func_open_file(self.get_agents_dir(), file_name)
-            agentunit_x = get_agent_from_json(lw_json=agent_json)
-            agentunit_x.set_agent_metrics()
+    def _bank_populate_calendars_data(self):
+        for file_name in self.get_calendars_dir_file_names_list():
+            calendar_json = x_func_open_file(self.get_calendars_dir(), file_name)
+            calendarunit_x = get_calendar_from_json(lw_json=calendar_json)
+            calendarunit_x.set_calendar_metrics()
 
-            self._bank_insert_agentunit(agentunit_x)
-            self._bank_insert_memberunit(agentunit_x)
-            self._bank_insert_groupunit(agentunit_x)
-            self._bank_insert_ideaunit(agentunit_x)
-            self._bank_insert_acptfact(agentunit_x)
+            self._bank_insert_calendarunit(calendarunit_x)
+            self._bank_insert_memberunit(calendarunit_x)
+            self._bank_insert_groupunit(calendarunit_x)
+            self._bank_insert_ideaunit(calendarunit_x)
+            self._bank_insert_acptfact(calendarunit_x)
 
-    def _bank_insert_agentunit(self, agentunit_x: AgentUnit):
+    def _bank_insert_calendarunit(self, calendarunit_x: CalendarUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            cur.execute(get_agent_table_insert_sqlstr(agent_x=agentunit_x))
+            cur.execute(get_calendar_table_insert_sqlstr(calendar_x=calendarunit_x))
 
-    def _bank_insert_memberunit(self, agentunit_x: AgentUnit):
+    def _bank_insert_memberunit(self, calendarunit_x: CalendarUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            for memberunit_x in agentunit_x._members.values():
-                sqlstr = get_ledger_table_insert_sqlstr(agentunit_x, memberunit_x)
+            for memberunit_x in calendarunit_x._members.values():
+                sqlstr = get_ledger_table_insert_sqlstr(calendarunit_x, memberunit_x)
                 cur.execute(sqlstr)
 
-    def _bank_insert_groupunit(self, agentunit_x: AgentUnit):
+    def _bank_insert_groupunit(self, calendarunit_x: CalendarUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            for groupunit_x in agentunit_x._groups.values():
+            for groupunit_x in calendarunit_x._groups.values():
                 groupunit_catalog_x = GroupUnitCatalog(
-                    agent_name=agentunit_x._desc,
+                    calendar_name=calendarunit_x._desc,
                     groupunit_name=groupunit_x.name,
                     memberlinks_set_by_system_road=groupunit_x._memberlinks_set_by_system_road,
                 )
                 sqlstr = get_groupunit_catalog_table_insert_sqlstr(groupunit_catalog_x)
                 cur.execute(sqlstr)
 
-    def _bank_insert_ideaunit(self, agentunit_x: AgentUnit):
+    def _bank_insert_ideaunit(self, calendarunit_x: CalendarUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            for idea_x in agentunit_x._idea_dict.values():
-                idea_catalog_x = IdeaCatalog(agentunit_x._desc, idea_x.get_road())
+            for idea_x in calendarunit_x._idea_dict.values():
+                idea_catalog_x = IdeaCatalog(calendarunit_x._desc, idea_x.get_road())
                 sqlstr = get_idea_catalog_table_insert_sqlstr(idea_catalog_x)
                 cur.execute(sqlstr)
 
-    def _bank_insert_acptfact(self, agentunit_x: AgentUnit):
+    def _bank_insert_acptfact(self, calendarunit_x: CalendarUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            for acptfact_x in agentunit_x._idearoot._acptfactunits.values():
+            for acptfact_x in calendarunit_x._idearoot._acptfactunits.values():
                 acptfact_catalog_x = AcptFactCatalog(
-                    agent_name=agentunit_x._desc,
+                    calendar_name=calendarunit_x._desc,
                     base=acptfact_x.base,
                     pick=acptfact_x.pick,
                 )
@@ -280,10 +282,10 @@ class SystemUnit:
 
     def create_dirs_if_null(self, in_memory_bank: bool = None):
         system_dir = self.get_object_root_dir()
-        agents_dir = self.get_agents_dir()
+        calendars_dir = self.get_calendars_dir()
         persons_dir = self.get_persons_dir()
         single_dir_create_if_null(x_path=system_dir)
-        single_dir_create_if_null(x_path=agents_dir)
+        single_dir_create_if_null(x_path=calendars_dir)
         single_dir_create_if_null(x_path=persons_dir)
         self._create_main_file_if_null(x_dir=system_dir)
         self._create_bank_db(in_memory=in_memory_bank, overwrite=True)
@@ -351,140 +353,149 @@ class SystemUnit:
     def del_person_dir(self, person_name: str):
         x_func_delete_dir(f"{self.get_persons_dir()}/{person_name}")
 
-    # agents_dir management
-    def get_agents_dir(self):
-        return f"{self.get_object_root_dir()}/agents"
+    # calendars_dir management
+    def get_calendars_dir(self):
+        return f"{self.get_object_root_dir()}/calendars"
 
     def get_ignores_dir(self, person_name: str):
         return f"{self.get_persons_dir()}/{person_name}/ignores"
 
-    def get_agent_from_agents_dir(self, _desc: str) -> AgentUnit:
-        return get_agent_from_json(
-            x_func_open_file(dest_dir=self.get_agents_dir(), file_name=f"{_desc}.json")
+    def get_calendar_from_calendars_dir(self, _desc: str) -> CalendarUnit:
+        return get_calendar_from_json(
+            x_func_open_file(
+                dest_dir=self.get_calendars_dir(), file_name=f"{_desc}.json"
+            )
         )
 
-    def get_agent_from_ignores_dir(self, person_name: str, _desc: str) -> AgentUnit:
-        return get_agent_from_json(
+    def get_calendar_from_ignores_dir(
+        self, person_name: str, _desc: str
+    ) -> CalendarUnit:
+        return get_calendar_from_json(
             x_func_open_file(
                 dest_dir=self.get_ignores_dir(person_name=person_name),
                 file_name=f"{_desc}.json",
             )
         )
 
-    def set_ignore_agent_file(self, person_name: str, agent_obj: AgentUnit):
+    def set_ignore_calendar_file(self, person_name: str, calendar_obj: CalendarUnit):
         person_x = self.get_person_obj_from_system(name=person_name)
-        person_x.set_ignore_agent_file(
-            agentunit=agent_obj, src_agent_desc=agent_obj._desc
+        person_x.set_ignore_calendar_file(
+            calendarunit=calendar_obj, src_calendar_desc=calendar_obj._desc
         )
 
-    def rename_agent_in_agents_dir(self, old_desc: str, new_desc: str):
-        agent_x = self.get_agent_from_agents_dir(_desc=old_desc)
-        agent_x.agent_and_idearoot_desc_edit(new_desc=new_desc)
-        self.save_agentunit_obj_to_agents_dir(agent_x=agent_x)
-        self.del_agentunit_from_agents_dir(agent_x_desc=old_desc)
+    def rename_calendar_in_calendars_dir(self, old_desc: str, new_desc: str):
+        calendar_x = self.get_calendar_from_calendars_dir(_desc=old_desc)
+        calendar_x.calendar_and_idearoot_desc_edit(new_desc=new_desc)
+        self.save_calendarunit_obj_to_calendars_dir(calendar_x=calendar_x)
+        self.del_calendarunit_from_calendars_dir(calendar_x_desc=old_desc)
 
-    def del_agentunit_from_agents_dir(self, agent_x_desc: str):
-        x_func_delete_dir(f"{self.get_agents_dir()}/{agent_x_desc}.json")
+    def del_calendarunit_from_calendars_dir(self, calendar_x_desc: str):
+        x_func_delete_dir(f"{self.get_calendars_dir()}/{calendar_x_desc}.json")
 
-    def save_agentunit_obj_to_agents_dir(self, agent_x: AgentUnit):
+    def save_calendarunit_obj_to_calendars_dir(self, calendar_x: CalendarUnit):
         x_func_save_file(
-            dest_dir=self.get_agents_dir(),
-            file_name=f"{agent_x._desc}.json",
-            file_text=agent_x.get_json(),
+            dest_dir=self.get_calendars_dir(),
+            file_name=f"{calendar_x._desc}.json",
+            file_text=calendar_x.get_json(),
         )
 
-    def reload_all_persons_src_agentunits(self):
+    def reload_all_persons_src_calendarunits(self):
         for person_x in self._personunits.values():
-            person_x.receive_all_src_agentunit_files()
+            person_x.receive_all_src_calendarunit_files()
 
-    def get_agents_dir_file_names_list(self):
-        return list(x_func_dir_files(dir_path=self.get_agents_dir()).keys())
+    def get_calendars_dir_file_names_list(self):
+        return list(x_func_dir_files(dir_path=self.get_calendars_dir()).keys())
 
-    def get_agents_dir_list_of_obj(self):
-        agents_list = []
+    def get_calendars_dir_list_of_obj(self):
+        calendars_list = []
 
-        for file_name in self.get_agents_dir_file_names_list():
-            agent_json = x_func_open_file(
-                dest_dir=self.get_agents_dir(), file_name=file_name
+        for file_name in self.get_calendars_dir_file_names_list():
+            calendar_json = x_func_open_file(
+                dest_dir=self.get_calendars_dir(), file_name=file_name
             )
-            agents_list.append(get_agent_from_json(lw_json=agent_json))
+            calendars_list.append(get_calendar_from_json(lw_json=calendar_json))
 
-        return agents_list
+        return calendars_list
 
-    # agents_dir to person_agents_dir management
-    def _person_receive_src_agentunit_obj(
+    # calendars_dir to person_calendars_dir management
+    def _person_receive_src_calendarunit_obj(
         self,
         personunit: PersonUnit,
-        agentunit: AgentUnit,
+        calendarunit: CalendarUnit,
         link_type: str = None,
         weight: float = None,
-        ignore_agent: AgentUnit = None,
+        ignore_calendar: CalendarUnit = None,
     ):
-        personunit.receive_src_agentunit_obj(
-            agent_x=agentunit, link_type=link_type, agentlink_weight=weight
+        personunit.receive_src_calendarunit_obj(
+            calendar_x=calendarunit, link_type=link_type, calendarlink_weight=weight
         )
-        if link_type == "ignore" and ignore_agent != None:
-            personunit.set_ignore_agent_file(
-                agentunit=ignore_agent, src_agent_desc=agentunit._desc
+        if link_type == "ignore" and ignore_calendar != None:
+            personunit.set_ignore_calendar_file(
+                calendarunit=ignore_calendar, src_calendar_desc=calendarunit._desc
             )
 
-    def _person_delete_src_agentunit_obj(
-        self, personunit: PersonUnit, agentunit_desc: str
+    def _person_delete_src_calendarunit_obj(
+        self, personunit: PersonUnit, calendarunit_desc: str
     ):
-        personunit.delete_agentlink(agent_desc=agentunit_desc)
+        personunit.delete_calendarlink(calendar_desc=calendarunit_desc)
 
-    def create_agentlink_to_saved_agent(
+    def create_calendarlink_to_saved_calendar(
         self,
         person_name: str,
-        agent_desc: str,
+        calendar_desc: str,
         link_type: str = None,
         weight: float = None,
-        ignore_agent: AgentUnit = None,
+        ignore_calendar: CalendarUnit = None,
     ):
         person_x = self.get_person_obj_from_system(name=person_name)
-        agent_x = self.get_agent_from_agents_dir(_desc=agent_desc)
-        self._person_receive_src_agentunit_obj(
+        calendar_x = self.get_calendar_from_calendars_dir(_desc=calendar_desc)
+        self._person_receive_src_calendarunit_obj(
             personunit=person_x,
-            agentunit=agent_x,
+            calendarunit=calendar_x,
             link_type=link_type,
             weight=weight,
-            ignore_agent=ignore_agent,
+            ignore_calendar=ignore_calendar,
         )
 
-    def create_agentlink_to_generated_agent(
+    def create_calendarlink_to_generated_calendar(
         self,
         person_name: str,
-        agent_desc: str,
+        calendar_desc: str,
         link_type: str = None,
         weight: float = None,
     ):
         person_x = self.get_person_obj_from_system(name=person_name)
-        agent_x = AgentUnit(_desc=agent_desc)
-        self._person_receive_src_agentunit_obj(
-            personunit=person_x, agentunit=agent_x, link_type=link_type, weight=weight
-        )
-
-    def update_agentlink(self, person_name: str, agentlink: AgentLink):
-        person_x = self.get_person_obj_from_system(name=person_name)
-        agent_x = self.get_agent_from_agents_dir(_desc=agentlink.agent_desc)
-        self._person_receive_src_agentunit_obj(
+        calendar_x = CalendarUnit(_desc=calendar_desc)
+        self._person_receive_src_calendarunit_obj(
             personunit=person_x,
-            agentunit=agent_x,
-            link_type=agentlink.link_type,
-            weight=agentlink.weight,
+            calendarunit=calendar_x,
+            link_type=link_type,
+            weight=weight,
         )
 
-    def del_agentlink(self, person_name: str, agentunit_desc: str):
+    def update_calendarlink(self, person_name: str, calendarlink: CalendarLink):
         person_x = self.get_person_obj_from_system(name=person_name)
-        agent_x = self.get_agent_from_agents_dir(_desc=agentunit_desc)
-        self._person_delete_src_agentunit_obj(
+        calendar_x = self.get_calendar_from_calendars_dir(
+            _desc=calendarlink.calendar_desc
+        )
+        self._person_receive_src_calendarunit_obj(
             personunit=person_x,
-            agentunit_desc=agentunit_desc,
+            calendarunit=calendar_x,
+            link_type=calendarlink.link_type,
+            weight=calendarlink.weight,
         )
 
-    # Person dest_agent
-    def get_person_dest_agent_from_digest_agent_files(
+    def del_calendarlink(self, person_name: str, calendarunit_desc: str):
+        person_x = self.get_person_obj_from_system(name=person_name)
+        calendar_x = self.get_calendar_from_calendars_dir(_desc=calendarunit_desc)
+        self._person_delete_src_calendarunit_obj(
+            personunit=person_x,
+            calendarunit_desc=calendarunit_desc,
+        )
+
+    # Person dest_calendar
+    def get_person_dest_calendar_from_digest_calendar_files(
         self, person_name: str
-    ) -> AgentUnit:
+    ) -> CalendarUnit:
         person_x = self.get_person_obj_from_system(name=person_name)
-        return person_x.get_dest_agent_from_digest_agent_files()
+        return person_x.get_dest_calendar_from_digest_calendar_files()

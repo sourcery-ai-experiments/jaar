@@ -1,6 +1,6 @@
 from src.system.system import SystemUnit
-from src.agent.agent import AgentUnit
-from src.agent.member import memberunit_shop
+from src.calendar.calendar import CalendarUnit
+from src.calendar.member import memberunit_shop
 from src.system.examples.env_kit import (
     get_temp_env_name,
     get_test_systems_dir,
@@ -34,9 +34,9 @@ from src.system.bank_sqlstr import (
     get_table_count_sqlstr,
 )
 from src.system.examples.example_persons import (
-    get_3node_agent,
-    get_6node_agent,
-    get_agent_3CleanNodesRandomWeights,
+    get_3node_calendar,
+    get_6node_calendar,
+    get_calendar_3CleanNodesRandomWeights,
 )
 from src.system.y_func import get_single_result_back
 
@@ -52,21 +52,21 @@ def test_system_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     bob_text = "bob"
     tim_text = "tim"
-    agent_x = AgentUnit(_desc=bob_text)
+    calendar_x = CalendarUnit(_desc=bob_text)
     memberunit_x = memberunit_shop(
         name=tim_text,
-        _agent_credit=0.9,
-        _agent_debt=0.8,
-        _agent_agenda_credit=0.7,
-        _agent_agenda_debt=0.6,
-        _agent_agenda_ratio_credit=0.5,
-        _agent_agenda_ratio_debt=0.4,
+        _calendar_credit=0.9,
+        _calendar_debt=0.8,
+        _calendar_agenda_credit=0.7,
+        _calendar_agenda_debt=0.6,
+        _calendar_agenda_ratio_credit=0.5,
+        _calendar_agenda_ratio_debt=0.4,
         _creditor_active=True,
         _debtor_active=False,
     )
 
     insert_sqlstr = get_ledger_table_insert_sqlstr(
-        agent_x=agent_x, memberunit_x=memberunit_x
+        calendar_x=calendar_x, memberunit_x=memberunit_x
     )
     print(insert_sqlstr)
 
@@ -82,14 +82,14 @@ def test_system_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     # THEN
     ledger_x = ledger_dict.get(tim_text)
-    assert ledger_x.agent_name == bob_text
+    assert ledger_x.calendar_name == bob_text
     assert ledger_x.member_name == tim_text
-    assert ledger_x._agent_credit == 0.9
-    assert ledger_x._agent_debt == 0.8
-    assert ledger_x._agent_agenda_credit == 0.7
-    assert ledger_x._agent_agenda_debt == 0.6
-    assert ledger_x._agent_agenda_ratio_credit == 0.5
-    assert ledger_x._agent_agenda_ratio_debt == 0.4
+    assert ledger_x._calendar_credit == 0.9
+    assert ledger_x._calendar_debt == 0.8
+    assert ledger_x._calendar_agenda_credit == 0.7
+    assert ledger_x._calendar_agenda_debt == 0.6
+    assert ledger_x._calendar_agenda_ratio_credit == 0.5
+    assert ledger_x._calendar_agenda_ratio_debt == 0.4
     assert ledger_x._creditor_active
     assert ledger_x._debtor_active == False
 
@@ -106,7 +106,7 @@ def test_RiverFlowUnit_exists():
 
     # WHEN
     river_flow_x = RiverFlowUnit(
-        currency_agent_name=bob_text,
+        currency_calendar_name=bob_text,
         src_name=None,
         dst_name=tom_text,
         currency_start=currency_onset,
@@ -117,7 +117,7 @@ def test_RiverFlowUnit_exists():
     )
 
     # THEN
-    assert river_flow_x.currency_agent_name == bob_text
+    assert river_flow_x.currency_calendar_name == bob_text
     assert river_flow_x.src_name is None
     assert river_flow_x.dst_name == tom_text
     assert river_flow_x.currency_start == currency_onset
@@ -140,7 +140,7 @@ def test_RiverFlowUnit_flow_returned_WorksCorrectly():
 
     # WHEN
     river_flow_x = RiverFlowUnit(
-        currency_agent_name=bob_text,
+        currency_calendar_name=bob_text,
         src_name=sal_text,
         dst_name=tom_text,
         currency_start=currency_onset,
@@ -149,7 +149,7 @@ def test_RiverFlowUnit_flow_returned_WorksCorrectly():
         parent_flow_num=parent_flow_num,
         river_tree_level=river_tree_level,
     )
-    assert river_flow_x.currency_agent_name != river_flow_x.dst_name
+    assert river_flow_x.currency_calendar_name != river_flow_x.dst_name
 
     # THEN
     assert river_flow_x.flow_returned() == False
@@ -170,36 +170,36 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
 
     bob_text = "bob"
     sal_text = "sal"
-    agent_bob = AgentUnit(_desc=bob_text)
+    calendar_bob = CalendarUnit(_desc=bob_text)
     memberunit_sal = memberunit_shop(
         name=sal_text,
-        _agent_credit=0.9,
-        _agent_debt=0.8,
-        _agent_agenda_credit=0.7,
-        _agent_agenda_debt=0.6,
-        _agent_agenda_ratio_credit=0.5,
-        _agent_agenda_ratio_debt=0.4,
+        _calendar_credit=0.9,
+        _calendar_debt=0.8,
+        _calendar_agenda_credit=0.7,
+        _calendar_agenda_debt=0.6,
+        _calendar_agenda_ratio_credit=0.5,
+        _calendar_agenda_ratio_debt=0.4,
         _creditor_active=True,
         _debtor_active=False,
     )
     insert_sqlstr_sal = get_ledger_table_insert_sqlstr(
-        agent_x=agent_bob, memberunit_x=memberunit_sal
+        calendar_x=calendar_bob, memberunit_x=memberunit_sal
     )
 
     tim_text = "tim"
     memberunit_tim = memberunit_shop(
         name=tim_text,
-        _agent_credit=0.012,
-        _agent_debt=0.017,
-        _agent_agenda_credit=0.077,
-        _agent_agenda_debt=0.066,
-        _agent_agenda_ratio_credit=0.051,
-        _agent_agenda_ratio_debt=0.049,
+        _calendar_credit=0.012,
+        _calendar_debt=0.017,
+        _calendar_agenda_credit=0.077,
+        _calendar_agenda_debt=0.066,
+        _calendar_agenda_ratio_credit=0.051,
+        _calendar_agenda_ratio_debt=0.049,
         _creditor_active=True,
         _debtor_active=False,
     )
     insert_sqlstr_tim = get_ledger_table_insert_sqlstr(
-        agent_x=agent_bob, memberunit_x=memberunit_tim
+        calendar_x=calendar_bob, memberunit_x=memberunit_tim
     )
 
     with e1.get_bank_conn() as bank_conn:
@@ -209,7 +209,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
 
     # WHEN
     river_flow_x = RiverFlowUnit(
-        currency_agent_name=bob_text,
+        currency_calendar_name=bob_text,
         src_name=None,
         dst_name=bob_text,
         currency_start=0.225,
@@ -222,7 +222,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
         river_ledger_x = get_river_ledger_unit(bank_conn, river_flow_x)
 
     # THEN
-    assert river_ledger_x.agent_name == bob_text
+    assert river_ledger_x.calendar_name == bob_text
     assert river_ledger_x.currency_onset == 0.225
     assert river_ledger_x.currency_cease == 0.387
     assert river_ledger_x.river_tree_level == 4
@@ -243,7 +243,7 @@ def test_river_flow_insert_CorrectlyPopulatesTable01(
     sal_text = "sal"
 
     river_flow_unit = RiverFlowUnit(
-        currency_agent_name=bob_text,
+        currency_calendar_name=bob_text,
         src_name=tim_text,
         dst_name=sal_text,
         currency_start=0.2,
@@ -258,14 +258,14 @@ def test_river_flow_insert_CorrectlyPopulatesTable01(
     # WHEN
     with e1.get_bank_conn() as bank_conn:
         bank_conn.execute(insert_sqlstr)
-        river_flows = get_river_flow_dict(bank_conn, currency_agent_name=bob_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=bob_text)
         print(f"{river_flows=}")
 
     # THEN
     print(f"{river_flows.keys()=}")
     # for value in river_flows.values():
     flow_0 = river_flows.get(0)
-    assert flow_0.currency_agent_name == bob_text
+    assert flow_0.currency_calendar_name == bob_text
     assert flow_0.src_name == tim_text
     assert flow_0.dst_name == sal_text
     assert flow_0.currency_start == 0.2
@@ -281,26 +281,26 @@ def test_RiverLedgerUnit_Exists():
     sal_text = "sal"
     tom_text = "tom"
     ledger_unit_01 = LedgerUnit(
-        agent_name=bob_text,
+        calendar_name=bob_text,
         member_name=sal_text,
-        _agent_credit=0.66,
-        _agent_debt=0.2,
-        _agent_agenda_credit=0.4,
-        _agent_agenda_debt=0.15,
-        _agent_agenda_ratio_credit=0.5,
-        _agent_agenda_ratio_debt=0.12,
+        _calendar_credit=0.66,
+        _calendar_debt=0.2,
+        _calendar_agenda_credit=0.4,
+        _calendar_agenda_debt=0.15,
+        _calendar_agenda_ratio_credit=0.5,
+        _calendar_agenda_ratio_debt=0.12,
         _creditor_active=True,
         _debtor_active=True,
     )
     ledger_unit_02 = LedgerUnit(
-        agent_name=bob_text,
+        calendar_name=bob_text,
         member_name=tom_text,
-        _agent_credit=0.05,
-        _agent_debt=0.09,
-        _agent_agenda_credit=0.055,
-        _agent_agenda_debt=0.0715,
-        _agent_agenda_ratio_credit=0.00995,
-        _agent_agenda_ratio_debt=0.00012,
+        _calendar_credit=0.05,
+        _calendar_debt=0.09,
+        _calendar_agenda_credit=0.055,
+        _calendar_agenda_debt=0.0715,
+        _calendar_agenda_ratio_credit=0.00995,
+        _calendar_agenda_ratio_debt=0.00012,
         _creditor_active=True,
         _debtor_active=True,
     )
@@ -311,7 +311,7 @@ def test_RiverLedgerUnit_Exists():
 
     # WHEN
     river_ledger_unit = RiverLedgerUnit(
-        agent_name=bob_text,
+        calendar_name=bob_text,
         currency_onset=0.6,
         currency_cease=0.8,
         _ledgers=ledger_dict,
@@ -320,7 +320,7 @@ def test_RiverLedgerUnit_Exists():
     )
 
     # THEN
-    assert river_ledger_unit.agent_name == bob_text
+    assert river_ledger_unit.calendar_name == bob_text
     assert river_ledger_unit.currency_onset == 0.6
     assert river_ledger_unit.currency_cease == 0.8
     assert river_ledger_unit.river_tree_level == 7
@@ -341,34 +341,34 @@ def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
     tom_text = "tom"
     sal_text = "sal"
 
-    agent_bob = AgentUnit(_desc=bob_text)
+    calendar_bob = CalendarUnit(_desc=bob_text)
     memberunit_tom = memberunit_shop(
         name=tom_text,
-        _agent_credit=0.9,
-        _agent_debt=0.8,
-        _agent_agenda_credit=0.7,
-        _agent_agenda_debt=0.6,
-        _agent_agenda_ratio_credit=0.5,
-        _agent_agenda_ratio_debt=0.411,
+        _calendar_credit=0.9,
+        _calendar_debt=0.8,
+        _calendar_agenda_credit=0.7,
+        _calendar_agenda_debt=0.6,
+        _calendar_agenda_ratio_credit=0.5,
+        _calendar_agenda_ratio_debt=0.411,
         _creditor_active=True,
         _debtor_active=False,
     )
     insert_sqlstr_tom = get_ledger_table_insert_sqlstr(
-        agent_x=agent_bob, memberunit_x=memberunit_tom
+        calendar_x=calendar_bob, memberunit_x=memberunit_tom
     )
     memberunit_sal = memberunit_shop(
         name=sal_text,
-        _agent_credit=0.9,
-        _agent_debt=0.8,
-        _agent_agenda_credit=0.7,
-        _agent_agenda_debt=0.6,
-        _agent_agenda_ratio_credit=0.5,
-        _agent_agenda_ratio_debt=0.455,
+        _calendar_credit=0.9,
+        _calendar_debt=0.8,
+        _calendar_agenda_credit=0.7,
+        _calendar_agenda_debt=0.6,
+        _calendar_agenda_ratio_credit=0.5,
+        _calendar_agenda_ratio_debt=0.455,
         _creditor_active=True,
         _debtor_active=False,
     )
     insert_sqlstr_sal = get_ledger_table_insert_sqlstr(
-        agent_x=agent_bob, memberunit_x=memberunit_sal
+        calendar_x=calendar_bob, memberunit_x=memberunit_sal
     )
 
     river_flow_1 = RiverFlowUnit(bob_text, bob_text, tom_text, 0.0, 0.2, 0, None, 1)
@@ -389,14 +389,16 @@ def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
         bank_conn.execute(ss0)
 
     # WHEN
-    mstr_sqlstr = get_river_tmember_table_insert_sqlstr(currency_agent_name=bob_text)
+    mstr_sqlstr = get_river_tmember_table_insert_sqlstr(currency_calendar_name=bob_text)
     with e1.get_bank_conn() as bank_conn:
         print(mstr_sqlstr)
         bank_conn.execute(mstr_sqlstr)
 
     # THEN
     with e1.get_bank_conn() as bank_conn:
-        river_tmembers = get_river_tmember_dict(bank_conn, currency_agent_name=bob_text)
+        river_tmembers = get_river_tmember_dict(
+            bank_conn, currency_calendar_name=bob_text
+        )
         print(f"{river_tmembers=}")
 
     assert len(river_tmembers) == 2
@@ -437,19 +439,19 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_agent = AgentUnit(_desc=sal_text)
-    sal_agent.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_agent.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_agent.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
+    sal_calendar = CalendarUnit(_desc=sal_text)
+    sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
+    sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
+    sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
 
-    bob_agent = AgentUnit(_desc=bob_text)
-    bob_agent.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_agent.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
+    bob_calendar = CalendarUnit(_desc=bob_text)
+    bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
+    bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
 
     e1.refresh_bank_metrics()
-    e1.set_river_sphere_for_agent(agent_name=sal_text)
+    e1.set_river_sphere_for_calendar(calendar_name=sal_text)
 
     with e1.get_bank_conn() as bank_conn:
         assert len(get_river_bucket_dict(bank_conn, sal_text)) > 0
@@ -478,48 +480,52 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_agent = AgentUnit(_desc=sal_text)
-    sal_agent.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_agent.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_agent.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
+    sal_calendar = CalendarUnit(_desc=sal_text)
+    sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
+    sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
+    sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
 
-    bob_agent = AgentUnit(_desc=bob_text)
-    bob_agent.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_agent.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
+    bob_calendar = CalendarUnit(_desc=bob_text)
+    bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
+    bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
 
-    tom_agent = AgentUnit(_desc=tom_text)
-    tom_agent.add_memberunit(name=sal_text, creditor_weight=2)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=tom_agent)
+    tom_calendar = CalendarUnit(_desc=tom_text)
+    tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom_calendar)
 
-    ava_agent = AgentUnit(_desc=ava_text)
-    ava_agent.add_memberunit(name=elu_text, creditor_weight=2)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=ava_agent)
+    ava_calendar = CalendarUnit(_desc=ava_text)
+    ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ava_calendar)
 
-    elu_agent = AgentUnit(_desc=elu_text)
-    elu_agent.add_memberunit(name=ava_text, creditor_weight=19)
-    elu_agent.add_memberunit(name=sal_text, creditor_weight=1)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=elu_agent)
+    elu_calendar = CalendarUnit(_desc=elu_text)
+    elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
+    elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu_calendar)
 
     e1.refresh_bank_metrics()
-    e1.set_river_sphere_for_agent(agent_name=sal_text, max_flows_count=100)
+    e1.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=100)
     with e1.get_bank_conn() as bank_conn:
         bank_conn.execute(get_river_bucket_table_delete_sqlstr(sal_text))
-        assert len(get_river_bucket_dict(bank_conn, currency_agent_name=sal_text)) == 0
+        assert (
+            len(get_river_bucket_dict(bank_conn, currency_calendar_name=sal_text)) == 0
+        )
 
     # WHEN / THEN
-    mstr_sqlstr = get_river_bucket_table_insert_sqlstr(currency_agent_name=sal_text)
+    mstr_sqlstr = get_river_bucket_table_insert_sqlstr(currency_calendar_name=sal_text)
     with e1.get_bank_conn() as bank_conn:
         print(mstr_sqlstr)
         bank_conn.execute(mstr_sqlstr)
-        # river_flows = get_river_flow_dict(bank_conn, currency_agent_name=sal_text)
+        # river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
         # for river_flow in river_flows.values():
         #     print(f"{river_flow=}")
 
     # THEN
     with e1.get_bank_conn() as bank_conn:
-        river_buckets = get_river_bucket_dict(bank_conn, currency_agent_name=sal_text)
+        river_buckets = get_river_bucket_dict(
+            bank_conn, currency_calendar_name=sal_text
+        )
         # for river_bucket in river_buckets.values():
         #     print(f"huh {river_bucket=}")
 
@@ -563,7 +569,7 @@ def test_system_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     # WHEN
     water_road = "src,elements,water"
-    water_idea_catalog = IdeaCatalog(agent_name=bob_text, idea_road=water_road)
+    water_idea_catalog = IdeaCatalog(calendar_name=bob_text, idea_road=water_road)
     water_insert_sqlstr = get_idea_catalog_table_insert_sqlstr(water_idea_catalog)
     with e1.get_bank_conn() as bank_conn:
         print(water_insert_sqlstr)
@@ -582,15 +588,15 @@ def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup
     bob_text = "bob"
     sal_text = "sal"
     tim_text = "tim"
-    bob_agent = get_3node_agent()
-    tim_agent = get_6node_agent()
-    sal_agent = get_agent_3CleanNodesRandomWeights()
-    bob_agent.agent_and_idearoot_desc_edit(new_desc=bob_text)
-    tim_agent.agent_and_idearoot_desc_edit(new_desc=tim_text)
-    sal_agent.agent_and_idearoot_desc_edit(new_desc=sal_text)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=tim_agent)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
+    bob_calendar = get_3node_calendar()
+    tim_calendar = get_6node_calendar()
+    sal_calendar = get_calendar_3CleanNodesRandomWeights()
+    bob_calendar.calendar_and_idearoot_desc_edit(new_desc=bob_text)
+    tim_calendar.calendar_and_idearoot_desc_edit(new_desc=tim_text)
+    sal_calendar.calendar_and_idearoot_desc_edit(new_desc=sal_text)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tim_calendar)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
 
     with e1.get_bank_conn() as bank_conn:
         assert get_idea_catalog_table_count(bank_conn, bob_text) == 0
@@ -615,18 +621,18 @@ def test_system_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     sal_text = "sal"
     tim_text = "tim"
     elu_text = "elu"
-    bob_agent = get_3node_agent()
-    tim_agent = get_6node_agent()
-    sal_agent = get_agent_3CleanNodesRandomWeights()
-    elu_agent = get_6node_agent()
-    bob_agent.agent_and_idearoot_desc_edit(new_desc=bob_text)
-    tim_agent.agent_and_idearoot_desc_edit(new_desc=tim_text)
-    sal_agent.agent_and_idearoot_desc_edit(new_desc=sal_text)
-    elu_agent.agent_and_idearoot_desc_edit(new_desc=elu_text)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=tim_agent)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=elu_agent)
+    bob_calendar = get_3node_calendar()
+    tim_calendar = get_6node_calendar()
+    sal_calendar = get_calendar_3CleanNodesRandomWeights()
+    elu_calendar = get_6node_calendar()
+    bob_calendar.calendar_and_idearoot_desc_edit(new_desc=bob_text)
+    tim_calendar.calendar_and_idearoot_desc_edit(new_desc=tim_text)
+    sal_calendar.calendar_and_idearoot_desc_edit(new_desc=sal_text)
+    elu_calendar.calendar_and_idearoot_desc_edit(new_desc=elu_text)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tim_calendar)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu_calendar)
     e1.refresh_bank_metrics()
     i_count_sqlstr = get_table_count_sqlstr("idea_catalog")
     with e1.get_bank_conn() as bank_conn:
@@ -658,7 +664,7 @@ def test_system_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable
 
     # WHEN
     weather_rain = AcptFactCatalog(
-        agent_name=bob_text, base="src,weather", pick="src,weather,rain"
+        calendar_name=bob_text, base="src,weather", pick="src,weather,rain"
     )
     water_insert_sqlstr = get_acptfact_catalog_table_insert_sqlstr(weather_rain)
     with e1.get_bank_conn() as bank_conn:
@@ -678,38 +684,38 @@ def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
     e1.create_dirs_if_null(in_memory_bank=True)
     e1.refresh_bank_metrics()
 
-    # TODO create 3 agents with varying numbers of acpt facts
+    # TODO create 3 calendars with varying numbers of acpt facts
     bob_text = "bob"
     sal_text = "sal"
     tim_text = "tim"
-    bob_agent = get_3node_agent()
-    tim_agent = get_6node_agent()
-    sal_agent = get_agent_3CleanNodesRandomWeights()
-    bob_agent.agent_and_idearoot_desc_edit(new_desc=bob_text)
-    tim_agent.agent_and_idearoot_desc_edit(new_desc=tim_text)
-    sal_agent.agent_and_idearoot_desc_edit(new_desc=sal_text)
+    bob_calendar = get_3node_calendar()
+    tim_calendar = get_6node_calendar()
+    sal_calendar = get_calendar_3CleanNodesRandomWeights()
+    bob_calendar.calendar_and_idearoot_desc_edit(new_desc=bob_text)
+    tim_calendar.calendar_and_idearoot_desc_edit(new_desc=tim_text)
+    sal_calendar.calendar_and_idearoot_desc_edit(new_desc=sal_text)
     c_text = "C"
-    c_road = f"{tim_agent._desc},{c_text}"
+    c_road = f"{tim_calendar._desc},{c_text}"
     f_text = "F"
     f_road = f"{c_road},{f_text}"
     b_text = "B"
-    b_road = f"{tim_agent._desc},{b_text}"
-    # for idea_x in tim_agent._idea_dict.values():
+    b_road = f"{tim_calendar._desc},{b_text}"
+    # for idea_x in tim_calendar._idea_dict.values():
     #     print(f"{f_road=} {idea_x.get_road()=}")
-    tim_agent.set_acptfact(base=c_road, pick=f_road)
+    tim_calendar.set_acptfact(base=c_road, pick=f_road)
 
-    bob_agent.set_acptfact(base=c_road, pick=f_road)
-    bob_agent.set_acptfact(base=b_road, pick=b_road)
+    bob_calendar.set_acptfact(base=c_road, pick=f_road)
+    bob_calendar.set_acptfact(base=b_road, pick=b_road)
 
     casa_text = "casa"
-    casa_road = f"{sal_agent._desc},{casa_text}"
+    casa_road = f"{sal_calendar._desc},{casa_text}"
     cookery_text = "clean cookery"
     cookery_road = f"{casa_road},{cookery_text}"
-    sal_agent.set_acptfact(base=cookery_road, pick=cookery_road)
+    sal_calendar.set_acptfact(base=cookery_road, pick=cookery_road)
 
-    e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=tim_agent)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=sal_agent)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tim_calendar)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
 
     with e1.get_bank_conn() as bank_conn:
         assert get_acptfact_catalog_table_count(bank_conn, bob_text) == 0
@@ -744,7 +750,7 @@ def test_system_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTabl
 
     # WHEN
     bob_group_x = GroupUnitCatalog(
-        agent_name=bob_text,
+        calendar_name=bob_text,
         groupunit_name="US Dollar",
         memberlinks_set_by_system_road="src,USA",
     )
@@ -767,13 +773,13 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     bob_text = "bob"
     tom_text = "tom"
     elu_text = "elu"
-    bob_agent = AgentUnit(_desc=bob_text)
-    tom_agent = AgentUnit(_desc=tom_text)
-    bob_agent.add_memberunit(name=tom_text)
-    tom_agent.add_memberunit(name=bob_text)
-    tom_agent.add_memberunit(name=elu_text)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=bob_agent)
-    e1.save_agentunit_obj_to_agents_dir(agent_x=tom_agent)
+    bob_calendar = CalendarUnit(_desc=bob_text)
+    tom_calendar = CalendarUnit(_desc=tom_text)
+    bob_calendar.add_memberunit(name=tom_text)
+    tom_calendar.add_memberunit(name=bob_text)
+    tom_calendar.add_memberunit(name=elu_text)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom_calendar)
     e1.refresh_bank_metrics()
     sqlstr = get_table_count_sqlstr("groupunit_catalog")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr) == 3
@@ -785,9 +791,9 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
 
     # THEN
     assert len(groupunit_catalog_dict) == 3
-    bob_agent_tom_group = f"{bob_text} {tom_text}"
-    tom_agent_bob_group = f"{tom_text} {bob_text}"
-    tom_agent_elu_group = f"{tom_text} {elu_text}"
-    assert groupunit_catalog_dict.get(bob_agent_tom_group) != None
-    assert groupunit_catalog_dict.get(tom_agent_bob_group) != None
-    assert groupunit_catalog_dict.get(tom_agent_elu_group) != None
+    bob_calendar_tom_group = f"{bob_text} {tom_text}"
+    tom_calendar_bob_group = f"{tom_text} {bob_text}"
+    tom_calendar_elu_group = f"{tom_text} {elu_text}"
+    assert groupunit_catalog_dict.get(bob_calendar_tom_group) != None
+    assert groupunit_catalog_dict.get(tom_calendar_bob_group) != None
+    assert groupunit_catalog_dict.get(tom_calendar_elu_group) != None

@@ -138,15 +138,15 @@ class Ui_MainWindow(object):
         self.acptfacts_table.setHorizontalHeaderItem(4, item)
         item = QtWidgets.QTableWidgetItem()
         self.acptfacts_table.setHorizontalHeaderItem(5, item)
-        self.agent_label = QtWidgets.QLabel(self.centralwidget)
-        self.agent_label.setGeometry(QtCore.QRect(30, 10, 91, 16))
-        self.agent_label.setObjectName("agent_label")
+        self.calendar_label = QtWidgets.QLabel(self.centralwidget)
+        self.calendar_label.setGeometry(QtCore.QRect(30, 10, 91, 16))
+        self.calendar_label.setObjectName("calendar_label")
         self.lw_desc_update_button = QtWidgets.QPushButton(self.centralwidget)
         self.lw_desc_update_button.setGeometry(QtCore.QRect(310, 10, 101, 21))
         self.lw_desc_update_button.setObjectName("lw_desc_update_button")
-        self.agent_desc = QtWidgets.QLineEdit(self.centralwidget)
-        self.agent_desc.setGeometry(QtCore.QRect(100, 10, 201, 22))
-        self.agent_desc.setObjectName("agent_desc")
+        self.calendar_desc = QtWidgets.QLineEdit(self.centralwidget)
+        self.calendar_desc.setGeometry(QtCore.QRect(100, 10, 201, 22))
+        self.calendar_desc.setObjectName("calendar_desc")
         self.label_agenda_day_header = QtWidgets.QLabel(self.centralwidget)
         self.label_agenda_day_header.setGeometry(QtCore.QRect(30, 500, 91, 31))
         font = QtGui.QFont()
@@ -165,17 +165,17 @@ class Ui_MainWindow(object):
         font.setPointSize(20)
         self.label_agenda_end_header.setFont(font)
         self.label_agenda_end_header.setObjectName("label_agenda_end_header")
-        self.label_agenda_agent_importance_header1 = QtWidgets.QLabel(
+        self.label_agenda_calendar_importance_header1 = QtWidgets.QLabel(
             self.centralwidget
         )
-        self.label_agenda_agent_importance_header1.setGeometry(
+        self.label_agenda_calendar_importance_header1.setGeometry(
             QtCore.QRect(30, 640, 91, 31)
         )
         font = QtGui.QFont()
         font.setPointSize(11)
-        self.label_agenda_agent_importance_header1.setFont(font)
-        self.label_agenda_agent_importance_header1.setObjectName(
-            "label_agenda_agent_importance_header1"
+        self.label_agenda_calendar_importance_header1.setFont(font)
+        self.label_agenda_calendar_importance_header1.setObjectName(
+            "label_agenda_calendar_importance_header1"
         )
         self.label_agenda_family_header1 = QtWidgets.QLabel(self.centralwidget)
         self.label_agenda_family_header1.setGeometry(QtCore.QRect(30, 700, 81, 31))
@@ -205,17 +205,17 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         self.label_agenda_family_header2.setFont(font)
         self.label_agenda_family_header2.setObjectName("label_agenda_family_header2")
-        self.label_agenda_agent_importance_header2 = QtWidgets.QLabel(
+        self.label_agenda_calendar_importance_header2 = QtWidgets.QLabel(
             self.centralwidget
         )
-        self.label_agenda_agent_importance_header2.setGeometry(
+        self.label_agenda_calendar_importance_header2.setGeometry(
             QtCore.QRect(30, 660, 101, 31)
         )
         font = QtGui.QFont()
         font.setPointSize(11)
-        self.label_agenda_agent_importance_header2.setFont(font)
-        self.label_agenda_agent_importance_header2.setObjectName(
-            "label_agenda_agent_importance_header2"
+        self.label_agenda_calendar_importance_header2.setFont(font)
+        self.label_agenda_calendar_importance_header2.setObjectName(
+            "label_agenda_calendar_importance_header2"
         )
         self.label_agenda_idea_id_data = QtWidgets.QLabel(self.centralwidget)
         self.label_agenda_idea_id_data.setGeometry(QtCore.QRect(130, 750, 221, 41))
@@ -233,17 +233,19 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.label_agenda_family_data.setFont(font)
         self.label_agenda_family_data.setObjectName("label_agenda_family_data")
-        self.label_agenda_agent_importance_data = QtWidgets.QLabel(self.centralwidget)
-        self.label_agenda_agent_importance_data.setGeometry(
+        self.label_agenda_calendar_importance_data = QtWidgets.QLabel(
+            self.centralwidget
+        )
+        self.label_agenda_calendar_importance_data.setGeometry(
             QtCore.QRect(130, 650, 221, 41)
         )
         font = QtGui.QFont()
         font.setPointSize(22)
         font.setBold(True)
         font.setWeight(75)
-        self.label_agenda_agent_importance_data.setFont(font)
-        self.label_agenda_agent_importance_data.setObjectName(
-            "label_agenda_agent_importance_data"
+        self.label_agenda_calendar_importance_data.setFont(font)
+        self.label_agenda_calendar_importance_data.setObjectName(
+            "label_agenda_calendar_importance_data"
         )
         self.label_agenda_end_data = QtWidgets.QLabel(self.centralwidget)
         self.label_agenda_end_data.setGeometry(QtCore.QRect(130, 610, 221, 31))
@@ -371,7 +373,7 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "TextLabel"))
         self.settings_button.setText(_translate("MainWindow", "Settings"))
         self.editmain_button.setText(
-            _translate("MainWindow", "Agents /  Member /  dimension")
+            _translate("MainWindow", "Calendars /  Member /  dimension")
         )
         self.root_datetime_prev_update.setText(
             _translate("MainWindow", "Update Lowerbound DateTime to next midnight")
@@ -427,23 +429,23 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Open"))
         item = self.acptfacts_table.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "Close"))
-        self.agent_label.setText(_translate("MainWindow", "AGENT: "))
+        self.calendar_label.setText(_translate("MainWindow", "CALENDAR: "))
         self.lw_desc_update_button.setText(_translate("MainWindow", "Update"))
         self.label_agenda_day_header.setText(_translate("MainWindow", "Day:"))
         self.label_agenda_time_header.setText(_translate("MainWindow", "Time:"))
         self.label_agenda_end_header.setText(_translate("MainWindow", "End:"))
-        self.label_agenda_agent_importance_header1.setText(
+        self.label_agenda_calendar_importance_header1.setText(
             _translate("MainWindow", "root_relative")
         )
         self.label_agenda_family_header1.setText(_translate("MainWindow", "Agenda"))
         self.label_agenda_idea_id_header.setText(_translate("MainWindow", "Idea_id:"))
         self.label_agenda_family_header2.setText(_translate("MainWindow", "Family:"))
-        self.label_agenda_agent_importance_header2.setText(
+        self.label_agenda_calendar_importance_header2.setText(
             _translate("MainWindow", "weight:")
         )
         self.label_agenda_idea_id_data.setText(_translate("MainWindow", "Idea_id:"))
         self.label_agenda_family_data.setText(_translate("MainWindow", "Agenda"))
-        self.label_agenda_agent_importance_data.setText(
+        self.label_agenda_calendar_importance_data.setText(
             _translate("MainWindow", "weight:")
         )
         self.label_agenda_end_data.setText(_translate("MainWindow", "End:"))
