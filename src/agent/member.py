@@ -49,7 +49,6 @@ class MemberUnit(MemberCore):
     uid: int = None
     creditor_weight: int = None
     debtor_weight: int = None
-    external_name: str = None
     _agent_credit: float = None
     _agent_debt: float = None
     _agent_agenda_credit: float = None
@@ -61,10 +60,6 @@ class MemberUnit(MemberCore):
     _memberrings: dict[MemberName:MemberRing] = None
     _bank_tax_paid: float = None
     _bank_tax_diff: float = None
-
-    def __post_init__(self):
-        if self.external_name is None:
-            self.external_name = str(self.name)
 
     def clear_banking_data(self):
         self._bank_tax_paid = None
@@ -93,7 +88,6 @@ class MemberUnit(MemberCore):
             "_creditor_active": self._creditor_active,
             "_debtor_active": self._debtor_active,
             "_memberrings": self.get_memberrings_dict(),
-            "external_name": self.external_name,
             "_bank_tax_paid": self._bank_tax_paid,
             "_bank_tax_diff": self._bank_tax_diff,
         }
@@ -196,11 +190,6 @@ def memberunits_get_from_dict(x_dict: dict) -> dict[str:MemberUnit]:
             memberrings = {}
 
         try:
-            external_name = memberunits_dict["external_name"]
-        except KeyError:
-            external_name = {}
-
-        try:
             _bank_tax_paid = memberunits_dict["_bank_tax_paid"]
         except KeyError:
             _bank_tax_paid = None
@@ -218,7 +207,6 @@ def memberunits_get_from_dict(x_dict: dict) -> dict[str:MemberUnit]:
             _creditor_active=memberunits_dict["_creditor_active"],
             _debtor_active=memberunits_dict["_debtor_active"],
             _memberrings=memberrings_get_from_dict(x_dict=memberrings),
-            external_name=external_name,
             _bank_tax_paid=_bank_tax_paid,
             _bank_tax_diff=_bank_tax_diff,
         )
@@ -240,7 +228,6 @@ def memberunit_shop(
     _agent_agenda_debt: float = None,
     _agent_agenda_ratio_credit: float = None,
     _agent_agenda_ratio_debt: float = None,
-    external_name: str = None,
     _bank_tax_paid: float = None,
     _bank_tax_diff: float = None,
 ) -> MemberUnit:
@@ -260,7 +247,6 @@ def memberunit_shop(
         _agent_agenda_ratio_credit=_agent_agenda_ratio_credit,
         _agent_agenda_ratio_debt=_agent_agenda_ratio_debt,
         _memberrings=final_memberrings,
-        external_name=external_name,
         _bank_tax_paid=_bank_tax_paid,
         _bank_tax_diff=_bank_tax_diff,
     )
@@ -358,7 +344,6 @@ def memberlink_shop(
 
 @dataclass
 class MemberUnitExternalMetrics:
-    external_name: str = None
     internal_name: MemberName = None
     creditor_active: bool = None
     debtor_active: bool = None

@@ -36,7 +36,6 @@ def test_memberrings_get_dict_ReturnsDictWithNecessaryDataForJSON():
 def test_memberrings_get_from_JSON_SimpleExampleWorks():
     marie_str = "Marie"
     marie_json_dict = {marie_str: {"name": marie_str}}
-    # marie_json_dict = {marie_str: {"name": marie_str, "external_name": marie_str}}
     marie_json_str = x_get_json(dict_x=marie_json_dict)
     assert x_is_json(json_x=marie_json_str)
 
@@ -70,7 +69,6 @@ def test_MemberUnit_exists():
     assert bob_member._creditor_active is None
     assert bob_member._debtor_active is None
     assert bob_member._memberrings is None
-    assert bob_member.external_name == bob_name
     assert bob_member._bank_tax_paid is None
     assert bob_member._bank_tax_diff is None
 
@@ -304,7 +302,6 @@ def test_MemberUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         "_creditor_active": False,
         "_debtor_active": True,
         "_memberrings": {"glen": {"name": "glen"}},
-        "external_name": bob_str,
         "_bank_tax_paid": bank_tax_paid,
         "_bank_tax_diff": bank_tax_diff,
     }
@@ -312,7 +309,6 @@ def test_MemberUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
 
 def test_MemberUnisshop_get_from_JSON_SimpleExampleWorks():
     cersei_name = MemberName("Cersei")
-    cersei_external = "Cersei Lan"
     member_rings = {cersei_name: {"name": cersei_name}}
     marie_str = "Marie"
     bank_tax_paid = 0.55
@@ -326,7 +322,6 @@ def test_MemberUnisshop_get_from_JSON_SimpleExampleWorks():
             "_creditor_active": False,
             "_debtor_active": True,
             "_memberrings": member_rings,
-            "external_name": cersei_external,
             "_bank_tax_paid": bank_tax_paid,
             "_bank_tax_diff": bank_tax_diff,
         }
