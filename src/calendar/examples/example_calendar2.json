@@ -4993,7 +4993,7 @@
                             "_weight": 1,
                             "promise": true
                         },
-                        "take care of charge card": {
+                        "take care of expenses card": {
                             "_acptfactunits": {},
                             "_addin": null,
                             "_begin": null,
@@ -5006,7 +5006,7 @@
                             },
                             "_close": null,
                             "_denom": null,
-                            "_desc": "take care of charge card",
+                            "_desc": "take care of expenses card",
                             "_is_expanded": true,
                             "_kids": {},
                             "_numeric_road": null,
