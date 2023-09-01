@@ -65,7 +65,7 @@ def test_calendar_get_tree_set_all_idea_uids_unique():
     assert tree_metrics_after.all_idea_uids_are_unique == True
 
 
-def test_calendar_calendar_get_tree_metrics_assigns_uids_correctly():
+def test_calendar_calendar_get_tree_metrics_sets_uids_correctly():
     # GIVEN
     src_text = "testing_lw"
     src_road = src_text
