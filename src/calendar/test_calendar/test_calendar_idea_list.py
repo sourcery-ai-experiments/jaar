@@ -5,7 +5,7 @@ from src.calendar.examples.example_calendars import (
     calendar_v001,
 )
 from src.calendar.idea import IdeaKid
-from src.calendar.required import sufffactunit_shop, RequiredUnit, RequiredHeir
+from src.calendar.required_idea import sufffactunit_shop, RequiredUnit, RequiredHeir
 from src.calendar.road import Road
 from src.calendar.calendar import CalendarUnit
 

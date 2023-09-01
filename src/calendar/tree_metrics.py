@@ -1,5 +1,5 @@
 import dataclasses
-from src.calendar.required import RequiredUnit, Road
+from src.calendar.required_idea import RequiredUnit, Road
 from src.calendar.group import GroupLink, GroupName, GroupMetrics
 
 

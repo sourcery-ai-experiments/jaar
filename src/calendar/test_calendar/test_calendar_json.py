@@ -1,5 +1,5 @@
 import contextlib
-from src.calendar.required import acptfactunit_shop
+from src.calendar.required_idea import acptfactunit_shop
 from src.calendar.examples.example_calendars import (
     calendar_v001 as example_calendars_calendar_v001,
     get_calendar_x1_3levels_1required_1acptfacts as example_calendars_get_calendar_x1_3levels_1required_1acptfacts,

@@ -1,4 +1,4 @@
-from src.calendar.required import (
+from src.calendar.required_idea import (
     AcptFactUnit,
     acptfactunit_shop,
     acptfactheir_shop,

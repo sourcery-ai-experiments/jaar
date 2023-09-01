@@ -1,5 +1,5 @@
 from src.calendar.idea import IdeaKid
-from src.calendar.required import (
+from src.calendar.required_idea import (
     acptfactunit_shop,
     sufffactunit_shop,
     RequiredUnit,

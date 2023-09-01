@@ -1,5 +1,5 @@
 import dataclasses
-from src.calendar.required import (
+from src.calendar.required_idea import (
     AcptFactCore,
     AcptFactHeir,
     acptfactheir_shop,

@@ -6,7 +6,7 @@ from PyQt5 import QtWidgets as qtw, QtCore
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1, QTableWidget as qtw0
 from src.calendar.hreg_time import SuffFactUnitHregTime
 from src.calendar.group import GroupLink, GroupName
-from src.calendar.required import Road
+from src.calendar.required_idea import Road
 from src.calendar.hreg_time import get_24hr, get_60min
 from src.pyqt5_kit.pyqt_func import (
     num2str,

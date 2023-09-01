@@ -1,7 +1,7 @@
 from src.calendar.group import GroupName, grouplink_shop, groupunit_shop
 from src.calendar.member import MemberName, memberunit_shop, memberlink_shop
 from src.calendar.idea import IdeaKid
-from src.calendar.required import Road
+from src.calendar.required_idea import Road
 from src.calendar.examples.example_calendars import (
     calendar_v001 as examples_calendar_v001,
 )

@@ -1,4 +1,4 @@
-from src.calendar.required import SuffFactUnit
+from src.calendar.required_idea import SuffFactUnit
 from src.calendar.hreg_time import SuffFactUnitHregTime
 from pytest import raises as pytest_raises
 

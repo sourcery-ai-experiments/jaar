@@ -6,7 +6,7 @@ from src.calendar.calendar import (
 from src.calendar.examples.get_calendar_examples_dir import get_calendar_examples_dir
 from src.calendar.idea import IdeaCore, IdeaKid
 from src.calendar.road import Road
-from src.calendar.required import RequiredUnit
+from src.calendar.required_idea import RequiredUnit
 from src.calendar.member import memberlink_shop
 from src.calendar.group import groupunit_shop, grouplink_shop
 from src.calendar.examples.example_calendars import (

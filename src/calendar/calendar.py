@@ -19,7 +19,7 @@ from src.calendar.group import (
     groupunit_shop,
     grouplink_shop,
 )
-from src.calendar.required import (
+from src.calendar.required_idea import (
     AcptFactCore,
     AcptFactUnit,
     AcptFactUnit,

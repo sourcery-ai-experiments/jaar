@@ -1,4 +1,4 @@
-from src.calendar.required import acptfactunit_shop
+from src.calendar.required_idea import acptfactunit_shop
 from src.calendar.lemma import Lemma, Lemmas
 from src.calendar.idea import IdeaKid
 

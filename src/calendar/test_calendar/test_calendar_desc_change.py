@@ -4,7 +4,7 @@ from src.calendar.examples.example_calendars import (
     get_calendar_with_4_levels_and_2requireds_2acptfacts,
 )
 from pytest import raises as pytest_raises
-from src.calendar.required import Road, AcptFactUnit
+from src.calendar.required_idea import Road, AcptFactUnit
 
 
 def test_idea_desc_fails_when_idea_does_not_exist():

@@ -1,6 +1,6 @@
 from src.calendar.idea import IdeaCore
 from src.calendar.group import GroupName, grouplink_shop, groupheir_shop
-from src.calendar.required import (
+from src.calendar.required_idea import (
     RequiredUnit,
     RequiredHeir,
     acptfactunit_shop,

@@ -1,4 +1,4 @@
-from src.calendar.required import SuffFactStatusFinder
+from src.calendar.required_idea import SuffFactStatusFinder
 from pytest import raises as pytest_raises
 
 

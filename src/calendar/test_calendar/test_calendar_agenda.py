@@ -3,7 +3,7 @@ from src.calendar.calendar import CalendarUnit, get_from_json
 from src.calendar.examples.get_calendar_examples_dir import get_calendar_examples_dir
 from src.calendar.idea import IdeaCore, IdeaKid
 from src.calendar.road import Road
-from src.calendar.required import RequiredUnit, SuffFactStatusFinder
+from src.calendar.required_idea import RequiredUnit, SuffFactStatusFinder
 from src.calendar.group import groupunit_shop, grouplink_shop
 from src.calendar.examples.example_calendars import (
     get_calendar_with_4_levels as example_calendars_get_calendar_with_4_levels,

@@ -1,6 +1,6 @@
 from src.calendar.examples.example_calendars import get_calendar_with_4_levels
 from src.calendar.idea import IdeaKid
-from src.calendar.required import RequiredUnit, acptfactunit_shop
+from src.calendar.required_idea import RequiredUnit, acptfactunit_shop
 from src.calendar.calendar import CalendarUnit
 from src.calendar.group import grouplink_shop
 from pytest import raises as pytest_raises

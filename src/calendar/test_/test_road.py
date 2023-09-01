@@ -10,7 +10,7 @@ from src.calendar.road import (
     road_validate,
     get_ancestor_roads,
 )
-from src.calendar.required import sufffactunit_shop
+from src.calendar.required_idea import sufffactunit_shop
 from src.calendar.idea import IdeaCore
 from pytest import raises as pytest_raises
 
