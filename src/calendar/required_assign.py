@@ -89,19 +89,17 @@ class AssignedHeir:
                 calendar_groups=calendar_groups,
                 groupname_dict=assignunit._suffgroups,
             )
-            # if all_assignedunit_members is subset of all_parent_assignedheir_members
-            if set(all_assignedunit_members).issubset(
+            if not set(all_assignedunit_members).issubset(
                 set(all_parent_assignedheir_members)
             ):
-                # set dict_x = to assignedunit groups
-                for suffgroup in assignunit._suffgroups.keys():
-                    dict_x[suffgroup] = -1
-            else:
                 # else raise error
                 raise InvalidAssignHeirPopulateException(
                     f"parent_assigned_heir does not contain all members of the idea's assigned_unit\n{set(all_parent_assignedheir_members)=}\n\n{set(all_assignedunit_members)=}"
                 )
 
+            # set dict_x = to assignedunit groups
+            for suffgroup in assignunit._suffgroups.keys():
+                dict_x[suffgroup] = -1
         self._suffgroups = dict_x
 
 
