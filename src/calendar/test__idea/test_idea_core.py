@@ -40,6 +40,10 @@ def test_idea_core_exists():
     assert new_obj._calendar_importance is None
     assert new_obj._calendar_coin_onset is None
     assert new_obj._calendar_coin_cease is None
+    assert new_obj._requiredunits is None
+    assert new_obj._requiredheirs is None
+    assert new_obj._assignedunits is None
+    assert new_obj._assignedheirs is None
 
 
 def test_idea_core_get_key_road_works():

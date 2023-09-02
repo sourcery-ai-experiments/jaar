@@ -116,6 +116,8 @@ class IdeaCore:
     _level: int = None
     _requiredunits: dict[Road:RequiredUnit] = None
     _requiredheirs: dict[Road:RequiredHeir] = None
+    _assignedunits: dict[GroupName:] = None
+    _assignedheirs: dict[GroupName:] = None
     _calendar_importance: float = None
     _calendar_coin_onset: float = None
     _calendar_coin_cease: float = None
