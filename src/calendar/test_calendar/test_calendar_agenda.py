@@ -5,6 +5,8 @@ from src.calendar.idea import IdeaCore, IdeaKid
 from src.calendar.road import Road
 from src.calendar.required_idea import RequiredUnit, SuffFactStatusFinder
 from src.calendar.group import groupunit_shop, grouplink_shop
+from src.calendar.member import memberlink_shop
+from src.calendar.required_assign import assigned_unit_shop
 from src.calendar.examples.example_calendars import (
     get_calendar_with_4_levels as example_calendars_get_calendar_with_4_levels,
     get_calendar_with_4_levels_and_2requireds as example_calendars_get_calendar_with_4_levels_and_2requireds,
@@ -752,3 +754,63 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
     print(f"  {segr_obj.sufffact_open_trans=}  {segr_obj.sufffact_nigh_trans=}")
     print(f"  {segr_obj._active_status=}  {segr_obj._task_status=}")
     assert get_tasks_count(action_idea_list) == 64
+
+
+def test_agenda_IsSetByAssignedUnit_1MemberGroup():
+    # GIVEN
+    bob_text = "bob"
+    cx = CalendarUnit(_owner=bob_text, _weight=10)
+    work_text = "work"
+    work_road = f"{bob_text},{work_text}"
+    cx.add_idea(idea_kid=IdeaKid(_desc=work_text, promise=True), walk=bob_text)
+    assert len(cx.get_agenda_items()) == 1
+
+    sue_text = "sue"
+    cx.add_memberunit(name=sue_text)
+    assigned_unit_sue = assigned_unit_shop()
+    assigned_unit_sue.set_suffgroup(name=sue_text)
+    assert len(cx.get_agenda_items()) == 1
+
+    # WHEN
+    cx.edit_idea_attr(road=work_road, assignedunit=assigned_unit_sue)
+
+    # THEN
+    assert len(cx.get_agenda_items()) == 0
+
+    # WHEN
+    cx.add_memberunit(name=bob_text)
+    assigned_unit_bob = assigned_unit_shop()
+    assigned_unit_bob.set_suffgroup(name=bob_text)
+
+    # WHEN
+    cx.edit_idea_attr(road=work_road, assignedunit=assigned_unit_bob)
+
+    # THEN
+    assert len(cx.get_agenda_items()) == 1
+
+    # agenda_list = cx.get_agenda_items()
+    # print(f"{agenda_list[0]._desc=}")
+
+
+def test_agenda_IsSetByAssignedUnit_2MemberGroup():
+    # # GIVEN
+    # bob_text = "bob"
+    # cx = CalendarUnit(_owner=bob_text, _weight=10)
+    # work_text = "work"
+    # work_road = f"{bob_text},{work_text}"
+    # cx.add_idea(idea_kid=IdeaKid(_desc=work_text, promise=True), walk=bob_text)
+    # assert len(cx.get_agenda_items()) == 1
+
+    # sue_text = "sue"
+    # cx.add_memberunit(name=bob_text)
+    # cx.add_memberunit(name=sue_text)
+
+    # run_text = "runners"
+    # run_group = groupunit_shop(name=run_text)
+    # run_group.set_memberlink(memberlink=memberlink_shop(name=sue_text))
+    # cx.set_groupunit(groupunit=run_group)
+    # agenda_list = cx.get_agenda_items()
+
+    # print(f"{agenda_list[0]._desc=}")
+
+    assert 1 == 2

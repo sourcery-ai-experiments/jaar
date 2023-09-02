@@ -692,12 +692,17 @@ class IdeaCore:
         for lu in self._requiredheirs.values():
             lu.set_status(acptfacts=self._acptfactheirs)
 
-    def set_active_status(self, tree_traverse_count: int):
+    def set_active_status(
+        self,
+        tree_traverse_count: int,
+        calendar_groups: dict[GroupName:GroupUnit] = None,
+        calendar_owner: str = None,
+    ):
+        self.set_acptfactheirs_empty_if_null()
         self.clear_requiredheirs_status()
         prev_to_now_active_status = bool(self._active_status)
         self._active_status = True
         self._task = False
-        self.set_acptfactheirs_empty_if_null()
         self.set_requiredheirs_status()
 
         for requiredheir in self._requiredheirs.values():
@@ -716,6 +721,16 @@ class IdeaCore:
             and self._requiredheirs == {}
         ):
             self._task = True
+
+        if (
+            self._active_status
+            and calendar_groups != None
+            and calendar_owner != None
+            and self._assignedheir._suffgroups != {}
+        ):
+            self._assignedheir.set_group_member(calendar_groups, calendar_owner)
+            if self._assignedheir._group_member == False:
+                self._active_status = False
 
         self.record_active_status_hx(
             tree_traverse_count=tree_traverse_count,

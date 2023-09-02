@@ -105,6 +105,7 @@ def test_calendar_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
     morn_text = "morning"
     morn_road = f"{src_text},{morn_text}"
     x_calendar = CalendarUnit(_owner=src_text)
+    x_calendar.set_groupunit(groupunit=groupunit_shop(run_text))
     x_calendar.add_idea(idea_kid=IdeaKid(_desc=morn_text), walk=src_text)
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(name=run_text)

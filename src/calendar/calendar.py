@@ -72,9 +72,13 @@ class InvalidCalendarException(Exception):
     pass
 
 
+class CalendarOwner(str):
+    pass
+
+
 @dataclasses.dataclass
 class CalendarUnit:
-    _owner: str = None
+    _owner: CalendarOwner = None
     _weight: float = None
     _members: dict[MemberName:MemberUnit] = None
     _groups: dict[GroupName:GroupUnit] = None
@@ -1663,21 +1667,16 @@ class CalendarUnit:
         idea_kid.set_road(parent_road=parent_idea._walk, parent_desc=parent_idea._desc)
         idea_kid.set_acptfactunits_empty_if_null()
         idea_kid.set_acptfactheirs(acptfacts=parent_acptfacts)
-        idea_kid.set_requiredheirs(
-            calendar_idea_dict=self._idea_dict, requiredheirs=parent_requiredheirs
-        )
-        idea_kid.set_assignedheir(
-            parent_assignheir=parent_idea._assignedheir, calendar_groups=self._groups
-        )
-        idea_kid.inherit_groupheirs(parent_groupheirs=parent_idea._groupheirs)
+        idea_kid.set_requiredheirs(self._idea_dict, parent_requiredheirs)
+        idea_kid.set_assignedheir(parent_idea._assignedheir, self._groups)
+        idea_kid.inherit_groupheirs(parent_idea._groupheirs)
         idea_kid.clear_grouplines()
-        idea_kid.set_active_status(tree_traverse_count=self._tree_traverse_count)
+        idea_kid.set_active_status(
+            tree_traverse_count=self._tree_traverse_count,
+            calendar_groups=self._groups,
+            calendar_owner=self._owner,
+        )
         idea_kid.set_sibling_total_weight(parent_idea._kids_total_weight)
-        # idea_kid.set_calendar_importance(
-        #     parent_calendar_importance=parent_idea._calendar_importance,
-        #     coin_onset_x=coin_onset_x,
-        #     parent_coin_cease=parent_idea._calendar_coin_cease,
-        # )
         idea_kid.set_calendar_importance(
             coin_onset_x=coin_onset,
             parent_calendar_importance=parent_idea._calendar_importance,
@@ -1698,11 +1697,9 @@ class CalendarUnit:
         # TODO manage situations where groupheir.creditor_weight is None for all groupheirs
         # TODO manage situations where groupheir.debtor_weight is None for all groupheirs
         if idea.is_groupheirless() == False:
-            self._set_groupunits_calendar_importance(groupheirs=idea._groupheirs)
+            self._set_groupunits_calendar_importance(idea._groupheirs)
         elif idea.is_groupheirless():
-            self._add_to_memberunits_calendar_credit_debt(
-                idea_calendar_importance=idea._calendar_importance
-            )
+            self._add_to_memberunits_calendar_credit_debt(idea._calendar_importance)
 
     def get_calendar_importance(
         self, parent_calendar_importance: float, weight: int, sibling_total_weight: int
