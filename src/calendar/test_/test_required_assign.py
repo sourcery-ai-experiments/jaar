@@ -12,8 +12,7 @@ from src.calendar.required_assign import (
 from src.calendar.group import GroupName, groupunit_shop
 from src.calendar.member import memberlink_shop
 from src.calendar.calendar import CalendarUnit
-
-# from pytest import raises as pytest_raises
+from pytest import raises as pytest_raises
 
 
 def test_AssignedUnit_exists():
@@ -297,8 +296,206 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
     assert assigned_heir_x._group_member == False
 
 
-# def test_AssignedHeir_
-#  tree traverse: Idea.AssignedUnit != None, parent_idea.AssignedHeir is None -> idea.AssignedHeir set by Idea.AssignedUnit
-#  tree traverse: Idea.AssignedUnit is None, parent_idea.AssignedHeir != None -> idea.AssignedHeir set by parent_idea.AssignedHeir
+def test_AssignedHeir_set_suffgroup_AssignedUnitEmpty_ParentAssignedHeirEmpty():
+    # GIVEN
+    assigned_heir_x = assigned_heir_shop(_suffgroups={})
+    parent_assignheir_empty = assigned_heir_shop()
+    assigned_unit_x = assigned_unit_shop()
+
+    # WHEN
+    assigned_heir_x.set_suffgroups(
+        parent_assignheir=parent_assignheir_empty,
+        assignunit=assigned_unit_x,
+        calendar_groups=None,
+    )
+
+    # THEN
+    assigned_heir_x._suffgroups = {}
+
+
+def test_AssignedHeir_set_suffgroup_AssignedUnitNotEmpty_ParentAssignedHeirIsNone():
+    # GIVEN
+    kent_text = "kent"
+    swim_text = "swim"
+    assigned_unit_x = assigned_unit_shop()
+    assigned_unit_x.set_suffgroup(name=kent_text)
+    assigned_unit_x.set_suffgroup(name=swim_text)
+
+    # WHEN
+    assigned_heir_x = assigned_heir_shop()
+    assigned_heir_x.set_suffgroups(
+        parent_assignheir=None, assignunit=assigned_unit_x, calendar_groups=None
+    )
+
+    # THEN
+    assert assigned_heir_x._suffgroups.keys() == assigned_unit_x._suffgroups.keys()
+
+
+def test_AssignedHeir_set_suffgroup_AssignedUnitNotEmpty_ParentAssignedHeirEmpty():
+    # GIVEN
+    kent_text = "kent"
+    swim_text = "swim"
+    assigned_unit_x = assigned_unit_shop()
+    assigned_unit_x.set_suffgroup(name=kent_text)
+    assigned_unit_x.set_suffgroup(name=swim_text)
+
+    # WHEN
+    assigned_heir_x = assigned_heir_shop()
+    parent_assignheir_empty = assigned_heir_shop()
+    assigned_heir_x.set_suffgroups(
+        parent_assignheir_empty, assignunit=assigned_unit_x, calendar_groups=None
+    )
+
+    # THEN
+    assert assigned_heir_x._suffgroups.keys() == assigned_unit_x._suffgroups.keys()
+
+
+def test_AssignedHeir_set_suffgroup_AssignedUnitEmpty_ParentAssignedHeirNotEmpty():
+    # GIVEN
+    kent_text = "kent"
+    swim_text = "swim"
+    assigned_unit_swim = assigned_unit_shop()
+    assigned_unit_swim.set_suffgroup(name=kent_text)
+    assigned_unit_swim.set_suffgroup(name=swim_text)
+    empty_assigned_heir = assigned_heir_shop()
+
+    parent_assigned_heir = assigned_heir_shop()
+    parent_assigned_heir.set_suffgroups(
+        empty_assigned_heir, assigned_unit_swim, calendar_groups=None
+    )
+
+    assigned_unit_empty = assigned_unit_shop()
+
+    # WHEN
+    assigned_heir_x = assigned_heir_shop()
+    assert assigned_heir_x._suffgroups == {}
+    assigned_heir_x.set_suffgroups(
+        parent_assigned_heir, assignunit=assigned_unit_empty, calendar_groups=None
+    )
+
+    # THEN
+    assert assigned_heir_x._suffgroups.keys() == parent_assigned_heir._suffgroups.keys()
+
+
+def test_AssignedHeir_set_suffgroup_AssignedUnitEqualParentAssignedHeir_NonEmpty():
+    # GIVEN
+    kent_text = "kent"
+    swim_text = "swim"
+    assigned_unit_swim = assigned_unit_shop()
+    assigned_unit_swim.set_suffgroup(name=kent_text)
+    assigned_unit_swim.set_suffgroup(name=swim_text)
+    empty_assigned_heir = assigned_heir_shop()
+
+    parent_assigned_heir = assigned_heir_shop()
+    parent_assigned_heir.set_suffgroups(
+        empty_assigned_heir, assigned_unit_swim, calendar_groups=None
+    )
+
+    # WHEN
+    assigned_heir_x = assigned_heir_shop()
+    assert assigned_heir_x._suffgroups == {}
+    assigned_heir_x.set_suffgroups(
+        parent_assigned_heir, assignunit=assigned_unit_swim, calendar_groups=None
+    )
+
+    # THEN
+    assert assigned_heir_x._suffgroups.keys() == parent_assigned_heir._suffgroups.keys()
+
+
+def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqual_ParentAssignedHeir_NonEmpty():
+    # GIVEN
+    jim_text = "jim"
+    sue_text = "sue"
+    bob_text = "bob"
+    tom_text = "tom"
+    c_x = CalendarUnit(_desc=jim_text)
+    c_x.add_memberunit(name=jim_text)
+    c_x.add_memberunit(name=sue_text)
+    c_x.add_memberunit(name=bob_text)
+    c_x.add_memberunit(name=tom_text)
+
+    swim2_text = "swim2"
+    swim2_group = groupunit_shop(name=swim2_text)
+    swim2_group.set_memberlink(memberlink=memberlink_shop(name=jim_text))
+    swim2_group.set_memberlink(memberlink=memberlink_shop(name=sue_text))
+    c_x.set_groupunit(groupunit=swim2_group)
+
+    swim3_text = "swim3"
+    swim3_group = groupunit_shop(name=swim3_text)
+    swim3_group.set_memberlink(memberlink=memberlink_shop(name=jim_text))
+    swim3_group.set_memberlink(memberlink=memberlink_shop(name=sue_text))
+    swim3_group.set_memberlink(memberlink=memberlink_shop(name=tom_text))
+    c_x.set_groupunit(groupunit=swim3_group)
+
+    parent_assigned_unit = assigned_unit_shop()
+    parent_assigned_unit.set_suffgroup(name=swim3_text)
+    parent_assigned_heir = assigned_heir_shop()
+    parent_assigned_heir.set_suffgroups(
+        parent_assignheir=None, assignunit=parent_assigned_unit, calendar_groups=None
+    )
+
+    assigned_unit_swim2 = assigned_unit_shop()
+    assigned_unit_swim2.set_suffgroup(name=swim2_text)
+
+    # WHEN
+    assigned_heir_x = assigned_heir_shop()
+    assigned_heir_x.set_suffgroups(
+        parent_assigned_heir, assigned_unit_swim2, calendar_groups=c_x._groups
+    )
+
+    # THEN
+    assert assigned_heir_x._suffgroups.keys() == assigned_unit_swim2._suffgroups.keys()
+    assert len(assigned_heir_x._suffgroups.keys()) == 1
+    assert list(assigned_heir_x._suffgroups) == [swim2_text]
+
+
+def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqualParentAssignedHeir_RaisesError():
+    # GIVEN
+    jim_text = "jim"
+    sue_text = "sue"
+    bob_text = "bob"
+    tom_text = "tom"
+    c_x = CalendarUnit(_desc=jim_text)
+    c_x.add_memberunit(name=jim_text)
+    c_x.add_memberunit(name=sue_text)
+    c_x.add_memberunit(name=bob_text)
+    c_x.add_memberunit(name=tom_text)
+
+    swim2_text = "swim2"
+    swim2_group = groupunit_shop(name=swim2_text)
+    swim2_group.set_memberlink(memberlink=memberlink_shop(name=jim_text))
+    swim2_group.set_memberlink(memberlink=memberlink_shop(name=sue_text))
+    c_x.set_groupunit(groupunit=swim2_group)
+
+    swim3_text = "swim3"
+    swim3_group = groupunit_shop(name=swim3_text)
+    swim3_group.set_memberlink(memberlink=memberlink_shop(name=jim_text))
+    swim3_group.set_memberlink(memberlink=memberlink_shop(name=sue_text))
+    swim3_group.set_memberlink(memberlink=memberlink_shop(name=tom_text))
+    c_x.set_groupunit(groupunit=swim3_group)
+
+    parent_assigned_unit = assigned_unit_shop()
+    parent_assigned_unit.set_suffgroup(name=swim2_text)
+    parent_assigned_heir = assigned_heir_shop()
+    parent_assigned_heir.set_suffgroups(
+        parent_assignheir=None, assignunit=parent_assigned_unit, calendar_groups=None
+    )
+
+    assigned_unit_swim3 = assigned_unit_shop()
+    assigned_unit_swim3.set_suffgroup(name=swim3_text)
+
+    # WHEN / THEN
+    assigned_heir_x = assigned_heir_shop()
+    # WHEN/THEN
+    with pytest_raises(Exception) as excinfo:
+        assigned_heir_x.set_suffgroups(
+            parent_assigned_heir, assigned_unit_swim3, calendar_groups=c_x._groups
+        )
+    assert (
+        str(excinfo.value)
+        == "parent_assigned_heir does not contain all members of the idea's assigned_unit"
+    )
+
+
 #  tree traverse: Idea.AssignedUnit != None, parent_idea.AssignedHeir != None AND unit_members are subset of heir_members -> idea.AssignedHeir set by Idea.AssignedUnit
 #  tree traverse: Idea.AssignedUnit != None, parent_idea.AssignedHeir != None AND unit_members are subset of heir_members -> raise Error
