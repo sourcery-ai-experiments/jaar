@@ -267,29 +267,29 @@ def test_calendar_requiredunits_set_UnCoupledMethod():
     calendar_x = example_calendars_get_calendar_with_4_levels()
     work_text = "work"
     work_road = f"{calendar_x._desc},{work_text}"
-    weekday_text = "weekdays"
-    weekday_road = f"{calendar_x._desc},{weekday_text}"
+    week_text = "weekdays"
+    week_road = f"{calendar_x._desc},{week_text}"
     wed_text = "Wednesday"
-    wed_road = f"{weekday_road},{wed_text}"
+    wed_road = f"{week_road},{wed_text}"
 
     # When
     calendar_x.edit_idea_attr(
-        road=work_road, required_base=weekday_road, required_sufffact=wed_road
+        road=work_road, required_base=week_road, required_sufffact=wed_road
     )
 
     # Then
     work_idea1 = calendar_x.get_idea_kid(road=work_road)
     assert work_idea1._requiredunits != None
     print(work_idea1._requiredunits)
-    assert work_idea1._requiredunits[weekday_road] != None
-    assert work_idea1._requiredunits[weekday_road].sufffacts[wed_road].open is None
-    assert work_idea1._requiredunits[weekday_road].sufffacts[wed_road].nigh is None
+    assert work_idea1._requiredunits[week_road] != None
+    assert work_idea1._requiredunits[week_road].sufffacts[wed_road].open is None
+    assert work_idea1._requiredunits[week_road].sufffacts[wed_road].nigh is None
 
-    work_wk_required1 = RequiredUnit(base=weekday_road, sufffacts=None)
+    work_wk_required1 = RequiredUnit(base=week_road, sufffacts=None)
     work_wk_required1.set_sufffact(sufffact=wed_road)
     print(f" {type(work_wk_required1.base)=}")
     print(f" {work_wk_required1.base=}")
-    assert work_idea1._requiredunits[weekday_road] == work_wk_required1
+    assert work_idea1._requiredunits[week_road] == work_wk_required1
 
     # Given
     divisor_x = 34
@@ -299,7 +299,7 @@ def test_calendar_requiredunits_set_UnCoupledMethod():
     # When
     calendar_x.edit_idea_attr(
         road=work_road,
-        required_base=weekday_road,
+        required_base=week_road,
         required_sufffact=wed_road,
         required_sufffact_divisor=divisor_x,
         required_sufffact_open=open_x,
@@ -307,25 +307,25 @@ def test_calendar_requiredunits_set_UnCoupledMethod():
     )
 
     # Then
-    assert work_idea1._requiredunits[weekday_road].sufffacts[wed_road].open == 12
-    assert work_idea1._requiredunits[weekday_road].sufffacts[wed_road].nigh == 12
+    assert work_idea1._requiredunits[week_road].sufffacts[wed_road].open == 12
+    assert work_idea1._requiredunits[week_road].sufffacts[wed_road].nigh == 12
 
     wed_sufffact2 = sufffactunit_shop(
         need=wed_road, divisor=divisor_x, open=open_x, nigh=nigh_x
     )
     work_wk_required2 = RequiredUnit(
-        base=weekday_road, sufffacts={wed_sufffact2.need: wed_sufffact2}
+        base=week_road, sufffacts={wed_sufffact2.need: wed_sufffact2}
     )
     print(f"{type(work_wk_required2.base)=}")
     print(f"{work_wk_required2.base=}")
-    assert work_idea1._requiredunits[weekday_road] == work_wk_required2
+    assert work_idea1._requiredunits[week_road] == work_wk_required2
 
     # When
     thu_text = "Thursday"
-    thu_road = f"{weekday_road},{thu_text}"
+    thu_road = f"{week_road},{thu_text}"
     calendar_x.edit_idea_attr(
         road=work_road,
-        required_base=weekday_road,
+        required_base=week_road,
         required_sufffact=thu_road,
         required_sufffact_divisor=divisor_x,
         required_sufffact_open=open_x,
@@ -333,22 +333,23 @@ def test_calendar_requiredunits_set_UnCoupledMethod():
     )
 
     # Then
-    assert len(work_idea1._requiredunits[weekday_road].sufffacts) == 2
+    assert len(work_idea1._requiredunits[week_road].sufffacts) == 2
 
 
 def test_calendar_requiredunits_set_sufffactIdeaWithDenomSetsSuffFactDivision():
     # Given
     calendar_x = example_calendars_get_calendar_with_4_levels()
-    work = "work"
-    work_road = f"{calendar_x._desc},{work}"
-    time = "time"
-    time_road = f"{calendar_x._desc},{time}"
-    week = "week"
-    week_road = f"{calendar_x._desc},{time},{week}"
+    work_text = "work"
+    work_road = f"{calendar_x._desc},{work_text}"
+    time_text = "time"
+    time_road = f"{calendar_x._desc},{time_text}"
+    week_text = "week"
+    week_road = f"{calendar_x._desc},{time_text},{week_text}"
     calendar_x.add_idea(
-        idea_kid=IdeaKid(_desc=time, _begin=100, _close=2000), walk=calendar_x._desc
+        idea_kid=IdeaKid(_desc=time_text, _begin=100, _close=2000),
+        walk=calendar_x._desc,
     )
-    calendar_x.add_idea(idea_kid=IdeaKid(_desc=week, _denom=7), walk=time_road)
+    calendar_x.add_idea(idea_kid=IdeaKid(_desc=week_text, _denom=7), walk=time_road)
 
     # When
     calendar_x.edit_idea_attr(

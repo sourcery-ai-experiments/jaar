@@ -1,4 +1,10 @@
 import dataclasses
+from src.calendar.required_assign import (
+    AssignedUnit,
+    AssignedHeir,
+    assigned_unit_shop,
+    assigned_heir_shop,
+)
 from src.calendar.required_idea import (
     AcptFactCore,
     AcptFactHeir,
@@ -22,6 +28,7 @@ from src.calendar.group import (
     GroupName,
     Groupline,
     groupheir_shop,
+    GroupUnit,
 )
 from src.calendar.x_func import (
     get_on_meld_weight_actions,
@@ -63,6 +70,7 @@ class IdeaAttrHolder:
     required_del_sufffact_base: Road = None
     required_del_sufffact_need: Road = None
     required_suff_idea_active_status: str = None
+    assignedunit: AssignedUnit = None
     begin: float = None
     close: float = None
     addin: float = None
@@ -116,8 +124,8 @@ class IdeaCore:
     _level: int = None
     _requiredunits: dict[Road:RequiredUnit] = None
     _requiredheirs: dict[Road:RequiredHeir] = None
-    _assignedunits: dict[GroupName:] = None
-    _assignedheirs: dict[GroupName:] = None
+    _assignedunit: AssignedUnit = None
+    _assignedheir: AssignedHeir = None
     _calendar_importance: float = None
     _calendar_coin_onset: float = None
     _calendar_coin_cease: float = None
@@ -520,6 +528,8 @@ class IdeaCore:
                 base=idea_attr.required_base,
                 suff_idea_active_status=idea_attr.required_suff_idea_active_status,
             )
+        if idea_attr.assignedunit != None:
+            self._assignedunit = idea_attr.assignedunit
         if idea_attr.begin != None:
             self._begin = idea_attr.begin
         if idea_attr.close != None:
@@ -845,6 +855,23 @@ class IdeaCore:
         self.set_acptfactunits_empty_if_null()
         self._acptfactunits == find_replace_road_key_dict(
             dict_x=self._acptfactunits, old_road=old_road, new_road=new_road
+        )
+
+    def set_assignedunit_empty_if_null(self):
+        if self._assignedunit is None:
+            self._assignedunit = assigned_unit_shop()
+
+    def set_assignedheir(
+        self,
+        parent_assignheir: AssignedHeir,
+        calendar_groups: dict[GroupName:GroupUnit],
+    ):
+        self.set_assignedunit_empty_if_null()
+        self._assignedheir = assigned_heir_shop()
+        self._assignedheir.set_suffgroups(
+            parent_assignheir=parent_assignheir,
+            assignunit=self._assignedunit,
+            calendar_groups=calendar_groups,
         )
 
 

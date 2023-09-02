@@ -32,6 +32,12 @@ from src.calendar.required_idea import (
     requireds_get_from_dict,
     sufffactunit_shop,
 )
+from src.calendar.required_assign import (
+    assigned_heir_shop,
+    assigned_unit_shop,
+    AssignedUnit,
+    AssignedHeir,
+)
 from src.calendar.tree_metrics import TreeMetrics
 from src.calendar.x_func import x_get_json
 from src.calendar.idea import IdeaCore, IdeaKid, IdeaRoot, IdeaAttrHolder
@@ -1209,6 +1215,7 @@ class CalendarUnit:
         required_del_sufffact_base: Road = None,
         required_del_sufffact_need: Road = None,
         required_suff_idea_active_status: str = None,
+        assignedunit: AssignedUnit = None,
         begin: float = None,
         close: float = None,
         addin: float = None,
@@ -1268,6 +1275,7 @@ class CalendarUnit:
             required_del_sufffact_base=required_del_sufffact_base,
             required_del_sufffact_need=required_del_sufffact_need,
             required_suff_idea_active_status=required_suff_idea_active_status,
+            assignedunit=assignedunit,
             begin=begin,
             close=close,
             addin=addin,
@@ -1614,6 +1622,9 @@ class CalendarUnit:
             requiredheirs=self._idearoot._requiredunits,
             calendar_idea_dict=self._idea_dict,
         )
+        self._idearoot.set_assignedheir(
+            parent_assignheir=None, calendar_groups=self._groups
+        )
         self._idearoot.inherit_groupheirs()
         self._idearoot.clear_grouplines()
         self._idearoot.set_acptfactunits_empty_if_null()
@@ -1655,6 +1666,7 @@ class CalendarUnit:
         idea_kid.set_acptfactunits_empty_if_null()
         idea_kid.set_acptfactheirs(acptfacts=parent_acptfacts)
         idea_kid.set_requiredheirs(parent_requiredheirs, self._idea_dict)
+        idea_kid.set_assignedheir(parent_assignheir=parent_idea._assignedheir, calendar_groups=self._groups)
         idea_kid.inherit_groupheirs(parent_groupheirs=parent_idea._groupheirs)
         idea_kid.clear_grouplines()
         idea_kid.set_active_status(tree_traverse_count=self._tree_traverse_count)

@@ -15,6 +15,7 @@ def test_idea_attr_holder_exists():
     assert new_obj.required_del_sufffact_base is None
     assert new_obj.required_del_sufffact_need is None
     assert new_obj.required_suff_idea_active_status is None
+    assert new_obj.assignedunit is None
     assert new_obj.begin is None
     assert new_obj.close is None
     assert new_obj.addin is None

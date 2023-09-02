@@ -7,6 +7,7 @@ from src.calendar.required_idea import (
     sufffactunit_shop,
     Road,
 )
+from src.calendar.required_assign import assigned_unit_shop, assigned_heir_shop
 from pytest import raises as pytest_raise
 
 
@@ -42,8 +43,8 @@ def test_idea_core_exists():
     assert new_obj._calendar_coin_cease is None
     assert new_obj._requiredunits is None
     assert new_obj._requiredheirs is None
-    assert new_obj._assignedunits is None
-    assert new_obj._assignedheirs is None
+    assert new_obj._assignedunit is None
+    assert new_obj._assignedheir is None
 
 
 def test_idea_core_get_key_road_works():
@@ -491,3 +492,38 @@ def test_idea_record_active_status_hx_CorrectlyRecordsHistory():
     )
     # THEN
     assert idea_x._active_status_hx == {0: False}
+
+
+def test_idea_set_assignedunit_empty_if_null():
+    # GIVEN
+    idea_x = IdeaCore(_desc="run")
+    assert idea_x._assignedunit is None
+
+    # WHEN
+    idea_x.set_assignedunit_empty_if_null()
+
+    # THEN
+    assert idea_x._assignedunit != None
+    assert idea_x._assignedunit == assigned_unit_shop()
+
+
+def test_idea_set_assignedunit_empty_if_null():
+    # GIVEN
+    swim_text = "swimmers"
+    idea_x = IdeaCore(_desc="run")
+    idea_x.set_assignedunit_empty_if_null()
+    idea_x._assignedunit.set_suffgroup(name=swim_text)
+    assert idea_x._assignedheir is None
+
+    # WHEN
+    idea_x.set_assignedheir(parent_assignheir=None, calendar_groups=None)
+
+    # THEN
+    assert idea_x._assignedheir != None
+    assigned_unit_x = assigned_unit_shop()
+    assigned_unit_x.set_suffgroup(name=swim_text)
+    assigned_heir_x = assigned_heir_shop()
+    assigned_heir_x.set_suffgroups(
+        assignunit=assigned_unit_x, parent_assignheir=None, calendar_groups=None
+    )
+    assert idea_x._assignedheir == assigned_heir_x
