@@ -9,7 +9,9 @@ from src.calendar.required_assign import (
     #     sufffactunit_shop,
     #     Road,
 )
-from src.calendar.group import GroupName
+from src.calendar.group import GroupName, groupunit_shop
+from src.calendar.member import memberlink_shop
+from src.calendar.calendar import CalendarUnit
 
 # from pytest import raises as pytest_raises
 
@@ -29,7 +31,7 @@ def test_AssignedUnit_exists():
 def test_assigned_unit_shop_ReturnsCorrectWithCorrectAttributes_v1():
     # GIVEN
     _suffgroups_x = {1: 2}
-    _group_member_status_x = "example"
+    _group_member_x = "example"
 
     # WHEN
     assigned_unit_x = assigned_unit_shop(_suffgroups=_suffgroups_x)
@@ -59,9 +61,7 @@ def test_AssignedUnit_get_dict_ReturnsCorrectDictWithSingleSuffGroup():
 
     # THEN
     assert obj_dict != None
-    example_dict = {
-        "_suffgroups": {bob_group_name: bob_group_name},
-    }
+    example_dict = {"_suffgroups": {bob_group_name: bob_group_name}}
     print(f"{example_dict=}")
     assert obj_dict == example_dict
 
@@ -69,30 +69,169 @@ def test_AssignedUnit_get_dict_ReturnsCorrectDictWithSingleSuffGroup():
 def test_AssignedHeir_exists():
     # GIVEN
     _suffgroups_x = {1: 2}
-    _group_member_status_x = "example"
+    _group_member_x = "example"
 
     # WHEN
     assigned_heir_x = AssignedHeir(
-        _suffgroups=_suffgroups_x, _group_member_status=_group_member_status_x
+        _suffgroups=_suffgroups_x, _group_member=_group_member_x
     )
 
     # THEN
     assert assigned_heir_x
     assert assigned_heir_x._suffgroups == _suffgroups_x
-    assert assigned_heir_x._group_member_status == _group_member_status_x
+    assert assigned_heir_x._group_member == _group_member_x
 
 
 def test_assigned_heir_shop_ReturnsCorrectWithCorrectAttributes_v1():
     # GIVEN
     _suffgroups_x = {1: 2}
-    _group_member_status_x = "example"
+    _group_member_x = "example"
 
     # WHEN
     assigned_heir_x = assigned_heir_shop(
-        _suffgroups=_suffgroups_x, _group_member_status=_group_member_status_x
+        _suffgroups=_suffgroups_x, _group_member=_group_member_x
     )
 
     # THEN
     assert assigned_heir_x
     assert assigned_heir_x._suffgroups == _suffgroups_x
-    assert assigned_heir_x._group_member_status == _group_member_status_x
+    assert assigned_heir_x._group_member == _group_member_x
+
+
+def test_AssignedHeir_get_all_suff_members_CorrectlyReturnsSingleDictWithAllMembers_v1():
+    # GIVEN
+    jim_text = "jim"
+    sue_text = "sue"
+    c_x = CalendarUnit(_desc=jim_text)
+    c_x.add_memberunit(name=jim_text)
+    c_x.add_memberunit(name=sue_text)
+
+    _suffgroups_x = {jim_text: -1}
+    assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
+
+    # WHEN
+    all_members = assigned_heir_x._get_all_suff_members(calendar_groups=c_x._groups)
+
+    # THEN
+    assert len(all_members) == 1
+
+
+def test_AssignedHeir_get_all_suff_members_CorrectlyReturnsSingleDictWithAllMembers_v2():
+    # GIVEN
+    jim_text = "jim"
+    sue_text = "sue"
+    bob_text = "bob"
+    c_x = CalendarUnit(_desc=jim_text)
+    c_x.add_memberunit(name=jim_text)
+    c_x.add_memberunit(name=sue_text)
+    c_x.add_memberunit(name=bob_text)
+
+    swim_text = "swim"
+    swim_group = groupunit_shop(name=swim_text)
+    swim_group.set_memberlink(memberlink=memberlink_shop(name=jim_text))
+    swim_group.set_memberlink(memberlink=memberlink_shop(name=sue_text))
+    c_x.set_groupunit(groupunit=swim_group)
+
+    _suffgroups_x = {swim_text: -1}
+    assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
+
+    # WHEN
+    all_members = assigned_heir_x._get_all_suff_members(calendar_groups=c_x._groups)
+
+    # THEN
+    assert len(all_members) == 2
+
+
+def test_AssignedHeir_set_group_member_CorrectlySetsAttribute_Empty_suffgroups_x():
+    # GIVEN
+    _suffgroups_x = {}
+    assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
+    assert assigned_heir_x._group_member == False
+
+    # WHEN
+    calendar_groups = {}
+    assigned_heir_x.set_group_member(calendar_groups=calendar_groups, calendar_owner="")
+
+    # THEN
+    assert assigned_heir_x._group_member
+
+
+def test_AssignedHeir_set_group_member_CorrectlySetsAttribute_NonEmpty_suffgroups_x_v1():
+    # GIVEN
+    jim_text = "jim"
+    sue_text = "sue"
+
+    c_x = CalendarUnit(_desc=jim_text)
+    c_x.add_memberunit(name=jim_text)
+    c_x.add_memberunit(name=sue_text)
+    calendar_owner = c_x._desc
+    calendar_groups = c_x._groups
+    print(f"{len(calendar_groups)=}")
+    # print(f"{calendar_groups.get(jim_text)=}")
+    # print(f"{calendar_groups.get(sue_text)=}")
+
+    _suffgroups_x = {jim_text: -1}
+    assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
+    assert assigned_heir_x._group_member == False
+
+    # WHEN
+    assigned_heir_x.set_group_member(calendar_groups, calendar_owner)
+
+    # THEN
+    assert assigned_heir_x._group_member
+
+
+def test_AssignedHeir_set_group_member_CorrectlySetsAttribute_NonEmpty_suffgroups_x_v2():
+    # GIVEN
+    jim_text = "jim"
+    sue_text = "sue"
+
+    c_x = CalendarUnit(_desc=jim_text)
+    c_x.add_memberunit(name=jim_text)
+    c_x.add_memberunit(name=sue_text)
+    calendar_owner = c_x._desc
+    calendar_groups = c_x._groups
+    print(f"{len(calendar_groups)=}")
+    # print(f"{calendar_groups.get(jim_text)=}")
+    # print(f"{calendar_groups.get(sue_text)=}")
+
+    _suffgroups_x = {sue_text: -1}
+    assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
+    assert assigned_heir_x._group_member == False
+
+    # WHEN
+    assigned_heir_x.set_group_member(calendar_groups, calendar_owner)
+
+    # THEN
+    assert assigned_heir_x._group_member == False
+
+
+def test_AssignedHeir_set_group_member_CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
+    # GIVEN
+    jim_text = "jim"
+    sue_text = "sue"
+    bob_text = "bob"
+    c_x = CalendarUnit(_desc=jim_text)
+    c_x.add_memberunit(name=jim_text)
+    c_x.add_memberunit(name=sue_text)
+    c_x.add_memberunit(name=bob_text)
+
+    swim_text = "swim"
+    swim_group = groupunit_shop(name=swim_text)
+    swim_group.set_memberlink(memberlink=memberlink_shop(name=jim_text))
+    swim_group.set_memberlink(memberlink=memberlink_shop(name=sue_text))
+    c_x.set_groupunit(groupunit=swim_group)
+
+    _suffgroups_x = {swim_text: -1}
+    assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
+    assert assigned_heir_x._group_member == False
+    assigned_heir_x.set_group_member(c_x._groups, c_x._desc)
+    assert assigned_heir_x._group_member
+
+    # WHEN
+    swim_group.del_memberlink(name=jim_text)
+    c_x.set_groupunit(groupunit=swim_group)
+    assigned_heir_x.set_group_member(c_x._groups, c_x._desc)
+
+    # THEN
+    assert assigned_heir_x._group_member == False
