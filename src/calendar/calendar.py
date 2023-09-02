@@ -74,7 +74,7 @@ class InvalidCalendarException(Exception):
 
 @dataclasses.dataclass
 class CalendarUnit:
-    _desc: str = None
+    _owner: str = None
     _weight: float = None
     _members: dict[MemberName:MemberUnit] = None
     _groups: dict[GroupName:GroupUnit] = None
@@ -84,14 +84,14 @@ class CalendarUnit:
     _tree_traverse_count: int = None
     _rational: bool = False
 
-    def __init__(self, _weight: float = None, _desc=None) -> None:
+    def __init__(self, _weight: float = None, _owner=None) -> None:
         if _weight is None:
             _weight = 1
         self._weight = _weight
-        if _desc is None:
-            _desc = ""
-        self._idearoot = IdeaRoot(_desc=_desc, _uid=1)
-        self._desc = _desc
+        if _owner is None:
+            _owner = ""
+        self._idearoot = IdeaRoot(_desc=_owner, _uid=1)
+        self._owner = _owner
 
     def set_banking_attr_memberunits(self, river_tmembers: dict):
         for memberunit_x in self._members.values():
@@ -153,7 +153,7 @@ class CalendarUnit:
         self.set_calendar_metrics()
         idea_x = self.get_idea_kid(road=road)
         new_weight = self._weight * idea_x._calendar_importance
-        cx = CalendarUnit(_desc=self._idearoot._desc, _weight=new_weight)
+        cx = CalendarUnit(_owner=self._idearoot._desc, _weight=new_weight)
 
         for road_assc in sorted(list(self._get_all_idea_assoc_roads(road))):
             src_yx = self.get_idea_kid(road=road_assc)
@@ -218,7 +218,7 @@ class CalendarUnit:
         return hreg_get_time_min_from_dt(dt=dt)
 
     def get_time_c400_from_min(self, min: int) -> int:
-        c400_idea = self.get_idea_kid(f"{self._desc},time,tech,400 year cycle")
+        c400_idea = self.get_idea_kid(f"{self._owner},time,tech,400 year cycle")
         c400_min = c400_idea._close
         return int(min / c400_min), c400_idea, min % c400_min
 
@@ -233,12 +233,12 @@ class CalendarUnit:
             50492160,
             52596000,
         ):  # 96 year and 100 year spans
-            yr4_1461 = self.get_idea_kid(f"{self._desc},time,tech,4year with leap")
+            yr4_1461 = self.get_idea_kid(f"{self._owner},time,tech,4year with leap")
             yr4_cycles = int(cXXXyr_min / yr4_1461._close)
             cXyr_min = cXXXyr_min % yr4_1461._close
             yr1_idea = yr4_1461.get_kids_in_range(begin=cXyr_min, close=cXyr_min)[0]
         elif c100_4_96y._close - c100_4_96y._begin == 2102400:
-            yr4_1460 = self.get_idea_kid(f"{self._desc},time,tech,4year wo leap")
+            yr4_1460 = self.get_idea_kid(f"{self._owner},time,tech,4year wo leap")
             yr4_cycles = 0
             yr1_idea = yr4_1460.get_kids_in_range(begin=cXXXyr_min, close=cXXXyr_min)[0]
             cXyr_min = cXXXyr_min % yr4_1460._close
@@ -254,13 +254,13 @@ class CalendarUnit:
         year_num, yr1_idea, yr1_idea_rem_min = self.get_time_c400yr_from_min(min=min)
         yrx = None
         if yr1_idea._close - yr1_idea._begin == 525600:
-            yrx = self.get_idea_kid(f"{self._desc},time,tech,365 year")
+            yrx = self.get_idea_kid(f"{self._owner},time,tech,365 year")
         elif yr1_idea._close - yr1_idea._begin == 527040:
-            yrx = self.get_idea_kid(f"{self._desc},time,tech,366 year")
+            yrx = self.get_idea_kid(f"{self._owner},time,tech,366 year")
         mon_x = yrx.get_kids_in_range(begin=yr1_idea_rem_min, close=yr1_idea_rem_min)[0]
         month_rem_min = yr1_idea_rem_min - mon_x._begin
         month_num = int(mon_x._desc.split("-")[0])
-        day_x = self.get_idea_kid(f"{self._desc},time,tech,day")
+        day_x = self.get_idea_kid(f"{self._owner},time,tech,day")
         day_num = int(month_rem_min / day_x._close)
         day_rem_min = month_rem_min % day_x._close
         return month_num, day_num, day_rem_min, day_x
@@ -311,7 +311,7 @@ class CalendarUnit:
 
     def _get_jajatime_week_readable_text(self, open: int, divisor: int) -> str:
         open_in_week = open % divisor
-        week_road = f"{self._desc},time,tech,week"
+        week_road = f"{self._owner},time,tech,week"
         weekday_ideas_dict = self.get_idea_ranged_kids(
             idea_road=week_road, begin=open_in_week
         )
@@ -656,7 +656,7 @@ class CalendarUnit:
     def set_time_acptfacts(self, open: datetime = None, nigh: datetime = None) -> None:
         open_minutes = self.get_time_min_from_dt(dt=open) if open != None else None
         nigh_minutes = self.get_time_min_from_dt(dt=nigh) if nigh != None else None
-        minutes_acptfact = f"{self._desc},time,jajatime"
+        minutes_acptfact = f"{self._owner},time,jajatime"
         self.set_acptfact(
             base=minutes_acptfact,
             pick=minutes_acptfact,
@@ -666,7 +666,7 @@ class CalendarUnit:
 
     def _is_idea_rangeroot(self, idea_road: Road):
         anc_roads = get_ancestor_roads(road=idea_road)
-        parent_road = self._desc if len(anc_roads) == 1 else anc_roads[1]
+        parent_road = self._owner if len(anc_roads) == 1 else anc_roads[1]
 
         # figure out if parent is range
         parent_range = None
@@ -941,8 +941,8 @@ class CalendarUnit:
         temp_road = _road.pop(0)
 
         # idearoot cannot be replaced
-        if temp_road == self._desc and _road == []:
-            idea_kid.set_road(parent_road=Road(self._desc))
+        if temp_road == self._owner and _road == []:
+            idea_kid.set_road(parent_road=Road(self._owner))
         else:
             parent_road = [temp_road]
             while _road != []:
@@ -1038,7 +1038,7 @@ class CalendarUnit:
         self.set_calendar_metrics()
 
     def calendar_and_idearoot_desc_edit(self, new_desc):
-        self._desc = new_desc
+        self._owner = new_desc
         self.edit_idea_desc(old_road=self._idearoot._desc, new_desc=new_desc)
 
     def edit_idea_desc(
@@ -1113,7 +1113,7 @@ class CalendarUnit:
             anc_roads
         ) == 1:
             raise InvalidCalendarException("Root Idea cannot have numor denom reest.")
-        parent_road = self._desc if len(anc_roads) == 1 else anc_roads[1]
+        parent_road = self._owner if len(anc_roads) == 1 else anc_roads[1]
 
         parent_has_range = None
         parent_idea_x = self.get_idea_kid(road=parent_road)
@@ -1851,7 +1851,7 @@ class CalendarUnit:
             "_grouplinks": self._idearoot.get_grouplinks_dict(),
             "_assignedunit": self._idearoot.get_assignedunit_dict(),
             "_weight": self._weight,
-            "_desc": self._desc,
+            "_owner": self._owner,
             "_uid": self._idearoot._uid,
             "_begin": self._idearoot._begin,
             "_close": self._idearoot._close,
@@ -1877,7 +1877,7 @@ class CalendarUnit:
             yb = ideabase_list.pop(0)
             special_road_x = None
             if yb.sr != None:
-                special_road_x = f"{self._desc},{yb.sr}"
+                special_road_x = f"{self._owner},{yb.sr}"
 
             idea_x = IdeaKid(
                 _desc=yb.n,
@@ -1891,12 +1891,12 @@ class CalendarUnit:
                 _reest=yb.mr,
                 _special_road=special_road_x,
             )
-            road_x = f"{self._desc},{yb.rr}"
+            road_x = f"{self._owner},{yb.rr}"
             self.add_idea(idea_kid=idea_x, walk=road_x)
 
             numeric_road_x = None
             if yb.nr != None:
-                numeric_road_x = f"{self._desc},{yb.nr}"
+                numeric_road_x = f"{self._owner},{yb.nr}"
                 self.edit_idea_attr(
                     road=f"{road_x},{yb.n}", numeric_road=numeric_road_x
                 )
@@ -1911,7 +1911,7 @@ class CalendarUnit:
         self, member_name: MemberName, acptfacts: dict[Road:AcptFactCore]
     ):
         self.set_calendar_metrics()
-        calendar4member = CalendarUnit(_desc=member_name)
+        calendar4member = CalendarUnit(_owner=member_name)
         calendar4member._idearoot._calendar_importance = (
             self._idearoot._calendar_importance
         )
@@ -2052,8 +2052,8 @@ def get_from_dict(lw_dict: dict) -> CalendarUnit:
     c_x._groups = groupunits_get_from_dict(x_dict=lw_dict["_groups"])
     c_x._idearoot._grouplinks = grouplinks_get_from_dict(x_dict=lw_dict["_grouplinks"])
     c_x._members = memberunits_get_from_dict(x_dict=lw_dict["_members"])
-    c_x._desc = lw_dict["_desc"]
-    c_x._idearoot._desc = lw_dict["_desc"]
+    c_x._owner = lw_dict["_owner"]
+    c_x._idearoot._desc = lw_dict["_owner"]
     c_x._weight = lw_dict["_weight"]
     c_x._max_tree_traverse = lw_dict.get("_max_tree_traverse")
     if lw_dict.get("_max_tree_traverse") is None:
@@ -2071,7 +2071,7 @@ def get_from_dict(lw_dict: dict) -> CalendarUnit:
 
     idea_dict_list = []
     for x_dict in lw_dict["_kids"].values():
-        x_dict["temp_road"] = c_x._desc
+        x_dict["temp_road"] = c_x._owner
         idea_dict_list.append(x_dict)
 
     while idea_dict_list != []:
@@ -2118,7 +2118,7 @@ def get_dict_of_calendar_from_dict(x_dict: dict) -> dict[str:CalendarUnit]:
     calendarunits = {}
     for calendarunit_dict in x_dict.values():
         x_calendar = get_from_dict(lw_dict=calendarunit_dict)
-        calendarunits[x_calendar._desc] = x_calendar
+        calendarunits[x_calendar._owner] = x_calendar
     return calendarunits
 
 

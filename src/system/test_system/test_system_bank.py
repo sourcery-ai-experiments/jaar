@@ -137,7 +137,7 @@ def test_system_refresh_bank_metrics_CorrectlyDeletesOldBankInMemory(
     bob_text = "bob"
     tom_text = "tom"
 
-    bob = CalendarUnit(_desc=bob_text)
+    bob = CalendarUnit(_owner=bob_text)
     bob.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob)
     e1.refresh_bank_metrics()
@@ -161,7 +161,7 @@ def test_system_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
     bob_text = "bob"
     tom_text = "tom"
 
-    bob = CalendarUnit(_desc=bob_text)
+    bob = CalendarUnit(_owner=bob_text)
     bob.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob)
     e1.refresh_bank_metrics()
@@ -187,25 +187,25 @@ def test_system_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     sal_text = "sal"
     elu_text = "elu"
 
-    bob = CalendarUnit(_desc=bob_text)
+    bob = CalendarUnit(_owner=bob_text)
     bob.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
     bob.add_memberunit(name=sal_text, creditor_weight=1, debtor_weight=4)
     bob.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob)
 
-    sal = CalendarUnit(_desc=sal_text)
+    sal = CalendarUnit(_owner=sal_text)
     sal.add_memberunit(name=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
     sal.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal)
 
-    tom = CalendarUnit(_desc=tom_text)
+    tom = CalendarUnit(_owner=tom_text)
     tom.add_memberunit(name=bob_text, creditor_weight=3, debtor_weight=1)
     tom.add_memberunit(name=sal_text, creditor_weight=1, debtor_weight=4)
     tom.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom)
 
-    elu = CalendarUnit(_desc=elu_text)
+    elu = CalendarUnit(_owner=elu_text)
     elu.add_memberunit(name=bob_text, creditor_weight=3, debtor_weight=1)
     elu.add_memberunit(name=tom_text, creditor_weight=1, debtor_weight=4)
     elu.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
@@ -233,10 +233,10 @@ def test_system_refresh_bank_metrics_CorrectlyPopulatesCalendarTable01(
     sal_text = "sal"
     elu_text = "elu"
 
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_desc=bob_text))
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_desc=tom_text))
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_desc=sal_text))
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_desc=elu_text))
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_owner=bob_text))
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_owner=tom_text))
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_owner=sal_text))
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_owner=elu_text))
 
     sqlstr_count_calendars = get_table_count_sqlstr("calendarunits")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_calendars) == 0
@@ -260,10 +260,10 @@ def test_system_refresh_bank_metrics_CorrectlyPopulatesCalendarTable01(
     sal_text = "sal"
     elu_text = "elu"
 
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_desc=bob_text))
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_desc=tom_text))
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_desc=sal_text))
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_desc=elu_text))
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_owner=bob_text))
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_owner=tom_text))
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_owner=sal_text))
+    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=CalendarUnit(_owner=elu_text))
 
     sqlstr_count_calendars = get_table_count_sqlstr("calendarunits")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_calendars) == 0
@@ -285,8 +285,8 @@ def test_system_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     bob_text = "bob"
     tom_text = "tom"
     elu_text = "elu"
-    bob_calendar = CalendarUnit(_desc=bob_text)
-    tom_calendar = CalendarUnit(_desc=tom_text)
+    bob_calendar = CalendarUnit(_owner=bob_text)
+    tom_calendar = CalendarUnit(_owner=tom_text)
     bob_calendar.add_memberunit(name=tom_text)
     tom_calendar.add_memberunit(name=bob_text)
     tom_calendar.add_memberunit(name=elu_text)
@@ -325,16 +325,16 @@ def test_system_set_calendar_attr_defined_by_system_CorrectlyPopulatesCalendar_G
     tom_text = "tom"
     ava_text = "ava"
 
-    sal_calendar = CalendarUnit(_desc=sal_text)
-    bob_calendar = CalendarUnit(_desc=bob_text)
-    tom_calendar = CalendarUnit(_desc=tom_text)
-    ava_calendar = CalendarUnit(_desc=ava_text)
+    sal_calendar = CalendarUnit(_owner=sal_text)
+    bob_calendar = CalendarUnit(_owner=bob_text)
+    tom_calendar = CalendarUnit(_owner=tom_text)
+    ava_calendar = CalendarUnit(_owner=ava_text)
 
     swim_text = "swimming"
     sports_text = "sports"
-    sal_sports_road = f"{sal_calendar._desc},{sports_text}"
-    bob_sports_road = f"{bob_calendar._desc},{sports_text}"
-    tom_sports_road = f"{tom_calendar._desc},{sports_text}"
+    sal_sports_road = f"{sal_calendar._owner},{sports_text}"
+    bob_sports_road = f"{bob_calendar._owner},{sports_text}"
+    tom_sports_road = f"{tom_calendar._owner},{sports_text}"
 
     sal_calendar.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=sal_sports_road)
     bob_calendar.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=bob_sports_road)

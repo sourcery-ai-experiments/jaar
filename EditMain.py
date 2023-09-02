@@ -93,7 +93,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
 
         row = 0
         for acptfact in self.get_acptfacts_list():
-            base_text = acptfact.base.replace(f"{self.calendar_x._desc}", "")
+            base_text = acptfact.base.replace(f"{self.calendar_x._owner}", "")
             base_text = base_text[1:]
             acptfact_text = acptfact.pick.replace(acptfact.base, "")
             acptfact_text = acptfact_text[1:]
@@ -114,7 +114,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
             row += 1
 
         for base, count in self.calendar_x.get_missing_acptfact_bases().items():
-            base_text = base.replace(f"{self.calendar_x._desc}", "")
+            base_text = base.replace(f"{self.calendar_x._owner}", "")
             base_text = base_text[1:]
 
             base_explain_text = f"{base_text} ({count} nodes)"

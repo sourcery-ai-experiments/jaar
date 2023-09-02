@@ -130,7 +130,7 @@ def test_AssignedHeir_get_all_suff_members_CorrectlyReturnsSingleDictWithAllMemb
     # GIVEN
     jim_text = "jim"
     sue_text = "sue"
-    c_x = CalendarUnit(_desc=jim_text)
+    c_x = CalendarUnit(_owner=jim_text)
     c_x.add_memberunit(name=jim_text)
     c_x.add_memberunit(name=sue_text)
 
@@ -149,7 +149,7 @@ def test_AssignedHeir_get_all_suff_members_CorrectlyReturnsSingleDictWithAllMemb
     jim_text = "jim"
     sue_text = "sue"
     bob_text = "bob"
-    c_x = CalendarUnit(_desc=jim_text)
+    c_x = CalendarUnit(_owner=jim_text)
     c_x.add_memberunit(name=jim_text)
     c_x.add_memberunit(name=sue_text)
     c_x.add_memberunit(name=bob_text)
@@ -189,10 +189,10 @@ def test_AssignedHeir_set_group_member_CorrectlySetsAttribute_NonEmpty_suffgroup
     jim_text = "jim"
     sue_text = "sue"
 
-    c_x = CalendarUnit(_desc=jim_text)
+    c_x = CalendarUnit(_owner=jim_text)
     c_x.add_memberunit(name=jim_text)
     c_x.add_memberunit(name=sue_text)
-    calendar_owner = c_x._desc
+    calendar_owner = c_x._owner
     calendar_groups = c_x._groups
     print(f"{len(calendar_groups)=}")
     # print(f"{calendar_groups.get(jim_text)=}")
@@ -214,10 +214,10 @@ def test_AssignedHeir_set_group_member_CorrectlySetsAttribute_NonEmpty_suffgroup
     jim_text = "jim"
     sue_text = "sue"
 
-    c_x = CalendarUnit(_desc=jim_text)
+    c_x = CalendarUnit(_owner=jim_text)
     c_x.add_memberunit(name=jim_text)
     c_x.add_memberunit(name=sue_text)
-    calendar_owner = c_x._desc
+    calendar_owner = c_x._owner
     calendar_groups = c_x._groups
     print(f"{len(calendar_groups)=}")
     # print(f"{calendar_groups.get(jim_text)=}")
@@ -239,7 +239,7 @@ def test_AssignedHeir_set_group_member_CorrectlySetsAttribute_NonEmpty_suffgroup
     jim_text = "jim"
     sue_text = "sue"
     bob_text = "bob"
-    c_x = CalendarUnit(_desc=jim_text)
+    c_x = CalendarUnit(_owner=jim_text)
     c_x.add_memberunit(name=jim_text)
     c_x.add_memberunit(name=sue_text)
     c_x.add_memberunit(name=bob_text)
@@ -253,13 +253,13 @@ def test_AssignedHeir_set_group_member_CorrectlySetsAttribute_NonEmpty_suffgroup
     _suffgroups_x = {swim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
     assert assigned_heir_x._group_member == False
-    assigned_heir_x.set_group_member(c_x._groups, c_x._desc)
+    assigned_heir_x.set_group_member(c_x._groups, c_x._owner)
     assert assigned_heir_x._group_member
 
     # WHEN
     swim_group.del_memberlink(name=jim_text)
     c_x.set_groupunit(groupunit=swim_group)
-    assigned_heir_x.set_group_member(c_x._groups, c_x._desc)
+    assigned_heir_x.set_group_member(c_x._groups, c_x._owner)
 
     # THEN
     assert assigned_heir_x._group_member == False
@@ -270,7 +270,7 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
     jim_text = "jim"
     sue_text = "sue"
     bob_text = "bob"
-    c_x = CalendarUnit(_desc=jim_text)
+    c_x = CalendarUnit(_owner=jim_text)
     c_x.add_memberunit(name=jim_text)
     c_x.add_memberunit(name=sue_text)
     c_x.add_memberunit(name=bob_text)
@@ -284,13 +284,13 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
     _suffgroups_x = {swim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
     assert assigned_heir_x._group_member == False
-    assigned_heir_x.set_group_member(c_x._groups, c_x._desc)
+    assigned_heir_x.set_group_member(c_x._groups, c_x._owner)
     assert assigned_heir_x._group_member
 
     # WHEN
     swim_group.del_memberlink(name=jim_text)
     c_x.set_groupunit(groupunit=swim_group)
-    assigned_heir_x.set_group_member(c_x._groups, c_x._desc)
+    assigned_heir_x.set_group_member(c_x._groups, c_x._owner)
 
     # THEN
     assert assigned_heir_x._group_member == False
@@ -408,7 +408,7 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqual_ParentAssignedHeir_Non
     sue_text = "sue"
     bob_text = "bob"
     tom_text = "tom"
-    c_x = CalendarUnit(_desc=jim_text)
+    c_x = CalendarUnit(_owner=jim_text)
     c_x.add_memberunit(name=jim_text)
     c_x.add_memberunit(name=sue_text)
     c_x.add_memberunit(name=bob_text)
@@ -455,7 +455,7 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqualParentAssignedHeir_Rais
     sue_text = "sue"
     bob_text = "bob"
     tom_text = "tom"
-    c_x = CalendarUnit(_desc=jim_text)
+    c_x = CalendarUnit(_owner=jim_text)
     c_x.add_memberunit(name=jim_text)
     c_x.add_memberunit(name=sue_text)
     c_x.add_memberunit(name=bob_text)

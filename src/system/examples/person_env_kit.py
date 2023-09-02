@@ -17,16 +17,16 @@ def person_dir_setup_cleanup():
 
 
 def create_calendar_file_for_person(person_calendar_dir: str, calendar_desc: str):
-    calendar_x = CalendarUnit(_desc=calendar_desc)
-    # file_path = f"{person_calendar_dir}/{calendar_x._desc}.json"
+    calendar_x = CalendarUnit(_owner=calendar_desc)
+    # file_path = f"{person_calendar_dir}/{calendar_x._owner}.json"
     # # if not path.exists(file_path):
-    # print(f"{file_path=} {calendar_x._desc=}")
+    # print(f"{file_path=} {calendar_x._owner=}")
     # with open(f"{file_path}", "w") as f:
-    #     print(f" saving {calendar_x._desc=} to {file_path=}")
+    #     print(f" saving {calendar_x._owner=} to {file_path=}")
     #     f.write(calendar_x.get_json())
     x_func_save_file(
         dest_dir=person_calendar_dir,
-        file_name=f"{calendar_x._desc}.json",
+        file_name=f"{calendar_x._owner}.json",
         file_text=calendar_x.get_json(),
     )
     # print(f"print all {calendar_dir=} {os_listdir(path=calendar_dir)}")

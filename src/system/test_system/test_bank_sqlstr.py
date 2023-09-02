@@ -52,7 +52,7 @@ def test_system_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     bob_text = "bob"
     tim_text = "tim"
-    calendar_x = CalendarUnit(_desc=bob_text)
+    calendar_x = CalendarUnit(_owner=bob_text)
     memberunit_x = memberunit_shop(
         name=tim_text,
         _calendar_credit=0.9,
@@ -170,7 +170,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
 
     bob_text = "bob"
     sal_text = "sal"
-    calendar_bob = CalendarUnit(_desc=bob_text)
+    calendar_bob = CalendarUnit(_owner=bob_text)
     memberunit_sal = memberunit_shop(
         name=sal_text,
         _calendar_credit=0.9,
@@ -341,7 +341,7 @@ def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
     tom_text = "tom"
     sal_text = "sal"
 
-    calendar_bob = CalendarUnit(_desc=bob_text)
+    calendar_bob = CalendarUnit(_owner=bob_text)
     memberunit_tom = memberunit_shop(
         name=tom_text,
         _calendar_credit=0.9,
@@ -439,13 +439,13 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_calendar = CalendarUnit(_desc=sal_text)
+    sal_calendar = CalendarUnit(_owner=sal_text)
     sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
     sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
     sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
 
-    bob_calendar = CalendarUnit(_desc=bob_text)
+    bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
@@ -480,26 +480,26 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_calendar = CalendarUnit(_desc=sal_text)
+    sal_calendar = CalendarUnit(_owner=sal_text)
     sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
     sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
     sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
 
-    bob_calendar = CalendarUnit(_desc=bob_text)
+    bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
 
-    tom_calendar = CalendarUnit(_desc=tom_text)
+    tom_calendar = CalendarUnit(_owner=tom_text)
     tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom_calendar)
 
-    ava_calendar = CalendarUnit(_desc=ava_text)
+    ava_calendar = CalendarUnit(_owner=ava_text)
     ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ava_calendar)
 
-    elu_calendar = CalendarUnit(_desc=elu_text)
+    elu_calendar = CalendarUnit(_owner=elu_text)
     elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
     elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu_calendar)
@@ -695,11 +695,11 @@ def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
     tim_calendar.calendar_and_idearoot_desc_edit(new_desc=tim_text)
     sal_calendar.calendar_and_idearoot_desc_edit(new_desc=sal_text)
     c_text = "C"
-    c_road = f"{tim_calendar._desc},{c_text}"
+    c_road = f"{tim_calendar._owner},{c_text}"
     f_text = "F"
     f_road = f"{c_road},{f_text}"
     b_text = "B"
-    b_road = f"{tim_calendar._desc},{b_text}"
+    b_road = f"{tim_calendar._owner},{b_text}"
     # for idea_x in tim_calendar._idea_dict.values():
     #     print(f"{f_road=} {idea_x.get_road()=}")
     tim_calendar.set_acptfact(base=c_road, pick=f_road)
@@ -708,7 +708,7 @@ def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
     bob_calendar.set_acptfact(base=b_road, pick=b_road)
 
     casa_text = "casa"
-    casa_road = f"{sal_calendar._desc},{casa_text}"
+    casa_road = f"{sal_calendar._owner},{casa_text}"
     cookery_text = "clean cookery"
     cookery_road = f"{casa_road},{cookery_text}"
     sal_calendar.set_acptfact(base=cookery_road, pick=cookery_road)
@@ -773,8 +773,8 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     bob_text = "bob"
     tom_text = "tom"
     elu_text = "elu"
-    bob_calendar = CalendarUnit(_desc=bob_text)
-    tom_calendar = CalendarUnit(_desc=tom_text)
+    bob_calendar = CalendarUnit(_owner=bob_text)
+    tom_calendar = CalendarUnit(_owner=tom_text)
     bob_calendar.add_memberunit(name=tom_text)
     tom_calendar.add_memberunit(name=bob_text)
     tom_calendar.add_memberunit(name=elu_text)

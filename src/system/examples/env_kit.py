@@ -49,15 +49,15 @@ def env_dir_setup_cleanup():
 
 
 def create_calendar_file_for_systems(system_dir: str, calendar_desc: str):
-    calendar_x = CalendarUnit(_desc=calendar_desc)
+    calendar_x = CalendarUnit(_owner=calendar_desc)
     calendar_dir = f"{system_dir}/calendars"
-    # file_path = f"{calendar_dir}/{calendar_x._desc}.json"
+    # file_path = f"{calendar_dir}/{calendar_x._owner}.json"
     # if not path.exists(file_path):
-    # print(f"{file_path=} {calendar_x._desc=}")
+    # print(f"{file_path=} {calendar_x._owner=}")
 
     x_func_save_file(
         dest_dir=calendar_dir,
-        file_name=f"{calendar_x._desc}.json",
+        file_name=f"{calendar_x._owner}.json",
         file_text=calendar_x.get_json(),
     )
 
@@ -197,83 +197,83 @@ def _delete_and_set_ex5():
     ex.save_calendarunit_obj_to_calendars_dir(calendar_x=calendar_4)
     ex.save_calendarunit_obj_to_calendars_dir(calendar_x=calendar_5)
 
-    ex.create_new_personunit(person_name=calendar_1._desc)
-    ex.create_new_personunit(person_name=calendar_2._desc)
-    ex.create_new_personunit(person_name=calendar_3._desc)
-    ex.create_new_personunit(person_name=calendar_4._desc)
-    ex.create_new_personunit(person_name=calendar_5._desc)
+    ex.create_new_personunit(person_name=calendar_1._owner)
+    ex.create_new_personunit(person_name=calendar_2._owner)
+    ex.create_new_personunit(person_name=calendar_3._owner)
+    ex.create_new_personunit(person_name=calendar_4._owner)
+    ex.create_new_personunit(person_name=calendar_5._owner)
 
     ex.create_calendarlink_to_saved_calendar(
-        calendar_1._desc, calendar_2._desc, "blind_trust", 3
+        calendar_1._owner, calendar_2._owner, "blind_trust", 3
     )
     ex.create_calendarlink_to_saved_calendar(
-        calendar_1._desc, calendar_3._desc, "blind_trust", 7
+        calendar_1._owner, calendar_3._owner, "blind_trust", 7
     )
     ex.create_calendarlink_to_saved_calendar(
-        calendar_1._desc, calendar_4._desc, "blind_trust", 4
+        calendar_1._owner, calendar_4._owner, "blind_trust", 4
     )
     ex.create_calendarlink_to_saved_calendar(
-        calendar_1._desc, calendar_5._desc, "blind_trust", 5
+        calendar_1._owner, calendar_5._owner, "blind_trust", 5
     )
 
     ex.create_calendarlink_to_saved_calendar(
-        calendar_2._desc, calendar_1._desc, "blind_trust", 3
+        calendar_2._owner, calendar_1._owner, "blind_trust", 3
     )
     ex.create_calendarlink_to_saved_calendar(
-        calendar_2._desc, calendar_3._desc, "blind_trust", 7
+        calendar_2._owner, calendar_3._owner, "blind_trust", 7
     )
     ex.create_calendarlink_to_saved_calendar(
-        calendar_2._desc, calendar_4._desc, "blind_trust", 4
+        calendar_2._owner, calendar_4._owner, "blind_trust", 4
     )
     icx = example_persons_get_calendar_3CleanNodesRandomWeights()
     ex.create_calendarlink_to_saved_calendar(
-        calendar_2._desc, calendar_5._desc, "ignore", 5, icx
+        calendar_2._owner, calendar_5._owner, "ignore", 5, icx
     )
 
     ex.create_calendarlink_to_saved_calendar(
-        calendar_3._desc, calendar_1._desc, "blind_trust", 3
+        calendar_3._owner, calendar_1._owner, "blind_trust", 3
     )
     ex.create_calendarlink_to_saved_calendar(
-        calendar_3._desc, calendar_2._desc, "blind_trust", 7
+        calendar_3._owner, calendar_2._owner, "blind_trust", 7
     )
     ex.create_calendarlink_to_saved_calendar(
-        calendar_3._desc, calendar_4._desc, "blind_trust", 4
+        calendar_3._owner, calendar_4._owner, "blind_trust", 4
     )
     ex.create_calendarlink_to_saved_calendar(
-        calendar_3._desc, calendar_5._desc, "blind_trust", 5
+        calendar_3._owner, calendar_5._owner, "blind_trust", 5
     )
 
     ex.create_calendarlink_to_saved_calendar(
-        calendar_4._desc, calendar_1._desc, "blind_trust", 3
+        calendar_4._owner, calendar_1._owner, "blind_trust", 3
     )
     ex.create_calendarlink_to_saved_calendar(
-        calendar_4._desc, calendar_2._desc, "blind_trust", 7
+        calendar_4._owner, calendar_2._owner, "blind_trust", 7
     )
     ex.create_calendarlink_to_saved_calendar(
-        calendar_4._desc, calendar_3._desc, "blind_trust", 4
+        calendar_4._owner, calendar_3._owner, "blind_trust", 4
     )
     ex.create_calendarlink_to_saved_calendar(
-        calendar_4._desc, calendar_5._desc, "blind_trust", 5
+        calendar_4._owner, calendar_5._owner, "blind_trust", 5
     )
 
     ex.create_calendarlink_to_saved_calendar(
-        calendar_5._desc, calendar_1._desc, "blind_trust", 3
+        calendar_5._owner, calendar_1._owner, "blind_trust", 3
     )
     ex.create_calendarlink_to_saved_calendar(
-        calendar_5._desc, calendar_2._desc, "blind_trust", 7
+        calendar_5._owner, calendar_2._owner, "blind_trust", 7
     )
     ex.create_calendarlink_to_saved_calendar(
-        calendar_5._desc, calendar_3._desc, "blind_trust", 4
+        calendar_5._owner, calendar_3._owner, "blind_trust", 4
     )
     ex.create_calendarlink_to_saved_calendar(
-        calendar_5._desc, calendar_4._desc, "blind_trust", 5
+        calendar_5._owner, calendar_4._owner, "blind_trust", 5
     )
 
-    ex.save_person_file(person_name=calendar_1._desc)
-    ex.save_person_file(person_name=calendar_2._desc)
-    ex.save_person_file(person_name=calendar_3._desc)
-    ex.save_person_file(person_name=calendar_4._desc)
-    ex.save_person_file(person_name=calendar_5._desc)
+    ex.save_person_file(person_name=calendar_1._owner)
+    ex.save_person_file(person_name=calendar_2._owner)
+    ex.save_person_file(person_name=calendar_3._owner)
+    ex.save_person_file(person_name=calendar_4._owner)
+    ex.save_person_file(person_name=calendar_5._owner)
 
 
 def _delete_and_set_ex6():
@@ -288,26 +288,26 @@ def _delete_and_set_ex6():
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_calendar = CalendarUnit(_desc=sal_text)
+    sal_calendar = CalendarUnit(_owner=sal_text)
     sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
     sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
     sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
     ex.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
 
-    bob_calendar = CalendarUnit(_desc=bob_text)
+    bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
     ex.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
 
-    tom_calendar = CalendarUnit(_desc=tom_text)
+    tom_calendar = CalendarUnit(_owner=tom_text)
     tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
     ex.save_calendarunit_obj_to_calendars_dir(calendar_x=tom_calendar)
 
-    ava_calendar = CalendarUnit(_desc=ava_text)
+    ava_calendar = CalendarUnit(_owner=ava_text)
     ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
     ex.save_calendarunit_obj_to_calendars_dir(calendar_x=ava_calendar)
 
-    elu_calendar = CalendarUnit(_desc=elu_text)
+    elu_calendar = CalendarUnit(_owner=elu_text)
     elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
     elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
     ex.save_calendarunit_obj_to_calendars_dir(calendar_x=elu_calendar)

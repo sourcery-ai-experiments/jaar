@@ -209,7 +209,7 @@ class SystemUnit:
             cur = bank_conn.cursor()
             for groupunit_x in calendarunit_x._groups.values():
                 groupunit_catalog_x = GroupUnitCatalog(
-                    calendar_name=calendarunit_x._desc,
+                    calendar_name=calendarunit_x._owner,
                     groupunit_name=groupunit_x.name,
                     memberlinks_set_by_system_road=groupunit_x._memberlinks_set_by_system_road,
                 )
@@ -220,7 +220,7 @@ class SystemUnit:
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
             for idea_x in calendarunit_x._idea_dict.values():
-                idea_catalog_x = IdeaCatalog(calendarunit_x._desc, idea_x.get_road())
+                idea_catalog_x = IdeaCatalog(calendarunit_x._owner, idea_x.get_road())
                 sqlstr = get_idea_catalog_table_insert_sqlstr(idea_catalog_x)
                 cur.execute(sqlstr)
 
@@ -229,7 +229,7 @@ class SystemUnit:
             cur = bank_conn.cursor()
             for acptfact_x in calendarunit_x._idearoot._acptfactunits.values():
                 acptfact_catalog_x = AcptFactCatalog(
-                    calendar_name=calendarunit_x._desc,
+                    calendar_name=calendarunit_x._owner,
                     base=acptfact_x.base,
                     pick=acptfact_x.pick,
                 )
@@ -395,7 +395,7 @@ class SystemUnit:
     def save_calendarunit_obj_to_calendars_dir(self, calendar_x: CalendarUnit):
         x_func_save_file(
             dest_dir=self.get_calendars_dir(),
-            file_name=f"{calendar_x._desc}.json",
+            file_name=f"{calendar_x._owner}.json",
             file_text=calendar_x.get_json(),
         )
 
@@ -431,7 +431,7 @@ class SystemUnit:
         )
         if link_type == "ignore" and ignore_calendar != None:
             personunit.set_ignore_calendar_file(
-                calendarunit=ignore_calendar, src_calendar_desc=calendarunit._desc
+                calendarunit=ignore_calendar, src_calendar_desc=calendarunit._owner
             )
 
     def _person_delete_src_calendarunit_obj(
@@ -465,7 +465,7 @@ class SystemUnit:
         weight: float = None,
     ):
         person_x = self.get_person_obj_from_system(name=person_name)
-        calendar_x = CalendarUnit(_desc=calendar_desc)
+        calendar_x = CalendarUnit(_owner=calendar_desc)
         self._person_receive_src_calendarunit_obj(
             personunit=person_x,
             calendarunit=calendar_x,

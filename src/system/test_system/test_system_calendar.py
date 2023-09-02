@@ -21,7 +21,7 @@ def test_system_set_calendar_CreatesCalendarFile(env_dir_setup_cleanup):
     e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
     e1.create_dirs_if_null()
     sx1_obj = example_persons.get_1node_calendar()
-    sx1_path = f"{e1.get_calendars_dir()}/{sx1_obj._desc}.json"
+    sx1_path = f"{e1.get_calendars_dir()}/{sx1_obj._owner}.json"
     assert os_path.exists(sx1_path) == False
 
     # WHEN
@@ -46,24 +46,24 @@ def test_system_get_calendars_dir_list_of_obj_CreatesCalendarFilesList(
     sx1_obj = example_persons.get_1node_calendar()
     sx2_obj = example_calendars_get_calendar_1Task_1CE0MinutesRequired_1AcptFact()
     sx3_obj = example_calendars_calendar_v001()
-    print(f"{sx1_obj._desc=}")
-    print(f"{sx2_obj._desc=}")
-    print(f"{sx3_obj._desc=}")
+    print(f"{sx1_obj._owner=}")
+    print(f"{sx2_obj._owner=}")
+    print(f"{sx3_obj._owner=}")
     ex.save_calendarunit_obj_to_calendars_dir(calendar_x=sx1_obj)
     ex.save_calendarunit_obj_to_calendars_dir(calendar_x=sx2_obj)
     ex.save_calendarunit_obj_to_calendars_dir(calendar_x=sx3_obj)
 
-    sx1_path = f"{ex.get_calendars_dir()}/{sx1_obj._desc}.json"
-    sx2_path = f"{ex.get_calendars_dir()}/{sx2_obj._desc}.json"
-    sx3_path = f"{ex.get_calendars_dir()}/{sx3_obj._desc}.json"
+    sx1_path = f"{ex.get_calendars_dir()}/{sx1_obj._owner}.json"
+    sx2_path = f"{ex.get_calendars_dir()}/{sx2_obj._owner}.json"
+    sx3_path = f"{ex.get_calendars_dir()}/{sx3_obj._owner}.json"
     assert os_path.exists(sx1_path)
     assert os_path.exists(sx2_path)
     assert os_path.exists(sx3_path)
 
     # THEN
     assert len(ex.get_calendars_dir_file_names_list()) == 3
-    assert ex.get_calendars_dir_file_names_list()[0] == f"{sx1_obj._desc}.json"
-    assert ex.get_calendars_dir_list_of_obj()[0]._desc == sx1_obj._desc
+    assert ex.get_calendars_dir_file_names_list()[0] == f"{sx1_obj._owner}.json"
+    assert ex.get_calendars_dir_list_of_obj()[0]._owner == sx1_obj._owner
     assert ex.get_calendars_dir_list_of_obj()[0] == sx1_obj
     assert ex.get_calendars_dir_list_of_obj()[1]._idearoot == sx2_obj._idearoot
     assert ex.get_calendars_dir_list_of_obj()[1] == sx2_obj
@@ -79,7 +79,7 @@ def test_system_get_calendar_currentlyGetsCalendar(env_dir_setup_cleanup):
     e5.save_calendarunit_obj_to_calendars_dir(calendar_x=sx5_obj)
 
     # WHEN / THEN
-    assert e5.get_calendar_from_calendars_dir(_desc=sx5_obj._desc) == sx5_obj
+    assert e5.get_calendar_from_calendars_dir(_desc=sx5_obj._owner) == sx5_obj
 
 
 def test_system_rename_calendar_in_calendars_dir_ChangesCalendarName(
@@ -90,7 +90,7 @@ def test_system_rename_calendar_in_calendars_dir_ChangesCalendarName(
     e5 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
     e5.create_dirs_if_null(in_memory_bank=True)
     old_calendar_desc = "old1"
-    sx5_obj = CalendarUnit(_desc=old_calendar_desc)
+    sx5_obj = CalendarUnit(_owner=old_calendar_desc)
     old_sx5_path = f"{e5.get_calendars_dir()}/{old_calendar_desc}.json"
     e5.save_calendarunit_obj_to_calendars_dir(calendar_x=sx5_obj)
     print(f"{old_sx5_path=}")

@@ -187,7 +187,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_acptfact_time_open_5daysago(self):
         days5ago_x = datetime.now() - timedelta(days=5)
-        road_minute = f"{self.calendar_x._desc},time,jajatime"
+        road_minute = f"{self.calendar_x._owner},time,jajatime"
         # self.root_datetime_curr_label.setText(f"Now: {str(now_x)}")
         self.calendar_x.set_acptfact(
             base=road_minute,
@@ -197,7 +197,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_all()
 
     def _set_acptfact_time_open_midnight_attr(self):
-        road_minute = f"{self.calendar_x._desc},time,jajatime"
+        road_minute = f"{self.calendar_x._owner},time,jajatime"
         open_dt = self.calendar_x.get_time_dt_from_min(
             self.calendar_x._idearoot._acptfactunits[road_minute].open
         )
@@ -231,7 +231,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_acptfact_time_open_soft(self):
         # now_x = datetime.now()
-        # road_minute = f"{self.calendar_x._desc},time,jajatime"
+        # road_minute = f"{self.calendar_x._owner},time,jajatime"
         # self.root_datetime_curr_label.setText(f"Now: {str(now_x)}")
         # self.calendar_x.set_acptfact(
         #     base=road_minute,
@@ -242,7 +242,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_acptfact_time_nigh_now(self):
         now_x = datetime.now()
-        road_minute = f"{self.calendar_x._desc},time,jajatime"
+        road_minute = f"{self.calendar_x._owner},time,jajatime"
         self.calendar_x.set_acptfact(
             base=road_minute,
             pick=road_minute,
@@ -268,7 +268,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def save_file(self):
         if self.file_path is None:
             self.file_path = (
-                f"{get_calendar_examples_dir()}/calendar_{self.calendar_x._desc}.json"
+                f"{get_calendar_examples_dir()}/calendar_{self.calendar_x._owner}.json"
             )
         self._commit_file_save()
 
@@ -279,7 +279,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.current_file_path_label.setText(self.file_path)
         # x_func_save_file(
         #     dest_dir=person_calendar_dir,
-        #     file_name=f"{calendar_x._desc}.json",
+        #     file_name=f"{calendar_x._owner}.json",
         #     file_text=calendar_x.get_json(),
         # )
 
@@ -298,19 +298,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.calendar_load(lw_json=self.calendar_x_json)
 
     def calendar_new(self):
-        self.calendar_x = CalendarUnit(_desc="new")
+        self.calendar_x = CalendarUnit(_owner="new")
         self.calendar_x._set_acptfacts_empty_if_null()
         self.calendar_x.set_members_empty_if_null()
         self.calendar_x.set_groupunits_empty_if_null()
         self.calendar_x.set_time_hreg_ideas(c400_count=7)
-        road_minute = f"{self.calendar_x._desc},time,jajatime"
+        road_minute = f"{self.calendar_x._owner},time,jajatime"
         self.calendar_x.set_acptfact(
             base=road_minute, pick=road_minute, open=1000000, nigh=1000000
         )
         self.refresh_all()
 
     def refresh_datetime_display(self):
-        road_minute = f"{self.calendar_x._desc},time,jajatime"
+        road_minute = f"{self.calendar_x._owner},time,jajatime"
         jajatime_open = self.calendar_x.get_time_dt_from_min(
             self.calendar_x._idearoot._acptfactunits[road_minute].open
         )
@@ -330,7 +330,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.root_datetime_prev_label.setText("")
         with contextlib.suppress(Exception):
             self.refresh_datetime_display()
-        self.calendar_desc.setText(self.calendar_x._desc)
+        self.calendar_desc.setText(self.calendar_x._owner)
         self.acptfacts_table_load()
         self.agenda_states_load()
 
@@ -347,7 +347,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         row = 0
         for acptfact in self.get_acptfacts_list():
-            base_text = acptfact.base.replace(f"{self.calendar_x._desc}", "")
+            base_text = acptfact.base.replace(f"{self.calendar_x._owner}", "")
             base_text = base_text[1:]
             acptfact_text = acptfact.pick.replace(acptfact.base, "")
             acptfact_text = acptfact_text[1:]
@@ -368,7 +368,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             row += 1
 
         for base, count in self.calendar_x.get_missing_acptfact_bases().items():
-            base_text = base.replace(f"{self.calendar_x._desc}", "")
+            base_text = base.replace(f"{self.calendar_x._owner}", "")
             base_text = base_text[1:]
 
             base_explain_text = f"{base_text} ({count} nodes)"
@@ -430,12 +430,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agenda_states.setItem(row, 0, qtw1(str(ax._uid)))
         self.agenda_states.setItem(row, 1, qtw1(ax._desc))
 
-        if ax._requiredunits.get(f"{self.calendar_x._desc},time,jajatime") != None:
+        if ax._requiredunits.get(f"{self.calendar_x._owner},time,jajatime") != None:
             jajatime_required = ax._requiredunits.get(
-                f"{self.calendar_x._desc},time,jajatime"
+                f"{self.calendar_x._owner},time,jajatime"
             )
             sufffact_x = jajatime_required.sufffacts.get(
-                f"{self.calendar_x._desc},time,jajatime"
+                f"{self.calendar_x._owner},time,jajatime"
             )
             if sufffact_x != None and sufffact_x.open != 0:
                 tw_open = qtw1(
@@ -486,14 +486,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def agenda_task_display(self, agenda_item):
         self.label_agenda_desc_data.setText(agenda_item._desc)
         if (
-            agenda_item._requiredunits.get(f"{self.calendar_x._desc},time,jajatime")
+            agenda_item._requiredunits.get(f"{self.calendar_x._owner},time,jajatime")
             != None
         ):
             jajatime_required = agenda_item._requiredunits.get(
-                f"{self.calendar_x._desc},time,jajatime"
+                f"{self.calendar_x._owner},time,jajatime"
             )
             sufffact_x = jajatime_required.sufffacts.get(
-                f"{self.calendar_x._desc},time,jajatime,day"
+                f"{self.calendar_x._owner},time,jajatime,day"
             )
             if sufffact_x != None:
                 self.label_agenda_day_data.setText("day_stuff")
@@ -511,10 +511,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_jajaday_open_nigh(self, agenda_item):
         jajatime_required = agenda_item._requiredunits.get(
-            f"{self.calendar_x._desc},time,jajatime"
+            f"{self.calendar_x._owner},time,jajatime"
         )
         sufffact_x = jajatime_required.sufffacts.get(
-            f"{self.calendar_x._desc},time,jajatime,day"
+            f"{self.calendar_x._owner},time,jajatime,day"
         )
         if sufffact_x != None:
             open_x = sufffact_x.open

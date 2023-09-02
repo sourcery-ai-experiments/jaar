@@ -315,7 +315,7 @@ def get_calendar_table_insert_sqlstr(calendar_x: CalendarUnit) -> str:
             name
             )
         VALUES (
-            '{calendar_x._desc}' 
+            '{calendar_x._owner}' 
         )
         ;
         """
@@ -359,7 +359,7 @@ def get_ledger_table_insert_sqlstr(
             , _debtor_active
             )
         VALUES (
-            '{calendar_x._desc}' 
+            '{calendar_x._owner}' 
             , '{memberunit_x.name}'
             , {sqlite_null(memberunit_x._calendar_credit)} 
             , {sqlite_null(memberunit_x._calendar_debt)}

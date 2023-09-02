@@ -118,11 +118,11 @@ class PersonUnit:
     ):
         x_func_save_file(
             dest_dir=self._person_calendars_dir,
-            file_name=f"{calendar_x._desc}.json",
+            file_name=f"{calendar_x._owner}.json",
             file_text=calendar_x.get_json(),
         )
         self._set_src_calendarlinks(
-            calendar_desc=calendar_x._desc,
+            calendar_desc=calendar_x._owner,
             link_type=link_type,
             weight=calendarlink_weight,
         )
@@ -172,11 +172,11 @@ class PersonUnit:
             cx_json = x_func_open_file(self._person_calendars_dir, cx_file_name)
             cx_obj = calendarunit_get_from_json(lw_json=cx_json)
             self._save_digest_calendar_file(
-                calendarunit=cx_obj, src_calendar_desc=cx_obj._desc
+                calendarunit=cx_obj, src_calendar_desc=cx_obj._owner
             )
         elif calendarlink_x.link_type == "ignore":
-            new_cx_obj = CalendarUnit(_desc=calendar_desc)
-            self.set_ignore_calendar_file(new_cx_obj, new_cx_obj._desc)
+            new_cx_obj = CalendarUnit(_owner=calendar_desc)
+            self.set_ignore_calendar_file(new_cx_obj, new_cx_obj._owner)
 
     def _set_src_calendarlinks_empty_if_null(self):
         if self._src_calendarlinks is None:
@@ -195,7 +195,7 @@ class PersonUnit:
         )
 
     def _set_emtpy_dest_calendar(self):
-        self._dest_calendar = CalendarUnit(_desc="")
+        self._dest_calendar = CalendarUnit(_owner="")
 
     def get_dest_calendar_from_digest_calendar_files(self) -> CalendarUnit:
         return get_meld_of_calendar_files(
@@ -253,7 +253,7 @@ class PersonUnit:
             self.set_dest_calendar_to_public_calendar()
 
     def _save_public_calendar_file(self, calendarunit: CalendarUnit):
-        file_name = f"{calendarunit._desc}.json"
+        file_name = f"{calendarunit._owner}.json"
         x_func_save_file(
             dest_dir=self._public_calendars_dir,
             file_name=file_name,
@@ -267,7 +267,7 @@ class PersonUnit:
             ct = x_func_open_file(self._person_dir, "starting_digest_calendar.json")
             cx = calendarunit_get_from_json(lw_json=ct)
             empty_cx = self._get_empty_starting_digest_calendar()
-            cx.calendar_and_idearoot_desc_edit(new_desc=empty_cx._desc)
+            cx.calendar_and_idearoot_desc_edit(new_desc=empty_cx._owner)
             cx.set_calendar_metrics()
         except Exception:
             cx = self._get_empty_starting_digest_calendar()
@@ -275,7 +275,7 @@ class PersonUnit:
         return cx
 
     def _get_empty_starting_digest_calendar(self):
-        return CalendarUnit(_desc=self.name, _weight=0)
+        return CalendarUnit(_owner=self.name, _weight=0)
 
     def set_starting_digest_calendar(self, calendarunit: CalendarUnit):
         x_func_save_file(

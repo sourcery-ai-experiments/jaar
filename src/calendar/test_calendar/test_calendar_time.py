@@ -4,7 +4,7 @@ from random import randint
 
 
 def test_time_get_time_min_from_dt_WorksCorrectly():
-    g_lw = CalendarUnit(_desc="src")
+    g_lw = CalendarUnit(_owner="src")
     g_lw.set_time_hreg_ideas(c400_count=6)
     assert g_lw.get_time_min_from_dt(dt=datetime(2000, 1, 1, 0, 0))
     assert g_lw.get_time_min_from_dt(dt=datetime(1, 1, 1, 0, 0)) == 527040
@@ -15,7 +15,7 @@ def test_time_get_time_min_from_dt_WorksCorrectly():
 
 
 def test_get_time_400YearCycle_from_min_WorksCorrectly():
-    g_lw = CalendarUnit(_desc="src")
+    g_lw = CalendarUnit(_owner="src")
     g_lw.set_time_hreg_ideas(c400_count=6)
     assert g_lw.get_time_c400_from_min(min=0)[0] == 0
     assert g_lw.get_time_c400_from_min(min=210379680)[0] == 1
@@ -24,7 +24,7 @@ def test_get_time_400YearCycle_from_min_WorksCorrectly():
 
 
 def test_get_time_c400year_from_min_WorksCorrectly():
-    g_lw = CalendarUnit(_desc="src")
+    g_lw = CalendarUnit(_owner="src")
     g_lw.set_time_hreg_ideas(c400_count=6)
     assert g_lw.get_time_c400yr_from_min(min=0)[0] == 0
     assert g_lw.get_time_c400yr_from_min(min=1)[0] == 0
@@ -51,7 +51,7 @@ def _check_time_conversion_works_with_random_inputs(ax: CalendarUnit):
 
 
 def test_get_time_dt_from_min_WorksCorrectly():
-    g_lw = CalendarUnit(_desc="src")
+    g_lw = CalendarUnit(_owner="src")
     g_lw.set_time_hreg_ideas(c400_count=6)
     assert g_lw.get_time_dt_from_min(min=5000000)
     # assert g_lw.get_time_dt_from_min(
@@ -100,7 +100,7 @@ def test_get_time_dt_from_min_WorksCorrectly():
 
 def test_get_time_():
     # Given
-    g_lw = CalendarUnit(_desc="src")
+    g_lw = CalendarUnit(_owner="src")
     g_lw.set_time_hreg_ideas(c400_count=6)
 
     idea_list = g_lw.get_idea_list()
@@ -116,17 +116,17 @@ def test_get_time_():
     )
 
     # Then
-    assert g_lw._idearoot._acptfactunits[f"{g_lw._desc},time,jajatime"]
+    assert g_lw._idearoot._acptfactunits[f"{g_lw._owner},time,jajatime"]
     assert (
-        g_lw._idearoot._acptfactunits[f"{g_lw._desc},time,jajatime"].open == 1051898400
+        g_lw._idearoot._acptfactunits[f"{g_lw._owner},time,jajatime"].open == 1051898400
     )  # - 1440
     assert (
-        g_lw._idearoot._acptfactunits[f"{g_lw._desc},time,jajatime"].nigh == 1053934800
+        g_lw._idearoot._acptfactunits[f"{g_lw._owner},time,jajatime"].nigh == 1053934800
     )  # - 1440
 
 
 # def test_time_hreg_set_exists():
-#     g_lw = CalendarUnit(_desc="src")
+#     g_lw = CalendarUnit(_owner="src")
 #     g_lw.set_time_hreg_ideas(c400_count=6)
 #     idea_x = g_lw.get_idea_kid(road="src,hreg")
 #     assert idea_x != None
@@ -304,7 +304,7 @@ def test_get_time_():
 def test_get_jajatime_repeating_readable_text_correctlyText():
     # GIVEN
     src_text = "src"
-    cx = CalendarUnit(_desc=src_text)
+    cx = CalendarUnit(_owner=src_text)
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN / THEN

@@ -32,7 +32,7 @@ def test_system_get_person_dest_calendar_from_digest_calendar_files_ReturnsCorre
     px_name = "test_person1"
     ex.create_new_personunit(person_name=px_name)
     ex.create_calendarlink_to_saved_calendar(
-        person_name=px_name, calendar_desc=input_calendar._desc
+        person_name=px_name, calendar_desc=input_calendar._owner
     )
     ex.save_person_file(person_name=px_name)
     person_x_obj = ex.get_person_obj_from_system(name=px_name)
@@ -99,8 +99,8 @@ def test_system_get_person_dest_calendar_from_digest_calendar_files_ReturnsCorre
     # ex.save_calendarunit_obj_to_calendars_dir(ex_cxs_calendar_v001())
     px_name = "test_person1"
     ex.create_new_personunit(person_name=px_name)
-    ex.create_calendarlink_to_saved_calendar(px_name, calendar1._desc)
-    ex.create_calendarlink_to_saved_calendar(px_name, calendar2._desc)
+    ex.create_calendarlink_to_saved_calendar(px_name, calendar1._owner)
+    ex.create_calendarlink_to_saved_calendar(px_name, calendar2._owner)
     ex.save_person_file(person_name=px_name)
     person_x_obj = ex.get_person_obj_from_system(name=px_name)
     print(f"{person_x_obj._src_calendarlinks=}")

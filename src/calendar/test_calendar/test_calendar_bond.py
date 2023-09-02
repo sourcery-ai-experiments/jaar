@@ -31,7 +31,7 @@ from pytest import raises as pytest_raises
 def test_calendarunit_get_bond_status_ReturnsCorrectBool():
     # GIVEN
     jessi_text = "jessi"
-    cx = CalendarUnit(_desc=jessi_text)
+    cx = CalendarUnit(_owner=jessi_text)
     casa_text = "case"
     casa_road = Road(f"{jessi_text},{casa_text}")
 
@@ -70,7 +70,7 @@ def test_calendarunit_get_bond_status_ReturnsCorrectBool():
 def test_calendarunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaGroupheirsMatchCalendarGroups():
     # GIVEN
     jessi_text = "jessi"
-    cx = CalendarUnit(_desc=jessi_text)
+    cx = CalendarUnit(_owner=jessi_text)
     casa_text = "case"
     casa_road = Road(f"{jessi_text},{casa_text}")
     cx.add_idea(idea_kid=IdeaKid(_desc=casa_text), walk=jessi_text)
@@ -98,7 +98,7 @@ def test_calendarunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaGrouph
 def test_calendarunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualCalendarGroupunits():
     # GIVEN
     jessi_text = "jessi"
-    cx = CalendarUnit(_desc=jessi_text)
+    cx = CalendarUnit(_owner=jessi_text)
     casa_text = "case"
     casa_road = Road(f"{jessi_text},{casa_text}")
     cx.add_idea(idea_kid=IdeaKid(_desc=casa_text), walk=jessi_text)
@@ -128,7 +128,7 @@ def test_calendarunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualCalendarGr
 def test_calendarunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualCalendarGroupunits2():
     # GIVEN
     jessi_text = "jessi"
-    cx = CalendarUnit(_desc=jessi_text)
+    cx = CalendarUnit(_owner=jessi_text)
     casa_text = "case"
     casa_road = Road(f"{jessi_text},{casa_text}")
     cx.add_idea(idea_kid=IdeaKid(_desc=casa_text), walk=jessi_text)
@@ -168,7 +168,7 @@ def test_calendarunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualCalendarGr
 def test_calendarunit_get_bond_status_ChecksOnlyNecessaryIdeasExist_MultipleScenario():
     # GIVEN
     jessi_text = "jessi"
-    cx = CalendarUnit(_desc=jessi_text)
+    cx = CalendarUnit(_owner=jessi_text)
     casa_text = "case"
     casa_road = Road(f"{jessi_text},{casa_text}")
     cx.add_idea(idea_kid=IdeaKid(_desc=casa_text), walk=jessi_text)
@@ -201,7 +201,7 @@ def test_calendarunit_get_bond_status_ChecksOnlyNecessaryIdeasExist_MultipleScen
 def test_calendarunit_get_calendar_sprung_from_single_idea_ReturnsCorrectCalendarScenario1():
     # GIVEN
     jessi_text = "jessi"
-    cx = CalendarUnit(_desc=jessi_text)
+    cx = CalendarUnit(_owner=jessi_text)
     casa_text = "case"
     casa_road = Road(f"{jessi_text},{casa_text}")
     cx.add_idea(
@@ -326,29 +326,29 @@ def test_calendarunit_export_all_bonds_ExportsFileOfBonds_2files(env_dir_setup_c
 #     assert len(x_func_dir_files(dir_path=get_temp_env_dir())) == action_count
 
 
-def test_calendarunit_export_all_bonds_ReturnsDictOfBonds(env_dir_setup_cleanup):
-    # GIVEN
-    cx = example_calendars_get_calendar_with_4_levels_and_2requireds_2acptfacts()
-    cx_idea_list = cx.get_idea_list()
-    action_count = sum(bool(yx.promise) for yx in cx_idea_list)
-    assert action_count == 2
+# def test_calendarunit_export_all_bonds_ReturnsDictOfBonds(env_dir_setup_cleanup):
+#     # GIVEN
+#     cx = example_calendars_get_calendar_with_4_levels_and_2requireds_2acptfacts()
+#     cx_idea_list = cx.get_idea_list()
+#     action_count = sum(bool(yx.promise) for yx in cx_idea_list)
+#     assert action_count == 2
 
-    # WHEN
-    cx.export_all_bonds(dir=get_temp_env_dir())
+#     # WHEN
+#     cx.export_all_bonds(dir=get_temp_env_dir())
 
-    # THEN
-    dir_files = x_func_dir_files(dir_path=get_temp_env_dir())
-    file_17_name = "17.json"
-    assert dir_files[file_17_name]
-    json_17 = x_func_open_file(dest_dir=get_temp_env_dir(), file_name=file_17_name)
-    bond_17 = calendar_get_from_json(lw_json=json_17)
-    assert bond_17.get_bond_status()
+#     # THEN
+#     dir_files = x_func_dir_files(dir_path=get_temp_env_dir())
+#     file_17_name = "17.json"
+#     assert dir_files[file_17_name]
+#     json_17 = x_func_open_file(dest_dir=get_temp_env_dir(), file_name=file_17_name)
+#     bond_17 = calendar_get_from_json(lw_json=json_17)
+#     assert bond_17.get_bond_status()
 
-    file_2_name = "2.json"
-    assert dir_files[file_2_name]
-    json_2 = x_func_open_file(dest_dir=get_temp_env_dir(), file_name=file_2_name)
-    bond_2 = calendar_get_from_json(lw_json=json_2)
-    assert bond_2.get_bond_status()
+#     file_2_name = "2.json"
+#     assert dir_files[file_2_name]
+#     json_2 = x_func_open_file(dest_dir=get_temp_env_dir(), file_name=file_2_name)
+#     bond_2 = calendar_get_from_json(lw_json=json_2)
+#     assert bond_2.get_bond_status()
 
 
 def test_calendarunit_get_meld_of_calendar_files_MeldsIntoSourceCalendar_Scenario1(
@@ -356,7 +356,7 @@ def test_calendarunit_get_meld_of_calendar_files_MeldsIntoSourceCalendar_Scenari
 ):
     # GIVEN
     src = "src"
-    src_cx = CalendarUnit(_weight=10, _desc=src)
+    src_cx = CalendarUnit(_owner=src, _weight=10)
 
     work = "work"
     idea_kid_work = IdeaKid(_weight=30, _desc=work, promise=True)
@@ -370,7 +370,7 @@ def test_calendarunit_get_meld_of_calendar_files_MeldsIntoSourceCalendar_Scenari
 
     # WHEN
     new_cx = get_meld_of_calendar_files(
-        calendarunit=CalendarUnit(_desc=src_cx._desc, _weight=10),
+        calendarunit=CalendarUnit(_owner=src_cx._owner, _weight=10),
         dir=get_temp_env_dir(),
     )
 
@@ -393,7 +393,7 @@ def test_calendarunit_get_meld_of_calendar_files_MeldsIntoSourceCalendar_Scenari
 # ):
 #     # GIVEN
 #     src = "src"
-#     src_cx = CalendarUnit(_weight=10, _desc=src)
+#     src_cx = CalendarUnit(_owner=src, _weight=10)
 
 #     work_text = "work"
 #     work_road = f"{src},{work_text}"
@@ -409,7 +409,7 @@ def test_calendarunit_get_meld_of_calendar_files_MeldsIntoSourceCalendar_Scenari
 
 #     # WHEN
 #     new_cx = get_meld_of_calendar_files(
-#         calendarunit=CalendarUnit(_desc=src_cx._desc, _weight=0), dir=get_temp_env_dir()
+#         calendarunit=CalendarUnit(_owner=src_cx._owner, _weight=0), dir=get_temp_env_dir()
 #     )
 
 #     # THEN

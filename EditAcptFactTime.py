@@ -66,10 +66,10 @@ class EditAcptFactTime(qtw.QTableWidget, Ui_Form):
 
     def display_acptfact_time(self):
         # minutes_idea = self.calendar_x.get_idea_kid(
-        #     road=f"{self.calendar_x._desc},time,jajatime"
+        #     road=f"{self.calendar_x._owner},time,jajatime"
         # )
         minutes_acptfact = self.calendar_x._idearoot._acptfactunits[
-            f"{self.calendar_x._desc},time,jajatime"
+            f"{self.calendar_x._owner},time,jajatime"
         ]
 
         dt_open = self.calendar_x.get_time_dt_from_min(min=minutes_acptfact.open)

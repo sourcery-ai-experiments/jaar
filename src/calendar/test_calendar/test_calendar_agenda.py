@@ -34,7 +34,7 @@ def test_get_agenda_returns_agenda_with_only_required_allowed():
     # GIVEN
     a1 = example_calendars_get_calendar_with_4_levels_and_2requireds()
     week_text = "weekdays"
-    week_road = f"{a1._desc},{week_text}"
+    week_road = f"{a1._owner},{week_text}"
     sun_text = "Sunday"
     sun_road = f"{week_road},{sun_text}"
     a1.set_acptfact(base=week_road, pick=sun_road)
@@ -91,7 +91,7 @@ def test_get_agenda_with_7amItem():
     # GIVEN
     # set acptfacts as midnight to 8am
     a1 = example_calendars_get_calendar_with7amCleanTableRequired()
-    day24hr_road = f"{a1._desc},timetech,24hr day"
+    day24hr_road = f"{a1._owner},timetech,24hr day"
     day24hr_open = 0.0
     day24hr_nigh = 8.0
     housework_text = "housework"
@@ -118,7 +118,7 @@ def test_get_agenda_with_7amItem():
 
 def test_get_agenda_does_not_return_promise_items_outside_range():
     src = "src"
-    a1 = CalendarUnit(_desc=src)
+    a1 = CalendarUnit(_owner=src)
     a1.set_time_hreg_ideas(c400_count=7)
     c_desc = "clean"
     c_idea = IdeaKid(_desc=c_desc, promise=True)
@@ -294,7 +294,7 @@ def test_set_agenda_task_as_complete_RangeWorksCorrectly():
     time_road = f"{src_text},{time_text}"
     day_text = "day"
     day_road = f"{time_road},{day_text}"
-    a1 = CalendarUnit(_desc=src_text)
+    a1 = CalendarUnit(_owner=src_text)
 
     a1.add_idea(idea_kid=IdeaKid(_desc=run_text, promise=True), walk=src_text)
     a1.add_idea(idea_kid=IdeaKid(_desc=day_text, _begin=0, _close=500), walk=time_road)
@@ -334,7 +334,7 @@ def test_set_agenda_task_as_complete_DivisionWorksCorrectly():
     time_road = f"{src_text},{time_text}"
     day_text = "day"
     day_road = f"{time_road},{day_text}"
-    a1 = CalendarUnit(_desc=src_text)
+    a1 = CalendarUnit(_owner=src_text)
 
     a1.add_idea(idea_kid=IdeaKid(_desc=run_text, promise=True), walk=src_text)
     a1.add_idea(idea_kid=IdeaKid(_desc=day_text, _begin=0, _close=500), walk=time_road)
@@ -405,14 +405,14 @@ def test_calendar_get_from_json_LoadsActionFromJSONCorrectly():
 
 def test_weekdayAgendaItemsCorrectlyReturned():
     # Given
-    a1 = CalendarUnit(_desc="src")
+    a1 = CalendarUnit(_owner="src")
 
     a1._set_acptfacts_empty_if_null()
     a1.set_time_hreg_ideas(c400_count=7)
 
     things_text = "things to do"
-    a1.add_idea(IdeaKid(_desc=things_text), walk=a1._desc)
-    t_road = f"{a1._desc},{things_text}"
+    a1.add_idea(IdeaKid(_desc=things_text), walk=a1._owner)
+    t_road = f"{a1._owner},{things_text}"
     clean = "clean"
     run = "run"
     swim = "swim"
@@ -425,7 +425,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     a1.add_idea(IdeaKid(_desc=jog, promise=True), walk=t_road)
     a1.add_idea(IdeaKid(_desc=veg, promise=True), walk=t_road)
     a1.add_idea(IdeaKid(_desc=lift, promise=True), walk=t_road)
-    w_word = f"{a1._desc},time,tech,week"
+    w_word = f"{a1._owner},time,tech,week"
     mon_road = f"{w_word},Monday"
     tue_road = f"{w_word},Tuesday"
     wed_road = f"{w_word},Wednesday"
@@ -433,7 +433,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     fri_road = f"{w_word},Friday"
     sat_road = f"{w_word},Saturday"
     sun_road = f"{w_word},Sunday"
-    t_road = f"{a1._desc},{things_text}"
+    t_road = f"{a1._owner},{things_text}"
     c_road = f"{t_road},{clean}"
     r_road = f"{t_road},{run}"
     s_road = f"{t_road},{swim}"
@@ -501,7 +501,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
 
     # When
     print("\nset acptfact for Sunday")
-    road_minute = f"{a1._desc},time,jajatime"
+    road_minute = f"{a1._owner},time,jajatime"
     a1.set_acptfact(base=road_minute, pick=road_minute, open=sun_min, nigh=sun_min)
     # for acptfact in a1._idearoot._acptfactunits.values():
     #     print(f"{acptfact.base=} (H: {acptfact.acptfact}) {acptfact.active=} {acptfact.open=} {acptfact.nigh=}")
@@ -592,7 +592,7 @@ def test_calendar_create_agenda_item_CorrectlyCreatesAllCalendarAttributes():
     src_text = "mysun"
     src_road = Road(f"{src_text}")
 
-    a1 = CalendarUnit(_desc=src_text)
+    a1 = CalendarUnit(_owner=src_text)
 
     a1.set_calendar_metrics()
     assert len(a1._members) == 0
@@ -680,7 +680,7 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
     a1 = example_calendars_calendar_v002()
 
     assert len(a1.get_agenda_items()) == 44
-    jajatime_road = f"{a1._desc},time,jajatime"
+    jajatime_road = f"{a1._owner},time,jajatime"
 
     # WHEN
     a1.set_acptfact(

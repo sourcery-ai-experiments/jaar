@@ -40,7 +40,7 @@ def test_calendar_get_dict_ReturnsDictObject():
     # THEN
     assert x_dict != None
     assert str(type(x_dict)) == "<class 'dict'>"
-    assert x_dict["_desc"] == x_calendar._desc
+    assert x_dict["_owner"] == x_calendar._owner
     assert x_dict["_weight"] == x_calendar._weight
     assert x_dict["_max_tree_traverse"] == x_calendar._max_tree_traverse
     assert len(x_dict["_members"]) == len(x_calendar._members)
@@ -50,7 +50,7 @@ def test_calendar_get_dict_ReturnsDictObject():
     _kids = "_kids"
     _special_road = "_special_road"
     _numeric_road = "_numeric_road"
-    assert x_dict["_desc"] == x_idearoot._desc
+    assert x_dict["_owner"] == x_idearoot._desc
     assert x_dict["_weight"] == x_idearoot._weight
     assert x_dict["_addin"] == x_idearoot._addin
     assert x_dict["_numor"] == x_idearoot._numor
@@ -62,7 +62,7 @@ def test_calendar_get_dict_ReturnsDictObject():
 
     # checking an ideakid._special_road attribute
     month_week_text = "month_week"
-    month_week_road = f"{x_calendar._desc},{month_week_text}"
+    month_week_road = f"{x_calendar._owner},{month_week_text}"
     month_week_idea_x = x_calendar.get_idea_kid(road=month_week_road)
     print("checking TlME,month_week...special_road equal to...")
     month_week_special_dict = x_dict[_kids][month_week_text][_special_road]
@@ -85,7 +85,7 @@ def test_calendar_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
     # GIVEN
     src_text = "src"
     run_text = "runners"
-    x_calendar = CalendarUnit(_desc=src_text)
+    x_calendar = CalendarUnit(_owner=src_text)
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(name=run_text)
     x_calendar.edit_idea_attr(assignedunit=assigned_unit_x, road=src_text)
@@ -104,7 +104,7 @@ def test_calendar_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
     run_text = "run"
     morn_text = "morning"
     morn_road = f"{src_text},{morn_text}"
-    x_calendar = CalendarUnit(_desc=src_text)
+    x_calendar = CalendarUnit(_owner=src_text)
     x_calendar.add_idea(idea_kid=IdeaKid(_desc=morn_text), walk=src_text)
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(name=run_text)
@@ -136,7 +136,7 @@ def test_export_to_JSON_simple_example_works():
     assert True == x_is_json(x_json)
     x_dict = json_loads(x_json)
 
-    assert x_dict["_desc"] == x_calendar._desc
+    assert x_dict["_owner"] == x_calendar._owner
     assert x_dict["_weight"] == x_calendar._weight
 
     x_idearoot = x_calendar._idearoot
@@ -158,7 +158,7 @@ def test_export_to_JSON_simple_example_works():
 def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     # GIVEN
     x_calendar = example_calendars_calendar_v001()
-    src_text = x_calendar._desc
+    src_text = x_calendar._owner
     day_hour_text = "day_hour"
     day_hour_road = f"{src_text},{day_hour_text}"
     x_calendar.set_acptfact(base=day_hour_road, pick=day_hour_road, open=0, nigh=23)
@@ -175,9 +175,8 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
 
     # THEN
     _kids = "_kids"
-    assert x_dict["_desc"] == x_calendar._desc
+    assert x_dict["_owner"] == x_calendar._owner
     assert x_dict["_weight"] == x_calendar._weight
-    assert x_dict["_desc"] == x_calendar._desc
     assert x_dict["_max_tree_traverse"] == 2
     assert x_dict["_max_tree_traverse"] == x_calendar._max_tree_traverse
 
@@ -231,10 +230,10 @@ def test_calendar_get_json_CorrectlyWorksForSimpleExample():
     # GIVEN
     calendar_y = example_calendars_get_calendar_x1_3levels_1required_1acptfacts()
     calendar_y.set_max_tree_traverse(23)
-    src_text = calendar_y._desc
+    src_text = calendar_y._owner
 
     shave_text = "shave"
-    shave_road = f"{calendar_y._desc},{shave_text}"
+    shave_road = f"{calendar_y._owner},{shave_text}"
     shave_idea_x = calendar_y.get_idea_kid(road=shave_road)
 
     sue_text = "sue"
@@ -265,8 +264,8 @@ def test_calendar_get_json_CorrectlyWorksForSimpleExample():
 
     # THEN
     assert str(type(calendar_x)).find(".calendar.CalendarUnit'>") > 0
-    assert calendar_x._desc != None
-    assert calendar_x._desc == calendar_y._desc
+    assert calendar_x._owner != None
+    assert calendar_x._owner == calendar_y._owner
     assert calendar_x._max_tree_traverse == 23
     assert calendar_x._max_tree_traverse == calendar_y._max_tree_traverse
 
@@ -282,7 +281,7 @@ def test_calendar_get_json_CorrectlyWorksForSimpleExample():
     assert len(calendar_x._idearoot._kids) == 2
 
     weekday_text = "weekdays"
-    weekday_road = f"{calendar_x._desc},{weekday_text}"
+    weekday_road = f"{calendar_x._owner},{weekday_text}"
     weekday_idea_x = calendar_x.get_idea_kid(road=weekday_road)
     assert len(weekday_idea_x._kids) == 2
 
@@ -318,12 +317,12 @@ def test_calendar_get_json_CorrectlyWorksForSimpleExample():
 
 #     # THEN
 #     assert str(type(cx3)).find(".calendar.CalendarUnit'>") > 0
-#     assert cx3._desc != None
-#     assert cx3._desc == cx1._desc
+#     assert cx3._owner != None
+#     assert cx3._owner == cx1._owner
 #     assert cx3._max_tree_traverse == 2
 #     assert cx3._max_tree_traverse == cx1._max_tree_traverse
-#     assert cx3._idearoot._desc != None
-#     assert cx3._idearoot._desc == cx1._idearoot._desc
+#     assert cx3._idearoot._owner != None
+#     assert cx3._idearoot._owner == cx1._idearoot._owner
 #     assert cx3._idearoot._walk == ""
 #     assert cx3._idearoot._walk == cx1._idearoot._walk
 #     assert len(cx3._idearoot._kids) == len(cx1._idearoot._kids)
@@ -338,21 +337,21 @@ def test_get_dict_of_calendar_from_dict_ReturnsDictOfCalendarUnits():
     cx3 = example_calendars_get_calendar_base_time_example()
 
     cn_dict_of_dicts = {
-        cx1._desc: cx1.get_dict(),
-        cx2._desc: cx2.get_dict(),
-        cx3._desc: cx3.get_dict(),
+        cx1._owner: cx1.get_dict(),
+        cx2._owner: cx2.get_dict(),
+        cx3._owner: cx3.get_dict(),
     }
 
     # WHEN
     ccn_dict_of_obj = get_dict_of_calendar_from_dict(cn_dict_of_dicts)
 
     # THEN
-    assert ccn_dict_of_obj.get(cx1._desc) != None
-    assert ccn_dict_of_obj.get(cx2._desc) != None
-    assert ccn_dict_of_obj.get(cx3._desc) != None
-    assert ccn_dict_of_obj.get(cx1._desc) == cx1
-    assert ccn_dict_of_obj.get(cx2._desc) == cx2
-    assert ccn_dict_of_obj.get(cx3._desc) == cx3
+    assert ccn_dict_of_obj.get(cx1._owner) != None
+    assert ccn_dict_of_obj.get(cx2._owner) != None
+    assert ccn_dict_of_obj.get(cx3._owner) != None
+    assert ccn_dict_of_obj.get(cx1._owner) == cx1
+    assert ccn_dict_of_obj.get(cx2._owner) == cx2
+    assert ccn_dict_of_obj.get(cx3._owner) == cx3
 
 
 def test_calendar_jsonExportCorrectyExportsWeights():

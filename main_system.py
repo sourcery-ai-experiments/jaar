@@ -234,7 +234,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def calendar_insert(self):
         self.system_x.save_calendarunit_obj_to_calendars_dir(
-            calendar_x=CalendarUnit(_desc=self.calendar_name.text())
+            calendar_x=CalendarUnit(_owner=self.calendar_name.text())
         )
         self.refresh_system()
 

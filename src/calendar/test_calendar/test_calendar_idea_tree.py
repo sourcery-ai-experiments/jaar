@@ -107,7 +107,7 @@ def test_get_idea_kid_CorrectlyReturnsIdea():
 
 
 def test_set_calendar_metrics_RootOnlyCorrectlySetsDescendantAttributes():
-    lw_x = CalendarUnit(_desc="src")
+    lw_x = CalendarUnit(_owner="src")
     assert lw_x._idearoot._descendant_promise_count is None
     assert lw_x._idearoot._all_member_credit is None
     assert lw_x._idearoot._all_member_debt is None
@@ -316,7 +316,7 @@ def test_calendar4member_Exists():
     )
     assert sandy_calendar4member
     assert str(type(sandy_calendar4member)).find(".calendar.CalendarUnit'>")
-    assert sandy_calendar4member._desc == sandy_name
+    assert sandy_calendar4member._owner == sandy_name
 
 
 def test_calendar4member_hasCorrectLevel1StructureNoGrouplessBranches():
@@ -375,13 +375,13 @@ def test_calendar_get_orderd_node_list_WorksCorrectly():
     assert lw_x.get_idea_tree_ordered_road_list()[0] == "src"
     assert lw_x.get_idea_tree_ordered_road_list()[8] == "src,weekdays"
 
-    lw_y = CalendarUnit(_desc="MyCalendar")
+    lw_y = CalendarUnit(_owner="MyCalendar")
     assert lw_y.get_idea_tree_ordered_road_list()[0] == "MyCalendar"
 
 
 def test_calendar_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoads():
     src = "src"
-    calendar_x = CalendarUnit(_desc=src)
+    calendar_x = CalendarUnit(_owner=src)
     time = "timeline"
     calendar_x.add_idea(IdeaKid(_desc=time, _begin=0, _close=700), walk=src)
     t_road = f"{src},{time}"
@@ -409,7 +409,7 @@ def test_calendar_get_heir_road_list_returnsCorrectList():
 
 # def test_calendar4member_hasCorrectLevel1StructureWithGrouplessBranches_2():
 #     lw_desc = "src"
-#     lw_x = CalendarUnit(_desc=lw_desc)
+#     lw_x = CalendarUnit(_owner=lw_desc)
 #     lw_x.add_idea(idea_kid=IdeaKid(_desc="A", _weight=7), walk="src")
 #     lw_x.add_idea(idea_kid=IdeaKid(_desc="C", _weight=3), walk="src,A")
 #     lw_x.add_idea(idea_kid=IdeaKid(_desc="E", _weight=7), walk="src,A,C")
@@ -437,7 +437,7 @@ def test_calendar_get_heir_road_list_returnsCorrectList():
 #     lw_x.edit_idea_attr(road="src,A,C,E", grouplink=sandy_bl)
 
 #     # expected sandy
-#     exp_sandy = CalendarUnit(_desc=lw_desc)
+#     exp_sandy = CalendarUnit(_owner=lw_desc)
 #     exp_sandy.add_idea(idea_kid=IdeaKid(_desc="A", _calendar_importance=0.07), walk="src")
 #     exp_sandy.add_idea(idea_kid=IdeaKid(_desc="C", _calendar_importance=0.07), walk="src,A")
 #     exp_sandy.add_idea(idea_kid=IdeaKid(_desc="E", _calendar_importance=0.5), walk="src,A,C")

@@ -56,7 +56,7 @@ def test_personget_starting_digest_calendar_WhenStartingCalendarFileDoesNotExist
     starting_dest_calendar = px.get_starting_digest_calendar()
 
     # THEN
-    x_calendar = CalendarUnit(_desc=p_name)
+    x_calendar = CalendarUnit(_owner=p_name)
     x_calendar.set_calendar_metrics()
     # x_idearoot = IdeaRoot(_desc=p_name, _walk="")
     # x_idearoot.set_grouplines_empty_if_null()
@@ -103,7 +103,7 @@ def test_person_get_starting_digest_calendar_WhenStartingCalendarFileExists(
     assert starting_dest_calendar._idearoot._acptfactunits == {}
     assert starting_dest_calendar._members == {}
     assert starting_dest_calendar._groups == {}
-    assert starting_dest_calendar._desc == px.name
+    assert starting_dest_calendar._owner == px.name
 
 
 def test_person_del_starting_digest_calendar_file_DeletesFileCorrectly(
@@ -140,14 +140,14 @@ def test_personunit_save_digest_calendar_file_SavesFileCorrectly(
     px = personunit_shop(name=person_name, env_dir=env_dir)
     px.create_core_dir_and_files()
     cx = example_persons.get_2node_calendar()
-    src_calendar_desc = cx._desc
+    src_calendar_owner = cx._owner
     assert x_func_count_files(px._digest_calendars_dir) == 0
 
     # WHEN
-    px._save_digest_calendar_file(calendarunit=cx, src_calendar_desc=src_calendar_desc)
+    px._save_digest_calendar_file(calendarunit=cx, src_calendar_desc=src_calendar_owner)
 
     # THEN
-    cx_file_name = f"{cx._desc}.json"
+    cx_file_name = f"{cx._owner}.json"
     digest_file_path = f"{px._digest_calendars_dir}/{cx_file_name}"
     print(f"Saving to {digest_file_path=}")
     assert os_path.exists(digest_file_path)
@@ -155,7 +155,7 @@ def test_personunit_save_digest_calendar_file_SavesFileCorrectly(
     #     print(f"{path_x=}")
     assert x_func_count_files(px._digest_calendars_dir) == 1
     digest_cx_json = x_func_open_file(
-        dest_dir=px._digest_calendars_dir, file_name=f"{src_calendar_desc}.json"
+        dest_dir=px._digest_calendars_dir, file_name=f"{src_calendar_owner}.json"
     )
     assert digest_cx_json == cx.get_json()
 
@@ -169,14 +169,14 @@ def test_presonunit_set_src_calendarlinks_CorrectlySets_blind_trust_DigestCalend
     px = personunit_shop(name=person_name, env_dir=env_dir)
     px.create_core_dir_and_files()
     cx = example_persons.get_2node_calendar()
-    src_calendar_desc = cx._desc
+    src_calendar_owner = cx._owner
     assert x_func_count_files(px._digest_calendars_dir) == 0
 
     # WHEN
     px.receive_src_calendarunit_obj(calendar_x=cx, link_type="blind_trust")
 
     # THEN
-    cx_file_name = f"{cx._desc}.json"
+    cx_file_name = f"{cx._owner}.json"
     digest_file_path = f"{px._digest_calendars_dir}/{cx_file_name}"
     print(f"Saving to {digest_file_path=}")
     assert os_path.exists(digest_file_path)
@@ -184,7 +184,7 @@ def test_presonunit_set_src_calendarlinks_CorrectlySets_blind_trust_DigestCalend
     #     print(f"{path_x=}")
     assert x_func_count_files(px._digest_calendars_dir) == 1
     digest_cx_json = x_func_open_file(
-        dest_dir=px._digest_calendars_dir, file_name=f"{src_calendar_desc}.json"
+        dest_dir=px._digest_calendars_dir, file_name=f"{src_calendar_owner}.json"
     )
     assert digest_cx_json == cx.get_json()
 
@@ -198,15 +198,15 @@ def test_person_get_dest_calendar_from_digest_calendar_files_withEmptyDigestDict
     px.create_core_dir_and_files()
     sx_output_before = px.get_dest_calendar_from_digest_calendar_files()
     assert str(type(sx_output_before)).find(".calendar.CalendarUnit'>")
-    assert sx_output_before._desc == person_name_x
+    assert sx_output_before._owner == person_name_x
     assert sx_output_before._idearoot._desc == person_name_x
-    # px.set_digested_calendar(calendar_x=CalendarUnit(_desc="digested1"))
+    # px.set_digested_calendar(calendar_x=CalendarUnit(_owner="digested1"))
 
     # WHEN
     sx_output_after = px.get_dest_calendar_from_digest_calendar_files()
 
     # THEN
-    person_calendar_x = CalendarUnit(_desc=person_name_x, _weight=0.0)
+    person_calendar_x = CalendarUnit(_owner=person_name_x, _weight=0.0)
     person_calendar_x._idearoot._walk = ""
     person_calendar_x.set_calendar_metrics()
     # person_calendar_x.set_members_empty_if_null()
@@ -237,7 +237,7 @@ def test_person_get_dest_calendar_from_digest_calendar_files_with1DigestedCalend
     px.create_core_dir_and_files()
     sx_output_old = px.get_dest_calendar_from_digest_calendar_files()
     assert str(type(sx_output_old)).find(".calendar.CalendarUnit'>")
-    assert sx_output_old._desc == person_name_x
+    assert sx_output_old._owner == person_name_x
     assert sx_output_old._idearoot._desc == person_name_x
     input_calendar = example_persons.get_2node_calendar()
     px.receive_src_calendarunit_obj(calendar_x=input_calendar, link_type="blind_trust")
@@ -262,7 +262,7 @@ def test_person_get_dest_calendar_from_digest_calendar_files_with1DigestedCalend
         == input_calendar._idearoot._kids_total_weight
     )
     assert sx_output_new._idearoot == input_calendar._idearoot
-    assert sx_output_new._desc != input_calendar._desc
+    assert sx_output_new._owner != input_calendar._owner
     assert sx_output_new != input_calendar
 
 
@@ -278,7 +278,7 @@ def test_person_get_dest_calendar_from_digest_calendar_files_with1DigestedCalend
 
 #     src1 = "test1"
 #     src1_road = Road(f"{src1}")
-#     s1 = CalendarUnit(_desc=src1)
+#     s1 = CalendarUnit(_owner=src1)
 
 #     ceci_text = "Ceci"
 #     s1.set_memberunit(memberunit=MemberUnit(name=ceci_text))

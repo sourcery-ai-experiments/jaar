@@ -40,7 +40,7 @@ def test_example_has_members():
 
 def test_calendar_set_member_correctly_sets_members_1():
     # GIVEN
-    a_x = CalendarUnit(_desc="prom")
+    a_x = CalendarUnit(_owner="prom")
     a_x.set_calendar_metrics()
     assert len(a_x._members) == 0
     assert len(a_x._groups) == 0
@@ -71,7 +71,7 @@ def test_calendar_set_member_correctly_sets_members_1():
 
 def test_calendar_set_member_correctly_sets_members_2():
     # GIVEN
-    a_x = CalendarUnit(_desc="prom")
+    a_x = CalendarUnit(_owner="prom")
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -93,7 +93,7 @@ def test_calendar_set_member_correctly_sets_members_2():
 def test_calendar_get_idea_list_CorrectlySetsMemberLinkCalendarCreditAndDebt():
     # GIVEN
     prom_text = "prom"
-    a_x = CalendarUnit(_desc=prom_text)
+    a_x = CalendarUnit(_owner=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -243,7 +243,7 @@ def test_calendar_get_idea_list_CorrectlySetsMemberLinkCalendarCreditAndDebt():
 def test_calendar_get_idea_list_CorrectlySetsMemberUnitCalendarImportance():
     # GIVEN
     prom_text = "prom"
-    a_x = CalendarUnit(_desc=prom_text)
+    a_x = CalendarUnit(_owner=prom_text)
     swim_text = "swim"
     a_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=prom_text)
     rico_text = "rico"
@@ -387,7 +387,7 @@ def test_calendar_get_idea_list_CorrectlySetsMemberUnitCalendarImportance():
 def test_calendar_get_idea_list_CorrectlySetsPartGroupedLWMemberUnitCalendarImportance():
     # GIVEN
     prom_text = "prom"
-    a_x = CalendarUnit(_desc=prom_text)
+    a_x = CalendarUnit(_owner=prom_text)
     swim_text = "swim"
     a_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=prom_text)
     rico_text = "rico"
@@ -499,7 +499,7 @@ def test_calendar_get_idea_list_CorrectlySetsPartGroupedLWMemberUnitCalendarImpo
 
 def test_calendar_get_idea_list_WithAllMembersWeighted():
     # GIVEN
-    a_x = CalendarUnit(_desc="prom")
+    a_x = CalendarUnit(_owner="prom")
     a_x.add_idea(idea_kid=IdeaKid(_desc="swim"), walk="prom")
     rico_text = "rico"
     carm_text = "carmen"
@@ -715,7 +715,7 @@ def test_calendar_agenda_credit_debt_IsCorrectlySet():
 def test_calendar_agenda_ratio_credit_debt_IsCorrectlySetWhenAgendaIsEmpty():
     # GIVEN
     src_text = "src"
-    a_x = CalendarUnit(_desc=src_text)
+    a_x = CalendarUnit(_owner=src_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -761,7 +761,7 @@ def test_calendar_agenda_ratio_credit_debt_IsCorrectlySetWhenAgendaIsEmpty():
 
 
 def test_calendar_get_member_groups_returnsCorrectData():
-    a_x = CalendarUnit(_desc="prom")
+    a_x = CalendarUnit(_owner="prom")
     a_x.add_idea(idea_kid=IdeaKid(_desc="swim"), walk="prom")
     rico = "rico"
     carmen = "carmen"
@@ -783,7 +783,7 @@ def test_calendar_get_member_groups_returnsCorrectData():
 
 def test_calendar_MemberUnit_CorrectlyCreatesNewName():
     # GIVEN
-    a_x = CalendarUnit(_desc="prom")
+    a_x = CalendarUnit(_owner="prom")
     rico_text = "rico"
     a_x.add_memberunit(name=rico_text, uid=61, creditor_weight=13)
     a_x.add_memberunit(name="carmen", uid=5)
@@ -817,7 +817,7 @@ def test_calendar_MemberUnit_CorrectlyCreatesNewName():
 
 def test_calendar_MemberUnit_raiseErrorNewNameAlreadyExists():
     # GIVEN
-    sx = CalendarUnit(_desc="prom")
+    sx = CalendarUnit(_owner="prom")
     rico_text = "rico"
     sx.add_memberunit(name=rico_text, uid=61, creditor_weight=13)
     carmen_text = "carmen"
@@ -847,7 +847,7 @@ def test_calendar_MemberUnit_raiseErrorNewNameAlreadyExists():
 def test_calendar_MemberUnit_CorrectlyChangesGroupUnitMemberLinks():
     # GIVEN
     prom_text = "prom"
-    a_x = CalendarUnit(_desc=prom_text)
+    a_x = CalendarUnit(_owner=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -892,7 +892,7 @@ def test_calendar_MemberUnit_CorrectlyChangesGroupUnitMemberLinks():
 def test_calendar_MemberUnit_CorrectlyMergesNames():
     # GIVEN
     prom_text = "prom"
-    a_x = CalendarUnit(_desc=prom_text)
+    a_x = CalendarUnit(_owner=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -936,7 +936,7 @@ def test_calendar_MemberUnit_CorrectlyMergesGroupUnitMemberLinks():
     # GIVEN
     # GIVEN
     prom_text = "prom"
-    a_x = CalendarUnit(_desc=prom_text)
+    a_x = CalendarUnit(_owner=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -982,7 +982,7 @@ def test_calendar_MemberUnit_CorrectlyMergesGroupUnitMemberLinks():
 
 def test_calendar_MemberUnit_raiseErrorNewNameGroupUnitAlreadyExists():
     # GIVEN
-    sx = CalendarUnit(_desc="prom")
+    sx = CalendarUnit(_owner="prom")
     rico_text = "rico"
     sx.add_memberunit(name=rico_text, uid=61, creditor_weight=13)
     anna_text = "anna"
@@ -1013,7 +1013,7 @@ def test_calendar_MemberUnit_raiseErrorNewNameGroupUnitAlreadyExists():
 
 def test_calendar_MemberUnit_CorrectlyOverwriteNewNameGroupUnit():
     # GIVEN
-    sx = CalendarUnit(_desc="prom")
+    sx = CalendarUnit(_owner="prom")
     rico_text = "rico"
     sx.add_memberunit(name=rico_text, uid=61, creditor_weight=13)
     anna_text = "anna"
@@ -1055,7 +1055,7 @@ def test_calendar_MemberUnit_CorrectlyOverwriteNewNameGroupUnit():
 def test_calendar_set_all_memberunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
     # GIVEN
     src_text = "src"
-    sx = CalendarUnit(_desc=src_text)
+    sx = CalendarUnit(_owner=src_text)
     sx.set_members_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
@@ -1079,7 +1079,7 @@ def test_calendar_set_all_memberunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
 def test_calendar_set_all_memberunits_uids_unique_CorrectlySetsChangesSameGroupUIDs():
     # GIVEN
     src_text = "src"
-    sx = CalendarUnit(_desc=src_text)
+    sx = CalendarUnit(_owner=src_text)
     sx.set_members_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
@@ -1106,7 +1106,7 @@ def test_calendar_set_all_memberunits_uids_unique_CorrectlySetsChangesSameGroupU
 def test_calendar_set_all_memberunits_uids_unique_CorrectlySetsChangesSameGroupUIDs():
     # GIVEN
     src_text = "src"
-    sx = CalendarUnit(_desc=src_text)
+    sx = CalendarUnit(_owner=src_text)
     sx.set_members_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
@@ -1133,7 +1133,7 @@ def test_calendar_set_all_memberunits_uids_unique_CorrectlySetsChangesSameGroupU
 def test_calendar_all_memberunits_uids_are_unique_ReturnsCorrectBoolean():
     # GIVEN
     src_text = "src"
-    sx = CalendarUnit(_desc=src_text)
+    sx = CalendarUnit(_owner=src_text)
     sx.set_members_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
@@ -1164,7 +1164,7 @@ def test_calendar_all_memberunits_uids_are_unique_ReturnsCorrectBoolean():
 def test_calendar_get_memberunits_name_list_CorrectlyReturnsListOfMemberUnits():
     # GIVEN
     src_text = "src"
-    sx = CalendarUnit(_desc=src_text)
+    sx = CalendarUnit(_owner=src_text)
     sx.set_members_empty_if_null()
     sam_text = "sam"
     will_text = "will"
@@ -1193,7 +1193,7 @@ def test_calendar_get_memberunits_name_list_CorrectlyReturnsListOfMemberUnits():
 def test_calendar_set_banking_data_memberunits_CorrectlySetsMemberUnitBankingAttr():
     # GIVEN
     bob_text = "bob"
-    ax = CalendarUnit(_desc=bob_text)
+    ax = CalendarUnit(_owner=bob_text)
     ax.set_members_empty_if_null()
     sam_text = "sam"
     wil_text = "wil"

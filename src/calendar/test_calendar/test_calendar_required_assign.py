@@ -10,7 +10,7 @@ from src.calendar.idea import IdeaKid
 def test_calendar_edit_idea_attr_CorrectlySetsAssignedUnit():
     # GIVEN
     src_text = ""
-    c_x = CalendarUnit(_desc=src_text)
+    c_x = CalendarUnit(_owner=src_text)
     run_text = "run"
     run_road = f"{src_text},{run_text}"
     c_x.add_idea(IdeaKid(_desc=run_text), walk=src_text)
@@ -30,7 +30,7 @@ def test_calendar_idearoot_assignedunit_CorrectlySets_idea_assignedheir():
     src_text = ""
     assigned_unit_x = assigned_unit_shop()
 
-    c_x = CalendarUnit(_desc=src_text)
+    c_x = CalendarUnit(_owner=src_text)
     c_x.edit_idea_attr(assignedunit=assigned_unit_x, road=src_text)
     assert c_x._idearoot._assignedunit == assigned_unit_x
     assert c_x._idearoot._assignedheir is None
@@ -54,7 +54,7 @@ def test_calendar_ideakid_assignedunit_CorrectlySets_idea_assignedheir():
     run_road = f"{src_text},{run_text}"
     assigned_unit_x = assigned_unit_shop()
 
-    c_x = CalendarUnit(_desc=src_text)
+    c_x = CalendarUnit(_owner=src_text)
     c_x.add_idea(IdeaKid(_desc=run_text), walk=src_text)
     c_x.edit_idea_attr(assignedunit=assigned_unit_x, road=run_road)
     run_idea = c_x.get_idea_kid(road=run_road)
@@ -85,7 +85,7 @@ def test_calendar_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedhei
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(name="swimmers")
 
-    c_x = CalendarUnit(_desc=src_text)
+    c_x = CalendarUnit(_owner=src_text)
     c_x.add_idea(IdeaKid(_desc=swim_text), walk=src_text)
     c_x.add_idea(IdeaKid(_desc=morn_text), walk=swim_road)
     c_x.add_idea(IdeaKid(_desc=four_text), walk=morn_road)

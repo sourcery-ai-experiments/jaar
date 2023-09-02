@@ -26,16 +26,16 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
     tom_text = "tom"
     sal_text = "sal"
 
-    sal = CalendarUnit(_desc=sal_text)
+    sal = CalendarUnit(_owner=sal_text)
     sal.add_memberunit(name=bob_text, creditor_weight=1)
     sal.add_memberunit(name=tom_text, creditor_weight=3)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal)
 
-    bob = CalendarUnit(_desc=bob_text)
+    bob = CalendarUnit(_owner=bob_text)
     bob.add_memberunit(name=sal_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob)
 
-    tom = CalendarUnit(_desc=tom_text)
+    tom = CalendarUnit(_owner=tom_text)
     tom.add_memberunit(name=sal_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom)
 
@@ -98,21 +98,21 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
     tom_text = "tom"
     elu_text = "elu"
 
-    sal = CalendarUnit(_desc=sal_text)
+    sal = CalendarUnit(_owner=sal_text)
     sal.add_memberunit(name=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal)
 
-    bob = CalendarUnit(_desc=bob_text)
+    bob = CalendarUnit(_owner=bob_text)
     bob.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=1)
     bob.add_memberunit(name=tom_text, creditor_weight=1, debtor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob)
 
-    tom = CalendarUnit(_desc=tom_text)
+    tom = CalendarUnit(_owner=tom_text)
     tom.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=8)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom)
 
-    elu = CalendarUnit(_desc=elu_text)
+    elu = CalendarUnit(_owner=elu_text)
     elu.add_memberunit(name=sal_text, creditor_weight=1, debtor_weight=8)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu)
     e1.refresh_bank_metrics()
@@ -161,22 +161,22 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
     tom_text = "tom"
     ava_text = "ava"
 
-    sal_calendar = CalendarUnit(_desc=sal_text)
+    sal_calendar = CalendarUnit(_owner=sal_text)
     sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
     sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
     sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
 
-    bob_calendar = CalendarUnit(_desc=bob_text)
+    bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
 
-    tom_calendar = CalendarUnit(_desc=tom_text)
+    tom_calendar = CalendarUnit(_owner=tom_text)
     tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom_calendar)
 
-    ava_calendar = CalendarUnit(_desc=ava_text)
+    ava_calendar = CalendarUnit(_owner=ava_text)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ava_calendar)
     e1.refresh_bank_metrics()
 
@@ -230,26 +230,26 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_calendar = CalendarUnit(_desc=sal_text)
+    sal_calendar = CalendarUnit(_owner=sal_text)
     sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
     sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
     sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
 
-    bob_calendar = CalendarUnit(_desc=bob_text)
+    bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
 
-    tom_calendar = CalendarUnit(_desc=tom_text)
+    tom_calendar = CalendarUnit(_owner=tom_text)
     tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom_calendar)
 
-    ava_calendar = CalendarUnit(_desc=ava_text)
+    ava_calendar = CalendarUnit(_owner=ava_text)
     ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ava_calendar)
 
-    elu_calendar = CalendarUnit(_desc=elu_text)
+    elu_calendar = CalendarUnit(_owner=elu_text)
     elu_calendar.add_memberunit(name=ava_text, creditor_weight=2)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu_calendar)
 
@@ -305,26 +305,26 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_calendar = CalendarUnit(_desc=sal_text)
+    sal_calendar = CalendarUnit(_owner=sal_text)
     sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
     sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
     sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
 
-    bob_calendar = CalendarUnit(_desc=bob_text)
+    bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
 
-    tom_calendar = CalendarUnit(_desc=tom_text)
+    tom_calendar = CalendarUnit(_owner=tom_text)
     tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom_calendar)
 
-    ava_calendar = CalendarUnit(_desc=ava_text)
+    ava_calendar = CalendarUnit(_owner=ava_text)
     ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ava_calendar)
 
-    elu_calendar = CalendarUnit(_desc=elu_text)
+    elu_calendar = CalendarUnit(_owner=elu_text)
     elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
     elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu_calendar)
@@ -385,21 +385,21 @@ def test_system_set_river_sphere_for_calendar_CorrectlyDeletesPreviousRiver(
     tom_text = "tom"
     elu_text = "elu"
 
-    sal = CalendarUnit(_desc=sal_text)
+    sal = CalendarUnit(_owner=sal_text)
     sal.add_memberunit(name=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal)
 
-    bob = CalendarUnit(_desc=bob_text)
+    bob = CalendarUnit(_owner=bob_text)
     bob.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=1)
     bob.add_memberunit(name=tom_text, creditor_weight=1, debtor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob)
 
-    tom = CalendarUnit(_desc=tom_text)
+    tom = CalendarUnit(_owner=tom_text)
     tom.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=8)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom)
 
-    elu = CalendarUnit(_desc=elu_text)
+    elu = CalendarUnit(_owner=elu_text)
     elu.add_memberunit(name=sal_text, creditor_weight=1, debtor_weight=8)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu)
     e1.refresh_bank_metrics()
@@ -444,26 +444,26 @@ def test_system_set_river_sphere_for_calendar_CorrectlyUsesMaxFlowsCount(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_calendar = CalendarUnit(_desc=sal_text)
+    sal_calendar = CalendarUnit(_owner=sal_text)
     sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
     sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
     sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
 
-    bob_calendar = CalendarUnit(_desc=bob_text)
+    bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
 
-    tom_calendar = CalendarUnit(_desc=tom_text)
+    tom_calendar = CalendarUnit(_owner=tom_text)
     tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom_calendar)
 
-    ava_calendar = CalendarUnit(_desc=ava_text)
+    ava_calendar = CalendarUnit(_owner=ava_text)
     ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ava_calendar)
 
-    elu_calendar = CalendarUnit(_desc=elu_text)
+    elu_calendar = CalendarUnit(_owner=elu_text)
     elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
     elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu_calendar)
@@ -505,26 +505,26 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_calendar = CalendarUnit(_desc=sal_text)
+    sal_calendar = CalendarUnit(_owner=sal_text)
     sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
     sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
     sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
 
-    bob_calendar = CalendarUnit(_desc=bob_text)
+    bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
 
-    tom_calendar = CalendarUnit(_desc=tom_text)
+    tom_calendar = CalendarUnit(_owner=tom_text)
     tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom_calendar)
 
-    ava_calendar = CalendarUnit(_desc=ava_text)
+    ava_calendar = CalendarUnit(_owner=ava_text)
     ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ava_calendar)
 
-    elu_calendar = CalendarUnit(_desc=elu_text)
+    elu_calendar = CalendarUnit(_owner=elu_text)
     elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
     elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu_calendar)
@@ -587,26 +587,26 @@ def test_system_set_river_sphere_for_calendar_CorrectlyBuildsASingleContinuousRa
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_calendar = CalendarUnit(_desc=sal_text)
+    sal_calendar = CalendarUnit(_owner=sal_text)
     sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
     sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
     sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
 
-    bob_calendar = CalendarUnit(_desc=bob_text)
+    bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
 
-    tom_calendar = CalendarUnit(_desc=tom_text)
+    tom_calendar = CalendarUnit(_owner=tom_text)
     tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom_calendar)
 
-    ava_calendar = CalendarUnit(_desc=ava_text)
+    ava_calendar = CalendarUnit(_owner=ava_text)
     ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ava_calendar)
 
-    elu_calendar = CalendarUnit(_desc=elu_text)
+    elu_calendar = CalendarUnit(_owner=elu_text)
     elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
     elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu_calendar)
@@ -657,26 +657,26 @@ def test_system_set_river_sphere_for_calendar_CorrectlyUpatesCalendarMemberUnits
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_calendar_src = CalendarUnit(_desc=sal_text)
+    sal_calendar_src = CalendarUnit(_owner=sal_text)
     sal_calendar_src.add_memberunit(name=bob_text, creditor_weight=2, debtor_weight=2)
     sal_calendar_src.add_memberunit(name=tom_text, creditor_weight=2, debtor_weight=1)
     sal_calendar_src.add_memberunit(name=ava_text, creditor_weight=2, debtor_weight=2)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar_src)
 
-    bob_calendar = CalendarUnit(_desc=bob_text)
+    bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
 
-    tom_calendar = CalendarUnit(_desc=tom_text)
+    tom_calendar = CalendarUnit(_owner=tom_text)
     tom_calendar.add_memberunit(name=sal_text)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom_calendar)
 
-    ava_calendar = CalendarUnit(_desc=ava_text)
+    ava_calendar = CalendarUnit(_owner=ava_text)
     ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ava_calendar)
 
-    elu_calendar = CalendarUnit(_desc=elu_text)
+    elu_calendar = CalendarUnit(_owner=elu_text)
     elu_calendar.add_memberunit(name=ava_text, creditor_weight=8)
     elu_calendar.add_memberunit(name=sal_text, creditor_weight=2)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu_calendar)

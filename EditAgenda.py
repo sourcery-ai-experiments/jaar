@@ -65,7 +65,7 @@ class EditAgenda(qw, Ui_Form):
 
         else:
             self.acptfact_base_update_init_road = (
-                f"{self.calendar_x._desc},time,jajatime"
+                f"{self.calendar_x._owner},time,jajatime"
             )
             self.acptfact_base_update_combo.setCurrentText(
                 self.acptfact_base_update_init_road
@@ -115,15 +115,15 @@ class EditAgenda(qw, Ui_Form):
             sufffact_open_x != None
             and sufffact_nigh_x != None
             and (
-                sufffact_need_x == f"{self.calendar_x._desc},time,jajatime"
-                or sufffact_need_x[:21] == f"{self.calendar_x._desc},time,jajatime"
+                sufffact_need_x == f"{self.calendar_x._owner},time,jajatime"
+                or sufffact_need_x[:21] == f"{self.calendar_x._owner},time,jajatime"
             )
         ):
             readable_x_text = self.calendar_x.get_jajatime_repeating_readable_text(
                 open=sufffact_open_x, nigh=sufffact_nigh_x, divisor=sufffact_divisor_x
             )
         elif sufffact_open_x != None and sufffact_nigh_x != None:
-            text_x = f"{self.calendar_x._desc},time,jajatime"
+            text_x = f"{self.calendar_x._owner},time,jajatime"
             readable_x_text = (
                 f"sufffact {sufffact_open_x}-{sufffact_nigh_x} {sufffact_divisor_x=}"
             )

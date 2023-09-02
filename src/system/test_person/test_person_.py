@@ -162,7 +162,7 @@ def test_personunit_auto_dest_calendar_to_public_calendar_SavesCalendarToPublicD
     assert os_path.exists(public_file_path) is False
 
     # WHEN
-    px.receive_src_calendarunit_obj(calendar_x=CalendarUnit(_desc="bobs calendarunit"))
+    px.receive_src_calendarunit_obj(calendar_x=CalendarUnit(_owner="bobs calendarunit"))
 
     # THEN
     assert os_path.exists(public_file_path)

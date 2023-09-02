@@ -13,7 +13,7 @@ def test_calendar_get_tree_metrics_exists():
     assert tree_metrics != None
 
     # WHEN
-    sx = CalendarUnit(_desc="testing_lw")
+    sx = CalendarUnit(_owner="testing_lw")
     sx_tree_metrics = sx.get_tree_metrics()
 
     # THEN
@@ -69,7 +69,7 @@ def test_calendar_calendar_get_tree_metrics_sets_uids_correctly():
     # GIVEN
     src_text = "testing_lw"
     src_road = src_text
-    sx = CalendarUnit(_desc=src_text)
+    sx = CalendarUnit(_owner=src_text)
     swim_text = "swim"
     walk_text = "walk"
     sx.add_idea(idea_kid=IdeaKid(_desc=swim_text, _uid=None), walk=src_road)
@@ -89,7 +89,7 @@ def test_calendar_get_tree_metrics_ReturnsAccurateActionIdeaCount():
     assert tree_metrics_before.bond_promise_count == 69
 
     # WHEN
-    cx.add_idea(idea_kid=IdeaKid(_desc="clean", promise=True), walk=f"{cx._desc}")
+    cx.add_idea(idea_kid=IdeaKid(_desc="clean", promise=True), walk=f"{cx._owner}")
 
     # THEN
     tree_metrics_after = cx.get_tree_metrics()
@@ -99,7 +99,7 @@ def test_calendar_get_tree_metrics_ReturnsAccurateActionIdeaCount():
 def test_calendar_get_tree_metrics_ReturnsANoneActionIdeaRoad():
     # GIVEN
     src = "src"
-    cx = CalendarUnit(_weight=10, _desc=src)
+    cx = CalendarUnit(_owner=src, _weight=10)
     weekdays = "weekdays"
     idea_kid_weekdays = IdeaKid(_weight=40, _desc=weekdays)
     cx.add_idea(idea_kid=idea_kid_weekdays, walk=f"{src}")

@@ -38,7 +38,7 @@ def test_calendar_3AdvocatesNoIdeaKid():
     carm_text = "carmen"
     patr_text = "patrick"
 
-    a_x = CalendarUnit(_desc="prom")
+    a_x = CalendarUnit(_owner="prom")
     au_rico = memberunit_shop(name=rico_text, uid=7)
     au_carm = memberunit_shop(name=carm_text, uid=2)
     au_patr = memberunit_shop(name=patr_text, uid=13)
@@ -85,7 +85,7 @@ def test_calendar_get_memberunits_uid_max_WorksCorrectly():
     carr_text = "carmen"
     patr_text = "patrick"
 
-    lw_x = CalendarUnit(_desc="prom")
+    lw_x = CalendarUnit(_owner="prom")
     lw_x.set_memberunit(memberunit=memberunit_shop(name=rico_text, uid=4))
     lw_x.set_memberunit(memberunit=memberunit_shop(name=carr_text, uid=13))
     lw_x.set_memberunit(memberunit=memberunit_shop(name=patr_text, uid=7))
@@ -100,7 +100,7 @@ def test_calendar_get_groupunits_uid_max_WorksCorrectly():
     carr_text = "carmen"
     patr_text = "patrick"
 
-    lw_x = CalendarUnit(_desc="prom")
+    lw_x = CalendarUnit(_owner="prom")
     lw_x.set_groupunit(groupunit=groupunit_shop(name=rico_text, uid=4))
     lw_x.set_groupunit(groupunit=groupunit_shop(name=carr_text, uid=12))
     lw_x.set_groupunit(groupunit=groupunit_shop(name=patr_text, uid=7))

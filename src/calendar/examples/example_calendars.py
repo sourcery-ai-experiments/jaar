@@ -21,29 +21,29 @@ def calendar_v001() -> CalendarUnit:
 def calendar_v001_with_large_agenda() -> CalendarUnit:
     a1 = calendar_v001()
     day_minute_text = "day_minute"
-    day_minute_road = f"{a1._desc},{day_minute_text}"
+    day_minute_road = f"{a1._owner},{day_minute_text}"
     month_week_text = "month_week"
-    month_week_road = f"{a1._desc},{month_week_text}"
+    month_week_road = f"{a1._owner},{month_week_text}"
     nations_text = "Nation-States"
-    nations_road = f"{a1._desc},{nations_text}"
+    nations_road = f"{a1._owner},{nations_text}"
     mood_text = "Moods"
-    mood_road = f"{a1._desc},{mood_text}"
+    mood_road = f"{a1._owner},{mood_text}"
     aaron_text = "Aaron Donald sphere"
-    aaron_road = f"{a1._desc},{aaron_text}"
+    aaron_road = f"{a1._owner},{aaron_text}"
     # internet_text = "Internet"
-    # internet_road = f"{a1._desc},{internet_text}"
+    # internet_road = f"{a1._owner},{internet_text}"
     year_month_text = "year_month"
-    year_month_road = f"{a1._desc},{year_month_text}"
+    year_month_road = f"{a1._owner},{year_month_text}"
     season_text = "Seasons"
-    season_road = f"{a1._desc},{season_text}"
+    season_road = f"{a1._owner},{season_text}"
     ced_week_text = "ced_week"
-    ced_week_road = f"{a1._desc},{ced_week_text}"
+    ced_week_road = f"{a1._owner},{ced_week_text}"
     # water_text = "WaterBeing"
-    # water_road = f"{a1._desc},{water_text}"
+    # water_road = f"{a1._owner},{water_text}"
     weekdays_text = "weekdays"
-    weekdays_road = f"{a1._desc},{weekdays_text}"
+    weekdays_road = f"{a1._owner},{weekdays_text}"
     # movie_text = "No Movie playing"
-    # movie_road = f"{a1._desc},{movie_text}"
+    # movie_road = f"{a1._owner},{movie_text}"
 
     a1.set_acptfact(base=aaron_road, pick=aaron_road)
     a1.set_acptfact(base=ced_week_road, pick=ced_week_road, open=0, nigh=53)
@@ -71,7 +71,7 @@ def calendar_v002() -> CalendarUnit:
 
 def get_calendar_with_4_levels() -> CalendarUnit:
     src_road = "src"
-    calendar_x = CalendarUnit(_weight=10, _desc=src_road)
+    calendar_x = CalendarUnit(_owner=src_road, _weight=10)
 
     work = "work"
     idea_kid_work = IdeaKid(_weight=30, _desc=work, promise=True)
@@ -137,12 +137,12 @@ def get_calendar_with_4_levels() -> CalendarUnit:
 
 def get_calendar_with_4_levels_and_2requireds() -> CalendarUnit:
     calendar_x = get_calendar_with_4_levels()
-    week_road = f"{calendar_x._desc},weekdays"
+    week_road = f"{calendar_x._owner},weekdays"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
     wed_sufffact = sufffactunit_shop(need=wed_road)
 
-    nation_road = f"{calendar_x._desc},nation-state"
+    nation_road = f"{calendar_x._owner},nation-state"
     usa_road = f"{nation_road},USA"
     usa_sufffact_x = sufffactunit_shop(need=usa_road)
     work_wk_required = RequiredUnit(
@@ -152,7 +152,7 @@ def get_calendar_with_4_levels_and_2requireds() -> CalendarUnit:
         base=nation_road, sufffacts={usa_sufffact_x.need: usa_sufffact_x}
     )
     work_text = "work"
-    work_road = f"{calendar_x._desc},{work_text}"
+    work_road = f"{calendar_x._owner},{work_text}"
     calendar_x.edit_idea_attr(road=work_road, required=work_wk_required)
     calendar_x.edit_idea_attr(road=work_road, required=nation_required)
     return calendar_x
@@ -160,10 +160,10 @@ def get_calendar_with_4_levels_and_2requireds() -> CalendarUnit:
 
 def get_calendar_with_4_levels_and_2requireds_2acptfacts() -> CalendarUnit:
     calendar_x = get_calendar_with_4_levels_and_2requireds()
-    wednesday = f"{calendar_x._desc},weekdays,Wednesday"
-    weekday = f"{calendar_x._desc},weekdays"
-    states = f"{calendar_x._desc},nation-state"
-    usa_road = f"{calendar_x._desc},nation-state,USA"
+    wednesday = f"{calendar_x._owner},weekdays,Wednesday"
+    weekday = f"{calendar_x._owner},weekdays"
+    states = f"{calendar_x._owner},nation-state"
+    usa_road = f"{calendar_x._owner},nation-state,USA"
     calendar_x.set_acptfact(base=weekday, pick=wednesday)
     calendar_x.set_acptfact(base=states, pick=usa_road)
     return calendar_x
@@ -171,7 +171,7 @@ def get_calendar_with_4_levels_and_2requireds_2acptfacts() -> CalendarUnit:
 
 def get_calendar_with7amCleanTableRequired() -> CalendarUnit:
     calendar_x = get_calendar_with_4_levels_and_2requireds_2acptfacts()
-    src = calendar_x._desc
+    src = calendar_x._owner
     timetech = "timetech"
     day_24hr = "24hr day"
     am = "am"
@@ -229,18 +229,18 @@ def get_calendar_with7amCleanTableRequired() -> CalendarUnit:
         sufffacts={clean_table_7am_sufffact_x.need: clean_table_7am_sufffact_x},
     )
     calendar_x.edit_idea_attr(
-        road=f"{calendar_x._desc},housework,clean table",
+        road=f"{calendar_x._owner},housework,clean table",
         required=clean_table_7am_required,
     )
     calendar_x.edit_idea_attr(
-        road=f"{calendar_x._desc},work", required=clean_table_7am_required
+        road=f"{calendar_x._owner},work", required=clean_table_7am_required
     )
     return calendar_x
 
 
 def get_calendar_1Task_1CE0MinutesRequired_1AcptFact() -> CalendarUnit:
     lw_desc = "test45"
-    calendar_x = CalendarUnit(_weight=10, _desc=lw_desc)
+    calendar_x = CalendarUnit(_owner=lw_desc, _weight=10)
     ced_min_desc = "CE0_minutes"
     ced_minutes = IdeaKid(_desc=ced_min_desc)
     ced_road = f"{lw_desc},{ced_min_desc}"
@@ -273,7 +273,7 @@ def get_calendar_1Task_1CE0MinutesRequired_1AcptFact() -> CalendarUnit:
 
 def get_calendar_x1_3levels_1required_1acptfacts() -> CalendarUnit:
     prom = "prom"
-    x_calendar = CalendarUnit(_weight=10, _desc=prom)
+    x_calendar = CalendarUnit(_owner=prom, _weight=10)
     idea_kid_shave = IdeaKid(_weight=30, _desc="shave", promise=True)
     x_calendar.add_idea(idea_kid=idea_kid_shave, walk=prom)
     weekdays = "weekdays"
@@ -305,7 +305,7 @@ def get_calendar_x1_3levels_1required_1acptfacts() -> CalendarUnit:
 
 def get_calendar_base_time_example() -> CalendarUnit:
     g_src = "src"
-    g_lw = CalendarUnit(_desc=g_src)
+    g_lw = CalendarUnit(_owner=g_src)
     plant = "plant"
     x_idea = IdeaKid(_desc=plant)
     g_lw.add_idea(x_idea, walk=g_src)
@@ -327,7 +327,7 @@ def get_calendar_irrational_example() -> CalendarUnit:
     # 2. calendar_x._tree_traverse_count = calendar_x._max_tree_traverse
 
     src_road = "src"
-    calendar_x = CalendarUnit(_weight=10, _desc=src_road)
+    calendar_x = CalendarUnit(_owner=src_road, _weight=10)
     calendar_x.set_max_tree_traverse(3)
 
     egg_text = "egg first"

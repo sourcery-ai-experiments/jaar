@@ -6,8 +6,14 @@ from pytest import raises as pytest_raises
 
 
 def test_calendar_exists():
-    new_obj = CalendarUnit()
+    # GIVEN
+    src_text = "src"
+
+    # WHEN
+    new_obj = CalendarUnit(_owner=src_text)
+
     assert new_obj
+    assert new_obj._owner == src_text
     assert new_obj._weight == 1
     assert new_obj._max_tree_traverse == 3
     assert new_obj._tree_traverse_count is None
@@ -58,7 +64,7 @@ def test_calendar_ideaoot_uid_isAlwaysEqualTo1():
     src_road = src_text
 
     # WHEN
-    sx = CalendarUnit(_desc=src_text)
+    sx = CalendarUnit(_owner=src_text)
 
     # THEN
     assert sx._idearoot._uid == 1
@@ -67,7 +73,7 @@ def test_calendar_ideaoot_uid_isAlwaysEqualTo1():
 def test_calendar_set_max_tree_traverse_CorrectlySetsInt():
     # GIVEN
     src_text = "testing_lw"
-    sx = CalendarUnit(_desc=src_text)
+    sx = CalendarUnit(_owner=src_text)
     assert sx._max_tree_traverse == 3
 
     # WHEN
@@ -80,7 +86,7 @@ def test_calendar_set_max_tree_traverse_CorrectlySetsInt():
 def test_calendar_set_max_tree_traverse_CorrectlyRaisesError():
     # GIVEN
     src_text = "testing_lw"
-    sx = CalendarUnit(_desc=src_text)
+    sx = CalendarUnit(_owner=src_text)
     assert sx._max_tree_traverse == 3
 
     # WHEN/THEN

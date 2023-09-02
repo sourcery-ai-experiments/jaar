@@ -20,9 +20,9 @@ def test_person_receive_src_calendarunit_obj_SetsCorrectInfo():
 
     # WHEN
     swim_text = "swim1"
-    person_x.receive_src_calendarunit_obj(calendar_x=CalendarUnit(_desc=swim_text))
+    person_x.receive_src_calendarunit_obj(calendar_x=CalendarUnit(_owner=swim_text))
     run_text = "run1"
-    person_x.receive_src_calendarunit_obj(calendar_x=CalendarUnit(_desc=run_text))
+    person_x.receive_src_calendarunit_obj(calendar_x=CalendarUnit(_owner=run_text))
 
     # THEN
     assert len(person_x.get_calendar_from_calendars_dirlinks_dict()) == 4
@@ -34,9 +34,9 @@ def test_person_get_calendar_from_calendars_dirlinks_dict_ReturnsCorrectInfo():
     person_x = person_examples.get_person_2calendar(env_dir=env_dir)
     assert len(person_x.get_calendar_from_calendars_dirlinks_dict()) == 2
     swim_text = "swim1"
-    person_x.receive_src_calendarunit_obj(calendar_x=CalendarUnit(_desc=swim_text))
+    person_x.receive_src_calendarunit_obj(calendar_x=CalendarUnit(_owner=swim_text))
     run_text = "run1"
-    person_x.receive_src_calendarunit_obj(calendar_x=CalendarUnit(_desc=run_text))
+    person_x.receive_src_calendarunit_obj(calendar_x=CalendarUnit(_owner=run_text))
 
     # WHEN
     src_calendarlinks_dict = person_x.get_calendar_from_calendars_dirlinks_dict()
@@ -54,7 +54,7 @@ def test_person_get_dict_ReturnsDictObject(person_dir_setup_cleanup):
     # GIVEN
     env_dir = get_temp_person_dir()
     person_x = person_examples.get_person_2calendar(env_dir=env_dir)
-    person_x.receive_src_calendarunit_obj(calendar_x=CalendarUnit(_desc="swim8"))
+    person_x.receive_src_calendarunit_obj(calendar_x=CalendarUnit(_owner="swim8"))
 
     # WHEN
     x_dict = person_x.get_dict()

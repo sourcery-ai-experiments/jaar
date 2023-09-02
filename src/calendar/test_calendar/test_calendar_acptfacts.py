@@ -13,8 +13,8 @@ from pytest import raises as pytest_raises
 
 def test_calendar_acptfact_exists():
     calendar_x = examples_get_calendar_with_4_levels()
-    sunday_road = Road(f"{calendar_x._desc},weekdays,Sunday")
-    weekday_road = Road(f"{calendar_x._desc},weekdays")
+    sunday_road = Road(f"{calendar_x._owner},weekdays,Sunday")
+    weekday_road = Road(f"{calendar_x._owner},weekdays")
     sunday_lw_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
     print(sunday_lw_acptfact)
     calendar_x._idearoot._acptfactunits = {sunday_lw_acptfact.base: sunday_lw_acptfact}
@@ -28,7 +28,7 @@ def test_calendar_acptfact_exists():
 
     calendar_x._idearoot._acptfactunits = None
     assert calendar_x._idearoot._acptfactunits is None
-    usa_week_road = Road(f"{calendar_x._desc},nation-state")
+    usa_week_road = Road(f"{calendar_x._owner},nation-state")
     usa_week_unit = acptfactunit_shop(
         base=usa_week_road, pick=usa_week_road, open=608, nigh=610
     )
@@ -43,8 +43,8 @@ def test_calendar_acptfact_exists():
 
 def test_calendar_acptfact_create():
     calendar_x = examples_get_calendar_with_4_levels()
-    sunday_road = Road(f"{calendar_x._desc},weekdays,Sunday")
-    weekday_road = Road(f"{calendar_x._desc},weekdays")
+    sunday_road = Road(f"{calendar_x._owner},weekdays,Sunday")
+    weekday_road = Road(f"{calendar_x._owner},weekdays")
     calendar_x.set_acptfact(base=weekday_road, pick=sunday_road)
     sunday_lw_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
     assert calendar_x._idearoot._acptfactunits == {
@@ -55,7 +55,7 @@ def test_calendar_acptfact_create():
 def test_set_acptfact_FailsToCreateWhenBaseAndAcptFactAreDifferenctAndAcptFactIdeaIsNotRangeRoot():
     # Given
     src_text = "src"
-    lw_x = CalendarUnit(_desc=src_text)
+    lw_x = CalendarUnit(_owner=src_text)
     time_x = "time_x"
     lw_x.add_idea(idea_kid=IdeaKid(_desc=time_x, _begin=0, _close=140), walk=src_text)
     t_x_road = Road(f"{src_text},{time_x}")
@@ -79,8 +79,8 @@ def test_set_acptfact_FailsToCreateWhenBaseAndAcptFactAreDifferenctAndAcptFactId
 def test_calendar_acptfact_create():
     # Given
     calendar_x = examples_get_calendar_with_4_levels()
-    sunday_road = Road(f"{calendar_x._desc},weekdays,Sunday")
-    weekday_road = Road(f"{calendar_x._desc},weekdays")
+    sunday_road = Road(f"{calendar_x._owner},weekdays,Sunday")
+    weekday_road = Road(f"{calendar_x._owner},weekdays")
     calendar_x.set_acptfact(base=weekday_road, pick=sunday_road)
     sunday_lw_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
     assert calendar_x._idearoot._acptfactunits == {
@@ -97,7 +97,7 @@ def test_calendar_acptfact_create():
 def test_calendar_get_idea_list_AcptFactHeirsCorrectlyInherited():
     # GIVEN
     src_text = "src"
-    calendar_x = CalendarUnit(_desc=src_text)
+    calendar_x = CalendarUnit(_owner=src_text)
     swim_text = "swim"
     swim_road = Road(f"{src_text},{swim_text}")
     calendar_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=src_text)
@@ -154,7 +154,7 @@ def test_calendar_get_idea_list_AcptFactHeirsCorrectlyInherited():
 def test_calendar_get_idea_list_AcptFactUnitCorrectlyTransformsacptfactheir_shop():
     # GIVEN
     src_text = "src"
-    calendar_x = CalendarUnit(_desc=src_text)
+    calendar_x = CalendarUnit(_owner=src_text)
     swim_text = "swim"
     swim_road = f"{src_text},{swim_text}"
     calendar_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=src_text)
@@ -197,7 +197,7 @@ def test_calendar_get_idea_list_AcptFactUnitCorrectlyTransformsacptfactheir_shop
 def test_calendar_get_idea_list_AcptFactHeirCorrectlyDeletesAcptFactUnit():
     # GIVEN
     src_text = "src"
-    calendar_x = CalendarUnit(_desc=src_text)
+    calendar_x = CalendarUnit(_owner=src_text)
     swim_text = "swim"
     swim_road = Road(f"{src_text},{swim_text}")
     calendar_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=src_text)
@@ -237,7 +237,7 @@ def test_calendar_get_idea_list_AcptFactHeirCorrectlyDeletesAcptFactUnit():
 def test_get_ranged_acptfacts():
     # Given a single ranged acptfact
     src_text = "src"
-    lw_x = CalendarUnit(_desc=src_text)
+    lw_x = CalendarUnit(_owner=src_text)
     time_x = "time_x"
     lw_x.add_idea(idea_kid=IdeaKid(_desc=time_x, _begin=0, _close=140), walk=src_text)
 
@@ -280,7 +280,7 @@ def test_get_ranged_acptfacts():
 def test_get_roots_ranged_acptfacts():
     # Given a two ranged acptfacts where one is "range-root" get_root_ranged_acptfacts returns one "range-root" acptfact
     src_text = "src"
-    lw_x = CalendarUnit(_desc=src_text)
+    lw_x = CalendarUnit(_owner=src_text)
     time_x = "time_x"
     lw_x.add_idea(idea_kid=IdeaKid(_desc=time_x, _begin=0, _close=140), walk=src_text)
     t_x_road = f"{src_text},{time_x}"
@@ -316,7 +316,7 @@ def test_get_roots_ranged_acptfacts():
 
 def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario1():
     src_text = "src"
-    lw_x = CalendarUnit(_desc=src_text)
+    lw_x = CalendarUnit(_owner=src_text)
     # # the action
     # clean = "clean"
     # lw_x.add_idea(idea_kid=IdeaKid(_desc=clean, promise=True), walk=src_text)
@@ -377,7 +377,7 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario1(
 
 def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario2():
     src_text = "src"
-    lw_x = CalendarUnit(_desc=src_text)
+    lw_x = CalendarUnit(_owner=src_text)
     # # the action
     # clean = "clean"
     # lw_x.add_idea(idea_kid=IdeaKid(_desc=clean, promise=True), walk=src_text)
@@ -436,7 +436,7 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario2(
 
 def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario3():
     src_text = "src"
-    lw_x = CalendarUnit(_desc=src_text)
+    lw_x = CalendarUnit(_owner=src_text)
     # # the action
     # clean = "clean"
     # lw_x.add_idea(idea_kid=IdeaKid(_desc=clean, promise=True), walk=src_text)
@@ -519,7 +519,7 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario3(
 
 def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario4():
     src_text = "src"
-    lw_x = CalendarUnit(_desc=src_text)
+    lw_x = CalendarUnit(_owner=src_text)
     time_x = "time_x"
     arsub1 = "arbitary_subsection1"
     as1_road = f"{src_text},{arsub1}"
@@ -562,7 +562,7 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario4(
 
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario4_1():
     src_text = "src"
-    lw_x = CalendarUnit(_desc=src_text)
+    lw_x = CalendarUnit(_owner=src_text)
     lw_x.set_time_hreg_ideas(c400_count=7)
     jajatime_road = "src,time,jajatime"
     lw_x.set_acptfact(base=jajatime_road, pick=jajatime_road, open=1500, nigh=1500)
@@ -588,7 +588,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario4_
 
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario5():
     src_text = "src"
-    lw_x = CalendarUnit(_desc=src_text)
+    lw_x = CalendarUnit(_owner=src_text)
     lw_x.set_time_hreg_ideas(c400_count=7)
     jajatime_road = "src,time,jajatime"
     lw_x.set_acptfact(
@@ -614,7 +614,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario5(
 
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario6():
     src_text = "src"
-    lw_x = CalendarUnit(_desc=src_text)
+    lw_x = CalendarUnit(_owner=src_text)
     lw_x.set_time_hreg_ideas(c400_count=7)
     jajatime_road = "src,time,jajatime"
     lw_x.set_acptfact(
@@ -637,7 +637,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario6(
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario7():
     # Given
     src_text = "src"
-    lw_x = CalendarUnit(_desc=src_text)
+    lw_x = CalendarUnit(_owner=src_text)
     lw_x.set_time_hreg_ideas(c400_count=7)
     jajatime_road = "src,time,jajatime"
 
@@ -680,7 +680,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario7(
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario8():
     # Given
     src_text = "src"
-    lw_x = CalendarUnit(_desc=src_text)
+    lw_x = CalendarUnit(_owner=src_text)
     lw_x.set_time_hreg_ideas(c400_count=7)
     jajatime_road = "src,time,jajatime"
 
@@ -723,7 +723,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario8(
 def test_calendar_set_acptfact_create_missing_ideas_CreatesBaseAndAcptFact():
     # GIVEN
     src_text = "src"
-    sx = CalendarUnit(_desc=src_text)
+    sx = CalendarUnit(_owner=src_text)
     sx._idearoot.set_kids_empty_if_null()
     prob_text = "problems"
     prob_road = Road(f"{src_text},{prob_text}")
@@ -743,7 +743,7 @@ def test_calendar_set_acptfact_create_missing_ideas_CreatesBaseAndAcptFact():
 def test_calendar_get_acptfactunits_base_and_acptfact_list_CorrectlyReturnsListOfAcptFactUnits():
     # GIVEN
     src_text = "src"
-    sx = CalendarUnit(_desc=src_text)
+    sx = CalendarUnit(_owner=src_text)
     sx._idearoot.set_kids_empty_if_null()
 
     prob_text = "problems"

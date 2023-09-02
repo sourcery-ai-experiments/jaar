@@ -10,23 +10,23 @@ from src.calendar.x_func import get_on_meld_weight_actions
 def test_calendar_meld_BaseScenario():
     # GIVEN
     calendar_text = "x_calendar"
-    ax1 = CalendarUnit(_desc=calendar_text)
-    ax2 = CalendarUnit(_desc=calendar_text)
+    ax1 = CalendarUnit(_owner=calendar_text)
+    ax2 = CalendarUnit(_owner=calendar_text)
 
     # WHEN
     ax1.meld(other_calendar=ax2)
 
     # THEN
     assert ax1
-    assert ax1._desc == calendar_text
+    assert ax1._owner == calendar_text
 
 
 def test_calendar_meld_WeightDoesNotCombine():
     # GIVEN
     calendar_text = "x_calendar"
-    ax1 = CalendarUnit(_desc=calendar_text)
+    ax1 = CalendarUnit(_owner=calendar_text)
     ax1._weight = 3
-    ax2 = CalendarUnit(_desc=calendar_text)
+    ax2 = CalendarUnit(_owner=calendar_text)
     ax2._weight = 5
 
     # WHEN
@@ -42,10 +42,10 @@ def test_calendar_meld_MemberUnits():
     x1_member = memberunit_shop(name=x1_name)
 
     calendar_text = "x_calendar"
-    ax1 = CalendarUnit(_desc=calendar_text)
+    ax1 = CalendarUnit(_owner=calendar_text)
     ax1.set_memberunit(memberunit=x1_member)
 
-    ax2 = CalendarUnit(_desc=calendar_text)
+    ax2 = CalendarUnit(_owner=calendar_text)
     ax2.set_memberunit(memberunit=x1_member)
     x2_name = "x2_member"
     x2_member = memberunit_shop(name=x2_name)
@@ -67,10 +67,10 @@ def test_calendar_meld_GroupUnits():
     x1_group = groupunit_shop(name=x1_name)
 
     calendar_text = "x_calendar"
-    ax1 = CalendarUnit(_desc=calendar_text)
+    ax1 = CalendarUnit(_owner=calendar_text)
     ax1.set_groupunit(groupunit=x1_group)
 
-    ax2 = CalendarUnit(_desc=calendar_text)
+    ax2 = CalendarUnit(_owner=calendar_text)
     ax2.set_groupunit(groupunit=x1_group)
     x2_name = "x2_group"
     x2_group = groupunit_shop(name=x2_name, uid=5)
@@ -93,8 +93,8 @@ def test_calendar_meld_GroupUnits():
 def test_calendar_idearoot_meld_IdeaRootAttrCorrectlyMelded():
     # GIVEN
     src = "casa"
-    ax1 = CalendarUnit(_desc="spirit")
-    ax2 = CalendarUnit(_desc="spirit")
+    ax1 = CalendarUnit(_owner="spirit")
+    ax2 = CalendarUnit(_owner="spirit")
     ax2._idearoot._uid = 4
     assert ax1._idearoot._uid == 1
     assert ax2._idearoot._uid == 4
@@ -120,9 +120,9 @@ def test_calendar_idearoot_meld_Add4IdeasScenario():
     free_text = "freestyle"
     free_road = f"{src},{swim_text},{free_text}"
 
-    ax1 = CalendarUnit(_desc="spirit")
+    ax1 = CalendarUnit(_owner="spirit")
 
-    ax2 = CalendarUnit(_desc="spirit")
+    ax2 = CalendarUnit(_owner="spirit")
     ax2.add_idea(walk=src, idea_kid=IdeaKid(_desc=tech_text))
     ax2.add_idea(walk=tech_road, idea_kid=IdeaKid(_desc=bowl_text))
     ax2.add_idea(walk=swim_road, idea_kid=IdeaKid(_desc=free_text))
@@ -146,11 +146,11 @@ def test_calendar_idearoot_meld_2SameIdeasScenario():
     bowl_text = "bowl"
     bowl_road = f"{src},{tech_text},{bowl_text}"
 
-    ax1 = CalendarUnit(_desc=src)
+    ax1 = CalendarUnit(_owner=src)
     ax1.add_idea(walk=src, idea_kid=IdeaKid(_desc=tech_text))
     ax1.add_idea(walk=tech_road, idea_kid=IdeaKid(_desc=bowl_text))
 
-    ax2 = CalendarUnit(_desc=src)
+    ax2 = CalendarUnit(_owner=src)
     ax2.add_idea(walk=src, idea_kid=IdeaKid(_desc=tech_text))
     ax2.add_idea(walk=tech_road, idea_kid=IdeaKid(_desc=bowl_text))
 
@@ -171,12 +171,12 @@ def test_calendar_acptfactunits_meld_BaseScenarioWorks():
     bowl_text = "bowl"
     bowl_road = f"{src},{tech_text},{bowl_text}"
 
-    ax1 = CalendarUnit(_desc="test7")
+    ax1 = CalendarUnit(_owner="test7")
     ax1.add_idea(walk=src, idea_kid=IdeaKid(_desc=tech_text))
     ax1.add_idea(walk=tech_road, idea_kid=IdeaKid(_desc=bowl_text))
     ax1.set_acptfact(base=tech_road, pick=bowl_road)
 
-    ax2 = CalendarUnit(_desc="test7")
+    ax2 = CalendarUnit(_owner="test7")
     ax2.add_idea(walk=src, idea_kid=IdeaKid(_desc=tech_text))
     ax2.add_idea(walk=tech_road, idea_kid=IdeaKid(_desc=bowl_text))
     ax2.set_acptfact(base=tech_road, pick=bowl_road)
@@ -201,13 +201,13 @@ def test_calendar_acptfactunits_meld_2AcptFactUnitsWorks():
     swim_road = f"{src},{swim_text}"
     free_text = "freestyle"
 
-    ax1 = CalendarUnit(_desc="test7")
+    ax1 = CalendarUnit(_owner="test7")
     ax1.add_idea(walk=src, idea_kid=IdeaKid(_desc=tech_text))
     ax1.add_idea(walk=tech_road, idea_kid=IdeaKid(_desc=bowl_text))
     ax1.add_idea(walk=swim_road, idea_kid=IdeaKid(_desc=free_text))
     ax1.set_acptfact(base=tech_road, pick=bowl_road)
 
-    ax2 = CalendarUnit(_desc="test7")
+    ax2 = CalendarUnit(_owner="test7")
     ax2.add_idea(walk=src, idea_kid=IdeaKid(_desc=tech_text))
     ax2.add_idea(walk=tech_road, idea_kid=IdeaKid(_desc=bowl_text))
     ax2.add_idea(walk=swim_road, idea_kid=IdeaKid(_desc=free_text))
@@ -230,9 +230,9 @@ def test_calendar_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
     swim_road = f"{src},{swim_text}"
     free_text = "freestyle"
 
-    ax1 = CalendarUnit(_desc="test7")
+    ax1 = CalendarUnit(_owner="test7")
 
-    ax2 = CalendarUnit(_desc="test7")
+    ax2 = CalendarUnit(_owner="test7")
     ax2.add_idea(walk=swim_road, idea_kid=IdeaKid(_desc=free_text))
     ax2.set_acptfact(base=swim_road, pick=swim_road)
 
@@ -251,8 +251,8 @@ def test_calendar_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
 def test_calendar_acptfactunits_meld_GroupsMeldedBefore_Members():
     # GIVEN
     src = "casa"
-    ax1 = CalendarUnit(_desc=src)
-    ax2 = CalendarUnit(_desc=src)
+    ax1 = CalendarUnit(_owner=src)
+    ax2 = CalendarUnit(_owner=src)
     bob = "bob"
     ax2.set_memberunit(memberunit_shop(name=bob))
     assert ax2._groups.get(bob) != None
@@ -278,10 +278,10 @@ def test_calendar_acptfactunits_meld_AcptFactsAttributeCorrectlySet():
     free_text = "freestyle"
     free_road = f"{src},{free_text}"
 
-    ax1 = CalendarUnit(_desc="test7")
+    ax1 = CalendarUnit(_owner="test7")
     ax1.add_idea(walk=swim_road, idea_kid=IdeaKid(_desc=free_text))
 
-    ax2 = CalendarUnit(_desc="test7")
+    ax2 = CalendarUnit(_owner="test7")
     ax2.add_idea(walk=swim_road, idea_kid=IdeaKid(_desc=free_text))
     ax2.set_acptfact(base=swim_road, pick=free_road, open=23, nigh=27)
 
@@ -300,7 +300,7 @@ def test_calendar_acptfactunits_meld_AcptFactsAttributeCorrectlySet():
 def test_calendar_meld_worksCorrectlyForLargeExample():
     # GIVEN
     src = "TlME"
-    ax1 = CalendarUnit(_desc=src)
+    ax1 = CalendarUnit(_owner=src)
     ax1._idearoot._uid = 1
     ax2 = calendar_v001()
 
@@ -328,7 +328,7 @@ def test_calendar_meld_worksCorrectlyForLargeExample():
 
     assert len(ax1._idearoot._acptfactunits) == 2
     assert len(ax1._idearoot._acptfactunits) == len(ax2._idearoot._acptfactunits)
-    assert ax1._desc == ax2._desc
+    assert ax1._owner == ax2._owner
     print(f"{len(ax1._groups.items())=}")
     # for ax1_group_key, ax1_group_obj in ax1._groups.items():
     #     print(f"{ax1_group_key=}")
@@ -380,7 +380,7 @@ def test_calendar_meld_worksCorrectlyForLargeExample():
 def test_calendar_meld_make_meldable():
     # GIVEN
     src = "Yahoo"
-    ax1 = CalendarUnit(_desc=src)
+    ax1 = CalendarUnit(_owner=src)
     ax1._idearoot._uid = 1
 
     ax2 = calendar_v001()
@@ -389,7 +389,7 @@ def test_calendar_meld_make_meldable():
         assert ax2.meld(other_calendar=ax1)
     assert (
         str(excinfo.value)
-        == f"Meld fail idearoot _desc '{ax2._desc}' not the same as '{ax1._desc}'"
+        == f"Meld fail idearoot _desc '{ax2._owner}' not the same as '{ax1._owner}'"
     )
 
     # WHEN

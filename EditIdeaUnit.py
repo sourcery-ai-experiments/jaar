@@ -290,7 +290,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
     def required_sufffact_xxxx_combo_load(self):
         filtered_list = []
         if self.required_sufffact_combo.currentText() not in [
-            self.calendar_x._desc,
+            self.calendar_x._owner,
             "",
         ]:
             sufffact_idea = self.calendar_x.get_idea_kid(
@@ -316,7 +316,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.required_sufffact_divisor.setText("")
 
         if self.required_sufffact_open_combo.currentText() not in [
-            self.calendar_x._desc,
+            self.calendar_x._owner,
             "",
         ]:
             self.required_sufffact_open_combo_sel_actions()
@@ -340,7 +340,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
     def numeric_road_combo_select(self):
         if self.required_sufffact_open_combo.currentText() not in [
-            self.calendar_x._desc,
+            self.calendar_x._owner,
             "",
         ]:
             open_idea_x = self.calendar_x.get_idea_kid(
@@ -361,7 +361,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if (
             self.required_sufffact_open_combo.currentText()
             not in [
-                self.calendar_x._desc,
+                self.calendar_x._owner,
                 "",
             ]
             and self.required_sufffact_open.toPlainText() != ""
@@ -381,7 +381,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if (
             self.required_sufffact_nigh_combo.currentText()
             not in [
-                self.calendar_x._desc,
+                self.calendar_x._owner,
                 "",
             ]
             and self.required_sufffact_nigh.toPlainText() != ""
@@ -401,7 +401,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if (
             self.required_sufffact_divisor_combo.currentText()
             not in [
-                self.calendar_x._desc,
+                self.calendar_x._owner,
                 "",
             ]
             and self.required_sufffact_divisor.toPlainText() != ""
@@ -422,7 +422,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
     def required_sufffact_nigh_combo_select(self):
         self.required_sufffact_nigh.setText("")
         if self.required_sufffact_nigh_combo.currentText() not in [
-            self.calendar_x._desc,
+            self.calendar_x._owner,
             "",
         ]:
             nigh_idea_x = self.calendar_x.get_idea_kid(
@@ -434,7 +434,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
     def required_sufffact_divisor_combo_select(self):
         self.required_sufffact_divisor.setText("")
         if self.required_sufffact_divisor_combo.currentText() not in [
-            self.calendar_x._desc,
+            self.calendar_x._owner,
             "",
         ]:
             divisor_idea_x = self.calendar_x.get_idea_kid(
@@ -449,7 +449,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         for required in self.yo_x._requiredunits.values():
             requiredheir = self.yo_x._requiredheirs.get(required.base)
             for sufffact in required.sufffacts.values():
-                required_text = required.base.replace(f"{self.calendar_x._desc}", "")
+                required_text = required.base.replace(f"{self.calendar_x._owner}", "")
                 required_text = required_text[1:]
                 sufffact_text = sufffact.need.replace(required.base, "")
                 sufffact_text = sufffact_text[1:]
@@ -535,7 +535,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         for requiredheir in self.yo_x._requiredheirs.values():
             for sufffact in requiredheir.sufffacts.values():
                 requiredheir_text = requiredheir.base.replace(
-                    f"{self.calendar_x._desc}", ""
+                    f"{self.calendar_x._owner}", ""
                 )
                 requiredheir_text = requiredheir_text[1:]
                 sufffact_text = sufffact.need.replace(requiredheir.base, "")
