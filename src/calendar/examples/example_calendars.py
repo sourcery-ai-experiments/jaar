@@ -195,19 +195,21 @@ def get_calendar_with7amCleanTableRequired() -> CalendarUnit:
     calendar_x.add_idea(idea_02, am_road)  # idea_am
     calendar_x.add_idea(idea_03, am_road)  # idea_am
 
-    housework = "housework"
-    house_road = f"{src},{housework}"
+    house_text = "housework"
+    house_road = f"{src},{house_text}"
     clean_table = "clean table"
     clean_road = f"{house_road},{clean_table}"
     remove_dish = "remove dishs"
-    get_soap = "get soap"
-    get_soap_road = f"{clean_road},{get_soap}"
+    get_soap_text = "get soap"
+    get_soap_road = f"{clean_road},{get_soap_text}"
+    grab_text = "grab soap"
+    grab_road = f"{get_soap_road},{grab_text}"
     remove_dish = "remove dishs"
-    idea_housework = IdeaKid(_weight=40, _desc=housework)
+    idea_housework = IdeaKid(_weight=40, _desc=house_text)
     idea_cleantable = IdeaKid(_weight=40, _desc=clean_table, promise=True)
     idea_tabledishs = IdeaKid(_weight=40, _desc=remove_dish, promise=True)
-    idea_tablesoap = IdeaKid(_weight=40, _desc=get_soap, promise=True)
-    idea_grabsoap = IdeaKid(_weight=40, _desc="grab soap", promise=True)
+    idea_tablesoap = IdeaKid(_weight=40, _desc=get_soap_text, promise=True)
+    idea_grabsoap = IdeaKid(_weight=40, _desc=grab_text, promise=True)
 
     calendar_x.add_idea(idea_kid=idea_housework, walk=src)
     calendar_x.add_idea(idea_kid=idea_cleantable, walk=house_road)
@@ -228,13 +230,10 @@ def get_calendar_with7amCleanTableRequired() -> CalendarUnit:
         base=clean_table_7am_base,
         sufffacts={clean_table_7am_sufffact_x.need: clean_table_7am_sufffact_x},
     )
-    calendar_x.edit_idea_attr(
-        road=f"{calendar_x._owner},housework,clean table",
-        required=clean_table_7am_required,
-    )
-    calendar_x.edit_idea_attr(
-        road=f"{calendar_x._owner},work", required=clean_table_7am_required
-    )
+    calendar_x.edit_idea_attr(road=clean_road, required=clean_table_7am_required)
+    work_text = "work"
+    work_road = f"{calendar_x._owner},{work_text}"
+    calendar_x.edit_idea_attr(road=work_road, required=clean_table_7am_required)
     return calendar_x
 
 
