@@ -115,46 +115,6 @@ def assigned_heir_shop(
 
     return AssignedHeir(_suffgroups=_suffgroups, _group_member=_group_member)
 
-    # def get_key_road(self):
-    #     return self.base
-
-    # def set_empty_if_null(self):
-    #     if self.sufffacts is None:
-    #         self.sufffacts = {}
-
-    # def get_sufffacts_count(self):
-    #     self.set_empty_if_null()
-    #     return sum(1 for _ in self.sufffacts.values())
-
-    # def set_sufffact(
-    #     self,
-    #     sufffact: Road,
-    #     open: float = None,
-    #     nigh: float = None,
-    #     divisor: int = None,
-    # ):
-    #     self.set_empty_if_null()
-    #     self.sufffacts[sufffact] = sufffactunit_shop(
-    #         need=sufffact,
-    #         open=open,
-    #         nigh=nigh,
-    #         divisor=divisor,
-    #     )
-
-    # def del_sufffact(self, sufffact: Road):
-    #     try:
-    #         self.sufffacts.pop(sufffact)
-    #     except KeyError as e:
-    #         raise InvalidRequiredException(
-    #             f"Required unable to delete sufffact {e}"
-    #         ) from e
-
-    # def find_replace_road(self, old_road: Road, new_road: Road):
-    #     self.base = change_road(self.base, old_road, new_road)
-    #     self.sufffacts = find_replace_road_key_dict(
-    #         dict_x=self.sufffacts, old_road=old_road, new_road=new_road
-    #     )
-
     # def meld(self, other_required):
     #     for sufffact_x in other_required.sufffacts.values():
     #         if self.sufffacts.get(sufffact_x.need) is None:
