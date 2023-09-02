@@ -759,7 +759,7 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
 def test_agenda_IsSetByAssignedUnit_1MemberGroup():
     # GIVEN
     bob_text = "bob"
-    cx = CalendarUnit(_owner=bob_text, _weight=10)
+    cx = CalendarUnit(_owner=bob_text)
     work_text = "work"
     work_road = f"{bob_text},{work_text}"
     cx.add_idea(idea_kid=IdeaKid(_desc=work_text, promise=True), walk=bob_text)
@@ -793,24 +793,35 @@ def test_agenda_IsSetByAssignedUnit_1MemberGroup():
 
 
 def test_agenda_IsSetByAssignedUnit_2MemberGroup():
-    # # GIVEN
-    # bob_text = "bob"
-    # cx = CalendarUnit(_owner=bob_text, _weight=10)
-    # work_text = "work"
-    # work_road = f"{bob_text},{work_text}"
-    # cx.add_idea(idea_kid=IdeaKid(_desc=work_text, promise=True), walk=bob_text)
-    # assert len(cx.get_agenda_items()) == 1
+    # GIVEN
+    bob_text = "bob"
+    cx = CalendarUnit(_owner=bob_text)
+    cx.add_memberunit(name=bob_text)
+    work_text = "work"
+    work_road = f"{bob_text},{work_text}"
+    cx.add_idea(idea_kid=IdeaKid(_desc=work_text, promise=True), walk=bob_text)
 
-    # sue_text = "sue"
-    # cx.add_memberunit(name=bob_text)
-    # cx.add_memberunit(name=sue_text)
+    sue_text = "sue"
+    cx.add_memberunit(name=sue_text)
 
-    # run_text = "runners"
-    # run_group = groupunit_shop(name=run_text)
-    # run_group.set_memberlink(memberlink=memberlink_shop(name=sue_text))
-    # cx.set_groupunit(groupunit=run_group)
-    # agenda_list = cx.get_agenda_items()
+    run_text = "runners"
+    run_group = groupunit_shop(name=run_text)
+    run_group.set_memberlink(memberlink=memberlink_shop(name=sue_text))
+    cx.set_groupunit(groupunit=run_group)
 
-    # print(f"{agenda_list[0]._desc=}")
+    run_assignedunit = assigned_unit_shop()
+    run_assignedunit.set_suffgroup(name=run_text)
+    assert len(cx.get_agenda_items()) == 1
 
-    assert 1 == 2
+    # WHEN
+    cx.edit_idea_attr(road=work_road, assignedunit=run_assignedunit)
+
+    # THEN
+    assert len(cx.get_agenda_items()) == 0
+
+    # WHEN
+    run_group.set_memberlink(memberlink=memberlink_shop(name=bob_text))
+    cx.set_groupunit(groupunit=run_group)
+
+    # THEN
+    assert len(cx.get_agenda_items()) == 1
