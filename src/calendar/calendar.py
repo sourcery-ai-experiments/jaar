@@ -37,6 +37,7 @@ from src.calendar.required_assign import (
     assigned_unit_shop,
     AssignedUnit,
     AssignedHeir,
+    assignedunit_get_from_dict,
 )
 from src.calendar.tree_metrics import TreeMetrics
 from src.calendar.x_func import x_get_json
@@ -1666,7 +1667,9 @@ class CalendarUnit:
         idea_kid.set_acptfactunits_empty_if_null()
         idea_kid.set_acptfactheirs(acptfacts=parent_acptfacts)
         idea_kid.set_requiredheirs(parent_requiredheirs, self._idea_dict)
-        idea_kid.set_assignedheir(parent_assignheir=parent_idea._assignedheir, calendar_groups=self._groups)
+        idea_kid.set_assignedheir(
+            parent_assignheir=parent_idea._assignedheir, calendar_groups=self._groups
+        )
         idea_kid.inherit_groupheirs(parent_groupheirs=parent_idea._groupheirs)
         idea_kid.clear_grouplines()
         idea_kid.set_active_status(tree_traverse_count=self._tree_traverse_count)
@@ -1847,6 +1850,7 @@ class CalendarUnit:
             "_members": self.get_members_dict(),
             "_groups": self.groupunit_shops_dict(),
             "_grouplinks": self._idearoot.get_grouplinks_dict(),
+            "_assignedunit": self._idearoot.get_assignedunit_dict(),
             "_weight": self._weight,
             "_desc": self._desc,
             "_uid": self._idearoot._uid,
@@ -2038,6 +2042,11 @@ def get_from_dict(lw_dict: dict) -> CalendarUnit:
     c_x._idearoot._requiredunits = requireds_get_from_dict(
         requireds_dict=lw_dict["_requiredunits"]
     )
+    _assignedunit = "_assignedunit"
+    if lw_dict.get(_assignedunit):
+        c_x._idearoot._assignedunit = assignedunit_get_from_dict(
+            assignedunit_dict=lw_dict.get(_assignedunit)
+        )
     c_x._idearoot._acptfactunits = acptfactunits_get_from_dict(
         x_dict=lw_dict["_acptfactunits"]
     )
@@ -2074,6 +2083,12 @@ def get_from_dict(lw_dict: dict) -> CalendarUnit:
             x_dict["temp_road"] = f"{temp_road},{temp_desc}"
             idea_dict_list.append(x_dict)
 
+        idea_assignedunit = assigned_unit_shop()
+        if idea_dict.get(_assignedunit):
+            idea_assignedunit = assignedunit_get_from_dict(
+                assignedunit_dict=idea_dict.get(_assignedunit)
+            )
+
         idea_obj = IdeaKid(
             _desc=idea_dict["_desc"],
             _weight=idea_dict["_weight"],
@@ -2087,6 +2102,7 @@ def get_from_dict(lw_dict: dict) -> CalendarUnit:
             _requiredunits=requireds_get_from_dict(
                 requireds_dict=idea_dict["_requiredunits"]
             ),
+            _assignedunit=idea_assignedunit,
             _grouplinks=grouplinks_get_from_dict(idea_dict["_grouplinks"]),
             _acptfactunits=acptfactunits_get_from_dict(idea_dict["_acptfactunits"]),
             _is_expanded=idea_dict["_is_expanded"],

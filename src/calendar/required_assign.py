@@ -99,7 +99,7 @@ class AssignedHeir:
             else:
                 # else raise error
                 raise InvalidAssignHeirPopulateException(
-                    "parent_assigned_heir does not contain all members of the idea's assigned_unit"
+                    f"parent_assigned_heir does not contain all members of the idea's assigned_unit\n{set(all_parent_assignedheir_members)=}\n\n{set(all_assignedunit_members)=}"
                 )
 
         self._suffgroups = dict_x
@@ -125,3 +125,11 @@ def assigned_heir_shop(
     #         raise InvalidRequiredException(
     #             f"Meld fail: required={other_required.base} is different {self.base=}"
     #         )
+
+
+def assignedunit_get_from_dict(assignedunit_dict: dict) -> AssignedUnit:
+    assigned_unit_x = assigned_unit_shop()
+    for suffgroup_name in assignedunit_dict.get("_suffgroups"):
+        assigned_unit_x.set_suffgroup(name=suffgroup_name)
+
+    return assigned_unit_x

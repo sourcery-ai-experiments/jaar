@@ -1,4 +1,6 @@
 import contextlib
+from src.calendar.calendar import CalendarUnit
+from src.calendar.idea import IdeaKid
 from src.calendar.required_idea import acptfactunit_shop
 from src.calendar.examples.example_calendars import (
     calendar_v001 as example_calendars_calendar_v001,
@@ -10,7 +12,9 @@ from src.calendar.calendar import (
     get_dict_of_calendar_from_dict,
 )
 from src.calendar.examples.get_calendar_examples_dir import get_calendar_examples_dir
-from src.calendar.group import GroupLink, GroupName
+from src.calendar.group import groupunit_shop, grouplink_shop
+from src.calendar.member import memberlink_shop
+from src.calendar.required_assign import assigned_unit_shop
 from src.calendar.x_func import (
     x_is_json,
     save_file as x_func_save_file,
@@ -21,13 +25,16 @@ from pytest import raises as pytest_raises
 
 
 def test_calendar_get_dict_ReturnsDictObject():
-    x_dict = None
+    # GIVEN
     x_calendar = example_calendars_calendar_v001()
     x_calendar.set_acptfact(base="TlME,day_hour", pick="TlME,day_hour", open=0, nigh=23)
     time_minute = "TlME,day_minute"
     x_calendar.set_acptfact(base=time_minute, pick=time_minute, open=0, nigh=1440)
-    assert x_dict is None
+
+    # WHEN
     x_dict = x_calendar.get_dict()
+
+    # THEN
     assert x_dict != None
     assert str(type(x_dict)) == "<class 'dict'>"
     assert x_dict["_desc"] == x_calendar._desc
@@ -73,21 +80,24 @@ def test_calendar_get_dict_ReturnsDictObject():
     # assert len(x_dict["_kids"][ap_idea._desc]["_requiredunits"]) == 1
 
     month_week_text = "month_week"
+    _kids = "_kids"
+    _special_road = "_special_road"
     month_week_road = f"{x_calendar._desc},{month_week_text}"
     month_week_idea = x_calendar.get_idea_kid(road=month_week_road)
     print("checking TlME,month_week...special_road equal to...")
-    print(x_dict["_kids"][month_week_text]["_special_road"])
-    print(x_dict["_kids"][month_week_text])
-    assert x_dict["_kids"][month_week_text]["_special_road"] != None
-    assert x_dict["_kids"][month_week_text]["_special_road"] == "TlME,ced_week"
+    print(x_dict[_kids][month_week_text][_special_road])
+    print(x_dict[_kids][month_week_text])
+    assert x_dict[_kids][month_week_text][_special_road] != None
+    assert x_dict[_kids][month_week_text][_special_road] == "TlME,ced_week"
 
     numeric_text = "numeric_road_test"
     numeric_road = f"TlME,{numeric_text}"
+    _numeric_road = "_numeric_road"
     print(f"checking {numeric_road}...numeric_road equal to...")
-    print(x_dict["_kids"][numeric_text]["_numeric_road"])
-    print(x_dict["_kids"][numeric_text])
-    assert x_dict["_kids"][numeric_text]["_numeric_road"] != None
-    assert x_dict["_kids"][numeric_text]["_numeric_road"] == "TlME,month_week"
+    print(x_dict[_kids][numeric_text][_numeric_road])
+    print(x_dict[_kids][numeric_text])
+    assert x_dict[_kids][numeric_text][_numeric_road] != None
+    assert x_dict[_kids][numeric_text][_numeric_road] == "TlME,month_week"
 
     # with contextlib.suppress(KeyError):
     #     if x_dict["_kids"][kid._desc]["_requiredunits"] not in (None, {}):
@@ -96,6 +106,45 @@ def test_calendar_get_dict_ReturnsDictObject():
     #         assert len(x_dict["_kids"][kid._desc]["_requiredunits"]) == len(
     #             kid._requiredunits
     #         )
+
+
+def test_calendar_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
+    # GIVEN
+    src_text = "src"
+    run_text = "runners"
+    x_calendar = CalendarUnit(_desc=src_text)
+    assigned_unit_x = assigned_unit_shop()
+    assigned_unit_x.set_suffgroup(name=run_text)
+    x_calendar.edit_idea_attr(assignedunit=assigned_unit_x, road=src_text)
+
+    # WHEN
+    x_dict = x_calendar.get_dict()
+
+    # THEN
+    assert x_dict["_assignedunit"] == assigned_unit_x.get_dict()
+    assert x_dict["_assignedunit"] == {"_suffgroups": {"runners": "runners"}}
+
+
+def test_calendar_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
+    # GIVEN
+    src_text = "src"
+    run_text = "run"
+    morn_text = "morning"
+    morn_road = f"{src_text},{morn_text}"
+    x_calendar = CalendarUnit(_desc=src_text)
+    x_calendar.add_idea(idea_kid=IdeaKid(_desc=morn_text), walk=src_text)
+    assigned_unit_x = assigned_unit_shop()
+    assigned_unit_x.set_suffgroup(name=run_text)
+    x_calendar.edit_idea_attr(assignedunit=assigned_unit_x, road=morn_road)
+
+    # WHEN
+    x_dict = x_calendar.get_dict()
+
+    # THEN
+    _kids = "_kids"
+    _assignedunit = "_assignedunit"
+    assert x_dict[_kids][morn_text][_assignedunit] == assigned_unit_x.get_dict()
+    assert x_dict[_kids][morn_text][_assignedunit] == {"_suffgroups": {"run": "run"}}
 
 
 def test_export_to_JSON_simple_example_works():
@@ -191,40 +240,67 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
 
 
 def test_calendar_get_json_CorrectlyWorksForSimpleExample():
-    x_json = None
+    # GIVEN
     calendar_y = example_calendars_get_calendar_x1_3levels_1required_1acptfacts()
     calendar_y.set_max_tree_traverse(23)
+    src_text = calendar_y._desc
 
-    bikers_link = GroupLink(name=GroupName("bikers"))
-    grouplinks_dict = {bikers_link.name: bikers_link}
-    calendar_y._idearoot._grouplinks = grouplinks_dict
+    shave_text = "shave"
+    shave_road = f"{calendar_y._desc},{shave_text}"
+    shave_idea_x = calendar_y.get_idea_kid(road=shave_road)
 
-    flyers_name = GroupName("flyers")
-    flyers_link = GroupLink(name=flyers_name)
-    grouplinks_dict_f = {flyers_link.name: flyers_link, bikers_link.name: bikers_link}
-    calendar_y._idearoot._kids["shave"]._grouplinks = grouplinks_dict_f
+    sue_text = "sue"
+    calendar_y.add_memberunit(name=sue_text)
+    tim_text = "tim"
+    calendar_y.add_memberunit(name=tim_text)
+    run_text = "runners"
+    run_group = groupunit_shop(name=run_text)
+    run_group.set_memberlink(memberlink=memberlink_shop(name=sue_text))
+    run_group.set_memberlink(memberlink=memberlink_shop(name=tim_text))
+    calendar_y.set_groupunit(groupunit=run_group)
 
+    run_assigned_unit = assigned_unit_shop()
+    run_assigned_unit.set_suffgroup(name=run_text)
+    calendar_y.edit_idea_attr(road=src_text, assignedunit=run_assigned_unit)
+    tim_assigned_unit = assigned_unit_shop()
+    tim_assigned_unit.set_suffgroup(name=tim_text)
+    calendar_y.edit_idea_attr(road=shave_road, assignedunit=tim_assigned_unit)
+    calendar_y.edit_idea_attr(road=shave_road, grouplink=grouplink_shop(name=tim_text))
+    calendar_y.edit_idea_attr(road=shave_road, grouplink=grouplink_shop(name=sue_text))
+
+    calendar_y.edit_idea_attr(road=src_text, grouplink=grouplink_shop(name=sue_text))
+
+    # WHEN
     x_json = calendar_y.get_json()
     assert x_is_json(x_json) == True
     calendar_x = calendar_get_from_json(lw_json=x_json)
+
+    # THEN
     assert str(type(calendar_x)).find(".calendar.CalendarUnit'>") > 0
     assert calendar_x._desc != None
     assert calendar_x._desc == calendar_y._desc
     assert calendar_x._max_tree_traverse == 23
     assert calendar_x._max_tree_traverse == calendar_y._max_tree_traverse
-    assert calendar_x._idearoot._walk == ""
-    assert calendar_x._idearoot._walk == calendar_y._idearoot._walk
-    assert calendar_x._idearoot._requiredunits == {}
+    idearoot_x = calendar_x._idearoot
+    assert idearoot_x._walk == ""
+    assert idearoot_x._walk == calendar_y._idearoot._walk
+    assert idearoot_x._requiredunits == {}
+    assert idearoot_x._assignedunit == calendar_y._idearoot._assignedunit
+    assert idearoot_x._assignedunit == run_assigned_unit
+
     assert len(calendar_x._idearoot._kids) == 2
     assert len(calendar_x._idearoot._kids["weekdays"]._kids) == 2
     assert calendar_x._idearoot._kids["weekdays"]._kids["Sunday"]._weight == 20
     # print(calendar_y.get_dict())
-    assert len(calendar_x._idearoot._kids["shave"]._requiredunits) == 1
+    shave_idea_x = calendar_x.get_idea_kid(road=shave_road)
+    assert len(shave_idea_x._requiredunits) == 1
+    assert shave_idea_x._assignedunit == shave_idea_x._assignedunit
+    assert shave_idea_x._assignedunit == tim_assigned_unit
     assert len(calendar_x._idearoot._acptfactunits) == 1
     assert len(calendar_x._idearoot._grouplinks) == 1
-    assert len(calendar_x._idearoot._kids["shave"]._grouplinks) == 2
-    print(calendar_x._idearoot._kids["shave"]._acptfactunits)
-    assert len(calendar_x._idearoot._kids["shave"]._acptfactunits) == 1
+    assert len(shave_idea_x._grouplinks) == 2
+    print(shave_idea_x._acptfactunits)
+    assert len(shave_idea_x._acptfactunits) == 1
 
 
 def test_calendar_get_json_CorrectlyWorksForNotSimpleExample():

@@ -486,14 +486,15 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqualParentAssignedHeir_Rais
 
     # WHEN / THEN
     assigned_heir_x = assigned_heir_shop()
-    # WHEN/THEN
+    all_parent_assignedheir_members = {jim_text, sue_text}
+    all_assignedunit_members = {jim_text, sue_text, tom_text}
     with pytest_raises(Exception) as excinfo:
         assigned_heir_x.set_suffgroups(
             parent_assigned_heir, assigned_unit_swim3, calendar_groups=c_x._groups
         )
     assert (
         str(excinfo.value)
-        == "parent_assigned_heir does not contain all members of the idea's assigned_unit"
+        == f"parent_assigned_heir does not contain all members of the idea's assigned_unit\n{set(all_parent_assignedheir_members)=}\n\n{set(all_assignedunit_members)=}"
     )
 
 

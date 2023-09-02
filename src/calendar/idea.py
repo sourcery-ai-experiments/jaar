@@ -820,6 +820,7 @@ class IdeaCore:
         return {
             "_kids": self.get_kids_dict(),
             "_requiredunits": self.get_requiredunits_dict(),
+            "_assignedunit": self.get_assignedunit_dict(),
             "_grouplinks": self.get_grouplinks_dict(),
             "_weight": self._weight,
             "_desc": self._desc,
@@ -873,6 +874,10 @@ class IdeaCore:
             assignunit=self._assignedunit,
             calendar_groups=calendar_groups,
         )
+
+    def get_assignedunit_dict(self):
+        self.set_assignedunit_empty_if_null()
+        return self._assignedunit.get_dict()
 
 
 @dataclasses.dataclass
