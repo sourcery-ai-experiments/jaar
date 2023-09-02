@@ -16,6 +16,12 @@ class AssignedUnit:
             "_suffgroups": _suffgroups,
         }
 
+    def set_suffgroup(self, name: GroupName):
+        self._suffgroups[name] = -1
+
+    def del_suffgroup(self, name: GroupName):
+        self._suffgroups.pop(name)
+
 
 def assigned_unit_shop(_suffgroups: dict[GroupName:GroupName] = None) -> AssignedUnit:
     if _suffgroups is None:
@@ -45,12 +51,6 @@ class AssignedHeir:
             all_suff_members_x = self._get_all_suff_members(calendar_groups)
             if all_suff_members_x.get(calendar_owner) != None:
                 self._group_member = True
-
-    def set_suffgroup(self, name: GroupName):
-        self._suffgroups[name] = -1
-
-    def del_suffgroup(self, name: GroupName):
-        self._suffgroups.pop(name)
 
 
 def assigned_heir_shop(
