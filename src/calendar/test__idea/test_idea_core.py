@@ -172,7 +172,7 @@ def test_idea_core_set_requiredheirsCorrectlyTakesFromOutside():
     requiredheirs = {requiredheir.base: requiredheir}
     assert idea._requiredunits is None
     assert idea._requiredheirs is None
-    idea.set_requiredheirs(requiredheirs=requiredheirs)
+    idea.set_requiredheirs(requiredheirs=requiredheirs, calendar_idea_dict=None)
     assert idea._requiredunits == {}
     assert idea._requiredheirs == requiredheirs
     assert id(idea._requiredheirs) != id(requiredheirs)
@@ -190,7 +190,7 @@ def test_idea_core_set_requiredheirsCorrectlyTakesFromSelf():
 
     assert idea._requiredunits != None
     assert idea._requiredheirs is None
-    idea.set_requiredheirs(requiredheirs=None)
+    idea.set_requiredheirs(requiredheirs=None, calendar_idea_dict=None)
     assert idea._requiredheirs == requiredheirs
 
 
@@ -368,7 +368,7 @@ def test_idea_get_requiredheir_correctlyReturnsRequiredHeir():
     test5_text = "test5"
     required_heir_x = RequiredHeir(base=test5_text, sufffacts={})
     required_heirs_x = {required_heir_x.base: required_heir_x}
-    idea_x.set_requiredheirs(requiredheirs=required_heirs_x)
+    idea_x.set_requiredheirs(requiredheirs=required_heirs_x, calendar_idea_dict=None)
 
     # WHEN
     required_heir_z = idea_x.get_requiredheir(base=test5_text)
@@ -384,7 +384,7 @@ def test_idea_get_requiredheir_correctlyReturnsNone():
     test5_text = "test5"
     required_heir_x = RequiredHeir(base=test5_text, sufffacts={})
     required_heirs_x = {required_heir_x.base: required_heir_x}
-    idea_x.set_requiredheirs(requiredheirs=required_heirs_x)
+    idea_x.set_requiredheirs(requiredheirs=required_heirs_x, calendar_idea_dict=None)
 
     # WHEN
     test6_text = "test6"

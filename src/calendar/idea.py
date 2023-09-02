@@ -738,9 +738,11 @@ class IdeaCore:
 
     def set_requiredheirs(
         self,
-        requiredheirs: dict[Road:RequiredCore],
-        calendar_idea_dict: dict[Road:] = None,
+        calendar_idea_dict: dict[Road:],
+        requiredheirs: dict[Road:RequiredCore] = None,
     ):
+        if requiredheirs is None:
+            requiredheirs = self._requiredheirs
         coalesced_requireds = self._coalesce_with_requiredunits(requiredheirs)
 
         x_dict = {}

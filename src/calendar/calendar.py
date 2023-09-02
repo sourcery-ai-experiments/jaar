@@ -1619,10 +1619,7 @@ class CalendarUnit:
     def _set_root_attributes(self):
         self._idearoot._level = 0
         self._idearoot.set_road(parent_road="")
-        self._idearoot.set_requiredheirs(
-            requiredheirs=self._idearoot._requiredunits,
-            calendar_idea_dict=self._idea_dict,
-        )
+        self._idearoot.set_requiredheirs(calendar_idea_dict=self._idea_dict)
         self._idearoot.set_assignedheir(
             parent_assignheir=None, calendar_groups=self._groups
         )
@@ -1666,7 +1663,9 @@ class CalendarUnit:
         idea_kid.set_road(parent_road=parent_idea._walk, parent_desc=parent_idea._desc)
         idea_kid.set_acptfactunits_empty_if_null()
         idea_kid.set_acptfactheirs(acptfacts=parent_acptfacts)
-        idea_kid.set_requiredheirs(parent_requiredheirs, self._idea_dict)
+        idea_kid.set_requiredheirs(
+            calendar_idea_dict=self._idea_dict, requiredheirs=parent_requiredheirs
+        )
         idea_kid.set_assignedheir(
             parent_assignheir=parent_idea._assignedheir, calendar_groups=self._groups
         )
