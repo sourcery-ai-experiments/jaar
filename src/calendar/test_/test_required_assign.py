@@ -98,6 +98,35 @@ def test_assigned_heir_shop_ReturnsCorrectWithCorrectAttributes_v1():
     assert assigned_heir_x._group_member == _group_member_x
 
 
+def test_AssignedHeir_set_suffgroup_CorrectlySets_suffgroups_v1():
+    # GIVEN
+    assigned_heir_x = assigned_heir_shop(_suffgroups={})
+    assert len(assigned_heir_x._suffgroups) == 0
+
+    # WHEN
+    jim_text = "jim"
+    assigned_heir_x.set_suffgroup(name=jim_text)
+
+    # THEN
+    assert len(assigned_heir_x._suffgroups) == 1
+
+
+def test_AssignedHeir_del_suffgroup_CorrectlyDeletes_suffgroups_v1():
+    # GIVEN
+    assigned_heir_x = assigned_heir_shop(_suffgroups={})
+    jim_text = "jim"
+    sue_text = "sue"
+    assigned_heir_x.set_suffgroup(name=jim_text)
+    assigned_heir_x.set_suffgroup(name=sue_text)
+    assert len(assigned_heir_x._suffgroups) == 2
+
+    # WHEN
+    assigned_heir_x.del_suffgroup(name=sue_text)
+
+    # THEN
+    assert len(assigned_heir_x._suffgroups) == 1
+
+
 def test_AssignedHeir_get_all_suff_members_CorrectlyReturnsSingleDictWithAllMembers_v1():
     # GIVEN
     jim_text = "jim"

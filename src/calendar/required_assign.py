@@ -46,6 +46,12 @@ class AssignedHeir:
             if all_suff_members_x.get(calendar_owner) != None:
                 self._group_member = True
 
+    def set_suffgroup(self, name: GroupName):
+        self._suffgroups[name] = -1
+
+    def del_suffgroup(self, name: GroupName):
+        self._suffgroups.pop(name)
+
 
 def assigned_heir_shop(
     _suffgroups: dict[GroupName:GroupName] = None, _group_member: bool = None
