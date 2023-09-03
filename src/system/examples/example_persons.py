@@ -160,8 +160,8 @@ def get_person_2calendar(env_dir):
     return wx
 
 
-def get_calendar_2CleanNodesRandomWeights(_desc: str = None):
-    desc_text = _desc if _desc != None else "ernie"
+def get_calendar_2CleanNodesRandomWeights(_owner: str = None):
+    desc_text = _owner if _owner != None else "ernie"
     calendar_x = CalendarUnit(_owner=desc_text)
     casa_text = "casa"
     calendar_x.add_idea(idea_kid=IdeaKid(_desc=casa_text), walk="")
@@ -176,8 +176,8 @@ def get_calendar_2CleanNodesRandomWeights(_desc: str = None):
     return calendar_x
 
 
-def get_calendar_3CleanNodesRandomWeights(_desc: str = None):
-    desc_text = _desc if _desc != None else "ernie"
+def get_calendar_3CleanNodesRandomWeights(_owner: str = None):
+    desc_text = _owner if _owner != None else "ernie"
     calendar_x = CalendarUnit(_owner=desc_text)
     casa_text = "casa"
     calendar_x.add_idea(idea_kid=IdeaKid(_desc=casa_text), walk="")

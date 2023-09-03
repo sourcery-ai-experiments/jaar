@@ -267,7 +267,7 @@ class PersonUnit:
             ct = x_func_open_file(self._person_dir, "starting_digest_calendar.json")
             cx = calendarunit_get_from_json(lw_json=ct)
             empty_cx = self._get_empty_starting_digest_calendar()
-            cx.calendar_and_idearoot_desc_edit(new_desc=empty_cx._owner)
+            cx.calendar_and_idearoot_desc_edit(new_owner=empty_cx._owner)
             cx.set_calendar_metrics()
         except Exception:
             cx = self._get_empty_starting_digest_calendar()

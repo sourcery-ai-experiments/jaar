@@ -185,11 +185,13 @@ def _delete_and_set_ex5():
     # ethical code Jessica
     # ethical code Francine
     # ethical code Clay
-    calendar_1 = example_persons_get_calendar_2CleanNodesRandomWeights(_desc="ernie")
-    calendar_2 = example_persons_get_calendar_2CleanNodesRandomWeights(_desc="steve")
-    calendar_3 = example_persons_get_calendar_2CleanNodesRandomWeights(_desc="jessica")
-    calendar_4 = example_persons_get_calendar_2CleanNodesRandomWeights(_desc="francine")
-    calendar_5 = example_persons_get_calendar_2CleanNodesRandomWeights(_desc="clay")
+    calendar_1 = example_persons_get_calendar_2CleanNodesRandomWeights(_owner="ernie")
+    calendar_2 = example_persons_get_calendar_2CleanNodesRandomWeights(_owner="steve")
+    calendar_3 = example_persons_get_calendar_2CleanNodesRandomWeights(_owner="jessica")
+    calendar_4 = example_persons_get_calendar_2CleanNodesRandomWeights(
+        _owner="francine"
+    )
+    calendar_5 = example_persons_get_calendar_2CleanNodesRandomWeights(_owner="clay")
 
     ex.save_calendarunit_obj_to_calendars_dir(calendar_x=calendar_1)
     ex.save_calendarunit_obj_to_calendars_dir(calendar_x=calendar_2)

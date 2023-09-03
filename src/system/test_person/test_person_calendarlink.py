@@ -186,7 +186,7 @@ def test_personunit_delete_calendarlink_CorrectlyDoesNotDeletesIgnoreFile(
 #     create_calendar_file_for_person(px._person_calendars_dir, swim_text)
 #     px._set_src_calendarlinks(calendar_owner=swim_text, link_type="ignore")
 #     assert x_func_count_files(dir_path=px._ignore_calendars_dir) == 1
-#     cx1 = px.get_ignore_calendar_from_ignore_calendar_files(_desc=swim_text)
+#     cx1 = px.get_ignore_calendar_from_ignore_calendar_files(_owner=swim_text)
 #     assert len(cx1._members) == 0
 #     cx1.add_memberunit(name="tim")
 #     assert len(cx1._members) == 1
@@ -195,7 +195,7 @@ def test_personunit_delete_calendarlink_CorrectlyDoesNotDeletesIgnoreFile(
 #     px.set_ignore_calendar_file()
 
 #     # THEN
-#     cx2 = px.get_ignore_calendar_from_ignore_calendar_files(_desc=swim_text)
+#     cx2 = px.get_ignore_calendar_from_ignore_calendar_files(_owner=swim_text)
 #     assert len(cx2._members) == 0
 
 #     assert x_func_count_files(dir_path=px._ignore_calendars_dir) == 1
@@ -215,10 +215,10 @@ def test_personunit_refresh_calendarlinks_CorrectlyPullsAllPublicCalendars(
     px = e1.get_person_obj_from_system(name=person1_text)
 
     ernie_calendar = example_persons.get_calendar_2CleanNodesRandomWeights(
-        _desc="ernie"
+        _owner="ernie"
     )
     old_steve_calendar = example_persons.get_calendar_2CleanNodesRandomWeights(
-        _desc="steve"
+        _owner="steve"
     )
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ernie_calendar)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=old_steve_calendar)
@@ -226,7 +226,7 @@ def test_personunit_refresh_calendarlinks_CorrectlyPullsAllPublicCalendars(
     px.receive_src_calendarunit_obj(calendar_x=old_steve_calendar)
     assert len(px.get_dest_calendar_from_digest_calendar_files().get_idea_list()) == 4
     new_steve_calendar = example_persons.get_calendar_3CleanNodesRandomWeights(
-        _desc="steve"
+        _owner="steve"
     )
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=new_steve_calendar)
     print(f"{env_dir=} {px._public_calendars_dir=}")

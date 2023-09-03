@@ -1041,9 +1041,9 @@ class CalendarUnit:
             parent_temp_idea._kids.pop(temp_desc)
         self.set_calendar_metrics()
 
-    def calendar_and_idearoot_desc_edit(self, new_desc):
-        self._owner = new_desc
-        self.edit_idea_desc(old_road=self._idearoot._desc, new_desc=new_desc)
+    def calendar_and_idearoot_desc_edit(self, new_owner):
+        self._owner = new_owner
+        self.edit_idea_desc(old_road=self._idearoot._desc, new_desc=new_owner)
 
     def edit_idea_desc(
         self,

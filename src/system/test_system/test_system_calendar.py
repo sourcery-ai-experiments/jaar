@@ -101,7 +101,7 @@ def test_system_rename_calendar_in_calendars_dir_ChangesCalendarName(
     assert os_path.exists(new_sx5_path) == False
     assert os_path.exists(old_sx5_path)
     e5.rename_calendar_in_calendars_dir(
-        old_desc=old_calendar_owner, new_desc=new_calendar_owner
+        old_owner=old_calendar_owner, new_owner=new_calendar_owner
     )
 
     # THEN
@@ -123,13 +123,13 @@ def test_personunit_refresh_calendarlinks_CorrectlyPullsAllPublicCalendars(
     jessi_text = "jessi"
     steve_text = "steve"
     ernie_calendar = example_persons.get_calendar_2CleanNodesRandomWeights(
-        _desc=ernie_text
+        _owner=ernie_text
     )
     jessi_calendar = example_persons.get_calendar_2CleanNodesRandomWeights(
-        _desc=jessi_text
+        _owner=jessi_text
     )
     old_steve_cx = example_persons.get_calendar_2CleanNodesRandomWeights(
-        _desc=steve_text
+        _owner=steve_text
     )
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ernie_calendar)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=jessi_calendar)
@@ -156,7 +156,7 @@ def test_personunit_refresh_calendarlinks_CorrectlyPullsAllPublicCalendars(
     )
     # assert len(px_steve.get_dest_calendar_from_digest_calendar_files().get_idea_list()) == 4
     new_steve_calendar = example_persons.get_calendar_3CleanNodesRandomWeights(
-        _desc="steve"
+        _owner="steve"
     )
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=new_steve_calendar)
     # print(f"{env_dir=} {px._public_calendars_dir=}")

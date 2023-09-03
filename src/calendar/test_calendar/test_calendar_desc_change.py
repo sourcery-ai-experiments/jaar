@@ -274,7 +274,7 @@ def test_calendar_calendar_and_idearoot_desc_edit_CorrectlyChangesBoth():
 
     # WHEN
     new_desc2 = "bob"
-    calendar_x.calendar_and_idearoot_desc_edit(new_desc=new_desc2)
+    calendar_x.calendar_and_idearoot_desc_edit(new_owner=new_desc2)
 
     # THEN
     assert calendar_x._owner == new_desc2

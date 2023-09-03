@@ -380,17 +380,17 @@ class SystemUnit:
     def set_ignore_calendar_file(self, person_name: str, calendar_obj: CalendarUnit):
         person_x = self.get_person_obj_from_system(name=person_name)
         person_x.set_ignore_calendar_file(
-            calendarunit=calendar_obj, src_calendar_owner=calendar_obj._desc
+            calendarunit=calendar_obj, src_calendar_owner=calendar_obj._owner
         )
 
-    def rename_calendar_in_calendars_dir(self, old_desc: str, new_desc: str):
-        calendar_x = self.get_calendar_from_calendars_dir(owner=old_desc)
-        calendar_x.calendar_and_idearoot_desc_edit(new_desc=new_desc)
+    def rename_calendar_in_calendars_dir(self, old_owner: str, new_owner: str):
+        calendar_x = self.get_calendar_from_calendars_dir(owner=old_owner)
+        calendar_x.calendar_and_idearoot_desc_edit(new_owner=new_owner)
         self.save_calendarunit_obj_to_calendars_dir(calendar_x=calendar_x)
-        self.del_calendarunit_from_calendars_dir(calendar_x_desc=old_desc)
+        self.del_calendarunit_from_calendars_dir(calendar_x_owner=old_owner)
 
-    def del_calendarunit_from_calendars_dir(self, calendar_x_desc: str):
-        x_func_delete_dir(f"{self.get_calendars_dir()}/{calendar_x_desc}.json")
+    def del_calendarunit_from_calendars_dir(self, calendar_x_owner: str):
+        x_func_delete_dir(f"{self.get_calendars_dir()}/{calendar_x_owner}.json")
 
     def save_calendarunit_obj_to_calendars_dir(self, calendar_x: CalendarUnit):
         x_func_save_file(
@@ -476,7 +476,7 @@ class SystemUnit:
     def update_calendarlink(self, person_name: str, calendarlink: CalendarLink):
         person_x = self.get_person_obj_from_system(name=person_name)
         calendar_x = self.get_calendar_from_calendars_dir(
-            _desc=calendarlink.calendar_owner
+            _owner=calendarlink.calendar_owner
         )
         self._person_receive_src_calendarunit_obj(
             personunit=person_x,

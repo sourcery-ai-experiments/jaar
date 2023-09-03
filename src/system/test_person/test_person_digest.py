@@ -95,7 +95,7 @@ def test_person_get_starting_digest_calendar_WhenStartingCalendarFileExists(
 
     # THEN
     x_calendar = example_calendars_get_calendar_with_4_levels()
-    x_calendar.calendar_and_idearoot_desc_edit(new_desc=p_name)
+    x_calendar.calendar_and_idearoot_desc_edit(new_owner=p_name)
     x_calendar.set_calendar_metrics()
 
     assert starting_dest_calendar._idearoot._kids == x_calendar._idearoot._kids
