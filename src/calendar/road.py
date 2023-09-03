@@ -57,7 +57,7 @@ def get_terminus_node_from_road(road: Road):
 
 
 def get_walk_from_road(road: Road):  # road without terminus node
-    return ",".join(get_all_road_nodes_in_list(road=road)[:-1])
+    return get_road_from_nodes(get_all_road_nodes_in_list(road=road)[:-1])
 
 
 def get_road_without_root_node(road: Road):  # road without terminus node
@@ -65,7 +65,9 @@ def get_road_without_root_node(road: Road):  # road without terminus node
         raise InvalidRoadException(
             f"Cannot get_road_without_root_node of '{road}' because it has no root node."
         )
-    road_without_root_node = ",".join(get_all_road_nodes_in_list(road=road)[1:])
+    road_without_root_node = get_road_from_nodes(
+        get_all_road_nodes_in_list(road=road)[1:]
+    )
     return f",{road_without_root_node}"
 
 
@@ -86,7 +88,7 @@ def road_validate(road: Road):
     return road_x
 
 
-def get_ancestor_roads(road: Road):
+def get_ancestor_roads(road: Road) -> list:
     if road is None:
         return []
     nodes = road.split(",")
@@ -104,5 +106,9 @@ def get_ancestor_roads(road: Road):
     return x_roads
 
 
-def get_global_root_desc():
+def get_global_root_desc() -> str:
     return "A"
+
+
+def get_road_from_nodes(nodes: list) -> Road:
+    return ",".join(nodes)

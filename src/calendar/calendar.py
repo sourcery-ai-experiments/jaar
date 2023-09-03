@@ -59,6 +59,7 @@ from src.calendar.road import (
     find_replace_road_key_dict,
     get_ancestor_roads,
     get_global_root_desc as root_desc,
+    get_road_from_nodes,
 )
 from copy import deepcopy as copy_deepcopy
 from src.calendar.x_func import (
@@ -949,15 +950,15 @@ class CalendarUnit:
         if temp_road == self._owner and _road == []:
             idea_kid.set_walk(parent_road=Road(self._owner))
         else:
-            parent_road = [temp_road]
+            road_nodes = [temp_road]
             while _road != []:
                 temp_road = _road.pop(0)
                 temp_idea = self._get_or_create_leveln_idea(
                     parent_idea=temp_idea, idea_desc=temp_road
                 )
-                parent_road.append(temp_road)
+                road_nodes.append(temp_road)
 
-            idea_kid.set_walk(parent_road=",".join(parent_road))
+            idea_kid.set_walk(parent_road=get_road_from_nodes(road_nodes))
 
         temp_idea.add_kid(idea_kid)
 
@@ -1028,9 +1029,9 @@ class CalendarUnit:
 
         if x_road == []:
             if not del_children:
-                d_temp_idea = self.get_idea_kid(road=",".join(temps_d))
+                d_temp_idea = self.get_idea_kid(road=get_road_from_nodes(temps_d))
                 for kid in d_temp_idea._kids.values():
-                    self.add_idea(idea_kid=kid, walk=",".join(temps_d[:-1]))
+                    self.add_idea(idea_kid=kid, walk=get_road_from_nodes(temps_d[:-1]))
             self._idearoot._kids.pop(temp_desc)
         elif x_road != []:
             i_temp_idea = self._idearoot._kids[temp_desc]

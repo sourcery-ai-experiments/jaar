@@ -10,6 +10,7 @@ from src.calendar.road import (
     road_validate,
     get_ancestor_roads,
     get_global_root_desc,
+    get_road_from_nodes,
 )
 from src.calendar.required_idea import sufffactunit_shop
 from src.calendar.idea import IdeaCore
@@ -144,7 +145,7 @@ def test_road_get_walk_from_road_works():
     assert get_walk_from_road(road=roses_road) == bloomers_road
 
 
-def test_road_get_road_without_root_node_works():
+def test_road_get_road_without_root_node_WorksCorrectly():
     # GIVEN
     src_text = "src"
     src_road = Road("src")
@@ -172,7 +173,7 @@ def test_road_get_road_without_root_node_works():
     )
 
 
-def test_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
+def test_road_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
     # GIVEN
     old_seasons_road = "src,person,seasons"
     old_sufffact_x = sufffactunit_shop(need=old_seasons_road)
@@ -228,7 +229,7 @@ def test_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
 #     assert new_kids_x.get(old_roses_road) is None
 
 
-def test_get_ancestor_roads_CorrectlyReturnsAncestorRoads():
+def test_road_get_ancestor_roads_CorrectlyReturnsAncestorRoads():
     road = "src,nation-state,USA,Texas"
     x_roads = get_ancestor_roads(road=road)
     assert x_roads != None
@@ -241,5 +242,27 @@ def test_get_ancestor_roads_CorrectlyReturnsAncestorRoads():
     assert x_roads == texas_ancestor_roads
 
 
-def test_get_global_root_desc_ReturnsCorrectObj():
+def test_road_get_global_root_desc_ReturnsCorrectObj():
     assert get_global_root_desc() == "A"
+
+
+def test_road_get_road_from_nodes_WorksCorrectly():
+    # GIVEN
+    src_text = "src"
+    src_road = Road("src")
+    src_list = get_all_road_nodes_in_list(src_road)
+    person_text = "person"
+    person_road = Road(f"{src_text},{person_text}")
+    person_list = get_all_road_nodes_in_list(person_road)
+    bloomers_text = "bloomers"
+    bloomers_road = Road(f"{src_text},{person_text},{bloomers_text}")
+    bloomers_list = get_all_road_nodes_in_list(bloomers_road)
+    roses_text = "roses"
+    roses_road = Road(f"{src_text},{person_text},{bloomers_text},{roses_text}")
+    roses_list = get_all_road_nodes_in_list(roses_road)
+
+    # WHEN / THEN
+    assert src_road == get_road_from_nodes(src_list)
+    assert person_road == get_road_from_nodes(person_list)
+    assert bloomers_road == get_road_from_nodes(bloomers_list)
+    assert roses_road == get_road_from_nodes(roses_list)
