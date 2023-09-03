@@ -316,7 +316,7 @@ def test_system_set_calendar_attr_defined_by_system_CorrectlyPopulatesCalendar_G
     # assert
     # _memberlinks_set_by_system_road
     # assert group "swimming expert" has 1 member
-    # change groupunit "swimming expert" _memberlinks_set_by_system_road ==  "root_desc,sports,swimmer"
+    # change groupunit "swimming expert" _memberlinks_set_by_system_road ==  "A,sports,swimmer"
     # run set_bank_metrics
     # assert group "swimming expert" has 2 different member
 
@@ -358,7 +358,7 @@ def test_system_set_calendar_attr_defined_by_system_CorrectlyPopulatesCalendar_G
     assert len(e1_sal_calendar._groups.get(swim_group_text)._members) == 1
 
     # WHEN
-    # change groupunit "swimming expert" _memberlinks_set_by_system_road ==  "root_desc,sports,swimmer"
+    # change groupunit "swimming expert" _memberlinks_set_by_system_road ==  "A,sports,swimmer"
     sal_swim_road = f"{sal_sports_road},{swim_text}"
     swim_group_unit.set_attr(_memberlinks_set_by_system_road=sal_swim_road)
     sal_calendar.set_groupunit(groupunit=swim_group_unit)
