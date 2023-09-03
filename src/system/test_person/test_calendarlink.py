@@ -107,18 +107,18 @@ def test_calendarlink_get_dict_ReturnsDictObject():
 
 def test_get_calendar_from_calendars_dirlink_from_dict_ReturnsCalendarLinkObject():
     # GIVEN
-    calendar_owner_title = "calendar_owner"
-    link_type_title = "link_type"
-    weight_title = "weight"
+    calendar_owner_text = "calendar_owner"
+    link_type_text = "link_type"
+    weight_text = "weight"
 
     test1_desc_text = "test1"
     test1_link_text = "blind_trust"
     test1_weight_float = 12.4
 
     calendarlink_dict = {
-        calendar_owner_title: test1_desc_text,
-        link_type_title: test1_link_text,
-        weight_title: test1_weight_float,
+        calendar_owner_text: test1_desc_text,
+        link_type_text: test1_link_text,
+        weight_text: test1_weight_float,
     }
 
     # WHEN
