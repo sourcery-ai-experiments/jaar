@@ -193,12 +193,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
 
     def ignores_table_select(self):
-        ignore_calendar_desc = self.ignores_table.item(
+        ignore_calendar_owner = self.ignores_table.item(
             self.ignores_table.currentRow(), 0
         ).text()
         # self.ignore_calendar_x = self.system_x.get_calendar_from_calendars_dir(
         self.ignore_calendar_x = self.system_x.get_calendar_from_ignores_dir(
-            person_name=self.person_x.name, _desc=ignore_calendar_desc
+            person_name=self.person_x.name, _owner=ignore_calendar_owner
         )
         self.edit_calendar = self.ignore_calendar_x
 
@@ -281,13 +281,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_persons()
 
     def calendarlink_insert(self):
-        calendar_desc = self.calendars_table.item(
+        calendar_owner = self.calendars_table.item(
             self.calendars_table.currentRow(), 0
         ).text()
         if self.person_x != None:
             calendar_json = x_func_open_file(
                 dest_dir=self.person_x._public_calendars_dir,
-                file_name=f"{calendar_desc}.json",
+                file_name=f"{calendar_owner}.json",
             )
             self.person_x.receive_src_calendarunit_file(
                 calendar_json=calendar_json,
@@ -300,7 +300,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def calendarlink_update(self):
         person_name_x = self.person_x.name
         new_calendarlink = calendarlink_shop(
-            calendar_desc=self.calendarlink_name.text(),
+            calendar_owner=self.calendarlink_name.text(),
             link_type=self.link_type_combo.currentText(),
             weight=self.calendarlink_weight.text(),
         )
@@ -315,34 +315,34 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def calendarlink_delete(self):
         person_name_x = self.person_x.name
         self.system_x.del_calendarlink(
-            person_name=person_name_x, calendarunit_desc=self.calendarlink_name.text()
+            person_name=person_name_x, calendarunit_owner=self.calendarlink_name.text()
         )
         self.system_x.save_person_file(person_name=person_name_x)
         self.refresh_person()
 
-    def get_calendar_desc_list(self):
-        calendars_desc_list = []
+    def get_calendar_owner_list(self):
+        calendars_owner_list = []
         if self.system_x != None:
-            calendars_desc_list.extend(
-                [calendar._desc]
+            calendars_owner_list.extend(
+                [calendar._owner]
                 for calendar in self.system_x.get_calendars_dir_list_of_obj()
             )
-        return calendars_desc_list
+        return calendars_owner_list
 
-    def get_person_desc_list(self):
-        persons_desc_list = []
+    def get_person_name_list(self):
+        persons_owner_list = []
         if self.system_x != None:
-            persons_desc_list.extend(
+            persons_owner_list.extend(
                 [person_dir] for person_dir in self.system_x.get_person_dir_paths_list()
             )
-        return persons_desc_list
+        return persons_owner_list
 
     def get_calendarlink_list(self):
         calendarlinks_list = []
         if self.person_x != None:
             for cl_val in self.person_x._src_calendarlinks.values():
                 calendarlink_row = [
-                    cl_val.calendar_desc,
+                    cl_val.calendar_owner,
                     cl_val.link_type,
                     str(cl_val.weight),
                 ]
@@ -459,7 +459,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def _sub_refresh_persons_table(self):
         self.refresh_x(
-            self.persons_table, ["Persons Table"], self.get_person_desc_list()
+            self.persons_table, ["Persons Table"], self.get_person_name_list()
         )
 
     def _sub_refresh_calendarlinks_table(self):
@@ -598,7 +598,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def refresh_system(self):
         self.refresh_x(
-            self.calendars_table, ["Calendars Table"], self.get_calendar_desc_list()
+            self.calendars_table, ["Calendars Table"], self.get_calendar_owner_list()
         )
         self.refresh_persons()
 

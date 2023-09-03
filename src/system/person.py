@@ -315,6 +315,19 @@ class PersonUnit:
         return x_get_json(dict_x=x_dict)
 
 
+def personunit_shop(
+    name: str, env_dir: str, _auto_dest_calendar_to_public_calendar: bool = None
+) -> PersonUnit:
+    person_x = PersonUnit(name=name)
+    person_x._set_env_dir(env_dir=env_dir)
+    person_x._set_auto_dest_calendar_to_public_calendar(
+        _auto_dest_calendar_to_public_calendar
+    )
+    person_x._set_src_calendarlinks_empty_if_null()
+    person_x._set_emtpy_dest_calendar()
+    return person_x
+
+
 def get_from_json(person_json: str) -> PersonUnit:
     return get_from_dict(person_dict=json_loads(person_json))
 
@@ -344,16 +357,3 @@ def get_calendar_from_calendars_dirlinks_from_dict(
         )
         _src_calendarlinks[calendarlink_obj.calendar_desc] = calendarlink_obj
     return _src_calendarlinks
-
-
-def personunit_shop(
-    name: str, env_dir: str, _auto_dest_calendar_to_public_calendar: bool = None
-) -> PersonUnit:
-    person_x = PersonUnit(name=name)
-    person_x._set_env_dir(env_dir=env_dir)
-    person_x._set_auto_dest_calendar_to_public_calendar(
-        _auto_dest_calendar_to_public_calendar
-    )
-    person_x._set_src_calendarlinks_empty_if_null()
-    person_x._set_emtpy_dest_calendar()
-    return person_x

@@ -368,12 +368,12 @@ class SystemUnit:
         )
 
     def get_calendar_from_ignores_dir(
-        self, person_name: str, _desc: str
+        self, person_name: str, _owner: str
     ) -> CalendarUnit:
         return get_calendar_from_json(
             x_func_open_file(
                 dest_dir=self.get_ignores_dir(person_name=person_name),
-                file_name=f"{_desc}.json",
+                file_name=f"{_owner}.json",
             )
         )
 
@@ -435,9 +435,9 @@ class SystemUnit:
             )
 
     def _person_delete_src_calendarunit_obj(
-        self, personunit: PersonUnit, calendarunit_desc: str
+        self, personunit: PersonUnit, calendarunit_owner: str
     ):
-        personunit.delete_calendarlink(calendar_desc=calendarunit_desc)
+        personunit.delete_calendarlink(calendar_desc=calendarunit_owner)
 
     def create_calendarlink_to_saved_calendar(
         self,
@@ -485,12 +485,12 @@ class SystemUnit:
             weight=calendarlink.weight,
         )
 
-    def del_calendarlink(self, person_name: str, calendarunit_desc: str):
+    def del_calendarlink(self, person_name: str, calendarunit_owner: str):
         person_x = self.get_person_obj_from_system(name=person_name)
-        calendar_x = self.get_calendar_from_calendars_dir(_desc=calendarunit_desc)
+        calendar_x = self.get_calendar_from_calendars_dir(_desc=calendarunit_owner)
         self._person_delete_src_calendarunit_obj(
             personunit=person_x,
-            calendarunit_desc=calendarunit_desc,
+            calendarunit_owner=calendarunit_owner,
         )
 
     # Person dest_calendar

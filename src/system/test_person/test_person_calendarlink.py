@@ -57,9 +57,7 @@ def test_personunit_delete_calendarlink_CorrectlyDeletesObj(person_dir_setup_cle
     env_dir = get_temp_person_dir()
     px = personunit_shop(name=person1_text, env_dir=env_dir)
     swim_text = "swim"
-    create_calendar_file_for_person(
-        person_calendar_dir=px._person_calendars_dir, calendar_desc=swim_text
-    )
+    create_calendar_file_for_person(px._person_calendars_dir, calendar_desc=swim_text)
     px._set_src_calendarlinks(calendar_desc=swim_text)
     assert list(px._src_calendarlinks.keys()) == [swim_text]
 
