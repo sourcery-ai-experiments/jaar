@@ -74,8 +74,8 @@ def road_validate(road: Road):
         return road
     elif road is None:
         return ""
-    elif road[0] == ",":
-        return road[1:]
+    # elif road[0] == ",":
+    #     return road[1:]
     else:
         return road
 

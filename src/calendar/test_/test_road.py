@@ -35,7 +35,7 @@ def test_road_is_sub_road_in_src_road_correctlyReturnsBool():
 
 def test_road_road_validate_correctlyReturnsRoad():
     assert road_validate(Road("")) == ""
-    assert road_validate(Road(",src")) == "src"
+    assert road_validate(Road(",src")) == ",src"
     assert road_validate(Road("src,fun")) == "src,fun"
 
 
