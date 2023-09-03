@@ -252,7 +252,6 @@ def test_person_get_dest_calendar_from_digest_calendar_files_with1DigestedCalend
     # THEN
     assert str(type(sx_output_new)).find(".calendar.CalendarUnit'>")
 
-    input_calendar.make_meldable(px.get_starting_digest_calendar())
     assert sx_output_new._weight == 0
     assert sx_output_new._weight != input_calendar._weight
     assert sx_output_new._idearoot._walk == input_calendar._idearoot._walk
@@ -260,6 +259,9 @@ def test_person_get_dest_calendar_from_digest_calendar_files_with1DigestedCalend
         sx_output_new._idearoot._acptfactunits
         == input_calendar._idearoot._acptfactunits
     )
+    input_b_idea = input_calendar._idearoot._kids.get("B")
+    sx_output_new_b_idea = sx_output_new._idearoot._kids.get("B")
+    assert sx_output_new_b_idea._walk == input_b_idea._walk
     assert sx_output_new._idearoot._kids == input_calendar._idearoot._kids
     assert (
         sx_output_new._idearoot._kids_total_weight

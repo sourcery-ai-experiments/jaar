@@ -1055,8 +1055,7 @@ class CalendarUnit:
             raise InvalidCalendarException(f"Idea {old_road=} does not exist")
 
         walk = get_walk_from_road(road=old_road)
-        new_road = road_validate(Road(f"{walk},{new_desc}"))
-
+        new_road = Road(f"{new_desc}") if walk == "" else Road(f"{walk},{new_desc}")
         if old_road != new_road:
             # if root _desc is changed
             if walk == "":
@@ -1969,12 +1968,6 @@ class CalendarUnit:
         x_list.pop(0)
         return x_list
 
-    def make_meldable(self, starting_digest_calendar):
-        self.edit_idea_desc(
-            old_road=Road(f"{self._idearoot._desc}"),
-            new_desc=starting_digest_calendar._idearoot._desc,
-        )
-
     def meld(self, other_calendar):
         self.meld_groups(other_calendar=other_calendar)
         self.meld_members(other_calendar=other_calendar)
@@ -2126,7 +2119,6 @@ def get_meld_of_calendar_files(calendarunit: CalendarUnit, dir: str) -> Calendar
         bond_x = get_from_json(
             lw_json=x_func_open_file(dest_dir=dir, file_name=bond_file_x)
         )
-        bond_x.make_meldable(starting_digest_calendar=calendarunit)
         calendarunit.meld(other_calendar=bond_x)
 
     calendarunit.set_calendar_metrics()

@@ -44,10 +44,6 @@ def test_system_get_person_dest_calendar_from_digest_calendar_files_ReturnsCorre
     )
 
     # THEN
-    # print(f"Before meldable= {person_x_obj._src_calendarlinks} ")
-    input_calendar.make_meldable(person_x_obj.get_starting_digest_calendar())
-    # print(f"After meldable= {person_x_obj._src_calendarlinks} ")
-
     dest_calendar_d_idea = dest_calendar.get_idea_kid(road="A,C,D")
     print(f" {dest_calendar_d_idea._weight=} {len(input_calendar._idearoot._kids)=} ")
     assert dest_calendar != None
@@ -111,10 +107,6 @@ def test_system_get_person_dest_calendar_from_digest_calendar_files_ReturnsCorre
     )
 
     # THEN
-    # print(f"Before meldable= {person_x_obj._src_calendarlinks} ")
-    calendar1.make_meldable(person_x_obj.get_starting_digest_calendar())
-    # print(f"After meldable= {person_x_obj._src_calendarlinks} ")
-
     dest_calendar_d_idea = dest_calendar.get_idea_kid(road="A,C,D")
     print(f" {dest_calendar_d_idea._weight=} ")
     assert dest_calendar != None

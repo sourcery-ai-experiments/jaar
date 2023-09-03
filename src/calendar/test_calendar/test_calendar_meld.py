@@ -378,34 +378,6 @@ def test_calendar_meld_worksCorrectlyForLargeExample():
     # assert ax1._idearoot == ax2._idearoot
 
 
-def test_calendar_meld_make_meldable():
-    flount_text = "flount"
-    # GIVEN
-    src = "Yahoo"
-    ax1 = CalendarUnit(_owner=src)
-    ax1._idearoot._uid = 1
-
-    ax2 = calendar_v001()
-    assert ax2._idearoot._desc == flount_text
-    assert ax2._idearoot._desc == ax1._idearoot._desc
-    # with pytest_raises(Exception) as excinfo:
-    #     assert ax2.meld(other_calendar=ax1)
-    # assert (
-    #     str(excinfo.value)
-    #     == f"Meld fail idearoot _desc '{ax2._owner}' not the same as '{ax1._owner}'"
-    # )
-
-    # # WHEN
-    # assert ax2._weight == 1
-    # ax1.make_meldable(starting_digest_calendar=ax2)
-    # assert ax2._idearoot._desc == ax1._idearoot._desc
-
-    # THEN
-    assert ax2._weight == 1
-    ax2.meld(other_calendar=ax1)
-    assert ax2._weight == 1
-
-
 def test_get_on_meld_weight_actions_HasCorrectItems():
     assert len(get_on_meld_weight_actions()) == 5
     assert get_on_meld_weight_actions() == {
