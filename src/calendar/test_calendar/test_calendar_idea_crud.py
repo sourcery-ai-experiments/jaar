@@ -85,7 +85,7 @@ def test_calendar_add_idea_CanAddKidToKidIdea():
         calendar_x._idearoot._kids["work"]._kids["new_york"]._walk
         == f"{calendar_x._owner},work"
     )
-    calendar_x._idearoot._kids["work"]._kids["new_york"].set_road(parent_road="testing")
+    calendar_x._idearoot._kids["work"]._kids["new_york"].set_walk(parent_road="testing")
     assert calendar_x._idearoot._kids["work"]._kids["new_york"]._walk == "testing"
     assert calendar_x.get_agenda_items
 

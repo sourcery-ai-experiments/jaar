@@ -339,7 +339,7 @@ class IdeaCore:
     def set_level(self, parent_level):
         self._level = parent_level + 1
 
-    def set_road(self, parent_road, parent_desc=None):
+    def set_walk(self, parent_road, parent_desc=None):
         if parent_road in ("", None):
             self._walk = "" if parent_desc is None else parent_desc
         elif parent_desc in ("", None):

@@ -947,7 +947,7 @@ class CalendarUnit:
 
         # idearoot cannot be replaced
         if temp_road == self._owner and _road == []:
-            idea_kid.set_road(parent_road=Road(self._owner))
+            idea_kid.set_walk(parent_road=Road(self._owner))
         else:
             parent_road = [temp_road]
             while _road != []:
@@ -957,7 +957,7 @@ class CalendarUnit:
                 )
                 parent_road.append(temp_road)
 
-            idea_kid.set_road(parent_road=",".join(parent_road))
+            idea_kid.set_walk(parent_road=",".join(parent_road))
 
         temp_idea.add_kid(idea_kid)
 
@@ -1621,7 +1621,7 @@ class CalendarUnit:
 
     def _set_root_attributes(self):
         self._idearoot._level = 0
-        self._idearoot.set_road(parent_road="")
+        self._idearoot.set_walk(parent_road="")
         self._idearoot.set_requiredheirs(calendar_idea_dict=self._idea_dict)
         self._idearoot.set_assignedheir(
             parent_assignheir=None, calendar_groups=self._groups
@@ -1663,7 +1663,7 @@ class CalendarUnit:
             parent_requiredheirs = parent_idea._requiredheirs
 
         idea_kid.set_level(parent_level=parent_idea._level)
-        idea_kid.set_road(parent_road=parent_idea._walk, parent_desc=parent_idea._desc)
+        idea_kid.set_walk(parent_road=parent_idea._walk, parent_desc=parent_idea._desc)
         idea_kid.set_acptfactunits_empty_if_null()
         idea_kid.set_acptfactheirs(acptfacts=parent_acptfacts)
         idea_kid.set_requiredheirs(self._idea_dict, parent_requiredheirs)
