@@ -48,9 +48,11 @@ def test_idea_core_exists():
 
 
 def test_idea_core_get_key_road_works():
-    x_walk = "src,round_things"
+    flount_text = "flount"
+    round_text = "round_things"
+    round_walk = f"{flount_text},{round_text}"
     x_desc = "ball"
-    idea = IdeaCore(_desc=x_desc, _walk=x_walk)
+    idea = IdeaCore(_desc=x_desc, _walk=round_walk)
     assert idea.get_key_road() == f"{x_desc}"
 
 

@@ -22,9 +22,11 @@ def test_RequiredCore_attributesExist():
 
 
 def test_RequiredHeir_clear_works():
-    sufffact_x = sufffactunit_shop(need="src,work,check email")
+    flount_text = "flount"
+    email_road = f"{flount_text},work,check email"
+    sufffact_x = sufffactunit_shop(need=email_road)
     sufffacts = {sufffact_x.need: sufffact_x}
-    base = "src,work"
+    base = f"{flount_text},work"
     required = RequiredHeir(base=base, sufffacts=sufffacts)
     assert required._status is None
     required._status = True
@@ -299,9 +301,11 @@ def test_RequiredCore_find_replace_road_works():
 
 
 def test_RequiredCore_get_key_road():
-    sufffact_x = sufffactunit_shop(need=Road("src,work,check email"))
+    flount_text = "flount"
+    email_road = f"{flount_text},work,check email"
+    sufffact_x = sufffactunit_shop(need=Road(email_road))
     sufffacts_x = {sufffact_x.need: sufffact_x}
-    base = Road("src,work")
+    base = Road(f"{flount_text},work")
     required_x = RequiredHeir(base=base, sufffacts=sufffacts_x)
     assert required_x.get_key_road() == base
 

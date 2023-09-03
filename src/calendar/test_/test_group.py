@@ -19,9 +19,10 @@ def test_groupName_exists():
 
 
 def test_groupunit_exists():
+    flount_text = "flount"
     # GIVEN
     swimmers = "swimmers"
-    usa_road = "src,nation-states,USA"
+    usa_road = f"{flount_text},nation-states,USA"
 
     # WHEN
     swimmers_group = groupunit_shop(
@@ -60,13 +61,14 @@ def test_groupunit_set_name_WorksCorrectly():
 
 
 def test_groupunit_set_attr_WorksCorrectly():
+    flount_text = "flount"
     # GIVEN
     swim_text = "swimmers"
     swim_group = groupunit_shop(name=swim_text)
     assert swim_group._memberlinks_set_by_system_road is None
 
     # WHEN
-    water_road = "src,sports,water"
+    water_road = f"{flount_text},sports,water"
     swim_group.set_attr(_memberlinks_set_by_system_road=water_road)
 
     # THEN
@@ -74,9 +76,10 @@ def test_groupunit_set_attr_WorksCorrectly():
 
 
 def test_groupunit_shop_WhenSingleMemberCorrectlyRemoves_memberlinks_set_by_system_road():
+    flount_text = "flount"
     # GIVEN
     swimmers = "swimmers"
-    usa_road = "src,nation-states,USA"
+    usa_road = f"{flount_text},nation-states,USA"
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
