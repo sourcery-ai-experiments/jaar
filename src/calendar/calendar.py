@@ -942,13 +942,14 @@ class CalendarUnit:
         walk: Road,
         create_missing_ideas_groups: bool = None,
     ):
+        walk = road_validate(walk)
         temp_idea = self._idearoot
         walk_nodes = walk.split(",")
         temp_road = walk_nodes.pop(0)
 
         # idearoot cannot be replaced
-        if temp_road == self._owner and walk_nodes == []:
-            idea_kid.set_walk(parent_road=Road(self._owner))
+        if temp_road == root_desc() and walk_nodes == []:
+            idea_kid.set_walk(parent_road=Road(root_desc()))
         else:
             road_nodes = [temp_road]
             while walk_nodes != []:
