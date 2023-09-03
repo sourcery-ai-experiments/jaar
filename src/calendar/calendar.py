@@ -60,6 +60,7 @@ from src.calendar.road import (
     get_ancestor_roads,
     get_global_root_desc as root_desc,
     get_road_from_nodes,
+    get_all_road_nodes_in_list,
 )
 from copy import deepcopy as copy_deepcopy
 from src.calendar.x_func import (
@@ -676,7 +677,7 @@ class CalendarUnit:
 
         # figure out if parent is range
         parent_range = None
-        if len(parent_road.split(",")) == 1:
+        if len(get_all_road_nodes_in_list(parent_road)) == 1:
             parent_range = False
         else:
             parent_idea = self.get_idea_kid(road=parent_road)
@@ -944,7 +945,7 @@ class CalendarUnit:
     ):
         walk = road_validate(walk)
         temp_idea = self._idearoot
-        walk_nodes = walk.split(",")
+        walk_nodes = get_all_road_nodes_in_list(walk)
         temp_road = walk_nodes.pop(0)
 
         # idearoot cannot be replaced
@@ -1019,7 +1020,7 @@ class CalendarUnit:
         return return_idea
 
     def del_idea_kid(self, road: Road, del_children: bool = True):
-        x_road = road.split(",")
+        x_road = get_all_road_nodes_in_list(road)
         temp_desc = x_road.pop(0)
         temps_d = [temp_desc]
 
@@ -1515,7 +1516,7 @@ class CalendarUnit:
     def get_idea_kid(self, road: Road) -> IdeaKid:
         if road is None:
             raise InvalidCalendarException("get_idea_kid received road=None")
-        nodes = road.split(",")
+        nodes = get_all_road_nodes_in_list(road)
         src = nodes.pop(0)
         temp_idea = None
 
@@ -1562,7 +1563,7 @@ class CalendarUnit:
             road = ""
 
         group_everyone = None
-        if len(road.split(",")) <= 1:
+        if len(get_all_road_nodes_in_list(road)) <= 1:
             group_everyone = self._idearoot._groupheirs in [None, {}]
         else:
             ancestor_roads = get_ancestor_roads(road=road)

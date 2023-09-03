@@ -91,7 +91,7 @@ def road_validate(road: Road):
 def get_ancestor_roads(road: Road) -> list:
     if road is None:
         return []
-    nodes = road.split(",")
+    nodes = get_all_road_nodes_in_list(road)
     temp_road = nodes.pop(0)
 
     temp_roads = [temp_road]
