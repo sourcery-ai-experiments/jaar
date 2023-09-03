@@ -109,11 +109,12 @@ def test_calendar_get_tree_metrics_ReturnsANoneActionIdeaRoad():
 
 
 def test_calendar_get_tree_metrics_ReturnsAnActionIdeaRoad():
+    flount_text = "flount"
     # GIVEN
     cx = calendar_v001()
     tree_metrics_before = cx.get_tree_metrics()
     # WHEN/THEN
     assert (
         tree_metrics_before.an_promise_idea_road
-        == "TlME,ACME,ACME Employee Responsiblities,Know Abuse Prevention and Reporting guildlines,Take Fall 2021 training"
+        == f"{flount_text},ACME,ACME Employee Responsiblities,Know Abuse Prevention and Reporting guildlines,Take Fall 2021 training"
     )

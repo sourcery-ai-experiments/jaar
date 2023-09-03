@@ -91,6 +91,7 @@ def test_calendar_meld_GroupUnits():
 
 
 def test_calendar_idearoot_meld_IdeaRootAttrCorrectlyMelded():
+    flount_text = "flount"
     # GIVEN
     src = "casa"
     ax1 = CalendarUnit(_owner="spirit")
@@ -104,7 +105,7 @@ def test_calendar_idearoot_meld_IdeaRootAttrCorrectlyMelded():
         ax1.meld(ax2)
     assert (
         str(excinfo.value)
-        == "Meld fail idea=None,spirit _uid:1 with None,spirit _uid:4"
+        == f"Meld fail idea=None,{flount_text} _uid:1 with None,{flount_text} _uid:4"
     )
 
 
@@ -378,24 +379,26 @@ def test_calendar_meld_worksCorrectlyForLargeExample():
 
 
 def test_calendar_meld_make_meldable():
+    flount_text = "flount"
     # GIVEN
     src = "Yahoo"
     ax1 = CalendarUnit(_owner=src)
     ax1._idearoot._uid = 1
 
     ax2 = calendar_v001()
-    assert ax2._idearoot._desc != ax1._idearoot._desc
-    with pytest_raises(Exception) as excinfo:
-        assert ax2.meld(other_calendar=ax1)
-    assert (
-        str(excinfo.value)
-        == f"Meld fail idearoot _desc '{ax2._owner}' not the same as '{ax1._owner}'"
-    )
-
-    # WHEN
-    assert ax2._weight == 1
-    ax1.make_meldable(starting_digest_calendar=ax2)
+    assert ax2._idearoot._desc == flount_text
     assert ax2._idearoot._desc == ax1._idearoot._desc
+    # with pytest_raises(Exception) as excinfo:
+    #     assert ax2.meld(other_calendar=ax1)
+    # assert (
+    #     str(excinfo.value)
+    #     == f"Meld fail idearoot _desc '{ax2._owner}' not the same as '{ax1._owner}'"
+    # )
+
+    # # WHEN
+    # assert ax2._weight == 1
+    # ax1.make_meldable(starting_digest_calendar=ax2)
+    # assert ax2._idearoot._desc == ax1._idearoot._desc
 
     # THEN
     assert ax2._weight == 1

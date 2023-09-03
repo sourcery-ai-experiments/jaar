@@ -64,23 +64,24 @@ def test_agenda_returned_WhenNoRequiredsExist():
     assert lw_x._idearoot._kids[cat_text]._task == True
 
 
-def test_calendar_requiredheirs_AreCorrectlyInherited():
+def test_calendar_requiredheirs_AreCorrectlyInherited_v1():
+    flount_text = "flount"
     # GIVEN
     calendar_x = example_calendars_get_calendar_with_4_levels()
     work_text = "work"
-    work_road = f"{calendar_x._owner},{work_text}"
-    weekday_desc = "weekdays"
-    weekday_road = f"{calendar_x._owner},{weekday_desc}"
+    work_road = f"{flount_text},{work_text}"
+    week_desc = "weekdays"
+    week_road = f"{flount_text},{week_desc}"
     wed_text = "Wednesday"
-    wed_road = f"{weekday_road},{wed_text}"
+    wed_road = f"{week_road},{wed_text}"
 
     wed_sufffact = sufffactunit_shop(need=wed_road)
     wed_sufffact._status = False
     wed_sufffact._task = False
     sufffacts = {wed_sufffact.need: wed_sufffact}
-    work_wk_build_requiredunit = RequiredUnit(base=weekday_road, sufffacts=sufffacts)
+    work_wk_build_requiredunit = RequiredUnit(base=week_road, sufffacts=sufffacts)
     work_wk_built_requiredheir = RequiredHeir(
-        base=weekday_road,
+        base=week_road,
         sufffacts=sufffacts,
         _status=False,
         _curr_idea_active_status=True,
@@ -90,10 +91,10 @@ def test_calendar_requiredheirs_AreCorrectlyInherited():
     work_idea = calendar_x._idearoot._kids[work_text]
     assert work_idea._requiredunits != None
     # print(work_idea._requiredunits)
-    assert work_idea._requiredunits[weekday_road] != None
-    assert work_idea._requiredunits[weekday_road] == work_wk_build_requiredunit
+    assert work_idea._requiredunits[week_road] != None
+    assert work_idea._requiredunits[week_road] == work_wk_build_requiredunit
     try:
-        work_idea._requiredheirs[weekday_road]
+        work_idea._requiredheirs[week_road]
     except TypeError as e:
         assert str(e) == "'NoneType' object is not subscriptable"
 
@@ -101,10 +102,10 @@ def test_calendar_requiredheirs_AreCorrectlyInherited():
 
     from_list_get_active_status(road=work_road, idea_list=idea_list)
 
-    work_wk_cal_requiredheir = work_idea._requiredheirs[weekday_road]
+    work_wk_cal_requiredheir = work_idea._requiredheirs[week_road]
     print(f"{len(work_wk_cal_requiredheir.sufffacts)=}")
     assert len(work_wk_cal_requiredheir.sufffacts) == 1
-    sufffact_wed = work_wk_cal_requiredheir.sufffacts.get("src,weekdays,Wednesday")
+    sufffact_wed = work_wk_cal_requiredheir.sufffacts.get(wed_road)
     assert (
         sufffact_wed._task
         == work_wk_built_requiredheir.sufffacts[sufffact_wed.need]._task
@@ -263,12 +264,13 @@ def test_calendar_requiredheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
 
 
 def test_calendar_requiredunits_set_UnCoupledMethod():
+    flount_text = "flount"
     # Given
     calendar_x = example_calendars_get_calendar_with_4_levels()
     work_text = "work"
-    work_road = f"{calendar_x._owner},{work_text}"
+    work_road = f"{flount_text},{work_text}"
     week_text = "weekdays"
-    week_road = f"{calendar_x._owner},{week_text}"
+    week_road = f"{flount_text},{week_text}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
 
@@ -337,17 +339,18 @@ def test_calendar_requiredunits_set_UnCoupledMethod():
 
 
 def test_calendar_requiredunits_set_sufffactIdeaWithDenomSetsSuffFactDivision():
+    flount_text = "flount"
     # Given
     calendar_x = example_calendars_get_calendar_with_4_levels()
     work_text = "work"
-    work_road = f"{calendar_x._owner},{work_text}"
+    work_road = f"{flount_text},{work_text}"
     time_text = "time"
-    time_road = f"{calendar_x._owner},{time_text}"
+    time_road = f"{flount_text},{time_text}"
     week_text = "week"
-    week_road = f"{calendar_x._owner},{time_text},{week_text}"
+    week_road = f"{flount_text},{time_text},{week_text}"
     calendar_x.add_idea(
         idea_kid=IdeaKid(_desc=time_text, _begin=100, _close=2000),
-        walk=calendar_x._owner,
+        walk=flount_text,
     )
     calendar_x.add_idea(idea_kid=IdeaKid(_desc=week_text, _denom=7), walk=time_road)
 
@@ -370,16 +373,17 @@ def test_calendar_requiredunits_set_sufffactIdeaWithDenomSetsSuffFactDivision():
 
 
 def test_calendar_requiredunits_set_sufffactIdeaWithBeginCloseSetsSuffFactOpenNigh():
+    flount_text = "flount"
     # Given
     calendar_x = example_calendars_get_calendar_with_4_levels()
     work = "work"
-    work_road = f"{calendar_x._owner},{work}"
+    work_road = f"{flount_text},{work}"
     time = "time"
-    time_road = f"{calendar_x._owner},{time}"
+    time_road = f"{flount_text},{time}"
     rus_war = "rus_war"
-    rus_war_road = f"{calendar_x._owner},{time},{rus_war}"
+    rus_war_road = f"{flount_text},{time},{rus_war}"
     calendar_x.add_idea(
-        idea_kid=IdeaKid(_desc=time, _begin=100, _close=2000), walk=calendar_x._owner
+        idea_kid=IdeaKid(_desc=time, _begin=100, _close=2000), walk=flount_text
     )
     calendar_x.add_idea(
         idea_kid=IdeaKid(_desc=rus_war, _begin=22, _close=34), walk=time_road
@@ -404,16 +408,17 @@ def test_calendar_requiredunits_set_sufffactIdeaWithBeginCloseSetsSuffFactOpenNi
 
 
 def test_calendar_requiredunits_del_required_sufffact_UncoupledMethod1():
+    flount_text = "flount"
     # Given
     calendar_x = example_calendars_get_calendar_with_4_levels()
-    work_road = f"{calendar_x._owner},work"
-    weekday_road = f"{calendar_x._owner},weekdays"
-    wed_road = f"{calendar_x._owner},weekdays,Wednesday"
+    work_road = f"{flount_text},work"
+    weekday_road = f"{flount_text},weekdays"
+    wed_road = f"{flount_text},weekdays,Wednesday"
 
     calendar_x.edit_idea_attr(
         road=work_road, required_base=weekday_road, required_sufffact=wed_road
     )
-    thu_road = f"{calendar_x._owner},weekdays,Thursday"
+    thu_road = f"{flount_text},weekdays,Thursday"
     calendar_x.edit_idea_attr(
         road=work_road,
         required_base=weekday_road,
@@ -447,10 +452,11 @@ def test_calendar_requiredunits_del_required_sufffact_UncoupledMethod1():
 
 
 def test_calendar_requiredunits_del_required_sufffact_UncoupledMethod2():
+    flount_text = "flount"
     # Given
     calendar_x = example_calendars_get_calendar_with_4_levels()
-    work_road = f"{calendar_x._owner},work"
-    weekdays_road = f"{calendar_x._owner},weekdays"
+    work_road = f"{flount_text},work"
+    weekdays_road = f"{flount_text},weekdays"
     work_idea1 = calendar_x.get_idea_kid(road=work_road)
     work_idea1.set_requiredunits_empty_if_null()
     assert len(work_idea1._requiredunits) == 0
@@ -462,17 +468,17 @@ def test_calendar_requiredunits_del_required_sufffact_UncoupledMethod2():
 
 
 def test_calendar_edit_idea_attr_calendarIsAbleToEdit_suff_idea_active_status_AnyIdeaIfInvaildThrowsError():
+    flount_text = "flount"
     # _suff_idea_active_status: str = None
     # must be 1 of 3: bool: True, bool: False, str="Set to Ignore"
     # GIVEN
     calendar_x = example_calendars_get_calendar_with_4_levels()
-    src_road = calendar_x._owner
     work_text = "work"
-    work_road = f"{src_road},{work_text}"
+    work_road = f"{flount_text},{work_text}"
 
     commute_text = "commute to work"
-    commute_road = f"{src_road},{commute_text}"
-    calendar_x.add_idea(idea_kid=IdeaKid(_desc=commute_text), walk=src_road)
+    commute_road = f"{flount_text},{commute_text}"
+    calendar_x.add_idea(idea_kid=IdeaKid(_desc=commute_text), walk=flount_text)
     calendar_x.get_idea_list()  # set tree metrics
     commute_idea = calendar_x.get_idea_kid(road=commute_road)
     assert len(commute_idea._requiredunits) == 0
@@ -521,16 +527,16 @@ def test_calendar_edit_idea_attr_calendarIsAbleToEdit_suff_idea_active_status_An
 
 
 def test_calendar_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus():
+    flount_text = "flount"
     # GIVEN an Calendar with 5 ideas, 1 AcptFact:
     # 1. idea(...,weekdays) exists
     # 2. idea(...,weekdays,wednesday) exists
     # 3. idea(...,weekdays,thursday) exists
     calendar_x = example_calendars_get_calendar_with_4_levels()
-    src_road = calendar_x._owner
     work_text = "work"
-    work_road = f"{src_road},{work_text}"
+    work_road = f"{flount_text},{work_text}"
     weekdays_text = "weekdays"
-    weekdays_road = f"{src_road},{weekdays_text}"
+    weekdays_road = f"{flount_text},{weekdays_text}"
     wed_text = "Wednesday"
     wed_road = f"{weekdays_road},{wed_text}"
     thu_text = "Thursday"
@@ -552,8 +558,8 @@ def test_calendar_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus
     # 5.1. RequiredUnit: idea(base=...,work) has .suff_idea_active_status = True
     # 5.2. idea(...,work).active_status = False
     commute_text = "commute to work"
-    commute_road = f"{src_road},{commute_text}"
-    calendar_x.add_idea(idea_kid=IdeaKid(_desc=commute_text), walk=src_road)
+    commute_road = f"{flount_text},{commute_text}"
+    calendar_x.add_idea(idea_kid=IdeaKid(_desc=commute_text), walk=flount_text)
     calendar_x.edit_idea_attr(
         road=commute_road,
         required_base=work_road,

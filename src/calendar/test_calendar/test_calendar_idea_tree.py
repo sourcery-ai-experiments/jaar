@@ -76,28 +76,27 @@ def test_set_calendar_metrics_CorrectlyClearsDescendantAttributes():
 
 
 def test_get_idea_kid_CorrectlyReturnsIdea():
+    flount_text = "flount"
     lw_x = example_calendars_get_calendar_with_4_levels()
 
-    brazil = "src,nation-state,Brazil"
+    brazil = f"{flount_text},nation-state,Brazil"
     idea_kid = lw_x.get_idea_kid(road=brazil)
     assert idea_kid != None
     assert idea_kid._desc == "Brazil"
 
-    weekdays = "src,weekdays"
+    weekdays = f"{flount_text},weekdays"
     idea_kid = lw_x.get_idea_kid(road=weekdays)
     assert idea_kid != None
     assert idea_kid._desc == "weekdays"
 
-    # src = "src"
     # with pytest.raises(Exception) as excinfo:
-    #     lw_x.get_idea_kid(road=src)
-    # assert str(excinfo.value) == f"Cannot return root '{src}'"
-    src = "src"
-    idea_root = lw_x.get_idea_kid(road=src)
+    #     lw_x.get_idea_kid(road=flount_text)
+    # assert str(excinfo.value) == f"Cannot return root '{flount_text}'"
+    idea_root = lw_x.get_idea_kid(road=flount_text)
     assert idea_root != None
-    assert idea_root._desc == src
+    assert idea_root._desc == flount_text
 
-    wrong_road = "src,bobdylan"
+    wrong_road = f"{flount_text},bobdylan"
     with pytest_raises(Exception) as excinfo:
         lw_x.get_idea_kid(road=wrong_road)
     assert (
@@ -107,7 +106,8 @@ def test_get_idea_kid_CorrectlyReturnsIdea():
 
 
 def test_set_calendar_metrics_RootOnlyCorrectlySetsDescendantAttributes():
-    lw_x = CalendarUnit(_owner="src")
+    flount_text = "flount"
+    lw_x = CalendarUnit(_owner=flount_text)
     assert lw_x._idearoot._descendant_promise_count is None
     assert lw_x._idearoot._all_member_credit is None
     assert lw_x._idearoot._all_member_debt is None
@@ -366,25 +366,26 @@ def test_calendar4member_hasCorrectLevel1StructureNoGrouplessBranches():
 
 
 def test_calendar_get_orderd_node_list_WorksCorrectly():
+    flount_text = "flount"
     lw_x = example_calendars_get_calendar_with_4_levels()
     assert lw_x.get_idea_tree_ordered_road_list()
     ordered_node_list = lw_x.get_idea_tree_ordered_road_list()
     # for node in ordered_node_list:
     #     print(f"{node}")
     assert len(ordered_node_list) == 17
-    assert lw_x.get_idea_tree_ordered_road_list()[0] == "src"
-    assert lw_x.get_idea_tree_ordered_road_list()[8] == "src,weekdays"
+    assert lw_x.get_idea_tree_ordered_road_list()[0] == f"{flount_text}"
+    assert lw_x.get_idea_tree_ordered_road_list()[8] == f"{flount_text},weekdays"
 
     lw_y = CalendarUnit(_owner="MyCalendar")
-    assert lw_y.get_idea_tree_ordered_road_list()[0] == "MyCalendar"
+    assert lw_y.get_idea_tree_ordered_road_list()[0] == flount_text
 
 
 def test_calendar_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoads():
-    src = "src"
-    calendar_x = CalendarUnit(_owner=src)
+    flount_text = "flount"
+    calendar_x = CalendarUnit(_owner=flount_text)
     time = "timeline"
-    calendar_x.add_idea(IdeaKid(_desc=time, _begin=0, _close=700), walk=src)
-    t_road = f"{src},{time}"
+    calendar_x.add_idea(IdeaKid(_desc=time, _begin=0, _close=700), walk=flount_text)
+    t_road = f"{flount_text},{time}"
     week = "weeks"
     calendar_x.add_idea(IdeaKid(_desc=week, _denom=7), walk=t_road)
 
@@ -395,8 +396,9 @@ def test_calendar_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoads():
 
 
 def test_calendar_get_heir_road_list_returnsCorrectList():
+    flount_text = "flount"
     lw_x = example_calendars_get_calendar_with_4_levels()
-    weekdays = "src,weekdays"
+    weekdays = f"{flount_text},weekdays"
     assert lw_x.get_heir_road_list(src_road=weekdays)
     heir_node_road_list = lw_x.get_heir_road_list(src_road=weekdays)
     # for node in heir_node_road_list:

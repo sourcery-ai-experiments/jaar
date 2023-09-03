@@ -94,7 +94,8 @@ class CalendarUnit:
         self._weight = _weight
         if _owner is None:
             _owner = ""
-        self._idearoot = IdeaRoot(_desc=_owner, _uid=1)
+        flount_text = "flount"
+        self._idearoot = IdeaRoot(_desc=flount_text, _uid=1)
         self._owner = _owner
 
     def set_banking_attr_memberunits(self, river_tmembers: dict):
@@ -1041,9 +1042,8 @@ class CalendarUnit:
             parent_temp_idea._kids.pop(temp_desc)
         self.set_calendar_metrics()
 
-    def calendar_and_idearoot_desc_edit(self, new_owner):
+    def calendar_owner_edit(self, new_owner):
         self._owner = new_owner
-        self.edit_idea_desc(old_road=self._idearoot._desc, new_desc=new_owner)
 
     def edit_idea_desc(
         self,
@@ -1060,7 +1060,7 @@ class CalendarUnit:
         if old_road != new_road:
             # if root _desc is changed
             if walk == "":
-                self._idearoot._desc = new_desc
+                self._idearoot.set_idea_desc(new_desc)
                 self._idearoot._walk = walk
             else:
                 self._non_root_idea_desc_edit(old_road, new_desc, walk)
@@ -1074,7 +1074,7 @@ class CalendarUnit:
 
     def _non_root_idea_desc_edit(self, old_road, new_desc, walk):
         idea_z = self.get_idea_kid(road=old_road)
-        idea_z._desc = new_desc
+        idea_z.set_idea_desc(new_desc)
         idea_z._walk = walk
         idea_parent = self.get_idea_kid(road=get_walk_from_road(old_road))
         idea_parent._kids.pop(get_terminus_node_from_road(old_road))
@@ -2050,7 +2050,8 @@ def get_from_dict(lw_dict: dict) -> CalendarUnit:
     c_x._idearoot._grouplinks = grouplinks_get_from_dict(x_dict=lw_dict["_grouplinks"])
     c_x._members = memberunits_get_from_dict(x_dict=lw_dict["_members"])
     c_x._owner = lw_dict["_owner"]
-    c_x._idearoot._desc = lw_dict["_owner"]
+    flount_text = "flount"
+    c_x._idearoot.set_idea_desc(flount_text)
     c_x._weight = lw_dict["_weight"]
     c_x._max_tree_traverse = lw_dict.get("_max_tree_traverse")
     if lw_dict.get("_max_tree_traverse") is None:

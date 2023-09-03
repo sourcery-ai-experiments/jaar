@@ -26,7 +26,12 @@ def test_calendar_get_missing_acptfact_bases_ReturnsAllBasesNotCoveredByAcptFact
     print(f"{len(missing_bases)=}")
     assert len(missing_bases) == 11
 
-    lw_x.set_acptfact(base="TlME,day_minute", pick="TlME,day_minute", open=0, nigh=1439)
+    lw_x.set_acptfact(
+        base="{flount_text},day_minute",
+        pick="{flount_text},day_minute",
+        open=0,
+        nigh=1439,
+    )
     missing_bases = lw_x.get_missing_acptfact_bases()
 
     assert len(missing_bases) == 11

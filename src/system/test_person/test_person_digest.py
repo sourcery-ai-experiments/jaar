@@ -95,7 +95,7 @@ def test_person_get_starting_digest_calendar_WhenStartingCalendarFileExists(
 
     # THEN
     x_calendar = example_calendars_get_calendar_with_4_levels()
-    x_calendar.calendar_and_idearoot_desc_edit(new_owner=p_name)
+    x_calendar.calendar_owner_edit(new_owner=p_name)
     x_calendar.set_calendar_metrics()
 
     assert starting_dest_calendar._idearoot._kids == x_calendar._idearoot._kids
@@ -194,6 +194,7 @@ def test_presonunit_set_src_calendarlinks_CorrectlySets_blind_trust_DigestCalend
 def test_person_get_dest_calendar_from_digest_calendar_files_withEmptyDigestDict(
     person_dir_setup_cleanup,
 ):
+    flount_text = "flount"
     # GIVEN
     person_name_x = "boots3"
     px = personunit_shop(name=person_name_x, env_dir=get_temp_person_dir())
@@ -201,7 +202,7 @@ def test_person_get_dest_calendar_from_digest_calendar_files_withEmptyDigestDict
     sx_output_before = px.get_dest_calendar_from_digest_calendar_files()
     assert str(type(sx_output_before)).find(".calendar.CalendarUnit'>")
     assert sx_output_before._owner == person_name_x
-    assert sx_output_before._idearoot._desc == person_name_x
+    assert sx_output_before._idearoot._desc == flount_text
     # px.set_digested_calendar(calendar_x=CalendarUnit(_owner="digested1"))
 
     # WHEN
@@ -232,6 +233,7 @@ def test_person_get_dest_calendar_from_digest_calendar_files_withEmptyDigestDict
 def test_person_get_dest_calendar_from_digest_calendar_files_with1DigestedCalendar(
     person_dir_setup_cleanup,
 ):
+    flount_text = "flount"
     # GIVEN
     person_name_x = "boots3"
     env_dir = get_temp_person_dir()
@@ -240,7 +242,7 @@ def test_person_get_dest_calendar_from_digest_calendar_files_with1DigestedCalend
     sx_output_old = px.get_dest_calendar_from_digest_calendar_files()
     assert str(type(sx_output_old)).find(".calendar.CalendarUnit'>")
     assert sx_output_old._owner == person_name_x
-    assert sx_output_old._idearoot._desc == person_name_x
+    assert sx_output_old._idearoot._desc == flount_text
     input_calendar = example_persons.get_2node_calendar()
     px.receive_src_calendarunit_obj(calendar_x=input_calendar, link_type="blind_trust")
 

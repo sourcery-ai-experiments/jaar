@@ -28,10 +28,13 @@ from pytest import raises as pytest_raises
 
 
 def test_calendar_get_dict_ReturnsDictObject():
+    flount_text = "flount"
     # GIVEN
     x_calendar = example_calendars_calendar_v001()
-    x_calendar.set_acptfact(base="TlME,day_hour", pick="TlME,day_hour", open=0, nigh=23)
-    time_minute = "TlME,day_minute"
+    x_calendar.set_acptfact(
+        base=f"{flount_text},day_hour", pick=f"{flount_text},day_hour", open=0, nigh=23
+    )
+    time_minute = f"{flount_text},day_minute"
     x_calendar.set_acptfact(base=time_minute, pick=time_minute, open=0, nigh=1440)
 
     # WHEN
@@ -50,7 +53,7 @@ def test_calendar_get_dict_ReturnsDictObject():
     _kids = "_kids"
     _special_road = "_special_road"
     _numeric_road = "_numeric_road"
-    assert x_dict["_owner"] == x_idearoot._desc
+    assert x_idearoot._desc == flount_text
     assert x_dict["_weight"] == x_idearoot._weight
     assert x_dict["_addin"] == x_idearoot._addin
     assert x_dict["_numor"] == x_idearoot._numor
@@ -62,17 +65,17 @@ def test_calendar_get_dict_ReturnsDictObject():
 
     # checking an ideakid._special_road attribute
     month_week_text = "month_week"
-    month_week_road = f"{x_calendar._owner},{month_week_text}"
+    month_week_road = f"{flount_text},{month_week_text}"
     month_week_idea_x = x_calendar.get_idea_kid(road=month_week_road)
     print("checking TlME,month_week...special_road equal to...")
     month_week_special_dict = x_dict[_kids][month_week_text][_special_road]
     assert month_week_special_dict != None
-    assert month_week_special_dict == "TlME,ced_week"
+    assert month_week_special_dict == f"{flount_text},ced_week"
     assert month_week_special_dict == month_week_idea_x._special_road
 
     # checking an ideakid._numeric_road attribute
     num1_text = "numeric_road_test"
-    num1_road = f"TlME,{num1_text}"
+    num1_road = f"{flount_text},{num1_text}"
     num1_idea_x = x_calendar.get_idea_kid(road=num1_road)
     print(f"checking {num1_road}...numeric_road equal to...")
     num1_dict_numeric_road = x_dict[_kids][num1_text][_numeric_road]
@@ -82,13 +85,13 @@ def test_calendar_get_dict_ReturnsDictObject():
 
 
 def test_calendar_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
+    flount_text = "flount"
     # GIVEN
-    src_text = "src"
     run_text = "runners"
-    x_calendar = CalendarUnit(_owner=src_text)
+    x_calendar = CalendarUnit(_owner=flount_text)
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(name=run_text)
-    x_calendar.edit_idea_attr(assignedunit=assigned_unit_x, road=src_text)
+    x_calendar.edit_idea_attr(assignedunit=assigned_unit_x, road=flount_text)
 
     # WHEN
     x_dict = x_calendar.get_dict()
@@ -99,14 +102,14 @@ def test_calendar_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
 
 
 def test_calendar_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
+    flount_text = "flount"
     # GIVEN
-    src_text = "src"
     run_text = "run"
     morn_text = "morning"
-    morn_road = f"{src_text},{morn_text}"
-    x_calendar = CalendarUnit(_owner=src_text)
+    morn_road = f"{flount_text},{morn_text}"
+    x_calendar = CalendarUnit(_owner=flount_text)
     x_calendar.set_groupunit(groupunit=groupunit_shop(run_text))
-    x_calendar.add_idea(idea_kid=IdeaKid(_desc=morn_text), walk=src_text)
+    x_calendar.add_idea(idea_kid=IdeaKid(_desc=morn_text), walk=flount_text)
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(name=run_text)
     x_calendar.edit_idea_attr(assignedunit=assigned_unit_x, road=morn_road)
@@ -157,14 +160,14 @@ def test_export_to_JSON_simple_example_works():
 
 
 def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
+    flount_text = "flount"
     # GIVEN
     x_calendar = example_calendars_calendar_v001()
-    src_text = x_calendar._owner
     day_hour_text = "day_hour"
-    day_hour_road = f"{src_text},{day_hour_text}"
+    day_hour_road = f"{flount_text},{day_hour_text}"
     x_calendar.set_acptfact(base=day_hour_road, pick=day_hour_road, open=0, nigh=23)
     day_min_text = "day_minute"
-    day_min_road = f"{src_text},{day_min_text}"
+    day_min_road = f"{flount_text},{day_min_text}"
     x_calendar.set_acptfact(base=day_min_road, pick=day_min_road, open=0, nigh=59)
     acptfactunit_x = acptfactunit_shop(day_min_road, day_min_road, 5, 59)
     x_calendar.edit_idea_attr(road=acptfactunit_x.base, acptfactunit=acptfactunit_x)
@@ -200,8 +203,8 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     _requiredunits = "_requiredunits"
     cont_text = "Contractor"
     ulti_text = "Ultimate Frisbee"
-    cont_road = f"{src_text},{cont_text}"
-    ulti_road = f"{src_text},{ulti_text}"
+    cont_road = f"{flount_text},{cont_text}"
+    ulti_road = f"{flount_text},{ulti_text}"
     cont_idea = x_calendar.get_idea_kid(road=cont_road)
     ulti_idea = x_calendar.get_idea_kid(road=ulti_road)
     cont_requiredunits_dict = x_dict[_kids][cont_text][_requiredunits]
@@ -228,10 +231,10 @@ def test_save_file_CorrectlySavesCalendarJSON(env_dir_setup_cleanup):
 
 
 def test_calendar_get_json_CorrectlyWorksForSimpleExample():
+    flount_text = "flount"
     # GIVEN
     calendar_y = example_calendars_get_calendar_x1_3levels_1required_1acptfacts()
     calendar_y.set_max_tree_traverse(23)
-    src_text = calendar_y._owner
 
     shave_text = "shave"
     shave_road = f"{calendar_y._owner},{shave_text}"
@@ -249,14 +252,14 @@ def test_calendar_get_json_CorrectlyWorksForSimpleExample():
 
     run_assigned_unit = assigned_unit_shop()
     run_assigned_unit.set_suffgroup(name=run_text)
-    calendar_y.edit_idea_attr(road=src_text, assignedunit=run_assigned_unit)
+    calendar_y.edit_idea_attr(road=flount_text, assignedunit=run_assigned_unit)
     tim_assigned_unit = assigned_unit_shop()
     tim_assigned_unit.set_suffgroup(name=tim_text)
     calendar_y.edit_idea_attr(road=shave_road, assignedunit=tim_assigned_unit)
     calendar_y.edit_idea_attr(road=shave_road, grouplink=grouplink_shop(name=tim_text))
     calendar_y.edit_idea_attr(road=shave_road, grouplink=grouplink_shop(name=sue_text))
 
-    calendar_y.edit_idea_attr(road=src_text, grouplink=grouplink_shop(name=sue_text))
+    calendar_y.edit_idea_attr(road=flount_text, grouplink=grouplink_shop(name=sue_text))
 
     # WHEN
     x_json = calendar_y.get_json()

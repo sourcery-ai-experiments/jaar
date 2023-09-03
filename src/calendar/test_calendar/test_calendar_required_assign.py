@@ -27,12 +27,12 @@ def test_calendar_edit_idea_attr_CorrectlySetsAssignedUnit():
 
 
 def test_calendar_idearoot_assignedunit_CorrectlySets_idea_assignedheir():
+    flount_text = "flount"
     # GIVEN
-    src_text = ""
     assigned_unit_x = assigned_unit_shop()
 
-    c_x = CalendarUnit(_owner=src_text)
-    c_x.edit_idea_attr(assignedunit=assigned_unit_x, road=src_text)
+    c_x = CalendarUnit(_owner=flount_text)
+    c_x.edit_idea_attr(assignedunit=assigned_unit_x, road=flount_text)
     assert c_x._idearoot._assignedunit == assigned_unit_x
     assert c_x._idearoot._assignedheir is None
 

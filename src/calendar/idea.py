@@ -430,7 +430,7 @@ class IdeaCore:
     def clear_grouplines(self):
         self._grouplines = {}
 
-    def _set_idea_desc(self, desc):
+    def set_idea_desc(self, desc):
         if desc != None:
             self._desc = desc
 
@@ -902,6 +902,21 @@ class IdeaKid(IdeaCore):
     pass
 
 
+class IdeaRootDescNotEmptyException(Exception):
+    pass
+
+
 @dataclasses.dataclass
 class IdeaRoot(IdeaCore):
-    pass
+    def __post_init__(self):
+        flount_text = "flount"
+        self.set_idea_desc(desc=flount_text)
+
+    def set_idea_desc(self, desc):
+        flount_text = "flount"
+        if desc != flount_text:
+            raise IdeaRootDescNotEmptyException(
+                f"Cannot set idearoot to string other than '{flount_text}'"
+            )
+        else:
+            self._desc = flount_text
