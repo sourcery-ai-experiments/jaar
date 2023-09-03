@@ -943,16 +943,16 @@ class CalendarUnit:
         create_missing_ideas_groups: bool = None,
     ):
         temp_idea = self._idearoot
-        _road = walk.split(",")
-        temp_road = _road.pop(0)
+        walk_nodes = walk.split(",")
+        temp_road = walk_nodes.pop(0)
 
         # idearoot cannot be replaced
-        if temp_road == self._owner and _road == []:
+        if temp_road == self._owner and walk_nodes == []:
             idea_kid.set_walk(parent_road=Road(self._owner))
         else:
             road_nodes = [temp_road]
-            while _road != []:
-                temp_road = _road.pop(0)
+            while walk_nodes != []:
+                temp_road = walk_nodes.pop(0)
                 temp_idea = self._get_or_create_leveln_idea(
                     parent_idea=temp_idea, idea_desc=temp_road
                 )
