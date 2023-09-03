@@ -35,9 +35,13 @@ def test_road_is_sub_road_in_src_road_correctlyReturnsBool():
 
 
 def test_road_road_validate_correctlyReturnsRoad():
+    assert road_validate(None) == ""
     assert road_validate(Road("")) == ""
-    assert road_validate(Road(",src")) == ",src"
-    assert road_validate(Road("src,fun")) == "src,fun"
+    assert road_validate(Road("A,casa")) == "A,casa"
+    assert road_validate(Road(",src")) == "A,src"
+    assert road_validate(Road("src,fun")) == "A,fun"
+    assert road_validate(Road("src")) == "A"
+    assert road_validate(Road("AA,casa")) == "A,casa"
 
 
 def test_road_change_road_correctlyRoad():
