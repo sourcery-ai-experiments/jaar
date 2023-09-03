@@ -72,20 +72,14 @@ def get_road_without_root_node(road: Road):  # road without terminus node
 
 
 def road_validate(road: Road):
-    road_x = None
     if road == "" or road is None:
-        road_x = ""
-    else:
-        x_root = get_all_road_nodes_in_list(road)[0]
-        if x_root != get_global_root_desc():
-            road_x = change_road(
-                current_road=road, old_road=x_root, new_road=get_global_root_desc()
-            )
-            print(f"{get_all_road_nodes_in_list(road)=}")
-        else:
-            road_x = road
-
-    return road_x
+        return ""
+    x_root = get_all_road_nodes_in_list(road)[0]
+    return (
+        change_road(current_road=road, old_road=x_root, new_road=get_global_root_desc())
+        if x_root != get_global_root_desc()
+        else road
+    )
 
 
 def get_ancestor_roads(road: Road) -> list:
