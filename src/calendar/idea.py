@@ -21,7 +21,7 @@ from src.calendar.required_idea import (
     change_road,
     find_replace_road_key_dict,
 )
-from src.calendar.road import is_sub_road_in_src_road
+from src.calendar.road import is_sub_road_in_src_road, get_global_root_desc as root_desc
 from src.calendar.group import (
     GroupHeir,
     GroupLink,
@@ -909,14 +909,12 @@ class IdeaRootDescNotEmptyException(Exception):
 @dataclasses.dataclass
 class IdeaRoot(IdeaCore):
     def __post_init__(self):
-        flount_text = "flount"
-        self.set_idea_desc(desc=flount_text)
+        self.set_idea_desc(desc=root_desc())
 
     def set_idea_desc(self, desc):
-        flount_text = "flount"
-        if desc != flount_text:
+        if desc != root_desc():
             raise IdeaRootDescNotEmptyException(
-                f"Cannot set idearoot to string other than '{flount_text}'"
+                f"Cannot set idearoot to string other than '{root_desc()}'"
             )
         else:
-            self._desc = flount_text
+            self._desc = root_desc()

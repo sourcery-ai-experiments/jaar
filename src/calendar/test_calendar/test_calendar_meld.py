@@ -2,6 +2,7 @@ from src.calendar.idea import IdeaKid
 from src.calendar.calendar import CalendarUnit
 from src.calendar.group import groupunit_shop
 from src.calendar.member import memberunit_shop
+from src.calendar.road import get_global_root_desc as root_desc
 from pytest import raises as pytest_raises
 from src.calendar.examples.example_calendars import calendar_v001
 from src.calendar.x_func import get_on_meld_weight_actions
@@ -91,7 +92,6 @@ def test_calendar_meld_GroupUnits():
 
 
 def test_calendar_idearoot_meld_IdeaRootAttrCorrectlyMelded():
-    flount_text = "flount"
     # GIVEN
     src = "casa"
     ax1 = CalendarUnit(_owner="spirit")
@@ -105,7 +105,7 @@ def test_calendar_idearoot_meld_IdeaRootAttrCorrectlyMelded():
         ax1.meld(ax2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea=None,{flount_text} _uid:1 with None,{flount_text} _uid:4"
+        == f"Meld fail idea=None,{root_desc()} _uid:1 with None,{root_desc()} _uid:4"
     )
 
 

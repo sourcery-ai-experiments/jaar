@@ -4,7 +4,7 @@ from src.calendar.required_idea import RequiredUnit, acptfactunit_shop
 from src.calendar.calendar import CalendarUnit
 from src.calendar.group import grouplink_shop
 from pytest import raises as pytest_raises
-from src.calendar.road import Road
+from src.calendar.road import Road, get_global_root_desc as root_desc
 
 
 def test_root_has_kids():
@@ -411,17 +411,16 @@ def test_calendar_edit_idea_attr_calendarIsAbleToEdit_on_meld_weight_action_AnyI
 
 
 def test_calendar_edit_idea_attr_calendarIsAbleToEditDenomAnyIdeaIfInvaildDenomThrowsError():
-    flount_text = "flount"
-    calendar_x = CalendarUnit(_owner=flount_text)
+    calendar_x = CalendarUnit(_owner=root_desc())
     # When/Then
     with pytest_raises(Exception) as excinfo:
         calendar_x.edit_idea_attr(road="", denom=46)
     assert str(excinfo.value) == "Root Idea cannot have numor denom reest."
 
     work = "work"
-    w_road = f"{flount_text},{work}"
+    w_road = f"{root_desc()},{work}"
     work_idea = IdeaKid(_desc=work)
-    calendar_x.add_idea(work_idea, walk=flount_text)
+    calendar_x.add_idea(work_idea, walk=root_desc())
     clean = "clean"
     clean_idea = IdeaKid(_desc=clean)
     c_road = f"{w_road},{clean}"
@@ -432,7 +431,7 @@ def test_calendar_edit_idea_attr_calendarIsAbleToEditDenomAnyIdeaIfInvaildDenomT
         calendar_x.edit_idea_attr(road=c_road, denom=46)
     assert (
         str(excinfo.value)
-        == f"Idea cannot edit numor=1/denom/reest of '{flount_text},work,clean' if parent '{flount_text},work' or ideacore._numeric_road does not have begin/close range"
+        == f"Idea cannot edit numor=1/denom/reest of '{root_desc()},work,clean' if parent '{root_desc()},work' or ideacore._numeric_road does not have begin/close range"
     )
 
     # Given
@@ -444,13 +443,12 @@ def test_calendar_edit_idea_attr_calendarIsAbleToEditDenomAnyIdeaIfInvaildDenomT
 
 
 def test_calendar_edit_idea_attr_calendarIsAbleToEditDenomAnyIdeaInvaildDenomThrowsError():
-    flount_text = "flount"
     # Given
-    calendar_x = CalendarUnit(_owner=flount_text)
+    calendar_x = CalendarUnit(_owner=root_desc())
     work = "work"
-    w_road = f"{flount_text},{work}"
+    w_road = f"{root_desc()},{work}"
     work_idea = IdeaKid(_desc=work, _begin=8, _close=14)
-    calendar_x.add_idea(work_idea, walk=flount_text)
+    calendar_x.add_idea(work_idea, walk=root_desc())
 
     clean = "clean"
     clean_idea = IdeaKid(_desc=clean, _denom=1)
@@ -461,8 +459,8 @@ def test_calendar_edit_idea_attr_calendarIsAbleToEditDenomAnyIdeaInvaildDenomThr
 
     day = "day_range"
     day_idea = IdeaKid(_desc=day, _begin=44, _close=110)
-    day_road = f"{flount_text},{day}"
-    calendar_x.add_idea(day_idea, walk=flount_text)
+    day_road = f"{root_desc()},{day}"
+    calendar_x.add_idea(day_idea, walk=root_desc())
 
     # When/Then
     with pytest_raises(Exception) as excinfo:
@@ -476,17 +474,16 @@ def test_calendar_edit_idea_attr_calendarIsAbleToEditDenomAnyIdeaInvaildDenomThr
 
 
 def test_calendar_edit_idea_attr_calendarWhenParentAndNumeric_roadBothHaveRangeThrowError():
-    flount_text = "flount"
     # Given
-    calendar_x = CalendarUnit(_owner=flount_text)
+    calendar_x = CalendarUnit(_owner=root_desc())
     work = "work"
-    w_road = f"{flount_text},{work}"
+    w_road = f"{root_desc()},{work}"
     work_idea = IdeaKid(_desc=work)
-    calendar_x.add_idea(work_idea, walk=flount_text)
+    calendar_x.add_idea(work_idea, walk=root_desc())
     day = "day_range"
     day_idea = IdeaKid(_desc=day, _begin=44, _close=110)
-    day_road = f"{flount_text},{day}"
-    calendar_x.add_idea(day_idea, walk=flount_text)
+    day_road = f"{root_desc()},{day}"
+    calendar_x.add_idea(day_idea, walk=root_desc())
 
     work_idea2 = calendar_x.get_idea_kid(road=w_road)
     assert work_idea2._begin is None
@@ -496,7 +493,7 @@ def test_calendar_edit_idea_attr_calendarWhenParentAndNumeric_roadBothHaveRangeT
         calendar_x.edit_idea_attr(road=w_road, denom=11)
     assert (
         str(excinfo.value)
-        == f"Idea cannot edit numor=1/denom/reest of '{flount_text},work' if parent '{flount_text}' or ideacore._numeric_road does not have begin/close range"
+        == f"Idea cannot edit numor=1/denom/reest of '{root_desc()},work' if parent '{root_desc()}' or ideacore._numeric_road does not have begin/close range"
     )
 
     # When

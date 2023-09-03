@@ -6,6 +6,7 @@ from src.calendar.required_assign import (
 from src.calendar.calendar import CalendarUnit
 from src.calendar.idea import IdeaKid
 from src.calendar.group import groupunit_shop
+from src.calendar.road import get_global_root_desc as root_desc
 
 
 def test_calendar_edit_idea_attr_CorrectlySetsAssignedUnit():
@@ -27,12 +28,11 @@ def test_calendar_edit_idea_attr_CorrectlySetsAssignedUnit():
 
 
 def test_calendar_idearoot_assignedunit_CorrectlySets_idea_assignedheir():
-    flount_text = "flount"
     # GIVEN
     assigned_unit_x = assigned_unit_shop()
 
-    c_x = CalendarUnit(_owner=flount_text)
-    c_x.edit_idea_attr(assignedunit=assigned_unit_x, road=flount_text)
+    c_x = CalendarUnit(_owner=root_desc())
+    c_x.edit_idea_attr(assignedunit=assigned_unit_x, road=root_desc())
     assert c_x._idearoot._assignedunit == assigned_unit_x
     assert c_x._idearoot._assignedheir is None
 

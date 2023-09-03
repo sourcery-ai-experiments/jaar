@@ -58,6 +58,7 @@ from src.calendar.road import (
     get_terminus_node_from_road,
     find_replace_road_key_dict,
     get_ancestor_roads,
+    get_global_root_desc as root_desc,
 )
 from copy import deepcopy as copy_deepcopy
 from src.calendar.x_func import (
@@ -94,8 +95,7 @@ class CalendarUnit:
         self._weight = _weight
         if _owner is None:
             _owner = ""
-        flount_text = "flount"
-        self._idearoot = IdeaRoot(_desc=flount_text, _uid=1)
+        self._idearoot = IdeaRoot(_desc=root_desc(), _uid=1)
         self._owner = _owner
 
     def set_banking_attr_memberunits(self, river_tmembers: dict):
@@ -2043,8 +2043,7 @@ def get_from_dict(lw_dict: dict) -> CalendarUnit:
     c_x._idearoot._grouplinks = grouplinks_get_from_dict(x_dict=lw_dict["_grouplinks"])
     c_x._members = memberunits_get_from_dict(x_dict=lw_dict["_members"])
     c_x._owner = lw_dict["_owner"]
-    flount_text = "flount"
-    c_x._idearoot.set_idea_desc(flount_text)
+    c_x._idearoot.set_idea_desc(root_desc())
     c_x._weight = lw_dict["_weight"]
     c_x._max_tree_traverse = lw_dict.get("_max_tree_traverse")
     if lw_dict.get("_max_tree_traverse") is None:

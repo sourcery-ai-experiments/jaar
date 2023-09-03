@@ -6,6 +6,7 @@ from src.calendar.examples.example_calendars import (
     calendar_v001 as examples_calendar_v001,
 )
 from src.calendar.calendar import CalendarUnit
+from src.calendar.road import get_global_root_desc as root_desc
 from pytest import raises as pytest_raises
 
 
@@ -52,7 +53,6 @@ def test_calendar_groups_del_groupunit_worksCorrectly():
 
 
 def test_example_has_groups():
-    flount_text = "flount"
     # GIVEN / WHEN
     lw_x = examples_calendar_v001()
 
@@ -69,7 +69,7 @@ def test_example_has_groups():
     idea_dict = lw_x._idea_dict
 
     # THEN
-    db_idea = idea_dict.get(f"{flount_text},D&B")
+    db_idea = idea_dict.get(f"{root_desc()},D&B")
     print(f"{db_idea._desc=} {db_idea._grouplinks=}")
     assert len(db_idea._grouplinks) == 3
     # for idea_key in idea_dict:

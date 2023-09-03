@@ -1,4 +1,5 @@
 from src.calendar.idea import IdeaRoot
+from src.calendar.road import get_global_root_desc as root_desc
 from pytest import raises as pytest_raises
 
 
@@ -8,8 +9,8 @@ def test_IdeaRoot_exists():
 
     # THEN
     assert new_obj
-    flount_text = "flount"
-    assert new_obj._desc == flount_text
+
+    assert new_obj._desc == root_desc()
     assert new_obj._kids is None
 
 
@@ -18,11 +19,11 @@ def test_IdeaRoot_set_idea_desc_DoesNotRaisesError():
     new_obj = IdeaRoot()
 
     # WHEN
-    flount_text = "flount"
-    new_obj.set_idea_desc(desc=flount_text)
+
+    new_obj.set_idea_desc(desc=root_desc())
 
     # THEN
-    assert new_obj._desc == flount_text
+    assert new_obj._desc == root_desc()
 
 
 def test_IdeaRoot_set_idea_desc_RaisesError():
@@ -30,11 +31,11 @@ def test_IdeaRoot_set_idea_desc_RaisesError():
     new_obj = IdeaRoot()
 
     # WHEN/THEN
-    flount_text = "flount"
+
     with pytest_raises(Exception) as excinfo:
         src_text = "src"
         new_obj.set_idea_desc(desc=src_text)
     assert (
         str(excinfo.value)
-        == f"Cannot set idearoot to string other than '{flount_text}'"
+        == f"Cannot set idearoot to string other than '{root_desc()}'"
     )

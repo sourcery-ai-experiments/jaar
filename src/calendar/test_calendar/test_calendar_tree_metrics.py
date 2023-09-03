@@ -5,6 +5,7 @@ from src.calendar.examples.example_calendars import (
 from src.calendar.calendar import CalendarUnit
 from src.calendar.tree_metrics import TreeMetrics
 from src.calendar.idea import IdeaKid
+from src.calendar.road import get_global_root_desc as root_desc
 
 
 def test_calendar_get_tree_metrics_exists():
@@ -109,12 +110,11 @@ def test_calendar_get_tree_metrics_ReturnsANoneActionIdeaRoad():
 
 
 def test_calendar_get_tree_metrics_ReturnsAnActionIdeaRoad():
-    flount_text = "flount"
     # GIVEN
     cx = calendar_v001()
     tree_metrics_before = cx.get_tree_metrics()
     # WHEN/THEN
     assert (
         tree_metrics_before.an_promise_idea_road
-        == f"{flount_text},ACME,ACME Employee Responsiblities,Know Abuse Prevention and Reporting guildlines,Take Fall 2021 training"
+        == f"{root_desc()},ACME,ACME Employee Responsiblities,Know Abuse Prevention and Reporting guildlines,Take Fall 2021 training"
     )

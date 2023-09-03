@@ -5,6 +5,7 @@ from src.calendar.examples.example_calendars import (
 )
 from pytest import raises as pytest_raises
 from src.calendar.required_idea import Road, AcptFactUnit
+from src.calendar.road import get_global_root_desc as root_desc
 
 
 def test_idea_desc_fails_when_idea_does_not_exist():
@@ -31,60 +32,60 @@ def test_idea_desc_fails_when_idea_does_not_exist():
 # fixing this quickly looks difficult. Maybe push it off
 def test_where_level0_idea_desc_change_breaks_idea_walk_of_child_ideas():
     # GIVEN
-    flount_text = "flount"
+
     work_text = "work"
-    work_road = f"{flount_text},{work_text}"
+    work_road = f"{root_desc()},{work_text}"
     swim_text = "swim"
-    swim_road = f"{flount_text},{work_text},{swim_text}"
-    sx = CalendarUnit(_owner=flount_text)
-    sx.add_idea(walk=flount_text, idea_kid=IdeaKid(_desc=work_text))
+    swim_road = f"{root_desc()},{work_text},{swim_text}"
+    sx = CalendarUnit(_owner=root_desc())
+    sx.add_idea(walk=root_desc(), idea_kid=IdeaKid(_desc=work_text))
     sx.add_idea(walk=work_road, idea_kid=IdeaKid(_desc=swim_text))
-    assert sx._owner == flount_text
-    assert sx._idearoot._desc == flount_text
+    assert sx._owner == root_desc()
+    assert sx._idearoot._desc == root_desc()
     work_idea = sx.get_idea_kid(road=work_road)
-    assert work_idea._walk == flount_text
+    assert work_idea._walk == root_desc()
     swim_idea = sx.get_idea_kid(road=swim_road)
     assert swim_idea._walk == work_road
 
     # WHEN
-    flount_text = "flount"
+
     with pytest_raises(Exception) as excinfo:
         moon_text = "moon"
-        sx.edit_idea_desc(old_road=flount_text, new_desc=moon_text)
+        sx.edit_idea_desc(old_road=root_desc(), new_desc=moon_text)
     assert (
         str(excinfo.value)
-        == f"Cannot set idearoot to string other than '{flount_text}'"
+        == f"Cannot set idearoot to string other than '{root_desc()}'"
     )
 
     # moon = "moon"
-    # sx.edit_idea_desc(old_road=flount_text, new_desc=moon)
+    # sx.edit_idea_desc(old_road=root_desc(), new_desc=moon)
 
     # # THEN
-    # assert sx._owner == flount_text
-    # assert sx._idearoot._desc == flount_text
+    # assert sx._owner == root_desc()
+    # assert sx._idearoot._desc == root_desc()
     # assert sx._idearoot._walk == ""
-    # assert work_idea._walk == flount_text
-    # assert swim_idea._walk == f"{flount_text},{work_text}"
+    # assert work_idea._walk == root_desc()
+    # assert swim_idea._walk == f"{root_desc()},{work_text}"
 
 
 def test_idea_find_replace_road_Changes_kids_scenario1():
     # GIVEN Idea with kids that will be changed
-    flount_text = "flount"
+
     old_person_text = "person"
-    old_person_road = Road(f"{flount_text},{old_person_text}")
+    old_person_road = Road(f"{root_desc()},{old_person_text}")
     bloomers_text = "bloomers"
-    old_bloomers_road = Road(f"{flount_text},{old_person_text},{bloomers_text}")
+    old_bloomers_road = Road(f"{root_desc()},{old_person_text},{bloomers_text}")
     roses_text = "roses"
     old_roses_road = Road(
-        f"{flount_text},{old_person_text},{bloomers_text},{roses_text}"
+        f"{root_desc()},{old_person_text},{bloomers_text},{roses_text}"
     )
     red_text = "red"
     old_red_road = Road(
-        f"{flount_text},{old_person_text},{bloomers_text},{roses_text},{red_text}"
+        f"{root_desc()},{old_person_text},{bloomers_text},{roses_text},{red_text}"
     )
 
-    sx = CalendarUnit(_owner=flount_text)
-    sx.add_idea(walk=flount_text, idea_kid=IdeaKid(_desc=old_person_text))
+    sx = CalendarUnit(_owner=root_desc())
+    sx.add_idea(walk=root_desc(), idea_kid=IdeaKid(_desc=old_person_text))
     sx.add_idea(walk=old_person_road, idea_kid=IdeaKid(_desc=bloomers_text))
     sx.add_idea(walk=old_bloomers_road, idea_kid=IdeaKid(_desc=roses_text))
     sx.add_idea(walk=old_roses_road, idea_kid=IdeaKid(_desc=red_text))
@@ -99,7 +100,7 @@ def test_idea_find_replace_road_Changes_kids_scenario1():
 
     # WHEN
     new_person_text = "globe"
-    new_person_road = Road(f"{flount_text},{new_person_text}")
+    new_person_road = Road(f"{root_desc()},{new_person_text}")
     sx.edit_idea_desc(old_road=old_person_road, new_desc=new_person_text)
 
     # THEN
@@ -110,31 +111,31 @@ def test_idea_find_replace_road_Changes_kids_scenario1():
     assert r_idea_bloomers._kids.get(roses_text) != None
 
     r_idea_roses = r_idea_bloomers._kids.get(roses_text)
-    new_bloomers_road = Road(f"{flount_text},{new_person_text},{bloomers_text}")
+    new_bloomers_road = Road(f"{root_desc()},{new_person_text},{bloomers_text}")
     assert r_idea_roses._walk == new_bloomers_road
     assert r_idea_roses._kids.get(red_text) != None
     r_idea_red = r_idea_roses._kids.get(red_text)
     new_roses_road = Road(
-        f"{flount_text},{new_person_text},{bloomers_text},{roses_text}"
+        f"{root_desc()},{new_person_text},{bloomers_text},{roses_text}"
     )
     assert r_idea_red._walk == new_roses_road
 
 
 def test_calendar_edit_idea_desc_Changes_acptfactunits():
     # GIVEN calendar with acptfactunits that will be changed
-    flount_text = "flount"
+
     person = "person"
     bloomers_text = "bloomers"
-    bloomers_road = f"{flount_text},{person},{bloomers_text}"
+    bloomers_road = f"{root_desc()},{person},{bloomers_text}"
     roses_text = "roses"
-    roses_road = f"{flount_text},{person},{bloomers_text},{roses_text}"
+    roses_road = f"{root_desc()},{person},{bloomers_text},{roses_text}"
     old_water_text = "water"
-    old_water_road = f"{flount_text},{old_water_text}"
+    old_water_road = f"{root_desc()},{old_water_text}"
     rain_text = "rain"
-    old_rain_road = f"{flount_text},{old_water_text},{rain_text}"
+    old_rain_road = f"{root_desc()},{old_water_text},{rain_text}"
 
-    sx = CalendarUnit(_owner=flount_text)
-    sx.add_idea(walk=flount_text, idea_kid=IdeaKid(_desc=person))
+    sx = CalendarUnit(_owner=root_desc())
+    sx.add_idea(walk=root_desc(), idea_kid=IdeaKid(_desc=person))
     sx.add_idea(walk=bloomers_road, idea_kid=IdeaKid(_desc=roses_text))
     sx.add_idea(walk=old_water_road, idea_kid=IdeaKid(_desc=rain_text))
     sx.set_acptfact(base=old_water_road, pick=old_rain_road)
@@ -147,8 +148,8 @@ def test_calendar_edit_idea_desc_Changes_acptfactunits():
 
     # WHEN
     new_water_text = "h2o"
-    new_water_road = f"{flount_text},{new_water_text}"
-    sx.add_idea(walk=flount_text, idea_kid=IdeaKid(_desc=new_water_text))
+    new_water_road = f"{root_desc()},{new_water_text}"
+    sx.add_idea(walk=root_desc(), idea_kid=IdeaKid(_desc=new_water_text))
     assert sx._idearoot._acptfactunits.get(new_water_road) is None
     sx.edit_idea_desc(old_road=old_water_road, new_desc=new_water_text)
 
@@ -157,7 +158,7 @@ def test_calendar_edit_idea_desc_Changes_acptfactunits():
     assert sx._idearoot._acptfactunits.get(new_water_road) != None
     new_water_rain_acptfactunit = sx._idearoot._acptfactunits[new_water_road]
     assert new_water_rain_acptfactunit.base == new_water_road
-    new_rain_road = f"{flount_text},{new_water_text},{rain_text}"
+    new_rain_road = f"{root_desc()},{new_water_text},{rain_text}"
     assert new_water_rain_acptfactunit.pick == new_rain_road
 
     assert sx._idearoot._acptfactunits.get(new_water_road)
@@ -170,12 +171,12 @@ def test_calendar_edit_idea_desc_Changes_acptfactunits():
 
 def test_calendar_edit_idea_desc_ChangesIdeaRoot_special_road():
     # GIVEN this should never happen but it's not currently banned
-    flount_text = "flount"
+
     old_person_text = "person"
-    old_person_road = Road(f"{flount_text},{old_person_text}")
-    sx = CalendarUnit(_owner=flount_text)
-    sx.add_idea(walk=flount_text, idea_kid=IdeaKid(_desc=old_person_text))
-    sx.edit_idea_attr(road=flount_text, special_road=old_person_road)
+    old_person_road = Road(f"{root_desc()},{old_person_text}")
+    sx = CalendarUnit(_owner=root_desc())
+    sx.add_idea(walk=root_desc(), idea_kid=IdeaKid(_desc=old_person_text))
+    sx.edit_idea_attr(road=root_desc(), special_road=old_person_road)
     assert sx._idearoot._special_road == old_person_road
 
     # WHEN
@@ -183,7 +184,7 @@ def test_calendar_edit_idea_desc_ChangesIdeaRoot_special_road():
     sx.edit_idea_desc(old_road=old_person_road, new_desc=new_person_text)
 
     # THEN
-    new_person_road = Road(f"{flount_text},{new_person_text}")
+    new_person_road = Road(f"{root_desc()},{new_person_text}")
     assert sx._idearoot._special_road == new_person_road
 
 
@@ -275,11 +276,10 @@ def test_calendar_owner_change_ChangesIdeaRequiredUnitsScenario1():
 
 
 def test_calendar_calendar_owner_edit_CorrectlyChangesBoth():
-    flount_text = "flount"
     # GIVEN
     calendar_x = get_calendar_with_4_levels_and_2requireds_2acptfacts()
-    assert calendar_x._owner == flount_text
-    assert calendar_x._idearoot._desc == flount_text
+    assert calendar_x._owner == root_desc()
+    assert calendar_x._idearoot._desc == root_desc()
     # mid_desc1 = "tim"
     # calendar_x.edit_idea_desc(old_road=old_desc, new_desc=mid_desc1)
     # assert calendar_x._owner == old_desc
@@ -291,4 +291,4 @@ def test_calendar_calendar_owner_edit_CorrectlyChangesBoth():
 
     # THEN
     assert calendar_x._owner == new_desc2
-    assert calendar_x._idearoot._desc == flount_text
+    assert calendar_x._idearoot._desc == root_desc()

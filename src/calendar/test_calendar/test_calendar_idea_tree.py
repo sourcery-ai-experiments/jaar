@@ -5,6 +5,7 @@ from src.calendar.member import MemberName
 from src.calendar.idea import IdeaKid
 from src.calendar.calendar import CalendarUnit
 from src.calendar.group import Groupline, GroupLink
+from src.calendar.road import get_global_root_desc as root_desc
 from pytest import raises as pytest_raises
 
 
@@ -76,27 +77,26 @@ def test_set_calendar_metrics_CorrectlyClearsDescendantAttributes():
 
 
 def test_get_idea_kid_CorrectlyReturnsIdea():
-    flount_text = "flount"
     lw_x = example_calendars_get_calendar_with_4_levels()
 
-    brazil = f"{flount_text},nation-state,Brazil"
+    brazil = f"{root_desc()},nation-state,Brazil"
     idea_kid = lw_x.get_idea_kid(road=brazil)
     assert idea_kid != None
     assert idea_kid._desc == "Brazil"
 
-    weekdays = f"{flount_text},weekdays"
+    weekdays = f"{root_desc()},weekdays"
     idea_kid = lw_x.get_idea_kid(road=weekdays)
     assert idea_kid != None
     assert idea_kid._desc == "weekdays"
 
     # with pytest.raises(Exception) as excinfo:
-    #     lw_x.get_idea_kid(road=flount_text)
-    # assert str(excinfo.value) == f"Cannot return root '{flount_text}'"
-    idea_root = lw_x.get_idea_kid(road=flount_text)
+    #     lw_x.get_idea_kid(road=root_desc())
+    # assert str(excinfo.value) == f"Cannot return root '{root_desc()}'"
+    idea_root = lw_x.get_idea_kid(road=root_desc())
     assert idea_root != None
-    assert idea_root._desc == flount_text
+    assert idea_root._desc == root_desc()
 
-    wrong_road = f"{flount_text},bobdylan"
+    wrong_road = f"{root_desc()},bobdylan"
     with pytest_raises(Exception) as excinfo:
         lw_x.get_idea_kid(road=wrong_road)
     assert (
@@ -106,8 +106,7 @@ def test_get_idea_kid_CorrectlyReturnsIdea():
 
 
 def test_set_calendar_metrics_RootOnlyCorrectlySetsDescendantAttributes():
-    flount_text = "flount"
-    lw_x = CalendarUnit(_owner=flount_text)
+    lw_x = CalendarUnit(_owner=root_desc())
     assert lw_x._idearoot._descendant_promise_count is None
     assert lw_x._idearoot._all_member_credit is None
     assert lw_x._idearoot._all_member_debt is None
@@ -366,26 +365,24 @@ def test_calendar4member_hasCorrectLevel1StructureNoGrouplessBranches():
 
 
 def test_calendar_get_orderd_node_list_WorksCorrectly():
-    flount_text = "flount"
     lw_x = example_calendars_get_calendar_with_4_levels()
     assert lw_x.get_idea_tree_ordered_road_list()
     ordered_node_list = lw_x.get_idea_tree_ordered_road_list()
     # for node in ordered_node_list:
     #     print(f"{node}")
     assert len(ordered_node_list) == 17
-    assert lw_x.get_idea_tree_ordered_road_list()[0] == f"{flount_text}"
-    assert lw_x.get_idea_tree_ordered_road_list()[8] == f"{flount_text},weekdays"
+    assert lw_x.get_idea_tree_ordered_road_list()[0] == f"{root_desc()}"
+    assert lw_x.get_idea_tree_ordered_road_list()[8] == f"{root_desc()},weekdays"
 
     lw_y = CalendarUnit(_owner="MyCalendar")
-    assert lw_y.get_idea_tree_ordered_road_list()[0] == flount_text
+    assert lw_y.get_idea_tree_ordered_road_list()[0] == root_desc()
 
 
 def test_calendar_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoads():
-    flount_text = "flount"
-    calendar_x = CalendarUnit(_owner=flount_text)
+    calendar_x = CalendarUnit(_owner=root_desc())
     time = "timeline"
-    calendar_x.add_idea(IdeaKid(_desc=time, _begin=0, _close=700), walk=flount_text)
-    t_road = f"{flount_text},{time}"
+    calendar_x.add_idea(IdeaKid(_desc=time, _begin=0, _close=700), walk=root_desc())
+    t_road = f"{root_desc()},{time}"
     week = "weeks"
     calendar_x.add_idea(IdeaKid(_desc=week, _denom=7), walk=t_road)
 
@@ -396,9 +393,8 @@ def test_calendar_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoads():
 
 
 def test_calendar_get_heir_road_list_returnsCorrectList():
-    flount_text = "flount"
     lw_x = example_calendars_get_calendar_with_4_levels()
-    weekdays = f"{flount_text},weekdays"
+    weekdays = f"{root_desc()},weekdays"
     assert lw_x.get_heir_road_list(src_road=weekdays)
     heir_node_road_list = lw_x.get_heir_road_list(src_road=weekdays)
     # for node in heir_node_road_list:

@@ -243,5 +243,5 @@ class Lemmas:
         #     # ):
         #     #     prin(f"{current_lemma_acptfact=} {acptfact_open=} {acptfact_nigh=}")
 
-        #     # if current_lemma_acptfact.base == "{flount_text},time,week":
+        #     # if current_lemma_acptfact.base == "{root_desc()},time,week":
         #     #     prin(f"{current_lemma_acptfact=} {acptfact_open=} {acptfact_nigh=}")

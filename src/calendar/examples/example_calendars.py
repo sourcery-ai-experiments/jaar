@@ -8,6 +8,7 @@ from src.calendar.required_idea import (
 from src.calendar.calendar import CalendarUnit, get_from_json
 from src.calendar.x_func import open_file as x_func_open_file
 from src.calendar.examples.get_calendar_examples_dir import get_calendar_examples_dir
+from src.calendar.road import get_global_root_desc as root_desc
 
 
 def calendar_v001() -> CalendarUnit:
@@ -19,32 +20,31 @@ def calendar_v001() -> CalendarUnit:
 
 
 def calendar_v001_with_large_agenda() -> CalendarUnit:
-    flount_text = "flount"
     a1 = calendar_v001()
     day_minute_text = "day_minute"
-    day_minute_road = f"{flount_text},{day_minute_text}"
+    day_minute_road = f"{root_desc()},{day_minute_text}"
     month_week_text = "month_week"
-    month_week_road = f"{flount_text},{month_week_text}"
+    month_week_road = f"{root_desc()},{month_week_text}"
     nations_text = "Nation-States"
-    nations_road = f"{flount_text},{nations_text}"
+    nations_road = f"{root_desc()},{nations_text}"
     mood_text = "Moods"
-    mood_road = f"{flount_text},{mood_text}"
+    mood_road = f"{root_desc()},{mood_text}"
     aaron_text = "Aaron Donald sphere"
-    aaron_road = f"{flount_text},{aaron_text}"
+    aaron_road = f"{root_desc()},{aaron_text}"
     # internet_text = "Internet"
-    # internet_road = f"{flount_text},{internet_text}"
+    # internet_road = f"{root_desc()},{internet_text}"
     year_month_text = "year_month"
-    year_month_road = f"{flount_text},{year_month_text}"
+    year_month_road = f"{root_desc()},{year_month_text}"
     season_text = "Seasons"
-    season_road = f"{flount_text},{season_text}"
+    season_road = f"{root_desc()},{season_text}"
     ced_week_text = "ced_week"
-    ced_week_road = f"{flount_text},{ced_week_text}"
+    ced_week_road = f"{root_desc()},{ced_week_text}"
     # water_text = "WaterBeing"
-    # water_road = f"{flount_text},{water_text}"
+    # water_road = f"{root_desc()},{water_text}"
     weekdays_text = "weekdays"
-    weekdays_road = f"{flount_text},{weekdays_text}"
+    weekdays_road = f"{root_desc()},{weekdays_text}"
     # movie_text = "No Movie playing"
-    # movie_road = f"{flount_text},{movie_text}"
+    # movie_road = f"{root_desc()},{movie_text}"
 
     a1.set_acptfact(base=aaron_road, pick=aaron_road)
     a1.set_acptfact(base=ced_week_road, pick=ced_week_road, open=0, nigh=53)
@@ -71,21 +71,20 @@ def calendar_v002() -> CalendarUnit:
 
 
 def get_calendar_with_4_levels() -> CalendarUnit:
-    flount_text = "flount"
-    calendar_x = CalendarUnit(_owner=flount_text, _weight=10)
+    calendar_x = CalendarUnit(_owner=root_desc(), _weight=10)
 
     work = "work"
     idea_kid_work = IdeaKid(_weight=30, _desc=work, promise=True)
-    calendar_x.add_idea(idea_kid=idea_kid_work, walk=flount_text)
+    calendar_x.add_idea(idea_kid=idea_kid_work, walk=root_desc())
 
     cat = "feed cat"
     idea_kid_feedcat = IdeaKid(_weight=30, _desc=cat, promise=True)
-    calendar_x.add_idea(idea_kid=idea_kid_feedcat, walk=flount_text)
+    calendar_x.add_idea(idea_kid=idea_kid_feedcat, walk=root_desc())
 
     week_text = "weekdays"
-    week_road = f"{flount_text},{week_text}"
+    week_road = f"{root_desc()},{week_text}"
     idea_kid_weekdays = IdeaKid(_weight=40, _desc=week_text)
-    calendar_x.add_idea(idea_kid=idea_kid_weekdays, walk=flount_text)
+    calendar_x.add_idea(idea_kid=idea_kid_weekdays, walk=root_desc())
 
     sun_text = "Sunday"
     mon_text = "Monday"
@@ -112,9 +111,9 @@ def get_calendar_with_4_levels() -> CalendarUnit:
     calendar_x.add_idea(idea_grandkidA, week_road)
 
     states_text = "nation-state"
-    states_road = f"{flount_text},{states_text}"
+    states_road = f"{root_desc()},{states_text}"
     idea_kid_states = IdeaKid(_weight=30, _desc=states_text)
-    calendar_x.add_idea(idea_kid=idea_kid_states, walk=f"{flount_text}")
+    calendar_x.add_idea(idea_kid=idea_kid_states, walk=f"{root_desc()}")
 
     usa_text = "USA"
     usa_road = f"{states_road},{usa_text}"
@@ -326,17 +325,16 @@ def get_calendar_irrational_example() -> CalendarUnit:
     # 1. calendar_x._irrational == True
     # 2. calendar_x._tree_traverse_count = calendar_x._max_tree_traverse
 
-    flount_text = "flount"
-    calendar_x = CalendarUnit(_owner=flount_text, _weight=10)
+    calendar_x = CalendarUnit(_owner=root_desc(), _weight=10)
     calendar_x.set_max_tree_traverse(3)
 
     egg_text = "egg first"
-    egg_road = f"{flount_text},{egg_text}"
-    calendar_x.add_idea(idea_kid=IdeaKid(_desc=egg_text), walk=flount_text)
+    egg_road = f"{root_desc()},{egg_text}"
+    calendar_x.add_idea(idea_kid=IdeaKid(_desc=egg_text), walk=root_desc())
 
     chicken_text = "chicken first"
-    chicken_road = f"{flount_text},{chicken_text}"
-    calendar_x.add_idea(idea_kid=IdeaKid(_desc=chicken_text), walk=flount_text)
+    chicken_road = f"{root_desc()},{chicken_text}"
+    calendar_x.add_idea(idea_kid=IdeaKid(_desc=chicken_text), walk=root_desc())
 
     # set egg promise is True when chicken first is False
     calendar_x.edit_idea_attr(

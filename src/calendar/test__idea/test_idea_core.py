@@ -8,6 +8,7 @@ from src.calendar.required_idea import (
     Road,
 )
 from src.calendar.required_assign import assigned_unit_shop, assigned_heir_shop
+from src.calendar.road import get_global_root_desc as root_desc
 from pytest import raises as pytest_raise
 
 
@@ -48,9 +49,8 @@ def test_idea_core_exists():
 
 
 def test_idea_core_get_key_road_works():
-    flount_text = "flount"
     round_text = "round_things"
-    round_walk = f"{flount_text},{round_text}"
+    round_walk = f"{root_desc()},{round_text}"
     x_desc = "ball"
     idea = IdeaCore(_desc=x_desc, _walk=round_walk)
     assert idea.get_key_road() == f"{x_desc}"

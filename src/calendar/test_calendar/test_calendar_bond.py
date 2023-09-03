@@ -9,6 +9,7 @@ from src.calendar.road import Road
 from src.calendar.required_idea import RequiredUnit
 from src.calendar.member import memberlink_shop
 from src.calendar.group import groupunit_shop, grouplink_shop
+from src.calendar.road import get_global_root_desc as root_desc
 from src.calendar.examples.example_calendars import (
     get_calendar_with_4_levels as example_calendars_get_calendar_with_4_levels,
     get_calendar_with_4_levels_and_2requireds as example_calendars_get_calendar_with_4_levels_and_2requireds,
@@ -166,15 +167,14 @@ def test_calendarunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualCalendarGr
 
 
 def test_calendarunit_get_bond_status_ChecksOnlyNecessaryIdeasExist_MultipleScenario():
-    flount_text = "flount"
     # GIVEN
     jessi_text = "jessi"
     cx = CalendarUnit(_owner=jessi_text)
     casa_text = "case"
-    casa_road = Road(f"{flount_text},{casa_text}")
+    casa_road = Road(f"{root_desc()},{casa_text}")
     cx.add_idea(idea_kid=IdeaKid(_desc=casa_text), walk=jessi_text)
     clean_cookery_text = "clean cookery"
-    clean_cookery_road = Road(f"{flount_text},{casa_text},{clean_cookery_text}")
+    clean_cookery_road = Road(f"{root_desc()},{casa_text},{clean_cookery_text}")
 
     # WHEN/THEN
     cx.add_idea(
@@ -184,12 +184,12 @@ def test_calendarunit_get_bond_status_ChecksOnlyNecessaryIdeasExist_MultipleScen
 
     # WHEN/THEN
     water_text = "water"
-    water_road = Road(f"{flount_text},{water_text}")
+    water_road = Road(f"{root_desc()},{water_text}")
     cx.add_idea(idea_kid=IdeaKid(_desc=water_text), walk=jessi_text)
     assert cx.get_bond_status() == False
 
     rain_text = "rain"
-    rain_road = Road(f"{flount_text},{water_text},{rain_text}")
+    rain_road = Road(f"{root_desc()},{water_text},{rain_text}")
     cx.add_idea(idea_kid=IdeaKid(_desc=rain_text), walk=water_road)
 
     # WHEN/THEN
@@ -200,24 +200,23 @@ def test_calendarunit_get_bond_status_ChecksOnlyNecessaryIdeasExist_MultipleScen
 
 
 def test_calendarunit_get_calendar_sprung_from_single_idea_ReturnsCorrectCalendarScenario1():
-    flount_text = "flount"
     # GIVEN
     jessi_text = "jessi"
     cx = CalendarUnit(_owner=jessi_text)
     casa_text = "case"
-    casa_road = Road(f"{flount_text},{casa_text}")
+    casa_road = Road(f"{root_desc()},{casa_text}")
     cx.add_idea(
-        idea_kid=IdeaKid(_desc=casa_text, _begin=-1, _close=19), walk=flount_text
+        idea_kid=IdeaKid(_desc=casa_text, _begin=-1, _close=19), walk=root_desc()
     )
     clean_cookery_text = "clean cookery"
-    clean_cookery_road = Road(f"{flount_text},{casa_text},{clean_cookery_text}")
+    clean_cookery_road = Road(f"{root_desc()},{casa_text},{clean_cookery_text}")
     cx.add_idea(
         idea_kid=IdeaKid(_desc=clean_cookery_text, promise=True, _begin=2, _close=4),
         walk=casa_road,
     )
     water_text = "water"
-    water_road = Road(f"{flount_text},{water_text}")
-    cx.add_idea(idea_kid=IdeaKid(_desc=water_text), walk=flount_text)
+    water_road = Road(f"{root_desc()},{water_text}")
+    cx.add_idea(idea_kid=IdeaKid(_desc=water_text), walk=root_desc())
     assert cx.get_bond_status() == False
 
     # WHEN
@@ -227,8 +226,8 @@ def test_calendarunit_get_calendar_sprung_from_single_idea_ReturnsCorrectCalenda
     # assert bond_calendar._desc == clean_cookery_text
     print(f"{len(bond_calendar._idea_dict)=}")
     assert len(bond_calendar._idea_dict) == 3
-    b_src_idea = bond_calendar.get_idea_kid(road=flount_text)
-    src_src_idea = cx.get_idea_kid(road=flount_text)
+    b_src_idea = bond_calendar.get_idea_kid(road=root_desc())
+    src_src_idea = cx.get_idea_kid(road=root_desc())
     assert b_src_idea._uid == src_src_idea._uid
     assert b_src_idea._begin == src_src_idea._begin
     assert b_src_idea._close == src_src_idea._close
@@ -275,7 +274,6 @@ def test_calendarunit_get_calendar_sprung_from_single_idea_ReturnsCorrectCalenda
 
 
 def test_calendarunit_export_all_bonds_ExportsFileOfBonds_2files(env_dir_setup_cleanup):
-    flount_text = "flount"
     # GIVEN
     cx = example_calendars_get_calendar_with_4_levels_and_2requireds_2acptfacts()
     cx_idea_list = cx.get_idea_list()

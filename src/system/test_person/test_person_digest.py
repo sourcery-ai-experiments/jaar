@@ -11,6 +11,7 @@ from src.system.examples.person_env_kit import (
     person_dir_setup_cleanup,
     get_temp_person_dir,
 )
+from src.calendar.road import get_global_root_desc as root_desc
 from os import path as os_path, scandir as os_scandir
 from src.calendar.x_func import (
     open_file as x_func_open_file,
@@ -194,7 +195,6 @@ def test_presonunit_set_src_calendarlinks_CorrectlySets_blind_trust_DigestCalend
 def test_person_get_dest_calendar_from_digest_calendar_files_withEmptyDigestDict(
     person_dir_setup_cleanup,
 ):
-    flount_text = "flount"
     # GIVEN
     person_name_x = "boots3"
     px = personunit_shop(name=person_name_x, env_dir=get_temp_person_dir())
@@ -202,7 +202,7 @@ def test_person_get_dest_calendar_from_digest_calendar_files_withEmptyDigestDict
     sx_output_before = px.get_dest_calendar_from_digest_calendar_files()
     assert str(type(sx_output_before)).find(".calendar.CalendarUnit'>")
     assert sx_output_before._owner == person_name_x
-    assert sx_output_before._idearoot._desc == flount_text
+    assert sx_output_before._idearoot._desc == root_desc()
     # px.set_digested_calendar(calendar_x=CalendarUnit(_owner="digested1"))
 
     # WHEN
@@ -233,7 +233,6 @@ def test_person_get_dest_calendar_from_digest_calendar_files_withEmptyDigestDict
 def test_person_get_dest_calendar_from_digest_calendar_files_with1DigestedCalendar(
     person_dir_setup_cleanup,
 ):
-    flount_text = "flount"
     # GIVEN
     person_name_x = "boots3"
     env_dir = get_temp_person_dir()
@@ -242,7 +241,7 @@ def test_person_get_dest_calendar_from_digest_calendar_files_with1DigestedCalend
     sx_output_old = px.get_dest_calendar_from_digest_calendar_files()
     assert str(type(sx_output_old)).find(".calendar.CalendarUnit'>")
     assert sx_output_old._owner == person_name_x
-    assert sx_output_old._idearoot._desc == flount_text
+    assert sx_output_old._idearoot._desc == root_desc()
     input_calendar = example_persons.get_2node_calendar()
     px.receive_src_calendarunit_obj(calendar_x=input_calendar, link_type="blind_trust")
 

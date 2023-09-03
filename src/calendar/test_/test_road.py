@@ -9,6 +9,7 @@ from src.calendar.road import (
     get_road_without_root_node,
     road_validate,
     get_ancestor_roads,
+    get_global_root_desc,
 )
 from src.calendar.required_idea import sufffactunit_shop
 from src.calendar.idea import IdeaCore
@@ -234,3 +235,7 @@ def test_get_ancestor_roads_CorrectlyReturnsAncestorRoads():
         "src",
     ]
     assert x_roads == texas_ancestor_roads
+
+
+def test_get_global_root_desc_ReturnsCorrectObj():
+    assert get_global_root_desc() == "A"

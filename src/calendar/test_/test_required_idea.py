@@ -6,6 +6,7 @@ from src.calendar.required_idea import (
     sufffactunit_shop,
     Road,
 )
+from src.calendar.road import get_global_root_desc as root_desc
 from pytest import raises as pytest_raises
 
 
@@ -22,11 +23,10 @@ def test_RequiredCore_attributesExist():
 
 
 def test_RequiredHeir_clear_works():
-    flount_text = "flount"
-    email_road = f"{flount_text},work,check email"
+    email_road = f"{root_desc()},work,check email"
     sufffact_x = sufffactunit_shop(need=email_road)
     sufffacts = {sufffact_x.need: sufffact_x}
-    base = f"{flount_text},work"
+    base = f"{root_desc()},work"
     required = RequiredHeir(base=base, sufffacts=sufffacts)
     assert required._status is None
     required._status = True
@@ -301,11 +301,10 @@ def test_RequiredCore_find_replace_road_works():
 
 
 def test_RequiredCore_get_key_road():
-    flount_text = "flount"
-    email_road = f"{flount_text},work,check email"
+    email_road = f"{root_desc()},work,check email"
     sufffact_x = sufffactunit_shop(need=Road(email_road))
     sufffacts_x = {sufffact_x.need: sufffact_x}
-    base = Road(f"{flount_text},work")
+    base = Road(f"{root_desc()},work")
     required_x = RequiredHeir(base=base, sufffacts=sufffacts_x)
     assert required_x.get_key_road() == base
 

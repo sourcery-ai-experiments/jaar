@@ -4,6 +4,7 @@ from src.calendar.examples.example_calendars import (
 from src.calendar.member import MemberName, memberunit_shop
 from src.calendar.group import GroupName, grouplink_shop, groupunit_shop
 from src.calendar.calendar import CalendarUnit
+from src.calendar.road import get_global_root_desc as root_desc
 
 
 def test_calendar_get_tree_metrics_TracksRequiredsThatHaveNoAcptFactBases():
@@ -27,8 +28,8 @@ def test_calendar_get_missing_acptfact_bases_ReturnsAllBasesNotCoveredByAcptFact
     assert len(missing_bases) == 11
 
     lw_x.set_acptfact(
-        base="{flount_text},day_minute",
-        pick="{flount_text},day_minute",
+        base="{root_desc()},day_minute",
+        pick="{root_desc()},day_minute",
         open=0,
         nigh=1439,
     )

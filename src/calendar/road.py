@@ -70,14 +70,7 @@ def get_road_without_root_node(road: Road):  # road without terminus node
 
 
 def road_validate(road: Road):
-    if road == "":
-        return road
-    elif road is None:
-        return ""
-    # elif road[0] == ",":
-    #     return road[1:]
-    else:
-        return road
+    return road if road == "" or road is not None else ""
 
 
 def get_ancestor_roads(road: Road):
@@ -96,3 +89,7 @@ def get_ancestor_roads(road: Road):
     while temp_roads != []:
         x_roads.append(temp_roads.pop(len(temp_roads) - 1))
     return x_roads
+
+
+def get_global_root_desc():
+    return "A"

@@ -1,6 +1,7 @@
 from src.calendar.required_idea import acptfactunit_shop
 from src.calendar.lemma import Lemma, Lemmas
 from src.calendar.idea import IdeaKid
+from src.calendar.road import get_global_root_desc as root_desc
 
 
 def test_lemma_attributes_exist():
@@ -92,7 +93,6 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_denom():
 
 
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_2_denom():
-    flount_text = "flount"
     # Given
     lx = Lemmas()
     lx.set_empty_if_null()
@@ -101,7 +101,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_2_denom():
     src_idea = IdeaKid(_desc="range_x", _walk="src", _begin=0, _close=10080)
     idea_kid = IdeaKid(
         _desc="timerange1",
-        _walk=f"{flount_text},range_x",
+        _walk=f"{root_desc()},range_x",
         _begin=7200,
         _close=8440,
         _reest=False,

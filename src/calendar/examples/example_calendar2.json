@@ -1,58 +1,58 @@
 {
     "_acptfactunits": {
-        "flount,Aaron Donald sphere": {
-            "base": "flount,Aaron Donald sphere",
+        "A,Aaron Donald sphere": {
+            "base": "A,Aaron Donald sphere",
             "nigh": null,
             "open": null,
-            "pick": "flount,Aaron Donald sphere"
+            "pick": "A,Aaron Donald sphere"
         },
-        "flount,casa,cleaning,laundry basket status": {
-            "base": "flount,casa,cleaning,laundry basket status",
+        "A,casa,cleaning,laundry basket status": {
+            "base": "A,casa,cleaning,laundry basket status",
             "nigh": null,
             "open": null,
-            "pick": "flount,casa,cleaning,laundry basket status,not full"
+            "pick": "A,casa,cleaning,laundry basket status,not full"
         },
-        "flount,Internet": {
-            "base": "flount,Internet",
+        "A,Internet": {
+            "base": "A,Internet",
             "nigh": null,
             "open": null,
-            "pick": "flount,Internet"
+            "pick": "A,Internet"
         },
-        "flount,Moods": {
-            "base": "flount,Moods",
+        "A,Moods": {
+            "base": "A,Moods",
             "nigh": null,
             "open": null,
-            "pick": "flount,Moods"
+            "pick": "A,Moods"
         },
-        "flount,Nation-States": {
-            "base": "flount,Nation-States",
+        "A,Nation-States": {
+            "base": "A,Nation-States",
             "nigh": null,
             "open": null,
-            "pick": "flount,Nation-States"
+            "pick": "A,Nation-States"
         },
-        "flount,No Movie playing": {
-            "base": "flount,No Movie playing",
+        "A,No Movie playing": {
+            "base": "A,No Movie playing",
             "nigh": null,
             "open": null,
-            "pick": "flount,No Movie playing"
+            "pick": "A,No Movie playing"
         },
-        "flount,Seasons": {
-            "base": "flount,Seasons",
+        "A,Seasons": {
+            "base": "A,Seasons",
             "nigh": null,
             "open": null,
-            "pick": "flount,Seasons"
+            "pick": "A,Seasons"
         },
-        "flount,time,jajatime": {
-            "base": "flount,time,jajatime",
+        "A,time,jajatime": {
+            "base": "A,time,jajatime",
             "nigh": 1064130373,
             "open": 1064128320,
-            "pick": "flount,time,jajatime"
+            "pick": "A,time,jajatime"
         },
-        "flount,WaterBeing": {
-            "base": "flount,WaterBeing",
+        "A,WaterBeing": {
+            "base": "A,WaterBeing",
             "nigh": null,
             "open": null,
-            "pick": "flount,WaterBeing"
+            "pick": "A,WaterBeing"
         }
     },
     "_addin": null,
@@ -1051,12 +1051,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime,x,Sept 4th 2023 9am": {
+                                                "A,time,jajatime,x,Sept 4th 2023 9am": {
                                                     "divisor": null,
-                                                    "need": "flount,time,jajatime,x,Sept 4th 2023 9am",
+                                                    "need": "A,time,jajatime,x,Sept 4th 2023 9am",
                                                     "nigh": 1064350680.0,
                                                     "open": 1064350680.0
                                                 }
@@ -1106,12 +1106,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime,x,Sept 4th 2023 9am": {
+                                                "A,time,jajatime,x,Sept 4th 2023 9am": {
                                                     "divisor": null,
-                                                    "need": "flount,time,jajatime,x,Sept 4th 2023 9am",
+                                                    "need": "A,time,jajatime,x,Sept 4th 2023 9am",
                                                     "nigh": 1064350680.0,
                                                     "open": 1064350680.0
                                                 }
@@ -1161,12 +1161,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime,x,Sept 4th 2023 9am": {
+                                                "A,time,jajatime,x,Sept 4th 2023 9am": {
                                                     "divisor": null,
-                                                    "need": "flount,time,jajatime,x,Sept 4th 2023 9am",
+                                                    "need": "A,time,jajatime,x,Sept 4th 2023 9am",
                                                     "nigh": 1064350680.0,
                                                     "open": 1064350680.0
                                                 }
@@ -1206,12 +1206,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime,x2,Sept 4th 2023 9am": {
+                                        "A,time,jajatime,x2,Sept 4th 2023 9am": {
                                             "divisor": null,
-                                            "need": "flount,time,jajatime,x2,Sept 4th 2023 9am",
+                                            "need": "A,time,jajatime,x2,Sept 4th 2023 9am",
                                             "nigh": 1064350680.0,
                                             "open": 1064350680.0
                                         }
@@ -1249,12 +1249,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime,x,Sept 4th 2023 9am": {
+                                                "A,time,jajatime,x,Sept 4th 2023 9am": {
                                                     "divisor": null,
-                                                    "need": "flount,time,jajatime,x,Sept 4th 2023 9am",
+                                                    "need": "A,time,jajatime,x,Sept 4th 2023 9am",
                                                     "nigh": 1064350680.0,
                                                     "open": 1064350680.0
                                                 }
@@ -1304,12 +1304,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime,x,Sept 4th 2023 9am": {
+                                                "A,time,jajatime,x,Sept 4th 2023 9am": {
                                                     "divisor": null,
-                                                    "need": "flount,time,jajatime,x,Sept 4th 2023 9am",
+                                                    "need": "A,time,jajatime,x,Sept 4th 2023 9am",
                                                     "nigh": 1064350680.0,
                                                     "open": 1064350680.0
                                                 }
@@ -1359,12 +1359,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime,x,Sept 4th 2023 9am": {
+                                                "A,time,jajatime,x,Sept 4th 2023 9am": {
                                                     "divisor": null,
-                                                    "need": "flount,time,jajatime,x,Sept 4th 2023 9am",
+                                                    "need": "A,time,jajatime,x,Sept 4th 2023 9am",
                                                     "nigh": 1064350680.0,
                                                     "open": 1064350680.0
                                                 }
@@ -1414,12 +1414,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime,x,Sept 4th 2023 9am": {
+                                                "A,time,jajatime,x,Sept 4th 2023 9am": {
                                                     "divisor": null,
-                                                    "need": "flount,time,jajatime,x,Sept 4th 2023 9am",
+                                                    "need": "A,time,jajatime,x,Sept 4th 2023 9am",
                                                     "nigh": 1064350680.0,
                                                     "open": 1064350680.0
                                                 }
@@ -1469,12 +1469,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime,x,Sept 4th 2023 9am": {
+                                                "A,time,jajatime,x,Sept 4th 2023 9am": {
                                                     "divisor": null,
-                                                    "need": "flount,time,jajatime,x,Sept 4th 2023 9am",
+                                                    "need": "A,time,jajatime,x,Sept 4th 2023 9am",
                                                     "nigh": 1064350680.0,
                                                     "open": 1064350680.0
                                                 }
@@ -1556,12 +1556,12 @@
                                             "_problem_bool": false,
                                             "_reest": null,
                                             "_requiredunits": {
-                                                "flount,time,jajatime": {
-                                                    "base": "flount,time,jajatime",
+                                                "A,time,jajatime": {
+                                                    "base": "A,time,jajatime",
                                                     "sufffacts": {
-                                                        "flount,time,jajatime,day": {
+                                                        "A,time,jajatime,day": {
                                                             "divisor": 1440,
-                                                            "need": "flount,time,jajatime,day",
+                                                            "need": "A,time,jajatime,day",
                                                             "nigh": 360,
                                                             "open": 360
                                                         }
@@ -1674,12 +1674,12 @@
                                             "_problem_bool": false,
                                             "_reest": null,
                                             "_requiredunits": {
-                                                "flount,time,jajatime": {
-                                                    "base": "flount,time,jajatime",
+                                                "A,time,jajatime": {
+                                                    "base": "A,time,jajatime",
                                                     "sufffacts": {
-                                                        "flount,time,jajatime,day": {
+                                                        "A,time,jajatime,day": {
                                                             "divisor": 1440,
-                                                            "need": "flount,time,jajatime,day",
+                                                            "need": "A,time,jajatime,day",
                                                             "nigh": 360,
                                                             "open": 360
                                                         }
@@ -1698,12 +1698,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime,day": {
+                                                "A,time,jajatime,day": {
                                                     "divisor": 1440,
-                                                    "need": "flount,time,jajatime,day",
+                                                    "need": "A,time,jajatime,day",
                                                     "nigh": 360,
                                                     "open": 360
                                                 }
@@ -1731,12 +1731,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime,day": {
+                                                "A,time,jajatime,day": {
                                                     "divisor": 1440,
-                                                    "need": "flount,time,jajatime,day",
+                                                    "need": "A,time,jajatime,day",
                                                     "nigh": 450,
                                                     "open": 450
                                                 }
@@ -1764,12 +1764,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime,day": {
+                                                "A,time,jajatime,day": {
                                                     "divisor": 1440,
-                                                    "need": "flount,time,jajatime,day",
+                                                    "need": "A,time,jajatime,day",
                                                     "nigh": 525,
                                                     "open": 525
                                                 }
@@ -1788,12 +1788,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime,day": {
+                                        "A,time,jajatime,day": {
                                             "divisor": 1440,
-                                            "need": "flount,time,jajatime,day",
+                                            "need": "A,time,jajatime,day",
                                             "nigh": 360,
                                             "open": 360
                                         }
@@ -1831,12 +1831,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime,day": {
+                                                "A,time,jajatime,day": {
                                                     "divisor": 1440,
-                                                    "need": "flount,time,jajatime,day",
+                                                    "need": "A,time,jajatime,day",
                                                     "nigh": 540,
                                                     "open": 540
                                                 }
@@ -1864,12 +1864,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime,day": {
+                                                "A,time,jajatime,day": {
                                                     "divisor": 1440,
-                                                    "need": "flount,time,jajatime,day",
+                                                    "need": "A,time,jajatime,day",
                                                     "nigh": 540,
                                                     "open": 540
                                                 }
@@ -1907,12 +1907,12 @@
                                             "_problem_bool": false,
                                             "_reest": null,
                                             "_requiredunits": {
-                                                "flount,time,jajatime": {
-                                                    "base": "flount,time,jajatime",
+                                                "A,time,jajatime": {
+                                                    "base": "A,time,jajatime",
                                                     "sufffacts": {
-                                                        "flount,time,jajatime,day": {
+                                                        "A,time,jajatime,day": {
                                                             "divisor": 1440,
-                                                            "need": "flount,time,jajatime,day",
+                                                            "need": "A,time,jajatime,day",
                                                             "nigh": 540,
                                                             "open": 540
                                                         }
@@ -2025,12 +2025,12 @@
                                             "_problem_bool": false,
                                             "_reest": null,
                                             "_requiredunits": {
-                                                "flount,time,jajatime": {
-                                                    "base": "flount,time,jajatime",
+                                                "A,time,jajatime": {
+                                                    "base": "A,time,jajatime",
                                                     "sufffacts": {
-                                                        "flount,time,jajatime,day": {
+                                                        "A,time,jajatime,day": {
                                                             "divisor": 1440,
-                                                            "need": "flount,time,jajatime,day",
+                                                            "need": "A,time,jajatime,day",
                                                             "nigh": 480,
                                                             "open": 480
                                                         }
@@ -2058,12 +2058,12 @@
                                             "_problem_bool": false,
                                             "_reest": null,
                                             "_requiredunits": {
-                                                "flount,time,jajatime": {
-                                                    "base": "flount,time,jajatime",
+                                                "A,time,jajatime": {
+                                                    "base": "A,time,jajatime",
                                                     "sufffacts": {
-                                                        "flount,time,jajatime,day": {
+                                                        "A,time,jajatime,day": {
                                                             "divisor": 1440,
-                                                            "need": "flount,time,jajatime,day",
+                                                            "need": "A,time,jajatime,day",
                                                             "nigh": 540,
                                                             "open": 540
                                                         }
@@ -2103,12 +2103,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime,day": {
+                                                "A,time,jajatime,day": {
                                                     "divisor": 1440,
-                                                    "need": "flount,time,jajatime,day",
+                                                    "need": "A,time,jajatime,day",
                                                     "nigh": 1020,
                                                     "open": 1020
                                                 }
@@ -2136,12 +2136,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime,day": {
+                                                "A,time,jajatime,day": {
                                                     "divisor": 1440,
-                                                    "need": "flount,time,jajatime,day",
+                                                    "need": "A,time,jajatime,day",
                                                     "nigh": 540,
                                                     "open": 540
                                                 }
@@ -2179,12 +2179,12 @@
                                             "_problem_bool": false,
                                             "_reest": null,
                                             "_requiredunits": {
-                                                "flount,time,jajatime": {
-                                                    "base": "flount,time,jajatime",
+                                                "A,time,jajatime": {
+                                                    "base": "A,time,jajatime",
                                                     "sufffacts": {
-                                                        "flount,time,jajatime,day": {
+                                                        "A,time,jajatime,day": {
                                                             "divisor": 1440,
-                                                            "need": "flount,time,jajatime,day",
+                                                            "need": "A,time,jajatime,day",
                                                             "nigh": 540,
                                                             "open": 540
                                                         }
@@ -2203,12 +2203,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime,day": {
+                                                "A,time,jajatime,day": {
                                                     "divisor": 1440,
-                                                    "need": "flount,time,jajatime,day",
+                                                    "need": "A,time,jajatime,day",
                                                     "nigh": 540,
                                                     "open": 540
                                                 }
@@ -2227,12 +2227,12 @@
                             "_problem_bool": false,
                             "_reest": false,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime,day": {
+                                        "A,time,jajatime,day": {
                                             "divisor": 1440.0,
-                                            "need": "flount,time,jajatime,day",
+                                            "need": "A,time,jajatime,day",
                                             "nigh": 1080.0,
                                             "open": 540.0
                                         }
@@ -2251,12 +2251,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "flount,time,jajatime": {
-                            "base": "flount,time,jajatime",
+                        "A,time,jajatime": {
+                            "base": "A,time,jajatime",
                             "sufffacts": {
-                                "flount,time,jajatime,day": {
+                                "A,time,jajatime,day": {
                                     "divisor": 1440,
-                                    "need": "flount,time,jajatime,day",
+                                    "need": "A,time,jajatime,day",
                                     "nigh": 360,
                                     "open": 360
                                 }
@@ -2346,12 +2346,12 @@
                                                     "_problem_bool": false,
                                                     "_reest": null,
                                                     "_requiredunits": {
-                                                        "flount,Nation-States": {
-                                                            "base": "flount,Nation-States",
+                                                        "A,Nation-States": {
+                                                            "base": "A,Nation-States",
                                                             "sufffacts": {
-                                                                "flount,Nation-States,USA,Portland OR,Downtown,Apartment Building,Apt 450": {
+                                                                "A,Nation-States,USA,Portland OR,Downtown,Apartment Building,Apt 450": {
                                                                     "divisor": null,
-                                                                    "need": "flount,Nation-States,USA,Portland OR,Downtown,Apartment Building,Apt 450",
+                                                                    "need": "A,Nation-States,USA,Portland OR,Downtown,Apartment Building,Apt 450",
                                                                     "nigh": null,
                                                                     "open": null
                                                                 }
@@ -2389,12 +2389,12 @@
                                                             "_problem_bool": false,
                                                             "_reest": null,
                                                             "_requiredunits": {
-                                                                "flount,Internet": {
-                                                                    "base": "flount,Internet",
+                                                                "A,Internet": {
+                                                                    "base": "A,Internet",
                                                                     "sufffacts": {
-                                                                        "flount,Internet,Youtube": {
+                                                                        "A,Internet,Youtube": {
                                                                             "divisor": null,
-                                                                            "need": "flount,Internet,Youtube",
+                                                                            "need": "A,Internet,Youtube",
                                                                             "nigh": null,
                                                                             "open": null
                                                                         }
@@ -2413,12 +2413,12 @@
                                                     "_problem_bool": false,
                                                     "_reest": null,
                                                     "_requiredunits": {
-                                                        "flount,Nation-States": {
-                                                            "base": "flount,Nation-States",
+                                                        "A,Nation-States": {
+                                                            "base": "A,Nation-States",
                                                             "sufffacts": {
-                                                                "flount,Nation-States,USA,Portland OR,Downtown,Apartment Building,10th floor garden": {
+                                                                "A,Nation-States,USA,Portland OR,Downtown,Apartment Building,10th floor garden": {
                                                                     "divisor": null,
-                                                                    "need": "flount,Nation-States,USA,Portland OR,Downtown,Apartment Building,10th floor garden",
+                                                                    "need": "A,Nation-States,USA,Portland OR,Downtown,Apartment Building,10th floor garden",
                                                                     "nigh": null,
                                                                     "open": null
                                                                 }
@@ -2446,12 +2446,12 @@
                                                     "_problem_bool": false,
                                                     "_reest": null,
                                                     "_requiredunits": {
-                                                        "flount,Moods": {
-                                                            "base": "flount,Moods",
+                                                        "A,Moods": {
+                                                            "base": "A,Moods",
                                                             "sufffacts": {
-                                                                "flount,Moods,hungry": {
+                                                                "A,Moods,hungry": {
                                                                     "divisor": null,
-                                                                    "need": "flount,Moods,hungry",
+                                                                    "need": "A,Moods,hungry",
                                                                     "nigh": null,
                                                                     "open": null
                                                                 }
@@ -2479,12 +2479,12 @@
                                                     "_problem_bool": false,
                                                     "_reest": null,
                                                     "_requiredunits": {
-                                                        "flount,Nation-States": {
-                                                            "base": "flount,Nation-States",
+                                                        "A,Nation-States": {
+                                                            "base": "A,Nation-States",
                                                             "sufffacts": {
-                                                                "flount,Nation-States,USA,Portland OR,Downtown,Apartment Building,Office": {
+                                                                "A,Nation-States,USA,Portland OR,Downtown,Apartment Building,Office": {
                                                                     "divisor": null,
-                                                                    "need": "flount,Nation-States,USA,Portland OR,Downtown,Apartment Building,Office",
+                                                                    "need": "A,Nation-States,USA,Portland OR,Downtown,Apartment Building,Office",
                                                                     "nigh": null,
                                                                     "open": null
                                                                 }
@@ -2503,12 +2503,12 @@
                                             "_problem_bool": false,
                                             "_reest": null,
                                             "_requiredunits": {
-                                                "flount,Nation-States": {
-                                                    "base": "flount,Nation-States",
+                                                "A,Nation-States": {
+                                                    "base": "A,Nation-States",
                                                     "sufffacts": {
-                                                        "flount,Nation-States,USA,Portland OR,Downtown,Apartment Building": {
+                                                        "A,Nation-States,USA,Portland OR,Downtown,Apartment Building": {
                                                             "divisor": null,
-                                                            "need": "flount,Nation-States,USA,Portland OR,Downtown,Apartment Building",
+                                                            "need": "A,Nation-States,USA,Portland OR,Downtown,Apartment Building",
                                                             "nigh": null,
                                                             "open": null
                                                         }
@@ -2546,12 +2546,12 @@
                                                     "_problem_bool": false,
                                                     "_reest": null,
                                                     "_requiredunits": {
-                                                        "flount,Seasons": {
-                                                            "base": "flount,Seasons",
+                                                        "A,Seasons": {
+                                                            "base": "A,Seasons",
                                                             "sufffacts": {
-                                                                "flount,Seasons,Summer": {
+                                                                "A,Seasons,Summer": {
                                                                     "divisor": null,
-                                                                    "need": "flount,Seasons,Summer",
+                                                                    "need": "A,Seasons,Summer",
                                                                     "nigh": null,
                                                                     "open": null
                                                                 }
@@ -2579,12 +2579,12 @@
                                                     "_problem_bool": false,
                                                     "_reest": null,
                                                     "_requiredunits": {
-                                                        "flount,Nation-States": {
-                                                            "base": "flount,Nation-States",
+                                                        "A,Nation-States": {
+                                                            "base": "A,Nation-States",
                                                             "sufffacts": {
-                                                                "flount,Nation-States,USA,Portland OR,Downtown,PSU,library": {
+                                                                "A,Nation-States,USA,Portland OR,Downtown,PSU,library": {
                                                                     "divisor": null,
-                                                                    "need": "flount,Nation-States,USA,Portland OR,Downtown,PSU,library",
+                                                                    "need": "A,Nation-States,USA,Portland OR,Downtown,PSU,library",
                                                                     "nigh": null,
                                                                     "open": null
                                                                 }
@@ -2612,12 +2612,12 @@
                                                     "_problem_bool": false,
                                                     "_reest": null,
                                                     "_requiredunits": {
-                                                        "flount,Nation-States": {
-                                                            "base": "flount,Nation-States",
+                                                        "A,Nation-States": {
+                                                            "base": "A,Nation-States",
                                                             "sufffacts": {
-                                                                "flount,Nation-States,USA,Portland OR,Downtown,PSU,Stott Field": {
+                                                                "A,Nation-States,USA,Portland OR,Downtown,PSU,Stott Field": {
                                                                     "divisor": null,
-                                                                    "need": "flount,Nation-States,USA,Portland OR,Downtown,PSU,Stott Field",
+                                                                    "need": "A,Nation-States,USA,Portland OR,Downtown,PSU,Stott Field",
                                                                     "nigh": null,
                                                                     "open": null
                                                                 }
@@ -2645,12 +2645,12 @@
                                                     "_problem_bool": false,
                                                     "_reest": null,
                                                     "_requiredunits": {
-                                                        "flount,Nation-States": {
-                                                            "base": "flount,Nation-States",
+                                                        "A,Nation-States": {
+                                                            "base": "A,Nation-States",
                                                             "sufffacts": {
-                                                                "flount,Nation-States,USA,Portland OR,Downtown,PSU,Pool": {
+                                                                "A,Nation-States,USA,Portland OR,Downtown,PSU,Pool": {
                                                                     "divisor": null,
-                                                                    "need": "flount,Nation-States,USA,Portland OR,Downtown,PSU,Pool",
+                                                                    "need": "A,Nation-States,USA,Portland OR,Downtown,PSU,Pool",
                                                                     "nigh": null,
                                                                     "open": null
                                                                 }
@@ -2669,12 +2669,12 @@
                                             "_problem_bool": false,
                                             "_reest": null,
                                             "_requiredunits": {
-                                                "flount,Nation-States": {
-                                                    "base": "flount,Nation-States",
+                                                "A,Nation-States": {
+                                                    "base": "A,Nation-States",
                                                     "sufffacts": {
-                                                        "flount,Nation-States,USA,Portland OR,Downtown,PSU": {
+                                                        "A,Nation-States,USA,Portland OR,Downtown,PSU": {
                                                             "divisor": null,
-                                                            "need": "flount,Nation-States,USA,Portland OR,Downtown,PSU",
+                                                            "need": "A,Nation-States,USA,Portland OR,Downtown,PSU",
                                                             "nigh": null,
                                                             "open": null
                                                         }
@@ -2693,12 +2693,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,Nation-States": {
-                                            "base": "flount,Nation-States",
+                                        "A,Nation-States": {
+                                            "base": "A,Nation-States",
                                             "sufffacts": {
-                                                "flount,Nation-States,USA,Portland OR,Downtown": {
+                                                "A,Nation-States,USA,Portland OR,Downtown": {
                                                     "divisor": null,
-                                                    "need": "flount,Nation-States,USA,Portland OR,Downtown",
+                                                    "need": "A,Nation-States,USA,Portland OR,Downtown",
                                                     "nigh": null,
                                                     "open": null
                                                 }
@@ -2717,12 +2717,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,Nation-States": {
-                                    "base": "flount,Nation-States",
+                                "A,Nation-States": {
+                                    "base": "A,Nation-States",
                                     "sufffacts": {
-                                        "flount,Nation-States,USA,Portland OR": {
+                                        "A,Nation-States,USA,Portland OR": {
                                             "divisor": null,
-                                            "need": "flount,Nation-States,USA,Portland OR",
+                                            "need": "A,Nation-States,USA,Portland OR",
                                             "nigh": null,
                                             "open": null
                                         }
@@ -2750,12 +2750,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,Nation-States": {
-                                    "base": "flount,Nation-States",
+                                "A,Nation-States": {
+                                    "base": "A,Nation-States",
                                     "sufffacts": {
-                                        "flount,Nation-States,USA,Texas": {
+                                        "A,Nation-States,USA,Texas": {
                                             "divisor": null,
-                                            "need": "flount,Nation-States,USA,Texas",
+                                            "need": "A,Nation-States,USA,Texas",
                                             "nigh": null,
                                             "open": null
                                         }
@@ -2774,12 +2774,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "flount,Nation-States": {
-                            "base": "flount,Nation-States",
+                        "A,Nation-States": {
+                            "base": "A,Nation-States",
                             "sufffacts": {
-                                "flount,Nation-States,USA": {
+                                "A,Nation-States,USA": {
                                     "divisor": null,
-                                    "need": "flount,Nation-States,USA",
+                                    "need": "A,Nation-States,USA",
                                     "nigh": null,
                                     "open": null
                                 }
@@ -2807,12 +2807,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "flount,Nation-States": {
-                            "base": "flount,Nation-States",
+                        "A,Nation-States": {
+                            "base": "A,Nation-States",
                             "sufffacts": {
-                                "flount,Nation-States,France2": {
+                                "A,Nation-States,France2": {
                                     "divisor": null,
-                                    "need": "flount,Nation-States,France2",
+                                    "need": "A,Nation-States,France2",
                                     "nigh": null,
                                     "open": null
                                 }
@@ -2942,12 +2942,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime,day": {
+                                        "A,time,jajatime,day": {
                                             "divisor": 1440,
-                                            "need": "flount,time,jajatime,day",
+                                            "need": "A,time,jajatime,day",
                                             "nigh": 420,
                                             "open": 420
                                         }
@@ -2981,12 +2981,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 1440.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 420.0,
                                             "open": 420.0
                                         }
@@ -3020,12 +3020,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 10080.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 3420.0,
                                             "open": 3420.0
                                         }
@@ -3059,12 +3059,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 1440.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 420.0,
                                             "open": 420.0
                                         }
@@ -3098,12 +3098,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 1440.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 420.0,
                                             "open": 420.0
                                         }
@@ -3131,12 +3131,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 1440.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 1080.0,
                                             "open": 1080.0
                                         }
@@ -3170,12 +3170,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 80640.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 3420.0,
                                             "open": 3420.0
                                         }
@@ -3209,12 +3209,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 1440.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 420.0,
                                             "open": 420.0
                                         }
@@ -3248,12 +3248,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 80640.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 4860.0,
                                             "open": 4860.0
                                         }
@@ -3287,12 +3287,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 10080.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 3420.0,
                                             "open": 3420.0
                                         }
@@ -3330,12 +3330,12 @@
                                     "_problem_bool": false,
                                     "_reest": false,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime": {
+                                                "A,time,jajatime": {
                                                     "divisor": 10080.0,
-                                                    "need": "flount,time,jajatime",
+                                                    "need": "A,time,jajatime",
                                                     "nigh": 9180.0,
                                                     "open": 9180.0
                                                 }
@@ -3363,12 +3363,12 @@
                                     "_problem_bool": false,
                                     "_reest": false,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime": {
+                                                "A,time,jajatime": {
                                                     "divisor": 10080.0,
-                                                    "need": "flount,time,jajatime",
+                                                    "need": "A,time,jajatime",
                                                     "nigh": 9180.0,
                                                     "open": 9180.0
                                                 }
@@ -3408,12 +3408,12 @@
                             "_problem_bool": false,
                             "_reest": false,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 10080.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 9180.0,
                                             "open": 9180.0
                                         }
@@ -3447,12 +3447,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 10080.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 3420.0,
                                             "open": 3420.0
                                         }
@@ -3496,12 +3496,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime": {
+                                                "A,time,jajatime": {
                                                     "divisor": 10080.0,
-                                                    "need": "flount,time,jajatime",
+                                                    "need": "A,time,jajatime",
                                                     "nigh": 9600.0,
                                                     "open": 9600.0
                                                 }
@@ -3578,12 +3578,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime": {
+                                                "A,time,jajatime": {
                                                     "divisor": 10080.0,
-                                                    "need": "flount,time,jajatime",
+                                                    "need": "A,time,jajatime",
                                                     "nigh": 3360.0,
                                                     "open": 3360.0
                                                 }
@@ -3611,12 +3611,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime": {
+                                                "A,time,jajatime": {
                                                     "divisor": 10080.0,
-                                                    "need": "flount,time,jajatime",
+                                                    "need": "A,time,jajatime",
                                                     "nigh": 6242.0,
                                                     "open": 6242.0
                                                 }
@@ -3650,12 +3650,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime": {
+                                                "A,time,jajatime": {
                                                     "divisor": 10080.0,
-                                                    "need": "flount,time,jajatime",
+                                                    "need": "A,time,jajatime",
                                                     "nigh": 3420.0,
                                                     "open": 3420.0
                                                 }
@@ -3689,12 +3689,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime": {
+                                                "A,time,jajatime": {
                                                     "divisor": 10080.0,
-                                                    "need": "flount,time,jajatime",
+                                                    "need": "A,time,jajatime",
                                                     "nigh": 7200.0,
                                                     "open": 7200.0
                                                 }
@@ -3771,12 +3771,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime": {
+                                                "A,time,jajatime": {
                                                     "divisor": 10080.0,
-                                                    "need": "flount,time,jajatime",
+                                                    "need": "A,time,jajatime",
                                                     "nigh": 4800.0,
                                                     "open": 4800.0
                                                 }
@@ -3810,12 +3810,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime": {
+                                                "A,time,jajatime": {
                                                     "divisor": 10080.0,
-                                                    "need": "flount,time,jajatime",
+                                                    "need": "A,time,jajatime",
                                                     "nigh": 6240.0,
                                                     "open": 6240.0
                                                 }
@@ -3873,12 +3873,12 @@
                     "_problem_bool": false,
                     "_reest": false,
                     "_requiredunits": {
-                        "flount,time,jajatime": {
-                            "base": "flount,time,jajatime",
+                        "A,time,jajatime": {
+                            "base": "A,time,jajatime",
                             "sufffacts": {
-                                "flount,time,jajatime": {
+                                "A,time,jajatime": {
                                     "divisor": 10080.0,
-                                    "need": "flount,time,jajatime",
+                                    "need": "A,time,jajatime",
                                     "nigh": 480.0,
                                     "open": 480.0
                                 }
@@ -3906,12 +3906,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "flount,Moods": {
-                            "base": "flount,Moods",
+                        "A,Moods": {
+                            "base": "A,Moods",
                             "sufffacts": {
-                                "flount,Moods,Happy,Happy - angerish": {
+                                "A,Moods,Happy,Happy - angerish": {
                                     "divisor": null,
-                                    "need": "flount,Moods,Happy,Happy - angerish",
+                                    "need": "A,Moods,Happy,Happy - angerish",
                                     "nigh": null,
                                     "open": null
                                 }
@@ -3955,12 +3955,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 10080.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 3360.0,
                                             "open": 3360.0
                                         }
@@ -3988,12 +3988,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 1440.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 420.0,
                                             "open": 420.0
                                         }
@@ -4027,12 +4027,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 60480.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 660.0,
                                             "open": 660.0
                                         }
@@ -4066,12 +4066,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 1440.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 600.0,
                                             "open": 600.0
                                         }
@@ -4105,12 +4105,12 @@
                             "_problem_bool": false,
                             "_reest": false,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 10080.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 3420.0,
                                             "open": 3420.0
                                         }
@@ -4144,12 +4144,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 10080.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 3420.0,
                                             "open": 3420.0
                                         }
@@ -4183,12 +4183,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 30240.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 3420.0,
                                             "open": 3420.0
                                         }
@@ -4222,12 +4222,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 10080.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 1200.0,
                                             "open": 1200.0
                                         }
@@ -4261,12 +4261,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 40320.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 3420.0,
                                             "open": 3420.0
                                         }
@@ -4300,12 +4300,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 10080.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 4800.0,
                                             "open": 4800.0
                                         }
@@ -4339,12 +4339,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 10080.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 9120.0,
                                             "open": 9120.0
                                         }
@@ -4442,23 +4442,23 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,casa,cleaning,laundry basket status": {
-                                    "base": "flount,casa,cleaning,laundry basket status",
+                                "A,casa,cleaning,laundry basket status": {
+                                    "base": "A,casa,cleaning,laundry basket status",
                                     "sufffacts": {
-                                        "flount,casa,cleaning,laundry basket status,full": {
+                                        "A,casa,cleaning,laundry basket status,full": {
                                             "divisor": null,
-                                            "need": "flount,casa,cleaning,laundry basket status,full",
+                                            "need": "A,casa,cleaning,laundry basket status,full",
                                             "nigh": null,
                                             "open": null
                                         }
                                     }
                                 },
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 10080.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 3420.0,
                                             "open": 3420.0
                                         }
@@ -4492,23 +4492,23 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,casa,cleaning,laundry basket status": {
-                                    "base": "flount,casa,cleaning,laundry basket status",
+                                "A,casa,cleaning,laundry basket status": {
+                                    "base": "A,casa,cleaning,laundry basket status",
                                     "sufffacts": {
-                                        "flount,casa,cleaning,laundry basket status,full": {
+                                        "A,casa,cleaning,laundry basket status,full": {
                                             "divisor": null,
-                                            "need": "flount,casa,cleaning,laundry basket status,full",
+                                            "need": "A,casa,cleaning,laundry basket status,full",
                                             "nigh": null,
                                             "open": null
                                         }
                                     }
                                 },
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 10080.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 420.0,
                                             "open": 420.0
                                         }
@@ -4536,23 +4536,23 @@
                             "_problem_bool": false,
                             "_reest": false,
                             "_requiredunits": {
-                                "flount,casa,cleaning,laundry basket status": {
-                                    "base": "flount,casa,cleaning,laundry basket status",
+                                "A,casa,cleaning,laundry basket status": {
+                                    "base": "A,casa,cleaning,laundry basket status",
                                     "sufffacts": {
-                                        "flount,casa,cleaning,laundry basket status,full": {
+                                        "A,casa,cleaning,laundry basket status,full": {
                                             "divisor": null,
-                                            "need": "flount,casa,cleaning,laundry basket status,full",
+                                            "need": "A,casa,cleaning,laundry basket status,full",
                                             "nigh": null,
                                             "open": null
                                         }
                                     }
                                 },
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 10080.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 7740.0,
                                             "open": 7740.0
                                         }
@@ -4586,23 +4586,23 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,casa,cleaning,laundry basket status": {
-                                    "base": "flount,casa,cleaning,laundry basket status",
+                                "A,casa,cleaning,laundry basket status": {
+                                    "base": "A,casa,cleaning,laundry basket status",
                                     "sufffacts": {
-                                        "flount,casa,cleaning,laundry basket status,full": {
+                                        "A,casa,cleaning,laundry basket status,full": {
                                             "divisor": null,
-                                            "need": "flount,casa,cleaning,laundry basket status,full",
+                                            "need": "A,casa,cleaning,laundry basket status,full",
                                             "nigh": null,
                                             "open": null
                                         }
                                     }
                                 },
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 10080.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 6300.0,
                                             "open": 6300.0
                                         }
@@ -4636,12 +4636,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 1440.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 480.0,
                                             "open": 480.0
                                         }
@@ -4669,12 +4669,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 1440.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 480.0,
                                             "open": 480.0
                                         }
@@ -4708,12 +4708,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 10080.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 4740.0,
                                             "open": 4740.0
                                         }
@@ -4747,12 +4747,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 10080.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 9060.0,
                                             "open": 9060.0
                                         }
@@ -4786,12 +4786,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 10080.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 3420.0,
                                             "open": 3420.0
                                         }
@@ -4825,12 +4825,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 10080.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 7620.0,
                                             "open": 7620.0
                                         }
@@ -4864,12 +4864,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 10080.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 3420.0,
                                             "open": 3420.0
                                         }
@@ -4903,12 +4903,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 10080.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 3420.0,
                                             "open": 3420.0
                                         }
@@ -4927,12 +4927,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "flount,Nation-States": {
-                            "base": "flount,Nation-States",
+                        "A,Nation-States": {
+                            "base": "A,Nation-States",
                             "sufffacts": {
-                                "flount,Nation-States,USA,Portland OR,Downtown,Apartment Building,Apt 450": {
+                                "A,Nation-States,USA,Portland OR,Downtown,Apartment Building,Apt 450": {
                                     "divisor": null,
-                                    "need": "flount,Nation-States,USA,Portland OR,Downtown,Apartment Building,Apt 450",
+                                    "need": "A,Nation-States,USA,Portland OR,Downtown,Apartment Building,Apt 450",
                                     "nigh": null,
                                     "open": null
                                 }
@@ -4976,12 +4976,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime,x2,monthly 1st business day,2023 Feb 9am": {
+                                        "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am": {
                                             "divisor": null,
-                                            "need": "flount,time,jajatime,x2,monthly 1st business day,2023 Feb 9am",
+                                            "need": "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am",
                                             "nigh": 1064041020.0,
                                             "open": 1064041020.0
                                         }
@@ -5015,12 +5015,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime,x2,monthly 1st business day,2023 Feb 9am": {
+                                        "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am": {
                                             "divisor": null,
-                                            "need": "flount,time,jajatime,x2,monthly 1st business day,2023 Feb 9am",
+                                            "need": "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am",
                                             "nigh": 1064041020.0,
                                             "open": 1064041020.0
                                         }
@@ -5054,12 +5054,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime,x2,monthly 1st business day,2023 Feb 9am": {
+                                        "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am": {
                                             "divisor": null,
-                                            "need": "flount,time,jajatime,x2,monthly 1st business day,2023 Feb 9am",
+                                            "need": "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am",
                                             "nigh": 1064041020.0,
                                             "open": 1064041020.0
                                         }
@@ -5093,12 +5093,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime,x2,monthly 1st business day,2023 Feb 9am": {
+                                        "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am": {
                                             "divisor": null,
-                                            "need": "flount,time,jajatime,x2,monthly 1st business day,2023 Feb 9am",
+                                            "need": "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am",
                                             "nigh": 1064041020.0,
                                             "open": 1064041020.0
                                         }
@@ -5554,12 +5554,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "flount,Internet": {
-                            "base": "flount,Internet",
+                        "A,Internet": {
+                            "base": "A,Internet",
                             "sufffacts": {
-                                "flount,Internet,Facebook": {
+                                "A,Internet,Facebook": {
                                     "divisor": null,
-                                    "need": "flount,Internet,Facebook",
+                                    "need": "A,Internet,Facebook",
                                     "nigh": null,
                                     "open": null
                                 }
@@ -5587,12 +5587,12 @@
                     "_problem_bool": false,
                     "_reest": false,
                     "_requiredunits": {
-                        "flount,time,jajatime": {
-                            "base": "flount,time,jajatime",
+                        "A,time,jajatime": {
+                            "base": "A,time,jajatime",
                             "sufffacts": {
-                                "flount,time,jajatime,day": {
+                                "A,time,jajatime,day": {
                                     "divisor": 1440.0,
-                                    "need": "flount,time,jajatime,day",
+                                    "need": "A,time,jajatime,day",
                                     "nigh": 480.0,
                                     "open": 480.0
                                 }
@@ -5626,12 +5626,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "flount,time,jajatime": {
-                            "base": "flount,time,jajatime",
+                        "A,time,jajatime": {
+                            "base": "A,time,jajatime",
                             "sufffacts": {
-                                "flount,time,jajatime": {
+                                "A,time,jajatime": {
                                     "divisor": 1440.0,
-                                    "need": "flount,time,jajatime",
+                                    "need": "A,time,jajatime",
                                     "nigh": 480.0,
                                     "open": 480.0
                                 }
@@ -5675,23 +5675,23 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,Nation-States": {
-                                    "base": "flount,Nation-States",
+                                "A,Nation-States": {
+                                    "base": "A,Nation-States",
                                     "sufffacts": {
-                                        "flount,Nation-States,USA,Portland OR": {
+                                        "A,Nation-States,USA,Portland OR": {
                                             "divisor": null,
-                                            "need": "flount,Nation-States,USA,Portland OR",
+                                            "need": "A,Nation-States,USA,Portland OR",
                                             "nigh": null,
                                             "open": null
                                         }
                                     }
                                 },
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 10080.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 5340.0,
                                             "open": 5340.0
                                         }
@@ -5725,23 +5725,23 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,Nation-States": {
-                                    "base": "flount,Nation-States",
+                                "A,Nation-States": {
+                                    "base": "A,Nation-States",
                                     "sufffacts": {
-                                        "flount,Nation-States,USA,Portland OR": {
+                                        "A,Nation-States,USA,Portland OR": {
                                             "divisor": null,
-                                            "need": "flount,Nation-States,USA,Portland OR",
+                                            "need": "A,Nation-States,USA,Portland OR",
                                             "nigh": null,
                                             "open": null
                                         }
                                     }
                                 },
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 60480.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 840.0,
                                             "open": 840.0
                                         }
@@ -5760,12 +5760,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "flount,Nation-States": {
-                            "base": "flount,Nation-States",
+                        "A,Nation-States": {
+                            "base": "A,Nation-States",
                             "sufffacts": {
-                                "flount,Nation-States,USA,Portland OR": {
+                                "A,Nation-States,USA,Portland OR": {
                                     "divisor": null,
-                                    "need": "flount,Nation-States,USA,Portland OR",
+                                    "need": "A,Nation-States,USA,Portland OR",
                                     "nigh": null,
                                     "open": null
                                 }
@@ -5853,12 +5853,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,Aaron Donald sphere": {
-                                    "base": "flount,Aaron Donald sphere",
+                                "A,Aaron Donald sphere": {
+                                    "base": "A,Aaron Donald sphere",
                                     "sufffacts": {
-                                        "flount,Aaron Donald sphere,interesting": {
+                                        "A,Aaron Donald sphere,interesting": {
                                             "divisor": null,
-                                            "need": "flount,Aaron Donald sphere,interesting",
+                                            "need": "A,Aaron Donald sphere,interesting",
                                             "nigh": null,
                                             "open": null
                                         }
@@ -5877,12 +5877,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "flount,Aaron Donald sphere": {
-                            "base": "flount,Aaron Donald sphere",
+                        "A,Aaron Donald sphere": {
+                            "base": "A,Aaron Donald sphere",
                             "sufffacts": {
-                                "flount,Aaron Donald sphere,interesting": {
+                                "A,Aaron Donald sphere,interesting": {
                                     "divisor": null,
-                                    "need": "flount,Aaron Donald sphere,interesting",
+                                    "need": "A,Aaron Donald sphere,interesting",
                                     "nigh": null,
                                     "open": null
                                 }
@@ -5926,23 +5926,23 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,Aaron Donald sphere": {
-                                    "base": "flount,Aaron Donald sphere",
+                                "A,Aaron Donald sphere": {
+                                    "base": "A,Aaron Donald sphere",
                                     "sufffacts": {
-                                        "flount,Aaron Donald sphere,interesting": {
+                                        "A,Aaron Donald sphere,interesting": {
                                             "divisor": null,
-                                            "need": "flount,Aaron Donald sphere,interesting",
+                                            "need": "A,Aaron Donald sphere,interesting",
                                             "nigh": null,
                                             "open": null
                                         }
                                     }
                                 },
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime,day": {
+                                        "A,time,jajatime,day": {
                                             "divisor": 1440,
-                                            "need": "flount,time,jajatime,day",
+                                            "need": "A,time,jajatime,day",
                                             "nigh": 660,
                                             "open": 660
                                         }
@@ -5961,12 +5961,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "flount,Aaron Donald sphere": {
-                            "base": "flount,Aaron Donald sphere",
+                        "A,Aaron Donald sphere": {
+                            "base": "A,Aaron Donald sphere",
                             "sufffacts": {
-                                "flount,Aaron Donald sphere,interesting": {
+                                "A,Aaron Donald sphere,interesting": {
                                     "divisor": null,
-                                    "need": "flount,Aaron Donald sphere,interesting",
+                                    "need": "A,Aaron Donald sphere,interesting",
                                     "nigh": null,
                                     "open": null
                                 }
@@ -6010,23 +6010,23 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,Aaron Donald sphere": {
-                                    "base": "flount,Aaron Donald sphere",
+                                "A,Aaron Donald sphere": {
+                                    "base": "A,Aaron Donald sphere",
                                     "sufffacts": {
-                                        "flount,Aaron Donald sphere,interesting": {
+                                        "A,Aaron Donald sphere,interesting": {
                                             "divisor": null,
-                                            "need": "flount,Aaron Donald sphere,interesting",
+                                            "need": "A,Aaron Donald sphere,interesting",
                                             "nigh": null,
                                             "open": null
                                         }
                                     }
                                 },
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 20160.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 4920.0,
                                             "open": 4920.0
                                         }
@@ -6045,12 +6045,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "flount,Aaron Donald sphere": {
-                            "base": "flount,Aaron Donald sphere",
+                        "A,Aaron Donald sphere": {
+                            "base": "A,Aaron Donald sphere",
                             "sufffacts": {
-                                "flount,Aaron Donald sphere,interesting": {
+                                "A,Aaron Donald sphere,interesting": {
                                     "divisor": null,
-                                    "need": "flount,Aaron Donald sphere,interesting",
+                                    "need": "A,Aaron Donald sphere,interesting",
                                     "nigh": null,
                                     "open": null
                                 }
@@ -6078,23 +6078,23 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "flount,Aaron Donald sphere": {
-                            "base": "flount,Aaron Donald sphere",
+                        "A,Aaron Donald sphere": {
+                            "base": "A,Aaron Donald sphere",
                             "sufffacts": {
-                                "flount,Aaron Donald sphere,interesting": {
+                                "A,Aaron Donald sphere,interesting": {
                                     "divisor": null,
-                                    "need": "flount,Aaron Donald sphere,interesting",
+                                    "need": "A,Aaron Donald sphere,interesting",
                                     "nigh": null,
                                     "open": null
                                 }
                             }
                         },
-                        "flount,time,jajatime": {
-                            "base": "flount,time,jajatime",
+                        "A,time,jajatime": {
+                            "base": "A,time,jajatime",
                             "sufffacts": {
-                                "flount,time,jajatime": {
+                                "A,time,jajatime": {
                                     "divisor": 1440.0,
-                                    "need": "flount,time,jajatime",
+                                    "need": "A,time,jajatime",
                                     "nigh": 1305.0,
                                     "open": 1305.0
                                 }
@@ -6142,12 +6142,12 @@
                                     "_problem_bool": false,
                                     "_reest": false,
                                     "_requiredunits": {
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime": {
+                                                "A,time,jajatime": {
                                                     "divisor": 10080.0,
-                                                    "need": "flount,time,jajatime",
+                                                    "need": "A,time,jajatime",
                                                     "nigh": 6495.0,
                                                     "open": 6480.0
                                                 }
@@ -6166,8 +6166,8 @@
                             "_problem_bool": false,
                             "_reest": false,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {}
                                 }
                             },
@@ -6214,23 +6214,23 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,Aaron Donald sphere": {
-                                            "base": "flount,Aaron Donald sphere",
+                                        "A,Aaron Donald sphere": {
+                                            "base": "A,Aaron Donald sphere",
                                             "sufffacts": {
-                                                "flount,Aaron Donald sphere,interesting": {
+                                                "A,Aaron Donald sphere,interesting": {
                                                     "divisor": null,
-                                                    "need": "flount,Aaron Donald sphere,interesting",
+                                                    "need": "A,Aaron Donald sphere,interesting",
                                                     "nigh": null,
                                                     "open": null
                                                 }
                                             }
                                         },
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime": {
+                                                "A,time,jajatime": {
                                                     "divisor": 10080.0,
-                                                    "need": "flount,time,jajatime",
+                                                    "need": "A,time,jajatime",
                                                     "nigh": 6540.0,
                                                     "open": 6480.0
                                                 }
@@ -6269,23 +6269,23 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "flount,Aaron Donald sphere": {
-                                            "base": "flount,Aaron Donald sphere",
+                                        "A,Aaron Donald sphere": {
+                                            "base": "A,Aaron Donald sphere",
                                             "sufffacts": {
-                                                "flount,Aaron Donald sphere,interesting": {
+                                                "A,Aaron Donald sphere,interesting": {
                                                     "divisor": null,
-                                                    "need": "flount,Aaron Donald sphere,interesting",
+                                                    "need": "A,Aaron Donald sphere,interesting",
                                                     "nigh": null,
                                                     "open": null
                                                 }
                                             }
                                         },
-                                        "flount,time,jajatime": {
-                                            "base": "flount,time,jajatime",
+                                        "A,time,jajatime": {
+                                            "base": "A,time,jajatime",
                                             "sufffacts": {
-                                                "flount,time,jajatime": {
+                                                "A,time,jajatime": {
                                                     "divisor": 20160.0,
-                                                    "need": "flount,time,jajatime",
+                                                    "need": "A,time,jajatime",
                                                     "nigh": 600.0,
                                                     "open": 600.0
                                                 }
@@ -6304,12 +6304,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,Aaron Donald sphere": {
-                                    "base": "flount,Aaron Donald sphere",
+                                "A,Aaron Donald sphere": {
+                                    "base": "A,Aaron Donald sphere",
                                     "sufffacts": {
-                                        "flount,Aaron Donald sphere,interesting": {
+                                        "A,Aaron Donald sphere,interesting": {
                                             "divisor": null,
-                                            "need": "flount,Aaron Donald sphere,interesting",
+                                            "need": "A,Aaron Donald sphere,interesting",
                                             "nigh": null,
                                             "open": null
                                         }
@@ -6328,12 +6328,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "flount,Aaron Donald sphere": {
-                            "base": "flount,Aaron Donald sphere",
+                        "A,Aaron Donald sphere": {
+                            "base": "A,Aaron Donald sphere",
                             "sufffacts": {
-                                "flount,Aaron Donald sphere,interesting": {
+                                "A,Aaron Donald sphere,interesting": {
                                     "divisor": null,
-                                    "need": "flount,Aaron Donald sphere,interesting",
+                                    "need": "A,Aaron Donald sphere,interesting",
                                     "nigh": null,
                                     "open": null
                                 }
@@ -6377,23 +6377,23 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,Aaron Donald sphere": {
-                                    "base": "flount,Aaron Donald sphere",
+                                "A,Aaron Donald sphere": {
+                                    "base": "A,Aaron Donald sphere",
                                     "sufffacts": {
-                                        "flount,Aaron Donald sphere,interesting": {
+                                        "A,Aaron Donald sphere,interesting": {
                                             "divisor": null,
-                                            "need": "flount,Aaron Donald sphere,interesting",
+                                            "need": "A,Aaron Donald sphere,interesting",
                                             "nigh": null,
                                             "open": null
                                         }
                                     }
                                 },
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": 20160.0,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 600.0,
                                             "open": 600.0
                                         }
@@ -6412,12 +6412,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "flount,Aaron Donald sphere": {
-                            "base": "flount,Aaron Donald sphere",
+                        "A,Aaron Donald sphere": {
+                            "base": "A,Aaron Donald sphere",
                             "sufffacts": {
-                                "flount,Aaron Donald sphere,interesting": {
+                                "A,Aaron Donald sphere,interesting": {
                                     "divisor": null,
-                                    "need": "flount,Aaron Donald sphere,interesting",
+                                    "need": "A,Aaron Donald sphere,interesting",
                                     "nigh": null,
                                     "open": null
                                 }
@@ -6436,12 +6436,12 @@
             "_problem_bool": false,
             "_reest": null,
             "_requiredunits": {
-                "flount,Aaron Donald sphere": {
-                    "base": "flount,Aaron Donald sphere",
+                "A,Aaron Donald sphere": {
+                    "base": "A,Aaron Donald sphere",
                     "sufffacts": {
-                        "flount,Aaron Donald sphere,interesting": {
+                        "A,Aaron Donald sphere,interesting": {
                             "divisor": null,
-                            "need": "flount,Aaron Donald sphere,interesting",
+                            "need": "A,Aaron Donald sphere,interesting",
                             "nigh": null,
                             "open": null
                         }
@@ -6489,12 +6489,12 @@
                             "_problem_bool": false,
                             "_reest": false,
                             "_requiredunits": {
-                                "flount,time,jajatime": {
-                                    "base": "flount,time,jajatime",
+                                "A,time,jajatime": {
+                                    "base": "A,time,jajatime",
                                     "sufffacts": {
-                                        "flount,time,jajatime": {
+                                        "A,time,jajatime": {
                                             "divisor": null,
-                                            "need": "flount,time,jajatime",
+                                            "need": "A,time,jajatime",
                                             "nigh": 1472657760,
                                             "open": 0
                                         }
@@ -7271,7 +7271,7 @@
                             "_problem_bool": false,
                             "_reest": true,
                             "_requiredunits": {},
-                            "_special_road": "flount,time,tech,400 year cycle",
+                            "_special_road": "A,time,tech,400 year cycle",
                             "_uid": null,
                             "_weight": 1,
                             "promise": false
@@ -7292,7 +7292,7 @@
                             "_problem_bool": false,
                             "_reest": false,
                             "_requiredunits": {},
-                            "_special_road": "flount,time,tech,400 year cycle",
+                            "_special_road": "A,time,tech,400 year cycle",
                             "_uid": null,
                             "_weight": 1,
                             "promise": false
@@ -7313,7 +7313,7 @@
                             "_problem_bool": false,
                             "_reest": true,
                             "_requiredunits": {},
-                            "_special_road": "flount,time,tech,day",
+                            "_special_road": "A,time,tech,day",
                             "_uid": null,
                             "_weight": 1,
                             "promise": false
@@ -7355,7 +7355,7 @@
                             "_problem_bool": false,
                             "_reest": true,
                             "_requiredunits": {},
-                            "_special_road": "flount,time,tech,week",
+                            "_special_road": "A,time,tech,week",
                             "_uid": null,
                             "_weight": 1,
                             "promise": false
@@ -7515,7 +7515,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,Jan",
+                                    "_special_road": "A,time,tech,month,Jan",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -7536,7 +7536,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,Oct",
+                                    "_special_road": "A,time,tech,month,Oct",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -7557,7 +7557,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,Nov",
+                                    "_special_road": "A,time,tech,month,Nov",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -7578,7 +7578,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,Dec",
+                                    "_special_road": "A,time,tech,month,Dec",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -7599,7 +7599,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,Feb28",
+                                    "_special_road": "A,time,tech,month,Feb28",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -7620,7 +7620,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,Mar",
+                                    "_special_road": "A,time,tech,month,Mar",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -7641,7 +7641,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,Apr",
+                                    "_special_road": "A,time,tech,month,Apr",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -7662,7 +7662,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,May",
+                                    "_special_road": "A,time,tech,month,May",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -7683,7 +7683,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,Jun",
+                                    "_special_road": "A,time,tech,month,Jun",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -7704,7 +7704,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,Jul",
+                                    "_special_road": "A,time,tech,month,Jul",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -7725,7 +7725,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,Aug",
+                                    "_special_road": "A,time,tech,month,Aug",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -7746,7 +7746,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,Sep",
+                                    "_special_road": "A,time,tech,month,Sep",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -7789,7 +7789,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,Jan",
+                                    "_special_road": "A,time,tech,month,Jan",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -7810,7 +7810,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,Oct",
+                                    "_special_road": "A,time,tech,month,Oct",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -7831,7 +7831,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,Nov",
+                                    "_special_road": "A,time,tech,month,Nov",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -7852,7 +7852,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,Dec",
+                                    "_special_road": "A,time,tech,month,Dec",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -7873,7 +7873,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,Feb29",
+                                    "_special_road": "A,time,tech,month,Feb29",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -7894,7 +7894,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,Mar",
+                                    "_special_road": "A,time,tech,month,Mar",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -7915,7 +7915,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,Apr",
+                                    "_special_road": "A,time,tech,month,Apr",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -7936,7 +7936,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,May",
+                                    "_special_road": "A,time,tech,month,May",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -7957,7 +7957,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,Jun",
+                                    "_special_road": "A,time,tech,month,Jun",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -7978,7 +7978,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,Jul",
+                                    "_special_road": "A,time,tech,month,Jul",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -7999,7 +7999,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,Aug",
+                                    "_special_road": "A,time,tech,month,Aug",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8020,7 +8020,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,month,Sep",
+                                    "_special_road": "A,time,tech,month,Sep",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8073,7 +8073,7 @@
                                             "_problem_bool": false,
                                             "_reest": true,
                                             "_requiredunits": {},
-                                            "_special_road": "flount,time,tech,4year with leap",
+                                            "_special_road": "A,time,tech,4year with leap",
                                             "_uid": null,
                                             "_weight": 1,
                                             "promise": false
@@ -8116,7 +8116,7 @@
                                             "_problem_bool": false,
                                             "_reest": true,
                                             "_requiredunits": {},
-                                            "_special_road": "flount,time,tech,4year wo leap",
+                                            "_special_road": "A,time,tech,4year wo leap",
                                             "_uid": null,
                                             "_weight": 1,
                                             "promise": false
@@ -8159,7 +8159,7 @@
                                             "_problem_bool": false,
                                             "_reest": true,
                                             "_requiredunits": {},
-                                            "_special_road": "flount,time,tech,4year with leap",
+                                            "_special_road": "A,time,tech,4year with leap",
                                             "_uid": null,
                                             "_weight": 1,
                                             "promise": false
@@ -8202,7 +8202,7 @@
                                             "_problem_bool": false,
                                             "_reest": true,
                                             "_requiredunits": {},
-                                            "_special_road": "flount,time,tech,4year wo leap",
+                                            "_special_road": "A,time,tech,4year wo leap",
                                             "_uid": null,
                                             "_weight": 1,
                                             "promise": false
@@ -8245,7 +8245,7 @@
                                             "_problem_bool": false,
                                             "_reest": true,
                                             "_requiredunits": {},
-                                            "_special_road": "flount,time,tech,4year with leap",
+                                            "_special_road": "A,time,tech,4year with leap",
                                             "_uid": null,
                                             "_weight": 1,
                                             "promise": false
@@ -8288,7 +8288,7 @@
                                             "_problem_bool": false,
                                             "_reest": true,
                                             "_requiredunits": {},
-                                            "_special_road": "flount,time,tech,4year wo leap",
+                                            "_special_road": "A,time,tech,4year wo leap",
                                             "_uid": null,
                                             "_weight": 1,
                                             "promise": false
@@ -8331,7 +8331,7 @@
                                             "_problem_bool": false,
                                             "_reest": true,
                                             "_requiredunits": {},
-                                            "_special_road": "flount,time,tech,4year with leap",
+                                            "_special_road": "A,time,tech,4year with leap",
                                             "_uid": null,
                                             "_weight": 1,
                                             "promise": false
@@ -8349,7 +8349,7 @@
                                     "promise": false
                                 }
                             },
-                            "_numeric_road": "flount,time,jajatime,400 year cycle",
+                            "_numeric_road": "A,time,jajatime,400 year cycle",
                             "_numor": null,
                             "_on_meld_weight_action": "default",
                             "_problem_bool": false,
@@ -8386,7 +8386,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,366 year",
+                                    "_special_road": "A,time,tech,366 year",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8407,7 +8407,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,365 year",
+                                    "_special_road": "A,time,tech,365 year",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8428,7 +8428,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,365 year",
+                                    "_special_road": "A,time,tech,365 year",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8449,13 +8449,13 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,365 year",
+                                    "_special_road": "A,time,tech,365 year",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
                                 }
                             },
-                            "_numeric_road": "flount,time,tech,400 year cycle,0-100-25 leap years,4year with leap",
+                            "_numeric_road": "A,time,tech,400 year cycle,0-100-25 leap years,4year with leap",
                             "_numor": null,
                             "_on_meld_weight_action": "default",
                             "_problem_bool": false,
@@ -8492,7 +8492,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,365 year",
+                                    "_special_road": "A,time,tech,365 year",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8513,7 +8513,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,365 year",
+                                    "_special_road": "A,time,tech,365 year",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8534,7 +8534,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,365 year",
+                                    "_special_road": "A,time,tech,365 year",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8555,7 +8555,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,365 year",
+                                    "_special_road": "A,time,tech,365 year",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8598,7 +8598,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8619,7 +8619,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8640,7 +8640,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8661,7 +8661,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8682,7 +8682,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8703,7 +8703,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8724,7 +8724,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8745,7 +8745,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8766,7 +8766,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8787,7 +8787,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8808,7 +8808,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8829,7 +8829,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8850,7 +8850,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8871,7 +8871,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8892,7 +8892,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8913,7 +8913,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8934,7 +8934,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8955,7 +8955,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8976,7 +8976,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -8997,7 +8997,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -9018,7 +9018,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -9039,7 +9039,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -9060,7 +9060,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -9081,7 +9081,7 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {},
-                                    "_special_road": "flount,time,tech,hour",
+                                    "_special_road": "A,time,tech,hour",
                                     "_uid": null,
                                     "_weight": 1,
                                     "promise": false
@@ -11119,7 +11119,7 @@
                                     "promise": false
                                 }
                             },
-                            "_numeric_road": "flount,time,jajatime,week",
+                            "_numeric_road": "A,time,jajatime,week",
                             "_numor": null,
                             "_on_meld_weight_action": "default",
                             "_problem_bool": false,
@@ -11244,12 +11244,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "flount,Moods": {
-                            "base": "flount,Moods",
+                        "A,Moods": {
+                            "base": "A,Moods",
                             "sufffacts": {
-                                "flount,Moods,Happy": {
+                                "A,Moods,Happy": {
                                     "divisor": null,
-                                    "need": "flount,Moods,Happy",
+                                    "need": "A,Moods,Happy",
                                     "nigh": null,
                                     "open": null
                                 }
@@ -11277,12 +11277,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "flount,No Movie playing": {
-                            "base": "flount,No Movie playing",
+                        "A,No Movie playing": {
+                            "base": "A,No Movie playing",
                             "sufffacts": {
-                                "flount,No Movie playing,Big Lewbowski": {
+                                "A,No Movie playing,Big Lewbowski": {
                                     "divisor": null,
-                                    "need": "flount,No Movie playing,Big Lewbowski",
+                                    "need": "A,No Movie playing,Big Lewbowski",
                                     "nigh": null,
                                     "open": null
                                 }
@@ -11320,12 +11320,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,Moods": {
-                                    "base": "flount,Moods",
+                                "A,Moods": {
+                                    "base": "A,Moods",
                                     "sufffacts": {
-                                        "flount,Moods,Happy": {
+                                        "A,Moods,Happy": {
                                             "divisor": null,
-                                            "need": "flount,Moods,Happy",
+                                            "need": "A,Moods,Happy",
                                             "nigh": null,
                                             "open": null
                                         }
@@ -11344,12 +11344,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "flount,Moods": {
-                            "base": "flount,Moods",
+                        "A,Moods": {
+                            "base": "A,Moods",
                             "sufffacts": {
-                                "flount,Moods,Happy": {
+                                "A,Moods,Happy": {
                                     "divisor": null,
-                                    "need": "flount,Moods,Happy",
+                                    "need": "A,Moods,Happy",
                                     "nigh": null,
                                     "open": null
                                 }
@@ -11377,12 +11377,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "flount,No Movie playing": {
-                            "base": "flount,No Movie playing",
+                        "A,No Movie playing": {
+                            "base": "A,No Movie playing",
                             "sufffacts": {
-                                "flount,No Movie playing,Star Wars Episode IV": {
+                                "A,No Movie playing,Star Wars Episode IV": {
                                     "divisor": null,
-                                    "need": "flount,No Movie playing,Star Wars Episode IV",
+                                    "need": "A,No Movie playing,Star Wars Episode IV",
                                     "nigh": null,
                                     "open": null
                                 }
@@ -11401,12 +11401,12 @@
             "_problem_bool": false,
             "_reest": null,
             "_requiredunits": {
-                "flount,Moods": {
-                    "base": "flount,Moods",
+                "A,Moods": {
+                    "base": "A,Moods",
                     "sufffacts": {
-                        "flount,Moods,Happy": {
+                        "A,Moods,Happy": {
                             "divisor": null,
-                            "need": "flount,Moods,Happy",
+                            "need": "A,Moods,Happy",
                             "nigh": null,
                             "open": null
                         }
@@ -11454,12 +11454,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,WaterBeing": {
-                                    "base": "flount,WaterBeing",
+                                "A,WaterBeing": {
+                                    "base": "A,WaterBeing",
                                     "sufffacts": {
-                                        "flount,WaterBeing,Williamette WaterShed,East Side of Watershed": {
+                                        "A,WaterBeing,Williamette WaterShed,East Side of Watershed": {
                                             "divisor": null,
-                                            "need": "flount,WaterBeing,Williamette WaterShed,East Side of Watershed",
+                                            "need": "A,WaterBeing,Williamette WaterShed,East Side of Watershed",
                                             "nigh": null,
                                             "open": null
                                         }
@@ -11487,12 +11487,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,WaterBeing": {
-                                    "base": "flount,WaterBeing",
+                                "A,WaterBeing": {
+                                    "base": "A,WaterBeing",
                                     "sufffacts": {
-                                        "flount,WaterBeing,Williamette WaterShed,East Side of Watershed,apartment": {
+                                        "A,WaterBeing,Williamette WaterShed,East Side of Watershed,apartment": {
                                             "divisor": null,
-                                            "need": "flount,WaterBeing,Williamette WaterShed,East Side of Watershed,apartment",
+                                            "need": "A,WaterBeing,Williamette WaterShed,East Side of Watershed,apartment",
                                             "nigh": null,
                                             "open": null
                                         }
@@ -11520,12 +11520,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "flount,WaterBeing": {
-                                    "base": "flount,WaterBeing",
+                                "A,WaterBeing": {
+                                    "base": "A,WaterBeing",
                                     "sufffacts": {
-                                        "flount,WaterBeing,Williamette WaterShed,West side of Watershed": {
+                                        "A,WaterBeing,Williamette WaterShed,West side of Watershed": {
                                             "divisor": null,
-                                            "need": "flount,WaterBeing,Williamette WaterShed,West side of Watershed",
+                                            "need": "A,WaterBeing,Williamette WaterShed,West side of Watershed",
                                             "nigh": null,
                                             "open": null
                                         }
@@ -11544,12 +11544,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "flount,WaterBeing": {
-                            "base": "flount,WaterBeing",
+                        "A,WaterBeing": {
+                            "base": "A,WaterBeing",
                             "sufffacts": {
-                                "flount,WaterBeing,Williamette WaterShed": {
+                                "A,WaterBeing,Williamette WaterShed": {
                                     "divisor": null,
-                                    "need": "flount,WaterBeing,Williamette WaterShed",
+                                    "need": "A,WaterBeing,Williamette WaterShed",
                                     "nigh": null,
                                     "open": null
                                 }

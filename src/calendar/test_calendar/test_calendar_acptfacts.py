@@ -8,6 +8,7 @@ from src.calendar.examples.example_calendars import (
     get_calendar_with_4_levels as examples_get_calendar_with_4_levels,
 )
 from src.calendar.calendar import CalendarUnit
+from src.calendar.road import get_global_root_desc as root_desc
 from pytest import raises as pytest_raises
 
 
@@ -54,13 +55,13 @@ def test_calendar_acptfact_create():
 
 def test_set_acptfact_FailsToCreateWhenBaseAndAcptFactAreDifferenctAndAcptFactIdeaIsNotRangeRoot():
     # Given
-    flount_text = "flount"
-    lw_x = CalendarUnit(_owner=flount_text)
+
+    lw_x = CalendarUnit(_owner=root_desc())
     time_x = "time_x"
     lw_x.add_idea(
-        idea_kid=IdeaKid(_desc=time_x, _begin=0, _close=140), walk=flount_text
+        idea_kid=IdeaKid(_desc=time_x, _begin=0, _close=140), walk=root_desc()
     )
-    t_x_road = Road(f"{flount_text},{time_x}")
+    t_x_road = Road(f"{root_desc()},{time_x}")
     age1st = "age1st"
     lw_x.add_idea(idea_kid=IdeaKid(_desc=age1st, _begin=0, _close=20), walk=t_x_road)
     a1_road = Road(f"{t_x_road},{age1st}")
@@ -98,11 +99,11 @@ def test_calendar_acptfact_create():
 
 def test_calendar_get_idea_list_AcptFactHeirsCorrectlyInherited():
     # GIVEN
-    flount_text = "flount"
-    calendar_x = CalendarUnit(_owner=flount_text)
+
+    calendar_x = CalendarUnit(_owner=root_desc())
     swim_text = "swim"
-    swim_road = Road(f"{flount_text},{swim_text}")
-    calendar_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=flount_text)
+    swim_road = Road(f"{root_desc()},{swim_text}")
+    calendar_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=root_desc())
     fast_text = "fast"
     slow_text = "slow"
     fast_road = Road(f"{swim_road},{fast_text}")
@@ -111,8 +112,8 @@ def test_calendar_get_idea_list_AcptFactHeirsCorrectlyInherited():
     calendar_x.add_idea(idea_kid=IdeaKid(_desc=slow_text), walk=swim_road)
 
     earth_text = "earth"
-    earth_road = Road(f"{flount_text},{earth_text}")
-    calendar_x.add_idea(idea_kid=IdeaKid(_desc=earth_text), walk=flount_text)
+    earth_road = Road(f"{root_desc()},{earth_text}")
+    calendar_x.add_idea(idea_kid=IdeaKid(_desc=earth_text), walk=root_desc())
 
     swim_idea = calendar_x.get_idea_kid(road=swim_road)
     fast_idea = calendar_x.get_idea_kid(road=fast_road)
@@ -155,11 +156,11 @@ def test_calendar_get_idea_list_AcptFactHeirsCorrectlyInherited():
 
 def test_calendar_get_idea_list_AcptFactUnitCorrectlyTransformsacptfactheir_shop():
     # GIVEN
-    flount_text = "flount"
-    calendar_x = CalendarUnit(_owner=flount_text)
+
+    calendar_x = CalendarUnit(_owner=root_desc())
     swim_text = "swim"
-    swim_road = f"{flount_text},{swim_text}"
-    calendar_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=flount_text)
+    swim_road = f"{root_desc()},{swim_text}"
+    calendar_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=root_desc())
     swim_idea = calendar_x.get_idea_kid(road=swim_road)
 
     fast_text = "fast"
@@ -168,8 +169,8 @@ def test_calendar_get_idea_list_AcptFactUnitCorrectlyTransformsacptfactheir_shop
     calendar_x.add_idea(idea_kid=IdeaKid(_desc=slow_text), walk=swim_road)
 
     earth_text = "earth"
-    earth_road = Road(f"{flount_text},{earth_text}")
-    calendar_x.add_idea(idea_kid=IdeaKid(_desc=earth_text), walk=flount_text)
+    earth_road = Road(f"{root_desc()},{earth_text}")
+    calendar_x.add_idea(idea_kid=IdeaKid(_desc=earth_text), walk=root_desc())
 
     assert swim_idea._acptfactheirs is None
 
@@ -198,11 +199,11 @@ def test_calendar_get_idea_list_AcptFactUnitCorrectlyTransformsacptfactheir_shop
 
 def test_calendar_get_idea_list_AcptFactHeirCorrectlyDeletesAcptFactUnit():
     # GIVEN
-    flount_text = "flount"
-    calendar_x = CalendarUnit(_owner=flount_text)
+
+    calendar_x = CalendarUnit(_owner=root_desc())
     swim_text = "swim"
-    swim_road = Road(f"{flount_text},{swim_text}")
-    calendar_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=flount_text)
+    swim_road = Road(f"{root_desc()},{swim_text}")
+    calendar_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=root_desc())
     fast_text = "fast"
     slow_text = "slow"
     fast_road = Road(f"{swim_road},{fast_text}")
@@ -211,8 +212,8 @@ def test_calendar_get_idea_list_AcptFactHeirCorrectlyDeletesAcptFactUnit():
     calendar_x.add_idea(idea_kid=IdeaKid(_desc=slow_text), walk=swim_road)
 
     earth_text = "earth"
-    earth_road = Road(f"{flount_text},{earth_text}")
-    calendar_x.add_idea(idea_kid=IdeaKid(_desc=earth_text), walk=flount_text)
+    earth_road = Road(f"{root_desc()},{earth_text}")
+    calendar_x.add_idea(idea_kid=IdeaKid(_desc=earth_text), walk=root_desc())
 
     swim_idea = calendar_x.get_idea_kid(road=swim_road)
 
@@ -238,17 +239,17 @@ def test_calendar_get_idea_list_AcptFactHeirCorrectlyDeletesAcptFactUnit():
 
 def test_get_ranged_acptfacts():
     # Given a single ranged acptfact
-    flount_text = "flount"
-    lw_x = CalendarUnit(_owner=flount_text)
+
+    lw_x = CalendarUnit(_owner=root_desc())
     time_x = "time_x"
     lw_x.add_idea(
-        idea_kid=IdeaKid(_desc=time_x, _begin=0, _close=140), walk=flount_text
+        idea_kid=IdeaKid(_desc=time_x, _begin=0, _close=140), walk=root_desc()
     )
 
     clean = "clean"
-    lw_x.add_idea(idea_kid=IdeaKid(_desc=clean, promise=True), walk=flount_text)
-    c_road = f"{flount_text},{clean}"
-    t_x_road = f"{flount_text},{time_x}"
+    lw_x.add_idea(idea_kid=IdeaKid(_desc=clean, promise=True), walk=root_desc())
+    c_road = f"{root_desc()},{clean}"
+    t_x_road = f"{root_desc()},{time_x}"
     # lw_x.edit_idea_attr(road=c_road, required_base=t_x_road, required_sufffact=t_x_road, required_sufffact_open=5, required_sufffact_nigh=10)
 
     lw_x.set_acptfact(base=t_x_road, pick=t_x_road, open=5, nigh=10)
@@ -261,9 +262,9 @@ def test_get_ranged_acptfacts():
     # When one ranged acptfact added
     place = "place_x"
     lw_x.add_idea(
-        idea_kid=IdeaKid(_desc=place, _begin=600, _close=800), walk=flount_text
+        idea_kid=IdeaKid(_desc=place, _begin=600, _close=800), walk=root_desc()
     )
-    p_road = f"{flount_text},{place}"
+    p_road = f"{root_desc()},{place}"
     lw_x.set_acptfact(base=p_road, pick=p_road, open=5, nigh=10)
     print(f"When one ranged acptfact added {lw_x._idearoot._acptfactunits=}")
     assert len(lw_x._idearoot._acptfactunits) == 2
@@ -273,8 +274,8 @@ def test_get_ranged_acptfacts():
 
     # When one non-ranged_acptfact added
     mood = "mood_x"
-    lw_x.add_idea(idea_kid=IdeaKid(_desc=mood), walk=flount_text)
-    m_road = f"{flount_text},{mood}"
+    lw_x.add_idea(idea_kid=IdeaKid(_desc=mood), walk=root_desc())
+    m_road = f"{root_desc()},{mood}"
     lw_x.set_acptfact(base=m_road, pick=m_road)
     print(f"When one non-ranged_acptfact added {lw_x._idearoot._acptfactunits=}")
     assert len(lw_x._idearoot._acptfactunits) == 3
@@ -285,16 +286,16 @@ def test_get_ranged_acptfacts():
 
 def test_get_roots_ranged_acptfacts():
     # Given a two ranged acptfacts where one is "range-root" get_root_ranged_acptfacts returns one "range-root" acptfact
-    flount_text = "flount"
-    lw_x = CalendarUnit(_owner=flount_text)
+
+    lw_x = CalendarUnit(_owner=root_desc())
     time_x = "time_x"
     lw_x.add_idea(
-        idea_kid=IdeaKid(_desc=time_x, _begin=0, _close=140), walk=flount_text
+        idea_kid=IdeaKid(_desc=time_x, _begin=0, _close=140), walk=root_desc()
     )
-    t_x_road = f"{flount_text},{time_x}"
+    t_x_road = f"{root_desc()},{time_x}"
     mood_x = "mood_x"
-    lw_x.add_idea(idea_kid=IdeaKid(_desc=mood_x), walk=flount_text)
-    m_x_road = f"{flount_text},{mood_x}"
+    lw_x.add_idea(idea_kid=IdeaKid(_desc=mood_x), walk=root_desc())
+    m_x_road = f"{root_desc()},{mood_x}"
     happy = "happy"
     sad = "Sad"
     lw_x.add_idea(idea_kid=IdeaKid(_desc=happy), walk=m_x_road)
@@ -313,9 +314,9 @@ def test_get_roots_ranged_acptfacts():
     # a acptfact who's idea range is defined by numeric_root is not "rangeroot"
     mirrow_x = "mirrow_x"
     lw_x.add_idea(
-        idea_kid=IdeaKid(_desc=mirrow_x, _numeric_road=time_x), walk=flount_text
+        idea_kid=IdeaKid(_desc=mirrow_x, _numeric_road=time_x), walk=root_desc()
     )
-    m_x_road = f"{flount_text},{mirrow_x}"
+    m_x_road = f"{root_desc()},{mirrow_x}"
     lw_x.set_acptfact(base=m_x_road, pick=t_x_road, open=5, nigh=10)
     assert len(lw_x._idearoot._acptfactunits) == 3
 
@@ -325,17 +326,16 @@ def test_get_roots_ranged_acptfacts():
 
 
 def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario1():
-    flount_text = "flount"
-    lw_x = CalendarUnit(_owner=flount_text)
+    lw_x = CalendarUnit(_owner=root_desc())
     # # the action
     # clean = "clean"
-    # lw_x.add_idea(idea_kid=IdeaKid(_desc=clean, promise=True), walk=flount_text)
+    # lw_x.add_idea(idea_kid=IdeaKid(_desc=clean, promise=True), walk=root_desc())
 
     time_x = "time_x"
     lw_x.add_idea(
-        idea_kid=IdeaKid(_desc=time_x, _begin=0, _close=140), walk=flount_text
+        idea_kid=IdeaKid(_desc=time_x, _begin=0, _close=140), walk=root_desc()
     )
-    t_x_road = f"{flount_text},{time_x}"
+    t_x_road = f"{root_desc()},{time_x}"
     age1st = "age1st"
     age2nd = "age2nd"
     age3rd = "age3rd"
@@ -388,17 +388,16 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario1(
 
 
 def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario2():
-    flount_text = "flount"
-    lw_x = CalendarUnit(_owner=flount_text)
+    lw_x = CalendarUnit(_owner=root_desc())
     # # the action
     # clean = "clean"
-    # lw_x.add_idea(idea_kid=IdeaKid(_desc=clean, promise=True), walk=flount_text)
+    # lw_x.add_idea(idea_kid=IdeaKid(_desc=clean, promise=True), walk=root_desc())
 
     time_x = "time_x"
     lw_x.add_idea(
-        idea_kid=IdeaKid(_desc=time_x, _begin=0, _close=140), walk=flount_text
+        idea_kid=IdeaKid(_desc=time_x, _begin=0, _close=140), walk=root_desc()
     )
-    t_x_road = f"{flount_text},{time_x}"
+    t_x_road = f"{root_desc()},{time_x}"
     age1st = "age1st"
     age2nd = "age2nd"
     age3rd = "age3rd"
@@ -449,17 +448,16 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario2(
 
 
 def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario3():
-    flount_text = "flount"
-    lw_x = CalendarUnit(_owner=flount_text)
+    lw_x = CalendarUnit(_owner=root_desc())
     # # the action
     # clean = "clean"
-    # lw_x.add_idea(idea_kid=IdeaKid(_desc=clean, promise=True), walk=flount_text)
+    # lw_x.add_idea(idea_kid=IdeaKid(_desc=clean, promise=True), walk=root_desc())
 
     time_x = "time_x"
     lw_x.add_idea(
-        idea_kid=IdeaKid(_desc=time_x, _begin=0, _close=140), walk=flount_text
+        idea_kid=IdeaKid(_desc=time_x, _begin=0, _close=140), walk=root_desc()
     )
-    t_x_road = f"{flount_text},{time_x}"
+    t_x_road = f"{root_desc()},{time_x}"
     age1st = "age1st"
     age2nd = "age2nd"
     age3rd = "age3rd"
@@ -534,26 +532,25 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario3(
 
 
 def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario4():
-    flount_text = "flount"
-    lw_x = CalendarUnit(_owner=flount_text)
+    lw_x = CalendarUnit(_owner=root_desc())
     time_x = "time_x"
     arsub1 = "arbitary_subsection1"
-    as1_road = f"{flount_text},{arsub1}"
+    as1_road = f"{root_desc()},{arsub1}"
     lw_x.add_idea(
-        idea_kid=IdeaKid(_desc=arsub1, _begin=0, _close=140), walk=flount_text
+        idea_kid=IdeaKid(_desc=arsub1, _begin=0, _close=140), walk=root_desc()
     )
     # range-root idea has special_road
     lw_x.add_idea(
         idea_kid=IdeaKid(_desc=time_x, _begin=0, _close=140, _special_road=as1_road),
-        walk=flount_text,
+        walk=root_desc(),
     )
 
     arsub2 = "arbitary_subsection2"
-    as2_road = f"{flount_text},{arsub2}"
-    lw_x.add_idea(idea_kid=IdeaKid(_desc=arsub2, _begin=0, _close=20), walk=flount_text)
+    as2_road = f"{root_desc()},{arsub2}"
+    lw_x.add_idea(idea_kid=IdeaKid(_desc=arsub2, _begin=0, _close=20), walk=root_desc())
 
     # non-range-root child idea has special_road
-    t_x_road = f"{flount_text},{time_x}"
+    t_x_road = f"{root_desc()},{time_x}"
     age1st = "age1st"
     lw_x.add_idea(
         idea_kid=IdeaKid(_desc=age1st, _begin=0, _close=20, _special_road=as2_road),
@@ -579,97 +576,94 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario4(
 
 
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario4_1():
-    flount_text = "flount"
-    lw_x = CalendarUnit(_owner=flount_text)
+    lw_x = CalendarUnit(_owner=root_desc())
     lw_x.set_time_hreg_ideas(c400_count=7)
-    jajatime_road = f"{flount_text},time,jajatime"
+    jajatime_road = f"{root_desc()},time,jajatime"
     lw_x.set_acptfact(base=jajatime_road, pick=jajatime_road, open=1500, nigh=1500)
     lhu = lw_x._get_lemma_acptfactunits()
 
-    assert lhu[f"{flount_text},time,jajatime,400 year cycle"].open == 1500
-    assert lhu[f"{flount_text},time,jajatime,400 year cycle"].nigh == 1500
-    assert lhu[f"{flount_text},time,jajatime,400 year cycles"].open > 0
-    assert lhu[f"{flount_text},time,jajatime,400 year cycles"].open < 1
-    assert lhu[f"{flount_text},time,jajatime,400 year cycles"].nigh > 0
-    assert lhu[f"{flount_text},time,jajatime,400 year cycles"].nigh < 1
-    assert lhu[f"{flount_text},time,jajatime,days"].open >= 1
-    assert lhu[f"{flount_text},time,jajatime,days"].open <= 2
-    assert lhu[f"{flount_text},time,jajatime,days"].nigh >= 1
-    assert lhu[f"{flount_text},time,jajatime,days"].nigh <= 2
-    assert lhu[f"{flount_text},time,jajatime,day"].open == 60
-    assert lhu[f"{flount_text},time,jajatime,day"].nigh == 60
-    assert lhu[f"{flount_text},time,jajatime,week"].open == 1500
-    assert int(lhu[f"{flount_text},time,jajatime,week"].nigh) == 1500
-    assert lhu[f"{flount_text},time,tech,week"].open == 1500
-    assert int(lhu[f"{flount_text},time,tech,week"].nigh) == 1500
+    assert lhu[f"{root_desc()},time,jajatime,400 year cycle"].open == 1500
+    assert lhu[f"{root_desc()},time,jajatime,400 year cycle"].nigh == 1500
+    assert lhu[f"{root_desc()},time,jajatime,400 year cycles"].open > 0
+    assert lhu[f"{root_desc()},time,jajatime,400 year cycles"].open < 1
+    assert lhu[f"{root_desc()},time,jajatime,400 year cycles"].nigh > 0
+    assert lhu[f"{root_desc()},time,jajatime,400 year cycles"].nigh < 1
+    assert lhu[f"{root_desc()},time,jajatime,days"].open >= 1
+    assert lhu[f"{root_desc()},time,jajatime,days"].open <= 2
+    assert lhu[f"{root_desc()},time,jajatime,days"].nigh >= 1
+    assert lhu[f"{root_desc()},time,jajatime,days"].nigh <= 2
+    assert lhu[f"{root_desc()},time,jajatime,day"].open == 60
+    assert lhu[f"{root_desc()},time,jajatime,day"].nigh == 60
+    assert lhu[f"{root_desc()},time,jajatime,week"].open == 1500
+    assert int(lhu[f"{root_desc()},time,jajatime,week"].nigh) == 1500
+    assert lhu[f"{root_desc()},time,tech,week"].open == 1500
+    assert int(lhu[f"{root_desc()},time,tech,week"].nigh) == 1500
 
 
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario5():
-    flount_text = "flount"
-    lw_x = CalendarUnit(_owner=flount_text)
+    lw_x = CalendarUnit(_owner=root_desc())
     lw_x.set_time_hreg_ideas(c400_count=7)
-    jajatime_road = f"{flount_text},time,jajatime"
+    jajatime_road = f"{root_desc()},time,jajatime"
     lw_x.set_acptfact(
         base=jajatime_road, pick=jajatime_road, open=1500, nigh=1063954002
     )
     lhu = lw_x._get_lemma_acptfactunits()
 
-    assert lhu[f"{flount_text},time,jajatime,400 year cycle"].open == 0
-    assert lhu[f"{flount_text},time,jajatime,400 year cycle"].nigh == 210379680
-    assert lhu[f"{flount_text},time,jajatime,400 year cycles"].open > 0
-    assert lhu[f"{flount_text},time,jajatime,400 year cycles"].open < 1
-    assert lhu[f"{flount_text},time,jajatime,400 year cycles"].nigh > 5
-    assert lhu[f"{flount_text},time,jajatime,400 year cycles"].nigh < 6
-    assert int(lhu[f"{flount_text},time,jajatime,days"].open) == 1  # 0 / 1440
+    assert lhu[f"{root_desc()},time,jajatime,400 year cycle"].open == 0
+    assert lhu[f"{root_desc()},time,jajatime,400 year cycle"].nigh == 210379680
+    assert lhu[f"{root_desc()},time,jajatime,400 year cycles"].open > 0
+    assert lhu[f"{root_desc()},time,jajatime,400 year cycles"].open < 1
+    assert lhu[f"{root_desc()},time,jajatime,400 year cycles"].nigh > 5
+    assert lhu[f"{root_desc()},time,jajatime,400 year cycles"].nigh < 6
+    assert int(lhu[f"{root_desc()},time,jajatime,days"].open) == 1  # 0 / 1440
     assert (
-        int(lhu[f"{flount_text},time,jajatime,days"].nigh) == 738856
+        int(lhu[f"{root_desc()},time,jajatime,days"].nigh) == 738856
     )  # 1063953183 / 1440
-    assert lhu[f"{flount_text},time,jajatime,day"].open == 0  # 0 / 1440
+    assert lhu[f"{root_desc()},time,jajatime,day"].open == 0  # 0 / 1440
     assert (
-        lhu[f"{flount_text},time,jajatime,day"].nigh == 1440
+        lhu[f"{root_desc()},time,jajatime,day"].nigh == 1440
     )  # 1362  # 1063953183 / 1440
-    assert lhu[f"{flount_text},time,jajatime,week"].open == 0  # 0 / 1440
+    assert lhu[f"{root_desc()},time,jajatime,week"].open == 0  # 0 / 1440
     assert (
-        int(lhu[f"{flount_text},time,jajatime,week"].nigh) == 10080
+        int(lhu[f"{root_desc()},time,jajatime,week"].nigh) == 10080
     )  # 1063953183 / 1440
-    assert lhu[f"{flount_text},time,tech,week"].open == 0  # 0 / 1440
-    assert int(lhu[f"{flount_text},time,tech,week"].nigh) == 10080  # 1063953183 / 1440
+    assert lhu[f"{root_desc()},time,tech,week"].open == 0  # 0 / 1440
+    assert int(lhu[f"{root_desc()},time,tech,week"].nigh) == 10080  # 1063953183 / 1440
 
 
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario6():
-    flount_text = "flount"
-    lw_x = CalendarUnit(_owner=flount_text)
+    lw_x = CalendarUnit(_owner=root_desc())
     lw_x.set_time_hreg_ideas(c400_count=7)
-    jajatime_road = f"{flount_text},time,jajatime"
+    jajatime_road = f"{root_desc()},time,jajatime"
     lw_x.set_acptfact(
         base=jajatime_road, pick=jajatime_road, open=1063954000, nigh=1063954002
     )
     lhu = lw_x._get_lemma_acptfactunits()
 
-    assert lhu[f"{flount_text},time,jajatime,400 year cycle"].open == 12055600.0
-    assert lhu[f"{flount_text},time,jajatime,400 year cycle"].nigh == 12055602.0
-    assert lhu[f"{flount_text},time,jajatime,400 year cycles"].open > 5
-    assert lhu[f"{flount_text},time,jajatime,400 year cycles"].open < 6
-    assert lhu[f"{flount_text},time,jajatime,400 year cycles"].nigh > 5
-    assert lhu[f"{flount_text},time,jajatime,400 year cycles"].nigh < 6
+    assert lhu[f"{root_desc()},time,jajatime,400 year cycle"].open == 12055600.0
+    assert lhu[f"{root_desc()},time,jajatime,400 year cycle"].nigh == 12055602.0
+    assert lhu[f"{root_desc()},time,jajatime,400 year cycles"].open > 5
+    assert lhu[f"{root_desc()},time,jajatime,400 year cycles"].open < 6
+    assert lhu[f"{root_desc()},time,jajatime,400 year cycles"].nigh > 5
+    assert lhu[f"{root_desc()},time,jajatime,400 year cycles"].nigh < 6
     assert (
-        int(lhu[f"{flount_text},time,jajatime,days"].open) == 738856
+        int(lhu[f"{root_desc()},time,jajatime,days"].open) == 738856
     )  # 1063954000 / 1440
     assert (
-        int(lhu[f"{flount_text},time,jajatime,days"].nigh) == 738856
+        int(lhu[f"{root_desc()},time,jajatime,days"].nigh) == 738856
     )  # 1063954000 / 1440
-    assert lhu[f"{flount_text},time,jajatime,day"].open == 1360  # 0 / 1440
+    assert lhu[f"{root_desc()},time,jajatime,day"].open == 1360  # 0 / 1440
     assert (
-        int(lhu[f"{flount_text},time,jajatime,day"].nigh) == 1362
+        int(lhu[f"{root_desc()},time,jajatime,day"].nigh) == 1362
     )  # 1063953183 / 1440
 
 
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario7():
     # Given
-    flount_text = "flount"
-    lw_x = CalendarUnit(_owner=flount_text)
+
+    lw_x = CalendarUnit(_owner=root_desc())
     lw_x.set_time_hreg_ideas(c400_count=7)
-    jajatime_road = f"{flount_text},time,jajatime"
+    jajatime_road = f"{root_desc()},time,jajatime"
 
     # When given a minute range that should be Thursday to Monday midnight
     lw_x.set_acptfact(
@@ -678,41 +672,41 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario7(
     lhu = lw_x._get_lemma_acptfactunits()
 
     # Then
-    week_open = lhu[f"{flount_text},time,jajatime,week"].open
-    week_nigh = lhu[f"{flount_text},time,jajatime,week"].nigh
+    week_open = lhu[f"{root_desc()},time,jajatime,week"].open
+    week_nigh = lhu[f"{root_desc()},time,jajatime,week"].nigh
     print(f"for src,time,jajatime,week: {week_open=} {week_nigh=}")
-    assert lhu[f"{flount_text},time,jajatime,week"].open == 7200
-    assert lhu[f"{flount_text},time,jajatime,week"].nigh == 2880
+    assert lhu[f"{root_desc()},time,jajatime,week"].open == 7200
+    assert lhu[f"{root_desc()},time,jajatime,week"].nigh == 2880
 
-    week_open = lhu[f"{flount_text},time,tech,week"].open
-    week_nigh = lhu[f"{flount_text},time,tech,week"].nigh
+    week_open = lhu[f"{root_desc()},time,tech,week"].open
+    week_nigh = lhu[f"{root_desc()},time,tech,week"].nigh
     print(f"for src,time,tech,week: {week_open=} {week_nigh=}")
-    assert lhu[f"{flount_text},time,tech,week"].open == 7200
-    assert lhu[f"{flount_text},time,tech,week"].nigh == 2880
-    print(lhu[f"{flount_text},time,tech,week"])
-    print(lhu[f"{flount_text},time,tech,week,Thursday"])
-    print(lhu[f"{flount_text},time,tech,week,Friday"])
-    print(lhu[f"{flount_text},time,tech,week,Saturday"])
-    print(lhu[f"{flount_text},time,tech,week,Sunday"])
-    print(lhu[f"{flount_text},time,tech,week,Monday"])
-    print(lhu[f"{flount_text},time,tech,week,Tuesday"])
-    print(lhu[f"{flount_text},time,tech,week,Wednesday"])
+    assert lhu[f"{root_desc()},time,tech,week"].open == 7200
+    assert lhu[f"{root_desc()},time,tech,week"].nigh == 2880
+    print(lhu[f"{root_desc()},time,tech,week"])
+    print(lhu[f"{root_desc()},time,tech,week,Thursday"])
+    print(lhu[f"{root_desc()},time,tech,week,Friday"])
+    print(lhu[f"{root_desc()},time,tech,week,Saturday"])
+    print(lhu[f"{root_desc()},time,tech,week,Sunday"])
+    print(lhu[f"{root_desc()},time,tech,week,Monday"])
+    print(lhu[f"{root_desc()},time,tech,week,Tuesday"])
+    print(lhu[f"{root_desc()},time,tech,week,Wednesday"])
 
-    # assert lhu[f"{flount_text},time,tech,week,Thursday"].active == True
-    # assert lhu[f"{flount_text},time,tech,week,Friday"].active == True
-    # assert lhu[f"{flount_text},time,tech,week,Saturday"].active == True
-    # assert lhu[f"{flount_text},time,tech,week,Sunday"].active == True
-    # assert lhu[f"{flount_text},time,tech,week,Monday"].active == False
-    # assert lhu[f"{flount_text},time,tech,week,Tuesday"].active == False
-    # assert lhu[f"{flount_text},time,tech,week,Wednesday"].active == False
+    # assert lhu[f"{root_desc()},time,tech,week,Thursday"].active == True
+    # assert lhu[f"{root_desc()},time,tech,week,Friday"].active == True
+    # assert lhu[f"{root_desc()},time,tech,week,Saturday"].active == True
+    # assert lhu[f"{root_desc()},time,tech,week,Sunday"].active == True
+    # assert lhu[f"{root_desc()},time,tech,week,Monday"].active == False
+    # assert lhu[f"{root_desc()},time,tech,week,Tuesday"].active == False
+    # assert lhu[f"{root_desc()},time,tech,week,Wednesday"].active == False
 
 
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario8():
     # Given
-    flount_text = "flount"
-    lw_x = CalendarUnit(_owner=flount_text)
+
+    lw_x = CalendarUnit(_owner=root_desc())
     lw_x.set_time_hreg_ideas(c400_count=7)
-    jajatime_road = f"{flount_text},time,jajatime"
+    jajatime_road = f"{root_desc()},time,jajatime"
 
     # When given a minute range that should be Thursday to Monday midnight
     lw_x.set_acptfact(
@@ -721,44 +715,44 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario8(
     lhu = lw_x._get_lemma_acptfactunits()
 
     # Then
-    week_open = lhu[f"{flount_text},time,jajatime,week"].open
-    week_nigh = lhu[f"{flount_text},time,jajatime,week"].nigh
+    week_open = lhu[f"{root_desc()},time,jajatime,week"].open
+    week_nigh = lhu[f"{root_desc()},time,jajatime,week"].nigh
     print(f"for src,time,jajatime,week: {week_open=} {week_nigh=}")
-    assert lhu[f"{flount_text},time,jajatime,week"].open == 7200
-    assert lhu[f"{flount_text},time,jajatime,week"].nigh == 7200
+    assert lhu[f"{root_desc()},time,jajatime,week"].open == 7200
+    assert lhu[f"{root_desc()},time,jajatime,week"].nigh == 7200
 
-    week_open = lhu[f"{flount_text},time,tech,week"].open
-    week_nigh = lhu[f"{flount_text},time,tech,week"].nigh
+    week_open = lhu[f"{root_desc()},time,tech,week"].open
+    week_nigh = lhu[f"{root_desc()},time,tech,week"].nigh
     print(f"for src,time,tech,week: {week_open=} {week_nigh=}")
-    assert lhu[f"{flount_text},time,tech,week"].open == 7200
-    assert lhu[f"{flount_text},time,tech,week"].nigh == 7200
-    print(lhu[f"{flount_text},time,tech,week"])
-    print(lhu[f"{flount_text},time,tech,week,Thursday"])
-    print(lhu[f"{flount_text},time,tech,week,Friday"])
-    print(lhu[f"{flount_text},time,tech,week,Saturday"])
-    print(lhu[f"{flount_text},time,tech,week,Sunday"])
-    print(lhu[f"{flount_text},time,tech,week,Monday"])
-    print(lhu[f"{flount_text},time,tech,week,Tuesday"])
-    print(lhu[f"{flount_text},time,tech,week,Wednesday"])
+    assert lhu[f"{root_desc()},time,tech,week"].open == 7200
+    assert lhu[f"{root_desc()},time,tech,week"].nigh == 7200
+    print(lhu[f"{root_desc()},time,tech,week"])
+    print(lhu[f"{root_desc()},time,tech,week,Thursday"])
+    print(lhu[f"{root_desc()},time,tech,week,Friday"])
+    print(lhu[f"{root_desc()},time,tech,week,Saturday"])
+    print(lhu[f"{root_desc()},time,tech,week,Sunday"])
+    print(lhu[f"{root_desc()},time,tech,week,Monday"])
+    print(lhu[f"{root_desc()},time,tech,week,Tuesday"])
+    print(lhu[f"{root_desc()},time,tech,week,Wednesday"])
 
-    # assert lhu[f"{flount_text},time,tech,week,Thursday"].active == True
-    # assert lhu[f"{flount_text},time,tech,week,Friday"].active == False
-    # assert lhu[f"{flount_text},time,tech,week,Saturday"].active == False
-    # assert lhu[f"{flount_text},time,tech,week,Sunday"].active == False
-    # assert lhu[f"{flount_text},time,tech,week,Monday"].active == False
-    # assert lhu[f"{flount_text},time,tech,week,Tuesday"].active == False
-    # assert lhu[f"{flount_text},time,tech,week,Wednesday"].active == False
+    # assert lhu[f"{root_desc()},time,tech,week,Thursday"].active == True
+    # assert lhu[f"{root_desc()},time,tech,week,Friday"].active == False
+    # assert lhu[f"{root_desc()},time,tech,week,Saturday"].active == False
+    # assert lhu[f"{root_desc()},time,tech,week,Sunday"].active == False
+    # assert lhu[f"{root_desc()},time,tech,week,Monday"].active == False
+    # assert lhu[f"{root_desc()},time,tech,week,Tuesday"].active == False
+    # assert lhu[f"{root_desc()},time,tech,week,Wednesday"].active == False
 
 
 def test_calendar_set_acptfact_create_missing_ideas_CreatesBaseAndAcptFact():
     # GIVEN
-    flount_text = "flount"
-    sx = CalendarUnit(_owner=flount_text)
+
+    sx = CalendarUnit(_owner=root_desc())
     sx._idearoot.set_kids_empty_if_null()
     prob_text = "problems"
-    prob_road = Road(f"{flount_text},{prob_text}")
+    prob_road = Road(f"{root_desc()},{prob_text}")
     climate_text = "climate"
-    climate_road = Road(f"{flount_text},{prob_text},{climate_text}")
+    climate_road = Road(f"{root_desc()},{prob_text},{climate_text}")
     assert sx._idearoot._kids.get(prob_text) is None
 
     # WHEN
@@ -772,32 +766,32 @@ def test_calendar_set_acptfact_create_missing_ideas_CreatesBaseAndAcptFact():
 
 def test_calendar_get_acptfactunits_base_and_acptfact_list_CorrectlyReturnsListOfAcptFactUnits():
     # GIVEN
-    flount_text = "flount"
-    sx = CalendarUnit(_owner=flount_text)
+
+    sx = CalendarUnit(_owner=root_desc())
     sx._idearoot.set_kids_empty_if_null()
 
     prob_text = "problems"
-    prob_road = Road(f"{flount_text},{prob_text}")
+    prob_road = Road(f"{root_desc()},{prob_text}")
     climate_text = "climate"
-    climate_road = Road(f"{flount_text},{prob_text},{climate_text}")
+    climate_road = Road(f"{root_desc()},{prob_text},{climate_text}")
     sx.set_acptfact(base=prob_road, pick=climate_road, create_missing_ideas=True)
 
     weather_text = "weather"
-    weather_road = Road(f"{flount_text},{weather_text}")
+    weather_road = Road(f"{root_desc()},{weather_text}")
     windy_text = "windy"
-    windy_road = Road(f"{flount_text},{weather_text},{windy_text}")
+    windy_road = Road(f"{root_desc()},{weather_text},{windy_text}")
     sx.set_acptfact(base=weather_road, pick=windy_road, create_missing_ideas=True)
     hot_text = "hot"
-    hot_road = Road(f"{flount_text},{weather_text},{hot_text}")
+    hot_road = Road(f"{root_desc()},{weather_text},{hot_text}")
     sx.set_acptfact(base=weather_road, pick=hot_road, create_missing_ideas=True)
     cold_text = "cold"
-    cold_road = Road(f"{flount_text},{weather_text},{cold_text}")
+    cold_road = Road(f"{root_desc()},{weather_text},{cold_text}")
     sx.set_acptfact(base=weather_road, pick=cold_road, create_missing_ideas=True)
 
     games_text = "games"
-    games_road = Road(f"{flount_text},{games_text}")
+    games_road = Road(f"{root_desc()},{games_text}")
     football_text = "football"
-    football_road = Road(f"{flount_text},{games_text},{football_text}")
+    football_road = Road(f"{root_desc()},{games_text},{football_text}")
     sx.set_acptfact(base=games_road, pick=football_road, create_missing_ideas=True)
 
     # WHEN
