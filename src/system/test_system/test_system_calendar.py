@@ -79,7 +79,7 @@ def test_system_get_calendar_currentlyGetsCalendar(env_dir_setup_cleanup):
     e5.save_calendarunit_obj_to_calendars_dir(calendar_x=sx5_obj)
 
     # WHEN / THEN
-    assert e5.get_calendar_from_calendars_dir(_desc=sx5_obj._owner) == sx5_obj
+    assert e5.get_calendar_from_calendars_dir(owner=sx5_obj._owner) == sx5_obj
 
 
 def test_system_rename_calendar_in_calendars_dir_ChangesCalendarName(
@@ -89,19 +89,19 @@ def test_system_rename_calendar_in_calendars_dir_ChangesCalendarName(
     system_name = get_temp_env_name()
     e5 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
     e5.create_dirs_if_null(in_memory_bank=True)
-    old_calendar_desc = "old1"
-    sx5_obj = CalendarUnit(_owner=old_calendar_desc)
-    old_sx5_path = f"{e5.get_calendars_dir()}/{old_calendar_desc}.json"
+    old_calendar_owner = "old1"
+    sx5_obj = CalendarUnit(_owner=old_calendar_owner)
+    old_sx5_path = f"{e5.get_calendars_dir()}/{old_calendar_owner}.json"
     e5.save_calendarunit_obj_to_calendars_dir(calendar_x=sx5_obj)
     print(f"{old_sx5_path=}")
 
     # WHEN
-    new_calendar_desc = "new1"
-    new_sx5_path = f"{e5.get_calendars_dir()}/{new_calendar_desc}.json"
+    new_calendar_owner = "new1"
+    new_sx5_path = f"{e5.get_calendars_dir()}/{new_calendar_owner}.json"
     assert os_path.exists(new_sx5_path) == False
     assert os_path.exists(old_sx5_path)
     e5.rename_calendar_in_calendars_dir(
-        old_desc=old_calendar_desc, new_desc=new_calendar_desc
+        old_desc=old_calendar_owner, new_desc=new_calendar_owner
     )
 
     # THEN

@@ -682,7 +682,7 @@ def test_system_set_river_sphere_for_calendar_CorrectlyUpatesCalendarMemberUnits
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu_calendar)
 
     e1.refresh_bank_metrics()
-    sal_calendar_before = e1.get_calendar_from_calendars_dir(_desc=sal_text)
+    sal_calendar_before = e1.get_calendar_from_calendars_dir(owner=sal_text)
 
     e1.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=100)
     assert len(sal_calendar_before._members) == 3
@@ -704,7 +704,7 @@ def test_system_set_river_sphere_for_calendar_CorrectlyUpatesCalendarMemberUnits
     sal_river_tmembers = e1.get_river_tmembers(calendar_name=sal_text)
     assert len(sal_river_tmembers) == 3
 
-    sal_calendar_after = e1.get_calendar_from_calendars_dir(_desc=sal_text)
+    sal_calendar_after = e1.get_calendar_from_calendars_dir(owner=sal_text)
 
     bob_tmember = sal_river_tmembers.get(bob_text)
     tom_tmember = sal_river_tmembers.get(tom_text)

@@ -212,7 +212,7 @@ def test_calendar_edit_idea_desc_ChangesIdeaKidN_special_road():
     assert mood_idea._special_road == new_rain_road
 
 
-def test_calendar_desc_change_ChangesIdeaRequiredUnitsScenario1():
+def test_calendar_owner_change_ChangesIdeaRequiredUnitsScenario1():
     # GIVEN
     calendar_x = get_calendar_with_4_levels_and_2requireds_2acptfacts()
     old_weekday_text = "weekdays"

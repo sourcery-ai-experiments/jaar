@@ -32,7 +32,7 @@ def test_system_get_person_dest_calendar_from_digest_calendar_files_ReturnsCorre
     px_name = "test_person1"
     ex.create_new_personunit(person_name=px_name)
     ex.create_calendarlink_to_saved_calendar(
-        person_name=px_name, calendar_desc=input_calendar._owner
+        person_name=px_name, calendar_owner=input_calendar._owner
     )
     ex.save_person_file(person_name=px_name)
     person_x_obj = ex.get_person_obj_from_system(name=px_name)

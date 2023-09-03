@@ -306,7 +306,7 @@
      <string>Update</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="calendar_desc">
+   <widget class="QLineEdit" name="calendar_owner">
     <property name="geometry">
      <rect>
       <x>100</x>

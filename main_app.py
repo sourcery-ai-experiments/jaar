@@ -330,7 +330,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.root_datetime_prev_label.setText("")
         with contextlib.suppress(Exception):
             self.refresh_datetime_display()
-        self.calendar_desc.setText(self.calendar_x._owner)
+        self.calendar_owner.setText(self.calendar_x._owner)
         self.acptfacts_table_load()
         self.agenda_states_load()
 

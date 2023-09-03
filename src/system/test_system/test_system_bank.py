@@ -354,7 +354,7 @@ def test_system_set_calendar_attr_defined_by_system_CorrectlyPopulatesCalendar_G
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ava_calendar)
 
     e1.set_calendar_attr_defined_by_system(calendar_name=sal_text)
-    e1_sal_calendar = e1.get_calendar_from_calendars_dir(_desc=sal_text)
+    e1_sal_calendar = e1.get_calendar_from_calendars_dir(owner=sal_text)
     assert len(e1_sal_calendar._groups.get(swim_group_text)._members) == 1
 
     # WHEN
@@ -366,5 +366,5 @@ def test_system_set_calendar_attr_defined_by_system_CorrectlyPopulatesCalendar_G
     e1.set_calendar_attr_defined_by_system(calendar_name=sal_text)
 
     # THEN
-    e1_sal_calendar = e1.get_calendar_from_calendars_dir(_desc=sal_text)
+    e1_sal_calendar = e1.get_calendar_from_calendars_dir(owner=sal_text)
     assert len(e1_sal_calendar._groups.get(swim_group_text)._members) == 2

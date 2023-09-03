@@ -122,7 +122,7 @@ class PersonUnit:
             file_text=calendar_x.get_json(),
         )
         self._set_src_calendarlinks(
-            calendar_desc=calendar_x._owner,
+            calendar_owner=calendar_x._owner,
             link_type=link_type,
             weight=calendarlink_weight,
         )
@@ -137,7 +137,7 @@ class PersonUnit:
 
     def receive_all_src_calendarunit_files(self):
         for calendarlink_obj in self._src_calendarlinks.values():
-            file_name_x = f"{calendarlink_obj.calendar_desc}.json"
+            file_name_x = f"{calendarlink_obj.calendar_owner}.json"
             calendar_json = x_func_open_file(self._public_calendars_dir, file_name_x)
             self.receive_src_calendarunit_file(
                 calendar_json=calendar_json,
@@ -146,46 +146,46 @@ class PersonUnit:
             )
 
     def _set_src_calendarlinks(
-        self, calendar_desc: str, link_type: str = None, weight: float = None
+        self, calendar_owner: str, link_type: str = None, weight: float = None
     ):
         self._set_src_calendarlinks_empty_if_null()
-        cx_file_name = f"{calendar_desc}.json"
+        cx_file_name = f"{calendar_owner}.json"
         cx_file_path = f"{self._person_calendars_dir}/{cx_file_name}"
         if not os_path.exists(cx_file_path):
             raise InvalidPersonException(
-                f"Person {self.name} cannot find calendar {calendar_desc}"
+                f"Person {self.name} cannot find calendar {calendar_owner}"
             )
 
         # if not calendarlink_x.link_type in list(get_calendarlink_types().keys()):
         #     raise Exception(f"{calendarlink_x.link_type=} not allowed.")
         calendarlink_x = calendarlink_shop(
-            calendar_desc=calendar_desc, link_type=link_type, weight=weight
+            calendar_owner=calendar_owner, link_type=link_type, weight=weight
         )
 
-        # if self._src_calendarlinks.get(calendar_desc) is None:
-        #     self._src_calendarlinks[calendar_desc] = calendarlink_x
-        # elif self._src_calendarlinks.get(calendar_desc) != None:
-        #     self._src_calendarlinks[calendar_desc] = calendarlink_x
-        self._src_calendarlinks[calendar_desc] = calendarlink_x
+        # if self._src_calendarlinks.get(calendar_owner) is None:
+        #     self._src_calendarlinks[calendar_owner] = calendarlink_x
+        # elif self._src_calendarlinks.get(calendar_owner) != None:
+        #     self._src_calendarlinks[calendar_owner] = calendarlink_x
+        self._src_calendarlinks[calendar_owner] = calendarlink_x
 
         if calendarlink_x.link_type == "blind_trust":
             cx_json = x_func_open_file(self._person_calendars_dir, cx_file_name)
             cx_obj = calendarunit_get_from_json(lw_json=cx_json)
             self._save_digest_calendar_file(
-                calendarunit=cx_obj, src_calendar_desc=cx_obj._owner
+                calendarunit=cx_obj, src_calendar_owner=cx_obj._owner
             )
         elif calendarlink_x.link_type == "ignore":
-            new_cx_obj = CalendarUnit(_owner=calendar_desc)
+            new_cx_obj = CalendarUnit(_owner=calendar_owner)
             self.set_ignore_calendar_file(new_cx_obj, new_cx_obj._owner)
 
     def _set_src_calendarlinks_empty_if_null(self):
         if self._src_calendarlinks is None:
             self._src_calendarlinks = {}
 
-    def delete_calendarlink(self, calendar_desc: str):
-        self._src_calendarlinks.pop(calendar_desc)
-        x_func_delete_dir(dir=f"{self._person_calendars_dir}/{calendar_desc}.json")
-        x_func_delete_dir(dir=f"{self._digest_calendars_dir}/{calendar_desc}.json")
+    def delete_calendarlink(self, calendar_owner: str):
+        self._src_calendarlinks.pop(calendar_owner)
+        x_func_delete_dir(dir=f"{self._person_calendars_dir}/{calendar_owner}.json")
+        x_func_delete_dir(dir=f"{self._digest_calendars_dir}/{calendar_owner}.json")
 
     def _set_auto_dest_calendar_to_public_calendar(
         self, _auto_dest_calendar_to_public_calendar: bool
@@ -217,20 +217,20 @@ class PersonUnit:
         return calendar_obj
 
     def set_ignore_calendar_file(
-        self, calendarunit: CalendarUnit, src_calendar_desc: str
+        self, calendarunit: CalendarUnit, src_calendar_owner: str
     ):
-        self._save_ignore_calendar_file(calendarunit, src_calendar_desc)
-        cx_file_name = f"{src_calendar_desc}.json"
+        self._save_ignore_calendar_file(calendarunit, src_calendar_owner)
+        cx_file_name = f"{src_calendar_owner}.json"
         cx_2_json = x_func_open_file(self._ignore_calendars_dir, cx_file_name)
         cx_2_obj = calendarunit_get_from_json(lw_json=cx_2_json)
         self._save_digest_calendar_file(
-            calendarunit=cx_2_obj, src_calendar_desc=src_calendar_desc
+            calendarunit=cx_2_obj, src_calendar_owner=src_calendar_owner
         )
 
     def _save_ignore_calendar_file(
-        self, calendarunit: CalendarUnit, src_calendar_desc: str
+        self, calendarunit: CalendarUnit, src_calendar_owner: str
     ):
-        file_name = f"{src_calendar_desc}.json"
+        file_name = f"{src_calendar_owner}.json"
         x_func_save_file(
             dest_dir=self._ignore_calendars_dir,
             file_name=file_name,
@@ -239,9 +239,9 @@ class PersonUnit:
         )
 
     def _save_digest_calendar_file(
-        self, calendarunit: CalendarUnit, src_calendar_desc: str
+        self, calendarunit: CalendarUnit, src_calendar_owner: str
     ):
-        file_name = f"{src_calendar_desc}.json"
+        file_name = f"{src_calendar_owner}.json"
         x_func_save_file(
             dest_dir=self._digest_calendars_dir,
             file_name=file_name,
@@ -307,7 +307,7 @@ class PersonUnit:
         src_calendarlinks_dict = {}
         for calendarlink_x in self._src_calendarlinks.values():
             single_x_dict = calendarlink_x.get_dict()
-            src_calendarlinks_dict[single_x_dict["calendar_desc"]] = single_x_dict
+            src_calendarlinks_dict[single_x_dict["calendar_owner"]] = single_x_dict
         return src_calendarlinks_dict
 
     def get_json(self):
@@ -355,5 +355,5 @@ def get_calendar_from_calendars_dirlinks_from_dict(
         calendarlink_obj = get_calendar_from_calendars_dirlink_from_dict(
             x_dict=calendarlink_dict
         )
-        _src_calendarlinks[calendarlink_obj.calendar_desc] = calendarlink_obj
+        _src_calendarlinks[calendarlink_obj.calendar_owner] = calendarlink_obj
     return _src_calendarlinks

@@ -48,8 +48,8 @@ def env_dir_setup_cleanup():
     x_func_delete_dir(dir=env_dir)
 
 
-def create_calendar_file_for_systems(system_dir: str, calendar_desc: str):
-    calendar_x = CalendarUnit(_owner=calendar_desc)
+def create_calendar_file_for_systems(system_dir: str, calendar_owner: str):
+    calendar_x = CalendarUnit(_owner=calendar_owner)
     calendar_dir = f"{system_dir}/calendars"
     # file_path = f"{calendar_dir}/{calendar_x._owner}.json"
     # if not path.exists(file_path):
@@ -118,27 +118,27 @@ def _delete_and_set_ex3():
     w1_text = "w1"
     ex.create_new_personunit(person_name=w1_text)
     ex.create_calendarlink_to_saved_calendar(
-        person_name=w1_text, calendar_desc="Mycalendar", weight=3
+        person_name=w1_text, calendar_owner="Mycalendar", weight=3
     )
     # w1_obj = ex.get_person_obj_from_system(name=w1_text)
 
     bob_text = "bob wurld"
     create_calendar_file_for_systems(
-        system_dir=ex.get_object_root_dir(), calendar_desc=bob_text
+        system_dir=ex.get_object_root_dir(), calendar_owner=bob_text
     )
     # print(f"create calendar_list {w1_text=}")
     ex.create_calendarlink_to_generated_calendar(
-        person_name=w1_text, calendar_desc=bob_text, link_type="ignore"
+        person_name=w1_text, calendar_owner=bob_text, link_type="ignore"
     )
     land_text = "tim wurld"
     create_calendar_file_for_systems(
-        system_dir=ex.get_object_root_dir(), calendar_desc=land_text
+        system_dir=ex.get_object_root_dir(), calendar_owner=land_text
     )
     ex.create_calendarlink_to_generated_calendar(
-        person_name=w1_text, calendar_desc=land_text
+        person_name=w1_text, calendar_owner=land_text
     )
-    # ex.create_calendarlink_to_generated_calendar(person_name=w1_text, calendar_desc="test9")
-    # ex.create_calendarlink_to_generated_calendar(person_name=w1_text, calendar_desc="Bobs calendar")
+    # ex.create_calendarlink_to_generated_calendar(person_name=w1_text, calendar_owner="test9")
+    # ex.create_calendarlink_to_generated_calendar(person_name=w1_text, calendar_owner="Bobs calendar")
     ex.save_person_file(person_name=w1_text)
     # print(f"WHAT WHAT {ex.get_object_root_dir()}")
     # print(f"WHAT WHAT {ex.get_object_root_dir()}/persons/w1/w1.json")

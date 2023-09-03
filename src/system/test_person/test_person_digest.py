@@ -144,7 +144,9 @@ def test_personunit_save_digest_calendar_file_SavesFileCorrectly(
     assert x_func_count_files(px._digest_calendars_dir) == 0
 
     # WHEN
-    px._save_digest_calendar_file(calendarunit=cx, src_calendar_desc=src_calendar_owner)
+    px._save_digest_calendar_file(
+        calendarunit=cx, src_calendar_owner=src_calendar_owner
+    )
 
     # THEN
     cx_file_name = f"{cx._owner}.json"
@@ -298,7 +300,7 @@ def test_person_get_dest_calendar_from_digest_calendar_files_with1DigestedCalend
 #     assert s1._acptfacts.get(yaya_road).base == yaya_road
 
 #     # WHEN
-#     px.set_single_digested_calendar(_calendar_desc="test1", digest_calendar_x=s1)
+#     px.set_single_digested_calendar(_calendar_owner="test1", digest_calendar_x=s1)
 #     sx_output_new = px.get_dest_calendar_from_digest_calendar_files()
 
 #     # THEN

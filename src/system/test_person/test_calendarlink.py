@@ -12,11 +12,11 @@ def test_calendarlink_exists():
     weight_float = 42
     # WHEN
     slx = calendarlink_shop(
-        calendar_desc=calendar_text, link_type=blind_text, weight=weight_float
+        calendar_owner=calendar_text, link_type=blind_text, weight=weight_float
     )
     # THEN
     assert slx != None
-    assert slx.calendar_desc == calendar_text
+    assert slx.calendar_owner == calendar_text
     assert slx.link_type == blind_text
     assert slx.weight == weight_float
 
@@ -27,11 +27,11 @@ def test_calendarlink_shop_ifAttrNoneAutoFill():
     blind_text = "blind_trust"
 
     # WHEN
-    slx = calendarlink_shop(calendar_desc=calendar_text, link_type=None, weight=None)
+    slx = calendarlink_shop(calendar_owner=calendar_text, link_type=None, weight=None)
 
     # THEN
     assert slx != None
-    assert slx.calendar_desc == calendar_text
+    assert slx.calendar_owner == calendar_text
     assert slx.link_type == blind_text
     assert slx.weight == 1
 
@@ -78,7 +78,7 @@ def test_calendarlink_shop_raisesErrorIfByTypeIsEntered():
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        calendarlink_shop(calendar_desc=calendar_text, link_type=bad_type_text)
+        calendarlink_shop(calendar_owner=calendar_text, link_type=bad_type_text)
     assert (
         str(excinfo.value)
         == f"Calendarlink '{calendar_text}' cannot have type '{bad_type_text}'."
@@ -91,7 +91,7 @@ def test_calendarlink_get_dict_ReturnsDictObject():
     blind_text = "blind_trust"
     weight_float = 29
     clx = calendarlink_shop(
-        calendar_desc=calendar_text, link_type=blind_text, weight=weight_float
+        calendar_owner=calendar_text, link_type=blind_text, weight=weight_float
     )
 
     # WHEN
@@ -99,7 +99,7 @@ def test_calendarlink_get_dict_ReturnsDictObject():
 
     # THEN
     assert x_dict == {
-        "calendar_desc": calendar_text,
+        "calendar_owner": calendar_text,
         "link_type": blind_text,
         "weight": weight_float,
     }
@@ -107,7 +107,7 @@ def test_calendarlink_get_dict_ReturnsDictObject():
 
 def test_get_calendar_from_calendars_dirlink_from_dict_ReturnsCalendarLinkObject():
     # GIVEN
-    calendar_desc_title = "calendar_desc"
+    calendar_owner_title = "calendar_owner"
     link_type_title = "link_type"
     weight_title = "weight"
 
@@ -116,7 +116,7 @@ def test_get_calendar_from_calendars_dirlink_from_dict_ReturnsCalendarLinkObject
     test1_weight_float = 12.4
 
     calendarlink_dict = {
-        calendar_desc_title: test1_desc_text,
+        calendar_owner_title: test1_desc_text,
         link_type_title: test1_link_text,
         weight_title: test1_weight_float,
     }
@@ -125,6 +125,6 @@ def test_get_calendar_from_calendars_dirlink_from_dict_ReturnsCalendarLinkObject
     x_obj = get_calendar_from_calendars_dirlink_from_dict(x_dict=calendarlink_dict)
 
     # THEN
-    assert x_obj.calendar_desc == test1_desc_text
+    assert x_obj.calendar_owner == test1_desc_text
     assert x_obj.link_type == test1_link_text
     assert x_obj.weight == test1_weight_float

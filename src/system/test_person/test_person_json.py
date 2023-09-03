@@ -46,7 +46,7 @@ def test_person_get_calendar_from_calendars_dirlinks_dict_ReturnsCorrectInfo():
     swim_dict = src_calendarlinks_dict.get(swim_text)
     assert str(type(swim_dict)) == "<class 'dict'>"
     assert len(swim_dict) > 1
-    assert swim_dict.get("calendar_desc") == swim_text
+    assert swim_dict.get("calendar_owner") == swim_text
     assert swim_dict.get("link_type") == "blind_trust"
 
 
@@ -71,8 +71,8 @@ def test_person_get_dict_ReturnsDictObject(person_dir_setup_cleanup):
     assert x_dict["_public_calendars_dir"] == person_x._public_calendars_dir
     assert x_dict["_digest_calendars_dir"] == person_x._digest_calendars_dir
     print("check internal obj attributes")
-    # for src_calendar_desc, src_calendar_obj in x_dict["_src_calendarlinks"].items():
-    #     print(f"{src_calendar_desc=}")
+    # for src_calendar_owner, src_calendar_obj in x_dict["_src_calendarlinks"].items():
+    #     print(f"{src_calendar_owner=}")
 
     assert x_dict["_src_calendarlinks"]["A"] != None
     assert x_dict["_src_calendarlinks"]["J"] != None
@@ -151,7 +151,7 @@ def test_person_get_json_CorrectlyWorksForSimpleExample(
 
     # for algo_calendarlink_x in person_algo._src_calendarlinks.values():
     #     assert algo_calendarlink_x == person_json._src_calendarlinks.get(
-    #         algo_calendarlink_x.calendar_desc
+    #         algo_calendarlink_x.calendar_owner
     #     )
 
     assert len(person_json._src_calendarlinks) == len(person_algo._src_calendarlinks)
