@@ -62,13 +62,15 @@ class Ui_MainWindow(object):
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
         self.label_3.setGeometry(QtCore.QRect(30, 30, 181, 16))
         self.label_3.setObjectName("label_3")
-        self.label_agenda_description_header = QtWidgets.QLabel(self.centralwidget)
-        self.label_agenda_description_header.setGeometry(QtCore.QRect(30, 310, 141, 41))
+        self.label_agenda_deescription_header = QtWidgets.QLabel(self.centralwidget)
+        self.label_agenda_deescription_header.setGeometry(
+            QtCore.QRect(30, 310, 141, 41)
+        )
         font = QtGui.QFont()
         font.setPointSize(14)
-        self.label_agenda_description_header.setFont(font)
-        self.label_agenda_description_header.setObjectName(
-            "label_agenda_description_header"
+        self.label_agenda_deescription_header.setFont(font)
+        self.label_agenda_deescription_header.setObjectName(
+            "label_agenda_deescription_header"
         )
         self.label_5 = QtWidgets.QLabel(self.centralwidget)
         self.label_5.setGeometry(QtCore.QRect(470, 400, 141, 20))
@@ -189,15 +191,15 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         self.label_agenda_idea_id_header.setFont(font)
         self.label_agenda_idea_id_header.setObjectName("label_agenda_idea_id_header")
-        self.label_agenda_description_data = QtWidgets.QLabel(self.centralwidget)
-        self.label_agenda_description_data.setGeometry(QtCore.QRect(80, 350, 681, 71))
+        self.label_agenda_deescription_data = QtWidgets.QLabel(self.centralwidget)
+        self.label_agenda_deescription_data.setGeometry(QtCore.QRect(80, 350, 681, 71))
         font = QtGui.QFont()
         font.setPointSize(36)
-        self.label_agenda_description_data.setFont(font)
-        self.label_agenda_description_data.setText("")
-        self.label_agenda_description_data.setWordWrap(True)
-        self.label_agenda_description_data.setObjectName(
-            "label_agenda_description_data"
+        self.label_agenda_deescription_data.setFont(font)
+        self.label_agenda_deescription_data.setText("")
+        self.label_agenda_deescription_data.setWordWrap(True)
+        self.label_agenda_deescription_data.setObjectName(
+            "label_agenda_deescription_data"
         )
         self.label_agenda_family_header2 = QtWidgets.QLabel(self.centralwidget)
         self.label_agenda_family_header2.setGeometry(QtCore.QRect(30, 720, 81, 31))
@@ -388,7 +390,7 @@ class Ui_MainWindow(object):
         self.label_3.setText(
             _translate("MainWindow", "When is the past you have not let go?")
         )
-        self.label_agenda_description_header.setText(
+        self.label_agenda_deescription_header.setText(
             _translate("MainWindow", "Description")
         )
         self.label_5.setText(_translate("MainWindow", "Change where I am:"))

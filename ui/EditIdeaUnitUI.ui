@@ -37,7 +37,7 @@
     <string>Ideas: Edit or Add Children </string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="yo_description">
+  <widget class="QTextEdit" name="yo_deescription">
    <property name="geometry">
     <rect>
      <x>680</x>

@@ -124,7 +124,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.prom_l_03.setHidden(setHiddenBool)
         self.yo_action_cb.setHidden(setHiddenBool)
         self.yo_problem_bool_cb.setHidden(setHiddenBool)
-        self.yo_description.setHidden(setHiddenBool)
+        self.yo_deescription.setHidden(setHiddenBool)
         self.yo_walk.setHidden(setHiddenBool)
         self.yo_weight.setHidden(setHiddenBool)
         self.yo_begin.setHidden(setHiddenBool)
@@ -200,7 +200,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.label_parent_id.setText("Current Node ID : ")
         self.prom_l_02.setText("")
         self.yo_action_cb.setChecked(False)
-        self.yo_description.setText("")
+        self.yo_deescription.setText("")
         self.idea_desc_on_populate = ""
         self.yo_weight.setText("")
         # self.required_base_combo.setText("")
@@ -222,7 +222,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
     def yo_x_populate(self):
         self.label_parent_id.setText(f"Current Node road : {self.yo_x._walk}")
-        self.yo_description.setText(self.yo_x._desc)
+        self.yo_deescription.setText(self.yo_x._desc)
         # self.idea_desc_on_populate = self.yo_x._desc
         self.yo_walk.setText(self.yo_x._walk)
         self.yo_weight.setText(num2str(self.yo_x._weight))
@@ -842,7 +842,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
     def idea_edit_road(self, idea_road):
         self.calendar_x.edit_idea_desc(
             old_road=idea_road,
-            new_desc=self.yo_description.toPlainText(),
+            new_desc=self.yo_deescription.toPlainText(),
         )
 
         # update hierarchical data
@@ -857,19 +857,19 @@ class EditIdeaUnit(qtw0, Ui_Form):
             idea_road = Road(f"{self.yo_x._desc}")
         self.idea_edit_nonroad_data(idea_road=idea_road)
         # if (
-        #     self.idea_desc_on_populate != self.yo_description.toPlainText()
+        #     self.idea_desc_on_populate != self.yo_deescription.toPlainText()
         #     and self.idea_desc_on_populate != ""
         #     and self.idea_desc_on_populate != None
         # ):
         #     self.idea_edit_road()
-        if self.yo_x._desc != self.yo_description.toPlainText():
+        if self.yo_x._desc != self.yo_deescription.toPlainText():
             self.idea_edit_road(idea_road=idea_road)
 
     def idea_duty_insert(self):
         new_walk = f"{self.yo_x._desc}"
         if self.yo_x._walk not in ("", None):
             new_walk = f"{self.yo_x._walk},{self.yo_x._desc}"
-        new_road = f"{new_walk},{self.yo_description.toPlainText()}"
+        new_road = f"{new_walk},{self.yo_deescription.toPlainText()}"
         self.idea_insert()
 
         # add done/not_done children
@@ -896,7 +896,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.refresh_tree()
 
     def idea_insert(self):
-        new_idea = IdeaKid(_desc=self.yo_description.toPlainText())
+        new_idea = IdeaKid(_desc=self.yo_deescription.toPlainText())
         idea_attr_x = IdeaAttrHolder(
             weight=float(self.yo_weight.toPlainText()),
             begin=str2float(self.yo_begin.toPlainText()),
