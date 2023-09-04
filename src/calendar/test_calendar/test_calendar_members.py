@@ -813,7 +813,7 @@ def test_calendar_MemberUnit_CorrectlyCreatesNewName():
     assert a_x._groups.get(beto_text)._single_member == True
 
 
-def test_calendar_MemberUnit_raiseErrorNewNameAlreadyExists():
+def test_calendar_MemberUnit_raiseErrorNewNamePreviouslyExists():
     # GIVEN
     sx = CalendarUnit(_owner="prom")
     rico_text = "rico"
