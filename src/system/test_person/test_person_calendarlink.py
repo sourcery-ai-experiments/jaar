@@ -26,10 +26,13 @@ def test_personunitset_src_calendarlinks_RaisesErrorWhenCalendarDoesNotExist(
     assert px._src_calendarlinks == {}
 
     # WHEN / THEN
+    file_path_x = f"{px._person_calendars_dir}/{swim_text}.json"
+    print(f"{file_path_x=}")
     with pytest_raises(Exception) as excinfo:
         px.set_src_calendarlinks(calendar_owner=swim_text)
     assert (
-        str(excinfo.value) == f"Person {person1_text} cannot find calendar {swim_text}"
+        str(excinfo.value)
+        == f"Person {person1_text} cannot find calendar {swim_text} in {file_path_x}"
     )
 
 
