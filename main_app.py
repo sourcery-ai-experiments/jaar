@@ -371,8 +371,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             base_text = base.replace(f"{self.calendar_x._owner}", "")
             base_text = base_text[1:]
 
-            base_explain_text = f"{base_text} ({count} nodes)"
-            self._acptfacts_table_set_row_and_2_columns(row, base_explain_text, "")
+            base_lecture_text = f"{base_text} ({count} nodes)"
+            self._acptfacts_table_set_row_and_2_columns(row, base_lecture_text, "")
             self.acptfacts_table.setItem(row, 2, qtw1(base))
             self.acptfacts_table.setItem(row, 3, qtw1(""))
             self.acptfacts_table.setItem(row, 4, qtw1(""))
