@@ -303,8 +303,8 @@ def test_get_time_():
 
 def test_get_jajatime_repeating_legible_text_correctlyText():
     # GIVEN
-    src_text = "src"
-    cx = CalendarUnit(_owner=src_text)
+    owner_text = "Noa"
+    cx = CalendarUnit(_owner=owner_text)
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN / THEN

@@ -1,16 +1,17 @@
 from src.calendar.idea import IdeaKid
 from src.calendar.calendar import CalendarUnit
+from src.calendar.road import get_global_root_desc as root_desc
 
 
 def test_calendarAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
     # Given
-    src = "src"
-    calendar_x = CalendarUnit(_owner=src, _weight=10)
+    owner_text = "Mia"
+    calendar_x = CalendarUnit(_owner=owner_text, _weight=10)
 
     l1 = "level1"
     idea_kid_l1 = IdeaKid(_weight=30, _desc=l1)
-    calendar_x.add_idea(walk=src, idea_kid=idea_kid_l1)
-    l1_road = f"{src},{l1}"
+    calendar_x.add_idea(walk=root_desc(), idea_kid=idea_kid_l1)
+    l1_road = f"{root_desc()},{l1}"
 
     rx1 = "range_root_example"
     idea_kid_rx1 = IdeaKid(_weight=30, _desc=rx1)
@@ -41,13 +42,13 @@ def test_calendarAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
 
 def test_calendarAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
     # Given
-    src = "src"
-    calendar_x = CalendarUnit(_owner=src, _weight=10)
+    owner_text = "Bob"
+    calendar_x = CalendarUnit(_owner=owner_text, _weight=10)
 
     l1 = "level1"
     idea_kid_l1 = IdeaKid(_weight=30, _desc=l1)
-    calendar_x.add_idea(walk=src, idea_kid=idea_kid_l1)
-    l1_road = f"{src},{l1}"
+    calendar_x.add_idea(walk=root_desc(), idea_kid=idea_kid_l1)
+    l1_road = f"{root_desc()},{l1}"
 
     rx1 = "range_root_example"
     idea_kid_rx1 = IdeaKid(_weight=30, _desc=rx1)
@@ -81,8 +82,8 @@ def test_calendarAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
 
 def test_get_idea_ranged_kids_CorrectlyReturnsAllChildren():
     # GIVEN
-    src_text = "src"
-    cx = CalendarUnit(_owner=src_text)
+    owner_text = "Noa"
+    cx = CalendarUnit(_owner=owner_text)
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN
@@ -95,8 +96,8 @@ def test_get_idea_ranged_kids_CorrectlyReturnsAllChildren():
 
 def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen1():
     # GIVEN
-    src_text = "src"
-    cx = CalendarUnit(_owner=src_text)
+    owner_text = "Noa"
+    cx = CalendarUnit(_owner=owner_text)
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN
@@ -117,8 +118,8 @@ def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen1():
 
 def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen2():
     # GIVEN
-    src_text = "src"
-    cx = CalendarUnit(_owner=src_text)
+    owner_text = "Noa"
+    cx = CalendarUnit(_owner=owner_text)
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN THEN
@@ -130,8 +131,8 @@ def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen2():
 
 def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen3():
     # GIVEN
-    src_text = "src"
-    cx = CalendarUnit(_owner=src_text)
+    owner_text = "Noa"
+    cx = CalendarUnit(_owner=owner_text)
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN THEN

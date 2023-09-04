@@ -93,7 +93,6 @@ def test_calendar_meld_GroupUnits():
 
 def test_calendar_idearoot_meld_IdeaRootAttrCorrectlyMelded():
     # GIVEN
-    src = "casa"
     ax1 = CalendarUnit(_owner="spirit")
     ax2 = CalendarUnit(_owner="spirit")
     ax2._idearoot._uid = 4
@@ -111,20 +110,19 @@ def test_calendar_idearoot_meld_IdeaRootAttrCorrectlyMelded():
 
 def test_calendar_idearoot_meld_Add4IdeasScenario():
     # GIVEN
-    src = "casa"
     tech_text = "tech"
-    tech_road = f"{src},{tech_text}"
+    tech_road = f"{root_desc()},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{src},{tech_text},{bowl_text}"
+    bowl_road = f"{root_desc()},{tech_text},{bowl_text}"
     swim_text = "swim"
-    swim_road = f"{src},{swim_text}"
+    swim_road = f"{root_desc()},{swim_text}"
     free_text = "freestyle"
-    free_road = f"{src},{swim_text},{free_text}"
+    free_road = f"{root_desc()},{swim_text},{free_text}"
 
     ax1 = CalendarUnit(_owner="spirit")
 
     ax2 = CalendarUnit(_owner="spirit")
-    ax2.add_idea(walk=src, idea_kid=IdeaKid(_desc=tech_text))
+    ax2.add_idea(walk=root_desc(), idea_kid=IdeaKid(_desc=tech_text))
     ax2.add_idea(walk=tech_road, idea_kid=IdeaKid(_desc=bowl_text))
     ax2.add_idea(walk=swim_road, idea_kid=IdeaKid(_desc=free_text))
 
@@ -141,18 +139,18 @@ def test_calendar_idearoot_meld_Add4IdeasScenario():
 
 def test_calendar_idearoot_meld_2SameIdeasScenario():
     # GIVEN
-    src = "casa"
     tech_text = "tech"
-    tech_road = f"{src},{tech_text}"
+    tech_road = f"{root_desc()},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{src},{tech_text},{bowl_text}"
+    bowl_road = f"{root_desc()},{tech_text},{bowl_text}"
 
-    ax1 = CalendarUnit(_owner=src)
-    ax1.add_idea(walk=src, idea_kid=IdeaKid(_desc=tech_text))
+    owner_text = "Yoa"
+    ax1 = CalendarUnit(_owner=owner_text)
+    ax1.add_idea(walk=root_desc(), idea_kid=IdeaKid(_desc=tech_text))
     ax1.add_idea(walk=tech_road, idea_kid=IdeaKid(_desc=bowl_text))
 
-    ax2 = CalendarUnit(_owner=src)
-    ax2.add_idea(walk=src, idea_kid=IdeaKid(_desc=tech_text))
+    ax2 = CalendarUnit(_owner=owner_text)
+    ax2.add_idea(walk=root_desc(), idea_kid=IdeaKid(_desc=tech_text))
     ax2.add_idea(walk=tech_road, idea_kid=IdeaKid(_desc=bowl_text))
 
     assert ax1.get_idea_kid(road=bowl_road)._weight == 1
@@ -166,19 +164,18 @@ def test_calendar_idearoot_meld_2SameIdeasScenario():
 
 def test_calendar_acptfactunits_meld_BaseScenarioWorks():
     # GIVEN
-    src = "casa"
     tech_text = "tech"
-    tech_road = f"{src},{tech_text}"
+    tech_road = f"{root_desc()},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{src},{tech_text},{bowl_text}"
+    bowl_road = f"{root_desc()},{tech_text},{bowl_text}"
 
     ax1 = CalendarUnit(_owner="test7")
-    ax1.add_idea(walk=src, idea_kid=IdeaKid(_desc=tech_text))
+    ax1.add_idea(walk=root_desc(), idea_kid=IdeaKid(_desc=tech_text))
     ax1.add_idea(walk=tech_road, idea_kid=IdeaKid(_desc=bowl_text))
     ax1.set_acptfact(base=tech_road, pick=bowl_road)
 
     ax2 = CalendarUnit(_owner="test7")
-    ax2.add_idea(walk=src, idea_kid=IdeaKid(_desc=tech_text))
+    ax2.add_idea(walk=root_desc(), idea_kid=IdeaKid(_desc=tech_text))
     ax2.add_idea(walk=tech_road, idea_kid=IdeaKid(_desc=bowl_text))
     ax2.set_acptfact(base=tech_road, pick=bowl_road)
 
@@ -193,23 +190,22 @@ def test_calendar_acptfactunits_meld_BaseScenarioWorks():
 
 def test_calendar_acptfactunits_meld_2AcptFactUnitsWorks():
     # GIVEN
-    src = "casa"
     tech_text = "tech"
-    tech_road = f"{src},{tech_text}"
+    tech_road = f"{root_desc()},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{src},{tech_text},{bowl_text}"
+    bowl_road = f"{root_desc()},{tech_text},{bowl_text}"
     swim_text = "swim"
-    swim_road = f"{src},{swim_text}"
+    swim_road = f"{root_desc()},{swim_text}"
     free_text = "freestyle"
 
     ax1 = CalendarUnit(_owner="test7")
-    ax1.add_idea(walk=src, idea_kid=IdeaKid(_desc=tech_text))
+    ax1.add_idea(walk=root_desc(), idea_kid=IdeaKid(_desc=tech_text))
     ax1.add_idea(walk=tech_road, idea_kid=IdeaKid(_desc=bowl_text))
     ax1.add_idea(walk=swim_road, idea_kid=IdeaKid(_desc=free_text))
     ax1.set_acptfact(base=tech_road, pick=bowl_road)
 
     ax2 = CalendarUnit(_owner="test7")
-    ax2.add_idea(walk=src, idea_kid=IdeaKid(_desc=tech_text))
+    ax2.add_idea(walk=root_desc(), idea_kid=IdeaKid(_desc=tech_text))
     ax2.add_idea(walk=tech_road, idea_kid=IdeaKid(_desc=bowl_text))
     ax2.add_idea(walk=swim_road, idea_kid=IdeaKid(_desc=free_text))
     ax2.set_acptfact(base=tech_road, pick=bowl_road)
@@ -226,9 +222,8 @@ def test_calendar_acptfactunits_meld_2AcptFactUnitsWorks():
 
 def test_calendar_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
     # GIVEN
-    src = "casa"
     swim_text = "swim"
-    swim_road = f"{src},{swim_text}"
+    swim_road = f"{root_desc()},{swim_text}"
     free_text = "freestyle"
 
     ax1 = CalendarUnit(_owner="test7")
@@ -251,9 +246,9 @@ def test_calendar_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
 
 def test_calendar_acptfactunits_meld_GroupsMeldedBefore_Members():
     # GIVEN
-    src = "casa"
-    ax1 = CalendarUnit(_owner=src)
-    ax2 = CalendarUnit(_owner=src)
+    owner_text = "Yoa"
+    ax1 = CalendarUnit(_owner=owner_text)
+    ax2 = CalendarUnit(_owner=owner_text)
     bob = "bob"
     ax2.set_memberunit(memberunit_shop(name=bob))
     assert ax2._groups.get(bob) != None
@@ -273,11 +268,10 @@ def test_calendar_acptfactunits_meld_GroupsMeldedBefore_Members():
 
 def test_calendar_acptfactunits_meld_AcptFactsAttributeCorrectlySet():
     # GIVEN
-    src = "casa"
     swim_text = "swim"
-    swim_road = f"{src},{swim_text}"
+    swim_road = f"{root_desc()},{swim_text}"
     free_text = "freestyle"
-    free_road = f"{src},{free_text}"
+    free_road = f"{root_desc()},{free_text}"
 
     ax1 = CalendarUnit(_owner="test7")
     ax1.add_idea(walk=swim_road, idea_kid=IdeaKid(_desc=free_text))
@@ -300,8 +294,8 @@ def test_calendar_acptfactunits_meld_AcptFactsAttributeCorrectlySet():
 
 def test_calendar_meld_worksCorrectlyForLargeExample():
     # GIVEN
-    src = "TlME"
-    ax1 = CalendarUnit(_owner=src)
+    owner_text = "TlME"
+    ax1 = CalendarUnit(_owner=owner_text)
     ax1._idearoot._uid = 1
     ax2 = calendar_v001()
 

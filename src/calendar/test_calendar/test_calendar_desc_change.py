@@ -10,16 +10,16 @@ from src.calendar.road import get_global_root_desc as root_desc
 
 def test_idea_desc_fails_when_idea_does_not_exist():
     # GIVEN
-    src = "src"
     work_text = "work"
-    work_road = f"{src},{work_text}"
+    work_road = f"{root_desc()},{work_text}"
     swim_text = "swim"
-    sx = CalendarUnit(_owner=src)
-    sx.add_idea(walk=src, idea_kid=IdeaKid(_desc=work_text))
+    owner_text = "Noa"
+    sx = CalendarUnit(_owner=owner_text)
+    sx.add_idea(walk=root_desc(), idea_kid=IdeaKid(_desc=work_text))
     sx.add_idea(walk=work_road, idea_kid=IdeaKid(_desc=swim_text))
 
     # When/Then
-    no_idea_road = Road(f"{src},bees")
+    no_idea_road = Road(f"{root_desc()},bees")
     with pytest_raises(Exception) as excinfo:
         sx.edit_idea_desc(old_road=no_idea_road, new_desc="pigeons")
     assert (
@@ -189,21 +189,21 @@ def test_calendar_edit_idea_desc_ChangesIdeaRoot_special_road():
 
 
 def test_calendar_edit_idea_desc_ChangesIdeaKidN_special_road():
-    src = "src"
     person_text = "person"
-    person_road = Road(f"{src},{person_text}")
+    person_road = Road(f"{root_desc()},{person_text}")
     old_water_text = "water"
-    old_water_road = f"{src},{person_text},{old_water_text}"
+    old_water_road = f"{root_desc()},{person_text},{old_water_text}"
     rain_text = "rain"
-    old_rain_road = f"{src},{person_text},{old_water_text},{rain_text}"
+    old_rain_road = f"{root_desc()},{person_text},{old_water_text},{rain_text}"
     mood_text = "mood"
-    mood_road = Road(f"{src},{mood_text}")
+    mood_road = Road(f"{root_desc()},{mood_text}")
 
-    sx = CalendarUnit(_owner=src)
-    sx.add_idea(walk=src, idea_kid=IdeaKid(_desc=person_text))
+    owner_text = "Bob"
+    sx = CalendarUnit(_owner=owner_text)
+    sx.add_idea(walk=root_desc(), idea_kid=IdeaKid(_desc=person_text))
     sx.add_idea(walk=person_road, idea_kid=IdeaKid(_desc=old_water_text))
     sx.add_idea(walk=old_water_road, idea_kid=IdeaKid(_desc=rain_text))
-    sx.add_idea(walk=src, idea_kid=IdeaKid(_desc=mood_text))
+    sx.add_idea(walk=root_desc(), idea_kid=IdeaKid(_desc=mood_text))
 
     sx.edit_idea_attr(road=mood_road, special_road=old_rain_road)
     mood_idea = sx.get_idea_kid(road=mood_road)
@@ -211,7 +211,7 @@ def test_calendar_edit_idea_desc_ChangesIdeaKidN_special_road():
 
     # WHEN
     new_water_text = "h2o"
-    new_rain_road = f"{src},{person_text},{new_water_text},{rain_text}"
+    new_rain_road = f"{root_desc()},{person_text},{new_water_text},{rain_text}"
     sx.edit_idea_desc(old_road=old_water_road, new_desc=new_water_text)
 
     # THEN
@@ -230,12 +230,12 @@ def test_calendar_owner_change_ChangesIdeaRequiredUnitsScenario1():
     # GIVEN
     calendar_x = get_calendar_with_4_levels_and_2requireds_2acptfacts()
     old_weekday_text = "weekdays"
-    old_weekday_road = f"{calendar_x._owner},{old_weekday_text}"
+    old_weekday_road = f"{root_desc()},{old_weekday_text}"
     wednesday_text = "Wednesday"
-    old_wednesday_road = f"{calendar_x._owner},{old_weekday_text},{wednesday_text}"
-    work_idea = calendar_x.get_idea_kid(f"{calendar_x._owner},work")
-    usa = f"{calendar_x._owner},nation-state,USA"
-    nationstate = f"{calendar_x._owner},nation-state"
+    old_wednesday_road = f"{root_desc()},{old_weekday_text},{wednesday_text}"
+    work_idea = calendar_x.get_idea_kid(f"{root_desc()},work")
+    usa = f"{root_desc()},nation-state,USA"
+    nationstate = f"{root_desc()},nation-state"
     # work_wk_required = RequiredUnit(base=weekday, sufffacts={wed_sufffact.need: wed_sufffact})
     # nation_required = RequiredUnit(base=nationstate, sufffacts={usa_sufffact.need: usa_sufffact})
     assert len(work_idea._requiredunits) == 2
@@ -248,8 +248,8 @@ def test_calendar_owner_change_ChangesIdeaRequiredUnitsScenario1():
         == old_wednesday_road
     )
     new_weekday_text = "days of week"
-    new_weekday_road = f"{calendar_x._owner},{new_weekday_text}"
-    new_wednesday_road = f"{calendar_x._owner},{new_weekday_text},{wednesday_text}"
+    new_weekday_road = f"{root_desc()},{new_weekday_text}"
+    new_wednesday_road = f"{root_desc()},{new_weekday_text},{wednesday_text}"
     assert work_idea._requiredunits.get(new_weekday_text) is None
 
     # WHEN
@@ -278,7 +278,7 @@ def test_calendar_owner_change_ChangesIdeaRequiredUnitsScenario1():
 def test_calendar_calendar_owner_edit_CorrectlyChangesBoth():
     # GIVEN
     calendar_x = get_calendar_with_4_levels_and_2requireds_2acptfacts()
-    assert calendar_x._owner == root_desc()
+    assert calendar_x._owner == "Noa"
     assert calendar_x._idearoot._desc == root_desc()
     # mid_desc1 = "tim"
     # calendar_x.edit_idea_desc(old_road=old_desc, new_desc=mid_desc1)

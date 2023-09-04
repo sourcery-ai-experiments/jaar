@@ -356,16 +356,16 @@ def test_calendarunit_get_meld_of_calendar_files_MeldsIntoSourceCalendar_Scenari
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    src = "src"
-    src_cx = CalendarUnit(_owner=src, _weight=10)
+    owner_text = "Nia"
+    src_cx = CalendarUnit(_owner=owner_text, _weight=10)
 
     work = "work"
     idea_kid_work = IdeaKid(_weight=30, _desc=work, promise=True)
-    src_cx.add_idea(idea_kid=idea_kid_work, walk=f"{src}")
+    src_cx.add_idea(idea_kid=idea_kid_work, walk=f"{root_desc()}")
 
     cat = "feed cat"
     idea_kid_feedcat = IdeaKid(_weight=20, _desc=cat, promise=True)
-    src_cx.add_idea(idea_kid=idea_kid_feedcat, walk=f"{src}")
+    src_cx.add_idea(idea_kid=idea_kid_feedcat, walk=f"{root_desc()}")
 
     src_cx.export_all_bonds(dir=get_temp_env_dir())
 
@@ -394,10 +394,10 @@ def test_calendarunit_get_meld_of_calendar_files_MeldsIntoSourceCalendar_Scenari
 # ):
 #     # GIVEN
 #     src = "src"
-#     src_cx = CalendarUnit(_owner=src, _weight=10)
+#     src_cx = CalendarUnit(_owner=owner_text, _weight=10)
 
 #     work_text = "work"
-#     work_road = f"{src},{work_text}"
+#     work_road = f"{root_desc()},{work_text}"
 
 #     cat_text = "feed cat"
 #     cat_idea = IdeaKid(_weight=20, _desc=cat_text, promise=True)

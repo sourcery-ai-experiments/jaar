@@ -13,9 +13,9 @@ from src.calendar.x_func import from_list_get_active_status
 def test_calendar_requiredunits_create():
     calendar_x = example_calendars_get_calendar_with_4_levels()
     work_text = "work"
-    work_road = f"{calendar_x._owner},{work_text}"
+    work_road = f"{root_desc()},{work_text}"
     weekday_text = "weekdays"
-    weekday_road = f"{calendar_x._owner},{weekday_text}"
+    weekday_road = f"{root_desc()},{weekday_text}"
     wed_text = "Wednesday"
     wed_road = f"{weekday_road},{wed_text}"
 
@@ -36,9 +36,9 @@ def test_calendar_requiredunits_create():
 def test_calendar_set_requiredunits_status():
     calendar_x = example_calendars_get_calendar_with_4_levels()
     work_text = "work"
-    work_road = f"{calendar_x._owner},{work_text}"
+    work_road = f"{root_desc()},{work_text}"
     weekday_text = "weekdays"
-    weekday_road = f"{calendar_x._owner},{weekday_text}"
+    weekday_road = f"{root_desc()},{weekday_text}"
     wed_text = "Wednesday"
     wed_road = f"{weekday_road},{wed_text}"
 
@@ -125,9 +125,9 @@ def test_calendar_requiredheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
     # GIVEN
     a4 = example_calendars_get_calendar_with_4_levels()
     work_text = "work"
-    work_road = f"{a4._owner},{work_text}"
+    work_road = f"{root_desc()},{work_text}"
     week_text = "weekdays"
-    week_road = f"{a4._owner},{week_text}"
+    week_road = f"{root_desc()},{week_text}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
 
@@ -193,9 +193,9 @@ def test_calendar_requiredheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
 def test_calendar_requiredheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     a4 = example_calendars_get_calendar_with_4_levels()
     work_text = "work"
-    work_road = f"{a4._owner},{work_text}"
+    work_road = f"{root_desc()},{work_text}"
     week_desc = "weekdays"
-    week_road = f"{a4._owner},{week_desc}"
+    week_road = f"{root_desc()},{week_desc}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
 

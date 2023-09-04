@@ -14,8 +14,8 @@ from pytest import raises as pytest_raises
 
 def test_calendar_acptfact_exists():
     calendar_x = examples_get_calendar_with_4_levels()
-    sunday_road = Road(f"{calendar_x._owner},weekdays,Sunday")
-    weekday_road = Road(f"{calendar_x._owner},weekdays")
+    sunday_road = Road(f"{root_desc()},weekdays,Sunday")
+    weekday_road = Road(f"{root_desc()},weekdays")
     sunday_lw_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
     print(sunday_lw_acptfact)
     calendar_x._idearoot._acptfactunits = {sunday_lw_acptfact.base: sunday_lw_acptfact}
@@ -29,7 +29,7 @@ def test_calendar_acptfact_exists():
 
     calendar_x._idearoot._acptfactunits = None
     assert calendar_x._idearoot._acptfactunits is None
-    usa_week_road = Road(f"{calendar_x._owner},nation-state")
+    usa_week_road = Road(f"{root_desc()},nation-state")
     usa_week_unit = acptfactunit_shop(
         base=usa_week_road, pick=usa_week_road, open=608, nigh=610
     )
@@ -44,8 +44,8 @@ def test_calendar_acptfact_exists():
 
 def test_calendar_acptfact_create():
     calendar_x = examples_get_calendar_with_4_levels()
-    sunday_road = Road(f"{calendar_x._owner},weekdays,Sunday")
-    weekday_road = Road(f"{calendar_x._owner},weekdays")
+    sunday_road = Road(f"{root_desc()},weekdays,Sunday")
+    weekday_road = Road(f"{root_desc()},weekdays")
     calendar_x.set_acptfact(base=weekday_road, pick=sunday_road)
     sunday_lw_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
     assert calendar_x._idearoot._acptfactunits == {
@@ -82,8 +82,8 @@ def test_set_acptfact_FailsToCreateWhenBaseAndAcptFactAreDifferenctAndAcptFactId
 def test_calendar_acptfact_create():
     # Given
     calendar_x = examples_get_calendar_with_4_levels()
-    sunday_road = Road(f"{calendar_x._owner},weekdays,Sunday")
-    weekday_road = Road(f"{calendar_x._owner},weekdays")
+    sunday_road = Road(f"{root_desc()},weekdays,Sunday")
+    weekday_road = Road(f"{root_desc()},weekdays")
     calendar_x.set_acptfact(base=weekday_road, pick=sunday_road)
     sunday_lw_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
     assert calendar_x._idearoot._acptfactunits == {

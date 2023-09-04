@@ -281,7 +281,7 @@ def test_calendar_get_json_CorrectlyWorksForSimpleExample():
     assert len(calendar_x._idearoot._kids) == 2
 
     weekday_text = "weekdays"
-    weekday_road = f"{calendar_x._owner},{weekday_text}"
+    weekday_road = f"{root_desc()},{weekday_text}"
     weekday_idea_x = calendar_x.get_idea_kid(road=weekday_road)
     assert len(weekday_idea_x._kids) == 2
 

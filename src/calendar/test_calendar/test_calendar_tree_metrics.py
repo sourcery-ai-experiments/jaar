@@ -14,7 +14,7 @@ def test_calendar_get_tree_metrics_exists():
     assert tree_metrics != None
 
     # WHEN
-    sx = CalendarUnit(_owner="testing_lw")
+    sx = CalendarUnit(_owner="Zia")
     sx_tree_metrics = sx.get_tree_metrics()
 
     # THEN
@@ -68,19 +68,18 @@ def test_calendar_get_tree_set_all_idea_uids_unique():
 
 def test_calendar_calendar_get_tree_metrics_sets_uids_correctly():
     # GIVEN
-    src_text = "testing_lw"
-    src_road = src_text
-    sx = CalendarUnit(_owner=src_text)
+    owner_text = "Zia"
+    sx = CalendarUnit(_owner=owner_text)
     swim_text = "swim"
     walk_text = "walk"
-    sx.add_idea(idea_kid=IdeaKid(_desc=swim_text, _uid=None), walk=src_road)
-    sx.add_idea(idea_kid=IdeaKid(_desc=walk_text, _uid=2), walk=src_road)
-    assert sx.get_idea_kid(road=f"{src_road},{swim_text}")._uid is None
+    sx.add_idea(idea_kid=IdeaKid(_desc=swim_text, _uid=None), walk=root_desc())
+    sx.add_idea(idea_kid=IdeaKid(_desc=walk_text, _uid=2), walk=root_desc())
+    assert sx.get_idea_kid(road=f"{root_desc()},{swim_text}")._uid is None
 
     sx.set_all_idea_uids_unique()
 
     # THEN
-    assert sx.get_idea_kid(road=f"{src_road},{swim_text}")._uid != None
+    assert sx.get_idea_kid(road=f"{root_desc()},{swim_text}")._uid != None
 
 
 def test_calendar_get_tree_metrics_ReturnsAccurateActionIdeaCount():
@@ -99,11 +98,11 @@ def test_calendar_get_tree_metrics_ReturnsAccurateActionIdeaCount():
 
 def test_calendar_get_tree_metrics_ReturnsANoneActionIdeaRoad():
     # GIVEN
-    src = "src"
-    cx = CalendarUnit(_owner=src, _weight=10)
+    owner_text = "Nia"
+    cx = CalendarUnit(_owner=owner_text, _weight=10)
     weekdays = "weekdays"
     idea_kid_weekdays = IdeaKid(_weight=40, _desc=weekdays)
-    cx.add_idea(idea_kid=idea_kid_weekdays, walk=f"{src}")
+    cx.add_idea(idea_kid=idea_kid_weekdays, walk=f"{root_desc()}")
     tree_metrics_before = cx.get_tree_metrics()
     # WHEN/THEN
     assert tree_metrics_before.an_promise_idea_road is None

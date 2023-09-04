@@ -229,13 +229,12 @@ def test_get_kids_in_range_GetsCorrectIdeas():
 
 def test_idea_get_dict_ReturnsDict():
     # GIVEN
-    src_text = "src"
     week_text = "weekdays"
-    week_road = f"{src_text},{week_text}"
+    week_road = f"{root_desc()},{week_text}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
     states_text = "nation-state"
-    states_road = f"{src_text},{states_text}"
+    states_road = f"{root_desc()},{states_text}"
     france_text = "France"
     france_road = f"{states_road},{france_text}"
     usa_text = "USA"

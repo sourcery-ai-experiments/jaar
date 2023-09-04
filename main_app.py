@@ -283,7 +283,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.current_file_path_label.setText(self.file_path)
         # x_func_save_file(
         #     dest_dir=person_calendar_dir,
-        #     file_name=f"{calendar_x._owner}.json",
+        #     file_name=f"{root_desc()}.json",
         #     file_text=calendar_x.get_json(),
         # )
 

@@ -71,7 +71,8 @@ def calendar_v002() -> CalendarUnit:
 
 
 def get_calendar_with_4_levels() -> CalendarUnit:
-    calendar_x = CalendarUnit(_owner=root_desc(), _weight=10)
+    owner_text = "Noa"
+    calendar_x = CalendarUnit(_owner=owner_text, _weight=10)
 
     work = "work"
     idea_kid_work = IdeaKid(_weight=30, _desc=work, promise=True)
@@ -175,7 +176,6 @@ def get_calendar_with_4_levels_and_2requireds_2acptfacts() -> CalendarUnit:
 
 def get_calendar_with7amCleanTableRequired() -> CalendarUnit:
     calendar_x = get_calendar_with_4_levels_and_2requireds_2acptfacts()
-    src = calendar_x._owner
     timetech = "timetech"
     day_24hr = "24hr day"
     am = "am"
@@ -188,10 +188,10 @@ def get_calendar_with7amCleanTableRequired() -> CalendarUnit:
     idea_03 = IdeaKid(_weight=50, _desc="3", _begin=3, _close=4)
     idea_pm = IdeaKid(_weight=50, _desc=pm, _begin=12, _close=24)
 
-    time_road = f"{src},{timetech}"
+    time_road = f"{root_desc()},{timetech}"
     day24hr_road = f"{time_road},{day_24hr}"
     am_road = f"{day_24hr},{am}"
-    calendar_x.add_idea(idea_timeline, src)
+    calendar_x.add_idea(idea_timeline, root_desc())
     calendar_x.add_idea(idea_24hr_day, time_road)
     calendar_x.add_idea(idea_am, day24hr_road)
     calendar_x.add_idea(idea_pm, day24hr_road)
@@ -200,7 +200,7 @@ def get_calendar_with7amCleanTableRequired() -> CalendarUnit:
     calendar_x.add_idea(idea_03, am_road)  # idea_am
 
     house_text = "housework"
-    house_road = f"{src},{house_text}"
+    house_road = f"{root_desc()},{house_text}"
     clean_table = "clean table"
     clean_road = f"{house_road},{clean_table}"
     remove_dish = "remove dishs"
@@ -215,7 +215,7 @@ def get_calendar_with7amCleanTableRequired() -> CalendarUnit:
     idea_tablesoap = IdeaKid(_weight=40, _desc=get_soap_text, promise=True)
     idea_grabsoap = IdeaKid(_weight=40, _desc=grab_text, promise=True)
 
-    calendar_x.add_idea(idea_kid=idea_housework, walk=src)
+    calendar_x.add_idea(idea_kid=idea_housework, walk=root_desc())
     calendar_x.add_idea(idea_kid=idea_cleantable, walk=house_road)
     calendar_x.add_idea(idea_kid=idea_tabledishs, walk=clean_road)
     calendar_x.add_idea(idea_kid=idea_tablesoap, walk=clean_road)
@@ -242,21 +242,21 @@ def get_calendar_with7amCleanTableRequired() -> CalendarUnit:
 
 
 def get_calendar_1Task_1CE0MinutesRequired_1AcptFact() -> CalendarUnit:
-    lw_desc = "test45"
-    calendar_x = CalendarUnit(_owner=lw_desc, _weight=10)
+    owner_text = "Bob"
+    calendar_x = CalendarUnit(_owner=owner_text, _weight=10)
     ced_min_desc = "CE0_minutes"
     ced_minutes = IdeaKid(_desc=ced_min_desc)
-    ced_road = f"{lw_desc},{ced_min_desc}"
-    calendar_x.add_idea(idea_kid=ced_minutes, walk=lw_desc)
+    ced_road = f"{root_desc()},{ced_min_desc}"
+    calendar_x.add_idea(idea_kid=ced_minutes, walk=root_desc())
     mail_desc = "obtain mail"
     mail_task = IdeaKid(_desc=mail_desc, promise=True)
-    calendar_x.add_idea(idea_kid=mail_task, walk=lw_desc)
+    calendar_x.add_idea(idea_kid=mail_task, walk=root_desc())
 
     sufffact_x = sufffactunit_shop(need=ced_road, open=80, nigh=90)
     x_task_required = RequiredUnit(
         base=sufffact_x.need, sufffacts={sufffact_x.need: sufffact_x}
     )
-    mail_road = f"{lw_desc},{mail_desc}"
+    mail_road = f"{root_desc()},{mail_desc}"
     calendar_x.edit_idea_attr(road=mail_road, required=x_task_required)
 
     x_acptfact = acptfactunit_shop(base=ced_road, pick=ced_road, open=85, nigh=95)
@@ -307,13 +307,13 @@ def get_calendar_x1_3levels_1required_1acptfacts() -> CalendarUnit:
 
 
 def get_calendar_base_time_example() -> CalendarUnit:
-    g_src = "src"
-    g_lw = CalendarUnit(_owner=g_src)
+    owner_text = "Sue"
+    calendar_x = CalendarUnit(_owner=owner_text)
     plant = "plant"
     x_idea = IdeaKid(_desc=plant)
-    g_lw.add_idea(x_idea, walk=g_src)
+    calendar_x.add_idea(x_idea, walk=owner_text)
 
-    return g_lw
+    return calendar_x
 
 
 def get_calendar_irrational_example() -> CalendarUnit:

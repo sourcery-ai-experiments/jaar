@@ -4,6 +4,7 @@ from src.calendar.required_idea import (
     Road,
     sufffactunit_shop,
 )
+from src.calendar.road import get_global_root_desc as root_desc
 from pytest import raises as pytest_raises
 
 
@@ -392,15 +393,14 @@ def test_sufffact_get_key_road():
 
 def test_sufffact_find_replace_road_works():
     # GIVEN
-    src = "src"
     weekday_text = "weekday"
-    old_sunday_road = f"{src},{weekday_text},Sunday"
+    old_sunday_road = f"{root_desc()},{weekday_text},Sunday"
     sunday_sufffact_x = sufffactunit_shop(need=old_sunday_road)
     print(sunday_sufffact_x)
     assert sunday_sufffact_x.need == old_sunday_road
 
     # WHEN
-    old_road = f"{src}"
+    old_road = f"{root_desc()}"
     new_road = "fun"
     sunday_sufffact_x.find_replace_road(old_road=old_road, new_road=new_road)
     new_sunday_road = f"{new_road},{weekday_text},Sunday"

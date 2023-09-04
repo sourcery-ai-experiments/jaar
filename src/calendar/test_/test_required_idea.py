@@ -270,11 +270,10 @@ def test_RequiredCore_del_sufffact_CorrectlyDeletesSuffFact():
 
 def test_RequiredCore_find_replace_road_works():
     # GIVEN
-    src = "src"
     weekday_text = "weekday"
     sunday_text = "Sunday"
-    old_weekday_road = f"{src},{weekday_text}"
-    old_sunday_road = f"{src},{weekday_text},{sunday_text}"
+    old_weekday_road = f"{root_desc()},{weekday_text}"
+    old_sunday_road = f"{root_desc()},{weekday_text},{sunday_text}"
     # sunday_sufffact_x = sufffactunit_shop(need=old_sunday_road)
     required_x = RequiredCore(base=old_weekday_road, sufffacts=None)
     required_x.set_sufffact(sufffact=old_sunday_road)
@@ -285,7 +284,7 @@ def test_RequiredCore_find_replace_road_works():
     assert required_x.sufffacts.get(old_sunday_road).need == old_sunday_road
 
     # WHEN
-    old_road = f"{src}"
+    old_road = f"{root_desc()}"
     new_road = "fun"
     required_x.find_replace_road(old_road=old_road, new_road=new_road)
     new_weekday_road = f"{new_road},{weekday_text}"
@@ -311,11 +310,10 @@ def test_RequiredCore_get_key_road():
 
 def test_RequiredCore_meld_BaseScenarioWorks():
     # GIVEN
-    src = "src"
     tech_text = "timetech"
-    tech_road = f"{src},{tech_text}"
+    tech_road = f"{root_desc()},{tech_text}"
     week_text = "ced_week"
-    week_road = f"{src},{tech_text},{week_text}"
+    week_road = f"{root_desc()},{tech_text},{week_text}"
 
     required_x1 = RequiredCore(base=tech_road, sufffacts={})
     required_x1.set_sufffact(sufffact=week_road)
@@ -329,18 +327,17 @@ def test_RequiredCore_meld_BaseScenarioWorks():
 
 def test_RequiredCore_meld_AddSuffFactscenarioWorks():
     # GIVEN
-    src = "src"
     tech_text = "timetech"
-    tech_road = f"{src},{tech_text}"
+    tech_road = f"{root_desc()},{tech_text}"
     week_text = "ced_week"
-    week_road = f"{src},{tech_text},{week_text}"
+    week_road = f"{root_desc()},{tech_text},{week_text}"
 
     required_x1 = RequiredCore(base=tech_road, sufffacts={})
     required_x1.set_sufffact(sufffact=week_road)
 
     required_x2 = RequiredCore(base=tech_road, sufffacts={})
     year_text = "year"
-    year_road = f"{src},{tech_text},{year_text}"
+    year_road = f"{root_desc()},{tech_text},{year_text}"
     required_x2.set_sufffact(sufffact=year_road, open=45, nigh=55)
 
     # WHEN/THEN
@@ -352,11 +349,10 @@ def test_RequiredCore_meld_AddSuffFactscenarioWorks():
 
 def test_RequiredCore_meld_raises_NotSameRoadError():
     # GIVEN
-    src = "src"
     tech_text = "timetech"
-    tech_road = f"{src},{tech_text}"
+    tech_road = f"{root_desc()},{tech_text}"
     week_text = "ced_week"
-    week_road = f"{src},{tech_text},{week_text}"
+    week_road = f"{root_desc()},{tech_text},{week_text}"
 
     required_x1 = RequiredCore(base=tech_road, sufffacts={})
     required_x2 = RequiredCore(base=week_road, sufffacts={})

@@ -94,6 +94,10 @@ def test_get_agenda_with_7amItem():
     # GIVEN
     # set acptfacts as midnight to 8am
     a1 = example_calendars_get_calendar_with7amCleanTableRequired()
+    print(f"{len(a1.get_agenda_items())=}")
+    assert len(a1.get_agenda_items()) == 1
+
+    # WHEN
     day24hr_road = f"{root_desc()},timetech,24hr day"
     day24hr_open = 0.0
     day24hr_nigh = 8.0
@@ -106,13 +110,8 @@ def test_get_agenda_with_7amItem():
     print(a1._idearoot._kids[housework_text]._kids[clean_text]._requiredunits)
     print(a1._idearoot._kids[housework_text]._kids[clean_text]._active_status)
 
-    # WHEN
-    agenda_list = a1.get_agenda_items()
-
     # THEN
-    # for agenda_item in agenda_list:
-    #     print(agenda_item._desc)
-
+    agenda_list = a1.get_agenda_items()
     print(f"{len(agenda_list)=}")
     assert len(agenda_list) == 6
     clean_item = agenda_list[1]

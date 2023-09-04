@@ -5,6 +5,7 @@ from src.calendar.required_idea import (
     acptfactunit_shop as c_acptfactunit,
     Road,
 )
+from src.calendar.road import get_global_root_desc as root_desc
 from pytest import raises as pytest_raises
 
 
@@ -237,11 +238,10 @@ def test_idea_grouplink_meld_TwoGroupsScenarioWorks():
 
 def test_idea_acptfactunits_meld_BaseScenarioWorks():
     # GIVEN
-    src = "casa"
     tech_text = "tech"
-    tech_road = f"{src},{tech_text}"
+    tech_road = f"{root_desc()},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{src},{tech_text},{bowl_text}"
+    bowl_road = f"{root_desc()},{tech_text},{bowl_text}"
     hc_1 = c_acptfactunit(base=tech_road, pick=bowl_road)
     yx1 = IdeaCore(_desc="spirit")
     yx1.set_acptfactunits_empty_if_null()
@@ -263,13 +263,12 @@ def test_idea_acptfactunits_meld_BaseScenarioWorks():
 
 def test_idea_acptfactunits_meld_2AcptFactUnitsWorks():
     # GIVEN
-    src = "casa"
     tech_text = "tech"
-    tech_road = f"{src},{tech_text}"
+    tech_road = f"{root_desc()},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{src},{tech_text},{bowl_text}"
+    bowl_road = f"{root_desc()},{tech_text},{bowl_text}"
     plate_text = "plate"
-    plate_road = f"{src},{tech_text},{plate_text}"
+    plate_road = f"{root_desc()},{tech_text},{plate_text}"
 
     hc_1 = c_acptfactunit(base=tech_road, pick=bowl_road)
     yx1 = IdeaCore(_desc="spirit")
@@ -290,13 +289,12 @@ def test_idea_acptfactunits_meld_2AcptFactUnitsWorks():
 
 def test_idea_attributes_meld_Works():
     # GIVEN
-    src = "casa"
     tech_text = "tech"
-    tech_road = f"{src},{tech_text}"
+    tech_road = f"{root_desc()},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{src},{tech_text},{bowl_text}"
+    bowl_road = f"{root_desc()},{tech_text},{bowl_text}"
     plate_text = "plate"
-    plate_road = f"{src},{tech_text},{plate_text}"
+    plate_road = f"{root_desc()},{tech_text},{plate_text}"
 
     yx1 = IdeaCore(_desc="spirit")
     custom_set_idea_attr(

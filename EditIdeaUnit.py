@@ -282,9 +282,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.required_sufffact_combo.clear()
         self.required_sufffact_combo.addItems([""])
         self.required_sufffact_combo.addItems(
-            self.calendar_x.get_heir_road_list(
-                src_road=self.required_base_combo.currentText()
-            )
+            self.calendar_x.get_heir_road_list(self.required_base_combo.currentText())
         )
 
     def required_sufffact_xxxx_combo_load(self):

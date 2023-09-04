@@ -395,8 +395,8 @@ def test_calendar_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoads():
 def test_calendar_get_heir_road_list_returnsCorrectList():
     lw_x = example_calendars_get_calendar_with_4_levels()
     weekdays = f"{root_desc()},weekdays"
-    assert lw_x.get_heir_road_list(src_road=weekdays)
-    heir_node_road_list = lw_x.get_heir_road_list(src_road=weekdays)
+    assert lw_x.get_heir_road_list(road_x=weekdays)
+    heir_node_road_list = lw_x.get_heir_road_list(road_x=weekdays)
     # for node in heir_node_road_list:
     #     print(f"{node}")
     assert len(heir_node_road_list) == 8
@@ -407,7 +407,7 @@ def test_calendar_get_heir_road_list_returnsCorrectList():
 
 # def test_calendar4member_hasCorrectLevel1StructureWithGrouplessBranches_2():
 #     lw_desc = "src"
-#     lw_x = CalendarUnit(_owner=lw_desc)
+#     lw_x = CalendarUnit(_owner=owner_text)
 #     lw_x.add_idea(idea_kid=IdeaKid(_desc="A", _weight=7), walk="src")
 #     lw_x.add_idea(idea_kid=IdeaKid(_desc="C", _weight=3), walk="src,A")
 #     lw_x.add_idea(idea_kid=IdeaKid(_desc="E", _weight=7), walk="src,A,C")
@@ -435,7 +435,7 @@ def test_calendar_get_heir_road_list_returnsCorrectList():
 #     lw_x.edit_idea_attr(road="src,A,C,E", grouplink=sandy_bl)
 
 #     # expected sandy
-#     exp_sandy = CalendarUnit(_owner=lw_desc)
+#     exp_sandy = CalendarUnit(_owner=owner_text)
 #     exp_sandy.add_idea(idea_kid=IdeaKid(_desc="A", _calendar_importance=0.07), walk="src")
 #     exp_sandy.add_idea(idea_kid=IdeaKid(_desc="C", _calendar_importance=0.07), walk="src,A")
 #     exp_sandy.add_idea(idea_kid=IdeaKid(_desc="E", _calendar_importance=0.5), walk="src,A,C")

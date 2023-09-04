@@ -645,8 +645,8 @@ def test_system_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     assert len(get_idea_catalog_dict(e1.get_bank_conn(), b_road)) == 3
     ce_road = "src,C,E"
     assert len(get_idea_catalog_dict(e1.get_bank_conn(), ce_road)) == 2
-    src_road = "src"
-    assert len(get_idea_catalog_dict(e1.get_bank_conn(), src_road)) == 4
+    ex_road = "src"
+    assert len(get_idea_catalog_dict(e1.get_bank_conn(), ex_road)) == 4
 
 
 def test_system_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(

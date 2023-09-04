@@ -171,7 +171,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.acptfact_pick_update_combo.clear()
         self.acptfact_pick_update_combo.addItems(
             self.calendar_x.get_heir_road_list(
-                src_road=self.acptfact_base_update_combo.currentText()
+                self.acptfact_base_update_combo.currentText()
             )
         )
 

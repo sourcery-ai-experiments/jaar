@@ -2,18 +2,19 @@ from src.calendar.examples.example_calendars import (
     get_calendar_1Task_1CE0MinutesRequired_1AcptFact,
 )
 from src.calendar.calendar import CalendarUnit
+from src.calendar.road import get_global_root_desc as root_desc
 from pytest import raises as pytest_raises
 
 
 def test_calendar_exists():
     # GIVEN
-    src_text = "src"
 
     # WHEN
-    new_obj = CalendarUnit(_owner=src_text)
+    owner_text = "Noa"
+    new_obj = CalendarUnit(_owner=owner_text)
 
     assert new_obj
-    assert new_obj._owner == src_text
+    assert new_obj._owner == owner_text
     assert new_obj._weight == 1
     assert new_obj._max_tree_traverse == 3
     assert new_obj._tree_traverse_count is None
@@ -34,7 +35,7 @@ def test_calendar_IsAbleToSetTaskAsComplete():
     assert mail_idea._task == True
 
     ced_min_desc = "CE0_minutes"
-    ced_road = f"test45,{ced_min_desc}"
+    ced_road = f"{root_desc()},{ced_min_desc}"
     calendar_x.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=85)
     idea_list = calendar_x.get_idea_list()
     assert mail_idea.promise == True
@@ -44,7 +45,7 @@ def test_calendar_IsAbleToSetTaskAsComplete():
 def test_calendar_IsAbleToEditAcptFactUnitAnyAncestor_Idea_1():
     calendar_x = get_calendar_1Task_1CE0MinutesRequired_1AcptFact()
     ced_min_desc = "CE0_minutes"
-    ced_road = f"test45,{ced_min_desc}"
+    ced_road = f"{root_desc()},{ced_min_desc}"
     calendar_x.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=85)
     idea_list = calendar_x.get_idea_list()
     mail_idea = idea_list[1]
@@ -60,11 +61,10 @@ def test_calendar_IsAbleToEditAcptFactUnitAnyAncestor_Idea_1():
 
 def test_calendar_ideaoot_uid_isAlwaysEqualTo1():
     # GIVEN
-    src_text = "testing_lw"
-    src_road = src_text
+    owner_text = "Zia"
 
     # WHEN
-    sx = CalendarUnit(_owner=src_text)
+    sx = CalendarUnit(_owner=owner_text)
 
     # THEN
     assert sx._idearoot._uid == 1
@@ -72,8 +72,8 @@ def test_calendar_ideaoot_uid_isAlwaysEqualTo1():
 
 def test_calendar_set_max_tree_traverse_CorrectlySetsInt():
     # GIVEN
-    src_text = "testing_lw"
-    sx = CalendarUnit(_owner=src_text)
+    owner_text = "Zia"
+    sx = CalendarUnit(_owner=owner_text)
     assert sx._max_tree_traverse == 3
 
     # WHEN
@@ -85,8 +85,8 @@ def test_calendar_set_max_tree_traverse_CorrectlySetsInt():
 
 def test_calendar_set_max_tree_traverse_CorrectlyRaisesError():
     # GIVEN
-    src_text = "testing_lw"
-    sx = CalendarUnit(_owner=src_text)
+    owner_text = "Zia"
+    sx = CalendarUnit(_owner=owner_text)
     assert sx._max_tree_traverse == 3
 
     # WHEN/THEN

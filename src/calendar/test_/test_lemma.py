@@ -32,8 +32,9 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario1():
     lemmas_x = Lemmas()
 
     # When
-    idea_kid = IdeaKid(_desc="timerange1", _walk="src", _begin=0, _close=12)
-    src_idea = IdeaKid(_desc="whatever", _walk="src", _begin=-13, _close=500)
+    walk_road = root_desc()
+    idea_kid = IdeaKid(_desc="timerange1", _walk=walk_road, _begin=0, _close=12)
+    src_idea = IdeaKid(_desc="whatever", _walk=walk_road, _begin=-13, _close=500)
     tr1 = f"{idea_kid._walk},{idea_kid._desc}"
     src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
     new_acptfact = lemmas_x._create_new_acptfact(
@@ -52,10 +53,11 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario2():
     lemmas_x = Lemmas()
 
     # When
-    idea_kid = IdeaKid(_desc="timerange1", _walk="src", _begin=7, _close=12)
+    walk_road = root_desc()
+    idea_kid = IdeaKid(_desc="timerange1", _walk=walk_road, _begin=7, _close=12)
     tr1 = f"{idea_kid._walk},{idea_kid._desc}"
     src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
-    src_idea = IdeaKid(_desc="whatever", _walk="src", _begin=-13, _close=500)
+    src_idea = IdeaKid(_desc="whatever", _walk=walk_road, _begin=-13, _close=500)
     new_acptfact = lemmas_x._create_new_acptfact(
         idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
     )
@@ -71,9 +73,10 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_denom():
     lx.set_empty_if_null()
 
     # When
+    walk_road = root_desc()
     idea_kid = IdeaKid(
         _desc="timerange1",
-        _walk="src",
+        _walk=walk_road,
         _begin=0,
         _close=20,
         _numor=1,
@@ -82,7 +85,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_denom():
     )
     tr1 = f"{idea_kid._walk},{idea_kid._desc}"
     src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
-    src_idea = IdeaKid(_desc="whatever", _walk="src", _begin=-13, _close=500)
+    src_idea = IdeaKid(_desc="whatever", _walk=walk_road, _begin=-13, _close=500)
     new_acptfact = lx._create_new_acptfact(
         idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
     )
@@ -98,7 +101,8 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_2_denom():
     lx.set_empty_if_null()
 
     # When
-    src_idea = IdeaKid(_desc="range_x", _walk="src", _begin=0, _close=10080)
+    walk_road = root_desc()
+    ex_idea = IdeaKid(_desc="range_x", _walk=walk_road, _begin=0, _close=10080)
     idea_kid = IdeaKid(
         _desc="timerange1",
         _walk=f"{root_desc()},range_x",
@@ -106,10 +110,10 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_2_denom():
         _close=8440,
         _reest=False,
     )
-    src_road = f"{src_idea._walk},{src_idea._desc}"
-    src_acptfact = acptfactunit_shop(base=src_road, pick=src_road, open=7200, nigh=7200)
+    ex_road = f"{ex_idea._walk},{ex_idea._desc}"
+    ex_acptfact = acptfactunit_shop(base=ex_road, pick=ex_road, open=7200, nigh=7200)
     new_acptfact = lx._create_new_acptfact(
-        idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
+        idea_x=idea_kid, src_acptfact=ex_acptfact, src_idea=ex_idea
     )
 
     # Then
@@ -123,9 +127,10 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario4_denomReest(
     lemmas_x.set_empty_if_null()
 
     # When
+    walk_road = root_desc()
     idea_kid = IdeaKid(
         _desc="timerange1",
-        _walk="src",
+        _walk=walk_road,
         _begin=0,
         _close=60,
         _numor=1,
@@ -134,7 +139,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario4_denomReest(
     )
     tr1 = f"{idea_kid._walk},{idea_kid._desc}"
     src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=120, nigh=150)
-    src_idea = IdeaKid(_desc="whatever", _walk="src", _begin=-13, _close=500)
+    src_idea = IdeaKid(_desc="whatever", _walk=walk_road, _begin=-13, _close=500)
     new_acptfact = lemmas_x._create_new_acptfact(
         idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
     )
@@ -150,9 +155,10 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario5_denomReest(
     lemmas_x.set_empty_if_null()
 
     # When
+    walk_road = root_desc()
     idea_kid = IdeaKid(
         _desc="timerange1",
-        _walk="src",
+        _walk=walk_road,
         _begin=0,
         _close=60,
         _numor=1,
@@ -161,7 +167,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario5_denomReest(
     )
     tr1 = f"{idea_kid._walk},{idea_kid._desc}"
     src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=100, nigh=150)
-    src_idea = IdeaKid(_desc="whatever", _walk="src", _begin=-13, _close=500)
+    src_idea = IdeaKid(_desc="whatever", _walk=walk_road, _begin=-13, _close=500)
     new_acptfact = lemmas_x._create_new_acptfact(
         idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
     )
@@ -173,11 +179,12 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario5_denomReest(
 
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest():
     # Given
+    walk_road = root_desc()
     lemmas_x = Lemmas()
     lemmas_x.set_empty_if_null()
     idea_src = IdeaKid(
         _desc="timerange1",
-        _walk="src",
+        _walk=walk_road,
         _begin=0,
         _close=60,
     )
@@ -185,7 +192,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
     # When/Then Check
     tr3_kid = IdeaKid(
         _desc="subera",
-        _walk="src",
+        _walk=walk_road,
         _begin=40,
         _close=50,
     )
@@ -200,7 +207,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
     # When/Then Check
     trb_kid = IdeaKid(
         _desc="subera",
-        _walk="src",
+        _walk=walk_road,
         _begin=40,
         _close=60,
     )
@@ -215,7 +222,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
     # When/Then Check
     tr4_kid = IdeaKid(
         _desc="subera",
-        _walk="src",
+        _walk=walk_road,
         _begin=55,
         _close=10,
     )
@@ -230,7 +237,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
     # When/Then Check
     tr5_kid = IdeaKid(
         _desc="subera",
-        _walk="src",
+        _walk=walk_road,
         _begin=0,
         _close=60,
     )
@@ -249,9 +256,10 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario7_denomReest(
     lemmas_x.set_empty_if_null()
 
     # When
+    walk_road = root_desc()
     idea_kid = IdeaKid(
         _desc="timerange1",
-        _walk="src",
+        _walk=walk_road,
         _begin=0,
         _close=60,
         _numor=1,
@@ -260,7 +268,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario7_denomReest(
     )
     tr1 = f"{idea_kid._walk},{idea_kid._desc}"
     src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=90, nigh=150)
-    src_idea = IdeaKid(_desc="whatever", _walk="src", _begin=-13, _close=500)
+    src_idea = IdeaKid(_desc="whatever", _walk=walk_road, _begin=-13, _close=500)
     new_acptfact = lemmas_x._create_new_acptfact(
         idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
     )
@@ -287,16 +295,17 @@ def test_lemmas_get_unevaluated_lemma_ReturnsCorrectLemmaWhenEmpty():
 
 def test_lemmas_get_unevaluated_lemma_ReturnsCorrectLemmaWhenPopulated():
     # Given 2 in lemmas
+    walk_road = root_desc()
     lemmas_x = Lemmas()
     lemmas_x.lemmas = {}
-    src_idea = IdeaKid(_desc="whatever", _walk="src", _begin=-13, _close=500)
+    src_idea = IdeaKid(_desc="whatever", _walk=walk_road, _begin=-13, _close=500)
 
-    tr1_idea = IdeaKid(_desc="timerange1", _walk="src", _begin=7, _close=12)
+    tr1_idea = IdeaKid(_desc="timerange1", _walk=walk_road, _begin=7, _close=12)
     tr1 = f"{tr1_idea._walk},{tr1_idea._desc}"
     src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
     lemmas_x.eval(idea_x=tr1_idea, src_acptfact=src_acptfact, src_idea=src_idea)
 
-    tr2_idea = IdeaKid(_desc="timerange2", _walk="src", _begin=40, _close=60)
+    tr2_idea = IdeaKid(_desc="timerange2", _walk=walk_road, _begin=40, _close=60)
     tr2 = f"{tr2_idea._walk},{tr2_idea._desc}"
     src_acptfact = acptfactunit_shop(base=tr2, pick=tr2, open=55, nigh=60)
     lemmas_x.eval(idea_x=tr2_idea, src_acptfact=src_acptfact, src_idea=src_idea)
@@ -320,19 +329,20 @@ def test_lemmas_get_unevaluated_lemma_ReturnsCorrectLemmaWhenPopulated():
 
 def test_lemmas_is_lemmas_incomplete_ReturnsCorrectBoolWhenPopulated():
     # Given
+    walk_road = root_desc()
     lemmas_z = Lemmas()
     lemmas_z.lemmas = {}
-    src_idea = IdeaKid(_desc="whatever", _walk="src", _begin=-13, _close=500)
+    src_idea = IdeaKid(_desc="whatever", _walk=walk_road, _begin=-13, _close=500)
 
     # for lemma in lemmas_z.lemmas.values():
     #     print(f"Does not exist: {lemma.eval_status=} {lemma.calc_acptfact=}")
 
-    tr1_idea = IdeaKid(_desc="timerange1", _walk="src", _begin=7, _close=12)
+    tr1_idea = IdeaKid(_desc="timerange1", _walk=walk_road, _begin=7, _close=12)
     tr1_road = f"{tr1_idea._walk},{tr1_idea._desc}"
     src_acptfact = acptfactunit_shop(base=tr1_road, pick=tr1_road, open=0, nigh=30)
     lemmas_z.eval(idea_x=tr1_idea, src_acptfact=src_acptfact, src_idea=src_idea)
 
-    tr2_idea = IdeaKid(_desc="timerange2", _walk="src", _begin=40, _close=60)
+    tr2_idea = IdeaKid(_desc="timerange2", _walk=walk_road, _begin=40, _close=60)
     tr2_road = f"{tr2_idea._walk},{tr2_idea._desc}"
     src_acptfact = acptfactunit_shop(base=tr2_road, pick=tr2_road, open=55, nigh=60)
     lemmas_z.eval(idea_x=tr2_idea, src_acptfact=src_acptfact, src_idea=src_idea)

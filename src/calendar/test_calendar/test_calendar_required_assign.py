@@ -11,11 +11,11 @@ from src.calendar.road import get_global_root_desc as root_desc
 
 def test_calendar_edit_idea_attr_CorrectlySetsAssignedUnit():
     # GIVEN
-    src_text = ""
-    c_x = CalendarUnit(_owner=src_text)
+    owner_text = "Xio"
+    c_x = CalendarUnit(_owner=owner_text)
     run_text = "run"
-    run_road = f"{src_text},{run_text}"
-    c_x.add_idea(IdeaKid(_desc=run_text), walk=src_text)
+    run_road = f"{root_desc()},{run_text}"
+    c_x.add_idea(IdeaKid(_desc=run_text), walk=root_desc())
     run_idea = c_x.get_idea_kid(road=run_road)
     assert run_idea._assignedunit is None
 
@@ -81,9 +81,9 @@ def test_calendar_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
 
 def test_calendar_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir():
     # GIVEN
-    src_text = "src"
+    owner_text = "Noa"
     swim_text = "swiming"
-    swim_road = f"{src_text},{swim_text}"
+    swim_road = f"{root_desc()},{swim_text}"
     morn_text = "morning"
     morn_road = f"{swim_road},{morn_text}"
     four_text = "fourth"
@@ -92,9 +92,9 @@ def test_calendar_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedhei
     swimmers_text = "swimmers"
     assigned_unit_x.set_suffgroup(name=swimmers_text)
 
-    c_x = CalendarUnit(_owner=src_text)
+    c_x = CalendarUnit(_owner=owner_text)
     c_x.set_groupunit(groupunit=groupunit_shop(name=swimmers_text))
-    c_x.add_idea(IdeaKid(_desc=swim_text), walk=src_text)
+    c_x.add_idea(IdeaKid(_desc=swim_text), walk=root_desc())
     c_x.add_idea(IdeaKid(_desc=morn_text), walk=swim_road)
     c_x.add_idea(IdeaKid(_desc=four_text), walk=morn_road)
     c_x.edit_idea_attr(road=swim_road, assignedunit=assigned_unit_x)

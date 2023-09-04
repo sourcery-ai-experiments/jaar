@@ -617,10 +617,10 @@ def test_calendar_edit_groupUnit_name_CorrectlyMeldsGroupLinesGroupLinksGroupHei
 
 def test_calendar_add_idea_CreatesMissingGroups():
     # GIVEN
-    src_text = "src"
-    a_x = CalendarUnit(_owner=src_text)
+    owner_text = "bob"
+    a_x = CalendarUnit(_owner=owner_text)
     a_x.set_groupunits_empty_if_null()
-    new_idea_parent_road = f"{src_text},work,cleaning"
+    new_idea_parent_road = f"{root_desc()},work,cleaning"
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = IdeaKid(_weight=40, _desc=clean_cookery_text, promise=True)
 
@@ -645,10 +645,10 @@ def test_calendar_add_idea_CreatesMissingGroups():
 
 def test_calendar_add_idea_DoesNotOverwriteGroups():
     # GIVEN
-    src_text = "src"
-    a_x = CalendarUnit(_owner=src_text)
+    owner_text = "bob"
+    a_x = CalendarUnit(_owner=owner_text)
     a_x.set_groupunits_empty_if_null()
-    new_idea_parent_road = f"{src_text},work,cleaning"
+    new_idea_parent_road = f"{root_desc()},work,cleaning"
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = IdeaKid(_weight=40, _desc=clean_cookery_text, promise=True)
 
@@ -688,8 +688,8 @@ def test_calendar_add_idea_DoesNotOverwriteGroups():
 
 def test_calendar_set_groupunits_create_missing_members_DoesCreateMissingMembers():
     # GIVEN
-    src_text = "src"
-    a_x = CalendarUnit(_owner=src_text)
+    owner_text = "bob"
+    a_x = CalendarUnit(_owner=owner_text)
     a_x.set_members_empty_if_null()
     a_x.set_groupunits_empty_if_null()
     family_text = "family"
@@ -727,8 +727,8 @@ def test_calendar_set_groupunits_create_missing_members_DoesCreateMissingMembers
 
 def test_calendar_set_groupunits_create_missing_members_DoesNotReplaceMembers():
     # GIVEN
-    src_text = "src"
-    a_x = CalendarUnit(_owner=src_text)
+    owner_text = "bob"
+    a_x = CalendarUnit(_owner=owner_text)
     a_x.set_members_empty_if_null()
     family_text = "family"
     anna_text = "anna"
@@ -770,8 +770,8 @@ def test_calendar_set_groupunits_create_missing_members_DoesNotReplaceMembers():
 
 def test_calendar_get_groupunits_dict_CorrectlyReturnsDictOfGroups():
     # GIVEN
-    src_text = "src"
-    sx = CalendarUnit(_owner=src_text)
+    owner_text = "bob"
+    sx = CalendarUnit(_owner=owner_text)
     sx.set_members_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
@@ -794,8 +794,8 @@ def test_calendar_get_groupunits_dict_CorrectlyReturnsDictOfGroups():
 
 def test_calendar_set_all_groupunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
     # GIVEN
-    src_text = "src"
-    sx = CalendarUnit(_owner=src_text)
+    owner_text = "bob"
+    sx = CalendarUnit(_owner=owner_text)
     sx.set_members_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
@@ -818,8 +818,8 @@ def test_calendar_set_all_groupunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
 
 def test_calendar_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs():
     # GIVEN
-    src_text = "src"
-    sx = CalendarUnit(_owner=src_text)
+    owner_text = "bob"
+    sx = CalendarUnit(_owner=owner_text)
     sx.set_members_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
@@ -845,8 +845,8 @@ def test_calendar_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUI
 
 def test_calendar_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs():
     # GIVEN
-    src_text = "src"
-    sx = CalendarUnit(_owner=src_text)
+    owner_text = "Noa"
+    sx = CalendarUnit(_owner=owner_text)
     sx.set_members_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
@@ -872,8 +872,8 @@ def test_calendar_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUI
 
 def test_calendar_all_groupunits_uids_are_unique_ReturnsCorrectBoolean():
     # GIVEN
-    src_text = "src"
-    sx = CalendarUnit(_owner=src_text)
+    owner_text = "Noa"
+    sx = CalendarUnit(_owner=owner_text)
     sx.set_members_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"

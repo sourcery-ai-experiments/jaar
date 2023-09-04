@@ -52,7 +52,7 @@ from src.calendar.hreg_time import (
 from src.calendar.lemma import Lemmas
 from src.calendar.road import (
     get_walk_from_road,
-    is_sub_road_in_src_road,
+    is_sub_road_in_source_road,
     road_validate,
     change_road,
     get_terminus_node_from_road,
@@ -685,10 +685,10 @@ class CalendarUnit:
 
         # figure out if numeric source exists
         idea_x = self.get_idea_kid(road=idea_road)
-        numeric_src_road = None
-        numeric_src_road = idea_x._numeric_road != None
+        numeric_source_road = None
+        numeric_source_road = idea_x._numeric_road != None
 
-        return not numeric_src_road and not parent_range
+        return not numeric_source_road and not parent_range
 
     def _get_rangeroot_acptfactunits(self):
         return [
@@ -1092,8 +1092,8 @@ class CalendarUnit:
             if listed_idea._kids != None:
                 for idea_kid in listed_idea._kids.values():
                     idea_iter_list.append(idea_kid)
-                    if is_sub_road_in_src_road(
-                        src_road=idea_kid._walk,
+                    if is_sub_road_in_source_road(
+                        ref_road=idea_kid._walk,
                         sub_road=old_road,
                     ):
                         idea_kid._walk = change_road(
@@ -1522,7 +1522,7 @@ class CalendarUnit:
 
         if nodes == [] and src == self._idearoot._desc:
             temp_idea = self._idearoot
-            # raise InvalidCalendarException(f"Cannot return root '{src}'")
+            # raise InvalidCalendarException(f"Cannot return root '{root_desc()}'")
         else:
             idea_desc = src if nodes == [] else nodes.pop(0)
             try:
@@ -1784,12 +1784,12 @@ class CalendarUnit:
         self._reset_groupunits_calendar_credit_debt()
         self._reset_memberunit_calendar_credit_debt()
 
-    def get_heir_road_list(self, src_road: Road):
+    def get_heir_road_list(self, road_x: Road):
         # create list of all idea roads (road+desc)
         return [
             road
             for road in self.get_idea_tree_ordered_road_list()
-            if road.find(src_road) == 0
+            if road.find(road_x) == 0
         ]
 
     def get_idea_tree_ordered_road_list(self, no_range_descendents: bool = False):
