@@ -12,102 +12,102 @@ from src.system.bank_sqlstr import RiverTmemberUnit
 
 def test_calendar_members_exists():
     # GIVEN / WHEN
-    a_x = CalendarUnit()
+    cx = CalendarUnit()
 
     # THEN
-    assert a_x._members is None
+    assert cx._members is None
 
     # GIVEN
     yahri_member = memberunit_shop(name=MemberName("yahri"))
     members_x = {yahri_member.name: yahri_member}
-    a_x2 = CalendarUnit()
+    cx2 = CalendarUnit()
 
     # WHEN
-    a_x2.set_memberunit(memberunit=yahri_member)
+    cx2.set_memberunit(memberunit=yahri_member)
 
     # THEN
-    assert a_x2._members == members_x
+    assert cx2._members == members_x
 
 
 def test_example_has_members():
     # GIVEN / WHEN
-    a_x = examples_calendar_v001()
+    cx = examples_calendar_v001()
 
     # THEN
-    assert a_x._members != None
-    assert len(a_x._members) == 22
+    assert cx._members != None
+    assert len(cx._members) == 22
 
 
 def test_calendar_set_member_correctly_sets_members_1():
     # GIVEN
-    a_x = CalendarUnit(_owner="prom")
-    a_x.set_calendar_metrics()
-    assert len(a_x._members) == 0
-    assert len(a_x._groups) == 0
+    cx = CalendarUnit(_owner="prom")
+    cx.set_calendar_metrics()
+    assert len(cx._members) == 0
+    assert len(cx._groups) == 0
 
     # WHEN
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName("rico")))
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName("carmen")))
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName("patrick")))
+    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName("rico")))
+    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName("carmen")))
+    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName("patrick")))
 
     # THEN
-    assert len(a_x._members) == 3
-    assert len(a_x._groups) == 3
-    assert a_x._groups["rico"]._single_member == True
+    assert len(cx._members) == 3
+    assert len(cx._groups) == 3
+    assert cx._groups["rico"]._single_member == True
 
     # WHEN
-    a_x._idearoot.set_grouplink(
+    cx._idearoot.set_grouplink(
         grouplink=grouplink_shop(name=GroupName("rico"), creditor_weight=10)
     )
-    a_x._idearoot.set_grouplink(
+    cx._idearoot.set_grouplink(
         grouplink=grouplink_shop(name=GroupName("carmen"), creditor_weight=10)
     )
-    a_x._idearoot.set_grouplink(
+    cx._idearoot.set_grouplink(
         grouplink=grouplink_shop(name=GroupName("patrick"), creditor_weight=10)
     )
-    assert len(a_x._idearoot._grouplinks) == 3
+    assert len(cx._idearoot._grouplinks) == 3
 
 
 def test_calendar_set_member_correctly_sets_members_2():
     # GIVEN
-    a_x = CalendarUnit(_owner="prom")
+    cx = CalendarUnit(_owner="prom")
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
 
     # WHEN
-    a_x.add_memberunit(name=rico_text, uid=61, creditor_weight=13, debtor_weight=8)
-    a_x.add_memberunit(name=carm_text, uid=5, debtor_weight=5)
-    a_x.add_memberunit(name=patr_text, creditor_weight=17)
+    cx.add_memberunit(name=rico_text, uid=61, creditor_weight=13, debtor_weight=8)
+    cx.add_memberunit(name=carm_text, uid=5, debtor_weight=5)
+    cx.add_memberunit(name=patr_text, creditor_weight=17)
 
     # THEN
-    assert len(a_x._members) == 3
-    assert len(a_x._groups) == 3
-    assert a_x._groups[rico_text]._single_member == True
-    assert a_x._members[patr_text].creditor_weight == 17
-    assert a_x._members[carm_text].debtor_weight == 5
+    assert len(cx._members) == 3
+    assert len(cx._groups) == 3
+    assert cx._groups[rico_text]._single_member == True
+    assert cx._members[patr_text].creditor_weight == 17
+    assert cx._members[carm_text].debtor_weight == 5
 
 
 def test_calendar_get_idea_list_CorrectlySetsMemberLinkCalendarCreditAndDebt():
     # GIVEN
     prom_text = "prom"
-    a_x = CalendarUnit(_owner=prom_text)
+    cx = CalendarUnit(_owner=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(rico_text)))
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
+    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName(rico_text)))
+    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
+    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
     bl_rico = grouplink_shop(name=rico_text, creditor_weight=20, debtor_weight=40)
     bl_carm = grouplink_shop(name=carm_text, creditor_weight=10, debtor_weight=5)
     bl_patr = grouplink_shop(name=patr_text, creditor_weight=10, debtor_weight=5)
-    a_x._idearoot.set_grouplink(grouplink=bl_rico)
-    a_x._idearoot.set_grouplink(grouplink=bl_carm)
-    a_x._idearoot.set_grouplink(grouplink=bl_patr)
+    cx._idearoot.set_grouplink(grouplink=bl_rico)
+    cx._idearoot.set_grouplink(grouplink=bl_carm)
+    cx._idearoot.set_grouplink(grouplink=bl_patr)
 
-    rico_groupunit = a_x._groups.get(rico_text)
-    carm_groupunit = a_x._groups.get(carm_text)
-    patr_groupunit = a_x._groups.get(patr_text)
+    rico_groupunit = cx._groups.get(rico_text)
+    carm_groupunit = cx._groups.get(carm_text)
+    patr_groupunit = cx._groups.get(patr_text)
     rico_memberlink = rico_groupunit._members.get(rico_text)
     carm_memberlink = carm_groupunit._members.get(carm_text)
     patr_memberlink = patr_groupunit._members.get(patr_text)
@@ -118,16 +118,16 @@ def test_calendar_get_idea_list_CorrectlySetsMemberLinkCalendarCreditAndDebt():
     patr_memberlink._calendar_credit is None
     patr_memberlink._calendar_debt is None
 
-    # for group in a_x._groups.values():
+    # for group in cx._groups.values():
     #     for memberlink in group._members.values():
     #         assert memberlink._calendar_credit is None
     #         assert memberlink._calendar_debt is None
 
-    a_x.set_calendar_metrics()
+    cx.set_calendar_metrics()
 
-    # for grouplink in a_x._groupheirs.values():
+    # for grouplink in cx._groupheirs.values():
     #     print(
-    #         f"{a_x._calendar_importance=} {grouplink.name=} {grouplink._calendar_credit=} {grouplink._calendar_debt=}"
+    #         f"{cx._calendar_importance=} {grouplink.name=} {grouplink._calendar_credit=} {grouplink._calendar_debt=}"
     #     )
 
     assert rico_memberlink._calendar_credit == 0.5
@@ -139,7 +139,7 @@ def test_calendar_get_idea_list_CorrectlySetsMemberLinkCalendarCreditAndDebt():
 
     # memberlink_calendar_credit_sum = 0.0
     # memberlink_calendar_debt_sum = 0.0
-    # for group in a_x._groups.values():
+    # for group in cx._groups.values():
     #     # print(f"{group.name=} {group._members=}")
 
     #     for memberlink in group._members.values():
@@ -172,16 +172,16 @@ def test_calendar_get_idea_list_CorrectlySetsMemberLinkCalendarCreditAndDebt():
 
     # WHEN another action, make sure metrics are as expected
     selena_text = "selena"
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(selena_text)))
-    a_x._idearoot.set_grouplink(
+    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName(selena_text)))
+    cx._idearoot.set_grouplink(
         grouplink=grouplink_shop(
             name=GroupName(selena_text), creditor_weight=20, debtor_weight=13
         )
     )
-    a_x.set_calendar_metrics()
+    cx.set_calendar_metrics()
 
     # THEN
-    selena_groupunit = a_x._groups.get(selena_text)
+    selena_groupunit = cx._groups.get(selena_text)
     selena_memberlink = selena_groupunit._members.get(selena_text)
 
     assert rico_memberlink._calendar_credit != 0.25
@@ -196,7 +196,7 @@ def test_calendar_get_idea_list_CorrectlySetsMemberLinkCalendarCreditAndDebt():
     # memberlink_calendar_credit_sum = 0.0
     # memberlink_calendar_debt_sum = 0.0
 
-    # for group in a_x._groups.values():
+    # for group in cx._groups.values():
     #     # print(f"{group.name=} {group._members=}")
 
     #     for memberlink in group._members.values():
@@ -241,25 +241,25 @@ def test_calendar_get_idea_list_CorrectlySetsMemberLinkCalendarCreditAndDebt():
 def test_calendar_get_idea_list_CorrectlySetsMemberUnitCalendarImportance():
     # GIVEN
     prom_text = "prom"
-    a_x = CalendarUnit(_owner=prom_text)
+    cx = CalendarUnit(_owner=prom_text)
     swim_text = "swim"
-    a_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=prom_text)
+    cx.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(rico_text)))
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
+    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName(rico_text)))
+    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
+    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
     bl_rico = grouplink_shop(name=rico_text, creditor_weight=20, debtor_weight=40)
     bl_carm = grouplink_shop(name=carm_text, creditor_weight=10, debtor_weight=5)
     bl_patr = grouplink_shop(name=patr_text, creditor_weight=10, debtor_weight=5)
-    a_x._idearoot._kids[swim_text].set_grouplink(grouplink=bl_rico)
-    a_x._idearoot._kids[swim_text].set_grouplink(grouplink=bl_carm)
-    a_x._idearoot._kids[swim_text].set_grouplink(grouplink=bl_patr)
+    cx._idearoot._kids[swim_text].set_grouplink(grouplink=bl_rico)
+    cx._idearoot._kids[swim_text].set_grouplink(grouplink=bl_carm)
+    cx._idearoot._kids[swim_text].set_grouplink(grouplink=bl_patr)
 
-    rico_memberunit = a_x._members.get(rico_text)
-    carm_memberunit = a_x._members.get(carm_text)
-    patr_memberunit = a_x._members.get(patr_text)
+    rico_memberunit = cx._members.get(rico_text)
+    carm_memberunit = cx._members.get(carm_text)
+    patr_memberunit = cx._members.get(patr_text)
 
     assert rico_memberunit._calendar_credit is None
     assert rico_memberunit._calendar_debt is None
@@ -269,7 +269,7 @@ def test_calendar_get_idea_list_CorrectlySetsMemberUnitCalendarImportance():
     assert patr_memberunit._calendar_debt is None
 
     # WHEN
-    a_x.set_calendar_metrics()
+    cx.set_calendar_metrics()
 
     # THEN
     memberunit_calendar_credit_sum = 0.0
@@ -295,7 +295,7 @@ def test_calendar_get_idea_list_CorrectlySetsMemberUnitCalendarImportance():
         == 1.0
     )
 
-    # for memberunit in a_x._members.values():
+    # for memberunit in cx._members.values():
     #     assert memberunit._calendar_credit != None
     #     assert memberunit._calendar_credit in [0.25, 0.5]
     #     assert memberunit._calendar_debt != None
@@ -315,14 +315,14 @@ def test_calendar_get_idea_list_CorrectlySetsMemberUnitCalendarImportance():
 
     # WHEN another action, make sure metrics are as expected
     selena_text = "selena"
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(selena_text)))
-    a_x._idearoot.set_grouplink(
+    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName(selena_text)))
+    cx._idearoot.set_grouplink(
         grouplink=grouplink_shop(name=selena_text, creditor_weight=20, debtor_weight=10)
     )
-    a_x.set_calendar_metrics()
+    cx.set_calendar_metrics()
 
     # THEN
-    selena_memberunit = a_x._members.get(selena_text)
+    selena_memberunit = cx._members.get(selena_text)
 
     assert rico_memberunit._calendar_credit != 0.5
     assert rico_memberunit._calendar_debt != 0.8
@@ -363,7 +363,7 @@ def test_calendar_get_idea_list_CorrectlySetsMemberUnitCalendarImportance():
     # memberunit_calendar_credit_sum = 0.0
     # memberunit_calendar_debt_sum = 0.0
 
-    # for memberunit in a_x._members.values():
+    # for memberunit in cx._members.values():
     #     assert memberunit._calendar_credit != None
     #     assert memberunit._calendar_credit not in [0.25, 0.5]
     #     assert memberunit._calendar_debt != None
@@ -385,35 +385,35 @@ def test_calendar_get_idea_list_CorrectlySetsMemberUnitCalendarImportance():
 def test_calendar_get_idea_list_CorrectlySetsPartGroupedLWMemberUnitCalendarImportance():
     # GIVEN
     prom_text = "prom"
-    a_x = CalendarUnit(_owner=prom_text)
+    cx = CalendarUnit(_owner=prom_text)
     swim_text = "swim"
-    a_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=prom_text)
+    cx.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(rico_text)))
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
+    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName(rico_text)))
+    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
+    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
     bl_rico = grouplink_shop(name=rico_text, creditor_weight=20, debtor_weight=40)
     bl_carm = grouplink_shop(name=carm_text, creditor_weight=10, debtor_weight=5)
     bl_patr = grouplink_shop(name=patr_text, creditor_weight=10, debtor_weight=5)
-    a_x._idearoot._kids[swim_text].set_grouplink(grouplink=bl_rico)
-    a_x._idearoot._kids[swim_text].set_grouplink(grouplink=bl_carm)
-    a_x._idearoot._kids[swim_text].set_grouplink(grouplink=bl_patr)
+    cx._idearoot._kids[swim_text].set_grouplink(grouplink=bl_rico)
+    cx._idearoot._kids[swim_text].set_grouplink(grouplink=bl_carm)
+    cx._idearoot._kids[swim_text].set_grouplink(grouplink=bl_patr)
 
     # no grouplinks attached to this one
     hunt_text = "hunt"
-    a_x.add_idea(idea_kid=IdeaKid(_desc=hunt_text, _weight=3), walk=prom_text)
+    cx.add_idea(idea_kid=IdeaKid(_desc=hunt_text, _weight=3), walk=prom_text)
 
-    assert a_x._idearoot._grouplinks is None
+    assert cx._idearoot._grouplinks is None
 
     # WHEN
-    a_x.set_calendar_metrics()
+    cx.set_calendar_metrics()
 
     # THEN
-    rico_groupunit = a_x._groups.get(rico_text)
-    carm_groupunit = a_x._groups.get(carm_text)
-    patr_groupunit = a_x._groups.get(patr_text)
+    rico_groupunit = cx._groups.get(rico_text)
+    carm_groupunit = cx._groups.get(carm_text)
+    patr_groupunit = cx._groups.get(patr_text)
     assert rico_groupunit._calendar_credit != 0.5
     assert rico_groupunit._calendar_debt != 0.8
     assert carm_groupunit._calendar_credit != 0.25
@@ -435,7 +435,7 @@ def test_calendar_get_idea_list_CorrectlySetsPartGroupedLWMemberUnitCalendarImpo
 
     # groupunit_calendar_credit_sum = 0.0
     # groupunit_calendar_debt_sum = 0.0
-    # for groupunit in a_x._groups.values():
+    # for groupunit in cx._groups.values():
     #     assert groupunit._calendar_credit != None
     #     assert groupunit._calendar_credit not in [0.25, 0.5]
     #     assert groupunit._calendar_debt != None
@@ -451,9 +451,9 @@ def test_calendar_get_idea_list_CorrectlySetsPartGroupedLWMemberUnitCalendarImpo
     # assert groupunit_calendar_credit_sum == 0.25
     # assert groupunit_calendar_debt_sum == 0.25
 
-    rico_memberunit = a_x._members.get(rico_text)
-    carm_memberunit = a_x._members.get(carm_text)
-    patr_memberunit = a_x._members.get(patr_text)
+    rico_memberunit = cx._members.get(rico_text)
+    carm_memberunit = cx._members.get(carm_text)
+    patr_memberunit = cx._members.get(patr_text)
 
     assert rico_memberunit._calendar_credit == 0.375
     assert rico_memberunit._calendar_debt == 0.45
@@ -477,7 +477,7 @@ def test_calendar_get_idea_list_CorrectlySetsPartGroupedLWMemberUnitCalendarImpo
 
     # memberunit_calendar_credit_sum = 0.0
     # memberunit_calendar_debt_sum = 0.0
-    # for memberunit in a_x._members.values():
+    # for memberunit in cx._members.values():
     #     assert memberunit._calendar_credit != None
     #     assert memberunit._calendar_credit not in [0.25, 0.5]
     #     assert memberunit._calendar_debt != None
@@ -497,19 +497,19 @@ def test_calendar_get_idea_list_CorrectlySetsPartGroupedLWMemberUnitCalendarImpo
 
 def test_calendar_get_idea_list_WithAllMembersWeighted():
     # GIVEN
-    a_x = CalendarUnit(_owner="prom")
-    a_x.add_idea(idea_kid=IdeaKid(_desc="swim"), walk="prom")
+    cx = CalendarUnit(_owner="prom")
+    cx.add_idea(idea_kid=IdeaKid(_desc="swim"), walk="prom")
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    a_x.set_memberunit(
+    cx.set_memberunit(
         memberunit=memberunit_shop(name=MemberName(rico_text), creditor_weight=8)
     )
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
-    rico_memberunit = a_x._members.get(rico_text)
-    carm_memberunit = a_x._members.get(carm_text)
-    patr_memberunit = a_x._members.get(patr_text)
+    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
+    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
+    rico_memberunit = cx._members.get(rico_text)
+    carm_memberunit = cx._members.get(carm_text)
+    patr_memberunit = cx._members.get(patr_text)
     assert rico_memberunit._calendar_credit is None
     assert rico_memberunit._calendar_debt is None
     assert carm_memberunit._calendar_credit is None
@@ -518,7 +518,7 @@ def test_calendar_get_idea_list_WithAllMembersWeighted():
     assert patr_memberunit._calendar_debt is None
 
     # WHEN
-    a_x.set_calendar_metrics()
+    cx.set_calendar_metrics()
 
     # THEN
     assert (
@@ -535,7 +535,7 @@ def test_calendar_get_idea_list_WithAllMembersWeighted():
     )
     # memberunit_calendar_credit_sum = 0.0
     # memberunit_calendar_debt_sum = 0.0
-    # for memberunit in a_x._members.values():
+    # for memberunit in cx._members.values():
     #     assert memberunit._calendar_credit != None
     #     assert memberunit._calendar_credit not in [0.25, 0.5]
     #     assert memberunit._calendar_debt != None
@@ -553,15 +553,15 @@ def test_calendar_get_idea_list_WithAllMembersWeighted():
     # assert memberunit_calendar_debt_sum < 1.00000001
 
 
-def clear_all_memberunits_groupunits_calendar_agenda_credit_debt(a_x: CalendarUnit):
+def clear_all_memberunits_groupunits_calendar_agenda_credit_debt(cx: CalendarUnit):
     # DELETE calendar_agenda_debt and calendar_agenda_credit
-    for groupunit_x in a_x._groups.values():
+    for groupunit_x in cx._groups.values():
         groupunit_x.reset_calendar_credit_debt()
         # for memberlink_x in groupunit_x._members.values():
         #     print(f"{groupunit_x.name=} {memberlink_x.creditor_weight=}  {memberlink_x._calendar_credit:.6f} {memberlink_x.debtor_weight=} {memberlink_x._calendar_debt:.6f} {memberlink_x.name=} ")
 
     # DELETE calendar_agenda_debt and calendar_agenda_credit
-    for memberunit_x in a_x._members.values():
+    for memberunit_x in cx._members.values():
         memberunit_x.reset_calendar_credit_debt()
 
 
@@ -569,15 +569,15 @@ def clear_all_memberunits_groupunits_calendar_agenda_credit_debt(a_x: CalendarUn
 # sourcery skip: no-conditionals-in-tests
 def test_calendar_agenda_credit_debt_IsCorrectlySet():
     # GIVEN
-    a_x = examples_calendar_v001_with_large_agenda()
-    clear_all_memberunits_groupunits_calendar_agenda_credit_debt(a_x=a_x)
+    cx = examples_calendar_v001_with_large_agenda()
+    clear_all_memberunits_groupunits_calendar_agenda_credit_debt(cx=cx)
 
     # TEST calendar_agenda_debt and calendar_agenda_credit are empty
     sum_groupunit_calendar_agenda_credit = 0
     sum_groupunit_calendar_agenda_debt = 0
     sum_memberlink_calendar_agenda_credit = 0
     sum_memberlink_calendar_agenda_debt = 0
-    for groupunit_x in a_x._groups.values():
+    for groupunit_x in cx._groups.values():
         # print(f"{memberunit.name=}")
         sum_groupunit_calendar_agenda_credit += groupunit_x._calendar_agenda_credit
         sum_groupunit_calendar_agenda_debt += groupunit_x._calendar_agenda_debt
@@ -597,7 +597,7 @@ def test_calendar_agenda_credit_debt_IsCorrectlySet():
     sum_memberunit_calendar_agenda_debt = 0
     sum_memberunit_calendar_agenda_ratio_credit = 0
     sum_memberunit_calendar_agenda_ratio_debt = 0
-    for memberunit in a_x._members.values():
+    for memberunit in cx._members.values():
         # print(f"{memberunit.name=}")
         sum_memberunit_calendar_agenda_credit += memberunit._calendar_agenda_credit
         sum_memberunit_calendar_agenda_debt += memberunit._calendar_agenda_debt
@@ -614,7 +614,7 @@ def test_calendar_agenda_credit_debt_IsCorrectlySet():
     assert sum_memberunit_calendar_agenda_ratio_debt == 0
 
     # WHEN
-    agenda_list = a_x.get_agenda_items()
+    agenda_list = cx.get_agenda_items()
 
     # THEN
     assert len(agenda_list) == 68
@@ -649,7 +649,7 @@ def test_calendar_agenda_credit_debt_IsCorrectlySet():
     sum_memberlink_calendar_agenda_credit = 0
     sum_memberlink_calendar_agenda_debt = 0
     memberlink_count = 0
-    for groupunit_x in a_x._groups.values():
+    for groupunit_x in cx._groups.values():
         # print(f"{memberunit.name=}")
         sum_groupunit_calendar_agenda_credit += groupunit_x._calendar_agenda_credit
         sum_groupunit_calendar_agenda_debt += groupunit_x._calendar_agenda_debt
@@ -675,7 +675,7 @@ def test_calendar_agenda_credit_debt_IsCorrectlySet():
     sum_memberunit_calendar_agenda_debt = 0
     sum_memberunit_calendar_agenda_ratio_credit = 0
     sum_memberunit_calendar_agenda_ratio_debt = 0
-    for memberunit in a_x._members.values():
+    for memberunit in cx._members.values():
         assert memberunit._calendar_credit != None
         assert memberunit._calendar_credit not in [0.25, 0.5]
         assert memberunit._calendar_debt != None
@@ -712,90 +712,90 @@ def test_calendar_agenda_credit_debt_IsCorrectlySet():
 
 def test_calendar_agenda_ratio_credit_debt_IsCorrectlySetWhenAgendaIsEmpty():
     # GIVEN
-    src_text = "src"
-    a_x = CalendarUnit(_owner=src_text)
+    owner_text = "Noa"
+    cx = CalendarUnit(_owner=owner_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
     rico_member = memberunit_shop(name=rico_text, creditor_weight=0.5, debtor_weight=2)
     carm_member = memberunit_shop(name=carm_text, creditor_weight=1.5, debtor_weight=3)
     patr_member = memberunit_shop(name=patr_text, creditor_weight=8, debtor_weight=5)
-    a_x.set_memberunit(memberunit=rico_member)
-    a_x.set_memberunit(memberunit=carm_member)
-    a_x.set_memberunit(memberunit=patr_member)
-    a_x_rico_member = a_x._members.get(rico_text)
-    a_x_carm_member = a_x._members.get(carm_text)
-    a_x_patr_member = a_x._members.get(patr_text)
+    cx.set_memberunit(memberunit=rico_member)
+    cx.set_memberunit(memberunit=carm_member)
+    cx.set_memberunit(memberunit=patr_member)
+    cx_rico_member = cx._members.get(rico_text)
+    cx_carm_member = cx._members.get(carm_text)
+    cx_patr_member = cx._members.get(patr_text)
 
-    assert a_x_rico_member._calendar_agenda_credit in [0, None]
-    assert a_x_rico_member._calendar_agenda_debt in [0, None]
-    assert a_x_carm_member._calendar_agenda_credit in [0, None]
-    assert a_x_carm_member._calendar_agenda_debt in [0, None]
-    assert a_x_patr_member._calendar_agenda_credit in [0, None]
-    assert a_x_patr_member._calendar_agenda_debt in [0, None]
-    assert a_x_rico_member._calendar_agenda_ratio_credit != 0.05
-    assert a_x_rico_member._calendar_agenda_ratio_debt != 0.2
-    assert a_x_carm_member._calendar_agenda_ratio_credit != 0.15
-    assert a_x_carm_member._calendar_agenda_ratio_debt != 0.3
-    assert a_x_patr_member._calendar_agenda_ratio_credit != 0.8
-    assert a_x_patr_member._calendar_agenda_ratio_debt != 0.5
+    assert cx_rico_member._calendar_agenda_credit in [0, None]
+    assert cx_rico_member._calendar_agenda_debt in [0, None]
+    assert cx_carm_member._calendar_agenda_credit in [0, None]
+    assert cx_carm_member._calendar_agenda_debt in [0, None]
+    assert cx_patr_member._calendar_agenda_credit in [0, None]
+    assert cx_patr_member._calendar_agenda_debt in [0, None]
+    assert cx_rico_member._calendar_agenda_ratio_credit != 0.05
+    assert cx_rico_member._calendar_agenda_ratio_debt != 0.2
+    assert cx_carm_member._calendar_agenda_ratio_credit != 0.15
+    assert cx_carm_member._calendar_agenda_ratio_debt != 0.3
+    assert cx_patr_member._calendar_agenda_ratio_credit != 0.8
+    assert cx_patr_member._calendar_agenda_ratio_debt != 0.5
 
     # WHEN
-    a_x.set_calendar_metrics()
+    cx.set_calendar_metrics()
 
     # THEN
-    assert a_x_rico_member._calendar_agenda_credit == 0
-    assert a_x_rico_member._calendar_agenda_debt == 0
-    assert a_x_carm_member._calendar_agenda_credit == 0
-    assert a_x_carm_member._calendar_agenda_debt == 0
-    assert a_x_patr_member._calendar_agenda_credit == 0
-    assert a_x_patr_member._calendar_agenda_debt == 0
-    assert a_x_rico_member._calendar_agenda_ratio_credit == 0.05
-    assert a_x_rico_member._calendar_agenda_ratio_debt == 0.2
-    assert a_x_carm_member._calendar_agenda_ratio_credit == 0.15
-    assert a_x_carm_member._calendar_agenda_ratio_debt == 0.3
-    assert a_x_patr_member._calendar_agenda_ratio_credit == 0.8
-    assert a_x_patr_member._calendar_agenda_ratio_debt == 0.5
+    assert cx_rico_member._calendar_agenda_credit == 0
+    assert cx_rico_member._calendar_agenda_debt == 0
+    assert cx_carm_member._calendar_agenda_credit == 0
+    assert cx_carm_member._calendar_agenda_debt == 0
+    assert cx_patr_member._calendar_agenda_credit == 0
+    assert cx_patr_member._calendar_agenda_debt == 0
+    assert cx_rico_member._calendar_agenda_ratio_credit == 0.05
+    assert cx_rico_member._calendar_agenda_ratio_debt == 0.2
+    assert cx_carm_member._calendar_agenda_ratio_credit == 0.15
+    assert cx_carm_member._calendar_agenda_ratio_debt == 0.3
+    assert cx_patr_member._calendar_agenda_ratio_credit == 0.8
+    assert cx_patr_member._calendar_agenda_ratio_debt == 0.5
 
 
 def test_calendar_get_member_groups_returnsCorrectData():
-    a_x = CalendarUnit(_owner="prom")
-    a_x.add_idea(idea_kid=IdeaKid(_desc="swim"), walk="prom")
-    rico = "rico"
-    carmen = "carmen"
-    patrick = "patrick"
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(rico)))
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(carmen)))
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(patrick)))
+    cx = CalendarUnit(_owner="prom")
+    cx.add_idea(idea_kid=IdeaKid(_desc="swim"), walk="prom")
+    rico_text = "rico"
+    carm_text = "carmen"
+    patr_text = "patrick"
+    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName(rico_text)))
+    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
+    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
 
-    carmen_group_list = a_x.get_member_groups(member_name=carmen)
-    assert carmen_group_list == [carmen]
+    carmen_group_list = cx.get_member_groups(member_name=carm_text)
+    assert carmen_group_list == [carm_text]
 
     swimmers = "swimmers"
-    carmen_member_dict = {MemberName(carmen): memberlink_shop(name=carmen)}
+    carmen_member_dict = {MemberName(carm_text): memberlink_shop(name=carm_text)}
     swim_group = groupunit_shop(name=swimmers, _members=carmen_member_dict)
-    a_x._groups[swim_group.name] = swim_group
-    carmen_group_list = a_x.get_member_groups(member_name=carmen)
-    assert carmen_group_list == [carmen, swimmers]
+    cx._groups[swim_group.name] = swim_group
+    carmen_group_list = cx.get_member_groups(member_name=carm_text)
+    assert carmen_group_list == [carm_text, swimmers]
 
 
 def test_calendar_MemberUnit_CorrectlyCreatesNewName():
     # GIVEN
-    a_x = CalendarUnit(_owner="prom")
+    cx = CalendarUnit(_owner="prom")
     rico_text = "rico"
-    a_x.add_memberunit(name=rico_text, uid=61, creditor_weight=13)
-    a_x.add_memberunit(name="carmen", uid=5)
-    a_x.add_memberunit(name="patrick", creditor_weight=17)
-    assert len(a_x._members) == 3
-    assert a_x._members.get(rico_text) != None
-    assert a_x._members.get(rico_text).creditor_weight == 13
-    assert len(a_x._groups) == 3
-    assert a_x._groups.get(rico_text) != None
-    assert a_x._groups.get(rico_text)._single_member == True
+    cx.add_memberunit(name=rico_text, uid=61, creditor_weight=13)
+    cx.add_memberunit(name="carmen", uid=5)
+    cx.add_memberunit(name="patrick", creditor_weight=17)
+    assert len(cx._members) == 3
+    assert cx._members.get(rico_text) != None
+    assert cx._members.get(rico_text).creditor_weight == 13
+    assert len(cx._groups) == 3
+    assert cx._groups.get(rico_text) != None
+    assert cx._groups.get(rico_text)._single_member == True
 
     # WHEN
     beto_text = "beta"
-    a_x.edit_memberunit_name(
+    cx.edit_memberunit_name(
         old_name=rico_text,
         new_name=beto_text,
         allow_member_overwite=False,
@@ -803,14 +803,14 @@ def test_calendar_MemberUnit_CorrectlyCreatesNewName():
     )
 
     # THEN
-    assert a_x._members.get(beto_text) != None
-    assert a_x._members.get(beto_text).creditor_weight == 13
-    assert a_x._members.get(rico_text) is None
-    assert len(a_x._members) == 3
-    assert len(a_x._groups) == 3
-    assert a_x._groups.get(rico_text) is None
-    assert a_x._groups.get(beto_text) != None
-    assert a_x._groups.get(beto_text)._single_member == True
+    assert cx._members.get(beto_text) != None
+    assert cx._members.get(beto_text).creditor_weight == 13
+    assert cx._members.get(rico_text) is None
+    assert len(cx._members) == 3
+    assert len(cx._groups) == 3
+    assert cx._groups.get(rico_text) is None
+    assert cx._groups.get(beto_text) != None
+    assert cx._groups.get(beto_text)._single_member == True
 
 
 def test_calendar_MemberUnit_raiseErrorNewNamePreviouslyExists():
@@ -845,13 +845,13 @@ def test_calendar_MemberUnit_raiseErrorNewNamePreviouslyExists():
 def test_calendar_MemberUnit_CorrectlyChangesGroupUnitMemberLinks():
     # GIVEN
     prom_text = "prom"
-    a_x = CalendarUnit(_owner=prom_text)
+    cx = CalendarUnit(_owner=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    a_x.add_memberunit(name=rico_text, uid=61, creditor_weight=13)
-    a_x.add_memberunit(name=carm_text, uid=5)
-    a_x.add_memberunit(name=patr_text, creditor_weight=17)
+    cx.add_memberunit(name=rico_text, uid=61, creditor_weight=13)
+    cx.add_memberunit(name=carm_text, uid=5)
+    cx.add_memberunit(name=patr_text, creditor_weight=17)
 
     swim_text = "swimmers"
     carmen_member_dict = {MemberName(carm_text): memberlink_shop(name=carm_text)}
@@ -862,9 +862,9 @@ def test_calendar_MemberUnit_CorrectlyChangesGroupUnitMemberLinks():
     swim_group.set_memberlink(
         memberlink=memberlink_shop(name=rico_text, creditor_weight=7, debtor_weight=30)
     )
-    a_x.set_groupunit(groupunit=swim_group)
+    cx.set_groupunit(groupunit=swim_group)
 
-    swim_group = a_x._groups.get(swim_text)
+    swim_group = cx._groups.get(swim_text)
     assert len(swim_group._members) == 2
     assert swim_group._members.get(rico_text) != None
     assert swim_group._members.get(rico_text).creditor_weight == 7
@@ -872,7 +872,7 @@ def test_calendar_MemberUnit_CorrectlyChangesGroupUnitMemberLinks():
 
     # WHEN
     beto_text = "beta"
-    a_x.edit_memberunit_name(
+    cx.edit_memberunit_name(
         old_name=rico_text,
         new_name=beto_text,
         allow_member_overwite=False,
@@ -890,13 +890,13 @@ def test_calendar_MemberUnit_CorrectlyChangesGroupUnitMemberLinks():
 def test_calendar_MemberUnit_CorrectlyMergesNames():
     # GIVEN
     prom_text = "prom"
-    a_x = CalendarUnit(_owner=prom_text)
+    cx = CalendarUnit(_owner=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    a_x.add_memberunit(name=rico_text, uid=61, creditor_weight=13)
-    a_x.add_memberunit(name=carm_text, uid=5, creditor_weight=3)
-    a_x.add_memberunit(name=patr_text, creditor_weight=17)
+    cx.add_memberunit(name=rico_text, uid=61, creditor_weight=13)
+    cx.add_memberunit(name=carm_text, uid=5, creditor_weight=3)
+    cx.add_memberunit(name=patr_text, creditor_weight=17)
 
     swim_text = "swimmers"
     carmen_member_dict = {MemberName(carm_text): memberlink_shop(name=carm_text)}
@@ -907,16 +907,16 @@ def test_calendar_MemberUnit_CorrectlyMergesNames():
     swim_group.set_memberlink(
         memberlink=memberlink_shop(name=rico_text, creditor_weight=7, debtor_weight=30)
     )
-    a_x.set_groupunit(groupunit=swim_group)
+    cx.set_groupunit(groupunit=swim_group)
 
-    assert len(a_x._members) == 3
-    assert a_x._members.get(rico_text) != None
-    assert a_x._members.get(rico_text).creditor_weight == 13
-    assert a_x._members.get(carm_text) != None
-    assert a_x._members.get(carm_text).creditor_weight == 3
+    assert len(cx._members) == 3
+    assert cx._members.get(rico_text) != None
+    assert cx._members.get(rico_text).creditor_weight == 13
+    assert cx._members.get(carm_text) != None
+    assert cx._members.get(carm_text).creditor_weight == 3
 
     # WHEN / THEN
-    a_x.edit_memberunit_name(
+    cx.edit_memberunit_name(
         old_name=rico_text,
         new_name=carm_text,
         allow_member_overwite=True,
@@ -924,23 +924,23 @@ def test_calendar_MemberUnit_CorrectlyMergesNames():
     )
 
     # THEN
-    assert a_x._members.get(carm_text) != None
-    assert a_x._members.get(carm_text).creditor_weight == 16
-    assert a_x._members.get(rico_text) is None
-    assert len(a_x._members) == 2
+    assert cx._members.get(carm_text) != None
+    assert cx._members.get(carm_text).creditor_weight == 16
+    assert cx._members.get(rico_text) is None
+    assert len(cx._members) == 2
 
 
 def test_calendar_MemberUnit_CorrectlyMergesGroupUnitMemberLinks():
     # GIVEN
     # GIVEN
     prom_text = "prom"
-    a_x = CalendarUnit(_owner=prom_text)
+    cx = CalendarUnit(_owner=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    a_x.add_memberunit(name=rico_text, uid=61, creditor_weight=13)
-    a_x.add_memberunit(name=carm_text, uid=5)
-    a_x.add_memberunit(name=patr_text, creditor_weight=17)
+    cx.add_memberunit(name=rico_text, uid=61, creditor_weight=13)
+    cx.add_memberunit(name=carm_text, uid=5)
+    cx.add_memberunit(name=patr_text, creditor_weight=17)
 
     swim_text = "swimmers"
     carmen_member_dict = {MemberName(carm_text): memberlink_shop(name=carm_text)}
@@ -951,9 +951,9 @@ def test_calendar_MemberUnit_CorrectlyMergesGroupUnitMemberLinks():
     swim_group.set_memberlink(
         memberlink=memberlink_shop(name=rico_text, creditor_weight=7, debtor_weight=30)
     )
-    a_x.set_groupunit(groupunit=swim_group)
+    cx.set_groupunit(groupunit=swim_group)
 
-    swim_group = a_x._groups.get(swim_text)
+    swim_group = cx._groups.get(swim_text)
     assert len(swim_group._members) == 2
     assert swim_group._members.get(rico_text) != None
     assert swim_group._members.get(rico_text).creditor_weight == 7
@@ -963,7 +963,7 @@ def test_calendar_MemberUnit_CorrectlyMergesGroupUnitMemberLinks():
     assert swim_group._members.get(carm_text).debtor_weight == 18
 
     # WHEN
-    a_x.edit_memberunit_name(
+    cx.edit_memberunit_name(
         old_name=rico_text,
         new_name=carm_text,
         allow_member_overwite=True,
@@ -1052,8 +1052,8 @@ def test_calendar_MemberUnit_CorrectlyOverwriteNewNameGroupUnit():
 
 def test_calendar_set_all_memberunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
     # GIVEN
-    src_text = "src"
-    sx = CalendarUnit(_owner=src_text)
+    owner_text = "Noa"
+    sx = CalendarUnit(_owner=owner_text)
     sx.set_members_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
@@ -1076,8 +1076,8 @@ def test_calendar_set_all_memberunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
 
 def test_calendar_set_all_memberunits_uids_unique_CorrectlySetsChangesSameGroupUIDs():
     # GIVEN
-    src_text = "src"
-    sx = CalendarUnit(_owner=src_text)
+    owner_text = "Noa"
+    sx = CalendarUnit(_owner=owner_text)
     sx.set_members_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
@@ -1103,8 +1103,8 @@ def test_calendar_set_all_memberunits_uids_unique_CorrectlySetsChangesSameGroupU
 
 def test_calendar_set_all_memberunits_uids_unique_CorrectlySetsChangesSameGroupUIDs():
     # GIVEN
-    src_text = "src"
-    sx = CalendarUnit(_owner=src_text)
+    owner_text = "Noa"
+    sx = CalendarUnit(_owner=owner_text)
     sx.set_members_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
@@ -1130,8 +1130,8 @@ def test_calendar_set_all_memberunits_uids_unique_CorrectlySetsChangesSameGroupU
 
 def test_calendar_all_memberunits_uids_are_unique_ReturnsCorrectBoolean():
     # GIVEN
-    src_text = "src"
-    sx = CalendarUnit(_owner=src_text)
+    owner_text = "Noa"
+    sx = CalendarUnit(_owner=owner_text)
     sx.set_members_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
@@ -1161,8 +1161,8 @@ def test_calendar_all_memberunits_uids_are_unique_ReturnsCorrectBoolean():
 
 def test_calendar_get_memberunits_name_list_CorrectlyReturnsListOfMemberUnits():
     # GIVEN
-    src_text = "src"
-    sx = CalendarUnit(_owner=src_text)
+    owner_text = "Noa"
+    sx = CalendarUnit(_owner=owner_text)
     sx.set_members_empty_if_null()
     sam_text = "sam"
     will_text = "will"
