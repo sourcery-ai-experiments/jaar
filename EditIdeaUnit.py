@@ -976,7 +976,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             required_view_name=required_view_base,
             acptfactheir_view_flag=acptfactheir_view_flag,
             root_percent_flag=root_percent_flag,
-            src_calendar=self.calendar_x,
+            source_calendar=self.calendar_x,
         )
 
         self.baseideaunit.clear()

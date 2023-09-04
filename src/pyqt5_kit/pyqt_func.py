@@ -27,7 +27,7 @@ class PYQTTreeHolder:
     required_view_name: str
     acptfactheir_view_flag: str
     root_percent_flag: str
-    src_calendar: str
+    source_calendar: str
 
 
 def get_pyqttree(
@@ -47,7 +47,7 @@ def get_pyqttree(
     required_view_flag: bool = None,
     required_view_name: bool = None,
     acptfactheir_view_flag: bool = None,
-    src_calendar: CalendarUnit = None,
+    source_calendar: CalendarUnit = None,
 ) -> QTreeWidgetItem:
     pyqttree_holder = PYQTTreeHolder(
         ideacore=idearoot,
@@ -66,7 +66,7 @@ def get_pyqttree(
         required_view_name=required_view_name,
         acptfactheir_view_flag=acptfactheir_view_flag,
         root_percent_flag=root_percent_flag,
-        src_calendar=src_calendar,
+        source_calendar=source_calendar,
     )
 
     return _create_node(pth=pyqttree_holder)
@@ -114,7 +114,7 @@ def _create_node(pth: PYQTTreeHolder) -> QTreeWidgetItem:
             required_view_name=pth.required_view_name,
             acptfactheir_view_flag=pth.acptfactheir_view_flag,
             root_percent_flag=pth.root_percent_flag,
-            src_calendar=pth.src_calendar,
+            source_calendar=pth.source_calendar,
         )
         item.addChild(_create_node(child_pth))
     return item
@@ -198,16 +198,16 @@ def _get_treenode_label_required_view(treenode_label, pth: PYQTTreeHolder) -> st
 def _get_treenode_label_acptfactheir_view(treenode_label, pth: PYQTTreeHolder) -> str:
     acptfactheir = pth.ideacore._acptfactheirs.get(pth.required_view_name)
     if acptfactheir != None:
-        time_road = f"{pth.src_calendar._idearoot._desc},time,jajatime"
+        time_road = f"{pth.source_calendar._idearoot._desc},time,jajatime"
         if (
             acptfactheir.base == time_road
             and acptfactheir.open != None
             and acptfactheir.nigh != None
         ):
-            hc_open_str = pth.src_calendar.get_jajatime_legible_one_time_event(
+            hc_open_str = pth.source_calendar.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactheir.open
             )
-            hc_nigh_str = pth.src_calendar.get_jajatime_legible_one_time_event(
+            hc_nigh_str = pth.source_calendar.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactheir.nigh
             )
             # treenode_label += f"{get_terminus_node_from_road(acptfactheir.base)}"
@@ -249,13 +249,13 @@ def _create_treenode_label(pth: PYQTTreeHolder):
         treenode_label += f" (RequiredHeirs {len(pth.ideacore._requiredheirs)})"
 
     if pth.yo_acptfactunit_time_flag:
-        time_road = f"{pth.src_calendar._idearoot._desc},time,jajatime"
+        time_road = f"{pth.source_calendar._idearoot._desc},time,jajatime"
         acptfactunit_time_obj = pth.ideacore._acptfactunits.get(time_road)
         if acptfactunit_time_obj != None:
-            hc_open_str = pth.src_calendar.get_jajatime_legible_one_time_event(
+            hc_open_str = pth.source_calendar.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactunit_time_obj.open
             )
-            hc_nigh_str = pth.src_calendar.get_jajatime_legible_one_time_event(
+            hc_nigh_str = pth.source_calendar.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactunit_time_obj.nigh
             )
             # treenode_label += f" ({acptfactunit.base=} {acptfactunit.open}-{acptfactunit.nigh})"
