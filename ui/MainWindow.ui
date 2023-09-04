@@ -71,7 +71,7 @@
      <string>Complete Promise</string>
     </property>
    </widget>
-   <widget class="QLabel" name="root_datetime_prev_label">
+   <widget class="QLabel" name="root_datetime_prev_l">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -92,7 +92,7 @@
      <string>Past:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="root_datetime_curr_label">
+   <widget class="QLabel" name="root_datetime_curr_l">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -280,7 +280,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QLabel" name="calendar_label">
+   <widget class="QLabel" name="calendar_l">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -764,7 +764,7 @@
      <string>Problem Creation</string>
     </property>
    </widget>
-   <widget class="QLabel" name="current_file_path_label">
+   <widget class="QLabel" name="current_file_path_l">
     <property name="geometry">
      <rect>
       <x>540</x>

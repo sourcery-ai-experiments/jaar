@@ -73,8 +73,8 @@ def get_pyqttree(
 
 
 def _create_node(pth: PYQTTreeHolder) -> QTreeWidgetItem:
-    treenode_label = _create_treenode_label(pth)
-    item = QTreeWidgetItem([treenode_label])
+    treenode_l = _create_treenode_l(pth)
+    item = QTreeWidgetItem([treenode_l])
     item.setData(2, 10, pth.ideacore._desc)
     item.setData(2, 11, pth.ideacore._walk)
     # item.setData(2, 12, ideacore._weight)
@@ -171,31 +171,31 @@ def lw_diplay(calendar_importance: float):
         return f"{calendar_importance:.15f}%"
 
 
-def _get_treenode_label_required_count(treenode_label, pth: PYQTTreeHolder) -> str:
+def _get_treenode_l_required_count(treenode_l, pth: PYQTTreeHolder) -> str:
     sufffact_count = sum(
         required.get_sufffacts_count()
         for required in pth.ideacore._requiredunits.values()
     )
     required_count = len(pth.ideacore._requiredunits)
     if required_count != 0:
-        treenode_label += f" (lim {len(pth.ideacore._requiredunits)}/c{sufffact_count})"
-    return treenode_label
+        treenode_l += f" (lim {len(pth.ideacore._requiredunits)}/c{sufffact_count})"
+    return treenode_l
 
 
-def _get_treenode_label_required_view(treenode_label, pth: PYQTTreeHolder) -> str:
+def _get_treenode_l_required_view(treenode_l, pth: PYQTTreeHolder) -> str:
     requiredheir = pth.ideacore._requiredheirs.get(pth.required_view_name)
     if requiredheir != None:
-        # treenode_label += f"{get_terminus_node_from_road(requiredheir.base)}"
+        # treenode_l += f"{get_terminus_node_from_road(requiredheir.base)}"
         grabed_sufffact = None
         for sufffact in requiredheir.sufffacts.values():
             grabed_sufffact = sufffact.need
         if grabed_sufffact not in [requiredheir.base, None]:
             grabed_sufffact = grabed_sufffact.replace(f"{requiredheir.base},", "")
-            treenode_label += f" ({grabed_sufffact})"
-    return treenode_label
+            treenode_l += f" ({grabed_sufffact})"
+    return treenode_l
 
 
-def _get_treenode_label_acptfactheir_view(treenode_label, pth: PYQTTreeHolder) -> str:
+def _get_treenode_l_acptfactheir_view(treenode_l, pth: PYQTTreeHolder) -> str:
     acptfactheir = pth.ideacore._acptfactheirs.get(pth.required_view_name)
     if acptfactheir != None:
         time_road = f"{pth.source_calendar._idearoot._desc},time,jajatime"
@@ -210,43 +210,43 @@ def _get_treenode_label_acptfactheir_view(treenode_label, pth: PYQTTreeHolder) -
             hc_nigh_str = pth.source_calendar.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactheir.nigh
             )
-            # treenode_label += f"{get_terminus_node_from_road(acptfactheir.base)}"
-            treenode_label += f" ({hc_open_str}-{hc_nigh_str})"
+            # treenode_l += f"{get_terminus_node_from_road(acptfactheir.base)}"
+            treenode_l += f" ({hc_open_str}-{hc_nigh_str})"
         elif (
             acptfactheir.base != time_road
             and acptfactheir.open != None
             and acptfactheir.nigh != None
         ):
-            treenode_label += f" ({acptfactheir.open}-{acptfactheir.nigh})"
-    return treenode_label
+            treenode_l += f" ({acptfactheir.open}-{acptfactheir.nigh})"
+    return treenode_l
 
 
-def _create_treenode_label(pth: PYQTTreeHolder):
-    treenode_label = pth.ideacore._desc
+def _create_treenode_l(pth: PYQTTreeHolder):
+    treenode_l = pth.ideacore._desc
 
     if pth.root_percent_flag:
-        treenode_label += f" ({lw_diplay(pth.ideacore._calendar_importance)})"
+        treenode_l += f" ({lw_diplay(pth.ideacore._calendar_importance)})"
     elif pth.yo2bd_count_flag:
-        treenode_label += f" ({len(pth.ideacore._grouplinks)})"
+        treenode_l += f" ({len(pth.ideacore._grouplinks)})"
     elif pth.required_count_flag:
-        treenode_label = _get_treenode_label_required_count(treenode_label, pth)
+        treenode_l = _get_treenode_l_required_count(treenode_l, pth)
     elif pth.required_view_flag:
-        treenode_label = _get_treenode_label_required_view(treenode_label, pth)
+        treenode_l = _get_treenode_l_required_view(treenode_l, pth)
     elif pth.acptfactheir_view_flag and pth.ideacore._walk != "":
-        treenode_label = _get_treenode_label_acptfactheir_view(treenode_label, pth)
+        treenode_l = _get_treenode_l_acptfactheir_view(treenode_l, pth)
     elif pth.yo_action_flag and pth.ideacore.promise:
-        treenode_label += " (task)" if pth.ideacore._task else " (state)"
+        treenode_l += " (task)" if pth.ideacore._task else " (state)"
     elif pth.yo_acptfactunit_count_flag:
-        treenode_label += f" ({len(pth.ideacore._acptfactunits)})"
+        treenode_l += f" ({len(pth.ideacore._acptfactunits)})"
     elif pth.yo_acptfactheir_count_flag and pth.ideacore._walk != "":
-        treenode_label += f" ({len(pth.ideacore._acptfactheirs)})"
+        treenode_l += f" ({len(pth.ideacore._acptfactheirs)})"
 
     if pth.requiredheir_count_flag and pth.ideacore._walk not in (None, ""):
         # requiredunit_count = sum(
         #     str(type(requiredheir)) == "<class 'src.calendar.required.RequiredUnit'>"
         #     for requiredheir in pth.ideacore._requiredheirs.values()
         # )
-        treenode_label += f" (RequiredHeirs {len(pth.ideacore._requiredheirs)})"
+        treenode_l += f" (RequiredHeirs {len(pth.ideacore._requiredheirs)})"
 
     if pth.yo_acptfactunit_time_flag:
         time_road = f"{pth.source_calendar._idearoot._desc},time,jajatime"
@@ -258,7 +258,7 @@ def _create_treenode_label(pth: PYQTTreeHolder):
             hc_nigh_str = pth.source_calendar.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactunit_time_obj.nigh
             )
-            # treenode_label += f" ({acptfactunit.base=} {acptfactunit.open}-{acptfactunit.nigh})"
-            treenode_label += f" ({hc_open_str}-{hc_nigh_str})"
+            # treenode_l += f" ({acptfactunit.base=} {acptfactunit.open}-{acptfactunit.nigh})"
+            treenode_l += f" ({hc_open_str}-{hc_nigh_str})"
 
-    return treenode_label
+    return treenode_l

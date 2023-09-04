@@ -675,7 +675,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLabel" name="prom_label_03">
+  <widget class="QLabel" name="prom_l_03">
    <property name="geometry">
     <rect>
      <x>580</x>
@@ -693,7 +693,7 @@
     <string>SuffFact</string>
    </property>
   </widget>
-  <widget class="QLabel" name="prom_label_02">
+  <widget class="QLabel" name="prom_l_02">
    <property name="geometry">
     <rect>
      <x>1480</x>

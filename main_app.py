@@ -191,7 +191,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def set_acptfact_time_open_5daysago(self):
         days5ago_x = datetime.now() - timedelta(days=5)
         road_minute = f"{self.calendar_x._owner},time,jajatime"
-        # self.root_datetime_curr_label.setText(f"Now: {str(now_x)}")
+        # self.root_datetime_curr_l.setText(f"Now: {str(now_x)}")
         self.calendar_x.set_acptfact(
             base=road_minute,
             pick=road_minute,
@@ -235,7 +235,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def set_acptfact_time_open_soft(self):
         # now_x = datetime.now()
         # road_minute = f"{self.calendar_x._owner},time,jajatime"
-        # self.root_datetime_curr_label.setText(f"Now: {str(now_x)}")
+        # self.root_datetime_curr_l.setText(f"Now: {str(now_x)}")
         # self.calendar_x.set_acptfact(
         #     base=road_minute,
         #     pick=road_minute,
@@ -280,7 +280,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         calendar_x_json = self.calendar_x.get_json()
         with open(f"{self.file_path}", "w") as f:
             f.write(calendar_x_json)
-        self.current_file_path_label.setText(self.file_path)
+        self.current_file_path_l.setText(self.file_path)
         # x_func_save_file(
         #     dest_dir=person_calendar_dir,
         #     file_name=f"{root_desc()}.json",
@@ -290,7 +290,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def load_file(self):
         x_json = ""
         x_json = x_func_open_file(dest_dir=self.file_path, file_name=None)
-        self.current_file_path_label.setText(self.file_path)
+        self.current_file_path_l.setText(self.file_path)
         return x_json
 
     def open_file(self):
@@ -318,16 +318,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.calendar_x._idearoot._acptfactunits[road_minute].nigh
         )
         week_days = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
-        self.root_datetime_curr_label.setText(
+        self.root_datetime_curr_l.setText(
             f"Now:  {str(jajatime_nigh)} {week_days[jajatime_nigh.weekday()]}"
         )
-        self.root_datetime_prev_label.setText(
+        self.root_datetime_prev_l.setText(
             f"Past: {str(jajatime_open)} {week_days[jajatime_open.weekday()]}"
         )
 
     def refresh_all(self):
-        self.root_datetime_curr_label.setText("")
-        self.root_datetime_prev_label.setText("")
+        self.root_datetime_curr_l.setText("")
+        self.root_datetime_prev_l.setText("")
         with contextlib.suppress(Exception):
             self.refresh_datetime_display()
         self.calendar_owner.setText(self.calendar_x._owner)
