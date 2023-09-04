@@ -186,9 +186,10 @@ class SuffFactUnitHregTime:
 
 
 def _get_time_hreg_src_idea(c400_count: int):
-    src = "time"
+    time = "time"
+    min_text = "minutes"
     list_x = []
-    list_x += _get_time_hreg_ced(local_root=src, tech="minutes", c400_count=c400_count)
+    list_x += _get_time_hreg_ced(local_root=time, tech=min_text, c400_count=c400_count)
     return list_x
 
 

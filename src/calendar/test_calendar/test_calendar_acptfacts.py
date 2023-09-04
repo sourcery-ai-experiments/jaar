@@ -674,13 +674,13 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario7(
     # Then
     week_open = lhu[f"{root_desc()},time,jajatime,week"].open
     week_nigh = lhu[f"{root_desc()},time,jajatime,week"].nigh
-    print(f"for src,time,jajatime,week: {week_open=} {week_nigh=}")
+    print(f"for {root_desc()},time,jajatime,week: {week_open=} {week_nigh=}")
     assert lhu[f"{root_desc()},time,jajatime,week"].open == 7200
     assert lhu[f"{root_desc()},time,jajatime,week"].nigh == 2880
 
     week_open = lhu[f"{root_desc()},time,tech,week"].open
     week_nigh = lhu[f"{root_desc()},time,tech,week"].nigh
-    print(f"for src,time,tech,week: {week_open=} {week_nigh=}")
+    print(f"for {root_desc()},time,tech,week: {week_open=} {week_nigh=}")
     assert lhu[f"{root_desc()},time,tech,week"].open == 7200
     assert lhu[f"{root_desc()},time,tech,week"].nigh == 2880
     print(lhu[f"{root_desc()},time,tech,week"])
@@ -717,13 +717,13 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario8(
     # Then
     week_open = lhu[f"{root_desc()},time,jajatime,week"].open
     week_nigh = lhu[f"{root_desc()},time,jajatime,week"].nigh
-    print(f"for src,time,jajatime,week: {week_open=} {week_nigh=}")
+    print(f"for {root_desc()},time,jajatime,week: {week_open=} {week_nigh=}")
     assert lhu[f"{root_desc()},time,jajatime,week"].open == 7200
     assert lhu[f"{root_desc()},time,jajatime,week"].nigh == 7200
 
     week_open = lhu[f"{root_desc()},time,tech,week"].open
     week_nigh = lhu[f"{root_desc()},time,tech,week"].nigh
-    print(f"for src,time,tech,week: {week_open=} {week_nigh=}")
+    print(f"for {root_desc()},time,tech,week: {week_open=} {week_nigh=}")
     assert lhu[f"{root_desc()},time,tech,week"].open == 7200
     assert lhu[f"{root_desc()},time,tech,week"].nigh == 7200
     print(lhu[f"{root_desc()},time,tech,week"])
