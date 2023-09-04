@@ -436,7 +436,7 @@ def test_idea_set_active_status_IfFullactive_status_hxResetToTrue():
 #     assert idea_x._active_status_hx == {0: False}
 
 
-def test_idea_record_active_status_hx_CorrectlyRecordsHistory():
+def test_idea_record_active_status_hx_CorrectlyRecordsHistorry():
     # GIVEN
     idea_x = IdeaCore(_desc="test4")
     assert idea_x._active_status_hx is None
