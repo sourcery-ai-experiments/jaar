@@ -153,7 +153,7 @@ class PersonUnit:
         cx_file_path = f"{self._person_calendars_dir}/{cx_file_name}"
         if not os_path.exists(cx_file_path):
             raise InvalidPersonException(
-                f"Person {self.name} cannot find calendar {calendar_owner}"
+                f"Person {self.name} cannot find calendar {calendar_owner} in {cx_file_path}"
             )
 
         # if not calendarlink_x.link_type in list(get_calendarlink_types().keys()):
