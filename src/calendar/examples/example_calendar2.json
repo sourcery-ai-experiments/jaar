@@ -2563,14 +2563,14 @@
                                                     "_weight": 1,
                                                     "promise": false
                                                 },
-                                                "reading": {
+                                                "browsing": {
                                                     "_acptfactunits": {},
                                                     "_addin": null,
                                                     "_begin": null,
                                                     "_grouplinks": {},
                                                     "_close": null,
                                                     "_denom": null,
-                                                    "_desc": "reading",
+                                                    "_desc": "browsing",
                                                     "_is_expanded": true,
                                                     "_kids": {},
                                                     "_numeric_road": null,

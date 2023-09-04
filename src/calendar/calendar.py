@@ -47,7 +47,7 @@ from src.calendar.hreg_time import (
     get_time_min_from_dt as hreg_get_time_min_from_dt,
     convert1440toReadableTime,
     get_number_with_postfix,
-    get_jajatime_readable_from_dt,
+    get_jajatime_legible_from_dt,
 )
 from src.calendar.lemma import Lemmas
 from src.calendar.road import (
@@ -291,19 +291,19 @@ class CalendarUnit:
             year=year_x, month=month_num, day=day_num, hour=hr_num, minute=min_num
         )
 
-    def get_jajatime_readable_one_time_event(self, jajatime_min: int) -> str:
+    def get_jajatime_legible_one_time_event(self, jajatime_min: int) -> str:
         dt_x = self.get_time_dt_from_min(min=jajatime_min)
-        return get_jajatime_readable_from_dt(dt=dt_x)
+        return get_jajatime_legible_from_dt(dt=dt_x)
 
-    def get_jajatime_repeating_readable_text(
+    def get_jajatime_repeating_legible_text(
         self, open: float = None, nigh: float = None, divisor: float = None
     ) -> str:
         str_x = "test3"
         if divisor is None:
-            str_x = self.get_jajatime_readable_one_time_event(jajatime_min=open)
+            str_x = self.get_jajatime_legible_one_time_event(jajatime_min=open)
             # str_x = f"Weekday, monthname monthday year"
         elif divisor != None and divisor % 10080 == 0:
-            str_x = self._get_jajatime_week_readable_text(open, divisor)
+            str_x = self._get_jajatime_week_legible_text(open, divisor)
         elif divisor != None and divisor % 1440 == 0:
             if divisor == 1440:
                 str_x = f"every day at {convert1440toReadableTime(min1440=open)}"
@@ -316,7 +316,7 @@ class CalendarUnit:
 
         return str_x
 
-    def _get_jajatime_week_readable_text(self, open: int, divisor: int) -> str:
+    def _get_jajatime_week_legible_text(self, open: int, divisor: int) -> str:
         open_in_week = open % divisor
         week_road = f"{self._owner},time,tech,week"
         weekday_ideas_dict = self.get_idea_ranged_kids(
@@ -410,7 +410,7 @@ class CalendarUnit:
     def set_memberunit(self, memberunit: MemberUnit):
         self.set_members_empty_if_null()
         self.set_groupunits_empty_if_null()
-        # future: if member is new check group does not already have that name
+        # future: if member is new check existance of group with member name
 
         self._members[memberunit.name] = memberunit
 
@@ -441,7 +441,7 @@ class CalendarUnit:
         old_name_creditor_weight = self._members.get(old_name).creditor_weight
         if not allow_member_overwite and self._members.get(new_name) != None:
             raise InvalidCalendarException(
-                f"Member '{old_name}' change to '{new_name}' failed since it already exists."
+                f"Member '{old_name}' change to '{new_name}' failed since '{new_name}' exists."
             )
         elif (
             not allow_nonsingle_group_overwrite
@@ -449,7 +449,7 @@ class CalendarUnit:
             and self._groups.get(new_name)._single_member == False
         ):
             raise InvalidCalendarException(
-                f"Member '{old_name}' change to '{new_name}' failed since non-single group '{new_name}' already exists."
+                f"Member '{old_name}' change to '{new_name}' failed since non-single group '{new_name}' exists."
             )
         elif (
             allow_nonsingle_group_overwrite
@@ -595,7 +595,7 @@ class CalendarUnit:
     ):
         if not allow_group_overwite and self._groups.get(new_name) != None:
             raise InvalidCalendarException(
-                f"Group '{old_name}' change to '{new_name}' failed since it already exists."
+                f"Group '{old_name}' change to '{new_name}' failed since '{new_name}' exists."
             )
         elif self._groups.get(new_name) != None:
             old_groupunit = self._groups.get(old_name)

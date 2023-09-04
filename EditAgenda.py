@@ -110,7 +110,7 @@ class EditAgenda(qw, Ui_Form):
                 sufffact_nigh_x = sufffact.nigh
                 sufffact_divisor_x = sufffact.divisor
 
-        readable_x_text = ""
+        legible_x_text = ""
         if (
             sufffact_open_x != None
             and sufffact_nigh_x != None
@@ -119,16 +119,16 @@ class EditAgenda(qw, Ui_Form):
                 or sufffact_need_x[:21] == f"{self.calendar_x._owner},time,jajatime"
             )
         ):
-            readable_x_text = self.calendar_x.get_jajatime_repeating_readable_text(
+            legible_x_text = self.calendar_x.get_jajatime_repeating_legible_text(
                 open=sufffact_open_x, nigh=sufffact_nigh_x, divisor=sufffact_divisor_x
             )
         elif sufffact_open_x != None and sufffact_nigh_x != None:
             text_x = f"{self.calendar_x._owner},time,jajatime"
-            readable_x_text = (
+            legible_x_text = (
                 f"sufffact {sufffact_open_x}-{sufffact_nigh_x} {sufffact_divisor_x=}"
             )
         else:
-            readable_x_text = (
+            legible_x_text = (
                 f"sufffact {sufffact_open_x}-{sufffact_nigh_x} {sufffact_divisor_x=}"
             )
 
@@ -141,7 +141,7 @@ class EditAgenda(qw, Ui_Form):
         self.agenda_table.setItem(row, 5, qti(num2str(sufffact_open_x)))
         self.agenda_table.setItem(row, 6, qti(num2str(sufffact_nigh_x)))
         self.agenda_table.setItem(row, 7, qti(num2str(sufffact_divisor_x)))
-        self.agenda_table.setItem(row, 8, qti(readable_x_text))
+        self.agenda_table.setItem(row, 8, qti(legible_x_text))
         # if a._task in (True, False):
         #     self.agenda_table.setItem(row, 7, qti(f"task {a._task}"))
         # else:

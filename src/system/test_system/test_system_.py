@@ -5,9 +5,10 @@ from src.system.examples.env_kit import (
     get_temp_env_name,
     get_test_systems_dir,
     rename_example_system,
-    copy_test_system,
+    copy_evaluation_system,
     env_dir_setup_cleanup,
 )
+from pytest import raises as pytest_raises
 
 
 def test_system_exists():
@@ -124,7 +125,7 @@ def test_rename_example_system_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup
     print(f"{new_system_dir=}")
 
 
-def test_copy_test_system_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup):
+def test_copy_evaluation_system_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup):
     # GIVEN create system
     old_system_name = get_temp_env_name()
     old_system_dir = f"src/system/examples/systems/{old_system_name}"
@@ -161,7 +162,7 @@ def test_copy_test_system_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup):
     assert e1.name != new_system_name
 
     # WHEN
-    copy_test_system(src_name=e1.name, dest_name=new_system_name)
+    copy_evaluation_system(src_name=e1.name, dest_name=new_system_name)
 
     # THEN confirm calendars src directory created
     assert os_path.exists(old_system_dir)
@@ -185,3 +186,18 @@ def test_copy_test_system_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup):
     # x_func_delete_dir(e1.get_object_root_dir())
     # x_func_delete_dir(dir=old_system_dir)
     x_func_delete_dir(dir=new_system_dir)
+
+
+def test_copy_evaluation_system_CorrectlyRaisesError(env_dir_setup_cleanup):
+    # GIVEN create system
+    old_system_name = get_temp_env_name()
+    e1 = SystemUnit(name=old_system_name, systems_dir=get_test_systems_dir())
+    e1.create_dirs_if_null()
+
+    # WHEN/THEN
+    with pytest_raises(Exception) as excinfo:
+        copy_evaluation_system(src_name=e1.name, dest_name=old_system_name)
+    assert (
+        str(excinfo.value)
+        == f"Cannot copy system to '{e1.get_object_root_dir()}' directory because '{e1.get_object_root_dir()}' exists."
+    )

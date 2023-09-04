@@ -204,10 +204,10 @@ def _get_treenode_label_acptfactheir_view(treenode_label, pth: PYQTTreeHolder) -
             and acptfactheir.open != None
             and acptfactheir.nigh != None
         ):
-            hc_open_str = pth.src_calendar.get_jajatime_readable_one_time_event(
+            hc_open_str = pth.src_calendar.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactheir.open
             )
-            hc_nigh_str = pth.src_calendar.get_jajatime_readable_one_time_event(
+            hc_nigh_str = pth.src_calendar.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactheir.nigh
             )
             # treenode_label += f"{get_terminus_node_from_road(acptfactheir.base)}"
@@ -252,10 +252,10 @@ def _create_treenode_label(pth: PYQTTreeHolder):
         time_road = f"{pth.src_calendar._idearoot._desc},time,jajatime"
         acptfactunit_time_obj = pth.ideacore._acptfactunits.get(time_road)
         if acptfactunit_time_obj != None:
-            hc_open_str = pth.src_calendar.get_jajatime_readable_one_time_event(
+            hc_open_str = pth.src_calendar.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactunit_time_obj.open
             )
-            hc_nigh_str = pth.src_calendar.get_jajatime_readable_one_time_event(
+            hc_nigh_str = pth.src_calendar.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactunit_time_obj.nigh
             )
             # treenode_label += f" ({acptfactunit.base=} {acptfactunit.open}-{acptfactunit.nigh})"

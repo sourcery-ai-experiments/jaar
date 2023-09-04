@@ -717,8 +717,8 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
     print(f"\nIdea = '{night_text}' and required '{jajatime_road}'")
     acptfactheir_jajatime = night_idea._acptfactheirs.get(jajatime_road)
     print(f"\n{acptfactheir_jajatime=}")
-    print(f"      {a1.get_jajatime_repeating_readable_text(open=1063998720)}")
-    print(f"      {a1.get_jajatime_repeating_readable_text(open=1064130373)}")
+    print(f"      {a1.get_jajatime_repeating_legible_text(open=1063998720)}")
+    print(f"      {a1.get_jajatime_repeating_legible_text(open=1064130373)}")
 
     # for requiredheir in agenda_item._requiredheirs.values():
     #     print(f"{requiredheir.base=} {requiredheir._status=} {requiredheir._task=}")

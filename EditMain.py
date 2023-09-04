@@ -100,7 +100,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
             if acptfact.open is None:
                 acptfact_text = f"{acptfact_text}"
             elif base_text == "time,jajatime":
-                acptfact_text = f"{self.calendar_x.get_jajatime_readable_one_time_event(acptfact.open)}-{self.calendar_x.get_jajatime_repeating_readable_text(acptfact.nigh)}"
+                acptfact_text = f"{self.calendar_x.get_jajatime_legible_one_time_event(acptfact.open)}-{self.calendar_x.get_jajatime_repeating_legible_text(acptfact.nigh)}"
             else:
                 acptfact_text = (
                     f"{acptfact_text} Open-Nigh {acptfact.open}-{acptfact.nigh}"

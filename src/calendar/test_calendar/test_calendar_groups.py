@@ -470,7 +470,7 @@ def test_calendar_edit_groupunit_name_CorrectlyCreatesNewName():
     assert len(sx._groups.get(jog_text)._members) == 1
 
 
-def test_calendar_edit_groupunit_name_raiseErrorNewNameAlreadyExists():
+def test_calendar_edit_GroupUnit_name_raiseErrorNewNamePreviouslyExists():
     # GIVEN
     sx = CalendarUnit(_owner="prom")
     rico_text = "rico"
@@ -489,7 +489,7 @@ def test_calendar_edit_groupunit_name_raiseErrorNewNameAlreadyExists():
         )
     assert (
         str(excinfo.value)
-        == f"Group '{swim_text}' change to '{jog_text}' failed since it already exists."
+        == f"Group '{swim_text}' change to '{jog_text}' failed since '{jog_text}' exists."
     )
 
 

@@ -456,12 +456,10 @@ class EditIdeaUnit(qtw0, Ui_Form):
                 sufffact_open = sufffact.open
                 sufffact_nigh = sufffact.nigh
                 if required_text == "time,jajatime":
-                    sufffact_open = (
-                        self.calendar_x.get_jajatime_repeating_readable_text(
-                            open=sufffact.open,
-                            nigh=sufffact.nigh,
-                            divisor=sufffact.divisor,
-                        )
+                    sufffact_open = self.calendar_x.get_jajatime_repeating_legible_text(
+                        open=sufffact.open,
+                        nigh=sufffact.nigh,
+                        divisor=sufffact.divisor,
                     )
                     sufffact_nigh = ""
                     sufffact_text = f"{sufffact_open}"
@@ -543,12 +541,10 @@ class EditIdeaUnit(qtw0, Ui_Form):
                 sufffact_open = sufffact.open
                 sufffact_nigh = sufffact.nigh
                 if requiredheir_text == "time,jajatime":
-                    sufffact_open = (
-                        self.calendar_x.get_jajatime_repeating_readable_text(
-                            open=sufffact.open,
-                            nigh=sufffact.nigh,
-                            divisor=sufffact.divisor,
-                        )
+                    sufffact_open = self.calendar_x.get_jajatime_repeating_legible_text(
+                        open=sufffact.open,
+                        nigh=sufffact.nigh,
+                        divisor=sufffact.divisor,
                     )
                     sufffact_nigh = ""
                     sufffact_text = f"{sufffact_open}"
@@ -775,11 +771,11 @@ class EditIdeaUnit(qtw0, Ui_Form):
         # groupunits_list = list(self.calendar_x._groupunits.values())
         groupunits_names_list = []
         for groupunit in self.calendar_x._groups.values():
-            group_already_selected = any(
+            group_previously_selected = any(
                 groupunit.name == grouplink.name
                 for grouplink in self.yo_x._grouplinks.values()
             )
-            if not group_already_selected:
+            if not group_previously_selected:
                 groupunits_names_list.append(groupunit.name)
         groupunits_names_list.sort(key=lambda x: x.lower(), reverse=False)
 

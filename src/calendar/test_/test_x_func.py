@@ -110,7 +110,9 @@ def test_x_func_dir_files_doesNotReturnsFiles(person_dir_setup_cleanup):
     assert len(files_dict) == 1
 
 
-def test_x_func_open_file_OpensFilesCorrectly(person_dir_setup_cleanup):
+def test_x_func_open_file_OpensFilesCorrectlyWhenGivenDirectoryAndFileName(
+    person_dir_setup_cleanup,
+):
     # GIVEN
     env_dir = get_temp_person_dir()
     x1_name = "x1"
@@ -128,6 +130,32 @@ def test_x_func_open_file_OpensFilesCorrectly(person_dir_setup_cleanup):
     # WHEN / THEN
     assert x_func_open_file(dest_dir=env_dir, file_name=x1_file_name) == x1_file_text
     assert x_func_open_file(dest_dir=env_dir, file_name=x2_file_name) == x2_file_text
+
+
+def test_x_func_open_file_OpensFilesCorrectlyWhenGivenOnlyFilePath(
+    person_dir_setup_cleanup,
+):
+    # GIVEN
+    env_dir = get_temp_person_dir()
+    x1_name = "x1"
+    x2_name = "x2"
+    x1_file_ext = "txt"
+    x2_file_ext = "json"
+    x1_file_name = f"{x1_name}.{x1_file_ext}"
+    x2_file_name = f"{x2_name}.{x2_file_ext}"
+    x1_file_text = "trying this"
+    x2_file_text = "look there"
+    x1_file_path = f"{env_dir}/{x1_file_name}"
+    x2_file_path = f"{env_dir}/{x2_file_name}"
+
+    print(f"{env_dir=} {x1_file_name=}")
+    print(f"{env_dir=} {x1_file_name=}")
+    x_func_save_file(dest_dir=env_dir, file_name=x1_file_name, file_text=x1_file_text)
+    x_func_save_file(dest_dir=env_dir, file_name=x2_file_name, file_text=x2_file_text)
+
+    # WHEN / THEN
+    assert x_func_open_file(dest_dir=x1_file_path, file_name=None) == x1_file_text
+    assert x_func_open_file(dest_dir=x2_file_path, file_name=None) == x2_file_text
 
 
 def test_x_func_save_file_ReplacesFileAsDefault(person_dir_setup_cleanup):

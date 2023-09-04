@@ -115,7 +115,7 @@ def test_sufffact_is_range_or_segregate_ReturnsCorrectBool():
 
 
 def test_get_sufffact_status_returnsCorrectsufffactstatus():
-    # assumes acptfact is already in lineage is already
+    # assumes acptfact is in lineage
     road_x = Road("casa,weekday")
     sufffact_x = sufffactunit_shop(need=road_x)
     x_acptfact = acptfactheir_shop(base=road_x, pick=road_x)
@@ -126,7 +126,7 @@ def test_get_sufffact_status_returnsCorrectsufffactstatus():
 
 
 def test_get_sufffact_status_returnsCorrectRangedsufffactstatus():
-    # assumes acptfact is already in lineage is already
+    # assumes acptfact is in lineage
     road_x = Road("casa,weekday")
     sufffact_x = sufffactunit_shop(need=road_x, open=3, nigh=7)
     x_acptfact = acptfactheir_shop(base=road_x, pick=road_x)

@@ -14,7 +14,10 @@ from src.pyqt5_kit.pyqt_func import (
     str2float as pyqt_func_str2float,
     num2str as pyqt_func_num2str,
 )
-from src.calendar.x_func import save_file as x_func_save_file
+from src.calendar.x_func import (
+    save_file as x_func_save_file,
+    open_file as x_func_open_file,
+)
 from sys import exit as sys_exit
 
 # """Simple test application for dealing with multiple windows"""
@@ -267,10 +270,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def save_file(self):
         if self.file_path is None:
-            self.file_path = (
-                f"{get_calendar_examples_dir()}/calendar_{self.calendar_x._owner}.json"
-            )
+            self.file_path = f"{get_calendar_examples_dir()}/{self._get_file_name()}"
         self._commit_file_save()
+
+    def _get_file_name(self):
+        return f"calendar_{self.calendar_x._owner}.json"
 
     def _commit_file_save(self):
         calendar_x_json = self.calendar_x.get_json()
@@ -285,11 +289,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def load_file(self):
         x_json = ""
-        try:
-            with open(self.file_path, "r") as fh:
-                x_json = fh.read()
-        except Exception as e:
-            print(f"Could not load file {self.file_path} {e.args}")
+        x_json = x_func_open_file(dest_dir=self.file_path, file_name=None)
         self.current_file_path_label.setText(self.file_path)
         return x_json
 
@@ -354,7 +354,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if acptfact.open is None:
                 acptfact_text = f"{acptfact_text}"
             elif base_text == "time,jajatime":
-                acptfact_text = f"{self.calendar_x.get_jajatime_readable_one_time_event(acptfact.open)}-{self.calendar_x.get_jajatime_repeating_readable_text(acptfact.nigh)}"
+                acptfact_text = f"{self.calendar_x.get_jajatime_legible_one_time_event(acptfact.open)}-{self.calendar_x.get_jajatime_repeating_legible_text(acptfact.nigh)}"
             else:
                 acptfact_text = (
                     f"{acptfact_text} Open-Nigh {acptfact.open}-{acptfact.nigh}"
@@ -439,7 +439,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             )
             if sufffact_x != None and sufffact_x.open != 0:
                 tw_open = qtw1(
-                    self.calendar_x.get_jajatime_repeating_readable_text(
+                    self.calendar_x.get_jajatime_repeating_legible_text(
                         open=sufffact_x.open,
                         nigh=sufffact_x.nigh,
                         divisor=sufffact_x.divisor,

@@ -301,7 +301,7 @@ def test_get_time_():
 # g_lw = examples.get_calendar_gregorian_years()
 
 
-def test_get_jajatime_repeating_readable_text_correctlyText():
+def test_get_jajatime_repeating_legible_text_correctlyText():
     # GIVEN
     src_text = "src"
     cx = CalendarUnit(_owner=src_text)
@@ -310,54 +310,54 @@ def test_get_jajatime_repeating_readable_text_correctlyText():
     # WHEN / THEN
     print("ReturnsDailyText")
     assert (
-        cx.get_jajatime_repeating_readable_text(open=480, nigh=480, divisor=1440)
+        cx.get_jajatime_repeating_legible_text(open=480, nigh=480, divisor=1440)
         == "every day at 8am"
     )
 
     print("ReturnsEvery2DaysText")
     assert (
-        cx.get_jajatime_repeating_readable_text(open=490, nigh=490, divisor=2880)
+        cx.get_jajatime_repeating_legible_text(open=490, nigh=490, divisor=2880)
         == "every 2nd day at 8:10am"
     )
 
     print("ReturnsEvery6DaysText")
     assert (
-        cx.get_jajatime_repeating_readable_text(open=480, nigh=480, divisor=8640)
+        cx.get_jajatime_repeating_legible_text(open=480, nigh=480, divisor=8640)
         == "every 6th day at 8am"
     )
 
     print("ReturnsWeeklyText")
     assert (
-        cx.get_jajatime_repeating_readable_text(open=480, nigh=480, divisor=10080)
+        cx.get_jajatime_repeating_legible_text(open=480, nigh=480, divisor=10080)
         == "every Saturday at 8am"
     )
 
     print("ReturnsEvery2WeeksText")
     assert (
-        cx.get_jajatime_repeating_readable_text(open=480, nigh=480, divisor=20160)
+        cx.get_jajatime_repeating_legible_text(open=480, nigh=480, divisor=20160)
         == "every 2nd Saturday at 8am"
     )
 
     print("ReturnsEvery6WeeksText")
     assert (
-        cx.get_jajatime_repeating_readable_text(open=480, nigh=480, divisor=60480)
+        cx.get_jajatime_repeating_legible_text(open=480, nigh=480, divisor=60480)
         == "every 6th Saturday at 8am"
     )
 
     print("ReturnsOneTimeEventCorrectlyMorning")
     assert (
-        cx.get_jajatime_repeating_readable_text(open=1064041020.0, nigh=1064041020.0)
+        cx.get_jajatime_repeating_legible_text(open=1064041020.0, nigh=1064041020.0)
         == "Wed Feb 1st, 2023 at 9am"
     )
 
     print("ReturnsOneTimeEventCorrectlyEvening")
     assert (
-        cx.get_jajatime_repeating_readable_text(open=1064041620.0, nigh=1064041620.0)
+        cx.get_jajatime_repeating_legible_text(open=1064041620.0, nigh=1064041620.0)
         == "Wed Feb 1st, 2023 at 7pm"
     )
 
     print("ReturnsOneTimeEventCorrectlyMidnight")
     assert (
-        cx.get_jajatime_repeating_readable_text(open=1064041920.0, nigh=1064041920.0)
+        cx.get_jajatime_repeating_legible_text(open=1064041920.0, nigh=1064041920.0)
         == "Thu Feb 2nd, 2023 at 12am"
     )

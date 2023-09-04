@@ -49,7 +49,6 @@ def test_calendar_set_member_correctly_sets_members_1():
     a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName("rico")))
     a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName("carmen")))
     a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName("patrick")))
-    # future: if member is new check group does not already have that name
 
     # THEN
     assert len(a_x._members) == 3
@@ -80,7 +79,6 @@ def test_calendar_set_member_correctly_sets_members_2():
     a_x.add_memberunit(name=rico_text, uid=61, creditor_weight=13, debtor_weight=8)
     a_x.add_memberunit(name=carm_text, uid=5, debtor_weight=5)
     a_x.add_memberunit(name=patr_text, creditor_weight=17)
-    # future: if member is new check group does not already have that name
 
     # THEN
     assert len(a_x._members) == 3
@@ -840,7 +838,7 @@ def test_calendar_MemberUnit_raiseErrorNewNameAlreadyExists():
         )
     assert (
         str(excinfo.value)
-        == f"Member '{rico_text}' change to '{carmen_text}' failed since it already exists."
+        == f"Member '{rico_text}' change to '{carmen_text}' failed since '{carmen_text}' exists."
     )
 
 
@@ -980,7 +978,7 @@ def test_calendar_MemberUnit_CorrectlyMergesGroupUnitMemberLinks():
     assert len(swim_group._members) == 1
 
 
-def test_calendar_MemberUnit_raiseErrorNewNameGroupUnitAlreadyExists():
+def test_calendar_MemberUnit_raiseErrorNewNameGroupUnitPreviouslyExists():
     # GIVEN
     sx = CalendarUnit(_owner="prom")
     rico_text = "rico"
@@ -1007,7 +1005,7 @@ def test_calendar_MemberUnit_raiseErrorNewNameGroupUnitAlreadyExists():
         )
     assert (
         str(excinfo.value)
-        == f"Member '{rico_text}' change to '{carmen_text}' failed since non-single group '{carmen_text}' already exists."
+        == f"Member '{rico_text}' change to '{carmen_text}' failed since non-single group '{carmen_text}' exists."
     )
 
 

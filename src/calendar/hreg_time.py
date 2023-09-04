@@ -659,7 +659,7 @@ def _get_time_hreg_hour(local_root: str, multipler: int):
     return hreg_list
 
 
-def get_jajatime_readable_from_dt(dt: datetime) -> str:
+def get_jajatime_legible_from_dt(dt: datetime) -> str:
     weekday_text = dt.strftime("%A")
     monthname_text = dt.strftime("%B")
     monthday_text = get_number_with_postfix(int(dt.strftime("%d")))

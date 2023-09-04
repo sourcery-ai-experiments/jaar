@@ -340,12 +340,12 @@ class InvalidSystemCopyException(Exception):
     pass
 
 
-def copy_test_system(src_name: str, dest_name: str):
+def copy_evaluation_system(src_name: str, dest_name: str):
     base_dir = "src/system/examples/systems"
     new_dir = f"{base_dir}/{dest_name}"
     if os_path.exists(new_dir):
         raise InvalidSystemCopyException(
-            f"Cannot copy system to '{new_dir}' dir already exists."
+            f"Cannot copy system to '{new_dir}' directory because '{new_dir}' exists."
         )
     # base_dir = system_obj.get_object_root_dir()
     src_dir = f"{base_dir}/{src_name}"

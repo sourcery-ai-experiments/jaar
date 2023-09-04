@@ -35,7 +35,7 @@ class InvalidFileCopyException(Exception):
 def copy_dir(src_dir: str, dest_dir: str):
     if os_path.exists(dest_dir):
         raise InvalidFileCopyException(
-            f"Cannot copy '{src_dir}' to '{dest_dir}' since destination already exists"
+            f"Cannot copy '{src_dir}' to '{dest_dir}' since '{dest_dir}' exists"
         )
     else:
         shutil_copytree(src=src_dir, dst=dest_dir)
@@ -60,7 +60,7 @@ def save_file(dest_dir: str, file_name: str, file_text: str, replace: bool = Non
 
 def open_file(dest_dir: str, file_name: str):
     # sourcery skip: raise-specific-error
-    file_path = f"{dest_dir}/{file_name}"
+    file_path = dest_dir if file_name is None else f"{dest_dir}/{file_name}"
     text_x = ""
     try:
         with open(file_path, "r") as f:
