@@ -76,7 +76,7 @@ def custom_set_idea_attr(
 
 def test_idea_required_meld_BaseScenarioWorks():
     # GIVEN
-    required_base_x1 = "src,ball,run"
+    required_base_x1 = f"{root_desc()},ball,run"
     yx1 = IdeaCore(_desc="spirit")
     custom_set_idea_attr(
         idea=yx1,
@@ -105,8 +105,8 @@ def test_idea_required_meld_BaseScenarioWorks():
 
 def test_idea_required_meld_TwoRequiredsScenarioWorks():
     # GIVEN
-    required_base_x1 = "src,ball,run"
-    required_base_x2 = "src,ball,swim"
+    required_base_x1 = f"{root_desc()},ball,run"
+    required_base_x2 = f"{root_desc()},ball,swim"
     yx1 = IdeaCore(_desc="spirit")
     custom_set_idea_attr(
         idea=yx1,
@@ -132,8 +132,8 @@ def test_idea_required_meld_TwoRequiredsScenarioWorks():
 
 def test_idea_required_meld_TwoRequiredsMeldScenarioWorks():
     # GIVEN
-    required_base_x1 = "src,ball,run"
-    required_base_x2 = "src,ball,swim"
+    required_base_x1 = f"{root_desc()},ball,run"
+    required_base_x2 = f"{root_desc()},ball,swim"
     yx1 = IdeaCore(_desc="spirit")
     custom_set_idea_attr(
         idea=yx1,

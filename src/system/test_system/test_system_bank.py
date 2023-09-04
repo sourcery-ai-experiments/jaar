@@ -311,7 +311,7 @@ def test_system_set_calendar_attr_defined_by_system_CorrectlyPopulatesCalendar_G
     e1.create_dirs_if_null(in_memory_bank=True)
 
     # create 4 calendars, 1 with group "swimming expert" linked to 1 member
-    # two others have idea "src,sports,swimming"
+    # two others have idea f"{root_desc()},sports,swimming"
     # run set_bank_metrics
     # assert
     # _memberlinks_set_by_system_road

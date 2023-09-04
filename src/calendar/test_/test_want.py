@@ -9,13 +9,13 @@ from pytest import raises as pytest_raises
 
 
 def test_sufffact_attributesExist():
-    email = "src,work,check email"
+    email = f"{root_desc()},work,check email"
     sufffact_x = sufffactunit_shop(need=email)
     assert sufffact_x.need == email
 
 
 def test_sufffact_clear_works():
-    sufffact_x = sufffactunit_shop(need="src,work,check email")
+    sufffact_x = sufffactunit_shop(need=f"{root_desc()},work,check email")
     assert sufffact_x._status is None
     sufffact_x._status = True
     assert sufffact_x._status
@@ -24,20 +24,24 @@ def test_sufffact_clear_works():
 
 
 def test_sufffact_is_range_CorrectlyIdenitiesRangeStatus():
-    sufffact_x = sufffactunit_shop(need="src,work", open=1, nigh=3)
+    sufffact_x = sufffactunit_shop(need=f"{root_desc()},work", open=1, nigh=3)
     assert sufffact_x._is_range() == True
-    sufffact_x = sufffactunit_shop(need="src,work")
+    sufffact_x = sufffactunit_shop(need=f"{root_desc()},work")
     assert sufffact_x._is_range() == False
-    sufffact_x = sufffactunit_shop(need="src,work", divisor=5, open=3, nigh=3)
+    sufffact_x = sufffactunit_shop(
+        need=f"{root_desc()},work", divisor=5, open=3, nigh=3
+    )
     assert sufffact_x._is_range() == False
 
 
 def test_sufffact_is_range_CorrectlyIdenitiesSegregateStatus():
-    sufffact_x = sufffactunit_shop(need="src,work", open=1, nigh=3)
+    sufffact_x = sufffactunit_shop(need=f"{root_desc()},work", open=1, nigh=3)
     assert sufffact_x._is_segregate() == False
-    sufffact_x = sufffactunit_shop(need="src,work")
+    sufffact_x = sufffactunit_shop(need=f"{root_desc()},work")
     assert sufffact_x._is_segregate() == False
-    sufffact_x = sufffactunit_shop(need="src,work", divisor=5, open=3, nigh=3)
+    sufffact_x = sufffactunit_shop(
+        need=f"{root_desc()},work", divisor=5, open=3, nigh=3
+    )
     assert sufffact_x._is_segregate() == True
 
 

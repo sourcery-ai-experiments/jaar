@@ -12,23 +12,22 @@ from pytest import raises as pytest_raises
 def test_set_calendar_metrics_CorrectlyClearsDescendantAttributes():
     calendar_x = example_calendars_get_calendar_with_4_levels()
 
-    # idea "src,weekdays,Sunday"
-    # idea "src,weekdays,Monday"
-    # idea "src,weekdays,Tuesday"
-    # idea "src,weekdays,Wednesday"
-    # idea "src,weekdays,Thursday"
-    # idea "src,weekdays,Friday"
-    # idea "src,weekdays,Saturday"
-    # idea "src,weekdays"
-    # idea "src,nation-state,USA,Texas"
-    # idea "src,nation-state,USA,Oregon"
-    # idea "src,nation-state,USA"
-    # idea "src,nation-state,France"
-    # idea "src,nation-state,Brazil"
-    # idea "src,nation-state"
+    # idea ",weekdays,Sunday"
+    # idea ",weekdays,Monday"
+    # idea ",weekdays,Tuesday"
+    # idea ",weekdays,Wednesday"
+    # idea ",weekdays,Thursday"
+    # idea ",weekdays,Friday"
+    # idea ",weekdays,Saturday"
+    # idea ",weekdays"
+    # idea ",nation-state,USA,Texas"
+    # idea ",nation-state,USA,Oregon"
+    # idea ",nation-state,USA"
+    # idea ",nation-state,France"
+    # idea ",nation-state,Brazil"
+    # idea ",nation-state"
     # idea "work"  # , promise=True)
     # idea "feed cat"  # , promise=True)
-    # idea "src"
 
     # test root init status:
     yrx = calendar_x._idearoot
@@ -120,25 +119,25 @@ def test_set_calendar_metrics_RootOnlyCorrectlySetsDescendantAttributes():
 def test_set_calendar_metrics_NLevelCorrectlySetsDescendantAttributes_1():
     lw_x = example_calendars_get_calendar_with_4_levels()
     x_idea = IdeaKid(_desc="email", promise=True)
-    lw_x.add_idea(idea_kid=x_idea, walk="src,work")
+    lw_x.add_idea(idea_kid=x_idea, walk=f"{root_desc()},work")
 
-    # idea "src,weekdays,Sunday"
-    # idea "src,weekdays,Monday"
-    # idea "src,weekdays,Tuesday"
-    # idea "src,weekdays,Wednesday"
-    # idea "src,weekdays,Thursday"
-    # idea "src,weekdays,Friday"
-    # idea "src,weekdays,Saturday"
-    # idea "src,weekdays"
-    # idea "src,nation-state,USA,Texas"
-    # idea "src,nation-state,USA,Oregon"
-    # idea "src,nation-state,USA"
-    # idea "src,nation-state,France"
-    # idea "src,nation-state,Brazil"
-    # idea "src,nation-state"
+    # idea ",weekdays,Sunday"
+    # idea ",weekdays,Monday"
+    # idea ",weekdays,Tuesday"
+    # idea ",weekdays,Wednesday"
+    # idea ",weekdays,Thursday"
+    # idea ",weekdays,Friday"
+    # idea ",weekdays,Saturday"
+    # idea ",weekdays"
+    # idea ",nation-state,USA,Texas"
+    # idea ",nation-state,USA,Oregon"
+    # idea ",nation-state,USA"
+    # idea ",nation-state,France"
+    # idea ",nation-state,Brazil"
+    # idea ",nation-state"
     # idea "work"  # , promise=True)
     # idea "feed cat"  # , promise=True)
-    # idea "src"
+    # idea "
 
     # test root init status:
     assert lw_x._idearoot._descendant_promise_count is None
@@ -172,9 +171,9 @@ def test_set_calendar_metrics_NLevelCorrectlySetsDescendantAttributes_1():
 def test_set_calendar_metrics_NLevelCorrectlySetsDescendantAttributes_2():
     lw_x = example_calendars_get_calendar_with_4_levels()
     x1_idea = IdeaKid(_desc="email", promise=True)
-    lw_x.add_idea(idea_kid=x1_idea, walk="src,work")
+    lw_x.add_idea(idea_kid=x1_idea, walk=f"{root_desc()},work")
     x2_idea = IdeaKid(_desc="sweep", promise=True)
-    lw_x.add_idea(idea_kid=x2_idea, walk="src,work")
+    lw_x.add_idea(idea_kid=x2_idea, walk=f"{root_desc()},work")
 
     lw_x.add_memberunit(name="sandy")
     x_grouplink = GroupLink(name="sandy")
@@ -244,13 +243,13 @@ def test_TreeTraverseSetsGrouplineestorFromRootCorrectly():
     print(f"{sandy_groupline._calendar_credit=} {root_idea._calendar_importance=} ")
     print(f"  {sandy_groupline._calendar_debt=} {root_idea._calendar_importance=} ")
     sum_x = 0
-    cat_road = "src,feed cat"
+    cat_road = f"{root_desc()},feed cat"
     cat_idea = a_x.get_idea_kid(cat_road)
-    week_road = "src,weekdays"
+    week_road = f"{root_desc()},weekdays"
     week_idea = a_x.get_idea_kid(week_road)
-    work_road = "src,work"
+    work_road = f"{root_desc()},work"
     work_idea = a_x.get_idea_kid(work_road)
-    nation_road = "src,nation-state"
+    nation_road = f"{root_desc()},nation-state"
     nation_idea = a_x.get_idea_kid(nation_road)
     sum_x = cat_idea._calendar_importance
     print(f"{cat_idea._calendar_importance=} {sum_x} ")
@@ -301,9 +300,9 @@ def test_TreeTraverseSetsGrouplineestorFromNonRootCorrectly():
 def test_calendar4member_Exists():
     calendar_x = example_calendars_get_calendar_with_4_levels()
     x1_idea = IdeaKid(_desc="email", promise=True)
-    calendar_x.add_idea(idea_kid=x1_idea, walk="src,work")
+    calendar_x.add_idea(idea_kid=x1_idea, walk=f"{root_desc()},work")
     x2_idea = IdeaKid(_desc="sweep", promise=True)
-    calendar_x.add_idea(idea_kid=x2_idea, walk="src,work")
+    calendar_x.add_idea(idea_kid=x2_idea, walk=f"{root_desc()},work")
 
     sandy_name = MemberName("sandy")
     calendar_x.add_memberunit(name=sandy_name)
@@ -321,9 +320,9 @@ def test_calendar4member_Exists():
 def test_calendar4member_hasCorrectLevel1StructureNoGrouplessBranches():
     calendar_x = example_calendars_get_calendar_with_4_levels()
     x1_idea = IdeaKid(_desc="email", promise=True)
-    calendar_x.add_idea(idea_kid=x1_idea, walk="src,work")
+    calendar_x.add_idea(idea_kid=x1_idea, walk=f"{root_desc()},work")
     x2_idea = IdeaKid(_desc="sweep", promise=True)
-    calendar_x.add_idea(idea_kid=x2_idea, walk="src,work")
+    calendar_x.add_idea(idea_kid=x2_idea, walk=f"{root_desc()},work")
 
     billy_name = MemberName("billy")
     calendar_x.add_memberunit(name=billy_name)
@@ -406,64 +405,63 @@ def test_calendar_get_heir_road_list_returnsCorrectList():
 
 
 # def test_calendar4member_hasCorrectLevel1StructureWithGrouplessBranches_2():
-#     lw_desc = "src"
 #     lw_x = CalendarUnit(_owner=owner_text)
-#     lw_x.add_idea(idea_kid=IdeaKid(_desc="A", _weight=7), walk="src")
-#     lw_x.add_idea(idea_kid=IdeaKid(_desc="C", _weight=3), walk="src,A")
-#     lw_x.add_idea(idea_kid=IdeaKid(_desc="E", _weight=7), walk="src,A,C")
-#     lw_x.add_idea(idea_kid=IdeaKid(_desc="D", _weight=7), walk="src,A,C")
-#     lw_x.add_idea(idea_kid=IdeaKid(_desc="B", _weight=13), walk="src")
-#     lw_x.add_idea(idea_kid=IdeaKid(_desc="F", _weight=23), walk="src")
-#     lw_x.add_idea(idea_kid=IdeaKid(_desc="G", _weight=57), walk="src")
-#     lw_x.add_idea(idea_kid=IdeaKid(_desc="I"), walk="src,G")
-#     lw_x.add_idea(idea_kid=IdeaKid(_desc="H"), walk="src,G")
-#     lw_x.add_idea(idea_kid=IdeaKid(_desc="J"), walk="src,G,I")
-#     lw_x.add_idea(idea_kid=IdeaKid(_desc="K"), walk="src,G,I")
-#     lw_x.add_idea(idea_kid=IdeaKid(_desc="M"), walk="src,G,H")
+#     lw_x.add_idea(idea_kid=IdeaKid(_desc="A", _weight=7), walk="blahblah")
+#     lw_x.add_idea(idea_kid=IdeaKid(_desc="C", _weight=3), walk=f"{root_desc()},A")
+#     lw_x.add_idea(idea_kid=IdeaKid(_desc="E", _weight=7), walk=f"{root_desc()},A,C")
+#     lw_x.add_idea(idea_kid=IdeaKid(_desc="D", _weight=7), walk=f"{root_desc()},A,C")
+#     lw_x.add_idea(idea_kid=IdeaKid(_desc="B", _weight=13), walk="blahblah")
+#     lw_x.add_idea(idea_kid=IdeaKid(_desc="F", _weight=23), walk="blahblah")
+#     lw_x.add_idea(idea_kid=IdeaKid(_desc="G", _weight=57), walk="blahblah")
+#     lw_x.add_idea(idea_kid=IdeaKid(_desc="I"), walk=f"{root_desc()},G")
+#     lw_x.add_idea(idea_kid=IdeaKid(_desc="H"), walk=f"{root_desc()},G")
+#     lw_x.add_idea(idea_kid=IdeaKid(_desc="J"), walk=f"{root_desc()},G,I")
+#     lw_x.add_idea(idea_kid=IdeaKid(_desc="K"), walk=f"{root_desc()},G,I")
+#     lw_x.add_idea(idea_kid=IdeaKid(_desc="M"), walk=f"{root_desc()},G,H")
 
 #     billy_name = MemberName("billy")
 #     lw_x.add_memberunit(name=billy_name)
 #     billy_bl = GroupLink(name=billy_name)
-#     lw_x.edit_idea_attr(road="src,G", grouplink=billy_bl)
-#     lw_x.edit_idea_attr(road="src,G,H,M", grouplink=billy_bl)
+#     lw_x.edit_idea_attr(road=f"{root_desc()},G", grouplink=billy_bl)
+#     lw_x.edit_idea_attr(road=f"{root_desc()},G,H,M", grouplink=billy_bl)
 
 #     sandy_name = MemberName("sandy")
 #     lw_x.add_memberunit(name=sandy_name)
 #     sandy_bl = GroupLink(name=sandy_name)
-#     lw_x.edit_idea_attr(road="src,A", grouplink=sandy_bl)
-#     lw_x.edit_idea_attr(road="src,B", grouplink=sandy_bl)
-#     lw_x.edit_idea_attr(road="src,A,C,E", grouplink=sandy_bl)
+#     lw_x.edit_idea_attr(road=f"{root_desc()},A", grouplink=sandy_bl)
+#     lw_x.edit_idea_attr(road=f"{root_desc()},B", grouplink=sandy_bl)
+#     lw_x.edit_idea_attr(road=f"{root_desc()},A,C,E", grouplink=sandy_bl)
 
 #     # expected sandy
 #     exp_sandy = CalendarUnit(_owner=owner_text)
-#     exp_sandy.add_idea(idea_kid=IdeaKid(_desc="A", _calendar_importance=0.07), walk="src")
-#     exp_sandy.add_idea(idea_kid=IdeaKid(_desc="C", _calendar_importance=0.07), walk="src,A")
-#     exp_sandy.add_idea(idea_kid=IdeaKid(_desc="E", _calendar_importance=0.5), walk="src,A,C")
-#     exp_sandy.add_idea(idea_kid=IdeaKid(_desc="B", _calendar_importance=0.13), walk="src")
+#     exp_sandy.add_idea(idea_kid=IdeaKid(_desc="A", _calendar_importance=0.07), walk="blahblah")
+#     exp_sandy.add_idea(idea_kid=IdeaKid(_desc="C", _calendar_importance=0.07), walk=f"{root_desc()},A")
+#     exp_sandy.add_idea(idea_kid=IdeaKid(_desc="E", _calendar_importance=0.5), walk=f"{root_desc()},A,C")
+#     exp_sandy.add_idea(idea_kid=IdeaKid(_desc="B", _calendar_importance=0.13), walk="blahblah")
 
 #     # generated sandy
 #     gen_sandy = lw_x.get_calendar4member(acptfacts=None, member_name=sandy_name)
 
 #     # confirm generated sandy is correct
-#     assert gen_sandy.get_idea_kid(road="src,A")._calendar_importance == 0.07
-#     assert gen_sandy.get_idea_kid(road="src,A,C")._calendar_importance == 0.07
-#     assert gen_sandy.get_idea_kid(road="src,A,C,E")._calendar_importance == 0.5
-#     assert gen_sandy.get_idea_kid(road="src,B")._calendar_importance == 0.13
+#     assert gen_sandy.get_idea_kid(road=f"{root_desc()},A")._calendar_importance == 0.07
+#     assert gen_sandy.get_idea_kid(road=f"{root_desc()},A,C")._calendar_importance == 0.07
+#     assert gen_sandy.get_idea_kid(road=f"{root_desc()},A,C,E")._calendar_importance == 0.5
+#     assert gen_sandy.get_idea_kid(road=f"{root_desc()},B")._calendar_importance == 0.13
 #     assert (
-#         gen_sandy.get_idea_kid(road="src,A")._calendar_importance
-#         == exp_sandy.get_idea_kid(road="src,A")._calendar_importance
+#         gen_sandy.get_idea_kid(road=f"{root_desc()},A")._calendar_importance
+#         == exp_sandy.get_idea_kid(road=f"{root_desc()},A")._calendar_importance
 #     )
 #     assert (
-#         gen_sandy.get_idea_kid(road="src,A,C")._calendar_importance
-#         == exp_sandy.get_idea_kid(road="src,A,C")._calendar_importance
+#         gen_sandy.get_idea_kid(road=f"{root_desc()},A,C")._calendar_importance
+#         == exp_sandy.get_idea_kid(road=f"{root_desc()},A,C")._calendar_importance
 #     )
 #     assert (
-#         gen_sandy.get_idea_kid(road="src,A,C,E")._calendar_importance
-#         == exp_sandy.get_idea_kid(road="src,A,C,E")._calendar_importance
+#         gen_sandy.get_idea_kid(road=f"{root_desc()},A,C,E")._calendar_importance
+#         == exp_sandy.get_idea_kid(road=f"{root_desc()},A,C,E")._calendar_importance
 #     )
 #     assert (
-#         gen_sandy.get_idea_kid(road="src,B")._calendar_importance
-#         == exp_sandy.get_idea_kid(road="src,B")._calendar_importance
+#         gen_sandy.get_idea_kid(road=f"{root_desc()},B")._calendar_importance
+#         == exp_sandy.get_idea_kid(road=f"{root_desc()},B")._calendar_importance
 #     )
 #     gen_sandy_list = gen_sandy.get_idea_list()
 #     assert len(gen_sandy_list) == 5

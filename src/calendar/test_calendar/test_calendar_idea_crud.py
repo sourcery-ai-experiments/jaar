@@ -134,7 +134,6 @@ def test_calendar_add_idea_creates_requireds_ideas():
     calendar_x = get_calendar_with_4_levels()
     assert calendar_x.get_node_count() == 17
     assert calendar_x.get_level_count(level=3) == 2
-    src_text = calendar_x._idearoot._desc
     new_idea_parent_road = f"{root_desc()},work,cleaning"
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = IdeaKid(_weight=40, _desc=clean_cookery_text, promise=True)
@@ -312,7 +311,7 @@ def test_calendar_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     # acptfactunit: acptfactunit_shop = None,
     # calendar_x._idearoot._kids[work_text]._acptfactunits = None
     assert calendar_x._idearoot._kids[work_text]._acptfactunits is None
-    acptfact_road = "src,weekdays,Sunday"
+    acptfact_road = f"{root_desc()},weekdays,Sunday"
     acptfactunit_x = acptfactunit_shop(base=acptfact_road, pick=acptfact_road)
 
     work_acptfactunits = calendar_x._idearoot._kids[work_text]._acptfactunits

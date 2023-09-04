@@ -227,11 +227,11 @@ def test_calendarunit_get_calendar_sprung_from_single_idea_ReturnsCorrectCalenda
     print(f"{len(bond_calendar._idea_dict)=}")
     assert len(bond_calendar._idea_dict) == 3
     b_src_idea = bond_calendar.get_idea_kid(road=root_desc())
-    src_src_idea = cx.get_idea_kid(road=root_desc())
-    assert b_src_idea._uid == src_src_idea._uid
-    assert b_src_idea._begin == src_src_idea._begin
-    assert b_src_idea._close == src_src_idea._close
-    assert b_src_idea != src_src_idea
+    source_x_idea = cx.get_idea_kid(road=root_desc())
+    assert b_src_idea._uid == source_x_idea._uid
+    assert b_src_idea._begin == source_x_idea._begin
+    assert b_src_idea._close == source_x_idea._close
+    assert b_src_idea != source_x_idea
 
     b_casa_idea = bond_calendar.get_idea_kid(road=casa_road)
     src_casa_idea = cx.get_idea_kid(road=casa_road)
@@ -393,43 +393,42 @@ def test_calendarunit_get_meld_of_calendar_files_MeldsIntoSourceCalendar_Scenari
 #     env_dir_setup_cleanup,
 # ):
 #     # GIVEN
-#     src = "src"
-#     src_cx = CalendarUnit(_owner=owner_text, _weight=10)
+#     sourrcecx = CalendarUnit(_owner=owner_text, _weight=10)
 
 #     work_text = "work"
 #     work_road = f"{root_desc()},{work_text}"
 
 #     cat_text = "feed cat"
 #     cat_idea = IdeaKid(_weight=20, _desc=cat_text, promise=True)
-#     src_cx.add_idea(idea_kid=cat_idea, walk=work_road)
+#     sourrce_cx.add_idea(idea_kid=cat_idea, walk=work_road)
 
 #     plant_text = "water plant"
 #     plant_idea = IdeaKid(_weight=30, _desc=plant_text, promise=True)
-#     src_cx.add_idea(idea_kid=plant_idea, walk=work_road)
-#     src_cx.export_all_bonds(dir=get_temp_env_dir())
+#     sourrce_cx.add_idea(idea_kid=plant_idea, walk=work_road)
+#     sourrce_cx.export_all_bonds(dir=get_temp_env_dir())
 
 #     # WHEN
 #     new_cx = get_meld_of_calendar_files(
-#         calendarunit=CalendarUnit(_owner=src_cx._owner, _weight=0), dir=get_temp_env_dir()
+#         calendarunit=CalendarUnit(_owner=sourrce_cx._owner, _weight=0), dir=get_temp_env_dir()
 #     )
 
 #     # THEN
-#     assert src_cx._weight == new_cx._weight
-#     assert src_cx._idearoot._weight == new_cx._idearoot._weight
-#     assert len(src_cx._idearoot._kids) == 1
-#     assert len(src_cx._idearoot._kids) == len(new_cx._idearoot._kids)
-#     src_work_idea = src_cx._idearoot._kids.get(work_text)
+#     assert sourrce_cx._weight == new_cx._weight
+#     assert sourrce_cx._idearoot._weight == new_cx._idearoot._weight
+#     assert len(sourrce_cx._idearoot._kids) == 1
+#     assert len(sourrce_cx._idearoot._kids) == len(new_cx._idearoot._kids)
+#     sourrce_work_idea = sourrce_cx._idearoot._kids.get(work_text)
 #     new_work_idea = new_cx._idearoot._kids.get(work_text)
-#     src_cat_idea = src_work_idea._kids.get(cat_text)
+#     sourrce_cat_idea = sourrce_work_idea._kids.get(cat_text)
 #     new_cat_idea = new_work_idea._kids.get(cat_text)
-#     print(f"{src_cat_idea._calendar_importance=} {new_cat_idea._calendar_importance=}")
-#     assert src_cat_idea._weight == new_cat_idea._weight
-#     assert src_work_idea._kids.get(cat_text) == new_work_idea._kids.get(cat_text)
+#     print(f"{sourrce_cat_idea._calendar_importance=} {new_cat_idea._calendar_importance=}")
+#     assert sourrce_cat_idea._weight == new_cat_idea._weight
+#     assert sourrce_work_idea._kids.get(cat_text) == new_work_idea._kids.get(cat_text)
 
-#     assert src_cx._idearoot._kids.get(cat_text) == new_cx._idearoot._kids.get(cat_text)
-#     assert src_cx._idearoot._kids == new_cx._idearoot._kids
-#     assert src_cx._idearoot == new_cx._idearoot
-#     assert src_cx == new_cx
+#     assert sourrce_cx._idearoot._kids.get(cat_text) == new_cx._idearoot._kids.get(cat_text)
+#     assert sourrce_cx._idearoot._kids == new_cx._idearoot._kids
+#     assert sourrce_cx._idearoot == new_cx._idearoot
+#     assert sourrce_cx == new_cx
 
 
 # - [ ] create test_calendarunit_get_bond_status_ReturnsFalseWhenNotOnlyActionIdeaAcptFactsExist

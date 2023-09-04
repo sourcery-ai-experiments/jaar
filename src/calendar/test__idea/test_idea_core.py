@@ -296,7 +296,7 @@ def test_idea_get_dict_ReturnsDict():
     x1_grouplinks = {biker_name: biker_get_dict, flyer_name: flyer_get_dict}
 
     temp_idea = IdeaCore(
-        _walk="src,work",
+        _walk=f"{root_desc()},work",
         _kids=None,
         _grouplinks=biker_and_flyer_grouplinks,
         _weight=30,
@@ -353,13 +353,19 @@ def test_idea_vaild_DenomCorrectInheritsBeginAndClose():
 
 def test_idea_invaild_DenomThrowsError():
     parent_idea = IdeaCore(_desc="work")
-    kid_idea = IdeaCore(_desc="clean", _walk="src", _numor=1, _denom=11.0, _reest=False)
+    casa_text = "casa"
+    casa_road = f"{root_desc()},{casa_text}"
+    clean_text = "clean"
+    clean_road = f"{casa_road},{clean_text}"
+    kid_idea = IdeaCore(
+        _desc=clean_text, _walk=casa_road, _numor=1, _denom=11.0, _reest=False
+    )
     # When/Then
     with pytest_raise(Exception) as excinfo:
         parent_idea.add_kid(idea_kid=kid_idea)
     assert (
         str(excinfo.value)
-        == "Idea src,clean cannot have numor,denom,reest if parent does not have begin/close range"
+        == f"Idea {clean_road} cannot have numor,denom,reest if parent does not have begin/close range"
     )
 
 

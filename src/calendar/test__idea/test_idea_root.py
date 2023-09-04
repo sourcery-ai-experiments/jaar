@@ -33,8 +33,8 @@ def test_IdeaRoot_set_idea_desc_RaisesError():
     # WHEN/THEN
 
     with pytest_raises(Exception) as excinfo:
-        src_text = "src"
-        new_obj.set_idea_desc(desc=src_text)
+        casa_text = "casa"
+        new_obj.set_idea_desc(desc=casa_text)
     assert (
         str(excinfo.value)
         == f"Cannot set idearoot to string other than '{root_desc()}'"

@@ -4,7 +4,8 @@ from random import randint
 
 
 def test_time_get_time_min_from_dt_WorksCorrectly():
-    g_lw = CalendarUnit(_owner="src")
+    owner_text = "Kia"
+    g_lw = CalendarUnit(_owner=owner_text)
     g_lw.set_time_hreg_ideas(c400_count=6)
     assert g_lw.get_time_min_from_dt(dt=datetime(2000, 1, 1, 0, 0))
     assert g_lw.get_time_min_from_dt(dt=datetime(1, 1, 1, 0, 0)) == 527040
@@ -15,7 +16,8 @@ def test_time_get_time_min_from_dt_WorksCorrectly():
 
 
 def test_get_time_400YearCycle_from_min_WorksCorrectly():
-    g_lw = CalendarUnit(_owner="src")
+    owner_text = "Kia"
+    g_lw = CalendarUnit(_owner=owner_text)
     g_lw.set_time_hreg_ideas(c400_count=6)
     assert g_lw.get_time_c400_from_min(min=0)[0] == 0
     assert g_lw.get_time_c400_from_min(min=210379680)[0] == 1
@@ -24,7 +26,8 @@ def test_get_time_400YearCycle_from_min_WorksCorrectly():
 
 
 def test_get_time_c400year_from_min_WorksCorrectly():
-    g_lw = CalendarUnit(_owner="src")
+    owner_text = "Kia"
+    g_lw = CalendarUnit(_owner=owner_text)
     g_lw.set_time_hreg_ideas(c400_count=6)
     assert g_lw.get_time_c400yr_from_min(min=0)[0] == 0
     assert g_lw.get_time_c400yr_from_min(min=1)[0] == 0
@@ -51,7 +54,8 @@ def _check_time_conversion_works_with_random_inputs(ax: CalendarUnit):
 
 
 def test_get_time_dt_from_min_WorksCorrectly():
-    g_lw = CalendarUnit(_owner="src")
+    owner_text = "Kia"
+    g_lw = CalendarUnit(_owner=owner_text)
     g_lw.set_time_hreg_ideas(c400_count=6)
     assert g_lw.get_time_dt_from_min(min=5000000)
     # assert g_lw.get_time_dt_from_min(
@@ -100,7 +104,8 @@ def test_get_time_dt_from_min_WorksCorrectly():
 
 def test_get_time_():
     # Given
-    g_lw = CalendarUnit(_owner="src")
+    owner_text = "Kia"
+    g_lw = CalendarUnit(_owner=owner_text)
     g_lw.set_time_hreg_ideas(c400_count=6)
 
     idea_list = g_lw.get_idea_list()
@@ -126,9 +131,9 @@ def test_get_time_():
 
 
 # def test_time_hreg_set_exists():
-#     g_lw = CalendarUnit(_owner="src")
+#     g_lw = CalendarUnit(_owner=owner_text)
 #     g_lw.set_time_hreg_ideas(c400_count=6)
-#     idea_x = g_lw.get_idea_kid(road="src,hreg")
+#     idea_x = g_lw.get_idea_kid(road=f"{root_desc()},hreg")
 #     assert idea_x != None
 #     assert g_lw._kids["hreg"]
 #     for kid in g_lw._kids["hreg"]._kids.values():
@@ -156,7 +161,7 @@ def test_get_time_():
 #     g_lw = examples.get_calendar_base_time_example()
 #     g_lw.set_time_hreg_ideas(c400_count=6)
 #     weekday_name = "weekday"
-#     weekday = g_lw.get_idea_kid(road=f"src,hreg,{weekday_name}")
+#     weekday = g_lw.get_idea_kid(road=f"{root_desc()},hreg,{weekday_name}")
 #     assert weekday != None
 #     assert weekday._begin == 0
 #     assert weekday._close == 7
@@ -175,7 +180,7 @@ def test_get_time_():
 #     g_lw.set_time_hreg_ideas(c400_count=c400_count)
 
 #     timetech_name = "400 year cycle"
-#     timetech_road = f"src,hreg,{timetech_name}"
+#     timetech_road = f"{root_desc()},hreg,{timetech_name}"
 #     print(f"{timetech_road=}")
 #     timetech = g_lw.get_idea_kid(road=timetech_road)
 #     assert timetech != None
@@ -189,7 +194,7 @@ def test_get_time_():
 #     h_lw.set_time_hreg_ideas(c400_count=c400_count)
 
 #     hy400_name = "cycle400year_years"
-#     hy400_road = f"src,hreg,{hy400_name}"
+#     hy400_road = f"{root_desc()},hreg,{hy400_name}"
 #     print(f"{hy400_road=}")
 #     hy400_idea = h_lw.get_idea_kid(road=hy400_road)
 #     assert hy400_idea != None
@@ -267,7 +272,7 @@ def test_get_time_():
 #     h_lw.set_time_hreg_ideas(c400_count=c400_count)
 
 #     hy400_name = "cycle400year_days"
-#     hy400_road = f"src,hreg,{hy400_name}"
+#     hy400_road = f"{root_desc()},hreg,{hy400_name}"
 #     print(f"{hy400_road=}")
 #     hy400_idea = h_lw.get_idea_kid(road=hy400_road)
 #     assert hy400_idea != None
@@ -279,13 +284,13 @@ def test_get_time_():
 # def test_time_hreg_set_CorrectlyCreatesDayRange():
 #     g_lw = examples.get_calendar_base_time_example()
 #     g_lw.set_time_hreg_ideas(c400_count=6)
-#     timetech = g_lw.get_idea_kid(road="src,hreg,day_range")
+#     timetech = g_lw.get_idea_kid(road=f"{root_desc()},hreg,day_range")
 #     assert timetech != None
 #     assert timetech._begin == 0
 #     assert timetech._close == 876582
 
 # x_lw = CalendarUnit()
-# g_lw.get_idea_kid(road={"src,hreg,weekday"})
+# g_lw.get_idea_kid(road={f"{root_desc()},hreg,weekday"})
 
 # wed_sufffact_x = sufffactunit_shop(need=wednesday_road)
 # work_wk_required = RequiredUnit(base=weekday_road, sufffacts={wed_sufffact.need: wed_sufffact})
