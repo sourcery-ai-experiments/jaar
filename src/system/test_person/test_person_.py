@@ -64,7 +64,7 @@ def test_personunit_creates_files(person_dir_setup_cleanup):
     person_file_path = f"{person1_dir}/{person_file_name}"
     px = personunit_shop(name=person1_text, env_dir=env_dir)
     px._set_env_dir(env_dir=env_dir)
-    px._set_src_calendarlinks_empty_if_null()
+    px.set_src_calendarlinks_empty_if_null()
     px._set_emtpy_dest_calendar()
     assert os_path.exists(persons_dir) is False
     assert os_path.exists(calendars_dir) is False

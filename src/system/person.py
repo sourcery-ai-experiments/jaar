@@ -121,7 +121,7 @@ class PersonUnit:
             file_name=f"{calendar_x._owner}.json",
             file_text=calendar_x.get_json(),
         )
-        self._set_src_calendarlinks(
+        self.set_src_calendarlinks(
             calendar_owner=calendar_x._owner,
             link_type=link_type,
             weight=calendarlink_weight,
@@ -145,10 +145,10 @@ class PersonUnit:
                 weight=calendarlink_obj.weight,
             )
 
-    def _set_src_calendarlinks(
+    def set_src_calendarlinks(
         self, calendar_owner: str, link_type: str = None, weight: float = None
     ):
-        self._set_src_calendarlinks_empty_if_null()
+        self.set_src_calendarlinks_empty_if_null()
         cx_file_name = f"{calendar_owner}.json"
         cx_file_path = f"{self._person_calendars_dir}/{cx_file_name}"
         if not os_path.exists(cx_file_path):
@@ -178,7 +178,7 @@ class PersonUnit:
             new_cx_obj = CalendarUnit(_owner=calendar_owner)
             self.set_ignore_calendar_file(new_cx_obj, new_cx_obj._owner)
 
-    def _set_src_calendarlinks_empty_if_null(self):
+    def set_src_calendarlinks_empty_if_null(self):
         if self._src_calendarlinks is None:
             self._src_calendarlinks = {}
 
@@ -323,7 +323,7 @@ def personunit_shop(
     person_x._set_auto_dest_calendar_to_public_calendar(
         _auto_dest_calendar_to_public_calendar
     )
-    person_x._set_src_calendarlinks_empty_if_null()
+    person_x.set_src_calendarlinks_empty_if_null()
     person_x._set_emtpy_dest_calendar()
     return person_x
 
