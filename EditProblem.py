@@ -124,8 +124,8 @@ class EditProblem(qtw.QWidget, Ui_Form):
     def set_problem_dominate_action_idea(self, road):
         if road != "":
             prob_walk = get_walk_from_road(road)
-            prob_desc = get_terminus_node_from_road(road)
-            prob_idea = IdeaKid(_desc=prob_desc, _walk=prob_walk)
+            prob_label = get_terminus_node_from_road(road)
+            prob_idea = IdeaKid(_label=prob_label, _walk=prob_walk)
             for grouplink_x in self.create_grouplinks_list():
                 prob_idea.set_grouplink(grouplink_x)
             self.calendar_x.set_dominate_promise_idea(idea_kid=prob_idea)
@@ -214,7 +214,7 @@ class EditProblem(qtw.QWidget, Ui_Form):
                     sufffact_divisor_x = sufffact.divisor
 
         self.agenda_table.setRowCount(row + 1)
-        self.agenda_table.setItem(row, 0, qti(a._desc))
+        self.agenda_table.setItem(row, 0, qti(a._label))
         self.agenda_table.setItem(row, 1, qti(a._walk))
         self.agenda_table.setItem(row, 2, qti(lw_display_x))
         self.agenda_table.setItem(row, 3, qti(num2str(a._weight)))
@@ -247,7 +247,7 @@ class EditProblem(qtw.QWidget, Ui_Form):
         self.agenda_table.setColumnHidden(7, False)
         self.agenda_table.setHorizontalHeaderLabels(
             [
-                "_desc",
+                "_label",
                 "road",
                 "calendar_importance",
                 "weight",

@@ -1,7 +1,7 @@
 from src.calendar.calendar import CalendarUnit
 from src.calendar.idea import IdeaKid
 from src.system.person import personunit_shop
-from src.calendar.road import Road, get_global_root_desc as root_desc
+from src.calendar.road import Road, get_global_root_label as root_label
 from random import randrange
 
 
@@ -16,8 +16,8 @@ def get_Jnode2node_calendar():
     owner_text = "J"
     calendar_x = CalendarUnit(_owner=owner_text)
     a_text = "A"
-    idea_a = IdeaKid(_desc=a_text)
-    calendar_x.add_idea(idea_kid=idea_a, walk=root_desc())
+    idea_a = IdeaKid(_label=a_text)
+    calendar_x.add_idea(idea_kid=idea_a, walk=root_label())
     calendar_x.set_calendar_metrics()
     return calendar_x
 
@@ -26,8 +26,8 @@ def get_2node_calendar():
     owner_text = "A"
     b_text = "B"
     calendar_x = CalendarUnit(_owner=owner_text)
-    idea_b = IdeaKid(_desc=b_text)
-    calendar_x.add_idea(idea_kid=idea_b, walk=root_desc())
+    idea_b = IdeaKid(_label=b_text)
+    calendar_x.add_idea(idea_kid=idea_b, walk=root_label())
     calendar_x.set_calendar_metrics()
     return calendar_x
 
@@ -37,9 +37,9 @@ def get_3node_calendar():
     a_road = Road(a_text)
     calendar_x = CalendarUnit(_owner=a_text)
     b_text = "B"
-    idea_b = IdeaKid(_desc=b_text)
+    idea_b = IdeaKid(_label=b_text)
     c_text = "C"
-    idea_c = IdeaKid(_desc=c_text)
+    idea_c = IdeaKid(_label=c_text)
     calendar_x.add_idea(idea_kid=idea_b, walk=a_road)
     calendar_x.add_idea(idea_kid=idea_c, walk=a_road)
     calendar_x.set_calendar_metrics()
@@ -51,9 +51,9 @@ def get_3node_D_E_F_calendar():
     d_road = Road(d_text)
     calendar_x = CalendarUnit(_owner=d_text)
     b_text = "E"
-    idea_b = IdeaKid(_desc=b_text)
+    idea_b = IdeaKid(_label=b_text)
     c_text = "F"
-    idea_c = IdeaKid(_desc=c_text)
+    idea_c = IdeaKid(_label=c_text)
     calendar_x.add_idea(idea_kid=idea_b, walk=d_road)
     calendar_x.add_idea(idea_kid=idea_c, walk=d_road)
     calendar_x.set_calendar_metrics()
@@ -62,11 +62,11 @@ def get_3node_D_E_F_calendar():
 
 def get_6node_calendar():
     calendar_x = CalendarUnit(_owner="A")
-    idea_b = IdeaKid(_desc="B")
-    idea_c = IdeaKid(_desc="C")
-    idea_d = IdeaKid(_desc="D")
-    idea_e = IdeaKid(_desc="E")
-    idea_f = IdeaKid(_desc="F")
+    idea_b = IdeaKid(_label="B")
+    idea_c = IdeaKid(_label="C")
+    idea_d = IdeaKid(_label="D")
+    idea_e = IdeaKid(_label="E")
+    idea_f = IdeaKid(_label="F")
     calendar_x.add_idea(idea_kid=idea_b, walk="A")
     calendar_x.add_idea(idea_kid=idea_c, walk="A")
     calendar_x.add_idea(idea_kid=idea_d, walk="A,C")
@@ -78,12 +78,12 @@ def get_6node_calendar():
 
 def get_7nodeInsertH_calendar():
     calendar_x = CalendarUnit(_owner="A")
-    idea_b = IdeaKid(_desc="B")
-    idea_c = IdeaKid(_desc="C")
-    idea_h = IdeaKid(_desc="H")
-    idea_d = IdeaKid(_desc="D")
-    idea_e = IdeaKid(_desc="E")
-    idea_f = IdeaKid(_desc="F")
+    idea_b = IdeaKid(_label="B")
+    idea_c = IdeaKid(_label="C")
+    idea_h = IdeaKid(_label="H")
+    idea_d = IdeaKid(_label="D")
+    idea_e = IdeaKid(_label="E")
+    idea_f = IdeaKid(_label="F")
     calendar_x.add_idea(idea_kid=idea_b, walk="A")
     calendar_x.add_idea(idea_kid=idea_c, walk="A")
     calendar_x.add_idea(idea_kid=idea_e, walk="A,C")
@@ -96,10 +96,10 @@ def get_7nodeInsertH_calendar():
 
 def get_5nodeHG_calendar():
     calendar_x = CalendarUnit(_owner="A")
-    idea_b = IdeaKid(_desc="B")
-    idea_c = IdeaKid(_desc="C")
-    idea_h = IdeaKid(_desc="H")
-    idea_g = IdeaKid(_desc="G")
+    idea_b = IdeaKid(_label="B")
+    idea_c = IdeaKid(_label="C")
+    idea_h = IdeaKid(_label="H")
+    idea_g = IdeaKid(_label="G")
     calendar_x.add_idea(idea_kid=idea_b, walk="A")
     calendar_x.add_idea(idea_kid=idea_c, walk="A")
     calendar_x.add_idea(idea_kid=idea_h, walk="A,C")
@@ -110,12 +110,12 @@ def get_5nodeHG_calendar():
 
 def get_7nodeJRoot_calendar():
     calendar_x = CalendarUnit(_owner="J")
-    idea_a = IdeaKid(_desc="A")
-    idea_b = IdeaKid(_desc="B")
-    idea_c = IdeaKid(_desc="C")
-    idea_d = IdeaKid(_desc="D")
-    idea_e = IdeaKid(_desc="E")
-    idea_f = IdeaKid(_desc="F")
+    idea_a = IdeaKid(_label="A")
+    idea_b = IdeaKid(_label="B")
+    idea_c = IdeaKid(_label="C")
+    idea_d = IdeaKid(_label="D")
+    idea_e = IdeaKid(_label="E")
+    idea_f = IdeaKid(_label="F")
     calendar_x.add_idea(idea_kid=idea_a, walk="J")
     calendar_x.add_idea(idea_kid=idea_b, walk="J,A")
     calendar_x.add_idea(idea_kid=idea_c, walk="J,A")
@@ -128,12 +128,12 @@ def get_7nodeJRoot_calendar():
 
 def get_7nodeJRootWithH_calendar():
     calendar_x = CalendarUnit(_owner="J")
-    idea_a = IdeaKid(_desc="A")
-    idea_b = IdeaKid(_desc="B")
-    idea_c = IdeaKid(_desc="C")
-    idea_e = IdeaKid(_desc="E")
-    idea_f = IdeaKid(_desc="F")
-    idea_h = IdeaKid(_desc="H")
+    idea_a = IdeaKid(_label="A")
+    idea_b = IdeaKid(_label="B")
+    idea_c = IdeaKid(_label="C")
+    idea_e = IdeaKid(_label="E")
+    idea_f = IdeaKid(_label="F")
+    idea_h = IdeaKid(_label="H")
     calendar_x.add_idea(idea_kid=idea_a, walk="J")
     calendar_x.add_idea(idea_kid=idea_b, walk="J,A")
     calendar_x.add_idea(idea_kid=idea_c, walk="J,A")
@@ -159,15 +159,15 @@ def get_person_2calendar(env_dir):
 
 
 def get_calendar_2CleanNodesRandomWeights(_owner: str = None):
-    desc_text = _owner if _owner != None else "ernie"
-    calendar_x = CalendarUnit(_owner=desc_text)
+    label_text = _owner if _owner != None else "ernie"
+    calendar_x = CalendarUnit(_owner=label_text)
     casa_text = "casa"
-    calendar_x.add_idea(idea_kid=IdeaKid(_desc=casa_text), walk="")
-    casa_road = Road(f"{desc_text},{casa_text}")
+    calendar_x.add_idea(idea_kid=IdeaKid(_label=casa_text), walk="")
+    casa_road = Road(f"{label_text},{casa_text}")
     cookery_text = "clean cookery"
     bedroom_text = "clean bedroom"
-    cookery_idea = IdeaKid(_desc=cookery_text, _weight=randrange(1, 50), promise=True)
-    bedroom_idea = IdeaKid(_desc=bedroom_text, _weight=randrange(1, 50), promise=True)
+    cookery_idea = IdeaKid(_label=cookery_text, _weight=randrange(1, 50), promise=True)
+    bedroom_idea = IdeaKid(_label=bedroom_text, _weight=randrange(1, 50), promise=True)
     calendar_x.add_idea(idea_kid=cookery_idea, walk=casa_road)
     calendar_x.add_idea(idea_kid=bedroom_idea, walk=casa_road)
     calendar_x.set_calendar_metrics()
@@ -175,17 +175,17 @@ def get_calendar_2CleanNodesRandomWeights(_owner: str = None):
 
 
 def get_calendar_3CleanNodesRandomWeights(_owner: str = None):
-    desc_text = _owner if _owner != None else "ernie"
-    calendar_x = CalendarUnit(_owner=desc_text)
+    label_text = _owner if _owner != None else "ernie"
+    calendar_x = CalendarUnit(_owner=label_text)
     casa_text = "casa"
-    calendar_x.add_idea(idea_kid=IdeaKid(_desc=casa_text), walk="")
-    casa_road = Road(f"{desc_text},{casa_text}")
+    calendar_x.add_idea(idea_kid=IdeaKid(_label=casa_text), walk="")
+    casa_road = Road(f"{label_text},{casa_text}")
     cookery_text = "clean cookery"
     bedroom_text = "clean bedroom"
     hallway_text = "clean hallway"
-    cookery_idea = IdeaKid(_desc=cookery_text, _weight=randrange(1, 50), promise=True)
-    bedroom_idea = IdeaKid(_desc=bedroom_text, _weight=randrange(1, 50), promise=True)
-    hallway_idea = IdeaKid(_desc=hallway_text, _weight=randrange(1, 50), promise=True)
+    cookery_idea = IdeaKid(_label=cookery_text, _weight=randrange(1, 50), promise=True)
+    bedroom_idea = IdeaKid(_label=bedroom_text, _weight=randrange(1, 50), promise=True)
+    hallway_idea = IdeaKid(_label=hallway_text, _weight=randrange(1, 50), promise=True)
     calendar_x.add_idea(idea_kid=cookery_idea, walk=casa_road)
     calendar_x.add_idea(idea_kid=bedroom_idea, walk=casa_road)
     calendar_x.add_idea(idea_kid=hallway_idea, walk=casa_road)

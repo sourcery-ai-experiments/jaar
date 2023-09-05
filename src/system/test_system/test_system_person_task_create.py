@@ -11,7 +11,7 @@ from src.calendar.calendar import CalendarUnit
 from src.calendar.idea import IdeaKid
 from src.calendar.road import (
     road_validate,
-    get_global_root_desc as root_desc,
+    get_global_root_label as root_label,
     get_road_from_nodes,
 )
 from os import path as os_path
@@ -46,7 +46,7 @@ from pytest import raises as pytest_raises
 #     america_person.set_src_calendarlinks(calendar_owner=joachim_text)
 
 #     casa_text = "casa"
-#     casa_road = f"{root_desc()},{casa_text}"
+#     casa_road = f"{root_label()},{casa_text}"
 #     task_text = "do_laundry"
 #     task_road = f"{casa_road},{task_text}"
 #     req_base_text = "laundry basket status"
@@ -86,7 +86,7 @@ from pytest import raises as pytest_raises
 #     new_joa_dest_c = ex.get_calendar_from_calendars_dir(joachim_text)
 #     new_joa_agenda = new_joa_dest_c.get_agenda_items()
 #     assert len(new_joa_agenda) == 1
-#     print(f"{new_joa_agenda[0]._desc=}")
-#     assert new_joa_agenda[0]._desc == task_text
+#     print(f"{new_joa_agenda[0]._label=}")
+#     assert new_joa_agenda[0]._label == task_text
 
 #     assert 1 == 2

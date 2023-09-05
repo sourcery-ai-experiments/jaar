@@ -6,7 +6,7 @@ from src.calendar.required_idea import (
     sufffactunit_shop,
     Road,
 )
-from src.calendar.road import get_global_root_desc as root_desc
+from src.calendar.road import get_global_root_label as root_label
 from pytest import raises as pytest_raises
 
 
@@ -23,10 +23,10 @@ def test_RequiredCore_attributesExist():
 
 
 def test_RequiredHeir_clear_works():
-    email_road = f"{root_desc()},work,check email"
+    email_road = f"{root_label()},work,check email"
     sufffact_x = sufffactunit_shop(need=email_road)
     sufffacts = {sufffact_x.need: sufffact_x}
-    base = f"{root_desc()},work"
+    base = f"{root_label()},work"
     required = RequiredHeir(base=base, sufffacts=sufffacts)
     assert required._status is None
     required._status = True
@@ -272,8 +272,8 @@ def test_RequiredCore_find_replace_road_works():
     # GIVEN
     weekday_text = "weekday"
     sunday_text = "Sunday"
-    old_weekday_road = f"{root_desc()},{weekday_text}"
-    old_sunday_road = f"{root_desc()},{weekday_text},{sunday_text}"
+    old_weekday_road = f"{root_label()},{weekday_text}"
+    old_sunday_road = f"{root_label()},{weekday_text},{sunday_text}"
     # sunday_sufffact_x = sufffactunit_shop(need=old_sunday_road)
     required_x = RequiredCore(base=old_weekday_road, sufffacts=None)
     required_x.set_sufffact(sufffact=old_sunday_road)
@@ -284,7 +284,7 @@ def test_RequiredCore_find_replace_road_works():
     assert required_x.sufffacts.get(old_sunday_road).need == old_sunday_road
 
     # WHEN
-    old_road = f"{root_desc()}"
+    old_road = f"{root_label()}"
     new_road = "fun"
     required_x.find_replace_road(old_road=old_road, new_road=new_road)
     new_weekday_road = f"{new_road},{weekday_text}"
@@ -300,10 +300,10 @@ def test_RequiredCore_find_replace_road_works():
 
 
 def test_RequiredCore_get_key_road():
-    email_road = f"{root_desc()},work,check email"
+    email_road = f"{root_label()},work,check email"
     sufffact_x = sufffactunit_shop(need=Road(email_road))
     sufffacts_x = {sufffact_x.need: sufffact_x}
-    base = Road(f"{root_desc()},work")
+    base = Road(f"{root_label()},work")
     required_x = RequiredHeir(base=base, sufffacts=sufffacts_x)
     assert required_x.get_key_road() == base
 
@@ -311,9 +311,9 @@ def test_RequiredCore_get_key_road():
 def test_RequiredCore_meld_BaseScenarioWorks():
     # GIVEN
     tech_text = "timetech"
-    tech_road = f"{root_desc()},{tech_text}"
+    tech_road = f"{root_label()},{tech_text}"
     week_text = "ced_week"
-    week_road = f"{root_desc()},{tech_text},{week_text}"
+    week_road = f"{root_label()},{tech_text},{week_text}"
 
     required_x1 = RequiredCore(base=tech_road, sufffacts={})
     required_x1.set_sufffact(sufffact=week_road)
@@ -328,16 +328,16 @@ def test_RequiredCore_meld_BaseScenarioWorks():
 def test_RequiredCore_meld_AddSuffFactscenarioWorks():
     # GIVEN
     tech_text = "timetech"
-    tech_road = f"{root_desc()},{tech_text}"
+    tech_road = f"{root_label()},{tech_text}"
     week_text = "ced_week"
-    week_road = f"{root_desc()},{tech_text},{week_text}"
+    week_road = f"{root_label()},{tech_text},{week_text}"
 
     required_x1 = RequiredCore(base=tech_road, sufffacts={})
     required_x1.set_sufffact(sufffact=week_road)
 
     required_x2 = RequiredCore(base=tech_road, sufffacts={})
     year_text = "year"
-    year_road = f"{root_desc()},{tech_text},{year_text}"
+    year_road = f"{root_label()},{tech_text},{year_text}"
     required_x2.set_sufffact(sufffact=year_road, open=45, nigh=55)
 
     # WHEN/THEN
@@ -350,9 +350,9 @@ def test_RequiredCore_meld_AddSuffFactscenarioWorks():
 def test_RequiredCore_meld_raises_NotSameRoadError():
     # GIVEN
     tech_text = "timetech"
-    tech_road = f"{root_desc()},{tech_text}"
+    tech_road = f"{root_label()},{tech_text}"
     week_text = "ced_week"
-    week_road = f"{root_desc()},{tech_text},{week_text}"
+    week_road = f"{root_label()},{tech_text},{week_text}"
 
     required_x1 = RequiredCore(base=tech_road, sufffacts={})
     required_x2 = RequiredCore(base=week_road, sufffacts={})

@@ -6,7 +6,7 @@ from src.calendar.examples.example_calendars import (
     calendar_v001 as examples_calendar_v001,
 )
 from src.calendar.calendar import CalendarUnit
-from src.calendar.road import get_global_root_desc as root_desc
+from src.calendar.road import get_global_root_label as root_label
 from pytest import raises as pytest_raises
 
 
@@ -69,13 +69,13 @@ def test_example_has_groups():
     idea_dict = lw_x._idea_dict
 
     # THEN
-    db_idea = idea_dict.get(f"{root_desc()},D&B")
-    print(f"{db_idea._desc=} {db_idea._grouplinks=}")
+    db_idea = idea_dict.get(f"{root_label()},D&B")
+    print(f"{db_idea._label=} {db_idea._grouplinks=}")
     assert len(db_idea._grouplinks) == 3
     # for idea_key in idea_dict:
     #     print(f"{idea_key=}")
-    #     if idea._desc == "D&B":
-    #         print(f"{idea._desc=} {idea._grouplinks=}")
+    #     if idea._label == "D&B":
+    #         print(f"{idea._label=} {idea._grouplinks=}")
     #         db_grouplink_len = len(idea._grouplinks)
     # assert db_grouplink_len == 3
 
@@ -94,7 +94,7 @@ def test_calendar_set_grouplink_correctly_sets_grouplinks():
     assert len(lw_x._members) == 3
     assert len(lw_x._groups) == 3
     swim_text = "swim"
-    lw_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=prom_text)
+    lw_x.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=prom_text)
     grouplink_rico = grouplink_shop(name=GroupName(rico_text), creditor_weight=10)
     grouplink_carm = grouplink_shop(name=GroupName(carm_text), creditor_weight=10)
     grouplink_patr = grouplink_shop(name=GroupName(patr_text), creditor_weight=10)
@@ -106,7 +106,7 @@ def test_calendar_set_grouplink_correctly_sets_grouplinks():
     assert lw_x._idearoot._grouplinks in (None, {})
     assert len(lw_x._idearoot._kids[swim_text]._grouplinks) == 3
 
-    lw_x.add_idea(idea_kid=IdeaKid(_desc="streets"), walk=swim_road)
+    lw_x.add_idea(idea_kid=IdeaKid(_label="streets"), walk=swim_road)
 
     # WHEN
     idea_list = lw_x.get_idea_list()
@@ -141,7 +141,7 @@ def test_calendar_set_grouplink_correctly_deletes_grouplinks():
     swim_text = "swim"
     swim_road = f"{prom_text},{swim_text}"
 
-    a_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=prom_text)
+    a_x.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=prom_text)
     grouplink_rico = grouplink_shop(name=GroupName(rico_text), creditor_weight=10)
     grouplink_carm = grouplink_shop(name=GroupName(carm_text), creditor_weight=10)
     grouplink_patr = grouplink_shop(name=GroupName(patr_text), creditor_weight=10)
@@ -168,7 +168,7 @@ def test_calendar_set_grouplink_correctly_deletes_grouplinks():
 
     # THEN
     swim_idea = a_x.get_idea_kid(road=swim_road)
-    print(f"{swim_idea._desc=}")
+    print(f"{swim_idea._label=}")
     print(f"{swim_idea._grouplinks=}")
     print(f"{swim_idea._groupheirs=}")
 
@@ -321,7 +321,7 @@ def test_calendar_get_idea_list_CorrectlyCalculates3levelCalendarGroupCalendarIm
     prom_text = "prom"
     a_x = CalendarUnit(_owner=prom_text)
     swim_text = "swim"
-    a_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=prom_text)
+    a_x.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=prom_text)
 
     rico_text = "rico"
     carm_text = "carmen"
@@ -369,7 +369,7 @@ def test_calendar_get_idea_list_CorrectlyCalculatesGroupCalendarImportanceLWwith
     prom_text = "prom"
     a_x = CalendarUnit(_owner=prom_text)
     swim_text = "swim"
-    a_x.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=prom_text)
+    a_x.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=prom_text)
 
     rico_text = "rico"
     carm_text = "carmen"
@@ -385,7 +385,7 @@ def test_calendar_get_idea_list_CorrectlyCalculatesGroupCalendarImportanceLWwith
     a_x._idearoot._kids[swim_text].set_grouplink(grouplink=parm_grouplink)
 
     # no grouplinks attached to this one
-    a_x.add_idea(idea_kid=IdeaKid(_desc="hunt", _weight=3), walk="prom")
+    a_x.add_idea(idea_kid=IdeaKid(_label="hunt", _weight=3), walk="prom")
 
     assert a_x._idearoot._grouplinks is None
 
@@ -544,7 +544,7 @@ def test_calendar_edit_groupUnit_name_CorrectlyChangesGroupLinks():
     outdoor_road = Road(f"{a_x._owner},{outdoor_text}")
     camping_text = "camping"
     camping_road = Road(f"{a_x._owner},{outdoor_text},{camping_text}")
-    a_x.add_idea(walk=outdoor_road, idea_kid=IdeaKid(_desc=camping_text))
+    a_x.add_idea(walk=outdoor_road, idea_kid=IdeaKid(_label=camping_text))
 
     camping_idea = a_x.get_idea_kid(camping_road)
     swim_grouplink = grouplink_shop(
@@ -585,7 +585,7 @@ def test_calendar_edit_groupUnit_name_CorrectlyMeldsGroupLinesGroupLinksGroupHei
     outdoor_road = Road(f"{a_x._owner},{outdoor_text}")
     camping_text = "camping"
     camping_road = Road(f"{a_x._owner},{outdoor_text},{camping_text}")
-    a_x.add_idea(walk=outdoor_road, idea_kid=IdeaKid(_desc=camping_text))
+    a_x.add_idea(walk=outdoor_road, idea_kid=IdeaKid(_label=camping_text))
 
     camping_idea = a_x.get_idea_kid(camping_road)
     swim_grouplink = grouplink_shop(
@@ -620,9 +620,9 @@ def test_calendar_add_idea_CreatesMissingGroups():
     owner_text = "bob"
     a_x = CalendarUnit(_owner=owner_text)
     a_x.set_groupunits_empty_if_null()
-    new_idea_parent_road = f"{root_desc()},work,cleaning"
+    new_idea_parent_road = f"{root_label()},work,cleaning"
     clean_cookery_text = "clean_cookery"
-    clean_cookery_idea = IdeaKid(_weight=40, _desc=clean_cookery_text, promise=True)
+    clean_cookery_idea = IdeaKid(_weight=40, _label=clean_cookery_text, promise=True)
 
     family_text = "family"
     grouplink_z = grouplink_shop(name=family_text)
@@ -648,9 +648,9 @@ def test_calendar_add_idea_DoesNotOverwriteGroups():
     owner_text = "bob"
     a_x = CalendarUnit(_owner=owner_text)
     a_x.set_groupunits_empty_if_null()
-    new_idea_parent_road = f"{root_desc()},work,cleaning"
+    new_idea_parent_road = f"{root_label()},work,cleaning"
     clean_cookery_text = "clean_cookery"
-    clean_cookery_idea = IdeaKid(_weight=40, _desc=clean_cookery_text, promise=True)
+    clean_cookery_idea = IdeaKid(_weight=40, _label=clean_cookery_text, promise=True)
 
     family_text = "family"
     grouplink_z = grouplink_shop(name=family_text)

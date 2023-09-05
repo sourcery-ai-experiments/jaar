@@ -23,7 +23,7 @@ from src.calendar.required_idea import (
 )
 from src.calendar.road import (
     is_sub_road_in_source_road,
-    get_global_root_desc as root_desc,
+    get_global_root_label as root_label,
 )
 from src.calendar.group import (
     GroupHeir,
@@ -52,12 +52,12 @@ class IdeaBare:
     b: float = None  # begin
     c: float = None  # close  # where
     a: float = None  # addin
-    rr: str = None  # relative_road # not road since it doesn't know root _desc
+    rr: str = None  # relative_road # not road since it doesn't know root _label
     mn: int = None  # numor
     md: int = None  # denom
     mr: bool = None  # reest
-    sr: str = None  # special_road # not road since it doesn't know root _desc
-    nr: str = None  # numeric_road # not road since it doesn't know root _desc
+    sr: str = None  # special_road # not road since it doesn't know root _label
+    nr: str = None  # numeric_road # not road since it doesn't know root _label
 
 
 @dataclasses.dataclass
@@ -116,7 +116,7 @@ class IdeaAttrHolder:
 
 @dataclasses.dataclass
 class IdeaCore:
-    _desc: str = None
+    _label: str = None
     _uid: int = None
     _walk: str = None
     _kids: dict = None  # dict[]
@@ -188,7 +188,7 @@ class IdeaCore:
                 self._active_status_hx[tree_traverse_count] = curr_active_status
 
     def get_key_road(self):
-        return self._desc
+        return self._label
 
     def set_acptfactheirs(self, acptfacts: dict[Road:AcptFactCore]):
         acptfacts = self._get_empty_dict_if_null(x_dict=acptfacts)
@@ -314,9 +314,9 @@ class IdeaCore:
 
     def get_road(self) -> Road:
         if self._walk in (None, ""):
-            return f"{self._desc}"
+            return f"{self._label}"
         else:
-            return f"{self._walk},{self._desc}"
+            return f"{self._walk},{self._label}"
 
     def clear_descendant_promise_count(self):
         self._descendant_promise_count = None
@@ -342,15 +342,15 @@ class IdeaCore:
     def set_level(self, parent_level):
         self._level = parent_level + 1
 
-    def set_walk(self, parent_road, parent_desc=None):
-        if parent_road == "" and parent_desc is None:
+    def set_walk(self, parent_road, parent_label=None):
+        if parent_road == "" and parent_label is None:
             self._walk = ""
-        elif parent_road == "" and parent_desc != None:
-            self._walk = parent_desc
-        elif parent_road != "" and parent_desc in ("", None):
+        elif parent_road == "" and parent_label != None:
+            self._walk = parent_label
+        elif parent_road != "" and parent_label in ("", None):
             self._walk = f"{parent_road}"
         else:
-            self._walk = f"{parent_road},{parent_desc}"
+            self._walk = f"{parent_road},{parent_label}"
 
     def inherit_groupheirs(self, parent_groupheirs: dict[GroupName:GroupHeir] = None):
         if parent_groupheirs is None:
@@ -435,9 +435,9 @@ class IdeaCore:
     def clear_grouplines(self):
         self._grouplines = {}
 
-    def set_idea_desc(self, desc):
-        if desc != None:
-            self._desc = desc
+    def set_idea_label(self, _label):
+        if _label != None:
+            self._label = _label
 
     def meld_requiredunits(self, other_idea):
         self.set_requiredunits_empty_if_null()
@@ -471,9 +471,9 @@ class IdeaCore:
                 self._acptfactunits.get(hc.base).meld(hc)
 
     def meld(self, other_idea, _idearoot: bool = None):
-        if _idearoot and self._desc != other_idea._desc:
+        if _idearoot and self._label != other_idea._label:
             raise InvalidIdeaException(
-                f"Meld fail idearoot _desc '{self._desc}' not the same as '{other_idea._desc}'"
+                f"Meld fail idearoot _label '{self._label}' not the same as '{other_idea._label}'"
             )
         if _idearoot:
             self._weight = 1
@@ -507,7 +507,7 @@ class IdeaCore:
             attrs = xl.pop()
             if attrs[1] != attrs[2]:
                 raise InvalidIdeaException(
-                    f"Meld fail idea={self._walk},{self._desc} {attrs[0]}:{attrs[1]} with {other_idea._walk},{other_idea._desc} {attrs[0]}:{attrs[2]}"
+                    f"Meld fail idea={self._walk},{self._label} {attrs[0]}:{attrs[1]} with {other_idea._walk},{other_idea._label} {attrs[0]}:{attrs[2]}"
                 )
 
     def _set_idea_attr(self, idea_attr: IdeaAttrHolder):
@@ -580,7 +580,7 @@ class IdeaCore:
     def _check_get_on_meld_weight_actions(self, on_meld_weight_action: str):
         if on_meld_weight_action not in (list(get_on_meld_weight_actions())):
             raise InvalidIdeaException(
-                f"IdeaCore unit '{self._desc}' cannot have on_meld_weight_action '{on_meld_weight_action}'."
+                f"IdeaCore unit '{self._label}' cannot have on_meld_weight_action '{on_meld_weight_action}'."
             )
 
     def _set_addin_to_zero_if_any_transformations_exist(self):
@@ -648,14 +648,14 @@ class IdeaCore:
             # if idea_kid._reest != None:
             if self._begin is None or self._close is None:
                 raise InvalidIdeaException(
-                    f"Idea {idea_kid._walk},{idea_kid._desc} cannot have numor,denom,reest if parent does not have begin/close range"
+                    f"Idea {idea_kid._walk},{idea_kid._label} cannot have numor,denom,reest if parent does not have begin/close range"
                 )
 
             idea_kid._begin = self._begin * idea_kid._numor / idea_kid._denom
             idea_kid._close = self._close * idea_kid._numor / idea_kid._denom
 
         self.set_kids_empty_if_null()
-        self._kids[idea_kid._desc] = idea_kid
+        self._kids[idea_kid._label] = idea_kid
         self._kids = dict(sorted(self._kids.items()))
 
     def set_grouplink_empty_if_null(self):
@@ -845,7 +845,7 @@ class IdeaCore:
             "_assignedunit": self.get_assignedunit_dict(),
             "_grouplinks": self.get_grouplinks_dict(),
             "_weight": self._weight,
-            "_desc": self._desc,
+            "_label": self._label,
             "_uid": self._uid,
             "_begin": self._begin,
             "_close": self._close,
@@ -914,12 +914,12 @@ class IdeaRootDescNotEmptyException(Exception):
 @dataclasses.dataclass
 class IdeaRoot(IdeaCore):
     def __post_init__(self):
-        self.set_idea_desc(desc=root_desc())
+        self.set_idea_label(_label=root_label())
 
-    def set_idea_desc(self, desc):
-        if desc != root_desc():
+    def set_idea_label(self, _label):
+        if _label != root_label():
             raise IdeaRootDescNotEmptyException(
-                f"Cannot set idearoot to string other than '{root_desc()}'"
+                f"Cannot set idearoot to string other than '{root_label()}'"
             )
         else:
-            self._desc = root_desc()
+            self._label = root_label()

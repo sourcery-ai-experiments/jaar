@@ -139,7 +139,7 @@ class Lemmas:
     ) -> AcptFactUnit:
         if idea_x._begin is None or idea_x._close is None:
             raise InvalidLemmaException(
-                f"Idea {idea_x._walk},{idea_x._desc} does not have range"
+                f"Idea {idea_x._walk},{idea_x._label} does not have range"
             )
 
         idea_begin = idea_x._begin
@@ -151,7 +151,7 @@ class Lemmas:
         src_nigh = src_acptfact.nigh
         src_idea_begin = src_idea._begin
         src_idea_close = src_idea._close
-        idea_road = f"{idea_x._walk},{idea_x._desc}"
+        idea_road = f"{idea_x._walk},{idea_x._label}"
 
         acptfact_open = None
         acptfact_nigh = None
@@ -218,7 +218,7 @@ class Lemmas:
         new_acptfact = self._create_new_acptfact(
             idea_x=idea_x, src_acptfact=src_acptfact, src_idea=src_idea
         )
-        road_x = f"{idea_x._walk},{idea_x._desc}"
+        road_x = f"{idea_x._walk},{idea_x._label}"
         if self.lemmas.get(road_x) is None:
             self.lemmas[road_x] = Lemma(
                 src_acptfact=src_acptfact,
@@ -243,5 +243,5 @@ class Lemmas:
         #     # ):
         #     #     prin(f"{current_lemma_acptfact=} {acptfact_open=} {acptfact_nigh=}")
 
-        #     # if current_lemma_acptfact.base == "{root_desc()},time,week":
+        #     # if current_lemma_acptfact.base == "{root_label()},time,week":
         #     #     prin(f"{current_lemma_acptfact=} {acptfact_open=} {acptfact_nigh=}")

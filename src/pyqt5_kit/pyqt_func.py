@@ -75,7 +75,7 @@ def get_pyqttree(
 def _create_node(pth: PYQTTreeHolder) -> QTreeWidgetItem:
     treenode_l = _create_treenode_l(pth)
     item = QTreeWidgetItem([treenode_l])
-    item.setData(2, 10, pth.ideacore._desc)
+    item.setData(2, 10, pth.ideacore._label)
     item.setData(2, 11, pth.ideacore._walk)
     # item.setData(2, 12, ideacore._weight)
     # item.setData(2, 13, ideacore._begin)
@@ -86,13 +86,13 @@ def _create_node(pth: PYQTTreeHolder) -> QTreeWidgetItem:
     else:
         item.setData(2, 21, len(pth.ideacore._requiredunits))
     if pth.ideacore._kids is None:
-        raise InvalidPyQtException(f"Idea {pth.ideacore._desc} has null kids.")
+        raise InvalidPyQtException(f"Idea {pth.ideacore._label} has null kids.")
 
     sort_ideas_list = list(pth.ideacore._kids.values())
     # print(f"{len(sort_ideas_list)=}")
     # print(f"{type(sort_ideas_list)=}")
-    # print(f"{len(unsorted_ideas_list.sort(key=lambda x: x._desc, reverse=False))=}")
-    sort_ideas_list.sort(key=lambda x: x._desc.lower(), reverse=False)
+    # print(f"{len(unsorted_ideas_list.sort(key=lambda x: x._label, reverse=False))=}")
+    sort_ideas_list.sort(key=lambda x: x._label.lower(), reverse=False)
     # print(f"{len(sorted_ideas_list)=}")
 
     for kid_idea in sort_ideas_list:
@@ -198,7 +198,7 @@ def _get_treenode_l_required_view(treenode_l, pth: PYQTTreeHolder) -> str:
 def _get_treenode_l_acptfactheir_view(treenode_l, pth: PYQTTreeHolder) -> str:
     acptfactheir = pth.ideacore._acptfactheirs.get(pth.required_view_name)
     if acptfactheir != None:
-        time_road = f"{pth.source_calendar._idearoot._desc},time,jajatime"
+        time_road = f"{pth.source_calendar._idearoot._label},time,jajatime"
         if (
             acptfactheir.base == time_road
             and acptfactheir.open != None
@@ -222,7 +222,7 @@ def _get_treenode_l_acptfactheir_view(treenode_l, pth: PYQTTreeHolder) -> str:
 
 
 def _create_treenode_l(pth: PYQTTreeHolder):
-    treenode_l = pth.ideacore._desc
+    treenode_l = pth.ideacore._label
 
     if pth.root_percent_flag:
         treenode_l += f" ({lw_diplay(pth.ideacore._calendar_importance)})"
@@ -249,7 +249,7 @@ def _create_treenode_l(pth: PYQTTreeHolder):
         treenode_l += f" (RequiredHeirs {len(pth.ideacore._requiredheirs)})"
 
     if pth.yo_acptfactunit_time_flag:
-        time_road = f"{pth.source_calendar._idearoot._desc},time,jajatime"
+        time_road = f"{pth.source_calendar._idearoot._label},time,jajatime"
         acptfactunit_time_obj = pth.ideacore._acptfactunits.get(time_road)
         if acptfactunit_time_obj != None:
             hc_open_str = pth.source_calendar.get_jajatime_legible_one_time_event(

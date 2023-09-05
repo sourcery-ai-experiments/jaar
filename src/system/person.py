@@ -208,9 +208,9 @@ class PersonUnit:
         self._save_public_calendar_file(calendarunit=dest_calendar)
 
     def get_ignore_calendar_from_ignore_calendar_files(
-        self, _desc: str
+        self, _label: str
     ) -> CalendarUnit:
-        file_name_x = f"{_desc}.json"
+        file_name_x = f"{_label}.json"
         calendar_json = x_func_open_file(self._ignore_calendars_dir, file_name_x)
         calendar_obj = calendarunit_get_from_json(lw_json=calendar_json)
         calendar_obj.set_calendar_metrics()

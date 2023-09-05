@@ -26,7 +26,7 @@ def test_personunit_exists(person_dir_setup_cleanup):
     assert px._auto_dest_calendar_to_public_calendar
     # assert px._re_idearoot != None
     # assert str(type(px._re_idearoot)).find(".idea.IdeaRoot'>") > 0
-    # assert px._re_idearoot._desc == person_text
+    # assert px._re_idearoot._label == person_text
     # assert px._re_idearoot._weight == 1
 
     # assert px._re_idearoot._uid == -1

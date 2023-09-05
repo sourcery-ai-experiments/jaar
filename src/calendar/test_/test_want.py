@@ -4,18 +4,18 @@ from src.calendar.required_idea import (
     Road,
     sufffactunit_shop,
 )
-from src.calendar.road import get_global_root_desc as root_desc
+from src.calendar.road import get_global_root_label as root_label
 from pytest import raises as pytest_raises
 
 
 def test_sufffact_attributesExist():
-    email = f"{root_desc()},work,check email"
+    email = f"{root_label()},work,check email"
     sufffact_x = sufffactunit_shop(need=email)
     assert sufffact_x.need == email
 
 
 def test_sufffact_clear_works():
-    sufffact_x = sufffactunit_shop(need=f"{root_desc()},work,check email")
+    sufffact_x = sufffactunit_shop(need=f"{root_label()},work,check email")
     assert sufffact_x._status is None
     sufffact_x._status = True
     assert sufffact_x._status
@@ -24,23 +24,23 @@ def test_sufffact_clear_works():
 
 
 def test_sufffact_is_range_CorrectlyIdenitiesRangeStatus():
-    sufffact_x = sufffactunit_shop(need=f"{root_desc()},work", open=1, nigh=3)
+    sufffact_x = sufffactunit_shop(need=f"{root_label()},work", open=1, nigh=3)
     assert sufffact_x._is_range() == True
-    sufffact_x = sufffactunit_shop(need=f"{root_desc()},work")
+    sufffact_x = sufffactunit_shop(need=f"{root_label()},work")
     assert sufffact_x._is_range() == False
     sufffact_x = sufffactunit_shop(
-        need=f"{root_desc()},work", divisor=5, open=3, nigh=3
+        need=f"{root_label()},work", divisor=5, open=3, nigh=3
     )
     assert sufffact_x._is_range() == False
 
 
 def test_sufffact_is_range_CorrectlyIdenitiesSegregateStatus():
-    sufffact_x = sufffactunit_shop(need=f"{root_desc()},work", open=1, nigh=3)
+    sufffact_x = sufffactunit_shop(need=f"{root_label()},work", open=1, nigh=3)
     assert sufffact_x._is_segregate() == False
-    sufffact_x = sufffactunit_shop(need=f"{root_desc()},work")
+    sufffact_x = sufffactunit_shop(need=f"{root_label()},work")
     assert sufffact_x._is_segregate() == False
     sufffact_x = sufffactunit_shop(
-        need=f"{root_desc()},work", divisor=5, open=3, nigh=3
+        need=f"{root_label()},work", divisor=5, open=3, nigh=3
     )
     assert sufffact_x._is_segregate() == True
 
@@ -398,13 +398,13 @@ def test_sufffact_get_key_road():
 def test_sufffact_find_replace_road_works():
     # GIVEN
     weekday_text = "weekday"
-    old_sunday_road = f"{root_desc()},{weekday_text},Sunday"
+    old_sunday_road = f"{root_label()},{weekday_text},Sunday"
     sunday_sufffact_x = sufffactunit_shop(need=old_sunday_road)
     print(sunday_sufffact_x)
     assert sunday_sufffact_x.need == old_sunday_road
 
     # WHEN
-    old_road = f"{root_desc()}"
+    old_road = f"{root_label()}"
     new_road = "fun"
     sunday_sufffact_x.find_replace_road(old_road=old_road, new_road=new_road)
     new_sunday_road = f"{new_road},{weekday_text},Sunday"

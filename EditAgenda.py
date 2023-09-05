@@ -31,11 +31,11 @@ class EditAgenda(qw, Ui_Form):
 
     def select_agenda_item(self):
         _road = self.agenda_table.item(self.agenda_table.currentRow(), 1).text()
-        _desc = self.agenda_table.item(self.agenda_table.currentRow(), 0).text()
+        _label = self.agenda_table.item(self.agenda_table.currentRow(), 0).text()
         # base_x = "Mycalendar,time,jajatime"
         base_x = self.acptfact_base_update_combo.currentText()
         self.calendar_x.set_agenda_task_complete(
-            task_road=f"{_road},{_desc}", base=base_x
+            task_road=f"{_road},{_label}", base=base_x
         )
         self.refresh_all()
 
@@ -133,7 +133,7 @@ class EditAgenda(qw, Ui_Form):
             )
 
         self.agenda_table.setRowCount(row + 1)
-        self.agenda_table.setItem(row, 0, qti(a._desc))
+        self.agenda_table.setItem(row, 0, qti(a._label))
         self.agenda_table.setItem(row, 1, qti(a._walk))
         self.agenda_table.setItem(row, 2, qti(lw_display_x))
         self.agenda_table.setItem(row, 3, qti(num2str(a._weight)))
@@ -167,7 +167,7 @@ class EditAgenda(qw, Ui_Form):
         self.agenda_table.setColumnHidden(8, not display_acptfactbase)
         self.agenda_table.setHorizontalHeaderLabels(
             [
-                "_desc",
+                "_label",
                 "road",
                 "calendar_importance",
                 "weight",

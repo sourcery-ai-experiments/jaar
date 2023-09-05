@@ -1,7 +1,7 @@
 from src.system.system import SystemUnit
 from src.calendar.calendar import CalendarUnit
 from src.calendar.member import memberunit_shop
-from src.calendar.road import get_global_root_desc as root_desc
+from src.calendar.road import get_global_root_label as root_label
 from src.system.examples.env_kit import (
     get_temp_env_name,
     get_test_systems_dir,
@@ -569,7 +569,7 @@ def test_system_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
         assert get_idea_catalog_table_count(bank_conn, bob_text) == 0
 
     # WHEN
-    water_road = f"{root_desc()},elements,water"
+    water_road = f"{root_label()},elements,water"
     water_idea_catalog = IdeaCatalog(calendar_name=bob_text, idea_road=water_road)
     water_insert_sqlstr = get_idea_catalog_table_insert_sqlstr(water_idea_catalog)
     with e1.get_bank_conn() as bank_conn:
@@ -642,11 +642,11 @@ def test_system_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
 
     # WHEN / THEN
     assert len(get_idea_catalog_dict(e1.get_bank_conn())) == 20
-    b_road = f"{root_desc()},B"
+    b_road = f"{root_label()},B"
     assert len(get_idea_catalog_dict(e1.get_bank_conn(), b_road)) == 3
-    ce_road = f"{root_desc()},C,E"
+    ce_road = f"{root_label()},C,E"
     assert len(get_idea_catalog_dict(e1.get_bank_conn(), ce_road)) == 2
-    ex_road = f"{root_desc()}"
+    ex_road = f"{root_label()}"
     assert len(get_idea_catalog_dict(e1.get_bank_conn(), ex_road)) == 4
 
 
@@ -666,8 +666,8 @@ def test_system_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable
     # WHEN
     weather_rain = AcptFactCatalog(
         calendar_name=bob_text,
-        base=f"{root_desc()},weather",
-        pick=f"{root_desc()},weather,rain",
+        base=f"{root_label()},weather",
+        pick=f"{root_label()},weather,rain",
     )
     water_insert_sqlstr = get_acptfact_catalog_table_insert_sqlstr(weather_rain)
     with e1.get_bank_conn() as bank_conn:
@@ -755,7 +755,7 @@ def test_system_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTabl
     bob_group_x = GroupUnitCatalog(
         calendar_name=bob_text,
         groupunit_name="US Dollar",
-        memberlinks_set_by_system_road=f"{root_desc()},USA",
+        memberlinks_set_by_system_road=f"{root_label()},USA",
     )
     bob_group_sqlstr = get_groupunit_catalog_table_insert_sqlstr(bob_group_x)
     with e1.get_bank_conn() as bank_conn:

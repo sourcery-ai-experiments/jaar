@@ -311,7 +311,7 @@ def test_system_set_calendar_attr_defined_by_system_CorrectlyPopulatesCalendar_G
     e1.create_dirs_if_null(in_memory_bank=True)
 
     # create 4 calendars, 1 with group "swimming expert" linked to 1 member
-    # two others have idea f"{root_desc()},sports,swimming"
+    # two others have idea f"{root_label()},sports,swimming"
     # run set_bank_metrics
     # assert
     # _memberlinks_set_by_system_road
@@ -336,9 +336,9 @@ def test_system_set_calendar_attr_defined_by_system_CorrectlyPopulatesCalendar_G
     bob_sports_road = f"{bob_calendar._owner},{sports_text}"
     tom_sports_road = f"{tom_calendar._owner},{sports_text}"
 
-    sal_calendar.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=sal_sports_road)
-    bob_calendar.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=bob_sports_road)
-    tom_calendar.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=tom_sports_road)
+    sal_calendar.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=sal_sports_road)
+    bob_calendar.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=bob_sports_road)
+    tom_calendar.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=tom_sports_road)
 
     sal_calendar.add_memberunit(name=bob_text, creditor_weight=2, debtor_weight=2)
 

@@ -5,7 +5,7 @@ from src.calendar.examples.example_calendars import (
 from src.calendar.calendar import CalendarUnit
 from src.calendar.tree_metrics import TreeMetrics
 from src.calendar.idea import IdeaKid
-from src.calendar.road import get_global_root_desc as root_desc
+from src.calendar.road import get_global_root_label as root_label
 
 
 def test_calendar_get_tree_metrics_exists():
@@ -72,14 +72,14 @@ def test_calendar_calendar_get_tree_metrics_sets_uids_correctly():
     sx = CalendarUnit(_owner=owner_text)
     swim_text = "swim"
     walk_text = "walk"
-    sx.add_idea(idea_kid=IdeaKid(_desc=swim_text, _uid=None), walk=root_desc())
-    sx.add_idea(idea_kid=IdeaKid(_desc=walk_text, _uid=2), walk=root_desc())
-    assert sx.get_idea_kid(road=f"{root_desc()},{swim_text}")._uid is None
+    sx.add_idea(idea_kid=IdeaKid(_label=swim_text, _uid=None), walk=root_label())
+    sx.add_idea(idea_kid=IdeaKid(_label=walk_text, _uid=2), walk=root_label())
+    assert sx.get_idea_kid(road=f"{root_label()},{swim_text}")._uid is None
 
     sx.set_all_idea_uids_unique()
 
     # THEN
-    assert sx.get_idea_kid(road=f"{root_desc()},{swim_text}")._uid != None
+    assert sx.get_idea_kid(road=f"{root_label()},{swim_text}")._uid != None
 
 
 def test_calendar_get_tree_metrics_ReturnsAccurateActionIdeaCount():
@@ -89,7 +89,7 @@ def test_calendar_get_tree_metrics_ReturnsAccurateActionIdeaCount():
     assert tree_metrics_before.bond_promise_count == 69
 
     # WHEN
-    cx.add_idea(idea_kid=IdeaKid(_desc="clean", promise=True), walk=f"{cx._owner}")
+    cx.add_idea(idea_kid=IdeaKid(_label="clean", promise=True), walk=f"{cx._owner}")
 
     # THEN
     tree_metrics_after = cx.get_tree_metrics()
@@ -101,8 +101,8 @@ def test_calendar_get_tree_metrics_ReturnsANoneActionIdeaRoad():
     owner_text = "Nia"
     cx = CalendarUnit(_owner=owner_text, _weight=10)
     weekdays = "weekdays"
-    idea_kid_weekdays = IdeaKid(_weight=40, _desc=weekdays)
-    cx.add_idea(idea_kid=idea_kid_weekdays, walk=f"{root_desc()}")
+    idea_kid_weekdays = IdeaKid(_weight=40, _label=weekdays)
+    cx.add_idea(idea_kid=idea_kid_weekdays, walk=f"{root_label()}")
     tree_metrics_before = cx.get_tree_metrics()
     # WHEN/THEN
     assert tree_metrics_before.an_promise_idea_road is None
@@ -115,5 +115,5 @@ def test_calendar_get_tree_metrics_ReturnsAnActionIdeaRoad():
     # WHEN/THEN
     assert (
         tree_metrics_before.an_promise_idea_road
-        == f"{root_desc()},ACME,ACME Employee Responsiblities,Know Abuse Prevention and Reporting guildlines,Take Fall 2021 training"
+        == f"{root_label()},ACME,ACME Employee Responsiblities,Know Abuse Prevention and Reporting guildlines,Take Fall 2021 training"
     )

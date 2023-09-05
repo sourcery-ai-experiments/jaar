@@ -8,7 +8,7 @@ from src.calendar.group import (
     groupheir_shop,
     get_from_json as groupunits_get_from_json,
 )
-from src.calendar.road import get_global_root_desc as root_desc
+from src.calendar.road import get_global_root_label as root_label
 from src.calendar.x_func import x_is_json, x_get_json
 from pytest import raises as pytest_raises
 
@@ -22,7 +22,7 @@ def test_groupName_exists():
 def test_groupunit_exists():
     # GIVEN
     swimmers = "swimmers"
-    usa_road = f"{root_desc()},nation-states,USA"
+    usa_road = f"{root_label()},nation-states,USA"
 
     # WHEN
     swimmers_group = groupunit_shop(
@@ -67,7 +67,7 @@ def test_groupunit_set_attr_WorksCorrectly():
     assert swim_group._memberlinks_set_by_system_road is None
 
     # WHEN
-    water_road = f"{root_desc()},sports,water"
+    water_road = f"{root_label()},sports,water"
     swim_group.set_attr(_memberlinks_set_by_system_road=water_road)
 
     # THEN
@@ -77,7 +77,7 @@ def test_groupunit_set_attr_WorksCorrectly():
 def test_groupunit_shop_WhenSingleMemberCorrectlyRemoves_memberlinks_set_by_system_road():
     # GIVEN
     swimmers = "swimmers"
-    usa_road = f"{root_desc()},nation-states,USA"
+    usa_road = f"{root_label()},nation-states,USA"
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:

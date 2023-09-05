@@ -4,15 +4,15 @@ from src.calendar.required_idea import RequiredUnit, acptfactunit_shop
 from src.calendar.calendar import CalendarUnit
 from src.calendar.group import grouplink_shop
 from pytest import raises as pytest_raises
-from src.calendar.road import Road, get_global_root_desc as root_desc
+from src.calendar.road import Road, get_global_root_label as root_label
 
 
 def test_root_has_kids():
     # GIVEN
     calendar_x = CalendarUnit(_owner="prom")
     idearoot_x = calendar_x._idearoot
-    idea1 = IdeaKid(_weight=30, _desc="work")
-    idea2 = IdeaKid(_weight=40, _desc="ulty")
+    idea1 = IdeaKid(_weight=30, _label="work")
+    idea2 = IdeaKid(_weight=40, _label="ulty")
 
     # WHEN
     calendar_x.add_idea(idea_kid=idea1, walk=calendar_x._owner)
@@ -37,7 +37,7 @@ def test_kid_can_have_kids():
     weekdays_len = len(weekdays_kids)
     print(f"{weekdays_len=} {calendar_x._idearoot._walk=}")
     # for idea in weekdays_kids.values():
-    #     print(f"{idea._desc=}")
+    #     print(f"{idea._label=}")
     assert calendar_x.get_node_count() == 17
     assert calendar_x.get_level_count(level=1) == 4
     assert calendar_x.get_level_count(level=2) == 10
@@ -51,7 +51,7 @@ def test_calendar_add_idea_CanAddKidToRootIdea():
     assert calendar_x.get_level_count(level=1) == 4
 
     new_idea_parent_road = calendar_x._owner
-    new_idea = IdeaKid(_weight=40, _desc="new_idea")
+    new_idea = IdeaKid(_weight=40, _label="new_idea")
 
     # WHEN
     calendar_x.add_idea(idea_kid=new_idea, walk=new_idea_parent_road)
@@ -69,8 +69,8 @@ def test_calendar_add_idea_CanAddKidToKidIdea():
     assert calendar_x.get_node_count() == 17
     assert calendar_x.get_level_count(level=2) == 10
 
-    new_idea_parent_road = f"{root_desc()},work"
-    new_idea = IdeaKid(_weight=40, _desc="new_york")
+    new_idea_parent_road = f"{root_label()},work"
+    new_idea = IdeaKid(_weight=40, _label="new_york")
 
     # WHEN
     calendar_x.add_idea(idea_kid=new_idea, walk=new_idea_parent_road)
@@ -83,7 +83,7 @@ def test_calendar_add_idea_CanAddKidToKidIdea():
     assert calendar_x.get_level_count(level=2) == 11
     assert (
         calendar_x._idearoot._kids["work"]._kids["new_york"]._walk
-        == f"{root_desc()},work"
+        == f"{root_label()},work"
     )
     calendar_x._idearoot._kids["work"]._kids["new_york"].set_walk(parent_road="testing")
     assert calendar_x._idearoot._kids["work"]._kids["new_york"]._walk == "testing"
@@ -95,8 +95,8 @@ def test_calendar_add_idea_CanAddKidToGrandkidIdea():
     calendar_x = get_calendar_with_4_levels()
     assert calendar_x.get_node_count() == 17
     assert calendar_x.get_level_count(level=3) == 2
-    new_idea_parent_road = f"{root_desc()},weekdays,Wednesday"
-    new_idea = IdeaKid(_weight=40, _desc="new_idea")
+    new_idea_parent_road = f"{root_label()},weekdays,Wednesday"
+    new_idea = IdeaKid(_weight=40, _label="new_idea")
 
     # WHEN
     calendar_x.add_idea(idea_kid=new_idea, walk=new_idea_parent_road)
@@ -114,8 +114,8 @@ def test_calendar_add_idea_CanCreateRoadToGrandkidIdea():
     calendar_x = get_calendar_with_4_levels()
     assert calendar_x.get_node_count() == 17
     assert calendar_x.get_level_count(level=3) == 2
-    new_idea_parent_road = f"{root_desc()},ww2,battles,coralsea"
-    new_idea = IdeaKid(_weight=40, _desc="USS Saratoga")
+    new_idea_parent_road = f"{root_label()},ww2,battles,coralsea"
+    new_idea = IdeaKid(_weight=40, _label="USS Saratoga")
 
     # WHEN
     calendar_x.add_idea(idea_kid=new_idea, walk=new_idea_parent_road)
@@ -123,8 +123,8 @@ def test_calendar_add_idea_CanCreateRoadToGrandkidIdea():
     # THEN
     print(calendar_x._idearoot._kids["ww2"])
     print(f"{(len(new_idea_parent_road) == 1)=}")
-    assert calendar_x._idearoot._kids["ww2"]._desc == "ww2"
-    assert calendar_x._idearoot._kids["ww2"]._kids["battles"]._desc == "battles"
+    assert calendar_x._idearoot._kids["ww2"]._label == "ww2"
+    assert calendar_x._idearoot._kids["ww2"]._kids["battles"]._label == "battles"
     assert calendar_x.get_node_count() == 21
     assert calendar_x.get_level_count(level=3) == 3
 
@@ -134,14 +134,14 @@ def test_calendar_add_idea_creates_requireds_ideas():
     calendar_x = get_calendar_with_4_levels()
     assert calendar_x.get_node_count() == 17
     assert calendar_x.get_level_count(level=3) == 2
-    new_idea_parent_road = f"{root_desc()},work,cleaning"
+    new_idea_parent_road = f"{root_label()},work,cleaning"
     clean_cookery_text = "clean_cookery"
-    clean_cookery_idea = IdeaKid(_weight=40, _desc=clean_cookery_text, promise=True)
+    clean_cookery_idea = IdeaKid(_weight=40, _label=clean_cookery_text, promise=True)
 
     buildings_text = "buildings"
-    buildings_road = Road(f"{root_desc()},{buildings_text}")
+    buildings_road = Road(f"{root_label()},{buildings_text}")
     cookery_room_text = "cookery"
-    cookery_room_road = Road(f"{root_desc()},{buildings_text},{cookery_room_text}")
+    cookery_room_road = Road(f"{root_label()},{buildings_text},{cookery_room_text}")
     cookery_dirty_text = "dirty"
     cookery_dirty_road = Road(f"{cookery_room_road},{cookery_dirty_text}")
     required_x = RequiredUnit(base=cookery_room_road, sufffacts={})
@@ -160,7 +160,7 @@ def test_calendar_add_idea_creates_requireds_ideas():
     # THEN
     print(f"{(len(new_idea_parent_road) == 1)=}")
     # for idea_kid in calendar_x._idearoot._kids.values():
-    #     print(f"{idea_kid._desc=}")
+    #     print(f"{idea_kid._label=}")
     assert calendar_x._idearoot._kids.get(buildings_text) != None
     assert calendar_x.get_idea_kid(road=buildings_road) != None
     assert calendar_x.get_idea_kid(road=cookery_dirty_road) != None
@@ -170,8 +170,8 @@ def test_calendar_add_idea_creates_requireds_ideas():
 
 def test_calendar_idearoot_is_heir_CorrectlyChecksLineage():
     calendar_x = get_calendar_with_4_levels()
-    sunday_road = f"{root_desc()},weekdays,Sunday"
-    weekday_road = f"{root_desc()},weekdays"
+    sunday_road = f"{root_label()},weekdays,Sunday"
+    weekday_road = f"{root_label()},weekdays"
     assert calendar_x._idearoot.is_heir(src=weekday_road, heir=weekday_road)
     assert calendar_x._idearoot.is_heir(src=weekday_road, heir=sunday_road)
     assert calendar_x._idearoot.is_heir(src=sunday_road, heir=weekday_road) == False
@@ -180,7 +180,7 @@ def test_calendar_idearoot_is_heir_CorrectlyChecksLineage():
 def test_calendar_del_idea_kid_IdeaLevel0CannotBeDeleted():
     # Given
     calendar_x = get_calendar_with_4_levels()
-    root_road = f"{root_desc()}"
+    root_road = f"{root_label()}"
 
     # When/Then
     with pytest_raises(Exception) as excinfo:
@@ -191,8 +191,8 @@ def test_calendar_del_idea_kid_IdeaLevel0CannotBeDeleted():
 def test_calendar_del_idea_kid_IdeaLevel1CanBeDeleted_ChildrenDeleted():
     # Given
     calendar_x = get_calendar_with_4_levels()
-    weekdays_road = f"{root_desc()},weekdays"
-    sunday_road = f"{root_desc()},weekdays,Sunday"
+    weekdays_road = f"{root_label()},weekdays"
+    sunday_road = f"{root_label()},weekdays,Sunday"
     assert calendar_x.get_idea_kid(road=weekdays_road)
     assert calendar_x.get_idea_kid(road=sunday_road)
 
@@ -204,22 +204,22 @@ def test_calendar_del_idea_kid_IdeaLevel1CanBeDeleted_ChildrenDeleted():
         calendar_x.get_idea_kid(road=weekdays_road)
     assert (
         str(excinfo.value)
-        == f"Getting idea_desc='weekdays' failed no item at '{weekdays_road}'"
+        == f"Getting idea_label='weekdays' failed no item at '{weekdays_road}'"
     )
-    new_sunday_road = f"{root_desc()},Sunday"
+    new_sunday_road = f"{root_label()},Sunday"
     with pytest_raises(Exception) as excinfo:
         calendar_x.get_idea_kid(road=new_sunday_road)
     assert (
         str(excinfo.value)
-        == f"Getting idea_desc='Sunday' failed no item at '{new_sunday_road}'"
+        == f"Getting idea_label='Sunday' failed no item at '{new_sunday_road}'"
     )
 
 
 def test_calendar_del_idea_kid_IdeaLevel1CanBeDeleted_ChildrenInherited():
     # Given
     calendar_x = get_calendar_with_4_levels()
-    weekdays_road = f"{root_desc()},weekdays"
-    old_sunday_road = f"{root_desc()},weekdays,Sunday"
+    weekdays_road = f"{root_label()},weekdays"
+    old_sunday_road = f"{root_label()},weekdays,Sunday"
     assert calendar_x.get_idea_kid(road=old_sunday_road)
 
     # When
@@ -230,18 +230,18 @@ def test_calendar_del_idea_kid_IdeaLevel1CanBeDeleted_ChildrenInherited():
         calendar_x.get_idea_kid(road=old_sunday_road)
     assert (
         str(excinfo.value)
-        == f"Getting idea_desc='Sunday' failed no item at '{old_sunday_road}'"
+        == f"Getting idea_label='Sunday' failed no item at '{old_sunday_road}'"
     )
-    new_sunday_road = f"{root_desc()},Sunday"
+    new_sunday_road = f"{root_label()},Sunday"
     assert calendar_x.get_idea_kid(road=new_sunday_road)
     new_sunday_idea = calendar_x.get_idea_kid(road=new_sunday_road)
-    assert new_sunday_idea._walk == f"{root_desc()}"
+    assert new_sunday_idea._walk == f"{root_label()}"
 
 
 def test_calendar_del_idea_kid_IdeaLevel2CanBeDeleted_ChildrenDeleted():
     # Given
     calendar_x = get_calendar_with_4_levels()
-    monday_road = f"{root_desc()},weekdays,Monday"
+    monday_road = f"{root_label()},weekdays,Monday"
     assert calendar_x.get_idea_kid(road=monday_road)
 
     # When
@@ -252,7 +252,7 @@ def test_calendar_del_idea_kid_IdeaLevel2CanBeDeleted_ChildrenDeleted():
         calendar_x.get_idea_kid(road=monday_road)
     assert (
         str(excinfo.value)
-        == f"Getting idea_desc='Monday' failed no item at '{monday_road}'"
+        == f"Getting idea_label='Monday' failed no item at '{monday_road}'"
     )
 
 
@@ -262,7 +262,7 @@ def test_calendar_del_idea_kid_IdeaLevelNCanBeDeleted_ChildrenDeleted():
     states = "nation-state"
     USA = "USA"
     Texas = "Texas"
-    texas_road = f"{root_desc()},{states},{USA},{Texas}"
+    texas_road = f"{root_label()},{states},{USA},{Texas}"
     assert calendar_x.get_idea_kid(road=texas_road)
 
     # When
@@ -273,14 +273,14 @@ def test_calendar_del_idea_kid_IdeaLevelNCanBeDeleted_ChildrenDeleted():
         calendar_x.get_idea_kid(road=texas_road)
     assert (
         str(excinfo.value)
-        == f"Getting idea_desc='Texas' failed no item at '{texas_road}'"
+        == f"Getting idea_label='Texas' failed no item at '{texas_road}'"
     )
 
 
 def test_calendar_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     calendar_x = get_calendar_with_4_levels()
     work_text = "work"
-    work_road = f"{root_desc()},{work_text}"
+    work_road = f"{root_label()},{work_text}"
     print(f"{work_road=}")
     current_weight = calendar_x._idearoot._kids[work_text]._weight
     assert current_weight == 30
@@ -311,7 +311,7 @@ def test_calendar_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     # acptfactunit: acptfactunit_shop = None,
     # calendar_x._idearoot._kids[work_text]._acptfactunits = None
     assert calendar_x._idearoot._kids[work_text]._acptfactunits is None
-    acptfact_road = f"{root_desc()},weekdays,Sunday"
+    acptfact_road = f"{root_label()},weekdays,Sunday"
     acptfactunit_x = acptfactunit_shop(base=acptfact_road, pick=acptfact_road)
 
     work_acptfactunits = calendar_x._idearoot._kids[work_text]._acptfactunits
@@ -398,7 +398,7 @@ def test_calendar_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
 
 def test_calendar_edit_idea_attr_calendarIsAbleToEdit_on_meld_weight_action_AnyIdeaIfInvaildThrowsError():
     calendar_x = get_calendar_with_4_levels()
-    work_road = f"{root_desc()},work"
+    work_road = f"{root_label()},work"
 
     # When/Then
     with pytest_raises(Exception) as excinfo:
@@ -410,18 +410,19 @@ def test_calendar_edit_idea_attr_calendarIsAbleToEdit_on_meld_weight_action_AnyI
 
 
 def test_calendar_edit_idea_attr_calendarIsAbleToEditDenomAnyIdeaIfInvaildDenomThrowsError():
-    calendar_x = CalendarUnit(_owner=root_desc())
+    owner_text = "Yao"
+    calendar_x = CalendarUnit(_owner=owner_text)
     # When/Then
     with pytest_raises(Exception) as excinfo:
         calendar_x.edit_idea_attr(road="", denom=46)
     assert str(excinfo.value) == "Root Idea cannot have numor denom reest."
 
     work = "work"
-    w_road = f"{root_desc()},{work}"
-    work_idea = IdeaKid(_desc=work)
-    calendar_x.add_idea(work_idea, walk=root_desc())
+    w_road = f"{root_label()},{work}"
+    work_idea = IdeaKid(_label=work)
+    calendar_x.add_idea(work_idea, walk=root_label())
     clean = "clean"
-    clean_idea = IdeaKid(_desc=clean)
+    clean_idea = IdeaKid(_label=clean)
     c_road = f"{w_road},{clean}"
     calendar_x.add_idea(clean_idea, walk=w_road)
 
@@ -430,7 +431,7 @@ def test_calendar_edit_idea_attr_calendarIsAbleToEditDenomAnyIdeaIfInvaildDenomT
         calendar_x.edit_idea_attr(road=c_road, denom=46)
     assert (
         str(excinfo.value)
-        == f"Idea cannot edit numor=1/denom/reest of '{root_desc()},work,clean' if parent '{root_desc()},work' or ideacore._numeric_road does not have begin/close range"
+        == f"Idea cannot edit numor=1/denom/reest of '{root_label()},work,clean' if parent '{root_label()},work' or ideacore._numeric_road does not have begin/close range"
     )
 
     # Given
@@ -443,23 +444,24 @@ def test_calendar_edit_idea_attr_calendarIsAbleToEditDenomAnyIdeaIfInvaildDenomT
 
 def test_calendar_edit_idea_attr_calendarIsAbleToEditDenomAnyIdeaInvaildDenomThrowsError():
     # Given
-    calendar_x = CalendarUnit(_owner=root_desc())
+    owner_text = "Yao"
+    calendar_x = CalendarUnit(_owner=owner_text)
     work = "work"
-    w_road = f"{root_desc()},{work}"
-    work_idea = IdeaKid(_desc=work, _begin=8, _close=14)
-    calendar_x.add_idea(work_idea, walk=root_desc())
+    w_road = f"{root_label()},{work}"
+    work_idea = IdeaKid(_label=work, _begin=8, _close=14)
+    calendar_x.add_idea(work_idea, walk=root_label())
 
     clean = "clean"
-    clean_idea = IdeaKid(_desc=clean, _denom=1)
+    clean_idea = IdeaKid(_label=clean, _denom=1)
     c_road = f"{w_road},{clean}"
     calendar_x.add_idea(clean_idea, walk=w_road)
 
     clean_idea = calendar_x.get_idea_kid(road=c_road)
 
     day = "day_range"
-    day_idea = IdeaKid(_desc=day, _begin=44, _close=110)
-    day_road = f"{root_desc()},{day}"
-    calendar_x.add_idea(day_idea, walk=root_desc())
+    day_idea = IdeaKid(_label=day, _begin=44, _close=110)
+    day_road = f"{root_label()},{day}"
+    calendar_x.add_idea(day_idea, walk=root_label())
 
     # When/Then
     with pytest_raises(Exception) as excinfo:
@@ -474,15 +476,16 @@ def test_calendar_edit_idea_attr_calendarIsAbleToEditDenomAnyIdeaInvaildDenomThr
 
 def test_calendar_edit_idea_attr_calendarWhenParentAndNumeric_roadBothHaveRangeThrowError():
     # Given
-    calendar_x = CalendarUnit(_owner=root_desc())
+    owner_text = "Yao"
+    calendar_x = CalendarUnit(_owner=owner_text)
     work = "work"
-    w_road = f"{root_desc()},{work}"
-    work_idea = IdeaKid(_desc=work)
-    calendar_x.add_idea(work_idea, walk=root_desc())
+    w_road = f"{root_label()},{work}"
+    work_idea = IdeaKid(_label=work)
+    calendar_x.add_idea(work_idea, walk=root_label())
     day = "day_range"
-    day_idea = IdeaKid(_desc=day, _begin=44, _close=110)
-    day_road = f"{root_desc()},{day}"
-    calendar_x.add_idea(day_idea, walk=root_desc())
+    day_idea = IdeaKid(_label=day, _begin=44, _close=110)
+    day_road = f"{root_label()},{day}"
+    calendar_x.add_idea(day_idea, walk=root_label())
 
     work_idea2 = calendar_x.get_idea_kid(road=w_road)
     assert work_idea2._begin is None
@@ -492,7 +495,7 @@ def test_calendar_edit_idea_attr_calendarWhenParentAndNumeric_roadBothHaveRangeT
         calendar_x.edit_idea_attr(road=w_road, denom=11)
     assert (
         str(excinfo.value)
-        == f"Idea cannot edit numor=1/denom/reest of '{root_desc()},work' if parent '{root_desc()}' or ideacore._numeric_road does not have begin/close range"
+        == f"Idea cannot edit numor=1/denom/reest of '{root_label()},work' if parent '{root_label()}' or ideacore._numeric_road does not have begin/close range"
     )
 
     # When
@@ -520,12 +523,12 @@ def test_calendar_add_idea_MustReorderKidsDictToBeAlphabetical():
     owner_text = "Noa"
     ax = CalendarUnit(_owner=owner_text)
     work_text = "work"
-    ax.add_idea(IdeaKid(_desc=work_text), walk=root_desc())
+    ax.add_idea(IdeaKid(_label=work_text), walk=root_label())
     swim_text = "swim"
-    ax.add_idea(IdeaKid(_desc=swim_text), walk=root_desc())
+    ax.add_idea(IdeaKid(_label=swim_text), walk=root_label())
 
     # WHEN
     idea_list = list(ax._idearoot._kids.values())
 
     # THEN
-    assert idea_list[0]._desc == swim_text
+    assert idea_list[0]._label == swim_text

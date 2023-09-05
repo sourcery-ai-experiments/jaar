@@ -151,7 +151,7 @@ def from_list_get_active_status(
 
     active_status = temp_idea._active_status
     print(
-        f"Set Active_status: {idea._desc=} {active_status} {active_true_count=} {active_false_count=}"
+        f"Set Active_status: {idea._label=} {active_status} {active_true_count=} {active_false_count=}"
     )
 
     if asse_bool in {True, False}:

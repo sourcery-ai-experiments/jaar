@@ -9,7 +9,7 @@ from src.calendar.road import Road
 from src.calendar.required_idea import RequiredUnit
 from src.calendar.member import memberlink_shop
 from src.calendar.group import groupunit_shop, grouplink_shop
-from src.calendar.road import get_global_root_desc as root_desc
+from src.calendar.road import get_global_root_label as root_label
 from src.calendar.examples.example_calendars import (
     get_calendar_with_4_levels as example_calendars_get_calendar_with_4_levels,
     get_calendar_with_4_levels_and_2requireds as example_calendars_get_calendar_with_4_levels_and_2requireds,
@@ -37,20 +37,20 @@ def test_calendarunit_get_bond_status_ReturnsCorrectBool():
     casa_road = Road(f"{jessi_text},{casa_text}")
 
     # WHEN\THEN no action idea exists
-    cx.add_idea(idea_kid=IdeaKid(_desc=casa_text), walk=jessi_text)
+    cx.add_idea(idea_kid=IdeaKid(_label=casa_text), walk=jessi_text)
     assert cx.get_bond_status() == False
 
     # WHEN\THEN 1 action idea exists
     clean_cookery_text = "clean cookery"
     cx.add_idea(
-        idea_kid=IdeaKid(_desc=clean_cookery_text, promise=True), walk=casa_road
+        idea_kid=IdeaKid(_label=clean_cookery_text, promise=True), walk=casa_road
     )
     assert cx.get_bond_status()
 
     # WHEN\THEN 2 action idea exists
     clean_hallway_text = "clean hallway"
     cx.add_idea(
-        idea_kid=IdeaKid(_desc=clean_hallway_text, promise=True), walk=casa_road
+        idea_kid=IdeaKid(_label=clean_hallway_text, promise=True), walk=casa_road
     )
     assert cx.get_bond_status() == False
 
@@ -65,7 +65,7 @@ def test_calendarunit_get_bond_status_ReturnsCorrectBool():
     assert cx.get_bond_status() == False
 
     # for idea_kid in cx._idearoot._kids.values():
-    #     print(f"after {idea_kid._desc=} {idea_kid.promise=}")
+    #     print(f"after {idea_kid._label=} {idea_kid.promise=}")
 
 
 def test_calendarunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaGroupheirsMatchCalendarGroups():
@@ -74,11 +74,11 @@ def test_calendarunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaGrouph
     cx = CalendarUnit(_owner=jessi_text)
     casa_text = "case"
     casa_road = Road(f"{jessi_text},{casa_text}")
-    cx.add_idea(idea_kid=IdeaKid(_desc=casa_text), walk=jessi_text)
+    cx.add_idea(idea_kid=IdeaKid(_label=casa_text), walk=jessi_text)
     clean_cookery_text = "clean cookery"
     clean_cookery_road = Road(f"{jessi_text},{casa_text},{clean_cookery_text}")
     cx.add_idea(
-        idea_kid=IdeaKid(_desc=clean_cookery_text, promise=True), walk=casa_road
+        idea_kid=IdeaKid(_label=clean_cookery_text, promise=True), walk=casa_road
     )
     tom_text = "tom"
     cx.add_memberunit(name=tom_text)
@@ -102,11 +102,11 @@ def test_calendarunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualCalendarGr
     cx = CalendarUnit(_owner=jessi_text)
     casa_text = "case"
     casa_road = Road(f"{jessi_text},{casa_text}")
-    cx.add_idea(idea_kid=IdeaKid(_desc=casa_text), walk=jessi_text)
+    cx.add_idea(idea_kid=IdeaKid(_label=casa_text), walk=jessi_text)
     clean_cookery_text = "clean cookery"
     clean_cookery_road = Road(f"{jessi_text},{casa_text},{clean_cookery_text}")
     cx.add_idea(
-        idea_kid=IdeaKid(_desc=clean_cookery_text, promise=True), walk=casa_road
+        idea_kid=IdeaKid(_label=clean_cookery_text, promise=True), walk=casa_road
     )
     tom_text = "tom"
     cx.add_memberunit(name=tom_text)
@@ -132,11 +132,11 @@ def test_calendarunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualCalendarGr
     cx = CalendarUnit(_owner=jessi_text)
     casa_text = "case"
     casa_road = Road(f"{jessi_text},{casa_text}")
-    cx.add_idea(idea_kid=IdeaKid(_desc=casa_text), walk=jessi_text)
+    cx.add_idea(idea_kid=IdeaKid(_label=casa_text), walk=jessi_text)
     clean_cookery_text = "clean cookery"
     clean_cookery_road = Road(f"{jessi_text},{casa_text},{clean_cookery_text}")
     cx.add_idea(
-        idea_kid=IdeaKid(_desc=clean_cookery_text, promise=True), walk=casa_road
+        idea_kid=IdeaKid(_label=clean_cookery_text, promise=True), walk=casa_road
     )
     assert cx.get_bond_status()
 
@@ -171,26 +171,26 @@ def test_calendarunit_get_bond_status_ChecksOnlyNecessaryIdeasExist_MultipleScen
     jessi_text = "jessi"
     cx = CalendarUnit(_owner=jessi_text)
     casa_text = "case"
-    casa_road = Road(f"{root_desc()},{casa_text}")
-    cx.add_idea(idea_kid=IdeaKid(_desc=casa_text), walk=jessi_text)
+    casa_road = Road(f"{root_label()},{casa_text}")
+    cx.add_idea(idea_kid=IdeaKid(_label=casa_text), walk=jessi_text)
     clean_cookery_text = "clean cookery"
-    clean_cookery_road = Road(f"{root_desc()},{casa_text},{clean_cookery_text}")
+    clean_cookery_road = Road(f"{root_label()},{casa_text},{clean_cookery_text}")
 
     # WHEN/THEN
     cx.add_idea(
-        idea_kid=IdeaKid(_desc=clean_cookery_text, promise=True), walk=casa_road
+        idea_kid=IdeaKid(_label=clean_cookery_text, promise=True), walk=casa_road
     )
     assert cx.get_bond_status()
 
     # WHEN/THEN
     water_text = "water"
-    water_road = Road(f"{root_desc()},{water_text}")
-    cx.add_idea(idea_kid=IdeaKid(_desc=water_text), walk=jessi_text)
+    water_road = Road(f"{root_label()},{water_text}")
+    cx.add_idea(idea_kid=IdeaKid(_label=water_text), walk=jessi_text)
     assert cx.get_bond_status() == False
 
     rain_text = "rain"
-    rain_road = Road(f"{root_desc()},{water_text},{rain_text}")
-    cx.add_idea(idea_kid=IdeaKid(_desc=rain_text), walk=water_road)
+    rain_road = Road(f"{root_label()},{water_text},{rain_text}")
+    cx.add_idea(idea_kid=IdeaKid(_label=rain_text), walk=water_road)
 
     # WHEN/THEN
     cx.edit_idea_attr(
@@ -204,30 +204,30 @@ def test_calendarunit_get_calendar_sprung_from_single_idea_ReturnsCorrectCalenda
     jessi_text = "jessi"
     cx = CalendarUnit(_owner=jessi_text)
     casa_text = "case"
-    casa_road = Road(f"{root_desc()},{casa_text}")
+    casa_road = Road(f"{root_label()},{casa_text}")
     cx.add_idea(
-        idea_kid=IdeaKid(_desc=casa_text, _begin=-1, _close=19), walk=root_desc()
+        idea_kid=IdeaKid(_label=casa_text, _begin=-1, _close=19), walk=root_label()
     )
     clean_cookery_text = "clean cookery"
-    clean_cookery_road = Road(f"{root_desc()},{casa_text},{clean_cookery_text}")
+    clean_cookery_road = Road(f"{root_label()},{casa_text},{clean_cookery_text}")
     cx.add_idea(
-        idea_kid=IdeaKid(_desc=clean_cookery_text, promise=True, _begin=2, _close=4),
+        idea_kid=IdeaKid(_label=clean_cookery_text, promise=True, _begin=2, _close=4),
         walk=casa_road,
     )
     water_text = "water"
-    water_road = Road(f"{root_desc()},{water_text}")
-    cx.add_idea(idea_kid=IdeaKid(_desc=water_text), walk=root_desc())
+    water_road = Road(f"{root_label()},{water_text}")
+    cx.add_idea(idea_kid=IdeaKid(_label=water_text), walk=root_label())
     assert cx.get_bond_status() == False
 
     # WHEN
     bond_calendar = cx.get_calendar_sprung_from_single_idea(road=clean_cookery_road)
 
     # THEN
-    # assert bond_calendar._desc == clean_cookery_text
+    # assert bond_calendar._label == clean_cookery_text
     print(f"{len(bond_calendar._idea_dict)=}")
     assert len(bond_calendar._idea_dict) == 3
-    b_src_idea = bond_calendar.get_idea_kid(road=root_desc())
-    source_x_idea = cx.get_idea_kid(road=root_desc())
+    b_src_idea = bond_calendar.get_idea_kid(road=root_label())
+    source_x_idea = cx.get_idea_kid(road=root_label())
     assert b_src_idea._uid == source_x_idea._uid
     assert b_src_idea._begin == source_x_idea._begin
     assert b_src_idea._close == source_x_idea._close
@@ -257,13 +257,13 @@ def test_calendarunit_get_calendar_sprung_from_single_idea_ReturnsCorrectCalenda
     #     assert byx._begin == cyx._begin
     #     assert byx._close == cyx._close
     #     for yx4 in byx._kids.values():
-    #         assert yx4._desc == cyx._kids.get(yx4._desc)._desc
+    #         assert yx4._label == cyx._kids.get(yx4._label)._label
     #     for cx3 in cyx._kids.values():
-    #         if cx3._desc == water_text:
-    #             print(f"checking src calendar idea kid_desc='{cx3._desc}'")
-    #             assert byx._kids.get(cx3._desc) is None
+    #         if cx3._label == water_text:
+    #             print(f"checking src calendar idea kid_label='{cx3._label}'")
+    #             assert byx._kids.get(cx3._label) is None
     #         else:
-    #             assert cx3._desc == byx._kids.get(cx3._desc)._desc
+    #             assert cx3._label == byx._kids.get(cx3._label)._label
     #     # assert len(byx._kids) != len(cyx._kids)
     #     # assert byx._kids_total_weight != cyx._kids_total_weight
     #     # assert byx._kids != cyx._kids
@@ -360,12 +360,12 @@ def test_calendarunit_get_meld_of_calendar_files_MeldsIntoSourceCalendar_Scenari
     src_cx = CalendarUnit(_owner=owner_text, _weight=10)
 
     work = "work"
-    idea_kid_work = IdeaKid(_weight=30, _desc=work, promise=True)
-    src_cx.add_idea(idea_kid=idea_kid_work, walk=f"{root_desc()}")
+    idea_kid_work = IdeaKid(_weight=30, _label=work, promise=True)
+    src_cx.add_idea(idea_kid=idea_kid_work, walk=f"{root_label()}")
 
     cat = "feed cat"
-    idea_kid_feedcat = IdeaKid(_weight=20, _desc=cat, promise=True)
-    src_cx.add_idea(idea_kid=idea_kid_feedcat, walk=f"{root_desc()}")
+    idea_kid_feedcat = IdeaKid(_weight=20, _label=cat, promise=True)
+    src_cx.add_idea(idea_kid=idea_kid_feedcat, walk=f"{root_label()}")
 
     src_cx.export_all_bonds(dir=get_temp_env_dir())
 
@@ -396,14 +396,14 @@ def test_calendarunit_get_meld_of_calendar_files_MeldsIntoSourceCalendar_Scenari
 #     sourrcecx = CalendarUnit(_owner=owner_text, _weight=10)
 
 #     work_text = "work"
-#     work_road = f"{root_desc()},{work_text}"
+#     work_road = f"{root_label()},{work_text}"
 
 #     cat_text = "feed cat"
-#     cat_idea = IdeaKid(_weight=20, _desc=cat_text, promise=True)
+#     cat_idea = IdeaKid(_weight=20, _label=cat_text, promise=True)
 #     sourrce_cx.add_idea(idea_kid=cat_idea, walk=work_road)
 
 #     plant_text = "water plant"
-#     plant_idea = IdeaKid(_weight=30, _desc=plant_text, promise=True)
+#     plant_idea = IdeaKid(_weight=30, _label=plant_text, promise=True)
 #     sourrce_cx.add_idea(idea_kid=plant_idea, walk=work_road)
 #     sourrce_cx.export_all_bonds(dir=get_temp_env_dir())
 

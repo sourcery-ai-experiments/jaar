@@ -11,7 +11,7 @@ from src.system.examples.person_env_kit import (
     person_dir_setup_cleanup,
     get_temp_person_dir,
 )
-from src.calendar.road import get_global_root_desc as root_desc
+from src.calendar.road import get_global_root_label as root_label
 from os import path as os_path, scandir as os_scandir
 from src.calendar.x_func import (
     open_file as x_func_open_file,
@@ -59,7 +59,7 @@ def test_personget_starting_digest_calendar_WhenStartingCalendarFileDoesNotExist
     # THEN
     x_calendar = CalendarUnit(_owner=p_name)
     x_calendar.set_calendar_metrics()
-    # x_idearoot = IdeaRoot(_desc=p_name, _walk="")
+    # x_idearoot = IdeaRoot(_label=p_name, _walk="")
     # x_idearoot.set_grouplines_empty_if_null()
     # x_idearoot.set_kids_empty_if_null()
     # x_idearoot.set_grouplink_empty_if_null()
@@ -202,7 +202,7 @@ def test_person_get_dest_calendar_from_digest_calendar_files_withEmptyDigestDict
     sx_output_before = px.get_dest_calendar_from_digest_calendar_files()
     assert str(type(sx_output_before)).find(".calendar.CalendarUnit'>")
     assert sx_output_before._owner == person_name_x
-    assert sx_output_before._idearoot._desc == root_desc()
+    assert sx_output_before._idearoot._label == root_label()
     # px.set_digested_calendar(calendar_x=CalendarUnit(_owner="digested1"))
 
     # WHEN
@@ -241,7 +241,7 @@ def test_person_get_dest_calendar_from_digest_calendar_files_with1DigestedCalend
     sx_output_old = px.get_dest_calendar_from_digest_calendar_files()
     assert str(type(sx_output_old)).find(".calendar.CalendarUnit'>")
     assert sx_output_old._owner == person_name_x
-    assert sx_output_old._idearoot._desc == root_desc()
+    assert sx_output_old._idearoot._label == root_label()
     input_calendar = example_persons.get_2node_calendar()
     px.receive_src_calendarunit_obj(calendar_x=input_calendar, link_type="blind_trust")
 
@@ -294,12 +294,12 @@ def test_person_get_dest_calendar_from_digest_calendar_files_with1DigestedCalend
 
 #     yaya_text = "yaya"
 #     yaya_road = Road(f"{src1},{yaya_text}")
-#     s1.add_idea(idea_kid=IdeaKid(_desc=yaya_text), walk=src1_road)
+#     s1.add_idea(idea_kid=IdeaKid(_label=yaya_text), walk=src1_road)
 #     s1.set_acptfact(base=yaya_road, acptfact=yaya_road)
 
 #     assert s1._groups.get(swim_text).name == swim_text
 #     assert s1._members.get(ceci_text).name == ceci_text
-#     assert s1._idearoot._desc == src1
+#     assert s1._idearoot._label == src1
 #     assert s1._acptfacts.get(yaya_road).base == yaya_road
 
 #     # WHEN
@@ -318,5 +318,5 @@ def test_person_get_dest_calendar_from_digest_calendar_files_with1DigestedCalend
 #     assert sx_output_new._idearoot._kids == s1._idearoot._kids
 #     assert sx_output_new._idearoot._kids_total_weight == s1._idearoot._kids_total_weight
 #     assert sx_output_new._idearoot == s1._idearoot
-#     assert sx_output_new._desc != s1._desc
+#     assert sx_output_new._label != s1._label
 #     assert sx_output_new != s1

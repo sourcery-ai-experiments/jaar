@@ -7,7 +7,7 @@ from src.calendar.required_idea import RequiredUnit, SuffFactStatusFinder
 from src.calendar.group import groupunit_shop, grouplink_shop
 from src.calendar.member import memberlink_shop
 from src.calendar.required_assign import assigned_unit_shop
-from src.calendar.road import get_global_root_desc as root_desc
+from src.calendar.road import get_global_root_label as root_label
 from src.calendar.examples.example_calendars import (
     get_calendar_with_4_levels as example_calendars_get_calendar_with_4_levels,
     get_calendar_with_4_levels_and_2requireds as example_calendars_get_calendar_with_4_levels_and_2requireds,
@@ -30,14 +30,14 @@ def test_get_agenda_returns_agenda():
     # THEN
     assert agenda_list
     assert len(agenda_list) == 2
-    assert agenda_list[0]._desc in ["work", "feed cat"]
+    assert agenda_list[0]._label in ["work", "feed cat"]
 
 
 def test_get_agenda_returns_agenda_with_only_required_allowed():
     # GIVEN
     a1 = example_calendars_get_calendar_with_4_levels_and_2requireds()
     week_text = "weekdays"
-    week_road = f"{root_desc()},{week_text}"
+    week_road = f"{root_label()},{week_text}"
     sun_text = "Sunday"
     sun_road = f"{week_road},{sun_text}"
     a1.set_acptfact(base=week_road, pick=sun_road)
@@ -53,7 +53,7 @@ def test_get_agenda_returns_agenda_with_only_required_allowed():
 
     assert len(agenda_list) == 1
     print(f"{agenda_list=}")
-    assert agenda_list[0]._desc in ["feed cat"]
+    assert agenda_list[0]._label in ["feed cat"]
 
 
 def test_get_agenda_returns_agenda_with_calendar_importance():
@@ -66,10 +66,10 @@ def test_get_agenda_returns_agenda_with_calendar_importance():
     # THEN
     assert agenda_list
     assert len(agenda_list) == 2
-    print(f"{agenda_list[0]._desc=}")
+    print(f"{agenda_list[0]._label=}")
     assert agenda_list[0]._calendar_importance
 
-    print(f"{agenda_list[1]._desc=}")
+    print(f"{agenda_list[1]._label=}")
     assert agenda_list[1]._calendar_importance
 
 
@@ -83,11 +83,11 @@ def test_get_agenda_with_No7amItem():
     # THEN
     assert agenda_list
     assert len(agenda_list) == 1
-    print(f"{agenda_list[0]._desc=}")
+    print(f"{agenda_list[0]._label=}")
     assert len(agenda_list) == 1
 
     agenda_item = agenda_list[0]
-    assert agenda_item._desc != "clean table"
+    assert agenda_item._label != "clean table"
 
 
 def test_get_agenda_with_7amItem():
@@ -98,7 +98,7 @@ def test_get_agenda_with_7amItem():
     assert len(a1.get_agenda_items()) == 1
 
     # WHEN
-    day24hr_road = f"{root_desc()},timetech,24hr day"
+    day24hr_road = f"{root_label()},timetech,24hr day"
     day24hr_open = 0.0
     day24hr_nigh = 8.0
     housework_text = "housework"
@@ -115,18 +115,19 @@ def test_get_agenda_with_7amItem():
     print(f"{len(agenda_list)=}")
     assert len(agenda_list) == 6
     clean_item = agenda_list[1]
-    assert clean_item._desc == clean_text
+    assert clean_item._label == clean_text
 
 
 def test_get_agenda_does_not_return_promise_items_outside_range():
-    a1 = CalendarUnit(_owner=root_desc())
+    owner_text = "Zia"
+    a1 = CalendarUnit(_owner=owner_text)
     a1.set_time_hreg_ideas(c400_count=7)
-    c_desc = "clean"
-    c_idea = IdeaKid(_desc=c_desc, promise=True)
-    a1.add_idea(idea_kid=c_idea, walk=root_desc())
-    c_road = f"{root_desc()},{c_desc}"
-    jajatime = f"{root_desc()},time,jajatime"
-    jajaday = f"{root_desc()},time,jajatime,day"
+    c_label = "clean"
+    c_idea = IdeaKid(_label=c_label, promise=True)
+    a1.add_idea(idea_kid=c_idea, walk=root_label())
+    c_road = f"{root_label()},{c_label}"
+    jajatime = f"{root_label()},time,jajatime"
+    jajaday = f"{root_label()},time,jajatime,day"
 
     a1.edit_idea_attr(
         road=c_road,
@@ -143,7 +144,7 @@ def test_get_agenda_does_not_return_promise_items_outside_range():
     agenda_list = a1.get_agenda_items()
     assert len(agenda_list) == 1
     print(f"{agenda_list=}")
-    assert agenda_list[0]._desc in [c_desc]
+    assert agenda_list[0]._label in [c_label]
 
     nigh_x2 = 1063971923
     a1.set_acptfact(base=jajatime, pick=jajaday, open=open_x, nigh=nigh_x2)
@@ -156,11 +157,11 @@ def test_exammple_agenda_exists():
     # GIVEN
     a1 = example_calendars_calendar_v001()
     min_text = "day_minute"
-    min_road = f"{root_desc()},{min_text}"
+    min_road = f"{root_label()},{min_text}"
     a1.set_acptfact(base=min_road, pick=min_road, open=0, nigh=1399)
     assert a1
     # for idea_kid in a1._idearoot._kids.values():
-    #     # print(idea_kid._desc)
+    #     # print(idea_kid._label)
     #     assert str(type(idea_kid)) != "<class 'str'>"
     #     assert idea_kid.promise != None
 
@@ -181,20 +182,20 @@ def test_exammple_AgendaHasCorrectAttributes():
     a1 = example_calendars_calendar_v001()
 
     day_min_text = "day_minute"
-    day_min_road = f"{root_desc()},{day_min_text}"
+    day_min_road = f"{root_label()},{day_min_text}"
     a1.set_acptfact(base=day_min_road, pick=day_min_road, open=0, nigh=1399)
     month_week_text = "month_week"
-    month_week_road = f"{root_desc()},{month_week_text}"
+    month_week_road = f"{root_label()},{month_week_text}"
     nations_text = "Nation-States"
-    nations_road = f"{root_desc()},{nations_text}"
+    nations_road = f"{root_label()},{nations_text}"
     mood_text = "Moods"
-    mood_road = f"{root_desc()},{mood_text}"
+    mood_road = f"{root_label()},{mood_text}"
     aaron_text = "Aaron Donald sphere"
-    aaron_road = f"{root_desc()},{aaron_text}"
+    aaron_road = f"{root_label()},{aaron_text}"
     # internet_text = "Internet"
-    # internet_road = f"{root_desc()},{internet_text}"
+    # internet_road = f"{root_label()},{internet_text}"
     year_month_text = "year_month"
-    year_month_road = f"{root_desc()},{year_month_text}"
+    year_month_road = f"{root_label()},{year_month_text}"
     a1.set_acptfact(base=month_week_road, pick=month_week_road)
     a1.set_acptfact(base=nations_road, pick=nations_road)
     a1.set_acptfact(base=mood_road, pick=mood_road)
@@ -202,16 +203,16 @@ def test_exammple_AgendaHasCorrectAttributes():
     # a1.set_acptfact(base=internet_road, pick=internet_road)
     a1.set_acptfact(base=year_month_road, pick=year_month_road)
     # season_text = "Seasons"
-    # season_road = f"{root_desc()},{season_text}"
+    # season_road = f"{root_label()},{season_text}"
     # a1.set_acptfact(base=season_road, pick=season_road)
     ced_week_text = "ced_week"
-    ced_week_road = f"{root_desc()},{ced_week_text}"
+    ced_week_road = f"{root_label()},{ced_week_text}"
     a1.set_acptfact(base=ced_week_road, pick=ced_week_road)
     # water_text = "WaterBeing"
-    # water_road = f"{root_desc()},{water_text}"
+    # water_road = f"{root_label()},{water_text}"
     # a1.set_acptfact(base=water_road, pick=water_road)
     # movie_text = "No Movie playing"
-    # movie_road = f"{root_desc()},{movie_text}"
+    # movie_road = f"{root_label()},{movie_text}"
     # a1.set_acptfact(base=movie_road, pick=movie_text)
 
     # WHEN
@@ -226,7 +227,7 @@ def test_exammple_AgendaHasCorrectAttributes():
     assert len(idea_action_list) == 27
 
     weekday_text = "weekdays"
-    weekday_road = f"{root_desc()},{weekday_text}"
+    weekday_road = f"{root_label()},{weekday_text}"
     monday_text = "Monday"
     monday_road = f"{weekday_road},{monday_text}"
 
@@ -259,21 +260,21 @@ def test_exammple_AgendaCanFiltersOnBase():
     # GIVEN
     a1 = example_calendars_calendar_v001_with_large_agenda()
     week_text = "weekdays"
-    week_road = f"{root_desc()},{week_text}"
+    week_road = f"{root_label()},{week_text}"
     print(f"{type(a1)=}")
     # for base in a1.get_missing_acptfact_bases():
     #     print(f"{base=}")
 
     # for agenda_item in a1.get_agenda_items():
     #     print(
-    #         f"{agenda_item._walk=} {agenda_item._desc} {len(agenda_item._requiredunits)=}"
+    #         f"{agenda_item._walk=} {agenda_item._label} {len(agenda_item._requiredunits)=}"
     #     )
     #     for required in agenda_item._requiredunits.values():
     #         if required.base == weekdays:
     #             print(f"         {weekdays}")
 
     # a1.edit_idea_attr(
-    #     road="{root_desc()},sufffacts,cleaning,laundry wednesday",
+    #     road="{root_label()},sufffacts,cleaning,laundry wednesday",
     #     required_del_sufffact_base=weekdays,
     #     required_del_sufffact_need=weekdays,
     # )
@@ -291,15 +292,16 @@ def test_set_agenda_task_as_complete_RangeWorksCorrectly():
     # GIVEN
 
     run_text = "run"
-    run_road = f"{root_desc()},{run_text}"
+    run_road = f"{root_label()},{run_text}"
     time_text = "time"
-    time_road = f"{root_desc()},{time_text}"
+    time_road = f"{root_label()},{time_text}"
     day_text = "day"
     day_road = f"{time_road},{day_text}"
-    a1 = CalendarUnit(_owner=root_desc())
+    owner_text = "Zia"
+    a1 = CalendarUnit(_owner=owner_text)
 
-    a1.add_idea(idea_kid=IdeaKid(_desc=run_text, promise=True), walk=root_desc())
-    a1.add_idea(idea_kid=IdeaKid(_desc=day_text, _begin=0, _close=500), walk=time_road)
+    a1.add_idea(idea_kid=IdeaKid(_label=run_text, promise=True), walk=root_label())
+    a1.add_idea(idea_kid=IdeaKid(_label=day_text, _begin=0, _close=500), walk=time_road)
     a1.edit_idea_attr(
         road=run_road,
         required_base=day_road,
@@ -331,15 +333,16 @@ def test_set_agenda_task_as_complete_DivisionWorksCorrectly():
     # GIVEN
 
     run_text = "run"
-    run_road = f"{root_desc()},{run_text}"
+    run_road = f"{root_label()},{run_text}"
     time_text = "time"
-    time_road = f"{root_desc()},{time_text}"
+    time_road = f"{root_label()},{time_text}"
     day_text = "day"
     day_road = f"{time_road},{day_text}"
-    a1 = CalendarUnit(_owner=root_desc())
+    owner_text = "Zia"
+    a1 = CalendarUnit(_owner=owner_text)
 
-    a1.add_idea(idea_kid=IdeaKid(_desc=run_text, promise=True), walk=root_desc())
-    a1.add_idea(idea_kid=IdeaKid(_desc=day_text, _begin=0, _close=500), walk=time_road)
+    a1.add_idea(idea_kid=IdeaKid(_label=run_text, promise=True), walk=root_label())
+    a1.add_idea(idea_kid=IdeaKid(_label=day_text, _begin=0, _close=500), walk=time_road)
     a1.edit_idea_attr(
         road=run_road,
         required_base=day_road,
@@ -382,7 +385,7 @@ def test_calendar_get_from_json_LoadsActionFromJSONCorrectly():
     assert len(a1.get_idea_list()) == 253
     print(f"{len(a1.get_idea_list())=}")
     casa_text = "casa"
-    casa_road = f"{root_desc()},{casa_text}"
+    casa_road = f"{root_label()},{casa_text}"
     body_text = "body care"
     body_road = f"{casa_road},{body_text}"
     veg_text = "make veggies every morning"
@@ -398,18 +401,18 @@ def test_calendar_get_from_json_LoadsActionFromJSONCorrectly():
     #         assert idea._active_status in (True, False)
     #     assert idea.promise in (True, False)
     #     # if idea._active_status == True:
-    #     #     print(idea._desc)
+    #     #     print(idea._label)
     #     if idea.promise == True:
     #         action_true_count += 1
     #         # if idea.promise == False:
-    #         #     print(f"action is false {idea._desc}")
+    #         #     print(f"action is false {idea._label}")
     #         # for required in idea._requiredunits.values():
     #         #     assert required._status in (True, False)
     # assert action_true_count > 0
 
     # WHEN
     day_min_text = "day_minute"
-    day_min_road = f"{root_desc()},{day_min_text}"
+    day_min_road = f"{root_label()},{day_min_text}"
     a1.set_acptfact(base=day_min_road, pick=day_min_road, open=0, nigh=1399)
 
     # THEN
@@ -418,29 +421,29 @@ def test_calendar_get_from_json_LoadsActionFromJSONCorrectly():
 
 def test_weekdayAgendaItemsCorrectlyReturned():
     # Given
-
-    a1 = CalendarUnit(_owner=root_desc())
+    owner_text = "Zia"
+    a1 = CalendarUnit(_owner=owner_text)
 
     a1._set_acptfacts_empty_if_null()
     a1.set_time_hreg_ideas(c400_count=7)
 
     things_text = "things to do"
-    a1.add_idea(IdeaKid(_desc=things_text), walk=root_desc())
-    t_road = f"{root_desc()},{things_text}"
+    a1.add_idea(IdeaKid(_label=things_text), walk=root_label())
+    t_road = f"{root_label()},{things_text}"
     clean = "clean"
     run = "run"
     swim = "swim"
     jog = "job"
     veg = "veg"
     lift = "life"
-    a1.add_idea(IdeaKid(_desc=clean, promise=True), walk=t_road)
-    a1.add_idea(IdeaKid(_desc=run, promise=True), walk=t_road)
-    a1.add_idea(IdeaKid(_desc=swim, promise=True), walk=t_road)
-    a1.add_idea(IdeaKid(_desc=jog, promise=True), walk=t_road)
-    a1.add_idea(IdeaKid(_desc=veg, promise=True), walk=t_road)
-    a1.add_idea(IdeaKid(_desc=lift, promise=True), walk=t_road)
+    a1.add_idea(IdeaKid(_label=clean, promise=True), walk=t_road)
+    a1.add_idea(IdeaKid(_label=run, promise=True), walk=t_road)
+    a1.add_idea(IdeaKid(_label=swim, promise=True), walk=t_road)
+    a1.add_idea(IdeaKid(_label=jog, promise=True), walk=t_road)
+    a1.add_idea(IdeaKid(_label=veg, promise=True), walk=t_road)
+    a1.add_idea(IdeaKid(_label=lift, promise=True), walk=t_road)
     time_text = "time"
-    time_road = f"{root_desc()},{time_text}"
+    time_road = f"{root_label()},{time_text}"
     jaja_text = "jajatime"
     jaja_road = f"{time_road},{jaja_text}"
     tech_text = "tech"
@@ -453,7 +456,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     fri_road = f"{w_road},Friday"
     sat_road = f"{w_road},Saturday"
     sun_road = f"{w_road},Sunday"
-    t_road = f"{root_desc()},{things_text}"
+    t_road = f"{root_label()},{things_text}"
     c_road = f"{t_road},{clean}"
     r_road = f"{t_road},{run}"
     s_road = f"{t_road},{swim}"
@@ -497,7 +500,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     # for required_y in c_required.values():
     #     for sufffact_y in required_y.sufffacts.values():
     #         print(
-    #             f"Idea: {c_idea._walk},{c_idea._desc}  Required: {required_y.base} open:{sufffact_y.open} nigh:{sufffact_y.nigh} diff:{sufffact_y.nigh-sufffact_y.open}"
+    #             f"Idea: {c_idea._walk},{c_idea._label}  Required: {required_y.base} open:{sufffact_y.open} nigh:{sufffact_y.nigh} diff:{sufffact_y.nigh-sufffact_y.open}"
     #         )
 
     # for base, count_x in a1.get_required_bases().items():
@@ -604,7 +607,8 @@ def test_calendar_create_agenda_item_CorrectlyCreatesAllCalendarAttributes():
     # WHEN "I am cleaning the cookery since I'm in the apartment and it's 8am and it's dirty and I'm doing this for my family"
 
     # GIVEN
-    a1 = CalendarUnit(_owner=root_desc())
+    owner_text = "Zia"
+    a1 = CalendarUnit(_owner=owner_text)
 
     a1.set_calendar_metrics()
     assert len(a1._members) == 0
@@ -612,21 +616,23 @@ def test_calendar_create_agenda_item_CorrectlyCreatesAllCalendarAttributes():
     assert len(a1._idearoot._kids) == 0
 
     clean_things_text = "cleaning things"
-    clean_things_road = Road(f"{root_desc()},{clean_things_text}")
+    clean_things_road = Road(f"{root_label()},{clean_things_text}")
     clean_cookery_text = "clean cookery"
-    clean_cookery_road = Road(f"{root_desc()},{clean_things_text},{clean_cookery_text}")
-    clean_cookery_idea = IdeaKid(_desc=clean_cookery_text, _walk=clean_things_road)
+    clean_cookery_road = Road(
+        f"{root_label()},{clean_things_text},{clean_cookery_text}"
+    )
+    clean_cookery_idea = IdeaKid(_label=clean_cookery_text, _walk=clean_things_road)
     print(f"{clean_cookery_idea.get_road()=}")
     home_text = "home"
-    home_road = Road(f"{root_desc()},{home_text}")
+    home_road = Road(f"{root_label()},{home_text}")
     cookery_room_text = "cookery room"
-    cookery_room_road = Road(f"{root_desc()},{home_text},{cookery_room_text}")
+    cookery_room_road = Road(f"{root_label()},{home_text},{cookery_room_text}")
     cookery_dirty_text = "dirty"
     cookery_dirty_road = Road(f"{cookery_room_road},{cookery_dirty_text}")
 
     # create gregorian timeline
     a1.set_time_hreg_ideas(c400_count=7)
-    daytime_road = Road(f"{root_desc()},time,jajatime,day")
+    daytime_road = Road(f"{root_label()},time,jajatime,day")
     open_8am = 480
     nigh_8am = 480
 
@@ -668,7 +674,7 @@ def test_calendar_create_agenda_item_CorrectlyCreatesAllCalendarAttributes():
 
     print(f"{clean_cookery_idea.get_road()=}")
     assert a1.get_idea_kid(road=clean_cookery_road) != None
-    assert a1.get_idea_kid(road=clean_cookery_road)._desc == clean_cookery_text
+    assert a1.get_idea_kid(road=clean_cookery_road)._label == clean_cookery_text
     assert a1.get_idea_kid(road=clean_cookery_road).promise
     assert len(a1.get_idea_kid(road=clean_cookery_road)._requiredunits) == 2
     assert a1.get_idea_kid(road=clean_things_road) != None
@@ -692,7 +698,7 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
     a1 = example_calendars_calendar_v002()
 
     assert len(a1.get_agenda_items()) == 44
-    jajatime_road = f"{root_desc()},time,jajatime"
+    jajatime_road = f"{root_label()},time,jajatime"
 
     # WHEN
     a1.set_acptfact(
@@ -702,14 +708,14 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
 
     # THEN
     assert len(action_idea_list) == 66
-    jajatime_road = f"{root_desc()},time,jajatime"
+    jajatime_road = f"{root_label()},time,jajatime"
     night_text = "late_night_go_to_sleep"
-    night_road = f"{root_desc()},D&B,{night_text}"
+    night_road = f"{root_label()},D&B,{night_text}"
     night_idea = a1._idea_dict.get(night_road)
     # for idea_x in a1.get_agenda_items():
     #     # if idea_x._task != True:
     #     #     print(f"{len(action_idea_list)=} {idea_x._task=} {idea_x.get_road()}")
-    #     if idea_x._desc == night_desc:
+    #     if idea_x._label == night_label:
     #         night_idea = idea_x
     #         print(f"{idea_x.get_road()=}")
 
@@ -757,7 +763,7 @@ def test_agenda_IsSetByAssignedUnit_1MemberGroup():
     cx = CalendarUnit(_owner=bob_text)
     work_text = "work"
     work_road = f"{bob_text},{work_text}"
-    cx.add_idea(idea_kid=IdeaKid(_desc=work_text, promise=True), walk=bob_text)
+    cx.add_idea(idea_kid=IdeaKid(_label=work_text, promise=True), walk=bob_text)
     assert len(cx.get_agenda_items()) == 1
 
     sue_text = "sue"
@@ -784,7 +790,7 @@ def test_agenda_IsSetByAssignedUnit_1MemberGroup():
     assert len(cx.get_agenda_items()) == 1
 
     # agenda_list = cx.get_agenda_items()
-    # print(f"{agenda_list[0]._desc=}")
+    # print(f"{agenda_list[0]._label=}")
 
 
 def test_agenda_IsSetByAssignedUnit_2MemberGroup():
@@ -794,7 +800,7 @@ def test_agenda_IsSetByAssignedUnit_2MemberGroup():
     cx.add_memberunit(name=bob_text)
     work_text = "work"
     work_road = f"{bob_text},{work_text}"
-    cx.add_idea(idea_kid=IdeaKid(_desc=work_text, promise=True), walk=bob_text)
+    cx.add_idea(idea_kid=IdeaKid(_label=work_text, promise=True), walk=bob_text)
 
     sue_text = "sue"
     cx.add_memberunit(name=sue_text)

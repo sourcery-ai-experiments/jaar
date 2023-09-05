@@ -243,7 +243,7 @@ def test_calendar_get_idea_list_CorrectlySetsMemberUnitCalendarImportance():
     prom_text = "prom"
     cx = CalendarUnit(_owner=prom_text)
     swim_text = "swim"
-    cx.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=prom_text)
+    cx.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -387,7 +387,7 @@ def test_calendar_get_idea_list_CorrectlySetsPartGroupedLWMemberUnitCalendarImpo
     prom_text = "prom"
     cx = CalendarUnit(_owner=prom_text)
     swim_text = "swim"
-    cx.add_idea(idea_kid=IdeaKid(_desc=swim_text), walk=prom_text)
+    cx.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -403,7 +403,7 @@ def test_calendar_get_idea_list_CorrectlySetsPartGroupedLWMemberUnitCalendarImpo
 
     # no grouplinks attached to this one
     hunt_text = "hunt"
-    cx.add_idea(idea_kid=IdeaKid(_desc=hunt_text, _weight=3), walk=prom_text)
+    cx.add_idea(idea_kid=IdeaKid(_label=hunt_text, _weight=3), walk=prom_text)
 
     assert cx._idearoot._grouplinks is None
 
@@ -498,7 +498,7 @@ def test_calendar_get_idea_list_CorrectlySetsPartGroupedLWMemberUnitCalendarImpo
 def test_calendar_get_idea_list_WithAllMembersWeighted():
     # GIVEN
     cx = CalendarUnit(_owner="prom")
-    cx.add_idea(idea_kid=IdeaKid(_desc="swim"), walk="prom")
+    cx.add_idea(idea_kid=IdeaKid(_label="swim"), walk="prom")
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -631,7 +631,7 @@ def test_calendar_agenda_credit_debt_IsCorrectlySet():
         else:
             agenda_yes_grouplines_count += 1
             agenda_yes_grouplines_calendar_i_sum += agenda_item._calendar_importance
-        # print(f"idea importance: {agenda_item._calendar_importance:.7f} {sum_calendar_agenda_importance:.5f} {agenda_item._desc=} ")
+        # print(f"idea importance: {agenda_item._calendar_importance:.7f} {sum_calendar_agenda_importance:.5f} {agenda_item._label=} ")
         # print(f"{agenda_item.get_road()}")
     print(f"{sum_calendar_agenda_importance=}")
     assert agenda_no_grouplines_count == 20
@@ -760,7 +760,7 @@ def test_calendar_agenda_ratio_credit_debt_IsCorrectlySetWhenAgendaIsEmpty():
 
 def test_calendar_get_member_groups_returnsCorrectData():
     cx = CalendarUnit(_owner="prom")
-    cx.add_idea(idea_kid=IdeaKid(_desc="swim"), walk="prom")
+    cx.add_idea(idea_kid=IdeaKid(_label="swim"), walk="prom")
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"

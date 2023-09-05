@@ -111,12 +111,12 @@ def test_get_calendar_from_calendars_dirlink_from_dict_ReturnsCalendarLinkObject
     link_type_text = "link_type"
     weight_text = "weight"
 
-    test1_desc_text = "test1"
+    test1_label_text = "test1"
     test1_link_text = "blind_trust"
     test1_weight_float = 12.4
 
     calendarlink_dict = {
-        calendar_owner_text: test1_desc_text,
+        calendar_owner_text: test1_label_text,
         link_type_text: test1_link_text,
         weight_text: test1_weight_float,
     }
@@ -125,6 +125,6 @@ def test_get_calendar_from_calendars_dirlink_from_dict_ReturnsCalendarLinkObject
     x_obj = get_calendar_from_calendars_dirlink_from_dict(x_dict=calendarlink_dict)
 
     # THEN
-    assert x_obj.calendar_owner == test1_desc_text
+    assert x_obj.calendar_owner == test1_label_text
     assert x_obj.link_type == test1_link_text
     assert x_obj.weight == test1_weight_float

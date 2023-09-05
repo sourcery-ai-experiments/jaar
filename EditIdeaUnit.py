@@ -201,7 +201,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.prom_l_02.setText("")
         self.yo_action_cb.setChecked(False)
         self.yo_deescription.setText("")
-        self.idea_desc_on_populate = ""
+        self.idea_label_on_populate = ""
         self.yo_weight.setText("")
         # self.required_base_combo.setText("")
         # self.required_sufffact_combo.setText("")
@@ -222,8 +222,8 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
     def yo_x_populate(self):
         self.label_parent_id.setText(f"Current Node road : {self.yo_x._walk}")
-        self.yo_deescription.setText(self.yo_x._desc)
-        # self.idea_desc_on_populate = self.yo_x._desc
+        self.yo_deescription.setText(self.yo_x._label)
+        # self.idea_label_on_populate = self.yo_x._label
         self.yo_walk.setText(self.yo_x._walk)
         self.yo_weight.setText(num2str(self.yo_x._weight))
         self.yo_begin.setText(num2str(self.yo_x._begin))
@@ -236,7 +236,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.yo_problem_bool_cb.setChecked(self.yo_x._problem_bool)
         self.yo_task_status.setText(str(self.yo_x._task))
         self.yo_active_status.setText(str(self.yo_x._active_status))
-        self.submit_child_insert.setText(f"Add child {self.yo_x._desc:8}")
+        self.submit_child_insert.setText(f"Add child {self.yo_x._label:8}")
         self.required_table_load()
         self.requiredheir_table_load()
         self.required_base_combo_load()
@@ -258,10 +258,10 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.yo_numeric_road.setCurrentText(self.yo_x._numeric_road)
 
     def yo_tree_item_selected(self):
-        idea_desc = self.baseideaunit.currentItem().data(2, 10)
+        idea_label = self.baseideaunit.currentItem().data(2, 10)
         idea_walk = self.baseideaunit.currentItem().data(2, 11)
         if idea_walk not in ("", None):
-            self.yo_x = self.calendar_x.get_idea_kid(road=f"{idea_walk},{idea_desc}")
+            self.yo_x = self.calendar_x.get_idea_kid(road=f"{idea_walk},{idea_label}")
         else:
             self.yo_x = self.calendar_x._idearoot
         self.yo_tree_item_setHidden(setHiddenBool=False)
@@ -271,7 +271,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.idea_tree_set_is_expanded(root)
 
     def required_base_combo_load(self):
-        # create list of all idea roads (road+desc)
+        # create list of all idea roads (road+_label)
         self.required_base_combo.clear()
         self.required_base_combo.addItems([""])
         self.required_base_combo.addItems(
@@ -372,7 +372,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             if len(open_kids) == 1:
                 idea_x = open_kids[0]
                 self.required_sufffact_open_combo.setCurrentText(
-                    f"{idea_x._walk},{idea_x._desc}"
+                    f"{idea_x._walk},{idea_x._label}"
                 )
 
     def set_sufffact_nigh_combo(self):
@@ -392,7 +392,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             if len(nigh_kids) == 1:
                 idea_x = nigh_kids[0]
                 self.required_sufffact_nigh_combo.setCurrentText(
-                    f"{idea_x._walk},{idea_x._desc}"
+                    f"{idea_x._walk},{idea_x._label}"
                 )
 
     def set_sufffact_divisor_combo(self):
@@ -414,7 +414,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             if len(divisor_kids) == 1:
                 idea_x = divisor_kids[0]
                 self.required_sufffact_divisor_combo.setCurrentText(
-                    f"{idea_x._walk},{idea_x._desc}"
+                    f"{idea_x._walk},{idea_x._label}"
                 )
 
     def required_sufffact_nigh_combo_select(self):
@@ -690,10 +690,10 @@ class EditIdeaUnit(qtw0, Ui_Form):
             open_x = str2float(self.required_sufffact_open.toPlainText())
             nigh_x = str2float(self.required_sufffact_nigh.toPlainText())
             divisor_x = str2float(self.required_sufffact_divisor.toPlainText())
-            idea_desc = self.baseideaunit.currentItem().data(2, 10)
+            idea_label = self.baseideaunit.currentItem().data(2, 10)
             idea_walk = self.baseideaunit.currentItem().data(2, 11)
             self.calendar_x.edit_idea_attr(
-                road=f"{idea_walk},{idea_desc}",
+                road=f"{idea_walk},{idea_label}",
                 required_base=base_x,
                 required_sufffact=sufffact_x,
                 required_sufffact_open=open_x,
@@ -786,7 +786,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             raise Exception("bd_name is empty, idea2bd cannot be updated")
         grouplink_new = GroupLink(name=GroupName(bd_name_new), weight=1)
         self.calendar_x.edit_idea_attr(
-            road=f"{self.yo_x._walk},{self.yo_x._desc}", grouplink=grouplink_new
+            road=f"{self.yo_x._walk},{self.yo_x._label}", grouplink=grouplink_new
         )
         self.idea2group_insert_combo_load()
         self.idea2group_table_load()
@@ -798,14 +798,14 @@ class EditIdeaUnit(qtw0, Ui_Form):
                 self.idea2group_table.currentRow(), 1
             ).text()
             self.calendar_x.edit_idea_attr(
-                road=f"{self.yo_x._walk},{self.yo_x._desc}",
+                road=f"{self.yo_x._walk},{self.yo_x._label}",
                 grouplink_del=delete_group_name,
             )
             self.idea2group_insert_combo_load()
             self.idea2group_table_load()
 
     def idea_delete(self):
-        self.calendar_x.del_idea_kid(road=f"{self.yo_x._walk},{self.yo_x._desc}")
+        self.calendar_x.del_idea_kid(road=f"{self.yo_x._walk},{self.yo_x._label}")
         self.baseideaunit.clear()
         self.refresh_tree(disable_is_expanded=True)
 
@@ -840,9 +840,9 @@ class EditIdeaUnit(qtw0, Ui_Form):
         )
 
     def idea_edit_road(self, idea_road):
-        self.calendar_x.edit_idea_desc(
+        self.calendar_x.edit_idea_label(
             old_road=idea_road,
-            new_desc=self.yo_deescription.toPlainText(),
+            new_label=self.yo_deescription.toPlainText(),
         )
 
         # update hierarchical data
@@ -852,35 +852,35 @@ class EditIdeaUnit(qtw0, Ui_Form):
     def idea_update(self):
         idea_road = None
         if self.yo_x._walk not in (None, ""):
-            idea_road = Road(f"{self.yo_x._walk},{self.yo_x._desc}")
+            idea_road = Road(f"{self.yo_x._walk},{self.yo_x._label}")
         else:
-            idea_road = Road(f"{self.yo_x._desc}")
+            idea_road = Road(f"{self.yo_x._label}")
         self.idea_edit_nonroad_data(idea_road=idea_road)
         # if (
-        #     self.idea_desc_on_populate != self.yo_deescription.toPlainText()
-        #     and self.idea_desc_on_populate != ""
-        #     and self.idea_desc_on_populate != None
+        #     self.idea_label_on_populate != self.yo_deescription.toPlainText()
+        #     and self.idea_label_on_populate != ""
+        #     and self.idea_label_on_populate != None
         # ):
         #     self.idea_edit_road()
-        if self.yo_x._desc != self.yo_deescription.toPlainText():
+        if self.yo_x._label != self.yo_deescription.toPlainText():
             self.idea_edit_road(idea_road=idea_road)
 
     def idea_duty_insert(self):
-        new_walk = f"{self.yo_x._desc}"
+        new_walk = f"{self.yo_x._label}"
         if self.yo_x._walk not in ("", None):
-            new_walk = f"{self.yo_x._walk},{self.yo_x._desc}"
+            new_walk = f"{self.yo_x._walk},{self.yo_x._label}"
         new_road = f"{new_walk},{self.yo_deescription.toPlainText()}"
         self.idea_insert()
 
         # add done/not_done children
         not_done_text = "not done"
         self.calendar_x.add_idea(
-            idea_kid=IdeaKid(_desc=not_done_text),
+            idea_kid=IdeaKid(_label=not_done_text),
             walk=new_road,
         )
         done_text = "done"
         self.calendar_x.add_idea(
-            idea_kid=IdeaKid(_desc=done_text),
+            idea_kid=IdeaKid(_label=done_text),
             walk=new_road,
         )
         # set required to "not done"
@@ -896,7 +896,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.refresh_tree()
 
     def idea_insert(self):
-        new_idea = IdeaKid(_desc=self.yo_deescription.toPlainText())
+        new_idea = IdeaKid(_label=self.yo_deescription.toPlainText())
         idea_attr_x = IdeaAttrHolder(
             weight=float(self.yo_weight.toPlainText()),
             begin=str2float(self.yo_begin.toPlainText()),
@@ -929,9 +929,9 @@ class EditIdeaUnit(qtw0, Ui_Form):
         new_idea._set_idea_attr(idea_attr=idea_attr_x)
         new_idea.set_kids_empty_if_null()
         take_parent_children_bool = self.cb_yo_insert_allChildren.checkState() == 2
-        new_walk = f"{self.yo_x._desc}"
+        new_walk = f"{self.yo_x._label}"
         if self.yo_x._walk not in ("", None):
-            new_walk = f"{self.yo_x._walk},{self.yo_x._desc}"
+            new_walk = f"{self.yo_x._walk},{self.yo_x._label}"
         self.calendar_x.add_idea(
             idea_kid=new_idea,
             walk=new_walk,
@@ -998,12 +998,12 @@ class EditIdeaUnit(qtw0, Ui_Form):
         child_count = root.childCount()
         for i in range(child_count):
             item = root.child(i)
-            desc_x = item.data(2, 10)
+            label_x = item.data(2, 10)
             road_x = item.data(2, 11)
             is_expanded = item.isExpanded()
-            # print(f"{road_x},{desc_x}")
-            _road = f"{desc_x}" if road_x in ("", None) else f"{road_x},{desc_x}"
-            # print(f"road={road_x},{desc_x}")
+            # print(f"{road_x},{label_x}")
+            _road = f"{label_x}" if road_x in ("", None) else f"{road_x},{label_x}"
+            # print(f"road={road_x},{label_x}")
             # print(f"{_road=}")
 
             self.calendar_x.edit_idea_attr(road=_road, is_expanded=is_expanded)

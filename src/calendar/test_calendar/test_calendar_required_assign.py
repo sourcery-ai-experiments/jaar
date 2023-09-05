@@ -6,7 +6,7 @@ from src.calendar.required_assign import (
 from src.calendar.calendar import CalendarUnit
 from src.calendar.idea import IdeaKid
 from src.calendar.group import groupunit_shop
-from src.calendar.road import get_global_root_desc as root_desc
+from src.calendar.road import get_global_root_label as root_label
 
 
 def test_calendar_edit_idea_attr_CorrectlySetsAssignedUnit():
@@ -14,8 +14,8 @@ def test_calendar_edit_idea_attr_CorrectlySetsAssignedUnit():
     owner_text = "Xio"
     c_x = CalendarUnit(_owner=owner_text)
     run_text = "run"
-    run_road = f"{root_desc()},{run_text}"
-    c_x.add_idea(IdeaKid(_desc=run_text), walk=root_desc())
+    run_road = f"{root_label()},{run_text}"
+    c_x.add_idea(IdeaKid(_label=run_text), walk=root_label())
     run_idea = c_x.get_idea_kid(road=run_road)
     assert run_idea._assignedunit is None
 
@@ -31,8 +31,9 @@ def test_calendar_idearoot_assignedunit_CorrectlySets_idea_assignedheir():
     # GIVEN
     assigned_unit_x = assigned_unit_shop()
 
-    c_x = CalendarUnit(_owner=root_desc())
-    c_x.edit_idea_attr(assignedunit=assigned_unit_x, road=root_desc())
+    owner_text = "Tim"
+    c_x = CalendarUnit(_owner=owner_text)
+    c_x.edit_idea_attr(assignedunit=assigned_unit_x, road=root_label())
     assert c_x._idearoot._assignedunit == assigned_unit_x
     assert c_x._idearoot._assignedheir is None
 
@@ -57,7 +58,7 @@ def test_calendar_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
 
     c_x = CalendarUnit(_owner=bob_text)
     c_x.add_memberunit(name=bob_text)
-    c_x.add_idea(IdeaKid(_desc=run_text), walk=bob_text)
+    c_x.add_idea(IdeaKid(_label=run_text), walk=bob_text)
     c_x.edit_idea_attr(road=run_road, assignedunit=assigned_unit_x)
     run_idea = c_x.get_idea_kid(road=run_road)
     assert run_idea._assignedunit == assigned_unit_x
@@ -83,7 +84,7 @@ def test_calendar_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedhei
     # GIVEN
     owner_text = "Noa"
     swim_text = "swiming"
-    swim_road = f"{root_desc()},{swim_text}"
+    swim_road = f"{root_label()},{swim_text}"
     morn_text = "morning"
     morn_road = f"{swim_road},{morn_text}"
     four_text = "fourth"
@@ -94,9 +95,9 @@ def test_calendar_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedhei
 
     c_x = CalendarUnit(_owner=owner_text)
     c_x.set_groupunit(groupunit=groupunit_shop(name=swimmers_text))
-    c_x.add_idea(IdeaKid(_desc=swim_text), walk=root_desc())
-    c_x.add_idea(IdeaKid(_desc=morn_text), walk=swim_road)
-    c_x.add_idea(IdeaKid(_desc=four_text), walk=morn_road)
+    c_x.add_idea(IdeaKid(_label=swim_text), walk=root_label())
+    c_x.add_idea(IdeaKid(_label=morn_text), walk=swim_road)
+    c_x.add_idea(IdeaKid(_label=four_text), walk=morn_road)
     c_x.edit_idea_attr(road=swim_road, assignedunit=assigned_unit_x)
     # print(f"{four_road=}\n{morn_road=}")
     four_idea = c_x.get_idea_kid(road=four_road)

@@ -179,13 +179,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_agenda_item_complete(self):
         if self.current_task_road is None:
-            self.label_last_desc.setText("")
+            self.label_last_label.setText("")
         else:
             base_x = "Mycalendar,time,jajatime"
             self.calendar_x.set_agenda_task_complete(
                 task_road=self.current_task_road, base=base_x
             )
-        self.label_last_desc.setText(self.current_task_road)
+        self.label_last_label.setText(self.current_task_road)
         self.refresh_all()
 
     def set_acptfact_time_open_5daysago(self):
@@ -283,7 +283,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.current_file_path_l.setText(self.file_path)
         # x_func_save_file(
         #     dest_dir=person_calendar_dir,
-        #     file_name=f"{root_desc()}.json",
+        #     file_name=f"{root_label()}.json",
         #     file_text=calendar_x.get_json(),
         # )
 
@@ -409,7 +409,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agenda_states.setRowCount(0)
         self.set_agenda_states_table_properties()
 
-        self.label_agenda_desc_data.setText("")
+        self.label_agenda_label_data.setText("")
         self.label_agenda_day_data.setText("")
         self.label_agenda_time_data.setText("")
         self.label_agenda_end_data.setText("")
@@ -421,14 +421,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.populate_agenda_table_row(row=row, agenda_item=agenda_item)
                 row += 1
             elif agenda_item._task == True and self.current_task_road is None:
-                self.current_task_road = f"{agenda_item._walk},{agenda_item._desc}"
+                self.current_task_road = f"{agenda_item._walk},{agenda_item._label}"
                 self.agenda_task_display(agenda_item)
 
     def populate_agenda_table_row(self, row, agenda_item):
         ax = agenda_item
         self.agenda_states.setRowCount(row + 1)
         self.agenda_states.setItem(row, 0, qtw1(str(ax._uid)))
-        self.agenda_states.setItem(row, 1, qtw1(ax._desc))
+        self.agenda_states.setItem(row, 1, qtw1(ax._label))
 
         if ax._requiredunits.get(f"{self.calendar_x._owner},time,jajatime") != None:
             jajatime_required = ax._requiredunits.get(
@@ -474,7 +474,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agenda_states.setHorizontalHeaderLabels(
             [
                 "rank",
-                "description",
+                "label",
                 "jajatime",
                 "jaja_nigh",
                 "calendar_importance",
@@ -484,7 +484,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
 
     def agenda_task_display(self, agenda_item):
-        self.label_agenda_desc_data.setText(agenda_item._desc)
+        self.label_agenda_label_data.setText(agenda_item._label)
         if (
             agenda_item._requiredunits.get(f"{self.calendar_x._owner},time,jajatime")
             != None

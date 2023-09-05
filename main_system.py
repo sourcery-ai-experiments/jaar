@@ -245,13 +245,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         typed_in = self.calendar_name.text()
         if currently_selected != typed_in:
             self.system_x.rename_calendar_in_calendars_dir(
-                old_desc=currently_selected, new_desc=typed_in
+                old_label=currently_selected, new_label=typed_in
             )
             self.refresh_system()
 
     def calendar_delete(self):
         self.system_x.del_calendarunit_from_calendars_dir(
-            calendar_x_desc=self.calendars_table.item(
+            calendar_x_label=self.calendars_table.item(
                 self.calendars_table.currentRow(), 0
             ).text()
         )
@@ -268,7 +268,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         typed_in = self.person_name.text()
         if currently_selected != typed_in:
             self.system_x.rename_personunit(
-                old_desc=currently_selected, new_desc=typed_in
+                old_label=currently_selected, new_label=typed_in
             )
             self.refresh_persons()
 
@@ -447,7 +447,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             x_list.extend(
                 [
                     lw_diplay(agenda_item._calendar_importance),
-                    agenda_item._desc,
+                    agenda_item._label,
                     agenda_item._walk,
                 ]
                 for agenda_item in agenda_list

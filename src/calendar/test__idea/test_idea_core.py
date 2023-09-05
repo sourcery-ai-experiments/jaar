@@ -8,7 +8,7 @@ from src.calendar.required_idea import (
     Road,
 )
 from src.calendar.required_assign import assigned_unit_shop, assigned_heir_shop
-from src.calendar.road import get_global_root_desc as root_desc
+from src.calendar.road import get_global_root_label as root_label
 from pytest import raises as pytest_raise
 
 
@@ -17,7 +17,7 @@ def test_idea_core_exists():
     assert new_obj
     assert new_obj._kids is None
     assert new_obj._weight >= 1
-    assert new_obj._desc is None
+    assert new_obj._label is None
     assert new_obj._uid is None
     assert new_obj._all_member_credit is None
     assert new_obj._all_member_debt is None
@@ -50,10 +50,10 @@ def test_idea_core_exists():
 
 def test_idea_core_get_key_road_works():
     round_text = "round_things"
-    round_walk = f"{root_desc()},{round_text}"
-    x_desc = "ball"
-    idea = IdeaCore(_desc=x_desc, _walk=round_walk)
-    assert idea.get_key_road() == f"{x_desc}"
+    round_walk = f"{root_label()},{round_text}"
+    x_label = "ball"
+    idea = IdeaCore(_label=x_label, _walk=round_walk)
+    assert idea.get_key_road() == f"{x_label}"
 
 
 def test_idea_core_is_heir_CorrectlyIdentifiesHeirs():
@@ -88,7 +88,7 @@ def test_idea_core_grouplinks_exist():
     group_links = {swimmer_link.name: swimmer_link, biker_link.name: biker_link}
 
     # WHEN
-    idea_core = IdeaCore(_desc="exercising", _grouplinks=group_links)
+    idea_core = IdeaCore(_label="exercising", _grouplinks=group_links)
 
     # THEN
     assert idea_core._grouplinks == group_links
@@ -121,7 +121,7 @@ def test_idea_core_get_inherited_groupheirs_weight_sum_WorksCorrectlyWithValues(
     group_links = {swimmer_link.name: swimmer_link, biker_link.name: biker_link}
 
     # WHEN
-    idea_core = IdeaCore(_desc="exercising", _groupheirs=group_links)
+    idea_core = IdeaCore(_label="exercising", _groupheirs=group_links)
 
     # THEN
     assert idea_core.get_groupheirs_creditor_weight_sum() != None
@@ -154,7 +154,7 @@ def test_idea_core_get_inherited_groupheirs_weight_sum_WorksCorrectlyWithValues(
 
 def test_idea_core_get_grouplinks_weight_sum_WorksCorrectlyNoValues():
     # GIVEN /WHEN
-    idea_core = IdeaCore(_desc="exercising")
+    idea_core = IdeaCore(_label="exercising")
 
     # THEN
     assert idea_core.get_groupheirs_creditor_weight_sum() != None
@@ -165,7 +165,7 @@ def test_idea_core_get_grouplinks_weight_sum_WorksCorrectlyNoValues():
 
 def test_idea_core_set_requiredheirsCorrectlyTakesFromOutside():
     # GIVEN
-    idea = IdeaCore(_desc="ball")
+    idea = IdeaCore(_label="ball")
     sufffact_x = sufffactunit_shop(need="ball,run", open=0, nigh=7)
     sufffacts = {sufffact_x.need: sufffact_x}
     requiredunit = RequiredUnit(base="ball,run", sufffacts=sufffacts)
@@ -185,7 +185,7 @@ def test_idea_core_set_requiredheirsCorrectlyTakesFromSelf():
     sufffacts = {sufffact_x.need: sufffact_x}
     requiredunit = RequiredUnit(base="ball,run", sufffacts=sufffacts)
     requiredunits = {requiredunit.base: requiredunit}
-    idea = IdeaCore(_desc="ball", _requiredunits=requiredunits)
+    idea = IdeaCore(_label="ball", _requiredunits=requiredunits)
 
     requiredheir = RequiredHeir(base="ball,run", sufffacts=sufffacts)
     requiredheirs = {requiredheir.base: requiredheir}
@@ -197,14 +197,14 @@ def test_idea_core_set_requiredheirsCorrectlyTakesFromSelf():
 
 
 def test_idea_core_clear_descendant_promise_count_ClearsCorrectly():
-    idea = IdeaCore(_desc="ball", _descendant_promise_count=55)
+    idea = IdeaCore(_label="ball", _descendant_promise_count=55)
     assert idea._descendant_promise_count == 55
     idea.clear_descendant_promise_count()
     assert idea._descendant_promise_count is None
 
 
 def test_idea_core_clear_all_member_credit_debt_ClearsCorrectly():
-    idea = IdeaCore(_desc="ball", _all_member_credit=55, _all_member_debt=33)
+    idea = IdeaCore(_label="ball", _all_member_credit=55, _all_member_debt=33)
     assert idea._all_member_credit == 55
     assert idea._all_member_debt == 33
     idea.clear_all_member_credit_debt()
@@ -214,27 +214,27 @@ def test_idea_core_clear_all_member_credit_debt_ClearsCorrectly():
 
 def test_get_kids_in_range_GetsCorrectIdeas():
     # Given
-    idea_x = IdeaCore(_desc="366months", _begin=0, _close=366)
-    idea_x.add_kid(idea_kid=IdeaCore(_desc="Jan", _begin=0, _close=31))
-    idea_x.add_kid(idea_kid=IdeaCore(_desc="Feb29", _begin=31, _close=60))
-    idea_x.add_kid(idea_kid=IdeaCore(_desc="Mar", _begin=31, _close=91))
+    idea_x = IdeaCore(_label="366months", _begin=0, _close=366)
+    idea_x.add_kid(idea_kid=IdeaCore(_label="Jan", _begin=0, _close=31))
+    idea_x.add_kid(idea_kid=IdeaCore(_label="Feb29", _begin=31, _close=60))
+    idea_x.add_kid(idea_kid=IdeaCore(_label="Mar", _begin=31, _close=91))
 
     # When/Then
     assert len(idea_x.get_kids_in_range(begin=100, close=120)) == 0
     assert len(idea_x.get_kids_in_range(begin=0, close=31)) == 1
     assert len(idea_x.get_kids_in_range(begin=5, close=5)) == 1
     assert len(idea_x.get_kids_in_range(begin=0, close=61)) == 3
-    assert idea_x.get_kids_in_range(begin=31, close=31)[0]._desc == "Feb29"
+    assert idea_x.get_kids_in_range(begin=31, close=31)[0]._label == "Feb29"
 
 
 def test_idea_get_dict_ReturnsDict():
     # GIVEN
     week_text = "weekdays"
-    week_road = f"{root_desc()},{week_text}"
+    week_road = f"{root_label()},{week_text}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
     states_text = "nation-state"
-    states_road = f"{root_desc()},{states_text}"
+    states_road = f"{root_label()},{states_text}"
     france_text = "France"
     france_road = f"{states_road},{france_text}"
     usa_text = "USA"
@@ -296,11 +296,11 @@ def test_idea_get_dict_ReturnsDict():
     x1_grouplinks = {biker_name: biker_get_dict, flyer_name: flyer_get_dict}
 
     temp_idea = IdeaCore(
-        _walk=f"{root_desc()},work",
+        _walk=f"{root_label()},work",
         _kids=None,
         _grouplinks=biker_and_flyer_grouplinks,
         _weight=30,
-        _desc="work",
+        _label="work",
         _level=1,
         _requiredunits=x1_requiredunits,
         _requiredheirs=x1_requiredheirs,
@@ -322,7 +322,7 @@ def test_idea_get_dict_ReturnsDict():
     assert ideakid_dict["_grouplinks"] == temp_idea.get_grouplinks_dict()
     assert ideakid_dict["_grouplinks"] == x1_grouplinks
     assert ideakid_dict["_weight"] == temp_idea._weight
-    assert ideakid_dict["_desc"] == temp_idea._desc
+    assert ideakid_dict["_label"] == temp_idea._label
     assert ideakid_dict["_uid"] == temp_idea._uid
     assert ideakid_dict["_begin"] == temp_idea._begin
     assert ideakid_dict["_close"] == temp_idea._close
@@ -340,10 +340,10 @@ def test_idea_get_dict_ReturnsDict():
 
 
 def test_idea_vaild_DenomCorrectInheritsBeginAndClose():
-    parent_idea = IdeaCore(_desc="work", _begin=22.0, _close=66.0)
-    kid_idea_given = IdeaCore(_desc="clean", _numor=1, _denom=11.0, _reest=False)
+    parent_idea = IdeaCore(_label="work", _begin=22.0, _close=66.0)
+    kid_idea_given = IdeaCore(_label="clean", _numor=1, _denom=11.0, _reest=False)
     kid_idea_expected = IdeaCore(
-        _desc="clean", _numor=1, _denom=11.0, _reest=False, _begin=2, _close=6
+        _label="clean", _numor=1, _denom=11.0, _reest=False, _begin=2, _close=6
     )
     parent_idea.add_kid(idea_kid=kid_idea_given)
     assert parent_idea._kids["clean"]._begin == 2
@@ -352,13 +352,13 @@ def test_idea_vaild_DenomCorrectInheritsBeginAndClose():
 
 
 def test_idea_invaild_DenomThrowsError():
-    parent_idea = IdeaCore(_desc="work")
+    parent_idea = IdeaCore(_label="work")
     casa_text = "casa"
-    casa_road = f"{root_desc()},{casa_text}"
+    casa_road = f"{root_label()},{casa_text}"
     clean_text = "clean"
     clean_road = f"{casa_road},{clean_text}"
     kid_idea = IdeaCore(
-        _desc=clean_text, _walk=casa_road, _numor=1, _denom=11.0, _reest=False
+        _label=clean_text, _walk=casa_road, _numor=1, _denom=11.0, _reest=False
     )
     # When/Then
     with pytest_raise(Exception) as excinfo:
@@ -371,7 +371,7 @@ def test_idea_invaild_DenomThrowsError():
 
 def test_idea_get_requiredheir_correctlyReturnsRequiredHeir():
     # GIVEN
-    idea_x = IdeaCore(_desc="test4")
+    idea_x = IdeaCore(_label="test4")
     test5_text = "test5"
     required_heir_x = RequiredHeir(base=test5_text, sufffacts={})
     required_heirs_x = {required_heir_x.base: required_heir_x}
@@ -387,7 +387,7 @@ def test_idea_get_requiredheir_correctlyReturnsRequiredHeir():
 
 def test_idea_get_requiredheir_correctlyReturnsNone():
     # GIVEN
-    idea_x = IdeaCore(_desc="test4")
+    idea_x = IdeaCore(_label="test4")
     test5_text = "test5"
     required_heir_x = RequiredHeir(base=test5_text, sufffacts={})
     required_heirs_x = {required_heir_x.base: required_heir_x}
@@ -403,7 +403,7 @@ def test_idea_get_requiredheir_correctlyReturnsNone():
 
 def test_idea_set_active_status_SetsNullactive_status_hxToNonEmpty():
     # GIVEN
-    idea_x = IdeaCore(_desc="test4")
+    idea_x = IdeaCore(_label="test4")
     assert idea_x._active_status_hx is None
 
     # WHEN
@@ -414,7 +414,7 @@ def test_idea_set_active_status_SetsNullactive_status_hxToNonEmpty():
 
 def test_idea_set_active_status_IfFullactive_status_hxResetToTrue():
     # GIVEN
-    idea_x = IdeaCore(_desc="test4")
+    idea_x = IdeaCore(_label="test4")
     idea_x._active_status_hx = {0: True, 4: False}
     assert idea_x._active_status_hx != {0: True}
     # WHEN
@@ -425,7 +425,7 @@ def test_idea_set_active_status_IfFullactive_status_hxResetToTrue():
 
 # def test_idea_set_active_status_IfFullactive_status_hxResetToFalse():
 #     # GIVEN
-#     idea_x = IdeaCore(_desc="test4")
+#     idea_x = IdeaCore(_label="test4")
 #     idea_x.set_required_sufffact(
 #         base="testing1,second",
 #         sufffact="testing1,second,next",
@@ -443,7 +443,7 @@ def test_idea_set_active_status_IfFullactive_status_hxResetToTrue():
 
 def test_idea_record_active_status_hx_CorrectlyRecordsHistorry():
     # GIVEN
-    idea_x = IdeaCore(_desc="test4")
+    idea_x = IdeaCore(_label="test4")
     assert idea_x._active_status_hx is None
 
     # WHEN
@@ -503,7 +503,7 @@ def test_idea_record_active_status_hx_CorrectlyRecordsHistorry():
 
 def test_idea_set_assignedunit_empty_if_null():
     # GIVEN
-    idea_x = IdeaCore(_desc="run")
+    idea_x = IdeaCore(_label="run")
     assert idea_x._assignedunit is None
 
     # WHEN
@@ -517,7 +517,7 @@ def test_idea_set_assignedunit_empty_if_null():
 def test_idea_set_assignedunit_empty_if_null():
     # GIVEN
     swim_text = "swimmers"
-    idea_x = IdeaCore(_desc="run")
+    idea_x = IdeaCore(_label="run")
     idea_x.set_assignedunit_empty_if_null()
     idea_x._assignedunit.set_suffgroup(name=swim_text)
     assert idea_x._assignedheir is None

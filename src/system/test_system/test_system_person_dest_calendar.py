@@ -51,22 +51,22 @@ def test_system_get_person_dest_calendar_from_digest_calendar_files_ReturnsCorre
     # idea_a = dest_calendar.get_idea_kid(road="A")
     # idea_b = dest_calendar.get_idea_kid(road="B")
     # for idea_kid_x1 in input_calendar._idearoot._kids.values():
-    #     print(f"{idea_kid_x1._desc=}")
-    #     dest_calendar_counterpart_x1 = dest_calendar._idearoot._kids.get(idea_kid_x1._desc)
+    #     print(f"{idea_kid_x1._label=}")
+    #     dest_calendar_counterpart_x1 = dest_calendar._idearoot._kids.get(idea_kid_x1._label)
     #     for idea_kid_x2 in idea_kid_x1._kids.values():
     #         dest_calendar_counterpart_x2 = dest_calendar_counterpart_x1._kids.get(
-    #             idea_kid_x2._desc
+    #             idea_kid_x2._label
     #         )
     #         print(
-    #             f"{idea_kid_x2._desc=} {idea_kid_x2._weight=} {dest_calendar_counterpart_x2._weight=}"
+    #             f"{idea_kid_x2._label=} {idea_kid_x2._weight=} {dest_calendar_counterpart_x2._weight=}"
     #         )
     #         # assert dest_calendar_counterpart_x2 == idea_kid_x2
-    #         assert dest_calendar_counterpart_x2._desc == idea_kid_x2._desc
+    #         assert dest_calendar_counterpart_x2._label == idea_kid_x2._label
 
     #     print(
-    #         f"{idea_kid_x1._desc=} {idea_kid_x1._weight=} {dest_calendar_counterpart_x1._weight=}"
+    #         f"{idea_kid_x1._label=} {idea_kid_x1._weight=} {dest_calendar_counterpart_x1._weight=}"
     #     )
-    #     assert dest_calendar_counterpart_x1._desc == idea_kid_x1._desc
+    #     assert dest_calendar_counterpart_x1._label == idea_kid_x1._label
     # assert dest_calendar._idearoot._kids == input_calendar._idearoot._kids
     assert dest_calendar._idearoot._acptfactunits == {}
     assert (
@@ -111,21 +111,21 @@ def test_system_get_person_dest_calendar_from_digest_calendar_files_ReturnsCorre
     print(f" {dest_calendar_d_idea._weight=} ")
     assert dest_calendar != None
     # for idea_kid_x1 in calendar1._idearoot._kids.values():
-    #     dest_calendar_counterpart_x1 = dest_calendar._idearoot._kids.get(idea_kid_x1._desc)
+    #     dest_calendar_counterpart_x1 = dest_calendar._idearoot._kids.get(idea_kid_x1._label)
     #     for idea_kid_x2 in idea_kid_x1._kids.values():
     #         dest_calendar_counterpart_x2 = dest_calendar_counterpart_x1._kids.get(
-    #             idea_kid_x2._desc
+    #             idea_kid_x2._label
     #         )
     #         print(
-    #             f"{idea_kid_x2._desc=} {idea_kid_x2._weight=} {dest_calendar_counterpart_x2._weight=}"
+    #             f"{idea_kid_x2._label=} {idea_kid_x2._weight=} {dest_calendar_counterpart_x2._weight=}"
     #         )
     #         # assert dest_calendar_counterpart_x2 == idea_kid_x2
-    #         assert dest_calendar_counterpart_x2._desc == idea_kid_x2._desc
+    #         assert dest_calendar_counterpart_x2._label == idea_kid_x2._label
 
     #     print(
-    #         f"{idea_kid_x1._desc=} {idea_kid_x1._weight=} {dest_calendar_counterpart_x1._weight=}"
+    #         f"{idea_kid_x1._label=} {idea_kid_x1._weight=} {dest_calendar_counterpart_x1._weight=}"
     #     )
-    #     assert dest_calendar_counterpart_x1._desc == idea_kid_x1._desc
+    #     assert dest_calendar_counterpart_x1._label == idea_kid_x1._label
     # assert dest_calendar._idearoot._kids == calendar1._idearoot._kids
     assert len(dest_calendar._idearoot._acptfactunits) == 9
     assert len(dest_calendar._idearoot._acptfactunits) == len(

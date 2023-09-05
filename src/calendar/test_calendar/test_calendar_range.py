@@ -1,6 +1,6 @@
 from src.calendar.idea import IdeaKid
 from src.calendar.calendar import CalendarUnit
-from src.calendar.road import get_global_root_desc as root_desc
+from src.calendar.road import get_global_root_label as root_label
 
 
 def test_calendarAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
@@ -9,12 +9,12 @@ def test_calendarAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
     calendar_x = CalendarUnit(_owner=owner_text, _weight=10)
 
     l1 = "level1"
-    idea_kid_l1 = IdeaKid(_weight=30, _desc=l1)
-    calendar_x.add_idea(walk=root_desc(), idea_kid=idea_kid_l1)
-    l1_road = f"{root_desc()},{l1}"
+    idea_kid_l1 = IdeaKid(_weight=30, _label=l1)
+    calendar_x.add_idea(walk=root_label(), idea_kid=idea_kid_l1)
+    l1_road = f"{root_label()},{l1}"
 
     rx1 = "range_root_example"
-    idea_kid_rx1 = IdeaKid(_weight=30, _desc=rx1)
+    idea_kid_rx1 = IdeaKid(_weight=30, _label=rx1)
     calendar_x.add_idea(walk=l1_road, idea_kid=idea_kid_rx1)
     rx1_road = f"{l1_road},{rx1}"
     calendar_x.edit_idea_attr(road=rx1_road, begin=10, close=25)
@@ -23,7 +23,7 @@ def test_calendarAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
     print(f"Add example child idea to road='{rx1_road}'")
 
     rcA = "range_child_example"
-    idea_kid_rcA = IdeaKid(_weight=30, _begin=10, _close=25, _desc=rcA)
+    idea_kid_rcA = IdeaKid(_weight=30, _begin=10, _close=25, _label=rcA)
     calendar_x.add_idea(walk=rx1_road, idea_kid=idea_kid_rcA)
 
     rcA_road = f"{rx1_road},{rcA}"
@@ -46,12 +46,12 @@ def test_calendarAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
     calendar_x = CalendarUnit(_owner=owner_text, _weight=10)
 
     l1 = "level1"
-    idea_kid_l1 = IdeaKid(_weight=30, _desc=l1)
-    calendar_x.add_idea(walk=root_desc(), idea_kid=idea_kid_l1)
-    l1_road = f"{root_desc()},{l1}"
+    idea_kid_l1 = IdeaKid(_weight=30, _label=l1)
+    calendar_x.add_idea(walk=root_label(), idea_kid=idea_kid_l1)
+    l1_road = f"{root_label()},{l1}"
 
     rx1 = "range_root_example"
-    idea_kid_rx1 = IdeaKid(_weight=30, _desc=rx1)
+    idea_kid_rx1 = IdeaKid(_weight=30, _label=rx1)
     calendar_x.add_idea(walk=l1_road, idea_kid=idea_kid_rx1)
     rx1_road = f"{l1_road},{rx1}"
     calendar_x.edit_idea_attr(road=rx1_road, begin=10, close=25)
@@ -60,7 +60,7 @@ def test_calendarAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
     print(f"Add example child idea to road='{rx1_road}'")
 
     rcA = "range_child_example"
-    idea_kid_rcA = IdeaKid(_weight=30, _begin=10, _close=25, _desc=rcA)
+    idea_kid_rcA = IdeaKid(_weight=30, _begin=10, _close=25, _label=rcA)
     calendar_x.add_idea(walk=rx1_road, idea_kid=idea_kid_rcA)
 
     rcA_road = f"{rx1_road},{rcA}"
@@ -111,7 +111,7 @@ def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen1():
     # THEN
     # for idea_x in ranged_ideas.values():
     #     print(
-    #         f"{begin_x=} {close_x=} {idea_x._desc=} {idea_x._begin=} {idea_x._close=} "
+    #         f"{begin_x=} {close_x=} {idea_x._label=} {idea_x._begin=} {idea_x._close=} "
     #     )
     assert len(ranged_ideas) == 3
 

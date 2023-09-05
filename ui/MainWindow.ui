@@ -139,7 +139,7 @@
      <string>When is the past you have not let go?</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_agenda_desc_header">
+   <widget class="QLabel" name="label_agenda_label_header">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -293,7 +293,7 @@
      <string>CALENDAR: </string>
     </property>
    </widget>
-   <widget class="QPushButton" name="lw_desc_update_button">
+   <widget class="QPushButton" name="lw_label_update_button">
     <property name="geometry">
      <rect>
       <x>310</x>
@@ -424,7 +424,7 @@
      <string>Road:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_agenda_desc_data">
+   <widget class="QLabel" name="label_agenda_label_data">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -648,7 +648,7 @@
     </column>
     <column>
      <property name="text">
-      <string>description</string>
+      <string>label</string>
      </property>
     </column>
     <column>
@@ -713,7 +713,7 @@
      <string>Set open 5 days ago</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_last_desc">
+   <widget class="QLabel" name="label_last_label">
     <property name="geometry">
      <rect>
       <x>120</x>

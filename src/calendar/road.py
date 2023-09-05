@@ -28,7 +28,7 @@ def find_replace_road_key_dict(dict_x: dict, old_road: Road, new_road: Road):
             #  or (
             #     key_is_last_node
             #     and is_sub_road_in_source_road(
-            #         ref_road=Road(f"{x_obj._walk},{x_obj._desc}"), sub_road=old_road
+            #         ref_road=Road(f"{x_obj._walk},{x_obj._label}"), sub_road=old_road
             #     )
             # changed_road = change_road(
             #     current_road=x_key, old_road=old_road, new_road=new_road
@@ -76,8 +76,10 @@ def road_validate(road: Road) -> Road:
         return Road("")
     x_root = get_all_road_nodes_in_list(road)[0]
     return (
-        change_road(current_road=road, old_road=x_root, new_road=get_global_root_desc())
-        if x_root != get_global_root_desc()
+        change_road(
+            current_road=road, old_road=x_root, new_road=get_global_root_label()
+        )
+        if x_root != get_global_root_label()
         else road
     )
 
@@ -100,7 +102,7 @@ def get_ancestor_roads(road: Road) -> list:
     return x_roads
 
 
-def get_global_root_desc() -> str:
+def get_global_root_label() -> str:
     return "A"
 
 
