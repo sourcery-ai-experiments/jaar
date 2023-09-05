@@ -493,9 +493,9 @@ class SystemUnit:
             calendarunit_owner=calendarunit_owner,
         )
 
-    # Person dest_calendar
-    def get_person_dest_calendar_from_digest_calendar_files(
+    # Person output_calendar
+    def get_person_output_calendar_from_digest_calendar_files(
         self, person_name: str
     ) -> CalendarUnit:
         person_x = self.get_person_obj_from_system(name=person_name)
-        return person_x.get_dest_calendar_from_digest_calendar_files()
+        return person_x.get_output_calendar_from_digest_calendar_files()

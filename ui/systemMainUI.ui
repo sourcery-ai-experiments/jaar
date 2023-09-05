@@ -833,7 +833,7 @@
      </font>
     </property>
     <property name="text">
-     <string>dest_calendar to public_dir</string>
+     <string>output_calendar to public_dir</string>
     </property>
    </widget>
    <widget class="QPushButton" name="reload_all_src_calendars_button">

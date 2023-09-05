@@ -19,7 +19,7 @@ from src.system.examples.env_kit import (
 from pytest import raises as pytest_raises
 
 
-def test_system_get_person_dest_calendar_from_digest_calendar_files_ReturnsCorrectCalendarObjScenario1(
+def test_system_get_person_output_calendar_from_digest_calendar_files_ReturnsCorrectCalendarObjScenario1(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -39,48 +39,48 @@ def test_system_get_person_dest_calendar_from_digest_calendar_files_ReturnsCorre
     print(f"{person_x_obj._src_calendarlinks=}")
 
     # WHEN
-    dest_calendar = ex.get_person_dest_calendar_from_digest_calendar_files(
+    output_calendar = ex.get_person_output_calendar_from_digest_calendar_files(
         person_name=px_name
     )
 
     # THEN
-    dest_calendar_d_idea = dest_calendar.get_idea_kid(road="A,C,D")
-    print(f" {dest_calendar_d_idea._weight=} {len(input_calendar._idearoot._kids)=} ")
-    assert dest_calendar != None
+    output_calendar_d_idea = output_calendar.get_idea_kid(road="A,C,D")
+    print(f" {output_calendar_d_idea._weight=} {len(input_calendar._idearoot._kids)=} ")
+    assert output_calendar != None
     assert len(input_calendar._idearoot._kids) == 2
-    # idea_a = dest_calendar.get_idea_kid(road="A")
-    # idea_b = dest_calendar.get_idea_kid(road="B")
+    # idea_a = output_calendar.get_idea_kid(road="A")
+    # idea_b = output_calendar.get_idea_kid(road="B")
     # for idea_kid_x1 in input_calendar._idearoot._kids.values():
     #     print(f"{idea_kid_x1._label=}")
-    #     dest_calendar_counterpart_x1 = dest_calendar._idearoot._kids.get(idea_kid_x1._label)
+    #     output_calendar_counterpart_x1 = output_calendar._idearoot._kids.get(idea_kid_x1._label)
     #     for idea_kid_x2 in idea_kid_x1._kids.values():
-    #         dest_calendar_counterpart_x2 = dest_calendar_counterpart_x1._kids.get(
+    #         output_calendar_counterpart_x2 = output_calendar_counterpart_x1._kids.get(
     #             idea_kid_x2._label
     #         )
     #         print(
-    #             f"{idea_kid_x2._label=} {idea_kid_x2._weight=} {dest_calendar_counterpart_x2._weight=}"
+    #             f"{idea_kid_x2._label=} {idea_kid_x2._weight=} {output_calendar_counterpart_x2._weight=}"
     #         )
-    #         # assert dest_calendar_counterpart_x2 == idea_kid_x2
-    #         assert dest_calendar_counterpart_x2._label == idea_kid_x2._label
+    #         # assert output_calendar_counterpart_x2 == idea_kid_x2
+    #         assert output_calendar_counterpart_x2._label == idea_kid_x2._label
 
     #     print(
-    #         f"{idea_kid_x1._label=} {idea_kid_x1._weight=} {dest_calendar_counterpart_x1._weight=}"
+    #         f"{idea_kid_x1._label=} {idea_kid_x1._weight=} {output_calendar_counterpart_x1._weight=}"
     #     )
-    #     assert dest_calendar_counterpart_x1._label == idea_kid_x1._label
-    # assert dest_calendar._idearoot._kids == input_calendar._idearoot._kids
-    assert dest_calendar._idearoot._acptfactunits == {}
+    #     assert output_calendar_counterpart_x1._label == idea_kid_x1._label
+    # assert output_calendar._idearoot._kids == input_calendar._idearoot._kids
+    assert output_calendar._idearoot._acptfactunits == {}
     assert (
-        dest_calendar._idearoot._acptfactunits
+        output_calendar._idearoot._acptfactunits
         == input_calendar._idearoot._acptfactunits
     )
-    assert dest_calendar._members == {}
-    assert dest_calendar._members == input_calendar._members
-    assert dest_calendar._groups == {}
-    assert dest_calendar._groups == input_calendar._groups
-    assert dest_calendar._idearoot == input_calendar._idearoot
+    assert output_calendar._members == {}
+    assert output_calendar._members == input_calendar._members
+    assert output_calendar._groups == {}
+    assert output_calendar._groups == input_calendar._groups
+    assert output_calendar._idearoot == input_calendar._idearoot
 
 
-def test_system_get_person_dest_calendar_from_digest_calendar_files_ReturnsCorrectCalendarObjScenario2(
+def test_system_get_person_output_calendar_from_digest_calendar_files_ReturnsCorrectCalendarObjScenario2(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -102,38 +102,38 @@ def test_system_get_person_dest_calendar_from_digest_calendar_files_ReturnsCorre
     print(f"{person_x_obj._src_calendarlinks=}")
 
     # WHEN
-    dest_calendar = ex.get_person_dest_calendar_from_digest_calendar_files(
+    output_calendar = ex.get_person_output_calendar_from_digest_calendar_files(
         person_name=px_name
     )
 
     # THEN
-    dest_calendar_d_idea = dest_calendar.get_idea_kid(road="A,C,D")
-    print(f" {dest_calendar_d_idea._weight=} ")
-    assert dest_calendar != None
+    output_calendar_d_idea = output_calendar.get_idea_kid(road="A,C,D")
+    print(f" {output_calendar_d_idea._weight=} ")
+    assert output_calendar != None
     # for idea_kid_x1 in calendar1._idearoot._kids.values():
-    #     dest_calendar_counterpart_x1 = dest_calendar._idearoot._kids.get(idea_kid_x1._label)
+    #     output_calendar_counterpart_x1 = output_calendar._idearoot._kids.get(idea_kid_x1._label)
     #     for idea_kid_x2 in idea_kid_x1._kids.values():
-    #         dest_calendar_counterpart_x2 = dest_calendar_counterpart_x1._kids.get(
+    #         output_calendar_counterpart_x2 = output_calendar_counterpart_x1._kids.get(
     #             idea_kid_x2._label
     #         )
     #         print(
-    #             f"{idea_kid_x2._label=} {idea_kid_x2._weight=} {dest_calendar_counterpart_x2._weight=}"
+    #             f"{idea_kid_x2._label=} {idea_kid_x2._weight=} {output_calendar_counterpart_x2._weight=}"
     #         )
-    #         # assert dest_calendar_counterpart_x2 == idea_kid_x2
-    #         assert dest_calendar_counterpart_x2._label == idea_kid_x2._label
+    #         # assert output_calendar_counterpart_x2 == idea_kid_x2
+    #         assert output_calendar_counterpart_x2._label == idea_kid_x2._label
 
     #     print(
-    #         f"{idea_kid_x1._label=} {idea_kid_x1._weight=} {dest_calendar_counterpart_x1._weight=}"
+    #         f"{idea_kid_x1._label=} {idea_kid_x1._weight=} {output_calendar_counterpart_x1._weight=}"
     #     )
-    #     assert dest_calendar_counterpart_x1._label == idea_kid_x1._label
-    # assert dest_calendar._idearoot._kids == calendar1._idearoot._kids
-    assert len(dest_calendar._idearoot._acptfactunits) == 9
-    assert len(dest_calendar._idearoot._acptfactunits) == len(
+    #     assert output_calendar_counterpart_x1._label == idea_kid_x1._label
+    # assert output_calendar._idearoot._kids == calendar1._idearoot._kids
+    assert len(output_calendar._idearoot._acptfactunits) == 9
+    assert len(output_calendar._idearoot._acptfactunits) == len(
         calendar2._idearoot._acptfactunits
     )
-    assert len(dest_calendar._members) == 22
-    assert len(dest_calendar._members) == len(calendar2._members)
-    assert len(dest_calendar._groups) == 34
-    assert len(dest_calendar._groups) == len(calendar2._groups)
-    assert dest_calendar._idearoot != calendar1._idearoot
-    assert dest_calendar._idearoot != calendar2._idearoot
+    assert len(output_calendar._members) == 22
+    assert len(output_calendar._members) == len(calendar2._members)
+    assert len(output_calendar._groups) == 34
+    assert len(output_calendar._groups) == len(calendar2._groups)
+    assert output_calendar._idearoot != calendar1._idearoot
+    assert output_calendar._idearoot != calendar2._idearoot

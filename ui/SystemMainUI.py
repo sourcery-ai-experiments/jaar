@@ -480,7 +480,7 @@ class Ui_MainWindow(object):
         self.open_ignore_button.setText(_translate("MainWindow", "o"))
         self.save_ignore_button.setText(_translate("MainWindow", "s"))
         self.set_public_calendar_button.setText(
-            _translate("MainWindow", "dest_calendar to public_dir")
+            _translate("MainWindow", "output_calendar to public_dir")
         )
         self.reload_all_src_calendars_button.setText(
             _translate("MainWindow", "refresh_all_src_calendars")

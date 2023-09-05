@@ -227,7 +227,7 @@ def test_personunit_refresh_calendarlinks_CorrectlyPullsAllPublicCalendars(
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=old_steve_calendar)
     px.receive_src_calendarunit_obj(calendar_x=ernie_calendar)
     px.receive_src_calendarunit_obj(calendar_x=old_steve_calendar)
-    assert len(px.get_dest_calendar_from_digest_calendar_files().get_idea_list()) == 4
+    assert len(px.get_output_calendar_from_digest_calendar_files().get_idea_list()) == 4
     new_steve_calendar = example_persons.get_calendar_3CleanNodesRandomWeights(
         _owner="steve"
     )
@@ -243,4 +243,4 @@ def test_personunit_refresh_calendarlinks_CorrectlyPullsAllPublicCalendars(
     px.receive_all_src_calendarunit_files()
 
     # THEN
-    assert len(px.get_dest_calendar_from_digest_calendar_files().get_idea_list()) == 5
+    assert len(px.get_output_calendar_from_digest_calendar_files().get_idea_list()) == 5

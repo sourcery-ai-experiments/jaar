@@ -192,21 +192,21 @@ def test_presonunit_set_src_calendarlinks_CorrectlySets_blind_trust_DigestCalend
     assert digest_cx_json == cx.get_json()
 
 
-def test_person_get_dest_calendar_from_digest_calendar_files_withEmptyDigestDict(
+def test_person_get_output_calendar_from_digest_calendar_files_withEmptyDigestDict(
     person_dir_setup_cleanup,
 ):
     # GIVEN
     person_name_x = "boots3"
     px = personunit_shop(name=person_name_x, env_dir=get_temp_person_dir())
     px.create_core_dir_and_files()
-    sx_output_before = px.get_dest_calendar_from_digest_calendar_files()
+    sx_output_before = px.get_output_calendar_from_digest_calendar_files()
     assert str(type(sx_output_before)).find(".calendar.CalendarUnit'>")
     assert sx_output_before._owner == person_name_x
     assert sx_output_before._idearoot._label == root_label()
     # px.set_digested_calendar(calendar_x=CalendarUnit(_owner="digested1"))
 
     # WHEN
-    sx_output_after = px.get_dest_calendar_from_digest_calendar_files()
+    sx_output_after = px.get_output_calendar_from_digest_calendar_files()
 
     # THEN
     person_calendar_x = CalendarUnit(_owner=person_name_x, _weight=0.0)
@@ -230,7 +230,7 @@ def test_person_get_dest_calendar_from_digest_calendar_files_withEmptyDigestDict
     assert sx_output_after._idearoot == person_calendar_x._idearoot
 
 
-def test_person_get_dest_calendar_from_digest_calendar_files_with1DigestedCalendar(
+def test_person_get_output_calendar_from_digest_calendar_files_with1DigestedCalendar(
     person_dir_setup_cleanup,
 ):
     # GIVEN
@@ -238,7 +238,7 @@ def test_person_get_dest_calendar_from_digest_calendar_files_with1DigestedCalend
     env_dir = get_temp_person_dir()
     px = personunit_shop(name=person_name_x, env_dir=env_dir)
     px.create_core_dir_and_files()
-    sx_output_old = px.get_dest_calendar_from_digest_calendar_files()
+    sx_output_old = px.get_output_calendar_from_digest_calendar_files()
     assert str(type(sx_output_old)).find(".calendar.CalendarUnit'>")
     assert sx_output_old._owner == person_name_x
     assert sx_output_old._idearoot._label == root_label()
@@ -246,7 +246,7 @@ def test_person_get_dest_calendar_from_digest_calendar_files_with1DigestedCalend
     px.receive_src_calendarunit_obj(calendar_x=input_calendar, link_type="blind_trust")
 
     # WHEN
-    sx_output_new = px.get_dest_calendar_from_digest_calendar_files()
+    sx_output_new = px.get_output_calendar_from_digest_calendar_files()
 
     # THEN
     assert str(type(sx_output_new)).find(".calendar.CalendarUnit'>")
@@ -275,7 +275,7 @@ def test_person_get_dest_calendar_from_digest_calendar_files_with1DigestedCalend
 #     # GIVEN
 #     env_dir = get_temp_person_dir()
 #     px = personunit_shop(name="test8", env_dir=env_dir)
-#     sx_output_old = px.get_dest_calendar_from_digest_calendar_files()
+#     sx_output_old = px.get_output_calendar_from_digest_calendar_files()
 #     assert str(type(sx_output_old)).find(".calendar.CalendarUnit'>")
 #     assert sx_output_old._groups == {}
 #     assert sx_output_old._members == {}
@@ -304,7 +304,7 @@ def test_person_get_dest_calendar_from_digest_calendar_files_with1DigestedCalend
 
 #     # WHEN
 #     px.set_single_digested_calendar(_calendar_owner="test1", digest_calendar_x=s1)
-#     sx_output_new = px.get_dest_calendar_from_digest_calendar_files()
+#     sx_output_new = px.get_output_calendar_from_digest_calendar_files()
 
 #     # THEN
 #     assert str(type(sx_output_new)).find(".calendar.CalendarUnit'>")
@@ -326,7 +326,7 @@ def test_person_isol_calendar_CorrectlysHasOriginLinksWithOwnerAsSource():
     # GIVEN
     # personunit with isol_calendar and no calendarlinks
     # WHEN
-    # personunit produces dest_calendar
+    # personunit produces output_calendar
     # THEN
-    # dest_calendar ideas correctly store OriginLinks
+    # output_calendar ideas correctly store OriginLinks
     pass

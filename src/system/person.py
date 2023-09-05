@@ -45,8 +45,8 @@ class PersonUnit:
     _digest_calendars_dir: str = None
     _person_file_path: str = None
     _src_calendarlinks: dict[str:CalendarUnit] = None
-    _dest_calendar: CalendarUnit = None
-    _auto_dest_calendar_to_public_calendar: bool = None
+    _output_calendar: CalendarUnit = None
+    _auto_output_calendar_to_public_calendar: bool = None
 
     # dir methods
     def _set_env_dir(self, env_dir: str):
@@ -187,25 +187,25 @@ class PersonUnit:
         x_func_delete_dir(dir=f"{self._person_calendars_dir}/{calendar_owner}.json")
         x_func_delete_dir(dir=f"{self._digest_calendars_dir}/{calendar_owner}.json")
 
-    def _set_auto_dest_calendar_to_public_calendar(
-        self, _auto_dest_calendar_to_public_calendar: bool
+    def _set_auto_output_calendar_to_public_calendar(
+        self, _auto_output_calendar_to_public_calendar: bool
     ):
-        self._auto_dest_calendar_to_public_calendar = (
-            _auto_dest_calendar_to_public_calendar
+        self._auto_output_calendar_to_public_calendar = (
+            _auto_output_calendar_to_public_calendar
         )
 
-    def _set_emtpy_dest_calendar(self):
-        self._dest_calendar = CalendarUnit(_owner="")
+    def _set_emtpy_output_calendar(self):
+        self._output_calendar = CalendarUnit(_owner="")
 
-    def get_dest_calendar_from_digest_calendar_files(self) -> CalendarUnit:
+    def get_output_calendar_from_digest_calendar_files(self) -> CalendarUnit:
         return get_meld_of_calendar_files(
             calendarunit=self.get_isol_digest_calendar(),
             dir=self._digest_calendars_dir,
         )
 
-    def set_dest_calendar_to_public_calendar(self):
-        dest_calendar = self.get_dest_calendar_from_digest_calendar_files()
-        self._save_public_calendar_file(calendarunit=dest_calendar)
+    def set_output_calendar_to_public_calendar(self):
+        output_calendar = self.get_output_calendar_from_digest_calendar_files()
+        self._save_public_calendar_file(calendarunit=output_calendar)
 
     def get_ignore_calendar_from_ignore_calendar_files(
         self, _label: str
@@ -249,8 +249,8 @@ class PersonUnit:
             replace=True,
         )
 
-        if self._auto_dest_calendar_to_public_calendar:
-            self.set_dest_calendar_to_public_calendar()
+        if self._auto_output_calendar_to_public_calendar:
+            self.set_output_calendar_to_public_calendar()
 
     def _save_public_calendar_file(self, calendarunit: CalendarUnit):
         file_name = f"{calendarunit._owner}.json"
@@ -297,8 +297,8 @@ class PersonUnit:
             "_public_calendars_dir": self._public_calendars_dir,
             "_digest_calendars_dir": self._digest_calendars_dir,
             "_src_calendarlinks": self.get_calendar_from_calendars_dirlinks_dict(),
-            "_dest_calendar": self._dest_calendar.get_dict(),
-            "_auto_dest_calendar_to_public_calendar": self._auto_dest_calendar_to_public_calendar,
+            "_output_calendar": self._output_calendar.get_dict(),
+            "_auto_output_calendar_to_public_calendar": self._auto_output_calendar_to_public_calendar,
         }
 
     def get_calendar_from_calendars_dirlinks_dict(self) -> dict[str:dict]:
@@ -314,15 +314,15 @@ class PersonUnit:
 
 
 def personunit_shop(
-    name: str, env_dir: str, _auto_dest_calendar_to_public_calendar: bool = None
+    name: str, env_dir: str, _auto_output_calendar_to_public_calendar: bool = None
 ) -> PersonUnit:
     person_x = PersonUnit(name=name)
     person_x._set_env_dir(env_dir=env_dir)
-    person_x._set_auto_dest_calendar_to_public_calendar(
-        _auto_dest_calendar_to_public_calendar
+    person_x._set_auto_output_calendar_to_public_calendar(
+        _auto_output_calendar_to_public_calendar
     )
     person_x.set_src_calendarlinks_empty_if_null()
-    person_x._set_emtpy_dest_calendar()
+    person_x._set_emtpy_output_calendar()
     return person_x
 
 
@@ -334,8 +334,8 @@ def get_from_dict(person_dict: dict) -> PersonUnit:
     wx = personunit_shop(
         name=person_dict["name"],
         env_dir=person_dict["_env_dir"],
-        _auto_dest_calendar_to_public_calendar=person_dict[
-            "_auto_dest_calendar_to_public_calendar"
+        _auto_output_calendar_to_public_calendar=person_dict[
+            "_auto_output_calendar_to_public_calendar"
         ],
     )
     wx._src_calendarlinks = get_calendar_from_calendars_dirlinks_from_dict(

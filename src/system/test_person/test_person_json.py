@@ -64,8 +64,8 @@ def test_person_get_dict_ReturnsDictObject(person_dir_setup_cleanup):
     assert str(type(x_dict)) == "<class 'dict'>"
     assert x_dict["name"] == person_x.name
     assert (
-        x_dict["_auto_dest_calendar_to_public_calendar"]
-        == person_x._auto_dest_calendar_to_public_calendar
+        x_dict["_auto_output_calendar_to_public_calendar"]
+        == person_x._auto_output_calendar_to_public_calendar
     )
     assert x_dict["_env_dir"] == person_x._env_dir
     assert x_dict["_public_calendars_dir"] == person_x._public_calendars_dir
@@ -83,7 +83,7 @@ def test_person_get_dict_ReturnsDictObject(person_dir_setup_cleanup):
     )
     assert len(person_x.get_calendar_from_calendars_dirlinks_dict()) == 3
 
-    assert x_dict["_dest_calendar"] == person_x._dest_calendar.get_dict()
+    assert x_dict["_output_calendar"] == person_x._output_calendar.get_dict()
 
 
 def test_person_export_to_JSON_simple_example_works(person_dir_setup_cleanup):
@@ -108,7 +108,7 @@ def test_person_export_to_JSON_simple_example_works(person_dir_setup_cleanup):
         x_dict["_src_calendarlinks"]
         == x_person.get_calendar_from_calendars_dirlinks_dict()
     )
-    assert x_dict["_dest_calendar"] == x_person._dest_calendar.get_dict()
+    assert x_dict["_output_calendar"] == x_person._output_calendar.get_dict()
 
 
 def test_person_get_json_CorrectlyWorksForSimpleExample(
@@ -137,8 +137,8 @@ def test_person_get_json_CorrectlyWorksForSimpleExample(
     assert person_json.name != None
     assert person_json.name == person_algo.name
     assert (
-        person_json._auto_dest_calendar_to_public_calendar
-        == person_algo._auto_dest_calendar_to_public_calendar
+        person_json._auto_output_calendar_to_public_calendar
+        == person_algo._auto_output_calendar_to_public_calendar
     )
     assert person_json._env_dir == person_algo._env_dir
     assert person_json._public_calendars_dir == person_algo._public_calendars_dir
@@ -155,4 +155,4 @@ def test_person_get_json_CorrectlyWorksForSimpleExample(
     #     )
 
     assert len(person_json._src_calendarlinks) == len(person_algo._src_calendarlinks)
-    assert person_json._dest_calendar == person_json._dest_calendar
+    assert person_json._output_calendar == person_json._output_calendar

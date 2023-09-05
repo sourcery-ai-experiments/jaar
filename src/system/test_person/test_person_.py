@@ -19,11 +19,11 @@ def test_personunit_exists(person_dir_setup_cleanup):
     person_text = "test1"
     env_dir = get_temp_person_dir()
     px = personunit_shop(
-        name=person_text, env_dir=env_dir, _auto_dest_calendar_to_public_calendar=True
+        name=person_text, env_dir=env_dir, _auto_output_calendar_to_public_calendar=True
     )
     assert px.name == person_text
     assert px._src_calendarlinks == {}
-    assert px._auto_dest_calendar_to_public_calendar
+    assert px._auto_output_calendar_to_public_calendar
     # assert px._re_idearoot != None
     # assert str(type(px._re_idearoot)).find(".idea.IdeaRoot'>") > 0
     # assert px._re_idearoot._label == person_text
@@ -42,7 +42,7 @@ def test_personunit_exists(person_dir_setup_cleanup):
     # assert px._re_idearoot._all_member_credit is None
     # assert px._re_idearoot._all_member_debt is None
     # assert px._re_idearoot._is_expanded == True
-    assert px._dest_calendar != None
+    assert px._output_calendar != None
     assert px._person_dir != None
     assert px._person_calendars_dir != None
     assert px._digest_calendars_dir != None
@@ -65,7 +65,7 @@ def test_personunit_creates_files(person_dir_setup_cleanup):
     px = personunit_shop(name=person1_text, env_dir=env_dir)
     px._set_env_dir(env_dir=env_dir)
     px.set_src_calendarlinks_empty_if_null()
-    px._set_emtpy_dest_calendar()
+    px._set_emtpy_output_calendar()
     assert os_path.exists(persons_dir) is False
     assert os_path.exists(calendars_dir) is False
     assert os_path.exists(person1_dir) is False
@@ -125,7 +125,7 @@ def test_personunit_set_person_name_WorksCorrectly(person_dir_setup_cleanup):
     assert os_path.exists(new_person_file_path)
 
 
-def test_personunit_set_dest_calendar_to_public_calendar_SavesCalendarToPublicDir(
+def test_personunit_set_output_calendar_to_public_calendar_SavesCalendarToPublicDir(
     person_dir_setup_cleanup,
 ):
     # GIVEN create person
@@ -139,14 +139,14 @@ def test_personunit_set_dest_calendar_to_public_calendar_SavesCalendarToPublicDi
     assert os_path.exists(public_file_path) is False
 
     # WHEN
-    px.set_dest_calendar_to_public_calendar()
+    px.set_output_calendar_to_public_calendar()
 
     # THEN
     assert os_path.exists(public_file_path)
     print(f"{public_file_path=}")
 
 
-def test_personunit_auto_dest_calendar_to_public_calendar_SavesCalendarToPublicDir(
+def test_personunit_auto_output_calendar_to_public_calendar_SavesCalendarToPublicDir(
     person_dir_setup_cleanup,
 ):
     # GIVEN create person
@@ -156,7 +156,7 @@ def test_personunit_auto_dest_calendar_to_public_calendar_SavesCalendarToPublicD
     public_file_name = f"{person_text}.json"
     public_file_path = f"src/system/examples/ex_env/calendars/{public_file_name}"
     px = personunit_shop(
-        name=person_text, env_dir=env_dir, _auto_dest_calendar_to_public_calendar=True
+        name=person_text, env_dir=env_dir, _auto_output_calendar_to_public_calendar=True
     )
     px.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False

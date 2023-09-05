@@ -147,14 +147,14 @@ def test_personunit_refresh_calendarlinks_CorrectlyPullsAllPublicCalendars(
     # px_steve.receive_src_calendarunit_obj(calendar_x=ernie_calendar)
     # px_steve.receive_src_calendarunit_obj(calendar_x=jessi_calendar)
     assert (
-        len(px_ernie.get_dest_calendar_from_digest_calendar_files().get_idea_list())
+        len(px_ernie.get_output_calendar_from_digest_calendar_files().get_idea_list())
         == 4
     )
     assert (
-        len(px_jessi.get_dest_calendar_from_digest_calendar_files().get_idea_list())
+        len(px_jessi.get_output_calendar_from_digest_calendar_files().get_idea_list())
         == 4
     )
-    # assert len(px_steve.get_dest_calendar_from_digest_calendar_files().get_idea_list()) == 4
+    # assert len(px_steve.get_output_calendar_from_digest_calendar_files().get_idea_list()) == 4
     new_steve_calendar = example_persons.get_calendar_3CleanNodesRandomWeights(
         _owner="steve"
     )
@@ -171,10 +171,10 @@ def test_personunit_refresh_calendarlinks_CorrectlyPullsAllPublicCalendars(
 
     # THEN
     assert (
-        len(px_ernie.get_dest_calendar_from_digest_calendar_files().get_idea_list())
+        len(px_ernie.get_output_calendar_from_digest_calendar_files().get_idea_list())
         == 5
     )
     assert (
-        len(px_jessi.get_dest_calendar_from_digest_calendar_files().get_idea_list())
+        len(px_jessi.get_output_calendar_from_digest_calendar_files().get_idea_list())
         == 5
     )

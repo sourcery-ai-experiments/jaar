@@ -92,7 +92,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.reload_all_src_calendars
         )
         self.set_public_calendar_button.clicked.connect(
-            self.set_dest_calendar_to_public_calendar
+            self.set_output_calendar_to_public_calendar
         )
         self.set_public_and_reload_srcs_button.clicked.connect(
             self.set_public_and_reload_srcs
@@ -133,12 +133,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.system_x.reload_all_persons_src_calendarunits()
 
     def set_public_and_reload_srcs(self):
-        self.set_dest_calendar_to_public_calendar()
+        self.set_output_calendar_to_public_calendar()
         self.reload_all_src_calendars()
 
-    def set_dest_calendar_to_public_calendar(self):
+    def set_output_calendar_to_public_calendar(self):
         if self.person_x != None:
-            self.person_x.set_dest_calendar_to_public_calendar()
+            self.person_x.set_output_calendar_to_public_calendar()
         self.refresh_system()
 
     def system_load_from_file(self):
@@ -375,11 +375,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_ideas_list(self):
         x_list = []
-        if self.person_dest_calendar != None:
-            idea_list = self.person_dest_calendar.get_idea_tree_ordered_road_list()
+        if self.person_output_calendar != None:
+            idea_list = self.person_output_calendar.get_idea_tree_ordered_road_list()
 
             for idea_road in idea_list:
-                idea_obj = self.person_dest_calendar.get_idea_kid(idea_road)
+                idea_obj = self.person_output_calendar.get_idea_kid(idea_road)
 
                 if idea_obj._walk.find("time") != 3:
                     x_list.append(
@@ -394,36 +394,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_members_list(self):
         x_list = []
-        if self.person_dest_calendar != None:
+        if self.person_output_calendar != None:
             x_list.extend(
                 [
                     f"{lw_diplay(memberunit._calendar_credit)}/{lw_diplay(memberunit._calendar_debt)}",
                     memberunit.name,
                     f"{memberunit.creditor_weight}/{memberunit.debtor_weight}",
                 ]
-                for memberunit in self.person_dest_calendar._members.values()
+                for memberunit in self.person_output_calendar._members.values()
             )
         return x_list
 
     def get_p_groups_list(self):
         x_list = []
-        if self.person_dest_calendar != None:
+        if self.person_output_calendar != None:
             x_list.extend(
                 [
                     f"{lw_diplay(groupunit._calendar_debt)}/{lw_diplay(groupunit._calendar_credit)}",
                     groupunit.name,
                     len(groupunit._members),
                 ]
-                for groupunit in self.person_dest_calendar._groups.values()
+                for groupunit in self.person_output_calendar._groups.values()
             )
         return x_list
 
     def get_p_acptfacts_list(self):
         x_list = []
-        if self.person_dest_calendar != None:
+        if self.person_output_calendar != None:
             for (
                 acptfactunit
-            ) in self.person_dest_calendar._idearoot._acptfactunits.values():
+            ) in self.person_output_calendar._idearoot._acptfactunits.values():
                 open_nigh = ""
                 if acptfactunit.open is None and acptfactunit.nigh is None:
                     open_nigh = ""
@@ -441,8 +441,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_agenda_list(self):
         x_list = []
-        if self.person_dest_calendar != None:
-            agenda_list = self.person_dest_calendar.get_agenda_items()
+        if self.person_output_calendar != None:
+            agenda_list = self.person_output_calendar.get_agenda_items()
             agenda_list.sort(key=lambda x: x._calendar_importance, reverse=True)
             x_list.extend(
                 [
@@ -585,10 +585,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._sub_refresh_calendarlinks_table()
         self._sub_refresh_digests_table()
         self._sub_refresh_ignores_table()
-        self.person_dest_calendar = None
+        self.person_output_calendar = None
         if self.person_x != None:
-            self.person_dest_calendar = (
-                self.person_x.get_dest_calendar_from_digest_calendar_files()
+            self.person_output_calendar = (
+                self.person_x.get_output_calendar_from_digest_calendar_files()
             )
         self._sub_refresh_p_ideas_table()
         self._sub_refresh_p_members_table()
