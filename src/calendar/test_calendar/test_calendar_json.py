@@ -246,8 +246,11 @@ def test_calendar_get_json_CorrectlyWorksForSimpleExample():
     calendar_y.set_max_tree_traverse(23)
 
     shave_text = "shave"
-    shave_road = f"{calendar_y._owner},{shave_text}"
-    shave_idea_x = calendar_y.get_idea_kid(road=shave_road)
+    shave_road = f"{root_label()},{shave_text}"
+    shave_idea_y1 = calendar_y.get_idea_kid(road=shave_road)
+    shave_idea_y1._originunit.set_originlink(name="Sue", weight=4.3)
+    # print(f"{shave_road=}")
+    # print(f"{shave_idea_x._label=} {shave_idea_x._walk=}")
 
     sue_text = "sue"
     calendar_y.add_memberunit(name=sue_text)
@@ -306,10 +309,11 @@ def test_calendar_get_json_CorrectlyWorksForSimpleExample():
     assert sunday_idea_x._weight == 20
 
     shave_idea_x = calendar_x.get_idea_kid(road=shave_road)
-    shave_idea_y = calendar_y.get_idea_kid(road=shave_road)
+    shave_idea_y2 = calendar_y.get_idea_kid(road=shave_road)
     assert len(shave_idea_x._requiredunits) == 1
-    assert shave_idea_x._assignedunit == shave_idea_y._assignedunit
+    assert shave_idea_x._assignedunit == shave_idea_y2._assignedunit
     assert shave_idea_x._assignedunit == tim_assigned_unit
+    assert shave_idea_x._originunit == shave_idea_y2._originunit
     assert len(shave_idea_x._grouplinks) == 2
     assert len(shave_idea_x._acptfactunits) == 1
 
