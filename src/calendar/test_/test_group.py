@@ -339,7 +339,7 @@ def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     }
 
     str_teacher = "teachers"
-    swim_road = "road_str"
+    swim_road = "swim"
     teachers_group = groupunit_shop(
         name=str_teacher,
         _members=memberlinks_dict,
@@ -371,7 +371,7 @@ def test_groupunit_get_from_JSON_SimpleExampleWorks():
     memberlinks_dict = {marie_memberlink.name: marie_memberlink}
 
     str_teacher = "teachers"
-    swim_road = "road_str"
+    swim_road = "swim"
     teacher_group = groupunit_shop(
         name=str_teacher,
         _members=memberlinks_dict,

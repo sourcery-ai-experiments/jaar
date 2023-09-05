@@ -25,25 +25,32 @@ def test_memberrings_exists():
 
 
 def test_memberrings_get_dict_ReturnsDictWithNecessaryDataForJSON():
+    # GIVEN
     member_name = MemberName("bob")
     member_ring = MemberRing(name=member_name)
     print(f"{member_ring}")
+
+    # WHEN
     x_dict = member_ring.get_dict()
+
+    # THEN
     assert x_dict != None
     assert x_dict == {"name": str(member_name)}
 
 
 def test_memberrings_get_from_JSON_SimpleExampleWorks():
-    marie_str = "Marie"
-    marie_json_dict = {marie_str: {"name": marie_str}}
-    marie_json_str = x_get_json(dict_x=marie_json_dict)
-    assert x_is_json(json_x=marie_json_str)
+    # GIVEN
+    marie_text = "Marie"
+    marie_json_dict = {marie_text: {"name": marie_text}}
+    marie_json_text = x_get_json(dict_x=marie_json_dict)
+    assert x_is_json(json_x=marie_json_text)
 
-    marie_obj_dict = memberrings_get_from_json(memberrings_json=marie_json_str)
+    # WHEN
+    marie_obj_dict = memberrings_get_from_json(memberrings_json=marie_json_text)
+
+    # THEN
     assert marie_obj_dict != None
-
-    marie_name = MemberName(marie_str)
-    marie_memberring = MemberRing(name=marie_name)
+    marie_memberring = MemberRing(name=marie_text)
     memberrings_dict = {marie_memberring.name: marie_memberring}
     assert marie_obj_dict == memberrings_dict
 
@@ -273,14 +280,15 @@ def test_MemberUnit_clear_banking_data_MethodWorkCorrectly():
 
 
 def test_MemberUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
-    glen_str = "glen"
-    glen_ring = MemberRing(name=glen_str)
+    # GIVEN
+    glen_text = "glen"
+    glen_ring = MemberRing(name=glen_text)
     member_rings = {glen_ring.name: glen_ring}
-    bob_str = "bob"
+    bob_text = "bob"
     bank_tax_paid = 0.55
     bank_tax_diff = 0.66
     bob_member = memberunit_shop(
-        name=bob_str,
+        name=bob_text,
         uid=652,
         creditor_weight=13,
         debtor_weight=17,
@@ -290,12 +298,16 @@ def test_MemberUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         _bank_tax_paid=bank_tax_paid,
         _bank_tax_diff=bank_tax_diff,
     )
-    print(f"{bob_str}")
+    print(f"{bob_text}")
+
+    # WHEN
     x_dict = bob_member.get_dict()
+
+    # THEN
     print(f"{x_dict=}")
     assert x_dict != None
     assert x_dict == {
-        "name": bob_str,
+        "name": bob_text,
         "uid": 652,
         "creditor_weight": 13,
         "debtor_weight": 17,
@@ -310,12 +322,12 @@ def test_MemberUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
 def test_MemberUnisshop_get_from_JSON_SimpleExampleWorks():
     cersei_name = MemberName("Cersei")
     member_rings = {cersei_name: {"name": cersei_name}}
-    marie_str = "Marie"
+    marie_text = "Marie"
     bank_tax_paid = 0.55
     bank_tax_diff = 0.66
     marie_json_dict = {
-        marie_str: {
-            "name": marie_str,
+        marie_text: {
+            "name": marie_text,
             "uid": 103,
             "creditor_weight": 17,
             "debtor_weight": 17,
@@ -326,8 +338,8 @@ def test_MemberUnisshop_get_from_JSON_SimpleExampleWorks():
             "_bank_tax_diff": bank_tax_diff,
         }
     }
-    marie_json_str = x_get_json(dict_x=marie_json_dict)
-    assert x_is_json(json_x=marie_json_str)
+    marie_json_text = x_get_json(dict_x=marie_json_dict)
+    assert x_is_json(json_x=marie_json_text)
 
 
 def test_MemberUnisshop_get_from_JSON_SimpleExampleWorksWithIncompleteData():
@@ -351,12 +363,12 @@ def test_MemberUnisshop_get_from_JSON_SimpleExampleWorksWithIncompleteData():
     }
 
     # WHEN
-    marie_json_str = x_get_json(dict_x=marie_json_dict)
+    marie_json_text = x_get_json(dict_x=marie_json_dict)
 
     # THEN
-    assert x_is_json(json_x=marie_json_str)
+    assert x_is_json(json_x=marie_json_text)
 
-    marie_obj_dict = memberunits_get_from_json(memberunits_json=marie_json_str)
+    marie_obj_dict = memberunits_get_from_json(memberunits_json=marie_json_text)
     assert marie_obj_dict[marie_text] != None
     assert marie_obj_dict[marie_text].creditor_weight == 17
     assert marie_obj_dict[marie_text].debtor_weight == 15
@@ -484,20 +496,20 @@ def test_memberlink_shop_get_dict_ReturnsDictWithNecessaryDataForJSON():
 
 def test_memberlink_get_from_JSON_SimpleExampleWorks():
     # GIVEN
-    marie_str = "Marie"
+    marie_text = "Marie"
     marie_json_dict = {
-        marie_str: {"name": marie_str, "creditor_weight": 12, "debtor_weight": 19}
+        marie_text: {"name": marie_text, "creditor_weight": 12, "debtor_weight": 19}
     }
-    marie_json_str = x_get_json(dict_x=marie_json_dict)
-    assert x_is_json(json_x=marie_json_str)
+    marie_json_text = x_get_json(dict_x=marie_json_dict)
+    assert x_is_json(json_x=marie_json_text)
 
     # WHEN
-    marie_obj_dict = memberlinks_get_from_json(memberlinks_json=marie_json_str)
+    marie_obj_dict = memberlinks_get_from_json(memberlinks_json=marie_json_text)
 
     # THEN
     assert marie_obj_dict != None
 
-    marie_name = MemberName(marie_str)
+    marie_name = MemberName(marie_text)
     marie_memberlink = memberlink_shop(
         name=marie_name, creditor_weight=12, debtor_weight=19
     )

@@ -13,12 +13,12 @@ def sqlite_bool(int_x) -> bool:
 def sqlite_text(bool_x) -> str:
     """convert_sqlite_true_to_python_true"""
     if bool_x == True:
-        return_str = "TRUE"
+        x_text = "TRUE"
     elif bool_x == False:
-        return_str = "FALSE"
+        x_text = "FALSE"
     else:
         raise TypeError("function requires boolean")
-    return return_str
+    return x_text
 
 
 def check_connection(conn: Connection) -> bool:

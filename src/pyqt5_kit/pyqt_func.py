@@ -204,14 +204,14 @@ def _get_treenode_l_acptfactheir_view(treenode_l, pth: PYQTTreeHolder) -> str:
             and acptfactheir.open != None
             and acptfactheir.nigh != None
         ):
-            hc_open_str = pth.source_calendar.get_jajatime_legible_one_time_event(
+            hc_open_text = pth.source_calendar.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactheir.open
             )
-            hc_nigh_str = pth.source_calendar.get_jajatime_legible_one_time_event(
+            hc_nigh_text = pth.source_calendar.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactheir.nigh
             )
             # treenode_l += f"{get_terminus_node_from_road(acptfactheir.base)}"
-            treenode_l += f" ({hc_open_str}-{hc_nigh_str})"
+            treenode_l += f" ({hc_open_text}-{hc_nigh_text})"
         elif (
             acptfactheir.base != time_road
             and acptfactheir.open != None
@@ -252,13 +252,13 @@ def _create_treenode_l(pth: PYQTTreeHolder):
         time_road = f"{pth.source_calendar._idearoot._label},time,jajatime"
         acptfactunit_time_obj = pth.ideacore._acptfactunits.get(time_road)
         if acptfactunit_time_obj != None:
-            hc_open_str = pth.source_calendar.get_jajatime_legible_one_time_event(
+            hc_open_text = pth.source_calendar.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactunit_time_obj.open
             )
-            hc_nigh_str = pth.source_calendar.get_jajatime_legible_one_time_event(
+            hc_nigh_text = pth.source_calendar.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactunit_time_obj.nigh
             )
             # treenode_l += f" ({acptfactunit.base=} {acptfactunit.open}-{acptfactunit.nigh})"
-            treenode_l += f" ({hc_open_str}-{hc_nigh_str})"
+            treenode_l += f" ({hc_open_text}-{hc_nigh_text})"
 
     return treenode_l
