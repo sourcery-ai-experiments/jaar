@@ -289,20 +289,22 @@ def get_calendar_x1_3levels_1required_1acptfacts() -> CalendarUnit:
     x_calendar.add_idea(idea_kid=idea_grandkidU, walk=week_road)
     x_calendar.add_idea(idea_kid=idea_grandkidM, walk=week_road)
 
-    shave_base = "prom,weekdays"
-    shave_sufffact_road = "prom,weekdays,Monday"
+    shave_base = f"{root_label()},weekdays"
+    shave_sufffact_road = f"{root_label()},weekdays,Monday"
     shave_sufffact_x = sufffactunit_shop(need=shave_sufffact_road)
     shave_required = RequiredUnit(
         base=shave_base,
         sufffacts={shave_sufffact_x.need: shave_sufffact_x},
     )
 
-    x_calendar.edit_idea_attr(road="prom,shave", required=shave_required)
-    x_calendar.set_acptfact(base="prom,weekdays", pick="prom,weekdays,Sunday")
-    acptfactunit_x = acptfactunit_shop(
-        base="prom,weekdays", pick="prom,weekdays,Sunday,church"
+    x_calendar.edit_idea_attr(road=f"{root_label()},shave", required=shave_required)
+    x_calendar.set_acptfact(
+        base=f"{root_label()},weekdays", pick=f"{root_label()},weekdays,Sunday"
     )
-    x_calendar.edit_idea_attr(road="prom,shave", acptfactunit=acptfactunit_x)
+    acptfactunit_x = acptfactunit_shop(
+        base=f"{root_label()},weekdays", pick=f"{root_label()},weekdays,Sunday,church"
+    )
+    x_calendar.edit_idea_attr(road=f"{root_label()},shave", acptfactunit=acptfactunit_x)
     return x_calendar
 
 

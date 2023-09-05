@@ -59,8 +59,8 @@ def test_idea_core_get_key_road_works():
 
 def test_idea_core_is_heir_CorrectlyIdentifiesHeirs():
     idea_core = IdeaCore()
-    texas_road = "prom,Nation-States,USA,Texas"
-    usa_road = "prom,Nation-States,USA"
+    texas_road = f"{root_label()},Nation-States,USA,Texas"
+    usa_road = f"{root_label()},Nation-States,USA"
     assert idea_core.is_heir(src=usa_road, heir=usa_road)
     assert idea_core.is_heir(src=usa_road, heir=texas_road)
     assert idea_core.is_heir(src="earth,sea", heir="earth,seaside,beach") == False

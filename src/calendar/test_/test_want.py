@@ -46,9 +46,9 @@ def test_sufffact_is_range_CorrectlyIdenitiesSegregateStatus():
 
 
 def test_sufffact_is_in_lineage_CorrectlyIdentifiesLineage():
-    texas_road = "prom,Nation-States,USA,Texas"
-    oregon_road = "prom,Nation-States,USA,Oregon"
-    usa_road = "prom,Nation-States,USA"
+    texas_road = f"{root_label()},Nation-States,USA,Texas"
+    oregon_road = f"{root_label()},Nation-States,USA,Oregon"
+    usa_road = f"{root_label()},Nation-States,USA"
     texas_acptfact = acptfactheir_shop(base=usa_road, pick=texas_road)
     texas_sufffact_x = sufffactunit_shop(need=texas_road)
     usa_sufffact_x = sufffactunit_shop(need=usa_road)
@@ -268,11 +268,11 @@ def test_sufffact_set_task_CorrectlySetsTaskBoolSegregateTrue_02():
 
 
 def test_sufffact_set_task_NotNull():
-    road_x = "prom,weekdays,Wednesday"
+    road_x = f"{root_label()},weekdays,Wednesday"
     sufffact_x = sufffactunit_shop(need=road_x)
     sufffact_x._status = True
 
-    x_base_road = "prom,weekdays"
+    x_base_road = f"{root_label()},weekdays"
     acptfactheir = acptfactheir_shop(base=x_base_road, pick=road_x)
 
     assert sufffact_x._get_task_status(acptfactheir=acptfactheir) == False
