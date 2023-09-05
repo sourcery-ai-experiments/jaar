@@ -36,6 +36,16 @@ class OriginUnit:
         self._set_originlinks_empty_if_null()
         self._links.pop(name)
 
+    def get_dict(self):
+        return {"_links": self.get_originlinks_dict()}
+
+    def get_originlinks_dict(self):
+        x_dict = {}
+        if self._links != None:
+            for originlink_x in self._links.values():
+                x_dict[originlink_x.name] = originlink_x.get_dict()
+        return x_dict
+
 
 def originunit_shop() -> OriginUnit:
     originunit_x = OriginUnit()

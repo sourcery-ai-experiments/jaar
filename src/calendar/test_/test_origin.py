@@ -45,10 +45,10 @@ def test_originlink_shop_WeightIsNotRequired():
 def test_OriginLink_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
     roy_text = "Roy"
-    originlink_x = originlink_shop(name=roy_text)
+    roy_originlink = originlink_shop(name=roy_text)
 
     # WHEN
-    x_dict = originlink_x.get_dict()
+    x_dict = roy_originlink.get_dict()
 
     # THEN
     print(f"{x_dict=}")
@@ -115,3 +115,26 @@ def test_originunit_del_originlink_CorrectlyDeletesOriginLink():
 
     # THEN
     assert originunit_x._links.get(tim_text) is None
+
+
+def test_OriginUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
+    # GIVEN
+    roy_text = "Roy"
+    roy_originlink = originlink_shop(name=roy_text)
+    roy_ol_dict = roy_originlink.get_dict()
+    sue_text = "Sue"
+    sue_weight = 4
+    sue_originlink = originlink_shop(name=sue_text, weight=sue_weight)
+    sue_ol_dict = sue_originlink.get_dict()
+
+    originunit_x = originunit_shop()
+    originunit_x.set_originlink(name=roy_text, weight=None)
+    originunit_x.set_originlink(name=sue_text, weight=sue_weight)
+
+    # WHEN
+    x_dict = originunit_x.get_dict()
+
+    # THEN
+    print(f"{x_dict=}")
+    assert x_dict != None
+    assert x_dict == {"_links": {roy_text: roy_ol_dict, sue_text: sue_ol_dict}}
