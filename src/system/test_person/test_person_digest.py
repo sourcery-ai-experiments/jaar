@@ -320,3 +320,13 @@ def test_person_get_dest_calendar_from_digest_calendar_files_with1DigestedCalend
 #     assert sx_output_new._idearoot == s1._idearoot
 #     assert sx_output_new._label != s1._label
 #     assert sx_output_new != s1
+
+
+def test_person_isol_calendar_CorrectlysHasOriginLinksWithOwnerAsSource():
+    # GIVEN
+    # personunit with isol_calendar and no calendarlinks
+    # WHEN
+    # personunit produces dest_calendar
+    # THEN
+    # dest_calendar ideas correctly store OriginLinks
+    pass
