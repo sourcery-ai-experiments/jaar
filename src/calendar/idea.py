@@ -907,7 +907,7 @@ class IdeaKid(IdeaCore):
     pass
 
 
-class IdeaRootDescNotEmptyException(Exception):
+class IdeaRootLabelNotEmptyException(Exception):
     pass
 
 
@@ -918,7 +918,7 @@ class IdeaRoot(IdeaCore):
 
     def set_idea_label(self, _label):
         if _label != root_label():
-            raise IdeaRootDescNotEmptyException(
+            raise IdeaRootLabelNotEmptyException(
                 f"Cannot set idearoot to string other than '{root_label()}'"
             )
         else:
