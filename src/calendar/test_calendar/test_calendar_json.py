@@ -356,6 +356,9 @@ def test_get_dict_of_calendar_from_dict_ReturnsDictOfCalendarUnits():
     assert ccn_dict_of_obj.get(cx1._owner) != None
     assert ccn_dict_of_obj.get(cx2._owner) != None
     assert ccn_dict_of_obj.get(cx3._owner) != None
+    cc1_idea_root = ccn_dict_of_obj.get(cx1._owner)._idearoot
+    assert cc1_idea_root._originunit == cx1._idearoot._originunit
+    assert ccn_dict_of_obj.get(cx1._owner)._idea_dict == cx1._idea_dict
     assert ccn_dict_of_obj.get(cx1._owner) == cx1
     assert ccn_dict_of_obj.get(cx2._owner) == cx2
     assert ccn_dict_of_obj.get(cx3._owner) == cx3

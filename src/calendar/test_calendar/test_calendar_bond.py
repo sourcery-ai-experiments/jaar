@@ -368,22 +368,24 @@ def test_calendarunit_get_meld_of_calendar_files_MeldsIntoSourceCalendar_Scenari
     src_cx.add_idea(idea_kid=idea_kid_feedcat, walk=f"{root_label()}")
 
     src_cx.export_all_bonds(dir=get_temp_env_dir())
+    cat_t = "feed cat"
+    src_cat_idea = src_cx._idearoot._kids.get(cat_t)
+    src_cat_idea.set_originunit_empty_if_null()
 
     # WHEN
     new_cx = get_meld_of_calendar_files(
-        calendarunit=CalendarUnit(_owner=src_cx._owner, _weight=10),
+        calendarunit=src_cx,
         dir=get_temp_env_dir(),
     )
 
     # THEN
     assert src_cx._weight == new_cx._weight
     assert src_cx._idearoot._weight == new_cx._idearoot._weight
-    cat_t = "feed cat"
-    assert (
-        src_cx._idearoot._kids.get(cat_t)._calendar_coin_onset
-        == new_cx._idearoot._kids.get(cat_t)._calendar_coin_onset
-    )
-    assert src_cx._idearoot._kids.get(cat_t) == new_cx._idearoot._kids.get(cat_t)
+    src_cat_idea = src_cx._idearoot._kids.get(cat_t)
+    new_cat_idea = new_cx._idearoot._kids.get(cat_t)
+    assert src_cat_idea._calendar_coin_onset == new_cat_idea._calendar_coin_onset
+    assert src_cat_idea._originunit == new_cat_idea._originunit
+    assert src_cat_idea == new_cat_idea
     assert src_cx._idearoot._kids == new_cx._idearoot._kids
     assert src_cx._idearoot == new_cx._idearoot
     assert src_cx == new_cx

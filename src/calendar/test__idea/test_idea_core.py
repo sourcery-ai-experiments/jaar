@@ -312,6 +312,9 @@ def test_idea_get_dict_ReturnsDict():
     )
     acptfactunit_x = acptfactunit_shop(base=week_road, pick=week_road, open=5, nigh=59)
     temp_idea._set_ideakid_attr(acptfactunit=acptfactunit_x)
+    temp_idea.set_originunit_empty_if_null()
+    temp_idea._originunit.set_originlink(name="Ray", weight=None)
+    temp_idea._originunit.set_originlink(name="Lei", weight=4)
 
     # WHEN
     ideakid_dict = temp_idea.get_dict()
@@ -322,6 +325,7 @@ def test_idea_get_dict_ReturnsDict():
     assert ideakid_dict["_requiredunits"] == temp_idea.get_requiredunits_dict()
     assert ideakid_dict["_grouplinks"] == temp_idea.get_grouplinks_dict()
     assert ideakid_dict["_grouplinks"] == x1_grouplinks
+    assert ideakid_dict["_originunit"] == temp_idea.get_originunit_dict()
     assert ideakid_dict["_weight"] == temp_idea._weight
     assert ideakid_dict["_label"] == temp_idea._label
     assert ideakid_dict["_uid"] == temp_idea._uid

@@ -502,9 +502,16 @@ class IdeaCore:
 
     def _meld_originlinks(self, member_name: MemberName, member_weight: float):
         if member_name != None:
-            if self._originunit is None:
-                self._originunit = originunit_shop()
+            self.set_originunit_empty_if_null()
             self._originunit.set_originlink(member_name, member_weight)
+
+    def set_originunit_empty_if_null(self):
+        if self._originunit is None:
+            self._originunit = originunit_shop()
+
+    def get_originunit_dict(self):
+        self.set_originunit_empty_if_null()
+        return self._originunit.get_dict()
 
     def _meld_attributes_that_will_be_equal(self, other_idea):
         xl = [
@@ -861,6 +868,7 @@ class IdeaCore:
             "_requiredunits": self.get_requiredunits_dict(),
             "_assignedunit": self.get_assignedunit_dict(),
             "_grouplinks": self.get_grouplinks_dict(),
+            "_originunit": self.get_originunit_dict(),
             "_weight": self._weight,
             "_label": self._label,
             "_uid": self._uid,

@@ -1,3 +1,4 @@
+from contextlib import suppress as contextlib_suppress
 from src.calendar.member import MemberName
 from dataclasses import dataclass
 
@@ -50,4 +51,15 @@ class OriginUnit:
 def originunit_shop() -> OriginUnit:
     originunit_x = OriginUnit()
     originunit_x._set_originlinks_empty_if_null()
+    return originunit_x
+
+
+def originunit_get_from_dict(x_dict: dict) -> OriginUnit:
+    originunit_x = originlink_shop()
+    with contextlib_suppress(KeyError):
+        originlinks_dict = x_dict["_links"]
+        for originlink_dict in originlinks_dict.values():
+            originunit_x.set_originlink(
+                name=originlink_dict["name"], weight=originlink_dict["weight"]
+            )
     return originunit_x

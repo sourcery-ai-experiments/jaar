@@ -62,6 +62,7 @@ from src.calendar.road import (
     get_road_from_nodes,
     get_all_road_nodes_in_list,
 )
+from src.calendar.origin import originunit_get_from_dict, originunit_shop
 from copy import deepcopy as copy_deepcopy
 from src.calendar.x_func import (
     save_file as x_func_save_file,
@@ -1631,6 +1632,7 @@ class CalendarUnit:
         )
         self._idearoot.inherit_groupheirs()
         self._idearoot.clear_grouplines()
+        self._idearoot.set_originunit_empty_if_null()
         self._idearoot.set_acptfactunits_empty_if_null()
         self._idearoot._weight = 1
         self._idearoot._kids_total_weight = 0
@@ -1675,6 +1677,7 @@ class CalendarUnit:
         idea_kid.set_assignedheir(parent_idea._assignedheir, self._groups)
         idea_kid.inherit_groupheirs(parent_idea._groupheirs)
         idea_kid.clear_grouplines()
+        idea_kid.set_originunit_empty_if_null()
         idea_kid.set_active_status(
             tree_traverse_count=self._tree_traverse_count,
             calendar_groups=self._groups,
@@ -1851,6 +1854,7 @@ class CalendarUnit:
             "_groups": self.groupunit_shops_dict(),
             "_grouplinks": self._idearoot.get_grouplinks_dict(),
             "_assignedunit": self._idearoot.get_assignedunit_dict(),
+            "_originunit": self._idearoot.get_originunit_dict(),
             "_weight": self._weight,
             "_owner": self._owner,
             "_uid": self._idearoot._uid,
@@ -2028,44 +2032,50 @@ class CalendarUnit:
 
 # class Calendarshop:
 def get_from_json(lw_json: str) -> CalendarUnit:
-    return get_from_dict(lw_dict=json.loads(lw_json))
+    return get_from_dict(cx_dict=json.loads(lw_json))
 
 
-def get_from_dict(lw_dict: dict) -> CalendarUnit:
+def get_from_dict(cx_dict: dict) -> CalendarUnit:
     c_x = CalendarUnit()
     c_x._idearoot._requiredunits = requireds_get_from_dict(
-        requireds_dict=lw_dict["_requiredunits"]
+        requireds_dict=cx_dict["_requiredunits"]
     )
     _assignedunit = "_assignedunit"
-    if lw_dict.get(_assignedunit):
+    if cx_dict.get(_assignedunit):
         c_x._idearoot._assignedunit = assignedunit_get_from_dict(
-            assignedunit_dict=lw_dict.get(_assignedunit)
+            assignedunit_dict=cx_dict.get(_assignedunit)
         )
     c_x._idearoot._acptfactunits = acptfactunits_get_from_dict(
-        x_dict=lw_dict["_acptfactunits"]
+        x_dict=cx_dict["_acptfactunits"]
     )
-    c_x._groups = groupunits_get_from_dict(x_dict=lw_dict["_groups"])
-    c_x._idearoot._grouplinks = grouplinks_get_from_dict(x_dict=lw_dict["_grouplinks"])
-    c_x._members = memberunits_get_from_dict(x_dict=lw_dict["_members"])
-    c_x._owner = lw_dict["_owner"]
+    c_x._groups = groupunits_get_from_dict(x_dict=cx_dict["_groups"])
+    c_x._idearoot._grouplinks = grouplinks_get_from_dict(x_dict=cx_dict["_grouplinks"])
+    try:
+        c_x._idearoot._originunit = originunit_get_from_dict(
+            x_dict=cx_dict["_originunit"]
+        )
+    except Exception:
+        c_x._idearoot._originunit = originunit_shop()
+    c_x._members = memberunits_get_from_dict(x_dict=cx_dict["_members"])
+    c_x._owner = cx_dict["_owner"]
     c_x._idearoot.set_idea_label(root_label())
-    c_x._weight = lw_dict["_weight"]
-    c_x._max_tree_traverse = lw_dict.get("_max_tree_traverse")
-    if lw_dict.get("_max_tree_traverse") is None:
+    c_x._weight = cx_dict["_weight"]
+    c_x._max_tree_traverse = cx_dict.get("_max_tree_traverse")
+    if cx_dict.get("_max_tree_traverse") is None:
         c_x._max_tree_traverse = 20
-    c_x._idearoot._weight = lw_dict["_weight"]
-    c_x._idearoot._uid = lw_dict["_uid"]
-    c_x._idearoot._begin = lw_dict["_begin"]
-    c_x._idearoot._close = lw_dict["_close"]
-    c_x._idearoot._numor = lw_dict["_numor"]
-    c_x._idearoot._denom = lw_dict["_denom"]
-    c_x._idearoot._reest = lw_dict["_reest"]
-    c_x._idearoot._special_road = lw_dict["_special_road"]
-    c_x._idearoot._numeric_road = lw_dict["_numeric_road"]
-    c_x._idearoot._is_expanded = lw_dict["_is_expanded"]
+    c_x._idearoot._weight = cx_dict["_weight"]
+    c_x._idearoot._uid = cx_dict["_uid"]
+    c_x._idearoot._begin = cx_dict["_begin"]
+    c_x._idearoot._close = cx_dict["_close"]
+    c_x._idearoot._numor = cx_dict["_numor"]
+    c_x._idearoot._denom = cx_dict["_denom"]
+    c_x._idearoot._reest = cx_dict["_reest"]
+    c_x._idearoot._special_road = cx_dict["_special_road"]
+    c_x._idearoot._numeric_road = cx_dict["_numeric_road"]
+    c_x._idearoot._is_expanded = cx_dict["_is_expanded"]
 
     idea_dict_list = []
-    for x_dict in lw_dict["_kids"].values():
+    for x_dict in cx_dict["_kids"].values():
         x_dict["temp_road"] = c_x._owner
         idea_dict_list.append(x_dict)
 
@@ -2082,6 +2092,11 @@ def get_from_dict(lw_dict: dict) -> CalendarUnit:
             idea_assignedunit = assignedunit_get_from_dict(
                 assignedunit_dict=idea_dict.get(_assignedunit)
             )
+        originunit_from_dict = None
+        try:
+            originunit_from_dict = originunit_get_from_dict(idea_dict["_originunit"])
+        except Exception:
+            originunit_from_dict = originunit_shop()
 
         idea_obj = IdeaKid(
             _label=idea_dict["_label"],
@@ -2097,6 +2112,7 @@ def get_from_dict(lw_dict: dict) -> CalendarUnit:
                 requireds_dict=idea_dict["_requiredunits"]
             ),
             _assignedunit=idea_assignedunit,
+            _originunit=originunit_from_dict,
             _grouplinks=grouplinks_get_from_dict(idea_dict["_grouplinks"]),
             _acptfactunits=acptfactunits_get_from_dict(idea_dict["_acptfactunits"]),
             _is_expanded=idea_dict["_is_expanded"],
@@ -2109,10 +2125,10 @@ def get_from_dict(lw_dict: dict) -> CalendarUnit:
     return c_x
 
 
-def get_dict_of_calendar_from_dict(x_dict: dict) -> dict[str:CalendarUnit]:
+def get_dict_of_calendar_from_dict(x_dict: dict[str:dict]) -> dict[str:CalendarUnit]:
     calendarunits = {}
     for calendarunit_dict in x_dict.values():
-        x_calendar = get_from_dict(lw_dict=calendarunit_dict)
+        x_calendar = get_from_dict(cx_dict=calendarunit_dict)
         calendarunits[x_calendar._owner] = x_calendar
     return calendarunits
 
