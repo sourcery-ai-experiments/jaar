@@ -68,8 +68,8 @@ class PersonUnit:
     def _set_person_calendars_dir(self):
         self._person_calendars_dir = f"{self._person_dir}/calendars"
 
-    def get_starting_digest_calendar_file_name(self):
-        return "starting_digest_calendar.json"
+    def get_isol_digest_calendar_file_name(self):
+        return "isol_digest_calendar.json"
 
     def _set_digest_calendars_dir(self):
         self._digest_calendars_dir = f"{self._person_dir}/digests"
@@ -199,7 +199,7 @@ class PersonUnit:
 
     def get_dest_calendar_from_digest_calendar_files(self) -> CalendarUnit:
         return get_meld_of_calendar_files(
-            calendarunit=self.get_starting_digest_calendar(),
+            calendarunit=self.get_isol_digest_calendar(),
             dir=self._digest_calendars_dir,
         )
 
@@ -261,34 +261,32 @@ class PersonUnit:
             replace=True,
         )
 
-    def get_starting_digest_calendar(self) -> CalendarUnit:
+    def get_isol_digest_calendar(self) -> CalendarUnit:
         cx = None
         try:
-            ct = x_func_open_file(self._person_dir, "starting_digest_calendar.json")
+            ct = x_func_open_file(self._person_dir, "isol_digest_calendar.json")
             cx = calendarunit_get_from_json(lw_json=ct)
-            empty_cx = self._get_empty_starting_digest_calendar()
+            empty_cx = self._get_empty_isol_digest_calendar()
             cx.calendar_owner_edit(new_owner=empty_cx._owner)
             cx.set_calendar_metrics()
         except Exception:
-            cx = self._get_empty_starting_digest_calendar()
+            cx = self._get_empty_isol_digest_calendar()
             cx.set_calendar_metrics()
         return cx
 
-    def _get_empty_starting_digest_calendar(self):
+    def _get_empty_isol_digest_calendar(self):
         return CalendarUnit(_owner=self.name, _weight=0)
 
-    def set_starting_digest_calendar(self, calendarunit: CalendarUnit):
+    def set_isol_digest_calendar(self, calendarunit: CalendarUnit):
         x_func_save_file(
             dest_dir=self._person_dir,
-            file_name="starting_digest_calendar.json",
+            file_name="isol_digest_calendar.json",
             file_text=calendarunit.get_json(),
             replace=True,
         )
 
-    def del_starting_digest_calendar_file(self):
-        file_path = (
-            f"{self._person_dir}/{self.get_starting_digest_calendar_file_name()}"
-        )
+    def del_isol_digest_calendar_file(self):
+        file_path = f"{self._person_dir}/{self.get_isol_digest_calendar_file_name()}"
         x_func_delete_dir(dir=file_path)
 
     def get_dict(self):

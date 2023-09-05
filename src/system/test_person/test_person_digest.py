@@ -20,23 +20,23 @@ from src.calendar.x_func import (
 from pytest import raises as pytest_raises
 
 
-def test_person_set_starting_digest_calendar_CreateStartingCalendarFile(
+def test_person_set_isol_digest_calendar_CreateStartingCalendarFile(
     person_dir_setup_cleanup,
 ):
     # GIVEN
     p_name = "Game1"
     env_dir = get_temp_person_dir()
     px = personunit_shop(name=p_name, env_dir=env_dir)
-    file_name = "starting_digest_calendar.json"
+    file_name = "isol_digest_calendar.json"
     with pytest_raises(Exception) as excinfo:
         x_func_open_file(px._person_dir, file_name)
     assert (
         str(excinfo.value)
-        == f"Could not load file {px._person_dir}/starting_digest_calendar.json (2, 'No such file or directory')"
+        == f"Could not load file {px._person_dir}/isol_digest_calendar.json (2, 'No such file or directory')"
     )
 
     # WHEN
-    px.set_starting_digest_calendar(
+    px.set_isol_digest_calendar(
         calendarunit=example_calendars_get_calendar_with_4_levels()
     )
 
@@ -44,7 +44,7 @@ def test_person_set_starting_digest_calendar_CreateStartingCalendarFile(
     assert x_func_open_file(px._person_dir, file_name) != None
 
 
-def test_personget_starting_digest_calendar_WhenStartingCalendarFileDoesNotExists(
+def test_personget_isol_digest_calendar_WhenStartingCalendarFileDoesNotExists(
     person_dir_setup_cleanup,
 ):
     # GIVEN
@@ -53,8 +53,8 @@ def test_personget_starting_digest_calendar_WhenStartingCalendarFileDoesNotExist
     px = personunit_shop(name=p_name, env_dir=env_dir)
 
     # WHEN
-    assert px.get_starting_digest_calendar() != None
-    starting_dest_calendar = px.get_starting_digest_calendar()
+    assert px.get_isol_digest_calendar() != None
+    isol_digest_calendar = px.get_isol_digest_calendar()
 
     # THEN
     x_calendar = CalendarUnit(_owner=p_name)
@@ -73,62 +73,62 @@ def test_personget_starting_digest_calendar_WhenStartingCalendarFileDoesNotExist
     # x_idearoot._all_member_credit = True
     # x_idearoot._all_member_debt = True
 
-    assert starting_dest_calendar._idearoot == x_calendar._idearoot
-    assert starting_dest_calendar._idearoot._acptfactunits == {}
-    assert starting_dest_calendar._members == {}
-    assert starting_dest_calendar._groups == {}
+    assert isol_digest_calendar._idearoot == x_calendar._idearoot
+    assert isol_digest_calendar._idearoot._acptfactunits == {}
+    assert isol_digest_calendar._members == {}
+    assert isol_digest_calendar._groups == {}
 
 
-def test_person_get_starting_digest_calendar_WhenStartingCalendarFileExists(
+def test_person_get_isol_digest_calendar_WhenStartingCalendarFileExists(
     person_dir_setup_cleanup,
 ):
     # GIVEN
     p_name = "Game1"
     env_dir = get_temp_person_dir()
     px = personunit_shop(name=p_name, env_dir=env_dir)
-    px.set_starting_digest_calendar(
+    px.set_isol_digest_calendar(
         calendarunit=example_calendars_get_calendar_with_4_levels()
     )
 
     # WHEN
-    assert px.get_starting_digest_calendar() != None
-    starting_dest_calendar = px.get_starting_digest_calendar()
+    assert px.get_isol_digest_calendar() != None
+    isol_digest_calendar = px.get_isol_digest_calendar()
 
     # THEN
     x_calendar = example_calendars_get_calendar_with_4_levels()
     x_calendar.calendar_owner_edit(new_owner=p_name)
     x_calendar.set_calendar_metrics()
 
-    assert starting_dest_calendar._idearoot._kids == x_calendar._idearoot._kids
-    assert starting_dest_calendar._idearoot == x_calendar._idearoot
-    assert starting_dest_calendar._idearoot._acptfactunits == {}
-    assert starting_dest_calendar._members == {}
-    assert starting_dest_calendar._groups == {}
-    assert starting_dest_calendar._owner == px.name
+    assert isol_digest_calendar._idearoot._kids == x_calendar._idearoot._kids
+    assert isol_digest_calendar._idearoot == x_calendar._idearoot
+    assert isol_digest_calendar._idearoot._acptfactunits == {}
+    assert isol_digest_calendar._members == {}
+    assert isol_digest_calendar._groups == {}
+    assert isol_digest_calendar._owner == px.name
 
 
-def test_person_del_starting_digest_calendar_file_DeletesFileCorrectly(
+def test_person_del_isol_digest_calendar_file_DeletesFileCorrectly(
     person_dir_setup_cleanup,
 ):
     # GIVEN
     p_name = "Game1"
     env_dir = get_temp_person_dir()
     px = personunit_shop(name=p_name, env_dir=env_dir)
-    px.set_starting_digest_calendar(
+    px.set_isol_digest_calendar(
         calendarunit=example_calendars_get_calendar_with_4_levels()
     )
-    file_name = "starting_digest_calendar.json"
+    file_name = "isol_digest_calendar.json"
     assert x_func_open_file(px._person_dir, file_name) != None
 
     # WHEN
-    px.del_starting_digest_calendar_file()
+    px.del_isol_digest_calendar_file()
 
     # THEN
     with pytest_raises(Exception) as excinfo:
         x_func_open_file(px._person_dir, file_name)
     assert (
         str(excinfo.value)
-        == f"Could not load file {px._person_dir}/starting_digest_calendar.json (2, 'No such file or directory')"
+        == f"Could not load file {px._person_dir}/isol_digest_calendar.json (2, 'No such file or directory')"
     )
 
 

@@ -48,10 +48,10 @@ class MainApp(QApplication):
 
     def editmain_show(self):
         if self.main_window.ignore_calendar_x is None:
-            self.main_window.starting_digest = (
-                self.main_window.person_x.get_starting_digest_calendar()
+            self.main_window.isol_digest = (
+                self.main_window.person_x.get_isol_digest_calendar()
             )
-            self.editmain_view.calendar_x = self.main_window.starting_digest
+            self.editmain_view.calendar_x = self.main_window.isol_digest
         else:
             self.editmain_view.calendar_x = self.main_window.ignore_calendar_x
         self.editmain_view.refresh_all()
@@ -103,8 +103,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.ignores_table.setHidden(True)
         self.show_ignores_button.clicked.connect(self.show_ignores_table)
         self.show_digests_button.clicked.connect(self.show_digests_table)
-        self.starting_digest_open_button.clicked.connect(self.open_editmain)
-        self.starting_digest_save_button.clicked.connect(self.save_starting_digest)
+        self.isol_digest_open_button.clicked.connect(self.open_editmain)
+        self.isol_digest_save_button.clicked.connect(self.save_isol_digest)
 
         self.calendarlink_insert_button.clicked.connect(self.calendarlink_insert)
         self.calendarlink_update_button.clicked.connect(self.calendarlink_update)
@@ -123,9 +123,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.system_name_combo.setCurrentText(first_env)
         self._person_load(person_name="ernie")
 
-    def save_starting_digest(self):
-        if self.starting_digest != None:
-            self.person_x.set_starting_digest_calendar(self.starting_digest)
+    def save_isol_digest(self):
+        if self.isol_digest != None:
+            self.person_x.set_isol_digest_calendar(self.isol_digest)
         self.refresh_person()
 
     def reload_all_src_calendars(self):
