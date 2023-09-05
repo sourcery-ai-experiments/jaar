@@ -7,6 +7,12 @@ class OriginLink:
     name: MemberName
     weight: float
 
+    def get_dict(self):
+        return {
+            "name": self.name,
+            "weight": self.weight,
+        }
+
 
 def originlink_shop(name: MemberName, weight: float = None) -> OriginLink:
     if weight is None:

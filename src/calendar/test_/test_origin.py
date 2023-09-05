@@ -42,6 +42,20 @@ def test_originlink_shop_WeightIsNotRequired():
     assert originlink_x.weight == 1
 
 
+def test_OriginLink_get_dict_ReturnsDictWithNecessaryDataForJSON():
+    # GIVEN
+    roy_text = "Roy"
+    originlink_x = originlink_shop(name=roy_text)
+
+    # WHEN
+    x_dict = originlink_x.get_dict()
+
+    # THEN
+    print(f"{x_dict=}")
+    assert x_dict != None
+    assert x_dict == {"name": roy_text, "weight": 1}
+
+
 def test_OriginUnit_exists():
     # GIVEN / WHEN
     originunit_x = OriginUnit()
