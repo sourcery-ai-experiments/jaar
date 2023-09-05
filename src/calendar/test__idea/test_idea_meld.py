@@ -76,15 +76,21 @@ def custom_set_idea_attr(
 
 def test_idea_required_meld_BaseScenarioWorks():
     # GIVEN
-    required_base_x1 = f"{root_label()},ball,run"
-    yx1 = IdeaCore(_label="spirit")
+    ball_text = "ball"
+    ball_road = f"{root_label()},{ball_text}"
+    run_text = "run"
+    run_road = f"{ball_road},{run_text}"
+    required_base_x1 = run_road
+
+    _label_text = "spirit"
+    yx1 = IdeaCore(_label=_label_text)
     custom_set_idea_attr(
         idea=yx1,
         required_base=required_base_x1,
         required_sufffact=required_base_x1,
     )
 
-    yx2 = IdeaCore(_label="spirit")
+    yx2 = IdeaCore(_label=_label_text)
     custom_set_idea_attr(
         idea=yx2,
         required_base=required_base_x1,
@@ -105,16 +111,24 @@ def test_idea_required_meld_BaseScenarioWorks():
 
 def test_idea_required_meld_TwoRequiredsScenarioWorks():
     # GIVEN
-    required_base_x1 = f"{root_label()},ball,run"
-    required_base_x2 = f"{root_label()},ball,swim"
-    yx1 = IdeaCore(_label="spirit")
+    ball_text = "ball"
+    ball_road = f"{root_label()},{ball_text}"
+    run_text = "run"
+    run_road = f"{ball_road},{run_text}"
+    swim_text = "swim"
+    swim_road = f"{ball_road},{swim_text}"
+    required_base_x1 = run_road
+    required_base_x2 = swim_road
+
+    _label_text = "spirit"
+    yx1 = IdeaCore(_label=_label_text)
     custom_set_idea_attr(
         idea=yx1,
         required_base=required_base_x1,
         required_sufffact=required_base_x1,
     )
 
-    yx2 = IdeaCore(_label="spirit")
+    yx2 = IdeaCore(_label=_label_text)
     custom_set_idea_attr(
         idea=yx2,
         required_base=required_base_x2,
@@ -132,9 +146,17 @@ def test_idea_required_meld_TwoRequiredsScenarioWorks():
 
 def test_idea_required_meld_TwoRequiredsMeldScenarioWorks():
     # GIVEN
-    required_base_x1 = f"{root_label()},ball,run"
-    required_base_x2 = f"{root_label()},ball,swim"
-    yx1 = IdeaCore(_label="spirit")
+    ball_text = "ball"
+    ball_road = f"{root_label()},{ball_text}"
+    run_text = "run"
+    run_road = f"{ball_road},{run_text}"
+    swim_text = "swim"
+    swim_road = f"{ball_road},{swim_text}"
+    required_base_x1 = run_road
+    required_base_x2 = swim_road
+
+    _label_text = "spirit"
+    yx1 = IdeaCore(_label=_label_text)
     custom_set_idea_attr(
         idea=yx1,
         required_base=required_base_x1,
@@ -146,7 +168,7 @@ def test_idea_required_meld_TwoRequiredsMeldScenarioWorks():
         required_sufffact=required_base_x2,
     )
 
-    yx2 = IdeaCore(_label="spirit")
+    yx2 = IdeaCore(_label=_label_text)
     custom_set_idea_attr(
         idea=yx2,
         required_base=required_base_x2,
@@ -170,12 +192,13 @@ def test_idea_grouplink_meld_BaseScenarioWorks_on_meld_weight_actionEquals_defau
     # GIVEN
     yx1 = IdeaCore(_label="spirit")
     br1 = "Running"
-    custom_set_idea_attr(idea=yx1, on_meld_weight_action="default")
+    default_text = "default"
+    custom_set_idea_attr(idea=yx1, on_meld_weight_action=default_text)
     custom_set_idea_attr(
         idea=yx1, grouplink=grouplink_shop(name=br1, creditor_weight=2)
     )
     yx2 = IdeaCore(_label="Rocking")
-    custom_set_idea_attr(idea=yx2, on_meld_weight_action="default")
+    custom_set_idea_attr(idea=yx2, on_meld_weight_action=default_text)
     custom_set_idea_attr(
         idea=yx2, grouplink=grouplink_shop(name=br1, creditor_weight=3)
     )
@@ -190,14 +213,16 @@ def test_idea_grouplink_meld_BaseScenarioWorks_on_meld_weight_actionEquals_defau
 
 def test_idea_grouplink_meld_BaseScenarioWorks_on_meld_weight_actionEquals_sum():
     # GIVEN
+    sum_text = "sum"
+
     yx1 = IdeaCore(_label="spirit")
     br1 = "Running"
-    custom_set_idea_attr(idea=yx1, on_meld_weight_action="sum")
+    custom_set_idea_attr(idea=yx1, on_meld_weight_action=sum_text)
     custom_set_idea_attr(
         idea=yx1, grouplink=grouplink_shop(name=br1, creditor_weight=2, debtor_weight=3)
     )
     yx2 = IdeaCore(_label="Rocking")
-    custom_set_idea_attr(idea=yx2, on_meld_weight_action="sum")
+    custom_set_idea_attr(idea=yx2, on_meld_weight_action=sum_text)
     custom_set_idea_attr(
         idea=yx2, grouplink=grouplink_shop(name=br1, creditor_weight=2, debtor_weight=3)
     )
@@ -212,16 +237,18 @@ def test_idea_grouplink_meld_BaseScenarioWorks_on_meld_weight_actionEquals_sum()
 
 def test_idea_grouplink_meld_TwoGroupsScenarioWorks():
     # GIVEN
+    sum_text = "sum"
+
     yx1 = IdeaCore(_label="spirit")
     br1 = "Running"
-    custom_set_idea_attr(idea=yx1, on_meld_weight_action="sum")
+    custom_set_idea_attr(idea=yx1, on_meld_weight_action=sum_text)
     custom_set_idea_attr(
         idea=yx1, grouplink=grouplink_shop(name=br1, creditor_weight=2)
     )
 
     br2 = "Bears"
     yx2 = IdeaCore(_label="Rocking")
-    custom_set_idea_attr(idea=yx1, on_meld_weight_action="sum")
+    custom_set_idea_attr(idea=yx1, on_meld_weight_action=sum_text)
     custom_set_idea_attr(
         idea=yx2, grouplink=grouplink_shop(name=br2, creditor_weight=2)
     )
@@ -241,7 +268,7 @@ def test_idea_acptfactunits_meld_BaseScenarioWorks():
     tech_text = "tech"
     tech_road = f"{root_label()},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{root_label()},{tech_text},{bowl_text}"
+    bowl_road = f"{tech_road},{bowl_text}"
     hc_1 = c_acptfactunit(base=tech_road, pick=bowl_road)
     yx1 = IdeaCore(_label="spirit")
     yx1.set_acptfactunits_empty_if_null()
@@ -266,9 +293,9 @@ def test_idea_acptfactunits_meld_2AcptFactUnitsWorks():
     tech_text = "tech"
     tech_road = f"{root_label()},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{root_label()},{tech_text},{bowl_text}"
+    bowl_road = f"{tech_road},{bowl_text}"
     plate_text = "plate"
-    plate_road = f"{root_label()},{tech_text},{plate_text}"
+    plate_road = f"{tech_road},{plate_text}"
 
     hc_1 = c_acptfactunit(base=tech_road, pick=bowl_road)
     yx1 = IdeaCore(_label="spirit")
@@ -292,14 +319,19 @@ def test_idea_attributes_meld_Works():
     tech_text = "tech"
     tech_road = f"{root_label()},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{root_label()},{tech_text},{bowl_text}"
+    bowl_road = f"{tech_road},{bowl_text}"
     plate_text = "plate"
-    plate_road = f"{root_label()},{tech_text},{plate_text}"
+    plate_road = f"{tech_road},{plate_text}"
 
-    yx1 = IdeaCore(_label="spirit")
+    uid_x = "uid1xx"
+    all_member_credit_x = "am_cx"
+    all_member_debt_x = "am_dx"
+
+    label1_text = "spirit"
+    yx1 = IdeaCore(_label=label1_text)
     custom_set_idea_attr(
         idea=yx1,
-        uid="test_uid1",
+        uid=uid_x,
         weight=7,
         begin=1,
         close=2,
@@ -310,15 +342,16 @@ def test_idea_attributes_meld_Works():
         special_road=plate_road,
         numeric_road=bowl_road,
         promise=True,
-        all_member_credit="testgroup1",
-        all_member_debt="testgroup1",
+        all_member_credit=all_member_credit_x,
+        all_member_debt=all_member_debt_x,
         is_expanded=True,
     )
 
-    yx2 = IdeaCore(_label="fun")
+    label2_text = "fun"
+    yx2 = IdeaCore(_label=label2_text)
     custom_set_idea_attr(
         idea=yx2,
-        uid="test_uid1",
+        uid=uid_x,
         weight=7,
         begin=1,
         close=2,
@@ -329,8 +362,8 @@ def test_idea_attributes_meld_Works():
         special_road=plate_road,
         numeric_road=bowl_road,
         promise=True,
-        all_member_credit="testgroup1",
-        all_member_debt="testgroup1",
+        all_member_credit=all_member_credit_x,
+        all_member_debt=all_member_debt_x,
         is_expanded=True,
     )
 
@@ -338,7 +371,7 @@ def test_idea_attributes_meld_Works():
     yx1.meld(yx2)
 
     # THEN
-    assert yx1._uid == "test_uid1"
+    assert yx1._uid == uid_x
     assert yx1._weight == 7
     assert yx1._begin == 1
     assert yx1._close == 2
@@ -349,8 +382,8 @@ def test_idea_attributes_meld_Works():
     assert yx1._special_road == plate_road
     assert yx1._numeric_road == bowl_road
     assert yx1.promise == True
-    assert yx1._all_member_credit == "testgroup1"
-    assert yx1._all_member_debt == "testgroup1"
+    assert yx1._all_member_credit == all_member_credit_x
+    assert yx1._all_member_debt == all_member_debt_x
     assert yx1._is_expanded == True
 
 
