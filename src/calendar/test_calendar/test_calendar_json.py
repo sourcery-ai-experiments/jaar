@@ -31,9 +31,13 @@ from pytest import raises as pytest_raises
 def test_calendar_get_dict_ReturnsDictObject():
     # GIVEN
     x_calendar = example_calendars_calendar_v001()
+    day_hour_text = "day_hour"
+    day_hour_road = f"{root_label()},{day_hour_text}"
+    day_hour_idea = x_calendar.get_idea_kid(road=day_hour_road)
+    day_hour_idea._originunit.set_originlink(name="bob", weight=2)
     x_calendar.set_acptfact(
-        base=f"{root_label()},day_hour",
-        pick=f"{root_label()},day_hour",
+        base=day_hour_road,
+        pick=day_hour_road,
         open=0,
         nigh=23,
     )
@@ -85,6 +89,10 @@ def test_calendar_get_dict_ReturnsDictObject():
     assert num1_dict_numeric_road != None
     assert num1_dict_numeric_road == month_week_road
     assert num1_dict_numeric_road == num1_idea_x._numeric_road
+
+    originunit = "_originunit"
+    day_hour_originunit_dict = x_dict[_kids][day_hour_text][originunit]
+    assert day_hour_originunit_dict == day_hour_idea._originunit.get_dict()
 
 
 def test_calendar_get_dict_ReturnsDictWith_idearoot_AssignedUnit():

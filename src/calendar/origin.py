@@ -55,7 +55,8 @@ def originunit_shop() -> OriginUnit:
 
 
 def originunit_get_from_dict(x_dict: dict) -> OriginUnit:
-    originunit_x = originlink_shop()
+    originunit_x = originunit_shop()
+    originunit_x = None
     with contextlib_suppress(KeyError):
         originlinks_dict = x_dict["_links"]
         for originlink_dict in originlinks_dict.values():
