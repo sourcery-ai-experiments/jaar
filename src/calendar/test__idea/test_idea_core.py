@@ -46,6 +46,7 @@ def test_idea_core_exists():
     assert new_obj._requiredheirs is None
     assert new_obj._assignedunit is None
     assert new_obj._assignedheir is None
+    assert new_obj._originunit is None
 
 
 def test_idea_core_get_key_road_works():

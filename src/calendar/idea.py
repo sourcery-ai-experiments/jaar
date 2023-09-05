@@ -33,6 +33,7 @@ from src.calendar.group import (
     groupheir_shop,
     GroupUnit,
 )
+from src.calendar.origin import OriginUnit
 from src.calendar.x_func import (
     get_on_meld_weight_actions,
     get_meld_weight,
@@ -156,6 +157,7 @@ class IdeaCore:
     _acptfactunits: dict[AcptFactUnit] = None
     _on_meld_weight_action: str = "default"
     _active_status_hx: dict[int:bool] = None
+    _originunit: OriginUnit = None
 
     def is_agenda_item(self, base_x: Road = None):
         # bool_x = False
