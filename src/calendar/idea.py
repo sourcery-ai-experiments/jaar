@@ -34,6 +34,8 @@ from src.calendar.group import (
     GroupUnit,
 )
 from src.calendar.origin import OriginUnit
+from src.calendar.member import MemberName
+from src.calendar.origin import originunit_shop
 from src.calendar.x_func import (
     get_on_meld_weight_actions,
     get_meld_weight,
@@ -441,7 +443,7 @@ class IdeaCore:
         if _label != None:
             self._label = _label
 
-    def meld_requiredunits(self, other_idea):
+    def _meld_requiredunits(self, other_idea):
         self.set_requiredunits_empty_if_null()
         other_idea.set_requiredunits_empty_if_null()
         for lx in other_idea._requiredunits.values():
@@ -450,7 +452,7 @@ class IdeaCore:
             else:
                 self._requiredunits.get(lx.base).meld(lx)
 
-    def meld_grouplinks(self, other_idea):
+    def _meld_grouplinks(self, other_idea):
         self.set_grouplink_empty_if_null()
         other_idea.set_grouplink_empty_if_null()
         for bl in other_idea._grouplinks.values():
@@ -463,7 +465,7 @@ class IdeaCore:
             else:
                 self._grouplinks[bl.name] = bl
 
-    def meld_acptfactunits(self, other_idea):
+    def _meld_acptfactunits(self, other_idea):
         self.set_acptfactunits_empty_if_null()
         other_idea.set_acptfactunits_empty_if_null()
         for hc in other_idea._acptfactunits.values():
@@ -472,7 +474,13 @@ class IdeaCore:
             else:
                 self._acptfactunits.get(hc.base).meld(hc)
 
-    def meld(self, other_idea, _idearoot: bool = None):
+    def meld(
+        self,
+        other_idea,
+        _idearoot: bool = None,
+        member_name: MemberName = None,
+        member_weight: float = None,
+    ):
         if _idearoot and self._label != other_idea._label:
             raise InvalidIdeaException(
                 f"Meld fail idearoot _label '{self._label}' not the same as '{other_idea._label}'"
@@ -486,12 +494,19 @@ class IdeaCore:
                 other_weight=other_idea._weight,
                 other_on_meld_weight_action=other_idea._on_meld_weight_action,
             )
-        self.meld_requiredunits(other_idea=other_idea)
-        self.meld_grouplinks(other_idea=other_idea)
-        self.meld_acptfactunits(other_idea=other_idea)
-        self.meld_attributes_that_will_be_equal(other_idea=other_idea)
+        self._meld_requiredunits(other_idea=other_idea)
+        self._meld_grouplinks(other_idea=other_idea)
+        self._meld_acptfactunits(other_idea=other_idea)
+        self._meld_attributes_that_will_be_equal(other_idea=other_idea)
+        self._meld_originlinks(member_name, member_weight)
 
-    def meld_attributes_that_will_be_equal(self, other_idea):
+    def _meld_originlinks(self, member_name: MemberName, member_weight: float):
+        if member_name != None:
+            if self._originunit is None:
+                self._originunit = originunit_shop()
+            self._originunit.set_originlink(member_name, member_weight)
+
+    def _meld_attributes_that_will_be_equal(self, other_idea):
         xl = [
             ("_uid", self._uid, other_idea._uid),
             ("_begin", self._begin, other_idea._begin),

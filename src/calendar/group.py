@@ -118,7 +118,7 @@ class GroupUnit(GroupCore):
         self._members.pop(name)
 
     def meld(self, other_group):
-        self.meld_attributes_that_will_be_equal(other_group=other_group)
+        self._meld_attributes_that_will_be_equal(other_group=other_group)
         self.meld_memberlinks(other_group=other_group)
 
     def meld_memberlinks(self, other_group):
@@ -129,7 +129,7 @@ class GroupUnit(GroupCore):
             else:
                 self._members[oba.name].meld(oba)
 
-    def meld_attributes_that_will_be_equal(self, other_group):
+    def _meld_attributes_that_will_be_equal(self, other_group):
         xl = [
             ("name", self.name, other_group.name),
             ("uid", self.uid, other_group.uid),

@@ -6,6 +6,7 @@ from src.calendar.required_idea import (
     Road,
 )
 from src.calendar.road import get_global_root_label as root_label
+from src.calendar.origin import originunit_shop
 from pytest import raises as pytest_raises
 
 
@@ -314,7 +315,7 @@ def test_idea_acptfactunits_meld_2AcptFactUnitsWorks():
     assert yx1._acptfactunits != yx2._acptfactunits
 
 
-def test_idea_attributes_meld_Works():
+def test_idea_attributes_meld_CorrectlyMeldsIdeas():
     # GIVEN
     tech_text = "tech"
     tech_road = f"{root_label()},{tech_text}"
@@ -583,3 +584,24 @@ def test_idea_attributes_meld_FailRaisesError_is_expanded():
         str(excinfo.value)
         == f"Meld fail idea={yx1._walk},{yx1._label} {x_name}:{x_val} with {yx2._walk},{yx2._label} {x_name}:True"
     )
+
+
+def test_idea_meld_CorrectlyCreatesOriginUnitWithOriginLink():
+    # GIVEN
+    label1_text = "spirit"
+    yx1 = IdeaCore(_label=label1_text)
+
+    label2_text = "fun"
+    yx2 = IdeaCore(_label=label2_text)
+    assert yx1._originunit is None
+
+    # WHEN
+    sue_text = "Sue"
+    sue_weight = 5
+    yx1.meld(other_idea=yx2, member_name=sue_text, member_weight=sue_weight)
+
+    # THEN
+    assert yx1._originunit != None
+    sue_originunit = originunit_shop()
+    sue_originunit.set_originlink(name=sue_text, weight=sue_weight)
+    assert yx1._originunit == sue_originunit
