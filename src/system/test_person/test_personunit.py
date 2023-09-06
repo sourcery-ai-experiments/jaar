@@ -21,7 +21,7 @@ def test_personunit_exists(person_dir_setup_cleanup):
     px = personunit_shop(
         name=person_text, env_dir=env_dir, _auto_output_calendar_to_public_calendar=True
     )
-    assert px._personadmin._person_name == person_text
+    assert px._admin._person_name == person_text
     assert px._src_calendarlinks == {}
     assert px._auto_output_calendar_to_public_calendar
     # assert px._re_idearoot != None
@@ -43,9 +43,9 @@ def test_personunit_exists(person_dir_setup_cleanup):
     # assert px._re_idearoot._all_member_debt is None
     # assert px._re_idearoot._is_expanded == True
     assert px._output_calendar != None
-    assert px._personadmin._person_dir != None
-    assert px._personadmin._calendars_person_dir != None
-    assert px._personadmin._calendars_digest_dir != None
+    assert px._admin._person_dir != None
+    assert px._admin._calendars_depot_dir != None
+    assert px._admin._calendars_digest_dir != None
 
 
 def test_personunit_creates_files(person_dir_setup_cleanup):
@@ -135,7 +135,7 @@ def test_personunit_set_output_calendar_to_public_calendar_SavesCalendarToPublic
     px = personunit_shop(name=person_text, env_dir=env_dir)
     px.create_core_dir_and_files()
     public_file_name = f"{person_text}.json"
-    public_file_path = f"{px._personadmin._calendars_public_dir}/{public_file_name}"
+    public_file_path = f"{px._admin._calendars_public_dir}/{public_file_name}"
     assert os_path.exists(public_file_path) is False
 
     # WHEN

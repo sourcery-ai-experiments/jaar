@@ -286,7 +286,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         if self.person_x != None:
             calendar_json = x_func_open_file(
-                dest_dir=self.person_x._personadmin._calendars_public_dir,
+                dest_dir=self.person_x._admin._calendars_public_dir,
                 file_name=f"{calendar_owner}.json",
             )
             self.person_x.receive_src_calendarunit_file(
@@ -353,7 +353,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         x_list = []
         if self.person_x != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.person_x_personadmin._calendars_digest_dir,
+                dir_path=self.person_x_admin._calendars_digest_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -365,7 +365,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         x_list = []
         if self.person_x != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.person_x._personadmin._calendars_ignore_dir,
+                dir_path=self.person_x._admin._calendars_ignore_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,

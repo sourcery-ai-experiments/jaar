@@ -64,7 +64,7 @@ def create_calendar_file_for_systems(system_dir: str, calendar_owner: str):
 
 def create_person_file_for_systems(system_dir: str, person_name: str):
     person_x = personunit_shop(name=person_name, env_dir=system_dir)
-    person_dir = f"{system_dir}/persons/{person_x._personadmin._person_name}"
+    person_dir = f"{system_dir}/persons/{person_x._admin._person_name}"
     # file_path = f"{person_dir}/{person_x.name}.json"
     # single_dir_create_if_null(person_dir)
     # with open(f"{file_path}", "w") as f:
@@ -72,7 +72,7 @@ def create_person_file_for_systems(system_dir: str, person_name: str):
 
     x_func_save_file(
         dest_dir=person_dir,
-        file_name=f"{person_x._personadmin._person_name}.json",
+        file_name=f"{person_x._admin._person_name}.json",
         file_text=person_x.get_json(),
     )
 

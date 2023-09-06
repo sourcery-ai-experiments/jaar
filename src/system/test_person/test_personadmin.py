@@ -15,7 +15,7 @@ from src.calendar.x_func import (
 )
 
 
-def test_personadmin_exists():
+def test_admin_exists():
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_person_dir()
@@ -30,13 +30,13 @@ def test_personadmin_exists():
     assert pdx._person_file_name is None
     assert pdx._person_file_path is None
     assert pdx._calendars_public_dir is None
-    assert pdx._calendars_person_dir is None
+    assert pdx._calendars_depot_dir is None
     assert pdx._calendars_ignore_dir is None
     assert pdx._calendars_bond_dir is None
     assert pdx._calendars_digest_dir is None
 
 
-def test_personadmin__set_calendars_person_dir_CorrectSetsPersonAdminAttribute():
+def test_admin__set_calendars_depot_dir_CorrectSetsPersonAdminAttribute():
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_person_dir()
@@ -50,7 +50,7 @@ def test_personadmin__set_calendars_person_dir_CorrectSetsPersonAdminAttribute()
     # THEN
     assert pdx._person_dir != None
     assert pdx._calendars_public_dir != None
-    assert pdx._calendars_person_dir != None
+    assert pdx._calendars_depot_dir != None
     assert pdx._calendars_ignore_dir != None
     assert pdx._calendars_digest_dir != None
     assert pdx._calendars_bond_dir != None
@@ -63,7 +63,7 @@ def test_personadmin__set_calendars_person_dir_CorrectSetsPersonAdminAttribute()
     assert pdx._person_file_name == f"{bob_text}.json"
     assert pdx._person_file_path == f"{pdx._person_dir}/{pdx._person_file_name}"
     calendars_str = "calendars"
-    assert pdx._calendars_person_dir == f"{pdx._person_dir}/{calendars_str}"
+    assert pdx._calendars_depot_dir == f"{pdx._person_dir}/{calendars_str}"
     assert pdx._calendars_ignore_dir == f"{pdx._person_dir}/ignores"
     assert pdx._calendars_bond_dir == f"{pdx._person_dir}/bonds"
     assert pdx._calendars_digest_dir == f"{pdx._person_dir}/digests"
