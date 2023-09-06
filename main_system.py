@@ -284,7 +284,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.person_x.receive_src_calendarunit_file(
                 calendar_json=calendar_json,
                 depotlink_type=self.depotlink_type_combo.currentText(),
-                weight=self.depotlink_weight.text(),
+                depotlink_weight=self.depotlink_weight.text(),
             )
             self.system_x.save_person_file(person_name=self.person_x.name)
         self.refresh_person()
@@ -293,7 +293,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         person_name_x = self.person_x.name
         new_depotlink = depotlink_shop(
             calendar_owner=self.depotlink_name.text(),
-            depotlink_type=self.depotlink_type_combo.currentText(),
+            link_type=self.depotlink_type_combo.currentText(),
             weight=self.depotlink_weight.text(),
         )
 

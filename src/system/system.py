@@ -401,7 +401,7 @@ class SystemUnit:
 
     def reload_all_persons_src_calendarunits(self):
         for person_x in self._personunits.values():
-            person_x.receive_all_src_calendarunit_files()
+            person_x.reload_all_depot_calendars()
 
     def get_calendars_dir_file_names_list(self):
         return list(x_func_dir_files(dir_path=self.get_calendars_dir()).keys())

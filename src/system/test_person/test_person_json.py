@@ -47,7 +47,7 @@ def test_person_get_depotlinks_dict_ReturnsCorrectInfo():
     assert str(type(swim_dict)) == "<class 'dict'>"
     assert len(swim_dict) > 1
     assert swim_dict.get("calendar_owner") == swim_text
-    assert swim_dict.get("depotlink_type") == "blind_trust"
+    assert swim_dict.get("link_type") == "blind_trust"
 
 
 def test_person_get_dict_ReturnsDictObject(person_dir_setup_cleanup):

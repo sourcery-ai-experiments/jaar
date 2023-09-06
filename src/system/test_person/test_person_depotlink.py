@@ -83,7 +83,7 @@ def test_personunit_delete_depotlink_CorrectlyDeletesBlindTrustFile(
         calendar_person_dir=px._admin._calendars_depot_dir,
         calendar_owner=swim_text,
     )
-    px.set_depotlink(owner=swim_text, depotlink_type="blind_trust")
+    px.set_depotlink(owner=swim_text, link_type="blind_trust")
     assert x_func_count_files(dir_path=px._admin._calendars_depot_dir) == 1
     assert x_func_count_files(dir_path=px._admin._calendars_digest_dir) == 1
 
@@ -168,7 +168,7 @@ def test_personunit_delete_depotlink_CorrectlyDoesNotDeletesIgnoreFile(
     px = personunit_shop(name=person1_text, env_dir=env_dir)
     swim_text = "swim"
     create_calendar_file_for_person(px._admin._calendars_depot_dir, swim_text)
-    px.set_depotlink(owner=swim_text, depotlink_type="ignore")
+    px.set_depotlink(owner=swim_text, link_type="ignore")
     assert x_func_count_files(dir_path=px._admin._calendars_depot_dir) == 1
     assert x_func_count_files(dir_path=px._admin._calendars_digest_dir) == 1
     assert x_func_count_files(dir_path=px._admin._calendars_ignore_dir) == 1
@@ -191,7 +191,7 @@ def test_personunit_delete_depotlink_CorrectlyDoesNotDeletesIgnoreFile(
 #     px = personunit_shop(name=person1_text, env_dir=env_dir)
 #     swim_text = "swim"
 #     create_calendar_file_for_person(px._admin._calendars_depot_dir, swim_text)
-#     px.set_depotlink(owner=swim_text, depotlink_type="ignore")
+#     px.set_depotlink(owner=swim_text, link_type="ignore")
 #     assert x_func_count_files(dir_path=px._admin._calendars_ignore_dir) == 1
 #     cx1 = px.get_ignore_calendar_from_ignore_calendar_files(_owner=swim_text)
 #     assert len(cx1._members) == 0
@@ -244,7 +244,7 @@ def test_personunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
     #     print(f"{px._admin._calendars_public_dir=} {file_name=}")
 
     # WHEN
-    px.receive_all_src_calendarunit_files()
+    px.reload_all_depot_calendars()
 
     # THEN
     assert len(px.create_output_calendar().get_idea_list()) == 5

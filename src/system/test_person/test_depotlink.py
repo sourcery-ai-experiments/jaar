@@ -12,12 +12,12 @@ def test_depotlink_exists():
     weight_float = 42
     # WHEN
     slx = depotlink_shop(
-        calendar_owner=calendar_text, depotlink_type=blind_text, weight=weight_float
+        calendar_owner=calendar_text, link_type=blind_text, weight=weight_float
     )
     # THEN
     assert slx != None
     assert slx.calendar_owner == calendar_text
-    assert slx.depotlink_type == blind_text
+    assert slx.link_type == blind_text
     assert slx.weight == weight_float
 
 
@@ -27,12 +27,12 @@ def test_depotlink_shop_ifAttrNoneAutoFill():
     blind_text = "blind_trust"
 
     # WHEN
-    slx = depotlink_shop(calendar_owner=calendar_text, depotlink_type=None, weight=None)
+    slx = depotlink_shop(calendar_owner=calendar_text, link_type=None, weight=None)
 
     # THEN
     assert slx != None
     assert slx.calendar_owner == calendar_text
-    assert slx.depotlink_type == blind_text
+    assert slx.link_type == blind_text
     assert slx.weight == 1
 
 
@@ -44,12 +44,12 @@ def test_depotlink_shop_checkAllowed_depotlink_types():
     tributary_text = "tributary"
     ignore_text = "ignore"
 
-    depotlink_types = {
-        blind_trust_text: None,
-        bond_filter_text: None,
-        tributary_text: None,
-        ignore_text: None,
-    }
+    # depotlink_types = {
+    #     blind_trust_text: None,
+    #     bond_filter_text: None,
+    #     tributary_text: None,
+    #     ignore_text: None,
+    # }
 
     # THEN
     # for depotlink_type_x in depotlink_types:
@@ -59,16 +59,16 @@ def test_depotlink_shop_checkAllowed_depotlink_types():
     # assert depotlink_shop(calendar_text, depotlink_type_x).depotlink_type == depotlink_type_x
 
     depotlink_blind_trust = depotlink_shop(calendar_text, blind_trust_text)
-    assert depotlink_blind_trust.depotlink_type == blind_trust_text
+    assert depotlink_blind_trust.link_type == blind_trust_text
 
     depotlink_bond_filter = depotlink_shop(calendar_text, bond_filter_text)
-    assert depotlink_bond_filter.depotlink_type == bond_filter_text
+    assert depotlink_bond_filter.link_type == bond_filter_text
 
     depotlink_tributary = depotlink_shop(calendar_text, tributary_text)
-    assert depotlink_tributary.depotlink_type == tributary_text
+    assert depotlink_tributary.link_type == tributary_text
 
     depotlink_ignore = depotlink_shop(calendar_text, ignore_text)
-    assert depotlink_ignore.depotlink_type == ignore_text
+    assert depotlink_ignore.link_type == ignore_text
 
 
 def test_depotlink_shop_raisesErrorIfByTypeIsEntered():
@@ -78,7 +78,7 @@ def test_depotlink_shop_raisesErrorIfByTypeIsEntered():
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        depotlink_shop(calendar_owner=calendar_text, depotlink_type=bad_type_text)
+        depotlink_shop(calendar_owner=calendar_text, link_type=bad_type_text)
     assert (
         str(excinfo.value)
         == f"Calendarlink '{calendar_text}' cannot have type '{bad_type_text}'."
@@ -91,7 +91,7 @@ def test_depotlink_get_dict_ReturnsDictObject():
     blind_text = "blind_trust"
     weight_float = 29
     clx = depotlink_shop(
-        calendar_owner=calendar_text, depotlink_type=blind_text, weight=weight_float
+        calendar_owner=calendar_text, link_type=blind_text, weight=weight_float
     )
 
     # WHEN
@@ -100,7 +100,7 @@ def test_depotlink_get_dict_ReturnsDictObject():
     # THEN
     assert x_dict == {
         "calendar_owner": calendar_text,
-        "depotlink_type": blind_text,
+        "link_type": blind_text,
         "weight": weight_float,
     }
 
@@ -108,7 +108,7 @@ def test_depotlink_get_dict_ReturnsDictObject():
 def test_get_calendar_from_calendars_dirlink_from_dict_ReturnsCalendarLinkObject():
     # GIVEN
     calendar_owner_text = "calendar_owner"
-    depotlink_type_text = "depotlink_type"
+    link_type_text = "link_type"
     weight_text = "weight"
 
     test1_label_text = "test1"
@@ -117,7 +117,7 @@ def test_get_calendar_from_calendars_dirlink_from_dict_ReturnsCalendarLinkObject
 
     depotlink_dict = {
         calendar_owner_text: test1_label_text,
-        depotlink_type_text: test1_link_text,
+        link_type_text: test1_link_text,
         weight_text: test1_weight_float,
     }
 
@@ -126,5 +126,5 @@ def test_get_calendar_from_calendars_dirlink_from_dict_ReturnsCalendarLinkObject
 
     # THEN
     assert x_obj.calendar_owner == test1_label_text
-    assert x_obj.depotlink_type == test1_link_text
+    assert x_obj.link_type == test1_link_text
     assert x_obj.weight == test1_weight_float

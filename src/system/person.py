@@ -199,6 +199,15 @@ class PersonUnit:
     def create_core_dir_and_files(self):
         self._admin.create_core_dir_and_files(self.get_json())
 
+    def receive_src_calendarunit_file(
+        self,
+        calendar_json: str,
+        depotlink_type: str = None,
+        depotlink_weight: float = None,
+    ):
+        calendar_x = calendarunit_get_from_json(cx_json=calendar_json)
+        self.post_calendar_to_depot(calendar_x, depotlink_type, depotlink_weight)
+
     def post_calendar_to_depot(
         self,
         calendar_x: CalendarUnit,
@@ -210,34 +219,26 @@ class PersonUnit:
         if self._auto_output_to_public:
             self.save_output_calendar_to_public_dir()
 
-    def receive_src_calendarunit_file(
-        self, calendar_json: str, depotlink_type: str = None, weight: float = None
-    ):
-        calendar_x = calendarunit_get_from_json(cx_json=calendar_json)
-        self.post_calendar_to_depot(calendar_x, depotlink_type, weight)
-
-    def receive_all_src_calendarunit_files(self):
+    def reload_all_depot_calendars(self):
         for depotlink_obj in self._depotlinks.values():
             cx_json = self._admin.get_public_calendar(depotlink_obj.calendar_owner)
             self.receive_src_calendarunit_file(
                 calendar_json=cx_json,
-                depotlink_type=depotlink_obj.depotlink_type,
-                weight=depotlink_obj.weight,
+                depotlink_type=depotlink_obj.link_type,
+                depotlink_weight=depotlink_obj.weight,
             )
 
-    def set_depotlink(
-        self, owner: str, depotlink_type: str = None, weight: float = None
-    ):
+    def set_depotlink(self, owner: str, link_type: str = None, weight: float = None):
         self.set_depotlink_empty_if_null()
         self._admin.check_file_exists("depot", owner)
 
-        depotlink_x = depotlink_shop(owner, depotlink_type, weight)
+        depotlink_x = depotlink_shop(owner, link_type, weight)
 
         self._depotlinks[owner] = depotlink_x
-        if depotlink_x.depotlink_type == "blind_trust":
+        if depotlink_x.link_type == "blind_trust":
             cx_obj = self._admin.get_depot_calendar(owner=owner)
             self._admin.save_calendar_to_digest(cx_obj)
-        elif depotlink_x.depotlink_type == "ignore":
+        elif depotlink_x.link_type == "ignore":
             new_cx_obj = CalendarUnit(_owner=owner)
             self.set_ignore_calendar_file(new_cx_obj, new_cx_obj._owner)
 
