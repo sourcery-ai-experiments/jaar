@@ -29,7 +29,7 @@ def test_personunitset_src_calendarlinks_RaisesErrorWhenCalendarDoesNotExist(
     file_path_x = f"{px._admin._calendars_depot_dir}/{swim_text}.json"
     print(f"{file_path_x=}")
     with pytest_raises(Exception) as excinfo:
-        px.set_src_calendarlinks(calendar_owner=swim_text)
+        px.set_src_calendarlinks(owner=swim_text)
     assert (
         str(excinfo.value)
         == f"Person {person1_text} cannot find calendar {swim_text} in {file_path_x}"
@@ -46,7 +46,7 @@ def test_personunitset_src_calendarlinks_CorrectlyUsed(person_dir_setup_cleanup)
     assert px._src_calendarlinks == {}
 
     # WHEN
-    px.set_src_calendarlinks(calendar_owner=swim_text)
+    px.set_src_calendarlinks(owner=swim_text)
 
     # THEN
     assert list(px._src_calendarlinks.keys()) == [swim_text]
@@ -61,7 +61,7 @@ def test_personunit_delete_calendarlink_CorrectlyDeletesObj(person_dir_setup_cle
     create_calendar_file_for_person(
         px._admin._calendars_depot_dir, calendar_owner=swim_text
     )
-    px.set_src_calendarlinks(calendar_owner=swim_text)
+    px.set_src_calendarlinks(owner=swim_text)
     assert list(px._src_calendarlinks.keys()) == [swim_text]
 
     # WHEN
@@ -83,7 +83,7 @@ def test_personunit_delete_calendarlink_CorrectlyDeletesBlindTrustFile(
         calendar_person_dir=px._admin._calendars_depot_dir,
         calendar_owner=swim_text,
     )
-    px.set_src_calendarlinks(calendar_owner=swim_text, link_type="blind_trust")
+    px.set_src_calendarlinks(owner=swim_text, link_type="blind_trust")
     assert x_func_count_files(dir_path=px._admin._calendars_depot_dir) == 1
     assert x_func_count_files(dir_path=px._admin._calendars_digest_dir) == 1
 
@@ -149,7 +149,7 @@ def test_personunit_delete_ignore_calendarlink_CorrectlyDeletesObj(
         calendar_person_dir=px._admin._calendars_depot_dir,
         calendar_owner=swim_text,
     )
-    px.set_src_calendarlinks(calendar_owner=swim_text)
+    px.set_src_calendarlinks(owner=swim_text)
     assert list(px._src_calendarlinks.keys()) == [swim_text]
 
     # WHEN
@@ -168,7 +168,7 @@ def test_personunit_delete_calendarlink_CorrectlyDoesNotDeletesIgnoreFile(
     px = personunit_shop(name=person1_text, env_dir=env_dir)
     swim_text = "swim"
     create_calendar_file_for_person(px._admin._calendars_depot_dir, swim_text)
-    px.set_src_calendarlinks(calendar_owner=swim_text, link_type="ignore")
+    px.set_src_calendarlinks(owner=swim_text, link_type="ignore")
     assert x_func_count_files(dir_path=px._admin._calendars_depot_dir) == 1
     assert x_func_count_files(dir_path=px._admin._calendars_digest_dir) == 1
     assert x_func_count_files(dir_path=px._admin._calendars_ignore_dir) == 1
@@ -191,7 +191,7 @@ def test_personunit_delete_calendarlink_CorrectlyDoesNotDeletesIgnoreFile(
 #     px = personunit_shop(name=person1_text, env_dir=env_dir)
 #     swim_text = "swim"
 #     create_calendar_file_for_person(px._admin._calendars_depot_dir, swim_text)
-#     px.set_src_calendarlinks(calendar_owner=swim_text, link_type="ignore")
+#     px.set_src_calendarlinks(owner=swim_text, link_type="ignore")
 #     assert x_func_count_files(dir_path=px._admin._calendars_ignore_dir) == 1
 #     cx1 = px.get_ignore_calendar_from_ignore_calendar_files(_owner=swim_text)
 #     assert len(cx1._members) == 0

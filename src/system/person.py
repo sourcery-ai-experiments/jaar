@@ -97,9 +97,14 @@ class PersonAdmin:
             replace=True,
         )
 
-    def get_public_calendar(self, owner: str):
+    def get_public_calendar(self, owner: str) -> CalendarUnit:
         file_name_x = f"{owner}.json"
         return x_func_open_file(self._calendars_public_dir, file_name_x)
+
+    def get_depot_calendar(self, owner: str) -> CalendarUnit:
+        file_name_x = f"{owner}.json"
+        cx_json = x_func_open_file(self._calendars_depot_dir, file_name_x)
+        return calendarunit_get_from_json(cx_json=cx_json)
 
     def init_ignore_calendar(self, _label: str) -> CalendarUnit:
         ignore_file_name = f"{_label}.json"
@@ -166,6 +171,14 @@ class PersonAdmin:
     def delete_digest_calendar(self, owner):
         x_func_delete_dir(f"{self._calendars_digest_dir}/{owner}.json")
 
+    def check_file_exists(self, dir_type: str, owner: str):
+        cx_file_name = f"{owner}.json"
+        cx_file_path = f"{self._calendars_depot_dir}/{cx_file_name}"
+        if not os_path.exists(cx_file_path):
+            raise InvalidPersonException(
+                f"Person {self._person_name} cannot find calendar {owner} in {cx_file_path}"
+            )
+
 
 class InvalidPersonException(Exception):
     pass
@@ -216,34 +229,19 @@ class PersonUnit:
             )
 
     def set_src_calendarlinks(
-        self, calendar_owner: str, link_type: str = None, weight: float = None
+        self, owner: str, link_type: str = None, weight: float = None
     ):
         self.set_src_calendarlinks_empty_if_null()
-        cx_file_name = f"{calendar_owner}.json"
-        cx_file_path = f"{self._admin._calendars_depot_dir}/{cx_file_name}"
-        if not os_path.exists(cx_file_path):
-            raise InvalidPersonException(
-                f"Person {self._admin._person_name} cannot find calendar {calendar_owner} in {cx_file_path}"
-            )
+        self._admin.check_file_exists("depot", owner)
 
-        # if not calendarlink_x.link_type in list(get_calendarlink_types().keys()):
-        #     raise Exception(f"{calendarlink_x.link_type=} not allowed.")
-        calendarlink_x = calendarlink_shop(
-            calendar_owner=calendar_owner, link_type=link_type, weight=weight
-        )
-
-        # if self._src_calendarlinks.get(calendar_owner) is None:
-        #     self._src_calendarlinks[calendar_owner] = calendarlink_x
-        # elif self._src_calendarlinks.get(calendar_owner) != None:
-        #     self._src_calendarlinks[calendar_owner] = calendarlink_x
-        self._src_calendarlinks[calendar_owner] = calendarlink_x
+        calendarlink_x = calendarlink_shop(owner, link_type, weight)
+        self._src_calendarlinks[owner] = calendarlink_x
 
         if calendarlink_x.link_type == "blind_trust":
-            cx_json = x_func_open_file(self._admin._calendars_depot_dir, cx_file_name)
-            cx_obj = calendarunit_get_from_json(cx_json=cx_json)
+            cx_obj = self._admin.get_depot_calendar(owner=owner)
             self._admin.save_calendar_to_digest(cx_obj)
         elif calendarlink_x.link_type == "ignore":
-            new_cx_obj = CalendarUnit(_owner=calendar_owner)
+            new_cx_obj = CalendarUnit(_owner=owner)
             self.set_ignore_calendar_file(new_cx_obj, new_cx_obj._owner)
 
     def set_src_calendarlinks_empty_if_null(self):
