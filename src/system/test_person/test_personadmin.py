@@ -70,4 +70,4 @@ def test_admin__set_calendars_depot_dir_CorrectSetsPersonAdminAttribute():
     assert pdx._calendars_bond_dir == f"{pdx._person_dir}/bonds"
     assert pdx._calendars_digest_dir == f"{pdx._person_dir}/digests"
     assert pdx._calendars_public_dir == f"{env_dir}/{calendars_str}"
-    assert pdx._isol_calendar_file_name == "isol_digest_calendar.json"
+    assert pdx._isol_calendar_file_name == "isol_calendar.json"

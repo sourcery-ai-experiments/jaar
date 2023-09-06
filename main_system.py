@@ -48,10 +48,8 @@ class MainApp(QApplication):
 
     def editmain_show(self):
         if self.main_window.ignore_calendar_x is None:
-            self.main_window.isol_digest = (
-                self.main_window.person_x._admin.get_isol_digest_calendar()
-            )
-            self.editmain_view.calendar_x = self.main_window.isol_digest
+            self.main_window.isol = self.main_window.person_x._admin.get_isol_calendar()
+            self.editmain_view.calendar_x = self.main_window.isol
         else:
             self.editmain_view.calendar_x = self.main_window.ignore_calendar_x
         self.editmain_view.refresh_all()
@@ -103,8 +101,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.ignores_table.setHidden(True)
         self.show_ignores_button.clicked.connect(self.show_ignores_table)
         self.show_digests_button.clicked.connect(self.show_digests_table)
-        self.isol_digest_open_button.clicked.connect(self.open_editmain)
-        self.isol_digest_save_button.clicked.connect(self.save_isol_digest)
+        self.isol_open_button.clicked.connect(self.open_editmain)
+        self.isol_save_button.clicked.connect(self.save_isol)
 
         self.depotlink_insert_button.clicked.connect(self.depotlink_insert)
         self.depotlink_update_button.clicked.connect(self.depotlink_update)
@@ -123,9 +121,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.system_name_combo.setCurrentText(first_env)
         self._person_load(person_name="ernie")
 
-    def save_isol_digest(self):
-        if self.isol_digest != None:
-            self.person_x._admin.set_isol_digest_calendar(self.isol_digest)
+    def save_isol(self):
+        if self.isol != None:
+            self.person_x._admin.set_isol_calendar(self.isol)
         self.refresh_person()
 
     def reload_all_src_calendars(self):
@@ -581,9 +579,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._sub_refresh_ignores_table()
         self.person_output_calendar = None
         if self.person_x != None:
-            self.person_output_calendar = (
-                self.person_x.get_output_from_digest_calendar_files()
-            )
+            self.person_output_calendar = self.person_x.create_output_calendar()
         self._sub_refresh_p_ideas_table()
         self._sub_refresh_p_members_table()
         self._sub_refresh_p_groups_table()

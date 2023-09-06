@@ -16,7 +16,7 @@ def test_person_post_calendar_to_depot_SetsCorrectInfo():
     # GIVEN
     env_dir = get_temp_person_dir()
     person_x = person_examples.get_person_2calendar(env_dir=env_dir)
-    assert len(person_x.get_src_calendarslinks_dict()) == 2
+    assert len(person_x.get_depotlinks_dict()) == 2
 
     # WHEN
     swim_text = "swim1"
@@ -25,25 +25,25 @@ def test_person_post_calendar_to_depot_SetsCorrectInfo():
     person_x.post_calendar_to_depot(calendar_x=CalendarUnit(_owner=run_text))
 
     # THEN
-    assert len(person_x.get_src_calendarslinks_dict()) == 4
+    assert len(person_x.get_depotlinks_dict()) == 4
 
 
-def test_person_get_src_calendarslinks_dict_ReturnsCorrectInfo():
+def test_person_get_depotlinks_dict_ReturnsCorrectInfo():
     # GIVEN
     env_dir = get_temp_person_dir()
     person_x = person_examples.get_person_2calendar(env_dir=env_dir)
-    assert len(person_x.get_src_calendarslinks_dict()) == 2
+    assert len(person_x.get_depotlinks_dict()) == 2
     swim_text = "swim1"
     person_x.post_calendar_to_depot(calendar_x=CalendarUnit(_owner=swim_text))
     run_text = "run1"
     person_x.post_calendar_to_depot(calendar_x=CalendarUnit(_owner=run_text))
 
     # WHEN
-    src_depotlinks_dict = person_x.get_src_calendarslinks_dict()
+    depotlinks_dict = person_x.get_depotlinks_dict()
 
     # THEN
-    assert len(src_depotlinks_dict) == 4
-    swim_dict = src_depotlinks_dict.get(swim_text)
+    assert len(depotlinks_dict) == 4
+    swim_dict = depotlinks_dict.get(swim_text)
     assert str(type(swim_dict)) == "<class 'dict'>"
     assert len(swim_dict) > 1
     assert swim_dict.get("calendar_owner") == swim_text
@@ -71,8 +71,8 @@ def test_person_get_dict_ReturnsDictObject(person_dir_setup_cleanup):
     assert x_dict["_depotlinks"]["A"] != None
     assert x_dict["_depotlinks"]["J"] != None
     assert len(x_dict["_depotlinks"]) == 3
-    assert x_dict["_depotlinks"] == person_x.get_src_calendarslinks_dict()
-    assert len(person_x.get_src_calendarslinks_dict()) == 3
+    assert x_dict["_depotlinks"] == person_x.get_depotlinks_dict()
+    assert len(person_x.get_depotlinks_dict()) == 3
 
 
 def test_person_export_to_JSON_simple_example_works(person_dir_setup_cleanup):
@@ -90,7 +90,7 @@ def test_person_export_to_JSON_simple_example_works(person_dir_setup_cleanup):
     assert x_dict["_depotlinks"]["A"] != None
     assert x_dict["_depotlinks"]["J"] != None
     assert len(x_dict["_depotlinks"]) == 2
-    assert x_dict["_depotlinks"] == x_person.get_src_calendarslinks_dict()
+    assert x_dict["_depotlinks"] == x_person.get_depotlinks_dict()
 
 
 def test_person_get_json_CorrectlyWorksForSimpleExample(

@@ -29,6 +29,10 @@ from os import path as os_path
 from json import loads as json_loads
 
 
+class InvalidPersonException(Exception):
+    pass
+
+
 @dataclass
 class PersonAdmin:
     _person_name: str
@@ -56,7 +60,7 @@ class PersonAdmin:
         self._calendars_ignore_dir = f"{self._person_dir}/ignores"
         self._calendars_bond_dir = f"{self._person_dir}/bonds"
         self._calendars_digest_dir = f"{self._person_dir}/digests"
-        self._isol_calendar_file_name = "isol_digest_calendar.json"
+        self._isol_calendar_file_name = "isol_calendar.json"
 
     def set_person_name(self, new_name: str):
         old_name = self._person_name
@@ -140,20 +144,20 @@ class PersonAdmin:
     def init_isol_calendar(self) -> CalendarUnit:
         return x_func_open_file(self._person_dir, self._isol_calendar_file_name)
 
-    def del_isol_digest_calendar_file(self):
+    def del_isol_calendar_file(self):
         x_func_delete_dir(dir=f"{self._person_dir}/{self._isol_calendar_file_name}")
 
-    def get_isol_digest_calendar(self) -> CalendarUnit:
+    def get_isol_calendar(self) -> CalendarUnit:
         cx = None
         try:
             ct = self.init_isol_calendar()
             cx = calendarunit_get_from_json(cx_json=ct)
         except Exception:
-            cx = self._get_empty_isol_digest_calendar()
+            cx = self._get_empty_isol_calendar()
         cx.set_calendar_metrics()
         return cx
 
-    def set_isol_digest_calendar(self, calendar_x: CalendarUnit):
+    def set_isol_calendar(self, calendar_x: CalendarUnit):
         calendar_x.set_owner(self._person_name)
         x_func_save_file(
             dest_dir=self._person_dir,
@@ -162,7 +166,7 @@ class PersonAdmin:
             replace=True,
         )
 
-    def _get_empty_isol_digest_calendar(self):
+    def _get_empty_isol_calendar(self):
         return CalendarUnit(_owner=self._person_name, _weight=0)
 
     def delete_depot_calendar(self, owner):
@@ -178,10 +182,6 @@ class PersonAdmin:
             raise InvalidPersonException(
                 f"Person {self._person_name} cannot find calendar {owner} in {cx_file_path}"
             )
-
-
-class InvalidPersonException(Exception):
-    pass
 
 
 @dataclass
@@ -232,8 +232,8 @@ class PersonUnit:
         self._admin.check_file_exists("depot", owner)
 
         depotlink_x = depotlink_shop(owner, depotlink_type, weight)
-        self._depotlinks[owner] = depotlink_x
 
+        self._depotlinks[owner] = depotlink_x
         if depotlink_x.depotlink_type == "blind_trust":
             cx_obj = self._admin.get_depot_calendar(owner=owner)
             self._admin.save_calendar_to_digest(cx_obj)
@@ -256,16 +256,14 @@ class PersonUnit:
     def _set_emtpy_output_calendar(self):
         self._output_calendar = CalendarUnit(_owner=self._admin._person_name)
 
-    def get_output_from_digest_calendar_files(self) -> CalendarUnit:
+    def create_output_calendar(self) -> CalendarUnit:
         return get_meld_of_calendar_files(
-            cx_primary=self._admin.get_isol_digest_calendar(),
+            cx_primary=self._admin.get_isol_calendar(),
             meldees_dir=self._admin._calendars_digest_dir,
         )
 
     def save_output_calendar_to_public_dir(self):
-        self._admin.save_calendar_to_public(
-            self.get_output_from_digest_calendar_files()
-        )
+        self._admin.save_calendar_to_public(self.create_output_calendar())
 
     def get_ignore_calendar_from_ignore_calendar_files(
         self, _label: str
@@ -281,16 +279,16 @@ class PersonUnit:
     def get_dict(self):
         return {
             "name": self._admin._person_name,
-            "_depotlinks": self.get_src_calendarslinks_dict(),
+            "_depotlinks": self.get_depotlinks_dict(),
             "_auto_output_to_public": self._auto_output_to_public,
         }
 
-    def get_src_calendarslinks_dict(self) -> dict[str:dict]:
-        src_depotlinks_dict = {}
+    def get_depotlinks_dict(self) -> dict[str:dict]:
+        depotlinks_dict = {}
         for depotlink_x in self._depotlinks.values():
             single_x_dict = depotlink_x.get_dict()
-            src_depotlinks_dict[single_x_dict["calendar_owner"]] = single_x_dict
-        return src_depotlinks_dict
+            depotlinks_dict[single_x_dict["calendar_owner"]] = single_x_dict
+        return depotlinks_dict
 
     def get_json(self):
         x_dict = self.get_dict()

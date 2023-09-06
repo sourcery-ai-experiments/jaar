@@ -500,4 +500,4 @@ class SystemUnit:
         self, person_name: str
     ) -> CalendarUnit:
         person_x = self.get_person_obj_from_system(name=person_name)
-        return person_x.get_output_from_digest_calendar_files()
+        return person_x.create_output_calendar()

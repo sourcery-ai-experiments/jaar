@@ -20,7 +20,7 @@ from src.calendar.x_func import (
 from pytest import raises as pytest_raises
 
 
-def test_person_set_isol_digest_calendar_CreateStartingCalendarFile(
+def test_person_set_isol_calendar_CreateStartingCalendarFile(
     person_dir_setup_cleanup,
 ):
     # GIVEN
@@ -36,7 +36,7 @@ def test_person_set_isol_digest_calendar_CreateStartingCalendarFile(
     )
 
     # WHEN
-    px._admin.set_isol_digest_calendar(
+    px._admin.set_isol_calendar(
         calendar_x=example_calendars_get_calendar_with_4_levels()
     )
 
@@ -44,7 +44,7 @@ def test_person_set_isol_digest_calendar_CreateStartingCalendarFile(
     assert x_func_open_file(px._admin._person_dir, file_name) != None
 
 
-def test_personget_isol_digest_calendar_WhenStartingCalendarFileDoesNotExists(
+def test_personget_isol_calendar_WhenStartingCalendarFileDoesNotExists(
     person_dir_setup_cleanup,
 ):
     # GIVEN
@@ -53,8 +53,8 @@ def test_personget_isol_digest_calendar_WhenStartingCalendarFileDoesNotExists(
     px = personunit_shop(name=p_name, env_dir=env_dir)
 
     # WHEN
-    assert px._admin.get_isol_digest_calendar() != None
-    isol_digest_calendar = px._admin.get_isol_digest_calendar()
+    assert px._admin.get_isol_calendar() != None
+    isol_calendar = px._admin.get_isol_calendar()
 
     # THEN
     x_calendar = CalendarUnit(_owner=p_name)
@@ -73,13 +73,13 @@ def test_personget_isol_digest_calendar_WhenStartingCalendarFileDoesNotExists(
     # x_idearoot._all_member_credit = True
     # x_idearoot._all_member_debt = True
 
-    assert isol_digest_calendar._idearoot == x_calendar._idearoot
-    assert isol_digest_calendar._idearoot._acptfactunits == {}
-    assert isol_digest_calendar._members == {}
-    assert isol_digest_calendar._groups == {}
+    assert isol_calendar._idearoot == x_calendar._idearoot
+    assert isol_calendar._idearoot._acptfactunits == {}
+    assert isol_calendar._members == {}
+    assert isol_calendar._groups == {}
 
 
-def test_person_set_isol_digest_calendar_IsolCalendarOwnerMustBePerson(
+def test_person_set_isol_calendar_IsolCalendarOwnerMustBePerson(
     person_dir_setup_cleanup,
 ):
     # GIVEN
@@ -90,60 +90,60 @@ def test_person_set_isol_digest_calendar_IsolCalendarOwnerMustBePerson(
     assert cx1._owner != p_name
 
     # WHEN
-    px._admin.set_isol_digest_calendar(calendar_x=cx1)
+    px._admin.set_isol_calendar(calendar_x=cx1)
 
     # THEN
-    assert px._admin.get_isol_digest_calendar()._owner == px._admin._person_name
+    assert px._admin.get_isol_calendar()._owner == px._admin._person_name
 
 
-def test_person_get_isol_digest_calendar_WhenStartingCalendarFileExists(
+def test_person_get_isol_calendar_WhenStartingCalendarFileExists(
     person_dir_setup_cleanup,
 ):
     # GIVEN
     p_name = "Game1"
     env_dir = get_temp_person_dir()
     px = personunit_shop(name=p_name, env_dir=env_dir)
-    px._admin.set_isol_digest_calendar(
+    px._admin.set_isol_calendar(
         calendar_x=example_calendars_get_calendar_with_4_levels()
     )
 
     # WHEN
-    assert px._admin.get_isol_digest_calendar() != None
-    isol_digest_calendar = px._admin.get_isol_digest_calendar()
+    assert px._admin.get_isol_calendar() != None
+    isol_calendar = px._admin.get_isol_calendar()
 
     # THEN
     x_calendar = example_calendars_get_calendar_with_4_levels()
     x_calendar.set_owner(new_owner=p_name)
     x_calendar.set_calendar_metrics()
 
-    assert isol_digest_calendar._idearoot._kids == x_calendar._idearoot._kids
-    assert isol_digest_calendar._idearoot == x_calendar._idearoot
-    assert isol_digest_calendar._idearoot._acptfactunits == {}
-    assert isol_digest_calendar._members == {}
-    assert isol_digest_calendar._groups == {}
-    assert isol_digest_calendar._owner == px._admin._person_name
+    assert isol_calendar._idearoot._kids == x_calendar._idearoot._kids
+    assert isol_calendar._idearoot == x_calendar._idearoot
+    assert isol_calendar._idearoot._acptfactunits == {}
+    assert isol_calendar._members == {}
+    assert isol_calendar._groups == {}
+    assert isol_calendar._owner == px._admin._person_name
 
 
-def test_person_del_isol_digest_calendar_file_DeletesFileCorrectly(
+def test_person_del_isol_calendar_file_DeletesFileCorrectly(
     person_dir_setup_cleanup,
 ):
     # GIVEN
     p_name = "Game1"
     env_dir = get_temp_person_dir()
     px = personunit_shop(name=p_name, env_dir=env_dir)
-    px._admin.set_isol_digest_calendar(example_calendars_get_calendar_with_4_levels())
+    px._admin.set_isol_calendar(example_calendars_get_calendar_with_4_levels())
     file_name = px._admin._isol_calendar_file_name
     assert x_func_open_file(px._admin._person_dir, file_name) != None
 
     # WHEN
-    px._admin.del_isol_digest_calendar_file()
+    px._admin.del_isol_calendar_file()
 
     # THEN
     with pytest_raises(Exception) as excinfo:
         x_func_open_file(px._admin._person_dir, file_name)
     assert (
         str(excinfo.value)
-        == f"Could not load file {px._admin._person_dir}/isol_digest_calendar.json (2, 'No such file or directory')"
+        == f"Could not load file {px._admin._person_dir}/isol_calendar.json (2, 'No such file or directory')"
     )
 
 
@@ -207,21 +207,21 @@ def test_presonunit_set_depotlink_CorrectlySets_blind_trust_DigestCalendar(
     assert digest_cx_json == cx.get_json()
 
 
-def test_person_get_output_from_digest_calendar_files_withEmptyDigestDict(
+def test_person_create_output_calendar_withEmptyDigestDict(
     person_dir_setup_cleanup,
 ):
     # GIVEN
     person_name_x = "boots3"
     px = personunit_shop(name=person_name_x, env_dir=get_temp_person_dir())
     px.create_core_dir_and_files()
-    sx_output_before = px.get_output_from_digest_calendar_files()
+    sx_output_before = px.create_output_calendar()
     assert str(type(sx_output_before)).find(".calendar.CalendarUnit'>")
     assert sx_output_before._owner == person_name_x
     assert sx_output_before._idearoot._label == root_label()
     # px.set_digested_calendar(calendar_x=CalendarUnit(_owner="digested1"))
 
     # WHEN
-    sx_output_after = px.get_output_from_digest_calendar_files()
+    sx_output_after = px.create_output_calendar()
 
     # THEN
     person_calendar_x = CalendarUnit(_owner=person_name_x, _weight=0.0)
@@ -245,7 +245,7 @@ def test_person_get_output_from_digest_calendar_files_withEmptyDigestDict(
     assert sx_output_after._idearoot == person_calendar_x._idearoot
 
 
-def test_person_get_output_from_digest_calendar_files_with1DigestedCalendar(
+def test_person_create_output_calendar_with1DigestedCalendar(
     person_dir_setup_cleanup,
 ):
     # GIVEN
@@ -253,7 +253,7 @@ def test_person_get_output_from_digest_calendar_files_with1DigestedCalendar(
     env_dir = get_temp_person_dir()
     px = personunit_shop(name=person_name_x, env_dir=env_dir)
     px.create_core_dir_and_files()
-    sx_output_old = px.get_output_from_digest_calendar_files()
+    sx_output_old = px.create_output_calendar()
     assert str(type(sx_output_old)).find(".calendar.CalendarUnit'>")
     assert sx_output_old._owner == person_name_x
     assert sx_output_old._idearoot._label == root_label()
@@ -261,7 +261,7 @@ def test_person_get_output_from_digest_calendar_files_with1DigestedCalendar(
     px.post_calendar_to_depot(calendar_x=input_calendar, depotlink_type="blind_trust")
 
     # WHEN
-    sx_output_new = px.get_output_from_digest_calendar_files()
+    sx_output_new = px.create_output_calendar()
 
     # THEN
     assert str(type(sx_output_new)).find(".calendar.CalendarUnit'>")
@@ -290,7 +290,7 @@ def test_person_get_output_from_digest_calendar_files_with1DigestedCalendar(
 #     # GIVEN
 #     env_dir = get_temp_person_dir()
 #     px = personunit_shop(name="test8", env_dir=env_dir)
-#     sx_output_old = px.get_output_from_digest_calendar_files()
+#     sx_output_old = px.create_output_calendar()
 #     assert str(type(sx_output_old)).find(".calendar.CalendarUnit'>")
 #     assert sx_output_old._groups == {}
 #     assert sx_output_old._members == {}
@@ -319,7 +319,7 @@ def test_person_get_output_from_digest_calendar_files_with1DigestedCalendar(
 
 #     # WHEN
 #     px.set_single_digested_calendar(_calendar_owner="test1", digest_calendar_x=s1)
-#     sx_output_new = px.get_output_from_digest_calendar_files()
+#     sx_output_new = px.create_output_calendar()
 
 #     # THEN
 #     assert str(type(sx_output_new)).find(".calendar.CalendarUnit'>")

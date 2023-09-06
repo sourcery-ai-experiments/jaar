@@ -231,7 +231,7 @@ def test_personunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=old_steve_calendar)
     px.post_calendar_to_depot(calendar_x=ernie_calendar)
     px.post_calendar_to_depot(calendar_x=old_steve_calendar)
-    assert len(px.get_output_from_digest_calendar_files().get_idea_list()) == 4
+    assert len(px.create_output_calendar().get_idea_list()) == 4
     new_steve_calendar = example_persons.get_calendar_3CleanNodesRandomWeights(
         _owner="steve"
     )
@@ -247,4 +247,4 @@ def test_personunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
     px.receive_all_src_calendarunit_files()
 
     # THEN
-    assert len(px.get_output_from_digest_calendar_files().get_idea_list()) == 5
+    assert len(px.create_output_calendar().get_idea_list()) == 5
