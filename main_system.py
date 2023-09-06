@@ -19,7 +19,7 @@ from src.system.examples.env_kit import (
     rename_example_system,
     get_test_systems_dir,
 )
-from src.system.depotlink import get_depotdepotlink_types, depotlink_shop
+from src.system.depotlink import get_depotlink_types, depotlink_shop
 from src.calendar.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
@@ -457,10 +457,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
 
     def _sub_refresh_depotlinks_table(self):
-        depotdepotlink_types = list(get_depotdepotlink_types())
-        depotdepotlink_types.insert(0, "")
+        depotlink_types = list(get_depotlink_types())
+        depotlink_types.insert(0, "")
         self.depotlink_type_combo.clear()
-        self.depotlink_type_combo.addItems(depotdepotlink_types)
+        self.depotlink_type_combo.addItems(depotlink_types)
         self.depotlink_type_combo.setCurrentText("")
         column_header = ""
         if self.person_x is None:

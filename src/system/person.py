@@ -2,7 +2,7 @@ from src.system.depotlink import (
     depotlink_shop,
     get_calendar_from_calendars_dirlink_from_dict,
     CalendarLink,
-    get_depotdepotlink_types,
+    get_depotlink_types,
 )
 from src.calendar.calendar import (
     get_from_json as calendarunit_get_from_json,
@@ -189,7 +189,7 @@ class PersonUnit:
     _admin: PersonAdmin = None
     _depotlinks: dict[str:CalendarUnit] = None
     _output_calendar: CalendarUnit = None
-    _auto_output_calendar_to_public: bool = None
+    _auto_output_to_public: bool = None
 
     # dir methods
     def _set_env_dir(self, env_dir: str, person_name: str):
@@ -207,7 +207,7 @@ class PersonUnit:
     ):
         self._admin.save_calendar_to_depot(calendar_x)
         self.set_depotlink(calendar_x._owner, depotlink_type, depotlink_weight)
-        if self._auto_output_calendar_to_public:
+        if self._auto_output_to_public:
             self.save_output_calendar_to_public_dir()
 
     def receive_src_calendarunit_file(
@@ -250,8 +250,8 @@ class PersonUnit:
         self._admin.delete_depot_calendar(calendar_owner)
         self._admin.delete_digest_calendar(calendar_owner)
 
-    def _set_auto_output_calendar_to_public(self, bool_x: bool):
-        self._auto_output_calendar_to_public = bool_x
+    def _set_auto_output_to_public(self, bool_x: bool):
+        self._auto_output_to_public = bool_x
 
     def _set_emtpy_output_calendar(self):
         self._output_calendar = CalendarUnit(_owner=self._admin._person_name)
@@ -282,7 +282,7 @@ class PersonUnit:
         return {
             "name": self._admin._person_name,
             "_depotlinks": self.get_src_calendarslinks_dict(),
-            "_auto_output_calendar_to_public": self._auto_output_calendar_to_public,
+            "_auto_output_to_public": self._auto_output_to_public,
         }
 
     def get_src_calendarslinks_dict(self) -> dict[str:dict]:
@@ -298,11 +298,11 @@ class PersonUnit:
 
 
 def personunit_shop(
-    name: str, env_dir: str, _auto_output_calendar_to_public: bool = None
+    name: str, env_dir: str, _auto_output_to_public: bool = None
 ) -> PersonUnit:
     person_x = PersonUnit()
     person_x._set_env_dir(env_dir=env_dir, person_name=name)
-    person_x._set_auto_output_calendar_to_public(_auto_output_calendar_to_public)
+    person_x._set_auto_output_to_public(_auto_output_to_public)
     person_x.set_depotlink_empty_if_null()
     person_x._set_emtpy_output_calendar()
     return person_x
@@ -316,7 +316,7 @@ def get_from_dict(person_dict: dict, env_dir: str) -> PersonUnit:
     wx = personunit_shop(
         name=person_dict["name"],
         env_dir=env_dir,
-        _auto_output_calendar_to_public=person_dict["_auto_output_calendar_to_public"],
+        _auto_output_to_public=person_dict["_auto_output_to_public"],
     )
     wx._depotlinks = get_calendar_from_calendars_dirlinks_from_dict(
         person_dict["_depotlinks"]

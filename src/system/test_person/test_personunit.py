@@ -18,12 +18,10 @@ from src.calendar.x_func import (
 def test_personunit_exists(person_dir_setup_cleanup):
     person_text = "test1"
     env_dir = get_temp_person_dir()
-    px = personunit_shop(
-        name=person_text, env_dir=env_dir, _auto_output_calendar_to_public=True
-    )
+    px = personunit_shop(name=person_text, env_dir=env_dir, _auto_output_to_public=True)
     assert px._admin._person_name == person_text
     assert px._depotlinks == {}
-    assert px._auto_output_calendar_to_public
+    assert px._auto_output_to_public
     # assert px._re_idearoot != None
     # assert str(type(px._re_idearoot)).find(".idea.IdeaRoot'>") > 0
     # assert px._re_idearoot._label == person_text
@@ -146,7 +144,7 @@ def test_personunit_save_output_calendar_to_public_dir_SavesCalendarToPublicDir(
     print(f"{public_file_path=}")
 
 
-def test_personunit_auto_output_calendar_to_public_SavesCalendarToPublicDir(
+def test_personunit_auto_output_to_public_SavesCalendarToPublicDir(
     person_dir_setup_cleanup,
 ):
     # GIVEN
@@ -156,7 +154,7 @@ def test_personunit_auto_output_calendar_to_public_SavesCalendarToPublicDir(
     public_file_path = f"{get_temp_person_dir()}/calendars/{public_file_name}"
     print(f"{public_file_path=}")
     # public_file_path = f"src/system/examples/ex_env/calendars/{public_file_name}"
-    px = personunit_shop(person_text, env_dir, _auto_output_calendar_to_public=True)
+    px = personunit_shop(person_text, env_dir, _auto_output_to_public=True)
     px.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
 

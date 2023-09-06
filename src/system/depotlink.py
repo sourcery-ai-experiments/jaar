@@ -12,7 +12,7 @@ class CalendarLink:
     weight: float = None
 
     def set_depotlink_type(self, depotlink_type: str):
-        if depotlink_type not in (list(get_depotdepotlink_types())):
+        if depotlink_type not in (list(get_depotlink_types())):
             raise InvalidCalendarLinkException(
                 f"Calendarlink '{self.calendar_owner}' cannot have type '{depotlink_type}'."
             )
@@ -53,5 +53,5 @@ def get_calendar_from_calendars_dirlink_from_dict(x_dict: dict) -> CalendarLink:
     )
 
 
-def get_depotdepotlink_types() -> dict[str:None]:
+def get_depotlink_types() -> dict[str:None]:
     return {"blind_trust": None, "bond_filter": None, "tributary": None, "ignore": None}
