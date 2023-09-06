@@ -295,7 +295,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def open_file(self):
         self.calendar_x_json = self.load_file()
-        self.calendar_load(lw_json=self.calendar_x_json)
+        self.calendar_load(cx_json=self.calendar_x_json)
 
     def calendar_new(self):
         self.calendar_x = CalendarUnit(_owner="new")
@@ -334,8 +334,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.acptfacts_table_load()
         self.agenda_states_load()
 
-    def calendar_load(self, lw_json: str):
-        self.calendar_x = get_from_json(lw_json=lw_json)
+    def calendar_load(self, cx_json: str):
+        self.calendar_x = get_from_json(cx_json=cx_json)
         self.promise_items = self.calendar_x.get_agenda_items()
         self.refresh_all()
 

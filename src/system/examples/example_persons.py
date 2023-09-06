@@ -147,7 +147,7 @@ def get_7nodeJRootWithH_calendar():
 def get_person_2calendar(env_dir):
     person_name = "person1"
     wx = personunit_shop(
-        name=person_name, env_dir=env_dir, _auto_output_calendar_to_public_calendar=True
+        name=person_name, env_dir=env_dir, _auto_output_calendar_to_public=True
     )
     wx.receive_src_calendarunit_obj(
         calendar_x=get_1node_calendar(), link_type="blind_trust"

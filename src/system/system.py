@@ -183,7 +183,7 @@ class SystemUnit:
     def _bank_populate_calendars_data(self):
         for file_name in self.get_calendars_dir_file_names_list():
             calendar_json = x_func_open_file(self.get_calendars_dir(), file_name)
-            calendarunit_x = get_calendar_from_json(lw_json=calendar_json)
+            calendarunit_x = get_calendar_from_json(cx_json=calendar_json)
             calendarunit_x.set_calendar_metrics()
 
             self._bank_insert_calendarunit(calendarunit_x)
@@ -413,7 +413,7 @@ class SystemUnit:
             calendar_json = x_func_open_file(
                 dest_dir=self.get_calendars_dir(), file_name=file_name
             )
-            calendars_list.append(get_calendar_from_json(lw_json=calendar_json))
+            calendars_list.append(get_calendar_from_json(cx_json=calendar_json))
 
         return calendars_list
 
@@ -498,4 +498,4 @@ class SystemUnit:
         self, person_name: str
     ) -> CalendarUnit:
         person_x = self.get_person_obj_from_system(name=person_name)
-        return person_x.get_output_calendar_from_digest_calendar_files()
+        return person_x.get_output_from_digest_calendar_files()

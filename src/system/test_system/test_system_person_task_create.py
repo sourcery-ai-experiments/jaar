@@ -29,14 +29,14 @@ from pytest import raises as pytest_raises
 #     america_text = "America"
 #     ex.create_new_personunit(person_name=america_text)
 #     america_person = ex.get_person_obj_from_system(name=america_text)
-#     america_person.set_output_calendar_to_public_calendar()
+#     america_person.save_output_calendar_to_public_dir()
 
 #     # Create person2
 #     joachim_text = "Joachim"
 #     ex.create_new_personunit(person_name=joachim_text)
 #     old_joa_person = ex.get_person_obj_from_system(name=joachim_text)
 #     old_joa_person.set_src_calendarlinks(america_text, link_type="blind_trust")
-#     old_joa_person.set_output_calendar_to_public_calendar()
+#     old_joa_person.save_output_calendar_to_public_dir()
 #     old_joa_dest_c = ex.get_calendar_from_calendars_dir(joachim_text)
 #     old_joa_agenda = old_joa_dest_c.get_agenda_items()
 #     assert len(old_joa_agenda) == 0
@@ -80,9 +80,9 @@ from pytest import raises as pytest_raises
 #     )
 
 #     # WHEN
-#     america_person.set_output_calendar_to_public_calendar()
+#     america_person.save_output_calendar_to_public_dir()
 #     new_joa_person = ex.get_person_obj_from_system(name=joachim_text)
-#     new_joa_person.set_output_calendar_to_public_calendar()
+#     new_joa_person.save_output_calendar_to_public_dir()
 #     new_joa_dest_c = ex.get_calendar_from_calendars_dir(joachim_text)
 #     new_joa_agenda = new_joa_dest_c.get_agenda_items()
 #     assert len(new_joa_agenda) == 1

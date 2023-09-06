@@ -19,11 +19,11 @@ def test_personunit_exists(person_dir_setup_cleanup):
     person_text = "test1"
     env_dir = get_temp_person_dir()
     px = personunit_shop(
-        name=person_text, env_dir=env_dir, _auto_output_calendar_to_public_calendar=True
+        name=person_text, env_dir=env_dir, _auto_output_calendar_to_public=True
     )
     assert px._admin._person_name == person_text
     assert px._src_calendarlinks == {}
-    assert px._auto_output_calendar_to_public_calendar
+    assert px._auto_output_calendar_to_public
     # assert px._re_idearoot != None
     # assert str(type(px._re_idearoot)).find(".idea.IdeaRoot'>") > 0
     # assert px._re_idearoot._label == person_text
@@ -125,7 +125,7 @@ def test_personunit_set_person_name_WorksCorrectly(person_dir_setup_cleanup):
     assert os_path.exists(new_person_file_path)
 
 
-def test_personunit_set_output_calendar_to_public_calendar_SavesCalendarToPublicDir(
+def test_personunit_save_output_calendar_to_public_dir_SavesCalendarToPublicDir(
     person_dir_setup_cleanup,
 ):
     # GIVEN create person
@@ -139,30 +139,30 @@ def test_personunit_set_output_calendar_to_public_calendar_SavesCalendarToPublic
     assert os_path.exists(public_file_path) is False
 
     # WHEN
-    px.set_output_calendar_to_public_calendar()
+    px.save_output_calendar_to_public_dir()
 
     # THEN
     assert os_path.exists(public_file_path)
     print(f"{public_file_path=}")
 
 
-def test_personunit_auto_output_calendar_to_public_calendar_SavesCalendarToPublicDir(
+def test_personunit_auto_output_calendar_to_public_SavesCalendarToPublicDir(
     person_dir_setup_cleanup,
 ):
-    # GIVEN create person
+    # GIVEN
     env_dir = get_temp_person_dir()
-
     person_text = "person1"
     public_file_name = f"{person_text}.json"
-    public_file_path = f"src/system/examples/ex_env/calendars/{public_file_name}"
-    px = personunit_shop(
-        name=person_text, env_dir=env_dir, _auto_output_calendar_to_public_calendar=True
-    )
+    public_file_path = f"{get_temp_person_dir()}/calendars/{public_file_name}"
+    print(f"{public_file_path=}")
+    # public_file_path = f"src/system/examples/ex_env/calendars/{public_file_name}"
+    px = personunit_shop(person_text, env_dir, _auto_output_calendar_to_public=True)
     px.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
 
     # WHEN
-    px.receive_src_calendarunit_obj(calendar_x=CalendarUnit(_owner="bobs calendarunit"))
+    owner_text = "bobs calendarunit"
+    px.receive_src_calendarunit_obj(calendar_x=CalendarUnit(owner_text))
 
     # THEN
     assert os_path.exists(public_file_path)

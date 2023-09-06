@@ -34,6 +34,7 @@ def test_admin_exists():
     assert pdx._calendars_ignore_dir is None
     assert pdx._calendars_bond_dir is None
     assert pdx._calendars_digest_dir is None
+    assert pdx._isol_calendar_file_name is None
 
 
 def test_admin__set_calendars_depot_dir_CorrectSetsPersonAdminAttribute():
@@ -56,6 +57,7 @@ def test_admin__set_calendars_depot_dir_CorrectSetsPersonAdminAttribute():
     assert pdx._calendars_bond_dir != None
     assert pdx._person_file_name != None
     assert pdx._person_file_path != None
+    assert pdx._isol_calendar_file_name != None
 
     persons_drectory_name = "persons"
     assert pdx._persons_dir == f"{env_dir}/{persons_drectory_name}"
@@ -68,3 +70,4 @@ def test_admin__set_calendars_depot_dir_CorrectSetsPersonAdminAttribute():
     assert pdx._calendars_bond_dir == f"{pdx._person_dir}/bonds"
     assert pdx._calendars_digest_dir == f"{pdx._person_dir}/digests"
     assert pdx._calendars_public_dir == f"{env_dir}/{calendars_str}"
+    assert pdx._isol_calendar_file_name == "isol_digest_calendar.json"

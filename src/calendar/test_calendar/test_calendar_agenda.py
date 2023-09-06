@@ -379,7 +379,7 @@ def test_calendar_get_from_json_LoadsActionFromJSONCorrectly():
     a1_json = x_func_open_file(dest_dir=file_dir, file_name=file_name)
 
     # WHEN
-    a1 = get_from_json(lw_json=a1_json)
+    a1 = get_from_json(cx_json=a1_json)
 
     # THEN
     assert len(a1.get_idea_list()) == 253

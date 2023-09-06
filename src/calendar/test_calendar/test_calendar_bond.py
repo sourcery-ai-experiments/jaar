@@ -342,13 +342,13 @@ def test_calendarunit_export_all_bonds_ExportsFileOfBonds_2files(env_dir_setup_c
 #     file_17_name = "17.json"
 #     assert dir_files[file_17_name]
 #     json_17 = x_func_open_file(dest_dir=get_temp_env_dir(), file_name=file_17_name)
-#     bond_17 = calendar_get_from_json(lw_json=json_17)
+#     bond_17 = calendar_get_from_json(cx_json=json_17)
 #     assert bond_17.get_bond_status()
 
 #     file_2_name = "2.json"
 #     assert dir_files[file_2_name]
 #     json_2 = x_func_open_file(dest_dir=get_temp_env_dir(), file_name=file_2_name)
-#     bond_2 = calendar_get_from_json(lw_json=json_2)
+#     bond_2 = calendar_get_from_json(cx_json=json_2)
 #     assert bond_2.get_bond_status()
 
 
@@ -357,38 +357,38 @@ def test_calendarunit_get_meld_of_calendar_files_MeldsIntoSourceCalendar_Scenari
 ):
     # GIVEN
     owner_text = "Nia"
-    src_cx = CalendarUnit(_owner=owner_text, _weight=10)
+    primary_cx = CalendarUnit(_owner=owner_text, _weight=10)
 
     work = "work"
     idea_kid_work = IdeaKid(_weight=30, _label=work, promise=True)
-    src_cx.add_idea(idea_kid=idea_kid_work, walk=f"{root_label()}")
+    primary_cx.add_idea(idea_kid=idea_kid_work, walk=f"{root_label()}")
 
     cat = "feed cat"
     idea_kid_feedcat = IdeaKid(_weight=20, _label=cat, promise=True)
-    src_cx.add_idea(idea_kid=idea_kid_feedcat, walk=f"{root_label()}")
+    primary_cx.add_idea(idea_kid=idea_kid_feedcat, walk=f"{root_label()}")
 
-    src_cx.export_all_bonds(dir=get_temp_env_dir())
+    primary_cx.export_all_bonds(dir=get_temp_env_dir())
     cat_t = "feed cat"
-    src_cat_idea = src_cx._idearoot._kids.get(cat_t)
+    src_cat_idea = primary_cx._idearoot._kids.get(cat_t)
     src_cat_idea.set_originunit_empty_if_null()
 
     # WHEN
     new_cx = get_meld_of_calendar_files(
-        calendarunit=src_cx,
-        dir=get_temp_env_dir(),
+        cx_primary=primary_cx,
+        meldees_dir=get_temp_env_dir(),
     )
 
     # THEN
-    assert src_cx._weight == new_cx._weight
-    assert src_cx._idearoot._weight == new_cx._idearoot._weight
-    src_cat_idea = src_cx._idearoot._kids.get(cat_t)
+    assert primary_cx._weight == new_cx._weight
+    assert primary_cx._idearoot._weight == new_cx._idearoot._weight
+    src_cat_idea = primary_cx._idearoot._kids.get(cat_t)
     new_cat_idea = new_cx._idearoot._kids.get(cat_t)
     assert src_cat_idea._calendar_coin_onset == new_cat_idea._calendar_coin_onset
     assert src_cat_idea._originunit == new_cat_idea._originunit
     assert src_cat_idea == new_cat_idea
-    assert src_cx._idearoot._kids == new_cx._idearoot._kids
-    assert src_cx._idearoot == new_cx._idearoot
-    assert src_cx == new_cx
+    assert primary_cx._idearoot._kids == new_cx._idearoot._kids
+    assert primary_cx._idearoot == new_cx._idearoot
+    assert primary_cx == new_cx
 
 
 # def test_calendarunit_get_meld_of_calendar_files_MeldsIntoSourceCalendar_Scenario2(

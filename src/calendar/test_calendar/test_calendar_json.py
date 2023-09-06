@@ -182,10 +182,10 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     acptfactunit_x = acptfactunit_shop(day_min_road, day_min_road, 5, 59)
     x_calendar.edit_idea_attr(road=acptfactunit_x.base, acptfactunit=acptfactunit_x)
     x_calendar.set_max_tree_traverse(int_x=2)
-    x_lw_json = x_calendar.get_json()
+    x_cx_json = x_calendar.get_json()
 
     # WHEN
-    x_dict = json_loads(x_lw_json)
+    x_dict = json_loads(x_cx_json)
 
     # THEN
     _kids = "_kids"
@@ -226,14 +226,14 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
 def test_save_file_CorrectlySavesCalendarJSON(env_dir_setup_cleanup):
     # GIVEN
     x_calendar = example_calendars_calendar_v001()
-    x_lw_json = x_calendar.get_json()
+    x_cx_json = x_calendar.get_json()
     file_name_x = "example_calendar1.json"
 
     # WHEN
     x_func_save_file(
         dest_dir=get_calendar_temp_env_dir(),
         file_name=file_name_x,
-        file_text=x_lw_json,
+        file_text=x_cx_json,
     )
 
     # THEN
@@ -278,7 +278,7 @@ def test_calendar_get_json_CorrectlyWorksForSimpleExample():
     # WHEN
     x_json = calendar_y.get_json()
     assert x_is_json(x_json) == True
-    calendar_x = calendar_get_from_json(lw_json=x_json)
+    calendar_x = calendar_get_from_json(cx_json=x_json)
 
     # THEN
     assert str(type(calendar_x)).find(".calendar.CalendarUnit'>") > 0
@@ -332,7 +332,7 @@ def test_calendar_get_json_CorrectlyWorksForSimpleExample():
 #     # print(cx3_json[299000:299155])
 
 #     # WHEN
-#     cx3 = calendar_get_from_json(lw_json=cx3_json)
+#     cx3 = calendar_get_from_json(cx_json=cx3_json)
 
 #     # THEN
 #     assert str(type(cx3)).find(".calendar.CalendarUnit'>") > 0

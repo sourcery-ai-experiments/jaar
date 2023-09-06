@@ -2031,8 +2031,8 @@ class CalendarUnit:
 
 
 # class Calendarshop:
-def get_from_json(lw_json: str) -> CalendarUnit:
-    return get_from_dict(cx_dict=json.loads(lw_json))
+def get_from_json(cx_json: str) -> CalendarUnit:
+    return get_from_dict(cx_dict=json.loads(cx_json))
 
 
 def get_from_dict(cx_dict: dict) -> CalendarUnit:
@@ -2133,13 +2133,13 @@ def get_dict_of_calendar_from_dict(x_dict: dict[str:dict]) -> dict[str:CalendarU
     return calendarunits
 
 
-def get_meld_of_calendar_files(calendarunit: CalendarUnit, dir: str) -> CalendarUnit:
-    calendarunit.set_calendar_metrics()
-    for bond_file_x in x_func_dir_files(dir_path=dir):
-        bond_x = get_from_json(
-            lw_json=x_func_open_file(dest_dir=dir, file_name=bond_file_x)
-        )
-        calendarunit.meld(other_calendar=bond_x)
+def get_meld_of_calendar_files(
+    cx_primary: CalendarUnit, meldees_dir: str
+) -> CalendarUnit:
+    cx_primary.set_calendar_metrics()
+    for bond_file_x in x_func_dir_files(dir_path=meldees_dir):
+        bond_x = get_from_json(cx_json=x_func_open_file(meldees_dir, bond_file_x))
+        cx_primary.meld(other_calendar=bond_x)
 
-    calendarunit.set_calendar_metrics()
-    return calendarunit
+    cx_primary.set_calendar_metrics()
+    return cx_primary

@@ -64,8 +64,8 @@ def test_person_get_dict_ReturnsDictObject(person_dir_setup_cleanup):
     assert str(type(x_dict)) == "<class 'dict'>"
     assert x_dict["name"] == person_x._admin._person_name
     assert (
-        x_dict["_auto_output_calendar_to_public_calendar"]
-        == person_x._auto_output_calendar_to_public_calendar
+        x_dict["_auto_output_calendar_to_public"]
+        == person_x._auto_output_calendar_to_public
     )
     assert x_dict["_env_dir"] == person_x._admin._env_dir
     assert x_dict["_public_calendars_dir"] == person_x._admin._calendars_public_dir
@@ -137,8 +137,8 @@ def test_person_get_json_CorrectlyWorksForSimpleExample(
     assert person_json._admin._person_name != None
     assert person_json._admin._person_name == person_algo._admin._person_name
     assert (
-        person_json._auto_output_calendar_to_public_calendar
-        == person_algo._auto_output_calendar_to_public_calendar
+        person_json._auto_output_calendar_to_public
+        == person_algo._auto_output_calendar_to_public
     )
     assert person_json._admin._env_dir == person_algo._admin._env_dir
     assert (
