@@ -97,12 +97,27 @@ class PersonAdmin:
             replace=True,
         )
 
+    def get_public_calendar(self, owner: str):
+        file_name_x = f"{owner}.json"
+        return x_func_open_file(self._calendars_public_dir, file_name_x)
+
     def init_ignore_calendar(self, _label: str) -> CalendarUnit:
         ignore_file_name = f"{_label}.json"
         calendar_json = x_func_open_file(self._calendars_ignore_dir, ignore_file_name)
         calendar_obj = calendarunit_get_from_json(cx_json=calendar_json)
         calendar_obj.set_calendar_metrics()
         return calendar_obj
+
+    def save_calendar_to_ignore_dir(
+        self, calendar_x: CalendarUnit, src_calendar_owner: str
+    ):
+        file_name = f"{src_calendar_owner}.json"
+        x_func_save_file(
+            dest_dir=self._calendars_ignore_dir,
+            file_name=file_name,
+            file_text=calendar_x.get_json(),
+            replace=True,
+        )
 
     def save_calendar_to_digest(
         self, calendar_x: CalendarUnit, src_calendar_owner: str = None
@@ -120,15 +135,6 @@ class PersonAdmin:
     def init_isol_calendar(self) -> CalendarUnit:
         return x_func_open_file(self._person_dir, self._isol_calendar_file_name)
 
-    def set_isol_digest_calendar(self, calendar_x: CalendarUnit):
-        calendar_x.set_owner(self._person_name)
-        x_func_save_file(
-            dest_dir=self._person_dir,
-            file_name=self._isol_calendar_file_name,
-            file_text=calendar_x.get_json(),
-            replace=True,
-        )
-
     def del_isol_digest_calendar_file(self):
         x_func_delete_dir(dir=f"{self._person_dir}/{self._isol_calendar_file_name}")
 
@@ -142,8 +148,23 @@ class PersonAdmin:
         cx.set_calendar_metrics()
         return cx
 
+    def set_isol_digest_calendar(self, calendar_x: CalendarUnit):
+        calendar_x.set_owner(self._person_name)
+        x_func_save_file(
+            dest_dir=self._person_dir,
+            file_name=self._isol_calendar_file_name,
+            file_text=calendar_x.get_json(),
+            replace=True,
+        )
+
     def _get_empty_isol_digest_calendar(self):
         return CalendarUnit(_owner=self._person_name, _weight=0)
+
+    def delete_depot_calendar(self, owner):
+        x_func_delete_dir(f"{self._calendars_depot_dir}/{owner}.json")
+
+    def delete_digest_calendar(self, owner):
+        x_func_delete_dir(f"{self._calendars_digest_dir}/{owner}.json")
 
 
 class InvalidPersonException(Exception):
@@ -187,12 +208,9 @@ class PersonUnit:
 
     def receive_all_src_calendarunit_files(self):
         for calendarlink_obj in self._src_calendarlinks.values():
-            file_name_x = f"{calendarlink_obj.calendar_owner}.json"
-            calendar_json = x_func_open_file(
-                self._admin._calendars_public_dir, file_name_x
-            )
+            cx_json = self._admin.get_public_calendar(calendarlink_obj.calendar_owner)
             self.receive_src_calendarunit_file(
-                calendar_json=calendar_json,
+                calendar_json=cx_json,
                 link_type=calendarlink_obj.link_type,
                 weight=calendarlink_obj.weight,
             )
@@ -234,18 +252,14 @@ class PersonUnit:
 
     def delete_calendarlink(self, calendar_owner: str):
         self._src_calendarlinks.pop(calendar_owner)
-        x_func_delete_dir(
-            dir=f"{self._admin._calendars_depot_dir}/{calendar_owner}.json"
-        )
-        x_func_delete_dir(
-            dir=f"{self._admin._calendars_digest_dir}/{calendar_owner}.json"
-        )
+        self._admin.delete_depot_calendar(calendar_owner)
+        self._admin.delete_digest_calendar(calendar_owner)
 
     def _set_auto_output_calendar_to_public(self, bool_x: bool):
         self._auto_output_calendar_to_public = bool_x
 
     def _set_emtpy_output_calendar(self):
-        self._output_calendar = CalendarUnit(_owner="")
+        self._output_calendar = CalendarUnit(_owner=self._admin._person_name)
 
     def get_output_from_digest_calendar_files(self) -> CalendarUnit:
         return get_meld_of_calendar_files(
@@ -266,25 +280,8 @@ class PersonUnit:
     def set_ignore_calendar_file(
         self, calendarunit: CalendarUnit, src_calendar_owner: str
     ):
-        self._save_ignore_calendar_file(calendarunit, src_calendar_owner)
-        cx_file_name = f"{src_calendar_owner}.json"
-        cx_2_json = x_func_open_file(self._admin._calendars_ignore_dir, cx_file_name)
-        cx_2_obj = calendarunit_get_from_json(cx_json=cx_2_json)
-        self._admin.save_calendar_to_digest(cx_2_obj, src_calendar_owner)
-
-    def _save_ignore_calendar_file(
-        self, calendarunit: CalendarUnit, src_calendar_owner: str
-    ):
-        file_name = f"{src_calendar_owner}.json"
-        x_func_save_file(
-            dest_dir=self._admin._calendars_ignore_dir,
-            file_name=file_name,
-            file_text=calendarunit.get_json(),
-            replace=True,
-        )
-
-        if self._auto_output_calendar_to_public:
-            self.save_output_calendar_to_public_dir()
+        self._admin.save_calendar_to_ignore_dir(calendarunit, src_calendar_owner)
+        self._admin.save_calendar_to_digest(calendarunit, src_calendar_owner)
 
     def get_dict(self):
         return {
