@@ -1,6 +1,6 @@
 import src.system.examples.example_persons as person_examples
 from src.system.person import (
-    get_from_json as get_person_from_json,
+    get_from_json as person_get_from_json,
     calendarlink_shop,
 )
 from src.calendar.x_func import x_is_json, x_get_dict
@@ -67,9 +67,6 @@ def test_person_get_dict_ReturnsDictObject(person_dir_setup_cleanup):
         x_dict["_auto_output_calendar_to_public"]
         == person_x._auto_output_calendar_to_public
     )
-    assert x_dict["_env_dir"] == person_x._admin._env_dir
-    assert x_dict["_public_calendars_dir"] == person_x._admin._calendars_public_dir
-    assert x_dict["_digest_calendars_dir"] == person_x._admin._calendars_digest_dir
     print("check internal obj attributes")
     # for src_calendar_owner, src_calendar_obj in x_dict["_src_calendarlinks"].items():
     #     print(f"{src_calendar_owner=}")
@@ -82,8 +79,6 @@ def test_person_get_dict_ReturnsDictObject(person_dir_setup_cleanup):
         == person_x.get_calendar_from_calendars_dirlinks_dict()
     )
     assert len(person_x.get_calendar_from_calendars_dirlinks_dict()) == 3
-
-    assert x_dict["_output_calendar"] == person_x._output_calendar.get_dict()
 
 
 def test_person_export_to_JSON_simple_example_works(person_dir_setup_cleanup):
@@ -98,9 +93,6 @@ def test_person_export_to_JSON_simple_example_works(person_dir_setup_cleanup):
     x_dict = json_loads(x_json)
     # print(x_dict)
     assert x_dict["name"] == x_person._admin._person_name
-    assert x_dict["_env_dir"] == x_person._admin._env_dir
-    assert x_dict["_public_calendars_dir"] == x_person._admin._calendars_public_dir
-    assert x_dict["_digest_calendars_dir"] == x_person._admin._calendars_digest_dir
     assert x_dict["_src_calendarlinks"]["A"] != None
     assert x_dict["_src_calendarlinks"]["J"] != None
     assert len(x_dict["_src_calendarlinks"]) == 2
@@ -108,7 +100,6 @@ def test_person_export_to_JSON_simple_example_works(person_dir_setup_cleanup):
         x_dict["_src_calendarlinks"]
         == x_person.get_calendar_from_calendars_dirlinks_dict()
     )
-    assert x_dict["_output_calendar"] == x_person._output_calendar.get_dict()
 
 
 def test_person_get_json_CorrectlyWorksForSimpleExample(
@@ -130,7 +121,9 @@ def test_person_get_json_CorrectlyWorksForSimpleExample(
     # THEN check x_dict
 
     # WHEN
-    person_json = get_person_from_json(person_json=x_json)
+    person_json = person_get_from_json(
+        person_json=x_json, env_dir=get_temp_person_dir()
+    )
 
     # THEN check json
     assert str(type(person_json)).find(".person.PersonUnit'>") > 0

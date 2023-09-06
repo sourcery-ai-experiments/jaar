@@ -199,9 +199,6 @@ class PersonUnit:
     def create_core_dir_and_files(self):
         self._admin.create_core_dir_and_files(self.get_json())
 
-    def set_person_name(self, new_name: str):
-        self._admin.set_person_name(new_name=new_name)
-
     def receive_src_calendarunit_obj(
         self,
         calendar_x: CalendarUnit,
@@ -284,12 +281,7 @@ class PersonUnit:
     def get_dict(self):
         return {
             "name": self._admin._person_name,
-            "_env_dir": self._admin._env_dir,
-            "_person_dir": self._admin._person_dir,
-            "_public_calendars_dir": self._admin._calendars_public_dir,
-            "_digest_calendars_dir": self._admin._calendars_digest_dir,
             "_src_calendarlinks": self.get_calendar_from_calendars_dirlinks_dict(),
-            "_output_calendar": self._output_calendar.get_dict(),
             "_auto_output_calendar_to_public": self._auto_output_calendar_to_public,
         }
 
@@ -316,14 +308,14 @@ def personunit_shop(
     return person_x
 
 
-def get_from_json(person_json: str) -> PersonUnit:
-    return get_from_dict(person_dict=json_loads(person_json))
+def get_from_json(person_json: str, env_dir: str) -> PersonUnit:
+    return get_from_dict(person_dict=json_loads(person_json), env_dir=env_dir)
 
 
-def get_from_dict(person_dict: dict) -> PersonUnit:
+def get_from_dict(person_dict: dict, env_dir: str) -> PersonUnit:
     wx = personunit_shop(
         name=person_dict["name"],
-        env_dir=person_dict["_env_dir"],
+        env_dir=env_dir,
         _auto_output_calendar_to_public=person_dict["_auto_output_calendar_to_public"],
     )
     wx._src_calendarlinks = get_calendar_from_calendars_dirlinks_from_dict(

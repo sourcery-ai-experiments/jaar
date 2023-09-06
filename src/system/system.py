@@ -320,7 +320,7 @@ class SystemUnit:
         person_json = x_func_open_file(
             dest_dir=f"{self.get_persons_dir()}/{name}", file_name=f"{name}.json"
         )
-        return get_person_from_json(person_json=person_json)
+        return get_person_from_json(person_json, env_dir=self.get_object_root_dir())
 
     def load_personunit(self, name: str):
         person_x = self.get_person_obj_from_file(name=name)
@@ -342,7 +342,7 @@ class SystemUnit:
     def rename_personunit(self, old_name: str, new_name: str):
         person_x = self.get_person_obj_from_system(name=old_name)
         old_person_dir = person_x._admin._person_dir
-        person_x.set_person_name(new_name=new_name)
+        person_x._admin.set_person_name(new_name=new_name)
         self.set_personunit_to_system(person=person_x)
         x_func_delete_dir(old_person_dir)
         self.del_person_from_system(person_name=old_name)

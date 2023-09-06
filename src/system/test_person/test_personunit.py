@@ -114,7 +114,7 @@ def test_personunit_set_person_name_WorksCorrectly(person_dir_setup_cleanup):
     assert os_path.exists(new_person_file_path) == False
 
     # WHEN
-    px.set_person_name(new_name=new_person_text)
+    px._admin.set_person_name(new_name=new_person_text)
 
     # THEN
     assert os_path.exists(old_person_dir) == False
