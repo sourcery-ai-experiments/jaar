@@ -385,7 +385,7 @@ class SystemUnit:
 
     def rename_calendar_in_calendars_dir(self, old_owner: str, new_owner: str):
         calendar_x = self.get_calendar_from_calendars_dir(owner=old_owner)
-        calendar_x.calendar_owner_edit(new_owner=new_owner)
+        calendar_x.set_owner(new_owner=new_owner)
         self.save_calendarunit_obj_to_calendars_dir(calendar_x=calendar_x)
         self.del_calendarunit_from_calendars_dir(calendar_x_owner=old_owner)
 

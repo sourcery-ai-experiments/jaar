@@ -36,8 +36,8 @@ def test_person_set_isol_digest_calendar_CreateStartingCalendarFile(
     )
 
     # WHEN
-    px.set_isol_digest_calendar(
-        calendarunit=example_calendars_get_calendar_with_4_levels()
+    px._admin.set_isol_digest_calendar(
+        calendar_x=example_calendars_get_calendar_with_4_levels()
     )
 
     # THEN
@@ -53,8 +53,8 @@ def test_personget_isol_digest_calendar_WhenStartingCalendarFileDoesNotExists(
     px = personunit_shop(name=p_name, env_dir=env_dir)
 
     # WHEN
-    assert px.get_isol_digest_calendar() != None
-    isol_digest_calendar = px.get_isol_digest_calendar()
+    assert px._admin.get_isol_digest_calendar() != None
+    isol_digest_calendar = px._admin.get_isol_digest_calendar()
 
     # THEN
     x_calendar = CalendarUnit(_owner=p_name)
@@ -79,6 +79,23 @@ def test_personget_isol_digest_calendar_WhenStartingCalendarFileDoesNotExists(
     assert isol_digest_calendar._groups == {}
 
 
+def test_person_set_isol_digest_calendar_IsolCalendarOwnerMustBePerson(
+    person_dir_setup_cleanup,
+):
+    # GIVEN
+    p_name = "Game1"
+    env_dir = get_temp_person_dir()
+    px = personunit_shop(name=p_name, env_dir=env_dir)
+    cx1 = example_calendars_get_calendar_with_4_levels()
+    assert cx1._owner != p_name
+
+    # WHEN
+    px._admin.set_isol_digest_calendar(calendar_x=cx1)
+
+    # THEN
+    assert px._admin.get_isol_digest_calendar()._owner == px._admin._person_name
+
+
 def test_person_get_isol_digest_calendar_WhenStartingCalendarFileExists(
     person_dir_setup_cleanup,
 ):
@@ -86,17 +103,17 @@ def test_person_get_isol_digest_calendar_WhenStartingCalendarFileExists(
     p_name = "Game1"
     env_dir = get_temp_person_dir()
     px = personunit_shop(name=p_name, env_dir=env_dir)
-    px.set_isol_digest_calendar(
-        calendarunit=example_calendars_get_calendar_with_4_levels()
+    px._admin.set_isol_digest_calendar(
+        calendar_x=example_calendars_get_calendar_with_4_levels()
     )
 
     # WHEN
-    assert px.get_isol_digest_calendar() != None
-    isol_digest_calendar = px.get_isol_digest_calendar()
+    assert px._admin.get_isol_digest_calendar() != None
+    isol_digest_calendar = px._admin.get_isol_digest_calendar()
 
     # THEN
     x_calendar = example_calendars_get_calendar_with_4_levels()
-    x_calendar.calendar_owner_edit(new_owner=p_name)
+    x_calendar.set_owner(new_owner=p_name)
     x_calendar.set_calendar_metrics()
 
     assert isol_digest_calendar._idearoot._kids == x_calendar._idearoot._kids
@@ -114,14 +131,12 @@ def test_person_del_isol_digest_calendar_file_DeletesFileCorrectly(
     p_name = "Game1"
     env_dir = get_temp_person_dir()
     px = personunit_shop(name=p_name, env_dir=env_dir)
-    px.set_isol_digest_calendar(
-        calendarunit=example_calendars_get_calendar_with_4_levels()
-    )
+    px._admin.set_isol_digest_calendar(example_calendars_get_calendar_with_4_levels())
     file_name = px._admin._isol_calendar_file_name
     assert x_func_open_file(px._admin._person_dir, file_name) != None
 
     # WHEN
-    px.del_isol_digest_calendar_file()
+    px._admin.del_isol_digest_calendar_file()
 
     # THEN
     with pytest_raises(Exception) as excinfo:

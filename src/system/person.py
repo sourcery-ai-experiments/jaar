@@ -97,9 +97,6 @@ class PersonAdmin:
             replace=True,
         )
 
-    def init_isol_calendar(self) -> CalendarUnit:
-        return x_func_open_file(self._person_dir, self._isol_calendar_file_name)
-
     def init_ignore_calendar(self, _label: str) -> CalendarUnit:
         ignore_file_name = f"{_label}.json"
         calendar_json = x_func_open_file(self._calendars_ignore_dir, ignore_file_name)
@@ -119,6 +116,34 @@ class PersonAdmin:
             file_text=calendar_x.get_json(),
             replace=True,
         )
+
+    def init_isol_calendar(self) -> CalendarUnit:
+        return x_func_open_file(self._person_dir, self._isol_calendar_file_name)
+
+    def set_isol_digest_calendar(self, calendar_x: CalendarUnit):
+        calendar_x.set_owner(self._person_name)
+        x_func_save_file(
+            dest_dir=self._person_dir,
+            file_name=self._isol_calendar_file_name,
+            file_text=calendar_x.get_json(),
+            replace=True,
+        )
+
+    def del_isol_digest_calendar_file(self):
+        x_func_delete_dir(dir=f"{self._person_dir}/{self._isol_calendar_file_name}")
+
+    def get_isol_digest_calendar(self) -> CalendarUnit:
+        cx = None
+        try:
+            ct = self.init_isol_calendar()
+            cx = calendarunit_get_from_json(cx_json=ct)
+        except Exception:
+            cx = self._get_empty_isol_digest_calendar()
+        cx.set_calendar_metrics()
+        return cx
+
+    def _get_empty_isol_digest_calendar(self):
+        return CalendarUnit(_owner=self._person_name, _weight=0)
 
 
 class InvalidPersonException(Exception):
@@ -224,7 +249,7 @@ class PersonUnit:
 
     def get_output_from_digest_calendar_files(self) -> CalendarUnit:
         return get_meld_of_calendar_files(
-            cx_primary=self.get_isol_digest_calendar(),
+            cx_primary=self._admin.get_isol_digest_calendar(),
             meldees_dir=self._admin._calendars_digest_dir,
         )
 
@@ -260,34 +285,6 @@ class PersonUnit:
 
         if self._auto_output_calendar_to_public:
             self.save_output_calendar_to_public_dir()
-
-    def get_isol_digest_calendar(self) -> CalendarUnit:
-        cx = None
-        try:
-            ct = self._admin.init_isol_calendar()
-            cx = calendarunit_get_from_json(cx_json=ct)
-            empty_cx = self._get_empty_isol_digest_calendar()
-            cx.calendar_owner_edit(new_owner=empty_cx._owner)
-            cx.set_calendar_metrics()
-        except Exception:
-            cx = self._get_empty_isol_digest_calendar()
-            cx.set_calendar_metrics()
-        return cx
-
-    def _get_empty_isol_digest_calendar(self):
-        return CalendarUnit(_owner=self._admin._person_name, _weight=0)
-
-    def set_isol_digest_calendar(self, calendarunit: CalendarUnit):
-        x_func_save_file(
-            dest_dir=self._admin._person_dir,
-            file_name=self._admin._isol_calendar_file_name,
-            file_text=calendarunit.get_json(),
-            replace=True,
-        )
-
-    def del_isol_digest_calendar_file(self):
-        file_path = f"{self._admin._person_dir}/{self._admin._isol_calendar_file_name}"
-        x_func_delete_dir(dir=file_path)
 
     def get_dict(self):
         return {

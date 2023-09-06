@@ -279,7 +279,7 @@ def test_calendar_owner_change_ChangesIdeaRequiredUnitsScenario1():
     assert len(work_idea._requiredunits) == 2
 
 
-def test_calendar_calendar_owner_edit_CorrectlyChangesBoth():
+def test_calendar_set_owner_CorrectlyChangesBoth():
     # GIVEN
     calendar_x = get_calendar_with_4_levels_and_2requireds_2acptfacts()
     assert calendar_x._owner == "Noa"
@@ -291,7 +291,7 @@ def test_calendar_calendar_owner_edit_CorrectlyChangesBoth():
 
     # WHEN
     new_label2 = "bob"
-    calendar_x.calendar_owner_edit(new_owner=new_label2)
+    calendar_x.set_owner(new_owner=new_label2)
 
     # THEN
     assert calendar_x._owner == new_label2

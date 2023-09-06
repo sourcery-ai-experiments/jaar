@@ -1046,7 +1046,7 @@ class CalendarUnit:
             parent_temp_idea._kids.pop(temp_label)
         self.set_calendar_metrics()
 
-    def calendar_owner_edit(self, new_owner):
+    def set_owner(self, new_owner):
         self._owner = new_owner
 
     def edit_idea_label(

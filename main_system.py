@@ -49,7 +49,7 @@ class MainApp(QApplication):
     def editmain_show(self):
         if self.main_window.ignore_calendar_x is None:
             self.main_window.isol_digest = (
-                self.main_window.person_x.get_isol_digest_calendar()
+                self.main_window.person_x._admin.get_isol_digest_calendar()
             )
             self.editmain_view.calendar_x = self.main_window.isol_digest
         else:
@@ -125,7 +125,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def save_isol_digest(self):
         if self.isol_digest != None:
-            self.person_x.set_isol_digest_calendar(self.isol_digest)
+            self.person_x._admin.set_isol_digest_calendar(self.isol_digest)
         self.refresh_person()
 
     def reload_all_src_calendars(self):
