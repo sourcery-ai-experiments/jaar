@@ -31,12 +31,12 @@ def test_system_get_person_output_calendar_from_digest_calendar_files_ReturnsCor
     # ex.save_calendarunit_obj_to_calendars_dir(ex_cxs_calendar_v001())
     px_name = "test_person1"
     ex.create_new_personunit(person_name=px_name)
-    ex.create_calendarlink_to_saved_calendar(
+    ex.create_depotlink_to_saved_calendar(
         person_name=px_name, calendar_owner=input_calendar._owner
     )
     ex.save_person_file(person_name=px_name)
     person_x_obj = ex.get_person_obj_from_system(name=px_name)
-    print(f"{person_x_obj._src_calendarlinks=}")
+    print(f"{person_x_obj._depotlinks=}")
 
     # WHEN
     output_calendar = ex.get_person_output_calendar_from_digest_calendar_files(
@@ -95,11 +95,11 @@ def test_system_get_person_output_calendar_from_digest_calendar_files_ReturnsCor
     # ex.save_calendarunit_obj_to_calendars_dir(ex_cxs_calendar_v001())
     px_name = "test_person1"
     ex.create_new_personunit(person_name=px_name)
-    ex.create_calendarlink_to_saved_calendar(px_name, calendar1._owner)
-    ex.create_calendarlink_to_saved_calendar(px_name, calendar2._owner)
+    ex.create_depotlink_to_saved_calendar(px_name, calendar1._owner)
+    ex.create_depotlink_to_saved_calendar(px_name, calendar2._owner)
     ex.save_person_file(person_name=px_name)
     person_x_obj = ex.get_person_obj_from_system(name=px_name)
-    print(f"{person_x_obj._src_calendarlinks=}")
+    print(f"{person_x_obj._depotlinks=}")
 
     # WHEN
     output_calendar = ex.get_person_output_calendar_from_digest_calendar_files(

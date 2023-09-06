@@ -89,7 +89,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="calendarlinks_table">
+   <widget class="QTableWidget" name="depotlinks_table">
     <property name="geometry">
      <rect>
       <x>340</x>
@@ -331,7 +331,7 @@
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" name="calendarlink_delete_button">
+   <widget class="QPushButton" name="depotlink_delete_button">
     <property name="geometry">
      <rect>
       <x>480</x>
@@ -349,7 +349,7 @@
      <string>delete CalendarLink</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="calendarlink_name">
+   <widget class="QLineEdit" name="depotlink_name">
     <property name="geometry">
      <rect>
       <x>340</x>
@@ -364,7 +364,7 @@
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" name="calendarlink_insert_button">
+   <widget class="QPushButton" name="depotlink_insert_button">
     <property name="geometry">
      <rect>
       <x>376</x>
@@ -382,7 +382,7 @@
      <string>Add new CalendarLink</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="calendarlink_update_button">
+   <widget class="QPushButton" name="depotlink_update_button">
     <property name="geometry">
      <rect>
       <x>376</x>
@@ -454,7 +454,7 @@
      <string>Edit Person</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="calendarlink_edit_button">
+   <widget class="QPushButton" name="depotlink_edit_button">
     <property name="geometry">
      <rect>
       <x>340</x>
@@ -655,7 +655,7 @@
      <string>Copy</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="link_type_combo">
+   <widget class="QComboBox" name="depotlink_type_combo">
     <property name="geometry">
      <rect>
       <x>376</x>
@@ -688,7 +688,7 @@
      <string>load</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="calendarlink_weight">
+   <widget class="QLineEdit" name="depotlink_weight">
     <property name="geometry">
      <rect>
       <x>460</x>

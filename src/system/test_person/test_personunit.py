@@ -22,7 +22,7 @@ def test_personunit_exists(person_dir_setup_cleanup):
         name=person_text, env_dir=env_dir, _auto_output_calendar_to_public=True
     )
     assert px._admin._person_name == person_text
-    assert px._src_calendarlinks == {}
+    assert px._depotlinks == {}
     assert px._auto_output_calendar_to_public
     # assert px._re_idearoot != None
     # assert str(type(px._re_idearoot)).find(".idea.IdeaRoot'>") > 0
@@ -63,7 +63,7 @@ def test_personunit_creates_files(person_dir_setup_cleanup):
     bond_calendars_dir = f"{persons_dir}/{person1_text}/bonds/"
     person_file_path = f"{person1_dir}/{person_file_name}"
     px = personunit_shop(name=person1_text, env_dir=env_dir)
-    px.set_src_calendarlinks_empty_if_null()
+    px.set_depotlink_empty_if_null()
     px._set_emtpy_output_calendar()
     assert os_path.exists(persons_dir) is False
     assert os_path.exists(calendars_dir) is False
@@ -162,7 +162,7 @@ def test_personunit_auto_output_calendar_to_public_SavesCalendarToPublicDir(
 
     # WHEN
     owner_text = "bobs calendarunit"
-    px.receive_src_calendarunit_obj(calendar_x=CalendarUnit(owner_text))
+    px.post_calendar_to_depot(calendar_x=CalendarUnit(owner_text))
 
     # THEN
     assert os_path.exists(public_file_path)

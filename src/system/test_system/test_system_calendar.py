@@ -109,7 +109,7 @@ def test_system_rename_calendar_in_calendars_dir_ChangesCalendarName(
     assert os_path.exists(new_sx5_path)
 
 
-def test_personunit_refresh_calendarlinks_CorrectlyPullsAllPublicCalendars(
+def test_personunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -140,12 +140,12 @@ def test_personunit_refresh_calendarlinks_CorrectlyPullsAllPublicCalendars(
     px_ernie = e1.get_person_obj_from_system(name=ernie_text)
     px_jessi = e1.get_person_obj_from_system(name=jessi_text)
     # px_steve = e1.get_person_obj_from_system(name=steve_text)
-    px_ernie.receive_src_calendarunit_obj(calendar_x=jessi_calendar)
-    px_ernie.receive_src_calendarunit_obj(calendar_x=old_steve_cx)
-    px_jessi.receive_src_calendarunit_obj(calendar_x=ernie_calendar)
-    px_jessi.receive_src_calendarunit_obj(calendar_x=old_steve_cx)
-    # px_steve.receive_src_calendarunit_obj(calendar_x=ernie_calendar)
-    # px_steve.receive_src_calendarunit_obj(calendar_x=jessi_calendar)
+    px_ernie.post_calendar_to_depot(calendar_x=jessi_calendar)
+    px_ernie.post_calendar_to_depot(calendar_x=old_steve_cx)
+    px_jessi.post_calendar_to_depot(calendar_x=ernie_calendar)
+    px_jessi.post_calendar_to_depot(calendar_x=old_steve_cx)
+    # px_steve.post_calendar_to_depot(calendar_x=ernie_calendar)
+    # px_steve.post_calendar_to_depot(calendar_x=jessi_calendar)
     assert len(px_ernie.get_output_from_digest_calendar_files().get_idea_list()) == 4
     assert len(px_jessi.get_output_from_digest_calendar_files().get_idea_list()) == 4
     # assert len(px_steve.get_output_from_digest_calendar_files().get_idea_list()) == 4

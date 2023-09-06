@@ -177,7 +177,7 @@ def test_personunit_save_calendar_to_digest_SavesFileCorrectly(
     assert digest_cx_json == cx.get_json()
 
 
-def test_presonunit_set_src_calendarlinks_CorrectlySets_blind_trust_DigestCalendar(
+def test_presonunit_set_depotlink_CorrectlySets_blind_trust_DigestCalendar(
     person_dir_setup_cleanup,
 ):
     # GIVEN
@@ -190,7 +190,7 @@ def test_presonunit_set_src_calendarlinks_CorrectlySets_blind_trust_DigestCalend
     assert x_func_count_files(px._admin._calendars_digest_dir) == 0
 
     # WHEN
-    px.receive_src_calendarunit_obj(calendar_x=cx, link_type="blind_trust")
+    px.post_calendar_to_depot(calendar_x=cx, depotlink_type="blind_trust")
 
     # THEN
     cx_file_name = f"{cx._owner}.json"
@@ -258,7 +258,7 @@ def test_person_get_output_from_digest_calendar_files_with1DigestedCalendar(
     assert sx_output_old._owner == person_name_x
     assert sx_output_old._idearoot._label == root_label()
     input_calendar = example_persons.get_2node_calendar()
-    px.receive_src_calendarunit_obj(calendar_x=input_calendar, link_type="blind_trust")
+    px.post_calendar_to_depot(calendar_x=input_calendar, depotlink_type="blind_trust")
 
     # WHEN
     sx_output_new = px.get_output_from_digest_calendar_files()
@@ -339,7 +339,7 @@ def test_person_get_output_from_digest_calendar_files_with1DigestedCalendar(
 
 def test_person_isol_calendar_CorrectlysHasOriginLinksWithOwnerAsSource():
     # GIVEN
-    # personunit with isol_calendar and no calendarlinks
+    # personunit with isol_calendar and no depotlinks
     # WHEN
     # personunit produces output_calendar
     # THEN

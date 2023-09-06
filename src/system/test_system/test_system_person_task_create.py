@@ -35,7 +35,7 @@ from pytest import raises as pytest_raises
 #     joachim_text = "Joachim"
 #     ex.create_new_personunit(person_name=joachim_text)
 #     old_joa_person = ex.get_person_obj_from_system(name=joachim_text)
-#     old_joa_person.set_src_calendarlinks(america_text, link_type="blind_trust")
+#     old_joa_person.set_depotlink(america_text, depotlink_type="blind_trust")
 #     old_joa_person.save_output_calendar_to_public_dir()
 #     old_joa_dest_c = ex.get_calendar_from_calendars_dir(joachim_text)
 #     old_joa_agenda = old_joa_dest_c.get_agenda_items()
@@ -43,7 +43,7 @@ from pytest import raises as pytest_raises
 
 #     # Create person1 task:
 #     #  create joachim member in America calendar
-#     america_person.set_src_calendarlinks(owner=joachim_text)
+#     america_person.set_depotlink(owner=joachim_text)
 
 #     casa_text = "casa"
 #     casa_road = f"{root_label()},{casa_text}"

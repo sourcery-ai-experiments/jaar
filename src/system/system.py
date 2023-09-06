@@ -5,7 +5,7 @@ from src.system.person import (
     personunit_shop,
     get_from_json as get_person_from_json,
 )
-from src.system.calendarlink import CalendarLink
+from src.system.depotlink import CalendarLink
 from dataclasses import dataclass
 from src.calendar.x_func import (
     single_dir_create_if_null,
@@ -418,18 +418,20 @@ class SystemUnit:
         return calendars_list
 
     # calendars_dir to person_calendars_dir management
-    def _person_receive_src_calendarunit_obj(
+    def _person_post_calendar_to_depot(
         self,
         personunit: PersonUnit,
         calendarunit: CalendarUnit,
-        link_type: str = None,
+        depotlink_type: str = None,
         weight: float = None,
         ignore_calendar: CalendarUnit = None,
     ):
-        personunit.receive_src_calendarunit_obj(
-            calendar_x=calendarunit, link_type=link_type, calendarlink_weight=weight
+        personunit.post_calendar_to_depot(
+            calendar_x=calendarunit,
+            depotlink_type=depotlink_type,
+            depotlink_weight=weight,
         )
-        if link_type == "ignore" and ignore_calendar != None:
+        if depotlink_type == "ignore" and ignore_calendar != None:
             personunit.set_ignore_calendar_file(
                 calendarunit=ignore_calendar, src_calendar_owner=calendarunit._owner
             )
@@ -437,55 +439,55 @@ class SystemUnit:
     def _person_delete_src_calendarunit_obj(
         self, personunit: PersonUnit, calendarunit_owner: str
     ):
-        personunit.delete_calendarlink(calendar_owner=calendarunit_owner)
+        personunit.delete_depotlink(calendar_owner=calendarunit_owner)
 
-    def create_calendarlink_to_saved_calendar(
+    def create_depotlink_to_saved_calendar(
         self,
         person_name: str,
         calendar_owner: str,
-        link_type: str = None,
+        depotlink_type: str = None,
         weight: float = None,
         ignore_calendar: CalendarUnit = None,
     ):
         person_x = self.get_person_obj_from_system(name=person_name)
         calendar_x = self.get_calendar_from_calendars_dir(owner=calendar_owner)
-        self._person_receive_src_calendarunit_obj(
+        self._person_post_calendar_to_depot(
             personunit=person_x,
             calendarunit=calendar_x,
-            link_type=link_type,
+            depotlink_type=depotlink_type,
             weight=weight,
             ignore_calendar=ignore_calendar,
         )
 
-    def create_calendarlink_to_generated_calendar(
+    def create_depotlink_to_generated_calendar(
         self,
         person_name: str,
         calendar_owner: str,
-        link_type: str = None,
+        depotlink_type: str = None,
         weight: float = None,
     ):
         person_x = self.get_person_obj_from_system(name=person_name)
         calendar_x = CalendarUnit(_owner=calendar_owner)
-        self._person_receive_src_calendarunit_obj(
+        self._person_post_calendar_to_depot(
             personunit=person_x,
             calendarunit=calendar_x,
-            link_type=link_type,
+            depotlink_type=depotlink_type,
             weight=weight,
         )
 
-    def update_calendarlink(self, person_name: str, calendarlink: CalendarLink):
+    def update_depotlink(self, person_name: str, depotlink: CalendarLink):
         person_x = self.get_person_obj_from_system(name=person_name)
         calendar_x = self.get_calendar_from_calendars_dir(
-            _owner=calendarlink.calendar_owner
+            _owner=depotlink.calendar_owner
         )
-        self._person_receive_src_calendarunit_obj(
+        self._person_post_calendar_to_depot(
             personunit=person_x,
             calendarunit=calendar_x,
-            link_type=calendarlink.link_type,
-            weight=calendarlink.weight,
+            depotlink_type=depotlink.depotlink_type,
+            weight=depotlink.weight,
         )
 
-    def del_calendarlink(self, person_name: str, calendarunit_owner: str):
+    def del_depotlink(self, person_name: str, calendarunit_owner: str):
         person_x = self.get_person_obj_from_system(name=person_name)
         calendar_x = self.get_calendar_from_calendars_dir(owner=calendarunit_owner)
         self._person_delete_src_calendarunit_obj(

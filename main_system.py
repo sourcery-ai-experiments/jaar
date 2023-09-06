@@ -19,7 +19,7 @@ from src.system.examples.env_kit import (
     rename_example_system,
     get_test_systems_dir,
 )
-from src.system.calendarlink import get_calendarlink_types, calendarlink_shop
+from src.system.depotlink import get_depotdepotlink_types, depotlink_shop
 from src.calendar.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
@@ -106,10 +106,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.isol_digest_open_button.clicked.connect(self.open_editmain)
         self.isol_digest_save_button.clicked.connect(self.save_isol_digest)
 
-        self.calendarlink_insert_button.clicked.connect(self.calendarlink_insert)
-        self.calendarlink_update_button.clicked.connect(self.calendarlink_update)
-        self.calendarlink_delete_button.clicked.connect(self.calendarlink_delete)
-        self.calendarlinks_table.itemClicked.connect(self.calendarlinks_table_select)
+        self.depotlink_insert_button.clicked.connect(self.depotlink_insert)
+        self.depotlink_update_button.clicked.connect(self.depotlink_update)
+        self.depotlink_delete_button.clicked.connect(self.depotlink_delete)
+        self.depotlinks_table.itemClicked.connect(self.depotlinks_table_select)
         self.five_issue_button.clicked.connect(self.open_edit5issue)
 
         self.system_x = None
@@ -161,7 +161,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             selected_calendar = self.calendars_table.item(
                 self.calendars_table.currentRow(), 0
             ).text()
-            self.calendarlink_name.setText(f"{selected_person} - {selected_calendar}")
+            self.depotlink_name.setText(f"{selected_person} - {selected_calendar}")
 
     def persons_table_select(self):
         person_x_name = self.persons_table.item(
@@ -175,21 +175,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.person_name.setText(self.person_x.name)
         self.refresh_person()
 
-    def calendarlinks_table_select(self):
-        self.calendarlink_name.setText(
-            self.calendarlinks_table.item(
-                self.calendarlinks_table.currentRow(), 0
-            ).text()
+    def depotlinks_table_select(self):
+        self.depotlink_name.setText(
+            self.depotlinks_table.item(self.depotlinks_table.currentRow(), 0).text()
         )
-        self.link_type_combo.setCurrentText(
-            self.calendarlinks_table.item(
-                self.calendarlinks_table.currentRow(), 1
-            ).text()
+        self.depotlink_type_combo.setCurrentText(
+            self.depotlinks_table.item(self.depotlinks_table.currentRow(), 1).text()
         )
-        self.calendarlink_weight.setText(
-            self.calendarlinks_table.item(
-                self.calendarlinks_table.currentRow(), 2
-            ).text()
+        self.depotlink_weight.setText(
+            self.depotlinks_table.item(self.depotlinks_table.currentRow(), 2).text()
         )
 
     def ignores_table_select(self):
@@ -280,7 +274,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.refresh_persons()
 
-    def calendarlink_insert(self):
+    def depotlink_insert(self):
         calendar_owner = self.calendars_table.item(
             self.calendars_table.currentRow(), 0
         ).text()
@@ -291,31 +285,31 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             )
             self.person_x.receive_src_calendarunit_file(
                 calendar_json=calendar_json,
-                link_type=self.link_type_combo.currentText(),
-                weight=self.calendarlink_weight.text(),
+                depotlink_type=self.depotlink_type_combo.currentText(),
+                weight=self.depotlink_weight.text(),
             )
             self.system_x.save_person_file(person_name=self.person_x.name)
         self.refresh_person()
 
-    def calendarlink_update(self):
+    def depotlink_update(self):
         person_name_x = self.person_x.name
-        new_calendarlink = calendarlink_shop(
-            calendar_owner=self.calendarlink_name.text(),
-            link_type=self.link_type_combo.currentText(),
-            weight=self.calendarlink_weight.text(),
+        new_depotlink = depotlink_shop(
+            calendar_owner=self.depotlink_name.text(),
+            depotlink_type=self.depotlink_type_combo.currentText(),
+            weight=self.depotlink_weight.text(),
         )
 
-        self.system_x.update_calendarlink(
+        self.system_x.update_depotlink(
             person_name=person_name_x,
-            calendarlink=new_calendarlink,
+            depotlink=new_depotlink,
         )
         self.system_x.save_person_file(person_name=person_name_x)
         self.refresh_person()
 
-    def calendarlink_delete(self):
+    def depotlink_delete(self):
         person_name_x = self.person_x.name
-        self.system_x.del_calendarlink(
-            person_name=person_name_x, calendarunit_owner=self.calendarlink_name.text()
+        self.system_x.del_depotlink(
+            person_name=person_name_x, calendarunit_owner=self.depotlink_name.text()
         )
         self.system_x.save_person_file(person_name=person_name_x)
         self.refresh_person()
@@ -337,17 +331,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             )
         return persons_owner_list
 
-    def get_calendarlink_list(self):
-        calendarlinks_list = []
+    def get_depotlink_list(self):
+        depotlinks_list = []
         if self.person_x != None:
-            for cl_val in self.person_x._src_calendarlinks.values():
-                calendarlink_row = [
+            for cl_val in self.person_x._depotlinks.values():
+                depotlink_row = [
                     cl_val.calendar_owner,
-                    cl_val.link_type,
+                    cl_val.depotlink_type,
                     str(cl_val.weight),
                 ]
-                calendarlinks_list.append(calendarlink_row)
-        return calendarlinks_list
+                depotlinks_list.append(depotlink_row)
+        return depotlinks_list
 
     def get_digests_list(self):
         x_list = []
@@ -462,21 +456,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.persons_table, ["Persons Table"], self.get_person_name_list()
         )
 
-    def _sub_refresh_calendarlinks_table(self):
-        calendarlink_types = list(get_calendarlink_types())
-        calendarlink_types.insert(0, "")
-        self.link_type_combo.clear()
-        self.link_type_combo.addItems(calendarlink_types)
-        self.link_type_combo.setCurrentText("")
+    def _sub_refresh_depotlinks_table(self):
+        depotdepotlink_types = list(get_depotdepotlink_types())
+        depotdepotlink_types.insert(0, "")
+        self.depotlink_type_combo.clear()
+        self.depotlink_type_combo.addItems(depotdepotlink_types)
+        self.depotlink_type_combo.setCurrentText("")
         column_header = ""
         if self.person_x is None:
             column_header = "Calendarlinks Table"
         elif self.person_x != None:
             column_header = f"'{self.person_x.name}' Calendarlinks"
         self.refresh_x(
-            self.calendarlinks_table,
+            self.depotlinks_table,
             [column_header, "Link Type", "Weight"],
-            self.get_calendarlink_list(),
+            self.get_depotlink_list(),
         )
 
     def _sub_refresh_digests_table(self):
@@ -582,7 +576,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_person()
 
     def refresh_person(self):
-        self._sub_refresh_calendarlinks_table()
+        self._sub_refresh_depotlinks_table()
         self._sub_refresh_digests_table()
         self._sub_refresh_ignores_table()
         self.person_output_calendar = None

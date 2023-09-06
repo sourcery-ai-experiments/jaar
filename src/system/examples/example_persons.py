@@ -149,11 +149,11 @@ def get_person_2calendar(env_dir):
     wx = personunit_shop(
         name=person_name, env_dir=env_dir, _auto_output_calendar_to_public=True
     )
-    wx.receive_src_calendarunit_obj(
-        calendar_x=get_1node_calendar(), link_type="blind_trust"
+    wx.post_calendar_to_depot(
+        calendar_x=get_1node_calendar(), depotlink_type="blind_trust"
     )
-    wx.receive_src_calendarunit_obj(
-        calendar_x=get_Jnode2node_calendar(), link_type="blind_trust"
+    wx.post_calendar_to_depot(
+        calendar_x=get_Jnode2node_calendar(), depotlink_type="blind_trust"
     )
     return wx
 

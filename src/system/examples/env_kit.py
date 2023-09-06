@@ -117,7 +117,7 @@ def _delete_and_set_ex3():
     # ex.set_person(person_x=personunit_shop(name="w2", env_dir=ex.get_object_root_dir()))
     w1_text = "w1"
     ex.create_new_personunit(person_name=w1_text)
-    ex.create_calendarlink_to_saved_calendar(
+    ex.create_depotlink_to_saved_calendar(
         person_name=w1_text, calendar_owner="Mycalendar", weight=3
     )
     # w1_obj = ex.get_person_obj_from_system(name=w1_text)
@@ -127,18 +127,18 @@ def _delete_and_set_ex3():
         system_dir=ex.get_object_root_dir(), calendar_owner=bob_text
     )
     # print(f"create calendar_list {w1_text=}")
-    ex.create_calendarlink_to_generated_calendar(
-        person_name=w1_text, calendar_owner=bob_text, link_type="ignore"
+    ex.create_depotlink_to_generated_calendar(
+        person_name=w1_text, calendar_owner=bob_text, depotlink_type="ignore"
     )
     land_text = "tim wurld"
     create_calendar_file_for_systems(
         system_dir=ex.get_object_root_dir(), calendar_owner=land_text
     )
-    ex.create_calendarlink_to_generated_calendar(
+    ex.create_depotlink_to_generated_calendar(
         person_name=w1_text, calendar_owner=land_text
     )
-    # ex.create_calendarlink_to_generated_calendar(person_name=w1_text, calendar_owner="test9")
-    # ex.create_calendarlink_to_generated_calendar(person_name=w1_text, calendar_owner="Bobs calendar")
+    # ex.create_depotlink_to_generated_calendar(person_name=w1_text, calendar_owner="test9")
+    # ex.create_depotlink_to_generated_calendar(person_name=w1_text, calendar_owner="Bobs calendar")
     ex.save_person_file(person_name=w1_text)
     # print(f"WHAT WHAT {ex.get_object_root_dir()}")
     # print(f"WHAT WHAT {ex.get_object_root_dir()}/persons/w1/w1.json")
@@ -146,8 +146,8 @@ def _delete_and_set_ex3():
     #     dest_dir=f"{ex.get_object_root_dir}/persons/w1", file_name="w1.json"
     # )
     # print(f"{file_text=}")
-    # print(f"{len(ex._personunits.get(w1_text)._src_calendarlinks)=}")
-    # print(f"{ex._personunits.get(w1_text)._src_calendarlinks.get(bob_text)=}")
+    # print(f"{len(ex._personunits.get(w1_text)._depotlinks)=}")
+    # print(f"{ex._personunits.get(w1_text)._depotlinks.get(bob_text)=}")
     # print(f"{ex._personunits.get(w1_text).get_json=}")
 
     w2_text = "w2"
@@ -205,69 +205,69 @@ def _delete_and_set_ex5():
     ex.create_new_personunit(person_name=calendar_4._owner)
     ex.create_new_personunit(person_name=calendar_5._owner)
 
-    ex.create_calendarlink_to_saved_calendar(
+    ex.create_depotlink_to_saved_calendar(
         calendar_1._owner, calendar_2._owner, "blind_trust", 3
     )
-    ex.create_calendarlink_to_saved_calendar(
+    ex.create_depotlink_to_saved_calendar(
         calendar_1._owner, calendar_3._owner, "blind_trust", 7
     )
-    ex.create_calendarlink_to_saved_calendar(
+    ex.create_depotlink_to_saved_calendar(
         calendar_1._owner, calendar_4._owner, "blind_trust", 4
     )
-    ex.create_calendarlink_to_saved_calendar(
+    ex.create_depotlink_to_saved_calendar(
         calendar_1._owner, calendar_5._owner, "blind_trust", 5
     )
 
-    ex.create_calendarlink_to_saved_calendar(
+    ex.create_depotlink_to_saved_calendar(
         calendar_2._owner, calendar_1._owner, "blind_trust", 3
     )
-    ex.create_calendarlink_to_saved_calendar(
+    ex.create_depotlink_to_saved_calendar(
         calendar_2._owner, calendar_3._owner, "blind_trust", 7
     )
-    ex.create_calendarlink_to_saved_calendar(
+    ex.create_depotlink_to_saved_calendar(
         calendar_2._owner, calendar_4._owner, "blind_trust", 4
     )
     icx = example_persons_get_calendar_3CleanNodesRandomWeights()
-    ex.create_calendarlink_to_saved_calendar(
+    ex.create_depotlink_to_saved_calendar(
         calendar_2._owner, calendar_5._owner, "ignore", 5, icx
     )
 
-    ex.create_calendarlink_to_saved_calendar(
+    ex.create_depotlink_to_saved_calendar(
         calendar_3._owner, calendar_1._owner, "blind_trust", 3
     )
-    ex.create_calendarlink_to_saved_calendar(
+    ex.create_depotlink_to_saved_calendar(
         calendar_3._owner, calendar_2._owner, "blind_trust", 7
     )
-    ex.create_calendarlink_to_saved_calendar(
+    ex.create_depotlink_to_saved_calendar(
         calendar_3._owner, calendar_4._owner, "blind_trust", 4
     )
-    ex.create_calendarlink_to_saved_calendar(
+    ex.create_depotlink_to_saved_calendar(
         calendar_3._owner, calendar_5._owner, "blind_trust", 5
     )
 
-    ex.create_calendarlink_to_saved_calendar(
+    ex.create_depotlink_to_saved_calendar(
         calendar_4._owner, calendar_1._owner, "blind_trust", 3
     )
-    ex.create_calendarlink_to_saved_calendar(
+    ex.create_depotlink_to_saved_calendar(
         calendar_4._owner, calendar_2._owner, "blind_trust", 7
     )
-    ex.create_calendarlink_to_saved_calendar(
+    ex.create_depotlink_to_saved_calendar(
         calendar_4._owner, calendar_3._owner, "blind_trust", 4
     )
-    ex.create_calendarlink_to_saved_calendar(
+    ex.create_depotlink_to_saved_calendar(
         calendar_4._owner, calendar_5._owner, "blind_trust", 5
     )
 
-    ex.create_calendarlink_to_saved_calendar(
+    ex.create_depotlink_to_saved_calendar(
         calendar_5._owner, calendar_1._owner, "blind_trust", 3
     )
-    ex.create_calendarlink_to_saved_calendar(
+    ex.create_depotlink_to_saved_calendar(
         calendar_5._owner, calendar_2._owner, "blind_trust", 7
     )
-    ex.create_calendarlink_to_saved_calendar(
+    ex.create_depotlink_to_saved_calendar(
         calendar_5._owner, calendar_3._owner, "blind_trust", 4
     )
-    ex.create_calendarlink_to_saved_calendar(
+    ex.create_depotlink_to_saved_calendar(
         calendar_5._owner, calendar_4._owner, "blind_trust", 5
     )
 

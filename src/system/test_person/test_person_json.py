@@ -1,7 +1,7 @@
 import src.system.examples.example_persons as person_examples
 from src.system.person import (
     get_from_json as person_get_from_json,
-    calendarlink_shop,
+    depotlink_shop,
 )
 from src.calendar.x_func import x_is_json, x_get_dict
 from json import loads as json_loads
@@ -12,49 +12,49 @@ from src.system.examples.person_env_kit import (
 from src.calendar.calendar import CalendarUnit
 
 
-def test_person_receive_src_calendarunit_obj_SetsCorrectInfo():
+def test_person_post_calendar_to_depot_SetsCorrectInfo():
     # GIVEN
     env_dir = get_temp_person_dir()
     person_x = person_examples.get_person_2calendar(env_dir=env_dir)
-    assert len(person_x.get_calendar_from_calendars_dirlinks_dict()) == 2
+    assert len(person_x.get_src_calendarslinks_dict()) == 2
 
     # WHEN
     swim_text = "swim1"
-    person_x.receive_src_calendarunit_obj(calendar_x=CalendarUnit(_owner=swim_text))
+    person_x.post_calendar_to_depot(calendar_x=CalendarUnit(_owner=swim_text))
     run_text = "run1"
-    person_x.receive_src_calendarunit_obj(calendar_x=CalendarUnit(_owner=run_text))
+    person_x.post_calendar_to_depot(calendar_x=CalendarUnit(_owner=run_text))
 
     # THEN
-    assert len(person_x.get_calendar_from_calendars_dirlinks_dict()) == 4
+    assert len(person_x.get_src_calendarslinks_dict()) == 4
 
 
-def test_person_get_calendar_from_calendars_dirlinks_dict_ReturnsCorrectInfo():
+def test_person_get_src_calendarslinks_dict_ReturnsCorrectInfo():
     # GIVEN
     env_dir = get_temp_person_dir()
     person_x = person_examples.get_person_2calendar(env_dir=env_dir)
-    assert len(person_x.get_calendar_from_calendars_dirlinks_dict()) == 2
+    assert len(person_x.get_src_calendarslinks_dict()) == 2
     swim_text = "swim1"
-    person_x.receive_src_calendarunit_obj(calendar_x=CalendarUnit(_owner=swim_text))
+    person_x.post_calendar_to_depot(calendar_x=CalendarUnit(_owner=swim_text))
     run_text = "run1"
-    person_x.receive_src_calendarunit_obj(calendar_x=CalendarUnit(_owner=run_text))
+    person_x.post_calendar_to_depot(calendar_x=CalendarUnit(_owner=run_text))
 
     # WHEN
-    src_calendarlinks_dict = person_x.get_calendar_from_calendars_dirlinks_dict()
+    src_depotlinks_dict = person_x.get_src_calendarslinks_dict()
 
     # THEN
-    assert len(src_calendarlinks_dict) == 4
-    swim_dict = src_calendarlinks_dict.get(swim_text)
+    assert len(src_depotlinks_dict) == 4
+    swim_dict = src_depotlinks_dict.get(swim_text)
     assert str(type(swim_dict)) == "<class 'dict'>"
     assert len(swim_dict) > 1
     assert swim_dict.get("calendar_owner") == swim_text
-    assert swim_dict.get("link_type") == "blind_trust"
+    assert swim_dict.get("depotlink_type") == "blind_trust"
 
 
 def test_person_get_dict_ReturnsDictObject(person_dir_setup_cleanup):
     # GIVEN
     env_dir = get_temp_person_dir()
     person_x = person_examples.get_person_2calendar(env_dir=env_dir)
-    person_x.receive_src_calendarunit_obj(calendar_x=CalendarUnit(_owner="swim8"))
+    person_x.post_calendar_to_depot(calendar_x=CalendarUnit(_owner="swim8"))
 
     # WHEN
     x_dict = person_x.get_dict()
@@ -68,17 +68,14 @@ def test_person_get_dict_ReturnsDictObject(person_dir_setup_cleanup):
         == person_x._auto_output_calendar_to_public
     )
     print("check internal obj attributes")
-    # for src_calendar_owner, src_calendar_obj in x_dict["_src_calendarlinks"].items():
+    # for src_calendar_owner, src_calendar_obj in x_dict["_depotlinks"].items():
     #     print(f"{src_calendar_owner=}")
 
-    assert x_dict["_src_calendarlinks"]["A"] != None
-    assert x_dict["_src_calendarlinks"]["J"] != None
-    assert len(x_dict["_src_calendarlinks"]) == 3
-    assert (
-        x_dict["_src_calendarlinks"]
-        == person_x.get_calendar_from_calendars_dirlinks_dict()
-    )
-    assert len(person_x.get_calendar_from_calendars_dirlinks_dict()) == 3
+    assert x_dict["_depotlinks"]["A"] != None
+    assert x_dict["_depotlinks"]["J"] != None
+    assert len(x_dict["_depotlinks"]) == 3
+    assert x_dict["_depotlinks"] == person_x.get_src_calendarslinks_dict()
+    assert len(person_x.get_src_calendarslinks_dict()) == 3
 
 
 def test_person_export_to_JSON_simple_example_works(person_dir_setup_cleanup):
@@ -93,13 +90,10 @@ def test_person_export_to_JSON_simple_example_works(person_dir_setup_cleanup):
     x_dict = json_loads(x_json)
     # print(x_dict)
     assert x_dict["name"] == x_person._admin._person_name
-    assert x_dict["_src_calendarlinks"]["A"] != None
-    assert x_dict["_src_calendarlinks"]["J"] != None
-    assert len(x_dict["_src_calendarlinks"]) == 2
-    assert (
-        x_dict["_src_calendarlinks"]
-        == x_person.get_calendar_from_calendars_dirlinks_dict()
-    )
+    assert x_dict["_depotlinks"]["A"] != None
+    assert x_dict["_depotlinks"]["J"] != None
+    assert len(x_dict["_depotlinks"]) == 2
+    assert x_dict["_depotlinks"] == x_person.get_src_calendarslinks_dict()
 
 
 def test_person_get_json_CorrectlyWorksForSimpleExample(
@@ -143,15 +137,13 @@ def test_person_get_json_CorrectlyWorksForSimpleExample(
         == person_algo._admin._calendars_digest_dir
     )
     assert person_json._admin._person_dir != None
-    assert len(person_json._src_calendarlinks) == 2
-    assert (
-        person_json._src_calendarlinks.keys() == person_algo._src_calendarlinks.keys()
-    )
+    assert len(person_json._depotlinks) == 2
+    assert person_json._depotlinks.keys() == person_algo._depotlinks.keys()
 
-    # for algo_calendarlink_x in person_algo._src_calendarlinks.values():
-    #     assert algo_calendarlink_x == person_json._src_calendarlinks.get(
-    #         algo_calendarlink_x.calendar_owner
+    # for algo_depotlink_x in person_algo._depotlinks.values():
+    #     assert algo_depotlink_x == person_json._depotlinks.get(
+    #         algo_depotlink_x.calendar_owner
     #     )
 
-    assert len(person_json._src_calendarlinks) == len(person_algo._src_calendarlinks)
+    assert len(person_json._depotlinks) == len(person_algo._depotlinks)
     assert person_json._output_calendar == person_json._output_calendar
