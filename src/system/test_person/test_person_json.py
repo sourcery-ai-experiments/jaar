@@ -62,14 +62,18 @@ def test_person_get_dict_ReturnsDictObject(person_dir_setup_cleanup):
     # THEN
     assert x_dict != None
     assert str(type(x_dict)) == "<class 'dict'>"
-    assert x_dict["name"] == person_x.name
+    assert x_dict["name"] == person_x._personadmin._person_name
     assert (
         x_dict["_auto_output_calendar_to_public_calendar"]
         == person_x._auto_output_calendar_to_public_calendar
     )
-    assert x_dict["_env_dir"] == person_x._env_dir
-    assert x_dict["_public_calendars_dir"] == person_x._public_calendars_dir
-    assert x_dict["_digest_calendars_dir"] == person_x._digest_calendars_dir
+    assert x_dict["_env_dir"] == person_x._personadmin._env_dir
+    assert (
+        x_dict["_public_calendars_dir"] == person_x._personadmin._calendars_public_dir
+    )
+    assert (
+        x_dict["_digest_calendars_dir"] == person_x._personadmin._calendars_digest_dir
+    )
     print("check internal obj attributes")
     # for src_calendar_owner, src_calendar_obj in x_dict["_src_calendarlinks"].items():
     #     print(f"{src_calendar_owner=}")
@@ -97,10 +101,14 @@ def test_person_export_to_JSON_simple_example_works(person_dir_setup_cleanup):
     assert True == x_is_json(x_json)
     x_dict = json_loads(x_json)
     # print(x_dict)
-    assert x_dict["name"] == x_person.name
-    assert x_dict["_env_dir"] == x_person._env_dir
-    assert x_dict["_public_calendars_dir"] == x_person._public_calendars_dir
-    assert x_dict["_digest_calendars_dir"] == x_person._digest_calendars_dir
+    assert x_dict["name"] == x_person._personadmin._person_name
+    assert x_dict["_env_dir"] == x_person._personadmin._env_dir
+    assert (
+        x_dict["_public_calendars_dir"] == x_person._personadmin._calendars_public_dir
+    )
+    assert (
+        x_dict["_digest_calendars_dir"] == x_person._personadmin._calendars_digest_dir
+    )
     assert x_dict["_src_calendarlinks"]["A"] != None
     assert x_dict["_src_calendarlinks"]["J"] != None
     assert len(x_dict["_src_calendarlinks"]) == 2
@@ -134,16 +142,24 @@ def test_person_get_json_CorrectlyWorksForSimpleExample(
 
     # THEN check json
     assert str(type(person_json)).find(".person.PersonUnit'>") > 0
-    assert person_json.name != None
-    assert person_json.name == person_algo.name
+    assert person_json._personadmin._person_name != None
+    assert (
+        person_json._personadmin._person_name == person_algo._personadmin._person_name
+    )
     assert (
         person_json._auto_output_calendar_to_public_calendar
         == person_algo._auto_output_calendar_to_public_calendar
     )
-    assert person_json._env_dir == person_algo._env_dir
-    assert person_json._public_calendars_dir == person_algo._public_calendars_dir
-    assert person_json._digest_calendars_dir == person_algo._digest_calendars_dir
-    assert person_json._person_dir != None
+    assert person_json._personadmin._env_dir == person_algo._personadmin._env_dir
+    assert (
+        person_json._personadmin._calendars_public_dir
+        == person_algo._personadmin._calendars_public_dir
+    )
+    assert (
+        person_json._personadmin._calendars_digest_dir
+        == person_algo._personadmin._calendars_digest_dir
+    )
+    assert person_json._personadmin._person_dir != None
     assert len(person_json._src_calendarlinks) == 2
     assert (
         person_json._src_calendarlinks.keys() == person_algo._src_calendarlinks.keys()

@@ -27,12 +27,12 @@ def test_person_set_isol_digest_calendar_CreateStartingCalendarFile(
     p_name = "Game1"
     env_dir = get_temp_person_dir()
     px = personunit_shop(name=p_name, env_dir=env_dir)
-    file_name = "isol_digest_calendar.json"
+    file_name = px._get_isol_calendar_file_name()
     with pytest_raises(Exception) as excinfo:
-        x_func_open_file(px._person_dir, file_name)
+        x_func_open_file(px._personadmin._person_dir, file_name)
     assert (
         str(excinfo.value)
-        == f"Could not load file {px._person_dir}/isol_digest_calendar.json (2, 'No such file or directory')"
+        == f"Could not load file {px._personadmin._person_dir}/{file_name} (2, 'No such file or directory')"
     )
 
     # WHEN
@@ -41,7 +41,7 @@ def test_person_set_isol_digest_calendar_CreateStartingCalendarFile(
     )
 
     # THEN
-    assert x_func_open_file(px._person_dir, file_name) != None
+    assert x_func_open_file(px._personadmin._person_dir, file_name) != None
 
 
 def test_personget_isol_digest_calendar_WhenStartingCalendarFileDoesNotExists(
@@ -104,7 +104,7 @@ def test_person_get_isol_digest_calendar_WhenStartingCalendarFileExists(
     assert isol_digest_calendar._idearoot._acptfactunits == {}
     assert isol_digest_calendar._members == {}
     assert isol_digest_calendar._groups == {}
-    assert isol_digest_calendar._owner == px.name
+    assert isol_digest_calendar._owner == px._personadmin._person_name
 
 
 def test_person_del_isol_digest_calendar_file_DeletesFileCorrectly(
@@ -117,18 +117,18 @@ def test_person_del_isol_digest_calendar_file_DeletesFileCorrectly(
     px.set_isol_digest_calendar(
         calendarunit=example_calendars_get_calendar_with_4_levels()
     )
-    file_name = "isol_digest_calendar.json"
-    assert x_func_open_file(px._person_dir, file_name) != None
+    file_name = px._get_isol_calendar_file_name()
+    assert x_func_open_file(px._personadmin._person_dir, file_name) != None
 
     # WHEN
     px.del_isol_digest_calendar_file()
 
     # THEN
     with pytest_raises(Exception) as excinfo:
-        x_func_open_file(px._person_dir, file_name)
+        x_func_open_file(px._personadmin._person_dir, file_name)
     assert (
         str(excinfo.value)
-        == f"Could not load file {px._person_dir}/isol_digest_calendar.json (2, 'No such file or directory')"
+        == f"Could not load file {px._personadmin._person_dir}/isol_digest_calendar.json (2, 'No such file or directory')"
     )
 
 
@@ -142,7 +142,7 @@ def test_personunit_save_digest_calendar_file_SavesFileCorrectly(
     px.create_core_dir_and_files()
     cx = example_persons.get_2node_calendar()
     src_calendar_owner = cx._owner
-    assert x_func_count_files(px._digest_calendars_dir) == 0
+    assert x_func_count_files(px._personadmin._calendars_digest_dir) == 0
 
     # WHEN
     px._save_digest_calendar_file(
@@ -151,14 +151,15 @@ def test_personunit_save_digest_calendar_file_SavesFileCorrectly(
 
     # THEN
     cx_file_name = f"{cx._owner}.json"
-    digest_file_path = f"{px._digest_calendars_dir}/{cx_file_name}"
+    digest_file_path = f"{px._personadmin._calendars_digest_dir}/{cx_file_name}"
     print(f"Saving to {digest_file_path=}")
     assert os_path.exists(digest_file_path)
-    # for path_x in os_scandir(px._digest_calendars_dir):
+    # for path_x in os_scandir(px._personadmin._calendars_digest_dir):
     #     print(f"{path_x=}")
-    assert x_func_count_files(px._digest_calendars_dir) == 1
+    assert x_func_count_files(px._personadmin._calendars_digest_dir) == 1
     digest_cx_json = x_func_open_file(
-        dest_dir=px._digest_calendars_dir, file_name=f"{src_calendar_owner}.json"
+        dest_dir=px._personadmin._calendars_digest_dir,
+        file_name=f"{src_calendar_owner}.json",
     )
     assert digest_cx_json == cx.get_json()
 
@@ -173,21 +174,22 @@ def test_presonunit_set_src_calendarlinks_CorrectlySets_blind_trust_DigestCalend
     px.create_core_dir_and_files()
     cx = example_persons.get_2node_calendar()
     src_calendar_owner = cx._owner
-    assert x_func_count_files(px._digest_calendars_dir) == 0
+    assert x_func_count_files(px._personadmin._calendars_digest_dir) == 0
 
     # WHEN
     px.receive_src_calendarunit_obj(calendar_x=cx, link_type="blind_trust")
 
     # THEN
     cx_file_name = f"{cx._owner}.json"
-    digest_file_path = f"{px._digest_calendars_dir}/{cx_file_name}"
+    digest_file_path = f"{px._personadmin._calendars_digest_dir}/{cx_file_name}"
     print(f"Saving to {digest_file_path=}")
     assert os_path.exists(digest_file_path)
-    # for path_x in os_scandir(px._digest_calendars_dir):
+    # for path_x in os_scandir(px._personadmin._calendars_digest_dir):
     #     print(f"{path_x=}")
-    assert x_func_count_files(px._digest_calendars_dir) == 1
+    assert x_func_count_files(px._personadmin._calendars_digest_dir) == 1
     digest_cx_json = x_func_open_file(
-        dest_dir=px._digest_calendars_dir, file_name=f"{src_calendar_owner}.json"
+        dest_dir=px._personadmin._calendars_digest_dir,
+        file_name=f"{src_calendar_owner}.json",
     )
     assert digest_cx_json == cx.get_json()
 

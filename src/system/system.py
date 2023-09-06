@@ -311,7 +311,7 @@ class SystemUnit:
         self.set_personunits_empty_if_null()
         px = personunit_shop(name=person_name, env_dir=self.get_object_root_dir())
         px.create_core_dir_and_files()
-        self._personunits[px.name] = px
+        self._personunits[px._personadmin._person_name] = px
 
     def get_person_obj_from_system(self, name: str) -> PersonUnit:
         return None if self._personunits.get(name) is None else self._personunits[name]
@@ -328,20 +328,20 @@ class SystemUnit:
         self.set_personunit_to_system(person_x)
 
     def set_personunit_to_system(self, person: PersonUnit):
-        self._personunits[person.name] = person
-        self.save_person_file(person_name=person.name)
+        self._personunits[person._personadmin._person_name] = person
+        self.save_person_file(person_name=person._personadmin._person_name)
 
     def save_person_file(self, person_name: str):
         person_x = self.get_person_obj_from_system(name=person_name)
         x_func_save_file(
-            dest_dir=person_x._person_dir,
-            file_name=person_x.get_person_file_name(),
+            dest_dir=person_x._personadmin._person_dir,
+            file_name=person_x._personadmin._person_file_name,
             file_text=person_x.get_json(),
         )
 
     def rename_personunit(self, old_name: str, new_name: str):
         person_x = self.get_person_obj_from_system(name=old_name)
-        old_person_dir = person_x._person_dir
+        old_person_dir = person_x._personadmin._person_dir
         person_x.set_person_name(new_name=new_name)
         self.set_personunit_to_system(person=person_x)
         x_func_delete_dir(old_person_dir)

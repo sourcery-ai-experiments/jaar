@@ -159,12 +159,12 @@ def test_personunit_refresh_calendarlinks_CorrectlyPullsAllPublicCalendars(
         _owner="steve"
     )
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=new_steve_calendar)
-    # print(f"{env_dir=} {px._public_calendars_dir=}")
+    # print(f"{env_dir=} {px._personadmin._calendars_public_dir=}")
     # for file_name in x_func_dir_files(dir_path=env_dir):
-    #     print(f"{px._public_calendars_dir=} {file_name=}")
+    #     print(f"{px._personadmin._calendars_public_dir=} {file_name=}")
 
-    # for file_name in x_func_dir_files(dir_path=px._public_calendars_dir):
-    #     print(f"{px._public_calendars_dir=} {file_name=}")
+    # for file_name in x_func_dir_files(dir_path=px._personadmin._calendars_public_dir):
+    #     print(f"{px._personadmin._calendars_public_dir=} {file_name=}")
 
     # WHEN
     e1.reload_all_persons_src_calendarunits()
