@@ -7,7 +7,7 @@ from src.calendar.examples.get_calendar_examples_dir import get_calendar_example
 from src.calendar.idea import IdeaCore, IdeaKid
 from src.calendar.road import Road
 from src.calendar.required_idea import RequiredUnit
-from src.calendar.member import memberlink_shop
+from src.calendar.member import memberunit_shop, memberlink_shop
 from src.calendar.group import groupunit_shop, grouplink_shop
 from src.calendar.road import get_global_root_label as root_label
 from src.calendar.examples.example_calendars import (
@@ -34,16 +34,106 @@ def test_calendarunit_get_assignment_ReturnsCalendar():
     # WHEN
     bob_text = "bob"
     empty_calendar_x = CalendarUnit(_owner=jes_text)
-    assignor_known_members_x = []
+    empty_calendar_x.set_calendar_metrics()
+    assignor_known_members_x = {}
     cx_assignment = jes1_cx.get_assignment(
         empty_calendar=empty_calendar_x,
-        assignor=bob_text,
-        assignor_known_members=assignor_known_members_x,
+        assignor_members=assignor_known_members_x,
+        assignor_name=bob_text,
     )
 
     # THEN
     assert str(type(cx_assignment)) == "<class 'src.calendar.calendar.CalendarUnit'>"
     assert cx_assignment == empty_calendar_x
+
+
+def test_calendarunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInMembers():
+    # GIVEN
+    noa_text = "Noa"
+    noa_cx = example_calendars_get_calendar_with_4_levels()
+    noa_cx.set_memberunit(memberunit_shop(name=noa_text))
+    zia_text = "Zia"
+    yao_text = "Yao"
+    noa_cx.set_memberunit(memberunit_shop(name=zia_text))
+    noa_cx.set_memberunit(memberunit_shop(name=yao_text))
+
+    # WHEN
+    bob_text = "bob"
+    cx = CalendarUnit(_owner=noa_text)
+    tx = CalendarUnit()
+    tx.set_members_empty_if_null()
+    tx.set_memberunit(memberunit=memberunit_shop(name=zia_text))
+    tx.set_memberunit(memberunit=memberunit_shop(name=noa_text))
+
+    cx_assignment = noa_cx.get_assignment(cx, tx._members, bob_text)
+
+    # THEN
+    assert len(noa_cx._members) == 3
+    assert len(cx_assignment._members) == 0
+
+
+def test_calendarunit_get_assignment_ReturnsCorrectMembers():
+    # GIVEN
+    jes_text = "Jessi"
+    jes1_cx = CalendarUnit(_owner=jes_text)
+    jes1_cx.set_memberunit(memberunit_shop(name=jes_text))
+    bob_text = "bob"
+    zia_text = "Zia"
+    noa_text = "Noa"
+    yao_text = "Yao"
+    jes1_cx.set_memberunit(memberunit_shop(name=bob_text))
+    jes1_cx.set_memberunit(memberunit_shop(name=zia_text))
+    jes1_cx.set_memberunit(memberunit_shop(name=noa_text))
+    jes1_cx.set_memberunit(memberunit_shop(name=yao_text))
+
+    # WHEN
+    tx = CalendarUnit()
+    tx.set_members_empty_if_null()
+    tx.set_memberunit(memberunit=memberunit_shop(name=bob_text))
+    tx.set_memberunit(memberunit=memberunit_shop(name=zia_text))
+    tx.set_memberunit(memberunit=memberunit_shop(name=noa_text))
+
+    empty_cx = CalendarUnit(_owner=jes_text)
+    cx_assignment = jes1_cx.get_assignment(empty_cx, tx._members, bob_text)
+
+    # THEN
+    assert len(cx_assignment._members) == 3
+    assert cx_assignment._members.get(bob_text) != None
+    assert cx_assignment._members.get(zia_text) != None
+    assert cx_assignment._members.get(noa_text) != None
+    assert cx_assignment._members.get(yao_text) is None
+
+
+def test_calendarunit_get_assignment_ReturnsCorrectGroups():
+    # GIVEN
+    jes_text = "Jessi"
+    # jes1_cx = CalendarUnit(_owner=jes_text)
+    # jes1_cx.set_memberunit(memberunit_shop(name=jes_text))
+    # bob_text = "bob"
+    # zia_text = "Zia"
+    # noa_text = "Noa"
+    # yao_text = "Yao"
+    # jes1_cx.set_memberunit(memberunit_shop(name=bob_text))
+    # jes1_cx.set_memberunit(memberunit_shop(name=zia_text))
+    # jes1_cx.set_memberunit(memberunit_shop(name=noa_text))
+    # jes1_cx.set_memberunit(memberunit_shop(name=yao_text))
+
+    # # WHEN
+    # tx = CalendarUnit()
+    # tx.set_members_empty_if_null()
+    # tx.set_memberunit(memberunit=memberunit_shop(name=bob_text))
+    # tx.set_memberunit(memberunit=memberunit_shop(name=zia_text))
+    # tx.set_memberunit(memberunit=memberunit_shop(name=noa_text))
+
+    # empty_cx = CalendarUnit(_owner=jes_text)
+    # cx_assignment = jes1_cx.get_assignment(empty_cx, tx._members, bob_text)
+
+    # # THEN
+    # assert len(cx_assignment._members) == 3
+    # assert cx_assignment._members.get(bob_text) != None
+    # assert cx_assignment._members.get(zia_text) != None
+    # assert cx_assignment._members.get(noa_text) != None
+    # assert cx_assignment._members.get(yao_text) is None
 
 
 # def test_calendarunit_get_bond_status_ReturnsCorrectBool():

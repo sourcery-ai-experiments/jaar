@@ -76,6 +76,10 @@ class InvalidCalendarException(Exception):
     pass
 
 
+class AssignmentMemberException(Exception):
+    pass
+
+
 class CalendarOwner(str):
     pass
 
@@ -2045,10 +2049,18 @@ class CalendarUnit:
     def get_assignment(
         self,
         empty_calendar,
-        assignor: MemberName,
-        assignor_known_members: dict[MemberName:MemberName],
+        assignor_members: dict[MemberName:MemberUnit],
+        assignor_name: MemberName,
     ):
-        return empty_calendar
+        empty_calendar.set_members_empty_if_null()
+        calendar_x = empty_calendar
+        self.set_members_empty_if_null()
+        if self._members.get(assignor_name) != None:
+            # get all members that are both in self._members and assignor_known_members
+            members_set = get_intersection_of_members(self._members, assignor_members)
+            for membername_x in members_set:
+                calendar_x.set_memberunit(memberunit=memberunit_shop(name=membername_x))
+        return calendar_x
 
 
 def get_from_json(cx_json: str) -> CalendarUnit:
@@ -2161,3 +2173,12 @@ def get_meld_of_calendar_files(
 
     cx_primary.set_calendar_metrics()
     return cx_primary
+
+
+def get_intersection_of_members(
+    x_members: dict[MemberName:MemberUnit], y_members: dict[MemberName:MemberUnit]
+):
+    x_set = set(x_members)
+    y_set = set(y_members)
+    intersection_x = x_set.intersection(y_set)
+    return {membername_x: -1 for membername_x in intersection_x}

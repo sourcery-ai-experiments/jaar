@@ -4,7 +4,7 @@ from src.calendar.examples.example_calendars import (
     calendar_v001 as examples_calendar_v001,
     calendar_v001_with_large_agenda as examples_calendar_v001_with_large_agenda,
 )
-from src.calendar.calendar import CalendarUnit
+from src.calendar.calendar import CalendarUnit, get_intersection_of_members
 from src.calendar.idea import IdeaKid
 from pytest import raises as pytest_raises
 from src.system.bank_sqlstr import RiverTmemberUnit
@@ -1233,3 +1233,34 @@ def test_calendar_set_banking_data_memberunits_CorrectlySetsMemberUnitBankingAtt
     assert ax._members.get(fry_text)._bank_tax_diff == 0.006
     assert ax._members.get(elu_text)._bank_tax_paid is None
     assert ax._members.get(elu_text)._bank_tax_diff is None
+
+
+def test_get_union_CorrectlyReturnsUnionOfKeysOfTwoDictionarys_scenario1():
+    # GIVEN
+    bob_text = "bob"
+    ax = CalendarUnit(_owner=bob_text)
+    ax.set_members_empty_if_null()
+
+    sam_text = "sam"
+    wil_text = "wil"
+    fry_text = "fry"
+    elu_text = "elu"
+    ax.set_memberunit(memberunit=memberunit_shop(name=bob_text))
+    ax.set_memberunit(memberunit=memberunit_shop(name=sam_text))
+    ax.set_memberunit(memberunit=memberunit_shop(name=wil_text))
+    ax.set_memberunit(memberunit=memberunit_shop(name=fry_text))
+
+    tx = CalendarUnit()
+    tx.set_members_empty_if_null()
+
+    tx.set_memberunit(memberunit=memberunit_shop(name=bob_text))
+    tx.set_memberunit(memberunit=memberunit_shop(name=wil_text))
+    tx.set_memberunit(memberunit=memberunit_shop(name=fry_text))
+    tx.set_memberunit(memberunit=memberunit_shop(name=elu_text))
+
+    # WHEN
+    print(f"{len(ax._members)=} {len(tx._members)=}")
+    intersection_x = get_intersection_of_members(ax._members, tx._members)
+
+    # THEN
+    assert intersection_x == {bob_text: -1, wil_text: -1, fry_text: -1}
