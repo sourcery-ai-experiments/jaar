@@ -227,10 +227,11 @@ def test_calendar_edit_idea_label_ChangesIdeaKidN_special_road():
     #         idea_y.set_kids_empty_if_null()
     #         for idea_z in idea_y._kids.values():
     #             print(f"{idea_z._walk=} {idea_z._label=}")
+    assert old_rain_road != new_rain_road
     assert mood_idea._special_road == new_rain_road
 
 
-def test_calendar_owner_change_ChangesIdeaRequiredUnitsScenario1():
+def test_calendar_edit_idea_label_ChangesIdeaRequiredUnitsScenario1():
     # GIVEN
     calendar_x = get_calendar_with_4_levels_and_2requireds_2acptfacts()
     old_weekday_text = "weekdays"

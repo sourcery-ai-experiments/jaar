@@ -54,4 +54,4 @@ def get_depotlink_from_dict(x_dict: dict) -> CalendarLink:
 
 
 def get_depotlink_types() -> dict[str:None]:
-    return {"blind_trust": None, "ignore": None, "plain": None}
+    return {"blind_trust": None, "ignore": None, "assignment": None}

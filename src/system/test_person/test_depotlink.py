@@ -40,12 +40,12 @@ def test_depotlink_shop_ifAttrNoneAutoFill():
 def test_get_depotlink_types_ReturnsCorrectData():
     # GIVEN / WHEN
     blind_trust_text = "blind_trust"
-    plain_text = "plain"
+    assignment_text = "assignment"
     ignore_text = "ignore"
 
     depotlink_types = {
         blind_trust_text: None,
-        plain_text: None,
+        assignment_text: None,
         ignore_text: None,
     }
 
@@ -58,7 +58,7 @@ def test_depotlink_shop_checkAllowed_depotlink_types():
     calendar_text = "test1"
     blind_trust_text = "blind_trust"
     ignore_text = "ignore"
-    plain_text = "plain"
+    assignment_text = "assignment"
 
     # for depotlink_type_x in depotlink_types:
     #     print(f"{depotlink_type_x=} assert attempted.")
@@ -69,12 +69,12 @@ def test_depotlink_shop_checkAllowed_depotlink_types():
     # WHEN
     blind_depotlink = depotlink_shop(calendar_text, blind_trust_text)
     ignore_depotlink = depotlink_shop(calendar_text, ignore_text)
-    plain_depotlink = depotlink_shop(calendar_text, plain_text)
+    assignment_depotlink = depotlink_shop(calendar_text, assignment_text)
 
     # THEN
     assert blind_depotlink.link_type == blind_trust_text
     assert ignore_depotlink.link_type == ignore_text
-    assert plain_depotlink.link_type == plain_text
+    assert assignment_depotlink.link_type == assignment_text
 
 
 def test_depotlink_shop_raisesErrorIfByTypeIsEntered():
