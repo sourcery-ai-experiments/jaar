@@ -126,7 +126,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def save_isol(self):
         if self.isol != None:
-            self.person_x._admin.set_isol_calendar(self.isol)
+            self.person_x._admin.save_isol_calendar(self.isol)
         self.refresh_person()
 
     def reload_all_src_calendars(self):
@@ -285,7 +285,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 file_name=f"{calendar_owner}.json",
             )
             calendar_x = calendarunit_get_from_json(calendar_json)
-            self.person_x.post_calendar_to_depot(
+            self.person_x.set_src_calendar(
                 calendar_x=calendar_x,
                 depotlink_type=self.depotlink_type_combo.currentText(),
                 depotlink_weight=self.depotlink_weight.text(),
@@ -583,7 +583,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._sub_refresh_ignores_table()
         self.person_output_calendar = None
         if self.person_x != None:
-            self.person_output_calendar = self.person_x.create_output_calendar()
+            self.person_output_calendar = self.person_x.get_output_calendar()
         self._sub_refresh_p_ideas_table()
         self._sub_refresh_p_members_table()
         self._sub_refresh_p_groups_table()

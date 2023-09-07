@@ -99,66 +99,64 @@ class PersonAdmin:
             replace=False,
         )
 
-    def save_calendar_to_depot(self, calendar_x: CalendarUnit):
+    def _save_calendar_to_path(
+        self, calendar_x: CalendarUnit, dest_dir: str, file_name: str = None
+    ):
+        if file_name is None:
+            file_name = f"{calendar_x._owner}.json"
         x_func_save_file(
-            dest_dir=self._calendars_depot_dir,
-            file_name=f"{calendar_x._owner}.json",
-            file_text=calendar_x.get_json(),
-        )
-        print(f"{self._auto_output_to_public=}")
-        if self._auto_output_to_public:
-            self.save_calendar_to_public(calendar_x)
-
-    def save_calendar_to_public(self, calendar_x: CalendarUnit):
-        x_func_save_file(
-            dest_dir=self._calendars_public_dir,
-            file_name=f"{calendar_x._owner}.json",
+            dest_dir=dest_dir,
+            file_name=file_name,
             file_text=calendar_x.get_json(),
             replace=True,
         )
+
+    def save_calendar_to_public(self, calendar_x: CalendarUnit):
+        dest_dir = self._calendars_public_dir
+        self._save_calendar_to_path(calendar_x, dest_dir)
+
+    def save_ignore_calendar(self, calendar_x: CalendarUnit, src_calendar_owner: str):
+        dest_dir = self._calendars_ignore_dir
+        file_name = None
+        if src_calendar_owner != None:
+            file_name = f"{src_calendar_owner}.json"
+        else:
+            file_name = f"{calendar_x._owner}.json"
+        self._save_calendar_to_path(calendar_x, dest_dir, file_name)
+
+    def save_calendar_to_digest(
+        self, calendar_x: CalendarUnit, src_calendar_owner: str = None
+    ):
+        dest_dir = self._calendars_digest_dir
+        file_name = None
+        if src_calendar_owner != None:
+            file_name = f"{src_calendar_owner}.json"
+        else:
+            file_name = f"{calendar_x._owner}.json"
+        self._save_calendar_to_path(calendar_x, dest_dir, file_name)
+
+    def save_isol_calendar(self, calendar_x: CalendarUnit):
+        calendar_x.set_owner(self._person_name)
+        dest_dir = self._person_dir
+        file_name = self._isol_calendar_file_name
+        self._save_calendar_to_path(calendar_x, dest_dir, file_name)
+
+    def save_calendar_to_depot(self, calendar_x: CalendarUnit):
+        dest_dir = self._calendars_depot_dir
+        self._save_calendar_to_path(calendar_x, dest_dir)
+        if self._auto_output_to_public:
+            self.save_calendar_to_public(calendar_x)
 
     def get_public_calendar(self, owner: str) -> str:
         file_name_x = f"{owner}.json"
         return x_func_open_file(self._calendars_public_dir, file_name_x)
 
-    def get_depot_calendar(self, owner: str) -> str:
-        file_name_x = f"{owner}.json"
-        cx_json = x_func_open_file(self._calendars_depot_dir, file_name_x)
-        return calendarunit_get_from_json(cx_json=cx_json)
-
-    def init_ignore_calendar(self, _label: str) -> CalendarUnit:
+    def get_ignore_calendar(self, _label: str) -> CalendarUnit:
         ignore_file_name = f"{_label}.json"
         calendar_json = x_func_open_file(self._calendars_ignore_dir, ignore_file_name)
         calendar_obj = calendarunit_get_from_json(cx_json=calendar_json)
         calendar_obj.set_calendar_metrics()
         return calendar_obj
-
-    def save_calendar_to_ignore_dir(
-        self, calendar_x: CalendarUnit, src_calendar_owner: str
-    ):
-        file_name = f"{src_calendar_owner}.json"
-        x_func_save_file(
-            dest_dir=self._calendars_ignore_dir,
-            file_name=file_name,
-            file_text=calendar_x.get_json(),
-            replace=True,
-        )
-
-    def save_calendar_to_digest(
-        self, calendar_x: CalendarUnit, src_calendar_owner: str = None
-    ):
-        if src_calendar_owner is None:
-            src_calendar_owner = calendar_x._owner
-        file_name = f"{src_calendar_owner}.json"
-        x_func_save_file(
-            dest_dir=self._calendars_digest_dir,
-            file_name=file_name,
-            file_text=calendar_x.get_json(),
-            replace=True,
-        )
-
-    def init_isol_calendar(self) -> CalendarUnit:
-        return x_func_open_file(self._person_dir, self._isol_calendar_file_name)
 
     def del_isol_calendar_file(self):
         x_func_delete_dir(dir=f"{self._person_dir}/{self._isol_calendar_file_name}")
@@ -166,34 +164,32 @@ class PersonAdmin:
     def get_isol_calendar(self) -> CalendarUnit:
         cx = None
         try:
-            ct = self.init_isol_calendar()
+            ct = x_func_open_file(self._person_dir, self._isol_calendar_file_name)
             cx = calendarunit_get_from_json(cx_json=ct)
         except Exception:
             cx = self._get_empty_isol_calendar()
         cx.set_calendar_metrics()
         return cx
 
-    def set_isol_calendar(self, calendar_x: CalendarUnit):
-        calendar_x.set_owner(self._person_name)
-        x_func_save_file(
-            dest_dir=self._person_dir,
-            file_name=self._isol_calendar_file_name,
-            file_text=calendar_x.get_json(),
-            replace=True,
-        )
-
     def _get_empty_isol_calendar(self):
         return CalendarUnit(_owner=self._person_name, _weight=0)
 
-    def delete_depot_calendar(self, owner):
+    def get_depot_calendar(self, owner: str) -> str:
+        file_name_x = f"{owner}.json"
+        cx_json = x_func_open_file(self._calendars_depot_dir, file_name_x)
+        return calendarunit_get_from_json(cx_json=cx_json)
+
+    def del_depot_calendar(self, owner):
         x_func_delete_dir(f"{self._calendars_depot_dir}/{owner}.json")
 
-    def delete_digest_calendar(self, owner):
+    def del_digest_calendar(self, owner):
+        print(f"{self._calendars_digest_dir}/{owner}.json")
         x_func_delete_dir(f"{self._calendars_digest_dir}/{owner}.json")
 
     def check_file_exists(self, dir_type: str, owner: str):
         cx_file_name = f"{owner}.json"
-        cx_file_path = f"{self._calendars_depot_dir}/{cx_file_name}"
+        if dir_type == "depot":
+            cx_file_path = f"{self._calendars_depot_dir}/{cx_file_name}"
         if not os_path.exists(cx_file_path):
             raise InvalidPersonException(
                 f"Person {self._person_name} cannot find calendar {owner} in {cx_file_path}"
@@ -216,10 +212,8 @@ def personadmin_shop(
 class PersonUnit:
     _admin: PersonAdmin = None
     _depotlinks: dict[str:CalendarUnit] = None
-    _output_calendar: CalendarUnit = None
 
-    # dir methods
-    def _set_env_dir(
+    def set_env_dir(
         self, env_dir: str, person_name: str, _auto_output_to_public: bool = None
     ):
         self._admin = personadmin_shop(
@@ -231,28 +225,37 @@ class PersonUnit:
     def create_core_dir_and_files(self):
         self._admin.create_core_dir_and_files(self.get_json())
 
-    def post_calendar_to_depot(
+    def set_src_calendar(
         self,
         calendar_x: CalendarUnit,
         depotlink_type: str = None,
         depotlink_weight: float = None,
     ):
         self._admin.save_calendar_to_depot(calendar_x)
-        self.set_depotlink(calendar_x._owner, depotlink_type, depotlink_weight)
+        self._set_depotlink(calendar_x._owner, depotlink_type, depotlink_weight)
+
+    def del_src_calendar(self, calendar_owner: str):
+        self._del_depotlink(calendar_owner)
+        self._admin.del_depot_calendar(calendar_owner)
+        self._admin.del_digest_calendar(calendar_owner)
 
     def reload_all_depot_calendars(self):
         for depotlink in self._depotlinks.values():
             calendar_x = calendarunit_get_from_json(
                 cx_json=self._admin.get_public_calendar(depotlink.calendar_owner)
             )
-            self.post_calendar_to_depot(
+            self.set_src_calendar(
                 calendar_x=calendar_x,
                 depotlink_type=depotlink.link_type,
                 depotlink_weight=depotlink.weight,
             )
 
-    def set_depotlink(self, owner: str, link_type: str = None, weight: float = None):
-        self.set_depotlink_empty_if_null()
+    def _set_depotlink_empty_if_null(self):
+        if self._depotlinks is None:
+            self._depotlinks = {}
+
+    def _set_depotlink(self, owner: str, link_type: str = None, weight: float = None):
+        self._set_depotlink_empty_if_null()
         self._admin.check_file_exists("depot", owner)
         depotlink_x = depotlink_shop(owner, link_type, weight)
 
@@ -264,28 +267,22 @@ class PersonUnit:
             new_cx_obj = CalendarUnit(_owner=owner)
             self.set_ignore_calendar_file(new_cx_obj, new_cx_obj._owner)
 
-    def set_depotlink_empty_if_null(self):
-        if self._depotlinks is None:
-            self._depotlinks = {}
-
-    def delete_depotlink(self, calendar_owner: str):
+    def _del_depotlink(self, calendar_owner: str):
         self._depotlinks.pop(calendar_owner)
-        self._admin.delete_depot_calendar(calendar_owner)
-        self._admin.delete_digest_calendar(calendar_owner)
 
-    def create_output_calendar(self) -> CalendarUnit:
+    def get_output_calendar(self) -> CalendarUnit:
         return get_meld_of_calendar_files(
             cx_primary=self._admin.get_isol_calendar(),
             meldees_dir=self._admin._calendars_digest_dir,
         )
 
     def get_ignore_calendar_from_file(self, _label: str) -> CalendarUnit:
-        return self._admin.init_ignore_calendar(_label)
+        return self._admin.get_ignore_calendar(_label)
 
     def set_ignore_calendar_file(
         self, calendarunit: CalendarUnit, src_calendar_owner: str
     ):
-        self._admin.save_calendar_to_ignore_dir(calendarunit, src_calendar_owner)
+        self._admin.save_ignore_calendar(calendarunit, src_calendar_owner)
         self._admin.save_calendar_to_digest(calendarunit, src_calendar_owner)
 
     def get_dict(self):
@@ -311,11 +308,8 @@ def personunit_shop(
     name: str, env_dir: str, _auto_output_to_public: bool = None
 ) -> PersonUnit:
     person_x = PersonUnit()
-    person_x._set_env_dir(
-        env_dir=env_dir, person_name=name, _auto_output_to_public=_auto_output_to_public
-    )
-    # person_x._admin._set_auto_output_to_public(_auto_output_to_public)
-    person_x.set_depotlink_empty_if_null()
+    person_x.set_env_dir(env_dir, name, _auto_output_to_public)
+    person_x._set_depotlink_empty_if_null()
     return person_x
 
 

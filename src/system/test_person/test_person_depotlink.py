@@ -15,7 +15,7 @@ from src.calendar.x_func import (
 )
 
 
-def test_personunitset_depotlink_RaisesErrorWhenCalendarDoesNotExist(
+def test_personunit_set_depotlink_RaisesErrorWhenCalendarDoesNotExist(
     person_dir_setup_cleanup,
 ):
     # GIVEN
@@ -29,14 +29,14 @@ def test_personunitset_depotlink_RaisesErrorWhenCalendarDoesNotExist(
     file_path_x = f"{px._admin._calendars_depot_dir}/{swim_text}.json"
     print(f"{file_path_x=}")
     with pytest_raises(Exception) as excinfo:
-        px.set_depotlink(owner=swim_text)
+        px._set_depotlink(owner=swim_text)
     assert (
         str(excinfo.value)
         == f"Person {person1_text} cannot find calendar {swim_text} in {file_path_x}"
     )
 
 
-def test_personunitset_depotlink_CorrectlyUsed(person_dir_setup_cleanup):
+def test_personunit_set_depotlink_CorrectlyUsed(person_dir_setup_cleanup):
     # GIVEN
     person1_text = "person1"
     env_dir = get_temp_person_dir()
@@ -46,13 +46,13 @@ def test_personunitset_depotlink_CorrectlyUsed(person_dir_setup_cleanup):
     assert px._depotlinks == {}
 
     # WHEN
-    px.set_depotlink(owner=swim_text)
+    px._set_depotlink(owner=swim_text)
 
     # THEN
     assert list(px._depotlinks.keys()) == [swim_text]
 
 
-def test_personunit_delete_depotlink_CorrectlyDeletesObj(person_dir_setup_cleanup):
+def test_personunit_del_src_calendar_CorrectlyDeletesObj(person_dir_setup_cleanup):
     # GIVEN
     person1_text = "person1"
     env_dir = get_temp_person_dir()
@@ -61,17 +61,17 @@ def test_personunit_delete_depotlink_CorrectlyDeletesObj(person_dir_setup_cleanu
     create_calendar_file_for_person(
         px._admin._calendars_depot_dir, calendar_owner=swim_text
     )
-    px.set_depotlink(owner=swim_text)
+    px._set_depotlink(owner=swim_text)
     assert list(px._depotlinks.keys()) == [swim_text]
 
     # WHEN
-    px.delete_depotlink(calendar_owner=swim_text)
+    px.del_src_calendar(calendar_owner=swim_text)
 
     # THEN
     assert px._depotlinks == {}
 
 
-def test_personunit_delete_depotlink_CorrectlyDeletesBlindTrustFile(
+def test_personunit_del_src_calendar_CorrectlyDeletesBlindTrustFile(
     person_dir_setup_cleanup,
 ):
     # GIVEN
@@ -83,19 +83,19 @@ def test_personunit_delete_depotlink_CorrectlyDeletesBlindTrustFile(
         calendar_person_dir=px._admin._calendars_depot_dir,
         calendar_owner=swim_text,
     )
-    px.set_depotlink(owner=swim_text, link_type="blind_trust")
+    px._set_depotlink(owner=swim_text, link_type="blind_trust")
     assert x_func_count_files(dir_path=px._admin._calendars_depot_dir) == 1
     assert x_func_count_files(dir_path=px._admin._calendars_digest_dir) == 1
 
     # WHEN
-    px.delete_depotlink(calendar_owner=swim_text)
+    px.del_src_calendar(calendar_owner=swim_text)
 
     # THEN
     assert x_func_count_files(dir_path=px._admin._calendars_depot_dir) == 0
     assert x_func_count_files(dir_path=px._admin._calendars_digest_dir) == 0
 
 
-def test_personunit_post_calendar_to_depot_SavesFileCorrectly(
+def test_personunit_set_src_calendar_SavesFileCorrectly(
     person_dir_setup_cleanup,
 ):
     # GIVEN
@@ -108,7 +108,7 @@ def test_personunit_post_calendar_to_depot_SavesFileCorrectly(
     )  # dir does not exist
 
     # WHEN
-    px.post_calendar_to_depot(calendar_x=s1)
+    px.set_src_calendar(calendar_x=s1)
 
     # THEN
     print(f"Saving to {px._admin._calendars_depot_dir=}")
@@ -129,17 +129,17 @@ def test_personunit_delete_ignore_depotlink_CorrectlyDeletesObj(
         calendar_person_dir=px._admin._calendars_depot_dir,
         calendar_owner=swim_text,
     )
-    px.set_depotlink(owner=swim_text)
+    px._set_depotlink(owner=swim_text)
     assert list(px._depotlinks.keys()) == [swim_text]
 
     # WHEN
-    px.delete_depotlink(calendar_owner=swim_text)
+    px.del_src_calendar(calendar_owner=swim_text)
 
     # THEN
     assert px._depotlinks == {}
 
 
-def test_personunit_delete_depotlink_CorrectlyDoesNotDeletesIgnoreFile(
+def test_personunit_del_src_calendar_CorrectlyDoesNotDeletesIgnoreFile(
     person_dir_setup_cleanup,
 ):
     # GIVEN
@@ -148,13 +148,13 @@ def test_personunit_delete_depotlink_CorrectlyDoesNotDeletesIgnoreFile(
     px = personunit_shop(name=person1_text, env_dir=env_dir)
     swim_text = "swim"
     create_calendar_file_for_person(px._admin._calendars_depot_dir, swim_text)
-    px.set_depotlink(owner=swim_text, link_type="ignore")
+    px._set_depotlink(owner=swim_text, link_type="ignore")
     assert x_func_count_files(dir_path=px._admin._calendars_depot_dir) == 1
     assert x_func_count_files(dir_path=px._admin._calendars_digest_dir) == 1
     assert x_func_count_files(dir_path=px._admin._calendars_ignore_dir) == 1
 
     # WHEN
-    px.delete_depotlink(calendar_owner=swim_text)
+    px.del_src_calendar(calendar_owner=swim_text)
 
     # THEN
     assert x_func_count_files(dir_path=px._admin._calendars_depot_dir) == 0
@@ -171,7 +171,7 @@ def test_personunit_delete_depotlink_CorrectlyDoesNotDeletesIgnoreFile(
 #     px = personunit_shop(name=person1_text, env_dir=env_dir)
 #     swim_text = "swim"
 #     create_calendar_file_for_person(px._admin._calendars_depot_dir, swim_text)
-#     px.set_depotlink(owner=swim_text, link_type="ignore")
+#     px._set_depotlink(owner=swim_text, link_type="ignore")
 #     assert x_func_count_files(dir_path=px._admin._calendars_ignore_dir) == 1
 #     cx1 = px.get_ignore_calendar_from_file(_owner=swim_text)
 #     assert len(cx1._members) == 0
@@ -209,9 +209,9 @@ def test_personunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
     )
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ernie_calendar)
     e1.save_calendarunit_obj_to_calendars_dir(calendar_x=old_steve_calendar)
-    px.post_calendar_to_depot(calendar_x=ernie_calendar)
-    px.post_calendar_to_depot(calendar_x=old_steve_calendar)
-    assert len(px.create_output_calendar().get_idea_list()) == 4
+    px.set_src_calendar(calendar_x=ernie_calendar)
+    px.set_src_calendar(calendar_x=old_steve_calendar)
+    assert len(px.get_output_calendar().get_idea_list()) == 4
     new_steve_calendar = example_persons.get_calendar_3CleanNodesRandomWeights(
         _owner="steve"
     )
@@ -227,4 +227,4 @@ def test_personunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
     px.reload_all_depot_calendars()
 
     # THEN
-    assert len(px.create_output_calendar().get_idea_list()) == 5
+    assert len(px.get_output_calendar().get_idea_list()) == 5

@@ -147,10 +147,8 @@ def get_7nodeJRootWithH_calendar() -> CalendarUnit:
 def get_person_2calendar(env_dir) -> CalendarUnit:
     person_name = "person1"
     wx = personunit_shop(name=person_name, env_dir=env_dir, _auto_output_to_public=True)
-    wx.post_calendar_to_depot(
-        calendar_x=get_1node_calendar(), depotlink_type="blind_trust"
-    )
-    wx.post_calendar_to_depot(
+    wx.set_src_calendar(calendar_x=get_1node_calendar(), depotlink_type="blind_trust")
+    wx.set_src_calendar(
         calendar_x=get_Jnode2node_calendar(), depotlink_type="blind_trust"
     )
     return wx

@@ -140,15 +140,15 @@ def test_personunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
     px_ernie = e1.get_person_obj_from_system(name=ernie_text)
     px_jessi = e1.get_person_obj_from_system(name=jessi_text)
     # px_steve = e1.get_person_obj_from_system(name=steve_text)
-    px_ernie.post_calendar_to_depot(calendar_x=jessi_calendar)
-    px_ernie.post_calendar_to_depot(calendar_x=old_steve_cx)
-    px_jessi.post_calendar_to_depot(calendar_x=ernie_calendar)
-    px_jessi.post_calendar_to_depot(calendar_x=old_steve_cx)
-    # px_steve.post_calendar_to_depot(calendar_x=ernie_calendar)
-    # px_steve.post_calendar_to_depot(calendar_x=jessi_calendar)
-    assert len(px_ernie.create_output_calendar().get_idea_list()) == 4
-    assert len(px_jessi.create_output_calendar().get_idea_list()) == 4
-    # assert len(px_steve.create_output_calendar().get_idea_list()) == 4
+    px_ernie.set_src_calendar(calendar_x=jessi_calendar)
+    px_ernie.set_src_calendar(calendar_x=old_steve_cx)
+    px_jessi.set_src_calendar(calendar_x=ernie_calendar)
+    px_jessi.set_src_calendar(calendar_x=old_steve_cx)
+    # px_steve.set_src_calendar(calendar_x=ernie_calendar)
+    # px_steve.set_src_calendar(calendar_x=jessi_calendar)
+    assert len(px_ernie.get_output_calendar().get_idea_list()) == 4
+    assert len(px_jessi.get_output_calendar().get_idea_list()) == 4
+    # assert len(px_steve.get_output_calendar().get_idea_list()) == 4
     new_steve_calendar = example_persons.get_calendar_3CleanNodesRandomWeights(
         _owner="steve"
     )
@@ -164,5 +164,5 @@ def test_personunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
     e1.reload_all_persons_src_calendarunits()
 
     # THEN
-    assert len(px_ernie.create_output_calendar().get_idea_list()) == 5
-    assert len(px_jessi.create_output_calendar().get_idea_list()) == 5
+    assert len(px_ernie.get_output_calendar().get_idea_list()) == 5
+    assert len(px_jessi.get_output_calendar().get_idea_list()) == 5
