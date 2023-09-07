@@ -193,7 +193,7 @@ def test_personunit_delete_depotlink_CorrectlyDoesNotDeletesIgnoreFile(
 #     create_calendar_file_for_person(px._admin._calendars_depot_dir, swim_text)
 #     px.set_depotlink(owner=swim_text, link_type="ignore")
 #     assert x_func_count_files(dir_path=px._admin._calendars_ignore_dir) == 1
-#     cx1 = px.get_ignore_calendar_from_ignore_calendar_files(_owner=swim_text)
+#     cx1 = px.get_ignore_calendar_from_file(_owner=swim_text)
 #     assert len(cx1._members) == 0
 #     cx1.add_memberunit(name="tim")
 #     assert len(cx1._members) == 1
@@ -202,7 +202,7 @@ def test_personunit_delete_depotlink_CorrectlyDoesNotDeletesIgnoreFile(
 #     px.set_ignore_calendar_file()
 
 #     # THEN
-#     cx2 = px.get_ignore_calendar_from_ignore_calendar_files(_owner=swim_text)
+#     cx2 = px.get_ignore_calendar_from_file(_owner=swim_text)
 #     assert len(cx2._members) == 0
 
 #     assert x_func_count_files(dir_path=px._admin._calendars_ignore_dir) == 1

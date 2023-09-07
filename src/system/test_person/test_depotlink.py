@@ -1,6 +1,6 @@
 from src.system.depotlink import (
     depotlink_shop,
-    get_calendar_from_calendars_dirlink_from_dict,
+    get_depotlink_from_dict,
 )
 from pytest import raises as pytest_raises
 
@@ -105,7 +105,7 @@ def test_depotlink_get_dict_ReturnsDictObject():
     }
 
 
-def test_get_calendar_from_calendars_dirlink_from_dict_ReturnsCalendarLinkObject():
+def test_get_depotlink_from_dict_ReturnsCalendarLinkObject():
     # GIVEN
     calendar_owner_text = "calendar_owner"
     link_type_text = "link_type"
@@ -122,7 +122,7 @@ def test_get_calendar_from_calendars_dirlink_from_dict_ReturnsCalendarLinkObject
     }
 
     # WHEN
-    x_obj = get_calendar_from_calendars_dirlink_from_dict(x_dict=depotlink_dict)
+    x_obj = get_depotlink_from_dict(x_dict=depotlink_dict)
 
     # THEN
     assert x_obj.calendar_owner == test1_label_text

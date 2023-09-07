@@ -21,7 +21,6 @@ def test_personunit_exists(person_dir_setup_cleanup):
     px = personunit_shop(name=person_text, env_dir=env_dir, _auto_output_to_public=True)
     assert px._admin._person_name == person_text
     assert px._depotlinks == {}
-    assert px._auto_output_to_public
     # assert px._re_idearoot != None
     # assert str(type(px._re_idearoot)).find(".idea.IdeaRoot'>") > 0
     # assert px._re_idearoot._label == person_text
@@ -44,6 +43,7 @@ def test_personunit_exists(person_dir_setup_cleanup):
     assert px._admin._person_dir != None
     assert px._admin._calendars_depot_dir != None
     assert px._admin._calendars_digest_dir != None
+    assert px._admin._auto_output_to_public != None
 
 
 def test_personunit_creates_files(person_dir_setup_cleanup):
@@ -123,7 +123,7 @@ def test_personunit_set_person_name_WorksCorrectly(person_dir_setup_cleanup):
     assert os_path.exists(new_person_file_path)
 
 
-def test_personunit_save_output_calendar_to_public_dir_SavesCalendarToPublicDir(
+def test_personunit_save_output_calendar_to_public_SavesCalendarToPublicDir(
     person_dir_setup_cleanup,
 ):
     # GIVEN create person
@@ -137,7 +137,7 @@ def test_personunit_save_output_calendar_to_public_dir_SavesCalendarToPublicDir(
     assert os_path.exists(public_file_path) is False
 
     # WHEN
-    px.save_output_calendar_to_public_dir()
+    px.save_output_calendar_to_public()
 
     # THEN
     assert os_path.exists(public_file_path)

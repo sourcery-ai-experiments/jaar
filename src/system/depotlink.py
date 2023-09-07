@@ -42,7 +42,7 @@ def depotlink_shop(
     return sl
 
 
-def get_calendar_from_calendars_dirlink_from_dict(x_dict: dict) -> CalendarLink:
+def get_depotlink_from_dict(x_dict: dict) -> CalendarLink:
     calendar_owner_text = "calendar_owner"
     link_type_text = "link_type"
     weight_text = "weight"

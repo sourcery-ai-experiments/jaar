@@ -1,6 +1,6 @@
 from src.system.depotlink import (
     depotlink_shop,
-    get_calendar_from_calendars_dirlink_from_dict,
+    get_depotlink_from_dict,
     CalendarLink,
     get_depotlink_types,
 )
@@ -47,6 +47,7 @@ class PersonAdmin:
     _calendars_bond_dir: str = None
     _calendars_digest_dir: str = None
     _isol_calendar_file_name: str = None
+    _auto_output_to_public: bool = None
 
     def set_dirs(self):
         env_persons_dir_name = "persons"
@@ -61,6 +62,16 @@ class PersonAdmin:
         self._calendars_bond_dir = f"{self._person_dir}/bonds"
         self._calendars_digest_dir = f"{self._person_dir}/digests"
         self._isol_calendar_file_name = "isol_calendar.json"
+        self._auto_output_to_public = (
+            True  # self._set_auto_output_to_public(_auto_output_to_public)
+        )
+
+    def _set_auto_output_to_public(self, bool_x: bool):
+        pass
+
+    #     # if bool_x is None:
+    #     #     bool_x = False
+    #     self._auto_output_to_public = bool_x
 
     def set_person_name(self, new_name: str):
         old_name = self._person_name
@@ -216,8 +227,8 @@ class PersonUnit:
     ):
         self._admin.save_calendar_to_depot(calendar_x)
         self.set_depotlink(calendar_x._owner, depotlink_type, depotlink_weight)
-        if self._auto_output_to_public:
-            self.save_output_calendar_to_public_dir()
+        if self._admin._auto_output_to_public:
+            self.save_output_calendar_to_public()
 
     def reload_all_depot_calendars(self):
         for depotlink_obj in self._depotlinks.values():
@@ -231,7 +242,6 @@ class PersonUnit:
     def set_depotlink(self, owner: str, link_type: str = None, weight: float = None):
         self.set_depotlink_empty_if_null()
         self._admin.check_file_exists("depot", owner)
-
         depotlink_x = depotlink_shop(owner, link_type, weight)
 
         self._depotlinks[owner] = depotlink_x
@@ -251,9 +261,6 @@ class PersonUnit:
         self._admin.delete_depot_calendar(calendar_owner)
         self._admin.delete_digest_calendar(calendar_owner)
 
-    def _set_auto_output_to_public(self, bool_x: bool):
-        self._auto_output_to_public = bool_x
-
     def _set_emtpy_output_calendar(self):
         self._output_calendar = CalendarUnit(_owner=self._admin._person_name)
 
@@ -263,12 +270,10 @@ class PersonUnit:
             meldees_dir=self._admin._calendars_digest_dir,
         )
 
-    def save_output_calendar_to_public_dir(self):
+    def save_output_calendar_to_public(self):
         self._admin.save_calendar_to_public(self.create_output_calendar())
 
-    def get_ignore_calendar_from_ignore_calendar_files(
-        self, _label: str
-    ) -> CalendarUnit:
+    def get_ignore_calendar_from_file(self, _label: str) -> CalendarUnit:
         return self._admin.init_ignore_calendar(_label)
 
     def set_ignore_calendar_file(
@@ -301,7 +306,7 @@ def personunit_shop(
 ) -> PersonUnit:
     person_x = PersonUnit()
     person_x._set_env_dir(env_dir=env_dir, person_name=name)
-    person_x._set_auto_output_to_public(_auto_output_to_public)
+    person_x._admin._set_auto_output_to_public(_auto_output_to_public)
     person_x.set_depotlink_empty_if_null()
     person_x._set_emtpy_output_calendar()
     return person_x
@@ -317,20 +322,16 @@ def get_from_dict(person_dict: dict, env_dir: str) -> PersonUnit:
         env_dir=env_dir,
         _auto_output_to_public=person_dict["_auto_output_to_public"],
     )
-    wx._depotlinks = get_calendar_from_calendars_dirlinks_from_dict(
-        person_dict["_depotlinks"]
-    )
+    wx._depotlinks = get_depotlinks_from_dict(person_dict["_depotlinks"])
     return wx
 
 
-def get_calendar_from_calendars_dirlinks_from_dict(
+def get_depotlinks_from_dict(
     x_dict: dict,
 ) -> dict[str:CalendarLink]:
     _depotlinks = {}
 
     for depotlink_dict in x_dict.values():
-        depotlink_obj = get_calendar_from_calendars_dirlink_from_dict(
-            x_dict=depotlink_dict
-        )
+        depotlink_obj = get_depotlink_from_dict(x_dict=depotlink_dict)
         _depotlinks[depotlink_obj.calendar_owner] = depotlink_obj
     return _depotlinks

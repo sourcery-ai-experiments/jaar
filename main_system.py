@@ -90,7 +90,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.reload_all_src_calendars
         )
         self.set_public_calendar_button.clicked.connect(
-            self.save_output_calendar_to_public_dir()
+            self.save_output_calendar_to_public()
         )
         self.set_public_and_reload_srcs_button.clicked.connect(
             self.set_public_and_reload_srcs
@@ -131,12 +131,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.system_x.reload_all_persons_src_calendarunits()
 
     def set_public_and_reload_srcs(self):
-        self.save_output_calendar_to_public_dir()
+        self.save_output_calendar_to_public()
         self.reload_all_src_calendars()
 
-    def save_output_calendar_to_public_dir(self):
+    def save_output_calendar_to_public(self):
         if self.person_x != None:
-            self.person_x.save_output_calendar_to_public_dir()
+            self.person_x.save_output_calendar_to_public()
         self.refresh_system()
 
     def system_load_from_file(self):
