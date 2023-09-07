@@ -26,6 +26,26 @@ from src.system.examples.env_kit import env_dir_setup_cleanup, get_temp_env_dir
 from pytest import raises as pytest_raises
 
 
+def test_calendarunit_get_assignment_ReturnsCalendar():
+    # GIVEN
+    jes_text = "jessi"
+    jes1_cx = CalendarUnit(_owner=jes_text)
+
+    # WHEN
+    bob_text = "bob"
+    empty_calendar_x = CalendarUnit(_owner=jes_text)
+    assignor_known_members_x = []
+    cx_assignment = jes1_cx.get_assignment(
+        empty_calendar=empty_calendar_x,
+        assignor=bob_text,
+        assignor_known_members=assignor_known_members_x,
+    )
+
+    # THEN
+    assert str(type(cx_assignment)) == "<class 'src.calendar.calendar.CalendarUnit'>"
+    assert cx_assignment == empty_calendar_x
+
+
 # def test_calendarunit_get_bond_status_ReturnsCorrectBool():
 #     # GIVEN
 #     jessi_text = "jessi"

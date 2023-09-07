@@ -2042,6 +2042,14 @@ class CalendarUnit:
         if member_name != None:
             self._originunit.set_originlink(member_name, member_weight)
 
+    def get_assignment(
+        self,
+        empty_calendar,
+        assignor: MemberName,
+        assignor_known_members: dict[MemberName:MemberName],
+    ):
+        return empty_calendar
+
 
 def get_from_json(cx_json: str) -> CalendarUnit:
     return get_from_dict(cx_dict=json.loads(cx_json))
