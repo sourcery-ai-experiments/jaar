@@ -190,7 +190,7 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestCalendar(
     assert x_func_count_files(px._admin._calendars_digest_dir) == 0
 
     # WHEN
-    px.set_src_calendar(calendar_x=cx, depotlink_type="blind_trust")
+    px.set_depot_calendar(calendar_x=cx, depotlink_type="blind_trust")
 
     # THEN
     cx_file_name = f"{cx._owner}.json"
@@ -207,33 +207,26 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestCalendar(
     assert digest_cx_json == cx.get_json()
 
 
-def test_person_get_output_calendar_withEmptyDigestDict(
+def test_person_get_refreshed_output_calendar_withEmptyDigestDict(
     person_dir_setup_cleanup,
 ):
     # GIVEN
     person_name_x = "boots3"
     px = personunit_shop(name=person_name_x, env_dir=get_temp_person_dir())
     px.create_core_dir_and_files()
-    sx_output_before = px.get_output_calendar()
+    sx_output_before = px.get_refreshed_output_calendar()
     assert str(type(sx_output_before)).find(".calendar.CalendarUnit'>")
     assert sx_output_before._owner == person_name_x
     assert sx_output_before._idearoot._label == root_label()
     # px.set_digested_calendar(calendar_x=CalendarUnit(_owner="digested1"))
 
     # WHEN
-    sx_output_after = px.get_output_calendar()
+    sx_output_after = px.get_refreshed_output_calendar()
 
     # THEN
     person_calendar_x = CalendarUnit(_owner=person_name_x, _weight=0.0)
     person_calendar_x._idearoot._walk = ""
     person_calendar_x.set_calendar_metrics()
-    # person_calendar_x.set_members_empty_if_null()
-    # person_calendar_x.set_groupunits_empty_if_null()
-    # person_calendar_x._set_acptfacts_empty_if_null()
-    # person_calendar_x._idearoot.set_grouplink_empty_if_null()
-    # person_calendar_x._idearoot.set_requiredunits_empty_if_null()
-    # person_calendar_x._idearoot.set_acptfactunits_empty_if_null()
-    # person_calendar_x._idearoot.set_kids_empty_if_null()
 
     assert str(type(sx_output_after)).find(".calendar.CalendarUnit'>")
     assert sx_output_after._weight == person_calendar_x._weight
@@ -245,7 +238,7 @@ def test_person_get_output_calendar_withEmptyDigestDict(
     assert sx_output_after._idearoot == person_calendar_x._idearoot
 
 
-def test_person_get_output_calendar_with1DigestedCalendar(
+def test_person_get_refreshed_output_calendar_with1DigestedCalendar(
     person_dir_setup_cleanup,
 ):
     # GIVEN
@@ -253,15 +246,15 @@ def test_person_get_output_calendar_with1DigestedCalendar(
     env_dir = get_temp_person_dir()
     px = personunit_shop(name=person_name_x, env_dir=env_dir)
     px.create_core_dir_and_files()
-    sx_output_old = px.get_output_calendar()
+    sx_output_old = px.get_refreshed_output_calendar()
     assert str(type(sx_output_old)).find(".calendar.CalendarUnit'>")
     assert sx_output_old._owner == person_name_x
     assert sx_output_old._idearoot._label == root_label()
     input_calendar = example_persons.get_2node_calendar()
-    px.set_src_calendar(calendar_x=input_calendar, depotlink_type="blind_trust")
+    px.set_depot_calendar(calendar_x=input_calendar, depotlink_type="blind_trust")
 
     # WHEN
-    sx_output_new = px.get_output_calendar()
+    sx_output_new = px.get_refreshed_output_calendar()
 
     # THEN
     assert str(type(sx_output_new)).find(".calendar.CalendarUnit'>")
@@ -290,7 +283,7 @@ def test_person_get_output_calendar_with1DigestedCalendar(
 #     # GIVEN
 #     env_dir = get_temp_person_dir()
 #     px = personunit_shop(name="test8", env_dir=env_dir)
-#     sx_output_old = px.get_output_calendar()
+#     sx_output_old = px.get_refreshed_output_calendar()
 #     assert str(type(sx_output_old)).find(".calendar.CalendarUnit'>")
 #     assert sx_output_old._groups == {}
 #     assert sx_output_old._members == {}
@@ -319,7 +312,7 @@ def test_person_get_output_calendar_with1DigestedCalendar(
 
 #     # WHEN
 #     px.set_single_digested_calendar(_calendar_owner="test1", digest_calendar_x=s1)
-#     sx_output_new = px.get_output_calendar()
+#     sx_output_new = px.get_refreshed_output_calendar()
 
 #     # THEN
 #     assert str(type(sx_output_new)).find(".calendar.CalendarUnit'>")

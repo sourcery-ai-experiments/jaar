@@ -401,7 +401,7 @@ class SystemUnit:
 
     def reload_all_persons_src_calendarunits(self):
         for person_x in self._personunits.values():
-            person_x.reload_all_depot_calendars()
+            person_x.reset_depot_calendars()
 
     def get_calendars_dir_file_names_list(self):
         return list(x_func_dir_files(dir_path=self.get_calendars_dir()).keys())
@@ -418,7 +418,7 @@ class SystemUnit:
         return calendars_list
 
     # calendars_dir to person_calendars_dir management
-    def _person_set_src_calendar(
+    def _person_set_depot_calendar(
         self,
         personunit: PersonUnit,
         calendarunit: CalendarUnit,
@@ -426,7 +426,7 @@ class SystemUnit:
         weight: float = None,
         ignore_calendar: CalendarUnit = None,
     ):
-        personunit.set_src_calendar(
+        personunit.set_depot_calendar(
             calendar_x=calendarunit,
             depotlink_type=depotlink_type,
             depotlink_weight=weight,
@@ -439,7 +439,7 @@ class SystemUnit:
     def _person_delete_src_calendarunit_obj(
         self, personunit: PersonUnit, calendarunit_owner: str
     ):
-        personunit.del_src_calendar(calendar_owner=calendarunit_owner)
+        personunit.del_depot_calendar(calendar_owner=calendarunit_owner)
 
     def create_depotlink_to_saved_calendar(
         self,
@@ -451,7 +451,7 @@ class SystemUnit:
     ):
         person_x = self.get_person_obj_from_system(name=person_name)
         calendar_x = self.get_calendar_from_calendars_dir(owner=calendar_owner)
-        self._person_set_src_calendar(
+        self._person_set_depot_calendar(
             personunit=person_x,
             calendarunit=calendar_x,
             depotlink_type=depotlink_type,
@@ -468,7 +468,7 @@ class SystemUnit:
     ):
         person_x = self.get_person_obj_from_system(name=person_name)
         calendar_x = CalendarUnit(_owner=calendar_owner)
-        self._person_set_src_calendar(
+        self._person_set_depot_calendar(
             personunit=person_x,
             calendarunit=calendar_x,
             depotlink_type=depotlink_type,
@@ -480,7 +480,7 @@ class SystemUnit:
         calendar_x = self.get_calendar_from_calendars_dir(
             _owner=depotlink.calendar_owner
         )
-        self._person_set_src_calendar(
+        self._person_set_depot_calendar(
             personunit=person_x,
             calendarunit=calendar_x,
             depotlink_type=depotlink.depotlink_type,
@@ -500,4 +500,4 @@ class SystemUnit:
         self, person_name: str
     ) -> CalendarUnit:
         person_x = self.get_person_obj_from_system(name=person_name)
-        return person_x.get_output_calendar()
+        return person_x.get_refreshed_output_calendar()

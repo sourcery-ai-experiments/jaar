@@ -12,7 +12,7 @@ from src.system.examples.person_env_kit import (
 from src.calendar.calendar import CalendarUnit
 
 
-def test_person_set_src_calendar_SetsCorrectInfo():
+def test_person_set_depot_calendar_SetsCorrectInfo():
     # GIVEN
     env_dir = get_temp_person_dir()
     person_x = person_examples.get_person_2calendar(env_dir=env_dir)
@@ -20,9 +20,9 @@ def test_person_set_src_calendar_SetsCorrectInfo():
 
     # WHEN
     swim_text = "swim1"
-    person_x.set_src_calendar(calendar_x=CalendarUnit(_owner=swim_text))
+    person_x.set_depot_calendar(calendar_x=CalendarUnit(_owner=swim_text))
     run_text = "run1"
-    person_x.set_src_calendar(calendar_x=CalendarUnit(_owner=run_text))
+    person_x.set_depot_calendar(calendar_x=CalendarUnit(_owner=run_text))
 
     # THEN
     assert len(person_x.get_depotlinks_dict()) == 4
@@ -34,9 +34,9 @@ def test_person_get_depotlinks_dict_ReturnsCorrectInfo():
     person_x = person_examples.get_person_2calendar(env_dir=env_dir)
     assert len(person_x.get_depotlinks_dict()) == 2
     swim_text = "swim1"
-    person_x.set_src_calendar(calendar_x=CalendarUnit(_owner=swim_text))
+    person_x.set_depot_calendar(calendar_x=CalendarUnit(_owner=swim_text))
     run_text = "run1"
-    person_x.set_src_calendar(calendar_x=CalendarUnit(_owner=run_text))
+    person_x.set_depot_calendar(calendar_x=CalendarUnit(_owner=run_text))
 
     # WHEN
     depotlinks_dict = person_x.get_depotlinks_dict()
@@ -54,7 +54,7 @@ def test_person_get_dict_ReturnsDictObject(person_dir_setup_cleanup):
     # GIVEN
     env_dir = get_temp_person_dir()
     person_x = person_examples.get_person_2calendar(env_dir=env_dir)
-    person_x.set_src_calendar(calendar_x=CalendarUnit(_owner="swim8"))
+    person_x.set_depot_calendar(calendar_x=CalendarUnit(_owner="swim8"))
 
     # WHEN
     x_dict = person_x.get_dict()

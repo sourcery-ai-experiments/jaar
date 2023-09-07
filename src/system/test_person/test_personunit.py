@@ -42,7 +42,7 @@ def test_personunit_auto_output_to_public_SavesCalendarToPublicDirWhenTrue(
     assert os_path.exists(public_file_path) is False
 
     # WHEN
-    px.set_src_calendar(calendar_x=CalendarUnit(_owner=tim_text))
+    px.set_depot_calendar(calendar_x=CalendarUnit(_owner=tim_text))
 
     # THEN
     assert os_path.exists(public_file_path)
@@ -63,7 +63,7 @@ def test_personunit_auto_output_to_public_DoesNotSaveCalendarToPublicDirWhenFals
     assert os_path.exists(public_file_path) is False
 
     # WHEN
-    px.set_src_calendar(calendar_x=CalendarUnit(_owner=tim_text))
+    px.set_depot_calendar(calendar_x=CalendarUnit(_owner=tim_text))
 
     # THEN
     assert os_path.exists(public_file_path) is False
