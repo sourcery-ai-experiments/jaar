@@ -3,7 +3,10 @@ from ui.SystemMainUI import Ui_MainWindow
 from Edit5Issue import Edit5Issue
 from EditMain import EditMainView
 from PyQt5 import QtCore as qtc
-from src.calendar.calendar import CalendarUnit
+from src.calendar.calendar import (
+    CalendarUnit,
+    get_from_json as calendarunit_get_from_json,
+)
 from sys import argv as sys_argv, exit as sys_exit
 from PyQt5.QtWidgets import (
     QTableWidgetItem as qtw1,
@@ -281,8 +284,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 dest_dir=self.person_x._admin._calendars_public_dir,
                 file_name=f"{calendar_owner}.json",
             )
-            self.person_x.receive_src_calendarunit_file(
-                calendar_json=calendar_json,
+            calendar_x = calendarunit_get_from_json(calendar_json)
+            self.person_x.post_calendar_to_depot(
+                calendar_x=calendar_x,
                 depotlink_type=self.depotlink_type_combo.currentText(),
                 depotlink_weight=self.depotlink_weight.text(),
             )

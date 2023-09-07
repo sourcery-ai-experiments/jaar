@@ -16,12 +16,16 @@ from src.calendar.x_func import (
 
 
 def test_personunit_exists(person_dir_setup_cleanup):
+    # GIVEN
     person_text = "test1"
     env_dir = get_temp_person_dir()
-    _auto_output_to_public = True
-    px = personunit_shop(person_text, env_dir, _auto_output_to_public)
+
+    # WHEN
+    px = personunit_shop(name=person_text, env_dir=env_dir)
+
+    # GIVEN
     assert px._depotlinks == {}
-    assert px._output_calendar != None
+    assert px._output_calendar is None
 
 
 def test_personunit_auto_output_to_public_SavesCalendarToPublicDirWhenTrue(

@@ -102,33 +102,13 @@ def test_personunit_post_calendar_to_depot_SavesFileCorrectly(
     person_name = "person1"
     env_dir = get_temp_person_dir()
     px = personunit_shop(name=person_name, env_dir=env_dir)
-    assert x_func_count_files(px._admin._calendars_depot_dir) is None
-
-    # WHEN
-    px.post_calendar_to_depot(calendar_x=example_persons.get_1node_calendar())
-
-    # THEN
-    print(f"Saving to {px._admin._calendars_depot_dir=}")
-    # for path_x in os_scandir(px._admin._calendars_depot_dir):
-    #     print(f"{path_x=}")
-    assert x_func_count_files(px._admin._calendars_depot_dir) == 1
-
-
-def test_personunit_receive_src_calendarunit_file_SavesFileCorrectly(
-    person_dir_setup_cleanup,
-):
-    # GIVEN
-    person_name = "person1"
-    env_dir = get_temp_person_dir()
-    px = personunit_shop(name=person_name, env_dir=env_dir)
     s1 = example_persons.get_2node_calendar()
-    sx_json = s1.get_json()
     assert (
         x_func_count_files(px._admin._calendars_depot_dir) is None
     )  # dir does not exist
 
     # WHEN
-    px.receive_src_calendarunit_file(calendar_json=sx_json)
+    px.post_calendar_to_depot(calendar_x=s1)
 
     # THEN
     print(f"Saving to {px._admin._calendars_depot_dir=}")
