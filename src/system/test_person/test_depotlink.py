@@ -1,6 +1,7 @@
 from src.system.depotlink import (
     depotlink_shop,
     get_depotlink_from_dict,
+    get_depotlink_types,
 )
 from pytest import raises as pytest_raises
 
@@ -36,39 +37,44 @@ def test_depotlink_shop_ifAttrNoneAutoFill():
     assert slx.weight == 1
 
 
-def test_depotlink_shop_checkAllowed_depotlink_types():
+def test_get_depotlink_types_ReturnsCorrectData():
     # GIVEN / WHEN
-    calendar_text = "test1"
     blind_trust_text = "blind_trust"
-    bond_filter_text = "bond_filter"
-    tributary_text = "tributary"
+    plain_text = "plain"
     ignore_text = "ignore"
 
-    # depotlink_types = {
-    #     blind_trust_text: None,
-    #     bond_filter_text: None,
-    #     tributary_text: None,
-    #     ignore_text: None,
-    # }
+    depotlink_types = {
+        blind_trust_text: None,
+        plain_text: None,
+        ignore_text: None,
+    }
 
-    # THEN
+    assert len(depotlink_types) == len(get_depotlink_types())
+    assert depotlink_types == get_depotlink_types()
+
+
+def test_depotlink_shop_checkAllowed_depotlink_types():
+    # GIVEN
+    calendar_text = "test1"
+    blind_trust_text = "blind_trust"
+    ignore_text = "ignore"
+    plain_text = "plain"
+
     # for depotlink_type_x in depotlink_types:
     #     print(f"{depotlink_type_x=} assert attempted.")
     #     assert depotlink_shop(calendar_text, depotlink_type_x).depotlink_type == depotlink_type_x
     #     print(f"{depotlink_type_x=} assert succeeded.")
     # assert depotlink_shop(calendar_text, depotlink_type_x).depotlink_type == depotlink_type_x
 
-    depotlink_blind_trust = depotlink_shop(calendar_text, blind_trust_text)
-    assert depotlink_blind_trust.link_type == blind_trust_text
+    # WHEN
+    blind_depotlink = depotlink_shop(calendar_text, blind_trust_text)
+    ignore_depotlink = depotlink_shop(calendar_text, ignore_text)
+    plain_depotlink = depotlink_shop(calendar_text, plain_text)
 
-    depotlink_bond_filter = depotlink_shop(calendar_text, bond_filter_text)
-    assert depotlink_bond_filter.link_type == bond_filter_text
-
-    depotlink_tributary = depotlink_shop(calendar_text, tributary_text)
-    assert depotlink_tributary.link_type == tributary_text
-
-    depotlink_ignore = depotlink_shop(calendar_text, ignore_text)
-    assert depotlink_ignore.link_type == ignore_text
+    # THEN
+    assert blind_depotlink.link_type == blind_trust_text
+    assert ignore_depotlink.link_type == ignore_text
+    assert plain_depotlink.link_type == plain_text
 
 
 def test_depotlink_shop_raisesErrorIfByTypeIsEntered():
