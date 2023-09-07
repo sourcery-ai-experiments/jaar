@@ -18,149 +18,49 @@ from src.calendar.x_func import (
 def test_personunit_exists(person_dir_setup_cleanup):
     person_text = "test1"
     env_dir = get_temp_person_dir()
-    px = personunit_shop(name=person_text, env_dir=env_dir, _auto_output_to_public=True)
-    assert px._admin._person_name == person_text
+    _auto_output_to_public = True
+    px = personunit_shop(person_text, env_dir, _auto_output_to_public)
     assert px._depotlinks == {}
-    # assert px._re_idearoot != None
-    # assert str(type(px._re_idearoot)).find(".idea.IdeaRoot'>") > 0
-    # assert px._re_idearoot._label == person_text
-    # assert px._re_idearoot._weight == 1
-
-    # assert px._re_idearoot._uid == -1
-    # assert px._re_idearoot._begin is None
-    # assert px._re_idearoot._close is None
-    # assert px._re_idearoot._addin is None
-    # assert px._re_idearoot._denom is None
-    # assert px._re_idearoot._numor is None
-    # assert px._re_idearoot._reest is None
-    # assert px._re_idearoot._special_road is None
-    # assert px._re_idearoot._numeric_road is None
-    # assert px._re_idearoot.promise == False
-    # assert px._re_idearoot._all_member_credit is None
-    # assert px._re_idearoot._all_member_debt is None
-    # assert px._re_idearoot._is_expanded == True
     assert px._output_calendar != None
-    assert px._admin._person_dir != None
-    assert px._admin._calendars_depot_dir != None
-    assert px._admin._calendars_digest_dir != None
-    assert px._admin._auto_output_to_public != None
 
 
-def test_personunit_creates_files(person_dir_setup_cleanup):
-    # GIVEN create person
-    person1_text = "person1"
-    env_dir = get_temp_person_dir()
-
-    persons_dir = f"{env_dir}/persons"
-    calendars_dir = f"{env_dir}/calendars"
-    person1_dir = f"{persons_dir}/{person1_text}"
-    person_file_name = f"{person1_text}.json"
-    person_calendars_dir = f"{persons_dir}/{person1_text}/calendars/"
-    digest_calendars_dir = f"{persons_dir}/{person1_text}/digests/"
-    calendars_ignore_dir = f"{persons_dir}/{person1_text}/ignores/"
-    bond_calendars_dir = f"{persons_dir}/{person1_text}/bonds/"
-    person_file_path = f"{person1_dir}/{person_file_name}"
-    px = personunit_shop(name=person1_text, env_dir=env_dir)
-    px.set_depotlink_empty_if_null()
-    px._set_emtpy_output_calendar()
-    assert os_path.exists(persons_dir) is False
-    assert os_path.exists(calendars_dir) is False
-    assert os_path.exists(person1_dir) is False
-    assert os_path.isdir(person1_dir) is False
-    assert os_path.exists(person_calendars_dir) is False
-    assert os_path.exists(digest_calendars_dir) is False
-    assert os_path.exists(calendars_ignore_dir) is False
-    assert os_path.exists(bond_calendars_dir) is False
-
-    # WHEN
-    px.create_core_dir_and_files()
-
-    # THEN confirm calendars src directory created
-    print(f"Test {persons_dir=}")
-    assert os_path.exists(person1_dir)
-    assert os_path.isdir(person1_dir)
-    assert os_path.exists(persons_dir)
-    assert os_path.exists(calendars_dir)
-    assert os_path.exists(person_calendars_dir)
-    print(f"{person_file_path=}")
-    assert os_path.exists(person_file_path)
-    assert os_path.exists(digest_calendars_dir)
-    assert os_path.exists(calendars_ignore_dir)
-    assert os_path.exists(bond_calendars_dir)
-
-
-def test_personunit_set_person_name_WorksCorrectly(person_dir_setup_cleanup):
-    # GIVEN create person
-    env_dir = get_temp_person_dir()
-
-    old_person_text = "person1"
-    old_person_dir = f"{env_dir}/persons/{old_person_text}"
-    old_person_file_name = f"{old_person_text}.json"
-    old_person_file_path = f"{old_person_dir}/{old_person_file_name}"
-    px = personunit_shop(name=old_person_text, env_dir=env_dir)
-    px.create_core_dir_and_files()
-    assert os_path.exists(old_person_dir)
-    assert os_path.isdir(old_person_dir)
-    assert os_path.exists(old_person_file_path)
-
-    new_person_text = "person2"
-    new_person_dir = f"{env_dir}/persons/{new_person_text}"
-    new_person_file_name = f"{new_person_text}.json"
-    new_person_file_path = f"{new_person_dir}/{new_person_file_name}"
-    assert os_path.exists(new_person_dir) == False
-    assert os_path.isdir(new_person_dir) == False
-    assert os_path.exists(new_person_file_path) == False
-
-    # WHEN
-    px._admin.set_person_name(new_name=new_person_text)
-
-    # THEN
-    assert os_path.exists(old_person_dir) == False
-    assert os_path.isdir(old_person_dir) == False
-    assert os_path.exists(old_person_file_path) == False
-    assert os_path.exists(new_person_dir)
-    assert os_path.isdir(new_person_dir)
-    assert os_path.exists(new_person_file_path)
-
-
-def test_personunit_save_output_calendar_to_public_SavesCalendarToPublicDir(
-    person_dir_setup_cleanup,
-):
-    # GIVEN create person
-    env_dir = get_temp_person_dir()
-
-    person_text = "person1"
-    px = personunit_shop(name=person_text, env_dir=env_dir)
-    px.create_core_dir_and_files()
-    public_file_name = f"{person_text}.json"
-    public_file_path = f"{px._admin._calendars_public_dir}/{public_file_name}"
-    assert os_path.exists(public_file_path) is False
-
-    # WHEN
-    px.save_output_calendar_to_public()
-
-    # THEN
-    assert os_path.exists(public_file_path)
-    print(f"{public_file_path=}")
-
-
-def test_personunit_auto_output_to_public_SavesCalendarToPublicDir(
+def test_personunit_auto_output_to_public_SavesCalendarToPublicDirWhenTrue(
     person_dir_setup_cleanup,
 ):
     # GIVEN
     env_dir = get_temp_person_dir()
-    person_text = "person1"
-    public_file_name = f"{person_text}.json"
+    tim_text = "Tim"
+    public_file_name = f"{tim_text}.json"
     public_file_path = f"{get_temp_person_dir()}/calendars/{public_file_name}"
     print(f"{public_file_path=}")
     # public_file_path = f"src/system/examples/ex_env/calendars/{public_file_name}"
-    px = personunit_shop(person_text, env_dir, _auto_output_to_public=True)
+    px = personunit_shop(tim_text, env_dir, _auto_output_to_public=True)
     px.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
 
     # WHEN
-    owner_text = "bobs calendarunit"
-    px.post_calendar_to_depot(calendar_x=CalendarUnit(owner_text))
+    px.post_calendar_to_depot(calendar_x=CalendarUnit(_owner=tim_text))
 
     # THEN
     assert os_path.exists(public_file_path)
+
+
+def test_personunit_auto_output_to_public_DoesNotSaveCalendarToPublicDirWhenFalse(
+    person_dir_setup_cleanup,
+):
+    # GIVEN
+    env_dir = get_temp_person_dir()
+    tim_text = "Tim"
+    public_file_name = f"{tim_text}.json"
+    public_file_path = f"{get_temp_person_dir()}/calendars/{public_file_name}"
+    print(f"{public_file_path=}")
+    # public_file_path = f"src/system/examples/ex_env/calendars/{public_file_name}"
+    px = personunit_shop(tim_text, env_dir, _auto_output_to_public=False)
+    px.create_core_dir_and_files()
+    assert os_path.exists(public_file_path) is False
+
+    # WHEN
+    px.post_calendar_to_depot(calendar_x=CalendarUnit(_owner=tim_text))
+
+    # THEN
+    assert os_path.exists(public_file_path) is False

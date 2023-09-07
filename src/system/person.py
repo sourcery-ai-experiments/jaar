@@ -62,16 +62,12 @@ class PersonAdmin:
         self._calendars_bond_dir = f"{self._person_dir}/bonds"
         self._calendars_digest_dir = f"{self._person_dir}/digests"
         self._isol_calendar_file_name = "isol_calendar.json"
-        self._auto_output_to_public = (
-            True  # self._set_auto_output_to_public(_auto_output_to_public)
+        self._auto_output_to_public = self._set_auto_output_to_public(
+            self._auto_output_to_public
         )
 
     def _set_auto_output_to_public(self, bool_x: bool):
-        pass
-
-    #     # if bool_x is None:
-    #     #     bool_x = False
-    #     self._auto_output_to_public = bool_x
+        return bool_x is not None and bool_x
 
     def set_person_name(self, new_name: str):
         old_name = self._person_name
@@ -103,6 +99,9 @@ class PersonAdmin:
             file_name=f"{calendar_x._owner}.json",
             file_text=calendar_x.get_json(),
         )
+        print(f"{self._auto_output_to_public=}")
+        if self._auto_output_to_public:
+            self.save_calendar_to_public(calendar_x)
 
     def save_calendar_to_public(self, calendar_x: CalendarUnit):
         x_func_save_file(
@@ -195,16 +194,29 @@ class PersonAdmin:
             )
 
 
+def personadmin_shop(
+    name: str, env_dir: str, _auto_output_to_public: bool = None
+) -> PersonAdmin:
+    px = PersonAdmin(_person_name=name, _env_dir=env_dir)
+    px.set_dirs()
+    return px
+
+
 @dataclass
 class PersonUnit:
     _admin: PersonAdmin = None
     _depotlinks: dict[str:CalendarUnit] = None
     _output_calendar: CalendarUnit = None
-    _auto_output_to_public: bool = None
 
     # dir methods
-    def _set_env_dir(self, env_dir: str, person_name: str):
-        self._admin = PersonAdmin(_person_name=person_name, _env_dir=env_dir)
+    def _set_env_dir(
+        self, env_dir: str, person_name: str, _auto_output_to_public: bool = None
+    ):
+        self._admin = PersonAdmin(
+            _person_name=person_name,
+            _env_dir=env_dir,
+            _auto_output_to_public=_auto_output_to_public,
+        )
         self._admin.set_dirs()
 
     def create_core_dir_and_files(self):
@@ -227,8 +239,6 @@ class PersonUnit:
     ):
         self._admin.save_calendar_to_depot(calendar_x)
         self.set_depotlink(calendar_x._owner, depotlink_type, depotlink_weight)
-        if self._admin._auto_output_to_public:
-            self.save_output_calendar_to_public()
 
     def reload_all_depot_calendars(self):
         for depotlink_obj in self._depotlinks.values():
@@ -270,9 +280,6 @@ class PersonUnit:
             meldees_dir=self._admin._calendars_digest_dir,
         )
 
-    def save_output_calendar_to_public(self):
-        self._admin.save_calendar_to_public(self.create_output_calendar())
-
     def get_ignore_calendar_from_file(self, _label: str) -> CalendarUnit:
         return self._admin.init_ignore_calendar(_label)
 
@@ -286,7 +293,7 @@ class PersonUnit:
         return {
             "name": self._admin._person_name,
             "_depotlinks": self.get_depotlinks_dict(),
-            "_auto_output_to_public": self._auto_output_to_public,
+            "_auto_output_to_public": self._admin._auto_output_to_public,
         }
 
     def get_depotlinks_dict(self) -> dict[str:dict]:
@@ -305,8 +312,10 @@ def personunit_shop(
     name: str, env_dir: str, _auto_output_to_public: bool = None
 ) -> PersonUnit:
     person_x = PersonUnit()
-    person_x._set_env_dir(env_dir=env_dir, person_name=name)
-    person_x._admin._set_auto_output_to_public(_auto_output_to_public)
+    person_x._set_env_dir(
+        env_dir=env_dir, person_name=name, _auto_output_to_public=_auto_output_to_public
+    )
+    # person_x._admin._set_auto_output_to_public(_auto_output_to_public)
     person_x.set_depotlink_empty_if_null()
     person_x._set_emtpy_output_calendar()
     return person_x

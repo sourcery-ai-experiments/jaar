@@ -63,7 +63,7 @@ def test_person_get_dict_ReturnsDictObject(person_dir_setup_cleanup):
     assert x_dict != None
     assert str(type(x_dict)) == "<class 'dict'>"
     assert x_dict["name"] == person_x._admin._person_name
-    assert x_dict["_auto_output_to_public"] == person_x._auto_output_to_public
+    assert x_dict["_auto_output_to_public"] == person_x._admin._auto_output_to_public
     print("check internal obj attributes")
     # for src_calendar_owner, src_calendar_obj in x_dict["_depotlinks"].items():
     #     print(f"{src_calendar_owner=}")
@@ -120,7 +120,10 @@ def test_person_get_json_CorrectlyWorksForSimpleExample(
     assert str(type(person_json)).find(".person.PersonUnit'>") > 0
     assert person_json._admin._person_name != None
     assert person_json._admin._person_name == person_algo._admin._person_name
-    assert person_json._auto_output_to_public == person_algo._auto_output_to_public
+    assert (
+        person_json._admin._auto_output_to_public
+        == person_algo._admin._auto_output_to_public
+    )
     assert person_json._admin._env_dir == person_algo._admin._env_dir
     assert (
         person_json._admin._calendars_public_dir

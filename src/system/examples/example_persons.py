@@ -5,14 +5,14 @@ from src.calendar.road import Road, get_global_root_label as root_label
 from random import randrange
 
 
-def get_1node_calendar():
+def get_1node_calendar() -> CalendarUnit:
     a_text = "A"
     calendar_x = CalendarUnit(_owner=a_text)
     calendar_x.set_calendar_metrics()
     return calendar_x
 
 
-def get_Jnode2node_calendar():
+def get_Jnode2node_calendar() -> CalendarUnit:
     owner_text = "J"
     calendar_x = CalendarUnit(_owner=owner_text)
     a_text = "A"
@@ -22,7 +22,7 @@ def get_Jnode2node_calendar():
     return calendar_x
 
 
-def get_2node_calendar():
+def get_2node_calendar() -> CalendarUnit:
     owner_text = "A"
     b_text = "B"
     calendar_x = CalendarUnit(_owner=owner_text)
@@ -32,7 +32,7 @@ def get_2node_calendar():
     return calendar_x
 
 
-def get_3node_calendar():
+def get_3node_calendar() -> CalendarUnit:
     a_text = "A"
     a_road = Road(a_text)
     calendar_x = CalendarUnit(_owner=a_text)
@@ -46,7 +46,7 @@ def get_3node_calendar():
     return calendar_x
 
 
-def get_3node_D_E_F_calendar():
+def get_3node_D_E_F_calendar() -> CalendarUnit:
     d_text = "D"
     d_road = Road(d_text)
     calendar_x = CalendarUnit(_owner=d_text)
@@ -60,7 +60,7 @@ def get_3node_D_E_F_calendar():
     return calendar_x
 
 
-def get_6node_calendar():
+def get_6node_calendar() -> CalendarUnit:
     calendar_x = CalendarUnit(_owner="A")
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
@@ -76,7 +76,7 @@ def get_6node_calendar():
     return calendar_x
 
 
-def get_7nodeInsertH_calendar():
+def get_7nodeInsertH_calendar() -> CalendarUnit:
     calendar_x = CalendarUnit(_owner="A")
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
@@ -94,7 +94,7 @@ def get_7nodeInsertH_calendar():
     return calendar_x
 
 
-def get_5nodeHG_calendar():
+def get_5nodeHG_calendar() -> CalendarUnit:
     calendar_x = CalendarUnit(_owner="A")
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
@@ -108,7 +108,7 @@ def get_5nodeHG_calendar():
     return calendar_x
 
 
-def get_7nodeJRoot_calendar():
+def get_7nodeJRoot_calendar() -> CalendarUnit:
     calendar_x = CalendarUnit(_owner="J")
     idea_a = IdeaKid(_label="A")
     idea_b = IdeaKid(_label="B")
@@ -126,7 +126,7 @@ def get_7nodeJRoot_calendar():
     return calendar_x
 
 
-def get_7nodeJRootWithH_calendar():
+def get_7nodeJRootWithH_calendar() -> CalendarUnit:
     calendar_x = CalendarUnit(_owner="J")
     idea_a = IdeaKid(_label="A")
     idea_b = IdeaKid(_label="B")
@@ -144,7 +144,7 @@ def get_7nodeJRootWithH_calendar():
     return calendar_x
 
 
-def get_person_2calendar(env_dir):
+def get_person_2calendar(env_dir) -> CalendarUnit:
     person_name = "person1"
     wx = personunit_shop(name=person_name, env_dir=env_dir, _auto_output_to_public=True)
     wx.post_calendar_to_depot(
@@ -156,7 +156,7 @@ def get_person_2calendar(env_dir):
     return wx
 
 
-def get_calendar_2CleanNodesRandomWeights(_owner: str = None):
+def get_calendar_2CleanNodesRandomWeights(_owner: str = None) -> CalendarUnit:
     label_text = _owner if _owner != None else "ernie"
     calendar_x = CalendarUnit(_owner=label_text)
     casa_text = "casa"
@@ -172,7 +172,7 @@ def get_calendar_2CleanNodesRandomWeights(_owner: str = None):
     return calendar_x
 
 
-def get_calendar_3CleanNodesRandomWeights(_owner: str = None):
+def get_calendar_3CleanNodesRandomWeights(_owner: str = None) -> CalendarUnit:
     label_text = _owner if _owner != None else "ernie"
     calendar_x = CalendarUnit(_owner=label_text)
     casa_text = "casa"
