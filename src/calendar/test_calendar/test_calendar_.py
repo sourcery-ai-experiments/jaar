@@ -3,6 +3,7 @@ from src.calendar.examples.example_calendars import (
 )
 from src.calendar.calendar import CalendarUnit
 from src.calendar.road import get_global_root_label as root_label
+from src.calendar.origin import originunit_shop
 from pytest import raises as pytest_raises
 
 
@@ -19,6 +20,7 @@ def test_calendar_exists():
     assert new_obj._max_tree_traverse == 3
     assert new_obj._tree_traverse_count is None
     assert new_obj._rational == False
+    assert new_obj._originunit == originunit_shop()
     assert str(type(new_obj._idearoot)).find(".idea.IdeaRoot'>")
 
 

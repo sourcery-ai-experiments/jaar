@@ -148,8 +148,10 @@ class PersonAdmin:
             self.save_calendar_to_public(calendar_x)
 
     def save_output_calendar(self) -> CalendarUnit:
+        isol_calendar_x = self.get_isol_calendar()
+        isol_calendar_x.meld(isol_calendar_x, member_weight=1)
         calendar_x = get_meld_of_calendar_files(
-            cx_primary=self.get_isol_calendar(),
+            cx_primary=isol_calendar_x,
             meldees_dir=self._calendars_digest_dir,
         )
         dest_dir = self._person_dir
@@ -252,12 +254,12 @@ class PersonUnit:
                 depotlink_weight=depotlink.weight,
             )
 
-    def _set_depotlink_empty_if_null(self):
+    def _set_depotlinks_empty_if_null(self):
         if self._depotlinks is None:
             self._depotlinks = {}
 
     def _set_depotlink(self, owner: str, link_type: str = None, weight: float = None):
-        self._set_depotlink_empty_if_null()
+        self._set_depotlinks_empty_if_null()
         self._admin.check_file_exists("depot", owner)
         depotlink_x = depotlink_shop(owner, link_type, weight)
 
@@ -276,9 +278,6 @@ class PersonUnit:
         self._admin.save_output_calendar()
         return self._admin.get_output_calendar()
 
-    def get_ignore_calendar_from_file(self, _label: str) -> CalendarUnit:
-        return self._admin.get_ignore_calendar(_label)
-
     def set_ignore_calendar_file(
         self, calendarunit: CalendarUnit, src_calendar_owner: str
     ):
@@ -288,6 +287,7 @@ class PersonUnit:
     def get_ignore_calendar_from_file(self, _label: str) -> CalendarUnit:
         return self._admin.get_ignore_calendar(_label)
 
+    # housekeeping
     def get_dict(self):
         return {
             "name": self._admin._person_name,
@@ -323,7 +323,7 @@ def personunit_shop(
 ) -> PersonUnit:
     person_x = PersonUnit()
     person_x.set_env_dir(env_dir, name, _auto_output_to_public)
-    person_x._set_depotlink_empty_if_null()
+    person_x._set_depotlinks_empty_if_null()
     return person_x
 
 

@@ -12,6 +12,7 @@ from src.system.examples.person_env_kit import (
     get_temp_person_dir,
 )
 from src.calendar.road import get_global_root_label as root_label
+from src.calendar.origin import originunit_shop
 from os import path as os_path, scandir as os_scandir
 from src.calendar.x_func import (
     open_file as x_func_open_file,
@@ -242,15 +243,16 @@ def test_person_get_refreshed_output_calendar_with1DigestedCalendar(
     person_dir_setup_cleanup,
 ):
     # GIVEN
-    person_name_x = "boots3"
+    yao_text = "Yao"
     env_dir = get_temp_person_dir()
-    px = personunit_shop(name=person_name_x, env_dir=env_dir)
+    px = personunit_shop(name=yao_text, env_dir=env_dir)
     px.create_core_dir_and_files()
     sx_output_old = px.get_refreshed_output_calendar()
     assert str(type(sx_output_old)).find(".calendar.CalendarUnit'>")
-    assert sx_output_old._owner == person_name_x
+    assert sx_output_old._owner == yao_text
     assert sx_output_old._idearoot._label == root_label()
     input_calendar = example_persons.get_2node_calendar()
+    input_calendar.meld(input_calendar)
     px.set_depot_calendar(calendar_x=input_calendar, depotlink_type="blind_trust")
 
     # WHEN
@@ -261,20 +263,16 @@ def test_person_get_refreshed_output_calendar_with1DigestedCalendar(
 
     assert sx_output_new._weight == 0
     assert sx_output_new._weight != input_calendar._weight
-    assert sx_output_new._idearoot._walk == input_calendar._idearoot._walk
-    assert (
-        sx_output_new._idearoot._acptfactunits
-        == input_calendar._idearoot._acptfactunits
-    )
-    input_b_idea = input_calendar._idearoot._kids.get("B")
-    sx_output_new_b_idea = sx_output_new._idearoot._kids.get("B")
+    sx_idearoot = sx_output_new._idearoot
+    input_idearoot = input_calendar._idearoot
+    assert sx_idearoot._walk == input_idearoot._walk
+    assert sx_idearoot._acptfactunits == input_idearoot._acptfactunits
+    input_b_idea = input_idearoot._kids.get("B")
+    sx_output_new_b_idea = sx_idearoot._kids.get("B")
     assert sx_output_new_b_idea._walk == input_b_idea._walk
     assert sx_output_new._idearoot._kids == input_calendar._idearoot._kids
-    assert (
-        sx_output_new._idearoot._kids_total_weight
-        == input_calendar._idearoot._kids_total_weight
-    )
-    assert sx_output_new._idearoot == input_calendar._idearoot
+    assert sx_idearoot._kids_total_weight == input_idearoot._kids_total_weight
+    assert sx_idearoot == input_idearoot
     assert sx_output_new._owner != input_calendar._owner
     assert sx_output_new != input_calendar
 
@@ -330,11 +328,37 @@ def test_person_get_refreshed_output_calendar_with1DigestedCalendar(
 #     assert sx_output_new != s1
 
 
-def test_person_isol_calendar_CorrectlysHasOriginLinksWithOwnerAsSource():
+def test_person_isol_calendar_CorrectlysHasOriginLinksWithOwnerAsSource(
+    person_dir_setup_cleanup,
+):
     # GIVEN
-    # personunit with isol_calendar and no depotlinks
+    # personunit with isol_calendar and no other depot calendars
+    yao_text = "Yao"
+    isol_origin_weight = 1
+    yao_originunit = originunit_shop()
+    yao_originunit.set_originlink(name=yao_text, weight=isol_origin_weight)
+    isol_calendar_x = example_persons.get_7nodeJRoot_calendar()
+    isol_calendar_x.set_owner(yao_text)
+
+    assert isol_calendar_x._idearoot._originunit == originunit_shop()
+    assert isol_calendar_x._idearoot._originunit != yao_originunit
+
+    px = personunit_shop(name=yao_text, env_dir=get_temp_person_dir())
+    px.create_core_dir_and_files()
+    px._admin.save_isol_calendar(calendar_x=isol_calendar_x)
+
     # WHEN
-    # personunit produces output_calendar
+    output_calendar_x = px.get_refreshed_output_calendar()
+
     # THEN
-    # output_calendar ideas correctly store OriginLinks
-    pass
+    assert output_calendar_x._idearoot._originunit == originunit_shop()
+    d_road = "J,A,C,D"
+    d_idea = output_calendar_x.get_idea_kid(road=d_road)
+    assert d_idea._originunit == yao_originunit
+
+    print(f"{output_calendar_x._originunit=}")
+    assert output_calendar_x._originunit == yao_originunit
+
+    output_originlink = output_calendar_x._originunit._links.get(yao_text)
+    assert output_originlink.name == yao_text
+    assert output_originlink.weight == isol_origin_weight

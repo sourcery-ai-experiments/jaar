@@ -503,7 +503,7 @@ class IdeaCore:
     def _meld_originlinks(self, member_name: MemberName, member_weight: float):
         if member_name != None:
             self.set_originunit_empty_if_null()
-            self._originunit.set_originlink(member_name, member_weight)
+            self._originunit.set_originlink(name=member_name, weight=member_weight)
 
     def set_originunit_empty_if_null(self):
         if self._originunit is None:

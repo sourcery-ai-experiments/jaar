@@ -8,6 +8,7 @@ from src.calendar.required_idea import (
 from src.calendar.road import get_global_root_label as root_label
 from src.calendar.origin import originunit_shop
 from pytest import raises as pytest_raises
+from copy import deepcopy
 
 
 def custom_set_idea_attr(
@@ -605,3 +606,37 @@ def test_idea_meld_CorrectlyCreatesOriginUnitWithOriginLink():
     sue_originunit = originunit_shop()
     sue_originunit.set_originlink(name=sue_text, weight=sue_weight)
     assert yx1._originunit == sue_originunit
+
+
+def test_idea_meld_IdeaMeldingItselfCreatesOriginUnitWithCorrectOriginLink():
+    # GIVEN
+    label1_text = "spirit"
+    yx1 = IdeaCore(_label=label1_text)
+    tim_text = "Tim"
+    tim_weight = 7
+    tim_idea = IdeaCore(_label=tim_text)
+    ex_yx1_originunit = originunit_shop()
+    ex_yx1_originunit.set_originlink(name=tim_text, weight=tim_weight)
+    yx1.meld(other_idea=tim_idea, member_name=tim_text, member_weight=tim_weight)
+    assert yx1._originunit == ex_yx1_originunit
+
+    sue_text = "Sue"
+    sue_weight = 5
+    ex_yx1_originunit.set_originlink(name=sue_text, weight=sue_weight)
+    assert yx1._originunit != ex_yx1_originunit
+
+    yx1_copy = deepcopy(yx1)
+
+    # WHEN
+    yx1.meld(other_idea=yx1, member_name=sue_text, member_weight=sue_weight)
+    assert yx1._originunit == ex_yx1_originunit
+
+    # THEN
+    assert yx1._originunit != yx1_copy._originunit
+
+    yx1_originunit_link_sue = yx1._originunit._links.get(sue_text)
+    yx1_originunit_link_tim = yx1._originunit._links.get(tim_text)
+    assert yx1_originunit_link_sue != None
+    assert yx1_originunit_link_sue != yx1_copy._originunit._links.get(sue_text)
+    assert yx1_originunit_link_tim == yx1_copy._originunit._links.get(tim_text)
+    # assert yx1 == yx1_copy #Uncomment to see differences

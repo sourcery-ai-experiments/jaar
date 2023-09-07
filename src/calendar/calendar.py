@@ -62,7 +62,7 @@ from src.calendar.road import (
     get_road_from_nodes,
     get_all_road_nodes_in_list,
 )
-from src.calendar.origin import originunit_get_from_dict, originunit_shop
+from src.calendar.origin import originunit_get_from_dict, originunit_shop, OriginUnit
 from copy import deepcopy as copy_deepcopy
 from src.calendar.x_func import (
     save_file as x_func_save_file,
@@ -91,6 +91,7 @@ class CalendarUnit:
     _max_tree_traverse: int = 3
     _tree_traverse_count: int = None
     _rational: bool = False
+    _originunit: OriginUnit = None
 
     def __init__(self, _weight: float = None, _owner=None) -> None:
         if _weight is None:
@@ -100,6 +101,7 @@ class CalendarUnit:
             _owner = ""
         self._idearoot = IdeaRoot(_label=root_label(), _uid=1)
         self._owner = _owner
+        self._originunit = originunit_shop()
 
     def set_banking_attr_memberunits(self, river_tmembers: dict):
         for memberunit_x in self._members.values():
@@ -1854,7 +1856,7 @@ class CalendarUnit:
             "_groups": self.groupunit_shops_dict(),
             "_grouplinks": self._idearoot.get_grouplinks_dict(),
             "_assignedunit": self._idearoot.get_assignedunit_dict(),
-            "_originunit": self._idearoot.get_originunit_dict(),
+            "_originunit": self._originunit.get_dict(),
             "_weight": self._weight,
             "_owner": self._owner,
             "_uid": self._idearoot._uid,
@@ -1977,30 +1979,37 @@ class CalendarUnit:
         x_list.pop(0)
         return x_list
 
-    def meld(self, other_calendar):
-        self.meld_groups(other_calendar=other_calendar)
-        self.meld_members(other_calendar=other_calendar)
-        self.meld_idearoot(other_calendar=other_calendar)
-        self.meld_acptfacts(other_calendar=other_calendar)
+    def meld(self, other_calendar, member_weight: float = None):
+        self._meld_groups(other_calendar)
+        self._meld_members(other_calendar)
+        self._meld_ideas(other_calendar, member_weight)
+        self._meld_acptfacts(other_calendar)
         self._weight = get_meld_weight(
             src_weight=self._weight,
             src_on_meld_weight_action="default",
             other_weight=other_calendar._weight,
             other_on_meld_weight_action="default",
         )
+        self._meld_originlinks(other_calendar._owner, member_weight)
 
-    def meld_idearoot(self, other_calendar):
+    def _meld_ideas(self, other_calendar, member_weight: float):
+        # meld idearoot
         self._idearoot.meld(other_idea=other_calendar._idearoot, _idearoot=True)
+
+        # meld all other ideas
+        member_name = other_calendar._owner
         o_idea_list = other_calendar.get_idea_list_without_idearoot()
-        for oyx in o_idea_list:
-            o_road = road_validate(f"{oyx._walk},{oyx._label}")
+        for o_idea in o_idea_list:
+            o_road = road_validate(f"{o_idea._walk},{o_idea._label}")
             try:
                 main_idea = self.get_idea_kid(o_road)
-                main_idea.meld(other_idea=oyx)
+                main_idea.meld(o_idea, False, member_name, member_weight)
             except Exception:
-                self.add_idea(walk=oyx._walk, idea_kid=oyx)
+                self.add_idea(walk=o_idea._walk, idea_kid=o_idea)
+                main_idea = self.get_idea_kid(o_road)
+                main_idea._originunit.set_originlink(member_name, member_weight)
 
-    def meld_members(self, other_calendar):
+    def _meld_members(self, other_calendar):
         self.set_members_empty_if_null()
         other_calendar.set_members_empty_if_null()
         for memberunit in other_calendar._members.values():
@@ -2009,7 +2018,7 @@ class CalendarUnit:
             else:
                 self._members.get(memberunit.name).meld(memberunit)
 
-    def meld_groups(self, other_calendar):
+    def _meld_groups(self, other_calendar):
         self.set_groupunits_empty_if_null()
         other_calendar.set_groupunits_empty_if_null()
         for brx in other_calendar._groups.values():
@@ -2018,7 +2027,7 @@ class CalendarUnit:
             else:
                 self._groups.get(brx.name).meld(brx)
 
-    def meld_acptfacts(self, other_calendar):
+    def _meld_acptfacts(self, other_calendar):
         self._set_acptfacts_empty_if_null()
         other_calendar._set_acptfacts_empty_if_null()
         for hx in other_calendar._idearoot._acptfactunits.values():
@@ -2029,8 +2038,11 @@ class CalendarUnit:
             else:
                 self._idearoot._acptfactunits.get(hx.base).meld(hx)
 
+    def _meld_originlinks(self, member_name: MemberName, member_weight: float):
+        if member_name != None:
+            self._originunit.set_originlink(member_name, member_weight)
 
-# class Calendarshop:
+
 def get_from_json(cx_json: str) -> CalendarUnit:
     return get_from_dict(cx_dict=json.loads(cx_json))
 
@@ -2051,11 +2063,9 @@ def get_from_dict(cx_dict: dict) -> CalendarUnit:
     c_x._groups = groupunits_get_from_dict(x_dict=cx_dict["_groups"])
     c_x._idearoot._grouplinks = grouplinks_get_from_dict(x_dict=cx_dict["_grouplinks"])
     try:
-        c_x._idearoot._originunit = originunit_get_from_dict(
-            x_dict=cx_dict["_originunit"]
-        )
+        c_x._originunit = originunit_get_from_dict(x_dict=cx_dict["_originunit"])
     except Exception:
-        c_x._idearoot._originunit = originunit_shop()
+        c_x._originunit = originunit_shop()
     c_x._members = memberunits_get_from_dict(x_dict=cx_dict["_members"])
     c_x._owner = cx_dict["_owner"]
     c_x._idearoot.set_idea_label(root_label())

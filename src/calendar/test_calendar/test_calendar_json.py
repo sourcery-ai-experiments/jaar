@@ -43,6 +43,8 @@ def test_calendar_get_dict_ReturnsDictObject():
     )
     time_minute = f"{root_label()},day_minute"
     x_calendar.set_acptfact(base=time_minute, pick=time_minute, open=0, nigh=1440)
+    yao_text = "Yao"
+    x_calendar._originunit.set_originlink(yao_text, 1)
 
     # WHEN
     x_dict = x_calendar.get_dict()
@@ -90,9 +92,15 @@ def test_calendar_get_dict_ReturnsDictObject():
     assert num1_dict_numeric_road == month_week_road
     assert num1_dict_numeric_road == num1_idea_x._numeric_road
 
-    originunit = "_originunit"
-    day_hour_originunit_dict = x_dict[_kids][day_hour_text][originunit]
+    originunit_text = "_originunit"
+    day_hour_originunit_dict = x_dict[_kids][day_hour_text][originunit_text]
     assert day_hour_originunit_dict == day_hour_idea._originunit.get_dict()
+    _links = "_links"
+    calendar_x_originlink = x_dict[originunit_text][_links][yao_text]
+    print(f"{calendar_x_originlink=}")
+    assert calendar_x_originlink
+    assert calendar_x_originlink["name"] == yao_text
+    assert calendar_x_originlink["weight"] == 1
 
 
 def test_calendar_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
@@ -182,10 +190,11 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     acptfactunit_x = acptfactunit_shop(day_min_road, day_min_road, 5, 59)
     x_calendar.edit_idea_attr(road=acptfactunit_x.base, acptfactunit=acptfactunit_x)
     x_calendar.set_max_tree_traverse(int_x=2)
-    x_cx_json = x_calendar.get_json()
+    yao_text = "Yao"
+    x_calendar._originunit.set_originlink(yao_text, 1)
 
     # WHEN
-    x_dict = json_loads(x_cx_json)
+    x_dict = json_loads(x_calendar.get_json())
 
     # THEN
     _kids = "_kids"
@@ -221,6 +230,9 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     ulti_requiredunits_dict = x_dict[_kids][ulti_text][_requiredunits]
     assert len(cont_requiredunits_dict) == len(cont_idea._requiredunits)
     assert len(ulti_requiredunits_dict) == len(ulti_idea._requiredunits)
+    originunit_text = "_originunit"
+    _links = "_links"
+    assert len(x_dict[originunit_text][_links])
 
 
 def test_save_file_CorrectlySavesCalendarJSON(env_dir_setup_cleanup):
@@ -275,6 +287,9 @@ def test_calendar_get_json_CorrectlyWorksForSimpleExample():
         road=root_label(), grouplink=grouplink_shop(name=sue_text)
     )
 
+    yao_text = "Yao"
+    calendar_y._originunit.set_originlink(yao_text, 1)
+
     # WHEN
     x_json = calendar_y.get_json()
     assert x_is_json(x_json) == True
@@ -316,6 +331,9 @@ def test_calendar_get_json_CorrectlyWorksForSimpleExample():
     assert shave_idea_x._originunit == shave_idea_y2._originunit
     assert len(shave_idea_x._grouplinks) == 2
     assert len(shave_idea_x._acptfactunits) == 1
+
+    assert len(calendar_x._originunit._links) == 1
+    assert calendar_x._originunit == calendar_y._originunit
 
 
 # def test_calendar_get_json_CorrectlyWorksForNotSimpleExample():

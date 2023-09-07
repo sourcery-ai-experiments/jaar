@@ -3,6 +3,7 @@ from src.calendar.calendar import CalendarUnit
 from src.calendar.group import groupunit_shop
 from src.calendar.member import memberunit_shop
 from src.calendar.road import get_global_root_label as root_label
+from src.calendar.origin import originunit_shop
 from pytest import raises as pytest_raises
 from src.calendar.examples.example_calendars import calendar_v001
 from src.calendar.x_func import get_on_meld_weight_actions
@@ -381,3 +382,62 @@ def test_get_on_meld_weight_actions_HasCorrectItems():
         "override": None,
         "sum": None,
     }
+
+
+def test_calendar__meld_originlinks_CorrectlySetsOriginLinks():
+    # GIVEN
+    bob_text = "Bob"
+    sue_text = "Sue"
+    sue_weight = 4
+    bob_cx = CalendarUnit(_owner=bob_text)
+    assert len(bob_cx._originunit._links) == 0
+
+    # WHEN
+    bob_cx._meld_originlinks(member_name=sue_text, member_weight=sue_weight)
+
+    # THEN
+    assert len(bob_cx._originunit._links) == 1
+    bob_sue_originunit = originunit_shop()
+    bob_sue_originunit.set_originlink(name=sue_text, weight=sue_weight)
+    assert bob_cx._originunit == bob_sue_originunit
+
+
+def test_calendar_meld_OriginUnitsCorrectlySet():
+    # GIVEN
+    swim_text = "swim"
+    swim_road = f"{root_label()},{swim_text}"
+    free_text = "freestyle"
+    free_road = f"{swim_road},{free_text}"
+    back_text = "backstroke"
+    back_road = f"{swim_road},{back_text}"
+
+    bob_text = "Bob"
+    bob_cx = CalendarUnit(_owner=bob_text)
+    bob_cx.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
+
+    sue_text = "Sue"
+    sue_weight = 4
+    sue_cx = CalendarUnit(_owner=sue_text)
+    sue_cx.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
+    sue_cx.set_acptfact(base=swim_road, pick=free_road, open=23, nigh=27)
+    sue_cx.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=back_text))
+    assert len(bob_cx._originunit._links) == 0
+
+    # WHEN
+    bob_cx.meld(sue_cx, member_weight=sue_weight)
+
+    # THEN
+    sue_originunit = originunit_shop()
+    sue_originunit.set_originlink(name=sue_text, weight=sue_weight)
+    assert len(bob_cx._originunit._links) == 1
+    assert bob_cx._originunit == sue_originunit
+    bob_free_idea = bob_cx.get_idea_kid(road=free_road)
+    bob_back_idea = bob_cx.get_idea_kid(road=back_road)
+    print(f"{bob_free_idea._originunit=}")
+    print(f"{bob_back_idea._originunit=}")
+    assert bob_free_idea._originunit != None
+    assert bob_free_idea._originunit != originunit_shop()
+    assert bob_free_idea._originunit == sue_originunit
+    assert bob_back_idea._originunit != None
+    assert bob_back_idea._originunit != originunit_shop()
+    assert bob_back_idea._originunit == sue_originunit

@@ -36,16 +36,20 @@ def test_system_get_person_output_calendar_from_digest_calendar_files_ReturnsCor
     )
     ex.save_person_file(person_name=px_name)
     person_x_obj = ex.get_person_obj_from_system(name=px_name)
-    print(f"{person_x_obj._depotlinks=}")
+    # print(f"{person_x_obj._depotlinks=}")
 
     # WHEN
     output_calendar = ex.get_person_output_calendar_from_digest_calendar_files(
         person_name=px_name
     )
+    # input calendar must be melded to itself to create originunits
+    input_calendar.meld(input_calendar)
+    input_calendar.set_owner(new_owner=px_name)
+    input_calendar._originunit.set_originlink(name=px_name, weight=1)
 
     # THEN
     output_calendar_d_idea = output_calendar.get_idea_kid(road="A,C,D")
-    print(f" {output_calendar_d_idea._weight=} {len(input_calendar._idearoot._kids)=} ")
+    # print(f" {output_calendar_d_idea._weight=} {len(input_calendar._idearoot._kids)=} ")
     assert output_calendar != None
     assert len(input_calendar._idearoot._kids) == 2
     # idea_a = output_calendar.get_idea_kid(road="A")
@@ -77,6 +81,13 @@ def test_system_get_person_output_calendar_from_digest_calendar_files_ReturnsCor
     assert output_calendar._members == input_calendar._members
     assert output_calendar._groups == {}
     assert output_calendar._groups == input_calendar._groups
+    print(f"{output_calendar._originunit=}")
+    print(f"{input_calendar._originunit=}")
+    assert output_calendar._originunit == input_calendar._originunit
+
+    b_text = "B"
+    print(f"{output_calendar._idearoot._kids.get(b_text)._originunit=}")
+    print(f"{input_calendar._idearoot._kids.get(b_text)._originunit=}")
     assert output_calendar._idearoot == input_calendar._idearoot
 
 
