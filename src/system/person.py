@@ -58,7 +58,7 @@ class PersonAdmin:
         self._person_dir = f"{self._persons_dir}/{self._person_name}"
         self._person_file_name = f"{self._person_name}.json"
         self._person_file_path = f"{self._person_dir}/{self._person_file_name}"
-        self._calendar_output_file_name = "output.json"
+        self._calendar_output_file_name = "output_calendar.json"
         self._calendar_output_file_path = (
             f"{self._person_dir}/{self._calendar_output_file_name}"
         )

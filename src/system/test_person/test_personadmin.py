@@ -76,7 +76,7 @@ def test_PersonAdmin_set_dir_CorrectSetsPersonAdminAttribute():
     x_person_dir = f"{x_persons_dir}/{bob_text}"
     x_person_file_name = f"{bob_text}.json"
     x_person_file_path = f"{x_person_dir}/{x_person_file_name}"
-    x_calendar_output_file_name = "output.json"
+    x_calendar_output_file_name = "output_calendar.json"
     x_calendar_output_file_path = f"{x_person_dir}/{x_calendar_output_file_name}"
     calendars_str = "calendars"
     x_calendars_depot_dir = f"{x_person_dir}/{calendars_str}"
