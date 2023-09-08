@@ -138,23 +138,23 @@ def get_calendar_with_4_levels() -> CalendarUnit:
 
 def get_calendar_with_4_levels_and_2requireds() -> CalendarUnit:
     calendar_x = get_calendar_with_4_levels()
-    week_road = f"{root_label()},weekdays"
+    week_text = "weekdays"
+    week_road = f"{root_label()},{week_text}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
-    wed_sufffact = sufffactunit_shop(need=wed_road)
+    week_required = RequiredUnit(base=week_road, sufffacts={})
+    week_required.set_sufffact(wed_road)
 
-    nation_road = f"{root_label()},nation-state"
-    usa_road = f"{nation_road},USA"
-    usa_sufffact_x = sufffactunit_shop(need=usa_road)
-    work_wk_required = RequiredUnit(
-        base=week_road, sufffacts={wed_sufffact.need: wed_sufffact}
-    )
-    nation_required = RequiredUnit(
-        base=nation_road, sufffacts={usa_sufffact_x.need: usa_sufffact_x}
-    )
+    nation_text = "nation-state"
+    nation_road = f"{root_label()},{nation_text}"
+    usa_text = "USA"
+    usa_road = f"{nation_road},{usa_text}"
+    nation_required = RequiredUnit(base=nation_road, sufffacts={})
+    nation_required.set_sufffact(usa_road)
+
     work_text = "work"
     work_road = f"{root_label()},{work_text}"
-    calendar_x.edit_idea_attr(road=work_road, required=work_wk_required)
+    calendar_x.edit_idea_attr(road=work_road, required=week_required)
     calendar_x.edit_idea_attr(road=work_road, required=nation_required)
     return calendar_x
 
@@ -176,63 +176,65 @@ def get_calendar_with_4_levels_and_2requireds_2acptfacts() -> CalendarUnit:
 
 def get_calendar_with7amCleanTableRequired() -> CalendarUnit:
     calendar_x = get_calendar_with_4_levels_and_2requireds_2acptfacts()
-    timetech = "timetech"
-    day_24hr = "24hr day"
-    am = "am"
-    pm = "pm"
-    idea_timeline = IdeaKid(_weight=40, _label=timetech)
-    idea_24hr_day = IdeaKid(_weight=40, _label=day_24hr, _begin=0.0, _close=24.0)
-    idea_am = IdeaKid(_weight=50, _label=am, _begin=0, _close=12)
-    idea_01 = IdeaKid(_weight=50, _label="1", _begin=1, _close=2)
-    idea_02 = IdeaKid(_weight=50, _label="2", _begin=2, _close=3)
-    idea_03 = IdeaKid(_weight=50, _label="3", _begin=3, _close=4)
-    idea_pm = IdeaKid(_weight=50, _label=pm, _begin=12, _close=24)
 
-    time_road = f"{root_label()},{timetech}"
-    day24hr_road = f"{time_road},{day_24hr}"
-    am_road = f"{day_24hr},{am}"
-    calendar_x.add_idea(idea_timeline, root_label())
-    calendar_x.add_idea(idea_24hr_day, time_road)
-    calendar_x.add_idea(idea_am, day24hr_road)
-    calendar_x.add_idea(idea_pm, day24hr_road)
-    calendar_x.add_idea(idea_01, am_road)  # idea_am
-    calendar_x.add_idea(idea_02, am_road)  # idea_am
-    calendar_x.add_idea(idea_03, am_road)  # idea_am
+    time_text = "timetech"
+    time_road = f"{root_label()},{time_text}"
+    time_idea = IdeaKid(_label=time_text)
+
+    day24hr_text = "24hr day"
+    day24hr_road = f"{time_road},{day24hr_text}"
+    day24hr_idea = IdeaKid(_label=day24hr_text, _begin=0.0, _close=24.0)
+
+    am_text = "am"
+    am_road = f"{day24hr_road},{am_text}"
+    pm_text = "pm"
+    n1_text = "1"
+    n2_text = "2"
+    n3_text = "3"
+    am_idea = IdeaKid(_label=am_text, _begin=0, _close=12)
+    pm_idea = IdeaKid(_label=pm_text, _begin=12, _close=24)
+    n1_idea = IdeaKid(_label=n1_text, _begin=1, _close=2)
+    n2_idea = IdeaKid(_label=n2_text, _begin=2, _close=3)
+    n3_idea = IdeaKid(_label=n3_text, _begin=3, _close=4)
+
+    calendar_x.add_idea(time_idea, root_label())
+    calendar_x.add_idea(day24hr_idea, time_road)
+    calendar_x.add_idea(am_idea, day24hr_road)
+    calendar_x.add_idea(pm_idea, day24hr_road)
+    calendar_x.add_idea(n1_idea, am_road)  # idea_am
+    calendar_x.add_idea(n2_idea, am_road)  # idea_am
+    calendar_x.add_idea(n3_idea, am_road)  # idea_am
 
     house_text = "housework"
     house_road = f"{root_label()},{house_text}"
-    clean_table = "clean table"
-    clean_road = f"{house_road},{clean_table}"
-    remove_dish = "remove dishs"
-    get_soap_text = "get soap"
-    get_soap_road = f"{clean_road},{get_soap_text}"
+    clean_text = "clean table"
+    clean_road = f"{house_road},{clean_text}"
+    dish_text = "remove dishs"
+    soap_text = "get soap"
+    soap_road = f"{clean_road},{soap_text}"
     grab_text = "grab soap"
-    grab_road = f"{get_soap_road},{grab_text}"
-    remove_dish = "remove dishs"
-    idea_housework = IdeaKid(_weight=40, _label=house_text)
-    idea_cleantable = IdeaKid(_weight=40, _label=clean_table, promise=True)
-    idea_tabledishs = IdeaKid(_weight=40, _label=remove_dish, promise=True)
-    idea_tablesoap = IdeaKid(_weight=40, _label=get_soap_text, promise=True)
-    idea_grabsoap = IdeaKid(_weight=40, _label=grab_text, promise=True)
+    grab_road = f"{soap_road},{grab_text}"
+    house_idea = IdeaKid(_label=house_text)
+    clean_idea = IdeaKid(_label=clean_text, promise=True)
+    dish_idea = IdeaKid(_label=dish_text, promise=True)
+    soap_idea = IdeaKid(_label=soap_text, promise=True)
+    grab_idea = IdeaKid(_label=grab_text, promise=True)
 
-    calendar_x.add_idea(idea_kid=idea_housework, walk=root_label())
-    calendar_x.add_idea(idea_kid=idea_cleantable, walk=house_road)
-    calendar_x.add_idea(idea_kid=idea_tabledishs, walk=clean_road)
-    calendar_x.add_idea(idea_kid=idea_tablesoap, walk=clean_road)
-    calendar_x.add_idea(idea_kid=idea_grabsoap, walk=get_soap_road)
+    calendar_x.add_idea(idea_kid=house_idea, walk=root_label())
+    calendar_x.add_idea(idea_kid=clean_idea, walk=house_road)
+    calendar_x.add_idea(idea_kid=dish_idea, walk=clean_road)
+    calendar_x.add_idea(idea_kid=soap_idea, walk=clean_road)
+    calendar_x.add_idea(idea_kid=grab_idea, walk=soap_road)
 
     clean_table_7am_base = day24hr_road
     clean_table_7am_sufffact_road = day24hr_road
     clean_table_7am_sufffact_open = 7.0
     clean_table_7am_sufffact_nigh = 7.0
-    clean_table_7am_sufffact_x = sufffactunit_shop(
-        need=clean_table_7am_sufffact_road,
+    clean_table_7am_required = RequiredUnit(base=clean_table_7am_base, sufffacts={})
+    clean_table_7am_required.set_sufffact(
+        sufffact=clean_table_7am_sufffact_road,
         open=clean_table_7am_sufffact_open,
         nigh=clean_table_7am_sufffact_nigh,
-    )
-    clean_table_7am_required = RequiredUnit(
-        base=clean_table_7am_base,
-        sufffacts={clean_table_7am_sufffact_x.need: clean_table_7am_sufffact_x},
     )
     calendar_x.edit_idea_attr(road=clean_road, required=clean_table_7am_required)
     work_text = "work"
