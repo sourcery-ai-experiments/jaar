@@ -78,7 +78,7 @@ def test_calendarunit_get_assignment_ReturnsCorrectMembers():
     jes_text = "Jessi"
     jes_cx = CalendarUnit(_owner=jes_text)
     jes_cx.set_memberunit(memberunit_shop(name=jes_text))
-    bob_text = "bob"
+    bob_text = "Bob"
     zia_text = "Zia"
     noa_text = "Noa"
     yao_text = "Yao"
@@ -110,18 +110,18 @@ def test_calendarunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     jes_text = "Jessi"
     jes_cx = CalendarUnit(_owner=jes_text)
     jes_cx.set_memberunit(memberunit_shop(name=jes_text))
-    bob_text = "bob"
+    bob_text = "Bob"
     noa_text = "Noa"
     eli_text = "Eli"
     jes_cx.set_memberunit(memberunit_shop(name=bob_text))
     jes_cx.set_memberunit(memberunit_shop(name=noa_text))
     jes_cx.set_memberunit(memberunit_shop(name=eli_text))
-    swim_text = "Swimmers"
+    swim_text = "swimmers"
     jes_cx.set_groupunit(groupunit_shop(name=swim_text))
     swim_group = jes_cx._groups.get(swim_text)
     swim_group.set_memberlink(memberlink_shop(bob_text))
 
-    hike_text = "Hikers"
+    hike_text = "hikers"
     jes_cx.set_groupunit(groupunit_shop(name=hike_text))
     hike_group = jes_cx._groups.get(hike_text)
     hike_group.set_memberlink(memberlink_shop(bob_text))
