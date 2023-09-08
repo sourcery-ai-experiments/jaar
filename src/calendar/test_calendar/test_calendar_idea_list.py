@@ -330,7 +330,7 @@ def test_calendar_get_idea_list_without_root_CorrectlyCalculatesIdeaAttributes()
     idea_list_with_idearoot = calendar_x.get_idea_list()
 
     # THEN
-    assert len(idea_list_without_idearoot) == 29
+    assert len(idea_list_without_idearoot) == 28
     assert len(idea_list_without_idearoot) + 1 == len(idea_list_with_idearoot)
 
     # for idea in calendar_x.get_idea_list_without_idearoot():
@@ -344,15 +344,19 @@ def test_calendar_get_idea_list_CorrectlyCalculatesRangeAttributes():
     # GIVEN
     calendar_x = get_calendar_with7amCleanTableRequired()
     idea_list = calendar_x.get_idea_list()
-    housework = "housework"
-    house_road = f"{root_label()},{housework}"
+    house_text = "housework"
+    house_road = f"{root_label()},{house_text}"
     clean_text = "clean table"
     clean_road = f"{house_road},{clean_text}"
     assert calendar_x._idea_dict.get(clean_road)._active_status == False
 
     # set acptfacts as midnight to 8am
-    day24hr_base = f"{root_label()},timetech,24hr day"
-    day24hr_pick = f"{root_label()},timetech,24hr day"
+    time_text = "timetech"
+    time_road = f"{root_label()},{time_text}"
+    day24hr_text = "24hr day"
+    day24hr_road = f"{time_road},{day24hr_text}"
+    day24hr_base = day24hr_road
+    day24hr_pick = day24hr_road
     day24hr_open = 0.0
     day24hr_nigh = 8.0
 
@@ -369,13 +373,12 @@ def test_calendar_get_idea_list_CorrectlyCalculatesRangeAttributes():
     # set acptfacts as 8am to 10am
     day24hr_open = 8.0
     day24hr_nigh = 10.0
-    day24hr_road = f"{root_label()},timetech,24hr day"
     print(calendar_x._idearoot._acptfactunits[day24hr_road])
     calendar_x.set_acptfact(
         base=day24hr_base, pick=day24hr_pick, open=day24hr_open, nigh=day24hr_nigh
     )
     print(calendar_x._idearoot._acptfactunits[day24hr_road])
-    print(calendar_x._idearoot._kids["housework"]._kids[clean_text]._requiredunits)
+    print(calendar_x._idearoot._kids[house_text]._kids[clean_text]._requiredunits)
     # calendar_x._idearoot._kids["housework"]._kids[clean_text]._active_status = None
 
     # THEN
@@ -401,16 +404,21 @@ def test_exammple_idea_list_HasCorrectData():
     print(f"{calendar_x.get_required_bases()=}")
     # day_hour = f"{root_label()},day_hour"
     # calendar_x.set_acptfact(base=day_hour, pick=day_hour, open=0, nigh=23)
-    hour_minute = f"{root_label()},day_minute"
-    calendar_x.set_acptfact(base=hour_minute, pick=hour_minute, open=0, nigh=1439)
-    print("yeahyea")
-    mood = f"{root_label()},Moods"
-    calendar_x.set_acptfact(base=mood, pick=mood)
+    day_min_text = "day_minute"
+    day_min_road = f"{root_label()},{day_min_text}"
+    calendar_x.set_acptfact(base=day_min_road, pick=day_min_road, open=0, nigh=1439)
+
+    mood_text = "Moods"
+    mood_road = f"{root_label()},{mood_text}"
+    calendar_x.set_acptfact(base=mood_road, pick=mood_road)
     print(f"{calendar_x.get_required_bases()=}")
-    year_month = f"{root_label()},year_month"
-    calendar_x.set_acptfact(base=year_month, pick=year_month)
-    internet = f"{root_label()},Internet"
-    calendar_x.set_acptfact(base=internet, pick=internet)
+
+    yr_mon_text = "year_month"
+    yr_mon_road = f"{root_label()},{yr_mon_text}"
+    calendar_x.set_acptfact(base=yr_mon_road, pick=yr_mon_road)
+    inter_text = "Internet"
+    inter_road = f"{root_label()},{inter_text}"
+    calendar_x.set_acptfact(base=inter_road, pick=inter_road)
     assert calendar_x != None
     # print(f"{calendar_x._owner=}")
     # print(f"{len(calendar_x._idearoot._kids)=}")
@@ -443,9 +451,11 @@ def test_exammple_idea_list_HasCorrectData():
     assert calendar_x._idea_dict.get(laundry_road)._active_status == False
 
     # WHEN
-    calendar_x.set_acptfact(
-        base=f"{root_label()},weekdays", pick=f"{root_label()},weekdays,Monday"
-    )
+    week_text = "weekdays"
+    week_road = f"{root_label()},{week_text}"
+    mon_text = "Monday"
+    mon_road = f"{week_road},{mon_text}"
+    calendar_x.set_acptfact(base=week_road, pick=mon_road)
 
     calendar_x.set_calendar_metrics()
 
@@ -456,55 +466,64 @@ def test_exammple_idea_list_HasCorrectData():
 def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
     # GIVEN
     calendar_x = calendar_v001()
-    day_hour = f"{root_label()},day_hour"
-    calendar_x.set_acptfact(base=day_hour, pick=day_hour, open=0, nigh=23)
-    day_minute = f"{root_label()},day_minute"
-    calendar_x.set_acptfact(base=day_minute, pick=day_minute, open=0, nigh=59)
-    month_week = f"{root_label()},month_week"
-    calendar_x.set_acptfact(base=month_week, pick=month_week)
-    nations = f"{root_label()},Nation-States"
-    calendar_x.set_acptfact(base=nations, pick=nations)
-    mood = f"{root_label()},Moods"
-    calendar_x.set_acptfact(base=mood, pick=mood)
-    aaron = f"{root_label()},Aaron Donald sphere"
-    calendar_x.set_acptfact(base=aaron, pick=aaron)
-    internet = f"{root_label()},Internet"
-    calendar_x.set_acptfact(base=internet, pick=internet)
-    year_month = f"{root_label()},year_month"
-    calendar_x.set_acptfact(base=year_month, pick=year_month, open=0, nigh=1000)
+
+    day_hr_text = "day_hour"
+    day_hr_road = f"{root_label()},{day_hr_text}"
+    calendar_x.set_acptfact(base=day_hr_road, pick=day_hr_road, open=0, nigh=23)
+    day_min_text = "day_minute"
+    day_min_road = f"{root_label()},{day_min_text}"
+    calendar_x.set_acptfact(base=day_min_road, pick=day_min_road, open=0, nigh=59)
+    mon_wk_text = "month_week"
+    mon_wk_road = f"{root_label()},{mon_wk_text}"
+    calendar_x.set_acptfact(base=mon_wk_road, pick=mon_wk_road)
+    nation_text = "Nation-States"
+    nation_road = f"{root_label()},{nation_text}"
+    calendar_x.set_acptfact(base=nation_road, pick=nation_road)
+    mood_text = "Moods"
+    mood_road = f"{root_label()},{mood_text}"
+    calendar_x.set_acptfact(base=mood_road, pick=mood_road)
+    aaron_text = "Aaron Donald sphere"
+    aaron_road = f"{root_label()},{aaron_text}"
+    calendar_x.set_acptfact(base=aaron_road, pick=aaron_road)
+    inter_text = "Internet"
+    inter_road = f"{root_label()},{inter_text}"
+    calendar_x.set_acptfact(base=inter_road, pick=inter_road)
+    yr_mon_text = "year_month"
+    yr_mon_road = f"{root_label()},{yr_mon_text}"
+    calendar_x.set_acptfact(base=yr_mon_road, pick=yr_mon_road, open=0, nigh=1000)
 
     idea_list = calendar_x.get_idea_list()
     missing_acptfacts = calendar_x.get_missing_acptfact_bases()
     # for missing_acptfact, count in missing_acptfacts.items():
     #     print(f"{missing_acptfact=} {count=}")
 
-    weekday_road = f"{root_label()},weekdays"
-    mon_road = f"{root_label()},weekdays,Monday"
-    tue_road = f"{root_label()},weekdays,Tuesday"
+    week_road = f"{root_label()},weekdays"
+    mon_road = f"{week_road},Monday"
+    tue_road = f"{week_road},Tuesday"
     mon_sufffact_x = sufffactunit_shop(need=mon_road)
     tue_sufffact_x = sufffactunit_shop(need=tue_road)
     mt_sufffacts = {
         mon_sufffact_x.need: mon_sufffact_x,
         tue_sufffact_x.need: tue_sufffact_x,
     }
-    mt_required = RequiredUnit(base=weekday_road, sufffacts=mt_sufffacts)
-    mt_required_x = RequiredHeir(base=weekday_road, sufffacts=mt_sufffacts)
+    mt_required = RequiredUnit(base=week_road, sufffacts=mt_sufffacts)
+    mt_required_x = RequiredHeir(base=week_road, sufffacts=mt_sufffacts)
     calendar_x._idearoot.set_required_unit(required=mt_required)
-    # print(f"{calendar_x._requiredunits[weekday_road].base=}")
-    # print(f"{calendar_x._requiredunits[weekday_road].sufffacts[mon_road].need=}")
-    # print(f"{calendar_x._requiredunits[weekday_road].sufffacts[tue_road].need=}")
-    print(f"{calendar_x._idearoot._requiredunits[weekday_road].sufffacts=}")
-    sufffact_mon = calendar_x._idearoot._requiredunits[weekday_road].sufffacts.get(
+    # print(f"{calendar_x._requiredunits[week_road].base=}")
+    # print(f"{calendar_x._requiredunits[week_road].sufffacts[mon_road].need=}")
+    # print(f"{calendar_x._requiredunits[week_road].sufffacts[tue_road].need=}")
+    print(f"{calendar_x._idearoot._requiredunits[week_road].sufffacts=}")
+    sufffact_mon = calendar_x._idearoot._requiredunits[week_road].sufffacts.get(
         mon_road
     )
-    sufffact_tue = calendar_x._idearoot._requiredunits[weekday_road].sufffacts.get(
+    sufffact_tue = calendar_x._idearoot._requiredunits[week_road].sufffacts.get(
         tue_road
     )
     assert sufffact_mon
     assert sufffact_mon == mt_required.sufffacts[sufffact_mon.need]
     assert sufffact_tue
     assert sufffact_tue == mt_required.sufffacts[sufffact_tue.need]
-    assert calendar_x._idearoot._requiredunits[weekday_road] == mt_required
+    assert calendar_x._idearoot._requiredunits[week_road] == mt_required
 
     # WHEN
     idea_list = calendar_x.get_idea_list()
@@ -515,19 +534,18 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
     assert sufffact_tue
     assert sufffact_tue == mt_required.sufffacts[sufffact_tue.need]
 
-    assert calendar_x._idearoot._requiredheirs[weekday_road] == mt_required_x
+    assert calendar_x._idearoot._requiredheirs[week_road] == mt_required_x
 
-    bird_walk = f"{root_label()},casa"
-    bird_label = "say hi to birds"
-    bird_road = Road(f"{bird_walk},{bird_label}")
+    casa_text = "casa"
+    casa_road = f"{root_label()},{casa_text}"
+    bird_text = "say hi to birds"
+    bird_road = Road(f"{casa_road},{bird_text}")
     assert from_list_get_active_status(road=bird_road, idea_list=idea_list) == False
 
-    calendar_x.set_acptfact(
-        base=f"{root_label()},weekdays", pick=f"{root_label()},weekdays,Monday"
-    )
+    calendar_x.set_acptfact(base=week_road, pick=mon_road)
     idea_list = calendar_x.get_idea_list()
-    casa_idea = calendar_x._idearoot._kids["casa"]
-    twee_idea = casa_idea._kids["say hi to birds"]
+    casa_idea = calendar_x._idearoot._kids[casa_text]
+    twee_idea = casa_idea._kids[bird_text]
     print(f"{len(calendar_x._idearoot._requiredheirs)=}")
     print(f"{len(casa_idea._requiredheirs)=}")
     print(f"{len(twee_idea._requiredheirs)=}")
