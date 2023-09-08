@@ -180,7 +180,7 @@ def groupunit_shop(
     uid: int = None,
     single_member_id: int = None,
     _single_member: bool = None,
-    _members: dict[MemberName:MemberUnit] = None,
+    _members: dict[MemberName:MemberLink] = None,
     _calendar_credit: float = None,
     _calendar_debt: float = None,
     _calendar_agenda_credit: float = None,

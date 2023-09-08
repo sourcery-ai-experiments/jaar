@@ -5,7 +5,7 @@ from src.calendar.required_idea import Road
 from src.calendar.examples.example_calendars import (
     calendar_v001 as examples_calendar_v001,
 )
-from src.calendar.calendar import CalendarUnit
+from src.calendar.calendar import CalendarUnit, get_relevant_groups
 from src.calendar.road import get_global_root_label as root_label
 from pytest import raises as pytest_raises
 
@@ -899,3 +899,50 @@ def test_calendar_all_groupunits_uids_are_unique_ReturnsCorrectBoolean():
 
     # THEN
     assert sx.all_groupunits_uids_are_unique()
+
+
+def test_get_relevant_groups_CorrectlyReturnsEmptyDict():
+    # GIVEN
+    bob_text = "bob"
+    cx_with_members = CalendarUnit(_owner=bob_text)
+    cx_with_members.set_members_empty_if_null()
+
+    sam_text = "sam"
+    wil_text = "wil"
+    cx_with_members.set_memberunit(memberunit=memberunit_shop(name=bob_text))
+    cx_with_members.set_memberunit(memberunit=memberunit_shop(name=sam_text))
+
+    cx_with_groups = CalendarUnit()
+    cx_with_groups.set_members_empty_if_null()
+    cx_with_groups.set_groupunits_empty_if_null()
+
+    # WHEN
+    print(f"{len(cx_with_members._members)=} {len(cx_with_groups._groups)=}")
+    relevant_x = get_relevant_groups(cx_with_groups._groups, cx_with_members._members)
+
+    # THEN
+    assert relevant_x == {}
+
+
+def test_get_relevant_groups_CorrectlyReturns2SingleMemberGroups():
+    # GIVEN
+    bob_text = "Bob"
+    sam_text = "Sam"
+    wil_text = "Wil"
+    cx_with_3groups = CalendarUnit(_owner=bob_text)
+    cx_with_3groups.set_members_empty_if_null()
+    cx_with_3groups.set_memberunit(memberunit=memberunit_shop(name=bob_text))
+    cx_with_3groups.set_memberunit(memberunit=memberunit_shop(name=sam_text))
+    cx_with_3groups.set_memberunit(memberunit=memberunit_shop(name=wil_text))
+
+    cx_with_2members = CalendarUnit(_owner=bob_text)
+    cx_with_2members.set_members_empty_if_null()
+    cx_with_2members.set_memberunit(memberunit=memberunit_shop(name=bob_text))
+    cx_with_2members.set_memberunit(memberunit=memberunit_shop(name=sam_text))
+
+    # WHEN
+    print(f"{len(cx_with_2members._members)=} {len(cx_with_3groups._groups)=}")
+    relevant_x = get_relevant_groups(cx_with_3groups._groups, cx_with_2members._members)
+
+    # THEN
+    assert relevant_x == {bob_text: {bob_text: -1}, sam_text: {sam_text: -1}}

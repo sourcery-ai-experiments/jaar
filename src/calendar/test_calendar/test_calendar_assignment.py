@@ -30,11 +30,12 @@ def test_calendarunit_get_assignment_ReturnsCalendar():
     # GIVEN
     jes_text = "jessi"
     jes1_cx = CalendarUnit(_owner=jes_text)
+    jes1_cx.set_groupunits_empty_if_null()
 
     # WHEN
     bob_text = "bob"
     empty_calendar_x = CalendarUnit(_owner=jes_text)
-    empty_calendar_x.set_calendar_metrics()
+    empty_calendar_x.set_groupunits_empty_if_null()
     assignor_known_members_x = {}
     cx_assignment = jes1_cx.get_assignment(
         empty_calendar=empty_calendar_x,
@@ -75,16 +76,16 @@ def test_calendarunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInMembers()
 def test_calendarunit_get_assignment_ReturnsCorrectMembers():
     # GIVEN
     jes_text = "Jessi"
-    jes1_cx = CalendarUnit(_owner=jes_text)
-    jes1_cx.set_memberunit(memberunit_shop(name=jes_text))
+    jes_cx = CalendarUnit(_owner=jes_text)
+    jes_cx.set_memberunit(memberunit_shop(name=jes_text))
     bob_text = "bob"
     zia_text = "Zia"
     noa_text = "Noa"
     yao_text = "Yao"
-    jes1_cx.set_memberunit(memberunit_shop(name=bob_text))
-    jes1_cx.set_memberunit(memberunit_shop(name=zia_text))
-    jes1_cx.set_memberunit(memberunit_shop(name=noa_text))
-    jes1_cx.set_memberunit(memberunit_shop(name=yao_text))
+    jes_cx.set_memberunit(memberunit_shop(name=bob_text))
+    jes_cx.set_memberunit(memberunit_shop(name=zia_text))
+    jes_cx.set_memberunit(memberunit_shop(name=noa_text))
+    jes_cx.set_memberunit(memberunit_shop(name=yao_text))
 
     # WHEN
     tx = CalendarUnit()
@@ -94,7 +95,7 @@ def test_calendarunit_get_assignment_ReturnsCorrectMembers():
     tx.set_memberunit(memberunit=memberunit_shop(name=noa_text))
 
     empty_cx = CalendarUnit(_owner=jes_text)
-    cx_assignment = jes1_cx.get_assignment(empty_cx, tx._members, bob_text)
+    cx_assignment = jes_cx.get_assignment(empty_cx, tx._members, bob_text)
 
     # THEN
     assert len(cx_assignment._members) == 3
@@ -104,36 +105,58 @@ def test_calendarunit_get_assignment_ReturnsCorrectMembers():
     assert cx_assignment._members.get(yao_text) is None
 
 
-def test_calendarunit_get_assignment_ReturnsCorrectGroups():
+def test_calendarunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     # GIVEN
     jes_text = "Jessi"
-    # jes1_cx = CalendarUnit(_owner=jes_text)
-    # jes1_cx.set_memberunit(memberunit_shop(name=jes_text))
-    # bob_text = "bob"
-    # zia_text = "Zia"
-    # noa_text = "Noa"
-    # yao_text = "Yao"
-    # jes1_cx.set_memberunit(memberunit_shop(name=bob_text))
-    # jes1_cx.set_memberunit(memberunit_shop(name=zia_text))
-    # jes1_cx.set_memberunit(memberunit_shop(name=noa_text))
-    # jes1_cx.set_memberunit(memberunit_shop(name=yao_text))
+    jes_cx = CalendarUnit(_owner=jes_text)
+    jes_cx.set_memberunit(memberunit_shop(name=jes_text))
+    bob_text = "bob"
+    noa_text = "Noa"
+    eli_text = "Eli"
+    jes_cx.set_memberunit(memberunit_shop(name=bob_text))
+    jes_cx.set_memberunit(memberunit_shop(name=noa_text))
+    jes_cx.set_memberunit(memberunit_shop(name=eli_text))
+    swim_text = "Swimmers"
+    jes_cx.set_groupunit(groupunit_shop(name=swim_text))
+    swim_group = jes_cx._groups.get(swim_text)
+    swim_group.set_memberlink(memberlink_shop(bob_text))
 
-    # # WHEN
-    # tx = CalendarUnit()
-    # tx.set_members_empty_if_null()
-    # tx.set_memberunit(memberunit=memberunit_shop(name=bob_text))
-    # tx.set_memberunit(memberunit=memberunit_shop(name=zia_text))
-    # tx.set_memberunit(memberunit=memberunit_shop(name=noa_text))
+    hike_text = "Hikers"
+    jes_cx.set_groupunit(groupunit_shop(name=hike_text))
+    hike_group = jes_cx._groups.get(hike_text)
+    hike_group.set_memberlink(memberlink_shop(bob_text))
+    hike_group.set_memberlink(memberlink_shop(noa_text))
 
-    # empty_cx = CalendarUnit(_owner=jes_text)
-    # cx_assignment = jes1_cx.get_assignment(empty_cx, tx._members, bob_text)
+    hunt_text = "hunters"
+    jes_cx.set_groupunit(groupunit_shop(name=hunt_text))
+    hike_group = jes_cx._groups.get(hunt_text)
+    hike_group.set_memberlink(memberlink_shop(noa_text))
+    hike_group.set_memberlink(memberlink_shop(eli_text))
 
-    # # THEN
-    # assert len(cx_assignment._members) == 3
-    # assert cx_assignment._members.get(bob_text) != None
-    # assert cx_assignment._members.get(zia_text) != None
-    # assert cx_assignment._members.get(noa_text) != None
-    # assert cx_assignment._members.get(yao_text) is None
+    # WHEN
+    tx = CalendarUnit()
+    tx.set_members_empty_if_null()
+    zia_text = "Zia"
+    yao_text = "Yao"
+    tx.set_memberunit(memberunit=memberunit_shop(name=bob_text))
+    tx.set_memberunit(memberunit=memberunit_shop(name=zia_text))
+    tx.set_memberunit(memberunit=memberunit_shop(name=noa_text))
+
+    empty_cx = CalendarUnit(_owner=jes_text)
+    cx_assignment = jes_cx.get_assignment(empty_cx, tx._members, bob_text)
+
+    # THEN
+    assert len(cx_assignment._groups) == 5
+    assert cx_assignment._groups.get(bob_text) != None
+    assert cx_assignment._groups.get(noa_text) != None
+    assert cx_assignment._groups.get(zia_text) is None
+    assert cx_assignment._groups.get(yao_text) is None
+    assert cx_assignment._groups.get(swim_text) != None
+    assert cx_assignment._groups.get(hike_text) != None
+    assert cx_assignment._groups.get(hunt_text) != None
+    hunt_group = cx_assignment._groups.get(hunt_text)
+    assert hunt_group._members.get(noa_text) != None
+    assert len(hunt_group._members) == 1
 
 
 # def test_calendarunit_get_bond_status_ReturnsCorrectBool():

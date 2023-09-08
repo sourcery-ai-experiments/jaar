@@ -1235,7 +1235,7 @@ def test_calendar_set_banking_data_memberunits_CorrectlySetsMemberUnitBankingAtt
     assert ax._members.get(elu_text)._bank_tax_diff is None
 
 
-def test_get_union_CorrectlyReturnsUnionOfKeysOfTwoDictionarys_scenario1():
+def test_get_intersection_of_members_CorrectlyReturnsUnionOfKeysOfTwoDictionarys_scenario1():
     # GIVEN
     bob_text = "bob"
     ax = CalendarUnit(_owner=bob_text)
