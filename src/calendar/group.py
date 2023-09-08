@@ -103,12 +103,12 @@ class GroupUnit(GroupCore):
     def get_members_dict(self):
         self._set_memberlinks_empty_if_null()
 
-        x_members_dict = {}
+        members_x_dict = {}
         for member in self._members.values():
             member_dict = member.get_dict()
-            x_members_dict[member_dict["name"]] = member_dict
+            members_x_dict[member_dict["name"]] = member_dict
 
-        return x_members_dict
+        return members_x_dict
 
     def set_memberlink(self, memberlink: MemberLink):
         self._set_memberlinks_empty_if_null()

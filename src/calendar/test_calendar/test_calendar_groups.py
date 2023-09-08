@@ -5,7 +5,11 @@ from src.calendar.required_idea import Road
 from src.calendar.examples.example_calendars import (
     calendar_v001 as examples_calendar_v001,
 )
-from src.calendar.calendar import CalendarUnit, get_relevant_groups
+from src.calendar.calendar import (
+    CalendarUnit,
+    get_members_relevant_groups,
+    get_member_relevant_groups,
+)
 from src.calendar.road import get_global_root_label as root_label
 from pytest import raises as pytest_raises
 
@@ -901,7 +905,7 @@ def test_calendar_all_groupunits_uids_are_unique_ReturnsCorrectBoolean():
     assert sx.all_groupunits_uids_are_unique()
 
 
-def test_get_relevant_groups_CorrectlyReturnsEmptyDict():
+def test_get_members_relevant_groups_CorrectlyReturnsEmptyDict():
     # GIVEN
     bob_text = "bob"
     cx_with_members = CalendarUnit(_owner=bob_text)
@@ -918,31 +922,91 @@ def test_get_relevant_groups_CorrectlyReturnsEmptyDict():
 
     # WHEN
     print(f"{len(cx_with_members._members)=} {len(cx_with_groups._groups)=}")
-    relevant_x = get_relevant_groups(cx_with_groups._groups, cx_with_members._members)
+    relevant_x = get_members_relevant_groups(
+        cx_with_groups._groups, cx_with_members._members
+    )
 
     # THEN
     assert relevant_x == {}
 
 
-def test_get_relevant_groups_CorrectlyReturns2SingleMemberGroups():
+def test_get_members_relevant_groups_CorrectlyReturns2SingleMemberGroups():
     # GIVEN
     bob_text = "Bob"
     sam_text = "Sam"
     wil_text = "Wil"
-    cx_with_3groups = CalendarUnit(_owner=bob_text)
-    cx_with_3groups.set_members_empty_if_null()
-    cx_with_3groups.set_memberunit(memberunit=memberunit_shop(name=bob_text))
-    cx_with_3groups.set_memberunit(memberunit=memberunit_shop(name=sam_text))
-    cx_with_3groups.set_memberunit(memberunit=memberunit_shop(name=wil_text))
+    cx_3groups = CalendarUnit(_owner=bob_text)
+    cx_3groups.set_members_empty_if_null()
+    cx_3groups.set_memberunit(memberunit=memberunit_shop(name=bob_text))
+    cx_3groups.set_memberunit(memberunit=memberunit_shop(name=sam_text))
+    cx_3groups.set_memberunit(memberunit=memberunit_shop(name=wil_text))
 
-    cx_with_2members = CalendarUnit(_owner=bob_text)
-    cx_with_2members.set_members_empty_if_null()
-    cx_with_2members.set_memberunit(memberunit=memberunit_shop(name=bob_text))
-    cx_with_2members.set_memberunit(memberunit=memberunit_shop(name=sam_text))
+    cx_2members = CalendarUnit(_owner=bob_text)
+    cx_2members.set_members_empty_if_null()
+    cx_2members.set_memberunit(memberunit=memberunit_shop(name=bob_text))
+    cx_2members.set_memberunit(memberunit=memberunit_shop(name=sam_text))
 
     # WHEN
-    print(f"{len(cx_with_2members._members)=} {len(cx_with_3groups._groups)=}")
-    relevant_x = get_relevant_groups(cx_with_3groups._groups, cx_with_2members._members)
+    print(f"{len(cx_2members._members)=} {len(cx_3groups._groups)=}")
+    mrg_x = get_members_relevant_groups(cx_3groups._groups, cx_2members._members)
 
     # THEN
-    assert relevant_x == {bob_text: {bob_text: -1}, sam_text: {sam_text: -1}}
+    assert mrg_x == {bob_text: {bob_text: -1}, sam_text: {sam_text: -1}}
+
+
+def test_get_member_relevant_groups_CorrectlyReturnsCorrectDict():
+    # GIVEN
+    jes_text = "Jessi"
+    jes_cx = CalendarUnit(_owner=jes_text)
+    bob_text = "Bob"
+    jes_cx.set_memberunit(memberunit_shop(name=jes_text))
+    jes_cx.set_memberunit(memberunit_shop(name=bob_text))
+
+    hike_text = "hikers"
+    jes_cx.set_groupunit(groupunit_shop(name=hike_text))
+    hike_group = jes_cx._groups.get(hike_text)
+    hike_group.set_memberlink(memberlink_shop(bob_text))
+
+    # WHEN
+    noa_text = "Noa"
+    noa_mrg = get_member_relevant_groups(jes_cx._groups, noa_text)
+
+    # THEN
+    assert noa_mrg == {}
+
+
+def test_get_member_relevant_groups_CorrectlyReturnsCorrectDict():
+    # GIVEN
+    jes_text = "Jessi"
+    jes_cx = CalendarUnit(_owner=jes_text)
+    bob_text = "Bob"
+    noa_text = "Noa"
+    eli_text = "Eli"
+    jes_cx.set_memberunit(memberunit_shop(name=jes_text))
+    jes_cx.set_memberunit(memberunit_shop(name=bob_text))
+    jes_cx.set_memberunit(memberunit_shop(name=noa_text))
+    jes_cx.set_memberunit(memberunit_shop(name=eli_text))
+
+    swim_text = "swimmers"
+    jes_cx.set_groupunit(groupunit_shop(name=swim_text))
+    swim_group = jes_cx._groups.get(swim_text)
+    swim_group.set_memberlink(memberlink_shop(bob_text))
+
+    hike_text = "hikers"
+    jes_cx.set_groupunit(groupunit_shop(name=hike_text))
+    hike_group = jes_cx._groups.get(hike_text)
+    hike_group.set_memberlink(memberlink_shop(bob_text))
+    hike_group.set_memberlink(memberlink_shop(noa_text))
+
+    hunt_text = "hunters"
+    jes_cx.set_groupunit(groupunit_shop(name=hunt_text))
+    hike_group = jes_cx._groups.get(hunt_text)
+    hike_group.set_memberlink(memberlink_shop(noa_text))
+    hike_group.set_memberlink(memberlink_shop(eli_text))
+
+    # WHEN
+    print(f"{len(jes_cx._members)=} {len(jes_cx._groups)=}")
+    bob_mrg = get_member_relevant_groups(jes_cx._groups, bob_text)
+
+    # THEN
+    assert bob_mrg == {bob_text: -1, swim_text: -1, hike_text: -1}

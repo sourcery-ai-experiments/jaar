@@ -2063,7 +2063,7 @@ class CalendarUnit:
                 calendar_x.set_memberunit(memberunit=self._members.get(membername_x))
 
         # Groups
-        revelant_groups = get_relevant_groups(self._groups, calendar_x._members)
+        revelant_groups = get_members_relevant_groups(self._groups, calendar_x._members)
         for group_name, group_members in revelant_groups.items():
             if calendar_x._groups.get(group_name) is None:
                 group_x = groupunit_shop(name=group_name)
@@ -2187,23 +2187,33 @@ def get_meld_of_calendar_files(
 
 
 def get_intersection_of_members(
-    x_members: dict[MemberName:MemberUnit], y_members: dict[MemberName:MemberUnit]
+    members_x: dict[MemberName:MemberUnit], members_y: dict[MemberName:MemberUnit]
 ) -> dict[MemberName:-1]:
-    x_set = set(x_members)
-    y_set = set(y_members)
+    x_set = set(members_x)
+    y_set = set(members_y)
     intersection_x = x_set.intersection(y_set)
     return {membername_x: -1 for membername_x in intersection_x}
 
 
-def get_relevant_groups(
-    x_groups: dict[GroupName:GroupUnit], x_members: dict[MemberName:MemberUnit]
+def get_members_relevant_groups(
+    groups_x: dict[GroupName:GroupUnit], members_x: dict[MemberName:MemberUnit]
 ) -> dict[GroupName:{MemberName: -1}]:
     relevant_groups = {}
-    for group_x in x_groups.values():
-        for x_membername in x_members:
-            if group_x._members.get(x_membername) != None:
+    for membername_x in members_x:
+        for group_x in groups_x.values():
+            if group_x._members.get(membername_x) != None:
                 if relevant_groups.get(group_x.name) is None:
                     relevant_groups[group_x.name] = {}
-                relevant_groups.get(group_x.name)[x_membername] = -1
+                relevant_groups.get(group_x.name)[membername_x] = -1
 
     return relevant_groups
+
+
+def get_member_relevant_groups(
+    groups_x: dict[GroupName:GroupUnit], membername_x: MemberName
+) -> dict[GroupName:-1]:
+    return {
+        group_x.name: -1
+        for group_x in groups_x.values()
+        if group_x._members.get(membername_x) != None
+    }
