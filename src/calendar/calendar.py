@@ -1803,7 +1803,7 @@ class CalendarUnit:
             if road.find(road_x) == 0
         ]
 
-    def get_idea_tree_ordered_road_list(self, no_range_labelendents: bool = False):
+    def get_idea_tree_ordered_road_list(self, no_range_descendents: bool = False):
         idea_list = self.get_idea_list()
         node_dict = {idea.get_road().lower(): idea.get_road() for idea in idea_list}
         node_lowercase_ordered_list = sorted(list(node_dict))
@@ -1813,7 +1813,7 @@ class CalendarUnit:
 
         list_x = []
         for road in node_orginalcase_ordered_list:
-            if not no_range_labelendents:
+            if not no_range_descendents:
                 list_x.append(road)
             else:
                 anc_list = get_ancestor_roads(road=road)

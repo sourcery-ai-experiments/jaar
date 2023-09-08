@@ -389,7 +389,7 @@ def test_calendar_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoads():
 
     assert len(calendar_x.get_idea_tree_ordered_road_list()) == 3
     assert (
-        len(calendar_x.get_idea_tree_ordered_road_list(no_range_labelendents=True)) == 2
+        len(calendar_x.get_idea_tree_ordered_road_list(no_range_descendents=True)) == 2
     )
 
 
