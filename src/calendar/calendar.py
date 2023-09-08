@@ -169,7 +169,7 @@ class CalendarUnit:
         new_weight = self._weight * idea_x._calendar_importance
         cx = CalendarUnit(_owner=self._idearoot._label, _weight=new_weight)
 
-        for road_assc in sorted(list(self._get_all_idea_assoc_roads(road))):
+        for road_assc in sorted(list(self._get_relevant_roads(road))):
             src_yx = self.get_idea_kid(road=road_assc)
             new_yx = copy_deepcopy(src_yx)
             if new_yx._walk != "":
@@ -181,7 +181,7 @@ class CalendarUnit:
         # TODO grab acptfacts
         return cx
 
-    def _get_all_idea_assoc_roads(self, road: Road) -> set[Road]:
+    def _get_relevant_roads(self, road: Road) -> set[Road]:
         idea_ancestor_list = get_ancestor_roads(road=road)
         idea_x = self.get_idea_kid(road=road)
         requiredunit_base_road_list = []
@@ -197,7 +197,7 @@ class CalendarUnit:
         return set(idea_assoc_list)
 
     def all_ideas_relevant_to_promise_idea(self, road: Road) -> bool:
-        promise_idea_assoc_set = set(self._get_all_idea_assoc_roads(road=road))
+        promise_idea_assoc_set = set(self._get_relevant_roads(road=road))
         all_ideas_set = set(self.get_idea_tree_ordered_road_list())
         return all_ideas_set == all_ideas_set.intersection(promise_idea_assoc_set)
 
