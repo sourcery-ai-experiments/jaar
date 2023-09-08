@@ -103,7 +103,7 @@ class CalendarUnit:
         self._weight = _weight
         if _owner is None:
             _owner = ""
-        self._idearoot = IdeaRoot(_label=root_label(), _uid=1)
+        self._idearoot = IdeaRoot(_label=root_label(), _uid=1, _level=0)
         self._owner = _owner
         self._originunit = originunit_shop()
 
@@ -867,7 +867,6 @@ class CalendarUnit:
 
     def get_tree_metrics(self) -> TreeMetrics:
         tree_metrics = TreeMetrics()
-        self._idearoot._level = 0
         tree_metrics.evaluate_node(
             level=self._idearoot._level,
             requireds=self._idearoot._requiredunits,
