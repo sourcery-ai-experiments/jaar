@@ -2053,36 +2053,51 @@ class CalendarUnit:
         assignor_name: MemberName,
     ):
         # Members
-        empty_calendar.set_members_empty_if_null()
-        calendar_x = empty_calendar
         self.set_members_empty_if_null()
         self.set_calendar_metrics()
 
+        calendar_x = self._get_assignment_calendar_members(
+            empty_calendar, assignor_members, assignor_name
+        )
+        calendar_x = self._get_assignment_calendar_groups(calendar_x, self._groups)
+        assignor_promises = self._get_assignor_promise_ideas(calendar_x, assignor_name)
+
+        return calendar_x
+
+    def _get_assignment_calendar_members(
+        self,
+        calendar_x,
+        assignor_members: dict[MemberName:MemberUnit],
+        assignor_name: MemberName,
+    ):
+        calendar_x.set_members_empty_if_null()
         if self._members.get(assignor_name) != None:
             # get all members that are both in self._members and assignor_known_members
             members_set = get_intersection_of_members(self._members, assignor_members)
             for membername_x in members_set:
                 calendar_x.set_memberunit(memberunit=self._members.get(membername_x))
+        return calendar_x
 
-        # Groups
-        revelant_groups = get_members_relevant_groups(self._groups, calendar_x._members)
+    def _get_assignment_calendar_groups(
+        self, calendar_x, src_groups: dict[GroupName:GroupUnit]
+    ):
+        revelant_groups = get_members_relevant_groups(src_groups, calendar_x._members)
         for group_name, group_members in revelant_groups.items():
             if calendar_x._groups.get(group_name) is None:
                 group_x = groupunit_shop(name=group_name)
                 for member_name in group_members:
                     group_x.set_memberlink(memberlink_shop(name=member_name))
                 calendar_x.set_groupunit(group_x)
+        return calendar_x
 
-        # Get all task ideas with AssignedUnit for assignor
+    def _get_assignor_promise_ideas(self, calendar_x, assignor_name: GroupName):
         calendar_x.set_groupunits_empty_if_null()
         assignor_groups = get_member_relevant_groups(calendar_x._groups, assignor_name)
-        assignor_promise_ideas = {
+        return {
             idea_road: -1
             for idea_road, idea_x in self._idea_dict.items()
             if (idea_x.assignor_in(assignor_groups) and idea_x.promise)
         }
-
-        return calendar_x
 
 
 def get_from_json(cx_json: str) -> CalendarUnit:

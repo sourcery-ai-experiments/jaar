@@ -101,7 +101,9 @@ class AssignedHeir:
         self._suffgroups = dict_x
 
     def group_in(self, groupnames: dict[GroupName:-1]):
-        return any(self._suffgroups.get(gn_x) != None for gn_x in groupnames)
+        return self._suffgroups == {} or any(
+            self._suffgroups.get(gn_x) != None for gn_x in groupnames
+        )
 
 
 def assigned_heir_shop(

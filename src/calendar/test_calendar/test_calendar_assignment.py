@@ -159,6 +159,27 @@ def test_calendarunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     assert len(hunt_group._members) == 1
 
 
+def test_calendar__get_assignor_promise_ideas_ReturnsCorrectIdeaRoads():
+    # GIVEN
+    cx = example_calendars_get_calendar_with7amCleanTableRequired()
+    cx.set_calendar_metrics()
+
+    # WHEN
+    assignor_promises = cx._get_assignor_promise_ideas(cx, "any")
+
+    # THEN
+    print(f"{assignor_promises=}")
+    x_dict = {
+        "A,work": -1,
+        "A,housework,clean table": -1,
+        "A,housework,clean table,remove dishs": -1,
+        "A,housework,clean table,get soap": -1,
+        "A,housework,clean table,get soap,grab soap": -1,
+        "A,feed cat": -1,
+    }
+    assert assignor_promises == x_dict
+
+
 # def test_calendarunit_get_bond_status_ReturnsCorrectBool():
 #     # GIVEN
 #     jessi_text = "jessi"

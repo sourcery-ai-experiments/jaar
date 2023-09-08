@@ -499,7 +499,7 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqualParentAssignedHeir_Rais
     )
 
 
-def test_AssignedHeir_():
+def test_AssignedHeir_group_in_ReturnsCorrectBoolWhen_suffgroupsNotEmpty():
     # GIVEN
     swim_text = "swim"
     hike_text = "hike"
@@ -529,3 +529,28 @@ def test_AssignedHeir_():
     assert assignedheir_x.group_in(hunt_dict) == False
     assert assignedheir_x.group_in(hunt_hike_dict)
     assert assignedheir_x.group_in(hunt_play_dict) == False
+
+
+def test_AssignedHeir_group_in_ReturnsCorrectBoolWhen_suffgroupsEmpty():
+    # GIVEN
+    hike_text = "hike"
+    hike_dict = {hike_text: -1}
+    assignedunit_x = assigned_unit_shop()
+    assignedheir_x = assigned_heir_shop()
+    assignedheir_x.set_suffgroups(
+        parent_assignheir=None, assignunit=assignedunit_x, calendar_groups=None
+    )
+    hunt_text = "hunt"
+    hunt_dict = {hunt_text: -1}
+    play_text = "play"
+    play_dict = {play_text: -1}
+    assert assignedheir_x._suffgroups == {}
+    hunt_hike_dict = {hunt_text: -1, hike_text: -1}
+    hunt_play_dict = {hunt_text: -1, play_text: -1}
+
+    # WHEN / THEN
+    assert assignedheir_x.group_in(hike_dict)
+    assert assignedheir_x.group_in(hunt_dict)
+    assert assignedheir_x.group_in(play_dict)
+    assert assignedheir_x.group_in(hunt_hike_dict)
+    assert assignedheir_x.group_in(hunt_play_dict)
