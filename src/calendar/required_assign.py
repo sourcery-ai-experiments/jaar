@@ -16,9 +16,7 @@ class AssignedUnit:
             group_name: group_name  # sufffact.get_dict()
             for group_name, _suffgroup in self._suffgroups.items()
         }
-        return {
-            "_suffgroups": _suffgroups,
-        }
+        return {"_suffgroups": _suffgroups}
 
     def set_suffgroup(self, name: GroupName):
         self._suffgroups[name] = -1
@@ -101,6 +99,9 @@ class AssignedHeir:
             for suffgroup in assignunit._suffgroups.keys():
                 dict_x[suffgroup] = -1
         self._suffgroups = dict_x
+
+    def group_in(self, groupnames: dict[GroupName:-1]):
+        return any(self._suffgroups.get(gn_x) != None for gn_x in groupnames)
 
 
 def assigned_heir_shop(

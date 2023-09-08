@@ -374,6 +374,7 @@ def test_AssignedHeir_set_suffgroup_AssignedUnitEmpty_ParentAssignedHeirNotEmpty
     )
 
     # THEN
+    assert len(assigned_heir_x._suffgroups.keys())
     assert assigned_heir_x._suffgroups.keys() == parent_assigned_heir._suffgroups.keys()
 
 
@@ -498,5 +499,33 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqualParentAssignedHeir_Rais
     )
 
 
-#  tree traverse: Idea.AssignedUnit != None, parent_idea.AssignedHeir != None AND unit_members are subset of heir_members -> idea.AssignedHeir set by Idea.AssignedUnit
-#  tree traverse: Idea.AssignedUnit != None, parent_idea.AssignedHeir != None AND unit_members are subset of heir_members -> raise Error
+def test_AssignedHeir_():
+    # GIVEN
+    swim_text = "swim"
+    hike_text = "hike"
+    swim_dict = {swim_text: -1}
+    hike_dict = {hike_text: -1}
+    assignedunit_x = assigned_unit_shop()
+    assignedunit_x.set_suffgroup(name=swim_text)
+    assignedunit_x.set_suffgroup(name=hike_text)
+    assignedheir_x = assigned_heir_shop()
+    assignedheir_x.set_suffgroups(
+        parent_assignheir=None, assignunit=assignedunit_x, calendar_groups=None
+    )
+    hunt_text = "hunt"
+    hunt_dict = {hunt_text: -1}
+    play_text = "play"
+    play_dict = {play_text: -1}
+    assert assignedheir_x._suffgroups.get(swim_text) != None
+    assert assignedheir_x._suffgroups.get(hike_text) != None
+    assert assignedheir_x._suffgroups.get(hunt_text) is None
+    assert assignedheir_x._suffgroups.get(play_text) is None
+    hunt_hike_dict = {hunt_text: -1, hike_text: -1}
+    hunt_play_dict = {hunt_text: -1, play_text: -1}
+
+    # WHEN / THEN
+    assert assignedheir_x.group_in(swim_dict)
+    assert assignedheir_x.group_in(hike_dict)
+    assert assignedheir_x.group_in(hunt_dict) == False
+    assert assignedheir_x.group_in(hunt_hike_dict)
+    assert assignedheir_x.group_in(hunt_play_dict) == False

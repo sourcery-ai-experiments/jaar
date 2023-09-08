@@ -2056,6 +2056,8 @@ class CalendarUnit:
         empty_calendar.set_members_empty_if_null()
         calendar_x = empty_calendar
         self.set_members_empty_if_null()
+        self.set_calendar_metrics()
+
         if self._members.get(assignor_name) != None:
             # get all members that are both in self._members and assignor_known_members
             members_set = get_intersection_of_members(self._members, assignor_members)
@@ -2070,6 +2072,15 @@ class CalendarUnit:
                 for member_name in group_members:
                     group_x.set_memberlink(memberlink_shop(name=member_name))
                 calendar_x.set_groupunit(group_x)
+
+        # Get all task ideas with AssignedUnit for assignor
+        calendar_x.set_groupunits_empty_if_null()
+        assignor_groups = get_member_relevant_groups(calendar_x._groups, assignor_name)
+        assignor_promise_ideas = {
+            idea_road: -1
+            for idea_road, idea_x in self._idea_dict.items()
+            if (idea_x.assignor_in(assignor_groups) and idea_x.promise)
+        }
 
         return calendar_x
 

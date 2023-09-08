@@ -926,6 +926,9 @@ class IdeaCore:
         self.set_assignedunit_empty_if_null()
         return self._assignedunit.get_dict()
 
+    def assignor_in(self, groupnames: dict[GroupName:-1]):
+        return self._assignedheir.group_in(groupnames)
+
 
 @dataclasses.dataclass
 class IdeaKid(IdeaCore):
