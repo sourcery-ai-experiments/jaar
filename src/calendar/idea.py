@@ -22,7 +22,7 @@ from src.calendar.required_idea import (
     find_replace_road_key_dict,
 )
 from src.calendar.road import (
-    is_sub_road_in_source_road,
+    is_sub_road,
     get_global_root_label as root_label,
 )
 from src.calendar.group import (
@@ -888,11 +888,11 @@ class IdeaCore:
         }
 
     def find_replace_road(self, old_road: Road, new_road: Road):
-        if is_sub_road_in_source_road(ref_road=self._walk, sub_road=old_road):
+        if is_sub_road(ref_road=self._walk, sub_road=old_road):
             self._walk = change_road(self._walk, old_road, new_road)
-        if is_sub_road_in_source_road(ref_road=self._special_road, sub_road=old_road):
+        if is_sub_road(ref_road=self._special_road, sub_road=old_road):
             self._special_road = change_road(self._special_road, old_road, new_road)
-        if is_sub_road_in_source_road(ref_road=self._numeric_road, sub_road=old_road):
+        if is_sub_road(ref_road=self._numeric_road, sub_road=old_road):
             self._numeric_road = change_road(self._numeric_road, old_road, new_road)
 
         self.set_requiredunits_empty_if_null()

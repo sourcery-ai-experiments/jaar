@@ -52,7 +52,7 @@ from src.calendar.hreg_time import (
 from src.calendar.lemma import Lemmas
 from src.calendar.road import (
     get_walk_from_road,
-    is_sub_road_in_source_road,
+    is_sub_road,
     road_validate,
     change_road,
     get_terminus_node_from_road,
@@ -211,7 +211,16 @@ class CalendarUnit:
                 required_base = requiredunit_obj.base
                 if to_evaluate_hx_dict.get(required_base) is None:
                     to_evaluate_list.append(required_base)
-                    to_evaluate_hx_dict[required_base] = "requiredunit"
+                    to_evaluate_hx_dict[required_base] = "requiredunit_base"
+
+                    for road_y in self._idea_dict:
+                        if (
+                            is_sub_road(road_y, required_base)
+                            and road_y != required_base
+                        ):
+                            if to_evaluate_hx_dict.get(road_y) is None:
+                                to_evaluate_list.append(road_y)
+                                to_evaluate_hx_dict[road_y] = "requiredunit_descendant"
 
             #     requiredunit_base_road_list.extend(get_ancestor_roads(required_base))
             #     requiredunit_base_road_list.extend(
@@ -758,7 +767,7 @@ class CalendarUnit:
             self._get_rangeroot_acptfactunits()
         )
 
-        # Now collect associates (all their descendents and special_roads)
+        # Now collect associates (all their descendants and special_roads)
         lemma_acptfactunits = {}  # acptfact.base : acptfactUnit
         count_x = 0
         while lemmas_x.is_lemmas_evaluated() == False or count_x > 10000:
@@ -820,10 +829,10 @@ class CalendarUnit:
             and acptfact_idea._close != None
             and self._is_idea_rangeroot(idea_road=base) == True
         ):
-            # when idea is "range-root" identify any required.bases that are descendents
-            # calculate and set those descendent acptfacts
+            # when idea is "range-root" identify any required.bases that are descendants
+            # calculate and set those descendant acptfacts
             # example: timeline range (0-, 1.5e9) is range-root
-            # example: "timeline,weeks" (spllt 10080) is range-descendent
+            # example: "timeline,weeks" (spllt 10080) is range-descendant
             # there exists a required base "timeline,weeks" with sufffact.need = "timeline,weeks"
             # and (1,2) divisor=2 (every other week)
             #
@@ -834,7 +843,7 @@ class CalendarUnit:
                 base=base, pick=pick, open=open, nigh=nigh
             )
 
-            # Find all AcptFact descendents and any special_road connections "Lemmas"
+            # Find all AcptFact descendants and any special_road connections "Lemmas"
             lemmas_dict = self._get_lemma_acptfactunits()
             for current_acptfact in self._idearoot._acptfactunits.values():
                 for lemma_acptfact in lemmas_dict.values():
@@ -1128,7 +1137,7 @@ class CalendarUnit:
             if listed_idea._kids != None:
                 for idea_kid in listed_idea._kids.values():
                     idea_iter_list.append(idea_kid)
-                    if is_sub_road_in_source_road(
+                    if is_sub_road(
                         ref_road=idea_kid._walk,
                         sub_road=old_road,
                     ):
@@ -1832,7 +1841,7 @@ class CalendarUnit:
             if road.find(road_x) == 0
         ]
 
-    def get_idea_tree_ordered_road_list(self, no_range_descendents: bool = False):
+    def get_idea_tree_ordered_road_list(self, no_range_descendants: bool = False):
         idea_list = self.get_idea_list()
         node_dict = {idea.get_road().lower(): idea.get_road() for idea in idea_list}
         node_lowercase_ordered_list = sorted(list(node_dict))
@@ -1842,7 +1851,7 @@ class CalendarUnit:
 
         list_x = []
         for road in node_orginalcase_ordered_list:
-            if not no_range_descendents:
+            if not no_range_descendants:
                 list_x.append(road)
             else:
                 anc_list = get_ancestor_roads(road=road)

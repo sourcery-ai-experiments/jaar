@@ -1,7 +1,7 @@
 from src.calendar.road import (
     Road,
     change_road,
-    is_sub_road_in_source_road,
+    is_sub_road,
     get_all_road_nodes_in_list,
     get_terminus_node_from_road,
     find_replace_road_key_dict,
@@ -23,16 +23,16 @@ def test_road_exists():
     assert new_obj == ""
 
 
-def test_road_is_sub_road_in_source_road_correctlyReturnsBool():
+def test_road_is_sub_road_correctlyReturnsBool():
     person = "person"
     bloomers_text = "bloomers"
     bloomers_road = f"{root_label()},{person},{bloomers_text}"
     roses_text = "roses"
     roses_road = f"{root_label()},{person},{bloomers_text},{roses_text}"
 
-    assert is_sub_road_in_source_road(bloomers_road, bloomers_road)
-    assert is_sub_road_in_source_road(roses_road, bloomers_road)
-    assert is_sub_road_in_source_road(bloomers_road, roses_road) == False
+    assert is_sub_road(bloomers_road, bloomers_road)
+    assert is_sub_road(roses_road, bloomers_road)
+    assert is_sub_road(bloomers_road, roses_road) == False
 
 
 def test_road_road_validate_correctlyReturnsRoad():

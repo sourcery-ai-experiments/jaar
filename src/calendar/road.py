@@ -13,7 +13,7 @@ def change_road(current_road: Road, old_road: Road, new_road: Road):
         return current_road.replace(old_road, new_road, 1)
 
 
-def is_sub_road_in_source_road(ref_road: Road, sub_road: Road):
+def is_sub_road(ref_road: Road, sub_road: Road):
     if ref_road is None:
         ref_road = ""
     return ref_road.find(sub_road) == 0
@@ -24,10 +24,10 @@ def find_replace_road_key_dict(dict_x: dict, old_road: Road, new_road: Road):
     objs_to_add = []
     for x_key, x_obj in dict_x.items():
         # rint(f"{x_key=} {old_road=} {new_road=}")
-        if is_sub_road_in_source_road(ref_road=x_key, sub_road=old_road):
+        if is_sub_road(ref_road=x_key, sub_road=old_road):
             #  or (
             #     key_is_last_node
-            #     and is_sub_road_in_source_road(
+            #     and is_sub_road(
             #         ref_road=Road(f"{x_obj._walk},{x_obj._label}"), sub_road=old_road
             #     )
             # changed_road = change_road(

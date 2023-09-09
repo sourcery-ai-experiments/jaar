@@ -293,12 +293,22 @@ def test_calendar__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
     clean_text = "clean"
     clean_road = f"{status_road},{clean_text}"
     clean_idea = IdeaKid(_label=clean_text)
-    cx.add_idea(idea_kid=clean_idea, walk=clean_road)
+    cx.add_idea(idea_kid=clean_idea, walk=status_road)
+
+    really_text = "really"
+    really_road = f"{clean_road},{really_text}"
+    really_idea = IdeaKid(_label=really_text)
+    cx.add_idea(idea_kid=really_idea, walk=clean_road)
+
+    kinda_text = "kinda"
+    kinda_road = f"{clean_road},{kinda_text}"
+    kinda_idea = IdeaKid(_label=kinda_text)
+    cx.add_idea(idea_kid=kinda_idea, walk=clean_road)
 
     dirty_text = "dirty"
     dirty_road = f"{status_road},{dirty_text}"
     dirty_idea = IdeaKid(_label=dirty_text)
-    cx.add_idea(idea_kid=dirty_idea, walk=dirty_road)
+    cx.add_idea(idea_kid=dirty_idea, walk=status_road)
 
     floor_required = RequiredUnit(base=status_road, sufffacts={})
     floor_required.set_sufffact(sufffact=status_road)
@@ -311,7 +321,11 @@ def test_calendar__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
 
     # THEN
     print(f"{relevant_roads=}")
-    assert len(relevant_roads) == 6
+    assert len(relevant_roads) == 8
+    assert relevant_roads.get(clean_road) != None
+    assert relevant_roads.get(dirty_road) != None
+    assert relevant_roads.get(kinda_road) != None
+    assert relevant_roads.get(really_road) != None
     assert relevant_roads == {
         root_label(): -1,
         casa_road: -1,
@@ -319,6 +333,8 @@ def test_calendar__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
         floor_road: -1,
         clean_road: -1,
         dirty_road: -1,
+        really_road: -1,
+        kinda_road: -1,
     }
     assert relevant_roads.get(unim_road) is None
 
