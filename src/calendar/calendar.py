@@ -182,7 +182,7 @@ class CalendarUnit:
         # TODO grab acptfacts
         return cx
 
-    def _get_relevant_roads(self, roads: dict[Road:]) -> set[Road]:
+    def _get_relevant_roads(self, roads: dict[Road:]) -> dict[Road:str]:
         to_evaluate_list = []
         to_evaluate_hx_dict = {}
         for road_x in roads:
@@ -190,7 +190,6 @@ class CalendarUnit:
             to_evaluate_hx_dict[road_x] = "given"
         evaluated_roads = {}
 
-        count_x = 0
         # tree_metrics = self.get_tree_metrics()
         # while roads_to_evaluate != [] and count_x <= tree_metrics.node_count:
         # changed because count_x might be wrong way to measure
@@ -198,18 +197,7 @@ class CalendarUnit:
         while to_evaluate_list != []:
             road_x = to_evaluate_list.pop()
 
-            forefather_roads = get_forefather_roads(road_x)
-            for forefather_road in forefather_roads:
-                self._evaluate_relevancy(
-                    to_evaluate_list=to_evaluate_list,
-                    to_evaluate_hx_dict=to_evaluate_hx_dict,
-                    to_evaluate_road=forefather_road,
-                    road_type="forefather",
-                )
-
-            # time to evaluate ancestor
             idea_x = self.get_idea_kid(road=road_x)
-            # requiredunit_base_road_list = []
             for requiredunit_obj in idea_x._requiredunits.values():
                 required_base = requiredunit_obj.base
                 self._evaluate_relevancy(
@@ -235,12 +223,16 @@ class CalendarUnit:
                     road_type="range_source_road",
                 )
 
-            evaluated_roads[road_x] = -1
+            forefather_roads = get_forefather_roads(road_x)
+            for forefather_road in forefather_roads:
+                self._evaluate_relevancy(
+                    to_evaluate_list=to_evaluate_list,
+                    to_evaluate_hx_dict=to_evaluate_hx_dict,
+                    to_evaluate_road=forefather_road,
+                    road_type="forefather",
+                )
 
-            # idea_assoc_dict.extend(get_ancestor_roads(road=road_x))
-            # idea_assoc_dict.extend(requiredunit_base_road_list)
-            count_x += 1
-        print(f"Total while loop runs= {count_x}")
+            evaluated_roads[road_x] = -1
         return evaluated_roads
 
     def _evaluate_relevancy(
@@ -2132,9 +2124,29 @@ class CalendarUnit:
         calendar_x = self._get_assignment_calendar_groups(calendar_x, self._groups)
         assignor_promises = self._get_assignor_promise_ideas(calendar_x, assignor_name)
         relevant_roads = self._get_relevant_roads(assignor_promises)
+        self._set_assignment_calendar_ideas(calendar_x, relevant_roads)
         # for road in relevant_roads:
         # add_idea_kid()
 
+        return calendar_x
+
+    def _set_assignment_calendar_ideas(
+        self, calendar_x, relevant_roads: dict[Road:str]
+    ):
+        sorted_relevants = sorted(list(relevant_roads))
+        # don't know how to handle root idea attributes...
+        if sorted_relevants != []:
+            root_road = sorted_relevants.pop(0)
+
+        for relevant_road in sorted_relevants:
+            relevant_idea = copy_deepcopy(self.get_idea_kid(relevant_road))
+            # if relevant_roads.get(relevant_road) == "descendant":
+            #     relevant_idea._requiredunits = {}
+            #     relevant_idea._kids = {}
+            #     calendar_x.add_idea(idea_kid=relevant_idea, walk=relevant_idea._walk)
+            # elif relevant_roads.get(relevant_road) != "descendant":
+            relevant_idea._kids = {}
+            calendar_x.add_idea(idea_kid=relevant_idea, walk=relevant_idea._walk)
         return calendar_x
 
     def _get_assignment_calendar_members(

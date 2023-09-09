@@ -364,3 +364,50 @@ def get_calendar_irrational_example() -> CalendarUnit:
     )
 
     return calendar_x
+
+
+def get_assignment_calendar_example1():
+    owner_text = "Neo"
+    cx = CalendarUnit(_owner=owner_text)
+    casa_text = "casa"
+    casa_road = f"{root_label()},{casa_text}"
+    floor_text = "mop floor"
+    floor_road = f"{casa_road},{floor_text}"
+    floor_idea = IdeaKid(_label=floor_text, promise=True)
+    cx.add_idea(idea_kid=floor_idea, walk=casa_road)
+
+    unim_text = "unimportant"
+    unim_road = f"{root_label()},{unim_text}"
+    unim_idea = IdeaKid(_label=unim_text)
+    cx.add_idea(idea_kid=unim_idea, walk=root_label())
+
+    status_text = "cleaniness status"
+    status_road = f"{casa_road},{status_text}"
+    status_idea = IdeaKid(_label=status_text)
+    cx.add_idea(idea_kid=status_idea, walk=casa_road)
+
+    clean_text = "clean"
+    clean_road = f"{status_road},{clean_text}"
+    clean_idea = IdeaKid(_label=clean_text)
+    cx.add_idea(idea_kid=clean_idea, walk=status_road)
+
+    really_text = "really"
+    really_road = f"{clean_road},{really_text}"
+    really_idea = IdeaKid(_label=really_text)
+    cx.add_idea(idea_kid=really_idea, walk=clean_road)
+
+    kinda_text = "kinda"
+    kinda_road = f"{clean_road},{kinda_text}"
+    kinda_idea = IdeaKid(_label=kinda_text)
+    cx.add_idea(idea_kid=kinda_idea, walk=clean_road)
+
+    dirty_text = "dirty"
+    dirty_road = f"{status_road},{dirty_text}"
+    dirty_idea = IdeaKid(_label=dirty_text)
+    cx.add_idea(idea_kid=dirty_idea, walk=status_road)
+
+    floor_required = RequiredUnit(base=status_road, sufffacts={})
+    floor_required.set_sufffact(sufffact=status_road)
+    cx.edit_idea_attr(road=floor_road, required=floor_required)
+
+    return cx

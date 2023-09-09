@@ -7,6 +7,7 @@ from src.calendar.road import get_global_root_label as root_label
 from src.calendar.examples.example_calendars import (
     get_calendar_with_4_levels as example_calendars_get_calendar_with_4_levels,
     get_calendar_with7amCleanTableRequired as example_calendars_get_calendar_with7amCleanTableRequired,
+    get_assignment_calendar_example1 as example_calendar_get_assignment_calendar_example1,
 )
 
 
@@ -255,48 +256,29 @@ def test_calendar__get_relevant_roads_ReturnsSimpleRequiredUnitBase():
 
 def test_calendar__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
     # GIVEN
-    owner_text = "Neo"
-    cx = CalendarUnit(_owner=owner_text)
+    cx = example_calendar_get_assignment_calendar_example1()
     casa_text = "casa"
     casa_road = f"{root_label()},{casa_text}"
     floor_text = "mop floor"
     floor_road = f"{casa_road},{floor_text}"
-    floor_idea = IdeaKid(_label=floor_text)
-    cx.add_idea(idea_kid=floor_idea, walk=casa_road)
 
     unim_text = "unimportant"
     unim_road = f"{root_label()},{unim_text}"
-    unim_idea = IdeaKid(_label=unim_text)
-    cx.add_idea(idea_kid=unim_idea, walk=root_label())
 
     status_text = "cleaniness status"
     status_road = f"{casa_road},{status_text}"
-    status_idea = IdeaKid(_label=status_text)
-    cx.add_idea(idea_kid=status_idea, walk=casa_road)
 
     clean_text = "clean"
     clean_road = f"{status_road},{clean_text}"
-    clean_idea = IdeaKid(_label=clean_text)
-    cx.add_idea(idea_kid=clean_idea, walk=status_road)
 
     really_text = "really"
     really_road = f"{clean_road},{really_text}"
-    really_idea = IdeaKid(_label=really_text)
-    cx.add_idea(idea_kid=really_idea, walk=clean_road)
 
     kinda_text = "kinda"
     kinda_road = f"{clean_road},{kinda_text}"
-    kinda_idea = IdeaKid(_label=kinda_text)
-    cx.add_idea(idea_kid=kinda_idea, walk=clean_road)
 
     dirty_text = "dirty"
     dirty_road = f"{status_road},{dirty_text}"
-    dirty_idea = IdeaKid(_label=dirty_text)
-    cx.add_idea(idea_kid=dirty_idea, walk=status_road)
-
-    floor_required = RequiredUnit(base=status_road, sufffacts={})
-    floor_required.set_sufffact(sufffact=status_road)
-    cx.edit_idea_attr(road=floor_road, required=floor_required)
 
     # WHEN
     cx.set_calendar_metrics()
@@ -392,15 +374,71 @@ def test_calendar__get_relevant_roads_range_source_road_ReturnSimple():
     assert relevant_roads.get(day_len_road) != None
     assert relevant_roads.get(min_days_road) != None
     assert relevant_roads.get(root_label()) != None
-    # assert relevant_roads == {
-    #     root_label(): -1,
-    #     work_road: -1,
-    #     day_road: -1,
-    # }
-    min_days_idea = cx.get_idea_kid(road=min_days_road)
-    print(f"{min_days_idea=}")
-    assert 1 == 2
+    # min_days_idea = cx.get_idea_kid(road=min_days_road)
+    # print(f"{min_days_idea=}")
+    # assert 1 == 2
 
 
-def test_calendar__get_relevant_roads_numeric_road_range_source_road_ReturnEntireRangeTree():
-    pass
+# def test_calendar__get_relevant_roads_numeric_road_range_source_road_ReturnEntireRangeTree():
+#
+def test_calendar__set_assignment_calendar_ideas_ReturnsCorrectIdeas():
+    # GIVEN
+    yao_text = "Yao"
+    cx = CalendarUnit(_owner=yao_text)
+    casa_text = "casa"
+    casa_road = f"{root_label()},{casa_text}"
+    cx.add_idea(IdeaKid(_label=casa_text), walk=root_label())
+
+    # WHEN
+    bob_text = "Bob"
+    empty_calendar = CalendarUnit(_owner=bob_text)
+    relevant_roads = {root_label(): "descendant", casa_road: "requirementunit_base"}
+    assignment_x = cx._set_assignment_calendar_ideas(
+        calendar_x=empty_calendar, relevant_roads=relevant_roads
+    )
+
+    # THEN
+    assignment_x.set_calendar_metrics()
+    print(f"{assignment_x._idea_dict.keys()=}")
+    assert len(assignment_x._idea_dict) == 2
+    assert assignment_x.get_idea_kid(casa_road) != None
+
+
+def test_calendar_get_assignment_getsCorrectIdeas_scenario1():
+    # GIVEN
+    casa_text = "casa"
+    casa_road = f"{root_label()},{casa_text}"
+    floor_text = "mop floor"
+    floor_road = f"{casa_road},{floor_text}"
+    unim_text = "unimportant"
+    unim_road = f"{root_label()},{unim_text}"
+    status_text = "cleaniness status"
+    status_road = f"{casa_road},{status_text}"
+    clean_text = "clean"
+    clean_road = f"{status_road},{clean_text}"
+    really_text = "really"
+    really_road = f"{clean_road},{really_text}"
+    kinda_text = "kinda"
+    kinda_road = f"{clean_road},{kinda_text}"
+    dirty_text = "dirty"
+    dirty_road = f"{status_road},{dirty_text}"
+    cx = example_calendar_get_assignment_calendar_example1()
+    bob_text = "Bob"
+    cx.add_memberunit(name=bob_text)
+
+    # WHEN
+    assignment_x = cx.get_assignment(
+        empty_calendar=CalendarUnit(_owner=bob_text),
+        assignor_members={bob_text: -1},
+        assignor_name=bob_text,
+    )
+
+    # THEN
+    assignment_x.set_calendar_metrics()
+    print(f"{assignment_x._idea_dict.keys()=}")
+    assert len(assignment_x._idea_dict) == 8
+    assert assignment_x._idea_dict.get(clean_road) != None
+    assert assignment_x._idea_dict.get(dirty_road) != None
+    assert assignment_x._idea_dict.get(kinda_road) != None
+    assert assignment_x._idea_dict.get(really_road) != None
+    assert assignment_x._idea_dict.get(unim_road) is None
