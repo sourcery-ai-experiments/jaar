@@ -84,7 +84,7 @@ def road_validate(road: Road) -> Road:
     )
 
 
-def get_ancestor_roads(road: Road) -> list:
+def get_ancestor_roads(road: Road) -> list[Road:None]:
     if road is None:
         return []
     nodes = get_all_road_nodes_in_list(road)
@@ -100,6 +100,20 @@ def get_ancestor_roads(road: Road) -> list:
     while temp_roads != []:
         x_roads.append(temp_roads.pop(len(temp_roads) - 1))
     return x_roads
+
+
+class ForeFatherException(Exception):
+    pass
+
+
+def get_forefather_roads(road: Road) -> dict[Road]:
+    ancestor_roads = get_ancestor_roads(road=road)
+    popped_road = ancestor_roads.pop(0)
+    if popped_road != road:
+        raise ForeFatherException(
+            f"Incorrect road {popped_road} removed from forefather_roads"
+        )
+    return {a_road: None for a_road in ancestor_roads}
 
 
 def get_global_root_label() -> str:

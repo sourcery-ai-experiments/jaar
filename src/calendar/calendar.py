@@ -61,6 +61,7 @@ from src.calendar.road import (
     get_global_root_label as root_label,
     get_road_from_nodes,
     get_all_road_nodes_in_list,
+    get_forefather_roads,
 )
 from src.calendar.origin import originunit_get_from_dict, originunit_shop, OriginUnit
 from copy import deepcopy as copy_deepcopy
@@ -169,7 +170,7 @@ class CalendarUnit:
         new_weight = self._weight * idea_x._calendar_importance
         cx = CalendarUnit(_owner=self._idearoot._label, _weight=new_weight)
 
-        for road_assc in sorted(list(self._get_relevant_roads(road))):
+        for road_assc in sorted(list(self._get_relevant_roads({road}))):
             src_yx = self.get_idea_kid(road=road_assc)
             new_yx = copy_deepcopy(src_yx)
             if new_yx._walk != "":
@@ -181,23 +182,51 @@ class CalendarUnit:
         # TODO grab acptfacts
         return cx
 
-    def _get_relevant_roads(self, road: Road) -> set[Road]:
-        idea_ancestor_list = get_ancestor_roads(road=road)
-        idea_x = self.get_idea_kid(road=road)
-        requiredunit_base_road_list = []
+    def _get_relevant_roads(self, roads: dict[Road:]) -> set[Road]:
+        to_evaluate_list = []
+        to_evaluate_hx_dict = {}
+        for road_x in roads:
+            to_evaluate_list.append(road_x)
+            to_evaluate_hx_dict[road_x] = "given"
+        evaluated_roads = {}
 
-        for requiredunit_obj in idea_x._requiredunits.values():
-            required_base = requiredunit_obj.base
-            requiredunit_base_road_list.extend(get_ancestor_roads(required_base))
-            requiredunit_base_road_list.extend(self.get_heir_road_list(required_base))
+        count_x = 0
+        # tree_metrics = self.get_tree_metrics()
+        # while roads_to_evaluate != [] and count_x <= tree_metrics.nodeCount:
+        # changed because count_x might be wrong way to measure
+        # nice to avoid infinite loops from programming errors though...
+        while to_evaluate_list != []:
+            road_x = to_evaluate_list.pop()
 
-        idea_assoc_list = [road]
-        idea_assoc_list.extend(idea_ancestor_list)
-        idea_assoc_list.extend(requiredunit_base_road_list)
-        return set(idea_assoc_list)
+            forefather_roads = get_forefather_roads(road_x)
+            for forefather_road in forefather_roads:
+                if to_evaluate_hx_dict.get(forefather_road) is None:
+                    to_evaluate_list.append(forefather_road)
+                    to_evaluate_hx_dict[forefather_road] = "forefather"
+
+            # time to evaluate ancestor
+            idea_x = self.get_idea_kid(road=road_x)
+            # requiredunit_base_road_list = []
+            for requiredunit_obj in idea_x._requiredunits.values():
+                required_base = requiredunit_obj.base
+                if to_evaluate_hx_dict.get(required_base) is None:
+                    to_evaluate_list.append(required_base)
+                    to_evaluate_hx_dict[required_base] = "requiredunit"
+
+            #     requiredunit_base_road_list.extend(get_ancestor_roads(required_base))
+            #     requiredunit_base_road_list.extend(
+            #         self.get_heir_road_list(required_base)
+            #     )
+            evaluated_roads[road_x] = -1
+
+            # idea_assoc_dict.extend(get_ancestor_roads(road=road_x))
+            # idea_assoc_dict.extend(requiredunit_base_road_list)
+            count_x += 1
+        print(f"Total while loop runs= {count_x}")
+        return evaluated_roads
 
     def all_ideas_relevant_to_promise_idea(self, road: Road) -> bool:
-        promise_idea_assoc_set = set(self._get_relevant_roads(road=road))
+        promise_idea_assoc_set = set(self._get_relevant_roads({road}))
         all_ideas_set = set(self.get_idea_tree_ordered_road_list())
         return all_ideas_set == all_ideas_set.intersection(promise_idea_assoc_set)
 
@@ -2060,6 +2089,8 @@ class CalendarUnit:
         )
         calendar_x = self._get_assignment_calendar_groups(calendar_x, self._groups)
         assignor_promises = self._get_assignor_promise_ideas(calendar_x, assignor_name)
+        print(f"{assignor_promises=}")
+        relevant_roads = self._get_relevant_roads(assignor_promises)
 
         return calendar_x
 

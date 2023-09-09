@@ -180,16 +180,147 @@ def test_calendar__get_assignor_promise_ideas_ReturnsCorrectIdeaRoads():
     assert assignor_promises == x_dict
 
 
-def test_calendar__get_relevant_roads_SimpleReturnsOnlyItself():
-    pass
+def test_calendar__get_relevant_roads_EmptyRoadReturnsEmpty():
+    # GIVEN
+    cx = example_calendars_get_calendar_with_4_levels()
+    cx.set_calendar_metrics()
+
+    # WHEN
+    relevant_roads = cx._get_relevant_roads({})
+
+    # THEN
+    print(f"{relevant_roads=}")
+    assert len(relevant_roads) == 0
+    assert relevant_roads == {}
+
+
+def test_calendar__get_relevant_roads_RootRoadReturnsOnlyItself():
+    # GIVEN
+    cx = example_calendars_get_calendar_with_4_levels()
+    cx.set_calendar_metrics()
+
+    # WHEN
+    root_dict = {root_label(): -1}
+    relevant_roads = cx._get_relevant_roads(root_dict)
+
+    # THEN
+    print(f"{relevant_roads=}")
+    assert len(relevant_roads) == 1
+    assert relevant_roads == {root_label(): -1}
+
+
+def test_calendar__get_relevant_roads_SimpleReturnsOnlyAncestors():
+    # GIVEN
+    cx = example_calendars_get_calendar_with_4_levels()
+    cx.set_calendar_metrics()
+
+    # WHEN
+    week_text = "weekdays"
+    week_road = f"{root_label()},{week_text}"
+    sun_text = "Sunday"
+    sun_road = f"{week_road},{sun_text}"
+    sun_dict = {sun_road}
+    relevant_roads = cx._get_relevant_roads(sun_dict)
+
+    # THEN
+    print(f"{relevant_roads=}")
+    assert len(relevant_roads) == 3
+    assert relevant_roads == {root_label(): -1, sun_road: -1, week_road: -1}
 
 
 def test_calendar__get_relevant_roads_ReturnsSimpleRequiredUnitBase():
-    pass
+    # GIVEN
+    owner_text = "Neo"
+    cx = CalendarUnit(_owner=owner_text)
+    casa_text = "casa"
+    casa_road = f"{root_label()},{casa_text}"
+    floor_text = "mop floor"
+    floor_road = f"{casa_road},{floor_text}"
+    floor_idea = IdeaKid(_label=floor_text)
+    cx.add_idea(idea_kid=floor_idea, walk=casa_road)
+
+    unim_text = "unimportant"
+    unim_road = f"{root_label()},{unim_text}"
+    unim_idea = IdeaKid(_label=unim_text)
+    cx.add_idea(idea_kid=unim_idea, walk=root_label())
+
+    status_text = "cleaniness status"
+    status_road = f"{casa_road},{status_text}"
+    status_idea = IdeaKid(_label=status_text)
+    cx.add_idea(idea_kid=status_idea, walk=casa_road)
+    floor_required = RequiredUnit(base=status_road, sufffacts={})
+    floor_required.set_sufffact(sufffact=status_road)
+    cx.edit_idea_attr(road=floor_road, required=floor_required)
+
+    # WHEN
+    cx.set_calendar_metrics()
+    floor_dict = {floor_road}
+    relevant_roads = cx._get_relevant_roads(floor_dict)
+
+    # THEN
+    print(f"{relevant_roads=}")
+    assert len(relevant_roads) == 4
+    assert relevant_roads == {
+        root_label(): -1,
+        casa_road: -1,
+        status_road: -1,
+        floor_road: -1,
+    }
+    assert relevant_roads.get(unim_road) is None
 
 
 def test_calendar__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
-    pass
+    # GIVEN
+    owner_text = "Neo"
+    cx = CalendarUnit(_owner=owner_text)
+    casa_text = "casa"
+    casa_road = f"{root_label()},{casa_text}"
+    floor_text = "mop floor"
+    floor_road = f"{casa_road},{floor_text}"
+    floor_idea = IdeaKid(_label=floor_text)
+    cx.add_idea(idea_kid=floor_idea, walk=casa_road)
+
+    unim_text = "unimportant"
+    unim_road = f"{root_label()},{unim_text}"
+    unim_idea = IdeaKid(_label=unim_text)
+    cx.add_idea(idea_kid=unim_idea, walk=root_label())
+
+    status_text = "cleaniness status"
+    status_road = f"{casa_road},{status_text}"
+    status_idea = IdeaKid(_label=status_text)
+    cx.add_idea(idea_kid=status_idea, walk=casa_road)
+
+    clean_text = "clean"
+    clean_road = f"{status_road},{clean_text}"
+    clean_idea = IdeaKid(_label=clean_text)
+    cx.add_idea(idea_kid=clean_idea, walk=clean_road)
+
+    dirty_text = "dirty"
+    dirty_road = f"{status_road},{dirty_text}"
+    dirty_idea = IdeaKid(_label=dirty_text)
+    cx.add_idea(idea_kid=dirty_idea, walk=dirty_road)
+
+    floor_required = RequiredUnit(base=status_road, sufffacts={})
+    floor_required.set_sufffact(sufffact=status_road)
+    cx.edit_idea_attr(road=floor_road, required=floor_required)
+
+    # WHEN
+    cx.set_calendar_metrics()
+    floor_dict = {floor_road}
+    relevant_roads = cx._get_relevant_roads(floor_dict)
+
+    # THEN
+    print(f"{relevant_roads=}")
+    assert len(relevant_roads) == 6
+    assert relevant_roads == {
+        root_label(): -1,
+        casa_road: -1,
+        status_road: -1,
+        floor_road: -1,
+        clean_road: -1,
+        dirty_road: -1,
+    }
+    assert relevant_roads.get(unim_road) is None
 
 
 def test_calendar__get_relevant_roads_ReturnsRequiredUnitBaseRecursively():

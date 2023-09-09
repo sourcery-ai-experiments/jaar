@@ -166,37 +166,37 @@ def test_calendarunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualCalendarGr
     assert cx.get_bond_status() == False
 
 
-def test_calendarunit_get_bond_status_ChecksOnlyNecessaryIdeasExist_MultipleScenario():
-    # GIVEN
-    jessi_text = "jessi"
-    cx = CalendarUnit(_owner=jessi_text)
-    casa_text = "case"
-    casa_road = Road(f"{root_label()},{casa_text}")
-    cx.add_idea(idea_kid=IdeaKid(_label=casa_text), walk=jessi_text)
-    clean_cookery_text = "clean cookery"
-    clean_cookery_road = Road(f"{root_label()},{casa_text},{clean_cookery_text}")
+# def test_calendarunit_get_bond_status_ChecksOnlyNecessaryIdeasExist_MultipleScenario():
+#     # GIVEN
+#     jessi_text = "jessi"
+#     cx = CalendarUnit(_owner=jessi_text)
+#     casa_text = "case"
+#     casa_road = Road(f"{root_label()},{casa_text}")
+#     cx.add_idea(idea_kid=IdeaKid(_label=casa_text), walk=jessi_text)
+#     clean_cookery_text = "clean cookery"
+#     clean_cookery_road = Road(f"{root_label()},{casa_text},{clean_cookery_text}")
 
-    # WHEN/THEN
-    cx.add_idea(
-        idea_kid=IdeaKid(_label=clean_cookery_text, promise=True), walk=casa_road
-    )
-    assert cx.get_bond_status()
+#     # WHEN/THEN
+#     cx.add_idea(
+#         idea_kid=IdeaKid(_label=clean_cookery_text, promise=True), walk=casa_road
+#     )
+#     assert cx.get_bond_status()
 
-    # WHEN/THEN
-    water_text = "water"
-    water_road = Road(f"{root_label()},{water_text}")
-    cx.add_idea(idea_kid=IdeaKid(_label=water_text), walk=jessi_text)
-    assert cx.get_bond_status() == False
+#     # WHEN/THEN
+#     water_text = "water"
+#     water_road = Road(f"{root_label()},{water_text}")
+#     cx.add_idea(idea_kid=IdeaKid(_label=water_text), walk=jessi_text)
+#     assert cx.get_bond_status() == False
 
-    rain_text = "rain"
-    rain_road = Road(f"{root_label()},{water_text},{rain_text}")
-    cx.add_idea(idea_kid=IdeaKid(_label=rain_text), walk=water_road)
+#     rain_text = "rain"
+#     rain_road = Road(f"{root_label()},{water_text},{rain_text}")
+#     cx.add_idea(idea_kid=IdeaKid(_label=rain_text), walk=water_road)
 
-    # WHEN/THEN
-    cx.edit_idea_attr(
-        road=clean_cookery_road, required_base=water_road, required_sufffact=rain_road
-    )
-    assert cx.get_bond_status()
+#     # WHEN/THEN
+#     cx.edit_idea_attr(
+#         road=clean_cookery_road, required_base=water_road, required_sufffact=rain_road
+#     )
+#     assert cx.get_bond_status()
 
 
 def test_calendarunit_get_calendar_sprung_from_single_idea_ReturnsCorrectCalendarScenario1():

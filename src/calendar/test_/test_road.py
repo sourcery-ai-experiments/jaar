@@ -9,6 +9,7 @@ from src.calendar.road import (
     get_road_without_root_node,
     road_validate,
     get_ancestor_roads,
+    get_forefather_roads,
     get_global_root_label as root_label,
     get_road_from_nodes,
 )
@@ -198,16 +199,38 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
 
 
 def test_road_get_ancestor_roads_CorrectlyReturnsAncestorRoads():
-    road = f"{root_label()},nation-state,USA,Texas"
-    x_roads = get_ancestor_roads(road=road)
+    # GIVEN
+    road_x = f"{root_label()},nation-state,USA,Texas"
+
+    # WHEN
+    x_roads = get_ancestor_roads(road=road_x)
+
+    # THEN
     assert x_roads != None
     texas_ancestor_roads = [
-        f"{root_label()},nation-state,USA,Texas",
+        road_x,
         f"{root_label()},nation-state,USA",
         f"{root_label()},nation-state",
         f"{root_label()}",
     ]
     assert x_roads == texas_ancestor_roads
+
+
+def test_road_get_forefather_roads_CorrectlyReturnsAncestorRoadsWithoutSource():
+    # GIVEN
+    road_x = f"{root_label()},nation-state,USA,Texas"
+
+    # WHEN
+    x_roads = get_forefather_roads(road=road_x)
+
+    # THEN
+    assert x_roads != None
+    texas_forefather_roads = {
+        f"{root_label()},nation-state,USA": None,
+        f"{root_label()},nation-state": None,
+        f"{root_label()}": None,
+    }
+    assert x_roads == texas_forefather_roads
 
 
 def test_road_get_global_root_label_ReturnsCorrectObj():
