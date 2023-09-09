@@ -200,32 +200,25 @@ class CalendarUnit:
 
             forefather_roads = get_forefather_roads(road_x)
             for forefather_road in forefather_roads:
-                if to_evaluate_hx_dict.get(forefather_road) is None:
-                    to_evaluate_list.append(forefather_road)
-                    to_evaluate_hx_dict[forefather_road] = "forefather"
+                self._evaluate_relevancy(
+                    to_evaluate_list=to_evaluate_list,
+                    to_evaluate_hx_dict=to_evaluate_hx_dict,
+                    to_evaluate_road=forefather_road,
+                    road_type="forefather",
+                )
 
             # time to evaluate ancestor
             idea_x = self.get_idea_kid(road=road_x)
             # requiredunit_base_road_list = []
             for requiredunit_obj in idea_x._requiredunits.values():
                 required_base = requiredunit_obj.base
-                if to_evaluate_hx_dict.get(required_base) is None:
-                    to_evaluate_list.append(required_base)
-                    to_evaluate_hx_dict[required_base] = "requiredunit_base"
+                self._evaluate_relevancy(
+                    to_evaluate_list=to_evaluate_list,
+                    to_evaluate_hx_dict=to_evaluate_hx_dict,
+                    to_evaluate_road=required_base,
+                    road_type="requiredunit_base",
+                )
 
-                    for road_y in self._idea_dict:
-                        if (
-                            is_sub_road(road_y, required_base)
-                            and road_y != required_base
-                        ):
-                            if to_evaluate_hx_dict.get(road_y) is None:
-                                to_evaluate_list.append(road_y)
-                                to_evaluate_hx_dict[road_y] = "requiredunit_descendant"
-
-            #     requiredunit_base_road_list.extend(get_ancestor_roads(required_base))
-            #     requiredunit_base_road_list.extend(
-            #         self.get_heir_road_list(required_base)
-            #     )
             evaluated_roads[road_x] = -1
 
             # idea_assoc_dict.extend(get_ancestor_roads(road=road_x))
@@ -233,6 +226,30 @@ class CalendarUnit:
             count_x += 1
         print(f"Total while loop runs= {count_x}")
         return evaluated_roads
+
+    def _evaluate_relevancy(
+        self,
+        to_evaluate_list: [Road],
+        to_evaluate_hx_dict: dict[Road:int],
+        to_evaluate_road: Road,
+        road_type: str,
+    ):
+        if to_evaluate_hx_dict.get(to_evaluate_road) is None:
+            to_evaluate_list.append(to_evaluate_road)
+            to_evaluate_hx_dict[to_evaluate_road] = road_type
+
+            if road_type == "requiredunit_base":
+                for descendant_road in self._idea_dict:
+                    if (
+                        is_sub_road(descendant_road, to_evaluate_road)
+                        and descendant_road != to_evaluate_road
+                    ):
+                        self._evaluate_relevancy(
+                            to_evaluate_list=to_evaluate_list,
+                            to_evaluate_hx_dict=to_evaluate_hx_dict,
+                            to_evaluate_road=descendant_road,
+                            road_type="requiredunit_descendant",
+                        )
 
     def all_ideas_relevant_to_promise_idea(self, road: Road) -> bool:
         promise_idea_assoc_set = set(self._get_relevant_roads({road}))
