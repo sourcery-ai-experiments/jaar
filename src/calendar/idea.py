@@ -124,22 +124,19 @@ class IdeaAttrHolder:
 @dataclasses.dataclass
 class IdeaCore:
     _label: str = None
-    _uid: int = None
+    _uid: int = None  # Calculated field?
     _walk: str = None
-    _kids: dict = None  # dict[]
+    _kids: dict = None
     _weight: int = 1
     _grouplinks: dict[GroupName:GroupLink] = None
-    _groupheirs: dict[GroupName:GroupHeir] = None
-    _grouplines: dict[GroupName:GroupLink] = None
-    _level: int = None
+    _groupheirs: dict[GroupName:GroupHeir] = None  # Calculated field
+    _grouplines: dict[GroupName:GroupLink] = None  # Calculated field
     _requiredunits: dict[Road:RequiredUnit] = None
-    _requiredheirs: dict[Road:RequiredHeir] = None
+    _requiredheirs: dict[Road:RequiredHeir] = None  # Calculated field
     _assignedunit: AssignedUnit = None
-    _assignedheir: AssignedHeir = None
-    _calendar_importance: float = None
-    _calendar_coin_onset: float = None
-    _calendar_coin_cease: float = None
-    _kids_total_weight: int = 0
+    _assignedheir: AssignedHeir = None  # Calculated field
+    _acptfactunits: dict[AcptFactUnit] = None
+    _acptfactheirs: dict[AcptFactHeir] = None  # Calculated field
     _begin: float = None
     _close: float = None
     _addin: float = None
@@ -150,6 +147,14 @@ class IdeaCore:
     _numeric_road: Road = None
     promise: bool = False
     _problem_bool: bool = False
+    _originunit: OriginUnit = None
+    _on_meld_weight_action: str = "default"
+    # Calculated fields
+    _level: int = None
+    _kids_total_weight: int = 0
+    _calendar_importance: float = None
+    _calendar_coin_onset: float = None
+    _calendar_coin_cease: float = None
     _task: bool = None
     _active_status: bool = None
     _ancestor_promise_count: int = None
@@ -159,11 +164,7 @@ class IdeaCore:
     _is_expanded: bool = True
     _active_status: bool = None
     _sibling_total_weight: int = None
-    _acptfactheirs: dict[AcptFactHeir] = None
-    _acptfactunits: dict[AcptFactUnit] = None
-    _on_meld_weight_action: str = "default"
     _active_status_hx: dict[int:bool] = None
-    _originunit: OriginUnit = None
 
     def is_agenda_item(self, base_x: Road = None):
         # bool_x = False
