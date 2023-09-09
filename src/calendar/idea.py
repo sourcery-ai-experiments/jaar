@@ -48,6 +48,10 @@ class InvalidIdeaException(Exception):
     pass
 
 
+class GetDescendantsException(Exception):
+    pass
+
+
 @dataclasses.dataclass
 class IdeaBare:
     n: str = None  # name
@@ -328,6 +332,26 @@ class IdeaCore:
     def set_descendant_promise_count_zero_if_null(self):
         if self._descendant_promise_count is None:
             self._descendant_promise_count = 0
+
+    def get_descendant_roads(self) -> dict[Road:int]:
+        self.set_kids_empty_if_null()
+        descendant_roads = {}
+        to_evaluate_ideas = list(self._kids.values())
+        count_x = 0
+        max_count = 1000
+        while to_evaluate_ideas != [] and count_x < max_count:
+            idea_x = to_evaluate_ideas.pop()
+            idea_x.set_kids_empty_if_null()
+            descendant_roads[idea_x.get_road()] = -1
+            to_evaluate_ideas.extend(idea_x._kids.values())
+            count_x += 1
+
+        if count_x == max_count:
+            raise GetDescendantsException(
+                f"Idea '{self.get_road()}' either has an infinite loop or more than {max_count} descendants."
+            )
+
+        return descendant_roads
 
     def clear_all_member_credit_debt(self):
         self._all_member_credit = None

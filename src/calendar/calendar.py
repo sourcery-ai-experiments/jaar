@@ -239,17 +239,14 @@ class CalendarUnit:
             to_evaluate_hx_dict[to_evaluate_road] = road_type
 
             if road_type == "requiredunit_base":
-                for descendant_road in self._idea_dict:
-                    if (
-                        is_sub_road(descendant_road, to_evaluate_road)
-                        and descendant_road != to_evaluate_road
-                    ):
-                        self._evaluate_relevancy(
-                            to_evaluate_list=to_evaluate_list,
-                            to_evaluate_hx_dict=to_evaluate_hx_dict,
-                            to_evaluate_road=descendant_road,
-                            road_type="requiredunit_descendant",
-                        )
+                ru_base_idea = self.get_idea_kid(to_evaluate_road)
+                for descendant_road in ru_base_idea.get_descendant_roads():
+                    self._evaluate_relevancy(
+                        to_evaluate_list=to_evaluate_list,
+                        to_evaluate_hx_dict=to_evaluate_hx_dict,
+                        to_evaluate_road=descendant_road,
+                        road_type="requiredunit_descendant",
+                    )
 
     def all_ideas_relevant_to_promise_idea(self, road: Road) -> bool:
         promise_idea_assoc_set = set(self._get_relevant_roads({road}))

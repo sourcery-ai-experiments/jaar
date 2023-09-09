@@ -9,7 +9,7 @@ from src.calendar.required_idea import (
 )
 from src.calendar.required_assign import assigned_unit_shop, assigned_heir_shop
 from src.calendar.road import get_global_root_label as root_label
-from pytest import raises as pytest_raise
+from pytest import raises as pytest_raises
 
 
 def test_idea_core_exists():
@@ -366,7 +366,7 @@ def test_idea_invaild_DenomThrowsError():
         _label=clean_text, _walk=casa_road, _numor=1, _denom=11.0, _reest=False
     )
     # When/Then
-    with pytest_raise(Exception) as excinfo:
+    with pytest_raises(Exception) as excinfo:
         parent_idea.add_kid(idea_kid=kid_idea)
     assert (
         str(excinfo.value)
@@ -539,3 +539,64 @@ def test_idea_set_assignedunit_empty_if_null():
         assignunit=assigned_unit_x, parent_assignheir=None, calendar_groups=None
     )
     assert idea_x._assignedheir == assigned_heir_x
+
+
+def test_idea_get_descendants_ReturnsNoRoads():
+    # GIVEN
+    nation_text = "nation-state"
+    nation_road = f"{root_label()},{nation_text}"
+    nation_idea = IdeaCore(_label=nation_text, _walk=root_label())
+
+    # WHEN
+    nation_descendants = nation_idea.get_descendant_roads()
+
+    # THEN
+    assert nation_descendants == {}
+
+
+def test_idea_get_descendants_Returns3DescendantsRoads():
+    # GIVEN
+    nation_text = "nation-state"
+    nation_road = f"{root_label()},{nation_text}"
+    nation_idea = IdeaCore(_label=nation_text, _walk=root_label())
+
+    usa_text = "USA"
+    usa_road = f"{nation_road},{usa_text}"
+    usa_idea = IdeaCore(_label=usa_text, _walk=nation_road)
+    nation_idea.add_kid(idea_kid=usa_idea)
+
+    texas_text = "Texas"
+    texas_road = f"{usa_road},{texas_text}"
+    texas_idea = IdeaCore(_label=texas_text, _walk=usa_road)
+    usa_idea.add_kid(idea_kid=texas_idea)
+
+    iowa_text = "iowa"
+    iowa_road = f"{usa_road},{iowa_text}"
+    iowa_idea = IdeaCore(_label=iowa_text, _walk=usa_road)
+    usa_idea.add_kid(idea_kid=iowa_idea)
+
+    # WHEN
+    nation_descendants = nation_idea.get_descendant_roads()
+
+    # THEN
+    assert len(nation_descendants) == 3
+    assert nation_descendants.get(usa_road) != None
+    assert nation_descendants.get(texas_road) != None
+    assert nation_descendants.get(iowa_road) != None
+
+
+def test_idea_get_descendants_ErrorRaisedIfInfiniteLoop():
+    # Given
+    nation_text = "nation-state"
+    nation_road = f"{root_label()},{nation_text}"
+    nation_idea = IdeaCore(_label=nation_text, _walk=root_label())
+    nation_idea.add_kid(idea_kid=nation_idea)
+    max_count = 1000
+
+    # WHEN/THEN
+    with pytest_raises(Exception) as excinfo:
+        nation_idea.get_descendant_roads()
+    assert (
+        str(excinfo.value)
+        == f"Idea '{nation_idea.get_road()}' either has an infinite loop or more than {max_count} descendants."
+    )
