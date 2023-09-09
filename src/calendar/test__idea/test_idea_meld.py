@@ -31,7 +31,7 @@ def custom_set_idea_attr(
     denom: int = None,
     reest: bool = None,
     numeric_road: Road = None,
-    special_road: float = None,
+    range_source_road: float = None,
     descendant_promise_count: int = None,
     all_member_credit: bool = None,
     all_member_debt: bool = None,
@@ -61,7 +61,7 @@ def custom_set_idea_attr(
         denom=denom,
         reest=reest,
         numeric_road=numeric_road,
-        special_road=special_road,
+        range_source_road=range_source_road,
         descendant_promise_count=descendant_promise_count,
         all_member_credit=all_member_credit,
         all_member_debt=all_member_debt,
@@ -341,7 +341,7 @@ def test_idea_attributes_meld_CorrectlyMeldsIdeas():
         denom=4,
         numor=5,
         reest=6,
-        special_road=plate_road,
+        range_source_road=plate_road,
         numeric_road=bowl_road,
         promise=True,
         all_member_credit=all_member_credit_x,
@@ -361,7 +361,7 @@ def test_idea_attributes_meld_CorrectlyMeldsIdeas():
         denom=4,
         numor=5,
         reest=6,
-        special_road=plate_road,
+        range_source_road=plate_road,
         numeric_road=bowl_road,
         promise=True,
         all_member_credit=all_member_credit_x,
@@ -381,7 +381,7 @@ def test_idea_attributes_meld_CorrectlyMeldsIdeas():
     assert yx1._denom == 4
     assert yx1._numor == 5
     assert yx1._reest == 6
-    assert yx1._special_road == plate_road
+    assert yx1._range_source_road == plate_road
     assert yx1._numeric_road == bowl_road
     assert yx1.promise == True
     assert yx1._all_member_credit == all_member_credit_x
@@ -501,11 +501,11 @@ def test_idea_attributes_meld_FailRaisesError_reest():
     )
 
 
-def test_idea_attributes_meld_FailRaisesError_special_road():
-    x_name = "_special_road"
-    x_val = "test_special_road1"
+def test_idea_attributes_meld_FailRaisesError_range_source_road():
+    x_name = "_range_source_road"
+    x_val = "test_range_source_road1"
     yx1 = IdeaCore(_label="spirit")
-    custom_set_idea_attr(idea=yx1, special_road=x_val)
+    custom_set_idea_attr(idea=yx1, range_source_road=x_val)
     yx2 = IdeaCore(_label="fun")
 
     # WHEN/THEN

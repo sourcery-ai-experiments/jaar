@@ -360,11 +360,11 @@ def test_calendar__get_relevant_roads_numeric_road_ReturnSimple():
     }
 
 
-def test_calendar__get_relevant_roads_special_road_ReturnSimple():
+def test_calendar__get_relevant_roads_range_source_road_ReturnSimple():
     # GIVEN
     owner_text = "Yao"
     cx = CalendarUnit(_owner=owner_text)
-    min_range_text = "minute_range"
+    min_range_text = "a_minute_range"
     min_range_road = f"{root_label()},{min_range_text}"
     min_range_idea = IdeaKid(_label=min_range_text, _begin=0, _close=2880)
     cx.add_idea(min_range_idea, walk=root_label())
@@ -376,7 +376,7 @@ def test_calendar__get_relevant_roads_special_road_ReturnSimple():
 
     min_days_text = "days in minute_range"
     min_days_road = f"{min_range_road},{min_days_text}"
-    min_days_idea = IdeaKid(_label=min_days_text, _special_road=day_len_road)
+    min_days_idea = IdeaKid(_label=min_days_text, _range_source_road=day_len_road)
     cx.add_idea(min_days_idea, walk=min_range_road)
 
     # WHEN
@@ -391,12 +391,16 @@ def test_calendar__get_relevant_roads_special_road_ReturnSimple():
     assert relevant_roads.get(min_range_road) != None
     assert relevant_roads.get(day_len_road) != None
     assert relevant_roads.get(min_days_road) != None
+    assert relevant_roads.get(root_label()) != None
     # assert relevant_roads == {
     #     root_label(): -1,
     #     work_road: -1,
     #     day_road: -1,
     # }
+    min_days_idea = cx.get_idea_kid(road=min_days_road)
+    print(f"{min_days_idea=}")
+    assert 1 == 2
 
 
-def test_calendar__get_relevant_roads_numeric_road_special_road_ReturnEntireRangeTree():
+def test_calendar__get_relevant_roads_numeric_road_range_source_road_ReturnEntireRangeTree():
     pass

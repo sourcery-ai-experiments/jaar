@@ -33,7 +33,7 @@ def test_idea_find_replace_road_Changes_walk():
     assert Road(f"{idea_x._walk},{idea_x._label}") == new_roses_road
 
 
-def test_idea_find_replace_road_Changes_special_road_numeric_road():
+def test_idea_find_replace_road_Changes_range_source_road_numeric_road():
     # GIVEN Idea with special road and numeric road that will be changed
     person = "person"
     bloomers_text = "bloomers"
@@ -54,10 +54,10 @@ def test_idea_find_replace_road_Changes_special_road_numeric_road():
     idea_x = IdeaCore(
         _label=roses_text,
         _walk=bloomers_road,
-        _special_road=old_rain_road,
+        _range_source_road=old_rain_road,
         _numeric_road=old_snow_road,
     )
-    assert idea_x._special_road == old_rain_road
+    assert idea_x._range_source_road == old_rain_road
     assert idea_x._numeric_road == old_snow_road
 
     # WHEN
@@ -68,7 +68,7 @@ def test_idea_find_replace_road_Changes_special_road_numeric_road():
     idea_x.find_replace_road(old_road=old_water_road, new_road=new_water_road)
 
     # THEN
-    assert idea_x._special_road == new_rain_road
+    assert idea_x._range_source_road == new_rain_road
     assert idea_x._numeric_road == new_snow_road
 
 

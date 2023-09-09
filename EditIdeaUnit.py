@@ -132,7 +132,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.yo_numor.setHidden(setHiddenBool)
         self.yo_denom.setHidden(setHiddenBool)
         self.yo_reest.setHidden(setHiddenBool)
-        self.yo_special_road.setHidden(setHiddenBool)
+        self.yo_range_source_road.setHidden(setHiddenBool)
         self.yo_numeric_road.setHidden(setHiddenBool)
         self.yo_close.setHidden(setHiddenBool)
         self.yo_task_status.setHidden(setHiddenBool)
@@ -227,7 +227,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.yo_walk.setText(self.yo_x._walk)
         self.yo_weight.setText(num2str(self.yo_x._weight))
         self.yo_begin.setText(num2str(self.yo_x._begin))
-        self.yo_special_road.clear()
+        self.yo_range_source_road.clear()
         self.yo_numeric_road.clear()
         if f"{type(self.yo_x)}" != "<class 'lw.calendar.CalendarUnit'>":
             self.populate_idea_kid_actions()
@@ -252,8 +252,8 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.yo_reest.setChecked(bool_val(self.yo_x._reest))
         idea_road_list = self.calendar_x.get_idea_tree_ordered_road_list()
         idea_road_list.append("")
-        self.yo_special_road.addItems(idea_road_list)
-        self.yo_special_road.setCurrentText(self.yo_x._special_road)
+        self.yo_range_source_road.addItems(idea_road_list)
+        self.yo_range_source_road.setCurrentText(self.yo_x._range_source_road)
         self.yo_numeric_road.addItems(idea_road_list)
         self.yo_numeric_road.setCurrentText(self.yo_x._numeric_road)
 
@@ -294,9 +294,9 @@ class EditIdeaUnit(qtw0, Ui_Form):
             sufffact_idea = self.calendar_x.get_idea_kid(
                 road=self.required_sufffact_combo.currentText()
             )
-            if sufffact_idea._special_road != None:
+            if sufffact_idea._range_source_road != None:
                 filtered_list = self.calendar_x.get_heir_road_list(
-                    sufffact_idea._special_road
+                    sufffact_idea._range_source_road
                 )
         self.required_sufffact_open_combo.clear()
         self.required_sufffact_nigh_combo.clear()
@@ -819,7 +819,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             numor=str2float(self.yo_numor.toPlainText()),
             denom=str2float(self.yo_denom.toPlainText()),
             reest=self.yo_reest.checkState() == 2,
-            special_road=emptystr(self.yo_special_road.currentText()),
+            range_source_road=emptystr(self.yo_range_source_road.currentText()),
             numeric_road=emptystr(self.yo_numeric_road.currentText()),
             promise=(self.yo_action_cb.checkState() == 2),
             problem_bool=(self.yo_problem_bool_cb.checkState() == 2),
@@ -905,7 +905,9 @@ class EditIdeaUnit(qtw0, Ui_Form):
             numor=str2float(self.yo_numor.toPlainText()),
             denom=str2float(self.yo_denom.toPlainText()),
             reest=self.yo_reest.checkState() == 2,
-            special_road=emptystring_returns_none(self.yo_special_road.currentText()),
+            range_source_road=emptystring_returns_none(
+                self.yo_range_source_road.currentText()
+            ),
             numeric_road=emptystring_returns_none(self.yo_numeric_road.currentText()),
             promise=(self.yo_action_cb.checkState() == 2),
             uid=None,

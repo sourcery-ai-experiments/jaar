@@ -23,7 +23,7 @@ def test_idea_attr_holder_exists():
     assert new_obj.denom is None
     assert new_obj.reest is None
     assert new_obj.numeric_road is None
-    assert new_obj.special_road is None
+    assert new_obj.range_source_road is None
     assert new_obj.promise is None
     assert new_obj.problem_bool is None
     assert new_obj.acptfactunit is None

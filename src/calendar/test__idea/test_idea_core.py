@@ -28,7 +28,7 @@ def test_idea_core_exists():
     assert new_obj._denom is None
     assert new_obj._reest is None
     assert new_obj._numeric_road is None
-    assert new_obj._special_road is None
+    assert new_obj._range_source_road is None
     assert new_obj.promise is False
     assert new_obj._problem_bool is False
     assert new_obj._descendant_promise_count is None
@@ -306,7 +306,7 @@ def test_idea_get_dict_ReturnsDict():
         _requiredunits=x1_requiredunits,
         _requiredheirs=x1_requiredheirs,
         _active_status=True,
-        _special_road="test123",
+        _range_source_road="test123",
         promise=True,
         _problem_bool=True,
     )
@@ -334,7 +334,7 @@ def test_idea_get_dict_ReturnsDict():
     assert ideakid_dict["_numor"] == temp_idea._numor
     assert ideakid_dict["_denom"] == temp_idea._denom
     assert ideakid_dict["_reest"] == temp_idea._reest
-    assert ideakid_dict["_special_road"] == temp_idea._special_road
+    assert ideakid_dict["_range_source_road"] == temp_idea._range_source_road
     assert ideakid_dict["promise"] == temp_idea.promise
     assert ideakid_dict["_problem_bool"] == temp_idea._problem_bool
     assert ideakid_dict["_is_expanded"] == temp_idea._is_expanded

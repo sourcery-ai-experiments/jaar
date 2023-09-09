@@ -413,12 +413,12 @@ def test_calendar_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     calendar_x.edit_idea_attr(road=work_road, problem_bool=True)
     assert calendar_x._idearoot._kids[work_text]._problem_bool == True
 
-    # _special_road: dict = None,
-    calendar_x._idearoot._kids[work_text]._special_road = "fun3rol"
-    special_road = calendar_x._idearoot._kids[work_text]._special_road
-    assert special_road == "fun3rol"
-    calendar_x.edit_idea_attr(road=work_road, special_road="my,work,end")
-    assert calendar_x._idearoot._kids[work_text]._special_road == "my,work,end"
+    # _range_source_road: dict = None,
+    calendar_x._idearoot._kids[work_text]._range_source_road = "fun3rol"
+    range_source_road = calendar_x._idearoot._kids[work_text]._range_source_road
+    assert range_source_road == "fun3rol"
+    calendar_x.edit_idea_attr(road=work_road, range_source_road="my,work,end")
+    assert calendar_x._idearoot._kids[work_text]._range_source_road == "my,work,end"
 
 
 def test_calendar_edit_idea_attr_calendarIsAbleToEdit_on_meld_weight_action_AnyIdeaIfInvaildThrowsError():

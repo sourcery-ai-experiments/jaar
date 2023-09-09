@@ -60,7 +60,7 @@ def test_calendar_get_dict_ReturnsDictObject():
 
     x_idearoot = x_calendar._idearoot
     _kids = "_kids"
-    _special_road = "_special_road"
+    _range_source_road = "_range_source_road"
     _numeric_road = "_numeric_road"
     assert x_idearoot._label == root_label()
     assert x_dict["_weight"] == x_idearoot._weight
@@ -72,15 +72,15 @@ def test_calendar_get_dict_ReturnsDictObject():
     assert x_dict["_on_meld_weight_action"] == x_idearoot._on_meld_weight_action
     assert len(x_dict[_kids]) == len(x_idearoot._kids)
 
-    # checking an ideakid._special_road attribute
+    # checking an ideakid._range_source_road attribute
     month_week_text = "month_week"
     month_week_road = f"{root_label()},{month_week_text}"
     month_week_idea_x = x_calendar.get_idea_kid(road=month_week_road)
-    print("checking TlME,month_week...special_road equal to...")
-    month_week_special_dict = x_dict[_kids][month_week_text][_special_road]
+    print("checking TlME,month_week...range_source_road equal to...")
+    month_week_special_dict = x_dict[_kids][month_week_text][_range_source_road]
     assert month_week_special_dict != None
     assert month_week_special_dict == f"{root_label()},ced_week"
-    assert month_week_special_dict == month_week_idea_x._special_road
+    assert month_week_special_dict == month_week_idea_x._range_source_road
 
     # checking an ideakid._numeric_road attribute
     num1_text = "numeric_road_test"

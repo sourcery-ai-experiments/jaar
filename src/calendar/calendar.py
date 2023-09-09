@@ -227,12 +227,12 @@ class CalendarUnit:
                     road_type="numeric_road",
                 )
 
-            if idea_x._special_road != None:
+            if idea_x._range_source_road != None:
                 self._evaluate_relevancy(
                     to_evaluate_list=to_evaluate_list,
                     to_evaluate_hx_dict=to_evaluate_hx_dict,
-                    to_evaluate_road=idea_x._special_road,
-                    road_type="special_road",
+                    to_evaluate_road=idea_x._range_source_road,
+                    road_type="range_source_road",
                 )
 
             evaluated_roads[road_x] = -1
@@ -785,21 +785,21 @@ class CalendarUnit:
             for kid in acptfact_idea._kids.values():
                 lemmas_x.eval(idea_x=kid, src_acptfact=acptfact, src_idea=acptfact_idea)
 
-            if acptfact_idea._special_road != None:
+            if acptfact_idea._range_source_road != None:
                 lemmas_x.eval(
-                    idea_x=self.get_idea_kid(road=acptfact_idea._special_road),
+                    idea_x=self.get_idea_kid(road=acptfact_idea._range_source_road),
                     src_acptfact=acptfact,
                     src_idea=acptfact_idea,
                 )
         return lemmas_x
 
     def _get_lemma_acptfactunits(self) -> dict:
-        # get all range-root first level kids and special_road
+        # get all range-root first level kids and range_source_road
         lemmas_x = self._get_rangeroot_1stlevel_associates(
             self._get_rangeroot_acptfactunits()
         )
 
-        # Now collect associates (all their descendants and special_roads)
+        # Now collect associates (all their descendants and range_source_roads)
         lemma_acptfactunits = {}  # acptfact.base : acptfactUnit
         count_x = 0
         while lemmas_x.is_lemmas_evaluated() == False or count_x > 10000:
@@ -816,9 +816,9 @@ class CalendarUnit:
 
             for kid2 in idea_x._kids.values():
                 lemmas_x.eval(idea_x=kid2, src_acptfact=acptfact_x, src_idea=idea_x)
-            if idea_x._special_road not in [None, ""]:
+            if idea_x._range_source_road not in [None, ""]:
                 lemmas_x.eval(
-                    idea_x=self.get_idea_kid(road=idea_x._special_road),
+                    idea_x=self.get_idea_kid(road=idea_x._range_source_road),
                     src_acptfact=acptfact_x,
                     src_idea=idea_x,
                 )
@@ -875,7 +875,7 @@ class CalendarUnit:
                 base=base, pick=pick, open=open, nigh=nigh
             )
 
-            # Find all AcptFact descendants and any special_road connections "Lemmas"
+            # Find all AcptFact descendants and any range_source_road connections "Lemmas"
             lemmas_dict = self._get_lemma_acptfactunits()
             for current_acptfact in self._idearoot._acptfactunits.values():
                 for lemma_acptfact in lemmas_dict.values():
@@ -1059,8 +1059,8 @@ class CalendarUnit:
             self._set_ideakid_if_empty(road=required_x.base)
             for sufffact_x in required_x.sufffacts.values():
                 self._set_ideakid_if_empty(road=sufffact_x.need)
-        if posted_idea._special_road != None:
-            self._set_ideakid_if_empty(road=posted_idea._special_road)
+        if posted_idea._range_source_road != None:
+            self._set_ideakid_if_empty(road=posted_idea._range_source_road)
         if posted_idea._numeric_road != None:
             self._set_ideakid_if_empty(road=posted_idea._numeric_road)
 
@@ -1307,7 +1307,7 @@ class CalendarUnit:
         denom: float = None,
         reest: bool = None,
         numeric_road: Road = None,
-        special_road: float = None,
+        range_source_road: float = None,
         promise: bool = None,
         problem_bool: bool = None,
         acptfactunit: AcptFactUnit = None,
@@ -1367,7 +1367,7 @@ class CalendarUnit:
             denom=denom,
             reest=reest,
             numeric_road=numeric_road,
-            special_road=special_road,
+            range_source_road=range_source_road,
             descendant_promise_count=descendant_promise_count,
             all_member_credit=all_member_credit,
             all_member_debt=all_member_debt,
@@ -1942,7 +1942,7 @@ class CalendarUnit:
             "_reest": self._idearoot._reest,
             "_problem_bool": self._idearoot._problem_bool,
             "_is_expanded": self._idearoot._is_expanded,
-            "_special_road": self._idearoot._special_road,
+            "_range_source_road": self._idearoot._range_source_road,
             "_numeric_road": self._idearoot._numeric_road,
             "_on_meld_weight_action": self._idearoot._on_meld_weight_action,
             "_max_tree_traverse": self._max_tree_traverse,
@@ -1956,9 +1956,9 @@ class CalendarUnit:
         ideabase_list = _get_time_hreg_src_idea(c400_count=c400_count)
         while len(ideabase_list) != 0:
             yb = ideabase_list.pop(0)
-            special_road_x = None
+            range_source_road_x = None
             if yb.sr != None:
-                special_road_x = f"{root_label()},{yb.sr}"
+                range_source_road_x = f"{root_label()},{yb.sr}"
 
             idea_x = IdeaKid(
                 _label=yb.n,
@@ -1970,7 +1970,7 @@ class CalendarUnit:
                 _numor=yb.mn,
                 _denom=yb.md,
                 _reest=yb.mr,
-                _special_road=special_road_x,
+                _range_source_road=range_source_road_x,
             )
             road_x = f"{root_label()},{yb.rr}"
             self.add_idea(idea_kid=idea_x, walk=road_x)
@@ -2210,7 +2210,7 @@ def get_from_dict(cx_dict: dict) -> CalendarUnit:
     c_x._idearoot._numor = cx_dict["_numor"]
     c_x._idearoot._denom = cx_dict["_denom"]
     c_x._idearoot._reest = cx_dict["_reest"]
-    c_x._idearoot._special_road = cx_dict["_special_road"]
+    c_x._idearoot._range_source_road = cx_dict["_range_source_road"]
     c_x._idearoot._numeric_road = cx_dict["_numeric_road"]
     c_x._idearoot._is_expanded = cx_dict["_is_expanded"]
 
@@ -2256,7 +2256,7 @@ def get_from_dict(cx_dict: dict) -> CalendarUnit:
             _grouplinks=grouplinks_get_from_dict(idea_dict["_grouplinks"]),
             _acptfactunits=acptfactunits_get_from_dict(idea_dict["_acptfactunits"]),
             _is_expanded=idea_dict["_is_expanded"],
-            _special_road=idea_dict["_special_road"],
+            _range_source_road=idea_dict["_range_source_road"],
             _numeric_road=idea_dict["_numeric_road"],
         )
         c_x.add_idea(idea_kid=idea_obj, walk=idea_dict["temp_road"])

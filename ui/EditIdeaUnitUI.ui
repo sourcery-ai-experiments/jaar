@@ -1080,7 +1080,7 @@
     <string>Numeric Source</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="yo_special_road">
+  <widget class="QComboBox" name="yo_range_source_road">
    <property name="geometry">
     <rect>
      <x>680</x>

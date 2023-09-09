@@ -678,7 +678,7 @@
     </column>
     <column>
      <property name="text">
-      <string>special_road</string>
+      <string>range_source_road</string>
      </property>
     </column>
    </widget>

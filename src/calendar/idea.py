@@ -63,7 +63,7 @@ class IdeaBare:
     mn: int = None  # numor
     md: int = None  # denom
     mr: bool = None  # reest
-    sr: str = None  # special_road # not road since it doesn't know root _label
+    sr: str = None  # range_source_road # not road since it doesn't know root _label
     nr: str = None  # numeric_road # not road since it doesn't know root _label
 
 
@@ -88,7 +88,7 @@ class IdeaAttrHolder:
     denom: float = None
     reest: bool = None
     numeric_road: Road = None
-    special_road: float = None
+    range_source_road: float = None
     promise: bool = None
     problem_bool: bool = None
     acptfactunit: AcptFactUnit = None
@@ -143,7 +143,7 @@ class IdeaCore:
     _denom: int = None
     _numor: int = None
     _reest: bool = None
-    _special_road: Road = None
+    _range_source_road: Road = None
     _numeric_road: Road = None
     promise: bool = False
     _problem_bool: bool = False
@@ -547,7 +547,11 @@ class IdeaCore:
             ("_denom", self._denom, other_idea._denom),
             ("_numor", self._numor, other_idea._numor),
             ("_reest", self._reest, other_idea._reest),
-            ("_special_road", self._special_road, other_idea._special_road),
+            (
+                "_range_source_road",
+                self._range_source_road,
+                other_idea._range_source_road,
+            ),
             ("_numeric_road", self._numeric_road, other_idea._numeric_road),
             ("promise", self.promise, other_idea.promise),
             ("_is_expanded", self._is_expanded, other_idea._is_expanded),
@@ -598,8 +602,8 @@ class IdeaCore:
             self._reest = idea_attr.reest
         if idea_attr.numeric_road != None:
             self._numeric_road = idea_attr.numeric_road
-        if idea_attr.special_road != None:
-            self._special_road = idea_attr.special_road
+        if idea_attr.range_source_road != None:
+            self._range_source_road = idea_attr.range_source_road
         if idea_attr.descendant_promise_count != None:
             self._descendant_promise_count = idea_attr.descendant_promise_count
         if idea_attr.all_member_credit != None:
@@ -903,7 +907,7 @@ class IdeaCore:
             "_numor": self._numor,
             "_denom": self._denom,
             "_reest": self._reest,
-            "_special_road": self._special_road,
+            "_range_source_road": self._range_source_road,
             "_numeric_road": self._numeric_road,
             "promise": self.promise,
             "_problem_bool": self._problem_bool,
@@ -915,8 +919,10 @@ class IdeaCore:
     def find_replace_road(self, old_road: Road, new_road: Road):
         if is_sub_road(ref_road=self._walk, sub_road=old_road):
             self._walk = change_road(self._walk, old_road, new_road)
-        if is_sub_road(ref_road=self._special_road, sub_road=old_road):
-            self._special_road = change_road(self._special_road, old_road, new_road)
+        if is_sub_road(ref_road=self._range_source_road, sub_road=old_road):
+            self._range_source_road = change_road(
+                self._range_source_road, old_road, new_road
+            )
         if is_sub_road(ref_road=self._numeric_road, sub_road=old_road):
             self._numeric_road = change_road(self._numeric_road, old_road, new_road)
 

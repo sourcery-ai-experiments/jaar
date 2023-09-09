@@ -172,7 +172,7 @@ def test_calendar_edit_idea_label_Changes_acptfactunits():
     assert acptfactunit_obj.pick == new_rain_road
 
 
-def test_calendar_edit_idea_label_ChangesIdeaRoot_special_road():
+def test_calendar_edit_idea_label_ChangesIdeaRoot_range_source_road():
     # GIVEN this should never happen but it's not currently banned
 
     old_person_text = "person"
@@ -180,8 +180,8 @@ def test_calendar_edit_idea_label_ChangesIdeaRoot_special_road():
     owner_text = "Tim"
     sx = CalendarUnit(_owner=owner_text)
     sx.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=old_person_text))
-    sx.edit_idea_attr(road=root_label(), special_road=old_person_road)
-    assert sx._idearoot._special_road == old_person_road
+    sx.edit_idea_attr(road=root_label(), range_source_road=old_person_road)
+    assert sx._idearoot._range_source_road == old_person_road
 
     # WHEN
     new_person_text = "globe"
@@ -189,10 +189,10 @@ def test_calendar_edit_idea_label_ChangesIdeaRoot_special_road():
 
     # THEN
     new_person_road = Road(f"{root_label()},{new_person_text}")
-    assert sx._idearoot._special_road == new_person_road
+    assert sx._idearoot._range_source_road == new_person_road
 
 
-def test_calendar_edit_idea_label_ChangesIdeaKidN_special_road():
+def test_calendar_edit_idea_label_ChangesIdeaKidN_range_source_road():
     person_text = "person"
     person_road = Road(f"{root_label()},{person_text}")
     old_water_text = "water"
@@ -209,9 +209,9 @@ def test_calendar_edit_idea_label_ChangesIdeaKidN_special_road():
     sx.add_idea(walk=old_water_road, idea_kid=IdeaKid(_label=rain_text))
     sx.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=mood_text))
 
-    sx.edit_idea_attr(road=mood_road, special_road=old_rain_road)
+    sx.edit_idea_attr(road=mood_road, range_source_road=old_rain_road)
     mood_idea = sx.get_idea_kid(road=mood_road)
-    assert mood_idea._special_road == old_rain_road
+    assert mood_idea._range_source_road == old_rain_road
 
     # WHEN
     new_water_text = "h2o"
@@ -228,7 +228,7 @@ def test_calendar_edit_idea_label_ChangesIdeaKidN_special_road():
     #         for idea_z in idea_y._kids.values():
     #             print(f"{idea_z._walk=} {idea_z._label=}")
     assert old_rain_road != new_rain_road
-    assert mood_idea._special_road == new_rain_road
+    assert mood_idea._range_source_road == new_rain_road
 
 
 def test_calendar_edit_idea_label_ChangesIdeaRequiredUnitsScenario1():

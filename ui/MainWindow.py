@@ -404,7 +404,7 @@ class Ui_MainWindow(object):
         item = self.agenda_states.horizontalHeaderItem(6)
         item.setText(_translate("MainWindow", "jaja_nigh"))
         item = self.agenda_states.horizontalHeaderItem(7)
-        item.setText(_translate("MainWindow", "special_road"))
+        item.setText(_translate("MainWindow", "range_source_road"))
         self.label_8.setText(
             _translate("MainWindow", "Things you promised to be right now")
         )

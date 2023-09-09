@@ -555,9 +555,11 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario4(
     lw_x.add_idea(
         idea_kid=IdeaKid(_label=arsub1, _begin=0, _close=140), walk=root_label()
     )
-    # range-root idea has special_road
+    # range-root idea has range_source_road
     lw_x.add_idea(
-        idea_kid=IdeaKid(_label=time_x, _begin=0, _close=140, _special_road=as1_road),
+        idea_kid=IdeaKid(
+            _label=time_x, _begin=0, _close=140, _range_source_road=as1_road
+        ),
         walk=root_label(),
     )
 
@@ -567,11 +569,13 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario4(
         idea_kid=IdeaKid(_label=arsub2, _begin=0, _close=20), walk=root_label()
     )
 
-    # non-range-root child idea has special_road
+    # non-range-root child idea has range_source_road
     t_x_road = f"{root_label()},{time_x}"
     age1st = "age1st"
     lw_x.add_idea(
-        idea_kid=IdeaKid(_label=age1st, _begin=0, _close=20, _special_road=as2_road),
+        idea_kid=IdeaKid(
+            _label=age1st, _begin=0, _close=20, _range_source_road=as2_road
+        ),
         walk=t_x_road,
     )
 
