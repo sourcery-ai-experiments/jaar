@@ -25,7 +25,7 @@ def test_root_has_kids():
 
 
 def test_kid_can_have_kids():
-    # GIVEN/WHEN
+    # GIVEN / WHEN
     calendar_x = get_calendar_with_4_levels()
     calendar_x.set_calendar_metrics()
 
@@ -198,18 +198,18 @@ def test_calendar_idearoot_is_heir_CorrectlyChecksLineage():
 
 
 def test_calendar_del_idea_kid_IdeaLevel0CannotBeDeleted():
-    # Given
+    # GIVEN
     calendar_x = get_calendar_with_4_levels()
     root_road = f"{root_label()}"
 
-    # When/Then
+    # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         calendar_x.del_idea_kid(road=root_road)
     assert str(excinfo.value) == "Object cannot delete itself"
 
 
 def test_calendar_del_idea_kid_IdeaLevel1CanBeDeleted_ChildrenDeleted():
-    # Given
+    # GIVEN
     calendar_x = get_calendar_with_4_levels()
     week_text = "weekdays"
     week_road = f"{root_label()},{week_text}"
@@ -218,10 +218,10 @@ def test_calendar_del_idea_kid_IdeaLevel1CanBeDeleted_ChildrenDeleted():
     assert calendar_x.get_idea_kid(road=week_road)
     assert calendar_x.get_idea_kid(road=sun_road)
 
-    # When
+    # WHEN
     calendar_x.del_idea_kid(road=week_road)
 
-    # Then
+    # THEN
     with pytest_raises(Exception) as excinfo:
         calendar_x.get_idea_kid(road=week_road)
     assert (
@@ -238,7 +238,7 @@ def test_calendar_del_idea_kid_IdeaLevel1CanBeDeleted_ChildrenDeleted():
 
 
 def test_calendar_del_idea_kid_IdeaLevel1CanBeDeleted_ChildrenInherited():
-    # Given
+    # GIVEN
     calendar_x = get_calendar_with_4_levels()
     calendar_x.set_calendar_metrics()
     week_text = "weekdays"
@@ -247,10 +247,10 @@ def test_calendar_del_idea_kid_IdeaLevel1CanBeDeleted_ChildrenInherited():
     old_sunday_road = f"{week_road},{sun_text}"
     assert calendar_x.get_idea_kid(road=old_sunday_road)
 
-    # When
+    # WHEN
     calendar_x.del_idea_kid(road=week_road, del_children=False)
 
-    # Then
+    # THEN
     with pytest_raises(Exception) as excinfo:
         calendar_x.get_idea_kid(road=old_sunday_road)
     assert (
@@ -264,15 +264,15 @@ def test_calendar_del_idea_kid_IdeaLevel1CanBeDeleted_ChildrenInherited():
 
 
 def test_calendar_del_idea_kid_IdeaLevel2CanBeDeleted_ChildrenDeleted():
-    # Given
+    # GIVEN
     calendar_x = get_calendar_with_4_levels()
     monday_road = f"{root_label()},weekdays,Monday"
     assert calendar_x.get_idea_kid(road=monday_road)
 
-    # When
+    # WHEN
     calendar_x.del_idea_kid(road=monday_road)
 
-    # Then
+    # THEN
     with pytest_raises(Exception) as excinfo:
         calendar_x.get_idea_kid(road=monday_road)
     assert (
@@ -282,7 +282,7 @@ def test_calendar_del_idea_kid_IdeaLevel2CanBeDeleted_ChildrenDeleted():
 
 
 def test_calendar_del_idea_kid_IdeaLevelNCanBeDeleted_ChildrenDeleted():
-    # Given
+    # GIVEN
     calendar_x = get_calendar_with_4_levels()
     states = "nation-state"
     USA = "USA"
@@ -290,10 +290,10 @@ def test_calendar_del_idea_kid_IdeaLevelNCanBeDeleted_ChildrenDeleted():
     texas_road = f"{root_label()},{states},{USA},{Texas}"
     assert calendar_x.get_idea_kid(road=texas_road)
 
-    # When
+    # WHEN
     calendar_x.del_idea_kid(road=texas_road)
 
-    # Then
+    # THEN
     with pytest_raises(Exception) as excinfo:
         calendar_x.get_idea_kid(road=texas_road)
     assert (
@@ -425,7 +425,7 @@ def test_calendar_edit_idea_attr_calendarIsAbleToEdit_on_meld_weight_action_AnyI
     calendar_x = get_calendar_with_4_levels()
     work_road = f"{root_label()},work"
 
-    # When/Then
+    # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         calendar_x.edit_idea_attr(road=work_road, on_meld_weight_action="yahoo9")
     assert (
@@ -437,7 +437,7 @@ def test_calendar_edit_idea_attr_calendarIsAbleToEdit_on_meld_weight_action_AnyI
 def test_calendar_edit_idea_attr_calendarIsAbleToEditDenomAnyIdeaIfInvaildDenomThrowsError():
     owner_text = "Yao"
     calendar_x = CalendarUnit(_owner=owner_text)
-    # When/Then
+    # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         calendar_x.edit_idea_attr(road="", denom=46)
     assert str(excinfo.value) == "Root Idea cannot have numor denom reest."
@@ -451,7 +451,7 @@ def test_calendar_edit_idea_attr_calendarIsAbleToEditDenomAnyIdeaIfInvaildDenomT
     c_road = f"{w_road},{clean}"
     calendar_x.add_idea(clean_idea, walk=w_road)
 
-    # When/Then
+    # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         calendar_x.edit_idea_attr(road=c_road, denom=46)
     assert (
@@ -459,7 +459,7 @@ def test_calendar_edit_idea_attr_calendarIsAbleToEditDenomAnyIdeaIfInvaildDenomT
         == f"Idea cannot edit numor=1/denom/reest of '{root_label()},work,clean' if parent '{root_label()},work' or ideacore._numeric_road does not have begin/close range"
     )
 
-    # Given
+    # GIVEN
     calendar_x.edit_idea_attr(road=w_road, begin=44, close=110)
     calendar_x.edit_idea_attr(road=c_road, denom=11)
     clean_idea = calendar_x.get_idea_kid(road=c_road)
@@ -468,7 +468,7 @@ def test_calendar_edit_idea_attr_calendarIsAbleToEditDenomAnyIdeaIfInvaildDenomT
 
 
 def test_calendar_edit_idea_attr_calendarIsAbleToEditDenomAnyIdeaInvaildDenomThrowsError():
-    # Given
+    # GIVEN
     owner_text = "Yao"
     calendar_x = CalendarUnit(_owner=owner_text)
     work = "work"
@@ -488,7 +488,7 @@ def test_calendar_edit_idea_attr_calendarIsAbleToEditDenomAnyIdeaInvaildDenomThr
     day_road = f"{root_label()},{day}"
     calendar_x.add_idea(day_idea, walk=root_label())
 
-    # When/Then
+    # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         calendar_x.edit_idea_attr(road=c_road, numeric_road=day_road)
     assert (
@@ -500,41 +500,41 @@ def test_calendar_edit_idea_attr_calendarIsAbleToEditDenomAnyIdeaInvaildDenomThr
 
 
 def test_calendar_edit_idea_attr_calendarWhenParentAndNumeric_roadBothHaveRangeThrowError():
-    # Given
+    # GIVEN
     owner_text = "Yao"
     calendar_x = CalendarUnit(_owner=owner_text)
-    work = "work"
-    w_road = f"{root_label()},{work}"
-    work_idea = IdeaKid(_label=work)
-    calendar_x.add_idea(work_idea, walk=root_label())
-    day = "day_range"
-    day_idea = IdeaKid(_label=day, _begin=44, _close=110)
-    day_road = f"{root_label()},{day}"
+    work_text = "work"
+    work_road = f"{root_label()},{work_text}"
+    calendar_x.add_idea(IdeaKid(_label=work_text), walk=root_label())
+    day_text = "day_range"
+    day_idea = IdeaKid(_label=day_text, _begin=44, _close=110)
+    day_road = f"{root_label()},{day_text}"
     calendar_x.add_idea(day_idea, walk=root_label())
 
-    work_idea2 = calendar_x.get_idea_kid(road=w_road)
-    assert work_idea2._begin is None
-    assert work_idea2._close is None
+    work_idea = calendar_x.get_idea_kid(road=work_road)
+    assert work_idea._begin is None
+    assert work_idea._close is None
 
+    # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        calendar_x.edit_idea_attr(road=w_road, denom=11)
+        calendar_x.edit_idea_attr(road=work_road, denom=11)
     assert (
         str(excinfo.value)
         == f"Idea cannot edit numor=1/denom/reest of '{root_label()},work' if parent '{root_label()}' or ideacore._numeric_road does not have begin/close range"
     )
 
-    # When
-    calendar_x.edit_idea_attr(road=w_road, numeric_road=day_road)
+    # WHEN
+    calendar_x.edit_idea_attr(road=work_road, numeric_road=day_road)
 
-    # Then
-    work_idea3 = calendar_x.get_idea_kid(road=w_road)
+    # THEN
+    work_idea3 = calendar_x.get_idea_kid(road=work_road)
     assert work_idea3._addin is None
     assert work_idea3._numor is None
     assert work_idea3._denom is None
     assert work_idea3._reest is None
     assert work_idea3._begin == 44
     assert work_idea3._close == 110
-    calendar_x.edit_idea_attr(road=w_road, denom=11, numeric_road=day_road)
+    calendar_x.edit_idea_attr(road=work_road, denom=11, numeric_road=day_road)
     assert work_idea3._begin == 4
     assert work_idea3._close == 10
     assert work_idea3._numor == 1
@@ -544,7 +544,7 @@ def test_calendar_edit_idea_attr_calendarWhenParentAndNumeric_roadBothHaveRangeT
 
 
 def test_calendar_add_idea_MustReorderKidsDictToBeAlphabetical():
-    # Given
+    # GIVEN
     owner_text = "Noa"
     ax = CalendarUnit(_owner=owner_text)
     work_text = "work"
