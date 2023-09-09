@@ -200,35 +200,47 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
 
 def test_road_get_ancestor_roads_CorrectlyReturnsAncestorRoads():
     # GIVEN
-    road_x = f"{root_label()},nation-state,USA,Texas"
+    nation_text = "nation-state"
+    nation_road = f"{root_label()},{nation_text}"
+    usa_text = "USA"
+    usa_road = f"{nation_road},{usa_text}"
+    texas_text = "Texas"
+    texas_road = f"{usa_road},{texas_text}"
 
     # WHEN
-    x_roads = get_ancestor_roads(road=road_x)
+    x_roads = get_ancestor_roads(road=texas_road)
 
     # THEN
+    print(f"{texas_road=}")
     assert x_roads != None
     texas_ancestor_roads = [
-        road_x,
-        f"{root_label()},nation-state,USA",
-        f"{root_label()},nation-state",
-        f"{root_label()}",
+        texas_road,
+        usa_road,
+        nation_road,
+        root_label(),
     ]
     assert x_roads == texas_ancestor_roads
 
 
 def test_road_get_forefather_roads_CorrectlyReturnsAncestorRoadsWithoutSource():
     # GIVEN
-    road_x = f"{root_label()},nation-state,USA,Texas"
+    nation_text = "nation-state"
+    nation_road = f"{root_label()},{nation_text}"
+    usa_text = "USA"
+    usa_road = f"{nation_road},{usa_text}"
+    texas_text = "Texas"
+    texas_road = f"{usa_road},{texas_text}"
 
     # WHEN
-    x_roads = get_forefather_roads(road=road_x)
+    x_roads = get_forefather_roads(road=texas_road)
 
     # THEN
+    print(f"{texas_road=}")
     assert x_roads != None
     texas_forefather_roads = {
-        f"{root_label()},nation-state,USA": None,
-        f"{root_label()},nation-state": None,
-        f"{root_label()}": None,
+        nation_road: None,
+        usa_road: None,
+        root_label(): None,
     }
     assert x_roads == texas_forefather_roads
 
