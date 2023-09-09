@@ -19,18 +19,18 @@ def test_calendarunit_get_assignment_ReturnsCalendar():
 
     # WHEN
     bob_text = "bob"
-    empty_calendar_x = CalendarUnit(_owner=jes_text)
-    empty_calendar_x.set_groupunits_empty_if_null()
+    calendar_x = CalendarUnit(_owner=jes_text)
+    calendar_x.set_groupunits_empty_if_null()
     assignor_known_members_x = {}
     cx_assignment = jes1_cx.get_assignment(
-        empty_calendar=empty_calendar_x,
+        calendar_x=calendar_x,
         assignor_members=assignor_known_members_x,
         assignor_name=bob_text,
     )
 
     # THEN
     assert str(type(cx_assignment)) == "<class 'src.calendar.calendar.CalendarUnit'>"
-    assert cx_assignment == empty_calendar_x
+    assert cx_assignment == calendar_x
 
 
 def test_calendarunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInMembers():
@@ -381,7 +381,7 @@ def test_calendar__get_relevant_roads_range_source_road_ReturnSimple():
 
 # def test_calendar__get_relevant_roads_numeric_road_range_source_road_ReturnEntireRangeTree():
 #
-def test_calendar__set_assignment_calendar_ideas_ReturnsCorrectIdeas():
+def test_calendar__set_assignment_ideas_ReturnsCorrectIdeas():
     # GIVEN
     yao_text = "Yao"
     cx = CalendarUnit(_owner=yao_text)
@@ -393,9 +393,7 @@ def test_calendar__set_assignment_calendar_ideas_ReturnsCorrectIdeas():
     bob_text = "Bob"
     bob_calendar = CalendarUnit(_owner=bob_text)
     relevant_roads = {root_label(): "descendant", casa_road: "requirementunit_base"}
-    cx._set_assignment_calendar_ideas(
-        calendar_x=bob_calendar, relevant_roads=relevant_roads
-    )
+    cx._set_assignment_ideas(calendar_x=bob_calendar, relevant_roads=relevant_roads)
 
     # THEN
     bob_calendar.set_calendar_metrics()
@@ -428,7 +426,7 @@ def test_calendar_get_assignment_getsCorrectIdeas_scenario1():
 
     # WHEN
     assignment_x = cx.get_assignment(
-        empty_calendar=CalendarUnit(_owner=bob_text),
+        calendar_x=CalendarUnit(_owner=bob_text),
         assignor_members={bob_text: -1},
         assignor_name=bob_text,
     )

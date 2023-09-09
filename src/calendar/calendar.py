@@ -2110,27 +2110,19 @@ class CalendarUnit:
 
     def get_assignment(
         self,
-        empty_calendar,
+        calendar_x,
         assignor_members: dict[MemberName:MemberUnit],
         assignor_name: MemberName,
-    ):
-        # Members
-        self.set_members_empty_if_null()
+    ) -> CalendarOwner:
         self.set_calendar_metrics()
-
-        calendar_x = self._get_assignment_calendar_members(
-            empty_calendar, assignor_members, assignor_name
-        )
-        calendar_x = self._get_assignment_calendar_groups(calendar_x, self._groups)
+        self._set_assignment_members(calendar_x, assignor_members, assignor_name)
+        self._set_assignment_groups(calendar_x)
         assignor_promises = self._get_assignor_promise_ideas(calendar_x, assignor_name)
         relevant_roads = self._get_relevant_roads(assignor_promises)
-        self._set_assignment_calendar_ideas(calendar_x, relevant_roads)
-
+        self._set_assignment_ideas(calendar_x, relevant_roads)
         return calendar_x
 
-    def _set_assignment_calendar_ideas(
-        self, calendar_x, relevant_roads: dict[Road:str]
-    ):
+    def _set_assignment_ideas(self, calendar_x, relevant_roads: dict[Road:str]):
         sorted_relevants = sorted(list(relevant_roads))
         # don't know how to handle root idea attributes...
         if sorted_relevants != []:
@@ -2146,7 +2138,7 @@ class CalendarUnit:
             relevant_idea._kids = {}
             calendar_x.add_idea(idea_kid=relevant_idea, walk=relevant_idea._walk)
 
-    def _get_assignment_calendar_members(
+    def _set_assignment_members(
         self,
         calendar_x,
         assignor_members: dict[MemberName:MemberUnit],
@@ -2160,19 +2152,18 @@ class CalendarUnit:
                 calendar_x.set_memberunit(memberunit=self._members.get(membername_x))
         return calendar_x
 
-    def _get_assignment_calendar_groups(
-        self, calendar_x, src_groups: dict[GroupName:GroupUnit]
-    ):
-        revelant_groups = get_members_relevant_groups(src_groups, calendar_x._members)
+    def _set_assignment_groups(self, calendar_x):
+        revelant_groups = get_members_relevant_groups(self._groups, calendar_x._members)
         for group_name, group_members in revelant_groups.items():
             if calendar_x._groups.get(group_name) is None:
                 group_x = groupunit_shop(name=group_name)
                 for member_name in group_members:
                     group_x.set_memberlink(memberlink_shop(name=member_name))
                 calendar_x.set_groupunit(group_x)
-        return calendar_x
 
-    def _get_assignor_promise_ideas(self, calendar_x, assignor_name: GroupName):
+    def _get_assignor_promise_ideas(
+        self, calendar_x, assignor_name: GroupName
+    ) -> dict[Road:int]:
         calendar_x.set_groupunits_empty_if_null()
         assignor_groups = get_member_relevant_groups(calendar_x._groups, assignor_name)
         return {
