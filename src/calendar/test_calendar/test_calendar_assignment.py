@@ -1,4 +1,4 @@
-from src.calendar.calendar import CalendarUnit, get_from_json as calendar_get_from_json
+from src.calendar.calendar import CalendarUnit
 from src.calendar.idea import IdeaKid
 from src.calendar.required_idea import RequiredUnit
 from src.calendar.member import memberunit_shop, memberlink_shop
@@ -323,12 +323,43 @@ def test_calendar__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
     assert relevant_roads.get(unim_road) is None
 
 
-def test_calendar__get_relevant_roads_ReturnsRequiredUnitBaseRecursively():
-    pass
+# def test_calendar__get_relevant_roads_ReturnsRequiredUnitBaseRecursively():
+#     pass
 
 
 def test_calendar__get_relevant_roads_numeric_road_special_road_ReturnSimple():
-    pass
+    # GIVEN
+    owner_text = "Yao"
+    cx = CalendarUnit(_owner=owner_text)
+    work_text = "work"
+    work_road = f"{root_label()},{work_text}"
+    cx.add_idea(IdeaKid(_label=work_text), walk=root_label())
+    work_idea = cx.get_idea_kid(road=work_road)
+    day_text = "day_range"
+    day_road = f"{root_label()},{day_text}"
+    day_idea = IdeaKid(_label=day_text, _begin=44, _close=110)
+    cx.add_idea(day_idea, walk=root_label())
+    cx.edit_idea_attr(road=work_road, denom=11, numeric_road=day_road)
+    assert work_idea._begin == 4
+    print(f"{work_idea._label=} {work_idea._begin=} {work_idea._close=}")
+
+    # WHEN
+    cx.set_calendar_metrics()
+    roads_dict = {work_road}
+    relevant_roads = cx._get_relevant_roads(roads_dict)
+
+    # THEN
+    print(f"{relevant_roads=}")
+    assert len(relevant_roads) == 3
+    assert relevant_roads.get(work_road) != None
+    assert relevant_roads.get(day_road) != None
+    assert relevant_roads == {
+        root_label(): -1,
+        work_road: -1,
+        day_road: -1,
+    }
+
+    assert 1 == 2
 
 
 def test_calendar__get_relevant_roads_numeric_road_special_road_ReturnEntireRangeTree():

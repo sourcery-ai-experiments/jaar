@@ -219,6 +219,14 @@ class CalendarUnit:
                     road_type="requiredunit_base",
                 )
 
+            if idea_x._numeric_road != None:
+                self._evaluate_relevancy(
+                    to_evaluate_list=to_evaluate_list,
+                    to_evaluate_hx_dict=to_evaluate_hx_dict,
+                    to_evaluate_road=idea_x._numeric_road,
+                    road_type="numeric_road",
+                )
+
             evaluated_roads[road_x] = -1
 
             # idea_assoc_dict.extend(get_ancestor_roads(road=road_x))
