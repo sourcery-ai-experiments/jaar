@@ -2125,8 +2125,6 @@ class CalendarUnit:
         assignor_promises = self._get_assignor_promise_ideas(calendar_x, assignor_name)
         relevant_roads = self._get_relevant_roads(assignor_promises)
         self._set_assignment_calendar_ideas(calendar_x, relevant_roads)
-        # for road in relevant_roads:
-        # add_idea_kid()
 
         return calendar_x
 
@@ -2147,7 +2145,6 @@ class CalendarUnit:
             # elif relevant_roads.get(relevant_road) != "descendant":
             relevant_idea._kids = {}
             calendar_x.add_idea(idea_kid=relevant_idea, walk=relevant_idea._walk)
-        return calendar_x
 
     def _get_assignment_calendar_members(
         self,

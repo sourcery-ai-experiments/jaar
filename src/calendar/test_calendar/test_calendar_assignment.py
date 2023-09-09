@@ -391,17 +391,17 @@ def test_calendar__set_assignment_calendar_ideas_ReturnsCorrectIdeas():
 
     # WHEN
     bob_text = "Bob"
-    empty_calendar = CalendarUnit(_owner=bob_text)
+    bob_calendar = CalendarUnit(_owner=bob_text)
     relevant_roads = {root_label(): "descendant", casa_road: "requirementunit_base"}
-    assignment_x = cx._set_assignment_calendar_ideas(
-        calendar_x=empty_calendar, relevant_roads=relevant_roads
+    cx._set_assignment_calendar_ideas(
+        calendar_x=bob_calendar, relevant_roads=relevant_roads
     )
 
     # THEN
-    assignment_x.set_calendar_metrics()
-    print(f"{assignment_x._idea_dict.keys()=}")
-    assert len(assignment_x._idea_dict) == 2
-    assert assignment_x.get_idea_kid(casa_road) != None
+    bob_calendar.set_calendar_metrics()
+    print(f"{bob_calendar._idea_dict.keys()=}")
+    assert len(bob_calendar._idea_dict) == 2
+    assert bob_calendar.get_idea_kid(casa_road) != None
 
 
 def test_calendar_get_assignment_getsCorrectIdeas_scenario1():
