@@ -18,9 +18,9 @@ def test_calendar_get_tree_metrics_exists():
     sx_tree_metrics = sx.get_tree_metrics()
 
     # THEN
-    assert sx_tree_metrics.nodeCount != None
+    assert sx_tree_metrics.node_count != None
     assert sx_tree_metrics.required_bases != None
-    assert sx_tree_metrics.levelCount != None
+    assert sx_tree_metrics.level_count != None
     assert sx_tree_metrics.grouplinks_metrics != None
 
 

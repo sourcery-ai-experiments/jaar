@@ -11,7 +11,7 @@ def test_calendar_get_tree_metrics_TracksRequiredsThatHaveNoAcptFactBases():
     lw_x = example_calendars_calendar_v001()
     lw_x_metrics = lw_x.get_tree_metrics()
 
-    print(f"{lw_x_metrics.levelCount=}")
+    print(f"{lw_x_metrics.level_count=}")
     print(f"{lw_x_metrics.required_bases=}")
     assert lw_x_metrics != None
     required_bases_x = lw_x_metrics.required_bases

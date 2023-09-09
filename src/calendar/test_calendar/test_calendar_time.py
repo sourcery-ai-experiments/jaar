@@ -1,4 +1,5 @@
 from src.calendar.calendar import CalendarUnit
+from src.calendar.road import get_global_root_label as root_label
 from datetime import datetime
 from random import randint
 
@@ -121,13 +122,13 @@ def test_get_time_():
     )
 
     # Then
-    assert g_lw._idearoot._acptfactunits[f"{g_lw._owner},time,jajatime"]
-    assert (
-        g_lw._idearoot._acptfactunits[f"{g_lw._owner},time,jajatime"].open == 1051898400
-    )  # - 1440
-    assert (
-        g_lw._idearoot._acptfactunits[f"{g_lw._owner},time,jajatime"].nigh == 1053934800
-    )  # - 1440
+    time_text = "time"
+    time_road = f"{root_label()},{time_text}"
+    jaja_text = "jajatime"
+    jaja_road = f"{time_road},{jaja_text}"
+    assert g_lw._idearoot._acptfactunits[jaja_road]
+    assert g_lw._idearoot._acptfactunits[jaja_road].open == 1051898400  # - 1440
+    assert g_lw._idearoot._acptfactunits[jaja_road].nigh == 1053934800  # - 1440
 
 
 # def test_time_hreg_set_exists():

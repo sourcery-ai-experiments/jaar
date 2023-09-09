@@ -87,7 +87,7 @@ def test_get_idea_ranged_kids_CorrectlyReturnsAllChildren():
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN
-    weekunit_road = f"{cx._owner},time,tech,week"
+    weekunit_road = f"{root_label()},time,tech,week"
     ranged_ideas = cx.get_idea_ranged_kids(idea_road=weekunit_road)
 
     # # THEN
@@ -101,7 +101,7 @@ def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen1():
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN
-    weekunit_road = f"{cx._owner},time,tech,week"
+    weekunit_road = f"{root_label()},time,tech,week"
     begin_x = 1440
     close_x = 4 * 1440
     ranged_ideas = cx.get_idea_ranged_kids(
@@ -123,7 +123,7 @@ def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen2():
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN THEN
-    week_road = f"{cx._owner},time,tech,week"
+    week_road = f"{root_label()},time,tech,week"
     assert len(cx.get_idea_ranged_kids(idea_road=week_road, begin=0, close=1440)) == 1
     assert len(cx.get_idea_ranged_kids(idea_road=week_road, begin=0, close=2000)) == 2
     assert len(cx.get_idea_ranged_kids(idea_road=week_road, begin=0, close=3000)) == 3
@@ -136,6 +136,6 @@ def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen3():
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN THEN
-    week_road = f"{cx._owner},time,tech,week"
+    week_road = f"{root_label()},time,tech,week"
     assert len(cx.get_idea_ranged_kids(idea_road=week_road, begin=0)) == 1
     assert len(cx.get_idea_ranged_kids(idea_road=week_road, begin=1440)) == 1

@@ -3,6 +3,7 @@ from ui.EditAcptFactTimeUI import Ui_Form
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from datetime import datetime
+from src.calendar.road import get_global_root_label as root_label
 
 
 class EditAcptFactTime(qtw.QTableWidget, Ui_Form):
@@ -66,10 +67,10 @@ class EditAcptFactTime(qtw.QTableWidget, Ui_Form):
 
     def display_acptfact_time(self):
         # minutes_idea = self.calendar_x.get_idea_kid(
-        #     road=f"{self.calendar_x._owner},time,jajatime"
+        #     road=f"{root_label},time,jajatime"
         # )
         minutes_acptfact = self.calendar_x._idearoot._acptfactunits[
-            f"{self.calendar_x._owner},time,jajatime"
+            f"{root_label},time,jajatime"
         ]
 
         dt_open = self.calendar_x.get_time_dt_from_min(min=minutes_acptfact.open)

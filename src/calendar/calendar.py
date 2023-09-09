@@ -192,7 +192,7 @@ class CalendarUnit:
 
         count_x = 0
         # tree_metrics = self.get_tree_metrics()
-        # while roads_to_evaluate != [] and count_x <= tree_metrics.nodeCount:
+        # while roads_to_evaluate != [] and count_x <= tree_metrics.node_count:
         # changed because count_x might be wrong way to measure
         # nice to avoid infinite loops from programming errors though...
         while to_evaluate_list != []:
@@ -261,7 +261,7 @@ class CalendarUnit:
         return hreg_get_time_min_from_dt(dt=dt)
 
     def get_time_c400_from_min(self, min: int) -> int:
-        c400_idea = self.get_idea_kid(f"{self._owner},time,tech,400 year cycle")
+        c400_idea = self.get_idea_kid(f"{root_label()},time,tech,400 year cycle")
         c400_min = c400_idea._close
         return int(min / c400_min), c400_idea, min % c400_min
 
@@ -276,12 +276,12 @@ class CalendarUnit:
             50492160,
             52596000,
         ):  # 96 year and 100 year spans
-            yr4_1461 = self.get_idea_kid(f"{self._owner},time,tech,4year with leap")
+            yr4_1461 = self.get_idea_kid(f"{root_label()},time,tech,4year with leap")
             yr4_cycles = int(cXXXyr_min / yr4_1461._close)
             cXyr_min = cXXXyr_min % yr4_1461._close
             yr1_idea = yr4_1461.get_kids_in_range(begin=cXyr_min, close=cXyr_min)[0]
         elif c100_4_96y._close - c100_4_96y._begin == 2102400:
-            yr4_1460 = self.get_idea_kid(f"{self._owner},time,tech,4year wo leap")
+            yr4_1460 = self.get_idea_kid(f"{root_label()},time,tech,4year wo leap")
             yr4_cycles = 0
             yr1_idea = yr4_1460.get_kids_in_range(begin=cXXXyr_min, close=cXXXyr_min)[0]
             cXyr_min = cXXXyr_min % yr4_1460._close
@@ -297,13 +297,13 @@ class CalendarUnit:
         year_num, yr1_idea, yr1_idea_rem_min = self.get_time_c400yr_from_min(min=min)
         yrx = None
         if yr1_idea._close - yr1_idea._begin == 525600:
-            yrx = self.get_idea_kid(f"{self._owner},time,tech,365 year")
+            yrx = self.get_idea_kid(f"{root_label()},time,tech,365 year")
         elif yr1_idea._close - yr1_idea._begin == 527040:
-            yrx = self.get_idea_kid(f"{self._owner},time,tech,366 year")
+            yrx = self.get_idea_kid(f"{root_label()},time,tech,366 year")
         mon_x = yrx.get_kids_in_range(begin=yr1_idea_rem_min, close=yr1_idea_rem_min)[0]
         month_rem_min = yr1_idea_rem_min - mon_x._begin
         month_num = int(mon_x._label.split("-")[0])
-        day_x = self.get_idea_kid(f"{self._owner},time,tech,day")
+        day_x = self.get_idea_kid(f"{root_label()},time,tech,day")
         day_num = int(month_rem_min / day_x._close)
         day_rem_min = month_rem_min % day_x._close
         return month_num, day_num, day_rem_min, day_x
@@ -354,7 +354,7 @@ class CalendarUnit:
 
     def _get_jajatime_week_legible_text(self, open: int, divisor: int) -> str:
         open_in_week = open % divisor
-        week_road = f"{self._owner},time,tech,week"
+        week_road = f"{root_label()},time,tech,week"
         weekday_ideas_dict = self.get_idea_ranged_kids(
             idea_road=week_road, begin=open_in_week
         )
@@ -699,7 +699,7 @@ class CalendarUnit:
     def set_time_acptfacts(self, open: datetime = None, nigh: datetime = None) -> None:
         open_minutes = self.get_time_min_from_dt(dt=open) if open != None else None
         nigh_minutes = self.get_time_min_from_dt(dt=nigh) if nigh != None else None
-        minutes_acptfact = f"{self._owner},time,jajatime"
+        minutes_acptfact = f"{root_label()},time,jajatime"
         self.set_acptfact(
             base=minutes_acptfact,
             pick=minutes_acptfact,
@@ -941,17 +941,18 @@ class CalendarUnit:
                 idea_uid_max = new_idea_uid_max
 
     def get_node_count(self):
-        tree_metrics = self.get_tree_metrics()
-        return tree_metrics.nodeCount
+        # tree_metrics = self.get_tree_metrics()
+        # return tree_metrics.node_count
+        return len(self._idea_dict)
 
     def get_level_count(self, level):
         tree_metrics = self.get_tree_metrics()
-        levelCount = None
+        level_count = None
         try:
-            levelCount = tree_metrics.levelCount[level]
+            level_count = tree_metrics.level_count[level]
         except KeyError:
-            levelCount = 0
-        return levelCount
+            level_count = 0
+        return level_count
 
     def get_required_bases(self) -> dict[Road:int]:
         tree_metrics = self.get_tree_metrics()
@@ -966,7 +967,7 @@ class CalendarUnit:
         elif self._idearoot._acptfactunits != None:
             for base, base_count in required_bases.items():
                 try:
-                    levelCount = self._idearoot._acptfactunits[base]
+                    level_count = self._idearoot._acptfactunits[base]
                 except KeyError:
                     missing_bases[base] = base_count
 
@@ -1916,7 +1917,7 @@ class CalendarUnit:
             yb = ideabase_list.pop(0)
             special_road_x = None
             if yb.sr != None:
-                special_road_x = f"{self._owner},{yb.sr}"
+                special_road_x = f"{root_label()},{yb.sr}"
 
             idea_x = IdeaKid(
                 _label=yb.n,
@@ -1930,12 +1931,12 @@ class CalendarUnit:
                 _reest=yb.mr,
                 _special_road=special_road_x,
             )
-            road_x = f"{self._owner},{yb.rr}"
+            road_x = f"{root_label()},{yb.rr}"
             self.add_idea(idea_kid=idea_x, walk=road_x)
 
             numeric_road_x = None
             if yb.nr != None:
-                numeric_road_x = f"{self._owner},{yb.nr}"
+                numeric_road_x = f"{root_label()},{yb.nr}"
                 self.edit_idea_attr(
                     road=f"{road_x},{yb.n}", numeric_road=numeric_road_x
                 )
@@ -2089,7 +2090,6 @@ class CalendarUnit:
         )
         calendar_x = self._get_assignment_calendar_groups(calendar_x, self._groups)
         assignor_promises = self._get_assignor_promise_ideas(calendar_x, assignor_name)
-        print(f"{assignor_promises=}")
         relevant_roads = self._get_relevant_roads(assignor_promises)
 
         return calendar_x

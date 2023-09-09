@@ -5,8 +5,8 @@ from src.calendar.group import GroupLink, GroupName, GroupMetrics
 
 @dataclasses.dataclass
 class TreeMetrics:
-    nodeCount: int = None
-    levelCount: dict[int:int] = None
+    node_count: int = None
+    level_count: dict[int:int] = None
     required_bases: dict[Road:int] = None
     grouplinks_metrics: dict[GroupName:GroupMetrics] = None
     uid_max: int = None
@@ -16,10 +16,10 @@ class TreeMetrics:
     an_promise_idea_road: Road = None
 
     def __init__(self):
-        if self.nodeCount is None:
-            self.nodeCount = 0
-        if self.levelCount is None:
-            self.levelCount = {}
+        if self.node_count is None:
+            self.node_count = 0
+        if self.level_count is None:
+            self.level_count = {}
         if self.required_bases is None:
             self.required_bases = {}
         self.set_grouplinks_empty_if_null()
@@ -41,7 +41,7 @@ class TreeMetrics:
         promise: bool,
         idea_road: Road,
     ):
-        self.nodeCount += 1
+        self.node_count += 1
         self.evaluate_action(promise=promise, idea_road=idea_road)
         self.evaluate_level(level=level)
         self.evaluate_requiredunits(requireds=requireds)
@@ -58,10 +58,10 @@ class TreeMetrics:
             self.an_promise_idea_road = idea_road
 
     def evaluate_level(self, level):
-        if self.levelCount.get(level) is None:
-            self.levelCount[level] = 1
+        if self.level_count.get(level) is None:
+            self.level_count[level] = 1
         else:
-            self.levelCount[level] = self.levelCount[level] + 1
+            self.level_count[level] = self.level_count[level] + 1
 
     def evaluate_requiredunits(self, requireds: dict[Road:RequiredUnit]):
         if requireds is None:
