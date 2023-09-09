@@ -48,16 +48,16 @@ def find_replace_road_key_dict(dict_x: dict, old_road: Road, new_road: Road):
     return dict_x
 
 
-def get_all_road_nodes_in_list(road: Road):
+def get_all_road_nodes(road: Road):
     return road.split(",")
 
 
 def get_terminus_node_from_road(road: Road):
-    return get_all_road_nodes_in_list(road=road)[-1]
+    return get_all_road_nodes(road=road)[-1]
 
 
 def get_walk_from_road(road: Road):  # road without terminus node
-    return get_road_from_nodes(get_all_road_nodes_in_list(road=road)[:-1])
+    return get_road_from_nodes(get_all_road_nodes(road=road)[:-1])
 
 
 def get_road_without_root_node(road: Road):  # road without terminus node
@@ -65,16 +65,14 @@ def get_road_without_root_node(road: Road):  # road without terminus node
         raise InvalidRoadException(
             f"Cannot get_road_without_root_node of '{road}' because it has no root node."
         )
-    road_without_root_node = get_road_from_nodes(
-        get_all_road_nodes_in_list(road=road)[1:]
-    )
+    road_without_root_node = get_road_from_nodes(get_all_road_nodes(road=road)[1:])
     return f",{road_without_root_node}"
 
 
 def road_validate(road: Road) -> Road:
     if road == "" or road is None:
         return Road("")
-    x_root = get_all_road_nodes_in_list(road)[0]
+    x_root = get_all_road_nodes(road)[0]
     return (
         change_road(
             current_road=road, old_road=x_root, new_road=get_global_root_label()
@@ -87,7 +85,7 @@ def road_validate(road: Road) -> Road:
 def get_ancestor_roads(road: Road) -> list[Road:None]:
     if road is None:
         return []
-    nodes = get_all_road_nodes_in_list(road)
+    nodes = get_all_road_nodes(road)
     temp_road = nodes.pop(0)
 
     temp_roads = [temp_road]

@@ -2,7 +2,7 @@ from src.calendar.road import (
     Road,
     change_road,
     is_sub_road,
-    get_all_road_nodes_in_list,
+    get_all_road_nodes,
     get_terminus_node_from_road,
     find_replace_road_key_dict,
     get_walk_from_road,
@@ -64,7 +64,7 @@ def test_road_change_road_correctlyRoad():
     assert change_road(old_roses_road, "random_text", plants_road) == old_roses_road
 
 
-def test_road_get_all_road_nodes_in_list_works():
+def test_road_get_all_road_nodes_works():
     # GIVEN
     person_text = "person"
     person_road = Road(f"{root_label()},{person_text}")
@@ -75,13 +75,13 @@ def test_road_get_all_road_nodes_in_list_works():
 
     # WHEN/THENs
     root_list = [root_label()]
-    assert get_all_road_nodes_in_list(road=root_label()) == root_list
+    assert get_all_road_nodes(road=root_label()) == root_list
     person_list = [root_label(), person_text]
-    assert get_all_road_nodes_in_list(road=person_road) == person_list
+    assert get_all_road_nodes(road=person_road) == person_list
     bloomers_list = [root_label(), person_text, bloomers_text]
-    assert get_all_road_nodes_in_list(road=bloomers_road) == bloomers_list
+    assert get_all_road_nodes(road=bloomers_road) == bloomers_list
     roses_list = [root_label(), person_text, bloomers_text, roses_text]
-    assert get_all_road_nodes_in_list(road=roses_road) == roses_list
+    assert get_all_road_nodes(road=roses_road) == roses_list
 
 
 def test_road_get_terminus_node_from_road_works():
@@ -251,16 +251,16 @@ def test_road_get_global_root_label_ReturnsCorrectObj():
 
 def test_road_get_road_from_nodes_WorksCorrectly():
     # GIVEN
-    root_list = get_all_road_nodes_in_list(root_label())
+    root_list = get_all_road_nodes(root_label())
     person_text = "person"
     person_road = Road(f"{root_label()},{person_text}")
-    person_list = get_all_road_nodes_in_list(person_road)
+    person_list = get_all_road_nodes(person_road)
     bloomers_text = "bloomers"
     bloomers_road = Road(f"{root_label()},{person_text},{bloomers_text}")
-    bloomers_list = get_all_road_nodes_in_list(bloomers_road)
+    bloomers_list = get_all_road_nodes(bloomers_road)
     roses_text = "roses"
     roses_road = Road(f"{root_label()},{person_text},{bloomers_text},{roses_text}")
-    roses_list = get_all_road_nodes_in_list(roses_road)
+    roses_list = get_all_road_nodes(roses_road)
 
     # WHEN / THEN
     assert root_label() == get_road_from_nodes(root_list)

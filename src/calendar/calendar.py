@@ -60,7 +60,7 @@ from src.calendar.road import (
     get_ancestor_roads,
     get_global_root_label as root_label,
     get_road_from_nodes,
-    get_all_road_nodes_in_list,
+    get_all_road_nodes,
     get_forefather_roads,
 )
 from src.calendar.origin import originunit_get_from_dict, originunit_shop, OriginUnit
@@ -730,13 +730,13 @@ class CalendarUnit:
             nigh=nigh_minutes,
         )
 
-    def _is_idea_rangeroot(self, idea_road: Road):
+    def _is_idea_rangeroot(self, idea_road: Road) -> bool:
         anc_roads = get_ancestor_roads(road=idea_road)
         parent_road = root_label() if len(anc_roads) == 1 else anc_roads[1]
 
         # figure out if parent is range
         parent_range = None
-        if len(get_all_road_nodes_in_list(parent_road)) == 1:
+        if len(get_all_road_nodes(parent_road)) == 1:
             parent_range = False
         else:
             parent_idea = self.get_idea_kid(road=parent_road)
@@ -758,7 +758,9 @@ class CalendarUnit:
             and self._is_idea_rangeroot(idea_road=acptfact.base)
         ]
 
-    def _get_rangeroot_1stlevel_associates(self, ranged_acptfactunits: list[IdeaCore]):
+    def _get_rangeroot_1stlevel_associates(
+        self, ranged_acptfactunits: list[IdeaCore]
+    ) -> Lemmas:
         lemmas_x = Lemmas()
         lemmas_x.set_empty_if_null()
         # lemma_ideas = {}
@@ -1004,7 +1006,7 @@ class CalendarUnit:
     ):
         walk = road_validate(walk)
         temp_idea = self._idearoot
-        walk_nodes = get_all_road_nodes_in_list(walk)
+        walk_nodes = get_all_road_nodes(walk)
         temp_road = walk_nodes.pop(0)
 
         # idearoot cannot be replaced
@@ -1079,7 +1081,7 @@ class CalendarUnit:
         return return_idea
 
     def del_idea_kid(self, road: Road, del_children: bool = True):
-        x_road = get_all_road_nodes_in_list(road)
+        x_road = get_all_road_nodes(road)
         temp_label = x_road.pop(0)
         temps_d = [temp_label]
 
@@ -1575,7 +1577,7 @@ class CalendarUnit:
     def get_idea_kid(self, road: Road) -> IdeaKid:
         if road is None:
             raise InvalidCalendarException("get_idea_kid received road=None")
-        nodes = get_all_road_nodes_in_list(road)
+        nodes = get_all_road_nodes(road)
         src = nodes.pop(0)
         temp_idea = None
 
@@ -1622,7 +1624,7 @@ class CalendarUnit:
             road = ""
 
         group_everyone = None
-        if len(get_all_road_nodes_in_list(road)) <= 1:
+        if len(get_all_road_nodes(road)) <= 1:
             group_everyone = self._idearoot._groupheirs in [None, {}]
         else:
             ancestor_roads = get_ancestor_roads(road=road)
@@ -2114,6 +2116,8 @@ class CalendarUnit:
         calendar_x = self._get_assignment_calendar_groups(calendar_x, self._groups)
         assignor_promises = self._get_assignor_promise_ideas(calendar_x, assignor_name)
         relevant_roads = self._get_relevant_roads(assignor_promises)
+        # for road in relevant_roads:
+        # add_idea_kid()
 
         return calendar_x
 
