@@ -3,7 +3,7 @@ from src.calendar.calendar import (
     get_from_json as calendar_get_from_json,
     get_meld_of_calendar_files,
 )
-from src.calendar.examples.get_calendar_examples_dir import get_calendar_examples_dir
+from src.calendar.examples.calendar_env import calendar_env
 from src.calendar.idea import IdeaCore, IdeaKid
 from src.calendar.road import Road
 from src.calendar.required_idea import RequiredUnit

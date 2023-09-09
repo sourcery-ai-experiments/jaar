@@ -11,7 +11,7 @@ from src.calendar.calendar import (
     get_from_json as calendar_get_from_json,
     get_dict_of_calendar_from_dict,
 )
-from src.calendar.examples.get_calendar_examples_dir import (
+from src.calendar.examples.calendar_env import (
     get_calendar_temp_env_dir,
     env_dir_setup_cleanup,
 )
@@ -344,7 +344,7 @@ def test_calendar_get_json_CorrectlyWorksForSimpleExample():
 #     assert x_is_json(json_x=cx1_json)
 
 #     file_name = "example_calendar1.json"
-#     file_dir = get_calendar_examples_dir()
+#     file_dir = calendar_env()
 #     print("File may fail since example_calendar1.json is created by a later test")
 #     cx3_json = x_func_open_file(dest_dir=file_dir, file_name=file_name)
 #     # print(cx3_json[299000:299155])

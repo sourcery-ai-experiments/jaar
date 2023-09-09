@@ -1,6 +1,6 @@
 from datetime import datetime
 from src.calendar.calendar import CalendarUnit, get_from_json
-from src.calendar.examples.get_calendar_examples_dir import get_calendar_examples_dir
+from src.calendar.examples.calendar_env import calendar_env
 from src.calendar.idea import IdeaCore, IdeaKid
 from src.calendar.road import Road
 from src.calendar.required_idea import RequiredUnit, SuffFactStatusFinder
@@ -374,7 +374,7 @@ def test_set_agenda_task_as_complete_DivisionWorksCorrectly():
 
 def test_calendar_get_from_json_LoadsActionFromJSONCorrectly():
     # GIVEN
-    file_dir = get_calendar_examples_dir()
+    file_dir = calendar_env()
     file_name = "example_calendar1.json"
     a1_json = x_func_open_file(dest_dir=file_dir, file_name=file_name)
 

@@ -7,15 +7,13 @@ from src.calendar.required_idea import (
 )
 from src.calendar.calendar import CalendarUnit, get_from_json
 from src.calendar.x_func import open_file as x_func_open_file
-from src.calendar.examples.get_calendar_examples_dir import get_calendar_examples_dir
+from src.calendar.examples.calendar_env import calendar_env
 from src.calendar.road import get_global_root_label as root_label
 
 
 def calendar_v001() -> CalendarUnit:
     return get_from_json(
-        x_func_open_file(
-            dest_dir=get_calendar_examples_dir(), file_name="example_calendar1.json"
-        )
+        x_func_open_file(dest_dir=calendar_env(), file_name="example_calendar1.json")
     )
 
 
@@ -64,9 +62,7 @@ def calendar_v001_with_large_agenda() -> CalendarUnit:
 
 def calendar_v002() -> CalendarUnit:
     return get_from_json(
-        x_func_open_file(
-            dest_dir=get_calendar_examples_dir(), file_name="example_calendar2.json"
-        )
+        x_func_open_file(dest_dir=calendar_env(), file_name="example_calendar2.json")
     )
 
 

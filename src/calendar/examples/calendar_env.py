@@ -2,7 +2,7 @@ from src.calendar.x_func import delete_dir as x_func_delete_dir
 from pytest import fixture as pytest_fixture
 
 
-def get_calendar_examples_dir():
+def calendar_env():
     return "src/calendar/examples"
 
 

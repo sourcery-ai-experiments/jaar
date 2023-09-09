@@ -7,7 +7,7 @@ from EditAcptFactTime import EditAcptFactTime
 from EditAgenda import EditAgenda
 from EditProblem import EditProblem
 from src.calendar.calendar import CalendarUnit, get_from_json
-from src.calendar.examples.get_calendar_examples_dir import get_calendar_examples_dir
+from src.calendar.examples.calendar_env import calendar_env
 from src.calendar.hreg_time import convert1440toHHMM
 from src.calendar.road import get_global_root_label as root_label
 from src.pyqt5_kit.pyqt_func import (
@@ -150,7 +150,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # if "delete me this is for dev only":
         self.file_path = None
         if file_open_path is None:
-            self.file_path = f"{get_calendar_examples_dir()}/example_calendar2.json"
+            self.file_path = f"{calendar_env()}/example_calendar2.json"
         else:
             self.file_path = file_open_path
         self.open_file()
@@ -271,7 +271,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def save_file(self):
         if self.file_path is None:
-            self.file_path = f"{get_calendar_examples_dir()}/{self._get_file_name()}"
+            self.file_path = f"{calendar_env()}/{self._get_file_name()}"
         self._commit_file_save()
 
     def _get_file_name(self):
