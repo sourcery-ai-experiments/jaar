@@ -732,7 +732,7 @@ class CalendarUnit:
 
     def _is_idea_rangeroot(self, idea_road: Road):
         anc_roads = get_ancestor_roads(road=idea_road)
-        parent_road = self._owner if len(anc_roads) == 1 else anc_roads[1]
+        parent_road = root_label() if len(anc_roads) == 1 else anc_roads[1]
 
         # figure out if parent is range
         parent_range = None
@@ -1178,7 +1178,7 @@ class CalendarUnit:
             anc_roads
         ) == 1:
             raise InvalidCalendarException("Root Idea cannot have numor denom reest.")
-        parent_road = self._owner if len(anc_roads) == 1 else anc_roads[1]
+        parent_road = root_label() if len(anc_roads) == 1 else anc_roads[1]
 
         parent_has_range = None
         parent_idea_x = self.get_idea_kid(road=parent_road)
