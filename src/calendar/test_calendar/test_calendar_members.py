@@ -90,6 +90,23 @@ def test_calendar_set_member_correctly_sets_members_2():
     assert cx._members.get(patr_text).depotlink_type == assign_text
 
 
+def test_calendar_get_member_CorrectlyGetsMember():
+    # GIVEN
+    cx = CalendarUnit(_owner="prom")
+    rico_text = "rico"
+    carm_text = "carmen"
+    cx.add_memberunit(name=rico_text)
+    cx.add_memberunit(name=carm_text)
+
+    # WHEN
+    rico_member = cx.get_member(rico_text)
+    carm_member = cx.get_member(carm_text)
+
+    # THEN
+    assert rico_member == cx._members.get(rico_text)
+    assert carm_member == cx._members.get(carm_text)
+
+
 def test_calendar_get_idea_list_CorrectlySetsMemberLinkCalendarCreditAndDebt():
     # GIVEN
     prom_text = "prom"

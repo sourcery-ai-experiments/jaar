@@ -563,6 +563,9 @@ class CalendarUnit:
 
         self.del_memberunit(name=old_name)
 
+    def get_member(self, membername: MemberName) -> MemberUnit:
+        return self._members.get(membername)
+
     def get_memberunits_name_list(self):
         membername_list = list(self._members.keys())
         membername_list.append("")
