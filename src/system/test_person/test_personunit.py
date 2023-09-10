@@ -25,7 +25,7 @@ def test_personunit_exists(person_dir_setup_cleanup):
 
     # GIVEN
     assert px._depotlinks == {}
-    assert px._isol == None
+    assert px._isol is None
 
 
 def test_personunit_auto_output_to_public_SavesCalendarToPublicDirWhenTrue(
@@ -168,6 +168,46 @@ def test_personunit_set_isol_calendar_savesGivenCalendarSet_isol_None(
     # THEN
     assert os_path.exists(isol_file_path)
     assert px._isol is None
-    cx_isol2 = px.get_isol_calendar()
-    assert cx_isol2._idearoot._uid != isol_uid_text
-    assert cx_isol2._idearoot._uid == new_cx_uid_text
+    assert px.get_isol_calendar()._idearoot._uid != isol_uid_text
+    assert px.get_isol_calendar()._idearoot._uid == new_cx_uid_text
+
+    # GIVEN
+    px.set_isol_calendar(new_cx)
+    assert os_path.exists(isol_file_path)
+    assert px._isol is None
+
+    # WHEN
+    px.set_isol_calendar_if_empty()
+
+    # THEN
+    assert px._isol != None
+    assert os_path.exists(isol_file_path)
+
+    # WHEN
+    isol_uid_text = "this is ._isol uid"
+    px._isol._idearoot._uid = isol_uid_text
+
+
+def test_personunit_set_isol_calendar_if_emtpy_DoesNotReplace_isol(
+    person_dir_setup_cleanup,
+):
+    # GIVEN
+    tim_text = "Tim"
+    px = personunit_shop(tim_text, get_temp_person_dir())
+    px.create_core_dir_and_files()
+    saved_cx = CalendarUnit(_owner=tim_text)
+    saved_cx_uid_text = "this is pulled CalendarUnit uid"
+    saved_cx._idearoot._uid = saved_cx_uid_text
+    px.set_isol_calendar(saved_cx)
+    px.get_isol_calendar()
+    assert px._isol != None
+
+    # WHEN
+    isol_uid_text = "this is ._isol uid"
+    px._isol._idearoot._uid = isol_uid_text
+    px.set_isol_calendar_if_empty()
+
+    # THEN
+    assert px._isol != None
+    assert px._isol._idearoot._uid == isol_uid_text
+    assert px._isol._idearoot._uid != saved_cx_uid_text

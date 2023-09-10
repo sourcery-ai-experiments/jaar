@@ -139,7 +139,6 @@ class PersonAdmin:
         calendar_x.set_owner(self._person_name)
         dest_dir = self._person_dir
         file_name = self._isol_calendar_file_name
-        print(f"{dest_dir=} {file_name=} {calendar_x._owner=}")
         self._save_calendar_to_path(calendar_x, dest_dir, file_name)
 
     def save_calendar_to_depot(self, calendar_x: CalendarUnit):
@@ -253,6 +252,10 @@ class PersonUnit:
         self._admin.save_isol_calendar(self._isol)
         self._isol = None
 
+    def set_isol_calendar_if_empty(self):
+        # if self._isol is None:
+        self.get_isol_calendar()
+
     def del_depot_calendar(self, calendar_owner: str):
         self._del_depotlink(calendar_owner)
         self._admin.erase_depot_calendar(calendar_owner)
@@ -272,6 +275,7 @@ class PersonUnit:
     def _set_depotlinks_empty_if_null(self):
         if self._depotlinks is None:
             self._depotlinks = {}
+        # self.set_isol_calendar_if_empty()
 
     def _set_depotlink(self, owner: str, link_type: str = None, weight: float = None):
         self._set_depotlinks_empty_if_null()
