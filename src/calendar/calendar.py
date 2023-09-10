@@ -465,12 +465,14 @@ class CalendarUnit:
         uid: int = None,
         creditor_weight: int = None,
         debtor_weight: int = None,
+        depottype_link: str = None,
     ):
         memberunit = memberunit_shop(
             name=MemberName(name),
             uid=uid,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
+            depotlink_type=depottype_link,
         )
         self.set_memberunit(memberunit=memberunit)
 

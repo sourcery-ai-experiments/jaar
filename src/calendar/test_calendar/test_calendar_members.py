@@ -74,18 +74,20 @@ def test_calendar_set_member_correctly_sets_members_2():
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
+    assign_text = "assignment"
 
     # WHEN
     cx.add_memberunit(name=rico_text, uid=61, creditor_weight=13, debtor_weight=8)
     cx.add_memberunit(name=carm_text, uid=5, debtor_weight=5)
-    cx.add_memberunit(name=patr_text, creditor_weight=17)
+    cx.add_memberunit(name=patr_text, creditor_weight=17, depotlink_type=assign_text)
 
     # THEN
     assert len(cx._members) == 3
     assert len(cx._groups) == 3
-    assert cx._groups[rico_text]._single_member == True
-    assert cx._members[patr_text].creditor_weight == 17
-    assert cx._members[carm_text].debtor_weight == 5
+    assert cx._groups.get(rico_text)._single_member == True
+    assert cx._members.get(patr_text).creditor_weight == 17
+    assert cx._members.get(carm_text).debtor_weight == 5
+    assert cx._members.get(patr_text).depotlink_type == assign_text
 
 
 def test_calendar_get_idea_list_CorrectlySetsMemberLinkCalendarCreditAndDebt():
