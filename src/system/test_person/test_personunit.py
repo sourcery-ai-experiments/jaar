@@ -25,6 +25,7 @@ def test_personunit_exists(person_dir_setup_cleanup):
 
     # GIVEN
     assert px._depotlinks == {}
+    assert px._isol == None
 
 
 def test_personunit_auto_output_to_public_SavesCalendarToPublicDirWhenTrue(
@@ -67,3 +68,76 @@ def test_personunit_auto_output_to_public_DoesNotSaveCalendarToPublicDirWhenFals
 
     # THEN
     assert os_path.exists(public_file_path) is False
+
+
+def test_personunit_get_isol_calendar_createsEmptyCalendarWhenFileDoesNotExist(
+    person_dir_setup_cleanup,
+):
+    # GIVEN
+    tim_text = "Tim"
+    px = personunit_shop(tim_text, get_temp_person_dir())
+    px.create_core_dir_and_files()
+    isol_file_path = f"{px._admin._person_dir}/{px._admin._isol_calendar_file_name}"
+    assert os_path.exists(isol_file_path) is False
+    assert px._isol is None
+
+    # WHEN
+    cx_isol = px.get_isol_calendar()
+
+    # THEN
+    assert os_path.exists(isol_file_path)
+    assert px._isol != None
+
+
+def test_personunit_get_isol_calendar_getsMemoryCalendarIfExists(
+    person_dir_setup_cleanup,
+):
+    # GIVEN
+    tim_text = "Tim"
+    px = personunit_shop(tim_text, get_temp_person_dir())
+    px.create_core_dir_and_files()
+    isol_file_path = f"{px._admin._person_dir}/{px._admin._isol_calendar_file_name}"
+    cx_isol1 = px.get_isol_calendar()
+    assert os_path.exists(isol_file_path)
+    assert px._isol != None
+
+    # WHEN
+    ray_text = "Ray"
+    px._isol = CalendarUnit(_owner=ray_text)
+    cx_isol2 = px.get_isol_calendar()
+
+    # THEN
+    assert cx_isol2._owner == ray_text
+    assert cx_isol2 != cx_isol1
+
+    # WHEN
+    px._isol = None
+    cx_isol3 = px.get_isol_calendar()
+
+    # THEN
+    assert cx_isol3._owner != ray_text
+    assert cx_isol3 == cx_isol1
+
+
+def test_personunit_set_isol_calendar_savesIsolCalendarSet_isol_None(
+    person_dir_setup_cleanup,
+):
+    # GIVEN
+    tim_text = "Tim"
+    px = personunit_shop(tim_text, get_temp_person_dir())
+    px.create_core_dir_and_files()
+    isol_file_path = f"{px._admin._person_dir}/{px._admin._isol_calendar_file_name}"
+    cx_isol1 = px.get_isol_calendar()
+    assert os_path.exists(isol_file_path)
+    assert px._isol != None
+
+    # WHEN
+    uid_text = "Not a real uid"
+    px._isol._idearoot._uid = uid_text
+    px.set_isol_calendar()
+
+    # THEN
+    assert os_path.exists(isol_file_path)
+    assert px._isol is None
+    cx_isol2 = px.get_isol_calendar()
+    assert cx_isol2._idearoot._uid == uid_text

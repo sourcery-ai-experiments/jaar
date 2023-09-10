@@ -139,6 +139,7 @@ class PersonAdmin:
         calendar_x.set_owner(self._person_name)
         dest_dir = self._person_dir
         file_name = self._isol_calendar_file_name
+        print(f"{dest_dir=} {file_name=} {calendar_x._owner=}")
         self._save_calendar_to_path(calendar_x, dest_dir, file_name)
 
     def save_calendar_to_depot(self, calendar_x: CalendarUnit):
@@ -180,7 +181,9 @@ class PersonAdmin:
             ct = x_func_open_file(self._person_dir, self._isol_calendar_file_name)
             cx = calendarunit_get_from_json(cx_json=ct)
         except Exception:
-            cx = self._get_empty_isol_calendar()
+            self.save_isol_calendar(self._get_empty_isol_calendar())
+            ct = x_func_open_file(self._person_dir, self._isol_calendar_file_name)
+            cx = calendarunit_get_from_json(cx_json=ct)
         cx.set_calendar_metrics()
         return cx
 
@@ -228,6 +231,7 @@ def personadmin_shop(
 class PersonUnit:
     _admin: PersonAdmin = None
     _depotlinks: dict[MemberName:CalendarUnit] = None
+    _isol: CalendarUnit = None
 
     def set_depot_calendar(
         self,
@@ -237,6 +241,17 @@ class PersonUnit:
     ):
         self._admin.save_calendar_to_depot(calendar_x)
         self._set_depotlink(calendar_x._owner, depotlink_type, depotlink_weight)
+
+    def get_isol_calendar(self):
+        if self._isol is None:
+            self._isol = self._admin.open_isol_calendar()
+        return self._isol
+
+    def set_isol_calendar(self, calendar_x: CalendarUnit = None):
+        # if calendar_x !=None:
+        #     self._isol = calendar_x
+        self._admin.save_isol_calendar(self._isol)
+        self._isol = None
 
     def del_depot_calendar(self, calendar_owner: str):
         self._del_depotlink(calendar_owner)
