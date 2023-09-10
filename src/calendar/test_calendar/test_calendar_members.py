@@ -107,6 +107,36 @@ def test_calendar_get_member_CorrectlyGetsMember():
     assert carm_member == cx._members.get(carm_text)
 
 
+def test_calendar_get_members_depotlink_count_GetsCorrectCount():
+    # GIVEN
+    sue_text = "sue"
+    sue_cx = CalendarUnit(_owner=sue_text)
+    assign_text = "assignment"
+
+    # WHEN
+    rico_text = "rico"
+    carm_text = "carmen"
+    sue_cx.add_memberunit(name=rico_text)
+    sue_cx.add_memberunit(name=carm_text)
+    # THEN
+    assert len(sue_cx._members) == 2
+    assert sue_cx.get_members_depotlink_count() == 0
+
+    # WHEN
+    patr_text = "patrick"
+    sue_cx.add_memberunit(name=patr_text, depotlink_type=assign_text)
+    # THEN
+    assert len(sue_cx._members) == 3
+    assert sue_cx.get_members_depotlink_count() == 1
+
+    # WHEN
+    rico_member = sue_cx.get_member(rico_text)
+    rico_member.set_depotlink_type(assign_text)
+    # THEN
+    assert len(sue_cx._members) == 3
+    assert sue_cx.get_members_depotlink_count() == 2
+
+
 def test_calendar_get_idea_list_CorrectlySetsMemberLinkCalendarCreditAndDebt():
     # GIVEN
     prom_text = "prom"

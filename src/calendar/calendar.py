@@ -609,6 +609,9 @@ class CalendarUnit:
             uid_count > 1 or uid is None for uid, uid_count in uid_dict.items()
         )
 
+    def get_members_depotlink_count(self):
+        return sum(member_x.depotlink_type != None for member_x in self._members.values())
+
     def get_groupunits_uid_max(self) -> int:
         uid_max = 1
         for groupunit_x in self._groups.values():
