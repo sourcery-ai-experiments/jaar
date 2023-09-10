@@ -115,7 +115,7 @@ def test_MemberUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndStartin
     assert bob_member.debtor_weight == 56
 
 
-def test_MemberUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndStartingValues():
+def test_MemberUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndNoStartingValues():
     # GIVEN
     bob_name = "bob"
     bob_member = memberunit_shop(name=bob_name)
@@ -130,6 +130,40 @@ def test_MemberUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndStartin
     assert bob_member.depotlink_type == depotlink_type_x
     assert bob_member.creditor_weight == 1
     assert bob_member.debtor_weight == 1
+
+
+def test_MemberUnit_del_depotlink_type_CorrectlySetsAttributeToNone():
+    # GIVEN
+    bob_name = "bob"
+    bob_member = memberunit_shop(name=bob_name, creditor_weight=45, debtor_weight=56)
+    depotlink_type_x = "assignment"
+    bob_member.set_depotlink_type(depotlink_type=depotlink_type_x)
+    assert bob_member.depotlink_type == depotlink_type_x
+    assert bob_member.creditor_weight == 45
+    assert bob_member.debtor_weight == 56
+
+    # WHEN
+    bob_member.del_depotlink_type()
+
+    # THEN
+    assert bob_member.depotlink_type is None
+    assert bob_member.creditor_weight == 45
+    assert bob_member.debtor_weight == 56
+
+
+def test_MemberUnit_set_depotlink_type_raisesErrorIfByTypeIsEntered():
+    # GIVEN
+    bad_type_text = "bad"
+    bob_name = "bob"
+    bob_member = memberunit_shop(name=bob_name)
+
+    # WHEN / THEN
+    with pytest_raises(Exception) as excinfo:
+        bob_member.set_depotlink_type(depotlink_type=bad_type_text)
+    assert (
+        str(excinfo.value)
+        == f"MemberUnit '{bob_member.name}' cannot have type '{bad_type_text}'."
+    )
 
 
 def test_MemberUnit_set_empty_calendar_credit_debt_to_zero_CorrectlySetsZero():
@@ -350,7 +384,7 @@ def test_MemberUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         _memberrings=member_rings,
         _bank_tax_paid=bank_tax_paid,
         _bank_tax_diff=bank_tax_diff,
-        # _depotlink_type=depotlink_type,
+        depotlink_type=depotlink_type,
     )
     print(f"{bob_text}")
 
@@ -370,7 +404,7 @@ def test_MemberUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         "_memberrings": {"glen": {"name": "glen"}},
         "_bank_tax_paid": bank_tax_paid,
         "_bank_tax_diff": bank_tax_diff,
-        # "_depotlink_type": depotlink_type,
+        "depotlink_type": depotlink_type,
     }
 
 
@@ -380,6 +414,7 @@ def test_MemberUnisshop_get_from_JSON_SimpleExampleWorks():
     marie_text = "Marie"
     bank_tax_paid = 0.55
     bank_tax_diff = 0.66
+    depotlink_type = "assignment"
     marie_json_dict = {
         marie_text: {
             "name": marie_text,
@@ -391,6 +426,7 @@ def test_MemberUnisshop_get_from_JSON_SimpleExampleWorks():
             "_memberrings": member_rings,
             "_bank_tax_paid": bank_tax_paid,
             "_bank_tax_diff": bank_tax_diff,
+            "depotlink_type": depotlink_type,
         }
     }
     marie_json_text = x_get_json(dict_x=marie_json_dict)
@@ -404,6 +440,7 @@ def test_MemberUnisshop_get_from_JSON_SimpleExampleWorksWithIncompleteData():
     marie_text = "Marie"
     bank_tax_paid = 0.55
     bank_tax_diff = 0.66
+    depotlink_type_x = "assignment"
     marie_json_dict = {
         marie_text: {
             "name": marie_text,
@@ -414,6 +451,7 @@ def test_MemberUnisshop_get_from_JSON_SimpleExampleWorksWithIncompleteData():
             "_debtor_active": True,
             "_bank_tax_paid": bank_tax_paid,
             "_bank_tax_diff": bank_tax_diff,
+            "depotlink_type": depotlink_type_x,
         }
     }
 
@@ -431,6 +469,7 @@ def test_MemberUnisshop_get_from_JSON_SimpleExampleWorksWithIncompleteData():
     assert marie_obj_dict[marie_text]._debtor_active == True
     assert marie_obj_dict[marie_text]._bank_tax_paid == 0.55
     assert marie_obj_dict[marie_text]._bank_tax_diff == 0.66
+    assert marie_obj_dict[marie_text].depotlink_type == depotlink_type_x
     # assert marie_obj_dict[marie_text]._memberrings == member_rings
 
 

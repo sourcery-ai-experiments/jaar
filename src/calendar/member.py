@@ -72,15 +72,18 @@ class MemberUnit(MemberCore):
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
-        # if link_type not in (list(get_depotlink_types())):
-        #     raise InvalidDepotLinkException(
-        #         f"Member '{self.name}' cannot have type '{link_type}'."
-        #     )
+        if depotlink_type not in (list(get_depotlink_types())):
+            raise InvalidDepotLinkException(
+                f"MemberUnit '{self.name}' cannot have type '{depotlink_type}'."
+            )
         self.depotlink_type = depotlink_type
         if creditor_weight != None:
             self.creditor_weight = creditor_weight
         if debtor_weight != None:
             self.debtor_weight = debtor_weight
+
+    def del_depotlink_type(self):
+        self.depotlink_type = None
 
     def clear_banking_data(self):
         self._bank_tax_paid = None
@@ -111,6 +114,7 @@ class MemberUnit(MemberCore):
             "_memberrings": self.get_memberrings_dict(),
             "_bank_tax_paid": self._bank_tax_paid,
             "_bank_tax_diff": self._bank_tax_diff,
+            "depotlink_type": self.depotlink_type,
         }
 
     def get_memberrings_dict(self):
@@ -220,6 +224,11 @@ def memberunits_get_from_dict(x_dict: dict) -> dict[str:MemberUnit]:
         except KeyError:
             _bank_tax_diff = None
 
+        try:
+            depotlink_type = memberunits_dict["depotlink_type"]
+        except KeyError:
+            depotlink_type = None
+
         x_memberunit = memberunit_shop(
             name=memberunits_dict["name"],
             uid=memberunits_dict["uid"],
@@ -230,6 +239,7 @@ def memberunits_get_from_dict(x_dict: dict) -> dict[str:MemberUnit]:
             _memberrings=memberrings_get_from_dict(x_dict=memberrings),
             _bank_tax_paid=_bank_tax_paid,
             _bank_tax_diff=_bank_tax_diff,
+            depotlink_type=depotlink_type,
         )
         memberunits[x_memberunit.name] = x_memberunit
     return memberunits
@@ -251,7 +261,7 @@ def memberunit_shop(
     _calendar_agenda_ratio_debt: float = None,
     _bank_tax_paid: float = None,
     _bank_tax_diff: float = None,
-    # _depotlink_type: str = None,
+    depotlink_type: str = None,
 ) -> MemberUnit:
     final_memberrings = {} if _memberrings is None else _memberrings
 
@@ -272,7 +282,8 @@ def memberunit_shop(
         _bank_tax_paid=_bank_tax_paid,
         _bank_tax_diff=_bank_tax_diff,
     )
-    # memberunit_x.set_depotlink_type(depotlink_type=_depotlink_type)
+    if depotlink_type != None:
+        memberunit_x.set_depotlink_type(depotlink_type=depotlink_type)
     return memberunit_x
 
 
