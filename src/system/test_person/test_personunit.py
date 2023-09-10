@@ -141,3 +141,33 @@ def test_personunit_set_isol_calendar_savesIsolCalendarSet_isol_None(
     assert px._isol is None
     cx_isol2 = px.get_isol_calendar()
     assert cx_isol2._idearoot._uid == uid_text
+
+
+def test_personunit_set_isol_calendar_savesGivenCalendarSet_isol_None(
+    person_dir_setup_cleanup,
+):
+    # GIVEN
+    tim_text = "Tim"
+    px = personunit_shop(tim_text, get_temp_person_dir())
+    px.create_core_dir_and_files()
+    isol_file_path = f"{px._admin._person_dir}/{px._admin._isol_calendar_file_name}"
+    cx_isol1 = px.get_isol_calendar()
+    assert os_path.exists(isol_file_path)
+    assert px._isol != None
+
+    # WHEN
+    isol_uid_text = "this is ._isol uid"
+    px._isol._idearoot._uid = isol_uid_text
+
+    new_cx = CalendarUnit(_owner=tim_text)
+    new_cx_uid_text = "this is pulled CalendarUnit uid"
+    new_cx._idearoot._uid = new_cx_uid_text
+
+    px.set_isol_calendar(new_cx)
+
+    # THEN
+    assert os_path.exists(isol_file_path)
+    assert px._isol is None
+    cx_isol2 = px.get_isol_calendar()
+    assert cx_isol2._idearoot._uid != isol_uid_text
+    assert cx_isol2._idearoot._uid == new_cx_uid_text

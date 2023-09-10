@@ -248,8 +248,8 @@ class PersonUnit:
         return self._isol
 
     def set_isol_calendar(self, calendar_x: CalendarUnit = None):
-        # if calendar_x !=None:
-        #     self._isol = calendar_x
+        if calendar_x != None:
+            self._isol = calendar_x
         self._admin.save_isol_calendar(self._isol)
         self._isol = None
 
