@@ -1,3 +1,4 @@
+from src.calendar.member import get_depotlink_types
 from dataclasses import dataclass
 
 
@@ -51,7 +52,3 @@ def get_depotlink_from_dict(x_dict: dict) -> CalendarLink:
         link_type=x_dict[link_type_text],
         weight=x_dict[weight_text],
     )
-
-
-def get_depotlink_types() -> dict[str:None]:
-    return {"blind_trust": None, "ignore": None, "assignment": None}

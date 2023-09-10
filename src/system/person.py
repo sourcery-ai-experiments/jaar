@@ -2,8 +2,8 @@ from src.system.depotlink import (
     depotlink_shop,
     get_depotlink_from_dict,
     CalendarLink,
-    get_depotlink_types,
 )
+from src.calendar.member import get_depotlink_types
 from src.calendar.calendar import (
     get_from_json as calendarunit_get_from_json,
     get_dict_of_calendar_from_dict,

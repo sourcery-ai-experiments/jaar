@@ -78,6 +78,58 @@ def test_MemberUnit_exists():
     assert bob_member._memberrings is None
     assert bob_member._bank_tax_paid is None
     assert bob_member._bank_tax_diff is None
+    assert bob_member.depotlink_type is None
+
+
+def test_MemberUnit_set_depotlink_type_CorrectlySetsAttributeNoNulls():
+    # GIVEN
+    bob_name = "bob"
+    bob_member = memberunit_shop(name=bob_name)
+
+    # WHEN
+    depotlink_type_x = "assignment"
+    bob_member.set_depotlink_type(
+        depotlink_type=depotlink_type_x, creditor_weight=23, debtor_weight=34
+    )
+
+    # THEN
+    assert bob_member.depotlink_type == depotlink_type_x
+    assert bob_member.creditor_weight == 23
+    assert bob_member.debtor_weight == 34
+
+
+def test_MemberUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndStartingValues():
+    # GIVEN
+    bob_name = "bob"
+    bob_member = memberunit_shop(name=bob_name, creditor_weight=45, debtor_weight=56)
+
+    # WHEN
+    depotlink_type_x = "assignment"
+    bob_member.set_depotlink_type(
+        depotlink_type=depotlink_type_x, creditor_weight=None, debtor_weight=None
+    )
+
+    # THEN
+    assert bob_member.depotlink_type == depotlink_type_x
+    assert bob_member.creditor_weight == 45
+    assert bob_member.debtor_weight == 56
+
+
+def test_MemberUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndStartingValues():
+    # GIVEN
+    bob_name = "bob"
+    bob_member = memberunit_shop(name=bob_name)
+
+    # WHEN
+    depotlink_type_x = "assignment"
+    bob_member.set_depotlink_type(
+        depotlink_type=depotlink_type_x, creditor_weight=None, debtor_weight=None
+    )
+
+    # THEN
+    assert bob_member.depotlink_type == depotlink_type_x
+    assert bob_member.creditor_weight == 1
+    assert bob_member.debtor_weight == 1
 
 
 def test_MemberUnit_set_empty_calendar_credit_debt_to_zero_CorrectlySetsZero():
@@ -287,6 +339,7 @@ def test_MemberUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     bob_text = "bob"
     bank_tax_paid = 0.55
     bank_tax_diff = 0.66
+    depotlink_type = "assignment"
     bob_member = memberunit_shop(
         name=bob_text,
         uid=652,
@@ -297,6 +350,7 @@ def test_MemberUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         _memberrings=member_rings,
         _bank_tax_paid=bank_tax_paid,
         _bank_tax_diff=bank_tax_diff,
+        # _depotlink_type=depotlink_type,
     )
     print(f"{bob_text}")
 
@@ -316,6 +370,7 @@ def test_MemberUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         "_memberrings": {"glen": {"name": "glen"}},
         "_bank_tax_paid": bank_tax_paid,
         "_bank_tax_diff": bank_tax_diff,
+        # "_depotlink_type": depotlink_type,
     }
 
 

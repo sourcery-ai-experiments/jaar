@@ -6,6 +6,10 @@ class InvalidMemberException(Exception):
     pass
 
 
+class InvalidDepotLinkException(Exception):
+    pass
+
+
 class MemberName(str):
     pass
 
@@ -49,6 +53,7 @@ class MemberUnit(MemberCore):
     uid: int = None
     creditor_weight: int = None
     debtor_weight: int = None
+    depotlink_type: str = None
     _calendar_credit: float = None
     _calendar_debt: float = None
     _calendar_agenda_credit: float = None
@@ -60,6 +65,22 @@ class MemberUnit(MemberCore):
     _memberrings: dict[MemberName:MemberRing] = None
     _bank_tax_paid: float = None
     _bank_tax_diff: float = None
+
+    def set_depotlink_type(
+        self,
+        depotlink_type: str,
+        creditor_weight: float = None,
+        debtor_weight: float = None,
+    ):
+        # if link_type not in (list(get_depotlink_types())):
+        #     raise InvalidDepotLinkException(
+        #         f"Member '{self.name}' cannot have type '{link_type}'."
+        #     )
+        self.depotlink_type = depotlink_type
+        if creditor_weight != None:
+            self.creditor_weight = creditor_weight
+        if debtor_weight != None:
+            self.debtor_weight = debtor_weight
 
     def clear_banking_data(self):
         self._bank_tax_paid = None
@@ -230,10 +251,11 @@ def memberunit_shop(
     _calendar_agenda_ratio_debt: float = None,
     _bank_tax_paid: float = None,
     _bank_tax_diff: float = None,
+    # _depotlink_type: str = None,
 ) -> MemberUnit:
     final_memberrings = {} if _memberrings is None else _memberrings
 
-    return MemberUnit(
+    memberunit_x = MemberUnit(
         name=name,
         uid=uid,
         creditor_weight=x_func_return1ifnone(creditor_weight),
@@ -250,6 +272,8 @@ def memberunit_shop(
         _bank_tax_paid=_bank_tax_paid,
         _bank_tax_diff=_bank_tax_diff,
     )
+    # memberunit_x.set_depotlink_type(depotlink_type=_depotlink_type)
+    return memberunit_x
 
 
 @dataclass
@@ -347,3 +371,7 @@ class MemberUnitExternalMetrics:
     internal_name: MemberName = None
     creditor_active: bool = None
     debtor_active: bool = None
+
+
+def get_depotlink_types() -> dict[str:None]:
+    return {"blind_trust": None, "ignore": None, "assignment": None}

@@ -1,8 +1,8 @@
 from src.system.depotlink import (
     depotlink_shop,
     get_depotlink_from_dict,
-    get_depotlink_types,
 )
+from src.calendar.member import get_depotlink_types
 from pytest import raises as pytest_raises
 
 

@@ -22,7 +22,8 @@ from src.system.examples.env_kit import (
     rename_example_system,
     get_test_systems_dir,
 )
-from src.system.depotlink import get_depotlink_types, depotlink_shop
+from src.system.depotlink import depotlink_shop
+from src.calendar.member import get_depotlink_types
 from src.calendar.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
