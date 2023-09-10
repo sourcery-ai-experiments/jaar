@@ -45,7 +45,7 @@ def test_person_save_isol_calendar_CreateStartingCalendarFile(
     assert x_func_open_file(px._admin._person_dir, file_name) != None
 
 
-def test_personget_isol_calendar_WhenStartingCalendarFileDoesNotExists(
+def test_personopen_isol_calendar_WhenStartingCalendarFileDoesNotExists(
     person_dir_setup_cleanup,
 ):
     # GIVEN
@@ -54,8 +54,8 @@ def test_personget_isol_calendar_WhenStartingCalendarFileDoesNotExists(
     px = personunit_shop(name=p_name, env_dir=env_dir)
 
     # WHEN
-    assert px._admin.get_isol_calendar() != None
-    isol_calendar = px._admin.get_isol_calendar()
+    assert px._admin.open_isol_calendar() != None
+    isol_calendar = px._admin.open_isol_calendar()
 
     # THEN
     x_calendar = CalendarUnit(_owner=p_name)
@@ -94,10 +94,10 @@ def test_person_save_isol_calendar_IsolCalendarOwnerMustBePerson(
     px._admin.save_isol_calendar(calendar_x=cx1)
 
     # THEN
-    assert px._admin.get_isol_calendar()._owner == px._admin._person_name
+    assert px._admin.open_isol_calendar()._owner == px._admin._person_name
 
 
-def test_person_get_isol_calendar_WhenStartingCalendarFileExists(
+def test_person_open_isol_calendar_WhenStartingCalendarFileExists(
     person_dir_setup_cleanup,
 ):
     # GIVEN
@@ -109,8 +109,8 @@ def test_person_get_isol_calendar_WhenStartingCalendarFileExists(
     )
 
     # WHEN
-    assert px._admin.get_isol_calendar() != None
-    isol_calendar = px._admin.get_isol_calendar()
+    assert px._admin.open_isol_calendar() != None
+    isol_calendar = px._admin.open_isol_calendar()
 
     # THEN
     x_calendar = example_calendars_get_calendar_with_4_levels()
@@ -125,7 +125,7 @@ def test_person_get_isol_calendar_WhenStartingCalendarFileExists(
     assert isol_calendar._owner == px._admin._person_name
 
 
-def test_person_del_isol_calendar_file_DeletesFileCorrectly(
+def test_person_erase_isol_calendar_file_DeletesFileCorrectly(
     person_dir_setup_cleanup,
 ):
     # GIVEN
@@ -137,7 +137,7 @@ def test_person_del_isol_calendar_file_DeletesFileCorrectly(
     assert x_func_open_file(px._admin._person_dir, file_name) != None
 
     # WHEN
-    px._admin.del_isol_calendar_file()
+    px._admin.erase_isol_calendar_file()
 
     # THEN
     with pytest_raises(Exception) as excinfo:

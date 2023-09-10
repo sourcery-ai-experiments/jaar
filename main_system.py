@@ -51,7 +51,9 @@ class MainApp(QApplication):
 
     def editmain_show(self):
         if self.main_window.ignore_calendar_x is None:
-            self.main_window.isol = self.main_window.person_x._admin.get_isol_calendar()
+            self.main_window.isol = (
+                self.main_window.person_x._admin.open_isol_calendar()
+            )
             self.editmain_view.calendar_x = self.main_window.isol
         else:
             self.editmain_view.calendar_x = self.main_window.ignore_calendar_x
