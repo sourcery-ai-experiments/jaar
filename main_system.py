@@ -22,7 +22,7 @@ from src.system.examples.env_kit import (
     rename_example_system,
     get_test_systems_dir,
 )
-from src.system.depotlink import depotlink_shop
+
 from src.calendar.member import get_depotlink_types
 from src.calendar.x_func import (
     open_file as x_func_open_file,
@@ -176,7 +176,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _person_load(self, person_name: str):
         self.system_x.load_personunit(name=person_name)
         self.person_x = self.system_x._personunits.get(person_name)
-        self.person_name.setText(self.person_x.name)
+        self.person_name.setText(self.person_x._admin.name)
         self.refresh_person()
 
     def depotlinks_table_select(self):
@@ -194,15 +194,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ignore_calendar_owner = self.ignores_table.item(
             self.ignores_table.currentRow(), 0
         ).text()
-        # self.ignore_calendar_x = self.system_x.get_calendar_from_calendars_dir(
+        # self.ignore_calendar_x = self.system_x.get_public_calendar(
         self.ignore_calendar_x = self.system_x.get_calendar_from_ignores_dir(
-            person_name=self.person_x.name, _owner=ignore_calendar_owner
+            person_name=self.person_x._admin.name, _owner=ignore_calendar_owner
         )
         self.edit_calendar = self.ignore_calendar_x
 
     def ignore_calendar_file_update(self):
         self.system_x.set_ignore_calendar_file(
-            person_name=self.person_x.name, calendar_obj=self.ignore_calendar_x
+            person_name=self.person_x._admin.name, calendar_obj=self.ignore_calendar_x
         )
         self.refresh_person()
 
@@ -231,7 +231,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_system()
 
     def calendar_insert(self):
-        self.system_x.save_calendarunit_obj_to_calendars_dir(
+        self.system_x.save_public_calendarunit(
             calendar_x=CalendarUnit(_owner=self.calendar_name.text())
         )
         self.refresh_system()
@@ -293,26 +293,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 depotlink_type=self.depotlink_type_combo.currentText(),
                 depotlink_weight=self.depotlink_weight.text(),
             )
-            self.system_x.save_person_file(person_name=self.person_x.name)
+            self.system_x.save_person_file(person_name=self.person_x._admin.name)
         self.refresh_person()
 
     def depotlink_update(self):
-        person_name_x = self.person_x.name
-        new_depotlink = depotlink_shop(
-            calendar_owner=self.depotlink_name.text(),
-            link_type=self.depotlink_type_combo.currentText(),
-            weight=self.depotlink_weight.text(),
-        )
-
+        person_name_x = self.person_x._admin.name
         self.system_x.update_depotlink(
             person_name=person_name_x,
-            depotlink=new_depotlink,
+            membername=self.depotlink_name.text(),
+            depotlink_type=self.depotlink_type_combo.currentText(),
+            creditor_weight=self.depotlink_weight.text(),
+            debtor_weight=self.depotlink_weight.text(),
         )
         self.system_x.save_person_file(person_name=person_name_x)
         self.refresh_person()
 
     def depotlink_delete(self):
-        person_name_x = self.person_x.name
+        person_name_x = self.person_x._admin.name
         self.system_x.del_depotlink(
             person_name=person_name_x, calendarunit_owner=self.depotlink_name.text()
         )
@@ -471,7 +468,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.person_x is None:
             column_header = "Calendarlinks Table"
         elif self.person_x != None:
-            column_header = f"'{self.person_x.name}' Calendarlinks"
+            column_header = f"'{self.person_x._admin.name}' Calendarlinks"
         self.refresh_x(
             self.depotlinks_table,
             [column_header, "Link Type", "Weight"],

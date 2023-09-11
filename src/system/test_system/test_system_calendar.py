@@ -25,7 +25,7 @@ def test_system_set_calendar_CreatesCalendarFile(env_dir_setup_cleanup):
     assert os_path.exists(sx1_path) == False
 
     # WHEN
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sx1_obj)
+    e1.save_public_calendarunit(calendar_x=sx1_obj)
 
     # THEN
     print(f"{sx1_path=}")
@@ -49,9 +49,9 @@ def test_system_get_calendars_dir_list_of_obj_CreatesCalendarFilesList(
     print(f"{sx1_obj._owner=}")
     print(f"{sx2_obj._owner=}")
     print(f"{sx3_obj._owner=}")
-    ex.save_calendarunit_obj_to_calendars_dir(calendar_x=sx1_obj)
-    ex.save_calendarunit_obj_to_calendars_dir(calendar_x=sx2_obj)
-    ex.save_calendarunit_obj_to_calendars_dir(calendar_x=sx3_obj)
+    ex.save_public_calendarunit(calendar_x=sx1_obj)
+    ex.save_public_calendarunit(calendar_x=sx2_obj)
+    ex.save_public_calendarunit(calendar_x=sx3_obj)
 
     sx1_path = f"{ex.get_calendars_dir()}/{sx1_obj._owner}.json"
     sx2_path = f"{ex.get_calendars_dir()}/{sx2_obj._owner}.json"
@@ -76,10 +76,10 @@ def test_system_get_calendar_currentlyGetsCalendar(env_dir_setup_cleanup):
     e5 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
     e5.create_dirs_if_null(in_memory_bank=True)
     sx5_obj = example_persons.get_7nodeJRootWithH_calendar()
-    e5.save_calendarunit_obj_to_calendars_dir(calendar_x=sx5_obj)
+    e5.save_public_calendarunit(calendar_x=sx5_obj)
 
     # WHEN / THEN
-    assert e5.get_calendar_from_calendars_dir(owner=sx5_obj._owner) == sx5_obj
+    assert e5.get_public_calendar(owner=sx5_obj._owner) == sx5_obj
 
 
 def test_system_rename_calendar_in_calendars_dir_ChangesCalendarName(
@@ -92,7 +92,7 @@ def test_system_rename_calendar_in_calendars_dir_ChangesCalendarName(
     old_calendar_owner = "old1"
     sx5_obj = CalendarUnit(_owner=old_calendar_owner)
     old_sx5_path = f"{e5.get_calendars_dir()}/{old_calendar_owner}.json"
-    e5.save_calendarunit_obj_to_calendars_dir(calendar_x=sx5_obj)
+    e5.save_public_calendarunit(calendar_x=sx5_obj)
     print(f"{old_sx5_path=}")
 
     # WHEN
@@ -131,28 +131,28 @@ def test_personunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
     old_steve_cx = example_persons.get_calendar_2CleanNodesRandomWeights(
         _owner=steve_text
     )
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ernie_calendar)
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=jessi_calendar)
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=old_steve_cx)
+    e1.save_public_calendarunit(calendar_x=ernie_calendar)
+    e1.save_public_calendarunit(calendar_x=jessi_calendar)
+    e1.save_public_calendarunit(calendar_x=old_steve_cx)
     e1.create_new_personunit(person_name=ernie_text)
     e1.create_new_personunit(person_name=jessi_text)
     # e1.create_new_personunit(person_name=steve_text)
-    px_ernie = e1.get_person_obj_from_system(name=ernie_text)
-    px_jessi = e1.get_person_obj_from_system(name=jessi_text)
-    # px_steve = e1.get_person_obj_from_system(name=steve_text)
-    px_ernie.set_depot_calendar(calendar_x=jessi_calendar)
-    px_ernie.set_depot_calendar(calendar_x=old_steve_cx)
-    px_jessi.set_depot_calendar(calendar_x=ernie_calendar)
-    px_jessi.set_depot_calendar(calendar_x=old_steve_cx)
-    # px_steve.set_depot_calendar(calendar_x=ernie_calendar)
-    # px_steve.set_depot_calendar(calendar_x=jessi_calendar)
+    px_ernie = e1.sys_get_person_obj(name=ernie_text)
+    px_jessi = e1.sys_get_person_obj(name=jessi_text)
+    # px_steve = e1.sys_get_person_obj(name=steve_text)
+    px_ernie.set_depot_calendar(calendar_x=jessi_calendar, depotlink_type="blind_trust")
+    px_ernie.set_depot_calendar(calendar_x=old_steve_cx, depotlink_type="blind_trust")
+    px_jessi.set_depot_calendar(calendar_x=ernie_calendar, depotlink_type="blind_trust")
+    px_jessi.set_depot_calendar(calendar_x=old_steve_cx, depotlink_type="blind_trust")
+    # px_steve.set_depot_calendar(calendar_x=ernie_calendar, depotlink_type="blind_trust")
+    # px_steve.set_depot_calendar(calendar_x=jessi_calendar, depotlink_type="blind_trust")
     assert len(px_ernie.get_refreshed_output_calendar().get_idea_list()) == 4
     assert len(px_jessi.get_refreshed_output_calendar().get_idea_list()) == 4
     # assert len(px_steve.get_refreshed_output_calendar().get_idea_list()) == 4
     new_steve_calendar = example_persons.get_calendar_3CleanNodesRandomWeights(
         _owner="steve"
     )
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=new_steve_calendar)
+    e1.save_public_calendarunit(calendar_x=new_steve_calendar)
     # print(f"{env_dir=} {px._admin._calendars_public_dir=}")
     # for file_name in x_func_dir_files(dir_path=env_dir):
     #     print(f"{px._admin._calendars_public_dir=} {file_name=}")

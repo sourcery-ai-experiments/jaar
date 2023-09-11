@@ -89,8 +89,8 @@ def test_system_rename_personunit_WorksCorrectly(env_dir_setup_cleanup):
     assert os_path.exists(old_wx_dir)
     assert os_path.exists(new_wx_file_path) == False
     assert os_path.exists(old_wx_file_path)
-    old_person_x = e5.get_person_obj_from_system(name=old_person_name)
-    assert e5.get_person_obj_from_system(name=new_person_name) is None
+    old_person_x = e5.sys_get_person_obj(name=old_person_name)
+    assert e5.sys_get_person_obj(name=new_person_name) is None
     assert old_person_x._admin._person_dir == old_wx_dir
     assert old_person_x._admin._person_dir != new_wx_dir
 
@@ -104,8 +104,8 @@ def test_system_rename_personunit_WorksCorrectly(env_dir_setup_cleanup):
     assert os_path.exists(new_wx_file_path)
     assert os_path.exists(old_wx_file_path) == False
     # assert e5.get_person_obj_from_file(name=old_person_name) is None
-    assert e5.get_person_obj_from_system(name=old_person_name) is None
-    new_person_x = e5.get_person_obj_from_system(name=new_person_name)
+    assert e5.sys_get_person_obj(name=old_person_name) is None
+    new_person_x = e5.sys_get_person_obj(name=new_person_name)
     assert new_person_x._admin._person_dir != old_wx_dir
     assert new_person_x._admin._person_dir == new_wx_dir
 

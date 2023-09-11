@@ -444,12 +444,12 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
     sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
     sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
     sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
+    e1.save_public_calendarunit(calendar_x=sal_calendar)
 
     bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
+    e1.save_public_calendarunit(calendar_x=bob_calendar)
 
     e1.refresh_bank_metrics()
     e1.set_river_sphere_for_calendar(calendar_name=sal_text)
@@ -485,25 +485,25 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
     sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
     sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
+    e1.save_public_calendarunit(calendar_x=sal_calendar)
 
     bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
+    e1.save_public_calendarunit(calendar_x=bob_calendar)
 
     tom_calendar = CalendarUnit(_owner=tom_text)
     tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom_calendar)
+    e1.save_public_calendarunit(calendar_x=tom_calendar)
 
     ava_calendar = CalendarUnit(_owner=ava_text)
     ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=ava_calendar)
+    e1.save_public_calendarunit(calendar_x=ava_calendar)
 
     elu_calendar = CalendarUnit(_owner=elu_text)
     elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
     elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu_calendar)
+    e1.save_public_calendarunit(calendar_x=elu_calendar)
 
     e1.refresh_bank_metrics()
     e1.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=100)
@@ -595,9 +595,9 @@ def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup
     bob_calendar.set_owner(new_owner=bob_text)
     tim_calendar.set_owner(new_owner=tim_text)
     sal_calendar.set_owner(new_owner=sal_text)
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tim_calendar)
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
+    e1.save_public_calendarunit(calendar_x=bob_calendar)
+    e1.save_public_calendarunit(calendar_x=tim_calendar)
+    e1.save_public_calendarunit(calendar_x=sal_calendar)
 
     with e1.get_bank_conn() as bank_conn:
         assert get_idea_catalog_table_count(bank_conn, bob_text) == 0
@@ -630,10 +630,10 @@ def test_system_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     tim_calendar.set_owner(new_owner=tim_text)
     sal_calendar.set_owner(new_owner=sal_text)
     elu_calendar.set_owner(new_owner=elu_text)
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tim_calendar)
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=elu_calendar)
+    e1.save_public_calendarunit(calendar_x=bob_calendar)
+    e1.save_public_calendarunit(calendar_x=tim_calendar)
+    e1.save_public_calendarunit(calendar_x=sal_calendar)
+    e1.save_public_calendarunit(calendar_x=elu_calendar)
     e1.refresh_bank_metrics()
     i_count_sqlstr = get_table_count_sqlstr("idea_catalog")
     with e1.get_bank_conn() as bank_conn:
@@ -716,9 +716,9 @@ def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
     cookery_road = f"{casa_road},{cookery_text}"
     sal_calendar.set_acptfact(base=cookery_road, pick=cookery_road)
 
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tim_calendar)
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=sal_calendar)
+    e1.save_public_calendarunit(calendar_x=bob_calendar)
+    e1.save_public_calendarunit(calendar_x=tim_calendar)
+    e1.save_public_calendarunit(calendar_x=sal_calendar)
 
     with e1.get_bank_conn() as bank_conn:
         assert get_acptfact_catalog_table_count(bank_conn, bob_text) == 0
@@ -781,8 +781,8 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     bob_calendar.add_memberunit(name=tom_text)
     tom_calendar.add_memberunit(name=bob_text)
     tom_calendar.add_memberunit(name=elu_text)
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=bob_calendar)
-    e1.save_calendarunit_obj_to_calendars_dir(calendar_x=tom_calendar)
+    e1.save_public_calendarunit(calendar_x=bob_calendar)
+    e1.save_public_calendarunit(calendar_x=tom_calendar)
     e1.refresh_bank_metrics()
     sqlstr = get_table_count_sqlstr("groupunit_catalog")
     assert get_single_result_back(e1.get_bank_conn(), sqlstr) == 3

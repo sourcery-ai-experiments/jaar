@@ -19,36 +19,37 @@ from src.system.examples.env_kit import (
 from pytest import raises as pytest_raises
 
 
-def test_system_get_person_output_calendar_from_digest_calendar_files_ReturnsCorrectCalendarObjScenario1(
+def test_system_get_person_output_calendar_ReturnsCorrectCalendarObjScenario1(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     ex = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     ex.create_dirs_if_null(in_memory_bank=True)
     input_calendar = example_persons_get_6node_calendar()
-    ex.save_calendarunit_obj_to_calendars_dir(input_calendar)
-    # ex.save_calendarunit_obj_to_calendars_dir(ex_cxs_get_calendar_1Task_1CE0MinutesRequired_1AcptFact())
-    # ex.save_calendarunit_obj_to_calendars_dir(ex_cxs_calendar_v001())
-    px_name = "test_person1"
-    ex.create_new_personunit(person_name=px_name)
-    ex.create_depotlink_to_saved_calendar(
-        person_name=px_name, calendar_owner=input_calendar._owner
+    ex.save_public_calendarunit(input_calendar)
+    # ex.save_public_calendarunit(ex_cxs_get_calendar_1Task_1CE0MinutesRequired_1AcptFact())
+    # ex.save_public_calendarunit(ex_cxs_calendar_v001())
+    xia_text = "Xia"
+    ex.create_new_personunit(person_name=xia_text)
+    ex.set_person_depotlink(
+        xia_text, input_calendar._owner, depotlink_type="blind_trust"
     )
-    ex.save_person_file(person_name=px_name)
-    person_x_obj = ex.get_person_obj_from_system(name=px_name)
-    # print(f"{person_x_obj._depotlinks=}")
+    ex.save_person_file(person_name=xia_text)
+    person_x_obj = ex.sys_get_person_obj(name=xia_text)
+    # print(f"{person_x_obj._isol._members.keys()=}")
 
     # WHEN
-    output_calendar = ex.get_person_output_calendar_from_digest_calendar_files(
-        person_name=px_name
-    )
+    output_calendar = ex.get_person_output_calendar(person_name=xia_text)
     # input calendar must be melded to itself to create originunits
     input_calendar.meld(input_calendar)
-    input_calendar.set_owner(new_owner=px_name)
-    input_calendar._originunit.set_originlink(name=px_name, weight=1)
+    input_calendar.set_owner(new_owner=xia_text)
+    input_calendar._originunit.set_originlink(name=xia_text, weight=1)
 
     # THEN
-    output_calendar_d_idea = output_calendar.get_idea_kid(road="A,C,D")
+    d_road = "A,C,D"
+    print(f"{output_calendar._owner=}")
+    print(f"{output_calendar._idea_dict.keys()=}")
+    output_calendar_d_idea = output_calendar.get_idea_kid(d_road)
     # print(f" {output_calendar_d_idea._weight=} {len(input_calendar._idearoot._kids)=} ")
     assert output_calendar != None
     assert len(input_calendar._idearoot._kids) == 2
@@ -91,7 +92,7 @@ def test_system_get_person_output_calendar_from_digest_calendar_files_ReturnsCor
     assert output_calendar._idearoot == input_calendar._idearoot
 
 
-def test_system_get_person_output_calendar_from_digest_calendar_files_ReturnsCorrectCalendarObjScenario2(
+def test_system_get_person_output_calendar_ReturnsCorrectCalendarObjScenario2(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -100,22 +101,20 @@ def test_system_get_person_output_calendar_from_digest_calendar_files_ReturnsCor
     calendar1 = example_persons_get_6node_calendar()
     calendar2 = ex_cxs_calendar_v002()
 
-    ex.save_calendarunit_obj_to_calendars_dir(calendar1)
-    ex.save_calendarunit_obj_to_calendars_dir(calendar2)
-    # ex.save_calendarunit_obj_to_calendars_dir(ex_cxs_get_calendar_1Task_1CE0MinutesRequired_1AcptFact())
-    # ex.save_calendarunit_obj_to_calendars_dir(ex_cxs_calendar_v001())
-    px_name = "test_person1"
-    ex.create_new_personunit(person_name=px_name)
-    ex.create_depotlink_to_saved_calendar(px_name, calendar1._owner)
-    ex.create_depotlink_to_saved_calendar(px_name, calendar2._owner)
-    ex.save_person_file(person_name=px_name)
-    person_x_obj = ex.get_person_obj_from_system(name=px_name)
-    print(f"{person_x_obj._depotlinks=}")
+    ex.save_public_calendarunit(calendar1)
+    ex.save_public_calendarunit(calendar2)
+    # ex.save_public_calendarunit(ex_cxs_get_calendar_1Task_1CE0MinutesRequired_1AcptFact())
+    # ex.save_public_calendarunit(ex_cxs_calendar_v001())
+    xia_text = "Xia"
+    ex.create_new_personunit(person_name=xia_text)
+    ex.set_person_depotlink(xia_text, calendar1._owner, depotlink_type="blind_trust")
+    ex.set_person_depotlink(xia_text, calendar2._owner, depotlink_type="blind_trust")
+    ex.save_person_file(person_name=xia_text)
+    person_x_obj = ex.sys_get_person_obj(name=xia_text)
+    print(f"{person_x_obj._isol._members.keys()=}")
 
     # WHEN
-    output_calendar = ex.get_person_output_calendar_from_digest_calendar_files(
-        person_name=px_name
-    )
+    output_calendar = ex.get_person_output_calendar(person_name=xia_text)
 
     # THEN
     output_calendar_d_idea = output_calendar.get_idea_kid(road="A,C,D")

@@ -1,8 +1,5 @@
 import src.system.examples.example_persons as person_examples
-from src.system.person import (
-    get_from_json as person_get_from_json,
-    depotlink_shop,
-)
+from src.system.person import get_from_json as person_get_from_json
 from src.calendar.x_func import x_is_json, x_get_dict
 from json import loads as json_loads
 from src.system.examples.person_env_kit import (
@@ -16,45 +13,28 @@ def test_person_set_depot_calendar_SetsCorrectInfo():
     # GIVEN
     env_dir = get_temp_person_dir()
     person_x = person_examples.get_person_2calendar(env_dir=env_dir)
-    assert len(person_x.get_depotlinks_dict()) == 2
+    assert person_x._isol.get_members_depotlink_count() == 2
+    print(f"{person_x._isol._members.keys()=}")
 
     # WHEN
-    swim_text = "swim1"
-    person_x.set_depot_calendar(calendar_x=CalendarUnit(_owner=swim_text))
-    run_text = "run1"
-    person_x.set_depot_calendar(calendar_x=CalendarUnit(_owner=run_text))
+    assignment_text = "assignment"
+    zia_text = "Zia"
+    person_x.set_depot_calendar(CalendarUnit(_owner=zia_text), assignment_text)
+    zoa_text = "Zoa"
+    person_x.set_depot_calendar(CalendarUnit(_owner=zoa_text), assignment_text)
 
     # THEN
-    assert len(person_x.get_depotlinks_dict()) == 4
-
-
-def test_person_get_depotlinks_dict_ReturnsCorrectInfo():
-    # GIVEN
-    env_dir = get_temp_person_dir()
-    person_x = person_examples.get_person_2calendar(env_dir=env_dir)
-    assert len(person_x.get_depotlinks_dict()) == 2
-    swim_text = "swim1"
-    person_x.set_depot_calendar(calendar_x=CalendarUnit(_owner=swim_text))
-    run_text = "run1"
-    person_x.set_depot_calendar(calendar_x=CalendarUnit(_owner=run_text))
-
-    # WHEN
-    depotlinks_dict = person_x.get_depotlinks_dict()
-
-    # THEN
-    assert len(depotlinks_dict) == 4
-    swim_dict = depotlinks_dict.get(swim_text)
-    assert str(type(swim_dict)) == "<class 'dict'>"
-    assert len(swim_dict) > 1
-    assert swim_dict.get("calendar_owner") == swim_text
-    assert swim_dict.get("link_type") == "blind_trust"
+    print(f"{person_x._isol._members.keys()=}")
+    assert person_x._isol.get_members_depotlink_count() == 4
 
 
 def test_person_get_dict_ReturnsDictObject(person_dir_setup_cleanup):
     # GIVEN
     env_dir = get_temp_person_dir()
     person_x = person_examples.get_person_2calendar(env_dir=env_dir)
-    person_x.set_depot_calendar(calendar_x=CalendarUnit(_owner="swim8"))
+    person_x.set_depot_calendar(
+        calendar_x=CalendarUnit(_owner="swim8"), depotlink_type="blind_trust"
+    )
 
     # WHEN
     x_dict = person_x.get_dict()
@@ -67,12 +47,6 @@ def test_person_get_dict_ReturnsDictObject(person_dir_setup_cleanup):
     print("check internal obj attributes")
     # for src_calendar_owner, src_calendar_obj in x_dict["_depotlinks"].items():
     #     print(f"{src_calendar_owner=}")
-
-    assert x_dict["_depotlinks"]["A"] != None
-    assert x_dict["_depotlinks"]["J"] != None
-    assert len(x_dict["_depotlinks"]) == 3
-    assert x_dict["_depotlinks"] == person_x.get_depotlinks_dict()
-    assert len(person_x.get_depotlinks_dict()) == 3
 
 
 def test_person_export_to_JSON_simple_example_works(person_dir_setup_cleanup):
@@ -87,10 +61,6 @@ def test_person_export_to_JSON_simple_example_works(person_dir_setup_cleanup):
     x_dict = json_loads(x_json)
     # print(x_dict)
     assert x_dict["name"] == x_person._admin._person_name
-    assert x_dict["_depotlinks"]["A"] != None
-    assert x_dict["_depotlinks"]["J"] != None
-    assert len(x_dict["_depotlinks"]) == 2
-    assert x_dict["_depotlinks"] == x_person.get_depotlinks_dict()
 
 
 def test_person_get_json_CorrectlyWorksForSimpleExample(
@@ -134,12 +104,3 @@ def test_person_get_json_CorrectlyWorksForSimpleExample(
         == person_algo._admin._calendars_digest_dir
     )
     assert person_json._admin._person_dir != None
-    assert len(person_json._depotlinks) == 2
-    assert person_json._depotlinks.keys() == person_algo._depotlinks.keys()
-
-    # for algo_depotlink_x in person_algo._depotlinks.values():
-    #     assert algo_depotlink_x == person_json._depotlinks.get(
-    #         algo_depotlink_x.calendar_owner
-    #     )
-
-    assert len(person_json._depotlinks) == len(person_algo._depotlinks)

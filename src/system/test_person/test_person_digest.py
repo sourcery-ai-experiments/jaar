@@ -25,24 +25,24 @@ def test_person_save_isol_calendar_CreateStartingCalendarFile(
     person_dir_setup_cleanup,
 ):
     # GIVEN
-    p_name = "Game1"
+    lai_name = "Lai"
     env_dir = get_temp_person_dir()
-    px = personunit_shop(name=p_name, env_dir=env_dir)
-    file_name = px._admin._isol_calendar_file_name
+    lai_calendar = personunit_shop(name=lai_name, env_dir=env_dir)
+    lai_isol_file_name = lai_calendar._admin._isol_calendar_file_name
     with pytest_raises(Exception) as excinfo:
-        x_func_open_file(px._admin._person_dir, file_name)
+        x_func_open_file(lai_calendar._admin._person_dir, lai_isol_file_name)
     assert (
         str(excinfo.value)
-        == f"Could not load file {px._admin._person_dir}/{file_name} (2, 'No such file or directory')"
+        == f"Could not load file {lai_calendar._admin._person_dir}/{lai_isol_file_name} (2, 'No such file or directory')"
     )
 
     # WHEN
-    px._admin.save_isol_calendar(
+    lai_calendar._admin.save_isol_calendar(
         calendar_x=example_calendars_get_calendar_with_4_levels()
     )
 
     # THEN
-    assert x_func_open_file(px._admin._person_dir, file_name) != None
+    assert x_func_open_file(lai_calendar._admin._person_dir, lai_isol_file_name) != None
 
 
 def test_personopen_isol_calendar_WhenStartingCalendarFileDoesNotExists(
@@ -182,27 +182,27 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestCalendar(
     person_dir_setup_cleanup,
 ):
     # GIVEN
-    person_name = "person1"
+    sue_text = "Sue"
     env_dir = get_temp_person_dir()
-    px = personunit_shop(name=person_name, env_dir=env_dir)
-    px.create_core_dir_and_files()
+    sue_cx = personunit_shop(name=sue_text, env_dir=env_dir)
+    sue_cx.create_core_dir_and_files()
     cx = example_persons.get_2node_calendar()
     src_calendar_owner = cx._owner
-    assert x_func_count_files(px._admin._calendars_digest_dir) == 0
+    assert x_func_count_files(sue_cx._admin._calendars_digest_dir) == 0
 
     # WHEN
-    px.set_depot_calendar(calendar_x=cx, depotlink_type="blind_trust")
+    sue_cx.set_depot_calendar(calendar_x=cx, depotlink_type="blind_trust")
 
     # THEN
     cx_file_name = f"{cx._owner}.json"
-    digest_file_path = f"{px._admin._calendars_digest_dir}/{cx_file_name}"
+    digest_file_path = f"{sue_cx._admin._calendars_digest_dir}/{cx_file_name}"
     print(f"Saving to {digest_file_path=}")
     assert os_path.exists(digest_file_path)
-    # for path_x in os_scandir(px._admin._calendars_digest_dir):
+    # for path_x in os_scandir(sue_cx._admin._calendars_digest_dir):
     #     print(f"{path_x=}")
-    assert x_func_count_files(px._admin._calendars_digest_dir) == 1
+    assert x_func_count_files(sue_cx._admin._calendars_digest_dir) == 1
     digest_cx_json = x_func_open_file(
-        dest_dir=px._admin._calendars_digest_dir,
+        dest_dir=sue_cx._admin._calendars_digest_dir,
         file_name=f"{src_calendar_owner}.json",
     )
     assert digest_cx_json == cx.get_json()

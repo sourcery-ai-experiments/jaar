@@ -1,7 +1,7 @@
 from src.calendar.calendar import CalendarUnit
 from src.calendar.idea import IdeaKid
 from src.calendar.required_assign import assigned_unit_shop
-from src.system.person import personunit_shop
+from src.system.person import personunit_shop, PersonUnit
 from src.calendar.road import Road, get_global_root_label as root_label
 from random import randrange
 
@@ -145,14 +145,12 @@ def get_7nodeJRootWithH_calendar() -> CalendarUnit:
     return calendar_x
 
 
-def get_person_2calendar(env_dir) -> CalendarUnit:
-    person_name = "person1"
-    wx = personunit_shop(name=person_name, env_dir=env_dir, _auto_output_to_public=True)
-    wx.set_depot_calendar(calendar_x=get_1node_calendar(), depotlink_type="blind_trust")
-    wx.set_depot_calendar(
-        calendar_x=get_Jnode2node_calendar(), depotlink_type="blind_trust"
-    )
-    return wx
+def get_person_2calendar(env_dir) -> PersonUnit:
+    yao_text = "Yao"
+    yao_per = personunit_shop(yao_text, env_dir=env_dir, _auto_output_to_public=True)
+    yao_per.set_depot_calendar(get_1node_calendar(), depotlink_type="blind_trust")
+    yao_per.set_depot_calendar(get_Jnode2node_calendar(), depotlink_type="blind_trust")
+    return yao_per
 
 
 def get_calendar_2CleanNodesRandomWeights(_owner: str = None) -> CalendarUnit:
@@ -190,7 +188,7 @@ def get_calendar_3CleanNodesRandomWeights(_owner: str = None) -> CalendarUnit:
     return calendar_x
 
 
-def get_calendar_assignment_laundry_example1():
+def get_calendar_assignment_laundry_example1() -> CalendarUnit:
     america_text = "America"
     cx = CalendarUnit(_owner=america_text)
     joachim_text = "Joachim"

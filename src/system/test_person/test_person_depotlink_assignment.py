@@ -47,16 +47,16 @@ from src.calendar.x_func import (
 #     assert joachim_person._depotlinks == {}
 
 
-#     america_person = ex.get_person_obj_from_system(name=america_text)
+#     america_person = ex.sys_get_person_obj(name=america_text)
 #     america_person.save_output_calendar_to_public()
 
 #     # Create person2
 #     joachim_text = "Joachim"
 #     ex.create_new_personunit(person_name=joachim_text)
-#     old_joa_person = ex.get_person_obj_from_system(name=joachim_text)
+#     old_joa_person = ex.sys_get_person_obj(name=joachim_text)
 #     old_joa_person._set_depotlink(america_text, depotlink_type="blind_trust")
 #     old_joa_person.save_output_calendar_to_public()
-#     old_joa_dest_c = ex.get_calendar_from_calendars_dir(joachim_text)
+#     old_joa_dest_c = ex.get_public_calendar(joachim_text)
 #     old_joa_agenda = old_joa_dest_c.get_agenda_items()
 #     assert len(old_joa_agenda) == 0
 
@@ -100,9 +100,9 @@ from src.calendar.x_func import (
 
 #     # WHEN
 #     america_person.save_output_calendar_to_public()
-#     new_joa_person = ex.get_person_obj_from_system(name=joachim_text)
+#     new_joa_person = ex.sys_get_person_obj(name=joachim_text)
 #     new_joa_person.save_output_calendar_to_public()
-#     new_joa_dest_c = ex.get_calendar_from_calendars_dir(joachim_text)
+#     new_joa_dest_c = ex.get_public_calendar(joachim_text)
 #     new_joa_agenda = new_joa_dest_c.get_agenda_items()
 #     assert len(new_joa_agenda) == 1
 #     print(f"{new_joa_agenda[0]._label=}")
