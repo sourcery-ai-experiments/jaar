@@ -97,8 +97,11 @@ class CalendarUnit:
     _tree_traverse_count: int = None
     _rational: bool = False
     _originunit: OriginUnit = None
+    _auto_output_to_public: bool = None
 
-    def __init__(self, _weight: float = None, _owner=None) -> None:
+    def __init__(
+        self, _weight: float = None, _owner=None, _auto_output_to_public=None
+    ) -> None:
         if _weight is None:
             _weight = 1
         self._weight = _weight
@@ -107,6 +110,7 @@ class CalendarUnit:
         self._idearoot = IdeaRoot(_label=root_label(), _uid=1, _level=0)
         self._owner = _owner
         self._originunit = originunit_shop()
+        self._auto_output_to_public = bool(_auto_output_to_public)
 
     def set_banking_attr_memberunits(self, river_tmembers: dict):
         for memberunit_x in self._members.values():
@@ -610,7 +614,9 @@ class CalendarUnit:
         )
 
     def get_members_depotlink_count(self):
-        return sum(member_x.depotlink_type != None for member_x in self._members.values())
+        return sum(
+            member_x.depotlink_type != None for member_x in self._members.values()
+        )
 
     def get_groupunits_uid_max(self) -> int:
         uid_max = 1
@@ -1946,6 +1952,7 @@ class CalendarUnit:
             "_numeric_road": self._idearoot._numeric_road,
             "_on_meld_weight_action": self._idearoot._on_meld_weight_action,
             "_max_tree_traverse": self._max_tree_traverse,
+            "_auto_output_to_public": self._auto_output_to_public,
         }
 
     def get_json(self):
@@ -2180,6 +2187,12 @@ class CalendarUnit:
             if (idea_x.assignor_in(assignor_groups) and idea_x.promise)
         }
 
+    def _set_auto_output_to_public(self, bool_x: bool):
+        if bool_x is None and self._auto_output_to_public is None:
+            self._auto_output_to_public = False
+        elif bool_x is not None or not self._auto_output_to_public:
+            self._auto_output_to_public = bool_x is not None and bool_x
+
 
 def get_from_json(cx_json: str) -> CalendarUnit:
     return get_from_dict(cx_dict=json.loads(cx_json))
@@ -2204,6 +2217,10 @@ def get_from_dict(cx_dict: dict) -> CalendarUnit:
         c_x._originunit = originunit_get_from_dict(x_dict=cx_dict["_originunit"])
     except Exception:
         c_x._originunit = originunit_shop()
+    try:
+        c_x._auto_output_to_public = cx_dict["_auto_output_to_public"]
+    except Exception:
+        c_x._auto_output_to_public = False
     c_x._members = memberunits_get_from_dict(x_dict=cx_dict["_members"])
     c_x._owner = cx_dict["_owner"]
     c_x._idearoot.set_idea_label(root_label())

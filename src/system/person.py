@@ -232,6 +232,7 @@ def personadmin_shop(
 class PersonUnit:
     _admin: PersonAdmin = None
     _isol: CalendarUnit = None
+    _auto_output_to_public: bool = None
 
     def reset_depot_calendars(self):
         for member_x in self._isol._members.values():

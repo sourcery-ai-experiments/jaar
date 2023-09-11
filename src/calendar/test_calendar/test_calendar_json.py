@@ -55,6 +55,7 @@ def test_calendar_get_dict_ReturnsDictObject():
     assert x_dict["_owner"] == x_calendar._owner
     assert x_dict["_weight"] == x_calendar._weight
     assert x_dict["_max_tree_traverse"] == x_calendar._max_tree_traverse
+    assert x_dict["_auto_output_to_public"] == x_calendar._auto_output_to_public
     assert len(x_dict["_members"]) == len(x_calendar._members)
     assert len(x_dict["_groups"]) == len(x_calendar._groups)
 
@@ -168,6 +169,7 @@ def test_export_to_JSON_simple_example_works():
     assert x_dict["_denom"] == x_idearoot._denom
     assert x_dict["_reest"] == x_idearoot._reest
     assert x_dict["_problem_bool"] == x_idearoot._problem_bool
+    assert x_dict["_auto_output_to_public"] == x_calendar._auto_output_to_public
     assert len(x_dict[_kids]) == len(x_idearoot._kids)
 
     shave_text = "shave"
@@ -289,6 +291,7 @@ def test_calendar_get_json_CorrectlyWorksForSimpleExample():
 
     yao_text = "Yao"
     calendar_y._originunit.set_originlink(yao_text, 1)
+    calendar_y._auto_output_to_public = True
 
     # WHEN
     x_json = calendar_y.get_json()
@@ -301,6 +304,7 @@ def test_calendar_get_json_CorrectlyWorksForSimpleExample():
     assert calendar_x._owner == calendar_y._owner
     assert calendar_x._max_tree_traverse == 23
     assert calendar_x._max_tree_traverse == calendar_y._max_tree_traverse
+    assert calendar_x._auto_output_to_public == calendar_y._auto_output_to_public
 
     idearoot_x = calendar_x._idearoot
     assert idearoot_x._walk == ""
