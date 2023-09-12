@@ -27,16 +27,16 @@ def test_admin_exists():
     assert pdx._person_name != None
     assert pdx._env_dir != None
     assert pdx._person_dir is None
-    assert pdx._person_file_name is None
-    assert pdx._person_file_path is None
+    assert pdx._isol_file_name is None
+    assert pdx._isol_file_path is None
     assert pdx._calendar_output_file_name is None
     assert pdx._calendar_output_file_path is None
+    assert pdx._public_file_name is None
     assert pdx._calendars_public_dir is None
     assert pdx._calendars_depot_dir is None
     assert pdx._calendars_ignore_dir is None
     assert pdx._calendars_bond_dir is None
     assert pdx._calendars_digest_dir is None
-    assert pdx._isol_calendar_file_name is None
 
 
 def test_PersonAdmin_set_dir_CorrectSetsPersonAdminAttribute():
@@ -47,14 +47,14 @@ def test_PersonAdmin_set_dir_CorrectSetsPersonAdminAttribute():
     assert pdx._person_dir is None
     assert pdx._calendar_output_file_name is None
     assert pdx._calendar_output_file_path is None
+    assert pdx._public_file_name is None
     assert pdx._calendars_public_dir is None
     assert pdx._calendars_depot_dir is None
     assert pdx._calendars_ignore_dir is None
     assert pdx._calendars_digest_dir is None
     assert pdx._calendars_bond_dir is None
-    assert pdx._person_file_name is None
-    assert pdx._person_file_path is None
-    assert pdx._isol_calendar_file_name is None
+    assert pdx._isol_file_name is None
+    assert pdx._isol_file_path is None
     # WHEN
     pdx.set_dirs()
 
@@ -62,20 +62,21 @@ def test_PersonAdmin_set_dir_CorrectSetsPersonAdminAttribute():
     assert pdx._person_dir != None
     assert pdx._calendar_output_file_name != None
     assert pdx._calendar_output_file_path != None
+    assert pdx._public_file_name != None
     assert pdx._calendars_public_dir != None
     assert pdx._calendars_depot_dir != None
     assert pdx._calendars_ignore_dir != None
     assert pdx._calendars_digest_dir != None
     assert pdx._calendars_bond_dir != None
-    assert pdx._person_file_name != None
-    assert pdx._person_file_path != None
-    assert pdx._isol_calendar_file_name != None
+    assert pdx._isol_file_name != None
+    assert pdx._isol_file_path != None
 
     persons_drectory_name = "persons"
     x_persons_dir = f"{env_dir}/{persons_drectory_name}"
     x_person_dir = f"{x_persons_dir}/{bob_text}"
-    x_person_file_name = f"{bob_text}.json"
-    x_person_file_path = f"{x_person_dir}/{x_person_file_name}"
+    x_public_file_name = f"{bob_text}.json"
+    x_isol_file_name = "isol_calendar.json"
+    x_isol_file_path = f"{x_person_dir}/{x_isol_file_name}"
     x_calendar_output_file_name = "output_calendar.json"
     x_calendar_output_file_path = f"{x_person_dir}/{x_calendar_output_file_name}"
     calendars_str = "calendars"
@@ -84,19 +85,18 @@ def test_PersonAdmin_set_dir_CorrectSetsPersonAdminAttribute():
     x_calendars_bond_dir = f"{x_person_dir}/bonds"
     x_calendars_digest_dir = f"{x_person_dir}/digests"
     x_calendars_public_dir = f"{env_dir}/{calendars_str}"
-    x_isol_calendar_file_name = "isol_calendar.json"
     assert pdx._persons_dir == x_persons_dir
     assert pdx._person_dir == x_person_dir
-    assert pdx._person_file_name == x_person_file_name
-    assert pdx._person_file_path == x_person_file_path
+    assert pdx._isol_file_name == x_isol_file_name
+    assert pdx._isol_file_path == x_isol_file_path
     assert pdx._calendar_output_file_name == x_calendar_output_file_name
     assert pdx._calendar_output_file_path == x_calendar_output_file_path
     assert pdx._calendars_depot_dir == x_calendars_depot_dir
     assert pdx._calendars_ignore_dir == x_calendars_ignore_dir
     assert pdx._calendars_bond_dir == x_calendars_bond_dir
     assert pdx._calendars_digest_dir == x_calendars_digest_dir
+    assert pdx._public_file_name == x_public_file_name
     assert pdx._calendars_public_dir == x_calendars_public_dir
-    assert pdx._isol_calendar_file_name == x_isol_calendar_file_name
 
 
 def test_PersonAdmin_create_core_dir_and_files_CreatesDirsAndFiles(
@@ -109,7 +109,7 @@ def test_PersonAdmin_create_core_dir_and_files_CreatesDirsAndFiles(
     pdx.set_dirs()
     assert os_path.exists(pdx._persons_dir) is False
     assert os_path.exists(pdx._person_dir) is False
-    assert os_path.exists(pdx._person_file_path) is False
+    assert os_path.exists(pdx._isol_file_path) is False
     assert os_path.isdir(pdx._person_dir) is False
     assert os_path.exists(pdx._calendars_depot_dir) is False
     assert os_path.exists(pdx._calendars_digest_dir) is False
@@ -118,14 +118,14 @@ def test_PersonAdmin_create_core_dir_and_files_CreatesDirsAndFiles(
 
     # WHEN
     calendar_x = example_persons.get_7nodeJRootWithH_calendar()
-    pdx.create_core_dir_and_files(calendar_x.get_json())
+    pdx.create_core_dir_and_files(calendar_x)
 
     # THEN confirm calendars src directory created
     print(f"Checking {pdx._persons_dir=}")
     print(f"Checking {pdx._person_dir=}")
     assert os_path.exists(pdx._persons_dir)
     assert os_path.exists(pdx._person_dir)
-    assert os_path.exists(pdx._person_file_path)
+    assert os_path.exists(pdx._isol_file_path)
     assert os_path.isdir(pdx._person_dir)
     assert os_path.exists(pdx._calendars_depot_dir)
     assert os_path.exists(pdx._calendars_digest_dir)
@@ -141,25 +141,24 @@ def test_PersonAdmin_set_person_name_WorksCorrectly(person_dir_setup_cleanup):
     pdx = PersonAdmin(_person_name=old_person_text, _env_dir=env_dir)
     calendar_x = example_persons.get_7nodeJRootWithH_calendar()
     pdx.set_dirs()
-    pdx.create_core_dir_and_files(calendar_x.get_json())
+    pdx.create_core_dir_and_files(calendar_x)
     old_person_dir = pdx._person_dir
     # old_person_dir = f"{env_dir}/persons/{old_person_text}"
     print(f"{pdx._person_dir}")
     print(f"{env_dir}/persons/{old_person_text}")
-    old_person_file_name = f"{old_person_text}.json"
-    old_person_file_path = f"{old_person_dir}/{old_person_file_name}"
+    isol_file_name = "isol_calendar.json"
+    old_isol_file_path = f"{old_person_dir}/{isol_file_name}"
 
     assert os_path.exists(old_person_dir)
     assert os_path.isdir(old_person_dir)
-    assert os_path.exists(old_person_file_path)
+    assert os_path.exists(old_isol_file_path)
 
     new_person_text = "tim"
     new_person_dir = f"{env_dir}/persons/{new_person_text}"
-    new_person_file_name = f"{new_person_text}.json"
-    new_person_file_path = f"{new_person_dir}/{new_person_file_name}"
+    new_isol_file_path = f"{new_person_dir}/{isol_file_name}"
     assert os_path.exists(new_person_dir) == False
     assert os_path.isdir(new_person_dir) == False
-    assert os_path.exists(new_person_file_path) == False
+    assert os_path.exists(new_isol_file_path) == False
 
     # WHEN
     pdx.set_person_name(new_name=new_person_text)
@@ -167,10 +166,10 @@ def test_PersonAdmin_set_person_name_WorksCorrectly(person_dir_setup_cleanup):
     # THEN
     assert os_path.exists(old_person_dir) == False
     assert os_path.isdir(old_person_dir) == False
-    assert os_path.exists(old_person_file_path) == False
+    assert os_path.exists(old_isol_file_path) == False
     assert os_path.exists(new_person_dir)
     assert os_path.isdir(new_person_dir)
-    assert os_path.exists(new_person_file_path)
+    assert os_path.exists(new_isol_file_path)
 
 
 def test_personunit_auto_output_to_public_SavesCalendarToPublicDir(
@@ -181,9 +180,9 @@ def test_personunit_auto_output_to_public_SavesCalendarToPublicDir(
     pdx = personadmin_shop(bob_text, get_temp_person_dir())
     calendar_x = example_persons.get_6node_calendar()
     calendar_x.set_owner(new_owner=bob_text)
-    pdx.create_core_dir_and_files(calendar_x.get_json())
+    pdx.create_core_dir_and_files(calendar_x)
 
-    public_file_path = f"{pdx._calendars_public_dir}/{pdx._person_file_name}"
+    public_file_path = f"{pdx._calendars_public_dir}/{pdx._public_file_name}"
     print(f"{public_file_path=}")
     assert os_path.exists(public_file_path) is False
 

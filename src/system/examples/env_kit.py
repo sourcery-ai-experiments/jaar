@@ -72,8 +72,8 @@ def create_person_file_for_systems(system_dir: str, person_name: str):
 
     x_func_save_file(
         dest_dir=person_dir,
-        file_name=f"{person_x._admin._person_name}.json",
-        file_text=person_x.get_json(),
+        file_name=f"{person_x._admin._isol_file_name}.json",
+        file_text=person_x.get_isol_calendar().get_json(),
     )
 
 

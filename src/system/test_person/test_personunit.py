@@ -12,6 +12,7 @@ from pytest import raises as pytest_raises
 from src.calendar.x_func import (
     count_files as x_func_count_files,
     open_file as x_func_open_file,
+    delete_dir as x_func_delete_dir,
 )
 
 
@@ -28,50 +29,50 @@ def test_personunit_exists(person_dir_setup_cleanup):
     assert px._isol is None
 
 
-def test_personunit_auto_output_to_public_SavesCalendarToPublicDirWhenTrue(
-    person_dir_setup_cleanup,
-):
-    # GIVEN
-    env_dir = get_temp_person_dir()
-    tim_text = "Tim"
-    public_file_name = f"{tim_text}.json"
-    public_file_path = f"{get_temp_person_dir()}/calendars/{public_file_name}"
-    print(f"{public_file_path=}")
-    # public_file_path = f"src/system/examples/ex_env/calendars/{public_file_name}"
-    px = personunit_shop(tim_text, env_dir, _auto_output_to_public=True)
-    px.create_core_dir_and_files()
-    assert os_path.exists(public_file_path) is False
+# def test_personunit_auto_output_to_public_SavesCalendarToPublicDirWhenTrue(
+#     person_dir_setup_cleanup,
+# ):
+#     # GIVEN
+#     env_dir = get_temp_person_dir()
+#     tim_text = "Tim"
+#     public_file_name = f"{tim_text}.json"
+#     public_file_path = f"{get_temp_person_dir()}/calendars/{public_file_name}"
+#     print(f"{public_file_path=}")
+#     # public_file_path = f"src/system/examples/ex_env/calendars/{public_file_name}"
+#     px = personunit_shop(tim_text, env_dir, _auto_output_to_public=True)
+#     px.create_core_dir_and_files()
+#     assert os_path.exists(public_file_path) is False
 
-    # WHEN
-    px.set_depot_calendar(
-        calendar_x=CalendarUnit(_owner=tim_text), depotlink_type="blind_trust"
-    )
+#     # WHEN
+#     px.set_depot_calendar(
+#         calendar_x=CalendarUnit(_owner=tim_text), depotlink_type="blind_trust"
+#     )
 
-    # THEN
-    assert os_path.exists(public_file_path)
+#     # THEN
+#     assert os_path.exists(public_file_path)
 
 
-def test_personunit_auto_output_to_public_DoesNotSaveCalendarToPublicDirWhenFalse(
-    person_dir_setup_cleanup,
-):
-    # GIVEN
-    env_dir = get_temp_person_dir()
-    tim_text = "Tim"
-    public_file_name = f"{tim_text}.json"
-    public_file_path = f"{get_temp_person_dir()}/calendars/{public_file_name}"
-    print(f"{public_file_path=}")
-    # public_file_path = f"src/system/examples/ex_env/calendars/{public_file_name}"
-    px = personunit_shop(tim_text, env_dir, _auto_output_to_public=False)
-    px.create_core_dir_and_files()
-    assert os_path.exists(public_file_path) is False
+# def test_personunit_auto_output_to_public_DoesNotSaveCalendarToPublicDirWhenFalse(
+#     person_dir_setup_cleanup,
+# ):
+#     # GIVEN
+#     env_dir = get_temp_person_dir()
+#     tim_text = "Tim"
+#     public_file_name = f"{tim_text}.json"
+#     public_file_path = f"{get_temp_person_dir()}/calendars/{public_file_name}"
+#     print(f"{public_file_path=}")
+#     # public_file_path = f"src/system/examples/ex_env/calendars/{public_file_name}"
+#     px = personunit_shop(tim_text, env_dir, _auto_output_to_public=False)
+#     px.create_core_dir_and_files()
+#     assert os_path.exists(public_file_path) is False
 
-    # WHEN
-    px.set_depot_calendar(
-        calendar_x=CalendarUnit(_owner=tim_text), depotlink_type="blind_trust"
-    )
+#     # WHEN
+#     px.set_depot_calendar(
+#         calendar_x=CalendarUnit(_owner=tim_text), depotlink_type="blind_trust"
+#     )
 
-    # THEN
-    assert os_path.exists(public_file_path) is False
+#     # THEN
+#     assert os_path.exists(public_file_path) is False
 
 
 def test_personunit_get_isol_calendar_createsEmptyCalendarWhenFileDoesNotExist(
@@ -81,17 +82,16 @@ def test_personunit_get_isol_calendar_createsEmptyCalendarWhenFileDoesNotExist(
     tim_text = "Tim"
     tim_px = personunit_shop(tim_text, get_temp_person_dir())
     tim_px.create_core_dir_and_files()
-    isol_file_path = (
-        f"{tim_px._admin._person_dir}/{tim_px._admin._isol_calendar_file_name}"
-    )
-    assert os_path.exists(isol_file_path) is False
+    assert os_path.exists(tim_px._admin._isol_file_path)
+    x_func_delete_dir(dir=tim_px._admin._isol_file_path)
+    assert os_path.exists(tim_px._admin._isol_file_path) is False
     assert tim_px._isol is None
 
     # WHEN
     cx_isol = tim_px.get_isol_calendar()
 
     # THEN
-    assert os_path.exists(isol_file_path)
+    assert os_path.exists(tim_px._admin._isol_file_path)
     assert tim_px._isol != None
 
 
@@ -102,9 +102,7 @@ def test_personunit_get_isol_calendar_getsMemoryCalendarIfExists(
     tim_text = "Tim"
     tim_px = personunit_shop(tim_text, get_temp_person_dir())
     tim_px.create_core_dir_and_files()
-    isol_file_path = (
-        f"{tim_px._admin._person_dir}/{tim_px._admin._isol_calendar_file_name}"
-    )
+    isol_file_path = f"{tim_px._admin._person_dir}/{tim_px._admin._isol_file_name}"
     cx_isol1 = tim_px.get_isol_calendar()
     assert os_path.exists(isol_file_path)
     assert tim_px._isol != None
@@ -134,9 +132,7 @@ def test_personunit_set_isol_calendar_savesIsolCalendarSet_isol_None(
     tim_text = "Tim"
     tim_px = personunit_shop(tim_text, get_temp_person_dir())
     tim_px.create_core_dir_and_files()
-    isol_file_path = (
-        f"{tim_px._admin._person_dir}/{tim_px._admin._isol_calendar_file_name}"
-    )
+    isol_file_path = f"{tim_px._admin._person_dir}/{tim_px._admin._isol_file_name}"
     cx_isol1 = tim_px.get_isol_calendar()
     assert os_path.exists(isol_file_path)
     assert tim_px._isol != None
@@ -160,7 +156,7 @@ def test_personunit_set_isol_calendar_savesGivenCalendarSet_isol_None(
     tim_text = "Tim"
     px = personunit_shop(tim_text, get_temp_person_dir())
     px.create_core_dir_and_files()
-    isol_file_path = f"{px._admin._person_dir}/{px._admin._isol_calendar_file_name}"
+    isol_file_path = f"{px._admin._person_dir}/{px._admin._isol_file_name}"
     cx_isol1 = px.get_isol_calendar()
     assert os_path.exists(isol_file_path)
     assert px._isol != None

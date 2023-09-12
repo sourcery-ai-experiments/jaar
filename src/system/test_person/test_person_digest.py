@@ -28,7 +28,7 @@ def test_person_save_isol_calendar_CreateStartingCalendarFile(
     lai_name = "Lai"
     env_dir = get_temp_person_dir()
     lai_calendar = personunit_shop(name=lai_name, env_dir=env_dir)
-    lai_isol_file_name = lai_calendar._admin._isol_calendar_file_name
+    lai_isol_file_name = lai_calendar._admin._isol_file_name
     with pytest_raises(Exception) as excinfo:
         x_func_open_file(lai_calendar._admin._person_dir, lai_isol_file_name)
     assert (
@@ -133,7 +133,7 @@ def test_person_erase_isol_calendar_file_DeletesFileCorrectly(
     env_dir = get_temp_person_dir()
     px = personunit_shop(name=p_name, env_dir=env_dir)
     px._admin.save_isol_calendar(example_calendars_get_calendar_with_4_levels())
-    file_name = px._admin._isol_calendar_file_name
+    file_name = px._admin._isol_file_name
     assert x_func_open_file(px._admin._person_dir, file_name) != None
 
     # WHEN

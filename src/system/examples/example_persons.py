@@ -147,7 +147,7 @@ def get_7nodeJRootWithH_calendar() -> CalendarUnit:
 
 def get_person_2calendar(env_dir) -> PersonUnit:
     yao_text = "Yao"
-    yao_per = personunit_shop(yao_text, env_dir=env_dir, _auto_output_to_public=True)
+    yao_per = personunit_shop(yao_text, env_dir=env_dir)
     yao_per.set_depot_calendar(get_1node_calendar(), depotlink_type="blind_trust")
     yao_per.set_depot_calendar(get_Jnode2node_calendar(), depotlink_type="blind_trust")
     return yao_per

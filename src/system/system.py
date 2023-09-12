@@ -1,10 +1,6 @@
 from src.calendar.calendar import CalendarUnit, get_from_json as get_calendar_from_json
 from src.calendar.member import memberlink_shop, MemberName
-from src.system.person import (
-    PersonUnit,
-    personunit_shop,
-    get_from_json as get_person_from_json,
-)
+from src.system.person import PersonUnit, personunit_shop
 from dataclasses import dataclass
 from src.calendar.x_func import (
     single_dir_create_if_null,
@@ -315,14 +311,15 @@ class SystemUnit:
     def sys_get_person_obj(self, name: str) -> PersonUnit:
         return None if self._personunits.get(name) is None else self._personunits[name]
 
-    def get_person_obj_from_file(self, name: str) -> PersonUnit:
-        person_json = x_func_open_file(
-            dest_dir=f"{self.get_persons_dir()}/{name}", file_name=f"{name}.json"
+    def get_calendar_obj_from_file(self, name: str) -> PersonUnit:
+        cx_json = x_func_open_file(
+            dest_dir=f"{self.get_persons_dir()}/{name}", file_name="isol_calendar.json"
         )
-        return get_person_from_json(person_json, env_dir=self.get_object_root_dir())
+        return get_calendar_from_json(cx_json)
 
     def load_personunit(self, name: str):
-        person_x = self.get_person_obj_from_file(name=name)
+        cx = self.get_calendar_obj_from_file(name=name)
+        person_x = personunit_shop(name=cx._owner, env_dir=self.get_object_root_dir())
         self.set_personunits_empty_if_null()
         self.set_personunit_to_system(person_x)
 
@@ -332,11 +329,7 @@ class SystemUnit:
 
     def save_person_file(self, person_name: str):
         person_x = self.sys_get_person_obj(name=person_name)
-        x_func_save_file(
-            dest_dir=person_x._admin._person_dir,
-            file_name=person_x._admin._person_file_name,
-            file_text=person_x.get_json(),
-        )
+        person_x._admin.save_isol_calendar(person_x.get_isol_calendar())
 
     def rename_personunit(self, old_name: str, new_name: str):
         person_x = self.sys_get_person_obj(name=old_name)
