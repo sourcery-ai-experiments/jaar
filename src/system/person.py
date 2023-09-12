@@ -78,9 +78,10 @@ class PersonAdmin:
         single_dir_create_if_null(x_path=self._calendars_digest_dir)
         single_dir_create_if_null(x_path=self._calendars_ignore_dir)
         single_dir_create_if_null(x_path=self._calendars_bond_dir)
-        if isol_cx is None:
-            isol_cx = self._get_empty_isol_calendar()
-        self.save_isol_calendar(isol_cx)
+        if isol_cx is None and self._isol_calendar_exists() == False:
+            self.save_isol_calendar(self._get_empty_isol_calendar())
+        elif isol_cx != None and self._isol_calendar_exists() == False:
+            self.save_isol_calendar(isol_cx)
 
     def _save_calendar_to_path(
         self, calendar_x: CalendarUnit, dest_dir: str, file_name: str = None
@@ -127,8 +128,6 @@ class PersonAdmin:
     def save_calendar_to_depot(self, calendar_x: CalendarUnit):
         dest_dir = self._calendars_depot_dir
         self._save_calendar_to_path(calendar_x, dest_dir)
-        # if self._auto_output_to_public:
-        #     self.save_calendar_to_public(calendar_x)
 
     def save_output_calendar(self) -> CalendarUnit:
         isol_calendar_x = self.open_isol_calendar()
@@ -213,7 +212,6 @@ def personadmin_shop(_person_name: str, _env_dir: str) -> PersonAdmin:
 class PersonUnit:
     _admin: PersonAdmin = None
     _isol: CalendarUnit = None
-    _auto_output_to_public: bool = None
 
     def reset_depot_calendars(self):
         for member_x in self._isol._members.values():
@@ -239,6 +237,8 @@ class PersonUnit:
         self._set_depotlink(
             calendar_x._owner, depotlink_type, creditor_weight, debtor_weight
         )
+        if self.get_isol_calendar()._auto_output_to_public:
+            self._admin.save_calendar_to_public(self.get_refreshed_output_calendar())
 
     def _set_depotlinks_empty_if_null(self):
         self.set_isol_calendar_if_empty()
@@ -317,7 +317,14 @@ class PersonUnit:
         self._admin.create_core_dir_and_files(isol_cx)
 
 
-def personunit_shop(name: str, env_dir: str) -> PersonUnit:
+def personunit_shop(
+    name: str, env_dir: str, _auto_output_to_public: bool = None
+) -> PersonUnit:
     person_x = PersonUnit()
     person_x.set_env_dir(env_dir, name)
+    person_x.get_isol_calendar()
+    person_x._isol._set_auto_output_to_public(_auto_output_to_public)
+    print(f"{person_x._isol._auto_output_to_public=}")
+    person_x.set_isol_calendar()
+    print(f"{person_x._isol=}")
     return person_x

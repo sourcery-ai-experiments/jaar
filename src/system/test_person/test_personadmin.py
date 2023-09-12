@@ -1,5 +1,5 @@
 from src.system.person import PersonAdmin, personadmin_shop
-from src.calendar.calendar import CalendarUnit
+from src.calendar.calendar import CalendarUnit, get_from_json as calendar_get_from_json
 from src.calendar.idea import IdeaRoot
 import src.system.examples.example_persons as example_persons
 from src.system.examples.person_env_kit import (
@@ -12,6 +12,7 @@ from pytest import raises as pytest_raises
 from src.calendar.x_func import (
     count_files as x_func_count_files,
     open_file as x_func_open_file,
+    save_file as x_func_save_file,
 )
 
 
@@ -131,6 +132,33 @@ def test_PersonAdmin_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path.exists(pdx._calendars_digest_dir)
     assert os_path.exists(pdx._calendars_ignore_dir)
     assert os_path.exists(pdx._calendars_bond_dir)
+
+
+def test_PersonAdmin_create_core_dir_and_files_DoesNotOverWriteIsolCalendar(
+    person_dir_setup_cleanup,
+):
+    # GIVEN create person
+    jul_text = "julian"
+    env_dir = get_temp_person_dir()
+    jul_pdx = PersonAdmin(_person_name=jul_text, _env_dir=env_dir)
+    jul_pdx.set_dirs()
+    calendar_x = example_persons.get_7nodeJRootWithH_calendar()
+    jul_pdx.create_core_dir_and_files(calendar_x)
+    assert os_path.exists(jul_pdx._isol_file_path)
+    # jul_cx = calendar_get_from_json(x_func_open_file(jul_pdx._isol_file_path))
+    ex1 = "teesting text"
+    x_func_save_file(
+        dest_dir=jul_pdx._person_dir,
+        file_name=jul_pdx._isol_file_name,
+        file_text=ex1,
+    )
+    assert x_func_open_file(jul_pdx._person_dir, jul_pdx._isol_file_name) == ex1
+
+    # WHEN
+    jul_pdx.create_core_dir_and_files(calendar_x)
+
+    # THEN
+    assert x_func_open_file(jul_pdx._person_dir, jul_pdx._isol_file_name) == ex1
 
 
 def test_PersonAdmin_set_person_name_WorksCorrectly(person_dir_setup_cleanup):

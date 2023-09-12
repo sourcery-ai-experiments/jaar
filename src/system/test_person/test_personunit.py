@@ -29,50 +29,46 @@ def test_personunit_exists(person_dir_setup_cleanup):
     assert px._isol is None
 
 
-# def test_personunit_auto_output_to_public_SavesCalendarToPublicDirWhenTrue(
-#     person_dir_setup_cleanup,
-# ):
-#     # GIVEN
-#     env_dir = get_temp_person_dir()
-#     tim_text = "Tim"
-#     public_file_name = f"{tim_text}.json"
-#     public_file_path = f"{get_temp_person_dir()}/calendars/{public_file_name}"
-#     print(f"{public_file_path=}")
-#     # public_file_path = f"src/system/examples/ex_env/calendars/{public_file_name}"
-#     px = personunit_shop(tim_text, env_dir, _auto_output_to_public=True)
-#     px.create_core_dir_and_files()
-#     assert os_path.exists(public_file_path) is False
+def test_personunit_auto_output_to_public_SavesCalendarToPublicDirWhenTrue(
+    person_dir_setup_cleanup,
+):
+    # GIVEN
+    env_dir = get_temp_person_dir()
+    tim_text = "Tim"
+    public_file_name = f"{tim_text}.json"
+    public_file_path = f"{get_temp_person_dir()}/calendars/{public_file_name}"
+    print(f"{public_file_path=}")
+    # public_file_path = f"src/system/examples/ex_env/calendars/{public_file_name}"
+    px = personunit_shop(tim_text, env_dir, _auto_output_to_public=True)
+    px.create_core_dir_and_files()
+    assert os_path.exists(public_file_path) is False
 
-#     # WHEN
-#     px.set_depot_calendar(
-#         calendar_x=CalendarUnit(_owner=tim_text), depotlink_type="blind_trust"
-#     )
+    # WHEN
+    px.set_depot_calendar(CalendarUnit(_owner=tim_text), "blind_trust")
 
-#     # THEN
-#     assert os_path.exists(public_file_path)
+    # THEN
+    assert os_path.exists(public_file_path)
 
 
-# def test_personunit_auto_output_to_public_DoesNotSaveCalendarToPublicDirWhenFalse(
-#     person_dir_setup_cleanup,
-# ):
-#     # GIVEN
-#     env_dir = get_temp_person_dir()
-#     tim_text = "Tim"
-#     public_file_name = f"{tim_text}.json"
-#     public_file_path = f"{get_temp_person_dir()}/calendars/{public_file_name}"
-#     print(f"{public_file_path=}")
-#     # public_file_path = f"src/system/examples/ex_env/calendars/{public_file_name}"
-#     px = personunit_shop(tim_text, env_dir, _auto_output_to_public=False)
-#     px.create_core_dir_and_files()
-#     assert os_path.exists(public_file_path) is False
+def test_personunit_auto_output_to_public_DoesNotSaveCalendarToPublicDirWhenFalse(
+    person_dir_setup_cleanup,
+):
+    # GIVEN
+    env_dir = get_temp_person_dir()
+    tim_text = "Tim"
+    public_file_name = f"{tim_text}.json"
+    public_file_path = f"{get_temp_person_dir()}/calendars/{public_file_name}"
+    print(f"{public_file_path=}")
+    # public_file_path = f"src/system/examples/ex_env/calendars/{public_file_name}"
+    px = personunit_shop(tim_text, env_dir, _auto_output_to_public=False)
+    px.create_core_dir_and_files()
+    assert os_path.exists(public_file_path) is False
 
-#     # WHEN
-#     px.set_depot_calendar(
-#         calendar_x=CalendarUnit(_owner=tim_text), depotlink_type="blind_trust"
-#     )
+    # WHEN
+    px.set_depot_calendar(CalendarUnit(_owner=tim_text), depotlink_type="blind_trust")
 
-#     # THEN
-#     assert os_path.exists(public_file_path) is False
+    # THEN
+    assert os_path.exists(public_file_path) is False
 
 
 def test_personunit_get_isol_calendar_createsEmptyCalendarWhenFileDoesNotExist(
