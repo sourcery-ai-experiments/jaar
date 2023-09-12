@@ -9,6 +9,7 @@ from src.calendar.examples.example_calendars import (
     get_calendar_with7amCleanTableRequired as example_calendars_get_calendar_with7amCleanTableRequired,
     get_assignment_calendar_example1 as example_calendar_get_assignment_calendar_example1,
 )
+from src.system.examples.example_persons import get_calendar_assignment_laundry_example1
 
 
 def test_calendarunit_get_assignment_ReturnsCalendar():
@@ -384,22 +385,66 @@ def test_calendar__get_relevant_roads_range_source_road_ReturnSimple():
 def test_calendar__set_assignment_ideas_ReturnsCorrectIdeas():
     # GIVEN
     yao_text = "Yao"
-    cx = CalendarUnit(_owner=yao_text)
+    yao_cx = CalendarUnit(_owner=yao_text)
     casa_text = "casa"
     casa_road = f"{root_label()},{casa_text}"
-    cx.add_idea(IdeaKid(_label=casa_text), walk=root_label())
+    yao_cx.add_idea(IdeaKid(_label=casa_text), walk=root_label())
+    yao_cx.set_calendar_metrics()
 
     # WHEN
     bob_text = "Bob"
     bob_calendar = CalendarUnit(_owner=bob_text)
     relevant_roads = {root_label(): "descendant", casa_road: "requirementunit_base"}
-    cx._set_assignment_ideas(calendar_x=bob_calendar, relevant_roads=relevant_roads)
+    yao_cx._set_assignment_ideas(calendar_x=bob_calendar, relevant_roads=relevant_roads)
 
     # THEN
     bob_calendar.set_calendar_metrics()
     print(f"{bob_calendar._idea_dict.keys()=}")
     assert len(bob_calendar._idea_dict) == 2
     assert bob_calendar.get_idea_kid(casa_road) != None
+
+
+def test_calendar__set_assignment_ideas_ReturnsCorrectIdeaRoot_acptfacts():
+    # GIVEN
+    yao_text = "Yao"
+    yao_cx = CalendarUnit(_owner=yao_text)
+
+    casa_text = "casa"
+    casa_road = f"{root_label()},{casa_text}"
+    yao_cx.add_idea(IdeaKid(_label=casa_text), walk=root_label())
+
+    basket_text = "laundry basket status"
+    basket_road = f"{casa_road},{basket_text}"
+    yao_cx.add_idea(IdeaKid(basket_text), walk=casa_road)
+    yao_cx.set_acptfact(base=basket_road, pick=basket_road)
+    # print(f"{list(yao_cx._idearoot._acptfactunits.keys())=}")
+
+    room_text = "room status"
+    room_road = f"{casa_road},{room_text}"
+    yao_cx.add_idea(IdeaKid(room_text), walk=casa_road)
+    yao_cx.set_acptfact(base=room_road, pick=room_road)
+    print(f"{list(yao_cx._idearoot._acptfactunits.keys())=}")
+
+    bob_text = "Bob"
+    bob_cx = CalendarUnit(_owner=bob_text)
+
+    yao_cx.set_calendar_metrics()
+    bob_cx.set_calendar_metrics()
+    assert list(yao_cx._idearoot._acptfactunits.keys()) == [basket_road, room_road]
+    assert not list(bob_cx._idearoot._acptfactunits.keys())
+
+    # WHEN
+    relevant_roads = {
+        root_label(): "descendant",
+        casa_road: "requirementunit_base",
+        basket_road: "assigned",
+    }
+    yao_cx._set_assignment_ideas(calendar_x=bob_cx, relevant_roads=relevant_roads)
+
+    # THEN
+    bob_cx.set_calendar_metrics()
+    assert bob_cx._idearoot._acptfactunits.get(room_road) is None
+    assert list(bob_cx._idearoot._acptfactunits.keys()) == [basket_road]
 
 
 def test_calendar_get_assignment_getsCorrectIdeas_scenario1():
@@ -440,3 +485,79 @@ def test_calendar_get_assignment_getsCorrectIdeas_scenario1():
     assert assignment_x._idea_dict.get(kinda_road) != None
     assert assignment_x._idea_dict.get(really_road) != None
     assert assignment_x._idea_dict.get(unim_road) is None
+
+
+def test_calendar_get_assignment_CorrectlyCreatesAssignmentFile_v1():
+    # GIVEN
+    america_cx = get_calendar_assignment_laundry_example1()
+
+    # WHEN
+    joachim_text = "Joachim"
+    joachim_assignment = america_cx.get_assignment(
+        calendar_x=CalendarUnit(_owner=joachim_text),
+        assignor_members={joachim_text: -1, america_cx._owner: -1},
+        assignor_name=joachim_text,
+    )
+
+    # THEN
+    assert joachim_assignment != None
+    joachim_assignment.set_calendar_metrics()
+    assert len(joachim_assignment._idea_dict.keys()) == 9
+
+    # for road_x in joachim_assignment._idea_dict.keys():
+    #     print(f"{road_x=}")
+    # road_x='A'
+    # road_x='A,casa'
+    # road_x='A,casa,laundry basket status'
+    # road_x='A,casa,laundry basket status,smelly'
+    # road_x='A,casa,laundry basket status,half full'
+    # road_x='A,casa,laundry basket status,full'
+    # road_x='A,casa,laundry basket status,fine'
+    # road_x='A,casa,laundry basket status,bare'
+    # road_x='A,casa,do_laundry'
+    casa_text = "casa"
+    casa_road = f"{root_label()},{casa_text}"
+    basket_text = "laundry basket status"
+    basket_road = f"{casa_road},{basket_text}"
+    b_full_text = "full"
+    b_full_road = f"{basket_road},{b_full_text}"
+    b_smel_text = "smelly"
+    b_smel_road = f"{basket_road},{b_smel_text}"
+    b_bare_text = "bare"
+    b_bare_road = f"{basket_road},{b_bare_text}"
+    b_fine_text = "fine"
+    b_fine_road = f"{basket_road},{b_fine_text}"
+    b_half_text = "half full"
+    b_half_road = f"{basket_road},{b_half_text}"
+    laundry_task_text = "do_laundry"
+    laundry_task_road = f"{casa_road},{laundry_task_text}"
+
+    assert joachim_assignment._idea_dict.get(casa_road) != None
+    assert joachim_assignment._idea_dict.get(basket_road) != None
+    assert joachim_assignment._idea_dict.get(b_full_road) != None
+    assert joachim_assignment._idea_dict.get(b_smel_road) != None
+    assert joachim_assignment._idea_dict.get(b_bare_road) != None
+    assert joachim_assignment._idea_dict.get(b_fine_road) != None
+    assert joachim_assignment._idea_dict.get(b_half_road) != None
+    assert joachim_assignment._idea_dict.get(laundry_task_road) != None
+
+    laundry_do_idea = joachim_assignment.get_idea_kid(laundry_task_road)
+    print(f"{laundry_do_idea.promise=}")
+    print(f"{laundry_do_idea._requiredunits.keys()=}")
+    print(f"{laundry_do_idea._requiredunits.get(basket_road).sufffacts.keys()=}")
+    print(f"{laundry_do_idea._acptfactheirs=}")
+    print(f"{laundry_do_idea._assignedunit=}")
+
+    assert laundry_do_idea.promise == True
+    assert list(laundry_do_idea._requiredunits.keys()) == [basket_road]
+    laundry_do_sufffacts = laundry_do_idea._requiredunits.get(basket_road).sufffacts
+    assert list(laundry_do_sufffacts.keys()) == [b_full_road, b_smel_road]
+    assert list(laundry_do_idea._assignedunit._suffgroups.keys()) == [joachim_text]
+    assert list(laundry_do_idea._acptfactheirs.keys()) == [basket_road]
+
+    assert laundry_do_idea._acptfactheirs.get(basket_road).pick == b_full_road
+
+    # print(f"{laundry_do_idea=}")
+
+    assert len(joachim_assignment.get_agenda_items()) == 1
+    assert joachim_assignment.get_agenda_items()[0]._label == "do_laundry"

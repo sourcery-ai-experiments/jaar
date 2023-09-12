@@ -190,54 +190,56 @@ def get_calendar_3CleanNodesRandomWeights(_owner: str = None) -> CalendarUnit:
 
 def get_calendar_assignment_laundry_example1() -> CalendarUnit:
     america_text = "America"
-    cx = CalendarUnit(_owner=america_text)
+    america_cx = CalendarUnit(_owner=america_text)
     joachim_text = "Joachim"
-    cx.add_memberunit(america_text)
-    cx.add_memberunit(joachim_text)
+    america_cx.add_memberunit(america_text)
+    america_cx.add_memberunit(joachim_text)
 
     casa_text = "casa"
     casa_road = f"{root_label()},{casa_text}"
-    cx.add_idea(IdeaKid(_label=casa_text), walk=root_label())
+    america_cx.add_idea(IdeaKid(_label=casa_text), walk=root_label())
 
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
-    cx.add_idea(IdeaKid(_label=basket_text), walk=casa_road)
+    america_cx.add_idea(IdeaKid(_label=basket_text), walk=casa_road)
 
     b_full_text = "full"
     b_full_road = f"{basket_road},{b_full_text}"
-    cx.add_idea(IdeaKid(_label=basket_text), walk=casa_road)
+    america_cx.add_idea(IdeaKid(_label=b_full_text), walk=basket_road)
 
     b_smel_text = "smelly"
     b_smel_road = f"{basket_road},{b_smel_text}"
-    cx.add_idea(IdeaKid(_label=basket_text), walk=casa_road)
+    america_cx.add_idea(IdeaKid(_label=b_smel_text), walk=basket_road)
 
     b_bare_text = "bare"
     b_bare_road = f"{basket_road},{b_bare_text}"
-    cx.add_idea(IdeaKid(_label=b_bare_text), walk=casa_road)
+    america_cx.add_idea(IdeaKid(_label=b_bare_text), walk=basket_road)
 
     b_fine_text = "fine"
     b_fine_road = f"{basket_road},{b_fine_text}"
-    cx.add_idea(IdeaKid(_label=b_fine_text), walk=casa_road)
+    america_cx.add_idea(IdeaKid(_label=b_fine_text), walk=basket_road)
 
     b_half_text = "half full"
     b_half_road = f"{basket_road},{b_half_text}"
-    cx.add_idea(IdeaKid(_label=b_half_text), walk=casa_road)
+    america_cx.add_idea(IdeaKid(_label=b_half_text), walk=basket_road)
 
     laundry_task_text = "do_laundry"
     laundry_task_road = f"{casa_road},{laundry_task_text}"
-    cx.add_idea(IdeaKid(_label=laundry_task_text, promise=True), walk=casa_road)
+    america_cx.add_idea(IdeaKid(_label=laundry_task_text, promise=True), walk=casa_road)
 
     # make laundry requirement
-    cx.edit_idea_attr(
+    basket_idea = america_cx.get_idea_kid(road=basket_road)
+    america_cx.edit_idea_attr(
         road=laundry_task_road, required_base=basket_road, required_sufffact=b_full_road
     )
     # make laundry requirement
-    cx.edit_idea_attr(
+    america_cx.edit_idea_attr(
         road=laundry_task_road, required_base=basket_road, required_sufffact=b_smel_road
     )
     # assign Joachim to task
     joachim_assignunit = assigned_unit_shop()
     joachim_assignunit.set_suffgroup(joachim_text)
-    cx.edit_idea_attr(road=laundry_task_road, assignedunit=joachim_assignunit)
+    america_cx.edit_idea_attr(road=laundry_task_road, assignedunit=joachim_assignunit)
+    america_cx.set_acptfact(base=basket_road, pick=b_full_road)
 
-    return cx
+    return america_cx

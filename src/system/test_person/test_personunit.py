@@ -71,7 +71,7 @@ def test_personunit_auto_output_to_public_DoesNotSaveCalendarToPublicDirWhenFals
     assert os_path.exists(public_file_path) is False
 
 
-def test_personunit_get_isol_calendar_createsEmptyCalendarWhenFileDoesNotExist(
+def test_personunit_get_isol_createsEmptyCalendarWhenFileDoesNotExist(
     person_dir_setup_cleanup,
 ):
     # GIVEN
@@ -84,14 +84,14 @@ def test_personunit_get_isol_calendar_createsEmptyCalendarWhenFileDoesNotExist(
     assert tim_px._isol is None
 
     # WHEN
-    cx_isol = tim_px.get_isol_calendar()
+    cx_isol = tim_px.get_isol()
 
     # THEN
     assert os_path.exists(tim_px._admin._isol_file_path)
     assert tim_px._isol != None
 
 
-def test_personunit_get_isol_calendar_getsMemoryCalendarIfExists(
+def test_personunit_get_isol_getsMemoryCalendarIfExists(
     person_dir_setup_cleanup,
 ):
     # GIVEN
@@ -99,14 +99,14 @@ def test_personunit_get_isol_calendar_getsMemoryCalendarIfExists(
     tim_px = personunit_shop(tim_text, get_temp_person_dir())
     tim_px.create_core_dir_and_files()
     isol_file_path = f"{tim_px._admin._person_dir}/{tim_px._admin._isol_file_name}"
-    cx_isol1 = tim_px.get_isol_calendar()
+    cx_isol1 = tim_px.get_isol()
     assert os_path.exists(isol_file_path)
     assert tim_px._isol != None
 
     # WHEN
     ray_text = "Ray"
     tim_px._isol = CalendarUnit(_owner=ray_text)
-    cx_isol2 = tim_px.get_isol_calendar()
+    cx_isol2 = tim_px.get_isol()
 
     # THEN
     assert cx_isol2._owner == ray_text
@@ -114,7 +114,7 @@ def test_personunit_get_isol_calendar_getsMemoryCalendarIfExists(
 
     # WHEN
     tim_px._isol = None
-    cx_isol3 = tim_px.get_isol_calendar()
+    cx_isol3 = tim_px.get_isol()
 
     # THEN
     assert cx_isol3._owner != ray_text
@@ -129,7 +129,7 @@ def test_personunit_set_isol_calendar_savesIsolCalendarSet_isol_None(
     tim_px = personunit_shop(tim_text, get_temp_person_dir())
     tim_px.create_core_dir_and_files()
     isol_file_path = f"{tim_px._admin._person_dir}/{tim_px._admin._isol_file_name}"
-    cx_isol1 = tim_px.get_isol_calendar()
+    cx_isol1 = tim_px.get_isol()
     assert os_path.exists(isol_file_path)
     assert tim_px._isol != None
 
@@ -141,7 +141,7 @@ def test_personunit_set_isol_calendar_savesIsolCalendarSet_isol_None(
     # THEN
     assert os_path.exists(isol_file_path)
     assert tim_px._isol is None
-    cx_isol2 = tim_px.get_isol_calendar()
+    cx_isol2 = tim_px.get_isol()
     assert cx_isol2._idearoot._uid == uid_text
 
 
@@ -153,7 +153,7 @@ def test_personunit_set_isol_calendar_savesGivenCalendarSet_isol_None(
     px = personunit_shop(tim_text, get_temp_person_dir())
     px.create_core_dir_and_files()
     isol_file_path = f"{px._admin._person_dir}/{px._admin._isol_file_name}"
-    cx_isol1 = px.get_isol_calendar()
+    cx_isol1 = px.get_isol()
     assert os_path.exists(isol_file_path)
     assert px._isol != None
 
@@ -170,8 +170,8 @@ def test_personunit_set_isol_calendar_savesGivenCalendarSet_isol_None(
     # THEN
     assert os_path.exists(isol_file_path)
     assert px._isol is None
-    assert px.get_isol_calendar()._idearoot._uid != isol_uid_text
-    assert px.get_isol_calendar()._idearoot._uid == new_cx_uid_text
+    assert px.get_isol()._idearoot._uid != isol_uid_text
+    assert px.get_isol()._idearoot._uid == new_cx_uid_text
 
     # GIVEN
     px.set_isol_calendar(new_cx)
@@ -201,7 +201,7 @@ def test_personunit_set_isol_calendar_if_emtpy_DoesNotReplace_isol(
     saved_cx_uid_text = "this is pulled CalendarUnit uid"
     saved_cx._idearoot._uid = saved_cx_uid_text
     px.set_isol_calendar(saved_cx)
-    px.get_isol_calendar()
+    px.get_isol()
     assert px._isol != None
 
     # WHEN

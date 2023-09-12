@@ -329,7 +329,7 @@ class SystemUnit:
 
     def save_person_file(self, person_name: str):
         person_x = self.sys_get_person_obj(name=person_name)
-        person_x._admin.save_isol_calendar(person_x.get_isol_calendar())
+        person_x._admin.save_isol_calendar(person_x.get_isol())
 
     def rename_personunit(self, old_name: str, new_name: str):
         person_x = self.sys_get_person_obj(name=old_name)

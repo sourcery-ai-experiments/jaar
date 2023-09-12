@@ -237,7 +237,7 @@ class PersonUnit:
         self._set_depotlink(
             calendar_x._owner, depotlink_type, creditor_weight, debtor_weight
         )
-        if self.get_isol_calendar()._auto_output_to_public:
+        if self.get_isol()._auto_output_to_public:
             self._admin.save_calendar_to_public(self.get_refreshed_output_calendar())
 
     def _set_depotlinks_empty_if_null(self):
@@ -284,7 +284,7 @@ class PersonUnit:
     def _del_depotlink(self, membername: MemberName):
         self._isol.get_member(membername).del_depotlink_type()
 
-    def get_isol_calendar(self):
+    def get_isol(self):
         if self._isol is None:
             self._isol = self._admin.open_isol_calendar()
         return self._isol
@@ -297,7 +297,7 @@ class PersonUnit:
 
     def set_isol_calendar_if_empty(self):
         # if self._isol is None:
-        self.get_isol_calendar()
+        self.get_isol()
 
     def get_refreshed_output_calendar(self) -> CalendarUnit:
         self._admin.save_output_calendar()
@@ -322,7 +322,7 @@ def personunit_shop(
 ) -> PersonUnit:
     person_x = PersonUnit()
     person_x.set_env_dir(env_dir, name)
-    person_x.get_isol_calendar()
+    person_x.get_isol()
     person_x._isol._set_auto_output_to_public(_auto_output_to_public)
     print(f"{person_x._isol._auto_output_to_public=}")
     person_x.set_isol_calendar()

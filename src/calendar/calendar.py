@@ -2153,6 +2153,12 @@ class CalendarUnit:
             relevant_idea._kids = {}
             calendar_x.add_idea(idea_kid=relevant_idea, walk=relevant_idea._walk)
 
+        for afu in self._idearoot._acptfactunits.values():
+            if relevant_roads.get(afu.base):
+                calendar_x.set_acptfact(
+                    base=afu.base, pick=afu.pick, open=afu.open, nigh=afu.nigh
+                )
+
     def _set_assignment_members(
         self,
         calendar_x,
