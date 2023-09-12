@@ -16,7 +16,7 @@ def person_dir_setup_cleanup():
     delete_dir(dir=person_dir)
 
 
-def create_calendar_file_for_person(calendar_person_dir: str, calendar_owner: str):
+def create_calendar_file(calendar_person_dir: str, calendar_owner: str):
     calendar_x = CalendarUnit(_owner=calendar_owner)
     # file_path = f"{calendar_person_dir}/{calendar_x._owner}.json"
     # # if not path.exists(file_path):

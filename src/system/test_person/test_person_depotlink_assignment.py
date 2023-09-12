@@ -3,9 +3,9 @@ from src.system.examples.example_persons import get_calendar_assignment_laundry_
 from src.system.examples.person_env_kit import (
     person_dir_setup_cleanup,
     get_temp_person_dir,
-    create_calendar_file_for_person,
+    create_calendar_file,
 )
-from src.system.examples.env_kit import get_temp_env_name
+from src.system.examples.system_env_kit import get_temp_env_name
 from src.system.system import SystemUnit
 from os import path as os_path, scandir as os_scandir
 from pytest import raises as pytest_raises

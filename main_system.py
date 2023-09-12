@@ -14,7 +14,7 @@ from PyQt5.QtWidgets import (
     QMainWindow,
 )
 from src.system.system import SystemUnit
-from src.system.examples.env_kit import (
+from src.system.examples.system_env_kit import (
     create_example_systems_list,
     setup_test_example_environment,
     create_example_system,

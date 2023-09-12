@@ -1,6 +1,6 @@
 from src.system.system import SystemUnit
 from src.calendar.calendar import CalendarUnit
-from src.system.examples.env_kit import (
+from src.system.examples.system_env_kit import (
     get_temp_env_name,
     get_test_systems_dir,
     env_dir_setup_cleanup,

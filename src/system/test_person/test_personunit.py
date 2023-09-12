@@ -5,7 +5,7 @@ import src.system.examples.example_persons as example_persons
 from src.system.examples.person_env_kit import (
     person_dir_setup_cleanup,
     get_temp_person_dir,
-    create_calendar_file_for_person,
+    create_calendar_file,
 )
 from os import path as os_path, scandir as os_scandir
 from pytest import raises as pytest_raises

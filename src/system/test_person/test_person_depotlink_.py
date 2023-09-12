@@ -7,9 +7,9 @@ from src.system.examples.example_persons import (
 from src.system.examples.person_env_kit import (
     person_dir_setup_cleanup,
     get_temp_person_dir,
-    create_calendar_file_for_person,
+    create_calendar_file,
 )
-from src.system.examples.env_kit import get_temp_env_name
+from src.system.examples.system_env_kit import get_temp_env_name
 from src.system.system import SystemUnit
 from os import path as os_path, scandir as os_scandir
 from pytest import raises as pytest_raises
@@ -42,22 +42,40 @@ def test_personunit_set_depotlink_RaisesErrorWhenCalendarDoesNotExist(
     )
 
 
-def test_personunit_set_depotlink_CorrectlyUsed(person_dir_setup_cleanup):
+def test_personunit_set_depotlink_CorrectlySetsIsolMembers(person_dir_setup_cleanup):
     # GIVEN
-    person1_text = "person1"
+    yao_text = "yao"
     env_dir = get_temp_person_dir()
-    px = personunit_shop(name=person1_text, env_dir=env_dir)
-    px.set_isol_calendar_if_empty()
+    yao_px = personunit_shop(name=yao_text, env_dir=env_dir)
+    yao_px.set_isol_calendar_if_empty()
     sue_text = "sue"
-    create_calendar_file_for_person(px._admin._calendars_depot_dir, sue_text)
-    assert px._isol._members == {}
+    create_calendar_file(yao_px._admin._calendars_depot_dir, sue_text)
+    assert yao_px._isol._members == {}
 
     # WHEN
-    px._set_depotlink(owner=sue_text)
+    yao_px._set_depotlink(owner=sue_text)
 
     # THEN
-    assert list(px._isol._members.keys()) == [sue_text]
-    assert px._isol.get_member(sue_text).depotlink_type is None
+    assert list(yao_px._isol._members.keys()) == [sue_text]
+    assert yao_px._isol.get_member(sue_text).depotlink_type is None
+
+
+def test_personunit_set_depotlink_CorrectlySetsAssignment(person_dir_setup_cleanup):
+    # GIVEN
+    yao_text = "yao"
+    env_dir = get_temp_person_dir()
+    yao_px = personunit_shop(name=yao_text, env_dir=env_dir)
+    yao_px.set_isol_calendar_if_empty()
+    sue_text = "sue"
+    create_calendar_file(yao_px._admin._calendars_depot_dir, sue_text)
+    assert yao_px._isol._members == {}
+
+    # WHEN
+    yao_px._set_depotlink(owner=sue_text)
+
+    # THEN
+    assert list(yao_px._isol._members.keys()) == [sue_text]
+    assert yao_px._isol.get_member(sue_text).depotlink_type is None
 
 
 def test_personunit_del_depot_calendar_CorrectlyDeletesObj(person_dir_setup_cleanup):
@@ -66,9 +84,7 @@ def test_personunit_del_depot_calendar_CorrectlyDeletesObj(person_dir_setup_clea
     env_dir = get_temp_person_dir()
     bob_cx = personunit_shop(name=bob_text, env_dir=env_dir)
     yao_text = "Yao"
-    create_calendar_file_for_person(
-        bob_cx._admin._calendars_depot_dir, calendar_owner=yao_text
-    )
+    create_calendar_file(bob_cx._admin._calendars_depot_dir, yao_text)
     assignment_text = "assignment"
     bob_cx._set_depotlinks_empty_if_null()
     bob_cx._set_depotlink(owner=yao_text, link_type=assignment_text)
@@ -91,10 +107,7 @@ def test_personunit_del_depot_calendar_CorrectlyDeletesBlindTrustFile(
     env_dir = get_temp_person_dir()
     bob_cx = personunit_shop(name=bob_text, env_dir=env_dir)
     lai_text = "Lai"
-    create_calendar_file_for_person(
-        calendar_person_dir=bob_cx._admin._calendars_depot_dir,
-        calendar_owner=lai_text,
-    )
+    create_calendar_file(bob_cx._admin._calendars_depot_dir, lai_text)
     bob_cx.set_isol_calendar_if_empty()
     bob_cx._set_depotlink(owner=lai_text, link_type="blind_trust")
     assert x_func_count_files(dir_path=bob_cx._admin._calendars_depot_dir) == 1
@@ -139,10 +152,7 @@ def test_personunit_delete_ignore_depotlink_CorrectlyDeletesObj(
     env_dir = get_temp_person_dir()
     bob_cx = personunit_shop(name=bob_text, env_dir=env_dir)
     yao_text = "Yao"
-    create_calendar_file_for_person(
-        calendar_person_dir=bob_cx._admin._calendars_depot_dir,
-        calendar_owner=yao_text,
-    )
+    create_calendar_file(bob_cx._admin._calendars_depot_dir, yao_text)
     assignment_text = "assignment"
     bob_cx.set_isol_calendar_if_empty()
     bob_cx._set_depotlink(owner=yao_text, link_type=assignment_text)
@@ -165,7 +175,7 @@ def test_personunit_del_depot_calendar_CorrectlyDoesNotDeletesIgnoreFile(
     env_dir = get_temp_person_dir()
     bob_cx = personunit_shop(name=bob_text, env_dir=env_dir)
     zia_text = "Zia"
-    create_calendar_file_for_person(bob_cx._admin._calendars_depot_dir, zia_text)
+    create_calendar_file(bob_cx._admin._calendars_depot_dir, zia_text)
     bob_cx.set_isol_calendar_if_empty()
     bob_cx._set_depotlink(owner=zia_text, link_type="ignore")
     assert x_func_count_files(dir_path=bob_cx._admin._calendars_depot_dir) == 1
@@ -189,7 +199,7 @@ def test_personunit_set_ignore_calendar_file_CorrectlyUpdatesIgnoreFile(
     env_dir = get_temp_person_dir()
     bob_px = personunit_shop(name=bob_text, env_dir=env_dir)
     zia_text = "Zia"
-    create_calendar_file_for_person(bob_px._admin._calendars_depot_dir, zia_text)
+    create_calendar_file(bob_px._admin._calendars_depot_dir, zia_text)
     bob_px.set_isol_calendar_if_empty()
     bob_px._set_depotlink(owner=zia_text, link_type="ignore")
     assert x_func_count_files(dir_path=bob_px._admin._calendars_ignore_dir) == 1
@@ -217,7 +227,6 @@ def test_personunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
     sx = SystemUnit(name=system_name, systems_dir=env_dir)
     sx.create_dirs_if_null()
     yao_text = "Yao"
-    # bob_cx = personunit_shop(name=bob_text, env_dir=env_dir)
     sx.create_new_personunit(person_name=yao_text)
     yao_calendar = sx.sys_get_person_obj(name=yao_text)
     assert len(yao_calendar.get_refreshed_output_calendar().get_idea_list()) == 1

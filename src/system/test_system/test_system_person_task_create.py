@@ -1,6 +1,6 @@
 from src.system.system import SystemUnit
 from src.system.person import personunit_shop
-from src.system.examples.env_kit import (
+from src.system.examples.system_env_kit import (
     get_temp_env_dir,
     get_temp_env_name,
     env_dir_setup_cleanup,

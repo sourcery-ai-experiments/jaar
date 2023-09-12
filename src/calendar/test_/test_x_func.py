@@ -8,7 +8,7 @@ from src.calendar.x_func import (
 from src.system.examples.person_env_kit import (
     person_dir_setup_cleanup,
     get_temp_person_dir,
-    create_calendar_file_for_person,
+    create_calendar_file,
 )
 from pytest import raises as pytest_raises
 

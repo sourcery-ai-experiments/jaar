@@ -10,7 +10,7 @@ from src.system.examples.example_persons import (
     get_6node_calendar as example_persons_get_6node_calendar,
 )
 from os import path as os_path
-from src.system.examples.env_kit import (
+from src.system.examples.system_env_kit import (
     get_temp_env_name,
     get_test_systems_dir,
     create_person_file_for_systems,
