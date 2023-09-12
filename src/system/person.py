@@ -324,7 +324,5 @@ def personunit_shop(
     person_x.set_env_dir(env_dir, name)
     person_x.get_isol()
     person_x._isol._set_auto_output_to_public(_auto_output_to_public)
-    print(f"{person_x._isol._auto_output_to_public=}")
     person_x.set_isol_calendar()
-    print(f"{person_x._isol=}")
     return person_x
