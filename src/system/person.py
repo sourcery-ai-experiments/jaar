@@ -203,12 +203,12 @@ class PersonAdmin:
             bool_x = False
         return bool_x
 
-    def get_refreshed_output_calendar(self):
+    def get_remelded_output_calendar(self):
         self.save_output_calendar()
         return self.open_output_calendar()
 
     def save_refreshed_output_to_public(self):
-        self.save_calendar_to_public(self.get_refreshed_output_calendar())
+        self.save_calendar_to_public(self.get_remelded_output_calendar())
 
 
 def personadmin_shop(_person_name: str, _env_dir: str) -> PersonAdmin:
@@ -222,7 +222,7 @@ class PersonUnit:
     _admin: PersonAdmin = None
     _isol: CalendarUnit = None
 
-    def reset_depot_calendars(self):
+    def refresh_depot_calendars(self):
         for member_x in self._isol._members.values():
             if member_x.name != self._admin._person_name:
                 member_calendar = calendarunit_get_from_json(

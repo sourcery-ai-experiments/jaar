@@ -250,7 +250,7 @@ def test_personunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
     yao_text = "Yao"
     sx.create_new_personunit(person_name=yao_text)
     yao_calendar = sx.sys_get_person_obj(name=yao_text)
-    assert len(yao_calendar._admin.get_refreshed_output_calendar().get_idea_list()) == 1
+    assert len(yao_calendar._admin.get_remelded_output_calendar().get_idea_list()) == 1
 
     ernie_text = "ernie"
     ernie_calendar = get_cal2nodes(_owner=ernie_text)
@@ -265,7 +265,7 @@ def test_personunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
         calendar_x=old_steve_calendar, depotlink_type="blind_trust"
     )
 
-    assert len(yao_calendar._admin.get_refreshed_output_calendar().get_idea_list()) == 4
+    assert len(yao_calendar._admin.get_remelded_output_calendar().get_idea_list()) == 4
     new_steve_calendar = get_cal3nodes(_owner=steve_text)
     sx.save_public_calendarunit(calendar_x=new_steve_calendar)
     print(f"{env_dir=} {yao_calendar._admin._calendars_public_dir=}")
@@ -276,7 +276,7 @@ def test_personunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
     #     print(f"{bob_cx._admin._calendars_public_dir=} {file_name=}")
 
     # WHEN
-    yao_calendar.reset_depot_calendars()
+    yao_calendar.refresh_depot_calendars()
 
     # THEN
-    assert len(yao_calendar._admin.get_refreshed_output_calendar().get_idea_list()) == 5
+    assert len(yao_calendar._admin.get_remelded_output_calendar().get_idea_list()) == 5

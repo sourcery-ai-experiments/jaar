@@ -584,7 +584,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.person_output_calendar = None
         if self.person_x != None:
             self.person_output_calendar = (
-                self.person_x._admin.get_refreshed_output_calendar()
+                self.person_x._admin.get_remelded_output_calendar()
             )
         self._sub_refresh_p_ideas_table()
         self._sub_refresh_p_members_table()

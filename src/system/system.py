@@ -393,7 +393,7 @@ class SystemUnit:
 
     def reload_all_persons_src_calendarunits(self):
         for person_x in self._personunits.values():
-            person_x.reset_depot_calendars()
+            person_x.refresh_depot_calendars()
 
     def get_calendars_dir_file_names_list(self):
         return list(x_func_dir_files(dir_path=self.get_calendars_dir()).keys())
@@ -493,4 +493,4 @@ class SystemUnit:
     # Person output_calendar
     def get_person_output_calendar(self, person_name: str) -> CalendarUnit:
         person_x = self.sys_get_person_obj(name=person_name)
-        return person_x._admin.get_refreshed_output_calendar()
+        return person_x._admin.get_remelded_output_calendar()

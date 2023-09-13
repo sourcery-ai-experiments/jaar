@@ -172,9 +172,9 @@ def test_personunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
     px_jessi.set_depot_calendar(calendar_x=old_steve_cx, depotlink_type="blind_trust")
     # px_steve.set_depot_calendar(calendar_x=ernie_calendar, depotlink_type="blind_trust")
     # px_steve.set_depot_calendar(calendar_x=jessi_calendar, depotlink_type="blind_trust")
-    assert len(px_ernie._admin.get_refreshed_output_calendar().get_idea_list()) == 4
-    assert len(px_jessi._admin.get_refreshed_output_calendar().get_idea_list()) == 4
-    # assert len(px_steve._admin.get_refreshed_output_calendar().get_idea_list()) == 4
+    assert len(px_ernie._admin.get_remelded_output_calendar().get_idea_list()) == 4
+    assert len(px_jessi._admin.get_remelded_output_calendar().get_idea_list()) == 4
+    # assert len(px_steve._admin.get_remelded_output_calendar().get_idea_list()) == 4
     new_steve_calendar = get_calendar_3CleanNodesRandomWeights(_owner="steve")
     sx.save_public_calendarunit(calendar_x=new_steve_calendar)
     # print(f"{env_dir=} {px._admin._calendars_public_dir=}")
@@ -188,5 +188,5 @@ def test_personunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
     sx.reload_all_persons_src_calendarunits()
 
     # THEN
-    assert len(px_ernie._admin.get_refreshed_output_calendar().get_idea_list()) == 5
-    assert len(px_jessi._admin.get_refreshed_output_calendar().get_idea_list()) == 5
+    assert len(px_ernie._admin.get_remelded_output_calendar().get_idea_list()) == 5
+    assert len(px_jessi._admin.get_remelded_output_calendar().get_idea_list()) == 5
