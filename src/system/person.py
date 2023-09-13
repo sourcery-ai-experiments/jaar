@@ -266,21 +266,24 @@ class PersonUnit:
             outer_owner, link_type, creditor_weight, debtor_weight
         )
 
-        if link_type == "blind_trust":
+        if link_type == "assignment":
+            self._set_assignment_depotlink(outer_owner)
+        elif link_type == "blind_trust":
             cx_obj = self._admin.open_depot_calendar(owner=outer_owner)
             self._admin.save_calendar_to_digest(cx_obj)
         elif link_type == "ignore":
             new_cx_obj = CalendarUnit(_owner=outer_owner)
             self.set_ignore_calendar_file(new_cx_obj, new_cx_obj._owner)
-        elif link_type == "assignment":
-            src_cx = self._admin.open_depot_calendar(outer_owner)
-            src_cx.set_calendar_metrics()
-            empty_cx = CalendarUnit(_owner=self._admin._person_name)
-            assign_cx = src_cx.get_assignment(
-                empty_cx, self.get_isol()._members, self._admin._person_name
-            )
-            assign_cx.set_calendar_metrics()
-            self._admin.save_calendar_to_digest(assign_cx, src_cx._owner)
+
+    def _set_assignment_depotlink(self, outer_owner):
+        src_cx = self._admin.open_depot_calendar(outer_owner)
+        src_cx.set_calendar_metrics()
+        empty_cx = CalendarUnit(_owner=self._admin._person_name)
+        assign_cx = src_cx.get_assignment(
+            empty_cx, self.get_isol()._members, self._admin._person_name
+        )
+        assign_cx.set_calendar_metrics()
+        self._admin.save_calendar_to_digest(assign_cx, src_cx._owner)
 
     def _set_memberunit_depotlink(
         self,
