@@ -1,6 +1,4 @@
 import src.system.examples.example_persons as person_examples
-from src.calendar.x_func import x_is_json, x_get_dict
-from json import loads as json_loads
 from src.system.examples.person_env_kit import (
     person_dir_setup_cleanup,
     get_temp_person_dir,
