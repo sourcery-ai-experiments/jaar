@@ -43,7 +43,7 @@ from pytest import raises as pytest_raises
 
 #     # Create person1 task:
 #     #  create joachim member in America calendar
-#     america_person._set_depotlink(owner=joachim_text)
+#     america_person._set_depotlink(joachim_text)
 
 #     casa_text = "casa"
 #     casa_road = f"{root_label()},{casa_text}"

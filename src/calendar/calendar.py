@@ -2131,6 +2131,7 @@ class CalendarUnit:
     ) -> CalendarOwner:
         self.set_calendar_metrics()
         self._set_assignment_members(calendar_x, assignor_members, assignor_name)
+        print(f"{calendar_x._members.keys()=} {assignor_members.keys()=}")
         self._set_assignment_groups(calendar_x)
         assignor_promises = self._get_assignor_promise_ideas(calendar_x, assignor_name)
         relevant_roads = self._get_relevant_roads(assignor_promises)

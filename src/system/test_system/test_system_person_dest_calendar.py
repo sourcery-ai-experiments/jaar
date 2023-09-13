@@ -77,9 +77,9 @@ def test_system_get_person_output_calendar_ReturnsCorrectCalendarObjScenario1(
     # assert output_cx._idearoot._kids == input_cx._idearoot._kids
     assert output_cx._idearoot._acptfactunits == {}
     assert output_cx._idearoot._acptfactunits == input_cx._idearoot._acptfactunits
-    assert list(output_cx._members.keys()) == [a_text]
+    assert list(output_cx._members.keys()) == [xia_text, a_text]
     assert output_cx._members != input_cx._members
-    assert list(output_cx._groups.keys()) == [a_text]
+    assert list(output_cx._groups.keys()) == [xia_text, a_text]
     assert output_cx._groups != input_cx._groups
     print(f"{output_cx._originunit=}")
     print(f"{input_cx._originunit=}")
@@ -138,9 +138,9 @@ def test_system_get_person_output_calendar_ReturnsCorrectCalendarObjScenario2(
     # assert output_cx._idearoot._kids == cx1._idearoot._kids
     assert len(output_cx._idearoot._acptfactunits) == 9
     assert len(output_cx._idearoot._acptfactunits) == len(cx2._idearoot._acptfactunits)
-    assert len(output_cx._members) == 24
-    assert len(output_cx._members) == len(cx2._members) + 2
-    assert len(output_cx._groups) == 36
-    assert len(output_cx._groups) == len(cx2._groups) + 2
+    assert len(output_cx._members) == 25
+    assert len(output_cx._members) == len(cx2._members) + 2 + 1
+    assert len(output_cx._groups) == 37
+    assert len(output_cx._groups) == len(cx2._groups) + 2 + 1
     assert output_cx._idearoot != cx1._idearoot
     assert output_cx._idearoot != cx2._idearoot

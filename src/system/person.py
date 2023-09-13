@@ -144,7 +144,7 @@ class PersonAdmin:
         file_name_x = f"{owner}.json"
         return x_func_open_file(self._calendars_public_dir, file_name_x)
 
-    def open_depot_calendar(self, owner: CalendarOwner) -> str:
+    def open_depot_calendar(self, owner: CalendarOwner) -> CalendarUnit:
         file_name_x = f"{owner}.json"
         cx_json = x_func_open_file(self._calendars_depot_dir, file_name_x)
         return calendarunit_get_from_json(cx_json=cx_json)
@@ -181,7 +181,9 @@ class PersonAdmin:
         return cx_obj
 
     def _get_empty_isol_calendar(self):
-        return CalendarUnit(_owner=self._person_name, _weight=0)
+        cx = CalendarUnit(_owner=self._person_name, _weight=0)
+        cx.add_memberunit(name=self._person_name)
+        return cx
 
     def erase_depot_calendar(self, owner):
         x_func_delete_dir(f"{self._calendars_depot_dir}/{owner}.json")
@@ -215,15 +217,16 @@ class PersonUnit:
 
     def reset_depot_calendars(self):
         for member_x in self._isol._members.values():
-            member_calendar = calendarunit_get_from_json(
-                cx_json=self._admin.open_public_calendar(member_x.name)
-            )
-            self.set_depot_calendar(
-                calendar_x=member_calendar,
-                depotlink_type=member_x.depotlink_type,
-                creditor_weight=member_x.creditor_weight,
-                debtor_weight=member_x.debtor_weight,
-            )
+            if member_x.name != self._admin._person_name:
+                member_calendar = calendarunit_get_from_json(
+                    cx_json=self._admin.open_public_calendar(member_x.name)
+                )
+                self.set_depot_calendar(
+                    calendar_x=member_calendar,
+                    depotlink_type=member_x.depotlink_type,
+                    creditor_weight=member_x.creditor_weight,
+                    debtor_weight=member_x.debtor_weight,
+                )
 
     def set_depot_calendar(
         self,
@@ -246,20 +249,33 @@ class PersonUnit:
 
     def _set_depotlink(
         self,
-        owner: str,
+        depot_owner: str,
         link_type: str = None,
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
-        self._admin.check_file_exists("depot", owner)
-        self._set_memberunit_depotlink(owner, link_type, creditor_weight, debtor_weight)
+        self._admin.check_file_exists("depot", depot_owner)
+        self._set_memberunit_depotlink(
+            depot_owner, link_type, creditor_weight, debtor_weight
+        )
 
         if link_type == "blind_trust":
-            cx_obj = self._admin.open_depot_calendar(owner=owner)
+            cx_obj = self._admin.open_depot_calendar(owner=depot_owner)
             self._admin.save_calendar_to_digest(cx_obj)
         elif link_type == "ignore":
-            new_cx_obj = CalendarUnit(_owner=owner)
+            new_cx_obj = CalendarUnit(_owner=depot_owner)
             self.set_ignore_calendar_file(new_cx_obj, new_cx_obj._owner)
+        elif link_type == "assignment":
+            src_cx = self._admin.open_depot_calendar(depot_owner)
+            src_cx.set_calendar_metrics()
+            print(f"{src_cx._owner=} {len(src_cx._idea_dict)=} ")
+            empty_cx = CalendarUnit(_owner=self._admin._person_name)
+            assign_cx = src_cx.get_assignment(
+                empty_cx, self.get_isol()._members, self._admin._person_name
+            )
+            assign_cx.set_calendar_metrics()
+            print(f"{assign_cx._owner=} {len(assign_cx._idea_dict)=} ")
+            self._admin.save_calendar_to_digest(assign_cx, src_cx._owner)
 
     def _set_memberunit_depotlink(
         self,

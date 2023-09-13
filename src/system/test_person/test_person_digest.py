@@ -49,16 +49,16 @@ def test_personopen_isol_calendar_WhenStartingCalendarFileDoesNotExists(
     person_dir_setup_cleanup,
 ):
     # GIVEN
-    p_name = "Game1"
+    tim_text = "Tim"
     env_dir = get_temp_person_dir()
-    px = personunit_shop(name=p_name, env_dir=env_dir)
+    px = personunit_shop(name=tim_text, env_dir=env_dir)
 
     # WHEN
     assert px._admin.open_isol_calendar() != None
     isol_calendar = px._admin.open_isol_calendar()
 
     # THEN
-    x_calendar = CalendarUnit(_owner=p_name)
+    x_calendar = CalendarUnit(_owner=tim_text)
     x_calendar.set_calendar_metrics()
     # x_idearoot = IdeaRoot(_label=p_name, _walk="")
     # x_idearoot.set_grouplines_empty_if_null()
@@ -76,8 +76,8 @@ def test_personopen_isol_calendar_WhenStartingCalendarFileDoesNotExists(
 
     assert isol_calendar._idearoot == x_calendar._idearoot
     assert isol_calendar._idearoot._acptfactunits == {}
-    assert isol_calendar._members == {}
-    assert isol_calendar._groups == {}
+    assert list(isol_calendar._members.keys()) == [tim_text]
+    assert list(isol_calendar._groups.keys()) == [tim_text]
 
 
 def test_person_save_isol_calendar_IsolCalendarOwnerMustBePerson(
