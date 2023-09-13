@@ -268,13 +268,11 @@ class PersonUnit:
         elif link_type == "assignment":
             src_cx = self._admin.open_depot_calendar(depot_owner)
             src_cx.set_calendar_metrics()
-            print(f"{src_cx._owner=} {len(src_cx._idea_dict)=} ")
             empty_cx = CalendarUnit(_owner=self._admin._person_name)
             assign_cx = src_cx.get_assignment(
                 empty_cx, self.get_isol()._members, self._admin._person_name
             )
             assign_cx.set_calendar_metrics()
-            print(f"{assign_cx._owner=} {len(assign_cx._idea_dict)=} ")
             self._admin.save_calendar_to_digest(assign_cx, src_cx._owner)
 
     def _set_memberunit_depotlink(
