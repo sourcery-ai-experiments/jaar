@@ -430,11 +430,6 @@ class SystemUnit:
                 calendarunit=ignore_calendar, src_calendar_owner=calendarunit._owner
             )
 
-    def _person_delete_src_calendarunit_obj(
-        self, personunit: PersonUnit, calendarunit_owner: str
-    ):
-        personunit.del_depot_calendar(calendar_owner=calendarunit_owner)
-
     def set_person_depotlink(
         self,
         person_name: str,
@@ -493,11 +488,7 @@ class SystemUnit:
 
     def del_depotlink(self, person_name: str, calendarunit_owner: str):
         person_x = self.sys_get_person_obj(name=person_name)
-        calendar_x = self.get_public_calendar(owner=calendarunit_owner)
-        self._person_delete_src_calendarunit_obj(
-            personunit=person_x,
-            calendarunit_owner=calendarunit_owner,
-        )
+        person_x.del_depot_calendar(calendar_owner=calendarunit_owner)
 
     # Person output_calendar
     def get_person_output_calendar(self, person_name: str) -> CalendarUnit:
