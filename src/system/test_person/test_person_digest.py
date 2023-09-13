@@ -1,8 +1,5 @@
 from src.system.person import personunit_shop
-from src.calendar.calendar import (
-    CalendarUnit,
-    get_from_json as calendarunit_get_from_json,
-)
+from src.calendar.calendar import CalendarUnit
 from src.calendar.examples.example_calendars import (
     get_calendar_with_4_levels as example_calendars_get_calendar_with_4_levels,
 )
@@ -13,7 +10,7 @@ from src.system.examples.person_env_kit import (
 )
 from src.calendar.road import get_global_root_label as root_label
 from src.calendar.origin import originunit_shop
-from os import path as os_path, scandir as os_scandir
+from os import path as os_path
 from src.calendar.x_func import (
     open_file as x_func_open_file,
     count_files as x_func_count_files,

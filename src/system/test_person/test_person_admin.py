@@ -1,16 +1,11 @@
 from src.system.person import PersonAdmin, personadmin_shop
-from src.calendar.calendar import CalendarUnit, get_from_json as calendar_get_from_json
-from src.calendar.idea import IdeaRoot
 import src.system.examples.example_persons as example_persons
 from src.system.examples.person_env_kit import (
-    person_dir_setup_cleanup,
     get_temp_person_dir,
-    create_calendar_file,
+    person_dir_setup_cleanup,
 )
-from os import path as os_path, scandir as os_scandir
-from pytest import raises as pytest_raises
+from os import path as os_path
 from src.calendar.x_func import (
-    count_files as x_func_count_files,
     open_file as x_func_open_file,
     save_file as x_func_save_file,
 )

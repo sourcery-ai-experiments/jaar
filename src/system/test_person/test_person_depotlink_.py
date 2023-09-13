@@ -12,12 +12,11 @@ from src.system.examples.person_env_kit import (
 )
 from src.system.examples.system_env_kit import get_temp_env_name
 from src.system.system import SystemUnit
-from os import path as os_path, scandir as os_scandir
+from os import path as os_path
 from pytest import raises as pytest_raises
 from src.calendar.calendar import CalendarUnit, get_from_json as calendar_get_from_json
 from src.calendar.x_func import (
     count_files as x_func_count_files,
-    dir_files as x_func_dir_files,
     open_file as x_func_open_file,
 )
 

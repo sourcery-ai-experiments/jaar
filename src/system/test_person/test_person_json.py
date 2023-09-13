@@ -8,7 +8,7 @@ from src.system.examples.person_env_kit import (
 from src.calendar.calendar import CalendarUnit
 
 
-def test_person_set_depot_calendar_SetsCorrectInfo():
+def test_person_set_depot_calendar_SetsCorrectInfo(person_dir_setup_cleanup):
     # GIVEN
     env_dir = get_temp_person_dir()
     person_x = person_examples.get_person_2calendar(env_dir=env_dir)
