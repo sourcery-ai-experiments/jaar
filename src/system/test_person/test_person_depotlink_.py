@@ -3,6 +3,7 @@ from src.system.examples.example_persons import (
     get_2node_calendar,
     get_calendar_2CleanNodesRandomWeights as get_cal2nodes,
     get_calendar_3CleanNodesRandomWeights as get_cal3nodes,
+    get_calendar_assignment_laundry_example1 as get_america_assign_ex,
 )
 from src.system.examples.person_env_kit import (
     person_dir_setup_cleanup,
@@ -62,20 +63,28 @@ def test_personunit_set_depotlink_CorrectlySetsIsolMembers(person_dir_setup_clea
 
 def test_personunit_set_depotlink_CorrectlySetsAssignment(person_dir_setup_cleanup):
     # GIVEN
-    yao_text = "yao"
-    env_dir = get_temp_person_dir()
-    yao_px = personunit_shop(name=yao_text, env_dir=env_dir)
-    yao_px.set_isol_calendar_if_empty()
-    sue_text = "sue"
-    create_calendar_file(yao_px._admin._calendars_depot_dir, sue_text)
-    assert yao_px._isol._members == {}
+    america_cx = get_america_assign_ex()
+    joachim_text = "Joachim"
+    joachim_px = personunit_shop(joachim_text, get_temp_person_dir())
+    joachim_px.create_core_dir_and_files()
+    joachim_px.set_isol_calendar_if_empty()
+    joachim_px._admin.save_calendar_to_depot(america_cx)
+    assert joachim_px.get_isol().get_member(america_cx._owner) is None
+    america_digest_path = (
+        f"{joachim_px._admin._calendars_digest_dir}/{america_cx._owner}.json"
+    )
+    assert os_path.exists(america_digest_path) is False
 
     # WHEN
-    yao_px._set_depotlink(owner=sue_text)
+    assignment_text = "assignment"
+    joachim_px._set_depotlink(owner=america_cx._owner, link_type=assignment_text)
 
     # THEN
-    assert list(yao_px._isol._members.keys()) == [sue_text]
-    assert yao_px._isol.get_member(sue_text).depotlink_type is None
+    assert (
+        joachim_px.get_isol().get_member(america_cx._owner).depotlink_type
+        == assignment_text
+    )
+    assert os_path.exists(america_digest_path)
 
 
 def test_personunit_del_depot_calendar_CorrectlyDeletesObj(person_dir_setup_cleanup):
