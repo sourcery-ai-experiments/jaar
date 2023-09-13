@@ -252,22 +252,7 @@ class PersonUnit:
         debtor_weight: float = None,
     ):
         self._admin.check_file_exists("depot", owner)
-        member_x = self._isol.get_member(owner)
-        if member_x is None:
-            self._isol.set_memberunit(
-                memberunit_shop(
-                    name=owner,
-                    depotlink_type=link_type,
-                    creditor_weight=creditor_weight,
-                    debtor_weight=debtor_weight,
-                )
-            )
-        else:
-            member_x.set_depotlink_type(
-                depotlink_type=link_type,
-                creditor_weight=creditor_weight,
-                debtor_weight=debtor_weight,
-            )
+        self._set_memberunit_depotlink(owner, link_type, creditor_weight, debtor_weight)
 
         if link_type == "blind_trust":
             cx_obj = self._admin.open_depot_calendar(owner=owner)
@@ -275,6 +260,26 @@ class PersonUnit:
         elif link_type == "ignore":
             new_cx_obj = CalendarUnit(_owner=owner)
             self.set_ignore_calendar_file(new_cx_obj, new_cx_obj._owner)
+
+    def _set_memberunit_depotlink(
+        self,
+        name: MemberName,
+        link_type: str = None,
+        creditor_weight: float = None,
+        debtor_weight: float = None,
+    ):
+        member_x = self.get_isol().get_member(name)
+        if member_x is None:
+            self.get_isol().set_memberunit(
+                memberunit_shop(
+                    name=name,
+                    depotlink_type=link_type,
+                    creditor_weight=creditor_weight,
+                    debtor_weight=debtor_weight,
+                )
+            )
+        else:
+            member_x.set_depotlink_type(link_type, creditor_weight, debtor_weight)
 
     def del_depot_calendar(self, calendar_owner: str):
         self._del_depotlink(membername=calendar_owner)
