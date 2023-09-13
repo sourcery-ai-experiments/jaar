@@ -121,7 +121,7 @@ def test_personunit_get_isol_getsMemoryCalendarIfExists(
     assert cx_isol3 == cx_isol1
 
 
-def test_personunit_set_isol_calendar_savesIsolCalendarSet_isol_None(
+def test_personunit_set_isol_savesIsolCalendarSet_isol_None(
     person_dir_setup_cleanup,
 ):
     # GIVEN
@@ -136,7 +136,7 @@ def test_personunit_set_isol_calendar_savesIsolCalendarSet_isol_None(
     # WHEN
     uid_text = "Not a real uid"
     tim_px._isol._idearoot._uid = uid_text
-    tim_px.set_isol_calendar()
+    tim_px.set_isol()
 
     # THEN
     assert os_path.exists(isol_file_path)
@@ -145,7 +145,7 @@ def test_personunit_set_isol_calendar_savesIsolCalendarSet_isol_None(
     assert cx_isol2._idearoot._uid == uid_text
 
 
-def test_personunit_set_isol_calendar_savesGivenCalendarSet_isol_None(
+def test_personunit_set_isol_savesGivenCalendarSet_isol_None(
     person_dir_setup_cleanup,
 ):
     # GIVEN
@@ -165,7 +165,7 @@ def test_personunit_set_isol_calendar_savesGivenCalendarSet_isol_None(
     new_cx_uid_text = "this is pulled CalendarUnit uid"
     new_cx._idearoot._uid = new_cx_uid_text
 
-    px.set_isol_calendar(new_cx)
+    px.set_isol(new_cx)
 
     # THEN
     assert os_path.exists(isol_file_path)
@@ -174,12 +174,12 @@ def test_personunit_set_isol_calendar_savesGivenCalendarSet_isol_None(
     assert px.get_isol()._idearoot._uid == new_cx_uid_text
 
     # GIVEN
-    px.set_isol_calendar(new_cx)
+    px.set_isol(new_cx)
     assert os_path.exists(isol_file_path)
     assert px._isol is None
 
     # WHEN
-    px.set_isol_calendar_if_empty()
+    px.set_isol_if_empty()
 
     # THEN
     assert px._isol != None
@@ -190,7 +190,7 @@ def test_personunit_set_isol_calendar_savesGivenCalendarSet_isol_None(
     px._isol._idearoot._uid = isol_uid_text
 
 
-def test_personunit_set_isol_calendar_if_emtpy_DoesNotReplace_isol(
+def test_personunit_set_isol_if_emtpy_DoesNotReplace_isol(
     person_dir_setup_cleanup,
 ):
     # GIVEN
@@ -200,14 +200,14 @@ def test_personunit_set_isol_calendar_if_emtpy_DoesNotReplace_isol(
     saved_cx = CalendarUnit(_owner=tim_text)
     saved_cx_uid_text = "this is pulled CalendarUnit uid"
     saved_cx._idearoot._uid = saved_cx_uid_text
-    px.set_isol_calendar(saved_cx)
+    px.set_isol(saved_cx)
     px.get_isol()
     assert px._isol != None
 
     # WHEN
     isol_uid_text = "this is ._isol uid"
     px._isol._idearoot._uid = isol_uid_text
-    px.set_isol_calendar_if_empty()
+    px.set_isol_if_empty()
 
     # THEN
     assert px._isol != None

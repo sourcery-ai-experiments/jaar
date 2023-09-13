@@ -215,14 +215,14 @@ def test_person_get_refreshed_output_calendar_withEmptyDigestDict(
     person_name_x = "boots3"
     px = personunit_shop(name=person_name_x, env_dir=get_temp_person_dir())
     px.create_core_dir_and_files()
-    sx_output_before = px.get_refreshed_output_calendar()
+    sx_output_before = px._admin.get_refreshed_output_calendar()
     assert str(type(sx_output_before)).find(".calendar.CalendarUnit'>")
     assert sx_output_before._owner == person_name_x
     assert sx_output_before._idearoot._label == root_label()
     # px.set_digested_calendar(calendar_x=CalendarUnit(_owner="digested1"))
 
     # WHEN
-    sx_output_after = px.get_refreshed_output_calendar()
+    sx_output_after = px._admin.get_refreshed_output_calendar()
 
     # THEN
     person_calendar_x = CalendarUnit(_owner=person_name_x, _weight=0.0)
@@ -247,7 +247,7 @@ def test_person_get_refreshed_output_calendar_with1DigestedCalendar(
     env_dir = get_temp_person_dir()
     px = personunit_shop(name=yao_text, env_dir=env_dir)
     px.create_core_dir_and_files()
-    sx_output_old = px.get_refreshed_output_calendar()
+    sx_output_old = px._admin.get_refreshed_output_calendar()
     assert str(type(sx_output_old)).find(".calendar.CalendarUnit'>")
     assert sx_output_old._owner == yao_text
     assert sx_output_old._idearoot._label == root_label()
@@ -256,7 +256,7 @@ def test_person_get_refreshed_output_calendar_with1DigestedCalendar(
     px.set_depot_calendar(calendar_x=input_calendar, depotlink_type="blind_trust")
 
     # WHEN
-    sx_output_new = px.get_refreshed_output_calendar()
+    sx_output_new = px._admin.get_refreshed_output_calendar()
 
     # THEN
     assert str(type(sx_output_new)).find(".calendar.CalendarUnit'>")
@@ -281,7 +281,7 @@ def test_person_get_refreshed_output_calendar_with1DigestedCalendar(
 #     # GIVEN
 #     env_dir = get_temp_person_dir()
 #     px = personunit_shop(name="test8", env_dir=env_dir)
-#     sx_output_old = px.get_refreshed_output_calendar()
+#     sx_output_old = px._admin.get_refreshed_output_calendar()
 #     assert str(type(sx_output_old)).find(".calendar.CalendarUnit'>")
 #     assert sx_output_old._groups == {}
 #     assert sx_output_old._members == {}
@@ -310,7 +310,7 @@ def test_person_get_refreshed_output_calendar_with1DigestedCalendar(
 
 #     # WHEN
 #     px.set_single_digested_calendar(_calendar_owner="test1", digest_calendar_x=s1)
-#     sx_output_new = px.get_refreshed_output_calendar()
+#     sx_output_new = px._admin.get_refreshed_output_calendar()
 
 #     # THEN
 #     assert str(type(sx_output_new)).find(".calendar.CalendarUnit'>")
@@ -348,7 +348,7 @@ def test_person_isol_calendar_CorrectlysHasOriginLinksWithOwnerAsSource(
     px._admin.save_isol_calendar(calendar_x=isol_calendar_x)
 
     # WHEN
-    output_calendar_x = px.get_refreshed_output_calendar()
+    output_calendar_x = px._admin.get_refreshed_output_calendar()
 
     # THEN
     assert output_calendar_x._idearoot._originunit == originunit_shop()

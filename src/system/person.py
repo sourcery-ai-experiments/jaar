@@ -156,15 +156,6 @@ class PersonAdmin:
         calendar_obj.set_calendar_metrics()
         return calendar_obj
 
-    def _isol_calendar_exists(self):
-        bool_x = None
-        try:
-            x_func_open_file(self._person_dir, self._isol_file_name)
-            bool_x = True
-        except Exception:
-            bool_x = False
-        return bool_x
-
     def open_isol_calendar(self) -> CalendarUnit:
         cx = None
         if not self._isol_calendar_exists():
@@ -194,7 +185,7 @@ class PersonAdmin:
     def erase_isol_calendar_file(self):
         x_func_delete_dir(dir=f"{self._person_dir}/{self._isol_file_name}")
 
-    def check_file_exists(self, dir_type: str, owner: str):
+    def raise_exception_if_no_file(self, dir_type: str, owner: str):
         cx_file_name = f"{owner}.json"
         if dir_type == "depot":
             cx_file_path = f"{self._calendars_depot_dir}/{cx_file_name}"
@@ -202,6 +193,22 @@ class PersonAdmin:
             raise InvalidPersonException(
                 f"Person {self._person_name} cannot find calendar {owner} in {cx_file_path}"
             )
+
+    def _isol_calendar_exists(self):
+        bool_x = None
+        try:
+            x_func_open_file(self._person_dir, self._isol_file_name)
+            bool_x = True
+        except Exception:
+            bool_x = False
+        return bool_x
+
+    def get_refreshed_output_calendar(self):
+        self.save_output_calendar()
+        return self.open_output_calendar()
+
+    def save_refreshed_output_to_public(self):
+        self.save_calendar_to_public(self.get_refreshed_output_calendar())
 
 
 def personadmin_shop(_person_name: str, _env_dir: str) -> PersonAdmin:
@@ -235,38 +242,38 @@ class PersonUnit:
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
-        self.set_isol_calendar_if_empty()
+        self.set_isol_if_empty()
         self._admin.save_calendar_to_depot(calendar_x)
         self._set_depotlink(
             calendar_x._owner, depotlink_type, creditor_weight, debtor_weight
         )
         if self.get_isol()._auto_output_to_public:
-            self._admin.save_calendar_to_public(self.get_refreshed_output_calendar())
+            self._admin.save_refreshed_output_to_public()
 
     def _set_depotlinks_empty_if_null(self):
-        self.set_isol_calendar_if_empty()
+        self.set_isol_if_empty()
         self._isol.set_members_empty_if_null()
 
     def _set_depotlink(
         self,
-        depot_owner: str,
+        outer_owner: str,
         link_type: str = None,
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
-        self._admin.check_file_exists("depot", depot_owner)
+        self._admin.raise_exception_if_no_file("depot", outer_owner)
         self._set_memberunit_depotlink(
-            depot_owner, link_type, creditor_weight, debtor_weight
+            outer_owner, link_type, creditor_weight, debtor_weight
         )
 
         if link_type == "blind_trust":
-            cx_obj = self._admin.open_depot_calendar(owner=depot_owner)
+            cx_obj = self._admin.open_depot_calendar(owner=outer_owner)
             self._admin.save_calendar_to_digest(cx_obj)
         elif link_type == "ignore":
-            new_cx_obj = CalendarUnit(_owner=depot_owner)
+            new_cx_obj = CalendarUnit(_owner=outer_owner)
             self.set_ignore_calendar_file(new_cx_obj, new_cx_obj._owner)
         elif link_type == "assignment":
-            src_cx = self._admin.open_depot_calendar(depot_owner)
+            src_cx = self._admin.open_depot_calendar(outer_owner)
             src_cx.set_calendar_metrics()
             empty_cx = CalendarUnit(_owner=self._admin._person_name)
             assign_cx = src_cx.get_assignment(
@@ -308,19 +315,15 @@ class PersonUnit:
             self._isol = self._admin.open_isol_calendar()
         return self._isol
 
-    def set_isol_calendar(self, calendar_x: CalendarUnit = None):
+    def set_isol(self, calendar_x: CalendarUnit = None):
         if calendar_x != None:
             self._isol = calendar_x
         self._admin.save_isol_calendar(self._isol)
         self._isol = None
 
-    def set_isol_calendar_if_empty(self):
+    def set_isol_if_empty(self):
         # if self._isol is None:
         self.get_isol()
-
-    def get_refreshed_output_calendar(self) -> CalendarUnit:
-        self._admin.save_output_calendar()
-        return self._admin.open_output_calendar()
 
     def set_ignore_calendar_file(
         self, calendarunit: CalendarUnit, src_calendar_owner: str
@@ -343,5 +346,5 @@ def personunit_shop(
     person_x.set_env_dir(env_dir, name)
     person_x.get_isol()
     person_x._isol._set_auto_output_to_public(_auto_output_to_public)
-    person_x.set_isol_calendar()
+    person_x.set_isol()
     return person_x

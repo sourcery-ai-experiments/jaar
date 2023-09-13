@@ -61,7 +61,7 @@ class SystemUnit:
         # refresh bank metrics
         self.refresh_bank_metrics()
 
-    # figure out who is paying taxes and how much
+    # banking
     def set_river_sphere_for_calendar(
         self, calendar_name: str, max_flows_count: int = None
     ):
@@ -502,4 +502,4 @@ class SystemUnit:
     # Person output_calendar
     def get_person_output_calendar(self, person_name: str) -> CalendarUnit:
         person_x = self.sys_get_person_obj(name=person_name)
-        return person_x.get_refreshed_output_calendar()
+        return person_x._admin.get_refreshed_output_calendar()

@@ -28,7 +28,7 @@ def test_person_save_calendar_to_depot_assignment_link_CorrectlyCreatesAssignmen
 
     # WHEN
     joachim_px.set_depot_calendar(calendar_x=america_cx, depotlink_type="assignment")
-    output_cx = joachim_px.get_refreshed_output_calendar()
+    output_cx = joachim_px._admin.get_refreshed_output_calendar()
 
     # THEN
     assert output_cx != None
