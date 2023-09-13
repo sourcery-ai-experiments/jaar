@@ -24,66 +24,66 @@ def test_system_create_bank_db_CreatesBankDBIfItDoesNotExist(
     env_dir_setup_cleanup,
 ):
     # GIVEN create system
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null()
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null()
 
     # clear out any bank.db file
-    x_func_delete_dir(dir=e1.get_bank_db_path())
-    assert os_path.exists(e1.get_bank_db_path()) == False
+    x_func_delete_dir(dir=sx.get_bank_db_path())
+    assert os_path.exists(sx.get_bank_db_path()) == False
 
     # WHEN
-    e1._create_bank_db()
+    sx._create_bank_db()
 
     # THEN
-    assert os_path.exists(e1.get_bank_db_path())
+    assert os_path.exists(sx.get_bank_db_path())
 
 
 def test_system_create_bank_db_CanCreateBankInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN create system
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     # clear out any bank.db file
-    e1._bank_db = None
-    assert e1._bank_db is None
-    assert os_path.exists(e1.get_bank_db_path()) == False
+    sx._bank_db = None
+    assert sx._bank_db is None
+    assert os_path.exists(sx.get_bank_db_path()) == False
 
     # WHEN
-    e1._create_bank_db(in_memory=True)
+    sx._create_bank_db(in_memory=True)
 
     # THEN
-    assert e1._bank_db != None
-    assert os_path.exists(e1.get_bank_db_path()) == False
+    assert sx._bank_db != None
+    assert os_path.exists(sx.get_bank_db_path()) == False
 
 
 def test_system_refresh_bank_metrics_CanConnectToBankInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN create system
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
-    # e1._create_bank_db(in_memory=True)
-    assert os_path.exists(e1.get_bank_db_path()) == False
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
+    # sx._create_bank_db(in_memory=True)
+    assert os_path.exists(sx.get_bank_db_path()) == False
 
     # WHEN
-    e1.refresh_bank_metrics()
+    sx.refresh_bank_metrics()
 
     # THEN
-    assert os_path.exists(e1.get_bank_db_path()) == False
+    assert os_path.exists(sx.get_bank_db_path()) == False
 
 
 def test_system_get_bank_db_conn_CreatesBankDBIfItDoesNotExist(env_dir_setup_cleanup):
     # GIVEN create system
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        check_connection(e1.get_bank_conn())
+        check_connection(sx.get_bank_conn())
     assert str(excinfo.value) == "unable to open database file"
 
     # WHEN
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     # THEN
-    assert check_connection(e1.get_bank_conn())
+    assert check_connection(sx.get_bank_conn())

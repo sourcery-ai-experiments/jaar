@@ -18,14 +18,14 @@ from pytest import raises as pytest_raises
 def test_system_set_calendar_CreatesCalendarFile(env_dir_setup_cleanup):
     # GIVEN
     system_name = get_temp_env_name()
-    e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null()
+    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null()
     sx1_obj = example_persons.get_1node_calendar()
-    sx1_path = f"{e1.get_calendars_dir()}/{sx1_obj._owner}.json"
+    sx1_path = f"{sx.get_calendars_dir()}/{sx1_obj._owner}.json"
     assert os_path.exists(sx1_path) == False
 
     # WHEN
-    e1.save_public_calendarunit(calendar_x=sx1_obj)
+    sx.save_public_calendarunit(calendar_x=sx1_obj)
 
     # THEN
     print(f"{sx1_path=}")
@@ -37,10 +37,10 @@ def test_system_get_calendars_dir_list_of_obj_CreatesCalendarFilesList(
 ):
     # GIVEN
     system_name = get_temp_env_name()
-    ex = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
-    ex.create_dirs_if_null(in_memory_bank=True)
-    assert ex.get_calendars_dir_file_names_list() == []
-    assert ex.get_calendars_dir_list_of_obj() == []
+    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
+    assert sx.get_calendars_dir_file_names_list() == []
+    assert sx.get_calendars_dir_list_of_obj() == []
 
     # WHEN
     sx1_obj = example_persons.get_1node_calendar()
@@ -49,25 +49,25 @@ def test_system_get_calendars_dir_list_of_obj_CreatesCalendarFilesList(
     print(f"{sx1_obj._owner=}")
     print(f"{sx2_obj._owner=}")
     print(f"{sx3_obj._owner=}")
-    ex.save_public_calendarunit(calendar_x=sx1_obj)
-    ex.save_public_calendarunit(calendar_x=sx2_obj)
-    ex.save_public_calendarunit(calendar_x=sx3_obj)
+    sx.save_public_calendarunit(calendar_x=sx1_obj)
+    sx.save_public_calendarunit(calendar_x=sx2_obj)
+    sx.save_public_calendarunit(calendar_x=sx3_obj)
 
-    sx1_path = f"{ex.get_calendars_dir()}/{sx1_obj._owner}.json"
-    sx2_path = f"{ex.get_calendars_dir()}/{sx2_obj._owner}.json"
-    sx3_path = f"{ex.get_calendars_dir()}/{sx3_obj._owner}.json"
+    sx1_path = f"{sx.get_calendars_dir()}/{sx1_obj._owner}.json"
+    sx2_path = f"{sx.get_calendars_dir()}/{sx2_obj._owner}.json"
+    sx3_path = f"{sx.get_calendars_dir()}/{sx3_obj._owner}.json"
     assert os_path.exists(sx1_path)
     assert os_path.exists(sx2_path)
     assert os_path.exists(sx3_path)
 
     # THEN
-    assert len(ex.get_calendars_dir_file_names_list()) == 3
-    assert ex.get_calendars_dir_file_names_list()[0] == f"{sx1_obj._owner}.json"
-    assert ex.get_calendars_dir_list_of_obj()[0]._owner == sx1_obj._owner
-    assert ex.get_calendars_dir_list_of_obj()[0] == sx1_obj
-    assert ex.get_calendars_dir_list_of_obj()[1]._idearoot == sx2_obj._idearoot
-    assert ex.get_calendars_dir_list_of_obj()[1] == sx2_obj
-    assert ex.get_calendars_dir_list_of_obj()[2] == sx3_obj
+    assert len(sx.get_calendars_dir_file_names_list()) == 3
+    assert sx.get_calendars_dir_file_names_list()[0] == f"{sx1_obj._owner}.json"
+    assert sx.get_calendars_dir_list_of_obj()[0]._owner == sx1_obj._owner
+    assert sx.get_calendars_dir_list_of_obj()[0] == sx1_obj
+    assert sx.get_calendars_dir_list_of_obj()[1]._idearoot == sx2_obj._idearoot
+    assert sx.get_calendars_dir_list_of_obj()[1] == sx2_obj
+    assert sx.get_calendars_dir_list_of_obj()[2] == sx3_obj
 
 
 def test_system_get_calendar_currentlyGetsCalendar(env_dir_setup_cleanup):

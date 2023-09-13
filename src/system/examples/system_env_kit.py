@@ -96,78 +96,78 @@ def setup_test_example_environment():
 
 def _delete_and_set_ex3():
     system_name = "ex3"
-    ex = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
-    x_func_delete_dir(ex.get_object_root_dir())
-    ex.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    x_func_delete_dir(sx.get_object_root_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
-    ex.save_public_calendarunit(calendar_x=example_persons_get_1node_calendar())
-    ex.save_public_calendarunit(
+    sx.save_public_calendarunit(calendar_x=example_persons_get_1node_calendar())
+    sx.save_public_calendarunit(
         calendar_x=example_calendars_get_calendar_1Task_1CE0MinutesRequired_1AcptFact()
     )
-    ex.save_public_calendarunit(calendar_x=example_calendars_calendar_v001())
-    ex.save_public_calendarunit(calendar_x=example_calendars_calendar_v002())
+    sx.save_public_calendarunit(calendar_x=example_calendars_calendar_v001())
+    sx.save_public_calendarunit(calendar_x=example_calendars_calendar_v002())
 
-    # ex.set_person(person_x=personunit_shop(name="w1", env_dir=ex.get_object_root_dir()))
-    # ex.set_person(person_x=personunit_shop(name="w2", env_dir=ex.get_object_root_dir()))
+    # sx.set_person(person_x=personunit_shop(name="w1", env_dir=sx.get_object_root_dir()))
+    # sx.set_person(person_x=personunit_shop(name="w2", env_dir=sx.get_object_root_dir()))
     xia_text = "Xia"
-    ex.create_new_personunit(person_name=xia_text)
+    sx.create_new_personunit(person_name=xia_text)
     owner_text = "Mycalendar"
-    ex.set_person_depotlink(
+    sx.set_person_depotlink(
         xia_text, calendar_owner=owner_text, depotlink_type="blind_trust"
     )
-    # w1_obj = ex.sys_get_person_obj(name=w1_text)
+    # w1_obj = sx.sys_get_person_obj(name=w1_text)
 
     bob_text = "bob wurld"
-    create_calendar_file_for_systems(ex.get_object_root_dir(), bob_text)
+    create_calendar_file_for_systems(sx.get_object_root_dir(), bob_text)
     # print(f"create calendar_list {w1_text=}")
-    ex.create_depotlink_to_generated_calendar(
+    sx.create_depotlink_to_generated_calendar(
         person_name=xia_text, calendar_owner=bob_text, depotlink_type="ignore"
     )
     land_text = "tim wurld"
     create_calendar_file_for_systems(
-        system_dir=ex.get_object_root_dir(), calendar_owner=land_text
+        system_dir=sx.get_object_root_dir(), calendar_owner=land_text
     )
-    ex.create_depotlink_to_generated_calendar(
+    sx.create_depotlink_to_generated_calendar(
         person_name=xia_text, calendar_owner=land_text, depotlink_type="blind_trust"
     )
-    # ex.create_depotlink_to_generated_calendar(person_name=w1_text, calendar_owner="test9")
-    # ex.create_depotlink_to_generated_calendar(person_name=w1_text, calendar_owner="Bobs calendar")
-    ex.save_person_file(person_name=xia_text)
-    # print(f"WHAT WHAT {ex.get_object_root_dir()}")
-    # print(f"WHAT WHAT {ex.get_object_root_dir()}/persons/w1/w1.json")
+    # sx.create_depotlink_to_generated_calendar(person_name=w1_text, calendar_owner="test9")
+    # sx.create_depotlink_to_generated_calendar(person_name=w1_text, calendar_owner="Bobs calendar")
+    sx.save_person_file(person_name=xia_text)
+    # print(f"WHAT WHAT {sx.get_object_root_dir()}")
+    # print(f"WHAT WHAT {sx.get_object_root_dir()}/persons/w1/w1.json")
     # file_text = x_func_open_file(
-    #     dest_dir=f"{ex.get_object_root_dir}/persons/w1", file_name="w1.json"
+    #     dest_dir=f"{sx.get_object_root_dir}/persons/w1", file_name="w1.json"
     # )
     # print(f"{file_text=}")
-    # print(f"{len(ex._personunits.get(w1_text)._depotlinks)=}")
-    # print(f"{ex._personunits.get(w1_text)._depotlinks.get(bob_text)=}")
-    # print(f"{ex._personunits.get(w1_text).get_json=}")
+    # print(f"{len(sx._personunits.get(w1_text)._depotlinks)=}")
+    # print(f"{sx._personunits.get(w1_text)._depotlinks.get(bob_text)=}")
+    # print(f"{sx._personunits.get(w1_text).get_json=}")
 
     w2_text = "w2"
-    ex.create_new_personunit(person_name=w2_text)  # , env_dir=ex.get_object_root_dir())
-    ex.save_person_file(person_name=w2_text)
+    sx.create_new_personunit(person_name=w2_text)  # , env_dir=sx.get_object_root_dir())
+    sx.save_person_file(person_name=w2_text)
 
 
 def _delete_and_set_ex4():
     system_name = "ex4"
-    ex = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
-    x_func_delete_dir(ex.get_object_root_dir())
-    ex.create_dirs_if_null(in_memory_bank=True)
-    ex.save_public_calendarunit(example_persons_get_7nodeJRootWithH_calendar())
-    ex.save_public_calendarunit(
+    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    x_func_delete_dir(sx.get_object_root_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
+    sx.save_public_calendarunit(example_persons_get_7nodeJRootWithH_calendar())
+    sx.save_public_calendarunit(
         example_calendars_get_calendar_with7amCleanTableRequired()
     )
-    ex.save_public_calendarunit(example_calendars_get_calendar_base_time_example())
-    ex.save_public_calendarunit(
+    sx.save_public_calendarunit(example_calendars_get_calendar_base_time_example())
+    sx.save_public_calendarunit(
         example_calendars_get_calendar_x1_3levels_1required_1acptfacts()
     )
 
 
 def _delete_and_set_ex5():
     system_name = "ex5"
-    ex = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
-    x_func_delete_dir(ex.get_object_root_dir())
-    ex.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    x_func_delete_dir(sx.get_object_root_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     # ethical code ernie
     # ethical code steve
@@ -182,56 +182,56 @@ def _delete_and_set_ex5():
     )
     calendar_5 = example_persons_get_calendar_2CleanNodesRandomWeights(_owner="clay")
 
-    ex.save_public_calendarunit(calendar_x=calendar_1)
-    ex.save_public_calendarunit(calendar_x=calendar_2)
-    ex.save_public_calendarunit(calendar_x=calendar_3)
-    ex.save_public_calendarunit(calendar_x=calendar_4)
-    ex.save_public_calendarunit(calendar_x=calendar_5)
+    sx.save_public_calendarunit(calendar_x=calendar_1)
+    sx.save_public_calendarunit(calendar_x=calendar_2)
+    sx.save_public_calendarunit(calendar_x=calendar_3)
+    sx.save_public_calendarunit(calendar_x=calendar_4)
+    sx.save_public_calendarunit(calendar_x=calendar_5)
 
-    ex.create_new_personunit(person_name=calendar_1._owner)
-    ex.create_new_personunit(person_name=calendar_2._owner)
-    ex.create_new_personunit(person_name=calendar_3._owner)
-    ex.create_new_personunit(person_name=calendar_4._owner)
-    ex.create_new_personunit(person_name=calendar_5._owner)
+    sx.create_new_personunit(person_name=calendar_1._owner)
+    sx.create_new_personunit(person_name=calendar_2._owner)
+    sx.create_new_personunit(person_name=calendar_3._owner)
+    sx.create_new_personunit(person_name=calendar_4._owner)
+    sx.create_new_personunit(person_name=calendar_5._owner)
 
-    ex.set_person_depotlink(calendar_1._owner, calendar_2._owner, "blind_trust", 3, 3.1)
-    ex.set_person_depotlink(calendar_1._owner, calendar_3._owner, "blind_trust", 7, 7.1)
-    ex.set_person_depotlink(calendar_1._owner, calendar_4._owner, "blind_trust", 4, 4.1)
-    ex.set_person_depotlink(calendar_1._owner, calendar_5._owner, "blind_trust", 5, 5.1)
+    sx.set_person_depotlink(calendar_1._owner, calendar_2._owner, "blind_trust", 3, 3.1)
+    sx.set_person_depotlink(calendar_1._owner, calendar_3._owner, "blind_trust", 7, 7.1)
+    sx.set_person_depotlink(calendar_1._owner, calendar_4._owner, "blind_trust", 4, 4.1)
+    sx.set_person_depotlink(calendar_1._owner, calendar_5._owner, "blind_trust", 5, 5.1)
 
-    ex.set_person_depotlink(calendar_2._owner, calendar_1._owner, "blind_trust", 3, 3.1)
-    ex.set_person_depotlink(calendar_2._owner, calendar_3._owner, "blind_trust", 7, 7.1)
-    ex.set_person_depotlink(calendar_2._owner, calendar_4._owner, "blind_trust", 4, 4.1)
+    sx.set_person_depotlink(calendar_2._owner, calendar_1._owner, "blind_trust", 3, 3.1)
+    sx.set_person_depotlink(calendar_2._owner, calendar_3._owner, "blind_trust", 7, 7.1)
+    sx.set_person_depotlink(calendar_2._owner, calendar_4._owner, "blind_trust", 4, 4.1)
     icx = example_persons_get_calendar_3CleanNodesRandomWeights()
-    ex.set_person_depotlink(calendar_2._owner, calendar_5._owner, "ignore", 5, 5.1, icx)
+    sx.set_person_depotlink(calendar_2._owner, calendar_5._owner, "ignore", 5, 5.1, icx)
 
-    ex.set_person_depotlink(calendar_3._owner, calendar_1._owner, "blind_trust", 3, 3.1)
-    ex.set_person_depotlink(calendar_3._owner, calendar_2._owner, "blind_trust", 7, 7.1)
-    ex.set_person_depotlink(calendar_3._owner, calendar_4._owner, "blind_trust", 4, 4.1)
-    ex.set_person_depotlink(calendar_3._owner, calendar_5._owner, "blind_trust", 5, 5.1)
+    sx.set_person_depotlink(calendar_3._owner, calendar_1._owner, "blind_trust", 3, 3.1)
+    sx.set_person_depotlink(calendar_3._owner, calendar_2._owner, "blind_trust", 7, 7.1)
+    sx.set_person_depotlink(calendar_3._owner, calendar_4._owner, "blind_trust", 4, 4.1)
+    sx.set_person_depotlink(calendar_3._owner, calendar_5._owner, "blind_trust", 5, 5.1)
 
-    ex.set_person_depotlink(calendar_4._owner, calendar_1._owner, "blind_trust", 3, 3.1)
-    ex.set_person_depotlink(calendar_4._owner, calendar_2._owner, "blind_trust", 7, 7.1)
-    ex.set_person_depotlink(calendar_4._owner, calendar_3._owner, "blind_trust", 4, 4.1)
-    ex.set_person_depotlink(calendar_4._owner, calendar_5._owner, "blind_trust", 5, 5.1)
+    sx.set_person_depotlink(calendar_4._owner, calendar_1._owner, "blind_trust", 3, 3.1)
+    sx.set_person_depotlink(calendar_4._owner, calendar_2._owner, "blind_trust", 7, 7.1)
+    sx.set_person_depotlink(calendar_4._owner, calendar_3._owner, "blind_trust", 4, 4.1)
+    sx.set_person_depotlink(calendar_4._owner, calendar_5._owner, "blind_trust", 5, 5.1)
 
-    ex.set_person_depotlink(calendar_5._owner, calendar_1._owner, "blind_trust", 3, 3.1)
-    ex.set_person_depotlink(calendar_5._owner, calendar_2._owner, "blind_trust", 7, 7.1)
-    ex.set_person_depotlink(calendar_5._owner, calendar_3._owner, "blind_trust", 4, 4.1)
-    ex.set_person_depotlink(calendar_5._owner, calendar_4._owner, "blind_trust", 5, 5.1)
+    sx.set_person_depotlink(calendar_5._owner, calendar_1._owner, "blind_trust", 3, 3.1)
+    sx.set_person_depotlink(calendar_5._owner, calendar_2._owner, "blind_trust", 7, 7.1)
+    sx.set_person_depotlink(calendar_5._owner, calendar_3._owner, "blind_trust", 4, 4.1)
+    sx.set_person_depotlink(calendar_5._owner, calendar_4._owner, "blind_trust", 5, 5.1)
 
-    ex.save_person_file(person_name=calendar_1._owner)
-    ex.save_person_file(person_name=calendar_2._owner)
-    ex.save_person_file(person_name=calendar_3._owner)
-    ex.save_person_file(person_name=calendar_4._owner)
-    ex.save_person_file(person_name=calendar_5._owner)
+    sx.save_person_file(person_name=calendar_1._owner)
+    sx.save_person_file(person_name=calendar_2._owner)
+    sx.save_person_file(person_name=calendar_3._owner)
+    sx.save_person_file(person_name=calendar_4._owner)
+    sx.save_person_file(person_name=calendar_5._owner)
 
 
 def _delete_and_set_ex6():
     system_name = "ex6"
-    ex = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
-    x_func_delete_dir(ex.get_object_root_dir())
-    ex.create_dirs_if_null(in_memory_bank=False)
+    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    x_func_delete_dir(sx.get_object_root_dir())
+    sx.create_dirs_if_null(in_memory_bank=False)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -243,33 +243,33 @@ def _delete_and_set_ex6():
     sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
     sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
     sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    ex.save_public_calendarunit(calendar_x=sal_calendar)
+    sx.save_public_calendarunit(calendar_x=sal_calendar)
 
     bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    ex.save_public_calendarunit(calendar_x=bob_calendar)
+    sx.save_public_calendarunit(calendar_x=bob_calendar)
 
     tom_calendar = CalendarUnit(_owner=tom_text)
     tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
-    ex.save_public_calendarunit(calendar_x=tom_calendar)
+    sx.save_public_calendarunit(calendar_x=tom_calendar)
 
     ava_calendar = CalendarUnit(_owner=ava_text)
     ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
-    ex.save_public_calendarunit(calendar_x=ava_calendar)
+    sx.save_public_calendarunit(calendar_x=ava_calendar)
 
     elu_calendar = CalendarUnit(_owner=elu_text)
     elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
     elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
-    ex.save_public_calendarunit(calendar_x=elu_calendar)
+    sx.save_public_calendarunit(calendar_x=elu_calendar)
 
-    ex.refresh_bank_metrics()
-    ex.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=100)
+    sx.refresh_bank_metrics()
+    sx.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=100)
 
 
 def create_example_system(system_name: str):
-    ex = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
-    ex.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
 
 def delete_dir_example_system(system_obj: SystemUnit):

@@ -17,13 +17,13 @@ from src.system.bank_sqlstr import (
 
 def test_system_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
     # GIVEN create system
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
 
     # WHEN
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     # THEN
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         tables_dict = get_db_tables(bank_conn)
 
     # row_count = 0
@@ -57,56 +57,56 @@ def test_system_refresh_bank_metrics_CorrectlyDeletesOldBankInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tom_text = "tom"
 
     bob = CalendarUnit(_owner=bob_text)
     bob.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
-    e1.save_public_calendarunit(calendar_x=bob)
-    e1.refresh_bank_metrics()
+    sx.save_public_calendarunit(calendar_x=bob)
+    sx.refresh_bank_metrics()
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 1
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 1
 
     # WHEN
-    e1.refresh_bank_metrics()
+    sx.refresh_bank_metrics()
 
     # THEN
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 1
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 1
 
 
 def test_system_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=False)
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=False)
 
     bob_text = "bob"
     tom_text = "tom"
 
     bob = CalendarUnit(_owner=bob_text)
     bob.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
-    e1.save_public_calendarunit(calendar_x=bob)
-    e1.refresh_bank_metrics()
+    sx.save_public_calendarunit(calendar_x=bob)
+    sx.refresh_bank_metrics()
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 1
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 1
 
     # WHEN
-    e1.refresh_bank_metrics()
+    sx.refresh_bank_metrics()
 
     # THEN
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 1
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 1
 
 
 def test_system_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tom_text = "tom"
@@ -117,96 +117,96 @@ def test_system_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     bob.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
     bob.add_memberunit(name=sal_text, creditor_weight=1, debtor_weight=4)
     bob.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
-    e1.save_public_calendarunit(calendar_x=bob)
+    sx.save_public_calendarunit(calendar_x=bob)
 
     sal = CalendarUnit(_owner=sal_text)
     sal.add_memberunit(name=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
     sal.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
-    e1.save_public_calendarunit(calendar_x=sal)
+    sx.save_public_calendarunit(calendar_x=sal)
 
     tom = CalendarUnit(_owner=tom_text)
     tom.add_memberunit(name=bob_text, creditor_weight=3, debtor_weight=1)
     tom.add_memberunit(name=sal_text, creditor_weight=1, debtor_weight=4)
     tom.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
-    e1.save_public_calendarunit(calendar_x=tom)
+    sx.save_public_calendarunit(calendar_x=tom)
 
     elu = CalendarUnit(_owner=elu_text)
     elu.add_memberunit(name=bob_text, creditor_weight=3, debtor_weight=1)
     elu.add_memberunit(name=tom_text, creditor_weight=1, debtor_weight=4)
     elu.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
-    e1.save_public_calendarunit(calendar_x=elu)
+    sx.save_public_calendarunit(calendar_x=elu)
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 0
 
     # WHEN
-    e1.refresh_bank_metrics()
+    sx.refresh_bank_metrics()
 
     # THEN
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 12
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 12
 
 
 def test_system_refresh_bank_metrics_CorrectlyPopulatesCalendarTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tom_text = "tom"
     sal_text = "sal"
     elu_text = "elu"
 
-    e1.save_public_calendarunit(calendar_x=CalendarUnit(_owner=bob_text))
-    e1.save_public_calendarunit(calendar_x=CalendarUnit(_owner=tom_text))
-    e1.save_public_calendarunit(calendar_x=CalendarUnit(_owner=sal_text))
-    e1.save_public_calendarunit(calendar_x=CalendarUnit(_owner=elu_text))
+    sx.save_public_calendarunit(calendar_x=CalendarUnit(_owner=bob_text))
+    sx.save_public_calendarunit(calendar_x=CalendarUnit(_owner=tom_text))
+    sx.save_public_calendarunit(calendar_x=CalendarUnit(_owner=sal_text))
+    sx.save_public_calendarunit(calendar_x=CalendarUnit(_owner=elu_text))
 
     sqlstr_count_calendars = get_table_count_sqlstr("calendarunits")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_calendars) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_calendars) == 0
 
     # WHEN
-    e1.refresh_bank_metrics()
+    sx.refresh_bank_metrics()
 
     # THEN
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_calendars) == 4
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_calendars) == 4
 
 
 def test_system_refresh_bank_metrics_CorrectlyPopulatesCalendarTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tom_text = "tom"
     sal_text = "sal"
     elu_text = "elu"
 
-    e1.save_public_calendarunit(calendar_x=CalendarUnit(_owner=bob_text))
-    e1.save_public_calendarunit(calendar_x=CalendarUnit(_owner=tom_text))
-    e1.save_public_calendarunit(calendar_x=CalendarUnit(_owner=sal_text))
-    e1.save_public_calendarunit(calendar_x=CalendarUnit(_owner=elu_text))
+    sx.save_public_calendarunit(calendar_x=CalendarUnit(_owner=bob_text))
+    sx.save_public_calendarunit(calendar_x=CalendarUnit(_owner=tom_text))
+    sx.save_public_calendarunit(calendar_x=CalendarUnit(_owner=sal_text))
+    sx.save_public_calendarunit(calendar_x=CalendarUnit(_owner=elu_text))
 
     sqlstr_count_calendars = get_table_count_sqlstr("calendarunits")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_calendars) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_calendars) == 0
 
     # WHEN
-    e1.refresh_bank_metrics()
+    sx.refresh_bank_metrics()
 
     # THEN
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_calendars) == 4
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_calendars) == 4
 
 
 def test_system_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tom_text = "tom"
@@ -216,25 +216,25 @@ def test_system_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     bob_calendar.add_memberunit(name=tom_text)
     tom_calendar.add_memberunit(name=bob_text)
     tom_calendar.add_memberunit(name=elu_text)
-    e1.save_public_calendarunit(calendar_x=bob_calendar)
-    e1.save_public_calendarunit(calendar_x=tom_calendar)
+    sx.save_public_calendarunit(calendar_x=bob_calendar)
+    sx.save_public_calendarunit(calendar_x=tom_calendar)
 
     sqlstr = get_table_count_sqlstr("groupunit_catalog")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr) == 0
 
     # WHEN
-    e1.refresh_bank_metrics()
+    sx.refresh_bank_metrics()
 
     # THEN
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr) == 3
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr) == 3
 
 
 def test_system_set_calendar_attr_defined_by_system_CorrectlyPopulatesCalendar_Groupunit_Memberlinks(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     # create 4 calendars, 1 with group "swimming expert" linked to 1 member
     # two others have idea f"{root_label()},sports,swimming"
@@ -274,13 +274,13 @@ def test_system_set_calendar_attr_defined_by_system_CorrectlyPopulatesCalendar_G
     swim_group_unit.set_memberlink(memberlink=bob_link)
     sal_calendar.set_groupunit(groupunit=swim_group_unit)
 
-    e1.save_public_calendarunit(calendar_x=sal_calendar)
-    e1.save_public_calendarunit(calendar_x=bob_calendar)
-    e1.save_public_calendarunit(calendar_x=tom_calendar)
-    e1.save_public_calendarunit(calendar_x=ava_calendar)
+    sx.save_public_calendarunit(calendar_x=sal_calendar)
+    sx.save_public_calendarunit(calendar_x=bob_calendar)
+    sx.save_public_calendarunit(calendar_x=tom_calendar)
+    sx.save_public_calendarunit(calendar_x=ava_calendar)
 
-    e1.set_calendar_attr_defined_by_system(calendar_name=sal_text)
-    e1_sal_calendar = e1.get_public_calendar(owner=sal_text)
+    sx.set_calendar_attr_defined_by_system(calendar_name=sal_text)
+    e1_sal_calendar = sx.get_public_calendar(owner=sal_text)
     assert len(e1_sal_calendar._groups.get(swim_group_text)._members) == 1
 
     # WHEN
@@ -288,9 +288,9 @@ def test_system_set_calendar_attr_defined_by_system_CorrectlyPopulatesCalendar_G
     sal_swim_road = f"{sal_sports_road},{swim_text}"
     swim_group_unit.set_attr(_memberlinks_set_by_system_road=sal_swim_road)
     sal_calendar.set_groupunit(groupunit=swim_group_unit)
-    e1.save_public_calendarunit(calendar_x=sal_calendar)
-    e1.set_calendar_attr_defined_by_system(calendar_name=sal_text)
+    sx.save_public_calendarunit(calendar_x=sal_calendar)
+    sx.set_calendar_attr_defined_by_system(calendar_name=sal_text)
 
     # THEN
-    e1_sal_calendar = e1.get_public_calendar(owner=sal_text)
+    e1_sal_calendar = sx.get_public_calendar(owner=sal_text)
     assert len(e1_sal_calendar._groups.get(swim_group_text)._members) == 2

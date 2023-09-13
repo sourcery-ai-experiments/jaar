@@ -14,16 +14,16 @@ from pytest import raises as pytest_raises
 def test_system_set_person_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     system_name = get_temp_env_name()
-    e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
     print(f"create env '{system_name}' directories.")
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx.create_dirs_if_null(in_memory_bank=True)
     timmy_text = "timmy"
-    wx_path = f"{e1.get_persons_dir()}/{timmy_text}"
+    wx_path = f"{sx.get_persons_dir()}/{timmy_text}"
     print(f"{wx_path=}")
     assert os_path.exists(wx_path) == False
 
     # WHEN
-    e1.create_new_personunit(person_name=timmy_text)
+    sx.create_new_personunit(person_name=timmy_text)
 
     # THEN
     print(f"{wx_path=}")
@@ -35,15 +35,15 @@ def test_system_load_personunit_RaisesErrorWhenPersonDoesNotExist(
 ):
     # GIVEN
     system_name = get_temp_env_name()
-    e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
 
     # WHEN / THEN
     bobs_text = "bobs wurld"
     with pytest_raises(Exception) as excinfo:
-        e1.load_personunit(name=bobs_text)
+        sx.load_personunit(name=bobs_text)
     assert (
         str(excinfo.value)
-        == f"Could not load file {e1.get_persons_dir()}/{bobs_text}/isol_calendar.json (2, 'No such file or directory')"
+        == f"Could not load file {sx.get_persons_dir()}/{bobs_text}/isol_calendar.json (2, 'No such file or directory')"
     )
 
 
@@ -52,20 +52,20 @@ def test_system_env_kit_create_person_file_for_systems_WorksCorrectly(
 ):
     # GIVEN
     system_name = get_temp_env_name()
-    e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
-    e1.set_personunits_empty_if_null()
+    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx.set_personunits_empty_if_null()
     bobs_text = "bobs wurld"
     create_person_file_for_systems(
-        system_dir=e1.get_object_root_dir(), person_name=bobs_text
+        system_dir=sx.get_object_root_dir(), person_name=bobs_text
     )
-    assert e1._personunits.get(bobs_text) is None
+    assert sx._personunits.get(bobs_text) is None
 
     # WHEN
-    e1.load_personunit(name=bobs_text)
+    sx.load_personunit(name=bobs_text)
 
     # THEN
-    assert e1._personunits.get(bobs_text) != None
-    bobs_person = e1._personunits[bobs_text]
+    assert sx._personunits.get(bobs_text) != None
+    bobs_person = sx._personunits[bobs_text]
     assert bobs_person._admin._person_name == bobs_text
 
 
@@ -113,18 +113,18 @@ def test_system_rename_personunit_WorksCorrectly(env_dir_setup_cleanup):
 def test_system_del_person_dir_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     system_name = get_temp_env_name()
-    e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
     xia_text = "Xia"
-    xia_dir = f"{e1.get_persons_dir()}/{xia_text}"
+    xia_dir = f"{sx.get_persons_dir()}/{xia_text}"
     xia_file_path = f"{xia_dir}/isol_calendar.json"
-    e1.create_new_personunit(person_name=xia_text)
-    e1.save_person_file(person_name=xia_text)
+    sx.create_new_personunit(person_name=xia_text)
+    sx.save_person_file(person_name=xia_text)
     print(f"{xia_file_path=}")
     assert os_path.exists(xia_dir)
     assert os_path.exists(xia_file_path)
 
     # WHEN
-    e1.del_person_dir(person_name=xia_text)
+    sx.del_person_dir(person_name=xia_text)
 
     # THEN
     assert os_path.exists(xia_file_path) == False

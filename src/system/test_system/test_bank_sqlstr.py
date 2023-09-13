@@ -47,9 +47,9 @@ def test_system_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
-    e1.refresh_bank_metrics()
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
+    sx.refresh_bank_metrics()
 
     bob_text = "bob"
     tim_text = "tim"
@@ -72,10 +72,10 @@ def test_system_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
     print(insert_sqlstr)
 
     # WHEN
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         bank_conn.execute(insert_sqlstr)
 
-    ledger_dict = get_ledger_dict(db_conn=e1.get_bank_conn(), payer_name=bob_text)
+    ledger_dict = get_ledger_dict(db_conn=sx.get_bank_conn(), payer_name=bob_text)
     # ledger_x = None
     # for key, value in ledger_dict.items():
     #     print(f"{key=} {value=}")
@@ -165,9 +165,9 @@ def test_RiverFlowUnit_flow_returned_WorksCorrectly():
 def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cleanup):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
-    e1.refresh_bank_metrics()
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
+    sx.refresh_bank_metrics()
 
     bob_text = "bob"
     sal_text = "sal"
@@ -203,7 +203,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
         calendar_x=calendar_bob, memberunit_x=memberunit_tim
     )
 
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         bank_conn.execute(insert_sqlstr_sal)
         bank_conn.execute(insert_sqlstr_tim)
         ledger_dict_x = get_ledger_dict(db_conn=bank_conn, payer_name=bob_text)
@@ -219,7 +219,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
         parent_flow_num=6,
         river_tree_level=4,
     )
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         river_ledger_x = get_river_ledger_unit(bank_conn, river_flow_x)
 
     # THEN
@@ -236,8 +236,8 @@ def test_river_flow_insert_CorrectlyPopulatesTable01(
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tim_text = "tim"
@@ -257,7 +257,7 @@ def test_river_flow_insert_CorrectlyPopulatesTable01(
     print(insert_sqlstr)
 
     # WHEN
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         bank_conn.execute(insert_sqlstr)
         river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=bob_text)
         print(f"{river_flows=}")
@@ -335,8 +335,8 @@ def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tom_text = "tom"
@@ -381,7 +381,7 @@ def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
     st0 = river_flow_insert(river_flow_3)
     ss0 = river_flow_insert(river_flow_4)
 
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         bank_conn.execute(insert_sqlstr_tom)
         bank_conn.execute(insert_sqlstr_sal)
         bank_conn.execute(sb0)
@@ -391,12 +391,12 @@ def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     # WHEN
     mstr_sqlstr = get_river_tmember_table_insert_sqlstr(currency_calendar_name=bob_text)
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         print(mstr_sqlstr)
         bank_conn.execute(mstr_sqlstr)
 
     # THEN
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         river_tmembers = get_river_tmember_dict(
             bank_conn, currency_calendar_name=bob_text
         )
@@ -431,8 +431,8 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -444,26 +444,26 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
     sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
     sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
     sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=sal_calendar)
+    sx.save_public_calendarunit(calendar_x=sal_calendar)
 
     bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=bob_calendar)
+    sx.save_public_calendarunit(calendar_x=bob_calendar)
 
-    e1.refresh_bank_metrics()
-    e1.set_river_sphere_for_calendar(calendar_name=sal_text)
+    sx.refresh_bank_metrics()
+    sx.set_river_sphere_for_calendar(calendar_name=sal_text)
 
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         assert len(get_river_bucket_dict(bank_conn, sal_text)) > 0
 
     # WHEN
     sqlstr = get_river_bucket_table_delete_sqlstr(sal_text)
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         bank_conn.execute(sqlstr)
 
     # THEN
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         assert len(get_river_bucket_dict(bank_conn, sal_text)) == 0
 
 
@@ -472,8 +472,8 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -485,29 +485,29 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
     sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
     sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=sal_calendar)
+    sx.save_public_calendarunit(calendar_x=sal_calendar)
 
     bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=bob_calendar)
+    sx.save_public_calendarunit(calendar_x=bob_calendar)
 
     tom_calendar = CalendarUnit(_owner=tom_text)
     tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
-    e1.save_public_calendarunit(calendar_x=tom_calendar)
+    sx.save_public_calendarunit(calendar_x=tom_calendar)
 
     ava_calendar = CalendarUnit(_owner=ava_text)
     ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
-    e1.save_public_calendarunit(calendar_x=ava_calendar)
+    sx.save_public_calendarunit(calendar_x=ava_calendar)
 
     elu_calendar = CalendarUnit(_owner=elu_text)
     elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
     elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=elu_calendar)
+    sx.save_public_calendarunit(calendar_x=elu_calendar)
 
-    e1.refresh_bank_metrics()
-    e1.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=100)
-    with e1.get_bank_conn() as bank_conn:
+    sx.refresh_bank_metrics()
+    sx.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=100)
+    with sx.get_bank_conn() as bank_conn:
         bank_conn.execute(get_river_bucket_table_delete_sqlstr(sal_text))
         assert (
             len(get_river_bucket_dict(bank_conn, currency_calendar_name=sal_text)) == 0
@@ -515,7 +515,7 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     # WHEN / THEN
     mstr_sqlstr = get_river_bucket_table_insert_sqlstr(currency_calendar_name=sal_text)
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         print(mstr_sqlstr)
         bank_conn.execute(mstr_sqlstr)
         # river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
@@ -523,7 +523,7 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
         #     print(f"{river_flow=}")
 
     # THEN
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         river_buckets = get_river_bucket_dict(
             bank_conn, currency_calendar_name=sal_text
         )
@@ -560,19 +560,19 @@ def test_system_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
-    e1.refresh_bank_metrics()
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
+    sx.refresh_bank_metrics()
 
     bob_text = "bob"
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         assert get_idea_catalog_table_count(bank_conn, bob_text) == 0
 
     # WHEN
     water_road = f"{root_label()},elements,water"
     water_idea_catalog = IdeaCatalog(calendar_name=bob_text, idea_road=water_road)
     water_insert_sqlstr = get_idea_catalog_table_insert_sqlstr(water_idea_catalog)
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         print(water_insert_sqlstr)
         bank_conn.execute(water_insert_sqlstr)
 
@@ -582,9 +582,9 @@ def test_system_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
 def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
-    e1.refresh_bank_metrics()
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
+    sx.refresh_bank_metrics()
 
     bob_text = "bob"
     sal_text = "sal"
@@ -595,18 +595,18 @@ def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup
     bob_calendar.set_owner(new_owner=bob_text)
     tim_calendar.set_owner(new_owner=tim_text)
     sal_calendar.set_owner(new_owner=sal_text)
-    e1.save_public_calendarunit(calendar_x=bob_calendar)
-    e1.save_public_calendarunit(calendar_x=tim_calendar)
-    e1.save_public_calendarunit(calendar_x=sal_calendar)
+    sx.save_public_calendarunit(calendar_x=bob_calendar)
+    sx.save_public_calendarunit(calendar_x=tim_calendar)
+    sx.save_public_calendarunit(calendar_x=sal_calendar)
 
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         assert get_idea_catalog_table_count(bank_conn, bob_text) == 0
 
     # WHEN
-    e1.refresh_bank_metrics()
+    sx.refresh_bank_metrics()
 
     # THEN
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         assert get_idea_catalog_table_count(bank_conn, bob_text) == 3
         assert get_idea_catalog_table_count(bank_conn, tim_text) == 6
         assert get_idea_catalog_table_count(bank_conn, sal_text) == 5
@@ -614,9 +614,9 @@ def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup
 
 def test_system_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     # GIVEN
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
-    e1.refresh_bank_metrics()
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
+    sx.refresh_bank_metrics()
 
     bob_text = "bob"
     sal_text = "sal"
@@ -630,24 +630,24 @@ def test_system_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     tim_calendar.set_owner(new_owner=tim_text)
     sal_calendar.set_owner(new_owner=sal_text)
     elu_calendar.set_owner(new_owner=elu_text)
-    e1.save_public_calendarunit(calendar_x=bob_calendar)
-    e1.save_public_calendarunit(calendar_x=tim_calendar)
-    e1.save_public_calendarunit(calendar_x=sal_calendar)
-    e1.save_public_calendarunit(calendar_x=elu_calendar)
-    e1.refresh_bank_metrics()
+    sx.save_public_calendarunit(calendar_x=bob_calendar)
+    sx.save_public_calendarunit(calendar_x=tim_calendar)
+    sx.save_public_calendarunit(calendar_x=sal_calendar)
+    sx.save_public_calendarunit(calendar_x=elu_calendar)
+    sx.refresh_bank_metrics()
     i_count_sqlstr = get_table_count_sqlstr("idea_catalog")
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         print(f"{i_count_sqlstr=}")
-        assert get_single_result_back(e1.get_bank_conn(), i_count_sqlstr) == 20
+        assert get_single_result_back(sx.get_bank_conn(), i_count_sqlstr) == 20
 
     # WHEN / THEN
-    assert len(get_idea_catalog_dict(e1.get_bank_conn())) == 20
+    assert len(get_idea_catalog_dict(sx.get_bank_conn())) == 20
     b_road = f"{root_label()},B"
-    assert len(get_idea_catalog_dict(e1.get_bank_conn(), b_road)) == 3
+    assert len(get_idea_catalog_dict(sx.get_bank_conn(), b_road)) == 3
     ce_road = f"{root_label()},C,E"
-    assert len(get_idea_catalog_dict(e1.get_bank_conn(), ce_road)) == 2
+    assert len(get_idea_catalog_dict(sx.get_bank_conn(), ce_road)) == 2
     ex_road = f"{root_label()}"
-    assert len(get_idea_catalog_dict(e1.get_bank_conn(), ex_road)) == 4
+    assert len(get_idea_catalog_dict(sx.get_bank_conn(), ex_road)) == 4
 
 
 def test_system_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
@@ -655,12 +655,12 @@ def test_system_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
-    e1.refresh_bank_metrics()
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
+    sx.refresh_bank_metrics()
 
     bob_text = "bob"
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         assert get_acptfact_catalog_table_count(bank_conn, bob_text) == 0
 
     # WHEN
@@ -670,7 +670,7 @@ def test_system_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable
         pick=f"{root_label()},weather,rain",
     )
     water_insert_sqlstr = get_acptfact_catalog_table_insert_sqlstr(weather_rain)
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         print(water_insert_sqlstr)
         bank_conn.execute(water_insert_sqlstr)
 
@@ -683,9 +683,9 @@ def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
-    e1.refresh_bank_metrics()
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
+    sx.refresh_bank_metrics()
 
     # TODO create 3 calendars with varying numbers of acpt facts
     bob_text = "bob"
@@ -716,23 +716,23 @@ def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
     cookery_road = f"{casa_road},{cookery_text}"
     sal_calendar.set_acptfact(base=cookery_road, pick=cookery_road)
 
-    e1.save_public_calendarunit(calendar_x=bob_calendar)
-    e1.save_public_calendarunit(calendar_x=tim_calendar)
-    e1.save_public_calendarunit(calendar_x=sal_calendar)
+    sx.save_public_calendarunit(calendar_x=bob_calendar)
+    sx.save_public_calendarunit(calendar_x=tim_calendar)
+    sx.save_public_calendarunit(calendar_x=sal_calendar)
 
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         assert get_acptfact_catalog_table_count(bank_conn, bob_text) == 0
         assert get_acptfact_catalog_table_count(bank_conn, tim_text) == 0
         assert get_acptfact_catalog_table_count(bank_conn, sal_text) == 0
 
     # WHEN
-    e1.refresh_bank_metrics()
+    sx.refresh_bank_metrics()
 
     # THEN
     print(f"{get_acptfact_catalog_table_count(bank_conn, bob_text)=}")
     print(f"{get_acptfact_catalog_table_count(bank_conn, tim_text)=}")
     print(f"{get_acptfact_catalog_table_count(bank_conn, sal_text)=}")
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         assert get_acptfact_catalog_table_count(bank_conn, bob_text) == 2
         assert get_acptfact_catalog_table_count(bank_conn, tim_text) == 1
         assert get_acptfact_catalog_table_count(bank_conn, sal_text) == 1
@@ -743,12 +743,12 @@ def test_system_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTabl
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
-    e1.refresh_bank_metrics()
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
+    sx.refresh_bank_metrics()
 
     bob_text = "bob"
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         assert get_groupunit_catalog_table_count(bank_conn, bob_text) == 0
 
     # WHEN
@@ -758,7 +758,7 @@ def test_system_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTabl
         memberlinks_set_by_system_road=f"{root_label()},USA",
     )
     bob_group_sqlstr = get_groupunit_catalog_table_insert_sqlstr(bob_group_x)
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         print(bob_group_sqlstr)
         bank_conn.execute(bob_group_sqlstr)
 
@@ -770,8 +770,8 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    e1 = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tom_text = "tom"
@@ -781,14 +781,14 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     bob_calendar.add_memberunit(name=tom_text)
     tom_calendar.add_memberunit(name=bob_text)
     tom_calendar.add_memberunit(name=elu_text)
-    e1.save_public_calendarunit(calendar_x=bob_calendar)
-    e1.save_public_calendarunit(calendar_x=tom_calendar)
-    e1.refresh_bank_metrics()
+    sx.save_public_calendarunit(calendar_x=bob_calendar)
+    sx.save_public_calendarunit(calendar_x=tom_calendar)
+    sx.refresh_bank_metrics()
     sqlstr = get_table_count_sqlstr("groupunit_catalog")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr) == 3
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr) == 3
 
     # WHEN
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         print("try to grab GroupUnit data")
         groupunit_catalog_dict = get_groupunit_catalog_dict(db_conn=bank_conn)
 

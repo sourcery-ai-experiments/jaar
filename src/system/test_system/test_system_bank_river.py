@@ -19,8 +19,8 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
     system_name = get_temp_env_name()
-    e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tom_text = "tom"
@@ -29,32 +29,32 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
     sal = CalendarUnit(_owner=sal_text)
     sal.add_memberunit(name=bob_text, creditor_weight=1)
     sal.add_memberunit(name=tom_text, creditor_weight=3)
-    e1.save_public_calendarunit(calendar_x=sal)
+    sx.save_public_calendarunit(calendar_x=sal)
 
     bob = CalendarUnit(_owner=bob_text)
     bob.add_memberunit(name=sal_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=bob)
+    sx.save_public_calendarunit(calendar_x=bob)
 
     tom = CalendarUnit(_owner=tom_text)
     tom.add_memberunit(name=sal_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=tom)
+    sx.save_public_calendarunit(calendar_x=tom)
 
-    e1.refresh_bank_metrics()
+    sx.refresh_bank_metrics()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 4
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 4
 
     sqlstr_count_river_tmember = get_table_count_sqlstr("river_tmember")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    e1.set_river_sphere_for_calendar(calendar_name=sal_text)
+    sx.set_river_sphere_for_calendar(calendar_name=sal_text)
 
     # THEN
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 4
-    with e1.get_bank_conn() as bank_conn:
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 4
+    with sx.get_bank_conn() as bank_conn:
         river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
 
     flow_0 = river_flows.get(0)
@@ -70,9 +70,9 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
     assert flow_3.river_tree_level == 2
     assert flow_3.parent_flow_num == 1
 
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 2
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 2
 
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         river_tmembers = get_river_tmember_dict(bank_conn, sal_text)
     assert len(river_tmembers) == 2
     river_sal_tax_bob = river_tmembers.get(bob_text)
@@ -90,8 +90,8 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
 ):
     # GIVEN 4 calendars, 100% of river flows to sal
     system_name = get_temp_env_name()
-    e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -101,43 +101,43 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
     sal = CalendarUnit(_owner=sal_text)
     sal.add_memberunit(name=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
-    e1.save_public_calendarunit(calendar_x=sal)
+    sx.save_public_calendarunit(calendar_x=sal)
 
     bob = CalendarUnit(_owner=bob_text)
     bob.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=1)
     bob.add_memberunit(name=tom_text, creditor_weight=1, debtor_weight=1)
-    e1.save_public_calendarunit(calendar_x=bob)
+    sx.save_public_calendarunit(calendar_x=bob)
 
     tom = CalendarUnit(_owner=tom_text)
     tom.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=8)
-    e1.save_public_calendarunit(calendar_x=tom)
+    sx.save_public_calendarunit(calendar_x=tom)
 
     elu = CalendarUnit(_owner=elu_text)
     elu.add_memberunit(name=sal_text, creditor_weight=1, debtor_weight=8)
-    e1.save_public_calendarunit(calendar_x=elu)
-    e1.refresh_bank_metrics()
+    sx.save_public_calendarunit(calendar_x=elu)
+    sx.refresh_bank_metrics()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 6
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 6
 
     sqlstr_count_river_tmember = get_table_count_sqlstr("river_tmember")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    e1.set_river_sphere_for_calendar(calendar_name=sal_text)
+    sx.set_river_sphere_for_calendar(calendar_name=sal_text)
 
     # THEN
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 9
-    with e1.get_bank_conn() as bank_conn:
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 9
+    with sx.get_bank_conn() as bank_conn:
         river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 1
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 1
 
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         river_tmembers = get_river_tmember_dict(bank_conn, sal_text)
     assert len(river_tmembers) == 1
     assert river_tmembers.get(bob_text) is None
@@ -153,8 +153,8 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
 ):
     # GIVEN 4 calendars, 85% of river flows to sal
     system_name = get_temp_env_name()
-    e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -165,42 +165,42 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
     sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
     sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
     sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=sal_calendar)
+    sx.save_public_calendarunit(calendar_x=sal_calendar)
 
     bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=bob_calendar)
+    sx.save_public_calendarunit(calendar_x=bob_calendar)
 
     tom_calendar = CalendarUnit(_owner=tom_text)
     tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
-    e1.save_public_calendarunit(calendar_x=tom_calendar)
+    sx.save_public_calendarunit(calendar_x=tom_calendar)
 
     ava_calendar = CalendarUnit(_owner=ava_text)
-    e1.save_public_calendarunit(calendar_x=ava_calendar)
-    e1.refresh_bank_metrics()
+    sx.save_public_calendarunit(calendar_x=ava_calendar)
+    sx.refresh_bank_metrics()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 6
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 6
 
     sqlstr_count_river_tmember = get_table_count_sqlstr("river_tmember")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    e1.set_river_sphere_for_calendar(calendar_name=sal_text)
+    sx.set_river_sphere_for_calendar(calendar_name=sal_text)
 
     # THEN
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 6
-    with e1.get_bank_conn() as bank_conn:
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 6
+    with sx.get_bank_conn() as bank_conn:
         river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 2
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 2
 
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         river_tmembers = get_river_tmember_dict(bank_conn, sal_text)
     assert len(river_tmembers) == 2
     assert river_tmembers.get(bob_text) != None
@@ -221,8 +221,8 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
 ):
     # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop
     system_name = get_temp_env_name()
-    e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -234,48 +234,48 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
     sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
     sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
     sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=sal_calendar)
+    sx.save_public_calendarunit(calendar_x=sal_calendar)
 
     bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=bob_calendar)
+    sx.save_public_calendarunit(calendar_x=bob_calendar)
 
     tom_calendar = CalendarUnit(_owner=tom_text)
     tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
-    e1.save_public_calendarunit(calendar_x=tom_calendar)
+    sx.save_public_calendarunit(calendar_x=tom_calendar)
 
     ava_calendar = CalendarUnit(_owner=ava_text)
     ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
-    e1.save_public_calendarunit(calendar_x=ava_calendar)
+    sx.save_public_calendarunit(calendar_x=ava_calendar)
 
     elu_calendar = CalendarUnit(_owner=elu_text)
     elu_calendar.add_memberunit(name=ava_text, creditor_weight=2)
-    e1.save_public_calendarunit(calendar_x=elu_calendar)
+    sx.save_public_calendarunit(calendar_x=elu_calendar)
 
-    e1.refresh_bank_metrics()
+    sx.refresh_bank_metrics()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 8
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 8
 
     sqlstr_count_river_tmember = get_table_count_sqlstr("river_tmember")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    e1.set_river_sphere_for_calendar(calendar_name=sal_text)
+    sx.set_river_sphere_for_calendar(calendar_name=sal_text)
 
     # THEN
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 40
-    # with e1.get_bank_conn() as bank_conn:
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 40
+    # with sx.get_bank_conn() as bank_conn:
     #     river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 2
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 2
 
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         river_tmembers = get_river_tmember_dict(bank_conn, sal_text)
     assert len(river_tmembers) == 2
     assert river_tmembers.get(bob_text) != None
@@ -296,8 +296,8 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
 ):
     # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     system_name = get_temp_env_name()
-    e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -309,49 +309,49 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
     sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
     sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
     sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=sal_calendar)
+    sx.save_public_calendarunit(calendar_x=sal_calendar)
 
     bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=bob_calendar)
+    sx.save_public_calendarunit(calendar_x=bob_calendar)
 
     tom_calendar = CalendarUnit(_owner=tom_text)
     tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
-    e1.save_public_calendarunit(calendar_x=tom_calendar)
+    sx.save_public_calendarunit(calendar_x=tom_calendar)
 
     ava_calendar = CalendarUnit(_owner=ava_text)
     ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
-    e1.save_public_calendarunit(calendar_x=ava_calendar)
+    sx.save_public_calendarunit(calendar_x=ava_calendar)
 
     elu_calendar = CalendarUnit(_owner=elu_text)
     elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
     elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=elu_calendar)
+    sx.save_public_calendarunit(calendar_x=elu_calendar)
 
-    e1.refresh_bank_metrics()
+    sx.refresh_bank_metrics()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 9
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 9
 
     sqlstr_count_river_tmember = get_table_count_sqlstr("river_tmember")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    e1.set_river_sphere_for_calendar(calendar_name=sal_text)
+    sx.set_river_sphere_for_calendar(calendar_name=sal_text)
 
     # THEN
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 40
-    # with e1.get_bank_conn() as bank_conn:
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 40
+    # with sx.get_bank_conn() as bank_conn:
     #     river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 3
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 3
 
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         river_tmembers = get_river_tmember_dict(bank_conn, sal_text)
     assert len(river_tmembers) == 3
     assert river_tmembers.get(bob_text) != None
@@ -377,8 +377,8 @@ def test_system_set_river_sphere_for_calendar_CorrectlyDeletesPreviousRiver(
 ):
     # GIVEN 4 calendars, 100% of river flows to sal
     system_name = get_temp_env_name()
-    e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -388,46 +388,46 @@ def test_system_set_river_sphere_for_calendar_CorrectlyDeletesPreviousRiver(
     sal = CalendarUnit(_owner=sal_text)
     sal.add_memberunit(name=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
-    e1.save_public_calendarunit(calendar_x=sal)
+    sx.save_public_calendarunit(calendar_x=sal)
 
     bob = CalendarUnit(_owner=bob_text)
     bob.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=1)
     bob.add_memberunit(name=tom_text, creditor_weight=1, debtor_weight=1)
-    e1.save_public_calendarunit(calendar_x=bob)
+    sx.save_public_calendarunit(calendar_x=bob)
 
     tom = CalendarUnit(_owner=tom_text)
     tom.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=8)
-    e1.save_public_calendarunit(calendar_x=tom)
+    sx.save_public_calendarunit(calendar_x=tom)
 
     elu = CalendarUnit(_owner=elu_text)
     elu.add_memberunit(name=sal_text, creditor_weight=1, debtor_weight=8)
-    e1.save_public_calendarunit(calendar_x=elu)
-    e1.refresh_bank_metrics()
+    sx.save_public_calendarunit(calendar_x=elu)
+    sx.refresh_bank_metrics()
 
-    e1.set_river_sphere_for_calendar(calendar_name=sal_text)
-    e1.set_river_sphere_for_calendar(calendar_name=elu_text)
+    sx.set_river_sphere_for_calendar(calendar_name=sal_text)
+    sx.set_river_sphere_for_calendar(calendar_name=elu_text)
 
     sqlstr_count_river_tmember = get_table_count_sqlstr("river_tmember")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 16
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 16
 
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 3
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 3
 
     # WHEN
     # sal.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
-    # e1.save_public_calendarunit(calendar_x=sal)
-    e1.set_river_sphere_for_calendar(calendar_name=sal_text)
+    # sx.save_public_calendarunit(calendar_x=sal)
+    sx.set_river_sphere_for_calendar(calendar_name=sal_text)
 
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 16
-    with e1.get_bank_conn() as bank_conn:
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 16
+    with sx.get_bank_conn() as bank_conn:
         river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 3
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 3
 
 
 def test_system_set_river_sphere_for_calendar_CorrectlyUsesMaxFlowsCount(
@@ -435,8 +435,8 @@ def test_system_set_river_sphere_for_calendar_CorrectlyUsesMaxFlowsCount(
 ):
     # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     system_name = get_temp_env_name()
-    e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -448,47 +448,47 @@ def test_system_set_river_sphere_for_calendar_CorrectlyUsesMaxFlowsCount(
     sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
     sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
     sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=sal_calendar)
+    sx.save_public_calendarunit(calendar_x=sal_calendar)
 
     bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=bob_calendar)
+    sx.save_public_calendarunit(calendar_x=bob_calendar)
 
     tom_calendar = CalendarUnit(_owner=tom_text)
     tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
-    e1.save_public_calendarunit(calendar_x=tom_calendar)
+    sx.save_public_calendarunit(calendar_x=tom_calendar)
 
     ava_calendar = CalendarUnit(_owner=ava_text)
     ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
-    e1.save_public_calendarunit(calendar_x=ava_calendar)
+    sx.save_public_calendarunit(calendar_x=ava_calendar)
 
     elu_calendar = CalendarUnit(_owner=elu_text)
     elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
     elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=elu_calendar)
+    sx.save_public_calendarunit(calendar_x=elu_calendar)
 
-    e1.refresh_bank_metrics()
+    sx.refresh_bank_metrics()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 9
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 9
 
     sqlstr_count_river_tmember = get_table_count_sqlstr("river_tmember")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
     mtc = 13
-    e1.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=mtc)
+    sx.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=mtc)
 
     # THEN
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == mtc
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == mtc
 
 
 def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable05(
@@ -496,8 +496,8 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
 ):
     # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     system_name = get_temp_env_name()
-    e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -509,51 +509,51 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
     sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
     sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
     sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=sal_calendar)
+    sx.save_public_calendarunit(calendar_x=sal_calendar)
 
     bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=bob_calendar)
+    sx.save_public_calendarunit(calendar_x=bob_calendar)
 
     tom_calendar = CalendarUnit(_owner=tom_text)
     tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
-    e1.save_public_calendarunit(calendar_x=tom_calendar)
+    sx.save_public_calendarunit(calendar_x=tom_calendar)
 
     ava_calendar = CalendarUnit(_owner=ava_text)
     ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
-    e1.save_public_calendarunit(calendar_x=ava_calendar)
+    sx.save_public_calendarunit(calendar_x=ava_calendar)
 
     elu_calendar = CalendarUnit(_owner=elu_text)
     elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
     elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=elu_calendar)
+    sx.save_public_calendarunit(calendar_x=elu_calendar)
 
-    e1.refresh_bank_metrics()
+    sx.refresh_bank_metrics()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_ledger) == 9
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 9
 
     sqlstr_count_river_tmember = get_table_count_sqlstr("river_tmember")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    e1.set_river_sphere_for_calendar(calendar_name=sal_text)
+    sx.set_river_sphere_for_calendar(calendar_name=sal_text)
 
     # THEN
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_flow) == 40
-    with e1.get_bank_conn() as bank_conn:
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 40
+    with sx.get_bank_conn() as bank_conn:
         river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
-    assert get_single_result_back(e1.get_bank_conn(), sqlstr_count_river_tmember) == 3
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 3
 
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         river_tmembers = get_river_tmember_dict(bank_conn, sal_text)
-    river_tmembers = e1.get_river_tmembers(sal_text)
+    river_tmembers = sx.get_river_tmembers(sal_text)
     assert len(river_tmembers) == 3
     assert river_tmembers.get(bob_text) != None
     assert river_tmembers.get(tom_text) != None
@@ -578,8 +578,8 @@ def test_system_set_river_sphere_for_calendar_CorrectlyBuildsASingleContinuousRa
 ):
     # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     system_name = get_temp_env_name()
-    e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -591,30 +591,30 @@ def test_system_set_river_sphere_for_calendar_CorrectlyBuildsASingleContinuousRa
     sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
     sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
     sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=sal_calendar)
+    sx.save_public_calendarunit(calendar_x=sal_calendar)
 
     bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=bob_calendar)
+    sx.save_public_calendarunit(calendar_x=bob_calendar)
 
     tom_calendar = CalendarUnit(_owner=tom_text)
     tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
-    e1.save_public_calendarunit(calendar_x=tom_calendar)
+    sx.save_public_calendarunit(calendar_x=tom_calendar)
 
     ava_calendar = CalendarUnit(_owner=ava_text)
     ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
-    e1.save_public_calendarunit(calendar_x=ava_calendar)
+    sx.save_public_calendarunit(calendar_x=ava_calendar)
 
     elu_calendar = CalendarUnit(_owner=elu_text)
     elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
     elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=elu_calendar)
+    sx.save_public_calendarunit(calendar_x=elu_calendar)
 
-    e1.refresh_bank_metrics()
+    sx.refresh_bank_metrics()
 
     # WHEN
-    e1.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=100)
+    sx.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=100)
 
     # THEN
     count_range_fails_sql = """
@@ -639,7 +639,7 @@ def test_system_set_river_sphere_for_calendar_CorrectlyBuildsASingleContinuousRa
     ;
     
     """
-    with e1.get_bank_conn() as bank_conn:
+    with sx.get_bank_conn() as bank_conn:
         assert get_single_result_back(bank_conn, count_range_fails_sql) == 0
 
 
@@ -648,8 +648,8 @@ def test_system_set_river_sphere_for_calendar_CorrectlyUpatesCalendarMemberUnits
 ):
     # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     system_name = get_temp_env_name()
-    e1 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
-    e1.create_dirs_if_null(in_memory_bank=True)
+    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -661,30 +661,30 @@ def test_system_set_river_sphere_for_calendar_CorrectlyUpatesCalendarMemberUnits
     sal_calendar_src.add_memberunit(name=bob_text, creditor_weight=2, debtor_weight=2)
     sal_calendar_src.add_memberunit(name=tom_text, creditor_weight=2, debtor_weight=1)
     sal_calendar_src.add_memberunit(name=ava_text, creditor_weight=2, debtor_weight=2)
-    e1.save_public_calendarunit(calendar_x=sal_calendar_src)
+    sx.save_public_calendarunit(calendar_x=sal_calendar_src)
 
     bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    e1.save_public_calendarunit(calendar_x=bob_calendar)
+    sx.save_public_calendarunit(calendar_x=bob_calendar)
 
     tom_calendar = CalendarUnit(_owner=tom_text)
     tom_calendar.add_memberunit(name=sal_text)
-    e1.save_public_calendarunit(calendar_x=tom_calendar)
+    sx.save_public_calendarunit(calendar_x=tom_calendar)
 
     ava_calendar = CalendarUnit(_owner=ava_text)
     ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
-    e1.save_public_calendarunit(calendar_x=ava_calendar)
+    sx.save_public_calendarunit(calendar_x=ava_calendar)
 
     elu_calendar = CalendarUnit(_owner=elu_text)
     elu_calendar.add_memberunit(name=ava_text, creditor_weight=8)
     elu_calendar.add_memberunit(name=sal_text, creditor_weight=2)
-    e1.save_public_calendarunit(calendar_x=elu_calendar)
+    sx.save_public_calendarunit(calendar_x=elu_calendar)
 
-    e1.refresh_bank_metrics()
-    sal_calendar_before = e1.get_public_calendar(owner=sal_text)
+    sx.refresh_bank_metrics()
+    sal_calendar_before = sx.get_public_calendar(owner=sal_text)
 
-    e1.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=100)
+    sx.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=100)
     assert len(sal_calendar_before._members) == 3
     print(f"{len(sal_calendar_before._members)=}")
     bob_member = sal_calendar_before._members.get(bob_text)
@@ -698,13 +698,13 @@ def test_system_set_river_sphere_for_calendar_CorrectlyUpatesCalendarMemberUnits
     assert ava_member._bank_tax_diff is None
 
     # WHEN
-    e1.set_river_sphere_for_calendar(calendar_name=sal_text)
+    sx.set_river_sphere_for_calendar(calendar_name=sal_text)
 
     # THEN
-    sal_river_tmembers = e1.get_river_tmembers(calendar_name=sal_text)
+    sal_river_tmembers = sx.get_river_tmembers(calendar_name=sal_text)
     assert len(sal_river_tmembers) == 3
 
-    sal_calendar_after = e1.get_public_calendar(owner=sal_text)
+    sal_calendar_after = sx.get_public_calendar(owner=sal_text)
 
     bob_tmember = sal_river_tmembers.get(bob_text)
     tom_tmember = sal_river_tmembers.get(tom_text)
