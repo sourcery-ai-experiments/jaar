@@ -229,7 +229,7 @@ def test_system_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr) == 3
 
 
-def test_system_set_calendar_attr_defined_by_system_CorrectlyPopulatesCalendar_Groupunit_Memberlinks(
+def test_system_set_calendar_bank_attrs_CorrectlyPopulatesCalendar_Groupunit_Memberlinks(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -279,7 +279,7 @@ def test_system_set_calendar_attr_defined_by_system_CorrectlyPopulatesCalendar_G
     sx.save_public_calendarunit(calendar_x=tom_calendar)
     sx.save_public_calendarunit(calendar_x=ava_calendar)
 
-    sx.set_calendar_attr_defined_by_system(calendar_name=sal_text)
+    sx.set_calendar_bank_attrs(calendar_name=sal_text)
     e1_sal_calendar = sx.get_public_calendar(owner=sal_text)
     assert len(e1_sal_calendar._groups.get(swim_group_text)._members) == 1
 
@@ -289,7 +289,7 @@ def test_system_set_calendar_attr_defined_by_system_CorrectlyPopulatesCalendar_G
     swim_group_unit.set_attr(_memberlinks_set_by_system_road=sal_swim_road)
     sal_calendar.set_groupunit(groupunit=swim_group_unit)
     sx.save_public_calendarunit(calendar_x=sal_calendar)
-    sx.set_calendar_attr_defined_by_system(calendar_name=sal_text)
+    sx.set_calendar_bank_attrs(calendar_name=sal_text)
 
     # THEN
     e1_sal_calendar = sx.get_public_calendar(owner=sal_text)

@@ -43,7 +43,7 @@ class SystemUnit:
     _personunits: dict[str:PersonUnit] = None
     _bank_db = None
 
-    def set_calendar_attr_defined_by_system(self, calendar_name: str):
+    def set_calendar_bank_attrs(self, calendar_name: str):
         calendar_obj = self.get_public_calendar(calendar_name)
 
         for groupunit_x in calendar_obj._groups.values():
