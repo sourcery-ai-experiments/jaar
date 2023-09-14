@@ -1,8 +1,4 @@
-from src.system.system import SystemUnit
-from src.calendar.calendar import CalendarUnit
-from src.calendar.idea import IdeaKid
-from src.calendar.group import groupunit_shop
-from src.calendar.member import memberlink_shop
+from src.system.system import systemunit_shop, SystemUnit
 from src.calendar.x_func import delete_dir as x_func_delete_dir
 from os import path as os_path
 from src.system.examples.system_env_kit import (
@@ -11,21 +7,14 @@ from src.system.examples.system_env_kit import (
     env_dir_setup_cleanup,
 )
 from pytest import raises as pytest_raises
-from src.system.y_func import check_connection, get_single_result_back
-from sqlite3 import connect as sqlite3_connect, Connection
-from src.system.bank_sqlstr import (
-    get_db_tables,
-    get_groupunit_catalog_table_count,
-    get_table_count_sqlstr,
-)
+from src.system.y_func import check_connection
 
 
 def test_system_create_bank_db_CreatesBankDBIfItDoesNotExist(
     env_dir_setup_cleanup,
 ):
     # GIVEN create system
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
-    sx.create_dirs_if_null()
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
 
     # clear out any bank.db file
     x_func_delete_dir(dir=sx.get_bank_db_path())
@@ -42,7 +31,7 @@ def test_system_create_bank_db_CanCreateBankInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN create system
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     # clear out any bank.db file
@@ -62,7 +51,7 @@ def test_system_refresh_bank_metrics_CanConnectToBankInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN create system
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     # sx._create_bank_db(in_memory=True)
     assert os_path.exists(sx.get_bank_db_path()) == False

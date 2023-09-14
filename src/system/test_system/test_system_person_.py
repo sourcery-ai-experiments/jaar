@@ -1,4 +1,4 @@
-from src.system.system import SystemUnit
+from src.system.system import systemunit_shop
 from src.system.person import personunit_shop
 from src.system.examples.system_env_kit import (
     get_temp_env_dir,
@@ -13,7 +13,7 @@ from pytest import raises as pytest_raises
 def test_system_set_person_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     system_name = get_temp_env_name()
-    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
     print(f"create env '{system_name}' directories.")
     sx.create_dirs_if_null(in_memory_bank=True)
     timmy_text = "timmy"
@@ -34,7 +34,7 @@ def test_system_create_personunit_from_public_RaisesErrorWhenPersonDoesNotExist(
 ):
     # GIVEN
     system_name = get_temp_env_name()
-    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
 
     # WHEN / THEN
     bobs_text = "bobs wurld"
@@ -49,7 +49,7 @@ def test_system_create_personunit_from_public_RaisesErrorWhenPersonDoesNotExist(
 def test_system_rename_personunit_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     system_name = get_temp_env_name()
-    e5 = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    e5 = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
     e5.create_dirs_if_null(in_memory_bank=True)
     old_bob_text = "old Bob"
     old_bob_dir = f"{e5.get_persons_dir()}/{old_bob_text}"
@@ -89,7 +89,7 @@ def test_system_rename_personunit_WorksCorrectly(env_dir_setup_cleanup):
 def test_system_del_person_dir_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     system_name = get_temp_env_name()
-    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
     xia_text = "Xia"
     xia_dir = f"{sx.get_persons_dir()}/{xia_text}"
     xia_file_path = f"{xia_dir}/isol_calendar.json"

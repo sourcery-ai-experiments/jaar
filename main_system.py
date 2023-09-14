@@ -13,7 +13,7 @@ from PyQt5.QtWidgets import (
     QApplication,
     QMainWindow,
 )
-from src.system.system import SystemUnit
+from src.system.system import systemunit_shop
 from src.system.examples.system_env_kit import (
     create_example_systems_list,
     setup_test_example_environment,
@@ -121,7 +121,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.ignore_calendar_x = None
         setup_test_example_environment()
         first_env = "ex5"
-        self.system_x = SystemUnit(name=first_env, systems_dir=get_test_systems_dir())
+        self.system_x = systemunit_shop(
+            name=first_env, systems_dir=get_test_systems_dir()
+        )
         self.refresh_system()
         self.system_name_combo_refresh()
         self.system_name_combo.setCurrentText(first_env)
@@ -147,7 +149,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def system_load_from_file(self):
         system_selected = self.system_name_combo.currentText()
-        self.system_x = SystemUnit(
+        self.system_x = systemunit_shop(
             name=system_selected, systems_dir=get_test_systems_dir()
         )
         self.system_x.create_dirs_if_null(in_memory_bank=False)

@@ -1,4 +1,4 @@
-from src.system.system import SystemUnit
+from src.system.system import systemunit_shop
 from src.system.examples.system_env_kit import (
     get_temp_env_name,
     env_dir_setup_cleanup,
@@ -10,7 +10,7 @@ from src.system.examples.example_persons import get_calendar_assignment_laundry_
 
 
 def test_system_ChangingOnePersonsFactChangesAnotherAgenda(env_dir_setup_cleanup):
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     # GIVEN
@@ -72,7 +72,7 @@ def test_system_ChangingOnePersonsFactChangesAnotherAgenda(env_dir_setup_cleanup
 
 
 def test_system_create_task_CorrectlyCreatesTask(env_dir_setup_cleanup):
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     america_text = "America"
@@ -105,7 +105,7 @@ def test_system_create_task_CorrectlyCreatesTask(env_dir_setup_cleanup):
         from_person=america_text,
         to_group=joachim_text,
         group_members={joachim_text},
-        task_road=task_road,
+        task_road=do_laundry_road,
         required_base=req_base_road,
         required_picks=req_picks,
         required_not_picks=req_not_picks,

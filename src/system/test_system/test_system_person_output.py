@@ -1,4 +1,4 @@
-from src.system.system import SystemUnit
+from src.system.system import systemunit_shop
 from src.calendar.examples.example_calendars import (
     calendar_v002 as ex_cxs_calendar_v002,
 )
@@ -18,7 +18,7 @@ def test_system_get_output_calendar_ReturnsCorrectCalendarObjScenario1(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     input_cx = example_persons_get_6node_calendar()
     sx.save_public_calendar(input_cx)
@@ -90,7 +90,7 @@ def test_system_get_output_calendar_ReturnsCorrectCalendarObjScenario2(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     cx1 = example_persons_get_6node_calendar()
     cx2 = ex_cxs_calendar_v002()
@@ -147,7 +147,7 @@ def test_personunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
     # GIVEN
     env_dir = get_test_systems_dir()
     system_name = get_temp_env_name()
-    sx = SystemUnit(name=system_name, systems_dir=env_dir)
+    sx = systemunit_shop(name=system_name, systems_dir=env_dir)
     sx.create_dirs_if_null(in_memory_bank=True)
     # px = personunit_shop(name=person1_text, env_dir=env_dir)
 

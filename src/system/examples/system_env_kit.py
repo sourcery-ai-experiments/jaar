@@ -1,5 +1,5 @@
 # from lw.calendar import CalendarUnit
-from src.system.system import SystemUnit
+from src.system.system import SystemUnit, systemunit_shop
 from os import listdir as os_listdir, rename as os_rename, path as os_path
 from pytest import fixture as pytest_fixture
 from src.calendar.examples.example_calendars import (
@@ -81,7 +81,7 @@ def setup_test_example_environment():
 
 def _delete_and_set_ex3():
     system_name = "ex3"
-    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -135,7 +135,7 @@ def _delete_and_set_ex3():
 
 def _delete_and_set_ex4():
     system_name = "ex4"
-    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.save_public_calendar(example_persons_get_7nodeJRootWithH_calendar())
@@ -148,7 +148,7 @@ def _delete_and_set_ex4():
 
 def _delete_and_set_ex5():
     system_name = "ex5"
-    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -212,7 +212,7 @@ def _delete_and_set_ex5():
 
 def _delete_and_set_ex6():
     system_name = "ex6"
-    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=False)
 
@@ -251,7 +251,7 @@ def _delete_and_set_ex6():
 
 
 def create_example_system(system_name: str):
-    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
 

@@ -1,4 +1,4 @@
-from src.system.system import SystemUnit
+from src.system.system import SystemUnit, systemunit_shop
 from src.calendar.x_func import delete_dir as x_func_delete_dir
 from os import path as os_path
 from src.system.examples.system_env_kit import (
@@ -74,7 +74,7 @@ def test_rename_example_system_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup
     x_func_delete_dir(dir=new_system_dir)
     print(f"{new_system_dir=}")
 
-    sx = SystemUnit(name=old_system_name, systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=old_system_name, systems_dir=get_test_systems_dir())
     # x_func_delete_dir(sx.get_object_root_dir())
     # print(f"{sx.get_object_root_dir()=}")
 
@@ -134,7 +134,7 @@ def test_copy_evaluation_system_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup
     old_calendars_dir = f"{old_system_dir}/calendars"
     old_persons_dir = f"{old_system_dir}/persons"
 
-    sx = SystemUnit(name=old_system_name, systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=old_system_name, systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null()
 
     assert os_path.exists(old_system_dir)
@@ -191,7 +191,7 @@ def test_copy_evaluation_system_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup
 def test_copy_evaluation_system_CorrectlyRaisesError(env_dir_setup_cleanup):
     # GIVEN create system
     old_system_name = get_temp_env_name()
-    sx = SystemUnit(name=old_system_name, systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=old_system_name, systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null()
 
     # WHEN/THEN
@@ -201,3 +201,19 @@ def test_copy_evaluation_system_CorrectlyRaisesError(env_dir_setup_cleanup):
         str(excinfo.value)
         == f"Cannot copy system to '{sx.get_object_root_dir()}' directory because '{sx.get_object_root_dir()}' exists."
     )
+
+
+def test_systemunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
+    # GIVEN
+    park_text = get_temp_env_name()
+    system_dir = f"src/system/examples/systems/{park_text}"
+    assert os_path.exists(system_dir) is False
+
+    # WHEN
+    sx = systemunit_shop(name=park_text, systems_dir=get_test_systems_dir())
+
+    # THEN
+    assert sx != None
+    assert sx.name == park_text
+    assert os_path.exists(system_dir)
+    assert sx._bank_db != None

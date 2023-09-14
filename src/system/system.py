@@ -476,3 +476,16 @@ class SystemUnit:
     def get_output_calendar(self, person_name: str) -> CalendarUnit:
         person_x = self.get_person_obj(name=person_name)
         return person_x._admin.get_remelded_output_calendar()
+
+
+def systemunit_shop(
+    name: str,
+    systems_dir: str,
+    _personunits: dict[str:PersonUnit] = None,
+    in_memory_bank: bool = None,
+):
+    if in_memory_bank is None:
+        in_memory_bank = True
+    system_x = SystemUnit(name=name, systems_dir=systems_dir, _personunits=_personunits)
+    system_x.create_dirs_if_null(in_memory_bank=in_memory_bank)
+    return system_x

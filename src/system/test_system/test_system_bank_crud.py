@@ -1,4 +1,4 @@
-from src.system.system import SystemUnit
+from src.system.system import systemunit_shop
 from src.calendar.calendar import CalendarUnit
 from src.calendar.idea import IdeaKid
 from src.calendar.group import groupunit_shop
@@ -17,7 +17,7 @@ from src.system.bank_sqlstr import (
 
 def test_system_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
     # GIVEN create system
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
 
     # WHEN
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -57,7 +57,7 @@ def test_system_refresh_bank_metrics_CorrectlyDeletesOldBankInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -81,7 +81,7 @@ def test_system_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=False)
 
     bob_text = "bob"
@@ -105,7 +105,7 @@ def test_system_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -151,7 +151,7 @@ def test_system_refresh_bank_metrics_CorrectlyPopulatesCalendarTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -178,7 +178,7 @@ def test_system_refresh_bank_metrics_CorrectlyPopulatesCalendarTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -205,7 +205,7 @@ def test_system_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -233,7 +233,7 @@ def test_system_set_calendar_bank_attrs_CorrectlyPopulatesCalendar_Groupunit_Mem
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     # create 4 calendars, 1 with group "swimming expert" linked to 1 member

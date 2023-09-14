@@ -1,4 +1,4 @@
-from src.system.system import SystemUnit
+from src.system.system import systemunit_shop
 from src.calendar.calendar import CalendarUnit
 from src.calendar.member import memberunit_shop
 from src.calendar.road import get_global_root_label as root_label
@@ -47,7 +47,7 @@ def test_system_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -165,7 +165,7 @@ def test_RiverFlowUnit_flow_returned_WorksCorrectly():
 def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cleanup):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -236,7 +236,7 @@ def test_river_flow_insert_CorrectlyPopulatesTable01(
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -335,7 +335,7 @@ def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -431,7 +431,7 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -472,7 +472,7 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -560,7 +560,7 @@ def test_system_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -582,7 +582,7 @@ def test_system_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
 def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -614,7 +614,7 @@ def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup
 
 def test_system_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     # GIVEN
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -655,7 +655,7 @@ def test_system_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -683,7 +683,7 @@ def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -743,7 +743,7 @@ def test_system_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTabl
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
 
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -770,7 +770,7 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = SystemUnit(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"

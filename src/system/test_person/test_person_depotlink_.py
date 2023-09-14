@@ -11,7 +11,7 @@ from src.system.examples.person_env_kit import (
     create_calendar_file,
 )
 from src.system.examples.system_env_kit import get_temp_env_name
-from src.system.system import SystemUnit
+from src.system.system import systemunit_shop
 from os import path as os_path
 from pytest import raises as pytest_raises
 from src.calendar.calendar import CalendarUnit, get_from_json as calendar_get_from_json
@@ -245,8 +245,7 @@ def test_personunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
     # GIVEN
     env_dir = get_temp_person_dir()
     system_name = get_temp_env_name()
-    sx = SystemUnit(name=system_name, systems_dir=env_dir)
-    sx.create_dirs_if_null()
+    sx = systemunit_shop(name=system_name, systems_dir=env_dir)
     yao_text = "Yao"
     sx.create_new_personunit(person_name=yao_text)
     yao_calendar = sx.get_person_obj(name=yao_text)

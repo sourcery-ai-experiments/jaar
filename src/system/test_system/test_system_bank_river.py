@@ -1,4 +1,4 @@
-from src.system.system import SystemUnit
+from src.system.system import systemunit_shop
 from src.calendar.calendar import CalendarUnit
 from src.system.examples.system_env_kit import (
     get_temp_env_name,
@@ -19,7 +19,7 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
 ):
     # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
     system_name = get_temp_env_name()
-    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -90,7 +90,7 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
 ):
     # GIVEN 4 calendars, 100% of river flows to sal
     system_name = get_temp_env_name()
-    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -153,7 +153,7 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
 ):
     # GIVEN 4 calendars, 85% of river flows to sal
     system_name = get_temp_env_name()
-    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -221,7 +221,7 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
 ):
     # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop
     system_name = get_temp_env_name()
-    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -296,7 +296,7 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
 ):
     # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     system_name = get_temp_env_name()
-    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -377,7 +377,7 @@ def test_system_set_river_sphere_for_calendar_CorrectlyDeletesPreviousRiver(
 ):
     # GIVEN 4 calendars, 100% of river flows to sal
     system_name = get_temp_env_name()
-    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -435,7 +435,7 @@ def test_system_set_river_sphere_for_calendar_CorrectlyUsesMaxFlowsCount(
 ):
     # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     system_name = get_temp_env_name()
-    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -496,7 +496,7 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
 ):
     # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     system_name = get_temp_env_name()
-    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -578,7 +578,7 @@ def test_system_set_river_sphere_for_calendar_CorrectlyBuildsASingleContinuousRa
 ):
     # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     system_name = get_temp_env_name()
-    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -648,7 +648,7 @@ def test_system_set_river_sphere_for_calendar_CorrectlyUpatesCalendarMemberUnits
 ):
     # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     system_name = get_temp_env_name()
-    sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
+    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
