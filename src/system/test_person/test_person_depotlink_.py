@@ -249,15 +249,15 @@ def test_personunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
     sx.create_dirs_if_null()
     yao_text = "Yao"
     sx.create_new_personunit(person_name=yao_text)
-    yao_calendar = sx.sys_get_person_obj(name=yao_text)
+    yao_calendar = sx.get_person_obj(name=yao_text)
     assert len(yao_calendar._admin.get_remelded_output_calendar().get_idea_list()) == 1
 
     ernie_text = "ernie"
     ernie_calendar = get_cal2nodes(_owner=ernie_text)
     steve_text = "steve"
     old_steve_calendar = get_cal2nodes(_owner=steve_text)
-    sx.save_public_calendarunit(calendar_x=ernie_calendar)
-    sx.save_public_calendarunit(calendar_x=old_steve_calendar)
+    sx.save_public_calendar(calendar_x=ernie_calendar)
+    sx.save_public_calendar(calendar_x=old_steve_calendar)
     yao_calendar.set_depot_calendar(
         calendar_x=ernie_calendar, depotlink_type="blind_trust"
     )
@@ -267,7 +267,7 @@ def test_personunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
 
     assert len(yao_calendar._admin.get_remelded_output_calendar().get_idea_list()) == 4
     new_steve_calendar = get_cal3nodes(_owner=steve_text)
-    sx.save_public_calendarunit(calendar_x=new_steve_calendar)
+    sx.save_public_calendar(calendar_x=new_steve_calendar)
     print(f"{env_dir=} {yao_calendar._admin._calendars_public_dir=}")
     # for file_name in x_func_dir_files(dir_path=env_dir):
     #     print(f"{bob_cx._admin._calendars_public_dir=} {file_name=}")

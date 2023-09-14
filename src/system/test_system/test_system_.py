@@ -51,7 +51,7 @@ def test_system_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.exists(persons_dir)
     assert os_path.exists(bank_file_path)
     assert sx.get_object_root_dir() == system_dir
-    assert sx.get_calendars_dir() == calendars_dir
+    assert sx.get_public_dir() == calendars_dir
     assert sx.get_persons_dir() == persons_dir
     assert sx.get_bank_db_path() == bank_file_path
 
@@ -85,7 +85,7 @@ def test_rename_example_system_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup
     assert os_path.exists(old_system_file_path)
     assert os_path.exists(old_calendars_dir)
     assert os_path.exists(old_persons_dir)
-    assert sx.get_calendars_dir() == old_calendars_dir
+    assert sx.get_public_dir() == old_calendars_dir
     assert sx.get_persons_dir() == old_persons_dir
 
     assert os_path.exists(new_system_dir) is False
@@ -93,7 +93,7 @@ def test_rename_example_system_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup
     assert os_path.exists(new_system_file_path) is False
     assert os_path.exists(new_calendars_dir) is False
     assert os_path.exists(new_persons_dir) is False
-    assert sx.get_calendars_dir() != new_calendars_dir
+    assert sx.get_public_dir() != new_calendars_dir
     assert sx.get_persons_dir() != new_persons_dir
     assert sx.name != new_system_name
 
@@ -106,7 +106,7 @@ def test_rename_example_system_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup
     assert os_path.exists(old_system_file_path) is False
     assert os_path.exists(old_calendars_dir) is False
     assert os_path.exists(old_persons_dir) is False
-    assert sx.get_calendars_dir() != old_calendars_dir
+    assert sx.get_public_dir() != old_calendars_dir
     assert sx.get_persons_dir() != old_persons_dir
 
     assert os_path.exists(new_system_dir)
@@ -114,7 +114,7 @@ def test_rename_example_system_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup
     assert os_path.exists(new_system_file_path)
     assert os_path.exists(new_calendars_dir)
     assert os_path.exists(new_persons_dir)
-    assert sx.get_calendars_dir() == new_calendars_dir
+    assert sx.get_public_dir() == new_calendars_dir
     assert sx.get_persons_dir() == new_persons_dir
     assert sx.name == new_system_name
 
@@ -142,7 +142,7 @@ def test_copy_evaluation_system_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup
     assert os_path.exists(old_system_file_path)
     assert os_path.exists(old_calendars_dir)
     assert os_path.exists(old_persons_dir)
-    assert sx.get_calendars_dir() == old_calendars_dir
+    assert sx.get_public_dir() == old_calendars_dir
     assert sx.get_persons_dir() == old_persons_dir
 
     new_system_name = "ex_env1"
@@ -157,7 +157,7 @@ def test_copy_evaluation_system_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup
     assert os_path.exists(new_system_file_path) is False
     assert os_path.exists(new_calendars_dir) is False
     assert os_path.exists(new_persons_dir) is False
-    assert sx.get_calendars_dir() != new_calendars_dir
+    assert sx.get_public_dir() != new_calendars_dir
     assert sx.get_persons_dir() != new_persons_dir
     assert sx.name != new_system_name
 
@@ -170,7 +170,7 @@ def test_copy_evaluation_system_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup
     assert os_path.exists(old_system_file_path)
     assert os_path.exists(old_calendars_dir)
     assert os_path.exists(old_persons_dir)
-    assert sx.get_calendars_dir() == old_calendars_dir
+    assert sx.get_public_dir() == old_calendars_dir
     assert sx.get_persons_dir() == old_persons_dir
 
     assert os_path.exists(new_system_dir)
@@ -178,7 +178,7 @@ def test_copy_evaluation_system_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup
     assert os_path.exists(new_system_file_path)
     assert os_path.exists(new_calendars_dir)
     assert os_path.exists(new_persons_dir)
-    assert sx.get_calendars_dir() != new_calendars_dir
+    assert sx.get_public_dir() != new_calendars_dir
     assert sx.get_persons_dir() != new_persons_dir
     assert sx.name != new_system_name
 

@@ -5,7 +5,7 @@ from EditMain import EditMainView
 from PyQt5 import QtCore as qtc
 from src.calendar.calendar import (
     CalendarUnit,
-    get_from_json as calendarunit_get_from_json,
+    get_from_json as get_calendar_from_json,
 )
 from sys import argv as sys_argv, exit as sys_exit
 from PyQt5.QtWidgets import (
@@ -174,7 +174,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._person_load(person_name=person_x_name)
 
     def _person_load(self, person_name: str):
-        self.system_x.load_personunit(name=person_name)
+        self.system_x.create_personunit_from_public(name=person_name)
         self.person_x = self.system_x._personunits.get(person_name)
         self.person_name.setText(self.person_x._admin.name)
         self.refresh_person()
@@ -231,7 +231,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_system()
 
     def calendar_insert(self):
-        self.system_x.save_public_calendarunit(
+        self.system_x.save_public_calendar(
             calendar_x=CalendarUnit(_owner=self.calendar_name.text())
         )
         self.refresh_system()
@@ -242,13 +242,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         typed_in = self.calendar_name.text()
         if currently_selected != typed_in:
-            self.system_x.rename_calendar_in_calendars_dir(
+            self.system_x.rename_public_calendar(
                 old_label=currently_selected, new_label=typed_in
             )
             self.refresh_system()
 
     def calendar_delete(self):
-        self.system_x.del_calendarunit_from_calendars_dir(
+        self.system_x.del_public_calendar(
             calendar_x_label=self.calendars_table.item(
                 self.calendars_table.currentRow(), 0
             ).text()
@@ -287,7 +287,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 dest_dir=self.person_x._admin._calendars_public_dir,
                 file_name=f"{calendar_owner}.json",
             )
-            calendar_x = calendarunit_get_from_json(calendar_json)
+            calendar_x = get_calendar_from_json(calendar_json)
             self.person_x.set_depot_calendar(
                 calendar_x=calendar_x,
                 depotlink_type=self.depotlink_type_combo.currentText(),
@@ -317,13 +317,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_person()
 
     def get_calendar_owner_list(self):
-        calendars_owner_list = []
-        if self.system_x != None:
-            calendars_owner_list.extend(
-                [calendar._owner]
-                for calendar in self.system_x.get_calendars_dir_list_of_obj()
+        calendars_list = []
+        for file_name in self.get_public_dir_file_names_list():
+            calendar_json = x_func_open_file(
+                dest_dir=self.get_public_dir(), file_name=file_name
             )
-        return calendars_owner_list
+            calendars_list.append(get_calendar_from_json(cx_json=calendar_json))
+        return calendars_list
 
     def get_person_name_list(self):
         persons_owner_list = []

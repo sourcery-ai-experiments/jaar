@@ -65,7 +65,7 @@ def test_system_refresh_bank_metrics_CorrectlyDeletesOldBankInMemory(
 
     bob = CalendarUnit(_owner=bob_text)
     bob.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
-    sx.save_public_calendarunit(calendar_x=bob)
+    sx.save_public_calendar(calendar_x=bob)
     sx.refresh_bank_metrics()
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 1
@@ -89,7 +89,7 @@ def test_system_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
 
     bob = CalendarUnit(_owner=bob_text)
     bob.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
-    sx.save_public_calendarunit(calendar_x=bob)
+    sx.save_public_calendar(calendar_x=bob)
     sx.refresh_bank_metrics()
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 1
@@ -117,25 +117,25 @@ def test_system_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     bob.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
     bob.add_memberunit(name=sal_text, creditor_weight=1, debtor_weight=4)
     bob.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
-    sx.save_public_calendarunit(calendar_x=bob)
+    sx.save_public_calendar(calendar_x=bob)
 
     sal = CalendarUnit(_owner=sal_text)
     sal.add_memberunit(name=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
     sal.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
-    sx.save_public_calendarunit(calendar_x=sal)
+    sx.save_public_calendar(calendar_x=sal)
 
     tom = CalendarUnit(_owner=tom_text)
     tom.add_memberunit(name=bob_text, creditor_weight=3, debtor_weight=1)
     tom.add_memberunit(name=sal_text, creditor_weight=1, debtor_weight=4)
     tom.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
-    sx.save_public_calendarunit(calendar_x=tom)
+    sx.save_public_calendar(calendar_x=tom)
 
     elu = CalendarUnit(_owner=elu_text)
     elu.add_memberunit(name=bob_text, creditor_weight=3, debtor_weight=1)
     elu.add_memberunit(name=tom_text, creditor_weight=1, debtor_weight=4)
     elu.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
-    sx.save_public_calendarunit(calendar_x=elu)
+    sx.save_public_calendar(calendar_x=elu)
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 0
@@ -159,10 +159,10 @@ def test_system_refresh_bank_metrics_CorrectlyPopulatesCalendarTable01(
     sal_text = "sal"
     elu_text = "elu"
 
-    sx.save_public_calendarunit(calendar_x=CalendarUnit(_owner=bob_text))
-    sx.save_public_calendarunit(calendar_x=CalendarUnit(_owner=tom_text))
-    sx.save_public_calendarunit(calendar_x=CalendarUnit(_owner=sal_text))
-    sx.save_public_calendarunit(calendar_x=CalendarUnit(_owner=elu_text))
+    sx.save_public_calendar(calendar_x=CalendarUnit(_owner=bob_text))
+    sx.save_public_calendar(calendar_x=CalendarUnit(_owner=tom_text))
+    sx.save_public_calendar(calendar_x=CalendarUnit(_owner=sal_text))
+    sx.save_public_calendar(calendar_x=CalendarUnit(_owner=elu_text))
 
     sqlstr_count_calendars = get_table_count_sqlstr("calendarunits")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_calendars) == 0
@@ -186,10 +186,10 @@ def test_system_refresh_bank_metrics_CorrectlyPopulatesCalendarTable01(
     sal_text = "sal"
     elu_text = "elu"
 
-    sx.save_public_calendarunit(calendar_x=CalendarUnit(_owner=bob_text))
-    sx.save_public_calendarunit(calendar_x=CalendarUnit(_owner=tom_text))
-    sx.save_public_calendarunit(calendar_x=CalendarUnit(_owner=sal_text))
-    sx.save_public_calendarunit(calendar_x=CalendarUnit(_owner=elu_text))
+    sx.save_public_calendar(calendar_x=CalendarUnit(_owner=bob_text))
+    sx.save_public_calendar(calendar_x=CalendarUnit(_owner=tom_text))
+    sx.save_public_calendar(calendar_x=CalendarUnit(_owner=sal_text))
+    sx.save_public_calendar(calendar_x=CalendarUnit(_owner=elu_text))
 
     sqlstr_count_calendars = get_table_count_sqlstr("calendarunits")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_calendars) == 0
@@ -216,8 +216,8 @@ def test_system_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     bob_calendar.add_memberunit(name=tom_text)
     tom_calendar.add_memberunit(name=bob_text)
     tom_calendar.add_memberunit(name=elu_text)
-    sx.save_public_calendarunit(calendar_x=bob_calendar)
-    sx.save_public_calendarunit(calendar_x=tom_calendar)
+    sx.save_public_calendar(calendar_x=bob_calendar)
+    sx.save_public_calendar(calendar_x=tom_calendar)
 
     sqlstr = get_table_count_sqlstr("groupunit_catalog")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr) == 0
@@ -274,10 +274,10 @@ def test_system_set_calendar_bank_attrs_CorrectlyPopulatesCalendar_Groupunit_Mem
     swim_group_unit.set_memberlink(memberlink=bob_link)
     sal_calendar.set_groupunit(groupunit=swim_group_unit)
 
-    sx.save_public_calendarunit(calendar_x=sal_calendar)
-    sx.save_public_calendarunit(calendar_x=bob_calendar)
-    sx.save_public_calendarunit(calendar_x=tom_calendar)
-    sx.save_public_calendarunit(calendar_x=ava_calendar)
+    sx.save_public_calendar(calendar_x=sal_calendar)
+    sx.save_public_calendar(calendar_x=bob_calendar)
+    sx.save_public_calendar(calendar_x=tom_calendar)
+    sx.save_public_calendar(calendar_x=ava_calendar)
 
     sx.set_calendar_bank_attrs(calendar_name=sal_text)
     e1_sal_calendar = sx.get_public_calendar(owner=sal_text)
@@ -288,7 +288,7 @@ def test_system_set_calendar_bank_attrs_CorrectlyPopulatesCalendar_Groupunit_Mem
     sal_swim_road = f"{sal_sports_road},{swim_text}"
     swim_group_unit.set_attr(_memberlinks_set_by_system_road=sal_swim_road)
     sal_calendar.set_groupunit(groupunit=swim_group_unit)
-    sx.save_public_calendarunit(calendar_x=sal_calendar)
+    sx.save_public_calendar(calendar_x=sal_calendar)
     sx.set_calendar_bank_attrs(calendar_name=sal_text)
 
     # THEN

@@ -56,7 +56,7 @@ class SystemUnit:
                     if calendar_name != idea_catalog.calendar_name:
                         memberlink_x = memberlink_shop(name=idea_catalog.calendar_name)
                         groupunit_x.set_memberlink(memberlink_x)
-        self.save_public_calendarunit(calendar_obj)
+        self.save_public_calendar(calendar_obj)
 
         # refresh bank metrics
         self.refresh_bank_metrics()
@@ -162,7 +162,7 @@ class SystemUnit:
             sal_river_tmembers = get_river_tmember_dict(bank_conn, calendar_name)
             calendar_x = self.get_public_calendar(owner=calendar_name)
             calendar_x.set_banking_attr_memberunits(sal_river_tmembers)
-            self.save_public_calendarunit(calendar_x=calendar_x)
+            self.save_public_calendar(calendar_x=calendar_x)
 
     def get_river_tmembers(self, calendar_name: str) -> dict[str:RiverTmemberUnit]:
         with self.get_bank_conn() as bank_conn:
@@ -176,8 +176,8 @@ class SystemUnit:
         self._bank_populate_calendars_data()
 
     def _bank_populate_calendars_data(self):
-        for file_name in self.get_calendars_dir_file_names_list():
-            calendar_json = x_func_open_file(self.get_calendars_dir(), file_name)
+        for file_name in self.get_public_dir_file_names_list():
+            calendar_json = x_func_open_file(self.get_public_dir(), file_name)
             calendarunit_x = get_calendar_from_json(cx_json=calendar_json)
             calendarunit_x.set_calendar_metrics()
 
@@ -277,7 +277,7 @@ class SystemUnit:
 
     def create_dirs_if_null(self, in_memory_bank: bool = None):
         system_dir = self.get_object_root_dir()
-        calendars_dir = self.get_calendars_dir()
+        calendars_dir = self.get_public_dir()
         persons_dir = self.get_persons_dir()
         single_dir_create_if_null(x_path=system_dir)
         single_dir_create_if_null(x_path=calendars_dir)
@@ -308,17 +308,11 @@ class SystemUnit:
         px.create_core_dir_and_files()
         self._personunits[px._admin._person_name] = px
 
-    def sys_get_person_obj(self, name: str) -> PersonUnit:
+    def get_person_obj(self, name: str) -> PersonUnit:
         return None if self._personunits.get(name) is None else self._personunits[name]
 
-    def get_calendar_obj_from_file(self, name: str) -> PersonUnit:
-        cx_json = x_func_open_file(
-            dest_dir=f"{self.get_persons_dir()}/{name}", file_name="isol_calendar.json"
-        )
-        return get_calendar_from_json(cx_json)
-
-    def load_personunit(self, name: str):
-        cx = self.get_calendar_obj_from_file(name=name)
+    def create_personunit_from_public(self, name: str):
+        cx = self.get_public_calendar(owner=name)
         person_x = personunit_shop(name=cx._owner, env_dir=self.get_object_root_dir())
         self.set_personunits_empty_if_null()
         self.set_personunit_to_system(person_x)
@@ -328,11 +322,11 @@ class SystemUnit:
         self.save_person_file(person_name=person._admin._person_name)
 
     def save_person_file(self, person_name: str):
-        person_x = self.sys_get_person_obj(name=person_name)
+        person_x = self.get_person_obj(name=person_name)
         person_x._admin.save_isol_calendar(person_x.get_isol())
 
     def rename_personunit(self, old_name: str, new_name: str):
-        person_x = self.sys_get_person_obj(name=old_name)
+        person_x = self.get_person_obj(name=old_name)
         old_person_dir = person_x._admin._person_dir
         person_x._admin.set_person_name(new_name=new_name)
         self.set_personunit_to_system(person=person_x)
@@ -345,18 +339,17 @@ class SystemUnit:
     def del_person_dir(self, person_name: str):
         x_func_delete_dir(f"{self.get_persons_dir()}/{person_name}")
 
-    # calendars_dir management
-    def get_calendars_dir(self):
+    # public dir management
+    def get_public_dir(self):
         return f"{self.get_object_root_dir()}/calendars"
 
     def get_ignores_dir(self, person_name: str):
-        return f"{self.get_persons_dir()}/{person_name}/ignores"
+        per_x = self.get_person_obj(person_name)
+        return per_x._admin._calendars_ignore_dir
 
     def get_public_calendar(self, owner: str) -> CalendarUnit:
         return get_calendar_from_json(
-            x_func_open_file(
-                dest_dir=self.get_calendars_dir(), file_name=f"{owner}.json"
-            )
+            x_func_open_file(dest_dir=self.get_public_dir(), file_name=f"{owner}.json")
         )
 
     def get_calendar_from_ignores_dir(
@@ -370,23 +363,23 @@ class SystemUnit:
         )
 
     def set_ignore_calendar_file(self, person_name: str, calendar_obj: CalendarUnit):
-        person_x = self.sys_get_person_obj(name=person_name)
+        person_x = self.get_person_obj(name=person_name)
         person_x.set_ignore_calendar_file(
             calendarunit=calendar_obj, src_calendar_owner=calendar_obj._owner
         )
 
-    def rename_calendar_in_calendars_dir(self, old_owner: str, new_owner: str):
+    def rename_public_calendar(self, old_owner: str, new_owner: str):
         calendar_x = self.get_public_calendar(owner=old_owner)
         calendar_x.set_owner(new_owner=new_owner)
-        self.save_public_calendarunit(calendar_x=calendar_x)
-        self.del_calendarunit_from_calendars_dir(calendar_x_owner=old_owner)
+        self.save_public_calendar(calendar_x=calendar_x)
+        self.del_public_calendar(calendar_x_owner=old_owner)
 
-    def del_calendarunit_from_calendars_dir(self, calendar_x_owner: str):
-        x_func_delete_dir(f"{self.get_calendars_dir()}/{calendar_x_owner}.json")
+    def del_public_calendar(self, calendar_x_owner: str):
+        x_func_delete_dir(f"{self.get_public_dir()}/{calendar_x_owner}.json")
 
-    def save_public_calendarunit(self, calendar_x: CalendarUnit):
+    def save_public_calendar(self, calendar_x: CalendarUnit):
         x_func_save_file(
-            dest_dir=self.get_calendars_dir(),
+            dest_dir=self.get_public_dir(),
             file_name=f"{calendar_x._owner}.json",
             file_text=calendar_x.get_json(),
         )
@@ -395,19 +388,8 @@ class SystemUnit:
         for person_x in self._personunits.values():
             person_x.refresh_depot_calendars()
 
-    def get_calendars_dir_file_names_list(self):
-        return list(x_func_dir_files(dir_path=self.get_calendars_dir()).keys())
-
-    def get_calendars_dir_list_of_obj(self):
-        calendars_list = []
-
-        for file_name in self.get_calendars_dir_file_names_list():
-            calendar_json = x_func_open_file(
-                dest_dir=self.get_calendars_dir(), file_name=file_name
-            )
-            calendars_list.append(get_calendar_from_json(cx_json=calendar_json))
-
-        return calendars_list
+    def get_public_dir_file_names_list(self):
+        return list(x_func_dir_files(dir_path=self.get_public_dir()).keys())
 
     # calendars_dir to person_calendars_dir management
     def _person_set_depot_calendar(
@@ -439,7 +421,7 @@ class SystemUnit:
         debtor_weight: float = None,
         ignore_calendar: CalendarUnit = None,
     ):
-        person_x = self.sys_get_person_obj(name=person_name)
+        person_x = self.get_person_obj(name=person_name)
         calendar_x = self.get_public_calendar(owner=calendar_owner)
         self._person_set_depot_calendar(
             personunit=person_x,
@@ -458,7 +440,7 @@ class SystemUnit:
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
-        person_x = self.sys_get_person_obj(name=person_name)
+        person_x = self.get_person_obj(name=person_name)
         calendar_x = CalendarUnit(_owner=calendar_owner)
         self._person_set_depot_calendar(
             personunit=person_x,
@@ -476,7 +458,7 @@ class SystemUnit:
         creditor_weight: str,
         debtor_weight: str,
     ):
-        person_x = self.sys_get_person_obj(name=person_name)
+        person_x = self.get_person_obj(name=person_name)
         calendar_x = self.get_public_calendar(_owner=membername)
         self._person_set_depot_calendar(
             personunit=person_x,
@@ -487,10 +469,10 @@ class SystemUnit:
         )
 
     def del_depotlink(self, person_name: str, calendarunit_owner: str):
-        person_x = self.sys_get_person_obj(name=person_name)
+        person_x = self.get_person_obj(name=person_name)
         person_x.del_depot_calendar(calendar_owner=calendarunit_owner)
 
     # Person output_calendar
-    def get_person_output_calendar(self, person_name: str) -> CalendarUnit:
-        person_x = self.sys_get_person_obj(name=person_name)
+    def get_output_calendar(self, person_name: str) -> CalendarUnit:
+        person_x = self.get_person_obj(name=person_name)
         return person_x._admin.get_remelded_output_calendar()

@@ -62,21 +62,6 @@ def create_calendar_file_for_systems(system_dir: str, calendar_owner: str):
     )
 
 
-def create_person_file_for_systems(system_dir: str, person_name: str):
-    person_x = personunit_shop(name=person_name, env_dir=system_dir)
-    person_dir = f"{system_dir}/persons/{person_x._admin._person_name}"
-    # file_path = f"{person_dir}/{person_x.name}.json"
-    # single_dir_create_if_null(person_dir)
-    # with open(f"{file_path}", "w") as f:
-    #     f.write(person_x.get_json())
-
-    x_func_save_file(
-        dest_dir=person_dir,
-        file_name=f"{person_x._admin._isol_file_name}.json",
-        file_text=person_x.get_isol().get_json(),
-    )
-
-
 def get_test_systems_dir():
     return "src/system/examples/systems"
 
@@ -100,12 +85,12 @@ def _delete_and_set_ex3():
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
-    sx.save_public_calendarunit(calendar_x=example_persons_get_1node_calendar())
-    sx.save_public_calendarunit(
+    sx.save_public_calendar(calendar_x=example_persons_get_1node_calendar())
+    sx.save_public_calendar(
         calendar_x=example_calendars_get_calendar_1Task_1CE0MinutesRequired_1AcptFact()
     )
-    sx.save_public_calendarunit(calendar_x=example_calendars_calendar_v001())
-    sx.save_public_calendarunit(calendar_x=example_calendars_calendar_v002())
+    sx.save_public_calendar(calendar_x=example_calendars_calendar_v001())
+    sx.save_public_calendar(calendar_x=example_calendars_calendar_v002())
 
     # sx.set_person(person_x=personunit_shop(name="w1", env_dir=sx.get_object_root_dir()))
     # sx.set_person(person_x=personunit_shop(name="w2", env_dir=sx.get_object_root_dir()))
@@ -115,7 +100,7 @@ def _delete_and_set_ex3():
     sx.set_person_depotlink(
         xia_text, calendar_owner=owner_text, depotlink_type="blind_trust"
     )
-    # w1_obj = sx.sys_get_person_obj(name=w1_text)
+    # w1_obj = sx.get_person_obj(name=w1_text)
 
     bob_text = "bob wurld"
     create_calendar_file_for_systems(sx.get_object_root_dir(), bob_text)
@@ -153,12 +138,10 @@ def _delete_and_set_ex4():
     sx = SystemUnit(name=system_name, systems_dir=get_test_systems_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
-    sx.save_public_calendarunit(example_persons_get_7nodeJRootWithH_calendar())
-    sx.save_public_calendarunit(
-        example_calendars_get_calendar_with7amCleanTableRequired()
-    )
-    sx.save_public_calendarunit(example_calendars_get_calendar_base_time_example())
-    sx.save_public_calendarunit(
+    sx.save_public_calendar(example_persons_get_7nodeJRootWithH_calendar())
+    sx.save_public_calendar(example_calendars_get_calendar_with7amCleanTableRequired())
+    sx.save_public_calendar(example_calendars_get_calendar_base_time_example())
+    sx.save_public_calendar(
         example_calendars_get_calendar_x1_3levels_1required_1acptfacts()
     )
 
@@ -182,11 +165,11 @@ def _delete_and_set_ex5():
     )
     calendar_5 = example_persons_get_calendar_2CleanNodesRandomWeights(_owner="clay")
 
-    sx.save_public_calendarunit(calendar_x=calendar_1)
-    sx.save_public_calendarunit(calendar_x=calendar_2)
-    sx.save_public_calendarunit(calendar_x=calendar_3)
-    sx.save_public_calendarunit(calendar_x=calendar_4)
-    sx.save_public_calendarunit(calendar_x=calendar_5)
+    sx.save_public_calendar(calendar_x=calendar_1)
+    sx.save_public_calendar(calendar_x=calendar_2)
+    sx.save_public_calendar(calendar_x=calendar_3)
+    sx.save_public_calendar(calendar_x=calendar_4)
+    sx.save_public_calendar(calendar_x=calendar_5)
 
     sx.create_new_personunit(person_name=calendar_1._owner)
     sx.create_new_personunit(person_name=calendar_2._owner)
@@ -243,25 +226,25 @@ def _delete_and_set_ex6():
     sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
     sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
     sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    sx.save_public_calendarunit(calendar_x=sal_calendar)
+    sx.save_public_calendar(calendar_x=sal_calendar)
 
     bob_calendar = CalendarUnit(_owner=bob_text)
     bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
     bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    sx.save_public_calendarunit(calendar_x=bob_calendar)
+    sx.save_public_calendar(calendar_x=bob_calendar)
 
     tom_calendar = CalendarUnit(_owner=tom_text)
     tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
-    sx.save_public_calendarunit(calendar_x=tom_calendar)
+    sx.save_public_calendar(calendar_x=tom_calendar)
 
     ava_calendar = CalendarUnit(_owner=ava_text)
     ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
-    sx.save_public_calendarunit(calendar_x=ava_calendar)
+    sx.save_public_calendar(calendar_x=ava_calendar)
 
     elu_calendar = CalendarUnit(_owner=elu_text)
     elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
     elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
-    sx.save_public_calendarunit(calendar_x=elu_calendar)
+    sx.save_public_calendar(calendar_x=elu_calendar)
 
     sx.refresh_bank_metrics()
     sx.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=100)
