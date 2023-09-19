@@ -3,7 +3,7 @@ import sys
 from ui.System5IssueUI import Ui_Form
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
-from src.pyqt5_kit.pyqt_func import lw_diplay
+from src.pyqt5_kit.pyqt_func import calendar_importance_diplay
 from src.calendar.calendar import CalendarUnit
 from src.calendar.group import groupunit_shop
 from src.calendar.member import memberlink_shop

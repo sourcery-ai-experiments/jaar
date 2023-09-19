@@ -1,24 +1,24 @@
-from src.system.person import personunit_shop
-from src.system.examples.example_persons import get_calendar_assignment_laundry_example1
-from src.system.examples.person_env_kit import (
-    person_dir_setup_cleanup,
-    get_temp_person_dir,
+from src.system.author import authorunit_shop
+from src.system.examples.example_authors import get_calendar_assignment_laundry_example1
+from src.system.examples.author_env_kit import (
+    author_dir_setup_cleanup,
+    get_temp_author_dir,
 )
 from src.calendar.road import get_global_root_label as root_label
 
 
-def test_person_save_calendar_to_depot_assignment_link_CorrectlyCreatesAssignmentFile(
-    person_dir_setup_cleanup,
+def test_author_save_calendar_to_depot_assignment_link_CorrectlyCreatesAssignmentFile(
+    author_dir_setup_cleanup,
 ):
     # GIVEN
     america_cx = get_calendar_assignment_laundry_example1()
     joachim_text = "Joachim"
-    joachim_px = personunit_shop(joachim_text, get_temp_person_dir())
-    joachim_px.create_core_dir_and_files()
+    joachim_ux = authorunit_shop(joachim_text, get_temp_author_dir())
+    joachim_ux.create_core_dir_and_files()
 
     # WHEN
-    joachim_px.set_depot_calendar(calendar_x=america_cx, depotlink_type="assignment")
-    output_cx = joachim_px._admin.get_remelded_output_calendar()
+    joachim_ux.set_depot_calendar(calendar_x=america_cx, depotlink_type="assignment")
+    output_cx = joachim_ux._admin.get_remelded_output_calendar()
 
     # THEN
     assert output_cx != None

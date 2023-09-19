@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QTableWidgetItem as qtw1
 from EditIdeaUnit import EditIdeaUnit
 from EditMember import EditMember
 from src.pyqt5_kit.pyqt_func import (
-    lw_diplay,
+    calendar_importance_diplay,
     get_pyqttree,
     str2float as pyqt_func_str2float,
     num2str as pyqt_func_num2str,
@@ -214,7 +214,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
                         groups_count += 1
 
             qt_calendar_credit = qtw.QTableWidgetItem(
-                lw_diplay(member._calendar_credit)
+                calendar_importance_diplay(member._calendar_credit)
             )
             qt_group = qtw.QTableWidgetItem(f"{groups_count}")
             self.member_list.setRowCount(row)

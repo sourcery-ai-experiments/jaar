@@ -104,7 +104,7 @@ def test_system_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
 def test_system_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example system with 4 Authors, each with 3 Memberunits = 12 ledger rows
     sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -150,7 +150,7 @@ def test_system_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
 def test_system_refresh_bank_metrics_CorrectlyPopulatesCalendarTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example system with 4 Authors, each with 3 Memberunits = 12 ledger rows
     sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -177,7 +177,7 @@ def test_system_refresh_bank_metrics_CorrectlyPopulatesCalendarTable01(
 def test_system_refresh_bank_metrics_CorrectlyPopulatesCalendarTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example system with 4 Persons, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example system with 4 Authors, each with 3 Memberunits = 12 ledger rows
     sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 

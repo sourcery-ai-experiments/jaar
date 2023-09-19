@@ -39,7 +39,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="persons_table">
+   <widget class="QTableWidget" name="authors_table">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -55,7 +55,7 @@
     </property>
     <column>
      <property name="text">
-      <string>Persons</string>
+      <string>Authors</string>
      </property>
     </column>
     <column>
@@ -262,7 +262,7 @@
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" name="person_update_button">
+   <widget class="QPushButton" name="author_update_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -277,10 +277,10 @@
      </font>
     </property>
     <property name="text">
-     <string>Change Person Name</string>
+     <string>Change Author Name</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="person_insert_button">
+   <widget class="QPushButton" name="author_insert_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -295,10 +295,10 @@
      </font>
     </property>
     <property name="text">
-     <string>Add new Person</string>
+     <string>Add new Author</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="person_delete_button">
+   <widget class="QPushButton" name="author_delete_button">
     <property name="geometry">
      <rect>
       <x>240</x>
@@ -313,10 +313,10 @@
      </font>
     </property>
     <property name="text">
-     <string>delete Person</string>
+     <string>delete Author</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="person_name">
+   <widget class="QLineEdit" name="author_name">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -436,7 +436,7 @@
      <string>Edit </string>
     </property>
    </widget>
-   <widget class="QPushButton" name="person_edit_button">
+   <widget class="QPushButton" name="author_edit_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -451,7 +451,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Edit Person</string>
+     <string>Edit Author</string>
     </property>
    </widget>
    <widget class="QPushButton" name="depotlink_edit_button">
@@ -488,7 +488,7 @@
     </property>
     <column>
      <property name="text">
-      <string>Persons Agenda</string>
+      <string>Authors Agenda</string>
      </property>
     </column>
     <column>
@@ -518,7 +518,7 @@
     </property>
     <column>
      <property name="text">
-      <string>Persons Members</string>
+      <string>Authors Members</string>
      </property>
     </column>
     <column>
@@ -548,7 +548,7 @@
     </property>
     <column>
      <property name="text">
-      <string>Persons Groups</string>
+      <string>Authors Groups</string>
      </property>
     </column>
     <column>
@@ -578,7 +578,7 @@
     </property>
     <column>
      <property name="text">
-      <string>Person Ideas</string>
+      <string>Author Ideas</string>
      </property>
     </column>
     <column>

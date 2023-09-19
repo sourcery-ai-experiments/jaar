@@ -141,7 +141,7 @@ def emptystring_returns_none(str_x: str) -> str:
     return None if not str_x else str_x
 
 
-def lw_diplay(calendar_importance: float):
+def calendar_importance_diplay(calendar_importance: float):
     if calendar_importance is None:
         return "None"
     if str(type(calendar_importance)) == "<class 'set'>":
@@ -225,7 +225,7 @@ def _create_treenode_l(pth: PYQTTreeHolder):
     treenode_l = pth.ideacore._label
 
     if pth.root_percent_flag:
-        treenode_l += f" ({lw_diplay(pth.ideacore._calendar_importance)})"
+        treenode_l += f" ({calendar_importance_diplay(pth.ideacore._calendar_importance)})"
     elif pth.yo2bd_count_flag:
         treenode_l += f" ({len(pth.ideacore._grouplinks)})"
     elif pth.required_count_flag:

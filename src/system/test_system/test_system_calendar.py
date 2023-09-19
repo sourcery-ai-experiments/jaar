@@ -4,7 +4,7 @@ from src.calendar.examples.example_calendars import (
     get_calendar_1Task_1CE0MinutesRequired_1AcptFact as example_calendars_get_calendar_1Task_1CE0MinutesRequired_1AcptFact,
     calendar_v001 as example_calendars_calendar_v001,
 )
-import src.system.examples.example_persons as example_persons
+import src.system.examples.example_authors as example_authors
 from os import path as os_path
 from src.system.examples.system_env_kit import (
     get_temp_env_name,
@@ -19,7 +19,7 @@ def test_system_set_calendar_CreatesCalendarFile(env_dir_setup_cleanup):
     system_name = get_temp_env_name()
     sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null()
-    sx1_obj = example_persons.get_1node_calendar()
+    sx1_obj = example_authors.get_1node_calendar()
     sx1_path = f"{sx.get_public_dir()}/{sx1_obj._owner}.json"
     assert os_path.exists(sx1_path) == False
 
@@ -36,7 +36,7 @@ def test_system_get_calendar_currentlyGetsCalendar(env_dir_setup_cleanup):
     system_name = get_temp_env_name()
     e5 = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
     e5.create_dirs_if_null(in_memory_bank=True)
-    sx5_obj = example_persons.get_7nodeJRootWithH_calendar()
+    sx5_obj = example_authors.get_7nodeJRootWithH_calendar()
     e5.save_public_calendar(calendar_x=sx5_obj)
 
     # WHEN / THEN

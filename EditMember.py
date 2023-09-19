@@ -4,7 +4,7 @@ from ui.EditMemberUI import Ui_Form
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from EditMember2bd import EditMember2bd
-from src.pyqt5_kit.pyqt_func import lw_diplay
+from src.pyqt5_kit.pyqt_func import calendar_importance_diplay
 from src.calendar.calendar import CalendarUnit
 from src.calendar.group import groupunit_shop
 from src.calendar.member import memberlink_shop
@@ -109,9 +109,11 @@ class EditMember(qtw.QTableWidget, Ui_Form):
             self.member_table.setRowCount(row)
             self.member_table.setItem(row - 1, 0, qtw.QTableWidgetItem(member.name))
             qt_calendar_credit = qtw.QTableWidgetItem(
-                lw_diplay(member._calendar_credit)
+                calendar_importance_diplay(member._calendar_credit)
             )
-            qt_calendar_debt = qtw.QTableWidgetItem(lw_diplay(member._calendar_debt))
+            qt_calendar_debt = qtw.QTableWidgetItem(
+                calendar_importance_diplay(member._calendar_debt)
+            )
             self.member_table.setItem(row - 1, 1, qtw.QTableWidgetItem(single_group))
             self.member_table.setItem(row - 1, 2, qtw.QTableWidgetItem("#"))
             self.member_table.setItem(row - 1, 3, qt_calendar_credit)

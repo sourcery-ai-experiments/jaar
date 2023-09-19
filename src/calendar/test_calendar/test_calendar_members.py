@@ -1240,27 +1240,27 @@ def test_calendar_get_memberunits_name_list_CorrectlyReturnsListOfMemberUnits():
 def test_calendar_set_banking_data_memberunits_CorrectlySetsMemberUnitBankingAttr():
     # GIVEN
     bob_text = "bob"
-    ax = CalendarUnit(_owner=bob_text)
-    ax.set_members_empty_if_null()
+    cx = CalendarUnit(_owner=bob_text)
+    cx.set_members_empty_if_null()
     sam_text = "sam"
     wil_text = "wil"
     fry_text = "fry"
     elu_text = "elu"
-    ax.set_memberunit(memberunit=memberunit_shop(name=sam_text))
-    ax.set_memberunit(memberunit=memberunit_shop(name=wil_text))
-    ax.set_memberunit(memberunit=memberunit_shop(name=fry_text))
-    assert ax._members.get(sam_text)._bank_tax_paid is None
-    assert ax._members.get(sam_text)._bank_tax_diff is None
-    assert ax._members.get(wil_text)._bank_tax_paid is None
-    assert ax._members.get(wil_text)._bank_tax_diff is None
-    assert ax._members.get(fry_text)._bank_tax_paid is None
-    assert ax._members.get(fry_text)._bank_tax_diff is None
+    cx.set_memberunit(memberunit=memberunit_shop(name=sam_text))
+    cx.set_memberunit(memberunit=memberunit_shop(name=wil_text))
+    cx.set_memberunit(memberunit=memberunit_shop(name=fry_text))
+    assert cx._members.get(sam_text)._bank_tax_paid is None
+    assert cx._members.get(sam_text)._bank_tax_diff is None
+    assert cx._members.get(wil_text)._bank_tax_paid is None
+    assert cx._members.get(wil_text)._bank_tax_diff is None
+    assert cx._members.get(fry_text)._bank_tax_paid is None
+    assert cx._members.get(fry_text)._bank_tax_diff is None
     elu_memberunit = memberunit_shop(name=elu_text)
     elu_memberunit._bank_tax_paid = 0.003
     elu_memberunit._bank_tax_diff = 0.007
-    ax.set_memberunit(memberunit=elu_memberunit)
-    assert ax._members.get(elu_text)._bank_tax_paid == 0.003
-    assert ax._members.get(elu_text)._bank_tax_diff == 0.007
+    cx.set_memberunit(memberunit=elu_memberunit)
+    assert cx._members.get(elu_text)._bank_tax_paid == 0.003
+    assert cx._members.get(elu_text)._bank_tax_diff == 0.007
 
     river_tmember_sam = RiverTmemberUnit(bob_text, sam_text, 0.209, 0, 0.034)
     river_tmember_wil = RiverTmemberUnit(bob_text, wil_text, 0.501, 0, 0.024)
@@ -1271,33 +1271,33 @@ def test_calendar_set_banking_data_memberunits_CorrectlySetsMemberUnitBankingAtt
         river_tmember_fry.tax_name: river_tmember_fry,
     }
     # WHEN
-    ax.set_banking_attr_memberunits(river_tmembers=river_tmembers)
+    cx.set_banking_attr_memberunits(river_tmembers=river_tmembers)
 
     # THEN
-    assert ax._members.get(sam_text)._bank_tax_paid == 0.209
-    assert ax._members.get(sam_text)._bank_tax_diff == 0.034
-    assert ax._members.get(wil_text)._bank_tax_paid == 0.501
-    assert ax._members.get(wil_text)._bank_tax_diff == 0.024
-    assert ax._members.get(fry_text)._bank_tax_paid == 0.111
-    assert ax._members.get(fry_text)._bank_tax_diff == 0.006
-    assert ax._members.get(elu_text)._bank_tax_paid is None
-    assert ax._members.get(elu_text)._bank_tax_diff is None
+    assert cx._members.get(sam_text)._bank_tax_paid == 0.209
+    assert cx._members.get(sam_text)._bank_tax_diff == 0.034
+    assert cx._members.get(wil_text)._bank_tax_paid == 0.501
+    assert cx._members.get(wil_text)._bank_tax_diff == 0.024
+    assert cx._members.get(fry_text)._bank_tax_paid == 0.111
+    assert cx._members.get(fry_text)._bank_tax_diff == 0.006
+    assert cx._members.get(elu_text)._bank_tax_paid is None
+    assert cx._members.get(elu_text)._bank_tax_diff is None
 
 
 def test_get_intersection_of_members_CorrectlyReturnsUnionOfKeysOfTwoDictionarys_scenario1():
     # GIVEN
     bob_text = "bob"
-    ax = CalendarUnit(_owner=bob_text)
-    ax.set_members_empty_if_null()
+    cx = CalendarUnit(_owner=bob_text)
+    cx.set_members_empty_if_null()
 
     sam_text = "sam"
     wil_text = "wil"
     fry_text = "fry"
     elu_text = "elu"
-    ax.set_memberunit(memberunit=memberunit_shop(name=bob_text))
-    ax.set_memberunit(memberunit=memberunit_shop(name=sam_text))
-    ax.set_memberunit(memberunit=memberunit_shop(name=wil_text))
-    ax.set_memberunit(memberunit=memberunit_shop(name=fry_text))
+    cx.set_memberunit(memberunit=memberunit_shop(name=bob_text))
+    cx.set_memberunit(memberunit=memberunit_shop(name=sam_text))
+    cx.set_memberunit(memberunit=memberunit_shop(name=wil_text))
+    cx.set_memberunit(memberunit=memberunit_shop(name=fry_text))
 
     tx = CalendarUnit()
     tx.set_members_empty_if_null()
@@ -1308,8 +1308,8 @@ def test_get_intersection_of_members_CorrectlyReturnsUnionOfKeysOfTwoDictionarys
     tx.set_memberunit(memberunit=memberunit_shop(name=elu_text))
 
     # WHEN
-    print(f"{len(ax._members)=} {len(tx._members)=}")
-    intersection_x = get_intersection_of_members(ax._members, tx._members)
+    print(f"{len(cx._members)=} {len(tx._members)=}")
+    intersection_x = get_intersection_of_members(cx._members, tx._members)
 
     # THEN
     assert intersection_x == {bob_text: -1, wil_text: -1, fry_text: -1}

@@ -546,14 +546,14 @@ def test_calendar_edit_idea_attr_calendarWhenParentAndNumeric_roadBothHaveRangeT
 def test_calendar_add_idea_MustReorderKidsDictToBeAlphabetical():
     # GIVEN
     owner_text = "Noa"
-    ax = CalendarUnit(_owner=owner_text)
+    cx = CalendarUnit(_owner=owner_text)
     work_text = "work"
-    ax.add_idea(IdeaKid(_label=work_text), walk=root_label())
+    cx.add_idea(IdeaKid(_label=work_text), walk=root_label())
     swim_text = "swim"
-    ax.add_idea(IdeaKid(_label=swim_text), walk=root_label())
+    cx.add_idea(IdeaKid(_label=swim_text), walk=root_label())
 
     # WHEN
-    idea_list = list(ax._idearoot._kids.values())
+    idea_list = list(cx._idearoot._kids.values())
 
     # THEN
     assert idea_list[0]._label == swim_text

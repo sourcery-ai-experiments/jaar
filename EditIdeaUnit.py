@@ -14,7 +14,7 @@ from src.pyqt5_kit.pyqt_func import (
     str2float,
     get_pyqttree,
     emptystr,
-    lw_diplay,
+    calendar_importance_diplay,
     emptystring_returns_none,
 )
 
@@ -760,7 +760,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.idea2group_table.setItem(
                 row - 1,
                 2,
-                qtw1(lw_diplay(groupheir._calendar_credit)),
+                qtw1(calendar_importance_diplay(groupheir._calendar_credit)),
             )
 
         self.idea2group_table.sortItems(1, QtCore.Qt.AscendingOrder)

@@ -1,7 +1,7 @@
 from src.calendar.calendar import CalendarUnit
 from src.calendar.idea import IdeaKid
 from src.calendar.required_assign import assigned_unit_shop
-from src.system.person import personunit_shop, PersonUnit
+from src.system.author import authorunit_shop, AuthorUnit
 from src.calendar.road import Road, get_global_root_label as root_label
 from random import randrange
 
@@ -145,12 +145,14 @@ def get_7nodeJRootWithH_calendar() -> CalendarUnit:
     return calendar_x
 
 
-def get_person_2calendar(env_dir) -> PersonUnit:
+def get_author_2calendar(env_dir) -> AuthorUnit:
     yao_text = "Xio"
-    yao_per = personunit_shop(yao_text, env_dir=env_dir)
-    yao_per.set_depot_calendar(get_1node_calendar(), depotlink_type="blind_trust")
-    yao_per.set_depot_calendar(get_Jnode2node_calendar(), depotlink_type="blind_trust")
-    return yao_per
+    yao_author = authorunit_shop(yao_text, env_dir=env_dir)
+    yao_author.set_depot_calendar(get_1node_calendar(), depotlink_type="blind_trust")
+    yao_author.set_depot_calendar(
+        get_Jnode2node_calendar(), depotlink_type="blind_trust"
+    )
+    return yao_author
 
 
 def get_calendar_2CleanNodesRandomWeights(_owner: str = None) -> CalendarUnit:

@@ -24,11 +24,11 @@ def test_road_exists():
 
 
 def test_road_is_sub_road_correctlyReturnsBool():
-    person = "person"
+    author = "author"
     bloomers_text = "bloomers"
-    bloomers_road = f"{root_label()},{person},{bloomers_text}"
+    bloomers_road = f"{root_label()},{author},{bloomers_text}"
     roses_text = "roses"
-    roses_road = f"{root_label()},{person},{bloomers_text},{roses_text}"
+    roses_road = f"{root_label()},{author},{bloomers_text},{roses_text}"
 
     assert is_sub_road(bloomers_road, bloomers_road)
     assert is_sub_road(roses_road, bloomers_road)
@@ -46,16 +46,16 @@ def test_road_road_validate_correctlyReturnsRoad():
 
 
 def test_road_change_road_correctlyRoad():
-    person = "person"
+    author = "author"
     bloomers_text = "bloomers"
-    bloomers_road = Road(f"{root_label()},{person},{bloomers_text}")
+    bloomers_road = Road(f"{root_label()},{author},{bloomers_text}")
     plants_text = "plants"
-    plants_road = Road(f"{root_label()},{person},{plants_text}")
+    plants_road = Road(f"{root_label()},{author},{plants_text}")
     roses_text = "roses"
-    old_roses_road = Road(f"{root_label()},{person},{bloomers_text},{roses_text}")
-    new_roses_road = Road(f"{root_label()},{person},{plants_text},{roses_text}")
+    old_roses_road = Road(f"{root_label()},{author},{bloomers_text},{roses_text}")
+    new_roses_road = Road(f"{root_label()},{author},{plants_text},{roses_text}")
     # taff_text = "taff"
-    # new_roses_road = Road(f"{root_label()},{person},{bloomers_text},{taff_text}")
+    # new_roses_road = Road(f"{root_label()},{author},{bloomers_text},{taff_text}")
 
     print(f"{change_road(old_roses_road, bloomers_road, plants_road)}")
 
@@ -66,71 +66,71 @@ def test_road_change_road_correctlyRoad():
 
 def test_road_get_all_road_nodes_works():
     # GIVEN
-    person_text = "person"
-    person_road = Road(f"{root_label()},{person_text}")
+    author_text = "author"
+    author_road = Road(f"{root_label()},{author_text}")
     bloomers_text = "bloomers"
-    bloomers_road = Road(f"{root_label()},{person_text},{bloomers_text}")
+    bloomers_road = Road(f"{root_label()},{author_text},{bloomers_text}")
     roses_text = "roses"
-    roses_road = Road(f"{root_label()},{person_text},{bloomers_text},{roses_text}")
+    roses_road = Road(f"{root_label()},{author_text},{bloomers_text},{roses_text}")
 
     # WHEN/THENs
     root_list = [root_label()]
     assert get_all_road_nodes(road=root_label()) == root_list
-    person_list = [root_label(), person_text]
-    assert get_all_road_nodes(road=person_road) == person_list
-    bloomers_list = [root_label(), person_text, bloomers_text]
+    author_list = [root_label(), author_text]
+    assert get_all_road_nodes(road=author_road) == author_list
+    bloomers_list = [root_label(), author_text, bloomers_text]
     assert get_all_road_nodes(road=bloomers_road) == bloomers_list
-    roses_list = [root_label(), person_text, bloomers_text, roses_text]
+    roses_list = [root_label(), author_text, bloomers_text, roses_text]
     assert get_all_road_nodes(road=roses_road) == roses_list
 
 
 def test_road_get_terminus_node_from_road_works():
     # GIVEN
-    person_text = "person"
-    person_road = Road(f"{root_label()},{person_text}")
+    author_text = "author"
+    author_road = Road(f"{root_label()},{author_text}")
     bloomers_text = "bloomers"
-    bloomers_road = Road(f"{root_label()},{person_text},{bloomers_text}")
+    bloomers_road = Road(f"{root_label()},{author_text},{bloomers_text}")
     roses_text = "roses"
-    roses_road = Road(f"{root_label()},{person_text},{bloomers_text},{roses_text}")
+    roses_road = Road(f"{root_label()},{author_text},{bloomers_text},{roses_text}")
 
     # WHEN/THENs
     assert get_terminus_node_from_road(road=root_label()) == root_label()
-    assert get_terminus_node_from_road(road=person_road) == person_text
+    assert get_terminus_node_from_road(road=author_road) == author_text
     assert get_terminus_node_from_road(road=bloomers_road) == bloomers_text
     assert get_terminus_node_from_road(road=roses_road) == roses_text
 
 
 def test_road_get_walk_from_road_works():
     # GIVEN
-    person_text = "person"
-    person_road = Road(f"{root_label()},{person_text}")
+    author_text = "author"
+    author_road = Road(f"{root_label()},{author_text}")
     bloomers_text = "bloomers"
-    bloomers_road = Road(f"{root_label()},{person_text},{bloomers_text}")
+    bloomers_road = Road(f"{root_label()},{author_text},{bloomers_text}")
     roses_text = "roses"
-    roses_road = Road(f"{root_label()},{person_text},{bloomers_text},{roses_text}")
+    roses_road = Road(f"{root_label()},{author_text},{bloomers_text},{roses_text}")
 
     # WHEN/THENs
     assert get_walk_from_road(road=root_label()) == ""
-    assert get_walk_from_road(road=person_road) == root_label()
-    assert get_walk_from_road(road=bloomers_road) == person_road
+    assert get_walk_from_road(road=author_road) == root_label()
+    assert get_walk_from_road(road=bloomers_road) == author_road
     assert get_walk_from_road(road=roses_road) == bloomers_road
 
 
 def test_road_get_road_without_root_node_WorksCorrectly():
     # GIVEN
-    person_text = "person"
-    person_road = Road(f"{root_label()},{person_text}")
-    person_without_root_road = Road(f",{person_text}")
+    author_text = "author"
+    author_road = Road(f"{root_label()},{author_text}")
+    author_without_root_road = Road(f",{author_text}")
     bloomers_text = "bloomers"
-    bloomers_road = Road(f"{root_label()},{person_text},{bloomers_text}")
-    bloomers_without_root_road = Road(f",{person_text},{bloomers_text}")
+    bloomers_road = Road(f"{root_label()},{author_text},{bloomers_text}")
+    bloomers_without_root_road = Road(f",{author_text},{bloomers_text}")
     roses_text = "roses"
-    roses_road = Road(f"{root_label()},{person_text},{bloomers_text},{roses_text}")
-    roses_without_root_road = Road(f",{person_text},{bloomers_text},{roses_text}")
+    roses_road = Road(f"{root_label()},{author_text},{bloomers_text},{roses_text}")
+    roses_without_root_road = Road(f",{author_text},{bloomers_text},{roses_text}")
 
     # WHEN/THENs
     assert get_road_without_root_node(road=root_label()) == ","
-    assert get_road_without_root_node(road=person_road) == person_without_root_road
+    assert get_road_without_root_node(road=author_road) == author_without_root_road
     assert get_road_without_root_node(road=bloomers_road) == bloomers_without_root_road
     assert get_road_without_root_node(road=roses_road) == roses_without_root_road
     road_without_node = get_road_without_root_node(road=roses_road)
@@ -144,14 +144,14 @@ def test_road_get_road_without_root_node_WorksCorrectly():
 
 def test_road_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
     # GIVEN
-    old_seasons_road = f"{root_label()},person,seasons"
+    old_seasons_road = f"{root_label()},author,seasons"
     old_sufffact_x = sufffactunit_shop(need=old_seasons_road)
     old_sufffacts_x = {old_sufffact_x.need: old_sufffact_x}
 
     assert old_sufffacts_x.get(old_seasons_road) == old_sufffact_x
 
     # WHEN
-    new_seasons_road = f"{root_label()},person,kookies"
+    new_seasons_road = f"{root_label()},author,kookies"
     new_sufffacts_x = find_replace_road_key_dict(
         dict_x=old_sufffacts_x, old_road=old_seasons_road, new_road=new_seasons_road
     )
@@ -165,14 +165,14 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
 #     # sourcery skip: extract-duplicate-method
 #     # GIVEN
 #     src = f"{root_label()}"
-#     person_text = "person"
-#     person_road = Road(f"{root_label()},{person_text}")
+#     author_text = "author"
+#     author_road = Road(f"{root_label()},{author_text}")
 #     bloomers_text = "bloomers"
-#     bloomers_road = Road(f"{root_label()},{person_text},{bloomers_text}")
+#     bloomers_road = Road(f"{root_label()},{author_text},{bloomers_text}")
 #     old_roses_text = "roses"
-#     old_roses_road = Road(f"{root_label()},{person_text},{bloomers_text},{old_roses_text}")
+#     old_roses_road = Road(f"{root_label()},{author_text},{bloomers_text},{old_roses_text}")
 #     idea_roses = IdeaCore(_label=old_roses_text, _walk=bloomers_road)
-#     idea_bloomers = IdeaCore(_label=bloomers_text, _walk=person_road)
+#     idea_bloomers = IdeaCore(_label=bloomers_text, _walk=author_road)
 #     idea_bloomers.add_kid(idea_kid=idea_roses)
 
 #     for idea_key, idea_obj in idea_bloomers._kids.items():
@@ -182,7 +182,7 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
 
 #     # WHEN
 #     new_roses_text = "roses2"
-#     new_roses_road = Road(ff"{root_label()},person,{new_roses_text}")
+#     new_roses_road = Road(ff"{root_label()},author,{new_roses_text}")
 #     new_kids_x = find_replace_road_key_dict(
 #         dict_x=idea_bloomers._kids,
 #         old_road=old_roses_road,
@@ -252,18 +252,18 @@ def test_road_get_global_root_label_ReturnsCorrectObj():
 def test_road_get_road_from_nodes_WorksCorrectly():
     # GIVEN
     root_list = get_all_road_nodes(root_label())
-    person_text = "person"
-    person_road = Road(f"{root_label()},{person_text}")
-    person_list = get_all_road_nodes(person_road)
+    author_text = "author"
+    author_road = Road(f"{root_label()},{author_text}")
+    author_list = get_all_road_nodes(author_road)
     bloomers_text = "bloomers"
-    bloomers_road = Road(f"{root_label()},{person_text},{bloomers_text}")
+    bloomers_road = Road(f"{root_label()},{author_text},{bloomers_text}")
     bloomers_list = get_all_road_nodes(bloomers_road)
     roses_text = "roses"
-    roses_road = Road(f"{root_label()},{person_text},{bloomers_text},{roses_text}")
+    roses_road = Road(f"{root_label()},{author_text},{bloomers_text},{roses_text}")
     roses_list = get_all_road_nodes(roses_road)
 
     # WHEN / THEN
     assert root_label() == get_road_from_nodes(root_list)
-    assert person_road == get_road_from_nodes(person_list)
+    assert author_road == get_road_from_nodes(author_list)
     assert bloomers_road == get_road_from_nodes(bloomers_list)
     assert roses_road == get_road_from_nodes(roses_list)

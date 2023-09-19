@@ -2290,24 +2290,24 @@
             "_label": "Asset management",
             "_is_expanded": false,
             "_kids": {
-                "American authority": {
+                "American sovereignty": {
                     "_acptfactunits": {},
                     "_addin": null,
                     "_begin": null,
                     "_grouplinks": {},
                     "_close": null,
                     "_denom": null,
-                    "_label": "American authority",
+                    "_label": "American sovereignty",
                     "_is_expanded": true,
                     "_kids": {
-                        "portland authorities": {
+                        "portland sovereignty": {
                             "_acptfactunits": {},
                             "_addin": null,
                             "_begin": null,
                             "_grouplinks": {},
                             "_close": null,
                             "_denom": null,
-                            "_label": "portland authorities",
+                            "_label": "portland sovereignty",
                             "_is_expanded": true,
                             "_kids": {
                                 "downtown": {
@@ -2734,14 +2734,14 @@
                             "_weight": 1,
                             "promise": false
                         },
-                        "texas authority": {
+                        "texas sovereignty": {
                             "_acptfactunits": {},
                             "_addin": null,
                             "_begin": null,
                             "_grouplinks": {},
                             "_close": null,
                             "_denom": null,
-                            "_label": "texas authority",
+                            "_label": "texas sovereignty",
                             "_is_expanded": true,
                             "_kids": {},
                             "_numeric_road": null,
@@ -2791,14 +2791,14 @@
                     "_weight": 1,
                     "promise": false
                 },
-                "French authority": {
+                "French sovereignty": {
                     "_acptfactunits": {},
                     "_addin": null,
                     "_begin": null,
                     "_grouplinks": {},
                     "_close": null,
                     "_denom": null,
-                    "_label": "French authority",
+                    "_label": "French sovereignty",
                     "_is_expanded": true,
                     "_kids": {},
                     "_numeric_road": null,

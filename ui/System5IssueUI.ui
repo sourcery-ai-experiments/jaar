@@ -551,7 +551,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Person Name:</string>
+    <string>Author Name:</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="issue_10">

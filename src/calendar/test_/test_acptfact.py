@@ -13,15 +13,15 @@ from pytest import raises as pytest_raises
 def test_AcptFactUnit_exists():
     sunday_road = f"{root_label()},weekdays,Sunday"
     weekday_road = f"{root_label()},weekdays"
-    sunday_lw_acptfact = AcptFactUnit(
+    sunday_cx_acptfact = AcptFactUnit(
         base=weekday_road, pick=sunday_road, open=1.9, nigh=2.3
     )
-    print(sunday_lw_acptfact)
-    assert sunday_lw_acptfact != None
-    assert sunday_lw_acptfact.base == weekday_road
-    assert sunday_lw_acptfact.pick == sunday_road
-    assert sunday_lw_acptfact.open == 1.9
-    assert sunday_lw_acptfact.nigh == 2.3
+    print(sunday_cx_acptfact)
+    assert sunday_cx_acptfact != None
+    assert sunday_cx_acptfact.base == weekday_road
+    assert sunday_cx_acptfact.pick == sunday_road
+    assert sunday_cx_acptfact.open == 1.9
+    assert sunday_cx_acptfact.nigh == 2.3
 
 
 def test_AcptFactUnit_clear_range_works_1():
@@ -62,9 +62,9 @@ def test_AcptFactUnit_clear_range_works_2():
 def test_AcptFactUnit_get_dict_works():
     weekday_road = f"{root_label()},weekdays"
     sunday_road = f"{weekday_road},Sunday"
-    sunday_lw_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
-    print(sunday_lw_acptfact)
-    acptfact_dict = sunday_lw_acptfact.get_dict()
+    sunday_cx_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
+    print(sunday_cx_acptfact)
+    acptfact_dict = sunday_cx_acptfact.get_dict()
     assert acptfact_dict != None
     static_dict = {
         "base": weekday_road,

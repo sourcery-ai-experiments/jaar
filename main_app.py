@@ -11,7 +11,7 @@ from src.calendar.examples.calendar_env import calendar_env
 from src.calendar.hreg_time import convert1440toHHMM
 from src.calendar.road import get_global_root_label as root_label
 from src.pyqt5_kit.pyqt_func import (
-    lw_diplay as pyqt_func_lw_diplay,
+    calendar_importance_diplay as pyqt_func_calendar_importance_diplay,
     str2float as pyqt_func_str2float,
     num2str as pyqt_func_num2str,
 )
@@ -283,7 +283,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             f.write(calendar_x_json)
         self.current_file_path_l.setText(self.file_path)
         # x_func_save_file(
-        #     dest_dir=calendar_person_dir,
+        #     dest_dir=calendar_author_dir,
         #     file_name=f"{root_label()}.json",
         #     file_text=calendar_x.get_json(),
         # )
@@ -449,7 +449,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.agenda_states.setItem(row, 3, tw_nigh)
 
         self.agenda_states.setItem(
-            row, 4, qtw1(pyqt_func_lw_diplay(ax._calendar_importance))
+            row, 4, qtw1(pyqt_func_calendar_importance_diplay(ax._calendar_importance))
         )
         self.agenda_states.setItem(row, 5, qtw1(ax._walk))
         self.agenda_states.setItem(row, 6, qtw1(""))

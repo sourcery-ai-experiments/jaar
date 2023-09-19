@@ -6,43 +6,43 @@ from random import randint
 
 def test_time_get_time_min_from_dt_WorksCorrectly():
     owner_text = "Kia"
-    g_lw = CalendarUnit(_owner=owner_text)
-    g_lw.set_time_hreg_ideas(c400_count=6)
-    assert g_lw.get_time_min_from_dt(dt=datetime(2000, 1, 1, 0, 0))
-    assert g_lw.get_time_min_from_dt(dt=datetime(1, 1, 1, 0, 0)) == 527040
-    assert g_lw.get_time_min_from_dt(dt=datetime(1, 1, 2, 0, 0)) == 527040 + 1440
-    assert g_lw.get_time_min_from_dt(dt=datetime(400, 1, 1, 0, 0)) == 210379680
-    assert g_lw.get_time_min_from_dt(dt=datetime(800, 1, 1, 0, 0)) == 420759360
-    assert g_lw.get_time_min_from_dt(dt=datetime(1200, 1, 1, 0, 0)) == 631139040
+    cx = CalendarUnit(_owner=owner_text)
+    cx.set_time_hreg_ideas(c400_count=6)
+    assert cx.get_time_min_from_dt(dt=datetime(2000, 1, 1, 0, 0))
+    assert cx.get_time_min_from_dt(dt=datetime(1, 1, 1, 0, 0)) == 527040
+    assert cx.get_time_min_from_dt(dt=datetime(1, 1, 2, 0, 0)) == 527040 + 1440
+    assert cx.get_time_min_from_dt(dt=datetime(400, 1, 1, 0, 0)) == 210379680
+    assert cx.get_time_min_from_dt(dt=datetime(800, 1, 1, 0, 0)) == 420759360
+    assert cx.get_time_min_from_dt(dt=datetime(1200, 1, 1, 0, 0)) == 631139040
 
 
 def test_get_time_400YearCycle_from_min_WorksCorrectly():
     owner_text = "Kia"
-    g_lw = CalendarUnit(_owner=owner_text)
-    g_lw.set_time_hreg_ideas(c400_count=6)
-    assert g_lw.get_time_c400_from_min(min=0)[0] == 0
-    assert g_lw.get_time_c400_from_min(min=210379680)[0] == 1
-    assert g_lw.get_time_c400_from_min(min=210379681)[0] == 1
-    assert g_lw.get_time_c400_from_min(min=841518720)[0] == 4
+    cx = CalendarUnit(_owner=owner_text)
+    cx.set_time_hreg_ideas(c400_count=6)
+    assert cx.get_time_c400_from_min(min=0)[0] == 0
+    assert cx.get_time_c400_from_min(min=210379680)[0] == 1
+    assert cx.get_time_c400_from_min(min=210379681)[0] == 1
+    assert cx.get_time_c400_from_min(min=841518720)[0] == 4
 
 
 def test_get_time_c400year_from_min_WorksCorrectly():
     owner_text = "Kia"
-    g_lw = CalendarUnit(_owner=owner_text)
-    g_lw.set_time_hreg_ideas(c400_count=6)
-    assert g_lw.get_time_c400yr_from_min(min=0)[0] == 0
-    assert g_lw.get_time_c400yr_from_min(min=1)[0] == 0
-    assert g_lw.get_time_c400yr_from_min(min=1)[2] == 1
-    assert g_lw.get_time_c400yr_from_min(min=210379680)[0] == 0
-    assert g_lw.get_time_c400yr_from_min(min=210379680)[0] == 0
-    assert g_lw.get_time_c400yr_from_min(min=210379681)[0] == 0
-    assert g_lw.get_time_c400yr_from_min(min=841518720)[0] == 0
-    assert g_lw.get_time_c400yr_from_min(min=576000)[0] == 1
-    assert g_lw.get_time_c400yr_from_min(min=4608000)[0] == 8
-    assert g_lw.get_time_c400yr_from_min(min=157785120)[0] == 300
+    cx = CalendarUnit(_owner=owner_text)
+    cx.set_time_hreg_ideas(c400_count=6)
+    assert cx.get_time_c400yr_from_min(min=0)[0] == 0
+    assert cx.get_time_c400yr_from_min(min=1)[0] == 0
+    assert cx.get_time_c400yr_from_min(min=1)[2] == 1
+    assert cx.get_time_c400yr_from_min(min=210379680)[0] == 0
+    assert cx.get_time_c400yr_from_min(min=210379680)[0] == 0
+    assert cx.get_time_c400yr_from_min(min=210379681)[0] == 0
+    assert cx.get_time_c400yr_from_min(min=841518720)[0] == 0
+    assert cx.get_time_c400yr_from_min(min=576000)[0] == 1
+    assert cx.get_time_c400yr_from_min(min=4608000)[0] == 8
+    assert cx.get_time_c400yr_from_min(min=157785120)[0] == 300
 
 
-def _check_time_conversion_works_with_random_inputs(ax: CalendarUnit):
+def _check_time_conversion_works_with_random_inputs(cx: CalendarUnit):
     py_dt = datetime(
         year=randint(1, 2800),
         month=randint(1, 12),
@@ -51,30 +51,30 @@ def _check_time_conversion_works_with_random_inputs(ax: CalendarUnit):
         minute=randint(0, 59),
     )
     print(f"Attempt {py_dt=}")
-    assert py_dt == ax.get_time_dt_from_min(min=ax.get_time_min_from_dt(dt=py_dt))
+    assert py_dt == cx.get_time_dt_from_min(min=cx.get_time_min_from_dt(dt=py_dt))
 
 
 def test_get_time_dt_from_min_WorksCorrectly():
     owner_text = "Kia"
-    g_lw = CalendarUnit(_owner=owner_text)
-    g_lw.set_time_hreg_ideas(c400_count=6)
-    assert g_lw.get_time_dt_from_min(min=5000000)
-    # assert g_lw.get_time_dt_from_min(
-    #     min=g_lw.get_time_min_from_dt(dt=datetime(2000, 1, 1, 0, 0))
+    cx = CalendarUnit(_owner=owner_text)
+    cx.set_time_hreg_ideas(c400_count=6)
+    assert cx.get_time_dt_from_min(min=5000000)
+    # assert cx.get_time_dt_from_min(
+    #     min=cx.get_time_min_from_dt(dt=datetime(2000, 1, 1, 0, 0))
     # ) == datetime(2000, 1, 1, 0, 0)
-    assert g_lw.get_time_dt_from_min(min=420759360) == datetime(800, 1, 1, 0, 0)
-    assert g_lw.get_time_dt_from_min(min=631139040) == datetime(1200, 1, 1, 0, 0)
-    assert g_lw.get_time_dt_from_min(min=631751040) == datetime(1201, 3, 1, 0, 0)
-    assert g_lw.get_time_dt_from_min(min=631751060) == datetime(1201, 3, 1, 0, 20)
+    assert cx.get_time_dt_from_min(min=420759360) == datetime(800, 1, 1, 0, 0)
+    assert cx.get_time_dt_from_min(min=631139040) == datetime(1200, 1, 1, 0, 0)
+    assert cx.get_time_dt_from_min(min=631751040) == datetime(1201, 3, 1, 0, 0)
+    assert cx.get_time_dt_from_min(min=631751060) == datetime(1201, 3, 1, 0, 20)
 
     x_minutes = 1063903680
-    assert g_lw.get_time_dt_from_min(min=x_minutes) == datetime(2022, 10, 29, 0, 0)
+    assert cx.get_time_dt_from_min(min=x_minutes) == datetime(2022, 10, 29, 0, 0)
     x_next_day = x_minutes + 1440
-    assert g_lw.get_time_dt_from_min(min=x_next_day) == datetime(2022, 10, 30, 0, 0)
+    assert cx.get_time_dt_from_min(min=x_next_day) == datetime(2022, 10, 30, 0, 0)
 
-    _check_time_conversion_works_with_random_inputs(g_lw)
-    _check_time_conversion_works_with_random_inputs(g_lw)
-    _check_time_conversion_works_with_random_inputs(g_lw)
+    _check_time_conversion_works_with_random_inputs(cx)
+    _check_time_conversion_works_with_random_inputs(cx)
+    _check_time_conversion_works_with_random_inputs(cx)
 
     # for year, month, day, hr, min in .product(
     #     range(479, 480), range(1, 3), range(20, 28), range(12, 14), range(1430, 1440)
@@ -84,10 +84,10 @@ def test_get_time_dt_from_min_WorksCorrectly():
     #     # with contextlib.suppress(Exception):
     #     print(f"Attempt get_time_from_dt {year=} {month=} {day=} {hr=} {min=}")
     #     py_dt = datetime(year, month, day, 0, 0)
-    #     jaja_min = g_lw.get_time_min_from_dt(dt=py_dt)
+    #     jaja_min = cx.get_time_min_from_dt(dt=py_dt)
     #     # print(f"assert for {year=} {month=} {day=} {jaja_min}")
 
-    #     jaja_dt = g_lw.get_time_dt_from_min(min=jaja_min)
+    #     jaja_dt = cx.get_time_dt_from_min(min=jaja_min)
     #     print(
     #         f"assert attempted for {year=} {month=} {day} \t {jaja_min} Jaja too large: {str(jaja_dt-py_dt)} ({py_dt=})"
     #     )
@@ -98,18 +98,18 @@ def test_get_time_dt_from_min_WorksCorrectly():
     # for year in range(480, 481):
     #     for month in range(1, 12):
     #         for day in range(1, 30):
-    #             assert g_lw.get_time_dt_from_min(
-    #                 min=g_lw.get_time_min_from_dt(dt=datetime(year, month, day, 0, 0))
+    #             assert cx.get_time_dt_from_min(
+    #                 min=cx.get_time_min_from_dt(dt=datetime(year, month, day, 0, 0))
     #             ) == datetime(year, month, day, 0, 0)
 
 
 def test_get_time_():
     # Given
     owner_text = "Kia"
-    g_lw = CalendarUnit(_owner=owner_text)
-    g_lw.set_time_hreg_ideas(c400_count=6)
+    cx = CalendarUnit(_owner=owner_text)
+    cx.set_time_hreg_ideas(c400_count=6)
 
-    idea_list = g_lw.get_idea_list()
+    idea_list = cx.get_idea_list()
     # for idea_x in idea_list:
     #     if idea_x._label in ["min2010", "years"]:
     #         print(
@@ -117,7 +117,7 @@ def test_get_time_():
     #         )
 
     # When
-    g_lw.set_time_acptfacts(
+    cx.set_time_acptfacts(
         open=datetime(2000, 1, 1, 0, 0), nigh=datetime(2003, 11, 15, 4, 0)
     )
 
@@ -126,43 +126,43 @@ def test_get_time_():
     time_road = f"{root_label()},{time_text}"
     jaja_text = "jajatime"
     jaja_road = f"{time_road},{jaja_text}"
-    assert g_lw._idearoot._acptfactunits[jaja_road]
-    assert g_lw._idearoot._acptfactunits[jaja_road].open == 1051898400  # - 1440
-    assert g_lw._idearoot._acptfactunits[jaja_road].nigh == 1053934800  # - 1440
+    assert cx._idearoot._acptfactunits[jaja_road]
+    assert cx._idearoot._acptfactunits[jaja_road].open == 1051898400  # - 1440
+    assert cx._idearoot._acptfactunits[jaja_road].nigh == 1053934800  # - 1440
 
 
 # def test_time_hreg_set_exists():
-#     g_lw = CalendarUnit(_owner=owner_text)
-#     g_lw.set_time_hreg_ideas(c400_count=6)
-#     idea_x = g_lw.get_idea_kid(road=f"{root_label()},hreg")
+#     cx = CalendarUnit(_owner=owner_text)
+#     cx.set_time_hreg_ideas(c400_count=6)
+#     idea_x = cx.get_idea_kid(road=f"{root_label()},hreg")
 #     assert idea_x != None
-#     assert g_lw._kids["hreg"]
-#     for kid in g_lw._kids["hreg"]._kids.values():
+#     assert cx._kids["hreg"]
+#     for kid in cx._kids["hreg"]._kids.values():
 #         print(f"hreg kid= {kid._label=}")
 
-#     assert len(g_lw._kids["hreg"]._kids) > 0
+#     assert len(cx._kids["hreg"]._kids) > 0
 
 
 # def test_time_hreg_set_creates_idea():
-#     g_lw = examples.get_calendar_base_time_example()
+#     cx = examples.get_calendar_base_time_example()
 
 #     hreg_name = "hreg"
 #     with pytest.raises(KeyError) as excinfo:
-#         g_lw._kids[hreg_name]
+#         cx._kids[hreg_name]
 #     assert str(excinfo.value) == f"'{hreg_name}'"
 #     print(f"added {hreg_name}")
-#     g_lw.set_time_hreg_ideas(c400_count=6)
-#     hreg_idea = g_lw._kids[hreg_name]
+#     cx.set_time_hreg_ideas(c400_count=6)
+#     hreg_idea = cx._kids[hreg_name]
 #     assert hreg_idea != None
 #     assert hreg_idea._begin == 0
 #     assert hreg_idea._close == 1262278080
 
 
 # def test_time_hreg_set_CorrectlyCreatesWeekdayIdea():
-#     g_lw = examples.get_calendar_base_time_example()
-#     g_lw.set_time_hreg_ideas(c400_count=6)
+#     cx = examples.get_calendar_base_time_example()
+#     cx.set_time_hreg_ideas(c400_count=6)
 #     weekday_name = "weekday"
-#     weekday = g_lw.get_idea_kid(road=f"{root_label()},hreg,{weekday_name}")
+#     weekday = cx.get_idea_kid(road=f"{root_label()},hreg,{weekday_name}")
 #     assert weekday != None
 #     assert weekday._begin == 0
 #     assert weekday._close == 7
@@ -176,28 +176,28 @@ def test_get_time_():
 
 
 # def test_time_hreg_set_CorrectlyCreates400YearCycleCount():
-#     g_lw = examples.get_calendar_base_time_example()
+#     cx = examples.get_calendar_base_time_example()
 #     c400_count = 6
-#     g_lw.set_time_hreg_ideas(c400_count=c400_count)
+#     cx.set_time_hreg_ideas(c400_count=c400_count)
 
 #     timetech_name = "400 year cycle"
 #     timetech_road = f"{root_label()},hreg,{timetech_name}"
 #     print(f"{timetech_road=}")
-#     timetech = g_lw.get_idea_kid(road=timetech_road)
+#     timetech = cx.get_idea_kid(road=timetech_road)
 #     assert timetech != None
 #     assert timetech._begin == 0
 #     assert timetech._close == c400_count
 
 
 # def test_time_hreg_set_CorrectlyCreates400YearCycleYears():
-#     h_lw = examples.get_calendar_base_time_example()
+#     h_cx = examples.get_calendar_base_time_example()
 #     c400_count = 6
-#     h_lw.set_time_hreg_ideas(c400_count=c400_count)
+#     h_cx.set_time_hreg_ideas(c400_count=c400_count)
 
 #     hy400_name = "cycle400year_years"
 #     hy400_road = f"{root_label()},hreg,{hy400_name}"
 #     print(f"{hy400_road=}")
-#     hy400_idea = h_lw.get_idea_kid(road=hy400_road)
+#     hy400_idea = h_cx.get_idea_kid(road=hy400_road)
 #     assert hy400_idea != None
 #     assert hy400_idea._begin is None
 #     assert hy400_idea._close is None
@@ -268,14 +268,14 @@ def test_get_time_():
 
 
 # def test_time_hreg_set_CorrectlyCreates400YearCycleYears():
-#     h_lw = examples.get_calendar_base_time_example()
+#     h_cx = examples.get_calendar_base_time_example()
 #     c400_count = 6
-#     h_lw.set_time_hreg_ideas(c400_count=c400_count)
+#     h_cx.set_time_hreg_ideas(c400_count=c400_count)
 
 #     hy400_name = "cycle400year_days"
 #     hy400_road = f"{root_label()},hreg,{hy400_name}"
 #     print(f"{hy400_road=}")
-#     hy400_idea = h_lw.get_idea_kid(road=hy400_road)
+#     hy400_idea = h_cx.get_idea_kid(road=hy400_road)
 #     assert hy400_idea != None
 #     assert hy400_idea._begin is None
 #     assert hy400_idea._close is None
@@ -283,15 +283,15 @@ def test_get_time_():
 
 
 # def test_time_hreg_set_CorrectlyCreatesDayRange():
-#     g_lw = examples.get_calendar_base_time_example()
-#     g_lw.set_time_hreg_ideas(c400_count=6)
-#     timetech = g_lw.get_idea_kid(road=f"{root_label()},hreg,day_range")
+#     cx = examples.get_calendar_base_time_example()
+#     cx.set_time_hreg_ideas(c400_count=6)
+#     timetech = cx.get_idea_kid(road=f"{root_label()},hreg,day_range")
 #     assert timetech != None
 #     assert timetech._begin == 0
 #     assert timetech._close == 876582
 
-# x_lw = CalendarUnit()
-# g_lw.get_idea_kid(road={f"{root_label()},hreg,weekday"})
+# x_cx = CalendarUnit()
+# cx.get_idea_kid(road={f"{root_label()},hreg,weekday"})
 
 # wed_sufffact_x = sufffactunit_shop(need=wednesday_road)
 # work_wk_required = RequiredUnit(base=weekday_road, sufffacts={wed_sufffact.need: wed_sufffact})
@@ -304,7 +304,7 @@ def test_get_time_():
 # assert work_idea._requiredunits[weekday_road] != None
 # assert work_idea._requiredunits[weekday_road] == work_wk_required
 
-# g_lw = examples.get_calendar_gregorian_years()
+# cx = examples.get_calendar_gregorian_years()
 
 
 def test_get_jajatime_repeating_legible_text_correctlyText():

@@ -6,18 +6,18 @@ from src.system.examples.system_env_kit import (
 )
 from src.calendar.road import get_global_root_label as root_label
 from src.calendar.calendar import CalendarUnit
-from src.system.examples.example_persons import get_calendar_assignment_laundry_example1
+from src.system.examples.example_authors import get_calendar_assignment_laundry_example1
 
 
-def test_system_ChangingOnePersonsFactChangesAnotherAgenda(env_dir_setup_cleanup):
+def test_system_ChangingOneAuthorsFactChangesAnotherAgenda(env_dir_setup_cleanup):
     sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     # GIVEN
     america_text = "America"
-    sx.create_new_personunit(person_name=america_text)
-    america_px = sx.get_person_obj(name=america_text)
-    america_px.set_isol(get_calendar_assignment_laundry_example1())
+    sx.create_new_authorunit(author_name=america_text)
+    america_ux = sx.get_author_obj(name=america_text)
+    america_ux.set_isol(get_calendar_assignment_laundry_example1())
 
     casa_text = "casa"
     casa_road = f"{root_label()},{casa_text}"
@@ -28,18 +28,18 @@ def test_system_ChangingOnePersonsFactChangesAnotherAgenda(env_dir_setup_cleanup
     b_bare_text = "bare"
     b_bare_road = f"{basket_road},{b_bare_text}"
     # set basket status to "bare"
-    isol_x = america_px.get_isol().set_acptfact(base=basket_road, pick=b_bare_road)
-    america_px.set_isol(isol_x)
+    isol_x = america_ux.get_isol().set_acptfact(base=basket_road, pick=b_bare_road)
+    america_ux.set_isol(isol_x)
     # save fact change to public
-    america_px._admin.save_refreshed_output_to_public()
+    america_ux._admin.save_refreshed_output_to_public()
     # print(f"{sx.get_public_calendar(america_text)._idearoot._acptfactunits.keys()=}")
     america_output = sx.get_public_calendar(america_text)
 
     # create assignment for Joachim
     joachim_text = "Joachim"
-    sx.create_new_personunit(person_name=joachim_text)
-    joachim_px = sx.get_person_obj(name=joachim_text)
-    joachim_px.set_depot_calendar(america_output, "assignment")
+    sx.create_new_authorunit(author_name=joachim_text)
+    joachim_ux = sx.get_author_obj(name=joachim_text)
+    joachim_ux.set_depot_calendar(america_output, "assignment")
     old_joachim_cx = sx.get_output_calendar(joachim_text)
     # print(f"{old_joachim_cx._members.keys()=}")
     # print(f"{old_joachim_cx._idearoot._acptfactunits.keys()=}")
@@ -49,12 +49,12 @@ def test_system_ChangingOnePersonsFactChangesAnotherAgenda(env_dir_setup_cleanup
 
     # WHEN
     # set basket status to "full"
-    america_px.get_isol().set_acptfact(base=basket_road, pick=b_full_road)
-    america_px.set_isol()
-    america_px._admin.save_refreshed_output_to_public()
+    america_ux.get_isol().set_acptfact(base=basket_road, pick=b_full_road)
+    america_ux.set_isol()
+    america_ux._admin.save_refreshed_output_to_public()
 
-    joachim_px.refresh_depot_calendars()
-    new_joachim_cx = joachim_px._admin.get_remelded_output_calendar()
+    joachim_ux.refresh_depot_calendars()
+    new_joachim_cx = joachim_ux._admin.get_remelded_output_calendar()
 
     # new_public_america = sx.get_public_calendar(america_text)
     # a_basket_acptfact = new_public_america._idearoot._acptfactunits.get(basket_road)
@@ -102,7 +102,7 @@ def test_system_create_task_CorrectlyCreatesTask(env_dir_setup_cleanup):
     for_group_x = {america_text: -1, joachim_text: -1}
     assigned_group_x = {joachim_text: -1}
     sx.create_task(
-        from_person=america_text,
+        from_author=america_text,
         to_group=joachim_text,
         group_members={joachim_text},
         task_road=do_laundry_road,
@@ -115,9 +115,9 @@ def test_system_create_task_CorrectlyCreatesTask(env_dir_setup_cleanup):
     )
 
     # # WHEN
-    # america_person.save_output_calendar_to_public()
-    # new_joa_person = sx.get_person_obj(name=joachim_text)
-    # new_joa_person.save_output_calendar_to_public()
+    # america_author.save_output_calendar_to_public()
+    # new_joa_author = sx.get_author_obj(name=joachim_text)
+    # new_joa_author.save_output_calendar_to_public()
     # new_joa_dest_c = sx.get_public_calendar(joachim_text)
     # new_joa_agenda = new_joa_dest_c.get_agenda_items()
     # assert len(new_joa_agenda) == 1
@@ -128,21 +128,21 @@ def test_system_create_task_CorrectlyCreatesTask(env_dir_setup_cleanup):
     assert len(joachim_cx.get_agenda_items()) == 1
     assert joachim_cx.get_agenda_items()[0].get_road() == do_laundry_road
 
-    # sx.create_new_personunit(person_name=america_text)
-    # america_person = sx.get_person_obj(name=america_text)
-    # america_person.save_output_calendar_to_public()
+    # sx.create_new_authorunit(author_name=america_text)
+    # america_author = sx.get_author_obj(name=america_text)
+    # america_author.save_output_calendar_to_public()
     # assert sx.get_public_calendar(america_text) != None
 
-    # # Create person2
+    # # Create author2
 
-    # sx.create_new_personunit(person_name=joachim_text)
-    # old_joa_person = sx.get_person_obj(name=joachim_text)
-    # old_joa_person._set_depotlink(america_cx._ownert, depotlink_type="blind_trust")
-    # old_joa_person.save_output_calendar_to_public()
+    # sx.create_new_authorunit(author_name=joachim_text)
+    # old_joa_author = sx.get_author_obj(name=joachim_text)
+    # old_joa_author._set_depotlink(america_cx._ownert, depotlink_type="blind_trust")
+    # old_joa_author.save_output_calendar_to_public()
     # old_joa_dest_c = sx.get_public_calendar(joachim_text)
     # old_joa_agenda = old_joa_dest_c.get_agenda_items()
     # # assert len(old_joa_agenda) == 0
 
-    # # # Create person1 task:
+    # # # Create author1 task:
     # # #  create joachim member in America calendar
-    # america_person._set_depotlink(joachim_text)
+    # america_author._set_depotlink(joachim_text)

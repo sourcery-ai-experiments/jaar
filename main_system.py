@@ -28,7 +28,7 @@ from src.calendar.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
 )
-from src.pyqt5_kit.pyqt_func import lw_diplay
+from src.pyqt5_kit.pyqt_func import calendar_importance_diplay
 
 
 class MainApp(QApplication):
@@ -53,7 +53,7 @@ class MainApp(QApplication):
     def editmain_show(self):
         if self.main_window.ignore_calendar_x is None:
             self.main_window.isol = (
-                self.main_window.person_x._admin.open_isol_calendar()
+                self.main_window.author_x._admin.open_isol_calendar()
             )
             self.editmain_view.calendar_x = self.main_window.isol
         else:
@@ -62,8 +62,8 @@ class MainApp(QApplication):
         self.editmain_view.show()
 
     def edit5issue_show(self):
-        if self.main_window.person_x != None:
-            self.edit5issue_view.person_x = self.main_window.person_x
+        if self.main_window.author_x != None:
+            self.edit5issue_view.author_x = self.main_window.author_x
             self.edit5issue_view.refresh_all()
             self.edit5issue_view.show()
 
@@ -88,10 +88,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.calendar_update_button.clicked.connect(self.calendar_update_name)
         self.calendar_delete_button.clicked.connect(self.calendar_delete)
         self.calendars_table.itemClicked.connect(self.calendars_table_select)
-        self.person_insert_button.clicked.connect(self.person_insert)
-        self.person_update_button.clicked.connect(self.person_update_name)
-        self.person_delete_button.clicked.connect(self.person_delete)
-        self.persons_table.itemClicked.connect(self.persons_table_select)
+        self.author_insert_button.clicked.connect(self.author_insert)
+        self.author_update_button.clicked.connect(self.author_update_name)
+        self.author_delete_button.clicked.connect(self.author_delete)
+        self.authors_table.itemClicked.connect(self.authors_table_select)
         self.reload_all_src_calendars_button.clicked.connect(
             self.reload_all_src_calendars
         )
@@ -117,7 +117,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.five_issue_button.clicked.connect(self.open_edit5issue)
 
         self.system_x = None
-        self.person_x = None
+        self.author_x = None
         self.ignore_calendar_x = None
         setup_test_example_environment()
         first_env = "ex5"
@@ -127,24 +127,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_system()
         self.system_name_combo_refresh()
         self.system_name_combo.setCurrentText(first_env)
-        self._person_load(person_name="ernie")
+        self._author_load(author_name="ernie")
 
     def save_isol(self):
         if self.isol != None:
-            self.person_x._admin.save_isol_calendar(self.isol)
-        self.refresh_person()
+            self.author_x._admin.save_isol_calendar(self.isol)
+        self.refresh_author()
 
     def reload_all_src_calendars(self):
         if self.system_x != None:
-            self.system_x.reload_all_persons_src_calendarunits()
+            self.system_x.reload_all_authors_src_calendarunits()
 
     def set_public_and_reload_srcs(self):
         self.save_output_calendar_to_public()
         self.reload_all_src_calendars()
 
     def save_output_calendar_to_public(self):
-        if self.person_x != None:
-            self.person_x.save_output_calendar_to_public()
+        if self.author_x != None:
+            self.author_x.save_output_calendar_to_public()
         self.refresh_system()
 
     def system_load_from_file(self):
@@ -160,26 +160,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.calendar_name.setText(
             self.calendars_table.item(self.calendars_table.currentRow(), 0).text()
         )
-        if self.persons_table.currentRow() != -1:
-            selected_person = self.persons_table.item(
-                self.persons_table.currentRow(), 0
+        if self.authors_table.currentRow() != -1:
+            selected_author = self.authors_table.item(
+                self.authors_table.currentRow(), 0
             ).text()
             selected_calendar = self.calendars_table.item(
                 self.calendars_table.currentRow(), 0
             ).text()
-            self.depotlink_name.setText(f"{selected_person} - {selected_calendar}")
+            self.depotlink_name.setText(f"{selected_author} - {selected_calendar}")
 
-    def persons_table_select(self):
-        person_x_name = self.persons_table.item(
-            self.persons_table.currentRow(), 0
+    def authors_table_select(self):
+        author_x_name = self.authors_table.item(
+            self.authors_table.currentRow(), 0
         ).text()
-        self._person_load(person_name=person_x_name)
+        self._author_load(author_name=author_x_name)
 
-    def _person_load(self, person_name: str):
-        self.system_x.create_personunit_from_public(name=person_name)
-        self.person_x = self.system_x._personunits.get(person_name)
-        self.person_name.setText(self.person_x._admin.name)
-        self.refresh_person()
+    def _author_load(self, author_name: str):
+        self.system_x.create_authorunit_from_public(name=author_name)
+        self.author_x = self.system_x._authorunits.get(author_name)
+        self.author_name.setText(self.author_x._admin.name)
+        self.refresh_author()
 
     def depotlinks_table_select(self):
         self.depotlink_name.setText(
@@ -198,15 +198,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         # self.ignore_calendar_x = self.system_x.get_public_calendar(
         self.ignore_calendar_x = self.system_x.get_calendar_from_ignores_dir(
-            person_name=self.person_x._admin.name, _owner=ignore_calendar_owner
+            author_name=self.author_x._admin.name, _owner=ignore_calendar_owner
         )
         self.edit_calendar = self.ignore_calendar_x
 
     def ignore_calendar_file_update(self):
         self.system_x.set_ignore_calendar_file(
-            person_name=self.person_x._admin.name, calendar_obj=self.ignore_calendar_x
+            author_name=self.author_x._admin.name, calendar_obj=self.ignore_calendar_x
         )
-        self.refresh_person()
+        self.refresh_author()
 
     def show_ignores_table(self):
         self.ignores_table.setHidden(False)
@@ -257,66 +257,66 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.refresh_system()
 
-    def person_insert(self):
-        self.system_x.create_new_personunit(person_name=self.person_name.text())
-        self.refresh_persons()
+    def author_insert(self):
+        self.system_x.create_new_authorunit(author_name=self.author_name.text())
+        self.refresh_authors()
 
-    def person_update_name(self):
-        currently_selected = self.persons_table.item(
-            self.persons_table.currentRow(), 0
+    def author_update_name(self):
+        currently_selected = self.authors_table.item(
+            self.authors_table.currentRow(), 0
         ).text()
-        typed_in = self.person_name.text()
+        typed_in = self.author_name.text()
         if currently_selected != typed_in:
-            self.system_x.rename_personunit(
+            self.system_x.rename_authorunit(
                 old_label=currently_selected, new_label=typed_in
             )
-            self.refresh_persons()
+            self.refresh_authors()
 
-    def person_delete(self):
-        self.system_x.del_person_dir(
-            person_name=self.persons_table.item(
-                self.persons_table.currentRow(), 0
+    def author_delete(self):
+        self.system_x.del_author_dir(
+            author_name=self.authors_table.item(
+                self.authors_table.currentRow(), 0
             ).text()
         )
-        self.refresh_persons()
+        self.refresh_authors()
 
     def depotlink_insert(self):
         calendar_owner = self.calendars_table.item(
             self.calendars_table.currentRow(), 0
         ).text()
-        if self.person_x != None:
+        if self.author_x != None:
             calendar_json = x_func_open_file(
-                dest_dir=self.person_x._admin._calendars_public_dir,
+                dest_dir=self.author_x._admin._calendars_public_dir,
                 file_name=f"{calendar_owner}.json",
             )
             calendar_x = get_calendar_from_json(calendar_json)
-            self.person_x.set_depot_calendar(
+            self.author_x.set_depot_calendar(
                 calendar_x=calendar_x,
                 depotlink_type=self.depotlink_type_combo.currentText(),
                 depotlink_weight=self.depotlink_weight.text(),
             )
-            self.system_x.save_person_file(person_name=self.person_x._admin.name)
-        self.refresh_person()
+            self.system_x.save_author_file(author_name=self.author_x._admin.name)
+        self.refresh_author()
 
     def depotlink_update(self):
-        person_name_x = self.person_x._admin.name
+        author_name_x = self.author_x._admin.name
         self.system_x.update_depotlink(
-            person_name=person_name_x,
+            author_name=author_name_x,
             membername=self.depotlink_name.text(),
             depotlink_type=self.depotlink_type_combo.currentText(),
             creditor_weight=self.depotlink_weight.text(),
             debtor_weight=self.depotlink_weight.text(),
         )
-        self.system_x.save_person_file(person_name=person_name_x)
-        self.refresh_person()
+        self.system_x.save_author_file(author_name=author_name_x)
+        self.refresh_author()
 
     def depotlink_delete(self):
-        person_name_x = self.person_x._admin.name
+        author_name_x = self.author_x._admin.name
         self.system_x.del_depotlink(
-            person_name=person_name_x, calendarunit_owner=self.depotlink_name.text()
+            author_name=author_name_x, calendarunit_owner=self.depotlink_name.text()
         )
-        self.system_x.save_person_file(person_name=person_name_x)
-        self.refresh_person()
+        self.system_x.save_author_file(author_name=author_name_x)
+        self.refresh_author()
 
     def get_calendar_owner_list(self):
         calendars_list = []
@@ -327,18 +327,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             calendars_list.append(get_calendar_from_json(cx_json=calendar_json))
         return calendars_list
 
-    def get_person_name_list(self):
-        persons_owner_list = []
+    def get_author_name_list(self):
+        authors_owner_list = []
         if self.system_x != None:
-            persons_owner_list.extend(
-                [person_dir] for person_dir in self.system_x.get_person_dir_paths_list()
+            authors_owner_list.extend(
+                [author_dir] for author_dir in self.system_x.get_author_dir_paths_list()
             )
-        return persons_owner_list
+        return authors_owner_list
 
     def get_depotlink_list(self):
         depotlinks_list = []
-        if self.person_x != None:
-            for cl_val in self.person_x._depotlinks.values():
+        if self.author_x != None:
+            for cl_val in self.author_x._depotlinks.values():
                 depotlink_row = [
                     cl_val.calendar_owner,
                     cl_val.depotlink_type,
@@ -349,9 +349,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_digests_list(self):
         x_list = []
-        if self.person_x != None:
+        if self.author_x != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.person_x_admin._calendars_digest_dir,
+                dir_path=self.author_x_admin._calendars_digest_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -361,9 +361,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_ignores_list(self):
         x_list = []
-        if self.person_x != None:
+        if self.author_x != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.person_x._admin._calendars_ignore_dir,
+                dir_path=self.author_x._admin._calendars_ignore_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -373,16 +373,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_ideas_list(self):
         x_list = []
-        if self.person_output_calendar != None:
-            idea_list = self.person_output_calendar.get_idea_tree_ordered_road_list()
+        if self.author_output_calendar != None:
+            idea_list = self.author_output_calendar.get_idea_tree_ordered_road_list()
 
             for idea_road in idea_list:
-                idea_obj = self.person_output_calendar.get_idea_kid(idea_road)
+                idea_obj = self.author_output_calendar.get_idea_kid(idea_road)
 
                 if idea_obj._walk.find("time") != 3:
                     x_list.append(
                         [
-                            lw_diplay(idea_obj._calendar_importance),
+                            calendar_importance_diplay(idea_obj._calendar_importance),
                             idea_road,
                             len(idea_obj._grouplinks),
                         ]
@@ -392,36 +392,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_members_list(self):
         x_list = []
-        if self.person_output_calendar != None:
+        if self.author_output_calendar != None:
             x_list.extend(
                 [
-                    f"{lw_diplay(memberunit._calendar_credit)}/{lw_diplay(memberunit._calendar_debt)}",
+                    f"{calendar_importance_diplay(memberunit._calendar_credit)}/{calendar_importance_diplay(memberunit._calendar_debt)}",
                     memberunit.name,
                     f"{memberunit.creditor_weight}/{memberunit.debtor_weight}",
                 ]
-                for memberunit in self.person_output_calendar._members.values()
+                for memberunit in self.author_output_calendar._members.values()
             )
         return x_list
 
     def get_p_groups_list(self):
         x_list = []
-        if self.person_output_calendar != None:
+        if self.author_output_calendar != None:
             x_list.extend(
                 [
-                    f"{lw_diplay(groupunit._calendar_debt)}/{lw_diplay(groupunit._calendar_credit)}",
+                    f"{calendar_importance_diplay(groupunit._calendar_debt)}/{calendar_importance_diplay(groupunit._calendar_credit)}",
                     groupunit.name,
                     len(groupunit._members),
                 ]
-                for groupunit in self.person_output_calendar._groups.values()
+                for groupunit in self.author_output_calendar._groups.values()
             )
         return x_list
 
     def get_p_acptfacts_list(self):
         x_list = []
-        if self.person_output_calendar != None:
+        if self.author_output_calendar != None:
             for (
                 acptfactunit
-            ) in self.person_output_calendar._idearoot._acptfactunits.values():
+            ) in self.author_output_calendar._idearoot._acptfactunits.values():
                 open_nigh = ""
                 if acptfactunit.open is None and acptfactunit.nigh is None:
                     open_nigh = ""
@@ -439,12 +439,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_agenda_list(self):
         x_list = []
-        if self.person_output_calendar != None:
-            agenda_list = self.person_output_calendar.get_agenda_items()
+        if self.author_output_calendar != None:
+            agenda_list = self.author_output_calendar.get_agenda_items()
             agenda_list.sort(key=lambda x: x._calendar_importance, reverse=True)
             x_list.extend(
                 [
-                    lw_diplay(agenda_item._calendar_importance),
+                    calendar_importance_diplay(agenda_item._calendar_importance),
                     agenda_item._label,
                     agenda_item._walk,
                 ]
@@ -455,9 +455,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def refresh_all(self):
         self.refresh_system()
 
-    def _sub_refresh_persons_table(self):
+    def _sub_refresh_authors_table(self):
         self.refresh_x(
-            self.persons_table, ["Persons Table"], self.get_person_name_list()
+            self.authors_table, ["Authors Table"], self.get_author_name_list()
         )
 
     def _sub_refresh_depotlinks_table(self):
@@ -467,10 +467,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.depotlink_type_combo.addItems(depotlink_types)
         self.depotlink_type_combo.setCurrentText("")
         column_header = ""
-        if self.person_x is None:
+        if self.author_x is None:
             column_header = "Calendarlinks Table"
-        elif self.person_x != None:
-            column_header = f"'{self.person_x._admin.name}' Calendarlinks"
+        elif self.author_x != None:
+            column_header = f"'{self.author_x._admin.name}' Calendarlinks"
         self.refresh_x(
             self.depotlinks_table,
             [column_header, "Link Type", "Weight"],
@@ -574,19 +574,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.system_name_combo.clear()
         self.system_name_combo.addItems(create_example_systems_list())
 
-    def refresh_persons(self):
-        self.person_x = None
-        self._sub_refresh_persons_table()
-        self.refresh_person()
+    def refresh_authors(self):
+        self.author_x = None
+        self._sub_refresh_authors_table()
+        self.refresh_author()
 
-    def refresh_person(self):
+    def refresh_author(self):
         self._sub_refresh_depotlinks_table()
         self._sub_refresh_digests_table()
         self._sub_refresh_ignores_table()
-        self.person_output_calendar = None
-        if self.person_x != None:
-            self.person_output_calendar = (
-                self.person_x._admin.get_remelded_output_calendar()
+        self.author_output_calendar = None
+        if self.author_x != None:
+            self.author_output_calendar = (
+                self.author_x._admin.get_remelded_output_calendar()
             )
         self._sub_refresh_p_ideas_table()
         self._sub_refresh_p_members_table()
@@ -598,7 +598,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_x(
             self.calendars_table, ["Calendars Table"], self.get_calendar_owner_list()
         )
-        self.refresh_persons()
+        self.refresh_authors()
 
     def refresh_x(
         self,

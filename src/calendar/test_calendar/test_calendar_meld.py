@@ -12,30 +12,30 @@ from src.calendar.x_func import get_on_meld_weight_actions
 def test_calendar_meld_BaseScenario():
     # GIVEN
     calendar_text = "x_calendar"
-    ax1 = CalendarUnit(_owner=calendar_text)
-    ax2 = CalendarUnit(_owner=calendar_text)
+    cx1 = CalendarUnit(_owner=calendar_text)
+    cx2 = CalendarUnit(_owner=calendar_text)
 
     # WHEN
-    ax1.meld(other_calendar=ax2)
+    cx1.meld(other_calendar=cx2)
 
     # THEN
-    assert ax1
-    assert ax1._owner == calendar_text
+    assert cx1
+    assert cx1._owner == calendar_text
 
 
 def test_calendar_meld_WeightDoesNotCombine():
     # GIVEN
     calendar_text = "x_calendar"
-    ax1 = CalendarUnit(_owner=calendar_text)
-    ax1._weight = 3
-    ax2 = CalendarUnit(_owner=calendar_text)
-    ax2._weight = 5
+    cx1 = CalendarUnit(_owner=calendar_text)
+    cx1._weight = 3
+    cx2 = CalendarUnit(_owner=calendar_text)
+    cx2._weight = 5
 
     # WHEN
-    ax1.meld(other_calendar=ax2)
+    cx1.meld(other_calendar=cx2)
 
     # THEN
-    assert ax1._weight == 3
+    assert cx1._weight == 3
 
 
 def test_calendar_meld_MemberUnits():
@@ -44,23 +44,23 @@ def test_calendar_meld_MemberUnits():
     x1_member = memberunit_shop(name=x1_name)
 
     calendar_text = "x_calendar"
-    ax1 = CalendarUnit(_owner=calendar_text)
-    ax1.set_memberunit(memberunit=x1_member)
+    cx1 = CalendarUnit(_owner=calendar_text)
+    cx1.set_memberunit(memberunit=x1_member)
 
-    ax2 = CalendarUnit(_owner=calendar_text)
-    ax2.set_memberunit(memberunit=x1_member)
+    cx2 = CalendarUnit(_owner=calendar_text)
+    cx2.set_memberunit(memberunit=x1_member)
     x2_name = "x2_member"
     x2_member = memberunit_shop(name=x2_name)
-    ax2.set_memberunit(memberunit=x2_member)
-    assert len(ax1._members) == 1
+    cx2.set_memberunit(memberunit=x2_member)
+    assert len(cx1._members) == 1
 
     # WHEN
-    ax1.meld(other_calendar=ax2)
+    cx1.meld(other_calendar=cx2)
 
     # THEN
-    assert len(ax1._members) == 2
-    assert ax1._members.get(x1_name) != None
-    assert ax1._members.get(x2_name) != None
+    assert len(cx1._members) == 2
+    assert cx1._members.get(x1_name) != None
+    assert cx1._members.get(x2_name) != None
 
 
 def test_calendar_meld_GroupUnits():
@@ -69,40 +69,40 @@ def test_calendar_meld_GroupUnits():
     x1_group = groupunit_shop(name=x1_name)
 
     calendar_text = "x_calendar"
-    ax1 = CalendarUnit(_owner=calendar_text)
-    ax1.set_groupunit(groupunit=x1_group)
+    cx1 = CalendarUnit(_owner=calendar_text)
+    cx1.set_groupunit(groupunit=x1_group)
 
-    ax2 = CalendarUnit(_owner=calendar_text)
-    ax2.set_groupunit(groupunit=x1_group)
+    cx2 = CalendarUnit(_owner=calendar_text)
+    cx2.set_groupunit(groupunit=x1_group)
     x2_name = "x2_group"
     x2_group = groupunit_shop(name=x2_name, uid=5)
-    ax2.set_groupunit(groupunit=x2_group)
-    assert len(ax1._groups) == 1
+    cx2.set_groupunit(groupunit=x2_group)
+    assert len(cx1._groups) == 1
 
     # WHEN
-    ax1.meld(other_calendar=ax2)
+    cx1.meld(other_calendar=cx2)
 
     # THEN
-    # for group_name in ax1._groups.values():
-    #     print(f"ax1 {group_name.name=}")
+    # for group_name in cx1._groups.values():
+    #     print(f"cx1 {group_name.name=}")
 
-    assert len(ax1._groups) == 2
-    assert ax1._groups.get(x1_name) != None
-    assert ax1._groups.get(x2_name) != None
-    # assert ax1._groups.get(x2_name).uid == 5
+    assert len(cx1._groups) == 2
+    assert cx1._groups.get(x1_name) != None
+    assert cx1._groups.get(x2_name) != None
+    # assert cx1._groups.get(x2_name).uid == 5
 
 
 def test_calendar_idearoot_meld_IdeaRootAttrCorrectlyMelded():
     # GIVEN
-    ax1 = CalendarUnit(_owner="spirit")
-    ax2 = CalendarUnit(_owner="spirit")
-    ax2._idearoot._uid = 4
-    assert ax1._idearoot._uid == 1
-    assert ax2._idearoot._uid == 4
+    cx1 = CalendarUnit(_owner="spirit")
+    cx2 = CalendarUnit(_owner="spirit")
+    cx2._idearoot._uid = 4
+    assert cx1._idearoot._uid == 1
+    assert cx2._idearoot._uid == 4
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        ax1.meld(ax2)
+        cx1.meld(cx2)
     assert (
         str(excinfo.value)
         == f"Meld fail idea=None,{root_label()} _uid:1 with None,{root_label()} _uid:4"
@@ -120,22 +120,22 @@ def test_calendar_idearoot_meld_Add4IdeasScenario():
     free_text = "freestyle"
     free_road = f"{root_label()},{swim_text},{free_text}"
 
-    ax1 = CalendarUnit(_owner="spirit")
+    cx1 = CalendarUnit(_owner="spirit")
 
-    ax2 = CalendarUnit(_owner="spirit")
-    ax2.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=tech_text))
-    ax2.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
-    ax2.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
+    cx2 = CalendarUnit(_owner="spirit")
+    cx2.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=tech_text))
+    cx2.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
+    cx2.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
 
     # WHEN
-    ax1.meld(ax2)
+    cx1.meld(cx2)
 
     # THEN
-    assert len(ax1.get_idea_list()) == 5
-    assert ax1.get_idea_kid(road=tech_road)._label == tech_text
-    assert ax1.get_idea_kid(road=bowl_road)._label == bowl_text
-    assert ax1.get_idea_kid(road=swim_road)._label == swim_text
-    assert ax1.get_idea_kid(road=free_road)._label == free_text
+    assert len(cx1.get_idea_list()) == 5
+    assert cx1.get_idea_kid(road=tech_road)._label == tech_text
+    assert cx1.get_idea_kid(road=bowl_road)._label == bowl_text
+    assert cx1.get_idea_kid(road=swim_road)._label == swim_text
+    assert cx1.get_idea_kid(road=free_road)._label == free_text
 
 
 def test_calendar_idearoot_meld_2SameIdeasScenario():
@@ -146,21 +146,21 @@ def test_calendar_idearoot_meld_2SameIdeasScenario():
     bowl_road = f"{root_label()},{tech_text},{bowl_text}"
 
     owner_text = "Yoa"
-    ax1 = CalendarUnit(_owner=owner_text)
-    ax1.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=tech_text))
-    ax1.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
+    cx1 = CalendarUnit(_owner=owner_text)
+    cx1.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=tech_text))
+    cx1.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
 
-    ax2 = CalendarUnit(_owner=owner_text)
-    ax2.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=tech_text))
-    ax2.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
+    cx2 = CalendarUnit(_owner=owner_text)
+    cx2.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=tech_text))
+    cx2.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
 
-    assert ax1.get_idea_kid(road=bowl_road)._weight == 1
+    assert cx1.get_idea_kid(road=bowl_road)._weight == 1
     # WHEN
-    ax1.meld(ax2)
+    cx1.meld(cx2)
 
     # THEN
-    assert ax1.get_idea_kid(road=bowl_road)._weight == 1
-    assert len(ax1.get_idea_list()) == 3
+    assert cx1.get_idea_kid(road=bowl_road)._weight == 1
+    assert len(cx1.get_idea_list()) == 3
 
 
 def test_calendar_acptfactunits_meld_BaseScenarioWorks():
@@ -170,23 +170,23 @@ def test_calendar_acptfactunits_meld_BaseScenarioWorks():
     bowl_text = "bowl"
     bowl_road = f"{root_label()},{tech_text},{bowl_text}"
 
-    ax1 = CalendarUnit(_owner="test7")
-    ax1.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=tech_text))
-    ax1.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
-    ax1.set_acptfact(base=tech_road, pick=bowl_road)
+    cx1 = CalendarUnit(_owner="test7")
+    cx1.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=tech_text))
+    cx1.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
+    cx1.set_acptfact(base=tech_road, pick=bowl_road)
 
-    ax2 = CalendarUnit(_owner="test7")
-    ax2.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=tech_text))
-    ax2.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
-    ax2.set_acptfact(base=tech_road, pick=bowl_road)
+    cx2 = CalendarUnit(_owner="test7")
+    cx2.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=tech_text))
+    cx2.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
+    cx2.set_acptfact(base=tech_road, pick=bowl_road)
 
     # WHEN
-    ax1.meld(ax2)
+    cx1.meld(cx2)
 
     # THEN
-    assert len(ax1._idearoot._acptfactunits) == 1
-    assert len(ax1._idearoot._acptfactunits) == len(ax2._idearoot._acptfactunits)
-    assert ax1._idearoot._acptfactunits == ax2._idearoot._acptfactunits
+    assert len(cx1._idearoot._acptfactunits) == 1
+    assert len(cx1._idearoot._acptfactunits) == len(cx2._idearoot._acptfactunits)
+    assert cx1._idearoot._acptfactunits == cx2._idearoot._acptfactunits
 
 
 def test_calendar_acptfactunits_meld_2AcptFactUnitsWorks():
@@ -199,26 +199,26 @@ def test_calendar_acptfactunits_meld_2AcptFactUnitsWorks():
     swim_road = f"{root_label()},{swim_text}"
     free_text = "freestyle"
 
-    ax1 = CalendarUnit(_owner="test7")
-    ax1.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=tech_text))
-    ax1.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
-    ax1.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
-    ax1.set_acptfact(base=tech_road, pick=bowl_road)
+    cx1 = CalendarUnit(_owner="test7")
+    cx1.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=tech_text))
+    cx1.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
+    cx1.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
+    cx1.set_acptfact(base=tech_road, pick=bowl_road)
 
-    ax2 = CalendarUnit(_owner="test7")
-    ax2.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=tech_text))
-    ax2.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
-    ax2.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
-    ax2.set_acptfact(base=tech_road, pick=bowl_road)
-    ax2.set_acptfact(base=swim_road, pick=swim_road)
+    cx2 = CalendarUnit(_owner="test7")
+    cx2.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=tech_text))
+    cx2.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
+    cx2.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
+    cx2.set_acptfact(base=tech_road, pick=bowl_road)
+    cx2.set_acptfact(base=swim_road, pick=swim_road)
 
     # WHEN
-    ax1.meld(ax2)
+    cx1.meld(cx2)
 
     # THEN
-    assert len(ax1._idearoot._acptfactunits) == 2
-    assert len(ax1._idearoot._acptfactunits) == len(ax2._idearoot._acptfactunits)
-    assert ax1._idearoot._acptfactunits == ax2._idearoot._acptfactunits
+    assert len(cx1._idearoot._acptfactunits) == 2
+    assert len(cx1._idearoot._acptfactunits) == len(cx2._idearoot._acptfactunits)
+    assert cx1._idearoot._acptfactunits == cx2._idearoot._acptfactunits
 
 
 def test_calendar_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
@@ -227,40 +227,40 @@ def test_calendar_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
     swim_road = f"{root_label()},{swim_text}"
     free_text = "freestyle"
 
-    ax1 = CalendarUnit(_owner="test7")
+    cx1 = CalendarUnit(_owner="test7")
 
-    ax2 = CalendarUnit(_owner="test7")
-    ax2.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
-    ax2.set_acptfact(base=swim_road, pick=swim_road)
+    cx2 = CalendarUnit(_owner="test7")
+    cx2.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
+    cx2.set_acptfact(base=swim_road, pick=swim_road)
 
     # WHEN
-    ax1.meld(ax2)
+    cx1.meld(cx2)
 
     # THEN
     print()
-    assert len(ax1._idearoot._acptfactunits) == 1
-    assert ax1.get_idea_kid(swim_road)._label == swim_text
-    assert ax1._idearoot._kids[swim_text]._label == swim_text
-    assert len(ax1._idearoot._acptfactunits) == len(ax2._idearoot._acptfactunits)
-    assert ax1._idearoot._acptfactunits == ax2._idearoot._acptfactunits
+    assert len(cx1._idearoot._acptfactunits) == 1
+    assert cx1.get_idea_kid(swim_road)._label == swim_text
+    assert cx1._idearoot._kids[swim_text]._label == swim_text
+    assert len(cx1._idearoot._acptfactunits) == len(cx2._idearoot._acptfactunits)
+    assert cx1._idearoot._acptfactunits == cx2._idearoot._acptfactunits
 
 
 def test_calendar_acptfactunits_meld_GroupsMeldedBefore_Members():
     # GIVEN
     owner_text = "Yoa"
-    ax1 = CalendarUnit(_owner=owner_text)
-    ax2 = CalendarUnit(_owner=owner_text)
+    cx1 = CalendarUnit(_owner=owner_text)
+    cx2 = CalendarUnit(_owner=owner_text)
     bob = "bob"
-    ax2.set_memberunit(memberunit_shop(name=bob))
-    assert ax2._groups.get(bob) != None
-    assert ax2._groups.get(bob).uid is None
-    ax2.set_groupunit(groupunit_shop(name=bob, uid=13))
-    assert ax2._groups.get(bob).uid == 13
+    cx2.set_memberunit(memberunit_shop(name=bob))
+    assert cx2._groups.get(bob) != None
+    assert cx2._groups.get(bob).uid is None
+    cx2.set_groupunit(groupunit_shop(name=bob, uid=13))
+    assert cx2._groups.get(bob).uid == 13
 
     # WHEN/THEN
-    assert ax1.meld(ax2) is None  # No error raised
+    assert cx1.meld(cx2) is None  # No error raised
     # with pytest_raises(Exception) as excinfo:
-    #     ax1.meld(ax2)
+    #     cx1.meld(cx2)
     # assert (
     #     str(excinfo.value)
     #     == f"Meld fail GroupUnit bob .uid='None' not the same as .uid='13"
@@ -274,103 +274,103 @@ def test_calendar_acptfactunits_meld_AcptFactsAttributeCorrectlySet():
     free_text = "freestyle"
     free_road = f"{root_label()},{free_text}"
 
-    ax1 = CalendarUnit(_owner="test7")
-    ax1.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
+    cx1 = CalendarUnit(_owner="test7")
+    cx1.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
 
-    ax2 = CalendarUnit(_owner="test7")
-    ax2.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
-    ax2.set_acptfact(base=swim_road, pick=free_road, open=23, nigh=27)
+    cx2 = CalendarUnit(_owner="test7")
+    cx2.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
+    cx2.set_acptfact(base=swim_road, pick=free_road, open=23, nigh=27)
 
     # WHEN
-    ax1.meld(ax2)
+    cx1.meld(cx2)
 
     # THEN
     print()
-    assert len(ax1._idearoot._acptfactunits) == 1
-    assert ax1._idearoot._acptfactunits[swim_road].base == swim_road
-    assert ax1._idearoot._acptfactunits[swim_road].pick == free_road
-    assert ax1._idearoot._acptfactunits[swim_road].open == 23
-    assert ax1._idearoot._acptfactunits[swim_road].nigh == 27
+    assert len(cx1._idearoot._acptfactunits) == 1
+    assert cx1._idearoot._acptfactunits[swim_road].base == swim_road
+    assert cx1._idearoot._acptfactunits[swim_road].pick == free_road
+    assert cx1._idearoot._acptfactunits[swim_road].open == 23
+    assert cx1._idearoot._acptfactunits[swim_road].nigh == 27
 
 
 def test_calendar_meld_worksCorrectlyForLargeExample():
     # GIVEN
     owner_text = "TlME"
-    ax1 = CalendarUnit(_owner=owner_text)
-    ax1._idearoot._uid = 1
-    ax2 = calendar_v001()
+    cx1 = CalendarUnit(_owner=owner_text)
+    cx1._idearoot._uid = 1
+    cx2 = calendar_v001()
 
-    ax2r_bl = ax2._idearoot._grouplines
+    cx2r_bl = cx2._idearoot._grouplines
     fam_text = "Family"
 
     print(
-        f"Before {ax2r_bl.get(fam_text)._calendar_credit=} {ax2._idearoot._kids_total_weight=}"
+        f"Before {cx2r_bl.get(fam_text)._calendar_credit=} {cx2._idearoot._kids_total_weight=}"
     )
 
     # WHEN
-    ax1.meld(ax2)
-    ax1.get_tree_metrics()
+    cx1.meld(cx2)
+    cx1.get_tree_metrics()
 
     # THEN
     print(
-        f"After    {ax2r_bl.get(fam_text)._calendar_debt=} {ax2._idearoot._kids_total_weight=}"
+        f"After    {cx2r_bl.get(fam_text)._calendar_debt=} {cx2._idearoot._kids_total_weight=}"
     )
-    assert ax1._weight == ax2._weight
-    assert ax1._idearoot._kids == ax2._idearoot._kids
-    assert ax1._idearoot._uid == ax2._idearoot._uid
-    assert ax1._idearoot._acptfactunits == ax2._idearoot._acptfactunits
-    assert ax1._groups == ax2._groups
-    assert ax1._members == ax2._members
+    assert cx1._weight == cx2._weight
+    assert cx1._idearoot._kids == cx2._idearoot._kids
+    assert cx1._idearoot._uid == cx2._idearoot._uid
+    assert cx1._idearoot._acptfactunits == cx2._idearoot._acptfactunits
+    assert cx1._groups == cx2._groups
+    assert cx1._members == cx2._members
 
-    assert len(ax1._idearoot._acptfactunits) == 2
-    assert len(ax1._idearoot._acptfactunits) == len(ax2._idearoot._acptfactunits)
-    assert ax1._owner == ax2._owner
-    print(f"{len(ax1._groups.items())=}")
-    # for ax1_group_key, ax1_group_obj in ax1._groups.items():
-    #     print(f"{ax1_group_key=}")
-    #     assert ax1_group_obj.uid == ax2._groups[ax1_group_key].uid
-    #     assert ax1_group_obj == ax2._groups[ax1_group_key]
-    assert ax1._groups == ax2._groups
-    assert len(ax1.get_idea_list()) == len(ax2.get_idea_list())
+    assert len(cx1._idearoot._acptfactunits) == 2
+    assert len(cx1._idearoot._acptfactunits) == len(cx2._idearoot._acptfactunits)
+    assert cx1._owner == cx2._owner
+    print(f"{len(cx1._groups.items())=}")
+    # for cx1_group_key, cx1_group_obj in cx1._groups.items():
+    #     print(f"{cx1_group_key=}")
+    #     assert cx1_group_obj.uid == cx2._groups[cx1_group_key].uid
+    #     assert cx1_group_obj == cx2._groups[cx1_group_key]
+    assert cx1._groups == cx2._groups
+    assert len(cx1.get_idea_list()) == len(cx2.get_idea_list())
 
-    ax1r_bl = ax1._idearoot._grouplines
+    cx1r_bl = cx1._idearoot._grouplines
     print(
-        f"Melded   {ax1r_bl.get(fam_text)._calendar_debt=} {ax1._idearoot._kids_total_weight=}"
+        f"Melded   {cx1r_bl.get(fam_text)._calendar_debt=} {cx1._idearoot._kids_total_weight=}"
     )
 
-    assert ax1r_bl.get(fam_text) != None
-    # assert ax1r_bl.get(fam_text) == ax2r_bl.get(fam_text)
-    # assert ax1r_bl.get(fam_text).calendar_credit == ax2r_bl.get(fam_text).calendar_credit
+    assert cx1r_bl.get(fam_text) != None
+    # assert cx1r_bl.get(fam_text) == cx2r_bl.get(fam_text)
+    # assert cx1r_bl.get(fam_text).calendar_credit == cx2r_bl.get(fam_text).calendar_credit
     print(
-        f"{ax1r_bl.get(fam_text)._calendar_credit=} {ax1._idearoot._kids_total_weight=}"
+        f"{cx1r_bl.get(fam_text)._calendar_credit=} {cx1._idearoot._kids_total_weight=}"
     )
     print(
-        f"{ax2r_bl.get(fam_text)._calendar_credit=} {ax1._idearoot._kids_total_weight=}"
+        f"{cx2r_bl.get(fam_text)._calendar_credit=} {cx1._idearoot._kids_total_weight=}"
     )
     print(
-        f"  {ax1r_bl.get(fam_text)._calendar_debt=} {ax1._idearoot._kids_total_weight=}"
+        f"  {cx1r_bl.get(fam_text)._calendar_debt=} {cx1._idearoot._kids_total_weight=}"
     )
     print(
-        f"  {ax2r_bl.get(fam_text)._calendar_debt=} {ax1._idearoot._kids_total_weight=}"
+        f"  {cx2r_bl.get(fam_text)._calendar_debt=} {cx1._idearoot._kids_total_weight=}"
     )
     assert (
         abs(
-            ax1r_bl.get(fam_text)._calendar_credit
-            - ax2r_bl.get(fam_text)._calendar_credit
+            cx1r_bl.get(fam_text)._calendar_credit
+            - cx2r_bl.get(fam_text)._calendar_credit
         )
         < 0.0001
     )
     assert (
-        abs(ax1r_bl.get(fam_text)._calendar_debt - ax2r_bl.get(fam_text)._calendar_debt)
+        abs(cx1r_bl.get(fam_text)._calendar_debt - cx2r_bl.get(fam_text)._calendar_debt)
         < 0.0001
     )
 
-    # for groupline in ax1r_bl.values():
+    # for groupline in cx1r_bl.values():
     #     if groupline.name != fam_text:
-    #         assert groupline == ax2r_bl.get(groupline.name)
-    assert ax1r_bl == ax2r_bl
-    # assert ax1._idearoot._grouplines == ax2._idearoot._grouplines
-    # assert ax1._idearoot == ax2._idearoot
+    #         assert groupline == cx2r_bl.get(groupline.name)
+    assert cx1r_bl == cx2r_bl
+    # assert cx1._idearoot._grouplines == cx2._idearoot._grouplines
+    # assert cx1._idearoot == cx2._idearoot
 
 
 def test_get_on_meld_weight_actions_HasCorrectItems():

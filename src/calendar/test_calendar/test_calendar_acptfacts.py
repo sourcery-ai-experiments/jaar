@@ -16,15 +16,15 @@ def test_calendar_acptfact_exists():
     calendar_x = examples_get_calendar_with_4_levels()
     sunday_road = Road(f"{root_label()},weekdays,Sunday")
     weekday_road = Road(f"{root_label()},weekdays")
-    sunday_lw_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
-    print(sunday_lw_acptfact)
-    calendar_x._idearoot._acptfactunits = {sunday_lw_acptfact.base: sunday_lw_acptfact}
+    sunday_cx_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
+    print(sunday_cx_acptfact)
+    calendar_x._idearoot._acptfactunits = {sunday_cx_acptfact.base: sunday_cx_acptfact}
     assert calendar_x._idearoot._acptfactunits != None
     calendar_x._idearoot._acptfactunits = None
     assert calendar_x._idearoot._acptfactunits is None
     calendar_x.set_acptfact(base=weekday_road, pick=sunday_road)
     assert calendar_x._idearoot._acptfactunits == {
-        sunday_lw_acptfact.base: sunday_lw_acptfact
+        sunday_cx_acptfact.base: sunday_cx_acptfact
     }
 
     calendar_x._idearoot._acptfactunits = None
@@ -47,9 +47,9 @@ def test_calendar_acptfact_create():
     sunday_road = Road(f"{root_label()},weekdays,Sunday")
     weekday_road = Road(f"{root_label()},weekdays")
     calendar_x.set_acptfact(base=weekday_road, pick=sunday_road)
-    sunday_lw_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
+    sunday_cx_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
     assert calendar_x._idearoot._acptfactunits == {
-        sunday_lw_acptfact.base: sunday_lw_acptfact
+        sunday_cx_acptfact.base: sunday_cx_acptfact
     }
 
 
@@ -85,9 +85,9 @@ def test_calendar_acptfact_create():
     sunday_road = Road(f"{root_label()},weekdays,Sunday")
     weekday_road = Road(f"{root_label()},weekdays")
     calendar_x.set_acptfact(base=weekday_road, pick=sunday_road)
-    sunday_lw_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
+    sunday_cx_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
     assert calendar_x._idearoot._acptfactunits == {
-        sunday_lw_acptfact.base: sunday_lw_acptfact
+        sunday_cx_acptfact.base: sunday_cx_acptfact
     }
 
     # When

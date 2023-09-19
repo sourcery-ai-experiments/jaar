@@ -6,7 +6,7 @@ from PyQt5 import QtCore as qtc
 from PyQt5.QtWidgets import QTableWidgetItem as qti
 from EditIdeaUnit import EditIdeaUnit
 from EditMember import EditMember
-from src.pyqt5_kit.pyqt_func import lw_diplay, get_pyqttree, num2str
+from src.pyqt5_kit.pyqt_func import calendar_importance_diplay, get_pyqttree, num2str
 from src.calendar.group import groupunit_shop, grouplink_shop
 from src.calendar.idea import IdeaKid
 from src.calendar.road import Road, get_walk_from_road, get_terminus_node_from_road
@@ -204,7 +204,9 @@ class EditProblem(qtw.QWidget, Ui_Form):
         sufffact_open_x = None
         sufffact_nigh_x = None
         sufffact_divisor_x = None
-        lw_display_x = lw_diplay(calendar_importance=a._calendar_importance)
+        lw_display_x = calendar_importance_diplay(
+            calendar_importance=a._calendar_importance
+        )
 
         if requiredheir_x != None:
             for sufffact in requiredheir_x.sufffacts.values():

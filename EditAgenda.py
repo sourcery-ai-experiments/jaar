@@ -3,7 +3,7 @@ from ui.EditAgendaUI import Ui_Form
 from PyQt5.QtCore import pyqtSignal as qsig
 from PyQt5.QtWidgets import QWidget as qw
 from PyQt5.QtWidgets import QTableWidgetItem as qti
-from src.pyqt5_kit.pyqt_func import num2str, lw_diplay
+from src.pyqt5_kit.pyqt_func import num2str, calendar_importance_diplay
 from src.calendar.hreg_time import (
     SuffFactUnitHregTime,
     _get_time_hreg_weekday_idea,
@@ -97,7 +97,9 @@ class EditAgenda(qw, Ui_Form):
         sufffact_open_x = None
         sufffact_nigh_x = None
         sufffact_divisor_x = None
-        lw_display_x = lw_diplay(calendar_importance=a._calendar_importance)
+        lw_display_x = calendar_importance_diplay(
+            calendar_importance=a._calendar_importance
+        )
 
         display_acptfactbase = self.cb_acptfactbase_display.checkState() != 2
 

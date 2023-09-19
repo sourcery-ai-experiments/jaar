@@ -25,16 +25,16 @@ from os import path as os_path
 from json import loads as json_loads
 
 
-class InvalidPersonException(Exception):
+class InvalidAuthorException(Exception):
     pass
 
 
 @dataclass
-class PersonAdmin:
-    _person_name: str
+class AuthorAdmin:
+    _author_name: str
     _env_dir: str
-    _person_dir: str = None
-    _persons_dir: str = None
+    _author_dir: str = None
+    _authors_dir: str = None
     _isol_file_name: str = None
     _isol_file_path: str = None
     _calendar_output_file_name: str = None
@@ -47,32 +47,32 @@ class PersonAdmin:
     _calendars_digest_dir: str = None
 
     def set_dirs(self):
-        env_persons_dir_name = "persons"
+        env_authors_dir_name = "authors"
         calendars_str = "calendars"
-        self._persons_dir = f"{self._env_dir}/{env_persons_dir_name}"
-        self._person_dir = f"{self._persons_dir}/{self._person_name}"
+        self._authors_dir = f"{self._env_dir}/{env_authors_dir_name}"
+        self._author_dir = f"{self._authors_dir}/{self._author_name}"
         self._isol_file_name = "isol_calendar.json"
-        self._isol_file_path = f"{self._person_dir}/{self._isol_file_name}"
+        self._isol_file_path = f"{self._author_dir}/{self._isol_file_name}"
         self._calendar_output_file_name = "output_calendar.json"
         self._calendar_output_file_path = (
-            f"{self._person_dir}/{self._calendar_output_file_name}"
+            f"{self._author_dir}/{self._calendar_output_file_name}"
         )
-        self._public_file_name = f"{self._person_name}.json"
+        self._public_file_name = f"{self._author_name}.json"
         self._calendars_public_dir = f"{self._env_dir}/{calendars_str}"
-        self._calendars_depot_dir = f"{self._person_dir}/{calendars_str}"
-        self._calendars_ignore_dir = f"{self._person_dir}/ignores"
-        self._calendars_bond_dir = f"{self._person_dir}/bonds"
-        self._calendars_digest_dir = f"{self._person_dir}/digests"
+        self._calendars_depot_dir = f"{self._author_dir}/{calendars_str}"
+        self._calendars_ignore_dir = f"{self._author_dir}/ignores"
+        self._calendars_bond_dir = f"{self._author_dir}/bonds"
+        self._calendars_digest_dir = f"{self._author_dir}/digests"
 
-    def set_person_name(self, new_name: str):
-        old_person_dir = self._person_dir
-        self._person_name = new_name
+    def set_author_name(self, new_name: str):
+        old_author_dir = self._author_dir
+        self._author_name = new_name
         self.set_dirs()
 
-        rename_dir(src=old_person_dir, dst=self._person_dir)
+        rename_dir(src=old_author_dir, dst=self._author_dir)
 
     def create_core_dir_and_files(self, isol_cx: CalendarUnit = None):
-        single_dir_create_if_null(x_path=self._person_dir)
+        single_dir_create_if_null(x_path=self._author_dir)
         single_dir_create_if_null(x_path=self._calendars_public_dir)
         single_dir_create_if_null(x_path=self._calendars_depot_dir)
         single_dir_create_if_null(x_path=self._calendars_digest_dir)
@@ -122,8 +122,8 @@ class PersonAdmin:
         self._save_calendar_to_path(calendar_x, dest_dir, file_name)
 
     def save_isol_calendar(self, calendar_x: CalendarUnit):
-        calendar_x.set_owner(self._person_name)
-        self._save_calendar_to_path(calendar_x, self._person_dir, self._isol_file_name)
+        calendar_x.set_owner(self._author_name)
+        self._save_calendar_to_path(calendar_x, self._author_dir, self._isol_file_name)
 
     def save_calendar_to_depot(self, calendar_x: CalendarUnit):
         dest_dir = self._calendars_depot_dir
@@ -136,7 +136,7 @@ class PersonAdmin:
             cx_primary=isol_calendar_x,
             meldees_dir=self._calendars_digest_dir,
         )
-        dest_dir = self._person_dir
+        dest_dir = self._author_dir
         file_name = self._calendar_output_file_name
         self._save_calendar_to_path(calendar_x, dest_dir, file_name)
 
@@ -160,20 +160,20 @@ class PersonAdmin:
         cx = None
         if not self._isol_calendar_exists():
             self.save_isol_calendar(self._get_empty_isol_calendar())
-        ct = x_func_open_file(self._person_dir, self._isol_file_name)
+        ct = x_func_open_file(self._author_dir, self._isol_file_name)
         cx = calendarunit_get_from_json(cx_json=ct)
         cx.set_calendar_metrics()
         return cx
 
     def open_output_calendar(self) -> CalendarUnit:
-        cx_json = x_func_open_file(self._person_dir, self._calendar_output_file_name)
+        cx_json = x_func_open_file(self._author_dir, self._calendar_output_file_name)
         cx_obj = calendarunit_get_from_json(cx_json)
         cx_obj.set_calendar_metrics()
         return cx_obj
 
     def _get_empty_isol_calendar(self):
-        cx = CalendarUnit(_owner=self._person_name, _weight=0)
-        cx.add_memberunit(name=self._person_name)
+        cx = CalendarUnit(_owner=self._author_name, _weight=0)
+        cx.add_memberunit(name=self._author_name)
         return cx
 
     def erase_depot_calendar(self, owner):
@@ -183,21 +183,21 @@ class PersonAdmin:
         x_func_delete_dir(f"{self._calendars_digest_dir}/{owner}.json")
 
     def erase_isol_calendar_file(self):
-        x_func_delete_dir(dir=f"{self._person_dir}/{self._isol_file_name}")
+        x_func_delete_dir(dir=f"{self._author_dir}/{self._isol_file_name}")
 
     def raise_exception_if_no_file(self, dir_type: str, owner: str):
         cx_file_name = f"{owner}.json"
         if dir_type == "depot":
             cx_file_path = f"{self._calendars_depot_dir}/{cx_file_name}"
         if not os_path.exists(cx_file_path):
-            raise InvalidPersonException(
-                f"Person {self._person_name} cannot find calendar {owner} in {cx_file_path}"
+            raise InvalidAuthorException(
+                f"Author {self._author_name} cannot find calendar {owner} in {cx_file_path}"
             )
 
     def _isol_calendar_exists(self):
         bool_x = None
         try:
-            x_func_open_file(self._person_dir, self._isol_file_name)
+            x_func_open_file(self._author_dir, self._isol_file_name)
             bool_x = True
         except Exception:
             bool_x = False
@@ -211,20 +211,20 @@ class PersonAdmin:
         self.save_calendar_to_public(self.get_remelded_output_calendar())
 
 
-def personadmin_shop(_person_name: str, _env_dir: str) -> PersonAdmin:
-    px = PersonAdmin(_person_name=_person_name, _env_dir=_env_dir)
-    px.set_dirs()
-    return px
+def authoradmin_shop(_author_name: str, _env_dir: str) -> AuthorAdmin:
+    uax = AuthorAdmin(_author_name=_author_name, _env_dir=_env_dir)
+    uax.set_dirs()
+    return uax
 
 
 @dataclass
-class PersonUnit:
-    _admin: PersonAdmin = None
+class AuthorUnit:
+    _admin: AuthorAdmin = None
     _isol: CalendarUnit = None
 
     def refresh_depot_calendars(self):
         for member_x in self._isol._members.values():
-            if member_x.name != self._admin._person_name:
+            if member_x.name != self._admin._author_name:
                 member_calendar = calendarunit_get_from_json(
                     cx_json=self._admin.open_public_calendar(member_x.name)
                 )
@@ -278,9 +278,9 @@ class PersonUnit:
     def _set_assignment_depotlink(self, outer_owner):
         src_cx = self._admin.open_depot_calendar(outer_owner)
         src_cx.set_calendar_metrics()
-        empty_cx = CalendarUnit(_owner=self._admin._person_name)
+        empty_cx = CalendarUnit(_owner=self._admin._author_name)
         assign_cx = src_cx.get_assignment(
-            empty_cx, self.get_isol()._members, self._admin._person_name
+            empty_cx, self.get_isol()._members, self._admin._author_name
         )
         assign_cx.set_calendar_metrics()
         self._admin.save_calendar_to_digest(assign_cx, src_cx._owner)
@@ -335,19 +335,19 @@ class PersonUnit:
         self._admin.save_calendar_to_digest(calendarunit, src_calendar_owner)
 
     # housekeeping
-    def set_env_dir(self, env_dir: str, person_name: str):
-        self._admin = personadmin_shop(_person_name=person_name, _env_dir=env_dir)
+    def set_env_dir(self, env_dir: str, author_name: str):
+        self._admin = authoradmin_shop(_author_name=author_name, _env_dir=env_dir)
 
     def create_core_dir_and_files(self, isol_cx: CalendarUnit = None):
         self._admin.create_core_dir_and_files(isol_cx)
 
 
-def personunit_shop(
+def authorunit_shop(
     name: str, env_dir: str, _auto_output_to_public: bool = None
-) -> PersonUnit:
-    person_x = PersonUnit()
-    person_x.set_env_dir(env_dir, name)
-    person_x.get_isol()
-    person_x._isol._set_auto_output_to_public(_auto_output_to_public)
-    person_x.set_isol()
-    return person_x
+) -> AuthorUnit:
+    author_x = AuthorUnit()
+    author_x.set_env_dir(env_dir, name)
+    author_x.get_isol()
+    author_x._isol._set_auto_output_to_public(_auto_output_to_public)
+    author_x.set_isol()
+    return author_x

@@ -5,17 +5,17 @@ from src.calendar.x_func import (
     count_files as x_func_count_files,
     return1ifnone as x_func_return1ifnone,
 )
-from src.system.examples.person_env_kit import (
-    person_dir_setup_cleanup,
-    get_temp_person_dir,
+from src.system.examples.author_env_kit import (
+    author_dir_setup_cleanup,
+    get_temp_author_dir,
     create_calendar_file,
 )
 from pytest import raises as pytest_raises
 
 
-def test_x_func_dir_files_correctlyGrabsFileData(person_dir_setup_cleanup):
+def test_x_func_dir_files_correctlyGrabsFileData(author_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_person_dir()
+    env_dir = get_temp_author_dir()
     x1_file_name = "x1.txt"
     x2_file_name = "x2.txt"
     x1_file_text = "trying this"
@@ -32,9 +32,9 @@ def test_x_func_dir_files_correctlyGrabsFileData(person_dir_setup_cleanup):
     assert files_dict.get(x2_file_name) == x2_file_text
 
 
-def test_x_func_dir_files_removesFileExtension(person_dir_setup_cleanup):
+def test_x_func_dir_files_removesFileExtension(author_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_person_dir()
+    env_dir = get_temp_author_dir()
     x1_name = "x1"
     x2_name = "x2"
     x1_file_ext = "txt"
@@ -54,9 +54,9 @@ def test_x_func_dir_files_removesFileExtension(person_dir_setup_cleanup):
     assert files_dict.get(x2_name) == x2_file_text
 
 
-def test_x_func_dir_files_returnsSubDirs(person_dir_setup_cleanup):
+def test_x_func_dir_files_returnsSubDirs(author_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_person_dir()
+    env_dir = get_temp_author_dir()
     x1_name = "x1"
     x2_name = "x2"
     x1_file_ext = "txt"
@@ -82,9 +82,9 @@ def test_x_func_dir_files_returnsSubDirs(person_dir_setup_cleanup):
     assert files_dict.get(x2_name) == True
 
 
-def test_x_func_dir_files_doesNotReturnsFiles(person_dir_setup_cleanup):
+def test_x_func_dir_files_doesNotReturnsFiles(author_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_person_dir()
+    env_dir = get_temp_author_dir()
     x1_name = "x1"
     x1_file_ext = "txt"
     x1_file_name = f"{x1_name}.{x1_file_ext}"
@@ -111,10 +111,10 @@ def test_x_func_dir_files_doesNotReturnsFiles(person_dir_setup_cleanup):
 
 
 def test_x_func_open_file_OpensFilesCorrectlyWhenGivenDirectoryAndFileName(
-    person_dir_setup_cleanup,
+    author_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_person_dir()
+    env_dir = get_temp_author_dir()
     x1_name = "x1"
     x2_name = "x2"
     x1_file_ext = "txt"
@@ -133,10 +133,10 @@ def test_x_func_open_file_OpensFilesCorrectlyWhenGivenDirectoryAndFileName(
 
 
 def test_x_func_open_file_OpensFilesCorrectlyWhenGivenOnlyFilePath(
-    person_dir_setup_cleanup,
+    author_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_person_dir()
+    env_dir = get_temp_author_dir()
     x1_name = "x1"
     x2_name = "x2"
     x1_file_ext = "txt"
@@ -158,9 +158,9 @@ def test_x_func_open_file_OpensFilesCorrectlyWhenGivenOnlyFilePath(
     assert x_func_open_file(dest_dir=x2_file_path, file_name=None) == x2_file_text
 
 
-def test_x_func_save_file_ReplacesFileAsDefault(person_dir_setup_cleanup):
+def test_x_func_save_file_ReplacesFileAsDefault(author_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_person_dir()
+    env_dir = get_temp_author_dir()
     x_old_name = "x_old"
     # x_new_name = "x_new"
     x_old_file_ext = "txt"
@@ -191,9 +191,9 @@ def test_x_func_save_file_ReplacesFileAsDefault(person_dir_setup_cleanup):
     )
 
 
-def test_x_func_save_file_DoesNotreplaceFile(person_dir_setup_cleanup):
+def test_x_func_save_file_DoesNotreplaceFile(author_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_person_dir()
+    env_dir = get_temp_author_dir()
     x_old_name = "x_old"
     # x_new_name = "x_new"
     x_old_file_ext = "txt"
@@ -225,10 +225,10 @@ def test_x_func_save_file_DoesNotreplaceFile(person_dir_setup_cleanup):
 
 
 def test_x_func_count_files_ReturnsNoneIfDirectoryDoesNotExist(
-    person_dir_setup_cleanup,
+    author_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_person_dir()
+    env_dir = get_temp_author_dir()
     does_not_exist_dir = f"{env_dir}/swim"
 
     # WHEN

@@ -223,100 +223,100 @@ def test_calendar_get_idea_list_returns_correct_list():
 
 def test_calendar_set_calendar_metrics_CorrectlyClears_calendar_coin():
     # GIVEN
-    ax = get_calendar_with7amCleanTableRequired()
+    cx = get_calendar_with7amCleanTableRequired()
     work_text = "work"
     catt_text = "feed cat"
     week_text = "weekdays"
-    ax._idearoot._calendar_coin_onset = 13
-    ax._idearoot._calendar_coin_cease = 13
-    ax._idearoot._kids.get(work_text)._calendar_coin_onset = 13
-    ax._idearoot._kids.get(work_text)._calendar_coin_cease = 13
-    ax._idearoot._kids.get(catt_text)._calendar_coin_onset = 13
-    ax._idearoot._kids.get(catt_text)._calendar_coin_cease = 13
-    ax._idearoot._kids.get(week_text)._calendar_coin_onset = 13
-    ax._idearoot._kids.get(week_text)._calendar_coin_cease = 13
+    cx._idearoot._calendar_coin_onset = 13
+    cx._idearoot._calendar_coin_cease = 13
+    cx._idearoot._kids.get(work_text)._calendar_coin_onset = 13
+    cx._idearoot._kids.get(work_text)._calendar_coin_cease = 13
+    cx._idearoot._kids.get(catt_text)._calendar_coin_onset = 13
+    cx._idearoot._kids.get(catt_text)._calendar_coin_cease = 13
+    cx._idearoot._kids.get(week_text)._calendar_coin_onset = 13
+    cx._idearoot._kids.get(week_text)._calendar_coin_cease = 13
 
-    assert ax._idearoot._calendar_coin_onset == 13
-    assert ax._idearoot._calendar_coin_cease == 13
-    assert ax._idearoot._kids.get(work_text)._calendar_coin_onset == 13
-    assert ax._idearoot._kids.get(work_text)._calendar_coin_cease == 13
-    assert ax._idearoot._kids.get(catt_text)._calendar_coin_onset == 13
-    assert ax._idearoot._kids.get(catt_text)._calendar_coin_cease == 13
-    assert ax._idearoot._kids.get(week_text)._calendar_coin_onset == 13
-    assert ax._idearoot._kids.get(week_text)._calendar_coin_cease == 13
+    assert cx._idearoot._calendar_coin_onset == 13
+    assert cx._idearoot._calendar_coin_cease == 13
+    assert cx._idearoot._kids.get(work_text)._calendar_coin_onset == 13
+    assert cx._idearoot._kids.get(work_text)._calendar_coin_cease == 13
+    assert cx._idearoot._kids.get(catt_text)._calendar_coin_onset == 13
+    assert cx._idearoot._kids.get(catt_text)._calendar_coin_cease == 13
+    assert cx._idearoot._kids.get(week_text)._calendar_coin_onset == 13
+    assert cx._idearoot._kids.get(week_text)._calendar_coin_cease == 13
 
     # WHEN
-    ax.set_calendar_metrics()
+    cx.set_calendar_metrics()
 
     # THEN
-    assert ax._idearoot._calendar_coin_onset != 13
-    assert ax._idearoot._calendar_coin_cease != 13
-    assert ax._idearoot._kids.get(work_text)._calendar_coin_onset != 13
-    assert ax._idearoot._kids.get(work_text)._calendar_coin_cease != 13
-    assert ax._idearoot._kids.get(catt_text)._calendar_coin_onset != 13
-    assert ax._idearoot._kids.get(catt_text)._calendar_coin_cease != 13
-    assert ax._idearoot._kids.get(week_text)._calendar_coin_onset != 13
-    assert ax._idearoot._kids.get(week_text)._calendar_coin_cease != 13
+    assert cx._idearoot._calendar_coin_onset != 13
+    assert cx._idearoot._calendar_coin_cease != 13
+    assert cx._idearoot._kids.get(work_text)._calendar_coin_onset != 13
+    assert cx._idearoot._kids.get(work_text)._calendar_coin_cease != 13
+    assert cx._idearoot._kids.get(catt_text)._calendar_coin_onset != 13
+    assert cx._idearoot._kids.get(catt_text)._calendar_coin_cease != 13
+    assert cx._idearoot._kids.get(week_text)._calendar_coin_onset != 13
+    assert cx._idearoot._kids.get(week_text)._calendar_coin_cease != 13
 
 
 def test_calendar_get_idea_list_CorrectlyCalculatesIdeaAttr_calendar_coin():
     # GIVEN
     owner_text = "Yao"
-    ax = CalendarUnit(_owner=owner_text, _weight=10)
+    cx = CalendarUnit(_owner=owner_text, _weight=10)
 
     auto_text = "auto"
     auto_idea = IdeaKid(_label=auto_text, _weight=10)
-    ax.add_idea(idea_kid=auto_idea, walk=root_label())
+    cx.add_idea(idea_kid=auto_idea, walk=root_label())
 
     barn_text = "barn"
     barn_road = f"{root_label()},{barn_text}"
     barn_idea = IdeaKid(_label=barn_text, _weight=60)
-    ax.add_idea(idea_kid=barn_idea, walk=root_label())
+    cx.add_idea(idea_kid=barn_idea, walk=root_label())
     lamb_text = "lambs"
     lamb_road = f"{barn_road},{lamb_text}"
     lamb_idea = IdeaKid(_label=lamb_text, _weight=1)
-    ax.add_idea(idea_kid=lamb_idea, walk=barn_road)
+    cx.add_idea(idea_kid=lamb_idea, walk=barn_road)
     duck_text = "ducks"
     duck_road = f"{barn_road},{duck_text}"
     duck_idea = IdeaKid(_label=duck_text, _weight=2)
-    ax.add_idea(idea_kid=duck_idea, walk=barn_road)
+    cx.add_idea(idea_kid=duck_idea, walk=barn_road)
 
     coal_text = "coal"
     coal_idea = IdeaKid(_label=coal_text, _weight=30)
-    ax.add_idea(idea_kid=coal_idea, walk=root_label())
+    cx.add_idea(idea_kid=coal_idea, walk=root_label())
 
-    assert ax._idearoot._calendar_coin_onset is None
-    assert ax._idearoot._calendar_coin_cease is None
-    assert ax._idearoot._kids.get(auto_text)._calendar_coin_onset is None
-    assert ax._idearoot._kids.get(auto_text)._calendar_coin_cease is None
-    assert ax._idearoot._kids.get(barn_text)._calendar_coin_onset is None
-    assert ax._idearoot._kids.get(barn_text)._calendar_coin_cease is None
-    assert ax._idearoot._kids.get(coal_text)._calendar_coin_onset is None
-    assert ax._idearoot._kids.get(coal_text)._calendar_coin_cease is None
-    lamb_before = ax.get_idea_kid(road=lamb_road)
+    assert cx._idearoot._calendar_coin_onset is None
+    assert cx._idearoot._calendar_coin_cease is None
+    assert cx._idearoot._kids.get(auto_text)._calendar_coin_onset is None
+    assert cx._idearoot._kids.get(auto_text)._calendar_coin_cease is None
+    assert cx._idearoot._kids.get(barn_text)._calendar_coin_onset is None
+    assert cx._idearoot._kids.get(barn_text)._calendar_coin_cease is None
+    assert cx._idearoot._kids.get(coal_text)._calendar_coin_onset is None
+    assert cx._idearoot._kids.get(coal_text)._calendar_coin_cease is None
+    lamb_before = cx.get_idea_kid(road=lamb_road)
     assert lamb_before._calendar_coin_onset is None
     assert lamb_before._calendar_coin_cease is None
-    duck_before = ax.get_idea_kid(road=duck_road)
+    duck_before = cx.get_idea_kid(road=duck_road)
     assert duck_before._calendar_coin_onset is None
     assert duck_before._calendar_coin_cease is None
 
     # WHEN
-    ax.set_calendar_metrics()
+    cx.set_calendar_metrics()
 
     # THEN
-    assert ax._idearoot._calendar_coin_onset == 0.0
-    assert ax._idearoot._calendar_coin_cease == 1.0
-    assert ax._idearoot._kids.get(auto_text)._calendar_coin_onset == 0.0
-    assert ax._idearoot._kids.get(auto_text)._calendar_coin_cease == 0.1
-    assert ax._idearoot._kids.get(barn_text)._calendar_coin_onset == 0.1
-    assert ax._idearoot._kids.get(barn_text)._calendar_coin_cease == 0.7
-    assert ax._idearoot._kids.get(coal_text)._calendar_coin_onset == 0.7
-    assert ax._idearoot._kids.get(coal_text)._calendar_coin_cease == 1.0
+    assert cx._idearoot._calendar_coin_onset == 0.0
+    assert cx._idearoot._calendar_coin_cease == 1.0
+    assert cx._idearoot._kids.get(auto_text)._calendar_coin_onset == 0.0
+    assert cx._idearoot._kids.get(auto_text)._calendar_coin_cease == 0.1
+    assert cx._idearoot._kids.get(barn_text)._calendar_coin_onset == 0.1
+    assert cx._idearoot._kids.get(barn_text)._calendar_coin_cease == 0.7
+    assert cx._idearoot._kids.get(coal_text)._calendar_coin_onset == 0.7
+    assert cx._idearoot._kids.get(coal_text)._calendar_coin_cease == 1.0
 
-    duck_after = ax.get_idea_kid(road=duck_road)
+    duck_after = cx.get_idea_kid(road=duck_road)
     assert duck_after._calendar_coin_onset == 0.1
     assert duck_after._calendar_coin_cease == 0.5
-    lamb_after = ax.get_idea_kid(road=lamb_road)
+    lamb_after = cx.get_idea_kid(road=lamb_road)
     assert lamb_after._calendar_coin_onset == 0.5
     assert lamb_after._calendar_coin_cease == 0.7
 
