@@ -383,7 +383,7 @@ class CalendarUnit:
                 num_with_postfix = get_number_with_postfix(num=num_days)
                 str_x = f"every {num_with_postfix} day at {convert1440toReadableTime(min1440=open)}"
         else:
-            str_x = "unkonwn"
+            str_x = "unknown"
 
         return str_x
 
