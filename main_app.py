@@ -283,7 +283,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             f.write(calendar_x_json)
         self.current_file_path_l.setText(self.file_path)
         # x_func_save_file(
-        #     dest_dir=calendar_author_dir,
+        #     dest_dir=calendar_actor_dir,
         #     file_name=f"{root_label()}.json",
         #     file_text=calendar_x.get_json(),
         # )

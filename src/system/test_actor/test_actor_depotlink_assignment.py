@@ -1,19 +1,19 @@
-from src.system.author import authorunit_shop
-from src.system.examples.example_authors import get_calendar_assignment_laundry_example1
-from src.system.examples.author_env_kit import (
-    author_dir_setup_cleanup,
-    get_temp_author_dir,
+from src.system.actor import actorunit_shop
+from src.system.examples.example_actors import get_calendar_assignment_laundry_example1
+from src.system.examples.actor_env_kit import (
+    actor_dir_setup_cleanup,
+    get_temp_actor_dir,
 )
 from src.calendar.road import get_global_root_label as root_label
 
 
-def test_author_save_calendar_to_depot_assignment_link_CorrectlyCreatesAssignmentFile(
-    author_dir_setup_cleanup,
+def test_actor_save_calendar_to_depot_assignment_link_CorrectlyCreatesAssignmentFile(
+    actor_dir_setup_cleanup,
 ):
     # GIVEN
     america_cx = get_calendar_assignment_laundry_example1()
     joachim_text = "Joachim"
-    joachim_ux = authorunit_shop(joachim_text, get_temp_author_dir())
+    joachim_ux = actorunit_shop(joachim_text, get_temp_actor_dir())
     joachim_ux.create_core_dir_and_files()
 
     # WHEN

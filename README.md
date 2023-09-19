@@ -21,8 +21,8 @@
 voices are aggregated by a listener into a coherant agenda that can include promises 
 of actions and/or promises of being. Listening and acting on it.
 
-A author's agenda in the community is built by the the weighted intreprtation of
-1. Other authors agendas 
+A actor's agenda in the community is built by the the weighted intreprtation of
+1. Other actors agendas 
 2. Their own independent agenda
 
 Each agenda is saved as a JSON file. 
@@ -65,9 +65,9 @@ base attributes vs required attributess
 <!-- TODO: Add explanations -->
 SystemUnit objects
 
-SystemUnit AuthorUnit objects
+SystemUnit ActorUnit objects
 
-SystemUnit AuthorUnit CalendarLink objects
+SystemUnit ActorUnit CalendarLink objects
 
 SystemUnit Bank objects
 

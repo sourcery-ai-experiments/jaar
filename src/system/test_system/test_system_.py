@@ -29,7 +29,7 @@ def test_system_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     system_file_name = "system.json"
     system_file_path = f"{system_dir}/{system_file_name}"
     calendars_dir = f"{system_dir}/calendars"
-    authors_dir = f"{system_dir}/authors"
+    actors_dir = f"{system_dir}/actors"
     bank_file_name = "bank.db"
     bank_file_path = f"{system_dir}/{bank_file_name}"
 
@@ -37,7 +37,7 @@ def test_system_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.isdir(system_dir) is False
     assert os_path.exists(system_file_path) is False
     assert os_path.exists(calendars_dir) is False
-    assert os_path.exists(authors_dir) is False
+    assert os_path.exists(actors_dir) is False
     assert os_path.exists(bank_file_path) is False
 
     # WHEN
@@ -48,11 +48,11 @@ def test_system_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.isdir(system_dir)
     assert os_path.exists(system_file_path)
     assert os_path.exists(calendars_dir)
-    assert os_path.exists(authors_dir)
+    assert os_path.exists(actors_dir)
     assert os_path.exists(bank_file_path)
     assert sx.get_object_root_dir() == system_dir
     assert sx.get_public_dir() == calendars_dir
-    assert sx.get_authors_dir() == authors_dir
+    assert sx.get_actors_dir() == actors_dir
     assert sx.get_bank_db_path() == bank_file_path
 
 
@@ -63,14 +63,14 @@ def test_rename_example_system_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup
     old_system_file_name = "system.json"
     old_system_file_path = f"{old_system_dir}/{old_system_file_name}"
     old_calendars_dir = f"{old_system_dir}/calendars"
-    old_authors_dir = f"{old_system_dir}/authors"
+    old_actors_dir = f"{old_system_dir}/actors"
 
     new_system_name = "ex_env1"
     new_system_dir = f"src/system/examples/systems/{new_system_name}"
     new_system_file_name = "system.json"
     new_system_file_path = f"{new_system_dir}/{new_system_file_name}"
     new_calendars_dir = f"{new_system_dir}/calendars"
-    new_authors_dir = f"{new_system_dir}/authors"
+    new_actors_dir = f"{new_system_dir}/actors"
     x_func_delete_dir(dir=new_system_dir)
     print(f"{new_system_dir=}")
 
@@ -84,17 +84,17 @@ def test_rename_example_system_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup
     assert os_path.isdir(old_system_dir)
     assert os_path.exists(old_system_file_path)
     assert os_path.exists(old_calendars_dir)
-    assert os_path.exists(old_authors_dir)
+    assert os_path.exists(old_actors_dir)
     assert sx.get_public_dir() == old_calendars_dir
-    assert sx.get_authors_dir() == old_authors_dir
+    assert sx.get_actors_dir() == old_actors_dir
 
     assert os_path.exists(new_system_dir) is False
     assert os_path.isdir(new_system_dir) is False
     assert os_path.exists(new_system_file_path) is False
     assert os_path.exists(new_calendars_dir) is False
-    assert os_path.exists(new_authors_dir) is False
+    assert os_path.exists(new_actors_dir) is False
     assert sx.get_public_dir() != new_calendars_dir
-    assert sx.get_authors_dir() != new_authors_dir
+    assert sx.get_actors_dir() != new_actors_dir
     assert sx.name != new_system_name
 
     # WHEN
@@ -105,17 +105,17 @@ def test_rename_example_system_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup
     assert os_path.isdir(old_system_dir) is False
     assert os_path.exists(old_system_file_path) is False
     assert os_path.exists(old_calendars_dir) is False
-    assert os_path.exists(old_authors_dir) is False
+    assert os_path.exists(old_actors_dir) is False
     assert sx.get_public_dir() != old_calendars_dir
-    assert sx.get_authors_dir() != old_authors_dir
+    assert sx.get_actors_dir() != old_actors_dir
 
     assert os_path.exists(new_system_dir)
     assert os_path.isdir(new_system_dir)
     assert os_path.exists(new_system_file_path)
     assert os_path.exists(new_calendars_dir)
-    assert os_path.exists(new_authors_dir)
+    assert os_path.exists(new_actors_dir)
     assert sx.get_public_dir() == new_calendars_dir
-    assert sx.get_authors_dir() == new_authors_dir
+    assert sx.get_actors_dir() == new_actors_dir
     assert sx.name == new_system_name
 
     # Undo change to directory
@@ -132,7 +132,7 @@ def test_copy_evaluation_system_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup
     old_system_file_name = "system.json"
     old_system_file_path = f"{old_system_dir}/{old_system_file_name}"
     old_calendars_dir = f"{old_system_dir}/calendars"
-    old_authors_dir = f"{old_system_dir}/authors"
+    old_actors_dir = f"{old_system_dir}/actors"
 
     sx = systemunit_shop(name=old_system_name, systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null()
@@ -141,24 +141,24 @@ def test_copy_evaluation_system_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup
     assert os_path.isdir(old_system_dir)
     assert os_path.exists(old_system_file_path)
     assert os_path.exists(old_calendars_dir)
-    assert os_path.exists(old_authors_dir)
+    assert os_path.exists(old_actors_dir)
     assert sx.get_public_dir() == old_calendars_dir
-    assert sx.get_authors_dir() == old_authors_dir
+    assert sx.get_actors_dir() == old_actors_dir
 
     new_system_name = "ex_env1"
     new_system_dir = f"src/system/examples/systems/{new_system_name}"
     new_system_file_name = "system.json"
     new_system_file_path = f"{new_system_dir}/{new_system_file_name}"
     new_calendars_dir = f"{new_system_dir}/calendars"
-    new_authors_dir = f"{new_system_dir}/authors"
+    new_actors_dir = f"{new_system_dir}/actors"
 
     assert os_path.exists(new_system_dir) is False
     assert os_path.isdir(new_system_dir) is False
     assert os_path.exists(new_system_file_path) is False
     assert os_path.exists(new_calendars_dir) is False
-    assert os_path.exists(new_authors_dir) is False
+    assert os_path.exists(new_actors_dir) is False
     assert sx.get_public_dir() != new_calendars_dir
-    assert sx.get_authors_dir() != new_authors_dir
+    assert sx.get_actors_dir() != new_actors_dir
     assert sx.name != new_system_name
 
     # WHEN
@@ -169,17 +169,17 @@ def test_copy_evaluation_system_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup
     assert os_path.isdir(old_system_dir)
     assert os_path.exists(old_system_file_path)
     assert os_path.exists(old_calendars_dir)
-    assert os_path.exists(old_authors_dir)
+    assert os_path.exists(old_actors_dir)
     assert sx.get_public_dir() == old_calendars_dir
-    assert sx.get_authors_dir() == old_authors_dir
+    assert sx.get_actors_dir() == old_actors_dir
 
     assert os_path.exists(new_system_dir)
     assert os_path.isdir(new_system_dir)
     assert os_path.exists(new_system_file_path)
     assert os_path.exists(new_calendars_dir)
-    assert os_path.exists(new_authors_dir)
+    assert os_path.exists(new_actors_dir)
     assert sx.get_public_dir() != new_calendars_dir
-    assert sx.get_authors_dir() != new_authors_dir
+    assert sx.get_actors_dir() != new_actors_dir
     assert sx.name != new_system_name
 
     # Undo change to directory

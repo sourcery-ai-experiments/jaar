@@ -52,9 +52,7 @@ class MainApp(QApplication):
 
     def editmain_show(self):
         if self.main_window.ignore_calendar_x is None:
-            self.main_window.isol = (
-                self.main_window.author_x._admin.open_isol_calendar()
-            )
+            self.main_window.isol = self.main_window.actor_x._admin.open_isol_calendar()
             self.editmain_view.calendar_x = self.main_window.isol
         else:
             self.editmain_view.calendar_x = self.main_window.ignore_calendar_x
@@ -62,8 +60,8 @@ class MainApp(QApplication):
         self.editmain_view.show()
 
     def edit5issue_show(self):
-        if self.main_window.author_x != None:
-            self.edit5issue_view.author_x = self.main_window.author_x
+        if self.main_window.actor_x != None:
+            self.edit5issue_view.actor_x = self.main_window.actor_x
             self.edit5issue_view.refresh_all()
             self.edit5issue_view.show()
 
@@ -88,10 +86,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.calendar_update_button.clicked.connect(self.calendar_update_name)
         self.calendar_delete_button.clicked.connect(self.calendar_delete)
         self.calendars_table.itemClicked.connect(self.calendars_table_select)
-        self.author_insert_button.clicked.connect(self.author_insert)
-        self.author_update_button.clicked.connect(self.author_update_name)
-        self.author_delete_button.clicked.connect(self.author_delete)
-        self.authors_table.itemClicked.connect(self.authors_table_select)
+        self.actor_insert_button.clicked.connect(self.actor_insert)
+        self.actor_update_button.clicked.connect(self.actor_update_name)
+        self.actor_delete_button.clicked.connect(self.actor_delete)
+        self.actors_table.itemClicked.connect(self.actors_table_select)
         self.reload_all_src_calendars_button.clicked.connect(
             self.reload_all_src_calendars
         )
@@ -117,7 +115,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.five_issue_button.clicked.connect(self.open_edit5issue)
 
         self.system_x = None
-        self.author_x = None
+        self.actor_x = None
         self.ignore_calendar_x = None
         setup_test_example_environment()
         first_env = "ex5"
@@ -127,24 +125,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_system()
         self.system_name_combo_refresh()
         self.system_name_combo.setCurrentText(first_env)
-        self._author_load(author_name="ernie")
+        self._actor_load(actor_name="ernie")
 
     def save_isol(self):
         if self.isol != None:
-            self.author_x._admin.save_isol_calendar(self.isol)
-        self.refresh_author()
+            self.actor_x._admin.save_isol_calendar(self.isol)
+        self.refresh_actor()
 
     def reload_all_src_calendars(self):
         if self.system_x != None:
-            self.system_x.reload_all_authors_src_calendarunits()
+            self.system_x.reload_all_actors_src_calendarunits()
 
     def set_public_and_reload_srcs(self):
         self.save_output_calendar_to_public()
         self.reload_all_src_calendars()
 
     def save_output_calendar_to_public(self):
-        if self.author_x != None:
-            self.author_x.save_output_calendar_to_public()
+        if self.actor_x != None:
+            self.actor_x.save_output_calendar_to_public()
         self.refresh_system()
 
     def system_load_from_file(self):
@@ -160,26 +158,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.calendar_name.setText(
             self.calendars_table.item(self.calendars_table.currentRow(), 0).text()
         )
-        if self.authors_table.currentRow() != -1:
-            selected_author = self.authors_table.item(
-                self.authors_table.currentRow(), 0
+        if self.actors_table.currentRow() != -1:
+            selected_actor = self.actors_table.item(
+                self.actors_table.currentRow(), 0
             ).text()
             selected_calendar = self.calendars_table.item(
                 self.calendars_table.currentRow(), 0
             ).text()
-            self.depotlink_name.setText(f"{selected_author} - {selected_calendar}")
+            self.depotlink_name.setText(f"{selected_actor} - {selected_calendar}")
 
-    def authors_table_select(self):
-        author_x_name = self.authors_table.item(
-            self.authors_table.currentRow(), 0
-        ).text()
-        self._author_load(author_name=author_x_name)
+    def actors_table_select(self):
+        actor_x_name = self.actors_table.item(self.actors_table.currentRow(), 0).text()
+        self._actor_load(actor_name=actor_x_name)
 
-    def _author_load(self, author_name: str):
-        self.system_x.create_authorunit_from_public(name=author_name)
-        self.author_x = self.system_x._authorunits.get(author_name)
-        self.author_name.setText(self.author_x._admin.name)
-        self.refresh_author()
+    def _actor_load(self, actor_name: str):
+        self.system_x.create_actorunit_from_public(name=actor_name)
+        self.actor_x = self.system_x._actorunits.get(actor_name)
+        self.actor_name.setText(self.actor_x._admin.name)
+        self.refresh_actor()
 
     def depotlinks_table_select(self):
         self.depotlink_name.setText(
@@ -198,15 +194,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         # self.ignore_calendar_x = self.system_x.get_public_calendar(
         self.ignore_calendar_x = self.system_x.get_calendar_from_ignores_dir(
-            author_name=self.author_x._admin.name, _owner=ignore_calendar_owner
+            actor_name=self.actor_x._admin.name, _owner=ignore_calendar_owner
         )
         self.edit_calendar = self.ignore_calendar_x
 
     def ignore_calendar_file_update(self):
         self.system_x.set_ignore_calendar_file(
-            author_name=self.author_x._admin.name, calendar_obj=self.ignore_calendar_x
+            actor_name=self.actor_x._admin.name, calendar_obj=self.ignore_calendar_x
         )
-        self.refresh_author()
+        self.refresh_actor()
 
     def show_ignores_table(self):
         self.ignores_table.setHidden(False)
@@ -257,66 +253,64 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.refresh_system()
 
-    def author_insert(self):
-        self.system_x.create_new_authorunit(author_name=self.author_name.text())
-        self.refresh_authors()
+    def actor_insert(self):
+        self.system_x.create_new_actorunit(actor_name=self.actor_name.text())
+        self.refresh_actors()
 
-    def author_update_name(self):
-        currently_selected = self.authors_table.item(
-            self.authors_table.currentRow(), 0
+    def actor_update_name(self):
+        currently_selected = self.actors_table.item(
+            self.actors_table.currentRow(), 0
         ).text()
-        typed_in = self.author_name.text()
+        typed_in = self.actor_name.text()
         if currently_selected != typed_in:
-            self.system_x.rename_authorunit(
+            self.system_x.rename_actorunit(
                 old_label=currently_selected, new_label=typed_in
             )
-            self.refresh_authors()
+            self.refresh_actors()
 
-    def author_delete(self):
-        self.system_x.del_author_dir(
-            author_name=self.authors_table.item(
-                self.authors_table.currentRow(), 0
-            ).text()
+    def actor_delete(self):
+        self.system_x.del_actor_dir(
+            actor_name=self.actors_table.item(self.actors_table.currentRow(), 0).text()
         )
-        self.refresh_authors()
+        self.refresh_actors()
 
     def depotlink_insert(self):
         calendar_owner = self.calendars_table.item(
             self.calendars_table.currentRow(), 0
         ).text()
-        if self.author_x != None:
+        if self.actor_x != None:
             calendar_json = x_func_open_file(
-                dest_dir=self.author_x._admin._calendars_public_dir,
+                dest_dir=self.actor_x._admin._calendars_public_dir,
                 file_name=f"{calendar_owner}.json",
             )
             calendar_x = get_calendar_from_json(calendar_json)
-            self.author_x.set_depot_calendar(
+            self.actor_x.set_depot_calendar(
                 calendar_x=calendar_x,
                 depotlink_type=self.depotlink_type_combo.currentText(),
                 depotlink_weight=self.depotlink_weight.text(),
             )
-            self.system_x.save_author_file(author_name=self.author_x._admin.name)
-        self.refresh_author()
+            self.system_x.save_actor_file(actor_name=self.actor_x._admin.name)
+        self.refresh_actor()
 
     def depotlink_update(self):
-        author_name_x = self.author_x._admin.name
+        actor_name_x = self.actor_x._admin.name
         self.system_x.update_depotlink(
-            author_name=author_name_x,
+            actor_name=actor_name_x,
             membername=self.depotlink_name.text(),
             depotlink_type=self.depotlink_type_combo.currentText(),
             creditor_weight=self.depotlink_weight.text(),
             debtor_weight=self.depotlink_weight.text(),
         )
-        self.system_x.save_author_file(author_name=author_name_x)
-        self.refresh_author()
+        self.system_x.save_actor_file(actor_name=actor_name_x)
+        self.refresh_actor()
 
     def depotlink_delete(self):
-        author_name_x = self.author_x._admin.name
+        actor_name_x = self.actor_x._admin.name
         self.system_x.del_depotlink(
-            author_name=author_name_x, calendarunit_owner=self.depotlink_name.text()
+            actor_name=actor_name_x, calendarunit_owner=self.depotlink_name.text()
         )
-        self.system_x.save_author_file(author_name=author_name_x)
-        self.refresh_author()
+        self.system_x.save_actor_file(actor_name=actor_name_x)
+        self.refresh_actor()
 
     def get_calendar_owner_list(self):
         calendars_list = []
@@ -327,18 +321,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             calendars_list.append(get_calendar_from_json(cx_json=calendar_json))
         return calendars_list
 
-    def get_author_name_list(self):
-        authors_owner_list = []
+    def get_actor_name_list(self):
+        actors_owner_list = []
         if self.system_x != None:
-            authors_owner_list.extend(
-                [author_dir] for author_dir in self.system_x.get_author_dir_paths_list()
+            actors_owner_list.extend(
+                [actor_dir] for actor_dir in self.system_x.get_actor_dir_paths_list()
             )
-        return authors_owner_list
+        return actors_owner_list
 
     def get_depotlink_list(self):
         depotlinks_list = []
-        if self.author_x != None:
-            for cl_val in self.author_x._depotlinks.values():
+        if self.actor_x != None:
+            for cl_val in self.actor_x._depotlinks.values():
                 depotlink_row = [
                     cl_val.calendar_owner,
                     cl_val.depotlink_type,
@@ -349,9 +343,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_digests_list(self):
         x_list = []
-        if self.author_x != None:
+        if self.actor_x != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.author_x_admin._calendars_digest_dir,
+                dir_path=self.actor_x_admin._calendars_digest_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -361,9 +355,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_ignores_list(self):
         x_list = []
-        if self.author_x != None:
+        if self.actor_x != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.author_x._admin._calendars_ignore_dir,
+                dir_path=self.actor_x._admin._calendars_ignore_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -373,11 +367,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_ideas_list(self):
         x_list = []
-        if self.author_output_calendar != None:
-            idea_list = self.author_output_calendar.get_idea_tree_ordered_road_list()
+        if self.actor_output_calendar != None:
+            idea_list = self.actor_output_calendar.get_idea_tree_ordered_road_list()
 
             for idea_road in idea_list:
-                idea_obj = self.author_output_calendar.get_idea_kid(idea_road)
+                idea_obj = self.actor_output_calendar.get_idea_kid(idea_road)
 
                 if idea_obj._walk.find("time") != 3:
                     x_list.append(
@@ -392,36 +386,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_members_list(self):
         x_list = []
-        if self.author_output_calendar != None:
+        if self.actor_output_calendar != None:
             x_list.extend(
                 [
                     f"{calendar_importance_diplay(memberunit._calendar_credit)}/{calendar_importance_diplay(memberunit._calendar_debt)}",
                     memberunit.name,
                     f"{memberunit.creditor_weight}/{memberunit.debtor_weight}",
                 ]
-                for memberunit in self.author_output_calendar._members.values()
+                for memberunit in self.actor_output_calendar._members.values()
             )
         return x_list
 
     def get_p_groups_list(self):
         x_list = []
-        if self.author_output_calendar != None:
+        if self.actor_output_calendar != None:
             x_list.extend(
                 [
                     f"{calendar_importance_diplay(groupunit._calendar_debt)}/{calendar_importance_diplay(groupunit._calendar_credit)}",
                     groupunit.name,
                     len(groupunit._members),
                 ]
-                for groupunit in self.author_output_calendar._groups.values()
+                for groupunit in self.actor_output_calendar._groups.values()
             )
         return x_list
 
     def get_p_acptfacts_list(self):
         x_list = []
-        if self.author_output_calendar != None:
+        if self.actor_output_calendar != None:
             for (
                 acptfactunit
-            ) in self.author_output_calendar._idearoot._acptfactunits.values():
+            ) in self.actor_output_calendar._idearoot._acptfactunits.values():
                 open_nigh = ""
                 if acptfactunit.open is None and acptfactunit.nigh is None:
                     open_nigh = ""
@@ -439,8 +433,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_agenda_list(self):
         x_list = []
-        if self.author_output_calendar != None:
-            agenda_list = self.author_output_calendar.get_agenda_items()
+        if self.actor_output_calendar != None:
+            agenda_list = self.actor_output_calendar.get_agenda_items()
             agenda_list.sort(key=lambda x: x._calendar_importance, reverse=True)
             x_list.extend(
                 [
@@ -455,10 +449,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def refresh_all(self):
         self.refresh_system()
 
-    def _sub_refresh_authors_table(self):
-        self.refresh_x(
-            self.authors_table, ["Authors Table"], self.get_author_name_list()
-        )
+    def _sub_refresh_actors_table(self):
+        self.refresh_x(self.actors_table, ["Actors Table"], self.get_actor_name_list())
 
     def _sub_refresh_depotlinks_table(self):
         depotlink_types = list(get_depotlink_types())
@@ -467,10 +459,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.depotlink_type_combo.addItems(depotlink_types)
         self.depotlink_type_combo.setCurrentText("")
         column_header = ""
-        if self.author_x is None:
+        if self.actor_x is None:
             column_header = "Calendarlinks Table"
-        elif self.author_x != None:
-            column_header = f"'{self.author_x._admin.name}' Calendarlinks"
+        elif self.actor_x != None:
+            column_header = f"'{self.actor_x._admin.name}' Calendarlinks"
         self.refresh_x(
             self.depotlinks_table,
             [column_header, "Link Type", "Weight"],
@@ -574,19 +566,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.system_name_combo.clear()
         self.system_name_combo.addItems(create_example_systems_list())
 
-    def refresh_authors(self):
-        self.author_x = None
-        self._sub_refresh_authors_table()
-        self.refresh_author()
+    def refresh_actors(self):
+        self.actor_x = None
+        self._sub_refresh_actors_table()
+        self.refresh_actor()
 
-    def refresh_author(self):
+    def refresh_actor(self):
         self._sub_refresh_depotlinks_table()
         self._sub_refresh_digests_table()
         self._sub_refresh_ignores_table()
-        self.author_output_calendar = None
-        if self.author_x != None:
-            self.author_output_calendar = (
-                self.author_x._admin.get_remelded_output_calendar()
+        self.actor_output_calendar = None
+        if self.actor_x != None:
+            self.actor_output_calendar = (
+                self.actor_x._admin.get_remelded_output_calendar()
             )
         self._sub_refresh_p_ideas_table()
         self._sub_refresh_p_members_table()
@@ -598,7 +590,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_x(
             self.calendars_table, ["Calendars Table"], self.get_calendar_owner_list()
         )
-        self.refresh_authors()
+        self.refresh_actors()
 
     def refresh_x(
         self,

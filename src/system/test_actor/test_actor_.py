@@ -1,10 +1,10 @@
-from src.system.author import authorunit_shop
+from src.system.actor import actorunit_shop
 from src.calendar.calendar import CalendarUnit
 from src.calendar.idea import IdeaRoot
-import src.system.examples.example_authors as example_authors
-from src.system.examples.author_env_kit import (
-    author_dir_setup_cleanup,
-    get_temp_author_dir,
+import src.system.examples.example_actors as example_actors
+from src.system.examples.actor_env_kit import (
+    actor_dir_setup_cleanup,
+    get_temp_actor_dir,
     create_calendar_file,
 )
 from os import path as os_path, scandir as os_scandir
@@ -16,30 +16,30 @@ from src.calendar.x_func import (
 )
 
 
-def test_authorunit_exists(author_dir_setup_cleanup):
+def test_actorunit_exists(actor_dir_setup_cleanup):
     # GIVEN
-    author_text = "test1"
-    env_dir = get_temp_author_dir()
+    actor_text = "test1"
+    env_dir = get_temp_actor_dir()
 
     # WHEN
-    ux = authorunit_shop(name=author_text, env_dir=env_dir)
+    ux = actorunit_shop(name=actor_text, env_dir=env_dir)
 
     # GIVEN
-    assert ux._admin._author_name != None
+    assert ux._admin._actor_name != None
     assert ux._isol is None
 
 
-def test_authorunit_auto_output_to_public_SavesCalendarToPublicDirWhenTrue(
-    author_dir_setup_cleanup,
+def test_actorunit_auto_output_to_public_SavesCalendarToPublicDirWhenTrue(
+    actor_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_author_dir()
+    env_dir = get_temp_actor_dir()
     tim_text = "Tim"
     public_file_name = f"{tim_text}.json"
-    public_file_path = f"{get_temp_author_dir()}/calendars/{public_file_name}"
+    public_file_path = f"{get_temp_actor_dir()}/calendars/{public_file_name}"
     print(f"{public_file_path=}")
     # public_file_path = f"src/system/examples/ex_env/calendars/{public_file_name}"
-    ux = authorunit_shop(tim_text, env_dir, _auto_output_to_public=True)
+    ux = actorunit_shop(tim_text, env_dir, _auto_output_to_public=True)
     ux.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
 
@@ -50,17 +50,17 @@ def test_authorunit_auto_output_to_public_SavesCalendarToPublicDirWhenTrue(
     assert os_path.exists(public_file_path)
 
 
-def test_authorunit_auto_output_to_public_DoesNotSaveCalendarToPublicDirWhenFalse(
-    author_dir_setup_cleanup,
+def test_actorunit_auto_output_to_public_DoesNotSaveCalendarToPublicDirWhenFalse(
+    actor_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_author_dir()
+    env_dir = get_temp_actor_dir()
     tim_text = "Tim"
     public_file_name = f"{tim_text}.json"
-    public_file_path = f"{get_temp_author_dir()}/calendars/{public_file_name}"
+    public_file_path = f"{get_temp_actor_dir()}/calendars/{public_file_name}"
     print(f"{public_file_path=}")
     # public_file_path = f"src/system/examples/ex_env/calendars/{public_file_name}"
-    ux = authorunit_shop(tim_text, env_dir, _auto_output_to_public=False)
+    ux = actorunit_shop(tim_text, env_dir, _auto_output_to_public=False)
     ux.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
 
@@ -71,12 +71,12 @@ def test_authorunit_auto_output_to_public_DoesNotSaveCalendarToPublicDirWhenFals
     assert os_path.exists(public_file_path) is False
 
 
-def test_authorunit_get_isol_createsEmptyCalendarWhenFileDoesNotExist(
-    author_dir_setup_cleanup,
+def test_actorunit_get_isol_createsEmptyCalendarWhenFileDoesNotExist(
+    actor_dir_setup_cleanup,
 ):
     # GIVEN
     tim_text = "Tim"
-    tim_ux = authorunit_shop(tim_text, get_temp_author_dir())
+    tim_ux = actorunit_shop(tim_text, get_temp_actor_dir())
     tim_ux.create_core_dir_and_files()
     assert os_path.exists(tim_ux._admin._isol_file_path)
     x_func_delete_dir(dir=tim_ux._admin._isol_file_path)
@@ -91,14 +91,14 @@ def test_authorunit_get_isol_createsEmptyCalendarWhenFileDoesNotExist(
     assert tim_ux._isol != None
 
 
-def test_authorunit_get_isol_getsMemoryCalendarIfExists(
-    author_dir_setup_cleanup,
+def test_actorunit_get_isol_getsMemoryCalendarIfExists(
+    actor_dir_setup_cleanup,
 ):
     # GIVEN
     tim_text = "Tim"
-    tim_ux = authorunit_shop(tim_text, get_temp_author_dir())
+    tim_ux = actorunit_shop(tim_text, get_temp_actor_dir())
     tim_ux.create_core_dir_and_files()
-    isol_file_path = f"{tim_ux._admin._author_dir}/{tim_ux._admin._isol_file_name}"
+    isol_file_path = f"{tim_ux._admin._actor_dir}/{tim_ux._admin._isol_file_name}"
     cx_isol1 = tim_ux.get_isol()
     assert os_path.exists(isol_file_path)
     assert tim_ux._isol != None
@@ -121,14 +121,14 @@ def test_authorunit_get_isol_getsMemoryCalendarIfExists(
     assert cx_isol3 == cx_isol1
 
 
-def test_authorunit_set_isol_savesIsolCalendarSet_isol_None(
-    author_dir_setup_cleanup,
+def test_actorunit_set_isol_savesIsolCalendarSet_isol_None(
+    actor_dir_setup_cleanup,
 ):
     # GIVEN
     tim_text = "Tim"
-    tim_ux = authorunit_shop(tim_text, get_temp_author_dir())
+    tim_ux = actorunit_shop(tim_text, get_temp_actor_dir())
     tim_ux.create_core_dir_and_files()
-    isol_file_path = f"{tim_ux._admin._author_dir}/{tim_ux._admin._isol_file_name}"
+    isol_file_path = f"{tim_ux._admin._actor_dir}/{tim_ux._admin._isol_file_name}"
     cx_isol1 = tim_ux.get_isol()
     assert os_path.exists(isol_file_path)
     assert tim_ux._isol != None
@@ -145,14 +145,14 @@ def test_authorunit_set_isol_savesIsolCalendarSet_isol_None(
     assert cx_isol2._idearoot._uid == uid_text
 
 
-def test_authorunit_set_isol_savesGivenCalendarSet_isol_None(
-    author_dir_setup_cleanup,
+def test_actorunit_set_isol_savesGivenCalendarSet_isol_None(
+    actor_dir_setup_cleanup,
 ):
     # GIVEN
     tim_text = "Tim"
-    ux = authorunit_shop(tim_text, get_temp_author_dir())
+    ux = actorunit_shop(tim_text, get_temp_actor_dir())
     ux.create_core_dir_and_files()
-    isol_file_path = f"{ux._admin._author_dir}/{ux._admin._isol_file_name}"
+    isol_file_path = f"{ux._admin._actor_dir}/{ux._admin._isol_file_name}"
     cx_isol1 = ux.get_isol()
     assert os_path.exists(isol_file_path)
     assert ux._isol != None
@@ -190,12 +190,12 @@ def test_authorunit_set_isol_savesGivenCalendarSet_isol_None(
     ux._isol._idearoot._uid = isol_uid_text
 
 
-def test_authorunit_set_isol_if_emtpy_DoesNotReplace_isol(
-    author_dir_setup_cleanup,
+def test_actorunit_set_isol_if_emtpy_DoesNotReplace_isol(
+    actor_dir_setup_cleanup,
 ):
     # GIVEN
     tim_text = "Tim"
-    ux = authorunit_shop(tim_text, get_temp_author_dir())
+    ux = actorunit_shop(tim_text, get_temp_actor_dir())
     ux.create_core_dir_and_files()
     saved_cx = CalendarUnit(_owner=tim_text)
     saved_cx_uid_text = "this is pulled CalendarUnit uid"

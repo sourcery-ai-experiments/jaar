@@ -11,35 +11,35 @@ from pytest import raises as pytest_raises
 
 def test_idea_find_replace_road_Changes_walk():
     # GIVEN Idea with _walk that will be changed
-    old_author = "author1"
+    old_actor = "actor1"
     bloomers_text = "bloomers"
-    bloomers_road = f"{root_label()},{old_author},{bloomers_text}"
+    bloomers_road = f"{root_label()},{old_actor},{bloomers_text}"
     roses_text = "roses"
-    roses_road = f"{root_label()},{old_author},{bloomers_text},{roses_text}"
+    roses_road = f"{root_label()},{old_actor},{bloomers_text},{roses_text}"
     idea_x = IdeaCore(_label=roses_text, _walk=bloomers_road)
     assert Road(f"{idea_x._walk}") == bloomers_road
     assert Road(f"{idea_x._walk},{idea_x._label}") == roses_road
 
     # WHEN
-    new_author = "author1"
-    old_author_road = f"{root_label()},{old_author}"
-    new_author_road = f"{root_label()},{new_author}"
-    idea_x.find_replace_road(old_road=old_author_road, new_road=new_author_road)
+    new_actor = "actor1"
+    old_actor_road = f"{root_label()},{old_actor}"
+    new_actor_road = f"{root_label()},{new_actor}"
+    idea_x.find_replace_road(old_road=old_actor_road, new_road=new_actor_road)
 
     # THEN
-    new_bloomers_road = f"{root_label()},{new_author},{bloomers_text}"
-    new_roses_road = f"{root_label()},{new_author},{bloomers_text},{roses_text}"
+    new_bloomers_road = f"{root_label()},{new_actor},{bloomers_text}"
+    new_roses_road = f"{root_label()},{new_actor},{bloomers_text},{roses_text}"
     assert Road(f"{idea_x._walk}") == new_bloomers_road
     assert Road(f"{idea_x._walk},{idea_x._label}") == new_roses_road
 
 
 def test_idea_find_replace_road_Changes_range_source_road_numeric_road():
     # GIVEN Idea with special road and numeric road that will be changed
-    author = "author"
+    actor = "actor"
     bloomers_text = "bloomers"
-    bloomers_road = f"{root_label()},{author},{bloomers_text}"
+    bloomers_road = f"{root_label()},{actor},{bloomers_text}"
     roses_text = "roses"
-    roses_road = f"{root_label()},{author},{bloomers_text},{roses_text}"
+    roses_road = f"{root_label()},{actor},{bloomers_text},{roses_text}"
     old_water_text = "water"
     old_water_road = f"{root_label()},{old_water_text}"
     rain_text = "rain"
@@ -74,10 +74,10 @@ def test_idea_find_replace_road_Changes_range_source_road_numeric_road():
 
 def test_idea_find_replace_road_Changes_requiredunits():
     # GIVEN Idea with required that will be changed
-    author = "author"
+    actor = "actor"
     bloomers_text = "bloomers"
     roses_text = "roses"
-    roses_road = f"{root_label()},{author},{bloomers_text},{roses_text}"
+    roses_road = f"{root_label()},{actor},{bloomers_text},{roses_text}"
     # required roads
     old_water_text = "water"
     old_water_road = f"{root_label()},{old_water_text}"
@@ -126,11 +126,11 @@ def test_idea_find_replace_road_Changes_requiredunits():
 
 def test_idea_find_replace_road_Changes_acptfactunits():
     # GIVEN Idea with acptfactunit that will be changed
-    author = "author"
+    actor = "actor"
     bloomers_text = "bloomers"
-    # bloomers_road = f"{root_label()},{author},{bloomers_text}"
+    # bloomers_road = f"{root_label()},{actor},{bloomers_text}"
     roses_text = "roses"
-    # roses_road = f"{root_label()},{author},{bloomers_text},{roses_text}"
+    # roses_road = f"{root_label()},{actor},{bloomers_text},{roses_text}"
     old_water_text = "water"
     old_water_road = f"{root_label()},{old_water_text}"
     rain_text = "rain"

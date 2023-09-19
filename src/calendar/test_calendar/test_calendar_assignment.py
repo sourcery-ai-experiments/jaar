@@ -9,7 +9,7 @@ from src.calendar.examples.example_calendars import (
     get_calendar_with7amCleanTableRequired as example_calendars_get_calendar_with7amCleanTableRequired,
     get_assignment_calendar_example1 as example_calendar_get_assignment_calendar_example1,
 )
-from src.system.examples.example_authors import get_calendar_assignment_laundry_example1
+from src.system.examples.example_actors import get_calendar_assignment_laundry_example1
 
 
 def test_calendarunit_get_assignment_ReturnsCalendar():

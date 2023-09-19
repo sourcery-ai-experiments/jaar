@@ -4,28 +4,28 @@ from src.calendar.calendar import CalendarUnit
 from src.calendar.x_func import delete_dir, save_file as x_func_save_file
 
 
-def get_temp_author_dir():
+def get_temp_actor_dir():
     return "src/system/examples/ex_env"
 
 
 @pytest_fixture()
-def author_dir_setup_cleanup():
-    author_dir = get_temp_author_dir()
-    delete_dir(dir=author_dir)
-    yield author_dir
-    delete_dir(dir=author_dir)
+def actor_dir_setup_cleanup():
+    actor_dir = get_temp_actor_dir()
+    delete_dir(dir=actor_dir)
+    yield actor_dir
+    delete_dir(dir=actor_dir)
 
 
-def create_calendar_file(calendar_author_dir: str, calendar_owner: str):
+def create_calendar_file(calendar_actor_dir: str, calendar_owner: str):
     calendar_x = CalendarUnit(_owner=calendar_owner)
-    # file_path = f"{calendar_author_dir}/{calendar_x._owner}.json"
+    # file_path = f"{calendar_actor_dir}/{calendar_x._owner}.json"
     # # if not path.exists(file_path):
     # print(f"{file_path=} {calendar_x._owner=}")
     # with open(f"{file_path}", "w") as f:
     #     print(f" saving {calendar_x._owner=} to {file_path=}")
     #     f.write(calendar_x.get_json())
     x_func_save_file(
-        dest_dir=calendar_author_dir,
+        dest_dir=calendar_actor_dir,
         file_name=f"{calendar_x._owner}.json",
         file_text=calendar_x.get_json(),
     )

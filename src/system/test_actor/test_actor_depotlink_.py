@@ -1,13 +1,13 @@
-from src.system.author import authorunit_shop
-from src.system.examples.example_authors import (
+from src.system.actor import actorunit_shop
+from src.system.examples.example_actors import (
     get_2node_calendar,
     get_calendar_2CleanNodesRandomWeights as get_cal2nodes,
     get_calendar_3CleanNodesRandomWeights as get_cal3nodes,
     get_calendar_assignment_laundry_example1 as get_america_assign_ex,
 )
-from src.system.examples.author_env_kit import (
-    author_dir_setup_cleanup,
-    get_temp_author_dir,
+from src.system.examples.actor_env_kit import (
+    actor_dir_setup_cleanup,
+    get_temp_actor_dir,
     create_calendar_file,
 )
 from src.system.examples.system_env_kit import get_temp_env_name
@@ -21,13 +21,13 @@ from src.calendar.x_func import (
 )
 
 
-def test_authorunit_set_depotlink_RaisesErrorWhenCalendarDoesNotExist(
-    author_dir_setup_cleanup,
+def test_actorunit_set_depotlink_RaisesErrorWhenCalendarDoesNotExist(
+    actor_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
-    env_dir = get_temp_author_dir()
-    sue_cx = authorunit_shop(name=sue_text, env_dir=env_dir)
+    env_dir = get_temp_actor_dir()
+    sue_cx = actorunit_shop(name=sue_text, env_dir=env_dir)
     sue_cx.set_isol_if_empty()
     tim_text = "Tim"
     assert list(sue_cx._isol._members.keys()) == [sue_text]
@@ -39,15 +39,15 @@ def test_authorunit_set_depotlink_RaisesErrorWhenCalendarDoesNotExist(
         sue_cx._set_depotlink(outer_owner=tim_text)
     assert (
         str(excinfo.value)
-        == f"Author {sue_text} cannot find calendar {tim_text} in {file_path_x}"
+        == f"Actor {sue_text} cannot find calendar {tim_text} in {file_path_x}"
     )
 
 
-def test_authorunit_set_depotlink_CorrectlySetsIsolMembers(author_dir_setup_cleanup):
+def test_actorunit_set_depotlink_CorrectlySetsIsolMembers(actor_dir_setup_cleanup):
     # GIVEN
     yao_text = "yao"
-    env_dir = get_temp_author_dir()
-    yao_ux = authorunit_shop(name=yao_text, env_dir=env_dir)
+    env_dir = get_temp_actor_dir()
+    yao_ux = actorunit_shop(name=yao_text, env_dir=env_dir)
     yao_ux.set_isol_if_empty()
     sue_text = "sue"
     create_calendar_file(yao_ux._admin._calendars_depot_dir, sue_text)
@@ -61,12 +61,12 @@ def test_authorunit_set_depotlink_CorrectlySetsIsolMembers(author_dir_setup_clea
     assert yao_ux._isol.get_member(sue_text).depotlink_type is None
 
 
-def test_authorunit_set_depotlink_CorrectlySetsAssignment(author_dir_setup_cleanup):
+def test_actorunit_set_depotlink_CorrectlySetsAssignment(actor_dir_setup_cleanup):
     # GIVEN
     america_cx = get_america_assign_ex()
     print(f"{len(america_cx._idea_dict)=}")
     joachim_text = "Joachim"
-    joachim_ux = authorunit_shop(joachim_text, get_temp_author_dir())
+    joachim_ux = actorunit_shop(joachim_text, get_temp_actor_dir())
     joachim_ux.create_core_dir_and_files()
     joachim_ux.set_isol_if_empty()
     joachim_ux._admin.save_calendar_to_depot(america_cx)
@@ -99,11 +99,11 @@ def test_authorunit_set_depotlink_CorrectlySetsAssignment(author_dir_setup_clean
     assert digest_cx._owner == joachim_text
 
 
-def test_authorunit_del_depot_calendar_CorrectlyDeletesObj(author_dir_setup_cleanup):
+def test_actorunit_del_depot_calendar_CorrectlyDeletesObj(actor_dir_setup_cleanup):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_author_dir()
-    bob_cx = authorunit_shop(name=bob_text, env_dir=env_dir)
+    env_dir = get_temp_actor_dir()
+    bob_cx = actorunit_shop(name=bob_text, env_dir=env_dir)
     yao_text = "Yao"
     create_calendar_file(bob_cx._admin._calendars_depot_dir, yao_text)
     assignment_text = "assignment"
@@ -120,13 +120,13 @@ def test_authorunit_del_depot_calendar_CorrectlyDeletesObj(author_dir_setup_clea
     assert bob_cx._isol.get_member(yao_text).depotlink_type is None
 
 
-def test_authorunit_del_depot_calendar_CorrectlyDeletesBlindTrustFile(
-    author_dir_setup_cleanup,
+def test_actorunit_del_depot_calendar_CorrectlyDeletesBlindTrustFile(
+    actor_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_author_dir()
-    bob_cx = authorunit_shop(name=bob_text, env_dir=env_dir)
+    env_dir = get_temp_actor_dir()
+    bob_cx = actorunit_shop(name=bob_text, env_dir=env_dir)
     lai_text = "Lai"
     create_calendar_file(bob_cx._admin._calendars_depot_dir, lai_text)
     bob_cx.set_isol_if_empty()
@@ -142,13 +142,13 @@ def test_authorunit_del_depot_calendar_CorrectlyDeletesBlindTrustFile(
     assert x_func_count_files(dir_path=bob_cx._admin._calendars_digest_dir) == 0
 
 
-def test_authorunit_set_depot_calendar_SavesFileCorrectly(
-    author_dir_setup_cleanup,
+def test_actorunit_set_depot_calendar_SavesFileCorrectly(
+    actor_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_author_dir()
-    bob_cx = authorunit_shop(name=bob_text, env_dir=env_dir)
+    env_dir = get_temp_actor_dir()
+    bob_cx = actorunit_shop(name=bob_text, env_dir=env_dir)
     cal1 = get_2node_calendar()
     assert (
         x_func_count_files(bob_cx._admin._calendars_depot_dir) is None
@@ -165,13 +165,13 @@ def test_authorunit_set_depot_calendar_SavesFileCorrectly(
     assert x_func_count_files(bob_cx._admin._calendars_depot_dir) == 1
 
 
-def test_authorunit_delete_ignore_depotlink_CorrectlyDeletesObj(
-    author_dir_setup_cleanup,
+def test_actorunit_delete_ignore_depotlink_CorrectlyDeletesObj(
+    actor_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_author_dir()
-    bob_cx = authorunit_shop(name=bob_text, env_dir=env_dir)
+    env_dir = get_temp_actor_dir()
+    bob_cx = actorunit_shop(name=bob_text, env_dir=env_dir)
     yao_text = "Yao"
     create_calendar_file(bob_cx._admin._calendars_depot_dir, yao_text)
     assignment_text = "assignment"
@@ -188,13 +188,13 @@ def test_authorunit_delete_ignore_depotlink_CorrectlyDeletesObj(
     assert bob_cx._isol.get_member(yao_text).depotlink_type is None
 
 
-def test_authorunit_del_depot_calendar_CorrectlyDoesNotDeletesIgnoreFile(
-    author_dir_setup_cleanup,
+def test_actorunit_del_depot_calendar_CorrectlyDoesNotDeletesIgnoreFile(
+    actor_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "bob"
-    env_dir = get_temp_author_dir()
-    bob_cx = authorunit_shop(name=bob_text, env_dir=env_dir)
+    env_dir = get_temp_actor_dir()
+    bob_cx = actorunit_shop(name=bob_text, env_dir=env_dir)
     zia_text = "Zia"
     create_calendar_file(bob_cx._admin._calendars_depot_dir, zia_text)
     bob_cx.set_isol_if_empty()
@@ -212,13 +212,13 @@ def test_authorunit_del_depot_calendar_CorrectlyDoesNotDeletesIgnoreFile(
     assert x_func_count_files(dir_path=bob_cx._admin._calendars_ignore_dir) == 1
 
 
-def test_authorunit_set_ignore_calendar_file_CorrectlyUpdatesIgnoreFile(
-    author_dir_setup_cleanup,
+def test_actorunit_set_ignore_calendar_file_CorrectlyUpdatesIgnoreFile(
+    actor_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_author_dir()
-    bob_ux = authorunit_shop(name=bob_text, env_dir=env_dir)
+    env_dir = get_temp_actor_dir()
+    bob_ux = actorunit_shop(name=bob_text, env_dir=env_dir)
     zia_text = "Zia"
     create_calendar_file(bob_ux._admin._calendars_depot_dir, zia_text)
     bob_ux.set_isol_if_empty()
@@ -239,16 +239,16 @@ def test_authorunit_set_ignore_calendar_file_CorrectlyUpdatesIgnoreFile(
     assert x_func_count_files(dir_path=bob_ux._admin._calendars_ignore_dir) == 1
 
 
-def test_authorunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
-    author_dir_setup_cleanup,
+def test_actorunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
+    actor_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_author_dir()
+    env_dir = get_temp_actor_dir()
     system_name = get_temp_env_name()
     sx = systemunit_shop(name=system_name, systems_dir=env_dir)
     yao_text = "Yao"
-    sx.create_new_authorunit(author_name=yao_text)
-    yao_calendar = sx.get_author_obj(name=yao_text)
+    sx.create_new_actorunit(actor_name=yao_text)
+    yao_calendar = sx.get_actor_obj(name=yao_text)
     assert len(yao_calendar._admin.get_remelded_output_calendar().get_idea_list()) == 1
 
     ernie_text = "ernie"

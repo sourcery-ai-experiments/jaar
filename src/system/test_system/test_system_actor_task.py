@@ -6,17 +6,17 @@ from src.system.examples.system_env_kit import (
 )
 from src.calendar.road import get_global_root_label as root_label
 from src.calendar.calendar import CalendarUnit
-from src.system.examples.example_authors import get_calendar_assignment_laundry_example1
+from src.system.examples.example_actors import get_calendar_assignment_laundry_example1
 
 
-def test_system_ChangingOneAuthorsFactChangesAnotherAgenda(env_dir_setup_cleanup):
+def test_system_ChangingOneActorsFactChangesAnotherAgenda(env_dir_setup_cleanup):
     sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     # GIVEN
     america_text = "America"
-    sx.create_new_authorunit(author_name=america_text)
-    america_ux = sx.get_author_obj(name=america_text)
+    sx.create_new_actorunit(actor_name=america_text)
+    america_ux = sx.get_actor_obj(name=america_text)
     america_ux.set_isol(get_calendar_assignment_laundry_example1())
 
     casa_text = "casa"
@@ -37,8 +37,8 @@ def test_system_ChangingOneAuthorsFactChangesAnotherAgenda(env_dir_setup_cleanup
 
     # create assignment for Joachim
     joachim_text = "Joachim"
-    sx.create_new_authorunit(author_name=joachim_text)
-    joachim_ux = sx.get_author_obj(name=joachim_text)
+    sx.create_new_actorunit(actor_name=joachim_text)
+    joachim_ux = sx.get_actor_obj(name=joachim_text)
     joachim_ux.set_depot_calendar(america_output, "assignment")
     old_joachim_cx = sx.get_output_calendar(joachim_text)
     # print(f"{old_joachim_cx._members.keys()=}")
@@ -102,7 +102,7 @@ def test_system_create_task_CorrectlyCreatesTask(env_dir_setup_cleanup):
     for_group_x = {america_text: -1, joachim_text: -1}
     assigned_group_x = {joachim_text: -1}
     sx.create_task(
-        from_author=america_text,
+        from_actor=america_text,
         to_group=joachim_text,
         group_members={joachim_text},
         task_road=do_laundry_road,
@@ -115,9 +115,9 @@ def test_system_create_task_CorrectlyCreatesTask(env_dir_setup_cleanup):
     )
 
     # # WHEN
-    # america_author.save_output_calendar_to_public()
-    # new_joa_author = sx.get_author_obj(name=joachim_text)
-    # new_joa_author.save_output_calendar_to_public()
+    # america_actor.save_output_calendar_to_public()
+    # new_joa_actor = sx.get_actor_obj(name=joachim_text)
+    # new_joa_actor.save_output_calendar_to_public()
     # new_joa_dest_c = sx.get_public_calendar(joachim_text)
     # new_joa_agenda = new_joa_dest_c.get_agenda_items()
     # assert len(new_joa_agenda) == 1
@@ -128,21 +128,21 @@ def test_system_create_task_CorrectlyCreatesTask(env_dir_setup_cleanup):
     assert len(joachim_cx.get_agenda_items()) == 1
     assert joachim_cx.get_agenda_items()[0].get_road() == do_laundry_road
 
-    # sx.create_new_authorunit(author_name=america_text)
-    # america_author = sx.get_author_obj(name=america_text)
-    # america_author.save_output_calendar_to_public()
+    # sx.create_new_actorunit(actor_name=america_text)
+    # america_actor = sx.get_actor_obj(name=america_text)
+    # america_actor.save_output_calendar_to_public()
     # assert sx.get_public_calendar(america_text) != None
 
-    # # Create author2
+    # # Create actor2
 
-    # sx.create_new_authorunit(author_name=joachim_text)
-    # old_joa_author = sx.get_author_obj(name=joachim_text)
-    # old_joa_author._set_depotlink(america_cx._ownert, depotlink_type="blind_trust")
-    # old_joa_author.save_output_calendar_to_public()
+    # sx.create_new_actorunit(actor_name=joachim_text)
+    # old_joa_actor = sx.get_actor_obj(name=joachim_text)
+    # old_joa_actor._set_depotlink(america_cx._ownert, depotlink_type="blind_trust")
+    # old_joa_actor.save_output_calendar_to_public()
     # old_joa_dest_c = sx.get_public_calendar(joachim_text)
     # old_joa_agenda = old_joa_dest_c.get_agenda_items()
     # # assert len(old_joa_agenda) == 0
 
-    # # # Create author1 task:
+    # # # Create actor1 task:
     # # #  create joachim member in America calendar
-    # america_author._set_depotlink(joachim_text)
+    # america_actor._set_depotlink(joachim_text)

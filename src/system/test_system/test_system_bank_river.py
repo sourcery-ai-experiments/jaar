@@ -17,7 +17,7 @@ from src.system.bank_sqlstr import (
 def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example system with 4 Authors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example system with 4 Actors, each with 3 Memberunits = 12 ledger rows
     system_name = get_temp_env_name()
     sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
