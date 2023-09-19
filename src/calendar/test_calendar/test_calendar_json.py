@@ -222,7 +222,7 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     assert len(day_min_acptfactunits_dict) == len(day_min_idea_x._acptfactunits)
 
     _requiredunits = "_requiredunits"
-    cont_text = "Contractor"
+    cont_text = "Freelancing"
     ulti_text = "Ultimate Frisbee"
     cont_road = f"{root_label()},{cont_text}"
     ulti_road = f"{root_label()},{ulti_text}"
