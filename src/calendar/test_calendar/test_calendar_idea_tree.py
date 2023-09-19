@@ -444,7 +444,7 @@ def test_calendar_get_heir_road_list_returnsCorrectList():
 #     # generated sandy
 #     gen_sandy = lw_x.get_calendar4member(acptfacts=None, member_name=sandy_name)
 
-#     # confirm generated sandy is correct
+#     # check generated sandy is correct
 #     assert gen_sandy.get_idea_kid(road=f"{root_label()},A")._calendar_importance == 0.07
 #     assert gen_sandy.get_idea_kid(road=f"{root_label()},A,C")._calendar_importance == 0.07
 #     assert gen_sandy.get_idea_kid(road=f"{root_label()},A,C,E")._calendar_importance == 0.5

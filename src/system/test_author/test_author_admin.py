@@ -116,7 +116,7 @@ def test_AuthorAdmin_create_core_dir_and_files_CreatesDirsAndFiles(
     calendar_x = example_authors.get_7nodeJRootWithH_calendar()
     pdx.create_core_dir_and_files(calendar_x)
 
-    # THEN confirm calendars src directory created
+    # THEN check calendars src directory created
     print(f"Checking {pdx._authors_dir=}")
     print(f"Checking {pdx._author_dir=}")
     assert os_path.exists(pdx._authors_dir)

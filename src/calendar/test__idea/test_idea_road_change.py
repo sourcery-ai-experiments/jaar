@@ -89,7 +89,7 @@ def test_idea_find_replace_road_Changes_requiredunits():
     required_x = RequiredUnit(base=old_water_road, sufffacts=sufffacts_x)
     requireds_x = {required_x.base: required_x}
     idea_x = IdeaCore(_label=roses_text, _requiredunits=requireds_x)
-    # confirm asserts
+    # check asserts
     assert idea_x._requiredunits.get(old_water_road) != None
     old_water_rain_required = idea_x._requiredunits[old_water_road]
     assert old_water_rain_required.base == old_water_road

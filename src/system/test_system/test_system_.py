@@ -43,7 +43,7 @@ def test_system_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     # WHEN
     sx.create_dirs_if_null(in_memory_bank=False)
 
-    # THEN confirm calendars src directory created
+    # THEN check calendars src directory created
     assert os_path.exists(system_dir)
     assert os_path.isdir(system_dir)
     assert os_path.exists(system_file_path)
@@ -100,7 +100,7 @@ def test_rename_example_system_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup
     # WHEN
     rename_example_system(system_obj=sx, new_name=new_system_name)
 
-    # THEN confirm calendars src directory created
+    # THEN check calendars src directory created
     assert os_path.exists(old_system_dir) is False
     assert os_path.isdir(old_system_dir) is False
     assert os_path.exists(old_system_file_path) is False
@@ -164,7 +164,7 @@ def test_copy_evaluation_system_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup
     # WHEN
     copy_evaluation_system(src_name=sx.name, dest_name=new_system_name)
 
-    # THEN confirm calendars src directory created
+    # THEN check calendars src directory created
     assert os_path.exists(old_system_dir)
     assert os_path.isdir(old_system_dir)
     assert os_path.exists(old_system_file_path)

@@ -1136,7 +1136,7 @@ class CalendarUnit:
         old_road: Road,
         new_label: str,
     ):
-        # confirm idea exists
+        # check idea exists
         if self.get_idea_kid(road=old_road) is None:
             raise InvalidCalendarException(f"Idea {old_road=} does not exist")
 
