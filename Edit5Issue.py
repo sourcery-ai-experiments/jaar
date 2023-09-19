@@ -1,6 +1,6 @@
-# command to for converting ui form to python file: pyuic5 ui\System5IssueUI.ui -o ui\System5IssueUI.py
+# command to for converting ui form to python file: pyuic5 ui\Economy5IssueUI.ui -o ui\Economy5IssueUI.py
 import sys
-from ui.System5IssueUI import Ui_Form
+from ui.Economy5IssueUI import Ui_Form
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from src.pyqt5_kit.pyqt_func import calendar_importance_diplay

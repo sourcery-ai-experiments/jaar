@@ -1,5 +1,5 @@
 # from lw.calendar import CalendarUnit
-from src.system.system import SystemUnit, systemunit_shop
+from src.economy.economy import EconomyUnit, economyunit_shop
 from os import listdir as os_listdir, rename as os_rename, path as os_path
 from pytest import fixture as pytest_fixture
 from src.calendar.examples.example_calendars import (
@@ -10,14 +10,14 @@ from src.calendar.examples.example_calendars import (
     get_calendar_base_time_example as example_calendars_get_calendar_base_time_example,
     get_calendar_x1_3levels_1required_1acptfacts as example_calendars_get_calendar_x1_3levels_1required_1acptfacts,
 )
-from src.system.examples.example_actors import (
+from src.economy.examples.example_actors import (
     get_1node_calendar as example_actors_get_1node_calendar,
     get_7nodeJRootWithH_calendar as example_actors_get_7nodeJRootWithH_calendar,
     get_calendar_2CleanNodesRandomWeights as example_actors_get_calendar_2CleanNodesRandomWeights,
     get_calendar_3CleanNodesRandomWeights as example_actors_get_calendar_3CleanNodesRandomWeights,
 )
 from src.calendar.calendar import CalendarUnit
-from src.system.actor import actorunit_shop
+from src.economy.actor import actorunit_shop
 from src.calendar.x_func import (
     single_dir_create_if_null,
     delete_dir as x_func_delete_dir,
@@ -33,11 +33,11 @@ def get_temp_env_name():
 
 
 def get_temp_env_dir():
-    return f"{get_test_systems_dir()}/{get_temp_env_name()}"
+    return f"{get_test_economys_dir()}/{get_temp_env_name()}"
 
 
-def get_test_systems_dir():
-    return "src/system/examples/systems"
+def get_test_economys_dir():
+    return "src/economy/examples/economys"
 
 
 @pytest_fixture()
@@ -48,9 +48,9 @@ def env_dir_setup_cleanup():
     x_func_delete_dir(dir=env_dir)
 
 
-def create_calendar_file_for_systems(system_dir: str, calendar_owner: str):
+def create_calendar_file_for_economys(economy_dir: str, calendar_owner: str):
     calendar_x = CalendarUnit(_owner=calendar_owner)
-    calendar_dir = f"{system_dir}/calendars"
+    calendar_dir = f"{economy_dir}/calendars"
     # file_path = f"{calendar_dir}/{calendar_x._owner}.json"
     # if not path.exists(file_path):
     # print(f"{file_path=} {calendar_x._owner=}")
@@ -62,13 +62,13 @@ def create_calendar_file_for_systems(system_dir: str, calendar_owner: str):
     )
 
 
-def get_test_systems_dir():
-    return "src/system/examples/systems"
+def get_test_economys_dir():
+    return "src/economy/examples/economys"
 
 
-def create_example_systems_list():
+def create_example_economys_list():
     return x_func_dir_files(
-        dir_path=get_test_systems_dir(), include_dirs=True, include_files=False
+        dir_path=get_test_economys_dir(), include_dirs=True, include_files=False
     )
 
 
@@ -80,8 +80,8 @@ def setup_test_example_environment():
 
 
 def _delete_and_set_ex3():
-    system_name = "ex3"
-    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
+    economy_name = "ex3"
+    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -103,14 +103,14 @@ def _delete_and_set_ex3():
     # w1_obj = sx.get_actor_obj(name=w1_text)
 
     bob_text = "bob wurld"
-    create_calendar_file_for_systems(sx.get_object_root_dir(), bob_text)
+    create_calendar_file_for_economys(sx.get_object_root_dir(), bob_text)
     # print(f"create calendar_list {w1_text=}")
     sx.create_depotlink_to_generated_calendar(
         actor_name=xia_text, calendar_owner=bob_text, depotlink_type="ignore"
     )
     land_text = "tim wurld"
-    create_calendar_file_for_systems(
-        system_dir=sx.get_object_root_dir(), calendar_owner=land_text
+    create_calendar_file_for_economys(
+        economy_dir=sx.get_object_root_dir(), calendar_owner=land_text
     )
     sx.create_depotlink_to_generated_calendar(
         actor_name=xia_text, calendar_owner=land_text, depotlink_type="blind_trust"
@@ -134,8 +134,8 @@ def _delete_and_set_ex3():
 
 
 def _delete_and_set_ex4():
-    system_name = "ex4"
-    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
+    economy_name = "ex4"
+    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.save_public_calendar(example_actors_get_7nodeJRootWithH_calendar())
@@ -147,8 +147,8 @@ def _delete_and_set_ex4():
 
 
 def _delete_and_set_ex5():
-    system_name = "ex5"
-    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
+    economy_name = "ex5"
+    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -209,8 +209,8 @@ def _delete_and_set_ex5():
 
 
 def _delete_and_set_ex6():
-    system_name = "ex6"
-    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
+    economy_name = "ex6"
+    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=False)
 
@@ -248,36 +248,36 @@ def _delete_and_set_ex6():
     sx.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=100)
 
 
-def create_example_system(system_name: str):
-    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
+def create_example_economy(economy_name: str):
+    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
 
-def delete_dir_example_system(system_obj: SystemUnit):
-    x_func_delete_dir(system_obj.get_object_root_dir())
+def delete_dir_example_economy(economy_obj: EconomyUnit):
+    x_func_delete_dir(economy_obj.get_object_root_dir())
 
 
-def rename_example_system(system_obj: SystemUnit, new_name):
-    # base_dir = system_obj.get_object_root_dir()
-    base_dir = "src/system/examples/systems"
-    src_dir = f"{base_dir}/{system_obj.name}"
+def rename_example_economy(economy_obj: EconomyUnit, new_name):
+    # base_dir = economy_obj.get_object_root_dir()
+    base_dir = "src/economy/examples/economys"
+    src_dir = f"{base_dir}/{economy_obj.name}"
     dst_dir = f"{base_dir}/{new_name}"
     os_rename(src=src_dir, dst=dst_dir)
-    system_obj.set_systemunit_name(name=new_name)
+    economy_obj.set_economyunit_name(name=new_name)
 
 
-class InvalidSystemCopyException(Exception):
+class InvalidEconomyCopyException(Exception):
     pass
 
 
-def copy_evaluation_system(src_name: str, dest_name: str):
-    base_dir = "src/system/examples/systems"
+def copy_evaluation_economy(src_name: str, dest_name: str):
+    base_dir = "src/economy/examples/economys"
     new_dir = f"{base_dir}/{dest_name}"
     if os_path.exists(new_dir):
-        raise InvalidSystemCopyException(
-            f"Cannot copy system to '{new_dir}' directory because '{new_dir}' exists."
+        raise InvalidEconomyCopyException(
+            f"Cannot copy economy to '{new_dir}' directory because '{new_dir}' exists."
         )
-    # base_dir = system_obj.get_object_root_dir()
+    # base_dir = economy_obj.get_object_root_dir()
     src_dir = f"{base_dir}/{src_name}"
     dest_dir = f"{base_dir}/{dest_name}"
     copy_dir(src_dir=src_dir, dest_dir=dest_dir)

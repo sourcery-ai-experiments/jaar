@@ -1,25 +1,25 @@
-from src.system.system import systemunit_shop
+from src.economy.economy import economyunit_shop
 from src.calendar.calendar import CalendarUnit
-from src.system.examples.system_env_kit import (
+from src.economy.examples.economy_env_kit import (
     get_temp_env_name,
-    get_test_systems_dir,
+    get_test_economys_dir,
     env_dir_setup_cleanup,
 )
 from pytest import raises as pytest_raises
-from src.system.y_func import check_connection, get_single_result_back
-from src.system.bank_sqlstr import (
+from src.economy.y_func import check_connection, get_single_result_back
+from src.economy.bank_sqlstr import (
     get_river_tmember_dict,
     get_river_flow_dict,
     get_table_count_sqlstr,
 )
 
 
-def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable01(
+def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example system with 4 Actors, each with 3 Memberunits = 12 ledger rows
-    system_name = get_temp_env_name()
-    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
+    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    economy_name = get_temp_env_name()
+    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -85,12 +85,12 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
     assert river_sal_tax_tom.tax_total == 0.75
 
 
-def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable02(
+def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable02(
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 calendars, 100% of river flows to sal
-    system_name = get_temp_env_name()
-    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
+    economy_name = get_temp_env_name()
+    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -148,12 +148,12 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
     assert river_sal_tax_elu.tax_total == 1.0
 
 
-def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable03(
+def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable03(
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 calendars, 85% of river flows to sal
-    system_name = get_temp_env_name()
-    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
+    economy_name = get_temp_env_name()
+    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -216,12 +216,12 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
     assert river_sal_tax_tom.tax_total == 0.7
 
 
-def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable04(
+def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable04(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop
-    system_name = get_temp_env_name()
-    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
+    economy_name = get_temp_env_name()
+    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -291,12 +291,12 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
     assert river_sal_tax_tom.tax_total == 0.7
 
 
-def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable05(
+def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable05(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    system_name = get_temp_env_name()
-    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
+    economy_name = get_temp_env_name()
+    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -372,12 +372,12 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
     assert round(river_sal_tax_elu.tax_total, 15) == 0.0378017640625
 
 
-def test_system_set_river_sphere_for_calendar_CorrectlyDeletesPreviousRiver(
+def test_economy_set_river_sphere_for_calendar_CorrectlyDeletesPreviousRiver(
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 calendars, 100% of river flows to sal
-    system_name = get_temp_env_name()
-    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
+    economy_name = get_temp_env_name()
+    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -430,12 +430,12 @@ def test_system_set_river_sphere_for_calendar_CorrectlyDeletesPreviousRiver(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 3
 
 
-def test_system_set_river_sphere_for_calendar_CorrectlyUsesMaxFlowsCount(
+def test_economy_set_river_sphere_for_calendar_CorrectlyUsesMaxFlowsCount(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    system_name = get_temp_env_name()
-    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
+    economy_name = get_temp_env_name()
+    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -491,12 +491,12 @@ def test_system_set_river_sphere_for_calendar_CorrectlyUsesMaxFlowsCount(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == mtc
 
 
-def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable05(
+def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable05(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    system_name = get_temp_env_name()
-    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
+    economy_name = get_temp_env_name()
+    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -573,12 +573,12 @@ def test_system_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTab
     assert round(river_sal_tax_elu.tax_total, 15) == 0.0378017640625
 
 
-def test_system_set_river_sphere_for_calendar_CorrectlyBuildsASingleContinuousRange(
+def test_economy_set_river_sphere_for_calendar_CorrectlyBuildsASingleContinuousRange(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    system_name = get_temp_env_name()
-    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
+    economy_name = get_temp_env_name()
+    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -643,12 +643,12 @@ def test_system_set_river_sphere_for_calendar_CorrectlyBuildsASingleContinuousRa
         assert get_single_result_back(bank_conn, count_range_fails_sql) == 0
 
 
-def test_system_set_river_sphere_for_calendar_CorrectlyUpatesCalendarMemberUnits(
+def test_economy_set_river_sphere_for_calendar_CorrectlyUpatesCalendarMemberUnits(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    system_name = get_temp_env_name()
-    sx = systemunit_shop(name=system_name, systems_dir=get_test_systems_dir())
+    economy_name = get_temp_env_name()
+    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"

@@ -63,13 +63,13 @@ screenshots and explanatory text.
 base attributes vs required attributess
 
 <!-- TODO: Add explanations -->
-SystemUnit objects
+EconomyUnit objects
 
-SystemUnit ActorUnit objects
+EconomyUnit ActorUnit objects
 
-SystemUnit ActorUnit CalendarLink objects
+EconomyUnit ActorUnit CalendarLink objects
 
-SystemUnit Bank objects
+EconomyUnit Bank objects
 
 <!-- TODO: Add explanations -->
 CalendarUnit objects

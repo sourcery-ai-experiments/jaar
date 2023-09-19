@@ -1,23 +1,25 @@
-from src.system.system import systemunit_shop
+from src.economy.economy import economyunit_shop
 from src.calendar.calendar import CalendarUnit
 from src.calendar.idea import IdeaKid
 from src.calendar.group import groupunit_shop
 from src.calendar.member import memberlink_shop
-from src.system.examples.system_env_kit import (
+from src.economy.examples.economy_env_kit import (
     get_temp_env_name,
-    get_test_systems_dir,
+    get_test_economys_dir,
     env_dir_setup_cleanup,
 )
-from src.system.y_func import get_single_result_back
-from src.system.bank_sqlstr import (
+from src.economy.y_func import get_single_result_back
+from src.economy.bank_sqlstr import (
     get_db_tables,
     get_table_count_sqlstr,
 )
 
 
-def test_system_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
-    # GIVEN create system
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
+    # GIVEN create economy
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
 
     # WHEN
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -53,11 +55,13 @@ def test_system_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clean
     assert len(tables_dict) == len(curr_tables)
 
 
-def test_system_refresh_bank_metrics_CorrectlyDeletesOldBankInMemory(
+def test_economy_refresh_bank_metrics_CorrectlyDeletesOldBankInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -77,11 +81,13 @@ def test_system_refresh_bank_metrics_CorrectlyDeletesOldBankInMemory(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 1
 
 
-def test_system_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
+def test_economy_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=False)
 
     bob_text = "bob"
@@ -101,11 +107,13 @@ def test_system_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 1
 
 
-def test_system_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
+def test_economy_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example system with 4 Actors, each with 3 Memberunits = 12 ledger rows
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -147,11 +155,13 @@ def test_system_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 12
 
 
-def test_system_refresh_bank_metrics_CorrectlyPopulatesCalendarTable01(
+def test_economy_refresh_bank_metrics_CorrectlyPopulatesCalendarTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example system with 4 Actors, each with 3 Memberunits = 12 ledger rows
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -174,11 +184,13 @@ def test_system_refresh_bank_metrics_CorrectlyPopulatesCalendarTable01(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_calendars) == 4
 
 
-def test_system_refresh_bank_metrics_CorrectlyPopulatesCalendarTable01(
+def test_economy_refresh_bank_metrics_CorrectlyPopulatesCalendarTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example system with 4 Actors, each with 3 Memberunits = 12 ledger rows
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -201,11 +213,13 @@ def test_system_refresh_bank_metrics_CorrectlyPopulatesCalendarTable01(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_calendars) == 4
 
 
-def test_system_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
+def test_economy_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -229,20 +243,22 @@ def test_system_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr) == 3
 
 
-def test_system_set_calendar_bank_attrs_CorrectlyPopulatesCalendar_Groupunit_Memberlinks(
+def test_economy_set_calendar_bank_attrs_CorrectlyPopulatesCalendar_Groupunit_Memberlinks(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     # create 4 calendars, 1 with group "swimming expert" linked to 1 member
     # two others have idea f"{root_label()},sports,swimming"
     # run set_bank_metrics
     # assert
-    # _memberlinks_set_by_system_road
+    # _memberlinks_set_by_economy_road
     # assert group "swimming expert" has 1 member
-    # change groupunit "swimming expert" _memberlinks_set_by_system_road ==  "A,sports,swimmer"
+    # change groupunit "swimming expert" _memberlinks_set_by_economy_road ==  "A,sports,swimmer"
     # run set_bank_metrics
     # assert group "swimming expert" has 2 different member
 
@@ -284,9 +300,9 @@ def test_system_set_calendar_bank_attrs_CorrectlyPopulatesCalendar_Groupunit_Mem
     assert len(e1_sal_calendar._groups.get(swim_group_text)._members) == 1
 
     # WHEN
-    # change groupunit "swimming expert" _memberlinks_set_by_system_road ==  "A,sports,swimmer"
+    # change groupunit "swimming expert" _memberlinks_set_by_economy_road ==  "A,sports,swimmer"
     sal_swim_road = f"{sal_sports_road},{swim_text}"
-    swim_group_unit.set_attr(_memberlinks_set_by_system_road=sal_swim_road)
+    swim_group_unit.set_attr(_memberlinks_set_by_economy_road=sal_swim_road)
     sal_calendar.set_groupunit(groupunit=swim_group_unit)
     sx.save_public_calendar(calendar_x=sal_calendar)
     sx.set_calendar_bank_attrs(calendar_name=sal_text)

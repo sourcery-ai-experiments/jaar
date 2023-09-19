@@ -1,6 +1,6 @@
 from src.calendar.calendar import CalendarUnit, get_from_json as get_calendar_from_json
 from src.calendar.member import memberlink_shop, MemberName
-from src.system.actor import ActorUnit, actorunit_shop
+from src.economy.actor import ActorUnit, actorunit_shop
 from dataclasses import dataclass
 from src.calendar.x_func import (
     single_dir_create_if_null,
@@ -10,7 +10,7 @@ from src.calendar.x_func import (
     dir_files as x_func_dir_files,
 )
 from sqlite3 import connect as sqlite3_connect, Connection
-from src.system.bank_sqlstr import (
+from src.economy.bank_sqlstr import (
     get_river_flow_table_delete_sqlstr,
     get_river_flow_table_insert_sqlstr,
     get_river_tmember_table_delete_sqlstr,
@@ -37,9 +37,9 @@ from src.system.bank_sqlstr import (
 
 
 @dataclass
-class SystemUnit:
+class EconomyUnit:
     name: str
-    systems_dir: str
+    economys_dir: str
     _actorunits: dict[str:ActorUnit] = None
     _bank_db = None
 
@@ -47,10 +47,10 @@ class SystemUnit:
         calendar_obj = self.get_public_calendar(calendar_name)
 
         for groupunit_x in calendar_obj._groups.values():
-            if groupunit_x._memberlinks_set_by_system_road != None:
+            if groupunit_x._memberlinks_set_by_economy_road != None:
                 groupunit_x.clear_memberlinks()
                 ic = get_idea_catalog_dict(
-                    self.get_bank_conn(), groupunit_x._memberlinks_set_by_system_road
+                    self.get_bank_conn(), groupunit_x._memberlinks_set_by_economy_road
                 )
                 for idea_catalog in ic.values():
                     if calendar_name != idea_catalog.calendar_name:
@@ -206,7 +206,7 @@ class SystemUnit:
                 groupunit_catalog_x = GroupUnitCatalog(
                     calendar_name=calendarunit_x._owner,
                     groupunit_name=groupunit_x.name,
-                    memberlinks_set_by_system_road=groupunit_x._memberlinks_set_by_system_road,
+                    memberlinks_set_by_economy_road=groupunit_x._memberlinks_set_by_economy_road,
                 )
                 sqlstr = get_groupunit_catalog_table_insert_sqlstr(groupunit_catalog_x)
                 cur.execute(sqlstr)
@@ -258,31 +258,31 @@ class SystemUnit:
         self._bank_db = None
         x_func_delete_dir(dir=self.get_bank_db_path())
 
-    def set_systemunit_name(self, name: str):
+    def set_economyunit_name(self, name: str):
         self.name = name
 
     def get_bank_db_path(self):
         return f"{self.get_object_root_dir()}/bank.db"
 
     def get_object_root_dir(self):
-        return f"{self.systems_dir}/{self.name}"
+        return f"{self.economys_dir}/{self.name}"
 
     def _create_main_file_if_null(self, x_dir):
-        system_file_name = "system.json"
+        economy_file_name = "economy.json"
         x_func_save_file(
             dest_dir=x_dir,
-            file_name=system_file_name,
+            file_name=economy_file_name,
             file_text="",
         )
 
     def create_dirs_if_null(self, in_memory_bank: bool = None):
-        system_dir = self.get_object_root_dir()
+        economy_dir = self.get_object_root_dir()
         calendars_dir = self.get_public_dir()
         actors_dir = self.get_actors_dir()
-        single_dir_create_if_null(x_path=system_dir)
+        single_dir_create_if_null(x_path=economy_dir)
         single_dir_create_if_null(x_path=calendars_dir)
         single_dir_create_if_null(x_path=actors_dir)
-        self._create_main_file_if_null(x_dir=system_dir)
+        self._create_main_file_if_null(x_dir=economy_dir)
         self._create_bank_db(in_memory=in_memory_bank, overwrite=True)
 
     # ActorUnit management
@@ -315,9 +315,9 @@ class SystemUnit:
         cx = self.get_public_calendar(owner=name)
         actor_x = actorunit_shop(name=cx._owner, env_dir=self.get_object_root_dir())
         self.set_actorunits_empty_if_null()
-        self.set_actorunit_to_system(actor_x)
+        self.set_actorunit_to_economy(actor_x)
 
-    def set_actorunit_to_system(self, actor: ActorUnit):
+    def set_actorunit_to_economy(self, actor: ActorUnit):
         self._actorunits[actor._admin._actor_name] = actor
         self.save_actor_file(actor_name=actor._admin._actor_name)
 
@@ -329,11 +329,11 @@ class SystemUnit:
         actor_x = self.get_actor_obj(name=old_name)
         old_actor_dir = actor_x._admin._actor_dir
         actor_x._admin.set_actor_name(new_name=new_name)
-        self.set_actorunit_to_system(actor=actor_x)
+        self.set_actorunit_to_economy(actor=actor_x)
         x_func_delete_dir(old_actor_dir)
-        self.del_actor_from_system(actor_name=old_name)
+        self.del_actor_from_economy(actor_name=old_name)
 
-    def del_actor_from_system(self, actor_name):
+    def del_actor_from_economy(self, actor_name):
         self._actorunits.pop(actor_name)
 
     def del_actor_dir(self, actor_name: str):
@@ -478,14 +478,16 @@ class SystemUnit:
         return actor_x._admin.get_remelded_output_calendar()
 
 
-def systemunit_shop(
+def economyunit_shop(
     name: str,
-    systems_dir: str,
+    economys_dir: str,
     _actorunits: dict[str:ActorUnit] = None,
     in_memory_bank: bool = None,
 ):
     if in_memory_bank is None:
         in_memory_bank = True
-    system_x = SystemUnit(name=name, systems_dir=systems_dir, _actorunits=_actorunits)
-    system_x.create_dirs_if_null(in_memory_bank=in_memory_bank)
-    return system_x
+    economy_x = EconomyUnit(
+        name=name, economys_dir=economys_dir, _actorunits=_actorunits
+    )
+    economy_x.create_dirs_if_null(in_memory_bank=in_memory_bank)
+    return economy_x

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui\System5IssueUI.ui'
+# Form implementation generated from reading ui file 'ui\Economy5IssueUI.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #

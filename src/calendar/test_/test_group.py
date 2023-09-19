@@ -31,7 +31,7 @@ def test_groupunit_exists():
         _calendar_debt=0.44,
         _calendar_agenda_credit=0.66,
         _calendar_agenda_debt=0.77,
-        _memberlinks_set_by_system_road=usa_road,
+        _memberlinks_set_by_economy_road=usa_road,
     )
 
     # THEN
@@ -43,7 +43,7 @@ def test_groupunit_exists():
     assert swimmers_group._calendar_debt != None
     assert swimmers_group._calendar_agenda_credit != None
     assert swimmers_group._calendar_agenda_debt != None
-    assert swimmers_group._memberlinks_set_by_system_road == usa_road
+    assert swimmers_group._memberlinks_set_by_economy_road == usa_road
 
 
 def test_groupunit_set_name_WorksCorrectly():
@@ -64,17 +64,17 @@ def test_groupunit_set_attr_WorksCorrectly():
     # GIVEN
     swim_text = "swimmers"
     swim_group = groupunit_shop(name=swim_text)
-    assert swim_group._memberlinks_set_by_system_road is None
+    assert swim_group._memberlinks_set_by_economy_road is None
 
     # WHEN
     water_road = f"{root_label()},sports,water"
-    swim_group.set_attr(_memberlinks_set_by_system_road=water_road)
+    swim_group.set_attr(_memberlinks_set_by_economy_road=water_road)
 
     # THEN
-    assert swim_group._memberlinks_set_by_system_road == water_road
+    assert swim_group._memberlinks_set_by_economy_road == water_road
 
 
-def test_groupunit_shop_WhenSingleMemberCorrectlyRemoves_memberlinks_set_by_system_road():
+def test_groupunit_shop_WhenSingleMemberCorrectlyRemoves_memberlinks_set_by_economy_road():
     # GIVEN
     swimmers = "swimmers"
     usa_road = f"{root_label()},nation-states,USA"
@@ -84,11 +84,11 @@ def test_groupunit_shop_WhenSingleMemberCorrectlyRemoves_memberlinks_set_by_syst
         swimmers_group = groupunit_shop(
             name=swimmers,
             _single_member=True,
-            _memberlinks_set_by_system_road=usa_road,
+            _memberlinks_set_by_economy_road=usa_road,
         )
     assert (
         str(excinfo.value)
-        == f"_memberlinks_set_by_system_road cannot be '{usa_road}' for a single_member GroupUnit. It must have no value."
+        == f"_memberlinks_set_by_economy_road cannot be '{usa_road}' for a single_member GroupUnit. It must have no value."
     )
 
 
@@ -324,7 +324,7 @@ def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         "single_member_id": None,
         "_single_member": False,
         "_members": {},
-        "_memberlinks_set_by_system_road": None,
+        "_memberlinks_set_by_economy_road": None,
     }
 
     # GIVEN
@@ -343,7 +343,7 @@ def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     teachers_group = groupunit_shop(
         name=str_teacher,
         _members=memberlinks_dict,
-        _memberlinks_set_by_system_road=swim_road,
+        _memberlinks_set_by_economy_road=swim_road,
     )
 
     # WHEN
@@ -357,7 +357,7 @@ def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         "single_member_id": None,
         "_single_member": False,
         "_members": marie_json_dict,
-        "_memberlinks_set_by_system_road": swim_road,
+        "_memberlinks_set_by_economy_road": swim_road,
     }
 
 
@@ -375,15 +375,15 @@ def test_groupunit_get_from_JSON_SimpleExampleWorks():
     teacher_group = groupunit_shop(
         name=str_teacher,
         _members=memberlinks_dict,
-        _memberlinks_set_by_system_road=swim_road,
+        _memberlinks_set_by_economy_road=swim_road,
     )
     teacher_dict = teacher_group.get_dict()
-    _memberlinks_set_by_system_road_text = "_memberlinks_set_by_system_road"
-    print(f"{teacher_dict.get(_memberlinks_set_by_system_road_text)=}")
+    _memberlinks_set_by_economy_road_text = "_memberlinks_set_by_economy_road"
+    print(f"{teacher_dict.get(_memberlinks_set_by_economy_road_text)=}")
     groups_dict = {"teachers": teacher_dict}
 
     teachers_json = x_get_json(dict_x=groups_dict)
-    print(f"{teachers_json.find(_memberlinks_set_by_system_road_text)=}")
+    print(f"{teachers_json.find(_memberlinks_set_by_economy_road_text)=}")
     assert teachers_json != None
     assert x_is_json(json_x=teachers_json)
 
@@ -394,8 +394,8 @@ def test_groupunit_get_from_JSON_SimpleExampleWorks():
     assert groupunits_obj_dict != None
     teachers_obj_check_dict = {teacher_group.name: teacher_group}
     print(f"    {groupunits_obj_dict=}")
-    memberlinks_set_by_system_road_text = "_memberlinks_set_by_system_road"
-    print(f"{teachers_obj_check_dict.get(memberlinks_set_by_system_road_text)=}")
+    memberlinks_set_by_economy_road_text = "_memberlinks_set_by_economy_road"
+    print(f"{teachers_obj_check_dict.get(memberlinks_set_by_economy_road_text)=}")
     print(f"{teachers_obj_check_dict=}")
     assert groupunits_obj_dict == teachers_obj_check_dict
 

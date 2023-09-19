@@ -1,7 +1,7 @@
 from src.calendar.calendar import CalendarUnit
 from src.calendar.idea import IdeaKid
 from src.calendar.required_assign import assigned_unit_shop
-from src.system.actor import actorunit_shop, ActorUnit
+from src.economy.actor import actorunit_shop, ActorUnit
 from src.calendar.road import Road, get_global_root_label as root_label
 from random import randrange
 

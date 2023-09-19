@@ -1,4 +1,4 @@
-from src.system.examples.system_env_kit import (
+from src.economy.examples.economy_env_kit import (
     _delete_and_set_ex3,
     _delete_and_set_ex4,
     _delete_and_set_ex5,
@@ -6,7 +6,7 @@ from src.system.examples.system_env_kit import (
 )
 
 
-def test_system_delete_and_set_ex3_thru_6_RunWithOutError():
+def test_economy_delete_and_set_ex3_thru_6_RunWithOutError():
     # WHEN/THEN
     assert _delete_and_set_ex3() is None
     assert _delete_and_set_ex4() is None

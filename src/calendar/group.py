@@ -36,15 +36,15 @@ class GroupUnit(GroupCore):
     _calendar_debt: float = None
     _calendar_agenda_credit: float = None
     _calendar_agenda_debt: float = None
-    _memberlinks_set_by_system_road: Road = None
+    _memberlinks_set_by_economy_road: Road = None
 
     def set_name(self, name: GroupName = None):
         if name != None:
             self.name = name
 
-    def set_attr(self, _memberlinks_set_by_system_road: Road):
-        if _memberlinks_set_by_system_road != None:
-            self._memberlinks_set_by_system_road = _memberlinks_set_by_system_road
+    def set_attr(self, _memberlinks_set_by_economy_road: Road):
+        if _memberlinks_set_by_economy_road != None:
+            self._memberlinks_set_by_economy_road = _memberlinks_set_by_economy_road
 
     def get_dict(self):
         return {
@@ -53,7 +53,7 @@ class GroupUnit(GroupCore):
             "single_member_id": self.single_member_id,
             "_single_member": self._single_member,
             "_members": self.get_members_dict(),
-            "_memberlinks_set_by_system_road": self._memberlinks_set_by_system_road,
+            "_memberlinks_set_by_economy_road": self._memberlinks_set_by_economy_road,
         }
 
     def set_empty_calendar_credit_debt_to_zero(self):
@@ -157,11 +157,11 @@ def get_from_dict(x_dict: dict):
     groupunits = {}
     for groupunits_dict in x_dict.values():
         try:
-            ex_memberlinks_set_by_system_road = groupunits_dict[
-                "_memberlinks_set_by_system_road"
+            ex_memberlinks_set_by_economy_road = groupunits_dict[
+                "_memberlinks_set_by_economy_road"
             ]
         except KeyError:
-            ex_memberlinks_set_by_system_road = None
+            ex_memberlinks_set_by_economy_road = None
 
         x_group = groupunit_shop(
             name=groupunits_dict["name"],
@@ -169,7 +169,7 @@ def get_from_dict(x_dict: dict):
             _single_member=groupunits_dict["_single_member"],
             single_member_id=groupunits_dict["single_member_id"],
             _members=memberlinks_get_from_dict(x_dict=groupunits_dict["_members"]),
-            _memberlinks_set_by_system_road=ex_memberlinks_set_by_system_road,
+            _memberlinks_set_by_economy_road=ex_memberlinks_set_by_economy_road,
         )
         groupunits[x_group.name] = x_group
     return groupunits
@@ -185,11 +185,11 @@ def groupunit_shop(
     _calendar_debt: float = None,
     _calendar_agenda_credit: float = None,
     _calendar_agenda_debt: float = None,
-    _memberlinks_set_by_system_road: Road = None,
+    _memberlinks_set_by_economy_road: Road = None,
 ) -> GroupUnit:
-    if _single_member and _memberlinks_set_by_system_road != None:
+    if _single_member and _memberlinks_set_by_economy_road != None:
         raise InvalidGroupException(
-            f"_memberlinks_set_by_system_road cannot be '{_memberlinks_set_by_system_road}' for a single_member GroupUnit. It must have no value."
+            f"_memberlinks_set_by_economy_road cannot be '{_memberlinks_set_by_economy_road}' for a single_member GroupUnit. It must have no value."
         )
 
     if _members is None:
@@ -206,7 +206,7 @@ def groupunit_shop(
         _calendar_debt=_calendar_debt,
         _calendar_agenda_credit=_calendar_agenda_credit,
         _calendar_agenda_debt=_calendar_agenda_debt,
-        _memberlinks_set_by_system_road=_memberlinks_set_by_system_road,
+        _memberlinks_set_by_economy_road=_memberlinks_set_by_economy_road,
     )
 
 

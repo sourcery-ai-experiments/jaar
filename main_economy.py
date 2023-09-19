@@ -1,5 +1,5 @@
-# # command to for converting ui form to python file: pyuic5 ui\SystemMainUI.ui -o ui\SystemMainUI.py
-from ui.SystemMainUI import Ui_MainWindow
+# # command to for converting ui form to python file: pyuic5 ui\EconomyMainUI.ui -o ui\EconomyMainUI.py
+from ui.EconomyMainUI import Ui_MainWindow
 from Edit5Issue import Edit5Issue
 from EditMain import EditMainView
 from PyQt5 import QtCore as qtc
@@ -13,14 +13,14 @@ from PyQt5.QtWidgets import (
     QApplication,
     QMainWindow,
 )
-from src.system.system import systemunit_shop
-from src.system.examples.system_env_kit import (
-    create_example_systems_list,
+from src.economy.economy import economyunit_shop
+from src.economy.examples.economy_env_kit import (
+    create_example_economys_list,
     setup_test_example_environment,
-    create_example_system,
-    delete_dir_example_system,
-    rename_example_system,
-    get_test_systems_dir,
+    create_example_economy,
+    delete_dir_example_economy,
+    rename_example_economy,
+    get_test_economys_dir,
 )
 
 from src.calendar.member import get_depotlink_types
@@ -78,10 +78,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         # signals for opening windows
         self.refresh_all_button.clicked.connect(self.refresh_all)
-        self.system_insert_button.clicked.connect(self.system_insert)
-        self.system_load_button.clicked.connect(self.system_load_from_file)
-        self.system_update_button.clicked.connect(self.system_update_name)
-        self.system_delete_button.clicked.connect(self.system_delete)
+        self.economy_insert_button.clicked.connect(self.economy_insert)
+        self.economy_load_button.clicked.connect(self.economy_load_from_file)
+        self.economy_update_button.clicked.connect(self.economy_update_name)
+        self.economy_delete_button.clicked.connect(self.economy_delete)
         self.calendar_insert_button.clicked.connect(self.calendar_insert)
         self.calendar_update_button.clicked.connect(self.calendar_update_name)
         self.calendar_delete_button.clicked.connect(self.calendar_delete)
@@ -114,17 +114,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.depotlinks_table.itemClicked.connect(self.depotlinks_table_select)
         self.five_issue_button.clicked.connect(self.open_edit5issue)
 
-        self.system_x = None
+        self.economy_x = None
         self.actor_x = None
         self.ignore_calendar_x = None
         setup_test_example_environment()
         first_env = "ex5"
-        self.system_x = systemunit_shop(
-            name=first_env, systems_dir=get_test_systems_dir()
+        self.economy_x = economyunit_shop(
+            name=first_env, economys_dir=get_test_economys_dir()
         )
-        self.refresh_system()
-        self.system_name_combo_refresh()
-        self.system_name_combo.setCurrentText(first_env)
+        self.refresh_economy()
+        self.economy_name_combo_refresh()
+        self.economy_name_combo.setCurrentText(first_env)
         self._actor_load(actor_name="ernie")
 
     def save_isol(self):
@@ -133,8 +133,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_actor()
 
     def reload_all_src_calendars(self):
-        if self.system_x != None:
-            self.system_x.reload_all_actors_src_calendarunits()
+        if self.economy_x != None:
+            self.economy_x.reload_all_actors_src_calendarunits()
 
     def set_public_and_reload_srcs(self):
         self.save_output_calendar_to_public()
@@ -143,16 +143,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def save_output_calendar_to_public(self):
         if self.actor_x != None:
             self.actor_x.save_output_calendar_to_public()
-        self.refresh_system()
+        self.refresh_economy()
 
-    def system_load_from_file(self):
-        system_selected = self.system_name_combo.currentText()
-        self.system_x = systemunit_shop(
-            name=system_selected, systems_dir=get_test_systems_dir()
+    def economy_load_from_file(self):
+        economy_selected = self.economy_name_combo.currentText()
+        self.economy_x = economyunit_shop(
+            name=economy_selected, economys_dir=get_test_economys_dir()
         )
-        self.system_x.create_dirs_if_null(in_memory_bank=False)
-        self.system_name.setText(system_selected)
-        self.refresh_system()
+        self.economy_x.create_dirs_if_null(in_memory_bank=False)
+        self.economy_name.setText(economy_selected)
+        self.refresh_economy()
 
     def calendars_table_select(self):
         self.calendar_name.setText(
@@ -172,8 +172,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._actor_load(actor_name=actor_x_name)
 
     def _actor_load(self, actor_name: str):
-        self.system_x.create_actorunit_from_public(name=actor_name)
-        self.actor_x = self.system_x._actorunits.get(actor_name)
+        self.economy_x.create_actorunit_from_public(name=actor_name)
+        self.actor_x = self.economy_x._actorunits.get(actor_name)
         self.actor_name.setText(self.actor_x._admin.name)
         self.refresh_actor()
 
@@ -192,14 +192,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ignore_calendar_owner = self.ignores_table.item(
             self.ignores_table.currentRow(), 0
         ).text()
-        # self.ignore_calendar_x = self.system_x.get_public_calendar(
-        self.ignore_calendar_x = self.system_x.get_calendar_from_ignores_dir(
+        # self.ignore_calendar_x = self.economy_x.get_public_calendar(
+        self.ignore_calendar_x = self.economy_x.get_calendar_from_ignores_dir(
             actor_name=self.actor_x._admin.name, _owner=ignore_calendar_owner
         )
         self.edit_calendar = self.ignore_calendar_x
 
     def ignore_calendar_file_update(self):
-        self.system_x.set_ignore_calendar_file(
+        self.economy_x.set_ignore_calendar_file(
             actor_name=self.actor_x._admin.name, calendar_obj=self.ignore_calendar_x
         )
         self.refresh_actor()
@@ -212,27 +212,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.ignores_table.setHidden(True)
         self.digests_table.setHidden(False)
 
-    def system_insert(self):
-        create_example_system(system_name=self.system_name.text())
-        self.system_name_combo_refresh()
+    def economy_insert(self):
+        create_example_economy(economy_name=self.economy_name.text())
+        self.economy_name_combo_refresh()
 
-    def system_update_name(self):
-        rename_example_system(
-            system_obj=self.system_x, new_name=self.system_name.text()
+    def economy_update_name(self):
+        rename_example_economy(
+            economy_obj=self.economy_x, new_name=self.economy_name.text()
         )
-        self.system_name_combo_refresh()
+        self.economy_name_combo_refresh()
 
-    def system_delete(self):
-        delete_dir_example_system(system_obj=self.system_x)
-        self.system_x = None
-        self.system_name_combo_refresh()
-        self.refresh_system()
+    def economy_delete(self):
+        delete_dir_example_economy(economy_obj=self.economy_x)
+        self.economy_x = None
+        self.economy_name_combo_refresh()
+        self.refresh_economy()
 
     def calendar_insert(self):
-        self.system_x.save_public_calendar(
+        self.economy_x.save_public_calendar(
             calendar_x=CalendarUnit(_owner=self.calendar_name.text())
         )
-        self.refresh_system()
+        self.refresh_economy()
 
     def calendar_update_name(self):
         currently_selected = self.calendars_table.item(
@@ -240,21 +240,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         typed_in = self.calendar_name.text()
         if currently_selected != typed_in:
-            self.system_x.rename_public_calendar(
+            self.economy_x.rename_public_calendar(
                 old_label=currently_selected, new_label=typed_in
             )
-            self.refresh_system()
+            self.refresh_economy()
 
     def calendar_delete(self):
-        self.system_x.del_public_calendar(
+        self.economy_x.del_public_calendar(
             calendar_x_label=self.calendars_table.item(
                 self.calendars_table.currentRow(), 0
             ).text()
         )
-        self.refresh_system()
+        self.refresh_economy()
 
     def actor_insert(self):
-        self.system_x.create_new_actorunit(actor_name=self.actor_name.text())
+        self.economy_x.create_new_actorunit(actor_name=self.actor_name.text())
         self.refresh_actors()
 
     def actor_update_name(self):
@@ -263,13 +263,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         typed_in = self.actor_name.text()
         if currently_selected != typed_in:
-            self.system_x.rename_actorunit(
+            self.economy_x.rename_actorunit(
                 old_label=currently_selected, new_label=typed_in
             )
             self.refresh_actors()
 
     def actor_delete(self):
-        self.system_x.del_actor_dir(
+        self.economy_x.del_actor_dir(
             actor_name=self.actors_table.item(self.actors_table.currentRow(), 0).text()
         )
         self.refresh_actors()
@@ -289,27 +289,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 depotlink_type=self.depotlink_type_combo.currentText(),
                 depotlink_weight=self.depotlink_weight.text(),
             )
-            self.system_x.save_actor_file(actor_name=self.actor_x._admin.name)
+            self.economy_x.save_actor_file(actor_name=self.actor_x._admin.name)
         self.refresh_actor()
 
     def depotlink_update(self):
         actor_name_x = self.actor_x._admin.name
-        self.system_x.update_depotlink(
+        self.economy_x.update_depotlink(
             actor_name=actor_name_x,
             membername=self.depotlink_name.text(),
             depotlink_type=self.depotlink_type_combo.currentText(),
             creditor_weight=self.depotlink_weight.text(),
             debtor_weight=self.depotlink_weight.text(),
         )
-        self.system_x.save_actor_file(actor_name=actor_name_x)
+        self.economy_x.save_actor_file(actor_name=actor_name_x)
         self.refresh_actor()
 
     def depotlink_delete(self):
         actor_name_x = self.actor_x._admin.name
-        self.system_x.del_depotlink(
+        self.economy_x.del_depotlink(
             actor_name=actor_name_x, calendarunit_owner=self.depotlink_name.text()
         )
-        self.system_x.save_actor_file(actor_name=actor_name_x)
+        self.economy_x.save_actor_file(actor_name=actor_name_x)
         self.refresh_actor()
 
     def get_calendar_owner_list(self):
@@ -323,9 +323,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_actor_name_list(self):
         actors_owner_list = []
-        if self.system_x != None:
+        if self.economy_x != None:
             actors_owner_list.extend(
-                [actor_dir] for actor_dir in self.system_x.get_actor_dir_paths_list()
+                [actor_dir] for actor_dir in self.economy_x.get_actor_dir_paths_list()
             )
         return actors_owner_list
 
@@ -447,7 +447,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return x_list
 
     def refresh_all(self):
-        self.refresh_system()
+        self.refresh_economy()
 
     def _sub_refresh_actors_table(self):
         self.refresh_x(self.actors_table, ["Actors Table"], self.get_actor_name_list())
@@ -562,9 +562,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             column_width=[50, 200, 300],
         )
 
-    def system_name_combo_refresh(self):
-        self.system_name_combo.clear()
-        self.system_name_combo.addItems(create_example_systems_list())
+    def economy_name_combo_refresh(self):
+        self.economy_name_combo.clear()
+        self.economy_name_combo.addItems(create_example_economys_list())
 
     def refresh_actors(self):
         self.actor_x = None
@@ -586,7 +586,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._sub_refresh_p_acptfacts_table()
         self._sub_refresh_p_agenda_table()
 
-    def refresh_system(self):
+    def refresh_economy(self):
         self.refresh_x(
             self.calendars_table, ["Calendars Table"], self.get_calendar_owner_list()
         )

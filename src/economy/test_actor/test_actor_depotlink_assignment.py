@@ -1,6 +1,6 @@
-from src.system.actor import actorunit_shop
-from src.system.examples.example_actors import get_calendar_assignment_laundry_example1
-from src.system.examples.actor_env_kit import (
+from src.economy.actor import actorunit_shop
+from src.economy.examples.example_actors import get_calendar_assignment_laundry_example1
+from src.economy.examples.actor_env_kit import (
     actor_dir_setup_cleanup,
     get_temp_actor_dir,
 )

@@ -1,17 +1,17 @@
-from src.system.actor import actorunit_shop
-from src.system.examples.example_actors import (
+from src.economy.actor import actorunit_shop
+from src.economy.examples.example_actors import (
     get_2node_calendar,
     get_calendar_2CleanNodesRandomWeights as get_cal2nodes,
     get_calendar_3CleanNodesRandomWeights as get_cal3nodes,
     get_calendar_assignment_laundry_example1 as get_america_assign_ex,
 )
-from src.system.examples.actor_env_kit import (
+from src.economy.examples.actor_env_kit import (
     actor_dir_setup_cleanup,
     get_temp_actor_dir,
     create_calendar_file,
 )
-from src.system.examples.system_env_kit import get_temp_env_name
-from src.system.system import systemunit_shop
+from src.economy.examples.economy_env_kit import get_temp_env_name
+from src.economy.economy import economyunit_shop
 from os import path as os_path
 from pytest import raises as pytest_raises
 from src.calendar.calendar import CalendarUnit, get_from_json as calendar_get_from_json
@@ -244,8 +244,8 @@ def test_actorunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
 ):
     # GIVEN
     env_dir = get_temp_actor_dir()
-    system_name = get_temp_env_name()
-    sx = systemunit_shop(name=system_name, systems_dir=env_dir)
+    economy_name = get_temp_env_name()
+    sx = economyunit_shop(name=economy_name, economys_dir=env_dir)
     yao_text = "Yao"
     sx.create_new_actorunit(actor_name=yao_text)
     yao_calendar = sx.get_actor_obj(name=yao_text)

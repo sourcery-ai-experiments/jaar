@@ -5,7 +5,7 @@ from src.calendar.x_func import delete_dir, save_file as x_func_save_file
 
 
 def get_temp_actor_dir():
-    return "src/system/examples/ex_env"
+    return "src/economy/examples/ex_env"
 
 
 @pytest_fixture()

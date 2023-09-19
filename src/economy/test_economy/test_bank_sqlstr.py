@@ -1,13 +1,13 @@
-from src.system.system import systemunit_shop
+from src.economy.economy import economyunit_shop
 from src.calendar.calendar import CalendarUnit
 from src.calendar.member import memberunit_shop
 from src.calendar.road import get_global_root_label as root_label
-from src.system.examples.system_env_kit import (
+from src.economy.examples.economy_env_kit import (
     get_temp_env_name,
-    get_test_systems_dir,
+    get_test_economys_dir,
     env_dir_setup_cleanup,
 )
-from src.system.bank_sqlstr import (
+from src.economy.bank_sqlstr import (
     get_river_flow_table_insert_sqlstr as river_flow_insert,
     get_river_flow_dict,
     get_river_bucket_table_insert_sqlstr,
@@ -34,20 +34,22 @@ from src.system.bank_sqlstr import (
     get_groupunit_catalog_dict,
     get_table_count_sqlstr,
 )
-from src.system.examples.example_actors import (
+from src.economy.examples.example_actors import (
     get_3node_calendar,
     get_6node_calendar,
     get_calendar_3CleanNodesRandomWeights,
 )
-from src.system.y_func import get_single_result_back
+from src.economy.y_func import get_single_result_back
 
 
-def test_system_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_economy_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example system with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
 
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -163,9 +165,11 @@ def test_RiverFlowUnit_flow_returned_WorksCorrectly():
 
 
 def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cleanup):
-    # GIVEN Create example system with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
 
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -234,9 +238,11 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
 def test_river_flow_insert_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example system with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
 
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -333,9 +339,11 @@ def test_RiverLedgerUnit_Exists():
 def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example system with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
 
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -429,9 +437,11 @@ def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
 def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example system with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
 
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -470,9 +480,11 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
 def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example system with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
 
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -556,11 +568,13 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     #     assert value.curr_close in [0.1, 1.0]
 
 
-def test_system_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_economy_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -581,8 +595,10 @@ def test_system_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
 
 def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup):
-    # GIVEN Create example system with 4 Actors, each with 3 Memberunits = 12 ledger rows
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -612,9 +628,11 @@ def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup
         assert get_idea_catalog_table_count(bank_conn, sal_text) == 5
 
 
-def test_system_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
+def test_economy_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     # GIVEN
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -650,12 +668,14 @@ def test_system_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     assert len(get_idea_catalog_dict(sx.get_bank_conn(), ex_road)) == 4
 
 
-def test_system_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_economy_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example system with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
 
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -681,9 +701,11 @@ def test_system_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable
 def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example system with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
 
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -738,12 +760,14 @@ def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
         assert get_acptfact_catalog_table_count(bank_conn, sal_text) == 1
 
 
-def test_system_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_economy_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example system with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
 
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -755,7 +779,7 @@ def test_system_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTabl
     bob_group_x = GroupUnitCatalog(
         calendar_name=bob_text,
         groupunit_name="US Dollar",
-        memberlinks_set_by_system_road=f"{root_label()},USA",
+        memberlinks_set_by_economy_road=f"{root_label()},USA",
     )
     bob_group_sqlstr = get_groupunit_catalog_table_insert_sqlstr(bob_group_x)
     with sx.get_bank_conn() as bank_conn:
@@ -770,7 +794,9 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"

@@ -1,10 +1,10 @@
-from src.system.actor import actorunit_shop
+from src.economy.actor import actorunit_shop
 from src.calendar.calendar import CalendarUnit
 from src.calendar.examples.example_calendars import (
     get_calendar_with_4_levels as example_calendars_get_calendar_with_4_levels,
 )
-import src.system.examples.example_actors as example_actors
-from src.system.examples.actor_env_kit import (
+import src.economy.examples.example_actors as example_actors
+from src.economy.examples.actor_env_kit import (
     actor_dir_setup_cleanup,
     get_temp_actor_dir,
 )

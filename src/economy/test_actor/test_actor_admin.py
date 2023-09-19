@@ -1,6 +1,6 @@
-from src.system.actor import ActorAdmin, actoradmin_shop
-import src.system.examples.example_actors as example_actors
-from src.system.examples.actor_env_kit import (
+from src.economy.actor import ActorAdmin, actoradmin_shop
+import src.economy.examples.example_actors as example_actors
+from src.economy.examples.actor_env_kit import (
     get_temp_actor_dir,
     actor_dir_setup_cleanup,
 )

@@ -1,7 +1,7 @@
 from src.calendar.calendar import CalendarUnit
 from src.calendar.member import MemberUnit
 from src.calendar.road import get_road_without_root_node
-from src.system.y_func import sqlite_bool, sqlite_null
+from src.economy.y_func import sqlite_bool, sqlite_null
 from src.calendar.road import Road
 from dataclasses import dataclass
 from sqlite3 import Connection
@@ -574,7 +574,7 @@ def get_groupunit_catalog_table_create_sqlstr() -> str:
         CREATE TABLE IF NOT EXISTS groupunit_catalog (
           calendar_name VARCHAR(255) NOT NULL
         , groupunit_name VARCHAR(1000) NOT NULL
-        , memberlinks_set_by_system_road VARCHAR(1000) NULL
+        , memberlinks_set_by_economy_road VARCHAR(1000) NULL
         )
         ;
     """
@@ -596,7 +596,7 @@ def get_groupunit_catalog_table_count(db_conn: Connection, calendar_name: str) -
 class GroupUnitCatalog:
     calendar_name: str
     groupunit_name: str
-    memberlinks_set_by_system_road: str
+    memberlinks_set_by_economy_road: str
 
 
 def get_groupunit_catalog_table_insert_sqlstr(
@@ -606,12 +606,12 @@ def get_groupunit_catalog_table_insert_sqlstr(
         INSERT INTO groupunit_catalog (
           calendar_name
         , groupunit_name
-        , memberlinks_set_by_system_road
+        , memberlinks_set_by_economy_road
         )
         VALUES (
           '{groupunit_catalog.calendar_name}'
         , '{groupunit_catalog.groupunit_name}'
-        , '{groupunit_catalog.memberlinks_set_by_system_road}'
+        , '{groupunit_catalog.memberlinks_set_by_economy_road}'
         )
         ;
     """
@@ -622,7 +622,7 @@ def get_groupunit_catalog_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog
         SELECT 
           calendar_name
         , groupunit_name
-        , memberlinks_set_by_system_road
+        , memberlinks_set_by_economy_road
         FROM groupunit_catalog
         ;
     """
@@ -633,7 +633,7 @@ def get_groupunit_catalog_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog
         groupunit_catalog_x = GroupUnitCatalog(
             calendar_name=row[0],
             groupunit_name=row[1],
-            memberlinks_set_by_system_road=row[2],
+            memberlinks_set_by_economy_road=row[2],
         )
         dict_key = (
             f"{groupunit_catalog_x.calendar_name} {groupunit_catalog_x.groupunit_name}"

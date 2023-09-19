@@ -1,16 +1,18 @@
-from src.system.system import systemunit_shop
-from src.system.examples.system_env_kit import (
+from src.economy.economy import economyunit_shop
+from src.economy.examples.economy_env_kit import (
     get_temp_env_name,
     env_dir_setup_cleanup,
-    get_test_systems_dir,
+    get_test_economys_dir,
 )
 from src.calendar.road import get_global_root_label as root_label
 from src.calendar.calendar import CalendarUnit
-from src.system.examples.example_actors import get_calendar_assignment_laundry_example1
+from src.economy.examples.example_actors import get_calendar_assignment_laundry_example1
 
 
-def test_system_ChangingOneActorsFactChangesAnotherAgenda(env_dir_setup_cleanup):
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+def test_economy_ChangingOneActorsFactChangesAnotherAgenda(env_dir_setup_cleanup):
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     # GIVEN
@@ -71,8 +73,10 @@ def test_system_ChangingOneActorsFactChangesAnotherAgenda(env_dir_setup_cleanup)
     assert new_joachim_cx.get_agenda_items()[0].get_road() == laundry_task_road
 
 
-def test_system_create_task_CorrectlyCreatesTask(env_dir_setup_cleanup):
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+def test_economy_create_task_CorrectlyCreatesTask(env_dir_setup_cleanup):
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     america_text = "America"

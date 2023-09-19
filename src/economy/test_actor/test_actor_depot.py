@@ -1,5 +1,5 @@
-import src.system.examples.example_actors as actor_examples
-from src.system.examples.actor_env_kit import (
+import src.economy.examples.example_actors as actor_examples
+from src.economy.examples.actor_env_kit import (
     actor_dir_setup_cleanup,
     get_temp_actor_dir,
 )

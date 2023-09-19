@@ -1,24 +1,26 @@
-from src.system.system import systemunit_shop
+from src.economy.economy import economyunit_shop
 from src.calendar.examples.example_calendars import (
     calendar_v002 as ex_cxs_calendar_v002,
 )
-from src.system.examples.example_actors import (
+from src.economy.examples.example_actors import (
     get_6node_calendar as example_actors_get_6node_calendar,
     get_calendar_2CleanNodesRandomWeights,
     get_calendar_3CleanNodesRandomWeights,
 )
-from src.system.examples.system_env_kit import (
+from src.economy.examples.economy_env_kit import (
     get_temp_env_name,
-    get_test_systems_dir,
+    get_test_economys_dir,
     env_dir_setup_cleanup,
 )
 
 
-def test_system_get_output_calendar_ReturnsCorrectCalendarObjScenario1(
+def test_economy_get_output_calendar_ReturnsCorrectCalendarObjScenario1(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
     input_cx = example_actors_get_6node_calendar()
     sx.save_public_calendar(input_cx)
@@ -86,11 +88,13 @@ def test_system_get_output_calendar_ReturnsCorrectCalendarObjScenario1(
     assert output_cx._idearoot == input_cx._idearoot
 
 
-def test_system_get_output_calendar_ReturnsCorrectCalendarObjScenario2(
+def test_economy_get_output_calendar_ReturnsCorrectCalendarObjScenario2(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = systemunit_shop(name=get_temp_env_name(), systems_dir=get_test_systems_dir())
+    sx = economyunit_shop(
+        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
     cx1 = example_actors_get_6node_calendar()
     cx2 = ex_cxs_calendar_v002()
@@ -145,9 +149,9 @@ def test_actorunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_test_systems_dir()
-    system_name = get_temp_env_name()
-    sx = systemunit_shop(name=system_name, systems_dir=env_dir)
+    env_dir = get_test_economys_dir()
+    economy_name = get_temp_env_name()
+    sx = economyunit_shop(name=economy_name, economys_dir=env_dir)
     sx.create_dirs_if_null(in_memory_bank=True)
     # ux = actorunit_shop(name=actor1_text, env_dir=env_dir)
 

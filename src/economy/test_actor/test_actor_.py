@@ -1,8 +1,8 @@
-from src.system.actor import actorunit_shop
+from src.economy.actor import actorunit_shop
 from src.calendar.calendar import CalendarUnit
 from src.calendar.idea import IdeaRoot
-import src.system.examples.example_actors as example_actors
-from src.system.examples.actor_env_kit import (
+import src.economy.examples.example_actors as example_actors
+from src.economy.examples.actor_env_kit import (
     actor_dir_setup_cleanup,
     get_temp_actor_dir,
     create_calendar_file,
@@ -38,7 +38,7 @@ def test_actorunit_auto_output_to_public_SavesCalendarToPublicDirWhenTrue(
     public_file_name = f"{tim_text}.json"
     public_file_path = f"{get_temp_actor_dir()}/calendars/{public_file_name}"
     print(f"{public_file_path=}")
-    # public_file_path = f"src/system/examples/ex_env/calendars/{public_file_name}"
+    # public_file_path = f"src/economy/examples/ex_env/calendars/{public_file_name}"
     ux = actorunit_shop(tim_text, env_dir, _auto_output_to_public=True)
     ux.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
@@ -59,7 +59,7 @@ def test_actorunit_auto_output_to_public_DoesNotSaveCalendarToPublicDirWhenFalse
     public_file_name = f"{tim_text}.json"
     public_file_path = f"{get_temp_actor_dir()}/calendars/{public_file_name}"
     print(f"{public_file_path=}")
-    # public_file_path = f"src/system/examples/ex_env/calendars/{public_file_name}"
+    # public_file_path = f"src/economy/examples/ex_env/calendars/{public_file_name}"
     ux = actorunit_shop(tim_text, env_dir, _auto_output_to_public=False)
     ux.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False

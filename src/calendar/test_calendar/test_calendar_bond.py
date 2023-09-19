@@ -22,7 +22,7 @@ from src.calendar.x_func import (
     save_file as x_func_save_file,
     open_file as x_func_open_file,
 )
-from src.system.examples.system_env_kit import (
+from src.economy.examples.economy_env_kit import (
     env_dir_setup_cleanup,
     get_temp_env_dir,
 )

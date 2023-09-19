@@ -7,7 +7,7 @@ from src.calendar.examples.example_calendars import (
 from src.calendar.calendar import CalendarUnit, get_intersection_of_members
 from src.calendar.idea import IdeaKid
 from pytest import raises as pytest_raises
-from src.system.bank_sqlstr import RiverTmemberUnit
+from src.economy.bank_sqlstr import RiverTmemberUnit
 
 
 def test_calendar_members_exists():
