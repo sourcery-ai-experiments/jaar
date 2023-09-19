@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QTableWidgetItem as qtw1
 from EditIdeaUnit import EditIdeaUnit
 from EditMember import EditMember
 from src.pyqt5_kit.pyqt_func import (
-    calendar_importance_diplay,
+    contract_importance_diplay,
     get_pyqttree,
     str2float as pyqt_func_str2float,
     num2str as pyqt_func_num2str,
@@ -33,7 +33,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.open_groupedit_button.clicked.connect(self.open_edit_member)
 
         # self.acptfacts_table.itemClicked.connect(self.acptfact_base_combo_set)
-        self.acptfacts_table.setObjectName("Calendar AcptFacts")
+        self.acptfacts_table.setObjectName("Contract AcptFacts")
         self.acptfacts_table.setColumnWidth(0, 300)
         self.acptfacts_table.setColumnWidth(1, 300)
         self.acptfacts_table.setColumnWidth(2, 30)
@@ -58,10 +58,10 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.acptfact_update_button.clicked.connect(self.acptfact_set_action)
         self.acptfact_delete_button.clicked.connect(self.acptfact_del_action)
 
-        self.calendar_x = None
+        self.contract_x = None
 
     def acptfact_set_action(self):
-        self.calendar_x.set_acptfact(
+        self.contract_x.set_acptfact(
             base=self.acptfact_base_update_combo.currentText(),
             pick=self.acptfact_pick_update_combo.currentText(),
             open=pyqt_func_str2float(self.acptfact_open.text()),
@@ -70,7 +70,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.refresh_all()
 
     def acptfact_del_action(self):
-        self.calendar_x.del_acptfact(base=self.acptfact_base_update_combo.currentText())
+        self.contract_x.del_acptfact(base=self.acptfact_base_update_combo.currentText())
         self.refresh_all()
 
     def get_acptfacts_list(self):
@@ -78,14 +78,14 @@ class EditMainView(qtw.QWidget, Ui_Form):
         if self.display_problem_acptfacts_cb.checkState() == 2:
             x_list.extend(
                 acptfact
-                for acptfact in self.calendar_x._idearoot._acptfactunits.values()
+                for acptfact in self.contract_x._idearoot._acptfactunits.values()
                 if (
-                    self.calendar_x.get_idea_kid(road=acptfact.base)._problem_bool
-                    or self.calendar_x.get_idea_kid(road=acptfact.pick)._problem_bool
+                    self.contract_x.get_idea_kid(road=acptfact.base)._problem_bool
+                    or self.contract_x.get_idea_kid(road=acptfact.pick)._problem_bool
                 )
             )
         else:
-            x_list = self.calendar_x._idearoot._acptfactunits.values()
+            x_list = self.contract_x._idearoot._acptfactunits.values()
         return x_list
 
     def acptfacts_table_load(self):
@@ -93,14 +93,14 @@ class EditMainView(qtw.QWidget, Ui_Form):
 
         row = 0
         for acptfact in self.get_acptfacts_list():
-            base_text = acptfact.base.replace(f"{self.calendar_x._owner}", "")
+            base_text = acptfact.base.replace(f"{self.contract_x._owner}", "")
             base_text = base_text[1:]
             acptfact_text = acptfact.pick.replace(acptfact.base, "")
             acptfact_text = acptfact_text[1:]
             if acptfact.open is None:
                 acptfact_text = f"{acptfact_text}"
             elif base_text == "time,jajatime":
-                acptfact_text = f"{self.calendar_x.get_jajatime_legible_one_time_event(acptfact.open)}-{self.calendar_x.get_jajatime_repeating_legible_text(acptfact.nigh)}"
+                acptfact_text = f"{self.contract_x.get_jajatime_legible_one_time_event(acptfact.open)}-{self.contract_x.get_jajatime_repeating_legible_text(acptfact.nigh)}"
             else:
                 acptfact_text = (
                     f"{acptfact_text} Open-Nigh {acptfact.open}-{acptfact.nigh}"
@@ -113,8 +113,8 @@ class EditMainView(qtw.QWidget, Ui_Form):
             self.acptfacts_table.setItem(row, 5, qtw1(pyqt_func_num2str(acptfact.nigh)))
             row += 1
 
-        for base, count in self.calendar_x.get_missing_acptfact_bases().items():
-            base_text = base.replace(f"{self.calendar_x._owner}", "")
+        for base, count in self.contract_x.get_missing_acptfact_bases().items():
+            base_text = base.replace(f"{self.contract_x._owner}", "")
             base_text = base_text[1:]
 
             base_lecture_text = f"{base_text} ({count} nodes)"
@@ -142,7 +142,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
     def acptfact_table_select(self):
         self.acptfact_base_update_combo.clear()
         self.acptfact_base_update_combo.addItems(
-            self.calendar_x.get_idea_tree_ordered_road_list()
+            self.contract_x.get_idea_tree_ordered_road_list()
         )
         self.acptfact_base_update_combo.setCurrentText(
             self.acptfacts_table.item(self.acptfacts_table.currentRow(), 2).text()
@@ -170,7 +170,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
     def acptfact_pick_combo_load(self):
         self.acptfact_pick_update_combo.clear()
         self.acptfact_pick_update_combo.addItems(
-            self.calendar_x.get_heir_road_list(
+            self.contract_x.get_heir_road_list(
                 self.acptfact_base_update_combo.currentText()
             )
         )
@@ -184,14 +184,14 @@ class EditMainView(qtw.QWidget, Ui_Form):
         ):
             raise EditMainViewException("No table selection for acptfact update.")
         acptfact_update_combo_text = self.acptfact_update_combo.currentText()
-        self.calendar_x._idearoot._acptfactunits[
+        self.contract_x._idearoot._acptfactunits[
             base_road
         ].acptfact = acptfact_update_combo_text
         self.base_road = None
         self.refresh_all
 
     def refresh_all(self):
-        if self.calendar_x != None:
+        if self.contract_x != None:
             self.refresh_member_list()
             self.refresh_idea_tree()
             self.acptfacts_table_load()
@@ -203,42 +203,42 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.member_list.setColumnWidth(0, 170)
         self.member_list.setColumnWidth(1, 70)
         self.member_list.setHorizontalHeaderLabels(["Name", "LW Force"])
-        members_list = list(self.calendar_x._members.values())
-        members_list.sort(key=lambda x: x._calendar_credit, reverse=True)
+        members_list = list(self.contract_x._members.values())
+        members_list.sort(key=lambda x: x._contract_credit, reverse=True)
 
         for row, member in enumerate(members_list, start=1):
             groups_count = 0
-            for group in self.calendar_x._groups.values():
+            for group in self.contract_x._groups.values():
                 for memberlink in group._members.values():
                     if memberlink.name == member.name:
                         groups_count += 1
 
-            qt_calendar_credit = qtw.QTableWidgetItem(
-                calendar_importance_diplay(member._calendar_credit)
+            qt_contract_credit = qtw.QTableWidgetItem(
+                contract_importance_diplay(member._contract_credit)
             )
             qt_group = qtw.QTableWidgetItem(f"{groups_count}")
             self.member_list.setRowCount(row)
             self.member_list.setItem(row - 1, 0, qtw.QTableWidgetItem(member.name))
-            self.member_list.setItem(row - 1, 1, qt_calendar_credit)
+            self.member_list.setItem(row - 1, 1, qt_contract_credit)
 
     def open_editideaunit(self):
         self.EditIdeaunit = EditIdeaUnit()
-        self.EditIdeaunit.calendar_x = self.calendar_x
+        self.EditIdeaunit.contract_x = self.contract_x
         self.EditIdeaunit.refresh_tree()
         self.EditIdeaunit.show()
 
     def open_edit_member(self):
         self.edit_member = EditMember()
-        self.edit_member.calendar_x = self.calendar_x
+        self.edit_member.contract_x = self.contract_x
         self.edit_member.refresh_all()
         self.edit_member.show()
 
     def refresh_idea_tree(self):
-        tree_root = get_pyqttree(idearoot=self.calendar_x._idearoot)
+        tree_root = get_pyqttree(idearoot=self.contract_x._idearoot)
         self.baseideaunit.clear()
         self.baseideaunit.insertTopLevelItems(0, [tree_root])
 
-        # expand to depth set by calendar
+        # expand to depth set by contract
         def yo_tree_setExpanded(root):
             child_count = root.childCount()
             for i in range(child_count):

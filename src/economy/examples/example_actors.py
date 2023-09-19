@@ -1,181 +1,181 @@
-from src.calendar.calendar import CalendarUnit
-from src.calendar.idea import IdeaKid
-from src.calendar.required_assign import assigned_unit_shop
+from src.contract.contract import ContractUnit
+from src.contract.idea import IdeaKid
+from src.contract.required_assign import assigned_unit_shop
 from src.economy.actor import actorunit_shop, ActorUnit
-from src.calendar.road import Road, get_global_root_label as root_label
+from src.contract.road import Road, get_global_root_label as root_label
 from random import randrange
 
 
-def get_1node_calendar() -> CalendarUnit:
+def get_1node_contract() -> ContractUnit:
     a_text = "A"
-    calendar_x = CalendarUnit(_owner=a_text)
-    calendar_x.set_calendar_metrics()
-    return calendar_x
+    contract_x = ContractUnit(_owner=a_text)
+    contract_x.set_contract_metrics()
+    return contract_x
 
 
-def get_Jnode2node_calendar() -> CalendarUnit:
+def get_Jnode2node_contract() -> ContractUnit:
     owner_text = "J"
-    calendar_x = CalendarUnit(_owner=owner_text)
+    contract_x = ContractUnit(_owner=owner_text)
     a_text = "A"
     idea_a = IdeaKid(_label=a_text)
-    calendar_x.add_idea(idea_kid=idea_a, walk=root_label())
-    calendar_x.set_calendar_metrics()
-    return calendar_x
+    contract_x.add_idea(idea_kid=idea_a, walk=root_label())
+    contract_x.set_contract_metrics()
+    return contract_x
 
 
-def get_2node_calendar() -> CalendarUnit:
+def get_2node_contract() -> ContractUnit:
     owner_text = "A"
     b_text = "B"
-    calendar_x = CalendarUnit(_owner=owner_text)
+    contract_x = ContractUnit(_owner=owner_text)
     idea_b = IdeaKid(_label=b_text)
-    calendar_x.add_idea(idea_kid=idea_b, walk=root_label())
-    calendar_x.set_calendar_metrics()
-    return calendar_x
+    contract_x.add_idea(idea_kid=idea_b, walk=root_label())
+    contract_x.set_contract_metrics()
+    return contract_x
 
 
-def get_3node_calendar() -> CalendarUnit:
+def get_3node_contract() -> ContractUnit:
     a_text = "A"
     a_road = Road(a_text)
-    calendar_x = CalendarUnit(_owner=a_text)
+    contract_x = ContractUnit(_owner=a_text)
     b_text = "B"
     idea_b = IdeaKid(_label=b_text)
     c_text = "C"
     idea_c = IdeaKid(_label=c_text)
-    calendar_x.add_idea(idea_kid=idea_b, walk=a_road)
-    calendar_x.add_idea(idea_kid=idea_c, walk=a_road)
-    calendar_x.set_calendar_metrics()
-    return calendar_x
+    contract_x.add_idea(idea_kid=idea_b, walk=a_road)
+    contract_x.add_idea(idea_kid=idea_c, walk=a_road)
+    contract_x.set_contract_metrics()
+    return contract_x
 
 
-def get_3node_D_E_F_calendar() -> CalendarUnit:
+def get_3node_D_E_F_contract() -> ContractUnit:
     d_text = "D"
     d_road = Road(d_text)
-    calendar_x = CalendarUnit(_owner=d_text)
+    contract_x = ContractUnit(_owner=d_text)
     b_text = "E"
     idea_b = IdeaKid(_label=b_text)
     c_text = "F"
     idea_c = IdeaKid(_label=c_text)
-    calendar_x.add_idea(idea_kid=idea_b, walk=d_road)
-    calendar_x.add_idea(idea_kid=idea_c, walk=d_road)
-    calendar_x.set_calendar_metrics()
-    return calendar_x
+    contract_x.add_idea(idea_kid=idea_b, walk=d_road)
+    contract_x.add_idea(idea_kid=idea_c, walk=d_road)
+    contract_x.set_contract_metrics()
+    return contract_x
 
 
-def get_6node_calendar() -> CalendarUnit:
-    calendar_x = CalendarUnit(_owner="A")
+def get_6node_contract() -> ContractUnit:
+    contract_x = ContractUnit(_owner="A")
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
     idea_d = IdeaKid(_label="D")
     idea_e = IdeaKid(_label="E")
     idea_f = IdeaKid(_label="F")
-    calendar_x.add_idea(idea_kid=idea_b, walk="A")
-    calendar_x.add_idea(idea_kid=idea_c, walk="A")
-    calendar_x.add_idea(idea_kid=idea_d, walk="A,C")
-    calendar_x.add_idea(idea_kid=idea_e, walk="A,C")
-    calendar_x.add_idea(idea_kid=idea_f, walk="A,C")
-    calendar_x.set_calendar_metrics()
-    return calendar_x
+    contract_x.add_idea(idea_kid=idea_b, walk="A")
+    contract_x.add_idea(idea_kid=idea_c, walk="A")
+    contract_x.add_idea(idea_kid=idea_d, walk="A,C")
+    contract_x.add_idea(idea_kid=idea_e, walk="A,C")
+    contract_x.add_idea(idea_kid=idea_f, walk="A,C")
+    contract_x.set_contract_metrics()
+    return contract_x
 
 
-def get_7nodeInsertH_calendar() -> CalendarUnit:
-    calendar_x = CalendarUnit(_owner="A")
+def get_7nodeInsertH_contract() -> ContractUnit:
+    contract_x = ContractUnit(_owner="A")
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
     idea_h = IdeaKid(_label="H")
     idea_d = IdeaKid(_label="D")
     idea_e = IdeaKid(_label="E")
     idea_f = IdeaKid(_label="F")
-    calendar_x.add_idea(idea_kid=idea_b, walk="A")
-    calendar_x.add_idea(idea_kid=idea_c, walk="A")
-    calendar_x.add_idea(idea_kid=idea_e, walk="A,C")
-    calendar_x.add_idea(idea_kid=idea_f, walk="A,C")
-    calendar_x.add_idea(idea_kid=idea_h, walk="A,C")
-    calendar_x.add_idea(idea_kid=idea_d, walk="A,C,H")
-    calendar_x.set_calendar_metrics()
-    return calendar_x
+    contract_x.add_idea(idea_kid=idea_b, walk="A")
+    contract_x.add_idea(idea_kid=idea_c, walk="A")
+    contract_x.add_idea(idea_kid=idea_e, walk="A,C")
+    contract_x.add_idea(idea_kid=idea_f, walk="A,C")
+    contract_x.add_idea(idea_kid=idea_h, walk="A,C")
+    contract_x.add_idea(idea_kid=idea_d, walk="A,C,H")
+    contract_x.set_contract_metrics()
+    return contract_x
 
 
-def get_5nodeHG_calendar() -> CalendarUnit:
-    calendar_x = CalendarUnit(_owner="A")
+def get_5nodeHG_contract() -> ContractUnit:
+    contract_x = ContractUnit(_owner="A")
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
     idea_h = IdeaKid(_label="H")
     idea_g = IdeaKid(_label="G")
-    calendar_x.add_idea(idea_kid=idea_b, walk="A")
-    calendar_x.add_idea(idea_kid=idea_c, walk="A")
-    calendar_x.add_idea(idea_kid=idea_h, walk="A,C")
-    calendar_x.add_idea(idea_kid=idea_g, walk="A,C")
-    calendar_x.set_calendar_metrics()
-    return calendar_x
+    contract_x.add_idea(idea_kid=idea_b, walk="A")
+    contract_x.add_idea(idea_kid=idea_c, walk="A")
+    contract_x.add_idea(idea_kid=idea_h, walk="A,C")
+    contract_x.add_idea(idea_kid=idea_g, walk="A,C")
+    contract_x.set_contract_metrics()
+    return contract_x
 
 
-def get_7nodeJRoot_calendar() -> CalendarUnit:
-    calendar_x = CalendarUnit(_owner="J")
+def get_7nodeJRoot_contract() -> ContractUnit:
+    contract_x = ContractUnit(_owner="J")
     idea_a = IdeaKid(_label="A")
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
     idea_d = IdeaKid(_label="D")
     idea_e = IdeaKid(_label="E")
     idea_f = IdeaKid(_label="F")
-    calendar_x.add_idea(idea_kid=idea_a, walk="J")
-    calendar_x.add_idea(idea_kid=idea_b, walk="J,A")
-    calendar_x.add_idea(idea_kid=idea_c, walk="J,A")
-    calendar_x.add_idea(idea_kid=idea_d, walk="J,A,C")
-    calendar_x.add_idea(idea_kid=idea_e, walk="J,A,C")
-    calendar_x.add_idea(idea_kid=idea_f, walk="J,A,C")
-    calendar_x.set_calendar_metrics()
-    return calendar_x
+    contract_x.add_idea(idea_kid=idea_a, walk="J")
+    contract_x.add_idea(idea_kid=idea_b, walk="J,A")
+    contract_x.add_idea(idea_kid=idea_c, walk="J,A")
+    contract_x.add_idea(idea_kid=idea_d, walk="J,A,C")
+    contract_x.add_idea(idea_kid=idea_e, walk="J,A,C")
+    contract_x.add_idea(idea_kid=idea_f, walk="J,A,C")
+    contract_x.set_contract_metrics()
+    return contract_x
 
 
-def get_7nodeJRootWithH_calendar() -> CalendarUnit:
-    calendar_x = CalendarUnit(_owner="J")
+def get_7nodeJRootWithH_contract() -> ContractUnit:
+    contract_x = ContractUnit(_owner="J")
     idea_a = IdeaKid(_label="A")
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
     idea_e = IdeaKid(_label="E")
     idea_f = IdeaKid(_label="F")
     idea_h = IdeaKid(_label="H")
-    calendar_x.add_idea(idea_kid=idea_a, walk="J")
-    calendar_x.add_idea(idea_kid=idea_b, walk="J,A")
-    calendar_x.add_idea(idea_kid=idea_c, walk="J,A")
-    calendar_x.add_idea(idea_kid=idea_e, walk="J,A,C")
-    calendar_x.add_idea(idea_kid=idea_f, walk="J,A,C")
-    calendar_x.add_idea(idea_kid=idea_h, walk="J,A,C")
-    calendar_x.set_calendar_metrics()
-    return calendar_x
+    contract_x.add_idea(idea_kid=idea_a, walk="J")
+    contract_x.add_idea(idea_kid=idea_b, walk="J,A")
+    contract_x.add_idea(idea_kid=idea_c, walk="J,A")
+    contract_x.add_idea(idea_kid=idea_e, walk="J,A,C")
+    contract_x.add_idea(idea_kid=idea_f, walk="J,A,C")
+    contract_x.add_idea(idea_kid=idea_h, walk="J,A,C")
+    contract_x.set_contract_metrics()
+    return contract_x
 
 
-def get_actor_2calendar(env_dir) -> ActorUnit:
+def get_actor_2contract(env_dir) -> ActorUnit:
     yao_text = "Xio"
     yao_actor = actorunit_shop(yao_text, env_dir=env_dir)
-    yao_actor.set_depot_calendar(get_1node_calendar(), depotlink_type="blind_trust")
-    yao_actor.set_depot_calendar(
-        get_Jnode2node_calendar(), depotlink_type="blind_trust"
+    yao_actor.set_depot_contract(get_1node_contract(), depotlink_type="blind_trust")
+    yao_actor.set_depot_contract(
+        get_Jnode2node_contract(), depotlink_type="blind_trust"
     )
     return yao_actor
 
 
-def get_calendar_2CleanNodesRandomWeights(_owner: str = None) -> CalendarUnit:
+def get_contract_2CleanNodesRandomWeights(_owner: str = None) -> ContractUnit:
     label_text = _owner if _owner != None else "ernie"
-    calendar_x = CalendarUnit(_owner=label_text)
+    contract_x = ContractUnit(_owner=label_text)
     casa_text = "casa"
-    calendar_x.add_idea(idea_kid=IdeaKid(_label=casa_text), walk="")
+    contract_x.add_idea(idea_kid=IdeaKid(_label=casa_text), walk="")
     casa_road = Road(f"{label_text},{casa_text}")
     cookery_text = "clean cookery"
     bedroom_text = "clean bedroom"
     cookery_idea = IdeaKid(_label=cookery_text, _weight=randrange(1, 50), promise=True)
     bedroom_idea = IdeaKid(_label=bedroom_text, _weight=randrange(1, 50), promise=True)
-    calendar_x.add_idea(idea_kid=cookery_idea, walk=casa_road)
-    calendar_x.add_idea(idea_kid=bedroom_idea, walk=casa_road)
-    calendar_x.set_calendar_metrics()
-    return calendar_x
+    contract_x.add_idea(idea_kid=cookery_idea, walk=casa_road)
+    contract_x.add_idea(idea_kid=bedroom_idea, walk=casa_road)
+    contract_x.set_contract_metrics()
+    return contract_x
 
 
-def get_calendar_3CleanNodesRandomWeights(_owner: str = None) -> CalendarUnit:
+def get_contract_3CleanNodesRandomWeights(_owner: str = None) -> ContractUnit:
     label_text = _owner if _owner != None else "ernie"
-    calendar_x = CalendarUnit(_owner=label_text)
+    contract_x = ContractUnit(_owner=label_text)
     casa_text = "casa"
-    calendar_x.add_idea(idea_kid=IdeaKid(_label=casa_text), walk="")
+    contract_x.add_idea(idea_kid=IdeaKid(_label=casa_text), walk="")
     casa_road = Road(f"{label_text},{casa_text}")
     cookery_text = "clean cookery"
     bedroom_text = "clean bedroom"
@@ -183,16 +183,16 @@ def get_calendar_3CleanNodesRandomWeights(_owner: str = None) -> CalendarUnit:
     cookery_idea = IdeaKid(_label=cookery_text, _weight=randrange(1, 50), promise=True)
     bedroom_idea = IdeaKid(_label=bedroom_text, _weight=randrange(1, 50), promise=True)
     hallway_idea = IdeaKid(_label=hallway_text, _weight=randrange(1, 50), promise=True)
-    calendar_x.add_idea(idea_kid=cookery_idea, walk=casa_road)
-    calendar_x.add_idea(idea_kid=bedroom_idea, walk=casa_road)
-    calendar_x.add_idea(idea_kid=hallway_idea, walk=casa_road)
-    calendar_x.set_calendar_metrics()
-    return calendar_x
+    contract_x.add_idea(idea_kid=cookery_idea, walk=casa_road)
+    contract_x.add_idea(idea_kid=bedroom_idea, walk=casa_road)
+    contract_x.add_idea(idea_kid=hallway_idea, walk=casa_road)
+    contract_x.set_contract_metrics()
+    return contract_x
 
 
-def get_calendar_assignment_laundry_example1() -> CalendarUnit:
+def get_contract_assignment_laundry_example1() -> ContractUnit:
     america_text = "America"
-    america_cx = CalendarUnit(_owner=america_text)
+    america_cx = ContractUnit(_owner=america_text)
     joachim_text = "Joachim"
     america_cx.add_memberunit(america_text)
     america_cx.add_memberunit(joachim_text)

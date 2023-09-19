@@ -4,9 +4,9 @@ from src.economy.examples.economy_env_kit import (
     env_dir_setup_cleanup,
     get_test_economys_dir,
 )
-from src.calendar.road import get_global_root_label as root_label
-from src.calendar.calendar import CalendarUnit
-from src.economy.examples.example_actors import get_calendar_assignment_laundry_example1
+from src.contract.road import get_global_root_label as root_label
+from src.contract.contract import ContractUnit
+from src.economy.examples.example_actors import get_contract_assignment_laundry_example1
 
 
 def test_economy_ChangingOneActorsFactChangesAnotherAgenda(env_dir_setup_cleanup):
@@ -19,7 +19,7 @@ def test_economy_ChangingOneActorsFactChangesAnotherAgenda(env_dir_setup_cleanup
     america_text = "America"
     sx.create_new_actorunit(actor_name=america_text)
     america_ux = sx.get_actor_obj(name=america_text)
-    america_ux.set_isol(get_calendar_assignment_laundry_example1())
+    america_ux.set_isol(get_contract_assignment_laundry_example1())
 
     casa_text = "casa"
     casa_road = f"{root_label()},{casa_text}"
@@ -34,15 +34,15 @@ def test_economy_ChangingOneActorsFactChangesAnotherAgenda(env_dir_setup_cleanup
     america_ux.set_isol(isol_x)
     # save fact change to public
     america_ux._admin.save_refreshed_output_to_public()
-    # print(f"{sx.get_public_calendar(america_text)._idearoot._acptfactunits.keys()=}")
-    america_output = sx.get_public_calendar(america_text)
+    # print(f"{sx.get_public_contract(america_text)._idearoot._acptfactunits.keys()=}")
+    america_output = sx.get_public_contract(america_text)
 
     # create assignment for Joachim
     joachim_text = "Joachim"
     sx.create_new_actorunit(actor_name=joachim_text)
     joachim_ux = sx.get_actor_obj(name=joachim_text)
-    joachim_ux.set_depot_calendar(america_output, "assignment")
-    old_joachim_cx = sx.get_output_calendar(joachim_text)
+    joachim_ux.set_depot_contract(america_output, "assignment")
+    old_joachim_cx = sx.get_output_contract(joachim_text)
     # print(f"{old_joachim_cx._members.keys()=}")
     # print(f"{old_joachim_cx._idearoot._acptfactunits.keys()=}")
     basket_acptfact = old_joachim_cx._idearoot._acptfactunits.get(basket_road)
@@ -55,10 +55,10 @@ def test_economy_ChangingOneActorsFactChangesAnotherAgenda(env_dir_setup_cleanup
     america_ux.set_isol()
     america_ux._admin.save_refreshed_output_to_public()
 
-    joachim_ux.refresh_depot_calendars()
-    new_joachim_cx = joachim_ux._admin.get_remelded_output_calendar()
+    joachim_ux.refresh_depot_contracts()
+    new_joachim_cx = joachim_ux._admin.get_remelded_output_contract()
 
-    # new_public_america = sx.get_public_calendar(america_text)
+    # new_public_america = sx.get_public_contract(america_text)
     # a_basket_acptfact = new_public_america._idearoot._acptfactunits.get(basket_road)
     # print(f"America after when {a_basket_acptfact.base=} {a_basket_acptfact.pick=}")
 
@@ -119,34 +119,34 @@ def test_economy_create_task_CorrectlyCreatesTask(env_dir_setup_cleanup):
     )
 
     # # WHEN
-    # america_actor.save_output_calendar_to_public()
+    # america_actor.save_output_contract_to_public()
     # new_joa_actor = sx.get_actor_obj(name=joachim_text)
-    # new_joa_actor.save_output_calendar_to_public()
-    # new_joa_dest_c = sx.get_public_calendar(joachim_text)
+    # new_joa_actor.save_output_contract_to_public()
+    # new_joa_dest_c = sx.get_public_contract(joachim_text)
     # new_joa_agenda = new_joa_dest_c.get_agenda_items()
     # assert len(new_joa_agenda) == 1
     # print(f"{new_joa_agenda[0]._label=}")
     # assert new_joa_agenda[0]._label == task_text
-    joachim_cx = sx.get_public_calendar(joachim_text)
+    joachim_cx = sx.get_public_contract(joachim_text)
 
     assert len(joachim_cx.get_agenda_items()) == 1
     assert joachim_cx.get_agenda_items()[0].get_road() == do_laundry_road
 
     # sx.create_new_actorunit(actor_name=america_text)
     # america_actor = sx.get_actor_obj(name=america_text)
-    # america_actor.save_output_calendar_to_public()
-    # assert sx.get_public_calendar(america_text) != None
+    # america_actor.save_output_contract_to_public()
+    # assert sx.get_public_contract(america_text) != None
 
     # # Create actor2
 
     # sx.create_new_actorunit(actor_name=joachim_text)
     # old_joa_actor = sx.get_actor_obj(name=joachim_text)
     # old_joa_actor._set_depotlink(america_cx._ownert, depotlink_type="blind_trust")
-    # old_joa_actor.save_output_calendar_to_public()
-    # old_joa_dest_c = sx.get_public_calendar(joachim_text)
+    # old_joa_actor.save_output_contract_to_public()
+    # old_joa_dest_c = sx.get_public_contract(joachim_text)
     # old_joa_agenda = old_joa_dest_c.get_agenda_items()
     # # assert len(old_joa_agenda) == 0
 
     # # # Create actor1 task:
-    # # #  create joachim member in America calendar
+    # # #  create joachim member in America contract
     # america_actor._set_depotlink(joachim_text)

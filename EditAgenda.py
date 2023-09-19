@@ -3,13 +3,13 @@ from ui.EditAgendaUI import Ui_Form
 from PyQt5.QtCore import pyqtSignal as qsig
 from PyQt5.QtWidgets import QWidget as qw
 from PyQt5.QtWidgets import QTableWidgetItem as qti
-from src.pyqt5_kit.pyqt_func import num2str, calendar_importance_diplay
-from src.calendar.hreg_time import (
+from src.pyqt5_kit.pyqt_func import num2str, contract_importance_diplay
+from src.contract.hreg_time import (
     SuffFactUnitHregTime,
     _get_time_hreg_weekday_idea,
     convert1440toHHMM,
 )
-from src.calendar.road import get_global_root_label as root_label
+from src.contract.road import get_global_root_label as root_label
 
 
 class EditAgenda(qw, Ui_Form):
@@ -33,9 +33,9 @@ class EditAgenda(qw, Ui_Form):
     def select_agenda_item(self):
         _road = self.agenda_table.item(self.agenda_table.currentRow(), 1).text()
         _label = self.agenda_table.item(self.agenda_table.currentRow(), 0).text()
-        # base_x = "Mycalendar,time,jajatime"
+        # base_x = "Mycontract,time,jajatime"
         base_x = self.acptfact_base_update_combo.currentText()
-        self.calendar_x.set_agenda_task_complete(
+        self.contract_x.set_agenda_task_complete(
             task_road=f"{_road},{_label}", base=base_x
         )
         self.refresh_all()
@@ -58,7 +58,7 @@ class EditAgenda(qw, Ui_Form):
             temp_x = self.acptfact_base_update_combo.currentText()
 
         self.acptfact_base_update_combo.clear()
-        required_bases = list(self.calendar_x.get_required_bases())
+        required_bases = list(self.contract_x.get_required_bases())
         required_bases.sort(key=lambda x: x, reverse=False)
         self.acptfact_base_update_combo.addItems(required_bases)
         if self.acptfact_base_update_init_road is None:
@@ -78,10 +78,10 @@ class EditAgenda(qw, Ui_Form):
         if base_x == "":
             base_x = None
 
-        agenda_list = self.calendar_x.get_agenda_items(
+        agenda_list = self.contract_x.get_agenda_items(
             agenda_todo=True, agenda_state=False, base=base_x
         )
-        agenda_list.sort(key=lambda x: x._calendar_importance, reverse=True)
+        agenda_list.sort(key=lambda x: x._contract_importance, reverse=True)
 
         row = 0
         for agenda_item in agenda_list:
@@ -97,8 +97,8 @@ class EditAgenda(qw, Ui_Form):
         sufffact_open_x = None
         sufffact_nigh_x = None
         sufffact_divisor_x = None
-        lw_display_x = calendar_importance_diplay(
-            calendar_importance=a._calendar_importance
+        lw_display_x = contract_importance_diplay(
+            contract_importance=a._contract_importance
         )
 
         display_acptfactbase = self.cb_acptfactbase_display.checkState() != 2
@@ -120,7 +120,7 @@ class EditAgenda(qw, Ui_Form):
                 or sufffact_need_x[:21] == f"{root_label()},time,jajatime"
             )
         ):
-            legible_x_text = self.calendar_x.get_jajatime_repeating_legible_text(
+            legible_x_text = self.contract_x.get_jajatime_repeating_legible_text(
                 open=sufffact_open_x, nigh=sufffact_nigh_x, divisor=sufffact_divisor_x
             )
         elif sufffact_open_x != None and sufffact_nigh_x != None:
@@ -170,7 +170,7 @@ class EditAgenda(qw, Ui_Form):
             [
                 "_label",
                 "road",
-                "calendar_importance",
+                "contract_importance",
                 "weight",
                 "acptfact",
                 "open",

@@ -1,28 +1,28 @@
 from src.economy.actor import actorunit_shop
-from src.economy.examples.example_actors import get_calendar_assignment_laundry_example1
+from src.economy.examples.example_actors import get_contract_assignment_laundry_example1
 from src.economy.examples.actor_env_kit import (
     actor_dir_setup_cleanup,
     get_temp_actor_dir,
 )
-from src.calendar.road import get_global_root_label as root_label
+from src.contract.road import get_global_root_label as root_label
 
 
-def test_actor_save_calendar_to_depot_assignment_link_CorrectlyCreatesAssignmentFile(
+def test_actor_save_contract_to_depot_assignment_link_CorrectlyCreatesAssignmentFile(
     actor_dir_setup_cleanup,
 ):
     # GIVEN
-    america_cx = get_calendar_assignment_laundry_example1()
+    america_cx = get_contract_assignment_laundry_example1()
     joachim_text = "Joachim"
     joachim_ux = actorunit_shop(joachim_text, get_temp_actor_dir())
     joachim_ux.create_core_dir_and_files()
 
     # WHEN
-    joachim_ux.set_depot_calendar(calendar_x=america_cx, depotlink_type="assignment")
-    output_cx = joachim_ux._admin.get_remelded_output_calendar()
+    joachim_ux.set_depot_contract(contract_x=america_cx, depotlink_type="assignment")
+    output_cx = joachim_ux._admin.get_remelded_output_contract()
 
     # THEN
     assert output_cx != None
-    output_cx.set_calendar_metrics()
+    output_cx.set_contract_metrics()
     assert len(output_cx._idea_dict.keys()) == 9
 
     casa_text = "casa"

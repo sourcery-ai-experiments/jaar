@@ -1,7 +1,7 @@
-from src.calendar.calendar import CalendarUnit
-from src.calendar.idea import IdeaCore
+from src.contract.contract import ContractUnit
+from src.contract.idea import IdeaCore
 from PyQt5.QtWidgets import QTreeWidgetItem
-from src.calendar.road import get_terminus_node_from_road
+from src.contract.road import get_terminus_node_from_road
 from dataclasses import dataclass
 
 
@@ -27,7 +27,7 @@ class PYQTTreeHolder:
     required_view_name: str
     acptfactheir_view_flag: str
     root_percent_flag: str
-    source_calendar: str
+    source_contract: str
 
 
 def get_pyqttree(
@@ -47,7 +47,7 @@ def get_pyqttree(
     required_view_flag: bool = None,
     required_view_name: bool = None,
     acptfactheir_view_flag: bool = None,
-    source_calendar: CalendarUnit = None,
+    source_contract: ContractUnit = None,
 ) -> QTreeWidgetItem:
     pyqttree_holder = PYQTTreeHolder(
         ideacore=idearoot,
@@ -66,7 +66,7 @@ def get_pyqttree(
         required_view_name=required_view_name,
         acptfactheir_view_flag=acptfactheir_view_flag,
         root_percent_flag=root_percent_flag,
-        source_calendar=source_calendar,
+        source_contract=source_contract,
     )
 
     return _create_node(pth=pyqttree_holder)
@@ -96,7 +96,7 @@ def _create_node(pth: PYQTTreeHolder) -> QTreeWidgetItem:
     # print(f"{len(sorted_ideas_list)=}")
 
     for kid_idea in sort_ideas_list:
-        # for kid_idea in sort_ideas_list.sort(key=lambda x: x._calendar_importance, reverse=True):
+        # for kid_idea in sort_ideas_list.sort(key=lambda x: x._contract_importance, reverse=True):
         child_pth = PYQTTreeHolder(
             ideacore=kid_idea,
             yo_action_flag=pth.yo_action_flag,
@@ -114,7 +114,7 @@ def _create_node(pth: PYQTTreeHolder) -> QTreeWidgetItem:
             required_view_name=pth.required_view_name,
             acptfactheir_view_flag=pth.acptfactheir_view_flag,
             root_percent_flag=pth.root_percent_flag,
-            source_calendar=pth.source_calendar,
+            source_contract=pth.source_contract,
         )
         item.addChild(_create_node(child_pth))
     return item
@@ -141,34 +141,34 @@ def emptystring_returns_none(str_x: str) -> str:
     return None if not str_x else str_x
 
 
-def calendar_importance_diplay(calendar_importance: float):
-    if calendar_importance is None:
+def contract_importance_diplay(contract_importance: float):
+    if contract_importance is None:
         return "None"
-    if str(type(calendar_importance)) == "<class 'set'>":
-        return f"ERROR {calendar_importance} {type(calendar_importance)=}"
-    calendar_importance *= 100
-    if calendar_importance == 1:
+    if str(type(contract_importance)) == "<class 'set'>":
+        return f"ERROR {contract_importance} {type(contract_importance)=}"
+    contract_importance *= 100
+    if contract_importance == 1:
         return "100%"
-    elif calendar_importance >= 10:
-        return f"{calendar_importance:.1f}%"
-    elif calendar_importance >= 1:
-        return f"{calendar_importance:.2f}%"
-    elif calendar_importance >= 0.1:
-        return f"{calendar_importance:.3f}%"
-    elif calendar_importance >= 0.01:
-        return f"{calendar_importance:.4f}%"
-    elif calendar_importance >= 0.001:
-        return f"{calendar_importance:.5f}%"
-    elif calendar_importance >= 0.0001:
-        return f"{calendar_importance:.6f}%"
-    elif calendar_importance >= 0.00001:
-        return f"{calendar_importance:.7f}%"
-    elif calendar_importance >= 0.000001:
-        return f"{calendar_importance:.8f}%"
-    elif calendar_importance == 0:
+    elif contract_importance >= 10:
+        return f"{contract_importance:.1f}%"
+    elif contract_importance >= 1:
+        return f"{contract_importance:.2f}%"
+    elif contract_importance >= 0.1:
+        return f"{contract_importance:.3f}%"
+    elif contract_importance >= 0.01:
+        return f"{contract_importance:.4f}%"
+    elif contract_importance >= 0.001:
+        return f"{contract_importance:.5f}%"
+    elif contract_importance >= 0.0001:
+        return f"{contract_importance:.6f}%"
+    elif contract_importance >= 0.00001:
+        return f"{contract_importance:.7f}%"
+    elif contract_importance >= 0.000001:
+        return f"{contract_importance:.8f}%"
+    elif contract_importance == 0:
         return "0%"
     else:
-        return f"{calendar_importance:.15f}%"
+        return f"{contract_importance:.15f}%"
 
 
 def _get_treenode_l_required_count(treenode_l, pth: PYQTTreeHolder) -> str:
@@ -198,16 +198,16 @@ def _get_treenode_l_required_view(treenode_l, pth: PYQTTreeHolder) -> str:
 def _get_treenode_l_acptfactheir_view(treenode_l, pth: PYQTTreeHolder) -> str:
     acptfactheir = pth.ideacore._acptfactheirs.get(pth.required_view_name)
     if acptfactheir != None:
-        time_road = f"{pth.source_calendar._idearoot._label},time,jajatime"
+        time_road = f"{pth.source_contract._idearoot._label},time,jajatime"
         if (
             acptfactheir.base == time_road
             and acptfactheir.open != None
             and acptfactheir.nigh != None
         ):
-            hc_open_text = pth.source_calendar.get_jajatime_legible_one_time_event(
+            hc_open_text = pth.source_contract.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactheir.open
             )
-            hc_nigh_text = pth.source_calendar.get_jajatime_legible_one_time_event(
+            hc_nigh_text = pth.source_contract.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactheir.nigh
             )
             # treenode_l += f"{get_terminus_node_from_road(acptfactheir.base)}"
@@ -225,7 +225,9 @@ def _create_treenode_l(pth: PYQTTreeHolder):
     treenode_l = pth.ideacore._label
 
     if pth.root_percent_flag:
-        treenode_l += f" ({calendar_importance_diplay(pth.ideacore._calendar_importance)})"
+        treenode_l += (
+            f" ({contract_importance_diplay(pth.ideacore._contract_importance)})"
+        )
     elif pth.yo2bd_count_flag:
         treenode_l += f" ({len(pth.ideacore._grouplinks)})"
     elif pth.required_count_flag:
@@ -243,19 +245,19 @@ def _create_treenode_l(pth: PYQTTreeHolder):
 
     if pth.requiredheir_count_flag and pth.ideacore._walk not in (None, ""):
         # requiredunit_count = sum(
-        #     str(type(requiredheir)) == "<class 'src.calendar.required.RequiredUnit'>"
+        #     str(type(requiredheir)) == "<class 'src.contract.required.RequiredUnit'>"
         #     for requiredheir in pth.ideacore._requiredheirs.values()
         # )
         treenode_l += f" (RequiredHeirs {len(pth.ideacore._requiredheirs)})"
 
     if pth.yo_acptfactunit_time_flag:
-        time_road = f"{pth.source_calendar._idearoot._label},time,jajatime"
+        time_road = f"{pth.source_contract._idearoot._label},time,jajatime"
         acptfactunit_time_obj = pth.ideacore._acptfactunits.get(time_road)
         if acptfactunit_time_obj != None:
-            hc_open_text = pth.source_calendar.get_jajatime_legible_one_time_event(
+            hc_open_text = pth.source_contract.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactunit_time_obj.open
             )
-            hc_nigh_text = pth.source_calendar.get_jajatime_legible_one_time_event(
+            hc_nigh_text = pth.source_contract.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactunit_time_obj.nigh
             )
             # treenode_l += f" ({acptfactunit.base=} {acptfactunit.open}-{acptfactunit.nigh})"

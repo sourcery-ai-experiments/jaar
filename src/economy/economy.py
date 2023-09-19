@@ -1,8 +1,8 @@
-from src.calendar.calendar import CalendarUnit, get_from_json as get_calendar_from_json
-from src.calendar.member import memberlink_shop, MemberName
+from src.contract.contract import ContractUnit, get_from_json as get_contract_from_json
+from src.contract.member import memberlink_shop, MemberName
 from src.economy.actor import ActorUnit, actorunit_shop
 from dataclasses import dataclass
-from src.calendar.x_func import (
+from src.contract.x_func import (
     single_dir_create_if_null,
     delete_dir as x_func_delete_dir,
     save_file as x_func_save_file,
@@ -19,7 +19,7 @@ from src.economy.bank_sqlstr import (
     get_river_bucket_table_insert_sqlstr,
     get_create_table_if_not_exist_sqlstrs,
     get_ledger_table_insert_sqlstr,
-    get_calendar_table_insert_sqlstr,
+    get_contract_table_insert_sqlstr,
     get_river_ledger_unit,
     LedgerUnit,
     RiverLedgerUnit,
@@ -43,48 +43,48 @@ class EconomyUnit:
     _actorunits: dict[str:ActorUnit] = None
     _bank_db = None
 
-    def set_calendar_bank_attrs(self, calendar_name: str):
-        calendar_obj = self.get_public_calendar(calendar_name)
+    def set_contract_bank_attrs(self, contract_name: str):
+        contract_obj = self.get_public_contract(contract_name)
 
-        for groupunit_x in calendar_obj._groups.values():
+        for groupunit_x in contract_obj._groups.values():
             if groupunit_x._memberlinks_set_by_economy_road != None:
                 groupunit_x.clear_memberlinks()
                 ic = get_idea_catalog_dict(
                     self.get_bank_conn(), groupunit_x._memberlinks_set_by_economy_road
                 )
                 for idea_catalog in ic.values():
-                    if calendar_name != idea_catalog.calendar_name:
-                        memberlink_x = memberlink_shop(name=idea_catalog.calendar_name)
+                    if contract_name != idea_catalog.contract_name:
+                        memberlink_x = memberlink_shop(name=idea_catalog.contract_name)
                         groupunit_x.set_memberlink(memberlink_x)
-        self.save_public_calendar(calendar_obj)
+        self.save_public_contract(contract_obj)
 
         # refresh bank metrics
         self.refresh_bank_metrics()
 
     # banking
-    def set_river_sphere_for_calendar(
-        self, calendar_name: str, max_flows_count: int = None
+    def set_river_sphere_for_contract(
+        self, contract_name: str, max_flows_count: int = None
     ):
-        self._clear_all_source_river_data(calendar_name)
-        general_bucket = [self._get_root_river_ledger_unit(calendar_name)]
+        self._clear_all_source_river_data(contract_name)
+        general_bucket = [self._get_root_river_ledger_unit(contract_name)]
 
         if max_flows_count is None:
             max_flows_count = 40
 
         flows_count = 0
         while flows_count < max_flows_count and general_bucket != []:
-            parent_calendar_ledger = general_bucket.pop(0)
+            parent_contract_ledger = general_bucket.pop(0)
 
-            parent_range = parent_calendar_ledger.get_range()
-            parent_close = parent_calendar_ledger.currency_cease
-            curr_onset = parent_calendar_ledger.currency_onset
+            parent_range = parent_contract_ledger.get_range()
+            parent_close = parent_contract_ledger.currency_cease
+            curr_onset = parent_contract_ledger.currency_onset
 
-            ledgers_len = len(parent_calendar_ledger._ledgers.values())
+            ledgers_len = len(parent_contract_ledger._ledgers.values())
             ledgers_count = 0
-            for led_x in parent_calendar_ledger._ledgers.values():
+            for led_x in parent_contract_ledger._ledgers.values():
                 ledgers_count += 1
 
-                curr_range = parent_range * led_x._calendar_agenda_ratio_credit
+                curr_range = parent_range * led_x._contract_agenda_ratio_credit
                 curr_close = curr_onset + curr_range
 
                 # implies last element in dict
@@ -92,14 +92,14 @@ class EconomyUnit:
                     curr_close = parent_close
 
                 river_flow_x = RiverFlowUnit(
-                    currency_calendar_name=calendar_name,
-                    src_name=led_x.calendar_name,
+                    currency_contract_name=contract_name,
+                    src_name=led_x.contract_name,
                     dst_name=led_x.member_name,
                     currency_start=curr_onset,
                     currency_close=curr_close,
                     flow_num=flows_count,
-                    parent_flow_num=parent_calendar_ledger.flow_num,
-                    river_tree_level=parent_calendar_ledger.river_tree_level + 1,
+                    parent_flow_num=parent_contract_ledger.flow_num,
+                    river_tree_level=parent_contract_ledger.river_tree_level + 1,
                 )
                 river_ledger_x = self._insert_river_flow_grab_river_ledger(river_flow_x)
                 if river_ledger_x != None:
@@ -112,7 +112,7 @@ class EconomyUnit:
                 # change curr_onset for next
                 curr_onset += curr_range
 
-        self._set_river_tmembers_buckets(calendar_name)
+        self._set_river_tmembers_buckets(contract_name)
 
     def _insert_river_flow_grab_river_ledger(
         self, river_flow_x: RiverFlowUnit
@@ -127,23 +127,23 @@ class EconomyUnit:
 
         return river_ledger_x
 
-    def _clear_all_source_river_data(self, calendar_name: str):
+    def _clear_all_source_river_data(self, contract_name: str):
         with self.get_bank_conn() as bank_conn:
-            flow_s = get_river_flow_table_delete_sqlstr(calendar_name)
-            mstr_s = get_river_tmember_table_delete_sqlstr(calendar_name)
+            flow_s = get_river_flow_table_delete_sqlstr(contract_name)
+            mstr_s = get_river_tmember_table_delete_sqlstr(contract_name)
             bank_conn.execute(flow_s)
             bank_conn.execute(mstr_s)
 
-    def _get_root_river_ledger_unit(self, calendar_name: str) -> RiverLedgerUnit:
+    def _get_root_river_ledger_unit(self, contract_name: str) -> RiverLedgerUnit:
         default_currency_onset = 0.0
         default_currency_cease = 1.0
         default_root_river_tree_level = 0
         default_root_flow_num = None  # maybe change to 1?
         default_root_parent_flow_num = None
         root_river_flow = RiverFlowUnit(
-            currency_calendar_name=calendar_name,
+            currency_contract_name=contract_name,
             src_name=None,
-            dst_name=calendar_name,
+            dst_name=contract_name,
             currency_start=default_currency_onset,
             currency_close=default_currency_cease,
             flow_num=default_root_flow_num,
@@ -154,77 +154,77 @@ class EconomyUnit:
             source_river_ledger = get_river_ledger_unit(bank_conn, root_river_flow)
         return source_river_ledger
 
-    def _set_river_tmembers_buckets(self, calendar_name: str):
+    def _set_river_tmembers_buckets(self, contract_name: str):
         with self.get_bank_conn() as bank_conn:
-            bank_conn.execute(get_river_tmember_table_insert_sqlstr(calendar_name))
-            bank_conn.execute(get_river_bucket_table_insert_sqlstr(calendar_name))
+            bank_conn.execute(get_river_tmember_table_insert_sqlstr(contract_name))
+            bank_conn.execute(get_river_bucket_table_insert_sqlstr(contract_name))
 
-            sal_river_tmembers = get_river_tmember_dict(bank_conn, calendar_name)
-            calendar_x = self.get_public_calendar(owner=calendar_name)
-            calendar_x.set_banking_attr_memberunits(sal_river_tmembers)
-            self.save_public_calendar(calendar_x=calendar_x)
+            sal_river_tmembers = get_river_tmember_dict(bank_conn, contract_name)
+            contract_x = self.get_public_contract(owner=contract_name)
+            contract_x.set_banking_attr_memberunits(sal_river_tmembers)
+            self.save_public_contract(contract_x=contract_x)
 
-    def get_river_tmembers(self, calendar_name: str) -> dict[str:RiverTmemberUnit]:
+    def get_river_tmembers(self, contract_name: str) -> dict[str:RiverTmemberUnit]:
         with self.get_bank_conn() as bank_conn:
-            river_tmembers = get_river_tmember_dict(bank_conn, calendar_name)
+            river_tmembers = get_river_tmember_dict(bank_conn, contract_name)
         return river_tmembers
 
     def refresh_bank_metrics(self, in_memory: bool = None):
         if in_memory is None and self._bank_db != None:
             in_memory = True
         self._create_bank_db(in_memory=in_memory, overwrite=True)
-        self._bank_populate_calendars_data()
+        self._bank_populate_contracts_data()
 
-    def _bank_populate_calendars_data(self):
+    def _bank_populate_contracts_data(self):
         for file_name in self.get_public_dir_file_names_list():
-            calendar_json = x_func_open_file(self.get_public_dir(), file_name)
-            calendarunit_x = get_calendar_from_json(cx_json=calendar_json)
-            calendarunit_x.set_calendar_metrics()
+            contract_json = x_func_open_file(self.get_public_dir(), file_name)
+            contractunit_x = get_contract_from_json(cx_json=contract_json)
+            contractunit_x.set_contract_metrics()
 
-            self._bank_insert_calendarunit(calendarunit_x)
-            self._bank_insert_memberunit(calendarunit_x)
-            self._bank_insert_groupunit(calendarunit_x)
-            self._bank_insert_ideaunit(calendarunit_x)
-            self._bank_insert_acptfact(calendarunit_x)
+            self._bank_insert_contractunit(contractunit_x)
+            self._bank_insert_memberunit(contractunit_x)
+            self._bank_insert_groupunit(contractunit_x)
+            self._bank_insert_ideaunit(contractunit_x)
+            self._bank_insert_acptfact(contractunit_x)
 
-    def _bank_insert_calendarunit(self, calendarunit_x: CalendarUnit):
+    def _bank_insert_contractunit(self, contractunit_x: ContractUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            cur.execute(get_calendar_table_insert_sqlstr(calendar_x=calendarunit_x))
+            cur.execute(get_contract_table_insert_sqlstr(contract_x=contractunit_x))
 
-    def _bank_insert_memberunit(self, calendarunit_x: CalendarUnit):
+    def _bank_insert_memberunit(self, contractunit_x: ContractUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            for memberunit_x in calendarunit_x._members.values():
-                sqlstr = get_ledger_table_insert_sqlstr(calendarunit_x, memberunit_x)
+            for memberunit_x in contractunit_x._members.values():
+                sqlstr = get_ledger_table_insert_sqlstr(contractunit_x, memberunit_x)
                 cur.execute(sqlstr)
 
-    def _bank_insert_groupunit(self, calendarunit_x: CalendarUnit):
+    def _bank_insert_groupunit(self, contractunit_x: ContractUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            for groupunit_x in calendarunit_x._groups.values():
+            for groupunit_x in contractunit_x._groups.values():
                 groupunit_catalog_x = GroupUnitCatalog(
-                    calendar_name=calendarunit_x._owner,
+                    contract_name=contractunit_x._owner,
                     groupunit_name=groupunit_x.name,
                     memberlinks_set_by_economy_road=groupunit_x._memberlinks_set_by_economy_road,
                 )
                 sqlstr = get_groupunit_catalog_table_insert_sqlstr(groupunit_catalog_x)
                 cur.execute(sqlstr)
 
-    def _bank_insert_ideaunit(self, calendarunit_x: CalendarUnit):
+    def _bank_insert_ideaunit(self, contractunit_x: ContractUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            for idea_x in calendarunit_x._idea_dict.values():
-                idea_catalog_x = IdeaCatalog(calendarunit_x._owner, idea_x.get_road())
+            for idea_x in contractunit_x._idea_dict.values():
+                idea_catalog_x = IdeaCatalog(contractunit_x._owner, idea_x.get_road())
                 sqlstr = get_idea_catalog_table_insert_sqlstr(idea_catalog_x)
                 cur.execute(sqlstr)
 
-    def _bank_insert_acptfact(self, calendarunit_x: CalendarUnit):
+    def _bank_insert_acptfact(self, contractunit_x: ContractUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            for acptfact_x in calendarunit_x._idearoot._acptfactunits.values():
+            for acptfact_x in contractunit_x._idearoot._acptfactunits.values():
                 acptfact_catalog_x = AcptFactCatalog(
-                    calendar_name=calendarunit_x._owner,
+                    contract_name=contractunit_x._owner,
                     base=acptfact_x.base,
                     pick=acptfact_x.pick,
                 )
@@ -277,10 +277,10 @@ class EconomyUnit:
 
     def create_dirs_if_null(self, in_memory_bank: bool = None):
         economy_dir = self.get_object_root_dir()
-        calendars_dir = self.get_public_dir()
+        contracts_dir = self.get_public_dir()
         actors_dir = self.get_actors_dir()
         single_dir_create_if_null(x_path=economy_dir)
-        single_dir_create_if_null(x_path=calendars_dir)
+        single_dir_create_if_null(x_path=contracts_dir)
         single_dir_create_if_null(x_path=actors_dir)
         self._create_main_file_if_null(x_dir=economy_dir)
         self._create_bank_db(in_memory=in_memory_bank, overwrite=True)
@@ -312,7 +312,7 @@ class EconomyUnit:
         return None if self._actorunits.get(name) is None else self._actorunits[name]
 
     def create_actorunit_from_public(self, name: str):
-        cx = self.get_public_calendar(owner=name)
+        cx = self.get_public_contract(owner=name)
         actor_x = actorunit_shop(name=cx._owner, env_dir=self.get_object_root_dir())
         self.set_actorunits_empty_if_null()
         self.set_actorunit_to_economy(actor_x)
@@ -323,7 +323,7 @@ class EconomyUnit:
 
     def save_actor_file(self, actor_name: str):
         actor_x = self.get_actor_obj(name=actor_name)
-        actor_x._admin.save_isol_calendar(actor_x.get_isol())
+        actor_x._admin.save_isol_contract(actor_x.get_isol())
 
     def rename_actorunit(self, old_name: str, new_name: str):
         actor_x = self.get_actor_obj(name=old_name)
@@ -341,110 +341,110 @@ class EconomyUnit:
 
     # public dir management
     def get_public_dir(self):
-        return f"{self.get_object_root_dir()}/calendars"
+        return f"{self.get_object_root_dir()}/contracts"
 
     def get_ignores_dir(self, actor_name: str):
         per_x = self.get_actor_obj(actor_name)
-        return per_x._admin._calendars_ignore_dir
+        return per_x._admin._contracts_ignore_dir
 
-    def get_public_calendar(self, owner: str) -> CalendarUnit:
-        return get_calendar_from_json(
+    def get_public_contract(self, owner: str) -> ContractUnit:
+        return get_contract_from_json(
             x_func_open_file(dest_dir=self.get_public_dir(), file_name=f"{owner}.json")
         )
 
-    def get_calendar_from_ignores_dir(
+    def get_contract_from_ignores_dir(
         self, actor_name: str, _owner: str
-    ) -> CalendarUnit:
-        return get_calendar_from_json(
+    ) -> ContractUnit:
+        return get_contract_from_json(
             x_func_open_file(
                 dest_dir=self.get_ignores_dir(actor_name=actor_name),
                 file_name=f"{_owner}.json",
             )
         )
 
-    def set_ignore_calendar_file(self, actor_name: str, calendar_obj: CalendarUnit):
+    def set_ignore_contract_file(self, actor_name: str, contract_obj: ContractUnit):
         actor_x = self.get_actor_obj(name=actor_name)
-        actor_x.set_ignore_calendar_file(
-            calendarunit=calendar_obj, src_calendar_owner=calendar_obj._owner
+        actor_x.set_ignore_contract_file(
+            contractunit=contract_obj, src_contract_owner=contract_obj._owner
         )
 
-    def rename_public_calendar(self, old_owner: str, new_owner: str):
-        calendar_x = self.get_public_calendar(owner=old_owner)
-        calendar_x.set_owner(new_owner=new_owner)
-        self.save_public_calendar(calendar_x=calendar_x)
-        self.del_public_calendar(calendar_x_owner=old_owner)
+    def rename_public_contract(self, old_owner: str, new_owner: str):
+        contract_x = self.get_public_contract(owner=old_owner)
+        contract_x.set_owner(new_owner=new_owner)
+        self.save_public_contract(contract_x=contract_x)
+        self.del_public_contract(contract_x_owner=old_owner)
 
-    def del_public_calendar(self, calendar_x_owner: str):
-        x_func_delete_dir(f"{self.get_public_dir()}/{calendar_x_owner}.json")
+    def del_public_contract(self, contract_x_owner: str):
+        x_func_delete_dir(f"{self.get_public_dir()}/{contract_x_owner}.json")
 
-    def save_public_calendar(self, calendar_x: CalendarUnit):
+    def save_public_contract(self, contract_x: ContractUnit):
         x_func_save_file(
             dest_dir=self.get_public_dir(),
-            file_name=f"{calendar_x._owner}.json",
-            file_text=calendar_x.get_json(),
+            file_name=f"{contract_x._owner}.json",
+            file_text=contract_x.get_json(),
         )
 
-    def reload_all_actors_src_calendarunits(self):
+    def reload_all_actors_src_contractunits(self):
         for actor_x in self._actorunits.values():
-            actor_x.refresh_depot_calendars()
+            actor_x.refresh_depot_contracts()
 
     def get_public_dir_file_names_list(self):
         return list(x_func_dir_files(dir_path=self.get_public_dir()).keys())
 
-    # calendars_dir to actor_calendars_dir management
-    def _actor_set_depot_calendar(
+    # contracts_dir to actor_contracts_dir management
+    def _actor_set_depot_contract(
         self,
         actorunit: ActorUnit,
-        calendarunit: CalendarUnit,
+        contractunit: ContractUnit,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
-        ignore_calendar: CalendarUnit = None,
+        ignore_contract: ContractUnit = None,
     ):
-        actorunit.set_depot_calendar(
-            calendar_x=calendarunit,
+        actorunit.set_depot_contract(
+            contract_x=contractunit,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
         )
-        if depotlink_type == "ignore" and ignore_calendar != None:
-            actorunit.set_ignore_calendar_file(
-                calendarunit=ignore_calendar, src_calendar_owner=calendarunit._owner
+        if depotlink_type == "ignore" and ignore_contract != None:
+            actorunit.set_ignore_contract_file(
+                contractunit=ignore_contract, src_contract_owner=contractunit._owner
             )
 
     def set_actor_depotlink(
         self,
         actor_name: str,
-        calendar_owner: str,
+        contract_owner: str,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
-        ignore_calendar: CalendarUnit = None,
+        ignore_contract: ContractUnit = None,
     ):
         actor_x = self.get_actor_obj(name=actor_name)
-        calendar_x = self.get_public_calendar(owner=calendar_owner)
-        self._actor_set_depot_calendar(
+        contract_x = self.get_public_contract(owner=contract_owner)
+        self._actor_set_depot_contract(
             actorunit=actor_x,
-            calendarunit=calendar_x,
+            contractunit=contract_x,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
-            ignore_calendar=ignore_calendar,
+            ignore_contract=ignore_contract,
         )
 
-    def create_depotlink_to_generated_calendar(
+    def create_depotlink_to_generated_contract(
         self,
         actor_name: str,
-        calendar_owner: str,
+        contract_owner: str,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
         actor_x = self.get_actor_obj(name=actor_name)
-        calendar_x = CalendarUnit(_owner=calendar_owner)
-        self._actor_set_depot_calendar(
+        contract_x = ContractUnit(_owner=contract_owner)
+        self._actor_set_depot_contract(
             actorunit=actor_x,
-            calendarunit=calendar_x,
+            contractunit=contract_x,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
@@ -459,23 +459,23 @@ class EconomyUnit:
         debtor_weight: str,
     ):
         actor_x = self.get_actor_obj(name=actor_name)
-        calendar_x = self.get_public_calendar(_owner=membername)
-        self._actor_set_depot_calendar(
+        contract_x = self.get_public_contract(_owner=membername)
+        self._actor_set_depot_contract(
             actorunit=actor_x,
-            calendarunit=calendar_x,
+            contractunit=contract_x,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
         )
 
-    def del_depotlink(self, actor_name: str, calendarunit_owner: str):
+    def del_depotlink(self, actor_name: str, contractunit_owner: str):
         actor_x = self.get_actor_obj(name=actor_name)
-        actor_x.del_depot_calendar(calendar_owner=calendarunit_owner)
+        actor_x.del_depot_contract(contract_owner=contractunit_owner)
 
-    # Actor output_calendar
-    def get_output_calendar(self, actor_name: str) -> CalendarUnit:
+    # Actor output_contract
+    def get_output_contract(self, actor_name: str) -> ContractUnit:
         actor_x = self.get_actor_obj(name=actor_name)
-        return actor_x._admin.get_remelded_output_calendar()
+        return actor_x._admin.get_remelded_output_contract()
 
 
 def economyunit_shop(

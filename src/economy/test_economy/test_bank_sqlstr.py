@@ -1,7 +1,7 @@
 from src.economy.economy import economyunit_shop
-from src.calendar.calendar import CalendarUnit
-from src.calendar.member import memberunit_shop
-from src.calendar.road import get_global_root_label as root_label
+from src.contract.contract import ContractUnit
+from src.contract.member import memberunit_shop
+from src.contract.road import get_global_root_label as root_label
 from src.economy.examples.economy_env_kit import (
     get_temp_env_name,
     get_test_economys_dir,
@@ -35,9 +35,9 @@ from src.economy.bank_sqlstr import (
     get_table_count_sqlstr,
 )
 from src.economy.examples.example_actors import (
-    get_3node_calendar,
-    get_6node_calendar,
-    get_calendar_3CleanNodesRandomWeights,
+    get_3node_contract,
+    get_6node_contract,
+    get_contract_3CleanNodesRandomWeights,
 )
 from src.economy.y_func import get_single_result_back
 
@@ -55,21 +55,21 @@ def test_economy_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     bob_text = "bob"
     tim_text = "tim"
-    calendar_x = CalendarUnit(_owner=bob_text)
+    contract_x = ContractUnit(_owner=bob_text)
     memberunit_x = memberunit_shop(
         name=tim_text,
-        _calendar_credit=0.9,
-        _calendar_debt=0.8,
-        _calendar_agenda_credit=0.7,
-        _calendar_agenda_debt=0.6,
-        _calendar_agenda_ratio_credit=0.5,
-        _calendar_agenda_ratio_debt=0.4,
+        _contract_credit=0.9,
+        _contract_debt=0.8,
+        _contract_agenda_credit=0.7,
+        _contract_agenda_debt=0.6,
+        _contract_agenda_ratio_credit=0.5,
+        _contract_agenda_ratio_debt=0.4,
         _creditor_active=True,
         _debtor_active=False,
     )
 
     insert_sqlstr = get_ledger_table_insert_sqlstr(
-        calendar_x=calendar_x, memberunit_x=memberunit_x
+        contract_x=contract_x, memberunit_x=memberunit_x
     )
     print(insert_sqlstr)
 
@@ -85,14 +85,14 @@ def test_economy_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     # THEN
     ledger_x = ledger_dict.get(tim_text)
-    assert ledger_x.calendar_name == bob_text
+    assert ledger_x.contract_name == bob_text
     assert ledger_x.member_name == tim_text
-    assert ledger_x._calendar_credit == 0.9
-    assert ledger_x._calendar_debt == 0.8
-    assert ledger_x._calendar_agenda_credit == 0.7
-    assert ledger_x._calendar_agenda_debt == 0.6
-    assert ledger_x._calendar_agenda_ratio_credit == 0.5
-    assert ledger_x._calendar_agenda_ratio_debt == 0.4
+    assert ledger_x._contract_credit == 0.9
+    assert ledger_x._contract_debt == 0.8
+    assert ledger_x._contract_agenda_credit == 0.7
+    assert ledger_x._contract_agenda_debt == 0.6
+    assert ledger_x._contract_agenda_ratio_credit == 0.5
+    assert ledger_x._contract_agenda_ratio_debt == 0.4
     assert ledger_x._creditor_active
     assert ledger_x._debtor_active == False
 
@@ -109,7 +109,7 @@ def test_RiverFlowUnit_exists():
 
     # WHEN
     river_flow_x = RiverFlowUnit(
-        currency_calendar_name=bob_text,
+        currency_contract_name=bob_text,
         src_name=None,
         dst_name=tom_text,
         currency_start=currency_onset,
@@ -120,7 +120,7 @@ def test_RiverFlowUnit_exists():
     )
 
     # THEN
-    assert river_flow_x.currency_calendar_name == bob_text
+    assert river_flow_x.currency_contract_name == bob_text
     assert river_flow_x.src_name is None
     assert river_flow_x.dst_name == tom_text
     assert river_flow_x.currency_start == currency_onset
@@ -143,7 +143,7 @@ def test_RiverFlowUnit_flow_returned_WorksCorrectly():
 
     # WHEN
     river_flow_x = RiverFlowUnit(
-        currency_calendar_name=bob_text,
+        currency_contract_name=bob_text,
         src_name=sal_text,
         dst_name=tom_text,
         currency_start=currency_onset,
@@ -152,7 +152,7 @@ def test_RiverFlowUnit_flow_returned_WorksCorrectly():
         parent_flow_num=parent_flow_num,
         river_tree_level=river_tree_level,
     )
-    assert river_flow_x.currency_calendar_name != river_flow_x.dst_name
+    assert river_flow_x.currency_contract_name != river_flow_x.dst_name
 
     # THEN
     assert river_flow_x.flow_returned() == False
@@ -175,36 +175,36 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
 
     bob_text = "bob"
     sal_text = "sal"
-    calendar_bob = CalendarUnit(_owner=bob_text)
+    contract_bob = ContractUnit(_owner=bob_text)
     memberunit_sal = memberunit_shop(
         name=sal_text,
-        _calendar_credit=0.9,
-        _calendar_debt=0.8,
-        _calendar_agenda_credit=0.7,
-        _calendar_agenda_debt=0.6,
-        _calendar_agenda_ratio_credit=0.5,
-        _calendar_agenda_ratio_debt=0.4,
+        _contract_credit=0.9,
+        _contract_debt=0.8,
+        _contract_agenda_credit=0.7,
+        _contract_agenda_debt=0.6,
+        _contract_agenda_ratio_credit=0.5,
+        _contract_agenda_ratio_debt=0.4,
         _creditor_active=True,
         _debtor_active=False,
     )
     insert_sqlstr_sal = get_ledger_table_insert_sqlstr(
-        calendar_x=calendar_bob, memberunit_x=memberunit_sal
+        contract_x=contract_bob, memberunit_x=memberunit_sal
     )
 
     tim_text = "tim"
     memberunit_tim = memberunit_shop(
         name=tim_text,
-        _calendar_credit=0.012,
-        _calendar_debt=0.017,
-        _calendar_agenda_credit=0.077,
-        _calendar_agenda_debt=0.066,
-        _calendar_agenda_ratio_credit=0.051,
-        _calendar_agenda_ratio_debt=0.049,
+        _contract_credit=0.012,
+        _contract_debt=0.017,
+        _contract_agenda_credit=0.077,
+        _contract_agenda_debt=0.066,
+        _contract_agenda_ratio_credit=0.051,
+        _contract_agenda_ratio_debt=0.049,
         _creditor_active=True,
         _debtor_active=False,
     )
     insert_sqlstr_tim = get_ledger_table_insert_sqlstr(
-        calendar_x=calendar_bob, memberunit_x=memberunit_tim
+        contract_x=contract_bob, memberunit_x=memberunit_tim
     )
 
     with sx.get_bank_conn() as bank_conn:
@@ -214,7 +214,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
 
     # WHEN
     river_flow_x = RiverFlowUnit(
-        currency_calendar_name=bob_text,
+        currency_contract_name=bob_text,
         src_name=None,
         dst_name=bob_text,
         currency_start=0.225,
@@ -227,7 +227,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
         river_ledger_x = get_river_ledger_unit(bank_conn, river_flow_x)
 
     # THEN
-    assert river_ledger_x.calendar_name == bob_text
+    assert river_ledger_x.contract_name == bob_text
     assert river_ledger_x.currency_onset == 0.225
     assert river_ledger_x.currency_cease == 0.387
     assert river_ledger_x.river_tree_level == 4
@@ -250,7 +250,7 @@ def test_river_flow_insert_CorrectlyPopulatesTable01(
     sal_text = "sal"
 
     river_flow_unit = RiverFlowUnit(
-        currency_calendar_name=bob_text,
+        currency_contract_name=bob_text,
         src_name=tim_text,
         dst_name=sal_text,
         currency_start=0.2,
@@ -265,14 +265,14 @@ def test_river_flow_insert_CorrectlyPopulatesTable01(
     # WHEN
     with sx.get_bank_conn() as bank_conn:
         bank_conn.execute(insert_sqlstr)
-        river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=bob_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_contract_name=bob_text)
         print(f"{river_flows=}")
 
     # THEN
     print(f"{river_flows.keys()=}")
     # for value in river_flows.values():
     flow_0 = river_flows.get(0)
-    assert flow_0.currency_calendar_name == bob_text
+    assert flow_0.currency_contract_name == bob_text
     assert flow_0.src_name == tim_text
     assert flow_0.dst_name == sal_text
     assert flow_0.currency_start == 0.2
@@ -288,26 +288,26 @@ def test_RiverLedgerUnit_Exists():
     sal_text = "sal"
     tom_text = "tom"
     ledger_unit_01 = LedgerUnit(
-        calendar_name=bob_text,
+        contract_name=bob_text,
         member_name=sal_text,
-        _calendar_credit=0.66,
-        _calendar_debt=0.2,
-        _calendar_agenda_credit=0.4,
-        _calendar_agenda_debt=0.15,
-        _calendar_agenda_ratio_credit=0.5,
-        _calendar_agenda_ratio_debt=0.12,
+        _contract_credit=0.66,
+        _contract_debt=0.2,
+        _contract_agenda_credit=0.4,
+        _contract_agenda_debt=0.15,
+        _contract_agenda_ratio_credit=0.5,
+        _contract_agenda_ratio_debt=0.12,
         _creditor_active=True,
         _debtor_active=True,
     )
     ledger_unit_02 = LedgerUnit(
-        calendar_name=bob_text,
+        contract_name=bob_text,
         member_name=tom_text,
-        _calendar_credit=0.05,
-        _calendar_debt=0.09,
-        _calendar_agenda_credit=0.055,
-        _calendar_agenda_debt=0.0715,
-        _calendar_agenda_ratio_credit=0.00995,
-        _calendar_agenda_ratio_debt=0.00012,
+        _contract_credit=0.05,
+        _contract_debt=0.09,
+        _contract_agenda_credit=0.055,
+        _contract_agenda_debt=0.0715,
+        _contract_agenda_ratio_credit=0.00995,
+        _contract_agenda_ratio_debt=0.00012,
         _creditor_active=True,
         _debtor_active=True,
     )
@@ -318,7 +318,7 @@ def test_RiverLedgerUnit_Exists():
 
     # WHEN
     river_ledger_unit = RiverLedgerUnit(
-        calendar_name=bob_text,
+        contract_name=bob_text,
         currency_onset=0.6,
         currency_cease=0.8,
         _ledgers=ledger_dict,
@@ -327,7 +327,7 @@ def test_RiverLedgerUnit_Exists():
     )
 
     # THEN
-    assert river_ledger_unit.calendar_name == bob_text
+    assert river_ledger_unit.contract_name == bob_text
     assert river_ledger_unit.currency_onset == 0.6
     assert river_ledger_unit.currency_cease == 0.8
     assert river_ledger_unit.river_tree_level == 7
@@ -350,34 +350,34 @@ def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
     tom_text = "tom"
     sal_text = "sal"
 
-    calendar_bob = CalendarUnit(_owner=bob_text)
+    contract_bob = ContractUnit(_owner=bob_text)
     memberunit_tom = memberunit_shop(
         name=tom_text,
-        _calendar_credit=0.9,
-        _calendar_debt=0.8,
-        _calendar_agenda_credit=0.7,
-        _calendar_agenda_debt=0.6,
-        _calendar_agenda_ratio_credit=0.5,
-        _calendar_agenda_ratio_debt=0.411,
+        _contract_credit=0.9,
+        _contract_debt=0.8,
+        _contract_agenda_credit=0.7,
+        _contract_agenda_debt=0.6,
+        _contract_agenda_ratio_credit=0.5,
+        _contract_agenda_ratio_debt=0.411,
         _creditor_active=True,
         _debtor_active=False,
     )
     insert_sqlstr_tom = get_ledger_table_insert_sqlstr(
-        calendar_x=calendar_bob, memberunit_x=memberunit_tom
+        contract_x=contract_bob, memberunit_x=memberunit_tom
     )
     memberunit_sal = memberunit_shop(
         name=sal_text,
-        _calendar_credit=0.9,
-        _calendar_debt=0.8,
-        _calendar_agenda_credit=0.7,
-        _calendar_agenda_debt=0.6,
-        _calendar_agenda_ratio_credit=0.5,
-        _calendar_agenda_ratio_debt=0.455,
+        _contract_credit=0.9,
+        _contract_debt=0.8,
+        _contract_agenda_credit=0.7,
+        _contract_agenda_debt=0.6,
+        _contract_agenda_ratio_credit=0.5,
+        _contract_agenda_ratio_debt=0.455,
         _creditor_active=True,
         _debtor_active=False,
     )
     insert_sqlstr_sal = get_ledger_table_insert_sqlstr(
-        calendar_x=calendar_bob, memberunit_x=memberunit_sal
+        contract_x=contract_bob, memberunit_x=memberunit_sal
     )
 
     river_flow_1 = RiverFlowUnit(bob_text, bob_text, tom_text, 0.0, 0.2, 0, None, 1)
@@ -398,7 +398,7 @@ def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
         bank_conn.execute(ss0)
 
     # WHEN
-    mstr_sqlstr = get_river_tmember_table_insert_sqlstr(currency_calendar_name=bob_text)
+    mstr_sqlstr = get_river_tmember_table_insert_sqlstr(currency_contract_name=bob_text)
     with sx.get_bank_conn() as bank_conn:
         print(mstr_sqlstr)
         bank_conn.execute(mstr_sqlstr)
@@ -406,7 +406,7 @@ def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
     # THEN
     with sx.get_bank_conn() as bank_conn:
         river_tmembers = get_river_tmember_dict(
-            bank_conn, currency_calendar_name=bob_text
+            bank_conn, currency_contract_name=bob_text
         )
         print(f"{river_tmembers=}")
 
@@ -450,19 +450,19 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_calendar = CalendarUnit(_owner=sal_text)
-    sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=sal_calendar)
+    sal_contract = ContractUnit(_owner=sal_text)
+    sal_contract.add_memberunit(name=bob_text, creditor_weight=2)
+    sal_contract.add_memberunit(name=tom_text, creditor_weight=7)
+    sal_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=sal_contract)
 
-    bob_calendar = CalendarUnit(_owner=bob_text)
-    bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=bob_calendar)
+    bob_contract = ContractUnit(_owner=bob_text)
+    bob_contract.add_memberunit(name=sal_text, creditor_weight=3)
+    bob_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=bob_contract)
 
     sx.refresh_bank_metrics()
-    sx.set_river_sphere_for_calendar(calendar_name=sal_text)
+    sx.set_river_sphere_for_contract(contract_name=sal_text)
 
     with sx.get_bank_conn() as bank_conn:
         assert len(get_river_bucket_dict(bank_conn, sal_text)) > 0
@@ -493,51 +493,51 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_calendar = CalendarUnit(_owner=sal_text)
-    sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=sal_calendar)
+    sal_contract = ContractUnit(_owner=sal_text)
+    sal_contract.add_memberunit(name=bob_text, creditor_weight=2)
+    sal_contract.add_memberunit(name=tom_text, creditor_weight=7)
+    sal_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=sal_contract)
 
-    bob_calendar = CalendarUnit(_owner=bob_text)
-    bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=bob_calendar)
+    bob_contract = ContractUnit(_owner=bob_text)
+    bob_contract.add_memberunit(name=sal_text, creditor_weight=3)
+    bob_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=bob_contract)
 
-    tom_calendar = CalendarUnit(_owner=tom_text)
-    tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
-    sx.save_public_calendar(calendar_x=tom_calendar)
+    tom_contract = ContractUnit(_owner=tom_text)
+    tom_contract.add_memberunit(name=sal_text, creditor_weight=2)
+    sx.save_public_contract(contract_x=tom_contract)
 
-    ava_calendar = CalendarUnit(_owner=ava_text)
-    ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
-    sx.save_public_calendar(calendar_x=ava_calendar)
+    ava_contract = ContractUnit(_owner=ava_text)
+    ava_contract.add_memberunit(name=elu_text, creditor_weight=2)
+    sx.save_public_contract(contract_x=ava_contract)
 
-    elu_calendar = CalendarUnit(_owner=elu_text)
-    elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
-    elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=elu_calendar)
+    elu_contract = ContractUnit(_owner=elu_text)
+    elu_contract.add_memberunit(name=ava_text, creditor_weight=19)
+    elu_contract.add_memberunit(name=sal_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
-    sx.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=100)
+    sx.set_river_sphere_for_contract(contract_name=sal_text, max_flows_count=100)
     with sx.get_bank_conn() as bank_conn:
         bank_conn.execute(get_river_bucket_table_delete_sqlstr(sal_text))
         assert (
-            len(get_river_bucket_dict(bank_conn, currency_calendar_name=sal_text)) == 0
+            len(get_river_bucket_dict(bank_conn, currency_contract_name=sal_text)) == 0
         )
 
     # WHEN / THEN
-    mstr_sqlstr = get_river_bucket_table_insert_sqlstr(currency_calendar_name=sal_text)
+    mstr_sqlstr = get_river_bucket_table_insert_sqlstr(currency_contract_name=sal_text)
     with sx.get_bank_conn() as bank_conn:
         print(mstr_sqlstr)
         bank_conn.execute(mstr_sqlstr)
-        # river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
+        # river_flows = get_river_flow_dict(bank_conn, currency_contract_name=sal_text)
         # for river_flow in river_flows.values():
         #     print(f"{river_flow=}")
 
     # THEN
     with sx.get_bank_conn() as bank_conn:
         river_buckets = get_river_bucket_dict(
-            bank_conn, currency_calendar_name=sal_text
+            bank_conn, currency_contract_name=sal_text
         )
         # for river_bucket in river_buckets.values():
         #     print(f"huh {river_bucket=}")
@@ -584,7 +584,7 @@ def test_economy_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     # WHEN
     water_road = f"{root_label()},elements,water"
-    water_idea_catalog = IdeaCatalog(calendar_name=bob_text, idea_road=water_road)
+    water_idea_catalog = IdeaCatalog(contract_name=bob_text, idea_road=water_road)
     water_insert_sqlstr = get_idea_catalog_table_insert_sqlstr(water_idea_catalog)
     with sx.get_bank_conn() as bank_conn:
         print(water_insert_sqlstr)
@@ -605,15 +605,15 @@ def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup
     bob_text = "bob"
     sal_text = "sal"
     tim_text = "tim"
-    bob_calendar = get_3node_calendar()
-    tim_calendar = get_6node_calendar()
-    sal_calendar = get_calendar_3CleanNodesRandomWeights()
-    bob_calendar.set_owner(new_owner=bob_text)
-    tim_calendar.set_owner(new_owner=tim_text)
-    sal_calendar.set_owner(new_owner=sal_text)
-    sx.save_public_calendar(calendar_x=bob_calendar)
-    sx.save_public_calendar(calendar_x=tim_calendar)
-    sx.save_public_calendar(calendar_x=sal_calendar)
+    bob_contract = get_3node_contract()
+    tim_contract = get_6node_contract()
+    sal_contract = get_contract_3CleanNodesRandomWeights()
+    bob_contract.set_owner(new_owner=bob_text)
+    tim_contract.set_owner(new_owner=tim_text)
+    sal_contract.set_owner(new_owner=sal_text)
+    sx.save_public_contract(contract_x=bob_contract)
+    sx.save_public_contract(contract_x=tim_contract)
+    sx.save_public_contract(contract_x=sal_contract)
 
     with sx.get_bank_conn() as bank_conn:
         assert get_idea_catalog_table_count(bank_conn, bob_text) == 0
@@ -640,18 +640,18 @@ def test_economy_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup)
     sal_text = "sal"
     tim_text = "tim"
     elu_text = "elu"
-    bob_calendar = get_3node_calendar()
-    tim_calendar = get_6node_calendar()
-    sal_calendar = get_calendar_3CleanNodesRandomWeights()
-    elu_calendar = get_6node_calendar()
-    bob_calendar.set_owner(new_owner=bob_text)
-    tim_calendar.set_owner(new_owner=tim_text)
-    sal_calendar.set_owner(new_owner=sal_text)
-    elu_calendar.set_owner(new_owner=elu_text)
-    sx.save_public_calendar(calendar_x=bob_calendar)
-    sx.save_public_calendar(calendar_x=tim_calendar)
-    sx.save_public_calendar(calendar_x=sal_calendar)
-    sx.save_public_calendar(calendar_x=elu_calendar)
+    bob_contract = get_3node_contract()
+    tim_contract = get_6node_contract()
+    sal_contract = get_contract_3CleanNodesRandomWeights()
+    elu_contract = get_6node_contract()
+    bob_contract.set_owner(new_owner=bob_text)
+    tim_contract.set_owner(new_owner=tim_text)
+    sal_contract.set_owner(new_owner=sal_text)
+    elu_contract.set_owner(new_owner=elu_text)
+    sx.save_public_contract(contract_x=bob_contract)
+    sx.save_public_contract(contract_x=tim_contract)
+    sx.save_public_contract(contract_x=sal_contract)
+    sx.save_public_contract(contract_x=elu_contract)
     sx.refresh_bank_metrics()
     i_count_sqlstr = get_table_count_sqlstr("idea_catalog")
     with sx.get_bank_conn() as bank_conn:
@@ -685,7 +685,7 @@ def test_economy_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTabl
 
     # WHEN
     weather_rain = AcptFactCatalog(
-        calendar_name=bob_text,
+        contract_name=bob_text,
         base=f"{root_label()},weather",
         pick=f"{root_label()},weather,rain",
     )
@@ -709,38 +709,38 @@ def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
-    # TODO create 3 calendars with varying numbers of acpt facts
+    # TODO create 3 contracts with varying numbers of acpt facts
     bob_text = "bob"
     sal_text = "sal"
     tim_text = "tim"
-    bob_calendar = get_3node_calendar()
-    tim_calendar = get_6node_calendar()
-    sal_calendar = get_calendar_3CleanNodesRandomWeights()
-    bob_calendar.set_owner(new_owner=bob_text)
-    tim_calendar.set_owner(new_owner=tim_text)
-    sal_calendar.set_owner(new_owner=sal_text)
+    bob_contract = get_3node_contract()
+    tim_contract = get_6node_contract()
+    sal_contract = get_contract_3CleanNodesRandomWeights()
+    bob_contract.set_owner(new_owner=bob_text)
+    tim_contract.set_owner(new_owner=tim_text)
+    sal_contract.set_owner(new_owner=sal_text)
     c_text = "C"
-    c_road = f"{tim_calendar._owner},{c_text}"
+    c_road = f"{tim_contract._owner},{c_text}"
     f_text = "F"
     f_road = f"{c_road},{f_text}"
     b_text = "B"
-    b_road = f"{tim_calendar._owner},{b_text}"
-    # for idea_x in tim_calendar._idea_dict.values():
+    b_road = f"{tim_contract._owner},{b_text}"
+    # for idea_x in tim_contract._idea_dict.values():
     #     print(f"{f_road=} {idea_x.get_road()=}")
-    tim_calendar.set_acptfact(base=c_road, pick=f_road)
+    tim_contract.set_acptfact(base=c_road, pick=f_road)
 
-    bob_calendar.set_acptfact(base=c_road, pick=f_road)
-    bob_calendar.set_acptfact(base=b_road, pick=b_road)
+    bob_contract.set_acptfact(base=c_road, pick=f_road)
+    bob_contract.set_acptfact(base=b_road, pick=b_road)
 
     casa_text = "casa"
-    casa_road = f"{sal_calendar._owner},{casa_text}"
+    casa_road = f"{sal_contract._owner},{casa_text}"
     cookery_text = "clean cookery"
     cookery_road = f"{casa_road},{cookery_text}"
-    sal_calendar.set_acptfact(base=cookery_road, pick=cookery_road)
+    sal_contract.set_acptfact(base=cookery_road, pick=cookery_road)
 
-    sx.save_public_calendar(calendar_x=bob_calendar)
-    sx.save_public_calendar(calendar_x=tim_calendar)
-    sx.save_public_calendar(calendar_x=sal_calendar)
+    sx.save_public_contract(contract_x=bob_contract)
+    sx.save_public_contract(contract_x=tim_contract)
+    sx.save_public_contract(contract_x=sal_contract)
 
     with sx.get_bank_conn() as bank_conn:
         assert get_acptfact_catalog_table_count(bank_conn, bob_text) == 0
@@ -777,7 +777,7 @@ def test_economy_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTab
 
     # WHEN
     bob_group_x = GroupUnitCatalog(
-        calendar_name=bob_text,
+        contract_name=bob_text,
         groupunit_name="US Dollar",
         memberlinks_set_by_economy_road=f"{root_label()},USA",
     )
@@ -802,13 +802,13 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     bob_text = "bob"
     tom_text = "tom"
     elu_text = "elu"
-    bob_calendar = CalendarUnit(_owner=bob_text)
-    tom_calendar = CalendarUnit(_owner=tom_text)
-    bob_calendar.add_memberunit(name=tom_text)
-    tom_calendar.add_memberunit(name=bob_text)
-    tom_calendar.add_memberunit(name=elu_text)
-    sx.save_public_calendar(calendar_x=bob_calendar)
-    sx.save_public_calendar(calendar_x=tom_calendar)
+    bob_contract = ContractUnit(_owner=bob_text)
+    tom_contract = ContractUnit(_owner=tom_text)
+    bob_contract.add_memberunit(name=tom_text)
+    tom_contract.add_memberunit(name=bob_text)
+    tom_contract.add_memberunit(name=elu_text)
+    sx.save_public_contract(contract_x=bob_contract)
+    sx.save_public_contract(contract_x=tom_contract)
     sx.refresh_bank_metrics()
     sqlstr = get_table_count_sqlstr("groupunit_catalog")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr) == 3
@@ -820,9 +820,9 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
 
     # THEN
     assert len(groupunit_catalog_dict) == 3
-    bob_calendar_tom_group = f"{bob_text} {tom_text}"
-    tom_calendar_bob_group = f"{tom_text} {bob_text}"
-    tom_calendar_elu_group = f"{tom_text} {elu_text}"
-    assert groupunit_catalog_dict.get(bob_calendar_tom_group) != None
-    assert groupunit_catalog_dict.get(tom_calendar_bob_group) != None
-    assert groupunit_catalog_dict.get(tom_calendar_elu_group) != None
+    bob_contract_tom_group = f"{bob_text} {tom_text}"
+    tom_contract_bob_group = f"{tom_text} {bob_text}"
+    tom_contract_elu_group = f"{tom_text} {elu_text}"
+    assert groupunit_catalog_dict.get(bob_contract_tom_group) != None
+    assert groupunit_catalog_dict.get(tom_contract_bob_group) != None
+    assert groupunit_catalog_dict.get(tom_contract_elu_group) != None

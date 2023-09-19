@@ -3,9 +3,9 @@ from ui.EconomyMainUI import Ui_MainWindow
 from Edit5Issue import Edit5Issue
 from EditMain import EditMainView
 from PyQt5 import QtCore as qtc
-from src.calendar.calendar import (
-    CalendarUnit,
-    get_from_json as get_calendar_from_json,
+from src.contract.contract import (
+    ContractUnit,
+    get_from_json as get_contract_from_json,
 )
 from sys import argv as sys_argv, exit as sys_exit
 from PyQt5.QtWidgets import (
@@ -23,12 +23,12 @@ from src.economy.examples.economy_env_kit import (
     get_test_economys_dir,
 )
 
-from src.calendar.member import get_depotlink_types
-from src.calendar.x_func import (
+from src.contract.member import get_depotlink_types
+from src.contract.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
 )
-from src.pyqt5_kit.pyqt_func import calendar_importance_diplay
+from src.pyqt5_kit.pyqt_func import contract_importance_diplay
 
 
 class MainApp(QApplication):
@@ -51,11 +51,11 @@ class MainApp(QApplication):
         self.main_window.open_edit5issue.connect(self.edit5issue_show)
 
     def editmain_show(self):
-        if self.main_window.ignore_calendar_x is None:
-            self.main_window.isol = self.main_window.actor_x._admin.open_isol_calendar()
-            self.editmain_view.calendar_x = self.main_window.isol
+        if self.main_window.ignore_contract_x is None:
+            self.main_window.isol = self.main_window.actor_x._admin.open_isol_contract()
+            self.editmain_view.contract_x = self.main_window.isol
         else:
-            self.editmain_view.calendar_x = self.main_window.ignore_calendar_x
+            self.editmain_view.contract_x = self.main_window.ignore_contract_x
         self.editmain_view.refresh_all()
         self.editmain_view.show()
 
@@ -82,26 +82,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.economy_load_button.clicked.connect(self.economy_load_from_file)
         self.economy_update_button.clicked.connect(self.economy_update_name)
         self.economy_delete_button.clicked.connect(self.economy_delete)
-        self.calendar_insert_button.clicked.connect(self.calendar_insert)
-        self.calendar_update_button.clicked.connect(self.calendar_update_name)
-        self.calendar_delete_button.clicked.connect(self.calendar_delete)
-        self.calendars_table.itemClicked.connect(self.calendars_table_select)
+        self.contract_insert_button.clicked.connect(self.contract_insert)
+        self.contract_update_button.clicked.connect(self.contract_update_name)
+        self.contract_delete_button.clicked.connect(self.contract_delete)
+        self.contracts_table.itemClicked.connect(self.contracts_table_select)
         self.actor_insert_button.clicked.connect(self.actor_insert)
         self.actor_update_button.clicked.connect(self.actor_update_name)
         self.actor_delete_button.clicked.connect(self.actor_delete)
         self.actors_table.itemClicked.connect(self.actors_table_select)
-        self.reload_all_src_calendars_button.clicked.connect(
-            self.reload_all_src_calendars
+        self.reload_all_src_contracts_button.clicked.connect(
+            self.reload_all_src_contracts
         )
-        self.set_public_calendar_button.clicked.connect(
-            self.save_output_calendar_to_public()
+        self.set_public_contract_button.clicked.connect(
+            self.save_output_contract_to_public()
         )
         self.set_public_and_reload_srcs_button.clicked.connect(
             self.set_public_and_reload_srcs
         )
         self.ignores_table.itemClicked.connect(self.ignores_table_select)
         self.open_ignore_button.clicked.connect(self.open_editmain)
-        self.save_ignore_button.clicked.connect(self.ignore_calendar_file_update)
+        self.save_ignore_button.clicked.connect(self.ignore_contract_file_update)
         self.ignores_table.setHidden(True)
         self.show_ignores_button.clicked.connect(self.show_ignores_table)
         self.show_digests_button.clicked.connect(self.show_digests_table)
@@ -116,7 +116,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.economy_x = None
         self.actor_x = None
-        self.ignore_calendar_x = None
+        self.ignore_contract_x = None
         setup_test_example_environment()
         first_env = "ex5"
         self.economy_x = economyunit_shop(
@@ -129,20 +129,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def save_isol(self):
         if self.isol != None:
-            self.actor_x._admin.save_isol_calendar(self.isol)
+            self.actor_x._admin.save_isol_contract(self.isol)
         self.refresh_actor()
 
-    def reload_all_src_calendars(self):
+    def reload_all_src_contracts(self):
         if self.economy_x != None:
-            self.economy_x.reload_all_actors_src_calendarunits()
+            self.economy_x.reload_all_actors_src_contractunits()
 
     def set_public_and_reload_srcs(self):
-        self.save_output_calendar_to_public()
-        self.reload_all_src_calendars()
+        self.save_output_contract_to_public()
+        self.reload_all_src_contracts()
 
-    def save_output_calendar_to_public(self):
+    def save_output_contract_to_public(self):
         if self.actor_x != None:
-            self.actor_x.save_output_calendar_to_public()
+            self.actor_x.save_output_contract_to_public()
         self.refresh_economy()
 
     def economy_load_from_file(self):
@@ -154,18 +154,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.economy_name.setText(economy_selected)
         self.refresh_economy()
 
-    def calendars_table_select(self):
-        self.calendar_name.setText(
-            self.calendars_table.item(self.calendars_table.currentRow(), 0).text()
+    def contracts_table_select(self):
+        self.contract_name.setText(
+            self.contracts_table.item(self.contracts_table.currentRow(), 0).text()
         )
         if self.actors_table.currentRow() != -1:
             selected_actor = self.actors_table.item(
                 self.actors_table.currentRow(), 0
             ).text()
-            selected_calendar = self.calendars_table.item(
-                self.calendars_table.currentRow(), 0
+            selected_contract = self.contracts_table.item(
+                self.contracts_table.currentRow(), 0
             ).text()
-            self.depotlink_name.setText(f"{selected_actor} - {selected_calendar}")
+            self.depotlink_name.setText(f"{selected_actor} - {selected_contract}")
 
     def actors_table_select(self):
         actor_x_name = self.actors_table.item(self.actors_table.currentRow(), 0).text()
@@ -189,18 +189,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
 
     def ignores_table_select(self):
-        ignore_calendar_owner = self.ignores_table.item(
+        ignore_contract_owner = self.ignores_table.item(
             self.ignores_table.currentRow(), 0
         ).text()
-        # self.ignore_calendar_x = self.economy_x.get_public_calendar(
-        self.ignore_calendar_x = self.economy_x.get_calendar_from_ignores_dir(
-            actor_name=self.actor_x._admin.name, _owner=ignore_calendar_owner
+        # self.ignore_contract_x = self.economy_x.get_public_contract(
+        self.ignore_contract_x = self.economy_x.get_contract_from_ignores_dir(
+            actor_name=self.actor_x._admin.name, _owner=ignore_contract_owner
         )
-        self.edit_calendar = self.ignore_calendar_x
+        self.edit_contract = self.ignore_contract_x
 
-    def ignore_calendar_file_update(self):
-        self.economy_x.set_ignore_calendar_file(
-            actor_name=self.actor_x._admin.name, calendar_obj=self.ignore_calendar_x
+    def ignore_contract_file_update(self):
+        self.economy_x.set_ignore_contract_file(
+            actor_name=self.actor_x._admin.name, contract_obj=self.ignore_contract_x
         )
         self.refresh_actor()
 
@@ -228,27 +228,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.economy_name_combo_refresh()
         self.refresh_economy()
 
-    def calendar_insert(self):
-        self.economy_x.save_public_calendar(
-            calendar_x=CalendarUnit(_owner=self.calendar_name.text())
+    def contract_insert(self):
+        self.economy_x.save_public_contract(
+            contract_x=ContractUnit(_owner=self.contract_name.text())
         )
         self.refresh_economy()
 
-    def calendar_update_name(self):
-        currently_selected = self.calendars_table.item(
-            self.calendars_table.currentRow(), 0
+    def contract_update_name(self):
+        currently_selected = self.contracts_table.item(
+            self.contracts_table.currentRow(), 0
         ).text()
-        typed_in = self.calendar_name.text()
+        typed_in = self.contract_name.text()
         if currently_selected != typed_in:
-            self.economy_x.rename_public_calendar(
+            self.economy_x.rename_public_contract(
                 old_label=currently_selected, new_label=typed_in
             )
             self.refresh_economy()
 
-    def calendar_delete(self):
-        self.economy_x.del_public_calendar(
-            calendar_x_label=self.calendars_table.item(
-                self.calendars_table.currentRow(), 0
+    def contract_delete(self):
+        self.economy_x.del_public_contract(
+            contract_x_label=self.contracts_table.item(
+                self.contracts_table.currentRow(), 0
             ).text()
         )
         self.refresh_economy()
@@ -275,17 +275,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_actors()
 
     def depotlink_insert(self):
-        calendar_owner = self.calendars_table.item(
-            self.calendars_table.currentRow(), 0
+        contract_owner = self.contracts_table.item(
+            self.contracts_table.currentRow(), 0
         ).text()
         if self.actor_x != None:
-            calendar_json = x_func_open_file(
-                dest_dir=self.actor_x._admin._calendars_public_dir,
-                file_name=f"{calendar_owner}.json",
+            contract_json = x_func_open_file(
+                dest_dir=self.actor_x._admin._contracts_public_dir,
+                file_name=f"{contract_owner}.json",
             )
-            calendar_x = get_calendar_from_json(calendar_json)
-            self.actor_x.set_depot_calendar(
-                calendar_x=calendar_x,
+            contract_x = get_contract_from_json(contract_json)
+            self.actor_x.set_depot_contract(
+                contract_x=contract_x,
                 depotlink_type=self.depotlink_type_combo.currentText(),
                 depotlink_weight=self.depotlink_weight.text(),
             )
@@ -307,19 +307,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def depotlink_delete(self):
         actor_name_x = self.actor_x._admin.name
         self.economy_x.del_depotlink(
-            actor_name=actor_name_x, calendarunit_owner=self.depotlink_name.text()
+            actor_name=actor_name_x, contractunit_owner=self.depotlink_name.text()
         )
         self.economy_x.save_actor_file(actor_name=actor_name_x)
         self.refresh_actor()
 
-    def get_calendar_owner_list(self):
-        calendars_list = []
+    def get_contract_owner_list(self):
+        contracts_list = []
         for file_name in self.get_public_dir_file_names_list():
-            calendar_json = x_func_open_file(
+            contract_json = x_func_open_file(
                 dest_dir=self.get_public_dir(), file_name=file_name
             )
-            calendars_list.append(get_calendar_from_json(cx_json=calendar_json))
-        return calendars_list
+            contracts_list.append(get_contract_from_json(cx_json=contract_json))
+        return contracts_list
 
     def get_actor_name_list(self):
         actors_owner_list = []
@@ -334,7 +334,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.actor_x != None:
             for cl_val in self.actor_x._depotlinks.values():
                 depotlink_row = [
-                    cl_val.calendar_owner,
+                    cl_val.contract_owner,
                     cl_val.depotlink_type,
                     str(cl_val.weight),
                 ]
@@ -345,7 +345,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         x_list = []
         if self.actor_x != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.actor_x_admin._calendars_digest_dir,
+                dir_path=self.actor_x_admin._contracts_digest_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -357,7 +357,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         x_list = []
         if self.actor_x != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.actor_x._admin._calendars_ignore_dir,
+                dir_path=self.actor_x._admin._contracts_ignore_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -367,16 +367,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_ideas_list(self):
         x_list = []
-        if self.actor_output_calendar != None:
-            idea_list = self.actor_output_calendar.get_idea_tree_ordered_road_list()
+        if self.actor_output_contract != None:
+            idea_list = self.actor_output_contract.get_idea_tree_ordered_road_list()
 
             for idea_road in idea_list:
-                idea_obj = self.actor_output_calendar.get_idea_kid(idea_road)
+                idea_obj = self.actor_output_contract.get_idea_kid(idea_road)
 
                 if idea_obj._walk.find("time") != 3:
                     x_list.append(
                         [
-                            calendar_importance_diplay(idea_obj._calendar_importance),
+                            contract_importance_diplay(idea_obj._contract_importance),
                             idea_road,
                             len(idea_obj._grouplinks),
                         ]
@@ -386,36 +386,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_members_list(self):
         x_list = []
-        if self.actor_output_calendar != None:
+        if self.actor_output_contract != None:
             x_list.extend(
                 [
-                    f"{calendar_importance_diplay(memberunit._calendar_credit)}/{calendar_importance_diplay(memberunit._calendar_debt)}",
+                    f"{contract_importance_diplay(memberunit._contract_credit)}/{contract_importance_diplay(memberunit._contract_debt)}",
                     memberunit.name,
                     f"{memberunit.creditor_weight}/{memberunit.debtor_weight}",
                 ]
-                for memberunit in self.actor_output_calendar._members.values()
+                for memberunit in self.actor_output_contract._members.values()
             )
         return x_list
 
     def get_p_groups_list(self):
         x_list = []
-        if self.actor_output_calendar != None:
+        if self.actor_output_contract != None:
             x_list.extend(
                 [
-                    f"{calendar_importance_diplay(groupunit._calendar_debt)}/{calendar_importance_diplay(groupunit._calendar_credit)}",
+                    f"{contract_importance_diplay(groupunit._contract_debt)}/{contract_importance_diplay(groupunit._contract_credit)}",
                     groupunit.name,
                     len(groupunit._members),
                 ]
-                for groupunit in self.actor_output_calendar._groups.values()
+                for groupunit in self.actor_output_contract._groups.values()
             )
         return x_list
 
     def get_p_acptfacts_list(self):
         x_list = []
-        if self.actor_output_calendar != None:
+        if self.actor_output_contract != None:
             for (
                 acptfactunit
-            ) in self.actor_output_calendar._idearoot._acptfactunits.values():
+            ) in self.actor_output_contract._idearoot._acptfactunits.values():
                 open_nigh = ""
                 if acptfactunit.open is None and acptfactunit.nigh is None:
                     open_nigh = ""
@@ -433,12 +433,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_agenda_list(self):
         x_list = []
-        if self.actor_output_calendar != None:
-            agenda_list = self.actor_output_calendar.get_agenda_items()
-            agenda_list.sort(key=lambda x: x._calendar_importance, reverse=True)
+        if self.actor_output_contract != None:
+            agenda_list = self.actor_output_contract.get_agenda_items()
+            agenda_list.sort(key=lambda x: x._contract_importance, reverse=True)
             x_list.extend(
                 [
-                    calendar_importance_diplay(agenda_item._calendar_importance),
+                    contract_importance_diplay(agenda_item._contract_importance),
                     agenda_item._label,
                     agenda_item._walk,
                 ]
@@ -460,9 +460,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.depotlink_type_combo.setCurrentText("")
         column_header = ""
         if self.actor_x is None:
-            column_header = "Calendarlinks Table"
+            column_header = "Contractlinks Table"
         elif self.actor_x != None:
-            column_header = f"'{self.actor_x._admin.name}' Calendarlinks"
+            column_header = f"'{self.actor_x._admin.name}' Contractlinks"
         self.refresh_x(
             self.depotlinks_table,
             [column_header, "Link Type", "Weight"],
@@ -484,13 +484,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         p_ideas_list = self.get_p_ideas_list()
         if len(p_ideas_list) >= 0:
             column_headers = [
-                "calendar_importance",
+                "contract_importance",
                 f"Ideas Table ({len(p_ideas_list)})",
                 "grouplinks",
             ]
         else:
             column_headers = [
-                "calendar_importance",
+                "contract_importance",
                 "Ideas Table",
                 "grouplinks",
             ]
@@ -509,7 +509,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _sub_refresh_p_members_table(self):
         p_members_list = self.get_p_members_list()
         column_headers = [
-            "calendar_debt/calendar_credit",
+            "contract_debt/contract_credit",
             f"Members ({len(p_members_list)})",
             "creditor_weight/debtor_weight",
         ]
@@ -524,7 +524,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _sub_refresh_p_groups_table(self):
         p_groups_list = self.get_p_groups_list()
         column_headers = [
-            "calendar_debt/calendar_credit",
+            "contract_debt/contract_credit",
             f"groups ({len(p_groups_list)})",
             "Members",
         ]
@@ -550,7 +550,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _sub_refresh_p_agenda_table(self):
         p_agenda_list = self.get_p_agenda_list()
         column_headers = [
-            "calendar_importance",
+            "contract_importance",
             f"Agenda ({len(p_agenda_list)})",
             "Idea Walk",
         ]
@@ -575,10 +575,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._sub_refresh_depotlinks_table()
         self._sub_refresh_digests_table()
         self._sub_refresh_ignores_table()
-        self.actor_output_calendar = None
+        self.actor_output_contract = None
         if self.actor_x != None:
-            self.actor_output_calendar = (
-                self.actor_x._admin.get_remelded_output_calendar()
+            self.actor_output_contract = (
+                self.actor_x._admin.get_remelded_output_contract()
             )
         self._sub_refresh_p_ideas_table()
         self._sub_refresh_p_members_table()
@@ -588,7 +588,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def refresh_economy(self):
         self.refresh_x(
-            self.calendars_table, ["Calendars Table"], self.get_calendar_owner_list()
+            self.contracts_table, ["Contracts Table"], self.get_contract_owner_list()
         )
         self.refresh_actors()
 

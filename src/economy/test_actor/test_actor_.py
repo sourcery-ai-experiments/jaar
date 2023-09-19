@@ -1,15 +1,15 @@
 from src.economy.actor import actorunit_shop
-from src.calendar.calendar import CalendarUnit
-from src.calendar.idea import IdeaRoot
+from src.contract.contract import ContractUnit
+from src.contract.idea import IdeaRoot
 import src.economy.examples.example_actors as example_actors
 from src.economy.examples.actor_env_kit import (
     actor_dir_setup_cleanup,
     get_temp_actor_dir,
-    create_calendar_file,
+    create_contract_file,
 )
 from os import path as os_path, scandir as os_scandir
 from pytest import raises as pytest_raises
-from src.calendar.x_func import (
+from src.contract.x_func import (
     count_files as x_func_count_files,
     open_file as x_func_open_file,
     delete_dir as x_func_delete_dir,
@@ -29,49 +29,49 @@ def test_actorunit_exists(actor_dir_setup_cleanup):
     assert ux._isol is None
 
 
-def test_actorunit_auto_output_to_public_SavesCalendarToPublicDirWhenTrue(
+def test_actorunit_auto_output_to_public_SavesContractToPublicDirWhenTrue(
     actor_dir_setup_cleanup,
 ):
     # GIVEN
     env_dir = get_temp_actor_dir()
     tim_text = "Tim"
     public_file_name = f"{tim_text}.json"
-    public_file_path = f"{get_temp_actor_dir()}/calendars/{public_file_name}"
+    public_file_path = f"{get_temp_actor_dir()}/contracts/{public_file_name}"
     print(f"{public_file_path=}")
-    # public_file_path = f"src/economy/examples/ex_env/calendars/{public_file_name}"
+    # public_file_path = f"src/economy/examples/ex_env/contracts/{public_file_name}"
     ux = actorunit_shop(tim_text, env_dir, _auto_output_to_public=True)
     ux.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
 
     # WHEN
-    ux.set_depot_calendar(CalendarUnit(_owner=tim_text), "blind_trust")
+    ux.set_depot_contract(ContractUnit(_owner=tim_text), "blind_trust")
 
     # THEN
     assert os_path.exists(public_file_path)
 
 
-def test_actorunit_auto_output_to_public_DoesNotSaveCalendarToPublicDirWhenFalse(
+def test_actorunit_auto_output_to_public_DoesNotSaveContractToPublicDirWhenFalse(
     actor_dir_setup_cleanup,
 ):
     # GIVEN
     env_dir = get_temp_actor_dir()
     tim_text = "Tim"
     public_file_name = f"{tim_text}.json"
-    public_file_path = f"{get_temp_actor_dir()}/calendars/{public_file_name}"
+    public_file_path = f"{get_temp_actor_dir()}/contracts/{public_file_name}"
     print(f"{public_file_path=}")
-    # public_file_path = f"src/economy/examples/ex_env/calendars/{public_file_name}"
+    # public_file_path = f"src/economy/examples/ex_env/contracts/{public_file_name}"
     ux = actorunit_shop(tim_text, env_dir, _auto_output_to_public=False)
     ux.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
 
     # WHEN
-    ux.set_depot_calendar(CalendarUnit(_owner=tim_text), depotlink_type="blind_trust")
+    ux.set_depot_contract(ContractUnit(_owner=tim_text), depotlink_type="blind_trust")
 
     # THEN
     assert os_path.exists(public_file_path) is False
 
 
-def test_actorunit_get_isol_createsEmptyCalendarWhenFileDoesNotExist(
+def test_actorunit_get_isol_createsEmptyContractWhenFileDoesNotExist(
     actor_dir_setup_cleanup,
 ):
     # GIVEN
@@ -91,7 +91,7 @@ def test_actorunit_get_isol_createsEmptyCalendarWhenFileDoesNotExist(
     assert tim_ux._isol != None
 
 
-def test_actorunit_get_isol_getsMemoryCalendarIfExists(
+def test_actorunit_get_isol_getsMemoryContractIfExists(
     actor_dir_setup_cleanup,
 ):
     # GIVEN
@@ -105,7 +105,7 @@ def test_actorunit_get_isol_getsMemoryCalendarIfExists(
 
     # WHEN
     ray_text = "Ray"
-    tim_ux._isol = CalendarUnit(_owner=ray_text)
+    tim_ux._isol = ContractUnit(_owner=ray_text)
     cx_isol2 = tim_ux.get_isol()
 
     # THEN
@@ -121,7 +121,7 @@ def test_actorunit_get_isol_getsMemoryCalendarIfExists(
     assert cx_isol3 == cx_isol1
 
 
-def test_actorunit_set_isol_savesIsolCalendarSet_isol_None(
+def test_actorunit_set_isol_savesIsolContractSet_isol_None(
     actor_dir_setup_cleanup,
 ):
     # GIVEN
@@ -145,7 +145,7 @@ def test_actorunit_set_isol_savesIsolCalendarSet_isol_None(
     assert cx_isol2._idearoot._uid == uid_text
 
 
-def test_actorunit_set_isol_savesGivenCalendarSet_isol_None(
+def test_actorunit_set_isol_savesGivenContractSet_isol_None(
     actor_dir_setup_cleanup,
 ):
     # GIVEN
@@ -161,8 +161,8 @@ def test_actorunit_set_isol_savesGivenCalendarSet_isol_None(
     isol_uid_text = "this is ._isol uid"
     ux._isol._idearoot._uid = isol_uid_text
 
-    new_cx = CalendarUnit(_owner=tim_text)
-    new_cx_uid_text = "this is pulled CalendarUnit uid"
+    new_cx = ContractUnit(_owner=tim_text)
+    new_cx_uid_text = "this is pulled ContractUnit uid"
     new_cx._idearoot._uid = new_cx_uid_text
 
     ux.set_isol(new_cx)
@@ -197,8 +197,8 @@ def test_actorunit_set_isol_if_emtpy_DoesNotReplace_isol(
     tim_text = "Tim"
     ux = actorunit_shop(tim_text, get_temp_actor_dir())
     ux.create_core_dir_and_files()
-    saved_cx = CalendarUnit(_owner=tim_text)
-    saved_cx_uid_text = "this is pulled CalendarUnit uid"
+    saved_cx = ContractUnit(_owner=tim_text)
+    saved_cx_uid_text = "this is pulled ContractUnit uid"
     saved_cx._idearoot._uid = saved_cx_uid_text
     ux.set_isol(saved_cx)
     ux.get_isol()

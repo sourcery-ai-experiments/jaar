@@ -1,8 +1,8 @@
-from src.calendar.calendar import CalendarUnit
-from src.calendar.member import MemberUnit
-from src.calendar.road import get_road_without_root_node
+from src.contract.contract import ContractUnit
+from src.contract.member import MemberUnit
+from src.contract.road import get_road_without_root_node
 from src.economy.y_func import sqlite_bool, sqlite_null
-from src.calendar.road import Road
+from src.contract.road import Road
 from dataclasses import dataclass
 from sqlite3 import Connection
 
@@ -11,10 +11,10 @@ def get_table_count_sqlstr(table_name: str) -> str:
     return f"SELECT COUNT(*) FROM {table_name}"
 
 
-def get_river_flow_table_delete_sqlstr(currency_calendar_name: str) -> str:
+def get_river_flow_table_delete_sqlstr(currency_contract_name: str) -> str:
     return f"""
         DELETE FROM river_flow
-        WHERE currency_name = '{currency_calendar_name}' 
+        WHERE currency_name = '{currency_contract_name}' 
         ;
     """
 
@@ -30,9 +30,9 @@ def get_river_flow_table_create_sqlstr() -> str:
         , flow_num INT NOT NULL
         , parent_flow_num INT NULL
         , river_tree_level INT NOT NULL
-        , FOREIGN KEY(currency_name) REFERENCES calendarunits(name)
-        , FOREIGN KEY(src_name) REFERENCES calendarunits(name)
-        , FOREIGN KEY(dst_name) REFERENCES calendarunits(name)
+        , FOREIGN KEY(currency_name) REFERENCES contractunits(name)
+        , FOREIGN KEY(src_name) REFERENCES contractunits(name)
+        , FOREIGN KEY(dst_name) REFERENCES contractunits(name)
         )
         ;
     """
@@ -40,7 +40,7 @@ def get_river_flow_table_create_sqlstr() -> str:
 
 @dataclass
 class RiverFlowUnit:
-    currency_calendar_name: str
+    currency_contract_name: str
     src_name: str
     dst_name: str
     currency_start: float
@@ -50,7 +50,7 @@ class RiverFlowUnit:
     river_tree_level: int
 
     def flow_returned(self) -> bool:
-        return self.currency_calendar_name == self.dst_name
+        return self.currency_contract_name == self.dst_name
 
 
 def get_river_flow_table_insert_sqlstr(
@@ -68,7 +68,7 @@ def get_river_flow_table_insert_sqlstr(
         , river_tree_level
         )
         VALUES (
-          '{river_flow_x.currency_calendar_name}'
+          '{river_flow_x.currency_contract_name}'
         , '{river_flow_x.src_name}'
         , '{river_flow_x.dst_name}'
         , {sqlite_null(river_flow_x.currency_start)}
@@ -82,7 +82,7 @@ def get_river_flow_table_insert_sqlstr(
 
 
 def get_river_flow_dict(
-    db_conn: str, currency_calendar_name: str
+    db_conn: str, currency_contract_name: str
 ) -> dict[str:RiverFlowUnit]:
     sqlstr = f"""
         SELECT 
@@ -95,7 +95,7 @@ def get_river_flow_dict(
         , parent_flow_num
         , river_tree_level
         FROM river_flow
-        WHERE currency_name = '{currency_calendar_name}' 
+        WHERE currency_name = '{currency_contract_name}' 
         ;
     """
     dict_x = {}
@@ -105,7 +105,7 @@ def get_river_flow_dict(
 
     for count_x, row in enumerate(results_x):
         river_flow_x = RiverFlowUnit(
-            currency_calendar_name=row[0],
+            currency_contract_name=row[0],
             src_name=row[1],
             dst_name=row[2],
             currency_start=row[3],
@@ -118,10 +118,10 @@ def get_river_flow_dict(
     return dict_x
 
 
-def get_river_bucket_table_delete_sqlstr(currency_calendar_name: str) -> str:
+def get_river_bucket_table_delete_sqlstr(currency_contract_name: str) -> str:
     return f"""
         DELETE FROM river_bucket
-        WHERE currency_name = '{currency_calendar_name}' 
+        WHERE currency_name = '{currency_contract_name}' 
         ;
     """
 
@@ -134,14 +134,14 @@ def get_river_bucket_table_create_sqlstr() -> str:
         , bucket_num INT NOT NULL
         , curr_start FLOAT NOT NULL
         , curr_close FLOAT NOT NULL
-        , FOREIGN KEY(currency_name) REFERENCES calendarunits(name)
-        , FOREIGN KEY(dst_name) REFERENCES calendarunits(name)
+        , FOREIGN KEY(currency_name) REFERENCES contractunits(name)
+        , FOREIGN KEY(dst_name) REFERENCES contractunits(name)
         )
     ;
     """
 
 
-def get_river_bucket_table_insert_sqlstr(currency_calendar_name: str) -> str:
+def get_river_bucket_table_insert_sqlstr(currency_contract_name: str) -> str:
     return f"""
         INSERT INTO river_bucket (
           currency_name
@@ -168,7 +168,7 @@ def get_river_bucket_table_insert_sqlstr(currency_calendar_name: str) -> str:
             END AS step
             , *
             FROM  river_flow
-            WHERE currency_name = '{currency_calendar_name}' and dst_name = currency_name 
+            WHERE currency_name = '{currency_contract_name}' and dst_name = currency_name 
             ) b
         ) c
         GROUP BY currency_name, dst_name, currency_bucket_num
@@ -187,7 +187,7 @@ class RiverBucketUnit:
 
 
 def get_river_bucket_dict(
-    db_conn: Connection, currency_calendar_name: str
+    db_conn: Connection, currency_contract_name: str
 ) -> dict[str:RiverBucketUnit]:
     sqlstr = f"""
         SELECT
@@ -197,7 +197,7 @@ def get_river_bucket_dict(
         , curr_start
         , curr_close
         FROM river_bucket
-        WHERE currency_name = '{currency_calendar_name}'
+        WHERE currency_name = '{currency_contract_name}'
         ;
     """
     dict_x = {}
@@ -215,10 +215,10 @@ def get_river_bucket_dict(
     return dict_x
 
 
-def get_river_tmember_table_delete_sqlstr(currency_calendar_name: str) -> str:
+def get_river_tmember_table_delete_sqlstr(currency_contract_name: str) -> str:
     return f"""
         DELETE FROM river_tmember
-        WHERE currency_name = '{currency_calendar_name}' 
+        WHERE currency_name = '{currency_contract_name}' 
         ;
     """
 
@@ -231,14 +231,14 @@ def get_river_tmember_table_create_sqlstr() -> str:
         , tax_total FLOAT NOT NULL
         , debt FLOAT NULL
         , tax_diff FLOAT NULL
-        , FOREIGN KEY(currency_name) REFERENCES calendarunits(name)
-        , FOREIGN KEY(tax_name) REFERENCES calendarunits(name)
+        , FOREIGN KEY(currency_name) REFERENCES contractunits(name)
+        , FOREIGN KEY(tax_name) REFERENCES contractunits(name)
         )
     ;
     """
 
 
-def get_river_tmember_table_insert_sqlstr(currency_calendar_name: str) -> str:
+def get_river_tmember_table_insert_sqlstr(currency_contract_name: str) -> str:
     return f"""
         INSERT INTO river_tmember (
           currency_name
@@ -251,11 +251,11 @@ def get_river_tmember_table_insert_sqlstr(currency_calendar_name: str) -> str:
           rt.currency_name
         , rt.src_name
         , SUM(rt.currency_close-rt.currency_start) tax_paid
-        , l._calendar_agenda_ratio_debt
-        , l._calendar_agenda_ratio_debt - SUM(rt.currency_close-rt.currency_start)
+        , l._contract_agenda_ratio_debt
+        , l._contract_agenda_ratio_debt - SUM(rt.currency_close-rt.currency_start)
         FROM river_flow rt
-        LEFT JOIN ledger l ON l.calendar_name = rt.currency_name AND l.member_name = rt.src_name
-        WHERE rt.currency_name='{currency_calendar_name}' and rt.dst_name=rt.currency_name
+        LEFT JOIN ledger l ON l.contract_name = rt.currency_name AND l.member_name = rt.src_name
+        WHERE rt.currency_name='{currency_contract_name}' and rt.dst_name=rt.currency_name
         GROUP BY rt.currency_name, rt.src_name
         ;
     """
@@ -271,7 +271,7 @@ class RiverTmemberUnit:
 
 
 def get_river_tmember_dict(
-    db_conn: Connection, currency_calendar_name: str
+    db_conn: Connection, currency_contract_name: str
 ) -> dict[str:RiverTmemberUnit]:
     sqlstr = f"""
         SELECT
@@ -281,7 +281,7 @@ def get_river_tmember_dict(
         , debt
         , tax_diff
         FROM river_tmember
-        WHERE currency_name = '{currency_calendar_name}'
+        WHERE currency_name = '{currency_contract_name}'
         ;
     """
     dict_x = {}
@@ -299,9 +299,9 @@ def get_river_tmember_dict(
     return dict_x
 
 
-def get_calendar_table_create_sqlstr() -> str:
+def get_contract_table_create_sqlstr() -> str:
     return """
-        CREATE TABLE IF NOT EXISTS calendarunits (
+        CREATE TABLE IF NOT EXISTS contractunits (
           name VARCHAR(255) PRIMARY KEY ASC
         , UNIQUE(name)
         )
@@ -309,13 +309,13 @@ def get_calendar_table_create_sqlstr() -> str:
     """
 
 
-def get_calendar_table_insert_sqlstr(calendar_x: CalendarUnit) -> str:
+def get_contract_table_insert_sqlstr(contract_x: ContractUnit) -> str:
     return f"""
-        INSERT INTO calendarunits (
+        INSERT INTO contractunits (
             name
             )
         VALUES (
-            '{calendar_x._owner}' 
+            '{contract_x._owner}' 
         )
         ;
         """
@@ -324,49 +324,49 @@ def get_calendar_table_insert_sqlstr(calendar_x: CalendarUnit) -> str:
 def get_ledger_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS ledger (
-          calendar_name INTEGER 
+          contract_name INTEGER 
         , member_name INTEGER
-        , _calendar_credit FLOAT
-        , _calendar_debt FLOAT
-        , _calendar_agenda_credit FLOAT
-        , _calendar_agenda_debt FLOAT
-        , _calendar_agenda_ratio_credit FLOAT
-        , _calendar_agenda_ratio_debt FLOAT
+        , _contract_credit FLOAT
+        , _contract_debt FLOAT
+        , _contract_agenda_credit FLOAT
+        , _contract_agenda_debt FLOAT
+        , _contract_agenda_ratio_credit FLOAT
+        , _contract_agenda_ratio_debt FLOAT
         , _creditor_active INT
         , _debtor_active INT
-        , FOREIGN KEY(calendar_name) REFERENCES calendarunits(name)
-        , FOREIGN KEY(member_name) REFERENCES calendarunits(name)
-        , UNIQUE(calendar_name, member_name)
+        , FOREIGN KEY(contract_name) REFERENCES contractunits(name)
+        , FOREIGN KEY(member_name) REFERENCES contractunits(name)
+        , UNIQUE(contract_name, member_name)
         )
     ;
     """
 
 
 def get_ledger_table_insert_sqlstr(
-    calendar_x: CalendarUnit, memberunit_x: MemberUnit
+    contract_x: ContractUnit, memberunit_x: MemberUnit
 ) -> str:
     return f"""
         INSERT INTO ledger (
-              calendar_name
+              contract_name
             , member_name
-            , _calendar_credit
-            , _calendar_debt
-            , _calendar_agenda_credit
-            , _calendar_agenda_debt
-            , _calendar_agenda_ratio_credit
-            , _calendar_agenda_ratio_debt
+            , _contract_credit
+            , _contract_debt
+            , _contract_agenda_credit
+            , _contract_agenda_debt
+            , _contract_agenda_ratio_credit
+            , _contract_agenda_ratio_debt
             , _creditor_active
             , _debtor_active
             )
         VALUES (
-            '{calendar_x._owner}' 
+            '{contract_x._owner}' 
             , '{memberunit_x.name}'
-            , {sqlite_null(memberunit_x._calendar_credit)} 
-            , {sqlite_null(memberunit_x._calendar_debt)}
-            , {sqlite_null(memberunit_x._calendar_agenda_credit)}
-            , {sqlite_null(memberunit_x._calendar_agenda_debt)}
-            , {sqlite_null(memberunit_x._calendar_agenda_ratio_credit)}
-            , {sqlite_null(memberunit_x._calendar_agenda_ratio_debt)}
+            , {sqlite_null(memberunit_x._contract_credit)} 
+            , {sqlite_null(memberunit_x._contract_debt)}
+            , {sqlite_null(memberunit_x._contract_agenda_credit)}
+            , {sqlite_null(memberunit_x._contract_agenda_debt)}
+            , {sqlite_null(memberunit_x._contract_agenda_ratio_credit)}
+            , {sqlite_null(memberunit_x._contract_agenda_ratio_debt)}
             , {sqlite_bool(memberunit_x._creditor_active)}
             , {sqlite_bool(memberunit_x._debtor_active)}
         )
@@ -376,14 +376,14 @@ def get_ledger_table_insert_sqlstr(
 
 @dataclass
 class LedgerUnit:
-    calendar_name: str
+    contract_name: str
     member_name: str
-    _calendar_credit: float
-    _calendar_debt: float
-    _calendar_agenda_credit: float
-    _calendar_agenda_debt: float
-    _calendar_agenda_ratio_credit: float
-    _calendar_agenda_ratio_debt: float
+    _contract_credit: float
+    _contract_debt: float
+    _contract_agenda_credit: float
+    _contract_agenda_debt: float
+    _contract_agenda_ratio_credit: float
+    _contract_agenda_ratio_debt: float
     _creditor_active: float
     _debtor_active: float
 
@@ -391,18 +391,18 @@ class LedgerUnit:
 def get_ledger_dict(db_conn: Connection, payer_name: str) -> dict[str:LedgerUnit]:
     sqlstr = f"""
         SELECT 
-          calendar_name
+          contract_name
         , member_name
-        , _calendar_credit
-        , _calendar_debt
-        , _calendar_agenda_credit
-        , _calendar_agenda_debt
-        , _calendar_agenda_ratio_credit
-        , _calendar_agenda_ratio_debt
+        , _contract_credit
+        , _contract_debt
+        , _contract_agenda_credit
+        , _contract_agenda_debt
+        , _contract_agenda_ratio_credit
+        , _contract_agenda_ratio_debt
         , _creditor_active
         , _debtor_active
         FROM ledger
-        WHERE calendar_name = '{payer_name}' 
+        WHERE contract_name = '{payer_name}' 
         ;
     """
     dict_x = {}
@@ -410,14 +410,14 @@ def get_ledger_dict(db_conn: Connection, payer_name: str) -> dict[str:LedgerUnit
 
     for row in results.fetchall():
         ledger_x = LedgerUnit(
-            calendar_name=row[0],
+            contract_name=row[0],
             member_name=row[1],
-            _calendar_credit=row[2],
-            _calendar_debt=row[3],
-            _calendar_agenda_credit=row[4],
-            _calendar_agenda_debt=row[5],
-            _calendar_agenda_ratio_credit=row[6],
-            _calendar_agenda_ratio_debt=row[7],
+            _contract_credit=row[2],
+            _contract_debt=row[3],
+            _contract_agenda_credit=row[4],
+            _contract_agenda_debt=row[5],
+            _contract_agenda_ratio_credit=row[6],
+            _contract_agenda_ratio_debt=row[7],
             _creditor_active=row[8],
             _debtor_active=row[9],
         )
@@ -427,7 +427,7 @@ def get_ledger_dict(db_conn: Connection, payer_name: str) -> dict[str:LedgerUnit
 
 @dataclass
 class RiverLedgerUnit:
-    calendar_name: str
+    contract_name: str
     currency_onset: float
     currency_cease: float
     _ledgers: dict[str:LedgerUnit]
@@ -443,7 +443,7 @@ def get_river_ledger_unit(
 ) -> RiverLedgerUnit:
     ledger_x = get_ledger_dict(db_conn, river_flow_x.dst_name)
     return RiverLedgerUnit(
-        calendar_name=river_flow_x.dst_name,
+        contract_name=river_flow_x.dst_name,
         currency_onset=river_flow_x.currency_start,
         currency_cease=river_flow_x.currency_close,
         _ledgers=ledger_x,
@@ -455,42 +455,42 @@ def get_river_ledger_unit(
 def get_idea_catalog_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS idea_catalog (
-          calendar_name VARCHAR(255) NOT NULL
+          contract_name VARCHAR(255) NOT NULL
         , idea_road VARCHAR(1000) NOT NULL
         )
         ;
     """
 
 
-def get_idea_catalog_table_count(db_conn: Connection, calendar_name: str) -> str:
+def get_idea_catalog_table_count(db_conn: Connection, contract_name: str) -> str:
     sqlstr = f"""
-        {get_table_count_sqlstr("idea_catalog")} WHERE calendar_name = '{calendar_name}'
+        {get_table_count_sqlstr("idea_catalog")} WHERE contract_name = '{contract_name}'
         ;
     """
     results = db_conn.execute(sqlstr)
-    calendar_row_count = 0
+    contract_row_count = 0
     for row in results.fetchall():
-        calendar_row_count = row[0]
-    return calendar_row_count
+        contract_row_count = row[0]
+    return contract_row_count
 
 
 @dataclass
 class IdeaCatalog:
-    calendar_name: str
+    contract_name: str
     idea_road: str
 
 
 def get_idea_catalog_table_insert_sqlstr(
     idea_catalog: IdeaCatalog,
 ) -> str:
-    # return f"""INSERT INTO idea_catalog (calendar_name, idea_road) VALUES ('{idea_catalog.calendar_name}', '{idea_catalog.idea_road}');"""
+    # return f"""INSERT INTO idea_catalog (contract_name, idea_road) VALUES ('{idea_catalog.contract_name}', '{idea_catalog.idea_road}');"""
     return f"""
         INSERT INTO idea_catalog (
-          calendar_name
+          contract_name
         , idea_road
         )
         VALUES (
-          '{idea_catalog.calendar_name}'
+          '{idea_catalog.contract_name}'
         , '{get_road_without_root_node(idea_catalog.idea_road)}'
         )
         ;
@@ -505,7 +505,7 @@ def get_idea_catalog_dict(db_conn: Connection, search_road: Road = None):
         where_clause = f"WHERE idea_road = '{search_road_without_root_node}'"
     sqlstr = f"""
         SELECT 
-          calendar_name
+          contract_name
         , idea_road
         FROM idea_catalog
         {where_clause}
@@ -515,8 +515,8 @@ def get_idea_catalog_dict(db_conn: Connection, search_road: Road = None):
 
     dict_x = {}
     for row in results.fetchall():
-        idea_catalog_x = IdeaCatalog(calendar_name=row[0], idea_road=row[1])
-        dict_key = f"{idea_catalog_x.calendar_name} {idea_catalog_x.idea_road}"
+        idea_catalog_x = IdeaCatalog(contract_name=row[0], idea_road=row[1])
+        dict_key = f"{idea_catalog_x.contract_name} {idea_catalog_x.idea_road}"
         dict_x[dict_key] = idea_catalog_x
     return dict_x
 
@@ -524,7 +524,7 @@ def get_idea_catalog_dict(db_conn: Connection, search_road: Road = None):
 def get_acptfact_catalog_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS acptfact_catalog (
-          calendar_name VARCHAR(255) NOT NULL
+          contract_name VARCHAR(255) NOT NULL
         , base VARCHAR(1000) NOT NULL
         , pick VARCHAR(1000) NOT NULL
         )
@@ -532,21 +532,21 @@ def get_acptfact_catalog_table_create_sqlstr() -> str:
     """
 
 
-def get_acptfact_catalog_table_count(db_conn: Connection, calendar_name: str) -> str:
+def get_acptfact_catalog_table_count(db_conn: Connection, contract_name: str) -> str:
     sqlstr = f"""
-        {get_table_count_sqlstr("acptfact_catalog")} WHERE calendar_name = '{calendar_name}'
+        {get_table_count_sqlstr("acptfact_catalog")} WHERE contract_name = '{contract_name}'
         ;
     """
     results = db_conn.execute(sqlstr)
-    calendar_row_count = 0
+    contract_row_count = 0
     for row in results.fetchall():
-        calendar_row_count = row[0]
-    return calendar_row_count
+        contract_row_count = row[0]
+    return contract_row_count
 
 
 @dataclass
 class AcptFactCatalog:
-    calendar_name: str
+    contract_name: str
     base: str
     pick: str
 
@@ -556,12 +556,12 @@ def get_acptfact_catalog_table_insert_sqlstr(
 ) -> str:
     return f"""
         INSERT INTO acptfact_catalog (
-          calendar_name
+          contract_name
         , base
         , pick
         )
         VALUES (
-          '{acptfact_catalog.calendar_name}'
+          '{acptfact_catalog.contract_name}'
         , '{acptfact_catalog.base}'
         , '{acptfact_catalog.pick}'
         )
@@ -572,7 +572,7 @@ def get_acptfact_catalog_table_insert_sqlstr(
 def get_groupunit_catalog_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS groupunit_catalog (
-          calendar_name VARCHAR(255) NOT NULL
+          contract_name VARCHAR(255) NOT NULL
         , groupunit_name VARCHAR(1000) NOT NULL
         , memberlinks_set_by_economy_road VARCHAR(1000) NULL
         )
@@ -580,21 +580,21 @@ def get_groupunit_catalog_table_create_sqlstr() -> str:
     """
 
 
-def get_groupunit_catalog_table_count(db_conn: Connection, calendar_name: str) -> str:
+def get_groupunit_catalog_table_count(db_conn: Connection, contract_name: str) -> str:
     sqlstr = f"""
-        {get_table_count_sqlstr("groupunit_catalog")} WHERE calendar_name = '{calendar_name}'
+        {get_table_count_sqlstr("groupunit_catalog")} WHERE contract_name = '{contract_name}'
         ;
     """
     results = db_conn.execute(sqlstr)
-    calendar_row_count = 0
+    contract_row_count = 0
     for row in results.fetchall():
-        calendar_row_count = row[0]
-    return calendar_row_count
+        contract_row_count = row[0]
+    return contract_row_count
 
 
 @dataclass
 class GroupUnitCatalog:
-    calendar_name: str
+    contract_name: str
     groupunit_name: str
     memberlinks_set_by_economy_road: str
 
@@ -604,12 +604,12 @@ def get_groupunit_catalog_table_insert_sqlstr(
 ) -> str:
     return f"""
         INSERT INTO groupunit_catalog (
-          calendar_name
+          contract_name
         , groupunit_name
         , memberlinks_set_by_economy_road
         )
         VALUES (
-          '{groupunit_catalog.calendar_name}'
+          '{groupunit_catalog.contract_name}'
         , '{groupunit_catalog.groupunit_name}'
         , '{groupunit_catalog.memberlinks_set_by_economy_road}'
         )
@@ -620,7 +620,7 @@ def get_groupunit_catalog_table_insert_sqlstr(
 def get_groupunit_catalog_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog]:
     sqlstr = """
         SELECT 
-          calendar_name
+          contract_name
         , groupunit_name
         , memberlinks_set_by_economy_road
         FROM groupunit_catalog
@@ -631,19 +631,19 @@ def get_groupunit_catalog_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog
     dict_x = {}
     for row in results.fetchall():
         groupunit_catalog_x = GroupUnitCatalog(
-            calendar_name=row[0],
+            contract_name=row[0],
             groupunit_name=row[1],
             memberlinks_set_by_economy_road=row[2],
         )
         dict_key = (
-            f"{groupunit_catalog_x.calendar_name} {groupunit_catalog_x.groupunit_name}"
+            f"{groupunit_catalog_x.contract_name} {groupunit_catalog_x.groupunit_name}"
         )
         dict_x[dict_key] = groupunit_catalog_x
     return dict_x
 
 
 def get_create_table_if_not_exist_sqlstrs() -> list[str]:
-    list_x = [get_calendar_table_create_sqlstr()]
+    list_x = [get_contract_table_create_sqlstr()]
     list_x.append(get_acptfact_catalog_table_create_sqlstr())
     list_x.append(get_idea_catalog_table_create_sqlstr())
     list_x.append(get_ledger_table_create_sqlstr())

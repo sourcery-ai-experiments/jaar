@@ -1,11 +1,11 @@
 from src.economy.economy import economyunit_shop
-from src.calendar.examples.example_calendars import (
-    calendar_v002 as ex_cxs_calendar_v002,
+from src.contract.examples.example_contracts import (
+    contract_v002 as ex_cxs_contract_v002,
 )
 from src.economy.examples.example_actors import (
-    get_6node_calendar as example_actors_get_6node_calendar,
-    get_calendar_2CleanNodesRandomWeights,
-    get_calendar_3CleanNodesRandomWeights,
+    get_6node_contract as example_actors_get_6node_contract,
+    get_contract_2CleanNodesRandomWeights,
+    get_contract_3CleanNodesRandomWeights,
 )
 from src.economy.examples.economy_env_kit import (
     get_temp_env_name,
@@ -14,7 +14,7 @@ from src.economy.examples.economy_env_kit import (
 )
 
 
-def test_economy_get_output_calendar_ReturnsCorrectCalendarObjScenario1(
+def test_economy_get_output_contract_ReturnsCorrectContractObjScenario1(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -22,10 +22,10 @@ def test_economy_get_output_calendar_ReturnsCorrectCalendarObjScenario1(
         name=get_temp_env_name(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
-    input_cx = example_actors_get_6node_calendar()
-    sx.save_public_calendar(input_cx)
-    # sx.save_public_calendar(ex_cxs_get_calendar_1Task_1CE0MinutesRequired_1AcptFact())
-    # sx.save_public_calendar(ex_cxs_calendar_v001())
+    input_cx = example_actors_get_6node_contract()
+    sx.save_public_contract(input_cx)
+    # sx.save_public_contract(ex_cxs_get_contract_1Task_1CE0MinutesRequired_1AcptFact())
+    # sx.save_public_contract(ex_cxs_contract_v001())
     xia_text = "Xia"
     sx.create_new_actorunit(actor_name=xia_text)
     sx.set_actor_depotlink(xia_text, input_cx._owner, depotlink_type="blind_trust")
@@ -34,8 +34,8 @@ def test_economy_get_output_calendar_ReturnsCorrectCalendarObjScenario1(
     # print(f"{xia_actor._isol._members.keys()=}")
 
     # WHEN
-    output_cx = sx.get_output_calendar(actor_name=xia_text)
-    # input calendar must be melded to itself to create originunits
+    output_cx = sx.get_output_contract(actor_name=xia_text)
+    # input contract must be melded to itself to create originunits
     input_cx.meld(input_cx)
     input_cx.set_owner(new_owner=xia_text)
     input_cx._originunit.set_originlink(name=xia_text, weight=1)
@@ -88,7 +88,7 @@ def test_economy_get_output_calendar_ReturnsCorrectCalendarObjScenario1(
     assert output_cx._idearoot == input_cx._idearoot
 
 
-def test_economy_get_output_calendar_ReturnsCorrectCalendarObjScenario2(
+def test_economy_get_output_contract_ReturnsCorrectContractObjScenario2(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -96,13 +96,13 @@ def test_economy_get_output_calendar_ReturnsCorrectCalendarObjScenario2(
         name=get_temp_env_name(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
-    cx1 = example_actors_get_6node_calendar()
-    cx2 = ex_cxs_calendar_v002()
+    cx1 = example_actors_get_6node_contract()
+    cx2 = ex_cxs_contract_v002()
 
-    sx.save_public_calendar(cx1)
-    sx.save_public_calendar(cx2)
-    # sx.save_public_calendar(ex_cxs_get_calendar_1Task_1CE0MinutesRequired_1AcptFact())
-    # sx.save_public_calendar(ex_cxs_calendar_v001())
+    sx.save_public_contract(cx1)
+    sx.save_public_contract(cx2)
+    # sx.save_public_contract(ex_cxs_get_contract_1Task_1CE0MinutesRequired_1AcptFact())
+    # sx.save_public_contract(ex_cxs_contract_v001())
     xia_text = "Xia"
     sx.create_new_actorunit(actor_name=xia_text)
     sx.set_actor_depotlink(xia_text, cx1._owner, depotlink_type="blind_trust")
@@ -112,7 +112,7 @@ def test_economy_get_output_calendar_ReturnsCorrectCalendarObjScenario2(
     print(f"{xia_actor._isol._members.keys()=}")
 
     # WHEN
-    output_cx = sx.get_output_calendar(actor_name=xia_text)
+    output_cx = sx.get_output_contract(actor_name=xia_text)
 
     # THEN
     output_cx_d_idea = output_cx.get_idea_kid(road="A,C,D")
@@ -145,7 +145,7 @@ def test_economy_get_output_calendar_ReturnsCorrectCalendarObjScenario2(
     assert output_cx._idearoot != cx2._idearoot
 
 
-def test_actorunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
+def test_actorunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -158,39 +158,39 @@ def test_actorunit_refresh_depotlinks_CorrectlyPullsAllPublicCalendars(
     ernie_text = "ernie"
     jessi_text = "jessi"
     steve_text = "steve"
-    ernie_calendar = get_calendar_2CleanNodesRandomWeights(_owner=ernie_text)
-    jessi_calendar = get_calendar_2CleanNodesRandomWeights(_owner=jessi_text)
-    old_steve_cx = get_calendar_2CleanNodesRandomWeights(_owner=steve_text)
-    sx.save_public_calendar(calendar_x=ernie_calendar)
-    sx.save_public_calendar(calendar_x=jessi_calendar)
-    sx.save_public_calendar(calendar_x=old_steve_cx)
+    ernie_contract = get_contract_2CleanNodesRandomWeights(_owner=ernie_text)
+    jessi_contract = get_contract_2CleanNodesRandomWeights(_owner=jessi_text)
+    old_steve_cx = get_contract_2CleanNodesRandomWeights(_owner=steve_text)
+    sx.save_public_contract(contract_x=ernie_contract)
+    sx.save_public_contract(contract_x=jessi_contract)
+    sx.save_public_contract(contract_x=old_steve_cx)
     sx.create_new_actorunit(actor_name=ernie_text)
     sx.create_new_actorunit(actor_name=jessi_text)
     # sx.create_new_actorunit(actor_name=steve_text)
     ux_ernie = sx.get_actor_obj(name=ernie_text)
     ux_jessi = sx.get_actor_obj(name=jessi_text)
     # ux_steve = sx.get_actor_obj(name=steve_text)
-    ux_ernie.set_depot_calendar(calendar_x=jessi_calendar, depotlink_type="blind_trust")
-    ux_ernie.set_depot_calendar(calendar_x=old_steve_cx, depotlink_type="blind_trust")
-    ux_jessi.set_depot_calendar(calendar_x=ernie_calendar, depotlink_type="blind_trust")
-    ux_jessi.set_depot_calendar(calendar_x=old_steve_cx, depotlink_type="blind_trust")
-    # ux_steve.set_depot_calendar(calendar_x=ernie_calendar, depotlink_type="blind_trust")
-    # ux_steve.set_depot_calendar(calendar_x=jessi_calendar, depotlink_type="blind_trust")
-    assert len(ux_ernie._admin.get_remelded_output_calendar().get_idea_list()) == 4
-    assert len(ux_jessi._admin.get_remelded_output_calendar().get_idea_list()) == 4
-    # assert len(ux_steve._admin.get_remelded_output_calendar().get_idea_list()) == 4
-    new_steve_calendar = get_calendar_3CleanNodesRandomWeights(_owner="steve")
-    sx.save_public_calendar(calendar_x=new_steve_calendar)
-    # print(f"{env_dir=} {ux._admin._calendars_public_dir=}")
+    ux_ernie.set_depot_contract(contract_x=jessi_contract, depotlink_type="blind_trust")
+    ux_ernie.set_depot_contract(contract_x=old_steve_cx, depotlink_type="blind_trust")
+    ux_jessi.set_depot_contract(contract_x=ernie_contract, depotlink_type="blind_trust")
+    ux_jessi.set_depot_contract(contract_x=old_steve_cx, depotlink_type="blind_trust")
+    # ux_steve.set_depot_contract(contract_x=ernie_contract, depotlink_type="blind_trust")
+    # ux_steve.set_depot_contract(contract_x=jessi_contract, depotlink_type="blind_trust")
+    assert len(ux_ernie._admin.get_remelded_output_contract().get_idea_list()) == 4
+    assert len(ux_jessi._admin.get_remelded_output_contract().get_idea_list()) == 4
+    # assert len(ux_steve._admin.get_remelded_output_contract().get_idea_list()) == 4
+    new_steve_contract = get_contract_3CleanNodesRandomWeights(_owner="steve")
+    sx.save_public_contract(contract_x=new_steve_contract)
+    # print(f"{env_dir=} {ux._admin._contracts_public_dir=}")
     # for file_name in x_func_dir_files(dir_path=env_dir):
-    #     print(f"{ux._admin._calendars_public_dir=} {file_name=}")
+    #     print(f"{ux._admin._contracts_public_dir=} {file_name=}")
 
-    # for file_name in x_func_dir_files(dir_path=ux._admin._calendars_public_dir):
-    #     print(f"{ux._admin._calendars_public_dir=} {file_name=}")
+    # for file_name in x_func_dir_files(dir_path=ux._admin._contracts_public_dir):
+    #     print(f"{ux._admin._contracts_public_dir=} {file_name=}")
 
     # WHEN
-    sx.reload_all_actors_src_calendarunits()
+    sx.reload_all_actors_src_contractunits()
 
     # THEN
-    assert len(ux_ernie._admin.get_remelded_output_calendar().get_idea_list()) == 5
-    assert len(ux_jessi._admin.get_remelded_output_calendar().get_idea_list()) == 5
+    assert len(ux_ernie._admin.get_remelded_output_contract().get_idea_list()) == 5
+    assert len(ux_jessi._admin.get_remelded_output_contract().get_idea_list()) == 5

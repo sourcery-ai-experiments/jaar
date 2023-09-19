@@ -3,10 +3,10 @@ import sys
 from ui.Economy5IssueUI import Ui_Form
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
-from src.pyqt5_kit.pyqt_func import calendar_importance_diplay
-from src.calendar.calendar import CalendarUnit
-from src.calendar.group import groupunit_shop
-from src.calendar.member import memberlink_shop
+from src.pyqt5_kit.pyqt_func import contract_importance_diplay
+from src.contract.contract import ContractUnit
+from src.contract.group import groupunit_shop
+from src.contract.member import memberlink_shop
 
 
 class Edit5Issue(qtw.QTableWidget, Ui_Form):

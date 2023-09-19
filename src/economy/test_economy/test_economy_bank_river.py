@@ -1,5 +1,5 @@
 from src.economy.economy import economyunit_shop
-from src.calendar.calendar import CalendarUnit
+from src.contract.contract import ContractUnit
 from src.economy.examples.economy_env_kit import (
     get_temp_env_name,
     get_test_economys_dir,
@@ -14,7 +14,7 @@ from src.economy.bank_sqlstr import (
 )
 
 
-def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable01(
+def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
@@ -26,18 +26,18 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTa
     tom_text = "tom"
     sal_text = "sal"
 
-    sal = CalendarUnit(_owner=sal_text)
+    sal = ContractUnit(_owner=sal_text)
     sal.add_memberunit(name=bob_text, creditor_weight=1)
     sal.add_memberunit(name=tom_text, creditor_weight=3)
-    sx.save_public_calendar(calendar_x=sal)
+    sx.save_public_contract(contract_x=sal)
 
-    bob = CalendarUnit(_owner=bob_text)
+    bob = ContractUnit(_owner=bob_text)
     bob.add_memberunit(name=sal_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=bob)
+    sx.save_public_contract(contract_x=bob)
 
-    tom = CalendarUnit(_owner=tom_text)
+    tom = ContractUnit(_owner=tom_text)
     tom.add_memberunit(name=sal_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=tom)
+    sx.save_public_contract(contract_x=tom)
 
     sx.refresh_bank_metrics()
 
@@ -50,12 +50,12 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTa
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    sx.set_river_sphere_for_calendar(calendar_name=sal_text)
+    sx.set_river_sphere_for_contract(contract_name=sal_text)
 
     # THEN
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 4
     with sx.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_contract_name=sal_text)
 
     flow_0 = river_flows.get(0)
     flow_1 = river_flows.get(1)
@@ -85,10 +85,10 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTa
     assert river_sal_tax_tom.tax_total == 0.75
 
 
-def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable02(
+def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTable02(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 4 calendars, 100% of river flows to sal
+    # GIVEN 4 contracts, 100% of river flows to sal
     economy_name = get_temp_env_name()
     sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -98,23 +98,23 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTa
     tom_text = "tom"
     elu_text = "elu"
 
-    sal = CalendarUnit(_owner=sal_text)
+    sal = ContractUnit(_owner=sal_text)
     sal.add_memberunit(name=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
-    sx.save_public_calendar(calendar_x=sal)
+    sx.save_public_contract(contract_x=sal)
 
-    bob = CalendarUnit(_owner=bob_text)
+    bob = ContractUnit(_owner=bob_text)
     bob.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=1)
     bob.add_memberunit(name=tom_text, creditor_weight=1, debtor_weight=1)
-    sx.save_public_calendar(calendar_x=bob)
+    sx.save_public_contract(contract_x=bob)
 
-    tom = CalendarUnit(_owner=tom_text)
+    tom = ContractUnit(_owner=tom_text)
     tom.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=8)
-    sx.save_public_calendar(calendar_x=tom)
+    sx.save_public_contract(contract_x=tom)
 
-    elu = CalendarUnit(_owner=elu_text)
+    elu = ContractUnit(_owner=elu_text)
     elu.add_memberunit(name=sal_text, creditor_weight=1, debtor_weight=8)
-    sx.save_public_calendar(calendar_x=elu)
+    sx.save_public_contract(contract_x=elu)
     sx.refresh_bank_metrics()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
@@ -126,12 +126,12 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTa
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    sx.set_river_sphere_for_calendar(calendar_name=sal_text)
+    sx.set_river_sphere_for_contract(contract_name=sal_text)
 
     # THEN
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 9
     with sx.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_contract_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
@@ -148,10 +148,10 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTa
     assert river_sal_tax_elu.tax_total == 1.0
 
 
-def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable03(
+def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTable03(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 4 calendars, 85% of river flows to sal
+    # GIVEN 4 contracts, 85% of river flows to sal
     economy_name = get_temp_env_name()
     sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -161,23 +161,23 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTa
     tom_text = "tom"
     ava_text = "ava"
 
-    sal_calendar = CalendarUnit(_owner=sal_text)
-    sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=sal_calendar)
+    sal_contract = ContractUnit(_owner=sal_text)
+    sal_contract.add_memberunit(name=bob_text, creditor_weight=2)
+    sal_contract.add_memberunit(name=tom_text, creditor_weight=7)
+    sal_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=sal_contract)
 
-    bob_calendar = CalendarUnit(_owner=bob_text)
-    bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=bob_calendar)
+    bob_contract = ContractUnit(_owner=bob_text)
+    bob_contract.add_memberunit(name=sal_text, creditor_weight=3)
+    bob_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=bob_contract)
 
-    tom_calendar = CalendarUnit(_owner=tom_text)
-    tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
-    sx.save_public_calendar(calendar_x=tom_calendar)
+    tom_contract = ContractUnit(_owner=tom_text)
+    tom_contract.add_memberunit(name=sal_text, creditor_weight=2)
+    sx.save_public_contract(contract_x=tom_contract)
 
-    ava_calendar = CalendarUnit(_owner=ava_text)
-    sx.save_public_calendar(calendar_x=ava_calendar)
+    ava_contract = ContractUnit(_owner=ava_text)
+    sx.save_public_contract(contract_x=ava_contract)
     sx.refresh_bank_metrics()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
@@ -189,12 +189,12 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTa
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    sx.set_river_sphere_for_calendar(calendar_name=sal_text)
+    sx.set_river_sphere_for_contract(contract_name=sal_text)
 
     # THEN
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 6
     with sx.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_contract_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
@@ -216,10 +216,10 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTa
     assert river_sal_tax_tom.tax_total == 0.7
 
 
-def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable04(
+def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTable04(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop
+    # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop
     economy_name = get_temp_env_name()
     sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -230,28 +230,28 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTa
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_calendar = CalendarUnit(_owner=sal_text)
-    sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=sal_calendar)
+    sal_contract = ContractUnit(_owner=sal_text)
+    sal_contract.add_memberunit(name=bob_text, creditor_weight=2)
+    sal_contract.add_memberunit(name=tom_text, creditor_weight=7)
+    sal_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=sal_contract)
 
-    bob_calendar = CalendarUnit(_owner=bob_text)
-    bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=bob_calendar)
+    bob_contract = ContractUnit(_owner=bob_text)
+    bob_contract.add_memberunit(name=sal_text, creditor_weight=3)
+    bob_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=bob_contract)
 
-    tom_calendar = CalendarUnit(_owner=tom_text)
-    tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
-    sx.save_public_calendar(calendar_x=tom_calendar)
+    tom_contract = ContractUnit(_owner=tom_text)
+    tom_contract.add_memberunit(name=sal_text, creditor_weight=2)
+    sx.save_public_contract(contract_x=tom_contract)
 
-    ava_calendar = CalendarUnit(_owner=ava_text)
-    ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
-    sx.save_public_calendar(calendar_x=ava_calendar)
+    ava_contract = ContractUnit(_owner=ava_text)
+    ava_contract.add_memberunit(name=elu_text, creditor_weight=2)
+    sx.save_public_contract(contract_x=ava_contract)
 
-    elu_calendar = CalendarUnit(_owner=elu_text)
-    elu_calendar.add_memberunit(name=ava_text, creditor_weight=2)
-    sx.save_public_calendar(calendar_x=elu_calendar)
+    elu_contract = ContractUnit(_owner=elu_text)
+    elu_contract.add_memberunit(name=ava_text, creditor_weight=2)
+    sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
 
@@ -264,12 +264,12 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTa
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    sx.set_river_sphere_for_calendar(calendar_name=sal_text)
+    sx.set_river_sphere_for_contract(contract_name=sal_text)
 
     # THEN
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 40
     # with sx.get_bank_conn() as bank_conn:
-    #     river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
+    #     river_flows = get_river_flow_dict(bank_conn, currency_contract_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
@@ -291,10 +291,10 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTa
     assert river_sal_tax_tom.tax_total == 0.7
 
 
-def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable05(
+def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTable05(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
+    # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     economy_name = get_temp_env_name()
     sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -305,29 +305,29 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTa
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_calendar = CalendarUnit(_owner=sal_text)
-    sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=sal_calendar)
+    sal_contract = ContractUnit(_owner=sal_text)
+    sal_contract.add_memberunit(name=bob_text, creditor_weight=2)
+    sal_contract.add_memberunit(name=tom_text, creditor_weight=7)
+    sal_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=sal_contract)
 
-    bob_calendar = CalendarUnit(_owner=bob_text)
-    bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=bob_calendar)
+    bob_contract = ContractUnit(_owner=bob_text)
+    bob_contract.add_memberunit(name=sal_text, creditor_weight=3)
+    bob_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=bob_contract)
 
-    tom_calendar = CalendarUnit(_owner=tom_text)
-    tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
-    sx.save_public_calendar(calendar_x=tom_calendar)
+    tom_contract = ContractUnit(_owner=tom_text)
+    tom_contract.add_memberunit(name=sal_text, creditor_weight=2)
+    sx.save_public_contract(contract_x=tom_contract)
 
-    ava_calendar = CalendarUnit(_owner=ava_text)
-    ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
-    sx.save_public_calendar(calendar_x=ava_calendar)
+    ava_contract = ContractUnit(_owner=ava_text)
+    ava_contract.add_memberunit(name=elu_text, creditor_weight=2)
+    sx.save_public_contract(contract_x=ava_contract)
 
-    elu_calendar = CalendarUnit(_owner=elu_text)
-    elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
-    elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=elu_calendar)
+    elu_contract = ContractUnit(_owner=elu_text)
+    elu_contract.add_memberunit(name=ava_text, creditor_weight=19)
+    elu_contract.add_memberunit(name=sal_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
 
@@ -340,12 +340,12 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTa
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    sx.set_river_sphere_for_calendar(calendar_name=sal_text)
+    sx.set_river_sphere_for_contract(contract_name=sal_text)
 
     # THEN
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 40
     # with sx.get_bank_conn() as bank_conn:
-    #     river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
+    #     river_flows = get_river_flow_dict(bank_conn, currency_contract_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
@@ -372,10 +372,10 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTa
     assert round(river_sal_tax_elu.tax_total, 15) == 0.0378017640625
 
 
-def test_economy_set_river_sphere_for_calendar_CorrectlyDeletesPreviousRiver(
+def test_economy_set_river_sphere_for_contract_CorrectlyDeletesPreviousRiver(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 4 calendars, 100% of river flows to sal
+    # GIVEN 4 contracts, 100% of river flows to sal
     economy_name = get_temp_env_name()
     sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -385,55 +385,55 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyDeletesPreviousRiver(
     tom_text = "tom"
     elu_text = "elu"
 
-    sal = CalendarUnit(_owner=sal_text)
+    sal = ContractUnit(_owner=sal_text)
     sal.add_memberunit(name=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
-    sx.save_public_calendar(calendar_x=sal)
+    sx.save_public_contract(contract_x=sal)
 
-    bob = CalendarUnit(_owner=bob_text)
+    bob = ContractUnit(_owner=bob_text)
     bob.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=1)
     bob.add_memberunit(name=tom_text, creditor_weight=1, debtor_weight=1)
-    sx.save_public_calendar(calendar_x=bob)
+    sx.save_public_contract(contract_x=bob)
 
-    tom = CalendarUnit(_owner=tom_text)
+    tom = ContractUnit(_owner=tom_text)
     tom.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=8)
-    sx.save_public_calendar(calendar_x=tom)
+    sx.save_public_contract(contract_x=tom)
 
-    elu = CalendarUnit(_owner=elu_text)
+    elu = ContractUnit(_owner=elu_text)
     elu.add_memberunit(name=sal_text, creditor_weight=1, debtor_weight=8)
-    sx.save_public_calendar(calendar_x=elu)
+    sx.save_public_contract(contract_x=elu)
     sx.refresh_bank_metrics()
 
-    sx.set_river_sphere_for_calendar(calendar_name=sal_text)
-    sx.set_river_sphere_for_calendar(calendar_name=elu_text)
+    sx.set_river_sphere_for_contract(contract_name=sal_text)
+    sx.set_river_sphere_for_contract(contract_name=elu_text)
 
     sqlstr_count_river_tmember = get_table_count_sqlstr("river_tmember")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 16
 
     with sx.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_contract_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 3
 
     # WHEN
     # sal.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
-    # sx.save_public_calendar(calendar_x=sal)
-    sx.set_river_sphere_for_calendar(calendar_name=sal_text)
+    # sx.save_public_contract(contract_x=sal)
+    sx.set_river_sphere_for_contract(contract_name=sal_text)
 
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 16
     with sx.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_contract_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 3
 
 
-def test_economy_set_river_sphere_for_calendar_CorrectlyUsesMaxFlowsCount(
+def test_economy_set_river_sphere_for_contract_CorrectlyUsesMaxFlowsCount(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
+    # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     economy_name = get_temp_env_name()
     sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -444,29 +444,29 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyUsesMaxFlowsCount(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_calendar = CalendarUnit(_owner=sal_text)
-    sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=sal_calendar)
+    sal_contract = ContractUnit(_owner=sal_text)
+    sal_contract.add_memberunit(name=bob_text, creditor_weight=2)
+    sal_contract.add_memberunit(name=tom_text, creditor_weight=7)
+    sal_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=sal_contract)
 
-    bob_calendar = CalendarUnit(_owner=bob_text)
-    bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=bob_calendar)
+    bob_contract = ContractUnit(_owner=bob_text)
+    bob_contract.add_memberunit(name=sal_text, creditor_weight=3)
+    bob_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=bob_contract)
 
-    tom_calendar = CalendarUnit(_owner=tom_text)
-    tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
-    sx.save_public_calendar(calendar_x=tom_calendar)
+    tom_contract = ContractUnit(_owner=tom_text)
+    tom_contract.add_memberunit(name=sal_text, creditor_weight=2)
+    sx.save_public_contract(contract_x=tom_contract)
 
-    ava_calendar = CalendarUnit(_owner=ava_text)
-    ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
-    sx.save_public_calendar(calendar_x=ava_calendar)
+    ava_contract = ContractUnit(_owner=ava_text)
+    ava_contract.add_memberunit(name=elu_text, creditor_weight=2)
+    sx.save_public_contract(contract_x=ava_contract)
 
-    elu_calendar = CalendarUnit(_owner=elu_text)
-    elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
-    elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=elu_calendar)
+    elu_contract = ContractUnit(_owner=elu_text)
+    elu_contract.add_memberunit(name=ava_text, creditor_weight=19)
+    elu_contract.add_memberunit(name=sal_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
 
@@ -480,21 +480,21 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyUsesMaxFlowsCount(
 
     # WHEN
     mtc = 13
-    sx.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=mtc)
+    sx.set_river_sphere_for_contract(contract_name=sal_text, max_flows_count=mtc)
 
     # THEN
     with sx.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_contract_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == mtc
 
 
-def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTable05(
+def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTable05(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
+    # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     economy_name = get_temp_env_name()
     sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -505,29 +505,29 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTa
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_calendar = CalendarUnit(_owner=sal_text)
-    sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=sal_calendar)
+    sal_contract = ContractUnit(_owner=sal_text)
+    sal_contract.add_memberunit(name=bob_text, creditor_weight=2)
+    sal_contract.add_memberunit(name=tom_text, creditor_weight=7)
+    sal_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=sal_contract)
 
-    bob_calendar = CalendarUnit(_owner=bob_text)
-    bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=bob_calendar)
+    bob_contract = ContractUnit(_owner=bob_text)
+    bob_contract.add_memberunit(name=sal_text, creditor_weight=3)
+    bob_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=bob_contract)
 
-    tom_calendar = CalendarUnit(_owner=tom_text)
-    tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
-    sx.save_public_calendar(calendar_x=tom_calendar)
+    tom_contract = ContractUnit(_owner=tom_text)
+    tom_contract.add_memberunit(name=sal_text, creditor_weight=2)
+    sx.save_public_contract(contract_x=tom_contract)
 
-    ava_calendar = CalendarUnit(_owner=ava_text)
-    ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
-    sx.save_public_calendar(calendar_x=ava_calendar)
+    ava_contract = ContractUnit(_owner=ava_text)
+    ava_contract.add_memberunit(name=elu_text, creditor_weight=2)
+    sx.save_public_contract(contract_x=ava_contract)
 
-    elu_calendar = CalendarUnit(_owner=elu_text)
-    elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
-    elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=elu_calendar)
+    elu_contract = ContractUnit(_owner=elu_text)
+    elu_contract.add_memberunit(name=ava_text, creditor_weight=19)
+    elu_contract.add_memberunit(name=sal_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
 
@@ -540,12 +540,12 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTa
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    sx.set_river_sphere_for_calendar(calendar_name=sal_text)
+    sx.set_river_sphere_for_contract(contract_name=sal_text)
 
     # THEN
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 40
     with sx.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_calendar_name=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_contract_name=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
@@ -573,10 +573,10 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyPopulatesriver_tmemberTa
     assert round(river_sal_tax_elu.tax_total, 15) == 0.0378017640625
 
 
-def test_economy_set_river_sphere_for_calendar_CorrectlyBuildsASingleContinuousRange(
+def test_economy_set_river_sphere_for_contract_CorrectlyBuildsASingleContinuousRange(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
+    # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     economy_name = get_temp_env_name()
     sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -587,34 +587,34 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyBuildsASingleContinuousR
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_calendar = CalendarUnit(_owner=sal_text)
-    sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=sal_calendar)
+    sal_contract = ContractUnit(_owner=sal_text)
+    sal_contract.add_memberunit(name=bob_text, creditor_weight=2)
+    sal_contract.add_memberunit(name=tom_text, creditor_weight=7)
+    sal_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=sal_contract)
 
-    bob_calendar = CalendarUnit(_owner=bob_text)
-    bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=bob_calendar)
+    bob_contract = ContractUnit(_owner=bob_text)
+    bob_contract.add_memberunit(name=sal_text, creditor_weight=3)
+    bob_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=bob_contract)
 
-    tom_calendar = CalendarUnit(_owner=tom_text)
-    tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
-    sx.save_public_calendar(calendar_x=tom_calendar)
+    tom_contract = ContractUnit(_owner=tom_text)
+    tom_contract.add_memberunit(name=sal_text, creditor_weight=2)
+    sx.save_public_contract(contract_x=tom_contract)
 
-    ava_calendar = CalendarUnit(_owner=ava_text)
-    ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
-    sx.save_public_calendar(calendar_x=ava_calendar)
+    ava_contract = ContractUnit(_owner=ava_text)
+    ava_contract.add_memberunit(name=elu_text, creditor_weight=2)
+    sx.save_public_contract(contract_x=ava_contract)
 
-    elu_calendar = CalendarUnit(_owner=elu_text)
-    elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
-    elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=elu_calendar)
+    elu_contract = ContractUnit(_owner=elu_text)
+    elu_contract.add_memberunit(name=ava_text, creditor_weight=19)
+    elu_contract.add_memberunit(name=sal_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
 
     # WHEN
-    sx.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=100)
+    sx.set_river_sphere_for_contract(contract_name=sal_text, max_flows_count=100)
 
     # THEN
     count_range_fails_sql = """
@@ -643,10 +643,10 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyBuildsASingleContinuousR
         assert get_single_result_back(bank_conn, count_range_fails_sql) == 0
 
 
-def test_economy_set_river_sphere_for_calendar_CorrectlyUpatesCalendarMemberUnits(
+def test_economy_set_river_sphere_for_contract_CorrectlyUpatesContractMemberUnits(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 calendars, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
+    # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     economy_name = get_temp_env_name()
     sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -657,39 +657,39 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyUpatesCalendarMemberUnit
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_calendar_src = CalendarUnit(_owner=sal_text)
-    sal_calendar_src.add_memberunit(name=bob_text, creditor_weight=2, debtor_weight=2)
-    sal_calendar_src.add_memberunit(name=tom_text, creditor_weight=2, debtor_weight=1)
-    sal_calendar_src.add_memberunit(name=ava_text, creditor_weight=2, debtor_weight=2)
-    sx.save_public_calendar(calendar_x=sal_calendar_src)
+    sal_contract_src = ContractUnit(_owner=sal_text)
+    sal_contract_src.add_memberunit(name=bob_text, creditor_weight=2, debtor_weight=2)
+    sal_contract_src.add_memberunit(name=tom_text, creditor_weight=2, debtor_weight=1)
+    sal_contract_src.add_memberunit(name=ava_text, creditor_weight=2, debtor_weight=2)
+    sx.save_public_contract(contract_x=sal_contract_src)
 
-    bob_calendar = CalendarUnit(_owner=bob_text)
-    bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=bob_calendar)
+    bob_contract = ContractUnit(_owner=bob_text)
+    bob_contract.add_memberunit(name=sal_text, creditor_weight=3)
+    bob_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=bob_contract)
 
-    tom_calendar = CalendarUnit(_owner=tom_text)
-    tom_calendar.add_memberunit(name=sal_text)
-    sx.save_public_calendar(calendar_x=tom_calendar)
+    tom_contract = ContractUnit(_owner=tom_text)
+    tom_contract.add_memberunit(name=sal_text)
+    sx.save_public_contract(contract_x=tom_contract)
 
-    ava_calendar = CalendarUnit(_owner=ava_text)
-    ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
-    sx.save_public_calendar(calendar_x=ava_calendar)
+    ava_contract = ContractUnit(_owner=ava_text)
+    ava_contract.add_memberunit(name=elu_text, creditor_weight=2)
+    sx.save_public_contract(contract_x=ava_contract)
 
-    elu_calendar = CalendarUnit(_owner=elu_text)
-    elu_calendar.add_memberunit(name=ava_text, creditor_weight=8)
-    elu_calendar.add_memberunit(name=sal_text, creditor_weight=2)
-    sx.save_public_calendar(calendar_x=elu_calendar)
+    elu_contract = ContractUnit(_owner=elu_text)
+    elu_contract.add_memberunit(name=ava_text, creditor_weight=8)
+    elu_contract.add_memberunit(name=sal_text, creditor_weight=2)
+    sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
-    sal_calendar_before = sx.get_public_calendar(owner=sal_text)
+    sal_contract_before = sx.get_public_contract(owner=sal_text)
 
-    sx.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=100)
-    assert len(sal_calendar_before._members) == 3
-    print(f"{len(sal_calendar_before._members)=}")
-    bob_member = sal_calendar_before._members.get(bob_text)
-    tom_member = sal_calendar_before._members.get(tom_text)
-    ava_member = sal_calendar_before._members.get(ava_text)
+    sx.set_river_sphere_for_contract(contract_name=sal_text, max_flows_count=100)
+    assert len(sal_contract_before._members) == 3
+    print(f"{len(sal_contract_before._members)=}")
+    bob_member = sal_contract_before._members.get(bob_text)
+    tom_member = sal_contract_before._members.get(tom_text)
+    ava_member = sal_contract_before._members.get(ava_text)
     assert bob_member._bank_tax_paid is None
     assert bob_member._bank_tax_diff is None
     assert tom_member._bank_tax_paid is None
@@ -698,13 +698,13 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyUpatesCalendarMemberUnit
     assert ava_member._bank_tax_diff is None
 
     # WHEN
-    sx.set_river_sphere_for_calendar(calendar_name=sal_text)
+    sx.set_river_sphere_for_contract(contract_name=sal_text)
 
     # THEN
-    sal_river_tmembers = sx.get_river_tmembers(calendar_name=sal_text)
+    sal_river_tmembers = sx.get_river_tmembers(contract_name=sal_text)
     assert len(sal_river_tmembers) == 3
 
-    sal_calendar_after = sx.get_public_calendar(owner=sal_text)
+    sal_contract_after = sx.get_public_contract(owner=sal_text)
 
     bob_tmember = sal_river_tmembers.get(bob_text)
     tom_tmember = sal_river_tmembers.get(tom_text)
@@ -716,10 +716,10 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyUpatesCalendarMemberUnit
     assert tom_tmember.currency_name == sal_text
     assert elu_tmember.currency_name == sal_text
 
-    bob_member = sal_calendar_after._members.get(bob_text)
-    tom_member = sal_calendar_after._members.get(tom_text)
-    ava_member = sal_calendar_after._members.get(ava_text)
-    elu_member = sal_calendar_after._members.get(elu_text)
+    bob_member = sal_contract_after._members.get(bob_text)
+    tom_member = sal_contract_after._members.get(tom_text)
+    ava_member = sal_contract_after._members.get(ava_text)
+    elu_member = sal_contract_after._members.get(elu_text)
 
     assert bob_tmember.tax_total == bob_member._bank_tax_paid
     assert bob_tmember.tax_diff == bob_member._bank_tax_diff
@@ -733,7 +733,7 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyUpatesCalendarMemberUnit
     #     print(f"{tmember_uid=} {sal_river_tmember=}")
     #     assert sal_river_tmember.currency_name == sal_text
     #     assert sal_river_tmember.tax_name in [bob_text, tom_text, elu_text]
-    #     memberunit_x = sal_calendar_after._members.get(sal_river_tmember.tax_name)
+    #     memberunit_x = sal_contract_after._members.get(sal_river_tmember.tax_name)
     #     if memberunit_x != None:
     #         # print(
     #         #     f"{sal_river_tmember.currency_name=} {sal_river_tmember.tax_name=} {memberunit_x.name=} tax_total: {sal_river_tmember.tax_total} Tax Paid: {memberunit_x._bank_tax_paid}"
@@ -748,8 +748,8 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyUpatesCalendarMemberUnit
     assert ava_member._bank_tax_paid is None
     assert ava_member._bank_tax_diff is None
 
-    # for memberunit_x in sal_calendar_after._members.values():
-    #     print(f"sal_calendar_after {memberunit_x.name=} {memberunit_x._bank_tax_paid=}")
+    # for memberunit_x in sal_contract_after._members.values():
+    #     print(f"sal_contract_after {memberunit_x.name=} {memberunit_x._bank_tax_paid=}")
     #     river_tmember_x = sal_river_tmembers.get(memberunit_x.name)
     #     if river_tmember_x is None:
     #         assert memberunit_x._bank_tax_paid is None
@@ -757,4 +757,4 @@ def test_economy_set_river_sphere_for_calendar_CorrectlyUpatesCalendarMemberUnit
     #     else:
     #         assert memberunit_x._bank_tax_paid != None
     #         assert memberunit_x._bank_tax_diff != None
-    # assert sal_calendar_after != sal_calendar_before
+    # assert sal_contract_after != sal_contract_before

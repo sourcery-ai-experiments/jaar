@@ -53,7 +53,7 @@ def test_economy_rename_actorunit_WorksCorrectly(env_dir_setup_cleanup):
     e5.create_dirs_if_null(in_memory_bank=True)
     old_bob_text = "old Bob"
     old_bob_dir = f"{e5.get_actors_dir()}/{old_bob_text}"
-    old_bob_file_path = f"{old_bob_dir}/isol_calendar.json"
+    old_bob_file_path = f"{old_bob_dir}/isol_contract.json"
     wx5_obj = actorunit_shop(name=old_bob_text, env_dir=e5.get_object_root_dir())
     e5.set_actorunits_empty_if_null()
     e5.set_actorunit_to_economy(actor=wx5_obj)
@@ -61,7 +61,7 @@ def test_economy_rename_actorunit_WorksCorrectly(env_dir_setup_cleanup):
 
     new_bob_text = "new Bob"
     new_bob_dir = f"{e5.get_actors_dir()}/{new_bob_text}"
-    new_bob_file_path = f"{new_bob_dir}/isol_calendar.json"
+    new_bob_file_path = f"{new_bob_dir}/isol_contract.json"
     assert os_path.exists(new_bob_dir) == False
     assert os_path.exists(old_bob_dir)
     assert os_path.exists(new_bob_file_path) == False
@@ -92,7 +92,7 @@ def test_economy_del_actor_dir_WorksCorrectly(env_dir_setup_cleanup):
     sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     xia_text = "Xia"
     xia_dir = f"{sx.get_actors_dir()}/{xia_text}"
-    xia_file_path = f"{xia_dir}/isol_calendar.json"
+    xia_file_path = f"{xia_dir}/isol_contract.json"
     sx.create_new_actorunit(actor_name=xia_text)
     sx.save_actor_file(actor_name=xia_text)
     print(f"{xia_file_path=}")

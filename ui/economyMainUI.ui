@@ -64,7 +64,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="calendars_table">
+   <widget class="QTableWidget" name="contracts_table">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -105,7 +105,7 @@
     </property>
     <column>
      <property name="text">
-      <string>Calendarlinks</string>
+      <string>Contractlinks</string>
      </property>
     </column>
     <column>
@@ -193,7 +193,7 @@
      <string>Change Name</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="calendar_update_button">
+   <widget class="QPushButton" name="contract_update_button">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -208,10 +208,10 @@
      </font>
     </property>
     <property name="text">
-     <string>Change Calendar Name</string>
+     <string>Change Contract Name</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="calendar_insert_button">
+   <widget class="QPushButton" name="contract_insert_button">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -226,10 +226,10 @@
      </font>
     </property>
     <property name="text">
-     <string>Add new Calendar</string>
+     <string>Add new Contract</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="calendar_delete_button">
+   <widget class="QPushButton" name="contract_delete_button">
     <property name="geometry">
      <rect>
       <x>80</x>
@@ -247,7 +247,7 @@
      <string>Delete</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="calendar_name">
+   <widget class="QLineEdit" name="contract_name">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -346,7 +346,7 @@
      </font>
     </property>
     <property name="text">
-     <string>delete CalendarLink</string>
+     <string>delete ContractLink</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="depotlink_name">
@@ -379,7 +379,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Add new CalendarLink</string>
+     <string>Add new ContractLink</string>
     </property>
    </widget>
    <widget class="QPushButton" name="depotlink_update_button">
@@ -397,7 +397,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Update CalendarLink</string>
+     <string>Update ContractLink</string>
     </property>
    </widget>
    <widget class="QPushButton" name="refresh_all_button">
@@ -418,7 +418,7 @@
      <string>refresh</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="calendar_edit_button">
+   <widget class="QPushButton" name="contract_edit_button">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -469,7 +469,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Edit CalendarLink</string>
+     <string>Edit ContractLink</string>
     </property>
    </widget>
    <widget class="QTableWidget" name="w_agenda_table">
@@ -718,7 +718,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Calendarlink Weight:</string>
+     <string>Contractlink Weight:</string>
     </property>
    </widget>
    <widget class="QTableWidget" name="ignores_table">
@@ -818,7 +818,7 @@
      <string>s</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="set_public_calendar_button">
+   <widget class="QPushButton" name="set_public_contract_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -833,10 +833,10 @@
      </font>
     </property>
     <property name="text">
-     <string>output_calendar to public_dir</string>
+     <string>output_contract to public_dir</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="reload_all_src_calendars_button">
+   <widget class="QPushButton" name="reload_all_src_contracts_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -851,7 +851,7 @@
      </font>
     </property>
     <property name="text">
-     <string>refresh_all_src_calendars</string>
+     <string>refresh_all_src_contracts</string>
     </property>
    </widget>
    <widget class="QPushButton" name="set_public_and_reload_srcs_button">

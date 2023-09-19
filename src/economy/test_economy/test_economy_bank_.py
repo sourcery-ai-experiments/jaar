@@ -1,5 +1,5 @@
 from src.economy.economy import economyunit_shop, EconomyUnit
-from src.calendar.x_func import delete_dir as x_func_delete_dir
+from src.contract.x_func import delete_dir as x_func_delete_dir
 from os import path as os_path
 from src.economy.examples.economy_env_kit import (
     get_temp_env_name,

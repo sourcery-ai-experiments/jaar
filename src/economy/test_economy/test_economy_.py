@@ -1,5 +1,5 @@
 from src.economy.economy import EconomyUnit, economyunit_shop
-from src.calendar.x_func import delete_dir as x_func_delete_dir
+from src.contract.x_func import delete_dir as x_func_delete_dir
 from os import path as os_path
 from src.economy.examples.economy_env_kit import (
     get_temp_env_name,
@@ -28,7 +28,7 @@ def test_economy_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     economy_dir = f"src/economy/examples/economys/{economy_name}"
     economy_file_name = "economy.json"
     economy_file_path = f"{economy_dir}/{economy_file_name}"
-    calendars_dir = f"{economy_dir}/calendars"
+    contracts_dir = f"{economy_dir}/contracts"
     actors_dir = f"{economy_dir}/actors"
     bank_file_name = "bank.db"
     bank_file_path = f"{economy_dir}/{bank_file_name}"
@@ -36,22 +36,22 @@ def test_economy_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.exists(economy_dir) is False
     assert os_path.isdir(economy_dir) is False
     assert os_path.exists(economy_file_path) is False
-    assert os_path.exists(calendars_dir) is False
+    assert os_path.exists(contracts_dir) is False
     assert os_path.exists(actors_dir) is False
     assert os_path.exists(bank_file_path) is False
 
     # WHEN
     sx.create_dirs_if_null(in_memory_bank=False)
 
-    # THEN check calendars src directory created
+    # THEN check contracts src directory created
     assert os_path.exists(economy_dir)
     assert os_path.isdir(economy_dir)
     assert os_path.exists(economy_file_path)
-    assert os_path.exists(calendars_dir)
+    assert os_path.exists(contracts_dir)
     assert os_path.exists(actors_dir)
     assert os_path.exists(bank_file_path)
     assert sx.get_object_root_dir() == economy_dir
-    assert sx.get_public_dir() == calendars_dir
+    assert sx.get_public_dir() == contracts_dir
     assert sx.get_actors_dir() == actors_dir
     assert sx.get_bank_db_path() == bank_file_path
 
@@ -62,14 +62,14 @@ def test_rename_example_economy_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanu
     old_economy_dir = f"src/economy/examples/economys/{old_economy_name}"
     old_economy_file_name = "economy.json"
     old_economy_file_path = f"{old_economy_dir}/{old_economy_file_name}"
-    old_calendars_dir = f"{old_economy_dir}/calendars"
+    old_contracts_dir = f"{old_economy_dir}/contracts"
     old_actors_dir = f"{old_economy_dir}/actors"
 
     new_economy_name = "ex_env1"
     new_economy_dir = f"src/economy/examples/economys/{new_economy_name}"
     new_economy_file_name = "economy.json"
     new_economy_file_path = f"{new_economy_dir}/{new_economy_file_name}"
-    new_calendars_dir = f"{new_economy_dir}/calendars"
+    new_contracts_dir = f"{new_economy_dir}/contracts"
     new_actors_dir = f"{new_economy_dir}/actors"
     x_func_delete_dir(dir=new_economy_dir)
     print(f"{new_economy_dir=}")
@@ -83,38 +83,38 @@ def test_rename_example_economy_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanu
     assert os_path.exists(old_economy_dir)
     assert os_path.isdir(old_economy_dir)
     assert os_path.exists(old_economy_file_path)
-    assert os_path.exists(old_calendars_dir)
+    assert os_path.exists(old_contracts_dir)
     assert os_path.exists(old_actors_dir)
-    assert sx.get_public_dir() == old_calendars_dir
+    assert sx.get_public_dir() == old_contracts_dir
     assert sx.get_actors_dir() == old_actors_dir
 
     assert os_path.exists(new_economy_dir) is False
     assert os_path.isdir(new_economy_dir) is False
     assert os_path.exists(new_economy_file_path) is False
-    assert os_path.exists(new_calendars_dir) is False
+    assert os_path.exists(new_contracts_dir) is False
     assert os_path.exists(new_actors_dir) is False
-    assert sx.get_public_dir() != new_calendars_dir
+    assert sx.get_public_dir() != new_contracts_dir
     assert sx.get_actors_dir() != new_actors_dir
     assert sx.name != new_economy_name
 
     # WHEN
     rename_example_economy(economy_obj=sx, new_name=new_economy_name)
 
-    # THEN check calendars src directory created
+    # THEN check contracts src directory created
     assert os_path.exists(old_economy_dir) is False
     assert os_path.isdir(old_economy_dir) is False
     assert os_path.exists(old_economy_file_path) is False
-    assert os_path.exists(old_calendars_dir) is False
+    assert os_path.exists(old_contracts_dir) is False
     assert os_path.exists(old_actors_dir) is False
-    assert sx.get_public_dir() != old_calendars_dir
+    assert sx.get_public_dir() != old_contracts_dir
     assert sx.get_actors_dir() != old_actors_dir
 
     assert os_path.exists(new_economy_dir)
     assert os_path.isdir(new_economy_dir)
     assert os_path.exists(new_economy_file_path)
-    assert os_path.exists(new_calendars_dir)
+    assert os_path.exists(new_contracts_dir)
     assert os_path.exists(new_actors_dir)
-    assert sx.get_public_dir() == new_calendars_dir
+    assert sx.get_public_dir() == new_contracts_dir
     assert sx.get_actors_dir() == new_actors_dir
     assert sx.name == new_economy_name
 
@@ -131,7 +131,7 @@ def test_copy_evaluation_economy_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     old_economy_dir = f"src/economy/examples/economys/{old_economy_name}"
     old_economy_file_name = "economy.json"
     old_economy_file_path = f"{old_economy_dir}/{old_economy_file_name}"
-    old_calendars_dir = f"{old_economy_dir}/calendars"
+    old_contracts_dir = f"{old_economy_dir}/contracts"
     old_actors_dir = f"{old_economy_dir}/actors"
 
     sx = economyunit_shop(name=old_economy_name, economys_dir=get_test_economys_dir())
@@ -140,45 +140,45 @@ def test_copy_evaluation_economy_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     assert os_path.exists(old_economy_dir)
     assert os_path.isdir(old_economy_dir)
     assert os_path.exists(old_economy_file_path)
-    assert os_path.exists(old_calendars_dir)
+    assert os_path.exists(old_contracts_dir)
     assert os_path.exists(old_actors_dir)
-    assert sx.get_public_dir() == old_calendars_dir
+    assert sx.get_public_dir() == old_contracts_dir
     assert sx.get_actors_dir() == old_actors_dir
 
     new_economy_name = "ex_env1"
     new_economy_dir = f"src/economy/examples/economys/{new_economy_name}"
     new_economy_file_name = "economy.json"
     new_economy_file_path = f"{new_economy_dir}/{new_economy_file_name}"
-    new_calendars_dir = f"{new_economy_dir}/calendars"
+    new_contracts_dir = f"{new_economy_dir}/contracts"
     new_actors_dir = f"{new_economy_dir}/actors"
 
     assert os_path.exists(new_economy_dir) is False
     assert os_path.isdir(new_economy_dir) is False
     assert os_path.exists(new_economy_file_path) is False
-    assert os_path.exists(new_calendars_dir) is False
+    assert os_path.exists(new_contracts_dir) is False
     assert os_path.exists(new_actors_dir) is False
-    assert sx.get_public_dir() != new_calendars_dir
+    assert sx.get_public_dir() != new_contracts_dir
     assert sx.get_actors_dir() != new_actors_dir
     assert sx.name != new_economy_name
 
     # WHEN
     copy_evaluation_economy(src_name=sx.name, dest_name=new_economy_name)
 
-    # THEN check calendars src directory created
+    # THEN check contracts src directory created
     assert os_path.exists(old_economy_dir)
     assert os_path.isdir(old_economy_dir)
     assert os_path.exists(old_economy_file_path)
-    assert os_path.exists(old_calendars_dir)
+    assert os_path.exists(old_contracts_dir)
     assert os_path.exists(old_actors_dir)
-    assert sx.get_public_dir() == old_calendars_dir
+    assert sx.get_public_dir() == old_contracts_dir
     assert sx.get_actors_dir() == old_actors_dir
 
     assert os_path.exists(new_economy_dir)
     assert os_path.isdir(new_economy_dir)
     assert os_path.exists(new_economy_file_path)
-    assert os_path.exists(new_calendars_dir)
+    assert os_path.exists(new_contracts_dir)
     assert os_path.exists(new_actors_dir)
-    assert sx.get_public_dir() != new_calendars_dir
+    assert sx.get_public_dir() != new_contracts_dir
     assert sx.get_actors_dir() != new_actors_dir
     assert sx.name != new_economy_name
 

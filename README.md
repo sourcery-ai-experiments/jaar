@@ -67,36 +67,36 @@ EconomyUnit objects
 
 EconomyUnit ActorUnit objects
 
-EconomyUnit ActorUnit CalendarLink objects
+EconomyUnit ActorUnit ContractLink objects
 
 EconomyUnit Bank objects
 
 <!-- TODO: Add explanations -->
-CalendarUnit objects
+ContractUnit objects
 
-CalendarUnit MemberUnit objects
+ContractUnit MemberUnit objects
 
-CalendarUnit GroupUnit objects
+ContractUnit GroupUnit objects
 
-CalendarUnit IdeaUnit objects
+ContractUnit IdeaUnit objects
 
-CalendarUnit IdeaUnit hierarchical structure
+ContractUnit IdeaUnit hierarchical structure
 
-CalendarUnit IdeaUnit GroupLink objects
+ContractUnit IdeaUnit GroupLink objects
 
-CalendarUnit IdeaUnit GroupLine objects
+ContractUnit IdeaUnit GroupLine objects
 
-CalendarUnit IdeaUnit GroupHeir objects
+ContractUnit IdeaUnit GroupHeir objects
 
-CalendarUnit IdeaUnit GroupHeir objects
+ContractUnit IdeaUnit GroupHeir objects
 
-CalendarUnit IdeaUnit RequiredFactUnit objects
+ContractUnit IdeaUnit RequiredFactUnit objects
 
-CalendarUnit IdeaUnit RequiredFactHeir objects
+ContractUnit IdeaUnit RequiredFactHeir objects
 
-CalendarUnit IdeaUnit AcptFactUnit objects
+ContractUnit IdeaUnit AcptFactUnit objects
 
-CalendarUnit IdeaUnit AcptFactHeir objects
+ContractUnit IdeaUnit AcptFactHeir objects
 
 
 ## 1.3 Test-Driven-Development

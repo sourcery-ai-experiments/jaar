@@ -1,24 +1,24 @@
-# from lw.calendar import CalendarUnit
+# from lw.contract import ContractUnit
 from src.economy.economy import EconomyUnit, economyunit_shop
 from os import listdir as os_listdir, rename as os_rename, path as os_path
 from pytest import fixture as pytest_fixture
-from src.calendar.examples.example_calendars import (
-    calendar_v001 as example_calendars_calendar_v001,
-    calendar_v002 as example_calendars_calendar_v002,
-    get_calendar_1Task_1CE0MinutesRequired_1AcptFact as example_calendars_get_calendar_1Task_1CE0MinutesRequired_1AcptFact,
-    get_calendar_with7amCleanTableRequired as example_calendars_get_calendar_with7amCleanTableRequired,
-    get_calendar_base_time_example as example_calendars_get_calendar_base_time_example,
-    get_calendar_x1_3levels_1required_1acptfacts as example_calendars_get_calendar_x1_3levels_1required_1acptfacts,
+from src.contract.examples.example_contracts import (
+    contract_v001 as example_contracts_contract_v001,
+    contract_v002 as example_contracts_contract_v002,
+    get_contract_1Task_1CE0MinutesRequired_1AcptFact as example_contracts_get_contract_1Task_1CE0MinutesRequired_1AcptFact,
+    get_contract_with7amCleanTableRequired as example_contracts_get_contract_with7amCleanTableRequired,
+    get_contract_base_time_example as example_contracts_get_contract_base_time_example,
+    get_contract_x1_3levels_1required_1acptfacts as example_contracts_get_contract_x1_3levels_1required_1acptfacts,
 )
 from src.economy.examples.example_actors import (
-    get_1node_calendar as example_actors_get_1node_calendar,
-    get_7nodeJRootWithH_calendar as example_actors_get_7nodeJRootWithH_calendar,
-    get_calendar_2CleanNodesRandomWeights as example_actors_get_calendar_2CleanNodesRandomWeights,
-    get_calendar_3CleanNodesRandomWeights as example_actors_get_calendar_3CleanNodesRandomWeights,
+    get_1node_contract as example_actors_get_1node_contract,
+    get_7nodeJRootWithH_contract as example_actors_get_7nodeJRootWithH_contract,
+    get_contract_2CleanNodesRandomWeights as example_actors_get_contract_2CleanNodesRandomWeights,
+    get_contract_3CleanNodesRandomWeights as example_actors_get_contract_3CleanNodesRandomWeights,
 )
-from src.calendar.calendar import CalendarUnit
+from src.contract.contract import ContractUnit
 from src.economy.actor import actorunit_shop
-from src.calendar.x_func import (
+from src.contract.x_func import (
     single_dir_create_if_null,
     delete_dir as x_func_delete_dir,
     copy_dir,
@@ -48,17 +48,17 @@ def env_dir_setup_cleanup():
     x_func_delete_dir(dir=env_dir)
 
 
-def create_calendar_file_for_economys(economy_dir: str, calendar_owner: str):
-    calendar_x = CalendarUnit(_owner=calendar_owner)
-    calendar_dir = f"{economy_dir}/calendars"
-    # file_path = f"{calendar_dir}/{calendar_x._owner}.json"
+def create_contract_file_for_economys(economy_dir: str, contract_owner: str):
+    contract_x = ContractUnit(_owner=contract_owner)
+    contract_dir = f"{economy_dir}/contracts"
+    # file_path = f"{contract_dir}/{contract_x._owner}.json"
     # if not path.exists(file_path):
-    # print(f"{file_path=} {calendar_x._owner=}")
+    # print(f"{file_path=} {contract_x._owner=}")
 
     x_func_save_file(
-        dest_dir=calendar_dir,
-        file_name=f"{calendar_x._owner}.json",
-        file_text=calendar_x.get_json(),
+        dest_dir=contract_dir,
+        file_name=f"{contract_x._owner}.json",
+        file_text=contract_x.get_json(),
     )
 
 
@@ -85,38 +85,38 @@ def _delete_and_set_ex3():
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
-    sx.save_public_calendar(calendar_x=example_actors_get_1node_calendar())
-    sx.save_public_calendar(
-        calendar_x=example_calendars_get_calendar_1Task_1CE0MinutesRequired_1AcptFact()
+    sx.save_public_contract(contract_x=example_actors_get_1node_contract())
+    sx.save_public_contract(
+        contract_x=example_contracts_get_contract_1Task_1CE0MinutesRequired_1AcptFact()
     )
-    sx.save_public_calendar(calendar_x=example_calendars_calendar_v001())
-    sx.save_public_calendar(calendar_x=example_calendars_calendar_v002())
+    sx.save_public_contract(contract_x=example_contracts_contract_v001())
+    sx.save_public_contract(contract_x=example_contracts_contract_v002())
 
     # sx.set_actor(actor_x=actorunit_shop(name="w1", env_dir=sx.get_object_root_dir()))
     # sx.set_actor(actor_x=actorunit_shop(name="w2", env_dir=sx.get_object_root_dir()))
     xia_text = "Xia"
     sx.create_new_actorunit(actor_name=xia_text)
-    owner_text = "Mycalendar"
+    owner_text = "Mycontract"
     sx.set_actor_depotlink(
-        xia_text, calendar_owner=owner_text, depotlink_type="blind_trust"
+        xia_text, contract_owner=owner_text, depotlink_type="blind_trust"
     )
     # w1_obj = sx.get_actor_obj(name=w1_text)
 
     bob_text = "bob wurld"
-    create_calendar_file_for_economys(sx.get_object_root_dir(), bob_text)
-    # print(f"create calendar_list {w1_text=}")
-    sx.create_depotlink_to_generated_calendar(
-        actor_name=xia_text, calendar_owner=bob_text, depotlink_type="ignore"
+    create_contract_file_for_economys(sx.get_object_root_dir(), bob_text)
+    # print(f"create contract_list {w1_text=}")
+    sx.create_depotlink_to_generated_contract(
+        actor_name=xia_text, contract_owner=bob_text, depotlink_type="ignore"
     )
     land_text = "tim wurld"
-    create_calendar_file_for_economys(
-        economy_dir=sx.get_object_root_dir(), calendar_owner=land_text
+    create_contract_file_for_economys(
+        economy_dir=sx.get_object_root_dir(), contract_owner=land_text
     )
-    sx.create_depotlink_to_generated_calendar(
-        actor_name=xia_text, calendar_owner=land_text, depotlink_type="blind_trust"
+    sx.create_depotlink_to_generated_contract(
+        actor_name=xia_text, contract_owner=land_text, depotlink_type="blind_trust"
     )
-    # sx.create_depotlink_to_generated_calendar(actor_name=w1_text, calendar_owner="test9")
-    # sx.create_depotlink_to_generated_calendar(actor_name=w1_text, calendar_owner="Bobs calendar")
+    # sx.create_depotlink_to_generated_contract(actor_name=w1_text, contract_owner="test9")
+    # sx.create_depotlink_to_generated_contract(actor_name=w1_text, contract_owner="Bobs contract")
     sx.save_actor_file(actor_name=xia_text)
     # print(f"WHAT WHAT {sx.get_object_root_dir()}")
     # print(f"WHAT WHAT {sx.get_object_root_dir()}/actors/w1/w1.json")
@@ -138,11 +138,11 @@ def _delete_and_set_ex4():
     sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
-    sx.save_public_calendar(example_actors_get_7nodeJRootWithH_calendar())
-    sx.save_public_calendar(example_calendars_get_calendar_with7amCleanTableRequired())
-    sx.save_public_calendar(example_calendars_get_calendar_base_time_example())
-    sx.save_public_calendar(
-        example_calendars_get_calendar_x1_3levels_1required_1acptfacts()
+    sx.save_public_contract(example_actors_get_7nodeJRootWithH_contract())
+    sx.save_public_contract(example_contracts_get_contract_with7amCleanTableRequired())
+    sx.save_public_contract(example_contracts_get_contract_base_time_example())
+    sx.save_public_contract(
+        example_contracts_get_contract_x1_3levels_1required_1acptfacts()
     )
 
 
@@ -157,55 +157,55 @@ def _delete_and_set_ex5():
     # ethical code Jessica
     # ethical code Francine
     # ethical code Clay
-    calendar_1 = example_actors_get_calendar_2CleanNodesRandomWeights(_owner="ernie")
-    calendar_2 = example_actors_get_calendar_2CleanNodesRandomWeights(_owner="steve")
-    calendar_3 = example_actors_get_calendar_2CleanNodesRandomWeights(_owner="jessica")
-    calendar_4 = example_actors_get_calendar_2CleanNodesRandomWeights(_owner="francine")
-    calendar_5 = example_actors_get_calendar_2CleanNodesRandomWeights(_owner="clay")
+    contract_1 = example_actors_get_contract_2CleanNodesRandomWeights(_owner="ernie")
+    contract_2 = example_actors_get_contract_2CleanNodesRandomWeights(_owner="steve")
+    contract_3 = example_actors_get_contract_2CleanNodesRandomWeights(_owner="jessica")
+    contract_4 = example_actors_get_contract_2CleanNodesRandomWeights(_owner="francine")
+    contract_5 = example_actors_get_contract_2CleanNodesRandomWeights(_owner="clay")
 
-    sx.save_public_calendar(calendar_x=calendar_1)
-    sx.save_public_calendar(calendar_x=calendar_2)
-    sx.save_public_calendar(calendar_x=calendar_3)
-    sx.save_public_calendar(calendar_x=calendar_4)
-    sx.save_public_calendar(calendar_x=calendar_5)
+    sx.save_public_contract(contract_x=contract_1)
+    sx.save_public_contract(contract_x=contract_2)
+    sx.save_public_contract(contract_x=contract_3)
+    sx.save_public_contract(contract_x=contract_4)
+    sx.save_public_contract(contract_x=contract_5)
 
-    sx.create_new_actorunit(actor_name=calendar_1._owner)
-    sx.create_new_actorunit(actor_name=calendar_2._owner)
-    sx.create_new_actorunit(actor_name=calendar_3._owner)
-    sx.create_new_actorunit(actor_name=calendar_4._owner)
-    sx.create_new_actorunit(actor_name=calendar_5._owner)
+    sx.create_new_actorunit(actor_name=contract_1._owner)
+    sx.create_new_actorunit(actor_name=contract_2._owner)
+    sx.create_new_actorunit(actor_name=contract_3._owner)
+    sx.create_new_actorunit(actor_name=contract_4._owner)
+    sx.create_new_actorunit(actor_name=contract_5._owner)
 
-    sx.set_actor_depotlink(calendar_1._owner, calendar_2._owner, "blind_trust", 3, 3.1)
-    sx.set_actor_depotlink(calendar_1._owner, calendar_3._owner, "blind_trust", 7, 7.1)
-    sx.set_actor_depotlink(calendar_1._owner, calendar_4._owner, "blind_trust", 4, 4.1)
-    sx.set_actor_depotlink(calendar_1._owner, calendar_5._owner, "blind_trust", 5, 5.1)
+    sx.set_actor_depotlink(contract_1._owner, contract_2._owner, "blind_trust", 3, 3.1)
+    sx.set_actor_depotlink(contract_1._owner, contract_3._owner, "blind_trust", 7, 7.1)
+    sx.set_actor_depotlink(contract_1._owner, contract_4._owner, "blind_trust", 4, 4.1)
+    sx.set_actor_depotlink(contract_1._owner, contract_5._owner, "blind_trust", 5, 5.1)
 
-    sx.set_actor_depotlink(calendar_2._owner, calendar_1._owner, "blind_trust", 3, 3.1)
-    sx.set_actor_depotlink(calendar_2._owner, calendar_3._owner, "blind_trust", 7, 7.1)
-    sx.set_actor_depotlink(calendar_2._owner, calendar_4._owner, "blind_trust", 4, 4.1)
-    icx = example_actors_get_calendar_3CleanNodesRandomWeights()
-    sx.set_actor_depotlink(calendar_2._owner, calendar_5._owner, "ignore", 5, 5.1, icx)
+    sx.set_actor_depotlink(contract_2._owner, contract_1._owner, "blind_trust", 3, 3.1)
+    sx.set_actor_depotlink(contract_2._owner, contract_3._owner, "blind_trust", 7, 7.1)
+    sx.set_actor_depotlink(contract_2._owner, contract_4._owner, "blind_trust", 4, 4.1)
+    icx = example_actors_get_contract_3CleanNodesRandomWeights()
+    sx.set_actor_depotlink(contract_2._owner, contract_5._owner, "ignore", 5, 5.1, icx)
 
-    sx.set_actor_depotlink(calendar_3._owner, calendar_1._owner, "blind_trust", 3, 3.1)
-    sx.set_actor_depotlink(calendar_3._owner, calendar_2._owner, "blind_trust", 7, 7.1)
-    sx.set_actor_depotlink(calendar_3._owner, calendar_4._owner, "blind_trust", 4, 4.1)
-    sx.set_actor_depotlink(calendar_3._owner, calendar_5._owner, "blind_trust", 5, 5.1)
+    sx.set_actor_depotlink(contract_3._owner, contract_1._owner, "blind_trust", 3, 3.1)
+    sx.set_actor_depotlink(contract_3._owner, contract_2._owner, "blind_trust", 7, 7.1)
+    sx.set_actor_depotlink(contract_3._owner, contract_4._owner, "blind_trust", 4, 4.1)
+    sx.set_actor_depotlink(contract_3._owner, contract_5._owner, "blind_trust", 5, 5.1)
 
-    sx.set_actor_depotlink(calendar_4._owner, calendar_1._owner, "blind_trust", 3, 3.1)
-    sx.set_actor_depotlink(calendar_4._owner, calendar_2._owner, "blind_trust", 7, 7.1)
-    sx.set_actor_depotlink(calendar_4._owner, calendar_3._owner, "blind_trust", 4, 4.1)
-    sx.set_actor_depotlink(calendar_4._owner, calendar_5._owner, "blind_trust", 5, 5.1)
+    sx.set_actor_depotlink(contract_4._owner, contract_1._owner, "blind_trust", 3, 3.1)
+    sx.set_actor_depotlink(contract_4._owner, contract_2._owner, "blind_trust", 7, 7.1)
+    sx.set_actor_depotlink(contract_4._owner, contract_3._owner, "blind_trust", 4, 4.1)
+    sx.set_actor_depotlink(contract_4._owner, contract_5._owner, "blind_trust", 5, 5.1)
 
-    sx.set_actor_depotlink(calendar_5._owner, calendar_1._owner, "blind_trust", 3, 3.1)
-    sx.set_actor_depotlink(calendar_5._owner, calendar_2._owner, "blind_trust", 7, 7.1)
-    sx.set_actor_depotlink(calendar_5._owner, calendar_3._owner, "blind_trust", 4, 4.1)
-    sx.set_actor_depotlink(calendar_5._owner, calendar_4._owner, "blind_trust", 5, 5.1)
+    sx.set_actor_depotlink(contract_5._owner, contract_1._owner, "blind_trust", 3, 3.1)
+    sx.set_actor_depotlink(contract_5._owner, contract_2._owner, "blind_trust", 7, 7.1)
+    sx.set_actor_depotlink(contract_5._owner, contract_3._owner, "blind_trust", 4, 4.1)
+    sx.set_actor_depotlink(contract_5._owner, contract_4._owner, "blind_trust", 5, 5.1)
 
-    sx.save_actor_file(actor_name=calendar_1._owner)
-    sx.save_actor_file(actor_name=calendar_2._owner)
-    sx.save_actor_file(actor_name=calendar_3._owner)
-    sx.save_actor_file(actor_name=calendar_4._owner)
-    sx.save_actor_file(actor_name=calendar_5._owner)
+    sx.save_actor_file(actor_name=contract_1._owner)
+    sx.save_actor_file(actor_name=contract_2._owner)
+    sx.save_actor_file(actor_name=contract_3._owner)
+    sx.save_actor_file(actor_name=contract_4._owner)
+    sx.save_actor_file(actor_name=contract_5._owner)
 
 
 def _delete_and_set_ex6():
@@ -220,32 +220,32 @@ def _delete_and_set_ex6():
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_calendar = CalendarUnit(_owner=sal_text)
-    sal_calendar.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_calendar.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=sal_calendar)
+    sal_contract = ContractUnit(_owner=sal_text)
+    sal_contract.add_memberunit(name=bob_text, creditor_weight=2)
+    sal_contract.add_memberunit(name=tom_text, creditor_weight=7)
+    sal_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=sal_contract)
 
-    bob_calendar = CalendarUnit(_owner=bob_text)
-    bob_calendar.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_calendar.add_memberunit(name=ava_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=bob_calendar)
+    bob_contract = ContractUnit(_owner=bob_text)
+    bob_contract.add_memberunit(name=sal_text, creditor_weight=3)
+    bob_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=bob_contract)
 
-    tom_calendar = CalendarUnit(_owner=tom_text)
-    tom_calendar.add_memberunit(name=sal_text, creditor_weight=2)
-    sx.save_public_calendar(calendar_x=tom_calendar)
+    tom_contract = ContractUnit(_owner=tom_text)
+    tom_contract.add_memberunit(name=sal_text, creditor_weight=2)
+    sx.save_public_contract(contract_x=tom_contract)
 
-    ava_calendar = CalendarUnit(_owner=ava_text)
-    ava_calendar.add_memberunit(name=elu_text, creditor_weight=2)
-    sx.save_public_calendar(calendar_x=ava_calendar)
+    ava_contract = ContractUnit(_owner=ava_text)
+    ava_contract.add_memberunit(name=elu_text, creditor_weight=2)
+    sx.save_public_contract(contract_x=ava_contract)
 
-    elu_calendar = CalendarUnit(_owner=elu_text)
-    elu_calendar.add_memberunit(name=ava_text, creditor_weight=19)
-    elu_calendar.add_memberunit(name=sal_text, creditor_weight=1)
-    sx.save_public_calendar(calendar_x=elu_calendar)
+    elu_contract = ContractUnit(_owner=elu_text)
+    elu_contract.add_memberunit(name=ava_text, creditor_weight=19)
+    elu_contract.add_memberunit(name=sal_text, creditor_weight=1)
+    sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
-    sx.set_river_sphere_for_calendar(calendar_name=sal_text, max_flows_count=100)
+    sx.set_river_sphere_for_contract(contract_name=sal_text, max_flows_count=100)
 
 
 def create_example_economy(economy_name: str):

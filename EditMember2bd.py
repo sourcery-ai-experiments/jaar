@@ -29,7 +29,7 @@ class EditMember2bd(qtw.QWidget, Ui_Form):
         self.gp_delete_button.clicked.connect(self.gp_delete)
         self.gp_update_button.clicked.connect(self.gp_update)
 
-        # self.EditMember2bd.calendar_x = self.calendar_x
+        # self.EditMember2bd.contract_x = self.contract_x
         # self.EditMember2bd.selected_member_name = self.selected_member_name
 
     def gp_insert(self):
