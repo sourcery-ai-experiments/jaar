@@ -1,3 +1,4 @@
+from src.contract.road import get_global_root_label as root_label
 from src.economy.economy import economyunit_shop
 from src.contract.examples.example_contracts import (
     contract_v002 as ex_cxs_contract_v002,
@@ -115,7 +116,7 @@ def test_economy_get_output_contract_ReturnsCorrectContractObjScenario2(
     output_cx = sx.get_output_contract(actor_name=xia_text)
 
     # THEN
-    output_cx_d_idea = output_cx.get_idea_kid(road="A,C,D")
+    output_cx_d_idea = output_cx.get_idea_kid(road=f"{root_label()},C,D")
     print(f" {output_cx_d_idea._weight=} ")
     assert output_cx != None
     # for idea_kid_x1 in cx1._idearoot._kids.values():

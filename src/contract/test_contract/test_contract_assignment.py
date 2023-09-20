@@ -156,12 +156,12 @@ def test_contract__get_assignor_promise_ideas_ReturnsCorrectIdeaRoads():
     # THEN
     print(f"{assignor_promises=}")
     x_dict = {
-        "A,work": -1,
-        "A,housework,clean table": -1,
-        "A,housework,clean table,remove dishs": -1,
-        "A,housework,clean table,get soap": -1,
-        "A,housework,clean table,get soap,grab soap": -1,
-        "A,feed cat": -1,
+        f"{root_label()},work": -1,
+        f"{root_label()},housework,clean table": -1,
+        f"{root_label()},housework,clean table,remove dishs": -1,
+        f"{root_label()},housework,clean table,get soap": -1,
+        f"{root_label()},housework,clean table,get soap,grab soap": -1,
+        f"{root_label()},feed cat": -1,
     }
     assert assignor_promises == x_dict
 

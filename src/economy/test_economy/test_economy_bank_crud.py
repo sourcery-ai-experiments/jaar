@@ -3,6 +3,7 @@ from src.contract.contract import ContractUnit
 from src.contract.idea import IdeaKid
 from src.contract.group import groupunit_shop
 from src.contract.member import memberlink_shop
+from src.contract.road import get_global_root_label as root_label
 from src.economy.examples.economy_env_kit import (
     get_temp_env_name,
     get_test_economys_dir,
@@ -258,7 +259,7 @@ def test_economy_set_contract_bank_attrs_CorrectlyPopulatesContract_Groupunit_Me
     # assert
     # _memberlinks_set_by_economy_road
     # assert group "swimming expert" has 1 member
-    # change groupunit "swimming expert" _memberlinks_set_by_economy_road ==  "A,sports,swimmer"
+    # change groupunit "swimming expert" _memberlinks_set_by_economy_road ==  f"{root_label()}sports,swimmer"
     # run set_bank_metrics
     # assert group "swimming expert" has 2 different member
 
@@ -274,9 +275,9 @@ def test_economy_set_contract_bank_attrs_CorrectlyPopulatesContract_Groupunit_Me
 
     swim_text = "swimming"
     sports_text = "sports"
-    sal_sports_road = f"{sal_contract._owner},{sports_text}"
-    bob_sports_road = f"{bob_contract._owner},{sports_text}"
-    tom_sports_road = f"{tom_contract._owner},{sports_text}"
+    sal_sports_road = f"{root_label()},{sports_text}"
+    bob_sports_road = f"{root_label()},{sports_text}"
+    tom_sports_road = f"{root_label()},{sports_text}"
 
     sal_contract.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=sal_sports_road)
     bob_contract.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=bob_sports_road)
@@ -300,7 +301,7 @@ def test_economy_set_contract_bank_attrs_CorrectlyPopulatesContract_Groupunit_Me
     assert len(e1_sal_contract._groups.get(swim_group_text)._members) == 1
 
     # WHEN
-    # change groupunit "swimming expert" _memberlinks_set_by_economy_road ==  "A,sports,swimmer"
+    # change groupunit "swimming expert" _memberlinks_set_by_economy_road ==  f"{root_label()},sports,swimmer"
     sal_swim_road = f"{sal_sports_road},{swim_text}"
     swim_group_unit.set_attr(_memberlinks_set_by_economy_road=sal_swim_road)
     sal_contract.set_groupunit(groupunit=swim_group_unit)

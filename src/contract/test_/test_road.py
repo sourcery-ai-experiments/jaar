@@ -38,11 +38,12 @@ def test_road_is_sub_road_correctlyReturnsBool():
 def test_road_road_validate_correctlyReturnsRoad():
     assert road_validate(None) == ""
     assert road_validate(Road("")) == ""
-    assert road_validate(Road("A,casa")) == "A,casa"
-    assert road_validate(Road(",source")) == "A,source"
-    assert road_validate(Road("source,fun")) == "A,fun"
-    assert road_validate(Road("source")) == "A"
-    assert road_validate(Road("AA,casa")) == "A,casa"
+    assert road_validate(Road(f"{root_label()},casa")) == f"{root_label()},casa"
+    assert road_validate(Road("A,casa")) == f"{root_label()},casa"
+    assert road_validate(Road(",source")) == f"{root_label()},source"
+    assert road_validate(Road("source,fun")) == f"{root_label()},fun"
+    assert road_validate(Road("source")) == root_label()
+    assert road_validate(Road("AA,casa")) == f"{root_label()},casa"
 
 
 def test_road_change_road_correctlyRoad():
