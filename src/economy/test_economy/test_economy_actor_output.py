@@ -9,7 +9,7 @@ from src.economy.examples.example_actors import (
     get_contract_3CleanNodesRandomWeights,
 )
 from src.economy.examples.economy_env_kit import (
-    get_temp_env_name,
+    get_temp_env_title,
     get_test_economys_dir,
     env_dir_setup_cleanup,
 )
@@ -20,7 +20,7 @@ def test_economy_get_output_contract_ReturnsCorrectContractObjScenario1(
 ):
     # GIVEN
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
     input_cx = example_actors_get_6node_contract()
@@ -94,7 +94,7 @@ def test_economy_get_output_contract_ReturnsCorrectContractObjScenario2(
 ):
     # GIVEN
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
     cx1 = example_actors_get_6node_contract()
@@ -151,8 +151,8 @@ def test_actorunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
 ):
     # GIVEN
     env_dir = get_test_economys_dir()
-    economy_name = get_temp_env_name()
-    sx = economyunit_shop(name=economy_name, economys_dir=env_dir)
+    economy_title = get_temp_env_title()
+    sx = economyunit_shop(title=economy_title, economys_dir=env_dir)
     sx.create_dirs_if_null(in_memory_bank=True)
     # ux = actorunit_shop(name=actor1_text, env_dir=env_dir)
 

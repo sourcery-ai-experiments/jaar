@@ -5,7 +5,7 @@ from src.contract.group import groupunit_shop
 from src.contract.member import memberlink_shop
 from src.contract.road import get_economy_root_label as root_label
 from src.economy.examples.economy_env_kit import (
-    get_temp_env_name,
+    get_temp_env_title,
     get_test_economys_dir,
     env_dir_setup_cleanup,
 )
@@ -19,7 +19,7 @@ from src.economy.bank_sqlstr import (
 def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
     # GIVEN create economy
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
 
     # WHEN
@@ -61,7 +61,7 @@ def test_economy_refresh_bank_metrics_CorrectlyDeletesOldBankInMemory(
 ):
     # GIVEN
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -87,7 +87,7 @@ def test_economy_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
 ):
     # GIVEN
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=False)
 
@@ -113,7 +113,7 @@ def test_economy_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
 ):
     # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -161,7 +161,7 @@ def test_economy_refresh_bank_metrics_CorrectlyPopulatesContractTable01(
 ):
     # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -190,7 +190,7 @@ def test_economy_refresh_bank_metrics_CorrectlyPopulatesContractTable01(
 ):
     # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -219,7 +219,7 @@ def test_economy_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
 ):
     # GIVEN
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -249,7 +249,7 @@ def test_economy_set_contract_bank_attrs_CorrectlyPopulatesContract_Groupunit_Me
 ):
     # GIVEN
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -296,7 +296,7 @@ def test_economy_set_contract_bank_attrs_CorrectlyPopulatesContract_Groupunit_Me
     sx.save_public_contract(contract_x=tom_contract)
     sx.save_public_contract(contract_x=ava_contract)
 
-    sx.set_contract_bank_attrs(contract_name=sal_text)
+    sx.set_contract_bank_attrs(contract_owner=sal_text)
     e1_sal_contract = sx.get_public_contract(owner=sal_text)
     assert len(e1_sal_contract._groups.get(swim_group_text)._members) == 1
 
@@ -306,7 +306,7 @@ def test_economy_set_contract_bank_attrs_CorrectlyPopulatesContract_Groupunit_Me
     swim_group_unit.set_attr(_memberlinks_set_by_economy_road=sal_swim_road)
     sal_contract.set_groupunit(groupunit=swim_group_unit)
     sx.save_public_contract(contract_x=sal_contract)
-    sx.set_contract_bank_attrs(contract_name=sal_text)
+    sx.set_contract_bank_attrs(contract_owner=sal_text)
 
     # THEN
     e1_sal_contract = sx.get_public_contract(owner=sal_text)

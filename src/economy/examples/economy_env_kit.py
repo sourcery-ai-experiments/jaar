@@ -28,12 +28,12 @@ from src.contract.x_func import (
 )
 
 
-def get_temp_env_name():
+def get_temp_env_title():
     return "ex_env04"
 
 
 def get_temp_env_dir():
-    return f"{get_test_economys_dir()}/{get_temp_env_name()}"
+    return f"{get_test_economys_dir()}/{get_temp_env_title()}"
 
 
 def get_test_economys_dir():
@@ -80,8 +80,8 @@ def setup_test_example_environment():
 
 
 def _delete_and_set_ex3():
-    economy_name = "ex3"
-    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+    economy_title = "ex3"
+    sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -134,8 +134,8 @@ def _delete_and_set_ex3():
 
 
 def _delete_and_set_ex4():
-    economy_name = "ex4"
-    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+    economy_title = "ex4"
+    sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.save_public_contract(example_actors_get_7nodeJRootWithH_contract())
@@ -147,8 +147,8 @@ def _delete_and_set_ex4():
 
 
 def _delete_and_set_ex5():
-    economy_name = "ex5"
-    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+    economy_title = "ex5"
+    sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -209,8 +209,8 @@ def _delete_and_set_ex5():
 
 
 def _delete_and_set_ex6():
-    economy_name = "ex6"
-    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+    economy_title = "ex6"
+    sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=False)
 
@@ -245,11 +245,11 @@ def _delete_and_set_ex6():
     sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
-    sx.set_river_sphere_for_contract(contract_name=sal_text, max_flows_count=100)
+    sx.set_river_sphere_for_contract(contract_owner=sal_text, max_flows_count=100)
 
 
-def create_example_economy(economy_name: str):
-    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+def create_example_economy(economy_title: str):
+    sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
 
@@ -260,24 +260,24 @@ def delete_dir_example_economy(economy_obj: EconomyUnit):
 def rename_example_economy(economy_obj: EconomyUnit, new_name):
     # base_dir = economy_obj.get_object_root_dir()
     base_dir = "src/economy/examples/economys"
-    src_dir = f"{base_dir}/{economy_obj.name}"
+    src_dir = f"{base_dir}/{economy_obj.title}"
     dst_dir = f"{base_dir}/{new_name}"
     os_rename(src=src_dir, dst=dst_dir)
-    economy_obj.set_economyunit_name(name=new_name)
+    economy_obj.set_economyunit_title(title=new_name)
 
 
 class InvalidEconomyCopyException(Exception):
     pass
 
 
-def copy_evaluation_economy(src_name: str, dest_name: str):
+def copy_evaluation_economy(src_title: str, dest_title: str):
     base_dir = "src/economy/examples/economys"
-    new_dir = f"{base_dir}/{dest_name}"
+    new_dir = f"{base_dir}/{dest_title}"
     if os_path.exists(new_dir):
         raise InvalidEconomyCopyException(
             f"Cannot copy economy to '{new_dir}' directory because '{new_dir}' exists."
         )
     # base_dir = economy_obj.get_object_root_dir()
-    src_dir = f"{base_dir}/{src_name}"
-    dest_dir = f"{base_dir}/{dest_name}"
+    src_dir = f"{base_dir}/{src_title}"
+    dest_dir = f"{base_dir}/{dest_title}"
     copy_dir(src_dir=src_dir, dest_dir=dest_dir)

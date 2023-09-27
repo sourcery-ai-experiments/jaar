@@ -10,7 +10,7 @@ from src.economy.examples.actor_env_kit import (
     get_temp_actor_dir,
     create_contract_file,
 )
-from src.economy.examples.economy_env_kit import get_temp_env_name
+from src.economy.examples.economy_env_kit import get_temp_env_title
 from src.economy.economy import economyunit_shop
 from os import path as os_path
 from pytest import raises as pytest_raises
@@ -244,8 +244,8 @@ def test_actorunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
 ):
     # GIVEN
     env_dir = get_temp_actor_dir()
-    economy_name = get_temp_env_name()
-    sx = economyunit_shop(name=economy_name, economys_dir=env_dir)
+    economy_title = get_temp_env_title()
+    sx = economyunit_shop(title=economy_title, economys_dir=env_dir)
     yao_text = "Yao"
     sx.create_new_actorunit(actor_name=yao_text)
     yao_contract = sx.get_actor_obj(name=yao_text)

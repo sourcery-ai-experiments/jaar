@@ -1,7 +1,7 @@
 from src.economy.economy import economyunit_shop
 from src.contract.contract import ContractUnit
 from src.economy.examples.economy_env_kit import (
-    get_temp_env_name,
+    get_temp_env_title,
     get_test_economys_dir,
     env_dir_setup_cleanup,
 )
@@ -18,8 +18,8 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
-    economy_name = get_temp_env_name()
-    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+    economy_title = get_temp_env_title()
+    sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -50,12 +50,12 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    sx.set_river_sphere_for_contract(contract_name=sal_text)
+    sx.set_river_sphere_for_contract(contract_owner=sal_text)
 
     # THEN
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 4
     with sx.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_contract_name=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_contract_owner=sal_text)
 
     flow_0 = river_flows.get(0)
     flow_1 = river_flows.get(1)
@@ -89,8 +89,8 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 contracts, 100% of river flows to sal
-    economy_name = get_temp_env_name()
-    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+    economy_title = get_temp_env_title()
+    sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -126,12 +126,12 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    sx.set_river_sphere_for_contract(contract_name=sal_text)
+    sx.set_river_sphere_for_contract(contract_owner=sal_text)
 
     # THEN
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 9
     with sx.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_contract_name=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_contract_owner=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
@@ -152,8 +152,8 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 contracts, 85% of river flows to sal
-    economy_name = get_temp_env_name()
-    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+    economy_title = get_temp_env_title()
+    sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -189,12 +189,12 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    sx.set_river_sphere_for_contract(contract_name=sal_text)
+    sx.set_river_sphere_for_contract(contract_owner=sal_text)
 
     # THEN
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 6
     with sx.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_contract_name=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_contract_owner=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
@@ -220,8 +220,8 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop
-    economy_name = get_temp_env_name()
-    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+    economy_title = get_temp_env_title()
+    sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -264,12 +264,12 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    sx.set_river_sphere_for_contract(contract_name=sal_text)
+    sx.set_river_sphere_for_contract(contract_owner=sal_text)
 
     # THEN
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 40
     # with sx.get_bank_conn() as bank_conn:
-    #     river_flows = get_river_flow_dict(bank_conn, currency_contract_name=sal_text)
+    #     river_flows = get_river_flow_dict(bank_conn, currency_contract_owner=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
@@ -295,8 +295,8 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    economy_name = get_temp_env_name()
-    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+    economy_title = get_temp_env_title()
+    sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -340,12 +340,12 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    sx.set_river_sphere_for_contract(contract_name=sal_text)
+    sx.set_river_sphere_for_contract(contract_owner=sal_text)
 
     # THEN
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 40
     # with sx.get_bank_conn() as bank_conn:
-    #     river_flows = get_river_flow_dict(bank_conn, currency_contract_name=sal_text)
+    #     river_flows = get_river_flow_dict(bank_conn, currency_contract_owner=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
@@ -376,8 +376,8 @@ def test_economy_set_river_sphere_for_contract_CorrectlyDeletesPreviousRiver(
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 contracts, 100% of river flows to sal
-    economy_name = get_temp_env_name()
-    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+    economy_title = get_temp_env_title()
+    sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -404,15 +404,15 @@ def test_economy_set_river_sphere_for_contract_CorrectlyDeletesPreviousRiver(
     sx.save_public_contract(contract_x=elu)
     sx.refresh_bank_metrics()
 
-    sx.set_river_sphere_for_contract(contract_name=sal_text)
-    sx.set_river_sphere_for_contract(contract_name=elu_text)
+    sx.set_river_sphere_for_contract(contract_owner=sal_text)
+    sx.set_river_sphere_for_contract(contract_owner=elu_text)
 
     sqlstr_count_river_tmember = get_table_count_sqlstr("river_tmember")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 16
 
     with sx.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_contract_name=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_contract_owner=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 3
@@ -420,11 +420,11 @@ def test_economy_set_river_sphere_for_contract_CorrectlyDeletesPreviousRiver(
     # WHEN
     # sal.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
     # sx.save_public_contract(contract_x=sal)
-    sx.set_river_sphere_for_contract(contract_name=sal_text)
+    sx.set_river_sphere_for_contract(contract_owner=sal_text)
 
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 16
     with sx.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_contract_name=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_contract_owner=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 3
@@ -434,8 +434,8 @@ def test_economy_set_river_sphere_for_contract_CorrectlyUsesMaxFlowsCount(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    economy_name = get_temp_env_name()
-    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+    economy_title = get_temp_env_title()
+    sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -480,11 +480,11 @@ def test_economy_set_river_sphere_for_contract_CorrectlyUsesMaxFlowsCount(
 
     # WHEN
     mtc = 13
-    sx.set_river_sphere_for_contract(contract_name=sal_text, max_flows_count=mtc)
+    sx.set_river_sphere_for_contract(contract_owner=sal_text, max_flows_count=mtc)
 
     # THEN
     with sx.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_contract_name=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_contract_owner=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
@@ -495,8 +495,8 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    economy_name = get_temp_env_name()
-    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+    economy_title = get_temp_env_title()
+    sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -540,12 +540,12 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
 
     # WHEN
-    sx.set_river_sphere_for_contract(contract_name=sal_text)
+    sx.set_river_sphere_for_contract(contract_owner=sal_text)
 
     # THEN
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 40
     with sx.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_contract_name=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_contract_owner=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
@@ -577,8 +577,8 @@ def test_economy_set_river_sphere_for_contract_CorrectlyBuildsASingleContinuousR
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    economy_name = get_temp_env_name()
-    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+    economy_title = get_temp_env_title()
+    sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -614,7 +614,7 @@ def test_economy_set_river_sphere_for_contract_CorrectlyBuildsASingleContinuousR
     sx.refresh_bank_metrics()
 
     # WHEN
-    sx.set_river_sphere_for_contract(contract_name=sal_text, max_flows_count=100)
+    sx.set_river_sphere_for_contract(contract_owner=sal_text, max_flows_count=100)
 
     # THEN
     count_range_fails_sql = """
@@ -647,8 +647,8 @@ def test_economy_set_river_sphere_for_contract_CorrectlyUpatesContractMemberUnit
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    economy_name = get_temp_env_name()
-    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+    economy_title = get_temp_env_title()
+    sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -684,7 +684,7 @@ def test_economy_set_river_sphere_for_contract_CorrectlyUpatesContractMemberUnit
     sx.refresh_bank_metrics()
     sal_contract_before = sx.get_public_contract(owner=sal_text)
 
-    sx.set_river_sphere_for_contract(contract_name=sal_text, max_flows_count=100)
+    sx.set_river_sphere_for_contract(contract_owner=sal_text, max_flows_count=100)
     assert len(sal_contract_before._members) == 3
     print(f"{len(sal_contract_before._members)=}")
     bob_member = sal_contract_before._members.get(bob_text)
@@ -698,10 +698,10 @@ def test_economy_set_river_sphere_for_contract_CorrectlyUpatesContractMemberUnit
     assert ava_member._bank_tax_diff is None
 
     # WHEN
-    sx.set_river_sphere_for_contract(contract_name=sal_text)
+    sx.set_river_sphere_for_contract(contract_owner=sal_text)
 
     # THEN
-    sal_river_tmembers = sx.get_river_tmembers(contract_name=sal_text)
+    sal_river_tmembers = sx.get_river_tmembers(contract_owner=sal_text)
     assert len(sal_river_tmembers) == 3
 
     sal_contract_after = sx.get_public_contract(owner=sal_text)

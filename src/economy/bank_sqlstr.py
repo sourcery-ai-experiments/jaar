@@ -11,10 +11,10 @@ def get_table_count_sqlstr(table_name: str) -> str:
     return f"SELECT COUNT(*) FROM {table_name}"
 
 
-def get_river_flow_table_delete_sqlstr(currency_contract_name: str) -> str:
+def get_river_flow_table_delete_sqlstr(currency_contract_owner: str) -> str:
     return f"""
         DELETE FROM river_flow
-        WHERE currency_name = '{currency_contract_name}' 
+        WHERE currency_name = '{currency_contract_owner}' 
         ;
     """
 
@@ -40,7 +40,7 @@ def get_river_flow_table_create_sqlstr() -> str:
 
 @dataclass
 class RiverFlowUnit:
-    currency_contract_name: str
+    currency_contract_owner: str
     src_name: str
     dst_name: str
     currency_start: float
@@ -50,7 +50,7 @@ class RiverFlowUnit:
     river_tree_level: int
 
     def flow_returned(self) -> bool:
-        return self.currency_contract_name == self.dst_name
+        return self.currency_contract_owner == self.dst_name
 
 
 def get_river_flow_table_insert_sqlstr(
@@ -68,7 +68,7 @@ def get_river_flow_table_insert_sqlstr(
         , river_tree_level
         )
         VALUES (
-          '{river_flow_x.currency_contract_name}'
+          '{river_flow_x.currency_contract_owner}'
         , '{river_flow_x.src_name}'
         , '{river_flow_x.dst_name}'
         , {sqlite_null(river_flow_x.currency_start)}
@@ -82,7 +82,7 @@ def get_river_flow_table_insert_sqlstr(
 
 
 def get_river_flow_dict(
-    db_conn: str, currency_contract_name: str
+    db_conn: str, currency_contract_owner: str
 ) -> dict[str:RiverFlowUnit]:
     sqlstr = f"""
         SELECT 
@@ -95,7 +95,7 @@ def get_river_flow_dict(
         , parent_flow_num
         , river_tree_level
         FROM river_flow
-        WHERE currency_name = '{currency_contract_name}' 
+        WHERE currency_name = '{currency_contract_owner}' 
         ;
     """
     dict_x = {}
@@ -105,7 +105,7 @@ def get_river_flow_dict(
 
     for count_x, row in enumerate(results_x):
         river_flow_x = RiverFlowUnit(
-            currency_contract_name=row[0],
+            currency_contract_owner=row[0],
             src_name=row[1],
             dst_name=row[2],
             currency_start=row[3],
@@ -118,10 +118,10 @@ def get_river_flow_dict(
     return dict_x
 
 
-def get_river_bucket_table_delete_sqlstr(currency_contract_name: str) -> str:
+def get_river_bucket_table_delete_sqlstr(currency_contract_owner: str) -> str:
     return f"""
         DELETE FROM river_bucket
-        WHERE currency_name = '{currency_contract_name}' 
+        WHERE currency_name = '{currency_contract_owner}' 
         ;
     """
 
@@ -141,7 +141,7 @@ def get_river_bucket_table_create_sqlstr() -> str:
     """
 
 
-def get_river_bucket_table_insert_sqlstr(currency_contract_name: str) -> str:
+def get_river_bucket_table_insert_sqlstr(currency_contract_owner: str) -> str:
     return f"""
         INSERT INTO river_bucket (
           currency_name
@@ -168,7 +168,7 @@ def get_river_bucket_table_insert_sqlstr(currency_contract_name: str) -> str:
             END AS step
             , *
             FROM  river_flow
-            WHERE currency_name = '{currency_contract_name}' and dst_name = currency_name 
+            WHERE currency_name = '{currency_contract_owner}' and dst_name = currency_name 
             ) b
         ) c
         GROUP BY currency_name, dst_name, currency_bucket_num
@@ -187,7 +187,7 @@ class RiverBucketUnit:
 
 
 def get_river_bucket_dict(
-    db_conn: Connection, currency_contract_name: str
+    db_conn: Connection, currency_contract_owner: str
 ) -> dict[str:RiverBucketUnit]:
     sqlstr = f"""
         SELECT
@@ -197,7 +197,7 @@ def get_river_bucket_dict(
         , curr_start
         , curr_close
         FROM river_bucket
-        WHERE currency_name = '{currency_contract_name}'
+        WHERE currency_name = '{currency_contract_owner}'
         ;
     """
     dict_x = {}
@@ -215,10 +215,10 @@ def get_river_bucket_dict(
     return dict_x
 
 
-def get_river_tmember_table_delete_sqlstr(currency_contract_name: str) -> str:
+def get_river_tmember_table_delete_sqlstr(currency_contract_owner: str) -> str:
     return f"""
         DELETE FROM river_tmember
-        WHERE currency_name = '{currency_contract_name}' 
+        WHERE currency_name = '{currency_contract_owner}' 
         ;
     """
 
@@ -238,7 +238,7 @@ def get_river_tmember_table_create_sqlstr() -> str:
     """
 
 
-def get_river_tmember_table_insert_sqlstr(currency_contract_name: str) -> str:
+def get_river_tmember_table_insert_sqlstr(currency_contract_owner: str) -> str:
     return f"""
         INSERT INTO river_tmember (
           currency_name
@@ -254,8 +254,8 @@ def get_river_tmember_table_insert_sqlstr(currency_contract_name: str) -> str:
         , l._contract_agenda_ratio_debt
         , l._contract_agenda_ratio_debt - SUM(rt.currency_close-rt.currency_start)
         FROM river_flow rt
-        LEFT JOIN ledger l ON l.contract_name = rt.currency_name AND l.member_name = rt.src_name
-        WHERE rt.currency_name='{currency_contract_name}' and rt.dst_name=rt.currency_name
+        LEFT JOIN ledger l ON l.contract_owner = rt.currency_name AND l.member_name = rt.src_name
+        WHERE rt.currency_name='{currency_contract_owner}' and rt.dst_name=rt.currency_name
         GROUP BY rt.currency_name, rt.src_name
         ;
     """
@@ -271,7 +271,7 @@ class RiverTmemberUnit:
 
 
 def get_river_tmember_dict(
-    db_conn: Connection, currency_contract_name: str
+    db_conn: Connection, currency_contract_owner: str
 ) -> dict[str:RiverTmemberUnit]:
     sqlstr = f"""
         SELECT
@@ -281,7 +281,7 @@ def get_river_tmember_dict(
         , debt
         , tax_diff
         FROM river_tmember
-        WHERE currency_name = '{currency_contract_name}'
+        WHERE currency_name = '{currency_contract_owner}'
         ;
     """
     dict_x = {}
@@ -324,7 +324,7 @@ def get_contract_table_insert_sqlstr(contract_x: ContractUnit) -> str:
 def get_ledger_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS ledger (
-          contract_name INTEGER 
+          contract_owner INTEGER 
         , member_name INTEGER
         , _contract_credit FLOAT
         , _contract_debt FLOAT
@@ -334,9 +334,9 @@ def get_ledger_table_create_sqlstr() -> str:
         , _contract_agenda_ratio_debt FLOAT
         , _creditor_active INT
         , _debtor_active INT
-        , FOREIGN KEY(contract_name) REFERENCES contractunits(name)
+        , FOREIGN KEY(contract_owner) REFERENCES contractunits(name)
         , FOREIGN KEY(member_name) REFERENCES contractunits(name)
-        , UNIQUE(contract_name, member_name)
+        , UNIQUE(contract_owner, member_name)
         )
     ;
     """
@@ -347,7 +347,7 @@ def get_ledger_table_insert_sqlstr(
 ) -> str:
     return f"""
         INSERT INTO ledger (
-              contract_name
+              contract_owner
             , member_name
             , _contract_credit
             , _contract_debt
@@ -376,7 +376,7 @@ def get_ledger_table_insert_sqlstr(
 
 @dataclass
 class LedgerUnit:
-    contract_name: str
+    contract_owner: str
     member_name: str
     _contract_credit: float
     _contract_debt: float
@@ -391,7 +391,7 @@ class LedgerUnit:
 def get_ledger_dict(db_conn: Connection, payer_name: str) -> dict[str:LedgerUnit]:
     sqlstr = f"""
         SELECT 
-          contract_name
+          contract_owner
         , member_name
         , _contract_credit
         , _contract_debt
@@ -402,7 +402,7 @@ def get_ledger_dict(db_conn: Connection, payer_name: str) -> dict[str:LedgerUnit
         , _creditor_active
         , _debtor_active
         FROM ledger
-        WHERE contract_name = '{payer_name}' 
+        WHERE contract_owner = '{payer_name}' 
         ;
     """
     dict_x = {}
@@ -410,7 +410,7 @@ def get_ledger_dict(db_conn: Connection, payer_name: str) -> dict[str:LedgerUnit
 
     for row in results.fetchall():
         ledger_x = LedgerUnit(
-            contract_name=row[0],
+            contract_owner=row[0],
             member_name=row[1],
             _contract_credit=row[2],
             _contract_debt=row[3],
@@ -427,7 +427,7 @@ def get_ledger_dict(db_conn: Connection, payer_name: str) -> dict[str:LedgerUnit
 
 @dataclass
 class RiverLedgerUnit:
-    contract_name: str
+    contract_owner: str
     currency_onset: float
     currency_cease: float
     _ledgers: dict[str:LedgerUnit]
@@ -443,7 +443,7 @@ def get_river_ledger_unit(
 ) -> RiverLedgerUnit:
     ledger_x = get_ledger_dict(db_conn, river_flow_x.dst_name)
     return RiverLedgerUnit(
-        contract_name=river_flow_x.dst_name,
+        contract_owner=river_flow_x.dst_name,
         currency_onset=river_flow_x.currency_start,
         currency_cease=river_flow_x.currency_close,
         _ledgers=ledger_x,
@@ -455,16 +455,16 @@ def get_river_ledger_unit(
 def get_idea_catalog_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS idea_catalog (
-          contract_name VARCHAR(255) NOT NULL
+          contract_owner VARCHAR(255) NOT NULL
         , idea_road VARCHAR(1000) NOT NULL
         )
         ;
     """
 
 
-def get_idea_catalog_table_count(db_conn: Connection, contract_name: str) -> str:
+def get_idea_catalog_table_count(db_conn: Connection, contract_owner: str) -> str:
     sqlstr = f"""
-        {get_table_count_sqlstr("idea_catalog")} WHERE contract_name = '{contract_name}'
+        {get_table_count_sqlstr("idea_catalog")} WHERE contract_owner = '{contract_owner}'
         ;
     """
     results = db_conn.execute(sqlstr)
@@ -476,21 +476,21 @@ def get_idea_catalog_table_count(db_conn: Connection, contract_name: str) -> str
 
 @dataclass
 class IdeaCatalog:
-    contract_name: str
+    contract_owner: str
     idea_road: str
 
 
 def get_idea_catalog_table_insert_sqlstr(
     idea_catalog: IdeaCatalog,
 ) -> str:
-    # return f"""INSERT INTO idea_catalog (contract_name, idea_road) VALUES ('{idea_catalog.contract_name}', '{idea_catalog.idea_road}');"""
+    # return f"""INSERT INTO idea_catalog (contract_owner, idea_road) VALUES ('{idea_catalog.contract_owner}', '{idea_catalog.idea_road}');"""
     return f"""
         INSERT INTO idea_catalog (
-          contract_name
+          contract_owner
         , idea_road
         )
         VALUES (
-          '{idea_catalog.contract_name}'
+          '{idea_catalog.contract_owner}'
         , '{get_road_without_root_node(idea_catalog.idea_road)}'
         )
         ;
@@ -505,7 +505,7 @@ def get_idea_catalog_dict(db_conn: Connection, search_road: Road = None):
         where_clause = f"WHERE idea_road = '{search_road_without_root_node}'"
     sqlstr = f"""
         SELECT 
-          contract_name
+          contract_owner
         , idea_road
         FROM idea_catalog
         {where_clause}
@@ -515,8 +515,8 @@ def get_idea_catalog_dict(db_conn: Connection, search_road: Road = None):
 
     dict_x = {}
     for row in results.fetchall():
-        idea_catalog_x = IdeaCatalog(contract_name=row[0], idea_road=row[1])
-        dict_key = f"{idea_catalog_x.contract_name} {idea_catalog_x.idea_road}"
+        idea_catalog_x = IdeaCatalog(contract_owner=row[0], idea_road=row[1])
+        dict_key = f"{idea_catalog_x.contract_owner} {idea_catalog_x.idea_road}"
         dict_x[dict_key] = idea_catalog_x
     return dict_x
 
@@ -524,7 +524,7 @@ def get_idea_catalog_dict(db_conn: Connection, search_road: Road = None):
 def get_acptfact_catalog_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS acptfact_catalog (
-          contract_name VARCHAR(255) NOT NULL
+          contract_owner VARCHAR(255) NOT NULL
         , base VARCHAR(1000) NOT NULL
         , pick VARCHAR(1000) NOT NULL
         )
@@ -532,9 +532,9 @@ def get_acptfact_catalog_table_create_sqlstr() -> str:
     """
 
 
-def get_acptfact_catalog_table_count(db_conn: Connection, contract_name: str) -> str:
+def get_acptfact_catalog_table_count(db_conn: Connection, contract_owner: str) -> str:
     sqlstr = f"""
-        {get_table_count_sqlstr("acptfact_catalog")} WHERE contract_name = '{contract_name}'
+        {get_table_count_sqlstr("acptfact_catalog")} WHERE contract_owner = '{contract_owner}'
         ;
     """
     results = db_conn.execute(sqlstr)
@@ -546,7 +546,7 @@ def get_acptfact_catalog_table_count(db_conn: Connection, contract_name: str) ->
 
 @dataclass
 class AcptFactCatalog:
-    contract_name: str
+    contract_owner: str
     base: str
     pick: str
 
@@ -556,12 +556,12 @@ def get_acptfact_catalog_table_insert_sqlstr(
 ) -> str:
     return f"""
         INSERT INTO acptfact_catalog (
-          contract_name
+          contract_owner
         , base
         , pick
         )
         VALUES (
-          '{acptfact_catalog.contract_name}'
+          '{acptfact_catalog.contract_owner}'
         , '{acptfact_catalog.base}'
         , '{acptfact_catalog.pick}'
         )
@@ -572,7 +572,7 @@ def get_acptfact_catalog_table_insert_sqlstr(
 def get_groupunit_catalog_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS groupunit_catalog (
-          contract_name VARCHAR(255) NOT NULL
+          contract_owner VARCHAR(255) NOT NULL
         , groupunit_name VARCHAR(1000) NOT NULL
         , memberlinks_set_by_economy_road VARCHAR(1000) NULL
         )
@@ -580,9 +580,9 @@ def get_groupunit_catalog_table_create_sqlstr() -> str:
     """
 
 
-def get_groupunit_catalog_table_count(db_conn: Connection, contract_name: str) -> str:
+def get_groupunit_catalog_table_count(db_conn: Connection, contract_owner: str) -> str:
     sqlstr = f"""
-        {get_table_count_sqlstr("groupunit_catalog")} WHERE contract_name = '{contract_name}'
+        {get_table_count_sqlstr("groupunit_catalog")} WHERE contract_owner = '{contract_owner}'
         ;
     """
     results = db_conn.execute(sqlstr)
@@ -594,7 +594,7 @@ def get_groupunit_catalog_table_count(db_conn: Connection, contract_name: str) -
 
 @dataclass
 class GroupUnitCatalog:
-    contract_name: str
+    contract_owner: str
     groupunit_name: str
     memberlinks_set_by_economy_road: str
 
@@ -604,12 +604,12 @@ def get_groupunit_catalog_table_insert_sqlstr(
 ) -> str:
     return f"""
         INSERT INTO groupunit_catalog (
-          contract_name
+          contract_owner
         , groupunit_name
         , memberlinks_set_by_economy_road
         )
         VALUES (
-          '{groupunit_catalog.contract_name}'
+          '{groupunit_catalog.contract_owner}'
         , '{groupunit_catalog.groupunit_name}'
         , '{groupunit_catalog.memberlinks_set_by_economy_road}'
         )
@@ -620,7 +620,7 @@ def get_groupunit_catalog_table_insert_sqlstr(
 def get_groupunit_catalog_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog]:
     sqlstr = """
         SELECT 
-          contract_name
+          contract_owner
         , groupunit_name
         , memberlinks_set_by_economy_road
         FROM groupunit_catalog
@@ -631,12 +631,12 @@ def get_groupunit_catalog_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog
     dict_x = {}
     for row in results.fetchall():
         groupunit_catalog_x = GroupUnitCatalog(
-            contract_name=row[0],
+            contract_owner=row[0],
             groupunit_name=row[1],
             memberlinks_set_by_economy_road=row[2],
         )
         dict_key = (
-            f"{groupunit_catalog_x.contract_name} {groupunit_catalog_x.groupunit_name}"
+            f"{groupunit_catalog_x.contract_owner} {groupunit_catalog_x.groupunit_name}"
         )
         dict_x[dict_key] = groupunit_catalog_x
     return dict_x

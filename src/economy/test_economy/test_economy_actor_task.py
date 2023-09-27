@@ -1,6 +1,6 @@
 from src.economy.economy import economyunit_shop
 from src.economy.examples.economy_env_kit import (
-    get_temp_env_name,
+    get_temp_env_title,
     env_dir_setup_cleanup,
     get_test_economys_dir,
 )
@@ -11,7 +11,7 @@ from src.economy.examples.example_actors import get_contract_assignment_laundry_
 
 def test_economy_ChangingOneActorsFactChangesAnotherAgenda(env_dir_setup_cleanup):
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -75,7 +75,7 @@ def test_economy_ChangingOneActorsFactChangesAnotherAgenda(env_dir_setup_cleanup
 
 # def test_economy_create_task_CorrectlyCreatesTask(env_dir_setup_cleanup):
 #     sx = economyunit_shop(
-#         name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+#         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
 #     )
 #     sx.create_dirs_if_null(in_memory_bank=True)
 

@@ -160,7 +160,7 @@
      <string>Add new Economy</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="economy_name">
+   <widget class="QLineEdit" name="economy_title">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -247,7 +247,7 @@
      <string>Delete</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="contract_name">
+   <widget class="QLineEdit" name="contract_owner">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -622,7 +622,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QComboBox" name="economy_name_combo">
+   <widget class="QComboBox" name="economy_title_combo">
     <property name="geometry">
      <rect>
       <x>20</x>

@@ -2,7 +2,7 @@ from src.economy.economy import economyunit_shop
 from src.economy.actor import actorunit_shop
 from src.economy.examples.economy_env_kit import (
     get_temp_env_dir,
-    get_temp_env_name,
+    get_temp_env_title,
     env_dir_setup_cleanup,
     get_test_economys_dir,
 )
@@ -12,9 +12,9 @@ from pytest import raises as pytest_raises
 
 def test_economy_set_actor_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
-    economy_name = get_temp_env_name()
-    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
-    print(f"create env '{economy_name}' directories.")
+    economy_title = get_temp_env_title()
+    sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
+    print(f"create env '{economy_title}' directories.")
     sx.create_dirs_if_null(in_memory_bank=True)
     timmy_text = "timmy"
     wx_path = f"{sx.get_actors_dir()}/{timmy_text}"
@@ -33,8 +33,8 @@ def test_economy_create_actorunit_from_public_RaisesErrorWhenActorDoesNotExist(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    economy_name = get_temp_env_name()
-    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+    economy_title = get_temp_env_title()
+    sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
 
     # WHEN / THEN
     bobs_text = "bobs wurld"
@@ -48,8 +48,8 @@ def test_economy_create_actorunit_from_public_RaisesErrorWhenActorDoesNotExist(
 
 def test_economy_rename_actorunit_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
-    economy_name = get_temp_env_name()
-    e5 = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+    economy_title = get_temp_env_title()
+    e5 = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     e5.create_dirs_if_null(in_memory_bank=True)
     old_bob_text = "old Bob"
     old_bob_dir = f"{e5.get_actors_dir()}/{old_bob_text}"
@@ -88,8 +88,8 @@ def test_economy_rename_actorunit_WorksCorrectly(env_dir_setup_cleanup):
 
 def test_economy_del_actor_dir_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
-    economy_name = get_temp_env_name()
-    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+    economy_title = get_temp_env_title()
+    sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     xia_text = "Xia"
     xia_dir = f"{sx.get_actors_dir()}/{xia_text}"
     xia_file_path = f"{xia_dir}/isol_contract.json"

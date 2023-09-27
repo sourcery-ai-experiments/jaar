@@ -7,7 +7,7 @@ from src.contract.examples.example_contracts import (
 import src.economy.examples.example_actors as example_actors
 from os import path as os_path
 from src.economy.examples.economy_env_kit import (
-    get_temp_env_name,
+    get_temp_env_title,
     get_test_economys_dir,
     env_dir_setup_cleanup,
 )
@@ -16,8 +16,8 @@ from pytest import raises as pytest_raises
 
 def test_economy_set_contract_CreatesContractFile(env_dir_setup_cleanup):
     # GIVEN
-    economy_name = get_temp_env_name()
-    sx = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+    economy_title = get_temp_env_title()
+    sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null()
     sx1_obj = example_actors.get_1node_contract()
     sx1_path = f"{sx.get_public_dir()}/{sx1_obj._owner}.json"
@@ -33,8 +33,8 @@ def test_economy_set_contract_CreatesContractFile(env_dir_setup_cleanup):
 
 def test_economy_get_contract_currentlyGetsContract(env_dir_setup_cleanup):
     # GIVEN
-    economy_name = get_temp_env_name()
-    e5 = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+    economy_title = get_temp_env_title()
+    e5 = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     e5.create_dirs_if_null(in_memory_bank=True)
     sx5_obj = example_actors.get_7nodeJRootWithH_contract()
     e5.save_public_contract(contract_x=sx5_obj)
@@ -47,8 +47,8 @@ def test_economy_rename_public_contract_ChangesContractName(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    economy_name = get_temp_env_name()
-    e5 = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+    economy_title = get_temp_env_title()
+    e5 = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     e5.create_dirs_if_null(in_memory_bank=True)
     old_contract_owner = "old1"
     sx5_obj = ContractUnit(_owner=old_contract_owner)
@@ -74,8 +74,8 @@ def test_economy_SetsIdeaRootLabel(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    economy_name = get_temp_env_name()
-    e5 = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+    economy_title = get_temp_env_title()
+    e5 = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     e5.create_dirs_if_null(in_memory_bank=True)
     contract_x = example_contracts_get_contract_1Task_1CE0MinutesRequired_1AcptFact()
     assert contract_x._idearoot._label == "A"
@@ -85,4 +85,4 @@ def test_economy_SetsIdeaRootLabel(
 
     # THEN
     contract_after = e5.get_public_contract(contract_x._owner)
-    assert contract_after._idearoot._label == economy_name
+    assert contract_after._idearoot._label == economy_title

@@ -38,13 +38,13 @@ from src.economy.bank_sqlstr import (
 
 @dataclass
 class EconomyUnit:
-    name: str
+    title: str
     economys_dir: str
     _actorunits: dict[str:ActorUnit] = None
     _bank_db = None
 
-    def set_contract_bank_attrs(self, contract_name: str):
-        contract_obj = self.get_public_contract(contract_name)
+    def set_contract_bank_attrs(self, contract_owner: str):
+        contract_obj = self.get_public_contract(contract_owner)
 
         for groupunit_x in contract_obj._groups.values():
             if groupunit_x._memberlinks_set_by_economy_road != None:
@@ -53,8 +53,8 @@ class EconomyUnit:
                     self.get_bank_conn(), groupunit_x._memberlinks_set_by_economy_road
                 )
                 for idea_catalog in ic.values():
-                    if contract_name != idea_catalog.contract_name:
-                        memberlink_x = memberlink_shop(name=idea_catalog.contract_name)
+                    if contract_owner != idea_catalog.contract_owner:
+                        memberlink_x = memberlink_shop(name=idea_catalog.contract_owner)
                         groupunit_x.set_memberlink(memberlink_x)
         self.save_public_contract(contract_obj)
 
@@ -63,10 +63,10 @@ class EconomyUnit:
 
     # banking
     def set_river_sphere_for_contract(
-        self, contract_name: str, max_flows_count: int = None
+        self, contract_owner: str, max_flows_count: int = None
     ):
-        self._clear_all_source_river_data(contract_name)
-        general_bucket = [self._get_root_river_ledger_unit(contract_name)]
+        self._clear_all_source_river_data(contract_owner)
+        general_bucket = [self._get_root_river_ledger_unit(contract_owner)]
 
         if max_flows_count is None:
             max_flows_count = 40
@@ -92,8 +92,8 @@ class EconomyUnit:
                     curr_close = parent_close
 
                 river_flow_x = RiverFlowUnit(
-                    currency_contract_name=contract_name,
-                    src_name=led_x.contract_name,
+                    currency_contract_owner=contract_owner,
+                    src_name=led_x.contract_owner,
                     dst_name=led_x.member_name,
                     currency_start=curr_onset,
                     currency_close=curr_close,
@@ -112,7 +112,7 @@ class EconomyUnit:
                 # change curr_onset for next
                 curr_onset += curr_range
 
-        self._set_river_tmembers_buckets(contract_name)
+        self._set_river_tmembers_buckets(contract_owner)
 
     def _insert_river_flow_grab_river_ledger(
         self, river_flow_x: RiverFlowUnit
@@ -127,23 +127,23 @@ class EconomyUnit:
 
         return river_ledger_x
 
-    def _clear_all_source_river_data(self, contract_name: str):
+    def _clear_all_source_river_data(self, contract_owner: str):
         with self.get_bank_conn() as bank_conn:
-            flow_s = get_river_flow_table_delete_sqlstr(contract_name)
-            mstr_s = get_river_tmember_table_delete_sqlstr(contract_name)
+            flow_s = get_river_flow_table_delete_sqlstr(contract_owner)
+            mstr_s = get_river_tmember_table_delete_sqlstr(contract_owner)
             bank_conn.execute(flow_s)
             bank_conn.execute(mstr_s)
 
-    def _get_root_river_ledger_unit(self, contract_name: str) -> RiverLedgerUnit:
+    def _get_root_river_ledger_unit(self, contract_owner: str) -> RiverLedgerUnit:
         default_currency_onset = 0.0
         default_currency_cease = 1.0
         default_root_river_tree_level = 0
         default_root_flow_num = None  # maybe change to 1?
         default_root_parent_flow_num = None
         root_river_flow = RiverFlowUnit(
-            currency_contract_name=contract_name,
+            currency_contract_owner=contract_owner,
             src_name=None,
-            dst_name=contract_name,
+            dst_name=contract_owner,
             currency_start=default_currency_onset,
             currency_close=default_currency_cease,
             flow_num=default_root_flow_num,
@@ -154,19 +154,19 @@ class EconomyUnit:
             source_river_ledger = get_river_ledger_unit(bank_conn, root_river_flow)
         return source_river_ledger
 
-    def _set_river_tmembers_buckets(self, contract_name: str):
+    def _set_river_tmembers_buckets(self, contract_owner: str):
         with self.get_bank_conn() as bank_conn:
-            bank_conn.execute(get_river_tmember_table_insert_sqlstr(contract_name))
-            bank_conn.execute(get_river_bucket_table_insert_sqlstr(contract_name))
+            bank_conn.execute(get_river_tmember_table_insert_sqlstr(contract_owner))
+            bank_conn.execute(get_river_bucket_table_insert_sqlstr(contract_owner))
 
-            sal_river_tmembers = get_river_tmember_dict(bank_conn, contract_name)
-            contract_x = self.get_public_contract(owner=contract_name)
+            sal_river_tmembers = get_river_tmember_dict(bank_conn, contract_owner)
+            contract_x = self.get_public_contract(owner=contract_owner)
             contract_x.set_banking_attr_memberunits(sal_river_tmembers)
             self.save_public_contract(contract_x=contract_x)
 
-    def get_river_tmembers(self, contract_name: str) -> dict[str:RiverTmemberUnit]:
+    def get_river_tmembers(self, contract_owner: str) -> dict[str:RiverTmemberUnit]:
         with self.get_bank_conn() as bank_conn:
-            river_tmembers = get_river_tmember_dict(bank_conn, contract_name)
+            river_tmembers = get_river_tmember_dict(bank_conn, contract_owner)
         return river_tmembers
 
     def refresh_bank_metrics(self, in_memory: bool = None):
@@ -204,7 +204,7 @@ class EconomyUnit:
             cur = bank_conn.cursor()
             for groupunit_x in contractunit_x._groups.values():
                 groupunit_catalog_x = GroupUnitCatalog(
-                    contract_name=contractunit_x._owner,
+                    contract_owner=contractunit_x._owner,
                     groupunit_name=groupunit_x.name,
                     memberlinks_set_by_economy_road=groupunit_x._memberlinks_set_by_economy_road,
                 )
@@ -224,7 +224,7 @@ class EconomyUnit:
             cur = bank_conn.cursor()
             for acptfact_x in contractunit_x._idearoot._acptfactunits.values():
                 acptfact_catalog_x = AcptFactCatalog(
-                    contract_name=contractunit_x._owner,
+                    contract_owner=contractunit_x._owner,
                     base=acptfact_x.base,
                     pick=acptfact_x.pick,
                 )
@@ -258,14 +258,14 @@ class EconomyUnit:
         self._bank_db = None
         x_func_delete_dir(dir=self.get_bank_db_path())
 
-    def set_economyunit_name(self, name: str):
-        self.name = name
+    def set_economyunit_title(self, title: str):
+        self.title = title
 
     def get_bank_db_path(self):
         return f"{self.get_object_root_dir()}/bank.db"
 
     def get_object_root_dir(self):
-        return f"{self.economys_dir}/{self.name}"
+        return f"{self.economys_dir}/{self.title}"
 
     def _create_main_file_if_null(self, x_dir):
         economy_file_name = "economy.json"
@@ -479,7 +479,7 @@ class EconomyUnit:
 
 
 def economyunit_shop(
-    name: str,
+    title: str,
     economys_dir: str,
     _actorunits: dict[str:ActorUnit] = None,
     in_memory_bank: bool = None,
@@ -487,7 +487,7 @@ def economyunit_shop(
     if in_memory_bank is None:
         in_memory_bank = True
     economy_x = EconomyUnit(
-        name=name, economys_dir=economys_dir, _actorunits=_actorunits
+        title=title, economys_dir=economys_dir, _actorunits=_actorunits
     )
     economy_x.create_dirs_if_null(in_memory_bank=in_memory_bank)
     return economy_x

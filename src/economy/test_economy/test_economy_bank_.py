@@ -2,7 +2,7 @@ from src.economy.economy import economyunit_shop, EconomyUnit
 from src.contract.x_func import delete_dir as x_func_delete_dir
 from os import path as os_path
 from src.economy.examples.economy_env_kit import (
-    get_temp_env_name,
+    get_temp_env_title,
     get_test_economys_dir,
     env_dir_setup_cleanup,
 )
@@ -15,7 +15,7 @@ def test_economy_create_bank_db_CreatesBankDBIfItDoesNotExist(
 ):
     # GIVEN create economy
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
 
     # clear out any bank.db file
@@ -34,7 +34,7 @@ def test_economy_create_bank_db_CanCreateBankInMemory(
 ):
     # GIVEN create economy
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -56,7 +56,7 @@ def test_economy_refresh_bank_metrics_CanConnectToBankInMemory(
 ):
     # GIVEN create economy
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
     # sx._create_bank_db(in_memory=True)
@@ -71,7 +71,7 @@ def test_economy_refresh_bank_metrics_CanConnectToBankInMemory(
 
 def test_economy_get_bank_db_conn_CreatesBankDBIfItDoesNotExist(env_dir_setup_cleanup):
     # GIVEN create economy
-    sx = EconomyUnit(name=get_temp_env_name(), economys_dir=get_test_economys_dir())
+    sx = EconomyUnit(title=get_temp_env_title(), economys_dir=get_test_economys_dir())
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         check_connection(sx.get_bank_conn())

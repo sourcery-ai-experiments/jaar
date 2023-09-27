@@ -123,8 +123,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             name=first_env, economys_dir=get_test_economys_dir()
         )
         self.refresh_economy()
-        self.economy_name_combo_refresh()
-        self.economy_name_combo.setCurrentText(first_env)
+        self.economy_title_combo_refresh()
+        self.economy_title_combo.setCurrentText(first_env)
         self._actor_load(actor_name="ernie")
 
     def save_isol(self):
@@ -146,16 +146,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_economy()
 
     def economy_load_from_file(self):
-        economy_selected = self.economy_name_combo.currentText()
+        economy_selected = self.economy_title_combo.currentText()
         self.economy_x = economyunit_shop(
             name=economy_selected, economys_dir=get_test_economys_dir()
         )
         self.economy_x.create_dirs_if_null(in_memory_bank=False)
-        self.economy_name.setText(economy_selected)
+        self.economy_title.setText(economy_selected)
         self.refresh_economy()
 
     def contracts_table_select(self):
-        self.contract_name.setText(
+        self.contract_owner.setText(
             self.contracts_table.item(self.contracts_table.currentRow(), 0).text()
         )
         if self.actors_table.currentRow() != -1:
@@ -213,24 +213,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.digests_table.setHidden(False)
 
     def economy_insert(self):
-        create_example_economy(economy_name=self.economy_name.text())
-        self.economy_name_combo_refresh()
+        create_example_economy(economy_title=self.economy_title.text())
+        self.economy_title_combo_refresh()
 
     def economy_update_name(self):
         rename_example_economy(
-            economy_obj=self.economy_x, new_name=self.economy_name.text()
+            economy_obj=self.economy_x, new_name=self.economy_title.text()
         )
-        self.economy_name_combo_refresh()
+        self.economy_title_combo_refresh()
 
     def economy_delete(self):
         delete_dir_example_economy(economy_obj=self.economy_x)
         self.economy_x = None
-        self.economy_name_combo_refresh()
+        self.economy_title_combo_refresh()
         self.refresh_economy()
 
     def contract_insert(self):
         self.economy_x.save_public_contract(
-            contract_x=ContractUnit(_owner=self.contract_name.text())
+            contract_x=ContractUnit(_owner=self.contract_owner.text())
         )
         self.refresh_economy()
 
@@ -238,7 +238,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         currently_selected = self.contracts_table.item(
             self.contracts_table.currentRow(), 0
         ).text()
-        typed_in = self.contract_name.text()
+        typed_in = self.contract_owner.text()
         if currently_selected != typed_in:
             self.economy_x.rename_public_contract(
                 old_label=currently_selected, new_label=typed_in
@@ -562,9 +562,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             column_width=[50, 200, 300],
         )
 
-    def economy_name_combo_refresh(self):
-        self.economy_name_combo.clear()
-        self.economy_name_combo.addItems(create_example_economys_list())
+    def economy_title_combo_refresh(self):
+        self.economy_title_combo.clear()
+        self.economy_title_combo.addItems(create_example_economys_list())
 
     def refresh_actors(self):
         self.actor_x = None

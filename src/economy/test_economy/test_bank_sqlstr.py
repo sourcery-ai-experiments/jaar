@@ -3,7 +3,7 @@ from src.contract.contract import ContractUnit
 from src.contract.member import memberunit_shop
 from src.contract.road import get_economy_root_label as root_label
 from src.economy.examples.economy_env_kit import (
-    get_temp_env_name,
+    get_temp_env_title,
     get_test_economys_dir,
     env_dir_setup_cleanup,
 )
@@ -48,7 +48,7 @@ def test_economy_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
     # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
 
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
@@ -85,7 +85,7 @@ def test_economy_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     # THEN
     ledger_x = ledger_dict.get(tim_text)
-    assert ledger_x.contract_name == bob_text
+    assert ledger_x.contract_owner == bob_text
     assert ledger_x.member_name == tim_text
     assert ledger_x._contract_credit == 0.9
     assert ledger_x._contract_debt == 0.8
@@ -109,7 +109,7 @@ def test_RiverFlowUnit_exists():
 
     # WHEN
     river_flow_x = RiverFlowUnit(
-        currency_contract_name=bob_text,
+        currency_contract_owner=bob_text,
         src_name=None,
         dst_name=tom_text,
         currency_start=currency_onset,
@@ -120,7 +120,7 @@ def test_RiverFlowUnit_exists():
     )
 
     # THEN
-    assert river_flow_x.currency_contract_name == bob_text
+    assert river_flow_x.currency_contract_owner == bob_text
     assert river_flow_x.src_name is None
     assert river_flow_x.dst_name == tom_text
     assert river_flow_x.currency_start == currency_onset
@@ -143,7 +143,7 @@ def test_RiverFlowUnit_flow_returned_WorksCorrectly():
 
     # WHEN
     river_flow_x = RiverFlowUnit(
-        currency_contract_name=bob_text,
+        currency_contract_owner=bob_text,
         src_name=sal_text,
         dst_name=tom_text,
         currency_start=currency_onset,
@@ -152,7 +152,7 @@ def test_RiverFlowUnit_flow_returned_WorksCorrectly():
         parent_flow_num=parent_flow_num,
         river_tree_level=river_tree_level,
     )
-    assert river_flow_x.currency_contract_name != river_flow_x.dst_name
+    assert river_flow_x.currency_contract_owner != river_flow_x.dst_name
 
     # THEN
     assert river_flow_x.flow_returned() == False
@@ -168,7 +168,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
     # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
 
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
@@ -214,7 +214,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
 
     # WHEN
     river_flow_x = RiverFlowUnit(
-        currency_contract_name=bob_text,
+        currency_contract_owner=bob_text,
         src_name=None,
         dst_name=bob_text,
         currency_start=0.225,
@@ -227,7 +227,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
         river_ledger_x = get_river_ledger_unit(bank_conn, river_flow_x)
 
     # THEN
-    assert river_ledger_x.contract_name == bob_text
+    assert river_ledger_x.contract_owner == bob_text
     assert river_ledger_x.currency_onset == 0.225
     assert river_ledger_x.currency_cease == 0.387
     assert river_ledger_x.river_tree_level == 4
@@ -241,7 +241,7 @@ def test_river_flow_insert_CorrectlyPopulatesTable01(
     # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
 
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -250,7 +250,7 @@ def test_river_flow_insert_CorrectlyPopulatesTable01(
     sal_text = "sal"
 
     river_flow_unit = RiverFlowUnit(
-        currency_contract_name=bob_text,
+        currency_contract_owner=bob_text,
         src_name=tim_text,
         dst_name=sal_text,
         currency_start=0.2,
@@ -265,14 +265,14 @@ def test_river_flow_insert_CorrectlyPopulatesTable01(
     # WHEN
     with sx.get_bank_conn() as bank_conn:
         bank_conn.execute(insert_sqlstr)
-        river_flows = get_river_flow_dict(bank_conn, currency_contract_name=bob_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_contract_owner=bob_text)
         print(f"{river_flows=}")
 
     # THEN
     print(f"{river_flows.keys()=}")
     # for value in river_flows.values():
     flow_0 = river_flows.get(0)
-    assert flow_0.currency_contract_name == bob_text
+    assert flow_0.currency_contract_owner == bob_text
     assert flow_0.src_name == tim_text
     assert flow_0.dst_name == sal_text
     assert flow_0.currency_start == 0.2
@@ -288,7 +288,7 @@ def test_RiverLedgerUnit_Exists():
     sal_text = "sal"
     tom_text = "tom"
     ledger_unit_01 = LedgerUnit(
-        contract_name=bob_text,
+        contract_owner=bob_text,
         member_name=sal_text,
         _contract_credit=0.66,
         _contract_debt=0.2,
@@ -300,7 +300,7 @@ def test_RiverLedgerUnit_Exists():
         _debtor_active=True,
     )
     ledger_unit_02 = LedgerUnit(
-        contract_name=bob_text,
+        contract_owner=bob_text,
         member_name=tom_text,
         _contract_credit=0.05,
         _contract_debt=0.09,
@@ -318,7 +318,7 @@ def test_RiverLedgerUnit_Exists():
 
     # WHEN
     river_ledger_unit = RiverLedgerUnit(
-        contract_name=bob_text,
+        contract_owner=bob_text,
         currency_onset=0.6,
         currency_cease=0.8,
         _ledgers=ledger_dict,
@@ -327,7 +327,7 @@ def test_RiverLedgerUnit_Exists():
     )
 
     # THEN
-    assert river_ledger_unit.contract_name == bob_text
+    assert river_ledger_unit.contract_owner == bob_text
     assert river_ledger_unit.currency_onset == 0.6
     assert river_ledger_unit.currency_cease == 0.8
     assert river_ledger_unit.river_tree_level == 7
@@ -342,7 +342,7 @@ def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
     # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
 
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -398,7 +398,9 @@ def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
         bank_conn.execute(ss0)
 
     # WHEN
-    mstr_sqlstr = get_river_tmember_table_insert_sqlstr(currency_contract_name=bob_text)
+    mstr_sqlstr = get_river_tmember_table_insert_sqlstr(
+        currency_contract_owner=bob_text
+    )
     with sx.get_bank_conn() as bank_conn:
         print(mstr_sqlstr)
         bank_conn.execute(mstr_sqlstr)
@@ -406,7 +408,7 @@ def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
     # THEN
     with sx.get_bank_conn() as bank_conn:
         river_tmembers = get_river_tmember_dict(
-            bank_conn, currency_contract_name=bob_text
+            bank_conn, currency_contract_owner=bob_text
         )
         print(f"{river_tmembers=}")
 
@@ -440,7 +442,7 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
     # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
 
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -462,7 +464,7 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
     sx.save_public_contract(contract_x=bob_contract)
 
     sx.refresh_bank_metrics()
-    sx.set_river_sphere_for_contract(contract_name=sal_text)
+    sx.set_river_sphere_for_contract(contract_owner=sal_text)
 
     with sx.get_bank_conn() as bank_conn:
         assert len(get_river_bucket_dict(bank_conn, sal_text)) > 0
@@ -483,7 +485,7 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
 
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -518,26 +520,26 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
-    sx.set_river_sphere_for_contract(contract_name=sal_text, max_flows_count=100)
+    sx.set_river_sphere_for_contract(contract_owner=sal_text, max_flows_count=100)
     with sx.get_bank_conn() as bank_conn:
         bank_conn.execute(get_river_bucket_table_delete_sqlstr(sal_text))
         assert (
-            len(get_river_bucket_dict(bank_conn, currency_contract_name=sal_text)) == 0
+            len(get_river_bucket_dict(bank_conn, currency_contract_owner=sal_text)) == 0
         )
 
     # WHEN / THEN
-    mstr_sqlstr = get_river_bucket_table_insert_sqlstr(currency_contract_name=sal_text)
+    mstr_sqlstr = get_river_bucket_table_insert_sqlstr(currency_contract_owner=sal_text)
     with sx.get_bank_conn() as bank_conn:
         print(mstr_sqlstr)
         bank_conn.execute(mstr_sqlstr)
-        # river_flows = get_river_flow_dict(bank_conn, currency_contract_name=sal_text)
+        # river_flows = get_river_flow_dict(bank_conn, currency_contract_owner=sal_text)
         # for river_flow in river_flows.values():
         #     print(f"{river_flow=}")
 
     # THEN
     with sx.get_bank_conn() as bank_conn:
         river_buckets = get_river_bucket_dict(
-            bank_conn, currency_contract_name=sal_text
+            bank_conn, currency_contract_owner=sal_text
         )
         # for river_bucket in river_buckets.values():
         #     print(f"huh {river_bucket=}")
@@ -573,7 +575,7 @@ def test_economy_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
 ):
     # GIVEN
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
@@ -584,7 +586,7 @@ def test_economy_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     # WHEN
     water_road = f"{root_label()},elements,water"
-    water_idea_catalog = IdeaCatalog(contract_name=bob_text, idea_road=water_road)
+    water_idea_catalog = IdeaCatalog(contract_owner=bob_text, idea_road=water_road)
     water_insert_sqlstr = get_idea_catalog_table_insert_sqlstr(water_idea_catalog)
     with sx.get_bank_conn() as bank_conn:
         print(water_insert_sqlstr)
@@ -597,7 +599,7 @@ def test_economy_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
 def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup):
     # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
@@ -631,7 +633,7 @@ def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup
 def test_economy_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     # GIVEN
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
@@ -674,7 +676,7 @@ def test_economy_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTabl
     # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
 
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
@@ -685,7 +687,7 @@ def test_economy_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTabl
 
     # WHEN
     weather_rain = AcptFactCatalog(
-        contract_name=bob_text,
+        contract_owner=bob_text,
         base=f"{root_label()},weather",
         pick=f"{root_label()},weather,rain",
     )
@@ -704,7 +706,7 @@ def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
     # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
 
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
@@ -766,7 +768,7 @@ def test_economy_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTab
     # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
 
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
@@ -777,7 +779,7 @@ def test_economy_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTab
 
     # WHEN
     bob_group_x = GroupUnitCatalog(
-        contract_name=bob_text,
+        contract_owner=bob_text,
         groupunit_name="US Dollar",
         memberlinks_set_by_economy_road=f"{root_label()},USA",
     )
@@ -795,7 +797,7 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
 ):
     # GIVEN
     sx = economyunit_shop(
-        name=get_temp_env_name(), economys_dir=get_test_economys_dir()
+        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
 

@@ -17,6 +17,7 @@ def test_contract_exists():
 
     assert new_obj
     assert new_obj._owner == owner_text
+    # assert new_obj._economy == owner_text
     assert new_obj._weight == 1
     assert new_obj._max_tree_traverse == 3
     assert new_obj._tree_traverse_count is None
