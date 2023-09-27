@@ -89,15 +89,39 @@ def test_Contract_level0_idea_edit_idea_label_RaisesError_economy_title_IsDiffer
         str(excinfo.value) == f"Cannot set idearoot to string other than '{sun_text}'"
     )
 
-    # moon = "moon"
-    # sx.edit_idea_label(old_road=root_label(), new_label=moon)
 
-    # # THEN
-    # assert sx._owner == root_label()
-    # assert sx._idearoot._label == root_label()
-    # assert sx._idearoot._walk == ""
-    # assert work_idea._walk == root_label()
-    # assert swim_idea._walk == f"{root_label()},{work_text}"
+def test_contract_set_economy_title_CorrectlySetsAttr():
+    # GIVEN
+    work_text = "work"
+    old_work_road = f"{root_label()},{work_text}"
+    swim_text = "swim"
+    old_swim_road = f"{old_work_road},{swim_text}"
+    owner_text = "Tim"
+    sx = ContractUnit(_owner=owner_text)
+    sx.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=work_text))
+    sx.add_idea(walk=old_work_road, idea_kid=IdeaKid(_label=swim_text))
+    assert sx._owner == owner_text
+    assert sx._idearoot._label == root_label()
+    work_idea = sx.get_idea_kid(road=old_work_road)
+    assert work_idea._walk == root_label()
+    swim_idea = sx.get_idea_kid(road=old_swim_road)
+    assert swim_idea._walk == old_work_road
+    assert sx._economy_title == root_label()
+
+    # WHEN
+    economy_title_text = "Sun"
+    sx.set_economy_title(economy_title=economy_title_text)
+
+    # THEN
+    new_work_road = f"{economy_title_text},{work_text}"
+    swim_text = "swim"
+    new_swim_road = f"{new_work_road},{swim_text}"
+    assert sx._economy_title == economy_title_text
+    assert sx._idearoot._label == economy_title_text
+    work_idea = sx.get_idea_kid(road=new_work_road)
+    assert work_idea._walk == economy_title_text
+    swim_idea = sx.get_idea_kid(road=new_swim_road)
+    assert swim_idea._walk == new_work_road
 
 
 def test_idea_find_replace_road_Changes_kids_scenario1():

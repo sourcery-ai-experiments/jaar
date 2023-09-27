@@ -115,7 +115,9 @@ class ContractUnit:
         self._economy_title = root_label()
 
     def set_economy_title(self, economy_title: str):
+        old_economy_title = copy_deepcopy(self._economy_title)
         self._economy_title = economy_title
+        self.edit_idea_label(old_road=old_economy_title, new_label=self._economy_title)
 
     def set_banking_attr_memberunits(self, river_tmembers: dict):
         for memberunit_x in self._members.values():
