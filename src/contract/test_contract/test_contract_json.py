@@ -18,7 +18,7 @@ from src.contract.examples.contract_env import (
 from src.contract.group import groupunit_shop, grouplink_shop
 from src.contract.member import memberlink_shop
 from src.contract.required_assign import assigned_unit_shop
-from src.contract.road import get_economy_root_label as root_label
+from src.contract.road import get_default_economy_root_label as root_label
 from src.contract.x_func import (
     x_is_json,
     save_file as x_func_save_file,

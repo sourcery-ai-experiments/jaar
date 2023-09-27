@@ -5,7 +5,7 @@ from src.contract.examples.example_contracts import (
 from src.contract.contract import ContractUnit
 from src.contract.tree_metrics import TreeMetrics
 from src.contract.idea import IdeaKid
-from src.contract.road import get_economy_root_label as root_label
+from src.contract.road import get_default_economy_root_label as root_label
 
 
 def test_contract_get_tree_metrics_exists():

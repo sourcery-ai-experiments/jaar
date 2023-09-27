@@ -2,7 +2,7 @@ from src.contract.contract import ContractUnit
 from src.contract.idea import IdeaKid
 from src.contract.required_assign import assigned_unit_shop
 from src.economy.actor import actorunit_shop, ActorUnit
-from src.contract.road import Road, get_economy_root_label as root_label
+from src.contract.road import Road, get_default_economy_root_label as root_label
 from random import randrange
 
 

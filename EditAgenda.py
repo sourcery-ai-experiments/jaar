@@ -9,7 +9,7 @@ from src.contract.hreg_time import (
     _get_time_hreg_weekday_idea,
     convert1440toHHMM,
 )
-from src.contract.road import get_economy_root_label as root_label
+from src.contract.road import get_default_economy_root_label as root_label
 
 
 class EditAgenda(qw, Ui_Form):

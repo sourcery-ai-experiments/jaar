@@ -8,7 +8,7 @@ from src.contract.examples.example_contracts import (
     get_contract_with_4_levels as examples_get_contract_with_4_levels,
 )
 from src.contract.contract import ContractUnit
-from src.contract.road import get_economy_root_label as root_label
+from src.contract.road import get_default_economy_root_label as root_label
 from pytest import raises as pytest_raises
 
 

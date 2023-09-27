@@ -8,7 +8,7 @@ from src.contract.idea import IdeaKid
 from src.contract.required_idea import sufffactunit_shop, RequiredUnit, RequiredHeir
 from src.contract.road import Road
 from src.contract.contract import ContractUnit
-from src.contract.road import get_economy_root_label as root_label
+from src.contract.road import get_default_economy_root_label as root_label
 
 
 def _check_all_elements_in_dict_are_correct_type(x_dict: dict, type_str: str) -> bool:

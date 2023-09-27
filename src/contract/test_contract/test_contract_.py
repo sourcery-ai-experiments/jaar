@@ -3,7 +3,7 @@ from src.contract.examples.example_contracts import (
     get_contract_with_4_levels,
 )
 from src.contract.contract import ContractUnit
-from src.contract.road import get_economy_root_label as root_label
+from src.contract.road import get_default_economy_root_label as root_label
 from src.contract.origin import originunit_shop
 from pytest import raises as pytest_raises
 
@@ -17,7 +17,7 @@ def test_contract_exists():
 
     assert new_obj
     assert new_obj._owner == owner_text
-    # assert new_obj._economy == owner_text
+    assert new_obj._economy_title == root_label()
     assert new_obj._weight == 1
     assert new_obj._max_tree_traverse == 3
     assert new_obj._tree_traverse_count is None

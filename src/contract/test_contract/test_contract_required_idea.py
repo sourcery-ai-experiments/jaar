@@ -6,7 +6,7 @@ from src.contract.examples.example_contracts import (
 from src.contract.idea import IdeaKid
 from src.contract.required_idea import sufffactunit_shop, RequiredUnit, RequiredHeir
 from src.contract.contract import ContractUnit
-from src.contract.road import get_economy_root_label as root_label
+from src.contract.road import get_default_economy_root_label as root_label
 from src.contract.x_func import from_list_get_active_status
 
 

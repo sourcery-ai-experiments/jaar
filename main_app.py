@@ -9,7 +9,7 @@ from EditProblem import EditProblem
 from src.contract.contract import ContractUnit, get_from_json
 from src.contract.examples.contract_env import contract_env
 from src.contract.hreg_time import convert1440toHHMM
-from src.contract.road import get_economy_root_label as root_label
+from src.contract.road import get_default_economy_root_label as root_label
 from src.pyqt5_kit.pyqt_func import (
     contract_importance_diplay as pyqt_func_contract_importance_diplay,
     str2float as pyqt_func_str2float,

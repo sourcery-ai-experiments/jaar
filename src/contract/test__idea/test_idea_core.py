@@ -8,7 +8,7 @@ from src.contract.required_idea import (
     Road,
 )
 from src.contract.required_assign import assigned_unit_shop, assigned_heir_shop
-from src.contract.road import get_economy_root_label as root_label
+from src.contract.road import get_default_economy_root_label as root_label
 from pytest import raises as pytest_raises
 
 

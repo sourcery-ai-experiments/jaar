@@ -23,7 +23,7 @@ from src.contract.required_idea import (
 )
 from src.contract.road import (
     is_sub_road,
-    get_economy_root_label as root_label,
+    get_default_economy_root_label as root_label,
 )
 from src.contract.group import (
     GroupHeir,
@@ -975,10 +975,16 @@ class IdeaRoot(IdeaCore):
     def __post_init__(self):
         self.set_idea_label(_label=root_label())
 
-    def set_idea_label(self, _label):
-        if _label != root_label():
+    def set_idea_label(self, _label: str, contract_economy_title: str = None):
+        if _label != root_label() and contract_economy_title is None:
             raise IdeaRootLabelNotEmptyException(
                 f"Cannot set idearoot to string other than '{root_label()}'"
             )
+        elif _label != contract_economy_title != None:
+            raise IdeaRootLabelNotEmptyException(
+                f"Cannot set idearoot to string other than '{contract_economy_title}'"
+            )
+        elif _label != root_label() and contract_economy_title == _label:
+            self._label = _label
         else:
             self._label = root_label()

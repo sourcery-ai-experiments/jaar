@@ -8,7 +8,7 @@ from src.economy.examples.actor_env_kit import (
     actor_dir_setup_cleanup,
     get_temp_actor_dir,
 )
-from src.contract.road import get_economy_root_label as root_label
+from src.contract.road import get_default_economy_root_label as root_label
 from src.contract.origin import originunit_shop
 from os import path as os_path
 from src.contract.x_func import (

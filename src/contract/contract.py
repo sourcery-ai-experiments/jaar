@@ -58,7 +58,7 @@ from src.contract.road import (
     get_terminus_node_from_road,
     find_replace_road_key_dict,
     get_ancestor_roads,
-    get_economy_root_label as root_label,
+    get_default_economy_root_label as root_label,
     get_road_from_nodes,
     get_all_road_nodes,
     get_forefather_roads,
@@ -97,6 +97,7 @@ class ContractUnit:
     _tree_traverse_count: int = None
     _rational: bool = False
     _originunit: OriginUnit = None
+    _economy_title: str = None
     _auto_output_to_public: bool = None
 
     def __init__(
@@ -111,6 +112,7 @@ class ContractUnit:
         self._owner = _owner
         self._originunit = originunit_shop()
         self._auto_output_to_public = bool(_auto_output_to_public)
+        self._economy_title = root_label()
 
     def set_banking_attr_memberunits(self, river_tmembers: dict):
         for memberunit_x in self._members.values():

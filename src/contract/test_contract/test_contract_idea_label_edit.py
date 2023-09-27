@@ -5,7 +5,7 @@ from src.contract.examples.example_contracts import (
 )
 from pytest import raises as pytest_raises
 from src.contract.required_idea import Road, AcptFactUnit
-from src.contract.road import get_economy_root_label as root_label
+from src.contract.road import get_default_economy_root_label as root_label
 
 
 def test_idea_label_fails_when_idea_does_not_exist():

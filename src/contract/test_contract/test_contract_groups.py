@@ -10,7 +10,7 @@ from src.contract.contract import (
     get_members_relevant_groups,
     get_member_relevant_groups,
 )
-from src.contract.road import get_economy_root_label as root_label
+from src.contract.road import get_default_economy_root_label as root_label
 from pytest import raises as pytest_raises
 
 
