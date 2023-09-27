@@ -114,6 +114,9 @@ class ContractUnit:
         self._auto_output_to_public = bool(_auto_output_to_public)
         self._economy_title = root_label()
 
+    def set_economy_title(self, economy_title: str):
+        self._economy_title = economy_title
+
     def set_banking_attr_memberunits(self, river_tmembers: dict):
         for memberunit_x in self._members.values():
             memberunit_x.clear_banking_data()
@@ -1147,7 +1150,9 @@ class ContractUnit:
         if old_road != new_road:
             # if root _label is changed
             if walk == "":
-                self._idearoot.set_idea_label(new_label)
+                self._idearoot.set_idea_label(
+                    new_label, contract_economy_title=self._economy_title
+                )
                 self._idearoot._walk = walk
             else:
                 self._non_root_idea_label_edit(old_road, new_label, walk)

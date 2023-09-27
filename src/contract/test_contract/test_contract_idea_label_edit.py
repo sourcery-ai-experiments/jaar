@@ -28,9 +28,7 @@ def test_idea_label_fails_when_idea_does_not_exist():
     )
 
 
-# when editing a idea _label it's possible that the change breaks a required.base, sufffact.need or acptfact.base or acptfact.acptfact
-# fixing this quickly looks difficult. Maybe push it off
-def test_where_level0_idea_label_change_breaks_idea_walk_of_child_ideas():
+def test_Contract_level0_idea_edit_idea_label_RaisesError_economy_title_IsNone():
     # GIVEN
 
     work_text = "work"
@@ -42,6 +40,7 @@ def test_where_level0_idea_label_change_breaks_idea_walk_of_child_ideas():
     sx.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=work_text))
     sx.add_idea(walk=work_road, idea_kid=IdeaKid(_label=swim_text))
     assert sx._owner == owner_text
+    assert sx._economy_title == root_label()
     assert sx._idearoot._label == root_label()
     work_idea = sx.get_idea_kid(road=work_road)
     assert work_idea._walk == root_label()
@@ -55,7 +54,39 @@ def test_where_level0_idea_label_change_breaks_idea_walk_of_child_ideas():
         sx.edit_idea_label(old_road=root_label(), new_label=moon_text)
     assert (
         str(excinfo.value)
-        == f"Cannot set idearoot to string other than '{root_label()}'"
+        == f"Cannot set idearoot to string other than '{sx._economy_title}'"
+    )
+
+
+# when editing a idea _label it's possible that the change breaks a required.base, sufffact.need or acptfact.base or acptfact.acptfact
+# fixing this quickly looks difficult. Maybe push it off
+def test_Contract_level0_idea_edit_idea_label_RaisesError_economy_title_IsDifferent():
+    # GIVEN
+    work_text = "work"
+    work_road = f"{root_label()},{work_text}"
+    swim_text = "swim"
+    swim_road = f"{root_label()},{work_text},{swim_text}"
+    owner_text = "Tim"
+    sx = ContractUnit(_owner=owner_text)
+    sx.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=work_text))
+    sx.add_idea(walk=work_road, idea_kid=IdeaKid(_label=swim_text))
+    sun_text = "sun"
+    sx._economy_title = sun_text
+    assert sx._owner == owner_text
+    assert sx._economy_title == sun_text
+    assert sx._idearoot._label == root_label()
+    work_idea = sx.get_idea_kid(road=work_road)
+    assert work_idea._walk == root_label()
+    swim_idea = sx.get_idea_kid(road=swim_road)
+    assert swim_idea._walk == work_road
+
+    # WHEN
+
+    with pytest_raises(Exception) as excinfo:
+        moon_text = "moon"
+        sx.edit_idea_label(old_road=root_label(), new_label=moon_text)
+    assert (
+        str(excinfo.value) == f"Cannot set idearoot to string other than '{sun_text}'"
     )
 
     # moon = "moon"

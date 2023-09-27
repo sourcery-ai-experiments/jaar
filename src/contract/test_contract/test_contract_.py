@@ -148,3 +148,17 @@ def test_contract_init_CorrectlySetsGiven_auto_output_to_public():
 
     # THEN
     assert new_obj._auto_output_to_public == True
+
+
+def test_contract_set_economy_title_CorrectlySetsAttr():
+    # GIVEN
+    economy_title_text = "Sun"
+    owner_text = "Noa"
+    new_obj = ContractUnit(_owner=owner_text, _auto_output_to_public=True)
+    assert new_obj._economy_title == root_label()
+
+    # WHEN
+    new_obj.set_economy_title(economy_title=economy_title_text)
+
+    # THEN
+    assert new_obj._economy_title == economy_title_text
