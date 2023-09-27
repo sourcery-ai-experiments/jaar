@@ -3,7 +3,7 @@ from ui.EditAcptFactTimeUI import Ui_Form
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from datetime import datetime
-from src.contract.road import get_global_root_label as root_label
+from src.contract.road import get_economy_root_label as root_label
 
 
 class EditAcptFactTime(qtw.QTableWidget, Ui_Form):

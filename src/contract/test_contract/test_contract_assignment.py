@@ -3,7 +3,7 @@ from src.contract.idea import IdeaKid
 from src.contract.required_idea import RequiredUnit
 from src.contract.member import memberunit_shop, memberlink_shop
 from src.contract.group import groupunit_shop
-from src.contract.road import get_global_root_label as root_label
+from src.contract.road import get_economy_root_label as root_label
 from src.contract.examples.example_contracts import (
     get_contract_with_4_levels as example_contracts_get_contract_with_4_levels,
     get_contract_with7amCleanTableRequired as example_contracts_get_contract_with7amCleanTableRequired,

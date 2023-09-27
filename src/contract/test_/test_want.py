@@ -4,7 +4,7 @@ from src.contract.required_idea import (
     Road,
     sufffactunit_shop,
 )
-from src.contract.road import get_global_root_label as root_label
+from src.contract.road import get_economy_root_label as root_label
 from pytest import raises as pytest_raises
 
 

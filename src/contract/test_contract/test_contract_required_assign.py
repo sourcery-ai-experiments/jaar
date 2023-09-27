@@ -6,7 +6,7 @@ from src.contract.required_assign import (
 from src.contract.contract import ContractUnit
 from src.contract.idea import IdeaKid
 from src.contract.group import groupunit_shop
-from src.contract.road import get_global_root_label as root_label
+from src.contract.road import get_economy_root_label as root_label
 
 
 def test_contract_edit_idea_attr_CorrectlySetsAssignedUnit():

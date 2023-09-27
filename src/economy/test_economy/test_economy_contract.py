@@ -68,3 +68,21 @@ def test_economy_rename_public_contract_ChangesContractName(
     # THEN
     assert os_path.exists(old_sx5_path) == False
     assert os_path.exists(new_sx5_path)
+
+
+def test_economy_SetsIdeaRootLabel(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    economy_name = get_temp_env_name()
+    e5 = economyunit_shop(name=economy_name, economys_dir=get_test_economys_dir())
+    e5.create_dirs_if_null(in_memory_bank=True)
+    contract_x = example_contracts_get_contract_1Task_1CE0MinutesRequired_1AcptFact()
+    assert contract_x._idearoot._label == "A"
+
+    # WHEN
+    e5.save_public_contract(contract_x)
+
+    # THEN
+    contract_after = e5.get_public_contract(contract_x._owner)
+    assert contract_after._idearoot._label == economy_name

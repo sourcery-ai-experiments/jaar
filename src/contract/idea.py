@@ -23,7 +23,7 @@ from src.contract.required_idea import (
 )
 from src.contract.road import (
     is_sub_road,
-    get_global_root_label as root_label,
+    get_economy_root_label as root_label,
 )
 from src.contract.group import (
     GroupHeir,

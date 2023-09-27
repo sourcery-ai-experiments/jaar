@@ -10,7 +10,7 @@ from src.contract.road import (
     road_validate,
     get_ancestor_roads,
     get_forefather_roads,
-    get_global_root_label as root_label,
+    get_economy_root_label as root_label,
     get_road_from_nodes,
 )
 from src.contract.required_idea import sufffactunit_shop
@@ -246,7 +246,7 @@ def test_road_get_forefather_roads_CorrectlyReturnsAncestorRoadsWithoutSource():
     assert x_roads == texas_forefather_roads
 
 
-def test_road_get_global_root_label_ReturnsCorrectObj():
+def test_road_get_economy_root_label_ReturnsCorrectObj():
     assert root_label() == "A"
 
 

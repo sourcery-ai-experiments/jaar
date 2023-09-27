@@ -1,7 +1,7 @@
 from src.economy.economy import economyunit_shop
 from src.contract.contract import ContractUnit
 from src.contract.member import memberunit_shop
-from src.contract.road import get_global_root_label as root_label
+from src.contract.road import get_economy_root_label as root_label
 from src.economy.examples.economy_env_kit import (
     get_temp_env_name,
     get_test_economys_dir,

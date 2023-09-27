@@ -2,7 +2,7 @@ from src.contract.idea import IdeaKid
 from src.contract.contract import ContractUnit
 from src.contract.group import groupunit_shop
 from src.contract.member import memberunit_shop
-from src.contract.road import get_global_root_label as root_label
+from src.contract.road import get_economy_root_label as root_label
 from src.contract.origin import originunit_shop
 from pytest import raises as pytest_raises
 from src.contract.examples.example_contracts import contract_v001

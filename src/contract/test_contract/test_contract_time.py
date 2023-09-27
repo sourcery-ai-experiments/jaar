@@ -1,5 +1,5 @@
 from src.contract.contract import ContractUnit
-from src.contract.road import get_global_root_label as root_label
+from src.contract.road import get_economy_root_label as root_label
 from datetime import datetime
 from random import randint
 

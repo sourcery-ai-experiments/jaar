@@ -8,7 +8,7 @@ from src.contract.required_idea import (
 from src.contract.contract import ContractUnit, get_from_json
 from src.contract.x_func import open_file as x_func_open_file
 from src.contract.examples.contract_env import contract_env
-from src.contract.road import get_global_root_label as root_label
+from src.contract.road import get_economy_root_label as root_label
 
 
 def contract_v001() -> ContractUnit:

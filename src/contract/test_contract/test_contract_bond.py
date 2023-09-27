@@ -9,7 +9,7 @@ from src.contract.road import Road
 from src.contract.required_idea import RequiredUnit
 from src.contract.member import memberlink_shop
 from src.contract.group import groupunit_shop, grouplink_shop
-from src.contract.road import get_global_root_label as root_label
+from src.contract.road import get_economy_root_label as root_label
 from src.contract.examples.example_contracts import (
     get_contract_with_4_levels as example_contracts_get_contract_with_4_levels,
     get_contract_with_4_levels_and_2requireds as example_contracts_get_contract_with_4_levels_and_2requireds,

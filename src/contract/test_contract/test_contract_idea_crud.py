@@ -4,7 +4,7 @@ from src.contract.required_idea import RequiredUnit, acptfactunit_shop
 from src.contract.contract import ContractUnit
 from src.contract.group import grouplink_shop
 from pytest import raises as pytest_raises
-from src.contract.road import Road, get_global_root_label as root_label
+from src.contract.road import Road, get_economy_root_label as root_label
 
 
 def test_root_has_kids():

@@ -8,7 +8,7 @@ from src.contract.group import (
     groupheir_shop,
     get_from_json as groupunits_get_from_json,
 )
-from src.contract.road import get_global_root_label as root_label
+from src.contract.road import get_economy_root_label as root_label
 from src.contract.x_func import x_is_json, x_get_json
 from pytest import raises as pytest_raises
 

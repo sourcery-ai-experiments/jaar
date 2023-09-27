@@ -1,4 +1,4 @@
-from src.contract.road import get_global_root_label as root_label
+from src.contract.road import get_economy_root_label as root_label
 from src.economy.economy import economyunit_shop
 from src.contract.examples.example_contracts import (
     contract_v002 as ex_cxs_contract_v002,

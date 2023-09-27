@@ -75,9 +75,9 @@ def road_validate(road: Road) -> Road:
     x_root = get_all_road_nodes(road)[0]
     return (
         change_road(
-            current_road=road, old_road=x_root, new_road=get_global_root_label()
+            current_road=road, old_road=x_root, new_road=get_economy_root_label()
         )
-        if x_root != get_global_root_label()
+        if x_root != get_economy_root_label()
         else road
     )
 
@@ -114,7 +114,7 @@ def get_forefather_roads(road: Road) -> dict[Road]:
     return {a_road: None for a_road in ancestor_roads}
 
 
-def get_global_root_label() -> str:
+def get_economy_root_label() -> str:
     return "A"
 
 

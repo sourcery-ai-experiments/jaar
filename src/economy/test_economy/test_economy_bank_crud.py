@@ -3,7 +3,7 @@ from src.contract.contract import ContractUnit
 from src.contract.idea import IdeaKid
 from src.contract.group import groupunit_shop
 from src.contract.member import memberlink_shop
-from src.contract.road import get_global_root_label as root_label
+from src.contract.road import get_economy_root_label as root_label
 from src.economy.examples.economy_env_kit import (
     get_temp_env_name,
     get_test_economys_dir,

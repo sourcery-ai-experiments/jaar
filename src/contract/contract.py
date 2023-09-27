@@ -58,7 +58,7 @@ from src.contract.road import (
     get_terminus_node_from_road,
     find_replace_road_key_dict,
     get_ancestor_roads,
-    get_global_root_label as root_label,
+    get_economy_root_label as root_label,
     get_road_from_nodes,
     get_all_road_nodes,
     get_forefather_roads,
@@ -2139,7 +2139,7 @@ class ContractUnit:
 
     def _set_assignment_ideas(self, contract_x, relevant_roads: dict[Road:str]):
         sorted_relevants = sorted(list(relevant_roads))
-        # don't know how to handle root idea attributes...
+        # don't know how to manage root idea attributes...
         if sorted_relevants != []:
             root_road = sorted_relevants.pop(0)
 
