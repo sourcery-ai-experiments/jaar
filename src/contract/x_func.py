@@ -156,11 +156,11 @@ def from_list_get_active_status(
 
     if asse_bool in {True, False}:
         if active_status != asse_bool:
-            yr_tale(temp_idea)
+            yr_explanation(temp_idea)
 
         assert active_status == asse_bool
     else:
-        yr_tale(temp_idea)
+        yr_explanation(temp_idea)
     return active_status
 
 
@@ -179,7 +179,7 @@ def yr_print_idea_base_info(idea, filter: bool):
                 )
 
 
-def yr_tale(idea):
+def yr_explanation(idea):
     str1 = f"'{yr_d(idea._walk)}' idea"
     str2 = f" has RequiredU:{yr_x(idea._requiredunits)} LH:{yr_x(idea._requiredheirs)}"
     str3 = f" {str(type(idea))}"

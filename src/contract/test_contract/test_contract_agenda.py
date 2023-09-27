@@ -17,7 +17,7 @@ from src.contract.examples.example_contracts import (
     contract_v001_with_large_agenda as example_contracts_contract_v001_with_large_agenda,
     contract_v002 as example_contracts_contract_v002,
 )
-from src.contract.x_func import yr_tale, open_file as x_func_open_file
+from src.contract.x_func import yr_explanation, open_file as x_func_open_file
 
 
 def test_get_agenda_returns_agenda():
@@ -48,8 +48,8 @@ def test_get_agenda_returns_agenda_with_only_required_allowed():
     # THEN
     assert agenda_list
     # for agenda_item in agenda_list:
-    #     yr_tale(idea=agenda_item)
-    yr_tale(idea=agenda_list[0])
+    #     yr_explanation(idea=agenda_item)
+    yr_explanation(idea=agenda_list[0])
 
     assert len(agenda_list) == 1
     print(f"{agenda_list=}")
