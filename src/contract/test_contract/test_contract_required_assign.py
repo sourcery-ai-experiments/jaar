@@ -113,3 +113,76 @@ def test_contract_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedhei
     )
     assert four_idea._assignedheir != None
     assert four_idea._assignedheir == assigned_heir_x
+
+
+def test_ContractUnit__get_filtered_grouplinks_idea_CorrectlyFiltersIdea_AssignUnit():
+    # GIVEN
+    owner_text = "Noa"
+    cx1 = ContractUnit(_owner=owner_text)
+    xia_text = "Xia"
+    zoa_text = "Zoa"
+    cx1.add_memberunit(name=xia_text)
+    cx1.add_memberunit(name=zoa_text)
+
+    work_text = "work"
+    work_road = f"{cx1._economy_title},{work_text}"
+    swim_text = "swim"
+    swim_road = f"{cx1._economy_title},{swim_text}"
+    cx1.add_idea(IdeaKid(_label=work_text), walk=cx1._economy_title)
+    cx1.add_idea(IdeaKid(_label=swim_text), walk=cx1._economy_title)
+    swim_assignedunit = assigned_unit_shop()
+    swim_assignedunit.set_suffgroup(name=xia_text)
+    swim_assignedunit.set_suffgroup(name=zoa_text)
+    cx1.edit_idea_attr(road=swim_road, assignedunit=swim_assignedunit)
+    cx1_swim_idea = cx1.get_idea_kid(swim_road)
+    cx1_swim_suffgroups = cx1_swim_idea._assignedunit._suffgroups
+    assert len(cx1_swim_suffgroups) == 2
+
+    # WHEN
+    cx2 = ContractUnit(_owner=owner_text)
+    cx2.add_memberunit(name=xia_text)
+    filtered_idea = cx2._get_filtered_grouplinks_idea(cx1_swim_idea)
+
+    # THEN
+    filtered_swim_suffgroups = filtered_idea._assignedunit._suffgroups
+    assert len(filtered_swim_suffgroups) == 1
+    assert list(filtered_swim_suffgroups) == [xia_text]
+
+
+def test_ContractUnit_add_idea_CorrectlyFiltersIdea_grouplinks():
+    # GIVEN
+    owner_text = "Noa"
+    cx1 = ContractUnit(_owner=owner_text)
+    xia_text = "Xia"
+    zoa_text = "Zoa"
+    cx1.add_memberunit(name=xia_text)
+    cx1.add_memberunit(name=zoa_text)
+
+    work_text = "work"
+    work_road = f"{cx1._economy_title},{work_text}"
+    swim_text = "swim"
+    swim_road = f"{cx1._economy_title},{swim_text}"
+    cx1.add_idea(IdeaKid(_label=work_text), walk=cx1._economy_title)
+    cx1.add_idea(IdeaKid(_label=swim_text), walk=cx1._economy_title)
+    swim_assignedunit = assigned_unit_shop()
+    swim_assignedunit.set_suffgroup(name=xia_text)
+    swim_assignedunit.set_suffgroup(name=zoa_text)
+    cx1.edit_idea_attr(road=swim_road, assignedunit=swim_assignedunit)
+    cx1_swim_idea = cx1.get_idea_kid(swim_road)
+    cx1_swim_suffgroups = cx1_swim_idea._assignedunit._suffgroups
+    assert len(cx1_swim_suffgroups) == 2
+
+    # WHEN
+    cx2 = ContractUnit(_owner=owner_text)
+    cx2.add_memberunit(name=xia_text)
+    cx2.add_idea(
+        idea_kid=cx1_swim_idea,
+        walk=cx2._economy_title,
+        create_missing_ideas_groups=False,
+    )
+
+    # THEN
+    cx2_swim_idea = cx2.get_idea_kid(swim_road)
+    cx2_swim_suffgroups = cx2_swim_idea._assignedunit._suffgroups
+    assert len(cx2_swim_suffgroups) == 1
+    assert list(cx2_swim_suffgroups) == [xia_text]

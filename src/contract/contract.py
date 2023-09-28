@@ -1038,7 +1038,6 @@ class ContractUnit:
         create_missing_ideas_groups: bool = None,
     ):
         if not create_missing_ideas_groups:
-            idea_kid.set_grouplink_empty_if_null()
             idea_kid = self._get_filtered_grouplinks_idea(idea_kid)
 
         walk = road_validate(walk)
@@ -1067,13 +1066,24 @@ class ContractUnit:
             self._create_missing_groups_members(grouplinks=idea_kid._grouplinks)
 
     def _get_filtered_grouplinks_idea(self, idea: IdeaKid) -> IdeaKid:
-        to_delete = [
+        idea.set_grouplink_empty_if_null()
+        _grouplinks_to_delete = [
             _grouplink_name
             for _grouplink_name in idea._grouplinks.keys()
             if self._groups.get(_grouplink_name) is None
         ]
-        for _grouplink_name in to_delete:
+        for _grouplink_name in _grouplinks_to_delete:
             idea._grouplinks.pop(_grouplink_name)
+
+        if idea._assignedunit != None:
+            _suffgroups_to_delete = [
+                _suffgroup_name
+                for _suffgroup_name in idea._assignedunit._suffgroups.keys()
+                if self._groups.get(_suffgroup_name) is None
+            ]
+            for _suffgroup_name in _suffgroups_to_delete:
+                idea._assignedunit.del_suffgroup(_suffgroup_name)
+
         return idea
 
     def _create_missing_groups_members(self, grouplinks: dict[GroupName:GroupLink]):

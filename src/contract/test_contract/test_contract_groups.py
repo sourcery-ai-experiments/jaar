@@ -644,6 +644,71 @@ def test_contract_add_idea_CreatesMissingGroups():
     assert a_x._groups.get(family_text)._members in (None, {})
 
 
+def test_ContractUnit__get_filtered_grouplinks_idea_CorrectlyFiltersIdea_grouplinks():
+    # GIVEN
+    owner_text = "Noa"
+    cx1 = ContractUnit(_owner=owner_text)
+    xia_text = "Xia"
+    zoa_text = "Zoa"
+    cx1.add_memberunit(name=xia_text)
+    cx1.add_memberunit(name=zoa_text)
+
+    work_text = "work"
+    work_road = f"{cx1._economy_title},{work_text}"
+    swim_text = "swim"
+    swim_road = f"{cx1._economy_title},{swim_text}"
+    cx1.add_idea(IdeaKid(_label=work_text), walk=cx1._economy_title)
+    cx1.add_idea(IdeaKid(_label=swim_text), walk=cx1._economy_title)
+    cx1.edit_idea_attr(road=swim_road, grouplink=grouplink_shop(name=xia_text))
+    cx1.edit_idea_attr(road=swim_road, grouplink=grouplink_shop(name=zoa_text))
+    cx1_swim_idea = cx1.get_idea_kid(swim_road)
+    assert len(cx1_swim_idea._grouplinks) == 2
+    cx2 = ContractUnit(_owner=owner_text)
+    cx2.add_memberunit(name=xia_text)
+
+    # WHEN
+    filtered_idea = cx2._get_filtered_grouplinks_idea(cx1_swim_idea)
+
+    # THEN
+    assert len(filtered_idea._grouplinks) == 1
+    assert list(filtered_idea._grouplinks.keys()) == [xia_text]
+
+
+def test_ContractUnit_add_idea_CorrectlyFiltersIdea_grouplinks():
+    # GIVEN
+    owner_text = "Noa"
+    cx1 = ContractUnit(_owner=owner_text)
+    xia_text = "Xia"
+    zoa_text = "Zoa"
+    cx1.add_memberunit(name=xia_text)
+    cx1.add_memberunit(name=zoa_text)
+
+    work_text = "work"
+    work_road = f"{cx1._economy_title},{work_text}"
+    swim_text = "swim"
+    swim_road = f"{cx1._economy_title},{swim_text}"
+    cx1.add_idea(IdeaKid(_label=work_text), walk=cx1._economy_title)
+    cx1.add_idea(IdeaKid(_label=swim_text), walk=cx1._economy_title)
+    cx1.edit_idea_attr(road=swim_road, grouplink=grouplink_shop(name=xia_text))
+    cx1.edit_idea_attr(road=swim_road, grouplink=grouplink_shop(name=zoa_text))
+    cx1_swim_idea = cx1.get_idea_kid(swim_road)
+    assert len(cx1_swim_idea._grouplinks) == 2
+
+    # WHEN
+    cx2 = ContractUnit(_owner=owner_text)
+    cx2.add_memberunit(name=xia_text)
+    cx2.add_idea(
+        idea_kid=cx1_swim_idea,
+        walk=cx2._economy_title,
+        create_missing_ideas_groups=False,
+    )
+
+    # THEN
+    cx2_swim_idea = cx2.get_idea_kid(swim_road)
+    assert len(cx2_swim_idea._grouplinks) == 1
+    assert list(cx2_swim_idea._grouplinks.keys()) == [xia_text]
+
+
 def test_contract_add_idea_DoesNotOverwriteGroups():
     # GIVEN
     owner_text = "bob"
