@@ -1037,6 +1037,10 @@ class ContractUnit:
         walk: Road,
         create_missing_ideas_groups: bool = None,
     ):
+        if not create_missing_ideas_groups:
+            idea_kid.set_grouplink_empty_if_null()
+            idea_kid = self._get_filtered_grouplinks_idea(idea_kid)
+
         walk = road_validate(walk)
         temp_idea = self._idearoot
         walk_nodes = get_all_road_nodes(walk)
@@ -1061,6 +1065,16 @@ class ContractUnit:
         if create_missing_ideas_groups:
             self._create_missing_ideas(road=Road(f"{walk},{idea_kid._label}"))
             self._create_missing_groups_members(grouplinks=idea_kid._grouplinks)
+
+    def _get_filtered_grouplinks_idea(self, idea: IdeaKid) -> IdeaKid:
+        to_delete = [
+            _grouplink_name
+            for _grouplink_name in idea._grouplinks.keys()
+            if self._groups.get(_grouplink_name) is None
+        ]
+        for _grouplink_name in to_delete:
+            idea._grouplinks.pop(_grouplink_name)
+        return idea
 
     def _create_missing_groups_members(self, grouplinks: dict[GroupName:GroupLink]):
         for grouplink_x in grouplinks.values():
