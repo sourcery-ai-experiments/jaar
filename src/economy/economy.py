@@ -304,6 +304,7 @@ class EconomyUnit:
 
     def create_new_actorunit(self, actor_name: str):
         self.set_actorunits_empty_if_null()
+        print(f"{self.title=}")
         ux = actorunit_shop(actor_name, self.get_object_root_dir(), self.title)
         ux.create_core_dir_and_files()
         self._actorunits[ux._admin._actor_name] = ux

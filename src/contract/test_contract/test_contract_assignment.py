@@ -493,7 +493,11 @@ def test_contract_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     # GIVEN
     america_cx = get_contract_assignment_laundry_example1()
     economy_title_text = "tiger_econ"
+    print(f"{america_cx._economy_title=} {america_cx._idea_dict.keys()=}")
     america_cx.set_economy_title(economy_title_text)
+    print(f"{america_cx._economy_title=} {america_cx._idea_dict.keys()=}")
+    do_laundery_idea = america_cx.get_idea_kid("tiger_econ,casa,do_laundry")
+    print(f"{do_laundery_idea._requiredunits.keys()=}")
 
     # WHEN
     joachim_text = "Joachim"

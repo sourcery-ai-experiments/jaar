@@ -91,7 +91,6 @@ class ActorAdmin:
             file_name = f"{contract_x._owner}.json"
         # if dest_dir == self._contracts_public_dir:
         #     file_name = self._public_file_name
-        print(f"{contract_x._owner} {contract_x._idearoot._label=}")
         x_func_save_file(
             dest_dir=dest_dir,
             file_name=file_name,

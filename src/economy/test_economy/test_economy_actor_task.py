@@ -16,10 +16,12 @@ def test_economy_ChangingOneActorsFactChangesAnotherAgenda(env_dir_setup_cleanup
     america_text = "America"
     sx.create_new_actorunit(actor_name=america_text)
     america_ux = sx.get_actor_obj(name=america_text)
-    america_ux.set_isol(get_contract_assignment_laundry_example1())
+    laundry_contract = get_contract_assignment_laundry_example1()
+    laundry_contract.set_economy_title(sx.title)
+    america_ux.set_isol(laundry_contract)
 
     casa_text = "casa"
-    casa_road = f"{get_temp_env_title()},{casa_text}"
+    casa_road = f"{sx.title},{casa_text}"
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
     b_full_text = "full"

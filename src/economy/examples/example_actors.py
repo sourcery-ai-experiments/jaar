@@ -167,11 +167,11 @@ def get_actor_2contract(env_dir, economy_title) -> ActorUnit:
 
 
 def get_contract_2CleanNodesRandomWeights(_owner: str = None) -> ContractUnit:
-    label_text = _owner if _owner != None else "ernie"
-    contract_x = ContractUnit(_owner=label_text)
+    owner_text = _owner if _owner != None else "ernie"
+    contract_x = ContractUnit(_owner=owner_text)
     casa_text = "casa"
     contract_x.add_idea(idea_kid=IdeaKid(_label=casa_text), walk="")
-    casa_road = f"{label_text},{casa_text}"
+    casa_road = f"{contract_x._economy_title},{casa_text}"
     cookery_text = "clean cookery"
     bedroom_text = "clean bedroom"
     cookery_idea = IdeaKid(_label=cookery_text, _weight=randrange(1, 50), promise=True)
@@ -183,11 +183,11 @@ def get_contract_2CleanNodesRandomWeights(_owner: str = None) -> ContractUnit:
 
 
 def get_contract_3CleanNodesRandomWeights(_owner: str = None) -> ContractUnit:
-    label_text = _owner if _owner != None else "ernie"
-    contract_x = ContractUnit(_owner=label_text)
+    owner_text = _owner if _owner != None else "ernie"
+    contract_x = ContractUnit(_owner=owner_text)
     casa_text = "casa"
     contract_x.add_idea(idea_kid=IdeaKid(_label=casa_text), walk="")
-    casa_road = f"{label_text},{casa_text}"
+    casa_road = f"{contract_x._economy_title},{casa_text}"
     cookery_text = "clean cookery"
     bedroom_text = "clean bedroom"
     hallway_text = "clean hallway"
@@ -208,9 +208,10 @@ def get_contract_assignment_laundry_example1() -> ContractUnit:
     america_cx.add_memberunit(america_text)
     america_cx.add_memberunit(joachim_text)
 
+    root_road = america_cx._economy_title
     casa_text = "casa"
-    casa_road = f"{get_temp_economy_title()},{casa_text}"
-    america_cx.add_idea(IdeaKid(_label=casa_text), walk=get_temp_economy_title())
+    casa_road = f"{root_road},{casa_text}"
+    america_cx.add_idea(IdeaKid(_label=casa_text), walk=root_road)
 
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"

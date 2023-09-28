@@ -211,7 +211,6 @@ class ContractUnit:
             idea_x = self.get_idea_kid(road=road_x)
             for requiredunit_obj in idea_x._requiredunits.values():
                 required_base = requiredunit_obj.base
-                print(f"1 {required_base=} {to_evaluate_list=}")
                 self._evaluate_relevancy(
                     to_evaluate_list=to_evaluate_list,
                     to_evaluate_hx_dict=to_evaluate_hx_dict,
