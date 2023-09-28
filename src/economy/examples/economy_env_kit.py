@@ -62,10 +62,6 @@ def create_contract_file_for_economys(economy_dir: str, contract_owner: str):
     )
 
 
-def get_test_economys_dir():
-    return "src/economy/examples/economys"
-
-
 def create_example_economys_list():
     return x_func_dir_files(
         dir_path=get_test_economys_dir(), include_dirs=True, include_files=False

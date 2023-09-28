@@ -162,6 +162,31 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
     assert new_sufffacts_x.get(old_seasons_road) is None
 
 
+def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeEconomyTitleScenario():
+    # GIVEN
+    old_economy_title = "El Paso"
+    actor_text = "actor"
+    old_actor_road = f"{old_economy_title},{actor_text}"
+    seasons_text = "seasons"
+    old_seasons_road = f"{old_actor_road},{seasons_text}"
+    old_sufffact_x = sufffactunit_shop(need=old_seasons_road)
+    old_sufffacts_x = {old_sufffact_x.need: old_sufffact_x}
+
+    assert old_sufffacts_x.get(old_seasons_road) == old_sufffact_x
+
+    # WHEN
+    new_economy_title = "Austin"
+    new_actor_road = f"{new_economy_title},{actor_text}"
+    new_seasons_road = f"{new_actor_road},{seasons_text}"
+    new_sufffacts_x = find_replace_road_key_dict(
+        dict_x=old_sufffacts_x, old_road=old_seasons_road, new_road=new_seasons_road
+    )
+    new_sufffact_x = sufffactunit_shop(need=new_seasons_road)
+
+    assert new_sufffacts_x.get(new_seasons_road) == new_sufffact_x
+    assert new_sufffacts_x.get(old_seasons_road) is None
+
+
 # def test_find_replace_road_key_dict_ReturnsCorrectDict_Scenario2():
 #     # sourcery skip: extract-duplicate-method
 #     # GIVEN

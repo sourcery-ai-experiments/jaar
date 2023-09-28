@@ -3,7 +3,6 @@ from src.contract.contract import ContractUnit
 from src.contract.idea import IdeaKid
 from src.contract.group import groupunit_shop
 from src.contract.member import memberlink_shop
-from src.contract.road import get_default_economy_root_label as root_label
 from src.economy.examples.economy_env_kit import (
     get_temp_env_title,
     get_test_economys_dir,
@@ -275,9 +274,9 @@ def test_economy_set_contract_bank_attrs_CorrectlyPopulatesContract_Groupunit_Me
 
     swim_text = "swimming"
     sports_text = "sports"
-    sal_sports_road = f"{root_label()},{sports_text}"
-    bob_sports_road = f"{root_label()},{sports_text}"
-    tom_sports_road = f"{root_label()},{sports_text}"
+    sal_sports_road = f"{sx.title},{sports_text}"
+    bob_sports_road = f"{sx.title},{sports_text}"
+    tom_sports_road = f"{sx.title},{sports_text}"
 
     sal_contract.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=sal_sports_road)
     bob_contract.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=bob_sports_road)

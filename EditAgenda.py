@@ -9,7 +9,6 @@ from src.contract.hreg_time import (
     _get_time_hreg_weekday_idea,
     convert1440toHHMM,
 )
-from src.contract.road import get_default_economy_root_label as root_label
 
 
 class EditAgenda(qw, Ui_Form):
@@ -65,7 +64,9 @@ class EditAgenda(qw, Ui_Form):
             self.acptfact_base_update_combo.setCurrentText(temp_x)
 
         else:
-            self.acptfact_base_update_init_road = f"{root_label()},time,jajatime"
+            self.acptfact_base_update_init_road = (
+                f"{self.contract_x._economy_title},time,jajatime"
+            )
             self.acptfact_base_update_combo.setCurrentText(
                 self.acptfact_base_update_init_road
             )
@@ -116,15 +117,16 @@ class EditAgenda(qw, Ui_Form):
             sufffact_open_x != None
             and sufffact_nigh_x != None
             and (
-                sufffact_need_x == f"{root_label()},time,jajatime"
-                or sufffact_need_x[:21] == f"{root_label()},time,jajatime"
+                sufffact_need_x == f"{self.contract_x._economy_title},time,jajatime"
+                or sufffact_need_x[:21]
+                == f"{self.contract_x._economy_title},time,jajatime"
             )
         ):
             legible_x_text = self.contract_x.get_jajatime_repeating_legible_text(
                 open=sufffact_open_x, nigh=sufffact_nigh_x, divisor=sufffact_divisor_x
             )
         elif sufffact_open_x != None and sufffact_nigh_x != None:
-            text_x = f"{root_label()},time,jajatime"
+            text_x = f"{self.contract_x._economy_title},time,jajatime"
             legible_x_text = (
                 f"sufffact {sufffact_open_x}-{sufffact_nigh_x} {sufffact_divisor_x=}"
             )

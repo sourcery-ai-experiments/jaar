@@ -2,6 +2,7 @@ from src.economy.actor import ActorAdmin, actoradmin_shop
 import src.economy.examples.example_actors as example_actors
 from src.economy.examples.actor_env_kit import (
     get_temp_actor_dir,
+    get_temp_economy_title,
     actor_dir_setup_cleanup,
 )
 from os import path as os_path
@@ -17,11 +18,12 @@ def test_admin_exists():
     env_dir = get_temp_actor_dir()
 
     # WHEN
-    pdx = ActorAdmin(_actor_name=bob_text, _env_dir=env_dir)
+    pdx = ActorAdmin(bob_text, env_dir, get_temp_economy_title())
 
     # THEN
     assert pdx._actor_name != None
     assert pdx._env_dir != None
+    assert pdx._economy_title != None
     assert pdx._actor_dir is None
     assert pdx._isol_file_name is None
     assert pdx._isol_file_path is None
@@ -39,7 +41,7 @@ def test_ActorAdmin_set_dir_CorrectSetsActorAdminAttribute():
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_actor_dir()
-    pdx = ActorAdmin(_actor_name=bob_text, _env_dir=env_dir)
+    pdx = ActorAdmin(bob_text, env_dir, get_temp_economy_title())
     assert pdx._actor_dir is None
     assert pdx._contract_output_file_name is None
     assert pdx._contract_output_file_path is None
@@ -101,7 +103,7 @@ def test_ActorAdmin_create_core_dir_and_files_CreatesDirsAndFiles(
     # GIVEN create actor
     jul_text = "julian"
     env_dir = get_temp_actor_dir()
-    pdx = ActorAdmin(_actor_name=jul_text, _env_dir=env_dir)
+    pdx = ActorAdmin(jul_text, env_dir, get_temp_economy_title())
     pdx.set_dirs()
     assert os_path.exists(pdx._actors_dir) is False
     assert os_path.exists(pdx._actor_dir) is False
@@ -135,7 +137,7 @@ def test_ActorAdmin_create_core_dir_and_files_DoesNotOverWriteIsolContract(
     # GIVEN create actor
     jul_text = "julian"
     env_dir = get_temp_actor_dir()
-    jul_pdx = ActorAdmin(_actor_name=jul_text, _env_dir=env_dir)
+    jul_pdx = ActorAdmin(jul_text, env_dir, get_temp_economy_title())
     jul_pdx.set_dirs()
     contract_x = example_actors.get_7nodeJRootWithH_contract()
     jul_pdx.create_core_dir_and_files(contract_x)
@@ -161,7 +163,7 @@ def test_ActorAdmin_set_actor_name_WorksCorrectly(actor_dir_setup_cleanup):
     env_dir = get_temp_actor_dir()
 
     old_actor_text = "bob"
-    pdx = ActorAdmin(_actor_name=old_actor_text, _env_dir=env_dir)
+    pdx = ActorAdmin(old_actor_text, env_dir, get_temp_economy_title())
     contract_x = example_actors.get_7nodeJRootWithH_contract()
     pdx.set_dirs()
     pdx.create_core_dir_and_files(contract_x)
@@ -200,7 +202,7 @@ def test_actorunit_auto_output_to_public_SavesContractToPublicDir(
 ):
     # GIVEN
     bob_text = "bob"
-    pdx = actoradmin_shop(bob_text, get_temp_actor_dir())
+    pdx = actoradmin_shop(bob_text, get_temp_actor_dir(), get_temp_economy_title())
     contract_x = example_actors.get_6node_contract()
     contract_x.set_owner(new_owner=bob_text)
     pdx.create_core_dir_and_files(contract_x)

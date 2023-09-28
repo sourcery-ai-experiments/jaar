@@ -10,30 +10,27 @@ from src.contract.contract import (
     get_members_relevant_groups,
     get_member_relevant_groups,
 )
-from src.contract.road import get_default_economy_root_label as root_label
 from pytest import raises as pytest_raises
 
 
 def test_contract_groups_set_groupunit_worksCorrectly():
     # GIVEN
-    lw_x = ContractUnit()
-    assert lw_x._groups is None
+    cx = ContractUnit()
+    assert cx._groups is None
     swim_text = "swim"
     groupname_x = GroupName(swim_text)
     every1_groups = {groupname_x: groupunit_shop(name=groupname_x)}
-    lw_x2 = ContractUnit()
+    cx2 = ContractUnit()
 
     # WHEN
-    lw_x2.set_groupunit(groupunit=groupunit_shop(name=groupname_x))
+    cx2.set_groupunit(groupunit=groupunit_shop(name=groupname_x))
 
     # THEN
-    assert len(lw_x2._groups) == 1
-    assert len(lw_x2._groups) == len(every1_groups)
-    assert (
-        lw_x2._groups.get(swim_text)._members == every1_groups.get(swim_text)._members
-    )
-    assert lw_x2._groups.get(swim_text) == every1_groups.get(swim_text)
-    assert lw_x2._groups == every1_groups
+    assert len(cx2._groups) == 1
+    assert len(cx2._groups) == len(every1_groups)
+    assert cx2._groups.get(swim_text)._members == every1_groups.get(swim_text)._members
+    assert cx2._groups.get(swim_text) == every1_groups.get(swim_text)
+    assert cx2._groups == every1_groups
 
     bill_single_member_id = 30
     bill_group = groupunit_shop(
@@ -58,22 +55,22 @@ def test_contract_groups_del_groupunit_worksCorrectly():
 
 def test_example_has_groups():
     # GIVEN / WHEN
-    lw_x = examples_contract_v001()
+    cx = examples_contract_v001()
 
     # THEN
-    assert lw_x._groups != None
-    assert len(lw_x._groups) == 34
+    assert cx._groups != None
+    assert len(cx._groups) == 34
     everyone_members_len = None
-    everyone_group = lw_x._groups.get("Everyone")
+    everyone_group = cx._groups.get("Everyone")
     everyone_members_len = len(everyone_group._members)
     assert everyone_members_len == 22
 
     # WHEN
-    lw_x.set_contract_metrics()
-    idea_dict = lw_x._idea_dict
+    cx.set_contract_metrics()
+    idea_dict = cx._idea_dict
 
     # THEN
-    db_idea = idea_dict.get(f"{root_label()},D&B")
+    db_idea = idea_dict.get(f"{cx._economy_title},D&B")
     print(f"{db_idea._label=} {db_idea._grouplinks=}")
     assert len(db_idea._grouplinks) == 3
     # for idea_key in idea_dict:
@@ -87,33 +84,33 @@ def test_example_has_groups():
 def test_contract_set_grouplink_correctly_sets_grouplinks():
     # GIVEN
     prom_text = "prom"
-    lw_x = ContractUnit(_owner=prom_text)
+    cx = ContractUnit(_owner=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    lw_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(rico_text)))
-    lw_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
-    lw_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
+    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName(rico_text)))
+    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
+    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
 
-    assert len(lw_x._members) == 3
-    assert len(lw_x._groups) == 3
+    assert len(cx._members) == 3
+    assert len(cx._groups) == 3
     swim_text = "swim"
-    lw_x.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=prom_text)
+    cx.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=prom_text)
     grouplink_rico = grouplink_shop(name=GroupName(rico_text), creditor_weight=10)
     grouplink_carm = grouplink_shop(name=GroupName(carm_text), creditor_weight=10)
     grouplink_patr = grouplink_shop(name=GroupName(patr_text), creditor_weight=10)
     swim_road = f"{prom_text},{swim_text}"
-    lw_x.edit_idea_attr(road=swim_road, grouplink=grouplink_rico)
-    lw_x.edit_idea_attr(road=swim_road, grouplink=grouplink_carm)
-    lw_x.edit_idea_attr(road=swim_road, grouplink=grouplink_patr)
+    cx.edit_idea_attr(road=swim_road, grouplink=grouplink_rico)
+    cx.edit_idea_attr(road=swim_road, grouplink=grouplink_carm)
+    cx.edit_idea_attr(road=swim_road, grouplink=grouplink_patr)
 
-    assert lw_x._idearoot._grouplinks in (None, {})
-    assert len(lw_x._idearoot._kids[swim_text]._grouplinks) == 3
+    assert cx._idearoot._grouplinks in (None, {})
+    assert len(cx._idearoot._kids[swim_text]._grouplinks) == 3
 
-    lw_x.add_idea(idea_kid=IdeaKid(_label="streets"), walk=swim_road)
+    cx.add_idea(idea_kid=IdeaKid(_label="streets"), walk=swim_road)
 
     # WHEN
-    idea_list = lw_x.get_idea_list()
+    idea_list = cx.get_idea_list()
 
     # THEN
     idea_prom = idea_list[1]
@@ -128,7 +125,7 @@ def test_contract_set_grouplink_correctly_sets_grouplinks():
     print(f"{idea_list[0]._grouplinks}")
     print(f"{idea_list[0]._groupheirs}")
     print(f"{idea_list[1]._groupheirs}")
-    assert len(lw_x._idearoot._kids["swim"]._groupheirs) == 3
+    assert len(cx._idearoot._kids["swim"]._groupheirs) == 3
 
 
 def test_contract_set_grouplink_correctly_deletes_grouplinks():
@@ -624,7 +621,7 @@ def test_contract_add_idea_CreatesMissingGroups():
     owner_text = "bob"
     a_x = ContractUnit(_owner=owner_text)
     a_x.set_groupunits_empty_if_null()
-    new_idea_parent_road = f"{root_label()},work,cleaning"
+    new_idea_parent_road = f"{a_x._economy_title},work,cleaning"
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = IdeaKid(_weight=40, _label=clean_cookery_text, promise=True)
 
@@ -652,7 +649,7 @@ def test_contract_add_idea_DoesNotOverwriteGroups():
     owner_text = "bob"
     a_x = ContractUnit(_owner=owner_text)
     a_x.set_groupunits_empty_if_null()
-    new_idea_parent_road = f"{root_label()},work,cleaning"
+    new_idea_parent_road = f"{a_x._economy_title},work,cleaning"
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = IdeaKid(_weight=40, _label=clean_cookery_text, promise=True)
 

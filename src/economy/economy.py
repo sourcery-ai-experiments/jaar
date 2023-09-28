@@ -304,7 +304,7 @@ class EconomyUnit:
 
     def create_new_actorunit(self, actor_name: str):
         self.set_actorunits_empty_if_null()
-        ux = actorunit_shop(name=actor_name, env_dir=self.get_object_root_dir())
+        ux = actorunit_shop(actor_name, self.get_object_root_dir(), self.title)
         ux.create_core_dir_and_files()
         self._actorunits[ux._admin._actor_name] = ux
 
@@ -378,6 +378,7 @@ class EconomyUnit:
         x_func_delete_dir(f"{self.get_public_dir()}/{contract_x_owner}.json")
 
     def save_public_contract(self, contract_x: ContractUnit):
+        contract_x.set_economy_title(economy_title=self.title)
         x_func_save_file(
             dest_dir=self.get_public_dir(),
             file_name=f"{contract_x._owner}.json",

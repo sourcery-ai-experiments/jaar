@@ -54,7 +54,9 @@ def test_economy_rename_actorunit_WorksCorrectly(env_dir_setup_cleanup):
     old_bob_text = "old Bob"
     old_bob_dir = f"{e5.get_actors_dir()}/{old_bob_text}"
     old_bob_file_path = f"{old_bob_dir}/isol_contract.json"
-    wx5_obj = actorunit_shop(name=old_bob_text, env_dir=e5.get_object_root_dir())
+    wx5_obj = actorunit_shop(
+        old_bob_text, e5.get_object_root_dir(), get_temp_env_title()
+    )
     e5.set_actorunits_empty_if_null()
     e5.set_actorunit_to_economy(actor=wx5_obj)
     print(f"{old_bob_dir=}")

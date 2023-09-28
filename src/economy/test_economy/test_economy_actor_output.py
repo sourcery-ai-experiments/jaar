@@ -1,4 +1,3 @@
-from src.contract.road import get_default_economy_root_label as root_label
 from src.economy.economy import economyunit_shop
 from src.contract.examples.example_contracts import (
     contract_v002 as ex_cxs_contract_v002,
@@ -44,7 +43,7 @@ def test_economy_get_output_contract_ReturnsCorrectContractObjScenario1(
     # THEN
     a_text = "A"
     c_text = "C"
-    c_road = f"{a_text},{c_text}"
+    c_road = f"{input_cx._economy_title},{c_text}"
     d_text = "D"
     d_road = f"{c_road},{d_text}"
     print(f"{output_cx._owner=}")
@@ -116,7 +115,8 @@ def test_economy_get_output_contract_ReturnsCorrectContractObjScenario2(
     output_cx = sx.get_output_contract(actor_name=xia_text)
 
     # THEN
-    output_cx_d_idea = output_cx.get_idea_kid(road=f"{root_label()},C,D")
+    output_cx_d_road = f"{output_cx._economy_title},C,D"
+    output_cx_d_idea = output_cx.get_idea_kid(output_cx_d_road)
     print(f" {output_cx_d_idea._weight=} ")
     assert output_cx != None
     # for idea_kid_x1 in cx1._idearoot._kids.values():

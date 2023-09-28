@@ -40,7 +40,7 @@ def test_contract_IsAbleToSetTaskAsComplete():
     assert mail_idea._task == True
 
     ced_min_label = "CE0_minutes"
-    ced_road = f"{root_label()},{ced_min_label}"
+    ced_road = f"{contract_x._economy_title},{ced_min_label}"
     contract_x.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=85)
     idea_list = contract_x.get_idea_list()
     assert mail_idea.promise == True
@@ -50,7 +50,7 @@ def test_contract_IsAbleToSetTaskAsComplete():
 def test_contract_IsAbleToEditAcptFactUnitAnyAncestor_Idea_1():
     contract_x = get_contract_1Task_1CE0MinutesRequired_1AcptFact()
     ced_min_label = "CE0_minutes"
-    ced_road = f"{root_label()},{ced_min_label}"
+    ced_road = f"{contract_x._economy_title},{ced_min_label}"
     contract_x.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=85)
     idea_list = contract_x.get_idea_list()
     mail_idea = idea_list[1]

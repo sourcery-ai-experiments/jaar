@@ -2,13 +2,15 @@ from src.contract.contract import ContractUnit
 from src.contract.idea import IdeaKid
 from src.contract.required_assign import assigned_unit_shop
 from src.economy.actor import actorunit_shop, ActorUnit
-from src.contract.road import Road, get_default_economy_root_label as root_label
+from src.economy.examples.actor_env_kit import get_temp_economy_title
+
 from random import randrange
 
 
 def get_1node_contract() -> ContractUnit:
     a_text = "A"
     contract_x = ContractUnit(_owner=a_text)
+    contract_x.set_economy_title(get_temp_economy_title())
     contract_x.set_contract_metrics()
     return contract_x
 
@@ -16,9 +18,10 @@ def get_1node_contract() -> ContractUnit:
 def get_Jnode2node_contract() -> ContractUnit:
     owner_text = "J"
     contract_x = ContractUnit(_owner=owner_text)
+    contract_x.set_economy_title(get_temp_economy_title())
     a_text = "A"
     idea_a = IdeaKid(_label=a_text)
-    contract_x.add_idea(idea_kid=idea_a, walk=root_label())
+    contract_x.add_idea(idea_kid=idea_a, walk=get_temp_economy_title())
     contract_x.set_contract_metrics()
     return contract_x
 
@@ -27,16 +30,18 @@ def get_2node_contract() -> ContractUnit:
     owner_text = "A"
     b_text = "B"
     contract_x = ContractUnit(_owner=owner_text)
+    contract_x.set_economy_title(get_temp_economy_title())
     idea_b = IdeaKid(_label=b_text)
-    contract_x.add_idea(idea_kid=idea_b, walk=root_label())
+    contract_x.add_idea(idea_kid=idea_b, walk=get_temp_economy_title())
     contract_x.set_contract_metrics()
     return contract_x
 
 
 def get_3node_contract() -> ContractUnit:
     a_text = "A"
-    a_road = Road(a_text)
+    a_road = a_text
     contract_x = ContractUnit(_owner=a_text)
+    contract_x.set_economy_title(get_temp_economy_title())
     b_text = "B"
     idea_b = IdeaKid(_label=b_text)
     c_text = "C"
@@ -49,8 +54,9 @@ def get_3node_contract() -> ContractUnit:
 
 def get_3node_D_E_F_contract() -> ContractUnit:
     d_text = "D"
-    d_road = Road(d_text)
+    d_road = d_text
     contract_x = ContractUnit(_owner=d_text)
+    contract_x.set_economy_title(get_temp_economy_title())
     b_text = "E"
     idea_b = IdeaKid(_label=b_text)
     c_text = "F"
@@ -63,6 +69,7 @@ def get_3node_D_E_F_contract() -> ContractUnit:
 
 def get_6node_contract() -> ContractUnit:
     contract_x = ContractUnit(_owner="A")
+    contract_x.set_economy_title(get_temp_economy_title())
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
     idea_d = IdeaKid(_label="D")
@@ -79,6 +86,7 @@ def get_6node_contract() -> ContractUnit:
 
 def get_7nodeInsertH_contract() -> ContractUnit:
     contract_x = ContractUnit(_owner="A")
+    contract_x.set_economy_title(get_temp_economy_title())
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
     idea_h = IdeaKid(_label="H")
@@ -97,6 +105,7 @@ def get_7nodeInsertH_contract() -> ContractUnit:
 
 def get_5nodeHG_contract() -> ContractUnit:
     contract_x = ContractUnit(_owner="A")
+    contract_x.set_economy_title(get_temp_economy_title())
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
     idea_h = IdeaKid(_label="H")
@@ -111,6 +120,7 @@ def get_5nodeHG_contract() -> ContractUnit:
 
 def get_7nodeJRoot_contract() -> ContractUnit:
     contract_x = ContractUnit(_owner="J")
+    contract_x.set_economy_title(get_temp_economy_title())
     idea_a = IdeaKid(_label="A")
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
@@ -129,6 +139,7 @@ def get_7nodeJRoot_contract() -> ContractUnit:
 
 def get_7nodeJRootWithH_contract() -> ContractUnit:
     contract_x = ContractUnit(_owner="J")
+    contract_x.set_economy_title(get_temp_economy_title())
     idea_a = IdeaKid(_label="A")
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
@@ -145,9 +156,9 @@ def get_7nodeJRootWithH_contract() -> ContractUnit:
     return contract_x
 
 
-def get_actor_2contract(env_dir) -> ActorUnit:
+def get_actor_2contract(env_dir, economy_title) -> ActorUnit:
     yao_text = "Xio"
-    yao_actor = actorunit_shop(yao_text, env_dir=env_dir)
+    yao_actor = actorunit_shop(yao_text, env_dir, economy_title)
     yao_actor.set_depot_contract(get_1node_contract(), depotlink_type="blind_trust")
     yao_actor.set_depot_contract(
         get_Jnode2node_contract(), depotlink_type="blind_trust"
@@ -160,7 +171,7 @@ def get_contract_2CleanNodesRandomWeights(_owner: str = None) -> ContractUnit:
     contract_x = ContractUnit(_owner=label_text)
     casa_text = "casa"
     contract_x.add_idea(idea_kid=IdeaKid(_label=casa_text), walk="")
-    casa_road = Road(f"{label_text},{casa_text}")
+    casa_road = f"{label_text},{casa_text}"
     cookery_text = "clean cookery"
     bedroom_text = "clean bedroom"
     cookery_idea = IdeaKid(_label=cookery_text, _weight=randrange(1, 50), promise=True)
@@ -176,7 +187,7 @@ def get_contract_3CleanNodesRandomWeights(_owner: str = None) -> ContractUnit:
     contract_x = ContractUnit(_owner=label_text)
     casa_text = "casa"
     contract_x.add_idea(idea_kid=IdeaKid(_label=casa_text), walk="")
-    casa_road = Road(f"{label_text},{casa_text}")
+    casa_road = f"{label_text},{casa_text}"
     cookery_text = "clean cookery"
     bedroom_text = "clean bedroom"
     hallway_text = "clean hallway"
@@ -198,8 +209,8 @@ def get_contract_assignment_laundry_example1() -> ContractUnit:
     america_cx.add_memberunit(joachim_text)
 
     casa_text = "casa"
-    casa_road = f"{root_label()},{casa_text}"
-    america_cx.add_idea(IdeaKid(_label=casa_text), walk=root_label())
+    casa_road = f"{get_temp_economy_title()},{casa_text}"
+    america_cx.add_idea(IdeaKid(_label=casa_text), walk=get_temp_economy_title())
 
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"

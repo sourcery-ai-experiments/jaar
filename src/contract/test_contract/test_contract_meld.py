@@ -2,7 +2,6 @@ from src.contract.idea import IdeaKid
 from src.contract.contract import ContractUnit
 from src.contract.group import groupunit_shop
 from src.contract.member import memberunit_shop
-from src.contract.road import get_default_economy_root_label as root_label
 from src.contract.origin import originunit_shop
 from pytest import raises as pytest_raises
 from src.contract.examples.example_contracts import contract_v001
@@ -105,25 +104,26 @@ def test_contract_idearoot_meld_IdeaRootAttrCorrectlyMelded():
         cx1.meld(cx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea=None,{root_label()} _uid:1 with None,{root_label()} _uid:4"
+        == f"Meld fail idea=None,{cx1._economy_title} _uid:1 with None,{cx2._economy_title} _uid:4"
     )
 
 
 def test_contract_idearoot_meld_Add4IdeasScenario():
     # GIVEN
+    spirit_text = "spirit"
+    cx1 = ContractUnit(_owner=spirit_text)
+
     tech_text = "tech"
-    tech_road = f"{root_label()},{tech_text}"
+    tech_road = f"{cx1._economy_title},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{root_label()},{tech_text},{bowl_text}"
+    bowl_road = f"{cx1._economy_title},{tech_text},{bowl_text}"
     swim_text = "swim"
-    swim_road = f"{root_label()},{swim_text}"
+    swim_road = f"{cx1._economy_title},{swim_text}"
     free_text = "freestyle"
-    free_road = f"{root_label()},{swim_text},{free_text}"
+    free_road = f"{cx1._economy_title},{swim_text},{free_text}"
 
-    cx1 = ContractUnit(_owner="spirit")
-
-    cx2 = ContractUnit(_owner="spirit")
-    cx2.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=tech_text))
+    cx2 = ContractUnit(_owner=spirit_text)
+    cx2.add_idea(walk=cx2._economy_title, idea_kid=IdeaKid(_label=tech_text))
     cx2.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
     cx2.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
 
@@ -140,18 +140,18 @@ def test_contract_idearoot_meld_Add4IdeasScenario():
 
 def test_contract_idearoot_meld_2SameIdeasScenario():
     # GIVEN
-    tech_text = "tech"
-    tech_road = f"{root_label()},{tech_text}"
-    bowl_text = "bowl"
-    bowl_road = f"{root_label()},{tech_text},{bowl_text}"
-
     owner_text = "Yoa"
     cx1 = ContractUnit(_owner=owner_text)
-    cx1.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=tech_text))
+    tech_text = "tech"
+    tech_road = f"{cx1._economy_title},{tech_text}"
+    bowl_text = "bowl"
+    bowl_road = f"{cx1._economy_title},{tech_text},{bowl_text}"
+
+    cx1.add_idea(walk=cx1._economy_title, idea_kid=IdeaKid(_label=tech_text))
     cx1.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
 
     cx2 = ContractUnit(_owner=owner_text)
-    cx2.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=tech_text))
+    cx2.add_idea(walk=cx2._economy_title, idea_kid=IdeaKid(_label=tech_text))
     cx2.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
 
     assert cx1.get_idea_kid(road=bowl_road)._weight == 1
@@ -165,18 +165,18 @@ def test_contract_idearoot_meld_2SameIdeasScenario():
 
 def test_contract_acptfactunits_meld_BaseScenarioWorks():
     # GIVEN
-    tech_text = "tech"
-    tech_road = f"{root_label()},{tech_text}"
-    bowl_text = "bowl"
-    bowl_road = f"{root_label()},{tech_text},{bowl_text}"
-
     cx1 = ContractUnit(_owner="test7")
-    cx1.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=tech_text))
+    tech_text = "tech"
+    tech_road = f"{cx1._economy_title},{tech_text}"
+    bowl_text = "bowl"
+    bowl_road = f"{cx1._economy_title},{tech_text},{bowl_text}"
+
+    cx1.add_idea(walk=cx1._economy_title, idea_kid=IdeaKid(_label=tech_text))
     cx1.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
     cx1.set_acptfact(base=tech_road, pick=bowl_road)
 
     cx2 = ContractUnit(_owner="test7")
-    cx2.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=tech_text))
+    cx2.add_idea(walk=cx2._economy_title, idea_kid=IdeaKid(_label=tech_text))
     cx2.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
     cx2.set_acptfact(base=tech_road, pick=bowl_road)
 
@@ -191,22 +191,22 @@ def test_contract_acptfactunits_meld_BaseScenarioWorks():
 
 def test_contract_acptfactunits_meld_2AcptFactUnitsWorks():
     # GIVEN
+    cx1 = ContractUnit(_owner="test7")
     tech_text = "tech"
-    tech_road = f"{root_label()},{tech_text}"
+    tech_road = f"{cx1._economy_title},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{root_label()},{tech_text},{bowl_text}"
+    bowl_road = f"{cx1._economy_title},{tech_text},{bowl_text}"
     swim_text = "swim"
-    swim_road = f"{root_label()},{swim_text}"
+    swim_road = f"{cx1._economy_title},{swim_text}"
     free_text = "freestyle"
 
-    cx1 = ContractUnit(_owner="test7")
-    cx1.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=tech_text))
+    cx1.add_idea(walk=cx1._economy_title, idea_kid=IdeaKid(_label=tech_text))
     cx1.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
     cx1.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
     cx1.set_acptfact(base=tech_road, pick=bowl_road)
 
     cx2 = ContractUnit(_owner="test7")
-    cx2.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=tech_text))
+    cx2.add_idea(walk=cx2._economy_title, idea_kid=IdeaKid(_label=tech_text))
     cx2.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
     cx2.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
     cx2.set_acptfact(base=tech_road, pick=bowl_road)
@@ -223,11 +223,11 @@ def test_contract_acptfactunits_meld_2AcptFactUnitsWorks():
 
 def test_contract_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
     # GIVEN
-    swim_text = "swim"
-    swim_road = f"{root_label()},{swim_text}"
-    free_text = "freestyle"
-
     cx1 = ContractUnit(_owner="test7")
+
+    swim_text = "swim"
+    swim_road = f"{cx1._economy_title},{swim_text}"
+    free_text = "freestyle"
 
     cx2 = ContractUnit(_owner="test7")
     cx2.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
@@ -269,12 +269,12 @@ def test_contract_acptfactunits_meld_GroupsMeldedBefore_Members():
 
 def test_contract_acptfactunits_meld_AcptFactsAttributeCorrectlySet():
     # GIVEN
-    swim_text = "swim"
-    swim_road = f"{root_label()},{swim_text}"
-    free_text = "freestyle"
-    free_road = f"{root_label()},{free_text}"
-
     cx1 = ContractUnit(_owner="test7")
+
+    swim_text = "swim"
+    swim_road = f"{cx1._economy_title},{swim_text}"
+    free_text = "freestyle"
+    free_road = f"{cx1._economy_title},{free_text}"
     cx1.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
 
     cx2 = ContractUnit(_owner="test7")
@@ -404,15 +404,15 @@ def test_contract__meld_originlinks_CorrectlySetsOriginLinks():
 
 def test_contract_meld_OriginUnitsCorrectlySet():
     # GIVEN
+    bob_text = "Bob"
+    bob_cx = ContractUnit(_owner=bob_text)
+
     swim_text = "swim"
-    swim_road = f"{root_label()},{swim_text}"
+    swim_road = f"{bob_cx._economy_title},{swim_text}"
     free_text = "freestyle"
     free_road = f"{swim_road},{free_text}"
     back_text = "backstroke"
     back_road = f"{swim_road},{back_text}"
-
-    bob_text = "Bob"
-    bob_cx = ContractUnit(_owner=bob_text)
     bob_cx.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
 
     sue_text = "Sue"

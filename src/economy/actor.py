@@ -33,6 +33,7 @@ class InvalidActorException(Exception):
 class ActorAdmin:
     _actor_name: str
     _env_dir: str
+    _economy_title: str
     _actor_dir: str = None
     _actors_dir: str = None
     _isol_file_name: str = None
@@ -90,6 +91,7 @@ class ActorAdmin:
             file_name = f"{contract_x._owner}.json"
         # if dest_dir == self._contracts_public_dir:
         #     file_name = self._public_file_name
+        print(f"{contract_x._owner} {contract_x._idearoot._label=}")
         x_func_save_file(
             dest_dir=dest_dir,
             file_name=file_name,
@@ -174,6 +176,7 @@ class ActorAdmin:
     def _get_empty_isol_contract(self):
         cx = ContractUnit(_owner=self._actor_name, _weight=0)
         cx.add_memberunit(name=self._actor_name)
+        cx.set_economy_title(self._economy_title)
         return cx
 
     def erase_depot_contract(self, owner):
@@ -211,8 +214,10 @@ class ActorAdmin:
         self.save_contract_to_public(self.get_remelded_output_contract())
 
 
-def actoradmin_shop(_actor_name: str, _env_dir: str) -> ActorAdmin:
-    uax = ActorAdmin(_actor_name=_actor_name, _env_dir=_env_dir)
+def actoradmin_shop(_actor_name: str, _env_dir: str, _economy_title: str) -> ActorAdmin:
+    uax = ActorAdmin(
+        _actor_name=_actor_name, _env_dir=_env_dir, _economy_title=_economy_title
+    )
     uax.set_dirs()
     return uax
 
@@ -273,12 +278,14 @@ class ActorUnit:
             self._admin.save_contract_to_digest(cx_obj)
         elif link_type == "ignore":
             new_cx_obj = ContractUnit(_owner=outer_owner)
+            new_cx_obj.set_economy_title(self._admin._economy_title)
             self.set_ignore_contract_file(new_cx_obj, new_cx_obj._owner)
 
     def _set_assignment_depotlink(self, outer_owner):
         src_cx = self._admin.open_depot_contract(outer_owner)
         src_cx.set_contract_metrics()
         empty_cx = ContractUnit(_owner=self._admin._actor_name)
+        empty_cx.set_economy_title(self._admin._economy_title)
         assign_cx = src_cx.get_assignment(
             empty_cx, self.get_isol()._members, self._admin._actor_name
         )
@@ -335,18 +342,20 @@ class ActorUnit:
         self._admin.save_contract_to_digest(contractunit, src_contract_owner)
 
     # housekeeping
-    def set_env_dir(self, env_dir: str, actor_name: str):
-        self._admin = actoradmin_shop(_actor_name=actor_name, _env_dir=env_dir)
+    def set_env_dir(self, env_dir: str, actor_name: str, economy_title: str):
+        self._admin = actoradmin_shop(
+            _actor_name=actor_name, _env_dir=env_dir, _economy_title=economy_title
+        )
 
     def create_core_dir_and_files(self, isol_cx: ContractUnit = None):
         self._admin.create_core_dir_and_files(isol_cx)
 
 
 def actorunit_shop(
-    name: str, env_dir: str, _auto_output_to_public: bool = None
+    name: str, env_dir: str, economy_title: str, _auto_output_to_public: bool = None
 ) -> ActorUnit:
     actor_x = ActorUnit()
-    actor_x.set_env_dir(env_dir, name)
+    actor_x.set_env_dir(env_dir, name, economy_title=economy_title)
     actor_x.get_isol()
     actor_x._isol._set_auto_output_to_public(_auto_output_to_public)
     actor_x.set_isol()

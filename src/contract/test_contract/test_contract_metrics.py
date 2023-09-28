@@ -4,7 +4,6 @@ from src.contract.examples.example_contracts import (
 from src.contract.member import MemberName, memberunit_shop
 from src.contract.group import GroupName, grouplink_shop, groupunit_shop
 from src.contract.contract import ContractUnit
-from src.contract.road import get_default_economy_root_label as root_label
 
 
 def test_contract_get_tree_metrics_TracksRequiredsThatHaveNoAcptFactBases():

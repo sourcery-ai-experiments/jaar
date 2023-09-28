@@ -18,7 +18,6 @@ from src.contract.examples.contract_env import (
 from src.contract.group import groupunit_shop, grouplink_shop
 from src.contract.member import memberlink_shop
 from src.contract.required_assign import assigned_unit_shop
-from src.contract.road import get_default_economy_root_label as root_label
 from src.contract.x_func import (
     x_is_json,
     save_file as x_func_save_file,
@@ -32,7 +31,7 @@ def test_contract_get_dict_ReturnsDictObject():
     # GIVEN
     x_contract = example_contracts_contract_v001()
     day_hour_text = "day_hour"
-    day_hour_road = f"{root_label()},{day_hour_text}"
+    day_hour_road = f"{x_contract._economy_title},{day_hour_text}"
     day_hour_idea = x_contract.get_idea_kid(road=day_hour_road)
     day_hour_idea._originunit.set_originlink(name="bob", weight=2)
     x_contract.set_acptfact(
@@ -41,7 +40,7 @@ def test_contract_get_dict_ReturnsDictObject():
         open=0,
         nigh=23,
     )
-    time_minute = f"{root_label()},day_minute"
+    time_minute = f"{x_contract._economy_title},day_minute"
     x_contract.set_acptfact(base=time_minute, pick=time_minute, open=0, nigh=1440)
     yao_text = "Yao"
     x_contract._originunit.set_originlink(yao_text, 1)
@@ -53,6 +52,7 @@ def test_contract_get_dict_ReturnsDictObject():
     assert x_dict != None
     assert str(type(x_dict)) == "<class 'dict'>"
     assert x_dict["_owner"] == x_contract._owner
+    assert x_dict["_economy_title"] == x_contract._economy_title
     assert x_dict["_weight"] == x_contract._weight
     assert x_dict["_max_tree_traverse"] == x_contract._max_tree_traverse
     assert x_dict["_auto_output_to_public"] == x_contract._auto_output_to_public
@@ -63,7 +63,7 @@ def test_contract_get_dict_ReturnsDictObject():
     _kids = "_kids"
     _range_source_road = "_range_source_road"
     _numeric_road = "_numeric_road"
-    assert x_idearoot._label == root_label()
+    assert x_idearoot._label == x_contract._economy_title
     assert x_dict["_weight"] == x_idearoot._weight
     assert x_dict["_addin"] == x_idearoot._addin
     assert x_dict["_numor"] == x_idearoot._numor
@@ -75,17 +75,17 @@ def test_contract_get_dict_ReturnsDictObject():
 
     # checking an ideakid._range_source_road attribute
     month_week_text = "month_week"
-    month_week_road = f"{root_label()},{month_week_text}"
+    month_week_road = f"{x_contract._economy_title},{month_week_text}"
     month_week_idea_x = x_contract.get_idea_kid(road=month_week_road)
     print("checking TlME,month_week...range_source_road equal to...")
     month_week_special_dict = x_dict[_kids][month_week_text][_range_source_road]
     assert month_week_special_dict != None
-    assert month_week_special_dict == f"{root_label()},ced_week"
+    assert month_week_special_dict == f"{x_contract._economy_title},ced_week"
     assert month_week_special_dict == month_week_idea_x._range_source_road
 
     # checking an ideakid._numeric_road attribute
     num1_text = "numeric_road_test"
-    num1_road = f"{root_label()},{num1_text}"
+    num1_road = f"{x_contract._economy_title},{num1_text}"
     num1_idea_x = x_contract.get_idea_kid(road=num1_road)
     print(f"checking {num1_road}...numeric_road equal to...")
     num1_dict_numeric_road = x_dict[_kids][num1_text][_numeric_road]
@@ -111,7 +111,9 @@ def test_contract_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
     x_contract = ContractUnit(_owner=owner_text)
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(name=run_text)
-    x_contract.edit_idea_attr(assignedunit=assigned_unit_x, road=root_label())
+    x_contract.edit_idea_attr(
+        assignedunit=assigned_unit_x, road=x_contract._economy_title
+    )
 
     # WHEN
     x_dict = x_contract.get_dict()
@@ -123,13 +125,16 @@ def test_contract_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
 
 def test_contract_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
     # GIVEN
-    run_text = "run"
-    morn_text = "morning"
-    morn_road = f"{root_label()},{morn_text}"
     owner_text = "Tom"
     x_contract = ContractUnit(_owner=owner_text)
+    run_text = "run"
     x_contract.set_groupunit(groupunit=groupunit_shop(run_text))
-    x_contract.add_idea(idea_kid=IdeaKid(_label=morn_text), walk=root_label())
+
+    morn_text = "morning"
+    morn_road = f"{x_contract._economy_title},{morn_text}"
+    x_contract.add_idea(
+        idea_kid=IdeaKid(_label=morn_text), walk=x_contract._economy_title
+    )
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(name=run_text)
     x_contract.edit_idea_attr(assignedunit=assigned_unit_x, road=morn_road)
@@ -149,6 +154,8 @@ def test_contract_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
 def test_export_to_JSON_simple_example_works():
     # GIVEN
     x_contract = example_contracts_get_contract_x1_3levels_1required_1acptfacts()
+    economy_title_text = "tiger_econ"
+    x_contract.set_economy_title(economy_title_text)
 
     # WHEN
     x_json = x_contract.get_json()
@@ -161,6 +168,7 @@ def test_export_to_JSON_simple_example_works():
     x_dict = json_loads(x_json)
 
     assert x_dict["_owner"] == x_contract._owner
+    assert x_dict["_economy_title"] == x_contract._economy_title
     assert x_dict["_weight"] == x_contract._weight
 
     x_idearoot = x_contract._idearoot
@@ -184,10 +192,10 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     # GIVEN
     x_contract = example_contracts_contract_v001()
     day_hour_text = "day_hour"
-    day_hour_road = f"{root_label()},{day_hour_text}"
+    day_hour_road = f"{x_contract._economy_title},{day_hour_text}"
     x_contract.set_acptfact(base=day_hour_road, pick=day_hour_road, open=0, nigh=23)
     day_min_text = "day_minute"
-    day_min_road = f"{root_label()},{day_min_text}"
+    day_min_road = f"{x_contract._economy_title},{day_min_text}"
     x_contract.set_acptfact(base=day_min_road, pick=day_min_road, open=0, nigh=59)
     acptfactunit_x = acptfactunit_shop(day_min_road, day_min_road, 5, 59)
     x_contract.edit_idea_attr(road=acptfactunit_x.base, acptfactunit=acptfactunit_x)
@@ -201,6 +209,7 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     # THEN
     _kids = "_kids"
     assert x_dict["_owner"] == x_contract._owner
+    assert x_dict["_economy_title"] == x_contract._economy_title
     assert x_dict["_weight"] == x_contract._weight
     assert x_dict["_max_tree_traverse"] == 2
     assert x_dict["_max_tree_traverse"] == x_contract._max_tree_traverse
@@ -224,8 +233,8 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     _requiredunits = "_requiredunits"
     cont_text = "Freelancing"
     ulti_text = "Ultimate Frisbee"
-    cont_road = f"{root_label()},{cont_text}"
-    ulti_road = f"{root_label()},{ulti_text}"
+    cont_road = f"{x_contract._economy_title},{cont_text}"
+    ulti_road = f"{x_contract._economy_title},{ulti_text}"
     cont_idea = x_contract.get_idea_kid(road=cont_road)
     ulti_idea = x_contract.get_idea_kid(road=ulti_road)
     cont_requiredunits_dict = x_dict[_kids][cont_text][_requiredunits]
@@ -258,9 +267,11 @@ def test_contract_get_json_CorrectlyWorksForSimpleExample():
     # GIVEN
     contract_y = example_contracts_get_contract_x1_3levels_1required_1acptfacts()
     contract_y.set_max_tree_traverse(23)
+    economy_title_text = "tiger_econ"
+    contract_y.set_economy_title(economy_title_text)
 
     shave_text = "shave"
-    shave_road = f"{root_label()},{shave_text}"
+    shave_road = f"{contract_y._economy_title},{shave_text}"
     shave_idea_y1 = contract_y.get_idea_kid(road=shave_road)
     shave_idea_y1._originunit.set_originlink(name="Sue", weight=4.3)
     # print(f"{shave_road=}")
@@ -278,7 +289,9 @@ def test_contract_get_json_CorrectlyWorksForSimpleExample():
 
     run_assigned_unit = assigned_unit_shop()
     run_assigned_unit.set_suffgroup(name=run_text)
-    contract_y.edit_idea_attr(road=root_label(), assignedunit=run_assigned_unit)
+    contract_y.edit_idea_attr(
+        road=contract_y._economy_title, assignedunit=run_assigned_unit
+    )
     tim_assigned_unit = assigned_unit_shop()
     tim_assigned_unit.set_suffgroup(name=tim_text)
     contract_y.edit_idea_attr(road=shave_road, assignedunit=tim_assigned_unit)
@@ -286,7 +299,7 @@ def test_contract_get_json_CorrectlyWorksForSimpleExample():
     contract_y.edit_idea_attr(road=shave_road, grouplink=grouplink_shop(name=sue_text))
 
     contract_y.edit_idea_attr(
-        road=root_label(), grouplink=grouplink_shop(name=sue_text)
+        road=contract_y._economy_title, grouplink=grouplink_shop(name=sue_text)
     )
 
     yao_text = "Yao"
@@ -302,6 +315,7 @@ def test_contract_get_json_CorrectlyWorksForSimpleExample():
     assert str(type(contract_x)).find(".contract.ContractUnit'>") > 0
     assert contract_x._owner != None
     assert contract_x._owner == contract_y._owner
+    assert contract_x._economy_title == contract_y._economy_title
     assert contract_x._max_tree_traverse == 23
     assert contract_x._max_tree_traverse == contract_y._max_tree_traverse
     assert contract_x._auto_output_to_public == contract_y._auto_output_to_public
@@ -318,7 +332,7 @@ def test_contract_get_json_CorrectlyWorksForSimpleExample():
     assert len(contract_x._idearoot._kids) == 2
 
     weekday_text = "weekdays"
-    weekday_road = f"{root_label()},{weekday_text}"
+    weekday_road = f"{contract_y._economy_title},{weekday_text}"
     weekday_idea_x = contract_x.get_idea_kid(road=weekday_road)
     assert len(weekday_idea_x._kids) == 2
 

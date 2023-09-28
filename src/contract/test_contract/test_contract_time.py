@@ -1,5 +1,4 @@
 from src.contract.contract import ContractUnit
-from src.contract.road import get_default_economy_root_label as root_label
 from datetime import datetime
 from random import randint
 
@@ -123,7 +122,7 @@ def test_get_time_():
 
     # Then
     time_text = "time"
-    time_road = f"{root_label()},{time_text}"
+    time_road = f"{cx._economy_title},{time_text}"
     jaja_text = "jajatime"
     jaja_road = f"{time_road},{jaja_text}"
     assert cx._idearoot._acptfactunits[jaja_road]

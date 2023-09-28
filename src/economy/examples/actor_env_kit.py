@@ -4,8 +4,12 @@ from src.contract.contract import ContractUnit
 from src.contract.x_func import delete_dir, save_file as x_func_save_file
 
 
-def get_temp_actor_dir():
-    return "src/economy/examples/ex_env"
+def get_temp_actor_dir() -> str:
+    return f"src/economy/examples/{get_temp_economy_title()}"
+
+
+def get_temp_economy_title() -> str:
+    return "ex_env"
 
 
 @pytest_fixture()

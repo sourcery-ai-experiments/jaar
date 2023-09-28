@@ -3,8 +3,8 @@ from src.economy.examples.example_actors import get_contract_assignment_laundry_
 from src.economy.examples.actor_env_kit import (
     actor_dir_setup_cleanup,
     get_temp_actor_dir,
+    get_temp_economy_title,
 )
-from src.contract.road import get_default_economy_root_label as root_label
 
 
 def test_actor_save_contract_to_depot_assignment_link_CorrectlyCreatesAssignmentFile(
@@ -12,9 +12,16 @@ def test_actor_save_contract_to_depot_assignment_link_CorrectlyCreatesAssignment
 ):
     # GIVEN
     america_cx = get_contract_assignment_laundry_example1()
+    america_cx.set_economy_title(get_temp_economy_title())
     joachim_text = "Joachim"
-    joachim_ux = actorunit_shop(joachim_text, get_temp_actor_dir())
+    joachim_ux = actorunit_shop(
+        joachim_text, get_temp_actor_dir(), get_temp_economy_title()
+    )
     joachim_ux.create_core_dir_and_files()
+    print(f"{america_cx._idearoot._label=}")
+    assert america_cx._idearoot._label == get_temp_economy_title()
+    assert america_cx._owner == "America"
+    print(f"{america_cx._owner} {america_cx._idearoot._label=}")
 
     # WHEN
     joachim_ux.set_depot_contract(contract_x=america_cx, depotlink_type="assignment")
@@ -26,7 +33,7 @@ def test_actor_save_contract_to_depot_assignment_link_CorrectlyCreatesAssignment
     assert len(output_cx._idea_dict.keys()) == 9
 
     casa_text = "casa"
-    casa_road = f"{root_label()},{casa_text}"
+    casa_road = f"{get_temp_economy_title()},{casa_text}"
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
     b_full_text = "full"

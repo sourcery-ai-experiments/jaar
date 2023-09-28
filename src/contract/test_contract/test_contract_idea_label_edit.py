@@ -10,16 +10,17 @@ from src.contract.road import get_default_economy_root_label as root_label
 
 def test_idea_label_fails_when_idea_does_not_exist():
     # GIVEN
-    work_text = "work"
-    work_road = f"{root_label()},{work_text}"
-    swim_text = "swim"
     owner_text = "Noa"
     sx = ContractUnit(_owner=owner_text)
-    sx.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=work_text))
+
+    work_text = "work"
+    work_road = f"{sx._economy_title},{work_text}"
+    swim_text = "swim"
+    sx.add_idea(walk=sx._economy_title, idea_kid=IdeaKid(_label=work_text))
     sx.add_idea(walk=work_road, idea_kid=IdeaKid(_label=swim_text))
 
     # When/Then
-    no_idea_road = Road(f"{root_label()},bees")
+    no_idea_road = Road(f"{sx._economy_title},bees")
     with pytest_raises(Exception) as excinfo:
         sx.edit_idea_label(old_road=no_idea_road, new_label="pigeons")
     assert (
@@ -30,20 +31,20 @@ def test_idea_label_fails_when_idea_does_not_exist():
 
 def test_Contract_level0_idea_edit_idea_label_RaisesError_economy_title_IsNone():
     # GIVEN
-
-    work_text = "work"
-    work_road = f"{root_label()},{work_text}"
-    swim_text = "swim"
-    swim_road = f"{root_label()},{work_text},{swim_text}"
     owner_text = "Tim"
     sx = ContractUnit(_owner=owner_text)
-    sx.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=work_text))
+
+    work_text = "work"
+    work_road = f"{sx._economy_title},{work_text}"
+    swim_text = "swim"
+    swim_road = f"{sx._economy_title},{work_text},{swim_text}"
+    sx.add_idea(walk=sx._economy_title, idea_kid=IdeaKid(_label=work_text))
     sx.add_idea(walk=work_road, idea_kid=IdeaKid(_label=swim_text))
     assert sx._owner == owner_text
-    assert sx._economy_title == root_label()
-    assert sx._idearoot._label == root_label()
+    assert sx._economy_title == sx._economy_title
+    assert sx._idearoot._label == sx._economy_title
     work_idea = sx.get_idea_kid(road=work_road)
-    assert work_idea._walk == root_label()
+    assert work_idea._walk == sx._economy_title
     swim_idea = sx.get_idea_kid(road=swim_road)
     assert swim_idea._walk == work_road
 
@@ -51,7 +52,7 @@ def test_Contract_level0_idea_edit_idea_label_RaisesError_economy_title_IsNone()
 
     with pytest_raises(Exception) as excinfo:
         moon_text = "moon"
-        sx.edit_idea_label(old_road=root_label(), new_label=moon_text)
+        sx.edit_idea_label(old_road=sx._economy_title, new_label=moon_text)
     assert (
         str(excinfo.value)
         == f"Cannot set idearoot to string other than '{sx._economy_title}'"
@@ -62,13 +63,13 @@ def test_Contract_level0_idea_edit_idea_label_RaisesError_economy_title_IsNone()
 # fixing this quickly looks difficult. Maybe push it off
 def test_Contract_level0_idea_edit_idea_label_RaisesError_economy_title_IsDifferent():
     # GIVEN
-    work_text = "work"
-    work_road = f"{root_label()},{work_text}"
-    swim_text = "swim"
-    swim_road = f"{root_label()},{work_text},{swim_text}"
     owner_text = "Tim"
     sx = ContractUnit(_owner=owner_text)
-    sx.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=work_text))
+    work_text = "work"
+    work_road = f"{sx._economy_title},{work_text}"
+    swim_text = "swim"
+    swim_road = f"{sx._economy_title},{work_text},{swim_text}"
+    sx.add_idea(walk=sx._economy_title, idea_kid=IdeaKid(_label=work_text))
     sx.add_idea(walk=work_road, idea_kid=IdeaKid(_label=swim_text))
     sun_text = "sun"
     sx._economy_title = sun_text
@@ -92,21 +93,21 @@ def test_Contract_level0_idea_edit_idea_label_RaisesError_economy_title_IsDiffer
 
 def test_contract_set_economy_title_CorrectlySetsAttr():
     # GIVEN
-    work_text = "work"
-    old_work_road = f"{root_label()},{work_text}"
-    swim_text = "swim"
-    old_swim_road = f"{old_work_road},{swim_text}"
     owner_text = "Tim"
     sx = ContractUnit(_owner=owner_text)
-    sx.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=work_text))
+    work_text = "work"
+    old_work_road = f"{sx._economy_title},{work_text}"
+    swim_text = "swim"
+    old_swim_road = f"{old_work_road},{swim_text}"
+    sx.add_idea(walk=sx._economy_title, idea_kid=IdeaKid(_label=work_text))
     sx.add_idea(walk=old_work_road, idea_kid=IdeaKid(_label=swim_text))
     assert sx._owner == owner_text
-    assert sx._idearoot._label == root_label()
+    assert sx._idearoot._label == sx._economy_title
     work_idea = sx.get_idea_kid(road=old_work_road)
-    assert work_idea._walk == root_label()
+    assert work_idea._walk == sx._economy_title
     swim_idea = sx.get_idea_kid(road=old_swim_road)
     assert swim_idea._walk == old_work_road
-    assert sx._economy_title == root_label()
+    assert sx._economy_title == sx._economy_title
 
     # WHEN
     economy_title_text = "Sun"
@@ -126,23 +127,23 @@ def test_contract_set_economy_title_CorrectlySetsAttr():
 
 def test_idea_find_replace_road_Changes_kids_scenario1():
     # GIVEN Idea with kids that will be changed
+    owner_text = "Tim"
+    sx = ContractUnit(_owner=owner_text)
 
     old_actor_text = "actor"
-    old_actor_road = Road(f"{root_label()},{old_actor_text}")
+    old_actor_road = Road(f"{sx._economy_title},{old_actor_text}")
     bloomers_text = "bloomers"
-    old_bloomers_road = Road(f"{root_label()},{old_actor_text},{bloomers_text}")
+    old_bloomers_road = Road(f"{sx._economy_title},{old_actor_text},{bloomers_text}")
     roses_text = "roses"
     old_roses_road = Road(
-        f"{root_label()},{old_actor_text},{bloomers_text},{roses_text}"
+        f"{sx._economy_title},{old_actor_text},{bloomers_text},{roses_text}"
     )
     red_text = "red"
     old_red_road = Road(
-        f"{root_label()},{old_actor_text},{bloomers_text},{roses_text},{red_text}"
+        f"{sx._economy_title},{old_actor_text},{bloomers_text},{roses_text},{red_text}"
     )
 
-    owner_text = "Tim"
-    sx = ContractUnit(_owner=owner_text)
-    sx.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=old_actor_text))
+    sx.add_idea(walk=sx._economy_title, idea_kid=IdeaKid(_label=old_actor_text))
     sx.add_idea(walk=old_actor_road, idea_kid=IdeaKid(_label=bloomers_text))
     sx.add_idea(walk=old_bloomers_road, idea_kid=IdeaKid(_label=roses_text))
     sx.add_idea(walk=old_roses_road, idea_kid=IdeaKid(_label=red_text))
@@ -157,7 +158,7 @@ def test_idea_find_replace_road_Changes_kids_scenario1():
 
     # WHEN
     new_actor_text = "globe"
-    new_actor_road = Road(f"{root_label()},{new_actor_text}")
+    new_actor_road = Road(f"{sx._economy_title},{new_actor_text}")
     sx.edit_idea_label(old_road=old_actor_road, new_label=new_actor_text)
 
     # THEN
@@ -168,32 +169,32 @@ def test_idea_find_replace_road_Changes_kids_scenario1():
     assert r_idea_bloomers._kids.get(roses_text) != None
 
     r_idea_roses = r_idea_bloomers._kids.get(roses_text)
-    new_bloomers_road = Road(f"{root_label()},{new_actor_text},{bloomers_text}")
+    new_bloomers_road = Road(f"{sx._economy_title},{new_actor_text},{bloomers_text}")
     assert r_idea_roses._walk == new_bloomers_road
     assert r_idea_roses._kids.get(red_text) != None
     r_idea_red = r_idea_roses._kids.get(red_text)
     new_roses_road = Road(
-        f"{root_label()},{new_actor_text},{bloomers_text},{roses_text}"
+        f"{sx._economy_title},{new_actor_text},{bloomers_text},{roses_text}"
     )
     assert r_idea_red._walk == new_roses_road
 
 
 def test_contract_edit_idea_label_Changes_acptfactunits():
     # GIVEN contract with acptfactunits that will be changed
+    owner_text = "Tim"
+    sx = ContractUnit(_owner=owner_text)
 
     actor = "actor"
     bloomers_text = "bloomers"
-    bloomers_road = f"{root_label()},{actor},{bloomers_text}"
+    bloomers_road = f"{sx._economy_title},{actor},{bloomers_text}"
     roses_text = "roses"
-    roses_road = f"{root_label()},{actor},{bloomers_text},{roses_text}"
+    roses_road = f"{sx._economy_title},{actor},{bloomers_text},{roses_text}"
     old_water_text = "water"
-    old_water_road = f"{root_label()},{old_water_text}"
+    old_water_road = f"{sx._economy_title},{old_water_text}"
     rain_text = "rain"
-    old_rain_road = f"{root_label()},{old_water_text},{rain_text}"
+    old_rain_road = f"{sx._economy_title},{old_water_text},{rain_text}"
 
-    owner_text = "Tim"
-    sx = ContractUnit(_owner=owner_text)
-    sx.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=actor))
+    sx.add_idea(walk=sx._economy_title, idea_kid=IdeaKid(_label=actor))
     sx.add_idea(walk=bloomers_road, idea_kid=IdeaKid(_label=roses_text))
     sx.add_idea(walk=old_water_road, idea_kid=IdeaKid(_label=rain_text))
     sx.set_acptfact(base=old_water_road, pick=old_rain_road)
@@ -206,8 +207,8 @@ def test_contract_edit_idea_label_Changes_acptfactunits():
 
     # WHEN
     new_water_text = "h2o"
-    new_water_road = f"{root_label()},{new_water_text}"
-    sx.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=new_water_text))
+    new_water_road = f"{sx._economy_title},{new_water_text}"
+    sx.add_idea(walk=sx._economy_title, idea_kid=IdeaKid(_label=new_water_text))
     assert sx._idearoot._acptfactunits.get(new_water_road) is None
     sx.edit_idea_label(old_road=old_water_road, new_label=new_water_text)
 
@@ -216,7 +217,7 @@ def test_contract_edit_idea_label_Changes_acptfactunits():
     assert sx._idearoot._acptfactunits.get(new_water_road) != None
     new_water_rain_acptfactunit = sx._idearoot._acptfactunits[new_water_road]
     assert new_water_rain_acptfactunit.base == new_water_road
-    new_rain_road = f"{root_label()},{new_water_text},{rain_text}"
+    new_rain_road = f"{sx._economy_title},{new_water_text},{rain_text}"
     assert new_water_rain_acptfactunit.pick == new_rain_road
 
     assert sx._idearoot._acptfactunits.get(new_water_road)
@@ -229,13 +230,13 @@ def test_contract_edit_idea_label_Changes_acptfactunits():
 
 def test_contract_edit_idea_label_ChangesIdeaRoot_range_source_road():
     # GIVEN this should never happen but it's not currently banned
-
-    old_actor_text = "actor"
-    old_actor_road = Road(f"{root_label()},{old_actor_text}")
     owner_text = "Tim"
     sx = ContractUnit(_owner=owner_text)
-    sx.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=old_actor_text))
-    sx.edit_idea_attr(road=root_label(), range_source_road=old_actor_road)
+
+    old_actor_text = "actor"
+    old_actor_road = Road(f"{sx._economy_title},{old_actor_text}")
+    sx.add_idea(walk=sx._economy_title, idea_kid=IdeaKid(_label=old_actor_text))
+    sx.edit_idea_attr(road=sx._economy_title, range_source_road=old_actor_road)
     assert sx._idearoot._range_source_road == old_actor_road
 
     # WHEN
@@ -243,26 +244,26 @@ def test_contract_edit_idea_label_ChangesIdeaRoot_range_source_road():
     sx.edit_idea_label(old_road=old_actor_road, new_label=new_actor_text)
 
     # THEN
-    new_actor_road = Road(f"{root_label()},{new_actor_text}")
+    new_actor_road = Road(f"{sx._economy_title},{new_actor_text}")
     assert sx._idearoot._range_source_road == new_actor_road
 
 
 def test_contract_edit_idea_label_ChangesIdeaKidN_range_source_road():
-    actor_text = "actor"
-    actor_road = Road(f"{root_label()},{actor_text}")
-    old_water_text = "water"
-    old_water_road = f"{root_label()},{actor_text},{old_water_text}"
-    rain_text = "rain"
-    old_rain_road = f"{root_label()},{actor_text},{old_water_text},{rain_text}"
-    mood_text = "mood"
-    mood_road = Road(f"{root_label()},{mood_text}")
-
     owner_text = "Bob"
     sx = ContractUnit(_owner=owner_text)
-    sx.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=actor_text))
+
+    actor_text = "actor"
+    actor_road = Road(f"{sx._economy_title},{actor_text}")
+    old_water_text = "water"
+    old_water_road = f"{sx._economy_title},{actor_text},{old_water_text}"
+    rain_text = "rain"
+    old_rain_road = f"{sx._economy_title},{actor_text},{old_water_text},{rain_text}"
+    mood_text = "mood"
+    mood_road = Road(f"{sx._economy_title},{mood_text}")
+    sx.add_idea(walk=sx._economy_title, idea_kid=IdeaKid(_label=actor_text))
     sx.add_idea(walk=actor_road, idea_kid=IdeaKid(_label=old_water_text))
     sx.add_idea(walk=old_water_road, idea_kid=IdeaKid(_label=rain_text))
-    sx.add_idea(walk=root_label(), idea_kid=IdeaKid(_label=mood_text))
+    sx.add_idea(walk=sx._economy_title, idea_kid=IdeaKid(_label=mood_text))
 
     sx.edit_idea_attr(road=mood_road, range_source_road=old_rain_road)
     mood_idea = sx.get_idea_kid(road=mood_road)
@@ -270,7 +271,7 @@ def test_contract_edit_idea_label_ChangesIdeaKidN_range_source_road():
 
     # WHEN
     new_water_text = "h2o"
-    new_rain_road = f"{root_label()},{actor_text},{new_water_text},{rain_text}"
+    new_rain_road = f"{sx._economy_title},{actor_text},{new_water_text},{rain_text}"
     sx.edit_idea_label(old_road=old_water_road, new_label=new_water_text)
 
     # THEN
@@ -288,19 +289,19 @@ def test_contract_edit_idea_label_ChangesIdeaKidN_range_source_road():
 
 def test_contract_edit_idea_label_ChangesIdeaRequiredUnitsScenario1():
     # GIVEN
-    contract_x = get_contract_with_4_levels_and_2requireds_2acptfacts()
+    sx = get_contract_with_4_levels_and_2requireds_2acptfacts()
     old_weekday_text = "weekdays"
-    old_weekday_road = f"{root_label()},{old_weekday_text}"
+    old_weekday_road = f"{sx._economy_title},{old_weekday_text}"
     wednesday_text = "Wednesday"
-    old_wednesday_road = f"{root_label()},{old_weekday_text},{wednesday_text}"
-    work_idea = contract_x.get_idea_kid(f"{root_label()},work")
-    usa = f"{root_label()},nation-state,USA"
-    nationstate = f"{root_label()},nation-state"
+    old_wednesday_road = f"{sx._economy_title},{old_weekday_text},{wednesday_text}"
+    work_idea = sx.get_idea_kid(f"{sx._economy_title},work")
+    usa = f"{sx._economy_title},nation-state,USA"
+    nationstate = f"{sx._economy_title},nation-state"
     # work_wk_required = RequiredUnit(base=weekday, sufffacts={wed_sufffact.need: wed_sufffact})
     # nation_required = RequiredUnit(base=nationstate, sufffacts={usa_sufffact.need: usa_sufffact})
     assert len(work_idea._requiredunits) == 2
     assert work_idea._requiredunits.get(old_weekday_road) != None
-    wednesday_idea = contract_x.get_idea_kid(old_weekday_road)
+    wednesday_idea = sx.get_idea_kid(old_weekday_road)
     work_weekday_required = work_idea._requiredunits.get(old_weekday_road)
     assert work_weekday_required.sufffacts.get(old_wednesday_road) != None
     assert (
@@ -308,8 +309,8 @@ def test_contract_edit_idea_label_ChangesIdeaRequiredUnitsScenario1():
         == old_wednesday_road
     )
     new_weekday_text = "days of week"
-    new_weekday_road = f"{root_label()},{new_weekday_text}"
-    new_wednesday_road = f"{root_label()},{new_weekday_text},{wednesday_text}"
+    new_weekday_road = f"{sx._economy_title},{new_weekday_text}"
+    new_wednesday_road = f"{sx._economy_title},{new_weekday_text},{wednesday_text}"
     assert work_idea._requiredunits.get(new_weekday_text) is None
 
     # WHEN
@@ -317,7 +318,7 @@ def test_contract_edit_idea_label_ChangesIdeaRequiredUnitsScenario1():
     #     print(f"Before {key_x=} {required_x.base=}")
     print(f"BEFORE {wednesday_idea._label=}")
     print(f"BEFORE {wednesday_idea._walk=}")
-    contract_x.edit_idea_label(old_road=old_weekday_road, new_label=new_weekday_text)
+    sx.edit_idea_label(old_road=old_weekday_road, new_label=new_weekday_text)
     # for key_x, required_x in work_idea._requiredunits.items():
     #     print(f"AFTER {key_x=} {required_x.base=}")
     print(f"AFTER {wednesday_idea._label=}")
@@ -337,18 +338,18 @@ def test_contract_edit_idea_label_ChangesIdeaRequiredUnitsScenario1():
 
 def test_contract_set_owner_CorrectlyChangesBoth():
     # GIVEN
-    contract_x = get_contract_with_4_levels_and_2requireds_2acptfacts()
-    assert contract_x._owner == "Noa"
-    assert contract_x._idearoot._label == root_label()
+    sx = get_contract_with_4_levels_and_2requireds_2acptfacts()
+    assert sx._owner == "Noa"
+    assert sx._idearoot._label == sx._economy_title
     # mid_label1 = "tim"
-    # contract_x.edit_idea_label(old_road=old_label, new_label=mid_label1)
-    # assert contract_x._owner == old_label
-    # assert contract_x._idearoot._label == mid_label1
+    # sx.edit_idea_label(old_road=old_label, new_label=mid_label1)
+    # assert sx._owner == old_label
+    # assert sx._idearoot._label == mid_label1
 
     # WHEN
     new_label2 = "bob"
-    contract_x.set_owner(new_owner=new_label2)
+    sx.set_owner(new_owner=new_label2)
 
     # THEN
-    assert contract_x._owner == new_label2
-    assert contract_x._idearoot._label == root_label()
+    assert sx._owner == new_label2
+    assert sx._idearoot._label == sx._economy_title

@@ -6,16 +6,15 @@ from src.contract.examples.example_contracts import (
 from src.contract.idea import IdeaKid
 from src.contract.required_idea import sufffactunit_shop, RequiredUnit, RequiredHeir
 from src.contract.contract import ContractUnit
-from src.contract.road import get_default_economy_root_label as root_label
 from src.contract.x_func import from_list_get_active_status
 
 
 def test_contract_requiredunits_create():
-    contract_x = example_contracts_get_contract_with_4_levels()
+    cx = example_contracts_get_contract_with_4_levels()
     work_text = "work"
-    work_road = f"{root_label()},{work_text}"
+    work_road = f"{cx._economy_title},{work_text}"
     weekday_text = "weekdays"
-    weekday_road = f"{root_label()},{weekday_text}"
+    weekday_road = f"{cx._economy_title},{weekday_text}"
     wed_text = "Wednesday"
     wed_road = f"{weekday_road},{wed_text}"
 
@@ -25,8 +24,8 @@ def test_contract_requiredunits_create():
     )
     print(f"{type(work_wk_required.base)=}")
     print(f"{work_wk_required.base=}")
-    contract_x.edit_idea_attr(road=work_road, required=work_wk_required)
-    work_idea = contract_x._idearoot._kids[work_text]
+    cx.edit_idea_attr(road=work_road, required=work_wk_required)
+    work_idea = cx._idearoot._kids[work_text]
     assert work_idea._requiredunits != None
     print(work_idea._requiredunits)
     assert work_idea._requiredunits[weekday_road] != None
@@ -34,11 +33,11 @@ def test_contract_requiredunits_create():
 
 
 def test_contract_set_requiredunits_status():
-    contract_x = example_contracts_get_contract_with_4_levels()
+    cx = example_contracts_get_contract_with_4_levels()
     work_text = "work"
-    work_road = f"{root_label()},{work_text}"
+    work_road = f"{cx._economy_title},{work_text}"
     weekday_text = "weekdays"
-    weekday_road = f"{root_label()},{weekday_text}"
+    weekday_road = f"{cx._economy_title},{weekday_text}"
     wed_text = "Wednesday"
     wed_road = f"{weekday_road},{wed_text}"
 
@@ -48,8 +47,8 @@ def test_contract_set_requiredunits_status():
     )
     print(f"{type(work_wk_required.base)=}")
     print(f"{work_wk_required.base=}")
-    contract_x.edit_idea_attr(road=work_road, required=work_wk_required)
-    work_idea = contract_x._idearoot._kids[work_text]
+    cx.edit_idea_attr(road=work_road, required=work_wk_required)
+    work_idea = cx._idearoot._kids[work_text]
     assert work_idea._requiredunits != None
     print(work_idea._requiredunits)
     assert work_idea._requiredunits[weekday_road] != None
@@ -67,11 +66,11 @@ def test_agenda_returned_WhenNoRequiredsExist():
 
 def test_contract_requiredheirs_AreCorrectlyInherited_v1():
     # GIVEN
-    contract_x = example_contracts_get_contract_with_4_levels()
+    cx = example_contracts_get_contract_with_4_levels()
     work_text = "work"
-    work_road = f"{root_label()},{work_text}"
+    work_road = f"{cx._economy_title},{work_text}"
     week_label = "weekdays"
-    week_road = f"{root_label()},{week_label}"
+    week_road = f"{cx._economy_title},{week_label}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
 
@@ -87,8 +86,8 @@ def test_contract_requiredheirs_AreCorrectlyInherited_v1():
         _curr_idea_active_status=True,
     )
     print(f"{work_wk_build_requiredunit.base=}")
-    contract_x.edit_idea_attr(road=work_road, required=work_wk_build_requiredunit)
-    work_idea = contract_x._idearoot._kids[work_text]
+    cx.edit_idea_attr(road=work_road, required=work_wk_build_requiredunit)
+    work_idea = cx._idearoot._kids[work_text]
     assert work_idea._requiredunits != None
     # print(work_idea._requiredunits)
     assert work_idea._requiredunits[week_road] != None
@@ -98,7 +97,7 @@ def test_contract_requiredheirs_AreCorrectlyInherited_v1():
     except TypeError as e:
         assert str(e) == "'NoneType' object is not subscriptable"
 
-    idea_list = contract_x.get_idea_list()
+    idea_list = cx.get_idea_list()
 
     from_list_get_active_status(road=work_road, idea_list=idea_list)
 
@@ -125,9 +124,9 @@ def test_contract_requiredheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
     # GIVEN
     a4 = example_contracts_get_contract_with_4_levels()
     work_text = "work"
-    work_road = f"{root_label()},{work_text}"
+    work_road = f"{a4._economy_title},{work_text}"
     week_text = "weekdays"
-    week_road = f"{root_label()},{week_text}"
+    week_road = f"{a4._economy_title},{week_text}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
 
@@ -193,9 +192,9 @@ def test_contract_requiredheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
 def test_contract_requiredheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     a4 = example_contracts_get_contract_with_4_levels()
     work_text = "work"
-    work_road = f"{root_label()},{work_text}"
+    work_road = f"{a4._economy_title},{work_text}"
     week_label = "weekdays"
-    week_road = f"{root_label()},{week_label}"
+    week_road = f"{a4._economy_title},{week_label}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
 
@@ -265,21 +264,21 @@ def test_contract_requiredheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
 
 def test_contract_requiredunits_set_UnCoupledMethod():
     # Given
-    contract_x = example_contracts_get_contract_with_4_levels()
+    cx = example_contracts_get_contract_with_4_levels()
     work_text = "work"
-    work_road = f"{root_label()},{work_text}"
+    work_road = f"{cx._economy_title},{work_text}"
     week_text = "weekdays"
-    week_road = f"{root_label()},{week_text}"
+    week_road = f"{cx._economy_title},{week_text}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
 
     # When
-    contract_x.edit_idea_attr(
+    cx.edit_idea_attr(
         road=work_road, required_base=week_road, required_sufffact=wed_road
     )
 
     # Then
-    work_idea1 = contract_x.get_idea_kid(road=work_road)
+    work_idea1 = cx.get_idea_kid(road=work_road)
     assert work_idea1._requiredunits != None
     print(work_idea1._requiredunits)
     assert work_idea1._requiredunits[week_road] != None
@@ -298,7 +297,7 @@ def test_contract_requiredunits_set_UnCoupledMethod():
     nigh_x = 12
 
     # When
-    contract_x.edit_idea_attr(
+    cx.edit_idea_attr(
         road=work_road,
         required_base=week_road,
         required_sufffact=wed_road,
@@ -324,7 +323,7 @@ def test_contract_requiredunits_set_UnCoupledMethod():
     # When
     thu_text = "Thursday"
     thu_road = f"{week_road},{thu_text}"
-    contract_x.edit_idea_attr(
+    cx.edit_idea_attr(
         road=work_road,
         required_base=week_road,
         required_sufffact=thu_road,
@@ -339,21 +338,21 @@ def test_contract_requiredunits_set_UnCoupledMethod():
 
 def test_contract_requiredunits_set_sufffactIdeaWithDenomSetsSuffFactDivision():
     # Given
-    contract_x = example_contracts_get_contract_with_4_levels()
+    cx = example_contracts_get_contract_with_4_levels()
     work_text = "work"
-    work_road = f"{root_label()},{work_text}"
+    work_road = f"{cx._economy_title},{work_text}"
     time_text = "time"
-    time_road = f"{root_label()},{time_text}"
+    time_road = f"{cx._economy_title},{time_text}"
     week_text = "week"
-    week_road = f"{root_label()},{time_text},{week_text}"
-    contract_x.add_idea(
+    week_road = f"{cx._economy_title},{time_text},{week_text}"
+    cx.add_idea(
         idea_kid=IdeaKid(_label=time_text, _begin=100, _close=2000),
-        walk=root_label(),
+        walk=cx._economy_title,
     )
-    contract_x.add_idea(idea_kid=IdeaKid(_label=week_text, _denom=7), walk=time_road)
+    cx.add_idea(idea_kid=IdeaKid(_label=week_text, _denom=7), walk=time_road)
 
     # When
-    contract_x.edit_idea_attr(
+    cx.edit_idea_attr(
         road=work_road,
         required_base=time_road,
         required_sufffact=week_road,
@@ -363,7 +362,7 @@ def test_contract_requiredunits_set_sufffactIdeaWithDenomSetsSuffFactDivision():
     )
 
     # Then
-    work_idea1 = contract_x.get_idea_kid(road=work_road)
+    work_idea1 = cx.get_idea_kid(road=work_road)
     assert work_idea1._requiredunits[time_road] != None
     assert work_idea1._requiredunits[time_road].sufffacts[week_road].divisor == 7
     assert work_idea1._requiredunits[time_road].sufffacts[week_road].open == 2
@@ -372,22 +371,20 @@ def test_contract_requiredunits_set_sufffactIdeaWithDenomSetsSuffFactDivision():
 
 def test_contract_requiredunits_set_sufffactIdeaWithBeginCloseSetsSuffFactOpenNigh():
     # Given
-    contract_x = example_contracts_get_contract_with_4_levels()
+    cx = example_contracts_get_contract_with_4_levels()
     work = "work"
-    work_road = f"{root_label()},{work}"
+    work_road = f"{cx._economy_title},{work}"
     time = "time"
-    time_road = f"{root_label()},{time}"
+    time_road = f"{cx._economy_title},{time}"
     rus_war = "rus_war"
-    rus_war_road = f"{root_label()},{time},{rus_war}"
-    contract_x.add_idea(
-        idea_kid=IdeaKid(_label=time, _begin=100, _close=2000), walk=root_label()
+    rus_war_road = f"{cx._economy_title},{time},{rus_war}"
+    cx.add_idea(
+        idea_kid=IdeaKid(_label=time, _begin=100, _close=2000), walk=cx._economy_title
     )
-    contract_x.add_idea(
-        idea_kid=IdeaKid(_label=rus_war, _begin=22, _close=34), walk=time_road
-    )
+    cx.add_idea(idea_kid=IdeaKid(_label=rus_war, _begin=22, _close=34), walk=time_road)
 
     # When
-    contract_x.edit_idea_attr(
+    cx.edit_idea_attr(
         road=work_road,
         required_base=time_road,
         required_sufffact=rus_war_road,
@@ -397,7 +394,7 @@ def test_contract_requiredunits_set_sufffactIdeaWithBeginCloseSetsSuffFactOpenNi
     )
 
     # Then
-    work_idea1 = contract_x.get_idea_kid(road=work_road)
+    work_idea1 = cx.get_idea_kid(road=work_road)
     assert work_idea1._requiredunits[time_road] != None
     assert work_idea1._requiredunits[time_road].sufffacts[rus_war_road].divisor is None
     assert work_idea1._requiredunits[time_road].sufffacts[rus_war_road].open == 22
@@ -406,25 +403,25 @@ def test_contract_requiredunits_set_sufffactIdeaWithBeginCloseSetsSuffFactOpenNi
 
 def test_contract_requiredunits_del_required_sufffact_UncoupledMethod1():
     # Given
-    contract_x = example_contracts_get_contract_with_4_levels()
-    work_road = f"{root_label()},work"
-    weekday_road = f"{root_label()},weekdays"
-    wed_road = f"{root_label()},weekdays,Wednesday"
+    cx = example_contracts_get_contract_with_4_levels()
+    work_road = f"{cx._economy_title},work"
+    weekday_road = f"{cx._economy_title},weekdays"
+    wed_road = f"{cx._economy_title},weekdays,Wednesday"
 
-    contract_x.edit_idea_attr(
+    cx.edit_idea_attr(
         road=work_road, required_base=weekday_road, required_sufffact=wed_road
     )
-    thu_road = f"{root_label()},weekdays,Thursday"
-    contract_x.edit_idea_attr(
+    thu_road = f"{cx._economy_title},weekdays,Thursday"
+    cx.edit_idea_attr(
         road=work_road,
         required_base=weekday_road,
         required_sufffact=thu_road,
     )
-    work_idea1 = contract_x.get_idea_kid(road=work_road)
+    work_idea1 = cx.get_idea_kid(road=work_road)
     assert len(work_idea1._requiredunits[weekday_road].sufffacts) == 2
 
     # When
-    contract_x.del_idea_required_sufffact(
+    cx.del_idea_required_sufffact(
         road=work_road,
         required_base=weekday_road,
         required_sufffact=thu_road,
@@ -434,7 +431,7 @@ def test_contract_requiredunits_del_required_sufffact_UncoupledMethod1():
     assert len(work_idea1._requiredunits[weekday_road].sufffacts) == 1
 
     # When
-    contract_x.del_idea_required_sufffact(
+    cx.del_idea_required_sufffact(
         road=work_road,
         required_base=weekday_road,
         required_sufffact=wed_road,
@@ -449,10 +446,10 @@ def test_contract_requiredunits_del_required_sufffact_UncoupledMethod1():
 
 def test_contract_requiredunits_del_required_sufffact_UncoupledMethod2():
     # Given
-    contract_x = example_contracts_get_contract_with_4_levels()
-    work_road = f"{root_label()},work"
-    weekdays_road = f"{root_label()},weekdays"
-    work_idea1 = contract_x.get_idea_kid(road=work_road)
+    cx = example_contracts_get_contract_with_4_levels()
+    work_road = f"{cx._economy_title},work"
+    weekdays_road = f"{cx._economy_title},weekdays"
+    work_idea1 = cx.get_idea_kid(road=work_road)
     work_idea1.set_requiredunits_empty_if_null()
     assert len(work_idea1._requiredunits) == 0
 
@@ -466,19 +463,19 @@ def test_contract_edit_idea_attr_contractIsAbleToEdit_suff_idea_active_status_An
     # _suff_idea_active_status: str = None
     # must be 1 of 3: bool: True, bool: False, str="Set to Ignore"
     # GIVEN
-    contract_x = example_contracts_get_contract_with_4_levels()
+    cx = example_contracts_get_contract_with_4_levels()
     work_text = "work"
-    work_road = f"{root_label()},{work_text}"
+    work_road = f"{cx._economy_title},{work_text}"
 
     commute_text = "commute to work"
-    commute_road = f"{root_label()},{commute_text}"
-    contract_x.add_idea(idea_kid=IdeaKid(_label=commute_text), walk=root_label())
-    contract_x.get_idea_list()  # set tree metrics
-    commute_idea = contract_x.get_idea_kid(road=commute_road)
+    commute_road = f"{cx._economy_title},{commute_text}"
+    cx.add_idea(idea_kid=IdeaKid(_label=commute_text), walk=cx._economy_title)
+    cx.get_idea_list()  # set tree metrics
+    commute_idea = cx.get_idea_kid(road=commute_road)
     assert len(commute_idea._requiredunits) == 0
 
     # WHEN
-    contract_x.edit_idea_attr(
+    cx.edit_idea_attr(
         road=commute_road,
         required_base=work_road,
         required_suff_idea_active_status=True,
@@ -492,7 +489,7 @@ def test_contract_edit_idea_attr_contractIsAbleToEdit_suff_idea_active_status_An
     assert requiredunit_work.suff_idea_active_status == True
 
     # WHEN
-    contract_x.edit_idea_attr(
+    cx.edit_idea_attr(
         road=commute_road,
         required_base=work_road,
         required_suff_idea_active_status=False,
@@ -506,7 +503,7 @@ def test_contract_edit_idea_attr_contractIsAbleToEdit_suff_idea_active_status_An
     assert requiredunit_work.suff_idea_active_status == False
 
     # WHEN
-    contract_x.edit_idea_attr(
+    cx.edit_idea_attr(
         road=commute_road,
         required_base=work_road,
         required_suff_idea_active_status="Set to Ignore",
@@ -525,11 +522,11 @@ def test_contract_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus
     # 1. idea(...,weekdays) exists
     # 2. idea(...,weekdays,wednesday) exists
     # 3. idea(...,weekdays,thursday) exists
-    contract_x = example_contracts_get_contract_with_4_levels()
+    cx = example_contracts_get_contract_with_4_levels()
     work_text = "work"
-    work_road = f"{root_label()},{work_text}"
+    work_road = f"{cx._economy_title},{work_text}"
     weekdays_text = "weekdays"
-    weekdays_road = f"{root_label()},{weekdays_text}"
+    weekdays_road = f"{cx._economy_title},{weekdays_text}"
     wed_text = "Wednesday"
     wed_road = f"{weekdays_road},{wed_text}"
     thu_text = "Thursday"
@@ -538,42 +535,42 @@ def test_contract_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus
     # 4. idea(...,work) with
     # 4.1 RequiredUnit: base=weekdays_road, need=thu_road
     # 4.2 .active_status = False
-    contract_x.edit_idea_attr(
+    cx.edit_idea_attr(
         road=work_road,
         required_base=weekdays_road,
         required_sufffact=thu_road,
     )
-    contract_x.get_idea_list()  # set tree metrics
-    work_idea = contract_x.get_idea_kid(road=work_road)
+    cx.get_idea_list()  # set tree metrics
+    work_idea = cx.get_idea_kid(road=work_road)
     assert work_idea._active_status == False
 
     # 5. idea(...,commute to work) with
     # 5.1. RequiredUnit: idea(base=...,work) has .suff_idea_active_status = True
     # 5.2. idea(...,work).active_status = False
     commute_text = "commute to work"
-    commute_road = f"{root_label()},{commute_text}"
-    contract_x.add_idea(idea_kid=IdeaKid(_label=commute_text), walk=root_label())
-    contract_x.edit_idea_attr(
+    commute_road = f"{cx._economy_title},{commute_text}"
+    cx.add_idea(idea_kid=IdeaKid(_label=commute_text), walk=cx._economy_title)
+    cx.edit_idea_attr(
         road=commute_road,
         required_base=work_road,
         required_suff_idea_active_status=True,
     )
-    commute_idea = contract_x.get_idea_kid(road=commute_road)
-    contract_x.get_idea_list()
+    commute_idea = cx.get_idea_kid(road=commute_road)
+    cx.get_idea_list()
     assert commute_idea._active_status == False
 
     # AcptFact: base: (...,weekdays) pick: (...,weekdays,wednesday)
-    contract_x.set_acptfact(base=weekdays_road, pick=wed_road)
-    contract_x.set_contract_metrics()
+    cx.set_acptfact(base=weekdays_road, pick=wed_road)
+    cx.set_contract_metrics()
 
     assert work_idea._active_status == False
     assert commute_idea._active_status == False
 
     # WHEN
     print("before changing acptfact")
-    contract_x.set_acptfact(base=weekdays_road, pick=thu_road)
+    cx.set_acptfact(base=weekdays_road, pick=thu_road)
     print("after changing acptfact")
-    contract_x.get_idea_list()
+    cx.get_idea_list()
     assert work_idea._active_status == True
 
     # THEN
@@ -582,44 +579,44 @@ def test_contract_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus
 
 def test_contract_set_contract_metrics_InitimemberSetsRationalAttrToFalse():
     # GIVEN
-    contract_x = example_contracts_get_contract_with_4_levels()
-    assert contract_x._rational == False
-    # contract_x.set_contract_metrics()
-    contract_x._rational = True
-    assert contract_x._rational
+    cx = example_contracts_get_contract_with_4_levels()
+    assert cx._rational == False
+    # cx.set_contract_metrics()
+    cx._rational = True
+    assert cx._rational
 
     # WHEN
     # hack contract to set _max_tree_traverse = 1 (not allowed, should always be 2 or more)
-    contract_x._max_tree_traverse = 1
-    contract_x.set_contract_metrics()
+    cx._max_tree_traverse = 1
+    cx.set_contract_metrics()
 
     # THEN
-    assert not contract_x._rational
+    assert not cx._rational
 
 
 def test_contract_tree_traverses_StopWhenNoChangeInStatusIsDetected():
     # GIVEN
-    contract_x = example_contracts_get_contract_with_4_levels()
-    assert contract_x._max_tree_traverse != 2
+    cx = example_contracts_get_contract_with_4_levels()
+    assert cx._max_tree_traverse != 2
 
     # WHEN
-    contract_x.set_contract_metrics()
-    # for idea_key in contract_x._idea_dict.keys():
+    cx.set_contract_metrics()
+    # for idea_key in cx._idea_dict.keys():
     #     print(f"{idea_key=}")
 
     # THEN
-    assert contract_x._tree_traverse_count == 2
+    assert cx._tree_traverse_count == 2
 
 
 def test_contract_tree_traverse_count_CorrectlyCountsTreeTraversesForIrrationalContracts():
     # GIVEN irrational contract
-    contract_x = example_contracts_get_contract_irrational_example()
-    contract_x.set_contract_metrics()
-    assert contract_x._tree_traverse_count == 3
+    cx = example_contracts_get_contract_irrational_example()
+    cx.set_contract_metrics()
+    assert cx._tree_traverse_count == 3
 
     # WHEN
-    contract_x.set_max_tree_traverse(int_x=21)
-    contract_x.set_contract_metrics()
+    cx.set_max_tree_traverse(int_x=21)
+    cx.set_contract_metrics()
 
     # THEN
-    assert contract_x._tree_traverse_count == 21
+    assert cx._tree_traverse_count == 21

@@ -3,7 +3,6 @@ from ui.EditAcptFactTimeUI import Ui_Form
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from datetime import datetime
-from src.contract.road import get_default_economy_root_label as root_label
 
 
 class EditAcptFactTime(qtw.QTableWidget, Ui_Form):
@@ -70,7 +69,7 @@ class EditAcptFactTime(qtw.QTableWidget, Ui_Form):
         #     road=f"{root_label},time,jajatime"
         # )
         minutes_acptfact = self.contract_x._idearoot._acptfactunits[
-            f"{root_label},time,jajatime"
+            f"{self.contract_x._economy_title},time,jajatime"
         ]
 
         dt_open = self.contract_x.get_time_dt_from_min(min=minutes_acptfact.open)

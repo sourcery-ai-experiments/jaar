@@ -4,15 +4,12 @@ from src.economy.examples.economy_env_kit import (
     env_dir_setup_cleanup,
     get_test_economys_dir,
 )
-from src.contract.road import get_default_economy_root_label as root_label
 from src.contract.contract import ContractUnit
 from src.economy.examples.example_actors import get_contract_assignment_laundry_example1
 
 
 def test_economy_ChangingOneActorsFactChangesAnotherAgenda(env_dir_setup_cleanup):
-    sx = economyunit_shop(
-        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
-    )
+    sx = economyunit_shop(get_temp_env_title(), get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     # GIVEN
@@ -22,7 +19,7 @@ def test_economy_ChangingOneActorsFactChangesAnotherAgenda(env_dir_setup_cleanup
     america_ux.set_isol(get_contract_assignment_laundry_example1())
 
     casa_text = "casa"
-    casa_road = f"{root_label()},{casa_text}"
+    casa_road = f"{get_temp_env_title()},{casa_text}"
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
     b_full_text = "full"

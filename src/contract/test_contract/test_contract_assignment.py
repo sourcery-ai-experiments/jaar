@@ -3,7 +3,6 @@ from src.contract.idea import IdeaKid
 from src.contract.required_idea import RequiredUnit
 from src.contract.member import memberunit_shop, memberlink_shop
 from src.contract.group import groupunit_shop
-from src.contract.road import get_default_economy_root_label as root_label
 from src.contract.examples.example_contracts import (
     get_contract_with_4_levels as example_contracts_get_contract_with_4_levels,
     get_contract_with7amCleanTableRequired as example_contracts_get_contract_with7amCleanTableRequired,
@@ -156,12 +155,12 @@ def test_contract__get_assignor_promise_ideas_ReturnsCorrectIdeaRoads():
     # THEN
     print(f"{assignor_promises=}")
     x_dict = {
-        f"{root_label()},work": -1,
-        f"{root_label()},housework,clean table": -1,
-        f"{root_label()},housework,clean table,remove dishs": -1,
-        f"{root_label()},housework,clean table,get soap": -1,
-        f"{root_label()},housework,clean table,get soap,grab soap": -1,
-        f"{root_label()},feed cat": -1,
+        f"{cx._economy_title},work": -1,
+        f"{cx._economy_title},housework,clean table": -1,
+        f"{cx._economy_title},housework,clean table,remove dishs": -1,
+        f"{cx._economy_title},housework,clean table,get soap": -1,
+        f"{cx._economy_title},housework,clean table,get soap,grab soap": -1,
+        f"{cx._economy_title},feed cat": -1,
     }
     assert assignor_promises == x_dict
 
@@ -186,13 +185,13 @@ def test_contract__get_relevant_roads_RootRoadReturnsOnlyItself():
     cx.set_contract_metrics()
 
     # WHEN
-    root_dict = {root_label(): -1}
+    root_dict = {cx._economy_title: -1}
     relevant_roads = cx._get_relevant_roads(root_dict)
 
     # THEN
     print(f"{relevant_roads=}")
     assert len(relevant_roads) == 1
-    assert relevant_roads == {root_label(): -1}
+    assert relevant_roads == {cx._economy_title: -1}
 
 
 def test_contract__get_relevant_roads_SimpleReturnsOnlyAncestors():
@@ -202,7 +201,7 @@ def test_contract__get_relevant_roads_SimpleReturnsOnlyAncestors():
 
     # WHEN
     week_text = "weekdays"
-    week_road = f"{root_label()},{week_text}"
+    week_road = f"{cx._economy_title},{week_text}"
     sun_text = "Sunday"
     sun_road = f"{week_road},{sun_text}"
     sun_dict = {sun_road}
@@ -211,7 +210,7 @@ def test_contract__get_relevant_roads_SimpleReturnsOnlyAncestors():
     # THEN
     print(f"{relevant_roads=}")
     assert len(relevant_roads) == 3
-    assert relevant_roads == {root_label(): -1, sun_road: -1, week_road: -1}
+    assert relevant_roads == {cx._economy_title: -1, sun_road: -1, week_road: -1}
 
 
 def test_contract__get_relevant_roads_ReturnsSimpleRequiredUnitBase():
@@ -219,16 +218,16 @@ def test_contract__get_relevant_roads_ReturnsSimpleRequiredUnitBase():
     owner_text = "Neo"
     cx = ContractUnit(_owner=owner_text)
     casa_text = "casa"
-    casa_road = f"{root_label()},{casa_text}"
+    casa_road = f"{cx._economy_title},{casa_text}"
     floor_text = "mop floor"
     floor_road = f"{casa_road},{floor_text}"
     floor_idea = IdeaKid(_label=floor_text)
     cx.add_idea(idea_kid=floor_idea, walk=casa_road)
 
     unim_text = "unimportant"
-    unim_road = f"{root_label()},{unim_text}"
+    unim_road = f"{cx._economy_title},{unim_text}"
     unim_idea = IdeaKid(_label=unim_text)
-    cx.add_idea(idea_kid=unim_idea, walk=root_label())
+    cx.add_idea(idea_kid=unim_idea, walk=cx._economy_title)
 
     status_text = "cleaniness status"
     status_road = f"{casa_road},{status_text}"
@@ -247,7 +246,7 @@ def test_contract__get_relevant_roads_ReturnsSimpleRequiredUnitBase():
     print(f"{relevant_roads=}")
     assert len(relevant_roads) == 4
     assert relevant_roads == {
-        root_label(): -1,
+        cx._economy_title: -1,
         casa_road: -1,
         status_road: -1,
         floor_road: -1,
@@ -259,12 +258,12 @@ def test_contract__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
     # GIVEN
     cx = example_contract_get_assignment_contract_example1()
     casa_text = "casa"
-    casa_road = f"{root_label()},{casa_text}"
+    casa_road = f"{cx._economy_title},{casa_text}"
     floor_text = "mop floor"
     floor_road = f"{casa_road},{floor_text}"
 
     unim_text = "unimportant"
-    unim_road = f"{root_label()},{unim_text}"
+    unim_road = f"{cx._economy_title},{unim_text}"
 
     status_text = "cleaniness status"
     status_road = f"{casa_road},{status_text}"
@@ -294,7 +293,7 @@ def test_contract__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
     assert relevant_roads.get(kinda_road) != None
     assert relevant_roads.get(really_road) != None
     assert relevant_roads == {
-        root_label(): -1,
+        cx._economy_title: -1,
         casa_road: -1,
         status_road: -1,
         floor_road: -1,
@@ -315,13 +314,13 @@ def test_contract__get_relevant_roads_numeric_road_ReturnSimple():
     owner_text = "Yao"
     cx = ContractUnit(_owner=owner_text)
     work_text = "work"
-    work_road = f"{root_label()},{work_text}"
-    cx.add_idea(IdeaKid(_label=work_text), walk=root_label())
+    work_road = f"{cx._economy_title},{work_text}"
+    cx.add_idea(IdeaKid(_label=work_text), walk=cx._economy_title)
     work_idea = cx.get_idea_kid(road=work_road)
     day_text = "day_range"
-    day_road = f"{root_label()},{day_text}"
+    day_road = f"{cx._economy_title},{day_text}"
     day_idea = IdeaKid(_label=day_text, _begin=44, _close=110)
-    cx.add_idea(day_idea, walk=root_label())
+    cx.add_idea(day_idea, walk=cx._economy_title)
     cx.edit_idea_attr(road=work_road, denom=11, numeric_road=day_road)
     assert work_idea._begin == 4
     print(f"{work_idea._label=} {work_idea._begin=} {work_idea._close=}")
@@ -337,7 +336,7 @@ def test_contract__get_relevant_roads_numeric_road_ReturnSimple():
     assert relevant_roads.get(work_road) != None
     assert relevant_roads.get(day_road) != None
     assert relevant_roads == {
-        root_label(): -1,
+        cx._economy_title: -1,
         work_road: -1,
         day_road: -1,
     }
@@ -348,14 +347,14 @@ def test_contract__get_relevant_roads_range_source_road_ReturnSimple():
     owner_text = "Yao"
     cx = ContractUnit(_owner=owner_text)
     min_range_text = "a_minute_range"
-    min_range_road = f"{root_label()},{min_range_text}"
+    min_range_road = f"{cx._economy_title},{min_range_text}"
     min_range_idea = IdeaKid(_label=min_range_text, _begin=0, _close=2880)
-    cx.add_idea(min_range_idea, walk=root_label())
+    cx.add_idea(min_range_idea, walk=cx._economy_title)
 
     day_len_text = "day_length"
-    day_len_road = f"{root_label()},{day_len_text}"
+    day_len_road = f"{cx._economy_title},{day_len_text}"
     day_len_idea = IdeaKid(_label=day_len_text, _begin=0, _close=1440)
-    cx.add_idea(day_len_idea, walk=root_label())
+    cx.add_idea(day_len_idea, walk=cx._economy_title)
 
     min_days_text = "days in minute_range"
     min_days_road = f"{min_range_road},{min_days_text}"
@@ -374,7 +373,7 @@ def test_contract__get_relevant_roads_range_source_road_ReturnSimple():
     assert relevant_roads.get(min_range_road) != None
     assert relevant_roads.get(day_len_road) != None
     assert relevant_roads.get(min_days_road) != None
-    assert relevant_roads.get(root_label()) != None
+    assert relevant_roads.get(cx._economy_title) != None
     # min_days_idea = cx.get_idea_kid(road=min_days_road)
     # print(f"{min_days_idea=}")
     # assert 1 == 2
@@ -387,14 +386,17 @@ def test_contract__set_assignment_ideas_ReturnsCorrectIdeas():
     yao_text = "Yao"
     yao_cx = ContractUnit(_owner=yao_text)
     casa_text = "casa"
-    casa_road = f"{root_label()},{casa_text}"
-    yao_cx.add_idea(IdeaKid(_label=casa_text), walk=root_label())
+    casa_road = f"{yao_cx._economy_title},{casa_text}"
+    yao_cx.add_idea(IdeaKid(_label=casa_text), walk=yao_cx._economy_title)
     yao_cx.set_contract_metrics()
 
     # WHEN
     bob_text = "Bob"
     bob_contract = ContractUnit(_owner=bob_text)
-    relevant_roads = {root_label(): "descendant", casa_road: "requirementunit_base"}
+    relevant_roads = {
+        yao_cx._economy_title: "descendant",
+        casa_road: "requirementunit_base",
+    }
     yao_cx._set_assignment_ideas(contract_x=bob_contract, relevant_roads=relevant_roads)
 
     # THEN
@@ -410,8 +412,8 @@ def test_contract__set_assignment_ideas_ReturnsCorrectIdeaRoot_acptfacts():
     yao_cx = ContractUnit(_owner=yao_text)
 
     casa_text = "casa"
-    casa_road = f"{root_label()},{casa_text}"
-    yao_cx.add_idea(IdeaKid(_label=casa_text), walk=root_label())
+    casa_road = f"{yao_cx._economy_title},{casa_text}"
+    yao_cx.add_idea(IdeaKid(_label=casa_text), walk=yao_cx._economy_title)
 
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
@@ -435,7 +437,7 @@ def test_contract__set_assignment_ideas_ReturnsCorrectIdeaRoot_acptfacts():
 
     # WHEN
     relevant_roads = {
-        root_label(): "descendant",
+        yao_cx._economy_title: "descendant",
         casa_road: "requirementunit_base",
         basket_road: "assigned",
     }
@@ -449,12 +451,13 @@ def test_contract__set_assignment_ideas_ReturnsCorrectIdeaRoot_acptfacts():
 
 def test_contract_get_assignment_getsCorrectIdeas_scenario1():
     # GIVEN
+    cx = example_contract_get_assignment_contract_example1()
     casa_text = "casa"
-    casa_road = f"{root_label()},{casa_text}"
+    casa_road = f"{cx._economy_title},{casa_text}"
     floor_text = "mop floor"
     floor_road = f"{casa_road},{floor_text}"
     unim_text = "unimportant"
-    unim_road = f"{root_label()},{unim_text}"
+    unim_road = f"{cx._economy_title},{unim_text}"
     status_text = "cleaniness status"
     status_road = f"{casa_road},{status_text}"
     clean_text = "clean"
@@ -465,7 +468,6 @@ def test_contract_get_assignment_getsCorrectIdeas_scenario1():
     kinda_road = f"{clean_road},{kinda_text}"
     dirty_text = "dirty"
     dirty_road = f"{status_road},{dirty_text}"
-    cx = example_contract_get_assignment_contract_example1()
     bob_text = "Bob"
     cx.add_memberunit(name=bob_text)
 
@@ -490,11 +492,16 @@ def test_contract_get_assignment_getsCorrectIdeas_scenario1():
 def test_contract_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     # GIVEN
     america_cx = get_contract_assignment_laundry_example1()
+    economy_title_text = "tiger_econ"
+    america_cx.set_economy_title(economy_title_text)
 
     # WHEN
     joachim_text = "Joachim"
+    joachim_contract = ContractUnit(_owner=joachim_text)
+    joachim_contract.set_economy_title(economy_title_text)
+    print(f"{joachim_contract._economy_title=} {joachim_contract._idea_dict.keys()=}")
     joachim_assignment = america_cx.get_assignment(
-        contract_x=ContractUnit(_owner=joachim_text),
+        contract_x=joachim_contract,
         assignor_members={joachim_text: -1, america_cx._owner: -1},
         assignor_name=joachim_text,
     )
@@ -516,7 +523,7 @@ def test_contract_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     # road_x='A,casa,laundry basket status,bare'
     # road_x='A,casa,do_laundry'
     casa_text = "casa"
-    casa_road = f"{root_label()},{casa_text}"
+    casa_road = f"{america_cx._economy_title},{casa_text}"
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
     b_full_text = "full"

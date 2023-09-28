@@ -1,39 +1,38 @@
 from src.contract.idea import IdeaKid
 from src.contract.contract import ContractUnit
-from src.contract.road import get_default_economy_root_label as root_label
 
 
 def test_contractAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
     # Given
     owner_text = "Mia"
-    contract_x = ContractUnit(_owner=owner_text, _weight=10)
+    cx = ContractUnit(_owner=owner_text, _weight=10)
 
     l1 = "level1"
     idea_kid_l1 = IdeaKid(_weight=30, _label=l1)
-    contract_x.add_idea(walk=root_label(), idea_kid=idea_kid_l1)
-    l1_road = f"{root_label()},{l1}"
+    cx.add_idea(walk=cx._economy_title, idea_kid=idea_kid_l1)
+    l1_road = f"{cx._economy_title},{l1}"
 
     rx1 = "range_root_example"
     idea_kid_rx1 = IdeaKid(_weight=30, _label=rx1)
-    contract_x.add_idea(walk=l1_road, idea_kid=idea_kid_rx1)
+    cx.add_idea(walk=l1_road, idea_kid=idea_kid_rx1)
     rx1_road = f"{l1_road},{rx1}"
-    contract_x.edit_idea_attr(road=rx1_road, begin=10, close=25)
+    cx.edit_idea_attr(road=rx1_road, begin=10, close=25)
 
-    y_idea = contract_x.get_idea_kid(road=rx1_road)
+    y_idea = cx.get_idea_kid(road=rx1_road)
     print(f"Add example child idea to road='{rx1_road}'")
 
     rcA = "range_child_example"
     idea_kid_rcA = IdeaKid(_weight=30, _begin=10, _close=25, _label=rcA)
-    contract_x.add_idea(walk=rx1_road, idea_kid=idea_kid_rcA)
+    cx.add_idea(walk=rx1_road, idea_kid=idea_kid_rcA)
 
     rcA_road = f"{rx1_road},{rcA}"
-    x_idea = contract_x.get_idea_kid(road=rcA_road)
+    x_idea = cx.get_idea_kid(road=rcA_road)
 
     assert x_idea._begin == 10
     assert x_idea._close == 25
 
     # When
-    contract_x.edit_idea_attr(road=rcA_road, addin=7)
+    cx.edit_idea_attr(road=rcA_road, addin=7)
 
     # Then
     assert x_idea._begin == 17
@@ -43,35 +42,35 @@ def test_contractAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
 def test_contractAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
     # Given
     owner_text = "Bob"
-    contract_x = ContractUnit(_owner=owner_text, _weight=10)
+    cx = ContractUnit(_owner=owner_text, _weight=10)
 
     l1 = "level1"
     idea_kid_l1 = IdeaKid(_weight=30, _label=l1)
-    contract_x.add_idea(walk=root_label(), idea_kid=idea_kid_l1)
-    l1_road = f"{root_label()},{l1}"
+    cx.add_idea(walk=cx._economy_title, idea_kid=idea_kid_l1)
+    l1_road = f"{cx._economy_title},{l1}"
 
     rx1 = "range_root_example"
     idea_kid_rx1 = IdeaKid(_weight=30, _label=rx1)
-    contract_x.add_idea(walk=l1_road, idea_kid=idea_kid_rx1)
+    cx.add_idea(walk=l1_road, idea_kid=idea_kid_rx1)
     rx1_road = f"{l1_road},{rx1}"
-    contract_x.edit_idea_attr(road=rx1_road, begin=10, close=25)
+    cx.edit_idea_attr(road=rx1_road, begin=10, close=25)
 
-    y_idea = contract_x.get_idea_kid(road=rx1_road)
+    y_idea = cx.get_idea_kid(road=rx1_road)
     print(f"Add example child idea to road='{rx1_road}'")
 
     rcA = "range_child_example"
     idea_kid_rcA = IdeaKid(_weight=30, _begin=10, _close=25, _label=rcA)
-    contract_x.add_idea(walk=rx1_road, idea_kid=idea_kid_rcA)
+    cx.add_idea(walk=rx1_road, idea_kid=idea_kid_rcA)
 
     rcA_road = f"{rx1_road},{rcA}"
-    x_idea = contract_x.get_idea_kid(road=rcA_road)
+    x_idea = cx.get_idea_kid(road=rcA_road)
 
     assert x_idea._begin == 10
     assert x_idea._close == 25
     assert x_idea._addin is None
 
     # When
-    contract_x.edit_idea_attr(road=rcA_road, addin=15, denom=5)
+    cx.edit_idea_attr(road=rcA_road, addin=15, denom=5)
 
     # Then
     assert x_idea._begin == 5
@@ -87,7 +86,7 @@ def test_get_idea_ranged_kids_CorrectlyReturnsAllChildren():
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN
-    weekunit_road = f"{root_label()},time,tech,week"
+    weekunit_road = f"{cx._economy_title},time,tech,week"
     ranged_ideas = cx.get_idea_ranged_kids(idea_road=weekunit_road)
 
     # # THEN
@@ -101,7 +100,7 @@ def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen1():
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN
-    weekunit_road = f"{root_label()},time,tech,week"
+    weekunit_road = f"{cx._economy_title},time,tech,week"
     begin_x = 1440
     close_x = 4 * 1440
     ranged_ideas = cx.get_idea_ranged_kids(
@@ -123,7 +122,7 @@ def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen2():
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN THEN
-    week_road = f"{root_label()},time,tech,week"
+    week_road = f"{cx._economy_title},time,tech,week"
     assert len(cx.get_idea_ranged_kids(idea_road=week_road, begin=0, close=1440)) == 1
     assert len(cx.get_idea_ranged_kids(idea_road=week_road, begin=0, close=2000)) == 2
     assert len(cx.get_idea_ranged_kids(idea_road=week_road, begin=0, close=3000)) == 3
@@ -136,6 +135,6 @@ def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen3():
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN THEN
-    week_road = f"{root_label()},time,tech,week"
+    week_road = f"{cx._economy_title},time,tech,week"
     assert len(cx.get_idea_ranged_kids(idea_road=week_road, begin=0)) == 1
     assert len(cx.get_idea_ranged_kids(idea_road=week_road, begin=1440)) == 1
