@@ -1036,7 +1036,14 @@ class ContractUnit:
         idea_kid: IdeaCore,
         walk: Road,
         create_missing_ideas_groups: bool = None,
+        adoptees: list[str] = None,
+        bundling=True,
     ):
+        if adoptees != None:
+            for adoptee_label in adoptees:
+                adoptee_road = f"{walk},{adoptee_label}"
+                adoptee_idea = self.get_idea_kid(road=adoptee_road)
+
         if not create_missing_ideas_groups:
             idea_kid = self._get_filtered_grouplinks_idea(idea_kid)
 
@@ -1060,6 +1067,20 @@ class ContractUnit:
             idea_kid.set_walk(parent_road=get_road_from_nodes(road_nodes))
 
         temp_idea.add_kid(idea_kid)
+
+        if adoptees != None:
+            weight_sum = 0
+            for adoptee_label in adoptees:
+                adoptee_road = f"{walk},{adoptee_label}"
+                adoptee_idea = self.get_idea_kid(road=adoptee_road)
+                weight_sum += adoptee_idea._weight
+                new_adoptee_walk = f"{walk},{idea_kid._label},{adoptee_label}"
+                self.add_idea(adoptee_idea, new_adoptee_walk)
+                self.edit_idea_attr(road=new_adoptee_walk, weight=adoptee_idea._weight)
+                self.del_idea_kid(adoptee_road)
+
+            if bundling:
+                self.edit_idea_attr(road=f"{walk},{idea_kid._label}", weight=weight_sum)
 
         if create_missing_ideas_groups:
             self._create_missing_ideas(road=Road(f"{walk},{idea_kid._label}"))
@@ -1149,9 +1170,7 @@ class ContractUnit:
 
         if x_road == []:
             if not del_children:
-                d_temp_idea = self.get_idea_kid(road=get_road_from_nodes(temps_d))
-                for kid in d_temp_idea._kids.values():
-                    self.add_idea(idea_kid=kid, walk=get_road_from_nodes(temps_d[:-1]))
+                self._move_idea_kids(road_nodes=temps_d)
             self._idearoot._kids.pop(temp_label)
         elif x_road != []:
             i_temp_idea = self._idearoot._kids[temp_label]
@@ -1160,8 +1179,16 @@ class ContractUnit:
                 parent_temp_idea = i_temp_idea
                 i_temp_idea = i_temp_idea._kids[temp_label]
 
+            if not del_children:
+                self.set_contract_metrics()
+                self._move_idea_kids(road_nodes=get_all_road_nodes(road))
             parent_temp_idea._kids.pop(temp_label)
         self.set_contract_metrics()
+
+    def _move_idea_kids(self, road_nodes: list):
+        d_temp_idea = self.get_idea_kid(road=get_road_from_nodes(road_nodes))
+        for kid in d_temp_idea._kids.values():
+            self.add_idea(idea_kid=kid, walk=get_road_from_nodes(road_nodes[:-1]))
 
     def set_owner(self, new_owner):
         self._owner = new_owner

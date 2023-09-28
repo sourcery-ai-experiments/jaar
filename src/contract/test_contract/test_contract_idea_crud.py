@@ -265,6 +265,38 @@ def test_contract_del_idea_kid_IdeaLevel1CanBeDeleted_ChildrenInherited():
     assert new_sunday_idea._walk == cx._economy_title
 
 
+def test_contract_del_idea_kid_IdeaLevelNCanBeDeleted_ChildrenInherited():
+    # GIVEN
+    cx = get_contract_with_4_levels()
+    states_text = "nation-state"
+    states_road = f"{cx._economy_title},{states_text}"
+    usa_text = "USA"
+    usa_road = f"{states_road},{usa_text}"
+    texas_text = "Texas"
+    oregon_text = "Oregon"
+    usa_texas_road = f"{usa_road},{texas_text}"
+    usa_oregon_road = f"{usa_road},{oregon_text}"
+    states_texas_road = f"{states_road},{texas_text}"
+    states_oregon_road = f"{states_road},{oregon_text}"
+    cx.set_contract_metrics()
+    assert cx._idea_dict.get(usa_road) != None
+    assert cx._idea_dict.get(usa_texas_road) != None
+    assert cx._idea_dict.get(usa_oregon_road) != None
+    assert cx._idea_dict.get(states_texas_road) is None
+    assert cx._idea_dict.get(states_oregon_road) is None
+
+    # WHEN
+    cx.del_idea_kid(road=usa_road, del_children=False)
+
+    # THEN
+    cx.set_contract_metrics()
+    assert cx._idea_dict.get(states_texas_road) != None
+    assert cx._idea_dict.get(states_oregon_road) != None
+    assert cx._idea_dict.get(usa_texas_road) is None
+    assert cx._idea_dict.get(usa_oregon_road) is None
+    assert cx._idea_dict.get(usa_road) is None
+
+
 def test_contract_del_idea_kid_IdeaLevel2CanBeDeleted_ChildrenDeleted():
     # GIVEN
     cx = get_contract_with_4_levels()
@@ -286,21 +318,23 @@ def test_contract_del_idea_kid_IdeaLevel2CanBeDeleted_ChildrenDeleted():
 def test_contract_del_idea_kid_IdeaLevelNCanBeDeleted_ChildrenDeleted():
     # GIVEN
     cx = get_contract_with_4_levels()
-    states = "nation-state"
-    USA = "USA"
-    Texas = "Texas"
-    texas_road = f"{cx._economy_title},{states},{USA},{Texas}"
-    assert cx.get_idea_kid(road=texas_road)
+    states_text = "nation-state"
+    states_road = f"{cx._economy_title},{states_text}"
+    usa_text = "USA"
+    usa_road = f"{states_road},{usa_text}"
+    texas_text = "Texas"
+    usa_texas_road = f"{usa_road},{texas_text}"
+    assert cx.get_idea_kid(road=usa_texas_road)
 
     # WHEN
-    cx.del_idea_kid(road=texas_road)
+    cx.del_idea_kid(road=usa_texas_road)
 
     # THEN
     with pytest_raises(Exception) as excinfo:
-        cx.get_idea_kid(road=texas_road)
+        cx.get_idea_kid(road=usa_texas_road)
     assert (
         str(excinfo.value)
-        == f"Getting idea_label='Texas' failed no item at '{texas_road}'"
+        == f"Getting idea_label='Texas' failed no item at '{usa_texas_road}'"
     )
 
 
@@ -561,66 +595,175 @@ def test_contract_add_idea_MustReorderKidsDictToBeAlphabetical():
     assert idea_list[0]._label == swim_text
 
 
-def test_ContractUnit__get_filtered_grouplinks_idea_CorrectlyFiltersIdea_grouplinks():
-    # GIVEN
+def test_contract_add_idea_adoptee_RaisesErrorIfAdopteeIdeaDoesNotHaveCorrectParent():
     owner_text = "Noa"
-    cx1 = ContractUnit(_owner=owner_text)
-    xia_text = "Xia"
-    zoa_text = "Zoa"
-    cx1.add_memberunit(name=xia_text)
-    cx1.add_memberunit(name=zoa_text)
-
-    work_text = "work"
-    work_road = f"{cx1._economy_title},{work_text}"
+    cx = ContractUnit(_owner=owner_text)
+    sports_text = "sports"
+    sports_road = f"{cx._economy_title},{sports_text}"
+    cx.add_idea(IdeaKid(_label=sports_text), walk=cx._economy_title)
     swim_text = "swim"
-    swim_road = f"{cx1._economy_title},{swim_text}"
-    cx1.add_idea(IdeaKid(_label=work_text), walk=cx1._economy_title)
-    cx1.add_idea(IdeaKid(_label=swim_text), walk=cx1._economy_title)
-    cx1.edit_idea_attr(road=swim_road, grouplink=grouplink_shop(name=xia_text))
-    cx1.edit_idea_attr(road=swim_road, grouplink=grouplink_shop(name=zoa_text))
-    cx1_swim_idea = cx1.get_idea_kid(swim_road)
-    assert len(cx1_swim_idea._grouplinks) == 2
-    cx2 = ContractUnit(_owner=owner_text)
-    cx2.add_memberunit(name=xia_text)
+    cx.add_idea(IdeaKid(_label=swim_text), walk=sports_road)
 
-    # WHEN
-    filtered_idea = cx2._get_filtered_grouplinks_idea(cx1_swim_idea)
+    # WHEN / THEN
+    summer_text = "summer"
+    hike_text = "hike"
+    hike_road = f"{sports_road},{hike_text}"
+    with pytest_raises(Exception) as excinfo:
+        cx.add_idea(
+            idea_kid=IdeaKid(_label=summer_text),
+            walk=sports_road,
+            adoptees=[swim_text, hike_text],
+        )
+    assert (
+        str(excinfo.value)
+        == f"Getting idea_label='{hike_text}' failed no item at '{hike_road}'"
+    )
 
-    # THEN
-    assert len(filtered_idea._grouplinks) == 1
-    assert list(filtered_idea._grouplinks.keys()) == [xia_text]
 
-
-def test_ContractUnit_add_idea_CorrectlyFiltersIdea_grouplinks():
-    # GIVEN
+def test_contract_add_idea_adoptee_CorrectlyAddsAdoptee():
     owner_text = "Noa"
-    cx1 = ContractUnit(_owner=owner_text)
-    xia_text = "Xia"
-    zoa_text = "Zoa"
-    cx1.add_memberunit(name=xia_text)
-    cx1.add_memberunit(name=zoa_text)
-
-    work_text = "work"
-    work_road = f"{cx1._economy_title},{work_text}"
+    cx = ContractUnit(_owner=owner_text)
+    sports_text = "sports"
+    sports_road = f"{cx._economy_title},{sports_text}"
+    cx.add_idea(IdeaKid(_label=sports_text), walk=cx._economy_title)
     swim_text = "swim"
-    swim_road = f"{cx1._economy_title},{swim_text}"
-    cx1.add_idea(IdeaKid(_label=work_text), walk=cx1._economy_title)
-    cx1.add_idea(IdeaKid(_label=swim_text), walk=cx1._economy_title)
-    cx1.edit_idea_attr(road=swim_road, grouplink=grouplink_shop(name=xia_text))
-    cx1.edit_idea_attr(road=swim_road, grouplink=grouplink_shop(name=zoa_text))
-    cx1_swim_idea = cx1.get_idea_kid(swim_road)
-    assert len(cx1_swim_idea._grouplinks) == 2
+    cx.add_idea(IdeaKid(_label=swim_text), walk=sports_road)
+    hike_text = "hike"
+    cx.add_idea(IdeaKid(_label=hike_text), walk=sports_road)
 
-    # WHEN
-    cx2 = ContractUnit(_owner=owner_text)
-    cx2.add_memberunit(name=xia_text)
-    cx2.add_idea(
-        idea_kid=cx1_swim_idea,
-        walk=cx2._economy_title,
-        create_missing_ideas_groups=False,
+    cx.set_contract_metrics()
+    sports_swim_road = f"{sports_road},{swim_text}"
+    sports_hike_road = f"{sports_road},{hike_text}"
+    assert cx._idea_dict.get(sports_swim_road) != None
+    assert cx._idea_dict.get(sports_hike_road) != None
+    summer_text = "summer"
+    summer_road = f"{sports_road},{summer_text}"
+    summer_swim_road = f"{summer_road},{swim_text}"
+    summer_hike_road = f"{summer_road},{hike_text}"
+    assert cx._idea_dict.get(summer_swim_road) is None
+    assert cx._idea_dict.get(summer_hike_road) is None
+
+    # WHEN / THEN
+    cx.add_idea(
+        idea_kid=IdeaKid(_label=summer_text),
+        walk=sports_road,
+        adoptees=[swim_text, hike_text],
     )
 
     # THEN
-    cx2_swim_idea = cx2.get_idea_kid(swim_road)
-    assert len(cx2_swim_idea._grouplinks) == 1
-    assert list(cx2_swim_idea._grouplinks.keys()) == [xia_text]
+    summer_idea = cx.get_idea_kid(summer_road)
+    print(f"{summer_idea._kids.keys()=}")
+    cx.set_contract_metrics()
+    assert cx._idea_dict.get(summer_swim_road) != None
+    assert cx._idea_dict.get(summer_hike_road) != None
+    assert cx._idea_dict.get(sports_swim_road) is None
+    assert cx._idea_dict.get(sports_hike_road) is None
+
+
+def test_contract_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdoptedIdeas():
+    owner_text = "Noa"
+    cx = ContractUnit(_owner=owner_text)
+    sports_text = "sports"
+    sports_road = f"{cx._economy_title},{sports_text}"
+    cx.add_idea(IdeaKid(_label=sports_text, _weight=2), walk=cx._economy_title)
+    swim_text = "swim"
+    swim_weight = 3
+    cx.add_idea(IdeaKid(_label=swim_text, _weight=swim_weight), walk=sports_road)
+    hike_text = "hike"
+    hike_weight = 5
+    cx.add_idea(IdeaKid(_label=hike_text, _weight=hike_weight), walk=sports_road)
+    bball_text = "bball"
+    bball_weight = 7
+    cx.add_idea(IdeaKid(_label=bball_text, _weight=bball_weight), walk=sports_road)
+
+    cx.set_contract_metrics()
+    sports_swim_road = f"{sports_road},{swim_text}"
+    sports_hike_road = f"{sports_road},{hike_text}"
+    sports_bball_road = f"{sports_road},{bball_text}"
+    assert cx._idea_dict.get(sports_swim_road)._weight == swim_weight
+    assert cx._idea_dict.get(sports_hike_road)._weight == hike_weight
+    assert cx._idea_dict.get(sports_bball_road)._weight == bball_weight
+    summer_text = "summer"
+    summer_road = f"{sports_road},{summer_text}"
+    summer_swim_road = f"{summer_road},{swim_text}"
+    summer_hike_road = f"{summer_road},{hike_text}"
+    summer_bball_road = f"{summer_road},{bball_text}"
+    assert cx._idea_dict.get(summer_swim_road) is None
+    assert cx._idea_dict.get(summer_hike_road) is None
+    assert cx._idea_dict.get(summer_bball_road) is None
+
+    # WHEN / THEN
+    cx.add_idea(
+        idea_kid=IdeaKid(_label=summer_text),
+        walk=sports_road,
+        adoptees=[swim_text, hike_text],
+        bundling=True,
+    )
+
+    # THEN
+    cx.set_contract_metrics()
+    assert cx._idea_dict.get(summer_road)._weight == swim_weight + hike_weight
+    assert cx._idea_dict.get(summer_swim_road)._weight == swim_weight
+    assert cx._idea_dict.get(summer_hike_road)._weight == hike_weight
+    assert cx._idea_dict.get(summer_bball_road) is None
+    assert cx._idea_dict.get(sports_swim_road) is None
+    assert cx._idea_dict.get(sports_hike_road) is None
+    assert cx._idea_dict.get(sports_bball_road) != None
+
+
+def test_contract_del_idea_kid_DeletingBundledIdeaReturnsIdeasToOriginalState():
+    owner_text = "Noa"
+    cx = ContractUnit(_owner=owner_text)
+    sports_text = "sports"
+    sports_road = f"{cx._economy_title},{sports_text}"
+    cx.add_idea(IdeaKid(_label=sports_text, _weight=2), walk=cx._economy_title)
+    swim_text = "swim"
+    swim_weight = 3
+    cx.add_idea(IdeaKid(_label=swim_text, _weight=swim_weight), walk=sports_road)
+    hike_text = "hike"
+    hike_weight = 5
+    cx.add_idea(IdeaKid(_label=hike_text, _weight=hike_weight), walk=sports_road)
+    bball_text = "bball"
+    bball_weight = 7
+    cx.add_idea(IdeaKid(_label=bball_text, _weight=bball_weight), walk=sports_road)
+
+    cx.set_contract_metrics()
+    sports_swim_road = f"{sports_road},{swim_text}"
+    sports_hike_road = f"{sports_road},{hike_text}"
+    sports_bball_road = f"{sports_road},{bball_text}"
+    assert cx._idea_dict.get(sports_swim_road)._weight == swim_weight
+    assert cx._idea_dict.get(sports_hike_road)._weight == hike_weight
+    assert cx._idea_dict.get(sports_bball_road)._weight == bball_weight
+    summer_text = "summer"
+    summer_road = f"{sports_road},{summer_text}"
+    summer_swim_road = f"{summer_road},{swim_text}"
+    summer_hike_road = f"{summer_road},{hike_text}"
+    summer_bball_road = f"{summer_road},{bball_text}"
+    assert cx._idea_dict.get(summer_swim_road) is None
+    assert cx._idea_dict.get(summer_hike_road) is None
+    assert cx._idea_dict.get(summer_bball_road) is None
+    cx.add_idea(
+        idea_kid=IdeaKid(_label=summer_text),
+        walk=sports_road,
+        adoptees=[swim_text, hike_text],
+        bundling=True,
+    )
+    cx.set_contract_metrics()
+    assert cx._idea_dict.get(summer_road)._weight == swim_weight + hike_weight
+    assert cx._idea_dict.get(summer_swim_road)._weight == swim_weight
+    assert cx._idea_dict.get(summer_hike_road)._weight == hike_weight
+    assert cx._idea_dict.get(summer_bball_road) is None
+    assert cx._idea_dict.get(sports_swim_road) is None
+    assert cx._idea_dict.get(sports_hike_road) is None
+    assert cx._idea_dict.get(sports_bball_road) != None
+    print(f"{cx._idea_dict.keys()=}")
+
+    # WHEN
+    cx.del_idea_kid(road=summer_road, del_children=False)
+
+    # THEN
+    cx.set_contract_metrics()
+    print(f"{cx._idea_dict.keys()=}")
+    assert cx._idea_dict.get(sports_swim_road)._weight == swim_weight
+    assert cx._idea_dict.get(sports_hike_road)._weight == hike_weight
+    assert cx._idea_dict.get(sports_bball_road)._weight == bball_weight
