@@ -205,7 +205,7 @@ class EconomyUnit:
             for groupunit_x in contractunit_x._groups.values():
                 groupunit_catalog_x = GroupUnitCatalog(
                     contract_owner=contractunit_x._owner,
-                    groupunit_name=groupunit_x.name,
+                    groupunit_brand=groupunit_x.brand,
                     partylinks_set_by_economy_road=groupunit_x._partylinks_set_by_economy_road,
                 )
                 sqlstr = get_groupunit_catalog_table_insert_sqlstr(groupunit_catalog_x)

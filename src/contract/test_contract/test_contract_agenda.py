@@ -649,10 +649,10 @@ def test_contract_create_agenda_item_CorrectlyCreatesAllContractAttributes():
     # beto_partylink = partylink_shop(name=beto_text)
 
     family_text = "family"
-    # groupunit_z = groupunit_shop(name=family_text)
+    # groupunit_z = groupunit_shop(brand=family_text)
     # groupunit_z.set_partylink(partylink=anna_partylink)
     # groupunit_z.set_partylink(partylink=beto_partylink)
-    grouplink_z = grouplink_shop(name=family_text)
+    grouplink_z = grouplink_shop(brand=family_text)
     clean_cookery_idea.set_grouplink(grouplink=grouplink_z)
 
     assert len(a1._partys) == 0
@@ -803,7 +803,7 @@ def test_agenda_IsSetByAssignedUnit_2PartyGroup():
     cx.add_partyunit(name=sue_text)
 
     run_text = "runners"
-    run_group = groupunit_shop(name=run_text)
+    run_group = groupunit_shop(brand=run_text)
     run_group.set_partylink(partylink=partylink_shop(name=sue_text))
     cx.set_groupunit(groupunit=run_group)
 

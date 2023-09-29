@@ -65,7 +65,7 @@ def test_contract_meld_PartyUnits():
 def test_contract_meld_GroupUnits():
     # GIVEN
     x1_name = "x1_group"
-    x1_group = groupunit_shop(name=x1_name)
+    x1_group = groupunit_shop(brand=x1_name)
 
     contract_text = "x_contract"
     cx1 = ContractUnit(_owner=contract_text)
@@ -74,7 +74,7 @@ def test_contract_meld_GroupUnits():
     cx2 = ContractUnit(_owner=contract_text)
     cx2.set_groupunit(groupunit=x1_group)
     x2_name = "x2_group"
-    x2_group = groupunit_shop(name=x2_name, uid=5)
+    x2_group = groupunit_shop(brand=x2_name, uid=5)
     cx2.set_groupunit(groupunit=x2_group)
     assert len(cx1._groups) == 1
 
@@ -254,7 +254,7 @@ def test_contract_acptfactunits_meld_GroupsMeldedBefore_Partys():
     cx2.set_partyunit(partyunit_shop(name=bob))
     assert cx2._groups.get(bob) != None
     assert cx2._groups.get(bob).uid is None
-    cx2.set_groupunit(groupunit_shop(name=bob, uid=13))
+    cx2.set_groupunit(groupunit_shop(brand=bob, uid=13))
     assert cx2._groups.get(bob).uid == 13
 
     # WHEN/THEN

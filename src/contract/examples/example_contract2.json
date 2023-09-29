@@ -267,7 +267,7 @@
                 }
             },
             "_single_party": false,
-            "name": "A a ron Jones",
+            "brand": "A a ron Jones",
             "single_party_id": 21,
             "uid": 32
         },
@@ -325,7 +325,7 @@
                 }
             },
             "_single_party": false,
-            "name": "ACME DevOps",
+            "brand": "ACME DevOps",
             "single_party_id": null,
             "uid": 12
         },
@@ -353,7 +353,7 @@
                 }
             },
             "_single_party": false,
-            "name": "ACME General",
+            "brand": "ACME General",
             "single_party_id": null,
             "uid": 29
         },
@@ -366,7 +366,7 @@
                 }
             },
             "_single_party": false,
-            "name": "America",
+            "brand": "America",
             "single_party_id": 1,
             "uid": 1
         },
@@ -379,7 +379,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Anna",
+            "brand": "Anna",
             "single_party_id": 2,
             "uid": 2
         },
@@ -392,7 +392,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Benjamin Stoddert",
+            "brand": "Benjamin Stoddert",
             "single_party_id": 14,
             "uid": 23
         },
@@ -405,7 +405,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Bob302",
+            "brand": "Bob302",
             "single_party_id": 6,
             "uid": 6
         },
@@ -418,7 +418,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Charles Lee",
+            "brand": "Charles Lee",
             "single_party_id": 13,
             "uid": 22
         },
@@ -441,7 +441,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Climate Change",
+            "brand": "Climate Change",
             "single_party_id": null,
             "uid": 20
         },
@@ -454,7 +454,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Ernesto Chavez",
+            "brand": "Ernesto Chavez",
             "single_party_id": 10,
             "uid": 10
         },
@@ -572,7 +572,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Everyone",
+            "brand": "Everyone",
             "single_party_id": null,
             "uid": 15
         },
@@ -595,7 +595,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Family",
+            "brand": "Family",
             "single_party_id": null,
             "uid": 13
         },
@@ -618,7 +618,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Friends",
+            "brand": "Friends",
             "single_party_id": null,
             "uid": 14
         },
@@ -631,7 +631,7 @@
                 }
             },
             "_single_party": false,
-            "name": "hurt by us dollar",
+            "brand": "hurt by us dollar",
             "single_party_id": null,
             "uid": 30
         },
@@ -644,7 +644,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Jacque Chirac",
+            "brand": "Jacque Chirac",
             "single_party_id": 20,
             "uid": 31
         },
@@ -657,7 +657,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Jane Randolph",
+            "brand": "Jane Randolph",
             "single_party_id": 17,
             "uid": 26
         },
@@ -685,7 +685,7 @@
                 }
             },
             "_single_party": false,
-            "name": "likes US DOLLAR",
+            "brand": "likes US DOLLAR",
             "single_party_id": null,
             "uid": 16
         },
@@ -698,7 +698,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Maria Reynolds",
+            "brand": "Maria Reynolds",
             "single_party_id": 7,
             "uid": 7
         },
@@ -711,7 +711,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Mark Reynolds",
+            "brand": "Mark Reynolds",
             "single_party_id": 16,
             "uid": 25
         },
@@ -724,7 +724,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Martha Wayles",
+            "brand": "Martha Wayles",
             "single_party_id": 15,
             "uid": 24
         },
@@ -737,7 +737,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Mikayla",
+            "brand": "Mikayla",
             "single_party_id": 12,
             "uid": 21
         },
@@ -750,7 +750,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Norberto",
+            "brand": "Norberto",
             "single_party_id": 22,
             "uid": 33
         },
@@ -773,7 +773,7 @@
                 }
             },
             "_single_party": false,
-            "name": "OceanView Apt",
+            "brand": "OceanView Apt",
             "single_party_id": null,
             "uid": 34
         },
@@ -786,7 +786,7 @@
                 }
             },
             "_single_party": false,
-            "name": "People who care about UTEP",
+            "brand": "People who care about UTEP",
             "single_party_id": null,
             "uid": 18
         },
@@ -799,7 +799,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Perrison",
+            "brand": "Perrison",
             "single_party_id": 9,
             "uid": 9
         },
@@ -812,7 +812,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Philipa",
+            "brand": "Philipa",
             "single_party_id": 5,
             "uid": 5
         },
@@ -840,7 +840,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Philosophy",
+            "brand": "Philosophy",
             "single_party_id": null,
             "uid": 11
         },
@@ -853,7 +853,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Prashant",
+            "brand": "Prashant",
             "single_party_id": 8,
             "uid": 8
         },
@@ -866,7 +866,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Renee Elise Goldsberry",
+            "brand": "Renee Elise Goldsberry",
             "single_party_id": 4,
             "uid": 4
         },
@@ -879,7 +879,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Shadwell Harris",
+            "brand": "Shadwell Harris",
             "single_party_id": 18,
             "uid": 27
         },
@@ -892,7 +892,7 @@
                 }
             },
             "_single_party": false,
-            "name": "SHOW ME2",
+            "brand": "SHOW ME2",
             "single_party_id": null,
             "uid": 17
         },
@@ -905,7 +905,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Thomas OSU",
+            "brand": "Thomas OSU",
             "single_party_id": 11,
             "uid": 19
         },
@@ -918,7 +918,7 @@
                 }
             },
             "_single_party": false,
-            "name": "Travis Fox",
+            "brand": "Travis Fox",
             "single_party_id": 3,
             "uid": 3
         },
@@ -931,7 +931,7 @@
                 }
             },
             "_single_party": false,
-            "name": "WIlliam Wallace",
+            "brand": "WIlliam Wallace",
             "single_party_id": 19,
             "uid": 28
         }
@@ -2928,7 +2928,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -2967,7 +2967,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -3006,7 +3006,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -3045,7 +3045,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -3084,7 +3084,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -3156,7 +3156,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -3195,7 +3195,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -3234,7 +3234,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -3273,7 +3273,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -3433,7 +3433,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -3482,7 +3482,7 @@
                                         "Family": {
                                             "creditor_weight": 1.0,
                                             "debtor_weight": 1,
-                                            "name": "Family"
+                                            "brand": "Family"
                                         }
                                     },
                                     "_close": null,
@@ -3521,7 +3521,7 @@
                                         "Family": {
                                             "creditor_weight": 1.0,
                                             "debtor_weight": 1,
-                                            "name": "Family"
+                                            "brand": "Family"
                                         }
                                     },
                                     "_close": null,
@@ -3636,7 +3636,7 @@
                                         "Family": {
                                             "creditor_weight": 1.0,
                                             "debtor_weight": 1,
-                                            "name": "Family"
+                                            "brand": "Family"
                                         }
                                     },
                                     "_close": null,
@@ -3675,7 +3675,7 @@
                                         "Family": {
                                             "creditor_weight": 1.0,
                                             "debtor_weight": 1,
-                                            "name": "Family"
+                                            "brand": "Family"
                                         }
                                     },
                                     "_close": null,
@@ -3714,7 +3714,7 @@
                                         "Family": {
                                             "creditor_weight": 1.0,
                                             "debtor_weight": 1,
-                                            "name": "Family"
+                                            "brand": "Family"
                                         }
                                     },
                                     "_close": null,
@@ -3796,7 +3796,7 @@
                                         "Family": {
                                             "creditor_weight": 1.0,
                                             "debtor_weight": 1,
-                                            "name": "Family"
+                                            "brand": "Family"
                                         }
                                     },
                                     "_close": null,
@@ -3859,7 +3859,7 @@
                         "Perrison": {
                             "creditor_weight": 1.0,
                             "debtor_weight": 1,
-                            "name": "Perrison"
+                            "brand": "Perrison"
                         }
                     },
                     "_close": null,
@@ -3941,7 +3941,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -4013,7 +4013,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -4052,7 +4052,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -4091,7 +4091,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -4130,7 +4130,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -4169,7 +4169,7 @@
                                 "Perrison": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Perrison"
+                                    "brand": "Perrison"
                                 }
                             },
                             "_close": null,
@@ -4208,7 +4208,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -4247,7 +4247,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -4286,7 +4286,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -4325,7 +4325,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -4428,7 +4428,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -4478,7 +4478,7 @@
                                 "Travis Fox": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Travis Fox"
+                                    "brand": "Travis Fox"
                                 }
                             },
                             "_close": null,
@@ -4572,7 +4572,7 @@
                                 "America": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "America"
+                                    "brand": "America"
                                 }
                             },
                             "_close": null,
@@ -4622,7 +4622,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -4694,7 +4694,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -4733,7 +4733,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -4772,7 +4772,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -4811,7 +4811,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -4850,7 +4850,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -4889,7 +4889,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -4962,7 +4962,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -5001,7 +5001,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -5040,7 +5040,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -5079,7 +5079,7 @@
                                 "Perrison": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Perrison"
+                                    "brand": "Perrison"
                                 }
                             },
                             "_close": null,
@@ -5130,7 +5130,7 @@
                         "OceanView Apt": {
                             "creditor_weight": 1.0,
                             "debtor_weight": 1,
-                            "name": "OceanView Apt"
+                            "brand": "OceanView Apt"
                         }
                     },
                     "_close": null,
@@ -5261,7 +5261,7 @@
                                                         "Norberto": {
                                                             "creditor_weight": 1.0,
                                                             "debtor_weight": 1,
-                                                            "name": "Norberto"
+                                                            "brand": "Norberto"
                                                         }
                                                     },
                                                     "_close": null,
@@ -5612,7 +5612,7 @@
                         "Family": {
                             "creditor_weight": 1.0,
                             "debtor_weight": 1,
-                            "name": "Family"
+                            "brand": "Family"
                         }
                     },
                     "_close": null,
@@ -5661,7 +5661,7 @@
                                 "America": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "America"
+                                    "brand": "America"
                                 }
                             },
                             "_close": null,
@@ -5711,7 +5711,7 @@
                                 "Family": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Family"
+                                    "brand": "Family"
                                 }
                             },
                             "_close": null,
@@ -5797,17 +5797,17 @@
                 "America": {
                     "creditor_weight": 1.0,
                     "debtor_weight": 1,
-                    "name": "America"
+                    "brand": "America"
                 },
                 "Climate Change": {
                     "creditor_weight": 1.0,
                     "debtor_weight": 1,
-                    "name": "Climate Change"
+                    "brand": "Climate Change"
                 },
                 "Family": {
                     "creditor_weight": 1.0,
                     "debtor_weight": 1,
-                    "name": "Family"
+                    "brand": "Family"
                 }
             },
             "_close": null,
@@ -5823,7 +5823,7 @@
                         "Renee Elise Goldsberry": {
                             "creditor_weight": 1.0,
                             "debtor_weight": 1,
-                            "name": "Renee Elise Goldsberry"
+                            "brand": "Renee Elise Goldsberry"
                         }
                     },
                     "_close": null,
@@ -5839,7 +5839,7 @@
                                 "Renee Elise Goldsberry": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Renee Elise Goldsberry"
+                                    "brand": "Renee Elise Goldsberry"
                                 }
                             },
                             "_close": null,
@@ -5902,7 +5902,7 @@
                         "hurt by us dollar": {
                             "creditor_weight": 1.0,
                             "debtor_weight": 1,
-                            "name": "hurt by us dollar"
+                            "brand": "hurt by us dollar"
                         }
                     },
                     "_close": null,
@@ -5996,7 +5996,7 @@
                                 "Climate Change": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Climate Change"
+                                    "brand": "Climate Change"
                                 }
                             },
                             "_close": null,
@@ -6184,7 +6184,7 @@
                                 "Renee Elise Goldsberry": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Renee Elise Goldsberry"
+                                    "brand": "Renee Elise Goldsberry"
                                 }
                             },
                             "_close": null,
@@ -6200,7 +6200,7 @@
                                         "Renee Elise Goldsberry": {
                                             "creditor_weight": 1.0,
                                             "debtor_weight": 1,
-                                            "name": "Renee Elise Goldsberry"
+                                            "brand": "Renee Elise Goldsberry"
                                         }
                                     },
                                     "_close": null,
@@ -6250,12 +6250,12 @@
                                         "Climate Change": {
                                             "creditor_weight": 1.0,
                                             "debtor_weight": 1,
-                                            "name": "Climate Change"
+                                            "brand": "Climate Change"
                                         },
                                         "Renee Elise Goldsberry": {
                                             "creditor_weight": 1.0,
                                             "debtor_weight": 1,
-                                            "name": "Renee Elise Goldsberry"
+                                            "brand": "Renee Elise Goldsberry"
                                         }
                                     },
                                     "_close": null,
@@ -6363,7 +6363,7 @@
                                 "Climate Change": {
                                     "creditor_weight": 1.0,
                                     "debtor_weight": 1,
-                                    "name": "Climate Change"
+                                    "brand": "Climate Change"
                                 }
                             },
                             "_close": null,

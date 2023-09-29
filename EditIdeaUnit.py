@@ -5,7 +5,7 @@ from ui.EditIdeaUnitUI import Ui_Form
 from PyQt5 import QtWidgets as qtw, QtCore
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1, QTableWidget as qtw0
 from src.contract.hreg_time import SuffFactUnitHregTime
-from src.contract.group import GroupLink, GroupName
+from src.contract.group import GroupLink, GroupBrand
 from src.contract.required_idea import Road
 from src.contract.hreg_time import get_24hr, get_60min
 from src.pyqt5_kit.pyqt_func import (
@@ -753,7 +753,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.idea2group_table.setRowCount(row)
             x_text = f"  Heir: {groupheir.name}"
             for grouplink in grouplinks_list:
-                if grouplink.name == groupheir.name:
+                if grouplink.brand == groupheir.name:
                     x_text = f"{groupheir.name}"
             self.idea2group_table.setItem(row - 1, 0, qtw1(x_text))
             self.idea2group_table.setItem(row - 1, 1, qtw1(groupheir.name))
@@ -770,11 +770,11 @@ class EditIdeaUnit(qtw0, Ui_Form):
         groupunits_names_list = []
         for groupunit in self.contract_x._groups.values():
             group_previously_selected = any(
-                groupunit.name == grouplink.name
+                groupunit.brand == grouplink.brand
                 for grouplink in self.yo_x._grouplinks.values()
             )
             if not group_previously_selected:
-                groupunits_names_list.append(groupunit.name)
+                groupunits_names_list.append(groupunit.brand)
         groupunits_names_list.sort(key=lambda x: x.lower(), reverse=False)
 
         self.idea2group_insert_combo.clear()
@@ -784,7 +784,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         bd_name_new = self.idea2group_insert_combo.currentText()
         if bd_name_new == "":
             raise Exception("bd_name is empty, idea2bd cannot be updated")
-        grouplink_new = GroupLink(name=GroupName(bd_name_new), weight=1)
+        grouplink_new = GroupLink(brand=GroupBrand(bd_name_new), weight=1)
         self.contract_x.edit_idea_attr(
             road=f"{self.yo_x._walk},{self.yo_x._label}", grouplink=grouplink_new
         )

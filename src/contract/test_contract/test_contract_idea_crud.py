@@ -414,18 +414,18 @@ def test_contract_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
 
     # _grouplink: dict = None,
     cx._idearoot._kids[work_text]._grouplinks = {
-        "fun": grouplink_shop(name="fun", creditor_weight=1, debtor_weight=7)
+        "fun": grouplink_shop(brand="fun", creditor_weight=1, debtor_weight=7)
     }
     _grouplinks = cx._idearoot._kids[work_text]._grouplinks
     assert _grouplinks == {
-        "fun": grouplink_shop(name="fun", creditor_weight=1, debtor_weight=7)
+        "fun": grouplink_shop(brand="fun", creditor_weight=1, debtor_weight=7)
     }
     cx.edit_idea_attr(
         road=work_road,
-        grouplink=grouplink_shop(name="fun", creditor_weight=4, debtor_weight=8),
+        grouplink=grouplink_shop(brand="fun", creditor_weight=4, debtor_weight=8),
     )
     assert cx._idearoot._kids[work_text]._grouplinks == {
-        "fun": grouplink_shop(name="fun", creditor_weight=4, debtor_weight=8)
+        "fun": grouplink_shop(brand="fun", creditor_weight=4, debtor_weight=8)
     }
 
     # _is_expanded: dict = None,

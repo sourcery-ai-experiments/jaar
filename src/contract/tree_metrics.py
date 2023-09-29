@@ -1,6 +1,6 @@
 import dataclasses
 from src.contract.required_idea import RequiredUnit, Road
-from src.contract.group import GroupLink, GroupName, GroupMetrics
+from src.contract.group import GroupLink, GroupBrand, GroupMetrics
 
 
 @dataclasses.dataclass
@@ -8,7 +8,7 @@ class TreeMetrics:
     node_count: int = None
     level_count: dict[int:int] = None
     required_bases: dict[Road:int] = None
-    grouplinks_metrics: dict[GroupName:GroupMetrics] = None
+    grouplinks_metrics: dict[GroupBrand:GroupMetrics] = None
     uid_max: int = None
     uid_dict: dict[int:int] = None
     all_idea_uids_are_unique: bool = None
@@ -36,7 +36,7 @@ class TreeMetrics:
         self,
         level: int,
         requireds: dict[Road:RequiredUnit],
-        grouplinks: dict[GroupName:GroupLink],
+        grouplinks: dict[GroupBrand:GroupLink],
         uid: int,
         promise: bool,
         idea_road: Road,
@@ -74,10 +74,10 @@ class TreeMetrics:
                     self.required_bases[required.base] + 1
                 )
 
-    def evaluate_grouplinks(self, grouplinks: dict[GroupName:GroupLink]):
+    def evaluate_grouplinks(self, grouplinks: dict[GroupBrand:GroupLink]):
         if grouplinks != None:
             for grouplink in grouplinks.values():
-                self.grouplinks_metrics[grouplink.name] = grouplink
+                self.grouplinks_metrics[grouplink.brand] = grouplink
 
     def set_uid_dict_emtpy_if_null(self):
         if self.uid_dict is None:

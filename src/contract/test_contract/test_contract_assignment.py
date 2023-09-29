@@ -102,18 +102,18 @@ def test_contractunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     jes_cx.set_partyunit(partyunit_shop(name=noa_text))
     jes_cx.set_partyunit(partyunit_shop(name=eli_text))
     swim_text = "swimmers"
-    jes_cx.set_groupunit(groupunit_shop(name=swim_text))
+    jes_cx.set_groupunit(groupunit_shop(brand=swim_text))
     swim_group = jes_cx._groups.get(swim_text)
     swim_group.set_partylink(partylink_shop(bob_text))
 
     hike_text = "hikers"
-    jes_cx.set_groupunit(groupunit_shop(name=hike_text))
+    jes_cx.set_groupunit(groupunit_shop(brand=hike_text))
     hike_group = jes_cx._groups.get(hike_text)
     hike_group.set_partylink(partylink_shop(bob_text))
     hike_group.set_partylink(partylink_shop(noa_text))
 
     hunt_text = "hunters"
-    jes_cx.set_groupunit(groupunit_shop(name=hunt_text))
+    jes_cx.set_groupunit(groupunit_shop(brand=hunt_text))
     hike_group = jes_cx._groups.get(hunt_text)
     hike_group.set_partylink(partylink_shop(noa_text))
     hike_group.set_partylink(partylink_shop(eli_text))

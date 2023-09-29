@@ -285,7 +285,7 @@ def test_economy_set_contract_bank_attrs_CorrectlyPopulatesContract_Groupunit_Pa
     sal_contract.add_partyunit(name=bob_text, creditor_weight=2, debtor_weight=2)
 
     swim_group_text = "swimming expert"
-    swim_group_unit = groupunit_shop(name=swim_group_text)
+    swim_group_unit = groupunit_shop(brand=swim_group_text)
     bob_link = partylink_shop(name=bob_text)
     swim_group_unit.set_partylink(partylink=bob_link)
     sal_contract.set_groupunit(groupunit=swim_group_unit)

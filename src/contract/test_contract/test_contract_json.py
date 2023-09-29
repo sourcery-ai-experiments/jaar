@@ -282,7 +282,7 @@ def test_contract_get_json_CorrectlyWorksForSimpleExample():
     tim_text = "tim"
     contract_y.add_partyunit(name=tim_text)
     run_text = "runners"
-    run_group = groupunit_shop(name=run_text)
+    run_group = groupunit_shop(brand=run_text)
     run_group.set_partylink(partylink=partylink_shop(name=sue_text))
     run_group.set_partylink(partylink=partylink_shop(name=tim_text))
     contract_y.set_groupunit(groupunit=run_group)
@@ -295,11 +295,11 @@ def test_contract_get_json_CorrectlyWorksForSimpleExample():
     tim_assigned_unit = assigned_unit_shop()
     tim_assigned_unit.set_suffgroup(name=tim_text)
     contract_y.edit_idea_attr(road=shave_road, assignedunit=tim_assigned_unit)
-    contract_y.edit_idea_attr(road=shave_road, grouplink=grouplink_shop(name=tim_text))
-    contract_y.edit_idea_attr(road=shave_road, grouplink=grouplink_shop(name=sue_text))
+    contract_y.edit_idea_attr(road=shave_road, grouplink=grouplink_shop(brand=tim_text))
+    contract_y.edit_idea_attr(road=shave_road, grouplink=grouplink_shop(brand=sue_text))
 
     contract_y.edit_idea_attr(
-        road=contract_y._economy_title, grouplink=grouplink_shop(name=sue_text)
+        road=contract_y._economy_title, grouplink=grouplink_shop(brand=sue_text)
     )
 
     yao_text = "Yao"

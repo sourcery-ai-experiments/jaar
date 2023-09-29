@@ -93,7 +93,7 @@ def test_contract_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedhei
     swimmers_text = "swimmers"
     assigned_unit_x.set_suffgroup(name=swimmers_text)
 
-    cx.set_groupunit(groupunit=groupunit_shop(name=swimmers_text))
+    cx.set_groupunit(groupunit=groupunit_shop(brand=swimmers_text))
     cx.add_idea(IdeaKid(_label=swim_text), walk=cx._economy_title)
     cx.add_idea(IdeaKid(_label=morn_text), walk=swim_road)
     cx.add_idea(IdeaKid(_label=four_text), walk=morn_road)

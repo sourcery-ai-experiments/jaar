@@ -9,7 +9,7 @@ from src.contract.required_assign import (
     #     sufffactunit_shop,
     #     Road,
 )
-from src.contract.group import GroupName, groupunit_shop
+from src.contract.group import GroupBrand, groupunit_shop
 from src.contract.party import partylink_shop
 from src.contract.contract import ContractUnit
 from pytest import raises as pytest_raises
@@ -51,7 +51,7 @@ def test_assigned_unit_shop_ifEmptyReturnsCorrectWithCorrectAttributes():
 
 def test_AssignedUnit_get_dict_ReturnsCorrectDictWithSingleSuffGroup():
     # GIVEN
-    bob_group_name = GroupName("bob")
+    bob_group_name = GroupBrand("bob")
     _suffgroups_x = {bob_group_name: bob_group_name}
     assigned_x = assigned_unit_shop(_suffgroups=_suffgroups_x)
 
@@ -155,7 +155,7 @@ def test_AssignedHeir_get_all_suff_partys_CorrectlyReturnsSingleDictWithAllParty
     c_x.add_partyunit(name=bob_text)
 
     swim_text = "swim"
-    swim_group = groupunit_shop(name=swim_text)
+    swim_group = groupunit_shop(brand=swim_text)
     swim_group.set_partylink(partylink=partylink_shop(name=jim_text))
     swim_group.set_partylink(partylink=partylink_shop(name=sue_text))
     c_x.set_groupunit(groupunit=swim_group)
@@ -245,7 +245,7 @@ def test_AssignedHeir_set_group_party_CorrectlySetsAttribute_NonEmpty_suffgroups
     c_x.add_partyunit(name=bob_text)
 
     swim_text = "swim"
-    swim_group = groupunit_shop(name=swim_text)
+    swim_group = groupunit_shop(brand=swim_text)
     swim_group.set_partylink(partylink=partylink_shop(name=jim_text))
     swim_group.set_partylink(partylink=partylink_shop(name=sue_text))
     c_x.set_groupunit(groupunit=swim_group)
@@ -276,7 +276,7 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
     c_x.add_partyunit(name=bob_text)
 
     swim_text = "swim"
-    swim_group = groupunit_shop(name=swim_text)
+    swim_group = groupunit_shop(brand=swim_text)
     swim_group.set_partylink(partylink=partylink_shop(name=jim_text))
     swim_group.set_partylink(partylink=partylink_shop(name=sue_text))
     c_x.set_groupunit(groupunit=swim_group)
@@ -416,13 +416,13 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqual_ParentAssignedHeir_Non
     c_x.add_partyunit(name=tom_text)
 
     swim2_text = "swim2"
-    swim2_group = groupunit_shop(name=swim2_text)
+    swim2_group = groupunit_shop(brand=swim2_text)
     swim2_group.set_partylink(partylink=partylink_shop(name=jim_text))
     swim2_group.set_partylink(partylink=partylink_shop(name=sue_text))
     c_x.set_groupunit(groupunit=swim2_group)
 
     swim3_text = "swim3"
-    swim3_group = groupunit_shop(name=swim3_text)
+    swim3_group = groupunit_shop(brand=swim3_text)
     swim3_group.set_partylink(partylink=partylink_shop(name=jim_text))
     swim3_group.set_partylink(partylink=partylink_shop(name=sue_text))
     swim3_group.set_partylink(partylink=partylink_shop(name=tom_text))
@@ -463,13 +463,13 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqualParentAssignedHeir_Rais
     c_x.add_partyunit(name=tom_text)
 
     swim2_text = "swim2"
-    swim2_group = groupunit_shop(name=swim2_text)
+    swim2_group = groupunit_shop(brand=swim2_text)
     swim2_group.set_partylink(partylink=partylink_shop(name=jim_text))
     swim2_group.set_partylink(partylink=partylink_shop(name=sue_text))
     c_x.set_groupunit(groupunit=swim2_group)
 
     swim3_text = "swim3"
-    swim3_group = groupunit_shop(name=swim3_text)
+    swim3_group = groupunit_shop(brand=swim3_text)
     swim3_group.set_partylink(partylink=partylink_shop(name=jim_text))
     swim3_group.set_partylink(partylink=partylink_shop(name=sue_text))
     swim3_group.set_partylink(partylink=partylink_shop(name=tom_text))

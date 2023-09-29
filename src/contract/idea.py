@@ -28,7 +28,7 @@ from src.contract.road import (
 from src.contract.group import (
     GroupHeir,
     GroupLink,
-    GroupName,
+    GroupBrand,
     Groupline,
     groupheir_shop,
     GroupUnit,
@@ -96,7 +96,7 @@ class IdeaAttrHolder:
     all_party_credit: bool = None
     all_party_debt: bool = None
     grouplink: GroupLink = None
-    grouplink_del: GroupName = None
+    grouplink_del: GroupBrand = None
     is_expanded: bool = None
     on_meld_weight_action: str = None
 
@@ -128,9 +128,9 @@ class IdeaCore:
     _walk: str = None
     _kids: dict = None
     _weight: int = 1
-    _grouplinks: dict[GroupName:GroupLink] = None
-    _groupheirs: dict[GroupName:GroupHeir] = None  # Calculated field
-    _grouplines: dict[GroupName:GroupLink] = None  # Calculated field
+    _grouplinks: dict[GroupBrand:GroupLink] = None
+    _groupheirs: dict[GroupBrand:GroupHeir] = None  # Calculated field
+    _grouplines: dict[GroupBrand:GroupLink] = None  # Calculated field
     _requiredunits: dict[Road:RequiredUnit] = None
     _requiredheirs: dict[Road:RequiredHeir] = None  # Calculated field
     _assignedunit: AssignedUnit = None
@@ -381,53 +381,53 @@ class IdeaCore:
         else:
             self._walk = f"{parent_road},{parent_label}"
 
-    def inherit_groupheirs(self, parent_groupheirs: dict[GroupName:GroupHeir] = None):
+    def inherit_groupheirs(self, parent_groupheirs: dict[GroupBrand:GroupHeir] = None):
         if parent_groupheirs is None:
             parent_groupheirs = {}
 
         self._groupheirs = {}
         for ib in parent_groupheirs.values():
             groupheir = groupheir_shop(
-                name=ib.name,
+                brand=ib.brand,
                 creditor_weight=ib.creditor_weight,
                 debtor_weight=ib.debtor_weight,
             )
-            self._groupheirs[groupheir.name] = groupheir
+            self._groupheirs[groupheir.brand] = groupheir
 
         self.set_grouplink_empty_if_null()
         for ib in self._grouplinks.values():
             groupheir = groupheir_shop(
-                name=ib.name,
+                brand=ib.brand,
                 creditor_weight=ib.creditor_weight,
                 debtor_weight=ib.debtor_weight,
             )
-            self._groupheirs[groupheir.name] = groupheir
+            self._groupheirs[groupheir.brand] = groupheir
 
     def set_kidless_grouplines(self):
         # get grouplines from self
         for bh in self._groupheirs.values():
             groupline_x = Groupline(
-                name=bh.name,
+                brand=bh.brand,
                 _contract_credit=bh._contract_credit,
                 _contract_debt=bh._contract_debt,
             )
-            self._grouplines[groupline_x.name] = groupline_x
+            self._grouplines[groupline_x.brand] = groupline_x
 
-    def set_grouplines(self, child_grouplines: dict[GroupName:Groupline] = None):
+    def set_grouplines(self, child_grouplines: dict[GroupBrand:Groupline] = None):
         self.set_grouplines_empty_if_null()
         if child_grouplines is None:
             child_grouplines = {}
 
         # get grouplines from child
         for bl in child_grouplines.values():
-            if self._grouplines.get(bl.name) is None:
-                self._grouplines[bl.name] = Groupline(
-                    name=bl.name,
+            if self._grouplines.get(bl.brand) is None:
+                self._grouplines[bl.brand] = Groupline(
+                    brand=bl.brand,
                     _contract_credit=0,
                     _contract_debt=0,
                 )
 
-            self._grouplines[bl.name].add_contract_credit_debt(
+            self._grouplines[bl.brand].add_contract_credit_debt(
                 contract_credit=bl._contract_credit, contract_debt=bl._contract_debt
             )
 
@@ -481,14 +481,14 @@ class IdeaCore:
         self.set_grouplink_empty_if_null()
         other_idea.set_grouplink_empty_if_null()
         for bl in other_idea._grouplinks.values():
-            if self._grouplinks.get(bl.name) != None:
-                self._grouplinks.get(bl.name).meld(
+            if self._grouplinks.get(bl.brand) != None:
+                self._grouplinks.get(bl.brand).meld(
                     other_grouplink=bl,
                     other_on_meld_weight_action=other_idea._on_meld_weight_action,
                     src_on_meld_weight_action=self._on_meld_weight_action,
                 )
             else:
-                self._grouplinks[bl.name] = bl
+                self._grouplinks[bl.brand] = bl
 
     def _meld_acptfactunits(self, other_idea):
         self.set_acptfactunits_empty_if_null()
@@ -613,7 +613,7 @@ class IdeaCore:
         if idea_attr.grouplink != None:
             self.set_grouplink(grouplink=idea_attr.grouplink)
         if idea_attr.grouplink_del != None:
-            self.del_grouplink(groupname=idea_attr.grouplink_del)
+            self.del_grouplink(groupbrand=idea_attr.grouplink_del)
         if idea_attr.is_expanded != None:
             self._is_expanded = idea_attr.is_expanded
         if idea_attr.promise != None:
@@ -725,14 +725,14 @@ class IdeaCore:
 
     def set_grouplink(self, grouplink: GroupLink):
         self.set_grouplink_empty_if_null()
-        self._grouplinks[grouplink.name] = grouplink
+        self._grouplinks[grouplink.brand] = grouplink
 
-    def del_grouplink(self, groupname: GroupName):
+    def del_grouplink(self, groupbrand: GroupBrand):
         self.set_grouplink_empty_if_null()
         try:
-            self._grouplinks.pop(groupname)
+            self._grouplinks.pop(groupbrand)
         except KeyError as e:
-            raise (f"Cannot delete grouplink '{groupname}'.") from e
+            raise (f"Cannot delete grouplink '{groupbrand}'.") from e
 
     def set_required_unit(self, required: RequiredUnit):
         self.set_requiredunits_empty_if_null()
@@ -753,7 +753,7 @@ class IdeaCore:
     def set_active_status(
         self,
         tree_traverse_count: int,
-        contract_groups: dict[GroupName:GroupUnit] = None,
+        contract_groups: dict[GroupBrand:GroupUnit] = None,
         contract_owner: str = None,
     ):
         self.set_acptfactheirs_empty_if_null()
@@ -943,7 +943,7 @@ class IdeaCore:
     def set_assignedheir(
         self,
         parent_assignheir: AssignedHeir,
-        contract_groups: dict[GroupName:GroupUnit],
+        contract_groups: dict[GroupBrand:GroupUnit],
     ):
         self.set_assignedunit_empty_if_null()
         self._assignedheir = assigned_heir_shop()
@@ -957,8 +957,8 @@ class IdeaCore:
         self.set_assignedunit_empty_if_null()
         return self._assignedunit.get_dict()
 
-    def assignor_in(self, groupnames: dict[GroupName:-1]):
-        return self._assignedheir.group_in(groupnames)
+    def assignor_in(self, groupbrands: dict[GroupBrand:-1]):
+        return self._assignedheir.group_in(groupbrands)
 
 
 @dataclasses.dataclass

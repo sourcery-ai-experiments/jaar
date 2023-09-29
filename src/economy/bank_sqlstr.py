@@ -573,7 +573,7 @@ def get_groupunit_catalog_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS groupunit_catalog (
           contract_owner VARCHAR(255) NOT NULL
-        , groupunit_name VARCHAR(1000) NOT NULL
+        , groupunit_brand VARCHAR(1000) NOT NULL
         , partylinks_set_by_economy_road VARCHAR(1000) NULL
         )
         ;
@@ -595,7 +595,7 @@ def get_groupunit_catalog_table_count(db_conn: Connection, contract_owner: str) 
 @dataclass
 class GroupUnitCatalog:
     contract_owner: str
-    groupunit_name: str
+    groupunit_brand: str
     partylinks_set_by_economy_road: str
 
 
@@ -605,12 +605,12 @@ def get_groupunit_catalog_table_insert_sqlstr(
     return f"""
         INSERT INTO groupunit_catalog (
           contract_owner
-        , groupunit_name
+        , groupunit_brand
         , partylinks_set_by_economy_road
         )
         VALUES (
           '{groupunit_catalog.contract_owner}'
-        , '{groupunit_catalog.groupunit_name}'
+        , '{groupunit_catalog.groupunit_brand}'
         , '{groupunit_catalog.partylinks_set_by_economy_road}'
         )
         ;
@@ -621,7 +621,7 @@ def get_groupunit_catalog_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog
     sqlstr = """
         SELECT 
           contract_owner
-        , groupunit_name
+        , groupunit_brand
         , partylinks_set_by_economy_road
         FROM groupunit_catalog
         ;
@@ -632,12 +632,10 @@ def get_groupunit_catalog_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog
     for row in results.fetchall():
         groupunit_catalog_x = GroupUnitCatalog(
             contract_owner=row[0],
-            groupunit_name=row[1],
+            groupunit_brand=row[1],
             partylinks_set_by_economy_road=row[2],
         )
-        dict_key = (
-            f"{groupunit_catalog_x.contract_owner} {groupunit_catalog_x.groupunit_name}"
-        )
+        dict_key = f"{groupunit_catalog_x.contract_owner} {groupunit_catalog_x.groupunit_brand}"
         dict_x[dict_key] = groupunit_catalog_x
     return dict_x
 

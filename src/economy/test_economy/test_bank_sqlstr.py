@@ -777,7 +777,7 @@ def test_economy_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTab
     # WHEN
     bob_group_x = GroupUnitCatalog(
         contract_owner=bob_text,
-        groupunit_name="US Dollar",
+        groupunit_brand="US Dollar",
         partylinks_set_by_economy_road=f"{get_temp_env_title()},USA",
     )
     bob_group_sqlstr = get_groupunit_catalog_table_insert_sqlstr(bob_group_x)

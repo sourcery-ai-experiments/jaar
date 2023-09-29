@@ -133,7 +133,7 @@ class EditProblem(qtw.QWidget, Ui_Form):
     def add_group(self):
         if self.add_group_text not in (None, ""):
             self.contract_x.set_groupunit(
-                groupunit_shop(name=self.add_group_text.text())
+                groupunit_shop(brand=self.add_group_text.text())
             )
         self.refresh_all()
 
@@ -162,9 +162,9 @@ class EditProblem(qtw.QWidget, Ui_Form):
             self.group1_name_combo.clear()
             self.group2_name_combo.clear()
             self.group3_name_combo.clear()
-            self.group1_name_combo.addItems(self.contract_x.get_groupunits_name_list())
-            self.group2_name_combo.addItems(self.contract_x.get_groupunits_name_list())
-            self.group3_name_combo.addItems(self.contract_x.get_groupunits_name_list())
+            self.group1_name_combo.addItems(self.contract_x.get_groupunits_brand_list())
+            self.group2_name_combo.addItems(self.contract_x.get_groupunits_brand_list())
+            self.group3_name_combo.addItems(self.contract_x.get_groupunits_brand_list())
             self.action1_combo.clear()
             self.action2_combo.clear()
             self.action3_combo.clear()

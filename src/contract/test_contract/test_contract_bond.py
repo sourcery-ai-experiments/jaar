@@ -84,7 +84,7 @@ def test_contractunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaGrouph
     assert cx.get_bond_status() == False
 
     # WHEN
-    cx.edit_idea_attr(road=clean_cookery_road, grouplink=grouplink_shop(name=tom_text))
+    cx.edit_idea_attr(road=clean_cookery_road, grouplink=grouplink_shop(brand=tom_text))
     # THEN
     assert cx.get_bond_status()
 
@@ -112,7 +112,7 @@ def test_contractunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGr
     assert cx.get_bond_status() == False
 
     # WHEN
-    cx.edit_idea_attr(road=clean_cookery_road, grouplink=grouplink_shop(name=tom_text))
+    cx.edit_idea_attr(road=clean_cookery_road, grouplink=grouplink_shop(brand=tom_text))
     clean_cookery_idea = cx.get_idea_kid(road=clean_cookery_road)
     assert len(clean_cookery_idea._groupheirs) == 1
     # THEN
@@ -144,7 +144,7 @@ def test_contractunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGr
     bob_text = "bob"
     cx.add_partyunit(name=bob_text)
     home_occupants_text = "home occupants"
-    home_occupants_groupunit = groupunit_shop(name=home_occupants_text)
+    home_occupants_groupunit = groupunit_shop(brand=home_occupants_text)
     home_occupants_groupunit.set_partylink(partylink=partylink_shop(name=tom_text))
     home_occupants_groupunit.set_partylink(partylink=partylink_shop(name=bob_text))
     cx.set_groupunit(groupunit=home_occupants_groupunit)
@@ -152,7 +152,7 @@ def test_contractunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGr
 
     # WHEN
     cx.edit_idea_attr(
-        road=clean_cookery_road, grouplink=grouplink_shop(name=home_occupants_text)
+        road=clean_cookery_road, grouplink=grouplink_shop(brand=home_occupants_text)
     )
     # THEN
     assert cx.get_bond_status()

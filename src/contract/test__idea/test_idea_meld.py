@@ -1,5 +1,5 @@
 from src.contract.idea import IdeaCore, IdeaAttrHolder
-from src.contract.group import GroupLink, GroupName, grouplink_shop
+from src.contract.group import GroupLink, GroupBrand, grouplink_shop
 from src.contract.required_idea import (
     RequiredUnit,
     acptfactunit_shop as c_acptfactunit,
@@ -36,7 +36,7 @@ def custom_set_idea_attr(
     all_party_credit: bool = None,
     all_party_debt: bool = None,
     grouplink: GroupLink = None,
-    grouplink_del: GroupName = None,
+    grouplink_del: GroupBrand = None,
     is_expanded: bool = None,
     promise: bool = None,
     problem_bool: bool = None,
@@ -197,19 +197,19 @@ def test_idea_grouplink_meld_BaseScenarioWorks_on_meld_weight_actionEquals_defau
     default_text = "default"
     custom_set_idea_attr(idea=yx1, on_meld_weight_action=default_text)
     custom_set_idea_attr(
-        idea=yx1, grouplink=grouplink_shop(name=br1, creditor_weight=2)
+        idea=yx1, grouplink=grouplink_shop(brand=br1, creditor_weight=2)
     )
     yx2 = IdeaCore(_label="Rocking")
     custom_set_idea_attr(idea=yx2, on_meld_weight_action=default_text)
     custom_set_idea_attr(
-        idea=yx2, grouplink=grouplink_shop(name=br1, creditor_weight=3)
+        idea=yx2, grouplink=grouplink_shop(brand=br1, creditor_weight=3)
     )
 
     # WHEN
     yx1.meld(other_idea=yx2)
 
     # THEN
-    bl_x = grouplink_shop(name=br1, creditor_weight=2)
+    bl_x = grouplink_shop(brand=br1, creditor_weight=2)
     assert yx1._grouplinks[br1] == bl_x
 
 
@@ -221,19 +221,21 @@ def test_idea_grouplink_meld_BaseScenarioWorks_on_meld_weight_actionEquals_sum()
     br1 = "Running"
     custom_set_idea_attr(idea=yx1, on_meld_weight_action=sum_text)
     custom_set_idea_attr(
-        idea=yx1, grouplink=grouplink_shop(name=br1, creditor_weight=2, debtor_weight=3)
+        idea=yx1,
+        grouplink=grouplink_shop(brand=br1, creditor_weight=2, debtor_weight=3),
     )
     yx2 = IdeaCore(_label="Rocking")
     custom_set_idea_attr(idea=yx2, on_meld_weight_action=sum_text)
     custom_set_idea_attr(
-        idea=yx2, grouplink=grouplink_shop(name=br1, creditor_weight=2, debtor_weight=3)
+        idea=yx2,
+        grouplink=grouplink_shop(brand=br1, creditor_weight=2, debtor_weight=3),
     )
 
     # WHEN
     yx1.meld(other_idea=yx2)
 
     # THEN
-    lu_x = grouplink_shop(name=br1, creditor_weight=4, debtor_weight=6)
+    lu_x = grouplink_shop(brand=br1, creditor_weight=4, debtor_weight=6)
     assert yx1._grouplinks[br1] == lu_x
 
 
@@ -245,22 +247,22 @@ def test_idea_grouplink_meld_TwoGroupsScenarioWorks():
     br1 = "Running"
     custom_set_idea_attr(idea=yx1, on_meld_weight_action=sum_text)
     custom_set_idea_attr(
-        idea=yx1, grouplink=grouplink_shop(name=br1, creditor_weight=2)
+        idea=yx1, grouplink=grouplink_shop(brand=br1, creditor_weight=2)
     )
 
     br2 = "Bears"
     yx2 = IdeaCore(_label="Rocking")
     custom_set_idea_attr(idea=yx1, on_meld_weight_action=sum_text)
     custom_set_idea_attr(
-        idea=yx2, grouplink=grouplink_shop(name=br2, creditor_weight=2)
+        idea=yx2, grouplink=grouplink_shop(brand=br2, creditor_weight=2)
     )
 
     # WHEN
     yx1.meld(other_idea=yx2)
 
     # THEN
-    lu_x1 = grouplink_shop(name=br1, creditor_weight=2)
-    lu_x2 = grouplink_shop(name=br2, creditor_weight=2)
+    lu_x1 = grouplink_shop(brand=br1, creditor_weight=2)
+    lu_x2 = grouplink_shop(brand=br2, creditor_weight=2)
     assert yx1._grouplinks[br1] == lu_x1
     assert yx1._grouplinks[br2] == lu_x2
 

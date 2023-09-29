@@ -12,7 +12,7 @@ from src.contract.party import (
 )
 from src.contract.group import (
     GroupLink,
-    GroupName,
+    GroupBrand,
     GroupUnit,
     grouplinks_get_from_dict,
     get_from_dict as groupunits_get_from_dict,
@@ -90,7 +90,7 @@ class ContractUnit:
     _owner: ContractOwner = None
     _weight: float = None
     _partys: dict[PartyName:PartyUnit] = None
-    _groups: dict[GroupName:GroupUnit] = None
+    _groups: dict[GroupBrand:GroupUnit] = None
     _idearoot: IdeaRoot = None
     _idea_dict: dict[Road:IdeaCore] = None
     _max_tree_traverse: int = 3
@@ -273,15 +273,15 @@ class ContractUnit:
         idea_kid = self.get_idea_kid(road=road)
         # get dict of all idea groupheirs
         groupheir_list = idea_kid._groupheirs.keys()
-        groupheir_dict = {groupheir_name: 1 for groupheir_name in groupheir_list}
+        groupheir_dict = {groupheir_brand: 1 for groupheir_brand in groupheir_list}
         non_single_groupunits = {
-            groupunit.name: groupunit
+            groupunit.brand: groupunit
             for groupunit in self._groups.values()
             if groupunit._single_party != True
         }
         # check all non_single_party_groupunits are in groupheirs
         for non_single_group in non_single_groupunits.values():
-            if groupheir_dict.get(non_single_group.name) is None:
+            if groupheir_dict.get(non_single_group.brand) is None:
                 return False
 
         # get dict of all partylinks that are in all groupheirs
@@ -418,25 +418,25 @@ class ContractUnit:
 
     def add_to_group_contract_credit_debt(
         self,
-        groupname: GroupName,
+        groupbrand: GroupBrand,
         groupheir_contract_credit: float,
         groupheir_contract_debt: float,
     ):
         for group in self._groups.values():
-            if group.name == groupname:
+            if group.brand == groupbrand:
                 group.set_empty_contract_credit_debt_to_zero()
                 group._contract_credit += groupheir_contract_credit
                 group._contract_debt += groupheir_contract_debt
 
     def add_to_group_contract_agenda_credit_debt(
         self,
-        groupname: GroupName,
+        groupbrand: GroupBrand,
         groupline_contract_credit: float,
         groupline_contract_debt: float,
     ):
         for group in self._groups.values():
             if (
-                group.name == groupname
+                group.brand == groupbrand
                 and groupline_contract_credit != None
                 and groupline_contract_debt != None
             ):
@@ -502,7 +502,7 @@ class ContractUnit:
             )
             partylinks = {partylink.name: partylink}
             group_unit = groupunit_shop(
-                name=partyunit.name,
+                brand=partyunit.name,
                 _single_party=True,
                 _partys=partylinks,
                 uid=None,
@@ -535,7 +535,7 @@ class ContractUnit:
             and self._groups.get(new_name) != None
             and self._groups.get(new_name)._single_party == False
         ):
-            self.del_groupunit(groupname=new_name)
+            self.del_groupunit(groupbrand=new_name)
         elif self._partys.get(new_name) != None:
             old_name_creditor_weight += self._partys.get(new_name).creditor_weight
 
@@ -543,7 +543,7 @@ class ContractUnit:
         groups_affected_list = []
         for group in self._groups.values():
             groups_affected_list.extend(
-                group.name
+                group.brand
                 for party_x in group._partys.values()
                 if party_x.name == old_name
             )
@@ -654,7 +654,7 @@ class ContractUnit:
     def set_groupunit(self, groupunit: GroupUnit, create_missing_partys: bool = None):
         self.set_groupunits_empty_if_null()
         groupunit._set_partylinks_empty_if_null()
-        self._groups[groupunit.name] = groupunit
+        self._groups[groupunit.brand] = groupunit
 
         if create_missing_partys:
             self._create_missing_partys(partylinks=groupunit._partys)
@@ -670,78 +670,82 @@ class ContractUnit:
                     )
                 )
 
-    def del_groupunit(self, groupname: GroupName):
-        self._groups.pop(groupname)
+    def del_groupunit(self, groupbrand: GroupBrand):
+        self._groups.pop(groupbrand)
 
-    def edit_groupunit_name(
-        self, old_name: GroupName, new_name: GroupName, allow_group_overwite: bool
+    def edit_groupunit_brand(
+        self, old_brand: GroupBrand, new_brand: GroupBrand, allow_group_overwite: bool
     ):
-        if not allow_group_overwite and self._groups.get(new_name) != None:
+        if not allow_group_overwite and self._groups.get(new_brand) != None:
             raise InvalidContractException(
-                f"Group '{old_name}' change to '{new_name}' failed since '{new_name}' exists."
+                f"Group '{old_brand}' change to '{new_brand}' failed since '{new_brand}' exists."
             )
-        elif self._groups.get(new_name) != None:
-            old_groupunit = self._groups.get(old_name)
-            old_groupunit.set_name(name=new_name)
-            self._groups.get(new_name).meld(other_group=old_groupunit)
-            self.del_groupunit(groupname=old_name)
-        elif self._groups.get(new_name) is None:
-            old_groupunit = self._groups.get(old_name)
+        elif self._groups.get(new_brand) != None:
+            old_groupunit = self._groups.get(old_brand)
+            old_groupunit.set_brand(brand=new_brand)
+            self._groups.get(new_brand).meld(other_group=old_groupunit)
+            self.del_groupunit(groupbrand=old_brand)
+        elif self._groups.get(new_brand) is None:
+            old_groupunit = self._groups.get(old_brand)
             groupunit_x = groupunit_shop(
-                name=new_name,
+                brand=new_brand,
                 uid=old_groupunit.uid,
                 _partys=old_groupunit._partys,
                 single_party_id=old_groupunit.single_party_id,
                 _single_party=old_groupunit._single_party,
             )
             self.set_groupunit(groupunit=groupunit_x)
-            self.del_groupunit(groupname=old_name)
+            self.del_groupunit(groupbrand=old_brand)
 
-        self._edit_grouplinks_name(
-            old_name=old_name,
-            new_name=new_name,
+        self._edit_grouplinks_brand(
+            old_brand=old_brand,
+            new_brand=new_brand,
             allow_group_overwite=allow_group_overwite,
         )
 
-    def _edit_grouplinks_name(
+    def _edit_grouplinks_brand(
         self,
-        old_name: GroupName,
-        new_name: GroupName,
+        old_brand: GroupBrand,
+        new_brand: GroupBrand,
         allow_group_overwite: bool,
     ):
         for idea_x in self.get_idea_list():
             if (
-                idea_x._grouplinks.get(new_name) != None
-                and idea_x._grouplinks.get(old_name) != None
+                idea_x._grouplinks.get(new_brand) != None
+                and idea_x._grouplinks.get(old_brand) != None
             ):
-                old_grouplink = idea_x._grouplinks.get(old_name)
-                old_grouplink.name = new_name
-                idea_x._grouplinks.get(new_name).meld(
+                old_grouplink = idea_x._grouplinks.get(old_brand)
+                old_grouplink.brand = new_brand
+                idea_x._grouplinks.get(new_brand).meld(
                     other_grouplink=old_grouplink,
                     other_on_meld_weight_action="sum",
                     src_on_meld_weight_action="sum",
                 )
 
-                idea_x.del_grouplink(groupname=old_name)
+                idea_x.del_grouplink(groupbrand=old_brand)
             elif (
-                idea_x._grouplinks.get(new_name) is None
-                and idea_x._grouplinks.get(old_name) != None
+                idea_x._grouplinks.get(new_brand) is None
+                and idea_x._grouplinks.get(old_brand) != None
             ):
-                old_grouplink = idea_x._grouplinks.get(old_name)
+                old_grouplink = idea_x._grouplinks.get(old_brand)
                 new_grouplink = grouplink_shop(
-                    name=new_name,
+                    brand=new_brand,
                     creditor_weight=old_grouplink.creditor_weight,
                     debtor_weight=old_grouplink.debtor_weight,
                 )
                 idea_x.set_grouplink(grouplink=new_grouplink)
-                idea_x.del_grouplink(groupname=old_name)
+                idea_x.del_grouplink(groupbrand=old_brand)
 
-    def get_groupunits_name_list(self):
-        groupname_list = list(self._groups.keys())
-        groupname_list.append("")
-        groupname_dict = {groupname.lower(): groupname for groupname in groupname_list}
-        groupname_lowercase_ordered_list = sorted(list(groupname_dict))
-        return [groupname_dict[group_l] for group_l in groupname_lowercase_ordered_list]
+    def get_groupunits_brand_list(self):
+        groupbrand_list = list(self._groups.keys())
+        groupbrand_list.append("")
+        groupbrand_dict = {
+            groupbrand.lower(): groupbrand for groupbrand in groupbrand_list
+        }
+        groupbrand_lowercase_ordered_list = sorted(list(groupbrand_dict))
+        return [
+            groupbrand_dict[group_l] for group_l in groupbrand_lowercase_ordered_list
+        ]
 
     def set_time_acptfacts(self, open: datetime = None, nigh: datetime = None) -> None:
         open_minutes = self.get_time_min_from_dt(dt=open) if open != None else None
@@ -1098,10 +1102,10 @@ class ContractUnit:
 
         return idea
 
-    def _create_missing_groups_partys(self, grouplinks: dict[GroupName:GroupLink]):
+    def _create_missing_groups_partys(self, grouplinks: dict[GroupBrand:GroupLink]):
         for grouplink_x in grouplinks.values():
-            if self._groups.get(grouplink_x.name) is None:
-                groupunit_x = groupunit_shop(name=grouplink_x.name, _partys={})
+            if self._groups.get(grouplink_x.brand) is None:
+                groupunit_x = groupunit_shop(brand=grouplink_x.brand, _partys={})
                 self.set_groupunit(groupunit=groupunit_x)
 
     def _create_missing_ideas(self, road):
@@ -1376,7 +1380,7 @@ class ContractUnit:
         all_party_credit: bool = None,
         all_party_debt: bool = None,
         grouplink: GroupLink = None,
-        grouplink_del: GroupName = None,
+        grouplink_del: GroupBrand = None,
         is_expanded: bool = None,
         on_meld_weight_action: str = None,
     ):  # sourcery skip: low-code-quality
@@ -1558,12 +1562,12 @@ class ContractUnit:
             grouplink_obj.reset_contract_credit_debt()
 
     def _set_groupunits_contract_importance(
-        self, groupheirs: dict[GroupName:GroupLink]
+        self, groupheirs: dict[GroupBrand:GroupLink]
     ):
         self.set_groupunits_empty_if_null()
         for grouplink_obj in groupheirs.values():
             self.add_to_group_contract_credit_debt(
-                groupname=grouplink_obj.name,
+                groupbrand=grouplink_obj.brand,
                 groupheir_contract_credit=grouplink_obj._contract_credit,
                 groupheir_contract_debt=grouplink_obj._contract_debt,
             )
@@ -1582,7 +1586,7 @@ class ContractUnit:
                 else:
                     for groupline_x in idea._grouplines.values():
                         self.add_to_group_contract_agenda_credit_debt(
-                            groupname=groupline_x.name,
+                            groupbrand=groupline_x.brand,
                             groupline_contract_credit=groupline_x._contract_credit,
                             groupline_contract_debt=groupline_x._contract_debt,
                         )
@@ -1619,7 +1623,7 @@ class ContractUnit:
         groups = []
         for group in self._groups.values():
             groups.extend(
-                group.name
+                group.brand
                 for partylink in group._partys.values()
                 if partylink.name == party_name
             )
@@ -2068,7 +2072,7 @@ class ContractUnit:
         contract4party._idearoot._kids = {}
         for ykx in self._idearoot._kids.values():
             y4a_included = any(
-                group_ancestor.name in party_groups
+                group_ancestor.brand in party_groups
                 for group_ancestor in ykx._grouplines.values()
             )
 
@@ -2157,10 +2161,10 @@ class ContractUnit:
         self.set_groupunits_empty_if_null()
         other_contract.set_groupunits_empty_if_null()
         for brx in other_contract._groups.values():
-            if self._groups.get(brx.name) is None:
+            if self._groups.get(brx.brand) is None:
                 self.set_groupunit(groupunit=brx)
             else:
-                self._groups.get(brx.name).meld(brx)
+                self._groups.get(brx.brand).meld(brx)
 
     def _meld_acptfacts(self, other_contract):
         self._set_acptfacts_empty_if_null()
@@ -2231,13 +2235,13 @@ class ContractUnit:
         revelant_groups = get_partys_relevant_groups(self._groups, contract_x._partys)
         for group_name, group_partys in revelant_groups.items():
             if contract_x._groups.get(group_name) is None:
-                group_x = groupunit_shop(name=group_name)
+                group_x = groupunit_shop(brand=group_name)
                 for party_name in group_partys:
                     group_x.set_partylink(partylink_shop(name=party_name))
                 contract_x.set_groupunit(group_x)
 
     def _get_assignor_promise_ideas(
-        self, contract_x, assignor_name: GroupName
+        self, contract_x, assignor_name: GroupBrand
     ) -> dict[Road:int]:
         contract_x.set_groupunits_empty_if_null()
         assignor_groups = get_party_relevant_groups(contract_x._groups, assignor_name)
@@ -2381,24 +2385,24 @@ def get_intersection_of_partys(
 
 
 def get_partys_relevant_groups(
-    groups_x: dict[GroupName:GroupUnit], partys_x: dict[PartyName:PartyUnit]
-) -> dict[GroupName:{PartyName: -1}]:
+    groups_x: dict[GroupBrand:GroupUnit], partys_x: dict[PartyName:PartyUnit]
+) -> dict[GroupBrand:{PartyName: -1}]:
     relevant_groups = {}
     for partyname_x in partys_x:
         for group_x in groups_x.values():
             if group_x._partys.get(partyname_x) != None:
-                if relevant_groups.get(group_x.name) is None:
-                    relevant_groups[group_x.name] = {}
-                relevant_groups.get(group_x.name)[partyname_x] = -1
+                if relevant_groups.get(group_x.brand) is None:
+                    relevant_groups[group_x.brand] = {}
+                relevant_groups.get(group_x.brand)[partyname_x] = -1
 
     return relevant_groups
 
 
 def get_party_relevant_groups(
-    groups_x: dict[GroupName:GroupUnit], partyname_x: PartyName
-) -> dict[GroupName:-1]:
+    groups_x: dict[GroupBrand:GroupUnit], partyname_x: PartyName
+) -> dict[GroupBrand:-1]:
     return {
-        group_x.name: -1
+        group_x.brand: -1
         for group_x in groups_x.values()
         if group_x._partys.get(partyname_x) != None
     }

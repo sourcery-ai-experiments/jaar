@@ -1,5 +1,5 @@
 from src.contract.party import PartyName, partylink_shop, partyunit_shop
-from src.contract.group import GroupName, groupunit_shop, grouplink_shop
+from src.contract.group import GroupBrand, groupunit_shop, grouplink_shop
 from src.contract.examples.example_contracts import (
     contract_v001 as examples_contract_v001,
     contract_v001_with_large_agenda as examples_contract_v001_with_large_agenda,
@@ -57,13 +57,13 @@ def test_contract_set_party_correctly_sets_partys_1():
 
     # WHEN
     cx._idearoot.set_grouplink(
-        grouplink=grouplink_shop(name=GroupName("rico"), creditor_weight=10)
+        grouplink=grouplink_shop(brand=GroupBrand("rico"), creditor_weight=10)
     )
     cx._idearoot.set_grouplink(
-        grouplink=grouplink_shop(name=GroupName("carmen"), creditor_weight=10)
+        grouplink=grouplink_shop(brand=GroupBrand("carmen"), creditor_weight=10)
     )
     cx._idearoot.set_grouplink(
-        grouplink=grouplink_shop(name=GroupName("patrick"), creditor_weight=10)
+        grouplink=grouplink_shop(brand=GroupBrand("patrick"), creditor_weight=10)
     )
     assert len(cx._idearoot._grouplinks) == 3
 
@@ -147,9 +147,9 @@ def test_contract_get_idea_list_CorrectlySetsPartyLinkContractCreditAndDebt():
     cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(rico_text)))
     cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(carm_text)))
     cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(patr_text)))
-    bl_rico = grouplink_shop(name=rico_text, creditor_weight=20, debtor_weight=40)
-    bl_carm = grouplink_shop(name=carm_text, creditor_weight=10, debtor_weight=5)
-    bl_patr = grouplink_shop(name=patr_text, creditor_weight=10, debtor_weight=5)
+    bl_rico = grouplink_shop(brand=rico_text, creditor_weight=20, debtor_weight=40)
+    bl_carm = grouplink_shop(brand=carm_text, creditor_weight=10, debtor_weight=5)
+    bl_patr = grouplink_shop(brand=patr_text, creditor_weight=10, debtor_weight=5)
     cx._idearoot.set_grouplink(grouplink=bl_rico)
     cx._idearoot.set_grouplink(grouplink=bl_carm)
     cx._idearoot.set_grouplink(grouplink=bl_patr)
@@ -176,7 +176,7 @@ def test_contract_get_idea_list_CorrectlySetsPartyLinkContractCreditAndDebt():
 
     # for grouplink in cx._groupheirs.values():
     #     print(
-    #         f"{cx._contract_importance=} {grouplink.name=} {grouplink._contract_credit=} {grouplink._contract_debt=}"
+    #         f"{cx._contract_importance=} {grouplink.brand=} {grouplink._contract_credit=} {grouplink._contract_debt=}"
     #     )
 
     assert rico_partylink._contract_credit == 0.5
@@ -189,7 +189,7 @@ def test_contract_get_idea_list_CorrectlySetsPartyLinkContractCreditAndDebt():
     # partylink_contract_credit_sum = 0.0
     # partylink_contract_debt_sum = 0.0
     # for group in cx._groups.values():
-    #     # print(f"{group.name=} {group._partys=}")
+    #     # print(f"{group.brand=} {group._partys=}")
 
     #     for partylink in group._partys.values():
     #         assert partylink._contract_credit != None
@@ -197,7 +197,7 @@ def test_contract_get_idea_list_CorrectlySetsPartyLinkContractCreditAndDebt():
     #         assert partylink._contract_debt != None
     #         assert partylink._contract_debt in [0.8, 0.1]
     #         # print(
-    #         #     f"{group.name=} {partylink._contract_importance=} {group._contract_importance=}"
+    #         #     f"{group.brand=} {partylink._contract_importance=} {group._contract_importance=}"
     #         # )
     #         partylink_contract_credit_sum += partylink._contract_credit
     #         partylink_contract_debt_sum += partylink._contract_debt
@@ -224,7 +224,7 @@ def test_contract_get_idea_list_CorrectlySetsPartyLinkContractCreditAndDebt():
     cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(selena_text)))
     cx._idearoot.set_grouplink(
         grouplink=grouplink_shop(
-            name=GroupName(selena_text), creditor_weight=20, debtor_weight=13
+            brand=GroupBrand(selena_text), creditor_weight=20, debtor_weight=13
         )
     )
     cx.set_contract_metrics()
@@ -246,7 +246,7 @@ def test_contract_get_idea_list_CorrectlySetsPartyLinkContractCreditAndDebt():
     # partylink_contract_debt_sum = 0.0
 
     # for group in cx._groups.values():
-    #     # print(f"{group.name=} {group._partys=}")
+    #     # print(f"{group.brand=} {group._partys=}")
 
     #     for partylink in group._partys.values():
     #         assert partylink._contract_credit != None
@@ -254,7 +254,7 @@ def test_contract_get_idea_list_CorrectlySetsPartyLinkContractCreditAndDebt():
     #         assert partylink._contract_debt != None
     #         assert partylink._contract_debt not in [0.8, 0.1]
     #         # print(
-    #         #     f"{group.name=} {partylink._contract_importance=} {group._contract_importance=}"
+    #         #     f"{group.brand=} {partylink._contract_importance=} {group._contract_importance=}"
     #         # )
     #         partylink_contract_credit_sum += partylink._contract_credit
     #         partylink_contract_debt_sum += partylink._contract_debt
@@ -299,9 +299,9 @@ def test_contract_get_idea_list_CorrectlySetsPartyUnitContractImportance():
     cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(rico_text)))
     cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(carm_text)))
     cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(patr_text)))
-    bl_rico = grouplink_shop(name=rico_text, creditor_weight=20, debtor_weight=40)
-    bl_carm = grouplink_shop(name=carm_text, creditor_weight=10, debtor_weight=5)
-    bl_patr = grouplink_shop(name=patr_text, creditor_weight=10, debtor_weight=5)
+    bl_rico = grouplink_shop(brand=rico_text, creditor_weight=20, debtor_weight=40)
+    bl_carm = grouplink_shop(brand=carm_text, creditor_weight=10, debtor_weight=5)
+    bl_patr = grouplink_shop(brand=patr_text, creditor_weight=10, debtor_weight=5)
     cx._idearoot._kids[swim_text].set_grouplink(grouplink=bl_rico)
     cx._idearoot._kids[swim_text].set_grouplink(grouplink=bl_carm)
     cx._idearoot._kids[swim_text].set_grouplink(grouplink=bl_patr)
@@ -350,7 +350,7 @@ def test_contract_get_idea_list_CorrectlySetsPartyUnitContractImportance():
     #     assert partyunit._contract_debt != None
     #     assert partyunit._contract_debt in [0.8, 0.1]
     #     # print(
-    #     #     f"{group.name=} {partyunit._contract_creditor=} {group._contract_creditor=}"
+    #     #     f"{group.brand=} {partyunit._contract_creditor=} {group._contract_creditor=}"
     #     # )
     #     print(f"{partyunit.name=} {partyunit._contract_credit=} {partyunit._contract_debt=} ")
     #     # print(f"{partyunit_contract_credit_sum=}")
@@ -366,7 +366,9 @@ def test_contract_get_idea_list_CorrectlySetsPartyUnitContractImportance():
     selena_text = "selena"
     cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(selena_text)))
     cx._idearoot.set_grouplink(
-        grouplink=grouplink_shop(name=selena_text, creditor_weight=20, debtor_weight=10)
+        grouplink=grouplink_shop(
+            brand=selena_text, creditor_weight=20, debtor_weight=10
+        )
     )
     cx.set_contract_metrics()
 
@@ -418,7 +420,7 @@ def test_contract_get_idea_list_CorrectlySetsPartyUnitContractImportance():
     #     assert partyunit._contract_debt != None
     #     assert partyunit._contract_debt not in [0.8, 0.1]
     #     # print(
-    #     #     f"{group.name=} {partyunit._contract_creditor=} {group._contract_creditor=}"
+    #     #     f"{group.brand=} {partyunit._contract_creditor=} {group._contract_creditor=}"
     #     # )
     #     print(f"{partyunit.name=} {partyunit._contract_credit=} {partyunit._contract_debt=} ")
     #     # print(f"{partyunit_contract_credit_sum=}")
@@ -443,9 +445,9 @@ def test_contract_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitContractImpor
     cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(rico_text)))
     cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(carm_text)))
     cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(patr_text)))
-    bl_rico = grouplink_shop(name=rico_text, creditor_weight=20, debtor_weight=40)
-    bl_carm = grouplink_shop(name=carm_text, creditor_weight=10, debtor_weight=5)
-    bl_patr = grouplink_shop(name=patr_text, creditor_weight=10, debtor_weight=5)
+    bl_rico = grouplink_shop(brand=rico_text, creditor_weight=20, debtor_weight=40)
+    bl_carm = grouplink_shop(brand=carm_text, creditor_weight=10, debtor_weight=5)
+    bl_patr = grouplink_shop(brand=patr_text, creditor_weight=10, debtor_weight=5)
     cx._idearoot._kids[swim_text].set_grouplink(grouplink=bl_rico)
     cx._idearoot._kids[swim_text].set_grouplink(grouplink=bl_carm)
     cx._idearoot._kids[swim_text].set_grouplink(grouplink=bl_patr)
@@ -490,9 +492,9 @@ def test_contract_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitContractImpor
     #     assert groupunit._contract_debt != None
     #     assert groupunit._contract_debt not in [0.8, 0.1]
     #     # print(
-    #     #     f"{group.name=} {groupunit._contract_creditor=} {group._contract_creditor=}"
+    #     #     f"{group.brand=} {groupunit._contract_creditor=} {group._contract_creditor=}"
     #     # )
-    #     print(f"{groupunit.name=} {groupunit._contract_credit=} {groupunit._contract_debt=} ")
+    #     print(f"{groupunit.brand=} {groupunit._contract_credit=} {groupunit._contract_debt=} ")
     #     # print(f"{groupunit_contract_credit_sum=}")
     #     # print(f"{groupunit_contract_debt_sum=}")
     #     groupunit_contract_credit_sum += groupunit._contract_credit
@@ -532,7 +534,7 @@ def test_contract_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitContractImpor
     #     assert partyunit._contract_debt != None
     #     assert partyunit._contract_debt not in [0.8, 0.1]
     #     # print(
-    #     #     f"{group.name=} {partyunit._contract_creditor=} {group._contract_creditor=}"
+    #     #     f"{group.brand=} {partyunit._contract_creditor=} {group._contract_creditor=}"
     #     # )
     #     print(f"{partyunit.name=} {partyunit._contract_credit=} {partyunit._contract_debt=} ")
     #     # print(f"{partyunit_contract_credit_sum=}")
@@ -590,7 +592,7 @@ def test_contract_get_idea_list_WithAllPartysWeighted():
     #     assert partyunit._contract_debt != None
     #     assert partyunit._contract_debt not in [0.8, 0.1]
     #     # print(
-    #     #     f"{group.name=} {partyunit._contract_creditor=} {group._contract_creditor=}"
+    #     #     f"{group.brand=} {partyunit._contract_creditor=} {group._contract_creditor=}"
     #     # )
     #     print(f"{partyunit.name=} {partyunit._contract_credit=} {partyunit._contract_debt=} ")
     #     # print(f"{partyunit_contract_credit_sum=}")
@@ -607,7 +609,7 @@ def clear_all_partyunits_groupunits_contract_agenda_credit_debt(cx: ContractUnit
     for groupunit_x in cx._groups.values():
         groupunit_x.reset_contract_credit_debt()
         # for partylink_x in groupunit_x._partys.values():
-        #     print(f"{groupunit_x.name=} {partylink_x.creditor_weight=}  {partylink_x._contract_credit:.6f} {partylink_x.debtor_weight=} {partylink_x._contract_debt:.6f} {partylink_x.name=} ")
+        #     print(f"{groupunit_x.brand=} {partylink_x.creditor_weight=}  {partylink_x._contract_credit:.6f} {partylink_x.debtor_weight=} {partylink_x._contract_debt:.6f} {partylink_x.name=} ")
 
     # DELETE contract_agenda_debt and contract_agenda_credit
     for partyunit_x in cx._partys.values():
@@ -817,8 +819,8 @@ def test_contract_get_party_groups_returnsCorrectData():
 
     swimmers = "swimmers"
     carmen_party_dict = {PartyName(carm_text): partylink_shop(name=carm_text)}
-    swim_group = groupunit_shop(name=swimmers, _partys=carmen_party_dict)
-    cx._groups[swim_group.name] = swim_group
+    swim_group = groupunit_shop(brand=swimmers, _partys=carmen_party_dict)
+    cx._groups[swim_group.brand] = swim_group
     carmen_group_list = cx.get_party_groups(party_name=carm_text)
     assert carmen_group_list == [carm_text, swimmers]
 
@@ -899,7 +901,7 @@ def test_contract_PartyUnit_CorrectlyChangesGroupUnitPartyLinks():
 
     swim_text = "swimmers"
     carmen_party_dict = {PartyName(carm_text): partylink_shop(name=carm_text)}
-    swim_group = groupunit_shop(name=swim_text, _partys=carmen_party_dict)
+    swim_group = groupunit_shop(brand=swim_text, _partys=carmen_party_dict)
     swim_group.set_partylink(
         partylink=partylink_shop(name=carm_text, creditor_weight=5, debtor_weight=18)
     )
@@ -944,7 +946,7 @@ def test_contract_PartyUnit_CorrectlyMergesNames():
 
     swim_text = "swimmers"
     carmen_party_dict = {PartyName(carm_text): partylink_shop(name=carm_text)}
-    swim_group = groupunit_shop(name=swim_text, _partys=carmen_party_dict)
+    swim_group = groupunit_shop(brand=swim_text, _partys=carmen_party_dict)
     swim_group.set_partylink(
         partylink=partylink_shop(name=carm_text, creditor_weight=5, debtor_weight=18)
     )
@@ -988,7 +990,7 @@ def test_contract_PartyUnit_CorrectlyMergesGroupUnitPartyLinks():
 
     swim_text = "swimmers"
     carmen_party_dict = {PartyName(carm_text): partylink_shop(name=carm_text)}
-    swim_group = groupunit_shop(name=swim_text, _partys=carmen_party_dict)
+    swim_group = groupunit_shop(brand=swim_text, _partys=carmen_party_dict)
     swim_group.set_partylink(
         partylink=partylink_shop(name=carm_text, creditor_weight=5, debtor_weight=18)
     )
@@ -1030,7 +1032,7 @@ def test_contract_PartyUnit_raiseErrorNewNameGroupUnitPreviouslyExists():
     anna_text = "anna"
     sx.add_partyunit(name=anna_text, uid=71, creditor_weight=17)
     carmen_text = "carmen"
-    carmen_group = groupunit_shop(name=carmen_text)
+    carmen_group = groupunit_shop(brand=carmen_text)
     carmen_group.set_partylink(partylink=partylink_shop(name=rico_text))
     carmen_group.set_partylink(partylink=partylink_shop(name=anna_text))
     sx.set_groupunit(groupunit=carmen_group)
@@ -1061,7 +1063,7 @@ def test_contract_PartyUnit_CorrectlyOverwriteNewNameGroupUnit():
     anna_text = "anna"
     sx.add_partyunit(name=anna_text, uid=71, creditor_weight=17)
     carmen_text = "carmen"
-    carmen_group = groupunit_shop(name=carmen_text)
+    carmen_group = groupunit_shop(brand=carmen_text)
     carmen_group.set_partylink(
         partylink=partylink_shop(name=rico_text, creditor_weight=3)
     )
@@ -1215,7 +1217,7 @@ def test_contract_get_partyunits_name_list_CorrectlyReturnsListOfPartyUnits():
     sx.set_partyunit(partyunit=partyunit_shop(name=will_text))
     sx.set_partyunit(partyunit=partyunit_shop(name=fry_text))
     fun_text = "fun people"
-    fun_group = groupunit_shop(name=fun_text)
+    fun_group = groupunit_shop(brand=fun_text)
     fun_group.set_partylink(partylink=partylink_shop(name=will_text))
     sx.set_groupunit(groupunit=fun_group)
     assert len(sx._groups) == 4

@@ -17,13 +17,13 @@ class InvalidGroupException(Exception):
     pass
 
 
-class GroupName(str):
+class GroupBrand(str):
     pass
 
 
 @dataclasses.dataclass
 class GroupCore:
-    name: GroupName
+    brand: GroupBrand
 
 
 @dataclasses.dataclass
@@ -38,9 +38,9 @@ class GroupUnit(GroupCore):
     _contract_agenda_debt: float = None
     _partylinks_set_by_economy_road: Road = None
 
-    def set_name(self, name: GroupName = None):
-        if name != None:
-            self.name = name
+    def set_brand(self, brand: GroupBrand = None):
+        if brand != None:
+            self.brand = brand
 
     def set_attr(self, _partylinks_set_by_economy_road: Road):
         if _partylinks_set_by_economy_road != None:
@@ -48,7 +48,7 @@ class GroupUnit(GroupCore):
 
     def get_dict(self):
         return {
-            "name": self.name,
+            "brand": self.brand,
             "uid": self.uid,
             "single_party_id": self.single_party_id,
             "_single_party": self._single_party,
@@ -131,17 +131,17 @@ class GroupUnit(GroupCore):
 
     def _meld_attributes_that_will_be_equal(self, other_group):
         xl = [
-            ("name", self.name, other_group.name),
+            ("brand", self.brand, other_group.brand),
             ("uid", self.uid, other_group.uid),
         ]
         while xl != []:
             attrs = xl.pop()
             if attrs[1] != attrs[2]:
                 raise InvalidGroupException(
-                    f"Meld fail GroupUnit {self.name} .{attrs[0]}='{attrs[1]}' not the same as .{attrs[0]}='{attrs[2]}"
+                    f"Meld fail GroupUnit {self.brand} .{attrs[0]}='{attrs[1]}' not the same as .{attrs[0]}='{attrs[2]}"
                 )
 
-        # if self.name != other_group.name:
+        # if self.brand != other_group.brand:
         #     raise InvalidGroupException(
         #             f"Meld fail idea={self._walk},{self._label} {attrs[0]}:{attrs[1]} with {other_idea._walk},{other_idea._label} {attrs[0]}:{attrs[2]}"
         #     )
@@ -163,20 +163,23 @@ def get_from_dict(x_dict: dict):
         except KeyError:
             ex_partylinks_set_by_economy_road = None
 
+        brand_text = "brand"
+        print(f"{groupunits_dict[brand_text]=}")
+
         x_group = groupunit_shop(
-            name=groupunits_dict["name"],
+            brand=groupunits_dict["brand"],
             uid=groupunits_dict["uid"],
             _single_party=groupunits_dict["_single_party"],
             single_party_id=groupunits_dict["single_party_id"],
             _partys=partylinks_get_from_dict(x_dict=groupunits_dict["_partys"]),
             _partylinks_set_by_economy_road=ex_partylinks_set_by_economy_road,
         )
-        groupunits[x_group.name] = x_group
+        groupunits[x_group.brand] = x_group
     return groupunits
 
 
 def groupunit_shop(
-    name: GroupName,
+    brand: GroupBrand,
     uid: int = None,
     single_party_id: int = None,
     _single_party: bool = None,
@@ -197,7 +200,7 @@ def groupunit_shop(
     if _single_party is None:
         _single_party = False
     return GroupUnit(
-        name=name,
+        brand=brand,
         uid=uid,
         single_party_id=single_party_id,
         _single_party=_single_party,
@@ -217,7 +220,7 @@ class GroupLink(GroupCore):
 
     def get_dict(self):
         return {
-            "name": self.name,
+            "brand": self.brand,
             "creditor_weight": self.creditor_weight,
             "debtor_weight": self.debtor_weight,
         }
@@ -243,30 +246,30 @@ class GroupLink(GroupCore):
 
 
 # class GroupLinksshop:
-def grouplinks_get_from_json(grouplinks_json: str) -> dict[GroupName, GroupLink]:
+def grouplinks_get_from_json(grouplinks_json: str) -> dict[GroupBrand, GroupLink]:
     grouplinks_dict = x_get_dict(json_x=grouplinks_json)
     return grouplinks_get_from_dict(x_dict=grouplinks_dict)
 
 
-def grouplinks_get_from_dict(x_dict: dict) -> dict[GroupName, GroupLink]:
+def grouplinks_get_from_dict(x_dict: dict) -> dict[GroupBrand, GroupLink]:
     grouplinks = {}
     for grouplinks_dict in x_dict.values():
         x_group = grouplink_shop(
-            name=grouplinks_dict["name"],
+            brand=grouplinks_dict["brand"],
             creditor_weight=grouplinks_dict["creditor_weight"],
             debtor_weight=grouplinks_dict["debtor_weight"],
         )
-        grouplinks[x_group.name] = x_group
+        grouplinks[x_group.brand] = x_group
     return grouplinks
 
 
 def grouplink_shop(
-    name: GroupName, creditor_weight: float = None, debtor_weight: float = None
+    brand: GroupBrand, creditor_weight: float = None, debtor_weight: float = None
 ) -> GroupLink:
     creditor_weight = x_func_return1ifnone(creditor_weight)
     debtor_weight = x_func_return1ifnone(debtor_weight)
     return GroupLink(
-        name=name, creditor_weight=creditor_weight, debtor_weight=debtor_weight
+        brand=brand, creditor_weight=creditor_weight, debtor_weight=debtor_weight
     )
 
 
@@ -292,7 +295,7 @@ class GroupHeir(GroupCore):
 
 
 def groupheir_shop(
-    name: GroupName,
+    brand: GroupBrand,
     creditor_weight: float = None,
     debtor_weight: float = None,
     _contract_credit: float = None,
@@ -301,7 +304,7 @@ def groupheir_shop(
     creditor_weight = x_func_return1ifnone(creditor_weight)
     debtor_weight = x_func_return1ifnone(debtor_weight)
     return GroupHeir(
-        name=name,
+        brand=brand,
         creditor_weight=creditor_weight,
         debtor_weight=debtor_weight,
         _contract_credit=_contract_credit,

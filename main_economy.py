@@ -403,7 +403,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             x_list.extend(
                 [
                     f"{contract_importance_diplay(groupunit._contract_debt)}/{contract_importance_diplay(groupunit._contract_credit)}",
-                    groupunit.name,
+                    groupunit.brand,
                     len(groupunit._partys),
                 ]
                 for groupunit in self.owner_output_contract._groups.values()

@@ -5,13 +5,13 @@ from src.contract.required_idea import (
     RequiredUnit,
     acptfactunit_shop,
 )
-from src.contract.contract import ContractUnit, get_from_json
+from src.contract.contract import ContractUnit, get_from_json as contract_get_from_json
 from src.contract.x_func import open_file as x_func_open_file
 from src.contract.examples.contract_env import contract_env
 
 
 def contract_v001() -> ContractUnit:
-    return get_from_json(
+    return contract_get_from_json(
         x_func_open_file(dest_dir=contract_env(), file_name="example_contract1.json")
     )
 
@@ -60,7 +60,7 @@ def contract_v001_with_large_agenda() -> ContractUnit:
 
 
 def contract_v002() -> ContractUnit:
-    return get_from_json(
+    return contract_get_from_json(
         x_func_open_file(dest_dir=contract_env(), file_name="example_contract2.json")
     )
 

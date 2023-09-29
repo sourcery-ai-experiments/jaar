@@ -1,5 +1,5 @@
 import dataclasses
-from src.contract.group import groupunit_shop, GroupUnit, GroupName
+from src.contract.group import groupunit_shop, GroupUnit, GroupBrand
 from src.contract.party import PartyName
 
 
@@ -9,7 +9,7 @@ class InvalidAssignHeirPopulateException(Exception):
 
 @dataclasses.dataclass
 class AssignedUnit:
-    _suffgroups: dict[GroupName:GroupName]
+    _suffgroups: dict[GroupBrand:GroupBrand]
 
     def get_dict(self) -> dict[str:str]:
         _suffgroups = {
@@ -18,14 +18,14 @@ class AssignedUnit:
         }
         return {"_suffgroups": _suffgroups}
 
-    def set_suffgroup(self, name: GroupName):
+    def set_suffgroup(self, name: GroupBrand):
         self._suffgroups[name] = -1
 
-    def del_suffgroup(self, name: GroupName):
+    def del_suffgroup(self, name: GroupBrand):
         self._suffgroups.pop(name)
 
 
-def assigned_unit_shop(_suffgroups: dict[GroupName:GroupName] = None) -> AssignedUnit:
+def assigned_unit_shop(_suffgroups: dict[GroupBrand:GroupBrand] = None) -> AssignedUnit:
     if _suffgroups is None:
         _suffgroups = {}
 
@@ -34,24 +34,24 @@ def assigned_unit_shop(_suffgroups: dict[GroupName:GroupName] = None) -> Assigne
 
 @dataclasses.dataclass
 class AssignedHeir:
-    _suffgroups: dict[GroupName:GroupName]
+    _suffgroups: dict[GroupBrand:GroupBrand]
     _group_party: bool
 
     def _get_all_partys(
         self,
-        contract_groups: dict[GroupName:GroupUnit],
-        groupname_dict: dict[GroupName:],
+        contract_groups: dict[GroupBrand:GroupUnit],
+        groupbrand_dict: dict[GroupBrand:],
     ):
         dict_x = {}
-        for groupname_x in groupname_dict:
-            dict_x |= contract_groups.get(groupname_x)._partys
+        for groupbrand_x in groupbrand_dict:
+            dict_x |= contract_groups.get(groupbrand_x)._partys
         return dict_x
 
-    def _get_all_suff_partys(self, contract_groups: dict[GroupName:GroupUnit]):
+    def _get_all_suff_partys(self, contract_groups: dict[GroupBrand:GroupUnit]):
         return self._get_all_partys(contract_groups, self._suffgroups)
 
     def set_group_party(
-        self, contract_groups: dict[GroupName:GroupUnit], contract_owner: PartyName
+        self, contract_groups: dict[GroupBrand:GroupUnit], contract_owner: PartyName
     ):
         self._group_party = False
         if self._suffgroups == {}:
@@ -65,7 +65,7 @@ class AssignedHeir:
         self,
         parent_assignheir,
         assignunit: AssignedUnit,
-        contract_groups: dict[GroupName:GroupUnit],
+        contract_groups: dict[GroupBrand:GroupUnit],
     ):
         dict_x = {}
         if parent_assignheir is None or parent_assignheir._suffgroups == {}:
@@ -80,12 +80,12 @@ class AssignedHeir:
             # collect all_partys of parent assignedheir groups
             all_parent_assignedheir_partys = self._get_all_partys(
                 contract_groups=contract_groups,
-                groupname_dict=parent_assignheir._suffgroups,
+                groupbrand_dict=parent_assignheir._suffgroups,
             )
             # collect all_partys of assignedunit groups
             all_assignedunit_partys = self._get_all_partys(
                 contract_groups=contract_groups,
-                groupname_dict=assignunit._suffgroups,
+                groupbrand_dict=assignunit._suffgroups,
             )
             if not set(all_assignedunit_partys).issubset(
                 set(all_parent_assignedheir_partys)
@@ -100,14 +100,14 @@ class AssignedHeir:
                 dict_x[suffgroup] = -1
         self._suffgroups = dict_x
 
-    def group_in(self, groupnames: dict[GroupName:-1]):
+    def group_in(self, groupbrands: dict[GroupBrand:-1]):
         return self._suffgroups == {} or any(
-            self._suffgroups.get(gn_x) != None for gn_x in groupnames
+            self._suffgroups.get(gn_x) != None for gn_x in groupbrands
         )
 
 
 def assigned_heir_shop(
-    _suffgroups: dict[GroupName:GroupName] = None, _group_party: bool = None
+    _suffgroups: dict[GroupBrand:GroupBrand] = None, _group_party: bool = None
 ) -> AssignedHeir:
     if _suffgroups is None:
         _suffgroups = {}

@@ -1,5 +1,5 @@
 from src.contract.idea import IdeaCore
-from src.contract.group import GroupName, grouplink_shop, groupheir_shop
+from src.contract.group import GroupBrand, grouplink_shop, groupheir_shop
 from src.contract.required_idea import (
     RequiredUnit,
     RequiredHeir,
@@ -72,21 +72,21 @@ def test_idea_core_grouplinks_exist():
     biker_creditor_weight = 12
     biker_debtor_weight = 15
     biker_link = grouplink_shop(
-        name=GroupName("bikers2"),
+        brand=GroupBrand("bikers2"),
         creditor_weight=biker_creditor_weight,
         debtor_weight=biker_debtor_weight,
     )
 
-    swimmer_name = GroupName("swimmers")
+    swimmer_name = GroupBrand("swimmers")
     swimmer_creditor_weight = 29
     swimmer_debtor_weight = 32
     swimmer_link = grouplink_shop(
-        name=swimmer_name,
+        brand=swimmer_name,
         creditor_weight=swimmer_creditor_weight,
         debtor_weight=swimmer_debtor_weight,
     )
 
-    group_links = {swimmer_link.name: swimmer_link, biker_link.name: biker_link}
+    group_links = {swimmer_link.brand: swimmer_link, biker_link.brand: biker_link}
 
     # WHEN
     idea_core = IdeaCore(_label="exercising", _grouplinks=group_links)
@@ -94,7 +94,7 @@ def test_idea_core_grouplinks_exist():
     # THEN
     assert idea_core._grouplinks == group_links
     # assert group_link_x.weight == 1.0
-    # group_link_x = grouplink_shop(name=bikers_name, weight=bikers_weight)
+    # group_link_x = grouplink_shop(brand=bikers_name, weight=bikers_weight)
     # assert group_link_x.weight == 3.0
 
 
@@ -104,22 +104,22 @@ def test_idea_core_get_inherited_groupheirs_weight_sum_WorksCorrectlyWithValues(
     biker_debtor_weight = 15
     biker_text = "bikers2"
     biker_link = groupheir_shop(
-        name=GroupName(biker_text),
+        brand=GroupBrand(biker_text),
         creditor_weight=biker_creditor_weight,
         debtor_weight=biker_debtor_weight,
     )
 
     swimmer_text = "swimmers"
-    swimmer_name = GroupName(swimmer_text)
+    swimmer_name = GroupBrand(swimmer_text)
     swimmer_creditor_weight = 29
     swimmer_debtor_weight = 32
     swimmer_link = groupheir_shop(
-        name=swimmer_name,
+        brand=swimmer_name,
         creditor_weight=swimmer_creditor_weight,
         debtor_weight=swimmer_debtor_weight,
     )
 
-    group_links = {swimmer_link.name: swimmer_link, biker_link.name: biker_link}
+    group_links = {swimmer_link.brand: swimmer_link, biker_link.brand: biker_link}
 
     # WHEN
     idea_core = IdeaCore(_label="exercising", _groupheirs=group_links)
@@ -264,33 +264,33 @@ def test_idea_get_dict_ReturnsDict():
             base=states_road, sufffacts={usa_sufffact.need: usa_sufffact}, _status=False
         ),
     }
-    biker_name = GroupName("bikers")
+    biker_name = GroupBrand("bikers")
     biker_creditor_weight = 3.0
     biker_debtor_weight = 7.0
     biker_link = grouplink_shop(
-        name=biker_name,
+        brand=biker_name,
         creditor_weight=biker_creditor_weight,
         debtor_weight=biker_debtor_weight,
     )
-    flyer_name = GroupName("flyers")
+    flyer_name = GroupBrand("flyers")
     flyer_creditor_weight = 6.0
     flyer_debtor_weight = 9.0
     flyer_link = grouplink_shop(
-        name=flyer_name,
+        brand=flyer_name,
         creditor_weight=flyer_creditor_weight,
         debtor_weight=flyer_debtor_weight,
     )
     biker_and_flyer_grouplinks = {
-        biker_link.name: biker_link,
-        flyer_link.name: flyer_link,
+        biker_link.brand: biker_link,
+        flyer_link.brand: flyer_link,
     }
     biker_get_dict = {
-        "name": biker_link.name,
+        "brand": biker_link.brand,
         "creditor_weight": biker_link.creditor_weight,
         "debtor_weight": biker_link.debtor_weight,
     }
     flyer_get_dict = {
-        "name": flyer_link.name,
+        "brand": flyer_link.brand,
         "creditor_weight": flyer_link.creditor_weight,
         "debtor_weight": flyer_link.debtor_weight,
     }
