@@ -24,11 +24,11 @@ def test_road_exists():
 
 
 def test_road_is_sub_road_correctlyReturnsBool():
-    actor = "actor"
+    owner = "owner"
     bloomers_text = "bloomers"
-    bloomers_road = f"{root_label()},{actor},{bloomers_text}"
+    bloomers_road = f"{root_label()},{owner},{bloomers_text}"
     roses_text = "roses"
-    roses_road = f"{root_label()},{actor},{bloomers_text},{roses_text}"
+    roses_road = f"{root_label()},{owner},{bloomers_text},{roses_text}"
 
     assert is_sub_road(bloomers_road, bloomers_road)
     assert is_sub_road(roses_road, bloomers_road)
@@ -47,16 +47,16 @@ def test_road_road_validate_correctlyReturnsRoad():
 
 
 def test_road_change_road_correctlyRoad():
-    actor = "actor"
+    owner = "owner"
     bloomers_text = "bloomers"
-    bloomers_road = Road(f"{root_label()},{actor},{bloomers_text}")
+    bloomers_road = Road(f"{root_label()},{owner},{bloomers_text}")
     plants_text = "plants"
-    plants_road = Road(f"{root_label()},{actor},{plants_text}")
+    plants_road = Road(f"{root_label()},{owner},{plants_text}")
     roses_text = "roses"
-    old_roses_road = Road(f"{root_label()},{actor},{bloomers_text},{roses_text}")
-    new_roses_road = Road(f"{root_label()},{actor},{plants_text},{roses_text}")
+    old_roses_road = Road(f"{root_label()},{owner},{bloomers_text},{roses_text}")
+    new_roses_road = Road(f"{root_label()},{owner},{plants_text},{roses_text}")
     # taff_text = "taff"
-    # new_roses_road = Road(f"{root_label()},{actor},{bloomers_text},{taff_text}")
+    # new_roses_road = Road(f"{root_label()},{owner},{bloomers_text},{taff_text}")
 
     print(f"{change_road(old_roses_road, bloomers_road, plants_road)}")
 
@@ -67,71 +67,71 @@ def test_road_change_road_correctlyRoad():
 
 def test_road_get_all_road_nodes_works():
     # GIVEN
-    actor_text = "actor"
-    actor_road = Road(f"{root_label()},{actor_text}")
+    owner_text = "owner"
+    owner_road = Road(f"{root_label()},{owner_text}")
     bloomers_text = "bloomers"
-    bloomers_road = Road(f"{root_label()},{actor_text},{bloomers_text}")
+    bloomers_road = Road(f"{root_label()},{owner_text},{bloomers_text}")
     roses_text = "roses"
-    roses_road = Road(f"{root_label()},{actor_text},{bloomers_text},{roses_text}")
+    roses_road = Road(f"{root_label()},{owner_text},{bloomers_text},{roses_text}")
 
     # WHEN/THENs
     root_list = [root_label()]
     assert get_all_road_nodes(road=root_label()) == root_list
-    actor_list = [root_label(), actor_text]
-    assert get_all_road_nodes(road=actor_road) == actor_list
-    bloomers_list = [root_label(), actor_text, bloomers_text]
+    owner_list = [root_label(), owner_text]
+    assert get_all_road_nodes(road=owner_road) == owner_list
+    bloomers_list = [root_label(), owner_text, bloomers_text]
     assert get_all_road_nodes(road=bloomers_road) == bloomers_list
-    roses_list = [root_label(), actor_text, bloomers_text, roses_text]
+    roses_list = [root_label(), owner_text, bloomers_text, roses_text]
     assert get_all_road_nodes(road=roses_road) == roses_list
 
 
 def test_road_get_terminus_node_from_road_works():
     # GIVEN
-    actor_text = "actor"
-    actor_road = Road(f"{root_label()},{actor_text}")
+    owner_text = "owner"
+    owner_road = Road(f"{root_label()},{owner_text}")
     bloomers_text = "bloomers"
-    bloomers_road = Road(f"{root_label()},{actor_text},{bloomers_text}")
+    bloomers_road = Road(f"{root_label()},{owner_text},{bloomers_text}")
     roses_text = "roses"
-    roses_road = Road(f"{root_label()},{actor_text},{bloomers_text},{roses_text}")
+    roses_road = Road(f"{root_label()},{owner_text},{bloomers_text},{roses_text}")
 
     # WHEN/THENs
     assert get_terminus_node_from_road(road=root_label()) == root_label()
-    assert get_terminus_node_from_road(road=actor_road) == actor_text
+    assert get_terminus_node_from_road(road=owner_road) == owner_text
     assert get_terminus_node_from_road(road=bloomers_road) == bloomers_text
     assert get_terminus_node_from_road(road=roses_road) == roses_text
 
 
 def test_road_get_walk_from_road_works():
     # GIVEN
-    actor_text = "actor"
-    actor_road = Road(f"{root_label()},{actor_text}")
+    owner_text = "owner"
+    owner_road = Road(f"{root_label()},{owner_text}")
     bloomers_text = "bloomers"
-    bloomers_road = Road(f"{root_label()},{actor_text},{bloomers_text}")
+    bloomers_road = Road(f"{root_label()},{owner_text},{bloomers_text}")
     roses_text = "roses"
-    roses_road = Road(f"{root_label()},{actor_text},{bloomers_text},{roses_text}")
+    roses_road = Road(f"{root_label()},{owner_text},{bloomers_text},{roses_text}")
 
     # WHEN/THENs
     assert get_walk_from_road(road=root_label()) == ""
-    assert get_walk_from_road(road=actor_road) == root_label()
-    assert get_walk_from_road(road=bloomers_road) == actor_road
+    assert get_walk_from_road(road=owner_road) == root_label()
+    assert get_walk_from_road(road=bloomers_road) == owner_road
     assert get_walk_from_road(road=roses_road) == bloomers_road
 
 
 def test_road_get_road_without_root_node_WorksCorrectly():
     # GIVEN
-    actor_text = "actor"
-    actor_road = Road(f"{root_label()},{actor_text}")
-    actor_without_root_road = Road(f",{actor_text}")
+    owner_text = "owner"
+    owner_road = Road(f"{root_label()},{owner_text}")
+    owner_without_root_road = Road(f",{owner_text}")
     bloomers_text = "bloomers"
-    bloomers_road = Road(f"{root_label()},{actor_text},{bloomers_text}")
-    bloomers_without_root_road = Road(f",{actor_text},{bloomers_text}")
+    bloomers_road = Road(f"{root_label()},{owner_text},{bloomers_text}")
+    bloomers_without_root_road = Road(f",{owner_text},{bloomers_text}")
     roses_text = "roses"
-    roses_road = Road(f"{root_label()},{actor_text},{bloomers_text},{roses_text}")
-    roses_without_root_road = Road(f",{actor_text},{bloomers_text},{roses_text}")
+    roses_road = Road(f"{root_label()},{owner_text},{bloomers_text},{roses_text}")
+    roses_without_root_road = Road(f",{owner_text},{bloomers_text},{roses_text}")
 
     # WHEN/THENs
     assert get_road_without_root_node(road=root_label()) == ","
-    assert get_road_without_root_node(road=actor_road) == actor_without_root_road
+    assert get_road_without_root_node(road=owner_road) == owner_without_root_road
     assert get_road_without_root_node(road=bloomers_road) == bloomers_without_root_road
     assert get_road_without_root_node(road=roses_road) == roses_without_root_road
     road_without_node = get_road_without_root_node(road=roses_road)
@@ -145,14 +145,14 @@ def test_road_get_road_without_root_node_WorksCorrectly():
 
 def test_road_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
     # GIVEN
-    old_seasons_road = f"{root_label()},actor,seasons"
+    old_seasons_road = f"{root_label()},owner,seasons"
     old_sufffact_x = sufffactunit_shop(need=old_seasons_road)
     old_sufffacts_x = {old_sufffact_x.need: old_sufffact_x}
 
     assert old_sufffacts_x.get(old_seasons_road) == old_sufffact_x
 
     # WHEN
-    new_seasons_road = f"{root_label()},actor,kookies"
+    new_seasons_road = f"{root_label()},owner,kookies"
     new_sufffacts_x = find_replace_road_key_dict(
         dict_x=old_sufffacts_x, old_road=old_seasons_road, new_road=new_seasons_road
     )
@@ -165,10 +165,10 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
 def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeEconomyTitleScenario():
     # GIVEN
     old_economy_title = "El Paso"
-    actor_text = "actor"
-    old_actor_road = f"{old_economy_title},{actor_text}"
+    owner_text = "owner"
+    old_owner_road = f"{old_economy_title},{owner_text}"
     seasons_text = "seasons"
-    old_seasons_road = f"{old_actor_road},{seasons_text}"
+    old_seasons_road = f"{old_owner_road},{seasons_text}"
     old_sufffact_x = sufffactunit_shop(need=old_seasons_road)
     old_sufffacts_x = {old_sufffact_x.need: old_sufffact_x}
 
@@ -176,8 +176,8 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeEconomyTitleSc
 
     # WHEN
     new_economy_title = "Austin"
-    new_actor_road = f"{new_economy_title},{actor_text}"
-    new_seasons_road = f"{new_actor_road},{seasons_text}"
+    new_owner_road = f"{new_economy_title},{owner_text}"
+    new_seasons_road = f"{new_owner_road},{seasons_text}"
     new_sufffacts_x = find_replace_road_key_dict(
         dict_x=old_sufffacts_x, old_road=old_seasons_road, new_road=new_seasons_road
     )
@@ -191,14 +191,14 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeEconomyTitleSc
 #     # sourcery skip: extract-duplicate-method
 #     # GIVEN
 #     src = f"{root_label()}"
-#     actor_text = "actor"
-#     actor_road = Road(f"{root_label()},{actor_text}")
+#     owner_text = "owner"
+#     owner_road = Road(f"{root_label()},{owner_text}")
 #     bloomers_text = "bloomers"
-#     bloomers_road = Road(f"{root_label()},{actor_text},{bloomers_text}")
+#     bloomers_road = Road(f"{root_label()},{owner_text},{bloomers_text}")
 #     old_roses_text = "roses"
-#     old_roses_road = Road(f"{root_label()},{actor_text},{bloomers_text},{old_roses_text}")
+#     old_roses_road = Road(f"{root_label()},{owner_text},{bloomers_text},{old_roses_text}")
 #     idea_roses = IdeaCore(_label=old_roses_text, _walk=bloomers_road)
-#     idea_bloomers = IdeaCore(_label=bloomers_text, _walk=actor_road)
+#     idea_bloomers = IdeaCore(_label=bloomers_text, _walk=owner_road)
 #     idea_bloomers.add_kid(idea_kid=idea_roses)
 
 #     for idea_key, idea_obj in idea_bloomers._kids.items():
@@ -208,7 +208,7 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeEconomyTitleSc
 
 #     # WHEN
 #     new_roses_text = "roses2"
-#     new_roses_road = Road(ff"{root_label()},actor,{new_roses_text}")
+#     new_roses_road = Road(ff"{root_label()},owner,{new_roses_text}")
 #     new_kids_x = find_replace_road_key_dict(
 #         dict_x=idea_bloomers._kids,
 #         old_road=old_roses_road,
@@ -278,18 +278,18 @@ def test_road_get_default_economy_root_label_ReturnsCorrectObj():
 def test_road_get_road_from_nodes_WorksCorrectly():
     # GIVEN
     root_list = get_all_road_nodes(root_label())
-    actor_text = "actor"
-    actor_road = Road(f"{root_label()},{actor_text}")
-    actor_list = get_all_road_nodes(actor_road)
+    owner_text = "owner"
+    owner_road = Road(f"{root_label()},{owner_text}")
+    owner_list = get_all_road_nodes(owner_road)
     bloomers_text = "bloomers"
-    bloomers_road = Road(f"{root_label()},{actor_text},{bloomers_text}")
+    bloomers_road = Road(f"{root_label()},{owner_text},{bloomers_text}")
     bloomers_list = get_all_road_nodes(bloomers_road)
     roses_text = "roses"
-    roses_road = Road(f"{root_label()},{actor_text},{bloomers_text},{roses_text}")
+    roses_road = Road(f"{root_label()},{owner_text},{bloomers_text},{roses_text}")
     roses_list = get_all_road_nodes(roses_road)
 
     # WHEN / THEN
     assert root_label() == get_road_from_nodes(root_list)
-    assert actor_road == get_road_from_nodes(actor_list)
+    assert owner_road == get_road_from_nodes(owner_list)
     assert bloomers_road == get_road_from_nodes(bloomers_list)
     assert roses_road == get_road_from_nodes(roses_list)

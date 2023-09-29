@@ -25,17 +25,17 @@ from os import path as os_path
 from json import loads as json_loads
 
 
-class InvalidActorException(Exception):
+class InvalidOwnerException(Exception):
     pass
 
 
 @dataclass
-class ActorAdmin:
-    _actor_name: str
+class OwnerAdmin:
+    _owner_name: str
     _env_dir: str
     _economy_title: str
-    _actor_dir: str = None
-    _actors_dir: str = None
+    _owner_dir: str = None
+    _owners_dir: str = None
     _isol_file_name: str = None
     _isol_file_path: str = None
     _contract_output_file_name: str = None
@@ -48,32 +48,32 @@ class ActorAdmin:
     _contracts_digest_dir: str = None
 
     def set_dirs(self):
-        env_actors_dir_name = "actors"
+        env_owners_dir_name = "owners"
         contracts_str = "contracts"
-        self._actors_dir = f"{self._env_dir}/{env_actors_dir_name}"
-        self._actor_dir = f"{self._actors_dir}/{self._actor_name}"
+        self._owners_dir = f"{self._env_dir}/{env_owners_dir_name}"
+        self._owner_dir = f"{self._owners_dir}/{self._owner_name}"
         self._isol_file_name = "isol_contract.json"
-        self._isol_file_path = f"{self._actor_dir}/{self._isol_file_name}"
+        self._isol_file_path = f"{self._owner_dir}/{self._isol_file_name}"
         self._contract_output_file_name = "output_contract.json"
         self._contract_output_file_path = (
-            f"{self._actor_dir}/{self._contract_output_file_name}"
+            f"{self._owner_dir}/{self._contract_output_file_name}"
         )
-        self._public_file_name = f"{self._actor_name}.json"
+        self._public_file_name = f"{self._owner_name}.json"
         self._contracts_public_dir = f"{self._env_dir}/{contracts_str}"
-        self._contracts_depot_dir = f"{self._actor_dir}/{contracts_str}"
-        self._contracts_ignore_dir = f"{self._actor_dir}/ignores"
-        self._contracts_bond_dir = f"{self._actor_dir}/bonds"
-        self._contracts_digest_dir = f"{self._actor_dir}/digests"
+        self._contracts_depot_dir = f"{self._owner_dir}/{contracts_str}"
+        self._contracts_ignore_dir = f"{self._owner_dir}/ignores"
+        self._contracts_bond_dir = f"{self._owner_dir}/bonds"
+        self._contracts_digest_dir = f"{self._owner_dir}/digests"
 
-    def set_actor_name(self, new_name: str):
-        old_actor_dir = self._actor_dir
-        self._actor_name = new_name
+    def set_owner_name(self, new_name: str):
+        old_owner_dir = self._owner_dir
+        self._owner_name = new_name
         self.set_dirs()
 
-        rename_dir(src=old_actor_dir, dst=self._actor_dir)
+        rename_dir(src=old_owner_dir, dst=self._owner_dir)
 
     def create_core_dir_and_files(self, isol_cx: ContractUnit = None):
-        single_dir_create_if_null(x_path=self._actor_dir)
+        single_dir_create_if_null(x_path=self._owner_dir)
         single_dir_create_if_null(x_path=self._contracts_public_dir)
         single_dir_create_if_null(x_path=self._contracts_depot_dir)
         single_dir_create_if_null(x_path=self._contracts_digest_dir)
@@ -123,8 +123,8 @@ class ActorAdmin:
         self._save_contract_to_path(contract_x, dest_dir, file_name)
 
     def save_isol_contract(self, contract_x: ContractUnit):
-        contract_x.set_owner(self._actor_name)
-        self._save_contract_to_path(contract_x, self._actor_dir, self._isol_file_name)
+        contract_x.set_owner(self._owner_name)
+        self._save_contract_to_path(contract_x, self._owner_dir, self._isol_file_name)
 
     def save_contract_to_depot(self, contract_x: ContractUnit):
         dest_dir = self._contracts_depot_dir
@@ -137,7 +137,7 @@ class ActorAdmin:
             cx_primary=isol_contract_x,
             meldees_dir=self._contracts_digest_dir,
         )
-        dest_dir = self._actor_dir
+        dest_dir = self._owner_dir
         file_name = self._contract_output_file_name
         self._save_contract_to_path(contract_x, dest_dir, file_name)
 
@@ -161,20 +161,20 @@ class ActorAdmin:
         cx = None
         if not self._isol_contract_exists():
             self.save_isol_contract(self._get_empty_isol_contract())
-        ct = x_func_open_file(self._actor_dir, self._isol_file_name)
+        ct = x_func_open_file(self._owner_dir, self._isol_file_name)
         cx = contractunit_get_from_json(cx_json=ct)
         cx.set_contract_metrics()
         return cx
 
     def open_output_contract(self) -> ContractUnit:
-        cx_json = x_func_open_file(self._actor_dir, self._contract_output_file_name)
+        cx_json = x_func_open_file(self._owner_dir, self._contract_output_file_name)
         cx_obj = contractunit_get_from_json(cx_json)
         cx_obj.set_contract_metrics()
         return cx_obj
 
     def _get_empty_isol_contract(self):
-        cx = ContractUnit(_owner=self._actor_name, _weight=0)
-        cx.add_memberunit(name=self._actor_name)
+        cx = ContractUnit(_owner=self._owner_name, _weight=0)
+        cx.add_memberunit(name=self._owner_name)
         cx.set_economy_title(self._economy_title)
         return cx
 
@@ -185,21 +185,21 @@ class ActorAdmin:
         x_func_delete_dir(f"{self._contracts_digest_dir}/{owner}.json")
 
     def erase_isol_contract_file(self):
-        x_func_delete_dir(dir=f"{self._actor_dir}/{self._isol_file_name}")
+        x_func_delete_dir(dir=f"{self._owner_dir}/{self._isol_file_name}")
 
     def raise_exception_if_no_file(self, dir_type: str, owner: str):
         cx_file_name = f"{owner}.json"
         if dir_type == "depot":
             cx_file_path = f"{self._contracts_depot_dir}/{cx_file_name}"
         if not os_path.exists(cx_file_path):
-            raise InvalidActorException(
-                f"Actor {self._actor_name} cannot find contract {owner} in {cx_file_path}"
+            raise InvalidOwnerException(
+                f"Owner {self._owner_name} cannot find contract {owner} in {cx_file_path}"
             )
 
     def _isol_contract_exists(self):
         bool_x = None
         try:
-            x_func_open_file(self._actor_dir, self._isol_file_name)
+            x_func_open_file(self._owner_dir, self._isol_file_name)
             bool_x = True
         except Exception:
             bool_x = False
@@ -213,22 +213,22 @@ class ActorAdmin:
         self.save_contract_to_public(self.get_remelded_output_contract())
 
 
-def actoradmin_shop(_actor_name: str, _env_dir: str, _economy_title: str) -> ActorAdmin:
-    uax = ActorAdmin(
-        _actor_name=_actor_name, _env_dir=_env_dir, _economy_title=_economy_title
+def owneradmin_shop(_owner_name: str, _env_dir: str, _economy_title: str) -> OwnerAdmin:
+    uax = OwnerAdmin(
+        _owner_name=_owner_name, _env_dir=_env_dir, _economy_title=_economy_title
     )
     uax.set_dirs()
     return uax
 
 
 @dataclass
-class ActorUnit:
-    _admin: ActorAdmin = None
+class OwnerUnit:
+    _admin: OwnerAdmin = None
     _isol: ContractUnit = None
 
     def refresh_depot_contracts(self):
         for member_x in self._isol._members.values():
-            if member_x.name != self._admin._actor_name:
+            if member_x.name != self._admin._owner_name:
                 member_contract = contractunit_get_from_json(
                     cx_json=self._admin.open_public_contract(member_x.name)
                 )
@@ -283,10 +283,10 @@ class ActorUnit:
     def _set_assignment_depotlink(self, outer_owner):
         src_cx = self._admin.open_depot_contract(outer_owner)
         src_cx.set_contract_metrics()
-        empty_cx = ContractUnit(_owner=self._admin._actor_name)
+        empty_cx = ContractUnit(_owner=self._admin._owner_name)
         empty_cx.set_economy_title(self._admin._economy_title)
         assign_cx = src_cx.get_assignment(
-            empty_cx, self.get_isol()._members, self._admin._actor_name
+            empty_cx, self.get_isol()._members, self._admin._owner_name
         )
         assign_cx.set_contract_metrics()
         self._admin.save_contract_to_digest(assign_cx, src_cx._owner)
@@ -341,21 +341,21 @@ class ActorUnit:
         self._admin.save_contract_to_digest(contractunit, src_contract_owner)
 
     # housekeeping
-    def set_env_dir(self, env_dir: str, actor_name: str, economy_title: str):
-        self._admin = actoradmin_shop(
-            _actor_name=actor_name, _env_dir=env_dir, _economy_title=economy_title
+    def set_env_dir(self, env_dir: str, owner_name: str, economy_title: str):
+        self._admin = owneradmin_shop(
+            _owner_name=owner_name, _env_dir=env_dir, _economy_title=economy_title
         )
 
     def create_core_dir_and_files(self, isol_cx: ContractUnit = None):
         self._admin.create_core_dir_and_files(isol_cx)
 
 
-def actorunit_shop(
+def ownerunit_shop(
     name: str, env_dir: str, economy_title: str, _auto_output_to_public: bool = None
-) -> ActorUnit:
-    actor_x = ActorUnit()
-    actor_x.set_env_dir(env_dir, name, economy_title=economy_title)
-    actor_x.get_isol()
-    actor_x._isol._set_auto_output_to_public(_auto_output_to_public)
-    actor_x.set_isol()
-    return actor_x
+) -> OwnerUnit:
+    owner_x = OwnerUnit()
+    owner_x.set_env_dir(env_dir, name, economy_title=economy_title)
+    owner_x.get_isol()
+    owner_x._isol._set_auto_output_to_public(_auto_output_to_public)
+    owner_x.set_isol()
+    return owner_x

@@ -33,7 +33,7 @@ from src.economy.bank_sqlstr import (
     get_groupunit_catalog_dict,
     get_table_count_sqlstr,
 )
-from src.economy.examples.example_actors import (
+from src.economy.examples.example_owners import (
     get_3node_contract,
     get_6node_contract,
     get_contract_3CleanNodesRandomWeights,
@@ -44,7 +44,7 @@ from src.economy.y_func import get_single_result_back
 def test_economy_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
 
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
@@ -164,7 +164,7 @@ def test_RiverFlowUnit_flow_returned_WorksCorrectly():
 
 
 def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cleanup):
-    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
 
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
@@ -237,7 +237,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
 def test_river_flow_insert_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
 
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
@@ -338,7 +338,7 @@ def test_RiverLedgerUnit_Exists():
 def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
 
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
@@ -438,7 +438,7 @@ def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
 def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
 
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
@@ -481,7 +481,7 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
 def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
 
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
@@ -596,7 +596,7 @@ def test_economy_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
 
 def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup):
-    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
@@ -672,7 +672,7 @@ def test_economy_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup)
 def test_economy_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
 
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
@@ -702,7 +702,7 @@ def test_economy_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTabl
 def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
 
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
@@ -764,7 +764,7 @@ def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
 def test_economy_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
 
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()

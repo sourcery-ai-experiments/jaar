@@ -29,7 +29,7 @@ def test_economy_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     economy_file_name = "economy.json"
     economy_file_path = f"{economy_dir}/{economy_file_name}"
     contracts_dir = f"{economy_dir}/contracts"
-    actors_dir = f"{economy_dir}/actors"
+    owners_dir = f"{economy_dir}/owners"
     bank_file_name = "bank.db"
     bank_file_path = f"{economy_dir}/{bank_file_name}"
 
@@ -37,7 +37,7 @@ def test_economy_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.isdir(economy_dir) is False
     assert os_path.exists(economy_file_path) is False
     assert os_path.exists(contracts_dir) is False
-    assert os_path.exists(actors_dir) is False
+    assert os_path.exists(owners_dir) is False
     assert os_path.exists(bank_file_path) is False
 
     # WHEN
@@ -48,11 +48,11 @@ def test_economy_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.isdir(economy_dir)
     assert os_path.exists(economy_file_path)
     assert os_path.exists(contracts_dir)
-    assert os_path.exists(actors_dir)
+    assert os_path.exists(owners_dir)
     assert os_path.exists(bank_file_path)
     assert sx.get_object_root_dir() == economy_dir
     assert sx.get_public_dir() == contracts_dir
-    assert sx.get_actors_dir() == actors_dir
+    assert sx.get_owners_dir() == owners_dir
     assert sx.get_bank_db_path() == bank_file_path
 
 
@@ -63,14 +63,14 @@ def test_rename_example_economy_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanu
     old_economy_file_name = "economy.json"
     old_economy_file_path = f"{old_economy_dir}/{old_economy_file_name}"
     old_contracts_dir = f"{old_economy_dir}/contracts"
-    old_actors_dir = f"{old_economy_dir}/actors"
+    old_owners_dir = f"{old_economy_dir}/owners"
 
     new_economy_title = "ex_env1"
     new_economy_dir = f"src/economy/examples/economys/{new_economy_title}"
     new_economy_file_name = "economy.json"
     new_economy_file_path = f"{new_economy_dir}/{new_economy_file_name}"
     new_contracts_dir = f"{new_economy_dir}/contracts"
-    new_actors_dir = f"{new_economy_dir}/actors"
+    new_owners_dir = f"{new_economy_dir}/owners"
     x_func_delete_dir(dir=new_economy_dir)
     print(f"{new_economy_dir=}")
 
@@ -84,17 +84,17 @@ def test_rename_example_economy_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanu
     assert os_path.isdir(old_economy_dir)
     assert os_path.exists(old_economy_file_path)
     assert os_path.exists(old_contracts_dir)
-    assert os_path.exists(old_actors_dir)
+    assert os_path.exists(old_owners_dir)
     assert sx.get_public_dir() == old_contracts_dir
-    assert sx.get_actors_dir() == old_actors_dir
+    assert sx.get_owners_dir() == old_owners_dir
 
     assert os_path.exists(new_economy_dir) is False
     assert os_path.isdir(new_economy_dir) is False
     assert os_path.exists(new_economy_file_path) is False
     assert os_path.exists(new_contracts_dir) is False
-    assert os_path.exists(new_actors_dir) is False
+    assert os_path.exists(new_owners_dir) is False
     assert sx.get_public_dir() != new_contracts_dir
-    assert sx.get_actors_dir() != new_actors_dir
+    assert sx.get_owners_dir() != new_owners_dir
     assert sx.title != new_economy_title
 
     # WHEN
@@ -105,17 +105,17 @@ def test_rename_example_economy_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanu
     assert os_path.isdir(old_economy_dir) is False
     assert os_path.exists(old_economy_file_path) is False
     assert os_path.exists(old_contracts_dir) is False
-    assert os_path.exists(old_actors_dir) is False
+    assert os_path.exists(old_owners_dir) is False
     assert sx.get_public_dir() != old_contracts_dir
-    assert sx.get_actors_dir() != old_actors_dir
+    assert sx.get_owners_dir() != old_owners_dir
 
     assert os_path.exists(new_economy_dir)
     assert os_path.isdir(new_economy_dir)
     assert os_path.exists(new_economy_file_path)
     assert os_path.exists(new_contracts_dir)
-    assert os_path.exists(new_actors_dir)
+    assert os_path.exists(new_owners_dir)
     assert sx.get_public_dir() == new_contracts_dir
-    assert sx.get_actors_dir() == new_actors_dir
+    assert sx.get_owners_dir() == new_owners_dir
     assert sx.title == new_economy_title
 
     # Undo change to directory
@@ -132,7 +132,7 @@ def test_copy_evaluation_economy_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     old_economy_file_name = "economy.json"
     old_economy_file_path = f"{old_economy_dir}/{old_economy_file_name}"
     old_contracts_dir = f"{old_economy_dir}/contracts"
-    old_actors_dir = f"{old_economy_dir}/actors"
+    old_owners_dir = f"{old_economy_dir}/owners"
 
     sx = economyunit_shop(title=old_economy_title, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null()
@@ -141,24 +141,24 @@ def test_copy_evaluation_economy_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     assert os_path.isdir(old_economy_dir)
     assert os_path.exists(old_economy_file_path)
     assert os_path.exists(old_contracts_dir)
-    assert os_path.exists(old_actors_dir)
+    assert os_path.exists(old_owners_dir)
     assert sx.get_public_dir() == old_contracts_dir
-    assert sx.get_actors_dir() == old_actors_dir
+    assert sx.get_owners_dir() == old_owners_dir
 
     new_economy_title = "ex_env1"
     new_economy_dir = f"src/economy/examples/economys/{new_economy_title}"
     new_economy_file_name = "economy.json"
     new_economy_file_path = f"{new_economy_dir}/{new_economy_file_name}"
     new_contracts_dir = f"{new_economy_dir}/contracts"
-    new_actors_dir = f"{new_economy_dir}/actors"
+    new_owners_dir = f"{new_economy_dir}/owners"
 
     assert os_path.exists(new_economy_dir) is False
     assert os_path.isdir(new_economy_dir) is False
     assert os_path.exists(new_economy_file_path) is False
     assert os_path.exists(new_contracts_dir) is False
-    assert os_path.exists(new_actors_dir) is False
+    assert os_path.exists(new_owners_dir) is False
     assert sx.get_public_dir() != new_contracts_dir
-    assert sx.get_actors_dir() != new_actors_dir
+    assert sx.get_owners_dir() != new_owners_dir
     assert sx.title != new_economy_title
 
     # WHEN
@@ -169,17 +169,17 @@ def test_copy_evaluation_economy_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     assert os_path.isdir(old_economy_dir)
     assert os_path.exists(old_economy_file_path)
     assert os_path.exists(old_contracts_dir)
-    assert os_path.exists(old_actors_dir)
+    assert os_path.exists(old_owners_dir)
     assert sx.get_public_dir() == old_contracts_dir
-    assert sx.get_actors_dir() == old_actors_dir
+    assert sx.get_owners_dir() == old_owners_dir
 
     assert os_path.exists(new_economy_dir)
     assert os_path.isdir(new_economy_dir)
     assert os_path.exists(new_economy_file_path)
     assert os_path.exists(new_contracts_dir)
-    assert os_path.exists(new_actors_dir)
+    assert os_path.exists(new_owners_dir)
     assert sx.get_public_dir() != new_contracts_dir
-    assert sx.get_actors_dir() != new_actors_dir
+    assert sx.get_owners_dir() != new_owners_dir
     assert sx.title != new_economy_title
 
     # Undo change to directory

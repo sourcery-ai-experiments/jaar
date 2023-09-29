@@ -8,7 +8,7 @@ from src.contract.examples.example_contracts import (
     get_contract_with7amCleanTableRequired as example_contracts_get_contract_with7amCleanTableRequired,
     get_assignment_contract_example1 as example_contract_get_assignment_contract_example1,
 )
-from src.economy.examples.example_actors import get_contract_assignment_laundry_example1
+from src.economy.examples.example_owners import get_contract_assignment_laundry_example1
 
 
 def test_contractunit_get_assignment_ReturnsContract():

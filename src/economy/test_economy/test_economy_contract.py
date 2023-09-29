@@ -4,7 +4,7 @@ from src.contract.examples.example_contracts import (
     get_contract_1Task_1CE0MinutesRequired_1AcptFact as example_contracts_get_contract_1Task_1CE0MinutesRequired_1AcptFact,
     contract_v001 as example_contracts_contract_v001,
 )
-import src.economy.examples.example_actors as example_actors
+import src.economy.examples.example_owners as example_owners
 from os import path as os_path
 from src.economy.examples.economy_env_kit import (
     get_temp_env_title,
@@ -19,7 +19,7 @@ def test_economy_set_contract_CreatesContractFile(env_dir_setup_cleanup):
     economy_title = get_temp_env_title()
     sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null()
-    sx1_obj = example_actors.get_1node_contract()
+    sx1_obj = example_owners.get_1node_contract()
     sx1_path = f"{sx.get_public_dir()}/{sx1_obj._owner}.json"
     assert os_path.exists(sx1_path) == False
 
@@ -36,7 +36,7 @@ def test_economy_get_contract_currentlyGetsContract(env_dir_setup_cleanup):
     economy_title = get_temp_env_title()
     e5 = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     e5.create_dirs_if_null(in_memory_bank=True)
-    sx5_obj = example_actors.get_7nodeJRootWithH_contract()
+    sx5_obj = example_owners.get_7nodeJRootWithH_contract()
     e5.save_public_contract(contract_x=sx5_obj)
 
     # WHEN / THEN

@@ -1,12 +1,12 @@
-from src.economy.actor import actorunit_shop
+from src.economy.owner import ownerunit_shop
 from src.contract.contract import ContractUnit
 from src.contract.examples.example_contracts import (
     get_contract_with_4_levels as example_contracts_get_contract_with_4_levels,
 )
-import src.economy.examples.example_actors as example_actors
-from src.economy.examples.actor_env_kit import (
-    actor_dir_setup_cleanup,
-    get_temp_actor_dir,
+import src.economy.examples.example_owners as example_owners
+from src.economy.examples.owner_env_kit import (
+    owner_dir_setup_cleanup,
+    get_temp_owner_dir,
     get_temp_economy_title,
 )
 from src.contract.origin import originunit_shop
@@ -18,16 +18,16 @@ from src.contract.x_func import (
 from pytest import raises as pytest_raises
 
 
-# def test_actor_save_isol_contract_CreateStartingContractFile(
-#     actor_dir_setup_cleanup,
+# def test_owner_save_isol_contract_CreateStartingContractFile(
+#     owner_dir_setup_cleanup,
 # ):
 #     # GIVEN
 #     lai_name = "Lai"
-#     env_dir = get_temp_actor_dir()
-#     lai_contract = actorunit_shop(name=lai_name, env_dir=env_dir)
+#     env_dir = get_temp_owner_dir()
+#     lai_contract = ownerunit_shop(name=lai_name, env_dir=env_dir)
 #     lai_isol_file_name = lai_contract._admin._isol_file_name
 #     with pytest_raises(Exception) as excinfo:
-#         x_func_open_file(lai_contract._admin._actor_dir, lai_isol_file_name)
+#         x_func_open_file(lai_contract._admin._owner_dir, lai_isol_file_name)
 #     assert (
 #         str(excinfo.value)
 #         == f"Could not load file {lai_contract._admin._isol_file_path} (2, 'No such file or directory')"
@@ -39,17 +39,17 @@ from pytest import raises as pytest_raises
 #     )
 
 #     # THEN
-#     assert x_func_open_file(lai_contract._admin._actor_dir, lai_isol_file_name) != None
+#     assert x_func_open_file(lai_contract._admin._owner_dir, lai_isol_file_name) != None
 
 
-def test_actoropen_isol_contract_WhenStartingContractFileDoesNotExists(
-    actor_dir_setup_cleanup,
+def test_owneropen_isol_contract_WhenStartingContractFileDoesNotExists(
+    owner_dir_setup_cleanup,
 ):
     # GIVEN
     tim_text = "Tim"
-    env_dir = get_temp_actor_dir()
+    env_dir = get_temp_owner_dir()
     economy_title_text = get_temp_economy_title()
-    ux = actorunit_shop(
+    ux = ownerunit_shop(
         name=tim_text, env_dir=env_dir, economy_title=economy_title_text
     )
 
@@ -82,13 +82,13 @@ def test_actoropen_isol_contract_WhenStartingContractFileDoesNotExists(
     assert list(isol_contract._groups.keys()) == [tim_text]
 
 
-def test_actor_save_isol_contract_IsolContractOwnerMustBeActor(
-    actor_dir_setup_cleanup,
+def test_owner_save_isol_contract_IsolContractOwnerMustBeOwner(
+    owner_dir_setup_cleanup,
 ):
     # GIVEN
     p_name = "Game1"
-    env_dir = get_temp_actor_dir()
-    ux = actorunit_shop(p_name, env_dir, get_temp_economy_title())
+    env_dir = get_temp_owner_dir()
+    ux = ownerunit_shop(p_name, env_dir, get_temp_economy_title())
     cx1 = example_contracts_get_contract_with_4_levels()
     assert cx1._owner != p_name
 
@@ -96,16 +96,16 @@ def test_actor_save_isol_contract_IsolContractOwnerMustBeActor(
     ux._admin.save_isol_contract(contract_x=cx1)
 
     # THEN
-    assert ux._admin.open_isol_contract()._owner == ux._admin._actor_name
+    assert ux._admin.open_isol_contract()._owner == ux._admin._owner_name
 
 
-def test_actor_open_isol_contract_WhenStartingContractFileExists(
-    actor_dir_setup_cleanup,
+def test_owner_open_isol_contract_WhenStartingContractFileExists(
+    owner_dir_setup_cleanup,
 ):
     # GIVEN
     p_name = "Game1"
-    env_dir = get_temp_actor_dir()
-    ux = actorunit_shop(p_name, env_dir, get_temp_economy_title())
+    env_dir = get_temp_owner_dir()
+    ux = ownerunit_shop(p_name, env_dir, get_temp_economy_title())
     ux._admin.save_isol_contract(
         contract_x=example_contracts_get_contract_with_4_levels()
     )
@@ -124,41 +124,41 @@ def test_actor_open_isol_contract_WhenStartingContractFileExists(
     assert isol_contract._idearoot._acptfactunits == {}
     assert isol_contract._members == {}
     assert isol_contract._groups == {}
-    assert isol_contract._owner == ux._admin._actor_name
+    assert isol_contract._owner == ux._admin._owner_name
 
 
-def test_actor_erase_isol_contract_file_DeletesFileCorrectly(
-    actor_dir_setup_cleanup,
+def test_owner_erase_isol_contract_file_DeletesFileCorrectly(
+    owner_dir_setup_cleanup,
 ):
     # GIVEN
     p_name = "Game1"
-    env_dir = get_temp_actor_dir()
-    ux = actorunit_shop(p_name, env_dir, get_temp_economy_title())
+    env_dir = get_temp_owner_dir()
+    ux = ownerunit_shop(p_name, env_dir, get_temp_economy_title())
     ux._admin.save_isol_contract(example_contracts_get_contract_with_4_levels())
     file_name = ux._admin._isol_file_name
-    assert x_func_open_file(ux._admin._actor_dir, file_name) != None
+    assert x_func_open_file(ux._admin._owner_dir, file_name) != None
 
     # WHEN
     ux._admin.erase_isol_contract_file()
 
     # THEN
     with pytest_raises(Exception) as excinfo:
-        x_func_open_file(ux._admin._actor_dir, file_name)
+        x_func_open_file(ux._admin._owner_dir, file_name)
     assert (
         str(excinfo.value)
-        == f"Could not load file {ux._admin._actor_dir}/isol_contract.json (2, 'No such file or directory')"
+        == f"Could not load file {ux._admin._owner_dir}/isol_contract.json (2, 'No such file or directory')"
     )
 
 
-def test_actorunit_save_contract_to_digest_SavesFileCorrectly(
-    actor_dir_setup_cleanup,
+def test_ownerunit_save_contract_to_digest_SavesFileCorrectly(
+    owner_dir_setup_cleanup,
 ):
     # GIVEN
-    actor_name = "actor1"
-    env_dir = get_temp_actor_dir()
-    ux = actorunit_shop(actor_name, env_dir, get_temp_economy_title())
+    owner_name = "owner1"
+    env_dir = get_temp_owner_dir()
+    ux = ownerunit_shop(owner_name, env_dir, get_temp_economy_title())
     ux.create_core_dir_and_files()
-    cx = example_actors.get_2node_contract()
+    cx = example_owners.get_2node_contract()
     src_contract_owner = cx._owner
     assert x_func_count_files(ux._admin._contracts_digest_dir) == 0
 
@@ -181,14 +181,14 @@ def test_actorunit_save_contract_to_digest_SavesFileCorrectly(
 
 
 def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestContract(
-    actor_dir_setup_cleanup,
+    owner_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
-    env_dir = get_temp_actor_dir()
-    sue_cx = actorunit_shop(sue_text, env_dir, get_temp_economy_title())
+    env_dir = get_temp_owner_dir()
+    sue_cx = ownerunit_shop(sue_text, env_dir, get_temp_economy_title())
     sue_cx.create_core_dir_and_files()
-    cx = example_actors.get_2node_contract()
+    cx = example_owners.get_2node_contract()
     src_contract_owner = cx._owner
     assert x_func_count_files(sue_cx._admin._contracts_digest_dir) == 0
 
@@ -210,16 +210,16 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestContract(
     assert digest_cx_json == cx.get_json()
 
 
-def test_actor_get_remelded_output_contract_withEmptyDigestDict(
-    actor_dir_setup_cleanup,
+def test_owner_get_remelded_output_contract_withEmptyDigestDict(
+    owner_dir_setup_cleanup,
 ):
     # GIVEN
-    actor_name_x = "boots3"
-    ux = actorunit_shop(actor_name_x, get_temp_actor_dir(), get_temp_economy_title())
+    owner_name_x = "boots3"
+    ux = ownerunit_shop(owner_name_x, get_temp_owner_dir(), get_temp_economy_title())
     ux.create_core_dir_and_files()
     sx_output_before = ux._admin.get_remelded_output_contract()
     assert str(type(sx_output_before)).find(".contract.ContractUnit'>")
-    assert sx_output_before._owner == actor_name_x
+    assert sx_output_before._owner == owner_name_x
     assert sx_output_before._idearoot._label == get_temp_economy_title()
     # ux.set_digested_contract(contract_x=ContractUnit(_owner="digested1"))
 
@@ -227,34 +227,34 @@ def test_actor_get_remelded_output_contract_withEmptyDigestDict(
     sx_output_after = ux._admin.get_remelded_output_contract()
 
     # THEN
-    actor_contract_x = ContractUnit(_owner=actor_name_x, _weight=0.0)
-    actor_contract_x.set_economy_title(get_temp_economy_title())
-    actor_contract_x._idearoot._walk = ""
-    actor_contract_x.set_contract_metrics()
+    owner_contract_x = ContractUnit(_owner=owner_name_x, _weight=0.0)
+    owner_contract_x.set_economy_title(get_temp_economy_title())
+    owner_contract_x._idearoot._walk = ""
+    owner_contract_x.set_contract_metrics()
 
     assert str(type(sx_output_after)).find(".contract.ContractUnit'>")
-    assert sx_output_after._weight == actor_contract_x._weight
-    assert sx_output_after._idearoot._walk == actor_contract_x._idearoot._walk
+    assert sx_output_after._weight == owner_contract_x._weight
+    assert sx_output_after._idearoot._walk == owner_contract_x._idearoot._walk
     assert (
         sx_output_after._idearoot._acptfactunits
-        == actor_contract_x._idearoot._acptfactunits
+        == owner_contract_x._idearoot._acptfactunits
     )
-    assert sx_output_after._idearoot == actor_contract_x._idearoot
+    assert sx_output_after._idearoot == owner_contract_x._idearoot
 
 
-def test_actor_get_remelded_output_contract_with1DigestedContract(
-    actor_dir_setup_cleanup,
+def test_owner_get_remelded_output_contract_with1DigestedContract(
+    owner_dir_setup_cleanup,
 ):
     # GIVEN
     yao_text = "Yao"
-    env_dir = get_temp_actor_dir()
-    ux = actorunit_shop(yao_text, env_dir, get_temp_economy_title())
+    env_dir = get_temp_owner_dir()
+    ux = ownerunit_shop(yao_text, env_dir, get_temp_economy_title())
     ux.create_core_dir_and_files()
     sx_output_old = ux._admin.get_remelded_output_contract()
     assert str(type(sx_output_old)).find(".contract.ContractUnit'>")
     assert sx_output_old._owner == yao_text
     assert sx_output_old._idearoot._label == get_temp_economy_title()
-    input_contract = example_actors.get_2node_contract()
+    input_contract = example_owners.get_2node_contract()
     input_contract.meld(input_contract)
     ux.set_depot_contract(contract_x=input_contract, depotlink_type="blind_trust")
 
@@ -280,10 +280,10 @@ def test_actor_get_remelded_output_contract_with1DigestedContract(
     assert sx_output_new != input_contract
 
 
-# def test_actor_set_digested_contract_with2Groups(actor_dir_setup_cleanup):
+# def test_owner_set_digested_contract_with2Groups(owner_dir_setup_cleanup):
 #     # GIVEN
-#     env_dir = get_temp_actor_dir()
-#     ux = actorunit_shop(name="test8", env_dir=env_dir)
+#     env_dir = get_temp_owner_dir()
+#     ux = ownerunit_shop(name="test8", env_dir=env_dir)
 #     sx_output_old = ux._admin.get_remelded_output_contract()
 #     assert str(type(sx_output_old)).find(".contract.ContractUnit'>")
 #     assert sx_output_old._groups == {}
@@ -331,22 +331,22 @@ def test_actor_get_remelded_output_contract_with1DigestedContract(
 #     assert sx_output_new != s1
 
 
-def test_actor_isol_contract_CorrectlysHasOriginLinksWithOwnerAsSource(
-    actor_dir_setup_cleanup,
+def test_owner_isol_contract_CorrectlysHasOriginLinksWithOwnerAsSource(
+    owner_dir_setup_cleanup,
 ):
     # GIVEN
-    # actorunit with isol_contract and no other depot contracts
+    # ownerunit with isol_contract and no other depot contracts
     yao_text = "Yao"
     isol_origin_weight = 1
     yao_originunit = originunit_shop()
     yao_originunit.set_originlink(name=yao_text, weight=isol_origin_weight)
-    isol_contract_x = example_actors.get_7nodeJRoot_contract()
+    isol_contract_x = example_owners.get_7nodeJRoot_contract()
     isol_contract_x.set_owner(yao_text)
 
     assert isol_contract_x._idearoot._originunit == originunit_shop()
     assert isol_contract_x._idearoot._originunit != yao_originunit
 
-    ux = actorunit_shop(yao_text, get_temp_actor_dir(), get_temp_economy_title())
+    ux = ownerunit_shop(yao_text, get_temp_owner_dir(), get_temp_economy_title())
     ux.create_core_dir_and_files()
     ux._admin.save_isol_contract(contract_x=isol_contract_x)
 

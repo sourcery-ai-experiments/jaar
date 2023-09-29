@@ -1,8 +1,8 @@
 from src.contract.contract import ContractUnit
 from src.contract.idea import IdeaKid
 from src.contract.required_assign import assigned_unit_shop
-from src.economy.actor import actorunit_shop, ActorUnit
-from src.economy.examples.actor_env_kit import get_temp_economy_title
+from src.economy.owner import ownerunit_shop, OwnerUnit
+from src.economy.examples.owner_env_kit import get_temp_economy_title
 
 from random import randrange
 
@@ -156,14 +156,14 @@ def get_7nodeJRootWithH_contract() -> ContractUnit:
     return contract_x
 
 
-def get_actor_2contract(env_dir, economy_title) -> ActorUnit:
+def get_owner_2contract(env_dir, economy_title) -> OwnerUnit:
     yao_text = "Xio"
-    yao_actor = actorunit_shop(yao_text, env_dir, economy_title)
-    yao_actor.set_depot_contract(get_1node_contract(), depotlink_type="blind_trust")
-    yao_actor.set_depot_contract(
+    yao_owner = ownerunit_shop(yao_text, env_dir, economy_title)
+    yao_owner.set_depot_contract(get_1node_contract(), depotlink_type="blind_trust")
+    yao_owner.set_depot_contract(
         get_Jnode2node_contract(), depotlink_type="blind_trust"
     )
-    return yao_actor
+    return yao_owner
 
 
 def get_contract_2CleanNodesRandomWeights(_owner: str = None) -> ContractUnit:

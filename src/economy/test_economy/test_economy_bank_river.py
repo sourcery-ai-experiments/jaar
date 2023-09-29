@@ -17,7 +17,7 @@ from src.economy.bank_sqlstr import (
 def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
     economy_title = get_temp_env_title()
     sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)

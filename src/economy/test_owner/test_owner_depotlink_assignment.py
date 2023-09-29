@@ -1,21 +1,21 @@
-from src.economy.actor import actorunit_shop
-from src.economy.examples.example_actors import get_contract_assignment_laundry_example1
-from src.economy.examples.actor_env_kit import (
-    actor_dir_setup_cleanup,
-    get_temp_actor_dir,
+from src.economy.owner import ownerunit_shop
+from src.economy.examples.example_owners import get_contract_assignment_laundry_example1
+from src.economy.examples.owner_env_kit import (
+    owner_dir_setup_cleanup,
+    get_temp_owner_dir,
     get_temp_economy_title,
 )
 
 
-def test_actor_save_contract_to_depot_assignment_link_CorrectlyCreatesAssignmentFile(
-    actor_dir_setup_cleanup,
+def test_owner_save_contract_to_depot_assignment_link_CorrectlyCreatesAssignmentFile(
+    owner_dir_setup_cleanup,
 ):
     # GIVEN
     america_cx = get_contract_assignment_laundry_example1()
     america_cx.set_economy_title(get_temp_economy_title())
     joachim_text = "Joachim"
-    joachim_ux = actorunit_shop(
-        joachim_text, get_temp_actor_dir(), get_temp_economy_title()
+    joachim_ux = ownerunit_shop(
+        joachim_text, get_temp_owner_dir(), get_temp_economy_title()
     )
     joachim_ux.create_core_dir_and_files()
     print(f"{america_cx._idearoot._label=}")

@@ -10,14 +10,14 @@ from src.contract.examples.example_contracts import (
     get_contract_base_time_example as example_contracts_get_contract_base_time_example,
     get_contract_x1_3levels_1required_1acptfacts as example_contracts_get_contract_x1_3levels_1required_1acptfacts,
 )
-from src.economy.examples.example_actors import (
-    get_1node_contract as example_actors_get_1node_contract,
-    get_7nodeJRootWithH_contract as example_actors_get_7nodeJRootWithH_contract,
-    get_contract_2CleanNodesRandomWeights as example_actors_get_contract_2CleanNodesRandomWeights,
-    get_contract_3CleanNodesRandomWeights as example_actors_get_contract_3CleanNodesRandomWeights,
+from src.economy.examples.example_owners import (
+    get_1node_contract as example_owners_get_1node_contract,
+    get_7nodeJRootWithH_contract as example_owners_get_7nodeJRootWithH_contract,
+    get_contract_2CleanNodesRandomWeights as example_owners_get_contract_2CleanNodesRandomWeights,
+    get_contract_3CleanNodesRandomWeights as example_owners_get_contract_3CleanNodesRandomWeights,
 )
 from src.contract.contract import ContractUnit
-from src.economy.actor import actorunit_shop
+from src.economy.owner import ownerunit_shop
 from src.contract.x_func import (
     single_dir_create_if_null,
     delete_dir as x_func_delete_dir,
@@ -81,52 +81,52 @@ def _delete_and_set_ex3():
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
-    sx.save_public_contract(contract_x=example_actors_get_1node_contract())
+    sx.save_public_contract(contract_x=example_owners_get_1node_contract())
     sx.save_public_contract(
         contract_x=example_contracts_get_contract_1Task_1CE0MinutesRequired_1AcptFact()
     )
     sx.save_public_contract(contract_x=example_contracts_contract_v001())
     sx.save_public_contract(contract_x=example_contracts_contract_v002())
 
-    # sx.set_actor(actor_x=actorunit_shop(name="w1", env_dir=sx.get_object_root_dir()))
-    # sx.set_actor(actor_x=actorunit_shop(name="w2", env_dir=sx.get_object_root_dir()))
+    # sx.set_owner(owner_x=ownerunit_shop(name="w1", env_dir=sx.get_object_root_dir()))
+    # sx.set_owner(owner_x=ownerunit_shop(name="w2", env_dir=sx.get_object_root_dir()))
     xia_text = "Xia"
-    sx.create_new_actorunit(actor_name=xia_text)
+    sx.create_new_ownerunit(owner_name=xia_text)
     owner_text = "Mycontract"
-    sx.set_actor_depotlink(
+    sx.set_owner_depotlink(
         xia_text, contract_owner=owner_text, depotlink_type="blind_trust"
     )
-    # w1_obj = sx.get_actor_obj(name=w1_text)
+    # w1_obj = sx.get_owner_obj(name=w1_text)
 
     bob_text = "bob wurld"
     create_contract_file_for_economys(sx.get_object_root_dir(), bob_text)
     # print(f"create contract_list {w1_text=}")
     sx.create_depotlink_to_generated_contract(
-        actor_name=xia_text, contract_owner=bob_text, depotlink_type="ignore"
+        owner_name=xia_text, contract_owner=bob_text, depotlink_type="ignore"
     )
     land_text = "tim wurld"
     create_contract_file_for_economys(
         economy_dir=sx.get_object_root_dir(), contract_owner=land_text
     )
     sx.create_depotlink_to_generated_contract(
-        actor_name=xia_text, contract_owner=land_text, depotlink_type="blind_trust"
+        owner_name=xia_text, contract_owner=land_text, depotlink_type="blind_trust"
     )
-    # sx.create_depotlink_to_generated_contract(actor_name=w1_text, contract_owner="test9")
-    # sx.create_depotlink_to_generated_contract(actor_name=w1_text, contract_owner="Bobs contract")
-    sx.save_actor_file(actor_name=xia_text)
+    # sx.create_depotlink_to_generated_contract(owner_name=w1_text, contract_owner="test9")
+    # sx.create_depotlink_to_generated_contract(owner_name=w1_text, contract_owner="Bobs contract")
+    sx.save_owner_file(owner_name=xia_text)
     # print(f"WHAT WHAT {sx.get_object_root_dir()}")
-    # print(f"WHAT WHAT {sx.get_object_root_dir()}/actors/w1/w1.json")
+    # print(f"WHAT WHAT {sx.get_object_root_dir()}/owners/w1/w1.json")
     # file_text = x_func_open_file(
-    #     dest_dir=f"{sx.get_object_root_dir}/actors/w1", file_name="w1.json"
+    #     dest_dir=f"{sx.get_object_root_dir}/owners/w1", file_name="w1.json"
     # )
     # print(f"{file_text=}")
-    # print(f"{len(sx._actorunits.get(w1_text)._depotlinks)=}")
-    # print(f"{sx._actorunits.get(w1_text)._depotlinks.get(bob_text)=}")
-    # print(f"{sx._actorunits.get(w1_text).get_json=}")
+    # print(f"{len(sx._ownerunits.get(w1_text)._depotlinks)=}")
+    # print(f"{sx._ownerunits.get(w1_text)._depotlinks.get(bob_text)=}")
+    # print(f"{sx._ownerunits.get(w1_text).get_json=}")
 
     w2_text = "w2"
-    sx.create_new_actorunit(actor_name=w2_text)  # , env_dir=sx.get_object_root_dir())
-    sx.save_actor_file(actor_name=w2_text)
+    sx.create_new_ownerunit(owner_name=w2_text)  # , env_dir=sx.get_object_root_dir())
+    sx.save_owner_file(owner_name=w2_text)
 
 
 def _delete_and_set_ex4():
@@ -134,7 +134,7 @@ def _delete_and_set_ex4():
     sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
-    sx.save_public_contract(example_actors_get_7nodeJRootWithH_contract())
+    sx.save_public_contract(example_owners_get_7nodeJRootWithH_contract())
     sx.save_public_contract(example_contracts_get_contract_with7amCleanTableRequired())
     sx.save_public_contract(example_contracts_get_contract_base_time_example())
     sx.save_public_contract(
@@ -153,11 +153,11 @@ def _delete_and_set_ex5():
     # ethical code Jessica
     # ethical code Francine
     # ethical code Clay
-    contract_1 = example_actors_get_contract_2CleanNodesRandomWeights(_owner="ernie")
-    contract_2 = example_actors_get_contract_2CleanNodesRandomWeights(_owner="steve")
-    contract_3 = example_actors_get_contract_2CleanNodesRandomWeights(_owner="jessica")
-    contract_4 = example_actors_get_contract_2CleanNodesRandomWeights(_owner="francine")
-    contract_5 = example_actors_get_contract_2CleanNodesRandomWeights(_owner="clay")
+    contract_1 = example_owners_get_contract_2CleanNodesRandomWeights(_owner="ernie")
+    contract_2 = example_owners_get_contract_2CleanNodesRandomWeights(_owner="steve")
+    contract_3 = example_owners_get_contract_2CleanNodesRandomWeights(_owner="jessica")
+    contract_4 = example_owners_get_contract_2CleanNodesRandomWeights(_owner="francine")
+    contract_5 = example_owners_get_contract_2CleanNodesRandomWeights(_owner="clay")
 
     sx.save_public_contract(contract_x=contract_1)
     sx.save_public_contract(contract_x=contract_2)
@@ -165,43 +165,43 @@ def _delete_and_set_ex5():
     sx.save_public_contract(contract_x=contract_4)
     sx.save_public_contract(contract_x=contract_5)
 
-    sx.create_new_actorunit(actor_name=contract_1._owner)
-    sx.create_new_actorunit(actor_name=contract_2._owner)
-    sx.create_new_actorunit(actor_name=contract_3._owner)
-    sx.create_new_actorunit(actor_name=contract_4._owner)
-    sx.create_new_actorunit(actor_name=contract_5._owner)
+    sx.create_new_ownerunit(owner_name=contract_1._owner)
+    sx.create_new_ownerunit(owner_name=contract_2._owner)
+    sx.create_new_ownerunit(owner_name=contract_3._owner)
+    sx.create_new_ownerunit(owner_name=contract_4._owner)
+    sx.create_new_ownerunit(owner_name=contract_5._owner)
 
-    sx.set_actor_depotlink(contract_1._owner, contract_2._owner, "blind_trust", 3, 3.1)
-    sx.set_actor_depotlink(contract_1._owner, contract_3._owner, "blind_trust", 7, 7.1)
-    sx.set_actor_depotlink(contract_1._owner, contract_4._owner, "blind_trust", 4, 4.1)
-    sx.set_actor_depotlink(contract_1._owner, contract_5._owner, "blind_trust", 5, 5.1)
+    sx.set_owner_depotlink(contract_1._owner, contract_2._owner, "blind_trust", 3, 3.1)
+    sx.set_owner_depotlink(contract_1._owner, contract_3._owner, "blind_trust", 7, 7.1)
+    sx.set_owner_depotlink(contract_1._owner, contract_4._owner, "blind_trust", 4, 4.1)
+    sx.set_owner_depotlink(contract_1._owner, contract_5._owner, "blind_trust", 5, 5.1)
 
-    sx.set_actor_depotlink(contract_2._owner, contract_1._owner, "blind_trust", 3, 3.1)
-    sx.set_actor_depotlink(contract_2._owner, contract_3._owner, "blind_trust", 7, 7.1)
-    sx.set_actor_depotlink(contract_2._owner, contract_4._owner, "blind_trust", 4, 4.1)
-    icx = example_actors_get_contract_3CleanNodesRandomWeights()
-    sx.set_actor_depotlink(contract_2._owner, contract_5._owner, "ignore", 5, 5.1, icx)
+    sx.set_owner_depotlink(contract_2._owner, contract_1._owner, "blind_trust", 3, 3.1)
+    sx.set_owner_depotlink(contract_2._owner, contract_3._owner, "blind_trust", 7, 7.1)
+    sx.set_owner_depotlink(contract_2._owner, contract_4._owner, "blind_trust", 4, 4.1)
+    icx = example_owners_get_contract_3CleanNodesRandomWeights()
+    sx.set_owner_depotlink(contract_2._owner, contract_5._owner, "ignore", 5, 5.1, icx)
 
-    sx.set_actor_depotlink(contract_3._owner, contract_1._owner, "blind_trust", 3, 3.1)
-    sx.set_actor_depotlink(contract_3._owner, contract_2._owner, "blind_trust", 7, 7.1)
-    sx.set_actor_depotlink(contract_3._owner, contract_4._owner, "blind_trust", 4, 4.1)
-    sx.set_actor_depotlink(contract_3._owner, contract_5._owner, "blind_trust", 5, 5.1)
+    sx.set_owner_depotlink(contract_3._owner, contract_1._owner, "blind_trust", 3, 3.1)
+    sx.set_owner_depotlink(contract_3._owner, contract_2._owner, "blind_trust", 7, 7.1)
+    sx.set_owner_depotlink(contract_3._owner, contract_4._owner, "blind_trust", 4, 4.1)
+    sx.set_owner_depotlink(contract_3._owner, contract_5._owner, "blind_trust", 5, 5.1)
 
-    sx.set_actor_depotlink(contract_4._owner, contract_1._owner, "blind_trust", 3, 3.1)
-    sx.set_actor_depotlink(contract_4._owner, contract_2._owner, "blind_trust", 7, 7.1)
-    sx.set_actor_depotlink(contract_4._owner, contract_3._owner, "blind_trust", 4, 4.1)
-    sx.set_actor_depotlink(contract_4._owner, contract_5._owner, "blind_trust", 5, 5.1)
+    sx.set_owner_depotlink(contract_4._owner, contract_1._owner, "blind_trust", 3, 3.1)
+    sx.set_owner_depotlink(contract_4._owner, contract_2._owner, "blind_trust", 7, 7.1)
+    sx.set_owner_depotlink(contract_4._owner, contract_3._owner, "blind_trust", 4, 4.1)
+    sx.set_owner_depotlink(contract_4._owner, contract_5._owner, "blind_trust", 5, 5.1)
 
-    sx.set_actor_depotlink(contract_5._owner, contract_1._owner, "blind_trust", 3, 3.1)
-    sx.set_actor_depotlink(contract_5._owner, contract_2._owner, "blind_trust", 7, 7.1)
-    sx.set_actor_depotlink(contract_5._owner, contract_3._owner, "blind_trust", 4, 4.1)
-    sx.set_actor_depotlink(contract_5._owner, contract_4._owner, "blind_trust", 5, 5.1)
+    sx.set_owner_depotlink(contract_5._owner, contract_1._owner, "blind_trust", 3, 3.1)
+    sx.set_owner_depotlink(contract_5._owner, contract_2._owner, "blind_trust", 7, 7.1)
+    sx.set_owner_depotlink(contract_5._owner, contract_3._owner, "blind_trust", 4, 4.1)
+    sx.set_owner_depotlink(contract_5._owner, contract_4._owner, "blind_trust", 5, 5.1)
 
-    sx.save_actor_file(actor_name=contract_1._owner)
-    sx.save_actor_file(actor_name=contract_2._owner)
-    sx.save_actor_file(actor_name=contract_3._owner)
-    sx.save_actor_file(actor_name=contract_4._owner)
-    sx.save_actor_file(actor_name=contract_5._owner)
+    sx.save_owner_file(owner_name=contract_1._owner)
+    sx.save_owner_file(owner_name=contract_2._owner)
+    sx.save_owner_file(owner_name=contract_3._owner)
+    sx.save_owner_file(owner_name=contract_4._owner)
+    sx.save_owner_file(owner_name=contract_5._owner)
 
 
 def _delete_and_set_ex6():

@@ -2,8 +2,8 @@ from src.economy.economy import economyunit_shop
 from src.contract.examples.example_contracts import (
     contract_v002 as ex_cxs_contract_v002,
 )
-from src.economy.examples.example_actors import (
-    get_6node_contract as example_actors_get_6node_contract,
+from src.economy.examples.example_owners import (
+    get_6node_contract as example_owners_get_6node_contract,
     get_contract_2CleanNodesRandomWeights,
     get_contract_3CleanNodesRandomWeights,
 )
@@ -22,19 +22,19 @@ def test_economy_get_output_contract_ReturnsCorrectContractObjScenario1(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
-    input_cx = example_actors_get_6node_contract()
+    input_cx = example_owners_get_6node_contract()
     sx.save_public_contract(input_cx)
     # sx.save_public_contract(ex_cxs_get_contract_1Task_1CE0MinutesRequired_1AcptFact())
     # sx.save_public_contract(ex_cxs_contract_v001())
     xia_text = "Xia"
-    sx.create_new_actorunit(actor_name=xia_text)
-    sx.set_actor_depotlink(xia_text, input_cx._owner, depotlink_type="blind_trust")
-    sx.save_actor_file(actor_name=xia_text)
-    xia_actor = sx.get_actor_obj(name=xia_text)
-    # print(f"{xia_actor._isol._members.keys()=}")
+    sx.create_new_ownerunit(owner_name=xia_text)
+    sx.set_owner_depotlink(xia_text, input_cx._owner, depotlink_type="blind_trust")
+    sx.save_owner_file(owner_name=xia_text)
+    xia_owner = sx.get_owner_obj(name=xia_text)
+    # print(f"{xia_owner._isol._members.keys()=}")
 
     # WHEN
-    output_cx = sx.get_output_contract(actor_name=xia_text)
+    output_cx = sx.get_output_contract(owner_name=xia_text)
     # input contract must be melded to itself to create originunits
     input_cx.meld(input_cx)
     input_cx.set_owner(new_owner=xia_text)
@@ -96,7 +96,7 @@ def test_economy_get_output_contract_ReturnsCorrectContractObjScenario2(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
-    cx1 = example_actors_get_6node_contract()
+    cx1 = example_owners_get_6node_contract()
     cx2 = ex_cxs_contract_v002()
 
     sx.save_public_contract(cx1)
@@ -104,15 +104,15 @@ def test_economy_get_output_contract_ReturnsCorrectContractObjScenario2(
     # sx.save_public_contract(ex_cxs_get_contract_1Task_1CE0MinutesRequired_1AcptFact())
     # sx.save_public_contract(ex_cxs_contract_v001())
     xia_text = "Xia"
-    sx.create_new_actorunit(actor_name=xia_text)
-    sx.set_actor_depotlink(xia_text, cx1._owner, depotlink_type="blind_trust")
-    sx.set_actor_depotlink(xia_text, cx2._owner, depotlink_type="blind_trust")
-    sx.save_actor_file(actor_name=xia_text)
-    xia_actor = sx.get_actor_obj(name=xia_text)
-    print(f"{xia_actor._isol._members.keys()=}")
+    sx.create_new_ownerunit(owner_name=xia_text)
+    sx.set_owner_depotlink(xia_text, cx1._owner, depotlink_type="blind_trust")
+    sx.set_owner_depotlink(xia_text, cx2._owner, depotlink_type="blind_trust")
+    sx.save_owner_file(owner_name=xia_text)
+    xia_owner = sx.get_owner_obj(name=xia_text)
+    print(f"{xia_owner._isol._members.keys()=}")
 
     # WHEN
-    output_cx = sx.get_output_contract(actor_name=xia_text)
+    output_cx = sx.get_output_contract(owner_name=xia_text)
 
     # THEN
     output_cx_d_road = f"{output_cx._economy_title},C,D"
@@ -146,7 +146,7 @@ def test_economy_get_output_contract_ReturnsCorrectContractObjScenario2(
     assert output_cx._idearoot != cx2._idearoot
 
 
-def test_actorunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
+def test_ownerunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -154,7 +154,7 @@ def test_actorunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
     economy_title = get_temp_env_title()
     sx = economyunit_shop(title=economy_title, economys_dir=env_dir)
     sx.create_dirs_if_null(in_memory_bank=True)
-    # ux = actorunit_shop(name=actor1_text, env_dir=env_dir)
+    # ux = ownerunit_shop(name=owner1_text, env_dir=env_dir)
 
     ernie_text = "ernie"
     jessi_text = "jessi"
@@ -165,12 +165,12 @@ def test_actorunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
     sx.save_public_contract(contract_x=ernie_contract)
     sx.save_public_contract(contract_x=jessi_contract)
     sx.save_public_contract(contract_x=old_steve_cx)
-    sx.create_new_actorunit(actor_name=ernie_text)
-    sx.create_new_actorunit(actor_name=jessi_text)
-    # sx.create_new_actorunit(actor_name=steve_text)
-    ux_ernie = sx.get_actor_obj(name=ernie_text)
-    ux_jessi = sx.get_actor_obj(name=jessi_text)
-    # ux_steve = sx.get_actor_obj(name=steve_text)
+    sx.create_new_ownerunit(owner_name=ernie_text)
+    sx.create_new_ownerunit(owner_name=jessi_text)
+    # sx.create_new_ownerunit(owner_name=steve_text)
+    ux_ernie = sx.get_owner_obj(name=ernie_text)
+    ux_jessi = sx.get_owner_obj(name=jessi_text)
+    # ux_steve = sx.get_owner_obj(name=steve_text)
     ux_ernie.set_depot_contract(contract_x=jessi_contract, depotlink_type="blind_trust")
     ux_ernie.set_depot_contract(contract_x=old_steve_cx, depotlink_type="blind_trust")
     ux_jessi.set_depot_contract(contract_x=ernie_contract, depotlink_type="blind_trust")
@@ -190,7 +190,7 @@ def test_actorunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
     #     print(f"{ux._admin._contracts_public_dir=} {file_name=}")
 
     # WHEN
-    sx.reload_all_actors_src_contractunits()
+    sx.reload_all_owners_src_contractunits()
 
     # THEN
     assert len(ux_ernie._admin.get_remelded_output_contract().get_idea_list()) == 5

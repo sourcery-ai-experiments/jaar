@@ -1,13 +1,13 @@
-from src.economy.actor import actorunit_shop
-from src.economy.examples.example_actors import (
+from src.economy.owner import ownerunit_shop
+from src.economy.examples.example_owners import (
     get_2node_contract,
     get_contract_2CleanNodesRandomWeights as get_cal2nodes,
     get_contract_3CleanNodesRandomWeights as get_cal3nodes,
     get_contract_assignment_laundry_example1 as get_america_assign_ex,
 )
-from src.economy.examples.actor_env_kit import (
-    actor_dir_setup_cleanup,
-    get_temp_actor_dir,
+from src.economy.examples.owner_env_kit import (
+    owner_dir_setup_cleanup,
+    get_temp_owner_dir,
     get_temp_economy_title,
     create_contract_file,
 )
@@ -22,13 +22,13 @@ from src.contract.x_func import (
 )
 
 
-def test_actorunit_set_depotlink_RaisesErrorWhenContractDoesNotExist(
-    actor_dir_setup_cleanup,
+def test_ownerunit_set_depotlink_RaisesErrorWhenContractDoesNotExist(
+    owner_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
-    env_dir = get_temp_actor_dir()
-    sue_cx = actorunit_shop(sue_text, env_dir, get_temp_economy_title())
+    env_dir = get_temp_owner_dir()
+    sue_cx = ownerunit_shop(sue_text, env_dir, get_temp_economy_title())
     sue_cx.set_isol_if_empty()
     tim_text = "Tim"
     assert list(sue_cx._isol._members.keys()) == [sue_text]
@@ -40,15 +40,15 @@ def test_actorunit_set_depotlink_RaisesErrorWhenContractDoesNotExist(
         sue_cx._set_depotlink(outer_owner=tim_text)
     assert (
         str(excinfo.value)
-        == f"Actor {sue_text} cannot find contract {tim_text} in {file_path_x}"
+        == f"Owner {sue_text} cannot find contract {tim_text} in {file_path_x}"
     )
 
 
-def test_actorunit_set_depotlink_CorrectlySetsIsolMembers(actor_dir_setup_cleanup):
+def test_ownerunit_set_depotlink_CorrectlySetsIsolMembers(owner_dir_setup_cleanup):
     # GIVEN
     yao_text = "yao"
-    env_dir = get_temp_actor_dir()
-    yao_ux = actorunit_shop(yao_text, env_dir, get_temp_economy_title())
+    env_dir = get_temp_owner_dir()
+    yao_ux = ownerunit_shop(yao_text, env_dir, get_temp_economy_title())
     yao_ux.set_isol_if_empty()
     sue_text = "sue"
     create_contract_file(yao_ux._admin._contracts_depot_dir, sue_text)
@@ -62,13 +62,13 @@ def test_actorunit_set_depotlink_CorrectlySetsIsolMembers(actor_dir_setup_cleanu
     assert yao_ux._isol.get_member(sue_text).depotlink_type is None
 
 
-def test_actorunit_set_depotlink_CorrectlySetsAssignment(actor_dir_setup_cleanup):
+def test_ownerunit_set_depotlink_CorrectlySetsAssignment(owner_dir_setup_cleanup):
     # GIVEN
     america_cx = get_america_assign_ex()
     print(f"{len(america_cx._idea_dict)=}")
     joachim_text = "Joachim"
-    joachim_ux = actorunit_shop(
-        joachim_text, get_temp_actor_dir(), get_temp_economy_title()
+    joachim_ux = ownerunit_shop(
+        joachim_text, get_temp_owner_dir(), get_temp_economy_title()
     )
     joachim_ux.create_core_dir_and_files()
     joachim_ux.set_isol_if_empty()
@@ -102,11 +102,11 @@ def test_actorunit_set_depotlink_CorrectlySetsAssignment(actor_dir_setup_cleanup
     assert digest_cx._owner == joachim_text
 
 
-def test_actorunit_del_depot_contract_CorrectlyDeletesObj(actor_dir_setup_cleanup):
+def test_ownerunit_del_depot_contract_CorrectlyDeletesObj(owner_dir_setup_cleanup):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_actor_dir()
-    bob_cx = actorunit_shop(bob_text, env_dir, get_temp_economy_title())
+    env_dir = get_temp_owner_dir()
+    bob_cx = ownerunit_shop(bob_text, env_dir, get_temp_economy_title())
     yao_text = "Yao"
     create_contract_file(bob_cx._admin._contracts_depot_dir, yao_text)
     assignment_text = "assignment"
@@ -123,13 +123,13 @@ def test_actorunit_del_depot_contract_CorrectlyDeletesObj(actor_dir_setup_cleanu
     assert bob_cx._isol.get_member(yao_text).depotlink_type is None
 
 
-def test_actorunit_del_depot_contract_CorrectlyDeletesBlindTrustFile(
-    actor_dir_setup_cleanup,
+def test_ownerunit_del_depot_contract_CorrectlyDeletesBlindTrustFile(
+    owner_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_actor_dir()
-    bob_cx = actorunit_shop(bob_text, env_dir, get_temp_economy_title())
+    env_dir = get_temp_owner_dir()
+    bob_cx = ownerunit_shop(bob_text, env_dir, get_temp_economy_title())
     lai_text = "Lai"
     create_contract_file(bob_cx._admin._contracts_depot_dir, lai_text)
     bob_cx.set_isol_if_empty()
@@ -145,13 +145,13 @@ def test_actorunit_del_depot_contract_CorrectlyDeletesBlindTrustFile(
     assert x_func_count_files(dir_path=bob_cx._admin._contracts_digest_dir) == 0
 
 
-def test_actorunit_set_depot_contract_SavesFileCorrectly(
-    actor_dir_setup_cleanup,
+def test_ownerunit_set_depot_contract_SavesFileCorrectly(
+    owner_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_actor_dir()
-    bob_cx = actorunit_shop(bob_text, env_dir, get_temp_economy_title())
+    env_dir = get_temp_owner_dir()
+    bob_cx = ownerunit_shop(bob_text, env_dir, get_temp_economy_title())
     cal1 = get_2node_contract()
     assert (
         x_func_count_files(bob_cx._admin._contracts_depot_dir) is None
@@ -168,13 +168,13 @@ def test_actorunit_set_depot_contract_SavesFileCorrectly(
     assert x_func_count_files(bob_cx._admin._contracts_depot_dir) == 1
 
 
-def test_actorunit_delete_ignore_depotlink_CorrectlyDeletesObj(
-    actor_dir_setup_cleanup,
+def test_ownerunit_delete_ignore_depotlink_CorrectlyDeletesObj(
+    owner_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_actor_dir()
-    bob_cx = actorunit_shop(bob_text, env_dir, get_temp_economy_title())
+    env_dir = get_temp_owner_dir()
+    bob_cx = ownerunit_shop(bob_text, env_dir, get_temp_economy_title())
     yao_text = "Yao"
     create_contract_file(bob_cx._admin._contracts_depot_dir, yao_text)
     assignment_text = "assignment"
@@ -191,13 +191,13 @@ def test_actorunit_delete_ignore_depotlink_CorrectlyDeletesObj(
     assert bob_cx._isol.get_member(yao_text).depotlink_type is None
 
 
-def test_actorunit_del_depot_contract_CorrectlyDoesNotDeletesIgnoreFile(
-    actor_dir_setup_cleanup,
+def test_ownerunit_del_depot_contract_CorrectlyDoesNotDeletesIgnoreFile(
+    owner_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "bob"
-    env_dir = get_temp_actor_dir()
-    bob_cx = actorunit_shop(bob_text, env_dir, get_temp_economy_title())
+    env_dir = get_temp_owner_dir()
+    bob_cx = ownerunit_shop(bob_text, env_dir, get_temp_economy_title())
     zia_text = "Zia"
     create_contract_file(bob_cx._admin._contracts_depot_dir, zia_text)
     bob_cx.set_isol_if_empty()
@@ -215,13 +215,13 @@ def test_actorunit_del_depot_contract_CorrectlyDoesNotDeletesIgnoreFile(
     assert x_func_count_files(dir_path=bob_cx._admin._contracts_ignore_dir) == 1
 
 
-def test_actorunit_set_ignore_contract_file_CorrectlyUpdatesIgnoreFile(
-    actor_dir_setup_cleanup,
+def test_ownerunit_set_ignore_contract_file_CorrectlyUpdatesIgnoreFile(
+    owner_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_actor_dir()
-    bob_ux = actorunit_shop(bob_text, env_dir, get_temp_economy_title())
+    env_dir = get_temp_owner_dir()
+    bob_ux = ownerunit_shop(bob_text, env_dir, get_temp_economy_title())
     zia_text = "Zia"
     create_contract_file(bob_ux._admin._contracts_depot_dir, zia_text)
     bob_ux.set_isol_if_empty()
@@ -242,16 +242,16 @@ def test_actorunit_set_ignore_contract_file_CorrectlyUpdatesIgnoreFile(
     assert x_func_count_files(dir_path=bob_ux._admin._contracts_ignore_dir) == 1
 
 
-def test_actorunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
-    actor_dir_setup_cleanup,
+def test_ownerunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
+    owner_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_actor_dir()
+    env_dir = get_temp_owner_dir()
     economy_title = get_temp_env_title()
     sx = economyunit_shop(title=economy_title, economys_dir=env_dir)
     yao_text = "Yao"
-    sx.create_new_actorunit(actor_name=yao_text)
-    yao_contract = sx.get_actor_obj(name=yao_text)
+    sx.create_new_ownerunit(owner_name=yao_text)
+    yao_contract = sx.get_owner_obj(name=yao_text)
     assert len(yao_contract._admin.get_remelded_output_contract().get_idea_list()) == 1
 
     ernie_text = "ernie"

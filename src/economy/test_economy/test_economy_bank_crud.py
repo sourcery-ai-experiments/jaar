@@ -110,7 +110,7 @@ def test_economy_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
 def test_economy_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
@@ -158,7 +158,7 @@ def test_economy_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
 def test_economy_refresh_bank_metrics_CorrectlyPopulatesContractTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
@@ -187,7 +187,7 @@ def test_economy_refresh_bank_metrics_CorrectlyPopulatesContractTable01(
 def test_economy_refresh_bank_metrics_CorrectlyPopulatesContractTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Actors, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )

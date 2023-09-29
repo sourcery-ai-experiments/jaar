@@ -39,7 +39,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="actors_table">
+   <widget class="QTableWidget" name="owners_table">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -55,7 +55,7 @@
     </property>
     <column>
      <property name="text">
-      <string>Actors</string>
+      <string>Owners</string>
      </property>
     </column>
     <column>
@@ -262,7 +262,7 @@
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" name="actor_update_button">
+   <widget class="QPushButton" name="owner_update_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -277,10 +277,10 @@
      </font>
     </property>
     <property name="text">
-     <string>Change Actor Name</string>
+     <string>Change Owner Name</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="actor_insert_button">
+   <widget class="QPushButton" name="owner_insert_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -295,10 +295,10 @@
      </font>
     </property>
     <property name="text">
-     <string>Add new Actor</string>
+     <string>Add new Owner</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="actor_delete_button">
+   <widget class="QPushButton" name="owner_delete_button">
     <property name="geometry">
      <rect>
       <x>240</x>
@@ -313,10 +313,10 @@
      </font>
     </property>
     <property name="text">
-     <string>delete Actor</string>
+     <string>delete Owner</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="actor_name">
+   <widget class="QLineEdit" name="owner_name">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -436,7 +436,7 @@
      <string>Edit </string>
     </property>
    </widget>
-   <widget class="QPushButton" name="actor_edit_button">
+   <widget class="QPushButton" name="owner_edit_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -451,7 +451,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Edit Actor</string>
+     <string>Edit Owner</string>
     </property>
    </widget>
    <widget class="QPushButton" name="depotlink_edit_button">
@@ -488,7 +488,7 @@
     </property>
     <column>
      <property name="text">
-      <string>Actors Agenda</string>
+      <string>Owners Agenda</string>
      </property>
     </column>
     <column>
@@ -518,7 +518,7 @@
     </property>
     <column>
      <property name="text">
-      <string>Actors Members</string>
+      <string>Owners Members</string>
      </property>
     </column>
     <column>
@@ -548,7 +548,7 @@
     </property>
     <column>
      <property name="text">
-      <string>Actors Groups</string>
+      <string>Owners Groups</string>
      </property>
     </column>
     <column>
@@ -578,7 +578,7 @@
     </property>
     <column>
      <property name="text">
-      <string>Actor Ideas</string>
+      <string>Owner Ideas</string>
      </property>
     </column>
     <column>

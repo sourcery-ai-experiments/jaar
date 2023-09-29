@@ -282,7 +282,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             f.write(contract_x_json)
         self.current_file_path_l.setText(self.file_path)
         # x_func_save_file(
-        #     dest_dir=contract_actor_dir,
+        #     dest_dir=contract_owner_dir,
         #     file_name=f"{self.contract_x._economy_title}.json",
         #     file_text=contract_x.get_json(),
         # )

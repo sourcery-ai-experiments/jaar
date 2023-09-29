@@ -5,17 +5,17 @@ from src.economy.examples.economy_env_kit import (
     get_test_economys_dir,
 )
 from src.contract.contract import ContractUnit
-from src.economy.examples.example_actors import get_contract_assignment_laundry_example1
+from src.economy.examples.example_owners import get_contract_assignment_laundry_example1
 
 
-def test_economy_ChangingOneActorsFactChangesAnotherAgenda(env_dir_setup_cleanup):
+def test_economy_ChangingOneOwnersFactChangesAnotherAgenda(env_dir_setup_cleanup):
     sx = economyunit_shop(get_temp_env_title(), get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     # GIVEN
     america_text = "America"
-    sx.create_new_actorunit(actor_name=america_text)
-    america_ux = sx.get_actor_obj(name=america_text)
+    sx.create_new_ownerunit(owner_name=america_text)
+    america_ux = sx.get_owner_obj(name=america_text)
     laundry_contract = get_contract_assignment_laundry_example1()
     laundry_contract.set_economy_title(sx.title)
     america_ux.set_isol(laundry_contract)
@@ -38,8 +38,8 @@ def test_economy_ChangingOneActorsFactChangesAnotherAgenda(env_dir_setup_cleanup
 
     # create assignment for Joachim
     joachim_text = "Joachim"
-    sx.create_new_actorunit(actor_name=joachim_text)
-    joachim_ux = sx.get_actor_obj(name=joachim_text)
+    sx.create_new_ownerunit(owner_name=joachim_text)
+    joachim_ux = sx.get_owner_obj(name=joachim_text)
     joachim_ux.set_depot_contract(america_output, "assignment")
     old_joachim_cx = sx.get_output_contract(joachim_text)
     # print(f"{old_joachim_cx._members.keys()=}")
@@ -105,7 +105,7 @@ def test_economy_ChangingOneActorsFactChangesAnotherAgenda(env_dir_setup_cleanup
 #     for_group_x = {america_text: -1, joachim_text: -1}
 #     assigned_group_x = {joachim_text: -1}
 #     sx.create_task(
-#         from_actor=america_text,
+#         from_owner=america_text,
 #         to_group=joachim_text,
 #         group_members={joachim_text},
 #         task_road=do_laundry_road,
@@ -118,9 +118,9 @@ def test_economy_ChangingOneActorsFactChangesAnotherAgenda(env_dir_setup_cleanup
 #     )
 
 #     # # WHEN
-#     # america_actor.save_output_contract_to_public()
-#     # new_joa_actor = sx.get_actor_obj(name=joachim_text)
-#     # new_joa_actor.save_output_contract_to_public()
+#     # america_owner.save_output_contract_to_public()
+#     # new_joa_owner = sx.get_owner_obj(name=joachim_text)
+#     # new_joa_owner.save_output_contract_to_public()
 #     # new_joa_dest_c = sx.get_public_contract(joachim_text)
 #     # new_joa_agenda = new_joa_dest_c.get_agenda_items()
 #     # assert len(new_joa_agenda) == 1
@@ -131,21 +131,21 @@ def test_economy_ChangingOneActorsFactChangesAnotherAgenda(env_dir_setup_cleanup
 #     assert len(joachim_cx.get_agenda_items()) == 1
 #     assert joachim_cx.get_agenda_items()[0].get_road() == do_laundry_road
 
-#     # sx.create_new_actorunit(actor_name=america_text)
-#     # america_actor = sx.get_actor_obj(name=america_text)
-#     # america_actor.save_output_contract_to_public()
+#     # sx.create_new_ownerunit(owner_name=america_text)
+#     # america_owner = sx.get_owner_obj(name=america_text)
+#     # america_owner.save_output_contract_to_public()
 #     # assert sx.get_public_contract(america_text) != None
 
-#     # # Create actor2
+#     # # Create owner2
 
-#     # sx.create_new_actorunit(actor_name=joachim_text)
-#     # old_joa_actor = sx.get_actor_obj(name=joachim_text)
-#     # old_joa_actor._set_depotlink(america_cx._ownert, depotlink_type="blind_trust")
-#     # old_joa_actor.save_output_contract_to_public()
+#     # sx.create_new_ownerunit(owner_name=joachim_text)
+#     # old_joa_owner = sx.get_owner_obj(name=joachim_text)
+#     # old_joa_owner._set_depotlink(america_cx._ownert, depotlink_type="blind_trust")
+#     # old_joa_owner.save_output_contract_to_public()
 #     # old_joa_dest_c = sx.get_public_contract(joachim_text)
 #     # old_joa_agenda = old_joa_dest_c.get_agenda_items()
 #     # # assert len(old_joa_agenda) == 0
 
-#     # # # Create actor1 task:
+#     # # # Create owner1 task:
 #     # # #  create joachim member in America contract
-#     # america_actor._set_depotlink(joachim_text)
+#     # america_owner._set_depotlink(joachim_text)
