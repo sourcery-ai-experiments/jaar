@@ -370,7 +370,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.editmain_button.setText(
-            _translate("MainWindow", "Contracts /  Member /  dimension")
+            _translate("MainWindow", "Contracts /  Party /  dimension")
         )
         self.acptfact_open_lower_spec1.setText(
             _translate("MainWindow", "set minutes next midnight")
@@ -385,7 +385,7 @@ class Ui_MainWindow(object):
         )
         self.label_agenda_label_header.setText(_translate("MainWindow", "Description"))
         self.label_5.setText(_translate("MainWindow", "Change where I am:"))
-        self.root_datetime_view.setText(_translate("MainWindow", "Manumember change"))
+        self.root_datetime_view.setText(_translate("MainWindow", "Manuparty change"))
         self.lobby_button.setText(_translate("MainWindow", "Lobby Someone"))
         self.label_7.setText(
             _translate("MainWindow", "Who you are right now. What's missing...")

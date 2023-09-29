@@ -502,7 +502,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="w_members_table">
+   <widget class="QTableWidget" name="w_partys_table">
     <property name="geometry">
      <rect>
       <x>1000</x>
@@ -518,7 +518,7 @@
     </property>
     <column>
      <property name="text">
-      <string>Owners Members</string>
+      <string>Owners Partys</string>
      </property>
     </column>
     <column>

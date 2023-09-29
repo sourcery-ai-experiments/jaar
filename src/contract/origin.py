@@ -1,11 +1,11 @@
 from contextlib import suppress as contextlib_suppress
-from src.contract.member import MemberName
+from src.contract.party import PartyName
 from dataclasses import dataclass
 
 
 @dataclass
 class OriginLink:
-    name: MemberName
+    name: PartyName
     weight: float
 
     def get_dict(self):
@@ -15,7 +15,7 @@ class OriginLink:
         }
 
 
-def originlink_shop(name: MemberName, weight: float = None) -> OriginLink:
+def originlink_shop(name: PartyName, weight: float = None) -> OriginLink:
     if weight is None:
         weight = 1
     return OriginLink(name=name, weight=weight)
@@ -23,17 +23,17 @@ def originlink_shop(name: MemberName, weight: float = None) -> OriginLink:
 
 @dataclass
 class OriginUnit:
-    _links: dict[MemberName:OriginLink] = None
+    _links: dict[PartyName:OriginLink] = None
 
     def _set_originlinks_empty_if_null(self):
         if self._links is None:
             self._links = {}
 
-    def set_originlink(self, name: MemberName, weight: float):
+    def set_originlink(self, name: PartyName, weight: float):
         self._set_originlinks_empty_if_null()
         self._links[name] = originlink_shop(name=name, weight=weight)
 
-    def del_originlink(self, name: MemberName):
+    def del_originlink(self, name: PartyName):
         self._set_originlinks_empty_if_null()
         self._links.pop(name)
 

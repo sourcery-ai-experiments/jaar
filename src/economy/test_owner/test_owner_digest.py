@@ -73,12 +73,12 @@ def test_owneropen_isol_contract_WhenStartingContractFileDoesNotExists(
     # x_idearoot._level = 0
     # x_idearoot._ancestor_promise_count = 0
     # x_idearoot._descendant_promise_count = 0
-    # x_idearoot._all_member_credit = True
-    # x_idearoot._all_member_debt = True
+    # x_idearoot._all_party_credit = True
+    # x_idearoot._all_party_debt = True
 
     assert isol_contract._idearoot == x_contract._idearoot
     assert isol_contract._idearoot._acptfactunits == {}
-    assert list(isol_contract._members.keys()) == [tim_text]
+    assert list(isol_contract._partys.keys()) == [tim_text]
     assert list(isol_contract._groups.keys()) == [tim_text]
 
 
@@ -122,7 +122,7 @@ def test_owner_open_isol_contract_WhenStartingContractFileExists(
     assert isol_contract._idearoot._kids == x_contract._idearoot._kids
     assert isol_contract._idearoot == x_contract._idearoot
     assert isol_contract._idearoot._acptfactunits == {}
-    assert isol_contract._members == {}
+    assert isol_contract._partys == {}
     assert isol_contract._groups == {}
     assert isol_contract._owner == ux._admin._owner_name
 
@@ -287,7 +287,7 @@ def test_owner_get_remelded_output_contract_with1DigestedContract(
 #     sx_output_old = ux._admin.get_remelded_output_contract()
 #     assert str(type(sx_output_old)).find(".contract.ContractUnit'>")
 #     assert sx_output_old._groups == {}
-#     assert sx_output_old._members == {}
+#     assert sx_output_old._partys == {}
 #     assert sx_output_old._acptfacts == {}
 
 #     src1 = "test1"
@@ -295,10 +295,10 @@ def test_owner_get_remelded_output_contract_with1DigestedContract(
 #     s1 = ContractUnit(_owner=src1)
 
 #     ceci_text = "Ceci"
-#     s1.set_memberunit(memberunit=MemberUnit(name=ceci_text))
+#     s1.set_partyunit(partyunit=PartyUnit(name=ceci_text))
 #     swim_text = "swimmers"
 #     swim_group = BraUnit(name=swim_text)
-#     swim_group.set_memberlink(memberlink=memberlink_shop(name=ceci_text))
+#     swim_group.set_partylink(partylink=partylink_shop(name=ceci_text))
 #     s1.set_groupunit(groupunit=swim_group)
 
 #     yaya_text = "yaya"
@@ -307,7 +307,7 @@ def test_owner_get_remelded_output_contract_with1DigestedContract(
 #     s1.set_acptfact(base=yaya_road, acptfact=yaya_road)
 
 #     assert s1._groups.get(swim_text).name == swim_text
-#     assert s1._members.get(ceci_text).name == ceci_text
+#     assert s1._partys.get(ceci_text).name == ceci_text
 #     assert s1._idearoot._label == src1
 #     assert s1._acptfacts.get(yaya_road).base == yaya_road
 
@@ -318,7 +318,7 @@ def test_owner_get_remelded_output_contract_with1DigestedContract(
 #     # THEN
 #     assert str(type(sx_output_new)).find(".contract.ContractUnit'>")
 #     assert sx_output_new._acptfacts == s1._acptfacts
-#     assert sx_output_new._members == s1._members
+#     assert sx_output_new._partys == s1._partys
 #     assert sx_output_new._groups == s1._groups
 #     assert sx_output_new._weight == s1._weight
 #     assert sx_output_new._weight == s1._weight

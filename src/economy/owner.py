@@ -1,4 +1,4 @@
-from src.contract.member import get_depotlink_types, memberunit_shop
+from src.contract.party import get_depotlink_types, partyunit_shop
 from src.contract.contract import (
     get_from_json as contractunit_get_from_json,
     get_dict_of_contract_from_dict,
@@ -6,7 +6,7 @@ from src.contract.contract import (
     ContractOwner,
 )
 from src.contract.idea import IdeaRoot
-from src.contract.member import MemberName
+from src.contract.party import PartyName
 from src.contract.contract import (
     ContractUnit,
     get_from_json as contractunit_get_from_json,
@@ -132,7 +132,7 @@ class OwnerAdmin:
 
     def save_output_contract(self) -> ContractUnit:
         isol_contract_x = self.open_isol_contract()
-        isol_contract_x.meld(isol_contract_x, member_weight=1)
+        isol_contract_x.meld(isol_contract_x, party_weight=1)
         contract_x = get_meld_of_contract_files(
             cx_primary=isol_contract_x,
             meldees_dir=self._contracts_digest_dir,
@@ -174,7 +174,7 @@ class OwnerAdmin:
 
     def _get_empty_isol_contract(self):
         cx = ContractUnit(_owner=self._owner_name, _weight=0)
-        cx.add_memberunit(name=self._owner_name)
+        cx.add_partyunit(name=self._owner_name)
         cx.set_economy_title(self._economy_title)
         return cx
 
@@ -227,16 +227,16 @@ class OwnerUnit:
     _isol: ContractUnit = None
 
     def refresh_depot_contracts(self):
-        for member_x in self._isol._members.values():
-            if member_x.name != self._admin._owner_name:
-                member_contract = contractunit_get_from_json(
-                    cx_json=self._admin.open_public_contract(member_x.name)
+        for party_x in self._isol._partys.values():
+            if party_x.name != self._admin._owner_name:
+                party_contract = contractunit_get_from_json(
+                    cx_json=self._admin.open_public_contract(party_x.name)
                 )
                 self.set_depot_contract(
-                    contract_x=member_contract,
-                    depotlink_type=member_x.depotlink_type,
-                    creditor_weight=member_x.creditor_weight,
-                    debtor_weight=member_x.debtor_weight,
+                    contract_x=party_contract,
+                    depotlink_type=party_x.depotlink_type,
+                    creditor_weight=party_x.creditor_weight,
+                    debtor_weight=party_x.debtor_weight,
                 )
 
     def set_depot_contract(
@@ -256,7 +256,7 @@ class OwnerUnit:
 
     def _set_depotlinks_empty_if_null(self):
         self.set_isol_if_empty()
-        self._isol.set_members_empty_if_null()
+        self._isol.set_partys_empty_if_null()
 
     def _set_depotlink(
         self,
@@ -266,7 +266,7 @@ class OwnerUnit:
         debtor_weight: float = None,
     ):
         self._admin.raise_exception_if_no_file("depot", outer_owner)
-        self._set_memberunit_depotlink(
+        self._set_partyunit_depotlink(
             outer_owner, link_type, creditor_weight, debtor_weight
         )
 
@@ -286,22 +286,22 @@ class OwnerUnit:
         empty_cx = ContractUnit(_owner=self._admin._owner_name)
         empty_cx.set_economy_title(self._admin._economy_title)
         assign_cx = src_cx.get_assignment(
-            empty_cx, self.get_isol()._members, self._admin._owner_name
+            empty_cx, self.get_isol()._partys, self._admin._owner_name
         )
         assign_cx.set_contract_metrics()
         self._admin.save_contract_to_digest(assign_cx, src_cx._owner)
 
-    def _set_memberunit_depotlink(
+    def _set_partyunit_depotlink(
         self,
-        name: MemberName,
+        name: PartyName,
         link_type: str = None,
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
-        member_x = self.get_isol().get_member(name)
-        if member_x is None:
-            self.get_isol().set_memberunit(
-                memberunit_shop(
+        party_x = self.get_isol().get_party(name)
+        if party_x is None:
+            self.get_isol().set_partyunit(
+                partyunit_shop(
                     name=name,
                     depotlink_type=link_type,
                     creditor_weight=creditor_weight,
@@ -309,15 +309,15 @@ class OwnerUnit:
                 )
             )
         else:
-            member_x.set_depotlink_type(link_type, creditor_weight, debtor_weight)
+            party_x.set_depotlink_type(link_type, creditor_weight, debtor_weight)
 
     def del_depot_contract(self, contract_owner: str):
-        self._del_depotlink(membername=contract_owner)
+        self._del_depotlink(partyname=contract_owner)
         self._admin.erase_depot_contract(contract_owner)
         self._admin.erase_digest_contract(contract_owner)
 
-    def _del_depotlink(self, membername: MemberName):
-        self._isol.get_member(membername).del_depotlink_type()
+    def _del_depotlink(self, partyname: PartyName):
+        self._isol.get_party(partyname).del_depotlink_type()
 
     def get_isol(self):
         if self._isol is None:

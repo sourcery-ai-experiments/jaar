@@ -42,7 +42,7 @@ def test_economy_ChangingOneOwnersFactChangesAnotherAgenda(env_dir_setup_cleanup
     joachim_ux = sx.get_owner_obj(name=joachim_text)
     joachim_ux.set_depot_contract(america_output, "assignment")
     old_joachim_cx = sx.get_output_contract(joachim_text)
-    # print(f"{old_joachim_cx._members.keys()=}")
+    # print(f"{old_joachim_cx._partys.keys()=}")
     # print(f"{old_joachim_cx._idearoot._acptfactunits.keys()=}")
     basket_acptfact = old_joachim_cx._idearoot._acptfactunits.get(basket_road)
     # print(f"Joachim: {basket_acptfact.base=} {basket_acptfact.pick=}")
@@ -62,7 +62,7 @@ def test_economy_ChangingOneOwnersFactChangesAnotherAgenda(env_dir_setup_cleanup
     # print(f"America after when {a_basket_acptfact.base=} {a_basket_acptfact.pick=}")
 
     # THEN
-    # print(f"{new_joachim_cx._members.keys()=}")
+    # print(f"{new_joachim_cx._partys.keys()=}")
     # basket_acptfact = new_joachim_cx._idearoot._acptfactunits.get(basket_road)
     # print(f"{basket_acptfact.base=} {basket_acptfact.pick=}")
     # print(f"{len(new_joachim_cx._idearoot._acptfactunits.keys())=}")
@@ -107,7 +107,7 @@ def test_economy_ChangingOneOwnersFactChangesAnotherAgenda(env_dir_setup_cleanup
 #     sx.create_task(
 #         from_owner=america_text,
 #         to_group=joachim_text,
-#         group_members={joachim_text},
+#         group_partys={joachim_text},
 #         task_road=do_laundry_road,
 #         required_base=req_base_road,
 #         required_picks=req_picks,
@@ -147,5 +147,5 @@ def test_economy_ChangingOneOwnersFactChangesAnotherAgenda(env_dir_setup_cleanup
 #     # # assert len(old_joa_agenda) == 0
 
 #     # # # Create owner1 task:
-#     # # #  create joachim member in America contract
+#     # # #  create joachim party in America contract
 #     # america_owner._set_depotlink(joachim_text)

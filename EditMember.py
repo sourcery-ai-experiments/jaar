@@ -1,44 +1,44 @@
-# command to for converting ui form to python file: pyuic5 ui\EditMemberUI.ui -o ui\EditMemberUI.py
+# command to for converting ui form to python file: pyuic5 ui\EditPartyUI.ui -o ui\EditPartyUI.py
 import sys
-from ui.EditMemberUI import Ui_Form
+from ui.EditPartyUI import Ui_Form
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
-from EditMember2bd import EditMember2bd
+from EditParty2bd import EditParty2bd
 from src.pyqt5_kit.pyqt_func import contract_importance_diplay
 from src.contract.contract import ContractUnit
 from src.contract.group import groupunit_shop
-from src.contract.member import memberlink_shop
+from src.contract.party import partylink_shop
 
 
-class EditMember(qtw.QTableWidget, Ui_Form):
-    member_selected = qtc.pyqtSignal(int)
+class EditParty(qtw.QTableWidget, Ui_Form):
+    party_selected = qtc.pyqtSignal(int)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.setupUi(self)
 
-        self.member_table.itemClicked.connect(self.member_select)
-        self.member_insert_button.clicked.connect(self.member_insert)
-        self.member_update_button.clicked.connect(self.member_update)
-        self.member_delete_button.clicked.connect(self.member_delete)
+        self.party_table.itemClicked.connect(self.party_select)
+        self.party_insert_button.clicked.connect(self.party_insert)
+        self.party_update_button.clicked.connect(self.party_update)
+        self.party_delete_button.clicked.connect(self.party_delete)
         self.groups_in_table.itemClicked.connect(self.groups_in_select)
         self.groups_out_table.itemClicked.connect(self.groups_out_select)
         self.group_insert_button.clicked.connect(self.group_insert)
         self.group_update_button.clicked.connect(self.group_update)
         self.group_delete_button.clicked.connect(self.group_delete)
-        self.member_group_set_button.clicked.connect(self.member_group_set)
-        self.member_group_del_button.clicked.connect(self.member_group_del)
+        self.party_group_set_button.clicked.connect(self.party_group_set)
+        self.party_group_del_button.clicked.connect(self.party_group_del)
         self.close_button.clicked.connect(self.close)
         self.quit_button.clicked.connect(sys.exit)
-        self.selected_member_name = None
-        self.memberunit_x = None
+        self.selected_party_name = None
+        self.partyunit_x = None
         self.groupunit_x = None
 
-    def member_select(self):
-        member_name = self.member_table.item(self.member_table.currentRow(), 0).text()
-        self.memberunit_x = self.contract_x._members.get(member_name)
-        self.member_name.setText(self.memberunit_x.name)
+    def party_select(self):
+        party_name = self.party_table.item(self.party_table.currentRow(), 0).text()
+        self.partyunit_x = self.contract_x._partys.get(party_name)
+        self.party_name.setText(self.partyunit_x.name)
         self.refresh_groups()
 
     def groups_in_select(self):
@@ -55,80 +55,79 @@ class EditMember(qtw.QTableWidget, Ui_Form):
         self.groupunit_x = self.contract_x._groups.get(group_name)
         self.group_name.setText(self.groupunit_x.name)
 
-    def member_group_set(self):
-        self.groupunit_x.set_memberlink(
-            memberlink=memberlink_shop(name=self.memberunit_x.name)
+    def party_group_set(self):
+        self.groupunit_x.set_partylink(
+            partylink=partylink_shop(name=self.partyunit_x.name)
         )
         self.refresh_groups()
 
-    def member_group_del(self):
-        if self.groupunit_x._members.get(self.memberunit_x.name) != None:
-            self.groupunit_x.del_memberlink(name=self.memberunit_x.name)
+    def party_group_del(self):
+        if self.groupunit_x._partys.get(self.partyunit_x.name) != None:
+            self.groupunit_x.del_partylink(name=self.partyunit_x.name)
         self.refresh_groups()
 
-    def get_member_group_count(self, member_name: str):  # MemberName):
+    def get_party_group_count(self, party_name: str):  # PartyName):
         single_group = ""
         groups_count = 0
-        group_memberlinks = []
+        group_partylinks = []
         for group in self.contract_x._groups.values():
-            for memberlink in group._members.values():
-                if memberlink.name == member_name and group.name != memberlink.name:
+            for partylink in group._partys.values():
+                if partylink.name == party_name and group.name != partylink.name:
                     groups_count += 1
                     single_group = group.name
-                    group_memberlinks.append((group, memberlink))
+                    group_partylinks.append((group, partylink))
 
-        return groups_count, single_group, group_memberlinks
+        return groups_count, single_group, group_partylinks
 
-    def refresh_member_table(self):
-        self.member_table.setObjectName("Members")
-        self.member_table.setColumnHidden(0, False)
-        self.member_table.setColumnWidth(0, 170)
-        self.member_table.setColumnWidth(1, 130)
-        self.member_table.setColumnWidth(2, 40)
-        self.member_table.setColumnWidth(3, 60)
-        self.member_table.setColumnWidth(4, 40)
-        self.member_table.setHorizontalHeaderLabels(
-            ["Member", "Group", "Group Count", "CONTRACT_Importance", "Weight"]
+    def refresh_party_table(self):
+        self.party_table.setObjectName("Partys")
+        self.party_table.setColumnHidden(0, False)
+        self.party_table.setColumnWidth(0, 170)
+        self.party_table.setColumnWidth(1, 130)
+        self.party_table.setColumnWidth(2, 40)
+        self.party_table.setColumnWidth(3, 60)
+        self.party_table.setColumnWidth(4, 40)
+        self.party_table.setHorizontalHeaderLabels(
+            ["Party", "Group", "Group Count", "CONTRACT_Importance", "Weight"]
         )
-        self.member_table.setRowCount(0)
+        self.party_table.setRowCount(0)
 
-        members_list = list(self.contract_x._members.values())
-        members_list.sort(key=lambda x: x.name, reverse=False)
+        partys_list = list(self.contract_x._partys.values())
+        partys_list.sort(key=lambda x: x.name, reverse=False)
 
-        for row, member in enumerate(members_list, start=1):
+        for row, party in enumerate(partys_list, start=1):
             # groups_count = 0
             # for group in self.contract_x._groups.values():
-            #     for memberlink in group._members.values():
-            #         if memberlink.name == member.name:
+            #     for partylink in group._partys.values():
+            #         if partylink.name == party.name:
             #             groups_count += 1
 
-            groups_count, single_group, group_memberlinks = self.get_member_group_count(
-                member_name=member.name
+            groups_count, single_group, group_partylinks = self.get_party_group_count(
+                party_name=party.name
             )
 
-            self.member_table.setRowCount(row)
-            self.member_table.setItem(row - 1, 0, qtw.QTableWidgetItem(member.name))
+            self.party_table.setRowCount(row)
+            self.party_table.setItem(row - 1, 0, qtw.QTableWidgetItem(party.name))
             qt_contract_credit = qtw.QTableWidgetItem(
-                contract_importance_diplay(member._contract_credit)
+                contract_importance_diplay(party._contract_credit)
             )
             qt_contract_debt = qtw.QTableWidgetItem(
-                contract_importance_diplay(member._contract_debt)
+                contract_importance_diplay(party._contract_debt)
             )
-            self.member_table.setItem(row - 1, 1, qtw.QTableWidgetItem(single_group))
-            self.member_table.setItem(row - 1, 2, qtw.QTableWidgetItem("#"))
-            self.member_table.setItem(row - 1, 3, qt_contract_credit)
-            # self.member_table.setItem(row - 1, 3, qt_contract_debt)
-            self.member_table.setItem(
-                row - 1, 4, qtw.QTableWidgetItem(f"{member.creditor_weight}")
+            self.party_table.setItem(row - 1, 1, qtw.QTableWidgetItem(single_group))
+            self.party_table.setItem(row - 1, 2, qtw.QTableWidgetItem("#"))
+            self.party_table.setItem(row - 1, 3, qt_contract_credit)
+            # self.party_table.setItem(row - 1, 3, qt_contract_debt)
+            self.party_table.setItem(
+                row - 1, 4, qtw.QTableWidgetItem(f"{party.creditor_weight}")
             )
-            # self.member_table.setItem(
-            #     row - 1, 4, qtw.QTableWidgetItem(f"{member.debtor_weight}")
+            # self.party_table.setItem(
+            #     row - 1, 4, qtw.QTableWidgetItem(f"{party.debtor_weight}")
             # )
 
-    def member_in_group(self, memberunit, groupunit):
+    def party_in_group(self, partyunit, groupunit):
         return any(
-            memberlink.name == memberunit.name
-            for memberlink in groupunit._members.values()
+            partylink.name == partyunit.name for partylink in groupunit._partys.values()
         )
 
     def refresh_groups_in_table(self):
@@ -145,11 +144,9 @@ class EditMember(qtw.QTableWidget, Ui_Form):
             groupunit
             for groupunit in self.contract_x._groups.values()
             if (
-                self.memberunit_x != None
-                and self.member_in_group(
-                    memberunit=self.memberunit_x, groupunit=groupunit
-                )
-                and self.memberunit_x.name != groupunit.name
+                self.partyunit_x != None
+                and self.party_in_group(partyunit=self.partyunit_x, groupunit=groupunit)
+                and self.partyunit_x.name != groupunit.name
             )
         ]
         groups_in_list.sort(key=lambda x: x.name, reverse=False)
@@ -178,16 +175,14 @@ class EditMember(qtw.QTableWidget, Ui_Form):
             groupunit
             for groupunit in self.contract_x._groups.values()
             if (
-                self.memberunit_x != None
-                and groupunit._members.get(groupunit.name) is None
+                self.partyunit_x != None
+                and groupunit._partys.get(groupunit.name) is None
                 and (
-                    self.member_in_group(
-                        memberunit=self.memberunit_x, groupunit=groupunit
-                    )
+                    self.party_in_group(partyunit=self.partyunit_x, groupunit=groupunit)
                     == False
                 )
             )
-            or self.memberunit_x is None
+            or self.partyunit_x is None
         ]
         groups_out_list.sort(key=lambda x: x.name, reverse=False)
         self.groups_out_table.setHorizontalHeaderLabels(
@@ -213,10 +208,10 @@ class EditMember(qtw.QTableWidget, Ui_Form):
         groups_stand_list = [
             groupunit
             for groupunit in self.contract_x._groups.values()
-            if self.memberunit_x != None
+            if self.partyunit_x != None
             and (
-                groupunit._members.get(groupunit.name) != None
-                and self.memberunit_x.name == groupunit.name
+                groupunit._partys.get(groupunit.name) != None
+                and self.partyunit_x.name == groupunit.name
             )
         ]
         groups_stand_list.sort(key=lambda x: x.name, reverse=False)
@@ -231,8 +226,8 @@ class EditMember(qtw.QTableWidget, Ui_Form):
             )
 
     def refresh_all(self):
-        self.refresh_member_table()
-        self.member_name.setText("")
+        self.refresh_party_table()
+        self.party_name.setText("")
         self.refresh_groups()
         if self.group_name != None:
             self.group_name.setText("")
@@ -242,24 +237,24 @@ class EditMember(qtw.QTableWidget, Ui_Form):
         self.refresh_groups_out_table()
         self.refresh_groups_stan_table()
 
-    def member_insert(self):
-        self.contract_x.add_memberunit(name=self.member_name.text())
+    def party_insert(self):
+        self.contract_x.add_partyunit(name=self.party_name.text())
         self.refresh_all()
 
-    def member_delete(self):
-        self.contract_x.del_memberunit(name=self.member_name.text())
-        self.member_name.setText("")
-        self.memberunit_x = None
+    def party_delete(self):
+        self.contract_x.del_partyunit(name=self.party_name.text())
+        self.party_name.setText("")
+        self.partyunit_x = None
         self.refresh_all()
 
-    def member_update(self):
-        self.contract_x.edit_memberunit_name(
-            old_name=self.member_table.item(self.member_table.currentRow(), 0).text(),
-            new_name=self.member_name.text(),
-            allow_member_overwite=True,
+    def party_update(self):
+        self.contract_x.edit_partyunit_name(
+            old_name=self.party_table.item(self.party_table.currentRow(), 0).text(),
+            new_name=self.party_name.text(),
+            allow_party_overwite=True,
             allow_nonsingle_group_overwrite=True,
         )
-        self.member_name.setText("")
+        self.party_name.setText("")
         self.refresh_all()
 
     def group_insert(self):

@@ -23,7 +23,7 @@ from src.economy.examples.economy_env_kit import (
     get_test_economys_dir,
 )
 
-from src.contract.member import get_depotlink_types
+from src.contract.party import get_depotlink_types
 from src.contract.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
@@ -296,7 +296,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         owner_name_x = self.owner_x._admin.name
         self.economy_x.update_depotlink(
             owner_name=owner_name_x,
-            membername=self.depotlink_name.text(),
+            partyname=self.depotlink_name.text(),
             depotlink_type=self.depotlink_type_combo.currentText(),
             creditor_weight=self.depotlink_weight.text(),
             debtor_weight=self.depotlink_weight.text(),
@@ -384,16 +384,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return x_list
 
-    def get_p_members_list(self):
+    def get_p_partys_list(self):
         x_list = []
         if self.owner_output_contract != None:
             x_list.extend(
                 [
-                    f"{contract_importance_diplay(memberunit._contract_credit)}/{contract_importance_diplay(memberunit._contract_debt)}",
-                    memberunit.name,
-                    f"{memberunit.creditor_weight}/{memberunit.debtor_weight}",
+                    f"{contract_importance_diplay(partyunit._contract_credit)}/{contract_importance_diplay(partyunit._contract_debt)}",
+                    partyunit.name,
+                    f"{partyunit.creditor_weight}/{partyunit.debtor_weight}",
                 ]
-                for memberunit in self.owner_output_contract._members.values()
+                for partyunit in self.owner_output_contract._partys.values()
             )
         return x_list
 
@@ -404,7 +404,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 [
                     f"{contract_importance_diplay(groupunit._contract_debt)}/{contract_importance_diplay(groupunit._contract_credit)}",
                     groupunit.name,
-                    len(groupunit._members),
+                    len(groupunit._partys),
                 ]
                 for groupunit in self.owner_output_contract._groups.values()
             )
@@ -506,18 +506,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             column_width=[50, 300, 50],
         )
 
-    def _sub_refresh_p_members_table(self):
-        p_members_list = self.get_p_members_list()
+    def _sub_refresh_p_partys_table(self):
+        p_partys_list = self.get_p_partys_list()
         column_headers = [
             "contract_debt/contract_credit",
-            f"Members ({len(p_members_list)})",
+            f"Partys ({len(p_partys_list)})",
             "creditor_weight/debtor_weight",
         ]
 
         self.refresh_x(
-            table_x=self.w_members_table,
+            table_x=self.w_partys_table,
             column_header=column_headers,
-            populate_list=p_members_list,
+            populate_list=p_partys_list,
             column_width=[50, 300, 50],
         )
 
@@ -526,7 +526,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         column_headers = [
             "contract_debt/contract_credit",
             f"groups ({len(p_groups_list)})",
-            "Members",
+            "Partys",
         ]
 
         self.refresh_x(
@@ -581,7 +581,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.owner_x._admin.get_remelded_output_contract()
             )
         self._sub_refresh_p_ideas_table()
-        self._sub_refresh_p_members_table()
+        self._sub_refresh_p_partys_table()
         self._sub_refresh_p_groups_table()
         self._sub_refresh_p_acptfacts_table()
         self._sub_refresh_p_agenda_table()

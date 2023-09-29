@@ -11,8 +11,8 @@ def test_owner_set_depot_contract_SetsCorrectInfo(owner_dir_setup_cleanup):
     # GIVEN
     env_dir = get_temp_owner_dir()
     owner_x = owner_examples.get_owner_2contract(env_dir, get_temp_economy_title())
-    assert owner_x._isol.get_members_depotlink_count() == 2
-    print(f"{owner_x._isol._members.keys()=}")
+    assert owner_x._isol.get_partys_depotlink_count() == 2
+    print(f"{owner_x._isol._partys.keys()=}")
 
     # WHEN
     assignment_text = "assignment"
@@ -22,5 +22,5 @@ def test_owner_set_depot_contract_SetsCorrectInfo(owner_dir_setup_cleanup):
     owner_x.set_depot_contract(ContractUnit(_owner=zoa_text), assignment_text)
 
     # THEN
-    print(f"{owner_x._isol._members.keys()=}")
-    assert owner_x._isol.get_members_depotlink_count() == 4
+    print(f"{owner_x._isol._partys.keys()=}")
+    assert owner_x._isol.get_partys_depotlink_count() == 4

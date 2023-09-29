@@ -5,7 +5,7 @@ from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
 from PyQt5.QtWidgets import QTableWidgetItem as qti
 from EditIdeaUnit import EditIdeaUnit
-from EditMember import EditMember
+from EditParty import EditParty
 from src.pyqt5_kit.pyqt_func import contract_importance_diplay, get_pyqttree, num2str
 from src.contract.group import groupunit_shop, grouplink_shop
 from src.contract.idea import IdeaKid
@@ -266,11 +266,11 @@ class EditProblem(qtw.QWidget, Ui_Form):
         self.EditIdeaunit.refresh_tree()
         self.EditIdeaunit.show()
 
-    def open_edit_member(self):
-        self.edit_member = EditMember()
-        self.edit_member.contract_x = self.contract_x
-        self.edit_member.refresh_all()
-        self.edit_member.show()
+    def open_edit_party(self):
+        self.edit_party = EditParty()
+        self.edit_party.contract_x = self.contract_x
+        self.edit_party.refresh_all()
+        self.edit_party.show()
 
     def refresh_idea_tree(self):
         tree_root = get_pyqttree(idearoot=self.contract_x._idearoot)

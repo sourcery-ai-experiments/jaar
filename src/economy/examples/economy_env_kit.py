@@ -217,27 +217,27 @@ def _delete_and_set_ex6():
     elu_text = "elu"
 
     sal_contract = ContractUnit(_owner=sal_text)
-    sal_contract.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_contract.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sal_contract.add_partyunit(name=bob_text, creditor_weight=2)
+    sal_contract.add_partyunit(name=tom_text, creditor_weight=7)
+    sal_contract.add_partyunit(name=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=sal_contract)
 
     bob_contract = ContractUnit(_owner=bob_text)
-    bob_contract.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    bob_contract.add_partyunit(name=sal_text, creditor_weight=3)
+    bob_contract.add_partyunit(name=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=bob_contract)
 
     tom_contract = ContractUnit(_owner=tom_text)
-    tom_contract.add_memberunit(name=sal_text, creditor_weight=2)
+    tom_contract.add_partyunit(name=sal_text, creditor_weight=2)
     sx.save_public_contract(contract_x=tom_contract)
 
     ava_contract = ContractUnit(_owner=ava_text)
-    ava_contract.add_memberunit(name=elu_text, creditor_weight=2)
+    ava_contract.add_partyunit(name=elu_text, creditor_weight=2)
     sx.save_public_contract(contract_x=ava_contract)
 
     elu_contract = ContractUnit(_owner=elu_text)
-    elu_contract.add_memberunit(name=ava_text, creditor_weight=19)
-    elu_contract.add_memberunit(name=sal_text, creditor_weight=1)
+    elu_contract.add_partyunit(name=ava_text, creditor_weight=19)
+    elu_contract.add_partyunit(name=sal_text, creditor_weight=1)
     sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()

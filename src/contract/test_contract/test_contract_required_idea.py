@@ -577,7 +577,7 @@ def test_contract_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus
     assert commute_idea._active_status == True
 
 
-def test_contract_set_contract_metrics_InitimemberSetsRationalAttrToFalse():
+def test_contract_set_contract_metrics_InitipartySetsRationalAttrToFalse():
     # GIVEN
     cx = example_contracts_get_contract_with_4_levels()
     assert cx._rational == False

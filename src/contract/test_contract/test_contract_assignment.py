@@ -1,7 +1,7 @@
 from src.contract.contract import ContractUnit
 from src.contract.idea import IdeaKid
 from src.contract.required_idea import RequiredUnit
-from src.contract.member import memberunit_shop, memberlink_shop
+from src.contract.party import partyunit_shop, partylink_shop
 from src.contract.group import groupunit_shop
 from src.contract.examples.example_contracts import (
     get_contract_with_4_levels as example_contracts_get_contract_with_4_levels,
@@ -21,10 +21,10 @@ def test_contractunit_get_assignment_ReturnsContract():
     bob_text = "bob"
     contract_x = ContractUnit(_owner=jes_text)
     contract_x.set_groupunits_empty_if_null()
-    assignor_known_members_x = {}
+    assignor_known_partys_x = {}
     cx_assignment = jes1_cx.get_assignment(
         contract_x=contract_x,
-        assignor_members=assignor_known_members_x,
+        assignor_partys=assignor_known_partys_x,
         assignor_name=bob_text,
     )
 
@@ -33,102 +33,102 @@ def test_contractunit_get_assignment_ReturnsContract():
     assert cx_assignment == contract_x
 
 
-def test_contractunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInMembers():
+def test_contractunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInPartys():
     # GIVEN
     noa_text = "Noa"
     noa_cx = example_contracts_get_contract_with_4_levels()
-    noa_cx.set_memberunit(memberunit_shop(name=noa_text))
+    noa_cx.set_partyunit(partyunit_shop(name=noa_text))
     zia_text = "Zia"
     yao_text = "Yao"
-    noa_cx.set_memberunit(memberunit_shop(name=zia_text))
-    noa_cx.set_memberunit(memberunit_shop(name=yao_text))
+    noa_cx.set_partyunit(partyunit_shop(name=zia_text))
+    noa_cx.set_partyunit(partyunit_shop(name=yao_text))
 
     # WHEN
     bob_text = "bob"
     cx = ContractUnit(_owner=noa_text)
     tx = ContractUnit()
-    tx.set_members_empty_if_null()
-    tx.set_memberunit(memberunit=memberunit_shop(name=zia_text))
-    tx.set_memberunit(memberunit=memberunit_shop(name=noa_text))
+    tx.set_partys_empty_if_null()
+    tx.set_partyunit(partyunit=partyunit_shop(name=zia_text))
+    tx.set_partyunit(partyunit=partyunit_shop(name=noa_text))
 
-    cx_assignment = noa_cx.get_assignment(cx, tx._members, bob_text)
+    cx_assignment = noa_cx.get_assignment(cx, tx._partys, bob_text)
 
     # THEN
-    assert len(noa_cx._members) == 3
-    assert len(cx_assignment._members) == 0
+    assert len(noa_cx._partys) == 3
+    assert len(cx_assignment._partys) == 0
 
 
-def test_contractunit_get_assignment_ReturnsCorrectMembers():
+def test_contractunit_get_assignment_ReturnsCorrectPartys():
     # GIVEN
     jes_text = "Jessi"
     jes_cx = ContractUnit(_owner=jes_text)
-    jes_cx.set_memberunit(memberunit_shop(name=jes_text))
+    jes_cx.set_partyunit(partyunit_shop(name=jes_text))
     bob_text = "Bob"
     zia_text = "Zia"
     noa_text = "Noa"
     yao_text = "Yao"
-    jes_cx.set_memberunit(memberunit_shop(name=bob_text))
-    jes_cx.set_memberunit(memberunit_shop(name=zia_text))
-    jes_cx.set_memberunit(memberunit_shop(name=noa_text))
-    jes_cx.set_memberunit(memberunit_shop(name=yao_text))
+    jes_cx.set_partyunit(partyunit_shop(name=bob_text))
+    jes_cx.set_partyunit(partyunit_shop(name=zia_text))
+    jes_cx.set_partyunit(partyunit_shop(name=noa_text))
+    jes_cx.set_partyunit(partyunit_shop(name=yao_text))
 
     # WHEN
     tx = ContractUnit()
-    tx.set_members_empty_if_null()
-    tx.set_memberunit(memberunit=memberunit_shop(name=bob_text))
-    tx.set_memberunit(memberunit=memberunit_shop(name=zia_text))
-    tx.set_memberunit(memberunit=memberunit_shop(name=noa_text))
+    tx.set_partys_empty_if_null()
+    tx.set_partyunit(partyunit=partyunit_shop(name=bob_text))
+    tx.set_partyunit(partyunit=partyunit_shop(name=zia_text))
+    tx.set_partyunit(partyunit=partyunit_shop(name=noa_text))
 
     empty_cx = ContractUnit(_owner=jes_text)
-    cx_assignment = jes_cx.get_assignment(empty_cx, tx._members, bob_text)
+    cx_assignment = jes_cx.get_assignment(empty_cx, tx._partys, bob_text)
 
     # THEN
-    assert len(cx_assignment._members) == 3
-    assert cx_assignment._members.get(bob_text) != None
-    assert cx_assignment._members.get(zia_text) != None
-    assert cx_assignment._members.get(noa_text) != None
-    assert cx_assignment._members.get(yao_text) is None
+    assert len(cx_assignment._partys) == 3
+    assert cx_assignment._partys.get(bob_text) != None
+    assert cx_assignment._partys.get(zia_text) != None
+    assert cx_assignment._partys.get(noa_text) != None
+    assert cx_assignment._partys.get(yao_text) is None
 
 
 def test_contractunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     # GIVEN
     jes_text = "Jessi"
     jes_cx = ContractUnit(_owner=jes_text)
-    jes_cx.set_memberunit(memberunit_shop(name=jes_text))
+    jes_cx.set_partyunit(partyunit_shop(name=jes_text))
     bob_text = "Bob"
     noa_text = "Noa"
     eli_text = "Eli"
-    jes_cx.set_memberunit(memberunit_shop(name=bob_text))
-    jes_cx.set_memberunit(memberunit_shop(name=noa_text))
-    jes_cx.set_memberunit(memberunit_shop(name=eli_text))
+    jes_cx.set_partyunit(partyunit_shop(name=bob_text))
+    jes_cx.set_partyunit(partyunit_shop(name=noa_text))
+    jes_cx.set_partyunit(partyunit_shop(name=eli_text))
     swim_text = "swimmers"
     jes_cx.set_groupunit(groupunit_shop(name=swim_text))
     swim_group = jes_cx._groups.get(swim_text)
-    swim_group.set_memberlink(memberlink_shop(bob_text))
+    swim_group.set_partylink(partylink_shop(bob_text))
 
     hike_text = "hikers"
     jes_cx.set_groupunit(groupunit_shop(name=hike_text))
     hike_group = jes_cx._groups.get(hike_text)
-    hike_group.set_memberlink(memberlink_shop(bob_text))
-    hike_group.set_memberlink(memberlink_shop(noa_text))
+    hike_group.set_partylink(partylink_shop(bob_text))
+    hike_group.set_partylink(partylink_shop(noa_text))
 
     hunt_text = "hunters"
     jes_cx.set_groupunit(groupunit_shop(name=hunt_text))
     hike_group = jes_cx._groups.get(hunt_text)
-    hike_group.set_memberlink(memberlink_shop(noa_text))
-    hike_group.set_memberlink(memberlink_shop(eli_text))
+    hike_group.set_partylink(partylink_shop(noa_text))
+    hike_group.set_partylink(partylink_shop(eli_text))
 
     # WHEN
     tx = ContractUnit()
-    tx.set_members_empty_if_null()
+    tx.set_partys_empty_if_null()
     zia_text = "Zia"
     yao_text = "Yao"
-    tx.set_memberunit(memberunit=memberunit_shop(name=bob_text))
-    tx.set_memberunit(memberunit=memberunit_shop(name=zia_text))
-    tx.set_memberunit(memberunit=memberunit_shop(name=noa_text))
+    tx.set_partyunit(partyunit=partyunit_shop(name=bob_text))
+    tx.set_partyunit(partyunit=partyunit_shop(name=zia_text))
+    tx.set_partyunit(partyunit=partyunit_shop(name=noa_text))
 
     empty_cx = ContractUnit(_owner=jes_text)
-    cx_assignment = jes_cx.get_assignment(empty_cx, tx._members, bob_text)
+    cx_assignment = jes_cx.get_assignment(empty_cx, tx._partys, bob_text)
 
     # THEN
     assert len(cx_assignment._groups) == 5
@@ -140,8 +140,8 @@ def test_contractunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     assert cx_assignment._groups.get(hike_text) != None
     assert cx_assignment._groups.get(hunt_text) != None
     hunt_group = cx_assignment._groups.get(hunt_text)
-    assert hunt_group._members.get(noa_text) != None
-    assert len(hunt_group._members) == 1
+    assert hunt_group._partys.get(noa_text) != None
+    assert len(hunt_group._partys) == 1
 
 
 def test_contract__get_assignor_promise_ideas_ReturnsCorrectIdeaRoads():
@@ -469,12 +469,12 @@ def test_contract_get_assignment_getsCorrectIdeas_scenario1():
     dirty_text = "dirty"
     dirty_road = f"{status_road},{dirty_text}"
     bob_text = "Bob"
-    cx.add_memberunit(name=bob_text)
+    cx.add_partyunit(name=bob_text)
 
     # WHEN
     assignment_x = cx.get_assignment(
         contract_x=ContractUnit(_owner=bob_text),
-        assignor_members={bob_text: -1},
+        assignor_partys={bob_text: -1},
         assignor_name=bob_text,
     )
 
@@ -506,7 +506,7 @@ def test_contract_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     print(f"{joachim_contract._economy_title=} {joachim_contract._idea_dict.keys()=}")
     joachim_assignment = america_cx.get_assignment(
         contract_x=joachim_contract,
-        assignor_members={joachim_text: -1, america_cx._owner: -1},
+        assignor_partys={joachim_text: -1, america_cx._owner: -1},
         assignor_name=joachim_text,
     )
 

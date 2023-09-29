@@ -33,8 +33,8 @@ def custom_set_idea_attr(
     numeric_road: Road = None,
     range_source_road: float = None,
     descendant_promise_count: int = None,
-    all_member_credit: bool = None,
-    all_member_debt: bool = None,
+    all_party_credit: bool = None,
+    all_party_debt: bool = None,
     grouplink: GroupLink = None,
     grouplink_del: GroupName = None,
     is_expanded: bool = None,
@@ -63,8 +63,8 @@ def custom_set_idea_attr(
         numeric_road=numeric_road,
         range_source_road=range_source_road,
         descendant_promise_count=descendant_promise_count,
-        all_member_credit=all_member_credit,
-        all_member_debt=all_member_debt,
+        all_party_credit=all_party_credit,
+        all_party_debt=all_party_debt,
         grouplink=grouplink,
         grouplink_del=grouplink_del,
         is_expanded=is_expanded,
@@ -326,8 +326,8 @@ def test_idea_attributes_meld_CorrectlyMeldsIdeas():
     plate_road = f"{tech_road},{plate_text}"
 
     uid_x = "uid1xx"
-    all_member_credit_x = "am_cx"
-    all_member_debt_x = "am_dx"
+    all_party_credit_x = "am_cx"
+    all_party_debt_x = "am_dx"
 
     label1_text = "spirit"
     yx1 = IdeaCore(_label=label1_text)
@@ -344,8 +344,8 @@ def test_idea_attributes_meld_CorrectlyMeldsIdeas():
         range_source_road=plate_road,
         numeric_road=bowl_road,
         promise=True,
-        all_member_credit=all_member_credit_x,
-        all_member_debt=all_member_debt_x,
+        all_party_credit=all_party_credit_x,
+        all_party_debt=all_party_debt_x,
         is_expanded=True,
     )
 
@@ -364,8 +364,8 @@ def test_idea_attributes_meld_CorrectlyMeldsIdeas():
         range_source_road=plate_road,
         numeric_road=bowl_road,
         promise=True,
-        all_member_credit=all_member_credit_x,
-        all_member_debt=all_member_debt_x,
+        all_party_credit=all_party_credit_x,
+        all_party_debt=all_party_debt_x,
         is_expanded=True,
     )
 
@@ -384,8 +384,8 @@ def test_idea_attributes_meld_CorrectlyMeldsIdeas():
     assert yx1._range_source_road == plate_road
     assert yx1._numeric_road == bowl_road
     assert yx1.promise == True
-    assert yx1._all_member_credit == all_member_credit_x
-    assert yx1._all_member_debt == all_member_debt_x
+    assert yx1._all_party_credit == all_party_credit_x
+    assert yx1._all_party_debt == all_party_debt_x
     assert yx1._is_expanded == True
 
 
@@ -549,15 +549,15 @@ def test_idea_attributes_meld_FailRaisesError_action():
     )
 
 
-# def test_idea_attributes_meld_FailRaisesError_all_member_credit():
-# def test_idea_attributes_meld_FailRaisesError_all_member_debt():
-#     x_name = "_all_member_credit"
-#     x_name = "_all_member_debt"
-#     x_val = "test_all_member_credit1"
-#     x_val = "test_all_member_debt1"
+# def test_idea_attributes_meld_FailRaisesError_all_party_credit():
+# def test_idea_attributes_meld_FailRaisesError_all_party_debt():
+#     x_name = "_all_party_credit"
+#     x_name = "_all_party_debt"
+#     x_val = "test_all_party_credit1"
+#     x_val = "test_all_party_debt1"
 #     yx1 = IdeaCore(_label="spirit")
-#     custom_set_idea_attr(idea=yx1, all_member_credit=x_val)
-#     custom_set_idea_attr(idea=yx1, all_member_debt=x_val)
+#     custom_set_idea_attr(idea=yx1, all_party_credit=x_val)
+#     custom_set_idea_attr(idea=yx1, all_party_debt=x_val)
 #     yx2 = IdeaCore(_label="fun")
 
 #     # WHEN/THEN
@@ -599,7 +599,7 @@ def test_idea_meld_CorrectlyCreatesOriginUnitWithOriginLink():
     # WHEN
     sue_text = "Sue"
     sue_weight = 5
-    yx1.meld(other_idea=yx2, member_name=sue_text, member_weight=sue_weight)
+    yx1.meld(other_idea=yx2, party_name=sue_text, party_weight=sue_weight)
 
     # THEN
     assert yx1._originunit != None
@@ -617,7 +617,7 @@ def test_idea_meld_IdeaMeldingItselfCreatesOriginUnitWithCorrectOriginLink():
     tim_idea = IdeaCore(_label=tim_text)
     ex_yx1_originunit = originunit_shop()
     ex_yx1_originunit.set_originlink(name=tim_text, weight=tim_weight)
-    yx1.meld(other_idea=tim_idea, member_name=tim_text, member_weight=tim_weight)
+    yx1.meld(other_idea=tim_idea, party_name=tim_text, party_weight=tim_weight)
     assert yx1._originunit == ex_yx1_originunit
 
     sue_text = "Sue"
@@ -628,7 +628,7 @@ def test_idea_meld_IdeaMeldingItselfCreatesOriginUnitWithCorrectOriginLink():
     yx1_copy = deepcopy(yx1)
 
     # WHEN
-    yx1.meld(other_idea=yx1, member_name=sue_text, member_weight=sue_weight)
+    yx1.meld(other_idea=yx1, party_name=sue_text, party_weight=sue_weight)
     assert yx1._originunit == ex_yx1_originunit
 
     # THEN

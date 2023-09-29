@@ -1,6 +1,6 @@
 from src.economy.economy import economyunit_shop
 from src.contract.contract import ContractUnit
-from src.contract.member import memberunit_shop
+from src.contract.party import partyunit_shop
 from src.economy.examples.economy_env_kit import (
     get_temp_env_title,
     get_test_economys_dir,
@@ -12,8 +12,8 @@ from src.economy.bank_sqlstr import (
     get_river_bucket_table_insert_sqlstr,
     get_river_bucket_dict,
     get_river_bucket_table_delete_sqlstr,
-    get_river_tmember_table_insert_sqlstr,
-    get_river_tmember_dict,
+    get_river_tparty_table_insert_sqlstr,
+    get_river_tparty_dict,
     get_ledger_table_insert_sqlstr,
     get_ledger_dict,
     LedgerUnit,
@@ -44,7 +44,7 @@ from src.economy.y_func import get_single_result_back
 def test_economy_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Partyunits = 12 ledger rows
 
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
@@ -55,7 +55,7 @@ def test_economy_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
     bob_text = "bob"
     tim_text = "tim"
     contract_x = ContractUnit(_owner=bob_text)
-    memberunit_x = memberunit_shop(
+    partyunit_x = partyunit_shop(
         name=tim_text,
         _contract_credit=0.9,
         _contract_debt=0.8,
@@ -68,7 +68,7 @@ def test_economy_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
     )
 
     insert_sqlstr = get_ledger_table_insert_sqlstr(
-        contract_x=contract_x, memberunit_x=memberunit_x
+        contract_x=contract_x, partyunit_x=partyunit_x
     )
     print(insert_sqlstr)
 
@@ -85,7 +85,7 @@ def test_economy_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
     # THEN
     ledger_x = ledger_dict.get(tim_text)
     assert ledger_x.contract_owner == bob_text
-    assert ledger_x.member_name == tim_text
+    assert ledger_x.party_name == tim_text
     assert ledger_x._contract_credit == 0.9
     assert ledger_x._contract_debt == 0.8
     assert ledger_x._contract_agenda_credit == 0.7
@@ -164,7 +164,7 @@ def test_RiverFlowUnit_flow_returned_WorksCorrectly():
 
 
 def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cleanup):
-    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Partyunits = 12 ledger rows
 
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
@@ -175,7 +175,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
     bob_text = "bob"
     sal_text = "sal"
     contract_bob = ContractUnit(_owner=bob_text)
-    memberunit_sal = memberunit_shop(
+    partyunit_sal = partyunit_shop(
         name=sal_text,
         _contract_credit=0.9,
         _contract_debt=0.8,
@@ -187,11 +187,11 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
         _debtor_active=False,
     )
     insert_sqlstr_sal = get_ledger_table_insert_sqlstr(
-        contract_x=contract_bob, memberunit_x=memberunit_sal
+        contract_x=contract_bob, partyunit_x=partyunit_sal
     )
 
     tim_text = "tim"
-    memberunit_tim = memberunit_shop(
+    partyunit_tim = partyunit_shop(
         name=tim_text,
         _contract_credit=0.012,
         _contract_debt=0.017,
@@ -203,7 +203,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
         _debtor_active=False,
     )
     insert_sqlstr_tim = get_ledger_table_insert_sqlstr(
-        contract_x=contract_bob, memberunit_x=memberunit_tim
+        contract_x=contract_bob, partyunit_x=partyunit_tim
     )
 
     with sx.get_bank_conn() as bank_conn:
@@ -237,7 +237,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
 def test_river_flow_insert_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Partyunits = 12 ledger rows
 
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
@@ -288,7 +288,7 @@ def test_RiverLedgerUnit_Exists():
     tom_text = "tom"
     ledger_unit_01 = LedgerUnit(
         contract_owner=bob_text,
-        member_name=sal_text,
+        party_name=sal_text,
         _contract_credit=0.66,
         _contract_debt=0.2,
         _contract_agenda_credit=0.4,
@@ -300,7 +300,7 @@ def test_RiverLedgerUnit_Exists():
     )
     ledger_unit_02 = LedgerUnit(
         contract_owner=bob_text,
-        member_name=tom_text,
+        party_name=tom_text,
         _contract_credit=0.05,
         _contract_debt=0.09,
         _contract_agenda_credit=0.055,
@@ -311,8 +311,8 @@ def test_RiverLedgerUnit_Exists():
         _debtor_active=True,
     )
     ledger_dict = {
-        ledger_unit_01.member_name: ledger_unit_01,
-        ledger_unit_02.member_name: ledger_unit_02,
+        ledger_unit_01.party_name: ledger_unit_01,
+        ledger_unit_02.party_name: ledger_unit_02,
     }
 
     # WHEN
@@ -335,10 +335,10 @@ def test_RiverLedgerUnit_Exists():
     assert abs(river_ledger_unit.get_range() - 0.2) < 0.00000001
 
 
-def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_get_river_tparty_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Partyunits = 12 ledger rows
 
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
@@ -350,7 +350,7 @@ def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
     sal_text = "sal"
 
     contract_bob = ContractUnit(_owner=bob_text)
-    memberunit_tom = memberunit_shop(
+    partyunit_tom = partyunit_shop(
         name=tom_text,
         _contract_credit=0.9,
         _contract_debt=0.8,
@@ -362,9 +362,9 @@ def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
         _debtor_active=False,
     )
     insert_sqlstr_tom = get_ledger_table_insert_sqlstr(
-        contract_x=contract_bob, memberunit_x=memberunit_tom
+        contract_x=contract_bob, partyunit_x=partyunit_tom
     )
-    memberunit_sal = memberunit_shop(
+    partyunit_sal = partyunit_shop(
         name=sal_text,
         _contract_credit=0.9,
         _contract_debt=0.8,
@@ -376,7 +376,7 @@ def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
         _debtor_active=False,
     )
     insert_sqlstr_sal = get_ledger_table_insert_sqlstr(
-        contract_x=contract_bob, memberunit_x=memberunit_sal
+        contract_x=contract_bob, partyunit_x=partyunit_sal
     )
 
     river_flow_1 = RiverFlowUnit(bob_text, bob_text, tom_text, 0.0, 0.2, 0, None, 1)
@@ -397,37 +397,35 @@ def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
         bank_conn.execute(ss0)
 
     # WHEN
-    mstr_sqlstr = get_river_tmember_table_insert_sqlstr(
-        currency_contract_owner=bob_text
-    )
+    mstr_sqlstr = get_river_tparty_table_insert_sqlstr(currency_contract_owner=bob_text)
     with sx.get_bank_conn() as bank_conn:
         print(mstr_sqlstr)
         bank_conn.execute(mstr_sqlstr)
 
     # THEN
     with sx.get_bank_conn() as bank_conn:
-        river_tmembers = get_river_tmember_dict(
+        river_tpartys = get_river_tparty_dict(
             bank_conn, currency_contract_owner=bob_text
         )
-        print(f"{river_tmembers=}")
+        print(f"{river_tpartys=}")
 
-    assert len(river_tmembers) == 2
+    assert len(river_tpartys) == 2
 
-    bob_tom_x = river_tmembers.get(tom_text)
+    bob_tom_x = river_tpartys.get(tom_text)
     assert bob_tom_x.currency_name == bob_text
     assert bob_tom_x.tax_name == tom_text
     assert bob_tom_x.tax_total == 0.2
     assert bob_tom_x.debt == 0.411
     assert round(bob_tom_x.tax_diff, 15) == 0.211
 
-    bob_sal_x = river_tmembers.get(sal_text)
+    bob_sal_x = river_tpartys.get(sal_text)
     assert bob_sal_x.currency_name == bob_text
     assert bob_sal_x.tax_name == sal_text
     assert bob_sal_x.tax_total == 0.8
     assert bob_sal_x.debt == 0.455
     assert round(bob_sal_x.tax_diff, 15) == -0.345
 
-    # for value in river_tmembers.values():
+    # for value in river_tpartys.values():
     #     assert value.currency_name == bob_text
     #     assert value.tax_name in [tom_text, sal_text]
     #     assert value.tax_total in [0.2, 0.8]
@@ -438,7 +436,7 @@ def test_get_river_tmember_table_insert_sqlstr_CorrectlyPopulatesTable01(
 def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Partyunits = 12 ledger rows
 
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
@@ -452,14 +450,14 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
     elu_text = "elu"
 
     sal_contract = ContractUnit(_owner=sal_text)
-    sal_contract.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_contract.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sal_contract.add_partyunit(name=bob_text, creditor_weight=2)
+    sal_contract.add_partyunit(name=tom_text, creditor_weight=7)
+    sal_contract.add_partyunit(name=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=sal_contract)
 
     bob_contract = ContractUnit(_owner=bob_text)
-    bob_contract.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    bob_contract.add_partyunit(name=sal_text, creditor_weight=3)
+    bob_contract.add_partyunit(name=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=bob_contract)
 
     sx.refresh_bank_metrics()
@@ -481,7 +479,7 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
 def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Partyunits = 12 ledger rows
 
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
@@ -495,27 +493,27 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     elu_text = "elu"
 
     sal_contract = ContractUnit(_owner=sal_text)
-    sal_contract.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_contract.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sal_contract.add_partyunit(name=bob_text, creditor_weight=2)
+    sal_contract.add_partyunit(name=tom_text, creditor_weight=7)
+    sal_contract.add_partyunit(name=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=sal_contract)
 
     bob_contract = ContractUnit(_owner=bob_text)
-    bob_contract.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    bob_contract.add_partyunit(name=sal_text, creditor_weight=3)
+    bob_contract.add_partyunit(name=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=bob_contract)
 
     tom_contract = ContractUnit(_owner=tom_text)
-    tom_contract.add_memberunit(name=sal_text, creditor_weight=2)
+    tom_contract.add_partyunit(name=sal_text, creditor_weight=2)
     sx.save_public_contract(contract_x=tom_contract)
 
     ava_contract = ContractUnit(_owner=ava_text)
-    ava_contract.add_memberunit(name=elu_text, creditor_weight=2)
+    ava_contract.add_partyunit(name=elu_text, creditor_weight=2)
     sx.save_public_contract(contract_x=ava_contract)
 
     elu_contract = ContractUnit(_owner=elu_text)
-    elu_contract.add_memberunit(name=ava_text, creditor_weight=19)
-    elu_contract.add_memberunit(name=sal_text, creditor_weight=1)
+    elu_contract.add_partyunit(name=ava_text, creditor_weight=19)
+    elu_contract.add_partyunit(name=sal_text, creditor_weight=1)
     sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
@@ -596,7 +594,7 @@ def test_economy_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
 
 def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup):
-    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Partyunits = 12 ledger rows
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
@@ -672,7 +670,7 @@ def test_economy_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup)
 def test_economy_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Partyunits = 12 ledger rows
 
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
@@ -702,7 +700,7 @@ def test_economy_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTabl
 def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Partyunits = 12 ledger rows
 
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
@@ -764,7 +762,7 @@ def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
 def test_economy_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Partyunits = 12 ledger rows
 
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
@@ -780,7 +778,7 @@ def test_economy_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTab
     bob_group_x = GroupUnitCatalog(
         contract_owner=bob_text,
         groupunit_name="US Dollar",
-        memberlinks_set_by_economy_road=f"{get_temp_env_title()},USA",
+        partylinks_set_by_economy_road=f"{get_temp_env_title()},USA",
     )
     bob_group_sqlstr = get_groupunit_catalog_table_insert_sqlstr(bob_group_x)
     with sx.get_bank_conn() as bank_conn:
@@ -805,9 +803,9 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     elu_text = "elu"
     bob_contract = ContractUnit(_owner=bob_text)
     tom_contract = ContractUnit(_owner=tom_text)
-    bob_contract.add_memberunit(name=tom_text)
-    tom_contract.add_memberunit(name=bob_text)
-    tom_contract.add_memberunit(name=elu_text)
+    bob_contract.add_partyunit(name=tom_text)
+    tom_contract.add_partyunit(name=bob_text)
+    tom_contract.add_partyunit(name=elu_text)
     sx.save_public_contract(contract_x=bob_contract)
     sx.save_public_contract(contract_x=tom_contract)
     sx.refresh_bank_metrics()

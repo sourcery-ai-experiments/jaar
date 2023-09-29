@@ -5,7 +5,7 @@ from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1
 from EditIdeaUnit import EditIdeaUnit
-from EditMember import EditMember
+from EditParty import EditParty
 from src.pyqt5_kit.pyqt_func import (
     contract_importance_diplay,
     get_pyqttree,
@@ -28,9 +28,9 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.setupUi(self)
         self.refresh_button.clicked.connect(self.refresh_all)
         self.baseideaunit.itemClicked.connect(self.open_editideaunit)
-        self.member_list.itemClicked.connect(self.open_edit_member)
+        self.party_list.itemClicked.connect(self.open_edit_party)
         self.close_button.clicked.connect(self.close)
-        self.open_groupedit_button.clicked.connect(self.open_edit_member)
+        self.open_groupedit_button.clicked.connect(self.open_edit_party)
 
         # self.acptfacts_table.itemClicked.connect(self.acptfact_base_combo_set)
         self.acptfacts_table.setObjectName("Contract AcptFacts")
@@ -192,34 +192,34 @@ class EditMainView(qtw.QWidget, Ui_Form):
 
     def refresh_all(self):
         if self.contract_x != None:
-            self.refresh_member_list()
+            self.refresh_party_list()
             self.refresh_idea_tree()
             self.acptfacts_table_load()
 
-    def refresh_member_list(self):
-        # member_list is qtw.QTableWidget()
-        self.member_list.setObjectName("Member Calculated Weight")
-        self.member_list.setColumnCount(2)
-        self.member_list.setColumnWidth(0, 170)
-        self.member_list.setColumnWidth(1, 70)
-        self.member_list.setHorizontalHeaderLabels(["Name", "LW Force"])
-        members_list = list(self.contract_x._members.values())
-        members_list.sort(key=lambda x: x._contract_credit, reverse=True)
+    def refresh_party_list(self):
+        # party_list is qtw.QTableWidget()
+        self.party_list.setObjectName("Party Calculated Weight")
+        self.party_list.setColumnCount(2)
+        self.party_list.setColumnWidth(0, 170)
+        self.party_list.setColumnWidth(1, 70)
+        self.party_list.setHorizontalHeaderLabels(["Name", "LW Force"])
+        partys_list = list(self.contract_x._partys.values())
+        partys_list.sort(key=lambda x: x._contract_credit, reverse=True)
 
-        for row, member in enumerate(members_list, start=1):
+        for row, party in enumerate(partys_list, start=1):
             groups_count = 0
             for group in self.contract_x._groups.values():
-                for memberlink in group._members.values():
-                    if memberlink.name == member.name:
+                for partylink in group._partys.values():
+                    if partylink.name == party.name:
                         groups_count += 1
 
             qt_contract_credit = qtw.QTableWidgetItem(
-                contract_importance_diplay(member._contract_credit)
+                contract_importance_diplay(party._contract_credit)
             )
             qt_group = qtw.QTableWidgetItem(f"{groups_count}")
-            self.member_list.setRowCount(row)
-            self.member_list.setItem(row - 1, 0, qtw.QTableWidgetItem(member.name))
-            self.member_list.setItem(row - 1, 1, qt_contract_credit)
+            self.party_list.setRowCount(row)
+            self.party_list.setItem(row - 1, 0, qtw.QTableWidgetItem(party.name))
+            self.party_list.setItem(row - 1, 1, qt_contract_credit)
 
     def open_editideaunit(self):
         self.EditIdeaunit = EditIdeaUnit()
@@ -227,11 +227,11 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.EditIdeaunit.refresh_tree()
         self.EditIdeaunit.show()
 
-    def open_edit_member(self):
-        self.edit_member = EditMember()
-        self.edit_member.contract_x = self.contract_x
-        self.edit_member.refresh_all()
-        self.edit_member.show()
+    def open_edit_party(self):
+        self.edit_party = EditParty()
+        self.edit_party.contract_x = self.contract_x
+        self.edit_party.refresh_all()
+        self.edit_party.show()
 
     def refresh_idea_tree(self):
         tree_root = get_pyqttree(idearoot=self.contract_x._idearoot)

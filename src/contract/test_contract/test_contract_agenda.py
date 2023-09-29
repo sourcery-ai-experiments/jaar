@@ -5,7 +5,7 @@ from src.contract.idea import IdeaCore, IdeaKid
 from src.contract.road import Road
 from src.contract.required_idea import RequiredUnit, SuffFactStatusFinder
 from src.contract.group import groupunit_shop, grouplink_shop
-from src.contract.member import memberlink_shop
+from src.contract.party import partylink_shop
 from src.contract.required_assign import assigned_unit_shop
 from src.contract.examples.example_contracts import (
     get_contract_with_4_levels as example_contracts_get_contract_with_4_levels,
@@ -610,7 +610,7 @@ def test_contract_create_agenda_item_CorrectlyCreatesAllContractAttributes():
     a1 = ContractUnit(_owner=owner_text)
 
     a1.set_contract_metrics()
-    assert len(a1._members) == 0
+    assert len(a1._partys) == 0
     assert len(a1._groups) == 0
     assert len(a1._idearoot._kids) == 0
 
@@ -642,20 +642,20 @@ def test_contract_create_agenda_item_CorrectlyCreatesAllContractAttributes():
     clean_cookery_idea.set_required_unit(required=daytime_required)
 
     # anna_text = "anna"
-    # anna_memberunit = memberunit_shop(name=anna_text)
-    # anna_memberlink = memberlink_shop(name=anna_text)
+    # anna_partyunit = partyunit_shop(name=anna_text)
+    # anna_partylink = partylink_shop(name=anna_text)
     # beto_text = "beto"
-    # beto_memberunit = memberunit_shop(name=beto_text)
-    # beto_memberlink = memberlink_shop(name=beto_text)
+    # beto_partyunit = partyunit_shop(name=beto_text)
+    # beto_partylink = partylink_shop(name=beto_text)
 
     family_text = "family"
     # groupunit_z = groupunit_shop(name=family_text)
-    # groupunit_z.set_memberlink(memberlink=anna_memberlink)
-    # groupunit_z.set_memberlink(memberlink=beto_memberlink)
+    # groupunit_z.set_partylink(partylink=anna_partylink)
+    # groupunit_z.set_partylink(partylink=beto_partylink)
     grouplink_z = grouplink_shop(name=family_text)
     clean_cookery_idea.set_grouplink(grouplink=grouplink_z)
 
-    assert len(a1._members) == 0
+    assert len(a1._partys) == 0
     assert len(a1._groups) == 0
     assert len(a1._idearoot._kids) == 1
     assert a1.get_idea_kid(road=daytime_road)._begin == 0
@@ -681,7 +681,7 @@ def test_contract_create_agenda_item_CorrectlyCreatesAllContractAttributes():
     assert a1.get_idea_kid(road=daytime_road)._close == 1440
     assert len(a1._groups) == 1
     assert a1._groups.get(family_text) != None
-    assert a1._groups.get(family_text)._members in (None, {})
+    assert a1._groups.get(family_text)._partys in (None, {})
 
     assert len(a1._idearoot._kids) == 3
 
@@ -754,7 +754,7 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
     assert get_tasks_count(action_idea_list) == 64
 
 
-def test_agenda_IsSetByAssignedUnit_1MemberGroup():
+def test_agenda_IsSetByAssignedUnit_1PartyGroup():
     # GIVEN
     bob_text = "bob"
     cx = ContractUnit(_owner=bob_text)
@@ -764,7 +764,7 @@ def test_agenda_IsSetByAssignedUnit_1MemberGroup():
     assert len(cx.get_agenda_items()) == 1
 
     sue_text = "sue"
-    cx.add_memberunit(name=sue_text)
+    cx.add_partyunit(name=sue_text)
     assigned_unit_sue = assigned_unit_shop()
     assigned_unit_sue.set_suffgroup(name=sue_text)
     assert len(cx.get_agenda_items()) == 1
@@ -776,7 +776,7 @@ def test_agenda_IsSetByAssignedUnit_1MemberGroup():
     assert len(cx.get_agenda_items()) == 0
 
     # WHEN
-    cx.add_memberunit(name=bob_text)
+    cx.add_partyunit(name=bob_text)
     assigned_unit_bob = assigned_unit_shop()
     assigned_unit_bob.set_suffgroup(name=bob_text)
 
@@ -790,21 +790,21 @@ def test_agenda_IsSetByAssignedUnit_1MemberGroup():
     # print(f"{agenda_list[0]._label=}")
 
 
-def test_agenda_IsSetByAssignedUnit_2MemberGroup():
+def test_agenda_IsSetByAssignedUnit_2PartyGroup():
     # GIVEN
     bob_text = "bob"
     cx = ContractUnit(_owner=bob_text)
-    cx.add_memberunit(name=bob_text)
+    cx.add_partyunit(name=bob_text)
     work_text = "work"
     work_road = f"{bob_text},{work_text}"
     cx.add_idea(idea_kid=IdeaKid(_label=work_text, promise=True), walk=bob_text)
 
     sue_text = "sue"
-    cx.add_memberunit(name=sue_text)
+    cx.add_partyunit(name=sue_text)
 
     run_text = "runners"
     run_group = groupunit_shop(name=run_text)
-    run_group.set_memberlink(memberlink=memberlink_shop(name=sue_text))
+    run_group.set_partylink(partylink=partylink_shop(name=sue_text))
     cx.set_groupunit(groupunit=run_group)
 
     run_assignedunit = assigned_unit_shop()
@@ -818,7 +818,7 @@ def test_agenda_IsSetByAssignedUnit_2MemberGroup():
     assert len(cx.get_agenda_items()) == 0
 
     # WHEN
-    run_group.set_memberlink(memberlink=memberlink_shop(name=bob_text))
+    run_group.set_partylink(partylink=partylink_shop(name=bob_text))
     cx.set_groupunit(groupunit=run_group)
 
     # THEN

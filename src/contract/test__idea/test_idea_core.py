@@ -19,8 +19,8 @@ def test_idea_core_exists():
     assert new_obj._weight >= 1
     assert new_obj._label is None
     assert new_obj._uid is None
-    assert new_obj._all_member_credit is None
-    assert new_obj._all_member_debt is None
+    assert new_obj._all_party_credit is None
+    assert new_obj._all_party_debt is None
     assert new_obj._begin is None
     assert new_obj._close is None
     assert new_obj._addin is None
@@ -204,13 +204,13 @@ def test_idea_core_clear_descendant_promise_count_ClearsCorrectly():
     assert idea._descendant_promise_count is None
 
 
-def test_idea_core_clear_all_member_credit_debt_ClearsCorrectly():
-    idea = IdeaCore(_label="ball", _all_member_credit=55, _all_member_debt=33)
-    assert idea._all_member_credit == 55
-    assert idea._all_member_debt == 33
-    idea.clear_all_member_credit_debt()
-    assert idea._all_member_credit is None
-    assert idea._all_member_debt is None
+def test_idea_core_clear_all_party_credit_debt_ClearsCorrectly():
+    idea = IdeaCore(_label="ball", _all_party_credit=55, _all_party_debt=33)
+    assert idea._all_party_credit == 55
+    assert idea._all_party_debt == 33
+    idea.clear_all_party_credit_debt()
+    assert idea._all_party_credit is None
+    assert idea._all_party_debt is None
 
 
 def test_get_kids_in_range_GetsCorrectIdeas():

@@ -2,7 +2,7 @@ from src.economy.economy import economyunit_shop
 from src.contract.contract import ContractUnit
 from src.contract.idea import IdeaKid
 from src.contract.group import groupunit_shop
-from src.contract.member import memberlink_shop
+from src.contract.party import partylink_shop
 from src.economy.examples.economy_env_kit import (
     get_temp_env_title,
     get_test_economys_dir,
@@ -36,7 +36,7 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     curr_tables = {
         0: "contractunits",
         1: "ledger",
-        2: "river_tmember",
+        2: "river_tparty",
         3: "river_flow",
         4: "river_bucket",
         5: "idea_catalog",
@@ -68,7 +68,7 @@ def test_economy_refresh_bank_metrics_CorrectlyDeletesOldBankInMemory(
     tom_text = "tom"
 
     bob = ContractUnit(_owner=bob_text)
-    bob.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
+    bob.add_partyunit(name=tom_text, creditor_weight=3, debtor_weight=1)
     sx.save_public_contract(contract_x=bob)
     sx.refresh_bank_metrics()
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
@@ -94,7 +94,7 @@ def test_economy_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
     tom_text = "tom"
 
     bob = ContractUnit(_owner=bob_text)
-    bob.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
+    bob.add_partyunit(name=tom_text, creditor_weight=3, debtor_weight=1)
     sx.save_public_contract(contract_x=bob)
     sx.refresh_bank_metrics()
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
@@ -110,7 +110,7 @@ def test_economy_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
 def test_economy_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Partyunits = 12 ledger rows
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
@@ -122,27 +122,27 @@ def test_economy_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     elu_text = "elu"
 
     bob = ContractUnit(_owner=bob_text)
-    bob.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
-    bob.add_memberunit(name=sal_text, creditor_weight=1, debtor_weight=4)
-    bob.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
+    bob.add_partyunit(name=tom_text, creditor_weight=3, debtor_weight=1)
+    bob.add_partyunit(name=sal_text, creditor_weight=1, debtor_weight=4)
+    bob.add_partyunit(name=elu_text, creditor_weight=1, debtor_weight=4)
     sx.save_public_contract(contract_x=bob)
 
     sal = ContractUnit(_owner=sal_text)
-    sal.add_memberunit(name=bob_text, creditor_weight=1, debtor_weight=4)
-    sal.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
-    sal.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
+    sal.add_partyunit(name=bob_text, creditor_weight=1, debtor_weight=4)
+    sal.add_partyunit(name=tom_text, creditor_weight=3, debtor_weight=1)
+    sal.add_partyunit(name=elu_text, creditor_weight=1, debtor_weight=4)
     sx.save_public_contract(contract_x=sal)
 
     tom = ContractUnit(_owner=tom_text)
-    tom.add_memberunit(name=bob_text, creditor_weight=3, debtor_weight=1)
-    tom.add_memberunit(name=sal_text, creditor_weight=1, debtor_weight=4)
-    tom.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
+    tom.add_partyunit(name=bob_text, creditor_weight=3, debtor_weight=1)
+    tom.add_partyunit(name=sal_text, creditor_weight=1, debtor_weight=4)
+    tom.add_partyunit(name=elu_text, creditor_weight=1, debtor_weight=4)
     sx.save_public_contract(contract_x=tom)
 
     elu = ContractUnit(_owner=elu_text)
-    elu.add_memberunit(name=bob_text, creditor_weight=3, debtor_weight=1)
-    elu.add_memberunit(name=tom_text, creditor_weight=1, debtor_weight=4)
-    elu.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
+    elu.add_partyunit(name=bob_text, creditor_weight=3, debtor_weight=1)
+    elu.add_partyunit(name=tom_text, creditor_weight=1, debtor_weight=4)
+    elu.add_partyunit(name=elu_text, creditor_weight=1, debtor_weight=4)
     sx.save_public_contract(contract_x=elu)
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
@@ -158,7 +158,7 @@ def test_economy_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
 def test_economy_refresh_bank_metrics_CorrectlyPopulatesContractTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Partyunits = 12 ledger rows
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
@@ -187,7 +187,7 @@ def test_economy_refresh_bank_metrics_CorrectlyPopulatesContractTable01(
 def test_economy_refresh_bank_metrics_CorrectlyPopulatesContractTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Partyunits = 12 ledger rows
     sx = economyunit_shop(
         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
     )
@@ -227,9 +227,9 @@ def test_economy_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     elu_text = "elu"
     bob_contract = ContractUnit(_owner=bob_text)
     tom_contract = ContractUnit(_owner=tom_text)
-    bob_contract.add_memberunit(name=tom_text)
-    tom_contract.add_memberunit(name=bob_text)
-    tom_contract.add_memberunit(name=elu_text)
+    bob_contract.add_partyunit(name=tom_text)
+    tom_contract.add_partyunit(name=bob_text)
+    tom_contract.add_partyunit(name=elu_text)
     sx.save_public_contract(contract_x=bob_contract)
     sx.save_public_contract(contract_x=tom_contract)
 
@@ -243,7 +243,7 @@ def test_economy_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr) == 3
 
 
-def test_economy_set_contract_bank_attrs_CorrectlyPopulatesContract_Groupunit_Memberlinks(
+def test_economy_set_contract_bank_attrs_CorrectlyPopulatesContract_Groupunit_Partylinks(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -252,15 +252,15 @@ def test_economy_set_contract_bank_attrs_CorrectlyPopulatesContract_Groupunit_Me
     )
     sx.create_dirs_if_null(in_memory_bank=True)
 
-    # create 4 contracts, 1 with group "swimming expert" linked to 1 member
+    # create 4 contracts, 1 with group "swimming expert" linked to 1 party
     # two others have idea f"{root_label()},sports,swimming"
     # run set_bank_metrics
     # assert
-    # _memberlinks_set_by_economy_road
-    # assert group "swimming expert" has 1 member
-    # change groupunit "swimming expert" _memberlinks_set_by_economy_road ==  f"{root_label()}sports,swimmer"
+    # _partylinks_set_by_economy_road
+    # assert group "swimming expert" has 1 party
+    # change groupunit "swimming expert" _partylinks_set_by_economy_road ==  f"{root_label()}sports,swimmer"
     # run set_bank_metrics
-    # assert group "swimming expert" has 2 different member
+    # assert group "swimming expert" has 2 different party
 
     sal_text = "sal"
     bob_text = "bob"
@@ -282,12 +282,12 @@ def test_economy_set_contract_bank_attrs_CorrectlyPopulatesContract_Groupunit_Me
     bob_contract.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=bob_sports_road)
     tom_contract.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=tom_sports_road)
 
-    sal_contract.add_memberunit(name=bob_text, creditor_weight=2, debtor_weight=2)
+    sal_contract.add_partyunit(name=bob_text, creditor_weight=2, debtor_weight=2)
 
     swim_group_text = "swimming expert"
     swim_group_unit = groupunit_shop(name=swim_group_text)
-    bob_link = memberlink_shop(name=bob_text)
-    swim_group_unit.set_memberlink(memberlink=bob_link)
+    bob_link = partylink_shop(name=bob_text)
+    swim_group_unit.set_partylink(partylink=bob_link)
     sal_contract.set_groupunit(groupunit=swim_group_unit)
 
     sx.save_public_contract(contract_x=sal_contract)
@@ -297,16 +297,16 @@ def test_economy_set_contract_bank_attrs_CorrectlyPopulatesContract_Groupunit_Me
 
     sx.set_contract_bank_attrs(contract_owner=sal_text)
     e1_sal_contract = sx.get_public_contract(owner=sal_text)
-    assert len(e1_sal_contract._groups.get(swim_group_text)._members) == 1
+    assert len(e1_sal_contract._groups.get(swim_group_text)._partys) == 1
 
     # WHEN
-    # change groupunit "swimming expert" _memberlinks_set_by_economy_road ==  f"{root_label()},sports,swimmer"
+    # change groupunit "swimming expert" _partylinks_set_by_economy_road ==  f"{root_label()},sports,swimmer"
     sal_swim_road = f"{sal_sports_road},{swim_text}"
-    swim_group_unit.set_attr(_memberlinks_set_by_economy_road=sal_swim_road)
+    swim_group_unit.set_attr(_partylinks_set_by_economy_road=sal_swim_road)
     sal_contract.set_groupunit(groupunit=swim_group_unit)
     sx.save_public_contract(contract_x=sal_contract)
     sx.set_contract_bank_attrs(contract_owner=sal_text)
 
     # THEN
     e1_sal_contract = sx.get_public_contract(owner=sal_text)
-    assert len(e1_sal_contract._groups.get(swim_group_text)._members) == 2
+    assert len(e1_sal_contract._groups.get(swim_group_text)._partys) == 2

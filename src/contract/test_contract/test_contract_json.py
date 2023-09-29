@@ -16,7 +16,7 @@ from src.contract.examples.contract_env import (
     env_dir_setup_cleanup,
 )
 from src.contract.group import groupunit_shop, grouplink_shop
-from src.contract.member import memberlink_shop
+from src.contract.party import partylink_shop
 from src.contract.required_assign import assigned_unit_shop
 from src.contract.x_func import (
     x_is_json,
@@ -56,7 +56,7 @@ def test_contract_get_dict_ReturnsDictObject():
     assert x_dict["_weight"] == x_contract._weight
     assert x_dict["_max_tree_traverse"] == x_contract._max_tree_traverse
     assert x_dict["_auto_output_to_public"] == x_contract._auto_output_to_public
-    assert len(x_dict["_members"]) == len(x_contract._members)
+    assert len(x_dict["_partys"]) == len(x_contract._partys)
     assert len(x_dict["_groups"]) == len(x_contract._groups)
 
     x_idearoot = x_contract._idearoot
@@ -278,13 +278,13 @@ def test_contract_get_json_CorrectlyWorksForSimpleExample():
     # print(f"{shave_idea_x._label=} {shave_idea_x._walk=}")
 
     sue_text = "sue"
-    contract_y.add_memberunit(name=sue_text)
+    contract_y.add_partyunit(name=sue_text)
     tim_text = "tim"
-    contract_y.add_memberunit(name=tim_text)
+    contract_y.add_partyunit(name=tim_text)
     run_text = "runners"
     run_group = groupunit_shop(name=run_text)
-    run_group.set_memberlink(memberlink=memberlink_shop(name=sue_text))
-    run_group.set_memberlink(memberlink=memberlink_shop(name=tim_text))
+    run_group.set_partylink(partylink=partylink_shop(name=sue_text))
+    run_group.set_partylink(partylink=partylink_shop(name=tim_text))
     contract_y.set_groupunit(groupunit=run_group)
 
     run_assigned_unit = assigned_unit_shop()
@@ -382,7 +382,7 @@ def test_contract_get_json_CorrectlyWorksForSimpleExample():
 #     assert cx3._idearoot._walk == cx1._idearoot._walk
 #     assert len(cx3._idearoot._kids) == len(cx1._idearoot._kids)
 #     assert len(cx3._groups) == 34
-#     assert len(cx3._members) == 22
+#     assert len(cx3._partys) == 22
 
 
 def test_get_dict_of_contract_from_dict_ReturnsDictOfContractUnits():

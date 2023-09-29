@@ -300,7 +300,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def contract_new(self):
         self.contract_x = ContractUnit(_owner="new")
         self.contract_x._set_acptfacts_empty_if_null()
-        self.contract_x.set_members_empty_if_null()
+        self.contract_x.set_partys_empty_if_null()
         self.contract_x.set_groupunits_empty_if_null()
         self.contract_x.set_time_hreg_ideas(c400_count=7)
         road_minute = f"{self.contract_x._economy_title},time,jajatime"

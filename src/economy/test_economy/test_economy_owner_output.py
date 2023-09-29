@@ -31,7 +31,7 @@ def test_economy_get_output_contract_ReturnsCorrectContractObjScenario1(
     sx.set_owner_depotlink(xia_text, input_cx._owner, depotlink_type="blind_trust")
     sx.save_owner_file(owner_name=xia_text)
     xia_owner = sx.get_owner_obj(name=xia_text)
-    # print(f"{xia_owner._isol._members.keys()=}")
+    # print(f"{xia_owner._isol._partys.keys()=}")
 
     # WHEN
     output_cx = sx.get_output_contract(owner_name=xia_text)
@@ -74,8 +74,8 @@ def test_economy_get_output_contract_ReturnsCorrectContractObjScenario1(
     # assert output_cx._idearoot._kids == input_cx._idearoot._kids
     assert output_cx._idearoot._acptfactunits == {}
     assert output_cx._idearoot._acptfactunits == input_cx._idearoot._acptfactunits
-    assert list(output_cx._members.keys()) == [xia_text, a_text]
-    assert output_cx._members != input_cx._members
+    assert list(output_cx._partys.keys()) == [xia_text, a_text]
+    assert output_cx._partys != input_cx._partys
     assert list(output_cx._groups.keys()) == [xia_text, a_text]
     assert output_cx._groups != input_cx._groups
     print(f"{output_cx._originunit=}")
@@ -109,7 +109,7 @@ def test_economy_get_output_contract_ReturnsCorrectContractObjScenario2(
     sx.set_owner_depotlink(xia_text, cx2._owner, depotlink_type="blind_trust")
     sx.save_owner_file(owner_name=xia_text)
     xia_owner = sx.get_owner_obj(name=xia_text)
-    print(f"{xia_owner._isol._members.keys()=}")
+    print(f"{xia_owner._isol._partys.keys()=}")
 
     # WHEN
     output_cx = sx.get_output_contract(owner_name=xia_text)
@@ -138,8 +138,8 @@ def test_economy_get_output_contract_ReturnsCorrectContractObjScenario2(
     # assert output_cx._idearoot._kids == cx1._idearoot._kids
     assert len(output_cx._idearoot._acptfactunits) == 9
     assert len(output_cx._idearoot._acptfactunits) == len(cx2._idearoot._acptfactunits)
-    assert len(output_cx._members) == 25
-    assert len(output_cx._members) == len(cx2._members) + 2 + 1
+    assert len(output_cx._partys) == 25
+    assert len(output_cx._partys) == len(cx2._partys) + 2 + 1
     assert len(output_cx._groups) == 37
     assert len(output_cx._groups) == len(cx2._groups) + 2 + 1
     assert output_cx._idearoot != cx1._idearoot

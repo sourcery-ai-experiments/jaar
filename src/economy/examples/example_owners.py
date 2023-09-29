@@ -205,8 +205,8 @@ def get_contract_assignment_laundry_example1() -> ContractUnit:
     america_text = "America"
     america_cx = ContractUnit(_owner=america_text)
     joachim_text = "Joachim"
-    america_cx.add_memberunit(america_text)
-    america_cx.add_memberunit(joachim_text)
+    america_cx.add_partyunit(america_text)
+    america_cx.add_partyunit(joachim_text)
 
     root_road = america_cx._economy_title
     casa_text = "casa"

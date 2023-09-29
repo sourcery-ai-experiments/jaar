@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Contracts /  Member /  dimension</string>
+     <string>Contracts /  Party /  dimension</string>
     </property>
    </widget>
    <widget class="QPushButton" name="acptfact_open_lower_spec1">
@@ -167,7 +167,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Manumember change</string>
+     <string>Manuparty change</string>
     </property>
    </widget>
    <widget class="QPushButton" name="lobby_button">

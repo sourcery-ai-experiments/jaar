@@ -56,7 +56,7 @@ def test_contract_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
     assigned_unit_x = assigned_unit_shop()
 
     cx = ContractUnit(_owner=bob_text)
-    cx.add_memberunit(name=bob_text)
+    cx.add_partyunit(name=bob_text)
     cx.add_idea(IdeaKid(_label=run_text), walk=bob_text)
     cx.edit_idea_attr(road=run_road, assignedunit=assigned_unit_x)
     run_idea = cx.get_idea_kid(road=run_road)
@@ -68,14 +68,14 @@ def test_contract_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
 
     # THEN
     assert run_idea._assignedheir != None
-    assert run_idea._assignedheir._group_member == False
+    assert run_idea._assignedheir._group_party == False
 
     assigned_heir_x = assigned_heir_shop()
     assigned_heir_x.set_suffgroups(
         parent_assignheir=None, assignunit=assigned_unit_x, contract_groups=cx._groups
     )
-    print(f"{assigned_heir_x._group_member=}")
-    assert run_idea._assignedheir._group_member == assigned_heir_x._group_member
+    print(f"{assigned_heir_x._group_party=}")
+    assert run_idea._assignedheir._group_party == assigned_heir_x._group_party
     assert run_idea._assignedheir == assigned_heir_x
 
 
@@ -121,8 +121,8 @@ def test_ContractUnit__get_filtered_grouplinks_idea_CorrectlyFiltersIdea_AssignU
     cx1 = ContractUnit(_owner=owner_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
-    cx1.add_memberunit(name=xia_text)
-    cx1.add_memberunit(name=zoa_text)
+    cx1.add_partyunit(name=xia_text)
+    cx1.add_partyunit(name=zoa_text)
 
     work_text = "work"
     work_road = f"{cx1._economy_title},{work_text}"
@@ -140,7 +140,7 @@ def test_ContractUnit__get_filtered_grouplinks_idea_CorrectlyFiltersIdea_AssignU
 
     # WHEN
     cx2 = ContractUnit(_owner=owner_text)
-    cx2.add_memberunit(name=xia_text)
+    cx2.add_partyunit(name=xia_text)
     filtered_idea = cx2._get_filtered_grouplinks_idea(cx1_swim_idea)
 
     # THEN
@@ -155,8 +155,8 @@ def test_ContractUnit_add_idea_CorrectlyFiltersIdea_grouplinks():
     cx1 = ContractUnit(_owner=owner_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
-    cx1.add_memberunit(name=xia_text)
-    cx1.add_memberunit(name=zoa_text)
+    cx1.add_partyunit(name=xia_text)
+    cx1.add_partyunit(name=zoa_text)
 
     work_text = "work"
     work_road = f"{cx1._economy_title},{work_text}"
@@ -174,7 +174,7 @@ def test_ContractUnit_add_idea_CorrectlyFiltersIdea_grouplinks():
 
     # WHEN
     cx2 = ContractUnit(_owner=owner_text)
-    cx2.add_memberunit(name=xia_text)
+    cx2.add_partyunit(name=xia_text)
     cx2.add_idea(
         idea_kid=cx1_swim_idea,
         walk=cx2._economy_title,

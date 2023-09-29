@@ -1,14 +1,14 @@
 import dataclasses
 import json
 from datetime import datetime
-from src.contract.member import (
-    MemberName,
-    MemberUnit,
-    MemberLink,
-    memberunits_get_from_dict,
-    memberunit_shop,
-    memberlink_shop,
-    MemberUnitExternalMetrics,
+from src.contract.party import (
+    PartyName,
+    PartyUnit,
+    PartyLink,
+    partyunits_get_from_dict,
+    partyunit_shop,
+    partylink_shop,
+    PartyUnitExternalMetrics,
 )
 from src.contract.group import (
     GroupLink,
@@ -77,7 +77,7 @@ class InvalidContractException(Exception):
     pass
 
 
-class AssignmentMemberException(Exception):
+class AssignmentPartyException(Exception):
     pass
 
 
@@ -89,7 +89,7 @@ class ContractOwner(str):
 class ContractUnit:
     _owner: ContractOwner = None
     _weight: float = None
-    _members: dict[MemberName:MemberUnit] = None
+    _partys: dict[PartyName:PartyUnit] = None
     _groups: dict[GroupName:GroupUnit] = None
     _idearoot: IdeaRoot = None
     _idea_dict: dict[Road:IdeaCore] = None
@@ -120,22 +120,22 @@ class ContractUnit:
         self.edit_idea_label(old_road=old_economy_title, new_label=self._economy_title)
         self.set_contract_metrics()
 
-    def set_banking_attr_memberunits(self, river_tmembers: dict):
-        for memberunit_x in self._members.values():
-            memberunit_x.clear_banking_data()
-            river_tmember = river_tmembers.get(memberunit_x.name)
-            if river_tmember != None:
-                memberunit_x.set_banking_data(
-                    river_tmember.tax_total, river_tmember.tax_diff
+    def set_banking_attr_partyunits(self, river_tpartys: dict):
+        for partyunit_x in self._partys.values():
+            partyunit_x.clear_banking_data()
+            river_tparty = river_tpartys.get(partyunit_x.name)
+            if river_tparty != None:
+                partyunit_x.set_banking_data(
+                    river_tparty.tax_total, river_tparty.tax_diff
                 )
 
-    def import_external_memberunit_metrics(
-        self, external_metrics: MemberUnitExternalMetrics
+    def import_external_partyunit_metrics(
+        self, external_metrics: PartyUnitExternalMetrics
     ):
-        member_x = self._members.get(external_metrics.internal_name)
-        member_x._creditor_active = external_metrics.creditor_active
-        member_x._debtor_active = external_metrics.debtor_active
-        # self.set_memberunit(memberunit=member_x)
+        party_x = self._partys.get(external_metrics.internal_name)
+        party_x._creditor_active = external_metrics.creditor_active
+        party_x._debtor_active = external_metrics.debtor_active
+        # self.set_partyunit(partyunit=party_x)
 
     def set_max_tree_traverse(self, int_x: int):
         if int_x < 2:
@@ -152,10 +152,7 @@ class ContractUnit:
             return False
 
         promise_idea_road = tree_metrics_x.an_promise_idea_road
-        if (
-            self._are_all_members_groups_are_in_idea_kid(road=promise_idea_road)
-            == False
-        ):
+        if self._are_all_partys_groups_are_in_idea_kid(road=promise_idea_road) == False:
             return False
 
         return self.all_ideas_relevant_to_promise_idea(road=promise_idea_road) != False
@@ -190,7 +187,7 @@ class ContractUnit:
             cx.set_contract_metrics()
 
         # TODO grab groups
-        # TODO grab all group members
+        # TODO grab all group partys
         # TODO grab acptfacts
         return cx
 
@@ -272,7 +269,7 @@ class ContractUnit:
         all_ideas_set = set(self.get_idea_tree_ordered_road_list())
         return all_ideas_set == all_ideas_set.intersection(promise_idea_assoc_set)
 
-    def _are_all_members_groups_are_in_idea_kid(self, road: Road) -> bool:
+    def _are_all_partys_groups_are_in_idea_kid(self, road: Road) -> bool:
         idea_kid = self.get_idea_kid(road=road)
         # get dict of all idea groupheirs
         groupheir_list = idea_kid._groupheirs.keys()
@@ -280,24 +277,22 @@ class ContractUnit:
         non_single_groupunits = {
             groupunit.name: groupunit
             for groupunit in self._groups.values()
-            if groupunit._single_member != True
+            if groupunit._single_party != True
         }
-        # check all non_single_member_groupunits are in groupheirs
+        # check all non_single_party_groupunits are in groupheirs
         for non_single_group in non_single_groupunits.values():
             if groupheir_dict.get(non_single_group.name) is None:
                 return False
 
-        # get dict of all memberlinks that are in all groupheirs
-        groupheir_memberunits = {}
+        # get dict of all partylinks that are in all groupheirs
+        groupheir_partyunits = {}
         for groupheir_name in groupheir_dict:
             groupunit = self._groups.get(groupheir_name)
-            for memberlink in groupunit._members.values():
-                groupheir_memberunits[memberlink.name] = self._members.get(
-                    memberlink.name
-                )
+            for partylink in groupunit._partys.values():
+                groupheir_partyunits[partylink.name] = self._partys.get(partylink.name)
 
-        # check all contract._members are in groupheir_memberunits
-        return len(self._members) == len(groupheir_memberunits)
+        # check all contract._partys are in groupheir_partyunits
+        return len(self._partys) == len(groupheir_partyunits)
 
     def get_time_min_from_dt(self, dt: datetime) -> float:
         return hreg_get_time_min_from_dt(dt=dt)
@@ -413,13 +408,13 @@ class ContractUnit:
         num_with_postfix = get_number_with_postfix(num=divisor // 10080)
         return f"every {num_with_postfix} {weekday_idea_node._label} at {convert1440toReadableTime(min1440=open % 1440)}"
 
-    def get_members_metrics(self):
+    def get_partys_metrics(self):
         tree_metrics = self.get_tree_metrics()
         return tree_metrics.grouplinks_metrics
 
-    def set_members_empty_if_null(self):
-        if self._members is None:
-            self._members = {}
+    def set_partys_empty_if_null(self):
+        if self._partys is None:
+            self._partys = {}
 
     def add_to_group_contract_credit_debt(
         self,
@@ -449,17 +444,17 @@ class ContractUnit:
                 group._contract_agenda_credit += groupline_contract_credit
                 group._contract_agenda_debt += groupline_contract_debt
 
-    def add_to_memberunit_contract_credit_debt(
+    def add_to_partyunit_contract_credit_debt(
         self,
-        memberunit_name: MemberName,
+        partyunit_name: PartyName,
         contract_credit,
         contract_debt: float,
         contract_agenda_credit: float,
         contract_agenda_debt: float,
     ):
-        for memberunit in self._members.values():
-            if memberunit.name == memberunit_name:
-                memberunit.add_contract_credit_debt(
+        for partyunit in self._partys.values():
+            if partyunit.name == partyunit_name:
+                partyunit.add_contract_credit_debt(
                     contract_credit=contract_credit,
                     contract_debt=contract_debt,
                     contract_agenda_credit=contract_agenda_credit,
@@ -470,11 +465,11 @@ class ContractUnit:
         if self._groups is None:
             self._groups = {}
 
-    def del_memberunit(self, name: str):
+    def del_partyunit(self, name: str):
         self._groups.pop(name)
-        self._members.pop(name)
+        self._partys.pop(name)
 
-    def add_memberunit(
+    def add_partyunit(
         self,
         name: str,
         uid: int = None,
@@ -482,152 +477,148 @@ class ContractUnit:
         debtor_weight: int = None,
         depotlink_type: str = None,
     ):
-        memberunit = memberunit_shop(
-            name=MemberName(name),
+        partyunit = partyunit_shop(
+            name=PartyName(name),
             uid=uid,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
             depotlink_type=depotlink_type,
         )
-        self.set_memberunit(memberunit=memberunit)
+        self.set_partyunit(partyunit=partyunit)
 
-    def set_memberunit(self, memberunit: MemberUnit):
-        self.set_members_empty_if_null()
+    def set_partyunit(self, partyunit: PartyUnit):
+        self.set_partys_empty_if_null()
         self.set_groupunits_empty_if_null()
-        # future: if member is new check existance of group with member name
+        # future: if party is new check existance of group with party name
 
-        self._members[memberunit.name] = memberunit
+        self._partys[partyunit.name] = partyunit
 
         existing_group = None
         try:
-            existing_group = self._groups[memberunit.name]
+            existing_group = self._groups[partyunit.name]
         except KeyError:
-            memberlink = memberlink_shop(
-                name=MemberName(memberunit.name), creditor_weight=1, debtor_weight=1
+            partylink = partylink_shop(
+                name=PartyName(partyunit.name), creditor_weight=1, debtor_weight=1
             )
-            memberlinks = {memberlink.name: memberlink}
+            partylinks = {partylink.name: partylink}
             group_unit = groupunit_shop(
-                name=memberunit.name,
-                _single_member=True,
-                _members=memberlinks,
+                name=partyunit.name,
+                _single_party=True,
+                _partys=partylinks,
                 uid=None,
-                single_member_id=None,
+                single_party_id=None,
             )
             self.set_groupunit(groupunit=group_unit)
 
-    def edit_memberunit_name(
+    def edit_partyunit_name(
         self,
         old_name: str,
         new_name: str,
-        allow_member_overwite: bool,
+        allow_party_overwite: bool,
         allow_nonsingle_group_overwrite: bool,
     ):
-        old_name_creditor_weight = self._members.get(old_name).creditor_weight
-        if not allow_member_overwite and self._members.get(new_name) != None:
+        old_name_creditor_weight = self._partys.get(old_name).creditor_weight
+        if not allow_party_overwite and self._partys.get(new_name) != None:
             raise InvalidContractException(
-                f"Member '{old_name}' change to '{new_name}' failed since '{new_name}' exists."
+                f"Party '{old_name}' change to '{new_name}' failed since '{new_name}' exists."
             )
         elif (
             not allow_nonsingle_group_overwrite
             and self._groups.get(new_name) != None
-            and self._groups.get(new_name)._single_member == False
+            and self._groups.get(new_name)._single_party == False
         ):
             raise InvalidContractException(
-                f"Member '{old_name}' change to '{new_name}' failed since non-single group '{new_name}' exists."
+                f"Party '{old_name}' change to '{new_name}' failed since non-single group '{new_name}' exists."
             )
         elif (
             allow_nonsingle_group_overwrite
             and self._groups.get(new_name) != None
-            and self._groups.get(new_name)._single_member == False
+            and self._groups.get(new_name)._single_party == False
         ):
             self.del_groupunit(groupname=new_name)
-        elif self._members.get(new_name) != None:
-            old_name_creditor_weight += self._members.get(new_name).creditor_weight
+        elif self._partys.get(new_name) != None:
+            old_name_creditor_weight += self._partys.get(new_name).creditor_weight
 
-        self.add_memberunit(name=new_name, creditor_weight=old_name_creditor_weight)
+        self.add_partyunit(name=new_name, creditor_weight=old_name_creditor_weight)
         groups_affected_list = []
         for group in self._groups.values():
             groups_affected_list.extend(
                 group.name
-                for member_x in group._members.values()
-                if member_x.name == old_name
+                for party_x in group._partys.values()
+                if party_x.name == old_name
             )
         for group_x in groups_affected_list:
-            memberlink_creditor_weight = (
-                self._groups.get(group_x)._members.get(old_name).creditor_weight
+            partylink_creditor_weight = (
+                self._groups.get(group_x)._partys.get(old_name).creditor_weight
             )
-            memberlink_debtor_weight = (
-                self._groups.get(group_x)._members.get(old_name).debtor_weight
+            partylink_debtor_weight = (
+                self._groups.get(group_x)._partys.get(old_name).debtor_weight
             )
-            if self._groups.get(group_x)._members.get(new_name) != None:
-                memberlink_creditor_weight += (
-                    self._groups.get(group_x)._members.get(new_name).creditor_weight
+            if self._groups.get(group_x)._partys.get(new_name) != None:
+                partylink_creditor_weight += (
+                    self._groups.get(group_x)._partys.get(new_name).creditor_weight
                 )
-                memberlink_debtor_weight += (
-                    self._groups.get(group_x)._members.get(new_name).debtor_weight
+                partylink_debtor_weight += (
+                    self._groups.get(group_x)._partys.get(new_name).debtor_weight
                 )
 
-            self._groups.get(group_x).set_memberlink(
-                memberlink=memberlink_shop(
+            self._groups.get(group_x).set_partylink(
+                partylink=partylink_shop(
                     name=new_name,
-                    creditor_weight=memberlink_creditor_weight,
-                    debtor_weight=memberlink_debtor_weight,
+                    creditor_weight=partylink_creditor_weight,
+                    debtor_weight=partylink_debtor_weight,
                 )
             )
-            self._groups.get(group_x).del_memberlink(name=old_name)
+            self._groups.get(group_x).del_partylink(name=old_name)
 
-        self.del_memberunit(name=old_name)
+        self.del_partyunit(name=old_name)
 
-    def get_member(self, membername: MemberName) -> MemberUnit:
-        return self._members.get(membername)
+    def get_party(self, partyname: PartyName) -> PartyUnit:
+        return self._partys.get(partyname)
 
-    def get_memberunits_name_list(self):
-        membername_list = list(self._members.keys())
-        membername_list.append("")
-        membername_dict = {
-            membername.lower(): membername for membername in membername_list
-        }
-        membername_lowercase_ordered_list = sorted(list(membername_dict))
+    def get_partyunits_name_list(self):
+        partyname_list = list(self._partys.keys())
+        partyname_list.append("")
+        partyname_dict = {partyname.lower(): partyname for partyname in partyname_list}
+        partyname_lowercase_ordered_list = sorted(list(partyname_dict))
         return [
-            membername_dict[membername_l]
-            for membername_l in membername_lowercase_ordered_list
+            partyname_dict[partyname_l]
+            for partyname_l in partyname_lowercase_ordered_list
         ]
 
-    def get_memberunits_uid_max(self) -> int:
+    def get_partyunits_uid_max(self) -> int:
         uid_max = 1
-        for memberunit_x in self._members.values():
-            if memberunit_x.uid != None and memberunit_x.uid > uid_max:
-                uid_max = memberunit_x.uid
+        for partyunit_x in self._partys.values():
+            if partyunit_x.uid != None and partyunit_x.uid > uid_max:
+                uid_max = partyunit_x.uid
         return uid_max
 
-    def get_memberunits_uid_dict(self) -> dict[int:int]:
+    def get_partyunits_uid_dict(self) -> dict[int:int]:
         uid_dict = {}
-        for memberunit_x in self._members.values():
-            if uid_dict.get(memberunit_x.uid) is None:
-                uid_dict[memberunit_x.uid] = 1
+        for partyunit_x in self._partys.values():
+            if uid_dict.get(partyunit_x.uid) is None:
+                uid_dict[partyunit_x.uid] = 1
             else:
-                uid_dict[memberunit_x.uid] += 1
+                uid_dict[partyunit_x.uid] += 1
         return uid_dict
 
-    def set_all_memberunits_uids_unique(self) -> int:
-        uid_max = self.get_memberunits_uid_max()
-        uid_dict = self.get_memberunits_uid_dict()
-        for memberunit_x in self._members.values():
-            if uid_dict.get(memberunit_x.uid) > 0:
+    def set_all_partyunits_uids_unique(self) -> int:
+        uid_max = self.get_partyunits_uid_max()
+        uid_dict = self.get_partyunits_uid_dict()
+        for partyunit_x in self._partys.values():
+            if uid_dict.get(partyunit_x.uid) > 0:
                 new_uid_max = uid_max + 1
-                memberunit_x.uid = new_uid_max
-                uid_max = memberunit_x.uid
+                partyunit_x.uid = new_uid_max
+                uid_max = partyunit_x.uid
 
-    def all_memberunits_uids_are_unique(self):
-        uid_dict = self.get_memberunits_uid_dict()
+    def all_partyunits_uids_are_unique(self):
+        uid_dict = self.get_partyunits_uid_dict()
         return not any(
             uid_count > 1 or uid is None for uid, uid_count in uid_dict.items()
         )
 
-    def get_members_depotlink_count(self):
-        return sum(
-            member_x.depotlink_type != None for member_x in self._members.values()
-        )
+    def get_partys_depotlink_count(self):
+        return sum(party_x.depotlink_type != None for party_x in self._partys.values())
 
     def get_groupunits_uid_max(self) -> int:
         uid_max = 1
@@ -660,22 +651,22 @@ class ContractUnit:
             uid_count > 1 or uid is None for uid, uid_count in uid_dict.items()
         )
 
-    def set_groupunit(self, groupunit: GroupUnit, create_missing_members: bool = None):
+    def set_groupunit(self, groupunit: GroupUnit, create_missing_partys: bool = None):
         self.set_groupunits_empty_if_null()
-        groupunit._set_memberlinks_empty_if_null()
+        groupunit._set_partylinks_empty_if_null()
         self._groups[groupunit.name] = groupunit
 
-        if create_missing_members:
-            self._create_missing_members(memberlinks=groupunit._members)
+        if create_missing_partys:
+            self._create_missing_partys(partylinks=groupunit._partys)
 
-    def _create_missing_members(self, memberlinks: dict[MemberName:MemberLink]):
-        for memberlink_x in memberlinks.values():
-            if self._members.get(memberlink_x.name) is None:
-                self.set_memberunit(
-                    memberunit=memberunit_shop(
-                        name=memberlink_x.name,
-                        creditor_weight=memberlink_x.creditor_weight,
-                        debtor_weight=memberlink_x.debtor_weight,
+    def _create_missing_partys(self, partylinks: dict[PartyName:PartyLink]):
+        for partylink_x in partylinks.values():
+            if self._partys.get(partylink_x.name) is None:
+                self.set_partyunit(
+                    partyunit=partyunit_shop(
+                        name=partylink_x.name,
+                        creditor_weight=partylink_x.creditor_weight,
+                        debtor_weight=partylink_x.debtor_weight,
                     )
                 )
 
@@ -699,9 +690,9 @@ class ContractUnit:
             groupunit_x = groupunit_shop(
                 name=new_name,
                 uid=old_groupunit.uid,
-                _members=old_groupunit._members,
-                single_member_id=old_groupunit.single_member_id,
-                _single_member=old_groupunit._single_member,
+                _partys=old_groupunit._partys,
+                single_party_id=old_groupunit.single_party_id,
+                _single_party=old_groupunit._single_party,
             )
             self.set_groupunit(groupunit=groupunit_x)
             self.del_groupunit(groupname=old_name)
@@ -1084,7 +1075,7 @@ class ContractUnit:
 
         if create_missing_ideas_groups:
             self._create_missing_ideas(road=Road(f"{walk},{idea_kid._label}"))
-            self._create_missing_groups_members(grouplinks=idea_kid._grouplinks)
+            self._create_missing_groups_partys(grouplinks=idea_kid._grouplinks)
 
     def _get_filtered_grouplinks_idea(self, idea: IdeaKid) -> IdeaKid:
         idea.set_grouplink_empty_if_null()
@@ -1107,10 +1098,10 @@ class ContractUnit:
 
         return idea
 
-    def _create_missing_groups_members(self, grouplinks: dict[GroupName:GroupLink]):
+    def _create_missing_groups_partys(self, grouplinks: dict[GroupName:GroupLink]):
         for grouplink_x in grouplinks.values():
             if self._groups.get(grouplink_x.name) is None:
-                groupunit_x = groupunit_shop(name=grouplink_x.name, _members={})
+                groupunit_x = groupunit_shop(name=grouplink_x.name, _partys={})
                 self.set_groupunit(groupunit=groupunit_x)
 
     def _create_missing_ideas(self, road):
@@ -1382,8 +1373,8 @@ class ContractUnit:
         problem_bool: bool = None,
         acptfactunit: AcptFactUnit = None,
         descendant_promise_count: int = None,
-        all_member_credit: bool = None,
-        all_member_debt: bool = None,
+        all_party_credit: bool = None,
+        all_party_debt: bool = None,
         grouplink: GroupLink = None,
         grouplink_del: GroupName = None,
         is_expanded: bool = None,
@@ -1439,8 +1430,8 @@ class ContractUnit:
             numeric_road=numeric_road,
             range_source_road=range_source_road,
             descendant_promise_count=descendant_promise_count,
-            all_member_credit=all_member_credit,
-            all_member_debt=all_member_debt,
+            all_party_credit=all_party_credit,
+            all_party_debt=all_party_debt,
             grouplink=grouplink,
             grouplink_del=grouplink_del,
             is_expanded=is_expanded,
@@ -1491,74 +1482,72 @@ class ContractUnit:
             base_acptfactunit=self._idearoot._acptfactunits[base]
         )
 
-    def get_memberunit_total_creditor_weight(self):
+    def get_partyunit_total_creditor_weight(self):
         return sum(
-            memberunit.get_creditor_weight() for memberunit in self._members.values()
+            partyunit.get_creditor_weight() for partyunit in self._partys.values()
         )
 
-    def get_memberunit_total_debtor_weight(self):
-        return sum(
-            memberunit.get_debtor_weight() for memberunit in self._members.values()
-        )
+    def get_partyunit_total_debtor_weight(self):
+        return sum(partyunit.get_debtor_weight() for partyunit in self._partys.values())
 
-    def _add_to_memberunits_contract_credit_debt(self, idea_contract_importance: float):
-        sum_memberunit_creditor_weight = self.get_memberunit_total_creditor_weight()
-        sum_memberunit_debtor_weight = self.get_memberunit_total_debtor_weight()
+    def _add_to_partyunits_contract_credit_debt(self, idea_contract_importance: float):
+        sum_partyunit_creditor_weight = self.get_partyunit_total_creditor_weight()
+        sum_partyunit_debtor_weight = self.get_partyunit_total_debtor_weight()
 
-        for memberunit_x in self._members.values():
+        for partyunit_x in self._partys.values():
             au_contract_credit = (
-                idea_contract_importance * memberunit_x.get_creditor_weight()
-            ) / sum_memberunit_creditor_weight
+                idea_contract_importance * partyunit_x.get_creditor_weight()
+            ) / sum_partyunit_creditor_weight
 
             au_contract_debt = (
-                idea_contract_importance * memberunit_x.get_debtor_weight()
-            ) / sum_memberunit_debtor_weight
+                idea_contract_importance * partyunit_x.get_debtor_weight()
+            ) / sum_partyunit_debtor_weight
 
-            memberunit_x.add_contract_credit_debt(
+            partyunit_x.add_contract_credit_debt(
                 contract_credit=au_contract_credit,
                 contract_debt=au_contract_debt,
                 contract_agenda_credit=0,
                 contract_agenda_debt=0,
             )
 
-    def _add_to_memberunits_contract_agenda_credit_debt(
+    def _add_to_partyunits_contract_agenda_credit_debt(
         self, idea_contract_importance: float
     ):
-        sum_memberunit_creditor_weight = self.get_memberunit_total_creditor_weight()
-        sum_memberunit_debtor_weight = self.get_memberunit_total_debtor_weight()
+        sum_partyunit_creditor_weight = self.get_partyunit_total_creditor_weight()
+        sum_partyunit_debtor_weight = self.get_partyunit_total_debtor_weight()
 
-        for memberunit_x in self._members.values():
+        for partyunit_x in self._partys.values():
             au_contract_agenda_credit = (
-                idea_contract_importance * memberunit_x.get_creditor_weight()
-            ) / sum_memberunit_creditor_weight
+                idea_contract_importance * partyunit_x.get_creditor_weight()
+            ) / sum_partyunit_creditor_weight
 
             au_contract_agenda_debt = (
-                idea_contract_importance * memberunit_x.get_debtor_weight()
-            ) / sum_memberunit_debtor_weight
+                idea_contract_importance * partyunit_x.get_debtor_weight()
+            ) / sum_partyunit_debtor_weight
 
-            memberunit_x.add_contract_credit_debt(
+            partyunit_x.add_contract_credit_debt(
                 contract_credit=0,
                 contract_debt=0,
                 contract_agenda_credit=au_contract_agenda_credit,
                 contract_agenda_debt=au_contract_agenda_debt,
             )
 
-    def _set_memberunits_contract_agenda_importance(
+    def _set_partyunits_contract_agenda_importance(
         self, contract_agenda_importance: float
     ):
-        sum_memberunit_creditor_weight = self.get_memberunit_total_creditor_weight()
-        sum_memberunit_debtor_weight = self.get_memberunit_total_debtor_weight()
+        sum_partyunit_creditor_weight = self.get_partyunit_total_creditor_weight()
+        sum_partyunit_debtor_weight = self.get_partyunit_total_debtor_weight()
 
-        for memberunit_x in self._members.values():
+        for partyunit_x in self._partys.values():
             au_contract_agenda_credit = (
-                contract_agenda_importance * memberunit_x.get_creditor_weight()
-            ) / sum_memberunit_creditor_weight
+                contract_agenda_importance * partyunit_x.get_creditor_weight()
+            ) / sum_partyunit_creditor_weight
 
             au_contract_agenda_debt = (
-                contract_agenda_importance * memberunit_x.get_debtor_weight()
-            ) / sum_memberunit_debtor_weight
+                contract_agenda_importance * partyunit_x.get_debtor_weight()
+            ) / sum_partyunit_debtor_weight
 
-            memberunit_x.add_contract_agenda_credit_debt(
+            partyunit_x.add_contract_agenda_credit_debt(
                 contract_agenda_credit=au_contract_agenda_credit,
                 contract_agenda_debt=au_contract_agenda_debt,
             )
@@ -1582,12 +1571,12 @@ class ContractUnit:
     def _distribute_contract_agenda_importance(self):
         for idea in self._idea_dict.values():
             # If there are no grouplines associated with idea
-            # distribute contract_importance via general memberunit
+            # distribute contract_importance via general partyunit
             # credit ratio and debt ratio
             # if idea.is_agenda_item() and idea._grouplines == {}:
             if idea.is_agenda_item():
                 if idea._grouplines == {}:
-                    self._add_to_memberunits_contract_agenda_credit_debt(
+                    self._add_to_partyunits_contract_agenda_credit_debt(
                         idea._contract_importance
                     )
                 else:
@@ -1600,47 +1589,47 @@ class ContractUnit:
 
     def _distribute_groups_contract_importance(self):
         for group_obj in self._groups.values():
-            group_obj._set_memberlink_contract_credit_debt()
-            for memberlink in group_obj._members.values():
-                self.add_to_memberunit_contract_credit_debt(
-                    memberunit_name=memberlink.name,
-                    contract_credit=memberlink._contract_credit,
-                    contract_debt=memberlink._contract_debt,
-                    contract_agenda_credit=memberlink._contract_agenda_credit,
-                    contract_agenda_debt=memberlink._contract_agenda_debt,
+            group_obj._set_partylink_contract_credit_debt()
+            for partylink in group_obj._partys.values():
+                self.add_to_partyunit_contract_credit_debt(
+                    partyunit_name=partylink.name,
+                    contract_credit=partylink._contract_credit,
+                    contract_debt=partylink._contract_debt,
+                    contract_agenda_credit=partylink._contract_agenda_credit,
+                    contract_agenda_debt=partylink._contract_agenda_debt,
                 )
 
     def _set_contract_agenda_ratio_credit_debt(self):
         contract_agenda_ratio_credit_sum = 0
         contract_agenda_ratio_debt_sum = 0
 
-        for memberunit_x in self._members.values():
-            contract_agenda_ratio_credit_sum += memberunit_x._contract_agenda_credit
-            contract_agenda_ratio_debt_sum += memberunit_x._contract_agenda_debt
+        for partyunit_x in self._partys.values():
+            contract_agenda_ratio_credit_sum += partyunit_x._contract_agenda_credit
+            contract_agenda_ratio_debt_sum += partyunit_x._contract_agenda_debt
 
-        for memberunit_x in self._members.values():
-            memberunit_x.set_contract_agenda_ratio_credit_debt(
+        for partyunit_x in self._partys.values():
+            partyunit_x.set_contract_agenda_ratio_credit_debt(
                 contract_agenda_ratio_credit_sum=contract_agenda_ratio_credit_sum,
                 contract_agenda_ratio_debt_sum=contract_agenda_ratio_debt_sum,
-                contract_memberunit_total_creditor_weight=self.get_memberunit_total_creditor_weight(),
-                contract_memberunit_total_debtor_weight=self.get_memberunit_total_debtor_weight(),
+                contract_partyunit_total_creditor_weight=self.get_partyunit_total_creditor_weight(),
+                contract_partyunit_total_debtor_weight=self.get_partyunit_total_debtor_weight(),
             )
 
-    def get_member_groups(self, member_name: MemberName):
+    def get_party_groups(self, party_name: PartyName):
         groups = []
         for group in self._groups.values():
             groups.extend(
                 group.name
-                for memberlink in group._members.values()
-                if memberlink.name == member_name
+                for partylink in group._partys.values()
+                if partylink.name == party_name
             )
 
         return groups
 
-    def _reset_memberunit_contract_credit_debt(self):
-        self.set_members_empty_if_null()
-        for memberunit in self._members.values():
-            memberunit.reset_contract_credit_debt()
+    def _reset_partyunit_contract_credit_debt(self):
+        self.set_partys_empty_if_null()
+        for partyunit in self._partys.values():
+            partyunit.reset_contract_credit_debt()
 
     def _idearoot_inherit_requiredheirs(self):
         self._idearoot.set_requiredunits_empty_if_null()
@@ -1733,34 +1722,34 @@ class ContractUnit:
 
                 if (
                     group_everyone != False
-                    and yu_idea_obj._all_member_credit != False
-                    and yu_idea_obj._all_member_debt != False
+                    and yu_idea_obj._all_party_credit != False
+                    and yu_idea_obj._all_party_debt != False
                     and yu_idea_obj._groupheirs != {}
                     or group_everyone != False
-                    and yu_idea_obj._all_member_credit == False
-                    and yu_idea_obj._all_member_debt == False
+                    and yu_idea_obj._all_party_credit == False
+                    and yu_idea_obj._all_party_debt == False
                 ):
                     group_everyone = False
                 elif group_everyone != False:
                     group_everyone = True
-                yu_idea_obj._all_member_credit = group_everyone
-                yu_idea_obj._all_member_debt = group_everyone
+                yu_idea_obj._all_party_credit = group_everyone
+                yu_idea_obj._all_party_debt = group_everyone
 
             if (
                 group_everyone != False
-                and self._idearoot._all_member_credit != False
-                and self._idearoot._all_member_debt != False
+                and self._idearoot._all_party_credit != False
+                and self._idearoot._all_party_debt != False
                 and self._idearoot._groupheirs != {}
                 or group_everyone != False
-                and self._idearoot._all_member_credit == False
-                and self._idearoot._all_member_debt == False
+                and self._idearoot._all_party_credit == False
+                and self._idearoot._all_party_debt == False
             ):
                 group_everyone = False
             elif group_everyone != False and yu_idea_obj._groupheirs == {}:
                 group_everyone = True
 
-        self._idearoot._all_member_credit = group_everyone
-        self._idearoot._all_member_debt = group_everyone
+        self._idearoot._all_party_credit = group_everyone
+        self._idearoot._all_party_debt = group_everyone
 
         if self._idearoot.is_kidless():
             self._idearoot.set_kidless_grouplines()
@@ -1788,7 +1777,7 @@ class ContractUnit:
         self._idearoot.set_groupheirs_contract_credit_debit()
         self._idearoot.set_ancestor_promise_count(0, False)
         self._idearoot.clear_descendant_promise_count()
-        self._idearoot.clear_all_member_credit_debt()
+        self._idearoot.clear_all_party_credit_debt()
         self._idearoot.promise = False
 
         if self._idearoot.is_kidless():
@@ -1839,7 +1828,7 @@ class ContractUnit:
             parent_idea._ancestor_promise_count, parent_idea.promise
         )
         idea_kid.clear_descendant_promise_count()
-        idea_kid.clear_all_member_credit_debt()
+        idea_kid.clear_all_party_credit_debt()
 
         if idea_kid.is_kidless():
             # set idea's ancestor metrics using contract root as common reference
@@ -1852,7 +1841,7 @@ class ContractUnit:
         if idea.is_groupheirless() == False:
             self._set_groupunits_contract_importance(idea._groupheirs)
         elif idea.is_groupheirless():
-            self._add_to_memberunits_contract_credit_debt(idea._contract_importance)
+            self._add_to_partyunits_contract_credit_debt(idea._contract_importance)
 
     def get_contract_importance(
         self, parent_contract_importance: float, weight: int, sibling_total_weight: int
@@ -1933,7 +1922,7 @@ class ContractUnit:
     def _run_before_idea_tree_traverse(self):
         self._reset_groupunits_contract_credit_debt()
         self._reset_groupunits_contract_credit_debt()
-        self._reset_memberunit_contract_credit_debt()
+        self._reset_partyunit_contract_credit_debt()
 
     def get_heir_road_list(self, road_x: Road):
         # create list of all idea roads (road+desc)
@@ -1976,11 +1965,11 @@ class ContractUnit:
                 x_dict[acptfact_road] = acptfact_obj.get_dict()
         return x_dict
 
-    def get_members_dict(self):
+    def get_partys_dict(self):
         x_dict = {}
-        if self._members != None:
-            for member_name, member_obj in self._members.items():
-                x_dict[member_name] = member_obj.get_dict()
+        if self._partys != None:
+            for party_name, party_obj in self._partys.items():
+                x_dict[party_name] = party_obj.get_dict()
         return x_dict
 
     def groupunit_shops_dict(self):
@@ -1996,7 +1985,7 @@ class ContractUnit:
             "_kids": self._idearoot.get_kids_dict(),
             "_requiredunits": self._idearoot.get_requiredunits_dict(),
             "_acptfactunits": self.get_acptfactunits_dict(),
-            "_members": self.get_members_dict(),
+            "_partys": self.get_partys_dict(),
             "_groups": self.groupunit_shops_dict(),
             "_grouplinks": self._idearoot.get_grouplinks_dict(),
             "_assignedunit": self._idearoot.get_assignedunit_dict(),
@@ -2060,26 +2049,26 @@ class ContractUnit:
 
         self.set_contract_metrics()
 
-    def get_contract4member(
-        self, member_name: MemberName, acptfacts: dict[Road:AcptFactCore]
+    def get_contract4party(
+        self, party_name: PartyName, acptfacts: dict[Road:AcptFactCore]
     ):
         self.set_contract_metrics()
-        contract4member = ContractUnit(_owner=member_name)
-        contract4member._idearoot._contract_importance = (
+        contract4party = ContractUnit(_owner=party_name)
+        contract4party._idearoot._contract_importance = (
             self._idearoot._contract_importance
         )
-        # get member's members: memberzone
+        # get party's partys: partyzone
 
-        # get memberzone groups
-        member_groups = self.get_member_groups(member_name=member_name)
+        # get partyzone groups
+        party_groups = self.get_party_groups(party_name=party_name)
 
-        # set contract4member by traversing the idea tree and selecting associated groups
+        # set contract4party by traversing the idea tree and selecting associated groups
         # set root
         not_included_contract_importance = 0
-        contract4member._idearoot._kids = {}
+        contract4party._idearoot._kids = {}
         for ykx in self._idearoot._kids.values():
             y4a_included = any(
-                group_ancestor.name in member_groups
+                group_ancestor.name in party_groups
                 for group_ancestor in ykx._grouplines.values()
             )
 
@@ -2094,7 +2083,7 @@ class ContractUnit:
                     promise=ykx.promise,
                     _task=ykx._task,
                 )
-                contract4member._idearoot._kids[ykx._label] = y4a_new
+                contract4party._idearoot._kids[ykx._label] = y4a_new
             else:
                 not_included_contract_importance += ykx._contract_importance
 
@@ -2103,9 +2092,9 @@ class ContractUnit:
                 _label="__other__",
                 _contract_importance=not_included_contract_importance,
             )
-            contract4member._idearoot._kids[y4a_other._label] = y4a_other
+            contract4party._idearoot._kids[y4a_other._label] = y4a_other
 
-        return contract4member
+        return contract4party
 
     # def get_agenda_items(
     #     self, agenda_todo: bool = True, agenda_state: bool = True, base: Road = None
@@ -2125,10 +2114,10 @@ class ContractUnit:
         x_list.pop(0)
         return x_list
 
-    def meld(self, other_contract, member_weight: float = None):
+    def meld(self, other_contract, party_weight: float = None):
         self._meld_groups(other_contract)
-        self._meld_members(other_contract)
-        self._meld_ideas(other_contract, member_weight)
+        self._meld_partys(other_contract)
+        self._meld_ideas(other_contract, party_weight)
         self._meld_acptfacts(other_contract)
         self._weight = get_meld_weight(
             src_weight=self._weight,
@@ -2136,33 +2125,33 @@ class ContractUnit:
             other_weight=other_contract._weight,
             other_on_meld_weight_action="default",
         )
-        self._meld_originlinks(other_contract._owner, member_weight)
+        self._meld_originlinks(other_contract._owner, party_weight)
 
-    def _meld_ideas(self, other_contract, member_weight: float):
+    def _meld_ideas(self, other_contract, party_weight: float):
         # meld idearoot
         self._idearoot.meld(other_idea=other_contract._idearoot, _idearoot=True)
 
         # meld all other ideas
-        member_name = other_contract._owner
+        party_name = other_contract._owner
         o_idea_list = other_contract.get_idea_list_without_idearoot()
         for o_idea in o_idea_list:
             o_road = road_validate(f"{o_idea._walk},{o_idea._label}")
             try:
                 main_idea = self.get_idea_kid(o_road)
-                main_idea.meld(o_idea, False, member_name, member_weight)
+                main_idea.meld(o_idea, False, party_name, party_weight)
             except Exception:
                 self.add_idea(walk=o_idea._walk, idea_kid=o_idea)
                 main_idea = self.get_idea_kid(o_road)
-                main_idea._originunit.set_originlink(member_name, member_weight)
+                main_idea._originunit.set_originlink(party_name, party_weight)
 
-    def _meld_members(self, other_contract):
-        self.set_members_empty_if_null()
-        other_contract.set_members_empty_if_null()
-        for memberunit in other_contract._members.values():
-            if self._members.get(memberunit.name) is None:
-                self.set_memberunit(memberunit=memberunit)
+    def _meld_partys(self, other_contract):
+        self.set_partys_empty_if_null()
+        other_contract.set_partys_empty_if_null()
+        for partyunit in other_contract._partys.values():
+            if self._partys.get(partyunit.name) is None:
+                self.set_partyunit(partyunit=partyunit)
             else:
-                self._members.get(memberunit.name).meld(memberunit)
+                self._partys.get(partyunit.name).meld(partyunit)
 
     def _meld_groups(self, other_contract):
         self.set_groupunits_empty_if_null()
@@ -2184,18 +2173,18 @@ class ContractUnit:
             else:
                 self._idearoot._acptfactunits.get(hx.base).meld(hx)
 
-    def _meld_originlinks(self, member_name: MemberName, member_weight: float):
-        if member_name != None:
-            self._originunit.set_originlink(member_name, member_weight)
+    def _meld_originlinks(self, party_name: PartyName, party_weight: float):
+        if party_name != None:
+            self._originunit.set_originlink(party_name, party_weight)
 
     def get_assignment(
         self,
         contract_x,
-        assignor_members: dict[MemberName:MemberUnit],
-        assignor_name: MemberName,
+        assignor_partys: dict[PartyName:PartyUnit],
+        assignor_name: PartyName,
     ) -> ContractOwner:
         self.set_contract_metrics()
-        self._set_assignment_members(contract_x, assignor_members, assignor_name)
+        self._set_assignment_partys(contract_x, assignor_partys, assignor_name)
         self._set_assignment_groups(contract_x)
         assignor_promises = self._get_assignor_promise_ideas(contract_x, assignor_name)
         relevant_roads = self._get_relevant_roads(assignor_promises)
@@ -2224,34 +2213,34 @@ class ContractUnit:
                     base=afu.base, pick=afu.pick, open=afu.open, nigh=afu.nigh
                 )
 
-    def _set_assignment_members(
+    def _set_assignment_partys(
         self,
         contract_x,
-        assignor_members: dict[MemberName:MemberUnit],
-        assignor_name: MemberName,
+        assignor_partys: dict[PartyName:PartyUnit],
+        assignor_name: PartyName,
     ):
-        contract_x.set_members_empty_if_null()
-        if self._members.get(assignor_name) != None:
-            # get all members that are both in self._members and assignor_known_members
-            members_set = get_intersection_of_members(self._members, assignor_members)
-            for membername_x in members_set:
-                contract_x.set_memberunit(memberunit=self._members.get(membername_x))
+        contract_x.set_partys_empty_if_null()
+        if self._partys.get(assignor_name) != None:
+            # get all partys that are both in self._partys and assignor_known_partys
+            partys_set = get_intersection_of_partys(self._partys, assignor_partys)
+            for partyname_x in partys_set:
+                contract_x.set_partyunit(partyunit=self._partys.get(partyname_x))
         return contract_x
 
     def _set_assignment_groups(self, contract_x):
-        revelant_groups = get_members_relevant_groups(self._groups, contract_x._members)
-        for group_name, group_members in revelant_groups.items():
+        revelant_groups = get_partys_relevant_groups(self._groups, contract_x._partys)
+        for group_name, group_partys in revelant_groups.items():
             if contract_x._groups.get(group_name) is None:
                 group_x = groupunit_shop(name=group_name)
-                for member_name in group_members:
-                    group_x.set_memberlink(memberlink_shop(name=member_name))
+                for party_name in group_partys:
+                    group_x.set_partylink(partylink_shop(name=party_name))
                 contract_x.set_groupunit(group_x)
 
     def _get_assignor_promise_ideas(
         self, contract_x, assignor_name: GroupName
     ) -> dict[Road:int]:
         contract_x.set_groupunits_empty_if_null()
-        assignor_groups = get_member_relevant_groups(contract_x._groups, assignor_name)
+        assignor_groups = get_party_relevant_groups(contract_x._groups, assignor_name)
         return {
             idea_road: -1
             for idea_road, idea_x in self._idea_dict.items()
@@ -2293,7 +2282,7 @@ def get_from_dict(cx_dict: dict) -> ContractUnit:
         c_x._auto_output_to_public = cx_dict["_auto_output_to_public"]
     except Exception:
         c_x._auto_output_to_public = False
-    c_x._members = memberunits_get_from_dict(x_dict=cx_dict["_members"])
+    c_x._partys = partyunits_get_from_dict(x_dict=cx_dict["_partys"])
     c_x._owner = cx_dict["_owner"]
     c_x._idearoot.set_idea_label(c_x._economy_title, c_x._economy_title)
     c_x._weight = cx_dict["_weight"]
@@ -2382,34 +2371,34 @@ def get_meld_of_contract_files(
     return cx_primary
 
 
-def get_intersection_of_members(
-    members_x: dict[MemberName:MemberUnit], members_y: dict[MemberName:MemberUnit]
-) -> dict[MemberName:-1]:
-    x_set = set(members_x)
-    y_set = set(members_y)
+def get_intersection_of_partys(
+    partys_x: dict[PartyName:PartyUnit], partys_y: dict[PartyName:PartyUnit]
+) -> dict[PartyName:-1]:
+    x_set = set(partys_x)
+    y_set = set(partys_y)
     intersection_x = x_set.intersection(y_set)
-    return {membername_x: -1 for membername_x in intersection_x}
+    return {partyname_x: -1 for partyname_x in intersection_x}
 
 
-def get_members_relevant_groups(
-    groups_x: dict[GroupName:GroupUnit], members_x: dict[MemberName:MemberUnit]
-) -> dict[GroupName:{MemberName: -1}]:
+def get_partys_relevant_groups(
+    groups_x: dict[GroupName:GroupUnit], partys_x: dict[PartyName:PartyUnit]
+) -> dict[GroupName:{PartyName: -1}]:
     relevant_groups = {}
-    for membername_x in members_x:
+    for partyname_x in partys_x:
         for group_x in groups_x.values():
-            if group_x._members.get(membername_x) != None:
+            if group_x._partys.get(partyname_x) != None:
                 if relevant_groups.get(group_x.name) is None:
                     relevant_groups[group_x.name] = {}
-                relevant_groups.get(group_x.name)[membername_x] = -1
+                relevant_groups.get(group_x.name)[partyname_x] = -1
 
     return relevant_groups
 
 
-def get_member_relevant_groups(
-    groups_x: dict[GroupName:GroupUnit], membername_x: MemberName
+def get_party_relevant_groups(
+    groups_x: dict[GroupName:GroupUnit], partyname_x: PartyName
 ) -> dict[GroupName:-1]:
     return {
         group_x.name: -1
         for group_x in groups_x.values()
-        if group_x._members.get(membername_x) != None
+        if group_x._partys.get(partyname_x) != None
     }

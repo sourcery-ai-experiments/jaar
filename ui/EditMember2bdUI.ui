@@ -49,7 +49,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Member is member of these Groups</string>
+    <string>Party is party of these Groups</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
@@ -65,13 +65,13 @@
     </rect>
    </property>
    <property name="text">
-    <string>Member is not member of these Groups</string>
+    <string>Party is not party of these Groups</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="source_member">
+  <widget class="QLabel" name="source_party">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -88,10 +88,10 @@
     </font>
    </property>
    <property name="text">
-    <string>Member (ID): </string>
+    <string>Party (ID): </string>
    </property>
   </widget>
-  <widget class="QTableWidget" name="bd_member_yes">
+  <widget class="QTableWidget" name="bd_party_yes">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -117,7 +117,7 @@
    </column>
    <column>
     <property name="text">
-     <string>MemberCount</string>
+     <string>PartyCount</string>
     </property>
    </column>
    <column>
@@ -126,7 +126,7 @@
     </property>
    </column>
   </widget>
-  <widget class="QTableWidget" name="bd_member_no">
+  <widget class="QTableWidget" name="bd_party_no">
    <property name="geometry">
     <rect>
      <x>630</x>
@@ -142,7 +142,7 @@
    </column>
    <column>
     <property name="text">
-     <string>MemberCount</string>
+     <string>PartyCount</string>
     </property>
    </column>
    <column>
@@ -177,7 +177,7 @@
     <string>Quit App</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="member2group_weight_edit">
+  <widget class="QLineEdit" name="party2group_weight_edit">
    <property name="geometry">
     <rect>
      <x>240</x>
@@ -197,7 +197,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Update Member's Weight in Group to:</string>
+    <string>Update Party's Weight in Group to:</string>
    </property>
   </widget>
   <widget class="QPushButton" name="bd_insert_button">

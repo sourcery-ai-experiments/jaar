@@ -599,7 +599,7 @@ class Ui_Form(object):
         item = self.idea2group_table.horizontalHeaderItem(1)
         item.setText(_translate("Form", "Group"))
         item = self.idea2group_table.horizontalHeaderItem(2)
-        item.setText(_translate("Form", "Member Count"))
+        item.setText(_translate("Form", "Party Count"))
         self.idea2group_delete_button.setText(_translate("Form", "De-link Group"))
         self.idea2group_insert_button.setText(_translate("Form", "Add Group to Idea"))
         self.cb_rootrank.setText(_translate("Form", "root rank"))

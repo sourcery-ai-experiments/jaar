@@ -74,7 +74,7 @@ EconomyUnit Bank objects
 <!-- TODO: Add explanations -->
 ContractUnit objects
 
-ContractUnit MemberUnit objects
+ContractUnit PartyUnit objects
 
 ContractUnit GroupUnit objects
 

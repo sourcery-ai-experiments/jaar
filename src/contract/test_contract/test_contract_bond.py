@@ -7,7 +7,7 @@ from src.contract.examples.contract_env import contract_env
 from src.contract.idea import IdeaCore, IdeaKid
 from src.contract.road import Road
 from src.contract.required_idea import RequiredUnit
-from src.contract.member import memberlink_shop
+from src.contract.party import partylink_shop
 from src.contract.group import groupunit_shop, grouplink_shop
 from src.contract.examples.example_contracts import (
     get_contract_with_4_levels as example_contracts_get_contract_with_4_levels,
@@ -80,7 +80,7 @@ def test_contractunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaGrouph
         idea_kid=IdeaKid(_label=clean_cookery_text, promise=True), walk=casa_road
     )
     tom_text = "tom"
-    cx.add_memberunit(name=tom_text)
+    cx.add_partyunit(name=tom_text)
     assert cx.get_bond_status() == False
 
     # WHEN
@@ -90,7 +90,7 @@ def test_contractunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaGrouph
 
     # WHEN
     bob_text = "bob"
-    cx.add_memberunit(name=bob_text)
+    cx.add_partyunit(name=bob_text)
     # THEN
     assert cx.get_bond_status() == False
 
@@ -108,7 +108,7 @@ def test_contractunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGr
         idea_kid=IdeaKid(_label=clean_cookery_text, promise=True), walk=casa_road
     )
     tom_text = "tom"
-    cx.add_memberunit(name=tom_text)
+    cx.add_partyunit(name=tom_text)
     assert cx.get_bond_status() == False
 
     # WHEN
@@ -120,7 +120,7 @@ def test_contractunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGr
 
     # WHEN
     bob_text = "bob"
-    cx.add_memberunit(name=bob_text)
+    cx.add_partyunit(name=bob_text)
     # THEN
     assert cx.get_bond_status() == False
 
@@ -140,13 +140,13 @@ def test_contractunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGr
     assert cx.get_bond_status()
 
     tom_text = "tom"
-    cx.add_memberunit(name=tom_text)
+    cx.add_partyunit(name=tom_text)
     bob_text = "bob"
-    cx.add_memberunit(name=bob_text)
+    cx.add_partyunit(name=bob_text)
     home_occupants_text = "home occupants"
     home_occupants_groupunit = groupunit_shop(name=home_occupants_text)
-    home_occupants_groupunit.set_memberlink(memberlink=memberlink_shop(name=tom_text))
-    home_occupants_groupunit.set_memberlink(memberlink=memberlink_shop(name=bob_text))
+    home_occupants_groupunit.set_partylink(partylink=partylink_shop(name=tom_text))
+    home_occupants_groupunit.set_partylink(partylink=partylink_shop(name=bob_text))
     cx.set_groupunit(groupunit=home_occupants_groupunit)
     assert cx.get_bond_status() == False
 
@@ -159,7 +159,7 @@ def test_contractunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGr
 
     # WHEN
     yuri_text = "yuri"
-    cx.add_memberunit(name=yuri_text)
+    cx.add_partyunit(name=yuri_text)
 
     # THEN
     assert cx.get_bond_status() == False

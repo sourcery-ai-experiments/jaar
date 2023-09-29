@@ -1,9 +1,9 @@
 import dataclasses
-from src.contract.member import (
-    MemberName,
-    MemberUnit,
-    MemberLink,
-    memberlinks_get_from_dict,
+from src.contract.party import (
+    PartyName,
+    PartyUnit,
+    PartyLink,
+    partylinks_get_from_dict,
 )
 from src.contract.x_func import (
     x_get_dict,
@@ -29,31 +29,31 @@ class GroupCore:
 @dataclasses.dataclass
 class GroupUnit(GroupCore):
     uid: int = None
-    single_member_id: int = None
-    _single_member: bool = None
-    _members: dict[MemberName:MemberLink] = None
+    single_party_id: int = None
+    _single_party: bool = None
+    _partys: dict[PartyName:PartyLink] = None
     _contract_credit: float = None
     _contract_debt: float = None
     _contract_agenda_credit: float = None
     _contract_agenda_debt: float = None
-    _memberlinks_set_by_economy_road: Road = None
+    _partylinks_set_by_economy_road: Road = None
 
     def set_name(self, name: GroupName = None):
         if name != None:
             self.name = name
 
-    def set_attr(self, _memberlinks_set_by_economy_road: Road):
-        if _memberlinks_set_by_economy_road != None:
-            self._memberlinks_set_by_economy_road = _memberlinks_set_by_economy_road
+    def set_attr(self, _partylinks_set_by_economy_road: Road):
+        if _partylinks_set_by_economy_road != None:
+            self._partylinks_set_by_economy_road = _partylinks_set_by_economy_road
 
     def get_dict(self):
         return {
             "name": self.name,
             "uid": self.uid,
-            "single_member_id": self.single_member_id,
-            "_single_member": self._single_member,
-            "_members": self.get_members_dict(),
-            "_memberlinks_set_by_economy_road": self._memberlinks_set_by_economy_road,
+            "single_party_id": self.single_party_id,
+            "_single_party": self._single_party,
+            "_partys": self.get_partys_dict(),
+            "_partylinks_set_by_economy_road": self._partylinks_set_by_economy_road,
         }
 
     def set_empty_contract_credit_debt_to_zero(self):
@@ -71,63 +71,63 @@ class GroupUnit(GroupCore):
         self._contract_debt = 0
         self._contract_agenda_credit = 0
         self._contract_agenda_debt = 0
-        self._set_memberlinks_empty_if_null()
-        for memberlink in self._members.values():
-            memberlink.reset_contract_credit_debt()
+        self._set_partylinks_empty_if_null()
+        for partylink in self._partys.values():
+            partylink.reset_contract_credit_debt()
 
-    def _set_memberlink_contract_credit_debt(self):
-        memberlinks_creditor_weight_sum = sum(
-            memberlink.creditor_weight for memberlink in self._members.values()
+    def _set_partylink_contract_credit_debt(self):
+        partylinks_creditor_weight_sum = sum(
+            partylink.creditor_weight for partylink in self._partys.values()
         )
-        memberlinks_debtor_weight_sum = sum(
-            memberlink.debtor_weight for memberlink in self._members.values()
+        partylinks_debtor_weight_sum = sum(
+            partylink.debtor_weight for partylink in self._partys.values()
         )
 
-        for memberlink in self._members.values():
-            memberlink.set_contract_credit_debt(
-                memberlinks_creditor_weight_sum=memberlinks_creditor_weight_sum,
-                memberlinks_debtor_weight_sum=memberlinks_debtor_weight_sum,
+        for partylink in self._partys.values():
+            partylink.set_contract_credit_debt(
+                partylinks_creditor_weight_sum=partylinks_creditor_weight_sum,
+                partylinks_debtor_weight_sum=partylinks_debtor_weight_sum,
                 group_contract_credit=self._contract_credit,
                 group_contract_debt=self._contract_debt,
                 group_contract_agenda_credit=self._contract_agenda_credit,
                 group_contract_agenda_debt=self._contract_agenda_debt,
             )
 
-    def clear_memberlinks(self):
-        self._members = {}
+    def clear_partylinks(self):
+        self._partys = {}
 
-    def _set_memberlinks_empty_if_null(self):
-        if self._members is None:
-            self._members = {}
+    def _set_partylinks_empty_if_null(self):
+        if self._partys is None:
+            self._partys = {}
 
-    def get_members_dict(self):
-        self._set_memberlinks_empty_if_null()
+    def get_partys_dict(self):
+        self._set_partylinks_empty_if_null()
 
-        members_x_dict = {}
-        for member in self._members.values():
-            member_dict = member.get_dict()
-            members_x_dict[member_dict["name"]] = member_dict
+        partys_x_dict = {}
+        for party in self._partys.values():
+            party_dict = party.get_dict()
+            partys_x_dict[party_dict["name"]] = party_dict
 
-        return members_x_dict
+        return partys_x_dict
 
-    def set_memberlink(self, memberlink: MemberLink):
-        self._set_memberlinks_empty_if_null()
-        self._members[memberlink.name] = memberlink
+    def set_partylink(self, partylink: PartyLink):
+        self._set_partylinks_empty_if_null()
+        self._partys[partylink.name] = partylink
 
-    def del_memberlink(self, name):
-        self._members.pop(name)
+    def del_partylink(self, name):
+        self._partys.pop(name)
 
     def meld(self, other_group):
         self._meld_attributes_that_will_be_equal(other_group=other_group)
-        self.meld_memberlinks(other_group=other_group)
+        self.meld_partylinks(other_group=other_group)
 
-    def meld_memberlinks(self, other_group):
-        self._set_memberlinks_empty_if_null()
-        for oba in other_group._members.values():
-            if self._members.get(oba.name) is None:
-                self._members[oba.name] = oba
+    def meld_partylinks(self, other_group):
+        self._set_partylinks_empty_if_null()
+        for oba in other_group._partys.values():
+            if self._partys.get(oba.name) is None:
+                self._partys[oba.name] = oba
             else:
-                self._members[oba.name].meld(oba)
+                self._partys[oba.name].meld(oba)
 
     def _meld_attributes_that_will_be_equal(self, other_group):
         xl = [
@@ -157,19 +157,19 @@ def get_from_dict(x_dict: dict):
     groupunits = {}
     for groupunits_dict in x_dict.values():
         try:
-            ex_memberlinks_set_by_economy_road = groupunits_dict[
-                "_memberlinks_set_by_economy_road"
+            ex_partylinks_set_by_economy_road = groupunits_dict[
+                "_partylinks_set_by_economy_road"
             ]
         except KeyError:
-            ex_memberlinks_set_by_economy_road = None
+            ex_partylinks_set_by_economy_road = None
 
         x_group = groupunit_shop(
             name=groupunits_dict["name"],
             uid=groupunits_dict["uid"],
-            _single_member=groupunits_dict["_single_member"],
-            single_member_id=groupunits_dict["single_member_id"],
-            _members=memberlinks_get_from_dict(x_dict=groupunits_dict["_members"]),
-            _memberlinks_set_by_economy_road=ex_memberlinks_set_by_economy_road,
+            _single_party=groupunits_dict["_single_party"],
+            single_party_id=groupunits_dict["single_party_id"],
+            _partys=partylinks_get_from_dict(x_dict=groupunits_dict["_partys"]),
+            _partylinks_set_by_economy_road=ex_partylinks_set_by_economy_road,
         )
         groupunits[x_group.name] = x_group
     return groupunits
@@ -178,35 +178,35 @@ def get_from_dict(x_dict: dict):
 def groupunit_shop(
     name: GroupName,
     uid: int = None,
-    single_member_id: int = None,
-    _single_member: bool = None,
-    _members: dict[MemberName:MemberLink] = None,
+    single_party_id: int = None,
+    _single_party: bool = None,
+    _partys: dict[PartyName:PartyLink] = None,
     _contract_credit: float = None,
     _contract_debt: float = None,
     _contract_agenda_credit: float = None,
     _contract_agenda_debt: float = None,
-    _memberlinks_set_by_economy_road: Road = None,
+    _partylinks_set_by_economy_road: Road = None,
 ) -> GroupUnit:
-    if _single_member and _memberlinks_set_by_economy_road != None:
+    if _single_party and _partylinks_set_by_economy_road != None:
         raise InvalidGroupException(
-            f"_memberlinks_set_by_economy_road cannot be '{_memberlinks_set_by_economy_road}' for a single_member GroupUnit. It must have no value."
+            f"_partylinks_set_by_economy_road cannot be '{_partylinks_set_by_economy_road}' for a single_party GroupUnit. It must have no value."
         )
 
-    if _members is None:
-        _members = {}
-    if _single_member is None:
-        _single_member = False
+    if _partys is None:
+        _partys = {}
+    if _single_party is None:
+        _single_party = False
     return GroupUnit(
         name=name,
         uid=uid,
-        single_member_id=single_member_id,
-        _single_member=_single_member,
-        _members=_members,
+        single_party_id=single_party_id,
+        _single_party=_single_party,
+        _partys=_partys,
         _contract_credit=_contract_credit,
         _contract_debt=_contract_debt,
         _contract_agenda_credit=_contract_agenda_credit,
         _contract_agenda_debt=_contract_agenda_debt,
-        _memberlinks_set_by_economy_road=_memberlinks_set_by_economy_road,
+        _partylinks_set_by_economy_road=_partylinks_set_by_economy_road,
     )
 
 

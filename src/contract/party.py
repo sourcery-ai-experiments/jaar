@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from src.contract.x_func import x_get_dict, return1ifnone as x_func_return1ifnone
 
 
-class InvalidMemberException(Exception):
+class InvalidPartyException(Exception):
     pass
 
 
@@ -10,46 +10,46 @@ class InvalidDepotLinkException(Exception):
     pass
 
 
-class MemberName(str):
+class PartyName(str):
     pass
 
 
 @dataclass
-class MemberRing:
-    name: MemberName
+class PartyRing:
+    name: PartyName
 
     def get_dict(self):
         return {"name": self.name}
 
 
 @dataclass
-class MemberCore:
-    name: MemberName
+class PartyCore:
+    name: PartyName
 
 
-# class MemberRingsshop:
-def memberrings_get_from_json(memberrings_json: str) -> dict[str:MemberRing]:
-    memberrings_dict = x_get_dict(json_x=memberrings_json)
-    return memberrings_get_from_dict(x_dict=memberrings_dict)
+# class PartyRingsshop:
+def partyrings_get_from_json(partyrings_json: str) -> dict[str:PartyRing]:
+    partyrings_dict = x_get_dict(json_x=partyrings_json)
+    return partyrings_get_from_dict(x_dict=partyrings_dict)
 
 
-def memberrings_get_from_dict(x_dict: dict) -> dict[str:MemberRing]:
-    memberrings = {}
+def partyrings_get_from_dict(x_dict: dict) -> dict[str:PartyRing]:
+    partyrings = {}
     if x_dict != None:
-        for memberrings_dict in x_dict.values():
-            x_memberring = memberrings_get_memberring(
-                name=memberrings_dict["name"],
+        for partyrings_dict in x_dict.values():
+            x_partyring = partyrings_get_partyring(
+                name=partyrings_dict["name"],
             )
-            memberrings[x_memberring.name] = x_memberring
-    return memberrings
+            partyrings[x_partyring.name] = x_partyring
+    return partyrings
 
 
-def memberrings_get_memberring(name: MemberName) -> MemberRing:
-    return MemberRing(name=name)
+def partyrings_get_partyring(name: PartyName) -> PartyRing:
+    return PartyRing(name=name)
 
 
 @dataclass
-class MemberUnit(MemberCore):
+class PartyUnit(PartyCore):
     uid: int = None
     creditor_weight: int = None
     debtor_weight: int = None
@@ -62,7 +62,7 @@ class MemberUnit(MemberCore):
     _contract_agenda_ratio_debt: float = None
     _creditor_active: bool = None
     _debtor_active: bool = None
-    _memberrings: dict[MemberName:MemberRing] = None
+    _partyrings: dict[PartyName:PartyRing] = None
     _bank_tax_paid: float = None
     _bank_tax_diff: float = None
 
@@ -74,7 +74,7 @@ class MemberUnit(MemberCore):
     ):
         if depotlink_type not in (list(get_depotlink_types())):
             raise InvalidDepotLinkException(
-                f"MemberUnit '{self.name}' cannot have type '{depotlink_type}'."
+                f"PartyUnit '{self.name}' cannot have type '{depotlink_type}'."
             )
         self.depotlink_type = depotlink_type
         if creditor_weight != None:
@@ -100,7 +100,7 @@ class MemberUnit(MemberCore):
         #     self._bank_tax_diff = tax_diff
         # else:
         #     raise Exception(
-        #         f"MemberUnit.set_banking_data fail: tax_paid={tax_paid} + tax_diff={tax_diff} not equal to _contract_agenda_ratio_credit={self._contract_agenda_ratio_credit}"
+        #         f"PartyUnit.set_banking_data fail: tax_paid={tax_paid} + tax_diff={tax_diff} not equal to _contract_agenda_ratio_credit={self._contract_agenda_ratio_credit}"
         #     )
 
     def get_dict(self):
@@ -111,17 +111,17 @@ class MemberUnit(MemberCore):
             "debtor_weight": self.debtor_weight,
             "_creditor_active": self._creditor_active,
             "_debtor_active": self._debtor_active,
-            "_memberrings": self.get_memberrings_dict(),
+            "_partyrings": self.get_partyrings_dict(),
             "_bank_tax_paid": self._bank_tax_paid,
             "_bank_tax_diff": self._bank_tax_diff,
             "depotlink_type": self.depotlink_type,
         }
 
-    def get_memberrings_dict(self):
+    def get_partyrings_dict(self):
         x_dict = {}
-        if self._memberrings != None:
-            for memberring in self._memberrings.values():
-                x_dict[memberring.name] = memberring.get_dict()
+        if self._partyrings != None:
+            for partyring in self._partyrings.values():
+                x_dict[partyring.name] = partyring.get_dict()
         return x_dict
 
     def get_creditor_weight(self):
@@ -169,12 +169,12 @@ class MemberUnit(MemberCore):
         self,
         contract_agenda_ratio_credit_sum: float,
         contract_agenda_ratio_debt_sum: float,
-        contract_memberunit_total_creditor_weight: float,
-        contract_memberunit_total_debtor_weight: float,
+        contract_partyunit_total_creditor_weight: float,
+        contract_partyunit_total_debtor_weight: float,
     ):
         if contract_agenda_ratio_credit_sum == 0:
             self._contract_agenda_ratio_credit = (
-                self.get_creditor_weight() / contract_memberunit_total_creditor_weight
+                self.get_creditor_weight() / contract_partyunit_total_creditor_weight
             )
         else:
             self._contract_agenda_ratio_credit = (
@@ -183,76 +183,76 @@ class MemberUnit(MemberCore):
 
         if contract_agenda_ratio_debt_sum == 0:
             self._contract_agenda_ratio_debt = (
-                self.get_debtor_weight() / contract_memberunit_total_debtor_weight
+                self.get_debtor_weight() / contract_partyunit_total_debtor_weight
             )
         else:
             self._contract_agenda_ratio_debt = (
                 self._contract_agenda_debt / contract_agenda_ratio_debt_sum
             )
 
-    def meld(self, other_memberunit):
-        if self.name != other_memberunit.name:
-            raise InvalidMemberException(
-                f"Meld fail MemberUnit='{self.name}' not the same as MemberUnit='{other_memberunit.name}"
+    def meld(self, other_partyunit):
+        if self.name != other_partyunit.name:
+            raise InvalidPartyException(
+                f"Meld fail PartyUnit='{self.name}' not the same as PartyUnit='{other_partyunit.name}"
             )
 
-        self.creditor_weight += other_memberunit.creditor_weight
-        self.debtor_weight += other_memberunit.debtor_weight
+        self.creditor_weight += other_partyunit.creditor_weight
+        self.debtor_weight += other_partyunit.debtor_weight
 
 
-# class MemberUnitsshop:
-def memberunits_get_from_json(memberunits_json: str) -> dict[str:MemberUnit]:
-    memberunits_dict = x_get_dict(json_x=memberunits_json)
-    return memberunits_get_from_dict(x_dict=memberunits_dict)
+# class PartyUnitsshop:
+def partyunits_get_from_json(partyunits_json: str) -> dict[str:PartyUnit]:
+    partyunits_dict = x_get_dict(json_x=partyunits_json)
+    return partyunits_get_from_dict(x_dict=partyunits_dict)
 
 
-def memberunits_get_from_dict(x_dict: dict) -> dict[str:MemberUnit]:
-    memberunits = {}
-    for memberunits_dict in x_dict.values():
+def partyunits_get_from_dict(x_dict: dict) -> dict[str:PartyUnit]:
+    partyunits = {}
+    for partyunits_dict in x_dict.values():
         try:
-            memberrings = memberunits_dict["_memberrings"]
+            partyrings = partyunits_dict["_partyrings"]
         except KeyError:
-            memberrings = {}
+            partyrings = {}
 
         try:
-            _bank_tax_paid = memberunits_dict["_bank_tax_paid"]
+            _bank_tax_paid = partyunits_dict["_bank_tax_paid"]
         except KeyError:
             _bank_tax_paid = None
 
         try:
-            _bank_tax_diff = memberunits_dict["_bank_tax_diff"]
+            _bank_tax_diff = partyunits_dict["_bank_tax_diff"]
         except KeyError:
             _bank_tax_diff = None
 
         try:
-            depotlink_type = memberunits_dict["depotlink_type"]
+            depotlink_type = partyunits_dict["depotlink_type"]
         except KeyError:
             depotlink_type = None
 
-        x_memberunit = memberunit_shop(
-            name=memberunits_dict["name"],
-            uid=memberunits_dict["uid"],
-            creditor_weight=memberunits_dict["creditor_weight"],
-            debtor_weight=memberunits_dict["debtor_weight"],
-            _creditor_active=memberunits_dict["_creditor_active"],
-            _debtor_active=memberunits_dict["_debtor_active"],
-            _memberrings=memberrings_get_from_dict(x_dict=memberrings),
+        x_partyunit = partyunit_shop(
+            name=partyunits_dict["name"],
+            uid=partyunits_dict["uid"],
+            creditor_weight=partyunits_dict["creditor_weight"],
+            debtor_weight=partyunits_dict["debtor_weight"],
+            _creditor_active=partyunits_dict["_creditor_active"],
+            _debtor_active=partyunits_dict["_debtor_active"],
+            _partyrings=partyrings_get_from_dict(x_dict=partyrings),
             _bank_tax_paid=_bank_tax_paid,
             _bank_tax_diff=_bank_tax_diff,
             depotlink_type=depotlink_type,
         )
-        memberunits[x_memberunit.name] = x_memberunit
-    return memberunits
+        partyunits[x_partyunit.name] = x_partyunit
+    return partyunits
 
 
-def memberunit_shop(
-    name: MemberName,
+def partyunit_shop(
+    name: PartyName,
     uid: int = None,
     creditor_weight: int = None,
     debtor_weight: int = None,
     _creditor_active: bool = None,
     _debtor_active: bool = None,
-    _memberrings: dict[MemberName:MemberRing] = None,
+    _partyrings: dict[PartyName:PartyRing] = None,
     _contract_credit: float = None,
     _contract_debt: float = None,
     _contract_agenda_credit: float = None,
@@ -262,10 +262,10 @@ def memberunit_shop(
     _bank_tax_paid: float = None,
     _bank_tax_diff: float = None,
     depotlink_type: str = None,
-) -> MemberUnit:
-    final_memberrings = {} if _memberrings is None else _memberrings
+) -> PartyUnit:
+    final_partyrings = {} if _partyrings is None else _partyrings
 
-    memberunit_x = MemberUnit(
+    partyunit_x = PartyUnit(
         name=name,
         uid=uid,
         creditor_weight=x_func_return1ifnone(creditor_weight),
@@ -278,17 +278,17 @@ def memberunit_shop(
         _contract_agenda_debt=_contract_agenda_debt,
         _contract_agenda_ratio_credit=_contract_agenda_ratio_credit,
         _contract_agenda_ratio_debt=_contract_agenda_ratio_debt,
-        _memberrings=final_memberrings,
+        _partyrings=final_partyrings,
         _bank_tax_paid=_bank_tax_paid,
         _bank_tax_diff=_bank_tax_diff,
     )
     if depotlink_type != None:
-        memberunit_x.set_depotlink_type(depotlink_type=depotlink_type)
-    return memberunit_x
+        partyunit_x.set_depotlink_type(depotlink_type=depotlink_type)
+    return partyunit_x
 
 
 @dataclass
-class MemberLink(MemberCore):
+class PartyLink(PartyCore):
     creditor_weight: float = 1.0
     debtor_weight: float = 1.0
     _contract_credit: float = None
@@ -305,8 +305,8 @@ class MemberLink(MemberCore):
 
     def set_contract_credit_debt(
         self,
-        memberlinks_creditor_weight_sum: float,
-        memberlinks_debtor_weight_sum: float,
+        partylinks_creditor_weight_sum: float,
+        partylinks_debtor_weight_sum: float,
         group_contract_credit: float,
         group_contract_debt: float,
         group_contract_agenda_credit: float,
@@ -314,8 +314,8 @@ class MemberLink(MemberCore):
     ):
         group_contract_credit = x_func_return1ifnone(group_contract_credit)
         group_contract_debt = x_func_return1ifnone(group_contract_debt)
-        creditor_ratio = self.creditor_weight / memberlinks_creditor_weight_sum
-        debtor_ratio = self.debtor_weight / memberlinks_debtor_weight_sum
+        creditor_ratio = self.creditor_weight / partylinks_creditor_weight_sum
+        debtor_ratio = self.debtor_weight / partylinks_debtor_weight_sum
 
         self._contract_credit = group_contract_credit * creditor_ratio
         self._contract_debt = group_contract_debt * debtor_ratio
@@ -328,45 +328,45 @@ class MemberLink(MemberCore):
         self._contract_agenda_credit = 0
         self._contract_agenda_debt = 0
 
-    def meld(self, other_memberlink):
-        if self.name != other_memberlink.name:
-            raise InvalidMemberException(
-                f"Meld fail MemberLink='{self.name}' not the same as MemberLink='{other_memberlink.name}"
+    def meld(self, other_partylink):
+        if self.name != other_partylink.name:
+            raise InvalidPartyException(
+                f"Meld fail PartyLink='{self.name}' not the same as PartyLink='{other_partylink.name}"
             )
-        self.creditor_weight += other_memberlink.creditor_weight
-        self.debtor_weight += other_memberlink.debtor_weight
+        self.creditor_weight += other_partylink.creditor_weight
+        self.debtor_weight += other_partylink.debtor_weight
 
 
-# class MemberLinkshop:
-def memberlinks_get_from_json(memberlinks_json: str) -> dict[str:MemberLink]:
-    memberlinks_dict = x_get_dict(json_x=memberlinks_json)
-    return memberlinks_get_from_dict(x_dict=memberlinks_dict)
+# class PartyLinkshop:
+def partylinks_get_from_json(partylinks_json: str) -> dict[str:PartyLink]:
+    partylinks_dict = x_get_dict(json_x=partylinks_json)
+    return partylinks_get_from_dict(x_dict=partylinks_dict)
 
 
-def memberlinks_get_from_dict(x_dict: dict) -> dict[str:MemberLink]:
-    memberlinks = {}
-    for memberlinks_dict in x_dict.values():
-        x_member = memberlink_shop(
-            name=memberlinks_dict["name"],
-            creditor_weight=memberlinks_dict["creditor_weight"],
-            debtor_weight=memberlinks_dict["debtor_weight"],
+def partylinks_get_from_dict(x_dict: dict) -> dict[str:PartyLink]:
+    partylinks = {}
+    for partylinks_dict in x_dict.values():
+        x_party = partylink_shop(
+            name=partylinks_dict["name"],
+            creditor_weight=partylinks_dict["creditor_weight"],
+            debtor_weight=partylinks_dict["debtor_weight"],
         )
-        memberlinks[x_member.name] = x_member
-    return memberlinks
+        partylinks[x_party.name] = x_party
+    return partylinks
 
 
-def memberlink_shop(
-    name: MemberName,
+def partylink_shop(
+    name: PartyName,
     creditor_weight: float = None,
     debtor_weight: float = None,
     _contract_credit: float = None,
     _contract_debt: float = None,
     _contract_agenda_credit: float = None,
     _contract_agenda_debt: float = None,
-) -> MemberLink:
+) -> PartyLink:
     creditor_weight = x_func_return1ifnone(creditor_weight)
     debtor_weight = x_func_return1ifnone(debtor_weight)
-    return MemberLink(
+    return PartyLink(
         name=name,
         creditor_weight=creditor_weight,
         debtor_weight=debtor_weight,
@@ -378,8 +378,8 @@ def memberlink_shop(
 
 
 @dataclass
-class MemberUnitExternalMetrics:
-    internal_name: MemberName = None
+class PartyUnitExternalMetrics:
+    internal_name: PartyName = None
     creditor_active: bool = None
     debtor_active: bool = None
 

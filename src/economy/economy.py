@@ -1,5 +1,5 @@
 from src.contract.contract import ContractUnit, get_from_json as get_contract_from_json
-from src.contract.member import memberlink_shop, MemberName
+from src.contract.party import partylink_shop, PartyName
 from src.economy.owner import OwnerUnit, ownerunit_shop
 from dataclasses import dataclass
 from src.contract.x_func import (
@@ -13,9 +13,9 @@ from sqlite3 import connect as sqlite3_connect, Connection
 from src.economy.bank_sqlstr import (
     get_river_flow_table_delete_sqlstr,
     get_river_flow_table_insert_sqlstr,
-    get_river_tmember_table_delete_sqlstr,
-    get_river_tmember_table_insert_sqlstr,
-    get_river_tmember_dict,
+    get_river_tparty_table_delete_sqlstr,
+    get_river_tparty_table_insert_sqlstr,
+    get_river_tparty_dict,
     get_river_bucket_table_insert_sqlstr,
     get_create_table_if_not_exist_sqlstrs,
     get_ledger_table_insert_sqlstr,
@@ -24,7 +24,7 @@ from src.economy.bank_sqlstr import (
     LedgerUnit,
     RiverLedgerUnit,
     RiverFlowUnit,
-    RiverTmemberUnit,
+    RiverTpartyUnit,
     IdeaCatalog,
     get_idea_catalog_table_insert_sqlstr,
     get_idea_catalog_dict,
@@ -47,15 +47,15 @@ class EconomyUnit:
         contract_obj = self.get_public_contract(contract_owner)
 
         for groupunit_x in contract_obj._groups.values():
-            if groupunit_x._memberlinks_set_by_economy_road != None:
-                groupunit_x.clear_memberlinks()
+            if groupunit_x._partylinks_set_by_economy_road != None:
+                groupunit_x.clear_partylinks()
                 ic = get_idea_catalog_dict(
-                    self.get_bank_conn(), groupunit_x._memberlinks_set_by_economy_road
+                    self.get_bank_conn(), groupunit_x._partylinks_set_by_economy_road
                 )
                 for idea_catalog in ic.values():
                     if contract_owner != idea_catalog.contract_owner:
-                        memberlink_x = memberlink_shop(name=idea_catalog.contract_owner)
-                        groupunit_x.set_memberlink(memberlink_x)
+                        partylink_x = partylink_shop(name=idea_catalog.contract_owner)
+                        groupunit_x.set_partylink(partylink_x)
         self.save_public_contract(contract_obj)
 
         # refresh bank metrics
@@ -94,7 +94,7 @@ class EconomyUnit:
                 river_flow_x = RiverFlowUnit(
                     currency_contract_owner=contract_owner,
                     src_name=led_x.contract_owner,
-                    dst_name=led_x.member_name,
+                    dst_name=led_x.party_name,
                     currency_start=curr_onset,
                     currency_close=curr_close,
                     flow_num=flows_count,
@@ -112,7 +112,7 @@ class EconomyUnit:
                 # change curr_onset for next
                 curr_onset += curr_range
 
-        self._set_river_tmembers_buckets(contract_owner)
+        self._set_river_tpartys_buckets(contract_owner)
 
     def _insert_river_flow_grab_river_ledger(
         self, river_flow_x: RiverFlowUnit
@@ -130,7 +130,7 @@ class EconomyUnit:
     def _clear_all_source_river_data(self, contract_owner: str):
         with self.get_bank_conn() as bank_conn:
             flow_s = get_river_flow_table_delete_sqlstr(contract_owner)
-            mstr_s = get_river_tmember_table_delete_sqlstr(contract_owner)
+            mstr_s = get_river_tparty_table_delete_sqlstr(contract_owner)
             bank_conn.execute(flow_s)
             bank_conn.execute(mstr_s)
 
@@ -154,20 +154,20 @@ class EconomyUnit:
             source_river_ledger = get_river_ledger_unit(bank_conn, root_river_flow)
         return source_river_ledger
 
-    def _set_river_tmembers_buckets(self, contract_owner: str):
+    def _set_river_tpartys_buckets(self, contract_owner: str):
         with self.get_bank_conn() as bank_conn:
-            bank_conn.execute(get_river_tmember_table_insert_sqlstr(contract_owner))
+            bank_conn.execute(get_river_tparty_table_insert_sqlstr(contract_owner))
             bank_conn.execute(get_river_bucket_table_insert_sqlstr(contract_owner))
 
-            sal_river_tmembers = get_river_tmember_dict(bank_conn, contract_owner)
+            sal_river_tpartys = get_river_tparty_dict(bank_conn, contract_owner)
             contract_x = self.get_public_contract(owner=contract_owner)
-            contract_x.set_banking_attr_memberunits(sal_river_tmembers)
+            contract_x.set_banking_attr_partyunits(sal_river_tpartys)
             self.save_public_contract(contract_x=contract_x)
 
-    def get_river_tmembers(self, contract_owner: str) -> dict[str:RiverTmemberUnit]:
+    def get_river_tpartys(self, contract_owner: str) -> dict[str:RiverTpartyUnit]:
         with self.get_bank_conn() as bank_conn:
-            river_tmembers = get_river_tmember_dict(bank_conn, contract_owner)
-        return river_tmembers
+            river_tpartys = get_river_tparty_dict(bank_conn, contract_owner)
+        return river_tpartys
 
     def refresh_bank_metrics(self, in_memory: bool = None):
         if in_memory is None and self._bank_db != None:
@@ -182,7 +182,7 @@ class EconomyUnit:
             contractunit_x.set_contract_metrics()
 
             self._bank_insert_contractunit(contractunit_x)
-            self._bank_insert_memberunit(contractunit_x)
+            self._bank_insert_partyunit(contractunit_x)
             self._bank_insert_groupunit(contractunit_x)
             self._bank_insert_ideaunit(contractunit_x)
             self._bank_insert_acptfact(contractunit_x)
@@ -192,11 +192,11 @@ class EconomyUnit:
             cur = bank_conn.cursor()
             cur.execute(get_contract_table_insert_sqlstr(contract_x=contractunit_x))
 
-    def _bank_insert_memberunit(self, contractunit_x: ContractUnit):
+    def _bank_insert_partyunit(self, contractunit_x: ContractUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            for memberunit_x in contractunit_x._members.values():
-                sqlstr = get_ledger_table_insert_sqlstr(contractunit_x, memberunit_x)
+            for partyunit_x in contractunit_x._partys.values():
+                sqlstr = get_ledger_table_insert_sqlstr(contractunit_x, partyunit_x)
                 cur.execute(sqlstr)
 
     def _bank_insert_groupunit(self, contractunit_x: ContractUnit):
@@ -206,7 +206,7 @@ class EconomyUnit:
                 groupunit_catalog_x = GroupUnitCatalog(
                     contract_owner=contractunit_x._owner,
                     groupunit_name=groupunit_x.name,
-                    memberlinks_set_by_economy_road=groupunit_x._memberlinks_set_by_economy_road,
+                    partylinks_set_by_economy_road=groupunit_x._partylinks_set_by_economy_road,
                 )
                 sqlstr = get_groupunit_catalog_table_insert_sqlstr(groupunit_catalog_x)
                 cur.execute(sqlstr)
@@ -455,13 +455,13 @@ class EconomyUnit:
     def update_depotlink(
         self,
         owner_name: str,
-        membername: MemberName,
+        partyname: PartyName,
         depotlink_type: str,
         creditor_weight: str,
         debtor_weight: str,
     ):
         owner_x = self.get_owner_obj(name=owner_name)
-        contract_x = self.get_public_contract(_owner=membername)
+        contract_x = self.get_public_contract(_owner=partyname)
         self._owner_set_depot_contract(
             ownerunit=owner_x,
             contractunit=contract_x,

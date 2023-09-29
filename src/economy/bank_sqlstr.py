@@ -1,5 +1,5 @@
 from src.contract.contract import ContractUnit
-from src.contract.member import MemberUnit
+from src.contract.party import PartyUnit
 from src.contract.road import get_road_without_root_node
 from src.economy.y_func import sqlite_bool, sqlite_null
 from src.contract.road import Road
@@ -215,17 +215,17 @@ def get_river_bucket_dict(
     return dict_x
 
 
-def get_river_tmember_table_delete_sqlstr(currency_contract_owner: str) -> str:
+def get_river_tparty_table_delete_sqlstr(currency_contract_owner: str) -> str:
     return f"""
-        DELETE FROM river_tmember
+        DELETE FROM river_tparty
         WHERE currency_name = '{currency_contract_owner}' 
         ;
     """
 
 
-def get_river_tmember_table_create_sqlstr() -> str:
+def get_river_tparty_table_create_sqlstr() -> str:
     return """
-        CREATE TABLE IF NOT EXISTS river_tmember (
+        CREATE TABLE IF NOT EXISTS river_tparty (
           currency_name VARCHAR(255) NOT NULL
         , tax_name VARCHAR(255) NOT NULL
         , tax_total FLOAT NOT NULL
@@ -238,9 +238,9 @@ def get_river_tmember_table_create_sqlstr() -> str:
     """
 
 
-def get_river_tmember_table_insert_sqlstr(currency_contract_owner: str) -> str:
+def get_river_tparty_table_insert_sqlstr(currency_contract_owner: str) -> str:
     return f"""
-        INSERT INTO river_tmember (
+        INSERT INTO river_tparty (
           currency_name
         , tax_name
         , tax_total
@@ -254,7 +254,7 @@ def get_river_tmember_table_insert_sqlstr(currency_contract_owner: str) -> str:
         , l._contract_agenda_ratio_debt
         , l._contract_agenda_ratio_debt - SUM(rt.currency_close-rt.currency_start)
         FROM river_flow rt
-        LEFT JOIN ledger l ON l.contract_owner = rt.currency_name AND l.member_name = rt.src_name
+        LEFT JOIN ledger l ON l.contract_owner = rt.currency_name AND l.party_name = rt.src_name
         WHERE rt.currency_name='{currency_contract_owner}' and rt.dst_name=rt.currency_name
         GROUP BY rt.currency_name, rt.src_name
         ;
@@ -262,7 +262,7 @@ def get_river_tmember_table_insert_sqlstr(currency_contract_owner: str) -> str:
 
 
 @dataclass
-class RiverTmemberUnit:
+class RiverTpartyUnit:
     currency_name: str
     tax_name: str
     tax_total: float
@@ -270,9 +270,9 @@ class RiverTmemberUnit:
     tax_diff: float
 
 
-def get_river_tmember_dict(
+def get_river_tparty_dict(
     db_conn: Connection, currency_contract_owner: str
-) -> dict[str:RiverTmemberUnit]:
+) -> dict[str:RiverTpartyUnit]:
     sqlstr = f"""
         SELECT
           currency_name
@@ -280,7 +280,7 @@ def get_river_tmember_dict(
         , tax_total
         , debt
         , tax_diff
-        FROM river_tmember
+        FROM river_tparty
         WHERE currency_name = '{currency_contract_owner}'
         ;
     """
@@ -288,14 +288,14 @@ def get_river_tmember_dict(
     results = db_conn.execute(sqlstr)
 
     for row in results.fetchall():
-        river_tmember_x = RiverTmemberUnit(
+        river_tparty_x = RiverTpartyUnit(
             currency_name=row[0],
             tax_name=row[1],
             tax_total=row[2],
             debt=row[3],
             tax_diff=row[4],
         )
-        dict_x[river_tmember_x.tax_name] = river_tmember_x
+        dict_x[river_tparty_x.tax_name] = river_tparty_x
     return dict_x
 
 
@@ -325,7 +325,7 @@ def get_ledger_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS ledger (
           contract_owner INTEGER 
-        , member_name INTEGER
+        , party_name INTEGER
         , _contract_credit FLOAT
         , _contract_debt FLOAT
         , _contract_agenda_credit FLOAT
@@ -335,20 +335,20 @@ def get_ledger_table_create_sqlstr() -> str:
         , _creditor_active INT
         , _debtor_active INT
         , FOREIGN KEY(contract_owner) REFERENCES contractunits(name)
-        , FOREIGN KEY(member_name) REFERENCES contractunits(name)
-        , UNIQUE(contract_owner, member_name)
+        , FOREIGN KEY(party_name) REFERENCES contractunits(name)
+        , UNIQUE(contract_owner, party_name)
         )
     ;
     """
 
 
 def get_ledger_table_insert_sqlstr(
-    contract_x: ContractUnit, memberunit_x: MemberUnit
+    contract_x: ContractUnit, partyunit_x: PartyUnit
 ) -> str:
     return f"""
         INSERT INTO ledger (
               contract_owner
-            , member_name
+            , party_name
             , _contract_credit
             , _contract_debt
             , _contract_agenda_credit
@@ -360,15 +360,15 @@ def get_ledger_table_insert_sqlstr(
             )
         VALUES (
             '{contract_x._owner}' 
-            , '{memberunit_x.name}'
-            , {sqlite_null(memberunit_x._contract_credit)} 
-            , {sqlite_null(memberunit_x._contract_debt)}
-            , {sqlite_null(memberunit_x._contract_agenda_credit)}
-            , {sqlite_null(memberunit_x._contract_agenda_debt)}
-            , {sqlite_null(memberunit_x._contract_agenda_ratio_credit)}
-            , {sqlite_null(memberunit_x._contract_agenda_ratio_debt)}
-            , {sqlite_bool(memberunit_x._creditor_active)}
-            , {sqlite_bool(memberunit_x._debtor_active)}
+            , '{partyunit_x.name}'
+            , {sqlite_null(partyunit_x._contract_credit)} 
+            , {sqlite_null(partyunit_x._contract_debt)}
+            , {sqlite_null(partyunit_x._contract_agenda_credit)}
+            , {sqlite_null(partyunit_x._contract_agenda_debt)}
+            , {sqlite_null(partyunit_x._contract_agenda_ratio_credit)}
+            , {sqlite_null(partyunit_x._contract_agenda_ratio_debt)}
+            , {sqlite_bool(partyunit_x._creditor_active)}
+            , {sqlite_bool(partyunit_x._debtor_active)}
         )
         ;
         """
@@ -377,7 +377,7 @@ def get_ledger_table_insert_sqlstr(
 @dataclass
 class LedgerUnit:
     contract_owner: str
-    member_name: str
+    party_name: str
     _contract_credit: float
     _contract_debt: float
     _contract_agenda_credit: float
@@ -392,7 +392,7 @@ def get_ledger_dict(db_conn: Connection, payer_name: str) -> dict[str:LedgerUnit
     sqlstr = f"""
         SELECT 
           contract_owner
-        , member_name
+        , party_name
         , _contract_credit
         , _contract_debt
         , _contract_agenda_credit
@@ -411,7 +411,7 @@ def get_ledger_dict(db_conn: Connection, payer_name: str) -> dict[str:LedgerUnit
     for row in results.fetchall():
         ledger_x = LedgerUnit(
             contract_owner=row[0],
-            member_name=row[1],
+            party_name=row[1],
             _contract_credit=row[2],
             _contract_debt=row[3],
             _contract_agenda_credit=row[4],
@@ -421,7 +421,7 @@ def get_ledger_dict(db_conn: Connection, payer_name: str) -> dict[str:LedgerUnit
             _creditor_active=row[8],
             _debtor_active=row[9],
         )
-        dict_x[ledger_x.member_name] = ledger_x
+        dict_x[ledger_x.party_name] = ledger_x
     return dict_x
 
 
@@ -574,7 +574,7 @@ def get_groupunit_catalog_table_create_sqlstr() -> str:
         CREATE TABLE IF NOT EXISTS groupunit_catalog (
           contract_owner VARCHAR(255) NOT NULL
         , groupunit_name VARCHAR(1000) NOT NULL
-        , memberlinks_set_by_economy_road VARCHAR(1000) NULL
+        , partylinks_set_by_economy_road VARCHAR(1000) NULL
         )
         ;
     """
@@ -596,7 +596,7 @@ def get_groupunit_catalog_table_count(db_conn: Connection, contract_owner: str) 
 class GroupUnitCatalog:
     contract_owner: str
     groupunit_name: str
-    memberlinks_set_by_economy_road: str
+    partylinks_set_by_economy_road: str
 
 
 def get_groupunit_catalog_table_insert_sqlstr(
@@ -606,12 +606,12 @@ def get_groupunit_catalog_table_insert_sqlstr(
         INSERT INTO groupunit_catalog (
           contract_owner
         , groupunit_name
-        , memberlinks_set_by_economy_road
+        , partylinks_set_by_economy_road
         )
         VALUES (
           '{groupunit_catalog.contract_owner}'
         , '{groupunit_catalog.groupunit_name}'
-        , '{groupunit_catalog.memberlinks_set_by_economy_road}'
+        , '{groupunit_catalog.partylinks_set_by_economy_road}'
         )
         ;
     """
@@ -622,7 +622,7 @@ def get_groupunit_catalog_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog
         SELECT 
           contract_owner
         , groupunit_name
-        , memberlinks_set_by_economy_road
+        , partylinks_set_by_economy_road
         FROM groupunit_catalog
         ;
     """
@@ -633,7 +633,7 @@ def get_groupunit_catalog_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog
         groupunit_catalog_x = GroupUnitCatalog(
             contract_owner=row[0],
             groupunit_name=row[1],
-            memberlinks_set_by_economy_road=row[2],
+            partylinks_set_by_economy_road=row[2],
         )
         dict_key = (
             f"{groupunit_catalog_x.contract_owner} {groupunit_catalog_x.groupunit_name}"
@@ -649,7 +649,7 @@ def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x.append(get_ledger_table_create_sqlstr())
     list_x.append(get_river_flow_table_create_sqlstr())
     list_x.append(get_river_bucket_table_create_sqlstr())
-    list_x.append(get_river_tmember_table_create_sqlstr())
+    list_x.append(get_river_tparty_table_create_sqlstr())
     list_x.append(get_groupunit_catalog_table_create_sqlstr())
     return list_x
 

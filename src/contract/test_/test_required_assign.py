@@ -10,7 +10,7 @@ from src.contract.required_assign import (
     #     Road,
 )
 from src.contract.group import GroupName, groupunit_shop
-from src.contract.member import memberlink_shop
+from src.contract.party import partylink_shop
 from src.contract.contract import ContractUnit
 from pytest import raises as pytest_raises
 
@@ -30,7 +30,7 @@ def test_AssignedUnit_exists():
 def test_assigned_unit_shop_ReturnsCorrectWithCorrectAttributes_v1():
     # GIVEN
     _suffgroups_x = {1: 2}
-    _group_member_x = "example"
+    _group_party_x = "example"
 
     # WHEN
     assigned_unit_x = assigned_unit_shop(_suffgroups=_suffgroups_x)
@@ -97,101 +97,101 @@ def test_AssignedUnit_del_suffgroup_CorrectlyDeletes_suffgroups_v1():
 def test_AssignedHeir_exists():
     # GIVEN
     _suffgroups_x = {1: 2}
-    _group_member_x = "example"
+    _group_party_x = "example"
 
     # WHEN
     assigned_heir_x = AssignedHeir(
-        _suffgroups=_suffgroups_x, _group_member=_group_member_x
+        _suffgroups=_suffgroups_x, _group_party=_group_party_x
     )
 
     # THEN
     assert assigned_heir_x
     assert assigned_heir_x._suffgroups == _suffgroups_x
-    assert assigned_heir_x._group_member == _group_member_x
+    assert assigned_heir_x._group_party == _group_party_x
 
 
 def test_assigned_heir_shop_ReturnsCorrectWithCorrectAttributes_v1():
     # GIVEN
     _suffgroups_x = {1: 2}
-    _group_member_x = "example"
+    _group_party_x = "example"
 
     # WHEN
     assigned_heir_x = assigned_heir_shop(
-        _suffgroups=_suffgroups_x, _group_member=_group_member_x
+        _suffgroups=_suffgroups_x, _group_party=_group_party_x
     )
 
     # THEN
     assert assigned_heir_x
     assert assigned_heir_x._suffgroups == _suffgroups_x
-    assert assigned_heir_x._group_member == _group_member_x
+    assert assigned_heir_x._group_party == _group_party_x
 
 
-def test_AssignedHeir_get_all_suff_members_CorrectlyReturnsSingleDictWithAllMembers_v1():
+def test_AssignedHeir_get_all_suff_partys_CorrectlyReturnsSingleDictWithAllPartys_v1():
     # GIVEN
     jim_text = "jim"
     sue_text = "sue"
     c_x = ContractUnit(_owner=jim_text)
-    c_x.add_memberunit(name=jim_text)
-    c_x.add_memberunit(name=sue_text)
+    c_x.add_partyunit(name=jim_text)
+    c_x.add_partyunit(name=sue_text)
 
     _suffgroups_x = {jim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
 
     # WHEN
-    all_members = assigned_heir_x._get_all_suff_members(contract_groups=c_x._groups)
+    all_partys = assigned_heir_x._get_all_suff_partys(contract_groups=c_x._groups)
 
     # THEN
-    assert len(all_members) == 1
+    assert len(all_partys) == 1
 
 
-def test_AssignedHeir_get_all_suff_members_CorrectlyReturnsSingleDictWithAllMembers_v2():
+def test_AssignedHeir_get_all_suff_partys_CorrectlyReturnsSingleDictWithAllPartys_v2():
     # GIVEN
     jim_text = "jim"
     sue_text = "sue"
     bob_text = "bob"
     c_x = ContractUnit(_owner=jim_text)
-    c_x.add_memberunit(name=jim_text)
-    c_x.add_memberunit(name=sue_text)
-    c_x.add_memberunit(name=bob_text)
+    c_x.add_partyunit(name=jim_text)
+    c_x.add_partyunit(name=sue_text)
+    c_x.add_partyunit(name=bob_text)
 
     swim_text = "swim"
     swim_group = groupunit_shop(name=swim_text)
-    swim_group.set_memberlink(memberlink=memberlink_shop(name=jim_text))
-    swim_group.set_memberlink(memberlink=memberlink_shop(name=sue_text))
+    swim_group.set_partylink(partylink=partylink_shop(name=jim_text))
+    swim_group.set_partylink(partylink=partylink_shop(name=sue_text))
     c_x.set_groupunit(groupunit=swim_group)
 
     _suffgroups_x = {swim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
 
     # WHEN
-    all_members = assigned_heir_x._get_all_suff_members(contract_groups=c_x._groups)
+    all_partys = assigned_heir_x._get_all_suff_partys(contract_groups=c_x._groups)
 
     # THEN
-    assert len(all_members) == 2
+    assert len(all_partys) == 2
 
 
-def test_AssignedHeir_set_group_member_CorrectlySetsAttribute_Empty_suffgroups_x():
+def test_AssignedHeir_set_group_party_CorrectlySetsAttribute_Empty_suffgroups_x():
     # GIVEN
     _suffgroups_x = {}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
-    assert assigned_heir_x._group_member == False
+    assert assigned_heir_x._group_party == False
 
     # WHEN
     contract_groups = {}
-    assigned_heir_x.set_group_member(contract_groups=contract_groups, contract_owner="")
+    assigned_heir_x.set_group_party(contract_groups=contract_groups, contract_owner="")
 
     # THEN
-    assert assigned_heir_x._group_member
+    assert assigned_heir_x._group_party
 
 
-def test_AssignedHeir_set_group_member_CorrectlySetsAttribute_NonEmpty_suffgroups_x_v1():
+def test_AssignedHeir_set_group_party_CorrectlySetsAttribute_NonEmpty_suffgroups_x_v1():
     # GIVEN
     jim_text = "jim"
     sue_text = "sue"
 
     c_x = ContractUnit(_owner=jim_text)
-    c_x.add_memberunit(name=jim_text)
-    c_x.add_memberunit(name=sue_text)
+    c_x.add_partyunit(name=jim_text)
+    c_x.add_partyunit(name=sue_text)
     contract_owner = c_x._owner
     contract_groups = c_x._groups
     print(f"{len(contract_groups)=}")
@@ -200,23 +200,23 @@ def test_AssignedHeir_set_group_member_CorrectlySetsAttribute_NonEmpty_suffgroup
 
     _suffgroups_x = {jim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
-    assert assigned_heir_x._group_member == False
+    assert assigned_heir_x._group_party == False
 
     # WHEN
-    assigned_heir_x.set_group_member(contract_groups, contract_owner)
+    assigned_heir_x.set_group_party(contract_groups, contract_owner)
 
     # THEN
-    assert assigned_heir_x._group_member
+    assert assigned_heir_x._group_party
 
 
-def test_AssignedHeir_set_group_member_CorrectlySetsAttribute_NonEmpty_suffgroups_x_v2():
+def test_AssignedHeir_set_group_party_CorrectlySetsAttribute_NonEmpty_suffgroups_x_v2():
     # GIVEN
     jim_text = "jim"
     sue_text = "sue"
 
     c_x = ContractUnit(_owner=jim_text)
-    c_x.add_memberunit(name=jim_text)
-    c_x.add_memberunit(name=sue_text)
+    c_x.add_partyunit(name=jim_text)
+    c_x.add_partyunit(name=sue_text)
     contract_owner = c_x._owner
     contract_groups = c_x._groups
     print(f"{len(contract_groups)=}")
@@ -225,44 +225,44 @@ def test_AssignedHeir_set_group_member_CorrectlySetsAttribute_NonEmpty_suffgroup
 
     _suffgroups_x = {sue_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
-    assert assigned_heir_x._group_member == False
+    assert assigned_heir_x._group_party == False
 
     # WHEN
-    assigned_heir_x.set_group_member(contract_groups, contract_owner)
+    assigned_heir_x.set_group_party(contract_groups, contract_owner)
 
     # THEN
-    assert assigned_heir_x._group_member == False
+    assert assigned_heir_x._group_party == False
 
 
-def test_AssignedHeir_set_group_member_CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
+def test_AssignedHeir_set_group_party_CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
     # GIVEN
     jim_text = "jim"
     sue_text = "sue"
     bob_text = "bob"
     c_x = ContractUnit(_owner=jim_text)
-    c_x.add_memberunit(name=jim_text)
-    c_x.add_memberunit(name=sue_text)
-    c_x.add_memberunit(name=bob_text)
+    c_x.add_partyunit(name=jim_text)
+    c_x.add_partyunit(name=sue_text)
+    c_x.add_partyunit(name=bob_text)
 
     swim_text = "swim"
     swim_group = groupunit_shop(name=swim_text)
-    swim_group.set_memberlink(memberlink=memberlink_shop(name=jim_text))
-    swim_group.set_memberlink(memberlink=memberlink_shop(name=sue_text))
+    swim_group.set_partylink(partylink=partylink_shop(name=jim_text))
+    swim_group.set_partylink(partylink=partylink_shop(name=sue_text))
     c_x.set_groupunit(groupunit=swim_group)
 
     _suffgroups_x = {swim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
-    assert assigned_heir_x._group_member == False
-    assigned_heir_x.set_group_member(c_x._groups, c_x._owner)
-    assert assigned_heir_x._group_member
+    assert assigned_heir_x._group_party == False
+    assigned_heir_x.set_group_party(c_x._groups, c_x._owner)
+    assert assigned_heir_x._group_party
 
     # WHEN
-    swim_group.del_memberlink(name=jim_text)
+    swim_group.del_partylink(name=jim_text)
     c_x.set_groupunit(groupunit=swim_group)
-    assigned_heir_x.set_group_member(c_x._groups, c_x._owner)
+    assigned_heir_x.set_group_party(c_x._groups, c_x._owner)
 
     # THEN
-    assert assigned_heir_x._group_member == False
+    assert assigned_heir_x._group_party == False
 
 
 def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
@@ -271,29 +271,29 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
     sue_text = "sue"
     bob_text = "bob"
     c_x = ContractUnit(_owner=jim_text)
-    c_x.add_memberunit(name=jim_text)
-    c_x.add_memberunit(name=sue_text)
-    c_x.add_memberunit(name=bob_text)
+    c_x.add_partyunit(name=jim_text)
+    c_x.add_partyunit(name=sue_text)
+    c_x.add_partyunit(name=bob_text)
 
     swim_text = "swim"
     swim_group = groupunit_shop(name=swim_text)
-    swim_group.set_memberlink(memberlink=memberlink_shop(name=jim_text))
-    swim_group.set_memberlink(memberlink=memberlink_shop(name=sue_text))
+    swim_group.set_partylink(partylink=partylink_shop(name=jim_text))
+    swim_group.set_partylink(partylink=partylink_shop(name=sue_text))
     c_x.set_groupunit(groupunit=swim_group)
 
     _suffgroups_x = {swim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
-    assert assigned_heir_x._group_member == False
-    assigned_heir_x.set_group_member(c_x._groups, c_x._owner)
-    assert assigned_heir_x._group_member
+    assert assigned_heir_x._group_party == False
+    assigned_heir_x.set_group_party(c_x._groups, c_x._owner)
+    assert assigned_heir_x._group_party
 
     # WHEN
-    swim_group.del_memberlink(name=jim_text)
+    swim_group.del_partylink(name=jim_text)
     c_x.set_groupunit(groupunit=swim_group)
-    assigned_heir_x.set_group_member(c_x._groups, c_x._owner)
+    assigned_heir_x.set_group_party(c_x._groups, c_x._owner)
 
     # THEN
-    assert assigned_heir_x._group_member == False
+    assert assigned_heir_x._group_party == False
 
 
 def test_AssignedHeir_set_suffgroup_AssignedUnitEmpty_ParentAssignedHeirEmpty():
@@ -410,22 +410,22 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqual_ParentAssignedHeir_Non
     bob_text = "bob"
     tom_text = "tom"
     c_x = ContractUnit(_owner=jim_text)
-    c_x.add_memberunit(name=jim_text)
-    c_x.add_memberunit(name=sue_text)
-    c_x.add_memberunit(name=bob_text)
-    c_x.add_memberunit(name=tom_text)
+    c_x.add_partyunit(name=jim_text)
+    c_x.add_partyunit(name=sue_text)
+    c_x.add_partyunit(name=bob_text)
+    c_x.add_partyunit(name=tom_text)
 
     swim2_text = "swim2"
     swim2_group = groupunit_shop(name=swim2_text)
-    swim2_group.set_memberlink(memberlink=memberlink_shop(name=jim_text))
-    swim2_group.set_memberlink(memberlink=memberlink_shop(name=sue_text))
+    swim2_group.set_partylink(partylink=partylink_shop(name=jim_text))
+    swim2_group.set_partylink(partylink=partylink_shop(name=sue_text))
     c_x.set_groupunit(groupunit=swim2_group)
 
     swim3_text = "swim3"
     swim3_group = groupunit_shop(name=swim3_text)
-    swim3_group.set_memberlink(memberlink=memberlink_shop(name=jim_text))
-    swim3_group.set_memberlink(memberlink=memberlink_shop(name=sue_text))
-    swim3_group.set_memberlink(memberlink=memberlink_shop(name=tom_text))
+    swim3_group.set_partylink(partylink=partylink_shop(name=jim_text))
+    swim3_group.set_partylink(partylink=partylink_shop(name=sue_text))
+    swim3_group.set_partylink(partylink=partylink_shop(name=tom_text))
     c_x.set_groupunit(groupunit=swim3_group)
 
     parent_assigned_unit = assigned_unit_shop()
@@ -457,22 +457,22 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqualParentAssignedHeir_Rais
     bob_text = "bob"
     tom_text = "tom"
     c_x = ContractUnit(_owner=jim_text)
-    c_x.add_memberunit(name=jim_text)
-    c_x.add_memberunit(name=sue_text)
-    c_x.add_memberunit(name=bob_text)
-    c_x.add_memberunit(name=tom_text)
+    c_x.add_partyunit(name=jim_text)
+    c_x.add_partyunit(name=sue_text)
+    c_x.add_partyunit(name=bob_text)
+    c_x.add_partyunit(name=tom_text)
 
     swim2_text = "swim2"
     swim2_group = groupunit_shop(name=swim2_text)
-    swim2_group.set_memberlink(memberlink=memberlink_shop(name=jim_text))
-    swim2_group.set_memberlink(memberlink=memberlink_shop(name=sue_text))
+    swim2_group.set_partylink(partylink=partylink_shop(name=jim_text))
+    swim2_group.set_partylink(partylink=partylink_shop(name=sue_text))
     c_x.set_groupunit(groupunit=swim2_group)
 
     swim3_text = "swim3"
     swim3_group = groupunit_shop(name=swim3_text)
-    swim3_group.set_memberlink(memberlink=memberlink_shop(name=jim_text))
-    swim3_group.set_memberlink(memberlink=memberlink_shop(name=sue_text))
-    swim3_group.set_memberlink(memberlink=memberlink_shop(name=tom_text))
+    swim3_group.set_partylink(partylink=partylink_shop(name=jim_text))
+    swim3_group.set_partylink(partylink=partylink_shop(name=sue_text))
+    swim3_group.set_partylink(partylink=partylink_shop(name=tom_text))
     c_x.set_groupunit(groupunit=swim3_group)
 
     parent_assigned_unit = assigned_unit_shop()
@@ -487,15 +487,15 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqualParentAssignedHeir_Rais
 
     # WHEN / THEN
     assigned_heir_x = assigned_heir_shop()
-    all_parent_assignedheir_members = {jim_text, sue_text}
-    all_assignedunit_members = {jim_text, sue_text, tom_text}
+    all_parent_assignedheir_partys = {jim_text, sue_text}
+    all_assignedunit_partys = {jim_text, sue_text, tom_text}
     with pytest_raises(Exception) as excinfo:
         assigned_heir_x.set_suffgroups(
             parent_assigned_heir, assigned_unit_swim3, contract_groups=c_x._groups
         )
     assert (
         str(excinfo.value)
-        == f"parent_assigned_heir does not contain all members of the idea's assigned_unit\n{set(all_parent_assignedheir_members)=}\n\n{set(all_assignedunit_members)=}"
+        == f"parent_assigned_heir does not contain all partys of the idea's assigned_unit\n{set(all_parent_assignedheir_partys)=}\n\n{set(all_assignedunit_partys)=}"
     )
 
 

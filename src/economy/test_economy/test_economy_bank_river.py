@@ -8,16 +8,16 @@ from src.economy.examples.economy_env_kit import (
 from pytest import raises as pytest_raises
 from src.economy.y_func import check_connection, get_single_result_back
 from src.economy.bank_sqlstr import (
-    get_river_tmember_dict,
+    get_river_tparty_dict,
     get_river_flow_dict,
     get_table_count_sqlstr,
 )
 
 
-def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTable01(
+def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example economy with 4 Owners, each with 3 Memberunits = 12 ledger rows
+    # GIVEN Create example economy with 4 Owners, each with 3 Partyunits = 12 ledger rows
     economy_title = get_temp_env_title()
     sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -27,16 +27,16 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     sal_text = "sal"
 
     sal = ContractUnit(_owner=sal_text)
-    sal.add_memberunit(name=bob_text, creditor_weight=1)
-    sal.add_memberunit(name=tom_text, creditor_weight=3)
+    sal.add_partyunit(name=bob_text, creditor_weight=1)
+    sal.add_partyunit(name=tom_text, creditor_weight=3)
     sx.save_public_contract(contract_x=sal)
 
     bob = ContractUnit(_owner=bob_text)
-    bob.add_memberunit(name=sal_text, creditor_weight=1)
+    bob.add_partyunit(name=sal_text, creditor_weight=1)
     sx.save_public_contract(contract_x=bob)
 
     tom = ContractUnit(_owner=tom_text)
-    tom.add_memberunit(name=sal_text, creditor_weight=1)
+    tom.add_partyunit(name=sal_text, creditor_weight=1)
     sx.save_public_contract(contract_x=tom)
 
     sx.refresh_bank_metrics()
@@ -44,10 +44,10 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 4
 
-    sqlstr_count_river_tmember = get_table_count_sqlstr("river_tmember")
+    sqlstr_count_river_tparty = get_table_count_sqlstr("river_tparty")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 0
 
     # WHEN
     sx.set_river_sphere_for_contract(contract_owner=sal_text)
@@ -70,13 +70,13 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     assert flow_3.river_tree_level == 2
     assert flow_3.parent_flow_num == 1
 
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 2
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 2
 
     with sx.get_bank_conn() as bank_conn:
-        river_tmembers = get_river_tmember_dict(bank_conn, sal_text)
-    assert len(river_tmembers) == 2
-    river_sal_tax_bob = river_tmembers.get(bob_text)
-    river_sal_tax_tom = river_tmembers.get(tom_text)
+        river_tpartys = get_river_tparty_dict(bank_conn, sal_text)
+    assert len(river_tpartys) == 2
+    river_sal_tax_bob = river_tpartys.get(bob_text)
+    river_sal_tax_tom = river_tpartys.get(tom_text)
 
     print(f"{river_sal_tax_bob=}")
     print(f"{river_sal_tax_tom=}")
@@ -85,7 +85,7 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     assert river_sal_tax_tom.tax_total == 0.75
 
 
-def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTable02(
+def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTable02(
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 contracts, 100% of river flows to sal
@@ -99,31 +99,31 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     elu_text = "elu"
 
     sal = ContractUnit(_owner=sal_text)
-    sal.add_memberunit(name=bob_text, creditor_weight=1, debtor_weight=4)
-    sal.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
+    sal.add_partyunit(name=bob_text, creditor_weight=1, debtor_weight=4)
+    sal.add_partyunit(name=tom_text, creditor_weight=3, debtor_weight=1)
     sx.save_public_contract(contract_x=sal)
 
     bob = ContractUnit(_owner=bob_text)
-    bob.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=1)
-    bob.add_memberunit(name=tom_text, creditor_weight=1, debtor_weight=1)
+    bob.add_partyunit(name=elu_text, creditor_weight=1, debtor_weight=1)
+    bob.add_partyunit(name=tom_text, creditor_weight=1, debtor_weight=1)
     sx.save_public_contract(contract_x=bob)
 
     tom = ContractUnit(_owner=tom_text)
-    tom.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=8)
+    tom.add_partyunit(name=elu_text, creditor_weight=1, debtor_weight=8)
     sx.save_public_contract(contract_x=tom)
 
     elu = ContractUnit(_owner=elu_text)
-    elu.add_memberunit(name=sal_text, creditor_weight=1, debtor_weight=8)
+    elu.add_partyunit(name=sal_text, creditor_weight=1, debtor_weight=8)
     sx.save_public_contract(contract_x=elu)
     sx.refresh_bank_metrics()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 6
 
-    sqlstr_count_river_tmember = get_table_count_sqlstr("river_tmember")
+    sqlstr_count_river_tparty = get_table_count_sqlstr("river_tparty")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 0
 
     # WHEN
     sx.set_river_sphere_for_contract(contract_owner=sal_text)
@@ -135,20 +135,20 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 1
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 1
 
     with sx.get_bank_conn() as bank_conn:
-        river_tmembers = get_river_tmember_dict(bank_conn, sal_text)
-    assert len(river_tmembers) == 1
-    assert river_tmembers.get(bob_text) is None
-    assert river_tmembers.get(tom_text) is None
-    river_sal_tax_elu = river_tmembers.get(elu_text)
+        river_tpartys = get_river_tparty_dict(bank_conn, sal_text)
+    assert len(river_tpartys) == 1
+    assert river_tpartys.get(bob_text) is None
+    assert river_tpartys.get(tom_text) is None
+    river_sal_tax_elu = river_tpartys.get(elu_text)
 
     print(f"{river_sal_tax_elu=}")
     assert river_sal_tax_elu.tax_total == 1.0
 
 
-def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTable03(
+def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTable03(
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 contracts, 85% of river flows to sal
@@ -162,18 +162,18 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     ava_text = "ava"
 
     sal_contract = ContractUnit(_owner=sal_text)
-    sal_contract.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_contract.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sal_contract.add_partyunit(name=bob_text, creditor_weight=2)
+    sal_contract.add_partyunit(name=tom_text, creditor_weight=7)
+    sal_contract.add_partyunit(name=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=sal_contract)
 
     bob_contract = ContractUnit(_owner=bob_text)
-    bob_contract.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    bob_contract.add_partyunit(name=sal_text, creditor_weight=3)
+    bob_contract.add_partyunit(name=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=bob_contract)
 
     tom_contract = ContractUnit(_owner=tom_text)
-    tom_contract.add_memberunit(name=sal_text, creditor_weight=2)
+    tom_contract.add_partyunit(name=sal_text, creditor_weight=2)
     sx.save_public_contract(contract_x=tom_contract)
 
     ava_contract = ContractUnit(_owner=ava_text)
@@ -183,10 +183,10 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 6
 
-    sqlstr_count_river_tmember = get_table_count_sqlstr("river_tmember")
+    sqlstr_count_river_tparty = get_table_count_sqlstr("river_tparty")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 0
 
     # WHEN
     sx.set_river_sphere_for_contract(contract_owner=sal_text)
@@ -198,25 +198,25 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 2
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 2
 
     with sx.get_bank_conn() as bank_conn:
-        river_tmembers = get_river_tmember_dict(bank_conn, sal_text)
-    assert len(river_tmembers) == 2
-    assert river_tmembers.get(bob_text) != None
-    assert river_tmembers.get(tom_text) != None
-    assert river_tmembers.get(ava_text) is None
+        river_tpartys = get_river_tparty_dict(bank_conn, sal_text)
+    assert len(river_tpartys) == 2
+    assert river_tpartys.get(bob_text) != None
+    assert river_tpartys.get(tom_text) != None
+    assert river_tpartys.get(ava_text) is None
 
-    river_sal_tax_bob = river_tmembers.get(bob_text)
+    river_sal_tax_bob = river_tpartys.get(bob_text)
     print(f"{river_sal_tax_bob=}")
-    river_sal_tax_tom = river_tmembers.get(tom_text)
+    river_sal_tax_tom = river_tpartys.get(tom_text)
     print(f"{river_sal_tax_tom=}")
 
     assert round(river_sal_tax_bob.tax_total, 15) == 0.15
     assert river_sal_tax_tom.tax_total == 0.7
 
 
-def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTable04(
+def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTable04(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop
@@ -231,26 +231,26 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     elu_text = "elu"
 
     sal_contract = ContractUnit(_owner=sal_text)
-    sal_contract.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_contract.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sal_contract.add_partyunit(name=bob_text, creditor_weight=2)
+    sal_contract.add_partyunit(name=tom_text, creditor_weight=7)
+    sal_contract.add_partyunit(name=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=sal_contract)
 
     bob_contract = ContractUnit(_owner=bob_text)
-    bob_contract.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    bob_contract.add_partyunit(name=sal_text, creditor_weight=3)
+    bob_contract.add_partyunit(name=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=bob_contract)
 
     tom_contract = ContractUnit(_owner=tom_text)
-    tom_contract.add_memberunit(name=sal_text, creditor_weight=2)
+    tom_contract.add_partyunit(name=sal_text, creditor_weight=2)
     sx.save_public_contract(contract_x=tom_contract)
 
     ava_contract = ContractUnit(_owner=ava_text)
-    ava_contract.add_memberunit(name=elu_text, creditor_weight=2)
+    ava_contract.add_partyunit(name=elu_text, creditor_weight=2)
     sx.save_public_contract(contract_x=ava_contract)
 
     elu_contract = ContractUnit(_owner=elu_text)
-    elu_contract.add_memberunit(name=ava_text, creditor_weight=2)
+    elu_contract.add_partyunit(name=ava_text, creditor_weight=2)
     sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
@@ -258,10 +258,10 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 8
 
-    sqlstr_count_river_tmember = get_table_count_sqlstr("river_tmember")
+    sqlstr_count_river_tparty = get_table_count_sqlstr("river_tparty")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 0
 
     # WHEN
     sx.set_river_sphere_for_contract(contract_owner=sal_text)
@@ -273,25 +273,25 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 2
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 2
 
     with sx.get_bank_conn() as bank_conn:
-        river_tmembers = get_river_tmember_dict(bank_conn, sal_text)
-    assert len(river_tmembers) == 2
-    assert river_tmembers.get(bob_text) != None
-    assert river_tmembers.get(tom_text) != None
-    assert river_tmembers.get(ava_text) is None
+        river_tpartys = get_river_tparty_dict(bank_conn, sal_text)
+    assert len(river_tpartys) == 2
+    assert river_tpartys.get(bob_text) != None
+    assert river_tpartys.get(tom_text) != None
+    assert river_tpartys.get(ava_text) is None
 
-    river_sal_tax_bob = river_tmembers.get(bob_text)
+    river_sal_tax_bob = river_tpartys.get(bob_text)
     print(f"{river_sal_tax_bob=}")
-    river_sal_tax_tom = river_tmembers.get(tom_text)
+    river_sal_tax_tom = river_tpartys.get(tom_text)
     print(f"{river_sal_tax_tom=}")
 
     assert round(river_sal_tax_bob.tax_total, 15) == 0.15
     assert river_sal_tax_tom.tax_total == 0.7
 
 
-def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTable05(
+def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTable05(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
@@ -306,27 +306,27 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     elu_text = "elu"
 
     sal_contract = ContractUnit(_owner=sal_text)
-    sal_contract.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_contract.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sal_contract.add_partyunit(name=bob_text, creditor_weight=2)
+    sal_contract.add_partyunit(name=tom_text, creditor_weight=7)
+    sal_contract.add_partyunit(name=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=sal_contract)
 
     bob_contract = ContractUnit(_owner=bob_text)
-    bob_contract.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    bob_contract.add_partyunit(name=sal_text, creditor_weight=3)
+    bob_contract.add_partyunit(name=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=bob_contract)
 
     tom_contract = ContractUnit(_owner=tom_text)
-    tom_contract.add_memberunit(name=sal_text, creditor_weight=2)
+    tom_contract.add_partyunit(name=sal_text, creditor_weight=2)
     sx.save_public_contract(contract_x=tom_contract)
 
     ava_contract = ContractUnit(_owner=ava_text)
-    ava_contract.add_memberunit(name=elu_text, creditor_weight=2)
+    ava_contract.add_partyunit(name=elu_text, creditor_weight=2)
     sx.save_public_contract(contract_x=ava_contract)
 
     elu_contract = ContractUnit(_owner=elu_text)
-    elu_contract.add_memberunit(name=ava_text, creditor_weight=19)
-    elu_contract.add_memberunit(name=sal_text, creditor_weight=1)
+    elu_contract.add_partyunit(name=ava_text, creditor_weight=19)
+    elu_contract.add_partyunit(name=sal_text, creditor_weight=1)
     sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
@@ -334,10 +334,10 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 9
 
-    sqlstr_count_river_tmember = get_table_count_sqlstr("river_tmember")
+    sqlstr_count_river_tparty = get_table_count_sqlstr("river_tparty")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 0
 
     # WHEN
     sx.set_river_sphere_for_contract(contract_owner=sal_text)
@@ -349,19 +349,19 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 3
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 3
 
     with sx.get_bank_conn() as bank_conn:
-        river_tmembers = get_river_tmember_dict(bank_conn, sal_text)
-    assert len(river_tmembers) == 3
-    assert river_tmembers.get(bob_text) != None
-    assert river_tmembers.get(tom_text) != None
-    assert river_tmembers.get(elu_text) != None
-    assert river_tmembers.get(ava_text) is None
+        river_tpartys = get_river_tparty_dict(bank_conn, sal_text)
+    assert len(river_tpartys) == 3
+    assert river_tpartys.get(bob_text) != None
+    assert river_tpartys.get(tom_text) != None
+    assert river_tpartys.get(elu_text) != None
+    assert river_tpartys.get(ava_text) is None
 
-    river_sal_tax_bob = river_tmembers.get(bob_text)
-    river_sal_tax_tom = river_tmembers.get(tom_text)
-    river_sal_tax_elu = river_tmembers.get(elu_text)
+    river_sal_tax_bob = river_tpartys.get(bob_text)
+    river_sal_tax_tom = river_tpartys.get(tom_text)
+    river_sal_tax_elu = river_tpartys.get(elu_text)
     print(f"{river_sal_tax_bob=}")
     print(f"{river_sal_tax_tom=}")
     print(f"{river_sal_tax_elu=}")
@@ -386,28 +386,28 @@ def test_economy_set_river_sphere_for_contract_CorrectlyDeletesPreviousRiver(
     elu_text = "elu"
 
     sal = ContractUnit(_owner=sal_text)
-    sal.add_memberunit(name=bob_text, creditor_weight=1, debtor_weight=4)
-    sal.add_memberunit(name=tom_text, creditor_weight=3, debtor_weight=1)
+    sal.add_partyunit(name=bob_text, creditor_weight=1, debtor_weight=4)
+    sal.add_partyunit(name=tom_text, creditor_weight=3, debtor_weight=1)
     sx.save_public_contract(contract_x=sal)
 
     bob = ContractUnit(_owner=bob_text)
-    bob.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=1)
-    bob.add_memberunit(name=tom_text, creditor_weight=1, debtor_weight=1)
+    bob.add_partyunit(name=elu_text, creditor_weight=1, debtor_weight=1)
+    bob.add_partyunit(name=tom_text, creditor_weight=1, debtor_weight=1)
     sx.save_public_contract(contract_x=bob)
 
     tom = ContractUnit(_owner=tom_text)
-    tom.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=8)
+    tom.add_partyunit(name=elu_text, creditor_weight=1, debtor_weight=8)
     sx.save_public_contract(contract_x=tom)
 
     elu = ContractUnit(_owner=elu_text)
-    elu.add_memberunit(name=sal_text, creditor_weight=1, debtor_weight=8)
+    elu.add_partyunit(name=sal_text, creditor_weight=1, debtor_weight=8)
     sx.save_public_contract(contract_x=elu)
     sx.refresh_bank_metrics()
 
     sx.set_river_sphere_for_contract(contract_owner=sal_text)
     sx.set_river_sphere_for_contract(contract_owner=elu_text)
 
-    sqlstr_count_river_tmember = get_table_count_sqlstr("river_tmember")
+    sqlstr_count_river_tparty = get_table_count_sqlstr("river_tparty")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 16
 
@@ -415,10 +415,10 @@ def test_economy_set_river_sphere_for_contract_CorrectlyDeletesPreviousRiver(
         river_flows = get_river_flow_dict(bank_conn, currency_contract_owner=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 3
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 3
 
     # WHEN
-    # sal.add_memberunit(name=elu_text, creditor_weight=1, debtor_weight=4)
+    # sal.add_partyunit(name=elu_text, creditor_weight=1, debtor_weight=4)
     # sx.save_public_contract(contract_x=sal)
     sx.set_river_sphere_for_contract(contract_owner=sal_text)
 
@@ -427,7 +427,7 @@ def test_economy_set_river_sphere_for_contract_CorrectlyDeletesPreviousRiver(
         river_flows = get_river_flow_dict(bank_conn, currency_contract_owner=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 3
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 3
 
 
 def test_economy_set_river_sphere_for_contract_CorrectlyUsesMaxFlowsCount(
@@ -445,27 +445,27 @@ def test_economy_set_river_sphere_for_contract_CorrectlyUsesMaxFlowsCount(
     elu_text = "elu"
 
     sal_contract = ContractUnit(_owner=sal_text)
-    sal_contract.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_contract.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sal_contract.add_partyunit(name=bob_text, creditor_weight=2)
+    sal_contract.add_partyunit(name=tom_text, creditor_weight=7)
+    sal_contract.add_partyunit(name=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=sal_contract)
 
     bob_contract = ContractUnit(_owner=bob_text)
-    bob_contract.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    bob_contract.add_partyunit(name=sal_text, creditor_weight=3)
+    bob_contract.add_partyunit(name=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=bob_contract)
 
     tom_contract = ContractUnit(_owner=tom_text)
-    tom_contract.add_memberunit(name=sal_text, creditor_weight=2)
+    tom_contract.add_partyunit(name=sal_text, creditor_weight=2)
     sx.save_public_contract(contract_x=tom_contract)
 
     ava_contract = ContractUnit(_owner=ava_text)
-    ava_contract.add_memberunit(name=elu_text, creditor_weight=2)
+    ava_contract.add_partyunit(name=elu_text, creditor_weight=2)
     sx.save_public_contract(contract_x=ava_contract)
 
     elu_contract = ContractUnit(_owner=elu_text)
-    elu_contract.add_memberunit(name=ava_text, creditor_weight=19)
-    elu_contract.add_memberunit(name=sal_text, creditor_weight=1)
+    elu_contract.add_partyunit(name=ava_text, creditor_weight=19)
+    elu_contract.add_partyunit(name=sal_text, creditor_weight=1)
     sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
@@ -473,10 +473,10 @@ def test_economy_set_river_sphere_for_contract_CorrectlyUsesMaxFlowsCount(
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 9
 
-    sqlstr_count_river_tmember = get_table_count_sqlstr("river_tmember")
+    sqlstr_count_river_tparty = get_table_count_sqlstr("river_tparty")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 0
 
     # WHEN
     mtc = 13
@@ -491,7 +491,7 @@ def test_economy_set_river_sphere_for_contract_CorrectlyUsesMaxFlowsCount(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == mtc
 
 
-def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTable05(
+def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTable05(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
@@ -506,27 +506,27 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     elu_text = "elu"
 
     sal_contract = ContractUnit(_owner=sal_text)
-    sal_contract.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_contract.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sal_contract.add_partyunit(name=bob_text, creditor_weight=2)
+    sal_contract.add_partyunit(name=tom_text, creditor_weight=7)
+    sal_contract.add_partyunit(name=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=sal_contract)
 
     bob_contract = ContractUnit(_owner=bob_text)
-    bob_contract.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    bob_contract.add_partyunit(name=sal_text, creditor_weight=3)
+    bob_contract.add_partyunit(name=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=bob_contract)
 
     tom_contract = ContractUnit(_owner=tom_text)
-    tom_contract.add_memberunit(name=sal_text, creditor_weight=2)
+    tom_contract.add_partyunit(name=sal_text, creditor_weight=2)
     sx.save_public_contract(contract_x=tom_contract)
 
     ava_contract = ContractUnit(_owner=ava_text)
-    ava_contract.add_memberunit(name=elu_text, creditor_weight=2)
+    ava_contract.add_partyunit(name=elu_text, creditor_weight=2)
     sx.save_public_contract(contract_x=ava_contract)
 
     elu_contract = ContractUnit(_owner=elu_text)
-    elu_contract.add_memberunit(name=ava_text, creditor_weight=19)
-    elu_contract.add_memberunit(name=sal_text, creditor_weight=1)
+    elu_contract.add_partyunit(name=ava_text, creditor_weight=19)
+    elu_contract.add_partyunit(name=sal_text, creditor_weight=1)
     sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
@@ -534,10 +534,10 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 9
 
-    sqlstr_count_river_tmember = get_table_count_sqlstr("river_tmember")
+    sqlstr_count_river_tparty = get_table_count_sqlstr("river_tparty")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 0
 
     # WHEN
     sx.set_river_sphere_for_contract(contract_owner=sal_text)
@@ -549,20 +549,20 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tmemberTa
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tmember) == 3
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 3
 
     with sx.get_bank_conn() as bank_conn:
-        river_tmembers = get_river_tmember_dict(bank_conn, sal_text)
-    river_tmembers = sx.get_river_tmembers(sal_text)
-    assert len(river_tmembers) == 3
-    assert river_tmembers.get(bob_text) != None
-    assert river_tmembers.get(tom_text) != None
-    assert river_tmembers.get(elu_text) != None
-    assert river_tmembers.get(ava_text) is None
+        river_tpartys = get_river_tparty_dict(bank_conn, sal_text)
+    river_tpartys = sx.get_river_tpartys(sal_text)
+    assert len(river_tpartys) == 3
+    assert river_tpartys.get(bob_text) != None
+    assert river_tpartys.get(tom_text) != None
+    assert river_tpartys.get(elu_text) != None
+    assert river_tpartys.get(ava_text) is None
 
-    river_sal_tax_bob = river_tmembers.get(bob_text)
-    river_sal_tax_tom = river_tmembers.get(tom_text)
-    river_sal_tax_elu = river_tmembers.get(elu_text)
+    river_sal_tax_bob = river_tpartys.get(bob_text)
+    river_sal_tax_tom = river_tpartys.get(tom_text)
+    river_sal_tax_elu = river_tpartys.get(elu_text)
     print(f"{river_sal_tax_bob=}")
     print(f"{river_sal_tax_tom=}")
     print(f"{river_sal_tax_elu=}")
@@ -588,27 +588,27 @@ def test_economy_set_river_sphere_for_contract_CorrectlyBuildsASingleContinuousR
     elu_text = "elu"
 
     sal_contract = ContractUnit(_owner=sal_text)
-    sal_contract.add_memberunit(name=bob_text, creditor_weight=2)
-    sal_contract.add_memberunit(name=tom_text, creditor_weight=7)
-    sal_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    sal_contract.add_partyunit(name=bob_text, creditor_weight=2)
+    sal_contract.add_partyunit(name=tom_text, creditor_weight=7)
+    sal_contract.add_partyunit(name=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=sal_contract)
 
     bob_contract = ContractUnit(_owner=bob_text)
-    bob_contract.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    bob_contract.add_partyunit(name=sal_text, creditor_weight=3)
+    bob_contract.add_partyunit(name=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=bob_contract)
 
     tom_contract = ContractUnit(_owner=tom_text)
-    tom_contract.add_memberunit(name=sal_text, creditor_weight=2)
+    tom_contract.add_partyunit(name=sal_text, creditor_weight=2)
     sx.save_public_contract(contract_x=tom_contract)
 
     ava_contract = ContractUnit(_owner=ava_text)
-    ava_contract.add_memberunit(name=elu_text, creditor_weight=2)
+    ava_contract.add_partyunit(name=elu_text, creditor_weight=2)
     sx.save_public_contract(contract_x=ava_contract)
 
     elu_contract = ContractUnit(_owner=elu_text)
-    elu_contract.add_memberunit(name=ava_text, creditor_weight=19)
-    elu_contract.add_memberunit(name=sal_text, creditor_weight=1)
+    elu_contract.add_partyunit(name=ava_text, creditor_weight=19)
+    elu_contract.add_partyunit(name=sal_text, creditor_weight=1)
     sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
@@ -643,7 +643,7 @@ def test_economy_set_river_sphere_for_contract_CorrectlyBuildsASingleContinuousR
         assert get_single_result_back(bank_conn, count_range_fails_sql) == 0
 
 
-def test_economy_set_river_sphere_for_contract_CorrectlyUpatesContractMemberUnits(
+def test_economy_set_river_sphere_for_contract_CorrectlyUpatesContractPartyUnits(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
@@ -658,103 +658,103 @@ def test_economy_set_river_sphere_for_contract_CorrectlyUpatesContractMemberUnit
     elu_text = "elu"
 
     sal_contract_src = ContractUnit(_owner=sal_text)
-    sal_contract_src.add_memberunit(name=bob_text, creditor_weight=2, debtor_weight=2)
-    sal_contract_src.add_memberunit(name=tom_text, creditor_weight=2, debtor_weight=1)
-    sal_contract_src.add_memberunit(name=ava_text, creditor_weight=2, debtor_weight=2)
+    sal_contract_src.add_partyunit(name=bob_text, creditor_weight=2, debtor_weight=2)
+    sal_contract_src.add_partyunit(name=tom_text, creditor_weight=2, debtor_weight=1)
+    sal_contract_src.add_partyunit(name=ava_text, creditor_weight=2, debtor_weight=2)
     sx.save_public_contract(contract_x=sal_contract_src)
 
     bob_contract = ContractUnit(_owner=bob_text)
-    bob_contract.add_memberunit(name=sal_text, creditor_weight=3)
-    bob_contract.add_memberunit(name=ava_text, creditor_weight=1)
+    bob_contract.add_partyunit(name=sal_text, creditor_weight=3)
+    bob_contract.add_partyunit(name=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=bob_contract)
 
     tom_contract = ContractUnit(_owner=tom_text)
-    tom_contract.add_memberunit(name=sal_text)
+    tom_contract.add_partyunit(name=sal_text)
     sx.save_public_contract(contract_x=tom_contract)
 
     ava_contract = ContractUnit(_owner=ava_text)
-    ava_contract.add_memberunit(name=elu_text, creditor_weight=2)
+    ava_contract.add_partyunit(name=elu_text, creditor_weight=2)
     sx.save_public_contract(contract_x=ava_contract)
 
     elu_contract = ContractUnit(_owner=elu_text)
-    elu_contract.add_memberunit(name=ava_text, creditor_weight=8)
-    elu_contract.add_memberunit(name=sal_text, creditor_weight=2)
+    elu_contract.add_partyunit(name=ava_text, creditor_weight=8)
+    elu_contract.add_partyunit(name=sal_text, creditor_weight=2)
     sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
     sal_contract_before = sx.get_public_contract(owner=sal_text)
 
     sx.set_river_sphere_for_contract(contract_owner=sal_text, max_flows_count=100)
-    assert len(sal_contract_before._members) == 3
-    print(f"{len(sal_contract_before._members)=}")
-    bob_member = sal_contract_before._members.get(bob_text)
-    tom_member = sal_contract_before._members.get(tom_text)
-    ava_member = sal_contract_before._members.get(ava_text)
-    assert bob_member._bank_tax_paid is None
-    assert bob_member._bank_tax_diff is None
-    assert tom_member._bank_tax_paid is None
-    assert tom_member._bank_tax_diff is None
-    assert ava_member._bank_tax_paid is None
-    assert ava_member._bank_tax_diff is None
+    assert len(sal_contract_before._partys) == 3
+    print(f"{len(sal_contract_before._partys)=}")
+    bob_party = sal_contract_before._partys.get(bob_text)
+    tom_party = sal_contract_before._partys.get(tom_text)
+    ava_party = sal_contract_before._partys.get(ava_text)
+    assert bob_party._bank_tax_paid is None
+    assert bob_party._bank_tax_diff is None
+    assert tom_party._bank_tax_paid is None
+    assert tom_party._bank_tax_diff is None
+    assert ava_party._bank_tax_paid is None
+    assert ava_party._bank_tax_diff is None
 
     # WHEN
     sx.set_river_sphere_for_contract(contract_owner=sal_text)
 
     # THEN
-    sal_river_tmembers = sx.get_river_tmembers(contract_owner=sal_text)
-    assert len(sal_river_tmembers) == 3
+    sal_river_tpartys = sx.get_river_tpartys(contract_owner=sal_text)
+    assert len(sal_river_tpartys) == 3
 
     sal_contract_after = sx.get_public_contract(owner=sal_text)
 
-    bob_tmember = sal_river_tmembers.get(bob_text)
-    tom_tmember = sal_river_tmembers.get(tom_text)
-    elu_tmember = sal_river_tmembers.get(elu_text)
-    assert bob_tmember.tax_name == bob_text
-    assert tom_tmember.tax_name == tom_text
-    assert elu_tmember.tax_name == elu_text
-    assert bob_tmember.currency_name == sal_text
-    assert tom_tmember.currency_name == sal_text
-    assert elu_tmember.currency_name == sal_text
+    bob_tparty = sal_river_tpartys.get(bob_text)
+    tom_tparty = sal_river_tpartys.get(tom_text)
+    elu_tparty = sal_river_tpartys.get(elu_text)
+    assert bob_tparty.tax_name == bob_text
+    assert tom_tparty.tax_name == tom_text
+    assert elu_tparty.tax_name == elu_text
+    assert bob_tparty.currency_name == sal_text
+    assert tom_tparty.currency_name == sal_text
+    assert elu_tparty.currency_name == sal_text
 
-    bob_member = sal_contract_after._members.get(bob_text)
-    tom_member = sal_contract_after._members.get(tom_text)
-    ava_member = sal_contract_after._members.get(ava_text)
-    elu_member = sal_contract_after._members.get(elu_text)
+    bob_party = sal_contract_after._partys.get(bob_text)
+    tom_party = sal_contract_after._partys.get(tom_text)
+    ava_party = sal_contract_after._partys.get(ava_text)
+    elu_party = sal_contract_after._partys.get(elu_text)
 
-    assert bob_tmember.tax_total == bob_member._bank_tax_paid
-    assert bob_tmember.tax_diff == bob_member._bank_tax_diff
-    assert tom_tmember.tax_total == tom_member._bank_tax_paid
-    assert tom_tmember.tax_diff == tom_member._bank_tax_diff
-    assert elu_member is None
-    assert elu_tmember.tax_total < 0.31 and elu_tmember.tax_total > 0.3
-    assert elu_tmember.tax_diff is None
+    assert bob_tparty.tax_total == bob_party._bank_tax_paid
+    assert bob_tparty.tax_diff == bob_party._bank_tax_diff
+    assert tom_tparty.tax_total == tom_party._bank_tax_paid
+    assert tom_tparty.tax_diff == tom_party._bank_tax_diff
+    assert elu_party is None
+    assert elu_tparty.tax_total < 0.31 and elu_tparty.tax_total > 0.3
+    assert elu_tparty.tax_diff is None
 
-    # for tmember_uid, sal_river_tmember in sal_river_tmembers.items():
-    #     print(f"{tmember_uid=} {sal_river_tmember=}")
-    #     assert sal_river_tmember.currency_name == sal_text
-    #     assert sal_river_tmember.tax_name in [bob_text, tom_text, elu_text]
-    #     memberunit_x = sal_contract_after._members.get(sal_river_tmember.tax_name)
-    #     if memberunit_x != None:
+    # for tparty_uid, sal_river_tparty in sal_river_tpartys.items():
+    #     print(f"{tparty_uid=} {sal_river_tparty=}")
+    #     assert sal_river_tparty.currency_name == sal_text
+    #     assert sal_river_tparty.tax_name in [bob_text, tom_text, elu_text]
+    #     partyunit_x = sal_contract_after._partys.get(sal_river_tparty.tax_name)
+    #     if partyunit_x != None:
     #         # print(
-    #         #     f"{sal_river_tmember.currency_name=} {sal_river_tmember.tax_name=} {memberunit_x.name=} tax_total: {sal_river_tmember.tax_total} Tax Paid: {memberunit_x._bank_tax_paid}"
+    #         #     f"{sal_river_tparty.currency_name=} {sal_river_tparty.tax_name=} {partyunit_x.name=} tax_total: {sal_river_tparty.tax_total} Tax Paid: {partyunit_x._bank_tax_paid}"
     #         # )
     #         # print(
-    #         #     f"{sal_river_tmember.currency_name=} {sal_river_tmember.tax_name=} {memberunit_x.name=} tax_diff:  {sal_river_tmember.tax_diff} Tax Paid: {memberunit_x._bank_tax_diff}"
+    #         #     f"{sal_river_tparty.currency_name=} {sal_river_tparty.tax_name=} {partyunit_x.name=} tax_diff:  {sal_river_tparty.tax_diff} Tax Paid: {partyunit_x._bank_tax_diff}"
     #         # )
-    #         assert sal_river_tmember.tax_total == memberunit_x._bank_tax_paid
-    #         assert sal_river_tmember.tax_diff == memberunit_x._bank_tax_diff
+    #         assert sal_river_tparty.tax_total == partyunit_x._bank_tax_paid
+    #         assert sal_river_tparty.tax_diff == partyunit_x._bank_tax_diff
 
-    assert sal_river_tmembers.get(ava_text) is None
-    assert ava_member._bank_tax_paid is None
-    assert ava_member._bank_tax_diff is None
+    assert sal_river_tpartys.get(ava_text) is None
+    assert ava_party._bank_tax_paid is None
+    assert ava_party._bank_tax_diff is None
 
-    # for memberunit_x in sal_contract_after._members.values():
-    #     print(f"sal_contract_after {memberunit_x.name=} {memberunit_x._bank_tax_paid=}")
-    #     river_tmember_x = sal_river_tmembers.get(memberunit_x.name)
-    #     if river_tmember_x is None:
-    #         assert memberunit_x._bank_tax_paid is None
-    #         assert memberunit_x._bank_tax_diff is None
+    # for partyunit_x in sal_contract_after._partys.values():
+    #     print(f"sal_contract_after {partyunit_x.name=} {partyunit_x._bank_tax_paid=}")
+    #     river_tparty_x = sal_river_tpartys.get(partyunit_x.name)
+    #     if river_tparty_x is None:
+    #         assert partyunit_x._bank_tax_paid is None
+    #         assert partyunit_x._bank_tax_diff is None
     #     else:
-    #         assert memberunit_x._bank_tax_paid != None
-    #         assert memberunit_x._bank_tax_diff != None
+    #         assert partyunit_x._bank_tax_paid != None
+    #         assert partyunit_x._bank_tax_diff != None
     # assert sal_contract_after != sal_contract_before

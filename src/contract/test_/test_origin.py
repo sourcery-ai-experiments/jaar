@@ -1,5 +1,5 @@
 from src.contract.origin import OriginLink, originlink_shop, OriginUnit, originunit_shop
-from src.contract.member import MemberName
+from src.contract.party import PartyName
 from pytest import raises as pytest_raises
 
 
@@ -32,7 +32,7 @@ def test_originlink_shop_ReturnsCorrectObj():
 def test_originlink_shop_WeightIsNotRequired():
     # GIVEN
     roy_text = "Roy"
-    # roy_name = MemberName(roy_text)
+    # roy_name = PartyName(roy_text)
 
     # WHEN
     originlink_x = originlink_shop(name=roy_text)

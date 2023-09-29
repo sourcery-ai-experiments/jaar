@@ -1,6 +1,6 @@
 import dataclasses
 from src.contract.group import groupunit_shop, GroupUnit, GroupName
-from src.contract.member import MemberName
+from src.contract.party import PartyName
 
 
 class InvalidAssignHeirPopulateException(Exception):
@@ -35,31 +35,31 @@ def assigned_unit_shop(_suffgroups: dict[GroupName:GroupName] = None) -> Assigne
 @dataclasses.dataclass
 class AssignedHeir:
     _suffgroups: dict[GroupName:GroupName]
-    _group_member: bool
+    _group_party: bool
 
-    def _get_all_members(
+    def _get_all_partys(
         self,
         contract_groups: dict[GroupName:GroupUnit],
         groupname_dict: dict[GroupName:],
     ):
         dict_x = {}
         for groupname_x in groupname_dict:
-            dict_x |= contract_groups.get(groupname_x)._members
+            dict_x |= contract_groups.get(groupname_x)._partys
         return dict_x
 
-    def _get_all_suff_members(self, contract_groups: dict[GroupName:GroupUnit]):
-        return self._get_all_members(contract_groups, self._suffgroups)
+    def _get_all_suff_partys(self, contract_groups: dict[GroupName:GroupUnit]):
+        return self._get_all_partys(contract_groups, self._suffgroups)
 
-    def set_group_member(
-        self, contract_groups: dict[GroupName:GroupUnit], contract_owner: MemberName
+    def set_group_party(
+        self, contract_groups: dict[GroupName:GroupUnit], contract_owner: PartyName
     ):
-        self._group_member = False
+        self._group_party = False
         if self._suffgroups == {}:
-            self._group_member = True
+            self._group_party = True
         else:
-            all_suff_members_x = self._get_all_suff_members(contract_groups)
-            if all_suff_members_x.get(contract_owner) != None:
-                self._group_member = True
+            all_suff_partys_x = self._get_all_suff_partys(contract_groups)
+            if all_suff_partys_x.get(contract_owner) != None:
+                self._group_party = True
 
     def set_suffgroups(
         self,
@@ -77,22 +77,22 @@ class AssignedHeir:
             for suffgroup in parent_assignheir._suffgroups.keys():
                 dict_x[suffgroup] = -1
         else:
-            # collect all_members of parent assignedheir groups
-            all_parent_assignedheir_members = self._get_all_members(
+            # collect all_partys of parent assignedheir groups
+            all_parent_assignedheir_partys = self._get_all_partys(
                 contract_groups=contract_groups,
                 groupname_dict=parent_assignheir._suffgroups,
             )
-            # collect all_members of assignedunit groups
-            all_assignedunit_members = self._get_all_members(
+            # collect all_partys of assignedunit groups
+            all_assignedunit_partys = self._get_all_partys(
                 contract_groups=contract_groups,
                 groupname_dict=assignunit._suffgroups,
             )
-            if not set(all_assignedunit_members).issubset(
-                set(all_parent_assignedheir_members)
+            if not set(all_assignedunit_partys).issubset(
+                set(all_parent_assignedheir_partys)
             ):
                 # else raise error
                 raise InvalidAssignHeirPopulateException(
-                    f"parent_assigned_heir does not contain all members of the idea's assigned_unit\n{set(all_parent_assignedheir_members)=}\n\n{set(all_assignedunit_members)=}"
+                    f"parent_assigned_heir does not contain all partys of the idea's assigned_unit\n{set(all_parent_assignedheir_partys)=}\n\n{set(all_assignedunit_partys)=}"
                 )
 
             # set dict_x = to assignedunit groups
@@ -107,14 +107,14 @@ class AssignedHeir:
 
 
 def assigned_heir_shop(
-    _suffgroups: dict[GroupName:GroupName] = None, _group_member: bool = None
+    _suffgroups: dict[GroupName:GroupName] = None, _group_party: bool = None
 ) -> AssignedHeir:
     if _suffgroups is None:
         _suffgroups = {}
-    if _group_member is None:
-        _group_member = False
+    if _group_party is None:
+        _group_party = False
 
-    return AssignedHeir(_suffgroups=_suffgroups, _group_member=_group_member)
+    return AssignedHeir(_suffgroups=_suffgroups, _group_party=_group_party)
 
     # def meld(self, other_required):
     #     for sufffact_x in other_required.sufffacts.values():

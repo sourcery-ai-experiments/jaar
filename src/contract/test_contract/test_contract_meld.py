@@ -1,7 +1,7 @@
 from src.contract.idea import IdeaKid
 from src.contract.contract import ContractUnit
 from src.contract.group import groupunit_shop
-from src.contract.member import memberunit_shop
+from src.contract.party import partyunit_shop
 from src.contract.origin import originunit_shop
 from pytest import raises as pytest_raises
 from src.contract.examples.example_contracts import contract_v001
@@ -37,29 +37,29 @@ def test_contract_meld_WeightDoesNotCombine():
     assert cx1._weight == 3
 
 
-def test_contract_meld_MemberUnits():
+def test_contract_meld_PartyUnits():
     # GIVEN
-    x1_name = "x1_member"
-    x1_member = memberunit_shop(name=x1_name)
+    x1_name = "x1_party"
+    x1_party = partyunit_shop(name=x1_name)
 
     contract_text = "x_contract"
     cx1 = ContractUnit(_owner=contract_text)
-    cx1.set_memberunit(memberunit=x1_member)
+    cx1.set_partyunit(partyunit=x1_party)
 
     cx2 = ContractUnit(_owner=contract_text)
-    cx2.set_memberunit(memberunit=x1_member)
-    x2_name = "x2_member"
-    x2_member = memberunit_shop(name=x2_name)
-    cx2.set_memberunit(memberunit=x2_member)
-    assert len(cx1._members) == 1
+    cx2.set_partyunit(partyunit=x1_party)
+    x2_name = "x2_party"
+    x2_party = partyunit_shop(name=x2_name)
+    cx2.set_partyunit(partyunit=x2_party)
+    assert len(cx1._partys) == 1
 
     # WHEN
     cx1.meld(other_contract=cx2)
 
     # THEN
-    assert len(cx1._members) == 2
-    assert cx1._members.get(x1_name) != None
-    assert cx1._members.get(x2_name) != None
+    assert len(cx1._partys) == 2
+    assert cx1._partys.get(x1_name) != None
+    assert cx1._partys.get(x2_name) != None
 
 
 def test_contract_meld_GroupUnits():
@@ -245,13 +245,13 @@ def test_contract_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
     assert cx1._idearoot._acptfactunits == cx2._idearoot._acptfactunits
 
 
-def test_contract_acptfactunits_meld_GroupsMeldedBefore_Members():
+def test_contract_acptfactunits_meld_GroupsMeldedBefore_Partys():
     # GIVEN
     owner_text = "Yoa"
     cx1 = ContractUnit(_owner=owner_text)
     cx2 = ContractUnit(_owner=owner_text)
     bob = "bob"
-    cx2.set_memberunit(memberunit_shop(name=bob))
+    cx2.set_partyunit(partyunit_shop(name=bob))
     assert cx2._groups.get(bob) != None
     assert cx2._groups.get(bob).uid is None
     cx2.set_groupunit(groupunit_shop(name=bob, uid=13))
@@ -320,7 +320,7 @@ def test_contract_meld_worksCorrectlyForLargeExample():
     assert cx1._idearoot._uid == cx2._idearoot._uid
     assert cx1._idearoot._acptfactunits == cx2._idearoot._acptfactunits
     assert cx1._groups == cx2._groups
-    assert cx1._members == cx2._members
+    assert cx1._partys == cx2._partys
 
     assert len(cx1._idearoot._acptfactunits) == 2
     assert len(cx1._idearoot._acptfactunits) == len(cx2._idearoot._acptfactunits)
@@ -393,7 +393,7 @@ def test_contract__meld_originlinks_CorrectlySetsOriginLinks():
     assert len(bob_cx._originunit._links) == 0
 
     # WHEN
-    bob_cx._meld_originlinks(member_name=sue_text, member_weight=sue_weight)
+    bob_cx._meld_originlinks(party_name=sue_text, party_weight=sue_weight)
 
     # THEN
     assert len(bob_cx._originunit._links) == 1
@@ -424,7 +424,7 @@ def test_contract_meld_OriginUnitsCorrectlySet():
     assert len(bob_cx._originunit._links) == 0
 
     # WHEN
-    bob_cx.meld(sue_cx, member_weight=sue_weight)
+    bob_cx.meld(sue_cx, party_weight=sue_weight)
 
     # THEN
     sue_originunit = originunit_shop()

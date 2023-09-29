@@ -1,4 +1,4 @@
-from src.contract.member import MemberName, memberlink_shop
+from src.contract.party import PartyName, partylink_shop
 from src.contract.group import (
     Groupline,
     groupunit_shop,
@@ -31,7 +31,7 @@ def test_groupunit_exists():
         _contract_debt=0.44,
         _contract_agenda_credit=0.66,
         _contract_agenda_debt=0.77,
-        _memberlinks_set_by_economy_road=usa_road,
+        _partylinks_set_by_economy_road=usa_road,
     )
 
     # THEN
@@ -43,7 +43,7 @@ def test_groupunit_exists():
     assert swimmers_group._contract_debt != None
     assert swimmers_group._contract_agenda_credit != None
     assert swimmers_group._contract_agenda_debt != None
-    assert swimmers_group._memberlinks_set_by_economy_road == usa_road
+    assert swimmers_group._partylinks_set_by_economy_road == usa_road
 
 
 def test_groupunit_set_name_WorksCorrectly():
@@ -64,17 +64,17 @@ def test_groupunit_set_attr_WorksCorrectly():
     # GIVEN
     swim_text = "swimmers"
     swim_group = groupunit_shop(name=swim_text)
-    assert swim_group._memberlinks_set_by_economy_road is None
+    assert swim_group._partylinks_set_by_economy_road is None
 
     # WHEN
     water_road = f"{root_label()},sports,water"
-    swim_group.set_attr(_memberlinks_set_by_economy_road=water_road)
+    swim_group.set_attr(_partylinks_set_by_economy_road=water_road)
 
     # THEN
-    assert swim_group._memberlinks_set_by_economy_road == water_road
+    assert swim_group._partylinks_set_by_economy_road == water_road
 
 
-def test_groupunit_shop_WhenSingleMemberCorrectlyRemoves_memberlinks_set_by_economy_road():
+def test_groupunit_shop_WhenSinglePartyCorrectlyRemoves_partylinks_set_by_economy_road():
     # GIVEN
     swimmers = "swimmers"
     usa_road = f"{root_label()},nation-states,USA"
@@ -83,73 +83,73 @@ def test_groupunit_shop_WhenSingleMemberCorrectlyRemoves_memberlinks_set_by_econ
     with pytest_raises(Exception) as excinfo:
         swimmers_group = groupunit_shop(
             name=swimmers,
-            _single_member=True,
-            _memberlinks_set_by_economy_road=usa_road,
+            _single_party=True,
+            _partylinks_set_by_economy_road=usa_road,
         )
     assert (
         str(excinfo.value)
-        == f"_memberlinks_set_by_economy_road cannot be '{usa_road}' for a single_member GroupUnit. It must have no value."
+        == f"_partylinks_set_by_economy_road cannot be '{usa_road}' for a single_party GroupUnit. It must have no value."
     )
 
 
-def test_groupunit_set_memberlink_worksCorrectly():
+def test_groupunit_set_partylink_worksCorrectly():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    todd_member = memberlink_shop(name=todd_text, creditor_weight=13, debtor_weight=7)
-    mery_member = memberlink_shop(name=mery_text, creditor_weight=23, debtor_weight=5)
+    todd_party = partylink_shop(name=todd_text, creditor_weight=13, debtor_weight=7)
+    mery_party = partylink_shop(name=mery_text, creditor_weight=23, debtor_weight=5)
 
-    swimmers_group = groupunit_shop(name="swimmers", _members={})
+    swimmers_group = groupunit_shop(name="swimmers", _partys={})
 
     # WHEN
-    swimmers_group.set_memberlink(todd_member)
-    swimmers_group.set_memberlink(mery_member)
+    swimmers_group.set_partylink(todd_party)
+    swimmers_group.set_partylink(mery_party)
 
     # THEN
-    swimmers_members = {todd_member.name: todd_member, mery_member.name: mery_member}
-    assert swimmers_group._members == swimmers_members
+    swimmers_partys = {todd_party.name: todd_party, mery_party.name: mery_party}
+    assert swimmers_group._partys == swimmers_partys
 
 
-def test_groupunit_del_memberlink_worksCorrectly():
+def test_groupunit_del_partylink_worksCorrectly():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    todd_member = memberlink_shop(name=todd_text)
-    mery_member = memberlink_shop(name=mery_text)
-    swimmers_members = {todd_member.name: todd_member, mery_member.name: mery_member}
-    swimmers_group = groupunit_shop(name="swimmers", _members={})
-    swimmers_group.set_memberlink(todd_member)
-    swimmers_group.set_memberlink(mery_member)
-    assert len(swimmers_group._members) == 2
-    assert swimmers_group._members == swimmers_members
+    todd_party = partylink_shop(name=todd_text)
+    mery_party = partylink_shop(name=mery_text)
+    swimmers_partys = {todd_party.name: todd_party, mery_party.name: mery_party}
+    swimmers_group = groupunit_shop(name="swimmers", _partys={})
+    swimmers_group.set_partylink(todd_party)
+    swimmers_group.set_partylink(mery_party)
+    assert len(swimmers_group._partys) == 2
+    assert swimmers_group._partys == swimmers_partys
 
     # WHEN
-    swimmers_group.del_memberlink(name=todd_text)
+    swimmers_group.del_partylink(name=todd_text)
 
     # THEN
-    assert len(swimmers_group._members) == 1
-    assert swimmers_group._members.get(todd_text) is None
+    assert len(swimmers_group._partys) == 1
+    assert swimmers_group._partys.get(todd_text) is None
 
 
-def test_groupunit_clear_memberlinks_worksCorrectly():
+def test_groupunit_clear_partylinks_worksCorrectly():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    todd_member = memberlink_shop(name=todd_text)
-    mery_member = memberlink_shop(name=mery_text)
-    swimmers_members = {todd_member.name: todd_member, mery_member.name: mery_member}
-    swimmers_group = groupunit_shop(name="swimmers", _members={})
-    swimmers_group.set_memberlink(todd_member)
-    swimmers_group.set_memberlink(mery_member)
-    assert len(swimmers_group._members) == 2
-    assert swimmers_group._members == swimmers_members
+    todd_party = partylink_shop(name=todd_text)
+    mery_party = partylink_shop(name=mery_text)
+    swimmers_partys = {todd_party.name: todd_party, mery_party.name: mery_party}
+    swimmers_group = groupunit_shop(name="swimmers", _partys={})
+    swimmers_group.set_partylink(todd_party)
+    swimmers_group.set_partylink(mery_party)
+    assert len(swimmers_group._partys) == 2
+    assert swimmers_group._partys == swimmers_partys
 
     # WHEN
-    swimmers_group.clear_memberlinks()
+    swimmers_group.clear_partylinks()
 
     # THEN
-    assert len(swimmers_group._members) == 0
-    assert swimmers_group._members.get(todd_text) is None
+    assert len(swimmers_group._partys) == 0
+    assert swimmers_group._partys.get(todd_text) is None
 
 
 def test_Groupunit_reset_contract_importance_WorkCorrectly():
@@ -178,101 +178,101 @@ def test_Groupunit_reset_contract_importance_WorkCorrectly():
     assert maria_group._contract_agenda_debt == 0
 
 
-def test_Groupunit_reset_contract_importance_reset_memberlinks():
+def test_Groupunit_reset_contract_importance_reset_partylinks():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    todd_member = memberlink_shop(
+    todd_party = partylink_shop(
         name=todd_text,
         _contract_credit=0.13,
         _contract_debt=0.7,
         _contract_agenda_credit=0.53,
         _contract_agenda_debt=0.77,
     )
-    mery_member = memberlink_shop(
+    mery_party = partylink_shop(
         name=mery_text,
         _contract_credit=0.23,
         _contract_debt=0.5,
         _contract_agenda_credit=0.54,
         _contract_agenda_debt=0.57,
     )
-    bikers_members = {todd_member.name: todd_member, mery_member.name: mery_member}
+    bikers_partys = {todd_party.name: todd_party, mery_party.name: mery_party}
     bikers_name = "bikers"
     bikers_group = groupunit_shop(
         name=bikers_name,
-        _members={},
+        _partys={},
         _contract_credit=0.33,
         _contract_debt=0.44,
         _contract_agenda_credit=0.1,
         _contract_agenda_debt=0.2,
     )
-    bikers_group.set_memberlink(memberlink=todd_member)
-    bikers_group.set_memberlink(memberlink=mery_member)
+    bikers_group.set_partylink(partylink=todd_party)
+    bikers_group.set_partylink(partylink=mery_party)
     print(f"{bikers_group}")
-    biker_memberlink_todd = bikers_group._members.get(todd_text)
-    assert biker_memberlink_todd._contract_credit == 0.13
-    assert biker_memberlink_todd._contract_debt == 0.7
-    assert biker_memberlink_todd._contract_agenda_credit == 0.53
-    assert biker_memberlink_todd._contract_agenda_debt == 0.77
+    biker_partylink_todd = bikers_group._partys.get(todd_text)
+    assert biker_partylink_todd._contract_credit == 0.13
+    assert biker_partylink_todd._contract_debt == 0.7
+    assert biker_partylink_todd._contract_agenda_credit == 0.53
+    assert biker_partylink_todd._contract_agenda_debt == 0.77
 
-    biker_memberlink_mery = bikers_group._members.get(mery_text)
-    assert biker_memberlink_mery._contract_credit == 0.23
-    assert biker_memberlink_mery._contract_debt == 0.5
-    assert biker_memberlink_mery._contract_agenda_credit == 0.54
-    assert biker_memberlink_mery._contract_agenda_debt == 0.57
+    biker_partylink_mery = bikers_group._partys.get(mery_text)
+    assert biker_partylink_mery._contract_credit == 0.23
+    assert biker_partylink_mery._contract_debt == 0.5
+    assert biker_partylink_mery._contract_agenda_credit == 0.54
+    assert biker_partylink_mery._contract_agenda_debt == 0.57
 
     # WHEN
     bikers_group.reset_contract_credit_debt()
 
     # THEN
-    assert biker_memberlink_todd._contract_credit == 0
-    assert biker_memberlink_todd._contract_debt == 0
-    assert biker_memberlink_todd._contract_agenda_credit == 0
-    assert biker_memberlink_todd._contract_agenda_debt == 0
-    assert biker_memberlink_mery._contract_credit == 0
-    assert biker_memberlink_mery._contract_debt == 0
-    assert biker_memberlink_mery._contract_agenda_credit == 0
-    assert biker_memberlink_mery._contract_agenda_debt == 0
+    assert biker_partylink_todd._contract_credit == 0
+    assert biker_partylink_todd._contract_debt == 0
+    assert biker_partylink_todd._contract_agenda_credit == 0
+    assert biker_partylink_todd._contract_agenda_debt == 0
+    assert biker_partylink_mery._contract_credit == 0
+    assert biker_partylink_mery._contract_debt == 0
+    assert biker_partylink_mery._contract_agenda_credit == 0
+    assert biker_partylink_mery._contract_agenda_debt == 0
 
 
-def test_GroupUnit_memberlink_meld_BaseScenarioWorks():
+def test_GroupUnit_partylink_meld_BaseScenarioWorks():
     # GIVEN
-    todd_member = memberlink_shop(name="Todd")
-    merry_member = memberlink_shop(name="Merry")
+    todd_party = partylink_shop(name="Todd")
+    merry_party = partylink_shop(name="Merry")
     x1_name = "bikers"
-    x1_group = groupunit_shop(name=x1_name, _members={})
-    x1_group.set_memberlink(memberlink=todd_member)
-    x1_group.set_memberlink(memberlink=merry_member)
+    x1_group = groupunit_shop(name=x1_name, _partys={})
+    x1_group.set_partylink(partylink=todd_party)
+    x1_group.set_partylink(partylink=merry_party)
 
-    x2_group = groupunit_shop(name=x1_name, _members={})
+    x2_group = groupunit_shop(name=x1_name, _partys={})
 
     # WHEN
     x1_group.meld(other_group=x2_group)
     print(f"{x1_group.name=} {x2_group.name=}")
 
     # THEN
-    assert len(x1_group._members) == 2
+    assert len(x1_group._partys) == 2
 
 
-def test_GroupUnit_memberlink_meld_GainScenarioWorks():
+def test_GroupUnit_partylink_meld_GainScenarioWorks():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    todd_member = memberlink_shop(name=todd_text, creditor_weight=13, debtor_weight=7)
-    mery_member = memberlink_shop(name=mery_text, creditor_weight=23, debtor_weight=5)
+    todd_party = partylink_shop(name=todd_text, creditor_weight=13, debtor_weight=7)
+    mery_party = partylink_shop(name=mery_text, creditor_weight=23, debtor_weight=5)
     x1_name = "bikers"
-    x1_group = groupunit_shop(name=x1_name, _members={})
+    x1_group = groupunit_shop(name=x1_name, _partys={})
 
-    x2_group = groupunit_shop(name=x1_name, _members={})
-    x2_group.set_memberlink(memberlink=todd_member)
-    x2_group.set_memberlink(memberlink=mery_member)
+    x2_group = groupunit_shop(name=x1_name, _partys={})
+    x2_group.set_partylink(partylink=todd_party)
+    x2_group.set_partylink(partylink=mery_party)
 
     # WHEN
     x1_group.meld(other_group=x2_group)
 
     # THEN
-    assert len(x1_group._members) == 2
-    assert x1_group._members.get(todd_text) != None
+    assert len(x1_group._partys) == 2
+    assert x1_group._partys.get(todd_text) != None
 
 
 def test_GroupUnit_meld_RaiseSameNameException():
@@ -321,19 +321,19 @@ def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     assert ee_dict == {
         "name": swimmers,
         "uid": None,
-        "single_member_id": None,
-        "_single_member": False,
-        "_members": {},
-        "_memberlinks_set_by_economy_road": None,
+        "single_party_id": None,
+        "_single_party": False,
+        "_partys": {},
+        "_partylinks_set_by_economy_road": None,
     }
 
     # GIVEN
     str_name = "Marie"
-    marie_name = MemberName(str_name)
-    marie_memberlink = memberlink_shop(
+    marie_name = PartyName(str_name)
+    marie_partylink = partylink_shop(
         name=marie_name, creditor_weight=29, debtor_weight=3
     )
-    memberlinks_dict = {marie_memberlink.name: marie_memberlink}
+    partylinks_dict = {marie_partylink.name: marie_partylink}
     marie_json_dict = {
         marie_name: {"name": marie_name, "creditor_weight": 29, "debtor_weight": 3}
     }
@@ -342,8 +342,8 @@ def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     swim_road = "swim"
     teachers_group = groupunit_shop(
         name=str_teacher,
-        _members=memberlinks_dict,
-        _memberlinks_set_by_economy_road=swim_road,
+        _partys=partylinks_dict,
+        _partylinks_set_by_economy_road=swim_road,
     )
 
     # WHEN
@@ -354,36 +354,36 @@ def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     assert teachers_dict == {
         "name": str_teacher,
         "uid": None,
-        "single_member_id": None,
-        "_single_member": False,
-        "_members": marie_json_dict,
-        "_memberlinks_set_by_economy_road": swim_road,
+        "single_party_id": None,
+        "_single_party": False,
+        "_partys": marie_json_dict,
+        "_partylinks_set_by_economy_road": swim_road,
     }
 
 
 def test_groupunit_get_from_JSON_SimpleExampleWorks():
     # GIVEN
     str_name = "Marie"
-    marie_name = MemberName(str_name)
-    marie_memberlink = memberlink_shop(
+    marie_name = PartyName(str_name)
+    marie_partylink = partylink_shop(
         name=marie_name, creditor_weight=29, debtor_weight=3
     )
-    memberlinks_dict = {marie_memberlink.name: marie_memberlink}
+    partylinks_dict = {marie_partylink.name: marie_partylink}
 
     str_teacher = "teachers"
     swim_road = "swim"
     teacher_group = groupunit_shop(
         name=str_teacher,
-        _members=memberlinks_dict,
-        _memberlinks_set_by_economy_road=swim_road,
+        _partys=partylinks_dict,
+        _partylinks_set_by_economy_road=swim_road,
     )
     teacher_dict = teacher_group.get_dict()
-    _memberlinks_set_by_economy_road_text = "_memberlinks_set_by_economy_road"
-    print(f"{teacher_dict.get(_memberlinks_set_by_economy_road_text)=}")
+    _partylinks_set_by_economy_road_text = "_partylinks_set_by_economy_road"
+    print(f"{teacher_dict.get(_partylinks_set_by_economy_road_text)=}")
     groups_dict = {"teachers": teacher_dict}
 
     teachers_json = x_get_json(dict_x=groups_dict)
-    print(f"{teachers_json.find(_memberlinks_set_by_economy_road_text)=}")
+    print(f"{teachers_json.find(_partylinks_set_by_economy_road_text)=}")
     assert teachers_json != None
     assert x_is_json(json_x=teachers_json)
 
@@ -394,8 +394,8 @@ def test_groupunit_get_from_JSON_SimpleExampleWorks():
     assert groupunits_obj_dict != None
     teachers_obj_check_dict = {teacher_group.name: teacher_group}
     print(f"    {groupunits_obj_dict=}")
-    memberlinks_set_by_economy_road_text = "_memberlinks_set_by_economy_road"
-    print(f"{teachers_obj_check_dict.get(memberlinks_set_by_economy_road_text)=}")
+    partylinks_set_by_economy_road_text = "_partylinks_set_by_economy_road"
+    print(f"{teachers_obj_check_dict.get(partylinks_set_by_economy_road_text)=}")
     print(f"{teachers_obj_check_dict=}")
     assert groupunits_obj_dict == teachers_obj_check_dict
 

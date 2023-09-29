@@ -396,21 +396,21 @@ def test_contract_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     ]._descendant_promise_count
     assert _descendant_promise_count_new == 67
 
-    # _all_member_credit: bool = None,
-    cx._idearoot._kids[work_text]._all_member_credit = 74
-    _all_member_credit_curr = cx._idearoot._kids[work_text]._all_member_credit
-    assert _all_member_credit_curr == 74
-    cx.edit_idea_attr(road=work_road, all_member_credit=59)
-    _all_member_credit_new = cx._idearoot._kids[work_text]._all_member_credit
-    assert _all_member_credit_new == 59
+    # _all_party_credit: bool = None,
+    cx._idearoot._kids[work_text]._all_party_credit = 74
+    _all_party_credit_curr = cx._idearoot._kids[work_text]._all_party_credit
+    assert _all_party_credit_curr == 74
+    cx.edit_idea_attr(road=work_road, all_party_credit=59)
+    _all_party_credit_new = cx._idearoot._kids[work_text]._all_party_credit
+    assert _all_party_credit_new == 59
 
-    # _all_member_debt: bool = None,
-    cx._idearoot._kids[work_text]._all_member_debt = 74
-    _all_member_debt_curr = cx._idearoot._kids[work_text]._all_member_debt
-    assert _all_member_debt_curr == 74
-    cx.edit_idea_attr(road=work_road, all_member_debt=59)
-    _all_member_debt_new = cx._idearoot._kids[work_text]._all_member_debt
-    assert _all_member_debt_new == 59
+    # _all_party_debt: bool = None,
+    cx._idearoot._kids[work_text]._all_party_debt = 74
+    _all_party_debt_curr = cx._idearoot._kids[work_text]._all_party_debt
+    assert _all_party_debt_curr == 74
+    cx.edit_idea_attr(road=work_road, all_party_debt=59)
+    _all_party_debt_new = cx._idearoot._kids[work_text]._all_party_debt
+    assert _all_party_debt_new == 59
 
     # _grouplink: dict = None,
     cx._idearoot._kids[work_text]._grouplinks = {

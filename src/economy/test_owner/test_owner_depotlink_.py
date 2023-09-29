@@ -31,7 +31,7 @@ def test_ownerunit_set_depotlink_RaisesErrorWhenContractDoesNotExist(
     sue_cx = ownerunit_shop(sue_text, env_dir, get_temp_economy_title())
     sue_cx.set_isol_if_empty()
     tim_text = "Tim"
-    assert list(sue_cx._isol._members.keys()) == [sue_text]
+    assert list(sue_cx._isol._partys.keys()) == [sue_text]
 
     # WHEN / THEN
     file_path_x = f"{sue_cx._admin._contracts_depot_dir}/{tim_text}.json"
@@ -44,7 +44,7 @@ def test_ownerunit_set_depotlink_RaisesErrorWhenContractDoesNotExist(
     )
 
 
-def test_ownerunit_set_depotlink_CorrectlySetsIsolMembers(owner_dir_setup_cleanup):
+def test_ownerunit_set_depotlink_CorrectlySetsIsolPartys(owner_dir_setup_cleanup):
     # GIVEN
     yao_text = "yao"
     env_dir = get_temp_owner_dir()
@@ -52,14 +52,14 @@ def test_ownerunit_set_depotlink_CorrectlySetsIsolMembers(owner_dir_setup_cleanu
     yao_ux.set_isol_if_empty()
     sue_text = "sue"
     create_contract_file(yao_ux._admin._contracts_depot_dir, sue_text)
-    assert list(yao_ux._isol._members.keys()) == [yao_text]
+    assert list(yao_ux._isol._partys.keys()) == [yao_text]
 
     # WHEN
     yao_ux._set_depotlink(outer_owner=sue_text)
 
     # THEN
-    assert list(yao_ux._isol._members.keys()) == [yao_text, sue_text]
-    assert yao_ux._isol.get_member(sue_text).depotlink_type is None
+    assert list(yao_ux._isol._partys.keys()) == [yao_text, sue_text]
+    assert yao_ux._isol.get_party(sue_text).depotlink_type is None
 
 
 def test_ownerunit_set_depotlink_CorrectlySetsAssignment(owner_dir_setup_cleanup):
@@ -73,7 +73,7 @@ def test_ownerunit_set_depotlink_CorrectlySetsAssignment(owner_dir_setup_cleanup
     joachim_ux.create_core_dir_and_files()
     joachim_ux.set_isol_if_empty()
     joachim_ux._admin.save_contract_to_depot(america_cx)
-    assert joachim_ux.get_isol().get_member(america_cx._owner) is None
+    assert joachim_ux.get_isol().get_party(america_cx._owner) is None
     america_digest_path = (
         f"{joachim_ux._admin._contracts_digest_dir}/{america_cx._owner}.json"
     )
@@ -85,7 +85,7 @@ def test_ownerunit_set_depotlink_CorrectlySetsAssignment(owner_dir_setup_cleanup
 
     # THEN
     assert (
-        joachim_ux.get_isol().get_member(america_cx._owner).depotlink_type
+        joachim_ux.get_isol().get_party(america_cx._owner).depotlink_type
         == assignment_text
     )
     assert os_path.exists(america_digest_path)
@@ -112,15 +112,15 @@ def test_ownerunit_del_depot_contract_CorrectlyDeletesObj(owner_dir_setup_cleanu
     assignment_text = "assignment"
     bob_cx._set_depotlinks_empty_if_null()
     bob_cx._set_depotlink(yao_text, link_type=assignment_text)
-    assert list(bob_cx._isol._members.keys()) == [bob_text, yao_text]
-    assert bob_cx._isol.get_member(yao_text).depotlink_type == assignment_text
+    assert list(bob_cx._isol._partys.keys()) == [bob_text, yao_text]
+    assert bob_cx._isol.get_party(yao_text).depotlink_type == assignment_text
 
     # WHEN
     bob_cx.del_depot_contract(contract_owner=yao_text)
 
     # THEN
-    assert list(bob_cx._isol._members.keys()) == [bob_text, yao_text]
-    assert bob_cx._isol.get_member(yao_text).depotlink_type is None
+    assert list(bob_cx._isol._partys.keys()) == [bob_text, yao_text]
+    assert bob_cx._isol.get_party(yao_text).depotlink_type is None
 
 
 def test_ownerunit_del_depot_contract_CorrectlyDeletesBlindTrustFile(
@@ -180,15 +180,15 @@ def test_ownerunit_delete_ignore_depotlink_CorrectlyDeletesObj(
     assignment_text = "assignment"
     bob_cx.set_isol_if_empty()
     bob_cx._set_depotlink(yao_text, link_type=assignment_text)
-    assert list(bob_cx._isol._members.keys()) == [bob_text, yao_text]
-    assert bob_cx._isol.get_member(yao_text).depotlink_type == assignment_text
+    assert list(bob_cx._isol._partys.keys()) == [bob_text, yao_text]
+    assert bob_cx._isol.get_party(yao_text).depotlink_type == assignment_text
 
     # WHEN
     bob_cx.del_depot_contract(contract_owner=yao_text)
 
     # THEN
-    assert list(bob_cx._isol._members.keys()) == [bob_text, yao_text]
-    assert bob_cx._isol.get_member(yao_text).depotlink_type is None
+    assert list(bob_cx._isol._partys.keys()) == [bob_text, yao_text]
+    assert bob_cx._isol.get_party(yao_text).depotlink_type is None
 
 
 def test_ownerunit_del_depot_contract_CorrectlyDoesNotDeletesIgnoreFile(
@@ -228,9 +228,9 @@ def test_ownerunit_set_ignore_contract_file_CorrectlyUpdatesIgnoreFile(
     bob_ux._set_depotlink(zia_text, link_type="ignore")
     assert x_func_count_files(dir_path=bob_ux._admin._contracts_ignore_dir) == 1
     cx1 = bob_ux._admin.open_ignore_contract(owner=zia_text)
-    assert len(cx1._members) == 0
-    cx1.add_memberunit(name="tim")
-    assert len(cx1._members) == 1
+    assert len(cx1._partys) == 0
+    cx1.add_partyunit(name="tim")
+    assert len(cx1._partys) == 1
 
     # WHEN
     zia_contract = ContractUnit(_owner=zia_text)
@@ -238,7 +238,7 @@ def test_ownerunit_set_ignore_contract_file_CorrectlyUpdatesIgnoreFile(
 
     # THEN
     cx2 = bob_ux._admin.open_ignore_contract(owner=zia_text)
-    assert len(cx2._members) == 0
+    assert len(cx2._partys) == 0
     assert x_func_count_files(dir_path=bob_ux._admin._contracts_ignore_dir) == 1
 
 

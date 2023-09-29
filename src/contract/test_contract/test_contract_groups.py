@@ -1,5 +1,5 @@
 from src.contract.group import GroupName, grouplink_shop, groupunit_shop
-from src.contract.member import MemberName, memberunit_shop, memberlink_shop
+from src.contract.party import PartyName, partyunit_shop, partylink_shop
 from src.contract.idea import IdeaKid
 from src.contract.required_idea import Road
 from src.contract.examples.example_contracts import (
@@ -7,8 +7,8 @@ from src.contract.examples.example_contracts import (
 )
 from src.contract.contract import (
     ContractUnit,
-    get_members_relevant_groups,
-    get_member_relevant_groups,
+    get_partys_relevant_groups,
+    get_party_relevant_groups,
 )
 from pytest import raises as pytest_raises
 
@@ -28,13 +28,13 @@ def test_contract_groups_set_groupunit_worksCorrectly():
     # THEN
     assert len(cx2._groups) == 1
     assert len(cx2._groups) == len(every1_groups)
-    assert cx2._groups.get(swim_text)._members == every1_groups.get(swim_text)._members
+    assert cx2._groups.get(swim_text)._partys == every1_groups.get(swim_text)._partys
     assert cx2._groups.get(swim_text) == every1_groups.get(swim_text)
     assert cx2._groups == every1_groups
 
-    bill_single_member_id = 30
+    bill_single_party_id = 30
     bill_group = groupunit_shop(
-        name=GroupName("bill"), uid=45, single_member_id=bill_single_member_id
+        name=GroupName("bill"), uid=45, single_party_id=bill_single_party_id
     )
     assert bill_group != None
 
@@ -60,10 +60,10 @@ def test_example_has_groups():
     # THEN
     assert cx._groups != None
     assert len(cx._groups) == 34
-    everyone_members_len = None
+    everyone_partys_len = None
     everyone_group = cx._groups.get("Everyone")
-    everyone_members_len = len(everyone_group._members)
-    assert everyone_members_len == 22
+    everyone_partys_len = len(everyone_group._partys)
+    assert everyone_partys_len == 22
 
     # WHEN
     cx.set_contract_metrics()
@@ -88,11 +88,11 @@ def test_contract_set_grouplink_correctly_sets_grouplinks():
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName(rico_text)))
-    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
-    cx.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
+    cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(rico_text)))
+    cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(carm_text)))
+    cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(patr_text)))
 
-    assert len(cx._members) == 3
+    assert len(cx._partys) == 3
     assert len(cx._groups) == 3
     swim_text = "swim"
     cx.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=prom_text)
@@ -135,9 +135,9 @@ def test_contract_set_grouplink_correctly_deletes_grouplinks():
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(rico_text)))
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
+    a_x.set_partyunit(partyunit=partyunit_shop(name=PartyName(rico_text)))
+    a_x.set_partyunit(partyunit=partyunit_shop(name=PartyName(carm_text)))
+    a_x.set_partyunit(partyunit=partyunit_shop(name=PartyName(patr_text)))
 
     swim_text = "swim"
     swim_road = f"{prom_text},{swim_text}"
@@ -183,9 +183,9 @@ def test_contract_set_grouplink_CorrectlyCalculatesInheritedGroupLinkContractImp
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(rico_text)))
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
+    a_x.set_partyunit(partyunit=partyunit_shop(name=PartyName(rico_text)))
+    a_x.set_partyunit(partyunit=partyunit_shop(name=PartyName(carm_text)))
+    a_x.set_partyunit(partyunit=partyunit_shop(name=PartyName(patr_text)))
     blink_rico = grouplink_shop(name=rico_text, creditor_weight=20, debtor_weight=6)
     blink_carm = grouplink_shop(name=carm_text, creditor_weight=10, debtor_weight=1)
     blink_patr = grouplink_shop(name=patr_text, creditor_weight=10)
@@ -246,9 +246,9 @@ def test_contract_get_idea_list_CorrectlyCalculates1LevelContractGroupContractIm
     carm_text = "carmen"
     patr_text = "patrick"
     sele_text = "selena"
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(rico_text)))
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
+    a_x.set_partyunit(partyunit=partyunit_shop(name=PartyName(rico_text)))
+    a_x.set_partyunit(partyunit=partyunit_shop(name=PartyName(carm_text)))
+    a_x.set_partyunit(partyunit=partyunit_shop(name=PartyName(patr_text)))
     blink_rico = grouplink_shop(name=rico_text, creditor_weight=20, debtor_weight=6)
     blink_carm = grouplink_shop(name=carm_text, creditor_weight=10, debtor_weight=1)
     blink_patr = grouplink_shop(name=patr_text, creditor_weight=10)
@@ -285,7 +285,7 @@ def test_contract_get_idea_list_CorrectlyCalculates1LevelContractGroupContractIm
     )
 
     # WHEN
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(sele_text)))
+    a_x.set_partyunit(partyunit=partyunit_shop(name=PartyName(sele_text)))
     bl_sele = grouplink_shop(name=sele_text, creditor_weight=37)
     a_x._idearoot.set_grouplink(grouplink=bl_sele)
     assert len(a_x._groups) == 4
@@ -327,9 +327,9 @@ def test_contract_get_idea_list_CorrectlyCalculates3levelContractGroupContractIm
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(rico_text)))
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
+    a_x.set_partyunit(partyunit=partyunit_shop(name=PartyName(rico_text)))
+    a_x.set_partyunit(partyunit=partyunit_shop(name=PartyName(carm_text)))
+    a_x.set_partyunit(partyunit=partyunit_shop(name=PartyName(patr_text)))
     rico_grouplink = grouplink_shop(name=rico_text, creditor_weight=20, debtor_weight=6)
     carm_grouplink = grouplink_shop(name=carm_text, creditor_weight=10, debtor_weight=1)
     parm_grouplink = grouplink_shop(name=patr_text, creditor_weight=10)
@@ -375,9 +375,9 @@ def test_contract_get_idea_list_CorrectlyCalculatesGroupContractImportanceLWwith
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(rico_text)))
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(carm_text)))
-    a_x.set_memberunit(memberunit=memberunit_shop(name=MemberName(patr_text)))
+    a_x.set_partyunit(partyunit=partyunit_shop(name=PartyName(rico_text)))
+    a_x.set_partyunit(partyunit=partyunit_shop(name=PartyName(carm_text)))
+    a_x.set_partyunit(partyunit=partyunit_shop(name=PartyName(patr_text)))
     rico_grouplink = grouplink_shop(name=rico_text, creditor_weight=20, debtor_weight=6)
     carm_grouplink = grouplink_shop(name=carm_text, creditor_weight=10, debtor_weight=1)
     parm_grouplink = grouplink_shop(name=patr_text, creditor_weight=10)
@@ -443,17 +443,17 @@ def test_contract_edit_groupunit_name_CorrectlyCreatesNewName():
     # GIVEN
     sx = ContractUnit(_owner="prom")
     rico_text = "rico"
-    sx.add_memberunit(name=rico_text)
+    sx.add_partyunit(name=rico_text)
     swim_text = "swim"
     swim_group = groupunit_shop(name=swim_text, uid=13)
-    swim_group.set_memberlink(memberlink=memberlink_shop(name=rico_text))
+    swim_group.set_partylink(partylink=partylink_shop(name=rico_text))
     sx.set_groupunit(swim_group)
-    assert len(sx._members) == 1
+    assert len(sx._partys) == 1
     assert len(sx._groups) == 2
     assert sx._groups.get(swim_text) != None
     assert sx._groups.get(swim_text).uid == 13
-    assert sx._groups.get(swim_text)._single_member == False
-    assert len(sx._groups.get(swim_text)._members) == 1
+    assert sx._groups.get(swim_text)._single_party == False
+    assert len(sx._groups.get(swim_text)._partys) == 1
 
     # WHEN
     jog_text = "jog"
@@ -465,17 +465,17 @@ def test_contract_edit_groupunit_name_CorrectlyCreatesNewName():
     assert sx._groups.get(jog_text) != None
     assert sx._groups.get(jog_text).uid == 13
     assert sx._groups.get(swim_text) is None
-    assert len(sx._members) == 1
+    assert len(sx._partys) == 1
     assert len(sx._groups) == 2
-    assert sx._groups.get(jog_text)._single_member == False
-    assert len(sx._groups.get(jog_text)._members) == 1
+    assert sx._groups.get(jog_text)._single_party == False
+    assert len(sx._groups.get(jog_text)._partys) == 1
 
 
 def test_contract_edit_GroupUnit_name_raiseErrorNewNamePreviouslyExists():
     # GIVEN
     sx = ContractUnit(_owner="prom")
     rico_text = "rico"
-    sx.add_memberunit(name=rico_text)
+    sx.add_partyunit(name=rico_text)
     swim_text = "swim"
     sx.set_groupunit(groupunit_shop(name=swim_text, uid=13))
     jog_text = "jog"
@@ -498,20 +498,20 @@ def test_contract_edit_groupunit_name_CorrectlyMeldNames():
     # GIVEN
     sx = ContractUnit(_owner="prom")
     rico_text = "rico"
-    sx.add_memberunit(name=rico_text)
+    sx.add_partyunit(name=rico_text)
     swim_text = "swim"
     swim_group = groupunit_shop(name=swim_text, uid=13)
-    swim_group.set_memberlink(
-        memberlink=memberlink_shop(name=rico_text, creditor_weight=5, debtor_weight=3)
+    swim_group.set_partylink(
+        partylink=partylink_shop(name=rico_text, creditor_weight=5, debtor_weight=3)
     )
     sx.set_groupunit(swim_group)
     jog_text = "jog"
     jog_group = groupunit_shop(name=jog_text, uid=13)
-    jog_group.set_memberlink(
-        memberlink=memberlink_shop(name=rico_text, creditor_weight=7, debtor_weight=10)
+    jog_group.set_partylink(
+        partylink=partylink_shop(name=rico_text, creditor_weight=7, debtor_weight=10)
     )
     sx.set_groupunit(jog_group)
-    print(f"{sx._groups.get(jog_text)._members.get(rico_text)=}")
+    print(f"{sx._groups.get(jog_text)._partys.get(rico_text)=}")
     assert sx._groups.get(jog_text) != None
     assert sx._groups.get(jog_text).uid == 13
 
@@ -525,19 +525,19 @@ def test_contract_edit_groupunit_name_CorrectlyMeldNames():
     # THEN
     assert sx._groups.get(jog_text) != None
     assert sx._groups.get(swim_text) is None
-    assert len(sx._members) == 1
+    assert len(sx._partys) == 1
     assert len(sx._groups) == 2
-    assert sx._groups.get(jog_text)._single_member == False
-    assert len(sx._groups.get(jog_text)._members) == 1
-    assert sx._groups.get(jog_text)._members.get(rico_text).creditor_weight == 12
-    assert sx._groups.get(jog_text)._members.get(rico_text).debtor_weight == 13
+    assert sx._groups.get(jog_text)._single_party == False
+    assert len(sx._groups.get(jog_text)._partys) == 1
+    assert sx._groups.get(jog_text)._partys.get(rico_text).creditor_weight == 12
+    assert sx._groups.get(jog_text)._partys.get(rico_text).debtor_weight == 13
 
 
 def test_contract_edit_groupUnit_name_CorrectlyChangesGroupLinks():
     # GIVEN
     a_x = ContractUnit(_owner="prom")
     rico_text = "rico"
-    a_x.add_memberunit(name=rico_text)
+    a_x.add_partyunit(name=rico_text)
     swim_text = "swim"
     swim_groupunit = groupunit_shop(name=swim_text, uid=13)
     a_x.set_groupunit(swim_groupunit)
@@ -573,7 +573,7 @@ def test_contract_edit_groupUnit_name_CorrectlyMeldsGroupLinesGroupLinksGroupHei
     # GIVEN
     a_x = ContractUnit(_owner="prom")
     rico_text = "rico"
-    a_x.add_memberunit(name=rico_text)
+    a_x.add_partyunit(name=rico_text)
     swim_text = "swim"
     swim_groupunit = groupunit_shop(name=swim_text, uid=13)
     a_x.set_groupunit(swim_groupunit)
@@ -641,7 +641,7 @@ def test_contract_add_idea_CreatesMissingGroups():
     # THEN
     assert len(a_x._groups) == 1
     assert a_x._groups.get(family_text) != None
-    assert a_x._groups.get(family_text)._members in (None, {})
+    assert a_x._groups.get(family_text)._partys in (None, {})
 
 
 def test_ContractUnit__get_filtered_grouplinks_idea_CorrectlyFiltersIdea_grouplinks():
@@ -650,8 +650,8 @@ def test_ContractUnit__get_filtered_grouplinks_idea_CorrectlyFiltersIdea_groupli
     cx1 = ContractUnit(_owner=owner_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
-    cx1.add_memberunit(name=xia_text)
-    cx1.add_memberunit(name=zoa_text)
+    cx1.add_partyunit(name=xia_text)
+    cx1.add_partyunit(name=zoa_text)
 
     work_text = "work"
     work_road = f"{cx1._economy_title},{work_text}"
@@ -664,7 +664,7 @@ def test_ContractUnit__get_filtered_grouplinks_idea_CorrectlyFiltersIdea_groupli
     cx1_swim_idea = cx1.get_idea_kid(swim_road)
     assert len(cx1_swim_idea._grouplinks) == 2
     cx2 = ContractUnit(_owner=owner_text)
-    cx2.add_memberunit(name=xia_text)
+    cx2.add_partyunit(name=xia_text)
 
     # WHEN
     filtered_idea = cx2._get_filtered_grouplinks_idea(cx1_swim_idea)
@@ -680,8 +680,8 @@ def test_ContractUnit_add_idea_CorrectlyFiltersIdea_grouplinks():
     cx1 = ContractUnit(_owner=owner_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
-    cx1.add_memberunit(name=xia_text)
-    cx1.add_memberunit(name=zoa_text)
+    cx1.add_partyunit(name=xia_text)
+    cx1.add_partyunit(name=zoa_text)
 
     work_text = "work"
     work_road = f"{cx1._economy_title},{work_text}"
@@ -696,7 +696,7 @@ def test_ContractUnit_add_idea_CorrectlyFiltersIdea_grouplinks():
 
     # WHEN
     cx2 = ContractUnit(_owner=owner_text)
-    cx2.add_memberunit(name=xia_text)
+    cx2.add_partyunit(name=xia_text)
     cx2.add_idea(
         idea_kid=cx1_swim_idea,
         walk=cx2._economy_title,
@@ -723,14 +723,14 @@ def test_contract_add_idea_DoesNotOverwriteGroups():
     clean_cookery_idea.set_grouplink(grouplink=grouplink_z)
 
     groupunit_z = groupunit_shop(name=family_text)
-    groupunit_z.set_memberlink(memberlink=memberlink_shop(name="ann1"))
-    groupunit_z.set_memberlink(memberlink=memberlink_shop(name="bet1"))
+    groupunit_z.set_partylink(partylink=partylink_shop(name="ann1"))
+    groupunit_z.set_partylink(partylink=partylink_shop(name="bet1"))
     a_x.set_groupunit(groupunit=groupunit_z)
 
     # assert len(a_x._groups) == 0
     # assert a_x._groups.get(family_text) is None
     assert len(a_x._groups) == 1
-    assert len(a_x._groups.get(family_text)._members) == 2
+    assert len(a_x._groups.get(family_text)._partys) == 2
 
     # WHEN
     a_x.add_idea(
@@ -742,103 +742,103 @@ def test_contract_add_idea_DoesNotOverwriteGroups():
     # THEN
 
     # assert len(a_x._groups) == 1
-    # assert len(a_x._groups.get(family_text)._members) == 0
+    # assert len(a_x._groups.get(family_text)._partys) == 0
     # groupunit_z = groupunit_shop(name=family_text)
-    # groupunit_z.set_memberlink(memberlink=memberlink_shop(name="ann2"))
-    # groupunit_z.set_memberlink(memberlink=memberlink_shop(name="bet2"))
+    # groupunit_z.set_partylink(partylink=partylink_shop(name="ann2"))
+    # groupunit_z.set_partylink(partylink=partylink_shop(name="bet2"))
     # a_x.set_groupunit(groupunit=groupunit_z)
 
     assert len(a_x._groups) == 1
-    assert len(a_x._groups.get(family_text)._members) == 2
+    assert len(a_x._groups.get(family_text)._partys) == 2
 
 
-def test_contract_set_groupunits_create_missing_members_DoesCreateMissingMembers():
+def test_contract_set_groupunits_create_missing_partys_DoesCreateMissingPartys():
     # GIVEN
     owner_text = "bob"
     a_x = ContractUnit(_owner=owner_text)
-    a_x.set_members_empty_if_null()
+    a_x.set_partys_empty_if_null()
     a_x.set_groupunits_empty_if_null()
     family_text = "family"
     anna_text = "anna"
     beto_text = "beto"
     groupunit_z = groupunit_shop(name=family_text)
-    groupunit_z.set_memberlink(
-        memberlink=memberlink_shop(name=anna_text, creditor_weight=3, debtor_weight=7)
+    groupunit_z.set_partylink(
+        partylink=partylink_shop(name=anna_text, creditor_weight=3, debtor_weight=7)
     )
-    groupunit_z.set_memberlink(
-        memberlink=memberlink_shop(name=beto_text, creditor_weight=5, debtor_weight=11)
+    groupunit_z.set_partylink(
+        partylink=partylink_shop(name=beto_text, creditor_weight=5, debtor_weight=11)
     )
 
-    assert groupunit_z._members.get(anna_text).creditor_weight == 3
-    assert groupunit_z._members.get(anna_text).debtor_weight == 7
+    assert groupunit_z._partys.get(anna_text).creditor_weight == 3
+    assert groupunit_z._partys.get(anna_text).debtor_weight == 7
 
-    assert groupunit_z._members.get(beto_text).creditor_weight == 5
-    assert groupunit_z._members.get(beto_text).debtor_weight == 11
+    assert groupunit_z._partys.get(beto_text).creditor_weight == 5
+    assert groupunit_z._partys.get(beto_text).debtor_weight == 11
 
-    assert len(a_x._members) == 0
+    assert len(a_x._partys) == 0
     assert len(a_x._groups) == 0
 
     # WHEN
-    a_x.set_groupunit(groupunit=groupunit_z, create_missing_members=True)
+    a_x.set_groupunit(groupunit=groupunit_z, create_missing_partys=True)
 
     # THEN
-    assert len(a_x._members) == 2
+    assert len(a_x._partys) == 2
     assert len(a_x._groups) == 3
-    assert a_x._members.get(anna_text).creditor_weight == 3
-    assert a_x._members.get(anna_text).debtor_weight == 7
+    assert a_x._partys.get(anna_text).creditor_weight == 3
+    assert a_x._partys.get(anna_text).debtor_weight == 7
 
-    assert a_x._members.get(beto_text).creditor_weight == 5
-    assert a_x._members.get(beto_text).debtor_weight == 11
+    assert a_x._partys.get(beto_text).creditor_weight == 5
+    assert a_x._partys.get(beto_text).debtor_weight == 11
 
 
-def test_contract_set_groupunits_create_missing_members_DoesNotReplaceMembers():
+def test_contract_set_groupunits_create_missing_partys_DoesNotReplacePartys():
     # GIVEN
     owner_text = "bob"
     a_x = ContractUnit(_owner=owner_text)
-    a_x.set_members_empty_if_null()
+    a_x.set_partys_empty_if_null()
     family_text = "family"
     anna_text = "anna"
     beto_text = "beto"
-    a_x.set_memberunit(
-        memberunit_shop(name=anna_text, creditor_weight=17, debtor_weight=88)
+    a_x.set_partyunit(
+        partyunit_shop(name=anna_text, creditor_weight=17, debtor_weight=88)
     )
-    a_x.set_memberunit(
-        memberunit_shop(name=beto_text, creditor_weight=46, debtor_weight=71)
+    a_x.set_partyunit(
+        partyunit_shop(name=beto_text, creditor_weight=46, debtor_weight=71)
     )
     groupunit_z = groupunit_shop(name=family_text)
-    groupunit_z.set_memberlink(
-        memberlink=memberlink_shop(name=anna_text, creditor_weight=3, debtor_weight=7)
+    groupunit_z.set_partylink(
+        partylink=partylink_shop(name=anna_text, creditor_weight=3, debtor_weight=7)
     )
-    groupunit_z.set_memberlink(
-        memberlink=memberlink_shop(name=beto_text, creditor_weight=5, debtor_weight=11)
+    groupunit_z.set_partylink(
+        partylink=partylink_shop(name=beto_text, creditor_weight=5, debtor_weight=11)
     )
 
-    assert groupunit_z._members.get(anna_text).creditor_weight == 3
-    assert groupunit_z._members.get(anna_text).debtor_weight == 7
-    assert groupunit_z._members.get(beto_text).creditor_weight == 5
-    assert groupunit_z._members.get(beto_text).debtor_weight == 11
-    assert len(a_x._members) == 2
-    assert a_x._members.get(anna_text).creditor_weight == 17
-    assert a_x._members.get(anna_text).debtor_weight == 88
-    assert a_x._members.get(beto_text).creditor_weight == 46
-    assert a_x._members.get(beto_text).debtor_weight == 71
+    assert groupunit_z._partys.get(anna_text).creditor_weight == 3
+    assert groupunit_z._partys.get(anna_text).debtor_weight == 7
+    assert groupunit_z._partys.get(beto_text).creditor_weight == 5
+    assert groupunit_z._partys.get(beto_text).debtor_weight == 11
+    assert len(a_x._partys) == 2
+    assert a_x._partys.get(anna_text).creditor_weight == 17
+    assert a_x._partys.get(anna_text).debtor_weight == 88
+    assert a_x._partys.get(beto_text).creditor_weight == 46
+    assert a_x._partys.get(beto_text).debtor_weight == 71
 
     # WHEN
-    a_x.set_groupunit(groupunit=groupunit_z, create_missing_members=True)
+    a_x.set_groupunit(groupunit=groupunit_z, create_missing_partys=True)
 
     # THEN
-    assert len(a_x._members) == 2
-    assert a_x._members.get(anna_text).creditor_weight == 17
-    assert a_x._members.get(anna_text).debtor_weight == 88
-    assert a_x._members.get(beto_text).creditor_weight == 46
-    assert a_x._members.get(beto_text).debtor_weight == 71
+    assert len(a_x._partys) == 2
+    assert a_x._partys.get(anna_text).creditor_weight == 17
+    assert a_x._partys.get(anna_text).debtor_weight == 88
+    assert a_x._partys.get(beto_text).creditor_weight == 46
+    assert a_x._partys.get(beto_text).debtor_weight == 71
 
 
 def test_contract_get_groupunits_dict_CorrectlyReturnsDictOfGroups():
     # GIVEN
     owner_text = "bob"
     sx = ContractUnit(_owner=owner_text)
-    sx.set_members_empty_if_null()
+    sx.set_partys_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
     fly_text = "fly"
@@ -862,7 +862,7 @@ def test_contract_set_all_groupunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
     # GIVEN
     owner_text = "bob"
     sx = ContractUnit(_owner=owner_text)
-    sx.set_members_empty_if_null()
+    sx.set_partys_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
     fly_text = "fly"
@@ -886,7 +886,7 @@ def test_contract_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUI
     # GIVEN
     owner_text = "bob"
     sx = ContractUnit(_owner=owner_text)
-    sx.set_members_empty_if_null()
+    sx.set_partys_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
     fly_text = "fly"
@@ -913,7 +913,7 @@ def test_contract_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUI
     # GIVEN
     owner_text = "Noa"
     sx = ContractUnit(_owner=owner_text)
-    sx.set_members_empty_if_null()
+    sx.set_partys_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
     fly_text = "fly"
@@ -940,7 +940,7 @@ def test_contract_all_groupunits_uids_are_unique_ReturnsCorrectBoolean():
     # GIVEN
     owner_text = "Noa"
     sx = ContractUnit(_owner=owner_text)
-    sx.set_members_empty_if_null()
+    sx.set_partys_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
     fly_text = "fly"
@@ -967,108 +967,108 @@ def test_contract_all_groupunits_uids_are_unique_ReturnsCorrectBoolean():
     assert sx.all_groupunits_uids_are_unique()
 
 
-def test_get_members_relevant_groups_CorrectlyReturnsEmptyDict():
+def test_get_partys_relevant_groups_CorrectlyReturnsEmptyDict():
     # GIVEN
     bob_text = "bob"
-    cx_with_members = ContractUnit(_owner=bob_text)
-    cx_with_members.set_members_empty_if_null()
+    cx_with_partys = ContractUnit(_owner=bob_text)
+    cx_with_partys.set_partys_empty_if_null()
 
     sam_text = "sam"
     wil_text = "wil"
-    cx_with_members.set_memberunit(memberunit=memberunit_shop(name=bob_text))
-    cx_with_members.set_memberunit(memberunit=memberunit_shop(name=sam_text))
+    cx_with_partys.set_partyunit(partyunit=partyunit_shop(name=bob_text))
+    cx_with_partys.set_partyunit(partyunit=partyunit_shop(name=sam_text))
 
     cx_with_groups = ContractUnit()
-    cx_with_groups.set_members_empty_if_null()
+    cx_with_groups.set_partys_empty_if_null()
     cx_with_groups.set_groupunits_empty_if_null()
 
     # WHEN
-    print(f"{len(cx_with_members._members)=} {len(cx_with_groups._groups)=}")
-    relevant_x = get_members_relevant_groups(
-        cx_with_groups._groups, cx_with_members._members
+    print(f"{len(cx_with_partys._partys)=} {len(cx_with_groups._groups)=}")
+    relevant_x = get_partys_relevant_groups(
+        cx_with_groups._groups, cx_with_partys._partys
     )
 
     # THEN
     assert relevant_x == {}
 
 
-def test_get_members_relevant_groups_CorrectlyReturns2SingleMemberGroups():
+def test_get_partys_relevant_groups_CorrectlyReturns2SinglePartyGroups():
     # GIVEN
     bob_text = "Bob"
     sam_text = "Sam"
     wil_text = "Wil"
     cx_3groups = ContractUnit(_owner=bob_text)
-    cx_3groups.set_members_empty_if_null()
-    cx_3groups.set_memberunit(memberunit=memberunit_shop(name=bob_text))
-    cx_3groups.set_memberunit(memberunit=memberunit_shop(name=sam_text))
-    cx_3groups.set_memberunit(memberunit=memberunit_shop(name=wil_text))
+    cx_3groups.set_partys_empty_if_null()
+    cx_3groups.set_partyunit(partyunit=partyunit_shop(name=bob_text))
+    cx_3groups.set_partyunit(partyunit=partyunit_shop(name=sam_text))
+    cx_3groups.set_partyunit(partyunit=partyunit_shop(name=wil_text))
 
-    cx_2members = ContractUnit(_owner=bob_text)
-    cx_2members.set_members_empty_if_null()
-    cx_2members.set_memberunit(memberunit=memberunit_shop(name=bob_text))
-    cx_2members.set_memberunit(memberunit=memberunit_shop(name=sam_text))
+    cx_2partys = ContractUnit(_owner=bob_text)
+    cx_2partys.set_partys_empty_if_null()
+    cx_2partys.set_partyunit(partyunit=partyunit_shop(name=bob_text))
+    cx_2partys.set_partyunit(partyunit=partyunit_shop(name=sam_text))
 
     # WHEN
-    print(f"{len(cx_2members._members)=} {len(cx_3groups._groups)=}")
-    mrg_x = get_members_relevant_groups(cx_3groups._groups, cx_2members._members)
+    print(f"{len(cx_2partys._partys)=} {len(cx_3groups._groups)=}")
+    mrg_x = get_partys_relevant_groups(cx_3groups._groups, cx_2partys._partys)
 
     # THEN
     assert mrg_x == {bob_text: {bob_text: -1}, sam_text: {sam_text: -1}}
 
 
-def test_get_member_relevant_groups_CorrectlyReturnsCorrectDict():
+def test_get_party_relevant_groups_CorrectlyReturnsCorrectDict():
     # GIVEN
     jes_text = "Jessi"
     jes_cx = ContractUnit(_owner=jes_text)
     bob_text = "Bob"
-    jes_cx.set_memberunit(memberunit_shop(name=jes_text))
-    jes_cx.set_memberunit(memberunit_shop(name=bob_text))
+    jes_cx.set_partyunit(partyunit_shop(name=jes_text))
+    jes_cx.set_partyunit(partyunit_shop(name=bob_text))
 
     hike_text = "hikers"
     jes_cx.set_groupunit(groupunit_shop(name=hike_text))
     hike_group = jes_cx._groups.get(hike_text)
-    hike_group.set_memberlink(memberlink_shop(bob_text))
+    hike_group.set_partylink(partylink_shop(bob_text))
 
     # WHEN
     noa_text = "Noa"
-    noa_mrg = get_member_relevant_groups(jes_cx._groups, noa_text)
+    noa_mrg = get_party_relevant_groups(jes_cx._groups, noa_text)
 
     # THEN
     assert noa_mrg == {}
 
 
-def test_get_member_relevant_groups_CorrectlyReturnsCorrectDict():
+def test_get_party_relevant_groups_CorrectlyReturnsCorrectDict():
     # GIVEN
     jes_text = "Jessi"
     jes_cx = ContractUnit(_owner=jes_text)
     bob_text = "Bob"
     noa_text = "Noa"
     eli_text = "Eli"
-    jes_cx.set_memberunit(memberunit_shop(name=jes_text))
-    jes_cx.set_memberunit(memberunit_shop(name=bob_text))
-    jes_cx.set_memberunit(memberunit_shop(name=noa_text))
-    jes_cx.set_memberunit(memberunit_shop(name=eli_text))
+    jes_cx.set_partyunit(partyunit_shop(name=jes_text))
+    jes_cx.set_partyunit(partyunit_shop(name=bob_text))
+    jes_cx.set_partyunit(partyunit_shop(name=noa_text))
+    jes_cx.set_partyunit(partyunit_shop(name=eli_text))
 
     swim_text = "swimmers"
     jes_cx.set_groupunit(groupunit_shop(name=swim_text))
     swim_group = jes_cx._groups.get(swim_text)
-    swim_group.set_memberlink(memberlink_shop(bob_text))
+    swim_group.set_partylink(partylink_shop(bob_text))
 
     hike_text = "hikers"
     jes_cx.set_groupunit(groupunit_shop(name=hike_text))
     hike_group = jes_cx._groups.get(hike_text)
-    hike_group.set_memberlink(memberlink_shop(bob_text))
-    hike_group.set_memberlink(memberlink_shop(noa_text))
+    hike_group.set_partylink(partylink_shop(bob_text))
+    hike_group.set_partylink(partylink_shop(noa_text))
 
     hunt_text = "hunters"
     jes_cx.set_groupunit(groupunit_shop(name=hunt_text))
     hike_group = jes_cx._groups.get(hunt_text)
-    hike_group.set_memberlink(memberlink_shop(noa_text))
-    hike_group.set_memberlink(memberlink_shop(eli_text))
+    hike_group.set_partylink(partylink_shop(noa_text))
+    hike_group.set_partylink(partylink_shop(eli_text))
 
     # WHEN
-    print(f"{len(jes_cx._members)=} {len(jes_cx._groups)=}")
-    bob_mrg = get_member_relevant_groups(jes_cx._groups, bob_text)
+    print(f"{len(jes_cx._partys)=} {len(jes_cx._groups)=}")
+    bob_mrg = get_party_relevant_groups(jes_cx._groups, bob_text)
 
     # THEN
     assert bob_mrg == {bob_text: -1, swim_text: -1, hike_text: -1}
