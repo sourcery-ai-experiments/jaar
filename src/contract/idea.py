@@ -48,7 +48,7 @@ class InvalidIdeaException(Exception):
     pass
 
 
-class GetDescendantsException(Exception):
+class IdeaGetDescendantsException(Exception):
     pass
 
 
@@ -348,7 +348,7 @@ class IdeaCore:
             count_x += 1
 
         if count_x == max_count:
-            raise GetDescendantsException(
+            raise IdeaGetDescendantsException(
                 f"Idea '{self.get_road()}' either has an infinite loop or more than {max_count} descendants."
             )
 
