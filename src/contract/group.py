@@ -155,6 +155,7 @@ def get_from_json(groupunits_json: str):
 
 def get_from_dict(x_dict: dict):
     groupunits = {}
+
     for groupunits_dict in x_dict.values():
         try:
             ex_partylinks_set_by_economy_road = groupunits_dict[
@@ -162,9 +163,6 @@ def get_from_dict(x_dict: dict):
             ]
         except KeyError:
             ex_partylinks_set_by_economy_road = None
-
-        brand_text = "brand"
-        print(f"{groupunits_dict[brand_text]=}")
 
         x_group = groupunit_shop(
             brand=groupunits_dict["brand"],
