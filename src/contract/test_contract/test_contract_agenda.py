@@ -432,7 +432,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     clean = "clean"
     run = "run"
     swim = "swim"
-    jog = "job"
+    jog = "jog"
     veg = "veg"
     lift = "life"
     a1.add_idea(IdeaKid(_label=clean, promise=True), walk=t_road)
