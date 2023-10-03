@@ -4,7 +4,7 @@ from src.contract.examples.contract_env import contract_env
 from src.contract.idea import IdeaCore, IdeaKid
 from src.contract.road import Road
 from src.contract.required_idea import RequiredUnit, SuffFactStatusFinder
-from src.contract.group import groupunit_shop, grouplink_shop
+from src.contract.group import groupunit_shop, balancelink_shop
 from src.contract.party import partylink_shop
 from src.contract.required_assign import assigned_unit_shop
 from src.contract.examples.example_contracts import (
@@ -652,8 +652,8 @@ def test_contract_create_agenda_item_CorrectlyCreatesAllContractAttributes():
     # groupunit_z = groupunit_shop(brand=family_text)
     # groupunit_z.set_partylink(partylink=anna_partylink)
     # groupunit_z.set_partylink(partylink=beto_partylink)
-    grouplink_z = grouplink_shop(brand=family_text)
-    clean_cookery_idea.set_grouplink(grouplink=grouplink_z)
+    balancelink_z = balancelink_shop(brand=family_text)
+    clean_cookery_idea.set_balancelink(balancelink=balancelink_z)
 
     assert len(a1._partys) == 0
     assert len(a1._groups) == 0

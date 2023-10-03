@@ -8,7 +8,7 @@ from src.contract.idea import IdeaCore, IdeaKid
 from src.contract.road import Road
 from src.contract.required_idea import RequiredUnit
 from src.contract.party import partylink_shop
-from src.contract.group import groupunit_shop, grouplink_shop
+from src.contract.group import groupunit_shop, balancelink_shop
 from src.contract.examples.example_contracts import (
     get_contract_with_4_levels as example_contracts_get_contract_with_4_levels,
     get_contract_with_4_levels_and_2requireds as example_contracts_get_contract_with_4_levels_and_2requireds,
@@ -67,7 +67,7 @@ def test_contractunit_get_bond_status_ReturnsCorrectBool():
     #     print(f"after {idea_kid._label=} {idea_kid.promise=}")
 
 
-def test_contractunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaGroupheirsMatchContractGroups():
+def test_contractunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaBalanceHeirsMatchContractGroups():
     # GIVEN
     jessi_text = "jessi"
     cx = ContractUnit(_owner=jessi_text)
@@ -84,7 +84,9 @@ def test_contractunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaGrouph
     assert cx.get_bond_status() == False
 
     # WHEN
-    cx.edit_idea_attr(road=clean_cookery_road, grouplink=grouplink_shop(brand=tom_text))
+    cx.edit_idea_attr(
+        road=clean_cookery_road, balancelink=balancelink_shop(brand=tom_text)
+    )
     # THEN
     assert cx.get_bond_status()
 
@@ -112,9 +114,11 @@ def test_contractunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGr
     assert cx.get_bond_status() == False
 
     # WHEN
-    cx.edit_idea_attr(road=clean_cookery_road, grouplink=grouplink_shop(brand=tom_text))
+    cx.edit_idea_attr(
+        road=clean_cookery_road, balancelink=balancelink_shop(brand=tom_text)
+    )
     clean_cookery_idea = cx.get_idea_kid(road=clean_cookery_road)
-    assert len(clean_cookery_idea._groupheirs) == 1
+    assert len(clean_cookery_idea._balanceheirs) == 1
     # THEN
     assert cx.get_bond_status()
 
@@ -152,7 +156,7 @@ def test_contractunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGr
 
     # WHEN
     cx.edit_idea_attr(
-        road=clean_cookery_road, grouplink=grouplink_shop(brand=home_occupants_text)
+        road=clean_cookery_road, balancelink=balancelink_shop(brand=home_occupants_text)
     )
     # THEN
     assert cx.get_bond_status()

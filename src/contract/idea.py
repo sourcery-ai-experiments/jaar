@@ -26,11 +26,11 @@ from src.contract.road import (
     get_default_economy_root_label as root_label,
 )
 from src.contract.group import (
-    GroupHeir,
-    GroupLink,
+    BalanceHeir,
+    Balancelink,
     GroupBrand,
-    Groupline,
-    groupheir_shop,
+    Balanceline,
+    balanceheir_shop,
     GroupUnit,
 )
 from src.contract.origin import OriginUnit
@@ -95,8 +95,8 @@ class IdeaAttrHolder:
     descendant_promise_count: int = None
     all_party_credit: bool = None
     all_party_debt: bool = None
-    grouplink: GroupLink = None
-    grouplink_del: GroupBrand = None
+    balancelink: Balancelink = None
+    balancelink_del: GroupBrand = None
     is_expanded: bool = None
     on_meld_weight_action: str = None
 
@@ -128,9 +128,9 @@ class IdeaCore:
     _walk: str = None
     _kids: dict = None
     _weight: int = 1
-    _grouplinks: dict[GroupBrand:GroupLink] = None
-    _groupheirs: dict[GroupBrand:GroupHeir] = None  # Calculated field
-    _grouplines: dict[GroupBrand:GroupLink] = None  # Calculated field
+    _balancelinks: dict[GroupBrand:Balancelink] = None
+    _balanceheirs: dict[GroupBrand:BalanceHeir] = None  # Calculated field
+    _balancelines: dict[GroupBrand:Balancelink] = None  # Calculated field
     _requiredunits: dict[Road:RequiredUnit] = None
     _requiredheirs: dict[Road:RequiredHeir] = None  # Calculated field
     _assignedunit: AssignedUnit = None
@@ -308,7 +308,7 @@ class IdeaCore:
             self._contract_coin_onset + self._contract_importance
         )
         self._contract_coin_cease = min(self._contract_coin_cease, parent_coin_cease)
-        self.set_groupheirs_contract_credit_debit()
+        self.set_balanceheirs_contract_credit_debit()
 
     def get_kids_in_range(self, begin: float, close: float) -> list:
         return [
@@ -381,53 +381,55 @@ class IdeaCore:
         else:
             self._walk = f"{parent_road},{parent_label}"
 
-    def inherit_groupheirs(self, parent_groupheirs: dict[GroupBrand:GroupHeir] = None):
-        if parent_groupheirs is None:
-            parent_groupheirs = {}
+    def inherit_balanceheirs(
+        self, parent_balanceheirs: dict[GroupBrand:BalanceHeir] = None
+    ):
+        if parent_balanceheirs is None:
+            parent_balanceheirs = {}
 
-        self._groupheirs = {}
-        for ib in parent_groupheirs.values():
-            groupheir = groupheir_shop(
+        self._balanceheirs = {}
+        for ib in parent_balanceheirs.values():
+            balanceheir = balanceheir_shop(
                 brand=ib.brand,
                 creditor_weight=ib.creditor_weight,
                 debtor_weight=ib.debtor_weight,
             )
-            self._groupheirs[groupheir.brand] = groupheir
+            self._balanceheirs[balanceheir.brand] = balanceheir
 
-        self.set_grouplink_empty_if_null()
-        for ib in self._grouplinks.values():
-            groupheir = groupheir_shop(
+        self.set_balancelink_empty_if_null()
+        for ib in self._balancelinks.values():
+            balanceheir = balanceheir_shop(
                 brand=ib.brand,
                 creditor_weight=ib.creditor_weight,
                 debtor_weight=ib.debtor_weight,
             )
-            self._groupheirs[groupheir.brand] = groupheir
+            self._balanceheirs[balanceheir.brand] = balanceheir
 
-    def set_kidless_grouplines(self):
-        # get grouplines from self
-        for bh in self._groupheirs.values():
-            groupline_x = Groupline(
+    def set_kidless_balancelines(self):
+        # get balancelines from self
+        for bh in self._balanceheirs.values():
+            balanceline_x = Balanceline(
                 brand=bh.brand,
                 _contract_credit=bh._contract_credit,
                 _contract_debt=bh._contract_debt,
             )
-            self._grouplines[groupline_x.brand] = groupline_x
+            self._balancelines[balanceline_x.brand] = balanceline_x
 
-    def set_grouplines(self, child_grouplines: dict[GroupBrand:Groupline] = None):
-        self.set_grouplines_empty_if_null()
-        if child_grouplines is None:
-            child_grouplines = {}
+    def set_balancelines(self, child_balancelines: dict[GroupBrand:Balanceline] = None):
+        self.set_balancelines_empty_if_null()
+        if child_balancelines is None:
+            child_balancelines = {}
 
-        # get grouplines from child
-        for bl in child_grouplines.values():
-            if self._grouplines.get(bl.brand) is None:
-                self._grouplines[bl.brand] = Groupline(
+        # get balancelines from child
+        for bl in child_balancelines.values():
+            if self._balancelines.get(bl.brand) is None:
+                self._balancelines[bl.brand] = Balanceline(
                     brand=bl.brand,
                     _contract_credit=0,
                     _contract_debt=0,
                 )
 
-            self._grouplines[bl.brand].add_contract_credit_debt(
+            self._balancelines[bl.brand].add_contract_credit_debt(
                 contract_credit=bl._contract_credit, contract_debt=bl._contract_debt
             )
 
@@ -437,32 +439,36 @@ class IdeaCore:
         for idea_x in self._kids.values():
             self._kids_total_weight += idea_x._weight
 
-    def get_groupheirs_creditor_weight_sum(self):
-        self.set_grouplink_empty_if_null()
-        self.set_groupheir_empty_if_null()
-        return sum(grouplink.creditor_weight for grouplink in self._groupheirs.values())
+    def get_balanceheirs_creditor_weight_sum(self):
+        self.set_balancelink_empty_if_null()
+        self.set_balanceheir_empty_if_null()
+        return sum(
+            balancelink.creditor_weight for balancelink in self._balanceheirs.values()
+        )
 
-    def get_groupheirs_debtor_weight_sum(self):
-        self.set_grouplink_empty_if_null()
-        self.set_groupheir_empty_if_null()
-        return sum(grouplink.debtor_weight for grouplink in self._groupheirs.values())
+    def get_balanceheirs_debtor_weight_sum(self):
+        self.set_balancelink_empty_if_null()
+        self.set_balanceheir_empty_if_null()
+        return sum(
+            balancelink.debtor_weight for balancelink in self._balanceheirs.values()
+        )
 
-    def set_groupheirs_contract_credit_debit(self):
-        groupheirs_creditor_weight_sum = self.get_groupheirs_creditor_weight_sum()
-        groupheirs_debtor_weight_sum = self.get_groupheirs_debtor_weight_sum()
-        for groupheir_x in self._groupheirs.values():
-            groupheir_x.set_contract_credit_debt(
+    def set_balanceheirs_contract_credit_debit(self):
+        balanceheirs_creditor_weight_sum = self.get_balanceheirs_creditor_weight_sum()
+        balanceheirs_debtor_weight_sum = self.get_balanceheirs_debtor_weight_sum()
+        for balanceheir_x in self._balanceheirs.values():
+            balanceheir_x.set_contract_credit_debt(
                 idea_contract_importance=self._contract_importance,
-                groupheirs_creditor_weight_sum=groupheirs_creditor_weight_sum,
-                groupheirs_debtor_weight_sum=groupheirs_debtor_weight_sum,
+                balanceheirs_creditor_weight_sum=balanceheirs_creditor_weight_sum,
+                balanceheirs_debtor_weight_sum=balanceheirs_debtor_weight_sum,
             )
 
     def set_kids_empty_if_null(self):
         if self._kids is None:
             self._kids = {}
 
-    def clear_grouplines(self):
-        self._grouplines = {}
+    def clear_balancelines(self):
+        self._balancelines = {}
 
     def set_idea_label(self, _label):
         if _label != None:
@@ -477,18 +483,18 @@ class IdeaCore:
             else:
                 self._requiredunits.get(lx.base).meld(lx)
 
-    def _meld_grouplinks(self, other_idea):
-        self.set_grouplink_empty_if_null()
-        other_idea.set_grouplink_empty_if_null()
-        for bl in other_idea._grouplinks.values():
-            if self._grouplinks.get(bl.brand) != None:
-                self._grouplinks.get(bl.brand).meld(
-                    other_grouplink=bl,
+    def _meld_balancelinks(self, other_idea):
+        self.set_balancelink_empty_if_null()
+        other_idea.set_balancelink_empty_if_null()
+        for bl in other_idea._balancelinks.values():
+            if self._balancelinks.get(bl.brand) != None:
+                self._balancelinks.get(bl.brand).meld(
+                    other_balancelink=bl,
                     other_on_meld_weight_action=other_idea._on_meld_weight_action,
                     src_on_meld_weight_action=self._on_meld_weight_action,
                 )
             else:
-                self._grouplinks[bl.brand] = bl
+                self._balancelinks[bl.brand] = bl
 
     def _meld_acptfactunits(self, other_idea):
         self.set_acptfactunits_empty_if_null()
@@ -520,7 +526,7 @@ class IdeaCore:
                 other_on_meld_weight_action=other_idea._on_meld_weight_action,
             )
         self._meld_requiredunits(other_idea=other_idea)
-        self._meld_grouplinks(other_idea=other_idea)
+        self._meld_balancelinks(other_idea=other_idea)
         self._meld_acptfactunits(other_idea=other_idea)
         self._meld_attributes_that_will_be_equal(other_idea=other_idea)
         self._meld_originlinks(party_name, party_weight)
@@ -610,10 +616,10 @@ class IdeaCore:
             self._all_party_credit = idea_attr.all_party_credit
         if idea_attr.all_party_debt != None:
             self._all_party_debt = idea_attr.all_party_debt
-        if idea_attr.grouplink != None:
-            self.set_grouplink(grouplink=idea_attr.grouplink)
-        if idea_attr.grouplink_del != None:
-            self.del_grouplink(groupbrand=idea_attr.grouplink_del)
+        if idea_attr.balancelink != None:
+            self.set_balancelink(balancelink=idea_attr.balancelink)
+        if idea_attr.balancelink_del != None:
+            self.del_balancelink(groupbrand=idea_attr.balancelink_del)
         if idea_attr.is_expanded != None:
             self._is_expanded = idea_attr.is_expanded
         if idea_attr.promise != None:
@@ -711,28 +717,28 @@ class IdeaCore:
         self._kids[idea_kid._label] = idea_kid
         self._kids = dict(sorted(self._kids.items()))
 
-    def set_grouplink_empty_if_null(self):
-        if self._grouplinks is None:
-            self._grouplinks = {}
+    def set_balancelink_empty_if_null(self):
+        if self._balancelinks is None:
+            self._balancelinks = {}
 
-    def set_groupheir_empty_if_null(self):
-        if self._groupheirs is None:
-            self._groupheirs = {}
+    def set_balanceheir_empty_if_null(self):
+        if self._balanceheirs is None:
+            self._balanceheirs = {}
 
-    def set_grouplines_empty_if_null(self):
-        if self._grouplines is None:
-            self._grouplines = {}
+    def set_balancelines_empty_if_null(self):
+        if self._balancelines is None:
+            self._balancelines = {}
 
-    def set_grouplink(self, grouplink: GroupLink):
-        self.set_grouplink_empty_if_null()
-        self._grouplinks[grouplink.brand] = grouplink
+    def set_balancelink(self, balancelink: Balancelink):
+        self.set_balancelink_empty_if_null()
+        self._balancelinks[balancelink.brand] = balancelink
 
-    def del_grouplink(self, groupbrand: GroupBrand):
-        self.set_grouplink_empty_if_null()
+    def del_balancelink(self, groupbrand: GroupBrand):
+        self.set_balancelink_empty_if_null()
         try:
-            self._grouplinks.pop(groupbrand)
+            self._balancelinks.pop(groupbrand)
         except KeyError as e:
-            raise (f"Cannot delete grouplink '{groupbrand}'.") from e
+            raise (f"Cannot delete balancelink '{groupbrand}'.") from e
 
     def set_required_unit(self, required: RequiredUnit):
         self.set_requiredunits_empty_if_null()
@@ -868,12 +874,12 @@ class IdeaCore:
                 x_dict[c_road] = kid.get_dict()
         return x_dict
 
-    def get_grouplinks_dict(self):
-        grouplinks_dict = {}
-        if self._grouplinks != None:
-            for group_name, grouplink in self._grouplinks.items():
-                grouplinks_dict[group_name] = grouplink.get_dict()
-        return grouplinks_dict
+    def get_balancelinks_dict(self):
+        balancelinks_dict = {}
+        if self._balancelinks != None:
+            for group_name, balancelink in self._balancelinks.items():
+                balancelinks_dict[group_name] = balancelink.get_dict()
+        return balancelinks_dict
 
     def _get_empty_dict_if_null(self, x_dict: dict) -> dict:
         if x_dict is None:
@@ -883,11 +889,11 @@ class IdeaCore:
     def is_kidless(self):
         return self._kids == {}
 
-    def is_groupheirless(self):
+    def is_balanceheirless(self):
         x_bool = None
-        if self._groupheirs in [{}, None]:
+        if self._balanceheirs in [{}, None]:
             x_bool = True
-        elif self._groupheirs != [{}, None]:
+        elif self._balanceheirs != [{}, None]:
             x_bool = False
         return x_bool
 
@@ -896,7 +902,7 @@ class IdeaCore:
             "_kids": self.get_kids_dict(),
             "_requiredunits": self.get_requiredunits_dict(),
             "_assignedunit": self.get_assignedunit_dict(),
-            "_grouplinks": self.get_grouplinks_dict(),
+            "_balancelinks": self.get_balancelinks_dict(),
             "_originunit": self.get_originunit_dict(),
             "_weight": self._weight,
             "_label": self._label,

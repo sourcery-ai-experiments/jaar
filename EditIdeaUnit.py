@@ -5,7 +5,7 @@ from ui.EditIdeaUnitUI import Ui_Form
 from PyQt5 import QtWidgets as qtw, QtCore
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1, QTableWidget as qtw0
 from src.contract.hreg_time import SuffFactUnitHregTime
-from src.contract.group import GroupLink, GroupBrand
+from src.contract.group import Balancelink, GroupBrand
 from src.contract.required_idea import Road
 from src.contract.hreg_time import get_24hr, get_60min
 from src.pyqt5_kit.pyqt_func import (
@@ -740,27 +740,27 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.idea2group_table.setHorizontalHeaderLabels(
             ["Group display", "group_name", "LW Force"]
         )
-        # print(f"{self.yo_x._grouplinks=}")
-        # print(f"{self.yo_x._groupheirs=}")
-        grouplinks_list = list(self.yo_x._grouplinks.values())
-        grouplinks_list.sort(key=lambda x: x.name, reverse=False)
-        groupheirs_list = list(self.yo_x._groupheirs.values())
-        groupheirs_list.sort(key=lambda x: x.name, reverse=False)
-        # print(f"{grouplinks_list=}")
-        # print(f"{groupheirs_list=}")
+        # print(f"{self.yo_x._balancelinks=}")
+        # print(f"{self.yo_x._balanceheirs=}")
+        balancelinks_list = list(self.yo_x._balancelinks.values())
+        balancelinks_list.sort(key=lambda x: x.name, reverse=False)
+        balanceheirs_list = list(self.yo_x._balanceheirs.values())
+        balanceheirs_list.sort(key=lambda x: x.name, reverse=False)
+        # print(f"{balancelinks_list=}")
+        # print(f"{balanceheirs_list=}")
 
-        for row, groupheir in enumerate(groupheirs_list, start=1):
+        for row, balanceheir in enumerate(balanceheirs_list, start=1):
             self.idea2group_table.setRowCount(row)
-            x_text = f"  Heir: {groupheir.name}"
-            for grouplink in grouplinks_list:
-                if grouplink.brand == groupheir.name:
-                    x_text = f"{groupheir.name}"
+            x_text = f"  Heir: {balanceheir.name}"
+            for balancelink in balancelinks_list:
+                if balancelink.brand == balanceheir.name:
+                    x_text = f"{balanceheir.name}"
             self.idea2group_table.setItem(row - 1, 0, qtw1(x_text))
-            self.idea2group_table.setItem(row - 1, 1, qtw1(groupheir.name))
+            self.idea2group_table.setItem(row - 1, 1, qtw1(balanceheir.name))
             self.idea2group_table.setItem(
                 row - 1,
                 2,
-                qtw1(contract_importance_diplay(groupheir._contract_credit)),
+                qtw1(contract_importance_diplay(balanceheir._contract_credit)),
             )
 
         self.idea2group_table.sortItems(1, QtCore.Qt.AscendingOrder)
@@ -770,8 +770,8 @@ class EditIdeaUnit(qtw0, Ui_Form):
         groupunits_names_list = []
         for groupunit in self.contract_x._groups.values():
             group_previously_selected = any(
-                groupunit.brand == grouplink.brand
-                for grouplink in self.yo_x._grouplinks.values()
+                groupunit.brand == balancelink.brand
+                for balancelink in self.yo_x._balancelinks.values()
             )
             if not group_previously_selected:
                 groupunits_names_list.append(groupunit.brand)
@@ -784,9 +784,9 @@ class EditIdeaUnit(qtw0, Ui_Form):
         bd_name_new = self.idea2group_insert_combo.currentText()
         if bd_name_new == "":
             raise Exception("bd_name is empty, idea2bd cannot be updated")
-        grouplink_new = GroupLink(brand=GroupBrand(bd_name_new), weight=1)
+        balancelink_new = Balancelink(brand=GroupBrand(bd_name_new), weight=1)
         self.contract_x.edit_idea_attr(
-            road=f"{self.yo_x._walk},{self.yo_x._label}", grouplink=grouplink_new
+            road=f"{self.yo_x._walk},{self.yo_x._label}", balancelink=balancelink_new
         )
         self.idea2group_insert_combo_load()
         self.idea2group_table_load()
@@ -799,7 +799,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             ).text()
             self.contract_x.edit_idea_attr(
                 road=f"{self.yo_x._walk},{self.yo_x._label}",
-                grouplink_del=delete_group_name,
+                balancelink_del=delete_group_name,
             )
             self.idea2group_insert_combo_load()
             self.idea2group_table_load()
@@ -835,7 +835,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             descendant_promise_count=None,
             all_party_credit=None,
             all_party_debt=None,
-            grouplink=None,
+            balancelink=None,
             is_expanded=None,
         )
 
@@ -922,8 +922,8 @@ class EditIdeaUnit(qtw0, Ui_Form):
             descendant_promise_count=None,
             all_party_credit=None,
             all_party_debt=None,
-            grouplink=None,
-            grouplink_del=None,
+            balancelink=None,
+            balancelink_del=None,
             is_expanded=None,
             problem_bool=None,
             on_meld_weight_action=None,

@@ -1,5 +1,5 @@
 from src.contract.party import PartyName, partylink_shop, partyunit_shop
-from src.contract.group import GroupBrand, groupunit_shop, grouplink_shop
+from src.contract.group import GroupBrand, groupunit_shop, balancelink_shop
 from src.contract.examples.example_contracts import (
     contract_v001 as examples_contract_v001,
     contract_v001_with_large_agenda as examples_contract_v001_with_large_agenda,
@@ -56,16 +56,16 @@ def test_contract_set_party_correctly_sets_partys_1():
     assert cx._groups["rico"]._single_party == True
 
     # WHEN
-    cx._idearoot.set_grouplink(
-        grouplink=grouplink_shop(brand=GroupBrand("rico"), creditor_weight=10)
+    cx._idearoot.set_balancelink(
+        balancelink=balancelink_shop(brand=GroupBrand("rico"), creditor_weight=10)
     )
-    cx._idearoot.set_grouplink(
-        grouplink=grouplink_shop(brand=GroupBrand("carmen"), creditor_weight=10)
+    cx._idearoot.set_balancelink(
+        balancelink=balancelink_shop(brand=GroupBrand("carmen"), creditor_weight=10)
     )
-    cx._idearoot.set_grouplink(
-        grouplink=grouplink_shop(brand=GroupBrand("patrick"), creditor_weight=10)
+    cx._idearoot.set_balancelink(
+        balancelink=balancelink_shop(brand=GroupBrand("patrick"), creditor_weight=10)
     )
-    assert len(cx._idearoot._grouplinks) == 3
+    assert len(cx._idearoot._balancelinks) == 3
 
 
 def test_contract_set_party_correctly_sets_partys_2():
@@ -147,12 +147,12 @@ def test_contract_get_idea_list_CorrectlySetsPartyLinkContractCreditAndDebt():
     cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(rico_text)))
     cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(carm_text)))
     cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(patr_text)))
-    bl_rico = grouplink_shop(brand=rico_text, creditor_weight=20, debtor_weight=40)
-    bl_carm = grouplink_shop(brand=carm_text, creditor_weight=10, debtor_weight=5)
-    bl_patr = grouplink_shop(brand=patr_text, creditor_weight=10, debtor_weight=5)
-    cx._idearoot.set_grouplink(grouplink=bl_rico)
-    cx._idearoot.set_grouplink(grouplink=bl_carm)
-    cx._idearoot.set_grouplink(grouplink=bl_patr)
+    bl_rico = balancelink_shop(brand=rico_text, creditor_weight=20, debtor_weight=40)
+    bl_carm = balancelink_shop(brand=carm_text, creditor_weight=10, debtor_weight=5)
+    bl_patr = balancelink_shop(brand=patr_text, creditor_weight=10, debtor_weight=5)
+    cx._idearoot.set_balancelink(balancelink=bl_rico)
+    cx._idearoot.set_balancelink(balancelink=bl_carm)
+    cx._idearoot.set_balancelink(balancelink=bl_patr)
 
     rico_groupunit = cx._groups.get(rico_text)
     carm_groupunit = cx._groups.get(carm_text)
@@ -174,9 +174,9 @@ def test_contract_get_idea_list_CorrectlySetsPartyLinkContractCreditAndDebt():
 
     cx.set_contract_metrics()
 
-    # for grouplink in cx._groupheirs.values():
+    # for balancelink in cx._balanceheirs.values():
     #     print(
-    #         f"{cx._contract_importance=} {grouplink.brand=} {grouplink._contract_credit=} {grouplink._contract_debt=}"
+    #         f"{cx._contract_importance=} {balancelink.brand=} {balancelink._contract_credit=} {balancelink._contract_debt=}"
     #     )
 
     assert rico_partylink._contract_credit == 0.5
@@ -222,8 +222,8 @@ def test_contract_get_idea_list_CorrectlySetsPartyLinkContractCreditAndDebt():
     # WHEN another action, make sure metrics are as expected
     selena_text = "selena"
     cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(selena_text)))
-    cx._idearoot.set_grouplink(
-        grouplink=grouplink_shop(
+    cx._idearoot.set_balancelink(
+        balancelink=balancelink_shop(
             brand=GroupBrand(selena_text), creditor_weight=20, debtor_weight=13
         )
     )
@@ -299,12 +299,12 @@ def test_contract_get_idea_list_CorrectlySetsPartyUnitContractImportance():
     cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(rico_text)))
     cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(carm_text)))
     cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(patr_text)))
-    bl_rico = grouplink_shop(brand=rico_text, creditor_weight=20, debtor_weight=40)
-    bl_carm = grouplink_shop(brand=carm_text, creditor_weight=10, debtor_weight=5)
-    bl_patr = grouplink_shop(brand=patr_text, creditor_weight=10, debtor_weight=5)
-    cx._idearoot._kids[swim_text].set_grouplink(grouplink=bl_rico)
-    cx._idearoot._kids[swim_text].set_grouplink(grouplink=bl_carm)
-    cx._idearoot._kids[swim_text].set_grouplink(grouplink=bl_patr)
+    bl_rico = balancelink_shop(brand=rico_text, creditor_weight=20, debtor_weight=40)
+    bl_carm = balancelink_shop(brand=carm_text, creditor_weight=10, debtor_weight=5)
+    bl_patr = balancelink_shop(brand=patr_text, creditor_weight=10, debtor_weight=5)
+    cx._idearoot._kids[swim_text].set_balancelink(balancelink=bl_rico)
+    cx._idearoot._kids[swim_text].set_balancelink(balancelink=bl_carm)
+    cx._idearoot._kids[swim_text].set_balancelink(balancelink=bl_patr)
 
     rico_partyunit = cx._partys.get(rico_text)
     carm_partyunit = cx._partys.get(carm_text)
@@ -365,8 +365,8 @@ def test_contract_get_idea_list_CorrectlySetsPartyUnitContractImportance():
     # WHEN another action, make sure metrics are as expected
     selena_text = "selena"
     cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(selena_text)))
-    cx._idearoot.set_grouplink(
-        grouplink=grouplink_shop(
+    cx._idearoot.set_balancelink(
+        balancelink=balancelink_shop(
             brand=selena_text, creditor_weight=20, debtor_weight=10
         )
     )
@@ -445,18 +445,18 @@ def test_contract_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitContractImpor
     cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(rico_text)))
     cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(carm_text)))
     cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(patr_text)))
-    bl_rico = grouplink_shop(brand=rico_text, creditor_weight=20, debtor_weight=40)
-    bl_carm = grouplink_shop(brand=carm_text, creditor_weight=10, debtor_weight=5)
-    bl_patr = grouplink_shop(brand=patr_text, creditor_weight=10, debtor_weight=5)
-    cx._idearoot._kids[swim_text].set_grouplink(grouplink=bl_rico)
-    cx._idearoot._kids[swim_text].set_grouplink(grouplink=bl_carm)
-    cx._idearoot._kids[swim_text].set_grouplink(grouplink=bl_patr)
+    bl_rico = balancelink_shop(brand=rico_text, creditor_weight=20, debtor_weight=40)
+    bl_carm = balancelink_shop(brand=carm_text, creditor_weight=10, debtor_weight=5)
+    bl_patr = balancelink_shop(brand=patr_text, creditor_weight=10, debtor_weight=5)
+    cx._idearoot._kids[swim_text].set_balancelink(balancelink=bl_rico)
+    cx._idearoot._kids[swim_text].set_balancelink(balancelink=bl_carm)
+    cx._idearoot._kids[swim_text].set_balancelink(balancelink=bl_patr)
 
-    # no grouplinks attached to this one
+    # no balancelinks attached to this one
     hunt_text = "hunt"
     cx.add_idea(idea_kid=IdeaKid(_label=hunt_text, _weight=3), walk=prom_text)
 
-    assert cx._idearoot._grouplinks is None
+    assert cx._idearoot._balancelinks is None
 
     # WHEN
     cx.set_contract_metrics()
@@ -668,26 +668,26 @@ def test_contract_agenda_credit_debt_IsCorrectlySet():
     # THEN
     assert len(agenda_list) == 68
     sum_contract_agenda_importance = 0
-    agenda_no_grouplines_count = 0
-    agenda_yes_grouplines_count = 0
-    agenda_no_grouplines_contract_i_sum = 0
-    agenda_yes_grouplines_contract_i_sum = 0
+    agenda_no_balancelines_count = 0
+    agenda_yes_balancelines_count = 0
+    agenda_no_balancelines_contract_i_sum = 0
+    agenda_yes_balancelines_contract_i_sum = 0
     for agenda_item in agenda_list:
         sum_contract_agenda_importance += agenda_item._contract_importance
-        if agenda_item._grouplines == {}:
-            agenda_no_grouplines_count += 1
-            agenda_no_grouplines_contract_i_sum += agenda_item._contract_importance
+        if agenda_item._balancelines == {}:
+            agenda_no_balancelines_count += 1
+            agenda_no_balancelines_contract_i_sum += agenda_item._contract_importance
         else:
-            agenda_yes_grouplines_count += 1
-            agenda_yes_grouplines_contract_i_sum += agenda_item._contract_importance
+            agenda_yes_balancelines_count += 1
+            agenda_yes_balancelines_contract_i_sum += agenda_item._contract_importance
         # print(f"idea importance: {agenda_item._contract_importance:.7f} {sum_contract_agenda_importance:.5f} {agenda_item._label=} ")
         # print(f"{agenda_item.get_road()}")
     print(f"{sum_contract_agenda_importance=}")
-    assert agenda_no_grouplines_count == 20
-    assert agenda_yes_grouplines_count == 48
-    assert agenda_no_grouplines_contract_i_sum == 0.00447826215370075
-    assert agenda_yes_grouplines_contract_i_sum == 0.0027152834170378025
-    x2 = agenda_no_grouplines_contract_i_sum + agenda_yes_grouplines_contract_i_sum
+    assert agenda_no_balancelines_count == 20
+    assert agenda_yes_balancelines_count == 48
+    assert agenda_no_balancelines_contract_i_sum == 0.00447826215370075
+    assert agenda_yes_balancelines_contract_i_sum == 0.0027152834170378025
+    x2 = agenda_no_balancelines_contract_i_sum + agenda_yes_balancelines_contract_i_sum
     e10 = 0.0000000001
     assert abs(x2 - sum_contract_agenda_importance) < e10
 
@@ -714,7 +714,10 @@ def test_contract_agenda_credit_debt_IsCorrectlySet():
     assert sum_partylink_contract_agenda_credit == x_sum
     assert sum_partylink_contract_agenda_debt == x_sum
     assert (
-        abs(agenda_yes_grouplines_contract_i_sum - sum_groupunit_contract_agenda_credit)
+        abs(
+            agenda_yes_balancelines_contract_i_sum
+            - sum_groupunit_contract_agenda_credit
+        )
         < e10
     )
 

@@ -63,10 +63,10 @@ def test_owneropen_isol_contract_WhenStartingContractFileDoesNotExists(
     x_contract.set_economy_title(get_temp_economy_title())
     x_contract.set_contract_metrics()
     # x_idearoot = IdeaRoot(_label=p_name, _walk="")
-    # x_idearoot.set_grouplines_empty_if_null()
+    # x_idearoot.set_balancelines_empty_if_null()
     # x_idearoot.set_kids_empty_if_null()
-    # x_idearoot.set_grouplink_empty_if_null()
-    # x_idearoot.set_groupheir_empty_if_null()
+    # x_idearoot.set_balancelink_empty_if_null()
+    # x_idearoot.set_balanceheir_empty_if_null()
     # x_idearoot.set_requiredunits_empty_if_null()
     # x_idearoot.set_requiredheirs_empty_if_null()
     # x_idearoot._contract_importance = 1

@@ -300,7 +300,7 @@ def test_contract_meld_worksCorrectlyForLargeExample():
     cx1._idearoot._uid = 1
     cx2 = contract_v001()
 
-    cx2r_bl = cx2._idearoot._grouplines
+    cx2r_bl = cx2._idearoot._balancelines
     fam_text = "Family"
 
     print(
@@ -333,7 +333,7 @@ def test_contract_meld_worksCorrectlyForLargeExample():
     assert cx1._groups == cx2._groups
     assert len(cx1.get_idea_list()) == len(cx2.get_idea_list())
 
-    cx1r_bl = cx1._idearoot._grouplines
+    cx1r_bl = cx1._idearoot._balancelines
     print(
         f"Melded   {cx1r_bl.get(fam_text)._contract_debt=} {cx1._idearoot._kids_total_weight=}"
     )
@@ -365,11 +365,11 @@ def test_contract_meld_worksCorrectlyForLargeExample():
         < 0.0001
     )
 
-    # for groupline in cx1r_bl.values():
-    #     if groupline.name != fam_text:
-    #         assert groupline == cx2r_bl.get(groupline.name)
+    # for balanceline in cx1r_bl.values():
+    #     if balanceline.name != fam_text:
+    #         assert balanceline == cx2r_bl.get(balanceline.name)
     assert cx1r_bl == cx2r_bl
-    # assert cx1._idearoot._grouplines == cx2._idearoot._grouplines
+    # assert cx1._idearoot._balancelines == cx2._idearoot._balancelines
     # assert cx1._idearoot == cx2._idearoot
 
 

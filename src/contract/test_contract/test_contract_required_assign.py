@@ -115,7 +115,7 @@ def test_contract_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedhei
     assert four_idea._assignedheir == assigned_heir_x
 
 
-def test_ContractUnit__get_filtered_grouplinks_idea_CorrectlyFiltersIdea_AssignUnit():
+def test_ContractUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignUnit():
     # GIVEN
     owner_text = "Noa"
     cx1 = ContractUnit(_owner=owner_text)
@@ -141,7 +141,7 @@ def test_ContractUnit__get_filtered_grouplinks_idea_CorrectlyFiltersIdea_AssignU
     # WHEN
     cx2 = ContractUnit(_owner=owner_text)
     cx2.add_partyunit(name=xia_text)
-    filtered_idea = cx2._get_filtered_grouplinks_idea(cx1_swim_idea)
+    filtered_idea = cx2._get_filtered_balancelinks_idea(cx1_swim_idea)
 
     # THEN
     filtered_swim_suffgroups = filtered_idea._assignedunit._suffgroups
@@ -149,7 +149,7 @@ def test_ContractUnit__get_filtered_grouplinks_idea_CorrectlyFiltersIdea_AssignU
     assert list(filtered_swim_suffgroups) == [xia_text]
 
 
-def test_ContractUnit_add_idea_CorrectlyFiltersIdea_grouplinks():
+def test_ContractUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     # GIVEN
     owner_text = "Noa"
     cx1 = ContractUnit(_owner=owner_text)

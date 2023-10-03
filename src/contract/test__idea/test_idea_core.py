@@ -1,5 +1,5 @@
 from src.contract.idea import IdeaCore
-from src.contract.group import GroupBrand, grouplink_shop, groupheir_shop
+from src.contract.group import GroupBrand, balancelink_shop, balanceheir_shop
 from src.contract.required_idea import (
     RequiredUnit,
     RequiredHeir,
@@ -32,8 +32,8 @@ def test_idea_core_exists():
     assert new_obj.promise is False
     assert new_obj._problem_bool is False
     assert new_obj._descendant_promise_count is None
-    assert new_obj._grouplines is None
-    assert new_obj._groupheirs is None
+    assert new_obj._balancelines is None
+    assert new_obj._balanceheirs is None
     assert new_obj._is_expanded == True
     assert new_obj._acptfactheirs is None
     assert new_obj._acptfactunits is None
@@ -67,11 +67,11 @@ def test_idea_core_is_heir_CorrectlyIdentifiesHeirs():
     assert idea_core.is_heir(src="earth,sea", heir="earth,seaside") == False
 
 
-def test_idea_core_grouplinks_exist():
+def test_idea_core_balancelinks_exist():
     # GIVEN
     biker_creditor_weight = 12
     biker_debtor_weight = 15
-    biker_link = grouplink_shop(
+    biker_link = balancelink_shop(
         brand=GroupBrand("bikers2"),
         creditor_weight=biker_creditor_weight,
         debtor_weight=biker_debtor_weight,
@@ -80,7 +80,7 @@ def test_idea_core_grouplinks_exist():
     swimmer_name = GroupBrand("swimmers")
     swimmer_creditor_weight = 29
     swimmer_debtor_weight = 32
-    swimmer_link = grouplink_shop(
+    swimmer_link = balancelink_shop(
         brand=swimmer_name,
         creditor_weight=swimmer_creditor_weight,
         debtor_weight=swimmer_debtor_weight,
@@ -89,21 +89,21 @@ def test_idea_core_grouplinks_exist():
     group_links = {swimmer_link.brand: swimmer_link, biker_link.brand: biker_link}
 
     # WHEN
-    idea_core = IdeaCore(_label="exercising", _grouplinks=group_links)
+    idea_core = IdeaCore(_label="exercising", _balancelinks=group_links)
 
     # THEN
-    assert idea_core._grouplinks == group_links
+    assert idea_core._balancelinks == group_links
     # assert group_link_x.weight == 1.0
-    # group_link_x = grouplink_shop(brand=bikers_name, weight=bikers_weight)
+    # group_link_x = balancelink_shop(brand=bikers_name, weight=bikers_weight)
     # assert group_link_x.weight == 3.0
 
 
-def test_idea_core_get_inherited_groupheirs_weight_sum_WorksCorrectlyWithValues():
+def test_idea_core_get_inherited_balanceheirs_weight_sum_WorksCorrectlyWithValues():
     # GIVEN
     biker_creditor_weight = 12
     biker_debtor_weight = 15
     biker_text = "bikers2"
-    biker_link = groupheir_shop(
+    biker_link = balanceheir_shop(
         brand=GroupBrand(biker_text),
         creditor_weight=biker_creditor_weight,
         debtor_weight=biker_debtor_weight,
@@ -113,7 +113,7 @@ def test_idea_core_get_inherited_groupheirs_weight_sum_WorksCorrectlyWithValues(
     swimmer_name = GroupBrand(swimmer_text)
     swimmer_creditor_weight = 29
     swimmer_debtor_weight = 32
-    swimmer_link = groupheir_shop(
+    swimmer_link = balanceheir_shop(
         brand=swimmer_name,
         creditor_weight=swimmer_creditor_weight,
         debtor_weight=swimmer_debtor_weight,
@@ -122,46 +122,46 @@ def test_idea_core_get_inherited_groupheirs_weight_sum_WorksCorrectlyWithValues(
     group_links = {swimmer_link.brand: swimmer_link, biker_link.brand: biker_link}
 
     # WHEN
-    idea_core = IdeaCore(_label="exercising", _groupheirs=group_links)
+    idea_core = IdeaCore(_label="exercising", _balanceheirs=group_links)
 
     # THEN
-    assert idea_core.get_groupheirs_creditor_weight_sum() != None
-    assert idea_core.get_groupheirs_creditor_weight_sum() == 41
-    assert idea_core.get_groupheirs_debtor_weight_sum() != None
-    assert idea_core.get_groupheirs_debtor_weight_sum() == 47
+    assert idea_core.get_balanceheirs_creditor_weight_sum() != None
+    assert idea_core.get_balanceheirs_creditor_weight_sum() == 41
+    assert idea_core.get_balanceheirs_debtor_weight_sum() != None
+    assert idea_core.get_balanceheirs_debtor_weight_sum() == 47
 
-    assert len(idea_core._groupheirs) == 2
+    assert len(idea_core._balanceheirs) == 2
 
-    swimmer_groupheir = idea_core._groupheirs.get(swimmer_text)
-    assert swimmer_groupheir._contract_credit is None
-    assert swimmer_groupheir._contract_debt is None
-    biker_groupheir = idea_core._groupheirs.get(biker_text)
-    assert biker_groupheir._contract_credit is None
-    assert biker_groupheir._contract_debt is None
+    swimmer_balanceheir = idea_core._balanceheirs.get(swimmer_text)
+    assert swimmer_balanceheir._contract_credit is None
+    assert swimmer_balanceheir._contract_debt is None
+    biker_balanceheir = idea_core._balanceheirs.get(biker_text)
+    assert biker_balanceheir._contract_credit is None
+    assert biker_balanceheir._contract_debt is None
 
     # WHEN
     idea_core._contract_importance = 0.25
-    idea_core.set_groupheirs_contract_credit_debit()
+    idea_core.set_balanceheirs_contract_credit_debit()
 
     # THEN
-    print(f"{len(idea_core._groupheirs)=}")
-    swimmer_groupheir = idea_core._groupheirs.get(swimmer_text)
-    assert swimmer_groupheir._contract_credit != None
-    assert swimmer_groupheir._contract_debt != None
-    biker_groupheir = idea_core._groupheirs.get(biker_text)
-    assert biker_groupheir._contract_credit != None
-    assert biker_groupheir._contract_debt != None
+    print(f"{len(idea_core._balanceheirs)=}")
+    swimmer_balanceheir = idea_core._balanceheirs.get(swimmer_text)
+    assert swimmer_balanceheir._contract_credit != None
+    assert swimmer_balanceheir._contract_debt != None
+    biker_balanceheir = idea_core._balanceheirs.get(biker_text)
+    assert biker_balanceheir._contract_credit != None
+    assert biker_balanceheir._contract_debt != None
 
 
-def test_idea_core_get_grouplinks_weight_sum_WorksCorrectlyNoValues():
+def test_idea_core_get_balancelinks_weight_sum_WorksCorrectlyNoValues():
     # GIVEN /WHEN
     idea_core = IdeaCore(_label="exercising")
 
     # THEN
-    assert idea_core.get_groupheirs_creditor_weight_sum() != None
-    assert idea_core.get_groupheirs_debtor_weight_sum() != None
+    assert idea_core.get_balanceheirs_creditor_weight_sum() != None
+    assert idea_core.get_balanceheirs_debtor_weight_sum() != None
     # does not crash with empty set
-    idea_core.set_groupheirs_contract_credit_debit()
+    idea_core.set_balanceheirs_contract_credit_debit()
 
 
 def test_idea_core_set_requiredheirsCorrectlyTakesFromOutside():
@@ -267,7 +267,7 @@ def test_idea_get_dict_ReturnsDict():
     biker_name = GroupBrand("bikers")
     biker_creditor_weight = 3.0
     biker_debtor_weight = 7.0
-    biker_link = grouplink_shop(
+    biker_link = balancelink_shop(
         brand=biker_name,
         creditor_weight=biker_creditor_weight,
         debtor_weight=biker_debtor_weight,
@@ -275,12 +275,12 @@ def test_idea_get_dict_ReturnsDict():
     flyer_name = GroupBrand("flyers")
     flyer_creditor_weight = 6.0
     flyer_debtor_weight = 9.0
-    flyer_link = grouplink_shop(
+    flyer_link = balancelink_shop(
         brand=flyer_name,
         creditor_weight=flyer_creditor_weight,
         debtor_weight=flyer_debtor_weight,
     )
-    biker_and_flyer_grouplinks = {
+    biker_and_flyer_balancelinks = {
         biker_link.brand: biker_link,
         flyer_link.brand: flyer_link,
     }
@@ -294,12 +294,12 @@ def test_idea_get_dict_ReturnsDict():
         "creditor_weight": flyer_link.creditor_weight,
         "debtor_weight": flyer_link.debtor_weight,
     }
-    x1_grouplinks = {biker_name: biker_get_dict, flyer_name: flyer_get_dict}
+    x1_balancelinks = {biker_name: biker_get_dict, flyer_name: flyer_get_dict}
 
     temp_idea = IdeaCore(
         _walk=f"{root_label()},work",
         _kids=None,
-        _grouplinks=biker_and_flyer_grouplinks,
+        _balancelinks=biker_and_flyer_balancelinks,
         _weight=30,
         _label="work",
         _level=1,
@@ -323,8 +323,8 @@ def test_idea_get_dict_ReturnsDict():
     assert ideakid_dict != None
     assert ideakid_dict["_kids"] == temp_idea.get_kids_dict()
     assert ideakid_dict["_requiredunits"] == temp_idea.get_requiredunits_dict()
-    assert ideakid_dict["_grouplinks"] == temp_idea.get_grouplinks_dict()
-    assert ideakid_dict["_grouplinks"] == x1_grouplinks
+    assert ideakid_dict["_balancelinks"] == temp_idea.get_balancelinks_dict()
+    assert ideakid_dict["_balancelinks"] == x1_balancelinks
     assert ideakid_dict["_originunit"] == temp_idea.get_originunit_dict()
     assert ideakid_dict["_weight"] == temp_idea._weight
     assert ideakid_dict["_label"] == temp_idea._label

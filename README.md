@@ -82,13 +82,13 @@ ContractUnit IdeaUnit objects
 
 ContractUnit IdeaUnit hierarchical structure
 
-ContractUnit IdeaUnit GroupLink objects
+ContractUnit IdeaUnit Balancelink objects
 
-ContractUnit IdeaUnit GroupLine objects
+ContractUnit IdeaUnit Balanceline objects
 
-ContractUnit IdeaUnit GroupHeir objects
+ContractUnit IdeaUnit BalanceHeir objects
 
-ContractUnit IdeaUnit GroupHeir objects
+ContractUnit IdeaUnit BalanceHeir objects
 
 ContractUnit IdeaUnit RequiredFactUnit objects
 

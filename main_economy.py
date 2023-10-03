@@ -378,7 +378,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         [
                             contract_importance_diplay(idea_obj._contract_importance),
                             idea_road,
-                            len(idea_obj._grouplinks),
+                            len(idea_obj._balancelinks),
                         ]
                     )
 
@@ -486,13 +486,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             column_headers = [
                 "contract_importance",
                 f"Ideas Table ({len(p_ideas_list)})",
-                "grouplinks",
+                "balancelinks",
             ]
         else:
             column_headers = [
                 "contract_importance",
                 "Ideas Table",
-                "grouplinks",
+                "balancelinks",
             ]
 
         self.w_ideas_table.setObjectName("Ideas Table")

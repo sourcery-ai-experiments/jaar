@@ -20,7 +20,7 @@ def test_contract_get_tree_metrics_exists():
     assert cx_tree_metrics.node_count != None
     assert cx_tree_metrics.required_bases != None
     assert cx_tree_metrics.level_count != None
-    assert cx_tree_metrics.grouplinks_metrics != None
+    assert cx_tree_metrics.balancelinks_metrics != None
 
 
 def test_contract_get_tree_metrics_get_idea_uid_max_correctlyGetsMaxIdeaUID():

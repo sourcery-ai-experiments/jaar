@@ -229,7 +229,7 @@ def _create_treenode_l(pth: PYQTTreeHolder):
             f" ({contract_importance_diplay(pth.ideacore._contract_importance)})"
         )
     elif pth.yo2bd_count_flag:
-        treenode_l += f" ({len(pth.ideacore._grouplinks)})"
+        treenode_l += f" ({len(pth.ideacore._balancelinks)})"
     elif pth.required_count_flag:
         treenode_l = _get_treenode_l_required_count(treenode_l, pth)
     elif pth.required_view_flag:

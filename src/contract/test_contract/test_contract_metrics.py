@@ -2,7 +2,7 @@ from src.contract.examples.example_contracts import (
     contract_v001 as example_contracts_contract_v001,
 )
 from src.contract.party import PartyName, partyunit_shop
-from src.contract.group import GroupBrand, grouplink_shop, groupunit_shop
+from src.contract.group import GroupBrand, balancelink_shop, groupunit_shop
 from src.contract.contract import ContractUnit
 
 
@@ -51,14 +51,14 @@ def test_contract_3AdvocatesNoIdeaKid():
     a_x.set_partyunit(partyunit=au_rico)
     a_x.set_partyunit(partyunit=au_carm)
     a_x.set_partyunit(partyunit=au_patr)
-    a_x._idearoot.set_grouplink(
-        grouplink=grouplink_shop(brand=GroupBrand(rico_text), creditor_weight=10)
+    a_x._idearoot.set_balancelink(
+        balancelink=balancelink_shop(brand=GroupBrand(rico_text), creditor_weight=10)
     )
-    a_x._idearoot.set_grouplink(
-        grouplink=grouplink_shop(brand=GroupBrand(carm_text), creditor_weight=10)
+    a_x._idearoot.set_balancelink(
+        balancelink=balancelink_shop(brand=GroupBrand(carm_text), creditor_weight=10)
     )
-    a_x._idearoot.set_grouplink(
-        grouplink=grouplink_shop(brand=GroupBrand(patr_text), creditor_weight=10)
+    a_x._idearoot.set_balancelink(
+        balancelink=balancelink_shop(brand=GroupBrand(patr_text), creditor_weight=10)
     )
 
     # WHEN
@@ -66,15 +66,15 @@ def test_contract_3AdvocatesNoIdeaKid():
     partys_metrics = a_x.get_partys_metrics()
 
     # THEN
-    grouplink_rico = partys_metrics[rico_text]
-    grouplink_carm = partys_metrics[carm_text]
-    grouplink_patr = partys_metrics[patr_text]
-    assert grouplink_rico.brand != None
-    assert grouplink_carm.brand != None
-    assert grouplink_patr.brand != None
-    assert grouplink_rico.brand == rico_text
-    assert grouplink_carm.brand == carm_text
-    assert grouplink_patr.brand == patr_text
+    balancelink_rico = partys_metrics[rico_text]
+    balancelink_carm = partys_metrics[carm_text]
+    balancelink_patr = partys_metrics[patr_text]
+    assert balancelink_rico.brand != None
+    assert balancelink_carm.brand != None
+    assert balancelink_patr.brand != None
+    assert balancelink_rico.brand == rico_text
+    assert balancelink_carm.brand == carm_text
+    assert balancelink_patr.brand == patr_text
     all_groups = a_x._groups
     groupunit_rico = all_groups[rico_text]
     groupunit_carm = all_groups[carm_text]

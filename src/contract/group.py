@@ -214,7 +214,7 @@ def groupunit_shop(
 
 
 @dataclasses.dataclass
-class GroupLink(GroupCore):
+class Balancelink(GroupCore):
     creditor_weight: float = 1.0
     debtor_weight: float = 1.0
 
@@ -227,54 +227,54 @@ class GroupLink(GroupCore):
 
     def meld(
         self,
-        other_grouplink,
+        other_balancelink,
         other_on_meld_weight_action: str,
         src_on_meld_weight_action: str,
     ):
         self.creditor_weight = get_meld_weight(
             src_weight=self.creditor_weight,
             src_on_meld_weight_action=src_on_meld_weight_action,
-            other_weight=other_grouplink.creditor_weight,
+            other_weight=other_balancelink.creditor_weight,
             other_on_meld_weight_action=other_on_meld_weight_action,
         )
         self.debtor_weight = get_meld_weight(
             src_weight=self.debtor_weight,
             src_on_meld_weight_action=src_on_meld_weight_action,
-            other_weight=other_grouplink.debtor_weight,
+            other_weight=other_balancelink.debtor_weight,
             other_on_meld_weight_action=other_on_meld_weight_action,
         )
 
 
-# class GroupLinksshop:
-def grouplinks_get_from_json(grouplinks_json: str) -> dict[GroupBrand, GroupLink]:
-    grouplinks_dict = x_get_dict(json_x=grouplinks_json)
-    return grouplinks_get_from_dict(x_dict=grouplinks_dict)
+# class Balancelinksshop:
+def balancelinks_get_from_json(balancelinks_json: str) -> dict[GroupBrand, Balancelink]:
+    balancelinks_dict = x_get_dict(json_x=balancelinks_json)
+    return balancelinks_get_from_dict(x_dict=balancelinks_dict)
 
 
-def grouplinks_get_from_dict(x_dict: dict) -> dict[GroupBrand, GroupLink]:
-    grouplinks = {}
-    for grouplinks_dict in x_dict.values():
-        x_group = grouplink_shop(
-            brand=grouplinks_dict["brand"],
-            creditor_weight=grouplinks_dict["creditor_weight"],
-            debtor_weight=grouplinks_dict["debtor_weight"],
+def balancelinks_get_from_dict(x_dict: dict) -> dict[GroupBrand, Balancelink]:
+    balancelinks = {}
+    for balancelinks_dict in x_dict.values():
+        x_group = balancelink_shop(
+            brand=balancelinks_dict["brand"],
+            creditor_weight=balancelinks_dict["creditor_weight"],
+            debtor_weight=balancelinks_dict["debtor_weight"],
         )
-        grouplinks[x_group.brand] = x_group
-    return grouplinks
+        balancelinks[x_group.brand] = x_group
+    return balancelinks
 
 
-def grouplink_shop(
+def balancelink_shop(
     brand: GroupBrand, creditor_weight: float = None, debtor_weight: float = None
-) -> GroupLink:
+) -> Balancelink:
     creditor_weight = x_func_return1ifnone(creditor_weight)
     debtor_weight = x_func_return1ifnone(debtor_weight)
-    return GroupLink(
+    return Balancelink(
         brand=brand, creditor_weight=creditor_weight, debtor_weight=debtor_weight
     )
 
 
 @dataclasses.dataclass
-class GroupHeir(GroupCore):
+class BalanceHeir(GroupCore):
     creditor_weight: float = 1.0
     debtor_weight: float = 1.0
     _contract_credit: float = None
@@ -283,27 +283,27 @@ class GroupHeir(GroupCore):
     def set_contract_credit_debt(
         self,
         idea_contract_importance,
-        groupheirs_creditor_weight_sum: float,
-        groupheirs_debtor_weight_sum: float,
+        balanceheirs_creditor_weight_sum: float,
+        balanceheirs_debtor_weight_sum: float,
     ):
         self._contract_credit = idea_contract_importance * (
-            self.creditor_weight / groupheirs_creditor_weight_sum
+            self.creditor_weight / balanceheirs_creditor_weight_sum
         )
         self._contract_debt = idea_contract_importance * (
-            self.debtor_weight / groupheirs_debtor_weight_sum
+            self.debtor_weight / balanceheirs_debtor_weight_sum
         )
 
 
-def groupheir_shop(
+def balanceheir_shop(
     brand: GroupBrand,
     creditor_weight: float = None,
     debtor_weight: float = None,
     _contract_credit: float = None,
     _contract_debt: float = None,
-) -> GroupHeir:
+) -> BalanceHeir:
     creditor_weight = x_func_return1ifnone(creditor_weight)
     debtor_weight = x_func_return1ifnone(debtor_weight)
-    return GroupHeir(
+    return BalanceHeir(
         brand=brand,
         creditor_weight=creditor_weight,
         debtor_weight=debtor_weight,
@@ -313,7 +313,7 @@ def groupheir_shop(
 
 
 @dataclasses.dataclass
-class Groupline(GroupCore):
+class Balanceline(GroupCore):
     _contract_credit: float
     _contract_debt: float
 

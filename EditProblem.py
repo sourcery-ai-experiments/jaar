@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QTableWidgetItem as qti
 from EditIdeaUnit import EditIdeaUnit
 from EditParty import EditParty
 from src.pyqt5_kit.pyqt_func import contract_importance_diplay, get_pyqttree, num2str
-from src.contract.group import groupunit_shop, grouplink_shop
+from src.contract.group import groupunit_shop, balancelink_shop
 from src.contract.idea import IdeaKid
 from src.contract.road import Road, get_walk_from_road, get_terminus_node_from_road
 from sys import exit as sys_exit
@@ -82,14 +82,14 @@ class EditProblem(qtw.QWidget, Ui_Form):
     def select_action3_combo(self):
         self.action3_text.setText(self.action3_combo.currentText())
 
-    def create_grouplinks_list(self):
-        grouplinks_x_list = []
+    def create_balancelinks_list(self):
+        balancelinks_x_list = []
         if self.group1_name_combo.currentText() != "":
             weight1 = 1
             if self.group1_weight_text.text() != "":
                 weight1 = float(self.group1_weight_text.text())
-            grouplinks_x_list.append(
-                grouplink_shop(
+            balancelinks_x_list.append(
+                balancelink_shop(
                     name=self.group1_name_combo.currentText(), weight=weight1
                 )
             )
@@ -98,8 +98,8 @@ class EditProblem(qtw.QWidget, Ui_Form):
             if self.group2_weight_text.text() != "":
                 weight2 = float(self.group2_weight_text.text())
 
-            grouplinks_x_list.append(
-                grouplink_shop(
+            balancelinks_x_list.append(
+                balancelink_shop(
                     name=self.group2_name_combo.currentText(), weight=weight2
                 )
             )
@@ -107,12 +107,12 @@ class EditProblem(qtw.QWidget, Ui_Form):
             weight3 = 1
             if self.group3_weight_text.text() != "":
                 weight3 = float(self.group3_weight_text.text())
-            grouplinks_x_list.append(
-                grouplink_shop(
+            balancelinks_x_list.append(
+                balancelink_shop(
                     name=self.group3_name_combo.currentText(), weight=weight3
                 )
             )
-        return grouplinks_x_list
+        return balancelinks_x_list
 
     def load_problem(self):
         self.set_problem_dominate_action_idea(road=self.problem_name_text.text())
@@ -126,8 +126,8 @@ class EditProblem(qtw.QWidget, Ui_Form):
             prob_walk = get_walk_from_road(road)
             prob_label = get_terminus_node_from_road(road)
             prob_idea = IdeaKid(_label=prob_label, _walk=prob_walk)
-            for grouplink_x in self.create_grouplinks_list():
-                prob_idea.set_grouplink(grouplink_x)
+            for balancelink_x in self.create_balancelinks_list():
+                prob_idea.set_balancelink(balancelink_x)
             self.contract_x.set_dominate_promise_idea(idea_kid=prob_idea)
 
     def add_group(self):

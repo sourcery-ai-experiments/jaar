@@ -1,11 +1,11 @@
 from src.contract.party import PartyName, partylink_shop
 from src.contract.group import (
-    Groupline,
+    Balanceline,
     groupunit_shop,
     GroupBrand,
-    grouplink_shop,
-    grouplinks_get_from_json,
-    groupheir_shop,
+    balancelink_shop,
+    balancelinks_get_from_json,
+    balanceheir_shop,
     get_from_json as groupunits_get_from_json,
 )
 from src.contract.road import get_default_economy_root_label as root_label
@@ -405,7 +405,7 @@ def test_brankLink_exists():
     bikers_brand = GroupBrand("bikers")
 
     # WHEN
-    group_link_x = grouplink_shop(brand=bikers_brand)
+    group_link_x = balancelink_shop(brand=bikers_brand)
 
     # THEN
     assert group_link_x.brand == bikers_brand
@@ -416,7 +416,7 @@ def test_brankLink_exists():
     bikers_creditor_weight = 3.0
     bikers_debtor_weight = 5.0
 
-    group_link_x = grouplink_shop(
+    group_link_x = balancelink_shop(
         brand=bikers_brand,
         creditor_weight=bikers_creditor_weight,
         debtor_weight=bikers_debtor_weight,
@@ -432,10 +432,10 @@ def test_brankLink_set_contract_importanceCorrectly():
     bikers_brand = GroupBrand("bikers")
     bikers_creditor_weight = 3.0
     bikers_debt_weight = 6.0
-    grouplinks_sum_creditor_weight = 60
-    grouplinks_sum_debtor_weight = 60
+    balancelinks_sum_creditor_weight = 60
+    balancelinks_sum_debtor_weight = 60
     idea_contract_importance = 1
-    group_heir_x = groupheir_shop(
+    group_heir_x = balanceheir_shop(
         brand=bikers_brand,
         creditor_weight=bikers_creditor_weight,
         debtor_weight=bikers_debt_weight,
@@ -444,8 +444,8 @@ def test_brankLink_set_contract_importanceCorrectly():
     # WHEN
     group_heir_x.set_contract_credit_debt(
         idea_contract_importance=idea_contract_importance,
-        groupheirs_creditor_weight_sum=grouplinks_sum_creditor_weight,
-        groupheirs_debtor_weight_sum=grouplinks_sum_debtor_weight,
+        balanceheirs_creditor_weight_sum=balancelinks_sum_creditor_weight,
+        balanceheirs_debtor_weight_sum=balancelinks_sum_debtor_weight,
     )
 
     # THEN
@@ -453,12 +453,12 @@ def test_brankLink_set_contract_importanceCorrectly():
     assert group_heir_x._contract_debt == 0.1
 
 
-def test_grouplink_get_dict_ReturnsDictWithNecessaryDataForJSON():
+def test_balancelink_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
     bikers_brand = GroupBrand("bikers")
     bikers_creditor_weight = 3.0
     bikers_debtor_weight = 5.0
-    bikers_link = grouplink_shop(
+    bikers_link = balancelink_shop(
         brand=bikers_brand,
         creditor_weight=bikers_creditor_weight,
         debtor_weight=bikers_debtor_weight,
@@ -478,43 +478,43 @@ def test_grouplink_get_dict_ReturnsDictWithNecessaryDataForJSON():
     }
 
 
-def test_grouplinks_get_from_JSON_SimpleExampleWorks():
+def test_balancelinks_get_from_JSON_SimpleExampleWorks():
     # GIVEN
     str_teacher = "teachers"
-    teacher_grouplink = grouplink_shop(
+    teacher_balancelink = balancelink_shop(
         brand=str_teacher, creditor_weight=103, debtor_weight=155
     )
-    teacher_dict = teacher_grouplink.get_dict()
-    grouplinks_dict = {teacher_grouplink.brand: teacher_dict}
+    teacher_dict = teacher_balancelink.get_dict()
+    balancelinks_dict = {teacher_balancelink.brand: teacher_dict}
 
-    teachers_json = x_get_json(dict_x=grouplinks_dict)
+    teachers_json = x_get_json(dict_x=balancelinks_dict)
     assert teachers_json != None
     assert x_is_json(json_x=teachers_json)
 
     # WHEN
-    grouplinks_obj_dict = grouplinks_get_from_json(grouplinks_json=teachers_json)
+    balancelinks_obj_dict = balancelinks_get_from_json(balancelinks_json=teachers_json)
 
     # THEN
-    assert grouplinks_obj_dict != None
-    teachers_obj_check_dict = {teacher_grouplink.brand: teacher_grouplink}
-    print(f"    {grouplinks_obj_dict=}")
+    assert balancelinks_obj_dict != None
+    teachers_obj_check_dict = {teacher_balancelink.brand: teacher_balancelink}
+    print(f"    {balancelinks_obj_dict=}")
     print(f"{teachers_obj_check_dict=}")
-    assert grouplinks_obj_dict == teachers_obj_check_dict
+    assert balancelinks_obj_dict == teachers_obj_check_dict
 
 
-def test_Groupline_exists():
+def test_Balanceline_exists():
     # GIVEN
     bikers_brand = GroupBrand("bikers")
-    groupline_x = Groupline(
+    balanceline_x = Balanceline(
         brand=bikers_brand, _contract_credit=0.33, _contract_debt=0.55
     )
-    assert groupline_x.brand == bikers_brand
-    assert groupline_x._contract_credit == 0.33
-    assert groupline_x._contract_debt == 0.55
+    assert balanceline_x.brand == bikers_brand
+    assert balanceline_x._contract_credit == 0.33
+    assert balanceline_x._contract_debt == 0.55
 
     # WHEN
-    groupline_x.add_contract_credit_debt(contract_credit=0.11, contract_debt=0.2)
+    balanceline_x.add_contract_credit_debt(contract_credit=0.11, contract_debt=0.2)
 
     # THEN
-    assert groupline_x._contract_credit == 0.44
-    assert groupline_x._contract_debt == 0.75
+    assert balanceline_x._contract_credit == 0.44
+    assert balanceline_x._contract_debt == 0.75

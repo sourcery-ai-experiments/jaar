@@ -15,7 +15,7 @@ from src.contract.examples.contract_env import (
     get_contract_temp_env_dir,
     env_dir_setup_cleanup,
 )
-from src.contract.group import groupunit_shop, grouplink_shop
+from src.contract.group import groupunit_shop, balancelink_shop
 from src.contract.party import partylink_shop
 from src.contract.required_assign import assigned_unit_shop
 from src.contract.x_func import (
@@ -295,11 +295,15 @@ def test_contract_get_json_CorrectlyWorksForSimpleExample():
     tim_assigned_unit = assigned_unit_shop()
     tim_assigned_unit.set_suffgroup(name=tim_text)
     contract_y.edit_idea_attr(road=shave_road, assignedunit=tim_assigned_unit)
-    contract_y.edit_idea_attr(road=shave_road, grouplink=grouplink_shop(brand=tim_text))
-    contract_y.edit_idea_attr(road=shave_road, grouplink=grouplink_shop(brand=sue_text))
+    contract_y.edit_idea_attr(
+        road=shave_road, balancelink=balancelink_shop(brand=tim_text)
+    )
+    contract_y.edit_idea_attr(
+        road=shave_road, balancelink=balancelink_shop(brand=sue_text)
+    )
 
     contract_y.edit_idea_attr(
-        road=contract_y._economy_title, grouplink=grouplink_shop(brand=sue_text)
+        road=contract_y._economy_title, balancelink=balancelink_shop(brand=sue_text)
     )
 
     yao_text = "Yao"
@@ -327,7 +331,7 @@ def test_contract_get_json_CorrectlyWorksForSimpleExample():
     assert idearoot_x._assignedunit == contract_y._idearoot._assignedunit
     assert idearoot_x._assignedunit == run_assigned_unit
     assert len(idearoot_x._acptfactunits) == 1
-    assert len(idearoot_x._grouplinks) == 1
+    assert len(idearoot_x._balancelinks) == 1
 
     assert len(contract_x._idearoot._kids) == 2
 
@@ -347,7 +351,7 @@ def test_contract_get_json_CorrectlyWorksForSimpleExample():
     assert shave_idea_x._assignedunit == shave_idea_y2._assignedunit
     assert shave_idea_x._assignedunit == tim_assigned_unit
     assert shave_idea_x._originunit == shave_idea_y2._originunit
-    assert len(shave_idea_x._grouplinks) == 2
+    assert len(shave_idea_x._balancelinks) == 2
     assert len(shave_idea_x._acptfactunits) == 1
 
     assert len(contract_x._originunit._links) == 1

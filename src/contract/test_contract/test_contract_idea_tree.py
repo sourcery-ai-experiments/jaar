@@ -4,7 +4,7 @@ from src.contract.examples.example_contracts import (
 from src.contract.party import PartyName
 from src.contract.idea import IdeaKid
 from src.contract.contract import ContractUnit
-from src.contract.group import Groupline, GroupLink
+from src.contract.group import Balanceline, Balancelink
 from pytest import raises as pytest_raises
 
 
@@ -173,13 +173,13 @@ def test_set_contract_metrics_NLevelCorrectlySetsDescendantAttributes_2():
     cx.add_idea(idea_kid=x2_idea, walk=f"{cx._economy_title},work")
 
     cx.add_partyunit(name="sandy")
-    x_grouplink = GroupLink(brand="sandy")
-    cx._idearoot._kids["work"]._kids["email"].set_grouplink(grouplink=x_grouplink)
+    x_balancelink = Balancelink(brand="sandy")
+    cx._idearoot._kids["work"]._kids["email"].set_balancelink(balancelink=x_balancelink)
     # print(cx._kids["work"]._kids["email"])
-    # print(cx._kids["work"]._kids["email"]._grouplink)
+    # print(cx._kids["work"]._kids["email"]._balancelink)
     cx.set_contract_metrics()
     # print(cx._kids["work"]._kids["email"])
-    # print(cx._kids["work"]._kids["email"]._grouplink)
+    # print(cx._kids["work"]._kids["email"]._balancelink)
 
     assert cx._idearoot._all_party_credit == False
     assert cx._idearoot._all_party_debt == False
@@ -197,48 +197,48 @@ def test_set_contract_metrics_NLevelCorrectlySetsDescendantAttributes_2():
     assert cx._idearoot._kids["weekdays"]._kids["Tuesday"]._all_party_debt == True
 
 
-def test_TreeTraverseSetsClearsGrouplineestorsCorrectly():
+def test_TreeTraverseSetsClearsBalancelineestorsCorrectly():
     # sourcery skip: simplify-empty-collection-comparison
     cx = example_contracts_get_contract_with_4_levels()
     cx.set_contract_metrics()
-    # idea tree has no grouplinks
-    assert cx._idearoot._grouplines == {}
-    cx._idearoot._grouplines = {1: "testtest"}
-    assert cx._idearoot._grouplines != {}
+    # idea tree has no balancelinks
+    assert cx._idearoot._balancelines == {}
+    cx._idearoot._balancelines = {1: "testtest"}
+    assert cx._idearoot._balancelines != {}
     cx.set_contract_metrics()
-    assert cx._idearoot._grouplines == {}
+    assert cx._idearoot._balancelines == {}
 
     # test for level 1 and level n
-    cx._idearoot._kids["work"]._grouplines = {1: "testtest"}
-    assert cx._idearoot._kids["work"]._grouplines != {}
+    cx._idearoot._kids["work"]._balancelines = {1: "testtest"}
+    assert cx._idearoot._kids["work"]._balancelines != {}
     cx.set_contract_metrics()
-    assert cx._idearoot._kids["work"]._grouplines == {}
+    assert cx._idearoot._kids["work"]._balancelines == {}
 
 
-def test_TreeTraverseSetsGrouplineestorFromRootCorrectly():
+def test_TreeTraverseSetsBalancelineestorFromRootCorrectly():
     # GIVEN
     cx = example_contracts_get_contract_with_4_levels()
     cx.set_contract_metrics()
-    # idea tree has no grouplinks
-    assert cx._idearoot._grouplines == {}
+    # idea tree has no balancelinks
+    assert cx._idearoot._balancelines == {}
     sandy_text = "sandy"
-    sandy_grouplink = GroupLink(brand=sandy_text)
+    sandy_balancelink = Balancelink(brand=sandy_text)
     cx.add_partyunit(name=sandy_text)
-    cx._idearoot.set_grouplink(grouplink=sandy_grouplink)
-    # idea tree has grouplines
-    assert cx._idearoot._groupheirs.get(sandy_text) is None
+    cx._idearoot.set_balancelink(balancelink=sandy_balancelink)
+    # idea tree has balancelines
+    assert cx._idearoot._balanceheirs.get(sandy_text) is None
 
     # WHEN
     cx.set_contract_metrics()
 
     # THEN
-    assert cx._idearoot._groupheirs.get(sandy_text) != None
-    assert cx._idearoot._groupheirs.get(sandy_text).brand == sandy_text
-    assert cx._idearoot._grouplines != {}
+    assert cx._idearoot._balanceheirs.get(sandy_text) != None
+    assert cx._idearoot._balanceheirs.get(sandy_text).brand == sandy_text
+    assert cx._idearoot._balancelines != {}
     root_idea = cx.get_idea_kid(road=f"{cx._idearoot._label}")
-    sandy_groupline = cx._idearoot._grouplines.get(sandy_text)
-    print(f"{sandy_groupline._contract_credit=} {root_idea._contract_importance=} ")
-    print(f"  {sandy_groupline._contract_debt=} {root_idea._contract_importance=} ")
+    sandy_balanceline = cx._idearoot._balancelines.get(sandy_text)
+    print(f"{sandy_balanceline._contract_credit=} {root_idea._contract_importance=} ")
+    print(f"  {sandy_balanceline._contract_debt=} {root_idea._contract_importance=} ")
     sum_x = 0
     cat_road = f"{cx._economy_title},feed cat"
     cat_idea = cx.get_idea_kid(cat_road)
@@ -262,36 +262,38 @@ def test_TreeTraverseSetsGrouplineestorFromRootCorrectly():
     # for kid_idea in root_idea._kids.values():
     #     sum_x += kid_idea._contract_importance
     #     print(f"  {kid_idea._contract_importance=} {sum_x=} {kid_idea.get_road()=}")
-    assert round(sandy_groupline._contract_credit, 15) == 1
-    assert round(sandy_groupline._contract_debt, 15) == 1
-    x_groupline = Groupline(
+    assert round(sandy_balanceline._contract_credit, 15) == 1
+    assert round(sandy_balanceline._contract_debt, 15) == 1
+    x_balanceline = Balanceline(
         brand=sandy_text,
         _contract_credit=0.9999999999999998,
         _contract_debt=0.9999999999999998,
     )
-    assert cx._idearoot._grouplines == {x_groupline.brand: x_groupline}
+    assert cx._idearoot._balancelines == {x_balanceline.brand: x_balanceline}
 
 
-def test_TreeTraverseSetsGrouplineestorFromNonRootCorrectly():
+def test_TreeTraverseSetsBalancelineestorFromNonRootCorrectly():
     cx = example_contracts_get_contract_with_4_levels()
     cx.set_contract_metrics()
-    # idea tree has no grouplinks
-    assert cx._idearoot._grouplines == {}
+    # idea tree has no balancelinks
+    assert cx._idearoot._balancelines == {}
     cx.add_partyunit(name="sandy")
-    x_grouplink = GroupLink(brand="sandy")
-    cx._idearoot._kids["work"].set_grouplink(grouplink=x_grouplink)
+    x_balancelink = Balancelink(brand="sandy")
+    cx._idearoot._kids["work"].set_balancelink(balancelink=x_balancelink)
 
-    # idea tree has grouplinks
+    # idea tree has balancelinks
     cx.set_contract_metrics()
-    assert cx._idearoot._grouplines != {}
-    x_groupline = Groupline(
+    assert cx._idearoot._balancelines != {}
+    x_balanceline = Balanceline(
         brand="sandy",
         _contract_credit=0.23076923076923078,
         _contract_debt=0.23076923076923078,
     )
-    assert cx._idearoot._grouplines == {x_groupline.brand: x_groupline}
-    assert cx._idearoot._kids["work"]._grouplines != {}
-    assert cx._idearoot._kids["work"]._grouplines == {x_groupline.brand: x_groupline}
+    assert cx._idearoot._balancelines == {x_balanceline.brand: x_balanceline}
+    assert cx._idearoot._kids["work"]._balancelines != {}
+    assert cx._idearoot._kids["work"]._balancelines == {
+        x_balanceline.brand: x_balanceline
+    }
 
 
 def test_contract4party_Exists():
@@ -303,9 +305,9 @@ def test_contract4party_Exists():
 
     sandy_name = PartyName("sandy")
     cx.add_partyunit(name=sandy_name)
-    x_grouplink = GroupLink(brand=sandy_name)
+    x_balancelink = Balancelink(brand=sandy_name)
     yrx = cx._idearoot
-    yrx._kids["work"]._kids["email"].set_grouplink(grouplink=x_grouplink)
+    yrx._kids["work"]._kids["email"].set_balancelink(balancelink=x_balancelink)
     sandy_contract4party = cx.get_contract4party(acptfacts=None, party_name=sandy_name)
     assert sandy_contract4party
     assert str(type(sandy_contract4party)).find(".contract.ContractUnit'>")
@@ -321,16 +323,16 @@ def test_contract4party_hasCorrectLevel1StructureNoGrouplessBranches():
 
     billy_name = PartyName("billy")
     cx.add_partyunit(name=billy_name)
-    billy_bl = GroupLink(brand=billy_name)
+    billy_bl = Balancelink(brand=billy_name)
     yrx = cx._idearoot
-    yrx._kids["weekdays"].set_grouplink(grouplink=billy_bl)
-    yrx._kids["feed cat"].set_grouplink(grouplink=billy_bl)
-    yrx._kids["nation-state"].set_grouplink(grouplink=billy_bl)
+    yrx._kids["weekdays"].set_balancelink(balancelink=billy_bl)
+    yrx._kids["feed cat"].set_balancelink(balancelink=billy_bl)
+    yrx._kids["nation-state"].set_balancelink(balancelink=billy_bl)
 
     sandy_name = PartyName("sandy")
     cx.add_partyunit(name=sandy_name)
-    sandy_bl = GroupLink(brand=sandy_name)
-    yrx._kids["work"]._kids["email"].set_grouplink(grouplink=sandy_bl)
+    sandy_bl = Balancelink(brand=sandy_name)
+    yrx._kids["work"]._kids["email"].set_balancelink(balancelink=sandy_bl)
 
     sandy_contract4party = cx.get_contract4party(acptfacts=None, party_name=sandy_name)
     assert len(sandy_contract4party._idearoot._kids) > 0
@@ -413,16 +415,16 @@ def test_contract_get_heir_road_list_returnsCorrectList():
 
 #     billy_name = PartyName("billy")
 #     cx.add_partyunit(name=billy_name)
-#     billy_bl = GroupLink(brand=billy_name)
-#     cx.edit_idea_attr(road=f"{cx._economy_title},G", grouplink=billy_bl)
-#     cx.edit_idea_attr(road=f"{cx._economy_title},G,H,M", grouplink=billy_bl)
+#     billy_bl = Balancelink(brand=billy_name)
+#     cx.edit_idea_attr(road=f"{cx._economy_title},G", balancelink=billy_bl)
+#     cx.edit_idea_attr(road=f"{cx._economy_title},G,H,M", balancelink=billy_bl)
 
 #     sandy_name = PartyName("sandy")
 #     cx.add_partyunit(name=sandy_name)
-#     sandy_bl = GroupLink(brand=sandy_name)
-#     cx.edit_idea_attr(road=f"{cx._economy_title},A", grouplink=sandy_bl)
-#     cx.edit_idea_attr(road=f"{cx._economy_title},B", grouplink=sandy_bl)
-#     cx.edit_idea_attr(road=f"{cx._economy_title},A,C,E", grouplink=sandy_bl)
+#     sandy_bl = Balancelink(brand=sandy_name)
+#     cx.edit_idea_attr(road=f"{cx._economy_title},A", balancelink=sandy_bl)
+#     cx.edit_idea_attr(road=f"{cx._economy_title},B", balancelink=sandy_bl)
+#     cx.edit_idea_attr(road=f"{cx._economy_title},A,C,E", balancelink=sandy_bl)
 
 #     # expected sandy
 #     exp_sandy = ContractUnit(_owner=owner_text)

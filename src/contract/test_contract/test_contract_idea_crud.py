@@ -2,7 +2,7 @@ from src.contract.examples.example_contracts import get_contract_with_4_levels
 from src.contract.idea import IdeaKid
 from src.contract.required_idea import RequiredUnit, acptfactunit_shop
 from src.contract.contract import ContractUnit
-from src.contract.group import grouplink_shop
+from src.contract.group import balancelink_shop
 from pytest import raises as pytest_raises
 from src.contract.road import Road
 
@@ -412,20 +412,20 @@ def test_contract_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     _all_party_debt_new = cx._idearoot._kids[work_text]._all_party_debt
     assert _all_party_debt_new == 59
 
-    # _grouplink: dict = None,
-    cx._idearoot._kids[work_text]._grouplinks = {
-        "fun": grouplink_shop(brand="fun", creditor_weight=1, debtor_weight=7)
+    # _balancelink: dict = None,
+    cx._idearoot._kids[work_text]._balancelinks = {
+        "fun": balancelink_shop(brand="fun", creditor_weight=1, debtor_weight=7)
     }
-    _grouplinks = cx._idearoot._kids[work_text]._grouplinks
-    assert _grouplinks == {
-        "fun": grouplink_shop(brand="fun", creditor_weight=1, debtor_weight=7)
+    _balancelinks = cx._idearoot._kids[work_text]._balancelinks
+    assert _balancelinks == {
+        "fun": balancelink_shop(brand="fun", creditor_weight=1, debtor_weight=7)
     }
     cx.edit_idea_attr(
         road=work_road,
-        grouplink=grouplink_shop(brand="fun", creditor_weight=4, debtor_weight=8),
+        balancelink=balancelink_shop(brand="fun", creditor_weight=4, debtor_weight=8),
     )
-    assert cx._idearoot._kids[work_text]._grouplinks == {
-        "fun": grouplink_shop(brand="fun", creditor_weight=4, debtor_weight=8)
+    assert cx._idearoot._kids[work_text]._balancelinks == {
+        "fun": balancelink_shop(brand="fun", creditor_weight=4, debtor_weight=8)
     }
 
     # _is_expanded: dict = None,

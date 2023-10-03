@@ -11,13 +11,13 @@ from src.contract.party import (
     PartyUnitExternalMetrics,
 )
 from src.contract.group import (
-    GroupLink,
+    Balancelink,
     GroupBrand,
     GroupUnit,
-    grouplinks_get_from_dict,
+    balancelinks_get_from_dict,
     get_from_dict as groupunits_get_from_dict,
     groupunit_shop,
-    grouplink_shop,
+    balancelink_shop,
 )
 from src.contract.required_idea import (
     AcptFactCore,
@@ -271,28 +271,32 @@ class ContractUnit:
 
     def _are_all_partys_groups_are_in_idea_kid(self, road: Road) -> bool:
         idea_kid = self.get_idea_kid(road=road)
-        # get dict of all idea groupheirs
-        groupheir_list = idea_kid._groupheirs.keys()
-        groupheir_dict = {groupheir_brand: 1 for groupheir_brand in groupheir_list}
+        # get dict of all idea balanceheirs
+        balanceheir_list = idea_kid._balanceheirs.keys()
+        balanceheir_dict = {
+            balanceheir_brand: 1 for balanceheir_brand in balanceheir_list
+        }
         non_single_groupunits = {
             groupunit.brand: groupunit
             for groupunit in self._groups.values()
             if groupunit._single_party != True
         }
-        # check all non_single_party_groupunits are in groupheirs
+        # check all non_single_party_groupunits are in balanceheirs
         for non_single_group in non_single_groupunits.values():
-            if groupheir_dict.get(non_single_group.brand) is None:
+            if balanceheir_dict.get(non_single_group.brand) is None:
                 return False
 
-        # get dict of all partylinks that are in all groupheirs
-        groupheir_partyunits = {}
-        for groupheir_name in groupheir_dict:
-            groupunit = self._groups.get(groupheir_name)
+        # get dict of all partylinks that are in all balanceheirs
+        balanceheir_partyunits = {}
+        for balanceheir_name in balanceheir_dict:
+            groupunit = self._groups.get(balanceheir_name)
             for partylink in groupunit._partys.values():
-                groupheir_partyunits[partylink.name] = self._partys.get(partylink.name)
+                balanceheir_partyunits[partylink.name] = self._partys.get(
+                    partylink.name
+                )
 
-        # check all contract._partys are in groupheir_partyunits
-        return len(self._partys) == len(groupheir_partyunits)
+        # check all contract._partys are in balanceheir_partyunits
+        return len(self._partys) == len(balanceheir_partyunits)
 
     def get_time_min_from_dt(self, dt: datetime) -> float:
         return hreg_get_time_min_from_dt(dt=dt)
@@ -410,7 +414,7 @@ class ContractUnit:
 
     def get_partys_metrics(self):
         tree_metrics = self.get_tree_metrics()
-        return tree_metrics.grouplinks_metrics
+        return tree_metrics.balancelinks_metrics
 
     def set_partys_empty_if_null(self):
         if self._partys is None:
@@ -419,30 +423,30 @@ class ContractUnit:
     def add_to_group_contract_credit_debt(
         self,
         groupbrand: GroupBrand,
-        groupheir_contract_credit: float,
-        groupheir_contract_debt: float,
+        balanceheir_contract_credit: float,
+        balanceheir_contract_debt: float,
     ):
         for group in self._groups.values():
             if group.brand == groupbrand:
                 group.set_empty_contract_credit_debt_to_zero()
-                group._contract_credit += groupheir_contract_credit
-                group._contract_debt += groupheir_contract_debt
+                group._contract_credit += balanceheir_contract_credit
+                group._contract_debt += balanceheir_contract_debt
 
     def add_to_group_contract_agenda_credit_debt(
         self,
         groupbrand: GroupBrand,
-        groupline_contract_credit: float,
-        groupline_contract_debt: float,
+        balanceline_contract_credit: float,
+        balanceline_contract_debt: float,
     ):
         for group in self._groups.values():
             if (
                 group.brand == groupbrand
-                and groupline_contract_credit != None
-                and groupline_contract_debt != None
+                and balanceline_contract_credit != None
+                and balanceline_contract_debt != None
             ):
                 group.set_empty_contract_credit_debt_to_zero()
-                group._contract_agenda_credit += groupline_contract_credit
-                group._contract_agenda_debt += groupline_contract_debt
+                group._contract_agenda_credit += balanceline_contract_credit
+                group._contract_agenda_debt += balanceline_contract_debt
 
     def add_to_partyunit_contract_credit_debt(
         self,
@@ -697,13 +701,13 @@ class ContractUnit:
             self.set_groupunit(groupunit=groupunit_x)
             self.del_groupunit(groupbrand=old_brand)
 
-        self._edit_grouplinks_brand(
+        self._edit_balancelinks_brand(
             old_brand=old_brand,
             new_brand=new_brand,
             allow_group_overwite=allow_group_overwite,
         )
 
-    def _edit_grouplinks_brand(
+    def _edit_balancelinks_brand(
         self,
         old_brand: GroupBrand,
         new_brand: GroupBrand,
@@ -711,30 +715,30 @@ class ContractUnit:
     ):
         for idea_x in self.get_idea_list():
             if (
-                idea_x._grouplinks.get(new_brand) != None
-                and idea_x._grouplinks.get(old_brand) != None
+                idea_x._balancelinks.get(new_brand) != None
+                and idea_x._balancelinks.get(old_brand) != None
             ):
-                old_grouplink = idea_x._grouplinks.get(old_brand)
-                old_grouplink.brand = new_brand
-                idea_x._grouplinks.get(new_brand).meld(
-                    other_grouplink=old_grouplink,
+                old_balancelink = idea_x._balancelinks.get(old_brand)
+                old_balancelink.brand = new_brand
+                idea_x._balancelinks.get(new_brand).meld(
+                    other_balancelink=old_balancelink,
                     other_on_meld_weight_action="sum",
                     src_on_meld_weight_action="sum",
                 )
 
-                idea_x.del_grouplink(groupbrand=old_brand)
+                idea_x.del_balancelink(groupbrand=old_brand)
             elif (
-                idea_x._grouplinks.get(new_brand) is None
-                and idea_x._grouplinks.get(old_brand) != None
+                idea_x._balancelinks.get(new_brand) is None
+                and idea_x._balancelinks.get(old_brand) != None
             ):
-                old_grouplink = idea_x._grouplinks.get(old_brand)
-                new_grouplink = grouplink_shop(
+                old_balancelink = idea_x._balancelinks.get(old_brand)
+                new_balancelink = balancelink_shop(
                     brand=new_brand,
-                    creditor_weight=old_grouplink.creditor_weight,
-                    debtor_weight=old_grouplink.debtor_weight,
+                    creditor_weight=old_balancelink.creditor_weight,
+                    debtor_weight=old_balancelink.debtor_weight,
                 )
-                idea_x.set_grouplink(grouplink=new_grouplink)
-                idea_x.del_grouplink(groupbrand=old_brand)
+                idea_x.set_balancelink(balancelink=new_balancelink)
+                idea_x.del_balancelink(groupbrand=old_brand)
 
     def get_groupunits_brand_list(self):
         groupbrand_list = list(self._groups.keys())
@@ -952,7 +956,7 @@ class ContractUnit:
         tree_metrics.evaluate_node(
             level=self._idearoot._level,
             requireds=self._idearoot._requiredunits,
-            grouplinks=self._idearoot._grouplinks,
+            balancelinks=self._idearoot._balancelinks,
             uid=self._idearoot._uid,
             promise=self._idearoot.promise,
             idea_road=self._idearoot.get_road(),
@@ -971,7 +975,7 @@ class ContractUnit:
         tree_metrics.evaluate_node(
             level=idea_kid._level,
             requireds=idea_kid._requiredunits,
-            grouplinks=idea_kid._grouplinks,
+            balancelinks=idea_kid._balancelinks,
             uid=idea_kid._uid,
             promise=idea_kid.promise,
             idea_road=idea_kid.get_road(),
@@ -1040,7 +1044,7 @@ class ContractUnit:
                 adoptee_idea = self.get_idea_kid(road=adoptee_road)
 
         if not create_missing_ideas_groups:
-            idea_kid = self._get_filtered_grouplinks_idea(idea_kid)
+            idea_kid = self._get_filtered_balancelinks_idea(idea_kid)
 
         walk = road_validate(walk)
         temp_idea = self._idearoot
@@ -1079,17 +1083,17 @@ class ContractUnit:
 
         if create_missing_ideas_groups:
             self._create_missing_ideas(road=Road(f"{walk},{idea_kid._label}"))
-            self._create_missing_groups_partys(grouplinks=idea_kid._grouplinks)
+            self._create_missing_groups_partys(balancelinks=idea_kid._balancelinks)
 
-    def _get_filtered_grouplinks_idea(self, idea: IdeaKid) -> IdeaKid:
-        idea.set_grouplink_empty_if_null()
-        _grouplinks_to_delete = [
-            _grouplink_name
-            for _grouplink_name in idea._grouplinks.keys()
-            if self._groups.get(_grouplink_name) is None
+    def _get_filtered_balancelinks_idea(self, idea: IdeaKid) -> IdeaKid:
+        idea.set_balancelink_empty_if_null()
+        _balancelinks_to_delete = [
+            _balancelink_name
+            for _balancelink_name in idea._balancelinks.keys()
+            if self._groups.get(_balancelink_name) is None
         ]
-        for _grouplink_name in _grouplinks_to_delete:
-            idea._grouplinks.pop(_grouplink_name)
+        for _balancelink_name in _balancelinks_to_delete:
+            idea._balancelinks.pop(_balancelink_name)
 
         if idea._assignedunit != None:
             _suffgroups_to_delete = [
@@ -1102,10 +1106,10 @@ class ContractUnit:
 
         return idea
 
-    def _create_missing_groups_partys(self, grouplinks: dict[GroupBrand:GroupLink]):
-        for grouplink_x in grouplinks.values():
-            if self._groups.get(grouplink_x.brand) is None:
-                groupunit_x = groupunit_shop(brand=grouplink_x.brand, _partys={})
+    def _create_missing_groups_partys(self, balancelinks: dict[GroupBrand:Balancelink]):
+        for balancelink_x in balancelinks.values():
+            if self._groups.get(balancelink_x.brand) is None:
+                groupunit_x = groupunit_shop(brand=balancelink_x.brand, _partys={})
                 self.set_groupunit(groupunit=groupunit_x)
 
     def _create_missing_ideas(self, road):
@@ -1379,8 +1383,8 @@ class ContractUnit:
         descendant_promise_count: int = None,
         all_party_credit: bool = None,
         all_party_debt: bool = None,
-        grouplink: GroupLink = None,
-        grouplink_del: GroupBrand = None,
+        balancelink: Balancelink = None,
+        balancelink_del: GroupBrand = None,
         is_expanded: bool = None,
         on_meld_weight_action: str = None,
     ):  # sourcery skip: low-code-quality
@@ -1436,8 +1440,8 @@ class ContractUnit:
             descendant_promise_count=descendant_promise_count,
             all_party_credit=all_party_credit,
             all_party_debt=all_party_debt,
-            grouplink=grouplink,
-            grouplink_del=grouplink_del,
+            balancelink=balancelink,
+            balancelink_del=balancelink_del,
             is_expanded=is_expanded,
             promise=promise,
             problem_bool=problem_bool,
@@ -1457,8 +1461,8 @@ class ContractUnit:
         if f"{type(temp_idea)}".find("'.idea.IdeaRoot'>") <= 0:
             temp_idea._set_ideakid_attr(acptfactunit=acptfactunit)
 
-        # deleting a grouplink reqquires a tree traverse to correctly set groupheirs and grouplines
-        if grouplink_del != None or grouplink != None:
+        # deleting a balancelink reqquires a tree traverse to correctly set balanceheirs and balancelines
+        if balancelink_del != None or balancelink != None:
             self.set_contract_metrics()
 
     def del_idea_required_sufffact(
@@ -1558,37 +1562,37 @@ class ContractUnit:
 
     def _reset_groupunits_contract_credit_debt(self):
         self.set_groupunits_empty_if_null()
-        for grouplink_obj in self._groups.values():
-            grouplink_obj.reset_contract_credit_debt()
+        for balancelink_obj in self._groups.values():
+            balancelink_obj.reset_contract_credit_debt()
 
     def _set_groupunits_contract_importance(
-        self, groupheirs: dict[GroupBrand:GroupLink]
+        self, balanceheirs: dict[GroupBrand:Balancelink]
     ):
         self.set_groupunits_empty_if_null()
-        for grouplink_obj in groupheirs.values():
+        for balancelink_obj in balanceheirs.values():
             self.add_to_group_contract_credit_debt(
-                groupbrand=grouplink_obj.brand,
-                groupheir_contract_credit=grouplink_obj._contract_credit,
-                groupheir_contract_debt=grouplink_obj._contract_debt,
+                groupbrand=balancelink_obj.brand,
+                balanceheir_contract_credit=balancelink_obj._contract_credit,
+                balanceheir_contract_debt=balancelink_obj._contract_debt,
             )
 
     def _distribute_contract_agenda_importance(self):
         for idea in self._idea_dict.values():
-            # If there are no grouplines associated with idea
+            # If there are no balancelines associated with idea
             # distribute contract_importance via general partyunit
             # credit ratio and debt ratio
-            # if idea.is_agenda_item() and idea._grouplines == {}:
+            # if idea.is_agenda_item() and idea._balancelines == {}:
             if idea.is_agenda_item():
-                if idea._grouplines == {}:
+                if idea._balancelines == {}:
                     self._add_to_partyunits_contract_agenda_credit_debt(
                         idea._contract_importance
                     )
                 else:
-                    for groupline_x in idea._grouplines.values():
+                    for balanceline_x in idea._balancelines.values():
                         self.add_to_group_contract_agenda_credit_debt(
-                            groupbrand=groupline_x.brand,
-                            groupline_contract_credit=groupline_x._contract_credit,
-                            groupline_contract_debt=groupline_x._contract_debt,
+                            groupbrand=balanceline_x.brand,
+                            balanceline_contract_credit=balanceline_x._contract_credit,
+                            balanceline_contract_debt=balanceline_x._contract_debt,
                         )
 
     def _distribute_groups_contract_importance(self):
@@ -1698,13 +1702,13 @@ class ContractUnit:
     def _set_ancestor_metrics(self, road: Road):
         # sourcery skip: low-code-quality
         da_count = 0
-        child_grouplines = None
+        child_balancelines = None
         if road is None:
             road = ""
 
         group_everyone = None
         if len(get_all_road_nodes(road)) <= 1:
-            group_everyone = self._idearoot._groupheirs in [None, {}]
+            group_everyone = self._idearoot._balanceheirs in [None, {}]
         else:
             ancestor_roads = get_ancestor_roads(road=road)
             # remove root road
@@ -1716,10 +1720,10 @@ class ContractUnit:
                 yu_idea_obj.set_descendant_promise_count_zero_if_null()
                 yu_idea_obj._descendant_promise_count += da_count
                 if yu_idea_obj.is_kidless():
-                    yu_idea_obj.set_kidless_grouplines()
-                    child_grouplines = yu_idea_obj._grouplines
+                    yu_idea_obj.set_kidless_balancelines()
+                    child_balancelines = yu_idea_obj._balancelines
                 else:
-                    yu_idea_obj.set_grouplines(child_grouplines=child_grouplines)
+                    yu_idea_obj.set_balancelines(child_balancelines=child_balancelines)
 
                 if yu_idea_obj._task == True:
                     da_count += 1
@@ -1728,7 +1732,7 @@ class ContractUnit:
                     group_everyone != False
                     and yu_idea_obj._all_party_credit != False
                     and yu_idea_obj._all_party_debt != False
-                    and yu_idea_obj._groupheirs != {}
+                    and yu_idea_obj._balanceheirs != {}
                     or group_everyone != False
                     and yu_idea_obj._all_party_credit == False
                     and yu_idea_obj._all_party_debt == False
@@ -1743,22 +1747,22 @@ class ContractUnit:
                 group_everyone != False
                 and self._idearoot._all_party_credit != False
                 and self._idearoot._all_party_debt != False
-                and self._idearoot._groupheirs != {}
+                and self._idearoot._balanceheirs != {}
                 or group_everyone != False
                 and self._idearoot._all_party_credit == False
                 and self._idearoot._all_party_debt == False
             ):
                 group_everyone = False
-            elif group_everyone != False and yu_idea_obj._groupheirs == {}:
+            elif group_everyone != False and yu_idea_obj._balanceheirs == {}:
                 group_everyone = True
 
         self._idearoot._all_party_credit = group_everyone
         self._idearoot._all_party_debt = group_everyone
 
         if self._idearoot.is_kidless():
-            self._idearoot.set_kidless_grouplines()
+            self._idearoot.set_kidless_balancelines()
         else:
-            self._idearoot.set_grouplines(child_grouplines=child_grouplines)
+            self._idearoot.set_balancelines(child_balancelines=child_balancelines)
         self._idearoot.set_descendant_promise_count_zero_if_null()
         self._idearoot._descendant_promise_count += da_count
 
@@ -1769,8 +1773,8 @@ class ContractUnit:
         self._idearoot.set_assignedheir(
             parent_assignheir=None, contract_groups=self._groups
         )
-        self._idearoot.inherit_groupheirs()
-        self._idearoot.clear_grouplines()
+        self._idearoot.inherit_balanceheirs()
+        self._idearoot.clear_balancelines()
         self._idearoot.set_originunit_empty_if_null()
         self._idearoot.set_acptfactunits_empty_if_null()
         self._idearoot._weight = 1
@@ -1778,7 +1782,7 @@ class ContractUnit:
         self._idearoot.set_kids_total_weight()
         self._idearoot.set_sibling_total_weight(1)
         self._idearoot.set_contract_importance(coin_onset_x=0, parent_coin_cease=1)
-        self._idearoot.set_groupheirs_contract_credit_debit()
+        self._idearoot.set_balanceheirs_contract_credit_debit()
         self._idearoot.set_ancestor_promise_count(0, False)
         self._idearoot.clear_descendant_promise_count()
         self._idearoot.clear_all_party_credit_debt()
@@ -1814,8 +1818,8 @@ class ContractUnit:
         idea_kid.set_acptfactheirs(acptfacts=parent_acptfacts)
         idea_kid.set_requiredheirs(self._idea_dict, parent_requiredheirs)
         idea_kid.set_assignedheir(parent_idea._assignedheir, self._groups)
-        idea_kid.inherit_groupheirs(parent_idea._groupheirs)
-        idea_kid.clear_grouplines()
+        idea_kid.inherit_balanceheirs(parent_idea._balanceheirs)
+        idea_kid.clear_balancelines()
         idea_kid.set_originunit_empty_if_null()
         idea_kid.set_active_status(
             tree_traverse_count=self._tree_traverse_count,
@@ -1840,11 +1844,11 @@ class ContractUnit:
             self._distribute_contract_importance(idea=idea_kid)
 
     def _distribute_contract_importance(self, idea: IdeaCore):
-        # TODO manage situations where groupheir.creditor_weight is None for all groupheirs
-        # TODO manage situations where groupheir.debtor_weight is None for all groupheirs
-        if idea.is_groupheirless() == False:
-            self._set_groupunits_contract_importance(idea._groupheirs)
-        elif idea.is_groupheirless():
+        # TODO manage situations where balanceheir.creditor_weight is None for all balanceheirs
+        # TODO manage situations where balanceheir.debtor_weight is None for all balanceheirs
+        if idea.is_balanceheirless() == False:
+            self._set_groupunits_contract_importance(idea._balanceheirs)
+        elif idea.is_balanceheirless():
             self._add_to_partyunits_contract_credit_debt(idea._contract_importance)
 
     def get_contract_importance(
@@ -1991,7 +1995,7 @@ class ContractUnit:
             "_acptfactunits": self.get_acptfactunits_dict(),
             "_partys": self.get_partys_dict(),
             "_groups": self.groupunit_shops_dict(),
-            "_grouplinks": self._idearoot.get_grouplinks_dict(),
+            "_balancelinks": self._idearoot.get_balancelinks_dict(),
             "_assignedunit": self._idearoot.get_assignedunit_dict(),
             "_originunit": self._originunit.get_dict(),
             "_weight": self._weight,
@@ -2073,7 +2077,7 @@ class ContractUnit:
         for ykx in self._idearoot._kids.values():
             y4a_included = any(
                 group_ancestor.brand in party_groups
-                for group_ancestor in ykx._grouplines.values()
+                for group_ancestor in ykx._balancelines.values()
             )
 
             if y4a_included:
@@ -2081,7 +2085,7 @@ class ContractUnit:
                     _label=ykx._label,
                     _contract_importance=ykx._contract_importance,
                     _requiredunits=ykx._requiredunits,
-                    _grouplinks=ykx._grouplinks,
+                    _balancelinks=ykx._balancelinks,
                     _begin=ykx._begin,
                     _close=ykx._close,
                     promise=ykx.promise,
@@ -2277,7 +2281,9 @@ def get_from_dict(cx_dict: dict) -> ContractUnit:
         x_dict=cx_dict["_acptfactunits"]
     )
     c_x._groups = groupunits_get_from_dict(x_dict=cx_dict["_groups"])
-    c_x._idearoot._grouplinks = grouplinks_get_from_dict(x_dict=cx_dict["_grouplinks"])
+    c_x._idearoot._balancelinks = balancelinks_get_from_dict(
+        x_dict=cx_dict["_balancelinks"]
+    )
     try:
         c_x._originunit = originunit_get_from_dict(x_dict=cx_dict["_originunit"])
     except Exception:
@@ -2343,7 +2349,7 @@ def get_from_dict(cx_dict: dict) -> ContractUnit:
             ),
             _assignedunit=idea_assignedunit,
             _originunit=originunit_from_dict,
-            _grouplinks=grouplinks_get_from_dict(idea_dict["_grouplinks"]),
+            _balancelinks=balancelinks_get_from_dict(idea_dict["_balancelinks"]),
             _acptfactunits=acptfactunits_get_from_dict(idea_dict["_acptfactunits"]),
             _is_expanded=idea_dict["_is_expanded"],
             _range_source_road=idea_dict["_range_source_road"],
