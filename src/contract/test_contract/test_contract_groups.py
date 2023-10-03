@@ -848,10 +848,10 @@ def test_contract_get_groupunits_dict_CorrectlyReturnsDictOfGroups():
     sx = ContractUnit(_owner=owner_text)
     sx.set_partys_empty_if_null()
     swim_text = "swim"
-    walk_text = "walk"
+    wiggle_text = "wiggle"
     fly_text = "fly"
     sx.set_groupunit(groupunit=groupunit_shop(brand=swim_text))
-    sx.set_groupunit(groupunit=groupunit_shop(brand=walk_text))
+    sx.set_groupunit(groupunit=groupunit_shop(brand=wiggle_text))
     sx.set_groupunit(groupunit=groupunit_shop(brand=fly_text))
     assert len(sx._groups) == 3
 
@@ -862,7 +862,7 @@ def test_contract_get_groupunits_dict_CorrectlyReturnsDictOfGroups():
     assert groupunit_list_x[0] == ""
     assert groupunit_list_x[1] == fly_text
     assert groupunit_list_x[2] == swim_text
-    assert groupunit_list_x[3] == walk_text
+    assert groupunit_list_x[3] == wiggle_text
     assert len(groupunit_list_x) == 4
 
 
