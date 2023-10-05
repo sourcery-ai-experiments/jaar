@@ -146,13 +146,13 @@
             "name": "Maria Reynolds",
             "uid": 7
         },
-        "Mark Reynolds": {
+        "Sam zamora": {
             "_creditor_active": null,
             "_debtor_active": null,
             "debtor_weight": 1,
             "partyrings": {},
             "creditor_weight": 1,
-            "name": "Mark Reynolds",
+            "name": "Sam zamora",
             "uid": 16
         },
         "Martha Wayles": {
@@ -298,10 +298,10 @@
                     "debtor_weight": 1,
                     "name": "Maria Reynolds"
                 },
-                "Mark Reynolds": {
+                "Sam zamora": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "name": "Mark Reynolds"
+                    "name": "Sam zamora"
                 },
                 "Martha Wayles": {
                     "creditor_weight": 1,
@@ -341,10 +341,10 @@
                     "debtor_weight": 1,
                     "name": "Charles Lee"
                 },
-                "Mark Reynolds": {
+                "Sam zamora": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "name": "Mark Reynolds"
+                    "name": "Sam zamora"
                 },
                 "Martha Wayles": {
                     "creditor_weight": 1,
@@ -510,10 +510,10 @@
                     "debtor_weight": 1,
                     "name": "Maria Reynolds"
                 },
-                "Mark Reynolds": {
+                "Sam zamora": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "name": "Mark Reynolds"
+                    "name": "Sam zamora"
                 },
                 "Martha Wayles": {
                     "creditor_weight": 1,
@@ -702,16 +702,16 @@
             "single_party_id": 7,
             "uid": 7
         },
-        "Mark Reynolds": {
+        "Sam zamora": {
             "_partys": {
-                "Mark Reynolds": {
+                "Sam zamora": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "name": "Mark Reynolds"
+                    "name": "Sam zamora"
                 }
             },
             "_single_party": false,
-            "brand": "Mark Reynolds",
+            "brand": "Sam zamora",
             "single_party_id": 16,
             "uid": 25
         },
