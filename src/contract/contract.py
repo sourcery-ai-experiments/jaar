@@ -97,7 +97,7 @@ class ContractUnit:
     _tree_traverse_count: int = None
     _rational: bool = False
     _originunit: OriginUnit = None
-    _economy_title: str = None
+    _economy_tag: str = None
     _auto_output_to_public: bool = None
 
     def __init__(
@@ -108,16 +108,16 @@ class ContractUnit:
         self._weight = _weight
         if _owner is None:
             _owner = ""
-        self._economy_title = root_label()
+        self._economy_tag = root_label()
         self._idearoot = IdeaRoot(_label=self._idearoot, _uid=1, _level=0)
         self._owner = _owner
         self._originunit = originunit_shop()
         self._auto_output_to_public = bool(_auto_output_to_public)
 
-    def set_economy_title(self, economy_title: str):
-        old_economy_title = copy_deepcopy(self._economy_title)
-        self._economy_title = economy_title
-        self.edit_idea_label(old_road=old_economy_title, new_label=self._economy_title)
+    def set_economy_tag(self, economy_tag: str):
+        old_economy_tag = copy_deepcopy(self._economy_tag)
+        self._economy_tag = economy_tag
+        self.edit_idea_label(old_road=old_economy_tag, new_label=self._economy_tag)
         self.set_contract_metrics()
 
     def set_banking_attr_partyunits(self, river_tpartys: dict):
@@ -302,7 +302,7 @@ class ContractUnit:
         return hreg_get_time_min_from_dt(dt=dt)
 
     def get_time_c400_from_min(self, min: int) -> int:
-        c400_idea = self.get_idea_kid(f"{self._economy_title},time,tech,400 year cycle")
+        c400_idea = self.get_idea_kid(f"{self._economy_tag},time,tech,400 year cycle")
         c400_min = c400_idea._close
         return int(min / c400_min), c400_idea, min % c400_min
 
@@ -318,15 +318,13 @@ class ContractUnit:
             52596000,
         ):  # 96 year and 100 year spans
             yr4_1461 = self.get_idea_kid(
-                f"{self._economy_title},time,tech,4year with leap"
+                f"{self._economy_tag},time,tech,4year with leap"
             )
             yr4_cycles = int(cXXXyr_min / yr4_1461._close)
             cXyr_min = cXXXyr_min % yr4_1461._close
             yr1_idea = yr4_1461.get_kids_in_range(begin=cXyr_min, close=cXyr_min)[0]
         elif c100_4_96y._close - c100_4_96y._begin == 2102400:
-            yr4_1460 = self.get_idea_kid(
-                f"{self._economy_title},time,tech,4year wo leap"
-            )
+            yr4_1460 = self.get_idea_kid(f"{self._economy_tag},time,tech,4year wo leap")
             yr4_cycles = 0
             yr1_idea = yr4_1460.get_kids_in_range(begin=cXXXyr_min, close=cXXXyr_min)[0]
             cXyr_min = cXXXyr_min % yr4_1460._close
@@ -342,13 +340,13 @@ class ContractUnit:
         year_num, yr1_idea, yr1_idea_rem_min = self.get_time_c400yr_from_min(min=min)
         yrx = None
         if yr1_idea._close - yr1_idea._begin == 525600:
-            yrx = self.get_idea_kid(f"{self._economy_title},time,tech,365 year")
+            yrx = self.get_idea_kid(f"{self._economy_tag},time,tech,365 year")
         elif yr1_idea._close - yr1_idea._begin == 527040:
-            yrx = self.get_idea_kid(f"{self._economy_title},time,tech,366 year")
+            yrx = self.get_idea_kid(f"{self._economy_tag},time,tech,366 year")
         mon_x = yrx.get_kids_in_range(begin=yr1_idea_rem_min, close=yr1_idea_rem_min)[0]
         month_rem_min = yr1_idea_rem_min - mon_x._begin
         month_num = int(mon_x._label.split("-")[0])
-        day_x = self.get_idea_kid(f"{self._economy_title},time,tech,day")
+        day_x = self.get_idea_kid(f"{self._economy_tag},time,tech,day")
         day_num = int(month_rem_min / day_x._close)
         day_rem_min = month_rem_min % day_x._close
         return month_num, day_num, day_rem_min, day_x
@@ -399,7 +397,7 @@ class ContractUnit:
 
     def _get_jajatime_week_legible_text(self, open: int, divisor: int) -> str:
         open_in_week = open % divisor
-        week_road = f"{self._economy_title},time,tech,week"
+        week_road = f"{self._economy_tag},time,tech,week"
         weekday_ideas_dict = self.get_idea_ranged_kids(
             idea_road=week_road, begin=open_in_week
         )
@@ -754,7 +752,7 @@ class ContractUnit:
     def set_time_acptfacts(self, open: datetime = None, nigh: datetime = None) -> None:
         open_minutes = self.get_time_min_from_dt(dt=open) if open != None else None
         nigh_minutes = self.get_time_min_from_dt(dt=nigh) if nigh != None else None
-        minutes_acptfact = f"{self._economy_title},time,jajatime"
+        minutes_acptfact = f"{self._economy_tag},time,jajatime"
         self.set_acptfact(
             base=minutes_acptfact,
             pick=minutes_acptfact,
@@ -764,7 +762,7 @@ class ContractUnit:
 
     def _is_idea_rangeroot(self, idea_road: Road) -> bool:
         anc_roads = get_ancestor_roads(road=idea_road)
-        parent_road = self._economy_title if len(anc_roads) == 1 else anc_roads[1]
+        parent_road = self._economy_tag if len(anc_roads) == 1 else anc_roads[1]
 
         # figure out if parent is range
         parent_range = None
@@ -1052,8 +1050,8 @@ class ContractUnit:
         temp_road = walk_nodes.pop(0)
 
         # idearoot cannot be replaced
-        if temp_road == self._economy_title and walk_nodes == []:
-            idea_kid.set_walk(parent_road=Road(self._economy_title))
+        if temp_road == self._economy_tag and walk_nodes == []:
+            idea_kid.set_walk(parent_road=Road(self._economy_tag))
         else:
             road_nodes = [temp_road]
             while walk_nodes != []:
@@ -1207,7 +1205,7 @@ class ContractUnit:
             # if root _label is changed
             if walk == "":
                 self._idearoot.set_idea_label(
-                    new_label, contract_economy_title=self._economy_title
+                    new_label, contract_economy_tag=self._economy_tag
                 )
                 self._idearoot._walk = walk
             else:
@@ -1265,7 +1263,7 @@ class ContractUnit:
             anc_roads
         ) == 1:
             raise InvalidContractException("Root Idea cannot have numor denom reest.")
-        parent_road = self._economy_title if len(anc_roads) == 1 else anc_roads[1]
+        parent_road = self._economy_tag if len(anc_roads) == 1 else anc_roads[1]
 
         parent_has_range = None
         parent_idea_x = self.get_idea_kid(road=parent_road)
@@ -1666,7 +1664,7 @@ class ContractUnit:
 
         if nodes == [] and src == self._idearoot._label:
             temp_idea = self._idearoot
-            # raise InvalidContractException(f"Cannot return root '{self._economic_title()}'")
+            # raise InvalidContractException(f"Cannot return root '{self._economic_tag()}'")
         else:
             idea_label = src if nodes == [] else nodes.pop(0)
             try:
@@ -2000,7 +1998,7 @@ class ContractUnit:
             "_originunit": self._originunit.get_dict(),
             "_weight": self._weight,
             "_owner": self._owner,
-            "_economy_title": self._economy_title,
+            "_economy_tag": self._economy_tag,
             "_uid": self._idearoot._uid,
             "_begin": self._idearoot._begin,
             "_close": self._idearoot._close,
@@ -2027,7 +2025,7 @@ class ContractUnit:
             yb = ideabase_list.pop(0)
             range_source_road_x = None
             if yb.sr != None:
-                range_source_road_x = f"{self._economy_title},{yb.sr}"
+                range_source_road_x = f"{self._economy_tag},{yb.sr}"
 
             idea_x = IdeaKid(
                 _label=yb.n,
@@ -2041,12 +2039,12 @@ class ContractUnit:
                 _reest=yb.mr,
                 _range_source_road=range_source_road_x,
             )
-            road_x = f"{self._economy_title},{yb.rr}"
+            road_x = f"{self._economy_tag},{yb.rr}"
             self.add_idea(idea_kid=idea_x, walk=road_x)
 
             numeric_road_x = None
             if yb.nr != None:
-                numeric_road_x = f"{self._economy_title},{yb.nr}"
+                numeric_road_x = f"{self._economy_tag},{yb.nr}"
                 self.edit_idea_attr(
                     road=f"{road_x},{yb.n}", numeric_road=numeric_road_x
                 )
@@ -2268,7 +2266,7 @@ def get_from_json(cx_json: str) -> ContractUnit:
 
 def get_from_dict(cx_dict: dict) -> ContractUnit:
     c_x = ContractUnit()
-    c_x.set_economy_title(cx_dict["_economy_title"])
+    c_x.set_economy_tag(cx_dict["_economy_tag"])
     c_x._idearoot._requiredunits = requireds_get_from_dict(
         requireds_dict=cx_dict["_requiredunits"]
     )
@@ -2294,7 +2292,7 @@ def get_from_dict(cx_dict: dict) -> ContractUnit:
         c_x._auto_output_to_public = False
     c_x._partys = partyunits_get_from_dict(x_dict=cx_dict["_partys"])
     c_x._owner = cx_dict["_owner"]
-    c_x._idearoot.set_idea_label(c_x._economy_title, c_x._economy_title)
+    c_x._idearoot.set_idea_label(c_x._economy_tag, c_x._economy_tag)
     c_x._weight = cx_dict["_weight"]
     c_x._max_tree_traverse = cx_dict.get("_max_tree_traverse")
     if cx_dict.get("_max_tree_traverse") is None:

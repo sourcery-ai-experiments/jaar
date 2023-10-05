@@ -10,7 +10,7 @@
     <height>722</height>
    </rect>
   </property>
-  <property name="windowTitle">
+  <property name="windowTag">
    <string>Form</string>
   </property>
   <widget class="QPushButton" name="refresh_button">

@@ -83,9 +83,9 @@ class Ui_MainWindow(object):
         self.label_time_display = QtWidgets.QLabel(self.centralwidget)
         self.label_time_display.setGeometry(QtCore.QRect(30, 210, 261, 16))
         self.label_time_display.setObjectName("label_time_display")
-        self.editagenda_button = QtWidgets.QPushButton(self.centralwidget)
-        self.editagenda_button.setGeometry(QtCore.QRect(250, 270, 141, 30))
-        self.editagenda_button.setObjectName("editagenda_button")
+        self.edit_agenda_button = QtWidgets.QPushButton(self.centralwidget)
+        self.edit_agenda_button.setGeometry(QtCore.QRect(250, 270, 141, 30))
+        self.edit_agenda_button.setObjectName("edit_agenda_button")
         self.acptfacts_table = QtWidgets.QTableWidget(self.centralwidget)
         self.acptfacts_table.setGeometry(QtCore.QRect(1020, 130, 641, 271))
         self.acptfacts_table.setObjectName("acptfacts_table")
@@ -368,7 +368,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTag(_translate("MainWindow", "MainWindow"))
         self.editmain_button.setText(
             _translate("MainWindow", "Contracts /  Party /  dimension")
         )
@@ -392,7 +392,7 @@ class Ui_MainWindow(object):
         )
         self.cb_update_now_repeat.setText(_translate("MainWindow", "Update now per"))
         self.label_time_display.setText(_translate("MainWindow", "Current Time:"))
-        self.editagenda_button.setText(_translate("MainWindow", "view current agenda"))
+        self.edit_agenda_button.setText(_translate("MainWindow", "view current agenda"))
         item = self.acptfacts_table.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "AcptFactBase"))
         item = self.acptfacts_table.horizontalHeaderItem(1)
@@ -467,7 +467,7 @@ class Ui_MainWindow(object):
         self.menubar.setAccessibleDescription(
             _translate("MainWindow", "General Operations")
         )
-        self.file_menu.setTitle(_translate("MainWindow", "File"))
+        self.file_menu.setTag(_translate("MainWindow", "File"))
         self.fm_open.setText(_translate("MainWindow", "Open"))
         self.fm_save.setText(_translate("MainWindow", "Save"))
         self.save_as.setText(_translate("MainWindow", "Save as..."))

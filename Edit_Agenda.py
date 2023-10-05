@@ -1,5 +1,5 @@
-# command to for converting ui form to python file: pyuic5 ui\EditAgendaUI.ui -o ui\EditAgendaUI.pyrefresh_all
-from ui.EditAgendaUI import Ui_Form
+# command to for converting ui form to python file: pyuic5 ui\Edit_AgendaUI.ui -o ui\Edit_AgendaUI.pyrefresh_all
+from ui.Edit_AgendaUI import Ui_Form
 from PyQt5.QtCore import pyqtSignal as qsig
 from PyQt5.QtWidgets import QWidget as qw
 from PyQt5.QtWidgets import QTableWidgetItem as qti
@@ -11,7 +11,7 @@ from src.contract.hreg_time import (
 )
 
 
-class EditAgenda(qw, Ui_Form):
+class Edit_Agenda(qw, Ui_Form):
     agenda_changed = qsig(bool)
 
     def __init__(self, *args, **kwargs):
@@ -65,7 +65,7 @@ class EditAgenda(qw, Ui_Form):
 
         else:
             self.acptfact_base_update_init_road = (
-                f"{self.contract_x._economy_title},time,jajatime"
+                f"{self.contract_x._economy_tag},time,jajatime"
             )
             self.acptfact_base_update_combo.setCurrentText(
                 self.acptfact_base_update_init_road
@@ -117,16 +117,16 @@ class EditAgenda(qw, Ui_Form):
             sufffact_open_x != None
             and sufffact_nigh_x != None
             and (
-                sufffact_need_x == f"{self.contract_x._economy_title},time,jajatime"
+                sufffact_need_x == f"{self.contract_x._economy_tag},time,jajatime"
                 or sufffact_need_x[:21]
-                == f"{self.contract_x._economy_title},time,jajatime"
+                == f"{self.contract_x._economy_tag},time,jajatime"
             )
         ):
             legible_x_text = self.contract_x.get_jajatime_repeating_legible_text(
                 open=sufffact_open_x, nigh=sufffact_nigh_x, divisor=sufffact_divisor_x
             )
         elif sufffact_open_x != None and sufffact_nigh_x != None:
-            text_x = f"{self.contract_x._economy_title},time,jajatime"
+            text_x = f"{self.contract_x._economy_tag},time,jajatime"
             legible_x_text = (
                 f"sufffact {sufffact_open_x}-{sufffact_nigh_x} {sufffact_divisor_x=}"
             )

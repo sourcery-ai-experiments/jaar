@@ -162,11 +162,11 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
     assert new_sufffacts_x.get(old_seasons_road) is None
 
 
-def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeEconomyTitleScenario():
+def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeEconomyTagScenario():
     # GIVEN
-    old_economy_title = "El Paso"
+    old_economy_tag = "El Paso"
     owner_text = "owner"
-    old_owner_road = f"{old_economy_title},{owner_text}"
+    old_owner_road = f"{old_economy_tag},{owner_text}"
     seasons_text = "seasons"
     old_seasons_road = f"{old_owner_road},{seasons_text}"
     old_sufffact_x = sufffactunit_shop(need=old_seasons_road)
@@ -175,8 +175,8 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeEconomyTitleSc
     assert old_sufffacts_x.get(old_seasons_road) == old_sufffact_x
 
     # WHEN
-    new_economy_title = "Austin"
-    new_owner_road = f"{new_economy_title},{owner_text}"
+    new_economy_tag = "Austin"
+    new_owner_road = f"{new_economy_tag},{owner_text}"
     new_seasons_road = f"{new_owner_road},{seasons_text}"
     new_sufffacts_x = find_replace_road_key_dict(
         dict_x=old_sufffacts_x, old_road=old_seasons_road, new_road=new_seasons_road

@@ -10,7 +10,7 @@
     <height>914</height>
    </rect>
   </property>
-  <property name="windowTitle">
+  <property name="windowTag">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -227,7 +227,7 @@
      <string>Current Time:</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="editagenda_button">
+   <widget class="QPushButton" name="edit_agenda_button">
     <property name="geometry">
      <rect>
       <x>250</x>
@@ -807,7 +807,7 @@
     <string>General Operations</string>
    </property>
    <widget class="QMenu" name="file_menu">
-    <property name="title">
+    <property name="tag">
      <string>File</string>
     </property>
     <addaction name="fm_new"/>

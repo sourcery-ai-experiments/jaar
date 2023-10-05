@@ -59,9 +59,9 @@ class Ui_MainWindow(object):
         self.economy_insert_button = QtWidgets.QPushButton(self.centralwidget)
         self.economy_insert_button.setGeometry(QtCore.QRect(20, 50, 141, 31))
         self.economy_insert_button.setObjectName("economy_insert_button")
-        self.economy_title = QtWidgets.QLineEdit(self.centralwidget)
-        self.economy_title.setGeometry(QtCore.QRect(20, 20, 141, 22))
-        self.economy_title.setObjectName("economy_title")
+        self.economy_tag = QtWidgets.QLineEdit(self.centralwidget)
+        self.economy_tag.setGeometry(QtCore.QRect(20, 20, 141, 22))
+        self.economy_tag.setObjectName("economy_tag")
         self.economy_update_button = QtWidgets.QPushButton(self.centralwidget)
         self.economy_update_button.setGeometry(QtCore.QRect(20, 80, 141, 31))
         self.economy_update_button.setObjectName("economy_update_button")
@@ -214,7 +214,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTag(_translate("MainWindow", "MainWindow"))
         item = self.economys_table.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "ECONOMYs"))
         item = self.owners_table.horizontalHeaderItem(0)
@@ -279,7 +279,7 @@ class Ui_MainWindow(object):
         self.menubar.setAccessibleDescription(
             _translate("MainWindow", "General Operations")
         )
-        self.file_menu.setTitle(_translate("MainWindow", "File"))
+        self.file_menu.setTag(_translate("MainWindow", "File"))
         self.fm_open.setText(_translate("MainWindow", "Open"))
         self.fm_save.setText(_translate("MainWindow", "Save"))
         self.save_as.setText(_translate("MainWindow", "Save as..."))

@@ -127,7 +127,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowTag(_translate("Form", "Form"))
         self.label.setText(
             _translate(
                 "Form", "Reset Current Date for entire ideaunit (American standard)"

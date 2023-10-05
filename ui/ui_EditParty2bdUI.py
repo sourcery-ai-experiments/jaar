@@ -108,7 +108,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowTag(_translate("Form", "Form"))
         self.gp_add_button.setText(_translate("Form", "Add Group"))
         self.gp_remove_button.setText(_translate("Form", "Remove Group"))
         self.label.setText(_translate("Form", "Party is party of these Groups"))

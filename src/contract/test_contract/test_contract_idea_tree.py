@@ -77,24 +77,24 @@ def test_set_contract_metrics_CorrectlyClearsDescendantAttributes():
 def test_get_idea_kid_CorrectlyReturnsIdea():
     cx = example_contracts_get_contract_with_4_levels()
 
-    brazil = f"{cx._economy_title},nation-state,Brazil"
+    brazil = f"{cx._economy_tag},nation-state,Brazil"
     idea_kid = cx.get_idea_kid(road=brazil)
     assert idea_kid != None
     assert idea_kid._label == "Brazil"
 
-    weekdays = f"{cx._economy_title},weekdays"
+    weekdays = f"{cx._economy_tag},weekdays"
     idea_kid = cx.get_idea_kid(road=weekdays)
     assert idea_kid != None
     assert idea_kid._label == "weekdays"
 
     # with pytest.raises(Exception) as excinfo:
-    #     cx.get_idea_kid(road=cx._economy_title)
-    # assert str(excinfo.value) == f"Cannot return root '{cx._economy_title}'"
-    idea_root = cx.get_idea_kid(road=cx._economy_title)
+    #     cx.get_idea_kid(road=cx._economy_tag)
+    # assert str(excinfo.value) == f"Cannot return root '{cx._economy_tag}'"
+    idea_root = cx.get_idea_kid(road=cx._economy_tag)
     assert idea_root != None
-    assert idea_root._label == cx._economy_title
+    assert idea_root._label == cx._economy_tag
 
-    wrong_road = f"{cx._economy_title},bobdylan"
+    wrong_road = f"{cx._economy_tag},bobdylan"
     with pytest_raises(Exception) as excinfo:
         cx.get_idea_kid(road=wrong_road)
     assert (
@@ -119,7 +119,7 @@ def test_set_contract_metrics_RootOnlyCorrectlySetsDescendantAttributes():
 def test_set_contract_metrics_NLevelCorrectlySetsDescendantAttributes_1():
     cx = example_contracts_get_contract_with_4_levels()
     x_idea = IdeaKid(_label="email", promise=True)
-    cx.add_idea(idea_kid=x_idea, walk=f"{cx._economy_title},work")
+    cx.add_idea(idea_kid=x_idea, walk=f"{cx._economy_tag},work")
 
     # idea ",weekdays,Sunday"
     # idea ",weekdays,Monday"
@@ -168,9 +168,9 @@ def test_set_contract_metrics_NLevelCorrectlySetsDescendantAttributes_1():
 def test_set_contract_metrics_NLevelCorrectlySetsDescendantAttributes_2():
     cx = example_contracts_get_contract_with_4_levels()
     x1_idea = IdeaKid(_label="email", promise=True)
-    cx.add_idea(idea_kid=x1_idea, walk=f"{cx._economy_title},work")
+    cx.add_idea(idea_kid=x1_idea, walk=f"{cx._economy_tag},work")
     x2_idea = IdeaKid(_label="sweep", promise=True)
-    cx.add_idea(idea_kid=x2_idea, walk=f"{cx._economy_title},work")
+    cx.add_idea(idea_kid=x2_idea, walk=f"{cx._economy_tag},work")
 
     cx.add_partyunit(name="sandy")
     x_balancelink = Balancelink(brand="sandy")
@@ -240,13 +240,13 @@ def test_TreeTraverseSetsBalancelineestorFromRootCorrectly():
     print(f"{sandy_balanceline._contract_credit=} {root_idea._contract_importance=} ")
     print(f"  {sandy_balanceline._contract_debt=} {root_idea._contract_importance=} ")
     sum_x = 0
-    cat_road = f"{cx._economy_title},feed cat"
+    cat_road = f"{cx._economy_tag},feed cat"
     cat_idea = cx.get_idea_kid(cat_road)
-    week_road = f"{cx._economy_title},weekdays"
+    week_road = f"{cx._economy_tag},weekdays"
     week_idea = cx.get_idea_kid(week_road)
-    work_road = f"{cx._economy_title},work"
+    work_road = f"{cx._economy_tag},work"
     work_idea = cx.get_idea_kid(work_road)
-    nation_road = f"{cx._economy_title},nation-state"
+    nation_road = f"{cx._economy_tag},nation-state"
     nation_idea = cx.get_idea_kid(nation_road)
     sum_x = cat_idea._contract_importance
     print(f"{cat_idea._contract_importance=} {sum_x} ")
@@ -299,9 +299,9 @@ def test_TreeTraverseSetsBalancelineestorFromNonRootCorrectly():
 def test_contract4party_Exists():
     cx = example_contracts_get_contract_with_4_levels()
     x1_idea = IdeaKid(_label="email", promise=True)
-    cx.add_idea(idea_kid=x1_idea, walk=f"{cx._economy_title},work")
+    cx.add_idea(idea_kid=x1_idea, walk=f"{cx._economy_tag},work")
     x2_idea = IdeaKid(_label="sweep", promise=True)
-    cx.add_idea(idea_kid=x2_idea, walk=f"{cx._economy_title},work")
+    cx.add_idea(idea_kid=x2_idea, walk=f"{cx._economy_tag},work")
 
     sandy_name = PartyName("sandy")
     cx.add_partyunit(name=sandy_name)
@@ -317,9 +317,9 @@ def test_contract4party_Exists():
 def test_contract4party_hasCorrectLevel1StructureNoGrouplessBranches():
     cx = example_contracts_get_contract_with_4_levels()
     x1_idea = IdeaKid(_label="email", promise=True)
-    cx.add_idea(idea_kid=x1_idea, walk=f"{cx._economy_title},work")
+    cx.add_idea(idea_kid=x1_idea, walk=f"{cx._economy_tag},work")
     x2_idea = IdeaKid(_label="sweep", promise=True)
-    cx.add_idea(idea_kid=x2_idea, walk=f"{cx._economy_title},work")
+    cx.add_idea(idea_kid=x2_idea, walk=f"{cx._economy_tag},work")
 
     billy_name = PartyName("billy")
     cx.add_partyunit(name=billy_name)
@@ -365,19 +365,19 @@ def test_contract_get_orderd_node_list_WorksCorrectly():
     # for node in ordered_node_list:
     #     print(f"{node}")
     assert len(ordered_node_list) == 17
-    assert cx.get_idea_tree_ordered_road_list()[0] == f"{cx._economy_title}"
-    assert cx.get_idea_tree_ordered_road_list()[8] == f"{cx._economy_title},weekdays"
+    assert cx.get_idea_tree_ordered_road_list()[0] == f"{cx._economy_tag}"
+    assert cx.get_idea_tree_ordered_road_list()[8] == f"{cx._economy_tag},weekdays"
 
     lw_y = ContractUnit(_owner="MyContract")
-    assert lw_y.get_idea_tree_ordered_road_list()[0] == cx._economy_title
+    assert lw_y.get_idea_tree_ordered_road_list()[0] == cx._economy_tag
 
 
 def test_contract_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoads():
     owner_text = "Tim"
     cx = ContractUnit(_owner=owner_text)
     time = "timeline"
-    cx.add_idea(IdeaKid(_label=time, _begin=0, _close=700), walk=cx._economy_title)
-    t_road = f"{cx._economy_title},{time}"
+    cx.add_idea(IdeaKid(_label=time, _begin=0, _close=700), walk=cx._economy_tag)
+    t_road = f"{cx._economy_tag},{time}"
     week = "weeks"
     cx.add_idea(IdeaKid(_label=week, _denom=7), walk=t_road)
 
@@ -387,7 +387,7 @@ def test_contract_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoads():
 
 def test_contract_get_heir_road_list_returnsCorrectList():
     cx = example_contracts_get_contract_with_4_levels()
-    weekdays = f"{cx._economy_title},weekdays"
+    weekdays = f"{cx._economy_tag},weekdays"
     assert cx.get_heir_road_list(road_x=weekdays)
     heir_node_road_list = cx.get_heir_road_list(road_x=weekdays)
     # for node in heir_node_road_list:
@@ -401,61 +401,61 @@ def test_contract_get_heir_road_list_returnsCorrectList():
 # def test_contract4party_hasCorrectLevel1StructureWithGrouplessBranches_2():
 #     cx = ContractUnit(_owner=owner_text)
 #     cx.add_idea(idea_kid=IdeaKid(_label="A", _weight=7), walk="blahblah")
-#     cx.add_idea(idea_kid=IdeaKid(_label="C", _weight=3), walk=f"{cx._economy_title},A")
-#     cx.add_idea(idea_kid=IdeaKid(_label="E", _weight=7), walk=f"{cx._economy_title},A,C")
-#     cx.add_idea(idea_kid=IdeaKid(_label="D", _weight=7), walk=f"{cx._economy_title},A,C")
+#     cx.add_idea(idea_kid=IdeaKid(_label="C", _weight=3), walk=f"{cx._economy_tag},A")
+#     cx.add_idea(idea_kid=IdeaKid(_label="E", _weight=7), walk=f"{cx._economy_tag},A,C")
+#     cx.add_idea(idea_kid=IdeaKid(_label="D", _weight=7), walk=f"{cx._economy_tag},A,C")
 #     cx.add_idea(idea_kid=IdeaKid(_label="B", _weight=13), walk="blahblah")
 #     cx.add_idea(idea_kid=IdeaKid(_label="F", _weight=23), walk="blahblah")
 #     cx.add_idea(idea_kid=IdeaKid(_label="G", _weight=57), walk="blahblah")
-#     cx.add_idea(idea_kid=IdeaKid(_label="I"), walk=f"{cx._economy_title},G")
-#     cx.add_idea(idea_kid=IdeaKid(_label="H"), walk=f"{cx._economy_title},G")
-#     cx.add_idea(idea_kid=IdeaKid(_label="J"), walk=f"{cx._economy_title},G,I")
-#     cx.add_idea(idea_kid=IdeaKid(_label="K"), walk=f"{cx._economy_title},G,I")
-#     cx.add_idea(idea_kid=IdeaKid(_label="M"), walk=f"{cx._economy_title},G,H")
+#     cx.add_idea(idea_kid=IdeaKid(_label="I"), walk=f"{cx._economy_tag},G")
+#     cx.add_idea(idea_kid=IdeaKid(_label="H"), walk=f"{cx._economy_tag},G")
+#     cx.add_idea(idea_kid=IdeaKid(_label="J"), walk=f"{cx._economy_tag},G,I")
+#     cx.add_idea(idea_kid=IdeaKid(_label="K"), walk=f"{cx._economy_tag},G,I")
+#     cx.add_idea(idea_kid=IdeaKid(_label="M"), walk=f"{cx._economy_tag},G,H")
 
 #     billy_name = PartyName("billy")
 #     cx.add_partyunit(name=billy_name)
 #     billy_bl = Balancelink(brand=billy_name)
-#     cx.edit_idea_attr(road=f"{cx._economy_title},G", balancelink=billy_bl)
-#     cx.edit_idea_attr(road=f"{cx._economy_title},G,H,M", balancelink=billy_bl)
+#     cx.edit_idea_attr(road=f"{cx._economy_tag},G", balancelink=billy_bl)
+#     cx.edit_idea_attr(road=f"{cx._economy_tag},G,H,M", balancelink=billy_bl)
 
 #     sandy_name = PartyName("sandy")
 #     cx.add_partyunit(name=sandy_name)
 #     sandy_bl = Balancelink(brand=sandy_name)
-#     cx.edit_idea_attr(road=f"{cx._economy_title},A", balancelink=sandy_bl)
-#     cx.edit_idea_attr(road=f"{cx._economy_title},B", balancelink=sandy_bl)
-#     cx.edit_idea_attr(road=f"{cx._economy_title},A,C,E", balancelink=sandy_bl)
+#     cx.edit_idea_attr(road=f"{cx._economy_tag},A", balancelink=sandy_bl)
+#     cx.edit_idea_attr(road=f"{cx._economy_tag},B", balancelink=sandy_bl)
+#     cx.edit_idea_attr(road=f"{cx._economy_tag},A,C,E", balancelink=sandy_bl)
 
 #     # expected sandy
 #     exp_sandy = ContractUnit(_owner=owner_text)
 #     exp_sandy.add_idea(idea_kid=IdeaKid(_label="A", _contract_importance=0.07), walk="blahblah")
-#     exp_sandy.add_idea(idea_kid=IdeaKid(_label="C", _contract_importance=0.07), walk=f"{cx._economy_title},A")
-#     exp_sandy.add_idea(idea_kid=IdeaKid(_label="E", _contract_importance=0.5), walk=f"{cx._economy_title},A,C")
+#     exp_sandy.add_idea(idea_kid=IdeaKid(_label="C", _contract_importance=0.07), walk=f"{cx._economy_tag},A")
+#     exp_sandy.add_idea(idea_kid=IdeaKid(_label="E", _contract_importance=0.5), walk=f"{cx._economy_tag},A,C")
 #     exp_sandy.add_idea(idea_kid=IdeaKid(_label="B", _contract_importance=0.13), walk="blahblah")
 
 #     # generated sandy
 #     gen_sandy = cx.get_contract4party(acptfacts=None, party_name=sandy_name)
 
 #     # check generated sandy is correct
-#     assert gen_sandy.get_idea_kid(road=f"{cx._economy_title},A")._contract_importance == 0.07
-#     assert gen_sandy.get_idea_kid(road=f"{cx._economy_title},A,C")._contract_importance == 0.07
-#     assert gen_sandy.get_idea_kid(road=f"{cx._economy_title},A,C,E")._contract_importance == 0.5
-#     assert gen_sandy.get_idea_kid(road=f"{cx._economy_title},B")._contract_importance == 0.13
+#     assert gen_sandy.get_idea_kid(road=f"{cx._economy_tag},A")._contract_importance == 0.07
+#     assert gen_sandy.get_idea_kid(road=f"{cx._economy_tag},A,C")._contract_importance == 0.07
+#     assert gen_sandy.get_idea_kid(road=f"{cx._economy_tag},A,C,E")._contract_importance == 0.5
+#     assert gen_sandy.get_idea_kid(road=f"{cx._economy_tag},B")._contract_importance == 0.13
 #     assert (
-#         gen_sandy.get_idea_kid(road=f"{cx._economy_title},A")._contract_importance
-#         == exp_sandy.get_idea_kid(road=f"{cx._economy_title},A")._contract_importance
+#         gen_sandy.get_idea_kid(road=f"{cx._economy_tag},A")._contract_importance
+#         == exp_sandy.get_idea_kid(road=f"{cx._economy_tag},A")._contract_importance
 #     )
 #     assert (
-#         gen_sandy.get_idea_kid(road=f"{cx._economy_title},A,C")._contract_importance
-#         == exp_sandy.get_idea_kid(road=f"{cx._economy_title},A,C")._contract_importance
+#         gen_sandy.get_idea_kid(road=f"{cx._economy_tag},A,C")._contract_importance
+#         == exp_sandy.get_idea_kid(road=f"{cx._economy_tag},A,C")._contract_importance
 #     )
 #     assert (
-#         gen_sandy.get_idea_kid(road=f"{cx._economy_title},A,C,E")._contract_importance
-#         == exp_sandy.get_idea_kid(road=f"{cx._economy_title},A,C,E")._contract_importance
+#         gen_sandy.get_idea_kid(road=f"{cx._economy_tag},A,C,E")._contract_importance
+#         == exp_sandy.get_idea_kid(road=f"{cx._economy_tag},A,C,E")._contract_importance
 #     )
 #     assert (
-#         gen_sandy.get_idea_kid(road=f"{cx._economy_title},B")._contract_importance
-#         == exp_sandy.get_idea_kid(road=f"{cx._economy_title},B")._contract_importance
+#         gen_sandy.get_idea_kid(road=f"{cx._economy_tag},B")._contract_importance
+#         == exp_sandy.get_idea_kid(road=f"{cx._economy_tag},B")._contract_importance
 #     )
 #     gen_sandy_list = gen_sandy.get_idea_list()
 #     assert len(gen_sandy_list) == 5

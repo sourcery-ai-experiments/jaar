@@ -123,8 +123,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             name=first_env, economys_dir=get_test_economys_dir()
         )
         self.refresh_economy()
-        self.economy_title_combo_refresh()
-        self.economy_title_combo.setCurrentText(first_env)
+        self.economy_tag_combo_refresh()
+        self.economy_tag_combo.setCurrentText(first_env)
         self._owner_load(owner_name="ernie")
 
     def save_isol(self):
@@ -146,12 +146,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_economy()
 
     def economy_load_from_file(self):
-        economy_selected = self.economy_title_combo.currentText()
+        economy_selected = self.economy_tag_combo.currentText()
         self.economy_x = economyunit_shop(
             name=economy_selected, economys_dir=get_test_economys_dir()
         )
         self.economy_x.create_dirs_if_null(in_memory_bank=False)
-        self.economy_title.setText(economy_selected)
+        self.economy_tag.setText(economy_selected)
         self.refresh_economy()
 
     def contracts_table_select(self):
@@ -213,19 +213,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.digests_table.setHidden(False)
 
     def economy_insert(self):
-        create_example_economy(economy_title=self.economy_title.text())
-        self.economy_title_combo_refresh()
+        create_example_economy(economy_tag=self.economy_tag.text())
+        self.economy_tag_combo_refresh()
 
     def economy_update_name(self):
         rename_example_economy(
-            economy_obj=self.economy_x, new_name=self.economy_title.text()
+            economy_obj=self.economy_x, new_name=self.economy_tag.text()
         )
-        self.economy_title_combo_refresh()
+        self.economy_tag_combo_refresh()
 
     def economy_delete(self):
         delete_dir_example_economy(economy_obj=self.economy_x)
         self.economy_x = None
-        self.economy_title_combo_refresh()
+        self.economy_tag_combo_refresh()
         self.refresh_economy()
 
     def contract_insert(self):
@@ -562,9 +562,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             column_width=[50, 200, 300],
         )
 
-    def economy_title_combo_refresh(self):
-        self.economy_title_combo.clear()
-        self.economy_title_combo.addItems(create_example_economys_list())
+    def economy_tag_combo_refresh(self):
+        self.economy_tag_combo.clear()
+        self.economy_tag_combo.addItems(create_example_economys_list())
 
     def refresh_owners(self):
         self.owner_x = None

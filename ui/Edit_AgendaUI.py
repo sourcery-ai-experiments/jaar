@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui\EditAgendaUI.ui'
+# Form implementation generated from reading ui file 'ui\Edit_AgendaUI.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -71,7 +71,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowTag(_translate("Form", "Form"))
         self.refresh_button.setText(_translate("Form", "Refresh All"))
         self.close_button.setText(_translate("Form", "Close"))
         item = self.agenda_table.horizontalHeaderItem(0)

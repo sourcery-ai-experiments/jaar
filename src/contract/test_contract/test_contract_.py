@@ -17,7 +17,7 @@ def test_contract_exists():
 
     assert new_obj
     assert new_obj._owner == owner_text
-    assert new_obj._economy_title == root_label()
+    assert new_obj._economy_tag == root_label()
     assert new_obj._weight == 1
     assert new_obj._max_tree_traverse == 3
     assert new_obj._tree_traverse_count is None
@@ -40,7 +40,7 @@ def test_contract_IsAbleToSetTaskAsComplete():
     assert mail_idea._task == True
 
     ced_min_label = "CE0_minutes"
-    ced_road = f"{contract_x._economy_title},{ced_min_label}"
+    ced_road = f"{contract_x._economy_tag},{ced_min_label}"
     contract_x.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=85)
     idea_list = contract_x.get_idea_list()
     assert mail_idea.promise == True
@@ -50,7 +50,7 @@ def test_contract_IsAbleToSetTaskAsComplete():
 def test_contract_IsAbleToEditAcptFactUnitAnyAncestor_Idea_1():
     contract_x = get_contract_1Task_1CE0MinutesRequired_1AcptFact()
     ced_min_label = "CE0_minutes"
-    ced_road = f"{contract_x._economy_title},{ced_min_label}"
+    ced_road = f"{contract_x._economy_tag},{ced_min_label}"
     contract_x.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=85)
     idea_list = contract_x.get_idea_list()
     mail_idea = idea_list[1]
@@ -150,15 +150,15 @@ def test_contract_init_CorrectlySetsGiven_auto_output_to_public():
     assert new_obj._auto_output_to_public == True
 
 
-def test_contract_set_economy_title_CorrectlySetsAttr():
+def test_contract_set_economy_tag_CorrectlySetsAttr():
     # GIVEN
-    economy_title_text = "Sun"
+    economy_tag_text = "Sun"
     owner_text = "Noa"
     new_obj = ContractUnit(_owner=owner_text, _auto_output_to_public=True)
-    assert new_obj._economy_title == root_label()
+    assert new_obj._economy_tag == root_label()
 
     # WHEN
-    new_obj.set_economy_title(economy_title=economy_title_text)
+    new_obj.set_economy_tag(economy_tag=economy_tag_text)
 
     # THEN
-    assert new_obj._economy_title == economy_title_text
+    assert new_obj._economy_tag == economy_tag_text

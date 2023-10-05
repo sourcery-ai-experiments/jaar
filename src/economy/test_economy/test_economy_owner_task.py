@@ -1,6 +1,6 @@
 from src.economy.economy import economyunit_shop
 from src.economy.examples.economy_env_kit import (
-    get_temp_env_title,
+    get_temp_env_tag,
     env_dir_setup_cleanup,
     get_test_economys_dir,
 )
@@ -8,7 +8,7 @@ from src.economy.examples.example_owners import get_contract_assignment_laundry_
 
 
 def test_economy_ChangingOneOwnersFactChangesAnotherAgenda(env_dir_setup_cleanup):
-    sx = economyunit_shop(get_temp_env_title(), get_test_economys_dir())
+    sx = economyunit_shop(get_temp_env_tag(), get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     # GIVEN
@@ -16,11 +16,11 @@ def test_economy_ChangingOneOwnersFactChangesAnotherAgenda(env_dir_setup_cleanup
     sx.create_new_ownerunit(owner_name=america_text)
     america_ux = sx.get_owner_obj(name=america_text)
     laundry_contract = get_contract_assignment_laundry_example1()
-    laundry_contract.set_economy_title(sx.title)
+    laundry_contract.set_economy_tag(sx.tag)
     america_ux.set_isol(laundry_contract)
 
     casa_text = "casa"
-    casa_road = f"{sx.title},{casa_text}"
+    casa_road = f"{sx.tag},{casa_text}"
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
     b_full_text = "full"
@@ -73,7 +73,7 @@ def test_economy_ChangingOneOwnersFactChangesAnotherAgenda(env_dir_setup_cleanup
 
 # def test_economy_create_task_CorrectlyCreatesTask(env_dir_setup_cleanup):
 #     sx = economyunit_shop(
-#         title=get_temp_env_title(), economys_dir=get_test_economys_dir()
+#         tag=get_temp_env_tag(), economys_dir=get_test_economys_dir()
 #     )
 #     sx.create_dirs_if_null(in_memory_bank=True)
 

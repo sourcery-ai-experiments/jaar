@@ -122,7 +122,7 @@ def test_get_time_():
 
     # Then
     time_text = "time"
-    time_road = f"{cx._economy_title},{time_text}"
+    time_road = f"{cx._economy_tag},{time_text}"
     jaja_text = "jajatime"
     jaja_road = f"{time_road},{jaja_text}"
     assert cx._idearoot._acptfactunits[jaja_road]

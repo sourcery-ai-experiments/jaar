@@ -5,10 +5,10 @@ from src.contract.x_func import delete_dir, save_file as x_func_save_file
 
 
 def get_temp_owner_dir() -> str:
-    return f"src/economy/examples/{get_temp_economy_title()}"
+    return f"src/economy/examples/{get_temp_economy_tag()}"
 
 
-def get_temp_economy_title() -> str:
+def get_temp_economy_tag() -> str:
     return "ex_env"
 
 

@@ -2,7 +2,7 @@ from src.economy.economy import economyunit_shop
 from src.economy.owner import ownerunit_shop
 from src.economy.examples.economy_env_kit import (
     get_temp_env_dir,
-    get_temp_env_title,
+    get_temp_env_tag,
     env_dir_setup_cleanup,
     get_test_economys_dir,
 )
@@ -12,9 +12,9 @@ from pytest import raises as pytest_raises
 
 def test_economy_set_owner_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
-    economy_title = get_temp_env_title()
-    sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
-    print(f"create env '{economy_title}' directories.")
+    economy_tag = get_temp_env_tag()
+    sx = economyunit_shop(tag=economy_tag, economys_dir=get_test_economys_dir())
+    print(f"create env '{economy_tag}' directories.")
     sx.create_dirs_if_null(in_memory_bank=True)
     timmy_text = "timmy"
     wx_path = f"{sx.get_owners_dir()}/{timmy_text}"
@@ -33,8 +33,8 @@ def test_economy_create_ownerunit_from_public_RaisesErrorWhenOwnerDoesNotExist(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    economy_title = get_temp_env_title()
-    sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
+    economy_tag = get_temp_env_tag()
+    sx = economyunit_shop(tag=economy_tag, economys_dir=get_test_economys_dir())
 
     # WHEN / THEN
     bobs_text = "bobs wurld"
@@ -48,15 +48,13 @@ def test_economy_create_ownerunit_from_public_RaisesErrorWhenOwnerDoesNotExist(
 
 def test_economy_rename_ownerunit_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
-    economy_title = get_temp_env_title()
-    e5 = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
+    economy_tag = get_temp_env_tag()
+    e5 = economyunit_shop(tag=economy_tag, economys_dir=get_test_economys_dir())
     e5.create_dirs_if_null(in_memory_bank=True)
     old_bob_text = "old Bob"
     old_bob_dir = f"{e5.get_owners_dir()}/{old_bob_text}"
     old_bob_file_path = f"{old_bob_dir}/isol_contract.json"
-    wx5_obj = ownerunit_shop(
-        old_bob_text, e5.get_object_root_dir(), get_temp_env_title()
-    )
+    wx5_obj = ownerunit_shop(old_bob_text, e5.get_object_root_dir(), get_temp_env_tag())
     e5.set_ownerunits_empty_if_null()
     e5.set_ownerunit_to_economy(owner=wx5_obj)
     print(f"{old_bob_dir=}")
@@ -90,8 +88,8 @@ def test_economy_rename_ownerunit_WorksCorrectly(env_dir_setup_cleanup):
 
 def test_economy_del_owner_dir_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
-    economy_title = get_temp_env_title()
-    sx = economyunit_shop(title=economy_title, economys_dir=get_test_economys_dir())
+    economy_tag = get_temp_env_tag()
+    sx = economyunit_shop(tag=economy_tag, economys_dir=get_test_economys_dir())
     xia_text = "Xia"
     xia_dir = f"{sx.get_owners_dir()}/{xia_text}"
     xia_file_path = f"{xia_dir}/isol_contract.json"

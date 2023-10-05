@@ -8,7 +8,7 @@ from src.economy.examples.example_owners import (
     get_contract_3CleanNodesRandomWeights,
 )
 from src.economy.examples.economy_env_kit import (
-    get_temp_env_title,
+    get_temp_env_tag,
     get_test_economys_dir,
     env_dir_setup_cleanup,
 )
@@ -18,9 +18,7 @@ def test_economy_get_output_contract_ReturnsCorrectContractObjScenario1(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = economyunit_shop(
-        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
-    )
+    sx = economyunit_shop(tag=get_temp_env_tag(), economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     input_cx = example_owners_get_6node_contract()
     sx.save_public_contract(input_cx)
@@ -43,7 +41,7 @@ def test_economy_get_output_contract_ReturnsCorrectContractObjScenario1(
     # THEN
     a_text = "A"
     c_text = "C"
-    c_road = f"{input_cx._economy_title},{c_text}"
+    c_road = f"{input_cx._economy_tag},{c_text}"
     d_text = "D"
     d_road = f"{c_road},{d_text}"
     print(f"{output_cx._owner=}")
@@ -92,9 +90,7 @@ def test_economy_get_output_contract_ReturnsCorrectContractObjScenario2(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = economyunit_shop(
-        title=get_temp_env_title(), economys_dir=get_test_economys_dir()
-    )
+    sx = economyunit_shop(tag=get_temp_env_tag(), economys_dir=get_test_economys_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     cx1 = example_owners_get_6node_contract()
     cx2 = ex_cxs_contract_v002()
@@ -115,7 +111,7 @@ def test_economy_get_output_contract_ReturnsCorrectContractObjScenario2(
     output_cx = sx.get_output_contract(owner_name=xia_text)
 
     # THEN
-    output_cx_d_road = f"{output_cx._economy_title},C,D"
+    output_cx_d_road = f"{output_cx._economy_tag},C,D"
     output_cx_d_idea = output_cx.get_idea_kid(output_cx_d_road)
     print(f" {output_cx_d_idea._weight=} ")
     assert output_cx != None
@@ -151,8 +147,8 @@ def test_ownerunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
 ):
     # GIVEN
     env_dir = get_test_economys_dir()
-    economy_title = get_temp_env_title()
-    sx = economyunit_shop(title=economy_title, economys_dir=env_dir)
+    economy_tag = get_temp_env_tag()
+    sx = economyunit_shop(tag=economy_tag, economys_dir=env_dir)
     sx.create_dirs_if_null(in_memory_bank=True)
     # ux = ownerunit_shop(name=owner1_text, env_dir=env_dir)
 

@@ -10,7 +10,7 @@
     <height>625</height>
    </rect>
   </property>
-  <property name="windowTitle">
+  <property name="windowTag">
    <string>Form</string>
   </property>
   <widget class="QLineEdit" name="issue_5">

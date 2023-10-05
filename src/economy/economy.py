@@ -42,7 +42,7 @@ from src.economy.bank_sqlstr import (
 
 @dataclass
 class EconomyUnit:
-    title: str
+    tag: str
     economys_dir: str
     _ownerunits: dict[str:OwnerUnit] = None
     _bank_db = None
@@ -262,14 +262,14 @@ class EconomyUnit:
         self._bank_db = None
         x_func_delete_dir(dir=self.get_bank_db_path())
 
-    def set_economyunit_title(self, title: str):
-        self.title = title
+    def set_economyunit_tag(self, tag: str):
+        self.tag = tag
 
     def get_bank_db_path(self):
         return f"{self.get_object_root_dir()}/bank.db"
 
     def get_object_root_dir(self):
-        return f"{self.economys_dir}/{self.title}"
+        return f"{self.economys_dir}/{self.tag}"
 
     def _create_main_file_if_null(self, x_dir):
         economy_file_name = "economy.json"
@@ -308,8 +308,8 @@ class EconomyUnit:
 
     def create_new_ownerunit(self, owner_name: str):
         self.set_ownerunits_empty_if_null()
-        print(f"{self.title=}")
-        ux = ownerunit_shop(owner_name, self.get_object_root_dir(), self.title)
+        print(f"{self.tag=}")
+        ux = ownerunit_shop(owner_name, self.get_object_root_dir(), self.tag)
         ux.create_core_dir_and_files()
         self._ownerunits[ux._admin._owner_name] = ux
 
@@ -383,7 +383,7 @@ class EconomyUnit:
         x_func_delete_dir(f"{self.get_public_dir()}/{contract_x_owner}.json")
 
     def save_public_contract(self, contract_x: ContractUnit):
-        contract_x.set_economy_title(economy_title=self.title)
+        contract_x.set_economy_tag(economy_tag=self.tag)
         x_func_save_file(
             dest_dir=self.get_public_dir(),
             file_name=f"{contract_x._owner}.json",
@@ -485,15 +485,13 @@ class EconomyUnit:
 
 
 def economyunit_shop(
-    title: str,
+    tag: str,
     economys_dir: str,
     _ownerunits: dict[str:OwnerUnit] = None,
     in_memory_bank: bool = None,
 ):
     if in_memory_bank is None:
         in_memory_bank = True
-    economy_x = EconomyUnit(
-        title=title, economys_dir=economys_dir, _ownerunits=_ownerunits
-    )
+    economy_x = EconomyUnit(tag=tag, economys_dir=economys_dir, _ownerunits=_ownerunits)
     economy_x.create_dirs_if_null(in_memory_bank=in_memory_bank)
     return economy_x

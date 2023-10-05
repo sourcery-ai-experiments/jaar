@@ -98,7 +98,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowTag(_translate("Form", "Form"))
         self.refresh_button.setText(_translate("Form", "Refresh All"))
         self.close_button.setText(_translate("Form", "Close"))
         self.open_groupedit_button.setText(_translate("Form", "Open Group Edit"))

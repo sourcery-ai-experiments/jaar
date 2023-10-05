@@ -371,7 +371,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTag(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "TextLabel"))
         self.settings_button.setText(_translate("MainWindow", "Settings"))
         self.editmain_button.setText(
@@ -479,7 +479,7 @@ class Ui_MainWindow(object):
         self.menubar.setAccessibleDescription(
             _translate("MainWindow", "General Operations")
         )
-        self.file_menu.setTitle(_translate("MainWindow", "File"))
+        self.file_menu.setTag(_translate("MainWindow", "File"))
         self.fm_open.setText(_translate("MainWindow", "Open"))
         self.fm_save.setText(_translate("MainWindow", "Save"))
         self.save_as.setText(_translate("MainWindow", "Save as..."))

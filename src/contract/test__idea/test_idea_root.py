@@ -29,31 +29,31 @@ def test_IdeaRoot_set_idea_label_get_default_economy_root_label_DoesNotRaisesErr
 def test_IdeaRoot_set_idea_label_CorrectlyDoesNotRaisesError():
     # GIVEN
     new_obj = IdeaRoot()
-    economy_title = "El Paso"
+    economy_tag = "El Paso"
 
     # WHEN
 
-    new_obj.set_idea_label(_label=economy_title, contract_economy_title=economy_title)
+    new_obj.set_idea_label(_label=economy_tag, contract_economy_tag=economy_tag)
 
     # THEN
-    assert new_obj._label == economy_title
+    assert new_obj._label == economy_tag
 
 
 def test_IdeaRoot_set_idea_label_InCorrectlyDoesRaisesError():
     # GIVEN
     new_obj = IdeaRoot()
-    economy_title = "El Paso"
+    economy_tag = "El Paso"
 
     with pytest_raises(Exception) as excinfo:
         casa_text = "casa"
-        new_obj.set_idea_label(_label=casa_text, contract_economy_title=economy_title)
+        new_obj.set_idea_label(_label=casa_text, contract_economy_tag=economy_tag)
     assert (
         str(excinfo.value)
-        == f"Cannot set idearoot to string other than '{economy_title}'"
+        == f"Cannot set idearoot to string other than '{economy_tag}'"
     )
 
 
-def test_IdeaRoot_set_idea_label_RaisesErrorWhen_contract_economy_title_IsNone():
+def test_IdeaRoot_set_idea_label_RaisesErrorWhen_contract_economy_tag_IsNone():
     # GIVEN
     new_obj = IdeaRoot()
 
@@ -61,20 +61,20 @@ def test_IdeaRoot_set_idea_label_RaisesErrorWhen_contract_economy_title_IsNone()
 
     with pytest_raises(Exception) as excinfo:
         casa_text = "casa"
-        new_obj.set_idea_label(_label=casa_text, contract_economy_title=None)
+        new_obj.set_idea_label(_label=casa_text, contract_economy_tag=None)
     assert (
         str(excinfo.value)
         == f"Cannot set idearoot to string other than '{root_label()}'"
     )
 
 
-def test_IdeaRoot_set_idea_label_contract_economy_title_EqualRootLabelDoesNotRaisesError():
+def test_IdeaRoot_set_idea_label_contract_economy_tag_EqualRootLabelDoesNotRaisesError():
     # GIVEN
     new_obj = IdeaRoot()
 
     # WHEN
 
-    new_obj.set_idea_label(_label=root_label(), contract_economy_title=root_label())
+    new_obj.set_idea_label(_label=root_label(), contract_economy_tag=root_label())
 
     # THEN
     assert new_obj._label == root_label()

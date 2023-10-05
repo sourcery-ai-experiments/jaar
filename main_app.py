@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from ui.MainWindow import Ui_MainWindow
 from EditMain import EditMainView
 from EditAcptFactTime import EditAcptFactTime
-from EditAgenda import EditAgenda
+from Edit_Agenda import Edit_Agenda
 from EditProblem import EditProblem
 from src.contract.contract import ContractUnit, get_from_json
 from src.contract.examples.contract_env import contract_env
@@ -52,9 +52,9 @@ class MainApp(QApplication):
         # create slot for making editmain visible
         self.main_window.open_editmain.connect(self.editmain_show)
 
-        self.editagenda_view = EditAgenda()
+        self.edit_agenda_view = Edit_Agenda()
         # create slot for making editmain visible
-        self.main_window.open_editagenda.connect(self.editagenda_show)
+        self.main_window.open_edit_agenda.connect(self.edit_agenda_show)
 
         self.edittime_view = EditAcptFactTime()
         # create slot for making editmain visible
@@ -75,10 +75,10 @@ class MainApp(QApplication):
         self.editproblem_view.refresh_all()
         self.editproblem_view.show()
 
-    def editagenda_show(self):
-        self.editagenda_view.contract_x = self.main_window.contract_x
-        self.editagenda_view.refresh_all()
-        self.editagenda_view.show()
+    def edit_agenda_show(self):
+        self.edit_agenda_view.contract_x = self.main_window.contract_x
+        self.edit_agenda_view.refresh_all()
+        self.edit_agenda_view.show()
 
     def editacptfact_show(self):
         self.edittime_view.contract_x = self.main_window.contract_x
@@ -91,7 +91,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     open_editmain = qtc.pyqtSignal(bool)
     open_editproblem = qtc.pyqtSignal(bool)
-    open_editagenda = qtc.pyqtSignal(bool)
+    open_edit_agenda = qtc.pyqtSignal(bool)
     open_edittime = qtc.pyqtSignal(bool)
     contract_x_signal = qtc.pyqtSignal(ContractUnit)
 
@@ -103,7 +103,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.save_close_button.clicked.connect(self.save_file_and_quit)
         self.editmain_button.clicked.connect(self.open_editmain)
         self.problem_popup_button.clicked.connect(self.open_editproblem)
-        self.editagenda_button.clicked.connect(self.open_editagenda)
+        self.edit_agenda_button.clicked.connect(self.open_edit_agenda)
         self.acptfact_nigh_now.clicked.connect(self.set_acptfact_time_nigh_now)
         self.acptfact_open_5daysago.clicked.connect(
             self.set_acptfact_time_open_5daysago
@@ -190,7 +190,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_acptfact_time_open_5daysago(self):
         days5ago_x = datetime.now() - timedelta(days=5)
-        road_minute = f"{self.contract_x._economy_title},time,jajatime"
+        road_minute = f"{self.contract_x._economy_tag},time,jajatime"
         # self.root_datetime_curr_l.setText(f"Now: {str(now_x)}")
         self.contract_x.set_acptfact(
             base=road_minute,
@@ -200,7 +200,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_all()
 
     def _set_acptfact_time_open_midnight_attr(self):
-        road_minute = f"{self.contract_x._economy_title},time,jajatime"
+        road_minute = f"{self.contract_x._economy_tag},time,jajatime"
         open_dt = self.contract_x.get_time_dt_from_min(
             self.contract_x._idearoot._acptfactunits[road_minute].open
         )
@@ -234,7 +234,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_acptfact_time_open_soft(self):
         # now_x = datetime.now()
-        # road_minute = f"{self.contract_x._economy_title},time,jajatime"
+        # road_minute = f"{self.contract_x._economy_tag},time,jajatime"
         # self.root_datetime_curr_l.setText(f"Now: {str(now_x)}")
         # self.contract_x.set_acptfact(
         #     base=road_minute,
@@ -245,7 +245,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_acptfact_time_nigh_now(self):
         now_x = datetime.now()
-        road_minute = f"{self.contract_x._economy_title},time,jajatime"
+        road_minute = f"{self.contract_x._economy_tag},time,jajatime"
         self.contract_x.set_acptfact(
             base=road_minute,
             pick=road_minute,
@@ -283,7 +283,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.current_file_path_l.setText(self.file_path)
         # x_func_save_file(
         #     dest_dir=contract_owner_dir,
-        #     file_name=f"{self.contract_x._economy_title}.json",
+        #     file_name=f"{self.contract_x._economy_tag}.json",
         #     file_text=contract_x.get_json(),
         # )
 
@@ -303,14 +303,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.contract_x.set_partys_empty_if_null()
         self.contract_x.set_groupunits_empty_if_null()
         self.contract_x.set_time_hreg_ideas(c400_count=7)
-        road_minute = f"{self.contract_x._economy_title},time,jajatime"
+        road_minute = f"{self.contract_x._economy_tag},time,jajatime"
         self.contract_x.set_acptfact(
             base=road_minute, pick=road_minute, open=1000000, nigh=1000000
         )
         self.refresh_all()
 
     def refresh_datetime_display(self):
-        road_minute = f"{self.contract_x._economy_title},time,jajatime"
+        road_minute = f"{self.contract_x._economy_tag},time,jajatime"
         jajatime_open = self.contract_x.get_time_dt_from_min(
             self.contract_x._idearoot._acptfactunits[road_minute].open
         )
@@ -431,14 +431,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agenda_states.setItem(row, 1, qtw1(ax._label))
 
         if (
-            ax._requiredunits.get(f"{self.contract_x._economy_title},time,jajatime")
+            ax._requiredunits.get(f"{self.contract_x._economy_tag},time,jajatime")
             != None
         ):
             jajatime_required = ax._requiredunits.get(
-                f"{self.contract_x._economy_title},time,jajatime"
+                f"{self.contract_x._economy_tag},time,jajatime"
             )
             sufffact_x = jajatime_required.sufffacts.get(
-                f"{self.contract_x._economy_title},time,jajatime"
+                f"{self.contract_x._economy_tag},time,jajatime"
             )
             if sufffact_x != None and sufffact_x.open != 0:
                 tw_open = qtw1(
@@ -490,15 +490,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.label_agenda_label_data.setText(agenda_item._label)
         if (
             agenda_item._requiredunits.get(
-                f"{self.contract_x._economy_title},time,jajatime"
+                f"{self.contract_x._economy_tag},time,jajatime"
             )
             != None
         ):
             jajatime_required = agenda_item._requiredunits.get(
-                f"{self.contract_x._economy_title},time,jajatime"
+                f"{self.contract_x._economy_tag},time,jajatime"
             )
             sufffact_x = jajatime_required.sufffacts.get(
-                f"{self.contract_x._economy_title},time,jajatime,day"
+                f"{self.contract_x._economy_tag},time,jajatime,day"
             )
             if sufffact_x != None:
                 self.label_agenda_day_data.setText("day_stuff")
@@ -516,10 +516,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_jajaday_open_nigh(self, agenda_item):
         jajatime_required = agenda_item._requiredunits.get(
-            f"{self.contract_x._economy_title},time,jajatime"
+            f"{self.contract_x._economy_tag},time,jajatime"
         )
         sufffact_x = jajatime_required.sufffacts.get(
-            f"{self.contract_x._economy_title},time,jajatime,day"
+            f"{self.contract_x._economy_tag},time,jajatime,day"
         )
         if sufffact_x != None:
             open_x = sufffact_x.open

@@ -10,7 +10,7 @@
     <height>829</height>
    </rect>
   </property>
-  <property name="windowTitle">
+  <property name="windowTag">
    <string>Form</string>
   </property>
   <widget class="QPushButton" name="bd_add_button">
