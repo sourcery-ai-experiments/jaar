@@ -22,7 +22,7 @@ def test_economy_set_owner_WorksCorrectly(env_dir_setup_cleanup):
     assert os_path.exists(wx_path) == False
 
     # WHEN
-    sx.create_new_ownerunit(owner_name=timmy_text)
+    sx.create_new_ownerunit(owner_title=timmy_text)
 
     # THEN
     print(f"{wx_path=}")
@@ -39,7 +39,7 @@ def test_economy_create_ownerunit_from_public_RaisesErrorWhenOwnerDoesNotExist(
     # WHEN / THEN
     bobs_text = "bobs wurld"
     with pytest_raises(Exception) as excinfo:
-        sx.create_ownerunit_from_public(name=bobs_text)
+        sx.create_ownerunit_from_public(title=bobs_text)
     assert (
         str(excinfo.value)
         == f"Could not load file {sx.get_public_dir()}/{bobs_text}.json (2, 'No such file or directory')"
@@ -66,13 +66,13 @@ def test_economy_rename_ownerunit_WorksCorrectly(env_dir_setup_cleanup):
     assert os_path.exists(old_bob_dir)
     assert os_path.exists(new_bob_file_path) == False
     assert os_path.exists(old_bob_file_path)
-    old_owner_x = e5.get_owner_obj(name=old_bob_text)
-    assert e5.get_owner_obj(name=new_bob_text) is None
+    old_owner_x = e5.get_owner_obj(title=old_bob_text)
+    assert e5.get_owner_obj(title=new_bob_text) is None
     assert old_owner_x._admin._owner_dir == old_bob_dir
     assert old_owner_x._admin._owner_dir != new_bob_dir
 
     # WHEN
-    e5.rename_ownerunit(old_name=old_bob_text, new_name=new_bob_text)
+    e5.rename_ownerunit(old_title=old_bob_text, new_title=new_bob_text)
 
     # THEN
     assert os_path.exists(new_bob_dir)
@@ -80,8 +80,8 @@ def test_economy_rename_ownerunit_WorksCorrectly(env_dir_setup_cleanup):
     print(f"{new_bob_file_path=}")
     assert os_path.exists(new_bob_file_path)
     assert os_path.exists(old_bob_file_path) == False
-    assert e5.get_owner_obj(name=old_bob_text) is None
-    new_owner_x = e5.get_owner_obj(name=new_bob_text)
+    assert e5.get_owner_obj(title=old_bob_text) is None
+    new_owner_x = e5.get_owner_obj(title=new_bob_text)
     assert new_owner_x._admin._owner_dir != old_bob_dir
     assert new_owner_x._admin._owner_dir == new_bob_dir
 
@@ -93,14 +93,14 @@ def test_economy_del_owner_dir_WorksCorrectly(env_dir_setup_cleanup):
     xia_text = "Xia"
     xia_dir = f"{sx.get_owners_dir()}/{xia_text}"
     xia_file_path = f"{xia_dir}/isol_contract.json"
-    sx.create_new_ownerunit(owner_name=xia_text)
-    sx.save_owner_file(owner_name=xia_text)
+    sx.create_new_ownerunit(owner_title=xia_text)
+    sx.save_owner_file(owner_title=xia_text)
     print(f"{xia_file_path=}")
     assert os_path.exists(xia_dir)
     assert os_path.exists(xia_file_path)
 
     # WHEN
-    sx.del_owner_dir(owner_name=xia_text)
+    sx.del_owner_dir(owner_title=xia_text)
 
     # THEN
     assert os_path.exists(xia_file_path) == False

@@ -1,4 +1,4 @@
-from src.contract.party import PartyName, partylink_shop, partyunit_shop
+from src.contract.party import PartyTitle, partylink_shop, partyunit_shop
 from src.contract.group import GroupBrand, groupunit_shop, balancelink_shop
 from src.contract.examples.example_contracts import (
     contract_v001 as examples_contract_v001,
@@ -18,8 +18,8 @@ def test_contract_partys_exists():
     assert cx._partys is None
 
     # GIVEN
-    yahri_party = partyunit_shop(name=PartyName("yahri"))
-    partys_x = {yahri_party.name: yahri_party}
+    yahri_party = partyunit_shop(title=PartyTitle("yahri"))
+    partys_x = {yahri_party.title: yahri_party}
     cx2 = ContractUnit()
 
     # WHEN
@@ -46,9 +46,9 @@ def test_contract_set_party_correctly_sets_partys_1():
     assert len(cx._groups) == 0
 
     # WHEN
-    cx.set_partyunit(partyunit=partyunit_shop(name=PartyName("rico")))
-    cx.set_partyunit(partyunit=partyunit_shop(name=PartyName("carmen")))
-    cx.set_partyunit(partyunit=partyunit_shop(name=PartyName("patrick")))
+    cx.set_partyunit(partyunit=partyunit_shop(title=PartyTitle("rico")))
+    cx.set_partyunit(partyunit=partyunit_shop(title=PartyTitle("carmen")))
+    cx.set_partyunit(partyunit=partyunit_shop(title=PartyTitle("patrick")))
 
     # THEN
     assert len(cx._partys) == 3
@@ -77,9 +77,9 @@ def test_contract_set_party_correctly_sets_partys_2():
     assign_text = "assignment"
 
     # WHEN
-    cx.add_partyunit(name=rico_text, uid=61, creditor_weight=13, debtor_weight=8)
-    cx.add_partyunit(name=carm_text, uid=5, debtor_weight=5)
-    cx.add_partyunit(name=patr_text, creditor_weight=17, depotlink_type=assign_text)
+    cx.add_partyunit(title=rico_text, uid=61, creditor_weight=13, debtor_weight=8)
+    cx.add_partyunit(title=carm_text, uid=5, debtor_weight=5)
+    cx.add_partyunit(title=patr_text, creditor_weight=17, depotlink_type=assign_text)
 
     # THEN
     assert len(cx._partys) == 3
@@ -95,8 +95,8 @@ def test_contract_get_party_CorrectlyGetsParty():
     cx = ContractUnit(_owner="prom")
     rico_text = "rico"
     carm_text = "carmen"
-    cx.add_partyunit(name=rico_text)
-    cx.add_partyunit(name=carm_text)
+    cx.add_partyunit(title=rico_text)
+    cx.add_partyunit(title=carm_text)
 
     # WHEN
     rico_party = cx.get_party(rico_text)
@@ -116,15 +116,15 @@ def test_contract_get_partys_depotlink_count_GetsCorrectCount():
     # WHEN
     rico_text = "rico"
     carm_text = "carmen"
-    sue_cx.add_partyunit(name=rico_text)
-    sue_cx.add_partyunit(name=carm_text)
+    sue_cx.add_partyunit(title=rico_text)
+    sue_cx.add_partyunit(title=carm_text)
     # THEN
     assert len(sue_cx._partys) == 2
     assert sue_cx.get_partys_depotlink_count() == 0
 
     # WHEN
     patr_text = "patrick"
-    sue_cx.add_partyunit(name=patr_text, depotlink_type=assign_text)
+    sue_cx.add_partyunit(title=patr_text, depotlink_type=assign_text)
     # THEN
     assert len(sue_cx._partys) == 3
     assert sue_cx.get_partys_depotlink_count() == 1
@@ -144,9 +144,9 @@ def test_contract_get_idea_list_CorrectlySetsPartyLinkContractCreditAndDebt():
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(rico_text)))
-    cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(carm_text)))
-    cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(patr_text)))
+    cx.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(rico_text)))
+    cx.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
+    cx.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
     bl_rico = balancelink_shop(brand=rico_text, creditor_weight=20, debtor_weight=40)
     bl_carm = balancelink_shop(brand=carm_text, creditor_weight=10, debtor_weight=5)
     bl_patr = balancelink_shop(brand=patr_text, creditor_weight=10, debtor_weight=5)
@@ -221,7 +221,7 @@ def test_contract_get_idea_list_CorrectlySetsPartyLinkContractCreditAndDebt():
 
     # WHEN another action, make sure metrics are as expected
     selena_text = "selena"
-    cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(selena_text)))
+    cx.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(selena_text)))
     cx._idearoot.set_balancelink(
         balancelink=balancelink_shop(
             brand=GroupBrand(selena_text), creditor_weight=20, debtor_weight=13
@@ -296,9 +296,9 @@ def test_contract_get_idea_list_CorrectlySetsPartyUnitContractImportance():
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(rico_text)))
-    cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(carm_text)))
-    cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(patr_text)))
+    cx.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(rico_text)))
+    cx.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
+    cx.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
     bl_rico = balancelink_shop(brand=rico_text, creditor_weight=20, debtor_weight=40)
     bl_carm = balancelink_shop(brand=carm_text, creditor_weight=10, debtor_weight=5)
     bl_patr = balancelink_shop(brand=patr_text, creditor_weight=10, debtor_weight=5)
@@ -352,7 +352,7 @@ def test_contract_get_idea_list_CorrectlySetsPartyUnitContractImportance():
     #     # print(
     #     #     f"{group.brand=} {partyunit._contract_creditor=} {group._contract_creditor=}"
     #     # )
-    #     print(f"{partyunit.name=} {partyunit._contract_credit=} {partyunit._contract_debt=} ")
+    #     print(f"{partyunit.title=} {partyunit._contract_credit=} {partyunit._contract_debt=} ")
     #     # print(f"{partyunit_contract_credit_sum=}")
     #     # print(f"{partyunit_contract_debt_sum=}")
     #     partyunit_contract_credit_sum += partyunit._contract_credit
@@ -364,7 +364,7 @@ def test_contract_get_idea_list_CorrectlySetsPartyUnitContractImportance():
 
     # WHEN another action, make sure metrics are as expected
     selena_text = "selena"
-    cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(selena_text)))
+    cx.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(selena_text)))
     cx._idearoot.set_balancelink(
         balancelink=balancelink_shop(
             brand=selena_text, creditor_weight=20, debtor_weight=10
@@ -422,7 +422,7 @@ def test_contract_get_idea_list_CorrectlySetsPartyUnitContractImportance():
     #     # print(
     #     #     f"{group.brand=} {partyunit._contract_creditor=} {group._contract_creditor=}"
     #     # )
-    #     print(f"{partyunit.name=} {partyunit._contract_credit=} {partyunit._contract_debt=} ")
+    #     print(f"{partyunit.title=} {partyunit._contract_credit=} {partyunit._contract_debt=} ")
     #     # print(f"{partyunit_contract_credit_sum=}")
     #     # print(f"{partyunit_contract_debt_sum=}")
     #     partyunit_contract_credit_sum += partyunit._contract_credit
@@ -442,9 +442,9 @@ def test_contract_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitContractImpor
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(rico_text)))
-    cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(carm_text)))
-    cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(patr_text)))
+    cx.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(rico_text)))
+    cx.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
+    cx.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
     bl_rico = balancelink_shop(brand=rico_text, creditor_weight=20, debtor_weight=40)
     bl_carm = balancelink_shop(brand=carm_text, creditor_weight=10, debtor_weight=5)
     bl_patr = balancelink_shop(brand=patr_text, creditor_weight=10, debtor_weight=5)
@@ -536,7 +536,7 @@ def test_contract_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitContractImpor
     #     # print(
     #     #     f"{group.brand=} {partyunit._contract_creditor=} {group._contract_creditor=}"
     #     # )
-    #     print(f"{partyunit.name=} {partyunit._contract_credit=} {partyunit._contract_debt=} ")
+    #     print(f"{partyunit.title=} {partyunit._contract_credit=} {partyunit._contract_debt=} ")
     #     # print(f"{partyunit_contract_credit_sum=}")
     #     # print(f"{partyunit_contract_debt_sum=}")
     #     partyunit_contract_credit_sum += partyunit._contract_credit
@@ -554,10 +554,10 @@ def test_contract_get_idea_list_WithAllPartysWeighted():
     carm_text = "carmen"
     patr_text = "patrick"
     cx.set_partyunit(
-        partyunit=partyunit_shop(name=PartyName(rico_text), creditor_weight=8)
+        partyunit=partyunit_shop(title=PartyTitle(rico_text), creditor_weight=8)
     )
-    cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(carm_text)))
-    cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(patr_text)))
+    cx.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
+    cx.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
     rico_partyunit = cx._partys.get(rico_text)
     carm_partyunit = cx._partys.get(carm_text)
     patr_partyunit = cx._partys.get(patr_text)
@@ -594,7 +594,7 @@ def test_contract_get_idea_list_WithAllPartysWeighted():
     #     # print(
     #     #     f"{group.brand=} {partyunit._contract_creditor=} {group._contract_creditor=}"
     #     # )
-    #     print(f"{partyunit.name=} {partyunit._contract_credit=} {partyunit._contract_debt=} ")
+    #     print(f"{partyunit.title=} {partyunit._contract_credit=} {partyunit._contract_debt=} ")
     #     # print(f"{partyunit_contract_credit_sum=}")
     #     # print(f"{partyunit_contract_debt_sum=}")
     #     partyunit_contract_credit_sum += partyunit._contract_credit
@@ -609,7 +609,7 @@ def clear_all_partyunits_groupunits_contract_agenda_credit_debt(cx: ContractUnit
     for groupunit_x in cx._groups.values():
         groupunit_x.reset_contract_credit_debt()
         # for partylink_x in groupunit_x._partys.values():
-        #     print(f"{groupunit_x.brand=} {partylink_x.creditor_weight=}  {partylink_x._contract_credit:.6f} {partylink_x.debtor_weight=} {partylink_x._contract_debt:.6f} {partylink_x.name=} ")
+        #     print(f"{groupunit_x.brand=} {partylink_x.creditor_weight=}  {partylink_x._contract_credit:.6f} {partylink_x.debtor_weight=} {partylink_x._contract_debt:.6f} {partylink_x.title=} ")
 
     # DELETE contract_agenda_debt and contract_agenda_credit
     for partyunit_x in cx._partys.values():
@@ -629,7 +629,7 @@ def test_contract_agenda_credit_debt_IsCorrectlySet():
     sum_partylink_contract_agenda_credit = 0
     sum_partylink_contract_agenda_debt = 0
     for groupunit_x in cx._groups.values():
-        # print(f"{partyunit.name=}")
+        # print(f"{partyunit.title=}")
         sum_groupunit_contract_agenda_credit += groupunit_x._contract_agenda_credit
         sum_groupunit_contract_agenda_debt += groupunit_x._contract_agenda_debt
         for partylink_x in groupunit_x._partys.values():
@@ -647,7 +647,7 @@ def test_contract_agenda_credit_debt_IsCorrectlySet():
     sum_partyunit_contract_agenda_ratio_credit = 0
     sum_partyunit_contract_agenda_ratio_debt = 0
     for partyunit in cx._partys.values():
-        # print(f"{partyunit.name=}")
+        # print(f"{partyunit.title=}")
         sum_partyunit_contract_agenda_credit += partyunit._contract_agenda_credit
         sum_partyunit_contract_agenda_debt += partyunit._contract_agenda_debt
         sum_partyunit_contract_agenda_ratio_credit += (
@@ -699,7 +699,7 @@ def test_contract_agenda_credit_debt_IsCorrectlySet():
     sum_partylink_contract_agenda_debt = 0
     partylink_count = 0
     for groupunit_x in cx._groups.values():
-        # print(f"{partyunit.name=}")
+        # print(f"{partyunit.title=}")
         sum_groupunit_contract_agenda_credit += groupunit_x._contract_agenda_credit
         sum_groupunit_contract_agenda_debt += groupunit_x._contract_agenda_debt
         for partylink_x in groupunit_x._partys.values():
@@ -732,7 +732,7 @@ def test_contract_agenda_credit_debt_IsCorrectlySet():
         assert partyunit._contract_debt not in [
             0.8,
             0.1,
-        ]  # print(f"{partyunit.name=}")
+        ]  # print(f"{partyunit.title=}")
         sum_partyunit_contract_agenda_credit += partyunit._contract_agenda_credit
         sum_partyunit_contract_agenda_debt += partyunit._contract_agenda_debt
         sum_partyunit_contract_agenda_ratio_credit += (
@@ -766,9 +766,9 @@ def test_contract_agenda_ratio_credit_debt_IsCorrectlySetWhenAgendaIsEmpty():
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    rico_party = partyunit_shop(name=rico_text, creditor_weight=0.5, debtor_weight=2)
-    carm_party = partyunit_shop(name=carm_text, creditor_weight=1.5, debtor_weight=3)
-    patr_party = partyunit_shop(name=patr_text, creditor_weight=8, debtor_weight=5)
+    rico_party = partyunit_shop(title=rico_text, creditor_weight=0.5, debtor_weight=2)
+    carm_party = partyunit_shop(title=carm_text, creditor_weight=1.5, debtor_weight=3)
+    patr_party = partyunit_shop(title=patr_text, creditor_weight=8, debtor_weight=5)
     cx.set_partyunit(partyunit=rico_party)
     cx.set_partyunit(partyunit=carm_party)
     cx.set_partyunit(partyunit=patr_party)
@@ -813,28 +813,28 @@ def test_contract_get_party_groups_returnsCorrectData():
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(rico_text)))
-    cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(carm_text)))
-    cx.set_partyunit(partyunit=partyunit_shop(name=PartyName(patr_text)))
+    cx.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(rico_text)))
+    cx.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
+    cx.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
 
-    carmen_group_list = cx.get_party_groups(party_name=carm_text)
+    carmen_group_list = cx.get_party_groups(party_title=carm_text)
     assert carmen_group_list == [carm_text]
 
     swimmers = "swimmers"
-    carmen_party_dict = {PartyName(carm_text): partylink_shop(name=carm_text)}
+    carmen_party_dict = {PartyTitle(carm_text): partylink_shop(title=carm_text)}
     swim_group = groupunit_shop(brand=swimmers, _partys=carmen_party_dict)
     cx._groups[swim_group.brand] = swim_group
-    carmen_group_list = cx.get_party_groups(party_name=carm_text)
+    carmen_group_list = cx.get_party_groups(party_title=carm_text)
     assert carmen_group_list == [carm_text, swimmers]
 
 
-def test_contract_PartyUnit_CorrectlyCreatesNewName():
+def test_contract_PartyUnit_CorrectlyCreatesNewTitle():
     # GIVEN
     cx = ContractUnit(_owner="prom")
     rico_text = "rico"
-    cx.add_partyunit(name=rico_text, uid=61, creditor_weight=13)
-    cx.add_partyunit(name="carmen", uid=5)
-    cx.add_partyunit(name="patrick", creditor_weight=17)
+    cx.add_partyunit(title=rico_text, uid=61, creditor_weight=13)
+    cx.add_partyunit(title="carmen", uid=5)
+    cx.add_partyunit(title="patrick", creditor_weight=17)
     assert len(cx._partys) == 3
     assert cx._partys.get(rico_text) != None
     assert cx._partys.get(rico_text).creditor_weight == 13
@@ -844,9 +844,9 @@ def test_contract_PartyUnit_CorrectlyCreatesNewName():
 
     # WHEN
     beto_text = "beta"
-    cx.edit_partyunit_name(
-        old_name=rico_text,
-        new_name=beto_text,
+    cx.edit_partyunit_title(
+        old_title=rico_text,
+        new_title=beto_text,
         allow_party_overwite=False,
         allow_nonsingle_group_overwrite=False,
     )
@@ -862,14 +862,14 @@ def test_contract_PartyUnit_CorrectlyCreatesNewName():
     assert cx._groups.get(beto_text)._single_party == True
 
 
-def test_contract_PartyUnit_raiseErrorNewNamePreviouslyExists():
+def test_contract_PartyUnit_raiseErrorNewTitlePreviouslyExists():
     # GIVEN
     sx = ContractUnit(_owner="prom")
     rico_text = "rico"
-    sx.add_partyunit(name=rico_text, uid=61, creditor_weight=13)
+    sx.add_partyunit(title=rico_text, uid=61, creditor_weight=13)
     carmen_text = "carmen"
-    sx.add_partyunit(name=carmen_text, uid=5)
-    sx.add_partyunit(name="patrick", creditor_weight=17)
+    sx.add_partyunit(title=carmen_text, uid=5)
+    sx.add_partyunit(title="patrick", creditor_weight=17)
     assert len(sx._partys) == 3
     assert sx._partys.get(rico_text) != None
     assert sx._partys.get(rico_text).creditor_weight == 13
@@ -879,9 +879,9 @@ def test_contract_PartyUnit_raiseErrorNewNamePreviouslyExists():
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        sx.edit_partyunit_name(
-            old_name=rico_text,
-            new_name=carmen_text,
+        sx.edit_partyunit_title(
+            old_title=rico_text,
+            new_title=carmen_text,
             allow_party_overwite=False,
             allow_nonsingle_group_overwrite=False,
         )
@@ -898,18 +898,18 @@ def test_contract_PartyUnit_CorrectlyChangesGroupUnitPartyLinks():
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    cx.add_partyunit(name=rico_text, uid=61, creditor_weight=13)
-    cx.add_partyunit(name=carm_text, uid=5)
-    cx.add_partyunit(name=patr_text, creditor_weight=17)
+    cx.add_partyunit(title=rico_text, uid=61, creditor_weight=13)
+    cx.add_partyunit(title=carm_text, uid=5)
+    cx.add_partyunit(title=patr_text, creditor_weight=17)
 
     swim_text = "swimmers"
-    carmen_party_dict = {PartyName(carm_text): partylink_shop(name=carm_text)}
+    carmen_party_dict = {PartyTitle(carm_text): partylink_shop(title=carm_text)}
     swim_group = groupunit_shop(brand=swim_text, _partys=carmen_party_dict)
     swim_group.set_partylink(
-        partylink=partylink_shop(name=carm_text, creditor_weight=5, debtor_weight=18)
+        partylink=partylink_shop(title=carm_text, creditor_weight=5, debtor_weight=18)
     )
     swim_group.set_partylink(
-        partylink=partylink_shop(name=rico_text, creditor_weight=7, debtor_weight=30)
+        partylink=partylink_shop(title=rico_text, creditor_weight=7, debtor_weight=30)
     )
     cx.set_groupunit(groupunit=swim_group)
 
@@ -921,9 +921,9 @@ def test_contract_PartyUnit_CorrectlyChangesGroupUnitPartyLinks():
 
     # WHEN
     beto_text = "beta"
-    cx.edit_partyunit_name(
-        old_name=rico_text,
-        new_name=beto_text,
+    cx.edit_partyunit_title(
+        old_title=rico_text,
+        new_title=beto_text,
         allow_party_overwite=False,
         allow_nonsingle_group_overwrite=False,
     )
@@ -936,25 +936,25 @@ def test_contract_PartyUnit_CorrectlyChangesGroupUnitPartyLinks():
     assert len(swim_group._partys) == 2
 
 
-def test_contract_PartyUnit_CorrectlyMergesNames():
+def test_contract_PartyUnit_CorrectlyMergesTitles():
     # GIVEN
     prom_text = "prom"
     cx = ContractUnit(_owner=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    cx.add_partyunit(name=rico_text, uid=61, creditor_weight=13)
-    cx.add_partyunit(name=carm_text, uid=5, creditor_weight=3)
-    cx.add_partyunit(name=patr_text, creditor_weight=17)
+    cx.add_partyunit(title=rico_text, uid=61, creditor_weight=13)
+    cx.add_partyunit(title=carm_text, uid=5, creditor_weight=3)
+    cx.add_partyunit(title=patr_text, creditor_weight=17)
 
     swim_text = "swimmers"
-    carmen_party_dict = {PartyName(carm_text): partylink_shop(name=carm_text)}
+    carmen_party_dict = {PartyTitle(carm_text): partylink_shop(title=carm_text)}
     swim_group = groupunit_shop(brand=swim_text, _partys=carmen_party_dict)
     swim_group.set_partylink(
-        partylink=partylink_shop(name=carm_text, creditor_weight=5, debtor_weight=18)
+        partylink=partylink_shop(title=carm_text, creditor_weight=5, debtor_weight=18)
     )
     swim_group.set_partylink(
-        partylink=partylink_shop(name=rico_text, creditor_weight=7, debtor_weight=30)
+        partylink=partylink_shop(title=rico_text, creditor_weight=7, debtor_weight=30)
     )
     cx.set_groupunit(groupunit=swim_group)
 
@@ -965,9 +965,9 @@ def test_contract_PartyUnit_CorrectlyMergesNames():
     assert cx._partys.get(carm_text).creditor_weight == 3
 
     # WHEN / THEN
-    cx.edit_partyunit_name(
-        old_name=rico_text,
-        new_name=carm_text,
+    cx.edit_partyunit_title(
+        old_title=rico_text,
+        new_title=carm_text,
         allow_party_overwite=True,
         allow_nonsingle_group_overwrite=False,
     )
@@ -987,18 +987,18 @@ def test_contract_PartyUnit_CorrectlyMergesGroupUnitPartyLinks():
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    cx.add_partyunit(name=rico_text, uid=61, creditor_weight=13)
-    cx.add_partyunit(name=carm_text, uid=5)
-    cx.add_partyunit(name=patr_text, creditor_weight=17)
+    cx.add_partyunit(title=rico_text, uid=61, creditor_weight=13)
+    cx.add_partyunit(title=carm_text, uid=5)
+    cx.add_partyunit(title=patr_text, creditor_weight=17)
 
     swim_text = "swimmers"
-    carmen_party_dict = {PartyName(carm_text): partylink_shop(name=carm_text)}
+    carmen_party_dict = {PartyTitle(carm_text): partylink_shop(title=carm_text)}
     swim_group = groupunit_shop(brand=swim_text, _partys=carmen_party_dict)
     swim_group.set_partylink(
-        partylink=partylink_shop(name=carm_text, creditor_weight=5, debtor_weight=18)
+        partylink=partylink_shop(title=carm_text, creditor_weight=5, debtor_weight=18)
     )
     swim_group.set_partylink(
-        partylink=partylink_shop(name=rico_text, creditor_weight=7, debtor_weight=30)
+        partylink=partylink_shop(title=rico_text, creditor_weight=7, debtor_weight=30)
     )
     cx.set_groupunit(groupunit=swim_group)
 
@@ -1012,9 +1012,9 @@ def test_contract_PartyUnit_CorrectlyMergesGroupUnitPartyLinks():
     assert swim_group._partys.get(carm_text).debtor_weight == 18
 
     # WHEN
-    cx.edit_partyunit_name(
-        old_name=rico_text,
-        new_name=carm_text,
+    cx.edit_partyunit_title(
+        old_title=rico_text,
+        new_title=carm_text,
         allow_party_overwite=True,
         allow_nonsingle_group_overwrite=False,
     )
@@ -1027,17 +1027,17 @@ def test_contract_PartyUnit_CorrectlyMergesGroupUnitPartyLinks():
     assert len(swim_group._partys) == 1
 
 
-def test_contract_PartyUnit_raiseErrorNewNameGroupUnitPreviouslyExists():
+def test_contract_PartyUnit_raiseErrorNewTitleGroupUnitPreviouslyExists():
     # GIVEN
     sx = ContractUnit(_owner="prom")
     rico_text = "rico"
-    sx.add_partyunit(name=rico_text, uid=61, creditor_weight=13)
+    sx.add_partyunit(title=rico_text, uid=61, creditor_weight=13)
     anna_text = "anna"
-    sx.add_partyunit(name=anna_text, uid=71, creditor_weight=17)
+    sx.add_partyunit(title=anna_text, uid=71, creditor_weight=17)
     carmen_text = "carmen"
     carmen_group = groupunit_shop(brand=carmen_text)
-    carmen_group.set_partylink(partylink=partylink_shop(name=rico_text))
-    carmen_group.set_partylink(partylink=partylink_shop(name=anna_text))
+    carmen_group.set_partylink(partylink=partylink_shop(title=rico_text))
+    carmen_group.set_partylink(partylink=partylink_shop(title=anna_text))
     sx.set_groupunit(groupunit=carmen_group)
     assert len(sx._groups) == 3
     assert sx._partys.get(carmen_text) is None
@@ -1046,9 +1046,9 @@ def test_contract_PartyUnit_raiseErrorNewNameGroupUnitPreviouslyExists():
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        sx.edit_partyunit_name(
-            old_name=rico_text,
-            new_name=carmen_text,
+        sx.edit_partyunit_title(
+            old_title=rico_text,
+            new_title=carmen_text,
             allow_party_overwite=False,
             allow_nonsingle_group_overwrite=False,
         )
@@ -1058,20 +1058,20 @@ def test_contract_PartyUnit_raiseErrorNewNameGroupUnitPreviouslyExists():
     )
 
 
-def test_contract_PartyUnit_CorrectlyOverwriteNewNameGroupUnit():
+def test_contract_PartyUnit_CorrectlyOverwriteNewTitleGroupUnit():
     # GIVEN
     sx = ContractUnit(_owner="prom")
     rico_text = "rico"
-    sx.add_partyunit(name=rico_text, uid=61, creditor_weight=13)
+    sx.add_partyunit(title=rico_text, uid=61, creditor_weight=13)
     anna_text = "anna"
-    sx.add_partyunit(name=anna_text, uid=71, creditor_weight=17)
+    sx.add_partyunit(title=anna_text, uid=71, creditor_weight=17)
     carmen_text = "carmen"
     carmen_group = groupunit_shop(brand=carmen_text)
     carmen_group.set_partylink(
-        partylink=partylink_shop(name=rico_text, creditor_weight=3)
+        partylink=partylink_shop(title=rico_text, creditor_weight=3)
     )
     carmen_group.set_partylink(
-        partylink=partylink_shop(name=anna_text, creditor_weight=5)
+        partylink=partylink_shop(title=anna_text, creditor_weight=5)
     )
     sx.set_groupunit(groupunit=carmen_group)
     assert len(sx._groups) == 3
@@ -1083,9 +1083,9 @@ def test_contract_PartyUnit_CorrectlyOverwriteNewNameGroupUnit():
     assert sx._groups.get(carmen_text)._partys.get(rico_text).creditor_weight == 3
 
     # WHEN
-    sx.edit_partyunit_name(
-        old_name=rico_text,
-        new_name=carmen_text,
+    sx.edit_partyunit_title(
+        old_title=rico_text,
+        new_title=carmen_text,
         allow_party_overwite=False,
         allow_nonsingle_group_overwrite=True,
     )
@@ -1107,9 +1107,9 @@ def test_contract_set_all_partyunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
     swim_text = "swim"
     walk_text = "walk"
     fly_text = "fly"
-    sx.set_partyunit(partyunit=partyunit_shop(name=swim_text))
-    sx.set_partyunit(partyunit=partyunit_shop(name=walk_text))
-    sx.set_partyunit(partyunit=partyunit_shop(name=fly_text))
+    sx.set_partyunit(partyunit=partyunit_shop(title=swim_text))
+    sx.set_partyunit(partyunit=partyunit_shop(title=walk_text))
+    sx.set_partyunit(partyunit=partyunit_shop(title=fly_text))
     assert sx._partys[swim_text].uid is None
     assert sx._partys[walk_text].uid is None
     assert sx._partys[fly_text].uid is None
@@ -1131,9 +1131,9 @@ def test_contract_set_all_partyunits_uids_unique_CorrectlySetsChangesSameGroupUI
     swim_text = "swim"
     walk_text = "walk"
     fly_text = "fly"
-    sx.set_partyunit(partyunit=partyunit_shop(name=swim_text, uid=3))
-    sx.set_partyunit(partyunit=partyunit_shop(name=walk_text, uid=3))
-    sx.set_partyunit(partyunit=partyunit_shop(name=fly_text))
+    sx.set_partyunit(partyunit=partyunit_shop(title=swim_text, uid=3))
+    sx.set_partyunit(partyunit=partyunit_shop(title=walk_text, uid=3))
+    sx.set_partyunit(partyunit=partyunit_shop(title=fly_text))
     assert sx._partys[swim_text].uid == 3
     assert sx._partys[walk_text].uid == 3
     assert sx._partys[fly_text].uid is None
@@ -1158,9 +1158,9 @@ def test_contract_set_all_partyunits_uids_unique_CorrectlySetsChangesSameGroupUI
     swim_text = "swim"
     walk_text = "walk"
     fly_text = "fly"
-    sx.set_partyunit(partyunit=partyunit_shop(name=swim_text, uid=3))
-    sx.set_partyunit(partyunit=partyunit_shop(name=walk_text, uid=3))
-    sx.set_partyunit(partyunit=partyunit_shop(name=fly_text))
+    sx.set_partyunit(partyunit=partyunit_shop(title=swim_text, uid=3))
+    sx.set_partyunit(partyunit=partyunit_shop(title=walk_text, uid=3))
+    sx.set_partyunit(partyunit=partyunit_shop(title=fly_text))
     assert sx._partys[swim_text].uid == 3
     assert sx._partys[walk_text].uid == 3
     assert sx._partys[fly_text].uid is None
@@ -1185,9 +1185,9 @@ def test_contract_all_partyunits_uids_are_unique_ReturnsCorrectBoolean():
     swim_text = "swim"
     walk_text = "walk"
     fly_text = "fly"
-    sx.set_partyunit(partyunit=partyunit_shop(name=swim_text, uid=3))
-    sx.set_partyunit(partyunit=partyunit_shop(name=walk_text, uid=3))
-    sx.set_partyunit(partyunit=partyunit_shop(name=fly_text))
+    sx.set_partyunit(partyunit=partyunit_shop(title=swim_text, uid=3))
+    sx.set_partyunit(partyunit=partyunit_shop(title=walk_text, uid=3))
+    sx.set_partyunit(partyunit=partyunit_shop(title=fly_text))
     assert sx._partys[swim_text].uid == 3
     assert sx._partys[walk_text].uid == 3
     assert sx._partys[fly_text].uid is None
@@ -1196,19 +1196,19 @@ def test_contract_all_partyunits_uids_are_unique_ReturnsCorrectBoolean():
     assert sx.all_partyunits_uids_are_unique() == False
 
     # WHEN2
-    sx.set_partyunit(partyunit=partyunit_shop(name=swim_text, uid=4))
+    sx.set_partyunit(partyunit=partyunit_shop(title=swim_text, uid=4))
 
     # THEN
     assert sx.all_partyunits_uids_are_unique() == False
 
     # WHEN3
-    sx.set_partyunit(partyunit=partyunit_shop(name=fly_text, uid=5))
+    sx.set_partyunit(partyunit=partyunit_shop(title=fly_text, uid=5))
 
     # THEN
     assert sx.all_partyunits_uids_are_unique()
 
 
-def test_contract_get_partyunits_name_list_CorrectlyReturnsListOfPartyUnits():
+def test_contract_get_partyunits_title_list_CorrectlyReturnsListOfPartyUnits():
     # GIVEN
     owner_text = "Noa"
     sx = ContractUnit(_owner=owner_text)
@@ -1216,18 +1216,18 @@ def test_contract_get_partyunits_name_list_CorrectlyReturnsListOfPartyUnits():
     sam_text = "sam"
     will_text = "will"
     fry_text = "fry"
-    sx.set_partyunit(partyunit=partyunit_shop(name=sam_text))
-    sx.set_partyunit(partyunit=partyunit_shop(name=will_text))
-    sx.set_partyunit(partyunit=partyunit_shop(name=fry_text))
+    sx.set_partyunit(partyunit=partyunit_shop(title=sam_text))
+    sx.set_partyunit(partyunit=partyunit_shop(title=will_text))
+    sx.set_partyunit(partyunit=partyunit_shop(title=fry_text))
     fun_text = "fun people"
     fun_group = groupunit_shop(brand=fun_text)
-    fun_group.set_partylink(partylink=partylink_shop(name=will_text))
+    fun_group.set_partylink(partylink=partylink_shop(title=will_text))
     sx.set_groupunit(groupunit=fun_group)
     assert len(sx._groups) == 4
     assert len(sx._partys) == 3
 
     # WHEN
-    partyunit_list_x = sx.get_partyunits_name_list()
+    partyunit_list_x = sx.get_partyunits_title_list()
 
     # THEN
     assert len(partyunit_list_x) == 4
@@ -1246,16 +1246,16 @@ def test_contract_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr(
     wil_text = "wil"
     fry_text = "fry"
     elu_text = "elu"
-    cx.set_partyunit(partyunit=partyunit_shop(name=sam_text))
-    cx.set_partyunit(partyunit=partyunit_shop(name=wil_text))
-    cx.set_partyunit(partyunit=partyunit_shop(name=fry_text))
+    cx.set_partyunit(partyunit=partyunit_shop(title=sam_text))
+    cx.set_partyunit(partyunit=partyunit_shop(title=wil_text))
+    cx.set_partyunit(partyunit=partyunit_shop(title=fry_text))
     assert cx._partys.get(sam_text)._bank_tax_paid is None
     assert cx._partys.get(sam_text)._bank_tax_diff is None
     assert cx._partys.get(wil_text)._bank_tax_paid is None
     assert cx._partys.get(wil_text)._bank_tax_diff is None
     assert cx._partys.get(fry_text)._bank_tax_paid is None
     assert cx._partys.get(fry_text)._bank_tax_diff is None
-    elu_partyunit = partyunit_shop(name=elu_text)
+    elu_partyunit = partyunit_shop(title=elu_text)
     elu_partyunit._bank_tax_paid = 0.003
     elu_partyunit._bank_tax_diff = 0.007
     cx.set_partyunit(partyunit=elu_partyunit)
@@ -1266,9 +1266,9 @@ def test_contract_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr(
     river_tparty_wil = RiverTpartyUnit(bob_text, wil_text, 0.501, 0, 0.024)
     river_tparty_fry = RiverTpartyUnit(bob_text, fry_text, 0.111, 0, 0.006)
     river_tpartys = {
-        river_tparty_sam.tax_name: river_tparty_sam,
-        river_tparty_wil.tax_name: river_tparty_wil,
-        river_tparty_fry.tax_name: river_tparty_fry,
+        river_tparty_sam.tax_title: river_tparty_sam,
+        river_tparty_wil.tax_title: river_tparty_wil,
+        river_tparty_fry.tax_title: river_tparty_fry,
     }
     # WHEN
     cx.set_banking_attr_partyunits(river_tpartys=river_tpartys)
@@ -1294,18 +1294,18 @@ def test_get_intersection_of_partys_CorrectlyReturnsUnionOfKeysOfTwoDictionarys_
     wil_text = "wil"
     fry_text = "fry"
     elu_text = "elu"
-    cx.set_partyunit(partyunit=partyunit_shop(name=bob_text))
-    cx.set_partyunit(partyunit=partyunit_shop(name=sam_text))
-    cx.set_partyunit(partyunit=partyunit_shop(name=wil_text))
-    cx.set_partyunit(partyunit=partyunit_shop(name=fry_text))
+    cx.set_partyunit(partyunit=partyunit_shop(title=bob_text))
+    cx.set_partyunit(partyunit=partyunit_shop(title=sam_text))
+    cx.set_partyunit(partyunit=partyunit_shop(title=wil_text))
+    cx.set_partyunit(partyunit=partyunit_shop(title=fry_text))
 
     tx = ContractUnit()
     tx.set_partys_empty_if_null()
 
-    tx.set_partyunit(partyunit=partyunit_shop(name=bob_text))
-    tx.set_partyunit(partyunit=partyunit_shop(name=wil_text))
-    tx.set_partyunit(partyunit=partyunit_shop(name=fry_text))
-    tx.set_partyunit(partyunit=partyunit_shop(name=elu_text))
+    tx.set_partyunit(partyunit=partyunit_shop(title=bob_text))
+    tx.set_partyunit(partyunit=partyunit_shop(title=wil_text))
+    tx.set_partyunit(partyunit=partyunit_shop(title=fry_text))
+    tx.set_partyunit(partyunit=partyunit_shop(title=elu_text))
 
     # WHEN
     print(f"{len(cx._partys)=} {len(tx._partys)=}")

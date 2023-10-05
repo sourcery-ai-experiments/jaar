@@ -13,29 +13,29 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_Form(object):
     def setupUi(self, Form):
-        Form.setObjectName("Form")
+        Form.setObjectTitle("Form")
         Form.resize(1023, 712)
         self.input = QtWidgets.QLineEdit(Form)
         self.input.setGeometry(QtCore.QRect(40, 20, 601, 31))
-        self.input.setObjectName("input")
+        self.input.setObjectTitle("input")
         self.refresh_button = QtWidgets.QPushButton(Form)
         self.refresh_button.setGeometry(QtCore.QRect(670, 20, 161, 31))
-        self.refresh_button.setObjectName("refresh_button")
+        self.refresh_button.setObjectTitle("refresh_button")
         self.baseideaunit = QtWidgets.QTreeWidget(Form)
         self.baseideaunit.setGeometry(QtCore.QRect(10, 60, 400, 630))
-        self.baseideaunit.setObjectName("baseideaunit")
+        self.baseideaunit.setObjectTitle("baseideaunit")
         self.baseideaunit.headerItem().setText(0, "1")
         self.close_button = QtWidgets.QPushButton(Form)
         self.close_button.setGeometry(QtCore.QRect(890, 20, 93, 28))
-        self.close_button.setObjectName("close_button")
+        self.close_button.setObjectTitle("close_button")
         self.party_list = QtWidgets.QTableWidget(Form)
         self.party_list.setGeometry(QtCore.QRect(420, 60, 231, 631))
-        self.party_list.setObjectName("party_list")
+        self.party_list.setObjectTitle("party_list")
         self.party_list.setColumnCount(0)
         self.party_list.setRowCount(0)
 
         self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        QtCore.QMetaObject.connectSlotsByTitle(Form)
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate

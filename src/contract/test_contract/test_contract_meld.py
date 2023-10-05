@@ -39,8 +39,8 @@ def test_contract_meld_WeightDoesNotCombine():
 
 def test_contract_meld_PartyUnits():
     # GIVEN
-    x1_name = "x1_party"
-    x1_party = partyunit_shop(name=x1_name)
+    x1_title = "x1_party"
+    x1_party = partyunit_shop(title=x1_title)
 
     contract_text = "x_contract"
     cx1 = ContractUnit(_owner=contract_text)
@@ -48,8 +48,8 @@ def test_contract_meld_PartyUnits():
 
     cx2 = ContractUnit(_owner=contract_text)
     cx2.set_partyunit(partyunit=x1_party)
-    x2_name = "x2_party"
-    x2_party = partyunit_shop(name=x2_name)
+    x2_title = "x2_party"
+    x2_party = partyunit_shop(title=x2_title)
     cx2.set_partyunit(partyunit=x2_party)
     assert len(cx1._partys) == 1
 
@@ -58,14 +58,14 @@ def test_contract_meld_PartyUnits():
 
     # THEN
     assert len(cx1._partys) == 2
-    assert cx1._partys.get(x1_name) != None
-    assert cx1._partys.get(x2_name) != None
+    assert cx1._partys.get(x1_title) != None
+    assert cx1._partys.get(x2_title) != None
 
 
 def test_contract_meld_GroupUnits():
     # GIVEN
-    x1_name = "x1_group"
-    x1_group = groupunit_shop(brand=x1_name)
+    x1_title = "x1_group"
+    x1_group = groupunit_shop(brand=x1_title)
 
     contract_text = "x_contract"
     cx1 = ContractUnit(_owner=contract_text)
@@ -73,8 +73,8 @@ def test_contract_meld_GroupUnits():
 
     cx2 = ContractUnit(_owner=contract_text)
     cx2.set_groupunit(groupunit=x1_group)
-    x2_name = "x2_group"
-    x2_group = groupunit_shop(brand=x2_name, uid=5)
+    x2_title = "x2_group"
+    x2_group = groupunit_shop(brand=x2_title, uid=5)
     cx2.set_groupunit(groupunit=x2_group)
     assert len(cx1._groups) == 1
 
@@ -82,13 +82,13 @@ def test_contract_meld_GroupUnits():
     cx1.meld(other_contract=cx2)
 
     # THEN
-    # for group_name in cx1._groups.values():
-    #     print(f"cx1 {group_name.name=}")
+    # for group_title in cx1._groups.values():
+    #     print(f"cx1 {group_title.title=}")
 
     assert len(cx1._groups) == 2
-    assert cx1._groups.get(x1_name) != None
-    assert cx1._groups.get(x2_name) != None
-    # assert cx1._groups.get(x2_name).uid == 5
+    assert cx1._groups.get(x1_title) != None
+    assert cx1._groups.get(x2_title) != None
+    # assert cx1._groups.get(x2_title).uid == 5
 
 
 def test_contract_idearoot_meld_IdeaRootAttrCorrectlyMelded():
@@ -251,7 +251,7 @@ def test_contract_acptfactunits_meld_GroupsMeldedBefore_Partys():
     cx1 = ContractUnit(_owner=owner_text)
     cx2 = ContractUnit(_owner=owner_text)
     bob = "bob"
-    cx2.set_partyunit(partyunit_shop(name=bob))
+    cx2.set_partyunit(partyunit_shop(title=bob))
     assert cx2._groups.get(bob) != None
     assert cx2._groups.get(bob).uid is None
     cx2.set_groupunit(groupunit_shop(brand=bob, uid=13))
@@ -366,8 +366,8 @@ def test_contract_meld_worksCorrectlyForLargeExample():
     )
 
     # for balanceline in cx1r_bl.values():
-    #     if balanceline.name != fam_text:
-    #         assert balanceline == cx2r_bl.get(balanceline.name)
+    #     if balanceline.title != fam_text:
+    #         assert balanceline == cx2r_bl.get(balanceline.title)
     assert cx1r_bl == cx2r_bl
     # assert cx1._idearoot._balancelines == cx2._idearoot._balancelines
     # assert cx1._idearoot == cx2._idearoot
@@ -393,12 +393,12 @@ def test_contract__meld_originlinks_CorrectlySetsOriginLinks():
     assert len(bob_cx._originunit._links) == 0
 
     # WHEN
-    bob_cx._meld_originlinks(party_name=sue_text, party_weight=sue_weight)
+    bob_cx._meld_originlinks(party_title=sue_text, party_weight=sue_weight)
 
     # THEN
     assert len(bob_cx._originunit._links) == 1
     bob_sue_originunit = originunit_shop()
-    bob_sue_originunit.set_originlink(name=sue_text, weight=sue_weight)
+    bob_sue_originunit.set_originlink(title=sue_text, weight=sue_weight)
     assert bob_cx._originunit == bob_sue_originunit
 
 
@@ -428,7 +428,7 @@ def test_contract_meld_OriginUnitsCorrectlySet():
 
     # THEN
     sue_originunit = originunit_shop()
-    sue_originunit.set_originlink(name=sue_text, weight=sue_weight)
+    sue_originunit.set_originlink(title=sue_text, weight=sue_weight)
     assert len(bob_cx._originunit._links) == 1
     assert bob_cx._originunit == sue_originunit
     bob_free_idea = bob_cx.get_idea_kid(road=free_road)

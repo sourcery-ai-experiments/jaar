@@ -27,16 +27,16 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTab
     sal_text = "sal"
 
     sal = ContractUnit(_owner=sal_text)
-    sal.add_partyunit(name=bob_text, creditor_weight=1)
-    sal.add_partyunit(name=tom_text, creditor_weight=3)
+    sal.add_partyunit(title=bob_text, creditor_weight=1)
+    sal.add_partyunit(title=tom_text, creditor_weight=3)
     sx.save_public_contract(contract_x=sal)
 
     bob = ContractUnit(_owner=bob_text)
-    bob.add_partyunit(name=sal_text, creditor_weight=1)
+    bob.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_contract(contract_x=bob)
 
     tom = ContractUnit(_owner=tom_text)
-    tom.add_partyunit(name=sal_text, creditor_weight=1)
+    tom.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_contract(contract_x=tom)
 
     sx.refresh_bank_metrics()
@@ -59,14 +59,14 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTab
 
     flow_0 = river_flows.get(0)
     flow_1 = river_flows.get(1)
-    assert flow_1.src_name == "sal" and flow_1.dst_name == "tom"
+    assert flow_1.src_title == "sal" and flow_1.dst_title == "tom"
     assert flow_1.river_tree_level == 1
     assert flow_1.currency_start == 0.25
     assert flow_1.currency_close == 1
     assert flow_1.parent_flow_num is None
     flow_2 = river_flows.get(2)
     flow_3 = river_flows.get(3)
-    assert flow_3.src_name == "tom" and flow_3.dst_name == "sal"
+    assert flow_3.src_title == "tom" and flow_3.dst_title == "sal"
     assert flow_3.river_tree_level == 2
     assert flow_3.parent_flow_num == 1
 
@@ -99,21 +99,21 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTab
     elu_text = "elu"
 
     sal = ContractUnit(_owner=sal_text)
-    sal.add_partyunit(name=bob_text, creditor_weight=1, debtor_weight=4)
-    sal.add_partyunit(name=tom_text, creditor_weight=3, debtor_weight=1)
+    sal.add_partyunit(title=bob_text, creditor_weight=1, debtor_weight=4)
+    sal.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
     sx.save_public_contract(contract_x=sal)
 
     bob = ContractUnit(_owner=bob_text)
-    bob.add_partyunit(name=elu_text, creditor_weight=1, debtor_weight=1)
-    bob.add_partyunit(name=tom_text, creditor_weight=1, debtor_weight=1)
+    bob.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=1)
+    bob.add_partyunit(title=tom_text, creditor_weight=1, debtor_weight=1)
     sx.save_public_contract(contract_x=bob)
 
     tom = ContractUnit(_owner=tom_text)
-    tom.add_partyunit(name=elu_text, creditor_weight=1, debtor_weight=8)
+    tom.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=8)
     sx.save_public_contract(contract_x=tom)
 
     elu = ContractUnit(_owner=elu_text)
-    elu.add_partyunit(name=sal_text, creditor_weight=1, debtor_weight=8)
+    elu.add_partyunit(title=sal_text, creditor_weight=1, debtor_weight=8)
     sx.save_public_contract(contract_x=elu)
     sx.refresh_bank_metrics()
 
@@ -162,18 +162,18 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTab
     ava_text = "ava"
 
     sal_contract = ContractUnit(_owner=sal_text)
-    sal_contract.add_partyunit(name=bob_text, creditor_weight=2)
-    sal_contract.add_partyunit(name=tom_text, creditor_weight=7)
-    sal_contract.add_partyunit(name=ava_text, creditor_weight=1)
+    sal_contract.add_partyunit(title=bob_text, creditor_weight=2)
+    sal_contract.add_partyunit(title=tom_text, creditor_weight=7)
+    sal_contract.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=sal_contract)
 
     bob_contract = ContractUnit(_owner=bob_text)
-    bob_contract.add_partyunit(name=sal_text, creditor_weight=3)
-    bob_contract.add_partyunit(name=ava_text, creditor_weight=1)
+    bob_contract.add_partyunit(title=sal_text, creditor_weight=3)
+    bob_contract.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=bob_contract)
 
     tom_contract = ContractUnit(_owner=tom_text)
-    tom_contract.add_partyunit(name=sal_text, creditor_weight=2)
+    tom_contract.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_contract(contract_x=tom_contract)
 
     ava_contract = ContractUnit(_owner=ava_text)
@@ -231,26 +231,26 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTab
     elu_text = "elu"
 
     sal_contract = ContractUnit(_owner=sal_text)
-    sal_contract.add_partyunit(name=bob_text, creditor_weight=2)
-    sal_contract.add_partyunit(name=tom_text, creditor_weight=7)
-    sal_contract.add_partyunit(name=ava_text, creditor_weight=1)
+    sal_contract.add_partyunit(title=bob_text, creditor_weight=2)
+    sal_contract.add_partyunit(title=tom_text, creditor_weight=7)
+    sal_contract.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=sal_contract)
 
     bob_contract = ContractUnit(_owner=bob_text)
-    bob_contract.add_partyunit(name=sal_text, creditor_weight=3)
-    bob_contract.add_partyunit(name=ava_text, creditor_weight=1)
+    bob_contract.add_partyunit(title=sal_text, creditor_weight=3)
+    bob_contract.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=bob_contract)
 
     tom_contract = ContractUnit(_owner=tom_text)
-    tom_contract.add_partyunit(name=sal_text, creditor_weight=2)
+    tom_contract.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_contract(contract_x=tom_contract)
 
     ava_contract = ContractUnit(_owner=ava_text)
-    ava_contract.add_partyunit(name=elu_text, creditor_weight=2)
+    ava_contract.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_contract(contract_x=ava_contract)
 
     elu_contract = ContractUnit(_owner=elu_text)
-    elu_contract.add_partyunit(name=ava_text, creditor_weight=2)
+    elu_contract.add_partyunit(title=ava_text, creditor_weight=2)
     sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
@@ -306,27 +306,27 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTab
     elu_text = "elu"
 
     sal_contract = ContractUnit(_owner=sal_text)
-    sal_contract.add_partyunit(name=bob_text, creditor_weight=2)
-    sal_contract.add_partyunit(name=tom_text, creditor_weight=7)
-    sal_contract.add_partyunit(name=ava_text, creditor_weight=1)
+    sal_contract.add_partyunit(title=bob_text, creditor_weight=2)
+    sal_contract.add_partyunit(title=tom_text, creditor_weight=7)
+    sal_contract.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=sal_contract)
 
     bob_contract = ContractUnit(_owner=bob_text)
-    bob_contract.add_partyunit(name=sal_text, creditor_weight=3)
-    bob_contract.add_partyunit(name=ava_text, creditor_weight=1)
+    bob_contract.add_partyunit(title=sal_text, creditor_weight=3)
+    bob_contract.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=bob_contract)
 
     tom_contract = ContractUnit(_owner=tom_text)
-    tom_contract.add_partyunit(name=sal_text, creditor_weight=2)
+    tom_contract.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_contract(contract_x=tom_contract)
 
     ava_contract = ContractUnit(_owner=ava_text)
-    ava_contract.add_partyunit(name=elu_text, creditor_weight=2)
+    ava_contract.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_contract(contract_x=ava_contract)
 
     elu_contract = ContractUnit(_owner=elu_text)
-    elu_contract.add_partyunit(name=ava_text, creditor_weight=19)
-    elu_contract.add_partyunit(name=sal_text, creditor_weight=1)
+    elu_contract.add_partyunit(title=ava_text, creditor_weight=19)
+    elu_contract.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
@@ -386,21 +386,21 @@ def test_economy_set_river_sphere_for_contract_CorrectlyDeletesPreviousRiver(
     elu_text = "elu"
 
     sal = ContractUnit(_owner=sal_text)
-    sal.add_partyunit(name=bob_text, creditor_weight=1, debtor_weight=4)
-    sal.add_partyunit(name=tom_text, creditor_weight=3, debtor_weight=1)
+    sal.add_partyunit(title=bob_text, creditor_weight=1, debtor_weight=4)
+    sal.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
     sx.save_public_contract(contract_x=sal)
 
     bob = ContractUnit(_owner=bob_text)
-    bob.add_partyunit(name=elu_text, creditor_weight=1, debtor_weight=1)
-    bob.add_partyunit(name=tom_text, creditor_weight=1, debtor_weight=1)
+    bob.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=1)
+    bob.add_partyunit(title=tom_text, creditor_weight=1, debtor_weight=1)
     sx.save_public_contract(contract_x=bob)
 
     tom = ContractUnit(_owner=tom_text)
-    tom.add_partyunit(name=elu_text, creditor_weight=1, debtor_weight=8)
+    tom.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=8)
     sx.save_public_contract(contract_x=tom)
 
     elu = ContractUnit(_owner=elu_text)
-    elu.add_partyunit(name=sal_text, creditor_weight=1, debtor_weight=8)
+    elu.add_partyunit(title=sal_text, creditor_weight=1, debtor_weight=8)
     sx.save_public_contract(contract_x=elu)
     sx.refresh_bank_metrics()
 
@@ -418,7 +418,7 @@ def test_economy_set_river_sphere_for_contract_CorrectlyDeletesPreviousRiver(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 3
 
     # WHEN
-    # sal.add_partyunit(name=elu_text, creditor_weight=1, debtor_weight=4)
+    # sal.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
     # sx.save_public_contract(contract_x=sal)
     sx.set_river_sphere_for_contract(contract_owner=sal_text)
 
@@ -445,27 +445,27 @@ def test_economy_set_river_sphere_for_contract_CorrectlyUsesMaxFlowsCount(
     elu_text = "elu"
 
     sal_contract = ContractUnit(_owner=sal_text)
-    sal_contract.add_partyunit(name=bob_text, creditor_weight=2)
-    sal_contract.add_partyunit(name=tom_text, creditor_weight=7)
-    sal_contract.add_partyunit(name=ava_text, creditor_weight=1)
+    sal_contract.add_partyunit(title=bob_text, creditor_weight=2)
+    sal_contract.add_partyunit(title=tom_text, creditor_weight=7)
+    sal_contract.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=sal_contract)
 
     bob_contract = ContractUnit(_owner=bob_text)
-    bob_contract.add_partyunit(name=sal_text, creditor_weight=3)
-    bob_contract.add_partyunit(name=ava_text, creditor_weight=1)
+    bob_contract.add_partyunit(title=sal_text, creditor_weight=3)
+    bob_contract.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=bob_contract)
 
     tom_contract = ContractUnit(_owner=tom_text)
-    tom_contract.add_partyunit(name=sal_text, creditor_weight=2)
+    tom_contract.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_contract(contract_x=tom_contract)
 
     ava_contract = ContractUnit(_owner=ava_text)
-    ava_contract.add_partyunit(name=elu_text, creditor_weight=2)
+    ava_contract.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_contract(contract_x=ava_contract)
 
     elu_contract = ContractUnit(_owner=elu_text)
-    elu_contract.add_partyunit(name=ava_text, creditor_weight=19)
-    elu_contract.add_partyunit(name=sal_text, creditor_weight=1)
+    elu_contract.add_partyunit(title=ava_text, creditor_weight=19)
+    elu_contract.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
@@ -506,27 +506,27 @@ def test_economy_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTab
     elu_text = "elu"
 
     sal_contract = ContractUnit(_owner=sal_text)
-    sal_contract.add_partyunit(name=bob_text, creditor_weight=2)
-    sal_contract.add_partyunit(name=tom_text, creditor_weight=7)
-    sal_contract.add_partyunit(name=ava_text, creditor_weight=1)
+    sal_contract.add_partyunit(title=bob_text, creditor_weight=2)
+    sal_contract.add_partyunit(title=tom_text, creditor_weight=7)
+    sal_contract.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=sal_contract)
 
     bob_contract = ContractUnit(_owner=bob_text)
-    bob_contract.add_partyunit(name=sal_text, creditor_weight=3)
-    bob_contract.add_partyunit(name=ava_text, creditor_weight=1)
+    bob_contract.add_partyunit(title=sal_text, creditor_weight=3)
+    bob_contract.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=bob_contract)
 
     tom_contract = ContractUnit(_owner=tom_text)
-    tom_contract.add_partyunit(name=sal_text, creditor_weight=2)
+    tom_contract.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_contract(contract_x=tom_contract)
 
     ava_contract = ContractUnit(_owner=ava_text)
-    ava_contract.add_partyunit(name=elu_text, creditor_weight=2)
+    ava_contract.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_contract(contract_x=ava_contract)
 
     elu_contract = ContractUnit(_owner=elu_text)
-    elu_contract.add_partyunit(name=ava_text, creditor_weight=19)
-    elu_contract.add_partyunit(name=sal_text, creditor_weight=1)
+    elu_contract.add_partyunit(title=ava_text, creditor_weight=19)
+    elu_contract.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
@@ -588,27 +588,27 @@ def test_economy_set_river_sphere_for_contract_CorrectlyBuildsASingleContinuousR
     elu_text = "elu"
 
     sal_contract = ContractUnit(_owner=sal_text)
-    sal_contract.add_partyunit(name=bob_text, creditor_weight=2)
-    sal_contract.add_partyunit(name=tom_text, creditor_weight=7)
-    sal_contract.add_partyunit(name=ava_text, creditor_weight=1)
+    sal_contract.add_partyunit(title=bob_text, creditor_weight=2)
+    sal_contract.add_partyunit(title=tom_text, creditor_weight=7)
+    sal_contract.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=sal_contract)
 
     bob_contract = ContractUnit(_owner=bob_text)
-    bob_contract.add_partyunit(name=sal_text, creditor_weight=3)
-    bob_contract.add_partyunit(name=ava_text, creditor_weight=1)
+    bob_contract.add_partyunit(title=sal_text, creditor_weight=3)
+    bob_contract.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=bob_contract)
 
     tom_contract = ContractUnit(_owner=tom_text)
-    tom_contract.add_partyunit(name=sal_text, creditor_weight=2)
+    tom_contract.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_contract(contract_x=tom_contract)
 
     ava_contract = ContractUnit(_owner=ava_text)
-    ava_contract.add_partyunit(name=elu_text, creditor_weight=2)
+    ava_contract.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_contract(contract_x=ava_contract)
 
     elu_contract = ContractUnit(_owner=elu_text)
-    elu_contract.add_partyunit(name=ava_text, creditor_weight=19)
-    elu_contract.add_partyunit(name=sal_text, creditor_weight=1)
+    elu_contract.add_partyunit(title=ava_text, creditor_weight=19)
+    elu_contract.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
@@ -631,7 +631,7 @@ def test_economy_set_river_sphere_for_contract_CorrectlyBuildsASingleContinuousR
         , river_tree_level
         , lag(river_tree_level) OVER (ORDER BY currency_start, currency_close) AS prev_parent_river_tree_level
         FROM river_flow rt1
-        --  WHERE dst_name = 'sal' and currency_name = dst_name
+        --  WHERE dst_title = 'sal' and currency_title = dst_title
         ORDER BY rt1.currency_start, rt1.currency_close
     ) x
     WHERE x.prev_diff <> 0
@@ -658,27 +658,27 @@ def test_economy_set_river_sphere_for_contract_CorrectlyUpatesContractPartyUnits
     elu_text = "elu"
 
     sal_contract_src = ContractUnit(_owner=sal_text)
-    sal_contract_src.add_partyunit(name=bob_text, creditor_weight=2, debtor_weight=2)
-    sal_contract_src.add_partyunit(name=tom_text, creditor_weight=2, debtor_weight=1)
-    sal_contract_src.add_partyunit(name=ava_text, creditor_weight=2, debtor_weight=2)
+    sal_contract_src.add_partyunit(title=bob_text, creditor_weight=2, debtor_weight=2)
+    sal_contract_src.add_partyunit(title=tom_text, creditor_weight=2, debtor_weight=1)
+    sal_contract_src.add_partyunit(title=ava_text, creditor_weight=2, debtor_weight=2)
     sx.save_public_contract(contract_x=sal_contract_src)
 
     bob_contract = ContractUnit(_owner=bob_text)
-    bob_contract.add_partyunit(name=sal_text, creditor_weight=3)
-    bob_contract.add_partyunit(name=ava_text, creditor_weight=1)
+    bob_contract.add_partyunit(title=sal_text, creditor_weight=3)
+    bob_contract.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=bob_contract)
 
     tom_contract = ContractUnit(_owner=tom_text)
-    tom_contract.add_partyunit(name=sal_text)
+    tom_contract.add_partyunit(title=sal_text)
     sx.save_public_contract(contract_x=tom_contract)
 
     ava_contract = ContractUnit(_owner=ava_text)
-    ava_contract.add_partyunit(name=elu_text, creditor_weight=2)
+    ava_contract.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_contract(contract_x=ava_contract)
 
     elu_contract = ContractUnit(_owner=elu_text)
-    elu_contract.add_partyunit(name=ava_text, creditor_weight=8)
-    elu_contract.add_partyunit(name=sal_text, creditor_weight=2)
+    elu_contract.add_partyunit(title=ava_text, creditor_weight=8)
+    elu_contract.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
@@ -709,12 +709,12 @@ def test_economy_set_river_sphere_for_contract_CorrectlyUpatesContractPartyUnits
     bob_tparty = sal_river_tpartys.get(bob_text)
     tom_tparty = sal_river_tpartys.get(tom_text)
     elu_tparty = sal_river_tpartys.get(elu_text)
-    assert bob_tparty.tax_name == bob_text
-    assert tom_tparty.tax_name == tom_text
-    assert elu_tparty.tax_name == elu_text
-    assert bob_tparty.currency_name == sal_text
-    assert tom_tparty.currency_name == sal_text
-    assert elu_tparty.currency_name == sal_text
+    assert bob_tparty.tax_title == bob_text
+    assert tom_tparty.tax_title == tom_text
+    assert elu_tparty.tax_title == elu_text
+    assert bob_tparty.currency_title == sal_text
+    assert tom_tparty.currency_title == sal_text
+    assert elu_tparty.currency_title == sal_text
 
     bob_party = sal_contract_after._partys.get(bob_text)
     tom_party = sal_contract_after._partys.get(tom_text)
@@ -731,15 +731,15 @@ def test_economy_set_river_sphere_for_contract_CorrectlyUpatesContractPartyUnits
 
     # for tparty_uid, sal_river_tparty in sal_river_tpartys.items():
     #     print(f"{tparty_uid=} {sal_river_tparty=}")
-    #     assert sal_river_tparty.currency_name == sal_text
-    #     assert sal_river_tparty.tax_name in [bob_text, tom_text, elu_text]
-    #     partyunit_x = sal_contract_after._partys.get(sal_river_tparty.tax_name)
+    #     assert sal_river_tparty.currency_title == sal_text
+    #     assert sal_river_tparty.tax_title in [bob_text, tom_text, elu_text]
+    #     partyunit_x = sal_contract_after._partys.get(sal_river_tparty.tax_title)
     #     if partyunit_x != None:
     #         # print(
-    #         #     f"{sal_river_tparty.currency_name=} {sal_river_tparty.tax_name=} {partyunit_x.name=} tax_total: {sal_river_tparty.tax_total} Tax Paid: {partyunit_x._bank_tax_paid}"
+    #         #     f"{sal_river_tparty.currency_title=} {sal_river_tparty.tax_title=} {partyunit_x.title=} tax_total: {sal_river_tparty.tax_total} Tax Paid: {partyunit_x._bank_tax_paid}"
     #         # )
     #         # print(
-    #         #     f"{sal_river_tparty.currency_name=} {sal_river_tparty.tax_name=} {partyunit_x.name=} tax_diff:  {sal_river_tparty.tax_diff} Tax Paid: {partyunit_x._bank_tax_diff}"
+    #         #     f"{sal_river_tparty.currency_title=} {sal_river_tparty.tax_title=} {partyunit_x.title=} tax_diff:  {sal_river_tparty.tax_diff} Tax Paid: {partyunit_x._bank_tax_diff}"
     #         # )
     #         assert sal_river_tparty.tax_total == partyunit_x._bank_tax_paid
     #         assert sal_river_tparty.tax_diff == partyunit_x._bank_tax_diff
@@ -749,8 +749,8 @@ def test_economy_set_river_sphere_for_contract_CorrectlyUpatesContractPartyUnits
     assert ava_party._bank_tax_diff is None
 
     # for partyunit_x in sal_contract_after._partys.values():
-    #     print(f"sal_contract_after {partyunit_x.name=} {partyunit_x._bank_tax_paid=}")
-    #     river_tparty_x = sal_river_tpartys.get(partyunit_x.name)
+    #     print(f"sal_contract_after {partyunit_x.title=} {partyunit_x._bank_tax_paid=}")
+    #     river_tparty_x = sal_river_tpartys.get(partyunit_x.title)
     #     if river_tparty_x is None:
     #         assert partyunit_x._bank_tax_paid is None
     #         assert partyunit_x._bank_tax_diff is None

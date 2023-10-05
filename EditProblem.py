@@ -12,15 +12,15 @@ from src.contract.idea import IdeaKid
 from src.contract.road import Road, get_walk_from_road, get_terminus_node_from_road
 from sys import exit as sys_exit
 
-# self.problem_name_text
-# self.problem_name_combo
+# self.problem_title_text
+# self.problem_title_combo
 
 # self.problem_context_text
 # self.problem_context_combo
 
-# self.group1_name_combo self.group1_weight_text
-# self.group2_name_combo self.group2_weight_text
-# self.group3_name_combo self.group3_weight_text
+# self.group1_title_combo self.group1_weight_text
+# self.group2_title_combo self.group2_weight_text
+# self.group3_title_combo self.group3_weight_text
 
 # self.action1_combo
 # self.action2_combo
@@ -51,8 +51,8 @@ class EditProblem(qtw.QWidget, Ui_Form):
         self.add_group_button.clicked.connect(self.add_group)
         self.load_problem_button.clicked.connect(self.load_problem)
 
-        self.problem_name_combo.currentTextChanged.connect(
-            self.select_problem_name_combo
+        self.problem_title_combo.currentTextChanged.connect(
+            self.select_problem_title_combo
         )
         self.problem_context_combo.currentTextChanged.connect(
             self.select_problem_context_combo
@@ -62,13 +62,13 @@ class EditProblem(qtw.QWidget, Ui_Form):
         self.action3_combo.currentTextChanged.connect(self.select_action3_combo)
 
         self.agenda_table.itemClicked.connect(self.select_agenda_item)
-        self.agenda_table.setObjectName("Current Agenda")
+        self.agenda_table.setObjectTitle("Current Agenda")
         self.agenda_table.setRowCount(0)
 
         self.contract_x = None
 
-    def select_problem_name_combo(self):
-        self.problem_name_text.setText(self.problem_name_combo.currentText())
+    def select_problem_title_combo(self):
+        self.problem_title_text.setText(self.problem_title_combo.currentText())
 
     def select_problem_context_combo(self):
         self.problem_context_text.setText(self.problem_context_combo.currentText())
@@ -84,38 +84,38 @@ class EditProblem(qtw.QWidget, Ui_Form):
 
     def create_balancelinks_list(self):
         balancelinks_x_list = []
-        if self.group1_name_combo.currentText() != "":
+        if self.group1_title_combo.currentText() != "":
             weight1 = 1
             if self.group1_weight_text.text() != "":
                 weight1 = float(self.group1_weight_text.text())
             balancelinks_x_list.append(
                 balancelink_shop(
-                    name=self.group1_name_combo.currentText(), weight=weight1
+                    title=self.group1_title_combo.currentText(), weight=weight1
                 )
             )
-        if self.group2_name_combo.currentText() != "":
+        if self.group2_title_combo.currentText() != "":
             weight2 = 1
             if self.group2_weight_text.text() != "":
                 weight2 = float(self.group2_weight_text.text())
 
             balancelinks_x_list.append(
                 balancelink_shop(
-                    name=self.group2_name_combo.currentText(), weight=weight2
+                    title=self.group2_title_combo.currentText(), weight=weight2
                 )
             )
-        if self.group3_name_combo.currentText() != "":
+        if self.group3_title_combo.currentText() != "":
             weight3 = 1
             if self.group3_weight_text.text() != "":
                 weight3 = float(self.group3_weight_text.text())
             balancelinks_x_list.append(
                 balancelink_shop(
-                    name=self.group3_name_combo.currentText(), weight=weight3
+                    title=self.group3_title_combo.currentText(), weight=weight3
                 )
             )
         return balancelinks_x_list
 
     def load_problem(self):
-        self.set_problem_dominate_action_idea(road=self.problem_name_text.text())
+        self.set_problem_dominate_action_idea(road=self.problem_title_text.text())
         self.set_problem_dominate_action_idea(road=self.action1_text.text())
         self.set_problem_dominate_action_idea(road=self.action2_text.text())
         self.set_problem_dominate_action_idea(road=self.action3_text.text())
@@ -138,7 +138,7 @@ class EditProblem(qtw.QWidget, Ui_Form):
         self.refresh_all()
 
     def refresh_all(self):
-        self.problem_name_text.setText("")
+        self.problem_title_text.setText("")
         self.problem_context_text.setText("")
         self.group1_weight_text.setText("")
         self.group2_weight_text.setText("")
@@ -155,16 +155,22 @@ class EditProblem(qtw.QWidget, Ui_Form):
             idea_road_list = self.contract_x.get_idea_tree_ordered_road_list()
             idea_road_list.insert(0, "")
 
-            self.problem_name_combo.clear()
-            self.problem_name_combo.addItems(idea_road_list)
+            self.problem_title_combo.clear()
+            self.problem_title_combo.addItems(idea_road_list)
             self.problem_context_combo.clear()
             self.problem_context_combo.addItems(idea_road_list)
-            self.group1_name_combo.clear()
-            self.group2_name_combo.clear()
-            self.group3_name_combo.clear()
-            self.group1_name_combo.addItems(self.contract_x.get_groupunits_brand_list())
-            self.group2_name_combo.addItems(self.contract_x.get_groupunits_brand_list())
-            self.group3_name_combo.addItems(self.contract_x.get_groupunits_brand_list())
+            self.group1_title_combo.clear()
+            self.group2_title_combo.clear()
+            self.group3_title_combo.clear()
+            self.group1_title_combo.addItems(
+                self.contract_x.get_groupunits_brand_list()
+            )
+            self.group2_title_combo.addItems(
+                self.contract_x.get_groupunits_brand_list()
+            )
+            self.group3_title_combo.addItems(
+                self.contract_x.get_groupunits_brand_list()
+            )
             self.action1_combo.clear()
             self.action2_combo.clear()
             self.action3_combo.clear()

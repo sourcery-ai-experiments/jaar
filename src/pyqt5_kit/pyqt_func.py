@@ -22,7 +22,7 @@ class PYQTTreeHolder:
     requiredheir_count_flag: str
     required_count_flag: str
     required_view_flag: str
-    required_view_name: str
+    required_view_title: str
     acptfactheir_view_flag: str
     root_percent_flag: str
     source_contract: str
@@ -43,7 +43,7 @@ def get_pyqttree(
     requiredheir_count_flag: bool = None,
     required_count_flag: bool = None,
     required_view_flag: bool = None,
-    required_view_name: bool = None,
+    required_view_title: bool = None,
     acptfactheir_view_flag: bool = None,
     source_contract: ContractUnit = None,
 ) -> QTreeWidgetItem:
@@ -61,7 +61,7 @@ def get_pyqttree(
         requiredheir_count_flag=requiredheir_count_flag,
         required_count_flag=required_count_flag,
         required_view_flag=required_view_flag,
-        required_view_name=required_view_name,
+        required_view_title=required_view_title,
         acptfactheir_view_flag=acptfactheir_view_flag,
         root_percent_flag=root_percent_flag,
         source_contract=source_contract,
@@ -109,7 +109,7 @@ def _create_node(pth: PYQTTreeHolder) -> QTreeWidgetItem:
             requiredheir_count_flag=pth.requiredheir_count_flag,
             required_count_flag=pth.required_count_flag,
             required_view_flag=pth.required_view_flag,
-            required_view_name=pth.required_view_name,
+            required_view_title=pth.required_view_title,
             acptfactheir_view_flag=pth.acptfactheir_view_flag,
             root_percent_flag=pth.root_percent_flag,
             source_contract=pth.source_contract,
@@ -181,7 +181,7 @@ def _get_treenode_l_required_count(treenode_l, pth: PYQTTreeHolder) -> str:
 
 
 def _get_treenode_l_required_view(treenode_l, pth: PYQTTreeHolder) -> str:
-    requiredheir = pth.ideacore._requiredheirs.get(pth.required_view_name)
+    requiredheir = pth.ideacore._requiredheirs.get(pth.required_view_title)
     if requiredheir != None:
         # treenode_l += f"{get_terminus_node_from_road(requiredheir.base)}"
         grabed_sufffact = None
@@ -194,7 +194,7 @@ def _get_treenode_l_required_view(treenode_l, pth: PYQTTreeHolder) -> str:
 
 
 def _get_treenode_l_acptfactheir_view(treenode_l, pth: PYQTTreeHolder) -> str:
-    acptfactheir = pth.ideacore._acptfactheirs.get(pth.required_view_name)
+    acptfactheir = pth.ideacore._acptfactheirs.get(pth.required_view_title)
     if acptfactheir != None:
         time_road = f"{pth.source_contract._idearoot._label},time,jajatime"
         if (

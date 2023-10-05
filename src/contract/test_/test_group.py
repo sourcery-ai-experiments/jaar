@@ -1,4 +1,4 @@
-from src.contract.party import PartyName, partylink_shop
+from src.contract.party import PartyTitle, partylink_shop
 from src.contract.group import (
     Balanceline,
     groupunit_shop,
@@ -96,8 +96,8 @@ def test_groupunit_set_partylink_worksCorrectly():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    todd_party = partylink_shop(name=todd_text, creditor_weight=13, debtor_weight=7)
-    mery_party = partylink_shop(name=mery_text, creditor_weight=23, debtor_weight=5)
+    todd_party = partylink_shop(title=todd_text, creditor_weight=13, debtor_weight=7)
+    mery_party = partylink_shop(title=mery_text, creditor_weight=23, debtor_weight=5)
 
     swimmers_group = groupunit_shop(brand="swimmers", _partys={})
 
@@ -106,7 +106,7 @@ def test_groupunit_set_partylink_worksCorrectly():
     swimmers_group.set_partylink(mery_party)
 
     # THEN
-    swimmers_partys = {todd_party.name: todd_party, mery_party.name: mery_party}
+    swimmers_partys = {todd_party.title: todd_party, mery_party.title: mery_party}
     assert swimmers_group._partys == swimmers_partys
 
 
@@ -114,9 +114,9 @@ def test_groupunit_del_partylink_worksCorrectly():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    todd_party = partylink_shop(name=todd_text)
-    mery_party = partylink_shop(name=mery_text)
-    swimmers_partys = {todd_party.name: todd_party, mery_party.name: mery_party}
+    todd_party = partylink_shop(title=todd_text)
+    mery_party = partylink_shop(title=mery_text)
+    swimmers_partys = {todd_party.title: todd_party, mery_party.title: mery_party}
     swimmers_group = groupunit_shop(brand="swimmers", _partys={})
     swimmers_group.set_partylink(todd_party)
     swimmers_group.set_partylink(mery_party)
@@ -124,7 +124,7 @@ def test_groupunit_del_partylink_worksCorrectly():
     assert swimmers_group._partys == swimmers_partys
 
     # WHEN
-    swimmers_group.del_partylink(name=todd_text)
+    swimmers_group.del_partylink(title=todd_text)
 
     # THEN
     assert len(swimmers_group._partys) == 1
@@ -135,9 +135,9 @@ def test_groupunit_clear_partylinks_worksCorrectly():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    todd_party = partylink_shop(name=todd_text)
-    mery_party = partylink_shop(name=mery_text)
-    swimmers_partys = {todd_party.name: todd_party, mery_party.name: mery_party}
+    todd_party = partylink_shop(title=todd_text)
+    mery_party = partylink_shop(title=mery_text)
+    swimmers_partys = {todd_party.title: todd_party, mery_party.title: mery_party}
     swimmers_group = groupunit_shop(brand="swimmers", _partys={})
     swimmers_group.set_partylink(todd_party)
     swimmers_group.set_partylink(mery_party)
@@ -183,20 +183,20 @@ def test_Groupunit_reset_contract_importance_reset_partylinks():
     todd_text = "Todd"
     mery_text = "Merry"
     todd_party = partylink_shop(
-        name=todd_text,
+        title=todd_text,
         _contract_credit=0.13,
         _contract_debt=0.7,
         _contract_agenda_credit=0.53,
         _contract_agenda_debt=0.77,
     )
     mery_party = partylink_shop(
-        name=mery_text,
+        title=mery_text,
         _contract_credit=0.23,
         _contract_debt=0.5,
         _contract_agenda_credit=0.54,
         _contract_agenda_debt=0.57,
     )
-    bikers_partys = {todd_party.name: todd_party, mery_party.name: mery_party}
+    bikers_partys = {todd_party.title: todd_party, mery_party.title: mery_party}
     bikers_brand = "bikers"
     bikers_group = groupunit_shop(
         brand=bikers_brand,
@@ -237,8 +237,8 @@ def test_Groupunit_reset_contract_importance_reset_partylinks():
 
 def test_GroupUnit_partylink_meld_BaseScenarioWorks():
     # GIVEN
-    todd_party = partylink_shop(name="Todd")
-    merry_party = partylink_shop(name="Merry")
+    todd_party = partylink_shop(title="Todd")
+    merry_party = partylink_shop(title="Merry")
     x1_brand = "bikers"
     x1_group = groupunit_shop(brand=x1_brand, _partys={})
     x1_group.set_partylink(partylink=todd_party)
@@ -258,8 +258,8 @@ def test_GroupUnit_partylink_meld_GainScenarioWorks():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    todd_party = partylink_shop(name=todd_text, creditor_weight=13, debtor_weight=7)
-    mery_party = partylink_shop(name=mery_text, creditor_weight=23, debtor_weight=5)
+    todd_party = partylink_shop(title=todd_text, creditor_weight=13, debtor_weight=7)
+    mery_party = partylink_shop(title=mery_text, creditor_weight=23, debtor_weight=5)
     x1_brand = "bikers"
     x1_group = groupunit_shop(brand=x1_brand, _partys={})
 
@@ -275,7 +275,7 @@ def test_GroupUnit_partylink_meld_GainScenarioWorks():
     assert x1_group._partys.get(todd_text) != None
 
 
-def test_GroupUnit_meld_RaiseSameNameException():
+def test_GroupUnit_meld_RaiseSameTitleException():
     # GIVEN
     todd_text = "Todd"
     todd_group = groupunit_shop(brand=todd_text)
@@ -328,14 +328,14 @@ def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     }
 
     # GIVEN
-    str_name = "Marie"
-    marie_name = PartyName(str_name)
+    str_title = "Marie"
+    marie_title = PartyTitle(str_title)
     marie_partylink = partylink_shop(
-        name=marie_name, creditor_weight=29, debtor_weight=3
+        title=marie_title, creditor_weight=29, debtor_weight=3
     )
-    partylinks_dict = {marie_partylink.name: marie_partylink}
+    partylinks_dict = {marie_partylink.title: marie_partylink}
     marie_json_dict = {
-        marie_name: {"name": marie_name, "creditor_weight": 29, "debtor_weight": 3}
+        marie_title: {"title": marie_title, "creditor_weight": 29, "debtor_weight": 3}
     }
 
     str_teacher = "teachers"
@@ -363,12 +363,12 @@ def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
 
 def test_groupunit_get_from_JSON_SimpleExampleWorks():
     # GIVEN
-    str_name = "Marie"
-    marie_name = PartyName(str_name)
+    str_title = "Marie"
+    marie_title = PartyTitle(str_title)
     marie_partylink = partylink_shop(
-        name=marie_name, creditor_weight=29, debtor_weight=3
+        title=marie_title, creditor_weight=29, debtor_weight=3
     )
-    partylinks_dict = {marie_partylink.name: marie_partylink}
+    partylinks_dict = {marie_partylink.title: marie_partylink}
 
     str_teacher = "teachers"
     swim_road = "swim"

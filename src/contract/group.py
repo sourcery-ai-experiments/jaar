@@ -1,6 +1,6 @@
 import dataclasses
 from src.contract.party import (
-    PartyName,
+    PartyTitle,
     PartyUnit,
     PartyLink,
     partylinks_get_from_dict,
@@ -31,7 +31,7 @@ class GroupUnit(GroupCore):
     uid: int = None
     single_party_id: int = None
     _single_party: bool = None
-    _partys: dict[PartyName:PartyLink] = None
+    _partys: dict[PartyTitle:PartyLink] = None
     _contract_credit: float = None
     _contract_debt: float = None
     _contract_agenda_credit: float = None
@@ -106,16 +106,16 @@ class GroupUnit(GroupCore):
         partys_x_dict = {}
         for party in self._partys.values():
             party_dict = party.get_dict()
-            partys_x_dict[party_dict["name"]] = party_dict
+            partys_x_dict[party_dict["title"]] = party_dict
 
         return partys_x_dict
 
     def set_partylink(self, partylink: PartyLink):
         self._set_partylinks_empty_if_null()
-        self._partys[partylink.name] = partylink
+        self._partys[partylink.title] = partylink
 
-    def del_partylink(self, name):
-        self._partys.pop(name)
+    def del_partylink(self, title):
+        self._partys.pop(title)
 
     def meld(self, other_group):
         self._meld_attributes_that_will_be_equal(other_group=other_group)
@@ -124,10 +124,10 @@ class GroupUnit(GroupCore):
     def meld_partylinks(self, other_group):
         self._set_partylinks_empty_if_null()
         for oba in other_group._partys.values():
-            if self._partys.get(oba.name) is None:
-                self._partys[oba.name] = oba
+            if self._partys.get(oba.title) is None:
+                self._partys[oba.title] = oba
             else:
-                self._partys[oba.name].meld(oba)
+                self._partys[oba.title].meld(oba)
 
     def _meld_attributes_that_will_be_equal(self, other_group):
         xl = [
@@ -181,7 +181,7 @@ def groupunit_shop(
     uid: int = None,
     single_party_id: int = None,
     _single_party: bool = None,
-    _partys: dict[PartyName:PartyLink] = None,
+    _partys: dict[PartyTitle:PartyLink] = None,
     _contract_credit: float = None,
     _contract_debt: float = None,
     _contract_agenda_credit: float = None,

@@ -46,7 +46,7 @@ def test_economy_get_contract_currentlyGetsContract(env_dir_setup_cleanup):
     assert e5.get_public_contract(owner=sx5_obj._owner) == sx5_obj
 
 
-def test_economy_rename_public_contract_ChangesContractName(
+def test_economy_rename_public_contract_ChangesContractTitle(
     env_dir_setup_cleanup,
 ):
     # GIVEN

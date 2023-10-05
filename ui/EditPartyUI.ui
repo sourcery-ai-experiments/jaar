@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Form</class>
- <widget class="QWidget" name="Form">
-  <property name="geometry">
+ <widget class="QWidget" title="Form">
+  <property title="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -10,11 +10,11 @@
     <height>771</height>
    </rect>
   </property>
-  <property name="windowTag">
+  <property title="windowTag">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="party_insert_button">
-   <property name="geometry">
+  <widget class="QPushButton" title="party_insert_button">
+   <property title="geometry">
     <rect>
      <x>170</x>
      <y>40</y>
@@ -22,12 +22,12 @@
      <height>31</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Add Party</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="party_update_button">
-   <property name="geometry">
+  <widget class="QPushButton" title="party_update_button">
+   <property title="geometry">
     <rect>
      <x>170</x>
      <y>70</y>
@@ -35,12 +35,12 @@
      <height>28</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Update</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
+  <widget class="QLabel" title="label_3">
+   <property title="geometry">
     <rect>
      <x>10</x>
      <y>80</y>
@@ -48,15 +48,15 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Weight:</string>
    </property>
-   <property name="wordWrap">
+   <property title="wordWrap">
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="party_delete_button">
-   <property name="geometry">
+  <widget class="QPushButton" title="party_delete_button">
+   <property title="geometry">
     <rect>
      <x>10</x>
      <y>100</y>
@@ -64,12 +64,12 @@
      <height>28</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>delete Party</string>
    </property>
   </widget>
-  <widget class="QTableWidget" name="party_table">
-   <property name="geometry">
+  <widget class="QTableWidget" title="party_table">
+   <property title="geometry">
     <rect>
      <x>10</x>
      <y>130</y>
@@ -78,33 +78,33 @@
     </rect>
    </property>
    <column>
-    <property name="text">
+    <property title="text">
      <string>1</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>2</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>3</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>4</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>5</string>
     </property>
    </column>
   </widget>
-  <widget class="QPushButton" name="close_button">
-   <property name="geometry">
+  <widget class="QPushButton" title="close_button">
+   <property title="geometry">
     <rect>
      <x>1090</x>
      <y>10</y>
@@ -112,12 +112,12 @@
      <height>28</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Close</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="quit_button">
-   <property name="geometry">
+  <widget class="QPushButton" title="quit_button">
+   <property title="geometry">
     <rect>
      <x>1090</x>
      <y>40</y>
@@ -125,12 +125,12 @@
      <height>28</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Quit App</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="party_name">
-   <property name="geometry">
+  <widget class="QLineEdit" title="party_title">
+   <property title="geometry">
     <rect>
      <x>10</x>
      <y>40</y>
@@ -139,8 +139,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QTableWidget" name="groups_in_table">
-   <property name="geometry">
+  <widget class="QTableWidget" title="groups_in_table">
+   <property title="geometry">
     <rect>
      <x>530</x>
      <y>130</y>
@@ -149,33 +149,33 @@
     </rect>
    </property>
    <column>
-    <property name="text">
+    <property title="text">
      <string>1</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>2</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>3</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>4</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>5</string>
     </property>
    </column>
   </widget>
-  <widget class="QTableWidget" name="groups_out_table">
-   <property name="geometry">
+  <widget class="QTableWidget" title="groups_out_table">
+   <property title="geometry">
     <rect>
      <x>920</x>
      <y>130</y>
@@ -184,33 +184,33 @@
     </rect>
    </property>
    <column>
-    <property name="text">
+    <property title="text">
      <string>1</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>2</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>3</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>4</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>5</string>
     </property>
    </column>
   </widget>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
+  <widget class="QLabel" title="label_4">
+   <property title="geometry">
     <rect>
      <x>20</x>
      <y>10</y>
@@ -218,20 +218,20 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>14</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Partys</string>
    </property>
-   <property name="wordWrap">
+   <property title="wordWrap">
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="label_5">
-   <property name="geometry">
+  <widget class="QLabel" title="label_5">
+   <property title="geometry">
     <rect>
      <x>760</x>
      <y>10</y>
@@ -239,20 +239,20 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>14</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Groups</string>
    </property>
-   <property name="wordWrap">
+   <property title="wordWrap">
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="group_update_button">
-   <property name="geometry">
+  <widget class="QPushButton" title="group_update_button">
+   <property title="geometry">
     <rect>
      <x>880</x>
      <y>70</y>
@@ -260,12 +260,12 @@
      <height>28</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Update Group</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="group_delete_button">
-   <property name="geometry">
+  <widget class="QPushButton" title="group_delete_button">
+   <property title="geometry">
     <rect>
      <x>720</x>
      <y>100</y>
@@ -273,12 +273,12 @@
      <height>28</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>delete Group</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_6">
-   <property name="geometry">
+  <widget class="QLabel" title="label_6">
+   <property title="geometry">
     <rect>
      <x>730</x>
      <y>70</y>
@@ -286,15 +286,15 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Change Name to:</string>
+   <property title="text">
+    <string>Change Title to:</string>
    </property>
-   <property name="wordWrap">
+   <property title="wordWrap">
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="group_insert_button">
-   <property name="geometry">
+  <widget class="QPushButton" title="group_insert_button">
+   <property title="geometry">
     <rect>
      <x>880</x>
      <y>40</y>
@@ -302,12 +302,12 @@
      <height>31</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Add Group</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="group_name">
-   <property name="geometry">
+  <widget class="QLineEdit" title="group_title">
+   <property title="geometry">
     <rect>
      <x>720</x>
      <y>40</y>
@@ -316,8 +316,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="party_group_set_button">
-   <property name="geometry">
+  <widget class="QPushButton" title="party_group_set_button">
+   <property title="geometry">
     <rect>
      <x>1060</x>
      <y>100</y>
@@ -325,19 +325,19 @@
      <height>28</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <weight>50</weight>
      <italic>true</italic>
      <bold>false</bold>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>add group to party</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="party_group_del_button">
-   <property name="geometry">
+  <widget class="QPushButton" title="party_group_del_button">
+   <property title="geometry">
     <rect>
      <x>530</x>
      <y>100</y>
@@ -345,19 +345,19 @@
      <height>28</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <weight>50</weight>
      <italic>true</italic>
      <bold>false</bold>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>remove group from party</string>
    </property>
   </widget>
-  <widget class="QTableWidget" name="groups_stan_table">
-   <property name="geometry">
+  <widget class="QTableWidget" title="groups_stan_table">
+   <property title="geometry">
     <rect>
      <x>530</x>
      <y>650</y>
@@ -366,33 +366,33 @@
     </rect>
    </property>
    <column>
-    <property name="text">
+    <property title="text">
      <string>1</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>2</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>3</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>4</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>5</string>
     </property>
    </column>
   </widget>
-  <widget class="QLineEdit" name="party_weight">
-   <property name="geometry">
+  <widget class="QLineEdit" title="party_weight">
+   <property title="geometry">
     <rect>
      <x>70</x>
      <y>70</y>

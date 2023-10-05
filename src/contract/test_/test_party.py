@@ -1,6 +1,6 @@
 from src.contract.party import (
     PartyUnit,
-    PartyName,
+    PartyTitle,
     partylink_shop,
     partyunit_shop,
     partylinks_get_from_json,
@@ -12,22 +12,22 @@ from src.contract.x_func import x_is_json, x_get_json
 from pytest import raises as pytest_raises
 
 
-def test_PartyName_exists():
-    cersei_name = PartyName("Cersei")
-    assert cersei_name != None
-    assert str(type(cersei_name)).find(".party.PartyName") > 0
+def test_PartyTitle_exists():
+    cersei_title = PartyTitle("Cersei")
+    assert cersei_title != None
+    assert str(type(cersei_title)).find(".party.PartyTitle") > 0
 
 
 def test_partyrings_exists():
-    cersei_name = PartyName("Cersei")
-    friend_link = PartyRing(name=cersei_name)
-    assert friend_link.name == cersei_name
+    cersei_title = PartyTitle("Cersei")
+    friend_link = PartyRing(title=cersei_title)
+    assert friend_link.title == cersei_title
 
 
 def test_partyrings_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
-    party_name = PartyName("bob")
-    party_ring = PartyRing(name=party_name)
+    party_title = PartyTitle("bob")
+    party_ring = PartyRing(title=party_title)
     print(f"{party_ring}")
 
     # WHEN
@@ -35,13 +35,13 @@ def test_partyrings_get_dict_ReturnsDictWithNecessaryDataForJSON():
 
     # THEN
     assert x_dict != None
-    assert x_dict == {"name": str(party_name)}
+    assert x_dict == {"title": str(party_title)}
 
 
 def test_partyrings_get_from_JSON_SimpleExampleWorks():
     # GIVEN
     marie_text = "Marie"
-    marie_json_dict = {marie_text: {"name": marie_text}}
+    marie_json_dict = {marie_text: {"title": marie_text}}
     marie_json_text = x_get_json(dict_x=marie_json_dict)
     assert x_is_json(json_x=marie_json_text)
 
@@ -50,23 +50,23 @@ def test_partyrings_get_from_JSON_SimpleExampleWorks():
 
     # THEN
     assert marie_obj_dict != None
-    marie_partyring = PartyRing(name=marie_text)
-    partyrings_dict = {marie_partyring.name: marie_partyring}
+    marie_partyring = PartyRing(title=marie_text)
+    partyrings_dict = {marie_partyring.title: marie_partyring}
     assert marie_obj_dict == partyrings_dict
 
 
 def test_PartyUnit_exists():
     # GIVEN
-    bob_name = "bob"
+    bob_title = "bob"
 
     # WHEN
-    bob_party = PartyUnit(name=bob_name)
+    bob_party = PartyUnit(title=bob_title)
 
     # THEN
-    print(f"{bob_name}")
+    print(f"{bob_title}")
     assert bob_party != None
-    assert bob_party.name != None
-    assert bob_party.name == bob_name
+    assert bob_party.title != None
+    assert bob_party.title == bob_title
     assert bob_party.creditor_weight is None
     assert bob_party.debtor_weight is None
     assert bob_party._contract_credit is None
@@ -83,8 +83,8 @@ def test_PartyUnit_exists():
 
 def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeNoNulls():
     # GIVEN
-    bob_name = "bob"
-    bob_party = partyunit_shop(name=bob_name)
+    bob_title = "bob"
+    bob_party = partyunit_shop(title=bob_title)
 
     # WHEN
     depotlink_type_x = "assignment"
@@ -100,8 +100,8 @@ def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeNoNulls():
 
 def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndStartingValues():
     # GIVEN
-    bob_name = "bob"
-    bob_party = partyunit_shop(name=bob_name, creditor_weight=45, debtor_weight=56)
+    bob_title = "bob"
+    bob_party = partyunit_shop(title=bob_title, creditor_weight=45, debtor_weight=56)
 
     # WHEN
     depotlink_type_x = "assignment"
@@ -117,8 +117,8 @@ def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndStarting
 
 def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndNoStartingValues():
     # GIVEN
-    bob_name = "bob"
-    bob_party = partyunit_shop(name=bob_name)
+    bob_title = "bob"
+    bob_party = partyunit_shop(title=bob_title)
 
     # WHEN
     depotlink_type_x = "assignment"
@@ -134,8 +134,8 @@ def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndNoStarti
 
 def test_PartyUnit_del_depotlink_type_CorrectlySetsAttributeToNone():
     # GIVEN
-    bob_name = "bob"
-    bob_party = partyunit_shop(name=bob_name, creditor_weight=45, debtor_weight=56)
+    bob_title = "bob"
+    bob_party = partyunit_shop(title=bob_title, creditor_weight=45, debtor_weight=56)
     depotlink_type_x = "assignment"
     bob_party.set_depotlink_type(depotlink_type=depotlink_type_x)
     assert bob_party.depotlink_type == depotlink_type_x
@@ -154,22 +154,22 @@ def test_PartyUnit_del_depotlink_type_CorrectlySetsAttributeToNone():
 def test_PartyUnit_set_depotlink_type_raisesErrorIfByTypeIsEntered():
     # GIVEN
     bad_type_text = "bad"
-    bob_name = "bob"
-    bob_party = partyunit_shop(name=bob_name)
+    bob_title = "bob"
+    bob_party = partyunit_shop(title=bob_title)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         bob_party.set_depotlink_type(depotlink_type=bad_type_text)
     assert (
         str(excinfo.value)
-        == f"PartyUnit '{bob_party.name}' cannot have type '{bad_type_text}'."
+        == f"PartyUnit '{bob_party.title}' cannot have type '{bad_type_text}'."
     )
 
 
 def test_PartyUnit_set_empty_contract_credit_debt_to_zero_CorrectlySetsZero():
     # GIVEN
-    bob_name = "bob"
-    bob_party = partyunit_shop(name=bob_name)
+    bob_title = "bob"
+    bob_party = partyunit_shop(title=bob_title)
     assert bob_party._contract_credit is None
     assert bob_party._contract_debt is None
     assert bob_party._contract_agenda_credit is None
@@ -216,8 +216,8 @@ def test_PartyUnit_set_empty_contract_credit_debt_to_zero_CorrectlySetsZero():
 
 def test_PartyUnit_reset_contract_credit_debt_MethodWorkCorrectly():
     # GIVEN
-    bob_name = "bob"
-    bob_party = partyunit_shop(name=bob_name)
+    bob_title = "bob"
+    bob_party = partyunit_shop(title=bob_title)
     bob_party._contract_credit = 0.27
     bob_party._contract_debt = 0.37
     bob_party._contract_agenda_credit = 0.41
@@ -245,8 +245,8 @@ def test_PartyUnit_reset_contract_credit_debt_MethodWorkCorrectly():
 
 def test_PartyUnit_add_contract_credit_debt_MethodWorkCorrectly():
     # GIVEN
-    bob_name = "bob"
-    bob_party = partyunit_shop(name=bob_name)
+    bob_title = "bob"
+    bob_party = partyunit_shop(title=bob_title)
     bob_party._contract_credit = 0.4106
     bob_party._contract_debt = 0.1106
     bob_party._contract_agenda_credit = 0.41
@@ -271,9 +271,9 @@ def test_PartyUnit_add_contract_credit_debt_MethodWorkCorrectly():
 
 def test_PartyUnit_set_contract_agenda_ratio_credit_debt_MethodWorkCorrectly():
     # GIVEN
-    bob_name = "bob"
+    bob_title = "bob"
     bob_party = partyunit_shop(
-        name=bob_name,
+        title=bob_title,
         creditor_weight=15,
         debtor_weight=7,
         _contract_credit=0.4106,
@@ -313,9 +313,9 @@ def test_PartyUnit_set_contract_agenda_ratio_credit_debt_MethodWorkCorrectly():
 
 def test_PartyUnit_set_banking_data_MethodWorkCorrectly():
     # GIVEN
-    bob_name = "bob"
+    bob_title = "bob"
     bob_party = partyunit_shop(
-        name=bob_name,
+        title=bob_title,
         _contract_agenda_ratio_credit=0.077,
         _contract_agenda_ratio_debt=0.066,
     )
@@ -347,9 +347,9 @@ def test_PartyUnit_set_banking_data_MethodWorkCorrectly():
 
 def test_PartyUnit_clear_banking_data_MethodWorkCorrectly():
     # GIVEN
-    bob_name = "bob"
+    bob_title = "bob"
     bob_party = partyunit_shop(
-        name=bob_name,
+        title=bob_title,
         _contract_agenda_ratio_credit=0.355,
         _contract_agenda_ratio_debt=0.066,
     )
@@ -368,14 +368,14 @@ def test_PartyUnit_clear_banking_data_MethodWorkCorrectly():
 def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
     glen_text = "glen"
-    glen_ring = PartyRing(name=glen_text)
-    party_rings = {glen_ring.name: glen_ring}
+    glen_ring = PartyRing(title=glen_text)
+    party_rings = {glen_ring.title: glen_ring}
     bob_text = "bob"
     bank_tax_paid = 0.55
     bank_tax_diff = 0.66
     depotlink_type = "assignment"
     bob_party = partyunit_shop(
-        name=bob_text,
+        title=bob_text,
         uid=652,
         creditor_weight=13,
         debtor_weight=17,
@@ -395,13 +395,13 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     print(f"{x_dict=}")
     assert x_dict != None
     assert x_dict == {
-        "name": bob_text,
+        "title": bob_text,
         "uid": 652,
         "creditor_weight": 13,
         "debtor_weight": 17,
         "_creditor_active": False,
         "_debtor_active": True,
-        "_partyrings": {"glen": {"name": "glen"}},
+        "_partyrings": {"glen": {"title": "glen"}},
         "_bank_tax_paid": bank_tax_paid,
         "_bank_tax_diff": bank_tax_diff,
         "depotlink_type": depotlink_type,
@@ -409,15 +409,15 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
 
 
 def test_PartyUnisshop_get_from_JSON_SimpleExampleWorks():
-    cersei_name = PartyName("Cersei")
-    party_rings = {cersei_name: {"name": cersei_name}}
+    cersei_title = PartyTitle("Cersei")
+    party_rings = {cersei_title: {"title": cersei_title}}
     marie_text = "Marie"
     bank_tax_paid = 0.55
     bank_tax_diff = 0.66
     depotlink_type = "assignment"
     marie_json_dict = {
         marie_text: {
-            "name": marie_text,
+            "title": marie_text,
             "uid": 103,
             "creditor_weight": 17,
             "debtor_weight": 17,
@@ -435,15 +435,15 @@ def test_PartyUnisshop_get_from_JSON_SimpleExampleWorks():
 
 def test_PartyUnisshop_get_from_JSON_SimpleExampleWorksWithIncompleteData():
     # GIVEN
-    cersei_name = PartyName("Cersei")
-    party_rings = {cersei_name: {"name": None}}
+    cersei_title = PartyTitle("Cersei")
+    party_rings = {cersei_title: {"title": None}}
     marie_text = "Marie"
     bank_tax_paid = 0.55
     bank_tax_diff = 0.66
     depotlink_type_x = "assignment"
     marie_json_dict = {
         marie_text: {
-            "name": marie_text,
+            "title": marie_text,
             "uid": 103,
             "creditor_weight": 17,
             "debtor_weight": 15,
@@ -475,13 +475,13 @@ def test_PartyUnisshop_get_from_JSON_SimpleExampleWorksWithIncompleteData():
 
 def test_PartyLink_exists():
     # GIVEN
-    bikers_name = PartyName("Marie")
+    bikers_title = PartyTitle("Marie")
 
     # WHEN
-    party_link_x = partylink_shop(name=bikers_name)
+    party_link_x = partylink_shop(title=bikers_title)
 
     # THEN
-    assert party_link_x.name == bikers_name
+    assert party_link_x.title == bikers_title
     assert party_link_x.creditor_weight == 1.0
     assert party_link_x.debtor_weight == 1.0
 
@@ -489,7 +489,7 @@ def test_PartyLink_exists():
     bikers_creditor_weight = 3.0
     bikers_debtor_weight = 5.0
     party_link_x = partylink_shop(
-        name=bikers_name,
+        title=bikers_title,
         creditor_weight=bikers_creditor_weight,
         debtor_weight=bikers_debtor_weight,
         _contract_credit=0.7,
@@ -510,7 +510,7 @@ def test_PartyLink_exists():
 
 def test_partylink_shop_set_contract_credit_debt_CorrectlyWorks():
     # GIVEN
-    bikers_name = PartyName("Marie")
+    bikers_title = PartyTitle("Marie")
     bikers_creditor_weight = 3.0
     partylinks_sum_creditor_weight = 60
     group_contract_credit = 0.5
@@ -522,7 +522,7 @@ def test_partylink_shop_set_contract_credit_debt_CorrectlyWorks():
     group_contract_agenda_debt = 0.5151
 
     party_link_x = partylink_shop(
-        name=bikers_name,
+        title=bikers_title,
         creditor_weight=bikers_creditor_weight,
         debtor_weight=bikers_debtor_weight,
     )
@@ -550,9 +550,9 @@ def test_partylink_shop_set_contract_credit_debt_CorrectlyWorks():
 
 def test_partylink_shop_reset_contract_credit_debt():
     # GIVEN
-    biker_name = "maria"
+    biker_title = "maria"
     biker_party = partylink_shop(
-        name=biker_name, _contract_credit=0.04, _contract_debt=0.7
+        title=biker_title, _contract_credit=0.04, _contract_debt=0.7
     )
     print(f"{biker_party}")
 
@@ -569,10 +569,10 @@ def test_partylink_shop_reset_contract_credit_debt():
 
 def test_partylink_shop_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
-    str_name = "Marie"
-    biker_name = PartyName(str_name)
+    str_title = "Marie"
+    biker_title = PartyTitle(str_title)
     biker_party_link = partylink_shop(
-        name=biker_name, creditor_weight=12, debtor_weight=19
+        title=biker_title, creditor_weight=12, debtor_weight=19
     )
     print(f"{biker_party_link}")
 
@@ -582,7 +582,7 @@ def test_partylink_shop_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # THEN
     assert biker_dict != None
     assert biker_dict == {
-        "name": biker_name,
+        "title": biker_title,
         "creditor_weight": 12,
         "debtor_weight": 19,
     }
@@ -592,7 +592,7 @@ def test_partylink_get_from_JSON_SimpleExampleWorks():
     # GIVEN
     marie_text = "Marie"
     marie_json_dict = {
-        marie_text: {"name": marie_text, "creditor_weight": 12, "debtor_weight": 19}
+        marie_text: {"title": marie_text, "creditor_weight": 12, "debtor_weight": 19}
     }
     marie_json_text = x_get_json(dict_x=marie_json_dict)
     assert x_is_json(json_x=marie_json_text)
@@ -603,35 +603,35 @@ def test_partylink_get_from_JSON_SimpleExampleWorks():
     # THEN
     assert marie_obj_dict != None
 
-    marie_name = PartyName(marie_text)
+    marie_title = PartyTitle(marie_text)
     marie_partylink = partylink_shop(
-        name=marie_name, creditor_weight=12, debtor_weight=19
+        title=marie_title, creditor_weight=12, debtor_weight=19
     )
-    partylinks_dict = {marie_partylink.name: marie_partylink}
+    partylinks_dict = {marie_partylink.title: marie_partylink}
     assert marie_obj_dict == partylinks_dict
 
 
-def test_partylink_meld_RaiseSameNameException():
+def test_partylink_meld_RaiseSameTitleException():
     # GIVEN
     todd_text = "Todd"
-    todd_party = partylink_shop(name=todd_text)
+    todd_party = partylink_shop(title=todd_text)
     mery_text = "Merry"
-    mery_party = partylink_shop(name=mery_text)
+    mery_party = partylink_shop(title=mery_text)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         todd_party.meld(mery_party)
     assert (
         str(excinfo.value)
-        == f"Meld fail PartyLink='{todd_party.name}' not the same as PartyLink='{mery_party.name}"
+        == f"Meld fail PartyLink='{todd_party.title}' not the same as PartyLink='{mery_party.title}"
     )
 
 
 def test_partylink_meld_CorrectlySumsWeights():
     # GIVEN
     todd_text = "Todd"
-    todd_party1 = partylink_shop(name=todd_text, creditor_weight=12, debtor_weight=19)
-    todd_party2 = partylink_shop(name=todd_text, creditor_weight=33, debtor_weight=3)
+    todd_party1 = partylink_shop(title=todd_text, creditor_weight=12, debtor_weight=19)
+    todd_party2 = partylink_shop(title=todd_text, creditor_weight=33, debtor_weight=3)
     assert todd_party1.creditor_weight == 12
     assert todd_party1.debtor_weight == 19
 
@@ -643,27 +643,27 @@ def test_partylink_meld_CorrectlySumsWeights():
     assert todd_party1.debtor_weight == 22
 
 
-def test_partyunit_meld_RaiseSameNameException():
+def test_partyunit_meld_RaiseSameTitleException():
     # GIVEN
     todd_text = "Todd"
-    todd_party = partyunit_shop(name=todd_text)
+    todd_party = partyunit_shop(title=todd_text)
     mery_text = "Merry"
-    mery_party = partyunit_shop(name=mery_text)
+    mery_party = partyunit_shop(title=mery_text)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         todd_party.meld(mery_party)
     assert (
         str(excinfo.value)
-        == f"Meld fail PartyUnit='{todd_party.name}' not the same as PartyUnit='{mery_party.name}"
+        == f"Meld fail PartyUnit='{todd_party.title}' not the same as PartyUnit='{mery_party.title}"
     )
 
 
 def test_partyunit_meld_CorrectlySumsWeights():
     # GIVEN
     todd_text = "Todd"
-    todd_party1 = partyunit_shop(name=todd_text, creditor_weight=7, debtor_weight=19)
-    todd_party2 = partyunit_shop(name=todd_text, creditor_weight=5, debtor_weight=3)
+    todd_party1 = partyunit_shop(title=todd_text, creditor_weight=7, debtor_weight=19)
+    todd_party2 = partyunit_shop(title=todd_text, creditor_weight=5, debtor_weight=3)
     assert todd_party1.creditor_weight == 7
     assert todd_party1.debtor_weight == 19
 

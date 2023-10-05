@@ -1,41 +1,41 @@
 from contextlib import suppress as contextlib_suppress
-from src.contract.party import PartyName
+from src.contract.party import PartyTitle
 from dataclasses import dataclass
 
 
 @dataclass
 class OriginLink:
-    name: PartyName
+    title: PartyTitle
     weight: float
 
     def get_dict(self):
         return {
-            "name": self.name,
+            "title": self.title,
             "weight": self.weight,
         }
 
 
-def originlink_shop(name: PartyName, weight: float = None) -> OriginLink:
+def originlink_shop(title: PartyTitle, weight: float = None) -> OriginLink:
     if weight is None:
         weight = 1
-    return OriginLink(name=name, weight=weight)
+    return OriginLink(title=title, weight=weight)
 
 
 @dataclass
 class OriginUnit:
-    _links: dict[PartyName:OriginLink] = None
+    _links: dict[PartyTitle:OriginLink] = None
 
     def _set_originlinks_empty_if_null(self):
         if self._links is None:
             self._links = {}
 
-    def set_originlink(self, name: PartyName, weight: float):
+    def set_originlink(self, title: PartyTitle, weight: float):
         self._set_originlinks_empty_if_null()
-        self._links[name] = originlink_shop(name=name, weight=weight)
+        self._links[title] = originlink_shop(title=title, weight=weight)
 
-    def del_originlink(self, name: PartyName):
+    def del_originlink(self, title: PartyTitle):
         self._set_originlinks_empty_if_null()
-        self._links.pop(name)
+        self._links.pop(title)
 
     def get_dict(self):
         return {"_links": self.get_originlinks_dict()}
@@ -44,7 +44,7 @@ class OriginUnit:
         x_dict = {}
         if self._links != None:
             for originlink_x in self._links.values():
-                x_dict[originlink_x.name] = originlink_x.get_dict()
+                x_dict[originlink_x.title] = originlink_x.get_dict()
         return x_dict
 
 
@@ -60,6 +60,6 @@ def originunit_get_from_dict(x_dict: dict) -> OriginUnit:
         originlinks_dict = x_dict["_links"]
         for originlink_dict in originlinks_dict.values():
             originunit_x.set_originlink(
-                name=originlink_dict["name"], weight=originlink_dict["weight"]
+                title=originlink_dict["title"], weight=originlink_dict["weight"]
             )
     return originunit_x

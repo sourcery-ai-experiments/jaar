@@ -80,7 +80,7 @@ def test_contractunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaBalanc
         idea_kid=IdeaKid(_label=clean_cookery_text, promise=True), walk=casa_road
     )
     tom_text = "tom"
-    cx.add_partyunit(name=tom_text)
+    cx.add_partyunit(title=tom_text)
     assert cx.get_bond_status() == False
 
     # WHEN
@@ -92,7 +92,7 @@ def test_contractunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaBalanc
 
     # WHEN
     bob_text = "bob"
-    cx.add_partyunit(name=bob_text)
+    cx.add_partyunit(title=bob_text)
     # THEN
     assert cx.get_bond_status() == False
 
@@ -110,7 +110,7 @@ def test_contractunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGr
         idea_kid=IdeaKid(_label=clean_cookery_text, promise=True), walk=casa_road
     )
     tom_text = "tom"
-    cx.add_partyunit(name=tom_text)
+    cx.add_partyunit(title=tom_text)
     assert cx.get_bond_status() == False
 
     # WHEN
@@ -124,7 +124,7 @@ def test_contractunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGr
 
     # WHEN
     bob_text = "bob"
-    cx.add_partyunit(name=bob_text)
+    cx.add_partyunit(title=bob_text)
     # THEN
     assert cx.get_bond_status() == False
 
@@ -144,13 +144,13 @@ def test_contractunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGr
     assert cx.get_bond_status()
 
     tom_text = "tom"
-    cx.add_partyunit(name=tom_text)
+    cx.add_partyunit(title=tom_text)
     bob_text = "bob"
-    cx.add_partyunit(name=bob_text)
+    cx.add_partyunit(title=bob_text)
     home_occupants_text = "home occupants"
     home_occupants_groupunit = groupunit_shop(brand=home_occupants_text)
-    home_occupants_groupunit.set_partylink(partylink=partylink_shop(name=tom_text))
-    home_occupants_groupunit.set_partylink(partylink=partylink_shop(name=bob_text))
+    home_occupants_groupunit.set_partylink(partylink=partylink_shop(title=tom_text))
+    home_occupants_groupunit.set_partylink(partylink=partylink_shop(title=bob_text))
     cx.set_groupunit(groupunit=home_occupants_groupunit)
     assert cx.get_bond_status() == False
 
@@ -163,7 +163,7 @@ def test_contractunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGr
 
     # WHEN
     yuri_text = "yuri"
-    cx.add_partyunit(name=yuri_text)
+    cx.add_partyunit(title=yuri_text)
 
     # THEN
     assert cx.get_bond_status() == False
@@ -342,15 +342,15 @@ def test_contractunit_export_all_bonds_ExportsFileOfBonds_2files(env_dir_setup_c
 
 #     # THEN
 #     dir_files = x_func_dir_files(dir_path=get_temp_env_dir())
-#     file_17_name = "17.json"
-#     assert dir_files[file_17_name]
-#     json_17 = x_func_open_file(dest_dir=get_temp_env_dir(), file_name=file_17_name)
+#     file_17_title = "17.json"
+#     assert dir_files[file_17_title]
+#     json_17 = x_func_open_file(dest_dir=get_temp_env_dir(), file_title=file_17_title)
 #     bond_17 = contract_get_from_json(cx_json=json_17)
 #     assert bond_17.get_bond_status()
 
-#     file_2_name = "2.json"
-#     assert dir_files[file_2_name]
-#     json_2 = x_func_open_file(dest_dir=get_temp_env_dir(), file_name=file_2_name)
+#     file_2_title = "2.json"
+#     assert dir_files[file_2_title]
+#     json_2 = x_func_open_file(dest_dir=get_temp_env_dir(), file_title=file_2_title)
 #     bond_2 = contract_get_from_json(cx_json=json_2)
 #     assert bond_2.get_bond_status()
 

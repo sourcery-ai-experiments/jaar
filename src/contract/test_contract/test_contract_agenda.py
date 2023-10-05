@@ -374,8 +374,8 @@ def test_set_agenda_task_as_complete_DivisionWorksCorrectly():
 def test_contract_get_from_json_LoadsActionFromJSONCorrectly():
     # GIVEN
     file_dir = contract_env()
-    file_name = "example_contract1.json"
-    a1_json = x_func_open_file(dest_dir=file_dir, file_name=file_name)
+    file_title = "example_contract1.json"
+    a1_json = x_func_open_file(dest_dir=file_dir, file_title=file_title)
 
     # WHEN
     a1 = get_from_json(cx_json=a1_json)
@@ -642,11 +642,11 @@ def test_contract_create_agenda_item_CorrectlyCreatesAllContractAttributes():
     clean_cookery_idea.set_required_unit(required=daytime_required)
 
     # anna_text = "anna"
-    # anna_partyunit = partyunit_shop(name=anna_text)
-    # anna_partylink = partylink_shop(name=anna_text)
+    # anna_partyunit = partyunit_shop(title=anna_text)
+    # anna_partylink = partylink_shop(title=anna_text)
     # beto_text = "beto"
-    # beto_partyunit = partyunit_shop(name=beto_text)
-    # beto_partylink = partylink_shop(name=beto_text)
+    # beto_partyunit = partyunit_shop(title=beto_text)
+    # beto_partylink = partylink_shop(title=beto_text)
 
     family_text = "family"
     # groupunit_z = groupunit_shop(brand=family_text)
@@ -764,9 +764,9 @@ def test_agenda_IsSetByAssignedUnit_1PartyGroup():
     assert len(cx.get_agenda_items()) == 1
 
     sue_text = "sue"
-    cx.add_partyunit(name=sue_text)
+    cx.add_partyunit(title=sue_text)
     assigned_unit_sue = assigned_unit_shop()
-    assigned_unit_sue.set_suffgroup(name=sue_text)
+    assigned_unit_sue.set_suffgroup(title=sue_text)
     assert len(cx.get_agenda_items()) == 1
 
     # WHEN
@@ -776,9 +776,9 @@ def test_agenda_IsSetByAssignedUnit_1PartyGroup():
     assert len(cx.get_agenda_items()) == 0
 
     # WHEN
-    cx.add_partyunit(name=bob_text)
+    cx.add_partyunit(title=bob_text)
     assigned_unit_bob = assigned_unit_shop()
-    assigned_unit_bob.set_suffgroup(name=bob_text)
+    assigned_unit_bob.set_suffgroup(title=bob_text)
 
     # WHEN
     cx.edit_idea_attr(road=work_road, assignedunit=assigned_unit_bob)
@@ -794,21 +794,21 @@ def test_agenda_IsSetByAssignedUnit_2PartyGroup():
     # GIVEN
     bob_text = "bob"
     cx = ContractUnit(_owner=bob_text)
-    cx.add_partyunit(name=bob_text)
+    cx.add_partyunit(title=bob_text)
     work_text = "work"
     work_road = f"{bob_text},{work_text}"
     cx.add_idea(idea_kid=IdeaKid(_label=work_text, promise=True), walk=bob_text)
 
     sue_text = "sue"
-    cx.add_partyunit(name=sue_text)
+    cx.add_partyunit(title=sue_text)
 
     run_text = "runners"
     run_group = groupunit_shop(brand=run_text)
-    run_group.set_partylink(partylink=partylink_shop(name=sue_text))
+    run_group.set_partylink(partylink=partylink_shop(title=sue_text))
     cx.set_groupunit(groupunit=run_group)
 
     run_assignedunit = assigned_unit_shop()
-    run_assignedunit.set_suffgroup(name=run_text)
+    run_assignedunit.set_suffgroup(title=run_text)
     assert len(cx.get_agenda_items()) == 1
 
     # WHEN
@@ -818,7 +818,7 @@ def test_agenda_IsSetByAssignedUnit_2PartyGroup():
     assert len(cx.get_agenda_items()) == 0
 
     # WHEN
-    run_group.set_partylink(partylink=partylink_shop(name=bob_text))
+    run_group.set_partylink(partylink=partylink_shop(title=bob_text))
     cx.set_groupunit(groupunit=run_group)
 
     # THEN

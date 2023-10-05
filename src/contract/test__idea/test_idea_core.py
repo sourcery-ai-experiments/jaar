@@ -77,11 +77,11 @@ def test_idea_core_balancelinks_exist():
         debtor_weight=biker_debtor_weight,
     )
 
-    swimmer_name = GroupBrand("swimmers")
+    swimmer_title = GroupBrand("swimmers")
     swimmer_creditor_weight = 29
     swimmer_debtor_weight = 32
     swimmer_link = balancelink_shop(
-        brand=swimmer_name,
+        brand=swimmer_title,
         creditor_weight=swimmer_creditor_weight,
         debtor_weight=swimmer_debtor_weight,
     )
@@ -94,7 +94,7 @@ def test_idea_core_balancelinks_exist():
     # THEN
     assert idea_core._balancelinks == group_links
     # assert group_link_x.weight == 1.0
-    # group_link_x = balancelink_shop(brand=bikers_name, weight=bikers_weight)
+    # group_link_x = balancelink_shop(brand=bikers_title, weight=bikers_weight)
     # assert group_link_x.weight == 3.0
 
 
@@ -110,11 +110,11 @@ def test_idea_core_get_inherited_balanceheirs_weight_sum_WorksCorrectlyWithValue
     )
 
     swimmer_text = "swimmers"
-    swimmer_name = GroupBrand(swimmer_text)
+    swimmer_title = GroupBrand(swimmer_text)
     swimmer_creditor_weight = 29
     swimmer_debtor_weight = 32
     swimmer_link = balanceheir_shop(
-        brand=swimmer_name,
+        brand=swimmer_title,
         creditor_weight=swimmer_creditor_weight,
         debtor_weight=swimmer_debtor_weight,
     )
@@ -264,19 +264,19 @@ def test_idea_get_dict_ReturnsDict():
             base=states_road, sufffacts={usa_sufffact.need: usa_sufffact}, _status=False
         ),
     }
-    biker_name = GroupBrand("bikers")
+    biker_title = GroupBrand("bikers")
     biker_creditor_weight = 3.0
     biker_debtor_weight = 7.0
     biker_link = balancelink_shop(
-        brand=biker_name,
+        brand=biker_title,
         creditor_weight=biker_creditor_weight,
         debtor_weight=biker_debtor_weight,
     )
-    flyer_name = GroupBrand("flyers")
+    flyer_title = GroupBrand("flyers")
     flyer_creditor_weight = 6.0
     flyer_debtor_weight = 9.0
     flyer_link = balancelink_shop(
-        brand=flyer_name,
+        brand=flyer_title,
         creditor_weight=flyer_creditor_weight,
         debtor_weight=flyer_debtor_weight,
     )
@@ -294,7 +294,7 @@ def test_idea_get_dict_ReturnsDict():
         "creditor_weight": flyer_link.creditor_weight,
         "debtor_weight": flyer_link.debtor_weight,
     }
-    x1_balancelinks = {biker_name: biker_get_dict, flyer_name: flyer_get_dict}
+    x1_balancelinks = {biker_title: biker_get_dict, flyer_title: flyer_get_dict}
 
     temp_idea = IdeaCore(
         _walk=f"{root_label()},work",
@@ -313,8 +313,8 @@ def test_idea_get_dict_ReturnsDict():
     acptfactunit_x = acptfactunit_shop(base=week_road, pick=week_road, open=5, nigh=59)
     temp_idea._set_ideakid_attr(acptfactunit=acptfactunit_x)
     temp_idea.set_originunit_empty_if_null()
-    temp_idea._originunit.set_originlink(name="Ray", weight=None)
-    temp_idea._originunit.set_originlink(name="Lei", weight=4)
+    temp_idea._originunit.set_originlink(title="Ray", weight=None)
+    temp_idea._originunit.set_originlink(title="Lei", weight=4)
 
     # WHEN
     ideakid_dict = temp_idea.get_dict()
@@ -524,7 +524,7 @@ def test_idea_set_assignedunit_empty_if_null():
     swim_text = "swimmers"
     idea_x = IdeaCore(_label="run")
     idea_x.set_assignedunit_empty_if_null()
-    idea_x._assignedunit.set_suffgroup(name=swim_text)
+    idea_x._assignedunit.set_suffgroup(title=swim_text)
     assert idea_x._assignedheir is None
 
     # WHEN
@@ -533,7 +533,7 @@ def test_idea_set_assignedunit_empty_if_null():
     # THEN
     assert idea_x._assignedheir != None
     assigned_unit_x = assigned_unit_shop()
-    assigned_unit_x.set_suffgroup(name=swim_text)
+    assigned_unit_x.set_suffgroup(title=swim_text)
     assigned_heir_x = assigned_heir_shop()
     assigned_heir_x.set_suffgroups(
         assignunit=assigned_unit_x, parent_assignheir=None, contract_groups=None

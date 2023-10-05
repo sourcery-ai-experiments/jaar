@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
-  <property name="geometry">
+ <widget class="QMainWindow" title="MainWindow">
+  <property title="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -10,12 +10,12 @@
     <height>750</height>
    </rect>
   </property>
-  <property name="windowTag">
+  <property title="windowTag">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
-   <widget class="QTableWidget" name="digests_table">
-    <property name="geometry">
+  <widget class="QWidget" title="centralwidget">
+   <widget class="QTableWidget" title="digests_table">
+    <property title="geometry">
      <rect>
       <x>530</x>
       <y>190</y>
@@ -23,24 +23,24 @@
       <height>501</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
     <column>
-     <property name="text">
+     <property title="text">
       <string>Digest</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string/>
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="owners_table">
-    <property name="geometry">
+   <widget class="QTableWidget" title="owners_table">
+    <property title="geometry">
      <rect>
       <x>190</x>
       <y>190</y>
@@ -48,24 +48,24 @@
       <height>430</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
     <column>
-     <property name="text">
+     <property title="text">
       <string>Owners</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string/>
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="contracts_table">
-    <property name="geometry">
+   <widget class="QTableWidget" title="contracts_table">
+    <property title="geometry">
      <rect>
       <x>10</x>
       <y>310</y>
@@ -73,24 +73,24 @@
       <height>381</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
     <column>
-     <property name="text">
+     <property title="text">
       <string>ECONOMY Stories</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string/>
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="depotlinks_table">
-    <property name="geometry">
+   <widget class="QTableWidget" title="depotlinks_table">
+    <property title="geometry">
      <rect>
       <x>340</x>
       <y>190</y>
@@ -98,34 +98,34 @@
       <height>501</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
     <column>
-     <property name="text">
+     <property title="text">
       <string>Contractlinks</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string>Weight</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string>Type</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string/>
      </property>
     </column>
    </widget>
-   <widget class="QPushButton" name="economy_delete_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="economy_delete_button">
+    <property title="geometry">
      <rect>
       <x>170</x>
       <y>20</y>
@@ -133,17 +133,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>delete </string>
     </property>
    </widget>
-   <widget class="QPushButton" name="economy_insert_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="economy_insert_button">
+    <property title="geometry">
      <rect>
       <x>20</x>
       <y>50</y>
@@ -151,17 +151,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Add new Economy</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="economy_tag">
-    <property name="geometry">
+   <widget class="QLineEdit" title="economy_tag">
+    <property title="geometry">
      <rect>
       <x>20</x>
       <y>20</y>
@@ -169,14 +169,14 @@
       <height>22</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" name="economy_update_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="economy_update_button">
+    <property title="geometry">
      <rect>
       <x>20</x>
       <y>80</y>
@@ -184,17 +184,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
-     <string>Change Name</string>
+    <property title="text">
+     <string>Change Title</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="contract_update_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="contract_update_button">
+    <property title="geometry">
      <rect>
       <x>10</x>
       <y>240</y>
@@ -202,17 +202,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
-     <string>Change Contract Name</string>
+    <property title="text">
+     <string>Change Contract Title</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="contract_insert_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="contract_insert_button">
+    <property title="geometry">
      <rect>
       <x>10</x>
       <y>210</y>
@@ -220,17 +220,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Add new Contract</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="contract_delete_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="contract_delete_button">
+    <property title="geometry">
      <rect>
       <x>80</x>
       <y>270</y>
@@ -238,17 +238,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Delete</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="contract_owner">
-    <property name="geometry">
+   <widget class="QLineEdit" title="contract_owner">
+    <property title="geometry">
      <rect>
       <x>10</x>
       <y>180</y>
@@ -256,14 +256,14 @@
       <height>22</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" name="owner_update_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="owner_update_button">
+    <property title="geometry">
      <rect>
       <x>190</x>
       <y>130</y>
@@ -271,17 +271,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
-     <string>Change Owner Name</string>
+    <property title="text">
+     <string>Change Owner Title</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="owner_insert_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="owner_insert_button">
+    <property title="geometry">
      <rect>
       <x>190</x>
       <y>100</y>
@@ -289,17 +289,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Add new Owner</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="owner_delete_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="owner_delete_button">
+    <property title="geometry">
      <rect>
       <x>240</x>
       <y>40</y>
@@ -307,17 +307,17 @@
       <height>28</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>delete Owner</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="owner_name">
-    <property name="geometry">
+   <widget class="QLineEdit" title="owner_title">
+    <property title="geometry">
      <rect>
       <x>190</x>
       <y>70</y>
@@ -325,14 +325,14 @@
       <height>22</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" name="depotlink_delete_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="depotlink_delete_button">
+    <property title="geometry">
      <rect>
       <x>480</x>
       <y>20</y>
@@ -340,17 +340,17 @@
       <height>28</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>delete ContractLink</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="depotlink_name">
-    <property name="geometry">
+   <widget class="QLineEdit" title="depotlink_title">
+    <property title="geometry">
      <rect>
       <x>340</x>
       <y>20</y>
@@ -358,14 +358,14 @@
       <height>22</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" name="depotlink_insert_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="depotlink_insert_button">
+    <property title="geometry">
      <rect>
       <x>376</x>
       <y>50</y>
@@ -373,17 +373,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Add new ContractLink</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="depotlink_update_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="depotlink_update_button">
+    <property title="geometry">
      <rect>
       <x>376</x>
       <y>80</y>
@@ -391,17 +391,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Update ContractLink</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="refresh_all_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="refresh_all_button">
+    <property title="geometry">
      <rect>
       <x>530</x>
       <y>90</y>
@@ -409,17 +409,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>refresh</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="contract_edit_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="contract_edit_button">
+    <property title="geometry">
      <rect>
       <x>10</x>
       <y>270</y>
@@ -427,17 +427,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Edit </string>
     </property>
    </widget>
-   <widget class="QPushButton" name="owner_edit_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="owner_edit_button">
+    <property title="geometry">
      <rect>
       <x>190</x>
       <y>160</y>
@@ -445,17 +445,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Edit Owner</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="depotlink_edit_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="depotlink_edit_button">
+    <property title="geometry">
      <rect>
       <x>340</x>
       <y>160</y>
@@ -463,17 +463,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Edit ContractLink</string>
     </property>
    </widget>
-   <widget class="QTableWidget" name="w_agenda_table">
-    <property name="geometry">
+   <widget class="QTableWidget" title="w_agenda_table">
+    <property title="geometry">
      <rect>
       <x>1180</x>
       <y>260</y>
@@ -481,29 +481,29 @@
       <height>431</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
     <column>
-     <property name="text">
+     <property title="text">
       <string>Owners Agenda</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string>New Column</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string/>
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="w_partys_table">
-    <property name="geometry">
+   <widget class="QTableWidget" title="w_partys_table">
+    <property title="geometry">
      <rect>
       <x>1000</x>
       <y>10</y>
@@ -511,29 +511,29 @@
       <height>241</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
     <column>
-     <property name="text">
+     <property title="text">
       <string>Owners Partys</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string>New Column</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string/>
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="w_groups_table">
-    <property name="geometry">
+   <widget class="QTableWidget" title="w_groups_table">
+    <property title="geometry">
      <rect>
       <x>1000</x>
       <y>260</y>
@@ -541,29 +541,29 @@
       <height>431</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
     <column>
-     <property name="text">
+     <property title="text">
       <string>Owners Groups</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string>New Column</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string/>
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="w_ideas_table">
-    <property name="geometry">
+   <widget class="QTableWidget" title="w_ideas_table">
+    <property title="geometry">
      <rect>
       <x>600</x>
       <y>10</y>
@@ -571,29 +571,29 @@
       <height>681</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
     <column>
-     <property name="text">
+     <property title="text">
       <string>Owner Ideas</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string>Idea walk</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string/>
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="w_acptfacts_table">
-    <property name="geometry">
+   <widget class="QTableWidget" title="w_acptfacts_table">
+    <property title="geometry">
      <rect>
       <x>1180</x>
       <y>10</y>
@@ -601,29 +601,29 @@
       <height>241</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
     <column>
-     <property name="text">
+     <property title="text">
       <string>AcptFacts Base</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string>AcptFacts AcptFact</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string/>
      </property>
     </column>
    </widget>
-   <widget class="QComboBox" name="economy_tag_combo">
-    <property name="geometry">
+   <widget class="QComboBox" title="economy_tag_combo">
+    <property title="geometry">
      <rect>
       <x>20</x>
       <y>110</y>
@@ -631,14 +631,14 @@
       <height>26</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" name="economy_copy_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="economy_copy_button">
+    <property title="geometry">
      <rect>
       <x>100</x>
       <y>80</y>
@@ -646,17 +646,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Copy</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="depotlink_type_combo">
-    <property name="geometry">
+   <widget class="QComboBox" title="depotlink_type_combo">
+    <property title="geometry">
      <rect>
       <x>376</x>
       <y>110</y>
@@ -664,14 +664,14 @@
       <height>26</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" name="economy_load_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="economy_load_button">
+    <property title="geometry">
      <rect>
       <x>100</x>
       <y>140</y>
@@ -679,17 +679,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>load</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="depotlink_weight">
-    <property name="geometry">
+   <widget class="QLineEdit" title="depotlink_weight">
+    <property title="geometry">
      <rect>
       <x>460</x>
       <y>140</y>
@@ -697,14 +697,14 @@
       <height>22</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
+   <widget class="QLabel" title="label">
+    <property title="geometry">
      <rect>
       <x>340</x>
       <y>140</y>
@@ -712,17 +712,17 @@
       <height>20</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Contractlink Weight:</string>
     </property>
    </widget>
-   <widget class="QTableWidget" name="ignores_table">
-    <property name="geometry">
+   <widget class="QTableWidget" title="ignores_table">
+    <property title="geometry">
      <rect>
       <x>530</x>
       <y>190</y>
@@ -730,24 +730,24 @@
       <height>501</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
     <column>
-     <property name="text">
+     <property title="text">
       <string>Ignore</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string/>
      </property>
     </column>
    </widget>
-   <widget class="QPushButton" name="show_digests_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="show_digests_button">
+    <property title="geometry">
      <rect>
       <x>530</x>
       <y>120</y>
@@ -755,17 +755,17 @@
       <height>21</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>digest</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="show_ignores_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="show_ignores_button">
+    <property title="geometry">
      <rect>
       <x>530</x>
       <y>140</y>
@@ -773,17 +773,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>ignore</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="open_ignore_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="open_ignore_button">
+    <property title="geometry">
      <rect>
       <x>570</x>
       <y>140</y>
@@ -791,17 +791,17 @@
       <height>21</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>o</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="save_ignore_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="save_ignore_button">
+    <property title="geometry">
      <rect>
       <x>570</x>
       <y>160</y>
@@ -809,17 +809,17 @@
       <height>21</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>s</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="set_public_contract_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="set_public_contract_button">
+    <property title="geometry">
      <rect>
       <x>190</x>
       <y>640</y>
@@ -827,17 +827,17 @@
       <height>21</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>output_contract to public_dir</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="reload_all_src_contracts_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="reload_all_src_contracts_button">
+    <property title="geometry">
      <rect>
       <x>190</x>
       <y>620</y>
@@ -845,17 +845,17 @@
       <height>21</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>refresh_all_src_contracts</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="set_public_and_reload_srcs_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="set_public_and_reload_srcs_button">
+    <property title="geometry">
      <rect>
       <x>190</x>
       <y>660</y>
@@ -863,17 +863,17 @@
       <height>21</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>dest2public and refresh</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="isol_open_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="isol_open_button">
+    <property title="geometry">
      <rect>
       <x>530</x>
       <y>50</y>
@@ -881,17 +881,17 @@
       <height>21</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>isol</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="isol_save_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="isol_save_button">
+    <property title="geometry">
      <rect>
       <x>530</x>
       <y>70</y>
@@ -899,17 +899,17 @@
       <height>21</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>save</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="five_issue_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="five_issue_button">
+    <property title="geometry">
      <rect>
       <x>450</x>
       <y>160</y>
@@ -917,18 +917,18 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>5 issue</string>
     </property>
    </widget>
   </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
+  <widget class="QMenuBar" title="menubar">
+   <property title="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
@@ -936,44 +936,44 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="accessibleName">
+   <property title="accessibleTitle">
     <string>File</string>
    </property>
-   <property name="accessibleDescription">
+   <property title="accessibleDescription">
     <string>General Operations</string>
    </property>
-   <widget class="QMenu" name="file_menu">
-    <property name="tag">
+   <widget class="QMenu" title="file_menu">
+    <property title="tag">
      <string>File</string>
     </property>
-    <addaction name="fm_new"/>
-    <addaction name="fm_open"/>
-    <addaction name="fm_save"/>
-    <addaction name="save_as"/>
+    <addaction title="fm_new"/>
+    <addaction title="fm_open"/>
+    <addaction title="fm_save"/>
+    <addaction title="save_as"/>
    </widget>
-   <addaction name="file_menu"/>
+   <addaction title="file_menu"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
-  <action name="fm_open">
-   <property name="checkable">
+  <widget class="QStatusBar" title="statusbar"/>
+  <action title="fm_open">
+   <property title="checkable">
     <bool>false</bool>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Open</string>
    </property>
   </action>
-  <action name="fm_save">
-   <property name="text">
+  <action title="fm_save">
+   <property title="text">
     <string>Save</string>
    </property>
   </action>
-  <action name="save_as">
-   <property name="text">
+  <action title="save_as">
+   <property title="text">
     <string>Save as...</string>
    </property>
   </action>
-  <action name="fm_new">
-   <property name="text">
+  <action title="fm_new">
+   <property title="text">
     <string>New</string>
    </property>
   </action>

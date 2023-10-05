@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Form</class>
- <widget class="QWidget" name="Form">
-  <property name="geometry">
+ <widget class="QWidget" title="Form">
+  <property title="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -10,17 +10,17 @@
     <height>853</height>
    </rect>
   </property>
-  <property name="minimumSize">
+  <property title="minimumSize">
    <size>
     <width>1492</width>
     <height>0</height>
    </size>
   </property>
-  <property name="windowTag">
+  <property title="windowTag">
    <string>Form</string>
   </property>
-  <widget class="QLabel" name="label_14">
-   <property name="geometry">
+  <widget class="QLabel" title="label_14">
+   <property title="geometry">
     <rect>
      <x>700</x>
      <y>10</y>
@@ -28,17 +28,17 @@
      <height>31</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>12</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Ideas: Edit or Add Children </string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="yo_deescription">
-   <property name="geometry">
+  <widget class="QTextEdit" title="yo_deescription">
+   <property title="geometry">
     <rect>
      <x>680</x>
      <y>40</y>
@@ -46,14 +46,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>9</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QTextEdit" name="yo_weight">
-   <property name="geometry">
+  <widget class="QTextEdit" title="yo_weight">
+   <property title="geometry">
     <rect>
      <x>680</x>
      <y>130</y>
@@ -61,14 +61,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>9</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QLabel" name="label_1">
-   <property name="geometry">
+  <widget class="QLabel" title="label_1">
+   <property title="geometry">
     <rect>
      <x>580</x>
      <y>40</y>
@@ -76,17 +76,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Description</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
+  <widget class="QLabel" title="label_4">
+   <property title="geometry">
     <rect>
      <x>580</x>
      <y>130</y>
@@ -94,17 +94,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Weight</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="submit_child_insert">
-   <property name="geometry">
+  <widget class="QPushButton" title="submit_child_insert">
+   <property title="geometry">
     <rect>
      <x>890</x>
      <y>800</y>
@@ -112,12 +112,12 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Add Child</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="submit_node_update">
-   <property name="geometry">
+  <widget class="QPushButton" title="submit_node_update">
+   <property title="geometry">
     <rect>
      <x>700</x>
      <y>800</y>
@@ -125,12 +125,12 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Update Node</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_parent_id">
-   <property name="geometry">
+  <widget class="QLabel" title="label_parent_id">
+   <property title="geometry">
     <rect>
      <x>1050</x>
      <y>0</y>
@@ -138,17 +138,17 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>10</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Current Node ID:</string>
    </property>
   </widget>
-  <widget class="QTreeWidget" name="baseideaunit">
-   <property name="geometry">
+  <widget class="QTreeWidget" title="baseideaunit">
+   <property title="geometry">
     <rect>
      <x>10</x>
      <y>110</y>
@@ -156,17 +156,17 @@
      <height>721</height>
     </rect>
    </property>
-   <property name="indentation">
+   <property title="indentation">
     <number>15</number>
    </property>
    <column>
-    <property name="text">
+    <property title="text">
      <string>ideaunit</string>
     </property>
    </column>
   </widget>
-  <widget class="QPushButton" name="submit_node_delete">
-   <property name="geometry">
+  <widget class="QPushButton" title="submit_node_delete">
+   <property title="geometry">
     <rect>
      <x>1080</x>
      <y>800</y>
@@ -174,12 +174,12 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Delete Node</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="refresh_button">
-   <property name="geometry">
+  <widget class="QPushButton" title="refresh_button">
+   <property title="geometry">
     <rect>
      <x>10</x>
      <y>20</y>
@@ -187,12 +187,12 @@
      <height>51</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Refresh</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="close_button">
-   <property name="geometry">
+  <widget class="QPushButton" title="close_button">
+   <property title="geometry">
     <rect>
      <x>1250</x>
      <y>20</y>
@@ -200,12 +200,12 @@
      <height>31</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Close</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="quit_button">
-   <property name="geometry">
+  <widget class="QPushButton" title="quit_button">
+   <property title="geometry">
     <rect>
      <x>1340</x>
      <y>20</y>
@@ -213,12 +213,12 @@
      <height>31</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Quit App</string>
    </property>
   </widget>
-  <widget class="QTableWidget" name="idea2group_table">
-   <property name="geometry">
+  <widget class="QTableWidget" title="idea2group_table">
+   <property title="geometry">
     <rect>
      <x>1050</x>
      <y>80</y>
@@ -226,29 +226,29 @@
      <height>191</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
    <column>
-    <property name="text">
+    <property title="text">
      <string>Group_ID</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>Group</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>Party Count</string>
     </property>
    </column>
   </widget>
-  <widget class="QPushButton" name="idea2group_delete_button">
-   <property name="geometry">
+  <widget class="QPushButton" title="idea2group_delete_button">
+   <property title="geometry">
     <rect>
      <x>1440</x>
      <y>80</y>
@@ -256,17 +256,17 @@
      <height>28</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>De-link Group</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="idea2group_insert_button">
-   <property name="geometry">
+  <widget class="QPushButton" title="idea2group_insert_button">
+   <property title="geometry">
     <rect>
      <x>1050</x>
      <y>50</y>
@@ -274,17 +274,17 @@
      <height>28</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Add Group to Idea</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="idea2group_insert_combo">
-   <property name="geometry">
+  <widget class="QComboBox" title="idea2group_insert_combo">
+   <property title="geometry">
     <rect>
      <x>1200</x>
      <y>50</y>
@@ -292,14 +292,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_rootrank">
-   <property name="geometry">
+  <widget class="QCheckBox" title="cb_rootrank">
+   <property title="geometry">
     <rect>
      <x>100</x>
      <y>20</y>
@@ -307,12 +307,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>root rank</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo_id">
-   <property name="geometry">
+  <widget class="QCheckBox" title="cb_yo_id">
+   <property title="geometry">
     <rect>
      <x>100</x>
      <y>40</y>
@@ -320,12 +320,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>uid</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo2bd_count">
-   <property name="geometry">
+  <widget class="QCheckBox" title="cb_yo2bd_count">
+   <property title="geometry">
     <rect>
      <x>100</x>
      <y>60</y>
@@ -333,12 +333,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Group count</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo_agenda">
-   <property name="geometry">
+  <widget class="QCheckBox" title="cb_yo_agenda">
+   <property title="geometry">
     <rect>
      <x>320</x>
      <y>40</y>
@@ -346,12 +346,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>lf agenda</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo_insert_allChildren">
-   <property name="geometry">
+  <widget class="QCheckBox" title="cb_yo_insert_allChildren">
+   <property title="geometry">
     <rect>
      <x>900</x>
      <y>780</y>
@@ -359,12 +359,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>New node gets all children</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="hreg_open_hr">
-   <property name="geometry">
+  <widget class="QComboBox" title="hreg_open_hr">
+   <property title="geometry">
     <rect>
      <x>1610</x>
      <y>280</y>
@@ -373,8 +373,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QComboBox" name="hreg_open_min">
-   <property name="geometry">
+  <widget class="QComboBox" title="hreg_open_min">
+   <property title="geometry">
     <rect>
      <x>1690</x>
      <y>280</y>
@@ -383,8 +383,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLabel" name="label_37">
-   <property name="geometry">
+  <widget class="QLabel" title="label_37">
+   <property title="geometry">
     <rect>
      <x>1610</x>
      <y>260</y>
@@ -392,12 +392,12 @@
      <height>16</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Hour</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_38">
-   <property name="geometry">
+  <widget class="QLabel" title="label_38">
+   <property title="geometry">
     <rect>
      <x>1700</x>
      <y>260</y>
@@ -405,12 +405,12 @@
      <height>16</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Min</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="hreg_length_hr">
-   <property name="geometry">
+  <widget class="QComboBox" title="hreg_length_hr">
+   <property title="geometry">
     <rect>
      <x>1610</x>
      <y>310</y>
@@ -419,8 +419,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QComboBox" name="hreg_length_min">
-   <property name="geometry">
+  <widget class="QComboBox" title="hreg_length_min">
+   <property title="geometry">
     <rect>
      <x>1690</x>
      <y>310</y>
@@ -429,8 +429,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo_agenda_current">
-   <property name="geometry">
+  <widget class="QCheckBox" title="cb_yo_agenda_current">
+   <property title="geometry">
     <rect>
      <x>210</x>
      <y>40</y>
@@ -438,12 +438,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Agenda</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo_action">
-   <property name="geometry">
+  <widget class="QCheckBox" title="cb_yo_action">
+   <property title="geometry">
     <rect>
      <x>320</x>
      <y>20</y>
@@ -451,12 +451,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Act</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="yo_action_cb">
-   <property name="geometry">
+  <widget class="QCheckBox" title="yo_action_cb">
+   <property title="geometry">
     <rect>
      <x>930</x>
      <y>160</y>
@@ -464,12 +464,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Action</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo_complete">
-   <property name="geometry">
+  <widget class="QCheckBox" title="cb_yo_complete">
+   <property title="geometry">
     <rect>
      <x>210</x>
      <y>20</y>
@@ -477,12 +477,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Complete</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="button_hreg_instance">
-   <property name="geometry">
+  <widget class="QPushButton" title="button_hreg_instance">
+   <property title="geometry">
     <rect>
      <x>1450</x>
      <y>210</y>
@@ -490,12 +490,12 @@
      <height>24</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Instant</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="button_hreg_1hour">
-   <property name="geometry">
+  <widget class="QPushButton" title="button_hreg_1hour">
+   <property title="geometry">
     <rect>
      <x>1450</x>
      <y>240</y>
@@ -503,12 +503,12 @@
      <height>24</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>1 hour</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="button_hreg_all_day">
-   <property name="geometry">
+  <widget class="QPushButton" title="button_hreg_all_day">
+   <property title="geometry">
     <rect>
      <x>1450</x>
      <y>180</y>
@@ -516,12 +516,12 @@
      <height>24</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>All Day</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo_acptfactunit_count">
-   <property name="geometry">
+  <widget class="QCheckBox" title="cb_yo_acptfactunit_count">
+   <property title="geometry">
     <rect>
      <x>210</x>
      <y>60</y>
@@ -529,12 +529,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>acptfactunits</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo_acptfactunit_time">
-   <property name="geometry">
+  <widget class="QCheckBox" title="cb_yo_acptfactunit_time">
+   <property title="geometry">
     <rect>
      <x>320</x>
      <y>60</y>
@@ -542,12 +542,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>time acptfactunit</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="required_base_combo">
-   <property name="geometry">
+  <widget class="QComboBox" title="required_base_combo">
+   <property title="geometry">
     <rect>
      <x>620</x>
      <y>370</y>
@@ -555,14 +555,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QTableWidget" name="required_table">
-   <property name="geometry">
+  <widget class="QTableWidget" title="required_table">
+   <property title="geometry">
     <rect>
      <x>580</x>
      <y>520</y>
@@ -571,63 +571,63 @@
     </rect>
    </property>
    <column>
-    <property name="text">
+    <property title="text">
      <string>Required Base</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>SuffFact</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>Base</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>Need</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>Open</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>Nigh</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>Divisor</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>empty</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>Limt_status</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>SuffFact_status</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>11</string>
     </property>
    </column>
   </widget>
-  <widget class="QCheckBox" name="cb_requiredheir_count">
-   <property name="geometry">
+  <widget class="QCheckBox" title="cb_requiredheir_count">
+   <property title="geometry">
     <rect>
      <x>430</x>
      <y>20</y>
@@ -635,12 +635,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>RequiredHeir count</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_required_count">
-   <property name="geometry">
+  <widget class="QCheckBox" title="cb_required_count">
+   <property title="geometry">
     <rect>
      <x>430</x>
      <y>40</y>
@@ -648,12 +648,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>RequiredUnit count</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_required_view">
-   <property name="geometry">
+  <widget class="QCheckBox" title="cb_required_view">
+   <property title="geometry">
     <rect>
      <x>10</x>
      <y>70</y>
@@ -661,12 +661,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Required:</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="combo_dim_root">
-   <property name="geometry">
+  <widget class="QComboBox" title="combo_dim_root">
+   <property title="geometry">
     <rect>
      <x>80</x>
      <y>80</y>
@@ -675,8 +675,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLabel" name="prom_l_03">
-   <property name="geometry">
+  <widget class="QLabel" title="prom_l_03">
+   <property title="geometry">
     <rect>
      <x>580</x>
      <y>400</y>
@@ -684,17 +684,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>SuffFact</string>
    </property>
   </widget>
-  <widget class="QLabel" name="prom_l_02">
-   <property name="geometry">
+  <widget class="QLabel" title="prom_l_02">
+   <property title="geometry">
     <rect>
      <x>1480</x>
      <y>820</y>
@@ -702,17 +702,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>10</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="label_9">
-   <property name="geometry">
+  <widget class="QLabel" title="label_9">
+   <property title="geometry">
     <rect>
      <x>590</x>
      <y>430</y>
@@ -720,17 +720,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Open</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="button_required_upsert">
-   <property name="geometry">
+  <widget class="QPushButton" title="button_required_upsert">
+   <property title="geometry">
     <rect>
      <x>1330</x>
      <y>430</y>
@@ -738,17 +738,17 @@
      <height>81</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Required Update</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_10">
-   <property name="geometry">
+  <widget class="QLabel" title="label_10">
+   <property title="geometry">
     <rect>
      <x>580</x>
      <y>160</y>
@@ -756,17 +756,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Begin</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="yo_begin">
-   <property name="geometry">
+  <widget class="QTextEdit" title="yo_begin">
+   <property title="geometry">
     <rect>
      <x>680</x>
      <y>160</y>
@@ -774,14 +774,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>9</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QLabel" name="label_11">
-   <property name="geometry">
+  <widget class="QLabel" title="label_11">
+   <property title="geometry">
     <rect>
      <x>580</x>
      <y>190</y>
@@ -789,17 +789,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Close</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="yo_close">
-   <property name="geometry">
+  <widget class="QTextEdit" title="yo_close">
+   <property title="geometry">
     <rect>
      <x>680</x>
      <y>190</y>
@@ -807,14 +807,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>9</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QLabel" name="label_12">
-   <property name="geometry">
+  <widget class="QLabel" title="label_12">
+   <property title="geometry">
     <rect>
      <x>580</x>
      <y>70</y>
@@ -822,17 +822,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Walk</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="yo_walk">
-   <property name="geometry">
+  <widget class="QTextEdit" title="yo_walk">
+   <property title="geometry">
     <rect>
      <x>680</x>
      <y>70</y>
@@ -840,14 +840,14 @@
      <height>51</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>9</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QPushButton" name="create_hreg_button">
-   <property name="geometry">
+  <widget class="QPushButton" title="create_hreg_button">
+   <property title="geometry">
     <rect>
      <x>580</x>
      <y>790</y>
@@ -855,17 +855,17 @@
      <height>31</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>create hreg</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="required_sufffact_combo">
-   <property name="geometry">
+  <widget class="QComboBox" title="required_sufffact_combo">
+   <property title="geometry">
     <rect>
      <x>620</x>
      <y>400</y>
@@ -873,14 +873,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QTextEdit" name="required_sufffact_open">
-   <property name="geometry">
+  <widget class="QTextEdit" title="required_sufffact_open">
+   <property title="geometry">
     <rect>
      <x>620</x>
      <y>430</y>
@@ -888,14 +888,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QTextEdit" name="required_sufffact_nigh">
-   <property name="geometry">
+  <widget class="QTextEdit" title="required_sufffact_nigh">
+   <property title="geometry">
     <rect>
      <x>620</x>
      <y>460</y>
@@ -903,14 +903,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QTextEdit" name="required_sufffact_divisor">
-   <property name="geometry">
+  <widget class="QTextEdit" title="required_sufffact_divisor">
+   <property title="geometry">
     <rect>
      <x>620</x>
      <y>490</y>
@@ -918,14 +918,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QLabel" name="label_15">
-   <property name="geometry">
+  <widget class="QLabel" title="label_15">
+   <property title="geometry">
     <rect>
      <x>590</x>
      <y>460</y>
@@ -933,17 +933,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Nigh</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_16">
-   <property name="geometry">
+  <widget class="QLabel" title="label_16">
+   <property title="geometry">
     <rect>
      <x>580</x>
      <y>490</y>
@@ -951,17 +951,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Divisor</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_17">
-   <property name="geometry">
+  <widget class="QLabel" title="label_17">
+   <property title="geometry">
     <rect>
      <x>580</x>
      <y>370</y>
@@ -969,17 +969,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Base</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="button_required_delete">
-   <property name="geometry">
+  <widget class="QPushButton" title="button_required_delete">
+   <property title="geometry">
     <rect>
      <x>1330</x>
      <y>370</y>
@@ -987,17 +987,17 @@
      <height>24</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Required Del</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="yo_task_status">
-   <property name="geometry">
+  <widget class="QTextEdit" title="yo_task_status">
+   <property title="geometry">
     <rect>
      <x>930</x>
      <y>130</y>
@@ -1005,14 +1005,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>9</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QLabel" name="label_18">
-   <property name="geometry">
+  <widget class="QLabel" title="label_18">
+   <property title="geometry">
     <rect>
      <x>860</x>
      <y>130</y>
@@ -1020,17 +1020,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Task Status:</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="yo_numor">
-   <property name="geometry">
+  <widget class="QTextEdit" title="yo_numor">
+   <property title="geometry">
     <rect>
      <x>680</x>
      <y>250</y>
@@ -1038,14 +1038,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>9</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QLabel" name="label_19">
-   <property name="geometry">
+  <widget class="QLabel" title="label_19">
+   <property title="geometry">
     <rect>
      <x>580</x>
      <y>250</y>
@@ -1053,17 +1053,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Numorator</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_20">
-   <property name="geometry">
+  <widget class="QLabel" title="label_20">
+   <property title="geometry">
     <rect>
      <x>580</x>
      <y>310</y>
@@ -1071,17 +1071,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Numeric Source</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="yo_range_source_road">
-   <property name="geometry">
+  <widget class="QComboBox" title="yo_range_source_road">
+   <property title="geometry">
     <rect>
      <x>680</x>
      <y>340</y>
@@ -1089,14 +1089,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QLabel" name="label_21">
-   <property name="geometry">
+  <widget class="QLabel" title="label_21">
+   <property title="geometry">
     <rect>
      <x>580</x>
      <y>340</y>
@@ -1104,17 +1104,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Special Road</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="required_sufffact_open_combo">
-   <property name="geometry">
+  <widget class="QComboBox" title="required_sufffact_open_combo">
+   <property title="geometry">
     <rect>
      <x>700</x>
      <y>430</y>
@@ -1122,14 +1122,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QComboBox" name="required_sufffact_nigh_combo">
-   <property name="geometry">
+  <widget class="QComboBox" title="required_sufffact_nigh_combo">
+   <property title="geometry">
     <rect>
      <x>700</x>
      <y>460</y>
@@ -1137,14 +1137,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QComboBox" name="required_sufffact_divisor_combo">
-   <property name="geometry">
+  <widget class="QComboBox" title="required_sufffact_divisor_combo">
+   <property title="geometry">
     <rect>
      <x>700</x>
      <y>490</y>
@@ -1152,14 +1152,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QComboBox" name="yo_numeric_road">
-   <property name="geometry">
+  <widget class="QComboBox" title="yo_numeric_road">
+   <property title="geometry">
     <rect>
      <x>680</x>
      <y>310</y>
@@ -1167,14 +1167,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QLabel" name="label_22">
-   <property name="geometry">
+  <widget class="QLabel" title="label_22">
+   <property title="geometry">
     <rect>
      <x>580</x>
      <y>280</y>
@@ -1182,17 +1182,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Denominator</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="yo_denom">
-   <property name="geometry">
+  <widget class="QTextEdit" title="yo_denom">
+   <property title="geometry">
     <rect>
      <x>680</x>
      <y>280</y>
@@ -1200,14 +1200,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>9</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QLabel" name="label_23">
-   <property name="geometry">
+  <widget class="QLabel" title="label_23">
+   <property title="geometry">
     <rect>
      <x>860</x>
      <y>250</y>
@@ -1215,17 +1215,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Remainder:</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="yo_reest">
-   <property name="geometry">
+  <widget class="QCheckBox" title="yo_reest">
+   <property title="geometry">
     <rect>
      <x>930</x>
      <y>250</y>
@@ -1233,12 +1233,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>reest</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_24">
-   <property name="geometry">
+  <widget class="QLabel" title="label_24">
+   <property title="geometry">
     <rect>
      <x>580</x>
      <y>220</y>
@@ -1246,17 +1246,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Addin</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="yo_addin">
-   <property name="geometry">
+  <widget class="QTextEdit" title="yo_addin">
+   <property title="geometry">
     <rect>
      <x>680</x>
      <y>220</y>
@@ -1264,14 +1264,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>9</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QPushButton" name="button_hreg_base">
-   <property name="geometry">
+  <widget class="QPushButton" title="button_hreg_base">
+   <property title="geometry">
     <rect>
      <x>1440</x>
      <y>280</y>
@@ -1279,17 +1279,17 @@
      <height>51</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>hregtime</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="hreg_days_repeat">
-   <property name="geometry">
+  <widget class="QTextEdit" title="hreg_days_repeat">
+   <property title="geometry">
     <rect>
      <x>1610</x>
      <y>350</y>
@@ -1297,14 +1297,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>9</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QLabel" name="label_25">
-   <property name="geometry">
+  <widget class="QLabel" title="label_25">
+   <property title="geometry">
     <rect>
      <x>1530</x>
      <y>350</y>
@@ -1312,17 +1312,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Every x days</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="hreg_weeks_repeat">
-   <property name="geometry">
+  <widget class="QTextEdit" title="hreg_weeks_repeat">
+   <property title="geometry">
     <rect>
      <x>1610</x>
      <y>380</y>
@@ -1330,14 +1330,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>9</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QLabel" name="label_26">
-   <property name="geometry">
+  <widget class="QLabel" title="label_26">
+   <property title="geometry">
     <rect>
      <x>1530</x>
      <y>380</y>
@@ -1345,17 +1345,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Every x weeks</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_27">
-   <property name="geometry">
+  <widget class="QLabel" title="label_27">
+   <property title="geometry">
     <rect>
      <x>1560</x>
      <y>280</y>
@@ -1363,17 +1363,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Open</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_28">
-   <property name="geometry">
+  <widget class="QLabel" title="label_28">
+   <property title="geometry">
     <rect>
      <x>1560</x>
      <y>310</y>
@@ -1381,17 +1381,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Length</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="hreg_weekday">
-   <property name="geometry">
+  <widget class="QComboBox" title="hreg_weekday">
+   <property title="geometry">
     <rect>
      <x>1770</x>
      <y>380</y>
@@ -1399,14 +1399,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QLabel" name="label_29">
-   <property name="geometry">
+  <widget class="QLabel" title="label_29">
+   <property title="geometry">
     <rect>
      <x>1660</x>
      <y>380</y>
@@ -1414,17 +1414,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Starting...</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_31">
-   <property name="geometry">
+  <widget class="QLabel" title="label_31">
+   <property title="geometry">
     <rect>
      <x>1530</x>
      <y>410</y>
@@ -1432,17 +1432,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Every x months</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="hreg_months_repeat">
-   <property name="geometry">
+  <widget class="QTextEdit" title="hreg_months_repeat">
+   <property title="geometry">
     <rect>
      <x>1610</x>
      <y>410</y>
@@ -1450,14 +1450,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>9</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QTextEdit" name="hreg_years_repeat">
-   <property name="geometry">
+  <widget class="QTextEdit" title="hreg_years_repeat">
+   <property title="geometry">
     <rect>
      <x>1610</x>
      <y>440</y>
@@ -1465,14 +1465,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>9</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QLabel" name="label_32">
-   <property name="geometry">
+  <widget class="QLabel" title="label_32">
+   <property title="geometry">
     <rect>
      <x>1530</x>
      <y>440</y>
@@ -1480,17 +1480,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Every x years</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="hreg_monthday">
-   <property name="geometry">
+  <widget class="QTextEdit" title="hreg_monthday">
+   <property title="geometry">
     <rect>
      <x>1720</x>
      <y>410</y>
@@ -1498,14 +1498,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>9</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QLabel" name="label_33">
-   <property name="geometry">
+  <widget class="QLabel" title="label_33">
+   <property title="geometry">
     <rect>
      <x>1660</x>
      <y>410</y>
@@ -1513,17 +1513,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Monthday:</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_34">
-   <property name="geometry">
+  <widget class="QLabel" title="label_34">
+   <property title="geometry">
     <rect>
      <x>1660</x>
      <y>440</y>
@@ -1531,17 +1531,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Month:</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="hreg_year_month">
-   <property name="geometry">
+  <widget class="QTextEdit" title="hreg_year_month">
+   <property title="geometry">
     <rect>
      <x>1660</x>
      <y>460</y>
@@ -1549,14 +1549,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>9</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QTextEdit" name="hreg_year_monthday">
-   <property name="geometry">
+  <widget class="QTextEdit" title="hreg_year_monthday">
+   <property title="geometry">
     <rect>
      <x>1720</x>
      <y>460</y>
@@ -1564,14 +1564,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>9</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QLabel" name="label_35">
-   <property name="geometry">
+  <widget class="QLabel" title="label_35">
+   <property title="geometry">
     <rect>
      <x>1720</x>
      <y>440</y>
@@ -1579,17 +1579,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Monthday:</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="button_sufffactunit_hreg_update_weeks">
-   <property name="geometry">
+  <widget class="QPushButton" title="button_sufffactunit_hreg_update_weeks">
+   <property title="geometry">
     <rect>
      <x>1530</x>
      <y>490</y>
@@ -1597,12 +1597,12 @@
      <height>24</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>apply sufffactunit_hregtime</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="hreg_weeks_remainder">
-   <property name="geometry">
+  <widget class="QTextEdit" title="hreg_weeks_remainder">
+   <property title="geometry">
     <rect>
      <x>1720</x>
      <y>380</y>
@@ -1610,14 +1610,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>9</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QTextEdit" name="hreg_days_remainder">
-   <property name="geometry">
+  <widget class="QTextEdit" title="hreg_days_remainder">
+   <property title="geometry">
     <rect>
      <x>1720</x>
      <y>350</y>
@@ -1625,14 +1625,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>9</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QLabel" name="label_30">
-   <property name="geometry">
+  <widget class="QLabel" title="label_30">
+   <property title="geometry">
     <rect>
      <x>1660</x>
      <y>350</y>
@@ -1640,17 +1640,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Starting...</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="button_sufffactunit_hreg_update_days">
-   <property name="geometry">
+  <widget class="QPushButton" title="button_sufffactunit_hreg_update_days">
+   <property title="geometry">
     <rect>
      <x>1530</x>
      <y>520</y>
@@ -1658,12 +1658,12 @@
      <height>24</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>apply sufffactunit_hregtime_days</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="yo_problem_bool_cb">
-   <property name="geometry">
+  <widget class="QCheckBox" title="yo_problem_bool_cb">
+   <property title="geometry">
     <rect>
      <x>930</x>
      <y>190</y>
@@ -1671,12 +1671,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Problem</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_acptfactheir_view">
-   <property name="geometry">
+  <widget class="QCheckBox" title="cb_acptfactheir_view">
+   <property title="geometry">
     <rect>
      <x>10</x>
      <y>90</y>
@@ -1684,12 +1684,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>AcptFactheir:</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo_acptfactheir_count">
-   <property name="geometry">
+  <widget class="QCheckBox" title="cb_yo_acptfactheir_count">
+   <property title="geometry">
     <rect>
      <x>430</x>
      <y>60</y>
@@ -1697,12 +1697,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>acptfactheirs</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="yo_active_status">
-   <property name="geometry">
+  <widget class="QTextEdit" title="yo_active_status">
+   <property title="geometry">
     <rect>
      <x>930</x>
      <y>220</y>
@@ -1710,14 +1710,14 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>9</pointsize>
     </font>
    </property>
   </widget>
-  <widget class="QLabel" name="label_36">
-   <property name="geometry">
+  <widget class="QLabel" title="label_36">
+   <property title="geometry">
     <rect>
      <x>860</x>
      <y>220</y>
@@ -1725,17 +1725,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Active Status:</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="button_view_requiredheirs">
-   <property name="geometry">
+  <widget class="QPushButton" title="button_view_requiredheirs">
+   <property title="geometry">
     <rect>
      <x>1430</x>
      <y>520</y>
@@ -1743,17 +1743,17 @@
      <height>31</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>view RequiredHeirs</string>
    </property>
   </widget>
-  <widget class="QTableWidget" name="requiredheir_table">
-   <property name="geometry">
+  <widget class="QTableWidget" title="requiredheir_table">
+   <property title="geometry">
     <rect>
      <x>580</x>
      <y>600</y>
@@ -1762,63 +1762,63 @@
     </rect>
    </property>
    <column>
-    <property name="text">
+    <property title="text">
      <string>Required Base</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>SuffFact</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>Base</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>Need</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>Open</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>Nigh</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>Divisor</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>empty</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>Limt_status</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>SuffFact_status</string>
     </property>
    </column>
    <column>
-    <property name="text">
+    <property title="text">
      <string>11</string>
     </property>
    </column>
   </widget>
-  <widget class="QPushButton" name="submit_duty_insert">
-   <property name="geometry">
+  <widget class="QPushButton" title="submit_duty_insert">
+   <property title="geometry">
     <rect>
      <x>1190</x>
      <y>800</y>
@@ -1826,12 +1826,12 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Add Duty child idea</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_39">
-   <property name="geometry">
+  <widget class="QLabel" title="label_39">
+   <property title="geometry">
     <rect>
      <x>1110</x>
      <y>400</y>
@@ -1839,17 +1839,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Required Base Agenda Status is Sufficient when Promise status is </string>
    </property>
   </widget>
-  <widget class="QComboBox" name="required_suff_active_status_combo">
-   <property name="geometry">
+  <widget class="QComboBox" title="required_suff_active_status_combo">
+   <property title="geometry">
     <rect>
      <x>1420</x>
      <y>400</y>
@@ -1857,7 +1857,7 @@
      <height>26</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <pointsize>8</pointsize>
     </font>

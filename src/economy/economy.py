@@ -2,7 +2,7 @@ from src.contract.contract import (
     ContractUnit,
     get_from_json as get_contract_from_json,
     partylink_shop,
-    PartyName,
+    PartyTitle,
 )
 from src.contract.x_func import (
     single_dir_create_if_null,
@@ -58,7 +58,7 @@ class EconomyUnit:
                 )
                 for idea_catalog in ic.values():
                     if contract_owner != idea_catalog.contract_owner:
-                        partylink_x = partylink_shop(name=idea_catalog.contract_owner)
+                        partylink_x = partylink_shop(title=idea_catalog.contract_owner)
                         groupunit_x.set_partylink(partylink_x)
         self.save_public_contract(contract_obj)
 
@@ -97,8 +97,8 @@ class EconomyUnit:
 
                 river_flow_x = RiverFlowUnit(
                     currency_contract_owner=contract_owner,
-                    src_name=led_x.contract_owner,
-                    dst_name=led_x.party_name,
+                    src_title=led_x.contract_owner,
+                    dst_title=led_x.party_title,
                     currency_start=curr_onset,
                     currency_close=curr_close,
                     flow_num=flows_count,
@@ -146,8 +146,8 @@ class EconomyUnit:
         default_root_parent_flow_num = None
         root_river_flow = RiverFlowUnit(
             currency_contract_owner=contract_owner,
-            src_name=None,
-            dst_name=contract_owner,
+            src_title=None,
+            dst_title=contract_owner,
             currency_start=default_currency_onset,
             currency_close=default_currency_cease,
             flow_num=default_root_flow_num,
@@ -180,8 +180,8 @@ class EconomyUnit:
         self._bank_populate_contracts_data()
 
     def _bank_populate_contracts_data(self):
-        for file_name in self.get_public_dir_file_names_list():
-            contract_json = x_func_open_file(self.get_public_dir(), file_name)
+        for file_title in self.get_public_dir_file_titles_list():
+            contract_json = x_func_open_file(self.get_public_dir(), file_title)
             contractunit_x = get_contract_from_json(cx_json=contract_json)
             contractunit_x.set_contract_metrics()
 
@@ -272,10 +272,10 @@ class EconomyUnit:
         return f"{self.economys_dir}/{self.tag}"
 
     def _create_main_file_if_null(self, x_dir):
-        economy_file_name = "economy.json"
+        economy_file_title = "economy.json"
         x_func_save_file(
             dest_dir=x_dir,
-            file_name=economy_file_name,
+            file_title=economy_file_title,
             file_text="",
         )
 
@@ -306,69 +306,69 @@ class EconomyUnit:
         if self._ownerunits is None:
             self._ownerunits = {}
 
-    def create_new_ownerunit(self, owner_name: str):
+    def create_new_ownerunit(self, owner_title: str):
         self.set_ownerunits_empty_if_null()
         print(f"{self.tag=}")
-        ux = ownerunit_shop(owner_name, self.get_object_root_dir(), self.tag)
+        ux = ownerunit_shop(owner_title, self.get_object_root_dir(), self.tag)
         ux.create_core_dir_and_files()
-        self._ownerunits[ux._admin._owner_name] = ux
+        self._ownerunits[ux._admin._owner_title] = ux
 
-    def get_owner_obj(self, name: str) -> OwnerUnit:
-        return None if self._ownerunits.get(name) is None else self._ownerunits[name]
+    def get_owner_obj(self, title: str) -> OwnerUnit:
+        return None if self._ownerunits.get(title) is None else self._ownerunits[title]
 
-    def create_ownerunit_from_public(self, name: str):
-        cx = self.get_public_contract(owner=name)
-        owner_x = ownerunit_shop(name=cx._owner, env_dir=self.get_object_root_dir())
+    def create_ownerunit_from_public(self, title: str):
+        cx = self.get_public_contract(owner=title)
+        owner_x = ownerunit_shop(title=cx._owner, env_dir=self.get_object_root_dir())
         self.set_ownerunits_empty_if_null()
         self.set_ownerunit_to_economy(owner_x)
 
     def set_ownerunit_to_economy(self, owner: OwnerUnit):
-        self._ownerunits[owner._admin._owner_name] = owner
-        self.save_owner_file(owner_name=owner._admin._owner_name)
+        self._ownerunits[owner._admin._owner_title] = owner
+        self.save_owner_file(owner_title=owner._admin._owner_title)
 
-    def save_owner_file(self, owner_name: str):
-        owner_x = self.get_owner_obj(name=owner_name)
+    def save_owner_file(self, owner_title: str):
+        owner_x = self.get_owner_obj(title=owner_title)
         owner_x._admin.save_isol_contract(owner_x.get_isol())
 
-    def rename_ownerunit(self, old_name: str, new_name: str):
-        owner_x = self.get_owner_obj(name=old_name)
+    def rename_ownerunit(self, old_title: str, new_title: str):
+        owner_x = self.get_owner_obj(title=old_title)
         old_owner_dir = owner_x._admin._owner_dir
-        owner_x._admin.set_owner_name(new_name=new_name)
+        owner_x._admin.set_owner_title(new_title=new_title)
         self.set_ownerunit_to_economy(owner=owner_x)
         x_func_delete_dir(old_owner_dir)
-        self.del_owner_from_economy(owner_name=old_name)
+        self.del_owner_from_economy(owner_title=old_title)
 
-    def del_owner_from_economy(self, owner_name):
-        self._ownerunits.pop(owner_name)
+    def del_owner_from_economy(self, owner_title):
+        self._ownerunits.pop(owner_title)
 
-    def del_owner_dir(self, owner_name: str):
-        x_func_delete_dir(f"{self.get_owners_dir()}/{owner_name}")
+    def del_owner_dir(self, owner_title: str):
+        x_func_delete_dir(f"{self.get_owners_dir()}/{owner_title}")
 
     # public dir management
     def get_public_dir(self):
         return f"{self.get_object_root_dir()}/contracts"
 
-    def get_ignores_dir(self, owner_name: str):
-        per_x = self.get_owner_obj(owner_name)
+    def get_ignores_dir(self, owner_title: str):
+        per_x = self.get_owner_obj(owner_title)
         return per_x._admin._contracts_ignore_dir
 
     def get_public_contract(self, owner: str) -> ContractUnit:
         return get_contract_from_json(
-            x_func_open_file(dest_dir=self.get_public_dir(), file_name=f"{owner}.json")
+            x_func_open_file(dest_dir=self.get_public_dir(), file_title=f"{owner}.json")
         )
 
     def get_contract_from_ignores_dir(
-        self, owner_name: str, _owner: str
+        self, owner_title: str, _owner: str
     ) -> ContractUnit:
         return get_contract_from_json(
             x_func_open_file(
-                dest_dir=self.get_ignores_dir(owner_name=owner_name),
-                file_name=f"{_owner}.json",
+                dest_dir=self.get_ignores_dir(owner_title=owner_title),
+                file_title=f"{_owner}.json",
             )
         )
 
-    def set_ignore_contract_file(self, owner_name: str, contract_obj: ContractUnit):
-        owner_x = self.get_owner_obj(name=owner_name)
+    def set_ignore_contract_file(self, owner_title: str, contract_obj: ContractUnit):
+        owner_x = self.get_owner_obj(title=owner_title)
         owner_x.set_ignore_contract_file(
             contractunit=contract_obj, src_contract_owner=contract_obj._owner
         )
@@ -386,7 +386,7 @@ class EconomyUnit:
         contract_x.set_economy_tag(economy_tag=self.tag)
         x_func_save_file(
             dest_dir=self.get_public_dir(),
-            file_name=f"{contract_x._owner}.json",
+            file_title=f"{contract_x._owner}.json",
             file_text=contract_x.get_json(),
         )
 
@@ -394,7 +394,7 @@ class EconomyUnit:
         for owner_x in self._ownerunits.values():
             owner_x.refresh_depot_contracts()
 
-    def get_public_dir_file_names_list(self):
+    def get_public_dir_file_titles_list(self):
         return list(x_func_dir_files(dir_path=self.get_public_dir()).keys())
 
     # contracts_dir to owner_contracts_dir management
@@ -420,14 +420,14 @@ class EconomyUnit:
 
     def set_owner_depotlink(
         self,
-        owner_name: str,
+        owner_title: str,
         contract_owner: str,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
         ignore_contract: ContractUnit = None,
     ):
-        owner_x = self.get_owner_obj(name=owner_name)
+        owner_x = self.get_owner_obj(title=owner_title)
         contract_x = self.get_public_contract(owner=contract_owner)
         self._owner_set_depot_contract(
             ownerunit=owner_x,
@@ -440,13 +440,13 @@ class EconomyUnit:
 
     def create_depotlink_to_generated_contract(
         self,
-        owner_name: str,
+        owner_title: str,
         contract_owner: str,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
-        owner_x = self.get_owner_obj(name=owner_name)
+        owner_x = self.get_owner_obj(title=owner_title)
         contract_x = ContractUnit(_owner=contract_owner)
         self._owner_set_depot_contract(
             ownerunit=owner_x,
@@ -458,14 +458,14 @@ class EconomyUnit:
 
     def update_depotlink(
         self,
-        owner_name: str,
-        partyname: PartyName,
+        owner_title: str,
+        partytitle: PartyTitle,
         depotlink_type: str,
         creditor_weight: str,
         debtor_weight: str,
     ):
-        owner_x = self.get_owner_obj(name=owner_name)
-        contract_x = self.get_public_contract(_owner=partyname)
+        owner_x = self.get_owner_obj(title=owner_title)
+        contract_x = self.get_public_contract(_owner=partytitle)
         self._owner_set_depot_contract(
             ownerunit=owner_x,
             contractunit=contract_x,
@@ -474,13 +474,13 @@ class EconomyUnit:
             debtor_weight=debtor_weight,
         )
 
-    def del_depotlink(self, owner_name: str, contractunit_owner: str):
-        owner_x = self.get_owner_obj(name=owner_name)
+    def del_depotlink(self, owner_title: str, contractunit_owner: str):
+        owner_x = self.get_owner_obj(title=owner_title)
         owner_x.del_depot_contract(contract_owner=contractunit_owner)
 
     # Owner output_contract
-    def get_output_contract(self, owner_name: str) -> ContractUnit:
-        owner_x = self.get_owner_obj(name=owner_name)
+    def get_output_contract(self, owner_title: str) -> ContractUnit:
+        owner_x = self.get_owner_obj(title=owner_title)
         return owner_x._admin.get_remelded_output_contract()
 
 

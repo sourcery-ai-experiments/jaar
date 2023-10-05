@@ -66,12 +66,12 @@ def test_worldunit_shop_SetsWorldsDirs():
 #     # x_func_delete_dir(sx.get_object_root_dir())
 #     print(f"delete {sx.get_object_root_dir()=}")
 #     economy_dir = f"src/economy/examples/economys/{economy_mark}"
-#     economy_file_name = "economy.json"
-#     economy_file_path = f"{economy_dir}/{economy_file_name}"
+#     economy_file_title = "economy.json"
+#     economy_file_path = f"{economy_dir}/{economy_file_title}"
 #     contracts_dir = f"{economy_dir}/contracts"
 #     owners_dir = f"{economy_dir}/owners"
-#     bank_file_name = "bank.db"
-#     bank_file_path = f"{economy_dir}/{bank_file_name}"
+#     bank_file_title = "bank.db"
+#     bank_file_path = f"{economy_dir}/{bank_file_title}"
 
 #     assert os_path.exists(economy_dir) is False
 #     assert os_path.isdir(economy_dir) is False
@@ -100,15 +100,15 @@ def test_worldunit_shop_SetsWorldsDirs():
 #     # GIVEN create economy
 #     old_economy_mark = get_temp_env_mark()
 #     old_economy_dir = f"src/economy/examples/economys/{old_economy_mark}"
-#     old_economy_file_name = "economy.json"
-#     old_economy_file_path = f"{old_economy_dir}/{old_economy_file_name}"
+#     old_economy_file_title = "economy.json"
+#     old_economy_file_path = f"{old_economy_dir}/{old_economy_file_title}"
 #     old_contracts_dir = f"{old_economy_dir}/contracts"
 #     old_owners_dir = f"{old_economy_dir}/owners"
 
 #     new_economy_mark = "ex_env1"
 #     new_economy_dir = f"src/economy/examples/economys/{new_economy_mark}"
-#     new_economy_file_name = "economy.json"
-#     new_economy_file_path = f"{new_economy_dir}/{new_economy_file_name}"
+#     new_economy_file_title = "economy.json"
+#     new_economy_file_path = f"{new_economy_dir}/{new_economy_file_title}"
 #     new_contracts_dir = f"{new_economy_dir}/contracts"
 #     new_owners_dir = f"{new_economy_dir}/owners"
 #     x_func_delete_dir(dir=new_economy_dir)
@@ -138,7 +138,7 @@ def test_worldunit_shop_SetsWorldsDirs():
 #     assert sx.mark != new_economy_mark
 
 #     # WHEN
-#     rename_example_economy(economy_obj=sx, new_name=new_economy_mark)
+#     rename_example_economy(economy_obj=sx, new_title=new_economy_mark)
 
 #     # THEN check contracts src directory created
 #     assert os_path.exists(old_economy_dir) is False
@@ -169,8 +169,8 @@ def test_worldunit_shop_SetsWorldsDirs():
 #     # GIVEN create economy
 #     old_economy_mark = get_temp_env_mark()
 #     old_economy_dir = f"src/economy/examples/economys/{old_economy_mark}"
-#     old_economy_file_name = "economy.json"
-#     old_economy_file_path = f"{old_economy_dir}/{old_economy_file_name}"
+#     old_economy_file_title = "economy.json"
+#     old_economy_file_path = f"{old_economy_dir}/{old_economy_file_title}"
 #     old_contracts_dir = f"{old_economy_dir}/contracts"
 #     old_owners_dir = f"{old_economy_dir}/owners"
 
@@ -187,8 +187,8 @@ def test_worldunit_shop_SetsWorldsDirs():
 
 #     new_economy_mark = "ex_env1"
 #     new_economy_dir = f"src/economy/examples/economys/{new_economy_mark}"
-#     new_economy_file_name = "economy.json"
-#     new_economy_file_path = f"{new_economy_dir}/{new_economy_file_name}"
+#     new_economy_file_title = "economy.json"
+#     new_economy_file_path = f"{new_economy_dir}/{new_economy_file_title}"
 #     new_contracts_dir = f"{new_economy_dir}/contracts"
 #     new_owners_dir = f"{new_economy_dir}/owners"
 

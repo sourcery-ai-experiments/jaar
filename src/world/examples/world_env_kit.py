@@ -64,13 +64,13 @@ def create_example_worlds_list():
 #     x_func_delete_dir(world_obj.get_object_root_dir())
 
 
-# def rename_example_world(world_obj: EconomyUnit, new_name):
+# def rename_example_world(world_obj: EconomyUnit, new_title):
 #     # base_dir = world_obj.get_object_root_dir()
 #     base_dir = "src/world/examples/worlds"
 #     src_dir = f"{base_dir}/{world_obj.tag}"
-#     dst_dir = f"{base_dir}/{new_name}"
+#     dst_dir = f"{base_dir}/{new_title}"
 #     os_rename(src=src_dir, dst=dst_dir)
-#     world_obj.set_worldunit_tag(tag=new_name)
+#     world_obj.set_worldunit_tag(tag=new_title)
 
 
 # class InvalidEconomyCopyException(Exception):

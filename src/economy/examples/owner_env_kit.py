@@ -30,7 +30,7 @@ def create_contract_file(contract_owner_dir: str, contract_owner: str):
     #     f.write(contract_x.get_json())
     x_func_save_file(
         dest_dir=contract_owner_dir,
-        file_name=f"{contract_x._owner}.json",
+        file_title=f"{contract_x._owner}.json",
         file_text=contract_x.get_json(),
     )
     # print(f"print all {contract_dir=} {os_listdir(path=contract_dir)}")

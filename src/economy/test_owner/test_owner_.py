@@ -19,13 +19,13 @@ def test_ownerunit_exists(owner_dir_setup_cleanup):
 
     # WHEN
     ux = ownerunit_shop(
-        name=owner_text,
+        title=owner_text,
         env_dir=get_temp_owner_dir(),
         economy_tag=get_temp_economy_tag(),
     )
 
     # GIVEN
-    assert ux._admin._owner_name != None
+    assert ux._admin._owner_title != None
     assert ux._admin._economy_tag != None
     assert ux._admin._economy_tag == get_temp_economy_tag()
     assert ux._isol is None
@@ -38,10 +38,10 @@ def test_ownerunit_auto_output_to_public_SavesContractToPublicDirWhenTrue(
     env_dir = get_temp_owner_dir()
     economy_tag = get_temp_economy_tag()
     tim_text = "Tim"
-    public_file_name = f"{tim_text}.json"
-    public_file_path = f"{get_temp_owner_dir()}/contracts/{public_file_name}"
+    public_file_title = f"{tim_text}.json"
+    public_file_path = f"{get_temp_owner_dir()}/contracts/{public_file_title}"
     print(f"{public_file_path=}")
-    # public_file_path = f"src/economy/examples/ex_env/contracts/{public_file_name}"
+    # public_file_path = f"src/economy/examples/ex_env/contracts/{public_file_title}"
     ux = ownerunit_shop(tim_text, env_dir, economy_tag, _auto_output_to_public=True)
     ux.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
@@ -62,10 +62,10 @@ def test_ownerunit_auto_output_to_public_DoesNotSaveContractToPublicDirWhenFalse
     env_dir = get_temp_owner_dir()
     economy_tag = get_temp_economy_tag()
     tim_text = "Tim"
-    public_file_name = f"{tim_text}.json"
-    public_file_path = f"{get_temp_owner_dir()}/contracts/{public_file_name}"
+    public_file_title = f"{tim_text}.json"
+    public_file_path = f"{get_temp_owner_dir()}/contracts/{public_file_title}"
     print(f"{public_file_path=}")
-    # public_file_path = f"src/economy/examples/ex_env/contracts/{public_file_name}"
+    # public_file_path = f"src/economy/examples/ex_env/contracts/{public_file_title}"
     ux = ownerunit_shop(tim_text, env_dir, economy_tag, _auto_output_to_public=False)
     ux.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
@@ -104,7 +104,7 @@ def test_ownerunit_get_isol_getsMemoryContractIfExists(
     tim_text = "Tim"
     tim_ux = ownerunit_shop(tim_text, get_temp_owner_dir(), get_temp_economy_tag())
     tim_ux.create_core_dir_and_files()
-    isol_file_path = f"{tim_ux._admin._owner_dir}/{tim_ux._admin._isol_file_name}"
+    isol_file_path = f"{tim_ux._admin._owner_dir}/{tim_ux._admin._isol_file_title}"
     cx_isol1 = tim_ux.get_isol()
     assert os_path.exists(isol_file_path)
     assert tim_ux._isol != None
@@ -134,7 +134,7 @@ def test_ownerunit_set_isol_savesIsolContractSet_isol_None(
     tim_text = "Tim"
     tim_ux = ownerunit_shop(tim_text, get_temp_owner_dir(), get_temp_economy_tag())
     tim_ux.create_core_dir_and_files()
-    isol_file_path = f"{tim_ux._admin._owner_dir}/{tim_ux._admin._isol_file_name}"
+    isol_file_path = f"{tim_ux._admin._owner_dir}/{tim_ux._admin._isol_file_title}"
     cx_isol1 = tim_ux.get_isol()
     assert os_path.exists(isol_file_path)
     assert tim_ux._isol != None
@@ -158,7 +158,7 @@ def test_ownerunit_set_isol_savesGivenContractSet_isol_None(
     tim_text = "Tim"
     ux = ownerunit_shop(tim_text, get_temp_owner_dir(), get_temp_economy_tag())
     ux.create_core_dir_and_files()
-    isol_file_path = f"{ux._admin._owner_dir}/{ux._admin._isol_file_name}"
+    isol_file_path = f"{ux._admin._owner_dir}/{ux._admin._isol_file_title}"
     cx_isol1 = ux.get_isol()
     assert os_path.exists(isol_file_path)
     assert ux._isol != None

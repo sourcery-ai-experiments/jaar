@@ -25,7 +25,7 @@ def test_contractunit_get_assignment_ReturnsContract():
     cx_assignment = jes1_cx.get_assignment(
         contract_x=contract_x,
         assignor_partys=assignor_known_partys_x,
-        assignor_name=bob_text,
+        assignor_title=bob_text,
     )
 
     # THEN
@@ -37,19 +37,19 @@ def test_contractunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInPartys():
     # GIVEN
     noa_text = "Noa"
     noa_cx = example_contracts_get_contract_with_4_levels()
-    noa_cx.set_partyunit(partyunit_shop(name=noa_text))
+    noa_cx.set_partyunit(partyunit_shop(title=noa_text))
     zia_text = "Zia"
     yao_text = "Yao"
-    noa_cx.set_partyunit(partyunit_shop(name=zia_text))
-    noa_cx.set_partyunit(partyunit_shop(name=yao_text))
+    noa_cx.set_partyunit(partyunit_shop(title=zia_text))
+    noa_cx.set_partyunit(partyunit_shop(title=yao_text))
 
     # WHEN
     bob_text = "bob"
     cx = ContractUnit(_owner=noa_text)
     tx = ContractUnit()
     tx.set_partys_empty_if_null()
-    tx.set_partyunit(partyunit=partyunit_shop(name=zia_text))
-    tx.set_partyunit(partyunit=partyunit_shop(name=noa_text))
+    tx.set_partyunit(partyunit=partyunit_shop(title=zia_text))
+    tx.set_partyunit(partyunit=partyunit_shop(title=noa_text))
 
     cx_assignment = noa_cx.get_assignment(cx, tx._partys, bob_text)
 
@@ -62,22 +62,22 @@ def test_contractunit_get_assignment_ReturnsCorrectPartys():
     # GIVEN
     jes_text = "Jessi"
     jes_cx = ContractUnit(_owner=jes_text)
-    jes_cx.set_partyunit(partyunit_shop(name=jes_text))
+    jes_cx.set_partyunit(partyunit_shop(title=jes_text))
     bob_text = "Bob"
     zia_text = "Zia"
     noa_text = "Noa"
     yao_text = "Yao"
-    jes_cx.set_partyunit(partyunit_shop(name=bob_text))
-    jes_cx.set_partyunit(partyunit_shop(name=zia_text))
-    jes_cx.set_partyunit(partyunit_shop(name=noa_text))
-    jes_cx.set_partyunit(partyunit_shop(name=yao_text))
+    jes_cx.set_partyunit(partyunit_shop(title=bob_text))
+    jes_cx.set_partyunit(partyunit_shop(title=zia_text))
+    jes_cx.set_partyunit(partyunit_shop(title=noa_text))
+    jes_cx.set_partyunit(partyunit_shop(title=yao_text))
 
     # WHEN
     tx = ContractUnit()
     tx.set_partys_empty_if_null()
-    tx.set_partyunit(partyunit=partyunit_shop(name=bob_text))
-    tx.set_partyunit(partyunit=partyunit_shop(name=zia_text))
-    tx.set_partyunit(partyunit=partyunit_shop(name=noa_text))
+    tx.set_partyunit(partyunit=partyunit_shop(title=bob_text))
+    tx.set_partyunit(partyunit=partyunit_shop(title=zia_text))
+    tx.set_partyunit(partyunit=partyunit_shop(title=noa_text))
 
     empty_cx = ContractUnit(_owner=jes_text)
     cx_assignment = jes_cx.get_assignment(empty_cx, tx._partys, bob_text)
@@ -94,13 +94,13 @@ def test_contractunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     # GIVEN
     jes_text = "Jessi"
     jes_cx = ContractUnit(_owner=jes_text)
-    jes_cx.set_partyunit(partyunit_shop(name=jes_text))
+    jes_cx.set_partyunit(partyunit_shop(title=jes_text))
     bob_text = "Bob"
     noa_text = "Noa"
     eli_text = "Eli"
-    jes_cx.set_partyunit(partyunit_shop(name=bob_text))
-    jes_cx.set_partyunit(partyunit_shop(name=noa_text))
-    jes_cx.set_partyunit(partyunit_shop(name=eli_text))
+    jes_cx.set_partyunit(partyunit_shop(title=bob_text))
+    jes_cx.set_partyunit(partyunit_shop(title=noa_text))
+    jes_cx.set_partyunit(partyunit_shop(title=eli_text))
     swim_text = "swimmers"
     jes_cx.set_groupunit(groupunit_shop(brand=swim_text))
     swim_group = jes_cx._groups.get(swim_text)
@@ -123,9 +123,9 @@ def test_contractunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     tx.set_partys_empty_if_null()
     zia_text = "Zia"
     yao_text = "Yao"
-    tx.set_partyunit(partyunit=partyunit_shop(name=bob_text))
-    tx.set_partyunit(partyunit=partyunit_shop(name=zia_text))
-    tx.set_partyunit(partyunit=partyunit_shop(name=noa_text))
+    tx.set_partyunit(partyunit=partyunit_shop(title=bob_text))
+    tx.set_partyunit(partyunit=partyunit_shop(title=zia_text))
+    tx.set_partyunit(partyunit=partyunit_shop(title=noa_text))
 
     empty_cx = ContractUnit(_owner=jes_text)
     cx_assignment = jes_cx.get_assignment(empty_cx, tx._partys, bob_text)
@@ -469,13 +469,13 @@ def test_contract_get_assignment_getsCorrectIdeas_scenario1():
     dirty_text = "dirty"
     dirty_road = f"{status_road},{dirty_text}"
     bob_text = "Bob"
-    cx.add_partyunit(name=bob_text)
+    cx.add_partyunit(title=bob_text)
 
     # WHEN
     assignment_x = cx.get_assignment(
         contract_x=ContractUnit(_owner=bob_text),
         assignor_partys={bob_text: -1},
-        assignor_name=bob_text,
+        assignor_title=bob_text,
     )
 
     # THEN
@@ -507,7 +507,7 @@ def test_contract_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     joachim_assignment = america_cx.get_assignment(
         contract_x=joachim_contract,
         assignor_partys={joachim_text: -1, america_cx._owner: -1},
-        assignor_name=joachim_text,
+        assignor_title=joachim_text,
     )
 
     # THEN

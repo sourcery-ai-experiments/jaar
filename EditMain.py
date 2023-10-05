@@ -33,7 +33,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.open_groupedit_button.clicked.connect(self.open_edit_party)
 
         # self.acptfacts_table.itemClicked.connect(self.acptfact_base_combo_set)
-        self.acptfacts_table.setObjectName("Contract AcptFacts")
+        self.acptfacts_table.setObjectTitle("Contract AcptFacts")
         self.acptfacts_table.setColumnWidth(0, 300)
         self.acptfacts_table.setColumnWidth(1, 300)
         self.acptfacts_table.setColumnWidth(2, 30)
@@ -198,11 +198,11 @@ class EditMainView(qtw.QWidget, Ui_Form):
 
     def refresh_party_list(self):
         # party_list is qtw.QTableWidget()
-        self.party_list.setObjectName("Party Calculated Weight")
+        self.party_list.setObjectTitle("Party Calculated Weight")
         self.party_list.setColumnCount(2)
         self.party_list.setColumnWidth(0, 170)
         self.party_list.setColumnWidth(1, 70)
-        self.party_list.setHorizontalHeaderLabels(["Name", "LW Force"])
+        self.party_list.setHorizontalHeaderLabels(["Title", "LW Force"])
         partys_list = list(self.contract_x._partys.values())
         partys_list.sort(key=lambda x: x._contract_credit, reverse=True)
 
@@ -210,7 +210,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
             groups_count = 0
             for group in self.contract_x._groups.values():
                 for partylink in group._partys.values():
-                    if partylink.name == party.name:
+                    if partylink.title == party.title:
                         groups_count += 1
 
             qt_contract_credit = qtw.QTableWidgetItem(
@@ -218,7 +218,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
             )
             qt_group = qtw.QTableWidgetItem(f"{groups_count}")
             self.party_list.setRowCount(row)
-            self.party_list.setItem(row - 1, 0, qtw.QTableWidgetItem(party.name))
+            self.party_list.setItem(row - 1, 0, qtw.QTableWidgetItem(party.title))
             self.party_list.setItem(row - 1, 1, qt_contract_credit)
 
     def open_editideaunit(self):

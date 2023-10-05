@@ -30,11 +30,11 @@ class EditParty2bd(qtw.QWidget, Ui_Form):
         self.gp_update_button.clicked.connect(self.gp_update)
 
         # self.EditParty2bd.contract_x = self.contract_x
-        # self.EditParty2bd.selected_party_name = self.selected_party_name
+        # self.EditParty2bd.selected_party_title = self.selected_party_title
 
     def gp_insert(self):
-        gp_name = self.gp_new_edit.text()
-        # .gp_insert(gp_name=gp_name)
+        gp_title = self.gp_new_edit.text()
+        # .gp_insert(gp_title=gp_title)
         # self.gp_new_edit.setText("")
         # self.refreshAll()
 
@@ -50,9 +50,9 @@ class EditParty2bd(qtw.QWidget, Ui_Form):
         currentRowInt = self.gp_party_no.currentRow()
         # if self.gp_party_no.rowCount() > 0:
         #     currentRowInt = max(currentRowInt, 0)
-        #     gp_name = self.gp_update_name_edit.text()
+        #     gp_title = self.gp_update_title_edit.text()
         #     gp_id = int(self.gp_party_no.item(currentRowInt, 2).text())
-        #     .gp_update(gp_id=gp_id, gp_name=gp_name)
+        #     .gp_update(gp_id=gp_id, gp_title=gp_title)
         # self.refreshAll()
 
     def party2group_update(self):
@@ -108,6 +108,6 @@ class EditParty2bd(qtw.QWidget, Ui_Form):
         )
 
     def gp_party_no_clicked(self):
-        name = self.gp_party_no.item(self.gp_party_no.currentRow(), 0).text()
-        self.gp_update_name_edit.setText(name)
-        self.gp_delete_button.setText(f'Delete Party Group " {name} "')
+        title = self.gp_party_no.item(self.gp_party_no.currentRow(), 0).text()
+        self.gp_update_title_edit.setText(title)
+        self.gp_delete_button.setText(f'Delete Party Group " {title} "')

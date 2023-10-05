@@ -145,13 +145,13 @@ def test_get_time_():
 # def test_time_hreg_set_creates_idea():
 #     cx = examples.get_contract_base_time_example()
 
-#     hreg_name = "hreg"
+#     hreg_title = "hreg"
 #     with pytest.raises(KeyError) as excinfo:
-#         cx._kids[hreg_name]
-#     assert str(excinfo.value) == f"'{hreg_name}'"
-#     print(f"added {hreg_name}")
+#         cx._kids[hreg_title]
+#     assert str(excinfo.value) == f"'{hreg_title}'"
+#     print(f"added {hreg_title}")
 #     cx.set_time_hreg_ideas(c400_count=6)
-#     hreg_idea = cx._kids[hreg_name]
+#     hreg_idea = cx._kids[hreg_title]
 #     assert hreg_idea != None
 #     assert hreg_idea._begin == 0
 #     assert hreg_idea._close == 1262278080
@@ -160,8 +160,8 @@ def test_get_time_():
 # def test_time_hreg_set_CorrectlyCreatesWeekdayIdea():
 #     cx = examples.get_contract_base_time_example()
 #     cx.set_time_hreg_ideas(c400_count=6)
-#     weekday_name = "weekday"
-#     weekday = cx.get_idea_kid(road=f"{root_label()},hreg,{weekday_name}")
+#     weekday_title = "weekday"
+#     weekday = cx.get_idea_kid(road=f"{root_label()},hreg,{weekday_title}")
 #     assert weekday != None
 #     assert weekday._begin == 0
 #     assert weekday._close == 7
@@ -179,8 +179,8 @@ def test_get_time_():
 #     c400_count = 6
 #     cx.set_time_hreg_ideas(c400_count=c400_count)
 
-#     timetech_name = "400 year cycle"
-#     timetech_road = f"{root_label()},hreg,{timetech_name}"
+#     timetech_title = "400 year cycle"
+#     timetech_road = f"{root_label()},hreg,{timetech_title}"
 #     print(f"{timetech_road=}")
 #     timetech = cx.get_idea_kid(road=timetech_road)
 #     assert timetech != None
@@ -193,8 +193,8 @@ def test_get_time_():
 #     c400_count = 6
 #     h_cx.set_time_hreg_ideas(c400_count=c400_count)
 
-#     hy400_name = "cycle400year_years"
-#     hy400_road = f"{root_label()},hreg,{hy400_name}"
+#     hy400_title = "cycle400year_years"
+#     hy400_road = f"{root_label()},hreg,{hy400_title}"
 #     print(f"{hy400_road=}")
 #     hy400_idea = h_cx.get_idea_kid(road=hy400_road)
 #     assert hy400_idea != None
@@ -202,64 +202,64 @@ def test_get_time_():
 #     assert hy400_idea._close is None
 #     assert hy400_idea.divisor == 400
 
-#     hy400c1_name = "100yr regular"
-#     hy400c1_road = f"{hy400_road},{hy400c1_name}"
+#     hy400c1_title = "100yr regular"
+#     hy400c1_road = f"{hy400_road},{hy400c1_title}"
 #     print(f"{hy400c1_road=}")
-#     hy400c1_idea = hy400_idea._kids[hy400c1_name]
+#     hy400c1_idea = hy400_idea._kids[hy400c1_title]
 #     assert hy400c1_idea != None
 #     assert hy400c1_idea._begin == 0
 #     assert hy400c1_idea._close == 100
 #     assert hy400c1_idea.divisor is None
 
-#     hy400c14y_name = "regular 4yr"
-#     hy400c14y_road = f"{hy400c1_road},{hy400c14y_name}"
+#     hy400c14y_title = "regular 4yr"
+#     hy400c14y_road = f"{hy400c1_road},{hy400c14y_title}"
 #     print(f"{hy400c14y_road=}")
-#     hy400c14y_idea = hy400c1_idea._kids[hy400c14y_name]
+#     hy400c14y_idea = hy400c1_idea._kids[hy400c14y_title]
 #     assert hy400c14y_idea != None
 #     assert hy400c14y_idea._begin is None
 #     assert hy400c14y_idea._close is None
 #     assert hy400c14y_idea.divisor == 4
 
-#     hy400c3_name = "300yr range"
-#     hy400c3_road = f"{hy400_road},{hy400c3_name}"
+#     hy400c3_title = "300yr range"
+#     hy400c3_road = f"{hy400_road},{hy400c3_title}"
 #     print(f"{hy400c3_road=}")
-#     hy400c3_idea = hy400_idea._kids[hy400c3_name]
+#     hy400c3_idea = hy400_idea._kids[hy400c3_title]
 #     assert hy400c3_idea != None
 #     assert hy400c3_idea._begin == 100
 #     assert hy400c3_idea._close == 400
 #     assert hy400c3_idea.divisor is None
 
-#     hy400c3c1_name = "100yr no century leap"
-#     hy400c3c1_road = f"{hy400c3_road},{hy400c3c1_name}"
+#     hy400c3c1_title = "100yr no century leap"
+#     hy400c3c1_road = f"{hy400c3_road},{hy400c3c1_title}"
 #     print(f"{hy400c3c1_road=}")
-#     hy400c3c1_idea = hy400c3_idea._kids[hy400c3c1_name]
+#     hy400c3c1_idea = hy400c3_idea._kids[hy400c3c1_title]
 #     assert hy400c3c1_idea != None
 #     assert hy400c3c1_idea._begin is None
 #     assert hy400c3c1_idea._close is None
 #     assert hy400c3c1_idea.divisor == 100
 
-#     hy400c3c14y_name = "4yr no leap"
-#     hy400c3c14y_road = f"{hy400c3c1_road},{hy400c3c14y_name}"
+#     hy400c3c14y_title = "4yr no leap"
+#     hy400c3c14y_road = f"{hy400c3c1_road},{hy400c3c14y_title}"
 #     print(f"{hy400c3c14y_road=}")
-#     hy400c3c14y_idea = hy400c3c1_idea._kids[hy400c3c14y_name]
+#     hy400c3c14y_idea = hy400c3c1_idea._kids[hy400c3c14y_title]
 #     assert hy400c3c14y_idea != None
 #     assert hy400c3c14y_idea._begin == 0
 #     assert hy400c3c14y_idea._close == 4
 #     assert hy400c3c14y_idea.divisor is None
 
-#     hy400c3c196_name = "96yr range"
-#     hy400c3c196_road = f"{hy400c3c1_road},{hy400c3c196_name}"
+#     hy400c3c196_title = "96yr range"
+#     hy400c3c196_road = f"{hy400c3c1_road},{hy400c3c196_title}"
 #     print(f"{hy400c3c196_road=}")
-#     hy400c3c196_idea = hy400c3c1_idea._kids[hy400c3c196_name]
+#     hy400c3c196_idea = hy400c3c1_idea._kids[hy400c3c196_title]
 #     assert hy400c3c196_idea != None
 #     assert hy400c3c196_idea._begin == 4
 #     assert hy400c3c196_idea._close == 100
 #     assert hy400c3c196_idea.divisor is None
 
-#     hy400c3c196ry_name = "regular 4yr"
-#     hy400c3c196ry_road = f"{hy400c3c196_road},{hy400c3c196ry_name}"
+#     hy400c3c196ry_title = "regular 4yr"
+#     hy400c3c196ry_road = f"{hy400c3c196_road},{hy400c3c196ry_title}"
 #     print(f"{hy400c3c196ry_road=}")
-#     hy400c3c196ry_idea = hy400c3c196_idea._kids[hy400c3c196ry_name]
+#     hy400c3c196ry_idea = hy400c3c196_idea._kids[hy400c3c196ry_title]
 #     assert hy400c3c196ry_idea != None
 #     assert hy400c3c196ry_idea._begin is None
 #     assert hy400c3c196ry_idea._close is None
@@ -271,8 +271,8 @@ def test_get_time_():
 #     c400_count = 6
 #     h_cx.set_time_hreg_ideas(c400_count=c400_count)
 
-#     hy400_name = "cycle400year_days"
-#     hy400_road = f"{root_label()},hreg,{hy400_name}"
+#     hy400_title = "cycle400year_days"
+#     hy400_road = f"{root_label()},hreg,{hy400_title}"
 #     print(f"{hy400_road=}")
 #     hy400_idea = h_cx.get_idea_kid(road=hy400_road)
 #     assert hy400_idea != None

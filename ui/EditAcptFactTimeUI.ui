@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Form</class>
- <widget class="QWidget" name="Form">
-  <property name="geometry">
+ <widget class="QWidget" title="Form">
+  <property title="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -10,11 +10,11 @@
     <height>253</height>
    </rect>
   </property>
-  <property name="windowTag">
+  <property title="windowTag">
    <string>Form</string>
   </property>
-  <widget class="QComboBox" name="curr_year">
-   <property name="geometry">
+  <widget class="QComboBox" title="curr_year">
+   <property title="geometry">
     <rect>
      <x>30</x>
      <y>150</y>
@@ -23,8 +23,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
+  <widget class="QLabel" title="label">
+   <property title="geometry">
     <rect>
      <x>30</x>
      <y>110</y>
@@ -32,12 +32,12 @@
      <height>16</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Reset Current Date for entire ideaunit (American standard)</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
+  <widget class="QLabel" title="label_2">
+   <property title="geometry">
     <rect>
      <x>30</x>
      <y>130</y>
@@ -45,12 +45,12 @@
      <height>16</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Year</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
+  <widget class="QLabel" title="label_3">
+   <property title="geometry">
     <rect>
      <x>120</x>
      <y>130</y>
@@ -58,12 +58,12 @@
      <height>16</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Month</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
+  <widget class="QLabel" title="label_4">
+   <property title="geometry">
     <rect>
      <x>260</x>
      <y>130</y>
@@ -71,12 +71,12 @@
      <height>16</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Day</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_5">
-   <property name="geometry">
+  <widget class="QLabel" title="label_5">
+   <property title="geometry">
     <rect>
      <x>340</x>
      <y>130</y>
@@ -84,12 +84,12 @@
      <height>16</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Hour</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_6">
-   <property name="geometry">
+  <widget class="QLabel" title="label_6">
+   <property title="geometry">
     <rect>
      <x>420</x>
      <y>130</y>
@@ -97,12 +97,12 @@
      <height>16</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Min</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="curr_month">
-   <property name="geometry">
+  <widget class="QComboBox" title="curr_month">
+   <property title="geometry">
     <rect>
      <x>110</x>
      <y>150</y>
@@ -111,8 +111,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QComboBox" name="curr_monthday">
-   <property name="geometry">
+  <widget class="QComboBox" title="curr_monthday">
+   <property title="geometry">
     <rect>
      <x>260</x>
      <y>150</y>
@@ -121,8 +121,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QComboBox" name="curr_hour">
-   <property name="geometry">
+  <widget class="QComboBox" title="curr_hour">
+   <property title="geometry">
     <rect>
      <x>340</x>
      <y>150</y>
@@ -131,8 +131,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QComboBox" name="curr_min">
-   <property name="geometry">
+  <widget class="QComboBox" title="curr_min">
+   <property title="geometry">
     <rect>
      <x>420</x>
      <y>150</y>
@@ -141,8 +141,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QFrame" name="frame_2">
-   <property name="geometry">
+  <widget class="QFrame" title="frame_2">
+   <property title="geometry">
     <rect>
      <x>20</x>
      <y>100</y>
@@ -150,14 +150,14 @@
      <height>141</height>
     </rect>
    </property>
-   <property name="frameShape">
+   <property title="frameShape">
     <enum>QFrame::StyledPanel</enum>
    </property>
-   <property name="frameShadow">
+   <property title="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QPushButton" name="american_update">
-    <property name="geometry">
+   <widget class="QPushButton" title="american_update">
+    <property title="geometry">
      <rect>
       <x>190</x>
       <y>100</y>
@@ -165,13 +165,13 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="text">
+    <property title="text">
      <string>OK</string>
     </property>
    </widget>
   </widget>
-  <widget class="QLabel" name="label_11">
-   <property name="geometry">
+  <widget class="QLabel" title="label_11">
+   <property title="geometry">
     <rect>
      <x>260</x>
      <y>40</y>
@@ -179,12 +179,12 @@
      <height>16</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Day</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="prev_monthday">
-   <property name="geometry">
+  <widget class="QComboBox" title="prev_monthday">
+   <property title="geometry">
     <rect>
      <x>260</x>
      <y>60</y>
@@ -193,8 +193,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QComboBox" name="prev_hour">
-   <property name="geometry">
+  <widget class="QComboBox" title="prev_hour">
+   <property title="geometry">
     <rect>
      <x>340</x>
      <y>60</y>
@@ -203,8 +203,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLabel" name="label_14">
-   <property name="geometry">
+  <widget class="QLabel" title="label_14">
+   <property title="geometry">
     <rect>
      <x>30</x>
      <y>20</y>
@@ -212,12 +212,12 @@
      <height>16</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Reset Previous Date for entire ideaunit (American standard)</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="prev_year">
-   <property name="geometry">
+  <widget class="QComboBox" title="prev_year">
+   <property title="geometry">
     <rect>
      <x>30</x>
      <y>60</y>
@@ -226,8 +226,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLabel" name="label_15">
-   <property name="geometry">
+  <widget class="QLabel" title="label_15">
+   <property title="geometry">
     <rect>
      <x>30</x>
      <y>40</y>
@@ -235,12 +235,12 @@
      <height>16</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Year</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_16">
-   <property name="geometry">
+  <widget class="QLabel" title="label_16">
+   <property title="geometry">
     <rect>
      <x>340</x>
      <y>40</y>
@@ -248,12 +248,12 @@
      <height>16</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Hour</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_17">
-   <property name="geometry">
+  <widget class="QLabel" title="label_17">
+   <property title="geometry">
     <rect>
      <x>120</x>
      <y>40</y>
@@ -261,12 +261,12 @@
      <height>16</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Month</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="prev_month">
-   <property name="geometry">
+  <widget class="QComboBox" title="prev_month">
+   <property title="geometry">
     <rect>
      <x>110</x>
      <y>60</y>
@@ -275,8 +275,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QComboBox" name="prev_min">
-   <property name="geometry">
+  <widget class="QComboBox" title="prev_min">
+   <property title="geometry">
     <rect>
      <x>420</x>
      <y>60</y>
@@ -285,8 +285,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLabel" name="label_18">
-   <property name="geometry">
+  <widget class="QLabel" title="label_18">
+   <property title="geometry">
     <rect>
      <x>420</x>
      <y>40</y>
@@ -294,12 +294,12 @@
      <height>16</height>
     </rect>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Min</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="refresh_root_values">
-   <property name="geometry">
+  <widget class="QPushButton" title="refresh_root_values">
+   <property title="geometry">
     <rect>
      <x>420</x>
      <y>10</y>
@@ -307,14 +307,14 @@
      <height>28</height>
     </rect>
    </property>
-   <property name="font">
+   <property title="font">
     <font>
      <weight>50</weight>
      <italic>true</italic>
      <bold>false</bold>
     </font>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Refresh</string>
    </property>
   </widget>

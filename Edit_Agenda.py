@@ -20,7 +20,7 @@ class Edit_Agenda(qw, Ui_Form):
         self.close_button.clicked.connect(self.close)
         self.refresh_button.clicked.connect(self.refresh_all)
         self.agenda_table.itemClicked.connect(self.select_agenda_item)
-        self.agenda_table.setObjectName("Current Agenda")
+        self.agenda_table.setObjectTitle("Current Agenda")
         self.agenda_table.setRowCount(0)
         self.acptfact_base_update_combo.currentTextChanged.connect(
             self.refreshAgendaTable

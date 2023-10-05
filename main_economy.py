@@ -80,14 +80,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_all_button.clicked.connect(self.refresh_all)
         self.economy_insert_button.clicked.connect(self.economy_insert)
         self.economy_load_button.clicked.connect(self.economy_load_from_file)
-        self.economy_update_button.clicked.connect(self.economy_update_name)
+        self.economy_update_button.clicked.connect(self.economy_update_title)
         self.economy_delete_button.clicked.connect(self.economy_delete)
         self.contract_insert_button.clicked.connect(self.contract_insert)
-        self.contract_update_button.clicked.connect(self.contract_update_name)
+        self.contract_update_button.clicked.connect(self.contract_update_title)
         self.contract_delete_button.clicked.connect(self.contract_delete)
         self.contracts_table.itemClicked.connect(self.contracts_table_select)
         self.owner_insert_button.clicked.connect(self.owner_insert)
-        self.owner_update_button.clicked.connect(self.owner_update_name)
+        self.owner_update_button.clicked.connect(self.owner_update_title)
         self.owner_delete_button.clicked.connect(self.owner_delete)
         self.owners_table.itemClicked.connect(self.owners_table_select)
         self.reload_all_src_contracts_button.clicked.connect(
@@ -120,12 +120,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         setup_test_example_environment()
         first_env = "ex5"
         self.economy_x = economyunit_shop(
-            name=first_env, economys_dir=get_test_economys_dir()
+            title=first_env, economys_dir=get_test_economys_dir()
         )
         self.refresh_economy()
         self.economy_tag_combo_refresh()
         self.economy_tag_combo.setCurrentText(first_env)
-        self._owner_load(owner_name="ernie")
+        self._owner_load(owner_title="ernie")
 
     def save_isol(self):
         if self.isol != None:
@@ -148,7 +148,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def economy_load_from_file(self):
         economy_selected = self.economy_tag_combo.currentText()
         self.economy_x = economyunit_shop(
-            name=economy_selected, economys_dir=get_test_economys_dir()
+            title=economy_selected, economys_dir=get_test_economys_dir()
         )
         self.economy_x.create_dirs_if_null(in_memory_bank=False)
         self.economy_tag.setText(economy_selected)
@@ -165,20 +165,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             selected_contract = self.contracts_table.item(
                 self.contracts_table.currentRow(), 0
             ).text()
-            self.depotlink_name.setText(f"{selected_owner} - {selected_contract}")
+            self.depotlink_title.setText(f"{selected_owner} - {selected_contract}")
 
     def owners_table_select(self):
-        owner_x_name = self.owners_table.item(self.owners_table.currentRow(), 0).text()
-        self._owner_load(owner_name=owner_x_name)
+        owner_x_title = self.owners_table.item(self.owners_table.currentRow(), 0).text()
+        self._owner_load(owner_title=owner_x_title)
 
-    def _owner_load(self, owner_name: str):
-        self.economy_x.create_ownerunit_from_public(name=owner_name)
-        self.owner_x = self.economy_x._ownerunits.get(owner_name)
-        self.owner_name.setText(self.owner_x._admin.name)
+    def _owner_load(self, owner_title: str):
+        self.economy_x.create_ownerunit_from_public(title=owner_title)
+        self.owner_x = self.economy_x._ownerunits.get(owner_title)
+        self.owner_title.setText(self.owner_x._admin.title)
         self.refresh_owner()
 
     def depotlinks_table_select(self):
-        self.depotlink_name.setText(
+        self.depotlink_title.setText(
             self.depotlinks_table.item(self.depotlinks_table.currentRow(), 0).text()
         )
         self.depotlink_type_combo.setCurrentText(
@@ -194,13 +194,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         # self.ignore_contract_x = self.economy_x.get_public_contract(
         self.ignore_contract_x = self.economy_x.get_contract_from_ignores_dir(
-            owner_name=self.owner_x._admin.name, _owner=ignore_contract_owner
+            owner_title=self.owner_x._admin.title, _owner=ignore_contract_owner
         )
         self.edit_contract = self.ignore_contract_x
 
     def ignore_contract_file_update(self):
         self.economy_x.set_ignore_contract_file(
-            owner_name=self.owner_x._admin.name, contract_obj=self.ignore_contract_x
+            owner_title=self.owner_x._admin.title, contract_obj=self.ignore_contract_x
         )
         self.refresh_owner()
 
@@ -216,9 +216,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         create_example_economy(economy_tag=self.economy_tag.text())
         self.economy_tag_combo_refresh()
 
-    def economy_update_name(self):
+    def economy_update_title(self):
         rename_example_economy(
-            economy_obj=self.economy_x, new_name=self.economy_tag.text()
+            economy_obj=self.economy_x, new_title=self.economy_tag.text()
         )
         self.economy_tag_combo_refresh()
 
@@ -234,7 +234,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.refresh_economy()
 
-    def contract_update_name(self):
+    def contract_update_title(self):
         currently_selected = self.contracts_table.item(
             self.contracts_table.currentRow(), 0
         ).text()
@@ -254,14 +254,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_economy()
 
     def owner_insert(self):
-        self.economy_x.create_new_ownerunit(owner_name=self.owner_name.text())
+        self.economy_x.create_new_ownerunit(owner_title=self.owner_title.text())
         self.refresh_owners()
 
-    def owner_update_name(self):
+    def owner_update_title(self):
         currently_selected = self.owners_table.item(
             self.owners_table.currentRow(), 0
         ).text()
-        typed_in = self.owner_name.text()
+        typed_in = self.owner_title.text()
         if currently_selected != typed_in:
             self.economy_x.rename_ownerunit(
                 old_label=currently_selected, new_label=typed_in
@@ -270,7 +270,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def owner_delete(self):
         self.economy_x.del_owner_dir(
-            owner_name=self.owners_table.item(self.owners_table.currentRow(), 0).text()
+            owner_title=self.owners_table.item(self.owners_table.currentRow(), 0).text()
         )
         self.refresh_owners()
 
@@ -281,7 +281,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.owner_x != None:
             contract_json = x_func_open_file(
                 dest_dir=self.owner_x._admin._contracts_public_dir,
-                file_name=f"{contract_owner}.json",
+                file_title=f"{contract_owner}.json",
             )
             contract_x = get_contract_from_json(contract_json)
             self.owner_x.set_depot_contract(
@@ -289,39 +289,39 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 depotlink_type=self.depotlink_type_combo.currentText(),
                 depotlink_weight=self.depotlink_weight.text(),
             )
-            self.economy_x.save_owner_file(owner_name=self.owner_x._admin.name)
+            self.economy_x.save_owner_file(owner_title=self.owner_x._admin.title)
         self.refresh_owner()
 
     def depotlink_update(self):
-        owner_name_x = self.owner_x._admin.name
+        owner_title_x = self.owner_x._admin.title
         self.economy_x.update_depotlink(
-            owner_name=owner_name_x,
-            partyname=self.depotlink_name.text(),
+            owner_title=owner_title_x,
+            partytitle=self.depotlink_title.text(),
             depotlink_type=self.depotlink_type_combo.currentText(),
             creditor_weight=self.depotlink_weight.text(),
             debtor_weight=self.depotlink_weight.text(),
         )
-        self.economy_x.save_owner_file(owner_name=owner_name_x)
+        self.economy_x.save_owner_file(owner_title=owner_title_x)
         self.refresh_owner()
 
     def depotlink_delete(self):
-        owner_name_x = self.owner_x._admin.name
+        owner_title_x = self.owner_x._admin.title
         self.economy_x.del_depotlink(
-            owner_name=owner_name_x, contractunit_owner=self.depotlink_name.text()
+            owner_title=owner_title_x, contractunit_owner=self.depotlink_title.text()
         )
-        self.economy_x.save_owner_file(owner_name=owner_name_x)
+        self.economy_x.save_owner_file(owner_title=owner_title_x)
         self.refresh_owner()
 
     def get_contract_owner_list(self):
         contracts_list = []
-        for file_name in self.get_public_dir_file_names_list():
+        for file_title in self.get_public_dir_file_titles_list():
             contract_json = x_func_open_file(
-                dest_dir=self.get_public_dir(), file_name=file_name
+                dest_dir=self.get_public_dir(), file_title=file_title
             )
             contracts_list.append(get_contract_from_json(cx_json=contract_json))
         return contracts_list
 
-    def get_owner_name_list(self):
+    def get_owner_title_list(self):
         owners_owner_list = []
         if self.economy_x != None:
             owners_owner_list.extend(
@@ -390,7 +390,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             x_list.extend(
                 [
                     f"{contract_importance_diplay(partyunit._contract_credit)}/{contract_importance_diplay(partyunit._contract_debt)}",
-                    partyunit.name,
+                    partyunit.title,
                     f"{partyunit.creditor_weight}/{partyunit.debtor_weight}",
                 ]
                 for partyunit in self.owner_output_contract._partys.values()
@@ -450,7 +450,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_economy()
 
     def _sub_refresh_owners_table(self):
-        self.refresh_x(self.owners_table, ["Owners Table"], self.get_owner_name_list())
+        self.refresh_x(self.owners_table, ["Owners Table"], self.get_owner_title_list())
 
     def _sub_refresh_depotlinks_table(self):
         depotlink_types = list(get_depotlink_types())
@@ -462,7 +462,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.owner_x is None:
             column_header = "Contractlinks Table"
         elif self.owner_x != None:
-            column_header = f"'{self.owner_x._admin.name}' Contractlinks"
+            column_header = f"'{self.owner_x._admin.title}' Contractlinks"
         self.refresh_x(
             self.depotlinks_table,
             [column_header, "Link Type", "Weight"],
@@ -495,7 +495,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 "balancelinks",
             ]
 
-        self.w_ideas_table.setObjectName("Ideas Table")
+        self.w_ideas_table.setObjectTitle("Ideas Table")
         self.w_ideas_table.setColumnHidden(0, False)
         self.w_ideas_table.setColumnHidden(1, False)
         self.w_ideas_table.setColumnHidden(2, False)
@@ -599,7 +599,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         populate_list: list[any],
         column_width: list[int] = None,
     ):
-        table_x.setObjectName(column_header[0])
+        table_x.setObjectTitle(column_header[0])
         if column_width is None:
             table_x.setColumnWidth(0, 150)
             table_x.setColumnHidden(0, False)
@@ -624,6 +624,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 table_x.setItem(row, 0, qtw1(list_x[0]))
 
 
-if __name__ == "__main__":
+if __title__ == "__main__":
     app = MainApp(sys_argv)
     sys_exit(app.exec())

@@ -33,7 +33,7 @@ def test_contract_get_dict_ReturnsDictObject():
     day_hour_text = "day_hour"
     day_hour_road = f"{x_contract._economy_tag},{day_hour_text}"
     day_hour_idea = x_contract.get_idea_kid(road=day_hour_road)
-    day_hour_idea._originunit.set_originlink(name="bob", weight=2)
+    day_hour_idea._originunit.set_originlink(title="bob", weight=2)
     x_contract.set_acptfact(
         base=day_hour_road,
         pick=day_hour_road,
@@ -100,7 +100,7 @@ def test_contract_get_dict_ReturnsDictObject():
     contract_x_originlink = x_dict[originunit_text][_links][yao_text]
     print(f"{contract_x_originlink=}")
     assert contract_x_originlink
-    assert contract_x_originlink["name"] == yao_text
+    assert contract_x_originlink["title"] == yao_text
     assert contract_x_originlink["weight"] == 1
 
 
@@ -110,7 +110,7 @@ def test_contract_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
     owner_text = "Tom"
     x_contract = ContractUnit(_owner=owner_text)
     assigned_unit_x = assigned_unit_shop()
-    assigned_unit_x.set_suffgroup(name=run_text)
+    assigned_unit_x.set_suffgroup(title=run_text)
     x_contract.edit_idea_attr(
         assignedunit=assigned_unit_x, road=x_contract._economy_tag
     )
@@ -136,7 +136,7 @@ def test_contract_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
         idea_kid=IdeaKid(_label=morn_text), walk=x_contract._economy_tag
     )
     assigned_unit_x = assigned_unit_shop()
-    assigned_unit_x.set_suffgroup(name=run_text)
+    assigned_unit_x.set_suffgroup(title=run_text)
     x_contract.edit_idea_attr(assignedunit=assigned_unit_x, road=morn_road)
 
     # WHEN
@@ -250,17 +250,19 @@ def test_save_file_CorrectlySavesContractJSON(env_dir_setup_cleanup):
     # GIVEN
     x_contract = example_contracts_contract_v001()
     x_cx_json = x_contract.get_json()
-    file_name_x = "example_contract1.json"
+    file_title_x = "example_contract1.json"
 
     # WHEN
     x_func_save_file(
         dest_dir=get_contract_temp_env_dir(),
-        file_name=file_name_x,
+        file_title=file_title_x,
         file_text=x_cx_json,
     )
 
     # THEN
-    assert x_func_open_file(dest_dir=get_contract_temp_env_dir(), file_name=file_name_x)
+    assert x_func_open_file(
+        dest_dir=get_contract_temp_env_dir(), file_title=file_title_x
+    )
 
 
 def test_contract_get_json_CorrectlyWorksForSimpleExample():
@@ -273,27 +275,27 @@ def test_contract_get_json_CorrectlyWorksForSimpleExample():
     shave_text = "shave"
     shave_road = f"{contract_y._economy_tag},{shave_text}"
     shave_idea_y1 = contract_y.get_idea_kid(road=shave_road)
-    shave_idea_y1._originunit.set_originlink(name="Sue", weight=4.3)
+    shave_idea_y1._originunit.set_originlink(title="Sue", weight=4.3)
     # print(f"{shave_road=}")
     # print(f"{shave_idea_x._label=} {shave_idea_x._walk=}")
 
     sue_text = "sue"
-    contract_y.add_partyunit(name=sue_text)
+    contract_y.add_partyunit(title=sue_text)
     tim_text = "tim"
-    contract_y.add_partyunit(name=tim_text)
+    contract_y.add_partyunit(title=tim_text)
     run_text = "runners"
     run_group = groupunit_shop(brand=run_text)
-    run_group.set_partylink(partylink=partylink_shop(name=sue_text))
-    run_group.set_partylink(partylink=partylink_shop(name=tim_text))
+    run_group.set_partylink(partylink=partylink_shop(title=sue_text))
+    run_group.set_partylink(partylink=partylink_shop(title=tim_text))
     contract_y.set_groupunit(groupunit=run_group)
 
     run_assigned_unit = assigned_unit_shop()
-    run_assigned_unit.set_suffgroup(name=run_text)
+    run_assigned_unit.set_suffgroup(title=run_text)
     contract_y.edit_idea_attr(
         road=contract_y._economy_tag, assignedunit=run_assigned_unit
     )
     tim_assigned_unit = assigned_unit_shop()
-    tim_assigned_unit.set_suffgroup(name=tim_text)
+    tim_assigned_unit.set_suffgroup(title=tim_text)
     contract_y.edit_idea_attr(road=shave_road, assignedunit=tim_assigned_unit)
     contract_y.edit_idea_attr(
         road=shave_road, balancelink=balancelink_shop(brand=tim_text)
@@ -365,10 +367,10 @@ def test_contract_get_json_CorrectlyWorksForSimpleExample():
 #     cx1_json = cx1.get_json()
 #     assert x_is_json(json_x=cx1_json)
 
-#     file_name = "example_contract1.json"
+#     file_title = "example_contract1.json"
 #     file_dir = contract_env()
 #     print("File may fail since example_contract1.json is created by a later test")
-#     cx3_json = x_func_open_file(dest_dir=file_dir, file_name=file_name)
+#     cx3_json = x_func_open_file(dest_dir=file_dir, file_title=file_title)
 #     # print(cx3_json[299000:299155])
 
 #     # WHEN

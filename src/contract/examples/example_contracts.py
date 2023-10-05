@@ -12,7 +12,7 @@ from src.contract.examples.contract_env import contract_env
 
 def contract_v001() -> ContractUnit:
     return contract_get_from_json(
-        x_func_open_file(dest_dir=contract_env(), file_name="example_contract1.json")
+        x_func_open_file(dest_dir=contract_env(), file_title="example_contract1.json")
     )
 
 
@@ -61,7 +61,7 @@ def contract_v001_with_large_agenda() -> ContractUnit:
 
 def contract_v002() -> ContractUnit:
     return contract_get_from_json(
-        x_func_open_file(dest_dir=contract_env(), file_name="example_contract2.json")
+        x_func_open_file(dest_dir=contract_env(), file_title="example_contract2.json")
     )
 
 

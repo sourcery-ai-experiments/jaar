@@ -34,7 +34,7 @@ from src.contract.group import (
     GroupUnit,
 )
 from src.contract.origin import OriginUnit
-from src.contract.party import PartyName
+from src.contract.party import PartyTitle
 from src.contract.origin import originunit_shop
 from src.contract.x_func import (
     get_on_meld_weight_actions,
@@ -54,7 +54,7 @@ class IdeaGetDescendantsException(Exception):
 
 @dataclasses.dataclass
 class IdeaBare:
-    n: str = None  # name
+    n: str = None  # title
     weight: int = 1
     b: float = None  # begin
     c: float = None  # close  # where
@@ -509,7 +509,7 @@ class IdeaCore:
         self,
         other_idea,
         _idearoot: bool = None,
-        party_name: PartyName = None,
+        party_title: PartyTitle = None,
         party_weight: float = None,
     ):
         if _idearoot and self._label != other_idea._label:
@@ -529,12 +529,12 @@ class IdeaCore:
         self._meld_balancelinks(other_idea=other_idea)
         self._meld_acptfactunits(other_idea=other_idea)
         self._meld_attributes_that_will_be_equal(other_idea=other_idea)
-        self._meld_originlinks(party_name, party_weight)
+        self._meld_originlinks(party_title, party_weight)
 
-    def _meld_originlinks(self, party_name: PartyName, party_weight: float):
-        if party_name != None:
+    def _meld_originlinks(self, party_title: PartyTitle, party_weight: float):
+        if party_title != None:
             self.set_originunit_empty_if_null()
-            self._originunit.set_originlink(name=party_name, weight=party_weight)
+            self._originunit.set_originlink(title=party_title, weight=party_weight)
 
     def set_originunit_empty_if_null(self):
         if self._originunit is None:
@@ -877,8 +877,8 @@ class IdeaCore:
     def get_balancelinks_dict(self):
         balancelinks_dict = {}
         if self._balancelinks != None:
-            for group_name, balancelink in self._balancelinks.items():
-                balancelinks_dict[group_name] = balancelink.get_dict()
+            for group_title, balancelink in self._balancelinks.items():
+                balancelinks_dict[group_title] = balancelink.get_dict()
         return balancelinks_dict
 
     def _get_empty_dict_if_null(self, x_dict: dict) -> dict:

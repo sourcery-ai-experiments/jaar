@@ -56,7 +56,7 @@ def test_contract_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
     assigned_unit_x = assigned_unit_shop()
 
     cx = ContractUnit(_owner=bob_text)
-    cx.add_partyunit(name=bob_text)
+    cx.add_partyunit(title=bob_text)
     cx.add_idea(IdeaKid(_label=run_text), walk=bob_text)
     cx.edit_idea_attr(road=run_road, assignedunit=assigned_unit_x)
     run_idea = cx.get_idea_kid(road=run_road)
@@ -91,7 +91,7 @@ def test_contract_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedhei
     four_road = f"{morn_road},{four_text}"
     assigned_unit_x = assigned_unit_shop()
     swimmers_text = "swimmers"
-    assigned_unit_x.set_suffgroup(name=swimmers_text)
+    assigned_unit_x.set_suffgroup(title=swimmers_text)
 
     cx.set_groupunit(groupunit=groupunit_shop(brand=swimmers_text))
     cx.add_idea(IdeaKid(_label=swim_text), walk=cx._economy_tag)
@@ -121,8 +121,8 @@ def test_ContractUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_Assig
     cx1 = ContractUnit(_owner=owner_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
-    cx1.add_partyunit(name=xia_text)
-    cx1.add_partyunit(name=zoa_text)
+    cx1.add_partyunit(title=xia_text)
+    cx1.add_partyunit(title=zoa_text)
 
     work_text = "work"
     work_road = f"{cx1._economy_tag},{work_text}"
@@ -131,8 +131,8 @@ def test_ContractUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_Assig
     cx1.add_idea(IdeaKid(_label=work_text), walk=cx1._economy_tag)
     cx1.add_idea(IdeaKid(_label=swim_text), walk=cx1._economy_tag)
     swim_assignedunit = assigned_unit_shop()
-    swim_assignedunit.set_suffgroup(name=xia_text)
-    swim_assignedunit.set_suffgroup(name=zoa_text)
+    swim_assignedunit.set_suffgroup(title=xia_text)
+    swim_assignedunit.set_suffgroup(title=zoa_text)
     cx1.edit_idea_attr(road=swim_road, assignedunit=swim_assignedunit)
     cx1_swim_idea = cx1.get_idea_kid(swim_road)
     cx1_swim_suffgroups = cx1_swim_idea._assignedunit._suffgroups
@@ -140,7 +140,7 @@ def test_ContractUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_Assig
 
     # WHEN
     cx2 = ContractUnit(_owner=owner_text)
-    cx2.add_partyunit(name=xia_text)
+    cx2.add_partyunit(title=xia_text)
     filtered_idea = cx2._get_filtered_balancelinks_idea(cx1_swim_idea)
 
     # THEN
@@ -155,8 +155,8 @@ def test_ContractUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     cx1 = ContractUnit(_owner=owner_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
-    cx1.add_partyunit(name=xia_text)
-    cx1.add_partyunit(name=zoa_text)
+    cx1.add_partyunit(title=xia_text)
+    cx1.add_partyunit(title=zoa_text)
 
     work_text = "work"
     work_road = f"{cx1._economy_tag},{work_text}"
@@ -165,8 +165,8 @@ def test_ContractUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     cx1.add_idea(IdeaKid(_label=work_text), walk=cx1._economy_tag)
     cx1.add_idea(IdeaKid(_label=swim_text), walk=cx1._economy_tag)
     swim_assignedunit = assigned_unit_shop()
-    swim_assignedunit.set_suffgroup(name=xia_text)
-    swim_assignedunit.set_suffgroup(name=zoa_text)
+    swim_assignedunit.set_suffgroup(title=xia_text)
+    swim_assignedunit.set_suffgroup(title=zoa_text)
     cx1.edit_idea_attr(road=swim_road, assignedunit=swim_assignedunit)
     cx1_swim_idea = cx1.get_idea_kid(swim_road)
     cx1_swim_suffgroups = cx1_swim_idea._assignedunit._suffgroups
@@ -174,7 +174,7 @@ def test_ContractUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
 
     # WHEN
     cx2 = ContractUnit(_owner=owner_text)
-    cx2.add_partyunit(name=xia_text)
+    cx2.add_partyunit(title=xia_text)
     cx2.add_idea(
         idea_kid=cx1_swim_idea,
         walk=cx2._economy_tag,

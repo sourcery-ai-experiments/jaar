@@ -53,7 +53,7 @@ def test_economy_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
     tim_text = "tim"
     contract_x = ContractUnit(_owner=bob_text)
     partyunit_x = partyunit_shop(
-        name=tim_text,
+        title=tim_text,
         _contract_credit=0.9,
         _contract_debt=0.8,
         _contract_agenda_credit=0.7,
@@ -73,7 +73,7 @@ def test_economy_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
     with sx.get_bank_conn() as bank_conn:
         bank_conn.execute(insert_sqlstr)
 
-    ledger_dict = get_ledger_dict(db_conn=sx.get_bank_conn(), payer_name=bob_text)
+    ledger_dict = get_ledger_dict(db_conn=sx.get_bank_conn(), payer_title=bob_text)
     # ledger_x = None
     # for key, value in ledger_dict.items():
     #     print(f"{key=} {value=}")
@@ -82,7 +82,7 @@ def test_economy_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
     # THEN
     ledger_x = ledger_dict.get(tim_text)
     assert ledger_x.contract_owner == bob_text
-    assert ledger_x.party_name == tim_text
+    assert ledger_x.party_title == tim_text
     assert ledger_x._contract_credit == 0.9
     assert ledger_x._contract_debt == 0.8
     assert ledger_x._contract_agenda_credit == 0.7
@@ -106,8 +106,8 @@ def test_RiverFlowUnit_exists():
     # WHEN
     river_flow_x = RiverFlowUnit(
         currency_contract_owner=bob_text,
-        src_name=None,
-        dst_name=tom_text,
+        src_title=None,
+        dst_title=tom_text,
         currency_start=currency_onset,
         currency_close=currency_cease,
         flow_num=flow_num,
@@ -117,8 +117,8 @@ def test_RiverFlowUnit_exists():
 
     # THEN
     assert river_flow_x.currency_contract_owner == bob_text
-    assert river_flow_x.src_name is None
-    assert river_flow_x.dst_name == tom_text
+    assert river_flow_x.src_title is None
+    assert river_flow_x.dst_title == tom_text
     assert river_flow_x.currency_start == currency_onset
     assert river_flow_x.currency_close == currency_cease
     assert river_flow_x.flow_num == flow_num
@@ -140,21 +140,21 @@ def test_RiverFlowUnit_flow_returned_WorksCorrectly():
     # WHEN
     river_flow_x = RiverFlowUnit(
         currency_contract_owner=bob_text,
-        src_name=sal_text,
-        dst_name=tom_text,
+        src_title=sal_text,
+        dst_title=tom_text,
         currency_start=currency_onset,
         currency_close=currency_cease,
         flow_num=flow_num,
         parent_flow_num=parent_flow_num,
         river_tree_level=river_tree_level,
     )
-    assert river_flow_x.currency_contract_owner != river_flow_x.dst_name
+    assert river_flow_x.currency_contract_owner != river_flow_x.dst_title
 
     # THEN
     assert river_flow_x.flow_returned() == False
 
     # WHEN
-    river_flow_x.dst_name = bob_text
+    river_flow_x.dst_title = bob_text
 
     # THEN
     assert river_flow_x.flow_returned()
@@ -171,7 +171,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
     sal_text = "sal"
     contract_bob = ContractUnit(_owner=bob_text)
     partyunit_sal = partyunit_shop(
-        name=sal_text,
+        title=sal_text,
         _contract_credit=0.9,
         _contract_debt=0.8,
         _contract_agenda_credit=0.7,
@@ -187,7 +187,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
 
     tim_text = "tim"
     partyunit_tim = partyunit_shop(
-        name=tim_text,
+        title=tim_text,
         _contract_credit=0.012,
         _contract_debt=0.017,
         _contract_agenda_credit=0.077,
@@ -204,13 +204,13 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
     with sx.get_bank_conn() as bank_conn:
         bank_conn.execute(insert_sqlstr_sal)
         bank_conn.execute(insert_sqlstr_tim)
-        ledger_dict_x = get_ledger_dict(db_conn=bank_conn, payer_name=bob_text)
+        ledger_dict_x = get_ledger_dict(db_conn=bank_conn, payer_title=bob_text)
 
     # WHEN
     river_flow_x = RiverFlowUnit(
         currency_contract_owner=bob_text,
-        src_name=None,
-        dst_name=bob_text,
+        src_title=None,
+        dst_title=bob_text,
         currency_start=0.225,
         currency_close=0.387,
         flow_num=51,
@@ -243,8 +243,8 @@ def test_river_flow_insert_CorrectlyPopulatesTable01(
 
     river_flow_unit = RiverFlowUnit(
         currency_contract_owner=bob_text,
-        src_name=tim_text,
-        dst_name=sal_text,
+        src_title=tim_text,
+        dst_title=sal_text,
         currency_start=0.2,
         currency_close=0.5,
         flow_num=5,
@@ -265,8 +265,8 @@ def test_river_flow_insert_CorrectlyPopulatesTable01(
     # for value in river_flows.values():
     flow_0 = river_flows.get(0)
     assert flow_0.currency_contract_owner == bob_text
-    assert flow_0.src_name == tim_text
-    assert flow_0.dst_name == sal_text
+    assert flow_0.src_title == tim_text
+    assert flow_0.dst_title == sal_text
     assert flow_0.currency_start == 0.2
     assert flow_0.currency_close == 0.5
     assert flow_0.flow_num == 5
@@ -281,7 +281,7 @@ def test_RiverLedgerUnit_Exists():
     tom_text = "tom"
     ledger_unit_01 = LedgerUnit(
         contract_owner=bob_text,
-        party_name=sal_text,
+        party_title=sal_text,
         _contract_credit=0.66,
         _contract_debt=0.2,
         _contract_agenda_credit=0.4,
@@ -293,7 +293,7 @@ def test_RiverLedgerUnit_Exists():
     )
     ledger_unit_02 = LedgerUnit(
         contract_owner=bob_text,
-        party_name=tom_text,
+        party_title=tom_text,
         _contract_credit=0.05,
         _contract_debt=0.09,
         _contract_agenda_credit=0.055,
@@ -304,8 +304,8 @@ def test_RiverLedgerUnit_Exists():
         _debtor_active=True,
     )
     ledger_dict = {
-        ledger_unit_01.party_name: ledger_unit_01,
-        ledger_unit_02.party_name: ledger_unit_02,
+        ledger_unit_01.party_title: ledger_unit_01,
+        ledger_unit_02.party_title: ledger_unit_02,
     }
 
     # WHEN
@@ -342,7 +342,7 @@ def test_get_river_tparty_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     contract_bob = ContractUnit(_owner=bob_text)
     partyunit_tom = partyunit_shop(
-        name=tom_text,
+        title=tom_text,
         _contract_credit=0.9,
         _contract_debt=0.8,
         _contract_agenda_credit=0.7,
@@ -356,7 +356,7 @@ def test_get_river_tparty_table_insert_sqlstr_CorrectlyPopulatesTable01(
         contract_x=contract_bob, partyunit_x=partyunit_tom
     )
     partyunit_sal = partyunit_shop(
-        name=sal_text,
+        title=sal_text,
         _contract_credit=0.9,
         _contract_debt=0.8,
         _contract_agenda_credit=0.7,
@@ -403,22 +403,22 @@ def test_get_river_tparty_table_insert_sqlstr_CorrectlyPopulatesTable01(
     assert len(river_tpartys) == 2
 
     bob_tom_x = river_tpartys.get(tom_text)
-    assert bob_tom_x.currency_name == bob_text
-    assert bob_tom_x.tax_name == tom_text
+    assert bob_tom_x.currency_title == bob_text
+    assert bob_tom_x.tax_title == tom_text
     assert bob_tom_x.tax_total == 0.2
     assert bob_tom_x.debt == 0.411
     assert round(bob_tom_x.tax_diff, 15) == 0.211
 
     bob_sal_x = river_tpartys.get(sal_text)
-    assert bob_sal_x.currency_name == bob_text
-    assert bob_sal_x.tax_name == sal_text
+    assert bob_sal_x.currency_title == bob_text
+    assert bob_sal_x.tax_title == sal_text
     assert bob_sal_x.tax_total == 0.8
     assert bob_sal_x.debt == 0.455
     assert round(bob_sal_x.tax_diff, 15) == -0.345
 
     # for value in river_tpartys.values():
-    #     assert value.currency_name == bob_text
-    #     assert value.tax_name in [tom_text, sal_text]
+    #     assert value.currency_title == bob_text
+    #     assert value.tax_title in [tom_text, sal_text]
     #     assert value.tax_total in [0.2, 0.8]
     #     assert value.debt in [0.411, 0.455]
     #     assert round(value.tax_diff, 15) in [0.211, -0.345]
@@ -439,14 +439,14 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
     elu_text = "elu"
 
     sal_contract = ContractUnit(_owner=sal_text)
-    sal_contract.add_partyunit(name=bob_text, creditor_weight=2)
-    sal_contract.add_partyunit(name=tom_text, creditor_weight=7)
-    sal_contract.add_partyunit(name=ava_text, creditor_weight=1)
+    sal_contract.add_partyunit(title=bob_text, creditor_weight=2)
+    sal_contract.add_partyunit(title=tom_text, creditor_weight=7)
+    sal_contract.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=sal_contract)
 
     bob_contract = ContractUnit(_owner=bob_text)
-    bob_contract.add_partyunit(name=sal_text, creditor_weight=3)
-    bob_contract.add_partyunit(name=ava_text, creditor_weight=1)
+    bob_contract.add_partyunit(title=sal_text, creditor_weight=3)
+    bob_contract.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=bob_contract)
 
     sx.refresh_bank_metrics()
@@ -480,27 +480,27 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     elu_text = "elu"
 
     sal_contract = ContractUnit(_owner=sal_text)
-    sal_contract.add_partyunit(name=bob_text, creditor_weight=2)
-    sal_contract.add_partyunit(name=tom_text, creditor_weight=7)
-    sal_contract.add_partyunit(name=ava_text, creditor_weight=1)
+    sal_contract.add_partyunit(title=bob_text, creditor_weight=2)
+    sal_contract.add_partyunit(title=tom_text, creditor_weight=7)
+    sal_contract.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=sal_contract)
 
     bob_contract = ContractUnit(_owner=bob_text)
-    bob_contract.add_partyunit(name=sal_text, creditor_weight=3)
-    bob_contract.add_partyunit(name=ava_text, creditor_weight=1)
+    bob_contract.add_partyunit(title=sal_text, creditor_weight=3)
+    bob_contract.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=bob_contract)
 
     tom_contract = ContractUnit(_owner=tom_text)
-    tom_contract.add_partyunit(name=sal_text, creditor_weight=2)
+    tom_contract.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_contract(contract_x=tom_contract)
 
     ava_contract = ContractUnit(_owner=ava_text)
-    ava_contract.add_partyunit(name=elu_text, creditor_weight=2)
+    ava_contract.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_contract(contract_x=ava_contract)
 
     elu_contract = ContractUnit(_owner=elu_text)
-    elu_contract.add_partyunit(name=ava_text, creditor_weight=19)
-    elu_contract.add_partyunit(name=sal_text, creditor_weight=1)
+    elu_contract.add_partyunit(title=ava_text, creditor_weight=19)
+    elu_contract.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
@@ -533,22 +533,22 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     #     print(f"{river_bucket=}")
 
     bucket_0 = river_buckets[0]
-    assert bucket_0.currency_name == sal_text
-    assert bucket_0.dst_name == sal_text
+    assert bucket_0.currency_title == sal_text
+    assert bucket_0.dst_title == sal_text
     assert bucket_0.bucket_num == 0
     assert bucket_0.curr_start == 0.04401266686517654
     assert bucket_0.curr_close == 0.1
 
     bucket_1 = river_buckets[1]
-    assert bucket_1.currency_name == sal_text
-    assert bucket_1.dst_name == sal_text
+    assert bucket_1.currency_title == sal_text
+    assert bucket_1.dst_title == sal_text
     assert bucket_1.bucket_num == 1
     assert bucket_1.curr_start == 0.12316456150798766
     assert bucket_1.curr_close == 1.0
 
     # for value in river_buckets.values():
-    #     assert value.currency_name == sal_text
-    #     assert value.dst_name == sal_text
+    #     assert value.currency_title == sal_text
+    #     assert value.dst_title == sal_text
     #     assert value.bucket_num in [0, 1]
     #     assert value.curr_start in [0.12316456150798766, 0.04401266686517654]
     #     assert value.curr_close in [0.1, 1.0]
@@ -776,9 +776,9 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     elu_text = "elu"
     bob_contract = ContractUnit(_owner=bob_text)
     tom_contract = ContractUnit(_owner=tom_text)
-    bob_contract.add_partyunit(name=tom_text)
-    tom_contract.add_partyunit(name=bob_text)
-    tom_contract.add_partyunit(name=elu_text)
+    bob_contract.add_partyunit(title=tom_text)
+    tom_contract.add_partyunit(title=bob_text)
+    tom_contract.add_partyunit(title=elu_text)
     sx.save_public_contract(contract_x=bob_contract)
     sx.save_public_contract(contract_x=tom_contract)
     sx.refresh_bank_metrics()

@@ -738,25 +738,25 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.idea2group_table.setColumnWidth(1, 50)
         self.idea2group_table.setColumnWidth(2, 70)
         self.idea2group_table.setHorizontalHeaderLabels(
-            ["Group display", "group_name", "LW Force"]
+            ["Group display", "group_title", "LW Force"]
         )
         # print(f"{self.yo_x._balancelinks=}")
         # print(f"{self.yo_x._balanceheirs=}")
         balancelinks_list = list(self.yo_x._balancelinks.values())
-        balancelinks_list.sort(key=lambda x: x.name, reverse=False)
+        balancelinks_list.sort(key=lambda x: x.title, reverse=False)
         balanceheirs_list = list(self.yo_x._balanceheirs.values())
-        balanceheirs_list.sort(key=lambda x: x.name, reverse=False)
+        balanceheirs_list.sort(key=lambda x: x.title, reverse=False)
         # print(f"{balancelinks_list=}")
         # print(f"{balanceheirs_list=}")
 
         for row, balanceheir in enumerate(balanceheirs_list, start=1):
             self.idea2group_table.setRowCount(row)
-            x_text = f"  Heir: {balanceheir.name}"
+            x_text = f"  Heir: {balanceheir.title}"
             for balancelink in balancelinks_list:
-                if balancelink.brand == balanceheir.name:
-                    x_text = f"{balanceheir.name}"
+                if balancelink.brand == balanceheir.title:
+                    x_text = f"{balanceheir.title}"
             self.idea2group_table.setItem(row - 1, 0, qtw1(x_text))
-            self.idea2group_table.setItem(row - 1, 1, qtw1(balanceheir.name))
+            self.idea2group_table.setItem(row - 1, 1, qtw1(balanceheir.title))
             self.idea2group_table.setItem(
                 row - 1,
                 2,
@@ -767,24 +767,24 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
     def idea2group_insert_combo_load(self):
         # groupunits_list = list(self.contract_x._groupunits.values())
-        groupunits_names_list = []
+        groupunits_titles_list = []
         for groupunit in self.contract_x._groups.values():
             group_previously_selected = any(
                 groupunit.brand == balancelink.brand
                 for balancelink in self.yo_x._balancelinks.values()
             )
             if not group_previously_selected:
-                groupunits_names_list.append(groupunit.brand)
-        groupunits_names_list.sort(key=lambda x: x.lower(), reverse=False)
+                groupunits_titles_list.append(groupunit.brand)
+        groupunits_titles_list.sort(key=lambda x: x.lower(), reverse=False)
 
         self.idea2group_insert_combo.clear()
-        self.idea2group_insert_combo.addItems(groupunits_names_list)
+        self.idea2group_insert_combo.addItems(groupunits_titles_list)
 
     def idea2group_update(self):
-        bd_name_new = self.idea2group_insert_combo.currentText()
-        if bd_name_new == "":
-            raise Exception("bd_name is empty, idea2bd cannot be updated")
-        balancelink_new = Balancelink(brand=GroupBrand(bd_name_new), weight=1)
+        bd_title_new = self.idea2group_insert_combo.currentText()
+        if bd_title_new == "":
+            raise Exception("bd_title is empty, idea2bd cannot be updated")
+        balancelink_new = Balancelink(brand=GroupBrand(bd_title_new), weight=1)
         self.contract_x.edit_idea_attr(
             road=f"{self.yo_x._walk},{self.yo_x._label}", balancelink=balancelink_new
         )
@@ -792,14 +792,14 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.idea2group_table_load()
 
     def idea2group_delete(self):
-        delete_group_name = ""
+        delete_group_title = ""
         if self.idea2group_table.currentRow() != None:
-            delete_group_name = self.idea2group_table.item(
+            delete_group_title = self.idea2group_table.item(
                 self.idea2group_table.currentRow(), 1
             ).text()
             self.contract_x.edit_idea_attr(
                 road=f"{self.yo_x._walk},{self.yo_x._label}",
-                balancelink_del=delete_group_name,
+                balancelink_del=delete_group_title,
             )
             self.idea2group_insert_combo_load()
             self.idea2group_table_load()
@@ -975,7 +975,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             requiredheir_count_flag=requiredheir_count_flag,
             required_count_flag=required_count_flag,
             required_view_flag=required_view_flag,
-            required_view_name=required_view_base,
+            required_view_title=required_view_base,
             acptfactheir_view_flag=acptfactheir_view_flag,
             root_percent_flag=root_percent_flag,
             source_contract=self.contract_x,

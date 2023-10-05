@@ -25,18 +25,18 @@ def test_economy_get_output_contract_ReturnsCorrectContractObjScenario1(
     # sx.save_public_contract(ex_cxs_get_contract_1Task_1CE0MinutesRequired_1AcptFact())
     # sx.save_public_contract(ex_cxs_contract_v001())
     xia_text = "Xia"
-    sx.create_new_ownerunit(owner_name=xia_text)
+    sx.create_new_ownerunit(owner_title=xia_text)
     sx.set_owner_depotlink(xia_text, input_cx._owner, depotlink_type="blind_trust")
-    sx.save_owner_file(owner_name=xia_text)
-    xia_owner = sx.get_owner_obj(name=xia_text)
+    sx.save_owner_file(owner_title=xia_text)
+    xia_owner = sx.get_owner_obj(title=xia_text)
     # print(f"{xia_owner._isol._partys.keys()=}")
 
     # WHEN
-    output_cx = sx.get_output_contract(owner_name=xia_text)
+    output_cx = sx.get_output_contract(owner_title=xia_text)
     # input contract must be melded to itself to create originunits
     input_cx.meld(input_cx)
     input_cx.set_owner(new_owner=xia_text)
-    input_cx._originunit.set_originlink(name=xia_text, weight=1)
+    input_cx._originunit.set_originlink(title=xia_text, weight=1)
 
     # THEN
     a_text = "A"
@@ -100,15 +100,15 @@ def test_economy_get_output_contract_ReturnsCorrectContractObjScenario2(
     # sx.save_public_contract(ex_cxs_get_contract_1Task_1CE0MinutesRequired_1AcptFact())
     # sx.save_public_contract(ex_cxs_contract_v001())
     xia_text = "Xia"
-    sx.create_new_ownerunit(owner_name=xia_text)
+    sx.create_new_ownerunit(owner_title=xia_text)
     sx.set_owner_depotlink(xia_text, cx1._owner, depotlink_type="blind_trust")
     sx.set_owner_depotlink(xia_text, cx2._owner, depotlink_type="blind_trust")
-    sx.save_owner_file(owner_name=xia_text)
-    xia_owner = sx.get_owner_obj(name=xia_text)
+    sx.save_owner_file(owner_title=xia_text)
+    xia_owner = sx.get_owner_obj(title=xia_text)
     print(f"{xia_owner._isol._partys.keys()=}")
 
     # WHEN
-    output_cx = sx.get_output_contract(owner_name=xia_text)
+    output_cx = sx.get_output_contract(owner_title=xia_text)
 
     # THEN
     output_cx_d_road = f"{output_cx._economy_tag},C,D"
@@ -150,7 +150,7 @@ def test_ownerunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
     economy_tag = get_temp_env_tag()
     sx = economyunit_shop(tag=economy_tag, economys_dir=env_dir)
     sx.create_dirs_if_null(in_memory_bank=True)
-    # ux = ownerunit_shop(name=owner1_text, env_dir=env_dir)
+    # ux = ownerunit_shop(title=owner1_text, env_dir=env_dir)
 
     ernie_text = "ernie"
     jessi_text = "jessi"
@@ -161,12 +161,12 @@ def test_ownerunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
     sx.save_public_contract(contract_x=ernie_contract)
     sx.save_public_contract(contract_x=jessi_contract)
     sx.save_public_contract(contract_x=old_steve_cx)
-    sx.create_new_ownerunit(owner_name=ernie_text)
-    sx.create_new_ownerunit(owner_name=jessi_text)
-    # sx.create_new_ownerunit(owner_name=steve_text)
-    ux_ernie = sx.get_owner_obj(name=ernie_text)
-    ux_jessi = sx.get_owner_obj(name=jessi_text)
-    # ux_steve = sx.get_owner_obj(name=steve_text)
+    sx.create_new_ownerunit(owner_title=ernie_text)
+    sx.create_new_ownerunit(owner_title=jessi_text)
+    # sx.create_new_ownerunit(owner_title=steve_text)
+    ux_ernie = sx.get_owner_obj(title=ernie_text)
+    ux_jessi = sx.get_owner_obj(title=jessi_text)
+    # ux_steve = sx.get_owner_obj(title=steve_text)
     ux_ernie.set_depot_contract(contract_x=jessi_contract, depotlink_type="blind_trust")
     ux_ernie.set_depot_contract(contract_x=old_steve_cx, depotlink_type="blind_trust")
     ux_jessi.set_depot_contract(contract_x=ernie_contract, depotlink_type="blind_trust")
@@ -179,11 +179,11 @@ def test_ownerunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
     new_steve_contract = get_contract_3CleanNodesRandomWeights(_owner="steve")
     sx.save_public_contract(contract_x=new_steve_contract)
     # print(f"{env_dir=} {ux._admin._contracts_public_dir=}")
-    # for file_name in x_func_dir_files(dir_path=env_dir):
-    #     print(f"{ux._admin._contracts_public_dir=} {file_name=}")
+    # for file_title in x_func_dir_files(dir_path=env_dir):
+    #     print(f"{ux._admin._contracts_public_dir=} {file_title=}")
 
-    # for file_name in x_func_dir_files(dir_path=ux._admin._contracts_public_dir):
-    #     print(f"{ux._admin._contracts_public_dir=} {file_name=}")
+    # for file_title in x_func_dir_files(dir_path=ux._admin._contracts_public_dir):
+    #     print(f"{ux._admin._contracts_public_dir=} {file_title=}")
 
     # WHEN
     sx.reload_all_owners_src_contractunits()

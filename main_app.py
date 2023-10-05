@@ -124,7 +124,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.fm_new.triggered.connect(self.contract_new)
 
         # self.acptfacts_table.itemClicked.connect(self.acptfact_base_combo_set)
-        self.acptfacts_table.setObjectName("Contract AcptFacts")
+        self.acptfacts_table.setObjectTitle("Contract AcptFacts")
         self.acptfacts_table.setColumnWidth(0, 300)
         self.acptfacts_table.setColumnWidth(1, 300)
         self.acptfacts_table.setColumnWidth(2, 30)
@@ -257,23 +257,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.contract_x_signal.emit(self.contract_x)
 
     def get_file_path(self):
-        x_file_path, _ = QFileDialog.getOpenFileName()
+        x_file_path, _ = QFileDialog.getOpenFileTitle()
         if x_file_path:
             self.file_path = x_file_path
             self.open_file()
 
     def save_as_file(self):
-        x_file_path, _ = QFileDialog.getSaveFileName()
+        x_file_path, _ = QFileDialog.getSaveFileTitle()
         if x_file_path:
             self.file_path = x_file_path
             self._commit_file_save()
 
     def save_file(self):
         if self.file_path is None:
-            self.file_path = f"{contract_env()}/{self._get_file_name()}"
+            self.file_path = f"{contract_env()}/{self._get_file_title()}"
         self._commit_file_save()
 
-    def _get_file_name(self):
+    def _get_file_title(self):
         return f"contract_{self.contract_x._owner}.json"
 
     def _commit_file_save(self):
@@ -283,13 +283,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.current_file_path_l.setText(self.file_path)
         # x_func_save_file(
         #     dest_dir=contract_owner_dir,
-        #     file_name=f"{self.contract_x._economy_tag}.json",
+        #     file_title=f"{self.contract_x._economy_tag}.json",
         #     file_text=contract_x.get_json(),
         # )
 
     def load_file(self):
         x_json = ""
-        x_json = x_func_open_file(dest_dir=self.file_path, file_name=None)
+        x_json = x_func_open_file(dest_dir=self.file_path, file_title=None)
         self.current_file_path_l.setText(self.file_path)
         return x_json
 
@@ -459,7 +459,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agenda_states.setItem(row, 6, qtw1(""))
 
     def set_agenda_states_table_properties(self):
-        self.agenda_states.setObjectName("Agenda Being")
+        self.agenda_states.setObjectTitle("Agenda Being")
         self.agenda_states.setColumnWidth(0, 30)
         self.agenda_states.setColumnWidth(1, 200)
         self.agenda_states.setColumnWidth(2, 120)
@@ -536,6 +536,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return open_y, nigh_y
 
 
-if __name__ == "__main__":
+if __title__ == "__main__":
     app = MainApp(sys.argv)
     sys.exit(app.exec())

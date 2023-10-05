@@ -57,7 +57,7 @@ def create_contract_file_for_economys(economy_dir: str, contract_owner: str):
 
     x_func_save_file(
         dest_dir=contract_dir,
-        file_name=f"{contract_x._owner}.json",
+        file_title=f"{contract_x._owner}.json",
         file_text=contract_x.get_json(),
     )
 
@@ -88,36 +88,36 @@ def _delete_and_set_ex3():
     sx.save_public_contract(contract_x=example_contracts_contract_v001())
     sx.save_public_contract(contract_x=example_contracts_contract_v002())
 
-    # sx.set_owner(owner_x=ownerunit_shop(name="w1", env_dir=sx.get_object_root_dir()))
-    # sx.set_owner(owner_x=ownerunit_shop(name="w2", env_dir=sx.get_object_root_dir()))
+    # sx.set_owner(owner_x=ownerunit_shop(title="w1", env_dir=sx.get_object_root_dir()))
+    # sx.set_owner(owner_x=ownerunit_shop(title="w2", env_dir=sx.get_object_root_dir()))
     xia_text = "Xia"
-    sx.create_new_ownerunit(owner_name=xia_text)
+    sx.create_new_ownerunit(owner_title=xia_text)
     owner_text = "Mycontract"
     sx.set_owner_depotlink(
         xia_text, contract_owner=owner_text, depotlink_type="blind_trust"
     )
-    # w1_obj = sx.get_owner_obj(name=w1_text)
+    # w1_obj = sx.get_owner_obj(title=w1_text)
 
     bob_text = "bob wurld"
     create_contract_file_for_economys(sx.get_object_root_dir(), bob_text)
     # print(f"create contract_list {w1_text=}")
     sx.create_depotlink_to_generated_contract(
-        owner_name=xia_text, contract_owner=bob_text, depotlink_type="ignore"
+        owner_title=xia_text, contract_owner=bob_text, depotlink_type="ignore"
     )
     land_text = "tim wurld"
     create_contract_file_for_economys(
         economy_dir=sx.get_object_root_dir(), contract_owner=land_text
     )
     sx.create_depotlink_to_generated_contract(
-        owner_name=xia_text, contract_owner=land_text, depotlink_type="blind_trust"
+        owner_title=xia_text, contract_owner=land_text, depotlink_type="blind_trust"
     )
-    # sx.create_depotlink_to_generated_contract(owner_name=w1_text, contract_owner="test9")
-    # sx.create_depotlink_to_generated_contract(owner_name=w1_text, contract_owner="Bobs contract")
-    sx.save_owner_file(owner_name=xia_text)
+    # sx.create_depotlink_to_generated_contract(owner_title=w1_text, contract_owner="test9")
+    # sx.create_depotlink_to_generated_contract(owner_title=w1_text, contract_owner="Bobs contract")
+    sx.save_owner_file(owner_title=xia_text)
     # print(f"WHAT WHAT {sx.get_object_root_dir()}")
     # print(f"WHAT WHAT {sx.get_object_root_dir()}/owners/w1/w1.json")
     # file_text = x_func_open_file(
-    #     dest_dir=f"{sx.get_object_root_dir}/owners/w1", file_name="w1.json"
+    #     dest_dir=f"{sx.get_object_root_dir}/owners/w1", file_title="w1.json"
     # )
     # print(f"{file_text=}")
     # print(f"{len(sx._ownerunits.get(w1_text)._depotlinks)=}")
@@ -125,8 +125,8 @@ def _delete_and_set_ex3():
     # print(f"{sx._ownerunits.get(w1_text).get_json=}")
 
     w2_text = "w2"
-    sx.create_new_ownerunit(owner_name=w2_text)  # , env_dir=sx.get_object_root_dir())
-    sx.save_owner_file(owner_name=w2_text)
+    sx.create_new_ownerunit(owner_title=w2_text)  # , env_dir=sx.get_object_root_dir())
+    sx.save_owner_file(owner_title=w2_text)
 
 
 def _delete_and_set_ex4():
@@ -165,11 +165,11 @@ def _delete_and_set_ex5():
     sx.save_public_contract(contract_x=contract_4)
     sx.save_public_contract(contract_x=contract_5)
 
-    sx.create_new_ownerunit(owner_name=contract_1._owner)
-    sx.create_new_ownerunit(owner_name=contract_2._owner)
-    sx.create_new_ownerunit(owner_name=contract_3._owner)
-    sx.create_new_ownerunit(owner_name=contract_4._owner)
-    sx.create_new_ownerunit(owner_name=contract_5._owner)
+    sx.create_new_ownerunit(owner_title=contract_1._owner)
+    sx.create_new_ownerunit(owner_title=contract_2._owner)
+    sx.create_new_ownerunit(owner_title=contract_3._owner)
+    sx.create_new_ownerunit(owner_title=contract_4._owner)
+    sx.create_new_ownerunit(owner_title=contract_5._owner)
 
     sx.set_owner_depotlink(contract_1._owner, contract_2._owner, "blind_trust", 3, 3.1)
     sx.set_owner_depotlink(contract_1._owner, contract_3._owner, "blind_trust", 7, 7.1)
@@ -197,11 +197,11 @@ def _delete_and_set_ex5():
     sx.set_owner_depotlink(contract_5._owner, contract_3._owner, "blind_trust", 4, 4.1)
     sx.set_owner_depotlink(contract_5._owner, contract_4._owner, "blind_trust", 5, 5.1)
 
-    sx.save_owner_file(owner_name=contract_1._owner)
-    sx.save_owner_file(owner_name=contract_2._owner)
-    sx.save_owner_file(owner_name=contract_3._owner)
-    sx.save_owner_file(owner_name=contract_4._owner)
-    sx.save_owner_file(owner_name=contract_5._owner)
+    sx.save_owner_file(owner_title=contract_1._owner)
+    sx.save_owner_file(owner_title=contract_2._owner)
+    sx.save_owner_file(owner_title=contract_3._owner)
+    sx.save_owner_file(owner_title=contract_4._owner)
+    sx.save_owner_file(owner_title=contract_5._owner)
 
 
 def _delete_and_set_ex6():
@@ -217,27 +217,27 @@ def _delete_and_set_ex6():
     elu_text = "elu"
 
     sal_contract = ContractUnit(_owner=sal_text)
-    sal_contract.add_partyunit(name=bob_text, creditor_weight=2)
-    sal_contract.add_partyunit(name=tom_text, creditor_weight=7)
-    sal_contract.add_partyunit(name=ava_text, creditor_weight=1)
+    sal_contract.add_partyunit(title=bob_text, creditor_weight=2)
+    sal_contract.add_partyunit(title=tom_text, creditor_weight=7)
+    sal_contract.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=sal_contract)
 
     bob_contract = ContractUnit(_owner=bob_text)
-    bob_contract.add_partyunit(name=sal_text, creditor_weight=3)
-    bob_contract.add_partyunit(name=ava_text, creditor_weight=1)
+    bob_contract.add_partyunit(title=sal_text, creditor_weight=3)
+    bob_contract.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_contract(contract_x=bob_contract)
 
     tom_contract = ContractUnit(_owner=tom_text)
-    tom_contract.add_partyunit(name=sal_text, creditor_weight=2)
+    tom_contract.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_contract(contract_x=tom_contract)
 
     ava_contract = ContractUnit(_owner=ava_text)
-    ava_contract.add_partyunit(name=elu_text, creditor_weight=2)
+    ava_contract.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_contract(contract_x=ava_contract)
 
     elu_contract = ContractUnit(_owner=elu_text)
-    elu_contract.add_partyunit(name=ava_text, creditor_weight=19)
-    elu_contract.add_partyunit(name=sal_text, creditor_weight=1)
+    elu_contract.add_partyunit(title=ava_text, creditor_weight=19)
+    elu_contract.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_contract(contract_x=elu_contract)
 
     sx.refresh_bank_metrics()
@@ -253,13 +253,13 @@ def delete_dir_example_economy(economy_obj: EconomyUnit):
     x_func_delete_dir(economy_obj.get_object_root_dir())
 
 
-def rename_example_economy(economy_obj: EconomyUnit, new_name):
+def rename_example_economy(economy_obj: EconomyUnit, new_title):
     # base_dir = economy_obj.get_object_root_dir()
     base_dir = "src/economy/examples/economys"
     src_dir = f"{base_dir}/{economy_obj.tag}"
-    dst_dir = f"{base_dir}/{new_name}"
+    dst_dir = f"{base_dir}/{new_title}"
     os_rename(src=src_dir, dst=dst_dir)
-    economy_obj.set_economyunit_tag(tag=new_name)
+    economy_obj.set_economyunit_tag(tag=new_title)
 
 
 class InvalidEconomyCopyException(Exception):

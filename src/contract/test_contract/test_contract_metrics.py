@@ -1,7 +1,7 @@
 from src.contract.examples.example_contracts import (
     contract_v001 as example_contracts_contract_v001,
 )
-from src.contract.party import PartyName, partyunit_shop
+from src.contract.party import PartyTitle, partyunit_shop
 from src.contract.group import GroupBrand, balancelink_shop, groupunit_shop
 from src.contract.contract import ContractUnit
 
@@ -44,9 +44,9 @@ def test_contract_3AdvocatesNoIdeaKid():
     patr_text = "patrick"
 
     a_x = ContractUnit(_owner="prom")
-    au_rico = partyunit_shop(name=rico_text, uid=7)
-    au_carm = partyunit_shop(name=carm_text, uid=2)
-    au_patr = partyunit_shop(name=patr_text, uid=13)
+    au_rico = partyunit_shop(title=rico_text, uid=7)
+    au_carm = partyunit_shop(title=carm_text, uid=2)
+    au_patr = partyunit_shop(title=patr_text, uid=13)
     # print(f"{rico=}")
     a_x.set_partyunit(partyunit=au_rico)
     a_x.set_partyunit(partyunit=au_carm)
@@ -91,9 +91,9 @@ def test_contract_get_partyunits_uid_max_WorksCorrectly():
     patr_text = "patrick"
 
     lw_x = ContractUnit(_owner="prom")
-    lw_x.set_partyunit(partyunit=partyunit_shop(name=rico_text, uid=4))
-    lw_x.set_partyunit(partyunit=partyunit_shop(name=carr_text, uid=13))
-    lw_x.set_partyunit(partyunit=partyunit_shop(name=patr_text, uid=7))
+    lw_x.set_partyunit(partyunit=partyunit_shop(title=rico_text, uid=4))
+    lw_x.set_partyunit(partyunit=partyunit_shop(title=carr_text, uid=13))
+    lw_x.set_partyunit(partyunit=partyunit_shop(title=patr_text, uid=7))
 
     # WHEN/THEN
     assert lw_x.get_partyunits_uid_max() == 13

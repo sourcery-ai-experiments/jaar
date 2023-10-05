@@ -92,7 +92,7 @@ def test_ownerunit_set_depotlink_CorrectlySetsAssignment(owner_dir_setup_cleanup
     digest_cx = contract_get_from_json(
         x_func_open_file(
             dest_dir=joachim_ux._admin._contracts_digest_dir,
-            file_name=f"{america_cx._owner}.json",
+            file_title=f"{america_cx._owner}.json",
         )
     )
     print(f"{digest_cx._owner=}")
@@ -229,7 +229,7 @@ def test_ownerunit_set_ignore_contract_file_CorrectlyUpdatesIgnoreFile(
     assert x_func_count_files(dir_path=bob_ux._admin._contracts_ignore_dir) == 1
     cx1 = bob_ux._admin.open_ignore_contract(owner=zia_text)
     assert len(cx1._partys) == 0
-    cx1.add_partyunit(name="tim")
+    cx1.add_partyunit(title="tim")
     assert len(cx1._partys) == 1
 
     # WHEN
@@ -250,8 +250,8 @@ def test_ownerunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
     economy_tag = get_temp_env_tag()
     sx = economyunit_shop(tag=economy_tag, economys_dir=env_dir)
     yao_text = "Yao"
-    sx.create_new_ownerunit(owner_name=yao_text)
-    yao_contract = sx.get_owner_obj(name=yao_text)
+    sx.create_new_ownerunit(owner_title=yao_text)
+    yao_contract = sx.get_owner_obj(title=yao_text)
     assert len(yao_contract._admin.get_remelded_output_contract().get_idea_list()) == 1
 
     ernie_text = "ernie"
@@ -271,11 +271,11 @@ def test_ownerunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
     new_steve_contract = get_cal3nodes(_owner=steve_text)
     sx.save_public_contract(contract_x=new_steve_contract)
     print(f"{env_dir=} {yao_contract._admin._contracts_public_dir=}")
-    # for file_name in x_func_dir_files(dir_path=env_dir):
-    #     print(f"{bob_cx._admin._contracts_public_dir=} {file_name=}")
+    # for file_title in x_func_dir_files(dir_path=env_dir):
+    #     print(f"{bob_cx._admin._contracts_public_dir=} {file_title=}")
 
-    # for file_name in x_func_dir_files(dir_path=bob_cx._admin._contracts_public_dir):
-    #     print(f"{bob_cx._admin._contracts_public_dir=} {file_name=}")
+    # for file_title in x_func_dir_files(dir_path=bob_cx._admin._contracts_public_dir):
+    #     print(f"{bob_cx._admin._contracts_public_dir=} {file_title=}")
 
     # WHEN
     yao_contract.refresh_depot_contracts()

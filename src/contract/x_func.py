@@ -41,15 +41,15 @@ def copy_dir(src_dir: str, dest_dir: str):
         shutil_copytree(src=src_dir, dst=dest_dir)
 
 
-def save_file(dest_dir: str, file_name: str, file_text: str, replace: bool = None):
-    # print(f"{dest_dir=} {file_name=} {replace=}")
+def save_file(dest_dir: str, file_title: str, file_text: str, replace: bool = None):
+    # print(f"{dest_dir=} {file_title=} {replace=}")
     if replace is None:
         replace = True
 
     if not os_path.exists(path=dest_dir):
         os_makedirs(dest_dir)
 
-    file_path = f"{dest_dir}/{file_name}"
+    file_path = f"{dest_dir}/{file_title}"
     if (os_path.exists(path=file_path) and replace) or os_path.exists(
         path=file_path
     ) == False:
@@ -58,9 +58,9 @@ def save_file(dest_dir: str, file_name: str, file_text: str, replace: bool = Non
             f.close()
 
 
-def open_file(dest_dir: str, file_name: str):
+def open_file(dest_dir: str, file_title: str):
     # sourcery skip: raise-specific-error
-    file_path = dest_dir if file_name is None else f"{dest_dir}/{file_name}"
+    file_path = dest_dir if file_title is None else f"{dest_dir}/{file_title}"
     text_x = ""
     try:
         with open(file_path, "r") as f:
@@ -88,24 +88,24 @@ def dir_files(
         include_files = True
 
     dict_x = {}
-    for obj_name in os_listdir(dir_path):
+    for obj_title in os_listdir(dir_path):
         dict_key = None
-        file_name = None
+        file_title = None
         file_path = None
         file_text = None
-        obj_path = f"{dir_path}/{obj_name}"
+        obj_path = f"{dir_path}/{obj_title}"
         if os_path.isfile(obj_path) and include_files:
-            file_name = obj_name
-            file_path = f"{dir_path}/{file_name}"
+            file_title = obj_title
+            file_path = f"{dir_path}/{file_title}"
             # print(f" {os_path.isdir(file_path)=}")
-            file_text = open_file(dest_dir=dir_path, file_name=file_name)
+            file_text = open_file(dest_dir=dir_path, file_title=file_title)
             dict_key = (
-                os_path.splitext(file_name)[0] if remove_extensions else file_name
+                os_path.splitext(file_title)[0] if remove_extensions else file_title
             )
             dict_x[dict_key] = file_text
 
         if os_path.isdir(obj_path) and include_dirs:
-            dict_key = obj_name
+            dict_key = obj_title
             file_text = True
             dict_x[dict_key] = file_text
     return dict_x

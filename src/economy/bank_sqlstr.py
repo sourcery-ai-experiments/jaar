@@ -5,14 +5,14 @@ from dataclasses import dataclass
 from sqlite3 import Connection
 
 
-def get_table_count_sqlstr(table_name: str) -> str:
-    return f"SELECT COUNT(*) FROM {table_name}"
+def get_table_count_sqlstr(table_title: str) -> str:
+    return f"SELECT COUNT(*) FROM {table_title}"
 
 
 def get_river_flow_table_delete_sqlstr(currency_contract_owner: str) -> str:
     return f"""
         DELETE FROM river_flow
-        WHERE currency_name = '{currency_contract_owner}' 
+        WHERE currency_title = '{currency_contract_owner}' 
         ;
     """
 
@@ -20,17 +20,17 @@ def get_river_flow_table_delete_sqlstr(currency_contract_owner: str) -> str:
 def get_river_flow_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS river_flow (
-          currency_name VARCHAR(255) NOT NULL
-        , src_name VARCHAR(255) NOT NULL
-        , dst_name VARCHAR(255) NOT NULL
+          currency_title VARCHAR(255) NOT NULL
+        , src_title VARCHAR(255) NOT NULL
+        , dst_title VARCHAR(255) NOT NULL
         , currency_start FLOAT NOT NULL
         , currency_close FLOAT NOT NULL
         , flow_num INT NOT NULL
         , parent_flow_num INT NULL
         , river_tree_level INT NOT NULL
-        , FOREIGN KEY(currency_name) REFERENCES contractunits(name)
-        , FOREIGN KEY(src_name) REFERENCES contractunits(name)
-        , FOREIGN KEY(dst_name) REFERENCES contractunits(name)
+        , FOREIGN KEY(currency_title) REFERENCES contractunits(title)
+        , FOREIGN KEY(src_title) REFERENCES contractunits(title)
+        , FOREIGN KEY(dst_title) REFERENCES contractunits(title)
         )
         ;
     """
@@ -39,8 +39,8 @@ def get_river_flow_table_create_sqlstr() -> str:
 @dataclass
 class RiverFlowUnit:
     currency_contract_owner: str
-    src_name: str
-    dst_name: str
+    src_title: str
+    dst_title: str
     currency_start: float
     currency_close: float
     flow_num: int
@@ -48,7 +48,7 @@ class RiverFlowUnit:
     river_tree_level: int
 
     def flow_returned(self) -> bool:
-        return self.currency_contract_owner == self.dst_name
+        return self.currency_contract_owner == self.dst_title
 
 
 def get_river_flow_table_insert_sqlstr(
@@ -56,9 +56,9 @@ def get_river_flow_table_insert_sqlstr(
 ) -> str:
     return f"""
         INSERT INTO river_flow (
-          currency_name
-        , src_name
-        , dst_name
+          currency_title
+        , src_title
+        , dst_title
         , currency_start 
         , currency_close
         , flow_num
@@ -67,8 +67,8 @@ def get_river_flow_table_insert_sqlstr(
         )
         VALUES (
           '{river_flow_x.currency_contract_owner}'
-        , '{river_flow_x.src_name}'
-        , '{river_flow_x.dst_name}'
+        , '{river_flow_x.src_title}'
+        , '{river_flow_x.dst_title}'
         , {sqlite_null(river_flow_x.currency_start)}
         , {sqlite_null(river_flow_x.currency_close)}
         , {river_flow_x.flow_num}
@@ -84,16 +84,16 @@ def get_river_flow_dict(
 ) -> dict[str:RiverFlowUnit]:
     sqlstr = f"""
         SELECT 
-          currency_name
-        , src_name
-        , dst_name
+          currency_title
+        , src_title
+        , dst_title
         , currency_start
         , currency_close
         , flow_num
         , parent_flow_num
         , river_tree_level
         FROM river_flow
-        WHERE currency_name = '{currency_contract_owner}' 
+        WHERE currency_title = '{currency_contract_owner}' 
         ;
     """
     dict_x = {}
@@ -104,8 +104,8 @@ def get_river_flow_dict(
     for count_x, row in enumerate(results_x):
         river_flow_x = RiverFlowUnit(
             currency_contract_owner=row[0],
-            src_name=row[1],
-            dst_name=row[2],
+            src_title=row[1],
+            dst_title=row[2],
             currency_start=row[3],
             currency_close=row[4],
             flow_num=row[5],
@@ -119,7 +119,7 @@ def get_river_flow_dict(
 def get_river_bucket_table_delete_sqlstr(currency_contract_owner: str) -> str:
     return f"""
         DELETE FROM river_bucket
-        WHERE currency_name = '{currency_contract_owner}' 
+        WHERE currency_title = '{currency_contract_owner}' 
         ;
     """
 
@@ -127,13 +127,13 @@ def get_river_bucket_table_delete_sqlstr(currency_contract_owner: str) -> str:
 def get_river_bucket_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS river_bucket (
-          currency_name VARCHAR(255) NOT NULL
-        , dst_name VARCHAR(255) NOT NULL
+          currency_title VARCHAR(255) NOT NULL
+        , dst_title VARCHAR(255) NOT NULL
         , bucket_num INT NOT NULL
         , curr_start FLOAT NOT NULL
         , curr_close FLOAT NOT NULL
-        , FOREIGN KEY(currency_name) REFERENCES contractunits(name)
-        , FOREIGN KEY(dst_name) REFERENCES contractunits(name)
+        , FOREIGN KEY(currency_title) REFERENCES contractunits(title)
+        , FOREIGN KEY(dst_title) REFERENCES contractunits(title)
         )
     ;
     """
@@ -142,15 +142,15 @@ def get_river_bucket_table_create_sqlstr() -> str:
 def get_river_bucket_table_insert_sqlstr(currency_contract_owner: str) -> str:
     return f"""
         INSERT INTO river_bucket (
-          currency_name
-        , dst_name
+          currency_title
+        , dst_title
         , bucket_num
         , curr_start
         , curr_close
         )
         SELECT 
-          currency_name
-        , dst_name
+          currency_title
+        , dst_title
         , currency_bucket_num
         , min(currency_start) currency_bucket_start
         , max(currency_close) currency_bucket_close
@@ -166,10 +166,10 @@ def get_river_bucket_table_insert_sqlstr(currency_contract_owner: str) -> str:
             END AS step
             , *
             FROM  river_flow
-            WHERE currency_name = '{currency_contract_owner}' and dst_name = currency_name 
+            WHERE currency_title = '{currency_contract_owner}' and dst_title = currency_title 
             ) b
         ) c
-        GROUP BY currency_name, dst_name, currency_bucket_num
+        GROUP BY currency_title, dst_title, currency_bucket_num
         ORDER BY currency_bucket_start
         ;
     """
@@ -177,8 +177,8 @@ def get_river_bucket_table_insert_sqlstr(currency_contract_owner: str) -> str:
 
 @dataclass
 class RiverBucketUnit:
-    currency_name: str
-    dst_name: str
+    currency_title: str
+    dst_title: str
     bucket_num: int
     curr_start: float
     curr_close: float
@@ -189,13 +189,13 @@ def get_river_bucket_dict(
 ) -> dict[str:RiverBucketUnit]:
     sqlstr = f"""
         SELECT
-          currency_name
-        , dst_name
+          currency_title
+        , dst_title
         , bucket_num
         , curr_start
         , curr_close
         FROM river_bucket
-        WHERE currency_name = '{currency_contract_owner}'
+        WHERE currency_title = '{currency_contract_owner}'
         ;
     """
     dict_x = {}
@@ -203,8 +203,8 @@ def get_river_bucket_dict(
 
     for row in results.fetchall():
         river_bucket_x = RiverBucketUnit(
-            currency_name=row[0],
-            dst_name=row[1],
+            currency_title=row[0],
+            dst_title=row[1],
             bucket_num=row[2],
             curr_start=row[3],
             curr_close=row[4],
@@ -216,7 +216,7 @@ def get_river_bucket_dict(
 def get_river_tparty_table_delete_sqlstr(currency_contract_owner: str) -> str:
     return f"""
         DELETE FROM river_tparty
-        WHERE currency_name = '{currency_contract_owner}' 
+        WHERE currency_title = '{currency_contract_owner}' 
         ;
     """
 
@@ -224,13 +224,13 @@ def get_river_tparty_table_delete_sqlstr(currency_contract_owner: str) -> str:
 def get_river_tparty_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS river_tparty (
-          currency_name VARCHAR(255) NOT NULL
-        , tax_name VARCHAR(255) NOT NULL
+          currency_title VARCHAR(255) NOT NULL
+        , tax_title VARCHAR(255) NOT NULL
         , tax_total FLOAT NOT NULL
         , debt FLOAT NULL
         , tax_diff FLOAT NULL
-        , FOREIGN KEY(currency_name) REFERENCES contractunits(name)
-        , FOREIGN KEY(tax_name) REFERENCES contractunits(name)
+        , FOREIGN KEY(currency_title) REFERENCES contractunits(title)
+        , FOREIGN KEY(tax_title) REFERENCES contractunits(title)
         )
     ;
     """
@@ -239,30 +239,30 @@ def get_river_tparty_table_create_sqlstr() -> str:
 def get_river_tparty_table_insert_sqlstr(currency_contract_owner: str) -> str:
     return f"""
         INSERT INTO river_tparty (
-          currency_name
-        , tax_name
+          currency_title
+        , tax_title
         , tax_total
         , debt
         , tax_diff
         )
         SELECT 
-          rt.currency_name
-        , rt.src_name
+          rt.currency_title
+        , rt.src_title
         , SUM(rt.currency_close-rt.currency_start) tax_paid
         , l._contract_agenda_ratio_debt
         , l._contract_agenda_ratio_debt - SUM(rt.currency_close-rt.currency_start)
         FROM river_flow rt
-        LEFT JOIN ledger l ON l.contract_owner = rt.currency_name AND l.party_name = rt.src_name
-        WHERE rt.currency_name='{currency_contract_owner}' and rt.dst_name=rt.currency_name
-        GROUP BY rt.currency_name, rt.src_name
+        LEFT JOIN ledger l ON l.contract_owner = rt.currency_title AND l.party_title = rt.src_title
+        WHERE rt.currency_title='{currency_contract_owner}' and rt.dst_title=rt.currency_title
+        GROUP BY rt.currency_title, rt.src_title
         ;
     """
 
 
 @dataclass
 class RiverTpartyUnit:
-    currency_name: str
-    tax_name: str
+    currency_title: str
+    tax_title: str
     tax_total: float
     debt: float
     tax_diff: float
@@ -273,13 +273,13 @@ def get_river_tparty_dict(
 ) -> dict[str:RiverTpartyUnit]:
     sqlstr = f"""
         SELECT
-          currency_name
-        , tax_name
+          currency_title
+        , tax_title
         , tax_total
         , debt
         , tax_diff
         FROM river_tparty
-        WHERE currency_name = '{currency_contract_owner}'
+        WHERE currency_title = '{currency_contract_owner}'
         ;
     """
     dict_x = {}
@@ -287,21 +287,21 @@ def get_river_tparty_dict(
 
     for row in results.fetchall():
         river_tparty_x = RiverTpartyUnit(
-            currency_name=row[0],
-            tax_name=row[1],
+            currency_title=row[0],
+            tax_title=row[1],
             tax_total=row[2],
             debt=row[3],
             tax_diff=row[4],
         )
-        dict_x[river_tparty_x.tax_name] = river_tparty_x
+        dict_x[river_tparty_x.tax_title] = river_tparty_x
     return dict_x
 
 
 def get_contract_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS contractunits (
-          name VARCHAR(255) PRIMARY KEY ASC
-        , UNIQUE(name)
+          title VARCHAR(255) PRIMARY KEY ASC
+        , UNIQUE(title)
         )
     ;
     """
@@ -310,7 +310,7 @@ def get_contract_table_create_sqlstr() -> str:
 def get_contract_table_insert_sqlstr(contract_x: ContractUnit) -> str:
     return f"""
         INSERT INTO contractunits (
-            name
+            title
             )
         VALUES (
             '{contract_x._owner}' 
@@ -323,7 +323,7 @@ def get_ledger_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS ledger (
           contract_owner INTEGER 
-        , party_name INTEGER
+        , party_title INTEGER
         , _contract_credit FLOAT
         , _contract_debt FLOAT
         , _contract_agenda_credit FLOAT
@@ -332,9 +332,9 @@ def get_ledger_table_create_sqlstr() -> str:
         , _contract_agenda_ratio_debt FLOAT
         , _creditor_active INT
         , _debtor_active INT
-        , FOREIGN KEY(contract_owner) REFERENCES contractunits(name)
-        , FOREIGN KEY(party_name) REFERENCES contractunits(name)
-        , UNIQUE(contract_owner, party_name)
+        , FOREIGN KEY(contract_owner) REFERENCES contractunits(title)
+        , FOREIGN KEY(party_title) REFERENCES contractunits(title)
+        , UNIQUE(contract_owner, party_title)
         )
     ;
     """
@@ -346,7 +346,7 @@ def get_ledger_table_insert_sqlstr(
     return f"""
         INSERT INTO ledger (
               contract_owner
-            , party_name
+            , party_title
             , _contract_credit
             , _contract_debt
             , _contract_agenda_credit
@@ -358,7 +358,7 @@ def get_ledger_table_insert_sqlstr(
             )
         VALUES (
             '{contract_x._owner}' 
-            , '{partyunit_x.name}'
+            , '{partyunit_x.title}'
             , {sqlite_null(partyunit_x._contract_credit)} 
             , {sqlite_null(partyunit_x._contract_debt)}
             , {sqlite_null(partyunit_x._contract_agenda_credit)}
@@ -375,7 +375,7 @@ def get_ledger_table_insert_sqlstr(
 @dataclass
 class LedgerUnit:
     contract_owner: str
-    party_name: str
+    party_title: str
     _contract_credit: float
     _contract_debt: float
     _contract_agenda_credit: float
@@ -386,11 +386,11 @@ class LedgerUnit:
     _debtor_active: float
 
 
-def get_ledger_dict(db_conn: Connection, payer_name: str) -> dict[str:LedgerUnit]:
+def get_ledger_dict(db_conn: Connection, payer_title: str) -> dict[str:LedgerUnit]:
     sqlstr = f"""
         SELECT 
           contract_owner
-        , party_name
+        , party_title
         , _contract_credit
         , _contract_debt
         , _contract_agenda_credit
@@ -400,7 +400,7 @@ def get_ledger_dict(db_conn: Connection, payer_name: str) -> dict[str:LedgerUnit
         , _creditor_active
         , _debtor_active
         FROM ledger
-        WHERE contract_owner = '{payer_name}' 
+        WHERE contract_owner = '{payer_title}' 
         ;
     """
     dict_x = {}
@@ -409,7 +409,7 @@ def get_ledger_dict(db_conn: Connection, payer_name: str) -> dict[str:LedgerUnit
     for row in results.fetchall():
         ledger_x = LedgerUnit(
             contract_owner=row[0],
-            party_name=row[1],
+            party_title=row[1],
             _contract_credit=row[2],
             _contract_debt=row[3],
             _contract_agenda_credit=row[4],
@@ -419,7 +419,7 @@ def get_ledger_dict(db_conn: Connection, payer_name: str) -> dict[str:LedgerUnit
             _creditor_active=row[8],
             _debtor_active=row[9],
         )
-        dict_x[ledger_x.party_name] = ledger_x
+        dict_x[ledger_x.party_title] = ledger_x
     return dict_x
 
 
@@ -439,9 +439,9 @@ class RiverLedgerUnit:
 def get_river_ledger_unit(
     db_conn: Connection, river_flow_x: RiverFlowUnit = None
 ) -> RiverLedgerUnit:
-    ledger_x = get_ledger_dict(db_conn, river_flow_x.dst_name)
+    ledger_x = get_ledger_dict(db_conn, river_flow_x.dst_title)
     return RiverLedgerUnit(
-        contract_owner=river_flow_x.dst_name,
+        contract_owner=river_flow_x.dst_title,
         currency_onset=river_flow_x.currency_start,
         currency_cease=river_flow_x.currency_close,
         _ledgers=ledger_x,

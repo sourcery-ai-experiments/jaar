@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
-  <property name="geometry">
+ <widget class="QMainWindow" title="MainWindow">
+  <property title="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -10,12 +10,12 @@
     <height>914</height>
    </rect>
   </property>
-  <property name="windowTag">
+  <property title="windowTag">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="editmain_button">
-    <property name="geometry">
+  <widget class="QWidget" title="centralwidget">
+   <widget class="QPushButton" title="editmain_button">
+    <property title="geometry">
      <rect>
       <x>390</x>
       <y>270</y>
@@ -23,12 +23,12 @@
       <height>30</height>
      </rect>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Contracts /  Party /  dimension</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="acptfact_open_lower_spec1">
-    <property name="geometry">
+   <widget class="QPushButton" title="acptfact_open_lower_spec1">
+    <property title="geometry">
      <rect>
       <x>200</x>
       <y>190</y>
@@ -36,17 +36,17 @@
       <height>21</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>set minutes next midnight</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="acptfact_nigh_now">
-    <property name="geometry">
+   <widget class="QPushButton" title="acptfact_nigh_now">
+    <property title="geometry">
      <rect>
       <x>30</x>
       <y>170</y>
@@ -54,12 +54,12 @@
       <height>21</height>
      </rect>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Update nigh to Now</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="agenda_task_complete">
-    <property name="geometry">
+   <widget class="QPushButton" title="agenda_task_complete">
+    <property title="geometry">
      <rect>
       <x>30</x>
       <y>270</y>
@@ -67,12 +67,12 @@
       <height>30</height>
      </rect>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Complete Promise</string>
     </property>
    </widget>
-   <widget class="QLabel" name="root_datetime_prev_l">
-    <property name="geometry">
+   <widget class="QLabel" title="root_datetime_prev_l">
+    <property title="geometry">
      <rect>
       <x>30</x>
       <y>50</y>
@@ -80,7 +80,7 @@
       <height>51</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <family>Courier New</family>
       <pointsize>36</pointsize>
@@ -88,12 +88,12 @@
       <bold>true</bold>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Past:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="root_datetime_curr_l">
-    <property name="geometry">
+   <widget class="QLabel" title="root_datetime_curr_l">
+    <property title="geometry">
      <rect>
       <x>30</x>
       <y>120</y>
@@ -101,7 +101,7 @@
       <height>51</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <family>Courier New</family>
       <pointsize>36</pointsize>
@@ -109,12 +109,12 @@
       <bold>true</bold>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Now:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
+   <widget class="QLabel" title="label_2">
+    <property title="geometry">
      <rect>
       <x>30</x>
       <y>100</y>
@@ -122,12 +122,12 @@
       <height>16</height>
      </rect>
     </property>
-    <property name="text">
+    <property title="text">
      <string>What is your present?</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
+   <widget class="QLabel" title="label_3">
+    <property title="geometry">
      <rect>
       <x>30</x>
       <y>30</y>
@@ -135,12 +135,12 @@
       <height>16</height>
      </rect>
     </property>
-    <property name="text">
+    <property title="text">
      <string>When is the past you have not let go?</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_agenda_label_header">
-    <property name="geometry">
+   <widget class="QLabel" title="label_agenda_label_header">
+    <property title="geometry">
      <rect>
       <x>30</x>
       <y>340</y>
@@ -148,17 +148,17 @@
       <height>41</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>14</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Description</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="root_datetime_view">
-    <property name="geometry">
+   <widget class="QPushButton" title="root_datetime_view">
+    <property title="geometry">
      <rect>
       <x>590</x>
       <y>170</y>
@@ -166,12 +166,12 @@
       <height>41</height>
      </rect>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Manuparty change</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="lobby_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="lobby_button">
+    <property title="geometry">
      <rect>
       <x>380</x>
       <y>810</y>
@@ -179,12 +179,12 @@
       <height>24</height>
      </rect>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Lobby Someone</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_7">
-    <property name="geometry">
+   <widget class="QLabel" title="label_7">
+    <property title="geometry">
      <rect>
       <x>130</x>
       <y>840</y>
@@ -192,12 +192,12 @@
       <height>16</height>
      </rect>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Who you are right now. What's missing...</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="cb_update_now_repeat">
-    <property name="geometry">
+   <widget class="QCheckBox" title="cb_update_now_repeat">
+    <property title="geometry">
      <rect>
       <x>30</x>
       <y>220</y>
@@ -205,17 +205,17 @@
       <height>41</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>18</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Update now per</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_time_display">
-    <property name="geometry">
+   <widget class="QLabel" title="label_time_display">
+    <property title="geometry">
      <rect>
       <x>30</x>
       <y>210</y>
@@ -223,12 +223,12 @@
       <height>16</height>
      </rect>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Current Time:</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="edit_agenda_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="edit_agenda_button">
+    <property title="geometry">
      <rect>
       <x>250</x>
       <y>270</y>
@@ -236,12 +236,12 @@
       <height>30</height>
      </rect>
     </property>
-    <property name="text">
+    <property title="text">
      <string>view current agenda</string>
     </property>
    </widget>
-   <widget class="QTableWidget" name="acptfacts_table">
-    <property name="geometry">
+   <widget class="QTableWidget" title="acptfacts_table">
+    <property title="geometry">
      <rect>
       <x>1270</x>
       <y>390</y>
@@ -250,38 +250,38 @@
      </rect>
     </property>
     <column>
-     <property name="text">
+     <property title="text">
       <string>AcptFactBase</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string>AcptFactPick</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string>Base</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string>Pick</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string>Open</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string>Close</string>
      </property>
     </column>
    </widget>
-   <widget class="QLabel" name="contract_l">
-    <property name="geometry">
+   <widget class="QLabel" title="contract_l">
+    <property title="geometry">
      <rect>
       <x>30</x>
       <y>10</y>
@@ -289,12 +289,12 @@
       <height>16</height>
      </rect>
     </property>
-    <property name="text">
+    <property title="text">
      <string>CONTRACT: </string>
     </property>
    </widget>
-   <widget class="QPushButton" name="lw_label_update_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="lw_label_update_button">
+    <property title="geometry">
      <rect>
       <x>310</x>
       <y>10</y>
@@ -302,12 +302,12 @@
       <height>21</height>
      </rect>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Update</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="contract_owner">
-    <property name="geometry">
+   <widget class="QLineEdit" title="contract_owner">
+    <property title="geometry">
      <rect>
       <x>100</x>
       <y>10</y>
@@ -316,8 +316,8 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLabel" name="label_agenda_day_header">
-    <property name="geometry">
+   <widget class="QLabel" title="label_agenda_day_header">
+    <property title="geometry">
      <rect>
       <x>30</x>
       <y>500</y>
@@ -325,17 +325,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>20</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Day:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_agenda_time_header">
-    <property name="geometry">
+   <widget class="QLabel" title="label_agenda_time_header">
+    <property title="geometry">
      <rect>
       <x>30</x>
       <y>560</y>
@@ -343,17 +343,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>20</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Time:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_agenda_end_header">
-    <property name="geometry">
+   <widget class="QLabel" title="label_agenda_end_header">
+    <property title="geometry">
      <rect>
       <x>30</x>
       <y>610</y>
@@ -361,17 +361,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>20</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>End:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_agenda_contract_importance_header1">
-    <property name="geometry">
+   <widget class="QLabel" title="label_agenda_contract_importance_header1">
+    <property title="geometry">
      <rect>
       <x>30</x>
       <y>640</y>
@@ -379,17 +379,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>11</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>root_relative</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_agenda_family_header1">
-    <property name="geometry">
+   <widget class="QLabel" title="label_agenda_family_header1">
+    <property title="geometry">
      <rect>
       <x>30</x>
       <y>700</y>
@@ -397,17 +397,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>12</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Agenda</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_agenda_road_header">
-    <property name="geometry">
+   <widget class="QLabel" title="label_agenda_road_header">
+    <property title="geometry">
      <rect>
       <x>30</x>
       <y>320</y>
@@ -415,17 +415,17 @@
       <height>41</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Road:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_agenda_label_data">
-    <property name="geometry">
+   <widget class="QLabel" title="label_agenda_label_data">
+    <property title="geometry">
      <rect>
       <x>150</x>
       <y>340</y>
@@ -433,20 +433,20 @@
       <height>71</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>36</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string/>
     </property>
-    <property name="wordWrap">
+    <property title="wordWrap">
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="label_agenda_family_header2">
-    <property name="geometry">
+   <widget class="QLabel" title="label_agenda_family_header2">
+    <property title="geometry">
      <rect>
       <x>30</x>
       <y>720</y>
@@ -454,17 +454,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>12</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Family:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_agenda_contract_importance_header2">
-    <property name="geometry">
+   <widget class="QLabel" title="label_agenda_contract_importance_header2">
+    <property title="geometry">
      <rect>
       <x>30</x>
       <y>660</y>
@@ -472,17 +472,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>11</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>weight:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_agenda_road_data">
-    <property name="geometry">
+   <widget class="QLabel" title="label_agenda_road_data">
+    <property title="geometry">
      <rect>
       <x>80</x>
       <y>330</y>
@@ -490,19 +490,19 @@
       <height>21</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Idea_id:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_agenda_family_data">
-    <property name="geometry">
+   <widget class="QLabel" title="label_agenda_family_data">
+    <property title="geometry">
      <rect>
       <x>130</x>
       <y>710</y>
@@ -510,19 +510,19 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>22</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Agenda</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_agenda_contract_importance_data">
-    <property name="geometry">
+   <widget class="QLabel" title="label_agenda_contract_importance_data">
+    <property title="geometry">
      <rect>
       <x>130</x>
       <y>650</y>
@@ -530,19 +530,19 @@
       <height>41</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>22</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>weight:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_agenda_end_data">
-    <property name="geometry">
+   <widget class="QLabel" title="label_agenda_end_data">
+    <property title="geometry">
      <rect>
       <x>130</x>
       <y>610</y>
@@ -550,19 +550,19 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>20</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>End:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_agenda_time_data">
-    <property name="geometry">
+   <widget class="QLabel" title="label_agenda_time_data">
+    <property title="geometry">
      <rect>
       <x>130</x>
       <y>560</y>
@@ -570,19 +570,19 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>20</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Time:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_agenda_day_data">
-    <property name="geometry">
+   <widget class="QLabel" title="label_agenda_day_data">
+    <property title="geometry">
      <rect>
       <x>130</x>
       <y>500</y>
@@ -590,19 +590,19 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>20</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Day:</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="update_now_time_frame">
-    <property name="geometry">
+   <widget class="QComboBox" title="update_now_time_frame">
+    <property title="geometry">
      <rect>
       <x>280</x>
       <y>230</y>
@@ -610,14 +610,14 @@
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>14</pointsize>
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" name="acptfact_open_soft_spec1">
-    <property name="geometry">
+   <widget class="QPushButton" title="acptfact_open_soft_spec1">
+    <property title="geometry">
      <rect>
       <x>380</x>
       <y>190</y>
@@ -625,12 +625,12 @@
       <height>21</height>
      </rect>
     </property>
-    <property name="text">
+    <property title="text">
      <string>&quot;Soft&quot; moving up the past</string>
     </property>
    </widget>
-   <widget class="QTableWidget" name="agenda_states">
-    <property name="geometry">
+   <widget class="QTableWidget" title="agenda_states">
+    <property title="geometry">
      <rect>
       <x>1020</x>
       <y>30</y>
@@ -638,52 +638,52 @@
       <height>351</height>
      </rect>
     </property>
-    <property name="sizeAdjustPolicy">
+    <property title="sizeAdjustPolicy">
      <enum>QAbstractScrollArea::AdjustToContents</enum>
     </property>
     <column>
-     <property name="text">
+     <property title="text">
       <string>rank</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string>label</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string>contract_importance</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string>idea_road</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string>branch_percent</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string>jaja_open</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string>jaja_nigh</string>
      </property>
     </column>
     <column>
-     <property name="text">
+     <property title="text">
       <string>range_source_road</string>
      </property>
     </column>
    </widget>
-   <widget class="QLabel" name="label_8">
-    <property name="geometry">
+   <widget class="QLabel" title="label_8">
+    <property title="geometry">
      <rect>
       <x>430</x>
       <y>840</y>
@@ -691,12 +691,12 @@
       <height>20</height>
      </rect>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Things you promised to be right now</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="acptfact_open_5daysago">
-    <property name="geometry">
+   <widget class="QPushButton" title="acptfact_open_5daysago">
+    <property title="geometry">
      <rect>
       <x>30</x>
       <y>190</y>
@@ -704,17 +704,17 @@
       <height>21</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Set open 5 days ago</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_last_label">
-    <property name="geometry">
+   <widget class="QLabel" title="label_last_label">
+    <property title="geometry">
      <rect>
       <x>120</x>
       <y>300</y>
@@ -722,19 +722,19 @@
       <height>21</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label_last_burb">
-    <property name="geometry">
+   <widget class="QLabel" title="label_last_burb">
+    <property title="geometry">
      <rect>
       <x>30</x>
       <y>300</y>
@@ -742,17 +742,17 @@
       <height>21</height>
      </rect>
     </property>
-    <property name="font">
+    <property title="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Last Complete:</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="problem_popup_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="problem_popup_button">
+    <property title="geometry">
      <rect>
       <x>750</x>
       <y>170</y>
@@ -760,12 +760,12 @@
       <height>41</height>
      </rect>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Problem Creation</string>
     </property>
    </widget>
-   <widget class="QLabel" name="current_file_path_l">
-    <property name="geometry">
+   <widget class="QLabel" title="current_file_path_l">
+    <property title="geometry">
      <rect>
       <x>540</x>
       <y>10</y>
@@ -773,12 +773,12 @@
       <height>20</height>
      </rect>
     </property>
-    <property name="text">
+    <property title="text">
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="save_close_button">
-    <property name="geometry">
+   <widget class="QPushButton" title="save_close_button">
+    <property title="geometry">
      <rect>
       <x>420</x>
       <y>10</y>
@@ -786,13 +786,13 @@
       <height>21</height>
      </rect>
     </property>
-    <property name="text">
+    <property title="text">
      <string>Save And Close</string>
     </property>
    </widget>
   </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
+  <widget class="QMenuBar" title="menubar">
+   <property title="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
@@ -800,44 +800,44 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="accessibleName">
+   <property title="accessibleTitle">
     <string>File</string>
    </property>
-   <property name="accessibleDescription">
+   <property title="accessibleDescription">
     <string>General Operations</string>
    </property>
-   <widget class="QMenu" name="file_menu">
-    <property name="tag">
+   <widget class="QMenu" title="file_menu">
+    <property title="tag">
      <string>File</string>
     </property>
-    <addaction name="fm_new"/>
-    <addaction name="fm_open"/>
-    <addaction name="fm_save"/>
-    <addaction name="save_as"/>
+    <addaction title="fm_new"/>
+    <addaction title="fm_open"/>
+    <addaction title="fm_save"/>
+    <addaction title="save_as"/>
    </widget>
-   <addaction name="file_menu"/>
+   <addaction title="file_menu"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
-  <action name="fm_open">
-   <property name="checkable">
+  <widget class="QStatusBar" title="statusbar"/>
+  <action title="fm_open">
+   <property title="checkable">
     <bool>false</bool>
    </property>
-   <property name="text">
+   <property title="text">
     <string>Open</string>
    </property>
   </action>
-  <action name="fm_save">
-   <property name="text">
+  <action title="fm_save">
+   <property title="text">
     <string>Save</string>
    </property>
   </action>
-  <action name="save_as">
-   <property name="text">
+  <action title="save_as">
+   <property title="text">
     <string>Save as...</string>
    </property>
   </action>
-  <action name="fm_new">
-   <property name="text">
+  <action title="fm_new">
+   <property title="text">
     <string>New</string>
    </property>
   </action>
