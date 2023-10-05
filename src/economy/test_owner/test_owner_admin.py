@@ -1,15 +1,18 @@
+from src.contract.x_func import (
+    open_file as x_func_open_file,
+    save_file as x_func_save_file,
+)
 from src.economy.owner import OwnerAdmin, owneradmin_shop
-import src.economy.examples.example_owners as example_owners
+from src.economy.examples.example_owners import (
+    get_6node_contract as example_owners_get_6node_contract,
+    get_6node_contract as example_owners_get_7nodeJRootWithH_contract,
+)
 from src.economy.examples.owner_env_kit import (
     get_temp_owner_dir,
     get_temp_economy_title,
     owner_dir_setup_cleanup,
 )
 from os import path as os_path
-from src.contract.x_func import (
-    open_file as x_func_open_file,
-    save_file as x_func_save_file,
-)
 
 
 def test_admin_exists():
@@ -115,7 +118,7 @@ def test_OwnerAdmin_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path.exists(pdx._contracts_bond_dir) is False
 
     # WHEN
-    contract_x = example_owners.get_7nodeJRootWithH_contract()
+    contract_x = example_owners_get_7nodeJRootWithH_contract()
     pdx.create_core_dir_and_files(contract_x)
 
     # THEN check contracts src directory created
@@ -139,7 +142,7 @@ def test_OwnerAdmin_create_core_dir_and_files_DoesNotOverWriteIsolContract(
     env_dir = get_temp_owner_dir()
     jul_pdx = OwnerAdmin(jul_text, env_dir, get_temp_economy_title())
     jul_pdx.set_dirs()
-    contract_x = example_owners.get_7nodeJRootWithH_contract()
+    contract_x = example_owners_get_7nodeJRootWithH_contract()
     jul_pdx.create_core_dir_and_files(contract_x)
     assert os_path.exists(jul_pdx._isol_file_path)
     # jul_cx = contract_get_from_json(x_func_open_file(jul_pdx._isol_file_path))
@@ -164,7 +167,7 @@ def test_OwnerAdmin_set_owner_name_WorksCorrectly(owner_dir_setup_cleanup):
 
     old_owner_text = "bob"
     pdx = OwnerAdmin(old_owner_text, env_dir, get_temp_economy_title())
-    contract_x = example_owners.get_7nodeJRootWithH_contract()
+    contract_x = example_owners_get_7nodeJRootWithH_contract()
     pdx.set_dirs()
     pdx.create_core_dir_and_files(contract_x)
     old_owner_dir = pdx._owner_dir
@@ -203,7 +206,7 @@ def test_ownerunit_auto_output_to_public_SavesContractToPublicDir(
     # GIVEN
     bob_text = "bob"
     pdx = owneradmin_shop(bob_text, get_temp_owner_dir(), get_temp_economy_title())
-    contract_x = example_owners.get_6node_contract()
+    contract_x = example_owners_get_6node_contract()
     contract_x.set_owner(new_owner=bob_text)
     pdx.create_core_dir_and_files(contract_x)
 

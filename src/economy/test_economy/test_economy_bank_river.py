@@ -1,5 +1,5 @@
-from src.economy.economy import economyunit_shop
 from src.contract.contract import ContractUnit
+from src.economy.economy import economyunit_shop
 from src.economy.examples.economy_env_kit import (
     get_temp_env_title,
     get_test_economys_dir,

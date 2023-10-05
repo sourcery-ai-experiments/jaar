@@ -1,7 +1,7 @@
-from src.economy.economy import economyunit_shop
 from src.contract.examples.example_contracts import (
     contract_v002 as ex_cxs_contract_v002,
 )
+from src.economy.economy import economyunit_shop
 from src.economy.examples.example_owners import (
     get_6node_contract as example_owners_get_6node_contract,
     get_contract_2CleanNodesRandomWeights,

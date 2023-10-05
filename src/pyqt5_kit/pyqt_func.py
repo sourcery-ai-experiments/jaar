@@ -1,7 +1,5 @@
-from src.contract.contract import ContractUnit
-from src.contract.idea import IdeaCore
+from src.contract.contract import ContractUnit, IdeaCore
 from PyQt5.QtWidgets import QTreeWidgetItem
-from src.contract.road import get_terminus_node_from_road
 from dataclasses import dataclass
 
 

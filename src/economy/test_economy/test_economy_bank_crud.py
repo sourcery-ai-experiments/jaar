@@ -1,8 +1,5 @@
+from src.contract.contract import ContractUnit, IdeaKid, groupunit_shop, partylink_shop
 from src.economy.economy import economyunit_shop
-from src.contract.contract import ContractUnit
-from src.contract.idea import IdeaKid
-from src.contract.group import groupunit_shop
-from src.contract.party import partylink_shop
 from src.economy.examples.economy_env_kit import (
     get_temp_env_title,
     get_test_economys_dir,

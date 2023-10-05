@@ -1,3 +1,8 @@
+from src.contract.contract import ContractUnit, get_from_json as contract_get_from_json
+from src.contract.x_func import (
+    count_files as x_func_count_files,
+    open_file as x_func_open_file,
+)
 from src.economy.owner import ownerunit_shop
 from src.economy.examples.example_owners import (
     get_2node_contract,
@@ -15,11 +20,6 @@ from src.economy.examples.economy_env_kit import get_temp_env_title
 from src.economy.economy import economyunit_shop
 from os import path as os_path
 from pytest import raises as pytest_raises
-from src.contract.contract import ContractUnit, get_from_json as contract_get_from_json
-from src.contract.x_func import (
-    count_files as x_func_count_files,
-    open_file as x_func_open_file,
-)
 
 
 def test_ownerunit_set_depotlink_RaisesErrorWhenContractDoesNotExist(

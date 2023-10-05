@@ -1,6 +1,6 @@
-from src.economy.economy import EconomyUnit, economyunit_shop
 from src.contract.x_func import delete_dir as x_func_delete_dir
 from os import path as os_path
+from src.economy.economy import EconomyUnit, economyunit_shop
 from src.economy.examples.economy_env_kit import (
     get_temp_env_title,
     get_test_economys_dir,

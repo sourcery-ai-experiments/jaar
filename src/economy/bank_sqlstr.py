@@ -1,8 +1,6 @@
-from src.contract.contract import ContractUnit
-from src.contract.party import PartyUnit
+from src.contract.contract import ContractUnit, PartyUnit, Road
 from src.contract.road import get_road_without_root_node
 from src.economy.y_func import sqlite_bool, sqlite_null
-from src.contract.road import Road
 from dataclasses import dataclass
 from sqlite3 import Connection
 

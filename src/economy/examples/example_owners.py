@@ -1,6 +1,4 @@
-from src.contract.contract import ContractUnit
-from src.contract.idea import IdeaKid
-from src.contract.required_assign import assigned_unit_shop
+from src.contract.contract import ContractUnit, IdeaKid, assigned_unit_shop
 from src.economy.owner import ownerunit_shop, OwnerUnit
 from src.economy.examples.owner_env_kit import get_temp_economy_title
 

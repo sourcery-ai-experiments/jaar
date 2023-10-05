@@ -4,7 +4,6 @@ from src.economy.examples.economy_env_kit import (
     env_dir_setup_cleanup,
     get_test_economys_dir,
 )
-from src.contract.contract import ContractUnit
 from src.economy.examples.example_owners import get_contract_assignment_laundry_example1
 
 

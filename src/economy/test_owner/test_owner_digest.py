@@ -1,20 +1,22 @@
-from src.economy.owner import ownerunit_shop
-from src.contract.contract import ContractUnit
+from src.contract.contract import ContractUnit, originunit_shop
 from src.contract.examples.example_contracts import (
     get_contract_with_4_levels as example_contracts_get_contract_with_4_levels,
 )
-import src.economy.examples.example_owners as example_owners
+from src.contract.x_func import (
+    open_file as x_func_open_file,
+    count_files as x_func_count_files,
+)
+from src.economy.owner import ownerunit_shop
+from src.economy.examples.example_owners import (
+    get_2node_contract as example_owners_get_2node_contract,
+    get_7nodeJRoot_contract as example_owners_get_7nodeJRoot_contract,
+)
 from src.economy.examples.owner_env_kit import (
     owner_dir_setup_cleanup,
     get_temp_owner_dir,
     get_temp_economy_title,
 )
-from src.contract.origin import originunit_shop
 from os import path as os_path
-from src.contract.x_func import (
-    open_file as x_func_open_file,
-    count_files as x_func_count_files,
-)
 from pytest import raises as pytest_raises
 
 
@@ -158,7 +160,7 @@ def test_ownerunit_save_contract_to_digest_SavesFileCorrectly(
     env_dir = get_temp_owner_dir()
     ux = ownerunit_shop(owner_name, env_dir, get_temp_economy_title())
     ux.create_core_dir_and_files()
-    cx = example_owners.get_2node_contract()
+    cx = example_owners_get_2node_contract()
     src_contract_owner = cx._owner
     assert x_func_count_files(ux._admin._contracts_digest_dir) == 0
 
@@ -188,7 +190,7 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestContract(
     env_dir = get_temp_owner_dir()
     sue_cx = ownerunit_shop(sue_text, env_dir, get_temp_economy_title())
     sue_cx.create_core_dir_and_files()
-    cx = example_owners.get_2node_contract()
+    cx = example_owners_get_2node_contract()
     src_contract_owner = cx._owner
     assert x_func_count_files(sue_cx._admin._contracts_digest_dir) == 0
 
@@ -254,7 +256,7 @@ def test_owner_get_remelded_output_contract_with1DigestedContract(
     assert str(type(sx_output_old)).find(".contract.ContractUnit'>")
     assert sx_output_old._owner == yao_text
     assert sx_output_old._idearoot._label == get_temp_economy_title()
-    input_contract = example_owners.get_2node_contract()
+    input_contract = example_owners_get_2node_contract()
     input_contract.meld(input_contract)
     ux.set_depot_contract(contract_x=input_contract, depotlink_type="blind_trust")
 
@@ -340,7 +342,7 @@ def test_owner_isol_contract_CorrectlysHasOriginLinksWithOwnerAsSource(
     isol_origin_weight = 1
     yao_originunit = originunit_shop()
     yao_originunit.set_originlink(name=yao_text, weight=isol_origin_weight)
-    isol_contract_x = example_owners.get_7nodeJRoot_contract()
+    isol_contract_x = example_owners_get_7nodeJRoot_contract()
     isol_contract_x.set_owner(yao_text)
 
     assert isol_contract_x._idearoot._originunit == originunit_shop()

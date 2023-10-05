@@ -1,20 +1,16 @@
-from src.economy.owner import ownerunit_shop
 from src.contract.contract import ContractUnit
-from src.contract.idea import IdeaRoot
-import src.economy.examples.example_owners as example_owners
-from src.economy.examples.owner_env_kit import (
-    owner_dir_setup_cleanup,
-    get_temp_owner_dir,
-    get_temp_economy_title,
-    create_contract_file,
-)
-from os import path as os_path, scandir as os_scandir
-from pytest import raises as pytest_raises
 from src.contract.x_func import (
     count_files as x_func_count_files,
     open_file as x_func_open_file,
     delete_dir as x_func_delete_dir,
 )
+from src.economy.owner import ownerunit_shop
+from src.economy.examples.owner_env_kit import (
+    owner_dir_setup_cleanup,
+    get_temp_owner_dir,
+    get_temp_economy_title,
+)
+from os import path as os_path
 
 
 def test_ownerunit_exists(owner_dir_setup_cleanup):

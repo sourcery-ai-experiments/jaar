@@ -1,23 +1,5 @@
 # from lw.contract import ContractUnit
-from src.economy.economy import EconomyUnit, economyunit_shop
-from os import listdir as os_listdir, rename as os_rename, path as os_path
-from pytest import fixture as pytest_fixture
-from src.contract.examples.example_contracts import (
-    contract_v001 as example_contracts_contract_v001,
-    contract_v002 as example_contracts_contract_v002,
-    get_contract_1Task_1CE0MinutesRequired_1AcptFact as example_contracts_get_contract_1Task_1CE0MinutesRequired_1AcptFact,
-    get_contract_with7amCleanTableRequired as example_contracts_get_contract_with7amCleanTableRequired,
-    get_contract_base_time_example as example_contracts_get_contract_base_time_example,
-    get_contract_x1_3levels_1required_1acptfacts as example_contracts_get_contract_x1_3levels_1required_1acptfacts,
-)
-from src.economy.examples.example_owners import (
-    get_1node_contract as example_owners_get_1node_contract,
-    get_7nodeJRootWithH_contract as example_owners_get_7nodeJRootWithH_contract,
-    get_contract_2CleanNodesRandomWeights as example_owners_get_contract_2CleanNodesRandomWeights,
-    get_contract_3CleanNodesRandomWeights as example_owners_get_contract_3CleanNodesRandomWeights,
-)
 from src.contract.contract import ContractUnit
-from src.economy.owner import ownerunit_shop
 from src.contract.x_func import (
     single_dir_create_if_null,
     delete_dir as x_func_delete_dir,
@@ -26,6 +8,24 @@ from src.contract.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
 )
+from src.contract.examples.example_contracts import (
+    contract_v001 as example_contracts_contract_v001,
+    contract_v002 as example_contracts_contract_v002,
+    get_contract_1Task_1CE0MinutesRequired_1AcptFact as example_contracts_get_contract_1Task_1CE0MinutesRequired_1AcptFact,
+    get_contract_with7amCleanTableRequired as example_contracts_get_contract_with7amCleanTableRequired,
+    get_contract_base_time_example as example_contracts_get_contract_base_time_example,
+    get_contract_x1_3levels_1required_1acptfacts as example_contracts_get_contract_x1_3levels_1required_1acptfacts,
+)
+
+from src.economy.economy import EconomyUnit, economyunit_shop
+from src.economy.examples.example_owners import (
+    get_1node_contract as example_owners_get_1node_contract,
+    get_7nodeJRootWithH_contract as example_owners_get_7nodeJRootWithH_contract,
+    get_contract_2CleanNodesRandomWeights as example_owners_get_contract_2CleanNodesRandomWeights,
+    get_contract_3CleanNodesRandomWeights as example_owners_get_contract_3CleanNodesRandomWeights,
+)
+from os import listdir as os_listdir, rename as os_rename, path as os_path
+from pytest import fixture as pytest_fixture
 
 
 def get_temp_env_title():

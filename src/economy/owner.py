@@ -1,15 +1,12 @@
-from src.contract.party import get_depotlink_types, partyunit_shop
 from src.contract.contract import (
     get_from_json as contractunit_get_from_json,
     get_dict_of_contract_from_dict,
     get_meld_of_contract_files,
     ContractOwner,
-)
-from src.contract.idea import IdeaRoot
-from src.contract.party import PartyName
-from src.contract.contract import (
     ContractUnit,
+    partyunit_shop,
     get_from_json as contractunit_get_from_json,
+    PartyName,
 )
 from src.contract.x_func import (
     x_get_json,
