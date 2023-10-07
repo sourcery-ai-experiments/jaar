@@ -11,14 +11,15 @@
 # from pytest import raises as pytest_raises
 from src.world.world import WorldUnit, worldunit_shop
 from src.world.examples.world_env_kit import get_test_worlds_dir
+from src.world.person import personunit_shop
 
 
 def test_worldunit_exists():
     dallas_text = "dallas"
-    sx = WorldUnit(mark=dallas_text, worlds_dir=get_test_worlds_dir())
-    assert sx.mark == dallas_text
-    assert sx.worlds_dir == get_test_worlds_dir()
-    assert sx.persons_dir is None
+    wx = WorldUnit(mark=dallas_text, worlds_dir=get_test_worlds_dir())
+    assert wx.mark == dallas_text
+    assert wx.worlds_dir == get_test_worlds_dir()
+    assert wx._persons_dir is None
 
 
 def test_worldunit_shop_ReturnsWorldUnit():
@@ -26,24 +27,25 @@ def test_worldunit_shop_ReturnsWorldUnit():
     dallas_text = "dallas"
 
     # WHEN
-    sx = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
+    wx = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
 
     # THEN
-    assert sx.mark == dallas_text
-    assert sx.worlds_dir == get_test_worlds_dir()
+    assert wx.mark == dallas_text
+    assert wx.worlds_dir == get_test_worlds_dir()
+    assert wx._persons_obj == {}
 
 
 def test_worldunit__set_persondir_SetsPersonDir():
     # GIVEN
     dallas_text = "dallas"
-    sx = WorldUnit(mark=dallas_text, worlds_dir=get_test_worlds_dir())
-    assert sx.persons_dir is None
+    wx = WorldUnit(mark=dallas_text, worlds_dir=get_test_worlds_dir())
+    assert wx._persons_dir is None
 
     # WHEN
-    sx._set_world_dirs()
+    wx._set_world_dirs()
 
     # THEN
-    assert sx.persons_dir == f"{get_test_worlds_dir()}/persons"
+    assert wx._persons_dir == f"{get_test_worlds_dir()}/persons"
 
 
 def test_worldunit_shop_SetsWorldsDirs():
@@ -51,20 +53,38 @@ def test_worldunit_shop_SetsWorldsDirs():
     dallas_text = "dallas"
 
     # WHEN
-    sx = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
+    wx = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
 
     # THEN
-    assert sx.mark == dallas_text
-    assert sx.persons_dir == f"{get_test_worlds_dir()}/persons"
+    assert wx.mark == dallas_text
+    assert wx._persons_dir == f"{get_test_worlds_dir()}/persons"
+
+
+def test_worldunit_set_person_in_memory_CorrectlySetsPerson():
+    # GIVEN
+    dallas_text = "dallas"
+    wx = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
+    assert wx._persons_obj == {}
+
+    # WHEN
+    luca_text = "Luca"
+    luca_person = personunit_shop(name=luca_text)
+    wx.set_person_in_memory(personunit=luca_person)
+
+    # THEN
+    assert wx._persons_obj != {}
+    assert len(wx._persons_obj) == 1
+    assert wx._persons_obj[luca_text] == luca_person
+    assert wx._persons_dir == f"{get_test_worlds_dir()}/persons"
 
 
 # def test_world_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
 #     # GIVEN create world
 #     dallas_text = get_temp_env_mark()
-#     sx = EconomyUnit(mark=dallas_text, worlds_dir=get_test_economys_dir())
-#     print(f"{get_test_economys_dir()=} {sx.economys_dir=}")
-#     # x_func_delete_dir(sx.get_object_root_dir())
-#     print(f"delete {sx.get_object_root_dir()=}")
+#     wx = EconomyUnit(mark=dallas_text, worlds_dir=get_test_economys_dir())
+#     print(f"{get_test_economys_dir()=} {wx.economys_dir=}")
+#     # x_func_delete_dir(wx.get_object_root_dir())
+#     print(f"delete {wx.get_object_root_dir()=}")
 #     economy_dir = f"src/economy/examples/economys/{economy_mark}"
 #     economy_file_title = "economy.json"
 #     economy_file_path = f"{economy_dir}/{economy_file_title}"
@@ -81,7 +101,7 @@ def test_worldunit_shop_SetsWorldsDirs():
 #     assert os_path.exists(bank_file_path) is False
 
 #     # WHEN
-#     sx.create_dirs_if_null(in_memory_bank=False)
+#     wx.create_dirs_if_null(in_memory_bank=False)
 
 #     # THEN check contracts src directory created
 #     assert os_path.exists(economy_dir)
@@ -90,10 +110,10 @@ def test_worldunit_shop_SetsWorldsDirs():
 #     assert os_path.exists(contracts_dir)
 #     assert os_path.exists(owners_dir)
 #     assert os_path.exists(bank_file_path)
-#     assert sx.get_object_root_dir() == economy_dir
-#     assert sx.get_public_dir() == contracts_dir
-#     assert sx.get_owners_dir() == owners_dir
-#     assert sx.get_bank_db_path() == bank_file_path
+#     assert wx.get_object_root_dir() == economy_dir
+#     assert wx.get_public_dir() == contracts_dir
+#     assert wx.get_owners_dir() == owners_dir
+#     assert wx.get_bank_db_path() == bank_file_path
 
 
 # def test_rename_example_economy_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup):
@@ -114,31 +134,31 @@ def test_worldunit_shop_SetsWorldsDirs():
 #     x_func_delete_dir(dir=new_economy_dir)
 #     print(f"{new_economy_dir=}")
 
-#     sx = economyunit_shop(mark=old_economy_mark, economys_dir=get_test_economys_dir())
-#     # x_func_delete_dir(sx.get_object_root_dir())
-#     # print(f"{sx.get_object_root_dir()=}")
+#     wx = economyunit_shop(mark=old_economy_mark, economys_dir=get_test_economys_dir())
+#     # x_func_delete_dir(wx.get_object_root_dir())
+#     # print(f"{wx.get_object_root_dir()=}")
 
-#     sx.create_dirs_if_null(in_memory_bank=True)
+#     wx.create_dirs_if_null(in_memory_bank=True)
 
 #     assert os_path.exists(old_economy_dir)
 #     assert os_path.isdir(old_economy_dir)
 #     assert os_path.exists(old_economy_file_path)
 #     assert os_path.exists(old_contracts_dir)
 #     assert os_path.exists(old_owners_dir)
-#     assert sx.get_public_dir() == old_contracts_dir
-#     assert sx.get_owners_dir() == old_owners_dir
+#     assert wx.get_public_dir() == old_contracts_dir
+#     assert wx.get_owners_dir() == old_owners_dir
 
 #     assert os_path.exists(new_economy_dir) is False
 #     assert os_path.isdir(new_economy_dir) is False
 #     assert os_path.exists(new_economy_file_path) is False
 #     assert os_path.exists(new_contracts_dir) is False
 #     assert os_path.exists(new_owners_dir) is False
-#     assert sx.get_public_dir() != new_contracts_dir
-#     assert sx.get_owners_dir() != new_owners_dir
-#     assert sx.mark != new_economy_mark
+#     assert wx.get_public_dir() != new_contracts_dir
+#     assert wx.get_owners_dir() != new_owners_dir
+#     assert wx.mark != new_economy_mark
 
 #     # WHEN
-#     rename_example_economy(economy_obj=sx, new_title=new_economy_mark)
+#     rename_example_economy(economy_obj=wx, new_title=new_economy_mark)
 
 #     # THEN check contracts src directory created
 #     assert os_path.exists(old_economy_dir) is False
@@ -146,17 +166,17 @@ def test_worldunit_shop_SetsWorldsDirs():
 #     assert os_path.exists(old_economy_file_path) is False
 #     assert os_path.exists(old_contracts_dir) is False
 #     assert os_path.exists(old_owners_dir) is False
-#     assert sx.get_public_dir() != old_contracts_dir
-#     assert sx.get_owners_dir() != old_owners_dir
+#     assert wx.get_public_dir() != old_contracts_dir
+#     assert wx.get_owners_dir() != old_owners_dir
 
 #     assert os_path.exists(new_economy_dir)
 #     assert os_path.isdir(new_economy_dir)
 #     assert os_path.exists(new_economy_file_path)
 #     assert os_path.exists(new_contracts_dir)
 #     assert os_path.exists(new_owners_dir)
-#     assert sx.get_public_dir() == new_contracts_dir
-#     assert sx.get_owners_dir() == new_owners_dir
-#     assert sx.mark == new_economy_mark
+#     assert wx.get_public_dir() == new_contracts_dir
+#     assert wx.get_owners_dir() == new_owners_dir
+#     assert wx.mark == new_economy_mark
 
 #     # Undo change to directory
 #     # x_func_delete_dir(dir=old_economy_dir)
@@ -174,16 +194,16 @@ def test_worldunit_shop_SetsWorldsDirs():
 #     old_contracts_dir = f"{old_economy_dir}/contracts"
 #     old_owners_dir = f"{old_economy_dir}/owners"
 
-#     sx = economyunit_shop(mark=old_economy_mark, economys_dir=get_test_economys_dir())
-#     sx.create_dirs_if_null()
+#     wx = economyunit_shop(mark=old_economy_mark, economys_dir=get_test_economys_dir())
+#     wx.create_dirs_if_null()
 
 #     assert os_path.exists(old_economy_dir)
 #     assert os_path.isdir(old_economy_dir)
 #     assert os_path.exists(old_economy_file_path)
 #     assert os_path.exists(old_contracts_dir)
 #     assert os_path.exists(old_owners_dir)
-#     assert sx.get_public_dir() == old_contracts_dir
-#     assert sx.get_owners_dir() == old_owners_dir
+#     assert wx.get_public_dir() == old_contracts_dir
+#     assert wx.get_owners_dir() == old_owners_dir
 
 #     new_economy_mark = "ex_env1"
 #     new_economy_dir = f"src/economy/examples/economys/{new_economy_mark}"
@@ -197,12 +217,12 @@ def test_worldunit_shop_SetsWorldsDirs():
 #     assert os_path.exists(new_economy_file_path) is False
 #     assert os_path.exists(new_contracts_dir) is False
 #     assert os_path.exists(new_owners_dir) is False
-#     assert sx.get_public_dir() != new_contracts_dir
-#     assert sx.get_owners_dir() != new_owners_dir
-#     assert sx.mark != new_economy_mark
+#     assert wx.get_public_dir() != new_contracts_dir
+#     assert wx.get_owners_dir() != new_owners_dir
+#     assert wx.mark != new_economy_mark
 
 #     # WHEN
-#     copy_evaluation_economy(src_mark=sx.mark, dest_mark=new_economy_mark)
+#     copy_evaluation_economy(src_mark=wx.mark, dest_mark=new_economy_mark)
 
 #     # THEN check contracts src directory created
 #     assert os_path.exists(old_economy_dir)
@@ -210,20 +230,20 @@ def test_worldunit_shop_SetsWorldsDirs():
 #     assert os_path.exists(old_economy_file_path)
 #     assert os_path.exists(old_contracts_dir)
 #     assert os_path.exists(old_owners_dir)
-#     assert sx.get_public_dir() == old_contracts_dir
-#     assert sx.get_owners_dir() == old_owners_dir
+#     assert wx.get_public_dir() == old_contracts_dir
+#     assert wx.get_owners_dir() == old_owners_dir
 
 #     assert os_path.exists(new_economy_dir)
 #     assert os_path.isdir(new_economy_dir)
 #     assert os_path.exists(new_economy_file_path)
 #     assert os_path.exists(new_contracts_dir)
 #     assert os_path.exists(new_owners_dir)
-#     assert sx.get_public_dir() != new_contracts_dir
-#     assert sx.get_owners_dir() != new_owners_dir
-#     assert sx.mark != new_economy_mark
+#     assert wx.get_public_dir() != new_contracts_dir
+#     assert wx.get_owners_dir() != new_owners_dir
+#     assert wx.mark != new_economy_mark
 
 #     # Undo change to directory
-#     # x_func_delete_dir(sx.get_object_root_dir())
+#     # x_func_delete_dir(wx.get_object_root_dir())
 #     # x_func_delete_dir(dir=old_economy_dir)
 #     x_func_delete_dir(dir=new_economy_dir)
 
@@ -231,15 +251,15 @@ def test_worldunit_shop_SetsWorldsDirs():
 # def test_copy_evaluation_economy_CorrectlyRaisesError(env_dir_setup_cleanup):
 #     # GIVEN create economy
 #     old_economy_mark = get_temp_env_mark()
-#     sx = economyunit_shop(mark=old_economy_mark, economys_dir=get_test_economys_dir())
-#     sx.create_dirs_if_null()
+#     wx = economyunit_shop(mark=old_economy_mark, economys_dir=get_test_economys_dir())
+#     wx.create_dirs_if_null()
 
 #     # WHEN/THEN
 #     with pytest_raises(Exception) as excinfo:
-#         copy_evaluation_economy(src_mark=sx.mark, dest_mark=old_economy_mark)
+#         copy_evaluation_economy(src_mark=wx.mark, dest_mark=old_economy_mark)
 #     assert (
 #         str(excinfo.value)
-#         == f"Cannot copy economy to '{sx.get_object_root_dir()}' directory because '{sx.get_object_root_dir()}' exists."
+#         == f"Cannot copy economy to '{wx.get_object_root_dir()}' directory because '{wx.get_object_root_dir()}' exists."
 #     )
 
 
@@ -250,10 +270,10 @@ def test_worldunit_shop_SetsWorldsDirs():
 #     assert os_path.exists(economy_dir) is False
 
 #     # WHEN
-#     sx = economyunit_shop(mark=park_text, economys_dir=get_test_economys_dir())
+#     wx = economyunit_shop(mark=park_text, economys_dir=get_test_economys_dir())
 
 #     # THEN
-#     assert sx != None
-#     assert sx.mark == park_text
+#     assert wx != None
+#     assert wx.mark == park_text
 #     assert os_path.exists(economy_dir)
-#     assert sx._bank_db != None
+#     assert wx._bank_db != None

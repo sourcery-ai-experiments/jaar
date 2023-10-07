@@ -9,58 +9,72 @@
 #     env_dir_setup_cleanup,
 # )
 # from pytest import raises as pytest_raises
-# from src.world.person import PersonUnit, personunit_shop
+from src.world.person import PersonUnit, personunit_shop
 
 
-# def test_personunit_exists():
+def test_personunit_exists():
+    # GIVEN / WHEN
+    sx = PersonUnit()
+
+    # THEN
+    assert sx.name is None
+    assert sx.person_dir is None
+
+
+def test_personunit_shop_ReturnsNonePersonUnitWithCorrectAttrs_v1():
+    # GIVEN
+    dallas_text = "dallas"
+
+    # WHEN
+    sx = personunit_shop(name=dallas_text)
+
+    # THEN
+    assert sx.name == dallas_text
+    assert sx.person_dir == ""
+
+
+def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
+    # GIVEN
+    dallas_text = "dallas"
+    dallas_dir = ""
+
+    # WHEN
+    sx = personunit_shop(name=dallas_text, person_dir=dallas_dir)
+
+    # THEN
+    assert sx.name == dallas_text
+    assert sx.person_dir == dallas_dir
+
+
+# def test_personunit__set_persondir_SetsPersonDir():
+#     # GIVEN
 #     dallas_text = "dallas"
-#     sx = PersonUnit(mark=dallas_text)
-#     assert sx.mark == dallas_text
-#     assert sx.worlds_dir == get_test_worlds_dir()
-#     assert sx.persons_dir is None
+#     sx = PersonUnit(mark=dallas_text, _persons_dir=get_test__persons_dir())
+#     assert sx._persons_dir is None
+
+#     # WHEN
+#     sx._set_person_dirs()
+
+#     # THEN
+#     assert sx._persons_dir == f"{get_test__persons_dir()}/persons"
 
 
-# def test_worldunit_shop_ReturnsWorldUnit():
+# def test_personunit_shop_SetsPersonsDirs():
 #     # GIVEN
 #     dallas_text = "dallas"
 
 #     # WHEN
-#     sx = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
+#     sx = personunit_shop(mark=dallas_text, _persons_dir=get_test__persons_dir())
 
 #     # THEN
 #     assert sx.mark == dallas_text
-#     assert sx.worlds_dir == get_test_worlds_dir()
+#     assert sx._persons_dir == f"{get_test__persons_dir()}/persons"
 
 
-# def test_worldunit__set_persondir_SetsPersonDir():
-#     # GIVEN
-#     dallas_text = "dallas"
-#     sx = WorldUnit(mark=dallas_text, worlds_dir=get_test_worlds_dir())
-#     assert sx.persons_dir is None
-
-#     # WHEN
-#     sx._set_world_dirs()
-
-#     # THEN
-#     assert sx.persons_dir == f"{get_test_worlds_dir()}/persons"
-
-
-# def test_worldunit_shop_SetsWorldsDirs():
-#     # GIVEN
-#     dallas_text = "dallas"
-
-#     # WHEN
-#     sx = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
-
-#     # THEN
-#     assert sx.mark == dallas_text
-#     assert sx.persons_dir == f"{get_test_worlds_dir()}/persons"
-
-
-# def test_world_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
-#     # GIVEN create world
+# def test_person_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
+#     # GIVEN create person
 #     dallas_text = get_temp_env_mark()
-#     sx = EconomyUnit(mark=dallas_text, worlds_dir=get_test_economys_dir())
+#     sx = EconomyUnit(mark=dallas_text, _persons_dir=get_test_economys_dir())
 #     print(f"{get_test_economys_dir()=} {sx.economys_dir=}")
 #     # x_func_delete_dir(sx.get_object_root_dir())
 #     print(f"delete {sx.get_object_root_dir()=}")
