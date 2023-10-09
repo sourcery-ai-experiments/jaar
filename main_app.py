@@ -124,7 +124,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.fm_new.triggered.connect(self.contract_new)
 
         # self.acptfacts_table.itemClicked.connect(self.acptfact_base_combo_set)
-        self.acptfacts_table.setObjectTitle("Contract AcptFacts")
+        self.acptfacts_table.setObjectName("Contract AcptFacts")
         self.acptfacts_table.setColumnWidth(0, 300)
         self.acptfacts_table.setColumnWidth(1, 300)
         self.acptfacts_table.setColumnWidth(2, 30)
@@ -459,7 +459,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agenda_states.setItem(row, 6, qtw1(""))
 
     def set_agenda_states_table_properties(self):
-        self.agenda_states.setObjectTitle("Agenda Being")
+        self.agenda_states.setObjectName("Agenda Being")
         self.agenda_states.setColumnWidth(0, 30)
         self.agenda_states.setColumnWidth(1, 200)
         self.agenda_states.setColumnWidth(2, 120)
@@ -536,6 +536,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return open_y, nigh_y
 
 
-if __title__ == "__main__":
+if __name__ == "__main__":
     app = MainApp(sys.argv)
     sys.exit(app.exec())

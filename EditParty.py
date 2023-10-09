@@ -80,7 +80,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
         return groups_count, single_group, group_partylinks
 
     def refresh_party_table(self):
-        self.party_table.setObjectTitle("Partys")
+        self.party_table.setObjectName("Partys")
         self.party_table.setColumnHidden(0, False)
         self.party_table.setColumnWidth(0, 170)
         self.party_table.setColumnWidth(1, 130)
@@ -132,7 +132,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
         )
 
     def refresh_groups_in_table(self):
-        self.groups_in_table.setObjectTitle("Groups Linked")
+        self.groups_in_table.setObjectName("Groups Linked")
         self.groups_in_table.setColumnHidden(0, False)
         self.groups_in_table.setColumnWidth(0, 170)
         self.groups_in_table.setColumnWidth(1, 130)
@@ -163,7 +163,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
             )
 
     def refresh_groups_out_table(self):
-        self.groups_out_table.setObjectTitle("Groups Linked")
+        self.groups_out_table.setObjectName("Groups Linked")
         self.groups_out_table.setColumnHidden(0, False)
         self.groups_out_table.setColumnWidth(0, 170)
         self.groups_out_table.setColumnWidth(1, 130)
@@ -197,7 +197,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
             )
 
     def refresh_groups_stan_table(self):
-        self.groups_stan_table.setObjectTitle("Groups Linked")
+        self.groups_stan_table.setObjectName("Groups Linked")
         self.groups_stan_table.setColumnHidden(0, False)
         self.groups_stan_table.setColumnWidth(0, 170)
         self.groups_stan_table.setColumnWidth(1, 130)

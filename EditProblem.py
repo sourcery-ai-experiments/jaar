@@ -62,7 +62,7 @@ class EditProblem(qtw.QWidget, Ui_Form):
         self.action3_combo.currentTextChanged.connect(self.select_action3_combo)
 
         self.agenda_table.itemClicked.connect(self.select_agenda_item)
-        self.agenda_table.setObjectTitle("Current Agenda")
+        self.agenda_table.setObjectName("Current Agenda")
         self.agenda_table.setRowCount(0)
 
         self.contract_x = None

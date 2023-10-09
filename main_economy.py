@@ -495,7 +495,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 "balancelinks",
             ]
 
-        self.w_ideas_table.setObjectTitle("Ideas Table")
+        self.w_ideas_table.setObjectName("Ideas Table")
         self.w_ideas_table.setColumnHidden(0, False)
         self.w_ideas_table.setColumnHidden(1, False)
         self.w_ideas_table.setColumnHidden(2, False)
@@ -599,7 +599,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         populate_list: list[any],
         column_width: list[int] = None,
     ):
-        table_x.setObjectTitle(column_header[0])
+        table_x.setObjectName(column_header[0])
         if column_width is None:
             table_x.setColumnWidth(0, 150)
             table_x.setColumnHidden(0, False)
