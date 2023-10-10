@@ -150,3 +150,5 @@ src/economy/examples/economys/ex6/
 src/economy/examples/economys/river_env/
 src/economy/test_economy/sql_worksheet01.sql
 src/contract/examples/js_contract.json
+main_cli_app.py
+worlds/Joachim/persons,Joachim/economys/Home/economy.json

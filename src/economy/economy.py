@@ -40,9 +40,13 @@ from src.economy.bank_sqlstr import (
 )
 
 
+class EconomyTag(str):
+    pass
+
+
 @dataclass
 class EconomyUnit:
-    tag: str
+    tag: EconomyTag
     economys_dir: str
     _ownerunits: dict[str:OwnerUnit] = None
     _bank_db = None

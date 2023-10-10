@@ -14,11 +14,12 @@ from src.world.person import PersonUnit, personunit_shop
 
 def test_personunit_exists():
     # GIVEN / WHEN
-    sx = PersonUnit()
+    px = PersonUnit()
 
     # THEN
-    assert sx.name is None
-    assert sx.person_dir is None
+    assert px.name is None
+    assert px.person_dir is None
+    assert px._economys is None
 
 
 def test_personunit_shop_ReturnsNonePersonUnitWithCorrectAttrs_v1():
@@ -26,11 +27,12 @@ def test_personunit_shop_ReturnsNonePersonUnitWithCorrectAttrs_v1():
     dallas_text = "dallas"
 
     # WHEN
-    sx = personunit_shop(name=dallas_text)
+    px = personunit_shop(name=dallas_text)
 
     # THEN
-    assert sx.name == dallas_text
-    assert sx.person_dir == ""
+    assert px.name == dallas_text
+    assert px.person_dir == ""
+    assert px._economys == {}
 
 
 def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
@@ -39,24 +41,59 @@ def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
     dallas_dir = ""
 
     # WHEN
-    sx = personunit_shop(name=dallas_text, person_dir=dallas_dir)
+    px = personunit_shop(name=dallas_text, person_dir=dallas_dir)
 
     # THEN
-    assert sx.name == dallas_text
-    assert sx.person_dir == dallas_dir
+    assert px.name == dallas_text
+    assert px.person_dir == dallas_dir
+
+
+def test_personunit_create_economy_CorrectlyCreatesAnEconomyUnit():
+    # GIVEN
+    xao_text = "Xao"
+    xao_person_dir = f"/persons/{xao_text}"
+    xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
+
+    # WHEN
+    home_text = "home"
+    xao_person_obj.create_economy(home_text)
+
+    # THEN
+    # home_economy = xao_person.get_economy()
+    home_economy = xao_person_obj._economys.get(home_text)
+    assert home_economy != None
+    assert home_economy.tag == home_text
+    assert home_economy.economys_dir == f"{xao_person_dir}/economys"
+
+
+def test_personunit_get_economy_obj_CorrectlyGetsAnEconomyUnit():
+    # GIVEN
+    xao_text = "Xao"
+    xao_person_dir = f"/persons/{xao_text}"
+    xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
+    home_text = "home"
+    xao_person_obj.create_economy(home_text)
+
+    # WHEN
+    home_economy = xao_person_obj.get_economy_obj(home_text)
+
+    # THEN
+    assert home_economy != None
+    assert home_economy.tag == home_text
+    assert home_economy.economys_dir == f"{xao_person_dir}/economys"
 
 
 # def test_personunit__set_persondir_SetsPersonDir():
 #     # GIVEN
 #     dallas_text = "dallas"
-#     sx = PersonUnit(mark=dallas_text, _persons_dir=get_test__persons_dir())
-#     assert sx._persons_dir is None
+#     px = PersonUnit(mark=dallas_text, _persons_dir=get_test__persons_dir())
+#     assert px._persons_dir is None
 
 #     # WHEN
-#     sx._set_person_dirs()
+#     px._set_person_dirs()
 
 #     # THEN
-#     assert sx._persons_dir == f"{get_test__persons_dir()}/persons"
+#     assert px._persons_dir == f"{get_test__persons_dir()}/persons"
 
 
 # def test_personunit_shop_SetsPersonsDirs():
@@ -64,20 +101,20 @@ def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
 #     dallas_text = "dallas"
 
 #     # WHEN
-#     sx = personunit_shop(mark=dallas_text, _persons_dir=get_test__persons_dir())
+#     px = personunit_shop(mark=dallas_text, _persons_dir=get_test__persons_dir())
 
 #     # THEN
-#     assert sx.mark == dallas_text
-#     assert sx._persons_dir == f"{get_test__persons_dir()}/persons"
+#     assert px.mark == dallas_text
+#     assert px._persons_dir == f"{get_test__persons_dir()}/persons"
 
 
 # def test_person_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
 #     # GIVEN create person
 #     dallas_text = get_temp_env_mark()
-#     sx = EconomyUnit(mark=dallas_text, _persons_dir=get_test_economys_dir())
-#     print(f"{get_test_economys_dir()=} {sx.economys_dir=}")
-#     # x_func_delete_dir(sx.get_object_root_dir())
-#     print(f"delete {sx.get_object_root_dir()=}")
+#     px = EconomyUnit(mark=dallas_text, _persons_dir=get_test_economys_dir())
+#     print(f"{get_test_economys_dir()=} {px.economys_dir=}")
+#     # x_func_delete_dir(px.get_object_root_dir())
+#     print(f"delete {px.get_object_root_dir()=}")
 #     economy_dir = f"src/economy/examples/economys/{economy_mark}"
 #     economy_file_title = "economy.json"
 #     economy_file_path = f"{economy_dir}/{economy_file_title}"
@@ -94,7 +131,7 @@ def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
 #     assert os_path.exists(bank_file_path) is False
 
 #     # WHEN
-#     sx.create_dirs_if_null(in_memory_bank=False)
+#     px.create_dirs_if_null(in_memory_bank=False)
 
 #     # THEN check contracts src directory created
 #     assert os_path.exists(economy_dir)
@@ -103,10 +140,10 @@ def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
 #     assert os_path.exists(contracts_dir)
 #     assert os_path.exists(owners_dir)
 #     assert os_path.exists(bank_file_path)
-#     assert sx.get_object_root_dir() == economy_dir
-#     assert sx.get_public_dir() == contracts_dir
-#     assert sx.get_owners_dir() == owners_dir
-#     assert sx.get_bank_db_path() == bank_file_path
+#     assert px.get_object_root_dir() == economy_dir
+#     assert px.get_public_dir() == contracts_dir
+#     assert px.get_owners_dir() == owners_dir
+#     assert px.get_bank_db_path() == bank_file_path
 
 
 # def test_rename_example_economy_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup):
@@ -127,31 +164,31 @@ def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
 #     x_func_delete_dir(dir=new_economy_dir)
 #     print(f"{new_economy_dir=}")
 
-#     sx = economyunit_shop(mark=old_economy_mark, economys_dir=get_test_economys_dir())
-#     # x_func_delete_dir(sx.get_object_root_dir())
-#     # print(f"{sx.get_object_root_dir()=}")
+#     px = economyunit_shop(mark=old_economy_mark, economys_dir=get_test_economys_dir())
+#     # x_func_delete_dir(px.get_object_root_dir())
+#     # print(f"{px.get_object_root_dir()=}")
 
-#     sx.create_dirs_if_null(in_memory_bank=True)
+#     px.create_dirs_if_null(in_memory_bank=True)
 
 #     assert os_path.exists(old_economy_dir)
 #     assert os_path.isdir(old_economy_dir)
 #     assert os_path.exists(old_economy_file_path)
 #     assert os_path.exists(old_contracts_dir)
 #     assert os_path.exists(old_owners_dir)
-#     assert sx.get_public_dir() == old_contracts_dir
-#     assert sx.get_owners_dir() == old_owners_dir
+#     assert px.get_public_dir() == old_contracts_dir
+#     assert px.get_owners_dir() == old_owners_dir
 
 #     assert os_path.exists(new_economy_dir) is False
 #     assert os_path.isdir(new_economy_dir) is False
 #     assert os_path.exists(new_economy_file_path) is False
 #     assert os_path.exists(new_contracts_dir) is False
 #     assert os_path.exists(new_owners_dir) is False
-#     assert sx.get_public_dir() != new_contracts_dir
-#     assert sx.get_owners_dir() != new_owners_dir
-#     assert sx.mark != new_economy_mark
+#     assert px.get_public_dir() != new_contracts_dir
+#     assert px.get_owners_dir() != new_owners_dir
+#     assert px.mark != new_economy_mark
 
 #     # WHEN
-#     rename_example_economy(economy_obj=sx, new_title=new_economy_mark)
+#     rename_example_economy(economy_obj=px, new_title=new_economy_mark)
 
 #     # THEN check contracts src directory created
 #     assert os_path.exists(old_economy_dir) is False
@@ -159,17 +196,17 @@ def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
 #     assert os_path.exists(old_economy_file_path) is False
 #     assert os_path.exists(old_contracts_dir) is False
 #     assert os_path.exists(old_owners_dir) is False
-#     assert sx.get_public_dir() != old_contracts_dir
-#     assert sx.get_owners_dir() != old_owners_dir
+#     assert px.get_public_dir() != old_contracts_dir
+#     assert px.get_owners_dir() != old_owners_dir
 
 #     assert os_path.exists(new_economy_dir)
 #     assert os_path.isdir(new_economy_dir)
 #     assert os_path.exists(new_economy_file_path)
 #     assert os_path.exists(new_contracts_dir)
 #     assert os_path.exists(new_owners_dir)
-#     assert sx.get_public_dir() == new_contracts_dir
-#     assert sx.get_owners_dir() == new_owners_dir
-#     assert sx.mark == new_economy_mark
+#     assert px.get_public_dir() == new_contracts_dir
+#     assert px.get_owners_dir() == new_owners_dir
+#     assert px.mark == new_economy_mark
 
 #     # Undo change to directory
 #     # x_func_delete_dir(dir=old_economy_dir)
@@ -187,16 +224,16 @@ def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
 #     old_contracts_dir = f"{old_economy_dir}/contracts"
 #     old_owners_dir = f"{old_economy_dir}/owners"
 
-#     sx = economyunit_shop(mark=old_economy_mark, economys_dir=get_test_economys_dir())
-#     sx.create_dirs_if_null()
+#     px = economyunit_shop(mark=old_economy_mark, economys_dir=get_test_economys_dir())
+#     px.create_dirs_if_null()
 
 #     assert os_path.exists(old_economy_dir)
 #     assert os_path.isdir(old_economy_dir)
 #     assert os_path.exists(old_economy_file_path)
 #     assert os_path.exists(old_contracts_dir)
 #     assert os_path.exists(old_owners_dir)
-#     assert sx.get_public_dir() == old_contracts_dir
-#     assert sx.get_owners_dir() == old_owners_dir
+#     assert px.get_public_dir() == old_contracts_dir
+#     assert px.get_owners_dir() == old_owners_dir
 
 #     new_economy_mark = "ex_env1"
 #     new_economy_dir = f"src/economy/examples/economys/{new_economy_mark}"
@@ -210,12 +247,12 @@ def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
 #     assert os_path.exists(new_economy_file_path) is False
 #     assert os_path.exists(new_contracts_dir) is False
 #     assert os_path.exists(new_owners_dir) is False
-#     assert sx.get_public_dir() != new_contracts_dir
-#     assert sx.get_owners_dir() != new_owners_dir
-#     assert sx.mark != new_economy_mark
+#     assert px.get_public_dir() != new_contracts_dir
+#     assert px.get_owners_dir() != new_owners_dir
+#     assert px.mark != new_economy_mark
 
 #     # WHEN
-#     copy_evaluation_economy(src_mark=sx.mark, dest_mark=new_economy_mark)
+#     copy_evaluation_economy(src_mark=px.mark, dest_mark=new_economy_mark)
 
 #     # THEN check contracts src directory created
 #     assert os_path.exists(old_economy_dir)
@@ -223,20 +260,20 @@ def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
 #     assert os_path.exists(old_economy_file_path)
 #     assert os_path.exists(old_contracts_dir)
 #     assert os_path.exists(old_owners_dir)
-#     assert sx.get_public_dir() == old_contracts_dir
-#     assert sx.get_owners_dir() == old_owners_dir
+#     assert px.get_public_dir() == old_contracts_dir
+#     assert px.get_owners_dir() == old_owners_dir
 
 #     assert os_path.exists(new_economy_dir)
 #     assert os_path.isdir(new_economy_dir)
 #     assert os_path.exists(new_economy_file_path)
 #     assert os_path.exists(new_contracts_dir)
 #     assert os_path.exists(new_owners_dir)
-#     assert sx.get_public_dir() != new_contracts_dir
-#     assert sx.get_owners_dir() != new_owners_dir
-#     assert sx.mark != new_economy_mark
+#     assert px.get_public_dir() != new_contracts_dir
+#     assert px.get_owners_dir() != new_owners_dir
+#     assert px.mark != new_economy_mark
 
 #     # Undo change to directory
-#     # x_func_delete_dir(sx.get_object_root_dir())
+#     # x_func_delete_dir(px.get_object_root_dir())
 #     # x_func_delete_dir(dir=old_economy_dir)
 #     x_func_delete_dir(dir=new_economy_dir)
 
@@ -244,15 +281,15 @@ def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
 # def test_copy_evaluation_economy_CorrectlyRaisesError(env_dir_setup_cleanup):
 #     # GIVEN create economy
 #     old_economy_mark = get_temp_env_mark()
-#     sx = economyunit_shop(mark=old_economy_mark, economys_dir=get_test_economys_dir())
-#     sx.create_dirs_if_null()
+#     px = economyunit_shop(mark=old_economy_mark, economys_dir=get_test_economys_dir())
+#     px.create_dirs_if_null()
 
 #     # WHEN/THEN
 #     with pytest_raises(Exception) as excinfo:
-#         copy_evaluation_economy(src_mark=sx.mark, dest_mark=old_economy_mark)
+#         copy_evaluation_economy(src_mark=px.mark, dest_mark=old_economy_mark)
 #     assert (
 #         str(excinfo.value)
-#         == f"Cannot copy economy to '{sx.get_object_root_dir()}' directory because '{sx.get_object_root_dir()}' exists."
+#         == f"Cannot copy economy to '{px.get_object_root_dir()}' directory because '{px.get_object_root_dir()}' exists."
 #     )
 
 
@@ -263,10 +300,10 @@ def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
 #     assert os_path.exists(economy_dir) is False
 
 #     # WHEN
-#     sx = economyunit_shop(mark=park_text, economys_dir=get_test_economys_dir())
+#     px = economyunit_shop(mark=park_text, economys_dir=get_test_economys_dir())
 
 #     # THEN
-#     assert sx != None
-#     assert sx.mark == park_text
+#     assert px != None
+#     assert px.mark == park_text
 #     assert os_path.exists(economy_dir)
-#     assert sx._bank_db != None
+#     assert px._bank_db != None
