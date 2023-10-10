@@ -312,7 +312,6 @@ class EconomyUnit:
 
     def create_new_ownerunit(self, owner_title: str):
         self.set_ownerunits_empty_if_null()
-        print(f"{self.tag=}")
         ux = ownerunit_shop(owner_title, self.get_object_root_dir(), self.tag)
         ux.create_core_dir_and_files()
         self._ownerunits[ux._admin._owner_title] = ux

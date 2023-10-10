@@ -26,10 +26,6 @@ class PersonUnit:
         return self._economys.get(economy_tag)
 
 
-#     def _set_world_dirs(self):
-#         self._persons_dir = f"{self.worlds_dir}/persons"
-
-
 def personunit_shop(name: PersonName, person_dir: str = None) -> PersonUnit:
     if person_dir is None:
         person_dir = ""

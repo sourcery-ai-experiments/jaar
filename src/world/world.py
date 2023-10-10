@@ -26,7 +26,7 @@ class WorldUnit:
         self._persons_obj[personunit.name] = personunit
 
     def _create_person_from_name(self, person_name: PersonName):
-        x_person_dir = f"{self._persons_dir},{person_name}"
+        x_person_dir = f"{self._persons_dir}/{person_name}"
         x_person_obj = personunit_shop(name=person_name, person_dir=x_person_dir)
         self._set_person_in_memory(x_person_obj)
 

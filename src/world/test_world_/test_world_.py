@@ -86,7 +86,7 @@ def test_worldunit__create_person_from_name_CorrectlySetsPerson():
     dallas_text = "dallas"
     wx = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
     luca_text = "Luca"
-    luca_person_dir = f"{wx._persons_dir},{luca_text}"
+    luca_person_dir = f"{wx._persons_dir}/{luca_text}"
     luca_person_obj = personunit_shop(name=luca_text, person_dir=luca_person_dir)
 
     # WHEN
@@ -103,7 +103,7 @@ def test_worldunit_get_personunit_from_memory_CorrectlyReturnsPerson():
     dallas_text = "dallas"
     wx = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
     luca_text = "Luca"
-    luca_person_dir = f"{wx._persons_dir},{luca_text}"
+    luca_person_dir = f"{wx._persons_dir}/{luca_text}"
     luca_person_obj = personunit_shop(name=luca_text, person_dir=luca_person_dir)
     wx._create_person_from_name(luca_text)
 
