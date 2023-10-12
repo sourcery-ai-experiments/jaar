@@ -476,7 +476,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agenda_states.setColumnHidden(6, True)
         self.agenda_states.setHorizontalHeaderLabels(
             [
-                "rank",
+                "admiration",
                 "label",
                 "jajatime",
                 "jaja_nigh",

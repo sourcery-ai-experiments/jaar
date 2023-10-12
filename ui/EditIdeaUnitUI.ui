@@ -298,7 +298,7 @@
     </font>
    </property>
   </widget>
-  <widget class="QCheckBox" title="cb_rootrank">
+  <widget class="QCheckBox" title="cb_rootadmiration">
    <property title="geometry">
     <rect>
      <x>100</x>
@@ -308,7 +308,7 @@
     </rect>
    </property>
    <property title="text">
-    <string>root rank</string>
+    <string>root admiration</string>
    </property>
   </widget>
   <widget class="QCheckBox" title="cb_yo_id">

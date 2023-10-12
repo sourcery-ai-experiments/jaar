@@ -390,7 +390,7 @@ class Ui_MainWindow(object):
             _translate("MainWindow", '"Soft" moving up the past')
         )
         item = self.agenda_states.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "rank"))
+        item.setText(_translate("MainWindow", "admiration"))
         item = self.agenda_states.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "label"))
         item = self.agenda_states.horizontalHeaderItem(2)

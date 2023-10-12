@@ -643,7 +643,7 @@
     </property>
     <column>
      <property title="text">
-      <string>rank</string>
+      <string>admiration</string>
      </property>
     </column>
     <column>

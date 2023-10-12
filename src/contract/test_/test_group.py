@@ -400,7 +400,7 @@ def test_groupunit_get_from_JSON_SimpleExampleWorks():
     assert groupunits_obj_dict == teachers_obj_check_dict
 
 
-def test_brankLink_exists():
+def test_brandLink_exists():
     # GIVEN
     bikers_brand = GroupBrand("bikers")
 
@@ -427,7 +427,7 @@ def test_brankLink_exists():
     assert group_link_x.debtor_weight == 5.0
 
 
-def test_brankLink_set_contract_importanceCorrectly():
+def test_brandLink_set_contract_importanceCorrectly():
     # GIVEN
     bikers_brand = GroupBrand("bikers")
     bikers_creditor_weight = 3.0

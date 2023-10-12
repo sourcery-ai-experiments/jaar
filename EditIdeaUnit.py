@@ -36,7 +36,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.submit_child_insert.clicked.connect(self.idea_insert)
         self.submit_duty_insert.clicked.connect(self.idea_duty_insert)
 
-        self.cb_rootrank.stateChanged.connect(self.refresh_tree)
+        self.cb_rootadmiration.stateChanged.connect(self.refresh_tree)
         self.cb_yo_id.stateChanged.connect(self.refresh_tree)
         self.cb_yo_agenda.stateChanged.connect(self.refresh_tree)
         self.cb_yo_action.stateChanged.connect(self.refresh_tree)
@@ -941,7 +941,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.refresh_tree()
 
     def refresh_tree(self, disable_is_expanded: bool = False):
-        root_percent_flag = self.cb_rootrank.checkState() == 2
+        root_percent_flag = self.cb_rootadmiration.checkState() == 2
         yo_id_flag = self.cb_yo_id.checkState() == 2
         yo_agenda_flag = self.cb_yo_agenda.checkState() == 2
         yo_action_flag = self.cb_yo_action.checkState() == 2
