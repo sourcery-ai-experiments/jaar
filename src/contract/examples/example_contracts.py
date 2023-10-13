@@ -391,10 +391,10 @@ def get_assignment_contract_example1():
     really_idea = IdeaKid(_label=really_text)
     a1.add_idea(idea_kid=really_idea, walk=clean_road)
 
-    kinda_text = "kinda"
-    kinda_road = f"{clean_road},{kinda_text}"
-    kinda_idea = IdeaKid(_label=kinda_text)
-    a1.add_idea(idea_kid=kinda_idea, walk=clean_road)
+    moderately_text = "moderately"
+    moderately_road = f"{clean_road},{moderately_text}"
+    moderately_idea = IdeaKid(_label=moderately_text)
+    a1.add_idea(idea_kid=moderately_idea, walk=clean_road)
 
     dirty_text = "dirty"
     dirty_road = f"{status_road},{dirty_text}"

@@ -274,8 +274,8 @@ def test_contract__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
     really_text = "really"
     really_road = f"{clean_road},{really_text}"
 
-    kinda_text = "kinda"
-    kinda_road = f"{clean_road},{kinda_text}"
+    moderately_text = "moderately"
+    moderately_road = f"{clean_road},{moderately_text}"
 
     dirty_text = "dirty"
     dirty_road = f"{status_road},{dirty_text}"
@@ -290,7 +290,7 @@ def test_contract__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
     assert len(relevant_roads) == 8
     assert relevant_roads.get(clean_road) != None
     assert relevant_roads.get(dirty_road) != None
-    assert relevant_roads.get(kinda_road) != None
+    assert relevant_roads.get(moderately_road) != None
     assert relevant_roads.get(really_road) != None
     assert relevant_roads == {
         cx._goal_tag: -1,
@@ -300,7 +300,7 @@ def test_contract__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
         clean_road: -1,
         dirty_road: -1,
         really_road: -1,
-        kinda_road: -1,
+        moderately_road: -1,
     }
     assert relevant_roads.get(unim_road) is None
 
@@ -464,8 +464,8 @@ def test_contract_get_assignment_getsCorrectIdeas_scenario1():
     clean_road = f"{status_road},{clean_text}"
     really_text = "really"
     really_road = f"{clean_road},{really_text}"
-    kinda_text = "kinda"
-    kinda_road = f"{clean_road},{kinda_text}"
+    moderately_text = "moderately"
+    moderately_road = f"{clean_road},{moderately_text}"
     dirty_text = "dirty"
     dirty_road = f"{status_road},{dirty_text}"
     bob_text = "Bob"
@@ -484,7 +484,7 @@ def test_contract_get_assignment_getsCorrectIdeas_scenario1():
     assert len(assignment_x._idea_dict) == 8
     assert assignment_x._idea_dict.get(clean_road) != None
     assert assignment_x._idea_dict.get(dirty_road) != None
-    assert assignment_x._idea_dict.get(kinda_road) != None
+    assert assignment_x._idea_dict.get(moderately_road) != None
     assert assignment_x._idea_dict.get(really_road) != None
     assert assignment_x._idea_dict.get(unim_road) is None
 
