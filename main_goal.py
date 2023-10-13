@@ -121,8 +121,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         first_env = "ex5"
         self.goal_x = goalunit_shop(title=first_env, goals_dir=get_test_goals_dir())
         self.refresh_goal()
-        self.goal_tag_combo_refresh()
-        self.goal_tag_combo.setCurrentText(first_env)
+        self.goal_kind_combo_refresh()
+        self.goal_kind_combo.setCurrentText(first_env)
         self._owner_load(owner_title="ernie")
 
     def save_isol(self):
@@ -144,10 +144,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_goal()
 
     def goal_load_from_file(self):
-        goal_selected = self.goal_tag_combo.currentText()
+        goal_selected = self.goal_kind_combo.currentText()
         self.goal_x = goalunit_shop(title=goal_selected, goals_dir=get_test_goals_dir())
         self.goal_x.create_dirs_if_null(in_memory_bank=False)
-        self.goal_tag.setText(goal_selected)
+        self.goal_kind.setText(goal_selected)
         self.refresh_goal()
 
     def contracts_table_select(self):
@@ -209,17 +209,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.digests_table.setHidden(False)
 
     def goal_insert(self):
-        create_example_goal(goal_tag=self.goal_tag.text())
-        self.goal_tag_combo_refresh()
+        create_example_goal(goal_kind=self.goal_kind.text())
+        self.goal_kind_combo_refresh()
 
     def goal_update_title(self):
-        rename_example_goal(goal_obj=self.goal_x, new_title=self.goal_tag.text())
-        self.goal_tag_combo_refresh()
+        rename_example_goal(goal_obj=self.goal_x, new_title=self.goal_kind.text())
+        self.goal_kind_combo_refresh()
 
     def goal_delete(self):
         delete_dir_example_goal(goal_obj=self.goal_x)
         self.goal_x = None
-        self.goal_tag_combo_refresh()
+        self.goal_kind_combo_refresh()
         self.refresh_goal()
 
     def contract_insert(self):
@@ -556,9 +556,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             column_width=[50, 200, 300],
         )
 
-    def goal_tag_combo_refresh(self):
-        self.goal_tag_combo.clear()
-        self.goal_tag_combo.addItems(create_example_goals_list())
+    def goal_kind_combo_refresh(self):
+        self.goal_kind_combo.clear()
+        self.goal_kind_combo.addItems(create_example_goals_list())
 
     def refresh_owners(self):
         self.owner_x = None

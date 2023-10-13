@@ -51,7 +51,7 @@ def test_personunit_create_goal_CorrectlyCreatesAnGoalUnit():
     # home_goal = xao_person.get_goal()
     home_goal = xao_person_obj._goals.get(home_text)
     assert home_goal != None
-    assert home_goal.tag == home_text
+    assert home_goal.kind == home_text
     assert home_goal.goals_dir == f"{xao_person_dir}/goals"
 
 
@@ -68,5 +68,5 @@ def test_personunit_get_goal_obj_CorrectlyGetsAnGoalUnit():
 
     # THEN
     assert home_goal != None
-    assert home_goal.tag == home_text
+    assert home_goal.kind == home_text
     assert home_goal.goals_dir == f"{xao_person_dir}/goals"

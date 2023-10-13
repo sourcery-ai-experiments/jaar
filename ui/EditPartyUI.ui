@@ -10,7 +10,7 @@
     <height>771</height>
    </rect>
   </property>
-  <property title="windowTag">
+  <property title="windowkind">
    <string>Form</string>
   </property>
   <widget class="QPushButton" title="party_insert_button">

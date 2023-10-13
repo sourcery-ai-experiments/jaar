@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src.goal.goal import GoalUnit, GoalTag, goalunit_shop
+from src.goal.goal import GoalUnit, Goalkind, goalunit_shop
 
 
 class PersonName(str):
@@ -10,18 +10,18 @@ class PersonName(str):
 class PersonUnit:
     name: PersonName = None
     person_dir: str = None
-    _goals: dict[GoalTag:GoalUnit] = None
+    _goals: dict[Goalkind:GoalUnit] = None
 
     def set_goals_empty_if_none(self):
         if self._goals is None:
             self._goals = {}
 
-    def create_goal(self, goal_tag: GoalTag):
+    def create_goal(self, goal_kind: Goalkind):
         goals_dir = f"{self.person_dir}/goals"
-        self._goals[goal_tag] = goalunit_shop(tag=goal_tag, goals_dir=goals_dir)
+        self._goals[goal_kind] = goalunit_shop(kind=goal_kind, goals_dir=goals_dir)
 
-    def get_goal_obj(self, goal_tag: GoalTag) -> GoalUnit:
-        return self._goals.get(goal_tag)
+    def get_goal_obj(self, goal_kind: Goalkind) -> GoalUnit:
+        return self._goals.get(goal_kind)
 
 
 def personunit_shop(name: PersonName, person_dir: str = None) -> PersonUnit:

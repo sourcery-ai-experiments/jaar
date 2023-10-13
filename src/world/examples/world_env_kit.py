@@ -29,12 +29,12 @@ from os import listdir as os_listdir, rename as os_rename, path as os_path
 from pytest import fixture as pytest_fixture
 
 
-def get_temp_env_tag():
+def get_temp_env_kind():
     return "ex_env77"
 
 
 def get_temp_env_dir():
-    return f"{get_test_worlds_dir()}/{get_temp_env_tag()}"
+    return f"{get_test_worlds_dir()}/{get_temp_env_kind()}"
 
 
 def get_test_worlds_dir():
@@ -55,8 +55,8 @@ def create_example_worlds_list():
     )
 
 
-# def create_example_world(world_tag: str):
-#     sx = worldunit_shop(tag=world_tag, worlds_dir=get_test_worlds_dir())
+# def create_example_world(world_kind: str):
+#     sx = worldunit_shop(kind=world_kind, worlds_dir=get_test_worlds_dir())
 #     sx.create_dirs_if_null(in_memory_bank=True)
 
 
@@ -67,24 +67,24 @@ def create_example_worlds_list():
 # def rename_example_world(world_obj: GoalUnit, new_title):
 #     # base_dir = world_obj.get_object_root_dir()
 #     base_dir = "src/world/examples/worlds"
-#     src_dir = f"{base_dir}/{world_obj.tag}"
+#     src_dir = f"{base_dir}/{world_obj.kind}"
 #     dst_dir = f"{base_dir}/{new_title}"
 #     os_rename(src=src_dir, dst=dst_dir)
-#     world_obj.set_worldunit_tag(tag=new_title)
+#     world_obj.set_worldunit_kind(kind=new_title)
 
 
 # class InvalidGoalCopyException(Exception):
 #     pass
 
 
-# def copy_evaluation_world(src_tag: str, dest_tag: str):
+# def copy_evaluation_world(src_kind: str, dest_kind: str):
 #     base_dir = "src/world/examples/worlds"
-#     new_dir = f"{base_dir}/{dest_tag}"
+#     new_dir = f"{base_dir}/{dest_kind}"
 #     if os_path.exists(new_dir):
 #         raise InvalidGoalCopyException(
 #             f"Cannot copy world to '{new_dir}' directory because '{new_dir}' exists."
 #         )
 #     # base_dir = world_obj.get_object_root_dir()
-#     src_dir = f"{base_dir}/{src_tag}"
-#     dest_dir = f"{base_dir}/{dest_tag}"
+#     src_dir = f"{base_dir}/{src_kind}"
+#     dest_dir = f"{base_dir}/{dest_kind}"
 #     copy_dir(src_dir=src_dir, dest_dir=dest_dir)

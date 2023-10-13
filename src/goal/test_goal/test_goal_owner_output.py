@@ -8,7 +8,7 @@ from src.goal.examples.example_owners import (
     get_contract_3CleanNodesRandomWeights,
 )
 from src.goal.examples.goal_env_kit import (
-    get_temp_env_tag,
+    get_temp_env_kind,
     get_test_goals_dir,
     env_dir_setup_cleanup,
 )
@@ -18,7 +18,7 @@ def test_goal_get_output_contract_ReturnsCorrectContractObjScenario1(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     input_cx = example_owners_get_6node_contract()
     sx.save_public_contract(input_cx)
@@ -41,7 +41,7 @@ def test_goal_get_output_contract_ReturnsCorrectContractObjScenario1(
     # THEN
     a_text = "A"
     c_text = "C"
-    c_road = f"{input_cx._goal_tag},{c_text}"
+    c_road = f"{input_cx._goal_kind},{c_text}"
     d_text = "D"
     d_road = f"{c_road},{d_text}"
     print(f"{output_cx._owner=}")
@@ -90,7 +90,7 @@ def test_goal_get_output_contract_ReturnsCorrectContractObjScenario2(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     cx1 = example_owners_get_6node_contract()
     cx2 = ex_cxs_contract_v002()
@@ -111,7 +111,7 @@ def test_goal_get_output_contract_ReturnsCorrectContractObjScenario2(
     output_cx = sx.get_output_contract(owner_title=xia_text)
 
     # THEN
-    output_cx_d_road = f"{output_cx._goal_tag},C,D"
+    output_cx_d_road = f"{output_cx._goal_kind},C,D"
     output_cx_d_idea = output_cx.get_idea_kid(output_cx_d_road)
     print(f" {output_cx_d_idea._weight=} ")
     assert output_cx != None
@@ -147,8 +147,8 @@ def test_ownerunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
 ):
     # GIVEN
     env_dir = get_test_goals_dir()
-    goal_tag = get_temp_env_tag()
-    sx = goalunit_shop(tag=goal_tag, goals_dir=env_dir)
+    goal_kind = get_temp_env_kind()
+    sx = goalunit_shop(kind=goal_kind, goals_dir=env_dir)
     sx.create_dirs_if_null(in_memory_bank=True)
     # ux = ownerunit_shop(title=owner1_text, env_dir=env_dir)
 

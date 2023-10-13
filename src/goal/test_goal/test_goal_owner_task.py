@@ -1,6 +1,6 @@
 from src.goal.goal import goalunit_shop
 from src.goal.examples.goal_env_kit import (
-    get_temp_env_tag,
+    get_temp_env_kind,
     env_dir_setup_cleanup,
     get_test_goals_dir,
 )
@@ -8,7 +8,7 @@ from src.goal.examples.example_owners import get_contract_assignment_laundry_exa
 
 
 def test_goal_ChangingOneOwnersFactChangesAnotherAgenda(env_dir_setup_cleanup):
-    sx = goalunit_shop(get_temp_env_tag(), get_test_goals_dir())
+    sx = goalunit_shop(get_temp_env_kind(), get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     # GIVEN
@@ -16,11 +16,11 @@ def test_goal_ChangingOneOwnersFactChangesAnotherAgenda(env_dir_setup_cleanup):
     sx.create_new_ownerunit(owner_title=america_text)
     america_ux = sx.get_owner_obj(title=america_text)
     laundry_contract = get_contract_assignment_laundry_example1()
-    laundry_contract.set_goal_tag(sx.tag)
+    laundry_contract.set_goal_kind(sx.kind)
     america_ux.set_isol(laundry_contract)
 
     casa_text = "casa"
-    casa_road = f"{sx.tag},{casa_text}"
+    casa_road = f"{sx.kind},{casa_text}"
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
     b_full_text = "full"
@@ -73,7 +73,7 @@ def test_goal_ChangingOneOwnersFactChangesAnotherAgenda(env_dir_setup_cleanup):
 
 # def test_goal_create_task_CorrectlyCreatesTask(env_dir_setup_cleanup):
 #     sx = goalunit_shop(
-#         tag=get_temp_env_tag(), goals_dir=get_test_goals_dir()
+#         kind=get_temp_env_kind(), goals_dir=get_test_goals_dir()
 #     )
 #     sx.create_dirs_if_null(in_memory_bank=True)
 

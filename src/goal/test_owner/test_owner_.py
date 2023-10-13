@@ -8,7 +8,7 @@ from src.goal.owner import ownerunit_shop
 from src.goal.examples.owner_env_kit import (
     owner_dir_setup_cleanup,
     get_temp_owner_dir,
-    get_temp_goal_tag,
+    get_temp_goal_kind,
 )
 from os import path as os_path
 
@@ -21,13 +21,13 @@ def test_ownerunit_exists(owner_dir_setup_cleanup):
     ux = ownerunit_shop(
         title=owner_text,
         env_dir=get_temp_owner_dir(),
-        goal_tag=get_temp_goal_tag(),
+        goal_kind=get_temp_goal_kind(),
     )
 
     # GIVEN
     assert ux._admin._owner_title != None
-    assert ux._admin._goal_tag != None
-    assert ux._admin._goal_tag == get_temp_goal_tag()
+    assert ux._admin._goal_kind != None
+    assert ux._admin._goal_kind == get_temp_goal_kind()
     assert ux._isol is None
 
 
@@ -36,19 +36,19 @@ def test_ownerunit_auto_output_to_public_SavesContractToPublicDirWhenTrue(
 ):
     # GIVEN
     env_dir = get_temp_owner_dir()
-    goal_tag = get_temp_goal_tag()
+    goal_kind = get_temp_goal_kind()
     tim_text = "Tim"
     public_file_title = f"{tim_text}.json"
     public_file_path = f"{get_temp_owner_dir()}/contracts/{public_file_title}"
     print(f"{public_file_path=}")
     # public_file_path = f"src/goal/examples/ex_env/contracts/{public_file_title}"
-    ux = ownerunit_shop(tim_text, env_dir, goal_tag, _auto_output_to_public=True)
+    ux = ownerunit_shop(tim_text, env_dir, goal_kind, _auto_output_to_public=True)
     ux.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
 
     # WHEN
     tim_contract = ContractUnit(_owner=tim_text)
-    tim_contract.set_goal_tag(goal_tag)
+    tim_contract.set_goal_kind(goal_kind)
     ux.set_depot_contract(tim_contract, "blind_trust")
 
     # THEN
@@ -60,13 +60,13 @@ def test_ownerunit_auto_output_to_public_DoesNotSaveContractToPublicDirWhenFalse
 ):
     # GIVEN
     env_dir = get_temp_owner_dir()
-    goal_tag = get_temp_goal_tag()
+    goal_kind = get_temp_goal_kind()
     tim_text = "Tim"
     public_file_title = f"{tim_text}.json"
     public_file_path = f"{get_temp_owner_dir()}/contracts/{public_file_title}"
     print(f"{public_file_path=}")
     # public_file_path = f"src/goal/examples/ex_env/contracts/{public_file_title}"
-    ux = ownerunit_shop(tim_text, env_dir, goal_tag, _auto_output_to_public=False)
+    ux = ownerunit_shop(tim_text, env_dir, goal_kind, _auto_output_to_public=False)
     ux.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
 
@@ -82,7 +82,7 @@ def test_ownerunit_get_isol_createsEmptyContractWhenFileDoesNotExist(
 ):
     # GIVEN
     tim_text = "Tim"
-    tim_ux = ownerunit_shop(tim_text, get_temp_owner_dir(), get_temp_goal_tag())
+    tim_ux = ownerunit_shop(tim_text, get_temp_owner_dir(), get_temp_goal_kind())
     tim_ux.create_core_dir_and_files()
     assert os_path.exists(tim_ux._admin._isol_file_path)
     x_func_delete_dir(dir=tim_ux._admin._isol_file_path)
@@ -102,7 +102,7 @@ def test_ownerunit_get_isol_getsMemoryContractIfExists(
 ):
     # GIVEN
     tim_text = "Tim"
-    tim_ux = ownerunit_shop(tim_text, get_temp_owner_dir(), get_temp_goal_tag())
+    tim_ux = ownerunit_shop(tim_text, get_temp_owner_dir(), get_temp_goal_kind())
     tim_ux.create_core_dir_and_files()
     isol_file_path = f"{tim_ux._admin._owner_dir}/{tim_ux._admin._isol_file_title}"
     cx_isol1 = tim_ux.get_isol()
@@ -132,7 +132,7 @@ def test_ownerunit_set_isol_savesIsolContractSet_isol_None(
 ):
     # GIVEN
     tim_text = "Tim"
-    tim_ux = ownerunit_shop(tim_text, get_temp_owner_dir(), get_temp_goal_tag())
+    tim_ux = ownerunit_shop(tim_text, get_temp_owner_dir(), get_temp_goal_kind())
     tim_ux.create_core_dir_and_files()
     isol_file_path = f"{tim_ux._admin._owner_dir}/{tim_ux._admin._isol_file_title}"
     cx_isol1 = tim_ux.get_isol()
@@ -156,7 +156,7 @@ def test_ownerunit_set_isol_savesGivenContractSet_isol_None(
 ):
     # GIVEN
     tim_text = "Tim"
-    ux = ownerunit_shop(tim_text, get_temp_owner_dir(), get_temp_goal_tag())
+    ux = ownerunit_shop(tim_text, get_temp_owner_dir(), get_temp_goal_kind())
     ux.create_core_dir_and_files()
     isol_file_path = f"{ux._admin._owner_dir}/{ux._admin._isol_file_title}"
     cx_isol1 = ux.get_isol()
@@ -201,7 +201,7 @@ def test_ownerunit_set_isol_if_emtpy_DoesNotReplace_isol(
 ):
     # GIVEN
     tim_text = "Tim"
-    ux = ownerunit_shop(tim_text, get_temp_owner_dir(), get_temp_goal_tag())
+    ux = ownerunit_shop(tim_text, get_temp_owner_dir(), get_temp_goal_kind())
     ux.create_core_dir_and_files()
     saved_cx = ContractUnit(_owner=tim_text)
     saved_cx_uid_text = "this is pulled ContractUnit uid"

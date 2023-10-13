@@ -1,7 +1,7 @@
 from src.contract.contract import ContractUnit, partyunit_shop
 from src.goal.goal import goalunit_shop
 from src.goal.examples.goal_env_kit import (
-    get_temp_env_tag,
+    get_temp_env_kind,
     get_test_goals_dir,
     env_dir_setup_cleanup,
 )
@@ -45,7 +45,7 @@ def test_goal_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
 ):
     # GIVEN Create example goal with 4 Owners, each with 3 Partyunits = 12 ledger rows
 
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -163,7 +163,7 @@ def test_RiverFlowUnit_flow_returned_WorksCorrectly():
 def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cleanup):
     # GIVEN Create example goal with 4 Owners, each with 3 Partyunits = 12 ledger rows
 
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -234,7 +234,7 @@ def test_river_flow_insert_CorrectlyPopulatesTable01(
 ):
     # GIVEN Create example goal with 4 Owners, each with 3 Partyunits = 12 ledger rows
 
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -333,7 +333,7 @@ def test_get_river_tparty_table_insert_sqlstr_CorrectlyPopulatesTable01(
 ):
     # GIVEN Create example goal with 4 Owners, each with 3 Partyunits = 12 ledger rows
 
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -429,7 +429,7 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
 ):
     # GIVEN Create example goal with 4 Owners, each with 3 Partyunits = 12 ledger rows
 
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -470,7 +470,7 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
 ):
     # GIVEN Create example goal with 4 Owners, each with 3 Partyunits = 12 ledger rows
 
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -558,7 +558,7 @@ def test_goal_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -567,7 +567,7 @@ def test_goal_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
         assert get_idea_catalog_table_count(bank_conn, bob_text) == 0
 
     # WHEN
-    water_road = f"{get_temp_env_tag()},elements,water"
+    water_road = f"{get_temp_env_kind()},elements,water"
     water_idea_catalog = IdeaCatalog(contract_owner=bob_text, idea_road=water_road)
     water_insert_sqlstr = get_idea_catalog_table_insert_sqlstr(water_idea_catalog)
     with sx.get_bank_conn() as bank_conn:
@@ -580,7 +580,7 @@ def test_goal_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
 def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup):
     # GIVEN Create example goal with 4 Owners, each with 3 Partyunits = 12 ledger rows
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -612,7 +612,7 @@ def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup
 
 def test_goal_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     # GIVEN
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -640,11 +640,11 @@ def test_goal_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
 
     # WHEN / THEN
     assert len(get_idea_catalog_dict(sx.get_bank_conn())) == 20
-    b_road = f"{get_temp_env_tag()},B"
+    b_road = f"{get_temp_env_kind()},B"
     assert len(get_idea_catalog_dict(sx.get_bank_conn(), b_road)) == 3
-    ce_road = f"{get_temp_env_tag()},C,E"
+    ce_road = f"{get_temp_env_kind()},C,E"
     assert len(get_idea_catalog_dict(sx.get_bank_conn(), ce_road)) == 2
-    ex_road = f"{get_temp_env_tag()}"
+    ex_road = f"{get_temp_env_kind()}"
     assert len(get_idea_catalog_dict(sx.get_bank_conn(), ex_road)) == 4
 
 
@@ -653,7 +653,7 @@ def test_goal_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01
 ):
     # GIVEN Create example goal with 4 Owners, each with 3 Partyunits = 12 ledger rows
 
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -664,8 +664,8 @@ def test_goal_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01
     # WHEN
     weather_rain = AcptFactCatalog(
         contract_owner=bob_text,
-        base=f"{get_temp_env_tag()},weather",
-        pick=f"{get_temp_env_tag()},weather,rain",
+        base=f"{get_temp_env_kind()},weather",
+        pick=f"{get_temp_env_kind()},weather,rain",
     )
     water_insert_sqlstr = get_acptfact_catalog_table_insert_sqlstr(weather_rain)
     with sx.get_bank_conn() as bank_conn:
@@ -681,7 +681,7 @@ def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
 ):
     # GIVEN Create example goal with 4 Owners, each with 3 Partyunits = 12 ledger rows
 
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -741,7 +741,7 @@ def test_goal_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTable0
 ):
     # GIVEN Create example goal with 4 Owners, each with 3 Partyunits = 12 ledger rows
 
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -753,7 +753,7 @@ def test_goal_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTable0
     bob_group_x = GroupUnitCatalog(
         contract_owner=bob_text,
         groupunit_brand="US Dollar",
-        partylinks_set_by_goal_road=f"{get_temp_env_tag()},USA",
+        partylinks_set_by_goal_road=f"{get_temp_env_kind()},USA",
     )
     bob_group_sqlstr = get_groupunit_catalog_table_insert_sqlstr(bob_group_x)
     with sx.get_bank_conn() as bank_conn:
@@ -768,7 +768,7 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"

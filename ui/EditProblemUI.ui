@@ -10,7 +10,7 @@
     <height>712</height>
    </rect>
   </property>
-  <property title="windowTag">
+  <property title="windowkind">
    <string>Form</string>
   </property>
   <widget class="QLabel" title="label_3">

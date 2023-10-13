@@ -29,30 +29,30 @@ def test_IdeaRoot_set_idea_label_get_default_goal_root_label_DoesNotRaisesError(
 def test_IdeaRoot_set_idea_label_CorrectlyDoesNotRaisesError():
     # GIVEN
     new_obj = IdeaRoot()
-    goal_tag = "El Paso"
+    goal_kind = "El Paso"
 
     # WHEN
 
-    new_obj.set_idea_label(_label=goal_tag, contract_goal_tag=goal_tag)
+    new_obj.set_idea_label(_label=goal_kind, contract_goal_kind=goal_kind)
 
     # THEN
-    assert new_obj._label == goal_tag
+    assert new_obj._label == goal_kind
 
 
 def test_IdeaRoot_set_idea_label_InCorrectlyDoesRaisesError():
     # GIVEN
     new_obj = IdeaRoot()
-    goal_tag = "El Paso"
+    goal_kind = "El Paso"
 
     with pytest_raises(Exception) as excinfo:
         casa_text = "casa"
-        new_obj.set_idea_label(_label=casa_text, contract_goal_tag=goal_tag)
+        new_obj.set_idea_label(_label=casa_text, contract_goal_kind=goal_kind)
     assert (
-        str(excinfo.value) == f"Cannot set idearoot to string other than '{goal_tag}'"
+        str(excinfo.value) == f"Cannot set idearoot to string other than '{goal_kind}'"
     )
 
 
-def test_IdeaRoot_set_idea_label_RaisesErrorWhen_contract_goal_tag_IsNone():
+def test_IdeaRoot_set_idea_label_RaisesErrorWhen_contract_goal_kind_IsNone():
     # GIVEN
     new_obj = IdeaRoot()
 
@@ -60,20 +60,20 @@ def test_IdeaRoot_set_idea_label_RaisesErrorWhen_contract_goal_tag_IsNone():
 
     with pytest_raises(Exception) as excinfo:
         casa_text = "casa"
-        new_obj.set_idea_label(_label=casa_text, contract_goal_tag=None)
+        new_obj.set_idea_label(_label=casa_text, contract_goal_kind=None)
     assert (
         str(excinfo.value)
         == f"Cannot set idearoot to string other than '{root_label()}'"
     )
 
 
-def test_IdeaRoot_set_idea_label_contract_goal_tag_EqualRootLabelDoesNotRaisesError():
+def test_IdeaRoot_set_idea_label_contract_goal_kind_EqualRootLabelDoesNotRaisesError():
     # GIVEN
     new_obj = IdeaRoot()
 
     # WHEN
 
-    new_obj.set_idea_label(_label=root_label(), contract_goal_tag=root_label())
+    new_obj.set_idea_label(_label=root_label(), contract_goal_kind=root_label())
 
     # THEN
     assert new_obj._label == root_label()

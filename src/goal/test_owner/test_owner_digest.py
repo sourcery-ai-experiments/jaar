@@ -14,7 +14,7 @@ from src.goal.examples.example_owners import (
 from src.goal.examples.owner_env_kit import (
     owner_dir_setup_cleanup,
     get_temp_owner_dir,
-    get_temp_goal_tag,
+    get_temp_goal_kind,
 )
 from os import path as os_path
 from pytest import raises as pytest_raises
@@ -50,17 +50,17 @@ def test_owneropen_isol_contract_WhenStartingContractFileDoesNotExists(
     # GIVEN
     tim_text = "Tim"
     env_dir = get_temp_owner_dir()
-    goal_tag_text = get_temp_goal_tag()
-    ux = ownerunit_shop(title=tim_text, env_dir=env_dir, goal_tag=goal_tag_text)
+    goal_kind_text = get_temp_goal_kind()
+    ux = ownerunit_shop(title=tim_text, env_dir=env_dir, goal_kind=goal_kind_text)
 
     # WHEN
     isol_contract = ux._admin.open_isol_contract()
     assert isol_contract != None
-    assert isol_contract._goal_tag == goal_tag_text
+    assert isol_contract._goal_kind == goal_kind_text
 
     # THEN
     x_contract = ContractUnit(_owner=tim_text)
-    x_contract.set_goal_tag(get_temp_goal_tag())
+    x_contract.set_goal_kind(get_temp_goal_kind())
     x_contract.set_contract_metrics()
     # x_idearoot = IdeaRoot(_label=p_title, _walk="")
     # x_idearoot.set_balancelines_empty_if_null()
@@ -88,7 +88,7 @@ def test_owner_save_isol_contract_IsolContractOwnerMustBeOwner(
     # GIVEN
     p_title = "Game1"
     env_dir = get_temp_owner_dir()
-    ux = ownerunit_shop(p_title, env_dir, get_temp_goal_tag())
+    ux = ownerunit_shop(p_title, env_dir, get_temp_goal_kind())
     cx1 = example_contracts_get_contract_with_4_levels()
     assert cx1._owner != p_title
 
@@ -105,7 +105,7 @@ def test_owner_open_isol_contract_WhenStartingContractFileExists(
     # GIVEN
     p_title = "Game1"
     env_dir = get_temp_owner_dir()
-    ux = ownerunit_shop(p_title, env_dir, get_temp_goal_tag())
+    ux = ownerunit_shop(p_title, env_dir, get_temp_goal_kind())
     ux._admin.save_isol_contract(
         contract_x=example_contracts_get_contract_with_4_levels()
     )
@@ -133,7 +133,7 @@ def test_owner_erase_isol_contract_file_DeletesFileCorrectly(
     # GIVEN
     p_title = "Game1"
     env_dir = get_temp_owner_dir()
-    ux = ownerunit_shop(p_title, env_dir, get_temp_goal_tag())
+    ux = ownerunit_shop(p_title, env_dir, get_temp_goal_kind())
     ux._admin.save_isol_contract(example_contracts_get_contract_with_4_levels())
     file_title = ux._admin._isol_file_title
     assert x_func_open_file(ux._admin._owner_dir, file_title) != None
@@ -156,7 +156,7 @@ def test_ownerunit_save_contract_to_digest_SavesFileCorrectly(
     # GIVEN
     owner_title = "owner1"
     env_dir = get_temp_owner_dir()
-    ux = ownerunit_shop(owner_title, env_dir, get_temp_goal_tag())
+    ux = ownerunit_shop(owner_title, env_dir, get_temp_goal_kind())
     ux.create_core_dir_and_files()
     cx = example_owners_get_2node_contract()
     src_contract_owner = cx._owner
@@ -186,7 +186,7 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestContract(
     # GIVEN
     sue_text = "Sue"
     env_dir = get_temp_owner_dir()
-    sue_cx = ownerunit_shop(sue_text, env_dir, get_temp_goal_tag())
+    sue_cx = ownerunit_shop(sue_text, env_dir, get_temp_goal_kind())
     sue_cx.create_core_dir_and_files()
     cx = example_owners_get_2node_contract()
     src_contract_owner = cx._owner
@@ -215,12 +215,12 @@ def test_owner_get_remelded_output_contract_withEmptyDigestDict(
 ):
     # GIVEN
     owner_title_x = "boots3"
-    ux = ownerunit_shop(owner_title_x, get_temp_owner_dir(), get_temp_goal_tag())
+    ux = ownerunit_shop(owner_title_x, get_temp_owner_dir(), get_temp_goal_kind())
     ux.create_core_dir_and_files()
     sx_output_before = ux._admin.get_remelded_output_contract()
     assert str(type(sx_output_before)).find(".contract.ContractUnit'>")
     assert sx_output_before._owner == owner_title_x
-    assert sx_output_before._idearoot._label == get_temp_goal_tag()
+    assert sx_output_before._idearoot._label == get_temp_goal_kind()
     # ux.set_digested_contract(contract_x=ContractUnit(_owner="digested1"))
 
     # WHEN
@@ -228,7 +228,7 @@ def test_owner_get_remelded_output_contract_withEmptyDigestDict(
 
     # THEN
     owner_contract_x = ContractUnit(_owner=owner_title_x, _weight=0.0)
-    owner_contract_x.set_goal_tag(get_temp_goal_tag())
+    owner_contract_x.set_goal_kind(get_temp_goal_kind())
     owner_contract_x._idearoot._walk = ""
     owner_contract_x.set_contract_metrics()
 
@@ -248,12 +248,12 @@ def test_owner_get_remelded_output_contract_with1DigestedContract(
     # GIVEN
     yao_text = "Yao"
     env_dir = get_temp_owner_dir()
-    ux = ownerunit_shop(yao_text, env_dir, get_temp_goal_tag())
+    ux = ownerunit_shop(yao_text, env_dir, get_temp_goal_kind())
     ux.create_core_dir_and_files()
     sx_output_old = ux._admin.get_remelded_output_contract()
     assert str(type(sx_output_old)).find(".contract.ContractUnit'>")
     assert sx_output_old._owner == yao_text
-    assert sx_output_old._idearoot._label == get_temp_goal_tag()
+    assert sx_output_old._idearoot._label == get_temp_goal_kind()
     input_contract = example_owners_get_2node_contract()
     input_contract.meld(input_contract)
     ux.set_depot_contract(contract_x=input_contract, depotlink_type="blind_trust")
@@ -346,7 +346,7 @@ def test_owner_isol_contract_CorrectlysHasOriginLinksWithOwnerAsSource(
     assert isol_contract_x._idearoot._originunit == originunit_shop()
     assert isol_contract_x._idearoot._originunit != yao_originunit
 
-    ux = ownerunit_shop(yao_text, get_temp_owner_dir(), get_temp_goal_tag())
+    ux = ownerunit_shop(yao_text, get_temp_owner_dir(), get_temp_goal_kind())
     ux.create_core_dir_and_files()
     ux._admin.save_isol_contract(contract_x=isol_contract_x)
 

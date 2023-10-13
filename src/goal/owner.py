@@ -30,7 +30,7 @@ class InvalidOwnerException(Exception):
 class OwnerAdmin:
     _owner_title: str
     _env_dir: str
-    _goal_tag: str
+    _goal_kind: str
     _owner_dir: str = None
     _owners_dir: str = None
     _isol_file_title: str = None
@@ -172,7 +172,7 @@ class OwnerAdmin:
     def _get_empty_isol_contract(self):
         cx = ContractUnit(_owner=self._owner_title, _weight=0)
         cx.add_partyunit(title=self._owner_title)
-        cx.set_goal_tag(self._goal_tag)
+        cx.set_goal_kind(self._goal_kind)
         return cx
 
     def erase_depot_contract(self, owner):
@@ -210,8 +210,10 @@ class OwnerAdmin:
         self.save_contract_to_public(self.get_remelded_output_contract())
 
 
-def owneradmin_shop(_owner_title: str, _env_dir: str, _goal_tag: str) -> OwnerAdmin:
-    uax = OwnerAdmin(_owner_title=_owner_title, _env_dir=_env_dir, _goal_tag=_goal_tag)
+def owneradmin_shop(_owner_title: str, _env_dir: str, _goal_kind: str) -> OwnerAdmin:
+    uax = OwnerAdmin(
+        _owner_title=_owner_title, _env_dir=_env_dir, _goal_kind=_goal_kind
+    )
     uax.set_dirs()
     return uax
 
@@ -272,14 +274,14 @@ class OwnerUnit:
             self._admin.save_contract_to_digest(cx_obj)
         elif link_type == "ignore":
             new_cx_obj = ContractUnit(_owner=outer_owner)
-            new_cx_obj.set_goal_tag(self._admin._goal_tag)
+            new_cx_obj.set_goal_kind(self._admin._goal_kind)
             self.set_ignore_contract_file(new_cx_obj, new_cx_obj._owner)
 
     def _set_assignment_depotlink(self, outer_owner):
         src_cx = self._admin.open_depot_contract(outer_owner)
         src_cx.set_contract_metrics()
         empty_cx = ContractUnit(_owner=self._admin._owner_title)
-        empty_cx.set_goal_tag(self._admin._goal_tag)
+        empty_cx.set_goal_kind(self._admin._goal_kind)
         assign_cx = src_cx.get_assignment(
             empty_cx, self.get_isol()._partys, self._admin._owner_title
         )
@@ -336,9 +338,9 @@ class OwnerUnit:
         self._admin.save_contract_to_digest(contractunit, src_contract_owner)
 
     # housekeeping
-    def set_env_dir(self, env_dir: str, owner_title: str, goal_tag: str):
+    def set_env_dir(self, env_dir: str, owner_title: str, goal_kind: str):
         self._admin = owneradmin_shop(
-            _owner_title=owner_title, _env_dir=env_dir, _goal_tag=goal_tag
+            _owner_title=owner_title, _env_dir=env_dir, _goal_kind=goal_kind
         )
 
     def create_core_dir_and_files(self, isol_cx: ContractUnit = None):
@@ -346,10 +348,10 @@ class OwnerUnit:
 
 
 def ownerunit_shop(
-    title: str, env_dir: str, goal_tag: str, _auto_output_to_public: bool = None
+    title: str, env_dir: str, goal_kind: str, _auto_output_to_public: bool = None
 ) -> OwnerUnit:
     owner_x = OwnerUnit()
-    owner_x.set_env_dir(env_dir, title, goal_tag=goal_tag)
+    owner_x.set_env_dir(env_dir, title, goal_kind=goal_kind)
     owner_x.get_isol()
     owner_x._isol._set_auto_output_to_public(_auto_output_to_public)
     owner_x.set_isol()

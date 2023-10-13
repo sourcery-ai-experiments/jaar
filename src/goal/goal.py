@@ -40,13 +40,13 @@ from src.goal.bank_sqlstr import (
 )
 
 
-class GoalTag(str):
+class Goalkind(str):
     pass
 
 
 @dataclass
 class GoalUnit:
-    tag: GoalTag
+    kind: Goalkind
     goals_dir: str
     _ownerunits: dict[str:OwnerUnit] = None
     _bank_db = None
@@ -266,14 +266,14 @@ class GoalUnit:
         self._bank_db = None
         x_func_delete_dir(dir=self.get_bank_db_path())
 
-    def set_goalunit_tag(self, tag: str):
-        self.tag = tag
+    def set_goalunit_kind(self, kind: str):
+        self.kind = kind
 
     def get_bank_db_path(self):
         return f"{self.get_object_root_dir()}/bank.db"
 
     def get_object_root_dir(self):
-        return f"{self.goals_dir}/{self.tag}"
+        return f"{self.goals_dir}/{self.kind}"
 
     def _create_main_file_if_null(self, x_dir):
         goal_file_title = "goal.json"
@@ -312,7 +312,7 @@ class GoalUnit:
 
     def create_new_ownerunit(self, owner_title: str):
         self.set_ownerunits_empty_if_null()
-        ux = ownerunit_shop(owner_title, self.get_object_root_dir(), self.tag)
+        ux = ownerunit_shop(owner_title, self.get_object_root_dir(), self.kind)
         ux.create_core_dir_and_files()
         self._ownerunits[ux._admin._owner_title] = ux
 
@@ -386,7 +386,7 @@ class GoalUnit:
         x_func_delete_dir(f"{self.get_public_dir()}/{contract_x_owner}.json")
 
     def save_public_contract(self, contract_x: ContractUnit):
-        contract_x.set_goal_tag(goal_tag=self.tag)
+        contract_x.set_goal_kind(goal_kind=self.kind)
         x_func_save_file(
             dest_dir=self.get_public_dir(),
             file_title=f"{contract_x._owner}.json",
@@ -488,13 +488,13 @@ class GoalUnit:
 
 
 def goalunit_shop(
-    tag: str,
+    kind: str,
     goals_dir: str,
     _ownerunits: dict[str:OwnerUnit] = None,
     in_memory_bank: bool = None,
 ):
     if in_memory_bank is None:
         in_memory_bank = True
-    goal_x = GoalUnit(tag=tag, goals_dir=goals_dir, _ownerunits=_ownerunits)
+    goal_x = GoalUnit(kind=kind, goals_dir=goals_dir, _ownerunits=_ownerunits)
     goal_x.create_dirs_if_null(in_memory_bank=in_memory_bank)
     return goal_x

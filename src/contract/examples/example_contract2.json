@@ -11690,5 +11690,5 @@
     "_range_source_road": null,
     "_uid": 1,
     "_weight": 1
-    , "_goal_tag": "A"
+    , "_goal_kind": "A"
 }

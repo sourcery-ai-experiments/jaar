@@ -12,9 +12,9 @@ from src.contract.x_func import from_list_get_active_status
 def test_contract_requiredunits_create():
     cx = example_contracts_get_contract_with_4_levels()
     work_text = "work"
-    work_road = f"{cx._goal_tag},{work_text}"
+    work_road = f"{cx._goal_kind},{work_text}"
     weekday_text = "weekdays"
-    weekday_road = f"{cx._goal_tag},{weekday_text}"
+    weekday_road = f"{cx._goal_kind},{weekday_text}"
     wed_text = "Wednesday"
     wed_road = f"{weekday_road},{wed_text}"
 
@@ -35,9 +35,9 @@ def test_contract_requiredunits_create():
 def test_contract_set_requiredunits_status():
     cx = example_contracts_get_contract_with_4_levels()
     work_text = "work"
-    work_road = f"{cx._goal_tag},{work_text}"
+    work_road = f"{cx._goal_kind},{work_text}"
     weekday_text = "weekdays"
-    weekday_road = f"{cx._goal_tag},{weekday_text}"
+    weekday_road = f"{cx._goal_kind},{weekday_text}"
     wed_text = "Wednesday"
     wed_road = f"{weekday_road},{wed_text}"
 
@@ -68,9 +68,9 @@ def test_contract_requiredheirs_AreCorrectlyInherited_v1():
     # GIVEN
     cx = example_contracts_get_contract_with_4_levels()
     work_text = "work"
-    work_road = f"{cx._goal_tag},{work_text}"
+    work_road = f"{cx._goal_kind},{work_text}"
     week_label = "weekdays"
-    week_road = f"{cx._goal_tag},{week_label}"
+    week_road = f"{cx._goal_kind},{week_label}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
 
@@ -124,9 +124,9 @@ def test_contract_requiredheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
     # GIVEN
     a4 = example_contracts_get_contract_with_4_levels()
     work_text = "work"
-    work_road = f"{a4._goal_tag},{work_text}"
+    work_road = f"{a4._goal_kind},{work_text}"
     week_text = "weekdays"
-    week_road = f"{a4._goal_tag},{week_text}"
+    week_road = f"{a4._goal_kind},{week_text}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
 
@@ -192,9 +192,9 @@ def test_contract_requiredheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
 def test_contract_requiredheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     a4 = example_contracts_get_contract_with_4_levels()
     work_text = "work"
-    work_road = f"{a4._goal_tag},{work_text}"
+    work_road = f"{a4._goal_kind},{work_text}"
     week_label = "weekdays"
-    week_road = f"{a4._goal_tag},{week_label}"
+    week_road = f"{a4._goal_kind},{week_label}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
 
@@ -266,9 +266,9 @@ def test_contract_requiredunits_set_UnCoupledMethod():
     # Given
     cx = example_contracts_get_contract_with_4_levels()
     work_text = "work"
-    work_road = f"{cx._goal_tag},{work_text}"
+    work_road = f"{cx._goal_kind},{work_text}"
     week_text = "weekdays"
-    week_road = f"{cx._goal_tag},{week_text}"
+    week_road = f"{cx._goal_kind},{week_text}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
 
@@ -340,14 +340,14 @@ def test_contract_requiredunits_set_sufffactIdeaWithDenomSetsSuffFactDivision():
     # Given
     cx = example_contracts_get_contract_with_4_levels()
     work_text = "work"
-    work_road = f"{cx._goal_tag},{work_text}"
+    work_road = f"{cx._goal_kind},{work_text}"
     time_text = "time"
-    time_road = f"{cx._goal_tag},{time_text}"
+    time_road = f"{cx._goal_kind},{time_text}"
     week_text = "week"
-    week_road = f"{cx._goal_tag},{time_text},{week_text}"
+    week_road = f"{cx._goal_kind},{time_text},{week_text}"
     cx.add_idea(
         idea_kid=IdeaKid(_label=time_text, _begin=100, _close=2000),
-        walk=cx._goal_tag,
+        walk=cx._goal_kind,
     )
     cx.add_idea(idea_kid=IdeaKid(_label=week_text, _denom=7), walk=time_road)
 
@@ -373,13 +373,13 @@ def test_contract_requiredunits_set_sufffactIdeaWithBeginCloseSetsSuffFactOpenNi
     # Given
     cx = example_contracts_get_contract_with_4_levels()
     work = "work"
-    work_road = f"{cx._goal_tag},{work}"
+    work_road = f"{cx._goal_kind},{work}"
     time = "time"
-    time_road = f"{cx._goal_tag},{time}"
+    time_road = f"{cx._goal_kind},{time}"
     rus_war = "rus_war"
-    rus_war_road = f"{cx._goal_tag},{time},{rus_war}"
+    rus_war_road = f"{cx._goal_kind},{time},{rus_war}"
     cx.add_idea(
-        idea_kid=IdeaKid(_label=time, _begin=100, _close=2000), walk=cx._goal_tag
+        idea_kid=IdeaKid(_label=time, _begin=100, _close=2000), walk=cx._goal_kind
     )
     cx.add_idea(idea_kid=IdeaKid(_label=rus_war, _begin=22, _close=34), walk=time_road)
 
@@ -404,14 +404,14 @@ def test_contract_requiredunits_set_sufffactIdeaWithBeginCloseSetsSuffFactOpenNi
 def test_contract_requiredunits_del_required_sufffact_UncoupledMethod1():
     # Given
     cx = example_contracts_get_contract_with_4_levels()
-    work_road = f"{cx._goal_tag},work"
-    weekday_road = f"{cx._goal_tag},weekdays"
-    wed_road = f"{cx._goal_tag},weekdays,Wednesday"
+    work_road = f"{cx._goal_kind},work"
+    weekday_road = f"{cx._goal_kind},weekdays"
+    wed_road = f"{cx._goal_kind},weekdays,Wednesday"
 
     cx.edit_idea_attr(
         road=work_road, required_base=weekday_road, required_sufffact=wed_road
     )
-    thu_road = f"{cx._goal_tag},weekdays,Thursday"
+    thu_road = f"{cx._goal_kind},weekdays,Thursday"
     cx.edit_idea_attr(
         road=work_road,
         required_base=weekday_road,
@@ -447,8 +447,8 @@ def test_contract_requiredunits_del_required_sufffact_UncoupledMethod1():
 def test_contract_requiredunits_del_required_sufffact_UncoupledMethod2():
     # Given
     cx = example_contracts_get_contract_with_4_levels()
-    work_road = f"{cx._goal_tag},work"
-    weekdays_road = f"{cx._goal_tag},weekdays"
+    work_road = f"{cx._goal_kind},work"
+    weekdays_road = f"{cx._goal_kind},weekdays"
     work_idea1 = cx.get_idea_kid(road=work_road)
     work_idea1.set_requiredunits_empty_if_null()
     assert len(work_idea1._requiredunits) == 0
@@ -465,11 +465,11 @@ def test_contract_edit_idea_attr_contractIsAbleToEdit_suff_idea_active_status_An
     # GIVEN
     cx = example_contracts_get_contract_with_4_levels()
     work_text = "work"
-    work_road = f"{cx._goal_tag},{work_text}"
+    work_road = f"{cx._goal_kind},{work_text}"
 
     commute_text = "commute to work"
-    commute_road = f"{cx._goal_tag},{commute_text}"
-    cx.add_idea(idea_kid=IdeaKid(_label=commute_text), walk=cx._goal_tag)
+    commute_road = f"{cx._goal_kind},{commute_text}"
+    cx.add_idea(idea_kid=IdeaKid(_label=commute_text), walk=cx._goal_kind)
     cx.get_idea_list()  # set tree metrics
     commute_idea = cx.get_idea_kid(road=commute_road)
     assert len(commute_idea._requiredunits) == 0
@@ -524,9 +524,9 @@ def test_contract_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus
     # 3. idea(...,weekdays,thursday) exists
     cx = example_contracts_get_contract_with_4_levels()
     work_text = "work"
-    work_road = f"{cx._goal_tag},{work_text}"
+    work_road = f"{cx._goal_kind},{work_text}"
     weekdays_text = "weekdays"
-    weekdays_road = f"{cx._goal_tag},{weekdays_text}"
+    weekdays_road = f"{cx._goal_kind},{weekdays_text}"
     wed_text = "Wednesday"
     wed_road = f"{weekdays_road},{wed_text}"
     thu_text = "Thursday"
@@ -548,8 +548,8 @@ def test_contract_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus
     # 5.1. RequiredUnit: idea(base=...,work) has .suff_idea_active_status = True
     # 5.2. idea(...,work).active_status = False
     commute_text = "commute to work"
-    commute_road = f"{cx._goal_tag},{commute_text}"
-    cx.add_idea(idea_kid=IdeaKid(_label=commute_text), walk=cx._goal_tag)
+    commute_road = f"{cx._goal_kind},{commute_text}"
+    cx.add_idea(idea_kid=IdeaKid(_label=commute_text), walk=cx._goal_kind)
     cx.edit_idea_attr(
         road=commute_road,
         required_base=work_road,

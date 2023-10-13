@@ -17,7 +17,7 @@ def test_contract_exists():
 
     assert new_obj
     assert new_obj._owner == owner_text
-    assert new_obj._goal_tag == root_label()
+    assert new_obj._goal_kind == root_label()
     assert new_obj._weight == 1
     assert new_obj._max_tree_traverse == 3
     assert new_obj._tree_traverse_count is None
@@ -40,7 +40,7 @@ def test_contract_IsAbleToSetTaskAsComplete():
     assert mail_idea._task == True
 
     ced_min_label = "CE0_minutes"
-    ced_road = f"{contract_x._goal_tag},{ced_min_label}"
+    ced_road = f"{contract_x._goal_kind},{ced_min_label}"
     contract_x.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=85)
     idea_list = contract_x.get_idea_list()
     assert mail_idea.promise == True
@@ -50,7 +50,7 @@ def test_contract_IsAbleToSetTaskAsComplete():
 def test_contract_IsAbleToEditAcptFactUnitAnyAncestor_Idea_1():
     contract_x = get_contract_1Task_1CE0MinutesRequired_1AcptFact()
     ced_min_label = "CE0_minutes"
-    ced_road = f"{contract_x._goal_tag},{ced_min_label}"
+    ced_road = f"{contract_x._goal_kind},{ced_min_label}"
     contract_x.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=85)
     idea_list = contract_x.get_idea_list()
     mail_idea = idea_list[1]
@@ -150,15 +150,15 @@ def test_contract_init_CorrectlySetsGiven_auto_output_to_public():
     assert new_obj._auto_output_to_public == True
 
 
-def test_contract_set_goal_tag_CorrectlySetsAttr():
+def test_contract_set_goal_kind_CorrectlySetsAttr():
     # GIVEN
-    goal_tag_text = "Sun"
+    goal_kind_text = "Sun"
     owner_text = "Noa"
     new_obj = ContractUnit(_owner=owner_text, _auto_output_to_public=True)
-    assert new_obj._goal_tag == root_label()
+    assert new_obj._goal_kind == root_label()
 
     # WHEN
-    new_obj.set_goal_tag(goal_tag=goal_tag_text)
+    new_obj.set_goal_kind(goal_kind=goal_kind_text)
 
     # THEN
-    assert new_obj._goal_tag == goal_tag_text
+    assert new_obj._goal_kind == goal_kind_text

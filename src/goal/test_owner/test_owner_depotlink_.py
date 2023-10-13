@@ -13,10 +13,10 @@ from src.goal.examples.example_owners import (
 from src.goal.examples.owner_env_kit import (
     owner_dir_setup_cleanup,
     get_temp_owner_dir,
-    get_temp_goal_tag,
+    get_temp_goal_kind,
     create_contract_file,
 )
-from src.goal.examples.goal_env_kit import get_temp_env_tag
+from src.goal.examples.goal_env_kit import get_temp_env_kind
 from src.goal.goal import goalunit_shop
 from os import path as os_path
 from pytest import raises as pytest_raises
@@ -28,7 +28,7 @@ def test_ownerunit_set_depotlink_RaisesErrorWhenContractDoesNotExist(
     # GIVEN
     sue_text = "Sue"
     env_dir = get_temp_owner_dir()
-    sue_cx = ownerunit_shop(sue_text, env_dir, get_temp_goal_tag())
+    sue_cx = ownerunit_shop(sue_text, env_dir, get_temp_goal_kind())
     sue_cx.set_isol_if_empty()
     tim_text = "Tim"
     assert list(sue_cx._isol._partys.keys()) == [sue_text]
@@ -48,7 +48,7 @@ def test_ownerunit_set_depotlink_CorrectlySetsIsolPartys(owner_dir_setup_cleanup
     # GIVEN
     yao_text = "yao"
     env_dir = get_temp_owner_dir()
-    yao_ux = ownerunit_shop(yao_text, env_dir, get_temp_goal_tag())
+    yao_ux = ownerunit_shop(yao_text, env_dir, get_temp_goal_kind())
     yao_ux.set_isol_if_empty()
     sue_text = "sue"
     create_contract_file(yao_ux._admin._contracts_depot_dir, sue_text)
@@ -67,7 +67,9 @@ def test_ownerunit_set_depotlink_CorrectlySetsAssignment(owner_dir_setup_cleanup
     america_cx = get_america_assign_ex()
     print(f"{len(america_cx._idea_dict)=}")
     joachim_text = "Joachim"
-    joachim_ux = ownerunit_shop(joachim_text, get_temp_owner_dir(), get_temp_goal_tag())
+    joachim_ux = ownerunit_shop(
+        joachim_text, get_temp_owner_dir(), get_temp_goal_kind()
+    )
     joachim_ux.create_core_dir_and_files()
     joachim_ux.set_isol_if_empty()
     joachim_ux._admin.save_contract_to_depot(america_cx)
@@ -104,7 +106,7 @@ def test_ownerunit_del_depot_contract_CorrectlyDeletesObj(owner_dir_setup_cleanu
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_owner_dir()
-    bob_cx = ownerunit_shop(bob_text, env_dir, get_temp_goal_tag())
+    bob_cx = ownerunit_shop(bob_text, env_dir, get_temp_goal_kind())
     yao_text = "Yao"
     create_contract_file(bob_cx._admin._contracts_depot_dir, yao_text)
     assignment_text = "assignment"
@@ -127,7 +129,7 @@ def test_ownerunit_del_depot_contract_CorrectlyDeletesBlindTrustFile(
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_owner_dir()
-    bob_cx = ownerunit_shop(bob_text, env_dir, get_temp_goal_tag())
+    bob_cx = ownerunit_shop(bob_text, env_dir, get_temp_goal_kind())
     lai_text = "Lai"
     create_contract_file(bob_cx._admin._contracts_depot_dir, lai_text)
     bob_cx.set_isol_if_empty()
@@ -149,7 +151,7 @@ def test_ownerunit_set_depot_contract_SavesFileCorrectly(
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_owner_dir()
-    bob_cx = ownerunit_shop(bob_text, env_dir, get_temp_goal_tag())
+    bob_cx = ownerunit_shop(bob_text, env_dir, get_temp_goal_kind())
     cal1 = get_2node_contract()
     assert (
         x_func_count_files(bob_cx._admin._contracts_depot_dir) is None
@@ -172,7 +174,7 @@ def test_ownerunit_delete_ignore_depotlink_CorrectlyDeletesObj(
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_owner_dir()
-    bob_cx = ownerunit_shop(bob_text, env_dir, get_temp_goal_tag())
+    bob_cx = ownerunit_shop(bob_text, env_dir, get_temp_goal_kind())
     yao_text = "Yao"
     create_contract_file(bob_cx._admin._contracts_depot_dir, yao_text)
     assignment_text = "assignment"
@@ -195,7 +197,7 @@ def test_ownerunit_del_depot_contract_CorrectlyDoesNotDeletesIgnoreFile(
     # GIVEN
     bob_text = "bob"
     env_dir = get_temp_owner_dir()
-    bob_cx = ownerunit_shop(bob_text, env_dir, get_temp_goal_tag())
+    bob_cx = ownerunit_shop(bob_text, env_dir, get_temp_goal_kind())
     zia_text = "Zia"
     create_contract_file(bob_cx._admin._contracts_depot_dir, zia_text)
     bob_cx.set_isol_if_empty()
@@ -219,7 +221,7 @@ def test_ownerunit_set_ignore_contract_file_CorrectlyUpdatesIgnoreFile(
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_owner_dir()
-    bob_ux = ownerunit_shop(bob_text, env_dir, get_temp_goal_tag())
+    bob_ux = ownerunit_shop(bob_text, env_dir, get_temp_goal_kind())
     zia_text = "Zia"
     create_contract_file(bob_ux._admin._contracts_depot_dir, zia_text)
     bob_ux.set_isol_if_empty()
@@ -245,8 +247,8 @@ def test_ownerunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
 ):
     # GIVEN
     env_dir = get_temp_owner_dir()
-    goal_tag = get_temp_env_tag()
-    sx = goalunit_shop(tag=goal_tag, goals_dir=env_dir)
+    goal_kind = get_temp_env_kind()
+    sx = goalunit_shop(kind=goal_kind, goals_dir=env_dir)
     yao_text = "Yao"
     sx.create_new_ownerunit(owner_title=yao_text)
     yao_contract = sx.get_owner_obj(title=yao_text)

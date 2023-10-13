@@ -70,7 +70,7 @@ def test_example_has_groups():
     idea_dict = cx._idea_dict
 
     # THEN
-    db_idea = idea_dict.get(f"{cx._goal_tag},D&B")
+    db_idea = idea_dict.get(f"{cx._goal_kind},D&B")
     print(f"{db_idea._label=} {db_idea._balancelinks=}")
     assert len(db_idea._balancelinks) == 3
     # for idea_key in idea_dict:
@@ -629,7 +629,7 @@ def test_contract_add_idea_CreatesMissingGroups():
     owner_text = "bob"
     a_x = ContractUnit(_owner=owner_text)
     a_x.set_groupunits_empty_if_null()
-    new_idea_parent_road = f"{a_x._goal_tag},work,cleaning"
+    new_idea_parent_road = f"{a_x._goal_kind},work,cleaning"
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = IdeaKid(_weight=40, _label=clean_cookery_text, promise=True)
 
@@ -662,11 +662,11 @@ def test_ContractUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balan
     cx1.add_partyunit(title=zoa_text)
 
     work_text = "work"
-    work_road = f"{cx1._goal_tag},{work_text}"
+    work_road = f"{cx1._goal_kind},{work_text}"
     swim_text = "swim"
-    swim_road = f"{cx1._goal_tag},{swim_text}"
-    cx1.add_idea(IdeaKid(_label=work_text), walk=cx1._goal_tag)
-    cx1.add_idea(IdeaKid(_label=swim_text), walk=cx1._goal_tag)
+    swim_road = f"{cx1._goal_kind},{swim_text}"
+    cx1.add_idea(IdeaKid(_label=work_text), walk=cx1._goal_kind)
+    cx1.add_idea(IdeaKid(_label=swim_text), walk=cx1._goal_kind)
     cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=xia_text))
     cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=zoa_text))
     cx1_swim_idea = cx1.get_idea_kid(swim_road)
@@ -692,11 +692,11 @@ def test_ContractUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     cx1.add_partyunit(title=zoa_text)
 
     work_text = "work"
-    work_road = f"{cx1._goal_tag},{work_text}"
+    work_road = f"{cx1._goal_kind},{work_text}"
     swim_text = "swim"
-    swim_road = f"{cx1._goal_tag},{swim_text}"
-    cx1.add_idea(IdeaKid(_label=work_text), walk=cx1._goal_tag)
-    cx1.add_idea(IdeaKid(_label=swim_text), walk=cx1._goal_tag)
+    swim_road = f"{cx1._goal_kind},{swim_text}"
+    cx1.add_idea(IdeaKid(_label=work_text), walk=cx1._goal_kind)
+    cx1.add_idea(IdeaKid(_label=swim_text), walk=cx1._goal_kind)
     cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=xia_text))
     cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=zoa_text))
     cx1_swim_idea = cx1.get_idea_kid(swim_road)
@@ -707,7 +707,7 @@ def test_ContractUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     cx2.add_partyunit(title=xia_text)
     cx2.add_idea(
         idea_kid=cx1_swim_idea,
-        walk=cx2._goal_tag,
+        walk=cx2._goal_kind,
         create_missing_ideas_groups=False,
     )
 
@@ -722,7 +722,7 @@ def test_contract_add_idea_DoesNotOverwriteGroups():
     owner_text = "bob"
     a_x = ContractUnit(_owner=owner_text)
     a_x.set_groupunits_empty_if_null()
-    new_idea_parent_road = f"{a_x._goal_tag},work,cleaning"
+    new_idea_parent_road = f"{a_x._goal_kind},work,cleaning"
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = IdeaKid(_weight=40, _label=clean_cookery_text, promise=True)
 

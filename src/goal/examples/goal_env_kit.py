@@ -28,12 +28,12 @@ from os import listdir as os_listdir, rename as os_rename, path as os_path
 from pytest import fixture as pytest_fixture
 
 
-def get_temp_env_tag():
+def get_temp_env_kind():
     return "ex_env04"
 
 
 def get_temp_env_dir():
-    return f"{get_test_goals_dir()}/{get_temp_env_tag()}"
+    return f"{get_test_goals_dir()}/{get_temp_env_kind()}"
 
 
 def get_test_goals_dir():
@@ -76,8 +76,8 @@ def setup_test_example_environment():
 
 
 def _delete_and_set_ex3():
-    goal_tag = "ex3"
-    sx = goalunit_shop(tag=goal_tag, goals_dir=get_test_goals_dir())
+    goal_kind = "ex3"
+    sx = goalunit_shop(kind=goal_kind, goals_dir=get_test_goals_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -130,8 +130,8 @@ def _delete_and_set_ex3():
 
 
 def _delete_and_set_ex4():
-    goal_tag = "ex4"
-    sx = goalunit_shop(tag=goal_tag, goals_dir=get_test_goals_dir())
+    goal_kind = "ex4"
+    sx = goalunit_shop(kind=goal_kind, goals_dir=get_test_goals_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.save_public_contract(example_owners_get_7nodeJRootWithH_contract())
@@ -143,8 +143,8 @@ def _delete_and_set_ex4():
 
 
 def _delete_and_set_ex5():
-    goal_tag = "ex5"
-    sx = goalunit_shop(tag=goal_tag, goals_dir=get_test_goals_dir())
+    goal_kind = "ex5"
+    sx = goalunit_shop(kind=goal_kind, goals_dir=get_test_goals_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -205,8 +205,8 @@ def _delete_and_set_ex5():
 
 
 def _delete_and_set_ex6():
-    goal_tag = "ex6"
-    sx = goalunit_shop(tag=goal_tag, goals_dir=get_test_goals_dir())
+    goal_kind = "ex6"
+    sx = goalunit_shop(kind=goal_kind, goals_dir=get_test_goals_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=False)
 
@@ -244,8 +244,8 @@ def _delete_and_set_ex6():
     sx.set_river_sphere_for_contract(contract_owner=sal_text, max_flows_count=100)
 
 
-def create_example_goal(goal_tag: str):
-    sx = goalunit_shop(tag=goal_tag, goals_dir=get_test_goals_dir())
+def create_example_goal(goal_kind: str):
+    sx = goalunit_shop(kind=goal_kind, goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
 
@@ -256,24 +256,24 @@ def delete_dir_example_goal(goal_obj: GoalUnit):
 def rename_example_goal(goal_obj: GoalUnit, new_title):
     # base_dir = goal_obj.get_object_root_dir()
     base_dir = "src/goal/examples/goals"
-    src_dir = f"{base_dir}/{goal_obj.tag}"
+    src_dir = f"{base_dir}/{goal_obj.kind}"
     dst_dir = f"{base_dir}/{new_title}"
     os_rename(src=src_dir, dst=dst_dir)
-    goal_obj.set_goalunit_tag(tag=new_title)
+    goal_obj.set_goalunit_kind(kind=new_title)
 
 
 class InvalidGoalCopyException(Exception):
     pass
 
 
-def copy_evaluation_goal(src_tag: str, dest_tag: str):
+def copy_evaluation_goal(src_kind: str, dest_kind: str):
     base_dir = "src/goal/examples/goals"
-    new_dir = f"{base_dir}/{dest_tag}"
+    new_dir = f"{base_dir}/{dest_kind}"
     if os_path.exists(new_dir):
         raise InvalidGoalCopyException(
             f"Cannot copy goal to '{new_dir}' directory because '{new_dir}' exists."
         )
     # base_dir = goal_obj.get_object_root_dir()
-    src_dir = f"{base_dir}/{src_tag}"
-    dest_dir = f"{base_dir}/{dest_tag}"
+    src_dir = f"{base_dir}/{src_kind}"
+    dest_dir = f"{base_dir}/{dest_kind}"
     copy_dir(src_dir=src_dir, dest_dir=dest_dir)

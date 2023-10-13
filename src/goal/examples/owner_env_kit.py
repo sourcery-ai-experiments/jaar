@@ -5,10 +5,10 @@ from src.contract.x_func import delete_dir, save_file as x_func_save_file
 
 
 def get_temp_owner_dir() -> str:
-    return f"src/goal/examples/{get_temp_goal_tag()}"
+    return f"src/goal/examples/{get_temp_goal_kind()}"
 
 
-def get_temp_goal_tag() -> str:
+def get_temp_goal_kind() -> str:
     return "ex_env"
 
 

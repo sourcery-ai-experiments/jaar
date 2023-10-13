@@ -3,7 +3,7 @@ from src.goal.examples.example_owners import get_contract_assignment_laundry_exa
 from src.goal.examples.owner_env_kit import (
     owner_dir_setup_cleanup,
     get_temp_owner_dir,
-    get_temp_goal_tag,
+    get_temp_goal_kind,
 )
 
 
@@ -12,12 +12,14 @@ def test_owner_save_contract_to_depot_assignment_link_CorrectlyCreatesAssignment
 ):
     # GIVEN
     america_cx = get_contract_assignment_laundry_example1()
-    america_cx.set_goal_tag(get_temp_goal_tag())
+    america_cx.set_goal_kind(get_temp_goal_kind())
     joachim_text = "Joachim"
-    joachim_ux = ownerunit_shop(joachim_text, get_temp_owner_dir(), get_temp_goal_tag())
+    joachim_ux = ownerunit_shop(
+        joachim_text, get_temp_owner_dir(), get_temp_goal_kind()
+    )
     joachim_ux.create_core_dir_and_files()
     print(f"{america_cx._idearoot._label=}")
-    assert america_cx._idearoot._label == get_temp_goal_tag()
+    assert america_cx._idearoot._label == get_temp_goal_kind()
     assert america_cx._owner == "America"
     print(f"{america_cx._owner} {america_cx._idearoot._label=}")
 
@@ -31,7 +33,7 @@ def test_owner_save_contract_to_depot_assignment_link_CorrectlyCreatesAssignment
     assert len(output_cx._idea_dict.keys()) == 9
 
     casa_text = "casa"
-    casa_road = f"{get_temp_goal_tag()},{casa_text}"
+    casa_road = f"{get_temp_goal_kind()},{casa_text}"
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
     b_full_text = "full"

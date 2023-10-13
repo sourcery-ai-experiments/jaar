@@ -2,7 +2,7 @@ from src.goal.goal import goalunit_shop
 from src.goal.owner import ownerunit_shop
 from src.goal.examples.goal_env_kit import (
     get_temp_env_dir,
-    get_temp_env_tag,
+    get_temp_env_kind,
     env_dir_setup_cleanup,
     get_test_goals_dir,
 )
@@ -12,9 +12,9 @@ from pytest import raises as pytest_raises
 
 def test_goal_set_owner_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
-    goal_tag = get_temp_env_tag()
-    sx = goalunit_shop(tag=goal_tag, goals_dir=get_test_goals_dir())
-    print(f"create env '{goal_tag}' directories.")
+    goal_kind = get_temp_env_kind()
+    sx = goalunit_shop(kind=goal_kind, goals_dir=get_test_goals_dir())
+    print(f"create env '{goal_kind}' directories.")
     sx.create_dirs_if_null(in_memory_bank=True)
     timmy_text = "timmy"
     wx_path = f"{sx.get_owners_dir()}/{timmy_text}"
@@ -33,8 +33,8 @@ def test_goal_create_ownerunit_from_public_RaisesErrorWhenOwnerDoesNotExist(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    goal_tag = get_temp_env_tag()
-    sx = goalunit_shop(tag=goal_tag, goals_dir=get_test_goals_dir())
+    goal_kind = get_temp_env_kind()
+    sx = goalunit_shop(kind=goal_kind, goals_dir=get_test_goals_dir())
 
     # WHEN / THEN
     bobs_text = "bobs wurld"
@@ -48,13 +48,15 @@ def test_goal_create_ownerunit_from_public_RaisesErrorWhenOwnerDoesNotExist(
 
 def test_goal_rename_ownerunit_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
-    goal_tag = get_temp_env_tag()
-    e5 = goalunit_shop(tag=goal_tag, goals_dir=get_test_goals_dir())
+    goal_kind = get_temp_env_kind()
+    e5 = goalunit_shop(kind=goal_kind, goals_dir=get_test_goals_dir())
     e5.create_dirs_if_null(in_memory_bank=True)
     old_bob_text = "old Bob"
     old_bob_dir = f"{e5.get_owners_dir()}/{old_bob_text}"
     old_bob_file_path = f"{old_bob_dir}/isol_contract.json"
-    wx5_obj = ownerunit_shop(old_bob_text, e5.get_object_root_dir(), get_temp_env_tag())
+    wx5_obj = ownerunit_shop(
+        old_bob_text, e5.get_object_root_dir(), get_temp_env_kind()
+    )
     e5.set_ownerunits_empty_if_null()
     e5.set_ownerunit_to_goal(owner=wx5_obj)
     print(f"{old_bob_dir=}")
@@ -88,8 +90,8 @@ def test_goal_rename_ownerunit_WorksCorrectly(env_dir_setup_cleanup):
 
 def test_goal_del_owner_dir_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
-    goal_tag = get_temp_env_tag()
-    sx = goalunit_shop(tag=goal_tag, goals_dir=get_test_goals_dir())
+    goal_kind = get_temp_env_kind()
+    sx = goalunit_shop(kind=goal_kind, goals_dir=get_test_goals_dir())
     xia_text = "Xia"
     xia_dir = f"{sx.get_owners_dir()}/{xia_text}"
     xia_file_path = f"{xia_dir}/isol_contract.json"

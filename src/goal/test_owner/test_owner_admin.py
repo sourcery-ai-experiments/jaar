@@ -9,7 +9,7 @@ from src.goal.examples.example_owners import (
 )
 from src.goal.examples.owner_env_kit import (
     get_temp_owner_dir,
-    get_temp_goal_tag,
+    get_temp_goal_kind,
     owner_dir_setup_cleanup,
 )
 from os import path as os_path
@@ -21,12 +21,12 @@ def test_admin_exists():
     env_dir = get_temp_owner_dir()
 
     # WHEN
-    pdx = OwnerAdmin(bob_text, env_dir, get_temp_goal_tag())
+    pdx = OwnerAdmin(bob_text, env_dir, get_temp_goal_kind())
 
     # THEN
     assert pdx._owner_title != None
     assert pdx._env_dir != None
-    assert pdx._goal_tag != None
+    assert pdx._goal_kind != None
     assert pdx._owner_dir is None
     assert pdx._isol_file_title is None
     assert pdx._isol_file_path is None
@@ -44,7 +44,7 @@ def test_OwnerAdmin_set_dir_CorrectSetsOwnerAdminAttribute():
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_owner_dir()
-    pdx = OwnerAdmin(bob_text, env_dir, get_temp_goal_tag())
+    pdx = OwnerAdmin(bob_text, env_dir, get_temp_goal_kind())
     assert pdx._owner_dir is None
     assert pdx._contract_output_file_title is None
     assert pdx._contract_output_file_path is None
@@ -106,7 +106,7 @@ def test_OwnerAdmin_create_core_dir_and_files_CreatesDirsAndFiles(
     # GIVEN create owner
     jul_text = "julian"
     env_dir = get_temp_owner_dir()
-    pdx = OwnerAdmin(jul_text, env_dir, get_temp_goal_tag())
+    pdx = OwnerAdmin(jul_text, env_dir, get_temp_goal_kind())
     pdx.set_dirs()
     assert os_path.exists(pdx._owners_dir) is False
     assert os_path.exists(pdx._owner_dir) is False
@@ -140,7 +140,7 @@ def test_OwnerAdmin_create_core_dir_and_files_DoesNotOverWriteIsolContract(
     # GIVEN create owner
     jul_text = "julian"
     env_dir = get_temp_owner_dir()
-    jul_pdx = OwnerAdmin(jul_text, env_dir, get_temp_goal_tag())
+    jul_pdx = OwnerAdmin(jul_text, env_dir, get_temp_goal_kind())
     jul_pdx.set_dirs()
     contract_x = example_owners_get_7nodeJRootWithH_contract()
     jul_pdx.create_core_dir_and_files(contract_x)
@@ -166,7 +166,7 @@ def test_OwnerAdmin_set_owner_title_WorksCorrectly(owner_dir_setup_cleanup):
     env_dir = get_temp_owner_dir()
 
     old_owner_text = "bob"
-    pdx = OwnerAdmin(old_owner_text, env_dir, get_temp_goal_tag())
+    pdx = OwnerAdmin(old_owner_text, env_dir, get_temp_goal_kind())
     contract_x = example_owners_get_7nodeJRootWithH_contract()
     pdx.set_dirs()
     pdx.create_core_dir_and_files(contract_x)
@@ -205,7 +205,7 @@ def test_ownerunit_auto_output_to_public_SavesContractToPublicDir(
 ):
     # GIVEN
     bob_text = "bob"
-    pdx = owneradmin_shop(bob_text, get_temp_owner_dir(), get_temp_goal_tag())
+    pdx = owneradmin_shop(bob_text, get_temp_owner_dir(), get_temp_goal_kind())
     contract_x = example_owners_get_6node_contract()
     contract_x.set_owner(new_owner=bob_text)
     pdx.create_core_dir_and_files(contract_x)

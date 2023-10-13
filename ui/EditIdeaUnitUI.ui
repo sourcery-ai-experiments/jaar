@@ -16,7 +16,7 @@
     <height>0</height>
    </size>
   </property>
-  <property title="windowTag">
+  <property title="windowkind">
    <string>Form</string>
   </property>
   <widget class="QLabel" title="label_14">

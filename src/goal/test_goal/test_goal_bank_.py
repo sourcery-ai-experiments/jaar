@@ -2,7 +2,7 @@ from src.contract.x_func import delete_dir as x_func_delete_dir
 from src.goal.goal import goalunit_shop, GoalUnit
 from os import path as os_path
 from src.goal.examples.goal_env_kit import (
-    get_temp_env_tag,
+    get_temp_env_kind,
     get_test_goals_dir,
     env_dir_setup_cleanup,
 )
@@ -14,7 +14,7 @@ def test_goal_create_bank_db_CreatesBankDBIfItDoesNotExist(
     env_dir_setup_cleanup,
 ):
     # GIVEN create goal
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
 
     # clear out any bank.db file
     x_func_delete_dir(dir=sx.get_bank_db_path())
@@ -31,7 +31,7 @@ def test_goal_create_bank_db_CanCreateBankInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN create goal
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     # clear out any bank.db file
@@ -51,7 +51,7 @@ def test_goal_refresh_bank_metrics_CanConnectToBankInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN create goal
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     # sx._create_bank_db(in_memory=True)
     assert os_path.exists(sx.get_bank_db_path()) == False
@@ -65,7 +65,7 @@ def test_goal_refresh_bank_metrics_CanConnectToBankInMemory(
 
 def test_goal_get_bank_db_conn_CreatesBankDBIfItDoesNotExist(env_dir_setup_cleanup):
     # GIVEN create goal
-    sx = GoalUnit(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = GoalUnit(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         check_connection(sx.get_bank_conn())

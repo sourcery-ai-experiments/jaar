@@ -10,7 +10,7 @@
     <height>750</height>
    </rect>
   </property>
-  <property title="windowTag">
+  <property title="windowkind">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" title="centralwidget">
@@ -160,7 +160,7 @@
      <string>Add new Goal</string>
     </property>
    </widget>
-   <widget class="QLineEdit" title="goal_tag">
+   <widget class="QLineEdit" title="goal_kind">
     <property title="geometry">
      <rect>
       <x>20</x>
@@ -622,7 +622,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QComboBox" title="goal_tag_combo">
+   <widget class="QComboBox" title="goal_kind_combo">
     <property title="geometry">
      <rect>
       <x>20</x>
@@ -943,7 +943,7 @@
     <string>General Operations</string>
    </property>
    <widget class="QMenu" title="file_menu">
-    <property title="tag">
+    <property title="kind">
      <string>File</string>
     </property>
     <addaction title="fm_new"/>

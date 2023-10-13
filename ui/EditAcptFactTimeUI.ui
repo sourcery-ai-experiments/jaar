@@ -10,7 +10,7 @@
     <height>253</height>
    </rect>
   </property>
-  <property title="windowTag">
+  <property title="windowkind">
    <string>Form</string>
   </property>
   <widget class="QComboBox" title="curr_year">

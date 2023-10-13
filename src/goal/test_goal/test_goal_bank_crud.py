@@ -1,7 +1,7 @@
 from src.contract.contract import ContractUnit, IdeaKid, groupunit_shop, partylink_shop
 from src.goal.goal import goalunit_shop
 from src.goal.examples.goal_env_kit import (
-    get_temp_env_tag,
+    get_temp_env_kind,
     get_test_goals_dir,
     env_dir_setup_cleanup,
 )
@@ -14,7 +14,7 @@ from src.goal.bank_sqlstr import (
 
 def test_goal_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
     # GIVEN create goal
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
 
     # WHEN
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -54,7 +54,7 @@ def test_goal_refresh_bank_metrics_CorrectlyDeletesOldBankInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -78,7 +78,7 @@ def test_goal_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=False)
 
     bob_text = "bob"
@@ -102,7 +102,7 @@ def test_goal_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example goal with 4 Owners, each with 3 Partyunits = 12 ledger rows
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -148,7 +148,7 @@ def test_goal_refresh_bank_metrics_CorrectlyPopulatesContractTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example goal with 4 Owners, each with 3 Partyunits = 12 ledger rows
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -175,7 +175,7 @@ def test_goal_refresh_bank_metrics_CorrectlyPopulatesContractTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example goal with 4 Owners, each with 3 Partyunits = 12 ledger rows
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -202,7 +202,7 @@ def test_goal_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -230,7 +230,7 @@ def test_goal_set_contract_bank_attrs_CorrectlyPopulatesContract_Groupunit_Party
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = goalunit_shop(tag=get_temp_env_tag(), goals_dir=get_test_goals_dir())
+    sx = goalunit_shop(kind=get_temp_env_kind(), goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     # create 4 contracts, 1 with group "swimming expert" linked to 1 party
@@ -255,9 +255,9 @@ def test_goal_set_contract_bank_attrs_CorrectlyPopulatesContract_Groupunit_Party
 
     swim_text = "swimming"
     sports_text = "sports"
-    sal_sports_road = f"{sx.tag},{sports_text}"
-    bob_sports_road = f"{sx.tag},{sports_text}"
-    tom_sports_road = f"{sx.tag},{sports_text}"
+    sal_sports_road = f"{sx.kind},{sports_text}"
+    bob_sports_road = f"{sx.kind},{sports_text}"
+    tom_sports_road = f"{sx.kind},{sports_text}"
 
     sal_contract.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=sal_sports_road)
     bob_contract.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=bob_sports_road)

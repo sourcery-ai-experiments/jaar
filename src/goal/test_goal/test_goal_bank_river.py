@@ -1,7 +1,7 @@
 from src.contract.contract import ContractUnit
 from src.goal.goal import goalunit_shop
 from src.goal.examples.goal_env_kit import (
-    get_temp_env_tag,
+    get_temp_env_kind,
     get_test_goals_dir,
     env_dir_setup_cleanup,
 )
@@ -18,8 +18,8 @@ def test_goal_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTable0
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example goal with 4 Owners, each with 3 Partyunits = 12 ledger rows
-    goal_tag = get_temp_env_tag()
-    sx = goalunit_shop(tag=goal_tag, goals_dir=get_test_goals_dir())
+    goal_kind = get_temp_env_kind()
+    sx = goalunit_shop(kind=goal_kind, goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -89,8 +89,8 @@ def test_goal_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTable0
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 contracts, 100% of river flows to sal
-    goal_tag = get_temp_env_tag()
-    sx = goalunit_shop(tag=goal_tag, goals_dir=get_test_goals_dir())
+    goal_kind = get_temp_env_kind()
+    sx = goalunit_shop(kind=goal_kind, goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -152,8 +152,8 @@ def test_goal_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTable0
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 contracts, 85% of river flows to sal
-    goal_tag = get_temp_env_tag()
-    sx = goalunit_shop(tag=goal_tag, goals_dir=get_test_goals_dir())
+    goal_kind = get_temp_env_kind()
+    sx = goalunit_shop(kind=goal_kind, goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -220,8 +220,8 @@ def test_goal_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTable0
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop
-    goal_tag = get_temp_env_tag()
-    sx = goalunit_shop(tag=goal_tag, goals_dir=get_test_goals_dir())
+    goal_kind = get_temp_env_kind()
+    sx = goalunit_shop(kind=goal_kind, goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -295,8 +295,8 @@ def test_goal_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTable0
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    goal_tag = get_temp_env_tag()
-    sx = goalunit_shop(tag=goal_tag, goals_dir=get_test_goals_dir())
+    goal_kind = get_temp_env_kind()
+    sx = goalunit_shop(kind=goal_kind, goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -376,8 +376,8 @@ def test_goal_set_river_sphere_for_contract_CorrectlyDeletesPreviousRiver(
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 contracts, 100% of river flows to sal
-    goal_tag = get_temp_env_tag()
-    sx = goalunit_shop(tag=goal_tag, goals_dir=get_test_goals_dir())
+    goal_kind = get_temp_env_kind()
+    sx = goalunit_shop(kind=goal_kind, goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -434,8 +434,8 @@ def test_goal_set_river_sphere_for_contract_CorrectlyUsesMaxFlowsCount(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    goal_tag = get_temp_env_tag()
-    sx = goalunit_shop(tag=goal_tag, goals_dir=get_test_goals_dir())
+    goal_kind = get_temp_env_kind()
+    sx = goalunit_shop(kind=goal_kind, goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -495,8 +495,8 @@ def test_goal_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTable0
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    goal_tag = get_temp_env_tag()
-    sx = goalunit_shop(tag=goal_tag, goals_dir=get_test_goals_dir())
+    goal_kind = get_temp_env_kind()
+    sx = goalunit_shop(kind=goal_kind, goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -577,8 +577,8 @@ def test_goal_set_river_sphere_for_contract_CorrectlyBuildsASingleContinuousRang
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    goal_tag = get_temp_env_tag()
-    sx = goalunit_shop(tag=goal_tag, goals_dir=get_test_goals_dir())
+    goal_kind = get_temp_env_kind()
+    sx = goalunit_shop(kind=goal_kind, goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -647,8 +647,8 @@ def test_goal_set_river_sphere_for_contract_CorrectlyUpatesContractPartyUnits(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    goal_tag = get_temp_env_tag()
-    sx = goalunit_shop(tag=goal_tag, goals_dir=get_test_goals_dir())
+    goal_kind = get_temp_env_kind()
+    sx = goalunit_shop(kind=goal_kind, goals_dir=get_test_goals_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"

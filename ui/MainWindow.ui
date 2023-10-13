@@ -10,7 +10,7 @@
     <height>914</height>
    </rect>
   </property>
-  <property title="windowTag">
+  <property title="windowkind">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" title="centralwidget">
@@ -807,7 +807,7 @@
     <string>General Operations</string>
    </property>
    <widget class="QMenu" title="file_menu">
-    <property title="tag">
+    <property title="kind">
      <string>File</string>
     </property>
     <addaction title="fm_new"/>

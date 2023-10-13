@@ -1,6 +1,6 @@
 from src.contract.contract import ContractUnit, IdeaKid, assigned_unit_shop
 from src.goal.owner import ownerunit_shop, OwnerUnit
-from src.goal.examples.owner_env_kit import get_temp_goal_tag
+from src.goal.examples.owner_env_kit import get_temp_goal_kind
 
 from random import randrange
 
@@ -8,7 +8,7 @@ from random import randrange
 def get_1node_contract() -> ContractUnit:
     a_text = "A"
     contract_x = ContractUnit(_owner=a_text)
-    contract_x.set_goal_tag(get_temp_goal_tag())
+    contract_x.set_goal_kind(get_temp_goal_kind())
     contract_x.set_contract_metrics()
     return contract_x
 
@@ -16,10 +16,10 @@ def get_1node_contract() -> ContractUnit:
 def get_Jnode2node_contract() -> ContractUnit:
     owner_text = "J"
     contract_x = ContractUnit(_owner=owner_text)
-    contract_x.set_goal_tag(get_temp_goal_tag())
+    contract_x.set_goal_kind(get_temp_goal_kind())
     a_text = "A"
     idea_a = IdeaKid(_label=a_text)
-    contract_x.add_idea(idea_kid=idea_a, walk=get_temp_goal_tag())
+    contract_x.add_idea(idea_kid=idea_a, walk=get_temp_goal_kind())
     contract_x.set_contract_metrics()
     return contract_x
 
@@ -28,9 +28,9 @@ def get_2node_contract() -> ContractUnit:
     owner_text = "A"
     b_text = "B"
     contract_x = ContractUnit(_owner=owner_text)
-    contract_x.set_goal_tag(get_temp_goal_tag())
+    contract_x.set_goal_kind(get_temp_goal_kind())
     idea_b = IdeaKid(_label=b_text)
-    contract_x.add_idea(idea_kid=idea_b, walk=get_temp_goal_tag())
+    contract_x.add_idea(idea_kid=idea_b, walk=get_temp_goal_kind())
     contract_x.set_contract_metrics()
     return contract_x
 
@@ -39,7 +39,7 @@ def get_3node_contract() -> ContractUnit:
     a_text = "A"
     a_road = a_text
     contract_x = ContractUnit(_owner=a_text)
-    contract_x.set_goal_tag(get_temp_goal_tag())
+    contract_x.set_goal_kind(get_temp_goal_kind())
     b_text = "B"
     idea_b = IdeaKid(_label=b_text)
     c_text = "C"
@@ -54,7 +54,7 @@ def get_3node_D_E_F_contract() -> ContractUnit:
     d_text = "D"
     d_road = d_text
     contract_x = ContractUnit(_owner=d_text)
-    contract_x.set_goal_tag(get_temp_goal_tag())
+    contract_x.set_goal_kind(get_temp_goal_kind())
     b_text = "E"
     idea_b = IdeaKid(_label=b_text)
     c_text = "F"
@@ -67,7 +67,7 @@ def get_3node_D_E_F_contract() -> ContractUnit:
 
 def get_6node_contract() -> ContractUnit:
     contract_x = ContractUnit(_owner="A")
-    contract_x.set_goal_tag(get_temp_goal_tag())
+    contract_x.set_goal_kind(get_temp_goal_kind())
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
     idea_d = IdeaKid(_label="D")
@@ -84,7 +84,7 @@ def get_6node_contract() -> ContractUnit:
 
 def get_7nodeInsertH_contract() -> ContractUnit:
     contract_x = ContractUnit(_owner="A")
-    contract_x.set_goal_tag(get_temp_goal_tag())
+    contract_x.set_goal_kind(get_temp_goal_kind())
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
     idea_h = IdeaKid(_label="H")
@@ -103,7 +103,7 @@ def get_7nodeInsertH_contract() -> ContractUnit:
 
 def get_5nodeHG_contract() -> ContractUnit:
     contract_x = ContractUnit(_owner="A")
-    contract_x.set_goal_tag(get_temp_goal_tag())
+    contract_x.set_goal_kind(get_temp_goal_kind())
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
     idea_h = IdeaKid(_label="H")
@@ -118,7 +118,7 @@ def get_5nodeHG_contract() -> ContractUnit:
 
 def get_7nodeJRoot_contract() -> ContractUnit:
     contract_x = ContractUnit(_owner="J")
-    contract_x.set_goal_tag(get_temp_goal_tag())
+    contract_x.set_goal_kind(get_temp_goal_kind())
     idea_a = IdeaKid(_label="A")
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
@@ -137,7 +137,7 @@ def get_7nodeJRoot_contract() -> ContractUnit:
 
 def get_7nodeJRootWithH_contract() -> ContractUnit:
     contract_x = ContractUnit(_owner="J")
-    contract_x.set_goal_tag(get_temp_goal_tag())
+    contract_x.set_goal_kind(get_temp_goal_kind())
     idea_a = IdeaKid(_label="A")
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
@@ -154,9 +154,9 @@ def get_7nodeJRootWithH_contract() -> ContractUnit:
     return contract_x
 
 
-def get_owner_2contract(env_dir, goal_tag) -> OwnerUnit:
+def get_owner_2contract(env_dir, goal_kind) -> OwnerUnit:
     yao_text = "Xio"
-    yao_owner = ownerunit_shop(yao_text, env_dir, goal_tag)
+    yao_owner = ownerunit_shop(yao_text, env_dir, goal_kind)
     yao_owner.set_depot_contract(get_1node_contract(), depotlink_type="blind_trust")
     yao_owner.set_depot_contract(
         get_Jnode2node_contract(), depotlink_type="blind_trust"
@@ -169,7 +169,7 @@ def get_contract_2CleanNodesRandomWeights(_owner: str = None) -> ContractUnit:
     contract_x = ContractUnit(_owner=owner_text)
     casa_text = "casa"
     contract_x.add_idea(idea_kid=IdeaKid(_label=casa_text), walk="")
-    casa_road = f"{contract_x._goal_tag},{casa_text}"
+    casa_road = f"{contract_x._goal_kind},{casa_text}"
     cookery_text = "clean cookery"
     bedroom_text = "clean bedroom"
     cookery_idea = IdeaKid(_label=cookery_text, _weight=randrange(1, 50), promise=True)
@@ -185,7 +185,7 @@ def get_contract_3CleanNodesRandomWeights(_owner: str = None) -> ContractUnit:
     contract_x = ContractUnit(_owner=owner_text)
     casa_text = "casa"
     contract_x.add_idea(idea_kid=IdeaKid(_label=casa_text), walk="")
-    casa_road = f"{contract_x._goal_tag},{casa_text}"
+    casa_road = f"{contract_x._goal_kind},{casa_text}"
     cookery_text = "clean cookery"
     bedroom_text = "clean bedroom"
     hallway_text = "clean hallway"
@@ -206,7 +206,7 @@ def get_contract_assignment_laundry_example1() -> ContractUnit:
     america_cx.add_partyunit(america_text)
     america_cx.add_partyunit(joachim_text)
 
-    root_road = america_cx._goal_tag
+    root_road = america_cx._goal_kind
     casa_text = "casa"
     casa_road = f"{root_road},{casa_text}"
     america_cx.add_idea(IdeaKid(_label=casa_text), walk=root_road)
