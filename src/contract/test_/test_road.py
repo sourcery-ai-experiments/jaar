@@ -10,7 +10,7 @@ from src.contract.road import (
     road_validate,
     get_ancestor_roads,
     get_forefather_roads,
-    get_default_economy_root_label as root_label,
+    get_default_goal_root_label as root_label,
     get_road_from_nodes,
 )
 from src.contract.required_idea import sufffactunit_shop
@@ -162,11 +162,11 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
     assert new_sufffacts_x.get(old_seasons_road) is None
 
 
-def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeEconomyTagScenario():
+def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeGoalTagScenario():
     # GIVEN
-    old_economy_tag = "El Paso"
+    old_goal_tag = "El Paso"
     owner_text = "owner"
-    old_owner_road = f"{old_economy_tag},{owner_text}"
+    old_owner_road = f"{old_goal_tag},{owner_text}"
     seasons_text = "seasons"
     old_seasons_road = f"{old_owner_road},{seasons_text}"
     old_sufffact_x = sufffactunit_shop(need=old_seasons_road)
@@ -175,8 +175,8 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeEconomyTagScen
     assert old_sufffacts_x.get(old_seasons_road) == old_sufffact_x
 
     # WHEN
-    new_economy_tag = "Austin"
-    new_owner_road = f"{new_economy_tag},{owner_text}"
+    new_goal_tag = "Austin"
+    new_owner_road = f"{new_goal_tag},{owner_text}"
     new_seasons_road = f"{new_owner_road},{seasons_text}"
     new_sufffacts_x = find_replace_road_key_dict(
         dict_x=old_sufffacts_x, old_road=old_seasons_road, new_road=new_seasons_road
@@ -271,7 +271,7 @@ def test_road_get_forefather_roads_CorrectlyReturnsAncestorRoadsWithoutSource():
     assert x_roads == texas_forefather_roads
 
 
-def test_road_get_default_economy_root_label_ReturnsCorrectObj():
+def test_road_get_default_goal_root_label_ReturnsCorrectObj():
     assert root_label() == "A"
 
 

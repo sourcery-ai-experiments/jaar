@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src.economy.economy import EconomyUnit, EconomyTag, economyunit_shop
+from src.goal.goal import GoalUnit, GoalTag, goalunit_shop
 
 
 class PersonName(str):
@@ -10,27 +10,25 @@ class PersonName(str):
 class PersonUnit:
     name: PersonName = None
     person_dir: str = None
-    _economys: dict[EconomyTag:EconomyUnit] = None
+    _goals: dict[GoalTag:GoalUnit] = None
 
-    def set_economys_empty_if_none(self):
-        if self._economys is None:
-            self._economys = {}
+    def set_goals_empty_if_none(self):
+        if self._goals is None:
+            self._goals = {}
 
-    def create_economy(self, economy_tag: EconomyTag):
-        economys_dir = f"{self.person_dir}/economys"
-        self._economys[economy_tag] = economyunit_shop(
-            tag=economy_tag, economys_dir=economys_dir
-        )
+    def create_goal(self, goal_tag: GoalTag):
+        goals_dir = f"{self.person_dir}/goals"
+        self._goals[goal_tag] = goalunit_shop(tag=goal_tag, goals_dir=goals_dir)
 
-    def get_economy_obj(self, economy_tag: EconomyTag) -> EconomyUnit:
-        return self._economys.get(economy_tag)
+    def get_goal_obj(self, goal_tag: GoalTag) -> GoalUnit:
+        return self._goals.get(goal_tag)
 
 
 def personunit_shop(name: PersonName, person_dir: str = None) -> PersonUnit:
     if person_dir is None:
         person_dir = ""
     person_x = PersonUnit(name=name, person_dir=person_dir)
-    person_x.set_economys_empty_if_none()
+    person_x.set_goals_empty_if_none()
     return person_x
 
 

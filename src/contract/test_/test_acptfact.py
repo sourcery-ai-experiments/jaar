@@ -6,7 +6,7 @@ from src.contract.required_idea import (
     AcptFactCore,
     acptfactunit_shop as c_acptfactunit,
 )
-from src.contract.road import get_default_economy_root_label as root_label
+from src.contract.road import get_default_goal_root_label as root_label
 from pytest import raises as pytest_raises
 
 

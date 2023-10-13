@@ -21,7 +21,7 @@ from src.contract.x_func import (
     save_file as x_func_save_file,
     open_file as x_func_open_file,
 )
-from src.economy.examples.economy_env_kit import (
+from src.goal.examples.goal_env_kit import (
     env_dir_setup_cleanup,
     get_temp_env_dir,
 )
@@ -174,10 +174,10 @@ def test_contractunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGr
 #     jessi_text = "jessi"
 #     cx = ContractUnit(_owner=jessi_text)
 #     casa_text = "case"
-#     casa_road = Road(f"{cx._economy_tag},{casa_text}")
+#     casa_road = Road(f"{cx._goal_tag},{casa_text}")
 #     cx.add_idea(idea_kid=IdeaKid(_label=casa_text), walk=jessi_text)
 #     clean_cookery_text = "clean cookery"
-#     clean_cookery_road = Road(f"{cx._economy_tag},{casa_text},{clean_cookery_text}")
+#     clean_cookery_road = Road(f"{cx._goal_tag},{casa_text},{clean_cookery_text}")
 
 #     # WHEN/THEN
 #     cx.add_idea(
@@ -187,12 +187,12 @@ def test_contractunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGr
 
 #     # WHEN/THEN
 #     water_text = "water"
-#     water_road = Road(f"{cx._economy_tag},{water_text}")
+#     water_road = Road(f"{cx._goal_tag},{water_text}")
 #     cx.add_idea(idea_kid=IdeaKid(_label=water_text), walk=jessi_text)
 #     assert cx.get_bond_status() == False
 
 #     rain_text = "rain"
-#     rain_road = Road(f"{cx._economy_tag},{water_text},{rain_text}")
+#     rain_road = Road(f"{cx._goal_tag},{water_text},{rain_text}")
 #     cx.add_idea(idea_kid=IdeaKid(_label=rain_text), walk=water_road)
 
 #     # WHEN/THEN
@@ -207,19 +207,19 @@ def test_contractunit_get_contract_sprung_from_single_idea_ReturnsCorrectContrac
     jessi_text = "jessi"
     cx = ContractUnit(_owner=jessi_text)
     casa_text = "case"
-    casa_road = Road(f"{cx._economy_tag},{casa_text}")
+    casa_road = Road(f"{cx._goal_tag},{casa_text}")
     cx.add_idea(
-        idea_kid=IdeaKid(_label=casa_text, _begin=-1, _close=19), walk=cx._economy_tag
+        idea_kid=IdeaKid(_label=casa_text, _begin=-1, _close=19), walk=cx._goal_tag
     )
     clean_cookery_text = "clean cookery"
-    clean_cookery_road = Road(f"{cx._economy_tag},{casa_text},{clean_cookery_text}")
+    clean_cookery_road = Road(f"{cx._goal_tag},{casa_text},{clean_cookery_text}")
     cx.add_idea(
         idea_kid=IdeaKid(_label=clean_cookery_text, promise=True, _begin=2, _close=4),
         walk=casa_road,
     )
     water_text = "water"
-    water_road = Road(f"{cx._economy_tag},{water_text}")
-    cx.add_idea(idea_kid=IdeaKid(_label=water_text), walk=cx._economy_tag)
+    water_road = Road(f"{cx._goal_tag},{water_text}")
+    cx.add_idea(idea_kid=IdeaKid(_label=water_text), walk=cx._goal_tag)
     assert cx.get_bond_status() == False
 
     # WHEN
@@ -229,8 +229,8 @@ def test_contractunit_get_contract_sprung_from_single_idea_ReturnsCorrectContrac
     # assert bond_contract._label == clean_cookery_text
     print(f"{len(bond_contract._idea_dict)=}")
     assert len(bond_contract._idea_dict) == 3
-    b_src_idea = bond_contract.get_idea_kid(road=cx._economy_tag)
-    source_x_idea = cx.get_idea_kid(road=cx._economy_tag)
+    b_src_idea = bond_contract.get_idea_kid(road=cx._goal_tag)
+    source_x_idea = cx.get_idea_kid(road=cx._goal_tag)
     assert b_src_idea._uid == source_x_idea._uid
     assert b_src_idea._begin == source_x_idea._begin
     assert b_src_idea._close == source_x_idea._close
@@ -364,11 +364,11 @@ def test_contractunit_get_meld_of_contract_files_MeldsIntoSourceContract_Scenari
 
     work = "work"
     idea_kid_work = IdeaKid(_weight=30, _label=work, promise=True)
-    primary_cx.add_idea(idea_kid=idea_kid_work, walk=f"{primary_cx._economy_tag}")
+    primary_cx.add_idea(idea_kid=idea_kid_work, walk=f"{primary_cx._goal_tag}")
 
     cat = "feed cat"
     idea_kid_feedcat = IdeaKid(_weight=20, _label=cat, promise=True)
-    primary_cx.add_idea(idea_kid=idea_kid_feedcat, walk=f"{primary_cx._economy_tag}")
+    primary_cx.add_idea(idea_kid=idea_kid_feedcat, walk=f"{primary_cx._goal_tag}")
 
     primary_cx.export_all_bonds(dir=get_temp_env_dir())
     cat_t = "feed cat"
@@ -401,7 +401,7 @@ def test_contractunit_get_meld_of_contract_files_MeldsIntoSourceContract_Scenari
 #     sourrcecx = ContractUnit(_owner=owner_text, _weight=10)
 
 #     work_text = "work"
-#     work_road = f"{cx._economy_tag},{work_text}"
+#     work_road = f"{cx._goal_tag},{work_text}"
 
 #     cat_text = "feed cat"
 #     cat_idea = IdeaKid(_weight=20, _label=cat_text, promise=True)

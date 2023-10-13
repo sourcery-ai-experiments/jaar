@@ -7,7 +7,7 @@ from src.contract.examples.example_contracts import (
 from src.contract.contract import ContractUnit, get_intersection_of_partys
 from src.contract.idea import IdeaKid
 from pytest import raises as pytest_raises
-from src.economy.bank_sqlstr import RiverTpartyUnit
+from src.goal.bank_sqlstr import RiverTpartyUnit
 
 
 def test_contract_partys_exists():

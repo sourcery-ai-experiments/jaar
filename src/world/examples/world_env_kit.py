@@ -18,8 +18,8 @@ from src.contract.x_func import (
 #     get_contract_x1_3levels_1required_1acptfacts as example_contracts_get_contract_x1_3levels_1required_1acptfacts,
 # )
 
-# from src.economy.economy import EconomyUnit, economyunit_shop
-# from src.economy.examples.example_owners import (
+# from src.goal.goal import GoalUnit, goalunit_shop
+# from src.goal.examples.example_owners import (
 #     get_1node_contract as example_owners_get_1node_contract,
 #     get_7nodeJRootWithH_contract as example_owners_get_7nodeJRootWithH_contract,
 #     get_contract_2CleanNodesRandomWeights as example_owners_get_contract_2CleanNodesRandomWeights,
@@ -60,11 +60,11 @@ def create_example_worlds_list():
 #     sx.create_dirs_if_null(in_memory_bank=True)
 
 
-# def delete_dir_example_world(world_obj: EconomyUnit):
+# def delete_dir_example_world(world_obj: GoalUnit):
 #     x_func_delete_dir(world_obj.get_object_root_dir())
 
 
-# def rename_example_world(world_obj: EconomyUnit, new_title):
+# def rename_example_world(world_obj: GoalUnit, new_title):
 #     # base_dir = world_obj.get_object_root_dir()
 #     base_dir = "src/world/examples/worlds"
 #     src_dir = f"{base_dir}/{world_obj.tag}"
@@ -73,7 +73,7 @@ def create_example_worlds_list():
 #     world_obj.set_worldunit_tag(tag=new_title)
 
 
-# class InvalidEconomyCopyException(Exception):
+# class InvalidGoalCopyException(Exception):
 #     pass
 
 
@@ -81,7 +81,7 @@ def create_example_worlds_list():
 #     base_dir = "src/world/examples/worlds"
 #     new_dir = f"{base_dir}/{dest_tag}"
 #     if os_path.exists(new_dir):
-#         raise InvalidEconomyCopyException(
+#         raise InvalidGoalCopyException(
 #             f"Cannot copy world to '{new_dir}' directory because '{new_dir}' exists."
 #         )
 #     # base_dir = world_obj.get_object_root_dir()

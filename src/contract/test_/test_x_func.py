@@ -5,7 +5,7 @@ from src.contract.x_func import (
     count_files as x_func_count_files,
     return1ifnone as x_func_return1ifnone,
 )
-from src.economy.examples.owner_env_kit import (
+from src.goal.examples.owner_env_kit import (
     owner_dir_setup_cleanup,
     get_temp_owner_dir,
     create_contract_file,
