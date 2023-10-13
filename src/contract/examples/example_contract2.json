@@ -1080,14 +1080,14 @@
                             "_weight": 1,
                             "promise": false
                         },
-                        "Know ACME Staff Health and Safety #2 guildlines": {
+                        "Know ACME Staff  and Safety #2 guildlines": {
                             "_acptfactunits": {},
                             "_addin": null,
                             "_begin": null,
                             "_balancelinks": {},
                             "_close": null,
                             "_denom": null,
-                            "_label": "Know ACME Staff Health and Safety #2 guildlines",
+                            "_label": "Know ACME Staff  and Safety #2 guildlines",
                             "_is_expanded": true,
                             "_kids": {
                                 "Take Fall 2021 training": {
@@ -3187,7 +3187,7 @@
                             "_weight": 1,
                             "promise": true
                         },
-                        "planks for 45 secs": {
+                        "straight back for 45 secs": {
                             "_acptfactunits": {},
                             "_addin": null,
                             "_begin": null,
@@ -3200,7 +3200,7 @@
                             },
                             "_close": null,
                             "_denom": null,
-                            "_label": "planks for 45 secs",
+                            "_label": "straight back for 45 secs",
                             "_is_expanded": true,
                             "_kids": {},
                             "_numeric_road": null,
@@ -6453,14 +6453,14 @@
             "_weight": 1,
             "promise": false
         },
-        "Healing Project": {
+        "Things better Project": {
             "_acptfactunits": {},
             "_addin": null,
             "_begin": null,
             "_balancelinks": {},
             "_close": null,
             "_denom": null,
-            "_label": "Healing Project",
+            "_label": "Things better Project",
             "_is_expanded": false,
             "_kids": {
                 "decrease carbon footprint": {
@@ -11690,5 +11690,5 @@
     "_range_source_road": null,
     "_uid": 1,
     "_weight": 1
-    , "_goal_kind": "A"
+    , "_heal_kind": "A"
 }

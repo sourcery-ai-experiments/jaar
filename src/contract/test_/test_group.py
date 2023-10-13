@@ -8,7 +8,7 @@ from src.contract.group import (
     balanceheir_shop,
     get_from_json as groupunits_get_from_json,
 )
-from src.contract.road import get_default_goal_root_label as root_label
+from src.contract.road import get_default_heal_root_label as root_label
 from src.contract.x_func import x_is_json, x_get_json
 from pytest import raises as pytest_raises
 
@@ -31,7 +31,7 @@ def test_groupunit_exists():
         _contract_debt=0.44,
         _contract_agenda_credit=0.66,
         _contract_agenda_debt=0.77,
-        _partylinks_set_by_goal_road=usa_road,
+        _partylinks_set_by_heal_road=usa_road,
     )
 
     # THEN
@@ -43,7 +43,7 @@ def test_groupunit_exists():
     assert swimmers_group._contract_debt != None
     assert swimmers_group._contract_agenda_credit != None
     assert swimmers_group._contract_agenda_debt != None
-    assert swimmers_group._partylinks_set_by_goal_road == usa_road
+    assert swimmers_group._partylinks_set_by_heal_road == usa_road
 
 
 def test_groupunit_set_brand_WorksCorrectly():
@@ -64,17 +64,17 @@ def test_groupunit_set_attr_WorksCorrectly():
     # GIVEN
     swim_text = "swimmers"
     swim_group = groupunit_shop(brand=swim_text)
-    assert swim_group._partylinks_set_by_goal_road is None
+    assert swim_group._partylinks_set_by_heal_road is None
 
     # WHEN
     water_road = f"{root_label()},sports,water"
-    swim_group.set_attr(_partylinks_set_by_goal_road=water_road)
+    swim_group.set_attr(_partylinks_set_by_heal_road=water_road)
 
     # THEN
-    assert swim_group._partylinks_set_by_goal_road == water_road
+    assert swim_group._partylinks_set_by_heal_road == water_road
 
 
-def test_groupunit_shop_WhenSinglePartyCorrectlyRemoves_partylinks_set_by_goal_road():
+def test_groupunit_shop_WhenSinglePartyCorrectlyRemoves_partylinks_set_by_heal_road():
     # GIVEN
     swimmers = "swimmers"
     usa_road = f"{root_label()},nation-states,USA"
@@ -84,11 +84,11 @@ def test_groupunit_shop_WhenSinglePartyCorrectlyRemoves_partylinks_set_by_goal_r
         swimmers_group = groupunit_shop(
             brand=swimmers,
             _single_party=True,
-            _partylinks_set_by_goal_road=usa_road,
+            _partylinks_set_by_heal_road=usa_road,
         )
     assert (
         str(excinfo.value)
-        == f"_partylinks_set_by_goal_road cannot be '{usa_road}' for a single_party GroupUnit. It must have no value."
+        == f"_partylinks_set_by_heal_road cannot be '{usa_road}' for a single_party GroupUnit. It must have no value."
     )
 
 
@@ -324,7 +324,7 @@ def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         "single_party_id": None,
         "_single_party": False,
         "_partys": {},
-        "_partylinks_set_by_goal_road": None,
+        "_partylinks_set_by_heal_road": None,
     }
 
     # GIVEN
@@ -343,7 +343,7 @@ def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     teachers_group = groupunit_shop(
         brand=str_teacher,
         _partys=partylinks_dict,
-        _partylinks_set_by_goal_road=swim_road,
+        _partylinks_set_by_heal_road=swim_road,
     )
 
     # WHEN
@@ -357,7 +357,7 @@ def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         "single_party_id": None,
         "_single_party": False,
         "_partys": marie_json_dict,
-        "_partylinks_set_by_goal_road": swim_road,
+        "_partylinks_set_by_heal_road": swim_road,
     }
 
 
@@ -375,15 +375,15 @@ def test_groupunit_get_from_JSON_SimpleExampleWorks():
     teacher_group = groupunit_shop(
         brand=str_teacher,
         _partys=partylinks_dict,
-        _partylinks_set_by_goal_road=swim_road,
+        _partylinks_set_by_heal_road=swim_road,
     )
     teacher_dict = teacher_group.get_dict()
-    _partylinks_set_by_goal_road_text = "_partylinks_set_by_goal_road"
-    print(f"{teacher_dict.get(_partylinks_set_by_goal_road_text)=}")
+    _partylinks_set_by_heal_road_text = "_partylinks_set_by_heal_road"
+    print(f"{teacher_dict.get(_partylinks_set_by_heal_road_text)=}")
     groups_dict = {"teachers": teacher_dict}
 
     teachers_json = x_get_json(dict_x=groups_dict)
-    print(f"{teachers_json.find(_partylinks_set_by_goal_road_text)=}")
+    print(f"{teachers_json.find(_partylinks_set_by_heal_road_text)=}")
     assert teachers_json != None
     assert x_is_json(json_x=teachers_json)
 
@@ -394,8 +394,8 @@ def test_groupunit_get_from_JSON_SimpleExampleWorks():
     assert groupunits_obj_dict != None
     teachers_obj_check_dict = {teacher_group.brand: teacher_group}
     print(f"    {groupunits_obj_dict=}")
-    partylinks_set_by_goal_road_text = "_partylinks_set_by_goal_road"
-    print(f"{teachers_obj_check_dict.get(partylinks_set_by_goal_road_text)=}")
+    partylinks_set_by_heal_road_text = "_partylinks_set_by_heal_road"
+    print(f"{teachers_obj_check_dict.get(partylinks_set_by_heal_road_text)=}")
     print(f"{teachers_obj_check_dict=}")
     assert groupunits_obj_dict == teachers_obj_check_dict
 

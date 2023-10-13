@@ -5,7 +5,7 @@ from src.contract.required_idea import (
     Road,
     acptfactunit_shop,
 )
-from src.contract.road import get_default_goal_root_label as root_label
+from src.contract.road import get_default_heal_root_label as root_label
 from pytest import raises as pytest_raises
 
 

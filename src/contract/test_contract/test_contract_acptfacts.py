@@ -13,8 +13,8 @@ from pytest import raises as pytest_raises
 
 def test_contract_acptfact_exists():
     sx = examples_get_contract_with_4_levels()
-    weekday_road = Road(f"{sx._goal_kind},weekdays")
-    sunday_road = Road(f"{sx._goal_kind},weekdays,Sunday")
+    weekday_road = Road(f"{sx._heal_kind},weekdays")
+    sunday_road = Road(f"{sx._heal_kind},weekdays,Sunday")
     sunday_cx_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
     print(sunday_cx_acptfact)
     sx._idearoot._acptfactunits = {sunday_cx_acptfact.base: sunday_cx_acptfact}
@@ -26,7 +26,7 @@ def test_contract_acptfact_exists():
 
     sx._idearoot._acptfactunits = None
     assert sx._idearoot._acptfactunits is None
-    usa_week_road = Road(f"{sx._goal_kind},nation-state")
+    usa_week_road = Road(f"{sx._heal_kind},nation-state")
     usa_week_unit = acptfactunit_shop(
         base=usa_week_road, pick=usa_week_road, open=608, nigh=610
     )
@@ -41,8 +41,8 @@ def test_contract_acptfact_exists():
 
 def test_contract_acptfact_create():
     sx = examples_get_contract_with_4_levels()
-    sunday_road = Road(f"{sx._goal_kind},weekdays,Sunday")
-    weekday_road = Road(f"{sx._goal_kind},weekdays")
+    sunday_road = Road(f"{sx._heal_kind},weekdays,Sunday")
+    weekday_road = Road(f"{sx._heal_kind},weekdays")
     sx.set_acptfact(base=weekday_road, pick=sunday_road)
     sunday_cx_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
     assert sx._idearoot._acptfactunits == {sunday_cx_acptfact.base: sunday_cx_acptfact}
@@ -54,9 +54,9 @@ def test_set_acptfact_FailsToCreateWhenBaseAndAcptFactAreDifferenctAndAcptFactId
     sx = ContractUnit(_owner=owner_text)
     time_x = "time_x"
     sx.add_idea(
-        idea_kid=IdeaKid(_label=time_x, _begin=0, _close=140), walk=sx._goal_kind
+        idea_kid=IdeaKid(_label=time_x, _begin=0, _close=140), walk=sx._heal_kind
     )
-    t_x_road = Road(f"{sx._goal_kind},{time_x}")
+    t_x_road = Road(f"{sx._heal_kind},{time_x}")
     age1st = "age1st"
     sx.add_idea(idea_kid=IdeaKid(_label=age1st, _begin=0, _close=20), walk=t_x_road)
     a1_road = Road(f"{t_x_road},{age1st}")
@@ -77,8 +77,8 @@ def test_set_acptfact_FailsToCreateWhenBaseAndAcptFactAreDifferenctAndAcptFactId
 def test_contract_acptfact_create():
     # Given
     sx = examples_get_contract_with_4_levels()
-    sunday_road = Road(f"{sx._goal_kind},weekdays,Sunday")
-    weekday_road = Road(f"{sx._goal_kind},weekdays")
+    sunday_road = Road(f"{sx._heal_kind},weekdays,Sunday")
+    weekday_road = Road(f"{sx._heal_kind},weekdays")
     sx.set_acptfact(base=weekday_road, pick=sunday_road)
     sunday_cx_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
     assert sx._idearoot._acptfactunits == {sunday_cx_acptfact.base: sunday_cx_acptfact}
@@ -95,8 +95,8 @@ def test_contract_get_idea_list_AcptFactHeirsCorrectlyInherited():
     owner_text = "Bob"
     sx = ContractUnit(_owner=owner_text)
     swim_text = "swim"
-    swim_road = Road(f"{sx._goal_kind},{swim_text}")
-    sx.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=sx._goal_kind)
+    swim_road = Road(f"{sx._heal_kind},{swim_text}")
+    sx.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=sx._heal_kind)
     fast_text = "fast"
     slow_text = "slow"
     fast_road = Road(f"{swim_road},{fast_text}")
@@ -105,8 +105,8 @@ def test_contract_get_idea_list_AcptFactHeirsCorrectlyInherited():
     sx.add_idea(idea_kid=IdeaKid(_label=slow_text), walk=swim_road)
 
     earth_text = "earth"
-    earth_road = Road(f"{sx._goal_kind},{earth_text}")
-    sx.add_idea(idea_kid=IdeaKid(_label=earth_text), walk=sx._goal_kind)
+    earth_road = Road(f"{sx._heal_kind},{earth_text}")
+    sx.add_idea(idea_kid=IdeaKid(_label=earth_text), walk=sx._heal_kind)
 
     swim_idea = sx.get_idea_kid(road=swim_road)
     fast_idea = sx.get_idea_kid(road=fast_road)
@@ -152,8 +152,8 @@ def test_contract_get_idea_list_AcptFactUnitCorrectlyTransformsacptfactheir_shop
     owner_text = "Bob"
     sx = ContractUnit(_owner=owner_text)
     swim_text = "swim"
-    swim_road = f"{sx._goal_kind},{swim_text}"
-    sx.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=sx._goal_kind)
+    swim_road = f"{sx._heal_kind},{swim_text}"
+    sx.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=sx._heal_kind)
     swim_idea = sx.get_idea_kid(road=swim_road)
 
     fast_text = "fast"
@@ -162,8 +162,8 @@ def test_contract_get_idea_list_AcptFactUnitCorrectlyTransformsacptfactheir_shop
     sx.add_idea(idea_kid=IdeaKid(_label=slow_text), walk=swim_road)
 
     earth_text = "earth"
-    earth_road = Road(f"{sx._goal_kind},{earth_text}")
-    sx.add_idea(idea_kid=IdeaKid(_label=earth_text), walk=sx._goal_kind)
+    earth_road = Road(f"{sx._heal_kind},{earth_text}")
+    sx.add_idea(idea_kid=IdeaKid(_label=earth_text), walk=sx._heal_kind)
 
     assert swim_idea._acptfactheirs is None
 
@@ -195,8 +195,8 @@ def test_contract_get_idea_list_AcptFactHeirCorrectlyDeletesAcptFactUnit():
     owner_text = "Tim"
     sx = ContractUnit(_owner=owner_text)
     swim_text = "swim"
-    swim_road = Road(f"{sx._goal_kind},{swim_text}")
-    sx.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=sx._goal_kind)
+    swim_road = Road(f"{sx._heal_kind},{swim_text}")
+    sx.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=sx._heal_kind)
     fast_text = "fast"
     slow_text = "slow"
     fast_road = Road(f"{swim_road},{fast_text}")
@@ -205,8 +205,8 @@ def test_contract_get_idea_list_AcptFactHeirCorrectlyDeletesAcptFactUnit():
     sx.add_idea(idea_kid=IdeaKid(_label=slow_text), walk=swim_road)
 
     earth_text = "earth"
-    earth_road = Road(f"{sx._goal_kind},{earth_text}")
-    sx.add_idea(idea_kid=IdeaKid(_label=earth_text), walk=sx._goal_kind)
+    earth_road = Road(f"{sx._heal_kind},{earth_text}")
+    sx.add_idea(idea_kid=IdeaKid(_label=earth_text), walk=sx._heal_kind)
 
     swim_idea = sx.get_idea_kid(road=swim_road)
 
@@ -236,13 +236,13 @@ def test_get_ranged_acptfacts():
     sx = ContractUnit(_owner=owner_text)
     time_x = "time_x"
     sx.add_idea(
-        idea_kid=IdeaKid(_label=time_x, _begin=0, _close=140), walk=sx._goal_kind
+        idea_kid=IdeaKid(_label=time_x, _begin=0, _close=140), walk=sx._heal_kind
     )
 
     clean = "clean"
-    sx.add_idea(idea_kid=IdeaKid(_label=clean, promise=True), walk=sx._goal_kind)
-    c_road = f"{sx._goal_kind},{clean}"
-    t_x_road = f"{sx._goal_kind},{time_x}"
+    sx.add_idea(idea_kid=IdeaKid(_label=clean, promise=True), walk=sx._heal_kind)
+    c_road = f"{sx._heal_kind},{clean}"
+    t_x_road = f"{sx._heal_kind},{time_x}"
     # sx.edit_idea_attr(road=c_road, required_base=t_x_road, required_sufffact=t_x_road, required_sufffact_open=5, required_sufffact_nigh=10)
 
     sx.set_acptfact(base=t_x_road, pick=t_x_road, open=5, nigh=10)
@@ -255,9 +255,9 @@ def test_get_ranged_acptfacts():
     # When one ranged acptfact added
     place = "place_x"
     sx.add_idea(
-        idea_kid=IdeaKid(_label=place, _begin=600, _close=800), walk=sx._goal_kind
+        idea_kid=IdeaKid(_label=place, _begin=600, _close=800), walk=sx._heal_kind
     )
-    p_road = f"{sx._goal_kind},{place}"
+    p_road = f"{sx._heal_kind},{place}"
     sx.set_acptfact(base=p_road, pick=p_road, open=5, nigh=10)
     print(f"When one ranged acptfact added {sx._idearoot._acptfactunits=}")
     assert len(sx._idearoot._acptfactunits) == 2
@@ -267,8 +267,8 @@ def test_get_ranged_acptfacts():
 
     # When one non-ranged_acptfact added
     mood = "mood_x"
-    sx.add_idea(idea_kid=IdeaKid(_label=mood), walk=sx._goal_kind)
-    m_road = f"{sx._goal_kind},{mood}"
+    sx.add_idea(idea_kid=IdeaKid(_label=mood), walk=sx._heal_kind)
+    m_road = f"{sx._heal_kind},{mood}"
     sx.set_acptfact(base=m_road, pick=m_road)
     print(f"When one non-ranged_acptfact added {sx._idearoot._acptfactunits=}")
     assert len(sx._idearoot._acptfactunits) == 3
@@ -283,12 +283,12 @@ def test_get_roots_ranged_acptfacts():
     sx = ContractUnit(_owner=owner_text)
     time_x = "time_x"
     sx.add_idea(
-        idea_kid=IdeaKid(_label=time_x, _begin=0, _close=140), walk=sx._goal_kind
+        idea_kid=IdeaKid(_label=time_x, _begin=0, _close=140), walk=sx._heal_kind
     )
-    t_x_road = f"{sx._goal_kind},{time_x}"
+    t_x_road = f"{sx._heal_kind},{time_x}"
     mood_x = "mood_x"
-    sx.add_idea(idea_kid=IdeaKid(_label=mood_x), walk=sx._goal_kind)
-    m_x_road = f"{sx._goal_kind},{mood_x}"
+    sx.add_idea(idea_kid=IdeaKid(_label=mood_x), walk=sx._heal_kind)
+    m_x_road = f"{sx._heal_kind},{mood_x}"
     happy = "happy"
     sad = "Sad"
     sx.add_idea(idea_kid=IdeaKid(_label=happy), walk=m_x_road)
@@ -307,9 +307,9 @@ def test_get_roots_ranged_acptfacts():
     # a acptfact who's idea range is defined by numeric_root is not "rangeroot"
     mirrow_x = "mirrow_x"
     sx.add_idea(
-        idea_kid=IdeaKid(_label=mirrow_x, _numeric_road=time_x), walk=sx._goal_kind
+        idea_kid=IdeaKid(_label=mirrow_x, _numeric_road=time_x), walk=sx._heal_kind
     )
-    m_x_road = f"{sx._goal_kind},{mirrow_x}"
+    m_x_road = f"{sx._heal_kind},{mirrow_x}"
     sx.set_acptfact(base=m_x_road, pick=t_x_road, open=5, nigh=10)
     assert len(sx._idearoot._acptfactunits) == 3
 
@@ -323,13 +323,13 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario1(
     sx = ContractUnit(_owner=owner_text)
     # # the action
     # clean = "clean"
-    # sx.add_idea(idea_kid=IdeaKid(_label=clean, promise=True), walk=sx._goal_kind)
+    # sx.add_idea(idea_kid=IdeaKid(_label=clean, promise=True), walk=sx._heal_kind)
 
     time_x = "time_x"
     sx.add_idea(
-        idea_kid=IdeaKid(_label=time_x, _begin=0, _close=140), walk=sx._goal_kind
+        idea_kid=IdeaKid(_label=time_x, _begin=0, _close=140), walk=sx._heal_kind
     )
-    t_x_road = f"{sx._goal_kind},{time_x}"
+    t_x_road = f"{sx._heal_kind},{time_x}"
     age1st = "age1st"
     age2nd = "age2nd"
     age3rd = "age3rd"
@@ -386,13 +386,13 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario2(
     sx = ContractUnit(_owner=owner_text)
     # # the action
     # clean = "clean"
-    # sx.add_idea(idea_kid=IdeaKid(_label=clean, promise=True), walk=sx._goal_kind)
+    # sx.add_idea(idea_kid=IdeaKid(_label=clean, promise=True), walk=sx._heal_kind)
 
     time_x = "time_x"
     sx.add_idea(
-        idea_kid=IdeaKid(_label=time_x, _begin=0, _close=140), walk=sx._goal_kind
+        idea_kid=IdeaKid(_label=time_x, _begin=0, _close=140), walk=sx._heal_kind
     )
-    t_x_road = f"{sx._goal_kind},{time_x}"
+    t_x_road = f"{sx._heal_kind},{time_x}"
     age1st = "age1st"
     age2nd = "age2nd"
     age3rd = "age3rd"
@@ -447,13 +447,13 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario3(
     sx = ContractUnit(_owner=owner_text)
     # # the action
     # clean = "clean"
-    # sx.add_idea(idea_kid=IdeaKid(_label=clean, promise=True), walk=sx._goal_kind)
+    # sx.add_idea(idea_kid=IdeaKid(_label=clean, promise=True), walk=sx._heal_kind)
 
     time_x = "time_x"
     sx.add_idea(
-        idea_kid=IdeaKid(_label=time_x, _begin=0, _close=140), walk=sx._goal_kind
+        idea_kid=IdeaKid(_label=time_x, _begin=0, _close=140), walk=sx._heal_kind
     )
-    t_x_road = f"{sx._goal_kind},{time_x}"
+    t_x_road = f"{sx._heal_kind},{time_x}"
     age1st = "age1st"
     age2nd = "age2nd"
     age3rd = "age3rd"
@@ -532,26 +532,26 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario4(
     sx = ContractUnit(_owner=owner_text)
     time_x = "time_x"
     arsub1 = "arbitary_subsection1"
-    as1_road = f"{sx._goal_kind},{arsub1}"
+    as1_road = f"{sx._heal_kind},{arsub1}"
     sx.add_idea(
-        idea_kid=IdeaKid(_label=arsub1, _begin=0, _close=140), walk=sx._goal_kind
+        idea_kid=IdeaKid(_label=arsub1, _begin=0, _close=140), walk=sx._heal_kind
     )
     # range-root idea has range_source_road
     sx.add_idea(
         idea_kid=IdeaKid(
             _label=time_x, _begin=0, _close=140, _range_source_road=as1_road
         ),
-        walk=sx._goal_kind,
+        walk=sx._heal_kind,
     )
 
     arsub2 = "arbitary_subsection2"
-    as2_road = f"{sx._goal_kind},{arsub2}"
+    as2_road = f"{sx._heal_kind},{arsub2}"
     sx.add_idea(
-        idea_kid=IdeaKid(_label=arsub2, _begin=0, _close=20), walk=sx._goal_kind
+        idea_kid=IdeaKid(_label=arsub2, _begin=0, _close=20), walk=sx._heal_kind
     )
 
     # non-range-root child idea has range_source_road
-    t_x_road = f"{sx._goal_kind},{time_x}"
+    t_x_road = f"{sx._heal_kind},{time_x}"
     age1st = "age1st"
     sx.add_idea(
         idea_kid=IdeaKid(
@@ -582,57 +582,57 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario4_
     owner_text = "Tim"
     sx = ContractUnit(_owner=owner_text)
     sx.set_time_hreg_ideas(c400_count=7)
-    jajatime_road = f"{sx._goal_kind},time,jajatime"
+    jajatime_road = f"{sx._heal_kind},time,jajatime"
     sx.set_acptfact(base=jajatime_road, pick=jajatime_road, open=1500, nigh=1500)
     lhu = sx._get_lemma_acptfactunits()
 
-    assert lhu[f"{sx._goal_kind},time,jajatime,400 year cycle"].open == 1500
-    assert lhu[f"{sx._goal_kind},time,jajatime,400 year cycle"].nigh == 1500
-    assert lhu[f"{sx._goal_kind},time,jajatime,400 year cycles"].open > 0
-    assert lhu[f"{sx._goal_kind},time,jajatime,400 year cycles"].open < 1
-    assert lhu[f"{sx._goal_kind},time,jajatime,400 year cycles"].nigh > 0
-    assert lhu[f"{sx._goal_kind},time,jajatime,400 year cycles"].nigh < 1
-    assert lhu[f"{sx._goal_kind},time,jajatime,days"].open >= 1
-    assert lhu[f"{sx._goal_kind},time,jajatime,days"].open <= 2
-    assert lhu[f"{sx._goal_kind},time,jajatime,days"].nigh >= 1
-    assert lhu[f"{sx._goal_kind},time,jajatime,days"].nigh <= 2
-    assert lhu[f"{sx._goal_kind},time,jajatime,day"].open == 60
-    assert lhu[f"{sx._goal_kind},time,jajatime,day"].nigh == 60
-    assert lhu[f"{sx._goal_kind},time,jajatime,week"].open == 1500
-    assert int(lhu[f"{sx._goal_kind},time,jajatime,week"].nigh) == 1500
-    assert lhu[f"{sx._goal_kind},time,tech,week"].open == 1500
-    assert int(lhu[f"{sx._goal_kind},time,tech,week"].nigh) == 1500
+    assert lhu[f"{sx._heal_kind},time,jajatime,400 year cycle"].open == 1500
+    assert lhu[f"{sx._heal_kind},time,jajatime,400 year cycle"].nigh == 1500
+    assert lhu[f"{sx._heal_kind},time,jajatime,400 year cycles"].open > 0
+    assert lhu[f"{sx._heal_kind},time,jajatime,400 year cycles"].open < 1
+    assert lhu[f"{sx._heal_kind},time,jajatime,400 year cycles"].nigh > 0
+    assert lhu[f"{sx._heal_kind},time,jajatime,400 year cycles"].nigh < 1
+    assert lhu[f"{sx._heal_kind},time,jajatime,days"].open >= 1
+    assert lhu[f"{sx._heal_kind},time,jajatime,days"].open <= 2
+    assert lhu[f"{sx._heal_kind},time,jajatime,days"].nigh >= 1
+    assert lhu[f"{sx._heal_kind},time,jajatime,days"].nigh <= 2
+    assert lhu[f"{sx._heal_kind},time,jajatime,day"].open == 60
+    assert lhu[f"{sx._heal_kind},time,jajatime,day"].nigh == 60
+    assert lhu[f"{sx._heal_kind},time,jajatime,week"].open == 1500
+    assert int(lhu[f"{sx._heal_kind},time,jajatime,week"].nigh) == 1500
+    assert lhu[f"{sx._heal_kind},time,tech,week"].open == 1500
+    assert int(lhu[f"{sx._heal_kind},time,tech,week"].nigh) == 1500
 
 
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario5():
     owner_text = "Tim"
     sx = ContractUnit(_owner=owner_text)
     sx.set_time_hreg_ideas(c400_count=7)
-    jajatime_road = f"{sx._goal_kind},time,jajatime"
+    jajatime_road = f"{sx._heal_kind},time,jajatime"
     sx.set_acptfact(base=jajatime_road, pick=jajatime_road, open=1500, nigh=1063954002)
     lhu = sx._get_lemma_acptfactunits()
 
-    assert lhu[f"{sx._goal_kind},time,jajatime,400 year cycle"].open == 0
-    assert lhu[f"{sx._goal_kind},time,jajatime,400 year cycle"].nigh == 210379680
-    assert lhu[f"{sx._goal_kind},time,jajatime,400 year cycles"].open > 0
-    assert lhu[f"{sx._goal_kind},time,jajatime,400 year cycles"].open < 1
-    assert lhu[f"{sx._goal_kind},time,jajatime,400 year cycles"].nigh > 5
-    assert lhu[f"{sx._goal_kind},time,jajatime,400 year cycles"].nigh < 6
-    assert int(lhu[f"{sx._goal_kind},time,jajatime,days"].open) == 1  # 0 / 1440
+    assert lhu[f"{sx._heal_kind},time,jajatime,400 year cycle"].open == 0
+    assert lhu[f"{sx._heal_kind},time,jajatime,400 year cycle"].nigh == 210379680
+    assert lhu[f"{sx._heal_kind},time,jajatime,400 year cycles"].open > 0
+    assert lhu[f"{sx._heal_kind},time,jajatime,400 year cycles"].open < 1
+    assert lhu[f"{sx._heal_kind},time,jajatime,400 year cycles"].nigh > 5
+    assert lhu[f"{sx._heal_kind},time,jajatime,400 year cycles"].nigh < 6
+    assert int(lhu[f"{sx._heal_kind},time,jajatime,days"].open) == 1  # 0 / 1440
     assert (
-        int(lhu[f"{sx._goal_kind},time,jajatime,days"].nigh) == 738856
+        int(lhu[f"{sx._heal_kind},time,jajatime,days"].nigh) == 738856
     )  # 1063953183 / 1440
-    assert lhu[f"{sx._goal_kind},time,jajatime,day"].open == 0  # 0 / 1440
+    assert lhu[f"{sx._heal_kind},time,jajatime,day"].open == 0  # 0 / 1440
     assert (
-        lhu[f"{sx._goal_kind},time,jajatime,day"].nigh == 1440
+        lhu[f"{sx._heal_kind},time,jajatime,day"].nigh == 1440
     )  # 1362  # 1063953183 / 1440
-    assert lhu[f"{sx._goal_kind},time,jajatime,week"].open == 0  # 0 / 1440
+    assert lhu[f"{sx._heal_kind},time,jajatime,week"].open == 0  # 0 / 1440
     assert (
-        int(lhu[f"{sx._goal_kind},time,jajatime,week"].nigh) == 10080
+        int(lhu[f"{sx._heal_kind},time,jajatime,week"].nigh) == 10080
     )  # 1063953183 / 1440
-    assert lhu[f"{sx._goal_kind},time,tech,week"].open == 0  # 0 / 1440
+    assert lhu[f"{sx._heal_kind},time,tech,week"].open == 0  # 0 / 1440
     assert (
-        int(lhu[f"{sx._goal_kind},time,tech,week"].nigh) == 10080
+        int(lhu[f"{sx._heal_kind},time,tech,week"].nigh) == 10080
     )  # 1063953183 / 1440
 
 
@@ -640,27 +640,27 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario6(
     owner_text = "Tim"
     sx = ContractUnit(_owner=owner_text)
     sx.set_time_hreg_ideas(c400_count=7)
-    jajatime_road = f"{sx._goal_kind},time,jajatime"
+    jajatime_road = f"{sx._heal_kind},time,jajatime"
     sx.set_acptfact(
         base=jajatime_road, pick=jajatime_road, open=1063954000, nigh=1063954002
     )
     lhu = sx._get_lemma_acptfactunits()
 
-    assert lhu[f"{sx._goal_kind},time,jajatime,400 year cycle"].open == 12055600.0
-    assert lhu[f"{sx._goal_kind},time,jajatime,400 year cycle"].nigh == 12055602.0
-    assert lhu[f"{sx._goal_kind},time,jajatime,400 year cycles"].open > 5
-    assert lhu[f"{sx._goal_kind},time,jajatime,400 year cycles"].open < 6
-    assert lhu[f"{sx._goal_kind},time,jajatime,400 year cycles"].nigh > 5
-    assert lhu[f"{sx._goal_kind},time,jajatime,400 year cycles"].nigh < 6
+    assert lhu[f"{sx._heal_kind},time,jajatime,400 year cycle"].open == 12055600.0
+    assert lhu[f"{sx._heal_kind},time,jajatime,400 year cycle"].nigh == 12055602.0
+    assert lhu[f"{sx._heal_kind},time,jajatime,400 year cycles"].open > 5
+    assert lhu[f"{sx._heal_kind},time,jajatime,400 year cycles"].open < 6
+    assert lhu[f"{sx._heal_kind},time,jajatime,400 year cycles"].nigh > 5
+    assert lhu[f"{sx._heal_kind},time,jajatime,400 year cycles"].nigh < 6
     assert (
-        int(lhu[f"{sx._goal_kind},time,jajatime,days"].open) == 738856
+        int(lhu[f"{sx._heal_kind},time,jajatime,days"].open) == 738856
     )  # 1063954000 / 1440
     assert (
-        int(lhu[f"{sx._goal_kind},time,jajatime,days"].nigh) == 738856
+        int(lhu[f"{sx._heal_kind},time,jajatime,days"].nigh) == 738856
     )  # 1063954000 / 1440
-    assert lhu[f"{sx._goal_kind},time,jajatime,day"].open == 1360  # 0 / 1440
+    assert lhu[f"{sx._heal_kind},time,jajatime,day"].open == 1360  # 0 / 1440
     assert (
-        int(lhu[f"{sx._goal_kind},time,jajatime,day"].nigh) == 1362
+        int(lhu[f"{sx._heal_kind},time,jajatime,day"].nigh) == 1362
     )  # 1063953183 / 1440
 
 
@@ -669,7 +669,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario7(
     owner_text = "Tim"
     sx = ContractUnit(_owner=owner_text)
     sx.set_time_hreg_ideas(c400_count=7)
-    jajatime_road = f"{sx._goal_kind},time,jajatime"
+    jajatime_road = f"{sx._heal_kind},time,jajatime"
 
     # When given a minute range that should be Thursday to Monday midnight
     sx.set_acptfact(
@@ -678,33 +678,33 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario7(
     lhu = sx._get_lemma_acptfactunits()
 
     # Then
-    week_open = lhu[f"{sx._goal_kind},time,jajatime,week"].open
-    week_nigh = lhu[f"{sx._goal_kind},time,jajatime,week"].nigh
-    print(f"for {sx._goal_kind},time,jajatime,week: {week_open=} {week_nigh=}")
-    assert lhu[f"{sx._goal_kind},time,jajatime,week"].open == 7200
-    assert lhu[f"{sx._goal_kind},time,jajatime,week"].nigh == 2880
+    week_open = lhu[f"{sx._heal_kind},time,jajatime,week"].open
+    week_nigh = lhu[f"{sx._heal_kind},time,jajatime,week"].nigh
+    print(f"for {sx._heal_kind},time,jajatime,week: {week_open=} {week_nigh=}")
+    assert lhu[f"{sx._heal_kind},time,jajatime,week"].open == 7200
+    assert lhu[f"{sx._heal_kind},time,jajatime,week"].nigh == 2880
 
-    week_open = lhu[f"{sx._goal_kind},time,tech,week"].open
-    week_nigh = lhu[f"{sx._goal_kind},time,tech,week"].nigh
-    print(f"for {sx._goal_kind},time,tech,week: {week_open=} {week_nigh=}")
-    assert lhu[f"{sx._goal_kind},time,tech,week"].open == 7200
-    assert lhu[f"{sx._goal_kind},time,tech,week"].nigh == 2880
-    print(lhu[f"{sx._goal_kind},time,tech,week"])
-    print(lhu[f"{sx._goal_kind},time,tech,week,Thursday"])
-    print(lhu[f"{sx._goal_kind},time,tech,week,Friday"])
-    print(lhu[f"{sx._goal_kind},time,tech,week,Saturday"])
-    print(lhu[f"{sx._goal_kind},time,tech,week,Sunday"])
-    print(lhu[f"{sx._goal_kind},time,tech,week,Monday"])
-    print(lhu[f"{sx._goal_kind},time,tech,week,Tuesday"])
-    print(lhu[f"{sx._goal_kind},time,tech,week,Wednesday"])
+    week_open = lhu[f"{sx._heal_kind},time,tech,week"].open
+    week_nigh = lhu[f"{sx._heal_kind},time,tech,week"].nigh
+    print(f"for {sx._heal_kind},time,tech,week: {week_open=} {week_nigh=}")
+    assert lhu[f"{sx._heal_kind},time,tech,week"].open == 7200
+    assert lhu[f"{sx._heal_kind},time,tech,week"].nigh == 2880
+    print(lhu[f"{sx._heal_kind},time,tech,week"])
+    print(lhu[f"{sx._heal_kind},time,tech,week,Thursday"])
+    print(lhu[f"{sx._heal_kind},time,tech,week,Friday"])
+    print(lhu[f"{sx._heal_kind},time,tech,week,Saturday"])
+    print(lhu[f"{sx._heal_kind},time,tech,week,Sunday"])
+    print(lhu[f"{sx._heal_kind},time,tech,week,Monday"])
+    print(lhu[f"{sx._heal_kind},time,tech,week,Tuesday"])
+    print(lhu[f"{sx._heal_kind},time,tech,week,Wednesday"])
 
-    # assert lhu[f"{sx._goal_kind},time,tech,week,Thursday"].active == True
-    # assert lhu[f"{sx._goal_kind},time,tech,week,Friday"].active == True
-    # assert lhu[f"{sx._goal_kind},time,tech,week,Saturday"].active == True
-    # assert lhu[f"{sx._goal_kind},time,tech,week,Sunday"].active == True
-    # assert lhu[f"{sx._goal_kind},time,tech,week,Monday"].active == False
-    # assert lhu[f"{sx._goal_kind},time,tech,week,Tuesday"].active == False
-    # assert lhu[f"{sx._goal_kind},time,tech,week,Wednesday"].active == False
+    # assert lhu[f"{sx._heal_kind},time,tech,week,Thursday"].active == True
+    # assert lhu[f"{sx._heal_kind},time,tech,week,Friday"].active == True
+    # assert lhu[f"{sx._heal_kind},time,tech,week,Saturday"].active == True
+    # assert lhu[f"{sx._heal_kind},time,tech,week,Sunday"].active == True
+    # assert lhu[f"{sx._heal_kind},time,tech,week,Monday"].active == False
+    # assert lhu[f"{sx._heal_kind},time,tech,week,Tuesday"].active == False
+    # assert lhu[f"{sx._heal_kind},time,tech,week,Wednesday"].active == False
 
 
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario8():
@@ -712,7 +712,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario8(
     owner_text = "Tim"
     sx = ContractUnit(_owner=owner_text)
     sx.set_time_hreg_ideas(c400_count=7)
-    jajatime_road = f"{sx._goal_kind},time,jajatime"
+    jajatime_road = f"{sx._heal_kind},time,jajatime"
 
     # When given a minute range that should be Thursday to Monday midnight
     sx.set_acptfact(
@@ -721,33 +721,33 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario8(
     lhu = sx._get_lemma_acptfactunits()
 
     # Then
-    week_open = lhu[f"{sx._goal_kind},time,jajatime,week"].open
-    week_nigh = lhu[f"{sx._goal_kind},time,jajatime,week"].nigh
-    print(f"for {sx._goal_kind},time,jajatime,week: {week_open=} {week_nigh=}")
-    assert lhu[f"{sx._goal_kind},time,jajatime,week"].open == 7200
-    assert lhu[f"{sx._goal_kind},time,jajatime,week"].nigh == 7200
+    week_open = lhu[f"{sx._heal_kind},time,jajatime,week"].open
+    week_nigh = lhu[f"{sx._heal_kind},time,jajatime,week"].nigh
+    print(f"for {sx._heal_kind},time,jajatime,week: {week_open=} {week_nigh=}")
+    assert lhu[f"{sx._heal_kind},time,jajatime,week"].open == 7200
+    assert lhu[f"{sx._heal_kind},time,jajatime,week"].nigh == 7200
 
-    week_open = lhu[f"{sx._goal_kind},time,tech,week"].open
-    week_nigh = lhu[f"{sx._goal_kind},time,tech,week"].nigh
-    print(f"for {sx._goal_kind},time,tech,week: {week_open=} {week_nigh=}")
-    assert lhu[f"{sx._goal_kind},time,tech,week"].open == 7200
-    assert lhu[f"{sx._goal_kind},time,tech,week"].nigh == 7200
-    print(lhu[f"{sx._goal_kind},time,tech,week"])
-    print(lhu[f"{sx._goal_kind},time,tech,week,Thursday"])
-    print(lhu[f"{sx._goal_kind},time,tech,week,Friday"])
-    print(lhu[f"{sx._goal_kind},time,tech,week,Saturday"])
-    print(lhu[f"{sx._goal_kind},time,tech,week,Sunday"])
-    print(lhu[f"{sx._goal_kind},time,tech,week,Monday"])
-    print(lhu[f"{sx._goal_kind},time,tech,week,Tuesday"])
-    print(lhu[f"{sx._goal_kind},time,tech,week,Wednesday"])
+    week_open = lhu[f"{sx._heal_kind},time,tech,week"].open
+    week_nigh = lhu[f"{sx._heal_kind},time,tech,week"].nigh
+    print(f"for {sx._heal_kind},time,tech,week: {week_open=} {week_nigh=}")
+    assert lhu[f"{sx._heal_kind},time,tech,week"].open == 7200
+    assert lhu[f"{sx._heal_kind},time,tech,week"].nigh == 7200
+    print(lhu[f"{sx._heal_kind},time,tech,week"])
+    print(lhu[f"{sx._heal_kind},time,tech,week,Thursday"])
+    print(lhu[f"{sx._heal_kind},time,tech,week,Friday"])
+    print(lhu[f"{sx._heal_kind},time,tech,week,Saturday"])
+    print(lhu[f"{sx._heal_kind},time,tech,week,Sunday"])
+    print(lhu[f"{sx._heal_kind},time,tech,week,Monday"])
+    print(lhu[f"{sx._heal_kind},time,tech,week,Tuesday"])
+    print(lhu[f"{sx._heal_kind},time,tech,week,Wednesday"])
 
-    # assert lhu[f"{sx._goal_kind},time,tech,week,Thursday"].active == True
-    # assert lhu[f"{sx._goal_kind},time,tech,week,Friday"].active == False
-    # assert lhu[f"{sx._goal_kind},time,tech,week,Saturday"].active == False
-    # assert lhu[f"{sx._goal_kind},time,tech,week,Sunday"].active == False
-    # assert lhu[f"{sx._goal_kind},time,tech,week,Monday"].active == False
-    # assert lhu[f"{sx._goal_kind},time,tech,week,Tuesday"].active == False
-    # assert lhu[f"{sx._goal_kind},time,tech,week,Wednesday"].active == False
+    # assert lhu[f"{sx._heal_kind},time,tech,week,Thursday"].active == True
+    # assert lhu[f"{sx._heal_kind},time,tech,week,Friday"].active == False
+    # assert lhu[f"{sx._heal_kind},time,tech,week,Saturday"].active == False
+    # assert lhu[f"{sx._heal_kind},time,tech,week,Sunday"].active == False
+    # assert lhu[f"{sx._heal_kind},time,tech,week,Monday"].active == False
+    # assert lhu[f"{sx._heal_kind},time,tech,week,Tuesday"].active == False
+    # assert lhu[f"{sx._heal_kind},time,tech,week,Wednesday"].active == False
 
 
 def test_contract_set_acptfact_create_missing_ideas_CreatesBaseAndAcptFact():
@@ -756,9 +756,9 @@ def test_contract_set_acptfact_create_missing_ideas_CreatesBaseAndAcptFact():
     sx = ContractUnit(_owner=owner_text)
     sx._idearoot.set_kids_empty_if_null()
     prob_text = "problems"
-    prob_road = Road(f"{sx._goal_kind},{prob_text}")
+    prob_road = Road(f"{sx._heal_kind},{prob_text}")
     climate_text = "climate"
-    climate_road = Road(f"{sx._goal_kind},{prob_text},{climate_text}")
+    climate_road = Road(f"{sx._heal_kind},{prob_text},{climate_text}")
     assert sx._idearoot._kids.get(prob_text) is None
 
     # WHEN
@@ -777,27 +777,27 @@ def test_contract_get_acptfactunits_base_and_acptfact_list_CorrectlyReturnsListO
     sx._idearoot.set_kids_empty_if_null()
 
     prob_text = "problems"
-    prob_road = Road(f"{sx._goal_kind},{prob_text}")
+    prob_road = Road(f"{sx._heal_kind},{prob_text}")
     climate_text = "climate"
-    climate_road = Road(f"{sx._goal_kind},{prob_text},{climate_text}")
+    climate_road = Road(f"{sx._heal_kind},{prob_text},{climate_text}")
     sx.set_acptfact(base=prob_road, pick=climate_road, create_missing_ideas=True)
 
     weather_text = "weather"
-    weather_road = Road(f"{sx._goal_kind},{weather_text}")
+    weather_road = Road(f"{sx._heal_kind},{weather_text}")
     windy_text = "windy"
-    windy_road = Road(f"{sx._goal_kind},{weather_text},{windy_text}")
+    windy_road = Road(f"{sx._heal_kind},{weather_text},{windy_text}")
     sx.set_acptfact(base=weather_road, pick=windy_road, create_missing_ideas=True)
     hot_text = "hot"
-    hot_road = Road(f"{sx._goal_kind},{weather_text},{hot_text}")
+    hot_road = Road(f"{sx._heal_kind},{weather_text},{hot_text}")
     sx.set_acptfact(base=weather_road, pick=hot_road, create_missing_ideas=True)
     cold_text = "cold"
-    cold_road = Road(f"{sx._goal_kind},{weather_text},{cold_text}")
+    cold_road = Road(f"{sx._heal_kind},{weather_text},{cold_text}")
     sx.set_acptfact(base=weather_road, pick=cold_road, create_missing_ideas=True)
 
     games_text = "games"
-    games_road = Road(f"{sx._goal_kind},{games_text}")
+    games_road = Road(f"{sx._heal_kind},{games_text}")
     football_text = "football"
-    football_road = Road(f"{sx._goal_kind},{games_text},{football_text}")
+    football_road = Road(f"{sx._heal_kind},{games_text},{football_text}")
     sx.set_acptfact(base=games_road, pick=football_road, create_missing_ideas=True)
 
     # WHEN

@@ -23,7 +23,7 @@ from src.contract.required_idea import (
 )
 from src.contract.road import (
     is_sub_road,
-    get_default_goal_root_label as root_label,
+    get_default_heal_root_label as root_label,
 )
 from src.contract.group import (
     BalanceHeir,
@@ -981,16 +981,16 @@ class IdeaRoot(IdeaCore):
     def __post_init__(self):
         self.set_idea_label(_label=root_label())
 
-    def set_idea_label(self, _label: str, contract_goal_kind: str = None):
-        if _label != root_label() and contract_goal_kind is None:
+    def set_idea_label(self, _label: str, contract_heal_kind: str = None):
+        if _label != root_label() and contract_heal_kind is None:
             raise IdeaRootLabelNotEmptyException(
                 f"Cannot set idearoot to string other than '{root_label()}'"
             )
-        elif _label != contract_goal_kind != None:
+        elif _label != contract_heal_kind != None:
             raise IdeaRootLabelNotEmptyException(
-                f"Cannot set idearoot to string other than '{contract_goal_kind}'"
+                f"Cannot set idearoot to string other than '{contract_heal_kind}'"
             )
-        elif _label != root_label() and contract_goal_kind == _label:
+        elif _label != root_label() and contract_heal_kind == _label:
             self._label = _label
         else:
             self._label = root_label()

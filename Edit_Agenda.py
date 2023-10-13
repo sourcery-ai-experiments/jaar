@@ -65,7 +65,7 @@ class Edit_Agenda(qw, Ui_Form):
 
         else:
             self.acptfact_base_update_init_road = (
-                f"{self.contract_x._goal_kind},time,jajatime"
+                f"{self.contract_x._heal_kind},time,jajatime"
             )
             self.acptfact_base_update_combo.setCurrentText(
                 self.acptfact_base_update_init_road
@@ -117,15 +117,15 @@ class Edit_Agenda(qw, Ui_Form):
             sufffact_open_x != None
             and sufffact_nigh_x != None
             and (
-                sufffact_need_x == f"{self.contract_x._goal_kind},time,jajatime"
-                or sufffact_need_x[:21] == f"{self.contract_x._goal_kind},time,jajatime"
+                sufffact_need_x == f"{self.contract_x._heal_kind},time,jajatime"
+                or sufffact_need_x[:21] == f"{self.contract_x._heal_kind},time,jajatime"
             )
         ):
             legible_x_text = self.contract_x.get_jajatime_repeating_legible_text(
                 open=sufffact_open_x, nigh=sufffact_nigh_x, divisor=sufffact_divisor_x
             )
         elif sufffact_open_x != None and sufffact_nigh_x != None:
-            text_x = f"{self.contract_x._goal_kind},time,jajatime"
+            text_x = f"{self.contract_x._heal_kind},time,jajatime"
             legible_x_text = (
                 f"sufffact {sufffact_open_x}-{sufffact_nigh_x} {sufffact_divisor_x=}"
             )

@@ -63,13 +63,13 @@ screenshots and explanatory text.
 base attributes vs required attributess
 
 <!-- TODO: Add explanations -->
-GoalUnit objects
+HealUnit objects
 
-GoalUnit OwnerUnit objects
+HealUnit OwnerUnit objects
 
-GoalUnit OwnerUnit ContractLink objects
+HealUnit OwnerUnit ContractLink objects
 
-GoalUnit Bank objects
+HealUnit Bank objects
 
 <!-- TODO: Add explanations -->
 ContractUnit objects
