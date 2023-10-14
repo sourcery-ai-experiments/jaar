@@ -130,7 +130,7 @@ def test_AssignedHeir_get_all_suff_partys_CorrectlyReturnsSingleDictWithAllParty
     # GIVEN
     jim_text = "jim"
     sue_text = "sue"
-    c_x = ContractUnit(_owner=jim_text)
+    c_x = ContractUnit(_healer=jim_text)
     c_x.add_partyunit(title=jim_text)
     c_x.add_partyunit(title=sue_text)
 
@@ -149,7 +149,7 @@ def test_AssignedHeir_get_all_suff_partys_CorrectlyReturnsSingleDictWithAllParty
     jim_text = "jim"
     sue_text = "sue"
     bob_text = "bob"
-    c_x = ContractUnit(_owner=jim_text)
+    c_x = ContractUnit(_healer=jim_text)
     c_x.add_partyunit(title=jim_text)
     c_x.add_partyunit(title=sue_text)
     c_x.add_partyunit(title=bob_text)
@@ -178,7 +178,7 @@ def test_AssignedHeir_set_group_party_CorrectlySetsAttribute_Empty_suffgroups_x(
 
     # WHEN
     contract_groups = {}
-    assigned_heir_x.set_group_party(contract_groups=contract_groups, contract_owner="")
+    assigned_heir_x.set_group_party(contract_groups=contract_groups, contract_healer="")
 
     # THEN
     assert assigned_heir_x._group_party
@@ -189,10 +189,10 @@ def test_AssignedHeir_set_group_party_CorrectlySetsAttribute_NonEmpty_suffgroups
     jim_text = "jim"
     sue_text = "sue"
 
-    c_x = ContractUnit(_owner=jim_text)
+    c_x = ContractUnit(_healer=jim_text)
     c_x.add_partyunit(title=jim_text)
     c_x.add_partyunit(title=sue_text)
-    contract_owner = c_x._owner
+    contract_healer = c_x._healer
     contract_groups = c_x._groups
     print(f"{len(contract_groups)=}")
     # print(f"{contract_groups.get(jim_text)=}")
@@ -203,7 +203,7 @@ def test_AssignedHeir_set_group_party_CorrectlySetsAttribute_NonEmpty_suffgroups
     assert assigned_heir_x._group_party == False
 
     # WHEN
-    assigned_heir_x.set_group_party(contract_groups, contract_owner)
+    assigned_heir_x.set_group_party(contract_groups, contract_healer)
 
     # THEN
     assert assigned_heir_x._group_party
@@ -214,10 +214,10 @@ def test_AssignedHeir_set_group_party_CorrectlySetsAttribute_NonEmpty_suffgroups
     jim_text = "jim"
     sue_text = "sue"
 
-    c_x = ContractUnit(_owner=jim_text)
+    c_x = ContractUnit(_healer=jim_text)
     c_x.add_partyunit(title=jim_text)
     c_x.add_partyunit(title=sue_text)
-    contract_owner = c_x._owner
+    contract_healer = c_x._healer
     contract_groups = c_x._groups
     print(f"{len(contract_groups)=}")
     # print(f"{contract_groups.get(jim_text)=}")
@@ -228,7 +228,7 @@ def test_AssignedHeir_set_group_party_CorrectlySetsAttribute_NonEmpty_suffgroups
     assert assigned_heir_x._group_party == False
 
     # WHEN
-    assigned_heir_x.set_group_party(contract_groups, contract_owner)
+    assigned_heir_x.set_group_party(contract_groups, contract_healer)
 
     # THEN
     assert assigned_heir_x._group_party == False
@@ -239,7 +239,7 @@ def test_AssignedHeir_set_group_party_CorrectlySetsAttribute_NonEmpty_suffgroups
     jim_text = "jim"
     sue_text = "sue"
     bob_text = "bob"
-    c_x = ContractUnit(_owner=jim_text)
+    c_x = ContractUnit(_healer=jim_text)
     c_x.add_partyunit(title=jim_text)
     c_x.add_partyunit(title=sue_text)
     c_x.add_partyunit(title=bob_text)
@@ -253,13 +253,13 @@ def test_AssignedHeir_set_group_party_CorrectlySetsAttribute_NonEmpty_suffgroups
     _suffgroups_x = {swim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
     assert assigned_heir_x._group_party == False
-    assigned_heir_x.set_group_party(c_x._groups, c_x._owner)
+    assigned_heir_x.set_group_party(c_x._groups, c_x._healer)
     assert assigned_heir_x._group_party
 
     # WHEN
     swim_group.del_partylink(title=jim_text)
     c_x.set_groupunit(groupunit=swim_group)
-    assigned_heir_x.set_group_party(c_x._groups, c_x._owner)
+    assigned_heir_x.set_group_party(c_x._groups, c_x._healer)
 
     # THEN
     assert assigned_heir_x._group_party == False
@@ -270,7 +270,7 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
     jim_text = "jim"
     sue_text = "sue"
     bob_text = "bob"
-    c_x = ContractUnit(_owner=jim_text)
+    c_x = ContractUnit(_healer=jim_text)
     c_x.add_partyunit(title=jim_text)
     c_x.add_partyunit(title=sue_text)
     c_x.add_partyunit(title=bob_text)
@@ -284,13 +284,13 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
     _suffgroups_x = {swim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
     assert assigned_heir_x._group_party == False
-    assigned_heir_x.set_group_party(c_x._groups, c_x._owner)
+    assigned_heir_x.set_group_party(c_x._groups, c_x._healer)
     assert assigned_heir_x._group_party
 
     # WHEN
     swim_group.del_partylink(title=jim_text)
     c_x.set_groupunit(groupunit=swim_group)
-    assigned_heir_x.set_group_party(c_x._groups, c_x._owner)
+    assigned_heir_x.set_group_party(c_x._groups, c_x._healer)
 
     # THEN
     assert assigned_heir_x._group_party == False
@@ -409,7 +409,7 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqual_ParentAssignedHeir_Non
     sue_text = "sue"
     bob_text = "bob"
     tom_text = "tom"
-    c_x = ContractUnit(_owner=jim_text)
+    c_x = ContractUnit(_healer=jim_text)
     c_x.add_partyunit(title=jim_text)
     c_x.add_partyunit(title=sue_text)
     c_x.add_partyunit(title=bob_text)
@@ -456,7 +456,7 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqualParentAssignedHeir_Rais
     sue_text = "sue"
     bob_text = "bob"
     tom_text = "tom"
-    c_x = ContractUnit(_owner=jim_text)
+    c_x = ContractUnit(_healer=jim_text)
     c_x.add_partyunit(title=jim_text)
     c_x.add_partyunit(title=sue_text)
     c_x.add_partyunit(title=bob_text)

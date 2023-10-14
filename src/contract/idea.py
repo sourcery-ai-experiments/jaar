@@ -23,7 +23,7 @@ from src.contract.required_idea import (
 )
 from src.contract.road import (
     is_sub_road,
-    get_default_heal_root_label as root_label,
+    get_default_healing_root_label as root_label,
 )
 from src.contract.group import (
     BalanceHeir,
@@ -760,7 +760,7 @@ class IdeaCore:
         self,
         tree_traverse_count: int,
         contract_groups: dict[GroupBrand:GroupUnit] = None,
-        contract_owner: str = None,
+        contract_healer: str = None,
     ):
         self.set_acptfactheirs_empty_if_null()
         self.clear_requiredheirs_status()
@@ -789,10 +789,10 @@ class IdeaCore:
         if (
             self._active_status
             and contract_groups != None
-            and contract_owner != None
+            and contract_healer != None
             and self._assignedheir._suffgroups != {}
         ):
-            self._assignedheir.set_group_party(contract_groups, contract_owner)
+            self._assignedheir.set_group_party(contract_groups, contract_healer)
             if self._assignedheir._group_party == False:
                 self._active_status = False
 
@@ -981,16 +981,16 @@ class IdeaRoot(IdeaCore):
     def __post_init__(self):
         self.set_idea_label(_label=root_label())
 
-    def set_idea_label(self, _label: str, contract_heal_kind: str = None):
-        if _label != root_label() and contract_heal_kind is None:
+    def set_idea_label(self, _label: str, contract_healing_kind: str = None):
+        if _label != root_label() and contract_healing_kind is None:
             raise IdeaRootLabelNotEmptyException(
                 f"Cannot set idearoot to string other than '{root_label()}'"
             )
-        elif _label != contract_heal_kind != None:
+        elif _label != contract_healing_kind != None:
             raise IdeaRootLabelNotEmptyException(
-                f"Cannot set idearoot to string other than '{contract_heal_kind}'"
+                f"Cannot set idearoot to string other than '{contract_healing_kind}'"
             )
-        elif _label != root_label() and contract_heal_kind == _label:
+        elif _label != root_label() and contract_healing_kind == _label:
             self._label = _label
         else:
             self._label = root_label()

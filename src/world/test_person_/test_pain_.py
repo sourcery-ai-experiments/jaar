@@ -2,87 +2,92 @@ from src.world.pain import (
     PainUnit,
     PainKind,
     painunit_shop,
-    HealLink,
-    heallink_shop,
-    PersonLink,
-    personlink_shop,
+    HealingLink,
+    healinglink_shop,
+    HealerLink,
+    healerlink_shop,
 )
 
 
-def test_heallink_exists():
+def test_healinglink_exists():
     # GIVEN
-    heal_text = "home"
-    x_weight = 3
+    home_text = "home"
+    home_weight = 3
 
     # WHEN
-    px = HealLink(kind=heal_text, weight=3)
+    px = HealingLink(kind=home_text, weight=home_weight)
 
     # THEN
-    assert px.kind == heal_text
-    assert px.weight == x_weight
+    assert px.kind == home_text
+    assert px.weight == home_weight
 
 
-def test_heallink_shop_ReturnsCorrectObj():
+def test_healinglink_shop_ReturnsCorrectObj():
     # GIVEN
-    heal_text = "home"
-    x_weight = 5
+    home_text = "home"
+    home_weight = 5
 
     # WHEN
-    px = heallink_shop(kind=heal_text, weight=x_weight)
+    px = healinglink_shop(kind=home_text, weight=home_weight)
 
     # THEN
-    assert px.kind == heal_text
-    assert px.weight == x_weight
+    assert px.kind == home_text
+    assert px.weight == home_weight
 
 
-def test_heallink_shop_ReturnsCorrectObj_EmptyWeight():
+def test_healinglink_shop_ReturnsCorrectObj_EmptyWeight():
     # GIVEN
-    heal_text = "home"
+    healing_text = "home"
 
     # WHEN
-    px = heallink_shop(kind=heal_text)
+    px = healinglink_shop(kind=healing_text)
 
     # THEN
-    assert px.kind == heal_text
+    assert px.kind == healing_text
     assert px.weight == 1
 
 
-def test_personlink_exists():
+def test_healerlink_exists():
     # GIVEN
     yao_text = "yao"
-    x_weight = 3
+    yao_weight = 3
+    yao_in_tribe = True
 
     # WHEN
-    px = PersonLink(person_name=yao_text, weight=3)
+    px = HealerLink(person_name=yao_text, weight=3, in_tribe=yao_in_tribe)
 
     # THEN
     assert px.person_name == yao_text
-    assert px.weight == x_weight
+    assert px.weight == yao_weight
+    assert px.in_tribe == yao_in_tribe
 
 
-def test_personlink_shop_ReturnsCorrectObj():
+def test_healerlink_shop_ReturnsCorrectObj():
     # GIVEN
     yao_text = "yao"
-    x_weight = 5
+    yao_weight = 5
+    yao_in_tribe = False
 
     # WHEN
-    px = personlink_shop(person_name=yao_text, weight=x_weight)
+    px = healerlink_shop(person_name=yao_text, weight=yao_weight, in_tribe=yao_in_tribe)
 
     # THEN
     assert px.person_name == yao_text
-    assert px.weight == x_weight
+    assert px.weight == yao_weight
+    assert px.in_tribe == yao_in_tribe
 
 
-def test_personlink_shop_ReturnsCorrectObj_EmptyWeight():
+def test_healerlink_shop_ReturnsCorrectObj_EmptyWeight():
     # GIVEN
     yao_text = "yao"
 
     # WHEN
-    px = personlink_shop(person_name=yao_text)
+    px = healerlink_shop(person_name=yao_text)
 
     # THEN
     assert px.person_name == yao_text
     assert px.weight == 1
+    assert px.in_tribe is None
 
 
 def test_painunit_exists():
@@ -94,8 +99,8 @@ def test_painunit_exists():
 
     # THEN
     assert px.kind == fear_text
-    assert px._heallinks is None
-    assert px._personlinks is None
+    assert px._healinglinks is None
+    assert px._healerlinks is None
 
 
 def test_painunit_shop_ReturnsNonePainUnitWithCorrectAttrs_v1():
@@ -107,75 +112,75 @@ def test_painunit_shop_ReturnsNonePainUnitWithCorrectAttrs_v1():
 
     # THEN
     assert px.kind == fear_text
-    assert px._heallinks == {}
-    assert px._personlinks == {}
+    assert px._healinglinks == {}
+    assert px._healerlinks == {}
 
 
-def test_painunit_set_heallink_CorrectlySetsHealLink():
+def test_painunit_set_healinglink_CorrectlySetsHealingLink():
     # GIVEN
     fear_text = "fear"
     fear_painunit = painunit_shop(kind=fear_text)
 
     # WHEN
     home_text = "home"
-    home_heallink = heallink_shop(kind=home_text)
-    fear_painunit.set_heallink(home_heallink)
+    home_healinglink = healinglink_shop(kind=home_text)
+    fear_painunit.set_healinglink(home_healinglink)
 
     # THEN
-    # home_heal = xao_pain.get_heal()
-    home_heal = fear_painunit._heallinks.get(home_text)
-    assert home_heal != None
-    assert home_heal.kind == home_text
+    # home_healing = xao_pain.get_healing()
+    home_healing = fear_painunit._healinglinks.get(home_text)
+    assert home_healing != None
+    assert home_healing.kind == home_text
 
 
-def test_painunit_get_healunit_CorrectlyGetsAnHealUnit():
+def test_painunit_get_healingunit_CorrectlyGetsAnHealingUnit():
     # GIVEN
     fear_text = "fear"
     fear_painunit = painunit_shop(kind=fear_text)
     home_text = "home"
-    home_heallink = heallink_shop(kind=home_text)
-    fear_painunit.set_heallink(home_heallink)
+    home_healinglink = healinglink_shop(kind=home_text)
+    fear_painunit.set_healinglink(home_healinglink)
 
     # WHEN
-    home_heal = fear_painunit.get_heallink(home_text)
+    home_healing = fear_painunit.get_healinglink(home_text)
 
     # THEN
-    assert home_heal != None
-    assert home_heal.kind == home_text
+    assert home_healing != None
+    assert home_healing.kind == home_text
 
 
-def test_painunit_del_healunit_CorrectlyDeletesHealUnit():
+def test_painunit_del_healingunit_CorrectlyDeletesHealingUnit():
     # GIVEN
     fear_text = "fear"
     fear_painunit = painunit_shop(kind=fear_text)
     home_text = "home"
-    home_heallink = heallink_shop(kind=home_text)
-    fear_painunit.set_heallink(home_heallink)
-    before_home_heal = fear_painunit.get_heallink(home_text)
-    assert before_home_heal != None
-    assert before_home_heal.kind == home_text
+    home_healinglink = healinglink_shop(kind=home_text)
+    fear_painunit.set_healinglink(home_healinglink)
+    before_home_healing = fear_painunit.get_healinglink(home_text)
+    assert before_home_healing != None
+    assert before_home_healing.kind == home_text
 
     # WHEN
-    fear_painunit.del_heallink(healkind=home_text)
+    fear_painunit.del_healinglink(healingkind=home_text)
 
     # THEN
-    after_home_heal = fear_painunit.get_heallink(home_text)
-    assert after_home_heal is None
+    after_home_healing = fear_painunit.get_healinglink(home_text)
+    assert after_home_healing is None
 
 
-def test_painunit_set_personlink_CorrectlySetsPersonLink():
+def test_painunit_set_healerlink_CorrectlySetsHealerLink():
     # GIVEN
     fear_text = "fear"
     fear_painunit = painunit_shop(kind=fear_text)
 
     # WHEN
     yao_text = "yao"
-    yao_personlink = personlink_shop(person_name=yao_text)
-    fear_painunit.set_personlink(yao_personlink)
+    yao_healerlink = healerlink_shop(person_name=yao_text)
+    fear_painunit.set_healerlink(yao_healerlink)
 
     # THEN
     # yao_person = xao_pain.get_person()
-    yao_person = fear_painunit._personlinks.get(yao_text)
+    yao_person = fear_painunit._healerlinks.get(yao_text)
     assert yao_person != None
     assert yao_person.person_name == yao_text
 
@@ -185,11 +190,11 @@ def test_painunit_get_personunit_CorrectlyGetsAnPersonUnit():
     fear_text = "fear"
     fear_painunit = painunit_shop(kind=fear_text)
     yao_text = "yao"
-    yao_personlink = personlink_shop(person_name=yao_text)
-    fear_painunit.set_personlink(yao_personlink)
+    yao_healerlink = healerlink_shop(person_name=yao_text)
+    fear_painunit.set_healerlink(yao_healerlink)
 
     # WHEN
-    yao_person = fear_painunit.get_personlink(yao_text)
+    yao_person = fear_painunit.get_healerlink(yao_text)
 
     # THEN
     assert yao_person != None
@@ -201,15 +206,15 @@ def test_painunit_del_personunit_CorrectlyDeletesPersonUnit():
     fear_text = "fear"
     fear_painunit = painunit_shop(kind=fear_text)
     yao_text = "yao"
-    yao_personlink = personlink_shop(person_name=yao_text)
-    fear_painunit.set_personlink(yao_personlink)
-    before_yao_person = fear_painunit.get_personlink(yao_text)
+    yao_healerlink = healerlink_shop(person_name=yao_text)
+    fear_painunit.set_healerlink(yao_healerlink)
+    before_yao_person = fear_painunit.get_healerlink(yao_text)
     assert before_yao_person != None
     assert before_yao_person.person_name == yao_text
 
     # WHEN
-    fear_painunit.del_personlink(person_name=yao_text)
+    fear_painunit.del_healerlink(person_name=yao_text)
 
     # THEN
-    after_yao_person = fear_painunit.get_personlink(yao_text)
+    after_yao_person = fear_painunit.get_healerlink(yao_text)
     assert after_yao_person is None

@@ -11,23 +11,23 @@ from src.contract.x_func import get_on_meld_weight_actions
 def test_contract_meld_BaseScenario():
     # GIVEN
     contract_text = "x_contract"
-    cx1 = ContractUnit(_owner=contract_text)
-    cx2 = ContractUnit(_owner=contract_text)
+    cx1 = ContractUnit(_healer=contract_text)
+    cx2 = ContractUnit(_healer=contract_text)
 
     # WHEN
     cx1.meld(other_contract=cx2)
 
     # THEN
     assert cx1
-    assert cx1._owner == contract_text
+    assert cx1._healer == contract_text
 
 
 def test_contract_meld_WeightDoesNotCombine():
     # GIVEN
     contract_text = "x_contract"
-    cx1 = ContractUnit(_owner=contract_text)
+    cx1 = ContractUnit(_healer=contract_text)
     cx1._weight = 3
-    cx2 = ContractUnit(_owner=contract_text)
+    cx2 = ContractUnit(_healer=contract_text)
     cx2._weight = 5
 
     # WHEN
@@ -43,10 +43,10 @@ def test_contract_meld_PartyUnits():
     x1_party = partyunit_shop(title=x1_title)
 
     contract_text = "x_contract"
-    cx1 = ContractUnit(_owner=contract_text)
+    cx1 = ContractUnit(_healer=contract_text)
     cx1.set_partyunit(partyunit=x1_party)
 
-    cx2 = ContractUnit(_owner=contract_text)
+    cx2 = ContractUnit(_healer=contract_text)
     cx2.set_partyunit(partyunit=x1_party)
     x2_title = "x2_party"
     x2_party = partyunit_shop(title=x2_title)
@@ -68,10 +68,10 @@ def test_contract_meld_GroupUnits():
     x1_group = groupunit_shop(brand=x1_title)
 
     contract_text = "x_contract"
-    cx1 = ContractUnit(_owner=contract_text)
+    cx1 = ContractUnit(_healer=contract_text)
     cx1.set_groupunit(groupunit=x1_group)
 
-    cx2 = ContractUnit(_owner=contract_text)
+    cx2 = ContractUnit(_healer=contract_text)
     cx2.set_groupunit(groupunit=x1_group)
     x2_title = "x2_group"
     x2_group = groupunit_shop(brand=x2_title, uid=5)
@@ -93,8 +93,8 @@ def test_contract_meld_GroupUnits():
 
 def test_contract_idearoot_meld_IdeaRootAttrCorrectlyMelded():
     # GIVEN
-    cx1 = ContractUnit(_owner="spirit")
-    cx2 = ContractUnit(_owner="spirit")
+    cx1 = ContractUnit(_healer="spirit")
+    cx2 = ContractUnit(_healer="spirit")
     cx2._idearoot._uid = 4
     assert cx1._idearoot._uid == 1
     assert cx2._idearoot._uid == 4
@@ -104,26 +104,26 @@ def test_contract_idearoot_meld_IdeaRootAttrCorrectlyMelded():
         cx1.meld(cx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea=None,{cx1._heal_kind} _uid:1 with None,{cx2._heal_kind} _uid:4"
+        == f"Meld fail idea=None,{cx1._healing_kind} _uid:1 with None,{cx2._healing_kind} _uid:4"
     )
 
 
 def test_contract_idearoot_meld_Add4IdeasScenario():
     # GIVEN
     spirit_text = "spirit"
-    cx1 = ContractUnit(_owner=spirit_text)
+    cx1 = ContractUnit(_healer=spirit_text)
 
     tech_text = "tech"
-    tech_road = f"{cx1._heal_kind},{tech_text}"
+    tech_road = f"{cx1._healing_kind},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{cx1._heal_kind},{tech_text},{bowl_text}"
+    bowl_road = f"{cx1._healing_kind},{tech_text},{bowl_text}"
     swim_text = "swim"
-    swim_road = f"{cx1._heal_kind},{swim_text}"
+    swim_road = f"{cx1._healing_kind},{swim_text}"
     free_text = "freestyle"
-    free_road = f"{cx1._heal_kind},{swim_text},{free_text}"
+    free_road = f"{cx1._healing_kind},{swim_text},{free_text}"
 
-    cx2 = ContractUnit(_owner=spirit_text)
-    cx2.add_idea(walk=cx2._heal_kind, idea_kid=IdeaKid(_label=tech_text))
+    cx2 = ContractUnit(_healer=spirit_text)
+    cx2.add_idea(walk=cx2._healing_kind, idea_kid=IdeaKid(_label=tech_text))
     cx2.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
     cx2.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
 
@@ -140,18 +140,18 @@ def test_contract_idearoot_meld_Add4IdeasScenario():
 
 def test_contract_idearoot_meld_2SameIdeasScenario():
     # GIVEN
-    owner_text = "Yoa"
-    cx1 = ContractUnit(_owner=owner_text)
+    healer_text = "Yoa"
+    cx1 = ContractUnit(_healer=healer_text)
     tech_text = "tech"
-    tech_road = f"{cx1._heal_kind},{tech_text}"
+    tech_road = f"{cx1._healing_kind},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{cx1._heal_kind},{tech_text},{bowl_text}"
+    bowl_road = f"{cx1._healing_kind},{tech_text},{bowl_text}"
 
-    cx1.add_idea(walk=cx1._heal_kind, idea_kid=IdeaKid(_label=tech_text))
+    cx1.add_idea(walk=cx1._healing_kind, idea_kid=IdeaKid(_label=tech_text))
     cx1.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
 
-    cx2 = ContractUnit(_owner=owner_text)
-    cx2.add_idea(walk=cx2._heal_kind, idea_kid=IdeaKid(_label=tech_text))
+    cx2 = ContractUnit(_healer=healer_text)
+    cx2.add_idea(walk=cx2._healing_kind, idea_kid=IdeaKid(_label=tech_text))
     cx2.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
 
     assert cx1.get_idea_kid(road=bowl_road)._weight == 1
@@ -165,18 +165,18 @@ def test_contract_idearoot_meld_2SameIdeasScenario():
 
 def test_contract_acptfactunits_meld_BaseScenarioWorks():
     # GIVEN
-    cx1 = ContractUnit(_owner="test7")
+    cx1 = ContractUnit(_healer="test7")
     tech_text = "tech"
-    tech_road = f"{cx1._heal_kind},{tech_text}"
+    tech_road = f"{cx1._healing_kind},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{cx1._heal_kind},{tech_text},{bowl_text}"
+    bowl_road = f"{cx1._healing_kind},{tech_text},{bowl_text}"
 
-    cx1.add_idea(walk=cx1._heal_kind, idea_kid=IdeaKid(_label=tech_text))
+    cx1.add_idea(walk=cx1._healing_kind, idea_kid=IdeaKid(_label=tech_text))
     cx1.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
     cx1.set_acptfact(base=tech_road, pick=bowl_road)
 
-    cx2 = ContractUnit(_owner="test7")
-    cx2.add_idea(walk=cx2._heal_kind, idea_kid=IdeaKid(_label=tech_text))
+    cx2 = ContractUnit(_healer="test7")
+    cx2.add_idea(walk=cx2._healing_kind, idea_kid=IdeaKid(_label=tech_text))
     cx2.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
     cx2.set_acptfact(base=tech_road, pick=bowl_road)
 
@@ -191,22 +191,22 @@ def test_contract_acptfactunits_meld_BaseScenarioWorks():
 
 def test_contract_acptfactunits_meld_2AcptFactUnitsWorks():
     # GIVEN
-    cx1 = ContractUnit(_owner="test7")
+    cx1 = ContractUnit(_healer="test7")
     tech_text = "tech"
-    tech_road = f"{cx1._heal_kind},{tech_text}"
+    tech_road = f"{cx1._healing_kind},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{cx1._heal_kind},{tech_text},{bowl_text}"
+    bowl_road = f"{cx1._healing_kind},{tech_text},{bowl_text}"
     swim_text = "swim"
-    swim_road = f"{cx1._heal_kind},{swim_text}"
+    swim_road = f"{cx1._healing_kind},{swim_text}"
     free_text = "freestyle"
 
-    cx1.add_idea(walk=cx1._heal_kind, idea_kid=IdeaKid(_label=tech_text))
+    cx1.add_idea(walk=cx1._healing_kind, idea_kid=IdeaKid(_label=tech_text))
     cx1.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
     cx1.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
     cx1.set_acptfact(base=tech_road, pick=bowl_road)
 
-    cx2 = ContractUnit(_owner="test7")
-    cx2.add_idea(walk=cx2._heal_kind, idea_kid=IdeaKid(_label=tech_text))
+    cx2 = ContractUnit(_healer="test7")
+    cx2.add_idea(walk=cx2._healing_kind, idea_kid=IdeaKid(_label=tech_text))
     cx2.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
     cx2.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
     cx2.set_acptfact(base=tech_road, pick=bowl_road)
@@ -223,13 +223,13 @@ def test_contract_acptfactunits_meld_2AcptFactUnitsWorks():
 
 def test_contract_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
     # GIVEN
-    cx1 = ContractUnit(_owner="test7")
+    cx1 = ContractUnit(_healer="test7")
 
     swim_text = "swim"
-    swim_road = f"{cx1._heal_kind},{swim_text}"
+    swim_road = f"{cx1._healing_kind},{swim_text}"
     free_text = "freestyle"
 
-    cx2 = ContractUnit(_owner="test7")
+    cx2 = ContractUnit(_healer="test7")
     cx2.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
     cx2.set_acptfact(base=swim_road, pick=swim_road)
 
@@ -247,9 +247,9 @@ def test_contract_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
 
 def test_contract_acptfactunits_meld_GroupsMeldedBefore_Partys():
     # GIVEN
-    owner_text = "Yoa"
-    cx1 = ContractUnit(_owner=owner_text)
-    cx2 = ContractUnit(_owner=owner_text)
+    healer_text = "Yoa"
+    cx1 = ContractUnit(_healer=healer_text)
+    cx2 = ContractUnit(_healer=healer_text)
     bob = "bob"
     cx2.set_partyunit(partyunit_shop(title=bob))
     assert cx2._groups.get(bob) != None
@@ -269,15 +269,15 @@ def test_contract_acptfactunits_meld_GroupsMeldedBefore_Partys():
 
 def test_contract_acptfactunits_meld_AcptFactsAttributeCorrectlySet():
     # GIVEN
-    cx1 = ContractUnit(_owner="test7")
+    cx1 = ContractUnit(_healer="test7")
 
     swim_text = "swim"
-    swim_road = f"{cx1._heal_kind},{swim_text}"
+    swim_road = f"{cx1._healing_kind},{swim_text}"
     free_text = "freestyle"
-    free_road = f"{cx1._heal_kind},{free_text}"
+    free_road = f"{cx1._healing_kind},{free_text}"
     cx1.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
 
-    cx2 = ContractUnit(_owner="test7")
+    cx2 = ContractUnit(_healer="test7")
     cx2.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
     cx2.set_acptfact(base=swim_road, pick=free_road, open=23, nigh=27)
 
@@ -295,8 +295,8 @@ def test_contract_acptfactunits_meld_AcptFactsAttributeCorrectlySet():
 
 def test_contract_meld_worksCorrectlyForLargeExample():
     # GIVEN
-    owner_text = "TlME"
-    cx1 = ContractUnit(_owner=owner_text)
+    healer_text = "TlME"
+    cx1 = ContractUnit(_healer=healer_text)
     cx1._idearoot._uid = 1
     cx2 = contract_v001()
 
@@ -324,7 +324,7 @@ def test_contract_meld_worksCorrectlyForLargeExample():
 
     assert len(cx1._idearoot._acptfactunits) == 2
     assert len(cx1._idearoot._acptfactunits) == len(cx2._idearoot._acptfactunits)
-    assert cx1._owner == cx2._owner
+    assert cx1._healer == cx2._healer
     print(f"{len(cx1._groups.items())=}")
     # for cx1_group_key, cx1_group_obj in cx1._groups.items():
     #     print(f"{cx1_group_key=}")
@@ -389,7 +389,7 @@ def test_contract__meld_originlinks_CorrectlySetsOriginLinks():
     bob_text = "Bob"
     sue_text = "Sue"
     sue_weight = 4
-    bob_cx = ContractUnit(_owner=bob_text)
+    bob_cx = ContractUnit(_healer=bob_text)
     assert len(bob_cx._originunit._links) == 0
 
     # WHEN
@@ -405,10 +405,10 @@ def test_contract__meld_originlinks_CorrectlySetsOriginLinks():
 def test_contract_meld_OriginUnitsCorrectlySet():
     # GIVEN
     bob_text = "Bob"
-    bob_cx = ContractUnit(_owner=bob_text)
+    bob_cx = ContractUnit(_healer=bob_text)
 
     swim_text = "swim"
-    swim_road = f"{bob_cx._heal_kind},{swim_text}"
+    swim_road = f"{bob_cx._healing_kind},{swim_text}"
     free_text = "freestyle"
     free_road = f"{swim_road},{free_text}"
     back_text = "backstroke"
@@ -417,7 +417,7 @@ def test_contract_meld_OriginUnitsCorrectlySet():
 
     sue_text = "Sue"
     sue_weight = 4
-    sue_cx = ContractUnit(_owner=sue_text)
+    sue_cx = ContractUnit(_healer=sue_text)
     sue_cx.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
     sue_cx.set_acptfact(base=swim_road, pick=free_road, open=23, nigh=27)
     sue_cx.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=back_text))

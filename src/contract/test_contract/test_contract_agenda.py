@@ -36,7 +36,7 @@ def test_get_agenda_returns_agenda_with_only_required_allowed():
     # GIVEN
     a1 = example_contracts_get_contract_with_4_levels_and_2requireds()
     week_text = "weekdays"
-    week_road = f"{a1._heal_kind},{week_text}"
+    week_road = f"{a1._healing_kind},{week_text}"
     sun_text = "Sunday"
     sun_road = f"{week_road},{sun_text}"
     a1.set_acptfact(base=week_road, pick=sun_road)
@@ -97,7 +97,7 @@ def test_get_agenda_with_7amItem():
     assert len(a1.get_agenda_items()) == 1
 
     # WHEN
-    day24hr_road = f"{a1._heal_kind},timetech,24hr day"
+    day24hr_road = f"{a1._healing_kind},timetech,24hr day"
     day24hr_open = 0.0
     day24hr_nigh = 8.0
     housework_text = "housework"
@@ -118,15 +118,15 @@ def test_get_agenda_with_7amItem():
 
 
 def test_get_agenda_does_not_return_promise_items_outside_range():
-    owner_text = "Zia"
-    a1 = ContractUnit(_owner=owner_text)
+    healer_text = "Zia"
+    a1 = ContractUnit(_healer=healer_text)
     a1.set_time_hreg_ideas(c400_count=7)
     c_label = "clean"
     c_idea = IdeaKid(_label=c_label, promise=True)
-    a1.add_idea(idea_kid=c_idea, walk=a1._heal_kind)
-    c_road = f"{a1._heal_kind},{c_label}"
-    jajatime = f"{a1._heal_kind},time,jajatime"
-    jajaday = f"{a1._heal_kind},time,jajatime,day"
+    a1.add_idea(idea_kid=c_idea, walk=a1._healing_kind)
+    c_road = f"{a1._healing_kind},{c_label}"
+    jajatime = f"{a1._healing_kind},time,jajatime"
+    jajaday = f"{a1._healing_kind},time,jajatime,day"
 
     a1.edit_idea_attr(
         road=c_road,
@@ -156,7 +156,7 @@ def test_exammple_agenda_exists():
     # GIVEN
     a1 = example_contracts_contract_v001()
     min_text = "day_minute"
-    min_road = f"{a1._heal_kind},{min_text}"
+    min_road = f"{a1._healing_kind},{min_text}"
     a1.set_acptfact(base=min_road, pick=min_road, open=0, nigh=1399)
     assert a1
     # for idea_kid in a1._idearoot._kids.values():
@@ -181,20 +181,20 @@ def test_exammple_AgendaHasCorrectAttributes():
     a1 = example_contracts_contract_v001()
 
     day_min_text = "day_minute"
-    day_min_road = f"{a1._heal_kind},{day_min_text}"
+    day_min_road = f"{a1._healing_kind},{day_min_text}"
     a1.set_acptfact(base=day_min_road, pick=day_min_road, open=0, nigh=1399)
     month_week_text = "month_week"
-    month_week_road = f"{a1._heal_kind},{month_week_text}"
+    month_week_road = f"{a1._healing_kind},{month_week_text}"
     nations_text = "Nation-States"
-    nations_road = f"{a1._heal_kind},{nations_text}"
+    nations_road = f"{a1._healing_kind},{nations_text}"
     mood_text = "Moods"
-    mood_road = f"{a1._heal_kind},{mood_text}"
+    mood_road = f"{a1._healing_kind},{mood_text}"
     aaron_text = "Aaron Donald sphere"
-    aaron_road = f"{a1._heal_kind},{aaron_text}"
+    aaron_road = f"{a1._healing_kind},{aaron_text}"
     # internet_text = "Internet"
-    # internet_road = f"{a1._heal_kind},{internet_text}"
+    # internet_road = f"{a1._healing_kind},{internet_text}"
     year_month_text = "year_month"
-    year_month_road = f"{a1._heal_kind},{year_month_text}"
+    year_month_road = f"{a1._healing_kind},{year_month_text}"
     a1.set_acptfact(base=month_week_road, pick=month_week_road)
     a1.set_acptfact(base=nations_road, pick=nations_road)
     a1.set_acptfact(base=mood_road, pick=mood_road)
@@ -202,16 +202,16 @@ def test_exammple_AgendaHasCorrectAttributes():
     # a1.set_acptfact(base=internet_road, pick=internet_road)
     a1.set_acptfact(base=year_month_road, pick=year_month_road)
     # season_text = "Seasons"
-    # season_road = f"{a1._heal_kind},{season_text}"
+    # season_road = f"{a1._healing_kind},{season_text}"
     # a1.set_acptfact(base=season_road, pick=season_road)
     ced_week_text = "ced_week"
-    ced_week_road = f"{a1._heal_kind},{ced_week_text}"
+    ced_week_road = f"{a1._healing_kind},{ced_week_text}"
     a1.set_acptfact(base=ced_week_road, pick=ced_week_road)
     # water_text = "WaterBeing"
-    # water_road = f"{a1._heal_kind},{water_text}"
+    # water_road = f"{a1._healing_kind},{water_text}"
     # a1.set_acptfact(base=water_road, pick=water_road)
     # movie_text = "No Movie playing"
-    # movie_road = f"{a1._heal_kind},{movie_text}"
+    # movie_road = f"{a1._healing_kind},{movie_text}"
     # a1.set_acptfact(base=movie_road, pick=movie_text)
 
     # WHEN
@@ -226,7 +226,7 @@ def test_exammple_AgendaHasCorrectAttributes():
     assert len(idea_action_list) == 27
 
     weekday_text = "weekdays"
-    weekday_road = f"{a1._heal_kind},{weekday_text}"
+    weekday_road = f"{a1._healing_kind},{weekday_text}"
     monday_text = "Monday"
     monday_road = f"{weekday_road},{monday_text}"
 
@@ -259,7 +259,7 @@ def test_exammple_AgendaCanFiltersOnBase():
     # GIVEN
     a1 = example_contracts_contract_v001_with_large_agenda()
     week_text = "weekdays"
-    week_road = f"{a1._heal_kind},{week_text}"
+    week_road = f"{a1._healing_kind},{week_text}"
     print(f"{type(a1)=}")
     # for base in a1.get_missing_acptfact_bases():
     #     print(f"{base=}")
@@ -273,7 +273,7 @@ def test_exammple_AgendaCanFiltersOnBase():
     #             print(f"         {weekdays}")
 
     # a1.edit_idea_attr(
-    #     road="{a1._heal_kind},sufffacts,cleaning,laundry wednesday",
+    #     road="{a1._healing_kind},sufffacts,cleaning,laundry wednesday",
     #     required_del_sufffact_base=weekdays,
     #     required_del_sufffact_need=weekdays,
     # )
@@ -289,17 +289,17 @@ def test_exammple_AgendaCanFiltersOnBase():
 
 def test_set_agenda_task_as_complete_RangeWorksCorrectly():
     # GIVEN
-    owner_text = "Zia"
-    a1 = ContractUnit(_owner=owner_text)
+    healer_text = "Zia"
+    a1 = ContractUnit(_healer=healer_text)
 
     run_text = "run"
-    run_road = f"{a1._heal_kind},{run_text}"
+    run_road = f"{a1._healing_kind},{run_text}"
     time_text = "time"
-    time_road = f"{a1._heal_kind},{time_text}"
+    time_road = f"{a1._healing_kind},{time_text}"
     day_text = "day"
     day_road = f"{time_road},{day_text}"
 
-    a1.add_idea(idea_kid=IdeaKid(_label=run_text, promise=True), walk=a1._heal_kind)
+    a1.add_idea(idea_kid=IdeaKid(_label=run_text, promise=True), walk=a1._healing_kind)
     a1.add_idea(idea_kid=IdeaKid(_label=day_text, _begin=0, _close=500), walk=time_road)
     a1.edit_idea_attr(
         road=run_road,
@@ -330,17 +330,17 @@ def test_set_agenda_task_as_complete_RangeWorksCorrectly():
 
 def test_set_agenda_task_as_complete_DivisionWorksCorrectly():
     # GIVEN
-    owner_text = "Zia"
-    a1 = ContractUnit(_owner=owner_text)
+    healer_text = "Zia"
+    a1 = ContractUnit(_healer=healer_text)
 
     run_text = "run"
-    run_road = f"{a1._heal_kind},{run_text}"
+    run_road = f"{a1._healing_kind},{run_text}"
     time_text = "time"
-    time_road = f"{a1._heal_kind},{time_text}"
+    time_road = f"{a1._healing_kind},{time_text}"
     day_text = "day"
     day_road = f"{time_road},{day_text}"
 
-    a1.add_idea(idea_kid=IdeaKid(_label=run_text, promise=True), walk=a1._heal_kind)
+    a1.add_idea(idea_kid=IdeaKid(_label=run_text, promise=True), walk=a1._healing_kind)
     a1.add_idea(idea_kid=IdeaKid(_label=day_text, _begin=0, _close=500), walk=time_road)
     a1.edit_idea_attr(
         road=run_road,
@@ -384,7 +384,7 @@ def test_contract_get_from_json_LoadsActionFromJSONCorrectly():
     assert len(a1.get_idea_list()) == 253
     print(f"{len(a1.get_idea_list())=}")
     casa_text = "casa"
-    casa_road = f"{a1._heal_kind},{casa_text}"
+    casa_road = f"{a1._healing_kind},{casa_text}"
     body_text = "body care"
     body_road = f"{casa_road},{body_text}"
     veg_text = "make veggies every morning"
@@ -411,7 +411,7 @@ def test_contract_get_from_json_LoadsActionFromJSONCorrectly():
 
     # WHEN
     day_min_text = "day_minute"
-    day_min_road = f"{a1._heal_kind},{day_min_text}"
+    day_min_road = f"{a1._healing_kind},{day_min_text}"
     a1.set_acptfact(base=day_min_road, pick=day_min_road, open=0, nigh=1399)
 
     # THEN
@@ -420,15 +420,15 @@ def test_contract_get_from_json_LoadsActionFromJSONCorrectly():
 
 def test_weekdayAgendaItemsCorrectlyReturned():
     # Given
-    owner_text = "Zia"
-    a1 = ContractUnit(_owner=owner_text)
+    healer_text = "Zia"
+    a1 = ContractUnit(_healer=healer_text)
 
     a1._set_acptfacts_empty_if_null()
     a1.set_time_hreg_ideas(c400_count=7)
 
     things_text = "things to do"
-    a1.add_idea(IdeaKid(_label=things_text), walk=a1._heal_kind)
-    t_road = f"{a1._heal_kind},{things_text}"
+    a1.add_idea(IdeaKid(_label=things_text), walk=a1._healing_kind)
+    t_road = f"{a1._healing_kind},{things_text}"
     clean = "clean"
     run = "run"
     swim = "swim"
@@ -442,7 +442,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     a1.add_idea(IdeaKid(_label=veg, promise=True), walk=t_road)
     a1.add_idea(IdeaKid(_label=lift, promise=True), walk=t_road)
     time_text = "time"
-    time_road = f"{a1._heal_kind},{time_text}"
+    time_road = f"{a1._healing_kind},{time_text}"
     jaja_text = "jajatime"
     jaja_road = f"{time_road},{jaja_text}"
     tech_text = "tech"
@@ -455,7 +455,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     fri_road = f"{w_road},Friday"
     sat_road = f"{w_road},Saturday"
     sun_road = f"{w_road},Sunday"
-    t_road = f"{a1._heal_kind},{things_text}"
+    t_road = f"{a1._healing_kind},{things_text}"
     c_road = f"{t_road},{clean}"
     r_road = f"{t_road},{run}"
     s_road = f"{t_road},{swim}"
@@ -606,8 +606,8 @@ def test_contract_create_agenda_item_CorrectlyCreatesAllContractAttributes():
     # WHEN "I am cleaning the cookery since I'm in the apartment and it's 8am and it's dirty and I'm doing this for my family"
 
     # GIVEN
-    owner_text = "Zia"
-    a1 = ContractUnit(_owner=owner_text)
+    healer_text = "Zia"
+    a1 = ContractUnit(_healer=healer_text)
 
     a1.set_contract_metrics()
     assert len(a1._partys) == 0
@@ -615,13 +615,13 @@ def test_contract_create_agenda_item_CorrectlyCreatesAllContractAttributes():
     assert len(a1._idearoot._kids) == 0
 
     clean_things_text = "cleaning things"
-    clean_things_road = Road(f"{a1._heal_kind},{clean_things_text}")
+    clean_things_road = Road(f"{a1._healing_kind},{clean_things_text}")
     clean_cookery_text = "clean cookery"
     clean_cookery_road = Road(f"{clean_things_road},{clean_cookery_text}")
     clean_cookery_idea = IdeaKid(_label=clean_cookery_text, _walk=clean_things_road)
     print(f"{clean_cookery_idea.get_road()=}")
     home_text = "home"
-    home_road = Road(f"{a1._heal_kind},{home_text}")
+    home_road = Road(f"{a1._healing_kind},{home_text}")
     cookery_room_text = "cookery room"
     cookery_room_road = Road(f"{home_road},{cookery_room_text}")
     cookery_dirty_text = "dirty"
@@ -629,7 +629,7 @@ def test_contract_create_agenda_item_CorrectlyCreatesAllContractAttributes():
 
     # create gregorian timeline
     a1.set_time_hreg_ideas(c400_count=7)
-    daytime_road = Road(f"{a1._heal_kind},time,jajatime,day")
+    daytime_road = Road(f"{a1._healing_kind},time,jajatime,day")
     open_8am = 480
     nigh_8am = 480
 
@@ -695,7 +695,7 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
     a1 = example_contracts_contract_v002()
 
     assert len(a1.get_agenda_items()) == 44
-    jajatime_road = f"{a1._heal_kind},time,jajatime"
+    jajatime_road = f"{a1._healing_kind},time,jajatime"
 
     # WHEN
     a1.set_acptfact(
@@ -705,9 +705,9 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
 
     # THEN
     assert len(action_idea_list) == 66
-    jajatime_road = f"{a1._heal_kind},time,jajatime"
+    jajatime_road = f"{a1._healing_kind},time,jajatime"
     night_text = "late_night_go_to_sleep"
-    night_road = f"{a1._heal_kind},D&B,{night_text}"
+    night_road = f"{a1._healing_kind},D&B,{night_text}"
     night_idea = a1._idea_dict.get(night_road)
     # for idea_x in a1.get_agenda_items():
     #     # if idea_x._task != True:
@@ -757,7 +757,7 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
 def test_agenda_IsSetByAssignedUnit_1PartyGroup():
     # GIVEN
     bob_text = "bob"
-    cx = ContractUnit(_owner=bob_text)
+    cx = ContractUnit(_healer=bob_text)
     work_text = "work"
     work_road = f"{bob_text},{work_text}"
     cx.add_idea(idea_kid=IdeaKid(_label=work_text, promise=True), walk=bob_text)
@@ -793,7 +793,7 @@ def test_agenda_IsSetByAssignedUnit_1PartyGroup():
 def test_agenda_IsSetByAssignedUnit_2PartyGroup():
     # GIVEN
     bob_text = "bob"
-    cx = ContractUnit(_owner=bob_text)
+    cx = ContractUnit(_healer=bob_text)
     cx.add_partyunit(title=bob_text)
     work_text = "work"
     work_road = f"{bob_text},{work_text}"

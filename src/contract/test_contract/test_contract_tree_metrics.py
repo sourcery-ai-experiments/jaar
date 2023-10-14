@@ -13,7 +13,7 @@ def test_contract_get_tree_metrics_exists():
     assert tree_metrics != None
 
     # WHEN
-    cx = ContractUnit(_owner="Zia")
+    cx = ContractUnit(_healer="Zia")
     cx_tree_metrics = cx.get_tree_metrics()
 
     # THEN
@@ -67,18 +67,18 @@ def test_contract_get_tree_set_all_idea_uids_unique():
 
 def test_contract_contract_get_tree_metrics_sets_uids_correctly():
     # GIVEN
-    owner_text = "Zia"
-    cx = ContractUnit(_owner=owner_text)
+    healer_text = "Zia"
+    cx = ContractUnit(_healer=healer_text)
     swim_text = "swim"
     walk_text = "walk"
-    cx.add_idea(idea_kid=IdeaKid(_label=swim_text, _uid=None), walk=cx._heal_kind)
-    cx.add_idea(idea_kid=IdeaKid(_label=walk_text, _uid=2), walk=cx._heal_kind)
-    assert cx.get_idea_kid(road=f"{cx._heal_kind},{swim_text}")._uid is None
+    cx.add_idea(idea_kid=IdeaKid(_label=swim_text, _uid=None), walk=cx._healing_kind)
+    cx.add_idea(idea_kid=IdeaKid(_label=walk_text, _uid=2), walk=cx._healing_kind)
+    assert cx.get_idea_kid(road=f"{cx._healing_kind},{swim_text}")._uid is None
 
     cx.set_all_idea_uids_unique()
 
     # THEN
-    assert cx.get_idea_kid(road=f"{cx._heal_kind},{swim_text}")._uid != None
+    assert cx.get_idea_kid(road=f"{cx._healing_kind},{swim_text}")._uid != None
 
 
 def test_contract_get_tree_metrics_ReturnsAccurateActionIdeaCount():
@@ -88,7 +88,7 @@ def test_contract_get_tree_metrics_ReturnsAccurateActionIdeaCount():
     assert tree_metrics_before.bond_promise_count == 69
 
     # WHEN
-    cx.add_idea(idea_kid=IdeaKid(_label="clean", promise=True), walk=f"{cx._owner}")
+    cx.add_idea(idea_kid=IdeaKid(_label="clean", promise=True), walk=f"{cx._healer}")
 
     # THEN
     tree_metrics_after = cx.get_tree_metrics()
@@ -97,11 +97,11 @@ def test_contract_get_tree_metrics_ReturnsAccurateActionIdeaCount():
 
 def test_contract_get_tree_metrics_ReturnsANoneActionIdeaRoad():
     # GIVEN
-    owner_text = "Nia"
-    cx = ContractUnit(_owner=owner_text, _weight=10)
+    healer_text = "Nia"
+    cx = ContractUnit(_healer=healer_text, _weight=10)
     weekdays = "weekdays"
     idea_kid_weekdays = IdeaKid(_weight=40, _label=weekdays)
-    cx.add_idea(idea_kid=idea_kid_weekdays, walk=f"{cx._heal_kind}")
+    cx.add_idea(idea_kid=idea_kid_weekdays, walk=f"{cx._healing_kind}")
     tree_metrics_before = cx.get_tree_metrics()
     # WHEN/THEN
     assert tree_metrics_before.an_promise_idea_road is None
@@ -114,5 +114,5 @@ def test_contract_get_tree_metrics_ReturnsAnActionIdeaRoad():
     # WHEN/THEN
     assert (
         tree_metrics_before.an_promise_idea_road
-        == f"{cx._heal_kind},ACME,ACME Employee Responsiblities,Know Abuse Prevention and Reporting guildlines,Take Fall 2021 training"
+        == f"{cx._healing_kind},ACME,ACME Employee Responsiblities,Know Abuse Prevention and Reporting guildlines,Take Fall 2021 training"
     )

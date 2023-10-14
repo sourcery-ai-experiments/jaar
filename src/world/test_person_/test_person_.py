@@ -8,7 +8,7 @@ def test_personunit_exists():
     # THEN
     assert px.name is None
     assert px.person_dir is None
-    assert px._heals is None
+    assert px._healings is None
     assert px._pains is None
 
 
@@ -22,7 +22,7 @@ def test_personunit_shop_ReturnsNonePersonUnitWithCorrectAttrs_v1():
     # THEN
     assert px.name == dallas_text
     assert px.person_dir == ""
-    assert px._heals == {}
+    assert px._healings == {}
     assert px._pains == {}
 
 
@@ -39,7 +39,7 @@ def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
     assert px.person_dir == dallas_dir
 
 
-def test_personunit_set_healunit_CorrectlyCreatesHealUnit():
+def test_personunit_set_healingunit_CorrectlyCreatesHealingUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
@@ -47,51 +47,51 @@ def test_personunit_set_healunit_CorrectlyCreatesHealUnit():
 
     # WHEN
     home_text = "home"
-    xao_person_obj.set_healunit(home_text)
+    xao_person_obj.set_healingunit(home_text)
 
     # THEN
-    # home_heal = xao_person.get_heal()
-    home_heal = xao_person_obj._heals.get(home_text)
-    assert home_heal != None
-    assert home_heal.kind == home_text
-    assert home_heal.heals_dir == f"{xao_person_dir}/heals"
+    # home_healing = xao_person.get_healing()
+    home_healing = xao_person_obj._healings.get(home_text)
+    assert home_healing != None
+    assert home_healing.kind == home_text
+    assert home_healing.healings_dir == f"{xao_person_dir}/healings"
 
 
-def test_personunit_get_healunit_CorrectlyGetsHealUnit():
+def test_personunit_get_healingunit_CorrectlyGetsHealingUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
     xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
     home_text = "home"
-    xao_person_obj.set_healunit(home_text)
+    xao_person_obj.set_healingunit(home_text)
 
     # WHEN
-    home_heal = xao_person_obj.get_healunit(home_text)
+    home_healing = xao_person_obj.get_healingunit(home_text)
 
     # THEN
-    assert home_heal != None
-    assert home_heal.kind == home_text
-    assert home_heal.heals_dir == f"{xao_person_dir}/heals"
+    assert home_healing != None
+    assert home_healing.kind == home_text
+    assert home_healing.healings_dir == f"{xao_person_dir}/healings"
 
 
-def test_personunit_del_healunit_CorrectlyDeletesHealUnit():
+def test_personunit_del_healingunit_CorrectlyDeletesHealingUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
     xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
     home_text = "home"
-    xao_person_obj.set_healunit(home_text)
-    before_home_heal = xao_person_obj.get_healunit(home_text)
-    assert before_home_heal != None
-    assert before_home_heal.kind == home_text
-    assert before_home_heal.heals_dir == f"{xao_person_dir}/heals"
+    xao_person_obj.set_healingunit(home_text)
+    before_home_healing = xao_person_obj.get_healingunit(home_text)
+    assert before_home_healing != None
+    assert before_home_healing.kind == home_text
+    assert before_home_healing.healings_dir == f"{xao_person_dir}/healings"
 
     # WHEN
-    xao_person_obj.del_healunit(home_text)
+    xao_person_obj.del_healingunit(home_text)
 
     # THEN
-    after_home_heal = xao_person_obj.get_healunit(home_text)
-    assert after_home_heal is None
+    after_home_healing = xao_person_obj.get_healingunit(home_text)
+    assert after_home_healing is None
 
 
 def test_personunit_set_painunit_CorrectlyCreatesPainUnit():

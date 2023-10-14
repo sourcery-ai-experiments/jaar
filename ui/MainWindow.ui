@@ -306,7 +306,7 @@
      <string>Update</string>
     </property>
    </widget>
-   <widget class="QLineEdit" title="contract_owner">
+   <widget class="QLineEdit" title="contract_healer">
     <property title="geometry">
      <rect>
       <x>100</x>

@@ -4,8 +4,8 @@ from random import randint
 
 
 def test_time_get_time_min_from_dt_WorksCorrectly():
-    owner_text = "Kia"
-    cx = ContractUnit(_owner=owner_text)
+    healer_text = "Kia"
+    cx = ContractUnit(_healer=healer_text)
     cx.set_time_hreg_ideas(c400_count=6)
     assert cx.get_time_min_from_dt(dt=datetime(2000, 1, 1, 0, 0))
     assert cx.get_time_min_from_dt(dt=datetime(1, 1, 1, 0, 0)) == 527040
@@ -16,8 +16,8 @@ def test_time_get_time_min_from_dt_WorksCorrectly():
 
 
 def test_get_time_400YearCycle_from_min_WorksCorrectly():
-    owner_text = "Kia"
-    cx = ContractUnit(_owner=owner_text)
+    healer_text = "Kia"
+    cx = ContractUnit(_healer=healer_text)
     cx.set_time_hreg_ideas(c400_count=6)
     assert cx.get_time_c400_from_min(min=0)[0] == 0
     assert cx.get_time_c400_from_min(min=210379680)[0] == 1
@@ -26,8 +26,8 @@ def test_get_time_400YearCycle_from_min_WorksCorrectly():
 
 
 def test_get_time_c400year_from_min_WorksCorrectly():
-    owner_text = "Kia"
-    cx = ContractUnit(_owner=owner_text)
+    healer_text = "Kia"
+    cx = ContractUnit(_healer=healer_text)
     cx.set_time_hreg_ideas(c400_count=6)
     assert cx.get_time_c400yr_from_min(min=0)[0] == 0
     assert cx.get_time_c400yr_from_min(min=1)[0] == 0
@@ -54,8 +54,8 @@ def _check_time_conversion_works_with_random_inputs(cx: ContractUnit):
 
 
 def test_get_time_dt_from_min_WorksCorrectly():
-    owner_text = "Kia"
-    cx = ContractUnit(_owner=owner_text)
+    healer_text = "Kia"
+    cx = ContractUnit(_healer=healer_text)
     cx.set_time_hreg_ideas(c400_count=6)
     assert cx.get_time_dt_from_min(min=5000000)
     # assert cx.get_time_dt_from_min(
@@ -104,8 +104,8 @@ def test_get_time_dt_from_min_WorksCorrectly():
 
 def test_get_time_():
     # Given
-    owner_text = "Kia"
-    cx = ContractUnit(_owner=owner_text)
+    healer_text = "Kia"
+    cx = ContractUnit(_healer=healer_text)
     cx.set_time_hreg_ideas(c400_count=6)
 
     idea_list = cx.get_idea_list()
@@ -122,7 +122,7 @@ def test_get_time_():
 
     # Then
     time_text = "time"
-    time_road = f"{cx._heal_kind},{time_text}"
+    time_road = f"{cx._healing_kind},{time_text}"
     jaja_text = "jajatime"
     jaja_road = f"{time_road},{jaja_text}"
     assert cx._idearoot._acptfactunits[jaja_road]
@@ -131,7 +131,7 @@ def test_get_time_():
 
 
 # def test_time_hreg_set_exists():
-#     cx = ContractUnit(_owner=owner_text)
+#     cx = ContractUnit(_healer=healer_text)
 #     cx.set_time_hreg_ideas(c400_count=6)
 #     idea_x = cx.get_idea_kid(road=f"{root_label()},hreg")
 #     assert idea_x != None
@@ -308,8 +308,8 @@ def test_get_time_():
 
 def test_get_jajatime_repeating_legible_text_correctlyText():
     # GIVEN
-    owner_text = "Noa"
-    cx = ContractUnit(_owner=owner_text)
+    healer_text = "Noa"
+    cx = ContractUnit(_healer=healer_text)
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN / THEN

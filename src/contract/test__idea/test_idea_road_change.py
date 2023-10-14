@@ -5,41 +5,41 @@ from src.contract.required_idea import (
     Road,
     acptfactunit_shop,
 )
-from src.contract.road import get_default_heal_root_label as root_label
+from src.contract.road import get_default_healing_root_label as root_label
 from pytest import raises as pytest_raises
 
 
 def test_idea_find_replace_road_Changes_walk():
     # GIVEN Idea with _walk that will be changed
-    old_owner = "owner1"
+    old_healer = "healer1"
     bloomers_text = "bloomers"
-    bloomers_road = f"{root_label()},{old_owner},{bloomers_text}"
+    bloomers_road = f"{root_label()},{old_healer},{bloomers_text}"
     roses_text = "roses"
-    roses_road = f"{root_label()},{old_owner},{bloomers_text},{roses_text}"
+    roses_road = f"{root_label()},{old_healer},{bloomers_text},{roses_text}"
     idea_x = IdeaCore(_label=roses_text, _walk=bloomers_road)
     assert Road(f"{idea_x._walk}") == bloomers_road
     assert Road(f"{idea_x._walk},{idea_x._label}") == roses_road
 
     # WHEN
-    new_owner = "owner1"
-    old_owner_road = f"{root_label()},{old_owner}"
-    new_owner_road = f"{root_label()},{new_owner}"
-    idea_x.find_replace_road(old_road=old_owner_road, new_road=new_owner_road)
+    new_healer = "healer1"
+    old_healer_road = f"{root_label()},{old_healer}"
+    new_healer_road = f"{root_label()},{new_healer}"
+    idea_x.find_replace_road(old_road=old_healer_road, new_road=new_healer_road)
 
     # THEN
-    new_bloomers_road = f"{root_label()},{new_owner},{bloomers_text}"
-    new_roses_road = f"{root_label()},{new_owner},{bloomers_text},{roses_text}"
+    new_bloomers_road = f"{root_label()},{new_healer},{bloomers_text}"
+    new_roses_road = f"{root_label()},{new_healer},{bloomers_text},{roses_text}"
     assert Road(f"{idea_x._walk}") == new_bloomers_road
     assert Road(f"{idea_x._walk},{idea_x._label}") == new_roses_road
 
 
 def test_idea_find_replace_road_Changes_range_source_road_numeric_road():
     # GIVEN Idea with special road and numeric road that will be changed
-    owner = "owner"
+    healer = "healer"
     bloomers_text = "bloomers"
-    bloomers_road = f"{root_label()},{owner},{bloomers_text}"
+    bloomers_road = f"{root_label()},{healer},{bloomers_text}"
     roses_text = "roses"
-    roses_road = f"{root_label()},{owner},{bloomers_text},{roses_text}"
+    roses_road = f"{root_label()},{healer},{bloomers_text},{roses_text}"
     old_water_text = "water"
     old_water_road = f"{root_label()},{old_water_text}"
     rain_text = "rain"
@@ -74,10 +74,10 @@ def test_idea_find_replace_road_Changes_range_source_road_numeric_road():
 
 def test_idea_find_replace_road_Changes_requiredunits():
     # GIVEN Idea with required that will be changed
-    owner = "owner"
+    healer = "healer"
     bloomers_text = "bloomers"
     roses_text = "roses"
-    roses_road = f"{root_label()},{owner},{bloomers_text},{roses_text}"
+    roses_road = f"{root_label()},{healer},{bloomers_text},{roses_text}"
     # required roads
     old_water_text = "water"
     old_water_road = f"{root_label()},{old_water_text}"
@@ -126,11 +126,11 @@ def test_idea_find_replace_road_Changes_requiredunits():
 
 def test_idea_find_replace_road_Changes_acptfactunits():
     # GIVEN Idea with acptfactunit that will be changed
-    owner = "owner"
+    healer = "healer"
     bloomers_text = "bloomers"
-    # bloomers_road = f"{root_label()},{owner},{bloomers_text}"
+    # bloomers_road = f"{root_label()},{healer},{bloomers_text}"
     roses_text = "roses"
-    # roses_road = f"{root_label()},{owner},{bloomers_text},{roses_text}"
+    # roses_road = f"{root_label()},{healer},{bloomers_text},{roses_text}"
     old_water_text = "water"
     old_water_road = f"{root_label()},{old_water_text}"
     rain_text = "rain"

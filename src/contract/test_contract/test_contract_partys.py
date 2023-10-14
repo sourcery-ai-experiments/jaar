@@ -7,7 +7,7 @@ from src.contract.examples.example_contracts import (
 from src.contract.contract import ContractUnit, get_intersection_of_partys
 from src.contract.idea import IdeaKid
 from pytest import raises as pytest_raises
-from src.heal.bank_sqlstr import RiverTpartyUnit
+from src.healing.bank_sqlstr import RiverTpartyUnit
 
 
 def test_contract_partys_exists():
@@ -40,7 +40,7 @@ def test_example_has_partys():
 
 def test_contract_set_party_correctly_sets_partys_1():
     # GIVEN
-    cx = ContractUnit(_owner="prom")
+    cx = ContractUnit(_healer="prom")
     cx.set_contract_metrics()
     assert len(cx._partys) == 0
     assert len(cx._groups) == 0
@@ -70,7 +70,7 @@ def test_contract_set_party_correctly_sets_partys_1():
 
 def test_contract_set_party_correctly_sets_partys_2():
     # GIVEN
-    cx = ContractUnit(_owner="prom")
+    cx = ContractUnit(_healer="prom")
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -92,7 +92,7 @@ def test_contract_set_party_correctly_sets_partys_2():
 
 def test_contract_get_party_CorrectlyGetsParty():
     # GIVEN
-    cx = ContractUnit(_owner="prom")
+    cx = ContractUnit(_healer="prom")
     rico_text = "rico"
     carm_text = "carmen"
     cx.add_partyunit(title=rico_text)
@@ -110,7 +110,7 @@ def test_contract_get_party_CorrectlyGetsParty():
 def test_contract_get_partys_depotlink_count_GetsCorrectCount():
     # GIVEN
     sue_text = "sue"
-    sue_cx = ContractUnit(_owner=sue_text)
+    sue_cx = ContractUnit(_healer=sue_text)
     assign_text = "assignment"
 
     # WHEN
@@ -140,7 +140,7 @@ def test_contract_get_partys_depotlink_count_GetsCorrectCount():
 def test_contract_get_idea_list_CorrectlySetsPartyLinkContractCreditAndDebt():
     # GIVEN
     prom_text = "prom"
-    cx = ContractUnit(_owner=prom_text)
+    cx = ContractUnit(_healer=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -290,7 +290,7 @@ def test_contract_get_idea_list_CorrectlySetsPartyLinkContractCreditAndDebt():
 def test_contract_get_idea_list_CorrectlySetsPartyUnitContractImportance():
     # GIVEN
     prom_text = "prom"
-    cx = ContractUnit(_owner=prom_text)
+    cx = ContractUnit(_healer=prom_text)
     swim_text = "swim"
     cx.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=prom_text)
     rico_text = "rico"
@@ -436,7 +436,7 @@ def test_contract_get_idea_list_CorrectlySetsPartyUnitContractImportance():
 def test_contract_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitContractImportance():
     # GIVEN
     prom_text = "prom"
-    cx = ContractUnit(_owner=prom_text)
+    cx = ContractUnit(_healer=prom_text)
     swim_text = "swim"
     cx.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=prom_text)
     rico_text = "rico"
@@ -548,7 +548,7 @@ def test_contract_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitContractImpor
 
 def test_contract_get_idea_list_WithAllPartysWeighted():
     # GIVEN
-    cx = ContractUnit(_owner="prom")
+    cx = ContractUnit(_healer="prom")
     cx.add_idea(idea_kid=IdeaKid(_label="swim"), walk="prom")
     rico_text = "rico"
     carm_text = "carmen"
@@ -761,8 +761,8 @@ def test_contract_agenda_credit_debt_IsCorrectlySet():
 
 def test_contract_agenda_ratio_credit_debt_IsCorrectlySetWhenAgendaIsEmpty():
     # GIVEN
-    owner_text = "Noa"
-    cx = ContractUnit(_owner=owner_text)
+    healer_text = "Noa"
+    cx = ContractUnit(_healer=healer_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -808,7 +808,7 @@ def test_contract_agenda_ratio_credit_debt_IsCorrectlySetWhenAgendaIsEmpty():
 
 
 def test_contract_get_party_groups_returnsCorrectData():
-    cx = ContractUnit(_owner="prom")
+    cx = ContractUnit(_healer="prom")
     cx.add_idea(idea_kid=IdeaKid(_label="swim"), walk="prom")
     rico_text = "rico"
     carm_text = "carmen"
@@ -830,7 +830,7 @@ def test_contract_get_party_groups_returnsCorrectData():
 
 def test_contract_PartyUnit_CorrectlyCreatesNewTitle():
     # GIVEN
-    cx = ContractUnit(_owner="prom")
+    cx = ContractUnit(_healer="prom")
     rico_text = "rico"
     cx.add_partyunit(title=rico_text, uid=61, creditor_weight=13)
     cx.add_partyunit(title="carmen", uid=5)
@@ -864,7 +864,7 @@ def test_contract_PartyUnit_CorrectlyCreatesNewTitle():
 
 def test_contract_PartyUnit_raiseErrorNewTitlePreviouslyExists():
     # GIVEN
-    sx = ContractUnit(_owner="prom")
+    sx = ContractUnit(_healer="prom")
     rico_text = "rico"
     sx.add_partyunit(title=rico_text, uid=61, creditor_weight=13)
     carmen_text = "carmen"
@@ -894,7 +894,7 @@ def test_contract_PartyUnit_raiseErrorNewTitlePreviouslyExists():
 def test_contract_PartyUnit_CorrectlyChangesGroupUnitPartyLinks():
     # GIVEN
     prom_text = "prom"
-    cx = ContractUnit(_owner=prom_text)
+    cx = ContractUnit(_healer=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -939,7 +939,7 @@ def test_contract_PartyUnit_CorrectlyChangesGroupUnitPartyLinks():
 def test_contract_PartyUnit_CorrectlyMergesTitles():
     # GIVEN
     prom_text = "prom"
-    cx = ContractUnit(_owner=prom_text)
+    cx = ContractUnit(_healer=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -983,7 +983,7 @@ def test_contract_PartyUnit_CorrectlyMergesGroupUnitPartyLinks():
     # GIVEN
     # GIVEN
     prom_text = "prom"
-    cx = ContractUnit(_owner=prom_text)
+    cx = ContractUnit(_healer=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -1029,7 +1029,7 @@ def test_contract_PartyUnit_CorrectlyMergesGroupUnitPartyLinks():
 
 def test_contract_PartyUnit_raiseErrorNewTitleGroupUnitPreviouslyExists():
     # GIVEN
-    sx = ContractUnit(_owner="prom")
+    sx = ContractUnit(_healer="prom")
     rico_text = "rico"
     sx.add_partyunit(title=rico_text, uid=61, creditor_weight=13)
     anna_text = "anna"
@@ -1060,7 +1060,7 @@ def test_contract_PartyUnit_raiseErrorNewTitleGroupUnitPreviouslyExists():
 
 def test_contract_PartyUnit_CorrectlyOverwriteNewTitleGroupUnit():
     # GIVEN
-    sx = ContractUnit(_owner="prom")
+    sx = ContractUnit(_healer="prom")
     rico_text = "rico"
     sx.add_partyunit(title=rico_text, uid=61, creditor_weight=13)
     anna_text = "anna"
@@ -1101,8 +1101,8 @@ def test_contract_PartyUnit_CorrectlyOverwriteNewTitleGroupUnit():
 
 def test_contract_set_all_partyunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
     # GIVEN
-    owner_text = "Noa"
-    sx = ContractUnit(_owner=owner_text)
+    healer_text = "Noa"
+    sx = ContractUnit(_healer=healer_text)
     sx.set_partys_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
@@ -1125,8 +1125,8 @@ def test_contract_set_all_partyunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
 
 def test_contract_set_all_partyunits_uids_unique_CorrectlySetsChangesSameGroupUIDs():
     # GIVEN
-    owner_text = "Noa"
-    sx = ContractUnit(_owner=owner_text)
+    healer_text = "Noa"
+    sx = ContractUnit(_healer=healer_text)
     sx.set_partys_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
@@ -1152,8 +1152,8 @@ def test_contract_set_all_partyunits_uids_unique_CorrectlySetsChangesSameGroupUI
 
 def test_contract_set_all_partyunits_uids_unique_CorrectlySetsChangesSameGroupUIDs():
     # GIVEN
-    owner_text = "Noa"
-    sx = ContractUnit(_owner=owner_text)
+    healer_text = "Noa"
+    sx = ContractUnit(_healer=healer_text)
     sx.set_partys_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
@@ -1179,8 +1179,8 @@ def test_contract_set_all_partyunits_uids_unique_CorrectlySetsChangesSameGroupUI
 
 def test_contract_all_partyunits_uids_are_unique_ReturnsCorrectBoolean():
     # GIVEN
-    owner_text = "Noa"
-    sx = ContractUnit(_owner=owner_text)
+    healer_text = "Noa"
+    sx = ContractUnit(_healer=healer_text)
     sx.set_partys_empty_if_null()
     swim_text = "swim"
     walk_text = "walk"
@@ -1210,8 +1210,8 @@ def test_contract_all_partyunits_uids_are_unique_ReturnsCorrectBoolean():
 
 def test_contract_get_partyunits_title_list_CorrectlyReturnsListOfPartyUnits():
     # GIVEN
-    owner_text = "Noa"
-    sx = ContractUnit(_owner=owner_text)
+    healer_text = "Noa"
+    sx = ContractUnit(_healer=healer_text)
     sx.set_partys_empty_if_null()
     sam_text = "sam"
     will_text = "will"
@@ -1240,7 +1240,7 @@ def test_contract_get_partyunits_title_list_CorrectlyReturnsListOfPartyUnits():
 def test_contract_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr():
     # GIVEN
     bob_text = "bob"
-    cx = ContractUnit(_owner=bob_text)
+    cx = ContractUnit(_healer=bob_text)
     cx.set_partys_empty_if_null()
     sam_text = "sam"
     wil_text = "wil"
@@ -1287,7 +1287,7 @@ def test_contract_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr(
 def test_get_intersection_of_partys_CorrectlyReturnsUnionOfKeysOfTwoDictionarys_scenario1():
     # GIVEN
     bob_text = "bob"
-    cx = ContractUnit(_owner=bob_text)
+    cx = ContractUnit(_healer=bob_text)
     cx.set_partys_empty_if_null()
 
     sam_text = "sam"

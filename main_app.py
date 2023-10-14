@@ -190,7 +190,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_acptfact_time_open_5daysago(self):
         days5ago_x = datetime.now() - timedelta(days=5)
-        road_minute = f"{self.contract_x._heal_kind},time,jajatime"
+        road_minute = f"{self.contract_x._healing_kind},time,jajatime"
         # self.root_datetime_curr_l.setText(f"Now: {str(now_x)}")
         self.contract_x.set_acptfact(
             base=road_minute,
@@ -200,7 +200,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_all()
 
     def _set_acptfact_time_open_midnight_attr(self):
-        road_minute = f"{self.contract_x._heal_kind},time,jajatime"
+        road_minute = f"{self.contract_x._healing_kind},time,jajatime"
         open_dt = self.contract_x.get_time_dt_from_min(
             self.contract_x._idearoot._acptfactunits[road_minute].open
         )
@@ -234,7 +234,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_acptfact_time_open_soft(self):
         # now_x = datetime.now()
-        # road_minute = f"{self.contract_x._heal_kind},time,jajatime"
+        # road_minute = f"{self.contract_x._healing_kind},time,jajatime"
         # self.root_datetime_curr_l.setText(f"Now: {str(now_x)}")
         # self.contract_x.set_acptfact(
         #     base=road_minute,
@@ -245,7 +245,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_acptfact_time_nigh_now(self):
         now_x = datetime.now()
-        road_minute = f"{self.contract_x._heal_kind},time,jajatime"
+        road_minute = f"{self.contract_x._healing_kind},time,jajatime"
         self.contract_x.set_acptfact(
             base=road_minute,
             pick=road_minute,
@@ -274,7 +274,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._commit_file_save()
 
     def _get_file_title(self):
-        return f"contract_{self.contract_x._owner}.json"
+        return f"contract_{self.contract_x._healer}.json"
 
     def _commit_file_save(self):
         contract_x_json = self.contract_x.get_json()
@@ -282,8 +282,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             f.write(contract_x_json)
         self.current_file_path_l.setText(self.file_path)
         # x_func_save_file(
-        #     dest_dir=contract_owner_dir,
-        #     file_title=f"{self.contract_x._heal_kind}.json",
+        #     dest_dir=contract_healer_dir,
+        #     file_title=f"{self.contract_x._healing_kind}.json",
         #     file_text=contract_x.get_json(),
         # )
 
@@ -298,19 +298,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.contract_load(cx_json=self.contract_x_json)
 
     def contract_new(self):
-        self.contract_x = ContractUnit(_owner="new")
+        self.contract_x = ContractUnit(_healer="new")
         self.contract_x._set_acptfacts_empty_if_null()
         self.contract_x.set_partys_empty_if_null()
         self.contract_x.set_groupunits_empty_if_null()
         self.contract_x.set_time_hreg_ideas(c400_count=7)
-        road_minute = f"{self.contract_x._heal_kind},time,jajatime"
+        road_minute = f"{self.contract_x._healing_kind},time,jajatime"
         self.contract_x.set_acptfact(
             base=road_minute, pick=road_minute, open=1000000, nigh=1000000
         )
         self.refresh_all()
 
     def refresh_datetime_display(self):
-        road_minute = f"{self.contract_x._heal_kind},time,jajatime"
+        road_minute = f"{self.contract_x._healing_kind},time,jajatime"
         jajatime_open = self.contract_x.get_time_dt_from_min(
             self.contract_x._idearoot._acptfactunits[road_minute].open
         )
@@ -330,7 +330,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.root_datetime_prev_l.setText("")
         with contextlib.suppress(Exception):
             self.refresh_datetime_display()
-        self.contract_owner.setText(self.contract_x._owner)
+        self.contract_healer.setText(self.contract_x._healer)
         self.acptfacts_table_load()
         self.agenda_states_load()
 
@@ -347,7 +347,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         row = 0
         for acptfact in self.get_acptfacts_list():
-            base_text = acptfact.base.replace(f"{self.contract_x._owner}", "")
+            base_text = acptfact.base.replace(f"{self.contract_x._healer}", "")
             base_text = base_text[1:]
             acptfact_text = acptfact.pick.replace(acptfact.base, "")
             acptfact_text = acptfact_text[1:]
@@ -368,7 +368,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             row += 1
 
         for base, count in self.contract_x.get_missing_acptfact_bases().items():
-            base_text = base.replace(f"{self.contract_x._owner}", "")
+            base_text = base.replace(f"{self.contract_x._healer}", "")
             base_text = base_text[1:]
 
             base_lecture_text = f"{base_text} ({count} nodes)"
@@ -430,12 +430,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agenda_states.setItem(row, 0, qtw1(str(ax._uid)))
         self.agenda_states.setItem(row, 1, qtw1(ax._label))
 
-        if ax._requiredunits.get(f"{self.contract_x._heal_kind},time,jajatime") != None:
+        if (
+            ax._requiredunits.get(f"{self.contract_x._healing_kind},time,jajatime")
+            != None
+        ):
             jajatime_required = ax._requiredunits.get(
-                f"{self.contract_x._heal_kind},time,jajatime"
+                f"{self.contract_x._healing_kind},time,jajatime"
             )
             sufffact_x = jajatime_required.sufffacts.get(
-                f"{self.contract_x._heal_kind},time,jajatime"
+                f"{self.contract_x._healing_kind},time,jajatime"
             )
             if sufffact_x != None and sufffact_x.open != 0:
                 tw_open = qtw1(
@@ -487,15 +490,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.label_agenda_label_data.setText(agenda_item._label)
         if (
             agenda_item._requiredunits.get(
-                f"{self.contract_x._heal_kind},time,jajatime"
+                f"{self.contract_x._healing_kind},time,jajatime"
             )
             != None
         ):
             jajatime_required = agenda_item._requiredunits.get(
-                f"{self.contract_x._heal_kind},time,jajatime"
+                f"{self.contract_x._healing_kind},time,jajatime"
             )
             sufffact_x = jajatime_required.sufffacts.get(
-                f"{self.contract_x._heal_kind},time,jajatime,day"
+                f"{self.contract_x._healing_kind},time,jajatime,day"
             )
             if sufffact_x != None:
                 self.label_agenda_day_data.setText("day_stuff")
@@ -513,10 +516,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_jajaday_open_nigh(self, agenda_item):
         jajatime_required = agenda_item._requiredunits.get(
-            f"{self.contract_x._heal_kind},time,jajatime"
+            f"{self.contract_x._healing_kind},time,jajatime"
         )
         sufffact_x = jajatime_required.sufffacts.get(
-            f"{self.contract_x._heal_kind},time,jajatime,day"
+            f"{self.contract_x._healing_kind},time,jajatime,day"
         )
         if sufffact_x != None:
             open_x = sufffact_x.open

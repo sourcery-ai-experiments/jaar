@@ -10,11 +10,11 @@ from src.contract.group import groupunit_shop
 
 def test_contract_edit_idea_attr_CorrectlySetsAssignedUnit():
     # GIVEN
-    owner_text = "Xio"
-    cx = ContractUnit(_owner=owner_text)
+    healer_text = "Xio"
+    cx = ContractUnit(_healer=healer_text)
     run_text = "run"
-    run_road = f"{cx._heal_kind},{run_text}"
-    cx.add_idea(IdeaKid(_label=run_text), walk=cx._heal_kind)
+    run_road = f"{cx._healing_kind},{run_text}"
+    cx.add_idea(IdeaKid(_label=run_text), walk=cx._healing_kind)
     run_idea = cx.get_idea_kid(road=run_road)
     assert run_idea._assignedunit is None
 
@@ -30,9 +30,9 @@ def test_contract_idearoot_assignedunit_CorrectlySets_idea_assignedheir():
     # GIVEN
     assigned_unit_x = assigned_unit_shop()
 
-    owner_text = "Tim"
-    cx = ContractUnit(_owner=owner_text)
-    cx.edit_idea_attr(assignedunit=assigned_unit_x, road=cx._heal_kind)
+    healer_text = "Tim"
+    cx = ContractUnit(_healer=healer_text)
+    cx.edit_idea_attr(assignedunit=assigned_unit_x, road=cx._healing_kind)
     assert cx._idearoot._assignedunit == assigned_unit_x
     assert cx._idearoot._assignedheir is None
 
@@ -55,7 +55,7 @@ def test_contract_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
     run_road = f"{bob_text},{run_text}"
     assigned_unit_x = assigned_unit_shop()
 
-    cx = ContractUnit(_owner=bob_text)
+    cx = ContractUnit(_healer=bob_text)
     cx.add_partyunit(title=bob_text)
     cx.add_idea(IdeaKid(_label=run_text), walk=bob_text)
     cx.edit_idea_attr(road=run_road, assignedunit=assigned_unit_x)
@@ -81,10 +81,10 @@ def test_contract_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
 
 def test_contract_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir():
     # GIVEN
-    owner_text = "Noa"
-    cx = ContractUnit(_owner=owner_text)
+    healer_text = "Noa"
+    cx = ContractUnit(_healer=healer_text)
     swim_text = "swiming"
-    swim_road = f"{cx._heal_kind},{swim_text}"
+    swim_road = f"{cx._healing_kind},{swim_text}"
     morn_text = "morning"
     morn_road = f"{swim_road},{morn_text}"
     four_text = "fourth"
@@ -94,7 +94,7 @@ def test_contract_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedhei
     assigned_unit_x.set_suffgroup(title=swimmers_text)
 
     cx.set_groupunit(groupunit=groupunit_shop(brand=swimmers_text))
-    cx.add_idea(IdeaKid(_label=swim_text), walk=cx._heal_kind)
+    cx.add_idea(IdeaKid(_label=swim_text), walk=cx._healing_kind)
     cx.add_idea(IdeaKid(_label=morn_text), walk=swim_road)
     cx.add_idea(IdeaKid(_label=four_text), walk=morn_road)
     cx.edit_idea_attr(road=swim_road, assignedunit=assigned_unit_x)
@@ -117,19 +117,19 @@ def test_contract_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedhei
 
 def test_ContractUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignUnit():
     # GIVEN
-    owner_text = "Noa"
-    cx1 = ContractUnit(_owner=owner_text)
+    healer_text = "Noa"
+    cx1 = ContractUnit(_healer=healer_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
     cx1.add_partyunit(title=xia_text)
     cx1.add_partyunit(title=zoa_text)
 
     work_text = "work"
-    work_road = f"{cx1._heal_kind},{work_text}"
+    work_road = f"{cx1._healing_kind},{work_text}"
     swim_text = "swim"
-    swim_road = f"{cx1._heal_kind},{swim_text}"
-    cx1.add_idea(IdeaKid(_label=work_text), walk=cx1._heal_kind)
-    cx1.add_idea(IdeaKid(_label=swim_text), walk=cx1._heal_kind)
+    swim_road = f"{cx1._healing_kind},{swim_text}"
+    cx1.add_idea(IdeaKid(_label=work_text), walk=cx1._healing_kind)
+    cx1.add_idea(IdeaKid(_label=swim_text), walk=cx1._healing_kind)
     swim_assignedunit = assigned_unit_shop()
     swim_assignedunit.set_suffgroup(title=xia_text)
     swim_assignedunit.set_suffgroup(title=zoa_text)
@@ -139,7 +139,7 @@ def test_ContractUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_Assig
     assert len(cx1_swim_suffgroups) == 2
 
     # WHEN
-    cx2 = ContractUnit(_owner=owner_text)
+    cx2 = ContractUnit(_healer=healer_text)
     cx2.add_partyunit(title=xia_text)
     filtered_idea = cx2._get_filtered_balancelinks_idea(cx1_swim_idea)
 
@@ -151,19 +151,19 @@ def test_ContractUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_Assig
 
 def test_ContractUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     # GIVEN
-    owner_text = "Noa"
-    cx1 = ContractUnit(_owner=owner_text)
+    healer_text = "Noa"
+    cx1 = ContractUnit(_healer=healer_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
     cx1.add_partyunit(title=xia_text)
     cx1.add_partyunit(title=zoa_text)
 
     work_text = "work"
-    work_road = f"{cx1._heal_kind},{work_text}"
+    work_road = f"{cx1._healing_kind},{work_text}"
     swim_text = "swim"
-    swim_road = f"{cx1._heal_kind},{swim_text}"
-    cx1.add_idea(IdeaKid(_label=work_text), walk=cx1._heal_kind)
-    cx1.add_idea(IdeaKid(_label=swim_text), walk=cx1._heal_kind)
+    swim_road = f"{cx1._healing_kind},{swim_text}"
+    cx1.add_idea(IdeaKid(_label=work_text), walk=cx1._healing_kind)
+    cx1.add_idea(IdeaKid(_label=swim_text), walk=cx1._healing_kind)
     swim_assignedunit = assigned_unit_shop()
     swim_assignedunit.set_suffgroup(title=xia_text)
     swim_assignedunit.set_suffgroup(title=zoa_text)
@@ -173,11 +173,11 @@ def test_ContractUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     assert len(cx1_swim_suffgroups) == 2
 
     # WHEN
-    cx2 = ContractUnit(_owner=owner_text)
+    cx2 = ContractUnit(_healer=healer_text)
     cx2.add_partyunit(title=xia_text)
     cx2.add_idea(
         idea_kid=cx1_swim_idea,
-        walk=cx2._heal_kind,
+        walk=cx2._healing_kind,
         create_missing_ideas_groups=False,
     )
 

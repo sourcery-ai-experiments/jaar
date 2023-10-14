@@ -4,13 +4,13 @@ from src.contract.contract import ContractUnit
 
 def test_contractAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
     # Given
-    owner_text = "Mia"
-    cx = ContractUnit(_owner=owner_text, _weight=10)
+    healer_text = "Mia"
+    cx = ContractUnit(_healer=healer_text, _weight=10)
 
     l1 = "level1"
     idea_kid_l1 = IdeaKid(_weight=30, _label=l1)
-    cx.add_idea(walk=cx._heal_kind, idea_kid=idea_kid_l1)
-    l1_road = f"{cx._heal_kind},{l1}"
+    cx.add_idea(walk=cx._healing_kind, idea_kid=idea_kid_l1)
+    l1_road = f"{cx._healing_kind},{l1}"
 
     rx1 = "range_root_example"
     idea_kid_rx1 = IdeaKid(_weight=30, _label=rx1)
@@ -41,13 +41,13 @@ def test_contractAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
 
 def test_contractAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
     # Given
-    owner_text = "Bob"
-    cx = ContractUnit(_owner=owner_text, _weight=10)
+    healer_text = "Bob"
+    cx = ContractUnit(_healer=healer_text, _weight=10)
 
     l1 = "level1"
     idea_kid_l1 = IdeaKid(_weight=30, _label=l1)
-    cx.add_idea(walk=cx._heal_kind, idea_kid=idea_kid_l1)
-    l1_road = f"{cx._heal_kind},{l1}"
+    cx.add_idea(walk=cx._healing_kind, idea_kid=idea_kid_l1)
+    l1_road = f"{cx._healing_kind},{l1}"
 
     rx1 = "range_root_example"
     idea_kid_rx1 = IdeaKid(_weight=30, _label=rx1)
@@ -81,12 +81,12 @@ def test_contractAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
 
 def test_get_idea_ranged_kids_CorrectlyReturnsAllChildren():
     # GIVEN
-    owner_text = "Noa"
-    cx = ContractUnit(_owner=owner_text)
+    healer_text = "Noa"
+    cx = ContractUnit(_healer=healer_text)
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN
-    weekunit_road = f"{cx._heal_kind},time,tech,week"
+    weekunit_road = f"{cx._healing_kind},time,tech,week"
     ranged_ideas = cx.get_idea_ranged_kids(idea_road=weekunit_road)
 
     # # THEN
@@ -95,12 +95,12 @@ def test_get_idea_ranged_kids_CorrectlyReturnsAllChildren():
 
 def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen1():
     # GIVEN
-    owner_text = "Noa"
-    cx = ContractUnit(_owner=owner_text)
+    healer_text = "Noa"
+    cx = ContractUnit(_healer=healer_text)
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN
-    weekunit_road = f"{cx._heal_kind},time,tech,week"
+    weekunit_road = f"{cx._healing_kind},time,tech,week"
     begin_x = 1440
     close_x = 4 * 1440
     ranged_ideas = cx.get_idea_ranged_kids(
@@ -117,12 +117,12 @@ def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen1():
 
 def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen2():
     # GIVEN
-    owner_text = "Noa"
-    cx = ContractUnit(_owner=owner_text)
+    healer_text = "Noa"
+    cx = ContractUnit(_healer=healer_text)
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN THEN
-    week_road = f"{cx._heal_kind},time,tech,week"
+    week_road = f"{cx._healing_kind},time,tech,week"
     assert len(cx.get_idea_ranged_kids(idea_road=week_road, begin=0, close=1440)) == 1
     assert len(cx.get_idea_ranged_kids(idea_road=week_road, begin=0, close=2000)) == 2
     assert len(cx.get_idea_ranged_kids(idea_road=week_road, begin=0, close=3000)) == 3
@@ -130,11 +130,11 @@ def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen2():
 
 def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen3():
     # GIVEN
-    owner_text = "Noa"
-    cx = ContractUnit(_owner=owner_text)
+    healer_text = "Noa"
+    cx = ContractUnit(_healer=healer_text)
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN THEN
-    week_road = f"{cx._heal_kind},time,tech,week"
+    week_road = f"{cx._healing_kind},time,tech,week"
     assert len(cx.get_idea_ranged_kids(idea_road=week_road, begin=0)) == 1
     assert len(cx.get_idea_ranged_kids(idea_road=week_road, begin=1440)) == 1

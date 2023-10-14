@@ -938,7 +938,7 @@
     },
     "_close": null,
     "_denom": null,
-    "_owner": "Mycontract",
+    "_healer": "Mycontract",
     "_is_expanded": true,
     "_kids": {
         "Aaron Donald sphere": {
@@ -11690,5 +11690,5 @@
     "_range_source_road": null,
     "_uid": 1,
     "_weight": 1
-    , "_heal_kind": "A"
+    , "_healing_kind": "A"
 }

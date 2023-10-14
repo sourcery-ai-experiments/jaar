@@ -51,14 +51,14 @@ class AssignedHeir:
         return self._get_all_partys(contract_groups, self._suffgroups)
 
     def set_group_party(
-        self, contract_groups: dict[GroupBrand:GroupUnit], contract_owner: PartyTitle
+        self, contract_groups: dict[GroupBrand:GroupUnit], contract_healer: PartyTitle
     ):
         self._group_party = False
         if self._suffgroups == {}:
             self._group_party = True
         else:
             all_suff_partys_x = self._get_all_suff_partys(contract_groups)
-            if all_suff_partys_x.get(contract_owner) != None:
+            if all_suff_partys_x.get(contract_healer) != None:
                 self._group_party = True
 
     def set_suffgroups(

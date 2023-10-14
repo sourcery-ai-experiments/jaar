@@ -43,7 +43,7 @@ def test_contract_3AdvocatesNoIdeaKid():
     carm_text = "carmen"
     patr_text = "patrick"
 
-    a_x = ContractUnit(_owner="prom")
+    a_x = ContractUnit(_healer="prom")
     au_rico = partyunit_shop(title=rico_text, uid=7)
     au_carm = partyunit_shop(title=carm_text, uid=2)
     au_patr = partyunit_shop(title=patr_text, uid=13)
@@ -90,7 +90,7 @@ def test_contract_get_partyunits_uid_max_WorksCorrectly():
     carr_text = "carmen"
     patr_text = "patrick"
 
-    lw_x = ContractUnit(_owner="prom")
+    lw_x = ContractUnit(_healer="prom")
     lw_x.set_partyunit(partyunit=partyunit_shop(title=rico_text, uid=4))
     lw_x.set_partyunit(partyunit=partyunit_shop(title=carr_text, uid=13))
     lw_x.set_partyunit(partyunit=partyunit_shop(title=patr_text, uid=7))
@@ -105,7 +105,7 @@ def test_contract_get_groupunits_uid_max_WorksCorrectly():
     carr_text = "carmen"
     patr_text = "patrick"
 
-    lw_x = ContractUnit(_owner="prom")
+    lw_x = ContractUnit(_healer="prom")
     lw_x.set_groupunit(groupunit=groupunit_shop(brand=rico_text, uid=4))
     lw_x.set_groupunit(groupunit=groupunit_shop(brand=carr_text, uid=12))
     lw_x.set_groupunit(groupunit=groupunit_shop(brand=patr_text, uid=7))

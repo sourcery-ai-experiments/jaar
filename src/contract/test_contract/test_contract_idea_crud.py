@@ -9,14 +9,14 @@ from src.contract.road import Road
 
 def test_root_has_kids():
     # GIVEN
-    cx = ContractUnit(_owner="prom")
+    cx = ContractUnit(_healer="prom")
     idearoot_x = cx._idearoot
     idea1 = IdeaKid(_weight=30, _label="work")
     idea2 = IdeaKid(_weight=40, _label="ulty")
 
     # WHEN
-    cx.add_idea(idea_kid=idea1, walk=cx._owner)
-    cx.add_idea(idea_kid=idea2, walk=cx._owner)
+    cx.add_idea(idea_kid=idea1, walk=cx._healer)
+    cx.add_idea(idea_kid=idea2, walk=cx._healer)
 
     # THEN
     assert idearoot_x._weight == 1
@@ -53,7 +53,7 @@ def test_contract_add_idea_CanAddKidToRootIdea():
     assert cx.get_node_count() == 17
     assert cx.get_level_count(level=1) == 4
 
-    new_idea_parent_road = cx._owner
+    new_idea_parent_road = cx._healer
     new_idea = IdeaKid(_weight=40, _label="new_idea")
 
     # WHEN
@@ -61,7 +61,7 @@ def test_contract_add_idea_CanAddKidToRootIdea():
     cx.set_contract_metrics()
 
     # THEN
-    print(f"{(cx._owner == new_idea_parent_road[0])=}")
+    print(f"{(cx._healer == new_idea_parent_road[0])=}")
     print(f"{(len(new_idea_parent_road) == 1)=}")
     assert cx.get_node_count() == 18
     assert cx.get_level_count(level=1) == 5
@@ -75,7 +75,7 @@ def test_contract_add_idea_CanAddKidToKidIdea():
     assert cx.get_node_count() == 17
     assert cx.get_level_count(level=2) == 10
 
-    new_idea_parent_road = f"{cx._heal_kind},work"
+    new_idea_parent_road = f"{cx._healing_kind},work"
     new_idea = IdeaKid(_weight=40, _label="new_york")
 
     # WHEN
@@ -83,12 +83,14 @@ def test_contract_add_idea_CanAddKidToKidIdea():
     cx.set_contract_metrics()
 
     # THEN
-    # print(f"{(cx._owner == new_idea_parent_road[0])=}")
+    # print(f"{(cx._healer == new_idea_parent_road[0])=}")
     # print(cx._idearoot._kids["work"])
     # print(f"{(len(new_idea_parent_road) == 1)=}")
     assert cx.get_node_count() == 18
     assert cx.get_level_count(level=2) == 11
-    assert cx._idearoot._kids["work"]._kids["new_york"]._walk == f"{cx._heal_kind},work"
+    assert (
+        cx._idearoot._kids["work"]._kids["new_york"]._walk == f"{cx._healing_kind},work"
+    )
     cx._idearoot._kids["work"]._kids["new_york"].set_walk(parent_road="testing")
     assert cx._idearoot._kids["work"]._kids["new_york"]._walk == "testing"
     assert cx.get_agenda_items
@@ -101,7 +103,7 @@ def test_contract_add_idea_CanAddKidToGrandkidIdea():
 
     assert cx.get_node_count() == 17
     assert cx.get_level_count(level=3) == 2
-    new_idea_parent_road = f"{cx._heal_kind},weekdays,Wednesday"
+    new_idea_parent_road = f"{cx._healing_kind},weekdays,Wednesday"
     new_idea = IdeaKid(_weight=40, _label="new_idea")
 
     # WHEN
@@ -109,7 +111,7 @@ def test_contract_add_idea_CanAddKidToGrandkidIdea():
     cx.set_contract_metrics()
 
     # THEN
-    print(f"{(cx._owner == new_idea_parent_road[0])=}")
+    print(f"{(cx._healer == new_idea_parent_road[0])=}")
     print(cx._idearoot._kids["work"])
     print(f"{(len(new_idea_parent_road) == 1)=}")
     assert cx.get_node_count() == 18
@@ -123,7 +125,7 @@ def test_contract_add_idea_CanCreateRoadToGrandkidIdea():
 
     assert cx.get_node_count() == 17
     assert cx.get_level_count(level=3) == 2
-    new_idea_parent_road = f"{cx._heal_kind},ww2,battles,coralsea"
+    new_idea_parent_road = f"{cx._healing_kind},ww2,battles,coralsea"
     new_idea = IdeaKid(_weight=40, _label="USS Saratoga")
 
     # WHEN
@@ -146,14 +148,14 @@ def test_contract_add_idea_creates_requireds_ideas():
 
     assert cx.get_node_count() == 17
     assert cx.get_level_count(level=3) == 2
-    new_idea_parent_road = f"{cx._heal_kind},work,cleaning"
+    new_idea_parent_road = f"{cx._healing_kind},work,cleaning"
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = IdeaKid(_weight=40, _label=clean_cookery_text, promise=True)
 
     buildings_text = "buildings"
-    buildings_road = Road(f"{cx._heal_kind},{buildings_text}")
+    buildings_road = Road(f"{cx._healing_kind},{buildings_text}")
     cookery_room_text = "cookery"
-    cookery_room_road = Road(f"{cx._heal_kind},{buildings_text},{cookery_room_text}")
+    cookery_room_road = Road(f"{cx._healing_kind},{buildings_text},{cookery_room_text}")
     cookery_dirty_text = "dirty"
     cookery_dirty_road = Road(f"{cookery_room_road},{cookery_dirty_text}")
     required_x = RequiredUnit(base=cookery_room_road, sufffacts={})
@@ -186,7 +188,7 @@ def test_contract_idearoot_is_heir_CorrectlyChecksLineage():
     cx.set_contract_metrics()
 
     week_text = "weekdays"
-    week_road = f"{cx._heal_kind},{week_text}"
+    week_road = f"{cx._healing_kind},{week_text}"
     sun_text = "Sunday"
     sun_road = f"{week_road},{sun_text}"
     assert cx._idearoot.is_heir(src=week_road, heir=week_road)
@@ -197,7 +199,7 @@ def test_contract_idearoot_is_heir_CorrectlyChecksLineage():
 def test_contract_del_idea_kid_IdeaLevel0CannotBeDeleted():
     # GIVEN
     cx = get_contract_with_4_levels()
-    root_road = f"{cx._heal_kind}"
+    root_road = f"{cx._healing_kind}"
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -209,7 +211,7 @@ def test_contract_del_idea_kid_IdeaLevel1CanBeDeleted_ChildrenDeleted():
     # GIVEN
     cx = get_contract_with_4_levels()
     week_text = "weekdays"
-    week_road = f"{cx._heal_kind},{week_text}"
+    week_road = f"{cx._healing_kind},{week_text}"
     sun_text = "Sunday"
     sun_road = f"{week_road},{sun_text}"
     assert cx.get_idea_kid(road=week_road)
@@ -225,7 +227,7 @@ def test_contract_del_idea_kid_IdeaLevel1CanBeDeleted_ChildrenDeleted():
         str(excinfo.value)
         == f"Getting idea_label='weekdays' failed no item at '{week_road}'"
     )
-    new_sunday_road = f"{cx._heal_kind},Sunday"
+    new_sunday_road = f"{cx._healing_kind},Sunday"
     with pytest_raises(Exception) as excinfo:
         cx.get_idea_kid(road=new_sunday_road)
     assert (
@@ -239,7 +241,7 @@ def test_contract_del_idea_kid_IdeaLevel1CanBeDeleted_ChildrenInherited():
     cx = get_contract_with_4_levels()
     cx.set_contract_metrics()
     week_text = "weekdays"
-    week_road = f"{cx._heal_kind},{week_text}"
+    week_road = f"{cx._healing_kind},{week_text}"
     sun_text = "Sunday"
     old_sunday_road = f"{week_road},{sun_text}"
     assert cx.get_idea_kid(road=old_sunday_road)
@@ -254,17 +256,17 @@ def test_contract_del_idea_kid_IdeaLevel1CanBeDeleted_ChildrenInherited():
         str(excinfo.value)
         == f"Getting idea_label='{sun_text}' failed no item at '{old_sunday_road}'"
     )
-    new_sunday_road = f"{cx._heal_kind},{sun_text}"
+    new_sunday_road = f"{cx._healing_kind},{sun_text}"
     assert cx.get_idea_kid(road=new_sunday_road)
     new_sunday_idea = cx.get_idea_kid(road=new_sunday_road)
-    assert new_sunday_idea._walk == cx._heal_kind
+    assert new_sunday_idea._walk == cx._healing_kind
 
 
 def test_contract_del_idea_kid_IdeaLevelNCanBeDeleted_ChildrenInherited():
     # GIVEN
     cx = get_contract_with_4_levels()
     states_text = "nation-state"
-    states_road = f"{cx._heal_kind},{states_text}"
+    states_road = f"{cx._healing_kind},{states_text}"
     usa_text = "USA"
     usa_road = f"{states_road},{usa_text}"
     texas_text = "Texas"
@@ -295,7 +297,7 @@ def test_contract_del_idea_kid_IdeaLevelNCanBeDeleted_ChildrenInherited():
 def test_contract_del_idea_kid_IdeaLevel2CanBeDeleted_ChildrenDeleted():
     # GIVEN
     cx = get_contract_with_4_levels()
-    monday_road = f"{cx._heal_kind},weekdays,Monday"
+    monday_road = f"{cx._healing_kind},weekdays,Monday"
     assert cx.get_idea_kid(road=monday_road)
 
     # WHEN
@@ -314,7 +316,7 @@ def test_contract_del_idea_kid_IdeaLevelNCanBeDeleted_ChildrenDeleted():
     # GIVEN
     cx = get_contract_with_4_levels()
     states_text = "nation-state"
-    states_road = f"{cx._heal_kind},{states_text}"
+    states_road = f"{cx._healing_kind},{states_text}"
     usa_text = "USA"
     usa_road = f"{states_road},{usa_text}"
     texas_text = "Texas"
@@ -336,7 +338,7 @@ def test_contract_del_idea_kid_IdeaLevelNCanBeDeleted_ChildrenDeleted():
 def test_contract_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     cx = get_contract_with_4_levels()
     work_text = "work"
-    work_road = f"{cx._heal_kind},{work_text}"
+    work_road = f"{cx._healing_kind},{work_text}"
     print(f"{work_road=}")
     current_weight = cx._idearoot._kids[work_text]._weight
     assert current_weight == 30
@@ -367,7 +369,7 @@ def test_contract_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     # acptfactunit: acptfactunit_shop = None,
     # cx._idearoot._kids[work_text]._acptfactunits = None
     assert cx._idearoot._kids[work_text]._acptfactunits is None
-    acptfact_road = f"{cx._heal_kind},weekdays,Sunday"
+    acptfact_road = f"{cx._healing_kind},weekdays,Sunday"
     acptfactunit_x = acptfactunit_shop(base=acptfact_road, pick=acptfact_road)
 
     work_acptfactunits = cx._idearoot._kids[work_text]._acptfactunits
@@ -454,7 +456,7 @@ def test_contract_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
 
 def test_contract_edit_idea_attr_contractIsAbleToEdit_on_meld_weight_action_AnyIdeaIfInvaildThrowsError():
     cx = get_contract_with_4_levels()
-    work_road = f"{cx._heal_kind},work"
+    work_road = f"{cx._healing_kind},work"
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -466,17 +468,17 @@ def test_contract_edit_idea_attr_contractIsAbleToEdit_on_meld_weight_action_AnyI
 
 
 def test_contract_edit_idea_attr_contractIsAbleToEditDenomAnyIdeaIfInvaildDenomThrowsError():
-    owner_text = "Yao"
-    cx = ContractUnit(_owner=owner_text)
+    healer_text = "Yao"
+    cx = ContractUnit(_healer=healer_text)
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         cx.edit_idea_attr(road="", denom=46)
     assert str(excinfo.value) == "Root Idea cannot have numor denom reest."
 
     work = "work"
-    w_road = f"{cx._heal_kind},{work}"
+    w_road = f"{cx._healing_kind},{work}"
     work_idea = IdeaKid(_label=work)
-    cx.add_idea(work_idea, walk=cx._heal_kind)
+    cx.add_idea(work_idea, walk=cx._healing_kind)
     clean = "clean"
     clean_idea = IdeaKid(_label=clean)
     c_road = f"{w_road},{clean}"
@@ -487,7 +489,7 @@ def test_contract_edit_idea_attr_contractIsAbleToEditDenomAnyIdeaIfInvaildDenomT
         cx.edit_idea_attr(road=c_road, denom=46)
     assert (
         str(excinfo.value)
-        == f"Idea cannot edit numor=1/denom/reest of '{cx._heal_kind},work,clean' if parent '{cx._heal_kind},work' or ideacore._numeric_road does not have begin/close range"
+        == f"Idea cannot edit numor=1/denom/reest of '{cx._healing_kind},work,clean' if parent '{cx._healing_kind},work' or ideacore._numeric_road does not have begin/close range"
     )
 
     # GIVEN
@@ -500,12 +502,12 @@ def test_contract_edit_idea_attr_contractIsAbleToEditDenomAnyIdeaIfInvaildDenomT
 
 def test_contract_edit_idea_attr_contractIsAbleToEditDenomAnyIdeaInvaildDenomThrowsError():
     # GIVEN
-    owner_text = "Yao"
-    cx = ContractUnit(_owner=owner_text)
+    healer_text = "Yao"
+    cx = ContractUnit(_healer=healer_text)
     work = "work"
-    w_road = f"{cx._heal_kind},{work}"
+    w_road = f"{cx._healing_kind},{work}"
     work_idea = IdeaKid(_label=work, _begin=8, _close=14)
-    cx.add_idea(work_idea, walk=cx._heal_kind)
+    cx.add_idea(work_idea, walk=cx._healing_kind)
 
     clean = "clean"
     clean_idea = IdeaKid(_label=clean, _denom=1)
@@ -516,8 +518,8 @@ def test_contract_edit_idea_attr_contractIsAbleToEditDenomAnyIdeaInvaildDenomThr
 
     day = "day_range"
     day_idea = IdeaKid(_label=day, _begin=44, _close=110)
-    day_road = f"{cx._heal_kind},{day}"
-    cx.add_idea(day_idea, walk=cx._heal_kind)
+    day_road = f"{cx._healing_kind},{day}"
+    cx.add_idea(day_idea, walk=cx._healing_kind)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -532,15 +534,15 @@ def test_contract_edit_idea_attr_contractIsAbleToEditDenomAnyIdeaInvaildDenomThr
 
 def test_contract_edit_idea_attr_contractWhenParentAndNumeric_roadBothHaveRangeThrowError():
     # GIVEN
-    owner_text = "Yao"
-    cx = ContractUnit(_owner=owner_text)
+    healer_text = "Yao"
+    cx = ContractUnit(_healer=healer_text)
     work_text = "work"
-    work_road = f"{cx._heal_kind},{work_text}"
-    cx.add_idea(IdeaKid(_label=work_text), walk=cx._heal_kind)
+    work_road = f"{cx._healing_kind},{work_text}"
+    cx.add_idea(IdeaKid(_label=work_text), walk=cx._healing_kind)
     day_text = "day_range"
     day_idea = IdeaKid(_label=day_text, _begin=44, _close=110)
-    day_road = f"{cx._heal_kind},{day_text}"
-    cx.add_idea(day_idea, walk=cx._heal_kind)
+    day_road = f"{cx._healing_kind},{day_text}"
+    cx.add_idea(day_idea, walk=cx._healing_kind)
 
     work_idea = cx.get_idea_kid(road=work_road)
     assert work_idea._begin is None
@@ -551,7 +553,7 @@ def test_contract_edit_idea_attr_contractWhenParentAndNumeric_roadBothHaveRangeT
         cx.edit_idea_attr(road=work_road, denom=11)
     assert (
         str(excinfo.value)
-        == f"Idea cannot edit numor=1/denom/reest of '{cx._heal_kind},work' if parent '{cx._heal_kind}' or ideacore._numeric_road does not have begin/close range"
+        == f"Idea cannot edit numor=1/denom/reest of '{cx._healing_kind},work' if parent '{cx._healing_kind}' or ideacore._numeric_road does not have begin/close range"
     )
 
     # WHEN
@@ -576,12 +578,12 @@ def test_contract_edit_idea_attr_contractWhenParentAndNumeric_roadBothHaveRangeT
 
 def test_contract_add_idea_MustReorderKidsDictToBeAlphabetical():
     # GIVEN
-    owner_text = "Noa"
-    cx = ContractUnit(_owner=owner_text)
+    healer_text = "Noa"
+    cx = ContractUnit(_healer=healer_text)
     work_text = "work"
-    cx.add_idea(IdeaKid(_label=work_text), walk=cx._heal_kind)
+    cx.add_idea(IdeaKid(_label=work_text), walk=cx._healing_kind)
     swim_text = "swim"
-    cx.add_idea(IdeaKid(_label=swim_text), walk=cx._heal_kind)
+    cx.add_idea(IdeaKid(_label=swim_text), walk=cx._healing_kind)
 
     # WHEN
     idea_list = list(cx._idearoot._kids.values())
@@ -591,11 +593,11 @@ def test_contract_add_idea_MustReorderKidsDictToBeAlphabetical():
 
 
 def test_contract_add_idea_adoptee_RaisesErrorIfAdopteeIdeaDoesNotHaveCorrectParent():
-    owner_text = "Noa"
-    cx = ContractUnit(_owner=owner_text)
+    healer_text = "Noa"
+    cx = ContractUnit(_healer=healer_text)
     sports_text = "sports"
-    sports_road = f"{cx._heal_kind},{sports_text}"
-    cx.add_idea(IdeaKid(_label=sports_text), walk=cx._heal_kind)
+    sports_road = f"{cx._healing_kind},{sports_text}"
+    cx.add_idea(IdeaKid(_label=sports_text), walk=cx._healing_kind)
     swim_text = "swim"
     cx.add_idea(IdeaKid(_label=swim_text), walk=sports_road)
 
@@ -616,11 +618,11 @@ def test_contract_add_idea_adoptee_RaisesErrorIfAdopteeIdeaDoesNotHaveCorrectPar
 
 
 def test_contract_add_idea_adoptee_CorrectlyAddsAdoptee():
-    owner_text = "Noa"
-    cx = ContractUnit(_owner=owner_text)
+    healer_text = "Noa"
+    cx = ContractUnit(_healer=healer_text)
     sports_text = "sports"
-    sports_road = f"{cx._heal_kind},{sports_text}"
-    cx.add_idea(IdeaKid(_label=sports_text), walk=cx._heal_kind)
+    sports_road = f"{cx._healing_kind},{sports_text}"
+    cx.add_idea(IdeaKid(_label=sports_text), walk=cx._healing_kind)
     swim_text = "swim"
     cx.add_idea(IdeaKid(_label=swim_text), walk=sports_road)
     hike_text = "hike"
@@ -656,11 +658,11 @@ def test_contract_add_idea_adoptee_CorrectlyAddsAdoptee():
 
 
 def test_contract_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdoptedIdeas():
-    owner_text = "Noa"
-    cx = ContractUnit(_owner=owner_text)
+    healer_text = "Noa"
+    cx = ContractUnit(_healer=healer_text)
     sports_text = "sports"
-    sports_road = f"{cx._heal_kind},{sports_text}"
-    cx.add_idea(IdeaKid(_label=sports_text, _weight=2), walk=cx._heal_kind)
+    sports_road = f"{cx._healing_kind},{sports_text}"
+    cx.add_idea(IdeaKid(_label=sports_text, _weight=2), walk=cx._healing_kind)
     swim_text = "swim"
     swim_weight = 3
     cx.add_idea(IdeaKid(_label=swim_text, _weight=swim_weight), walk=sports_road)
@@ -707,11 +709,11 @@ def test_contract_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdoptedId
 
 
 def test_contract_del_idea_kid_DeletingBundledIdeaReturnsIdeasToOriginalState():
-    owner_text = "Noa"
-    cx = ContractUnit(_owner=owner_text)
+    healer_text = "Noa"
+    cx = ContractUnit(_healer=healer_text)
     sports_text = "sports"
-    sports_road = f"{cx._heal_kind},{sports_text}"
-    cx.add_idea(IdeaKid(_label=sports_text, _weight=2), walk=cx._heal_kind)
+    sports_road = f"{cx._healing_kind},{sports_text}"
+    cx.add_idea(IdeaKid(_label=sports_text, _weight=2), walk=cx._healing_kind)
     swim_text = "swim"
     swim_weight = 3
     cx.add_idea(IdeaKid(_label=swim_text, _weight=swim_weight), walk=sports_road)

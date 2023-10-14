@@ -58,7 +58,7 @@ from src.contract.road import (
     get_terminus_node_from_road,
     find_replace_road_key_dict,
     get_ancestor_roads,
-    get_default_heal_root_label as root_label,
+    get_default_healing_root_label as root_label,
     get_road_from_nodes,
     get_all_road_nodes,
     get_forefather_roads,
@@ -81,13 +81,13 @@ class AssignmentPartyException(Exception):
     pass
 
 
-class ContractOwner(str):
+class ContractHealer(str):
     pass
 
 
 @dataclasses.dataclass
 class ContractUnit:
-    _owner: ContractOwner = None
+    _healer: ContractHealer = None
     _weight: float = None
     _partys: dict[PartyTitle:PartyUnit] = None
     _groups: dict[GroupBrand:GroupUnit] = None
@@ -97,27 +97,27 @@ class ContractUnit:
     _tree_traverse_count: int = None
     _rational: bool = False
     _originunit: OriginUnit = None
-    _heal_kind: str = None
+    _healing_kind: str = None
     _auto_output_to_public: bool = None
 
     def __init__(
-        self, _weight: float = None, _owner=None, _auto_output_to_public=None
+        self, _weight: float = None, _healer=None, _auto_output_to_public=None
     ) -> None:
         if _weight is None:
             _weight = 1
         self._weight = _weight
-        if _owner is None:
-            _owner = ""
-        self._heal_kind = root_label()
+        if _healer is None:
+            _healer = ""
+        self._healing_kind = root_label()
         self._idearoot = IdeaRoot(_label=self._idearoot, _uid=1, _level=0)
-        self._owner = _owner
+        self._healer = _healer
         self._originunit = originunit_shop()
         self._auto_output_to_public = bool(_auto_output_to_public)
 
-    def set_heal_kind(self, heal_kind: str):
-        old_heal_kind = copy_deepcopy(self._heal_kind)
-        self._heal_kind = heal_kind
-        self.edit_idea_label(old_road=old_heal_kind, new_label=self._heal_kind)
+    def set_healing_kind(self, healing_kind: str):
+        old_healing_kind = copy_deepcopy(self._healing_kind)
+        self._healing_kind = healing_kind
+        self.edit_idea_label(old_road=old_healing_kind, new_label=self._healing_kind)
         self.set_contract_metrics()
 
     def set_banking_attr_partyunits(self, river_tpartys: dict):
@@ -177,7 +177,7 @@ class ContractUnit:
         self.set_contract_metrics()
         idea_x = self.get_idea_kid(road=road)
         new_weight = self._weight * idea_x._contract_importance
-        cx = ContractUnit(_owner=self._idearoot._label, _weight=new_weight)
+        cx = ContractUnit(_healer=self._idearoot._label, _weight=new_weight)
 
         for road_assc in sorted(list(self._get_relevant_roads({road}))):
             src_yx = self.get_idea_kid(road=road_assc)
@@ -302,7 +302,7 @@ class ContractUnit:
         return hreg_get_time_min_from_dt(dt=dt)
 
     def get_time_c400_from_min(self, min: int) -> int:
-        c400_idea = self.get_idea_kid(f"{self._heal_kind},time,tech,400 year cycle")
+        c400_idea = self.get_idea_kid(f"{self._healing_kind},time,tech,400 year cycle")
         c400_min = c400_idea._close
         return int(min / c400_min), c400_idea, min % c400_min
 
@@ -317,12 +317,16 @@ class ContractUnit:
             50492160,
             52596000,
         ):  # 96 year and 100 year spans
-            yr4_1461 = self.get_idea_kid(f"{self._heal_kind},time,tech,4year with leap")
+            yr4_1461 = self.get_idea_kid(
+                f"{self._healing_kind},time,tech,4year with leap"
+            )
             yr4_cycles = int(cXXXyr_min / yr4_1461._close)
             cXyr_min = cXXXyr_min % yr4_1461._close
             yr1_idea = yr4_1461.get_kids_in_range(begin=cXyr_min, close=cXyr_min)[0]
         elif c100_4_96y._close - c100_4_96y._begin == 2102400:
-            yr4_1460 = self.get_idea_kid(f"{self._heal_kind},time,tech,4year wo leap")
+            yr4_1460 = self.get_idea_kid(
+                f"{self._healing_kind},time,tech,4year wo leap"
+            )
             yr4_cycles = 0
             yr1_idea = yr4_1460.get_kids_in_range(begin=cXXXyr_min, close=cXXXyr_min)[0]
             cXyr_min = cXXXyr_min % yr4_1460._close
@@ -338,13 +342,13 @@ class ContractUnit:
         year_num, yr1_idea, yr1_idea_rem_min = self.get_time_c400yr_from_min(min=min)
         yrx = None
         if yr1_idea._close - yr1_idea._begin == 525600:
-            yrx = self.get_idea_kid(f"{self._heal_kind},time,tech,365 year")
+            yrx = self.get_idea_kid(f"{self._healing_kind},time,tech,365 year")
         elif yr1_idea._close - yr1_idea._begin == 527040:
-            yrx = self.get_idea_kid(f"{self._heal_kind},time,tech,366 year")
+            yrx = self.get_idea_kid(f"{self._healing_kind},time,tech,366 year")
         mon_x = yrx.get_kids_in_range(begin=yr1_idea_rem_min, close=yr1_idea_rem_min)[0]
         month_rem_min = yr1_idea_rem_min - mon_x._begin
         month_num = int(mon_x._label.split("-")[0])
-        day_x = self.get_idea_kid(f"{self._heal_kind},time,tech,day")
+        day_x = self.get_idea_kid(f"{self._healing_kind},time,tech,day")
         day_num = int(month_rem_min / day_x._close)
         day_rem_min = month_rem_min % day_x._close
         return month_num, day_num, day_rem_min, day_x
@@ -395,7 +399,7 @@ class ContractUnit:
 
     def _get_jajatime_week_legible_text(self, open: int, divisor: int) -> str:
         open_in_week = open % divisor
-        week_road = f"{self._heal_kind},time,tech,week"
+        week_road = f"{self._healing_kind},time,tech,week"
         weekday_ideas_dict = self.get_idea_ranged_kids(
             idea_road=week_road, begin=open_in_week
         )
@@ -752,7 +756,7 @@ class ContractUnit:
     def set_time_acptfacts(self, open: datetime = None, nigh: datetime = None) -> None:
         open_minutes = self.get_time_min_from_dt(dt=open) if open != None else None
         nigh_minutes = self.get_time_min_from_dt(dt=nigh) if nigh != None else None
-        minutes_acptfact = f"{self._heal_kind},time,jajatime"
+        minutes_acptfact = f"{self._healing_kind},time,jajatime"
         self.set_acptfact(
             base=minutes_acptfact,
             pick=minutes_acptfact,
@@ -762,7 +766,7 @@ class ContractUnit:
 
     def _is_idea_rangeroot(self, idea_road: Road) -> bool:
         anc_roads = get_ancestor_roads(road=idea_road)
-        parent_road = self._heal_kind if len(anc_roads) == 1 else anc_roads[1]
+        parent_road = self._healing_kind if len(anc_roads) == 1 else anc_roads[1]
 
         # figure out if parent is range
         parent_range = None
@@ -1050,8 +1054,8 @@ class ContractUnit:
         temp_road = walk_nodes.pop(0)
 
         # idearoot cannot be replaced
-        if temp_road == self._heal_kind and walk_nodes == []:
-            idea_kid.set_walk(parent_road=Road(self._heal_kind))
+        if temp_road == self._healing_kind and walk_nodes == []:
+            idea_kid.set_walk(parent_road=Road(self._healing_kind))
         else:
             road_nodes = [temp_road]
             while walk_nodes != []:
@@ -1187,8 +1191,8 @@ class ContractUnit:
         for kid in d_temp_idea._kids.values():
             self.add_idea(idea_kid=kid, walk=get_road_from_nodes(road_nodes[:-1]))
 
-    def set_owner(self, new_owner):
-        self._owner = new_owner
+    def set_healer(self, new_healer):
+        self._healer = new_healer
 
     def edit_idea_label(
         self,
@@ -1205,7 +1209,7 @@ class ContractUnit:
             # if root _label is changed
             if walk == "":
                 self._idearoot.set_idea_label(
-                    new_label, contract_heal_kind=self._heal_kind
+                    new_label, contract_healing_kind=self._healing_kind
                 )
                 self._idearoot._walk = walk
             else:
@@ -1263,7 +1267,7 @@ class ContractUnit:
             anc_roads
         ) == 1:
             raise InvalidContractException("Root Idea cannot have numor denom reest.")
-        parent_road = self._heal_kind if len(anc_roads) == 1 else anc_roads[1]
+        parent_road = self._healing_kind if len(anc_roads) == 1 else anc_roads[1]
 
         parent_has_range = None
         parent_idea_x = self.get_idea_kid(road=parent_road)
@@ -1822,7 +1826,7 @@ class ContractUnit:
         idea_kid.set_active_status(
             tree_traverse_count=self._tree_traverse_count,
             contract_groups=self._groups,
-            contract_owner=self._owner,
+            contract_healer=self._healer,
         )
         idea_kid.set_sibling_total_weight(parent_idea._kids_total_weight)
         idea_kid.set_contract_importance(
@@ -1997,8 +2001,8 @@ class ContractUnit:
             "_assignedunit": self._idearoot.get_assignedunit_dict(),
             "_originunit": self._originunit.get_dict(),
             "_weight": self._weight,
-            "_owner": self._owner,
-            "_heal_kind": self._heal_kind,
+            "_healer": self._healer,
+            "_healing_kind": self._healing_kind,
             "_uid": self._idearoot._uid,
             "_begin": self._idearoot._begin,
             "_close": self._idearoot._close,
@@ -2025,7 +2029,7 @@ class ContractUnit:
             yb = ideabase_list.pop(0)
             range_source_road_x = None
             if yb.sr != None:
-                range_source_road_x = f"{self._heal_kind},{yb.sr}"
+                range_source_road_x = f"{self._healing_kind},{yb.sr}"
 
             idea_x = IdeaKid(
                 _label=yb.n,
@@ -2039,12 +2043,12 @@ class ContractUnit:
                 _reest=yb.mr,
                 _range_source_road=range_source_road_x,
             )
-            road_x = f"{self._heal_kind},{yb.rr}"
+            road_x = f"{self._healing_kind},{yb.rr}"
             self.add_idea(idea_kid=idea_x, walk=road_x)
 
             numeric_road_x = None
             if yb.nr != None:
-                numeric_road_x = f"{self._heal_kind},{yb.nr}"
+                numeric_road_x = f"{self._healing_kind},{yb.nr}"
                 self.edit_idea_attr(
                     road=f"{road_x},{yb.n}", numeric_road=numeric_road_x
                 )
@@ -2059,7 +2063,7 @@ class ContractUnit:
         self, party_title: PartyTitle, acptfacts: dict[Road:AcptFactCore]
     ):
         self.set_contract_metrics()
-        contract4party = ContractUnit(_owner=party_title)
+        contract4party = ContractUnit(_healer=party_title)
         contract4party._idearoot._contract_importance = (
             self._idearoot._contract_importance
         )
@@ -2131,14 +2135,14 @@ class ContractUnit:
             other_weight=other_contract._weight,
             other_on_meld_weight_action="default",
         )
-        self._meld_originlinks(other_contract._owner, party_weight)
+        self._meld_originlinks(other_contract._healer, party_weight)
 
     def _meld_ideas(self, other_contract, party_weight: float):
         # meld idearoot
         self._idearoot.meld(other_idea=other_contract._idearoot, _idearoot=True)
 
         # meld all other ideas
-        party_title = other_contract._owner
+        party_title = other_contract._healer
         o_idea_list = other_contract.get_idea_list_without_idearoot()
         for o_idea in o_idea_list:
             o_road = road_validate(f"{o_idea._walk},{o_idea._label}")
@@ -2188,7 +2192,7 @@ class ContractUnit:
         contract_x,
         assignor_partys: dict[PartyTitle:PartyUnit],
         assignor_title: PartyTitle,
-    ) -> ContractOwner:
+    ) -> ContractHealer:
         self.set_contract_metrics()
         self._set_assignment_partys(contract_x, assignor_partys, assignor_title)
         self._set_assignment_groups(contract_x)
@@ -2266,7 +2270,7 @@ def get_from_json(cx_json: str) -> ContractUnit:
 
 def get_from_dict(cx_dict: dict) -> ContractUnit:
     c_x = ContractUnit()
-    c_x.set_heal_kind(cx_dict["_heal_kind"])
+    c_x.set_healing_kind(cx_dict["_healing_kind"])
     c_x._idearoot._requiredunits = requireds_get_from_dict(
         requireds_dict=cx_dict["_requiredunits"]
     )
@@ -2291,8 +2295,8 @@ def get_from_dict(cx_dict: dict) -> ContractUnit:
     except Exception:
         c_x._auto_output_to_public = False
     c_x._partys = partyunits_get_from_dict(x_dict=cx_dict["_partys"])
-    c_x._owner = cx_dict["_owner"]
-    c_x._idearoot.set_idea_label(c_x._heal_kind, c_x._heal_kind)
+    c_x._healer = cx_dict["_healer"]
+    c_x._idearoot.set_idea_label(c_x._healing_kind, c_x._healing_kind)
     c_x._weight = cx_dict["_weight"]
     c_x._max_tree_traverse = cx_dict.get("_max_tree_traverse")
     if cx_dict.get("_max_tree_traverse") is None:
@@ -2310,7 +2314,7 @@ def get_from_dict(cx_dict: dict) -> ContractUnit:
 
     idea_dict_list = []
     for x_dict in cx_dict["_kids"].values():
-        x_dict["temp_road"] = c_x._owner
+        x_dict["temp_road"] = c_x._healer
         idea_dict_list.append(x_dict)
 
     while idea_dict_list != []:
@@ -2363,7 +2367,7 @@ def get_dict_of_contract_from_dict(x_dict: dict[str:dict]) -> dict[str:ContractU
     contractunits = {}
     for contractunit_dict in x_dict.values():
         x_contract = get_from_dict(cx_dict=contractunit_dict)
-        contractunits[x_contract._owner] = x_contract
+        contractunits[x_contract._healer] = x_contract
     return contractunits
 
 

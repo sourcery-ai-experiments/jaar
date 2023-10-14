@@ -288,7 +288,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
     def required_sufffact_xxxx_combo_load(self):
         filtered_list = []
         if self.required_sufffact_combo.currentText() not in [
-            self.contract_x._owner,
+            self.contract_x._healer,
             "",
         ]:
             sufffact_idea = self.contract_x.get_idea_kid(
@@ -314,7 +314,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.required_sufffact_divisor.setText("")
 
         if self.required_sufffact_open_combo.currentText() not in [
-            self.contract_x._owner,
+            self.contract_x._healer,
             "",
         ]:
             self.required_sufffact_open_combo_sel_actions()
@@ -338,7 +338,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
     def numeric_road_combo_select(self):
         if self.required_sufffact_open_combo.currentText() not in [
-            self.contract_x._owner,
+            self.contract_x._healer,
             "",
         ]:
             open_idea_x = self.contract_x.get_idea_kid(
@@ -359,7 +359,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if (
             self.required_sufffact_open_combo.currentText()
             not in [
-                self.contract_x._owner,
+                self.contract_x._healer,
                 "",
             ]
             and self.required_sufffact_open.toPlainText() != ""
@@ -379,7 +379,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if (
             self.required_sufffact_nigh_combo.currentText()
             not in [
-                self.contract_x._owner,
+                self.contract_x._healer,
                 "",
             ]
             and self.required_sufffact_nigh.toPlainText() != ""
@@ -399,7 +399,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if (
             self.required_sufffact_divisor_combo.currentText()
             not in [
-                self.contract_x._owner,
+                self.contract_x._healer,
                 "",
             ]
             and self.required_sufffact_divisor.toPlainText() != ""
@@ -420,7 +420,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
     def required_sufffact_nigh_combo_select(self):
         self.required_sufffact_nigh.setText("")
         if self.required_sufffact_nigh_combo.currentText() not in [
-            self.contract_x._owner,
+            self.contract_x._healer,
             "",
         ]:
             nigh_idea_x = self.contract_x.get_idea_kid(
@@ -432,7 +432,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
     def required_sufffact_divisor_combo_select(self):
         self.required_sufffact_divisor.setText("")
         if self.required_sufffact_divisor_combo.currentText() not in [
-            self.contract_x._owner,
+            self.contract_x._healer,
             "",
         ]:
             divisor_idea_x = self.contract_x.get_idea_kid(
@@ -447,7 +447,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         for required in self.yo_x._requiredunits.values():
             requiredheir = self.yo_x._requiredheirs.get(required.base)
             for sufffact in required.sufffacts.values():
-                required_text = required.base.replace(f"{self.contract_x._owner}", "")
+                required_text = required.base.replace(f"{self.contract_x._healer}", "")
                 required_text = required_text[1:]
                 sufffact_text = sufffact.need.replace(required.base, "")
                 sufffact_text = sufffact_text[1:]
@@ -531,7 +531,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         for requiredheir in self.yo_x._requiredheirs.values():
             for sufffact in requiredheir.sufffacts.values():
                 requiredheir_text = requiredheir.base.replace(
-                    f"{self.contract_x._owner}", ""
+                    f"{self.contract_x._healer}", ""
                 )
                 requiredheir_text = requiredheir_text[1:]
                 sufffact_text = sufffact.need.replace(requiredheir.base, "")

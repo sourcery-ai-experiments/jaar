@@ -5,17 +5,17 @@ from src.contract.x_func import (
     count_files as x_func_count_files,
     return1ifnone as x_func_return1ifnone,
 )
-from src.heal.examples.owner_env_kit import (
-    owner_dir_setup_cleanup,
-    get_temp_owner_dir,
+from src.healing.examples.healer_env_kit import (
+    healer_dir_setup_cleanup,
+    get_temp_healer_dir,
     create_contract_file,
 )
 from pytest import raises as pytest_raises
 
 
-def test_x_func_dir_files_correctlyGrabsFileData(owner_dir_setup_cleanup):
+def test_x_func_dir_files_correctlyGrabsFileData(healer_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_owner_dir()
+    env_dir = get_temp_healer_dir()
     x1_file_title = "x1.txt"
     x2_file_title = "x2.txt"
     x1_file_text = "trying this"
@@ -32,9 +32,9 @@ def test_x_func_dir_files_correctlyGrabsFileData(owner_dir_setup_cleanup):
     assert files_dict.get(x2_file_title) == x2_file_text
 
 
-def test_x_func_dir_files_removesFileExtension(owner_dir_setup_cleanup):
+def test_x_func_dir_files_removesFileExtension(healer_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_owner_dir()
+    env_dir = get_temp_healer_dir()
     x1_title = "x1"
     x2_title = "x2"
     x1_file_ext = "txt"
@@ -54,9 +54,9 @@ def test_x_func_dir_files_removesFileExtension(owner_dir_setup_cleanup):
     assert files_dict.get(x2_title) == x2_file_text
 
 
-def test_x_func_dir_files_returnsSubDirs(owner_dir_setup_cleanup):
+def test_x_func_dir_files_returnsSubDirs(healer_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_owner_dir()
+    env_dir = get_temp_healer_dir()
     x1_title = "x1"
     x2_title = "x2"
     x1_file_ext = "txt"
@@ -86,9 +86,9 @@ def test_x_func_dir_files_returnsSubDirs(owner_dir_setup_cleanup):
     assert files_dict.get(x2_title) == True
 
 
-def test_x_func_dir_files_doesNotReturnsFiles(owner_dir_setup_cleanup):
+def test_x_func_dir_files_doesNotReturnsFiles(healer_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_owner_dir()
+    env_dir = get_temp_healer_dir()
     x1_title = "x1"
     x1_file_ext = "txt"
     x1_file_title = f"{x1_title}.{x1_file_ext}"
@@ -117,10 +117,10 @@ def test_x_func_dir_files_doesNotReturnsFiles(owner_dir_setup_cleanup):
 
 
 def test_x_func_open_file_OpensFilesCorrectlyWhenGivenDirectoryAndFileTitle(
-    owner_dir_setup_cleanup,
+    healer_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_owner_dir()
+    env_dir = get_temp_healer_dir()
     x1_title = "x1"
     x2_title = "x2"
     x1_file_ext = "txt"
@@ -139,10 +139,10 @@ def test_x_func_open_file_OpensFilesCorrectlyWhenGivenDirectoryAndFileTitle(
 
 
 def test_x_func_open_file_OpensFilesCorrectlyWhenGivenOnlyFilePath(
-    owner_dir_setup_cleanup,
+    healer_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_owner_dir()
+    env_dir = get_temp_healer_dir()
     x1_title = "x1"
     x2_title = "x2"
     x1_file_ext = "txt"
@@ -164,9 +164,9 @@ def test_x_func_open_file_OpensFilesCorrectlyWhenGivenOnlyFilePath(
     assert x_func_open_file(dest_dir=x2_file_path, file_title=None) == x2_file_text
 
 
-def test_x_func_save_file_ReplacesFileAsDefault(owner_dir_setup_cleanup):
+def test_x_func_save_file_ReplacesFileAsDefault(healer_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_owner_dir()
+    env_dir = get_temp_healer_dir()
     x_old_title = "x_old"
     # x_new_title = "x_new"
     x_old_file_ext = "txt"
@@ -199,9 +199,9 @@ def test_x_func_save_file_ReplacesFileAsDefault(owner_dir_setup_cleanup):
     )
 
 
-def test_x_func_save_file_DoesNotreplaceFile(owner_dir_setup_cleanup):
+def test_x_func_save_file_DoesNotreplaceFile(healer_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_owner_dir()
+    env_dir = get_temp_healer_dir()
     x_old_title = "x_old"
     # x_new_title = "x_new"
     x_old_file_ext = "txt"
@@ -235,10 +235,10 @@ def test_x_func_save_file_DoesNotreplaceFile(owner_dir_setup_cleanup):
 
 
 def test_x_func_count_files_ReturnsNoneIfDirectoryDoesNotExist(
-    owner_dir_setup_cleanup,
+    healer_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_owner_dir()
+    env_dir = get_temp_healer_dir()
     does_not_exist_dir = f"{env_dir}/swim"
 
     # WHEN
