@@ -74,24 +74,7 @@ def test_personunit_get_healunit_CorrectlyGetsHealUnit():
     assert home_heal.heals_dir == f"{xao_person_dir}/heals"
 
 
-def test_personunit_get_healunit_CorrectlyGetsHealUnit():
-    # GIVEN
-    xao_text = "Xao"
-    xao_person_dir = f"/persons/{xao_text}"
-    xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
-    home_text = "home"
-    xao_person_obj.set_healunit(home_text)
-
-    # WHEN
-    home_heal = xao_person_obj.get_healunit(home_text)
-
-    # THEN
-    assert home_heal != None
-    assert home_heal.kind == home_text
-    assert home_heal.heals_dir == f"{xao_person_dir}/heals"
-
-
-def test_personunit_get_healunit_CorrectlyGetsHealUnit():
+def test_personunit_del_healunit_CorrectlyDeletesHealUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
@@ -107,8 +90,8 @@ def test_personunit_get_healunit_CorrectlyGetsHealUnit():
     xao_person_obj.del_healunit(home_text)
 
     # THEN
-    before_home_heal = xao_person_obj.get_healunit(home_text)
-    assert before_home_heal is None
+    after_home_heal = xao_person_obj.get_healunit(home_text)
+    assert after_home_heal is None
 
 
 def test_personunit_set_painunit_CorrectlyCreatesPainUnit():

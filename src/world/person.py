@@ -37,6 +37,22 @@ class PersonUnit:
     def del_healunit(self, heal_kind: HealKind):
         self._heals.pop(heal_kind)
 
+    def get_heals_dict(self) -> dict:
+        return {healunit_x.kind: None for healunit_x in self._heals.values()}
+
+    def get_pains_dict(self) -> dict:
+        return {
+            painunit_x.kind: painunit_x.get_dict()
+            for painunit_x in self._pains.values()
+        }
+
+    def get_dict(self) -> dict:
+        return {
+            "name": self.name,
+            "_heals": self.get_heals_dict(),
+            "_pains": self.get_pains_dict(),
+        }
+
 
 def personunit_shop(name: PersonName, person_dir: str = None) -> PersonUnit:
     if person_dir is None:

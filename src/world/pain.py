@@ -7,6 +7,9 @@ class HealLink:
     kind: HealKind
     weight: float
 
+    def get_dict(self) -> dict:
+        return {"kind": self.kind, "weight": self.weight}
+
 
 def heallink_shop(kind: HealKind, weight: float = None) -> HealLink:
     if weight is None:
@@ -22,6 +25,9 @@ class PersonName(str):
 class PersonLink:
     person_name: PersonName
     weight: float
+
+    def get_dict(self):
+        return {"person_name": self.person_name, "weight": self.weight}
 
 
 def personlink_shop(person_name: PersonName, weight: float = None) -> PersonLink:
@@ -65,6 +71,25 @@ class PainUnit:
 
     def del_personlink(self, person_name: PersonName):
         self._personlinks.pop(person_name)
+
+    def get_heallinks_dict(self) -> dict:
+        return {
+            heallink_x.kind: heallink_x.get_dict()
+            for heallink_x in self._heallinks.values()
+        }
+
+    def get_personlinks_dict(self) -> dict:
+        return {
+            personlink_x.person_name: personlink_x.get_dict()
+            for personlink_x in self._personlinks.values()
+        }
+
+    def get_dict(self):
+        return {
+            "kind": self.kind,
+            "_heallinks": self.get_heallinks_dict(),
+            "_personlinks": self.get_personlinks_dict(),
+        }
 
 
 def painunit_shop(kind: PainKind):
