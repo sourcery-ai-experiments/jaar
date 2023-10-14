@@ -1,18 +1,6 @@
 from dataclasses import dataclass
 from src.heal.heal import HealUnit, HealKind, healunit_shop
-
-
-class PainKind(str):
-    pass
-
-
-@dataclass
-class PainUnit:
-    pass
-
-
-class PersonName(str):
-    pass
+from src.world.pain import PainKind, PainUnit, PersonName, painunit_shop
 
 
 @dataclass
@@ -22,20 +10,32 @@ class PersonUnit:
     _heals: dict[HealKind:HealUnit] = None
     _pains: dict[PainKind:PainUnit] = None
 
-    def set_heals_empty_if_none(self):
-        if self._heals is None:
-            self._heals = {}
-
     def set_pains_empty_if_none(self):
         if self._pains is None:
             self._pains = {}
 
-    def create_heal(self, heal_kind: HealKind):
+    def set_painunit(self, pain_kind: PainKind):
+        self._pains[pain_kind] = painunit_shop(kind=pain_kind)
+
+    def get_painunit(self, pain_kind: PainKind) -> PainUnit:
+        return self._pains.get(pain_kind)
+
+    def del_painunit(self, pain_kind: PainKind):
+        self._pains.pop(pain_kind)
+
+    def set_heals_empty_if_none(self):
+        if self._heals is None:
+            self._heals = {}
+
+    def set_healunit(self, heal_kind: HealKind):
         heals_dir = f"{self.person_dir}/heals"
         self._heals[heal_kind] = healunit_shop(kind=heal_kind, heals_dir=heals_dir)
 
-    def get_heal_obj(self, heal_kind: HealKind) -> HealUnit:
+    def get_healunit(self, heal_kind: HealKind) -> HealUnit:
         return self._heals.get(heal_kind)
+
+    def del_healunit(self, heal_kind: HealKind):
+        self._heals.pop(heal_kind)
 
 
 def personunit_shop(name: PersonName, person_dir: str = None) -> PersonUnit:
