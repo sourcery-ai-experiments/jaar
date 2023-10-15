@@ -28,12 +28,12 @@ from os import listdir as os_listdir, rename as os_rename, path as os_path
 from pytest import fixture as pytest_fixture
 
 
-def get_temp_env_kind():
+def get_temp_env_handle():
     return "ex_env04"
 
 
 def get_temp_env_dir():
-    return f"{get_test_healings_dir()}/{get_temp_env_kind()}"
+    return f"{get_test_healings_dir()}/{get_temp_env_handle()}"
 
 
 def get_test_healings_dir():
@@ -76,8 +76,8 @@ def setup_test_example_environment():
 
 
 def _delete_and_set_ex3():
-    healing_kind = "ex3"
-    sx = healingunit_shop(kind=healing_kind, healings_dir=get_test_healings_dir())
+    healing_handle = "ex3"
+    sx = healingunit_shop(handle=healing_handle, healings_dir=get_test_healings_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -132,8 +132,8 @@ def _delete_and_set_ex3():
 
 
 def _delete_and_set_ex4():
-    healing_kind = "ex4"
-    sx = healingunit_shop(kind=healing_kind, healings_dir=get_test_healings_dir())
+    healing_handle = "ex4"
+    sx = healingunit_shop(handle=healing_handle, healings_dir=get_test_healings_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.save_public_contract(example_healers_get_7nodeJRootWithH_contract())
@@ -145,8 +145,8 @@ def _delete_and_set_ex4():
 
 
 def _delete_and_set_ex5():
-    healing_kind = "ex5"
-    sx = healingunit_shop(kind=healing_kind, healings_dir=get_test_healings_dir())
+    healing_handle = "ex5"
+    sx = healingunit_shop(handle=healing_handle, healings_dir=get_test_healings_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -251,8 +251,8 @@ def _delete_and_set_ex5():
 
 
 def _delete_and_set_ex6():
-    healing_kind = "ex6"
-    sx = healingunit_shop(kind=healing_kind, healings_dir=get_test_healings_dir())
+    healing_handle = "ex6"
+    sx = healingunit_shop(handle=healing_handle, healings_dir=get_test_healings_dir())
     x_func_delete_dir(sx.get_object_root_dir())
     sx.create_dirs_if_null(in_memory_bank=False)
 
@@ -290,8 +290,8 @@ def _delete_and_set_ex6():
     sx.set_river_sphere_for_contract(contract_healer=sal_text, max_flows_count=100)
 
 
-def create_example_healing(healing_kind: str):
-    sx = healingunit_shop(kind=healing_kind, healings_dir=get_test_healings_dir())
+def create_example_healing(healing_handle: str):
+    sx = healingunit_shop(handle=healing_handle, healings_dir=get_test_healings_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
 
@@ -302,24 +302,24 @@ def delete_dir_example_healing(healing_obj: HealingUnit):
 def rename_example_healing(healing_obj: HealingUnit, new_title):
     # base_dir = healing_obj.get_object_root_dir()
     base_dir = "src/healing/examples/healings"
-    src_dir = f"{base_dir}/{healing_obj.kind}"
+    src_dir = f"{base_dir}/{healing_obj.handle}"
     dst_dir = f"{base_dir}/{new_title}"
     os_rename(src=src_dir, dst=dst_dir)
-    healing_obj.set_healingunit_kind(kind=new_title)
+    healing_obj.set_healingunit_handle(handle=new_title)
 
 
 class InvalidHealingCopyException(Exception):
     pass
 
 
-def copy_evaluation_healing(src_kind: str, dest_kind: str):
+def copy_evaluation_healing(src_handle: str, dest_handle: str):
     base_dir = "src/healing/examples/healings"
-    new_dir = f"{base_dir}/{dest_kind}"
+    new_dir = f"{base_dir}/{dest_handle}"
     if os_path.exists(new_dir):
         raise InvalidHealingCopyException(
             f"Cannot copy healing to '{new_dir}' directory because '{new_dir}' exists."
         )
     # base_dir = healing_obj.get_object_root_dir()
-    src_dir = f"{base_dir}/{src_kind}"
-    dest_dir = f"{base_dir}/{dest_kind}"
+    src_dir = f"{base_dir}/{src_handle}"
+    dest_dir = f"{base_dir}/{dest_handle}"
     copy_dir(src_dir=src_dir, dest_dir=dest_dir)

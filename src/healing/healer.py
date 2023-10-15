@@ -30,7 +30,7 @@ class InvalidHealerException(Exception):
 class HealerAdmin:
     _healer_title: str
     _env_dir: str
-    _healing_kind: str
+    _healing_handle: str
     _healer_dir: str = None
     _healers_dir: str = None
     _isol_file_title: str = None
@@ -172,7 +172,7 @@ class HealerAdmin:
     def _get_empty_isol_contract(self):
         cx = ContractUnit(_healer=self._healer_title, _weight=0)
         cx.add_partyunit(title=self._healer_title)
-        cx.set_healing_kind(self._healing_kind)
+        cx.set_healing_handle(self._healing_handle)
         return cx
 
     def erase_depot_contract(self, healer):
@@ -211,10 +211,10 @@ class HealerAdmin:
 
 
 def healeradmin_shop(
-    _healer_title: str, _env_dir: str, _healing_kind: str
+    _healer_title: str, _env_dir: str, _healing_handle: str
 ) -> HealerAdmin:
     uax = HealerAdmin(
-        _healer_title=_healer_title, _env_dir=_env_dir, _healing_kind=_healing_kind
+        _healer_title=_healer_title, _env_dir=_env_dir, _healing_handle=_healing_handle
     )
     uax.set_dirs()
     return uax
@@ -276,14 +276,14 @@ class HealerUnit:
             self._admin.save_contract_to_digest(cx_obj)
         elif link_type == "ignore":
             new_cx_obj = ContractUnit(_healer=outer_healer)
-            new_cx_obj.set_healing_kind(self._admin._healing_kind)
+            new_cx_obj.set_healing_handle(self._admin._healing_handle)
             self.set_ignore_contract_file(new_cx_obj, new_cx_obj._healer)
 
     def _set_assignment_depotlink(self, outer_healer):
         src_cx = self._admin.open_depot_contract(outer_healer)
         src_cx.set_contract_metrics()
         empty_cx = ContractUnit(_healer=self._admin._healer_title)
-        empty_cx.set_healing_kind(self._admin._healing_kind)
+        empty_cx.set_healing_handle(self._admin._healing_handle)
         assign_cx = src_cx.get_assignment(
             empty_cx, self.get_isol()._partys, self._admin._healer_title
         )
@@ -340,9 +340,9 @@ class HealerUnit:
         self._admin.save_contract_to_digest(contractunit, src_contract_healer)
 
     # housekeeping
-    def set_env_dir(self, env_dir: str, healer_title: str, healing_kind: str):
+    def set_env_dir(self, env_dir: str, healer_title: str, healing_handle: str):
         self._admin = healeradmin_shop(
-            _healer_title=healer_title, _env_dir=env_dir, _healing_kind=healing_kind
+            _healer_title=healer_title, _env_dir=env_dir, _healing_handle=healing_handle
         )
 
     def create_core_dir_and_files(self, isol_cx: ContractUnit = None):
@@ -350,10 +350,10 @@ class HealerUnit:
 
 
 def healerunit_shop(
-    title: str, env_dir: str, healing_kind: str, _auto_output_to_public: bool = None
+    title: str, env_dir: str, healing_handle: str, _auto_output_to_public: bool = None
 ) -> HealerUnit:
     healer_x = HealerUnit()
-    healer_x.set_env_dir(env_dir, title, healing_kind=healing_kind)
+    healer_x.set_env_dir(env_dir, title, healing_handle=healing_handle)
     healer_x.get_isol()
     healer_x._isol._set_auto_output_to_public(_auto_output_to_public)
     healer_x.set_isol()

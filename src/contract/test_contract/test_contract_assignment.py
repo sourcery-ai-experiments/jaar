@@ -157,12 +157,12 @@ def test_contract__get_assignor_promise_ideas_ReturnsCorrectIdeaRoads():
     # THEN
     print(f"{assignor_promises=}")
     x_dict = {
-        f"{cx._healing_kind},work": -1,
-        f"{cx._healing_kind},housework,clean table": -1,
-        f"{cx._healing_kind},housework,clean table,remove dishs": -1,
-        f"{cx._healing_kind},housework,clean table,get soap": -1,
-        f"{cx._healing_kind},housework,clean table,get soap,grab soap": -1,
-        f"{cx._healing_kind},feed cat": -1,
+        f"{cx._healing_handle},work": -1,
+        f"{cx._healing_handle},housework,clean table": -1,
+        f"{cx._healing_handle},housework,clean table,remove dishs": -1,
+        f"{cx._healing_handle},housework,clean table,get soap": -1,
+        f"{cx._healing_handle},housework,clean table,get soap,grab soap": -1,
+        f"{cx._healing_handle},feed cat": -1,
     }
     assert assignor_promises == x_dict
 
@@ -187,13 +187,13 @@ def test_contract__get_relevant_roads_RootRoadReturnsOnlyItself():
     cx.set_contract_metrics()
 
     # WHEN
-    root_dict = {cx._healing_kind: -1}
+    root_dict = {cx._healing_handle: -1}
     relevant_roads = cx._get_relevant_roads(root_dict)
 
     # THEN
     print(f"{relevant_roads=}")
     assert len(relevant_roads) == 1
-    assert relevant_roads == {cx._healing_kind: -1}
+    assert relevant_roads == {cx._healing_handle: -1}
 
 
 def test_contract__get_relevant_roads_SimpleReturnsOnlyAncestors():
@@ -203,7 +203,7 @@ def test_contract__get_relevant_roads_SimpleReturnsOnlyAncestors():
 
     # WHEN
     week_text = "weekdays"
-    week_road = f"{cx._healing_kind},{week_text}"
+    week_road = f"{cx._healing_handle},{week_text}"
     sun_text = "Sunday"
     sun_road = f"{week_road},{sun_text}"
     sun_dict = {sun_road}
@@ -212,7 +212,7 @@ def test_contract__get_relevant_roads_SimpleReturnsOnlyAncestors():
     # THEN
     print(f"{relevant_roads=}")
     assert len(relevant_roads) == 3
-    assert relevant_roads == {cx._healing_kind: -1, sun_road: -1, week_road: -1}
+    assert relevant_roads == {cx._healing_handle: -1, sun_road: -1, week_road: -1}
 
 
 def test_contract__get_relevant_roads_ReturnsSimpleRequiredUnitBase():
@@ -220,16 +220,16 @@ def test_contract__get_relevant_roads_ReturnsSimpleRequiredUnitBase():
     healer_text = "Neo"
     cx = ContractUnit(_healer=healer_text)
     casa_text = "casa"
-    casa_road = f"{cx._healing_kind},{casa_text}"
+    casa_road = f"{cx._healing_handle},{casa_text}"
     floor_text = "mop floor"
     floor_road = f"{casa_road},{floor_text}"
     floor_idea = IdeaKid(_label=floor_text)
     cx.add_idea(idea_kid=floor_idea, walk=casa_road)
 
     unim_text = "unimportant"
-    unim_road = f"{cx._healing_kind},{unim_text}"
+    unim_road = f"{cx._healing_handle},{unim_text}"
     unim_idea = IdeaKid(_label=unim_text)
-    cx.add_idea(idea_kid=unim_idea, walk=cx._healing_kind)
+    cx.add_idea(idea_kid=unim_idea, walk=cx._healing_handle)
 
     status_text = "cleaniness status"
     status_road = f"{casa_road},{status_text}"
@@ -248,7 +248,7 @@ def test_contract__get_relevant_roads_ReturnsSimpleRequiredUnitBase():
     print(f"{relevant_roads=}")
     assert len(relevant_roads) == 4
     assert relevant_roads == {
-        cx._healing_kind: -1,
+        cx._healing_handle: -1,
         casa_road: -1,
         status_road: -1,
         floor_road: -1,
@@ -260,12 +260,12 @@ def test_contract__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
     # GIVEN
     cx = example_contract_get_assignment_contract_example1()
     casa_text = "casa"
-    casa_road = f"{cx._healing_kind},{casa_text}"
+    casa_road = f"{cx._healing_handle},{casa_text}"
     floor_text = "mop floor"
     floor_road = f"{casa_road},{floor_text}"
 
     unim_text = "unimportant"
-    unim_road = f"{cx._healing_kind},{unim_text}"
+    unim_road = f"{cx._healing_handle},{unim_text}"
 
     status_text = "cleaniness status"
     status_road = f"{casa_road},{status_text}"
@@ -273,8 +273,8 @@ def test_contract__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
     clean_text = "clean"
     clean_road = f"{status_road},{clean_text}"
 
-    really_text = "really"
-    really_road = f"{clean_road},{really_text}"
+    very_much_text = "very_much"
+    very_much_road = f"{clean_road},{very_much_text}"
 
     moderately_text = "moderately"
     moderately_road = f"{clean_road},{moderately_text}"
@@ -293,15 +293,15 @@ def test_contract__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
     assert relevant_roads.get(clean_road) != None
     assert relevant_roads.get(dirty_road) != None
     assert relevant_roads.get(moderately_road) != None
-    assert relevant_roads.get(really_road) != None
+    assert relevant_roads.get(very_much_road) != None
     assert relevant_roads == {
-        cx._healing_kind: -1,
+        cx._healing_handle: -1,
         casa_road: -1,
         status_road: -1,
         floor_road: -1,
         clean_road: -1,
         dirty_road: -1,
-        really_road: -1,
+        very_much_road: -1,
         moderately_road: -1,
     }
     assert relevant_roads.get(unim_road) is None
@@ -316,13 +316,13 @@ def test_contract__get_relevant_roads_numeric_road_ReturnSimple():
     healer_text = "Yao"
     cx = ContractUnit(_healer=healer_text)
     work_text = "work"
-    work_road = f"{cx._healing_kind},{work_text}"
-    cx.add_idea(IdeaKid(_label=work_text), walk=cx._healing_kind)
+    work_road = f"{cx._healing_handle},{work_text}"
+    cx.add_idea(IdeaKid(_label=work_text), walk=cx._healing_handle)
     work_idea = cx.get_idea_kid(road=work_road)
     day_text = "day_range"
-    day_road = f"{cx._healing_kind},{day_text}"
+    day_road = f"{cx._healing_handle},{day_text}"
     day_idea = IdeaKid(_label=day_text, _begin=44, _close=110)
-    cx.add_idea(day_idea, walk=cx._healing_kind)
+    cx.add_idea(day_idea, walk=cx._healing_handle)
     cx.edit_idea_attr(road=work_road, denom=11, numeric_road=day_road)
     assert work_idea._begin == 4
     print(f"{work_idea._label=} {work_idea._begin=} {work_idea._close=}")
@@ -338,7 +338,7 @@ def test_contract__get_relevant_roads_numeric_road_ReturnSimple():
     assert relevant_roads.get(work_road) != None
     assert relevant_roads.get(day_road) != None
     assert relevant_roads == {
-        cx._healing_kind: -1,
+        cx._healing_handle: -1,
         work_road: -1,
         day_road: -1,
     }
@@ -349,14 +349,14 @@ def test_contract__get_relevant_roads_range_source_road_ReturnSimple():
     healer_text = "Yao"
     cx = ContractUnit(_healer=healer_text)
     min_range_text = "a_minute_range"
-    min_range_road = f"{cx._healing_kind},{min_range_text}"
+    min_range_road = f"{cx._healing_handle},{min_range_text}"
     min_range_idea = IdeaKid(_label=min_range_text, _begin=0, _close=2880)
-    cx.add_idea(min_range_idea, walk=cx._healing_kind)
+    cx.add_idea(min_range_idea, walk=cx._healing_handle)
 
     day_len_text = "day_length"
-    day_len_road = f"{cx._healing_kind},{day_len_text}"
+    day_len_road = f"{cx._healing_handle},{day_len_text}"
     day_len_idea = IdeaKid(_label=day_len_text, _begin=0, _close=1440)
-    cx.add_idea(day_len_idea, walk=cx._healing_kind)
+    cx.add_idea(day_len_idea, walk=cx._healing_handle)
 
     min_days_text = "days in minute_range"
     min_days_road = f"{min_range_road},{min_days_text}"
@@ -375,7 +375,7 @@ def test_contract__get_relevant_roads_range_source_road_ReturnSimple():
     assert relevant_roads.get(min_range_road) != None
     assert relevant_roads.get(day_len_road) != None
     assert relevant_roads.get(min_days_road) != None
-    assert relevant_roads.get(cx._healing_kind) != None
+    assert relevant_roads.get(cx._healing_handle) != None
     # min_days_idea = cx.get_idea_kid(road=min_days_road)
     # print(f"{min_days_idea=}")
     # assert 1 == 2
@@ -388,15 +388,15 @@ def test_contract__set_assignment_ideas_ReturnsCorrectIdeas():
     yao_text = "Yao"
     yao_cx = ContractUnit(_healer=yao_text)
     casa_text = "casa"
-    casa_road = f"{yao_cx._healing_kind},{casa_text}"
-    yao_cx.add_idea(IdeaKid(_label=casa_text), walk=yao_cx._healing_kind)
+    casa_road = f"{yao_cx._healing_handle},{casa_text}"
+    yao_cx.add_idea(IdeaKid(_label=casa_text), walk=yao_cx._healing_handle)
     yao_cx.set_contract_metrics()
 
     # WHEN
     bob_text = "Bob"
     bob_contract = ContractUnit(_healer=bob_text)
     relevant_roads = {
-        yao_cx._healing_kind: "descendant",
+        yao_cx._healing_handle: "descendant",
         casa_road: "requirementunit_base",
     }
     yao_cx._set_assignment_ideas(contract_x=bob_contract, relevant_roads=relevant_roads)
@@ -414,8 +414,8 @@ def test_contract__set_assignment_ideas_ReturnsCorrectIdeaRoot_acptfacts():
     yao_cx = ContractUnit(_healer=yao_text)
 
     casa_text = "casa"
-    casa_road = f"{yao_cx._healing_kind},{casa_text}"
-    yao_cx.add_idea(IdeaKid(_label=casa_text), walk=yao_cx._healing_kind)
+    casa_road = f"{yao_cx._healing_handle},{casa_text}"
+    yao_cx.add_idea(IdeaKid(_label=casa_text), walk=yao_cx._healing_handle)
 
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
@@ -439,7 +439,7 @@ def test_contract__set_assignment_ideas_ReturnsCorrectIdeaRoot_acptfacts():
 
     # WHEN
     relevant_roads = {
-        yao_cx._healing_kind: "descendant",
+        yao_cx._healing_handle: "descendant",
         casa_road: "requirementunit_base",
         basket_road: "assigned",
     }
@@ -455,17 +455,17 @@ def test_contract_get_assignment_getsCorrectIdeas_scenario1():
     # GIVEN
     cx = example_contract_get_assignment_contract_example1()
     casa_text = "casa"
-    casa_road = f"{cx._healing_kind},{casa_text}"
+    casa_road = f"{cx._healing_handle},{casa_text}"
     floor_text = "mop floor"
     floor_road = f"{casa_road},{floor_text}"
     unim_text = "unimportant"
-    unim_road = f"{cx._healing_kind},{unim_text}"
+    unim_road = f"{cx._healing_handle},{unim_text}"
     status_text = "cleaniness status"
     status_road = f"{casa_road},{status_text}"
     clean_text = "clean"
     clean_road = f"{status_road},{clean_text}"
-    really_text = "really"
-    really_road = f"{clean_road},{really_text}"
+    very_much_text = "very_much"
+    very_much_road = f"{clean_road},{very_much_text}"
     moderately_text = "moderately"
     moderately_road = f"{clean_road},{moderately_text}"
     dirty_text = "dirty"
@@ -487,25 +487,25 @@ def test_contract_get_assignment_getsCorrectIdeas_scenario1():
     assert assignment_x._idea_dict.get(clean_road) != None
     assert assignment_x._idea_dict.get(dirty_road) != None
     assert assignment_x._idea_dict.get(moderately_road) != None
-    assert assignment_x._idea_dict.get(really_road) != None
+    assert assignment_x._idea_dict.get(very_much_road) != None
     assert assignment_x._idea_dict.get(unim_road) is None
 
 
 def test_contract_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     # GIVEN
     america_cx = get_contract_assignment_laundry_example1()
-    healing_kind_text = "tiger_econ"
-    print(f"{america_cx._healing_kind=} {america_cx._idea_dict.keys()=}")
-    america_cx.set_healing_kind(healing_kind_text)
-    print(f"{america_cx._healing_kind=} {america_cx._idea_dict.keys()=}")
+    healing_handle_text = "tiger_econ"
+    print(f"{america_cx._healing_handle=} {america_cx._idea_dict.keys()=}")
+    america_cx.set_healing_handle(healing_handle_text)
+    print(f"{america_cx._healing_handle=} {america_cx._idea_dict.keys()=}")
     do_laundery_idea = america_cx.get_idea_kid("tiger_econ,casa,do_laundry")
     print(f"{do_laundery_idea._requiredunits.keys()=}")
 
     # WHEN
     joachim_text = "Joachim"
     joachim_contract = ContractUnit(_healer=joachim_text)
-    joachim_contract.set_healing_kind(healing_kind_text)
-    print(f"{joachim_contract._healing_kind=} {joachim_contract._idea_dict.keys()=}")
+    joachim_contract.set_healing_handle(healing_handle_text)
+    print(f"{joachim_contract._healing_handle=} {joachim_contract._idea_dict.keys()=}")
     joachim_assignment = america_cx.get_assignment(
         contract_x=joachim_contract,
         assignor_partys={joachim_text: -1, america_cx._healer: -1},
@@ -529,7 +529,7 @@ def test_contract_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     # road_x='A,casa,laundry basket status,bare'
     # road_x='A,casa,do_laundry'
     casa_text = "casa"
-    casa_road = f"{america_cx._healing_kind},{casa_text}"
+    casa_road = f"{america_cx._healing_handle},{casa_text}"
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
     b_full_text = "full"

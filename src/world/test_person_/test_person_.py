@@ -47,13 +47,13 @@ def test_personunit_set_healingunit_CorrectlyCreatesHealingUnit():
 
     # WHEN
     home_text = "home"
-    xao_person_obj.set_healingunit(home_text)
+    xao_person_obj.set_healingunit(healing_handle=home_text)
 
     # THEN
     # home_healing = xao_person.get_healing()
     home_healing = xao_person_obj._healings.get(home_text)
     assert home_healing != None
-    assert home_healing.kind == home_text
+    assert home_healing.handle == home_text
     assert home_healing.healings_dir == f"{xao_person_dir}/healings"
 
 
@@ -70,7 +70,7 @@ def test_personunit_get_healingunit_CorrectlyGetsHealingUnit():
 
     # THEN
     assert home_healing != None
-    assert home_healing.kind == home_text
+    assert home_healing.handle == home_text
     assert home_healing.healings_dir == f"{xao_person_dir}/healings"
 
 
@@ -83,7 +83,7 @@ def test_personunit_del_healingunit_CorrectlyDeletesHealingUnit():
     xao_person_obj.set_healingunit(home_text)
     before_home_healing = xao_person_obj.get_healingunit(home_text)
     assert before_home_healing != None
-    assert before_home_healing.kind == home_text
+    assert before_home_healing.handle == home_text
     assert before_home_healing.healings_dir == f"{xao_person_dir}/healings"
 
     # WHEN

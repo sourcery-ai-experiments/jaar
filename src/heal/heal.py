@@ -40,13 +40,13 @@ from src.healing.bank_sqlstr import (
 )
 
 
-class HealingKind(str):
+class HealingHandle(str):
     pass
 
 
 @dataclass
 class HealingUnit:
-    kind: HealingKind
+    kind: HealingHandle
     healings_dir: str
     _healerunits: dict[str:HealerUnit] = None
     _bank_db = None
@@ -390,7 +390,7 @@ class HealingUnit:
         x_func_delete_dir(f"{self.get_public_dir()}/{contract_x_healer}.json")
 
     def save_public_contract(self, contract_x: ContractUnit):
-        contract_x.set_healing_kind(healing_kind=self.kind)
+        contract_x.set_healing_handle(healing_handle=self.kind)
         x_func_save_file(
             dest_dir=self.get_public_dir(),
             file_title=f"{contract_x._healer}.json",

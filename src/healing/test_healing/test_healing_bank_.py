@@ -2,7 +2,7 @@ from src.contract.x_func import delete_dir as x_func_delete_dir
 from src.healing.healing import healingunit_shop, HealingUnit
 from os import path as os_path
 from src.healing.examples.healing_env_kit import (
-    get_temp_env_kind,
+    get_temp_env_handle,
     get_test_healings_dir,
     env_dir_setup_cleanup,
 )
@@ -15,7 +15,7 @@ def test_healing_create_bank_db_CreatesBankDBIfItDoesNotExist(
 ):
     # GIVEN create healing
     sx = healingunit_shop(
-        kind=get_temp_env_kind(), healings_dir=get_test_healings_dir()
+        handle=get_temp_env_handle(), healings_dir=get_test_healings_dir()
     )
 
     # clear out any bank.db file
@@ -34,7 +34,7 @@ def test_healing_create_bank_db_CanCreateBankInMemory(
 ):
     # GIVEN create healing
     sx = healingunit_shop(
-        kind=get_temp_env_kind(), healings_dir=get_test_healings_dir()
+        handle=get_temp_env_handle(), healings_dir=get_test_healings_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -56,7 +56,7 @@ def test_healing_refresh_bank_metrics_CanConnectToBankInMemory(
 ):
     # GIVEN create healing
     sx = healingunit_shop(
-        kind=get_temp_env_kind(), healings_dir=get_test_healings_dir()
+        handle=get_temp_env_handle(), healings_dir=get_test_healings_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
     # sx._create_bank_db(in_memory=True)
@@ -71,7 +71,7 @@ def test_healing_refresh_bank_metrics_CanConnectToBankInMemory(
 
 def test_healing_get_bank_db_conn_CreatesBankDBIfItDoesNotExist(env_dir_setup_cleanup):
     # GIVEN create healing
-    sx = HealingUnit(kind=get_temp_env_kind(), healings_dir=get_test_healings_dir())
+    sx = HealingUnit(handle=get_temp_env_handle(), healings_dir=get_test_healings_dir())
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         check_connection(sx.get_bank_conn())

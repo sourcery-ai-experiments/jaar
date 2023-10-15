@@ -8,7 +8,7 @@ from src.healing.healer import healerunit_shop
 from src.healing.examples.healer_env_kit import (
     healer_dir_setup_cleanup,
     get_temp_healer_dir,
-    get_temp_healing_kind,
+    get_temp_healing_handle,
 )
 from os import path as os_path
 
@@ -21,13 +21,13 @@ def test_healerunit_exists(healer_dir_setup_cleanup):
     ux = healerunit_shop(
         title=healer_text,
         env_dir=get_temp_healer_dir(),
-        healing_kind=get_temp_healing_kind(),
+        healing_handle=get_temp_healing_handle(),
     )
 
     # GIVEN
     assert ux._admin._healer_title != None
-    assert ux._admin._healing_kind != None
-    assert ux._admin._healing_kind == get_temp_healing_kind()
+    assert ux._admin._healing_handle != None
+    assert ux._admin._healing_handle == get_temp_healing_handle()
     assert ux._isol is None
 
 
@@ -36,19 +36,19 @@ def test_healerunit_auto_output_to_public_SavesContractToPublicDirWhenTrue(
 ):
     # GIVEN
     env_dir = get_temp_healer_dir()
-    healing_kind = get_temp_healing_kind()
+    healing_handle = get_temp_healing_handle()
     tim_text = "Tim"
     public_file_title = f"{tim_text}.json"
     public_file_path = f"{get_temp_healer_dir()}/contracts/{public_file_title}"
     print(f"{public_file_path=}")
     # public_file_path = f"src/healing/examples/ex_env/contracts/{public_file_title}"
-    ux = healerunit_shop(tim_text, env_dir, healing_kind, _auto_output_to_public=True)
+    ux = healerunit_shop(tim_text, env_dir, healing_handle, _auto_output_to_public=True)
     ux.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
 
     # WHEN
     tim_contract = ContractUnit(_healer=tim_text)
-    tim_contract.set_healing_kind(healing_kind)
+    tim_contract.set_healing_handle(healing_handle)
     ux.set_depot_contract(tim_contract, "blind_trust")
 
     # THEN
@@ -60,13 +60,15 @@ def test_healerunit_auto_output_to_public_DoesNotSaveContractToPublicDirWhenFals
 ):
     # GIVEN
     env_dir = get_temp_healer_dir()
-    healing_kind = get_temp_healing_kind()
+    healing_handle = get_temp_healing_handle()
     tim_text = "Tim"
     public_file_title = f"{tim_text}.json"
     public_file_path = f"{get_temp_healer_dir()}/contracts/{public_file_title}"
     print(f"{public_file_path=}")
     # public_file_path = f"src/healing/examples/ex_env/contracts/{public_file_title}"
-    ux = healerunit_shop(tim_text, env_dir, healing_kind, _auto_output_to_public=False)
+    ux = healerunit_shop(
+        tim_text, env_dir, healing_handle, _auto_output_to_public=False
+    )
     ux.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
 
@@ -82,7 +84,7 @@ def test_healerunit_get_isol_createsEmptyContractWhenFileDoesNotExist(
 ):
     # GIVEN
     tim_text = "Tim"
-    tim_ux = healerunit_shop(tim_text, get_temp_healer_dir(), get_temp_healing_kind())
+    tim_ux = healerunit_shop(tim_text, get_temp_healer_dir(), get_temp_healing_handle())
     tim_ux.create_core_dir_and_files()
     assert os_path.exists(tim_ux._admin._isol_file_path)
     x_func_delete_dir(dir=tim_ux._admin._isol_file_path)
@@ -102,7 +104,7 @@ def test_healerunit_get_isol_getsMemoryContractIfExists(
 ):
     # GIVEN
     tim_text = "Tim"
-    tim_ux = healerunit_shop(tim_text, get_temp_healer_dir(), get_temp_healing_kind())
+    tim_ux = healerunit_shop(tim_text, get_temp_healer_dir(), get_temp_healing_handle())
     tim_ux.create_core_dir_and_files()
     isol_file_path = f"{tim_ux._admin._healer_dir}/{tim_ux._admin._isol_file_title}"
     cx_isol1 = tim_ux.get_isol()
@@ -132,7 +134,7 @@ def test_healerunit_set_isol_savesIsolContractSet_isol_None(
 ):
     # GIVEN
     tim_text = "Tim"
-    tim_ux = healerunit_shop(tim_text, get_temp_healer_dir(), get_temp_healing_kind())
+    tim_ux = healerunit_shop(tim_text, get_temp_healer_dir(), get_temp_healing_handle())
     tim_ux.create_core_dir_and_files()
     isol_file_path = f"{tim_ux._admin._healer_dir}/{tim_ux._admin._isol_file_title}"
     cx_isol1 = tim_ux.get_isol()
@@ -156,7 +158,7 @@ def test_healerunit_set_isol_savesGivenContractSet_isol_None(
 ):
     # GIVEN
     tim_text = "Tim"
-    ux = healerunit_shop(tim_text, get_temp_healer_dir(), get_temp_healing_kind())
+    ux = healerunit_shop(tim_text, get_temp_healer_dir(), get_temp_healing_handle())
     ux.create_core_dir_and_files()
     isol_file_path = f"{ux._admin._healer_dir}/{ux._admin._isol_file_title}"
     cx_isol1 = ux.get_isol()
@@ -201,7 +203,7 @@ def test_healerunit_set_isol_if_emtpy_DoesNotReplace_isol(
 ):
     # GIVEN
     tim_text = "Tim"
-    ux = healerunit_shop(tim_text, get_temp_healer_dir(), get_temp_healing_kind())
+    ux = healerunit_shop(tim_text, get_temp_healer_dir(), get_temp_healing_handle())
     ux.create_core_dir_and_files()
     saved_cx = ContractUnit(_healer=tim_text)
     saved_cx_uid_text = "this is pulled ContractUnit uid"

@@ -1,7 +1,7 @@
 from src.contract.contract import ContractUnit
 from src.healing.healing import healingunit_shop
 from src.healing.examples.healing_env_kit import (
-    get_temp_env_kind,
+    get_temp_env_handle,
     get_test_healings_dir,
     env_dir_setup_cleanup,
 )
@@ -18,8 +18,8 @@ def test_healing_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTab
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example healing with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    healing_kind = get_temp_env_kind()
-    sx = healingunit_shop(kind=healing_kind, healings_dir=get_test_healings_dir())
+    healing_handle = get_temp_env_handle()
+    sx = healingunit_shop(handle=healing_handle, healings_dir=get_test_healings_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -89,8 +89,8 @@ def test_healing_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTab
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 contracts, 100% of river flows to sal
-    healing_kind = get_temp_env_kind()
-    sx = healingunit_shop(kind=healing_kind, healings_dir=get_test_healings_dir())
+    healing_handle = get_temp_env_handle()
+    sx = healingunit_shop(handle=healing_handle, healings_dir=get_test_healings_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -152,8 +152,8 @@ def test_healing_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTab
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 contracts, 85% of river flows to sal
-    healing_kind = get_temp_env_kind()
-    sx = healingunit_shop(kind=healing_kind, healings_dir=get_test_healings_dir())
+    healing_handle = get_temp_env_handle()
+    sx = healingunit_shop(handle=healing_handle, healings_dir=get_test_healings_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -220,8 +220,8 @@ def test_healing_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTab
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop
-    healing_kind = get_temp_env_kind()
-    sx = healingunit_shop(kind=healing_kind, healings_dir=get_test_healings_dir())
+    healing_handle = get_temp_env_handle()
+    sx = healingunit_shop(handle=healing_handle, healings_dir=get_test_healings_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -295,8 +295,8 @@ def test_healing_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTab
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    healing_kind = get_temp_env_kind()
-    sx = healingunit_shop(kind=healing_kind, healings_dir=get_test_healings_dir())
+    healing_handle = get_temp_env_handle()
+    sx = healingunit_shop(handle=healing_handle, healings_dir=get_test_healings_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -376,8 +376,8 @@ def test_healing_set_river_sphere_for_contract_CorrectlyDeletesPreviousRiver(
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 contracts, 100% of river flows to sal
-    healing_kind = get_temp_env_kind()
-    sx = healingunit_shop(kind=healing_kind, healings_dir=get_test_healings_dir())
+    healing_handle = get_temp_env_handle()
+    sx = healingunit_shop(handle=healing_handle, healings_dir=get_test_healings_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -434,8 +434,8 @@ def test_healing_set_river_sphere_for_contract_CorrectlyUsesMaxFlowsCount(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    healing_kind = get_temp_env_kind()
-    sx = healingunit_shop(kind=healing_kind, healings_dir=get_test_healings_dir())
+    healing_handle = get_temp_env_handle()
+    sx = healingunit_shop(handle=healing_handle, healings_dir=get_test_healings_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -495,8 +495,8 @@ def test_healing_set_river_sphere_for_contract_CorrectlyPopulatesriver_tpartyTab
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    healing_kind = get_temp_env_kind()
-    sx = healingunit_shop(kind=healing_kind, healings_dir=get_test_healings_dir())
+    healing_handle = get_temp_env_handle()
+    sx = healingunit_shop(handle=healing_handle, healings_dir=get_test_healings_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -577,8 +577,8 @@ def test_healing_set_river_sphere_for_contract_CorrectlyBuildsASingleContinuousR
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    healing_kind = get_temp_env_kind()
-    sx = healingunit_shop(kind=healing_kind, healings_dir=get_test_healings_dir())
+    healing_handle = get_temp_env_handle()
+    sx = healingunit_shop(handle=healing_handle, healings_dir=get_test_healings_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -647,8 +647,8 @@ def test_healing_set_river_sphere_for_contract_CorrectlyUpatesContractPartyUnits
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 contracts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    healing_kind = get_temp_env_kind()
-    sx = healingunit_shop(kind=healing_kind, healings_dir=get_test_healings_dir())
+    healing_handle = get_temp_env_handle()
+    sx = healingunit_shop(handle=healing_handle, healings_dir=get_test_healings_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"

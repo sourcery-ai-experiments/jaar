@@ -161,7 +161,7 @@ def test_painunit_del_healingunit_CorrectlyDeletesHealingUnit():
     assert before_home_healing.kind == home_text
 
     # WHEN
-    fear_painunit.del_healinglink(healingkind=home_text)
+    fear_painunit.del_healinglink(healinghandle=home_text)
 
     # THEN
     after_home_healing = fear_painunit.get_healinglink(home_text)

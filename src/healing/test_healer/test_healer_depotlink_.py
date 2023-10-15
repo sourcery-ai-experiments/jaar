@@ -13,10 +13,10 @@ from src.healing.examples.example_healers import (
 from src.healing.examples.healer_env_kit import (
     healer_dir_setup_cleanup,
     get_temp_healer_dir,
-    get_temp_healing_kind,
+    get_temp_healing_handle,
     create_contract_file,
 )
-from src.healing.examples.healing_env_kit import get_temp_env_kind
+from src.healing.examples.healing_env_kit import get_temp_env_handle
 from src.healing.healing import healingunit_shop
 from os import path as os_path
 from pytest import raises as pytest_raises
@@ -28,7 +28,7 @@ def test_healerunit_set_depotlink_RaisesErrorWhenContractDoesNotExist(
     # GIVEN
     sue_text = "Sue"
     env_dir = get_temp_healer_dir()
-    sue_cx = healerunit_shop(sue_text, env_dir, get_temp_healing_kind())
+    sue_cx = healerunit_shop(sue_text, env_dir, get_temp_healing_handle())
     sue_cx.set_isol_if_empty()
     tim_text = "Tim"
     assert list(sue_cx._isol._partys.keys()) == [sue_text]
@@ -48,7 +48,7 @@ def test_healerunit_set_depotlink_CorrectlySetsIsolPartys(healer_dir_setup_clean
     # GIVEN
     yao_text = "yao"
     env_dir = get_temp_healer_dir()
-    yao_ux = healerunit_shop(yao_text, env_dir, get_temp_healing_kind())
+    yao_ux = healerunit_shop(yao_text, env_dir, get_temp_healing_handle())
     yao_ux.set_isol_if_empty()
     sue_text = "sue"
     create_contract_file(yao_ux._admin._contracts_depot_dir, sue_text)
@@ -68,7 +68,7 @@ def test_healerunit_set_depotlink_CorrectlySetsAssignment(healer_dir_setup_clean
     print(f"{len(america_cx._idea_dict)=}")
     joachim_text = "Joachim"
     joachim_ux = healerunit_shop(
-        joachim_text, get_temp_healer_dir(), get_temp_healing_kind()
+        joachim_text, get_temp_healer_dir(), get_temp_healing_handle()
     )
     joachim_ux.create_core_dir_and_files()
     joachim_ux.set_isol_if_empty()
@@ -106,7 +106,7 @@ def test_healerunit_del_depot_contract_CorrectlyDeletesObj(healer_dir_setup_clea
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_healer_dir()
-    bob_cx = healerunit_shop(bob_text, env_dir, get_temp_healing_kind())
+    bob_cx = healerunit_shop(bob_text, env_dir, get_temp_healing_handle())
     yao_text = "Yao"
     create_contract_file(bob_cx._admin._contracts_depot_dir, yao_text)
     assignment_text = "assignment"
@@ -129,7 +129,7 @@ def test_healerunit_del_depot_contract_CorrectlyDeletesBlindTrustFile(
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_healer_dir()
-    bob_cx = healerunit_shop(bob_text, env_dir, get_temp_healing_kind())
+    bob_cx = healerunit_shop(bob_text, env_dir, get_temp_healing_handle())
     lai_text = "Lai"
     create_contract_file(bob_cx._admin._contracts_depot_dir, lai_text)
     bob_cx.set_isol_if_empty()
@@ -151,7 +151,7 @@ def test_healerunit_set_depot_contract_SavesFileCorrectly(
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_healer_dir()
-    bob_cx = healerunit_shop(bob_text, env_dir, get_temp_healing_kind())
+    bob_cx = healerunit_shop(bob_text, env_dir, get_temp_healing_handle())
     cal1 = get_2node_contract()
     assert (
         x_func_count_files(bob_cx._admin._contracts_depot_dir) is None
@@ -174,7 +174,7 @@ def test_healerunit_delete_ignore_depotlink_CorrectlyDeletesObj(
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_healer_dir()
-    bob_cx = healerunit_shop(bob_text, env_dir, get_temp_healing_kind())
+    bob_cx = healerunit_shop(bob_text, env_dir, get_temp_healing_handle())
     yao_text = "Yao"
     create_contract_file(bob_cx._admin._contracts_depot_dir, yao_text)
     assignment_text = "assignment"
@@ -197,7 +197,7 @@ def test_healerunit_del_depot_contract_CorrectlyDoesNotDeletesIgnoreFile(
     # GIVEN
     bob_text = "bob"
     env_dir = get_temp_healer_dir()
-    bob_cx = healerunit_shop(bob_text, env_dir, get_temp_healing_kind())
+    bob_cx = healerunit_shop(bob_text, env_dir, get_temp_healing_handle())
     zia_text = "Zia"
     create_contract_file(bob_cx._admin._contracts_depot_dir, zia_text)
     bob_cx.set_isol_if_empty()
@@ -221,7 +221,7 @@ def test_healerunit_set_ignore_contract_file_CorrectlyUpdatesIgnoreFile(
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_healer_dir()
-    bob_ux = healerunit_shop(bob_text, env_dir, get_temp_healing_kind())
+    bob_ux = healerunit_shop(bob_text, env_dir, get_temp_healing_handle())
     zia_text = "Zia"
     create_contract_file(bob_ux._admin._contracts_depot_dir, zia_text)
     bob_ux.set_isol_if_empty()
@@ -247,8 +247,8 @@ def test_healerunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
 ):
     # GIVEN
     env_dir = get_temp_healer_dir()
-    healing_kind = get_temp_env_kind()
-    sx = healingunit_shop(kind=healing_kind, healings_dir=env_dir)
+    healing_handle = get_temp_env_handle()
+    sx = healingunit_shop(handle=healing_handle, healings_dir=env_dir)
     yao_text = "Yao"
     sx.create_new_healerunit(healer_title=yao_text)
     yao_contract = sx.get_healer_obj(title=yao_text)

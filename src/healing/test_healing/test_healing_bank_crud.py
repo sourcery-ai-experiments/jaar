@@ -1,7 +1,7 @@
 from src.contract.contract import ContractUnit, IdeaKid, groupunit_shop, partylink_shop
 from src.healing.healing import healingunit_shop
 from src.healing.examples.healing_env_kit import (
-    get_temp_env_kind,
+    get_temp_env_handle,
     get_test_healings_dir,
     env_dir_setup_cleanup,
 )
@@ -15,7 +15,7 @@ from src.healing.bank_sqlstr import (
 def test_healing_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
     # GIVEN create healing
     sx = healingunit_shop(
-        kind=get_temp_env_kind(), healings_dir=get_test_healings_dir()
+        handle=get_temp_env_handle(), healings_dir=get_test_healings_dir()
     )
 
     # WHEN
@@ -57,7 +57,7 @@ def test_healing_refresh_bank_metrics_CorrectlyDeletesOldBankInMemory(
 ):
     # GIVEN
     sx = healingunit_shop(
-        kind=get_temp_env_kind(), healings_dir=get_test_healings_dir()
+        handle=get_temp_env_handle(), healings_dir=get_test_healings_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -83,7 +83,7 @@ def test_healing_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
 ):
     # GIVEN
     sx = healingunit_shop(
-        kind=get_temp_env_kind(), healings_dir=get_test_healings_dir()
+        handle=get_temp_env_handle(), healings_dir=get_test_healings_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=False)
 
@@ -109,7 +109,7 @@ def test_healing_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
 ):
     # GIVEN Create example healing with 4 Healers, each with 3 Partyunits = 12 ledger rows
     sx = healingunit_shop(
-        kind=get_temp_env_kind(), healings_dir=get_test_healings_dir()
+        handle=get_temp_env_handle(), healings_dir=get_test_healings_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -157,7 +157,7 @@ def test_healing_refresh_bank_metrics_CorrectlyPopulatesContractTable01(
 ):
     # GIVEN Create example healing with 4 Healers, each with 3 Partyunits = 12 ledger rows
     sx = healingunit_shop(
-        kind=get_temp_env_kind(), healings_dir=get_test_healings_dir()
+        handle=get_temp_env_handle(), healings_dir=get_test_healings_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -186,7 +186,7 @@ def test_healing_refresh_bank_metrics_CorrectlyPopulatesContractTable01(
 ):
     # GIVEN Create example healing with 4 Healers, each with 3 Partyunits = 12 ledger rows
     sx = healingunit_shop(
-        kind=get_temp_env_kind(), healings_dir=get_test_healings_dir()
+        handle=get_temp_env_handle(), healings_dir=get_test_healings_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -215,7 +215,7 @@ def test_healing_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
 ):
     # GIVEN
     sx = healingunit_shop(
-        kind=get_temp_env_kind(), healings_dir=get_test_healings_dir()
+        handle=get_temp_env_handle(), healings_dir=get_test_healings_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -245,7 +245,7 @@ def test_healing_set_contract_bank_attrs_CorrectlyPopulatesContract_Groupunit_Pa
 ):
     # GIVEN
     sx = healingunit_shop(
-        kind=get_temp_env_kind(), healings_dir=get_test_healings_dir()
+        handle=get_temp_env_handle(), healings_dir=get_test_healings_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -271,9 +271,9 @@ def test_healing_set_contract_bank_attrs_CorrectlyPopulatesContract_Groupunit_Pa
 
     swim_text = "swimming"
     sports_text = "sports"
-    sal_sports_road = f"{sx.kind},{sports_text}"
-    bob_sports_road = f"{sx.kind},{sports_text}"
-    tom_sports_road = f"{sx.kind},{sports_text}"
+    sal_sports_road = f"{sx.handle},{sports_text}"
+    bob_sports_road = f"{sx.handle},{sports_text}"
+    tom_sports_road = f"{sx.handle},{sports_text}"
 
     sal_contract.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=sal_sports_road)
     bob_contract.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=bob_sports_road)

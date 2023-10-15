@@ -40,13 +40,13 @@ from src.healing.bank_sqlstr import (
 )
 
 
-class HealingKind(str):
+class HealingHandle(str):
     pass
 
 
 @dataclass
 class HealingUnit:
-    kind: HealingKind
+    handle: HealingHandle
     healings_dir: str
     _healerunits: dict[str:HealerUnit] = None
     _bank_db = None
@@ -266,14 +266,14 @@ class HealingUnit:
         self._bank_db = None
         x_func_delete_dir(dir=self.get_bank_db_path())
 
-    def set_healingunit_kind(self, kind: str):
-        self.kind = kind
+    def set_healingunit_handle(self, handle: str):
+        self.handle = handle
 
     def get_bank_db_path(self):
         return f"{self.get_object_root_dir()}/bank.db"
 
     def get_object_root_dir(self):
-        return f"{self.healings_dir}/{self.kind}"
+        return f"{self.healings_dir}/{self.handle}"
 
     def _create_main_file_if_null(self, x_dir):
         healing_file_title = "healing.json"
@@ -312,7 +312,7 @@ class HealingUnit:
 
     def create_new_healerunit(self, healer_title: str):
         self.set_healerunits_empty_if_null()
-        ux = healerunit_shop(healer_title, self.get_object_root_dir(), self.kind)
+        ux = healerunit_shop(healer_title, self.get_object_root_dir(), self.handle)
         ux.create_core_dir_and_files()
         self._healerunits[ux._admin._healer_title] = ux
 
@@ -390,7 +390,7 @@ class HealingUnit:
         x_func_delete_dir(f"{self.get_public_dir()}/{contract_x_healer}.json")
 
     def save_public_contract(self, contract_x: ContractUnit):
-        contract_x.set_healing_kind(healing_kind=self.kind)
+        contract_x.set_healing_handle(healing_handle=self.handle)
         x_func_save_file(
             dest_dir=self.get_public_dir(),
             file_title=f"{contract_x._healer}.json",
@@ -492,7 +492,7 @@ class HealingUnit:
 
 
 def healingunit_shop(
-    kind: str,
+    handle: str,
     healings_dir: str,
     _healerunits: dict[str:HealerUnit] = None,
     in_memory_bank: bool = None,
@@ -500,7 +500,7 @@ def healingunit_shop(
     if in_memory_bank is None:
         in_memory_bank = True
     healing_x = HealingUnit(
-        kind=kind, healings_dir=healings_dir, _healerunits=_healerunits
+        handle=handle, healings_dir=healings_dir, _healerunits=_healerunits
     )
     healing_x.create_dirs_if_null(in_memory_bank=in_memory_bank)
     return healing_x

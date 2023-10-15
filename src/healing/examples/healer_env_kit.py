@@ -5,10 +5,10 @@ from src.contract.x_func import delete_dir, save_file as x_func_save_file
 
 
 def get_temp_healer_dir() -> str:
-    return f"src/healing/examples/{get_temp_healing_kind()}"
+    return f"src/healing/examples/{get_temp_healing_handle()}"
 
 
-def get_temp_healing_kind() -> str:
+def get_temp_healing_handle() -> str:
     return "ex_env"
 
 

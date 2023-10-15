@@ -29,31 +29,33 @@ def test_IdeaRoot_set_idea_label_get_default_healing_root_label_DoesNotRaisesErr
 def test_IdeaRoot_set_idea_label_CorrectlyDoesNotRaisesError():
     # GIVEN
     new_obj = IdeaRoot()
-    healing_kind = "El Paso"
+    healing_handle = "El Paso"
 
     # WHEN
 
-    new_obj.set_idea_label(_label=healing_kind, contract_healing_kind=healing_kind)
+    new_obj.set_idea_label(
+        _label=healing_handle, contract_healing_handle=healing_handle
+    )
 
     # THEN
-    assert new_obj._label == healing_kind
+    assert new_obj._label == healing_handle
 
 
 def test_IdeaRoot_set_idea_label_InCorrectlyDoesRaisesError():
     # GIVEN
     new_obj = IdeaRoot()
-    healing_kind = "El Paso"
+    healing_handle = "El Paso"
 
     with pytest_raises(Exception) as excinfo:
         casa_text = "casa"
-        new_obj.set_idea_label(_label=casa_text, contract_healing_kind=healing_kind)
+        new_obj.set_idea_label(_label=casa_text, contract_healing_handle=healing_handle)
     assert (
         str(excinfo.value)
-        == f"Cannot set idearoot to string other than '{healing_kind}'"
+        == f"Cannot set idearoot to string other than '{healing_handle}'"
     )
 
 
-def test_IdeaRoot_set_idea_label_RaisesErrorWhen_contract_healing_kind_IsNone():
+def test_IdeaRoot_set_idea_label_RaisesErrorWhen_contract_healing_handle_IsNone():
     # GIVEN
     new_obj = IdeaRoot()
 
@@ -61,20 +63,20 @@ def test_IdeaRoot_set_idea_label_RaisesErrorWhen_contract_healing_kind_IsNone():
 
     with pytest_raises(Exception) as excinfo:
         casa_text = "casa"
-        new_obj.set_idea_label(_label=casa_text, contract_healing_kind=None)
+        new_obj.set_idea_label(_label=casa_text, contract_healing_handle=None)
     assert (
         str(excinfo.value)
         == f"Cannot set idearoot to string other than '{root_label()}'"
     )
 
 
-def test_IdeaRoot_set_idea_label_contract_healing_kind_EqualRootLabelDoesNotRaisesError():
+def test_IdeaRoot_set_idea_label_contract_healing_handle_EqualRootLabelDoesNotRaisesError():
     # GIVEN
     new_obj = IdeaRoot()
 
     # WHEN
 
-    new_obj.set_idea_label(_label=root_label(), contract_healing_kind=root_label())
+    new_obj.set_idea_label(_label=root_label(), contract_healing_handle=root_label())
 
     # THEN
     assert new_obj._label == root_label()

@@ -4,7 +4,7 @@ from src.healing.examples.example_healers import (
 from src.healing.examples.healer_env_kit import (
     healer_dir_setup_cleanup,
     get_temp_healer_dir,
-    get_temp_healing_kind,
+    get_temp_healing_handle,
 )
 from src.contract.contract import ContractUnit
 
@@ -12,7 +12,7 @@ from src.contract.contract import ContractUnit
 def test_healer_set_depot_contract_SetsCorrectInfo(healer_dir_setup_cleanup):
     # GIVEN
     env_dir = get_temp_healer_dir()
-    healer_x = healer_examples_get_healer_2contract(env_dir, get_temp_healing_kind())
+    healer_x = healer_examples_get_healer_2contract(env_dir, get_temp_healing_handle())
     assert healer_x._isol.get_partys_depotlink_count() == 2
     print(f"{healer_x._isol._partys.keys()=}")
 

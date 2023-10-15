@@ -14,7 +14,7 @@ from src.healing.examples.example_healers import (
 from src.healing.examples.healer_env_kit import (
     healer_dir_setup_cleanup,
     get_temp_healer_dir,
-    get_temp_healing_kind,
+    get_temp_healing_handle,
 )
 from os import path as os_path
 from pytest import raises as pytest_raises
@@ -50,19 +50,19 @@ def test_healeropen_isol_contract_WhenStartingContractFileDoesNotExists(
     # GIVEN
     tim_text = "Tim"
     env_dir = get_temp_healer_dir()
-    healing_kind_text = get_temp_healing_kind()
+    healing_handle_text = get_temp_healing_handle()
     ux = healerunit_shop(
-        title=tim_text, env_dir=env_dir, healing_kind=healing_kind_text
+        title=tim_text, env_dir=env_dir, healing_handle=healing_handle_text
     )
 
     # WHEN
     isol_contract = ux._admin.open_isol_contract()
     assert isol_contract != None
-    assert isol_contract._healing_kind == healing_kind_text
+    assert isol_contract._healing_handle == healing_handle_text
 
     # THEN
     x_contract = ContractUnit(_healer=tim_text)
-    x_contract.set_healing_kind(get_temp_healing_kind())
+    x_contract.set_healing_handle(get_temp_healing_handle())
     x_contract.set_contract_metrics()
     # x_idearoot = IdeaRoot(_label=p_title, _walk="")
     # x_idearoot.set_balancelines_empty_if_null()
@@ -90,7 +90,7 @@ def test_healer_save_isol_contract_IsolContractHealerMustBeHealer(
     # GIVEN
     p_title = "Game1"
     env_dir = get_temp_healer_dir()
-    ux = healerunit_shop(p_title, env_dir, get_temp_healing_kind())
+    ux = healerunit_shop(p_title, env_dir, get_temp_healing_handle())
     cx1 = example_contracts_get_contract_with_4_levels()
     assert cx1._healer != p_title
 
@@ -107,7 +107,7 @@ def test_healer_open_isol_contract_WhenStartingContractFileExists(
     # GIVEN
     p_title = "Game1"
     env_dir = get_temp_healer_dir()
-    ux = healerunit_shop(p_title, env_dir, get_temp_healing_kind())
+    ux = healerunit_shop(p_title, env_dir, get_temp_healing_handle())
     ux._admin.save_isol_contract(
         contract_x=example_contracts_get_contract_with_4_levels()
     )
@@ -135,7 +135,7 @@ def test_healer_erase_isol_contract_file_DeletesFileCorrectly(
     # GIVEN
     p_title = "Game1"
     env_dir = get_temp_healer_dir()
-    ux = healerunit_shop(p_title, env_dir, get_temp_healing_kind())
+    ux = healerunit_shop(p_title, env_dir, get_temp_healing_handle())
     ux._admin.save_isol_contract(example_contracts_get_contract_with_4_levels())
     file_title = ux._admin._isol_file_title
     assert x_func_open_file(ux._admin._healer_dir, file_title) != None
@@ -158,7 +158,7 @@ def test_healerunit_save_contract_to_digest_SavesFileCorrectly(
     # GIVEN
     healer_title = "healer1"
     env_dir = get_temp_healer_dir()
-    ux = healerunit_shop(healer_title, env_dir, get_temp_healing_kind())
+    ux = healerunit_shop(healer_title, env_dir, get_temp_healing_handle())
     ux.create_core_dir_and_files()
     cx = example_healers_get_2node_contract()
     src_contract_healer = cx._healer
@@ -188,7 +188,7 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestContract(
     # GIVEN
     sue_text = "Sue"
     env_dir = get_temp_healer_dir()
-    sue_cx = healerunit_shop(sue_text, env_dir, get_temp_healing_kind())
+    sue_cx = healerunit_shop(sue_text, env_dir, get_temp_healing_handle())
     sue_cx.create_core_dir_and_files()
     cx = example_healers_get_2node_contract()
     src_contract_healer = cx._healer
@@ -217,12 +217,14 @@ def test_healer_get_remelded_output_contract_withEmptyDigestDict(
 ):
     # GIVEN
     healer_title_x = "boots3"
-    ux = healerunit_shop(healer_title_x, get_temp_healer_dir(), get_temp_healing_kind())
+    ux = healerunit_shop(
+        healer_title_x, get_temp_healer_dir(), get_temp_healing_handle()
+    )
     ux.create_core_dir_and_files()
     sx_output_before = ux._admin.get_remelded_output_contract()
     assert str(type(sx_output_before)).find(".contract.ContractUnit'>")
     assert sx_output_before._healer == healer_title_x
-    assert sx_output_before._idearoot._label == get_temp_healing_kind()
+    assert sx_output_before._idearoot._label == get_temp_healing_handle()
     # ux.set_digested_contract(contract_x=ContractUnit(_healer="digested1"))
 
     # WHEN
@@ -230,7 +232,7 @@ def test_healer_get_remelded_output_contract_withEmptyDigestDict(
 
     # THEN
     healer_contract_x = ContractUnit(_healer=healer_title_x, _weight=0.0)
-    healer_contract_x.set_healing_kind(get_temp_healing_kind())
+    healer_contract_x.set_healing_handle(get_temp_healing_handle())
     healer_contract_x._idearoot._walk = ""
     healer_contract_x.set_contract_metrics()
 
@@ -250,12 +252,12 @@ def test_healer_get_remelded_output_contract_with1DigestedContract(
     # GIVEN
     yao_text = "Yao"
     env_dir = get_temp_healer_dir()
-    ux = healerunit_shop(yao_text, env_dir, get_temp_healing_kind())
+    ux = healerunit_shop(yao_text, env_dir, get_temp_healing_handle())
     ux.create_core_dir_and_files()
     sx_output_old = ux._admin.get_remelded_output_contract()
     assert str(type(sx_output_old)).find(".contract.ContractUnit'>")
     assert sx_output_old._healer == yao_text
-    assert sx_output_old._idearoot._label == get_temp_healing_kind()
+    assert sx_output_old._idearoot._label == get_temp_healing_handle()
     input_contract = example_healers_get_2node_contract()
     input_contract.meld(input_contract)
     ux.set_depot_contract(contract_x=input_contract, depotlink_type="blind_trust")
@@ -348,7 +350,7 @@ def test_healer_isol_contract_CorrectlysHasOriginLinksWithHealerAsSource(
     assert isol_contract_x._idearoot._originunit == originunit_shop()
     assert isol_contract_x._idearoot._originunit != yao_originunit
 
-    ux = healerunit_shop(yao_text, get_temp_healer_dir(), get_temp_healing_kind())
+    ux = healerunit_shop(yao_text, get_temp_healer_dir(), get_temp_healing_handle())
     ux.create_core_dir_and_files()
     ux._admin.save_isol_contract(contract_x=isol_contract_x)
 

@@ -1,6 +1,6 @@
 from src.healing.healing import healingunit_shop
 from src.healing.examples.healing_env_kit import (
-    get_temp_env_kind,
+    get_temp_env_handle,
     env_dir_setup_cleanup,
     get_test_healings_dir,
 )
@@ -10,7 +10,7 @@ from src.healing.examples.example_healers import (
 
 
 def test_healing_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanup):
-    sx = healingunit_shop(get_temp_env_kind(), get_test_healings_dir())
+    sx = healingunit_shop(get_temp_env_handle(), get_test_healings_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     # GIVEN
@@ -18,11 +18,11 @@ def test_healing_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     sx.create_new_healerunit(healer_title=america_text)
     america_ux = sx.get_healer_obj(title=america_text)
     laundry_contract = get_contract_assignment_laundry_example1()
-    laundry_contract.set_healing_kind(sx.kind)
+    laundry_contract.set_healing_handle(sx.handle)
     america_ux.set_isol(laundry_contract)
 
     casa_text = "casa"
-    casa_road = f"{sx.kind},{casa_text}"
+    casa_road = f"{sx.handle},{casa_text}"
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
     b_full_text = "full"
@@ -75,7 +75,7 @@ def test_healing_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
 
 # def test_healing_create_task_CorrectlyCreatesTask(env_dir_setup_cleanup):
 #     sx = healingunit_shop(
-#         kind=get_temp_env_kind(), healings_dir=get_test_healings_dir()
+#         handle=get_temp_env_handle(), healings_dir=get_test_healings_dir()
 #     )
 #     sx.create_dirs_if_null(in_memory_bank=True)
 

@@ -1,17 +1,17 @@
 from dataclasses import dataclass
-from src.healing.healing import HealingUnit, HealingKind, healingunit_shop
+from src.healing.healing import HealingUnit, HealingHandle, healingunit_shop
 
 
 @dataclass
 class HealingLink:
-    kind: HealingKind
+    kind: HealingHandle
     weight: float
 
     def get_dict(self) -> dict:
         return {"kind": self.kind, "weight": self.weight}
 
 
-def healinglink_shop(kind: HealingKind, weight: float = None) -> HealingLink:
+def healinglink_shop(kind: HealingHandle, weight: float = None) -> HealingLink:
     if weight is None:
         weight = 1
     return HealingLink(kind=kind, weight=weight)
@@ -47,7 +47,7 @@ class PainKind(str):
 @dataclass
 class PainUnit:
     kind: PainKind
-    _healinglinks: dict[HealingKind:HealingLink] = None
+    _healinglinks: dict[HealingHandle:HealingLink] = None
     _healerlinks: dict[PersonName:HealerLink] = None
 
     def set_healinglinks_empty_if_none(self):
@@ -57,11 +57,11 @@ class PainUnit:
     def set_healinglink(self, healinglink: HealingLink):
         self._healinglinks[healinglink.kind] = healinglink
 
-    def get_healinglink(self, healingkind: HealingKind) -> HealingLink:
-        return self._healinglinks.get(healingkind)
+    def get_healinglink(self, healinghandle: HealingHandle) -> HealingLink:
+        return self._healinglinks.get(healinghandle)
 
-    def del_healinglink(self, healingkind: HealingKind):
-        self._healinglinks.pop(healingkind)
+    def del_healinglink(self, healinghandle: HealingHandle):
+        self._healinglinks.pop(healinghandle)
 
     def set_healerlinks_empty_if_none(self):
         if self._healerlinks is None:

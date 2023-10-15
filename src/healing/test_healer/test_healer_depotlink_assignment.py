@@ -5,7 +5,7 @@ from src.healing.examples.example_healers import (
 from src.healing.examples.healer_env_kit import (
     healer_dir_setup_cleanup,
     get_temp_healer_dir,
-    get_temp_healing_kind,
+    get_temp_healing_handle,
 )
 
 
@@ -14,14 +14,14 @@ def test_healer_save_contract_to_depot_assignment_link_CorrectlyCreatesAssignmen
 ):
     # GIVEN
     america_cx = get_contract_assignment_laundry_example1()
-    america_cx.set_healing_kind(get_temp_healing_kind())
+    america_cx.set_healing_handle(get_temp_healing_handle())
     joachim_text = "Joachim"
     joachim_ux = healerunit_shop(
-        joachim_text, get_temp_healer_dir(), get_temp_healing_kind()
+        joachim_text, get_temp_healer_dir(), get_temp_healing_handle()
     )
     joachim_ux.create_core_dir_and_files()
     print(f"{america_cx._idearoot._label=}")
-    assert america_cx._idearoot._label == get_temp_healing_kind()
+    assert america_cx._idearoot._label == get_temp_healing_handle()
     assert america_cx._healer == "America"
     print(f"{america_cx._healer} {america_cx._idearoot._label=}")
 
@@ -35,7 +35,7 @@ def test_healer_save_contract_to_depot_assignment_link_CorrectlyCreatesAssignmen
     assert len(output_cx._idea_dict.keys()) == 9
 
     casa_text = "casa"
-    casa_road = f"{get_temp_healing_kind()},{casa_text}"
+    casa_road = f"{get_temp_healing_handle()},{casa_text}"
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
     b_full_text = "full"

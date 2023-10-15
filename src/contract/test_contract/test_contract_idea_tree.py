@@ -77,24 +77,24 @@ def test_set_contract_metrics_CorrectlyClearsDescendantAttributes():
 def test_get_idea_kid_CorrectlyReturnsIdea():
     cx = example_contracts_get_contract_with_4_levels()
 
-    brazil = f"{cx._healing_kind},nation-state,Brazil"
+    brazil = f"{cx._healing_handle},nation-state,Brazil"
     idea_kid = cx.get_idea_kid(road=brazil)
     assert idea_kid != None
     assert idea_kid._label == "Brazil"
 
-    weekdays = f"{cx._healing_kind},weekdays"
+    weekdays = f"{cx._healing_handle},weekdays"
     idea_kid = cx.get_idea_kid(road=weekdays)
     assert idea_kid != None
     assert idea_kid._label == "weekdays"
 
     # with pytest.raises(Exception) as excinfo:
-    #     cx.get_idea_kid(road=cx._healing_kind)
-    # assert str(excinfo.value) == f"Cannot return root '{cx._healing_kind}'"
-    idea_root = cx.get_idea_kid(road=cx._healing_kind)
+    #     cx.get_idea_kid(road=cx._healing_handle)
+    # assert str(excinfo.value) == f"Cannot return root '{cx._healing_handle}'"
+    idea_root = cx.get_idea_kid(road=cx._healing_handle)
     assert idea_root != None
-    assert idea_root._label == cx._healing_kind
+    assert idea_root._label == cx._healing_handle
 
-    wrong_road = f"{cx._healing_kind},bobdylan"
+    wrong_road = f"{cx._healing_handle},bobdylan"
     with pytest_raises(Exception) as excinfo:
         cx.get_idea_kid(road=wrong_road)
     assert (
@@ -119,7 +119,7 @@ def test_set_contract_metrics_RootOnlyCorrectlySetsDescendantAttributes():
 def test_set_contract_metrics_NLevelCorrectlySetsDescendantAttributes_1():
     cx = example_contracts_get_contract_with_4_levels()
     x_idea = IdeaKid(_label="email", promise=True)
-    cx.add_idea(idea_kid=x_idea, walk=f"{cx._healing_kind},work")
+    cx.add_idea(idea_kid=x_idea, walk=f"{cx._healing_handle},work")
 
     # idea ",weekdays,Sunday"
     # idea ",weekdays,Monday"
@@ -168,9 +168,9 @@ def test_set_contract_metrics_NLevelCorrectlySetsDescendantAttributes_1():
 def test_set_contract_metrics_NLevelCorrectlySetsDescendantAttributes_2():
     cx = example_contracts_get_contract_with_4_levels()
     x1_idea = IdeaKid(_label="email", promise=True)
-    cx.add_idea(idea_kid=x1_idea, walk=f"{cx._healing_kind},work")
+    cx.add_idea(idea_kid=x1_idea, walk=f"{cx._healing_handle},work")
     x2_idea = IdeaKid(_label="sweep", promise=True)
-    cx.add_idea(idea_kid=x2_idea, walk=f"{cx._healing_kind},work")
+    cx.add_idea(idea_kid=x2_idea, walk=f"{cx._healing_handle},work")
 
     cx.add_partyunit(title="sandy")
     x_balancelink = Balancelink(brand="sandy")
@@ -240,13 +240,13 @@ def test_TreeTraverseSetsBalancelineestorFromRootCorrectly():
     print(f"{sandy_balanceline._contract_credit=} {root_idea._contract_importance=} ")
     print(f"  {sandy_balanceline._contract_debt=} {root_idea._contract_importance=} ")
     sum_x = 0
-    cat_road = f"{cx._healing_kind},feed cat"
+    cat_road = f"{cx._healing_handle},feed cat"
     cat_idea = cx.get_idea_kid(cat_road)
-    week_road = f"{cx._healing_kind},weekdays"
+    week_road = f"{cx._healing_handle},weekdays"
     week_idea = cx.get_idea_kid(week_road)
-    work_road = f"{cx._healing_kind},work"
+    work_road = f"{cx._healing_handle},work"
     work_idea = cx.get_idea_kid(work_road)
-    nation_road = f"{cx._healing_kind},nation-state"
+    nation_road = f"{cx._healing_handle},nation-state"
     nation_idea = cx.get_idea_kid(nation_road)
     sum_x = cat_idea._contract_importance
     print(f"{cat_idea._contract_importance=} {sum_x} ")
@@ -299,9 +299,9 @@ def test_TreeTraverseSetsBalancelineestorFromNonRootCorrectly():
 def test_contract4party_Exists():
     cx = example_contracts_get_contract_with_4_levels()
     x1_idea = IdeaKid(_label="email", promise=True)
-    cx.add_idea(idea_kid=x1_idea, walk=f"{cx._healing_kind},work")
+    cx.add_idea(idea_kid=x1_idea, walk=f"{cx._healing_handle},work")
     x2_idea = IdeaKid(_label="sweep", promise=True)
-    cx.add_idea(idea_kid=x2_idea, walk=f"{cx._healing_kind},work")
+    cx.add_idea(idea_kid=x2_idea, walk=f"{cx._healing_handle},work")
 
     sandy_title = PartyTitle("sandy")
     cx.add_partyunit(title=sandy_title)
@@ -319,9 +319,9 @@ def test_contract4party_Exists():
 def test_contract4party_hasCorrectLevel1StructureNoGrouplessBranches():
     cx = example_contracts_get_contract_with_4_levels()
     x1_idea = IdeaKid(_label="email", promise=True)
-    cx.add_idea(idea_kid=x1_idea, walk=f"{cx._healing_kind},work")
+    cx.add_idea(idea_kid=x1_idea, walk=f"{cx._healing_handle},work")
     x2_idea = IdeaKid(_label="sweep", promise=True)
-    cx.add_idea(idea_kid=x2_idea, walk=f"{cx._healing_kind},work")
+    cx.add_idea(idea_kid=x2_idea, walk=f"{cx._healing_handle},work")
 
     billy_title = PartyTitle("billy")
     cx.add_partyunit(title=billy_title)
@@ -369,19 +369,19 @@ def test_contract_get_orderd_node_list_WorksCorrectly():
     # for node in ordered_node_list:
     #     print(f"{node}")
     assert len(ordered_node_list) == 17
-    assert cx.get_idea_tree_ordered_road_list()[0] == f"{cx._healing_kind}"
-    assert cx.get_idea_tree_ordered_road_list()[8] == f"{cx._healing_kind},weekdays"
+    assert cx.get_idea_tree_ordered_road_list()[0] == f"{cx._healing_handle}"
+    assert cx.get_idea_tree_ordered_road_list()[8] == f"{cx._healing_handle},weekdays"
 
     lw_y = ContractUnit(_healer="MyContract")
-    assert lw_y.get_idea_tree_ordered_road_list()[0] == cx._healing_kind
+    assert lw_y.get_idea_tree_ordered_road_list()[0] == cx._healing_handle
 
 
 def test_contract_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoads():
     healer_text = "Tim"
     cx = ContractUnit(_healer=healer_text)
     time = "timeline"
-    cx.add_idea(IdeaKid(_label=time, _begin=0, _close=700), walk=cx._healing_kind)
-    t_road = f"{cx._healing_kind},{time}"
+    cx.add_idea(IdeaKid(_label=time, _begin=0, _close=700), walk=cx._healing_handle)
+    t_road = f"{cx._healing_handle},{time}"
     week = "weeks"
     cx.add_idea(IdeaKid(_label=week, _denom=7), walk=t_road)
 
@@ -391,7 +391,7 @@ def test_contract_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoads():
 
 def test_contract_get_heir_road_list_returnsCorrectList():
     cx = example_contracts_get_contract_with_4_levels()
-    weekdays = f"{cx._healing_kind},weekdays"
+    weekdays = f"{cx._healing_handle},weekdays"
     assert cx.get_heir_road_list(road_x=weekdays)
     heir_node_road_list = cx.get_heir_road_list(road_x=weekdays)
     # for node in heir_node_road_list:
@@ -405,61 +405,61 @@ def test_contract_get_heir_road_list_returnsCorrectList():
 # def test_contract4party_hasCorrectLevel1StructureWithGrouplessBranches_2():
 #     cx = ContractUnit(_healer=healer_text)
 #     cx.add_idea(idea_kid=IdeaKid(_label="A", _weight=7), walk="blahblah")
-#     cx.add_idea(idea_kid=IdeaKid(_label="C", _weight=3), walk=f"{cx._healing_kind},A")
-#     cx.add_idea(idea_kid=IdeaKid(_label="E", _weight=7), walk=f"{cx._healing_kind},A,C")
-#     cx.add_idea(idea_kid=IdeaKid(_label="D", _weight=7), walk=f"{cx._healing_kind},A,C")
+#     cx.add_idea(idea_kid=IdeaKid(_label="C", _weight=3), walk=f"{cx._healing_handle},A")
+#     cx.add_idea(idea_kid=IdeaKid(_label="E", _weight=7), walk=f"{cx._healing_handle},A,C")
+#     cx.add_idea(idea_kid=IdeaKid(_label="D", _weight=7), walk=f"{cx._healing_handle},A,C")
 #     cx.add_idea(idea_kid=IdeaKid(_label="B", _weight=13), walk="blahblah")
 #     cx.add_idea(idea_kid=IdeaKid(_label="F", _weight=23), walk="blahblah")
 #     cx.add_idea(idea_kid=IdeaKid(_label="G", _weight=57), walk="blahblah")
-#     cx.add_idea(idea_kid=IdeaKid(_label="I"), walk=f"{cx._healing_kind},G")
-#     cx.add_idea(idea_kid=IdeaKid(_label="H"), walk=f"{cx._healing_kind},G")
-#     cx.add_idea(idea_kid=IdeaKid(_label="J"), walk=f"{cx._healing_kind},G,I")
-#     cx.add_idea(idea_kid=IdeaKid(_label="K"), walk=f"{cx._healing_kind},G,I")
-#     cx.add_idea(idea_kid=IdeaKid(_label="M"), walk=f"{cx._healing_kind},G,H")
+#     cx.add_idea(idea_kid=IdeaKid(_label="I"), walk=f"{cx._healing_handle},G")
+#     cx.add_idea(idea_kid=IdeaKid(_label="H"), walk=f"{cx._healing_handle},G")
+#     cx.add_idea(idea_kid=IdeaKid(_label="J"), walk=f"{cx._healing_handle},G,I")
+#     cx.add_idea(idea_kid=IdeaKid(_label="K"), walk=f"{cx._healing_handle},G,I")
+#     cx.add_idea(idea_kid=IdeaKid(_label="M"), walk=f"{cx._healing_handle},G,H")
 
 #     billy_title = PartyTitle("billy")
 #     cx.add_partyunit(title=billy_title)
 #     billy_bl = Balancelink(brand=billy_title)
-#     cx.edit_idea_attr(road=f"{cx._healing_kind},G", balancelink=billy_bl)
-#     cx.edit_idea_attr(road=f"{cx._healing_kind},G,H,M", balancelink=billy_bl)
+#     cx.edit_idea_attr(road=f"{cx._healing_handle},G", balancelink=billy_bl)
+#     cx.edit_idea_attr(road=f"{cx._healing_handle},G,H,M", balancelink=billy_bl)
 
 #     sandy_title = PartyTitle("sandy")
 #     cx.add_partyunit(title=sandy_title)
 #     sandy_bl = Balancelink(brand=sandy_title)
-#     cx.edit_idea_attr(road=f"{cx._healing_kind},A", balancelink=sandy_bl)
-#     cx.edit_idea_attr(road=f"{cx._healing_kind},B", balancelink=sandy_bl)
-#     cx.edit_idea_attr(road=f"{cx._healing_kind},A,C,E", balancelink=sandy_bl)
+#     cx.edit_idea_attr(road=f"{cx._healing_handle},A", balancelink=sandy_bl)
+#     cx.edit_idea_attr(road=f"{cx._healing_handle},B", balancelink=sandy_bl)
+#     cx.edit_idea_attr(road=f"{cx._healing_handle},A,C,E", balancelink=sandy_bl)
 
 #     # expected sandy
 #     exp_sandy = ContractUnit(_healer=healer_text)
 #     exp_sandy.add_idea(idea_kid=IdeaKid(_label="A", _contract_importance=0.07), walk="blahblah")
-#     exp_sandy.add_idea(idea_kid=IdeaKid(_label="C", _contract_importance=0.07), walk=f"{cx._healing_kind},A")
-#     exp_sandy.add_idea(idea_kid=IdeaKid(_label="E", _contract_importance=0.5), walk=f"{cx._healing_kind},A,C")
+#     exp_sandy.add_idea(idea_kid=IdeaKid(_label="C", _contract_importance=0.07), walk=f"{cx._healing_handle},A")
+#     exp_sandy.add_idea(idea_kid=IdeaKid(_label="E", _contract_importance=0.5), walk=f"{cx._healing_handle},A,C")
 #     exp_sandy.add_idea(idea_kid=IdeaKid(_label="B", _contract_importance=0.13), walk="blahblah")
 
 #     # generated sandy
 #     gen_sandy = cx.get_contract4party(acptfacts=None, party_title=sandy_title)
 
 #     # check generated sandy is correct
-#     assert gen_sandy.get_idea_kid(road=f"{cx._healing_kind},A")._contract_importance == 0.07
-#     assert gen_sandy.get_idea_kid(road=f"{cx._healing_kind},A,C")._contract_importance == 0.07
-#     assert gen_sandy.get_idea_kid(road=f"{cx._healing_kind},A,C,E")._contract_importance == 0.5
-#     assert gen_sandy.get_idea_kid(road=f"{cx._healing_kind},B")._contract_importance == 0.13
+#     assert gen_sandy.get_idea_kid(road=f"{cx._healing_handle},A")._contract_importance == 0.07
+#     assert gen_sandy.get_idea_kid(road=f"{cx._healing_handle},A,C")._contract_importance == 0.07
+#     assert gen_sandy.get_idea_kid(road=f"{cx._healing_handle},A,C,E")._contract_importance == 0.5
+#     assert gen_sandy.get_idea_kid(road=f"{cx._healing_handle},B")._contract_importance == 0.13
 #     assert (
-#         gen_sandy.get_idea_kid(road=f"{cx._healing_kind},A")._contract_importance
-#         == exp_sandy.get_idea_kid(road=f"{cx._healing_kind},A")._contract_importance
+#         gen_sandy.get_idea_kid(road=f"{cx._healing_handle},A")._contract_importance
+#         == exp_sandy.get_idea_kid(road=f"{cx._healing_handle},A")._contract_importance
 #     )
 #     assert (
-#         gen_sandy.get_idea_kid(road=f"{cx._healing_kind},A,C")._contract_importance
-#         == exp_sandy.get_idea_kid(road=f"{cx._healing_kind},A,C")._contract_importance
+#         gen_sandy.get_idea_kid(road=f"{cx._healing_handle},A,C")._contract_importance
+#         == exp_sandy.get_idea_kid(road=f"{cx._healing_handle},A,C")._contract_importance
 #     )
 #     assert (
-#         gen_sandy.get_idea_kid(road=f"{cx._healing_kind},A,C,E")._contract_importance
-#         == exp_sandy.get_idea_kid(road=f"{cx._healing_kind},A,C,E")._contract_importance
+#         gen_sandy.get_idea_kid(road=f"{cx._healing_handle},A,C,E")._contract_importance
+#         == exp_sandy.get_idea_kid(road=f"{cx._healing_handle},A,C,E")._contract_importance
 #     )
 #     assert (
-#         gen_sandy.get_idea_kid(road=f"{cx._healing_kind},B")._contract_importance
-#         == exp_sandy.get_idea_kid(road=f"{cx._healing_kind},B")._contract_importance
+#         gen_sandy.get_idea_kid(road=f"{cx._healing_handle},B")._contract_importance
+#         == exp_sandy.get_idea_kid(road=f"{cx._healing_handle},B")._contract_importance
 #     )
 #     gen_sandy_list = gen_sandy.get_idea_list()
 #     assert len(gen_sandy_list) == 5

@@ -125,8 +125,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             title=first_env, healings_dir=get_test_healings_dir()
         )
         self.refresh_healing()
-        self.healing_kind_combo_refresh()
-        self.healing_kind_combo.setCurrentText(first_env)
+        self.healing_handle_combo_refresh()
+        self.healing_handle_combo.setCurrentText(first_env)
         self._healer_load(healer_title="ernie")
 
     def save_isol(self):
@@ -148,12 +148,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_healing()
 
     def healing_load_from_file(self):
-        healing_selected = self.healing_kind_combo.currentText()
+        healing_selected = self.healing_handle_combo.currentText()
         self.healing_x = healingunit_shop(
             title=healing_selected, healings_dir=get_test_healings_dir()
         )
         self.healing_x.create_dirs_if_null(in_memory_bank=False)
-        self.healing_kind.setText(healing_selected)
+        self.healing_handle.setText(healing_selected)
         self.refresh_healing()
 
     def contracts_table_select(self):
@@ -217,19 +217,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.digests_table.setHidden(False)
 
     def healing_insert(self):
-        create_example_healing(healing_kind=self.healing_kind.text())
-        self.healing_kind_combo_refresh()
+        create_example_healing(healing_handle=self.healing_handle.text())
+        self.healing_handle_combo_refresh()
 
     def healing_update_title(self):
         rename_example_healing(
-            healing_obj=self.healing_x, new_title=self.healing_kind.text()
+            healing_obj=self.healing_x, new_title=self.healing_handle.text()
         )
-        self.healing_kind_combo_refresh()
+        self.healing_handle_combo_refresh()
 
     def healing_delete(self):
         delete_dir_example_healing(healing_obj=self.healing_x)
         self.healing_x = None
-        self.healing_kind_combo_refresh()
+        self.healing_handle_combo_refresh()
         self.refresh_healing()
 
     def contract_insert(self):
@@ -571,9 +571,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             column_width=[50, 200, 300],
         )
 
-    def healing_kind_combo_refresh(self):
-        self.healing_kind_combo.clear()
-        self.healing_kind_combo.addItems(create_example_healings_list())
+    def healing_handle_combo_refresh(self):
+        self.healing_handle_combo.clear()
+        self.healing_handle_combo.addItems(create_example_healings_list())
 
     def refresh_healers(self):
         self.healer_x = None

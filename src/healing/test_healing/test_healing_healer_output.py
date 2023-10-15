@@ -8,7 +8,7 @@ from src.healing.examples.example_healers import (
     get_contract_3CleanNodesRandomWeights,
 )
 from src.healing.examples.healing_env_kit import (
-    get_temp_env_kind,
+    get_temp_env_handle,
     get_test_healings_dir,
     env_dir_setup_cleanup,
 )
@@ -19,7 +19,7 @@ def test_healing_get_output_contract_ReturnsCorrectContractObjScenario1(
 ):
     # GIVEN
     sx = healingunit_shop(
-        kind=get_temp_env_kind(), healings_dir=get_test_healings_dir()
+        handle=get_temp_env_handle(), healings_dir=get_test_healings_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
     input_cx = example_healers_get_6node_contract()
@@ -43,7 +43,7 @@ def test_healing_get_output_contract_ReturnsCorrectContractObjScenario1(
     # THEN
     a_text = "A"
     c_text = "C"
-    c_road = f"{input_cx._healing_kind},{c_text}"
+    c_road = f"{input_cx._healing_handle},{c_text}"
     d_text = "D"
     d_road = f"{c_road},{d_text}"
     print(f"{output_cx._healer=}")
@@ -93,7 +93,7 @@ def test_healing_get_output_contract_ReturnsCorrectContractObjScenario2(
 ):
     # GIVEN
     sx = healingunit_shop(
-        kind=get_temp_env_kind(), healings_dir=get_test_healings_dir()
+        handle=get_temp_env_handle(), healings_dir=get_test_healings_dir()
     )
     sx.create_dirs_if_null(in_memory_bank=True)
     cx1 = example_healers_get_6node_contract()
@@ -115,7 +115,7 @@ def test_healing_get_output_contract_ReturnsCorrectContractObjScenario2(
     output_cx = sx.get_output_contract(healer_title=xia_text)
 
     # THEN
-    output_cx_d_road = f"{output_cx._healing_kind},C,D"
+    output_cx_d_road = f"{output_cx._healing_handle},C,D"
     output_cx_d_idea = output_cx.get_idea_kid(output_cx_d_road)
     print(f" {output_cx_d_idea._weight=} ")
     assert output_cx != None
@@ -151,8 +151,8 @@ def test_healerunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
 ):
     # GIVEN
     env_dir = get_test_healings_dir()
-    healing_kind = get_temp_env_kind()
-    sx = healingunit_shop(kind=healing_kind, healings_dir=env_dir)
+    healing_handle = get_temp_env_handle()
+    sx = healingunit_shop(handle=healing_handle, healings_dir=env_dir)
     sx.create_dirs_if_null(in_memory_bank=True)
     # ux = healerunit_shop(title=healer1_text, env_dir=env_dir)
 

@@ -160,7 +160,7 @@
      <string>Add new Healing</string>
     </property>
    </widget>
-   <widget class="QLineEdit" title="healing_kind">
+   <widget class="QLineEdit" title="healing_handle">
     <property title="geometry">
      <rect>
       <x>20</x>
@@ -622,7 +622,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QComboBox" title="healing_kind_combo">
+   <widget class="QComboBox" title="healing_handle_combo">
     <property title="geometry">
      <rect>
       <x>20</x>

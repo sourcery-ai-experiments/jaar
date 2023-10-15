@@ -981,16 +981,16 @@ class IdeaRoot(IdeaCore):
     def __post_init__(self):
         self.set_idea_label(_label=root_label())
 
-    def set_idea_label(self, _label: str, contract_healing_kind: str = None):
-        if _label != root_label() and contract_healing_kind is None:
+    def set_idea_label(self, _label: str, contract_healing_handle: str = None):
+        if _label != root_label() and contract_healing_handle is None:
             raise IdeaRootLabelNotEmptyException(
                 f"Cannot set idearoot to string other than '{root_label()}'"
             )
-        elif _label != contract_healing_kind != None:
+        elif _label != contract_healing_handle != None:
             raise IdeaRootLabelNotEmptyException(
-                f"Cannot set idearoot to string other than '{contract_healing_kind}'"
+                f"Cannot set idearoot to string other than '{contract_healing_handle}'"
             )
-        elif _label != root_label() and contract_healing_kind == _label:
+        elif _label != root_label() and contract_healing_handle == _label:
             self._label = _label
         else:
             self._label = root_label()

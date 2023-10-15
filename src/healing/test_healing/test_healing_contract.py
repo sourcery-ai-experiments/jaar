@@ -9,7 +9,7 @@ from src.healing.examples.example_healers import (
     get_1node_contract as example_healers_get_7nodeJRootWithH_contract,
 )
 from src.healing.examples.healing_env_kit import (
-    get_temp_env_kind,
+    get_temp_env_handle,
     get_test_healings_dir,
     env_dir_setup_cleanup,
 )
@@ -19,8 +19,8 @@ from pytest import raises as pytest_raises
 
 def test_healing_set_contract_CreatesContractFile(env_dir_setup_cleanup):
     # GIVEN
-    healing_kind = get_temp_env_kind()
-    sx = healingunit_shop(kind=healing_kind, healings_dir=get_test_healings_dir())
+    healing_handle = get_temp_env_handle()
+    sx = healingunit_shop(handle=healing_handle, healings_dir=get_test_healings_dir())
     sx.create_dirs_if_null()
     sx1_obj = example_healers_get_1node_contract()
     sx1_path = f"{sx.get_public_dir()}/{sx1_obj._healer}.json"
@@ -36,8 +36,8 @@ def test_healing_set_contract_CreatesContractFile(env_dir_setup_cleanup):
 
 def test_healing_get_contract_currentlyGetsContract(env_dir_setup_cleanup):
     # GIVEN
-    healing_kind = get_temp_env_kind()
-    e5 = healingunit_shop(kind=healing_kind, healings_dir=get_test_healings_dir())
+    healing_handle = get_temp_env_handle()
+    e5 = healingunit_shop(handle=healing_handle, healings_dir=get_test_healings_dir())
     e5.create_dirs_if_null(in_memory_bank=True)
     sx5_obj = example_healers_get_7nodeJRootWithH_contract()
     e5.save_public_contract(contract_x=sx5_obj)
@@ -50,8 +50,8 @@ def test_healing_rename_public_contract_ChangesContractTitle(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    healing_kind = get_temp_env_kind()
-    e5 = healingunit_shop(kind=healing_kind, healings_dir=get_test_healings_dir())
+    healing_handle = get_temp_env_handle()
+    e5 = healingunit_shop(handle=healing_handle, healings_dir=get_test_healings_dir())
     e5.create_dirs_if_null(in_memory_bank=True)
     old_contract_healer = "old1"
     sx5_obj = ContractUnit(_healer=old_contract_healer)
@@ -77,8 +77,8 @@ def test_healing_SetsIdeaRootLabel(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    healing_kind = get_temp_env_kind()
-    e5 = healingunit_shop(kind=healing_kind, healings_dir=get_test_healings_dir())
+    healing_handle = get_temp_env_handle()
+    e5 = healingunit_shop(handle=healing_handle, healings_dir=get_test_healings_dir())
     e5.create_dirs_if_null(in_memory_bank=True)
     contract_x = example_contracts_get_contract_1Task_1CE0MinutesRequired_1AcptFact()
     assert contract_x._idearoot._label == "A"
@@ -88,4 +88,4 @@ def test_healing_SetsIdeaRootLabel(
 
     # THEN
     contract_after = e5.get_public_contract(contract_x._healer)
-    assert contract_after._idearoot._label == healing_kind
+    assert contract_after._idearoot._label == healing_handle

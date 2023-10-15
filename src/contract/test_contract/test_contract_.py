@@ -17,7 +17,7 @@ def test_contract_exists():
 
     assert new_obj
     assert new_obj._healer == healer_text
-    assert new_obj._healing_kind == root_label()
+    assert new_obj._healing_handle == root_label()
     assert new_obj._weight == 1
     assert new_obj._max_tree_traverse == 3
     assert new_obj._tree_traverse_count is None
@@ -40,7 +40,7 @@ def test_contract_IsAbleToSetTaskAsComplete():
     assert mail_idea._task == True
 
     ced_min_label = "CE0_minutes"
-    ced_road = f"{contract_x._healing_kind},{ced_min_label}"
+    ced_road = f"{contract_x._healing_handle},{ced_min_label}"
     contract_x.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=85)
     idea_list = contract_x.get_idea_list()
     assert mail_idea.promise == True
@@ -50,7 +50,7 @@ def test_contract_IsAbleToSetTaskAsComplete():
 def test_contract_IsAbleToEditAcptFactUnitAnyAncestor_Idea_1():
     contract_x = get_contract_1Task_1CE0MinutesRequired_1AcptFact()
     ced_min_label = "CE0_minutes"
-    ced_road = f"{contract_x._healing_kind},{ced_min_label}"
+    ced_road = f"{contract_x._healing_handle},{ced_min_label}"
     contract_x.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=85)
     idea_list = contract_x.get_idea_list()
     mail_idea = idea_list[1]
@@ -150,15 +150,15 @@ def test_contract_init_CorrectlySetsGiven_auto_output_to_public():
     assert new_obj._auto_output_to_public == True
 
 
-def test_contract_set_healing_kind_CorrectlySetsAttr():
+def test_contract_set_healing_handle_CorrectlySetsAttr():
     # GIVEN
-    healing_kind_text = "Sun"
+    healing_handle_text = "Sun"
     healer_text = "Noa"
     new_obj = ContractUnit(_healer=healer_text, _auto_output_to_public=True)
-    assert new_obj._healing_kind == root_label()
+    assert new_obj._healing_handle == root_label()
 
     # WHEN
-    new_obj.set_healing_kind(healing_kind=healing_kind_text)
+    new_obj.set_healing_handle(healing_handle=healing_handle_text)
 
     # THEN
-    assert new_obj._healing_kind == healing_kind_text
+    assert new_obj._healing_handle == healing_handle_text

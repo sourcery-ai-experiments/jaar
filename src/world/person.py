@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src.healing.healing import HealingUnit, HealingKind, healingunit_shop
+from src.healing.healing import HealingUnit, HealingHandle, healingunit_shop
 from src.world.pain import PainKind, PainUnit, PersonName, painunit_shop
 
 
@@ -7,7 +7,7 @@ from src.world.pain import PainKind, PainUnit, PersonName, painunit_shop
 class PersonUnit:
     name: PersonName = None
     person_dir: str = None
-    _healings: dict[HealingKind:HealingUnit] = None
+    _healings: dict[HealingHandle:HealingUnit] = None
     _pains: dict[PainKind:PainUnit] = None
 
     def set_pains_empty_if_none(self):
@@ -27,20 +27,20 @@ class PersonUnit:
         if self._healings is None:
             self._healings = {}
 
-    def set_healingunit(self, healing_kind: HealingKind):
+    def set_healingunit(self, healing_handle: HealingHandle):
         healings_dir = f"{self.person_dir}/healings"
-        self._healings[healing_kind] = healingunit_shop(
-            kind=healing_kind, healings_dir=healings_dir
+        self._healings[healing_handle] = healingunit_shop(
+            handle=healing_handle, healings_dir=healings_dir
         )
 
-    def get_healingunit(self, healing_kind: HealingKind) -> HealingUnit:
-        return self._healings.get(healing_kind)
+    def get_healingunit(self, healing_handle: HealingHandle) -> HealingUnit:
+        return self._healings.get(healing_handle)
 
-    def del_healingunit(self, healing_kind: HealingKind):
-        self._healings.pop(healing_kind)
+    def del_healingunit(self, healing_handle: HealingHandle):
+        self._healings.pop(healing_handle)
 
     def get_healings_dict(self) -> dict:
-        return {healingunit_x.kind: None for healingunit_x in self._healings.values()}
+        return {healingunit_x.handle: None for healingunit_x in self._healings.values()}
 
     def get_pains_dict(self) -> dict:
         return {

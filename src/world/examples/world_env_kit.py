@@ -29,12 +29,12 @@ from os import listdir as os_listdir, rename as os_rename, path as os_path
 from pytest import fixture as pytest_fixture
 
 
-def get_temp_env_kind():
+def get_temp_env_handle():
     return "ex_env77"
 
 
 def get_temp_env_dir():
-    return f"{get_test_worlds_dir()}/{get_temp_env_kind()}"
+    return f"{get_test_worlds_dir()}/{get_temp_env_handle()}"
 
 
 def get_test_worlds_dir():
@@ -77,14 +77,14 @@ def create_example_worlds_list():
 #     pass
 
 
-# def copy_evaluation_world(src_kind: str, dest_kind: str):
+# def copy_evaluation_world(src_handle: str, dest_handle: str):
 #     base_dir = "src/world/examples/worlds"
-#     new_dir = f"{base_dir}/{dest_kind}"
+#     new_dir = f"{base_dir}/{dest_handle}"
 #     if os_path.exists(new_dir):
 #         raise InvalidHealingCopyException(
 #             f"Cannot copy world to '{new_dir}' directory because '{new_dir}' exists."
 #         )
 #     # base_dir = world_obj.get_object_root_dir()
-#     src_dir = f"{base_dir}/{src_kind}"
-#     dest_dir = f"{base_dir}/{dest_kind}"
+#     src_dir = f"{base_dir}/{src_handle}"
+#     dest_dir = f"{base_dir}/{dest_handle}"
 #     copy_dir(src_dir=src_dir, dest_dir=dest_dir)

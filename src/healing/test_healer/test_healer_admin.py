@@ -9,7 +9,7 @@ from src.healing.examples.example_healers import (
 )
 from src.healing.examples.healer_env_kit import (
     get_temp_healer_dir,
-    get_temp_healing_kind,
+    get_temp_healing_handle,
     healer_dir_setup_cleanup,
 )
 from os import path as os_path
@@ -21,12 +21,12 @@ def test_admin_exists():
     env_dir = get_temp_healer_dir()
 
     # WHEN
-    pdx = HealerAdmin(bob_text, env_dir, get_temp_healing_kind())
+    pdx = HealerAdmin(bob_text, env_dir, get_temp_healing_handle())
 
     # THEN
     assert pdx._healer_title != None
     assert pdx._env_dir != None
-    assert pdx._healing_kind != None
+    assert pdx._healing_handle != None
     assert pdx._healer_dir is None
     assert pdx._isol_file_title is None
     assert pdx._isol_file_path is None
@@ -44,7 +44,7 @@ def test_HealerAdmin_set_dir_CorrectSetsHealerAdminAttribute():
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_healer_dir()
-    pdx = HealerAdmin(bob_text, env_dir, get_temp_healing_kind())
+    pdx = HealerAdmin(bob_text, env_dir, get_temp_healing_handle())
     assert pdx._healer_dir is None
     assert pdx._contract_output_file_title is None
     assert pdx._contract_output_file_path is None
@@ -106,7 +106,7 @@ def test_HealerAdmin_create_core_dir_and_files_CreatesDirsAndFiles(
     # GIVEN create healer
     jul_text = "julian"
     env_dir = get_temp_healer_dir()
-    pdx = HealerAdmin(jul_text, env_dir, get_temp_healing_kind())
+    pdx = HealerAdmin(jul_text, env_dir, get_temp_healing_handle())
     pdx.set_dirs()
     assert os_path.exists(pdx._healers_dir) is False
     assert os_path.exists(pdx._healer_dir) is False
@@ -140,7 +140,7 @@ def test_HealerAdmin_create_core_dir_and_files_DoesNotOverWriteIsolContract(
     # GIVEN create healer
     jul_text = "julian"
     env_dir = get_temp_healer_dir()
-    jul_pdx = HealerAdmin(jul_text, env_dir, get_temp_healing_kind())
+    jul_pdx = HealerAdmin(jul_text, env_dir, get_temp_healing_handle())
     jul_pdx.set_dirs()
     contract_x = example_healers_get_7nodeJRootWithH_contract()
     jul_pdx.create_core_dir_and_files(contract_x)
@@ -166,7 +166,7 @@ def test_HealerAdmin_set_healer_title_WorksCorrectly(healer_dir_setup_cleanup):
     env_dir = get_temp_healer_dir()
 
     old_healer_text = "bob"
-    pdx = HealerAdmin(old_healer_text, env_dir, get_temp_healing_kind())
+    pdx = HealerAdmin(old_healer_text, env_dir, get_temp_healing_handle())
     contract_x = example_healers_get_7nodeJRootWithH_contract()
     pdx.set_dirs()
     pdx.create_core_dir_and_files(contract_x)
@@ -205,7 +205,7 @@ def test_healerunit_auto_output_to_public_SavesContractToPublicDir(
 ):
     # GIVEN
     bob_text = "bob"
-    pdx = healeradmin_shop(bob_text, get_temp_healer_dir(), get_temp_healing_kind())
+    pdx = healeradmin_shop(bob_text, get_temp_healer_dir(), get_temp_healing_handle())
     contract_x = example_healers_get_6node_contract()
     contract_x.set_healer(new_healer=bob_text)
     pdx.create_core_dir_and_files(contract_x)
