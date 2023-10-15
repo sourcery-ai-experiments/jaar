@@ -777,7 +777,7 @@
             "single_party_id": null,
             "uid": 34
         },
-        "People who care about UTEP": {
+        "People who identify by UTEP": {
             "_partys": {
                 "Renee Elise Goldsberry": {
                     "creditor_weight": 1,
@@ -786,7 +786,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "People who care about UTEP",
+            "brand": "People who identify by UTEP",
             "single_party_id": null,
             "uid": 18
         },
@@ -2463,14 +2463,14 @@
                                                     "_weight": 1,
                                                     "promise": false
                                                 },
-                                                "take care of rent": {
+                                                "be reponsible for rent": {
                                                     "_acptfactunits": {},
                                                     "_addin": null,
                                                     "_begin": null,
                                                     "_balancelinks": {},
                                                     "_close": null,
                                                     "_denom": null,
-                                                    "_label": "take care of rent",
+                                                    "_label": "be reponsible for rent",
                                                     "_is_expanded": true,
                                                     "_kids": {},
                                                     "_numeric_road": null,
@@ -2910,14 +2910,14 @@
             "_label": "casa",
             "_is_expanded": false,
             "_kids": {
-                "body care": {
+                "workout": {
                     "_acptfactunits": {},
                     "_addin": null,
                     "_begin": null,
                     "_balancelinks": {},
                     "_close": null,
                     "_denom": null,
-                    "_label": "body care",
+                    "_label": "workout",
                     "_is_expanded": false,
                     "_kids": {
                         "5 push-ups": {
@@ -4993,7 +4993,7 @@
                             "_weight": 1,
                             "promise": true
                         },
-                        "take care of expenses card": {
+                        "be responsible for expenses card": {
                             "_acptfactunits": {},
                             "_addin": null,
                             "_begin": null,
@@ -5006,7 +5006,7 @@
                             },
                             "_close": null,
                             "_denom": null,
-                            "_label": "take care of expenses card",
+                            "_label": "be responsible for expenses card",
                             "_is_expanded": true,
                             "_kids": {},
                             "_numeric_road": null,
@@ -5032,7 +5032,7 @@
                             "_weight": 1,
                             "promise": true
                         },
-                        "take care of rent": {
+                        "be reponsible for rent": {
                             "_acptfactunits": {},
                             "_addin": null,
                             "_begin": null,
@@ -5045,7 +5045,7 @@
                             },
                             "_close": null,
                             "_denom": null,
-                            "_label": "take care of rent",
+                            "_label": "be reponsible for rent",
                             "_is_expanded": true,
                             "_kids": {},
                             "_numeric_road": null,
@@ -5071,7 +5071,7 @@
                             "_weight": 1,
                             "promise": true
                         },
-                        "take care of utilities bills": {
+                        "be responsible for utilities bills": {
                             "_acptfactunits": {},
                             "_addin": null,
                             "_begin": null,
@@ -5084,7 +5084,7 @@
                             },
                             "_close": null,
                             "_denom": null,
-                            "_label": "take care of utilities bills",
+                            "_label": "be responsible for utilities bills",
                             "_is_expanded": true,
                             "_kids": {},
                             "_numeric_road": null,
@@ -5643,14 +5643,14 @@
                     "_weight": 1.0,
                     "promise": true
                 },
-                "taking care of kids": {
+                "being responsible for kids": {
                     "_acptfactunits": {},
                     "_addin": null,
                     "_begin": null,
                     "_balancelinks": {},
                     "_close": null,
                     "_denom": null,
-                    "_label": "taking care of kids",
+                    "_label": "being responsible for kids",
                     "_is_expanded": false,
                     "_kids": {
                         "clip oldest nails": {

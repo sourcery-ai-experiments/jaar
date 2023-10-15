@@ -389,7 +389,7 @@ def test_contract_get_from_json_LoadsActionFromJSONCorrectly():
     print(f"{len(a1.get_idea_list())=}")
     casa_text = "casa"
     casa_road = f"{a1._healing_handle},{casa_text}"
-    body_text = "body care"
+    body_text = "body obligations"
     body_road = f"{casa_road},{body_text}"
     veg_text = "make veggies every morning"
     veg_road = f"{body_road},{veg_text}"
