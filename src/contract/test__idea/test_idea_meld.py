@@ -5,7 +5,7 @@ from src.contract.required_idea import (
     acptfactunit_shop as c_acptfactunit,
     Road,
 )
-from src.contract.road import get_default_healing_root_label as root_label
+from src.contract.road import get_default_cure_root_label as root_label
 from src.contract.origin import originunit_shop
 from pytest import raises as pytest_raises
 from copy import deepcopy

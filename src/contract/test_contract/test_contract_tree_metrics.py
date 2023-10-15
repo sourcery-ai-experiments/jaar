@@ -71,14 +71,14 @@ def test_contract_contract_get_tree_metrics_sets_uids_correctly():
     cx = ContractUnit(_healer=healer_text)
     swim_text = "swim"
     walk_text = "walk"
-    cx.add_idea(idea_kid=IdeaKid(_label=swim_text, _uid=None), walk=cx._healing_handle)
-    cx.add_idea(idea_kid=IdeaKid(_label=walk_text, _uid=2), walk=cx._healing_handle)
-    assert cx.get_idea_kid(road=f"{cx._healing_handle},{swim_text}")._uid is None
+    cx.add_idea(idea_kid=IdeaKid(_label=swim_text, _uid=None), walk=cx._cure_handle)
+    cx.add_idea(idea_kid=IdeaKid(_label=walk_text, _uid=2), walk=cx._cure_handle)
+    assert cx.get_idea_kid(road=f"{cx._cure_handle},{swim_text}")._uid is None
 
     cx.set_all_idea_uids_unique()
 
     # THEN
-    assert cx.get_idea_kid(road=f"{cx._healing_handle},{swim_text}")._uid != None
+    assert cx.get_idea_kid(road=f"{cx._cure_handle},{swim_text}")._uid != None
 
 
 def test_contract_get_tree_metrics_ReturnsAccurateActionIdeaCount():
@@ -101,7 +101,7 @@ def test_contract_get_tree_metrics_ReturnsANoneActionIdeaRoad():
     cx = ContractUnit(_healer=healer_text, _weight=10)
     weekdays = "weekdays"
     idea_kid_weekdays = IdeaKid(_weight=40, _label=weekdays)
-    cx.add_idea(idea_kid=idea_kid_weekdays, walk=f"{cx._healing_handle}")
+    cx.add_idea(idea_kid=idea_kid_weekdays, walk=f"{cx._cure_handle}")
     tree_metrics_before = cx.get_tree_metrics()
     # WHEN/THEN
     assert tree_metrics_before.an_promise_idea_road is None
@@ -114,5 +114,5 @@ def test_contract_get_tree_metrics_ReturnsAnActionIdeaRoad():
     # WHEN/THEN
     assert (
         tree_metrics_before.an_promise_idea_road
-        == f"{cx._healing_handle},ACME,ACME Employee Responsiblities,Know Abuse Prevention and Reporting guildlines,Take Fall 2021 training"
+        == f"{cx._cure_handle},ACME,ACME Employee Responsiblities,Know Abuse Prevention and Reporting guildlines,Take Fall 2021 training"
     )

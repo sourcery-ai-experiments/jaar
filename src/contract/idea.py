@@ -23,7 +23,7 @@ from src.contract.required_idea import (
 )
 from src.contract.road import (
     is_sub_road,
-    get_default_healing_root_label as root_label,
+    get_default_cure_root_label as root_label,
 )
 from src.contract.group import (
     BalanceHeir,
@@ -981,16 +981,16 @@ class IdeaRoot(IdeaCore):
     def __post_init__(self):
         self.set_idea_label(_label=root_label())
 
-    def set_idea_label(self, _label: str, contract_healing_handle: str = None):
-        if _label != root_label() and contract_healing_handle is None:
+    def set_idea_label(self, _label: str, contract_cure_handle: str = None):
+        if _label != root_label() and contract_cure_handle is None:
             raise IdeaRootLabelNotEmptyException(
                 f"Cannot set idearoot to string other than '{root_label()}'"
             )
-        elif _label != contract_healing_handle != None:
+        elif _label != contract_cure_handle != None:
             raise IdeaRootLabelNotEmptyException(
-                f"Cannot set idearoot to string other than '{contract_healing_handle}'"
+                f"Cannot set idearoot to string other than '{contract_cure_handle}'"
             )
-        elif _label != root_label() and contract_healing_handle == _label:
+        elif _label != root_label() and contract_cure_handle == _label:
             self._label = _label
         else:
             self._label = root_label()

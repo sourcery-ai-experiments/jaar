@@ -2,21 +2,21 @@ from src.world.pain import (
     PainUnit,
     PainKind,
     painunit_shop,
-    HealingLink,
-    healinglink_shop,
+    CureLink,
+    curelink_shop,
     HealerLink,
     healerlink_shop,
 )
 
 
-def test_healinglink_get_dict_ReturnsCorrectDict():
+def test_curelink_get_dict_ReturnsCorrectDict():
     # GIVEN
     home_text = "home"
     home_weight = 5
-    home_healinglink = healinglink_shop(kind=home_text, weight=home_weight)
+    home_curelink = curelink_shop(kind=home_text, weight=home_weight)
 
     # WHEN
-    home_dict = home_healinglink.get_dict()
+    home_dict = home_curelink.get_dict()
 
     # THEN
     assert home_dict == {"kind": home_text, "weight": home_weight}
@@ -42,8 +42,8 @@ def test_painunit_get_dict_ReturnsCorrectDict():
 
     home_text = "home"
     home_weight = 3
-    home_healinglink = healinglink_shop(kind=home_text, weight=home_weight)
-    fear_painunit.set_healinglink(home_healinglink)
+    home_curelink = curelink_shop(kind=home_text, weight=home_weight)
+    fear_painunit.set_curelink(home_curelink)
 
     yao_text = "yao"
     yao_weight = 7
@@ -56,6 +56,6 @@ def test_painunit_get_dict_ReturnsCorrectDict():
     # THEN
     assert fear_dict == {
         "kind": fear_text,
-        "_healinglinks": {home_text: {"kind": home_text, "weight": home_weight}},
+        "_curelinks": {home_text: {"kind": home_text, "weight": home_weight}},
         "_healerlinks": {yao_text: {"person_name": yao_text, "weight": yao_weight}},
     }

@@ -10,7 +10,7 @@ from src.contract.road import (
     road_validate,
     get_ancestor_roads,
     get_forefather_roads,
-    get_default_healing_root_label as root_label,
+    get_default_cure_root_label as root_label,
     get_road_from_nodes,
 )
 from src.contract.required_idea import sufffactunit_shop
@@ -162,11 +162,11 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
     assert new_sufffacts_x.get(old_seasons_road) is None
 
 
-def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeHealingHandleScenario():
+def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeCureHandleScenario():
     # GIVEN
-    old_healing_handle = "El Paso"
+    old_cure_handle = "El Paso"
     healer_text = "healer"
-    old_healer_road = f"{old_healing_handle},{healer_text}"
+    old_healer_road = f"{old_cure_handle},{healer_text}"
     seasons_text = "seasons"
     old_seasons_road = f"{old_healer_road},{seasons_text}"
     old_sufffact_x = sufffactunit_shop(need=old_seasons_road)
@@ -175,8 +175,8 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeHealingHandleS
     assert old_sufffacts_x.get(old_seasons_road) == old_sufffact_x
 
     # WHEN
-    new_healing_handle = "Austin"
-    new_healer_road = f"{new_healing_handle},{healer_text}"
+    new_cure_handle = "Austin"
+    new_healer_road = f"{new_cure_handle},{healer_text}"
     new_seasons_road = f"{new_healer_road},{seasons_text}"
     new_sufffacts_x = find_replace_road_key_dict(
         dict_x=old_sufffacts_x, old_road=old_seasons_road, new_road=new_seasons_road
@@ -271,7 +271,7 @@ def test_road_get_forefather_roads_CorrectlyReturnsAncestorRoadsWithoutSource():
     assert x_roads == texas_forefather_roads
 
 
-def test_road_get_default_healing_root_label_ReturnsCorrectObj():
+def test_road_get_default_cure_root_label_ReturnsCorrectObj():
     assert root_label() == "A"
 
 

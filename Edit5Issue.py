@@ -1,6 +1,6 @@
-# command to for converting ui form to python file: pyuic5 ui\Healing5IssueUI.ui -o ui\Healing5IssueUI.py
+# command to for converting ui form to python file: pyuic5 ui\Cure5IssueUI.ui -o ui\Cure5IssueUI.py
 import sys
-from ui.Healing5IssueUI import Ui_Form
+from ui.Cure5IssueUI import Ui_Form
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from src.pyqt5_kit.pyqt_func import contract_importance_diplay

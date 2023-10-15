@@ -143,12 +143,12 @@ dmypy.json
 cython_debug/
 
 # automatica_lly generated testing environments on each run
-src/healing/examples/healings/ex3/
-src/healing/examples/healings/ex4/
-src/healing/examples/healings/ex5/
-src/healing/examples/healings/ex6/
-src/healing/examples/healings/river_env/
-src/healing/test_healing/sql_worksheet01.sql
+src/cure/examples/cures/ex3/
+src/cure/examples/cures/ex4/
+src/cure/examples/cures/ex5/
+src/cure/examples/cures/ex6/
+src/cure/examples/cures/river_env/
+src/cure/test_cure/sql_worksheet01.sql
 src/contract/examples/js_contract.json
 main_cli_app.py
 main_cli_app2.py

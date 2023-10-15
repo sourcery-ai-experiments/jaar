@@ -5,7 +5,7 @@ from src.contract.x_func import (
     count_files as x_func_count_files,
     return1ifnone as x_func_return1ifnone,
 )
-from src.healing.examples.healer_env_kit import (
+from src.cure.examples.healer_env_kit import (
     healer_dir_setup_cleanup,
     get_temp_healer_dir,
     create_contract_file,

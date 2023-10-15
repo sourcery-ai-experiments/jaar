@@ -1,20 +1,20 @@
 from dataclasses import dataclass
-from src.healing.healing import HealingUnit, HealingHandle, healingunit_shop
+from src.cure.cure import CureUnit, CureHandle, cureunit_shop
 
 
 @dataclass
-class HealingLink:
-    kind: HealingHandle
+class CureLink:
+    kind: CureHandle
     weight: float
 
     def get_dict(self) -> dict:
         return {"kind": self.kind, "weight": self.weight}
 
 
-def healinglink_shop(kind: HealingHandle, weight: float = None) -> HealingLink:
+def curelink_shop(kind: CureHandle, weight: float = None) -> CureLink:
     if weight is None:
         weight = 1
-    return HealingLink(kind=kind, weight=weight)
+    return CureLink(kind=kind, weight=weight)
 
 
 class PersonName(str):
@@ -47,21 +47,21 @@ class PainKind(str):
 @dataclass
 class PainUnit:
     kind: PainKind
-    _healinglinks: dict[HealingHandle:HealingLink] = None
+    _curelinks: dict[CureHandle:CureLink] = None
     _healerlinks: dict[PersonName:HealerLink] = None
 
-    def set_healinglinks_empty_if_none(self):
-        if self._healinglinks is None:
-            self._healinglinks = {}
+    def set_curelinks_empty_if_none(self):
+        if self._curelinks is None:
+            self._curelinks = {}
 
-    def set_healinglink(self, healinglink: HealingLink):
-        self._healinglinks[healinglink.kind] = healinglink
+    def set_curelink(self, curelink: CureLink):
+        self._curelinks[curelink.kind] = curelink
 
-    def get_healinglink(self, healinghandle: HealingHandle) -> HealingLink:
-        return self._healinglinks.get(healinghandle)
+    def get_curelink(self, curehandle: CureHandle) -> CureLink:
+        return self._curelinks.get(curehandle)
 
-    def del_healinglink(self, healinghandle: HealingHandle):
-        self._healinglinks.pop(healinghandle)
+    def del_curelink(self, curehandle: CureHandle):
+        self._curelinks.pop(curehandle)
 
     def set_healerlinks_empty_if_none(self):
         if self._healerlinks is None:
@@ -76,10 +76,10 @@ class PainUnit:
     def del_healerlink(self, person_name: PersonName):
         self._healerlinks.pop(person_name)
 
-    def get_healinglinks_dict(self) -> dict:
+    def get_curelinks_dict(self) -> dict:
         return {
-            healinglink_x.kind: healinglink_x.get_dict()
-            for healinglink_x in self._healinglinks.values()
+            curelink_x.kind: curelink_x.get_dict()
+            for curelink_x in self._curelinks.values()
         }
 
     def get_healerlinks_dict(self) -> dict:
@@ -91,13 +91,13 @@ class PainUnit:
     def get_dict(self):
         return {
             "kind": self.kind,
-            "_healinglinks": self.get_healinglinks_dict(),
+            "_curelinks": self.get_curelinks_dict(),
             "_healerlinks": self.get_healerlinks_dict(),
         }
 
 
 def painunit_shop(kind: PainKind):
     pain_x = PainUnit(kind=kind)
-    pain_x.set_healinglinks_empty_if_none()
+    pain_x.set_curelinks_empty_if_none()
     pain_x.set_healerlinks_empty_if_none()
     return pain_x

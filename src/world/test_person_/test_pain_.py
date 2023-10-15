@@ -2,48 +2,48 @@ from src.world.pain import (
     PainUnit,
     PainKind,
     painunit_shop,
-    HealingLink,
-    healinglink_shop,
+    CureLink,
+    curelink_shop,
     HealerLink,
     healerlink_shop,
 )
 
 
-def test_healinglink_exists():
+def test_curelink_exists():
     # GIVEN
     home_text = "home"
     home_weight = 3
 
     # WHEN
-    px = HealingLink(kind=home_text, weight=home_weight)
+    px = CureLink(kind=home_text, weight=home_weight)
 
     # THEN
     assert px.kind == home_text
     assert px.weight == home_weight
 
 
-def test_healinglink_shop_ReturnsCorrectObj():
+def test_curelink_shop_ReturnsCorrectObj():
     # GIVEN
     home_text = "home"
     home_weight = 5
 
     # WHEN
-    px = healinglink_shop(kind=home_text, weight=home_weight)
+    px = curelink_shop(kind=home_text, weight=home_weight)
 
     # THEN
     assert px.kind == home_text
     assert px.weight == home_weight
 
 
-def test_healinglink_shop_ReturnsCorrectObj_EmptyWeight():
+def test_curelink_shop_ReturnsCorrectObj_EmptyWeight():
     # GIVEN
-    healing_text = "home"
+    cure_text = "home"
 
     # WHEN
-    px = healinglink_shop(kind=healing_text)
+    px = curelink_shop(kind=cure_text)
 
     # THEN
-    assert px.kind == healing_text
+    assert px.kind == cure_text
     assert px.weight == 1
 
 
@@ -99,7 +99,7 @@ def test_painunit_exists():
 
     # THEN
     assert px.kind == fear_text
-    assert px._healinglinks is None
+    assert px._curelinks is None
     assert px._healerlinks is None
 
 
@@ -112,60 +112,60 @@ def test_painunit_shop_ReturnsNonePainUnitWithCorrectAttrs_v1():
 
     # THEN
     assert px.kind == fear_text
-    assert px._healinglinks == {}
+    assert px._curelinks == {}
     assert px._healerlinks == {}
 
 
-def test_painunit_set_healinglink_CorrectlySetsHealingLink():
+def test_painunit_set_curelink_CorrectlySetsCureLink():
     # GIVEN
     fear_text = "fear"
     fear_painunit = painunit_shop(kind=fear_text)
 
     # WHEN
     home_text = "home"
-    home_healinglink = healinglink_shop(kind=home_text)
-    fear_painunit.set_healinglink(home_healinglink)
+    home_curelink = curelink_shop(kind=home_text)
+    fear_painunit.set_curelink(home_curelink)
 
     # THEN
-    # home_healing = xao_pain.get_healing()
-    home_healing = fear_painunit._healinglinks.get(home_text)
-    assert home_healing != None
-    assert home_healing.kind == home_text
+    # home_cure = xao_pain.get_cure()
+    home_cure = fear_painunit._curelinks.get(home_text)
+    assert home_cure != None
+    assert home_cure.kind == home_text
 
 
-def test_painunit_get_healingunit_CorrectlyGetsAnHealingUnit():
+def test_painunit_get_cureunit_CorrectlyGetsAnCureUnit():
     # GIVEN
     fear_text = "fear"
     fear_painunit = painunit_shop(kind=fear_text)
     home_text = "home"
-    home_healinglink = healinglink_shop(kind=home_text)
-    fear_painunit.set_healinglink(home_healinglink)
+    home_curelink = curelink_shop(kind=home_text)
+    fear_painunit.set_curelink(home_curelink)
 
     # WHEN
-    home_healing = fear_painunit.get_healinglink(home_text)
+    home_cure = fear_painunit.get_curelink(home_text)
 
     # THEN
-    assert home_healing != None
-    assert home_healing.kind == home_text
+    assert home_cure != None
+    assert home_cure.kind == home_text
 
 
-def test_painunit_del_healingunit_CorrectlyDeletesHealingUnit():
+def test_painunit_del_cureunit_CorrectlyDeletesCureUnit():
     # GIVEN
     fear_text = "fear"
     fear_painunit = painunit_shop(kind=fear_text)
     home_text = "home"
-    home_healinglink = healinglink_shop(kind=home_text)
-    fear_painunit.set_healinglink(home_healinglink)
-    before_home_healing = fear_painunit.get_healinglink(home_text)
-    assert before_home_healing != None
-    assert before_home_healing.kind == home_text
+    home_curelink = curelink_shop(kind=home_text)
+    fear_painunit.set_curelink(home_curelink)
+    before_home_cure = fear_painunit.get_curelink(home_text)
+    assert before_home_cure != None
+    assert before_home_cure.kind == home_text
 
     # WHEN
-    fear_painunit.del_healinglink(healinghandle=home_text)
+    fear_painunit.del_curelink(curehandle=home_text)
 
     # THEN
-    after_home_healing = fear_painunit.get_healinglink(home_text)
-    assert after_home_healing is None
+    after_home_cure = fear_painunit.get_curelink(home_text)
+    assert after_home_cure is None
 
 
 def test_painunit_set_healerlink_CorrectlySetsHealerLink():

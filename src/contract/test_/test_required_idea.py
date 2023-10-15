@@ -6,7 +6,7 @@ from src.contract.required_idea import (
     sufffactunit_shop,
     Road,
 )
-from src.contract.road import get_default_healing_root_label as root_label
+from src.contract.road import get_default_cure_root_label as root_label
 from pytest import raises as pytest_raises
 
 

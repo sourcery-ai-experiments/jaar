@@ -11,10 +11,10 @@ from src.contract.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
 )
-from src.healing.healer import HealerUnit, healerunit_shop
+from src.cure.healer import HealerUnit, healerunit_shop
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
-from src.healing.bank_sqlstr import (
+from src.cure.bank_sqlstr import (
     get_river_flow_table_delete_sqlstr,
     get_river_flow_table_insert_sqlstr,
     get_river_tparty_table_delete_sqlstr,
@@ -40,14 +40,14 @@ from src.healing.bank_sqlstr import (
 )
 
 
-class HealingHandle(str):
+class CureHandle(str):
     pass
 
 
 @dataclass
-class HealingUnit:
-    kind: HealingHandle
-    healings_dir: str
+class CureUnit:
+    kind: CureHandle
+    cures_dir: str
     _healerunits: dict[str:HealerUnit] = None
     _bank_db = None
 
@@ -55,10 +55,10 @@ class HealingUnit:
         contract_obj = self.get_public_contract(contract_healer)
 
         for groupunit_x in contract_obj._groups.values():
-            if groupunit_x._partylinks_set_by_healing_road != None:
+            if groupunit_x._partylinks_set_by_cure_road != None:
                 groupunit_x.clear_partylinks()
                 ic = get_idea_catalog_dict(
-                    self.get_bank_conn(), groupunit_x._partylinks_set_by_healing_road
+                    self.get_bank_conn(), groupunit_x._partylinks_set_by_cure_road
                 )
                 for idea_catalog in ic.values():
                     if contract_healer != idea_catalog.contract_healer:
@@ -214,7 +214,7 @@ class HealingUnit:
                 groupunit_catalog_x = GroupUnitCatalog(
                     contract_healer=contractunit_x._healer,
                     groupunit_brand=groupunit_x.brand,
-                    partylinks_set_by_healing_road=groupunit_x._partylinks_set_by_healing_road,
+                    partylinks_set_by_cure_road=groupunit_x._partylinks_set_by_cure_road,
                 )
                 sqlstr = get_groupunit_catalog_table_insert_sqlstr(groupunit_catalog_x)
                 cur.execute(sqlstr)
@@ -266,31 +266,31 @@ class HealingUnit:
         self._bank_db = None
         x_func_delete_dir(dir=self.get_bank_db_path())
 
-    def set_healingunit_kind(self, kind: str):
+    def set_cureunit_kind(self, kind: str):
         self.kind = kind
 
     def get_bank_db_path(self):
         return f"{self.get_object_root_dir()}/bank.db"
 
     def get_object_root_dir(self):
-        return f"{self.healings_dir}/{self.kind}"
+        return f"{self.cures_dir}/{self.kind}"
 
     def _create_main_file_if_null(self, x_dir):
-        healing_file_title = "healing.json"
+        cure_file_title = "cure.json"
         x_func_save_file(
             dest_dir=x_dir,
-            file_title=healing_file_title,
+            file_title=cure_file_title,
             file_text="",
         )
 
     def create_dirs_if_null(self, in_memory_bank: bool = None):
-        healing_dir = self.get_object_root_dir()
+        cure_dir = self.get_object_root_dir()
         contracts_dir = self.get_public_dir()
         healers_dir = self.get_healers_dir()
-        single_dir_create_if_null(x_path=healing_dir)
+        single_dir_create_if_null(x_path=cure_dir)
         single_dir_create_if_null(x_path=contracts_dir)
         single_dir_create_if_null(x_path=healers_dir)
-        self._create_main_file_if_null(x_dir=healing_dir)
+        self._create_main_file_if_null(x_dir=cure_dir)
         self._create_bank_db(in_memory=in_memory_bank, overwrite=True)
 
     # HealerUnit management
@@ -325,9 +325,9 @@ class HealingUnit:
         cx = self.get_public_contract(healer=title)
         healer_x = healerunit_shop(title=cx._healer, env_dir=self.get_object_root_dir())
         self.set_healerunits_empty_if_null()
-        self.set_healerunit_to_healing(healer_x)
+        self.set_healerunit_to_cure(healer_x)
 
-    def set_healerunit_to_healing(self, healer: HealerUnit):
+    def set_healerunit_to_cure(self, healer: HealerUnit):
         self._healerunits[healer._admin._healer_title] = healer
         self.save_healer_file(healer_title=healer._admin._healer_title)
 
@@ -339,11 +339,11 @@ class HealingUnit:
         healer_x = self.get_healer_obj(title=old_title)
         old_healer_dir = healer_x._admin._healer_dir
         healer_x._admin.set_healer_title(new_title=new_title)
-        self.set_healerunit_to_healing(healer=healer_x)
+        self.set_healerunit_to_cure(healer=healer_x)
         x_func_delete_dir(old_healer_dir)
-        self.del_healer_from_healing(healer_title=old_title)
+        self.del_healer_from_cure(healer_title=old_title)
 
-    def del_healer_from_healing(self, healer_title):
+    def del_healer_from_cure(self, healer_title):
         self._healerunits.pop(healer_title)
 
     def del_healer_dir(self, healer_title: str):
@@ -390,7 +390,7 @@ class HealingUnit:
         x_func_delete_dir(f"{self.get_public_dir()}/{contract_x_healer}.json")
 
     def save_public_contract(self, contract_x: ContractUnit):
-        contract_x.set_healing_handle(healing_handle=self.kind)
+        contract_x.set_cure_handle(cure_handle=self.kind)
         x_func_save_file(
             dest_dir=self.get_public_dir(),
             file_title=f"{contract_x._healer}.json",
@@ -491,16 +491,14 @@ class HealingUnit:
         return healer_x._admin.get_remelded_output_contract()
 
 
-def healingunit_shop(
+def cureunit_shop(
     kind: str,
-    healings_dir: str,
+    cures_dir: str,
     _healerunits: dict[str:HealerUnit] = None,
     in_memory_bank: bool = None,
 ):
     if in_memory_bank is None:
         in_memory_bank = True
-    healing_x = HealingUnit(
-        kind=kind, healings_dir=healings_dir, _healerunits=_healerunits
-    )
-    healing_x.create_dirs_if_null(in_memory_bank=in_memory_bank)
-    return healing_x
+    cure_x = CureUnit(kind=kind, cures_dir=cures_dir, _healerunits=_healerunits)
+    cure_x.create_dirs_if_null(in_memory_bank=in_memory_bank)
+    return cure_x

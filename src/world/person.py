@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src.healing.healing import HealingUnit, HealingHandle, healingunit_shop
+from src.cure.cure import CureUnit, CureHandle, cureunit_shop
 from src.world.pain import PainKind, PainUnit, PersonName, painunit_shop
 
 
@@ -7,7 +7,7 @@ from src.world.pain import PainKind, PainUnit, PersonName, painunit_shop
 class PersonUnit:
     name: PersonName = None
     person_dir: str = None
-    _healings: dict[HealingHandle:HealingUnit] = None
+    _cures: dict[CureHandle:CureUnit] = None
     _pains: dict[PainKind:PainUnit] = None
 
     def set_pains_empty_if_none(self):
@@ -23,24 +23,24 @@ class PersonUnit:
     def del_painunit(self, pain_kind: PainKind):
         self._pains.pop(pain_kind)
 
-    def set_healings_empty_if_none(self):
-        if self._healings is None:
-            self._healings = {}
+    def set_cures_empty_if_none(self):
+        if self._cures is None:
+            self._cures = {}
 
-    def set_healingunit(self, healing_handle: HealingHandle):
-        healings_dir = f"{self.person_dir}/healings"
-        self._healings[healing_handle] = healingunit_shop(
-            handle=healing_handle, healings_dir=healings_dir
+    def set_cureunit(self, cure_handle: CureHandle):
+        cures_dir = f"{self.person_dir}/cures"
+        self._cures[cure_handle] = cureunit_shop(
+            handle=cure_handle, cures_dir=cures_dir
         )
 
-    def get_healingunit(self, healing_handle: HealingHandle) -> HealingUnit:
-        return self._healings.get(healing_handle)
+    def get_cureunit(self, cure_handle: CureHandle) -> CureUnit:
+        return self._cures.get(cure_handle)
 
-    def del_healingunit(self, healing_handle: HealingHandle):
-        self._healings.pop(healing_handle)
+    def del_cureunit(self, cure_handle: CureHandle):
+        self._cures.pop(cure_handle)
 
-    def get_healings_dict(self) -> dict:
-        return {healingunit_x.handle: None for healingunit_x in self._healings.values()}
+    def get_cures_dict(self) -> dict:
+        return {cureunit_x.handle: None for cureunit_x in self._cures.values()}
 
     def get_pains_dict(self) -> dict:
         return {
@@ -51,7 +51,7 @@ class PersonUnit:
     def get_dict(self) -> dict:
         return {
             "name": self.name,
-            "_healings": self.get_healings_dict(),
+            "_cures": self.get_cures_dict(),
             "_pains": self.get_pains_dict(),
         }
 
@@ -60,7 +60,7 @@ def personunit_shop(name: PersonName, person_dir: str = None) -> PersonUnit:
     if person_dir is None:
         person_dir = ""
     person_x = PersonUnit(name=name, person_dir=person_dir)
-    person_x.set_healings_empty_if_none()
+    person_x.set_cures_empty_if_none()
     person_x.set_pains_empty_if_none()
     return person_x
 

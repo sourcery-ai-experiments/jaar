@@ -3,7 +3,7 @@ from src.contract.examples.example_contracts import (
     get_contract_with_4_levels,
 )
 from src.contract.contract import ContractUnit
-from src.contract.road import get_default_healing_root_label as root_label
+from src.contract.road import get_default_cure_root_label as root_label
 from src.contract.origin import originunit_shop
 from pytest import raises as pytest_raises
 
@@ -17,7 +17,7 @@ def test_contract_exists():
 
     assert new_obj
     assert new_obj._healer == healer_text
-    assert new_obj._healing_handle == root_label()
+    assert new_obj._cure_handle == root_label()
     assert new_obj._weight == 1
     assert new_obj._max_tree_traverse == 3
     assert new_obj._tree_traverse_count is None
@@ -40,7 +40,7 @@ def test_contract_IsAbleToSetTaskAsComplete():
     assert mail_idea._task == True
 
     ced_min_label = "CE0_minutes"
-    ced_road = f"{contract_x._healing_handle},{ced_min_label}"
+    ced_road = f"{contract_x._cure_handle},{ced_min_label}"
     contract_x.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=85)
     idea_list = contract_x.get_idea_list()
     assert mail_idea.promise == True
@@ -50,7 +50,7 @@ def test_contract_IsAbleToSetTaskAsComplete():
 def test_contract_IsAbleToEditAcptFactUnitAnyAncestor_Idea_1():
     contract_x = get_contract_1Task_1CE0MinutesRequired_1AcptFact()
     ced_min_label = "CE0_minutes"
-    ced_road = f"{contract_x._healing_handle},{ced_min_label}"
+    ced_road = f"{contract_x._cure_handle},{ced_min_label}"
     contract_x.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=85)
     idea_list = contract_x.get_idea_list()
     mail_idea = idea_list[1]
@@ -150,15 +150,15 @@ def test_contract_init_CorrectlySetsGiven_auto_output_to_public():
     assert new_obj._auto_output_to_public == True
 
 
-def test_contract_set_healing_handle_CorrectlySetsAttr():
+def test_contract_set_cure_handle_CorrectlySetsAttr():
     # GIVEN
-    healing_handle_text = "Sun"
+    cure_handle_text = "Sun"
     healer_text = "Noa"
     new_obj = ContractUnit(_healer=healer_text, _auto_output_to_public=True)
-    assert new_obj._healing_handle == root_label()
+    assert new_obj._cure_handle == root_label()
 
     # WHEN
-    new_obj.set_healing_handle(healing_handle=healing_handle_text)
+    new_obj.set_cure_handle(cure_handle=cure_handle_text)
 
     # THEN
-    assert new_obj._healing_handle == healing_handle_text
+    assert new_obj._cure_handle == cure_handle_text

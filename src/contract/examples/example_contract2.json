@@ -11690,5 +11690,5 @@
     "_range_source_road": null,
     "_uid": 1,
     "_weight": 1
-    , "_healing_handle": "A"
+    , "_cure_handle": "A"
 }

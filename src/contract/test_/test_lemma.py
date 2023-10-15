@@ -1,7 +1,7 @@
 from src.contract.required_idea import acptfactunit_shop
 from src.contract.lemma import Lemma, Lemmas
 from src.contract.idea import IdeaKid
-from src.contract.road import get_default_healing_root_label as root_label
+from src.contract.road import get_default_cure_root_label as root_label
 
 
 def test_lemma_attributes_exist():

@@ -63,13 +63,13 @@ screenshots and explanatory text.
 base attributes vs required attributess
 
 <!-- TODO: Add explanations -->
-HealingUnit objects
+CureUnit objects
 
-HealingUnit HealerUnit objects
+CureUnit HealerUnit objects
 
-HealingUnit HealerUnit ContractLink objects
+CureUnit HealerUnit ContractLink objects
 
-HealingUnit Bank objects
+CureUnit Bank objects
 
 <!-- TODO: Add explanations -->
 ContractUnit objects
