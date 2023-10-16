@@ -1,4 +1,5 @@
 from src.world.person import PersonUnit, personunit_shop
+from src.world.pain import painunit_shop, healerlink_shop, curelink_shop
 
 
 def test_personunit_exists():
@@ -94,7 +95,7 @@ def test_personunit_del_cureunit_CorrectlyDeletesCureUnit():
     assert after_home_cure is None
 
 
-def test_personunit_set_painunit_CorrectlyCreatesPainUnit():
+def test_personunit_create_painunit_from_kind_CorrectlyCreatesPainUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
@@ -102,7 +103,24 @@ def test_personunit_set_painunit_CorrectlyCreatesPainUnit():
 
     # WHEN
     fear_text = "fear"
-    xao_person_obj.set_painunit(fear_text)
+    xao_person_obj.create_painunit_from_kind(fear_text)
+
+    # THEN
+    fear_pain = xao_person_obj._pains.get(fear_text)
+    assert fear_pain != None
+    assert fear_pain.kind == fear_text
+
+
+def test_personunit_create_painunit_from_kind_CorrectlyCreatesPainUnit():
+    # GIVEN
+    xao_text = "Xao"
+    xao_person_dir = f"/persons/{xao_text}"
+    xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
+
+    # WHEN
+    fear_text = "fear"
+    fear_painunit = painunit_shop(fear_text)
+    xao_person_obj.set_painunit(fear_painunit)
 
     # THEN
     fear_pain = xao_person_obj._pains.get(fear_text)
@@ -116,7 +134,7 @@ def test_personunit_get_painunit_CorrectlyGetsPainUnit():
     xao_person_dir = f"/persons/{xao_text}"
     xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
     fear_text = "fear"
-    xao_person_obj.set_painunit(fear_text)
+    xao_person_obj.create_painunit_from_kind(fear_text)
 
     # WHEN
     fear_pain = xao_person_obj.get_painunit(fear_text)
@@ -132,7 +150,7 @@ def test_personunit_del_painunit_CorrectlyDeletesPainUnit():
     xao_person_dir = f"/persons/{xao_text}"
     xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
     fear_text = "fear"
-    xao_person_obj.set_painunit(fear_text)
+    xao_person_obj.create_painunit_from_kind(fear_text)
     before_fear_pain = xao_person_obj.get_painunit(fear_text)
     assert before_fear_pain != None
     assert before_fear_pain.kind == fear_text
@@ -143,3 +161,34 @@ def test_personunit_del_painunit_CorrectlyDeletesPainUnit():
     # THEN
     after_fear_pain = xao_person_obj.get_painunit(fear_text)
     assert after_fear_pain is None
+
+
+def test_personunit_set_painunits_relative_weight_SetsCorrectly():
+    # GIVEN
+    xao_text = "Xao"
+    xao_person_dir = f"/persons/{xao_text}"
+    xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
+
+    fear_text = "fear"
+    bore_text = "bore"
+    rain_text = "rain"
+
+    xao_person_obj.set_painunit(painunit_shop(kind=fear_text, weight=60))
+    xao_person_obj.set_painunit(painunit_shop(kind=bore_text, weight=35))
+    xao_person_obj.set_painunit(painunit_shop(kind=rain_text, weight=5))
+
+    fear_painunit = xao_person_obj.get_painunit(fear_text)
+    bore_painunit = xao_person_obj.get_painunit(bore_text)
+    rain_painunit = xao_person_obj.get_painunit(rain_text)
+
+    assert fear_painunit._relative_weight is None
+    assert bore_painunit._relative_weight is None
+    assert rain_painunit._relative_weight is None
+
+    # WHEN
+    xao_person_obj.set_painunits_relative_weight()
+
+    # THEN
+    assert fear_painunit._relative_weight == 0.6
+    assert bore_painunit._relative_weight == 0.35
+    assert rain_painunit._relative_weight == 0.05

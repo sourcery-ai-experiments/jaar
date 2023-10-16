@@ -33,6 +33,13 @@ class HealerLink:
     _curelinks: dict[CureHandle:CureLink] = None
     _relative_weight: float = None
 
+    def set_curelinks_relative_weight(self):
+        total_curelinks_weight = sum(
+            x_curelink.weight for x_curelink in self._curelinks.values()
+        )
+        for x_curelink in self._curelinks.values():
+            x_curelink.set_relative_weight(x_curelink.weight / total_curelinks_weight)
+
     def set_relative_weight(self, relative_weight: float):
         self._relative_weight = relative_weight
 
@@ -83,6 +90,15 @@ class PainUnit:
     weight: float = None
     _healerlinks: dict[PersonName:HealerLink] = None
     _relative_weight: float = None
+
+    def set_healerlinks_relative_weight(self):
+        total_healerlinks_weight = sum(
+            x_healerlink.weight for x_healerlink in self._healerlinks.values()
+        )
+        for x_healerlink in self._healerlinks.values():
+            x_healerlink.set_relative_weight(
+                x_healerlink.weight / total_healerlinks_weight
+            )
 
     def set_relative_weight(self, relative_weight: float):
         self._relative_weight = relative_weight

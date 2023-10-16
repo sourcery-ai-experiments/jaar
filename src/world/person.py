@@ -14,14 +14,24 @@ class PersonUnit:
         if self._pains is None:
             self._pains = {}
 
-    def set_painunit(self, pain_kind: PainKind):
+    def create_painunit_from_kind(self, pain_kind: PainKind):
         self._pains[pain_kind] = painunit_shop(kind=pain_kind)
+
+    def set_painunit(self, painunit: PainUnit):
+        self._pains[painunit.kind] = painunit
 
     def get_painunit(self, pain_kind: PainKind) -> PainUnit:
         return self._pains.get(pain_kind)
 
     def del_painunit(self, pain_kind: PainKind):
         self._pains.pop(pain_kind)
+
+    def set_painunits_relative_weight(self):
+        total_painunits_weight = sum(
+            x_painunit.weight for x_painunit in self._pains.values()
+        )
+        for x_painunit in self._pains.values():
+            x_painunit.set_relative_weight(x_painunit.weight / total_painunits_weight)
 
     def set_cures_empty_if_none(self):
         if self._cures is None:
