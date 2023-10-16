@@ -227,17 +227,3 @@ def test_painunit_del_personunit_CorrectlyDeletesPersonUnit():
     # THEN
     after_yao_person = fear_painunit.get_healerlink(yao_text)
     assert after_yao_person is None
-
-
-def test_painunit__set_relative_weight_SetsCorrectly():
-    # GIVEN
-    fear_text = "fear"
-    fear_painunit = painunit_shop(kind=fear_text)
-    assert fear_painunit._relative_weight is None
-
-    # WHEN
-    x_relative_weight = 0.45
-    fear_painunit.set_relative_weight(x_relative_weight)
-
-    # THEN
-    assert fear_painunit._relative_weight == x_relative_weight

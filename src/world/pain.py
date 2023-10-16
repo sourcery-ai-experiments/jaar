@@ -8,6 +8,9 @@ class CureLink:
     weight: float
     _relative_weight: float = None
 
+    def set_relative_weight(self, relative_weight: float):
+        self._relative_weight = relative_weight
+
     def get_dict(self) -> dict:
         return {"handle": self.handle, "weight": self.weight}
 
@@ -28,13 +31,10 @@ class HealerLink:
     weight: float
     in_tribe: bool
     _curelinks: dict[CureHandle:CureLink] = None
+    _relative_weight: float = None
 
-    def get_dict(self):
-        return {
-            "person_name": self.person_name,
-            "weight": self.weight,
-            "_curelinks": self.get_curelinks_dict(),
-        }
+    def set_relative_weight(self, relative_weight: float):
+        self._relative_weight = relative_weight
 
     def set_curelinks_empty_if_none(self):
         if self._curelinks is None:
@@ -53,6 +53,13 @@ class HealerLink:
         return {
             curelink_x.handle: curelink_x.get_dict()
             for curelink_x in self._curelinks.values()
+        }
+
+    def get_dict(self):
+        return {
+            "person_name": self.person_name,
+            "weight": self.weight,
+            "_curelinks": self.get_curelinks_dict(),
         }
 
 
