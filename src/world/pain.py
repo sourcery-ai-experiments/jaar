@@ -1,11 +1,12 @@
 from dataclasses import dataclass
-from src.cure.cure import CureUnit, CureHandle, cureunit_shop
+from src.cure.cure import CureHandle
 
 
 @dataclass
 class CureLink:
     handle: CureHandle
     weight: float
+    _relative_weight: float = None
 
     def get_dict(self) -> dict:
         return {"handle": self.handle, "weight": self.weight}
@@ -72,7 +73,12 @@ class PainKind(str):
 @dataclass
 class PainUnit:
     kind: PainKind
+    weight: float = None
     _healerlinks: dict[PersonName:HealerLink] = None
+    _relative_weight: float = None
+
+    def set_relative_weight(self, relative_weight: float):
+        self._relative_weight = relative_weight
 
     def set_healerlinks_empty_if_none(self):
         if self._healerlinks is None:
@@ -96,11 +102,14 @@ class PainUnit:
     def get_dict(self):
         return {
             "kind": self.kind,
+            "weight": self.weight,
             "_healerlinks": self.get_healerlinks_dict(),
         }
 
 
-def painunit_shop(kind: PainKind):
-    pain_x = PainUnit(kind=kind)
+def painunit_shop(kind: PainKind, weight: float = None) -> PainUnit:
+    if weight is None:
+        weight = 1
+    pain_x = PainUnit(kind=kind, weight=weight)
     pain_x.set_healerlinks_empty_if_none()
     return pain_x

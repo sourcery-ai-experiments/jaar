@@ -41,7 +41,8 @@ def test_healerlink_get_dict_ReturnsCorrectDict():
 def test_painunit_get_dict_ReturnsCorrectDict():
     # GIVEN
     fear_text = "fear"
-    fear_painunit = painunit_shop(kind=fear_text)
+    fear_weight = 13
+    fear_painunit = painunit_shop(kind=fear_text, weight=fear_weight)
 
     yao_text = "yao"
     yao_weight = 7
@@ -59,7 +60,7 @@ def test_painunit_get_dict_ReturnsCorrectDict():
 
     # THEN
     print(f"{fear_dict.keys()=}")
-    assert len(fear_dict) == 2
+    assert len(fear_dict) == 3
     x_healerlinks_dict = fear_dict.get("_healerlinks")
     print(f"{x_healerlinks_dict=}")
     assert len(x_healerlinks_dict) == 1
@@ -84,6 +85,7 @@ def test_painunit_get_dict_ReturnsCorrectDict():
     }
     assert fear_dict == {
         "kind": fear_text,
+        "weight": fear_weight,
         "_healerlinks": {
             yao_text: {
                 "person_name": yao_text,

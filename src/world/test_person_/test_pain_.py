@@ -20,6 +20,7 @@ def test_curelink_exists():
     # THEN
     assert home_curelink.handle == home_text
     assert home_curelink.weight == home_weight
+    assert home_curelink._relative_weight is None
 
 
 def test_curelink_shop_ReturnsCorrectObj():
@@ -150,16 +151,19 @@ def test_healerunit_del_cureunit_CorrectlyDeletesCureUnit():
 def test_painunit_exists():
     # GIVEN
     fear_text = "dallas"
+    fear_weight = 13
 
     # WHEN
-    fear_painunit = PainUnit(kind=fear_text)
+    fear_painunit = PainUnit(kind=fear_text, weight=fear_weight)
 
     # THEN
     assert fear_painunit.kind == fear_text
+    assert fear_painunit.weight == fear_weight
     assert fear_painunit._healerlinks is None
+    assert fear_painunit._relative_weight is None
 
 
-def test_healerunit_shop_ReturnsNonePainUnitWithCorrectAttrs_v1():
+def test_painunit_shop_ReturnsNonePainUnitWithCorrectAttrs_v1():
     # GIVEN
     fear_text = "dallas"
 
@@ -168,7 +172,9 @@ def test_healerunit_shop_ReturnsNonePainUnitWithCorrectAttrs_v1():
 
     # THEN
     assert fear_painunit.kind == fear_text
+    assert fear_painunit.weight == 1
     assert fear_painunit._healerlinks == {}
+    assert fear_painunit._relative_weight is None
 
 
 def test_painunit_set_healerlink_CorrectlySetsHealerLink():
@@ -221,3 +227,17 @@ def test_painunit_del_personunit_CorrectlyDeletesPersonUnit():
     # THEN
     after_yao_person = fear_painunit.get_healerlink(yao_text)
     assert after_yao_person is None
+
+
+def test_painunit__set_relative_weight_SetsCorrectly():
+    # GIVEN
+    fear_text = "fear"
+    fear_painunit = painunit_shop(kind=fear_text)
+    assert fear_painunit._relative_weight is None
+
+    # WHEN
+    x_relative_weight = 0.45
+    fear_painunit.set_relative_weight(x_relative_weight)
+
+    # THEN
+    assert fear_painunit._relative_weight == x_relative_weight
