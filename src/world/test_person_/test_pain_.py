@@ -15,11 +15,11 @@ def test_curelink_exists():
     home_weight = 3
 
     # WHEN
-    px = CureLink(handle=home_text, weight=home_weight)
+    home_curelink = CureLink(handle=home_text, weight=home_weight)
 
     # THEN
-    assert px.handle == home_text
-    assert px.weight == home_weight
+    assert home_curelink.handle == home_text
+    assert home_curelink.weight == home_weight
 
 
 def test_curelink_shop_ReturnsCorrectObj():
@@ -28,11 +28,11 @@ def test_curelink_shop_ReturnsCorrectObj():
     home_weight = 5
 
     # WHEN
-    px = curelink_shop(handle=home_text, weight=home_weight)
+    home_curelink = curelink_shop(handle=home_text, weight=home_weight)
 
     # THEN
-    assert px.handle == home_text
-    assert px.weight == home_weight
+    assert home_curelink.handle == home_text
+    assert home_curelink.weight == home_weight
 
 
 def test_curelink_shop_ReturnsCorrectObj_EmptyWeight():
@@ -40,11 +40,11 @@ def test_curelink_shop_ReturnsCorrectObj_EmptyWeight():
     cure_text = "home"
 
     # WHEN
-    px = curelink_shop(handle=cure_text)
+    home_curelink = curelink_shop(handle=cure_text)
 
     # THEN
-    assert px.handle == cure_text
-    assert px.weight == 1
+    assert home_curelink.handle == cure_text
+    assert home_curelink.weight == 1
 
 
 def test_healerlink_exists():
@@ -152,11 +152,11 @@ def test_painunit_exists():
     fear_text = "dallas"
 
     # WHEN
-    px = PainUnit(kind=fear_text)
+    fear_painunit = PainUnit(kind=fear_text)
 
     # THEN
-    assert px.kind == fear_text
-    assert px._healerlinks is None
+    assert fear_painunit.kind == fear_text
+    assert fear_painunit._healerlinks is None
 
 
 def test_healerunit_shop_ReturnsNonePainUnitWithCorrectAttrs_v1():
@@ -164,11 +164,11 @@ def test_healerunit_shop_ReturnsNonePainUnitWithCorrectAttrs_v1():
     fear_text = "dallas"
 
     # WHEN
-    px = painunit_shop(kind=fear_text)
+    fear_painunit = painunit_shop(kind=fear_text)
 
     # THEN
-    assert px.kind == fear_text
-    assert px._healerlinks == {}
+    assert fear_painunit.kind == fear_text
+    assert fear_painunit._healerlinks == {}
 
 
 def test_painunit_set_healerlink_CorrectlySetsHealerLink():
