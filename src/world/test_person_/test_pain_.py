@@ -21,6 +21,7 @@ def test_curelink_exists():
     assert home_curelink.handle == home_text
     assert home_curelink.weight == home_weight
     assert home_curelink._relative_weight is None
+    assert home_curelink._person_importance is None
 
 
 def test_curelink_shop_ReturnsCorrectObj():
@@ -34,6 +35,8 @@ def test_curelink_shop_ReturnsCorrectObj():
     # THEN
     assert home_curelink.handle == home_text
     assert home_curelink.weight == home_weight
+    assert home_curelink._relative_weight is None
+    assert home_curelink._person_importance is None
 
 
 def test_curelink_shop_ReturnsCorrectObj_EmptyWeight():
@@ -46,6 +49,8 @@ def test_curelink_shop_ReturnsCorrectObj_EmptyWeight():
     # THEN
     assert home_curelink.handle == cure_text
     assert home_curelink.weight == 1
+    assert home_curelink._relative_weight is None
+    assert home_curelink._person_importance is None
 
 
 def test_healerlink_exists():
@@ -62,6 +67,8 @@ def test_healerlink_exists():
     assert yao_healerlink.weight == yao_weight
     assert yao_healerlink.in_tribe == yao_in_tribe
     assert yao_healerlink._curelinks is None
+    assert yao_healerlink._relative_weight is None
+    assert yao_healerlink._person_importance is None
 
 
 def test_healerlink_shop_ReturnsCorrectObj():
@@ -80,6 +87,8 @@ def test_healerlink_shop_ReturnsCorrectObj():
     assert yao_healerlink.weight == yao_weight
     assert yao_healerlink.in_tribe == yao_in_tribe
     assert yao_healerlink._curelinks == {}
+    assert yao_healerlink._relative_weight is None
+    assert yao_healerlink._person_importance is None
 
 
 def test_healerlink_shop_ReturnsCorrectObj_EmptyWeight():
@@ -94,9 +103,11 @@ def test_healerlink_shop_ReturnsCorrectObj_EmptyWeight():
     assert yao_healerlink.weight == 1
     assert yao_healerlink.in_tribe is None
     assert yao_healerlink._curelinks == {}
+    assert yao_healerlink._relative_weight is None
+    assert yao_healerlink._person_importance is None
 
 
-def test_healerunit_set_curelink_CorrectlySetsCureLink():
+def test_healerlink_set_curelink_CorrectlySetsCureLink():
     # GIVEN
     yao_text = "yao"
     yao_healerlink = healerlink_shop(person_name=yao_text)
@@ -113,7 +124,7 @@ def test_healerunit_set_curelink_CorrectlySetsCureLink():
     assert home_cure.handle == home_text
 
 
-def test_healerunit_get_cureunit_CorrectlyGetsAnCureUnit():
+def test_healerlink_get_cureunit_CorrectlyGetsAnCureUnit():
     # GIVEN
     yao_text = "yao"
     yao_healerlink = healerlink_shop(person_name=yao_text)
@@ -129,7 +140,7 @@ def test_healerunit_get_cureunit_CorrectlyGetsAnCureUnit():
     assert home_cure.handle == home_text
 
 
-def test_healerunit_del_cureunit_CorrectlyDeletesCureUnit():
+def test_healerlink_del_cureunit_CorrectlyDeletesCureUnit():
     # GIVEN
     yao_text = "yao"
     yao_healerlink = healerlink_shop(person_name=yao_text)
@@ -161,6 +172,7 @@ def test_painunit_exists():
     assert fear_painunit.weight == fear_weight
     assert fear_painunit._healerlinks is None
     assert fear_painunit._relative_weight is None
+    assert fear_painunit._person_importance is None
 
 
 def test_painunit_shop_ReturnsNonePainUnitWithCorrectAttrs_v1():
@@ -175,6 +187,7 @@ def test_painunit_shop_ReturnsNonePainUnitWithCorrectAttrs_v1():
     assert fear_painunit.weight == 1
     assert fear_painunit._healerlinks == {}
     assert fear_painunit._relative_weight is None
+    assert fear_painunit._person_importance is None
 
 
 def test_painunit_set_healerlink_CorrectlySetsHealerLink():

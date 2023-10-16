@@ -26,7 +26,7 @@ class PersonUnit:
     def del_painunit(self, pain_kind: PainKind):
         self._pains.pop(pain_kind)
 
-    def set_painunits_relative_weight(self):
+    def set_painunits_weight_metrics(self):
         total_painunits_weight = sum(
             x_painunit.weight for x_painunit in self._pains.values()
         )

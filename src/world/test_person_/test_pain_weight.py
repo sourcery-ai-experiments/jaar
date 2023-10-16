@@ -43,10 +43,53 @@ def test_painunit_set_relative_weight_SetsCorrectly():
     assert fear_painunit._relative_weight == x_relative_weight
 
 
-def test_healerunit_set_curelinks_relative_weight_SetsCorrectly():
+def test_curelink_set_person_importance_SetsCorrectly():
+    # GIVEN
+    home_text = "home"
+    home_curelink = curelink_shop(handle=home_text)
+    assert home_curelink._person_importance is None
+
+    # WHEN
+    x_person_importance = 0.45
+    home_curelink.set_person_importance(x_person_importance)
+
+    # THEN
+    assert home_curelink._person_importance == x_person_importance
+
+
+def test_healerunit_set_person_importance_SetsCorrectly():
+    # GIVEN
+    yao_text = "Yao"
+    yao_healerlink = healerlink_shop(person_name=yao_text)
+    assert yao_healerlink._person_importance is None
+
+    # WHEN
+    x_person_importance = 0.45
+    yao_healerlink.set_person_importance(x_person_importance)
+
+    # THEN
+    assert yao_healerlink._person_importance == x_person_importance
+
+
+def test_painunit_set_person_importance_SetsCorrectly():
+    # GIVEN
+    fear_text = "fear"
+    fear_painunit = painunit_shop(kind=fear_text)
+    assert fear_painunit._person_importance is None
+
+    # WHEN
+    x_person_importance = 0.45
+    fear_painunit.set_person_importance(x_person_importance)
+
+    # THEN
+    assert fear_painunit._person_importance == x_person_importance
+
+
+def test_healerunit_set_curelinks_weight_metrics_SetsCorrectly():
     # GIVEN
     yao_text = "Yao"
     yao_hl = healerlink_shop(person_name=yao_text)
+    yao_hl._person_importance = 0.25
     fight_text = "fight"
     flee_text = "flee"
     nego_text = "negoiate"
@@ -59,20 +102,27 @@ def test_healerunit_set_curelinks_relative_weight_SetsCorrectly():
     assert fight_curelink._relative_weight is None
     assert flee_curelink._relative_weight is None
     assert nego_curelink._relative_weight is None
+    assert fight_curelink._person_importance is None
+    assert flee_curelink._person_importance is None
+    assert nego_curelink._person_importance is None
 
     # WHEN
-    yao_hl.set_curelinks_relative_weight()
+    yao_hl.set_curelinks_weight_metrics()
 
     # THEN
     assert fight_curelink._relative_weight == 0.5
     assert flee_curelink._relative_weight == 0.35
     assert nego_curelink._relative_weight == 0.15
+    assert fight_curelink._person_importance == 0.125
+    assert flee_curelink._person_importance == 0.0875
+    assert nego_curelink._person_importance == 0.0375
 
 
-def test_painunit_set_healerlinks_relative_weight_SetsCorrectly():
+def test_painunit_set_healerlinks_weight_metrics_SetsCorrectly():
     # GIVEN
     fear_text = "fear"
     fear_painunit = painunit_shop(kind=fear_text)
+    fear_painunit._person_importance = 0.25
 
     yao_text = "Yao"
     sue_text = "Sue"
@@ -88,11 +138,17 @@ def test_painunit_set_healerlinks_relative_weight_SetsCorrectly():
     assert yao_healerlink._relative_weight is None
     assert sue_healerlink._relative_weight is None
     assert tim_healerlink._relative_weight is None
+    assert yao_healerlink._person_importance is None
+    assert sue_healerlink._person_importance is None
+    assert tim_healerlink._person_importance is None
 
     # WHEN
-    fear_painunit.set_healerlinks_relative_weight()
+    fear_painunit.set_healerlinks_weight_metrics()
 
     # THEN
     assert yao_healerlink._relative_weight == 0.75
     assert sue_healerlink._relative_weight == 0.15
     assert tim_healerlink._relative_weight == 0.10
+    assert yao_healerlink._person_importance == 0.1875
+    assert sue_healerlink._person_importance == 0.0375
+    assert tim_healerlink._person_importance == 0.025

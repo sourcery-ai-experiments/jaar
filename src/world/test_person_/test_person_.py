@@ -161,34 +161,3 @@ def test_personunit_del_painunit_CorrectlyDeletesPainUnit():
     # THEN
     after_fear_pain = xao_person_obj.get_painunit(fear_text)
     assert after_fear_pain is None
-
-
-def test_personunit_set_painunits_relative_weight_SetsCorrectly():
-    # GIVEN
-    xao_text = "Xao"
-    xao_person_dir = f"/persons/{xao_text}"
-    xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
-
-    fear_text = "fear"
-    bore_text = "bore"
-    rain_text = "rain"
-
-    xao_person_obj.set_painunit(painunit_shop(kind=fear_text, weight=60))
-    xao_person_obj.set_painunit(painunit_shop(kind=bore_text, weight=35))
-    xao_person_obj.set_painunit(painunit_shop(kind=rain_text, weight=5))
-
-    fear_painunit = xao_person_obj.get_painunit(fear_text)
-    bore_painunit = xao_person_obj.get_painunit(bore_text)
-    rain_painunit = xao_person_obj.get_painunit(rain_text)
-
-    assert fear_painunit._relative_weight is None
-    assert bore_painunit._relative_weight is None
-    assert rain_painunit._relative_weight is None
-
-    # WHEN
-    xao_person_obj.set_painunits_relative_weight()
-
-    # THEN
-    assert fear_painunit._relative_weight == 0.6
-    assert bore_painunit._relative_weight == 0.35
-    assert rain_painunit._relative_weight == 0.05

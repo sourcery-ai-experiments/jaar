@@ -7,9 +7,13 @@ class CureLink:
     handle: CureHandle
     weight: float
     _relative_weight: float = None
+    _person_importance: float = None
 
     def set_relative_weight(self, relative_weight: float):
         self._relative_weight = relative_weight
+
+    def set_person_importance(self, person_importance: float):
+        self._person_importance = person_importance
 
     def get_dict(self) -> dict:
         return {"handle": self.handle, "weight": self.weight}
@@ -32,16 +36,24 @@ class HealerLink:
     in_tribe: bool
     _curelinks: dict[CureHandle:CureLink] = None
     _relative_weight: float = None
+    _person_importance: float = None
 
-    def set_curelinks_relative_weight(self):
+    def set_curelinks_weight_metrics(self):
         total_curelinks_weight = sum(
             x_curelink.weight for x_curelink in self._curelinks.values()
         )
         for x_curelink in self._curelinks.values():
             x_curelink.set_relative_weight(x_curelink.weight / total_curelinks_weight)
+            x_curelink.set_person_importance(
+                x_curelink._relative_weight * self._person_importance
+            )
 
     def set_relative_weight(self, relative_weight: float):
         self._relative_weight = relative_weight
+
+    def set_person_importance(self, person_importance: float):
+        self._person_importance = person_importance
+        self.set_curelinks_weight_metrics()
 
     def set_curelinks_empty_if_none(self):
         if self._curelinks is None:
@@ -90,18 +102,28 @@ class PainUnit:
     weight: float = None
     _healerlinks: dict[PersonName:HealerLink] = None
     _relative_weight: float = None
+    _person_importance: float = None
 
-    def set_healerlinks_relative_weight(self):
+    def set_healerlinks_weight_metrics(self):
         total_healerlinks_weight = sum(
             x_healerlink.weight for x_healerlink in self._healerlinks.values()
         )
+
         for x_healerlink in self._healerlinks.values():
             x_healerlink.set_relative_weight(
                 x_healerlink.weight / total_healerlinks_weight
             )
+            x_healerlink.set_person_importance(
+                x_healerlink._relative_weight * self._person_importance
+            )
 
     def set_relative_weight(self, relative_weight: float):
         self._relative_weight = relative_weight
+        self.set_person_importance(self._relative_weight)
+
+    def set_person_importance(self, person_importance: float):
+        self._person_importance = person_importance
+        self.set_healerlinks_weight_metrics()
 
     def set_healerlinks_empty_if_none(self):
         if self._healerlinks is None:
