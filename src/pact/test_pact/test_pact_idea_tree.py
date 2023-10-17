@@ -3,7 +3,7 @@ from src.pact.examples.example_pacts import (
 )
 from src.pact.party import PartyTitle
 from src.pact.idea import IdeaKid
-from src.pact.pact import ContractUnit
+from src.pact.pact import PactUnit
 from src.pact.group import Balanceline, Balancelink
 from pytest import raises as pytest_raises
 
@@ -105,7 +105,7 @@ def test_get_idea_kid_CorrectlyReturnsIdea():
 
 def test_set_pact_metrics_RootOnlyCorrectlySetsDescendantAttributes():
     healer_text = "Tim"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     assert cx._idearoot._descendant_promise_count is None
     assert cx._idearoot._all_party_credit is None
     assert cx._idearoot._all_party_debt is None
@@ -310,7 +310,7 @@ def test_pact4party_Exists():
     yrx._kids["work"]._kids["email"].set_balancelink(balancelink=x_balancelink)
     sandy_pact4party = cx.get_pact4party(acptfacts=None, party_title=sandy_title)
     assert sandy_pact4party
-    assert str(type(sandy_pact4party)).find(".pact.ContractUnit'>")
+    assert str(type(sandy_pact4party)).find(".pact.PactUnit'>")
     assert sandy_pact4party._healer == sandy_title
 
 
@@ -364,13 +364,13 @@ def test_pact_get_orderd_node_list_WorksCorrectly():
     assert cx.get_idea_tree_ordered_road_list()[0] == f"{cx._cure_handle}"
     assert cx.get_idea_tree_ordered_road_list()[8] == f"{cx._cure_handle},weekdays"
 
-    lw_y = ContractUnit(_healer="MyContract")
+    lw_y = PactUnit(_healer="MyPact")
     assert lw_y.get_idea_tree_ordered_road_list()[0] == cx._cure_handle
 
 
 def test_pact_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoads():
     healer_text = "Tim"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     time = "timeline"
     cx.add_idea(IdeaKid(_label=time, _begin=0, _close=700), pad=cx._cure_handle)
     t_road = f"{cx._cure_handle},{time}"
@@ -395,7 +395,7 @@ def test_pact_get_heir_road_list_returnsCorrectList():
 
 
 # def test_pact4party_hasCorrectLevel1StructureWithGrouplessBranches_2():
-#     cx = ContractUnit(_healer=healer_text)
+#     cx = PactUnit(_healer=healer_text)
 #     cx.add_idea(idea_kid=IdeaKid(_label="A", _weight=7), pad="blahblah")
 #     cx.add_idea(idea_kid=IdeaKid(_label="C", _weight=3), pad=f"{cx._cure_handle},A")
 #     cx.add_idea(idea_kid=IdeaKid(_label="E", _weight=7), pad=f"{cx._cure_handle},A,C")
@@ -423,7 +423,7 @@ def test_pact_get_heir_road_list_returnsCorrectList():
 #     cx.edit_idea_attr(road=f"{cx._cure_handle},A,C,E", balancelink=sandy_bl)
 
 #     # expected sandy
-#     exp_sandy = ContractUnit(_healer=healer_text)
+#     exp_sandy = PactUnit(_healer=healer_text)
 #     exp_sandy.add_idea(idea_kid=IdeaKid(_label="A", _pact_importance=0.07), pad="blahblah")
 #     exp_sandy.add_idea(idea_kid=IdeaKid(_label="C", _pact_importance=0.07), pad=f"{cx._cure_handle},A")
 #     exp_sandy.add_idea(idea_kid=IdeaKid(_label="E", _pact_importance=0.5), pad=f"{cx._cure_handle},A,C")

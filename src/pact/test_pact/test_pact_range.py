@@ -1,11 +1,11 @@
 from src.pact.idea import IdeaKid
-from src.pact.pact import ContractUnit
+from src.pact.pact import PactUnit
 
 
 def test_pactAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
     # Given
     healer_text = "Mia"
-    cx = ContractUnit(_healer=healer_text, _weight=10)
+    cx = PactUnit(_healer=healer_text, _weight=10)
 
     l1 = "level1"
     idea_kid_l1 = IdeaKid(_weight=30, _label=l1)
@@ -42,7 +42,7 @@ def test_pactAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
 def test_pactAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
     # Given
     healer_text = "Bob"
-    cx = ContractUnit(_healer=healer_text, _weight=10)
+    cx = PactUnit(_healer=healer_text, _weight=10)
 
     l1 = "level1"
     idea_kid_l1 = IdeaKid(_weight=30, _label=l1)
@@ -82,7 +82,7 @@ def test_pactAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
 def test_get_idea_ranged_kids_CorrectlyReturnsAllChildren():
     # GIVEN
     healer_text = "Noa"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN
@@ -96,7 +96,7 @@ def test_get_idea_ranged_kids_CorrectlyReturnsAllChildren():
 def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen1():
     # GIVEN
     healer_text = "Noa"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN
@@ -118,7 +118,7 @@ def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen1():
 def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen2():
     # GIVEN
     healer_text = "Noa"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN THEN
@@ -131,7 +131,7 @@ def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen2():
 def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen3():
     # GIVEN
     healer_text = "Noa"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN THEN

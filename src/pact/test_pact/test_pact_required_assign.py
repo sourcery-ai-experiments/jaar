@@ -3,7 +3,7 @@ from src.pact.required_assign import (
     assigned_heir_shop,
     assigned_unit_shop,
 )
-from src.pact.pact import ContractUnit
+from src.pact.pact import PactUnit
 from src.pact.idea import IdeaKid
 from src.pact.group import groupunit_shop
 
@@ -11,7 +11,7 @@ from src.pact.group import groupunit_shop
 def test_pact_edit_idea_attr_CorrectlySetsAssignedUnit():
     # GIVEN
     healer_text = "Xio"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     run_text = "run"
     run_road = f"{cx._cure_handle},{run_text}"
     cx.add_idea(IdeaKid(_label=run_text), pad=cx._cure_handle)
@@ -31,7 +31,7 @@ def test_pact_idearoot_assignedunit_CorrectlySets_idea_assignedheir():
     assigned_unit_x = assigned_unit_shop()
 
     healer_text = "Tim"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     cx.edit_idea_attr(assignedunit=assigned_unit_x, road=cx._cure_handle)
     assert cx._idearoot._assignedunit == assigned_unit_x
     assert cx._idearoot._assignedheir is None
@@ -55,7 +55,7 @@ def test_pact_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
     run_road = f"{bob_text},{run_text}"
     assigned_unit_x = assigned_unit_shop()
 
-    cx = ContractUnit(_healer=bob_text)
+    cx = PactUnit(_healer=bob_text)
     cx.add_partyunit(title=bob_text)
     cx.add_idea(IdeaKid(_label=run_text), pad=bob_text)
     cx.edit_idea_attr(road=run_road, assignedunit=assigned_unit_x)
@@ -82,7 +82,7 @@ def test_pact_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
 def test_pact_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir():
     # GIVEN
     healer_text = "Noa"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     swim_text = "swiming"
     swim_road = f"{cx._cure_handle},{swim_text}"
     morn_text = "morning"
@@ -115,10 +115,10 @@ def test_pact_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir():
     assert four_idea._assignedheir == assigned_heir_x
 
 
-def test_ContractUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignUnit():
+def test_PactUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignUnit():
     # GIVEN
     healer_text = "Noa"
-    cx1 = ContractUnit(_healer=healer_text)
+    cx1 = PactUnit(_healer=healer_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
     cx1.add_partyunit(title=xia_text)
@@ -139,7 +139,7 @@ def test_ContractUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_Assig
     assert len(cx1_swim_suffgroups) == 2
 
     # WHEN
-    cx2 = ContractUnit(_healer=healer_text)
+    cx2 = PactUnit(_healer=healer_text)
     cx2.add_partyunit(title=xia_text)
     filtered_idea = cx2._get_filtered_balancelinks_idea(cx1_swim_idea)
 
@@ -149,10 +149,10 @@ def test_ContractUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_Assig
     assert list(filtered_swim_suffgroups) == [xia_text]
 
 
-def test_ContractUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
+def test_PactUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     # GIVEN
     healer_text = "Noa"
-    cx1 = ContractUnit(_healer=healer_text)
+    cx1 = PactUnit(_healer=healer_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
     cx1.add_partyunit(title=xia_text)
@@ -173,7 +173,7 @@ def test_ContractUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     assert len(cx1_swim_suffgroups) == 2
 
     # WHEN
-    cx2 = ContractUnit(_healer=healer_text)
+    cx2 = PactUnit(_healer=healer_text)
     cx2.add_partyunit(title=xia_text)
     cx2.add_idea(
         idea_kid=cx1_swim_idea,

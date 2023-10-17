@@ -2,7 +2,7 @@ from src.pact.examples.example_pacts import (
     get_pact_1Task_1CE0MinutesRequired_1AcptFact,
     get_pact_with_4_levels,
 )
-from src.pact.pact import ContractUnit
+from src.pact.pact import PactUnit
 from src.pact.road import get_default_cure_root_label as root_label
 from src.pact.origin import originunit_shop
 from pytest import raises as pytest_raises
@@ -13,7 +13,7 @@ def test_pact_exists():
 
     # WHEN
     healer_text = "Noa"
-    new_obj = ContractUnit(_healer=healer_text)
+    new_obj = PactUnit(_healer=healer_text)
 
     assert new_obj
     assert new_obj._healer == healer_text
@@ -69,7 +69,7 @@ def test_pact_ideaoot_uid_isAlwaysEqualTo1():
     healer_text = "Zia"
 
     # WHEN
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
 
     # THEN
     assert sx._idearoot._uid == 1
@@ -78,7 +78,7 @@ def test_pact_ideaoot_uid_isAlwaysEqualTo1():
 def test_pact_set_max_tree_traverse_CorrectlySetsInt():
     # GIVEN
     healer_text = "Zia"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     assert sx._max_tree_traverse == 3
 
     # WHEN
@@ -91,7 +91,7 @@ def test_pact_set_max_tree_traverse_CorrectlySetsInt():
 def test_pact_set_max_tree_traverse_CorrectlyRaisesError():
     # GIVEN
     healer_text = "Zia"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     assert sx._max_tree_traverse == 3
 
     # WHEN/THEN
@@ -144,7 +144,7 @@ def test_pact_init_CorrectlySetsGiven_auto_output_to_public():
 
     # WHEN
     healer_text = "Noa"
-    new_obj = ContractUnit(_healer=healer_text, _auto_output_to_public=True)
+    new_obj = PactUnit(_healer=healer_text, _auto_output_to_public=True)
 
     # THEN
     assert new_obj._auto_output_to_public == True
@@ -154,7 +154,7 @@ def test_pact_set_cure_handle_CorrectlySetsAttr():
     # GIVEN
     cure_handle_text = "Sun"
     healer_text = "Noa"
-    new_obj = ContractUnit(_healer=healer_text, _auto_output_to_public=True)
+    new_obj = PactUnit(_healer=healer_text, _auto_output_to_public=True)
     assert new_obj._cure_handle == root_label()
 
     # WHEN

@@ -1,5 +1,5 @@
 from datetime import datetime
-from src.pact.pact import ContractUnit, get_from_json
+from src.pact.pact import PactUnit, get_from_json
 from src.pact.examples.pact_env import pact_env
 from src.pact.idea import IdeaCore, IdeaKid
 from src.pact.road import Road
@@ -119,7 +119,7 @@ def test_get_agenda_with_7amItem():
 
 def test_get_agenda_does_not_return_promise_items_outside_range():
     healer_text = "Zia"
-    a1 = ContractUnit(_healer=healer_text)
+    a1 = PactUnit(_healer=healer_text)
     a1.set_time_hreg_ideas(c400_count=7)
     c_label = "clean"
     c_idea = IdeaKid(_label=c_label, promise=True)
@@ -290,7 +290,7 @@ def test_exammple_AgendaCanFiltersOnBase():
 def test_set_agenda_task_as_complete_RangeWorksCorrectly():
     # GIVEN
     healer_text = "Zia"
-    a1 = ContractUnit(_healer=healer_text)
+    a1 = PactUnit(_healer=healer_text)
 
     run_text = "run"
     run_road = f"{a1._cure_handle},{run_text}"
@@ -331,7 +331,7 @@ def test_set_agenda_task_as_complete_RangeWorksCorrectly():
 def test_set_agenda_task_as_complete_DivisionWorksCorrectly():
     # GIVEN
     healer_text = "Zia"
-    a1 = ContractUnit(_healer=healer_text)
+    a1 = PactUnit(_healer=healer_text)
 
     run_text = "run"
     run_road = f"{a1._cure_handle},{run_text}"
@@ -421,7 +421,7 @@ def test_pact_get_from_json_LoadsActionFromJSONCorrectly():
 def test_weekdayAgendaItemsCorrectlyReturned():
     # Given
     healer_text = "Zia"
-    a1 = ContractUnit(_healer=healer_text)
+    a1 = PactUnit(_healer=healer_text)
 
     a1._set_acptfacts_empty_if_null()
     a1.set_time_hreg_ideas(c400_count=7)
@@ -602,12 +602,12 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     # assert a1._idearoot._acptfactunits[fri_road].active == True
 
 
-def test_pact_create_agenda_item_CorrectlyCreatesAllContractAttributes():
+def test_pact_create_agenda_item_CorrectlyCreatesAllPactAttributes():
     # WHEN "I am cleaning the cookery since I'm in the apartment and it's 8am and it's dirty and I'm doing this for my family"
 
     # GIVEN
     healer_text = "Zia"
-    a1 = ContractUnit(_healer=healer_text)
+    a1 = PactUnit(_healer=healer_text)
 
     a1.set_pact_metrics()
     assert len(a1._partys) == 0
@@ -757,7 +757,7 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
 def test_agenda_IsSetByAssignedUnit_1PartyGroup():
     # GIVEN
     bob_text = "bob"
-    cx = ContractUnit(_healer=bob_text)
+    cx = PactUnit(_healer=bob_text)
     work_text = "work"
     work_road = f"{bob_text},{work_text}"
     cx.add_idea(idea_kid=IdeaKid(_label=work_text, promise=True), pad=bob_text)
@@ -793,7 +793,7 @@ def test_agenda_IsSetByAssignedUnit_1PartyGroup():
 def test_agenda_IsSetByAssignedUnit_2PartyGroup():
     # GIVEN
     bob_text = "bob"
-    cx = ContractUnit(_healer=bob_text)
+    cx = PactUnit(_healer=bob_text)
     cx.add_partyunit(title=bob_text)
     work_text = "work"
     work_road = f"{bob_text},{work_text}"

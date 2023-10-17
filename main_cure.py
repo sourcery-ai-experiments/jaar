@@ -4,7 +4,7 @@ from Edit5Issue import Edit5Issue
 from EditMain import EditMainView
 from PyQt5 import QtCore as qtc
 from src.pact.pact import (
-    ContractUnit,
+    PactUnit,
     get_from_json as get_pact_from_json,
 )
 from sys import argv as sys_argv, exit as sys_exit
@@ -221,9 +221,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_cure()
 
     def pact_insert(self):
-        self.cure_x.save_public_pact(
-            pact_x=ContractUnit(_healer=self.pact_healer.text())
-        )
+        self.cure_x.save_public_pact(pact_x=PactUnit(_healer=self.pact_healer.text()))
         self.refresh_cure()
 
     def pact_update_title(self):
@@ -452,9 +450,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.depotlink_type_combo.setCurrentText("")
         column_header = ""
         if self.healer_x is None:
-            column_header = "Contractlinks Table"
+            column_header = "Pactlinks Table"
         elif self.healer_x != None:
-            column_header = f"'{self.healer_x._admin.title}' Contractlinks"
+            column_header = f"'{self.healer_x._admin.title}' Pactlinks"
         self.refresh_x(
             self.depotlinks_table,
             [column_header, "Link Type", "Weight"],
@@ -577,9 +575,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._sub_refresh_p_agenda_table()
 
     def refresh_cure(self):
-        self.refresh_x(
-            self.pacts_table, ["Contracts Table"], self.get_pact_healer_list()
-        )
+        self.refresh_x(self.pacts_table, ["Pacts Table"], self.get_pact_healer_list())
         self.refresh_healers()
 
     def refresh_x(

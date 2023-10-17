@@ -1,11 +1,11 @@
-from src.pact.pact import ContractUnit
+from src.pact.pact import PactUnit
 from datetime import datetime
 from random import randint
 
 
 def test_time_get_time_min_from_dt_WorksCorrectly():
     healer_text = "Kia"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     cx.set_time_hreg_ideas(c400_count=6)
     assert cx.get_time_min_from_dt(dt=datetime(2000, 1, 1, 0, 0))
     assert cx.get_time_min_from_dt(dt=datetime(1, 1, 1, 0, 0)) == 527040
@@ -17,7 +17,7 @@ def test_time_get_time_min_from_dt_WorksCorrectly():
 
 def test_get_time_400YearCycle_from_min_WorksCorrectly():
     healer_text = "Kia"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     cx.set_time_hreg_ideas(c400_count=6)
     assert cx.get_time_c400_from_min(min=0)[0] == 0
     assert cx.get_time_c400_from_min(min=210379680)[0] == 1
@@ -27,7 +27,7 @@ def test_get_time_400YearCycle_from_min_WorksCorrectly():
 
 def test_get_time_c400year_from_min_WorksCorrectly():
     healer_text = "Kia"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     cx.set_time_hreg_ideas(c400_count=6)
     assert cx.get_time_c400yr_from_min(min=0)[0] == 0
     assert cx.get_time_c400yr_from_min(min=1)[0] == 0
@@ -41,7 +41,7 @@ def test_get_time_c400year_from_min_WorksCorrectly():
     assert cx.get_time_c400yr_from_min(min=157785120)[0] == 300
 
 
-def _check_time_conversion_works_with_random_inputs(cx: ContractUnit):
+def _check_time_conversion_works_with_random_inputs(cx: PactUnit):
     py_dt = datetime(
         year=randint(1, 2800),
         month=randint(1, 12),
@@ -55,7 +55,7 @@ def _check_time_conversion_works_with_random_inputs(cx: ContractUnit):
 
 def test_get_time_dt_from_min_WorksCorrectly():
     healer_text = "Kia"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     cx.set_time_hreg_ideas(c400_count=6)
     assert cx.get_time_dt_from_min(min=5000000)
     # assert cx.get_time_dt_from_min(
@@ -105,7 +105,7 @@ def test_get_time_dt_from_min_WorksCorrectly():
 def test_get_time_():
     # Given
     healer_text = "Kia"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     cx.set_time_hreg_ideas(c400_count=6)
 
     idea_list = cx.get_idea_list()
@@ -131,7 +131,7 @@ def test_get_time_():
 
 
 # def test_time_hreg_set_exists():
-#     cx = ContractUnit(_healer=healer_text)
+#     cx = PactUnit(_healer=healer_text)
 #     cx.set_time_hreg_ideas(c400_count=6)
 #     idea_x = cx.get_idea_kid(road=f"{root_label()},hreg")
 #     assert idea_x != None
@@ -289,7 +289,7 @@ def test_get_time_():
 #     assert timetech._begin == 0
 #     assert timetech._close == 876582
 
-# x_cx = ContractUnit()
+# x_cx = PactUnit()
 # cx.get_idea_kid(road={f"{root_label()},hreg,weekday"})
 
 # wed_sufffact_x = sufffactunit_shop(need=wednesday_road)
@@ -309,7 +309,7 @@ def test_get_time_():
 def test_get_jajatime_repeating_legible_text_correctlyText():
     # GIVEN
     healer_text = "Noa"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     cx.set_time_hreg_ideas(c400_count=7)
 
     # WHEN / THEN

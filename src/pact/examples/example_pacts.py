@@ -5,18 +5,18 @@ from src.pact.required_idea import (
     RequiredUnit,
     acptfactunit_shop,
 )
-from src.pact.pact import ContractUnit, get_from_json as pact_get_from_json
+from src.pact.pact import PactUnit, get_from_json as pact_get_from_json
 from src.pact.x_func import open_file as x_func_open_file
 from src.pact.examples.pact_env import pact_env
 
 
-def pact_v001() -> ContractUnit:
+def pact_v001() -> PactUnit:
     return pact_get_from_json(
         x_func_open_file(dest_dir=pact_env(), file_title="example_pact1.json")
     )
 
 
-def pact_v001_with_large_agenda() -> ContractUnit:
+def pact_v001_with_large_agenda() -> PactUnit:
     a1 = pact_v001()
     day_minute_text = "day_minute"
     day_minute_road = f"{a1._cure_handle},{day_minute_text}"
@@ -59,15 +59,15 @@ def pact_v001_with_large_agenda() -> ContractUnit:
     return a1
 
 
-def pact_v002() -> ContractUnit:
+def pact_v002() -> PactUnit:
     return pact_get_from_json(
         x_func_open_file(dest_dir=pact_env(), file_title="example_pact2.json")
     )
 
 
-def get_pact_with_4_levels() -> ContractUnit:
+def get_pact_with_4_levels() -> PactUnit:
     healer_text = "Noa"
-    a1 = ContractUnit(_healer=healer_text, _weight=10)
+    a1 = PactUnit(_healer=healer_text, _weight=10)
 
     work = "work"
     idea_kid_work = IdeaKid(_weight=30, _label=work, promise=True)
@@ -131,7 +131,7 @@ def get_pact_with_4_levels() -> ContractUnit:
     return a1
 
 
-def get_pact_with_4_levels_and_2requireds() -> ContractUnit:
+def get_pact_with_4_levels_and_2requireds() -> PactUnit:
     a1 = get_pact_with_4_levels()
     week_text = "weekdays"
     week_road = f"{a1._cure_handle},{week_text}"
@@ -154,7 +154,7 @@ def get_pact_with_4_levels_and_2requireds() -> ContractUnit:
     return a1
 
 
-def get_pact_with_4_levels_and_2requireds_2acptfacts() -> ContractUnit:
+def get_pact_with_4_levels_and_2requireds_2acptfacts() -> PactUnit:
     a1 = get_pact_with_4_levels_and_2requireds()
     week_text = "weekdays"
     week_road = f"{a1._cure_handle},{week_text}"
@@ -169,7 +169,7 @@ def get_pact_with_4_levels_and_2requireds_2acptfacts() -> ContractUnit:
     return a1
 
 
-def get_pact_with7amCleanTableRequired() -> ContractUnit:
+def get_pact_with7amCleanTableRequired() -> PactUnit:
     a1 = get_pact_with_4_levels_and_2requireds_2acptfacts()
 
     time_text = "timetech"
@@ -238,9 +238,9 @@ def get_pact_with7amCleanTableRequired() -> ContractUnit:
     return a1
 
 
-def get_pact_1Task_1CE0MinutesRequired_1AcptFact() -> ContractUnit:
+def get_pact_1Task_1CE0MinutesRequired_1AcptFact() -> PactUnit:
     healer_text = "Bob"
-    a1 = ContractUnit(_healer=healer_text, _weight=10)
+    a1 = PactUnit(_healer=healer_text, _weight=10)
     ced_min_label = "CE0_minutes"
     ced_minutes = IdeaKid(_label=ced_min_label)
     ced_road = f"{a1._cure_handle},{ced_min_label}"
@@ -271,9 +271,9 @@ def get_pact_1Task_1CE0MinutesRequired_1AcptFact() -> ContractUnit:
     return a1
 
 
-def get_pact_x1_3levels_1required_1acptfacts() -> ContractUnit:
+def get_pact_x1_3levels_1required_1acptfacts() -> PactUnit:
     healer_text = "Kol"
-    a1 = ContractUnit(_healer=healer_text, _weight=10)
+    a1 = PactUnit(_healer=healer_text, _weight=10)
     shave_text = "shave"
     shave_road = f"{a1._cure_handle},{shave_text}"
     idea_kid_shave = IdeaKid(_weight=30, _label=shave_text, promise=True)
@@ -307,9 +307,9 @@ def get_pact_x1_3levels_1required_1acptfacts() -> ContractUnit:
     return a1
 
 
-def get_pact_base_time_example() -> ContractUnit:
+def get_pact_base_time_example() -> PactUnit:
     healer_text = "Sue"
-    a1 = ContractUnit(_healer=healer_text)
+    a1 = PactUnit(_healer=healer_text)
     plant = "plant"
     x_idea = IdeaKid(_label=plant)
     a1.add_idea(x_idea, pad=healer_text)
@@ -317,7 +317,7 @@ def get_pact_base_time_example() -> ContractUnit:
     return a1
 
 
-def get_pact_irrational_example() -> ContractUnit:
+def get_pact_irrational_example() -> PactUnit:
     # this pact has no conclusive agenda because 2 promise ideas are in contradiction
     # "egg first" is true when "chicken first" is false
     # "chicken first" is true when "egg first" is true
@@ -331,7 +331,7 @@ def get_pact_irrational_example() -> ContractUnit:
     # 2. a1._tree_traverse_count = a1._max_tree_traverse
 
     healer_text = "Mad Hatter"
-    a1 = ContractUnit(_healer=healer_text, _weight=10)
+    a1 = PactUnit(_healer=healer_text, _weight=10)
     a1.set_max_tree_traverse(3)
 
     egg_text = "egg first"
@@ -363,7 +363,7 @@ def get_pact_irrational_example() -> ContractUnit:
 
 def get_assignment_pact_example1():
     healer_text = "Neo"
-    a1 = ContractUnit(_healer=healer_text)
+    a1 = PactUnit(_healer=healer_text)
     casa_text = "casa"
     casa_road = f"{a1._cure_handle},{casa_text}"
     floor_text = "mop floor"

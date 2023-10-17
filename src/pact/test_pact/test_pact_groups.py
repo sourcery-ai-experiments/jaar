@@ -6,7 +6,7 @@ from src.pact.examples.example_pacts import (
     pact_v001 as examples_pact_v001,
 )
 from src.pact.pact import (
-    ContractUnit,
+    PactUnit,
     get_partys_relevant_groups,
     get_party_relevant_groups,
 )
@@ -15,12 +15,12 @@ from pytest import raises as pytest_raises
 
 def test_pact_groups_set_groupunit_worksCorrectly():
     # GIVEN
-    cx = ContractUnit()
+    cx = PactUnit()
     assert cx._groups is None
     swim_text = "swim"
     groupbrand_x = GroupBrand(swim_text)
     every1_groups = {groupbrand_x: groupunit_shop(brand=groupbrand_x)}
-    cx2 = ContractUnit()
+    cx2 = PactUnit()
 
     # WHEN
     cx2.set_groupunit(groupunit=groupunit_shop(brand=groupbrand_x))
@@ -41,7 +41,7 @@ def test_pact_groups_set_groupunit_worksCorrectly():
 
 def test_pact_groups_del_groupunit_worksCorrectly():
     # GIVEN
-    sx = ContractUnit()
+    sx = PactUnit()
     swim_text = "swimmers"
     group_x = groupunit_shop(brand=GroupBrand(swim_text))
     sx.set_groupunit(groupunit=group_x)
@@ -84,7 +84,7 @@ def test_example_has_groups():
 def test_pact_set_balancelink_correctly_sets_balancelinks():
     # GIVEN
     prom_text = "prom"
-    cx = ContractUnit(_healer=prom_text)
+    cx = PactUnit(_healer=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -131,7 +131,7 @@ def test_pact_set_balancelink_correctly_sets_balancelinks():
 def test_pact_set_balancelink_correctly_deletes_balancelinks():
     # GIVEN
     prom_text = "prom"
-    a_x = ContractUnit(_healer=prom_text)
+    a_x = PactUnit(_healer=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -177,9 +177,9 @@ def test_pact_set_balancelink_correctly_deletes_balancelinks():
     assert len(a_x._idearoot._kids[swim_text]._balanceheirs) == 2
 
 
-def test_pact_set_balancelink_CorrectlyCalculatesInheritedBalancelinkContractImportance():
+def test_pact_set_balancelink_CorrectlyCalculatesInheritedBalancelinkPactImportance():
     # GIVEN
-    a_x = ContractUnit(_healer="prom")
+    a_x = PactUnit(_healer="prom")
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -230,10 +230,10 @@ def test_pact_set_balancelink_CorrectlyCalculatesInheritedBalancelinkContractImp
     # assert pact_debt_sum == 1
 
 
-def test_pact_get_idea_list_CorrectlyCalculates1LevelContractGroupContractImportance():
+def test_pact_get_idea_list_CorrectlyCalculates1LevelPactGroupPactImportance():
     # GIVEN
     prom_text = "prom"
-    a_x = ContractUnit(_healer=prom_text)
+    a_x = PactUnit(_healer=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -301,10 +301,10 @@ def test_pact_get_idea_list_CorrectlyCalculates1LevelContractGroupContractImport
     )
 
 
-def test_pact_get_idea_list_CorrectlyCalculates3levelContractGroupContractImportance():
+def test_pact_get_idea_list_CorrectlyCalculates3levelPactGroupPactImportance():
     # GIVEN
     prom_text = "prom"
-    a_x = ContractUnit(_healer=prom_text)
+    a_x = PactUnit(_healer=prom_text)
     swim_text = "swim"
     a_x.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
 
@@ -345,10 +345,10 @@ def test_pact_get_idea_list_CorrectlyCalculates3levelContractGroupContractImport
     assert group_rico._pact_debt + group_carm._pact_debt + group_patr._pact_debt == 1
 
 
-def test_pact_get_idea_list_CorrectlyCalculatesGroupContractImportanceLWwithGroupEmptyBranch():
+def test_pact_get_idea_list_CorrectlyCalculatesGroupPactImportanceLWwithGroupEmptyBranch():
     # GIVEN
     prom_text = "prom"
-    a_x = ContractUnit(_healer=prom_text)
+    a_x = PactUnit(_healer=prom_text)
     swim_text = "swim"
     a_x.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
 
@@ -418,7 +418,7 @@ def test_pact_get_idea_list_CorrectlyCalculatesGroupContractImportanceLWwithGrou
 
 def test_pact_edit_groupunit_brand_CorrectlyCreatesNewTitle():
     # GIVEN
-    sx = ContractUnit(_healer="prom")
+    sx = PactUnit(_healer="prom")
     rico_text = "rico"
     sx.add_partyunit(title=rico_text)
     swim_text = "swim"
@@ -450,7 +450,7 @@ def test_pact_edit_groupunit_brand_CorrectlyCreatesNewTitle():
 
 def test_pact_edit_Groupunit_brand_raiseErrorNewTitlePreviouslyExists():
     # GIVEN
-    sx = ContractUnit(_healer="prom")
+    sx = PactUnit(_healer="prom")
     rico_text = "rico"
     sx.add_partyunit(title=rico_text)
     swim_text = "swim"
@@ -473,7 +473,7 @@ def test_pact_edit_Groupunit_brand_raiseErrorNewTitlePreviouslyExists():
 
 def test_pact_edit_groupunit_brand_CorrectlyMeldTitles():
     # GIVEN
-    sx = ContractUnit(_healer="prom")
+    sx = PactUnit(_healer="prom")
     rico_text = "rico"
     sx.add_partyunit(title=rico_text)
     swim_text = "swim"
@@ -512,7 +512,7 @@ def test_pact_edit_groupunit_brand_CorrectlyMeldTitles():
 
 def test_pact_edit_groupunit_brand_CorrectlyChangesBalancelinks():
     # GIVEN
-    a_x = ContractUnit(_healer="prom")
+    a_x = PactUnit(_healer="prom")
     rico_text = "rico"
     a_x.add_partyunit(title=rico_text)
     swim_text = "swim"
@@ -548,7 +548,7 @@ def test_pact_edit_groupunit_brand_CorrectlyChangesBalancelinks():
 
 def test_pact_edit_groupunit_brand_CorrectlyMeldsBalancelinesBalancelinksBalanceHeirs():
     # GIVEN
-    a_x = ContractUnit(_healer="prom")
+    a_x = PactUnit(_healer="prom")
     rico_text = "rico"
     a_x.add_partyunit(title=rico_text)
     swim_text = "swim"
@@ -596,7 +596,7 @@ def test_pact_edit_groupunit_brand_CorrectlyMeldsBalancelinesBalancelinksBalance
 def test_pact_add_idea_CreatesMissingGroups():
     # GIVEN
     healer_text = "bob"
-    a_x = ContractUnit(_healer=healer_text)
+    a_x = PactUnit(_healer=healer_text)
     a_x.set_groupunits_empty_if_null()
     new_idea_parent_road = f"{a_x._cure_handle},work,cleaning"
     clean_cookery_text = "clean_cookery"
@@ -621,10 +621,10 @@ def test_pact_add_idea_CreatesMissingGroups():
     assert a_x._groups.get(family_text)._partys in (None, {})
 
 
-def test_ContractUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balancelinks():
+def test_PactUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balancelinks():
     # GIVEN
     healer_text = "Noa"
-    cx1 = ContractUnit(_healer=healer_text)
+    cx1 = PactUnit(_healer=healer_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
     cx1.add_partyunit(title=xia_text)
@@ -640,7 +640,7 @@ def test_ContractUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balan
     cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=zoa_text))
     cx1_swim_idea = cx1.get_idea_kid(swim_road)
     assert len(cx1_swim_idea._balancelinks) == 2
-    cx2 = ContractUnit(_healer=healer_text)
+    cx2 = PactUnit(_healer=healer_text)
     cx2.add_partyunit(title=xia_text)
 
     # WHEN
@@ -651,10 +651,10 @@ def test_ContractUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balan
     assert list(filtered_idea._balancelinks.keys()) == [xia_text]
 
 
-def test_ContractUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
+def test_PactUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     # GIVEN
     healer_text = "Noa"
-    cx1 = ContractUnit(_healer=healer_text)
+    cx1 = PactUnit(_healer=healer_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
     cx1.add_partyunit(title=xia_text)
@@ -672,7 +672,7 @@ def test_ContractUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     assert len(cx1_swim_idea._balancelinks) == 2
 
     # WHEN
-    cx2 = ContractUnit(_healer=healer_text)
+    cx2 = PactUnit(_healer=healer_text)
     cx2.add_partyunit(title=xia_text)
     cx2.add_idea(
         idea_kid=cx1_swim_idea,
@@ -689,7 +689,7 @@ def test_ContractUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
 def test_pact_add_idea_DoesNotOverwriteGroups():
     # GIVEN
     healer_text = "bob"
-    a_x = ContractUnit(_healer=healer_text)
+    a_x = PactUnit(_healer=healer_text)
     a_x.set_groupunits_empty_if_null()
     new_idea_parent_road = f"{a_x._cure_handle},work,cleaning"
     clean_cookery_text = "clean_cookery"
@@ -732,7 +732,7 @@ def test_pact_add_idea_DoesNotOverwriteGroups():
 def test_pact_set_groupunits_create_missing_partys_DoesCreateMissingPartys():
     # GIVEN
     healer_text = "bob"
-    a_x = ContractUnit(_healer=healer_text)
+    a_x = PactUnit(_healer=healer_text)
     a_x.set_partys_empty_if_null()
     a_x.set_groupunits_empty_if_null()
     family_text = "family"
@@ -771,7 +771,7 @@ def test_pact_set_groupunits_create_missing_partys_DoesCreateMissingPartys():
 def test_pact_set_groupunits_create_missing_partys_DoesNotReplacePartys():
     # GIVEN
     healer_text = "bob"
-    a_x = ContractUnit(_healer=healer_text)
+    a_x = PactUnit(_healer=healer_text)
     a_x.set_partys_empty_if_null()
     family_text = "family"
     anna_text = "anna"
@@ -814,7 +814,7 @@ def test_pact_set_groupunits_create_missing_partys_DoesNotReplacePartys():
 def test_pact_get_groupunits_dict_CorrectlyReturnsDictOfGroups():
     # GIVEN
     healer_text = "bob"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     sx.set_partys_empty_if_null()
     swim_text = "swim"
     wiggle_text = "wiggle"
@@ -838,7 +838,7 @@ def test_pact_get_groupunits_dict_CorrectlyReturnsDictOfGroups():
 def test_pact_set_all_groupunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
     # GIVEN
     healer_text = "bob"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     sx.set_partys_empty_if_null()
     swim_text = "swim"
     pad_text = "pad"
@@ -862,7 +862,7 @@ def test_pact_set_all_groupunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
 def test_pact_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs():
     # GIVEN
     healer_text = "bob"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     sx.set_partys_empty_if_null()
     swim_text = "swim"
     pad_text = "pad"
@@ -889,7 +889,7 @@ def test_pact_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs()
 def test_pact_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs():
     # GIVEN
     healer_text = "Noa"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     sx.set_partys_empty_if_null()
     swim_text = "swim"
     pad_text = "pad"
@@ -916,7 +916,7 @@ def test_pact_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs()
 def test_pact_all_groupunits_uids_are_unique_ReturnsCorrectBoolean():
     # GIVEN
     healer_text = "Noa"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     sx.set_partys_empty_if_null()
     swim_text = "swim"
     pad_text = "pad"
@@ -947,7 +947,7 @@ def test_pact_all_groupunits_uids_are_unique_ReturnsCorrectBoolean():
 def test_get_partys_relevant_groups_CorrectlyReturnsEmptyDict():
     # GIVEN
     bob_text = "bob"
-    cx_with_partys = ContractUnit(_healer=bob_text)
+    cx_with_partys = PactUnit(_healer=bob_text)
     cx_with_partys.set_partys_empty_if_null()
 
     sam_text = "sam"
@@ -955,7 +955,7 @@ def test_get_partys_relevant_groups_CorrectlyReturnsEmptyDict():
     cx_with_partys.set_partyunit(partyunit=partyunit_shop(title=bob_text))
     cx_with_partys.set_partyunit(partyunit=partyunit_shop(title=sam_text))
 
-    cx_with_groups = ContractUnit()
+    cx_with_groups = PactUnit()
     cx_with_groups.set_partys_empty_if_null()
     cx_with_groups.set_groupunits_empty_if_null()
 
@@ -974,13 +974,13 @@ def test_get_partys_relevant_groups_CorrectlyReturns2SinglePartyGroups():
     bob_text = "Bob"
     sam_text = "Sam"
     wil_text = "Wil"
-    cx_3groups = ContractUnit(_healer=bob_text)
+    cx_3groups = PactUnit(_healer=bob_text)
     cx_3groups.set_partys_empty_if_null()
     cx_3groups.set_partyunit(partyunit=partyunit_shop(title=bob_text))
     cx_3groups.set_partyunit(partyunit=partyunit_shop(title=sam_text))
     cx_3groups.set_partyunit(partyunit=partyunit_shop(title=wil_text))
 
-    cx_2partys = ContractUnit(_healer=bob_text)
+    cx_2partys = PactUnit(_healer=bob_text)
     cx_2partys.set_partys_empty_if_null()
     cx_2partys.set_partyunit(partyunit=partyunit_shop(title=bob_text))
     cx_2partys.set_partyunit(partyunit=partyunit_shop(title=sam_text))
@@ -996,7 +996,7 @@ def test_get_partys_relevant_groups_CorrectlyReturns2SinglePartyGroups():
 def test_get_party_relevant_groups_CorrectlyReturnsCorrectDict():
     # GIVEN
     jes_text = "Jessi"
-    jes_cx = ContractUnit(_healer=jes_text)
+    jes_cx = PactUnit(_healer=jes_text)
     bob_text = "Bob"
     jes_cx.set_partyunit(partyunit_shop(title=jes_text))
     jes_cx.set_partyunit(partyunit_shop(title=bob_text))
@@ -1017,7 +1017,7 @@ def test_get_party_relevant_groups_CorrectlyReturnsCorrectDict():
 def test_get_party_relevant_groups_CorrectlyReturnsCorrectDict():
     # GIVEN
     jes_text = "Jessi"
-    jes_cx = ContractUnit(_healer=jes_text)
+    jes_cx = PactUnit(_healer=jes_text)
     bob_text = "Bob"
     noa_text = "Noa"
     eli_text = "Eli"

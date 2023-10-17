@@ -1,4 +1,4 @@
-from src.pact.pact import ContractUnit, PartyUnit, Road
+from src.pact.pact import PactUnit, PartyUnit, Road
 from src.pact.road import get_road_without_root_node
 from src.cure.y_func import sqlite_bool, sqlite_null
 from dataclasses import dataclass
@@ -307,7 +307,7 @@ def get_pact_table_create_sqlstr() -> str:
     """
 
 
-def get_pact_table_insert_sqlstr(pact_x: ContractUnit) -> str:
+def get_pact_table_insert_sqlstr(pact_x: PactUnit) -> str:
     return f"""
         INSERT INTO pactunits (
             title
@@ -340,7 +340,7 @@ def get_ledger_table_create_sqlstr() -> str:
     """
 
 
-def get_ledger_table_insert_sqlstr(pact_x: ContractUnit, partyunit_x: PartyUnit) -> str:
+def get_ledger_table_insert_sqlstr(pact_x: PactUnit, partyunit_x: PartyUnit) -> str:
     return f"""
         INSERT INTO ledger (
               pact_healer

@@ -5,7 +5,7 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from EditParty2bd import EditParty2bd
 from pyqt_func import pact_importance_diplay
-from src.pact.pact import ContractUnit
+from src.pact.pact import PactUnit
 from src.pact.group import groupunit_shop
 from src.pact.party import partylink_shop
 
@@ -88,7 +88,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
         self.party_table.setColumnWidth(3, 60)
         self.party_table.setColumnWidth(4, 40)
         self.party_table.setHorizontalHeaderLabels(
-            ["Party", "Group", "Group Count", "CONTRACT_Importance", "Weight"]
+            ["Party", "Group", "Group Count", "PACT_Importance", "Weight"]
         )
         self.party_table.setRowCount(0)
 

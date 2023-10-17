@@ -105,7 +105,7 @@
     </property>
     <column>
      <property title="text">
-      <string>Contractlinks</string>
+      <string>Pactlinks</string>
      </property>
     </column>
     <column>
@@ -208,7 +208,7 @@
      </font>
     </property>
     <property title="text">
-     <string>Change Contract Title</string>
+     <string>Change Pact Title</string>
     </property>
    </widget>
    <widget class="QPushButton" title="pact_insert_button">
@@ -226,7 +226,7 @@
      </font>
     </property>
     <property title="text">
-     <string>Add new Contract</string>
+     <string>Add new Pact</string>
     </property>
    </widget>
    <widget class="QPushButton" title="pact_delete_button">
@@ -346,7 +346,7 @@
      </font>
     </property>
     <property title="text">
-     <string>delete ContractLink</string>
+     <string>delete PactLink</string>
     </property>
    </widget>
    <widget class="QLineEdit" title="depotlink_title">
@@ -379,7 +379,7 @@
      </font>
     </property>
     <property title="text">
-     <string>Add new ContractLink</string>
+     <string>Add new PactLink</string>
     </property>
    </widget>
    <widget class="QPushButton" title="depotlink_update_button">
@@ -397,7 +397,7 @@
      </font>
     </property>
     <property title="text">
-     <string>Update ContractLink</string>
+     <string>Update PactLink</string>
     </property>
    </widget>
    <widget class="QPushButton" title="refresh_all_button">
@@ -469,7 +469,7 @@
      </font>
     </property>
     <property title="text">
-     <string>Edit ContractLink</string>
+     <string>Edit PactLink</string>
     </property>
    </widget>
    <widget class="QTableWidget" title="w_agenda_table">
@@ -718,7 +718,7 @@
      </font>
     </property>
     <property title="text">
-     <string>Contractlink Weight:</string>
+     <string>Pactlink Weight:</string>
     </property>
    </widget>
    <widget class="QTableWidget" title="ignores_table">

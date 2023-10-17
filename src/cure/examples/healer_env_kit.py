@@ -1,6 +1,6 @@
 # from os import listdir as os_listdir
 from pytest import fixture as pytest_fixture
-from src.pact.pact import ContractUnit
+from src.pact.pact import PactUnit
 from src.pact.x_func import delete_dir, save_file as x_func_save_file
 
 
@@ -21,7 +21,7 @@ def healer_dir_setup_cleanup():
 
 
 def create_pact_file(pact_healer_dir: str, pact_healer: str):
-    pact_x = ContractUnit(_healer=pact_healer)
+    pact_x = PactUnit(_healer=pact_healer)
     # file_path = f"{pact_healer_dir}/{pact_x._healer}.json"
     # # if not path.exists(file_path):
     # print(f"{file_path=} {pact_x._healer=}")

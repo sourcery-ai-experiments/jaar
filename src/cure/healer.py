@@ -2,8 +2,8 @@ from src.pact.pact import (
     get_from_json as pactunit_get_from_json,
     get_dict_of_pact_from_dict,
     get_meld_of_pact_files,
-    ContractHealer,
-    ContractUnit,
+    PactHealer,
+    PactUnit,
     partyunit_shop,
     get_from_json as pactunit_get_from_json,
     PartyTitle,
@@ -69,7 +69,7 @@ class HealerAdmin:
 
         rename_dir(src=old_healer_dir, dst=self._healer_dir)
 
-    def create_core_dir_and_files(self, isol_cx: ContractUnit = None):
+    def create_core_dir_and_files(self, isol_cx: PactUnit = None):
         single_dir_create_if_null(x_path=self._healer_dir)
         single_dir_create_if_null(x_path=self._pacts_public_dir)
         single_dir_create_if_null(x_path=self._pacts_depot_dir)
@@ -82,7 +82,7 @@ class HealerAdmin:
             self.save_isol_pact(isol_cx)
 
     def _save_pact_to_path(
-        self, pact_x: ContractUnit, dest_dir: str, file_title: str = None
+        self, pact_x: PactUnit, dest_dir: str, file_title: str = None
     ):
         if file_title is None:
             file_title = f"{pact_x._healer}.json"
@@ -95,11 +95,11 @@ class HealerAdmin:
             replace=True,
         )
 
-    def save_pact_to_public(self, pact_x: ContractUnit):
+    def save_pact_to_public(self, pact_x: PactUnit):
         dest_dir = self._pacts_public_dir
         self._save_pact_to_path(pact_x, dest_dir)
 
-    def save_ignore_pact(self, pact_x: ContractUnit, src_pact_healer: str):
+    def save_ignore_pact(self, pact_x: PactUnit, src_pact_healer: str):
         dest_dir = self._pacts_ignore_dir
         file_title = None
         if src_pact_healer != None:
@@ -108,7 +108,7 @@ class HealerAdmin:
             file_title = f"{pact_x._healer}.json"
         self._save_pact_to_path(pact_x, dest_dir, file_title)
 
-    def save_pact_to_digest(self, pact_x: ContractUnit, src_pact_healer: str = None):
+    def save_pact_to_digest(self, pact_x: PactUnit, src_pact_healer: str = None):
         dest_dir = self._pacts_digest_dir
         file_title = None
         if src_pact_healer != None:
@@ -117,15 +117,15 @@ class HealerAdmin:
             file_title = f"{pact_x._healer}.json"
         self._save_pact_to_path(pact_x, dest_dir, file_title)
 
-    def save_isol_pact(self, pact_x: ContractUnit):
+    def save_isol_pact(self, pact_x: PactUnit):
         pact_x.set_healer(self._healer_title)
         self._save_pact_to_path(pact_x, self._healer_dir, self._isol_file_title)
 
-    def save_pact_to_depot(self, pact_x: ContractUnit):
+    def save_pact_to_depot(self, pact_x: PactUnit):
         dest_dir = self._pacts_depot_dir
         self._save_pact_to_path(pact_x, dest_dir)
 
-    def save_output_pact(self) -> ContractUnit:
+    def save_output_pact(self) -> PactUnit:
         isol_pact_x = self.open_isol_pact()
         isol_pact_x.meld(isol_pact_x, party_weight=1)
         pact_x = get_meld_of_pact_files(
@@ -136,23 +136,23 @@ class HealerAdmin:
         file_title = self._pact_output_file_title
         self._save_pact_to_path(pact_x, dest_dir, file_title)
 
-    def open_public_pact(self, healer: ContractHealer) -> str:
+    def open_public_pact(self, healer: PactHealer) -> str:
         file_title_x = f"{healer}.json"
         return x_func_open_file(self._pacts_public_dir, file_title_x)
 
-    def open_depot_pact(self, healer: ContractHealer) -> ContractUnit:
+    def open_depot_pact(self, healer: PactHealer) -> PactUnit:
         file_title_x = f"{healer}.json"
         cx_json = x_func_open_file(self._pacts_depot_dir, file_title_x)
         return pactunit_get_from_json(cx_json=cx_json)
 
-    def open_ignore_pact(self, healer: ContractHealer) -> ContractUnit:
+    def open_ignore_pact(self, healer: PactHealer) -> PactUnit:
         ignore_file_title = f"{healer}.json"
         pact_json = x_func_open_file(self._pacts_ignore_dir, ignore_file_title)
         pact_obj = pactunit_get_from_json(cx_json=pact_json)
         pact_obj.set_pact_metrics()
         return pact_obj
 
-    def open_isol_pact(self) -> ContractUnit:
+    def open_isol_pact(self) -> PactUnit:
         cx = None
         if not self._isol_pact_exists():
             self.save_isol_pact(self._get_empty_isol_pact())
@@ -161,14 +161,14 @@ class HealerAdmin:
         cx.set_pact_metrics()
         return cx
 
-    def open_output_pact(self) -> ContractUnit:
+    def open_output_pact(self) -> PactUnit:
         cx_json = x_func_open_file(self._healer_dir, self._pact_output_file_title)
         cx_obj = pactunit_get_from_json(cx_json)
         cx_obj.set_pact_metrics()
         return cx_obj
 
     def _get_empty_isol_pact(self):
-        cx = ContractUnit(_healer=self._healer_title, _weight=0)
+        cx = PactUnit(_healer=self._healer_title, _weight=0)
         cx.add_partyunit(title=self._healer_title)
         cx.set_cure_handle(self._cure_handle)
         return cx
@@ -221,7 +221,7 @@ def healeradmin_shop(
 @dataclass
 class HealerUnit:
     _admin: HealerAdmin = None
-    _isol: ContractUnit = None
+    _isol: PactUnit = None
 
     def refresh_depot_pacts(self):
         for party_x in self._isol._partys.values():
@@ -238,7 +238,7 @@ class HealerUnit:
 
     def set_depot_pact(
         self,
-        pact_x: ContractUnit,
+        pact_x: PactUnit,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
@@ -273,14 +273,14 @@ class HealerUnit:
             cx_obj = self._admin.open_depot_pact(healer=outer_healer)
             self._admin.save_pact_to_digest(cx_obj)
         elif link_type == "ignore":
-            new_cx_obj = ContractUnit(_healer=outer_healer)
+            new_cx_obj = PactUnit(_healer=outer_healer)
             new_cx_obj.set_cure_handle(self._admin._cure_handle)
             self.set_ignore_pact_file(new_cx_obj, new_cx_obj._healer)
 
     def _set_assignment_depotlink(self, outer_healer):
         src_cx = self._admin.open_depot_pact(outer_healer)
         src_cx.set_pact_metrics()
-        empty_cx = ContractUnit(_healer=self._admin._healer_title)
+        empty_cx = PactUnit(_healer=self._admin._healer_title)
         empty_cx.set_cure_handle(self._admin._cure_handle)
         assign_cx = src_cx.get_assignment(
             empty_cx, self.get_isol()._partys, self._admin._healer_title
@@ -321,7 +321,7 @@ class HealerUnit:
             self._isol = self._admin.open_isol_pact()
         return self._isol
 
-    def set_isol(self, pact_x: ContractUnit = None):
+    def set_isol(self, pact_x: PactUnit = None):
         if pact_x != None:
             self._isol = pact_x
         self._admin.save_isol_pact(self._isol)
@@ -331,7 +331,7 @@ class HealerUnit:
         # if self._isol is None:
         self.get_isol()
 
-    def set_ignore_pact_file(self, pactunit: ContractUnit, src_pact_healer: str):
+    def set_ignore_pact_file(self, pactunit: PactUnit, src_pact_healer: str):
         self._admin.save_ignore_pact(pactunit, src_pact_healer)
         self._admin.save_pact_to_digest(pactunit, src_pact_healer)
 
@@ -341,7 +341,7 @@ class HealerUnit:
             _healer_title=healer_title, _env_dir=env_dir, _cure_handle=cure_handle
         )
 
-    def create_core_dir_and_files(self, isol_cx: ContractUnit = None):
+    def create_core_dir_and_files(self, isol_cx: PactUnit = None):
         self._admin.create_core_dir_and_files(isol_cx)
 
 

@@ -1,4 +1,4 @@
-from src.pact.pact import ContractUnit, IdeaCore
+from src.pact.pact import PactUnit, IdeaCore
 from PyQt5.QtWidgets import QTreeWidgetItem
 from dataclasses import dataclass
 
@@ -45,7 +45,7 @@ def get_pyqttree(
     required_view_flag: bool = None,
     required_view_title: bool = None,
     acptfactheir_view_flag: bool = None,
-    source_pact: ContractUnit = None,
+    source_pact: PactUnit = None,
 ) -> QTreeWidgetItem:
     pyqttree_holder = PYQTTreeHolder(
         ideacore=idearoot,

@@ -1,4 +1,4 @@
-from src.pact.pact import ContractUnit
+from src.pact.pact import PactUnit
 from src.pact.x_func import (
     count_files as x_func_count_files,
     open_file as x_func_open_file,
@@ -31,7 +31,7 @@ def test_healerunit_exists(healer_dir_setup_cleanup):
     assert ux._isol is None
 
 
-def test_healerunit_auto_output_to_public_SavesContractToPublicDirWhenTrue(
+def test_healerunit_auto_output_to_public_SavesPactToPublicDirWhenTrue(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
@@ -47,7 +47,7 @@ def test_healerunit_auto_output_to_public_SavesContractToPublicDirWhenTrue(
     assert os_path.exists(public_file_path) is False
 
     # WHEN
-    tim_pact = ContractUnit(_healer=tim_text)
+    tim_pact = PactUnit(_healer=tim_text)
     tim_pact.set_cure_handle(cure_handle)
     ux.set_depot_pact(tim_pact, "blind_trust")
 
@@ -55,7 +55,7 @@ def test_healerunit_auto_output_to_public_SavesContractToPublicDirWhenTrue(
     assert os_path.exists(public_file_path)
 
 
-def test_healerunit_auto_output_to_public_DoesNotSaveContractToPublicDirWhenFalse(
+def test_healerunit_auto_output_to_public_DoesNotSavePactToPublicDirWhenFalse(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
@@ -71,13 +71,13 @@ def test_healerunit_auto_output_to_public_DoesNotSaveContractToPublicDirWhenFals
     assert os_path.exists(public_file_path) is False
 
     # WHEN
-    ux.set_depot_pact(ContractUnit(_healer=tim_text), depotlink_type="blind_trust")
+    ux.set_depot_pact(PactUnit(_healer=tim_text), depotlink_type="blind_trust")
 
     # THEN
     assert os_path.exists(public_file_path) is False
 
 
-def test_healerunit_get_isol_createsEmptyContractWhenFileDoesNotExist(
+def test_healerunit_get_isol_createsEmptyPactWhenFileDoesNotExist(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
@@ -97,7 +97,7 @@ def test_healerunit_get_isol_createsEmptyContractWhenFileDoesNotExist(
     assert tim_ux._isol != None
 
 
-def test_healerunit_get_isol_getsMemoryContractIfExists(
+def test_healerunit_get_isol_getsMemoryPactIfExists(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
@@ -111,7 +111,7 @@ def test_healerunit_get_isol_getsMemoryContractIfExists(
 
     # WHEN
     ray_text = "Ray"
-    tim_ux._isol = ContractUnit(_healer=ray_text)
+    tim_ux._isol = PactUnit(_healer=ray_text)
     cx_isol2 = tim_ux.get_isol()
 
     # THEN
@@ -127,7 +127,7 @@ def test_healerunit_get_isol_getsMemoryContractIfExists(
     assert cx_isol3 == cx_isol1
 
 
-def test_healerunit_set_isol_savesIsolContractSet_isol_None(
+def test_healerunit_set_isol_savesIsolPactSet_isol_None(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
@@ -151,7 +151,7 @@ def test_healerunit_set_isol_savesIsolContractSet_isol_None(
     assert cx_isol2._idearoot._uid == uid_text
 
 
-def test_healerunit_set_isol_savesGivenContractSet_isol_None(
+def test_healerunit_set_isol_savesGivenPactSet_isol_None(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
@@ -167,8 +167,8 @@ def test_healerunit_set_isol_savesGivenContractSet_isol_None(
     isol_uid_text = "this is ._isol uid"
     ux._isol._idearoot._uid = isol_uid_text
 
-    new_cx = ContractUnit(_healer=tim_text)
-    new_cx_uid_text = "this is pulled ContractUnit uid"
+    new_cx = PactUnit(_healer=tim_text)
+    new_cx_uid_text = "this is pulled PactUnit uid"
     new_cx._idearoot._uid = new_cx_uid_text
 
     ux.set_isol(new_cx)
@@ -203,8 +203,8 @@ def test_healerunit_set_isol_if_emtpy_DoesNotReplace_isol(
     tim_text = "Tim"
     ux = healerunit_shop(tim_text, get_temp_healer_dir(), get_temp_cure_handle())
     ux.create_core_dir_and_files()
-    saved_cx = ContractUnit(_healer=tim_text)
-    saved_cx_uid_text = "this is pulled ContractUnit uid"
+    saved_cx = PactUnit(_healer=tim_text)
+    saved_cx_uid_text = "this is pulled PactUnit uid"
     saved_cx._idearoot._uid = saved_cx_uid_text
     ux.set_isol(saved_cx)
     ux.get_isol()

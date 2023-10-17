@@ -1,21 +1,21 @@
-from src.pact.pact import ContractUnit, IdeaKid, assigned_unit_shop
+from src.pact.pact import PactUnit, IdeaKid, assigned_unit_shop
 from src.cure.healer import healerunit_shop, HealerUnit
 from src.cure.examples.healer_env_kit import get_temp_cure_handle
 
 from random import randrange
 
 
-def get_1node_pact() -> ContractUnit:
+def get_1node_pact() -> PactUnit:
     a_text = "A"
-    pact_x = ContractUnit(_healer=a_text)
+    pact_x = PactUnit(_healer=a_text)
     pact_x.set_cure_handle(get_temp_cure_handle())
     pact_x.set_pact_metrics()
     return pact_x
 
 
-def get_Jnode2node_pact() -> ContractUnit:
+def get_Jnode2node_pact() -> PactUnit:
     healer_text = "J"
-    pact_x = ContractUnit(_healer=healer_text)
+    pact_x = PactUnit(_healer=healer_text)
     pact_x.set_cure_handle(get_temp_cure_handle())
     a_text = "A"
     idea_a = IdeaKid(_label=a_text)
@@ -24,10 +24,10 @@ def get_Jnode2node_pact() -> ContractUnit:
     return pact_x
 
 
-def get_2node_pact() -> ContractUnit:
+def get_2node_pact() -> PactUnit:
     healer_text = "A"
     b_text = "B"
-    pact_x = ContractUnit(_healer=healer_text)
+    pact_x = PactUnit(_healer=healer_text)
     pact_x.set_cure_handle(get_temp_cure_handle())
     idea_b = IdeaKid(_label=b_text)
     pact_x.add_idea(idea_kid=idea_b, pad=get_temp_cure_handle())
@@ -35,10 +35,10 @@ def get_2node_pact() -> ContractUnit:
     return pact_x
 
 
-def get_3node_pact() -> ContractUnit:
+def get_3node_pact() -> PactUnit:
     a_text = "A"
     a_road = a_text
-    pact_x = ContractUnit(_healer=a_text)
+    pact_x = PactUnit(_healer=a_text)
     pact_x.set_cure_handle(get_temp_cure_handle())
     b_text = "B"
     idea_b = IdeaKid(_label=b_text)
@@ -50,10 +50,10 @@ def get_3node_pact() -> ContractUnit:
     return pact_x
 
 
-def get_3node_D_E_F_pact() -> ContractUnit:
+def get_3node_D_E_F_pact() -> PactUnit:
     d_text = "D"
     d_road = d_text
-    pact_x = ContractUnit(_healer=d_text)
+    pact_x = PactUnit(_healer=d_text)
     pact_x.set_cure_handle(get_temp_cure_handle())
     b_text = "E"
     idea_b = IdeaKid(_label=b_text)
@@ -65,8 +65,8 @@ def get_3node_D_E_F_pact() -> ContractUnit:
     return pact_x
 
 
-def get_6node_pact() -> ContractUnit:
-    pact_x = ContractUnit(_healer="A")
+def get_6node_pact() -> PactUnit:
+    pact_x = PactUnit(_healer="A")
     pact_x.set_cure_handle(get_temp_cure_handle())
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
@@ -82,8 +82,8 @@ def get_6node_pact() -> ContractUnit:
     return pact_x
 
 
-def get_7nodeInsertH_pact() -> ContractUnit:
-    pact_x = ContractUnit(_healer="A")
+def get_7nodeInsertH_pact() -> PactUnit:
+    pact_x = PactUnit(_healer="A")
     pact_x.set_cure_handle(get_temp_cure_handle())
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
@@ -101,8 +101,8 @@ def get_7nodeInsertH_pact() -> ContractUnit:
     return pact_x
 
 
-def get_5nodeHG_pact() -> ContractUnit:
-    pact_x = ContractUnit(_healer="A")
+def get_5nodeHG_pact() -> PactUnit:
+    pact_x = PactUnit(_healer="A")
     pact_x.set_cure_handle(get_temp_cure_handle())
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
@@ -116,8 +116,8 @@ def get_5nodeHG_pact() -> ContractUnit:
     return pact_x
 
 
-def get_7nodeJRoot_pact() -> ContractUnit:
-    pact_x = ContractUnit(_healer="J")
+def get_7nodeJRoot_pact() -> PactUnit:
+    pact_x = PactUnit(_healer="J")
     pact_x.set_cure_handle(get_temp_cure_handle())
     idea_a = IdeaKid(_label="A")
     idea_b = IdeaKid(_label="B")
@@ -135,8 +135,8 @@ def get_7nodeJRoot_pact() -> ContractUnit:
     return pact_x
 
 
-def get_7nodeJRootWithH_pact() -> ContractUnit:
-    pact_x = ContractUnit(_healer="J")
+def get_7nodeJRootWithH_pact() -> PactUnit:
+    pact_x = PactUnit(_healer="J")
     pact_x.set_cure_handle(get_temp_cure_handle())
     idea_a = IdeaKid(_label="A")
     idea_b = IdeaKid(_label="B")
@@ -162,9 +162,9 @@ def get_healer_2pact(env_dir, cure_handle) -> HealerUnit:
     return yao_healer
 
 
-def get_pact_2CleanNodesRandomWeights(_healer: str = None) -> ContractUnit:
+def get_pact_2CleanNodesRandomWeights(_healer: str = None) -> PactUnit:
     healer_text = _healer if _healer != None else "ernie"
-    pact_x = ContractUnit(_healer=healer_text)
+    pact_x = PactUnit(_healer=healer_text)
     casa_text = "casa"
     pact_x.add_idea(idea_kid=IdeaKid(_label=casa_text), pad="")
     casa_road = f"{pact_x._cure_handle},{casa_text}"
@@ -178,9 +178,9 @@ def get_pact_2CleanNodesRandomWeights(_healer: str = None) -> ContractUnit:
     return pact_x
 
 
-def get_pact_3CleanNodesRandomWeights(_healer: str = None) -> ContractUnit:
+def get_pact_3CleanNodesRandomWeights(_healer: str = None) -> PactUnit:
     healer_text = _healer if _healer != None else "ernie"
-    pact_x = ContractUnit(_healer=healer_text)
+    pact_x = PactUnit(_healer=healer_text)
     casa_text = "casa"
     pact_x.add_idea(idea_kid=IdeaKid(_label=casa_text), pad="")
     casa_road = f"{pact_x._cure_handle},{casa_text}"
@@ -197,9 +197,9 @@ def get_pact_3CleanNodesRandomWeights(_healer: str = None) -> ContractUnit:
     return pact_x
 
 
-def get_pact_assignment_laundry_example1() -> ContractUnit:
+def get_pact_assignment_laundry_example1() -> PactUnit:
     america_text = "America"
-    america_cx = ContractUnit(_healer=america_text)
+    america_cx = PactUnit(_healer=america_text)
     joachim_text = "Joachim"
     america_cx.add_partyunit(america_text)
     america_cx.add_partyunit(joachim_text)

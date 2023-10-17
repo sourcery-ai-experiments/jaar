@@ -1,4 +1,4 @@
-from src.pact.pact import ContractUnit
+from src.pact.pact import PactUnit
 from src.pact.idea import IdeaKid
 from src.pact.examples.example_pacts import (
     get_pact_with_4_levels_and_2requireds_2acptfacts,
@@ -11,7 +11,7 @@ from src.pact.road import get_default_cure_root_label as root_label
 def test_idea_label_fails_when_idea_does_not_exist():
     # GIVEN
     healer_text = "Noa"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
 
     work_text = "work"
     work_road = f"{sx._cure_handle},{work_text}"
@@ -29,10 +29,10 @@ def test_idea_label_fails_when_idea_does_not_exist():
     )
 
 
-def test_Contract_level0_idea_edit_idea_label_RaisesError_cure_handle_IsNone():
+def test_Pact_level0_idea_edit_idea_label_RaisesError_cure_handle_IsNone():
     # GIVEN
     healer_text = "Tim"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
 
     work_text = "work"
     work_road = f"{sx._cure_handle},{work_text}"
@@ -61,10 +61,10 @@ def test_Contract_level0_idea_edit_idea_label_RaisesError_cure_handle_IsNone():
 
 # when editing a idea _label it's possible that the change breaks a required.base, sufffact.need or acptfact.base or acptfact.acptfact
 # fixing this quickly looks difficult. Maybe push it off
-def test_Contract_level0_idea_edit_idea_label_RaisesError_cure_handle_IsDifferent():
+def test_Pact_level0_idea_edit_idea_label_RaisesError_cure_handle_IsDifferent():
     # GIVEN
     healer_text = "Tim"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     work_text = "work"
     work_road = f"{sx._cure_handle},{work_text}"
     swim_text = "swim"
@@ -94,7 +94,7 @@ def test_Contract_level0_idea_edit_idea_label_RaisesError_cure_handle_IsDifferen
 def test_pact_set_cure_handle_CorrectlySetsAttr():
     # GIVEN
     healer_text = "Tim"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     work_text = "work"
     old_work_road = f"{sx._cure_handle},{work_text}"
     swim_text = "swim"
@@ -128,7 +128,7 @@ def test_pact_set_cure_handle_CorrectlySetsAttr():
 def test_idea_find_replace_road_Changes_kids_scenario1():
     # GIVEN Idea with kids that will be changed
     healer_text = "Tim"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
 
     old_healer_text = "healer"
     old_healer_road = Road(f"{sx._cure_handle},{old_healer_text}")
@@ -182,7 +182,7 @@ def test_idea_find_replace_road_Changes_kids_scenario1():
 def test_pact_edit_idea_label_Changes_acptfactunits():
     # GIVEN pact with acptfactunits that will be changed
     healer_text = "Tim"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
 
     healer = "healer"
     bloomers_text = "bloomers"
@@ -231,7 +231,7 @@ def test_pact_edit_idea_label_Changes_acptfactunits():
 def test_pact_edit_idea_label_ChangesIdeaRoot_range_source_road():
     # GIVEN this should never happen but it's not currently banned
     healer_text = "Tim"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
 
     old_healer_text = "healer"
     old_healer_road = Road(f"{sx._cure_handle},{old_healer_text}")
@@ -250,7 +250,7 @@ def test_pact_edit_idea_label_ChangesIdeaRoot_range_source_road():
 
 def test_pact_edit_idea_label_ChangesIdeaKidN_range_source_road():
     healer_text = "Bob"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
 
     healer_text = "healer"
     healer_road = Road(f"{sx._cure_handle},{healer_text}")

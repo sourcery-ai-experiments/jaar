@@ -6,7 +6,7 @@ from EditMain import EditMainView
 from EditAcptFactTime import EditAcptFactTime
 from Edit_Agenda import Edit_Agenda
 from EditProblem import EditProblem
-from src.pact.pact import ContractUnit, get_from_json
+from src.pact.pact import PactUnit, get_from_json
 from src.pact.examples.pact_env import pact_env
 from src.pact.hreg_time import convert1440toHHMM
 from pyqt_func import (
@@ -93,7 +93,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     open_editproblem = qtc.pyqtSignal(bool)
     open_edit_agenda = qtc.pyqtSignal(bool)
     open_edittime = qtc.pyqtSignal(bool)
-    pact_x_signal = qtc.pyqtSignal(ContractUnit)
+    pact_x_signal = qtc.pyqtSignal(PactUnit)
 
     def __init__(self, file_open_path):
         super().__init__()
@@ -124,7 +124,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.fm_new.triggered.connect(self.pact_new)
 
         # self.acptfacts_table.itemClicked.connect(self.acptfact_base_combo_set)
-        self.acptfacts_table.setObjectName("Contract AcptFacts")
+        self.acptfacts_table.setObjectName("Pact AcptFacts")
         self.acptfacts_table.setColumnWidth(0, 300)
         self.acptfacts_table.setColumnWidth(1, 300)
         self.acptfacts_table.setColumnWidth(2, 30)
@@ -298,7 +298,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pact_load(cx_json=self.pact_x_json)
 
     def pact_new(self):
-        self.pact_x = ContractUnit(_healer="new")
+        self.pact_x = PactUnit(_healer="new")
         self.pact_x._set_acptfacts_empty_if_null()
         self.pact_x.set_partys_empty_if_null()
         self.pact_x.set_groupunits_empty_if_null()

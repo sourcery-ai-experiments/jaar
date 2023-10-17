@@ -1,4 +1,4 @@
-from src.pact.pact import ContractUnit, partyunit_shop
+from src.pact.pact import PactUnit, partyunit_shop
 from src.cure.cure import cureunit_shop
 from src.cure.examples.cure_env_kit import (
     get_temp_env_handle,
@@ -51,7 +51,7 @@ def test_cure_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     bob_text = "bob"
     tim_text = "tim"
-    pact_x = ContractUnit(_healer=bob_text)
+    pact_x = PactUnit(_healer=bob_text)
     partyunit_x = partyunit_shop(
         title=tim_text,
         _pact_credit=0.9,
@@ -169,7 +169,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
 
     bob_text = "bob"
     sal_text = "sal"
-    pact_bob = ContractUnit(_healer=bob_text)
+    pact_bob = PactUnit(_healer=bob_text)
     partyunit_sal = partyunit_shop(
         title=sal_text,
         _pact_credit=0.9,
@@ -340,7 +340,7 @@ def test_get_river_tparty_table_insert_sqlstr_CorrectlyPopulatesTable01(
     tom_text = "tom"
     sal_text = "sal"
 
-    pact_bob = ContractUnit(_healer=bob_text)
+    pact_bob = PactUnit(_healer=bob_text)
     partyunit_tom = partyunit_shop(
         title=tom_text,
         _pact_credit=0.9,
@@ -436,13 +436,13 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_pact = ContractUnit(_healer=sal_text)
+    sal_pact = PactUnit(_healer=sal_text)
     sal_pact.add_partyunit(title=bob_text, creditor_weight=2)
     sal_pact.add_partyunit(title=tom_text, creditor_weight=7)
     sal_pact.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_pact(pact_x=sal_pact)
 
-    bob_pact = ContractUnit(_healer=bob_text)
+    bob_pact = PactUnit(_healer=bob_text)
     bob_pact.add_partyunit(title=sal_text, creditor_weight=3)
     bob_pact.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_pact(pact_x=bob_pact)
@@ -477,26 +477,26 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_pact = ContractUnit(_healer=sal_text)
+    sal_pact = PactUnit(_healer=sal_text)
     sal_pact.add_partyunit(title=bob_text, creditor_weight=2)
     sal_pact.add_partyunit(title=tom_text, creditor_weight=7)
     sal_pact.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_pact(pact_x=sal_pact)
 
-    bob_pact = ContractUnit(_healer=bob_text)
+    bob_pact = PactUnit(_healer=bob_text)
     bob_pact.add_partyunit(title=sal_text, creditor_weight=3)
     bob_pact.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_pact(pact_x=bob_pact)
 
-    tom_pact = ContractUnit(_healer=tom_text)
+    tom_pact = PactUnit(_healer=tom_text)
     tom_pact.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_pact(pact_x=tom_pact)
 
-    ava_pact = ContractUnit(_healer=ava_text)
+    ava_pact = PactUnit(_healer=ava_text)
     ava_pact.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_pact(pact_x=ava_pact)
 
-    elu_pact = ContractUnit(_healer=elu_text)
+    elu_pact = PactUnit(_healer=elu_text)
     elu_pact.add_partyunit(title=ava_text, creditor_weight=19)
     elu_pact.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_pact(pact_x=elu_pact)
@@ -768,8 +768,8 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     bob_text = "bob"
     tom_text = "tom"
     elu_text = "elu"
-    bob_pact = ContractUnit(_healer=bob_text)
-    tom_pact = ContractUnit(_healer=tom_text)
+    bob_pact = PactUnit(_healer=bob_text)
+    tom_pact = PactUnit(_healer=tom_text)
     bob_pact.add_partyunit(title=tom_text)
     tom_pact.add_partyunit(title=bob_text)
     tom_pact.add_partyunit(title=elu_text)

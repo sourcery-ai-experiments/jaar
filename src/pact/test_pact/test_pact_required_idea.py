@@ -5,7 +5,7 @@ from src.pact.examples.example_pacts import (
 )
 from src.pact.idea import IdeaKid
 from src.pact.required_idea import sufffactunit_shop, RequiredUnit, RequiredHeir
-from src.pact.pact import ContractUnit
+from src.pact.pact import PactUnit
 from src.pact.x_func import from_list_get_active_status
 
 
@@ -518,7 +518,7 @@ def test_pact_edit_idea_attr_pactIsAbleToEdit_suff_idea_active_status_AnyIdeaIfI
 
 
 def test_pact_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus():
-    # GIVEN an Contract with 5 ideas, 1 AcptFact:
+    # GIVEN an Pact with 5 ideas, 1 AcptFact:
     # 1. idea(...,weekdays) exists
     # 2. idea(...,weekdays,wednesday) exists
     # 3. idea(...,weekdays,thursday) exists
@@ -608,7 +608,7 @@ def test_pact_tree_traverses_StopWhenNoChangeInStatusIsDetected():
     assert cx._tree_traverse_count == 2
 
 
-def test_pact_tree_traverse_count_CorrectlyCountsTreeTraversesForIrrationalContracts():
+def test_pact_tree_traverse_count_CorrectlyCountsTreeTraversesForIrrationalPacts():
     # GIVEN irrational pact
     cx = example_pacts_get_pact_irrational_example()
     cx.set_pact_metrics()

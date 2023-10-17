@@ -1,5 +1,5 @@
 from src.pact.pact import (
-    ContractUnit,
+    PactUnit,
     get_from_json as pact_get_from_json,
     get_meld_of_pact_files,
 )
@@ -31,7 +31,7 @@ from pytest import raises as pytest_raises
 def test_pactunit_get_bond_status_ReturnsCorrectBool():
     # GIVEN
     jessi_text = "jessi"
-    cx = ContractUnit(_healer=jessi_text)
+    cx = PactUnit(_healer=jessi_text)
     casa_text = "case"
     casa_road = Road(f"{jessi_text},{casa_text}")
 
@@ -67,10 +67,10 @@ def test_pactunit_get_bond_status_ReturnsCorrectBool():
     #     print(f"after {idea_kid._label=} {idea_kid.promise=}")
 
 
-def test_pactunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaBalanceHeirsMatchContractGroups():
+def test_pactunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaBalanceHeirsMatchPactGroups():
     # GIVEN
     jessi_text = "jessi"
-    cx = ContractUnit(_healer=jessi_text)
+    cx = PactUnit(_healer=jessi_text)
     casa_text = "case"
     casa_road = Road(f"{jessi_text},{casa_text}")
     cx.add_idea(idea_kid=IdeaKid(_label=casa_text), pad=jessi_text)
@@ -97,10 +97,10 @@ def test_pactunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaBalanceHei
     assert cx.get_bond_status() == False
 
 
-def test_pactunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGroupunits():
+def test_pactunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualPactGroupunits():
     # GIVEN
     jessi_text = "jessi"
-    cx = ContractUnit(_healer=jessi_text)
+    cx = PactUnit(_healer=jessi_text)
     casa_text = "case"
     casa_road = Road(f"{jessi_text},{casa_text}")
     cx.add_idea(idea_kid=IdeaKid(_label=casa_text), pad=jessi_text)
@@ -129,10 +129,10 @@ def test_pactunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGroupu
     assert cx.get_bond_status() == False
 
 
-def test_pactunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGroupunits2():
+def test_pactunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualPactGroupunits2():
     # GIVEN
     jessi_text = "jessi"
-    cx = ContractUnit(_healer=jessi_text)
+    cx = PactUnit(_healer=jessi_text)
     casa_text = "case"
     casa_road = Road(f"{jessi_text},{casa_text}")
     cx.add_idea(idea_kid=IdeaKid(_label=casa_text), pad=jessi_text)
@@ -173,7 +173,7 @@ def test_pactunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGroupu
 # def test_pactunit_get_bond_status_ChecksOnlyNecessaryIdeasExist_MultipleScenario():
 #     # GIVEN
 #     jessi_text = "jessi"
-#     cx = ContractUnit(_healer=jessi_text)
+#     cx = PactUnit(_healer=jessi_text)
 #     casa_text = "case"
 #     casa_road = Road(f"{cx._cure_handle},{casa_text}")
 #     cx.add_idea(idea_kid=IdeaKid(_label=casa_text), pad=jessi_text)
@@ -203,10 +203,10 @@ def test_pactunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGroupu
 #     assert cx.get_bond_status()
 
 
-def test_pactunit_get_pact_sprung_from_single_idea_ReturnsCorrectContractScenario1():
+def test_pactunit_get_pact_sprung_from_single_idea_ReturnsCorrectPactScenario1():
     # GIVEN
     jessi_text = "jessi"
-    cx = ContractUnit(_healer=jessi_text)
+    cx = PactUnit(_healer=jessi_text)
     casa_text = "case"
     casa_road = Road(f"{cx._cure_handle},{casa_text}")
     cx.add_idea(
@@ -357,12 +357,12 @@ def test_pactunit_export_all_bonds_ExportsFileOfBonds_2files(env_dir_setup_clean
 #     assert bond_2.get_bond_status()
 
 
-def test_pactunit_get_meld_of_pact_files_MeldsIntoSourceContract_Scenario1(
+def test_pactunit_get_meld_of_pact_files_MeldsIntoSourcePact_Scenario1(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     healer_text = "Nia"
-    primary_cx = ContractUnit(_healer=healer_text, _weight=10)
+    primary_cx = PactUnit(_healer=healer_text, _weight=10)
 
     work = "work"
     idea_kid_work = IdeaKid(_weight=30, _label=work, promise=True)
@@ -396,11 +396,11 @@ def test_pactunit_get_meld_of_pact_files_MeldsIntoSourceContract_Scenario1(
     assert primary_cx == new_cx
 
 
-# def test_pactunit_get_meld_of_pact_files_MeldsIntoSourceContract_Scenario2(
+# def test_pactunit_get_meld_of_pact_files_MeldsIntoSourcePact_Scenario2(
 #     env_dir_setup_cleanup,
 # ):
 #     # GIVEN
-#     sourrcecx = ContractUnit(_healer=healer_text, _weight=10)
+#     sourrcecx = PactUnit(_healer=healer_text, _weight=10)
 
 #     work_text = "work"
 #     work_road = f"{cx._cure_handle},{work_text}"
@@ -416,7 +416,7 @@ def test_pactunit_get_meld_of_pact_files_MeldsIntoSourceContract_Scenario1(
 
 #     # WHEN
 #     new_cx = get_meld_of_pact_files(
-#         pactunit=ContractUnit(_healer=sourrce_cx._healer, _weight=0), dir=get_temp_env_dir()
+#         pactunit=PactUnit(_healer=sourrce_cx._healer, _weight=0), dir=get_temp_env_dir()
 #     )
 
 #     # THEN

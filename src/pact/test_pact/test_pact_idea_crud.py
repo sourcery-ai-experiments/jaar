@@ -1,7 +1,7 @@
 from src.pact.examples.example_pacts import get_pact_with_4_levels
 from src.pact.idea import IdeaKid
 from src.pact.required_idea import RequiredUnit, acptfactunit_shop
-from src.pact.pact import ContractUnit
+from src.pact.pact import PactUnit
 from src.pact.group import balancelink_shop
 from pytest import raises as pytest_raises
 from src.pact.road import Road
@@ -9,7 +9,7 @@ from src.pact.road import Road
 
 def test_root_has_kids():
     # GIVEN
-    cx = ContractUnit(_healer="prom")
+    cx = PactUnit(_healer="prom")
     idearoot_x = cx._idearoot
     idea1 = IdeaKid(_weight=30, _label="work")
     idea2 = IdeaKid(_weight=40, _label="ulty")
@@ -469,7 +469,7 @@ def test_pact_edit_idea_attr_pactIsAbleToEdit_on_meld_weight_action_AnyIdeaIfInv
 
 def test_pact_edit_idea_attr_pactIsAbleToEditDenomAnyIdeaIfInvaildDenomThrowsError():
     healer_text = "Yao"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         cx.edit_idea_attr(road="", denom=46)
@@ -503,7 +503,7 @@ def test_pact_edit_idea_attr_pactIsAbleToEditDenomAnyIdeaIfInvaildDenomThrowsErr
 def test_pact_edit_idea_attr_pactIsAbleToEditDenomAnyIdeaInvaildDenomThrowsError():
     # GIVEN
     healer_text = "Yao"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     work = "work"
     w_road = f"{cx._cure_handle},{work}"
     work_idea = IdeaKid(_label=work, _begin=8, _close=14)
@@ -535,7 +535,7 @@ def test_pact_edit_idea_attr_pactIsAbleToEditDenomAnyIdeaInvaildDenomThrowsError
 def test_pact_edit_idea_attr_pactWhenParentAndNumeric_roadBothHaveRangeThrowError():
     # GIVEN
     healer_text = "Yao"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     work_text = "work"
     work_road = f"{cx._cure_handle},{work_text}"
     cx.add_idea(IdeaKid(_label=work_text), pad=cx._cure_handle)
@@ -579,7 +579,7 @@ def test_pact_edit_idea_attr_pactWhenParentAndNumeric_roadBothHaveRangeThrowErro
 def test_pact_add_idea_MustReorderKidsDictToBeAlphabetical():
     # GIVEN
     healer_text = "Noa"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     work_text = "work"
     cx.add_idea(IdeaKid(_label=work_text), pad=cx._cure_handle)
     swim_text = "swim"
@@ -594,7 +594,7 @@ def test_pact_add_idea_MustReorderKidsDictToBeAlphabetical():
 
 def test_pact_add_idea_adoptee_RaisesErrorIfAdopteeIdeaDoesNotHaveCorrectParent():
     healer_text = "Noa"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     sports_text = "sports"
     sports_road = f"{cx._cure_handle},{sports_text}"
     cx.add_idea(IdeaKid(_label=sports_text), pad=cx._cure_handle)
@@ -619,7 +619,7 @@ def test_pact_add_idea_adoptee_RaisesErrorIfAdopteeIdeaDoesNotHaveCorrectParent(
 
 def test_pact_add_idea_adoptee_CorrectlyAddsAdoptee():
     healer_text = "Noa"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     sports_text = "sports"
     sports_road = f"{cx._cure_handle},{sports_text}"
     cx.add_idea(IdeaKid(_label=sports_text), pad=cx._cure_handle)
@@ -659,7 +659,7 @@ def test_pact_add_idea_adoptee_CorrectlyAddsAdoptee():
 
 def test_pact_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdoptedIdeas():
     healer_text = "Noa"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     sports_text = "sports"
     sports_road = f"{cx._cure_handle},{sports_text}"
     cx.add_idea(IdeaKid(_label=sports_text, _weight=2), pad=cx._cure_handle)
@@ -710,7 +710,7 @@ def test_pact_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdoptedIdeas(
 
 def test_pact_del_idea_kid_DeletingBundledIdeaReturnsIdeasToOriginalState():
     healer_text = "Noa"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     sports_text = "sports"
     sports_road = f"{cx._cure_handle},{sports_text}"
     cx.add_idea(IdeaKid(_label=sports_text, _weight=2), pad=cx._cure_handle)

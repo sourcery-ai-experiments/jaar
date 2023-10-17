@@ -7,7 +7,7 @@ from src.pact.idea import IdeaKid, Road
 from src.pact.examples.example_pacts import (
     get_pact_with_4_levels as examples_get_pact_with_4_levels,
 )
-from src.pact.pact import ContractUnit
+from src.pact.pact import PactUnit
 from pytest import raises as pytest_raises
 
 
@@ -51,7 +51,7 @@ def test_pact_acptfact_create():
 def test_set_acptfact_FailsToCreateWhenBaseAndAcptFactAreDifferenctAndAcptFactIdeaIsNotRangeRoot():
     # Given
     healer_text = "Bob"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     time_x = "time_x"
     sx.add_idea(
         idea_kid=IdeaKid(_label=time_x, _begin=0, _close=140), pad=sx._cure_handle
@@ -93,7 +93,7 @@ def test_pact_acptfact_create():
 def test_pact_get_idea_list_AcptFactHeirsCorrectlyInherited():
     # GIVEN
     healer_text = "Bob"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     swim_text = "swim"
     swim_road = Road(f"{sx._cure_handle},{swim_text}")
     sx.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=sx._cure_handle)
@@ -150,7 +150,7 @@ def test_pact_get_idea_list_AcptFactHeirsCorrectlyInherited():
 def test_pact_get_idea_list_AcptFactUnitCorrectlyTransformsacptfactheir_shop():
     # GIVEN
     healer_text = "Bob"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     swim_text = "swim"
     swim_road = f"{sx._cure_handle},{swim_text}"
     sx.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=sx._cure_handle)
@@ -193,7 +193,7 @@ def test_pact_get_idea_list_AcptFactUnitCorrectlyTransformsacptfactheir_shop():
 def test_pact_get_idea_list_AcptFactHeirCorrectlyDeletesAcptFactUnit():
     # GIVEN
     healer_text = "Tim"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     swim_text = "swim"
     swim_road = Road(f"{sx._cure_handle},{swim_text}")
     sx.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=sx._cure_handle)
@@ -233,7 +233,7 @@ def test_pact_get_idea_list_AcptFactHeirCorrectlyDeletesAcptFactUnit():
 def test_get_ranged_acptfacts():
     # Given a single ranged acptfact
     healer_text = "Tim"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     time_x = "time_x"
     sx.add_idea(
         idea_kid=IdeaKid(_label=time_x, _begin=0, _close=140), pad=sx._cure_handle
@@ -280,7 +280,7 @@ def test_get_ranged_acptfacts():
 def test_get_roots_ranged_acptfacts():
     # Given a two ranged acptfacts where one is "range-root" get_root_ranged_acptfacts returns one "range-root" acptfact
     healer_text = "Tim"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     time_x = "time_x"
     sx.add_idea(
         idea_kid=IdeaKid(_label=time_x, _begin=0, _close=140), pad=sx._cure_handle
@@ -320,7 +320,7 @@ def test_get_roots_ranged_acptfacts():
 
 def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario1():
     healer_text = "Tim"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     # # the action
     # clean = "clean"
     # sx.add_idea(idea_kid=IdeaKid(_label=clean, promise=True), pad=sx._cure_handle)
@@ -383,7 +383,7 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario1(
 
 def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario2():
     healer_text = "Tim"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     # # the action
     # clean = "clean"
     # sx.add_idea(idea_kid=IdeaKid(_label=clean, promise=True), pad=sx._cure_handle)
@@ -444,7 +444,7 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario2(
 
 def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario3():
     healer_text = "Tim"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     # # the action
     # clean = "clean"
     # sx.add_idea(idea_kid=IdeaKid(_label=clean, promise=True), pad=sx._cure_handle)
@@ -529,7 +529,7 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario3(
 
 def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario4():
     healer_text = "Tim"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     time_x = "time_x"
     arsub1 = "arbitary_subsection1"
     as1_road = f"{sx._cure_handle},{arsub1}"
@@ -580,7 +580,7 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario4(
 
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario4_1():
     healer_text = "Tim"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     sx.set_time_hreg_ideas(c400_count=7)
     jajatime_road = f"{sx._cure_handle},time,jajatime"
     sx.set_acptfact(base=jajatime_road, pick=jajatime_road, open=1500, nigh=1500)
@@ -606,7 +606,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario4_
 
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario5():
     healer_text = "Tim"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     sx.set_time_hreg_ideas(c400_count=7)
     jajatime_road = f"{sx._cure_handle},time,jajatime"
     sx.set_acptfact(base=jajatime_road, pick=jajatime_road, open=1500, nigh=1063954002)
@@ -638,7 +638,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario5(
 
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario6():
     healer_text = "Tim"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     sx.set_time_hreg_ideas(c400_count=7)
     jajatime_road = f"{sx._cure_handle},time,jajatime"
     sx.set_acptfact(
@@ -667,7 +667,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario6(
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario7():
     # Given
     healer_text = "Tim"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     sx.set_time_hreg_ideas(c400_count=7)
     jajatime_road = f"{sx._cure_handle},time,jajatime"
 
@@ -710,7 +710,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario7(
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario8():
     # Given
     healer_text = "Tim"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     sx.set_time_hreg_ideas(c400_count=7)
     jajatime_road = f"{sx._cure_handle},time,jajatime"
 
@@ -753,7 +753,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario8(
 def test_pact_set_acptfact_create_missing_ideas_CreatesBaseAndAcptFact():
     # GIVEN
     healer_text = "Tim"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     sx._idearoot.set_kids_empty_if_null()
     prob_text = "problems"
     prob_road = Road(f"{sx._cure_handle},{prob_text}")
@@ -773,7 +773,7 @@ def test_pact_set_acptfact_create_missing_ideas_CreatesBaseAndAcptFact():
 def test_pact_get_acptfactunits_base_and_acptfact_list_CorrectlyReturnsListOfAcptFactUnits():
     # GIVEN
     healer_text = "Tim"
-    sx = ContractUnit(_healer=healer_text)
+    sx = PactUnit(_healer=healer_text)
     sx._idearoot.set_kids_empty_if_null()
 
     prob_text = "problems"

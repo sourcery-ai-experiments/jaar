@@ -1,4 +1,4 @@
-from src.pact.pact import ContractUnit, IdeaKid, groupunit_shop, partylink_shop
+from src.pact.pact import PactUnit, IdeaKid, groupunit_shop, partylink_shop
 from src.cure.cure import cureunit_shop
 from src.cure.examples.cure_env_kit import (
     get_temp_env_handle,
@@ -60,7 +60,7 @@ def test_cure_refresh_bank_metrics_CorrectlyDeletesOldBankInMemory(
     bob_text = "bob"
     tom_text = "tom"
 
-    bob = ContractUnit(_healer=bob_text)
+    bob = PactUnit(_healer=bob_text)
     bob.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
     sx.save_public_pact(pact_x=bob)
     sx.refresh_bank_metrics()
@@ -84,7 +84,7 @@ def test_cure_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
     bob_text = "bob"
     tom_text = "tom"
 
-    bob = ContractUnit(_healer=bob_text)
+    bob = PactUnit(_healer=bob_text)
     bob.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
     sx.save_public_pact(pact_x=bob)
     sx.refresh_bank_metrics()
@@ -110,25 +110,25 @@ def test_cure_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     sal_text = "sal"
     elu_text = "elu"
 
-    bob = ContractUnit(_healer=bob_text)
+    bob = PactUnit(_healer=bob_text)
     bob.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
     bob.add_partyunit(title=sal_text, creditor_weight=1, debtor_weight=4)
     bob.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
     sx.save_public_pact(pact_x=bob)
 
-    sal = ContractUnit(_healer=sal_text)
+    sal = PactUnit(_healer=sal_text)
     sal.add_partyunit(title=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
     sal.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
     sx.save_public_pact(pact_x=sal)
 
-    tom = ContractUnit(_healer=tom_text)
+    tom = PactUnit(_healer=tom_text)
     tom.add_partyunit(title=bob_text, creditor_weight=3, debtor_weight=1)
     tom.add_partyunit(title=sal_text, creditor_weight=1, debtor_weight=4)
     tom.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
     sx.save_public_pact(pact_x=tom)
 
-    elu = ContractUnit(_healer=elu_text)
+    elu = PactUnit(_healer=elu_text)
     elu.add_partyunit(title=bob_text, creditor_weight=3, debtor_weight=1)
     elu.add_partyunit(title=tom_text, creditor_weight=1, debtor_weight=4)
     elu.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
@@ -144,7 +144,7 @@ def test_cure_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 12
 
 
-def test_cure_refresh_bank_metrics_CorrectlyPopulatesContractTable01(
+def test_cure_refresh_bank_metrics_CorrectlyPopulatesPactTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example cure with 4 Healers, each with 3 Partyunits = 12 ledger rows
@@ -156,10 +156,10 @@ def test_cure_refresh_bank_metrics_CorrectlyPopulatesContractTable01(
     sal_text = "sal"
     elu_text = "elu"
 
-    sx.save_public_pact(pact_x=ContractUnit(_healer=bob_text))
-    sx.save_public_pact(pact_x=ContractUnit(_healer=tom_text))
-    sx.save_public_pact(pact_x=ContractUnit(_healer=sal_text))
-    sx.save_public_pact(pact_x=ContractUnit(_healer=elu_text))
+    sx.save_public_pact(pact_x=PactUnit(_healer=bob_text))
+    sx.save_public_pact(pact_x=PactUnit(_healer=tom_text))
+    sx.save_public_pact(pact_x=PactUnit(_healer=sal_text))
+    sx.save_public_pact(pact_x=PactUnit(_healer=elu_text))
 
     sqlstr_count_pacts = get_table_count_sqlstr("pactunits")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_pacts) == 0
@@ -171,7 +171,7 @@ def test_cure_refresh_bank_metrics_CorrectlyPopulatesContractTable01(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_pacts) == 4
 
 
-def test_cure_refresh_bank_metrics_CorrectlyPopulatesContractTable01(
+def test_cure_refresh_bank_metrics_CorrectlyPopulatesPactTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example cure with 4 Healers, each with 3 Partyunits = 12 ledger rows
@@ -183,10 +183,10 @@ def test_cure_refresh_bank_metrics_CorrectlyPopulatesContractTable01(
     sal_text = "sal"
     elu_text = "elu"
 
-    sx.save_public_pact(pact_x=ContractUnit(_healer=bob_text))
-    sx.save_public_pact(pact_x=ContractUnit(_healer=tom_text))
-    sx.save_public_pact(pact_x=ContractUnit(_healer=sal_text))
-    sx.save_public_pact(pact_x=ContractUnit(_healer=elu_text))
+    sx.save_public_pact(pact_x=PactUnit(_healer=bob_text))
+    sx.save_public_pact(pact_x=PactUnit(_healer=tom_text))
+    sx.save_public_pact(pact_x=PactUnit(_healer=sal_text))
+    sx.save_public_pact(pact_x=PactUnit(_healer=elu_text))
 
     sqlstr_count_pacts = get_table_count_sqlstr("pactunits")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_pacts) == 0
@@ -208,8 +208,8 @@ def test_cure_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     bob_text = "bob"
     tom_text = "tom"
     elu_text = "elu"
-    bob_pact = ContractUnit(_healer=bob_text)
-    tom_pact = ContractUnit(_healer=tom_text)
+    bob_pact = PactUnit(_healer=bob_text)
+    tom_pact = PactUnit(_healer=tom_text)
     bob_pact.add_partyunit(title=tom_text)
     tom_pact.add_partyunit(title=bob_text)
     tom_pact.add_partyunit(title=elu_text)
@@ -226,7 +226,7 @@ def test_cure_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr) == 3
 
 
-def test_cure_set_pact_bank_attrs_CorrectlyPopulatesContract_Groupunit_Partylinks(
+def test_cure_set_pact_bank_attrs_CorrectlyPopulatesPact_Groupunit_Partylinks(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -248,10 +248,10 @@ def test_cure_set_pact_bank_attrs_CorrectlyPopulatesContract_Groupunit_Partylink
     tom_text = "tom"
     ava_text = "ava"
 
-    sal_pact = ContractUnit(_healer=sal_text)
-    bob_pact = ContractUnit(_healer=bob_text)
-    tom_pact = ContractUnit(_healer=tom_text)
-    ava_pact = ContractUnit(_healer=ava_text)
+    sal_pact = PactUnit(_healer=sal_text)
+    bob_pact = PactUnit(_healer=bob_text)
+    tom_pact = PactUnit(_healer=tom_text)
+    ava_pact = PactUnit(_healer=ava_text)
 
     swim_text = "swimming"
     sports_text = "sports"

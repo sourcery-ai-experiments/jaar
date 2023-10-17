@@ -1,5 +1,5 @@
-# from lw.pact import ContractUnit
-from src.pact.pact import ContractUnit
+# from lw.pact import PactUnit
+from src.pact.pact import PactUnit
 from src.pact.x_func import (
     single_dir_create_if_null,
     delete_dir as x_func_delete_dir,
@@ -49,7 +49,7 @@ def env_dir_setup_cleanup():
 
 
 def create_pact_file_for_cures(cure_dir: str, pact_healer: str):
-    pact_x = ContractUnit(_healer=pact_healer)
+    pact_x = PactUnit(_healer=pact_healer)
     pact_dir = f"{cure_dir}/pacts"
     # file_path = f"{pact_dir}/{pact_x._healer}.json"
     # if not path.exists(file_path):
@@ -214,26 +214,26 @@ def _delete_and_set_ex6():
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_pact = ContractUnit(_healer=sal_text)
+    sal_pact = PactUnit(_healer=sal_text)
     sal_pact.add_partyunit(title=bob_text, creditor_weight=2)
     sal_pact.add_partyunit(title=tom_text, creditor_weight=7)
     sal_pact.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_pact(pact_x=sal_pact)
 
-    bob_pact = ContractUnit(_healer=bob_text)
+    bob_pact = PactUnit(_healer=bob_text)
     bob_pact.add_partyunit(title=sal_text, creditor_weight=3)
     bob_pact.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_pact(pact_x=bob_pact)
 
-    tom_pact = ContractUnit(_healer=tom_text)
+    tom_pact = PactUnit(_healer=tom_text)
     tom_pact.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_pact(pact_x=tom_pact)
 
-    ava_pact = ContractUnit(_healer=ava_text)
+    ava_pact = PactUnit(_healer=ava_text)
     ava_pact.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_pact(pact_x=ava_pact)
 
-    elu_pact = ContractUnit(_healer=elu_text)
+    elu_pact = PactUnit(_healer=elu_text)
     elu_pact.add_partyunit(title=ava_text, creditor_weight=19)
     elu_pact.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_pact(pact_x=elu_pact)

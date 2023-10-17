@@ -134,7 +134,7 @@ def test_HealerAdmin_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path.exists(pdx._pacts_bond_dir)
 
 
-def test_HealerAdmin_create_core_dir_and_files_DoesNotOverWriteIsolContract(
+def test_HealerAdmin_create_core_dir_and_files_DoesNotOverWriteIsolPact(
     healer_dir_setup_cleanup,
 ):
     # GIVEN create healer
@@ -200,7 +200,7 @@ def test_HealerAdmin_set_healer_title_WorksCorrectly(healer_dir_setup_cleanup):
     assert os_path.exists(new_isol_file_path)
 
 
-def test_healerunit_auto_output_to_public_SavesContractToPublicDir(
+def test_healerunit_auto_output_to_public_SavesPactToPublicDir(
     healer_dir_setup_cleanup,
 ):
     # GIVEN

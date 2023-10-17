@@ -73,7 +73,7 @@ from src.pact.x_func import (
 )
 
 
-class InvalidContractException(Exception):
+class InvalidPactException(Exception):
     pass
 
 
@@ -81,13 +81,13 @@ class AssignmentPartyException(Exception):
     pass
 
 
-class ContractHealer(str):
+class PactHealer(str):
     pass
 
 
 @dataclasses.dataclass
-class ContractUnit:
-    _healer: ContractHealer = None
+class PactUnit:
+    _healer: PactHealer = None
     _weight: float = None
     _partys: dict[PartyTitle:PartyUnit] = None
     _groups: dict[GroupBrand:GroupUnit] = None
@@ -139,7 +139,7 @@ class ContractUnit:
 
     def set_max_tree_traverse(self, int_x: int):
         if int_x < 2:
-            raise InvalidContractException(
+            raise InvalidPactException(
                 f"set_max_tree_traverse: input '{int_x}' must be number that is 2 or greater"
             )
         else:
@@ -177,7 +177,7 @@ class ContractUnit:
         self.set_pact_metrics()
         idea_x = self.get_idea_kid(road=road)
         new_weight = self._weight * idea_x._pact_importance
-        cx = ContractUnit(_healer=self._idearoot._label, _weight=new_weight)
+        cx = PactUnit(_healer=self._idearoot._label, _weight=new_weight)
 
         for road_assc in sorted(list(self._get_relevant_roads({road}))):
             src_yx = self.get_idea_kid(road=road_assc)
@@ -521,7 +521,7 @@ class ContractUnit:
     ):
         old_title_creditor_weight = self._partys.get(old_title).creditor_weight
         if not allow_party_overwite and self._partys.get(new_title) != None:
-            raise InvalidContractException(
+            raise InvalidPactException(
                 f"Party '{old_title}' change to '{new_title}' failed since '{new_title}' exists."
             )
         elif (
@@ -529,7 +529,7 @@ class ContractUnit:
             and self._groups.get(new_title) != None
             and self._groups.get(new_title)._single_party == False
         ):
-            raise InvalidContractException(
+            raise InvalidPactException(
                 f"Party '{old_title}' change to '{new_title}' failed since non-single group '{new_title}' exists."
             )
         elif (
@@ -681,7 +681,7 @@ class ContractUnit:
         self, old_brand: GroupBrand, new_brand: GroupBrand, allow_group_overwite: bool
     ):
         if not allow_group_overwite and self._groups.get(new_brand) != None:
-            raise InvalidContractException(
+            raise InvalidPactException(
                 f"Group '{old_brand}' change to '{new_brand}' failed since '{new_brand}' exists."
             )
         elif self._groups.get(new_brand) != None:
@@ -821,7 +821,7 @@ class ContractUnit:
         while lemmas_x.is_lemmas_evaluated() == False or count_x > 10000:
             count_x += 1
             if count_x == 9998:
-                raise InvalidContractException("lemma loop failed")
+                raise InvalidPactException("lemma loop failed")
 
             lemma_y = lemmas_x.get_unevaluated_lemma()
             idea_x = lemma_y.idea_x
@@ -868,7 +868,7 @@ class ContractUnit:
             and acptfact_idea._close != None
             and self._is_idea_rangeroot(idea_road=base) == False
         ):
-            raise InvalidContractException(
+            raise InvalidPactException(
                 f"Non range-root acptfact:{base} can only be set by range-root acptfact"
             )
 
@@ -1128,7 +1128,7 @@ class ContractUnit:
     def _set_ideakid_if_empty(self, road: Road):
         try:
             self.get_idea_kid(road)
-        except InvalidContractException:
+        except InvalidPactException:
             base_idea = IdeaKid(
                 _label=get_terminus_node_from_road(road=road),
                 _pad=get_pad_from_road(road=road),
@@ -1163,7 +1163,7 @@ class ContractUnit:
         temps_d = [temp_label]
 
         if x_road == []:
-            raise InvalidContractException("Object cannot delete itself")
+            raise InvalidPactException("Object cannot delete itself")
         temp_label = x_road.pop(0)
         temps_d.append(temp_label)
 
@@ -1199,7 +1199,7 @@ class ContractUnit:
     ):
         # check idea exists
         if self.get_idea_kid(road=old_road) is None:
-            raise InvalidContractException(f"Idea {old_road=} does not exist")
+            raise InvalidPactException(f"Idea {old_road=} does not exist")
 
         pad = get_pad_from_road(road=old_road)
         new_road = Road(f"{new_label}") if pad == "" else Road(f"{pad},{new_label}")
@@ -1264,7 +1264,7 @@ class ContractUnit:
         if (addin != None or numor != None or denom != None or reest != None) and len(
             anc_roads
         ) == 1:
-            raise InvalidContractException("Root Idea cannot have numor denom reest.")
+            raise InvalidPactException("Root Idea cannot have numor denom reest.")
         parent_road = self._cure_handle if len(anc_roads) == 1 else anc_roads[1]
 
         parent_has_range = None
@@ -1301,11 +1301,11 @@ class ContractUnit:
         )
 
         if parent_has_range and numeric_range:
-            raise InvalidContractException(
+            raise InvalidPactException(
                 "Idea has begin-close range parent, cannot have numeric_road"
             )
         elif not parent_has_range and not numeric_range and numor != None:
-            raise InvalidContractException(
+            raise InvalidPactException(
                 f"Idea cannot edit {numor=}/denom/reest of '{idea_road}' if parent '{parent_road}' or ideacore._numeric_road does not have begin/close range"
             )
         return begin, close
@@ -1655,14 +1655,14 @@ class ContractUnit:
 
     def get_idea_kid(self, road: Road) -> IdeaKid:
         if road is None:
-            raise InvalidContractException("get_idea_kid received road=None")
+            raise InvalidPactException("get_idea_kid received road=None")
         nodes = get_all_road_nodes(road)
         src = nodes.pop(0)
         temp_idea = None
 
         if nodes == [] and src == self._idearoot._label:
             temp_idea = self._idearoot
-            # raise InvalidContractException(f"Cannot return root '{self._economic_kind()}'")
+            # raise InvalidPactException(f"Cannot return root '{self._economic_kind()}'")
         else:
             idea_label = src if nodes == [] else nodes.pop(0)
             try:
@@ -1672,11 +1672,11 @@ class ContractUnit:
                     idea_label = nodes.pop(0)
                     temp_idea = temp_idea._kids[idea_label]
                 if temp_idea is None:
-                    raise InvalidContractException(
+                    raise InvalidPactException(
                         f"Temp_idea is None {idea_label=}. No item at '{road}'"
                     )
             except:
-                raise InvalidContractException(
+                raise InvalidPactException(
                     f"Getting {idea_label=} failed no item at '{road}'"
                 )
 
@@ -2055,7 +2055,7 @@ class ContractUnit:
         self, party_title: PartyTitle, acptfacts: dict[Road:AcptFactCore]
     ):
         self.set_pact_metrics()
-        pact4party = ContractUnit(_healer=party_title)
+        pact4party = PactUnit(_healer=party_title)
         pact4party._idearoot._pact_importance = self._idearoot._pact_importance
         # get party's partys: partyzone
 
@@ -2182,7 +2182,7 @@ class ContractUnit:
         pact_x,
         assignor_partys: dict[PartyTitle:PartyUnit],
         assignor_title: PartyTitle,
-    ) -> ContractHealer:
+    ) -> PactHealer:
         self.set_pact_metrics()
         self._set_assignment_partys(pact_x, assignor_partys, assignor_title)
         self._set_assignment_groups(pact_x)
@@ -2254,12 +2254,12 @@ class ContractUnit:
             self._auto_output_to_public = bool_x is not None and bool_x
 
 
-def get_from_json(cx_json: str) -> ContractUnit:
+def get_from_json(cx_json: str) -> PactUnit:
     return get_from_dict(cx_dict=json.loads(cx_json))
 
 
-def get_from_dict(cx_dict: dict) -> ContractUnit:
-    c_x = ContractUnit()
+def get_from_dict(cx_dict: dict) -> PactUnit:
+    c_x = PactUnit()
     c_x.set_cure_handle(cx_dict["_cure_handle"])
     c_x._idearoot._requiredunits = requireds_get_from_dict(
         requireds_dict=cx_dict["_requiredunits"]
@@ -2353,7 +2353,7 @@ def get_from_dict(cx_dict: dict) -> ContractUnit:
     return c_x
 
 
-def get_dict_of_pact_from_dict(x_dict: dict[str:dict]) -> dict[str:ContractUnit]:
+def get_dict_of_pact_from_dict(x_dict: dict[str:dict]) -> dict[str:PactUnit]:
     pactunits = {}
     for pactunit_dict in x_dict.values():
         x_pact = get_from_dict(cx_dict=pactunit_dict)
@@ -2361,7 +2361,7 @@ def get_dict_of_pact_from_dict(x_dict: dict[str:dict]) -> dict[str:ContractUnit]
     return pactunits
 
 
-def get_meld_of_pact_files(cx_primary: ContractUnit, meldees_dir: str) -> ContractUnit:
+def get_meld_of_pact_files(cx_primary: PactUnit, meldees_dir: str) -> PactUnit:
     cx_primary.set_pact_metrics()
     for meldee_file_x in x_func_dir_files(dir_path=meldees_dir):
         meldee_x = get_from_json(cx_json=x_func_open_file(meldees_dir, meldee_file_x))

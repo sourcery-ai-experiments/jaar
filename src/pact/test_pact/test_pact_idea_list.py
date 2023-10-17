@@ -7,7 +7,7 @@ from src.pact.examples.example_pacts import (
 from src.pact.idea import IdeaKid
 from src.pact.required_idea import sufffactunit_shop, RequiredUnit, RequiredHeir
 from src.pact.road import Road
-from src.pact.pact import ContractUnit
+from src.pact.pact import PactUnit
 
 
 def _check_all_elements_in_dict_are_correct_type(x_dict: dict, type_str: str) -> bool:
@@ -261,7 +261,7 @@ def test_pact_set_pact_metrics_CorrectlyClears_pact_coin():
 def test_pact_get_idea_list_CorrectlyCalculatesIdeaAttr_pact_coin():
     # GIVEN
     healer_text = "Yao"
-    cx = ContractUnit(_healer=healer_text, _weight=10)
+    cx = PactUnit(_healer=healer_text, _weight=10)
 
     auto_text = "auto"
     auto_idea = IdeaKid(_label=auto_text, _weight=10)

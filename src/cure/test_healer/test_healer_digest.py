@@ -1,4 +1,4 @@
-from src.pact.pact import ContractUnit, originunit_shop
+from src.pact.pact import PactUnit, originunit_shop
 from src.pact.examples.example_pacts import (
     get_pact_with_4_levels as example_pacts_get_pact_with_4_levels,
 )
@@ -20,7 +20,7 @@ from os import path as os_path
 from pytest import raises as pytest_raises
 
 
-# def test_healer_save_isol_pact_CreateStartingContractFile(
+# def test_healer_save_isol_pact_CreateStartingPactFile(
 #     healer_dir_setup_cleanup,
 # ):
 #     # GIVEN
@@ -44,7 +44,7 @@ from pytest import raises as pytest_raises
 #     assert x_func_open_file(lai_pact._admin._healer_dir, lai_isol_file_title) != None
 
 
-def test_healeropen_isol_pact_WhenStartingContractFileDoesNotExists(
+def test_healeropen_isol_pact_WhenStartingPactFileDoesNotExists(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
@@ -59,7 +59,7 @@ def test_healeropen_isol_pact_WhenStartingContractFileDoesNotExists(
     assert isol_pact._cure_handle == cure_handle_text
 
     # THEN
-    x_pact = ContractUnit(_healer=tim_text)
+    x_pact = PactUnit(_healer=tim_text)
     x_pact.set_cure_handle(get_temp_cure_handle())
     x_pact.set_pact_metrics()
     # x_idearoot = IdeaRoot(_label=p_title, _pad="")
@@ -82,7 +82,7 @@ def test_healeropen_isol_pact_WhenStartingContractFileDoesNotExists(
     assert list(isol_pact._groups.keys()) == [tim_text]
 
 
-def test_healer_save_isol_pact_IsolContractHealerMustBeHealer(
+def test_healer_save_isol_pact_IsolPactHealerMustBeHealer(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
@@ -99,7 +99,7 @@ def test_healer_save_isol_pact_IsolContractHealerMustBeHealer(
     assert ux._admin.open_isol_pact()._healer == ux._admin._healer_title
 
 
-def test_healer_open_isol_pact_WhenStartingContractFileExists(
+def test_healer_open_isol_pact_WhenStartingPactFileExists(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
@@ -178,7 +178,7 @@ def test_healerunit_save_pact_to_digest_SavesFileCorrectly(
     assert digest_cx_json == cx.get_json()
 
 
-def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestContract(
+def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestPact(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
@@ -216,21 +216,21 @@ def test_healer_get_remelded_output_pact_withEmptyDigestDict(
     ux = healerunit_shop(healer_title_x, get_temp_healer_dir(), get_temp_cure_handle())
     ux.create_core_dir_and_files()
     sx_output_before = ux._admin.get_remelded_output_pact()
-    assert str(type(sx_output_before)).find(".pact.ContractUnit'>")
+    assert str(type(sx_output_before)).find(".pact.PactUnit'>")
     assert sx_output_before._healer == healer_title_x
     assert sx_output_before._idearoot._label == get_temp_cure_handle()
-    # ux.set_digested_pact(pact_x=ContractUnit(_healer="digested1"))
+    # ux.set_digested_pact(pact_x=PactUnit(_healer="digested1"))
 
     # WHEN
     sx_output_after = ux._admin.get_remelded_output_pact()
 
     # THEN
-    healer_pact_x = ContractUnit(_healer=healer_title_x, _weight=0.0)
+    healer_pact_x = PactUnit(_healer=healer_title_x, _weight=0.0)
     healer_pact_x.set_cure_handle(get_temp_cure_handle())
     healer_pact_x._idearoot._pad = ""
     healer_pact_x.set_pact_metrics()
 
-    assert str(type(sx_output_after)).find(".pact.ContractUnit'>")
+    assert str(type(sx_output_after)).find(".pact.PactUnit'>")
     assert sx_output_after._weight == healer_pact_x._weight
     assert sx_output_after._idearoot._pad == healer_pact_x._idearoot._pad
     assert (
@@ -240,7 +240,7 @@ def test_healer_get_remelded_output_pact_withEmptyDigestDict(
     assert sx_output_after._idearoot == healer_pact_x._idearoot
 
 
-def test_healer_get_remelded_output_pact_with1DigestedContract(
+def test_healer_get_remelded_output_pact_with1DigestedPact(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
@@ -249,7 +249,7 @@ def test_healer_get_remelded_output_pact_with1DigestedContract(
     ux = healerunit_shop(yao_text, env_dir, get_temp_cure_handle())
     ux.create_core_dir_and_files()
     sx_output_old = ux._admin.get_remelded_output_pact()
-    assert str(type(sx_output_old)).find(".pact.ContractUnit'>")
+    assert str(type(sx_output_old)).find(".pact.PactUnit'>")
     assert sx_output_old._healer == yao_text
     assert sx_output_old._idearoot._label == get_temp_cure_handle()
     input_pact = example_healers_get_2node_pact()
@@ -260,7 +260,7 @@ def test_healer_get_remelded_output_pact_with1DigestedContract(
     sx_output_new = ux._admin.get_remelded_output_pact()
 
     # THEN
-    assert str(type(sx_output_new)).find(".pact.ContractUnit'>")
+    assert str(type(sx_output_new)).find(".pact.PactUnit'>")
 
     assert sx_output_new._weight == 0
     assert sx_output_new._weight != input_pact._weight
@@ -283,14 +283,14 @@ def test_healer_get_remelded_output_pact_with1DigestedContract(
 #     env_dir = get_temp_healer_dir()
 #     ux = healerunit_shop(title="test8", env_dir=env_dir)
 #     sx_output_old = ux._admin.get_remelded_output_pact()
-#     assert str(type(sx_output_old)).find(".pact.ContractUnit'>")
+#     assert str(type(sx_output_old)).find(".pact.PactUnit'>")
 #     assert sx_output_old._groups == {}
 #     assert sx_output_old._partys == {}
 #     assert sx_output_old._acptfacts == {}
 
 #     src1 = "test1"
 #     src1_road = Road(f"{src1}")
-#     s1 = ContractUnit(_healer=src1)
+#     s1 = PactUnit(_healer=src1)
 
 #     ceci_text = "Ceci"
 #     s1.set_partyunit(partyunit=PartyUnit(title=ceci_text))
@@ -314,7 +314,7 @@ def test_healer_get_remelded_output_pact_with1DigestedContract(
 #     sx_output_new = ux._admin.get_remelded_output_pact()
 
 #     # THEN
-#     assert str(type(sx_output_new)).find(".pact.ContractUnit'>")
+#     assert str(type(sx_output_new)).find(".pact.PactUnit'>")
 #     assert sx_output_new._acptfacts == s1._acptfacts
 #     assert sx_output_new._partys == s1._partys
 #     assert sx_output_new._groups == s1._groups

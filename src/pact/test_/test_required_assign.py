@@ -11,7 +11,7 @@ from src.pact.required_assign import (
 )
 from src.pact.group import GroupBrand, groupunit_shop
 from src.pact.party import partylink_shop
-from src.pact.pact import ContractUnit
+from src.pact.pact import PactUnit
 from pytest import raises as pytest_raises
 
 
@@ -130,7 +130,7 @@ def test_AssignedHeir_get_all_suff_partys_CorrectlyReturnsSingleDictWithAllParty
     # GIVEN
     jim_text = "jim"
     sue_text = "sue"
-    c_x = ContractUnit(_healer=jim_text)
+    c_x = PactUnit(_healer=jim_text)
     c_x.add_partyunit(title=jim_text)
     c_x.add_partyunit(title=sue_text)
 
@@ -149,7 +149,7 @@ def test_AssignedHeir_get_all_suff_partys_CorrectlyReturnsSingleDictWithAllParty
     jim_text = "jim"
     sue_text = "sue"
     bob_text = "bob"
-    c_x = ContractUnit(_healer=jim_text)
+    c_x = PactUnit(_healer=jim_text)
     c_x.add_partyunit(title=jim_text)
     c_x.add_partyunit(title=sue_text)
     c_x.add_partyunit(title=bob_text)
@@ -189,7 +189,7 @@ def test_AssignedHeir_set_group_party_CorrectlySetsAttribute_NonEmpty_suffgroups
     jim_text = "jim"
     sue_text = "sue"
 
-    c_x = ContractUnit(_healer=jim_text)
+    c_x = PactUnit(_healer=jim_text)
     c_x.add_partyunit(title=jim_text)
     c_x.add_partyunit(title=sue_text)
     pact_healer = c_x._healer
@@ -214,7 +214,7 @@ def test_AssignedHeir_set_group_party_CorrectlySetsAttribute_NonEmpty_suffgroups
     jim_text = "jim"
     sue_text = "sue"
 
-    c_x = ContractUnit(_healer=jim_text)
+    c_x = PactUnit(_healer=jim_text)
     c_x.add_partyunit(title=jim_text)
     c_x.add_partyunit(title=sue_text)
     pact_healer = c_x._healer
@@ -239,7 +239,7 @@ def test_AssignedHeir_set_group_party_CorrectlySetsAttribute_NonEmpty_suffgroups
     jim_text = "jim"
     sue_text = "sue"
     bob_text = "bob"
-    c_x = ContractUnit(_healer=jim_text)
+    c_x = PactUnit(_healer=jim_text)
     c_x.add_partyunit(title=jim_text)
     c_x.add_partyunit(title=sue_text)
     c_x.add_partyunit(title=bob_text)
@@ -270,7 +270,7 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
     jim_text = "jim"
     sue_text = "sue"
     bob_text = "bob"
-    c_x = ContractUnit(_healer=jim_text)
+    c_x = PactUnit(_healer=jim_text)
     c_x.add_partyunit(title=jim_text)
     c_x.add_partyunit(title=sue_text)
     c_x.add_partyunit(title=bob_text)
@@ -409,7 +409,7 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqual_ParentAssignedHeir_Non
     sue_text = "sue"
     bob_text = "bob"
     tom_text = "tom"
-    c_x = ContractUnit(_healer=jim_text)
+    c_x = PactUnit(_healer=jim_text)
     c_x.add_partyunit(title=jim_text)
     c_x.add_partyunit(title=sue_text)
     c_x.add_partyunit(title=bob_text)
@@ -456,7 +456,7 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqualParentAssignedHeir_Rais
     sue_text = "sue"
     bob_text = "bob"
     tom_text = "tom"
-    c_x = ContractUnit(_healer=jim_text)
+    c_x = PactUnit(_healer=jim_text)
     c_x.add_partyunit(title=jim_text)
     c_x.add_partyunit(title=sue_text)
     c_x.add_partyunit(title=bob_text)

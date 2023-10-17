@@ -1,5 +1,5 @@
 import contextlib
-from src.pact.pact import ContractUnit
+from src.pact.pact import PactUnit
 from src.pact.idea import IdeaKid
 from src.pact.required_idea import acptfactunit_shop
 from src.pact.examples.example_pacts import (
@@ -108,7 +108,7 @@ def test_pact_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
     # GIVEN
     run_text = "runners"
     healer_text = "Tom"
-    x_pact = ContractUnit(_healer=healer_text)
+    x_pact = PactUnit(_healer=healer_text)
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(title=run_text)
     x_pact.edit_idea_attr(assignedunit=assigned_unit_x, road=x_pact._cure_handle)
@@ -124,7 +124,7 @@ def test_pact_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
 def test_pact_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
     # GIVEN
     healer_text = "Tom"
-    x_pact = ContractUnit(_healer=healer_text)
+    x_pact = PactUnit(_healer=healer_text)
     run_text = "run"
     x_pact.set_groupunit(groupunit=groupunit_shop(run_text))
 
@@ -242,7 +242,7 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     assert len(x_dict[originunit_text][_links])
 
 
-def test_save_file_CorrectlySavesContractJSON(env_dir_setup_cleanup):
+def test_save_file_CorrectlySavesPactJSON(env_dir_setup_cleanup):
     # GIVEN
     x_pact = example_pacts_pact_v001()
     x_cx_json = x_pact.get_json()
@@ -306,7 +306,7 @@ def test_pact_get_json_CorrectlyWorksForSimpleExample():
     pact_x = pact_get_from_json(cx_json=x_json)
 
     # THEN
-    assert str(type(pact_x)).find(".pact.ContractUnit'>") > 0
+    assert str(type(pact_x)).find(".pact.PactUnit'>") > 0
     assert pact_x._healer != None
     assert pact_x._healer == pact_y._healer
     assert pact_x._cure_handle == pact_y._cure_handle
@@ -365,7 +365,7 @@ def test_pact_get_json_CorrectlyWorksForSimpleExample():
 #     cx3 = pact_get_from_json(cx_json=cx3_json)
 
 #     # THEN
-#     assert str(type(cx3)).find(".pact.ContractUnit'>") > 0
+#     assert str(type(cx3)).find(".pact.PactUnit'>") > 0
 #     assert cx3._healer != None
 #     assert cx3._healer == cx1._healer
 #     assert cx3._max_tree_traverse == 2
@@ -379,7 +379,7 @@ def test_pact_get_json_CorrectlyWorksForSimpleExample():
 #     assert len(cx3._partys) == 22
 
 
-def test_get_dict_of_pact_from_dict_ReturnsDictOfContractUnits():
+def test_get_dict_of_pact_from_dict_ReturnsDictOfPactUnits():
     # GIVEN
     cx1 = example_pacts_pact_v001()
     cx2 = example_pacts_get_pact_x1_3levels_1required_1acptfacts()

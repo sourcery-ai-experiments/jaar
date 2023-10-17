@@ -67,36 +67,36 @@ CureUnit objects
 
 CureUnit HealerUnit objects
 
-CureUnit HealerUnit ContractLink objects
+CureUnit HealerUnit PactLink objects
 
 CureUnit Bank objects
 
 <!-- TODO: Add explanations -->
-ContractUnit objects
+PactUnit objects
 
-ContractUnit PartyUnit objects
+PactUnit PartyUnit objects
 
-ContractUnit GroupUnit objects
+PactUnit GroupUnit objects
 
-ContractUnit IdeaUnit objects
+PactUnit IdeaUnit objects
 
-ContractUnit IdeaUnit hierarchical structure
+PactUnit IdeaUnit hierarchical structure
 
-ContractUnit IdeaUnit Balancelink objects
+PactUnit IdeaUnit Balancelink objects
 
-ContractUnit IdeaUnit Balanceline objects
+PactUnit IdeaUnit Balanceline objects
 
-ContractUnit IdeaUnit BalanceHeir objects
+PactUnit IdeaUnit BalanceHeir objects
 
-ContractUnit IdeaUnit BalanceHeir objects
+PactUnit IdeaUnit BalanceHeir objects
 
-ContractUnit IdeaUnit RequiredFactUnit objects
+PactUnit IdeaUnit RequiredFactUnit objects
 
-ContractUnit IdeaUnit RequiredFactHeir objects
+PactUnit IdeaUnit RequiredFactHeir objects
 
-ContractUnit IdeaUnit AcptFactUnit objects
+PactUnit IdeaUnit AcptFactUnit objects
 
-ContractUnit IdeaUnit AcptFactHeir objects
+PactUnit IdeaUnit AcptFactHeir objects
 
 
 ## 1.3 Test-Driven-Development

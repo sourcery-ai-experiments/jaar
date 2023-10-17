@@ -14,7 +14,7 @@ from src.cure.examples.cure_env_kit import (
 )
 
 
-def test_cure_get_output_pact_ReturnsCorrectContractObjScenario1(
+def test_cure_get_output_pact_ReturnsCorrectPactObjScenario1(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -86,7 +86,7 @@ def test_cure_get_output_pact_ReturnsCorrectContractObjScenario1(
     assert output_cx._idearoot == input_cx._idearoot
 
 
-def test_cure_get_output_pact_ReturnsCorrectContractObjScenario2(
+def test_cure_get_output_pact_ReturnsCorrectPactObjScenario2(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -142,7 +142,7 @@ def test_cure_get_output_pact_ReturnsCorrectContractObjScenario2(
     assert output_cx._idearoot != cx2._idearoot
 
 
-def test_healerunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
+def test_healerunit_refresh_depotlinks_CorrectlyPullsAllPublicPacts(
     env_dir_setup_cleanup,
 ):
     # GIVEN

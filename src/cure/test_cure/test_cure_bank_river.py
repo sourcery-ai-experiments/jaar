@@ -1,4 +1,4 @@
-from src.pact.pact import ContractUnit
+from src.pact.pact import PactUnit
 from src.cure.cure import cureunit_shop
 from src.cure.examples.cure_env_kit import (
     get_temp_env_handle,
@@ -26,16 +26,16 @@ def test_cure_set_river_sphere_for_pact_CorrectlyPopulatesriver_tpartyTable01(
     tom_text = "tom"
     sal_text = "sal"
 
-    sal = ContractUnit(_healer=sal_text)
+    sal = PactUnit(_healer=sal_text)
     sal.add_partyunit(title=bob_text, creditor_weight=1)
     sal.add_partyunit(title=tom_text, creditor_weight=3)
     sx.save_public_pact(pact_x=sal)
 
-    bob = ContractUnit(_healer=bob_text)
+    bob = PactUnit(_healer=bob_text)
     bob.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_pact(pact_x=bob)
 
-    tom = ContractUnit(_healer=tom_text)
+    tom = PactUnit(_healer=tom_text)
     tom.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_pact(pact_x=tom)
 
@@ -98,21 +98,21 @@ def test_cure_set_river_sphere_for_pact_CorrectlyPopulatesriver_tpartyTable02(
     tom_text = "tom"
     elu_text = "elu"
 
-    sal = ContractUnit(_healer=sal_text)
+    sal = PactUnit(_healer=sal_text)
     sal.add_partyunit(title=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
     sx.save_public_pact(pact_x=sal)
 
-    bob = ContractUnit(_healer=bob_text)
+    bob = PactUnit(_healer=bob_text)
     bob.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=1)
     bob.add_partyunit(title=tom_text, creditor_weight=1, debtor_weight=1)
     sx.save_public_pact(pact_x=bob)
 
-    tom = ContractUnit(_healer=tom_text)
+    tom = PactUnit(_healer=tom_text)
     tom.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=8)
     sx.save_public_pact(pact_x=tom)
 
-    elu = ContractUnit(_healer=elu_text)
+    elu = PactUnit(_healer=elu_text)
     elu.add_partyunit(title=sal_text, creditor_weight=1, debtor_weight=8)
     sx.save_public_pact(pact_x=elu)
     sx.refresh_bank_metrics()
@@ -161,22 +161,22 @@ def test_cure_set_river_sphere_for_pact_CorrectlyPopulatesriver_tpartyTable03(
     tom_text = "tom"
     ava_text = "ava"
 
-    sal_pact = ContractUnit(_healer=sal_text)
+    sal_pact = PactUnit(_healer=sal_text)
     sal_pact.add_partyunit(title=bob_text, creditor_weight=2)
     sal_pact.add_partyunit(title=tom_text, creditor_weight=7)
     sal_pact.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_pact(pact_x=sal_pact)
 
-    bob_pact = ContractUnit(_healer=bob_text)
+    bob_pact = PactUnit(_healer=bob_text)
     bob_pact.add_partyunit(title=sal_text, creditor_weight=3)
     bob_pact.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_pact(pact_x=bob_pact)
 
-    tom_pact = ContractUnit(_healer=tom_text)
+    tom_pact = PactUnit(_healer=tom_text)
     tom_pact.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_pact(pact_x=tom_pact)
 
-    ava_pact = ContractUnit(_healer=ava_text)
+    ava_pact = PactUnit(_healer=ava_text)
     sx.save_public_pact(pact_x=ava_pact)
     sx.refresh_bank_metrics()
 
@@ -230,26 +230,26 @@ def test_cure_set_river_sphere_for_pact_CorrectlyPopulatesriver_tpartyTable04(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_pact = ContractUnit(_healer=sal_text)
+    sal_pact = PactUnit(_healer=sal_text)
     sal_pact.add_partyunit(title=bob_text, creditor_weight=2)
     sal_pact.add_partyunit(title=tom_text, creditor_weight=7)
     sal_pact.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_pact(pact_x=sal_pact)
 
-    bob_pact = ContractUnit(_healer=bob_text)
+    bob_pact = PactUnit(_healer=bob_text)
     bob_pact.add_partyunit(title=sal_text, creditor_weight=3)
     bob_pact.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_pact(pact_x=bob_pact)
 
-    tom_pact = ContractUnit(_healer=tom_text)
+    tom_pact = PactUnit(_healer=tom_text)
     tom_pact.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_pact(pact_x=tom_pact)
 
-    ava_pact = ContractUnit(_healer=ava_text)
+    ava_pact = PactUnit(_healer=ava_text)
     ava_pact.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_pact(pact_x=ava_pact)
 
-    elu_pact = ContractUnit(_healer=elu_text)
+    elu_pact = PactUnit(_healer=elu_text)
     elu_pact.add_partyunit(title=ava_text, creditor_weight=2)
     sx.save_public_pact(pact_x=elu_pact)
 
@@ -305,26 +305,26 @@ def test_cure_set_river_sphere_for_pact_CorrectlyPopulatesriver_tpartyTable05(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_pact = ContractUnit(_healer=sal_text)
+    sal_pact = PactUnit(_healer=sal_text)
     sal_pact.add_partyunit(title=bob_text, creditor_weight=2)
     sal_pact.add_partyunit(title=tom_text, creditor_weight=7)
     sal_pact.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_pact(pact_x=sal_pact)
 
-    bob_pact = ContractUnit(_healer=bob_text)
+    bob_pact = PactUnit(_healer=bob_text)
     bob_pact.add_partyunit(title=sal_text, creditor_weight=3)
     bob_pact.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_pact(pact_x=bob_pact)
 
-    tom_pact = ContractUnit(_healer=tom_text)
+    tom_pact = PactUnit(_healer=tom_text)
     tom_pact.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_pact(pact_x=tom_pact)
 
-    ava_pact = ContractUnit(_healer=ava_text)
+    ava_pact = PactUnit(_healer=ava_text)
     ava_pact.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_pact(pact_x=ava_pact)
 
-    elu_pact = ContractUnit(_healer=elu_text)
+    elu_pact = PactUnit(_healer=elu_text)
     elu_pact.add_partyunit(title=ava_text, creditor_weight=19)
     elu_pact.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_pact(pact_x=elu_pact)
@@ -385,21 +385,21 @@ def test_cure_set_river_sphere_for_pact_CorrectlyDeletesPreviousRiver(
     tom_text = "tom"
     elu_text = "elu"
 
-    sal = ContractUnit(_healer=sal_text)
+    sal = PactUnit(_healer=sal_text)
     sal.add_partyunit(title=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
     sx.save_public_pact(pact_x=sal)
 
-    bob = ContractUnit(_healer=bob_text)
+    bob = PactUnit(_healer=bob_text)
     bob.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=1)
     bob.add_partyunit(title=tom_text, creditor_weight=1, debtor_weight=1)
     sx.save_public_pact(pact_x=bob)
 
-    tom = ContractUnit(_healer=tom_text)
+    tom = PactUnit(_healer=tom_text)
     tom.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=8)
     sx.save_public_pact(pact_x=tom)
 
-    elu = ContractUnit(_healer=elu_text)
+    elu = PactUnit(_healer=elu_text)
     elu.add_partyunit(title=sal_text, creditor_weight=1, debtor_weight=8)
     sx.save_public_pact(pact_x=elu)
     sx.refresh_bank_metrics()
@@ -444,26 +444,26 @@ def test_cure_set_river_sphere_for_pact_CorrectlyUsesMaxFlowsCount(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_pact = ContractUnit(_healer=sal_text)
+    sal_pact = PactUnit(_healer=sal_text)
     sal_pact.add_partyunit(title=bob_text, creditor_weight=2)
     sal_pact.add_partyunit(title=tom_text, creditor_weight=7)
     sal_pact.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_pact(pact_x=sal_pact)
 
-    bob_pact = ContractUnit(_healer=bob_text)
+    bob_pact = PactUnit(_healer=bob_text)
     bob_pact.add_partyunit(title=sal_text, creditor_weight=3)
     bob_pact.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_pact(pact_x=bob_pact)
 
-    tom_pact = ContractUnit(_healer=tom_text)
+    tom_pact = PactUnit(_healer=tom_text)
     tom_pact.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_pact(pact_x=tom_pact)
 
-    ava_pact = ContractUnit(_healer=ava_text)
+    ava_pact = PactUnit(_healer=ava_text)
     ava_pact.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_pact(pact_x=ava_pact)
 
-    elu_pact = ContractUnit(_healer=elu_text)
+    elu_pact = PactUnit(_healer=elu_text)
     elu_pact.add_partyunit(title=ava_text, creditor_weight=19)
     elu_pact.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_pact(pact_x=elu_pact)
@@ -505,26 +505,26 @@ def test_cure_set_river_sphere_for_pact_CorrectlyPopulatesriver_tpartyTable05(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_pact = ContractUnit(_healer=sal_text)
+    sal_pact = PactUnit(_healer=sal_text)
     sal_pact.add_partyunit(title=bob_text, creditor_weight=2)
     sal_pact.add_partyunit(title=tom_text, creditor_weight=7)
     sal_pact.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_pact(pact_x=sal_pact)
 
-    bob_pact = ContractUnit(_healer=bob_text)
+    bob_pact = PactUnit(_healer=bob_text)
     bob_pact.add_partyunit(title=sal_text, creditor_weight=3)
     bob_pact.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_pact(pact_x=bob_pact)
 
-    tom_pact = ContractUnit(_healer=tom_text)
+    tom_pact = PactUnit(_healer=tom_text)
     tom_pact.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_pact(pact_x=tom_pact)
 
-    ava_pact = ContractUnit(_healer=ava_text)
+    ava_pact = PactUnit(_healer=ava_text)
     ava_pact.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_pact(pact_x=ava_pact)
 
-    elu_pact = ContractUnit(_healer=elu_text)
+    elu_pact = PactUnit(_healer=elu_text)
     elu_pact.add_partyunit(title=ava_text, creditor_weight=19)
     elu_pact.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_pact(pact_x=elu_pact)
@@ -587,26 +587,26 @@ def test_cure_set_river_sphere_for_pact_CorrectlyBuildsASingleContinuousRange(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_pact = ContractUnit(_healer=sal_text)
+    sal_pact = PactUnit(_healer=sal_text)
     sal_pact.add_partyunit(title=bob_text, creditor_weight=2)
     sal_pact.add_partyunit(title=tom_text, creditor_weight=7)
     sal_pact.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_pact(pact_x=sal_pact)
 
-    bob_pact = ContractUnit(_healer=bob_text)
+    bob_pact = PactUnit(_healer=bob_text)
     bob_pact.add_partyunit(title=sal_text, creditor_weight=3)
     bob_pact.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_pact(pact_x=bob_pact)
 
-    tom_pact = ContractUnit(_healer=tom_text)
+    tom_pact = PactUnit(_healer=tom_text)
     tom_pact.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_pact(pact_x=tom_pact)
 
-    ava_pact = ContractUnit(_healer=ava_text)
+    ava_pact = PactUnit(_healer=ava_text)
     ava_pact.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_pact(pact_x=ava_pact)
 
-    elu_pact = ContractUnit(_healer=elu_text)
+    elu_pact = PactUnit(_healer=elu_text)
     elu_pact.add_partyunit(title=ava_text, creditor_weight=19)
     elu_pact.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_pact(pact_x=elu_pact)
@@ -643,7 +643,7 @@ def test_cure_set_river_sphere_for_pact_CorrectlyBuildsASingleContinuousRange(
         assert get_single_result_back(bank_conn, count_range_fails_sql) == 0
 
 
-def test_cure_set_river_sphere_for_pact_CorrectlyUpatesContractPartyUnits(
+def test_cure_set_river_sphere_for_pact_CorrectlyUpatesPactPartyUnits(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 pacts, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
@@ -657,26 +657,26 @@ def test_cure_set_river_sphere_for_pact_CorrectlyUpatesContractPartyUnits(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_pact_src = ContractUnit(_healer=sal_text)
+    sal_pact_src = PactUnit(_healer=sal_text)
     sal_pact_src.add_partyunit(title=bob_text, creditor_weight=2, debtor_weight=2)
     sal_pact_src.add_partyunit(title=tom_text, creditor_weight=2, debtor_weight=1)
     sal_pact_src.add_partyunit(title=ava_text, creditor_weight=2, debtor_weight=2)
     sx.save_public_pact(pact_x=sal_pact_src)
 
-    bob_pact = ContractUnit(_healer=bob_text)
+    bob_pact = PactUnit(_healer=bob_text)
     bob_pact.add_partyunit(title=sal_text, creditor_weight=3)
     bob_pact.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_pact(pact_x=bob_pact)
 
-    tom_pact = ContractUnit(_healer=tom_text)
+    tom_pact = PactUnit(_healer=tom_text)
     tom_pact.add_partyunit(title=sal_text)
     sx.save_public_pact(pact_x=tom_pact)
 
-    ava_pact = ContractUnit(_healer=ava_text)
+    ava_pact = PactUnit(_healer=ava_text)
     ava_pact.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_pact(pact_x=ava_pact)
 
-    elu_pact = ContractUnit(_healer=elu_text)
+    elu_pact = PactUnit(_healer=elu_text)
     elu_pact.add_partyunit(title=ava_text, creditor_weight=8)
     elu_pact.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_pact(pact_x=elu_pact)

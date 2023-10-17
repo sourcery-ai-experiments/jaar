@@ -364,7 +364,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.editmain_button.setText(
-            _translate("MainWindow", "Contracts /  Party /  dimension")
+            _translate("MainWindow", "Pacts /  Party /  dimension")
         )
         self.acptfact_open_lower_spec1.setText(
             _translate("MainWindow", "set minutes next midnight")
@@ -399,7 +399,7 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Open"))
         item = self.acptfacts_table.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "Close"))
-        self.pact_l.setText(_translate("MainWindow", "CONTRACT: "))
+        self.pact_l.setText(_translate("MainWindow", "PACT: "))
         self.lw_label_update_button.setText(_translate("MainWindow", "Update"))
         self.label_agenda_day_header.setText(_translate("MainWindow", "Day:"))
         self.label_agenda_time_header.setText(_translate("MainWindow", "Time:"))

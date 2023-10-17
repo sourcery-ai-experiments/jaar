@@ -33,7 +33,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.open_groupedit_button.clicked.connect(self.open_edit_party)
 
         # self.acptfacts_table.itemClicked.connect(self.acptfact_base_combo_set)
-        self.acptfacts_table.setObjectName("Contract AcptFacts")
+        self.acptfacts_table.setObjectName("Pact AcptFacts")
         self.acptfacts_table.setColumnWidth(0, 300)
         self.acptfacts_table.setColumnWidth(1, 300)
         self.acptfacts_table.setColumnWidth(2, 30)

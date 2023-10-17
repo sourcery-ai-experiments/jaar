@@ -1,4 +1,4 @@
-from src.pact.pact import ContractUnit, get_from_json as pact_get_from_json
+from src.pact.pact import PactUnit, get_from_json as pact_get_from_json
 from src.pact.x_func import (
     count_files as x_func_count_files,
     open_file as x_func_open_file,
@@ -22,7 +22,7 @@ from os import path as os_path
 from pytest import raises as pytest_raises
 
 
-def test_healerunit_set_depotlink_RaisesErrorWhenContractDoesNotExist(
+def test_healerunit_set_depotlink_RaisesErrorWhenPactDoesNotExist(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
@@ -233,7 +233,7 @@ def test_healerunit_set_ignore_pact_file_CorrectlyUpdatesIgnoreFile(
     assert len(cx1._partys) == 1
 
     # WHEN
-    zia_pact = ContractUnit(_healer=zia_text)
+    zia_pact = PactUnit(_healer=zia_text)
     bob_ux.set_ignore_pact_file(zia_pact, src_pact_healer=None)
 
     # THEN
@@ -242,7 +242,7 @@ def test_healerunit_set_ignore_pact_file_CorrectlyUpdatesIgnoreFile(
     assert x_func_count_files(dir_path=bob_ux._admin._pacts_ignore_dir) == 1
 
 
-def test_healerunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
+def test_healerunit_refresh_depotlinks_CorrectlyPullsAllPublicPacts(
     healer_dir_setup_cleanup,
 ):
     # GIVEN

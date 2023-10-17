@@ -6,7 +6,7 @@ from src.cure.examples.healer_env_kit import (
     get_temp_healer_dir,
     get_temp_cure_handle,
 )
-from src.pact.pact import ContractUnit
+from src.pact.pact import PactUnit
 
 
 def test_healer_set_depot_pact_SetsCorrectInfo(healer_dir_setup_cleanup):
@@ -19,9 +19,9 @@ def test_healer_set_depot_pact_SetsCorrectInfo(healer_dir_setup_cleanup):
     # WHEN
     assignment_text = "assignment"
     zia_text = "Zia"
-    healer_x.set_depot_pact(ContractUnit(_healer=zia_text), assignment_text)
+    healer_x.set_depot_pact(PactUnit(_healer=zia_text), assignment_text)
     zoa_text = "Zoa"
-    healer_x.set_depot_pact(ContractUnit(_healer=zoa_text), assignment_text)
+    healer_x.set_depot_pact(PactUnit(_healer=zoa_text), assignment_text)
 
     # THEN
     print(f"{healer_x._isol._partys.keys()=}")

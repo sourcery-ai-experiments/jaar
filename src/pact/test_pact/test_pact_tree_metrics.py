@@ -2,7 +2,7 @@ from src.pact.examples.example_pacts import (
     pact_v001,
     get_pact_with_4_levels,
 )
-from src.pact.pact import ContractUnit
+from src.pact.pact import PactUnit
 from src.pact.tree_metrics import TreeMetrics
 from src.pact.idea import IdeaKid
 
@@ -13,7 +13,7 @@ def test_pact_get_tree_metrics_exists():
     assert tree_metrics != None
 
     # WHEN
-    cx = ContractUnit(_healer="Zia")
+    cx = PactUnit(_healer="Zia")
     cx_tree_metrics = cx.get_tree_metrics()
 
     # THEN
@@ -68,7 +68,7 @@ def test_pact_get_tree_set_all_idea_uids_unique():
 def test_pact_pact_get_tree_metrics_sets_uids_correctly():
     # GIVEN
     healer_text = "Zia"
-    cx = ContractUnit(_healer=healer_text)
+    cx = PactUnit(_healer=healer_text)
     swim_text = "swim"
     pad_text = "pad"
     cx.add_idea(idea_kid=IdeaKid(_label=swim_text, _uid=None), pad=cx._cure_handle)
@@ -98,7 +98,7 @@ def test_pact_get_tree_metrics_ReturnsAccurateActionIdeaCount():
 def test_pact_get_tree_metrics_ReturnsANoneActionIdeaRoad():
     # GIVEN
     healer_text = "Nia"
-    cx = ContractUnit(_healer=healer_text, _weight=10)
+    cx = PactUnit(_healer=healer_text, _weight=10)
     weekdays = "weekdays"
     idea_kid_weekdays = IdeaKid(_weight=40, _label=weekdays)
     cx.add_idea(idea_kid=idea_kid_weekdays, pad=f"{cx._cure_handle}")
