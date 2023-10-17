@@ -119,7 +119,7 @@ def test_set_contract_metrics_RootOnlyCorrectlySetsDescendantAttributes():
 def test_set_contract_metrics_NLevelCorrectlySetsDescendantAttributes_1():
     cx = example_contracts_get_contract_with_4_levels()
     x_idea = IdeaKid(_label="email", promise=True)
-    cx.add_idea(idea_kid=x_idea, walk=f"{cx._cure_handle},work")
+    cx.add_idea(idea_kid=x_idea, pad=f"{cx._cure_handle},work")
 
     # idea ",weekdays,Sunday"
     # idea ",weekdays,Monday"
@@ -168,9 +168,9 @@ def test_set_contract_metrics_NLevelCorrectlySetsDescendantAttributes_1():
 def test_set_contract_metrics_NLevelCorrectlySetsDescendantAttributes_2():
     cx = example_contracts_get_contract_with_4_levels()
     x1_idea = IdeaKid(_label="email", promise=True)
-    cx.add_idea(idea_kid=x1_idea, walk=f"{cx._cure_handle},work")
+    cx.add_idea(idea_kid=x1_idea, pad=f"{cx._cure_handle},work")
     x2_idea = IdeaKid(_label="sweep", promise=True)
-    cx.add_idea(idea_kid=x2_idea, walk=f"{cx._cure_handle},work")
+    cx.add_idea(idea_kid=x2_idea, pad=f"{cx._cure_handle},work")
 
     cx.add_partyunit(title="sandy")
     x_balancelink = Balancelink(brand="sandy")
@@ -299,9 +299,9 @@ def test_TreeTraverseSetsBalancelineestorFromNonRootCorrectly():
 def test_contract4party_Exists():
     cx = example_contracts_get_contract_with_4_levels()
     x1_idea = IdeaKid(_label="email", promise=True)
-    cx.add_idea(idea_kid=x1_idea, walk=f"{cx._cure_handle},work")
+    cx.add_idea(idea_kid=x1_idea, pad=f"{cx._cure_handle},work")
     x2_idea = IdeaKid(_label="sweep", promise=True)
-    cx.add_idea(idea_kid=x2_idea, walk=f"{cx._cure_handle},work")
+    cx.add_idea(idea_kid=x2_idea, pad=f"{cx._cure_handle},work")
 
     sandy_title = PartyTitle("sandy")
     cx.add_partyunit(title=sandy_title)
@@ -319,9 +319,9 @@ def test_contract4party_Exists():
 def test_contract4party_hasCorrectLevel1StructureNoGrouplessBranches():
     cx = example_contracts_get_contract_with_4_levels()
     x1_idea = IdeaKid(_label="email", promise=True)
-    cx.add_idea(idea_kid=x1_idea, walk=f"{cx._cure_handle},work")
+    cx.add_idea(idea_kid=x1_idea, pad=f"{cx._cure_handle},work")
     x2_idea = IdeaKid(_label="sweep", promise=True)
-    cx.add_idea(idea_kid=x2_idea, walk=f"{cx._cure_handle},work")
+    cx.add_idea(idea_kid=x2_idea, pad=f"{cx._cure_handle},work")
 
     billy_title = PartyTitle("billy")
     cx.add_partyunit(title=billy_title)
@@ -380,10 +380,10 @@ def test_contract_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoads():
     healer_text = "Tim"
     cx = ContractUnit(_healer=healer_text)
     time = "timeline"
-    cx.add_idea(IdeaKid(_label=time, _begin=0, _close=700), walk=cx._cure_handle)
+    cx.add_idea(IdeaKid(_label=time, _begin=0, _close=700), pad=cx._cure_handle)
     t_road = f"{cx._cure_handle},{time}"
     week = "weeks"
-    cx.add_idea(IdeaKid(_label=week, _denom=7), walk=t_road)
+    cx.add_idea(IdeaKid(_label=week, _denom=7), pad=t_road)
 
     assert len(cx.get_idea_tree_ordered_road_list()) == 3
     assert len(cx.get_idea_tree_ordered_road_list(no_range_descendants=True)) == 2
@@ -404,18 +404,18 @@ def test_contract_get_heir_road_list_returnsCorrectList():
 
 # def test_contract4party_hasCorrectLevel1StructureWithGrouplessBranches_2():
 #     cx = ContractUnit(_healer=healer_text)
-#     cx.add_idea(idea_kid=IdeaKid(_label="A", _weight=7), walk="blahblah")
-#     cx.add_idea(idea_kid=IdeaKid(_label="C", _weight=3), walk=f"{cx._cure_handle},A")
-#     cx.add_idea(idea_kid=IdeaKid(_label="E", _weight=7), walk=f"{cx._cure_handle},A,C")
-#     cx.add_idea(idea_kid=IdeaKid(_label="D", _weight=7), walk=f"{cx._cure_handle},A,C")
-#     cx.add_idea(idea_kid=IdeaKid(_label="B", _weight=13), walk="blahblah")
-#     cx.add_idea(idea_kid=IdeaKid(_label="F", _weight=23), walk="blahblah")
-#     cx.add_idea(idea_kid=IdeaKid(_label="G", _weight=57), walk="blahblah")
-#     cx.add_idea(idea_kid=IdeaKid(_label="I"), walk=f"{cx._cure_handle},G")
-#     cx.add_idea(idea_kid=IdeaKid(_label="H"), walk=f"{cx._cure_handle},G")
-#     cx.add_idea(idea_kid=IdeaKid(_label="J"), walk=f"{cx._cure_handle},G,I")
-#     cx.add_idea(idea_kid=IdeaKid(_label="K"), walk=f"{cx._cure_handle},G,I")
-#     cx.add_idea(idea_kid=IdeaKid(_label="M"), walk=f"{cx._cure_handle},G,H")
+#     cx.add_idea(idea_kid=IdeaKid(_label="A", _weight=7), pad="blahblah")
+#     cx.add_idea(idea_kid=IdeaKid(_label="C", _weight=3), pad=f"{cx._cure_handle},A")
+#     cx.add_idea(idea_kid=IdeaKid(_label="E", _weight=7), pad=f"{cx._cure_handle},A,C")
+#     cx.add_idea(idea_kid=IdeaKid(_label="D", _weight=7), pad=f"{cx._cure_handle},A,C")
+#     cx.add_idea(idea_kid=IdeaKid(_label="B", _weight=13), pad="blahblah")
+#     cx.add_idea(idea_kid=IdeaKid(_label="F", _weight=23), pad="blahblah")
+#     cx.add_idea(idea_kid=IdeaKid(_label="G", _weight=57), pad="blahblah")
+#     cx.add_idea(idea_kid=IdeaKid(_label="I"), pad=f"{cx._cure_handle},G")
+#     cx.add_idea(idea_kid=IdeaKid(_label="H"), pad=f"{cx._cure_handle},G")
+#     cx.add_idea(idea_kid=IdeaKid(_label="J"), pad=f"{cx._cure_handle},G,I")
+#     cx.add_idea(idea_kid=IdeaKid(_label="K"), pad=f"{cx._cure_handle},G,I")
+#     cx.add_idea(idea_kid=IdeaKid(_label="M"), pad=f"{cx._cure_handle},G,H")
 
 #     billy_title = PartyTitle("billy")
 #     cx.add_partyunit(title=billy_title)
@@ -432,10 +432,10 @@ def test_contract_get_heir_road_list_returnsCorrectList():
 
 #     # expected sandy
 #     exp_sandy = ContractUnit(_healer=healer_text)
-#     exp_sandy.add_idea(idea_kid=IdeaKid(_label="A", _contract_importance=0.07), walk="blahblah")
-#     exp_sandy.add_idea(idea_kid=IdeaKid(_label="C", _contract_importance=0.07), walk=f"{cx._cure_handle},A")
-#     exp_sandy.add_idea(idea_kid=IdeaKid(_label="E", _contract_importance=0.5), walk=f"{cx._cure_handle},A,C")
-#     exp_sandy.add_idea(idea_kid=IdeaKid(_label="B", _contract_importance=0.13), walk="blahblah")
+#     exp_sandy.add_idea(idea_kid=IdeaKid(_label="A", _contract_importance=0.07), pad="blahblah")
+#     exp_sandy.add_idea(idea_kid=IdeaKid(_label="C", _contract_importance=0.07), pad=f"{cx._cure_handle},A")
+#     exp_sandy.add_idea(idea_kid=IdeaKid(_label="E", _contract_importance=0.5), pad=f"{cx._cure_handle},A,C")
+#     exp_sandy.add_idea(idea_kid=IdeaKid(_label="B", _contract_importance=0.13), pad="blahblah")
 
 #     # generated sandy
 #     gen_sandy = cx.get_contract4party(acptfacts=None, party_title=sandy_title)

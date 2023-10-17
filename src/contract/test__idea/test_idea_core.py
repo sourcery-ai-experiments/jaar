@@ -51,9 +51,9 @@ def test_idea_core_exists():
 
 def test_idea_core_get_key_road_works():
     round_text = "round_things"
-    round_walk = f"{root_label()},{round_text}"
+    round_pad = f"{root_label()},{round_text}"
     x_label = "ball"
-    idea = IdeaCore(_label=x_label, _walk=round_walk)
+    idea = IdeaCore(_label=x_label, _pad=round_pad)
     assert idea.get_key_road() == f"{x_label}"
 
 
@@ -297,7 +297,7 @@ def test_idea_get_dict_ReturnsDict():
     x1_balancelinks = {biker_title: biker_get_dict, flyer_title: flyer_get_dict}
 
     temp_idea = IdeaCore(
-        _walk=f"{root_label()},work",
+        _pad=f"{root_label()},work",
         _kids=None,
         _balancelinks=biker_and_flyer_balancelinks,
         _weight=30,
@@ -363,7 +363,7 @@ def test_idea_invaild_DenomThrowsError():
     clean_text = "clean"
     clean_road = f"{casa_road},{clean_text}"
     kid_idea = IdeaCore(
-        _label=clean_text, _walk=casa_road, _numor=1, _denom=11.0, _reest=False
+        _label=clean_text, _pad=casa_road, _numor=1, _denom=11.0, _reest=False
     )
     # When/Then
     with pytest_raises(Exception) as excinfo:
@@ -545,7 +545,7 @@ def test_idea_get_descendants_ReturnsNoRoads():
     # GIVEN
     nation_text = "nation-state"
     nation_road = f"{root_label()},{nation_text}"
-    nation_idea = IdeaCore(_label=nation_text, _walk=root_label())
+    nation_idea = IdeaCore(_label=nation_text, _pad=root_label())
 
     # WHEN
     nation_descendants = nation_idea.get_descendant_roads()
@@ -558,21 +558,21 @@ def test_idea_get_descendants_Returns3DescendantsRoads():
     # GIVEN
     nation_text = "nation-state"
     nation_road = f"{root_label()},{nation_text}"
-    nation_idea = IdeaCore(_label=nation_text, _walk=root_label())
+    nation_idea = IdeaCore(_label=nation_text, _pad=root_label())
 
     usa_text = "USA"
     usa_road = f"{nation_road},{usa_text}"
-    usa_idea = IdeaCore(_label=usa_text, _walk=nation_road)
+    usa_idea = IdeaCore(_label=usa_text, _pad=nation_road)
     nation_idea.add_kid(idea_kid=usa_idea)
 
     texas_text = "Texas"
     texas_road = f"{usa_road},{texas_text}"
-    texas_idea = IdeaCore(_label=texas_text, _walk=usa_road)
+    texas_idea = IdeaCore(_label=texas_text, _pad=usa_road)
     usa_idea.add_kid(idea_kid=texas_idea)
 
     iowa_text = "iowa"
     iowa_road = f"{usa_road},{iowa_text}"
-    iowa_idea = IdeaCore(_label=iowa_text, _walk=usa_road)
+    iowa_idea = IdeaCore(_label=iowa_text, _pad=usa_road)
     usa_idea.add_kid(idea_kid=iowa_idea)
 
     # WHEN
@@ -589,7 +589,7 @@ def test_idea_get_descendants_ErrorRaisedIfInfiniteLoop():
     # Given
     nation_text = "nation-state"
     nation_road = f"{root_label()},{nation_text}"
-    nation_idea = IdeaCore(_label=nation_text, _walk=root_label())
+    nation_idea = IdeaCore(_label=nation_text, _pad=root_label())
     nation_idea.add_kid(idea_kid=nation_idea)
     max_count = 1000
 

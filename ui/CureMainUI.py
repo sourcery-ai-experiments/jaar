@@ -465,7 +465,7 @@ class Ui_MainWindow(object):
         item = self.w_ideas_table.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Healer Ideas"))
         item = self.w_ideas_table.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Idea walk"))
+        item.setText(_translate("MainWindow", "Idea pad"))
         item = self.w_acptfacts_table.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "AcptFacts Base"))
         item = self.w_acptfacts_table.horizontalHeaderItem(1)

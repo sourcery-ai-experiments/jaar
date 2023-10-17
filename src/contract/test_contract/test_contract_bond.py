@@ -36,20 +36,20 @@ def test_contractunit_get_bond_status_ReturnsCorrectBool():
     casa_road = Road(f"{jessi_text},{casa_text}")
 
     # WHEN\THEN no action idea exists
-    cx.add_idea(idea_kid=IdeaKid(_label=casa_text), walk=jessi_text)
+    cx.add_idea(idea_kid=IdeaKid(_label=casa_text), pad=jessi_text)
     assert cx.get_bond_status() == False
 
     # WHEN\THEN 1 action idea exists
     clean_cookery_text = "clean cookery"
     cx.add_idea(
-        idea_kid=IdeaKid(_label=clean_cookery_text, promise=True), walk=casa_road
+        idea_kid=IdeaKid(_label=clean_cookery_text, promise=True), pad=casa_road
     )
     assert cx.get_bond_status()
 
     # WHEN\THEN 2 action idea exists
     clean_hallway_text = "clean hallway"
     cx.add_idea(
-        idea_kid=IdeaKid(_label=clean_hallway_text, promise=True), walk=casa_road
+        idea_kid=IdeaKid(_label=clean_hallway_text, promise=True), pad=casa_road
     )
     assert cx.get_bond_status() == False
 
@@ -73,11 +73,11 @@ def test_contractunit_get_bond_status_ReturnsCorrectBoolWhenOnlyActionIdeaBalanc
     cx = ContractUnit(_healer=jessi_text)
     casa_text = "case"
     casa_road = Road(f"{jessi_text},{casa_text}")
-    cx.add_idea(idea_kid=IdeaKid(_label=casa_text), walk=jessi_text)
+    cx.add_idea(idea_kid=IdeaKid(_label=casa_text), pad=jessi_text)
     clean_cookery_text = "clean cookery"
     clean_cookery_road = Road(f"{jessi_text},{casa_text},{clean_cookery_text}")
     cx.add_idea(
-        idea_kid=IdeaKid(_label=clean_cookery_text, promise=True), walk=casa_road
+        idea_kid=IdeaKid(_label=clean_cookery_text, promise=True), pad=casa_road
     )
     tom_text = "tom"
     cx.add_partyunit(title=tom_text)
@@ -103,11 +103,11 @@ def test_contractunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGr
     cx = ContractUnit(_healer=jessi_text)
     casa_text = "case"
     casa_road = Road(f"{jessi_text},{casa_text}")
-    cx.add_idea(idea_kid=IdeaKid(_label=casa_text), walk=jessi_text)
+    cx.add_idea(idea_kid=IdeaKid(_label=casa_text), pad=jessi_text)
     clean_cookery_text = "clean cookery"
     clean_cookery_road = Road(f"{jessi_text},{casa_text},{clean_cookery_text}")
     cx.add_idea(
-        idea_kid=IdeaKid(_label=clean_cookery_text, promise=True), walk=casa_road
+        idea_kid=IdeaKid(_label=clean_cookery_text, promise=True), pad=casa_road
     )
     tom_text = "tom"
     cx.add_partyunit(title=tom_text)
@@ -135,11 +135,11 @@ def test_contractunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGr
     cx = ContractUnit(_healer=jessi_text)
     casa_text = "case"
     casa_road = Road(f"{jessi_text},{casa_text}")
-    cx.add_idea(idea_kid=IdeaKid(_label=casa_text), walk=jessi_text)
+    cx.add_idea(idea_kid=IdeaKid(_label=casa_text), pad=jessi_text)
     clean_cookery_text = "clean cookery"
     clean_cookery_road = Road(f"{jessi_text},{casa_text},{clean_cookery_text}")
     cx.add_idea(
-        idea_kid=IdeaKid(_label=clean_cookery_text, promise=True), walk=casa_road
+        idea_kid=IdeaKid(_label=clean_cookery_text, promise=True), pad=casa_road
     )
     assert cx.get_bond_status()
 
@@ -176,25 +176,25 @@ def test_contractunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGr
 #     cx = ContractUnit(_healer=jessi_text)
 #     casa_text = "case"
 #     casa_road = Road(f"{cx._cure_handle},{casa_text}")
-#     cx.add_idea(idea_kid=IdeaKid(_label=casa_text), walk=jessi_text)
+#     cx.add_idea(idea_kid=IdeaKid(_label=casa_text), pad=jessi_text)
 #     clean_cookery_text = "clean cookery"
 #     clean_cookery_road = Road(f"{cx._cure_handle},{casa_text},{clean_cookery_text}")
 
 #     # WHEN/THEN
 #     cx.add_idea(
-#         idea_kid=IdeaKid(_label=clean_cookery_text, promise=True), walk=casa_road
+#         idea_kid=IdeaKid(_label=clean_cookery_text, promise=True), pad=casa_road
 #     )
 #     assert cx.get_bond_status()
 
 #     # WHEN/THEN
 #     water_text = "water"
 #     water_road = Road(f"{cx._cure_handle},{water_text}")
-#     cx.add_idea(idea_kid=IdeaKid(_label=water_text), walk=jessi_text)
+#     cx.add_idea(idea_kid=IdeaKid(_label=water_text), pad=jessi_text)
 #     assert cx.get_bond_status() == False
 
 #     rain_text = "rain"
 #     rain_road = Road(f"{cx._cure_handle},{water_text},{rain_text}")
-#     cx.add_idea(idea_kid=IdeaKid(_label=rain_text), walk=water_road)
+#     cx.add_idea(idea_kid=IdeaKid(_label=rain_text), pad=water_road)
 
 #     # WHEN/THEN
 #     cx.edit_idea_attr(
@@ -211,17 +211,17 @@ def test_contractunit_get_contract_sprung_from_single_idea_ReturnsCorrectContrac
     casa_road = Road(f"{cx._cure_handle},{casa_text}")
     cx.add_idea(
         idea_kid=IdeaKid(_label=casa_text, _begin=-1, _close=19),
-        walk=cx._cure_handle,
+        pad=cx._cure_handle,
     )
     clean_cookery_text = "clean cookery"
     clean_cookery_road = Road(f"{cx._cure_handle},{casa_text},{clean_cookery_text}")
     cx.add_idea(
         idea_kid=IdeaKid(_label=clean_cookery_text, promise=True, _begin=2, _close=4),
-        walk=casa_road,
+        pad=casa_road,
     )
     water_text = "water"
     water_road = Road(f"{cx._cure_handle},{water_text}")
-    cx.add_idea(idea_kid=IdeaKid(_label=water_text), walk=cx._cure_handle)
+    cx.add_idea(idea_kid=IdeaKid(_label=water_text), pad=cx._cure_handle)
     assert cx.get_bond_status() == False
 
     # WHEN
@@ -366,11 +366,11 @@ def test_contractunit_get_meld_of_contract_files_MeldsIntoSourceContract_Scenari
 
     work = "work"
     idea_kid_work = IdeaKid(_weight=30, _label=work, promise=True)
-    primary_cx.add_idea(idea_kid=idea_kid_work, walk=f"{primary_cx._cure_handle}")
+    primary_cx.add_idea(idea_kid=idea_kid_work, pad=f"{primary_cx._cure_handle}")
 
     cat = "feed cat"
     idea_kid_feedcat = IdeaKid(_weight=20, _label=cat, promise=True)
-    primary_cx.add_idea(idea_kid=idea_kid_feedcat, walk=f"{primary_cx._cure_handle}")
+    primary_cx.add_idea(idea_kid=idea_kid_feedcat, pad=f"{primary_cx._cure_handle}")
 
     primary_cx.export_all_bonds(dir=get_temp_env_dir())
     cat_t = "feed cat"
@@ -407,11 +407,11 @@ def test_contractunit_get_meld_of_contract_files_MeldsIntoSourceContract_Scenari
 
 #     cat_text = "feed cat"
 #     cat_idea = IdeaKid(_weight=20, _label=cat_text, promise=True)
-#     sourrce_cx.add_idea(idea_kid=cat_idea, walk=work_road)
+#     sourrce_cx.add_idea(idea_kid=cat_idea, pad=work_road)
 
 #     plant_text = "water plant"
 #     plant_idea = IdeaKid(_weight=30, _label=plant_text, promise=True)
-#     sourrce_cx.add_idea(idea_kid=plant_idea, walk=work_road)
+#     sourrce_cx.add_idea(idea_kid=plant_idea, pad=work_road)
 #     sourrce_cx.export_all_bonds(dir=get_temp_env_dir())
 
 #     # WHEN

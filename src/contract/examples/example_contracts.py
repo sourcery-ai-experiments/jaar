@@ -71,16 +71,16 @@ def get_contract_with_4_levels() -> ContractUnit:
 
     work = "work"
     idea_kid_work = IdeaKid(_weight=30, _label=work, promise=True)
-    a1.add_idea(idea_kid=idea_kid_work, walk=a1._cure_handle)
+    a1.add_idea(idea_kid=idea_kid_work, pad=a1._cure_handle)
 
     cat = "feed cat"
     idea_kid_feedcat = IdeaKid(_weight=30, _label=cat, promise=True)
-    a1.add_idea(idea_kid=idea_kid_feedcat, walk=a1._cure_handle)
+    a1.add_idea(idea_kid=idea_kid_feedcat, pad=a1._cure_handle)
 
     week_text = "weekdays"
     week_road = f"{a1._cure_handle},{week_text}"
     idea_kid_weekdays = IdeaKid(_weight=40, _label=week_text)
-    a1.add_idea(idea_kid=idea_kid_weekdays, walk=a1._cure_handle)
+    a1.add_idea(idea_kid=idea_kid_weekdays, pad=a1._cure_handle)
 
     sun_text = "Sunday"
     mon_text = "Monday"
@@ -109,7 +109,7 @@ def get_contract_with_4_levels() -> ContractUnit:
     states_text = "nation-state"
     states_road = f"{a1._cure_handle},{states_text}"
     idea_kid_states = IdeaKid(_weight=30, _label=states_text)
-    a1.add_idea(idea_kid=idea_kid_states, walk=f"{a1._cure_handle}")
+    a1.add_idea(idea_kid=idea_kid_states, pad=f"{a1._cure_handle}")
 
     usa_text = "USA"
     usa_road = f"{states_road},{usa_text}"
@@ -215,11 +215,11 @@ def get_contract_with7amCleanTableRequired() -> ContractUnit:
     soap_idea = IdeaKid(_label=soap_text, promise=True)
     grab_idea = IdeaKid(_label=grab_text, promise=True)
 
-    a1.add_idea(idea_kid=house_idea, walk=a1._cure_handle)
-    a1.add_idea(idea_kid=clean_idea, walk=house_road)
-    a1.add_idea(idea_kid=dish_idea, walk=clean_road)
-    a1.add_idea(idea_kid=soap_idea, walk=clean_road)
-    a1.add_idea(idea_kid=grab_idea, walk=soap_road)
+    a1.add_idea(idea_kid=house_idea, pad=a1._cure_handle)
+    a1.add_idea(idea_kid=clean_idea, pad=house_road)
+    a1.add_idea(idea_kid=dish_idea, pad=clean_road)
+    a1.add_idea(idea_kid=soap_idea, pad=clean_road)
+    a1.add_idea(idea_kid=grab_idea, pad=soap_road)
 
     clean_table_7am_base = day24hr_road
     clean_table_7am_sufffact_road = day24hr_road
@@ -244,10 +244,10 @@ def get_contract_1Task_1CE0MinutesRequired_1AcptFact() -> ContractUnit:
     ced_min_label = "CE0_minutes"
     ced_minutes = IdeaKid(_label=ced_min_label)
     ced_road = f"{a1._cure_handle},{ced_min_label}"
-    a1.add_idea(idea_kid=ced_minutes, walk=a1._cure_handle)
+    a1.add_idea(idea_kid=ced_minutes, pad=a1._cure_handle)
     mail_label = "obtain mail"
     mail_task = IdeaKid(_label=mail_label, promise=True)
-    a1.add_idea(idea_kid=mail_task, walk=a1._cure_handle)
+    a1.add_idea(idea_kid=mail_task, pad=a1._cure_handle)
 
     sufffact_x = sufffactunit_shop(need=ced_road, open=80, nigh=90)
     x_task_required = RequiredUnit(
@@ -277,11 +277,11 @@ def get_contract_x1_3levels_1required_1acptfacts() -> ContractUnit:
     shave_text = "shave"
     shave_road = f"{a1._cure_handle},{shave_text}"
     idea_kid_shave = IdeaKid(_weight=30, _label=shave_text, promise=True)
-    a1.add_idea(idea_kid=idea_kid_shave, walk=a1._cure_handle)
+    a1.add_idea(idea_kid=idea_kid_shave, pad=a1._cure_handle)
     week_text = "weekdays"
     week_road = f"{a1._cure_handle},{week_text}"
     week_idea = IdeaKid(_weight=40, _label=week_text)
-    a1.add_idea(idea_kid=week_idea, walk=a1._cure_handle)
+    a1.add_idea(idea_kid=week_idea, pad=a1._cure_handle)
 
     sun_text = "Sunday"
     sun_road = f"{week_road},{sun_text}"
@@ -291,8 +291,8 @@ def get_contract_x1_3levels_1required_1acptfacts() -> ContractUnit:
     mon_road = f"{week_road},{mon_text}"
     idea_grandkidU = IdeaKid(_weight=20, _label=sun_text)
     idea_grandkidM = IdeaKid(_weight=20, _label=mon_text)
-    a1.add_idea(idea_kid=idea_grandkidU, walk=week_road)
-    a1.add_idea(idea_kid=idea_grandkidM, walk=week_road)
+    a1.add_idea(idea_kid=idea_grandkidU, pad=week_road)
+    a1.add_idea(idea_kid=idea_grandkidM, pad=week_road)
 
     shave_sufffact_x = sufffactunit_shop(need=mon_road)
     shave_required = RequiredUnit(
@@ -312,7 +312,7 @@ def get_contract_base_time_example() -> ContractUnit:
     a1 = ContractUnit(_healer=healer_text)
     plant = "plant"
     x_idea = IdeaKid(_label=plant)
-    a1.add_idea(x_idea, walk=healer_text)
+    a1.add_idea(x_idea, pad=healer_text)
 
     return a1
 
@@ -336,11 +336,11 @@ def get_contract_irrational_example() -> ContractUnit:
 
     egg_text = "egg first"
     egg_road = f"{a1._cure_handle},{egg_text}"
-    a1.add_idea(idea_kid=IdeaKid(_label=egg_text), walk=a1._cure_handle)
+    a1.add_idea(idea_kid=IdeaKid(_label=egg_text), pad=a1._cure_handle)
 
     chicken_text = "chicken first"
     chicken_road = f"{a1._cure_handle},{chicken_text}"
-    a1.add_idea(idea_kid=IdeaKid(_label=chicken_text), walk=a1._cure_handle)
+    a1.add_idea(idea_kid=IdeaKid(_label=chicken_text), pad=a1._cure_handle)
 
     # set egg promise is True when chicken first is False
     a1.edit_idea_attr(
@@ -369,37 +369,37 @@ def get_assignment_contract_example1():
     floor_text = "mop floor"
     floor_road = f"{casa_road},{floor_text}"
     floor_idea = IdeaKid(_label=floor_text, promise=True)
-    a1.add_idea(idea_kid=floor_idea, walk=casa_road)
+    a1.add_idea(idea_kid=floor_idea, pad=casa_road)
 
     unim_text = "unimportant"
     unim_road = f"{a1._cure_handle},{unim_text}"
     unim_idea = IdeaKid(_label=unim_text)
-    a1.add_idea(idea_kid=unim_idea, walk=a1._cure_handle)
+    a1.add_idea(idea_kid=unim_idea, pad=a1._cure_handle)
 
     status_text = "cleaniness status"
     status_road = f"{casa_road},{status_text}"
     status_idea = IdeaKid(_label=status_text)
-    a1.add_idea(idea_kid=status_idea, walk=casa_road)
+    a1.add_idea(idea_kid=status_idea, pad=casa_road)
 
     clean_text = "clean"
     clean_road = f"{status_road},{clean_text}"
     clean_idea = IdeaKid(_label=clean_text)
-    a1.add_idea(idea_kid=clean_idea, walk=status_road)
+    a1.add_idea(idea_kid=clean_idea, pad=status_road)
 
     very_much_text = "very_much"
     very_much_road = f"{clean_road},{very_much_text}"
     very_much_idea = IdeaKid(_label=very_much_text)
-    a1.add_idea(idea_kid=very_much_idea, walk=clean_road)
+    a1.add_idea(idea_kid=very_much_idea, pad=clean_road)
 
     moderately_text = "moderately"
     moderately_road = f"{clean_road},{moderately_text}"
     moderately_idea = IdeaKid(_label=moderately_text)
-    a1.add_idea(idea_kid=moderately_idea, walk=clean_road)
+    a1.add_idea(idea_kid=moderately_idea, pad=clean_road)
 
     dirty_text = "dirty"
     dirty_road = f"{status_road},{dirty_text}"
     dirty_idea = IdeaKid(_label=dirty_text)
-    a1.add_idea(idea_kid=dirty_idea, walk=status_road)
+    a1.add_idea(idea_kid=dirty_idea, pad=status_road)
 
     floor_required = RequiredUnit(base=status_road, sufffacts={})
     floor_required.set_sufffact(sufffact=status_road)

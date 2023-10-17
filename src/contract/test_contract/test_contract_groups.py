@@ -95,7 +95,7 @@ def test_contract_set_balancelink_correctly_sets_balancelinks():
     assert len(cx._partys) == 3
     assert len(cx._groups) == 3
     swim_text = "swim"
-    cx.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=prom_text)
+    cx.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
     balancelink_rico = balancelink_shop(brand=GroupBrand(rico_text), creditor_weight=10)
     balancelink_carm = balancelink_shop(brand=GroupBrand(carm_text), creditor_weight=10)
     balancelink_patr = balancelink_shop(brand=GroupBrand(patr_text), creditor_weight=10)
@@ -107,7 +107,7 @@ def test_contract_set_balancelink_correctly_sets_balancelinks():
     assert cx._idearoot._balancelinks in (None, {})
     assert len(cx._idearoot._kids[swim_text]._balancelinks) == 3
 
-    cx.add_idea(idea_kid=IdeaKid(_label="streets"), walk=swim_road)
+    cx.add_idea(idea_kid=IdeaKid(_label="streets"), pad=swim_road)
 
     # WHEN
     idea_list = cx.get_idea_list()
@@ -142,7 +142,7 @@ def test_contract_set_balancelink_correctly_deletes_balancelinks():
     swim_text = "swim"
     swim_road = f"{prom_text},{swim_text}"
 
-    a_x.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=prom_text)
+    a_x.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
     balancelink_rico = balancelink_shop(brand=GroupBrand(rico_text), creditor_weight=10)
     balancelink_carm = balancelink_shop(brand=GroupBrand(carm_text), creditor_weight=10)
     balancelink_patr = balancelink_shop(brand=GroupBrand(patr_text), creditor_weight=10)
@@ -322,7 +322,7 @@ def test_contract_get_idea_list_CorrectlyCalculates3levelContractGroupContractIm
     prom_text = "prom"
     a_x = ContractUnit(_healer=prom_text)
     swim_text = "swim"
-    a_x.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=prom_text)
+    a_x.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
 
     rico_text = "rico"
     carm_text = "carmen"
@@ -374,7 +374,7 @@ def test_contract_get_idea_list_CorrectlyCalculatesGroupContractImportanceLWwith
     prom_text = "prom"
     a_x = ContractUnit(_healer=prom_text)
     swim_text = "swim"
-    a_x.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=prom_text)
+    a_x.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
 
     rico_text = "rico"
     carm_text = "carmen"
@@ -394,7 +394,7 @@ def test_contract_get_idea_list_CorrectlyCalculatesGroupContractImportanceLWwith
     a_x._idearoot._kids[swim_text].set_balancelink(balancelink=parm_balancelink)
 
     # no balancelinks attached to this one
-    a_x.add_idea(idea_kid=IdeaKid(_label="hunt", _weight=3), walk="prom")
+    a_x.add_idea(idea_kid=IdeaKid(_label="hunt", _weight=3), pad="prom")
 
     assert a_x._idearoot._balancelinks is None
 
@@ -553,7 +553,7 @@ def test_contract_edit_groupunit_brand_CorrectlyChangesBalancelinks():
     outdoor_road = Road(f"{a_x._healer},{outdoor_text}")
     camping_text = "camping"
     camping_road = Road(f"{a_x._healer},{outdoor_text},{camping_text}")
-    a_x.add_idea(walk=outdoor_road, idea_kid=IdeaKid(_label=camping_text))
+    a_x.add_idea(pad=outdoor_road, idea_kid=IdeaKid(_label=camping_text))
 
     camping_idea = a_x.get_idea_kid(camping_road)
     swim_balancelink = balancelink_shop(
@@ -594,7 +594,7 @@ def test_contract_edit_groupunit_brand_CorrectlyMeldsBalancelinesBalancelinksBal
     outdoor_road = Road(f"{a_x._healer},{outdoor_text}")
     camping_text = "camping"
     camping_road = Road(f"{a_x._healer},{outdoor_text},{camping_text}")
-    a_x.add_idea(walk=outdoor_road, idea_kid=IdeaKid(_label=camping_text))
+    a_x.add_idea(pad=outdoor_road, idea_kid=IdeaKid(_label=camping_text))
 
     camping_idea = a_x.get_idea_kid(camping_road)
     swim_balancelink = balancelink_shop(
@@ -642,7 +642,7 @@ def test_contract_add_idea_CreatesMissingGroups():
     # WHEN
     a_x.add_idea(
         idea_kid=clean_cookery_idea,
-        walk=new_idea_parent_road,
+        pad=new_idea_parent_road,
         create_missing_ideas_groups=True,
     )
 
@@ -665,8 +665,8 @@ def test_ContractUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balan
     work_road = f"{cx1._cure_handle},{work_text}"
     swim_text = "swim"
     swim_road = f"{cx1._cure_handle},{swim_text}"
-    cx1.add_idea(IdeaKid(_label=work_text), walk=cx1._cure_handle)
-    cx1.add_idea(IdeaKid(_label=swim_text), walk=cx1._cure_handle)
+    cx1.add_idea(IdeaKid(_label=work_text), pad=cx1._cure_handle)
+    cx1.add_idea(IdeaKid(_label=swim_text), pad=cx1._cure_handle)
     cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=xia_text))
     cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=zoa_text))
     cx1_swim_idea = cx1.get_idea_kid(swim_road)
@@ -695,8 +695,8 @@ def test_ContractUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     work_road = f"{cx1._cure_handle},{work_text}"
     swim_text = "swim"
     swim_road = f"{cx1._cure_handle},{swim_text}"
-    cx1.add_idea(IdeaKid(_label=work_text), walk=cx1._cure_handle)
-    cx1.add_idea(IdeaKid(_label=swim_text), walk=cx1._cure_handle)
+    cx1.add_idea(IdeaKid(_label=work_text), pad=cx1._cure_handle)
+    cx1.add_idea(IdeaKid(_label=swim_text), pad=cx1._cure_handle)
     cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=xia_text))
     cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=zoa_text))
     cx1_swim_idea = cx1.get_idea_kid(swim_road)
@@ -707,7 +707,7 @@ def test_ContractUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     cx2.add_partyunit(title=xia_text)
     cx2.add_idea(
         idea_kid=cx1_swim_idea,
-        walk=cx2._cure_handle,
+        pad=cx2._cure_handle,
         create_missing_ideas_groups=False,
     )
 
@@ -743,7 +743,7 @@ def test_contract_add_idea_DoesNotOverwriteGroups():
     # WHEN
     a_x.add_idea(
         idea_kid=clean_cookery_idea,
-        walk=new_idea_parent_road,
+        pad=new_idea_parent_road,
         create_missing_ideas_groups=True,
     )
 
@@ -872,13 +872,13 @@ def test_contract_set_all_groupunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
     sx = ContractUnit(_healer=healer_text)
     sx.set_partys_empty_if_null()
     swim_text = "swim"
-    walk_text = "walk"
+    pad_text = "pad"
     fly_text = "fly"
     sx.set_groupunit(groupunit=groupunit_shop(brand=swim_text))
-    sx.set_groupunit(groupunit=groupunit_shop(brand=walk_text))
+    sx.set_groupunit(groupunit=groupunit_shop(brand=pad_text))
     sx.set_groupunit(groupunit=groupunit_shop(brand=fly_text))
     assert sx._groups[swim_text].uid is None
-    assert sx._groups[walk_text].uid is None
+    assert sx._groups[pad_text].uid is None
     assert sx._groups[fly_text].uid is None
 
     # WHEN
@@ -886,7 +886,7 @@ def test_contract_set_all_groupunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
 
     # THEN
     assert sx._groups[swim_text].uid != None
-    assert sx._groups[walk_text].uid != None
+    assert sx._groups[pad_text].uid != None
     assert sx._groups[fly_text].uid != None
 
 
@@ -896,13 +896,13 @@ def test_contract_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUI
     sx = ContractUnit(_healer=healer_text)
     sx.set_partys_empty_if_null()
     swim_text = "swim"
-    walk_text = "walk"
+    pad_text = "pad"
     fly_text = "fly"
     sx.set_groupunit(groupunit=groupunit_shop(brand=swim_text, uid=3))
-    sx.set_groupunit(groupunit=groupunit_shop(brand=walk_text, uid=3))
+    sx.set_groupunit(groupunit=groupunit_shop(brand=pad_text, uid=3))
     sx.set_groupunit(groupunit=groupunit_shop(brand=fly_text))
     assert sx._groups[swim_text].uid == 3
-    assert sx._groups[walk_text].uid == 3
+    assert sx._groups[pad_text].uid == 3
     assert sx._groups[fly_text].uid is None
 
     # WHEN
@@ -910,10 +910,10 @@ def test_contract_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUI
 
     # THEN
     print(f"{sx._groups[swim_text].uid=}")
-    print(f"{sx._groups[walk_text].uid=}")
-    assert sx._groups[swim_text].uid != sx._groups[walk_text].uid
-    assert sx._groups[walk_text].uid != 3
-    assert sx._groups[walk_text].uid != 3
+    print(f"{sx._groups[pad_text].uid=}")
+    assert sx._groups[swim_text].uid != sx._groups[pad_text].uid
+    assert sx._groups[pad_text].uid != 3
+    assert sx._groups[pad_text].uid != 3
     assert sx._groups[fly_text].uid != None
 
 
@@ -923,13 +923,13 @@ def test_contract_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUI
     sx = ContractUnit(_healer=healer_text)
     sx.set_partys_empty_if_null()
     swim_text = "swim"
-    walk_text = "walk"
+    pad_text = "pad"
     fly_text = "fly"
     sx.set_groupunit(groupunit=groupunit_shop(brand=swim_text, uid=3))
-    sx.set_groupunit(groupunit=groupunit_shop(brand=walk_text, uid=3))
+    sx.set_groupunit(groupunit=groupunit_shop(brand=pad_text, uid=3))
     sx.set_groupunit(groupunit=groupunit_shop(brand=fly_text))
     assert sx._groups[swim_text].uid == 3
-    assert sx._groups[walk_text].uid == 3
+    assert sx._groups[pad_text].uid == 3
     assert sx._groups[fly_text].uid is None
 
     # WHEN
@@ -937,10 +937,10 @@ def test_contract_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUI
 
     # THEN
     print(f"{sx._groups[swim_text].uid=}")
-    print(f"{sx._groups[walk_text].uid=}")
-    assert sx._groups[swim_text].uid != sx._groups[walk_text].uid
-    assert sx._groups[walk_text].uid != 3
-    assert sx._groups[walk_text].uid != 3
+    print(f"{sx._groups[pad_text].uid=}")
+    assert sx._groups[swim_text].uid != sx._groups[pad_text].uid
+    assert sx._groups[pad_text].uid != 3
+    assert sx._groups[pad_text].uid != 3
     assert sx._groups[fly_text].uid != None
 
 
@@ -950,13 +950,13 @@ def test_contract_all_groupunits_uids_are_unique_ReturnsCorrectBoolean():
     sx = ContractUnit(_healer=healer_text)
     sx.set_partys_empty_if_null()
     swim_text = "swim"
-    walk_text = "walk"
+    pad_text = "pad"
     fly_text = "fly"
     sx.set_groupunit(groupunit=groupunit_shop(brand=swim_text, uid=3))
-    sx.set_groupunit(groupunit=groupunit_shop(brand=walk_text, uid=3))
+    sx.set_groupunit(groupunit=groupunit_shop(brand=pad_text, uid=3))
     sx.set_groupunit(groupunit=groupunit_shop(brand=fly_text))
     assert sx._groups[swim_text].uid == 3
-    assert sx._groups[walk_text].uid == 3
+    assert sx._groups[pad_text].uid == 3
     assert sx._groups[fly_text].uid is None
 
     # WHEN1 / THEN

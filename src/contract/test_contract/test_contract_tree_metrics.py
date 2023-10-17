@@ -70,9 +70,9 @@ def test_contract_contract_get_tree_metrics_sets_uids_correctly():
     healer_text = "Zia"
     cx = ContractUnit(_healer=healer_text)
     swim_text = "swim"
-    walk_text = "walk"
-    cx.add_idea(idea_kid=IdeaKid(_label=swim_text, _uid=None), walk=cx._cure_handle)
-    cx.add_idea(idea_kid=IdeaKid(_label=walk_text, _uid=2), walk=cx._cure_handle)
+    pad_text = "pad"
+    cx.add_idea(idea_kid=IdeaKid(_label=swim_text, _uid=None), pad=cx._cure_handle)
+    cx.add_idea(idea_kid=IdeaKid(_label=pad_text, _uid=2), pad=cx._cure_handle)
     assert cx.get_idea_kid(road=f"{cx._cure_handle},{swim_text}")._uid is None
 
     cx.set_all_idea_uids_unique()
@@ -88,7 +88,7 @@ def test_contract_get_tree_metrics_ReturnsAccurateActionIdeaCount():
     assert tree_metrics_before.bond_promise_count == 69
 
     # WHEN
-    cx.add_idea(idea_kid=IdeaKid(_label="clean", promise=True), walk=f"{cx._healer}")
+    cx.add_idea(idea_kid=IdeaKid(_label="clean", promise=True), pad=f"{cx._healer}")
 
     # THEN
     tree_metrics_after = cx.get_tree_metrics()
@@ -101,7 +101,7 @@ def test_contract_get_tree_metrics_ReturnsANoneActionIdeaRoad():
     cx = ContractUnit(_healer=healer_text, _weight=10)
     weekdays = "weekdays"
     idea_kid_weekdays = IdeaKid(_weight=40, _label=weekdays)
-    cx.add_idea(idea_kid=idea_kid_weekdays, walk=f"{cx._cure_handle}")
+    cx.add_idea(idea_kid=idea_kid_weekdays, pad=f"{cx._cure_handle}")
     tree_metrics_before = cx.get_tree_metrics()
     # WHEN/THEN
     assert tree_metrics_before.an_promise_idea_road is None

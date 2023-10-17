@@ -28,7 +28,7 @@ from src.contract.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
 )
-from src.pyqt5_kit.pyqt_func import contract_importance_diplay
+from pyqt_func import contract_importance_diplay
 
 
 class MainApp(QApplication):
@@ -373,7 +373,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for idea_road in idea_list:
                 idea_obj = self.healer_output_contract.get_idea_kid(idea_road)
 
-                if idea_obj._walk.find("time") != 3:
+                if idea_obj._pad.find("time") != 3:
                     x_list.append(
                         [
                             contract_importance_diplay(idea_obj._contract_importance),
@@ -440,7 +440,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 [
                     contract_importance_diplay(agenda_item._contract_importance),
                     agenda_item._label,
-                    agenda_item._walk,
+                    agenda_item._pad,
                 ]
                 for agenda_item in agenda_list
             )

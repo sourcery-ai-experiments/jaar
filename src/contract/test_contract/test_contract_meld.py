@@ -123,9 +123,9 @@ def test_contract_idearoot_meld_Add4IdeasScenario():
     free_road = f"{cx1._cure_handle},{swim_text},{free_text}"
 
     cx2 = ContractUnit(_healer=spirit_text)
-    cx2.add_idea(walk=cx2._cure_handle, idea_kid=IdeaKid(_label=tech_text))
-    cx2.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
-    cx2.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
+    cx2.add_idea(pad=cx2._cure_handle, idea_kid=IdeaKid(_label=tech_text))
+    cx2.add_idea(pad=tech_road, idea_kid=IdeaKid(_label=bowl_text))
+    cx2.add_idea(pad=swim_road, idea_kid=IdeaKid(_label=free_text))
 
     # WHEN
     cx1.meld(cx2)
@@ -147,12 +147,12 @@ def test_contract_idearoot_meld_2SameIdeasScenario():
     bowl_text = "bowl"
     bowl_road = f"{cx1._cure_handle},{tech_text},{bowl_text}"
 
-    cx1.add_idea(walk=cx1._cure_handle, idea_kid=IdeaKid(_label=tech_text))
-    cx1.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
+    cx1.add_idea(pad=cx1._cure_handle, idea_kid=IdeaKid(_label=tech_text))
+    cx1.add_idea(pad=tech_road, idea_kid=IdeaKid(_label=bowl_text))
 
     cx2 = ContractUnit(_healer=healer_text)
-    cx2.add_idea(walk=cx2._cure_handle, idea_kid=IdeaKid(_label=tech_text))
-    cx2.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
+    cx2.add_idea(pad=cx2._cure_handle, idea_kid=IdeaKid(_label=tech_text))
+    cx2.add_idea(pad=tech_road, idea_kid=IdeaKid(_label=bowl_text))
 
     assert cx1.get_idea_kid(road=bowl_road)._weight == 1
     # WHEN
@@ -171,13 +171,13 @@ def test_contract_acptfactunits_meld_BaseScenarioWorks():
     bowl_text = "bowl"
     bowl_road = f"{cx1._cure_handle},{tech_text},{bowl_text}"
 
-    cx1.add_idea(walk=cx1._cure_handle, idea_kid=IdeaKid(_label=tech_text))
-    cx1.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
+    cx1.add_idea(pad=cx1._cure_handle, idea_kid=IdeaKid(_label=tech_text))
+    cx1.add_idea(pad=tech_road, idea_kid=IdeaKid(_label=bowl_text))
     cx1.set_acptfact(base=tech_road, pick=bowl_road)
 
     cx2 = ContractUnit(_healer="test7")
-    cx2.add_idea(walk=cx2._cure_handle, idea_kid=IdeaKid(_label=tech_text))
-    cx2.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
+    cx2.add_idea(pad=cx2._cure_handle, idea_kid=IdeaKid(_label=tech_text))
+    cx2.add_idea(pad=tech_road, idea_kid=IdeaKid(_label=bowl_text))
     cx2.set_acptfact(base=tech_road, pick=bowl_road)
 
     # WHEN
@@ -200,15 +200,15 @@ def test_contract_acptfactunits_meld_2AcptFactUnitsWorks():
     swim_road = f"{cx1._cure_handle},{swim_text}"
     free_text = "freestyle"
 
-    cx1.add_idea(walk=cx1._cure_handle, idea_kid=IdeaKid(_label=tech_text))
-    cx1.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
-    cx1.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
+    cx1.add_idea(pad=cx1._cure_handle, idea_kid=IdeaKid(_label=tech_text))
+    cx1.add_idea(pad=tech_road, idea_kid=IdeaKid(_label=bowl_text))
+    cx1.add_idea(pad=swim_road, idea_kid=IdeaKid(_label=free_text))
     cx1.set_acptfact(base=tech_road, pick=bowl_road)
 
     cx2 = ContractUnit(_healer="test7")
-    cx2.add_idea(walk=cx2._cure_handle, idea_kid=IdeaKid(_label=tech_text))
-    cx2.add_idea(walk=tech_road, idea_kid=IdeaKid(_label=bowl_text))
-    cx2.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
+    cx2.add_idea(pad=cx2._cure_handle, idea_kid=IdeaKid(_label=tech_text))
+    cx2.add_idea(pad=tech_road, idea_kid=IdeaKid(_label=bowl_text))
+    cx2.add_idea(pad=swim_road, idea_kid=IdeaKid(_label=free_text))
     cx2.set_acptfact(base=tech_road, pick=bowl_road)
     cx2.set_acptfact(base=swim_road, pick=swim_road)
 
@@ -230,7 +230,7 @@ def test_contract_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
     free_text = "freestyle"
 
     cx2 = ContractUnit(_healer="test7")
-    cx2.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
+    cx2.add_idea(pad=swim_road, idea_kid=IdeaKid(_label=free_text))
     cx2.set_acptfact(base=swim_road, pick=swim_road)
 
     # WHEN
@@ -275,10 +275,10 @@ def test_contract_acptfactunits_meld_AcptFactsAttributeCorrectlySet():
     swim_road = f"{cx1._cure_handle},{swim_text}"
     free_text = "freestyle"
     free_road = f"{cx1._cure_handle},{free_text}"
-    cx1.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
+    cx1.add_idea(pad=swim_road, idea_kid=IdeaKid(_label=free_text))
 
     cx2 = ContractUnit(_healer="test7")
-    cx2.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
+    cx2.add_idea(pad=swim_road, idea_kid=IdeaKid(_label=free_text))
     cx2.set_acptfact(base=swim_road, pick=free_road, open=23, nigh=27)
 
     # WHEN
@@ -413,14 +413,14 @@ def test_contract_meld_OriginUnitsCorrectlySet():
     free_road = f"{swim_road},{free_text}"
     back_text = "backstroke"
     back_road = f"{swim_road},{back_text}"
-    bob_cx.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
+    bob_cx.add_idea(pad=swim_road, idea_kid=IdeaKid(_label=free_text))
 
     sue_text = "Sue"
     sue_weight = 4
     sue_cx = ContractUnit(_healer=sue_text)
-    sue_cx.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=free_text))
+    sue_cx.add_idea(pad=swim_road, idea_kid=IdeaKid(_label=free_text))
     sue_cx.set_acptfact(base=swim_road, pick=free_road, open=23, nigh=27)
-    sue_cx.add_idea(walk=swim_road, idea_kid=IdeaKid(_label=back_text))
+    sue_cx.add_idea(pad=swim_road, idea_kid=IdeaKid(_label=back_text))
     assert len(bob_cx._originunit._links) == 0
 
     # WHEN

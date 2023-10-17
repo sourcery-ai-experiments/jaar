@@ -3,7 +3,7 @@ import sys
 from ui.Cure5IssueUI import Ui_Form
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
-from src.pyqt5_kit.pyqt_func import contract_importance_diplay
+from pyqt_func import contract_importance_diplay
 from src.contract.contract import ContractUnit
 from src.contract.group import groupunit_shop
 from src.contract.party import partylink_shop

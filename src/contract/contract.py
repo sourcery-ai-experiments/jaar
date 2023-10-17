@@ -51,7 +51,7 @@ from src.contract.hreg_time import (
 )
 from src.contract.lemma import Lemmas
 from src.contract.road import (
-    get_walk_from_road,
+    get_pad_from_road,
     is_sub_road,
     road_validate,
     change_road,
@@ -182,8 +182,8 @@ class ContractUnit:
         for road_assc in sorted(list(self._get_relevant_roads({road}))):
             src_yx = self.get_idea_kid(road=road_assc)
             new_yx = copy_deepcopy(src_yx)
-            if new_yx._walk != "":
-                cx.add_idea(idea_kid=new_yx, walk=new_yx._walk)
+            if new_yx._pad != "":
+                cx.add_idea(idea_kid=new_yx, pad=new_yx._pad)
             cx.set_contract_metrics()
 
         # TODO grab groups
@@ -827,7 +827,7 @@ class ContractUnit:
             idea_x = lemma_y.idea_x
             acptfact_x = lemma_y.calc_acptfact
 
-            road_x = f"{idea_x._walk},{idea_x._label}"
+            road_x = f"{idea_x._pad},{idea_x._label}"
             lemma_acptfactunits[road_x] = acptfact_x
 
             for kid2 in idea_x._kids.values():
@@ -1033,56 +1033,56 @@ class ContractUnit:
     def add_idea(
         self,
         idea_kid: IdeaCore,
-        walk: Road,
+        pad: Road,
         create_missing_ideas_groups: bool = None,
         adoptees: list[str] = None,
         bundling=True,
     ):
         if adoptees != None:
             for adoptee_label in adoptees:
-                adoptee_road = f"{walk},{adoptee_label}"
+                adoptee_road = f"{pad},{adoptee_label}"
                 adoptee_idea = self.get_idea_kid(road=adoptee_road)
 
         if not create_missing_ideas_groups:
             idea_kid = self._get_filtered_balancelinks_idea(idea_kid)
 
-        walk = road_validate(walk)
+        pad = road_validate(pad)
         temp_idea = self._idearoot
-        walk_nodes = get_all_road_nodes(walk)
-        temp_road = walk_nodes.pop(0)
+        pad_nodes = get_all_road_nodes(pad)
+        temp_road = pad_nodes.pop(0)
 
         # idearoot cannot be replaced
-        if temp_road == self._cure_handle and walk_nodes == []:
-            idea_kid.set_walk(parent_road=Road(self._cure_handle))
+        if temp_road == self._cure_handle and pad_nodes == []:
+            idea_kid.set_pad(parent_road=Road(self._cure_handle))
         else:
             road_nodes = [temp_road]
-            while walk_nodes != []:
-                temp_road = walk_nodes.pop(0)
+            while pad_nodes != []:
+                temp_road = pad_nodes.pop(0)
                 temp_idea = self._get_or_create_leveln_idea(
                     parent_idea=temp_idea, idea_label=temp_road
                 )
                 road_nodes.append(temp_road)
 
-            idea_kid.set_walk(parent_road=get_road_from_nodes(road_nodes))
+            idea_kid.set_pad(parent_road=get_road_from_nodes(road_nodes))
 
         temp_idea.add_kid(idea_kid)
 
         if adoptees != None:
             weight_sum = 0
             for adoptee_label in adoptees:
-                adoptee_road = f"{walk},{adoptee_label}"
+                adoptee_road = f"{pad},{adoptee_label}"
                 adoptee_idea = self.get_idea_kid(road=adoptee_road)
                 weight_sum += adoptee_idea._weight
-                new_adoptee_walk = f"{walk},{idea_kid._label},{adoptee_label}"
-                self.add_idea(adoptee_idea, new_adoptee_walk)
-                self.edit_idea_attr(road=new_adoptee_walk, weight=adoptee_idea._weight)
+                new_adoptee_pad = f"{pad},{idea_kid._label},{adoptee_label}"
+                self.add_idea(adoptee_idea, new_adoptee_pad)
+                self.edit_idea_attr(road=new_adoptee_pad, weight=adoptee_idea._weight)
                 self.del_idea_kid(adoptee_road)
 
             if bundling:
-                self.edit_idea_attr(road=f"{walk},{idea_kid._label}", weight=weight_sum)
+                self.edit_idea_attr(road=f"{pad},{idea_kid._label}", weight=weight_sum)
 
         if create_missing_ideas_groups:
-            self._create_missing_ideas(road=Road(f"{walk},{idea_kid._label}"))
+            self._create_missing_ideas(road=Road(f"{pad},{idea_kid._label}"))
             self._create_missing_groups_partys(balancelinks=idea_kid._balancelinks)
 
     def _get_filtered_balancelinks_idea(self, idea: IdeaKid) -> IdeaKid:
@@ -1131,9 +1131,9 @@ class ContractUnit:
         except InvalidContractException:
             base_idea = IdeaKid(
                 _label=get_terminus_node_from_road(road=road),
-                _walk=get_walk_from_road(road=road),
+                _pad=get_pad_from_road(road=road),
             )
-            self.add_idea(idea_kid=base_idea, walk=base_idea._walk)
+            self.add_idea(idea_kid=base_idea, pad=base_idea._pad)
 
     # def _get_or_create_level1_idea(self, idea_label: str) -> IdeaKid:
     #     return_idea = None
@@ -1187,7 +1187,7 @@ class ContractUnit:
     def _move_idea_kids(self, road_nodes: list):
         d_temp_idea = self.get_idea_kid(road=get_road_from_nodes(road_nodes))
         for kid in d_temp_idea._kids.values():
-            self.add_idea(idea_kid=kid, walk=get_road_from_nodes(road_nodes[:-1]))
+            self.add_idea(idea_kid=kid, pad=get_road_from_nodes(road_nodes[:-1]))
 
     def set_healer(self, new_healer):
         self._healer = new_healer
@@ -1201,17 +1201,17 @@ class ContractUnit:
         if self.get_idea_kid(road=old_road) is None:
             raise InvalidContractException(f"Idea {old_road=} does not exist")
 
-        walk = get_walk_from_road(road=old_road)
-        new_road = Road(f"{new_label}") if walk == "" else Road(f"{walk},{new_label}")
+        pad = get_pad_from_road(road=old_road)
+        new_road = Road(f"{new_label}") if pad == "" else Road(f"{pad},{new_label}")
         if old_road != new_road:
             # if root _label is changed
-            if walk == "":
+            if pad == "":
                 self._idearoot.set_idea_label(
                     new_label, contract_cure_handle=self._cure_handle
                 )
-                self._idearoot._walk = walk
+                self._idearoot._pad = pad
             else:
-                self._non_root_idea_label_edit(old_road, new_label, walk)
+                self._non_root_idea_label_edit(old_road, new_label, pad)
             self._idearoot_find_replace_road(old_road=old_road, new_road=new_road)
             self._set_acptfacts_empty_if_null()
             self._idearoot._acptfactunits = find_replace_road_key_dict(
@@ -1220,11 +1220,11 @@ class ContractUnit:
                 new_road=new_road,
             )
 
-    def _non_root_idea_label_edit(self, old_road, new_label, walk):
+    def _non_root_idea_label_edit(self, old_road, new_label, pad):
         idea_z = self.get_idea_kid(road=old_road)
         idea_z.set_idea_label(new_label)
-        idea_z._walk = walk
-        idea_parent = self.get_idea_kid(road=get_walk_from_road(old_road))
+        idea_z._pad = pad
+        idea_parent = self.get_idea_kid(road=get_pad_from_road(old_road))
         idea_parent._kids.pop(get_terminus_node_from_road(old_road))
         idea_parent._kids[idea_z._label] = idea_z
 
@@ -1239,11 +1239,11 @@ class ContractUnit:
                 for idea_kid in listed_idea._kids.values():
                     idea_iter_list.append(idea_kid)
                     if is_sub_road(
-                        ref_road=idea_kid._walk,
+                        ref_road=idea_kid._pad,
                         sub_road=old_road,
                     ):
-                        idea_kid._walk = change_road(
-                            current_road=idea_kid._walk,
+                        idea_kid._pad = change_road(
+                            current_road=idea_kid._pad,
                             old_road=old_road,
                             new_road=new_road,
                         )
@@ -1768,7 +1768,7 @@ class ContractUnit:
 
     def _set_root_attributes(self):
         self._idearoot._level = 0
-        self._idearoot.set_walk(parent_road="")
+        self._idearoot.set_pad(parent_road="")
         self._idearoot.set_requiredheirs(contract_idea_dict=self._idea_dict)
         self._idearoot.set_assignedheir(
             parent_assignheir=None, contract_groups=self._groups
@@ -1789,7 +1789,7 @@ class ContractUnit:
         self._idearoot.promise = False
 
         if self._idearoot.is_kidless():
-            self._set_ancestor_metrics(road=self._idearoot._walk)
+            self._set_ancestor_metrics(road=self._idearoot._pad)
             self._distribute_contract_importance(idea=self._idearoot)
 
     def _set_kids_attributes(
@@ -1811,9 +1811,7 @@ class ContractUnit:
             parent_requiredheirs = parent_idea._requiredheirs
 
         idea_kid.set_level(parent_level=parent_idea._level)
-        idea_kid.set_walk(
-            parent_road=parent_idea._walk, parent_label=parent_idea._label
-        )
+        idea_kid.set_pad(parent_road=parent_idea._pad, parent_label=parent_idea._label)
         idea_kid.set_acptfactunits_empty_if_null()
         idea_kid.set_acptfactheirs(acptfacts=parent_acptfacts)
         idea_kid.set_requiredheirs(self._idea_dict, parent_requiredheirs)
@@ -2042,7 +2040,7 @@ class ContractUnit:
                 _range_source_road=range_source_road_x,
             )
             road_x = f"{self._cure_handle},{yb.rr}"
-            self.add_idea(idea_kid=idea_x, walk=road_x)
+            self.add_idea(idea_kid=idea_x, pad=road_x)
 
             numeric_road_x = None
             if yb.nr != None:
@@ -2113,7 +2111,7 @@ class ContractUnit:
         idea_kid.promise = True
         self.add_idea(
             idea_kid=idea_kid,
-            walk=Road(f"{idea_kid._walk}"),
+            pad=Road(f"{idea_kid._pad}"),
             create_missing_ideas_groups=True,
         )
 
@@ -2143,12 +2141,12 @@ class ContractUnit:
         party_title = other_contract._healer
         o_idea_list = other_contract.get_idea_list_without_idearoot()
         for o_idea in o_idea_list:
-            o_road = road_validate(f"{o_idea._walk},{o_idea._label}")
+            o_road = road_validate(f"{o_idea._pad},{o_idea._label}")
             try:
                 main_idea = self.get_idea_kid(o_road)
                 main_idea.meld(o_idea, False, party_title, party_weight)
             except Exception:
-                self.add_idea(walk=o_idea._walk, idea_kid=o_idea)
+                self.add_idea(pad=o_idea._pad, idea_kid=o_idea)
                 main_idea = self.get_idea_kid(o_road)
                 main_idea._originunit.set_originlink(party_title, party_weight)
 
@@ -2210,10 +2208,10 @@ class ContractUnit:
             # if relevant_roads.get(relevant_road) == "descendant":
             #     relevant_idea._requiredunits = {}
             #     relevant_idea._kids = {}
-            #     contract_x.add_idea(idea_kid=relevant_idea, walk=relevant_idea._walk)
+            #     contract_x.add_idea(idea_kid=relevant_idea, pad=relevant_idea._pad)
             # elif relevant_roads.get(relevant_road) != "descendant":
             relevant_idea._kids = {}
-            contract_x.add_idea(idea_kid=relevant_idea, walk=relevant_idea._walk)
+            contract_x.add_idea(idea_kid=relevant_idea, pad=relevant_idea._pad)
 
         for afu in self._idearoot._acptfactunits.values():
             if relevant_roads.get(afu.base):
@@ -2355,7 +2353,7 @@ def get_from_dict(cx_dict: dict) -> ContractUnit:
             _range_source_road=idea_dict["_range_source_road"],
             _numeric_road=idea_dict["_numeric_road"],
         )
-        c_x.add_idea(idea_kid=idea_obj, walk=idea_dict["temp_road"])
+        c_x.add_idea(idea_kid=idea_obj, pad=idea_dict["temp_road"])
 
     c_x.set_contract_metrics()  # clean up tree traverse defined fields
     return c_x

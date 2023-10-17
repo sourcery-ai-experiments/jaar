@@ -2392,7 +2392,7 @@
                                                     "_weight": 1,
                                                     "promise": false
                                                 },
-                                                "go for walk": {
+                                                "go for pad": {
                                                     "_acptfactunits": {},
                                                     "_addin": null,
                                                     "_assignedunit": {
@@ -2441,7 +2441,7 @@
                                                             "promise": false
                                                         }
                                                     },
-                                                    "_label": "go for walk",
+                                                    "_label": "go for pad",
                                                     "_numeric_road": null,
                                                     "_numor": null,
                                                     "_on_meld_weight_action": "default",

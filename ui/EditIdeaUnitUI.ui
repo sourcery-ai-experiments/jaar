@@ -831,7 +831,7 @@
     <string>Walk</string>
    </property>
   </widget>
-  <widget class="QTextEdit" title="yo_walk">
+  <widget class="QTextEdit" title="yo_pad">
    <property title="geometry">
     <rect>
      <x>680</x>

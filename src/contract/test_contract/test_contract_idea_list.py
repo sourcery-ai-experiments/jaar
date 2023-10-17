@@ -167,7 +167,7 @@ def test_contract_get_idea_list_returns_correct_list():
     # THEN
     work_idea = cx._idea_dict.get(work_road)
     print(f"\nlook at {work_idea.get_road()=}")
-    assert work_idea._walk == f"{cx._cure_handle}"
+    assert work_idea._pad == f"{cx._cure_handle}"
     assert work_idea._kids == {}
     assert work_idea._weight == 30
     assert work_idea._label == work_text
@@ -265,24 +265,24 @@ def test_contract_get_idea_list_CorrectlyCalculatesIdeaAttr_contract_coin():
 
     auto_text = "auto"
     auto_idea = IdeaKid(_label=auto_text, _weight=10)
-    cx.add_idea(idea_kid=auto_idea, walk=cx._cure_handle)
+    cx.add_idea(idea_kid=auto_idea, pad=cx._cure_handle)
 
     barn_text = "barn"
     barn_road = f"{cx._cure_handle},{barn_text}"
     barn_idea = IdeaKid(_label=barn_text, _weight=60)
-    cx.add_idea(idea_kid=barn_idea, walk=cx._cure_handle)
+    cx.add_idea(idea_kid=barn_idea, pad=cx._cure_handle)
     lamb_text = "lambs"
     lamb_road = f"{barn_road},{lamb_text}"
     lamb_idea = IdeaKid(_label=lamb_text, _weight=1)
-    cx.add_idea(idea_kid=lamb_idea, walk=barn_road)
+    cx.add_idea(idea_kid=lamb_idea, pad=barn_road)
     duck_text = "ducks"
     duck_road = f"{barn_road},{duck_text}"
     duck_idea = IdeaKid(_label=duck_text, _weight=2)
-    cx.add_idea(idea_kid=duck_idea, walk=barn_road)
+    cx.add_idea(idea_kid=duck_idea, pad=barn_road)
 
     coal_text = "coal"
     coal_idea = IdeaKid(_label=coal_text, _weight=30)
-    cx.add_idea(idea_kid=coal_idea, walk=cx._cure_handle)
+    cx.add_idea(idea_kid=coal_idea, pad=cx._cure_handle)
 
     assert cx._idearoot._contract_coin_onset is None
     assert cx._idearoot._contract_coin_cease is None
@@ -593,7 +593,7 @@ def test_exammple_idea_list_Every6WeeksRequired():
     assert clean_sheet_idea._active_status == False
 
     # for idea in idea_list:
-    #     # print(f"{idea._walk=}")
+    #     # print(f"{idea._pad=}")
     #     if idea._label == "clean sheets couch blankets":
     #         print(f"{idea.get_road()=}")
 
@@ -637,7 +637,7 @@ def print_sufffact_info(road: str, idea_list):
     sufffact_nigh = None
 
     for idea in idea_list:
-        if idea._walk == road:
+        if idea._pad == road:
             for required in idea._requiredunits.values():
                 for sufffact_x in required.sufffacts.values():
                     print(

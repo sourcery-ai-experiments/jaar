@@ -123,7 +123,7 @@ def test_get_agenda_does_not_return_promise_items_outside_range():
     a1.set_time_hreg_ideas(c400_count=7)
     c_label = "clean"
     c_idea = IdeaKid(_label=c_label, promise=True)
-    a1.add_idea(idea_kid=c_idea, walk=a1._cure_handle)
+    a1.add_idea(idea_kid=c_idea, pad=a1._cure_handle)
     c_road = f"{a1._cure_handle},{c_label}"
     jajatime = f"{a1._cure_handle},time,jajatime"
     jajaday = f"{a1._cure_handle},time,jajatime,day"
@@ -246,10 +246,10 @@ def test_exammple_AgendaHasCorrectAttributes():
     #     print(f"{base=}")
 
     # for agenda_item in idea_action_list:
-    #     print(f"{agenda_item._uid=} {agenda_item._walk=}")
+    #     print(f"{agenda_item._uid=} {agenda_item._pad=}")
 
     # for agenda_item in idea_action_list:
-    #     # print(f"{agenda_item._walk=}")
+    #     # print(f"{agenda_item._pad=}")
     #     pass
 
     print(len(idea_action_list))
@@ -266,7 +266,7 @@ def test_exammple_AgendaCanFiltersOnBase():
 
     # for agenda_item in a1.get_agenda_items():
     #     print(
-    #         f"{agenda_item._walk=} {agenda_item._label} {len(agenda_item._requiredunits)=}"
+    #         f"{agenda_item._pad=} {agenda_item._label} {len(agenda_item._requiredunits)=}"
     #     )
     #     for required in agenda_item._requiredunits.values():
     #         if required.base == weekdays:
@@ -299,8 +299,8 @@ def test_set_agenda_task_as_complete_RangeWorksCorrectly():
     day_text = "day"
     day_road = f"{time_road},{day_text}"
 
-    a1.add_idea(idea_kid=IdeaKid(_label=run_text, promise=True), walk=a1._cure_handle)
-    a1.add_idea(idea_kid=IdeaKid(_label=day_text, _begin=0, _close=500), walk=time_road)
+    a1.add_idea(idea_kid=IdeaKid(_label=run_text, promise=True), pad=a1._cure_handle)
+    a1.add_idea(idea_kid=IdeaKid(_label=day_text, _begin=0, _close=500), pad=time_road)
     a1.edit_idea_attr(
         road=run_road,
         required_base=day_road,
@@ -340,8 +340,8 @@ def test_set_agenda_task_as_complete_DivisionWorksCorrectly():
     day_text = "day"
     day_road = f"{time_road},{day_text}"
 
-    a1.add_idea(idea_kid=IdeaKid(_label=run_text, promise=True), walk=a1._cure_handle)
-    a1.add_idea(idea_kid=IdeaKid(_label=day_text, _begin=0, _close=500), walk=time_road)
+    a1.add_idea(idea_kid=IdeaKid(_label=run_text, promise=True), pad=a1._cure_handle)
+    a1.add_idea(idea_kid=IdeaKid(_label=day_text, _begin=0, _close=500), pad=time_road)
     a1.edit_idea_attr(
         road=run_road,
         required_base=day_road,
@@ -427,7 +427,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     a1.set_time_hreg_ideas(c400_count=7)
 
     things_text = "things to do"
-    a1.add_idea(IdeaKid(_label=things_text), walk=a1._cure_handle)
+    a1.add_idea(IdeaKid(_label=things_text), pad=a1._cure_handle)
     t_road = f"{a1._cure_handle},{things_text}"
     clean = "clean"
     run = "run"
@@ -435,12 +435,12 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     jog = "jog"
     veg = "veg"
     lift = "life"
-    a1.add_idea(IdeaKid(_label=clean, promise=True), walk=t_road)
-    a1.add_idea(IdeaKid(_label=run, promise=True), walk=t_road)
-    a1.add_idea(IdeaKid(_label=swim, promise=True), walk=t_road)
-    a1.add_idea(IdeaKid(_label=jog, promise=True), walk=t_road)
-    a1.add_idea(IdeaKid(_label=veg, promise=True), walk=t_road)
-    a1.add_idea(IdeaKid(_label=lift, promise=True), walk=t_road)
+    a1.add_idea(IdeaKid(_label=clean, promise=True), pad=t_road)
+    a1.add_idea(IdeaKid(_label=run, promise=True), pad=t_road)
+    a1.add_idea(IdeaKid(_label=swim, promise=True), pad=t_road)
+    a1.add_idea(IdeaKid(_label=jog, promise=True), pad=t_road)
+    a1.add_idea(IdeaKid(_label=veg, promise=True), pad=t_road)
+    a1.add_idea(IdeaKid(_label=lift, promise=True), pad=t_road)
     time_text = "time"
     time_road = f"{a1._cure_handle},{time_text}"
     jaja_text = "jajatime"
@@ -499,7 +499,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     # for required_y in c_required.values():
     #     for sufffact_y in required_y.sufffacts.values():
     #         print(
-    #             f"Idea: {c_idea._walk},{c_idea._label}  Required: {required_y.base} open:{sufffact_y.open} nigh:{sufffact_y.nigh} diff:{sufffact_y.nigh-sufffact_y.open}"
+    #             f"Idea: {c_idea._pad},{c_idea._label}  Required: {required_y.base} open:{sufffact_y.open} nigh:{sufffact_y.nigh} diff:{sufffact_y.nigh-sufffact_y.open}"
     #         )
 
     # for base, count_x in a1.get_required_bases().items():
@@ -618,7 +618,7 @@ def test_contract_create_agenda_item_CorrectlyCreatesAllContractAttributes():
     clean_things_road = Road(f"{a1._cure_handle},{clean_things_text}")
     clean_cookery_text = "clean cookery"
     clean_cookery_road = Road(f"{clean_things_road},{clean_cookery_text}")
-    clean_cookery_idea = IdeaKid(_label=clean_cookery_text, _walk=clean_things_road)
+    clean_cookery_idea = IdeaKid(_label=clean_cookery_text, _pad=clean_things_road)
     print(f"{clean_cookery_idea.get_road()=}")
     house_text = "house"
     house_road = Road(f"{a1._cure_handle},{house_text}")
@@ -760,7 +760,7 @@ def test_agenda_IsSetByAssignedUnit_1PartyGroup():
     cx = ContractUnit(_healer=bob_text)
     work_text = "work"
     work_road = f"{bob_text},{work_text}"
-    cx.add_idea(idea_kid=IdeaKid(_label=work_text, promise=True), walk=bob_text)
+    cx.add_idea(idea_kid=IdeaKid(_label=work_text, promise=True), pad=bob_text)
     assert len(cx.get_agenda_items()) == 1
 
     sue_text = "sue"
@@ -797,7 +797,7 @@ def test_agenda_IsSetByAssignedUnit_2PartyGroup():
     cx.add_partyunit(title=bob_text)
     work_text = "work"
     work_road = f"{bob_text},{work_text}"
-    cx.add_idea(idea_kid=IdeaKid(_label=work_text, promise=True), walk=bob_text)
+    cx.add_idea(idea_kid=IdeaKid(_label=work_text, promise=True), pad=bob_text)
 
     sue_text = "sue"
     cx.add_partyunit(title=sue_text)

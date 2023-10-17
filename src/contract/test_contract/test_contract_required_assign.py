@@ -14,7 +14,7 @@ def test_contract_edit_idea_attr_CorrectlySetsAssignedUnit():
     cx = ContractUnit(_healer=healer_text)
     run_text = "run"
     run_road = f"{cx._cure_handle},{run_text}"
-    cx.add_idea(IdeaKid(_label=run_text), walk=cx._cure_handle)
+    cx.add_idea(IdeaKid(_label=run_text), pad=cx._cure_handle)
     run_idea = cx.get_idea_kid(road=run_road)
     assert run_idea._assignedunit is None
 
@@ -57,7 +57,7 @@ def test_contract_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
 
     cx = ContractUnit(_healer=bob_text)
     cx.add_partyunit(title=bob_text)
-    cx.add_idea(IdeaKid(_label=run_text), walk=bob_text)
+    cx.add_idea(IdeaKid(_label=run_text), pad=bob_text)
     cx.edit_idea_attr(road=run_road, assignedunit=assigned_unit_x)
     run_idea = cx.get_idea_kid(road=run_road)
     assert run_idea._assignedunit == assigned_unit_x
@@ -94,9 +94,9 @@ def test_contract_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedhei
     assigned_unit_x.set_suffgroup(title=swimmers_text)
 
     cx.set_groupunit(groupunit=groupunit_shop(brand=swimmers_text))
-    cx.add_idea(IdeaKid(_label=swim_text), walk=cx._cure_handle)
-    cx.add_idea(IdeaKid(_label=morn_text), walk=swim_road)
-    cx.add_idea(IdeaKid(_label=four_text), walk=morn_road)
+    cx.add_idea(IdeaKid(_label=swim_text), pad=cx._cure_handle)
+    cx.add_idea(IdeaKid(_label=morn_text), pad=swim_road)
+    cx.add_idea(IdeaKid(_label=four_text), pad=morn_road)
     cx.edit_idea_attr(road=swim_road, assignedunit=assigned_unit_x)
     # print(f"{four_road=}\n{morn_road=}")
     four_idea = cx.get_idea_kid(road=four_road)
@@ -128,8 +128,8 @@ def test_ContractUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_Assig
     work_road = f"{cx1._cure_handle},{work_text}"
     swim_text = "swim"
     swim_road = f"{cx1._cure_handle},{swim_text}"
-    cx1.add_idea(IdeaKid(_label=work_text), walk=cx1._cure_handle)
-    cx1.add_idea(IdeaKid(_label=swim_text), walk=cx1._cure_handle)
+    cx1.add_idea(IdeaKid(_label=work_text), pad=cx1._cure_handle)
+    cx1.add_idea(IdeaKid(_label=swim_text), pad=cx1._cure_handle)
     swim_assignedunit = assigned_unit_shop()
     swim_assignedunit.set_suffgroup(title=xia_text)
     swim_assignedunit.set_suffgroup(title=zoa_text)
@@ -162,8 +162,8 @@ def test_ContractUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     work_road = f"{cx1._cure_handle},{work_text}"
     swim_text = "swim"
     swim_road = f"{cx1._cure_handle},{swim_text}"
-    cx1.add_idea(IdeaKid(_label=work_text), walk=cx1._cure_handle)
-    cx1.add_idea(IdeaKid(_label=swim_text), walk=cx1._cure_handle)
+    cx1.add_idea(IdeaKid(_label=work_text), pad=cx1._cure_handle)
+    cx1.add_idea(IdeaKid(_label=swim_text), pad=cx1._cure_handle)
     swim_assignedunit = assigned_unit_shop()
     swim_assignedunit.set_suffgroup(title=xia_text)
     swim_assignedunit.set_suffgroup(title=zoa_text)
@@ -177,7 +177,7 @@ def test_ContractUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     cx2.add_partyunit(title=xia_text)
     cx2.add_idea(
         idea_kid=cx1_swim_idea,
-        walk=cx2._cure_handle,
+        pad=cx2._cure_handle,
         create_missing_ideas_groups=False,
     )
 

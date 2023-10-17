@@ -3,7 +3,7 @@ from ui.Edit_AgendaUI import Ui_Form
 from PyQt5.QtCore import pyqtSignal as qsig
 from PyQt5.QtWidgets import QWidget as qw
 from PyQt5.QtWidgets import QTableWidgetItem as qti
-from src.pyqt5_kit.pyqt_func import num2str, contract_importance_diplay
+from pyqt_func import num2str, contract_importance_diplay
 from src.contract.hreg_time import (
     SuffFactUnitHregTime,
     _get_time_hreg_weekday_idea,
@@ -137,7 +137,7 @@ class Edit_Agenda(qw, Ui_Form):
 
         self.agenda_table.setRowCount(row + 1)
         self.agenda_table.setItem(row, 0, qti(a._label))
-        self.agenda_table.setItem(row, 1, qti(a._walk))
+        self.agenda_table.setItem(row, 1, qti(a._pad))
         self.agenda_table.setItem(row, 2, qti(lw_display_x))
         self.agenda_table.setItem(row, 3, qti(num2str(a._weight)))
         self.agenda_table.setItem(row, 4, qti(base))

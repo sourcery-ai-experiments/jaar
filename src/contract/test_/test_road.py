@@ -5,7 +5,7 @@ from src.contract.road import (
     get_all_road_nodes,
     get_terminus_node_from_road,
     find_replace_road_key_dict,
-    get_walk_from_road,
+    get_pad_from_road,
     get_road_without_root_node,
     road_validate,
     get_ancestor_roads,
@@ -101,7 +101,7 @@ def test_road_get_terminus_node_from_road_works():
     assert get_terminus_node_from_road(road=roses_road) == roses_text
 
 
-def test_road_get_walk_from_road_works():
+def test_road_get_pad_from_road_works():
     # GIVEN
     healer_text = "healer"
     healer_road = Road(f"{root_label()},{healer_text}")
@@ -111,10 +111,10 @@ def test_road_get_walk_from_road_works():
     roses_road = Road(f"{root_label()},{healer_text},{bloomers_text},{roses_text}")
 
     # WHEN/THENs
-    assert get_walk_from_road(road=root_label()) == ""
-    assert get_walk_from_road(road=healer_road) == root_label()
-    assert get_walk_from_road(road=bloomers_road) == healer_road
-    assert get_walk_from_road(road=roses_road) == bloomers_road
+    assert get_pad_from_road(road=root_label()) == ""
+    assert get_pad_from_road(road=healer_road) == root_label()
+    assert get_pad_from_road(road=bloomers_road) == healer_road
+    assert get_pad_from_road(road=roses_road) == bloomers_road
 
 
 def test_road_get_road_without_root_node_WorksCorrectly():
@@ -197,8 +197,8 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeCureHandleScen
 #     bloomers_road = Road(f"{root_label()},{healer_text},{bloomers_text}")
 #     old_roses_text = "roses"
 #     old_roses_road = Road(f"{root_label()},{healer_text},{bloomers_text},{old_roses_text}")
-#     idea_roses = IdeaCore(_label=old_roses_text, _walk=bloomers_road)
-#     idea_bloomers = IdeaCore(_label=bloomers_text, _walk=healer_road)
+#     idea_roses = IdeaCore(_label=old_roses_text, _pad=bloomers_road)
+#     idea_bloomers = IdeaCore(_label=bloomers_text, _pad=healer_road)
 #     idea_bloomers.add_kid(idea_kid=idea_roses)
 
 #     for idea_key, idea_obj in idea_bloomers._kids.items():

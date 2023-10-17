@@ -259,9 +259,9 @@ def test_cure_set_contract_bank_attrs_CorrectlyPopulatesContract_Groupunit_Party
     bob_sports_road = f"{sx.handle},{sports_text}"
     tom_sports_road = f"{sx.handle},{sports_text}"
 
-    sal_contract.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=sal_sports_road)
-    bob_contract.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=bob_sports_road)
-    tom_contract.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=tom_sports_road)
+    sal_contract.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=sal_sports_road)
+    bob_contract.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=bob_sports_road)
+    tom_contract.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=tom_sports_road)
 
     sal_contract.add_partyunit(title=bob_text, creditor_weight=2, debtor_weight=2)
 

@@ -8,7 +8,7 @@ from src.contract.hreg_time import SuffFactUnitHregTime
 from src.contract.group import Balancelink, GroupBrand
 from src.contract.required_idea import Road
 from src.contract.hreg_time import get_24hr, get_60min
-from src.pyqt5_kit.pyqt_func import (
+from pyqt_func import (
     num2str,
     bool_val,
     str2float,
@@ -125,7 +125,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.yo_action_cb.setHidden(setHiddenBool)
         self.yo_problem_bool_cb.setHidden(setHiddenBool)
         self.yo_deescription.setHidden(setHiddenBool)
-        self.yo_walk.setHidden(setHiddenBool)
+        self.yo_pad.setHidden(setHiddenBool)
         self.yo_weight.setHidden(setHiddenBool)
         self.yo_begin.setHidden(setHiddenBool)
         self.yo_addin.setHidden(setHiddenBool)
@@ -221,10 +221,10 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.yo_x_populate()
 
     def yo_x_populate(self):
-        self.label_parent_id.setText(f"Current Node road : {self.yo_x._walk}")
+        self.label_parent_id.setText(f"Current Node road : {self.yo_x._pad}")
         self.yo_deescription.setText(self.yo_x._label)
         # self.idea_label_on_populate = self.yo_x._label
-        self.yo_walk.setText(self.yo_x._walk)
+        self.yo_pad.setText(self.yo_x._pad)
         self.yo_weight.setText(num2str(self.yo_x._weight))
         self.yo_begin.setText(num2str(self.yo_x._begin))
         self.yo_range_source_road.clear()
@@ -259,9 +259,9 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
     def yo_tree_item_selected(self):
         idea_label = self.baseideaunit.currentItem().data(2, 10)
-        idea_walk = self.baseideaunit.currentItem().data(2, 11)
-        if idea_walk not in ("", None):
-            self.yo_x = self.contract_x.get_idea_kid(road=f"{idea_walk},{idea_label}")
+        idea_pad = self.baseideaunit.currentItem().data(2, 11)
+        if idea_pad not in ("", None):
+            self.yo_x = self.contract_x.get_idea_kid(road=f"{idea_pad},{idea_label}")
         else:
             self.yo_x = self.contract_x._idearoot
         self.yo_tree_item_setHidden(setHiddenBool=False)
@@ -372,7 +372,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             if len(open_kids) == 1:
                 idea_x = open_kids[0]
                 self.required_sufffact_open_combo.setCurrentText(
-                    f"{idea_x._walk},{idea_x._label}"
+                    f"{idea_x._pad},{idea_x._label}"
                 )
 
     def set_sufffact_nigh_combo(self):
@@ -392,7 +392,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             if len(nigh_kids) == 1:
                 idea_x = nigh_kids[0]
                 self.required_sufffact_nigh_combo.setCurrentText(
-                    f"{idea_x._walk},{idea_x._label}"
+                    f"{idea_x._pad},{idea_x._label}"
                 )
 
     def set_sufffact_divisor_combo(self):
@@ -414,7 +414,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             if len(divisor_kids) == 1:
                 idea_x = divisor_kids[0]
                 self.required_sufffact_divisor_combo.setCurrentText(
-                    f"{idea_x._walk},{idea_x._label}"
+                    f"{idea_x._pad},{idea_x._label}"
                 )
 
     def required_sufffact_nigh_combo_select(self):
@@ -691,9 +691,9 @@ class EditIdeaUnit(qtw0, Ui_Form):
             nigh_x = str2float(self.required_sufffact_nigh.toPlainText())
             divisor_x = str2float(self.required_sufffact_divisor.toPlainText())
             idea_label = self.baseideaunit.currentItem().data(2, 10)
-            idea_walk = self.baseideaunit.currentItem().data(2, 11)
+            idea_pad = self.baseideaunit.currentItem().data(2, 11)
             self.contract_x.edit_idea_attr(
-                road=f"{idea_walk},{idea_label}",
+                road=f"{idea_pad},{idea_label}",
                 required_base=base_x,
                 required_sufffact=sufffact_x,
                 required_sufffact_open=open_x,
@@ -786,7 +786,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             raise Exception("bd_title is empty, idea2bd cannot be updated")
         balancelink_new = Balancelink(brand=GroupBrand(bd_title_new), weight=1)
         self.contract_x.edit_idea_attr(
-            road=f"{self.yo_x._walk},{self.yo_x._label}", balancelink=balancelink_new
+            road=f"{self.yo_x._pad},{self.yo_x._label}", balancelink=balancelink_new
         )
         self.idea2group_insert_combo_load()
         self.idea2group_table_load()
@@ -798,14 +798,14 @@ class EditIdeaUnit(qtw0, Ui_Form):
                 self.idea2group_table.currentRow(), 1
             ).text()
             self.contract_x.edit_idea_attr(
-                road=f"{self.yo_x._walk},{self.yo_x._label}",
+                road=f"{self.yo_x._pad},{self.yo_x._label}",
                 balancelink_del=delete_group_title,
             )
             self.idea2group_insert_combo_load()
             self.idea2group_table_load()
 
     def idea_delete(self):
-        self.contract_x.del_idea_kid(road=f"{self.yo_x._walk},{self.yo_x._label}")
+        self.contract_x.del_idea_kid(road=f"{self.yo_x._pad},{self.yo_x._label}")
         self.baseideaunit.clear()
         self.refresh_tree(disable_is_expanded=True)
 
@@ -851,8 +851,8 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
     def idea_update(self):
         idea_road = None
-        if self.yo_x._walk not in (None, ""):
-            idea_road = Road(f"{self.yo_x._walk},{self.yo_x._label}")
+        if self.yo_x._pad not in (None, ""):
+            idea_road = Road(f"{self.yo_x._pad},{self.yo_x._label}")
         else:
             idea_road = Road(f"{self.yo_x._label}")
         self.idea_edit_nonroad_data(idea_road=idea_road)
@@ -866,22 +866,22 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.idea_edit_road(idea_road=idea_road)
 
     def idea_duty_insert(self):
-        new_walk = f"{self.yo_x._label}"
-        if self.yo_x._walk not in ("", None):
-            new_walk = f"{self.yo_x._walk},{self.yo_x._label}"
-        new_road = f"{new_walk},{self.yo_deescription.toPlainText()}"
+        new_pad = f"{self.yo_x._label}"
+        if self.yo_x._pad not in ("", None):
+            new_pad = f"{self.yo_x._pad},{self.yo_x._label}"
+        new_road = f"{new_pad},{self.yo_deescription.toPlainText()}"
         self.idea_insert()
 
         # add done/not_done children
         not_done_text = "not done"
         self.contract_x.add_idea(
             idea_kid=IdeaKid(_label=not_done_text),
-            walk=new_road,
+            pad=new_road,
         )
         done_text = "done"
         self.contract_x.add_idea(
             idea_kid=IdeaKid(_label=done_text),
-            walk=new_road,
+            pad=new_road,
         )
         # set required to "not done"
         self.contract_x.edit_idea_attr(
@@ -931,12 +931,12 @@ class EditIdeaUnit(qtw0, Ui_Form):
         new_idea._set_idea_attr(idea_attr=idea_attr_x)
         new_idea.set_kids_empty_if_null()
         take_parent_children_bool = self.cb_yo_insert_allChildren.checkState() == 2
-        new_walk = f"{self.yo_x._label}"
-        if self.yo_x._walk not in ("", None):
-            new_walk = f"{self.yo_x._walk},{self.yo_x._label}"
+        new_pad = f"{self.yo_x._label}"
+        if self.yo_x._pad not in ("", None):
+            new_pad = f"{self.yo_x._pad},{self.yo_x._label}"
         self.contract_x.add_idea(
             idea_kid=new_idea,
-            walk=new_walk,
+            pad=new_pad,
         )
         self.refresh_tree()
 

@@ -9,7 +9,7 @@ from EditProblem import EditProblem
 from src.contract.contract import ContractUnit, get_from_json
 from src.contract.examples.contract_env import contract_env
 from src.contract.hreg_time import convert1440toHHMM
-from src.pyqt5_kit.pyqt_func import (
+from pyqt_func import (
     contract_importance_diplay as pyqt_func_contract_importance_diplay,
     str2float as pyqt_func_str2float,
     num2str as pyqt_func_num2str,
@@ -421,7 +421,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.populate_agenda_table_row(row=row, agenda_item=agenda_item)
                 row += 1
             elif agenda_item._task == True and self.current_task_road is None:
-                self.current_task_road = f"{agenda_item._walk},{agenda_item._label}"
+                self.current_task_road = f"{agenda_item._pad},{agenda_item._label}"
                 self.agenda_task_display(agenda_item)
 
     def populate_agenda_table_row(self, row, agenda_item):
@@ -455,7 +455,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agenda_states.setItem(
             row, 4, qtw1(pyqt_func_contract_importance_diplay(ax._contract_importance))
         )
-        self.agenda_states.setItem(row, 5, qtw1(ax._walk))
+        self.agenda_states.setItem(row, 5, qtw1(ax._pad))
         self.agenda_states.setItem(row, 6, qtw1(""))
 
     def set_agenda_states_table_properties(self):
@@ -512,7 +512,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             str(agenda_item._contract_importance)
         )
         self.label_agenda_family_data.setText("")
-        self.label_agenda_road_data.setText(agenda_item._walk)
+        self.label_agenda_road_data.setText(agenda_item._pad)
 
     def get_jajaday_open_nigh(self, agenda_item):
         jajatime_required = agenda_item._requiredunits.get(

@@ -6,7 +6,7 @@ from PyQt5 import QtCore as qtc
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1
 from EditIdeaUnit import EditIdeaUnit
 from EditParty import EditParty
-from src.pyqt5_kit.pyqt_func import (
+from pyqt_func import (
     contract_importance_diplay,
     get_pyqttree,
     str2float as pyqt_func_str2float,

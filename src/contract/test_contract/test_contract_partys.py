@@ -292,7 +292,7 @@ def test_contract_get_idea_list_CorrectlySetsPartyUnitContractImportance():
     prom_text = "prom"
     cx = ContractUnit(_healer=prom_text)
     swim_text = "swim"
-    cx.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=prom_text)
+    cx.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -438,7 +438,7 @@ def test_contract_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitContractImpor
     prom_text = "prom"
     cx = ContractUnit(_healer=prom_text)
     swim_text = "swim"
-    cx.add_idea(idea_kid=IdeaKid(_label=swim_text), walk=prom_text)
+    cx.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -454,7 +454,7 @@ def test_contract_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitContractImpor
 
     # no balancelinks attached to this one
     hunt_text = "hunt"
-    cx.add_idea(idea_kid=IdeaKid(_label=hunt_text, _weight=3), walk=prom_text)
+    cx.add_idea(idea_kid=IdeaKid(_label=hunt_text, _weight=3), pad=prom_text)
 
     assert cx._idearoot._balancelinks is None
 
@@ -549,7 +549,7 @@ def test_contract_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitContractImpor
 def test_contract_get_idea_list_WithAllPartysWeighted():
     # GIVEN
     cx = ContractUnit(_healer="prom")
-    cx.add_idea(idea_kid=IdeaKid(_label="swim"), walk="prom")
+    cx.add_idea(idea_kid=IdeaKid(_label="swim"), pad="prom")
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -809,7 +809,7 @@ def test_contract_agenda_ratio_credit_debt_IsCorrectlySetWhenAgendaIsEmpty():
 
 def test_contract_get_party_groups_returnsCorrectData():
     cx = ContractUnit(_healer="prom")
-    cx.add_idea(idea_kid=IdeaKid(_label="swim"), walk="prom")
+    cx.add_idea(idea_kid=IdeaKid(_label="swim"), pad="prom")
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -1105,13 +1105,13 @@ def test_contract_set_all_partyunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
     sx = ContractUnit(_healer=healer_text)
     sx.set_partys_empty_if_null()
     swim_text = "swim"
-    walk_text = "walk"
+    pad_text = "pad"
     fly_text = "fly"
     sx.set_partyunit(partyunit=partyunit_shop(title=swim_text))
-    sx.set_partyunit(partyunit=partyunit_shop(title=walk_text))
+    sx.set_partyunit(partyunit=partyunit_shop(title=pad_text))
     sx.set_partyunit(partyunit=partyunit_shop(title=fly_text))
     assert sx._partys[swim_text].uid is None
-    assert sx._partys[walk_text].uid is None
+    assert sx._partys[pad_text].uid is None
     assert sx._partys[fly_text].uid is None
 
     # WHEN
@@ -1119,7 +1119,7 @@ def test_contract_set_all_partyunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
 
     # THEN
     assert sx._partys[swim_text].uid != None
-    assert sx._partys[walk_text].uid != None
+    assert sx._partys[pad_text].uid != None
     assert sx._partys[fly_text].uid != None
 
 
@@ -1129,13 +1129,13 @@ def test_contract_set_all_partyunits_uids_unique_CorrectlySetsChangesSameGroupUI
     sx = ContractUnit(_healer=healer_text)
     sx.set_partys_empty_if_null()
     swim_text = "swim"
-    walk_text = "walk"
+    pad_text = "pad"
     fly_text = "fly"
     sx.set_partyunit(partyunit=partyunit_shop(title=swim_text, uid=3))
-    sx.set_partyunit(partyunit=partyunit_shop(title=walk_text, uid=3))
+    sx.set_partyunit(partyunit=partyunit_shop(title=pad_text, uid=3))
     sx.set_partyunit(partyunit=partyunit_shop(title=fly_text))
     assert sx._partys[swim_text].uid == 3
-    assert sx._partys[walk_text].uid == 3
+    assert sx._partys[pad_text].uid == 3
     assert sx._partys[fly_text].uid is None
 
     # WHEN
@@ -1143,10 +1143,10 @@ def test_contract_set_all_partyunits_uids_unique_CorrectlySetsChangesSameGroupUI
 
     # THEN
     print(f"{sx._partys[swim_text].uid=}")
-    print(f"{sx._partys[walk_text].uid=}")
-    assert sx._partys[swim_text].uid != sx._partys[walk_text].uid
-    assert sx._partys[walk_text].uid != 3
-    assert sx._partys[walk_text].uid != 3
+    print(f"{sx._partys[pad_text].uid=}")
+    assert sx._partys[swim_text].uid != sx._partys[pad_text].uid
+    assert sx._partys[pad_text].uid != 3
+    assert sx._partys[pad_text].uid != 3
     assert sx._partys[fly_text].uid != None
 
 
@@ -1156,13 +1156,13 @@ def test_contract_set_all_partyunits_uids_unique_CorrectlySetsChangesSameGroupUI
     sx = ContractUnit(_healer=healer_text)
     sx.set_partys_empty_if_null()
     swim_text = "swim"
-    walk_text = "walk"
+    pad_text = "pad"
     fly_text = "fly"
     sx.set_partyunit(partyunit=partyunit_shop(title=swim_text, uid=3))
-    sx.set_partyunit(partyunit=partyunit_shop(title=walk_text, uid=3))
+    sx.set_partyunit(partyunit=partyunit_shop(title=pad_text, uid=3))
     sx.set_partyunit(partyunit=partyunit_shop(title=fly_text))
     assert sx._partys[swim_text].uid == 3
-    assert sx._partys[walk_text].uid == 3
+    assert sx._partys[pad_text].uid == 3
     assert sx._partys[fly_text].uid is None
 
     # WHEN
@@ -1170,10 +1170,10 @@ def test_contract_set_all_partyunits_uids_unique_CorrectlySetsChangesSameGroupUI
 
     # THEN
     print(f"{sx._partys[swim_text].uid=}")
-    print(f"{sx._partys[walk_text].uid=}")
-    assert sx._partys[swim_text].uid != sx._partys[walk_text].uid
-    assert sx._partys[walk_text].uid != 3
-    assert sx._partys[walk_text].uid != 3
+    print(f"{sx._partys[pad_text].uid=}")
+    assert sx._partys[swim_text].uid != sx._partys[pad_text].uid
+    assert sx._partys[pad_text].uid != 3
+    assert sx._partys[pad_text].uid != 3
     assert sx._partys[fly_text].uid != None
 
 
@@ -1183,13 +1183,13 @@ def test_contract_all_partyunits_uids_are_unique_ReturnsCorrectBoolean():
     sx = ContractUnit(_healer=healer_text)
     sx.set_partys_empty_if_null()
     swim_text = "swim"
-    walk_text = "walk"
+    pad_text = "pad"
     fly_text = "fly"
     sx.set_partyunit(partyunit=partyunit_shop(title=swim_text, uid=3))
-    sx.set_partyunit(partyunit=partyunit_shop(title=walk_text, uid=3))
+    sx.set_partyunit(partyunit=partyunit_shop(title=pad_text, uid=3))
     sx.set_partyunit(partyunit=partyunit_shop(title=fly_text))
     assert sx._partys[swim_text].uid == 3
-    assert sx._partys[walk_text].uid == 3
+    assert sx._partys[pad_text].uid == 3
     assert sx._partys[fly_text].uid is None
 
     # WHEN1 / THEN

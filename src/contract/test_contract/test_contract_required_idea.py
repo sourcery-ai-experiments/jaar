@@ -147,10 +147,10 @@ def test_contract_requiredheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
     # WHEN
     rla_text = "hp"
     rla_road = f"{work_road},{rla_text}"
-    a4.add_idea(idea_kid=IdeaKid(_label=rla_text), walk=rla_road)
+    a4.add_idea(idea_kid=IdeaKid(_label=rla_text), pad=rla_road)
     cost_text = "cost_tracking"
     cost_road = f"{rla_road},{cost_text}"
-    a4.add_idea(idea_kid=IdeaKid(_label=cost_text), walk=cost_road)
+    a4.add_idea(idea_kid=IdeaKid(_label=cost_text), pad=cost_road)
     a4.get_idea_list()
 
     # THEN
@@ -212,10 +212,10 @@ def test_contract_requiredheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     a4.edit_idea_attr(road=work_road, required=work_wk_build_requiredunit)
     rla_text = "hp"
     rla_road = f"{work_road},{rla_text}"
-    a4.add_idea(idea_kid=IdeaKid(_label=rla_text), walk=rla_road)
+    a4.add_idea(idea_kid=IdeaKid(_label=rla_text), pad=rla_road)
     cost_text = "cost_tracking"
     cost_road = f"{rla_road},{cost_text}"
-    a4.add_idea(idea_kid=IdeaKid(_label=cost_text), walk=cost_road)
+    a4.add_idea(idea_kid=IdeaKid(_label=cost_text), pad=cost_road)
 
     work_idea = a4._idearoot._kids[work_text]
     rla_idea = work_idea._kids[rla_text]
@@ -347,9 +347,9 @@ def test_contract_requiredunits_set_sufffactIdeaWithDenomSetsSuffFactDivision():
     week_road = f"{cx._cure_handle},{time_text},{week_text}"
     cx.add_idea(
         idea_kid=IdeaKid(_label=time_text, _begin=100, _close=2000),
-        walk=cx._cure_handle,
+        pad=cx._cure_handle,
     )
-    cx.add_idea(idea_kid=IdeaKid(_label=week_text, _denom=7), walk=time_road)
+    cx.add_idea(idea_kid=IdeaKid(_label=week_text, _denom=7), pad=time_road)
 
     # When
     cx.edit_idea_attr(
@@ -379,9 +379,9 @@ def test_contract_requiredunits_set_sufffactIdeaWithBeginCloseSetsSuffFactOpenNi
     rus_war = "rus_war"
     rus_war_road = f"{cx._cure_handle},{time},{rus_war}"
     cx.add_idea(
-        idea_kid=IdeaKid(_label=time, _begin=100, _close=2000), walk=cx._cure_handle
+        idea_kid=IdeaKid(_label=time, _begin=100, _close=2000), pad=cx._cure_handle
     )
-    cx.add_idea(idea_kid=IdeaKid(_label=rus_war, _begin=22, _close=34), walk=time_road)
+    cx.add_idea(idea_kid=IdeaKid(_label=rus_war, _begin=22, _close=34), pad=time_road)
 
     # When
     cx.edit_idea_attr(
@@ -469,7 +469,7 @@ def test_contract_edit_idea_attr_contractIsAbleToEdit_suff_idea_active_status_An
 
     commute_text = "commute to work"
     commute_road = f"{cx._cure_handle},{commute_text}"
-    cx.add_idea(idea_kid=IdeaKid(_label=commute_text), walk=cx._cure_handle)
+    cx.add_idea(idea_kid=IdeaKid(_label=commute_text), pad=cx._cure_handle)
     cx.get_idea_list()  # set tree metrics
     commute_idea = cx.get_idea_kid(road=commute_road)
     assert len(commute_idea._requiredunits) == 0
@@ -549,7 +549,7 @@ def test_contract_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus
     # 5.2. idea(...,work).active_status = False
     commute_text = "commute to work"
     commute_road = f"{cx._cure_handle},{commute_text}"
-    cx.add_idea(idea_kid=IdeaKid(_label=commute_text), walk=cx._cure_handle)
+    cx.add_idea(idea_kid=IdeaKid(_label=commute_text), pad=cx._cure_handle)
     cx.edit_idea_attr(
         road=commute_road,
         required_base=work_road,

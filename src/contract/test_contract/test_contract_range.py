@@ -9,12 +9,12 @@ def test_contractAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
 
     l1 = "level1"
     idea_kid_l1 = IdeaKid(_weight=30, _label=l1)
-    cx.add_idea(walk=cx._cure_handle, idea_kid=idea_kid_l1)
+    cx.add_idea(pad=cx._cure_handle, idea_kid=idea_kid_l1)
     l1_road = f"{cx._cure_handle},{l1}"
 
     rx1 = "range_root_example"
     idea_kid_rx1 = IdeaKid(_weight=30, _label=rx1)
-    cx.add_idea(walk=l1_road, idea_kid=idea_kid_rx1)
+    cx.add_idea(pad=l1_road, idea_kid=idea_kid_rx1)
     rx1_road = f"{l1_road},{rx1}"
     cx.edit_idea_attr(road=rx1_road, begin=10, close=25)
 
@@ -23,7 +23,7 @@ def test_contractAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
 
     rcA = "range_child_example"
     idea_kid_rcA = IdeaKid(_weight=30, _begin=10, _close=25, _label=rcA)
-    cx.add_idea(walk=rx1_road, idea_kid=idea_kid_rcA)
+    cx.add_idea(pad=rx1_road, idea_kid=idea_kid_rcA)
 
     rcA_road = f"{rx1_road},{rcA}"
     x_idea = cx.get_idea_kid(road=rcA_road)
@@ -46,12 +46,12 @@ def test_contractAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
 
     l1 = "level1"
     idea_kid_l1 = IdeaKid(_weight=30, _label=l1)
-    cx.add_idea(walk=cx._cure_handle, idea_kid=idea_kid_l1)
+    cx.add_idea(pad=cx._cure_handle, idea_kid=idea_kid_l1)
     l1_road = f"{cx._cure_handle},{l1}"
 
     rx1 = "range_root_example"
     idea_kid_rx1 = IdeaKid(_weight=30, _label=rx1)
-    cx.add_idea(walk=l1_road, idea_kid=idea_kid_rx1)
+    cx.add_idea(pad=l1_road, idea_kid=idea_kid_rx1)
     rx1_road = f"{l1_road},{rx1}"
     cx.edit_idea_attr(road=rx1_road, begin=10, close=25)
 
@@ -60,7 +60,7 @@ def test_contractAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
 
     rcA = "range_child_example"
     idea_kid_rcA = IdeaKid(_weight=30, _begin=10, _close=25, _label=rcA)
-    cx.add_idea(walk=rx1_road, idea_kid=idea_kid_rcA)
+    cx.add_idea(pad=rx1_road, idea_kid=idea_kid_rcA)
 
     rcA_road = f"{rx1_road},{rcA}"
     x_idea = cx.get_idea_kid(road=rcA_road)

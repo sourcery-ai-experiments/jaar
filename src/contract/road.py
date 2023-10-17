@@ -28,7 +28,7 @@ def find_replace_road_key_dict(dict_x: dict, old_road: Road, new_road: Road):
             #  or (
             #     key_is_last_node
             #     and is_sub_road(
-            #         ref_road=Road(f"{x_obj._walk},{x_obj._label}"), sub_road=old_road
+            #         ref_road=Road(f"{x_obj._pad},{x_obj._label}"), sub_road=old_road
             #     )
             # changed_road = change_road(
             #     current_road=x_key, old_road=old_road, new_road=new_road
@@ -56,7 +56,7 @@ def get_terminus_node_from_road(road: Road):
     return get_all_road_nodes(road=road)[-1]
 
 
-def get_walk_from_road(road: Road):  # road without terminus node
+def get_pad_from_road(road: Road):  # road without terminus node
     return get_road_from_nodes(get_all_road_nodes(road=road)[:-1])
 
 

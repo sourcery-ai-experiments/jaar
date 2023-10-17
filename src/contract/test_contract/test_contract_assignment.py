@@ -224,17 +224,17 @@ def test_contract__get_relevant_roads_ReturnsSimpleRequiredUnitBase():
     floor_text = "mop floor"
     floor_road = f"{casa_road},{floor_text}"
     floor_idea = IdeaKid(_label=floor_text)
-    cx.add_idea(idea_kid=floor_idea, walk=casa_road)
+    cx.add_idea(idea_kid=floor_idea, pad=casa_road)
 
     unim_text = "unimportant"
     unim_road = f"{cx._cure_handle},{unim_text}"
     unim_idea = IdeaKid(_label=unim_text)
-    cx.add_idea(idea_kid=unim_idea, walk=cx._cure_handle)
+    cx.add_idea(idea_kid=unim_idea, pad=cx._cure_handle)
 
     status_text = "cleaniness status"
     status_road = f"{casa_road},{status_text}"
     status_idea = IdeaKid(_label=status_text)
-    cx.add_idea(idea_kid=status_idea, walk=casa_road)
+    cx.add_idea(idea_kid=status_idea, pad=casa_road)
     floor_required = RequiredUnit(base=status_road, sufffacts={})
     floor_required.set_sufffact(sufffact=status_road)
     cx.edit_idea_attr(road=floor_road, required=floor_required)
@@ -317,12 +317,12 @@ def test_contract__get_relevant_roads_numeric_road_ReturnSimple():
     cx = ContractUnit(_healer=healer_text)
     work_text = "work"
     work_road = f"{cx._cure_handle},{work_text}"
-    cx.add_idea(IdeaKid(_label=work_text), walk=cx._cure_handle)
+    cx.add_idea(IdeaKid(_label=work_text), pad=cx._cure_handle)
     work_idea = cx.get_idea_kid(road=work_road)
     day_text = "day_range"
     day_road = f"{cx._cure_handle},{day_text}"
     day_idea = IdeaKid(_label=day_text, _begin=44, _close=110)
-    cx.add_idea(day_idea, walk=cx._cure_handle)
+    cx.add_idea(day_idea, pad=cx._cure_handle)
     cx.edit_idea_attr(road=work_road, denom=11, numeric_road=day_road)
     assert work_idea._begin == 4
     print(f"{work_idea._label=} {work_idea._begin=} {work_idea._close=}")
@@ -351,17 +351,17 @@ def test_contract__get_relevant_roads_range_source_road_ReturnSimple():
     min_range_text = "a_minute_range"
     min_range_road = f"{cx._cure_handle},{min_range_text}"
     min_range_idea = IdeaKid(_label=min_range_text, _begin=0, _close=2880)
-    cx.add_idea(min_range_idea, walk=cx._cure_handle)
+    cx.add_idea(min_range_idea, pad=cx._cure_handle)
 
     day_len_text = "day_length"
     day_len_road = f"{cx._cure_handle},{day_len_text}"
     day_len_idea = IdeaKid(_label=day_len_text, _begin=0, _close=1440)
-    cx.add_idea(day_len_idea, walk=cx._cure_handle)
+    cx.add_idea(day_len_idea, pad=cx._cure_handle)
 
     min_days_text = "days in minute_range"
     min_days_road = f"{min_range_road},{min_days_text}"
     min_days_idea = IdeaKid(_label=min_days_text, _range_source_road=day_len_road)
-    cx.add_idea(min_days_idea, walk=min_range_road)
+    cx.add_idea(min_days_idea, pad=min_range_road)
 
     # WHEN
     cx.set_contract_metrics()
@@ -389,7 +389,7 @@ def test_contract__set_assignment_ideas_ReturnsCorrectIdeas():
     yao_cx = ContractUnit(_healer=yao_text)
     casa_text = "casa"
     casa_road = f"{yao_cx._cure_handle},{casa_text}"
-    yao_cx.add_idea(IdeaKid(_label=casa_text), walk=yao_cx._cure_handle)
+    yao_cx.add_idea(IdeaKid(_label=casa_text), pad=yao_cx._cure_handle)
     yao_cx.set_contract_metrics()
 
     # WHEN
@@ -415,17 +415,17 @@ def test_contract__set_assignment_ideas_ReturnsCorrectIdeaRoot_acptfacts():
 
     casa_text = "casa"
     casa_road = f"{yao_cx._cure_handle},{casa_text}"
-    yao_cx.add_idea(IdeaKid(_label=casa_text), walk=yao_cx._cure_handle)
+    yao_cx.add_idea(IdeaKid(_label=casa_text), pad=yao_cx._cure_handle)
 
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
-    yao_cx.add_idea(IdeaKid(basket_text), walk=casa_road)
+    yao_cx.add_idea(IdeaKid(basket_text), pad=casa_road)
     yao_cx.set_acptfact(base=basket_road, pick=basket_road)
     # print(f"{list(yao_cx._idearoot._acptfactunits.keys())=}")
 
     room_text = "room status"
     room_road = f"{casa_road},{room_text}"
-    yao_cx.add_idea(IdeaKid(room_text), walk=casa_road)
+    yao_cx.add_idea(IdeaKid(room_text), pad=casa_road)
     yao_cx.set_acptfact(base=room_road, pick=room_road)
     print(f"{list(yao_cx._idearoot._acptfactunits.keys())=}")
 

@@ -6,10 +6,10 @@ from PyQt5 import QtCore as qtc
 from PyQt5.QtWidgets import QTableWidgetItem as qti
 from EditIdeaUnit import EditIdeaUnit
 from EditParty import EditParty
-from src.pyqt5_kit.pyqt_func import contract_importance_diplay, get_pyqttree, num2str
+from pyqt_func import contract_importance_diplay, get_pyqttree, num2str
 from src.contract.group import groupunit_shop, balancelink_shop
 from src.contract.idea import IdeaKid
-from src.contract.road import Road, get_walk_from_road, get_terminus_node_from_road
+from src.contract.road import Road, get_pad_from_road, get_terminus_node_from_road
 from sys import exit as sys_exit
 
 # self.problem_title_text
@@ -123,9 +123,9 @@ class EditProblem(qtw.QWidget, Ui_Form):
 
     def set_problem_dominate_action_idea(self, road):
         if road != "":
-            prob_walk = get_walk_from_road(road)
+            prob_pad = get_pad_from_road(road)
             prob_label = get_terminus_node_from_road(road)
-            prob_idea = IdeaKid(_label=prob_label, _walk=prob_walk)
+            prob_idea = IdeaKid(_label=prob_label, _pad=prob_pad)
             for balancelink_x in self.create_balancelinks_list():
                 prob_idea.set_balancelink(balancelink_x)
             self.contract_x.set_dominate_promise_idea(idea_kid=prob_idea)
@@ -223,7 +223,7 @@ class EditProblem(qtw.QWidget, Ui_Form):
 
         self.agenda_table.setRowCount(row + 1)
         self.agenda_table.setItem(row, 0, qti(a._label))
-        self.agenda_table.setItem(row, 1, qti(a._walk))
+        self.agenda_table.setItem(row, 1, qti(a._pad))
         self.agenda_table.setItem(row, 2, qti(lw_display_x))
         self.agenda_table.setItem(row, 3, qti(num2str(a._weight)))
         self.agenda_table.setItem(row, 4, qti(base))

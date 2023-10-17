@@ -403,7 +403,7 @@ def test_idea_attributes_meld_FailRaisesError_uid():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._walk},{yx1._label} {x_title}:{x_val} with {yx2._walk},{yx2._label} {x_title}:None"
+        == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:None"
     )
 
 
@@ -419,7 +419,7 @@ def test_idea_attributes_meld_FailRaisesError_begin():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._walk},{yx1._label} {x_title}:{x_val} with {yx2._walk},{yx2._label} {x_title}:None"
+        == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:None"
     )
 
 
@@ -435,7 +435,7 @@ def test_idea_attributes_meld_FailRaisesError_close():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._walk},{yx1._label} {x_title}:{x_val} with {yx2._walk},{yx2._label} {x_title}:None"
+        == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:None"
     )
 
 
@@ -451,7 +451,7 @@ def test_idea_attributes_meld_FailRaisesError_addin():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._walk},{yx1._label} {x_title}:{x_val} with {yx2._walk},{yx2._label} {x_title}:None"
+        == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:None"
     )
 
 
@@ -467,7 +467,7 @@ def test_idea_attributes_meld_FailRaisesError_denom():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._walk},{yx1._label} {x_title}:{x_val} with {yx2._walk},{yx2._label} {x_title}:None"
+        == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:None"
     )
 
 
@@ -483,7 +483,7 @@ def test_idea_attributes_meld_FailRaisesError_numor():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._walk},{yx1._label} {x_title}:{x_val} with {yx2._walk},{yx2._label} {x_title}:None"
+        == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:None"
     )
 
 
@@ -499,7 +499,7 @@ def test_idea_attributes_meld_FailRaisesError_reest():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._walk},{yx1._label} {x_title}:{x_val} with {yx2._walk},{yx2._label} {x_title}:None"
+        == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:None"
     )
 
 
@@ -515,7 +515,7 @@ def test_idea_attributes_meld_FailRaisesError_range_source_road():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._walk},{yx1._label} {x_title}:{x_val} with {yx2._walk},{yx2._label} {x_title}:None"
+        == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:None"
     )
 
 
@@ -531,7 +531,7 @@ def test_idea_attributes_meld_FailRaisesError_numeric_road():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._walk},{yx1._label} {x_title}:{x_val} with {yx2._walk},{yx2._label} {x_title}:None"
+        == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:None"
     )
 
 
@@ -547,7 +547,7 @@ def test_idea_attributes_meld_FailRaisesError_action():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._walk},{yx1._label} {x_title}:{x_val} with {yx2._walk},{yx2._label} {x_title}:False"
+        == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:False"
     )
 
 
@@ -567,7 +567,7 @@ def test_idea_attributes_meld_FailRaisesError_action():
 #         yx1.meld(yx2)
 #     assert (
 #         str(excinfo.value)
-#         == f"Meld fail idea={yx1._walk},{yx1._label} {x_title}:{x_val} with {yx2._walk},{yx2._label} {x_title}:None"
+#         == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:None"
 #     )
 
 
@@ -585,7 +585,7 @@ def test_idea_attributes_meld_FailRaisesError_is_expanded():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._walk},{yx1._label} {x_title}:{x_val} with {yx2._walk},{yx2._label} {x_title}:True"
+        == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:True"
     )
 
 

@@ -125,7 +125,7 @@ class IdeaAttrHolder:
 class IdeaCore:
     _label: str = None
     _uid: int = None  # Calculated field?
-    _walk: str = None
+    _pad: str = None
     _kids: dict = None
     _weight: int = 1
     _balancelinks: dict[GroupBrand:Balancelink] = None
@@ -322,10 +322,10 @@ class IdeaCore:
         ]
 
     def get_road(self) -> Road:
-        if self._walk in (None, ""):
+        if self._pad in (None, ""):
             return f"{self._label}"
         else:
-            return f"{self._walk},{self._label}"
+            return f"{self._pad},{self._label}"
 
     def clear_descendant_promise_count(self):
         self._descendant_promise_count = None
@@ -371,15 +371,15 @@ class IdeaCore:
     def set_level(self, parent_level):
         self._level = parent_level + 1
 
-    def set_walk(self, parent_road, parent_label=None):
+    def set_pad(self, parent_road, parent_label=None):
         if parent_road == "" and parent_label is None:
-            self._walk = ""
+            self._pad = ""
         elif parent_road == "" and parent_label != None:
-            self._walk = parent_label
+            self._pad = parent_label
         elif parent_road != "" and parent_label in ("", None):
-            self._walk = f"{parent_road}"
+            self._pad = f"{parent_road}"
         else:
-            self._walk = f"{parent_road},{parent_label}"
+            self._pad = f"{parent_road},{parent_label}"
 
     def inherit_balanceheirs(
         self, parent_balanceheirs: dict[GroupBrand:BalanceHeir] = None
@@ -566,7 +566,7 @@ class IdeaCore:
             attrs = xl.pop()
             if attrs[1] != attrs[2]:
                 raise InvalidIdeaException(
-                    f"Meld fail idea={self._walk},{self._label} {attrs[0]}:{attrs[1]} with {other_idea._walk},{other_idea._label} {attrs[0]}:{attrs[2]}"
+                    f"Meld fail idea={self._pad},{self._label} {attrs[0]}:{attrs[1]} with {other_idea._pad},{other_idea._label} {attrs[0]}:{attrs[2]}"
                 )
 
     def _set_idea_attr(self, idea_attr: IdeaAttrHolder):
@@ -707,7 +707,7 @@ class IdeaCore:
             # if idea_kid._reest != None:
             if self._begin is None or self._close is None:
                 raise InvalidIdeaException(
-                    f"Idea {idea_kid._walk},{idea_kid._label} cannot have numor,denom,reest if parent does not have begin/close range"
+                    f"Idea {idea_kid._pad},{idea_kid._label} cannot have numor,denom,reest if parent does not have begin/close range"
                 )
 
             idea_kid._begin = self._begin * idea_kid._numor / idea_kid._denom
@@ -923,8 +923,8 @@ class IdeaCore:
         }
 
     def find_replace_road(self, old_road: Road, new_road: Road):
-        if is_sub_road(ref_road=self._walk, sub_road=old_road):
-            self._walk = change_road(self._walk, old_road, new_road)
+        if is_sub_road(ref_road=self._pad, sub_road=old_road):
+            self._pad = change_road(self._pad, old_road, new_road)
         if is_sub_road(ref_road=self._range_source_road, sub_road=old_road):
             self._range_source_road = change_road(
                 self._range_source_road, old_road, new_road

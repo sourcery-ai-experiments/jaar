@@ -9,16 +9,16 @@ from src.contract.road import get_default_cure_root_label as root_label
 from pytest import raises as pytest_raises
 
 
-def test_idea_find_replace_road_Changes_walk():
-    # GIVEN Idea with _walk that will be changed
+def test_idea_find_replace_road_Changes_pad():
+    # GIVEN Idea with _pad that will be changed
     old_healer = "healer1"
     bloomers_text = "bloomers"
     bloomers_road = f"{root_label()},{old_healer},{bloomers_text}"
     roses_text = "roses"
     roses_road = f"{root_label()},{old_healer},{bloomers_text},{roses_text}"
-    idea_x = IdeaCore(_label=roses_text, _walk=bloomers_road)
-    assert Road(f"{idea_x._walk}") == bloomers_road
-    assert Road(f"{idea_x._walk},{idea_x._label}") == roses_road
+    idea_x = IdeaCore(_label=roses_text, _pad=bloomers_road)
+    assert Road(f"{idea_x._pad}") == bloomers_road
+    assert Road(f"{idea_x._pad},{idea_x._label}") == roses_road
 
     # WHEN
     new_healer = "healer1"
@@ -29,8 +29,8 @@ def test_idea_find_replace_road_Changes_walk():
     # THEN
     new_bloomers_road = f"{root_label()},{new_healer},{bloomers_text}"
     new_roses_road = f"{root_label()},{new_healer},{bloomers_text},{roses_text}"
-    assert Road(f"{idea_x._walk}") == new_bloomers_road
-    assert Road(f"{idea_x._walk},{idea_x._label}") == new_roses_road
+    assert Road(f"{idea_x._pad}") == new_bloomers_road
+    assert Road(f"{idea_x._pad},{idea_x._label}") == new_roses_road
 
 
 def test_idea_find_replace_road_Changes_range_source_road_numeric_road():
@@ -53,7 +53,7 @@ def test_idea_find_replace_road_Changes_range_source_road_numeric_road():
     farm_road = f"{root_label()},{farm_text}"
     idea_x = IdeaCore(
         _label=roses_text,
-        _walk=bloomers_road,
+        _pad=bloomers_road,
         _range_source_road=old_rain_road,
         _numeric_road=old_snow_road,
     )

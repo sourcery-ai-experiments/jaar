@@ -62,7 +62,7 @@ def test_healeropen_isol_contract_WhenStartingContractFileDoesNotExists(
     x_contract = ContractUnit(_healer=tim_text)
     x_contract.set_cure_handle(get_temp_cure_handle())
     x_contract.set_contract_metrics()
-    # x_idearoot = IdeaRoot(_label=p_title, _walk="")
+    # x_idearoot = IdeaRoot(_label=p_title, _pad="")
     # x_idearoot.set_balancelines_empty_if_null()
     # x_idearoot.set_kids_empty_if_null()
     # x_idearoot.set_balancelink_empty_if_null()
@@ -229,12 +229,12 @@ def test_healer_get_remelded_output_contract_withEmptyDigestDict(
     # THEN
     healer_contract_x = ContractUnit(_healer=healer_title_x, _weight=0.0)
     healer_contract_x.set_cure_handle(get_temp_cure_handle())
-    healer_contract_x._idearoot._walk = ""
+    healer_contract_x._idearoot._pad = ""
     healer_contract_x.set_contract_metrics()
 
     assert str(type(sx_output_after)).find(".contract.ContractUnit'>")
     assert sx_output_after._weight == healer_contract_x._weight
-    assert sx_output_after._idearoot._walk == healer_contract_x._idearoot._walk
+    assert sx_output_after._idearoot._pad == healer_contract_x._idearoot._pad
     assert (
         sx_output_after._idearoot._acptfactunits
         == healer_contract_x._idearoot._acptfactunits
@@ -268,11 +268,11 @@ def test_healer_get_remelded_output_contract_with1DigestedContract(
     assert sx_output_new._weight != input_contract._weight
     sx_idearoot = sx_output_new._idearoot
     input_idearoot = input_contract._idearoot
-    assert sx_idearoot._walk == input_idearoot._walk
+    assert sx_idearoot._pad == input_idearoot._pad
     assert sx_idearoot._acptfactunits == input_idearoot._acptfactunits
     input_b_idea = input_idearoot._kids.get("B")
     sx_output_new_b_idea = sx_idearoot._kids.get("B")
-    assert sx_output_new_b_idea._walk == input_b_idea._walk
+    assert sx_output_new_b_idea._pad == input_b_idea._pad
     assert sx_output_new._idearoot._kids == input_contract._idearoot._kids
     assert sx_idearoot._kids_total_weight == input_idearoot._kids_total_weight
     assert sx_idearoot == input_idearoot
@@ -303,7 +303,7 @@ def test_healer_get_remelded_output_contract_with1DigestedContract(
 
 #     yaya_text = "yaya"
 #     yaya_road = Road(f"{src1},{yaya_text}")
-#     s1.add_idea(idea_kid=IdeaKid(_label=yaya_text), walk=src1_road)
+#     s1.add_idea(idea_kid=IdeaKid(_label=yaya_text), pad=src1_road)
 #     s1.set_acptfact(base=yaya_road, acptfact=yaya_road)
 
 #     assert s1._groups.get(swim_text).title == swim_text
@@ -322,7 +322,7 @@ def test_healer_get_remelded_output_contract_with1DigestedContract(
 #     assert sx_output_new._groups == s1._groups
 #     assert sx_output_new._weight == s1._weight
 #     assert sx_output_new._weight == s1._weight
-#     assert sx_output_new._idearoot._walk == s1._idearoot._walk
+#     assert sx_output_new._idearoot._pad == s1._idearoot._pad
 #     assert sx_output_new._idearoot._acptfactunits == s1._idearoot._acptfactunits
 #     assert sx_output_new._idearoot._kids == s1._idearoot._kids
 #     assert sx_output_new._idearoot._kids_total_weight == s1._idearoot._kids_total_weight

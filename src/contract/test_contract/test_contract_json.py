@@ -132,9 +132,7 @@ def test_contract_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
 
     morn_text = "morning"
     morn_road = f"{x_contract._cure_handle},{morn_text}"
-    x_contract.add_idea(
-        idea_kid=IdeaKid(_label=morn_text), walk=x_contract._cure_handle
-    )
+    x_contract.add_idea(idea_kid=IdeaKid(_label=morn_text), pad=x_contract._cure_handle)
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(title=run_text)
     x_contract.edit_idea_attr(assignedunit=assigned_unit_x, road=morn_road)
@@ -277,7 +275,7 @@ def test_contract_get_json_CorrectlyWorksForSimpleExample():
     shave_idea_y1 = contract_y.get_idea_kid(road=shave_road)
     shave_idea_y1._originunit.set_originlink(title="Sue", weight=4.3)
     # print(f"{shave_road=}")
-    # print(f"{shave_idea_x._label=} {shave_idea_x._walk=}")
+    # print(f"{shave_idea_x._label=} {shave_idea_x._pad=}")
 
     sue_text = "sue"
     contract_y.add_partyunit(title=sue_text)
@@ -327,8 +325,8 @@ def test_contract_get_json_CorrectlyWorksForSimpleExample():
     assert contract_x._auto_output_to_public == contract_y._auto_output_to_public
 
     idearoot_x = contract_x._idearoot
-    assert idearoot_x._walk == ""
-    assert idearoot_x._walk == contract_y._idearoot._walk
+    assert idearoot_x._pad == ""
+    assert idearoot_x._pad == contract_y._idearoot._pad
     assert idearoot_x._requiredunits == {}
     assert idearoot_x._assignedunit == contract_y._idearoot._assignedunit
     assert idearoot_x._assignedunit == run_assigned_unit
@@ -384,8 +382,8 @@ def test_contract_get_json_CorrectlyWorksForSimpleExample():
 #     assert cx3._max_tree_traverse == cx1._max_tree_traverse
 #     assert cx3._idearoot._healer != None
 #     assert cx3._idearoot._healer == cx1._idearoot._healer
-#     assert cx3._idearoot._walk == ""
-#     assert cx3._idearoot._walk == cx1._idearoot._walk
+#     assert cx3._idearoot._pad == ""
+#     assert cx3._idearoot._pad == cx1._idearoot._pad
 #     assert len(cx3._idearoot._kids) == len(cx1._idearoot._kids)
 #     assert len(cx3._groups) == 34
 #     assert len(cx3._partys) == 22
