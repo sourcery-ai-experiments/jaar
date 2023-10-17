@@ -199,7 +199,7 @@ def test_oath_idearoot_is_heir_CorrectlyChecksLineage():
     assert x_oath._idearoot.is_heir(src=sun_road, heir=week_road) == False
 
 
-def test_oath_del_idea_kid_IdeaLevel0CannotBeDeleted():
+def test_oath_del_idea_kid_Level0CannotBeDeleted():
     # GIVEN
     x_oath = get_oath_with_4_levels()
     root_road = f"{x_oath._cure_handle}"
@@ -210,7 +210,7 @@ def test_oath_del_idea_kid_IdeaLevel0CannotBeDeleted():
     assert str(excinfo.value) == "Object cannot delete itself"
 
 
-def test_oath_del_idea_kid_IdeaLevel1CanBeDeleted_ChildrenDeleted():
+def test_oath_del_idea_kid_Level1CanBeDeleted_ChildrenDeleted():
     # GIVEN
     x_oath = get_oath_with_4_levels()
     week_text = "weekdays"
@@ -239,7 +239,7 @@ def test_oath_del_idea_kid_IdeaLevel1CanBeDeleted_ChildrenDeleted():
     )
 
 
-def test_oath_del_idea_kid_IdeaLevel1CanBeDeleted_ChildrenInherited():
+def test_oath_del_idea_kid_Level1CanBeDeleted_ChildrenInherited():
     # GIVEN
     x_oath = get_oath_with_4_levels()
     x_oath.set_oath_metrics()
@@ -265,7 +265,7 @@ def test_oath_del_idea_kid_IdeaLevel1CanBeDeleted_ChildrenInherited():
     assert new_sunday_idea._pad == x_oath._cure_handle
 
 
-def test_oath_del_idea_kid_IdeaLevelNCanBeDeleted_ChildrenInherited():
+def test_oath_del_idea_kid_LevelNCanBeDeleted_ChildrenInherited():
     # GIVEN
     x_oath = get_oath_with_4_levels()
     states_text = "nation-state"
@@ -297,7 +297,7 @@ def test_oath_del_idea_kid_IdeaLevelNCanBeDeleted_ChildrenInherited():
     assert x_oath._idea_dict.get(usa_road) is None
 
 
-def test_oath_del_idea_kid_IdeaLevel2CanBeDeleted_ChildrenDeleted():
+def test_oath_del_idea_kid_Level2CanBeDeleted_ChildrenDeleted():
     # GIVEN
     x_oath = get_oath_with_4_levels()
     monday_road = f"{x_oath._cure_handle},weekdays,Monday"
@@ -315,7 +315,7 @@ def test_oath_del_idea_kid_IdeaLevel2CanBeDeleted_ChildrenDeleted():
     )
 
 
-def test_oath_del_idea_kid_IdeaLevelNCanBeDeleted_ChildrenDeleted():
+def test_oath_del_idea_kid_LevelNCanBeDeleted_ChildrenDeleted():
     # GIVEN
     x_oath = get_oath_with_4_levels()
     states_text = "nation-state"

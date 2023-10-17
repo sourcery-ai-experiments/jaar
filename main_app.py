@@ -18,10 +18,8 @@ from src.oath.x_func import (
     save_file as x_func_save_file,
     open_file as x_func_open_file,
 )
-from sys import exit as sys_exit
+from sys import exit as sys_exit, argv as sys_argv
 
-# """Simple test application for dealing with multiple windows"""
-import sys
 
 # from PyQt5 import QtWidgets as qtw
 from PyQt5.QtWidgets import (
@@ -532,5 +530,5 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 
 if __name__ == "__main__":
-    app = MainApp(sys.argv)
-    sys.exit(app.exec())
+    app = MainApp(sys_argv)
+    sys_exit(app.exec())
