@@ -33,6 +33,20 @@ class PersonUnit:
         for x_painunit in self._pains.values():
             x_painunit.set_relative_weight(x_painunit.weight / total_painunits_weight)
 
+    def set_cureunits_weight_metrics(self):
+        self.set_painunits_weight_metrics()
+        cureunit_handles = {x_cureunit.handle: 0 for x_cureunit in self._cures.values()}
+
+        for x_painunit in self._pains.values():
+            for x_healerlink in x_painunit._healerlinks.values():
+                for x_curelink in x_healerlink._curelinks.values():
+                    cureunit_handles[x_curelink.handle] += x_curelink._person_importance
+
+        for x_cureunit_handle, x_cureunit_person_importance in cureunit_handles.items():
+            self._cures.get(x_cureunit_handle).set_person_importance(
+                x_cureunit_person_importance
+            )
+
     def set_cures_empty_if_none(self):
         if self._cures is None:
             self._cures = {}

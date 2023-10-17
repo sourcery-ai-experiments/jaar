@@ -48,8 +48,12 @@ class CureHandle(str):
 class CureUnit:
     handle: CureHandle
     cures_dir: str
+    _person_importance: float = None
     _healerunits: dict[str:HealerUnit] = None
     _bank_db = None
+
+    def set_person_importance(self, person_importance: float):
+        self._person_importance = person_importance
 
     def set_contract_bank_attrs(self, contract_healer: str):
         contract_obj = self.get_public_contract(contract_healer)
