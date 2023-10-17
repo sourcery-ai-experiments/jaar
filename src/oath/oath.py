@@ -145,34 +145,6 @@ class OathUnit:
         else:
             self._max_tree_traverse = int_x
 
-    def get_bond_status(self) -> bool:
-        self.set_oath_metrics()
-        tree_metrics_x = self.get_tree_metrics()
-        if tree_metrics_x.bond_promise_count != 1:
-            return False
-
-        promise_idea_road = tree_metrics_x.an_promise_idea_road
-        if self._are_all_partys_groups_are_in_idea_kid(road=promise_idea_road) == False:
-            return False
-
-        return self.all_ideas_relevant_to_promise_idea(road=promise_idea_road) != False
-
-    def export_all_bonds(self, dir: str):
-        self.set_all_idea_uids_unique()
-        self.set_oath_metrics()
-        # dict_x = {}
-        for yx in self.get_idea_list():
-            if yx.promise:
-                cx = self.get_oath_sprung_from_single_idea(yx.get_road())
-                file_title = f"{yx._uid}.json"
-                x_func_save_file(
-                    dest_dir=dir,
-                    file_title=file_title,
-                    file_text=cx.get_json(),
-                    replace=True,
-                )
-        return {}
-
     def get_oath_sprung_from_single_idea(self, road: Road):
         self.set_oath_metrics()
         idea_x = self.get_idea_kid(road=road)

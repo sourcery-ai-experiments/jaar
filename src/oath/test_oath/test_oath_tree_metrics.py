@@ -83,22 +83,6 @@ def test_oath_oath_get_tree_metrics_sets_uids_correctly():
     assert x_oath.get_idea_kid(road=f"{x_oath._cure_handle},{swim_text}")._uid != None
 
 
-def test_oath_get_tree_metrics_ReturnsAccurateActionIdeaCount():
-    # GIVEN
-    x_oath = oath_v001()
-    tree_metrics_before = x_oath.get_tree_metrics()
-    assert tree_metrics_before.bond_promise_count == 69
-
-    # WHEN
-    x_oath.add_idea(
-        idea_kid=IdeaKid(_label="clean", promise=True), pad=f"{x_oath._healer}"
-    )
-
-    # THEN
-    tree_metrics_after = x_oath.get_tree_metrics()
-    assert tree_metrics_after.bond_promise_count == 70
-
-
 def test_oath_get_tree_metrics_ReturnsANoneActionIdeaRoad():
     # GIVEN
     healer_text = "Nia"

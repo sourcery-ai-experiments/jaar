@@ -36,7 +36,6 @@ def test_admin_exists():
     assert pdx._oaths_public_dir is None
     assert pdx._oaths_depot_dir is None
     assert pdx._oaths_ignore_dir is None
-    assert pdx._oaths_bond_dir is None
     assert pdx._oaths_digest_dir is None
 
 
@@ -53,7 +52,6 @@ def test_HealingAdmin_set_dir_CorrectSetsHealingAdminAttribute():
     assert pdx._oaths_depot_dir is None
     assert pdx._oaths_ignore_dir is None
     assert pdx._oaths_digest_dir is None
-    assert pdx._oaths_bond_dir is None
     assert pdx._isol_file_title is None
     assert pdx._isol_file_path is None
     # WHEN
@@ -68,7 +66,6 @@ def test_HealingAdmin_set_dir_CorrectSetsHealingAdminAttribute():
     assert pdx._oaths_depot_dir != None
     assert pdx._oaths_ignore_dir != None
     assert pdx._oaths_digest_dir != None
-    assert pdx._oaths_bond_dir != None
     assert pdx._isol_file_title != None
     assert pdx._isol_file_path != None
 
@@ -83,7 +80,6 @@ def test_HealingAdmin_set_dir_CorrectSetsHealingAdminAttribute():
     oaths_str = "oaths"
     x_oaths_depot_dir = f"{x_healingunit_dir}/{oaths_str}"
     x_oaths_ignore_dir = f"{x_healingunit_dir}/ignores"
-    x_oaths_bond_dir = f"{x_healingunit_dir}/bonds"
     x_oaths_digest_dir = f"{x_healingunit_dir}/digests"
     x_oaths_public_dir = f"{env_dir}/{oaths_str}"
     assert pdx._healingunits_dir == x_healingunits_dir
@@ -94,7 +90,6 @@ def test_HealingAdmin_set_dir_CorrectSetsHealingAdminAttribute():
     assert pdx._oath_output_file_path == x_oath_output_file_path
     assert pdx._oaths_depot_dir == x_oaths_depot_dir
     assert pdx._oaths_ignore_dir == x_oaths_ignore_dir
-    assert pdx._oaths_bond_dir == x_oaths_bond_dir
     assert pdx._oaths_digest_dir == x_oaths_digest_dir
     assert pdx._public_file_title == x_public_file_title
     assert pdx._oaths_public_dir == x_oaths_public_dir
@@ -115,7 +110,6 @@ def test_HealingAdmin_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path.exists(pdx._oaths_depot_dir) is False
     assert os_path.exists(pdx._oaths_digest_dir) is False
     assert os_path.exists(pdx._oaths_ignore_dir) is False
-    assert os_path.exists(pdx._oaths_bond_dir) is False
 
     # WHEN
     oath_x = example_healers_get_7nodeJRootWithH_oath()
@@ -131,7 +125,6 @@ def test_HealingAdmin_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path.exists(pdx._oaths_depot_dir)
     assert os_path.exists(pdx._oaths_digest_dir)
     assert os_path.exists(pdx._oaths_ignore_dir)
-    assert os_path.exists(pdx._oaths_bond_dir)
 
 
 def test_HealingAdmin_create_core_dir_and_files_DoesNotOverWriteIsolOath(

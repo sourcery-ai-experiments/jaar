@@ -12,7 +12,6 @@ class TreeMetrics:
     uid_max: int = None
     uid_dict: dict[int:int] = None
     all_idea_uids_are_unique: bool = None
-    bond_promise_count: int = None
     an_promise_idea_road: Road = None
 
     def __init__(self):
@@ -49,11 +48,6 @@ class TreeMetrics:
         self.evaluate_uid_max(uid=uid)
 
     def evaluate_action(self, promise: bool, idea_road: Road):
-        if self.bond_promise_count is None and promise:
-            self.bond_promise_count = 1
-        elif self.bond_promise_count != None and promise:
-            self.bond_promise_count += 1
-
         if promise:
             self.an_promise_idea_road = idea_road
 

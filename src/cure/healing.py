@@ -41,7 +41,6 @@ class HealingAdmin:
     _oaths_public_dir: str = None
     _oaths_depot_dir: str = None
     _oaths_ignore_dir: str = None
-    _oaths_bond_dir: str = None
     _oaths_digest_dir: str = None
 
     def set_dirs(self):
@@ -59,7 +58,6 @@ class HealingAdmin:
         self._oaths_public_dir = f"{self._env_dir}/{oaths_str}"
         self._oaths_depot_dir = f"{self._healingunit_dir}/{oaths_str}"
         self._oaths_ignore_dir = f"{self._healingunit_dir}/ignores"
-        self._oaths_bond_dir = f"{self._healingunit_dir}/bonds"
         self._oaths_digest_dir = f"{self._healingunit_dir}/digests"
 
     def set_healing_title(self, new_title: str):
@@ -75,7 +73,6 @@ class HealingAdmin:
         single_dir_create_if_null(x_path=self._oaths_depot_dir)
         single_dir_create_if_null(x_path=self._oaths_digest_dir)
         single_dir_create_if_null(x_path=self._oaths_ignore_dir)
-        single_dir_create_if_null(x_path=self._oaths_bond_dir)
         if isol_oath is None and self._isol_oath_exists() == False:
             self.save_isol_oath(self._get_empty_isol_oath())
         elif isol_oath != None and self._isol_oath_exists() == False:
