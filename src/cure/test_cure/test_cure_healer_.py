@@ -53,7 +53,7 @@ def test_cure_rename_healingunit_WorksCorrectly(env_dir_setup_cleanup):
     e5.create_dirs_if_null(in_memory_bank=True)
     old_bob_text = "old Bob"
     old_bob_dir = f"{e5.get_healingunits_dir()}/{old_bob_text}"
-    old_bob_file_path = f"{old_bob_dir}/isol_oath.json"
+    old_bob_file_path = f"{old_bob_dir}/isol_deal.json"
     wx5_obj = healingunit_shop(
         old_bob_text, e5.get_object_root_dir(), get_temp_env_handle()
     )
@@ -63,7 +63,7 @@ def test_cure_rename_healingunit_WorksCorrectly(env_dir_setup_cleanup):
 
     new_bob_text = "new Bob"
     new_bob_dir = f"{e5.get_healingunits_dir()}/{new_bob_text}"
-    new_bob_file_path = f"{new_bob_dir}/isol_oath.json"
+    new_bob_file_path = f"{new_bob_dir}/isol_deal.json"
     assert os_path.exists(new_bob_dir) == False
     assert os_path.exists(old_bob_dir)
     assert os_path.exists(new_bob_file_path) == False
@@ -94,7 +94,7 @@ def test_cure_del_healingunit_dir_WorksCorrectly(env_dir_setup_cleanup):
     sx = cureunit_shop(handle=cure_handle, cures_dir=get_test_cures_dir())
     xia_text = "Xia"
     xia_dir = f"{sx.get_healingunits_dir()}/{xia_text}"
-    xia_file_path = f"{xia_dir}/isol_oath.json"
+    xia_file_path = f"{xia_dir}/isol_deal.json"
     sx.create_new_healingunit(healing_title=xia_text)
     sx.save_healingunit_file(healing_title=xia_text)
     print(f"{xia_file_path=}")

@@ -1,4 +1,4 @@
-from src.oath.oath import OathUnit, IdeaCore
+from src.deal.deal import DealUnit, IdeaCore
 from PyQt5.QtWidgets import QTreeWidgetItem
 from dataclasses import dataclass
 
@@ -25,7 +25,7 @@ class PYQTTreeHolder:
     required_view_title: str
     acptfactheir_view_flag: str
     root_percent_flag: str
-    source_oath: str
+    source_deal: str
 
 
 def get_pyqttree(
@@ -45,7 +45,7 @@ def get_pyqttree(
     required_view_flag: bool = None,
     required_view_title: bool = None,
     acptfactheir_view_flag: bool = None,
-    source_oath: OathUnit = None,
+    source_deal: DealUnit = None,
 ) -> QTreeWidgetItem:
     pyqttree_holder = PYQTTreeHolder(
         ideacore=idearoot,
@@ -64,7 +64,7 @@ def get_pyqttree(
         required_view_title=required_view_title,
         acptfactheir_view_flag=acptfactheir_view_flag,
         root_percent_flag=root_percent_flag,
-        source_oath=source_oath,
+        source_deal=source_deal,
     )
 
     return _create_node(pth=pyqttree_holder)
@@ -94,7 +94,7 @@ def _create_node(pth: PYQTTreeHolder) -> QTreeWidgetItem:
     # print(f"{len(sorted_ideas_list)=}")
 
     for kid_idea in sort_ideas_list:
-        # for kid_idea in sort_ideas_list.sort(key=lambda x: x._oath_importance, reverse=True):
+        # for kid_idea in sort_ideas_list.sort(key=lambda x: x._deal_importance, reverse=True):
         child_pth = PYQTTreeHolder(
             ideacore=kid_idea,
             yo_action_flag=pth.yo_action_flag,
@@ -112,7 +112,7 @@ def _create_node(pth: PYQTTreeHolder) -> QTreeWidgetItem:
             required_view_title=pth.required_view_title,
             acptfactheir_view_flag=pth.acptfactheir_view_flag,
             root_percent_flag=pth.root_percent_flag,
-            source_oath=pth.source_oath,
+            source_deal=pth.source_deal,
         )
         item.addChild(_create_node(child_pth))
     return item
@@ -139,34 +139,34 @@ def emptystring_returns_none(str_x: str) -> str:
     return None if not str_x else str_x
 
 
-def oath_importance_diplay(oath_importance: float):
-    if oath_importance is None:
+def deal_importance_diplay(deal_importance: float):
+    if deal_importance is None:
         return "None"
-    if str(type(oath_importance)) == "<class 'set'>":
-        return f"ERROR {oath_importance} {type(oath_importance)=}"
-    oath_importance *= 100
-    if oath_importance == 1:
+    if str(type(deal_importance)) == "<class 'set'>":
+        return f"ERROR {deal_importance} {type(deal_importance)=}"
+    deal_importance *= 100
+    if deal_importance == 1:
         return "100%"
-    elif oath_importance >= 10:
-        return f"{oath_importance:.1f}%"
-    elif oath_importance >= 1:
-        return f"{oath_importance:.2f}%"
-    elif oath_importance >= 0.1:
-        return f"{oath_importance:.3f}%"
-    elif oath_importance >= 0.01:
-        return f"{oath_importance:.4f}%"
-    elif oath_importance >= 0.001:
-        return f"{oath_importance:.5f}%"
-    elif oath_importance >= 0.0001:
-        return f"{oath_importance:.6f}%"
-    elif oath_importance >= 0.00001:
-        return f"{oath_importance:.7f}%"
-    elif oath_importance >= 0.000001:
-        return f"{oath_importance:.8f}%"
-    elif oath_importance == 0:
+    elif deal_importance >= 10:
+        return f"{deal_importance:.1f}%"
+    elif deal_importance >= 1:
+        return f"{deal_importance:.2f}%"
+    elif deal_importance >= 0.1:
+        return f"{deal_importance:.3f}%"
+    elif deal_importance >= 0.01:
+        return f"{deal_importance:.4f}%"
+    elif deal_importance >= 0.001:
+        return f"{deal_importance:.5f}%"
+    elif deal_importance >= 0.0001:
+        return f"{deal_importance:.6f}%"
+    elif deal_importance >= 0.00001:
+        return f"{deal_importance:.7f}%"
+    elif deal_importance >= 0.000001:
+        return f"{deal_importance:.8f}%"
+    elif deal_importance == 0:
         return "0%"
     else:
-        return f"{oath_importance:.15f}%"
+        return f"{deal_importance:.15f}%"
 
 
 def _get_treenode_l_required_count(treenode_l, pth: PYQTTreeHolder) -> str:
@@ -196,16 +196,16 @@ def _get_treenode_l_required_view(treenode_l, pth: PYQTTreeHolder) -> str:
 def _get_treenode_l_acptfactheir_view(treenode_l, pth: PYQTTreeHolder) -> str:
     acptfactheir = pth.ideacore._acptfactheirs.get(pth.required_view_title)
     if acptfactheir != None:
-        time_road = f"{pth.source_oath._idearoot._label},time,jajatime"
+        time_road = f"{pth.source_deal._idearoot._label},time,jajatime"
         if (
             acptfactheir.base == time_road
             and acptfactheir.open != None
             and acptfactheir.nigh != None
         ):
-            hc_open_text = pth.source_oath.get_jajatime_legible_one_time_event(
+            hc_open_text = pth.source_deal.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactheir.open
             )
-            hc_nigh_text = pth.source_oath.get_jajatime_legible_one_time_event(
+            hc_nigh_text = pth.source_deal.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactheir.nigh
             )
             # treenode_l += f"{get_terminus_node_from_road(acptfactheir.base)}"
@@ -223,7 +223,7 @@ def _create_treenode_l(pth: PYQTTreeHolder):
     treenode_l = pth.ideacore._label
 
     if pth.root_percent_flag:
-        treenode_l += f" ({oath_importance_diplay(pth.ideacore._oath_importance)})"
+        treenode_l += f" ({deal_importance_diplay(pth.ideacore._deal_importance)})"
     elif pth.yo2bd_count_flag:
         treenode_l += f" ({len(pth.ideacore._balancelinks)})"
     elif pth.required_count_flag:
@@ -241,19 +241,19 @@ def _create_treenode_l(pth: PYQTTreeHolder):
 
     if pth.requiredheir_count_flag and pth.ideacore._pad not in (None, ""):
         # requiredunit_count = sum(
-        #     str(type(requiredheir)) == "<class 'src.oath.required.RequiredUnit'>"
+        #     str(type(requiredheir)) == "<class 'src.deal.required.RequiredUnit'>"
         #     for requiredheir in pth.ideacore._requiredheirs.values()
         # )
         treenode_l += f" (RequiredHeirs {len(pth.ideacore._requiredheirs)})"
 
     if pth.yo_acptfactunit_time_flag:
-        time_road = f"{pth.source_oath._idearoot._label},time,jajatime"
+        time_road = f"{pth.source_deal._idearoot._label},time,jajatime"
         acptfactunit_time_obj = pth.ideacore._acptfactunits.get(time_road)
         if acptfactunit_time_obj != None:
-            hc_open_text = pth.source_oath.get_jajatime_legible_one_time_event(
+            hc_open_text = pth.source_deal.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactunit_time_obj.open
             )
-            hc_nigh_text = pth.source_oath.get_jajatime_legible_one_time_event(
+            hc_nigh_text = pth.source_deal.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactunit_time_obj.nigh
             )
             # treenode_l += f" ({acptfactunit.base=} {acptfactunit.open}-{acptfactunit.nigh})"

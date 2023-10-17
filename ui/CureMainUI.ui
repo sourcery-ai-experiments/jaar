@@ -64,7 +64,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" title="oaths_table">
+   <widget class="QTableWidget" title="deals_table">
     <property title="geometry">
      <rect>
       <x>10</x>
@@ -105,7 +105,7 @@
     </property>
     <column>
      <property title="text">
-      <string>Oathlinks</string>
+      <string>Deallinks</string>
      </property>
     </column>
     <column>
@@ -193,7 +193,7 @@
      <string>Change Title</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="oath_update_button">
+   <widget class="QPushButton" title="deal_update_button">
     <property title="geometry">
      <rect>
       <x>10</x>
@@ -208,10 +208,10 @@
      </font>
     </property>
     <property title="text">
-     <string>Change Oath Title</string>
+     <string>Change Deal Title</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="oath_insert_button">
+   <widget class="QPushButton" title="deal_insert_button">
     <property title="geometry">
      <rect>
       <x>10</x>
@@ -226,10 +226,10 @@
      </font>
     </property>
     <property title="text">
-     <string>Add new Oath</string>
+     <string>Add new Deal</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="oath_delete_button">
+   <widget class="QPushButton" title="deal_delete_button">
     <property title="geometry">
      <rect>
       <x>80</x>
@@ -247,7 +247,7 @@
      <string>Delete</string>
     </property>
    </widget>
-   <widget class="QLineEdit" title="oath_healer">
+   <widget class="QLineEdit" title="deal_healer">
     <property title="geometry">
      <rect>
       <x>10</x>
@@ -346,7 +346,7 @@
      </font>
     </property>
     <property title="text">
-     <string>delete OathLink</string>
+     <string>delete DealLink</string>
     </property>
    </widget>
    <widget class="QLineEdit" title="depotlink_title">
@@ -379,7 +379,7 @@
      </font>
     </property>
     <property title="text">
-     <string>Add new OathLink</string>
+     <string>Add new DealLink</string>
     </property>
    </widget>
    <widget class="QPushButton" title="depotlink_update_button">
@@ -397,7 +397,7 @@
      </font>
     </property>
     <property title="text">
-     <string>Update OathLink</string>
+     <string>Update DealLink</string>
     </property>
    </widget>
    <widget class="QPushButton" title="refresh_all_button">
@@ -418,7 +418,7 @@
      <string>refresh</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="oath_edit_button">
+   <widget class="QPushButton" title="deal_edit_button">
     <property title="geometry">
      <rect>
       <x>10</x>
@@ -469,7 +469,7 @@
      </font>
     </property>
     <property title="text">
-     <string>Edit OathLink</string>
+     <string>Edit DealLink</string>
     </property>
    </widget>
    <widget class="QTableWidget" title="w_agenda_table">
@@ -718,7 +718,7 @@
      </font>
     </property>
     <property title="text">
-     <string>Oathlink Weight:</string>
+     <string>Deallink Weight:</string>
     </property>
    </widget>
    <widget class="QTableWidget" title="ignores_table">
@@ -818,7 +818,7 @@
      <string>s</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="set_public_oath_button">
+   <widget class="QPushButton" title="set_public_deal_button">
     <property title="geometry">
      <rect>
       <x>190</x>
@@ -833,10 +833,10 @@
      </font>
     </property>
     <property title="text">
-     <string>output_oath to public_dir</string>
+     <string>output_deal to public_dir</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="reload_all_src_oaths_button">
+   <widget class="QPushButton" title="reload_all_src_deals_button">
     <property title="geometry">
      <rect>
       <x>190</x>
@@ -851,7 +851,7 @@
      </font>
     </property>
     <property title="text">
-     <string>refresh_all_src_oaths</string>
+     <string>refresh_all_src_deals</string>
     </property>
    </widget>
    <widget class="QPushButton" title="set_public_and_reload_srcs_button">

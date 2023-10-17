@@ -1,4 +1,4 @@
-from src.oath.x_func import delete_dir as x_func_delete_dir
+from src.deal.x_func import delete_dir as x_func_delete_dir
 from src.cure.cure import cureunit_shop, CureUnit
 from os import path as os_path
 from src.cure.examples.cure_env_kit import (

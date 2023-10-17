@@ -1,14 +1,14 @@
-from src.oath.oath import (
-    get_from_json as oathunit_get_from_json,
-    get_dict_of_oath_from_dict,
-    get_meld_of_oath_files,
+from src.deal.deal import (
+    get_from_json as dealunit_get_from_json,
+    get_dict_of_deal_from_dict,
+    get_meld_of_deal_files,
     PersonName,
-    OathUnit,
+    DealUnit,
     partyunit_shop,
-    get_from_json as oathunit_get_from_json,
+    get_from_json as dealunit_get_from_json,
     PartyTitle,
 )
-from src.oath.x_func import (
+from src.deal.x_func import (
     x_get_json,
     single_dir_create_if_null,
     rename_dir,
@@ -35,30 +35,30 @@ class HealingAdmin:
     _healingunits_dir: str = None
     _isol_file_title: str = None
     _isol_file_path: str = None
-    _oath_output_file_title: str = None
-    _oath_output_file_path: str = None
+    _deal_output_file_title: str = None
+    _deal_output_file_path: str = None
     _public_file_title: str = None
-    _oaths_public_dir: str = None
-    _oaths_depot_dir: str = None
-    _oaths_ignore_dir: str = None
-    _oaths_digest_dir: str = None
+    _deals_public_dir: str = None
+    _deals_depot_dir: str = None
+    _deals_ignore_dir: str = None
+    _deals_digest_dir: str = None
 
     def set_dirs(self):
         env_healingunits_folder = "healingunits"
-        oaths_str = "oaths"
+        deals_str = "deals"
         self._healingunits_dir = f"{self._env_dir}/{env_healingunits_folder}"
         self._healingunit_dir = f"{self._healingunits_dir}/{self._healing_title}"
-        self._isol_file_title = "isol_oath.json"
+        self._isol_file_title = "isol_deal.json"
         self._isol_file_path = f"{self._healingunit_dir}/{self._isol_file_title}"
-        self._oath_output_file_title = "output_oath.json"
-        self._oath_output_file_path = (
-            f"{self._healingunit_dir}/{self._oath_output_file_title}"
+        self._deal_output_file_title = "output_deal.json"
+        self._deal_output_file_path = (
+            f"{self._healingunit_dir}/{self._deal_output_file_title}"
         )
         self._public_file_title = f"{self._healing_title}.json"
-        self._oaths_public_dir = f"{self._env_dir}/{oaths_str}"
-        self._oaths_depot_dir = f"{self._healingunit_dir}/{oaths_str}"
-        self._oaths_ignore_dir = f"{self._healingunit_dir}/ignores"
-        self._oaths_digest_dir = f"{self._healingunit_dir}/digests"
+        self._deals_public_dir = f"{self._env_dir}/{deals_str}"
+        self._deals_depot_dir = f"{self._healingunit_dir}/{deals_str}"
+        self._deals_ignore_dir = f"{self._healingunit_dir}/ignores"
+        self._deals_digest_dir = f"{self._healingunit_dir}/digests"
 
     def set_healing_title(self, new_title: str):
         old_healingunit_dir = self._healingunit_dir
@@ -67,130 +67,130 @@ class HealingAdmin:
 
         rename_dir(src=old_healingunit_dir, dst=self._healingunit_dir)
 
-    def create_core_dir_and_files(self, isol_oath: OathUnit = None):
+    def create_core_dir_and_files(self, isol_deal: DealUnit = None):
         single_dir_create_if_null(x_path=self._healingunit_dir)
-        single_dir_create_if_null(x_path=self._oaths_public_dir)
-        single_dir_create_if_null(x_path=self._oaths_depot_dir)
-        single_dir_create_if_null(x_path=self._oaths_digest_dir)
-        single_dir_create_if_null(x_path=self._oaths_ignore_dir)
-        if isol_oath is None and self._isol_oath_exists() == False:
-            self.save_isol_oath(self._get_empty_isol_oath())
-        elif isol_oath != None and self._isol_oath_exists() == False:
-            self.save_isol_oath(isol_oath)
+        single_dir_create_if_null(x_path=self._deals_public_dir)
+        single_dir_create_if_null(x_path=self._deals_depot_dir)
+        single_dir_create_if_null(x_path=self._deals_digest_dir)
+        single_dir_create_if_null(x_path=self._deals_ignore_dir)
+        if isol_deal is None and self._isol_deal_exists() == False:
+            self.save_isol_deal(self._get_empty_isol_deal())
+        elif isol_deal != None and self._isol_deal_exists() == False:
+            self.save_isol_deal(isol_deal)
 
-    def _save_oath_to_path(
-        self, oath_x: OathUnit, dest_dir: str, file_title: str = None
+    def _save_deal_to_path(
+        self, deal_x: DealUnit, dest_dir: str, file_title: str = None
     ):
         if file_title is None:
-            file_title = f"{oath_x._healer}.json"
-        # if dest_dir == self._oaths_public_dir:
+            file_title = f"{deal_x._healer}.json"
+        # if dest_dir == self._deals_public_dir:
         #     file_title = self._public_file_title
         x_func_save_file(
             dest_dir=dest_dir,
             file_title=file_title,
-            file_text=oath_x.get_json(),
+            file_text=deal_x.get_json(),
             replace=True,
         )
 
-    def save_oath_to_public(self, oath_x: OathUnit):
-        dest_dir = self._oaths_public_dir
-        self._save_oath_to_path(oath_x, dest_dir)
+    def save_deal_to_public(self, deal_x: DealUnit):
+        dest_dir = self._deals_public_dir
+        self._save_deal_to_path(deal_x, dest_dir)
 
-    def save_ignore_oath(self, oath_x: OathUnit, src_oath_healer: str):
-        dest_dir = self._oaths_ignore_dir
+    def save_ignore_deal(self, deal_x: DealUnit, src_deal_healer: str):
+        dest_dir = self._deals_ignore_dir
         file_title = None
-        if src_oath_healer != None:
-            file_title = f"{src_oath_healer}.json"
+        if src_deal_healer != None:
+            file_title = f"{src_deal_healer}.json"
         else:
-            file_title = f"{oath_x._healer}.json"
-        self._save_oath_to_path(oath_x, dest_dir, file_title)
+            file_title = f"{deal_x._healer}.json"
+        self._save_deal_to_path(deal_x, dest_dir, file_title)
 
-    def save_oath_to_digest(self, oath_x: OathUnit, src_oath_healer: str = None):
-        dest_dir = self._oaths_digest_dir
+    def save_deal_to_digest(self, deal_x: DealUnit, src_deal_healer: str = None):
+        dest_dir = self._deals_digest_dir
         file_title = None
-        if src_oath_healer != None:
-            file_title = f"{src_oath_healer}.json"
+        if src_deal_healer != None:
+            file_title = f"{src_deal_healer}.json"
         else:
-            file_title = f"{oath_x._healer}.json"
-        self._save_oath_to_path(oath_x, dest_dir, file_title)
+            file_title = f"{deal_x._healer}.json"
+        self._save_deal_to_path(deal_x, dest_dir, file_title)
 
-    def save_isol_oath(self, oath_x: OathUnit):
-        oath_x.set_healer(self._healing_title)
-        self._save_oath_to_path(oath_x, self._healingunit_dir, self._isol_file_title)
+    def save_isol_deal(self, deal_x: DealUnit):
+        deal_x.set_healer(self._healing_title)
+        self._save_deal_to_path(deal_x, self._healingunit_dir, self._isol_file_title)
 
-    def save_oath_to_depot(self, oath_x: OathUnit):
-        dest_dir = self._oaths_depot_dir
-        self._save_oath_to_path(oath_x, dest_dir)
+    def save_deal_to_depot(self, deal_x: DealUnit):
+        dest_dir = self._deals_depot_dir
+        self._save_deal_to_path(deal_x, dest_dir)
 
-    def save_output_oath(self) -> OathUnit:
-        isol_oath_x = self.open_isol_oath()
-        isol_oath_x.meld(isol_oath_x, party_weight=1)
-        oath_x = get_meld_of_oath_files(
-            primary_oath=isol_oath_x,
-            meldees_dir=self._oaths_digest_dir,
+    def save_output_deal(self) -> DealUnit:
+        isol_deal_x = self.open_isol_deal()
+        isol_deal_x.meld(isol_deal_x, party_weight=1)
+        deal_x = get_meld_of_deal_files(
+            primary_deal=isol_deal_x,
+            meldees_dir=self._deals_digest_dir,
         )
         dest_dir = self._healingunit_dir
-        file_title = self._oath_output_file_title
-        self._save_oath_to_path(oath_x, dest_dir, file_title)
+        file_title = self._deal_output_file_title
+        self._save_deal_to_path(deal_x, dest_dir, file_title)
 
-    def open_public_oath(self, healer: PersonName) -> str:
+    def open_public_deal(self, healer: PersonName) -> str:
         file_title_x = f"{healer}.json"
-        return x_func_open_file(self._oaths_public_dir, file_title_x)
+        return x_func_open_file(self._deals_public_dir, file_title_x)
 
-    def open_depot_oath(self, healer: PersonName) -> OathUnit:
+    def open_depot_deal(self, healer: PersonName) -> DealUnit:
         file_title_x = f"{healer}.json"
-        x_oath_json = x_func_open_file(self._oaths_depot_dir, file_title_x)
-        return oathunit_get_from_json(x_oath_json=x_oath_json)
+        x_deal_json = x_func_open_file(self._deals_depot_dir, file_title_x)
+        return dealunit_get_from_json(x_deal_json=x_deal_json)
 
-    def open_ignore_oath(self, healer: PersonName) -> OathUnit:
+    def open_ignore_deal(self, healer: PersonName) -> DealUnit:
         ignore_file_title = f"{healer}.json"
-        oath_json = x_func_open_file(self._oaths_ignore_dir, ignore_file_title)
-        oath_obj = oathunit_get_from_json(x_oath_json=oath_json)
-        oath_obj.set_oath_metrics()
-        return oath_obj
+        deal_json = x_func_open_file(self._deals_ignore_dir, ignore_file_title)
+        deal_obj = dealunit_get_from_json(x_deal_json=deal_json)
+        deal_obj.set_deal_metrics()
+        return deal_obj
 
-    def open_isol_oath(self) -> OathUnit:
-        x_oath = None
-        if not self._isol_oath_exists():
-            self.save_isol_oath(self._get_empty_isol_oath())
+    def open_isol_deal(self) -> DealUnit:
+        x_deal = None
+        if not self._isol_deal_exists():
+            self.save_isol_deal(self._get_empty_isol_deal())
         ct = x_func_open_file(self._healingunit_dir, self._isol_file_title)
-        x_oath = oathunit_get_from_json(x_oath_json=ct)
-        x_oath.set_oath_metrics()
-        return x_oath
+        x_deal = dealunit_get_from_json(x_deal_json=ct)
+        x_deal.set_deal_metrics()
+        return x_deal
 
-    def open_output_oath(self) -> OathUnit:
-        x_oath_json = x_func_open_file(
-            self._healingunit_dir, self._oath_output_file_title
+    def open_output_deal(self) -> DealUnit:
+        x_deal_json = x_func_open_file(
+            self._healingunit_dir, self._deal_output_file_title
         )
-        x_oath = oathunit_get_from_json(x_oath_json)
-        x_oath.set_oath_metrics()
-        return x_oath
+        x_deal = dealunit_get_from_json(x_deal_json)
+        x_deal.set_deal_metrics()
+        return x_deal
 
-    def _get_empty_isol_oath(self):
-        x_oath = OathUnit(_healer=self._healing_title, _weight=0)
-        x_oath.add_partyunit(title=self._healing_title)
-        x_oath.set_cure_handle(self._cure_handle)
-        return x_oath
+    def _get_empty_isol_deal(self):
+        x_deal = DealUnit(_healer=self._healing_title, _weight=0)
+        x_deal.add_partyunit(title=self._healing_title)
+        x_deal.set_cure_handle(self._cure_handle)
+        return x_deal
 
-    def erase_depot_oath(self, healer):
-        x_func_delete_dir(f"{self._oaths_depot_dir}/{healer}.json")
+    def erase_depot_deal(self, healer):
+        x_func_delete_dir(f"{self._deals_depot_dir}/{healer}.json")
 
-    def erase_digest_oath(self, healer):
-        x_func_delete_dir(f"{self._oaths_digest_dir}/{healer}.json")
+    def erase_digest_deal(self, healer):
+        x_func_delete_dir(f"{self._deals_digest_dir}/{healer}.json")
 
-    def erase_isol_oath_file(self):
+    def erase_isol_deal_file(self):
         x_func_delete_dir(dir=f"{self._healingunit_dir}/{self._isol_file_title}")
 
     def raise_exception_if_no_file(self, dir_type: str, healer: str):
-        x_oath_file_title = f"{healer}.json"
+        x_deal_file_title = f"{healer}.json"
         if dir_type == "depot":
-            x_oath_file_path = f"{self._oaths_depot_dir}/{x_oath_file_title}"
-        if not os_path.exists(x_oath_file_path):
+            x_deal_file_path = f"{self._deals_depot_dir}/{x_deal_file_title}"
+        if not os_path.exists(x_deal_file_path):
             raise InvalidHealingException(
-                f"Healer {self._healing_title} cannot find oath {healer} in {x_oath_file_path}"
+                f"Healer {self._healing_title} cannot find deal {healer} in {x_deal_file_path}"
             )
 
-    def _isol_oath_exists(self):
+    def _isol_deal_exists(self):
         bool_x = None
         try:
             x_func_open_file(self._healingunit_dir, self._isol_file_title)
@@ -199,12 +199,12 @@ class HealingAdmin:
             bool_x = False
         return bool_x
 
-    def get_remelded_output_oath(self):
-        self.save_output_oath()
-        return self.open_output_oath()
+    def get_remelded_output_deal(self):
+        self.save_output_deal()
+        return self.open_output_deal()
 
     def save_refreshed_output_to_public(self):
-        self.save_oath_to_public(self.get_remelded_output_oath())
+        self.save_deal_to_public(self.get_remelded_output_deal())
 
 
 def healingadmin_shop(
@@ -220,32 +220,32 @@ def healingadmin_shop(
 @dataclass
 class HealingUnit:
     _admin: HealingAdmin = None
-    _isol: OathUnit = None
+    _isol: DealUnit = None
 
-    def refresh_depot_oaths(self):
+    def refresh_depot_deals(self):
         for party_x in self._isol._partys.values():
             if party_x.title != self._admin._healing_title:
-                party_oath = oathunit_get_from_json(
-                    x_oath_json=self._admin.open_public_oath(party_x.title)
+                party_deal = dealunit_get_from_json(
+                    x_deal_json=self._admin.open_public_deal(party_x.title)
                 )
-                self.set_depot_oath(
-                    oath_x=party_oath,
+                self.set_depot_deal(
+                    deal_x=party_deal,
                     depotlink_type=party_x.depotlink_type,
                     creditor_weight=party_x.creditor_weight,
                     debtor_weight=party_x.debtor_weight,
                 )
 
-    def set_depot_oath(
+    def set_depot_deal(
         self,
-        oath_x: OathUnit,
+        deal_x: DealUnit,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
         self.set_isol_if_empty()
-        self._admin.save_oath_to_depot(oath_x)
+        self._admin.save_deal_to_depot(deal_x)
         self._set_depotlink(
-            oath_x._healer, depotlink_type, creditor_weight, debtor_weight
+            deal_x._healer, depotlink_type, creditor_weight, debtor_weight
         )
         if self.get_isol()._auto_output_to_public:
             self._admin.save_refreshed_output_to_public()
@@ -269,23 +269,23 @@ class HealingUnit:
         if link_type == "assignment":
             self._set_assignment_depotlink(outer_healer)
         elif link_type == "blind_trust":
-            x_oath = self._admin.open_depot_oath(healer=outer_healer)
-            self._admin.save_oath_to_digest(x_oath)
+            x_deal = self._admin.open_depot_deal(healer=outer_healer)
+            self._admin.save_deal_to_digest(x_deal)
         elif link_type == "ignore":
-            new_x_oath = OathUnit(_healer=outer_healer)
-            new_x_oath.set_cure_handle(self._admin._cure_handle)
-            self.set_ignore_oath_file(new_x_oath, new_x_oath._healer)
+            new_x_deal = DealUnit(_healer=outer_healer)
+            new_x_deal.set_cure_handle(self._admin._cure_handle)
+            self.set_ignore_deal_file(new_x_deal, new_x_deal._healer)
 
     def _set_assignment_depotlink(self, outer_healer):
-        src_oath = self._admin.open_depot_oath(outer_healer)
-        src_oath.set_oath_metrics()
-        empty_oath = OathUnit(_healer=self._admin._healing_title)
-        empty_oath.set_cure_handle(self._admin._cure_handle)
-        assign_oath = src_oath.get_assignment(
-            empty_oath, self.get_isol()._partys, self._admin._healing_title
+        src_deal = self._admin.open_depot_deal(outer_healer)
+        src_deal.set_deal_metrics()
+        empty_deal = DealUnit(_healer=self._admin._healing_title)
+        empty_deal.set_cure_handle(self._admin._cure_handle)
+        assign_deal = src_deal.get_assignment(
+            empty_deal, self.get_isol()._partys, self._admin._healing_title
         )
-        assign_oath.set_oath_metrics()
-        self._admin.save_oath_to_digest(assign_oath, src_oath._healer)
+        assign_deal.set_deal_metrics()
+        self._admin.save_deal_to_digest(assign_deal, src_deal._healer)
 
     def _set_partyunit_depotlink(
         self,
@@ -307,32 +307,32 @@ class HealingUnit:
         else:
             party_x.set_depotlink_type(link_type, creditor_weight, debtor_weight)
 
-    def del_depot_oath(self, oath_healer: str):
-        self._del_depotlink(partytitle=oath_healer)
-        self._admin.erase_depot_oath(oath_healer)
-        self._admin.erase_digest_oath(oath_healer)
+    def del_depot_deal(self, deal_healer: str):
+        self._del_depotlink(partytitle=deal_healer)
+        self._admin.erase_depot_deal(deal_healer)
+        self._admin.erase_digest_deal(deal_healer)
 
     def _del_depotlink(self, partytitle: PartyTitle):
         self._isol.get_party(partytitle).del_depotlink_type()
 
     def get_isol(self):
         if self._isol is None:
-            self._isol = self._admin.open_isol_oath()
+            self._isol = self._admin.open_isol_deal()
         return self._isol
 
-    def set_isol(self, oath_x: OathUnit = None):
-        if oath_x != None:
-            self._isol = oath_x
-        self._admin.save_isol_oath(self._isol)
+    def set_isol(self, deal_x: DealUnit = None):
+        if deal_x != None:
+            self._isol = deal_x
+        self._admin.save_isol_deal(self._isol)
         self._isol = None
 
     def set_isol_if_empty(self):
         # if self._isol is None:
         self.get_isol()
 
-    def set_ignore_oath_file(self, oathunit: OathUnit, src_oath_healer: str):
-        self._admin.save_ignore_oath(oathunit, src_oath_healer)
-        self._admin.save_oath_to_digest(oathunit, src_oath_healer)
+    def set_ignore_deal_file(self, dealunit: DealUnit, src_deal_healer: str):
+        self._admin.save_ignore_deal(dealunit, src_deal_healer)
+        self._admin.save_deal_to_digest(dealunit, src_deal_healer)
 
     # housekeeping
     def set_env_dir(self, env_dir: str, healing_title: str, cure_handle: str):
@@ -340,8 +340,8 @@ class HealingUnit:
             _healing_title=healing_title, _env_dir=env_dir, _cure_handle=cure_handle
         )
 
-    def create_core_dir_and_files(self, isol_oath: OathUnit = None):
-        self._admin.create_core_dir_and_files(isol_oath)
+    def create_core_dir_and_files(self, isol_deal: DealUnit = None):
+        self._admin.create_core_dir_and_files(isol_deal)
 
 
 def healingunit_shop(

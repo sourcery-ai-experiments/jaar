@@ -3,9 +3,9 @@ from ui.CureMainUI import Ui_MainWindow
 from Edit5Issue import Edit5Issue
 from EditMain import EditMainView
 from PyQt5 import QtCore as qtc
-from src.oath.oath import (
-    OathUnit,
-    get_from_json as get_oath_from_json,
+from src.deal.deal import (
+    DealUnit,
+    get_from_json as get_deal_from_json,
 )
 from sys import argv as sys_argv, exit as sys_exit
 from PyQt5.QtWidgets import (
@@ -23,12 +23,12 @@ from src.cure.examples.cure_env_kit import (
     get_test_cures_dir,
 )
 
-from src.oath.party import get_depotlink_types
-from src.oath.x_func import (
+from src.deal.party import get_depotlink_types
+from src.deal.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
 )
-from pyqt_func import oath_importance_diplay
+from pyqt_func import deal_importance_diplay
 
 
 class MainApp(QApplication):
@@ -51,11 +51,11 @@ class MainApp(QApplication):
         self.main_window.open_edit5issue.connect(self.edit5issue_show)
 
     def editmain_show(self):
-        if self.main_window.ignore_oath_x is None:
-            self.main_window.isol = self.main_window.x_healing._admin.open_isol_oath()
-            self.editmain_view.oath_x = self.main_window.isol
+        if self.main_window.ignore_deal_x is None:
+            self.main_window.isol = self.main_window.x_healing._admin.open_isol_deal()
+            self.editmain_view.deal_x = self.main_window.isol
         else:
-            self.editmain_view.oath_x = self.main_window.ignore_oath_x
+            self.editmain_view.deal_x = self.main_window.ignore_deal_x
         self.editmain_view.refresh_all()
         self.editmain_view.show()
 
@@ -82,22 +82,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.cure_load_button.clicked.connect(self.cure_load_from_file)
         self.cure_update_button.clicked.connect(self.cure_update_title)
         self.cure_delete_button.clicked.connect(self.cure_delete)
-        self.oath_insert_button.clicked.connect(self.oath_insert)
-        self.oath_update_button.clicked.connect(self.oath_update_title)
-        self.oath_delete_button.clicked.connect(self.oath_delete)
-        self.oaths_table.itemClicked.connect(self.oaths_table_select)
+        self.deal_insert_button.clicked.connect(self.deal_insert)
+        self.deal_update_button.clicked.connect(self.deal_update_title)
+        self.deal_delete_button.clicked.connect(self.deal_delete)
+        self.deals_table.itemClicked.connect(self.deals_table_select)
         self.healer_insert_button.clicked.connect(self.healer_insert)
         self.healer_update_button.clicked.connect(self.healer_update_title)
         self.healer_delete_button.clicked.connect(self.healer_delete)
         self.healers_table.itemClicked.connect(self.healers_table_select)
-        self.reload_all_src_oaths_button.clicked.connect(self.reload_all_src_oaths)
-        self.set_public_oath_button.clicked.connect(self.save_output_oath_to_public())
+        self.reload_all_src_deals_button.clicked.connect(self.reload_all_src_deals)
+        self.set_public_deal_button.clicked.connect(self.save_output_deal_to_public())
         self.set_public_and_reload_srcs_button.clicked.connect(
             self.set_public_and_reload_srcs
         )
         self.ignores_table.itemClicked.connect(self.ignores_table_select)
         self.open_ignore_button.clicked.connect(self.open_editmain)
-        self.save_ignore_button.clicked.connect(self.ignore_oath_file_update)
+        self.save_ignore_button.clicked.connect(self.ignore_deal_file_update)
         self.ignores_table.setHidden(True)
         self.show_ignores_button.clicked.connect(self.show_ignores_table)
         self.show_digests_button.clicked.connect(self.show_digests_table)
@@ -112,7 +112,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.cure_x = None
         self.x_healing = None
-        self.ignore_oath_x = None
+        self.ignore_deal_x = None
         setup_test_example_environment()
         first_env = "ex5"
         self.cure_x = cureunit_shop(title=first_env, cures_dir=get_test_cures_dir())
@@ -123,20 +123,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def save_isol(self):
         if self.isol != None:
-            self.x_healing._admin.save_isol_oath(self.isol)
+            self.x_healing._admin.save_isol_deal(self.isol)
         self.refresh_healer()
 
-    def reload_all_src_oaths(self):
+    def reload_all_src_deals(self):
         if self.cure_x != None:
-            self.cure_x.reload_all_healingunits_src_oathunits()
+            self.cure_x.reload_all_healingunits_src_dealunits()
 
     def set_public_and_reload_srcs(self):
-        self.save_output_oath_to_public()
-        self.reload_all_src_oaths()
+        self.save_output_deal_to_public()
+        self.reload_all_src_deals()
 
-    def save_output_oath_to_public(self):
+    def save_output_deal_to_public(self):
         if self.x_healing != None:
-            self.x_healing.save_output_oath_to_public()
+            self.x_healing.save_output_deal_to_public()
         self.refresh_cure()
 
     def cure_load_from_file(self):
@@ -146,18 +146,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.cure_handle.setText(cure_selected)
         self.refresh_cure()
 
-    def oaths_table_select(self):
-        self.oath_healer.setText(
-            self.oaths_table.item(self.oaths_table.currentRow(), 0).text()
+    def deals_table_select(self):
+        self.deal_healer.setText(
+            self.deals_table.item(self.deals_table.currentRow(), 0).text()
         )
         if self.healers_table.currentRow() != -1:
             selected_healer = self.healers_table.item(
                 self.healers_table.currentRow(), 0
             ).text()
-            selected_oath = self.oaths_table.item(
-                self.oaths_table.currentRow(), 0
+            selected_deal = self.deals_table.item(
+                self.deals_table.currentRow(), 0
             ).text()
-            self.depotlink_title.setText(f"{selected_healer} - {selected_oath}")
+            self.depotlink_title.setText(f"{selected_healer} - {selected_deal}")
 
     def healers_table_select(self):
         x_healing_title = self.healers_table.item(
@@ -183,18 +183,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
 
     def ignores_table_select(self):
-        ignore_oath_healer = self.ignores_table.item(
+        ignore_deal_healer = self.ignores_table.item(
             self.ignores_table.currentRow(), 0
         ).text()
-        # self.ignore_oath_x = self.cure_x.get_public_oath(
-        self.ignore_oath_x = self.cure_x.get_oath_from_ignores_dir(
-            healing_title=self.x_healing._admin.title, _healer=ignore_oath_healer
+        # self.ignore_deal_x = self.cure_x.get_public_deal(
+        self.ignore_deal_x = self.cure_x.get_deal_from_ignores_dir(
+            healing_title=self.x_healing._admin.title, _healer=ignore_deal_healer
         )
-        self.edit_oath = self.ignore_oath_x
+        self.edit_deal = self.ignore_deal_x
 
-    def ignore_oath_file_update(self):
-        self.cure_x.set_ignore_oath_file(
-            healing_title=self.x_healing._admin.title, oath_obj=self.ignore_oath_x
+    def ignore_deal_file_update(self):
+        self.cure_x.set_ignore_deal_file(
+            healing_title=self.x_healing._admin.title, deal_obj=self.ignore_deal_x
         )
         self.refresh_healer()
 
@@ -220,24 +220,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.cure_handle_combo_refresh()
         self.refresh_cure()
 
-    def oath_insert(self):
-        self.cure_x.save_public_oath(oath_x=OathUnit(_healer=self.oath_healer.text()))
+    def deal_insert(self):
+        self.cure_x.save_public_deal(deal_x=DealUnit(_healer=self.deal_healer.text()))
         self.refresh_cure()
 
-    def oath_update_title(self):
-        currently_selected = self.oaths_table.item(
-            self.oaths_table.currentRow(), 0
+    def deal_update_title(self):
+        currently_selected = self.deals_table.item(
+            self.deals_table.currentRow(), 0
         ).text()
-        typed_in = self.oath_healer.text()
+        typed_in = self.deal_healer.text()
         if currently_selected != typed_in:
-            self.cure_x.rename_public_oath(
+            self.cure_x.rename_public_deal(
                 old_label=currently_selected, new_label=typed_in
             )
             self.refresh_cure()
 
-    def oath_delete(self):
-        self.cure_x.del_public_oath(
-            oath_x_label=self.oaths_table.item(self.oaths_table.currentRow(), 0).text()
+    def deal_delete(self):
+        self.cure_x.del_public_deal(
+            deal_x_label=self.deals_table.item(self.deals_table.currentRow(), 0).text()
         )
         self.refresh_cure()
 
@@ -265,15 +265,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_healers()
 
     def depotlink_insert(self):
-        oath_healer = self.oaths_table.item(self.oaths_table.currentRow(), 0).text()
+        deal_healer = self.deals_table.item(self.deals_table.currentRow(), 0).text()
         if self.x_healing != None:
-            oath_json = x_func_open_file(
-                dest_dir=self.x_healing._admin._oaths_public_dir,
-                file_title=f"{oath_healer}.json",
+            deal_json = x_func_open_file(
+                dest_dir=self.x_healing._admin._deals_public_dir,
+                file_title=f"{deal_healer}.json",
             )
-            oath_x = get_oath_from_json(oath_json)
-            self.x_healing.set_depot_oath(
-                oath_x=oath_x,
+            deal_x = get_deal_from_json(deal_json)
+            self.x_healing.set_depot_deal(
+                deal_x=deal_x,
                 depotlink_type=self.depotlink_type_combo.currentText(),
                 depotlink_weight=self.depotlink_weight.text(),
             )
@@ -295,19 +295,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def depotlink_delete(self):
         healing_title_x = self.x_healing._admin.title
         self.cure_x.del_depotlink(
-            healing_title=healing_title_x, oathunit_healer=self.depotlink_title.text()
+            healing_title=healing_title_x, dealunit_healer=self.depotlink_title.text()
         )
         self.cure_x.save_healingunit_file(healing_title=healing_title_x)
         self.refresh_healer()
 
-    def get_oath_healer_list(self):
-        oaths_list = []
+    def get_deal_healer_list(self):
+        deals_list = []
         for file_title in self.get_public_dir_file_titles_list():
-            oath_json = x_func_open_file(
+            deal_json = x_func_open_file(
                 dest_dir=self.get_public_dir(), file_title=file_title
             )
-            oaths_list.append(get_oath_from_json(x_oath_json=oath_json))
-        return oaths_list
+            deals_list.append(get_deal_from_json(x_deal_json=deal_json))
+        return deals_list
 
     def get_healing_title_list(self):
         healers_healer_list = []
@@ -323,7 +323,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.x_healing != None:
             for cl_val in self.x_healing._depotlinks.values():
                 depotlink_row = [
-                    cl_val.oath_healer,
+                    cl_val.deal_healer,
                     cl_val.depotlink_type,
                     str(cl_val.weight),
                 ]
@@ -334,7 +334,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         x_list = []
         if self.x_healing != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.x_healing_admin._oaths_digest_dir,
+                dir_path=self.x_healing_admin._deals_digest_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -346,7 +346,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         x_list = []
         if self.x_healing != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.x_healing._admin._oaths_ignore_dir,
+                dir_path=self.x_healing._admin._deals_ignore_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -356,16 +356,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_ideas_list(self):
         x_list = []
-        if self.healer_output_oath != None:
-            idea_list = self.healer_output_oath.get_idea_tree_ordered_road_list()
+        if self.healer_output_deal != None:
+            idea_list = self.healer_output_deal.get_idea_tree_ordered_road_list()
 
             for idea_road in idea_list:
-                idea_obj = self.healer_output_oath.get_idea_kid(idea_road)
+                idea_obj = self.healer_output_deal.get_idea_kid(idea_road)
 
                 if idea_obj._pad.find("time") != 3:
                     x_list.append(
                         [
-                            oath_importance_diplay(idea_obj._oath_importance),
+                            deal_importance_diplay(idea_obj._deal_importance),
                             idea_road,
                             len(idea_obj._balancelinks),
                         ]
@@ -375,36 +375,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_partys_list(self):
         x_list = []
-        if self.healer_output_oath != None:
+        if self.healer_output_deal != None:
             x_list.extend(
                 [
-                    f"{oath_importance_diplay(partyunit._oath_credit)}/{oath_importance_diplay(partyunit._oath_debt)}",
+                    f"{deal_importance_diplay(partyunit._deal_credit)}/{deal_importance_diplay(partyunit._deal_debt)}",
                     partyunit.title,
                     f"{partyunit.creditor_weight}/{partyunit.debtor_weight}",
                 ]
-                for partyunit in self.healer_output_oath._partys.values()
+                for partyunit in self.healer_output_deal._partys.values()
             )
         return x_list
 
     def get_p_groups_list(self):
         x_list = []
-        if self.healer_output_oath != None:
+        if self.healer_output_deal != None:
             x_list.extend(
                 [
-                    f"{oath_importance_diplay(groupunit._oath_debt)}/{oath_importance_diplay(groupunit._oath_credit)}",
+                    f"{deal_importance_diplay(groupunit._deal_debt)}/{deal_importance_diplay(groupunit._deal_credit)}",
                     groupunit.brand,
                     len(groupunit._partys),
                 ]
-                for groupunit in self.healer_output_oath._groups.values()
+                for groupunit in self.healer_output_deal._groups.values()
             )
         return x_list
 
     def get_p_acptfacts_list(self):
         x_list = []
-        if self.healer_output_oath != None:
+        if self.healer_output_deal != None:
             for (
                 acptfactunit
-            ) in self.healer_output_oath._idearoot._acptfactunits.values():
+            ) in self.healer_output_deal._idearoot._acptfactunits.values():
                 open_nigh = ""
                 if acptfactunit.open is None and acptfactunit.nigh is None:
                     open_nigh = ""
@@ -422,12 +422,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_agenda_list(self):
         x_list = []
-        if self.healer_output_oath != None:
-            agenda_list = self.healer_output_oath.get_agenda_items()
-            agenda_list.sort(key=lambda x: x._oath_importance, reverse=True)
+        if self.healer_output_deal != None:
+            agenda_list = self.healer_output_deal.get_agenda_items()
+            agenda_list.sort(key=lambda x: x._deal_importance, reverse=True)
             x_list.extend(
                 [
-                    oath_importance_diplay(agenda_item._oath_importance),
+                    deal_importance_diplay(agenda_item._deal_importance),
                     agenda_item._label,
                     agenda_item._pad,
                 ]
@@ -451,9 +451,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.depotlink_type_combo.setCurrentText("")
         column_header = ""
         if self.x_healing is None:
-            column_header = "Oathlinks Table"
+            column_header = "Deallinks Table"
         elif self.x_healing != None:
-            column_header = f"'{self.x_healing._admin.title}' Oathlinks"
+            column_header = f"'{self.x_healing._admin.title}' Deallinks"
         self.refresh_x(
             self.depotlinks_table,
             [column_header, "Link Type", "Weight"],
@@ -475,13 +475,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         p_ideas_list = self.get_p_ideas_list()
         if len(p_ideas_list) >= 0:
             column_headers = [
-                "oath_importance",
+                "deal_importance",
                 f"Ideas Table ({len(p_ideas_list)})",
                 "balancelinks",
             ]
         else:
             column_headers = [
-                "oath_importance",
+                "deal_importance",
                 "Ideas Table",
                 "balancelinks",
             ]
@@ -500,7 +500,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _sub_refresh_p_partys_table(self):
         p_partys_list = self.get_p_partys_list()
         column_headers = [
-            "oath_debt/oath_credit",
+            "deal_debt/deal_credit",
             f"Partys ({len(p_partys_list)})",
             "creditor_weight/debtor_weight",
         ]
@@ -515,7 +515,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _sub_refresh_p_groups_table(self):
         p_groups_list = self.get_p_groups_list()
         column_headers = [
-            "oath_debt/oath_credit",
+            "deal_debt/deal_credit",
             f"groups ({len(p_groups_list)})",
             "Partys",
         ]
@@ -541,7 +541,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _sub_refresh_p_agenda_table(self):
         p_agenda_list = self.get_p_agenda_list()
         column_headers = [
-            "oath_importance",
+            "deal_importance",
             f"Agenda ({len(p_agenda_list)})",
             "Idea Walk",
         ]
@@ -566,9 +566,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._sub_refresh_depotlinks_table()
         self._sub_refresh_digests_table()
         self._sub_refresh_ignores_table()
-        self.healer_output_oath = None
+        self.healer_output_deal = None
         if self.x_healing != None:
-            self.healer_output_oath = self.x_healing._admin.get_remelded_output_oath()
+            self.healer_output_deal = self.x_healing._admin.get_remelded_output_deal()
         self._sub_refresh_p_ideas_table()
         self._sub_refresh_p_partys_table()
         self._sub_refresh_p_groups_table()
@@ -576,7 +576,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._sub_refresh_p_agenda_table()
 
     def refresh_cure(self):
-        self.refresh_x(self.oaths_table, ["Oaths Table"], self.get_oath_healer_list())
+        self.refresh_x(self.deals_table, ["Deals Table"], self.get_deal_healer_list())
         self.refresh_healers()
 
     def refresh_x(

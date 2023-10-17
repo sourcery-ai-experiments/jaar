@@ -1,6 +1,6 @@
-# from lw.oath import OathUnit
-from src.oath.oath import OathUnit
-from src.oath.x_func import (
+# from lw.deal import DealUnit
+from src.deal.deal import DealUnit
+from src.deal.x_func import (
     single_dir_create_if_null,
     delete_dir as x_func_delete_dir,
     copy_dir,
@@ -8,21 +8,21 @@ from src.oath.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
 )
-from src.oath.examples.example_oaths import (
-    oath_v001 as example_oaths_oath_v001,
-    oath_v002 as example_oaths_oath_v002,
-    get_oath_1Task_1CE0MinutesRequired_1AcptFact as example_oaths_get_oath_1Task_1CE0MinutesRequired_1AcptFact,
-    get_oath_with7amCleanTableRequired as example_oaths_get_oath_with7amCleanTableRequired,
-    get_oath_base_time_example as example_oaths_get_oath_base_time_example,
-    get_oath_x1_3levels_1required_1acptfacts as example_oaths_get_oath_x1_3levels_1required_1acptfacts,
+from src.deal.examples.example_deals import (
+    deal_v001 as example_deals_deal_v001,
+    deal_v002 as example_deals_deal_v002,
+    get_deal_1Task_1CE0MinutesRequired_1AcptFact as example_deals_get_deal_1Task_1CE0MinutesRequired_1AcptFact,
+    get_deal_with7amCleanTableRequired as example_deals_get_deal_with7amCleanTableRequired,
+    get_deal_base_time_example as example_deals_get_deal_base_time_example,
+    get_deal_x1_3levels_1required_1acptfacts as example_deals_get_deal_x1_3levels_1required_1acptfacts,
 )
 
 from src.cure.cure import CureUnit, cureunit_shop
 from src.cure.examples.example_healers import (
-    get_1node_oath as example_healers_get_1node_oath,
-    get_7nodeJRootWithH_oath as example_healers_get_7nodeJRootWithH_oath,
-    get_oath_2CleanNodesRandomWeights as example_healers_get_oath_2CleanNodesRandomWeights,
-    get_oath_3CleanNodesRandomWeights as example_healers_get_oath_3CleanNodesRandomWeights,
+    get_1node_deal as example_healers_get_1node_deal,
+    get_7nodeJRootWithH_deal as example_healers_get_7nodeJRootWithH_deal,
+    get_deal_2CleanNodesRandomWeights as example_healers_get_deal_2CleanNodesRandomWeights,
+    get_deal_3CleanNodesRandomWeights as example_healers_get_deal_3CleanNodesRandomWeights,
 )
 from os import listdir as os_listdir, rename as os_rename, path as os_path
 from pytest import fixture as pytest_fixture
@@ -48,17 +48,17 @@ def env_dir_setup_cleanup():
     x_func_delete_dir(dir=env_dir)
 
 
-def create_oath_file_for_cures(cure_dir: str, oath_healer: str):
-    oath_x = OathUnit(_healer=oath_healer)
-    oath_dir = f"{cure_dir}/oaths"
-    # file_path = f"{oath_dir}/{oath_x._healer}.json"
+def create_deal_file_for_cures(cure_dir: str, deal_healer: str):
+    deal_x = DealUnit(_healer=deal_healer)
+    deal_dir = f"{cure_dir}/deals"
+    # file_path = f"{deal_dir}/{deal_x._healer}.json"
     # if not path.exists(file_path):
-    # print(f"{file_path=} {oath_x._healer=}")
+    # print(f"{file_path=} {deal_x._healer=}")
 
     x_func_save_file(
-        dest_dir=oath_dir,
-        file_title=f"{oath_x._healer}.json",
-        file_text=oath_x.get_json(),
+        dest_dir=deal_dir,
+        file_title=f"{deal_x._healer}.json",
+        file_text=deal_x.get_json(),
     )
 
 
@@ -81,38 +81,38 @@ def _delete_and_set_ex3():
     x_func_delete_dir(x_cure.get_object_root_dir())
     x_cure.create_dirs_if_null(in_memory_bank=True)
 
-    x_cure.save_public_oath(oath_x=example_healers_get_1node_oath())
-    x_cure.save_public_oath(
-        oath_x=example_oaths_get_oath_1Task_1CE0MinutesRequired_1AcptFact()
+    x_cure.save_public_deal(deal_x=example_healers_get_1node_deal())
+    x_cure.save_public_deal(
+        deal_x=example_deals_get_deal_1Task_1CE0MinutesRequired_1AcptFact()
     )
-    x_cure.save_public_oath(oath_x=example_oaths_oath_v001())
-    x_cure.save_public_oath(oath_x=example_oaths_oath_v002())
+    x_cure.save_public_deal(deal_x=example_deals_deal_v001())
+    x_cure.save_public_deal(deal_x=example_deals_deal_v002())
 
     # x_cure.set_healer(x_healing=healingunit_shop(title="w1", env_dir=x_cure.get_object_root_dir()))
     # x_cure.set_healer(x_healing=healingunit_shop(title="w2", env_dir=x_cure.get_object_root_dir()))
     xia_text = "Xia"
     x_cure.create_new_healingunit(healing_title=xia_text)
-    healer_text = "Myoath"
+    healer_text = "Mydeal"
     x_cure.set_healer_depotlink(
-        xia_text, oath_healer=healer_text, depotlink_type="blind_trust"
+        xia_text, deal_healer=healer_text, depotlink_type="blind_trust"
     )
     # w1_obj = x_cure.get_healingunit(title=w1_text)
 
     bob_text = "bob wurld"
-    create_oath_file_for_cures(x_cure.get_object_root_dir(), bob_text)
-    # print(f"create oath_list {w1_text=}")
-    x_cure.create_depotlink_to_generated_oath(
-        healing_title=xia_text, oath_healer=bob_text, depotlink_type="ignore"
+    create_deal_file_for_cures(x_cure.get_object_root_dir(), bob_text)
+    # print(f"create deal_list {w1_text=}")
+    x_cure.create_depotlink_to_generated_deal(
+        healing_title=xia_text, deal_healer=bob_text, depotlink_type="ignore"
     )
     land_text = "tim wurld"
-    create_oath_file_for_cures(
-        cure_dir=x_cure.get_object_root_dir(), oath_healer=land_text
+    create_deal_file_for_cures(
+        cure_dir=x_cure.get_object_root_dir(), deal_healer=land_text
     )
-    x_cure.create_depotlink_to_generated_oath(
-        healing_title=xia_text, oath_healer=land_text, depotlink_type="blind_trust"
+    x_cure.create_depotlink_to_generated_deal(
+        healing_title=xia_text, deal_healer=land_text, depotlink_type="blind_trust"
     )
-    # x_cure.create_depotlink_to_generated_oath(healing_title=w1_text, oath_healer="test9")
-    # x_cure.create_depotlink_to_generated_oath(healing_title=w1_text, oath_healer="Bobs oath")
+    # x_cure.create_depotlink_to_generated_deal(healing_title=w1_text, deal_healer="test9")
+    # x_cure.create_depotlink_to_generated_deal(healing_title=w1_text, deal_healer="Bobs deal")
     x_cure.save_healingunit_file(healing_title=xia_text)
     # print(f"WHAT WHAT {x_cure.get_object_root_dir()}")
     # print(f"WHAT WHAT {x_cure.get_object_root_dir()}/healingunits/w1/w1.json")
@@ -135,10 +135,10 @@ def _delete_and_set_ex4():
     x_cure = cureunit_shop(handle=cure_handle, cures_dir=get_test_cures_dir())
     x_func_delete_dir(x_cure.get_object_root_dir())
     x_cure.create_dirs_if_null(in_memory_bank=True)
-    x_cure.save_public_oath(example_healers_get_7nodeJRootWithH_oath())
-    x_cure.save_public_oath(example_oaths_get_oath_with7amCleanTableRequired())
-    x_cure.save_public_oath(example_oaths_get_oath_base_time_example())
-    x_cure.save_public_oath(example_oaths_get_oath_x1_3levels_1required_1acptfacts())
+    x_cure.save_public_deal(example_healers_get_7nodeJRootWithH_deal())
+    x_cure.save_public_deal(example_deals_get_deal_with7amCleanTableRequired())
+    x_cure.save_public_deal(example_deals_get_deal_base_time_example())
+    x_cure.save_public_deal(example_deals_get_deal_x1_3levels_1required_1acptfacts())
 
 
 def _delete_and_set_ex5():
@@ -152,57 +152,57 @@ def _delete_and_set_ex5():
     # ethical code Jessica
     # ethical code Francine
     # ethical code Clay
-    oath_1 = example_healers_get_oath_2CleanNodesRandomWeights(_healer="ernie")
-    oath_2 = example_healers_get_oath_2CleanNodesRandomWeights(_healer="steve")
-    oath_3 = example_healers_get_oath_2CleanNodesRandomWeights(_healer="jessica")
-    oath_4 = example_healers_get_oath_2CleanNodesRandomWeights(_healer="francine")
-    oath_5 = example_healers_get_oath_2CleanNodesRandomWeights(_healer="clay")
+    deal_1 = example_healers_get_deal_2CleanNodesRandomWeights(_healer="ernie")
+    deal_2 = example_healers_get_deal_2CleanNodesRandomWeights(_healer="steve")
+    deal_3 = example_healers_get_deal_2CleanNodesRandomWeights(_healer="jessica")
+    deal_4 = example_healers_get_deal_2CleanNodesRandomWeights(_healer="francine")
+    deal_5 = example_healers_get_deal_2CleanNodesRandomWeights(_healer="clay")
 
-    x_cure.save_public_oath(oath_x=oath_1)
-    x_cure.save_public_oath(oath_x=oath_2)
-    x_cure.save_public_oath(oath_x=oath_3)
-    x_cure.save_public_oath(oath_x=oath_4)
-    x_cure.save_public_oath(oath_x=oath_5)
+    x_cure.save_public_deal(deal_x=deal_1)
+    x_cure.save_public_deal(deal_x=deal_2)
+    x_cure.save_public_deal(deal_x=deal_3)
+    x_cure.save_public_deal(deal_x=deal_4)
+    x_cure.save_public_deal(deal_x=deal_5)
 
-    x_cure.create_new_healingunit(healing_title=oath_1._healer)
-    x_cure.create_new_healingunit(healing_title=oath_2._healer)
-    x_cure.create_new_healingunit(healing_title=oath_3._healer)
-    x_cure.create_new_healingunit(healing_title=oath_4._healer)
-    x_cure.create_new_healingunit(healing_title=oath_5._healer)
+    x_cure.create_new_healingunit(healing_title=deal_1._healer)
+    x_cure.create_new_healingunit(healing_title=deal_2._healer)
+    x_cure.create_new_healingunit(healing_title=deal_3._healer)
+    x_cure.create_new_healingunit(healing_title=deal_4._healer)
+    x_cure.create_new_healingunit(healing_title=deal_5._healer)
 
-    x_cure.set_healer_depotlink(oath_1._healer, oath_2._healer, "blind_trust", 3, 3.1)
-    x_cure.set_healer_depotlink(oath_1._healer, oath_3._healer, "blind_trust", 7, 7.1)
-    x_cure.set_healer_depotlink(oath_1._healer, oath_4._healer, "blind_trust", 4, 4.1)
-    x_cure.set_healer_depotlink(oath_1._healer, oath_5._healer, "blind_trust", 5, 5.1)
+    x_cure.set_healer_depotlink(deal_1._healer, deal_2._healer, "blind_trust", 3, 3.1)
+    x_cure.set_healer_depotlink(deal_1._healer, deal_3._healer, "blind_trust", 7, 7.1)
+    x_cure.set_healer_depotlink(deal_1._healer, deal_4._healer, "blind_trust", 4, 4.1)
+    x_cure.set_healer_depotlink(deal_1._healer, deal_5._healer, "blind_trust", 5, 5.1)
 
-    x_cure.set_healer_depotlink(oath_2._healer, oath_1._healer, "blind_trust", 3, 3.1)
-    x_cure.set_healer_depotlink(oath_2._healer, oath_3._healer, "blind_trust", 7, 7.1)
-    x_cure.set_healer_depotlink(oath_2._healer, oath_4._healer, "blind_trust", 4, 4.1)
-    x_oath = example_healers_get_oath_3CleanNodesRandomWeights()
+    x_cure.set_healer_depotlink(deal_2._healer, deal_1._healer, "blind_trust", 3, 3.1)
+    x_cure.set_healer_depotlink(deal_2._healer, deal_3._healer, "blind_trust", 7, 7.1)
+    x_cure.set_healer_depotlink(deal_2._healer, deal_4._healer, "blind_trust", 4, 4.1)
+    x_deal = example_healers_get_deal_3CleanNodesRandomWeights()
     x_cure.set_healer_depotlink(
-        oath_2._healer, oath_5._healer, "ignore", 5, 5.1, x_oath
+        deal_2._healer, deal_5._healer, "ignore", 5, 5.1, x_deal
     )
 
-    x_cure.set_healer_depotlink(oath_3._healer, oath_1._healer, "blind_trust", 3, 3.1)
-    x_cure.set_healer_depotlink(oath_3._healer, oath_2._healer, "blind_trust", 7, 7.1)
-    x_cure.set_healer_depotlink(oath_3._healer, oath_4._healer, "blind_trust", 4, 4.1)
-    x_cure.set_healer_depotlink(oath_3._healer, oath_5._healer, "blind_trust", 5, 5.1)
+    x_cure.set_healer_depotlink(deal_3._healer, deal_1._healer, "blind_trust", 3, 3.1)
+    x_cure.set_healer_depotlink(deal_3._healer, deal_2._healer, "blind_trust", 7, 7.1)
+    x_cure.set_healer_depotlink(deal_3._healer, deal_4._healer, "blind_trust", 4, 4.1)
+    x_cure.set_healer_depotlink(deal_3._healer, deal_5._healer, "blind_trust", 5, 5.1)
 
-    x_cure.set_healer_depotlink(oath_4._healer, oath_1._healer, "blind_trust", 3, 3.1)
-    x_cure.set_healer_depotlink(oath_4._healer, oath_2._healer, "blind_trust", 7, 7.1)
-    x_cure.set_healer_depotlink(oath_4._healer, oath_3._healer, "blind_trust", 4, 4.1)
-    x_cure.set_healer_depotlink(oath_4._healer, oath_5._healer, "blind_trust", 5, 5.1)
+    x_cure.set_healer_depotlink(deal_4._healer, deal_1._healer, "blind_trust", 3, 3.1)
+    x_cure.set_healer_depotlink(deal_4._healer, deal_2._healer, "blind_trust", 7, 7.1)
+    x_cure.set_healer_depotlink(deal_4._healer, deal_3._healer, "blind_trust", 4, 4.1)
+    x_cure.set_healer_depotlink(deal_4._healer, deal_5._healer, "blind_trust", 5, 5.1)
 
-    x_cure.set_healer_depotlink(oath_5._healer, oath_1._healer, "blind_trust", 3, 3.1)
-    x_cure.set_healer_depotlink(oath_5._healer, oath_2._healer, "blind_trust", 7, 7.1)
-    x_cure.set_healer_depotlink(oath_5._healer, oath_3._healer, "blind_trust", 4, 4.1)
-    x_cure.set_healer_depotlink(oath_5._healer, oath_4._healer, "blind_trust", 5, 5.1)
+    x_cure.set_healer_depotlink(deal_5._healer, deal_1._healer, "blind_trust", 3, 3.1)
+    x_cure.set_healer_depotlink(deal_5._healer, deal_2._healer, "blind_trust", 7, 7.1)
+    x_cure.set_healer_depotlink(deal_5._healer, deal_3._healer, "blind_trust", 4, 4.1)
+    x_cure.set_healer_depotlink(deal_5._healer, deal_4._healer, "blind_trust", 5, 5.1)
 
-    x_cure.save_healingunit_file(healing_title=oath_1._healer)
-    x_cure.save_healingunit_file(healing_title=oath_2._healer)
-    x_cure.save_healingunit_file(healing_title=oath_3._healer)
-    x_cure.save_healingunit_file(healing_title=oath_4._healer)
-    x_cure.save_healingunit_file(healing_title=oath_5._healer)
+    x_cure.save_healingunit_file(healing_title=deal_1._healer)
+    x_cure.save_healingunit_file(healing_title=deal_2._healer)
+    x_cure.save_healingunit_file(healing_title=deal_3._healer)
+    x_cure.save_healingunit_file(healing_title=deal_4._healer)
+    x_cure.save_healingunit_file(healing_title=deal_5._healer)
 
 
 def _delete_and_set_ex6():
@@ -217,32 +217,32 @@ def _delete_and_set_ex6():
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_oath = OathUnit(_healer=sal_text)
-    sal_oath.add_partyunit(title=bob_text, creditor_weight=2)
-    sal_oath.add_partyunit(title=tom_text, creditor_weight=7)
-    sal_oath.add_partyunit(title=ava_text, creditor_weight=1)
-    x_cure.save_public_oath(oath_x=sal_oath)
+    sal_deal = DealUnit(_healer=sal_text)
+    sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
+    sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
+    sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
+    x_cure.save_public_deal(deal_x=sal_deal)
 
-    bob_oath = OathUnit(_healer=bob_text)
-    bob_oath.add_partyunit(title=sal_text, creditor_weight=3)
-    bob_oath.add_partyunit(title=ava_text, creditor_weight=1)
-    x_cure.save_public_oath(oath_x=bob_oath)
+    bob_deal = DealUnit(_healer=bob_text)
+    bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
+    bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
+    x_cure.save_public_deal(deal_x=bob_deal)
 
-    tom_oath = OathUnit(_healer=tom_text)
-    tom_oath.add_partyunit(title=sal_text, creditor_weight=2)
-    x_cure.save_public_oath(oath_x=tom_oath)
+    tom_deal = DealUnit(_healer=tom_text)
+    tom_deal.add_partyunit(title=sal_text, creditor_weight=2)
+    x_cure.save_public_deal(deal_x=tom_deal)
 
-    ava_oath = OathUnit(_healer=ava_text)
-    ava_oath.add_partyunit(title=elu_text, creditor_weight=2)
-    x_cure.save_public_oath(oath_x=ava_oath)
+    ava_deal = DealUnit(_healer=ava_text)
+    ava_deal.add_partyunit(title=elu_text, creditor_weight=2)
+    x_cure.save_public_deal(deal_x=ava_deal)
 
-    elu_oath = OathUnit(_healer=elu_text)
-    elu_oath.add_partyunit(title=ava_text, creditor_weight=19)
-    elu_oath.add_partyunit(title=sal_text, creditor_weight=1)
-    x_cure.save_public_oath(oath_x=elu_oath)
+    elu_deal = DealUnit(_healer=elu_text)
+    elu_deal.add_partyunit(title=ava_text, creditor_weight=19)
+    elu_deal.add_partyunit(title=sal_text, creditor_weight=1)
+    x_cure.save_public_deal(deal_x=elu_deal)
 
     x_cure.refresh_bank_metrics()
-    x_cure.set_river_sphere_for_oath(oath_healer=sal_text, max_flows_count=100)
+    x_cure.set_river_sphere_for_deal(deal_healer=sal_text, max_flows_count=100)
 
 
 def create_example_cure(cure_handle: str):

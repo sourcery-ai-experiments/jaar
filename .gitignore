@@ -149,7 +149,7 @@ src/cure/examples/cures/ex5/
 src/cure/examples/cures/ex6/
 src/cure/examples/cures/river_env/
 src/cure/test_cure/sql_worksheet01.sql
-src/oath/examples/js_oath.json
+src/deal/examples/js_deal.json
 main_cli_app.py
 main_cli_app2.py
 worlds/Joachim/

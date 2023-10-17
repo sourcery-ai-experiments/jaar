@@ -1,4 +1,4 @@
-from src.oath.oath import OathUnit
+from src.deal.deal import DealUnit
 from src.cure.cure import cureunit_shop
 from src.cure.examples.cure_env_kit import (
     get_temp_env_handle,
@@ -14,7 +14,7 @@ from src.cure.bank_sqlstr import (
 )
 
 
-def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable01(
+def test_cure_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example cure with 4 Healers, each with 3 Partyunits = 12 ledger rows
@@ -26,18 +26,18 @@ def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable01(
     tom_text = "tom"
     sal_text = "sal"
 
-    sal = OathUnit(_healer=sal_text)
+    sal = DealUnit(_healer=sal_text)
     sal.add_partyunit(title=bob_text, creditor_weight=1)
     sal.add_partyunit(title=tom_text, creditor_weight=3)
-    sx.save_public_oath(oath_x=sal)
+    sx.save_public_deal(deal_x=sal)
 
-    bob = OathUnit(_healer=bob_text)
+    bob = DealUnit(_healer=bob_text)
     bob.add_partyunit(title=sal_text, creditor_weight=1)
-    sx.save_public_oath(oath_x=bob)
+    sx.save_public_deal(deal_x=bob)
 
-    tom = OathUnit(_healer=tom_text)
+    tom = DealUnit(_healer=tom_text)
     tom.add_partyunit(title=sal_text, creditor_weight=1)
-    sx.save_public_oath(oath_x=tom)
+    sx.save_public_deal(deal_x=tom)
 
     sx.refresh_bank_metrics()
 
@@ -50,12 +50,12 @@ def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable01(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 0
 
     # WHEN
-    sx.set_river_sphere_for_oath(oath_healer=sal_text)
+    sx.set_river_sphere_for_deal(deal_healer=sal_text)
 
     # THEN
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 4
     with sx.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_oath_healer=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_deal_healer=sal_text)
 
     flow_0 = river_flows.get(0)
     flow_1 = river_flows.get(1)
@@ -85,10 +85,10 @@ def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable01(
     assert river_sal_tax_tom.tax_total == 0.75
 
 
-def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable02(
+def test_cure_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable02(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 4 oaths, 100% of river flows to sal
+    # GIVEN 4 deals, 100% of river flows to sal
     cure_handle = get_temp_env_handle()
     sx = cureunit_shop(handle=cure_handle, cures_dir=get_test_cures_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -98,23 +98,23 @@ def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable02(
     tom_text = "tom"
     elu_text = "elu"
 
-    sal = OathUnit(_healer=sal_text)
+    sal = DealUnit(_healer=sal_text)
     sal.add_partyunit(title=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
-    sx.save_public_oath(oath_x=sal)
+    sx.save_public_deal(deal_x=sal)
 
-    bob = OathUnit(_healer=bob_text)
+    bob = DealUnit(_healer=bob_text)
     bob.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=1)
     bob.add_partyunit(title=tom_text, creditor_weight=1, debtor_weight=1)
-    sx.save_public_oath(oath_x=bob)
+    sx.save_public_deal(deal_x=bob)
 
-    tom = OathUnit(_healer=tom_text)
+    tom = DealUnit(_healer=tom_text)
     tom.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=8)
-    sx.save_public_oath(oath_x=tom)
+    sx.save_public_deal(deal_x=tom)
 
-    elu = OathUnit(_healer=elu_text)
+    elu = DealUnit(_healer=elu_text)
     elu.add_partyunit(title=sal_text, creditor_weight=1, debtor_weight=8)
-    sx.save_public_oath(oath_x=elu)
+    sx.save_public_deal(deal_x=elu)
     sx.refresh_bank_metrics()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
@@ -126,12 +126,12 @@ def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable02(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 0
 
     # WHEN
-    sx.set_river_sphere_for_oath(oath_healer=sal_text)
+    sx.set_river_sphere_for_deal(deal_healer=sal_text)
 
     # THEN
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 9
     with sx.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_oath_healer=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_deal_healer=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
@@ -148,10 +148,10 @@ def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable02(
     assert river_sal_tax_elu.tax_total == 1.0
 
 
-def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable03(
+def test_cure_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable03(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 4 oaths, 85% of river flows to sal
+    # GIVEN 4 deals, 85% of river flows to sal
     cure_handle = get_temp_env_handle()
     sx = cureunit_shop(handle=cure_handle, cures_dir=get_test_cures_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -161,23 +161,23 @@ def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable03(
     tom_text = "tom"
     ava_text = "ava"
 
-    sal_oath = OathUnit(_healer=sal_text)
-    sal_oath.add_partyunit(title=bob_text, creditor_weight=2)
-    sal_oath.add_partyunit(title=tom_text, creditor_weight=7)
-    sal_oath.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_oath(oath_x=sal_oath)
+    sal_deal = DealUnit(_healer=sal_text)
+    sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
+    sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
+    sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
+    sx.save_public_deal(deal_x=sal_deal)
 
-    bob_oath = OathUnit(_healer=bob_text)
-    bob_oath.add_partyunit(title=sal_text, creditor_weight=3)
-    bob_oath.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_oath(oath_x=bob_oath)
+    bob_deal = DealUnit(_healer=bob_text)
+    bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
+    bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
+    sx.save_public_deal(deal_x=bob_deal)
 
-    tom_oath = OathUnit(_healer=tom_text)
-    tom_oath.add_partyunit(title=sal_text, creditor_weight=2)
-    sx.save_public_oath(oath_x=tom_oath)
+    tom_deal = DealUnit(_healer=tom_text)
+    tom_deal.add_partyunit(title=sal_text, creditor_weight=2)
+    sx.save_public_deal(deal_x=tom_deal)
 
-    ava_oath = OathUnit(_healer=ava_text)
-    sx.save_public_oath(oath_x=ava_oath)
+    ava_deal = DealUnit(_healer=ava_text)
+    sx.save_public_deal(deal_x=ava_deal)
     sx.refresh_bank_metrics()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
@@ -189,12 +189,12 @@ def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable03(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 0
 
     # WHEN
-    sx.set_river_sphere_for_oath(oath_healer=sal_text)
+    sx.set_river_sphere_for_deal(deal_healer=sal_text)
 
     # THEN
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 6
     with sx.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_oath_healer=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_deal_healer=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
@@ -216,10 +216,10 @@ def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable03(
     assert river_sal_tax_tom.tax_total == 0.7
 
 
-def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable04(
+def test_cure_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable04(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 oaths, 85% of river flows to sal, left over %15 goes on endless loop
+    # GIVEN 5 deals, 85% of river flows to sal, left over %15 goes on endless loop
     cure_handle = get_temp_env_handle()
     sx = cureunit_shop(handle=cure_handle, cures_dir=get_test_cures_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -230,28 +230,28 @@ def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable04(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_oath = OathUnit(_healer=sal_text)
-    sal_oath.add_partyunit(title=bob_text, creditor_weight=2)
-    sal_oath.add_partyunit(title=tom_text, creditor_weight=7)
-    sal_oath.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_oath(oath_x=sal_oath)
+    sal_deal = DealUnit(_healer=sal_text)
+    sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
+    sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
+    sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
+    sx.save_public_deal(deal_x=sal_deal)
 
-    bob_oath = OathUnit(_healer=bob_text)
-    bob_oath.add_partyunit(title=sal_text, creditor_weight=3)
-    bob_oath.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_oath(oath_x=bob_oath)
+    bob_deal = DealUnit(_healer=bob_text)
+    bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
+    bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
+    sx.save_public_deal(deal_x=bob_deal)
 
-    tom_oath = OathUnit(_healer=tom_text)
-    tom_oath.add_partyunit(title=sal_text, creditor_weight=2)
-    sx.save_public_oath(oath_x=tom_oath)
+    tom_deal = DealUnit(_healer=tom_text)
+    tom_deal.add_partyunit(title=sal_text, creditor_weight=2)
+    sx.save_public_deal(deal_x=tom_deal)
 
-    ava_oath = OathUnit(_healer=ava_text)
-    ava_oath.add_partyunit(title=elu_text, creditor_weight=2)
-    sx.save_public_oath(oath_x=ava_oath)
+    ava_deal = DealUnit(_healer=ava_text)
+    ava_deal.add_partyunit(title=elu_text, creditor_weight=2)
+    sx.save_public_deal(deal_x=ava_deal)
 
-    elu_oath = OathUnit(_healer=elu_text)
-    elu_oath.add_partyunit(title=ava_text, creditor_weight=2)
-    sx.save_public_oath(oath_x=elu_oath)
+    elu_deal = DealUnit(_healer=elu_text)
+    elu_deal.add_partyunit(title=ava_text, creditor_weight=2)
+    sx.save_public_deal(deal_x=elu_deal)
 
     sx.refresh_bank_metrics()
 
@@ -264,12 +264,12 @@ def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable04(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 0
 
     # WHEN
-    sx.set_river_sphere_for_oath(oath_healer=sal_text)
+    sx.set_river_sphere_for_deal(deal_healer=sal_text)
 
     # THEN
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 40
     # with sx.get_bank_conn() as bank_conn:
-    #     river_flows = get_river_flow_dict(bank_conn, currency_oath_healer=sal_text)
+    #     river_flows = get_river_flow_dict(bank_conn, currency_deal_healer=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
@@ -291,10 +291,10 @@ def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable04(
     assert river_sal_tax_tom.tax_total == 0.7
 
 
-def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable05(
+def test_cure_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable05(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 oaths, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
+    # GIVEN 5 deals, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     cure_handle = get_temp_env_handle()
     sx = cureunit_shop(handle=cure_handle, cures_dir=get_test_cures_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -305,29 +305,29 @@ def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable05(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_oath = OathUnit(_healer=sal_text)
-    sal_oath.add_partyunit(title=bob_text, creditor_weight=2)
-    sal_oath.add_partyunit(title=tom_text, creditor_weight=7)
-    sal_oath.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_oath(oath_x=sal_oath)
+    sal_deal = DealUnit(_healer=sal_text)
+    sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
+    sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
+    sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
+    sx.save_public_deal(deal_x=sal_deal)
 
-    bob_oath = OathUnit(_healer=bob_text)
-    bob_oath.add_partyunit(title=sal_text, creditor_weight=3)
-    bob_oath.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_oath(oath_x=bob_oath)
+    bob_deal = DealUnit(_healer=bob_text)
+    bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
+    bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
+    sx.save_public_deal(deal_x=bob_deal)
 
-    tom_oath = OathUnit(_healer=tom_text)
-    tom_oath.add_partyunit(title=sal_text, creditor_weight=2)
-    sx.save_public_oath(oath_x=tom_oath)
+    tom_deal = DealUnit(_healer=tom_text)
+    tom_deal.add_partyunit(title=sal_text, creditor_weight=2)
+    sx.save_public_deal(deal_x=tom_deal)
 
-    ava_oath = OathUnit(_healer=ava_text)
-    ava_oath.add_partyunit(title=elu_text, creditor_weight=2)
-    sx.save_public_oath(oath_x=ava_oath)
+    ava_deal = DealUnit(_healer=ava_text)
+    ava_deal.add_partyunit(title=elu_text, creditor_weight=2)
+    sx.save_public_deal(deal_x=ava_deal)
 
-    elu_oath = OathUnit(_healer=elu_text)
-    elu_oath.add_partyunit(title=ava_text, creditor_weight=19)
-    elu_oath.add_partyunit(title=sal_text, creditor_weight=1)
-    sx.save_public_oath(oath_x=elu_oath)
+    elu_deal = DealUnit(_healer=elu_text)
+    elu_deal.add_partyunit(title=ava_text, creditor_weight=19)
+    elu_deal.add_partyunit(title=sal_text, creditor_weight=1)
+    sx.save_public_deal(deal_x=elu_deal)
 
     sx.refresh_bank_metrics()
 
@@ -340,12 +340,12 @@ def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable05(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 0
 
     # WHEN
-    sx.set_river_sphere_for_oath(oath_healer=sal_text)
+    sx.set_river_sphere_for_deal(deal_healer=sal_text)
 
     # THEN
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 40
     # with sx.get_bank_conn() as bank_conn:
-    #     river_flows = get_river_flow_dict(bank_conn, currency_oath_healer=sal_text)
+    #     river_flows = get_river_flow_dict(bank_conn, currency_deal_healer=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
@@ -372,10 +372,10 @@ def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable05(
     assert round(river_sal_tax_elu.tax_total, 15) == 0.0378017640625
 
 
-def test_cure_set_river_sphere_for_oath_CorrectlyDeletesPreviousRiver(
+def test_cure_set_river_sphere_for_deal_CorrectlyDeletesPreviousRiver(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 4 oaths, 100% of river flows to sal
+    # GIVEN 4 deals, 100% of river flows to sal
     cure_handle = get_temp_env_handle()
     sx = cureunit_shop(handle=cure_handle, cures_dir=get_test_cures_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -385,55 +385,55 @@ def test_cure_set_river_sphere_for_oath_CorrectlyDeletesPreviousRiver(
     tom_text = "tom"
     elu_text = "elu"
 
-    sal = OathUnit(_healer=sal_text)
+    sal = DealUnit(_healer=sal_text)
     sal.add_partyunit(title=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
-    sx.save_public_oath(oath_x=sal)
+    sx.save_public_deal(deal_x=sal)
 
-    bob = OathUnit(_healer=bob_text)
+    bob = DealUnit(_healer=bob_text)
     bob.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=1)
     bob.add_partyunit(title=tom_text, creditor_weight=1, debtor_weight=1)
-    sx.save_public_oath(oath_x=bob)
+    sx.save_public_deal(deal_x=bob)
 
-    tom = OathUnit(_healer=tom_text)
+    tom = DealUnit(_healer=tom_text)
     tom.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=8)
-    sx.save_public_oath(oath_x=tom)
+    sx.save_public_deal(deal_x=tom)
 
-    elu = OathUnit(_healer=elu_text)
+    elu = DealUnit(_healer=elu_text)
     elu.add_partyunit(title=sal_text, creditor_weight=1, debtor_weight=8)
-    sx.save_public_oath(oath_x=elu)
+    sx.save_public_deal(deal_x=elu)
     sx.refresh_bank_metrics()
 
-    sx.set_river_sphere_for_oath(oath_healer=sal_text)
-    sx.set_river_sphere_for_oath(oath_healer=elu_text)
+    sx.set_river_sphere_for_deal(deal_healer=sal_text)
+    sx.set_river_sphere_for_deal(deal_healer=elu_text)
 
     sqlstr_count_river_tparty = get_table_count_sqlstr("river_tparty")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 16
 
     with sx.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_oath_healer=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_deal_healer=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 3
 
     # WHEN
     # sal.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
-    # sx.save_public_oath(oath_x=sal)
-    sx.set_river_sphere_for_oath(oath_healer=sal_text)
+    # sx.save_public_deal(deal_x=sal)
+    sx.set_river_sphere_for_deal(deal_healer=sal_text)
 
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 16
     with sx.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_oath_healer=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_deal_healer=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 3
 
 
-def test_cure_set_river_sphere_for_oath_CorrectlyUsesMaxFlowsCount(
+def test_cure_set_river_sphere_for_deal_CorrectlyUsesMaxFlowsCount(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 oaths, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
+    # GIVEN 5 deals, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     cure_handle = get_temp_env_handle()
     sx = cureunit_shop(handle=cure_handle, cures_dir=get_test_cures_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -444,29 +444,29 @@ def test_cure_set_river_sphere_for_oath_CorrectlyUsesMaxFlowsCount(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_oath = OathUnit(_healer=sal_text)
-    sal_oath.add_partyunit(title=bob_text, creditor_weight=2)
-    sal_oath.add_partyunit(title=tom_text, creditor_weight=7)
-    sal_oath.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_oath(oath_x=sal_oath)
+    sal_deal = DealUnit(_healer=sal_text)
+    sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
+    sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
+    sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
+    sx.save_public_deal(deal_x=sal_deal)
 
-    bob_oath = OathUnit(_healer=bob_text)
-    bob_oath.add_partyunit(title=sal_text, creditor_weight=3)
-    bob_oath.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_oath(oath_x=bob_oath)
+    bob_deal = DealUnit(_healer=bob_text)
+    bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
+    bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
+    sx.save_public_deal(deal_x=bob_deal)
 
-    tom_oath = OathUnit(_healer=tom_text)
-    tom_oath.add_partyunit(title=sal_text, creditor_weight=2)
-    sx.save_public_oath(oath_x=tom_oath)
+    tom_deal = DealUnit(_healer=tom_text)
+    tom_deal.add_partyunit(title=sal_text, creditor_weight=2)
+    sx.save_public_deal(deal_x=tom_deal)
 
-    ava_oath = OathUnit(_healer=ava_text)
-    ava_oath.add_partyunit(title=elu_text, creditor_weight=2)
-    sx.save_public_oath(oath_x=ava_oath)
+    ava_deal = DealUnit(_healer=ava_text)
+    ava_deal.add_partyunit(title=elu_text, creditor_weight=2)
+    sx.save_public_deal(deal_x=ava_deal)
 
-    elu_oath = OathUnit(_healer=elu_text)
-    elu_oath.add_partyunit(title=ava_text, creditor_weight=19)
-    elu_oath.add_partyunit(title=sal_text, creditor_weight=1)
-    sx.save_public_oath(oath_x=elu_oath)
+    elu_deal = DealUnit(_healer=elu_text)
+    elu_deal.add_partyunit(title=ava_text, creditor_weight=19)
+    elu_deal.add_partyunit(title=sal_text, creditor_weight=1)
+    sx.save_public_deal(deal_x=elu_deal)
 
     sx.refresh_bank_metrics()
 
@@ -480,21 +480,21 @@ def test_cure_set_river_sphere_for_oath_CorrectlyUsesMaxFlowsCount(
 
     # WHEN
     mtc = 13
-    sx.set_river_sphere_for_oath(oath_healer=sal_text, max_flows_count=mtc)
+    sx.set_river_sphere_for_deal(deal_healer=sal_text, max_flows_count=mtc)
 
     # THEN
     with sx.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_oath_healer=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_deal_healer=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == mtc
 
 
-def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable05(
+def test_cure_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable05(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 oaths, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
+    # GIVEN 5 deals, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     cure_handle = get_temp_env_handle()
     sx = cureunit_shop(handle=cure_handle, cures_dir=get_test_cures_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -505,29 +505,29 @@ def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable05(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_oath = OathUnit(_healer=sal_text)
-    sal_oath.add_partyunit(title=bob_text, creditor_weight=2)
-    sal_oath.add_partyunit(title=tom_text, creditor_weight=7)
-    sal_oath.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_oath(oath_x=sal_oath)
+    sal_deal = DealUnit(_healer=sal_text)
+    sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
+    sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
+    sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
+    sx.save_public_deal(deal_x=sal_deal)
 
-    bob_oath = OathUnit(_healer=bob_text)
-    bob_oath.add_partyunit(title=sal_text, creditor_weight=3)
-    bob_oath.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_oath(oath_x=bob_oath)
+    bob_deal = DealUnit(_healer=bob_text)
+    bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
+    bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
+    sx.save_public_deal(deal_x=bob_deal)
 
-    tom_oath = OathUnit(_healer=tom_text)
-    tom_oath.add_partyunit(title=sal_text, creditor_weight=2)
-    sx.save_public_oath(oath_x=tom_oath)
+    tom_deal = DealUnit(_healer=tom_text)
+    tom_deal.add_partyunit(title=sal_text, creditor_weight=2)
+    sx.save_public_deal(deal_x=tom_deal)
 
-    ava_oath = OathUnit(_healer=ava_text)
-    ava_oath.add_partyunit(title=elu_text, creditor_weight=2)
-    sx.save_public_oath(oath_x=ava_oath)
+    ava_deal = DealUnit(_healer=ava_text)
+    ava_deal.add_partyunit(title=elu_text, creditor_weight=2)
+    sx.save_public_deal(deal_x=ava_deal)
 
-    elu_oath = OathUnit(_healer=elu_text)
-    elu_oath.add_partyunit(title=ava_text, creditor_weight=19)
-    elu_oath.add_partyunit(title=sal_text, creditor_weight=1)
-    sx.save_public_oath(oath_x=elu_oath)
+    elu_deal = DealUnit(_healer=elu_text)
+    elu_deal.add_partyunit(title=ava_text, creditor_weight=19)
+    elu_deal.add_partyunit(title=sal_text, creditor_weight=1)
+    sx.save_public_deal(deal_x=elu_deal)
 
     sx.refresh_bank_metrics()
 
@@ -540,12 +540,12 @@ def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable05(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 0
 
     # WHEN
-    sx.set_river_sphere_for_oath(oath_healer=sal_text)
+    sx.set_river_sphere_for_deal(deal_healer=sal_text)
 
     # THEN
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 40
     with sx.get_bank_conn() as bank_conn:
-        river_flows = get_river_flow_dict(bank_conn, currency_oath_healer=sal_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_deal_healer=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
@@ -573,10 +573,10 @@ def test_cure_set_river_sphere_for_oath_CorrectlyPopulatesriver_tpartyTable05(
     assert round(river_sal_tax_elu.tax_total, 15) == 0.0378017640625
 
 
-def test_cure_set_river_sphere_for_oath_CorrectlyBuildsASingleContinuousRange(
+def test_cure_set_river_sphere_for_deal_CorrectlyBuildsASingleContinuousRange(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 oaths, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
+    # GIVEN 5 deals, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     cure_handle = get_temp_env_handle()
     sx = cureunit_shop(handle=cure_handle, cures_dir=get_test_cures_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -587,34 +587,34 @@ def test_cure_set_river_sphere_for_oath_CorrectlyBuildsASingleContinuousRange(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_oath = OathUnit(_healer=sal_text)
-    sal_oath.add_partyunit(title=bob_text, creditor_weight=2)
-    sal_oath.add_partyunit(title=tom_text, creditor_weight=7)
-    sal_oath.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_oath(oath_x=sal_oath)
+    sal_deal = DealUnit(_healer=sal_text)
+    sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
+    sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
+    sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
+    sx.save_public_deal(deal_x=sal_deal)
 
-    bob_oath = OathUnit(_healer=bob_text)
-    bob_oath.add_partyunit(title=sal_text, creditor_weight=3)
-    bob_oath.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_oath(oath_x=bob_oath)
+    bob_deal = DealUnit(_healer=bob_text)
+    bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
+    bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
+    sx.save_public_deal(deal_x=bob_deal)
 
-    tom_oath = OathUnit(_healer=tom_text)
-    tom_oath.add_partyunit(title=sal_text, creditor_weight=2)
-    sx.save_public_oath(oath_x=tom_oath)
+    tom_deal = DealUnit(_healer=tom_text)
+    tom_deal.add_partyunit(title=sal_text, creditor_weight=2)
+    sx.save_public_deal(deal_x=tom_deal)
 
-    ava_oath = OathUnit(_healer=ava_text)
-    ava_oath.add_partyunit(title=elu_text, creditor_weight=2)
-    sx.save_public_oath(oath_x=ava_oath)
+    ava_deal = DealUnit(_healer=ava_text)
+    ava_deal.add_partyunit(title=elu_text, creditor_weight=2)
+    sx.save_public_deal(deal_x=ava_deal)
 
-    elu_oath = OathUnit(_healer=elu_text)
-    elu_oath.add_partyunit(title=ava_text, creditor_weight=19)
-    elu_oath.add_partyunit(title=sal_text, creditor_weight=1)
-    sx.save_public_oath(oath_x=elu_oath)
+    elu_deal = DealUnit(_healer=elu_text)
+    elu_deal.add_partyunit(title=ava_text, creditor_weight=19)
+    elu_deal.add_partyunit(title=sal_text, creditor_weight=1)
+    sx.save_public_deal(deal_x=elu_deal)
 
     sx.refresh_bank_metrics()
 
     # WHEN
-    sx.set_river_sphere_for_oath(oath_healer=sal_text, max_flows_count=100)
+    sx.set_river_sphere_for_deal(deal_healer=sal_text, max_flows_count=100)
 
     # THEN
     count_range_fails_sql = """
@@ -643,10 +643,10 @@ def test_cure_set_river_sphere_for_oath_CorrectlyBuildsASingleContinuousRange(
         assert get_single_result_back(bank_conn, count_range_fails_sql) == 0
 
 
-def test_cure_set_river_sphere_for_oath_CorrectlyUpatesOathPartyUnits(
+def test_cure_set_river_sphere_for_deal_CorrectlyUpatesDealPartyUnits(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 oaths, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
+    # GIVEN 5 deals, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     cure_handle = get_temp_env_handle()
     sx = cureunit_shop(handle=cure_handle, cures_dir=get_test_cures_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -657,39 +657,39 @@ def test_cure_set_river_sphere_for_oath_CorrectlyUpatesOathPartyUnits(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_oath_src = OathUnit(_healer=sal_text)
-    sal_oath_src.add_partyunit(title=bob_text, creditor_weight=2, debtor_weight=2)
-    sal_oath_src.add_partyunit(title=tom_text, creditor_weight=2, debtor_weight=1)
-    sal_oath_src.add_partyunit(title=ava_text, creditor_weight=2, debtor_weight=2)
-    sx.save_public_oath(oath_x=sal_oath_src)
+    sal_deal_src = DealUnit(_healer=sal_text)
+    sal_deal_src.add_partyunit(title=bob_text, creditor_weight=2, debtor_weight=2)
+    sal_deal_src.add_partyunit(title=tom_text, creditor_weight=2, debtor_weight=1)
+    sal_deal_src.add_partyunit(title=ava_text, creditor_weight=2, debtor_weight=2)
+    sx.save_public_deal(deal_x=sal_deal_src)
 
-    bob_oath = OathUnit(_healer=bob_text)
-    bob_oath.add_partyunit(title=sal_text, creditor_weight=3)
-    bob_oath.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_oath(oath_x=bob_oath)
+    bob_deal = DealUnit(_healer=bob_text)
+    bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
+    bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
+    sx.save_public_deal(deal_x=bob_deal)
 
-    tom_oath = OathUnit(_healer=tom_text)
-    tom_oath.add_partyunit(title=sal_text)
-    sx.save_public_oath(oath_x=tom_oath)
+    tom_deal = DealUnit(_healer=tom_text)
+    tom_deal.add_partyunit(title=sal_text)
+    sx.save_public_deal(deal_x=tom_deal)
 
-    ava_oath = OathUnit(_healer=ava_text)
-    ava_oath.add_partyunit(title=elu_text, creditor_weight=2)
-    sx.save_public_oath(oath_x=ava_oath)
+    ava_deal = DealUnit(_healer=ava_text)
+    ava_deal.add_partyunit(title=elu_text, creditor_weight=2)
+    sx.save_public_deal(deal_x=ava_deal)
 
-    elu_oath = OathUnit(_healer=elu_text)
-    elu_oath.add_partyunit(title=ava_text, creditor_weight=8)
-    elu_oath.add_partyunit(title=sal_text, creditor_weight=2)
-    sx.save_public_oath(oath_x=elu_oath)
+    elu_deal = DealUnit(_healer=elu_text)
+    elu_deal.add_partyunit(title=ava_text, creditor_weight=8)
+    elu_deal.add_partyunit(title=sal_text, creditor_weight=2)
+    sx.save_public_deal(deal_x=elu_deal)
 
     sx.refresh_bank_metrics()
-    sal_oath_before = sx.get_public_oath(healer=sal_text)
+    sal_deal_before = sx.get_public_deal(healer=sal_text)
 
-    sx.set_river_sphere_for_oath(oath_healer=sal_text, max_flows_count=100)
-    assert len(sal_oath_before._partys) == 3
-    print(f"{len(sal_oath_before._partys)=}")
-    bob_party = sal_oath_before._partys.get(bob_text)
-    tom_party = sal_oath_before._partys.get(tom_text)
-    ava_party = sal_oath_before._partys.get(ava_text)
+    sx.set_river_sphere_for_deal(deal_healer=sal_text, max_flows_count=100)
+    assert len(sal_deal_before._partys) == 3
+    print(f"{len(sal_deal_before._partys)=}")
+    bob_party = sal_deal_before._partys.get(bob_text)
+    tom_party = sal_deal_before._partys.get(tom_text)
+    ava_party = sal_deal_before._partys.get(ava_text)
     assert bob_party._bank_tax_paid is None
     assert bob_party._bank_tax_diff is None
     assert tom_party._bank_tax_paid is None
@@ -698,13 +698,13 @@ def test_cure_set_river_sphere_for_oath_CorrectlyUpatesOathPartyUnits(
     assert ava_party._bank_tax_diff is None
 
     # WHEN
-    sx.set_river_sphere_for_oath(oath_healer=sal_text)
+    sx.set_river_sphere_for_deal(deal_healer=sal_text)
 
     # THEN
-    sal_river_tpartys = sx.get_river_tpartys(oath_healer=sal_text)
+    sal_river_tpartys = sx.get_river_tpartys(deal_healer=sal_text)
     assert len(sal_river_tpartys) == 3
 
-    sal_oath_after = sx.get_public_oath(healer=sal_text)
+    sal_deal_after = sx.get_public_deal(healer=sal_text)
 
     bob_tparty = sal_river_tpartys.get(bob_text)
     tom_tparty = sal_river_tpartys.get(tom_text)
@@ -716,10 +716,10 @@ def test_cure_set_river_sphere_for_oath_CorrectlyUpatesOathPartyUnits(
     assert tom_tparty.currency_title == sal_text
     assert elu_tparty.currency_title == sal_text
 
-    bob_party = sal_oath_after._partys.get(bob_text)
-    tom_party = sal_oath_after._partys.get(tom_text)
-    ava_party = sal_oath_after._partys.get(ava_text)
-    elu_party = sal_oath_after._partys.get(elu_text)
+    bob_party = sal_deal_after._partys.get(bob_text)
+    tom_party = sal_deal_after._partys.get(tom_text)
+    ava_party = sal_deal_after._partys.get(ava_text)
+    elu_party = sal_deal_after._partys.get(elu_text)
 
     assert bob_tparty.tax_total == bob_party._bank_tax_paid
     assert bob_tparty.tax_diff == bob_party._bank_tax_diff
@@ -733,7 +733,7 @@ def test_cure_set_river_sphere_for_oath_CorrectlyUpatesOathPartyUnits(
     #     print(f"{tparty_uid=} {sal_river_tparty=}")
     #     assert sal_river_tparty.currency_title == sal_text
     #     assert sal_river_tparty.tax_title in [bob_text, tom_text, elu_text]
-    #     partyunit_x = sal_oath_after._partys.get(sal_river_tparty.tax_title)
+    #     partyunit_x = sal_deal_after._partys.get(sal_river_tparty.tax_title)
     #     if partyunit_x != None:
     #         # print(
     #         #     f"{sal_river_tparty.currency_title=} {sal_river_tparty.tax_title=} {partyunit_x.title=} tax_total: {sal_river_tparty.tax_total} Tax Paid: {partyunit_x._bank_tax_paid}"
@@ -748,8 +748,8 @@ def test_cure_set_river_sphere_for_oath_CorrectlyUpatesOathPartyUnits(
     assert ava_party._bank_tax_paid is None
     assert ava_party._bank_tax_diff is None
 
-    # for partyunit_x in sal_oath_after._partys.values():
-    #     print(f"sal_oath_after {partyunit_x.title=} {partyunit_x._bank_tax_paid=}")
+    # for partyunit_x in sal_deal_after._partys.values():
+    #     print(f"sal_deal_after {partyunit_x.title=} {partyunit_x._bank_tax_paid=}")
     #     river_tparty_x = sal_river_tpartys.get(partyunit_x.title)
     #     if river_tparty_x is None:
     #         assert partyunit_x._bank_tax_paid is None
@@ -757,4 +757,4 @@ def test_cure_set_river_sphere_for_oath_CorrectlyUpatesOathPartyUnits(
     #     else:
     #         assert partyunit_x._bank_tax_paid != None
     #         assert partyunit_x._bank_tax_diff != None
-    # assert sal_oath_after != sal_oath_before
+    # assert sal_deal_after != sal_deal_before

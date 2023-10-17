@@ -67,36 +67,36 @@ CureUnit objects
 
 CureUnit HealingUnit objects
 
-CureUnit HealingUnit OathLink objects
+CureUnit HealingUnit DealLink objects
 
 CureUnit Bank objects
 
 <!-- TODO: Add explanations -->
-OathUnit objects
+DealUnit objects
 
-OathUnit PartyUnit objects
+DealUnit PartyUnit objects
 
-OathUnit GroupUnit objects
+DealUnit GroupUnit objects
 
-OathUnit IdeaUnit objects
+DealUnit IdeaUnit objects
 
-OathUnit IdeaUnit hierarchical structure
+DealUnit IdeaUnit hierarchical structure
 
-OathUnit IdeaUnit Balancelink objects
+DealUnit IdeaUnit Balancelink objects
 
-OathUnit IdeaUnit Balanceline objects
+DealUnit IdeaUnit Balanceline objects
 
-OathUnit IdeaUnit BalanceHeir objects
+DealUnit IdeaUnit BalanceHeir objects
 
-OathUnit IdeaUnit BalanceHeir objects
+DealUnit IdeaUnit BalanceHeir objects
 
-OathUnit IdeaUnit RequiredFactUnit objects
+DealUnit IdeaUnit RequiredFactUnit objects
 
-OathUnit IdeaUnit RequiredFactHeir objects
+DealUnit IdeaUnit RequiredFactHeir objects
 
-OathUnit IdeaUnit AcptFactUnit objects
+DealUnit IdeaUnit AcptFactUnit objects
 
-OathUnit IdeaUnit AcptFactHeir objects
+DealUnit IdeaUnit AcptFactHeir objects
 
 
 ## 1.3 Test-Driven-Development
