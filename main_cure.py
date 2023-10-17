@@ -306,7 +306,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             pact_json = x_func_open_file(
                 dest_dir=self.get_public_dir(), file_title=file_title
             )
-            pacts_list.append(get_pact_from_json(cx_json=pact_json))
+            pacts_list.append(get_pact_from_json(x_pact_json=pact_json))
         return pacts_list
 
     def get_healing_title_list(self):

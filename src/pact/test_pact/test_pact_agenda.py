@@ -21,10 +21,10 @@ from src.pact.x_func import yr_explanation, open_file as x_func_open_file
 
 def test_get_agenda_returns_agenda():
     # GIVEN
-    a1 = example_pacts_get_pact_with_4_levels()
+    x_pact = example_pacts_get_pact_with_4_levels()
 
     # WHEN
-    agenda_list = a1.get_agenda_items()
+    agenda_list = x_pact.get_agenda_items()
 
     # THEN
     assert agenda_list
@@ -34,15 +34,15 @@ def test_get_agenda_returns_agenda():
 
 def test_get_agenda_returns_agenda_with_only_required_allowed():
     # GIVEN
-    a1 = example_pacts_get_pact_with_4_levels_and_2requireds()
+    x_pact = example_pacts_get_pact_with_4_levels_and_2requireds()
     week_text = "weekdays"
-    week_road = f"{a1._cure_handle},{week_text}"
+    week_road = f"{x_pact._cure_handle},{week_text}"
     sun_text = "Sunday"
     sun_road = f"{week_road},{sun_text}"
-    a1.set_acptfact(base=week_road, pick=sun_road)
+    x_pact.set_acptfact(base=week_road, pick=sun_road)
 
     # WHEN
-    agenda_list = a1.get_agenda_items()
+    agenda_list = x_pact.get_agenda_items()
 
     # THEN
     assert agenda_list
@@ -57,10 +57,10 @@ def test_get_agenda_returns_agenda_with_only_required_allowed():
 
 def test_get_agenda_returns_agenda_with_pact_importance():
     # GIVEN
-    a1 = example_pacts_get_pact_with_4_levels_and_2requireds_2acptfacts()
+    x_pact = example_pacts_get_pact_with_4_levels_and_2requireds_2acptfacts()
 
     # WHEN
-    agenda_list = a1.get_agenda_items()
+    agenda_list = x_pact.get_agenda_items()
 
     # THEN
     assert agenda_list
@@ -74,10 +74,10 @@ def test_get_agenda_returns_agenda_with_pact_importance():
 
 def test_get_agenda_with_No7amItem():
     # GIVEN
-    a1 = example_pacts_get_pact_with7amCleanTableRequired()
+    x_pact = example_pacts_get_pact_with7amCleanTableRequired()
 
     # WHEN
-    agenda_list = a1.get_agenda_items()
+    agenda_list = x_pact.get_agenda_items()
 
     # THEN
     assert agenda_list
@@ -92,25 +92,25 @@ def test_get_agenda_with_No7amItem():
 def test_get_agenda_with_7amItem():
     # GIVEN
     # set acptfacts as midnight to 8am
-    a1 = example_pacts_get_pact_with7amCleanTableRequired()
-    print(f"{len(a1.get_agenda_items())=}")
-    assert len(a1.get_agenda_items()) == 1
+    x_pact = example_pacts_get_pact_with7amCleanTableRequired()
+    print(f"{len(x_pact.get_agenda_items())=}")
+    assert len(x_pact.get_agenda_items()) == 1
 
     # WHEN
-    day24hr_road = f"{a1._cure_handle},timetech,24hr day"
+    day24hr_road = f"{x_pact._cure_handle},timetech,24hr day"
     day24hr_open = 0.0
     day24hr_nigh = 8.0
     housework_text = "housework"
     clean_text = "clean table"
-    a1.set_acptfact(
+    x_pact.set_acptfact(
         base=day24hr_road, pick=day24hr_road, open=day24hr_open, nigh=day24hr_nigh
     )
-    print(a1._idearoot._acptfactunits[day24hr_road])
-    print(a1._idearoot._kids[housework_text]._kids[clean_text]._requiredunits)
-    print(a1._idearoot._kids[housework_text]._kids[clean_text]._active_status)
+    print(x_pact._idearoot._acptfactunits[day24hr_road])
+    print(x_pact._idearoot._kids[housework_text]._kids[clean_text]._requiredunits)
+    print(x_pact._idearoot._kids[housework_text]._kids[clean_text]._active_status)
 
     # THEN
-    agenda_list = a1.get_agenda_items()
+    agenda_list = x_pact.get_agenda_items()
     print(f"{len(agenda_list)=}")
     assert len(agenda_list) == 6
     clean_item = agenda_list[1]
@@ -119,16 +119,16 @@ def test_get_agenda_with_7amItem():
 
 def test_get_agenda_does_not_return_promise_items_outside_range():
     healer_text = "Zia"
-    a1 = PactUnit(_healer=healer_text)
-    a1.set_time_hreg_ideas(c400_count=7)
+    x_pact = PactUnit(_healer=healer_text)
+    x_pact.set_time_hreg_ideas(c400_count=7)
     c_label = "clean"
     c_idea = IdeaKid(_label=c_label, promise=True)
-    a1.add_idea(idea_kid=c_idea, pad=a1._cure_handle)
-    c_road = f"{a1._cure_handle},{c_label}"
-    jajatime = f"{a1._cure_handle},time,jajatime"
-    jajaday = f"{a1._cure_handle},time,jajatime,day"
+    x_pact.add_idea(idea_kid=c_idea, pad=x_pact._cure_handle)
+    c_road = f"{x_pact._cure_handle},{c_label}"
+    jajatime = f"{x_pact._cure_handle},time,jajatime"
+    jajaday = f"{x_pact._cure_handle},time,jajatime,day"
 
-    a1.edit_idea_attr(
+    x_pact.edit_idea_attr(
         road=c_road,
         required_base=jajatime,
         required_sufffact=jajaday,
@@ -138,34 +138,34 @@ def test_get_agenda_does_not_return_promise_items_outside_range():
 
     open_x = 1063971180
     nigh_x1 = 2063971523
-    a1.set_acptfact(base=jajatime, pick=jajaday, open=open_x, nigh=nigh_x1)
+    x_pact.set_acptfact(base=jajatime, pick=jajaday, open=open_x, nigh=nigh_x1)
 
-    agenda_list = a1.get_agenda_items()
+    agenda_list = x_pact.get_agenda_items()
     assert len(agenda_list) == 1
     print(f"{agenda_list=}")
     assert agenda_list[0]._label in [c_label]
 
     nigh_x2 = 1063971923
-    a1.set_acptfact(base=jajatime, pick=jajaday, open=open_x, nigh=nigh_x2)
+    x_pact.set_acptfact(base=jajatime, pick=jajaday, open=open_x, nigh=nigh_x2)
 
-    agenda_list = a1.get_agenda_items()
+    agenda_list = x_pact.get_agenda_items()
     assert len(agenda_list) == 0
 
 
 def test_exammple_agenda_exists():
     # GIVEN
-    a1 = example_pacts_pact_v001()
+    x_pact = example_pacts_pact_v001()
     min_text = "day_minute"
-    min_road = f"{a1._cure_handle},{min_text}"
-    a1.set_acptfact(base=min_road, pick=min_road, open=0, nigh=1399)
-    assert a1
-    # for idea_kid in a1._idearoot._kids.values():
+    min_road = f"{x_pact._cure_handle},{min_text}"
+    x_pact.set_acptfact(base=min_road, pick=min_road, open=0, nigh=1399)
+    assert x_pact
+    # for idea_kid in x_pact._idearoot._kids.values():
     #     # print(idea_kid._label)
     #     assert str(type(idea_kid)) != "<class 'str'>"
     #     assert idea_kid.promise != None
 
     # WHEN
-    agenda_list = a1.get_agenda_items()
+    agenda_list = x_pact.get_agenda_items()
 
     # THEN
     assert len(agenda_list) > 0
@@ -178,71 +178,71 @@ def test_exammple_agenda_exists():
 
 def test_exammple_AgendaHasCorrectAttributes():
     # GIVEN
-    a1 = example_pacts_pact_v001()
+    x_pact = example_pacts_pact_v001()
 
     day_min_text = "day_minute"
-    day_min_road = f"{a1._cure_handle},{day_min_text}"
-    a1.set_acptfact(base=day_min_road, pick=day_min_road, open=0, nigh=1399)
+    day_min_road = f"{x_pact._cure_handle},{day_min_text}"
+    x_pact.set_acptfact(base=day_min_road, pick=day_min_road, open=0, nigh=1399)
     month_week_text = "month_week"
-    month_week_road = f"{a1._cure_handle},{month_week_text}"
+    month_week_road = f"{x_pact._cure_handle},{month_week_text}"
     nations_text = "Nation-States"
-    nations_road = f"{a1._cure_handle},{nations_text}"
+    nations_road = f"{x_pact._cure_handle},{nations_text}"
     mood_text = "Moods"
-    mood_road = f"{a1._cure_handle},{mood_text}"
+    mood_road = f"{x_pact._cure_handle},{mood_text}"
     aaron_text = "Aaron Donald sphere"
-    aaron_road = f"{a1._cure_handle},{aaron_text}"
+    aaron_road = f"{x_pact._cure_handle},{aaron_text}"
     # internet_text = "Internet"
-    # internet_road = f"{a1._cure_handle},{internet_text}"
+    # internet_road = f"{x_pact._cure_handle},{internet_text}"
     year_month_text = "year_month"
-    year_month_road = f"{a1._cure_handle},{year_month_text}"
-    a1.set_acptfact(base=month_week_road, pick=month_week_road)
-    a1.set_acptfact(base=nations_road, pick=nations_road)
-    a1.set_acptfact(base=mood_road, pick=mood_road)
-    a1.set_acptfact(base=aaron_road, pick=aaron_road)
-    # a1.set_acptfact(base=internet_road, pick=internet_road)
-    a1.set_acptfact(base=year_month_road, pick=year_month_road)
+    year_month_road = f"{x_pact._cure_handle},{year_month_text}"
+    x_pact.set_acptfact(base=month_week_road, pick=month_week_road)
+    x_pact.set_acptfact(base=nations_road, pick=nations_road)
+    x_pact.set_acptfact(base=mood_road, pick=mood_road)
+    x_pact.set_acptfact(base=aaron_road, pick=aaron_road)
+    # x_pact.set_acptfact(base=internet_road, pick=internet_road)
+    x_pact.set_acptfact(base=year_month_road, pick=year_month_road)
     # season_text = "Seasons"
-    # season_road = f"{a1._cure_handle},{season_text}"
-    # a1.set_acptfact(base=season_road, pick=season_road)
+    # season_road = f"{x_pact._cure_handle},{season_text}"
+    # x_pact.set_acptfact(base=season_road, pick=season_road)
     ced_week_text = "ced_week"
-    ced_week_road = f"{a1._cure_handle},{ced_week_text}"
-    a1.set_acptfact(base=ced_week_road, pick=ced_week_road)
+    ced_week_road = f"{x_pact._cure_handle},{ced_week_text}"
+    x_pact.set_acptfact(base=ced_week_road, pick=ced_week_road)
     # water_text = "WaterBeing"
-    # water_road = f"{a1._cure_handle},{water_text}"
-    # a1.set_acptfact(base=water_road, pick=water_road)
+    # water_road = f"{x_pact._cure_handle},{water_text}"
+    # x_pact.set_acptfact(base=water_road, pick=water_road)
     # movie_text = "No Movie playing"
-    # movie_road = f"{a1._cure_handle},{movie_text}"
-    # a1.set_acptfact(base=movie_road, pick=movie_text)
+    # movie_road = f"{x_pact._cure_handle},{movie_text}"
+    # x_pact.set_acptfact(base=movie_road, pick=movie_text)
 
     # WHEN
-    idea_action_list = a1.get_agenda_items()
+    idea_action_list = x_pact.get_agenda_items()
 
     # THEN
     print("Test might be deprecated if it's not worthy it to fix this test source.")
     assert len(idea_action_list) == 27
 
-    a1.set_acptfact(base=month_week_road, pick=f"{month_week_road},1st week")
-    idea_action_list = a1.get_agenda_items()
+    x_pact.set_acptfact(base=month_week_road, pick=f"{month_week_road},1st week")
+    idea_action_list = x_pact.get_agenda_items()
     assert len(idea_action_list) == 27
 
     weekday_text = "weekdays"
-    weekday_road = f"{a1._cure_handle},{weekday_text}"
+    weekday_road = f"{x_pact._cure_handle},{weekday_text}"
     monday_text = "Monday"
     monday_road = f"{weekday_road},{monday_text}"
 
-    a1.set_acptfact(base=weekday_road, pick=monday_road)
-    idea_action_list = a1.get_agenda_items()
+    x_pact.set_acptfact(base=weekday_road, pick=monday_road)
+    idea_action_list = x_pact.get_agenda_items()
     assert len(idea_action_list) == 39
 
-    a1.set_acptfact(base=weekday_road, pick=weekday_road)
-    idea_action_list = a1.get_agenda_items()
+    x_pact.set_acptfact(base=weekday_road, pick=weekday_road)
+    idea_action_list = x_pact.get_agenda_items()
     assert len(idea_action_list) == 53
 
-    # a1.set_acptfact(base=nations_road, pick=nations_road)
-    # idea_action_list = a1.get_agenda_items()
+    # x_pact.set_acptfact(base=nations_road, pick=nations_road)
+    # idea_action_list = x_pact.get_agenda_items()
     # assert len(idea_action_list) == 53
 
-    # for base in a1.get_missing_acptfact_bases():
+    # for base in x_pact.get_missing_acptfact_bases():
     #     print(f"{base=}")
 
     # for agenda_item in idea_action_list:
@@ -257,14 +257,14 @@ def test_exammple_AgendaHasCorrectAttributes():
 
 def test_exammple_AgendaCanFiltersOnBase():
     # GIVEN
-    a1 = example_pacts_pact_v001_with_large_agenda()
+    x_pact = example_pacts_pact_v001_with_large_agenda()
     week_text = "weekdays"
-    week_road = f"{a1._cure_handle},{week_text}"
-    print(f"{type(a1)=}")
-    # for base in a1.get_missing_acptfact_bases():
+    week_road = f"{x_pact._cure_handle},{week_text}"
+    print(f"{type(x_pact)=}")
+    # for base in x_pact.get_missing_acptfact_bases():
     #     print(f"{base=}")
 
-    # for agenda_item in a1.get_agenda_items():
+    # for agenda_item in x_pact.get_agenda_items():
     #     print(
     #         f"{agenda_item._pad=} {agenda_item._label} {len(agenda_item._requiredunits)=}"
     #     )
@@ -272,15 +272,15 @@ def test_exammple_AgendaCanFiltersOnBase():
     #         if required.base == weekdays:
     #             print(f"         {weekdays}")
 
-    # a1.edit_idea_attr(
-    #     road="{a1._cure_handle},sufffacts,cleaning,laundry wednesday",
+    # x_pact.edit_idea_attr(
+    #     road="{x_pact._cure_handle},sufffacts,cleaning,laundry wednesday",
     #     required_del_sufffact_base=weekdays,
     #     required_del_sufffact_need=weekdays,
     # )
-    assert len(a1.get_agenda_items()) == 68
+    assert len(x_pact.get_agenda_items()) == 68
 
     # When
-    action_list = a1.get_agenda_items(base=week_road)
+    action_list = x_pact.get_agenda_items(base=week_road)
 
     # THEN
     assert len(action_list) != 69
@@ -290,40 +290,44 @@ def test_exammple_AgendaCanFiltersOnBase():
 def test_set_agenda_task_as_complete_RangeWorksCorrectly():
     # GIVEN
     healer_text = "Zia"
-    a1 = PactUnit(_healer=healer_text)
+    x_pact = PactUnit(_healer=healer_text)
 
     run_text = "run"
-    run_road = f"{a1._cure_handle},{run_text}"
+    run_road = f"{x_pact._cure_handle},{run_text}"
     time_text = "time"
-    time_road = f"{a1._cure_handle},{time_text}"
+    time_road = f"{x_pact._cure_handle},{time_text}"
     day_text = "day"
     day_road = f"{time_road},{day_text}"
 
-    a1.add_idea(idea_kid=IdeaKid(_label=run_text, promise=True), pad=a1._cure_handle)
-    a1.add_idea(idea_kid=IdeaKid(_label=day_text, _begin=0, _close=500), pad=time_road)
-    a1.edit_idea_attr(
+    x_pact.add_idea(
+        idea_kid=IdeaKid(_label=run_text, promise=True), pad=x_pact._cure_handle
+    )
+    x_pact.add_idea(
+        idea_kid=IdeaKid(_label=day_text, _begin=0, _close=500), pad=time_road
+    )
+    x_pact.edit_idea_attr(
         road=run_road,
         required_base=day_road,
         required_sufffact=day_road,
         required_sufffact_open=25,
         required_sufffact_nigh=81,
     )
-    a1.set_acptfact(base=day_road, pick=day_road, open=30, nigh=87)
-    a1.get_agenda_items()
-    run_requiredunits = a1._idearoot._kids[run_text]._requiredunits[day_road]
+    x_pact.set_acptfact(base=day_road, pick=day_road, open=30, nigh=87)
+    x_pact.get_agenda_items()
+    run_requiredunits = x_pact._idearoot._kids[run_text]._requiredunits[day_road]
     print(f"{run_requiredunits=}")
     print(f"{run_requiredunits.sufffacts[day_road]._status=}")
     print(f"{run_requiredunits.sufffacts[day_road]._task=}")
-    print(f"{a1.get_required_bases()=}")
-    assert len(a1.get_idea_list()) == 4
-    assert len(a1.get_agenda_items()) == 1
-    assert a1.get_agenda_items()[0]._task == True
+    print(f"{x_pact.get_required_bases()=}")
+    assert len(x_pact.get_idea_list()) == 4
+    assert len(x_pact.get_agenda_items()) == 1
+    assert x_pact.get_agenda_items()[0]._task == True
 
     # When
-    a1.set_agenda_task_complete(task_road=run_road, base=day_road)
+    x_pact.set_agenda_task_complete(task_road=run_road, base=day_road)
 
     # Then
-    agenda_list = a1.get_agenda_items()
+    agenda_list = x_pact.get_agenda_items()
     assert len(agenda_list) == 0
     assert agenda_list == []
 
@@ -331,18 +335,22 @@ def test_set_agenda_task_as_complete_RangeWorksCorrectly():
 def test_set_agenda_task_as_complete_DivisionWorksCorrectly():
     # GIVEN
     healer_text = "Zia"
-    a1 = PactUnit(_healer=healer_text)
+    x_pact = PactUnit(_healer=healer_text)
 
     run_text = "run"
-    run_road = f"{a1._cure_handle},{run_text}"
+    run_road = f"{x_pact._cure_handle},{run_text}"
     time_text = "time"
-    time_road = f"{a1._cure_handle},{time_text}"
+    time_road = f"{x_pact._cure_handle},{time_text}"
     day_text = "day"
     day_road = f"{time_road},{day_text}"
 
-    a1.add_idea(idea_kid=IdeaKid(_label=run_text, promise=True), pad=a1._cure_handle)
-    a1.add_idea(idea_kid=IdeaKid(_label=day_text, _begin=0, _close=500), pad=time_road)
-    a1.edit_idea_attr(
+    x_pact.add_idea(
+        idea_kid=IdeaKid(_label=run_text, promise=True), pad=x_pact._cure_handle
+    )
+    x_pact.add_idea(
+        idea_kid=IdeaKid(_label=day_text, _begin=0, _close=500), pad=time_road
+    )
+    x_pact.edit_idea_attr(
         road=run_road,
         required_base=day_road,
         required_sufffact=day_road,
@@ -351,49 +359,49 @@ def test_set_agenda_task_as_complete_DivisionWorksCorrectly():
         required_sufffact_divisor=2,
     )
 
-    run_idea = a1.get_idea_kid(road=run_road)
+    run_idea = x_pact.get_idea_kid(road=run_road)
     # print(f"{run_idea._acptfactheirs=}")
-    a1.set_acptfact(base=day_road, pick=day_road, open=1, nigh=2)
-    assert len(a1.get_agenda_items()) == 1
-    a1.set_acptfact(base=day_road, pick=day_road, open=2, nigh=2)
-    assert len(a1.get_agenda_items()) == 0
-    a1.set_acptfact(base=day_road, pick=day_road, open=400, nigh=400)
-    assert len(a1.get_agenda_items()) == 0
-    a1.set_acptfact(base=day_road, pick=day_road, open=401, nigh=402)
-    assert len(a1.get_agenda_items()) == 1
+    x_pact.set_acptfact(base=day_road, pick=day_road, open=1, nigh=2)
+    assert len(x_pact.get_agenda_items()) == 1
+    x_pact.set_acptfact(base=day_road, pick=day_road, open=2, nigh=2)
+    assert len(x_pact.get_agenda_items()) == 0
+    x_pact.set_acptfact(base=day_road, pick=day_road, open=400, nigh=400)
+    assert len(x_pact.get_agenda_items()) == 0
+    x_pact.set_acptfact(base=day_road, pick=day_road, open=401, nigh=402)
+    assert len(x_pact.get_agenda_items()) == 1
     # print(f"{run_idea._acptfactheirs=}")
     print(f"{run_idea._acptfactunits=}")
 
     # When
-    a1.set_agenda_task_complete(task_road=run_road, base=day_road)
+    x_pact.set_agenda_task_complete(task_road=run_road, base=day_road)
     print(f"{run_idea._acptfactunits=}")
     # print(f"{run_idea._acptfactheirs=}")
-    assert len(a1.get_agenda_items()) == 0
+    assert len(x_pact.get_agenda_items()) == 0
 
 
 def test_pact_get_from_json_LoadsActionFromJSONCorrectly():
     # GIVEN
     file_dir = pact_env()
     file_title = "example_pact1.json"
-    a1_json = x_func_open_file(dest_dir=file_dir, file_title=file_title)
+    x_pact_json = x_func_open_file(dest_dir=file_dir, file_title=file_title)
 
     # WHEN
-    a1 = get_from_json(cx_json=a1_json)
+    x_pact = get_from_json(x_pact_json=x_pact_json)
 
     # THEN
-    assert len(a1.get_idea_list()) == 253
-    print(f"{len(a1.get_idea_list())=}")
+    assert len(x_pact.get_idea_list()) == 253
+    print(f"{len(x_pact.get_idea_list())=}")
     casa_text = "casa"
-    casa_road = f"{a1._cure_handle},{casa_text}"
+    casa_road = f"{x_pact._cure_handle},{casa_text}"
     body_text = "workout"
     body_road = f"{casa_road},{body_text}"
     veg_text = "make veggies every morning"
     veg_road = f"{body_road},{veg_text}"
-    veg_idea = a1.get_idea_kid(road=veg_road)
+    veg_idea = x_pact.get_idea_kid(road=veg_road)
     assert not veg_idea._active_status
     assert veg_idea.promise
 
-    # idea_list = a1.get_idea_list()
+    # idea_list = x_pact.get_idea_list()
     # action_true_count = 0
     # for idea in idea_list:
     #     if str(type(idea)).find(".idea.IdeaKid'>") > 0:
@@ -411,38 +419,38 @@ def test_pact_get_from_json_LoadsActionFromJSONCorrectly():
 
     # WHEN
     day_min_text = "day_minute"
-    day_min_road = f"{a1._cure_handle},{day_min_text}"
-    a1.set_acptfact(base=day_min_road, pick=day_min_road, open=0, nigh=1399)
+    day_min_road = f"{x_pact._cure_handle},{day_min_text}"
+    x_pact.set_acptfact(base=day_min_road, pick=day_min_road, open=0, nigh=1399)
 
     # THEN
-    assert len(a1.get_agenda_items()) > 0
+    assert len(x_pact.get_agenda_items()) > 0
 
 
 def test_weekdayAgendaItemsCorrectlyReturned():
     # Given
     healer_text = "Zia"
-    a1 = PactUnit(_healer=healer_text)
+    x_pact = PactUnit(_healer=healer_text)
 
-    a1._set_acptfacts_empty_if_null()
-    a1.set_time_hreg_ideas(c400_count=7)
+    x_pact._set_acptfacts_empty_if_null()
+    x_pact.set_time_hreg_ideas(c400_count=7)
 
     things_text = "things to do"
-    a1.add_idea(IdeaKid(_label=things_text), pad=a1._cure_handle)
-    t_road = f"{a1._cure_handle},{things_text}"
+    x_pact.add_idea(IdeaKid(_label=things_text), pad=x_pact._cure_handle)
+    t_road = f"{x_pact._cure_handle},{things_text}"
     clean = "clean"
     run = "run"
     swim = "swim"
     jog = "jog"
     veg = "veg"
     lift = "life"
-    a1.add_idea(IdeaKid(_label=clean, promise=True), pad=t_road)
-    a1.add_idea(IdeaKid(_label=run, promise=True), pad=t_road)
-    a1.add_idea(IdeaKid(_label=swim, promise=True), pad=t_road)
-    a1.add_idea(IdeaKid(_label=jog, promise=True), pad=t_road)
-    a1.add_idea(IdeaKid(_label=veg, promise=True), pad=t_road)
-    a1.add_idea(IdeaKid(_label=lift, promise=True), pad=t_road)
+    x_pact.add_idea(IdeaKid(_label=clean, promise=True), pad=t_road)
+    x_pact.add_idea(IdeaKid(_label=run, promise=True), pad=t_road)
+    x_pact.add_idea(IdeaKid(_label=swim, promise=True), pad=t_road)
+    x_pact.add_idea(IdeaKid(_label=jog, promise=True), pad=t_road)
+    x_pact.add_idea(IdeaKid(_label=veg, promise=True), pad=t_road)
+    x_pact.add_idea(IdeaKid(_label=lift, promise=True), pad=t_road)
     time_text = "time"
-    time_road = f"{a1._cure_handle},{time_text}"
+    time_road = f"{x_pact._cure_handle},{time_text}"
     jaja_text = "jajatime"
     jaja_road = f"{time_road},{jaja_text}"
     tech_text = "tech"
@@ -455,7 +463,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     fri_road = f"{w_road},Friday"
     sat_road = f"{w_road},Saturday"
     sun_road = f"{w_road},Sunday"
-    t_road = f"{a1._cure_handle},{things_text}"
+    t_road = f"{x_pact._cure_handle},{things_text}"
     c_road = f"{t_road},{clean}"
     r_road = f"{t_road},{run}"
     s_road = f"{t_road},{swim}"
@@ -463,38 +471,38 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     v_road = f"{t_road},{veg}"
     l_road = f"{t_road},{lift}"
 
-    a1.edit_idea_attr(
+    x_pact.edit_idea_attr(
         road=c_road,
         required_base=tue_road,
         required_sufffact=tue_road,
     )
-    a1.edit_idea_attr(
+    x_pact.edit_idea_attr(
         road=r_road,
         required_base=wed_road,
         required_sufffact=wed_road,
     )
-    a1.edit_idea_attr(
+    x_pact.edit_idea_attr(
         road=s_road,
         required_base=thu_road,
         required_sufffact=thu_road,
     )
-    a1.edit_idea_attr(
+    x_pact.edit_idea_attr(
         road=j_road,
         required_base=fri_road,
         required_sufffact=fri_road,
     )
-    a1.edit_idea_attr(
+    x_pact.edit_idea_attr(
         road=v_road,
         required_base=sat_road,
         required_sufffact=sat_road,
     )
-    a1.edit_idea_attr(
+    x_pact.edit_idea_attr(
         road=l_road,
         required_base=sun_road,
         required_sufffact=sun_road,
     )
 
-    c_idea = a1.get_idea_kid(road=c_road)
+    c_idea = x_pact.get_idea_kid(road=c_road)
     c_required = c_idea._requiredunits
     # for required_y in c_required.values():
     #     for sufffact_y in required_y.sufffacts.values():
@@ -502,7 +510,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     #             f"Idea: {c_idea._pad},{c_idea._label}  Required: {required_y.base} open:{sufffact_y.open} nigh:{sufffact_y.nigh} diff:{sufffact_y.nigh-sufffact_y.open}"
     #         )
 
-    # for base, count_x in a1.get_required_bases().items():
+    # for base, count_x in x_pact.get_required_bases().items():
     #     print(f"Requireds: {base=} Count: {count_x}")
 
     mon_dt = datetime(2000, 1, 3)
@@ -512,94 +520,96 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     fri_dt = datetime(2000, 1, 7)
     sat_dt = datetime(2000, 1, 1)
     sun_dt = datetime(2000, 1, 2)
-    mon_min = a1.get_time_min_from_dt(dt=mon_dt)
-    tue_min = a1.get_time_min_from_dt(dt=tue_dt)
-    wed_min = a1.get_time_min_from_dt(dt=wed_dt)
-    thu_min = a1.get_time_min_from_dt(dt=thu_dt)
-    fri_min = a1.get_time_min_from_dt(dt=fri_dt)
-    sat_min = a1.get_time_min_from_dt(dt=sat_dt)
-    sun_min = a1.get_time_min_from_dt(dt=sun_dt)
-    assert a1._idearoot._acptfactunits.get(jaja_road) is None
+    mon_min = x_pact.get_time_min_from_dt(dt=mon_dt)
+    tue_min = x_pact.get_time_min_from_dt(dt=tue_dt)
+    wed_min = x_pact.get_time_min_from_dt(dt=wed_dt)
+    thu_min = x_pact.get_time_min_from_dt(dt=thu_dt)
+    fri_min = x_pact.get_time_min_from_dt(dt=fri_dt)
+    sat_min = x_pact.get_time_min_from_dt(dt=sat_dt)
+    sun_min = x_pact.get_time_min_from_dt(dt=sun_dt)
+    assert x_pact._idearoot._acptfactunits.get(jaja_road) is None
 
     # When
     print("\nset acptfact for Sunday")
-    a1.set_acptfact(base=jaja_road, pick=jaja_road, open=sun_min, nigh=sun_min)
-    # for acptfact in a1._idearoot._acptfactunits.values():
+    x_pact.set_acptfact(base=jaja_road, pick=jaja_road, open=sun_min, nigh=sun_min)
+    # for acptfact in x_pact._idearoot._acptfactunits.values():
     #     print(f"{acptfact.base=} (H: {acptfact.acptfact}) {acptfact.active=} {acptfact.open=} {acptfact.nigh=}")
 
     # Then
-    assert len(a1._idearoot._acptfactunits) == 7
-    print(a1._idearoot._acptfactunits[jaja_road])
-    print(a1._idearoot._acptfactunits[sat_road])
-    print(a1._idearoot._acptfactunits[sun_road])
-    print(a1._idearoot._acptfactunits[tue_road])
-    print(a1._idearoot._acptfactunits[wed_road])
-    print(a1._idearoot._acptfactunits[thu_road])
-    print(a1._idearoot._acptfactunits[fri_road])
-    assert a1._idearoot._acptfactunits[sun_road]
-    assert a1._idearoot._acptfactunits[sun_road].open == 1440
-    assert a1._idearoot._acptfactunits[sun_road].nigh == 1440
-    # assert a1._idearoot._acptfactunits[sun_road].active == True
+    assert len(x_pact._idearoot._acptfactunits) == 7
+    print(x_pact._idearoot._acptfactunits[jaja_road])
+    print(x_pact._idearoot._acptfactunits[sat_road])
+    print(x_pact._idearoot._acptfactunits[sun_road])
+    print(x_pact._idearoot._acptfactunits[tue_road])
+    print(x_pact._idearoot._acptfactunits[wed_road])
+    print(x_pact._idearoot._acptfactunits[thu_road])
+    print(x_pact._idearoot._acptfactunits[fri_road])
+    assert x_pact._idearoot._acptfactunits[sun_road]
+    assert x_pact._idearoot._acptfactunits[sun_road].open == 1440
+    assert x_pact._idearoot._acptfactunits[sun_road].nigh == 1440
+    # assert x_pact._idearoot._acptfactunits[sun_road].active == True
 
-    # assert a1._idearoot._acptfactunits[tue_road].active == False
-    # assert a1._idearoot._acptfactunits[wed_road].active == False
-    # assert a1._idearoot._acptfactunits[thu_road].active == False
-    # assert a1._idearoot._acptfactunits[fri_road].active == False
-    # assert a1._idearoot._acptfactunits[sat_road].active == False
+    # assert x_pact._idearoot._acptfactunits[tue_road].active == False
+    # assert x_pact._idearoot._acptfactunits[wed_road].active == False
+    # assert x_pact._idearoot._acptfactunits[thu_road].active == False
+    # assert x_pact._idearoot._acptfactunits[fri_road].active == False
+    # assert x_pact._idearoot._acptfactunits[sat_road].active == False
 
     # When
     print("\nset acptfact for Sat through Monday")
-    a1.set_acptfact(base=jaja_road, pick=jaja_road, open=sat_min, nigh=mon_min)
-    # for acptfact in a1._idearoot._acptfactunits.values():
+    x_pact.set_acptfact(base=jaja_road, pick=jaja_road, open=sat_min, nigh=mon_min)
+    # for acptfact in x_pact._idearoot._acptfactunits.values():
     #     print(f"{acptfact.base=} (H: {acptfact.acptfact}) {acptfact.active=} {acptfact.open=} {acptfact.nigh=}")
 
     # Then
-    assert a1._idearoot._acptfactunits[sat_road]
-    # assert a1._idearoot._acptfactunits[sat_road].active == True
-    # assert a1._idearoot._acptfactunits[sun_road].active == True
-    # assert a1._idearoot._acptfactunits[tue_road].active == False
-    # assert a1._idearoot._acptfactunits[wed_road].active == False
-    # assert a1._idearoot._acptfactunits[thu_road].active == False
-    # assert a1._idearoot._acptfactunits[fri_road].active == False
+    assert x_pact._idearoot._acptfactunits[sat_road]
+    # assert x_pact._idearoot._acptfactunits[sat_road].active == True
+    # assert x_pact._idearoot._acptfactunits[sun_road].active == True
+    # assert x_pact._idearoot._acptfactunits[tue_road].active == False
+    # assert x_pact._idearoot._acptfactunits[wed_road].active == False
+    # assert x_pact._idearoot._acptfactunits[thu_road].active == False
+    # assert x_pact._idearoot._acptfactunits[fri_road].active == False
 
-    assert a1._idearoot._acptfactunits[sat_road].open == 0
-    assert a1._idearoot._acptfactunits[sat_road].nigh == 1440
-    assert a1._idearoot._acptfactunits[sun_road].open == 1440
-    assert a1._idearoot._acptfactunits[sun_road].nigh == 2880
+    assert x_pact._idearoot._acptfactunits[sat_road].open == 0
+    assert x_pact._idearoot._acptfactunits[sat_road].nigh == 1440
+    assert x_pact._idearoot._acptfactunits[sun_road].open == 1440
+    assert x_pact._idearoot._acptfactunits[sun_road].nigh == 2880
 
     # When
     print("\nset acptfacts for Sunday through Friday")
-    a1.set_acptfact(base=jaja_road, pick=jaja_road, open=sun_min, nigh=fri_min)
-    # for acptfact in a1._idearoot._acptfactunits.values():
+    x_pact.set_acptfact(base=jaja_road, pick=jaja_road, open=sun_min, nigh=fri_min)
+    # for acptfact in x_pact._idearoot._acptfactunits.values():
     #     print(f"{acptfact.base=} (H: {acptfact.acptfact}) {acptfact.active=} {acptfact.open=} {acptfact.nigh=}")
 
     # Then
-    # assert a1._idearoot._acptfactunits[sat_road].active == False
-    # assert a1._idearoot._acptfactunits[sun_road].active == True
-    # assert a1._idearoot._acptfactunits[tue_road].active == True
-    # assert a1._idearoot._acptfactunits[wed_road].active == True
-    # assert a1._idearoot._acptfactunits[thu_road].active == True
-    # assert a1._idearoot._acptfactunits[fri_road].active == False
+    # assert x_pact._idearoot._acptfactunits[sat_road].active == False
+    # assert x_pact._idearoot._acptfactunits[sun_road].active == True
+    # assert x_pact._idearoot._acptfactunits[tue_road].active == True
+    # assert x_pact._idearoot._acptfactunits[wed_road].active == True
+    # assert x_pact._idearoot._acptfactunits[thu_road].active == True
+    # assert x_pact._idearoot._acptfactunits[fri_road].active == False
 
-    assert a1._idearoot._acptfactunits[sun_road].open == 1440
-    assert a1._idearoot._acptfactunits[sun_road].nigh == 2880
+    assert x_pact._idearoot._acptfactunits[sun_road].open == 1440
+    assert x_pact._idearoot._acptfactunits[sun_road].nigh == 2880
 
     # When
     print("\nset acptfacts for 10 day stretch")
     dayzero_dt = datetime(2010, 1, 3)
     dayten_dt = datetime(2010, 1, 13)
-    dayzero_min = a1.get_time_min_from_dt(dt=dayzero_dt)
-    dayten_min = a1.get_time_min_from_dt(dt=dayten_dt)
-    a1.set_acptfact(base=jaja_road, pick=jaja_road, open=dayzero_min, nigh=dayten_min)
-    # for acptfact in a1._idearoot._acptfactunits.values():
+    dayzero_min = x_pact.get_time_min_from_dt(dt=dayzero_dt)
+    dayten_min = x_pact.get_time_min_from_dt(dt=dayten_dt)
+    x_pact.set_acptfact(
+        base=jaja_road, pick=jaja_road, open=dayzero_min, nigh=dayten_min
+    )
+    # for acptfact in x_pact._idearoot._acptfactunits.values():
     #     print(f"{acptfact.base=} (H: {acptfact.acptfact}) {acptfact.active=} {acptfact.open=} {acptfact.nigh=}")
 
-    # assert a1._idearoot._acptfactunits[sat_road].active == True
-    # assert a1._idearoot._acptfactunits[sun_road].active == True
-    # assert a1._idearoot._acptfactunits[tue_road].active == True
-    # assert a1._idearoot._acptfactunits[wed_road].active == True
-    # assert a1._idearoot._acptfactunits[thu_road].active == True
-    # assert a1._idearoot._acptfactunits[fri_road].active == True
+    # assert x_pact._idearoot._acptfactunits[sat_road].active == True
+    # assert x_pact._idearoot._acptfactunits[sun_road].active == True
+    # assert x_pact._idearoot._acptfactunits[tue_road].active == True
+    # assert x_pact._idearoot._acptfactunits[wed_road].active == True
+    # assert x_pact._idearoot._acptfactunits[thu_road].active == True
+    # assert x_pact._idearoot._acptfactunits[fri_road].active == True
 
 
 def test_pact_create_agenda_item_CorrectlyCreatesAllPactAttributes():
@@ -607,29 +617,29 @@ def test_pact_create_agenda_item_CorrectlyCreatesAllPactAttributes():
 
     # GIVEN
     healer_text = "Zia"
-    a1 = PactUnit(_healer=healer_text)
+    x_pact = PactUnit(_healer=healer_text)
 
-    a1.set_pact_metrics()
-    assert len(a1._partys) == 0
-    assert len(a1._groups) == 0
-    assert len(a1._idearoot._kids) == 0
+    x_pact.set_pact_metrics()
+    assert len(x_pact._partys) == 0
+    assert len(x_pact._groups) == 0
+    assert len(x_pact._idearoot._kids) == 0
 
     clean_things_text = "cleaning things"
-    clean_things_road = Road(f"{a1._cure_handle},{clean_things_text}")
+    clean_things_road = Road(f"{x_pact._cure_handle},{clean_things_text}")
     clean_cookery_text = "clean cookery"
     clean_cookery_road = Road(f"{clean_things_road},{clean_cookery_text}")
     clean_cookery_idea = IdeaKid(_label=clean_cookery_text, _pad=clean_things_road)
     print(f"{clean_cookery_idea.get_road()=}")
     house_text = "house"
-    house_road = Road(f"{a1._cure_handle},{house_text}")
+    house_road = Road(f"{x_pact._cure_handle},{house_text}")
     cookery_room_text = "cookery room"
     cookery_room_road = Road(f"{house_road},{cookery_room_text}")
     cookery_dirty_text = "dirty"
     cookery_dirty_road = Road(f"{cookery_room_road},{cookery_dirty_text}")
 
     # create gregorian timeline
-    a1.set_time_hreg_ideas(c400_count=7)
-    daytime_road = Road(f"{a1._cure_handle},time,jajatime,day")
+    x_pact.set_time_hreg_ideas(c400_count=7)
+    daytime_road = Road(f"{x_pact._cure_handle},time,jajatime,day")
     open_8am = 480
     nigh_8am = 480
 
@@ -655,35 +665,35 @@ def test_pact_create_agenda_item_CorrectlyCreatesAllPactAttributes():
     balancelink_z = balancelink_shop(brand=family_text)
     clean_cookery_idea.set_balancelink(balancelink=balancelink_z)
 
-    assert len(a1._partys) == 0
-    assert len(a1._groups) == 0
-    assert len(a1._idearoot._kids) == 1
-    assert a1.get_idea_kid(road=daytime_road)._begin == 0
-    assert a1.get_idea_kid(road=daytime_road)._close == 1440
+    assert len(x_pact._partys) == 0
+    assert len(x_pact._groups) == 0
+    assert len(x_pact._idearoot._kids) == 1
+    assert x_pact.get_idea_kid(road=daytime_road)._begin == 0
+    assert x_pact.get_idea_kid(road=daytime_road)._close == 1440
     print(f"{clean_cookery_idea.get_road()=}")
 
     # GIVEN
-    a1.set_dominate_promise_idea(idea_kid=clean_cookery_idea)
+    x_pact.set_dominate_promise_idea(idea_kid=clean_cookery_idea)
 
     # THEN
-    # for idea_kid in a1._idearoot._kids.keys():
+    # for idea_kid in x_pact._idearoot._kids.keys():
     #     print(f"  {idea_kid=}")
 
     print(f"{clean_cookery_idea.get_road()=}")
-    assert a1.get_idea_kid(road=clean_cookery_road) != None
-    assert a1.get_idea_kid(road=clean_cookery_road)._label == clean_cookery_text
-    assert a1.get_idea_kid(road=clean_cookery_road).promise
-    assert len(a1.get_idea_kid(road=clean_cookery_road)._requiredunits) == 2
-    assert a1.get_idea_kid(road=clean_things_road) != None
-    assert a1.get_idea_kid(road=cookery_room_road) != None
-    assert a1.get_idea_kid(road=cookery_dirty_road) != None
-    assert a1.get_idea_kid(road=daytime_road)._begin == 0
-    assert a1.get_idea_kid(road=daytime_road)._close == 1440
-    assert len(a1._groups) == 1
-    assert a1._groups.get(family_text) != None
-    assert a1._groups.get(family_text)._partys in (None, {})
+    assert x_pact.get_idea_kid(road=clean_cookery_road) != None
+    assert x_pact.get_idea_kid(road=clean_cookery_road)._label == clean_cookery_text
+    assert x_pact.get_idea_kid(road=clean_cookery_road).promise
+    assert len(x_pact.get_idea_kid(road=clean_cookery_road)._requiredunits) == 2
+    assert x_pact.get_idea_kid(road=clean_things_road) != None
+    assert x_pact.get_idea_kid(road=cookery_room_road) != None
+    assert x_pact.get_idea_kid(road=cookery_dirty_road) != None
+    assert x_pact.get_idea_kid(road=daytime_road)._begin == 0
+    assert x_pact.get_idea_kid(road=daytime_road)._close == 1440
+    assert len(x_pact._groups) == 1
+    assert x_pact._groups.get(family_text) != None
+    assert x_pact._groups.get(family_text)._partys in (None, {})
 
-    assert len(a1._idearoot._kids) == 3
+    assert len(x_pact._idearoot._kids) == 3
 
 
 def get_tasks_count(idea_list: list[IdeaCore]) -> int:
@@ -692,24 +702,24 @@ def get_tasks_count(idea_list: list[IdeaCore]) -> int:
 
 def test_Issue116Resolved_correctlySetsTaskAsTrue():
     # GIVEN
-    a1 = example_pacts_pact_v002()
+    x_pact = example_pacts_pact_v002()
 
-    assert len(a1.get_agenda_items()) == 44
-    jajatime_road = f"{a1._cure_handle},time,jajatime"
+    assert len(x_pact.get_agenda_items()) == 44
+    jajatime_road = f"{x_pact._cure_handle},time,jajatime"
 
     # WHEN
-    a1.set_acptfact(
+    x_pact.set_acptfact(
         base=jajatime_road, pick=jajatime_road, open=1063998720, nigh=1064130373
     )
-    action_idea_list = a1.get_agenda_items()
+    action_idea_list = x_pact.get_agenda_items()
 
     # THEN
     assert len(action_idea_list) == 66
-    jajatime_road = f"{a1._cure_handle},time,jajatime"
+    jajatime_road = f"{x_pact._cure_handle},time,jajatime"
     night_text = "late_night_go_to_sleep"
-    night_road = f"{a1._cure_handle},D&B,{night_text}"
-    night_idea = a1._idea_dict.get(night_road)
-    # for idea_x in a1.get_agenda_items():
+    night_road = f"{x_pact._cure_handle},D&B,{night_text}"
+    night_idea = x_pact._idea_dict.get(night_road)
+    # for idea_x in x_pact.get_agenda_items():
     #     # if idea_x._task != True:
     #     #     print(f"{len(action_idea_list)=} {idea_x._task=} {idea_x.get_road()}")
     #     if idea_x._label == night_label:
@@ -719,8 +729,8 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
     print(f"\nIdea = '{night_text}' and required '{jajatime_road}'")
     acptfactheir_jajatime = night_idea._acptfactheirs.get(jajatime_road)
     print(f"\n{acptfactheir_jajatime=}")
-    print(f"      {a1.get_jajatime_repeating_legible_text(open=1063998720)}")
-    print(f"      {a1.get_jajatime_repeating_legible_text(open=1064130373)}")
+    print(f"      {x_pact.get_jajatime_repeating_legible_text(open=1063998720)}")
+    print(f"      {x_pact.get_jajatime_repeating_legible_text(open=1064130373)}")
 
     # for requiredheir in agenda_item._requiredheirs.values():
     #     print(f"{requiredheir.base=} {requiredheir._status=} {requiredheir._task=}")

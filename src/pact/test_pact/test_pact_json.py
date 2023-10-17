@@ -97,11 +97,11 @@ def test_pact_get_dict_ReturnsDictObject():
     day_hour_originunit_dict = x_dict[_kids][day_hour_text][originunit_text]
     assert day_hour_originunit_dict == day_hour_idea._originunit.get_dict()
     _links = "_links"
-    pact_x_originlink = x_dict[originunit_text][_links][yao_text]
-    print(f"{pact_x_originlink=}")
-    assert pact_x_originlink
-    assert pact_x_originlink["title"] == yao_text
-    assert pact_x_originlink["weight"] == 1
+    x_pact_originlink = x_dict[originunit_text][_links][yao_text]
+    print(f"{x_pact_originlink=}")
+    assert x_pact_originlink
+    assert x_pact_originlink["title"] == yao_text
+    assert x_pact_originlink["weight"] == 1
 
 
 def test_pact_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
@@ -245,14 +245,14 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
 def test_save_file_CorrectlySavesPactJSON(env_dir_setup_cleanup):
     # GIVEN
     x_pact = example_pacts_pact_v001()
-    x_cx_json = x_pact.get_json()
+    x_x_pact_json = x_pact.get_json()
     file_title_x = "example_pact1.json"
 
     # WHEN
     x_func_save_file(
         dest_dir=get_pact_temp_env_dir(),
         file_title=file_title_x,
-        file_text=x_cx_json,
+        file_text=x_x_pact_json,
     )
 
     # THEN
@@ -261,82 +261,82 @@ def test_save_file_CorrectlySavesPactJSON(env_dir_setup_cleanup):
 
 def test_pact_get_json_CorrectlyWorksForSimpleExample():
     # GIVEN
-    pact_y = example_pacts_get_pact_x1_3levels_1required_1acptfacts()
-    pact_y.set_max_tree_traverse(23)
+    y_pact = example_pacts_get_pact_x1_3levels_1required_1acptfacts()
+    y_pact.set_max_tree_traverse(23)
     cure_handle_text = "tiger_econ"
-    pact_y.set_cure_handle(cure_handle_text)
+    y_pact.set_cure_handle(cure_handle_text)
 
     shave_text = "shave"
-    shave_road = f"{pact_y._cure_handle},{shave_text}"
-    shave_idea_y1 = pact_y.get_idea_kid(road=shave_road)
+    shave_road = f"{y_pact._cure_handle},{shave_text}"
+    shave_idea_y1 = y_pact.get_idea_kid(road=shave_road)
     shave_idea_y1._originunit.set_originlink(title="Sue", weight=4.3)
     # print(f"{shave_road=}")
     # print(f"{shave_idea_x._label=} {shave_idea_x._pad=}")
 
     sue_text = "sue"
-    pact_y.add_partyunit(title=sue_text)
+    y_pact.add_partyunit(title=sue_text)
     tim_text = "tim"
-    pact_y.add_partyunit(title=tim_text)
+    y_pact.add_partyunit(title=tim_text)
     run_text = "runners"
     run_group = groupunit_shop(brand=run_text)
     run_group.set_partylink(partylink=partylink_shop(title=sue_text))
     run_group.set_partylink(partylink=partylink_shop(title=tim_text))
-    pact_y.set_groupunit(groupunit=run_group)
+    y_pact.set_groupunit(groupunit=run_group)
 
     run_assigned_unit = assigned_unit_shop()
     run_assigned_unit.set_suffgroup(title=run_text)
-    pact_y.edit_idea_attr(road=pact_y._cure_handle, assignedunit=run_assigned_unit)
+    y_pact.edit_idea_attr(road=y_pact._cure_handle, assignedunit=run_assigned_unit)
     tim_assigned_unit = assigned_unit_shop()
     tim_assigned_unit.set_suffgroup(title=tim_text)
-    pact_y.edit_idea_attr(road=shave_road, assignedunit=tim_assigned_unit)
-    pact_y.edit_idea_attr(road=shave_road, balancelink=balancelink_shop(brand=tim_text))
-    pact_y.edit_idea_attr(road=shave_road, balancelink=balancelink_shop(brand=sue_text))
+    y_pact.edit_idea_attr(road=shave_road, assignedunit=tim_assigned_unit)
+    y_pact.edit_idea_attr(road=shave_road, balancelink=balancelink_shop(brand=tim_text))
+    y_pact.edit_idea_attr(road=shave_road, balancelink=balancelink_shop(brand=sue_text))
 
-    pact_y.edit_idea_attr(
-        road=pact_y._cure_handle, balancelink=balancelink_shop(brand=sue_text)
+    y_pact.edit_idea_attr(
+        road=y_pact._cure_handle, balancelink=balancelink_shop(brand=sue_text)
     )
 
     yao_text = "Yao"
-    pact_y._originunit.set_originlink(yao_text, 1)
-    pact_y._auto_output_to_public = True
+    y_pact._originunit.set_originlink(yao_text, 1)
+    y_pact._auto_output_to_public = True
 
     # WHEN
-    x_json = pact_y.get_json()
+    x_json = y_pact.get_json()
     assert x_is_json(x_json) == True
-    pact_x = pact_get_from_json(cx_json=x_json)
+    x_pact = pact_get_from_json(x_pact_json=x_json)
 
     # THEN
-    assert str(type(pact_x)).find(".pact.PactUnit'>") > 0
-    assert pact_x._healer != None
-    assert pact_x._healer == pact_y._healer
-    assert pact_x._cure_handle == pact_y._cure_handle
-    assert pact_x._max_tree_traverse == 23
-    assert pact_x._max_tree_traverse == pact_y._max_tree_traverse
-    assert pact_x._auto_output_to_public == pact_y._auto_output_to_public
+    assert str(type(x_pact)).find(".pact.PactUnit'>") > 0
+    assert x_pact._healer != None
+    assert x_pact._healer == y_pact._healer
+    assert x_pact._cure_handle == y_pact._cure_handle
+    assert x_pact._max_tree_traverse == 23
+    assert x_pact._max_tree_traverse == y_pact._max_tree_traverse
+    assert x_pact._auto_output_to_public == y_pact._auto_output_to_public
 
-    idearoot_x = pact_x._idearoot
+    idearoot_x = x_pact._idearoot
     assert idearoot_x._pad == ""
-    assert idearoot_x._pad == pact_y._idearoot._pad
+    assert idearoot_x._pad == y_pact._idearoot._pad
     assert idearoot_x._requiredunits == {}
-    assert idearoot_x._assignedunit == pact_y._idearoot._assignedunit
+    assert idearoot_x._assignedunit == y_pact._idearoot._assignedunit
     assert idearoot_x._assignedunit == run_assigned_unit
     assert len(idearoot_x._acptfactunits) == 1
     assert len(idearoot_x._balancelinks) == 1
 
-    assert len(pact_x._idearoot._kids) == 2
+    assert len(x_pact._idearoot._kids) == 2
 
     weekday_text = "weekdays"
-    weekday_road = f"{pact_y._cure_handle},{weekday_text}"
-    weekday_idea_x = pact_x.get_idea_kid(road=weekday_road)
+    weekday_road = f"{y_pact._cure_handle},{weekday_text}"
+    weekday_idea_x = x_pact.get_idea_kid(road=weekday_road)
     assert len(weekday_idea_x._kids) == 2
 
     sunday_text = "Sunday"
     sunday_road = f"{weekday_road},{sunday_text}"
-    sunday_idea_x = pact_x.get_idea_kid(road=sunday_road)
+    sunday_idea_x = x_pact.get_idea_kid(road=sunday_road)
     assert sunday_idea_x._weight == 20
 
-    shave_idea_x = pact_x.get_idea_kid(road=shave_road)
-    shave_idea_y2 = pact_y.get_idea_kid(road=shave_road)
+    shave_idea_x = x_pact.get_idea_kid(road=shave_road)
+    shave_idea_y2 = y_pact.get_idea_kid(road=shave_road)
     assert len(shave_idea_x._requiredunits) == 1
     assert shave_idea_x._assignedunit == shave_idea_y2._assignedunit
     assert shave_idea_x._assignedunit == tim_assigned_unit
@@ -344,82 +344,82 @@ def test_pact_get_json_CorrectlyWorksForSimpleExample():
     assert len(shave_idea_x._balancelinks) == 2
     assert len(shave_idea_x._acptfactunits) == 1
 
-    assert len(pact_x._originunit._links) == 1
-    assert pact_x._originunit == pact_y._originunit
+    assert len(x_pact._originunit._links) == 1
+    assert x_pact._originunit == y_pact._originunit
 
 
 # def test_pact_get_json_CorrectlyWorksForNotSimpleExample():
 #     # GIVEN
-#     cx1 = example_pacts_pact_v001()
-#     cx1.set_pact_metrics()
-#     cx1_json = cx1.get_json()
-#     assert x_is_json(json_x=cx1_json)
+#     x_pact1 = example_pacts_pact_v001()
+#     x_pact1.set_pact_metrics()
+#     x_pact1_json = x_pact1.get_json()
+#     assert x_is_json(json_x=x_pact1_json)
 
 #     file_title = "example_pact1.json"
 #     file_dir = pact_env()
 #     print("File may fail since example_pact1.json is created by a later test")
-#     cx3_json = x_func_open_file(dest_dir=file_dir, file_title=file_title)
-#     # print(cx3_json[299000:299155])
+#     x_pact3_json = x_func_open_file(dest_dir=file_dir, file_title=file_title)
+#     # print(x_pact3_json[299000:299155])
 
 #     # WHEN
-#     cx3 = pact_get_from_json(cx_json=cx3_json)
+#     x_pact3 = pact_get_from_json(x_pact_json=x_pact3_json)
 
 #     # THEN
-#     assert str(type(cx3)).find(".pact.PactUnit'>") > 0
-#     assert cx3._healer != None
-#     assert cx3._healer == cx1._healer
-#     assert cx3._max_tree_traverse == 2
-#     assert cx3._max_tree_traverse == cx1._max_tree_traverse
-#     assert cx3._idearoot._healer != None
-#     assert cx3._idearoot._healer == cx1._idearoot._healer
-#     assert cx3._idearoot._pad == ""
-#     assert cx3._idearoot._pad == cx1._idearoot._pad
-#     assert len(cx3._idearoot._kids) == len(cx1._idearoot._kids)
-#     assert len(cx3._groups) == 34
-#     assert len(cx3._partys) == 22
+#     assert str(type(x_pact3)).find(".pact.PactUnit'>") > 0
+#     assert x_pact3._healer != None
+#     assert x_pact3._healer == x_pact1._healer
+#     assert x_pact3._max_tree_traverse == 2
+#     assert x_pact3._max_tree_traverse == x_pact1._max_tree_traverse
+#     assert x_pact3._idearoot._healer != None
+#     assert x_pact3._idearoot._healer == x_pact1._idearoot._healer
+#     assert x_pact3._idearoot._pad == ""
+#     assert x_pact3._idearoot._pad == x_pact1._idearoot._pad
+#     assert len(x_pact3._idearoot._kids) == len(x_pact1._idearoot._kids)
+#     assert len(x_pact3._groups) == 34
+#     assert len(x_pact3._partys) == 22
 
 
 def test_get_dict_of_pact_from_dict_ReturnsDictOfPactUnits():
     # GIVEN
-    cx1 = example_pacts_pact_v001()
-    cx2 = example_pacts_get_pact_x1_3levels_1required_1acptfacts()
-    cx3 = example_pacts_get_pact_base_time_example()
+    x_pact1 = example_pacts_pact_v001()
+    x_pact2 = example_pacts_get_pact_x1_3levels_1required_1acptfacts()
+    x_pact3 = example_pacts_get_pact_base_time_example()
 
     cn_dict_of_dicts = {
-        cx1._healer: cx1.get_dict(),
-        cx2._healer: cx2.get_dict(),
-        cx3._healer: cx3.get_dict(),
+        x_pact1._healer: x_pact1.get_dict(),
+        x_pact2._healer: x_pact2.get_dict(),
+        x_pact3._healer: x_pact3.get_dict(),
     }
 
     # WHEN
     ccn_dict_of_obj = get_dict_of_pact_from_dict(cn_dict_of_dicts)
 
     # THEN
-    assert ccn_dict_of_obj.get(cx1._healer) != None
-    assert ccn_dict_of_obj.get(cx2._healer) != None
-    assert ccn_dict_of_obj.get(cx3._healer) != None
-    cc1_idea_root = ccn_dict_of_obj.get(cx1._healer)._idearoot
-    assert cc1_idea_root._originunit == cx1._idearoot._originunit
-    assert ccn_dict_of_obj.get(cx1._healer)._idea_dict == cx1._idea_dict
-    assert ccn_dict_of_obj.get(cx1._healer) == cx1
-    assert ccn_dict_of_obj.get(cx2._healer) == cx2
-    assert ccn_dict_of_obj.get(cx3._healer) == cx3
+    assert ccn_dict_of_obj.get(x_pact1._healer) != None
+    assert ccn_dict_of_obj.get(x_pact2._healer) != None
+    assert ccn_dict_of_obj.get(x_pact3._healer) != None
+    cc1_idea_root = ccn_dict_of_obj.get(x_pact1._healer)._idearoot
+    assert cc1_idea_root._originunit == x_pact1._idearoot._originunit
+    assert ccn_dict_of_obj.get(x_pact1._healer)._idea_dict == x_pact1._idea_dict
+    assert ccn_dict_of_obj.get(x_pact1._healer) == x_pact1
+    assert ccn_dict_of_obj.get(x_pact2._healer) == x_pact2
+    assert ccn_dict_of_obj.get(x_pact3._healer) == x_pact3
 
 
 def test_pact_jsonExportCorrectyExportsWeights():
     # GIVEN
-    cx1 = example_pacts_pact_v001()
-    cx1._weight = 15
-    assert 15 == cx1._weight
-    assert cx1._idearoot._weight != cx1._weight
-    assert cx1._idearoot._weight == 1
+    x_pact1 = example_pacts_pact_v001()
+    x_pact1._weight = 15
+    assert 15 == x_pact1._weight
+    assert x_pact1._idearoot._weight != x_pact1._weight
+    assert x_pact1._idearoot._weight == 1
 
     # WHEN
-    cx2 = pact_get_from_json(cx1.get_json())
+    x_pact2 = pact_get_from_json(x_pact1.get_json())
 
     # THEN
-    assert cx1._weight == 15
-    assert cx1._weight == cx2._weight
-    assert cx1._idearoot._weight == 1
-    assert cx1._idearoot._weight == cx2._idearoot._weight
-    assert cx1._idearoot._kids == cx2._idearoot._kids
+    assert x_pact1._weight == 15
+    assert x_pact1._weight == x_pact2._weight
+    assert x_pact1._idearoot._weight == 1
+    assert x_pact1._idearoot._weight == x_pact2._idearoot._weight
+    assert x_pact1._idearoot._kids == x_pact2._idearoot._kids

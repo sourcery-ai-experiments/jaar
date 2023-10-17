@@ -295,7 +295,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def open_file(self):
         self.pact_x_json = self.load_file()
-        self.pact_load(cx_json=self.pact_x_json)
+        self.pact_load(x_pact_json=self.pact_x_json)
 
     def pact_new(self):
         self.pact_x = PactUnit(_healer="new")
@@ -334,8 +334,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.acptfacts_table_load()
         self.agenda_states_load()
 
-    def pact_load(self, cx_json: str):
-        self.pact_x = get_from_json(cx_json=cx_json)
+    def pact_load(self, x_pact_json: str):
+        self.pact_x = get_from_json(x_pact_json=x_pact_json)
         self.promise_items = self.pact_x.get_agenda_items()
         self.refresh_all()
 

@@ -41,16 +41,16 @@ def test_pact_groups_set_groupunit_worksCorrectly():
 
 def test_pact_groups_del_groupunit_worksCorrectly():
     # GIVEN
-    sx = PactUnit()
+    pact = PactUnit()
     swim_text = "swimmers"
     group_x = groupunit_shop(brand=GroupBrand(swim_text))
-    sx.set_groupunit(groupunit=group_x)
-    assert sx._groups.get(swim_text) != None
+    pact.set_groupunit(groupunit=group_x)
+    assert pact._groups.get(swim_text) != None
 
     # WHEN
-    sx.del_groupunit(groupbrand=swim_text)
-    assert sx._groups.get(swim_text) is None
-    assert sx._groups == {}
+    pact.del_groupunit(groupbrand=swim_text)
+    assert pact._groups.get(swim_text) is None
+    assert pact._groups == {}
 
 
 def test_example_has_groups():
@@ -131,28 +131,28 @@ def test_pact_set_balancelink_correctly_sets_balancelinks():
 def test_pact_set_balancelink_correctly_deletes_balancelinks():
     # GIVEN
     prom_text = "prom"
-    a_x = PactUnit(_healer=prom_text)
+    x_pact = PactUnit(_healer=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    a_x.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(rico_text)))
-    a_x.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
-    a_x.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
+    x_pact.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(rico_text)))
+    x_pact.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
+    x_pact.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
 
     swim_text = "swim"
     swim_road = f"{prom_text},{swim_text}"
 
-    a_x.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
+    x_pact.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
     balancelink_rico = balancelink_shop(brand=GroupBrand(rico_text), creditor_weight=10)
     balancelink_carm = balancelink_shop(brand=GroupBrand(carm_text), creditor_weight=10)
     balancelink_patr = balancelink_shop(brand=GroupBrand(patr_text), creditor_weight=10)
 
-    swim_idea = a_x.get_idea_kid(road=swim_road)
-    a_x.edit_idea_attr(road=swim_road, balancelink=balancelink_rico)
-    a_x.edit_idea_attr(road=swim_road, balancelink=balancelink_carm)
-    a_x.edit_idea_attr(road=swim_road, balancelink=balancelink_patr)
+    swim_idea = x_pact.get_idea_kid(road=swim_road)
+    x_pact.edit_idea_attr(road=swim_road, balancelink=balancelink_rico)
+    x_pact.edit_idea_attr(road=swim_road, balancelink=balancelink_carm)
+    x_pact.edit_idea_attr(road=swim_road, balancelink=balancelink_patr)
 
-    # idea_list = a_x.get_idea_list()
+    # idea_list = x_pact.get_idea_list()
     # idea_prom = idea_list[1]
     assert len(swim_idea._balancelinks) == 3
     assert len(swim_idea._balanceheirs) == 3
@@ -161,41 +161,41 @@ def test_pact_set_balancelink_correctly_deletes_balancelinks():
     # print(f"{idea_list[0]._balancelinks}")
     # print(f"{idea_list[0]._balanceheirs}")
     # print(f"{idea_list[1]._balanceheirs}")
-    assert len(a_x._idearoot._kids[swim_text]._balancelinks) == 3
-    assert len(a_x._idearoot._kids[swim_text]._balanceheirs) == 3
+    assert len(x_pact._idearoot._kids[swim_text]._balancelinks) == 3
+    assert len(x_pact._idearoot._kids[swim_text]._balanceheirs) == 3
 
     # WHEN
-    a_x.edit_idea_attr(road=swim_road, balancelink_del=rico_text)
+    x_pact.edit_idea_attr(road=swim_road, balancelink_del=rico_text)
 
     # THEN
-    swim_idea = a_x.get_idea_kid(road=swim_road)
+    swim_idea = x_pact.get_idea_kid(road=swim_road)
     print(f"{swim_idea._label=}")
     print(f"{swim_idea._balancelinks=}")
     print(f"{swim_idea._balanceheirs=}")
 
-    assert len(a_x._idearoot._kids[swim_text]._balancelinks) == 2
-    assert len(a_x._idearoot._kids[swim_text]._balanceheirs) == 2
+    assert len(x_pact._idearoot._kids[swim_text]._balancelinks) == 2
+    assert len(x_pact._idearoot._kids[swim_text]._balanceheirs) == 2
 
 
 def test_pact_set_balancelink_CorrectlyCalculatesInheritedBalancelinkPactImportance():
     # GIVEN
-    a_x = PactUnit(_healer="prom")
+    x_pact = PactUnit(_healer="prom")
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    a_x.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(rico_text)))
-    a_x.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
-    a_x.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
+    x_pact.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(rico_text)))
+    x_pact.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
+    x_pact.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
     blink_rico = balancelink_shop(brand=rico_text, creditor_weight=20, debtor_weight=6)
     blink_carm = balancelink_shop(brand=carm_text, creditor_weight=10, debtor_weight=1)
     blink_patr = balancelink_shop(brand=patr_text, creditor_weight=10)
-    a_x._idearoot.set_balancelink(balancelink=blink_rico)
-    a_x._idearoot.set_balancelink(balancelink=blink_carm)
-    a_x._idearoot.set_balancelink(balancelink=blink_patr)
-    assert len(a_x._idearoot._balancelinks) == 3
+    x_pact._idearoot.set_balancelink(balancelink=blink_rico)
+    x_pact._idearoot.set_balancelink(balancelink=blink_carm)
+    x_pact._idearoot.set_balancelink(balancelink=blink_patr)
+    assert len(x_pact._idearoot._balancelinks) == 3
 
     # WHEN
-    idea_list = a_x.get_idea_list()
+    idea_list = x_pact.get_idea_list()
 
     # THEN
     idea_prom = idea_list[0]
@@ -217,7 +217,7 @@ def test_pact_set_balancelink_CorrectlyCalculatesInheritedBalancelinkPactImporta
 
     # pact_credit_sum = 0
     # pact_debt_sum = 0
-    # for group in a_x._idearoot._balanceheirs.values():
+    # for group in x_pact._idearoot._balanceheirs.values():
     #     print(f"{group=}")
     #     assert group._pact_credit != None
     #     assert group._pact_credit in [0.25, 0.5]
@@ -233,30 +233,30 @@ def test_pact_set_balancelink_CorrectlyCalculatesInheritedBalancelinkPactImporta
 def test_pact_get_idea_list_CorrectlyCalculates1LevelPactGroupPactImportance():
     # GIVEN
     prom_text = "prom"
-    a_x = PactUnit(_healer=prom_text)
+    x_pact = PactUnit(_healer=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
     sele_text = "selena"
-    a_x.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(rico_text)))
-    a_x.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
-    a_x.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
+    x_pact.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(rico_text)))
+    x_pact.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
+    x_pact.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
     blink_rico = balancelink_shop(brand=rico_text, creditor_weight=20, debtor_weight=6)
     blink_carm = balancelink_shop(brand=carm_text, creditor_weight=10, debtor_weight=1)
     blink_patr = balancelink_shop(brand=patr_text, creditor_weight=10)
-    a_x._idearoot.set_balancelink(balancelink=blink_rico)
-    a_x._idearoot.set_balancelink(balancelink=blink_carm)
-    a_x._idearoot.set_balancelink(balancelink=blink_patr)
+    x_pact._idearoot.set_balancelink(balancelink=blink_rico)
+    x_pact._idearoot.set_balancelink(balancelink=blink_carm)
+    x_pact._idearoot.set_balancelink(balancelink=blink_patr)
 
-    assert len(a_x._groups) == 3
+    assert len(x_pact._groups) == 3
 
     # WHEN
-    a_x.set_pact_metrics()
+    x_pact.set_pact_metrics()
 
     # THEN
-    group_rico = a_x._groups.get(rico_text)
-    group_carm = a_x._groups.get(carm_text)
-    group_patr = a_x._groups.get(patr_text)
+    group_rico = x_pact._groups.get(rico_text)
+    group_carm = x_pact._groups.get(carm_text)
+    group_patr = x_pact._groups.get(patr_text)
     assert group_rico._pact_credit == 0.5
     assert group_rico._pact_debt == 0.75
     assert group_carm._pact_credit == 0.25
@@ -269,14 +269,14 @@ def test_pact_get_idea_list_CorrectlyCalculates1LevelPactGroupPactImportance():
     assert group_rico._pact_debt + group_carm._pact_debt + group_patr._pact_debt == 1
 
     # WHEN
-    a_x.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(sele_text)))
+    x_pact.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(sele_text)))
     bl_sele = balancelink_shop(brand=sele_text, creditor_weight=37)
-    a_x._idearoot.set_balancelink(balancelink=bl_sele)
-    assert len(a_x._groups) == 4
-    a_x.set_pact_metrics()
+    x_pact._idearoot.set_balancelink(balancelink=bl_sele)
+    assert len(x_pact._groups) == 4
+    x_pact.set_pact_metrics()
 
     # THEN
-    group_sele = a_x._groups.get(sele_text)
+    group_sele = x_pact._groups.get(sele_text)
     assert group_rico._pact_credit != 0.5
     assert group_rico._pact_debt != 0.75
     assert group_carm._pact_credit != 0.25
@@ -304,16 +304,16 @@ def test_pact_get_idea_list_CorrectlyCalculates1LevelPactGroupPactImportance():
 def test_pact_get_idea_list_CorrectlyCalculates3levelPactGroupPactImportance():
     # GIVEN
     prom_text = "prom"
-    a_x = PactUnit(_healer=prom_text)
+    x_pact = PactUnit(_healer=prom_text)
     swim_text = "swim"
-    a_x.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
+    x_pact.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
 
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    a_x.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(rico_text)))
-    a_x.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
-    a_x.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
+    x_pact.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(rico_text)))
+    x_pact.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
+    x_pact.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
     rico_balancelink = balancelink_shop(
         brand=rico_text, creditor_weight=20, debtor_weight=6
     )
@@ -321,18 +321,18 @@ def test_pact_get_idea_list_CorrectlyCalculates3levelPactGroupPactImportance():
         brand=carm_text, creditor_weight=10, debtor_weight=1
     )
     parm_balancelink = balancelink_shop(brand=patr_text, creditor_weight=10)
-    a_x._idearoot._kids[swim_text].set_balancelink(balancelink=rico_balancelink)
-    a_x._idearoot._kids[swim_text].set_balancelink(balancelink=carm_balancelink)
-    a_x._idearoot._kids[swim_text].set_balancelink(balancelink=parm_balancelink)
-    assert len(a_x._groups) == 3
+    x_pact._idearoot._kids[swim_text].set_balancelink(balancelink=rico_balancelink)
+    x_pact._idearoot._kids[swim_text].set_balancelink(balancelink=carm_balancelink)
+    x_pact._idearoot._kids[swim_text].set_balancelink(balancelink=parm_balancelink)
+    assert len(x_pact._groups) == 3
 
     # WHEN
-    a_x.set_pact_metrics()
+    x_pact.set_pact_metrics()
 
     # THEN
-    group_rico = a_x._groups.get(rico_text)
-    group_carm = a_x._groups.get(carm_text)
-    group_patr = a_x._groups.get(patr_text)
+    group_rico = x_pact._groups.get(rico_text)
+    group_carm = x_pact._groups.get(carm_text)
+    group_patr = x_pact._groups.get(patr_text)
     assert group_rico._pact_credit == 0.5
     assert group_rico._pact_debt == 0.75
     assert group_carm._pact_credit == 0.25
@@ -348,16 +348,16 @@ def test_pact_get_idea_list_CorrectlyCalculates3levelPactGroupPactImportance():
 def test_pact_get_idea_list_CorrectlyCalculatesGroupPactImportanceLWwithGroupEmptyBranch():
     # GIVEN
     prom_text = "prom"
-    a_x = PactUnit(_healer=prom_text)
+    x_pact = PactUnit(_healer=prom_text)
     swim_text = "swim"
-    a_x.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
+    x_pact.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
 
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    a_x.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(rico_text)))
-    a_x.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
-    a_x.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
+    x_pact.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(rico_text)))
+    x_pact.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
+    x_pact.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
     rico_balancelink = balancelink_shop(
         brand=rico_text, creditor_weight=20, debtor_weight=6
     )
@@ -365,44 +365,44 @@ def test_pact_get_idea_list_CorrectlyCalculatesGroupPactImportanceLWwithGroupEmp
         brand=carm_text, creditor_weight=10, debtor_weight=1
     )
     parm_balancelink = balancelink_shop(brand=patr_text, creditor_weight=10)
-    a_x._idearoot._kids[swim_text].set_balancelink(balancelink=rico_balancelink)
-    a_x._idearoot._kids[swim_text].set_balancelink(balancelink=carm_balancelink)
-    a_x._idearoot._kids[swim_text].set_balancelink(balancelink=parm_balancelink)
+    x_pact._idearoot._kids[swim_text].set_balancelink(balancelink=rico_balancelink)
+    x_pact._idearoot._kids[swim_text].set_balancelink(balancelink=carm_balancelink)
+    x_pact._idearoot._kids[swim_text].set_balancelink(balancelink=parm_balancelink)
 
     # no balancelinks attached to this one
-    a_x.add_idea(idea_kid=IdeaKid(_label="hunt", _weight=3), pad="prom")
+    x_pact.add_idea(idea_kid=IdeaKid(_label="hunt", _weight=3), pad="prom")
 
-    assert a_x._idearoot._balancelinks is None
+    assert x_pact._idearoot._balancelinks is None
 
     # WHEN
-    a_x.set_pact_metrics()
+    x_pact.set_pact_metrics()
 
     # THEN
-    assert a_x._idearoot._balancelinks == {}
+    assert x_pact._idearoot._balancelinks == {}
 
     with pytest_raises(Exception) as excinfo:
-        a_x._idearoot._balancelinks[rico_text]
+        x_pact._idearoot._balancelinks[rico_text]
     assert str(excinfo.value) == f"'{rico_text}'"
     with pytest_raises(Exception) as excinfo:
-        a_x._idearoot._balancelinks[carm_text]
+        x_pact._idearoot._balancelinks[carm_text]
     assert str(excinfo.value) == f"'{carm_text}'"
     with pytest_raises(Exception) as excinfo:
-        a_x._idearoot._balancelinks[patr_text]
+        x_pact._idearoot._balancelinks[patr_text]
     assert str(excinfo.value) == f"'{patr_text}'"
     with pytest_raises(Exception) as excinfo:
-        a_x._idearoot._kids["hunt"]._balanceheirs[rico_text]
+        x_pact._idearoot._kids["hunt"]._balanceheirs[rico_text]
     assert str(excinfo.value) == f"'{rico_text}'"
     with pytest_raises(Exception) as excinfo:
-        a_x._idearoot._kids["hunt"]._balanceheirs[carm_text]
+        x_pact._idearoot._kids["hunt"]._balanceheirs[carm_text]
     assert str(excinfo.value) == f"'{carm_text}'"
     with pytest_raises(Exception) as excinfo:
-        a_x._idearoot._kids["hunt"]._balanceheirs[patr_text]
+        x_pact._idearoot._kids["hunt"]._balanceheirs[patr_text]
     assert str(excinfo.value) == f"'{patr_text}'"
 
     # THEN
-    group_rico = a_x._groups.get(rico_text)
-    group_carm = a_x._groups.get(carm_text)
-    group_patr = a_x._groups.get(patr_text)
+    group_rico = x_pact._groups.get(rico_text)
+    group_carm = x_pact._groups.get(carm_text)
+    group_patr = x_pact._groups.get(patr_text)
     assert group_rico._pact_credit == 0.125
     assert group_rico._pact_debt == 0.1875
     assert group_carm._pact_credit == 0.0625
@@ -418,49 +418,49 @@ def test_pact_get_idea_list_CorrectlyCalculatesGroupPactImportanceLWwithGroupEmp
 
 def test_pact_edit_groupunit_brand_CorrectlyCreatesNewTitle():
     # GIVEN
-    sx = PactUnit(_healer="prom")
+    pact = PactUnit(_healer="prom")
     rico_text = "rico"
-    sx.add_partyunit(title=rico_text)
+    pact.add_partyunit(title=rico_text)
     swim_text = "swim"
     swim_group = groupunit_shop(brand=swim_text, uid=13)
     swim_group.set_partylink(partylink=partylink_shop(title=rico_text))
-    sx.set_groupunit(swim_group)
-    assert len(sx._partys) == 1
-    assert len(sx._groups) == 2
-    assert sx._groups.get(swim_text) != None
-    assert sx._groups.get(swim_text).uid == 13
-    assert sx._groups.get(swim_text)._single_party == False
-    assert len(sx._groups.get(swim_text)._partys) == 1
+    pact.set_groupunit(swim_group)
+    assert len(pact._partys) == 1
+    assert len(pact._groups) == 2
+    assert pact._groups.get(swim_text) != None
+    assert pact._groups.get(swim_text).uid == 13
+    assert pact._groups.get(swim_text)._single_party == False
+    assert len(pact._groups.get(swim_text)._partys) == 1
 
     # WHEN
     jog_text = "jog"
-    sx.edit_groupunit_brand(
+    pact.edit_groupunit_brand(
         old_brand=swim_text, new_brand=jog_text, allow_group_overwite=False
     )
 
     # THEN
-    assert sx._groups.get(jog_text) != None
-    assert sx._groups.get(jog_text).uid == 13
-    assert sx._groups.get(swim_text) is None
-    assert len(sx._partys) == 1
-    assert len(sx._groups) == 2
-    assert sx._groups.get(jog_text)._single_party == False
-    assert len(sx._groups.get(jog_text)._partys) == 1
+    assert pact._groups.get(jog_text) != None
+    assert pact._groups.get(jog_text).uid == 13
+    assert pact._groups.get(swim_text) is None
+    assert len(pact._partys) == 1
+    assert len(pact._groups) == 2
+    assert pact._groups.get(jog_text)._single_party == False
+    assert len(pact._groups.get(jog_text)._partys) == 1
 
 
 def test_pact_edit_Groupunit_brand_raiseErrorNewTitlePreviouslyExists():
     # GIVEN
-    sx = PactUnit(_healer="prom")
+    pact = PactUnit(_healer="prom")
     rico_text = "rico"
-    sx.add_partyunit(title=rico_text)
+    pact.add_partyunit(title=rico_text)
     swim_text = "swim"
-    sx.set_groupunit(groupunit_shop(brand=swim_text, uid=13))
+    pact.set_groupunit(groupunit_shop(brand=swim_text, uid=13))
     jog_text = "jog"
-    sx.set_groupunit(groupunit_shop(brand=jog_text, uid=13))
+    pact.set_groupunit(groupunit_shop(brand=jog_text, uid=13))
 
     # WHEN
     with pytest_raises(Exception) as excinfo:
-        sx.edit_groupunit_brand(
+        pact.edit_groupunit_brand(
             old_brand=swim_text,
             new_brand=jog_text,
             allow_group_overwite=False,
@@ -473,58 +473,58 @@ def test_pact_edit_Groupunit_brand_raiseErrorNewTitlePreviouslyExists():
 
 def test_pact_edit_groupunit_brand_CorrectlyMeldTitles():
     # GIVEN
-    sx = PactUnit(_healer="prom")
+    pact = PactUnit(_healer="prom")
     rico_text = "rico"
-    sx.add_partyunit(title=rico_text)
+    pact.add_partyunit(title=rico_text)
     swim_text = "swim"
     swim_group = groupunit_shop(brand=swim_text, uid=13)
     swim_group.set_partylink(
         partylink=partylink_shop(title=rico_text, creditor_weight=5, debtor_weight=3)
     )
-    sx.set_groupunit(swim_group)
+    pact.set_groupunit(swim_group)
     jog_text = "jog"
     jog_group = groupunit_shop(brand=jog_text, uid=13)
     jog_group.set_partylink(
         partylink=partylink_shop(title=rico_text, creditor_weight=7, debtor_weight=10)
     )
-    sx.set_groupunit(jog_group)
-    print(f"{sx._groups.get(jog_text)._partys.get(rico_text)=}")
-    assert sx._groups.get(jog_text) != None
-    assert sx._groups.get(jog_text).uid == 13
+    pact.set_groupunit(jog_group)
+    print(f"{pact._groups.get(jog_text)._partys.get(rico_text)=}")
+    assert pact._groups.get(jog_text) != None
+    assert pact._groups.get(jog_text).uid == 13
 
     # WHEN
-    sx.edit_groupunit_brand(
+    pact.edit_groupunit_brand(
         old_brand=swim_text,
         new_brand=jog_text,
         allow_group_overwite=True,
     )
 
     # THEN
-    assert sx._groups.get(jog_text) != None
-    assert sx._groups.get(swim_text) is None
-    assert len(sx._partys) == 1
-    assert len(sx._groups) == 2
-    assert sx._groups.get(jog_text)._single_party == False
-    assert len(sx._groups.get(jog_text)._partys) == 1
-    assert sx._groups.get(jog_text)._partys.get(rico_text).creditor_weight == 12
-    assert sx._groups.get(jog_text)._partys.get(rico_text).debtor_weight == 13
+    assert pact._groups.get(jog_text) != None
+    assert pact._groups.get(swim_text) is None
+    assert len(pact._partys) == 1
+    assert len(pact._groups) == 2
+    assert pact._groups.get(jog_text)._single_party == False
+    assert len(pact._groups.get(jog_text)._partys) == 1
+    assert pact._groups.get(jog_text)._partys.get(rico_text).creditor_weight == 12
+    assert pact._groups.get(jog_text)._partys.get(rico_text).debtor_weight == 13
 
 
 def test_pact_edit_groupunit_brand_CorrectlyChangesBalancelinks():
     # GIVEN
-    a_x = PactUnit(_healer="prom")
+    x_pact = PactUnit(_healer="prom")
     rico_text = "rico"
-    a_x.add_partyunit(title=rico_text)
+    x_pact.add_partyunit(title=rico_text)
     swim_text = "swim"
     swim_groupunit = groupunit_shop(brand=swim_text, uid=13)
-    a_x.set_groupunit(swim_groupunit)
+    x_pact.set_groupunit(swim_groupunit)
     outdoor_text = "outdoors"
-    outdoor_road = Road(f"{a_x._healer},{outdoor_text}")
+    outdoor_road = Road(f"{x_pact._healer},{outdoor_text}")
     camping_text = "camping"
-    camping_road = Road(f"{a_x._healer},{outdoor_text},{camping_text}")
-    a_x.add_idea(pad=outdoor_road, idea_kid=IdeaKid(_label=camping_text))
+    camping_road = Road(f"{x_pact._healer},{outdoor_text},{camping_text}")
+    x_pact.add_idea(pad=outdoor_road, idea_kid=IdeaKid(_label=camping_text))
 
-    camping_idea = a_x.get_idea_kid(camping_road)
+    camping_idea = x_pact.get_idea_kid(camping_road)
     swim_balancelink = balancelink_shop(
         brand=swim_groupunit.brand, creditor_weight=5, debtor_weight=3
     )
@@ -535,7 +535,7 @@ def test_pact_edit_groupunit_brand_CorrectlyChangesBalancelinks():
 
     # WHEN
     jog_text = "jog"
-    a_x.edit_groupunit_brand(
+    x_pact.edit_groupunit_brand(
         old_brand=swim_text, new_brand=jog_text, allow_group_overwite=False
     )
 
@@ -548,24 +548,24 @@ def test_pact_edit_groupunit_brand_CorrectlyChangesBalancelinks():
 
 def test_pact_edit_groupunit_brand_CorrectlyMeldsBalancelinesBalancelinksBalanceHeirs():
     # GIVEN
-    a_x = PactUnit(_healer="prom")
+    x_pact = PactUnit(_healer="prom")
     rico_text = "rico"
-    a_x.add_partyunit(title=rico_text)
+    x_pact.add_partyunit(title=rico_text)
     swim_text = "swim"
     swim_groupunit = groupunit_shop(brand=swim_text, uid=13)
-    a_x.set_groupunit(swim_groupunit)
+    x_pact.set_groupunit(swim_groupunit)
 
     jog_text = "jog"
     jog_groupunit = groupunit_shop(brand=jog_text, uid=13)
-    a_x.set_groupunit(jog_groupunit)
+    x_pact.set_groupunit(jog_groupunit)
 
     outdoor_text = "outdoors"
-    outdoor_road = Road(f"{a_x._healer},{outdoor_text}")
+    outdoor_road = Road(f"{x_pact._healer},{outdoor_text}")
     camping_text = "camping"
-    camping_road = Road(f"{a_x._healer},{outdoor_text},{camping_text}")
-    a_x.add_idea(pad=outdoor_road, idea_kid=IdeaKid(_label=camping_text))
+    camping_road = Road(f"{x_pact._healer},{outdoor_text},{camping_text}")
+    x_pact.add_idea(pad=outdoor_road, idea_kid=IdeaKid(_label=camping_text))
 
-    camping_idea = a_x.get_idea_kid(camping_road)
+    camping_idea = x_pact.get_idea_kid(camping_road)
     swim_balancelink = balancelink_shop(
         brand=swim_groupunit.brand, creditor_weight=5, debtor_weight=3
     )
@@ -582,7 +582,7 @@ def test_pact_edit_groupunit_brand_CorrectlyMeldsBalancelinesBalancelinksBalance
     assert camping_idea._balancelinks.get(jog_text).debtor_weight == 10
 
     # WHEN
-    a_x.edit_groupunit_brand(
+    x_pact.edit_groupunit_brand(
         old_brand=swim_text, new_brand=jog_text, allow_group_overwite=True
     )
 
@@ -596,29 +596,29 @@ def test_pact_edit_groupunit_brand_CorrectlyMeldsBalancelinesBalancelinksBalance
 def test_pact_add_idea_CreatesMissingGroups():
     # GIVEN
     healer_text = "bob"
-    a_x = PactUnit(_healer=healer_text)
-    a_x.set_groupunits_empty_if_null()
-    new_idea_parent_road = f"{a_x._cure_handle},work,cleaning"
+    x_pact = PactUnit(_healer=healer_text)
+    x_pact.set_groupunits_empty_if_null()
+    new_idea_parent_road = f"{x_pact._cure_handle},work,cleaning"
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = IdeaKid(_weight=40, _label=clean_cookery_text, promise=True)
 
     family_text = "family"
     balancelink_z = balancelink_shop(brand=family_text)
     clean_cookery_idea.set_balancelink(balancelink=balancelink_z)
-    assert len(a_x._groups) == 0
-    assert a_x._groups.get(family_text) is None
+    assert len(x_pact._groups) == 0
+    assert x_pact._groups.get(family_text) is None
 
     # WHEN
-    a_x.add_idea(
+    x_pact.add_idea(
         idea_kid=clean_cookery_idea,
         pad=new_idea_parent_road,
         create_missing_ideas_groups=True,
     )
 
     # THEN
-    assert len(a_x._groups) == 1
-    assert a_x._groups.get(family_text) != None
-    assert a_x._groups.get(family_text)._partys in (None, {})
+    assert len(x_pact._groups) == 1
+    assert x_pact._groups.get(family_text) != None
+    assert x_pact._groups.get(family_text)._partys in (None, {})
 
 
 def test_PactUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balancelinks():
@@ -689,9 +689,9 @@ def test_PactUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
 def test_pact_add_idea_DoesNotOverwriteGroups():
     # GIVEN
     healer_text = "bob"
-    a_x = PactUnit(_healer=healer_text)
-    a_x.set_groupunits_empty_if_null()
-    new_idea_parent_road = f"{a_x._cure_handle},work,cleaning"
+    x_pact = PactUnit(_healer=healer_text)
+    x_pact.set_groupunits_empty_if_null()
+    new_idea_parent_road = f"{x_pact._cure_handle},work,cleaning"
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = IdeaKid(_weight=40, _label=clean_cookery_text, promise=True)
 
@@ -702,15 +702,15 @@ def test_pact_add_idea_DoesNotOverwriteGroups():
     groupunit_z = groupunit_shop(brand=family_text)
     groupunit_z.set_partylink(partylink=partylink_shop(title="ann1"))
     groupunit_z.set_partylink(partylink=partylink_shop(title="bet1"))
-    a_x.set_groupunit(groupunit=groupunit_z)
+    x_pact.set_groupunit(groupunit=groupunit_z)
 
-    # assert len(a_x._groups) == 0
-    # assert a_x._groups.get(family_text) is None
-    assert len(a_x._groups) == 1
-    assert len(a_x._groups.get(family_text)._partys) == 2
+    # assert len(x_pact._groups) == 0
+    # assert x_pact._groups.get(family_text) is None
+    assert len(x_pact._groups) == 1
+    assert len(x_pact._groups.get(family_text)._partys) == 2
 
     # WHEN
-    a_x.add_idea(
+    x_pact.add_idea(
         idea_kid=clean_cookery_idea,
         pad=new_idea_parent_road,
         create_missing_ideas_groups=True,
@@ -718,23 +718,23 @@ def test_pact_add_idea_DoesNotOverwriteGroups():
 
     # THEN
 
-    # assert len(a_x._groups) == 1
-    # assert len(a_x._groups.get(family_text)._partys) == 0
+    # assert len(x_pact._groups) == 1
+    # assert len(x_pact._groups.get(family_text)._partys) == 0
     # groupunit_z = groupunit_shop(brand=family_text)
     # groupunit_z.set_partylink(partylink=partylink_shop(title="ann2"))
     # groupunit_z.set_partylink(partylink=partylink_shop(title="bet2"))
-    # a_x.set_groupunit(groupunit=groupunit_z)
+    # x_pact.set_groupunit(groupunit=groupunit_z)
 
-    assert len(a_x._groups) == 1
-    assert len(a_x._groups.get(family_text)._partys) == 2
+    assert len(x_pact._groups) == 1
+    assert len(x_pact._groups.get(family_text)._partys) == 2
 
 
 def test_pact_set_groupunits_create_missing_partys_DoesCreateMissingPartys():
     # GIVEN
     healer_text = "bob"
-    a_x = PactUnit(_healer=healer_text)
-    a_x.set_partys_empty_if_null()
-    a_x.set_groupunits_empty_if_null()
+    x_pact = PactUnit(_healer=healer_text)
+    x_pact.set_partys_empty_if_null()
+    x_pact.set_groupunits_empty_if_null()
     family_text = "family"
     anna_text = "anna"
     beto_text = "beto"
@@ -752,34 +752,34 @@ def test_pact_set_groupunits_create_missing_partys_DoesCreateMissingPartys():
     assert groupunit_z._partys.get(beto_text).creditor_weight == 5
     assert groupunit_z._partys.get(beto_text).debtor_weight == 11
 
-    assert len(a_x._partys) == 0
-    assert len(a_x._groups) == 0
+    assert len(x_pact._partys) == 0
+    assert len(x_pact._groups) == 0
 
     # WHEN
-    a_x.set_groupunit(groupunit=groupunit_z, create_missing_partys=True)
+    x_pact.set_groupunit(groupunit=groupunit_z, create_missing_partys=True)
 
     # THEN
-    assert len(a_x._partys) == 2
-    assert len(a_x._groups) == 3
-    assert a_x._partys.get(anna_text).creditor_weight == 3
-    assert a_x._partys.get(anna_text).debtor_weight == 7
+    assert len(x_pact._partys) == 2
+    assert len(x_pact._groups) == 3
+    assert x_pact._partys.get(anna_text).creditor_weight == 3
+    assert x_pact._partys.get(anna_text).debtor_weight == 7
 
-    assert a_x._partys.get(beto_text).creditor_weight == 5
-    assert a_x._partys.get(beto_text).debtor_weight == 11
+    assert x_pact._partys.get(beto_text).creditor_weight == 5
+    assert x_pact._partys.get(beto_text).debtor_weight == 11
 
 
 def test_pact_set_groupunits_create_missing_partys_DoesNotReplacePartys():
     # GIVEN
     healer_text = "bob"
-    a_x = PactUnit(_healer=healer_text)
-    a_x.set_partys_empty_if_null()
+    x_pact = PactUnit(_healer=healer_text)
+    x_pact.set_partys_empty_if_null()
     family_text = "family"
     anna_text = "anna"
     beto_text = "beto"
-    a_x.set_partyunit(
+    x_pact.set_partyunit(
         partyunit_shop(title=anna_text, creditor_weight=17, debtor_weight=88)
     )
-    a_x.set_partyunit(
+    x_pact.set_partyunit(
         partyunit_shop(title=beto_text, creditor_weight=46, debtor_weight=71)
     )
     groupunit_z = groupunit_shop(brand=family_text)
@@ -794,38 +794,38 @@ def test_pact_set_groupunits_create_missing_partys_DoesNotReplacePartys():
     assert groupunit_z._partys.get(anna_text).debtor_weight == 7
     assert groupunit_z._partys.get(beto_text).creditor_weight == 5
     assert groupunit_z._partys.get(beto_text).debtor_weight == 11
-    assert len(a_x._partys) == 2
-    assert a_x._partys.get(anna_text).creditor_weight == 17
-    assert a_x._partys.get(anna_text).debtor_weight == 88
-    assert a_x._partys.get(beto_text).creditor_weight == 46
-    assert a_x._partys.get(beto_text).debtor_weight == 71
+    assert len(x_pact._partys) == 2
+    assert x_pact._partys.get(anna_text).creditor_weight == 17
+    assert x_pact._partys.get(anna_text).debtor_weight == 88
+    assert x_pact._partys.get(beto_text).creditor_weight == 46
+    assert x_pact._partys.get(beto_text).debtor_weight == 71
 
     # WHEN
-    a_x.set_groupunit(groupunit=groupunit_z, create_missing_partys=True)
+    x_pact.set_groupunit(groupunit=groupunit_z, create_missing_partys=True)
 
     # THEN
-    assert len(a_x._partys) == 2
-    assert a_x._partys.get(anna_text).creditor_weight == 17
-    assert a_x._partys.get(anna_text).debtor_weight == 88
-    assert a_x._partys.get(beto_text).creditor_weight == 46
-    assert a_x._partys.get(beto_text).debtor_weight == 71
+    assert len(x_pact._partys) == 2
+    assert x_pact._partys.get(anna_text).creditor_weight == 17
+    assert x_pact._partys.get(anna_text).debtor_weight == 88
+    assert x_pact._partys.get(beto_text).creditor_weight == 46
+    assert x_pact._partys.get(beto_text).debtor_weight == 71
 
 
 def test_pact_get_groupunits_dict_CorrectlyReturnsDictOfGroups():
     # GIVEN
     healer_text = "bob"
-    sx = PactUnit(_healer=healer_text)
-    sx.set_partys_empty_if_null()
+    pact = PactUnit(_healer=healer_text)
+    pact.set_partys_empty_if_null()
     swim_text = "swim"
     wiggle_text = "wiggle"
     fly_text = "fly"
-    sx.set_groupunit(groupunit=groupunit_shop(brand=swim_text))
-    sx.set_groupunit(groupunit=groupunit_shop(brand=wiggle_text))
-    sx.set_groupunit(groupunit=groupunit_shop(brand=fly_text))
-    assert len(sx._groups) == 3
+    pact.set_groupunit(groupunit=groupunit_shop(brand=swim_text))
+    pact.set_groupunit(groupunit=groupunit_shop(brand=wiggle_text))
+    pact.set_groupunit(groupunit=groupunit_shop(brand=fly_text))
+    assert len(pact._groups) == 3
 
     # WHEN
-    groupunit_list_x = sx.get_groupunits_brand_list()
+    groupunit_list_x = pact.get_groupunits_brand_list()
 
     # THEN
     assert groupunit_list_x[0] == ""
@@ -838,131 +838,131 @@ def test_pact_get_groupunits_dict_CorrectlyReturnsDictOfGroups():
 def test_pact_set_all_groupunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
     # GIVEN
     healer_text = "bob"
-    sx = PactUnit(_healer=healer_text)
-    sx.set_partys_empty_if_null()
+    pact = PactUnit(_healer=healer_text)
+    pact.set_partys_empty_if_null()
     swim_text = "swim"
     pad_text = "pad"
     fly_text = "fly"
-    sx.set_groupunit(groupunit=groupunit_shop(brand=swim_text))
-    sx.set_groupunit(groupunit=groupunit_shop(brand=pad_text))
-    sx.set_groupunit(groupunit=groupunit_shop(brand=fly_text))
-    assert sx._groups[swim_text].uid is None
-    assert sx._groups[pad_text].uid is None
-    assert sx._groups[fly_text].uid is None
+    pact.set_groupunit(groupunit=groupunit_shop(brand=swim_text))
+    pact.set_groupunit(groupunit=groupunit_shop(brand=pad_text))
+    pact.set_groupunit(groupunit=groupunit_shop(brand=fly_text))
+    assert pact._groups[swim_text].uid is None
+    assert pact._groups[pad_text].uid is None
+    assert pact._groups[fly_text].uid is None
 
     # WHEN
-    sx.set_all_groupunits_uids_unique()
+    pact.set_all_groupunits_uids_unique()
 
     # THEN
-    assert sx._groups[swim_text].uid != None
-    assert sx._groups[pad_text].uid != None
-    assert sx._groups[fly_text].uid != None
+    assert pact._groups[swim_text].uid != None
+    assert pact._groups[pad_text].uid != None
+    assert pact._groups[fly_text].uid != None
 
 
 def test_pact_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs():
     # GIVEN
     healer_text = "bob"
-    sx = PactUnit(_healer=healer_text)
-    sx.set_partys_empty_if_null()
+    pact = PactUnit(_healer=healer_text)
+    pact.set_partys_empty_if_null()
     swim_text = "swim"
     pad_text = "pad"
     fly_text = "fly"
-    sx.set_groupunit(groupunit=groupunit_shop(brand=swim_text, uid=3))
-    sx.set_groupunit(groupunit=groupunit_shop(brand=pad_text, uid=3))
-    sx.set_groupunit(groupunit=groupunit_shop(brand=fly_text))
-    assert sx._groups[swim_text].uid == 3
-    assert sx._groups[pad_text].uid == 3
-    assert sx._groups[fly_text].uid is None
+    pact.set_groupunit(groupunit=groupunit_shop(brand=swim_text, uid=3))
+    pact.set_groupunit(groupunit=groupunit_shop(brand=pad_text, uid=3))
+    pact.set_groupunit(groupunit=groupunit_shop(brand=fly_text))
+    assert pact._groups[swim_text].uid == 3
+    assert pact._groups[pad_text].uid == 3
+    assert pact._groups[fly_text].uid is None
 
     # WHEN
-    sx.set_all_groupunits_uids_unique()
+    pact.set_all_groupunits_uids_unique()
 
     # THEN
-    print(f"{sx._groups[swim_text].uid=}")
-    print(f"{sx._groups[pad_text].uid=}")
-    assert sx._groups[swim_text].uid != sx._groups[pad_text].uid
-    assert sx._groups[pad_text].uid != 3
-    assert sx._groups[pad_text].uid != 3
-    assert sx._groups[fly_text].uid != None
+    print(f"{pact._groups[swim_text].uid=}")
+    print(f"{pact._groups[pad_text].uid=}")
+    assert pact._groups[swim_text].uid != pact._groups[pad_text].uid
+    assert pact._groups[pad_text].uid != 3
+    assert pact._groups[pad_text].uid != 3
+    assert pact._groups[fly_text].uid != None
 
 
 def test_pact_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs():
     # GIVEN
     healer_text = "Noa"
-    sx = PactUnit(_healer=healer_text)
-    sx.set_partys_empty_if_null()
+    pact = PactUnit(_healer=healer_text)
+    pact.set_partys_empty_if_null()
     swim_text = "swim"
     pad_text = "pad"
     fly_text = "fly"
-    sx.set_groupunit(groupunit=groupunit_shop(brand=swim_text, uid=3))
-    sx.set_groupunit(groupunit=groupunit_shop(brand=pad_text, uid=3))
-    sx.set_groupunit(groupunit=groupunit_shop(brand=fly_text))
-    assert sx._groups[swim_text].uid == 3
-    assert sx._groups[pad_text].uid == 3
-    assert sx._groups[fly_text].uid is None
+    pact.set_groupunit(groupunit=groupunit_shop(brand=swim_text, uid=3))
+    pact.set_groupunit(groupunit=groupunit_shop(brand=pad_text, uid=3))
+    pact.set_groupunit(groupunit=groupunit_shop(brand=fly_text))
+    assert pact._groups[swim_text].uid == 3
+    assert pact._groups[pad_text].uid == 3
+    assert pact._groups[fly_text].uid is None
 
     # WHEN
-    sx.set_all_groupunits_uids_unique()
+    pact.set_all_groupunits_uids_unique()
 
     # THEN
-    print(f"{sx._groups[swim_text].uid=}")
-    print(f"{sx._groups[pad_text].uid=}")
-    assert sx._groups[swim_text].uid != sx._groups[pad_text].uid
-    assert sx._groups[pad_text].uid != 3
-    assert sx._groups[pad_text].uid != 3
-    assert sx._groups[fly_text].uid != None
+    print(f"{pact._groups[swim_text].uid=}")
+    print(f"{pact._groups[pad_text].uid=}")
+    assert pact._groups[swim_text].uid != pact._groups[pad_text].uid
+    assert pact._groups[pad_text].uid != 3
+    assert pact._groups[pad_text].uid != 3
+    assert pact._groups[fly_text].uid != None
 
 
 def test_pact_all_groupunits_uids_are_unique_ReturnsCorrectBoolean():
     # GIVEN
     healer_text = "Noa"
-    sx = PactUnit(_healer=healer_text)
-    sx.set_partys_empty_if_null()
+    pact = PactUnit(_healer=healer_text)
+    pact.set_partys_empty_if_null()
     swim_text = "swim"
     pad_text = "pad"
     fly_text = "fly"
-    sx.set_groupunit(groupunit=groupunit_shop(brand=swim_text, uid=3))
-    sx.set_groupunit(groupunit=groupunit_shop(brand=pad_text, uid=3))
-    sx.set_groupunit(groupunit=groupunit_shop(brand=fly_text))
-    assert sx._groups[swim_text].uid == 3
-    assert sx._groups[pad_text].uid == 3
-    assert sx._groups[fly_text].uid is None
+    pact.set_groupunit(groupunit=groupunit_shop(brand=swim_text, uid=3))
+    pact.set_groupunit(groupunit=groupunit_shop(brand=pad_text, uid=3))
+    pact.set_groupunit(groupunit=groupunit_shop(brand=fly_text))
+    assert pact._groups[swim_text].uid == 3
+    assert pact._groups[pad_text].uid == 3
+    assert pact._groups[fly_text].uid is None
 
     # WHEN1 / THEN
-    assert sx.all_groupunits_uids_are_unique() == False
+    assert pact.all_groupunits_uids_are_unique() == False
 
     # WHEN2
-    sx.set_groupunit(groupunit=groupunit_shop(brand=swim_text, uid=4))
+    pact.set_groupunit(groupunit=groupunit_shop(brand=swim_text, uid=4))
 
     # THEN
-    assert sx.all_groupunits_uids_are_unique() == False
+    assert pact.all_groupunits_uids_are_unique() == False
 
     # WHEN3
-    sx.set_groupunit(groupunit=groupunit_shop(brand=fly_text, uid=5))
+    pact.set_groupunit(groupunit=groupunit_shop(brand=fly_text, uid=5))
 
     # THEN
-    assert sx.all_groupunits_uids_are_unique()
+    assert pact.all_groupunits_uids_are_unique()
 
 
 def test_get_partys_relevant_groups_CorrectlyReturnsEmptyDict():
     # GIVEN
     bob_text = "bob"
-    cx_with_partys = PactUnit(_healer=bob_text)
-    cx_with_partys.set_partys_empty_if_null()
+    pact_with_partys = PactUnit(_healer=bob_text)
+    pact_with_partys.set_partys_empty_if_null()
 
     sam_text = "sam"
     wil_text = "wil"
-    cx_with_partys.set_partyunit(partyunit=partyunit_shop(title=bob_text))
-    cx_with_partys.set_partyunit(partyunit=partyunit_shop(title=sam_text))
+    pact_with_partys.set_partyunit(partyunit=partyunit_shop(title=bob_text))
+    pact_with_partys.set_partyunit(partyunit=partyunit_shop(title=sam_text))
 
-    cx_with_groups = PactUnit()
-    cx_with_groups.set_partys_empty_if_null()
-    cx_with_groups.set_groupunits_empty_if_null()
+    pact_with_groups = PactUnit()
+    pact_with_groups.set_partys_empty_if_null()
+    pact_with_groups.set_groupunits_empty_if_null()
 
     # WHEN
-    print(f"{len(cx_with_partys._partys)=} {len(cx_with_groups._groups)=}")
+    print(f"{len(pact_with_partys._partys)=} {len(pact_with_groups._groups)=}")
     relevant_x = get_partys_relevant_groups(
-        cx_with_groups._groups, cx_with_partys._partys
+        pact_with_groups._groups, pact_with_partys._partys
     )
 
     # THEN
@@ -974,20 +974,20 @@ def test_get_partys_relevant_groups_CorrectlyReturns2SinglePartyGroups():
     bob_text = "Bob"
     sam_text = "Sam"
     wil_text = "Wil"
-    cx_3groups = PactUnit(_healer=bob_text)
-    cx_3groups.set_partys_empty_if_null()
-    cx_3groups.set_partyunit(partyunit=partyunit_shop(title=bob_text))
-    cx_3groups.set_partyunit(partyunit=partyunit_shop(title=sam_text))
-    cx_3groups.set_partyunit(partyunit=partyunit_shop(title=wil_text))
+    pact_3groups = PactUnit(_healer=bob_text)
+    pact_3groups.set_partys_empty_if_null()
+    pact_3groups.set_partyunit(partyunit=partyunit_shop(title=bob_text))
+    pact_3groups.set_partyunit(partyunit=partyunit_shop(title=sam_text))
+    pact_3groups.set_partyunit(partyunit=partyunit_shop(title=wil_text))
 
-    cx_2partys = PactUnit(_healer=bob_text)
-    cx_2partys.set_partys_empty_if_null()
-    cx_2partys.set_partyunit(partyunit=partyunit_shop(title=bob_text))
-    cx_2partys.set_partyunit(partyunit=partyunit_shop(title=sam_text))
+    pact_2partys = PactUnit(_healer=bob_text)
+    pact_2partys.set_partys_empty_if_null()
+    pact_2partys.set_partyunit(partyunit=partyunit_shop(title=bob_text))
+    pact_2partys.set_partyunit(partyunit=partyunit_shop(title=sam_text))
 
     # WHEN
-    print(f"{len(cx_2partys._partys)=} {len(cx_3groups._groups)=}")
-    mrg_x = get_partys_relevant_groups(cx_3groups._groups, cx_2partys._partys)
+    print(f"{len(pact_2partys._partys)=} {len(pact_3groups._groups)=}")
+    mrg_x = get_partys_relevant_groups(pact_3groups._groups, pact_2partys._partys)
 
     # THEN
     assert mrg_x == {bob_text: {bob_text: -1}, sam_text: {sam_text: -1}}
@@ -996,19 +996,19 @@ def test_get_partys_relevant_groups_CorrectlyReturns2SinglePartyGroups():
 def test_get_party_relevant_groups_CorrectlyReturnsCorrectDict():
     # GIVEN
     jes_text = "Jessi"
-    jes_cx = PactUnit(_healer=jes_text)
+    jes_pact = PactUnit(_healer=jes_text)
     bob_text = "Bob"
-    jes_cx.set_partyunit(partyunit_shop(title=jes_text))
-    jes_cx.set_partyunit(partyunit_shop(title=bob_text))
+    jes_pact.set_partyunit(partyunit_shop(title=jes_text))
+    jes_pact.set_partyunit(partyunit_shop(title=bob_text))
 
     hike_text = "hikers"
-    jes_cx.set_groupunit(groupunit_shop(brand=hike_text))
-    hike_group = jes_cx._groups.get(hike_text)
+    jes_pact.set_groupunit(groupunit_shop(brand=hike_text))
+    hike_group = jes_pact._groups.get(hike_text)
     hike_group.set_partylink(partylink_shop(bob_text))
 
     # WHEN
     noa_text = "Noa"
-    noa_mrg = get_party_relevant_groups(jes_cx._groups, noa_text)
+    noa_mrg = get_party_relevant_groups(jes_pact._groups, noa_text)
 
     # THEN
     assert noa_mrg == {}
@@ -1017,35 +1017,35 @@ def test_get_party_relevant_groups_CorrectlyReturnsCorrectDict():
 def test_get_party_relevant_groups_CorrectlyReturnsCorrectDict():
     # GIVEN
     jes_text = "Jessi"
-    jes_cx = PactUnit(_healer=jes_text)
+    jes_pact = PactUnit(_healer=jes_text)
     bob_text = "Bob"
     noa_text = "Noa"
     eli_text = "Eli"
-    jes_cx.set_partyunit(partyunit_shop(title=jes_text))
-    jes_cx.set_partyunit(partyunit_shop(title=bob_text))
-    jes_cx.set_partyunit(partyunit_shop(title=noa_text))
-    jes_cx.set_partyunit(partyunit_shop(title=eli_text))
+    jes_pact.set_partyunit(partyunit_shop(title=jes_text))
+    jes_pact.set_partyunit(partyunit_shop(title=bob_text))
+    jes_pact.set_partyunit(partyunit_shop(title=noa_text))
+    jes_pact.set_partyunit(partyunit_shop(title=eli_text))
 
     swim_text = "swimmers"
-    jes_cx.set_groupunit(groupunit_shop(brand=swim_text))
-    swim_group = jes_cx._groups.get(swim_text)
+    jes_pact.set_groupunit(groupunit_shop(brand=swim_text))
+    swim_group = jes_pact._groups.get(swim_text)
     swim_group.set_partylink(partylink_shop(bob_text))
 
     hike_text = "hikers"
-    jes_cx.set_groupunit(groupunit_shop(brand=hike_text))
-    hike_group = jes_cx._groups.get(hike_text)
+    jes_pact.set_groupunit(groupunit_shop(brand=hike_text))
+    hike_group = jes_pact._groups.get(hike_text)
     hike_group.set_partylink(partylink_shop(bob_text))
     hike_group.set_partylink(partylink_shop(noa_text))
 
     hunt_text = "hunters"
-    jes_cx.set_groupunit(groupunit_shop(brand=hunt_text))
-    hike_group = jes_cx._groups.get(hunt_text)
+    jes_pact.set_groupunit(groupunit_shop(brand=hunt_text))
+    hike_group = jes_pact._groups.get(hunt_text)
     hike_group.set_partylink(partylink_shop(noa_text))
     hike_group.set_partylink(partylink_shop(eli_text))
 
     # WHEN
-    print(f"{len(jes_cx._partys)=} {len(jes_cx._groups)=}")
-    bob_mrg = get_party_relevant_groups(jes_cx._groups, bob_text)
+    print(f"{len(jes_pact._partys)=} {len(jes_pact._groups)=}")
+    bob_mrg = get_party_relevant_groups(jes_pact._groups, bob_text)
 
     # THEN
     assert bob_mrg == {bob_text: -1, swim_text: -1, hike_text: -1}

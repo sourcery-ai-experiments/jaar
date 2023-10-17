@@ -16,15 +16,15 @@ from src.cure.examples.example_healers import (
 def test_pactunit_get_assignment_ReturnsPact():
     # GIVEN
     jes_text = "jessi"
-    jes1_cx = PactUnit(_healer=jes_text)
-    jes1_cx.set_groupunits_empty_if_null()
+    jes1_pact = PactUnit(_healer=jes_text)
+    jes1_pact.set_groupunits_empty_if_null()
 
     # WHEN
     bob_text = "bob"
     pact_x = PactUnit(_healer=jes_text)
     pact_x.set_groupunits_empty_if_null()
     assignor_known_partys_x = {}
-    cx_assignment = jes1_cx.get_assignment(
+    cx_assignment = jes1_pact.get_assignment(
         pact_x=pact_x,
         assignor_partys=assignor_known_partys_x,
         assignor_title=bob_text,
@@ -38,12 +38,12 @@ def test_pactunit_get_assignment_ReturnsPact():
 def test_pactunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInPartys():
     # GIVEN
     noa_text = "Noa"
-    noa_cx = example_pacts_get_pact_with_4_levels()
-    noa_cx.set_partyunit(partyunit_shop(title=noa_text))
+    noa_pact = example_pacts_get_pact_with_4_levels()
+    noa_pact.set_partyunit(partyunit_shop(title=noa_text))
     zia_text = "Zia"
     yao_text = "Yao"
-    noa_cx.set_partyunit(partyunit_shop(title=zia_text))
-    noa_cx.set_partyunit(partyunit_shop(title=yao_text))
+    noa_pact.set_partyunit(partyunit_shop(title=zia_text))
+    noa_pact.set_partyunit(partyunit_shop(title=yao_text))
 
     # WHEN
     bob_text = "bob"
@@ -53,26 +53,26 @@ def test_pactunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInPartys():
     tx.set_partyunit(partyunit=partyunit_shop(title=zia_text))
     tx.set_partyunit(partyunit=partyunit_shop(title=noa_text))
 
-    cx_assignment = noa_cx.get_assignment(cx, tx._partys, bob_text)
+    cx_assignment = noa_pact.get_assignment(cx, tx._partys, bob_text)
 
     # THEN
-    assert len(noa_cx._partys) == 3
+    assert len(noa_pact._partys) == 3
     assert len(cx_assignment._partys) == 0
 
 
 def test_pactunit_get_assignment_ReturnsCorrectPartys():
     # GIVEN
     jes_text = "Jessi"
-    jes_cx = PactUnit(_healer=jes_text)
-    jes_cx.set_partyunit(partyunit_shop(title=jes_text))
+    jes_pact = PactUnit(_healer=jes_text)
+    jes_pact.set_partyunit(partyunit_shop(title=jes_text))
     bob_text = "Bob"
     zia_text = "Zia"
     noa_text = "Noa"
     yao_text = "Yao"
-    jes_cx.set_partyunit(partyunit_shop(title=bob_text))
-    jes_cx.set_partyunit(partyunit_shop(title=zia_text))
-    jes_cx.set_partyunit(partyunit_shop(title=noa_text))
-    jes_cx.set_partyunit(partyunit_shop(title=yao_text))
+    jes_pact.set_partyunit(partyunit_shop(title=bob_text))
+    jes_pact.set_partyunit(partyunit_shop(title=zia_text))
+    jes_pact.set_partyunit(partyunit_shop(title=noa_text))
+    jes_pact.set_partyunit(partyunit_shop(title=yao_text))
 
     # WHEN
     tx = PactUnit()
@@ -81,8 +81,8 @@ def test_pactunit_get_assignment_ReturnsCorrectPartys():
     tx.set_partyunit(partyunit=partyunit_shop(title=zia_text))
     tx.set_partyunit(partyunit=partyunit_shop(title=noa_text))
 
-    empty_cx = PactUnit(_healer=jes_text)
-    cx_assignment = jes_cx.get_assignment(empty_cx, tx._partys, bob_text)
+    empty_pact = PactUnit(_healer=jes_text)
+    cx_assignment = jes_pact.get_assignment(empty_pact, tx._partys, bob_text)
 
     # THEN
     assert len(cx_assignment._partys) == 3
@@ -95,28 +95,28 @@ def test_pactunit_get_assignment_ReturnsCorrectPartys():
 def test_pactunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     # GIVEN
     jes_text = "Jessi"
-    jes_cx = PactUnit(_healer=jes_text)
-    jes_cx.set_partyunit(partyunit_shop(title=jes_text))
+    jes_pact = PactUnit(_healer=jes_text)
+    jes_pact.set_partyunit(partyunit_shop(title=jes_text))
     bob_text = "Bob"
     noa_text = "Noa"
     eli_text = "Eli"
-    jes_cx.set_partyunit(partyunit_shop(title=bob_text))
-    jes_cx.set_partyunit(partyunit_shop(title=noa_text))
-    jes_cx.set_partyunit(partyunit_shop(title=eli_text))
+    jes_pact.set_partyunit(partyunit_shop(title=bob_text))
+    jes_pact.set_partyunit(partyunit_shop(title=noa_text))
+    jes_pact.set_partyunit(partyunit_shop(title=eli_text))
     swim_text = "swimmers"
-    jes_cx.set_groupunit(groupunit_shop(brand=swim_text))
-    swim_group = jes_cx._groups.get(swim_text)
+    jes_pact.set_groupunit(groupunit_shop(brand=swim_text))
+    swim_group = jes_pact._groups.get(swim_text)
     swim_group.set_partylink(partylink_shop(bob_text))
 
     hike_text = "hikers"
-    jes_cx.set_groupunit(groupunit_shop(brand=hike_text))
-    hike_group = jes_cx._groups.get(hike_text)
+    jes_pact.set_groupunit(groupunit_shop(brand=hike_text))
+    hike_group = jes_pact._groups.get(hike_text)
     hike_group.set_partylink(partylink_shop(bob_text))
     hike_group.set_partylink(partylink_shop(noa_text))
 
     hunt_text = "hunters"
-    jes_cx.set_groupunit(groupunit_shop(brand=hunt_text))
-    hike_group = jes_cx._groups.get(hunt_text)
+    jes_pact.set_groupunit(groupunit_shop(brand=hunt_text))
+    hike_group = jes_pact._groups.get(hunt_text)
     hike_group.set_partylink(partylink_shop(noa_text))
     hike_group.set_partylink(partylink_shop(eli_text))
 
@@ -129,8 +129,8 @@ def test_pactunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     tx.set_partyunit(partyunit=partyunit_shop(title=zia_text))
     tx.set_partyunit(partyunit=partyunit_shop(title=noa_text))
 
-    empty_cx = PactUnit(_healer=jes_text)
-    cx_assignment = jes_cx.get_assignment(empty_cx, tx._partys, bob_text)
+    empty_pact = PactUnit(_healer=jes_text)
+    cx_assignment = jes_pact.get_assignment(empty_pact, tx._partys, bob_text)
 
     # THEN
     assert len(cx_assignment._groups) == 5
@@ -386,20 +386,20 @@ def test_pact__get_relevant_roads_range_source_road_ReturnSimple():
 def test_pact__set_assignment_ideas_ReturnsCorrectIdeas():
     # GIVEN
     yao_text = "Yao"
-    yao_cx = PactUnit(_healer=yao_text)
+    yao_pact = PactUnit(_healer=yao_text)
     casa_text = "casa"
-    casa_road = f"{yao_cx._cure_handle},{casa_text}"
-    yao_cx.add_idea(IdeaKid(_label=casa_text), pad=yao_cx._cure_handle)
-    yao_cx.set_pact_metrics()
+    casa_road = f"{yao_pact._cure_handle},{casa_text}"
+    yao_pact.add_idea(IdeaKid(_label=casa_text), pad=yao_pact._cure_handle)
+    yao_pact.set_pact_metrics()
 
     # WHEN
     bob_text = "Bob"
     bob_pact = PactUnit(_healer=bob_text)
     relevant_roads = {
-        yao_cx._cure_handle: "descendant",
+        yao_pact._cure_handle: "descendant",
         casa_road: "requirementunit_base",
     }
-    yao_cx._set_assignment_ideas(pact_x=bob_pact, relevant_roads=relevant_roads)
+    yao_pact._set_assignment_ideas(pact_x=bob_pact, relevant_roads=relevant_roads)
 
     # THEN
     bob_pact.set_pact_metrics()
@@ -411,44 +411,44 @@ def test_pact__set_assignment_ideas_ReturnsCorrectIdeas():
 def test_pact__set_assignment_ideas_ReturnsCorrectIdeaRoot_acptfacts():
     # GIVEN
     yao_text = "Yao"
-    yao_cx = PactUnit(_healer=yao_text)
+    yao_pact = PactUnit(_healer=yao_text)
 
     casa_text = "casa"
-    casa_road = f"{yao_cx._cure_handle},{casa_text}"
-    yao_cx.add_idea(IdeaKid(_label=casa_text), pad=yao_cx._cure_handle)
+    casa_road = f"{yao_pact._cure_handle},{casa_text}"
+    yao_pact.add_idea(IdeaKid(_label=casa_text), pad=yao_pact._cure_handle)
 
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
-    yao_cx.add_idea(IdeaKid(basket_text), pad=casa_road)
-    yao_cx.set_acptfact(base=basket_road, pick=basket_road)
-    # print(f"{list(yao_cx._idearoot._acptfactunits.keys())=}")
+    yao_pact.add_idea(IdeaKid(basket_text), pad=casa_road)
+    yao_pact.set_acptfact(base=basket_road, pick=basket_road)
+    # print(f"{list(yao_pact._idearoot._acptfactunits.keys())=}")
 
     room_text = "room status"
     room_road = f"{casa_road},{room_text}"
-    yao_cx.add_idea(IdeaKid(room_text), pad=casa_road)
-    yao_cx.set_acptfact(base=room_road, pick=room_road)
-    print(f"{list(yao_cx._idearoot._acptfactunits.keys())=}")
+    yao_pact.add_idea(IdeaKid(room_text), pad=casa_road)
+    yao_pact.set_acptfact(base=room_road, pick=room_road)
+    print(f"{list(yao_pact._idearoot._acptfactunits.keys())=}")
 
     bob_text = "Bob"
-    bob_cx = PactUnit(_healer=bob_text)
+    bob_pact = PactUnit(_healer=bob_text)
 
-    yao_cx.set_pact_metrics()
-    bob_cx.set_pact_metrics()
-    assert list(yao_cx._idearoot._acptfactunits.keys()) == [basket_road, room_road]
-    assert not list(bob_cx._idearoot._acptfactunits.keys())
+    yao_pact.set_pact_metrics()
+    bob_pact.set_pact_metrics()
+    assert list(yao_pact._idearoot._acptfactunits.keys()) == [basket_road, room_road]
+    assert not list(bob_pact._idearoot._acptfactunits.keys())
 
     # WHEN
     relevant_roads = {
-        yao_cx._cure_handle: "descendant",
+        yao_pact._cure_handle: "descendant",
         casa_road: "requirementunit_base",
         basket_road: "assigned",
     }
-    yao_cx._set_assignment_ideas(pact_x=bob_cx, relevant_roads=relevant_roads)
+    yao_pact._set_assignment_ideas(pact_x=bob_pact, relevant_roads=relevant_roads)
 
     # THEN
-    bob_cx.set_pact_metrics()
-    assert bob_cx._idearoot._acptfactunits.get(room_road) is None
-    assert list(bob_cx._idearoot._acptfactunits.keys()) == [basket_road]
+    bob_pact.set_pact_metrics()
+    assert bob_pact._idearoot._acptfactunits.get(room_road) is None
+    assert list(bob_pact._idearoot._acptfactunits.keys()) == [basket_road]
 
 
 def test_pact_get_assignment_getsCorrectIdeas_scenario1():
@@ -493,12 +493,12 @@ def test_pact_get_assignment_getsCorrectIdeas_scenario1():
 
 def test_pact_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     # GIVEN
-    america_cx = get_pact_assignment_laundry_example1()
+    america_pact = get_pact_assignment_laundry_example1()
     cure_handle_text = "tiger_econ"
-    print(f"{america_cx._cure_handle=} {america_cx._idea_dict.keys()=}")
-    america_cx.set_cure_handle(cure_handle_text)
-    print(f"{america_cx._cure_handle=} {america_cx._idea_dict.keys()=}")
-    do_laundery_idea = america_cx.get_idea_kid("tiger_econ,casa,do_laundry")
+    print(f"{america_pact._cure_handle=} {america_pact._idea_dict.keys()=}")
+    america_pact.set_cure_handle(cure_handle_text)
+    print(f"{america_pact._cure_handle=} {america_pact._idea_dict.keys()=}")
+    do_laundery_idea = america_pact.get_idea_kid("tiger_econ,casa,do_laundry")
     print(f"{do_laundery_idea._requiredunits.keys()=}")
 
     # WHEN
@@ -506,9 +506,9 @@ def test_pact_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     joachim_pact = PactUnit(_healer=joachim_text)
     joachim_pact.set_cure_handle(cure_handle_text)
     print(f"{joachim_pact._cure_handle=} {joachim_pact._idea_dict.keys()=}")
-    joachim_assignment = america_cx.get_assignment(
+    joachim_assignment = america_pact.get_assignment(
         pact_x=joachim_pact,
-        assignor_partys={joachim_text: -1, america_cx._healer: -1},
+        assignor_partys={joachim_text: -1, america_pact._healer: -1},
         assignor_title=joachim_text,
     )
 
@@ -529,7 +529,7 @@ def test_pact_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     # road_x='A,casa,laundry basket status,bare'
     # road_x='A,casa,do_laundry'
     casa_text = "casa"
-    casa_road = f"{america_cx._cure_handle},{casa_text}"
+    casa_road = f"{america_pact._cure_handle},{casa_text}"
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
     b_full_text = "full"

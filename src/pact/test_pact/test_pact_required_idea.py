@@ -10,11 +10,11 @@ from src.pact.x_func import from_list_get_active_status
 
 
 def test_pact_requiredunits_create():
-    cx = example_pacts_get_pact_with_4_levels()
+    x_pact = example_pacts_get_pact_with_4_levels()
     work_text = "work"
-    work_road = f"{cx._cure_handle},{work_text}"
+    work_road = f"{x_pact._cure_handle},{work_text}"
     weekday_text = "weekdays"
-    weekday_road = f"{cx._cure_handle},{weekday_text}"
+    weekday_road = f"{x_pact._cure_handle},{weekday_text}"
     wed_text = "Wednesday"
     wed_road = f"{weekday_road},{wed_text}"
 
@@ -24,8 +24,8 @@ def test_pact_requiredunits_create():
     )
     print(f"{type(work_wk_required.base)=}")
     print(f"{work_wk_required.base=}")
-    cx.edit_idea_attr(road=work_road, required=work_wk_required)
-    work_idea = cx._idearoot._kids[work_text]
+    x_pact.edit_idea_attr(road=work_road, required=work_wk_required)
+    work_idea = x_pact._idearoot._kids[work_text]
     assert work_idea._requiredunits != None
     print(work_idea._requiredunits)
     assert work_idea._requiredunits[weekday_road] != None
@@ -33,11 +33,11 @@ def test_pact_requiredunits_create():
 
 
 def test_pact_set_requiredunits_status():
-    cx = example_pacts_get_pact_with_4_levels()
+    x_pact = example_pacts_get_pact_with_4_levels()
     work_text = "work"
-    work_road = f"{cx._cure_handle},{work_text}"
+    work_road = f"{x_pact._cure_handle},{work_text}"
     weekday_text = "weekdays"
-    weekday_road = f"{cx._cure_handle},{weekday_text}"
+    weekday_road = f"{x_pact._cure_handle},{weekday_text}"
     wed_text = "Wednesday"
     wed_road = f"{weekday_road},{wed_text}"
 
@@ -47,8 +47,8 @@ def test_pact_set_requiredunits_status():
     )
     print(f"{type(work_wk_required.base)=}")
     print(f"{work_wk_required.base=}")
-    cx.edit_idea_attr(road=work_road, required=work_wk_required)
-    work_idea = cx._idearoot._kids[work_text]
+    x_pact.edit_idea_attr(road=work_road, required=work_wk_required)
+    work_idea = x_pact._idearoot._kids[work_text]
     assert work_idea._requiredunits != None
     print(work_idea._requiredunits)
     assert work_idea._requiredunits[weekday_road] != None
@@ -66,11 +66,11 @@ def test_agenda_returned_WhenNoRequiredsExist():
 
 def test_pact_requiredheirs_AreCorrectlyInherited_v1():
     # GIVEN
-    cx = example_pacts_get_pact_with_4_levels()
+    x_pact = example_pacts_get_pact_with_4_levels()
     work_text = "work"
-    work_road = f"{cx._cure_handle},{work_text}"
+    work_road = f"{x_pact._cure_handle},{work_text}"
     week_label = "weekdays"
-    week_road = f"{cx._cure_handle},{week_label}"
+    week_road = f"{x_pact._cure_handle},{week_label}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
 
@@ -86,8 +86,8 @@ def test_pact_requiredheirs_AreCorrectlyInherited_v1():
         _curr_idea_active_status=True,
     )
     print(f"{work_wk_build_requiredunit.base=}")
-    cx.edit_idea_attr(road=work_road, required=work_wk_build_requiredunit)
-    work_idea = cx._idearoot._kids[work_text]
+    x_pact.edit_idea_attr(road=work_road, required=work_wk_build_requiredunit)
+    work_idea = x_pact._idearoot._kids[work_text]
     assert work_idea._requiredunits != None
     # print(work_idea._requiredunits)
     assert work_idea._requiredunits[week_road] != None
@@ -97,7 +97,7 @@ def test_pact_requiredheirs_AreCorrectlyInherited_v1():
     except TypeError as e:
         assert str(e) == "'NoneType' object is not subscriptable"
 
-    idea_list = cx.get_idea_list()
+    idea_list = x_pact.get_idea_list()
 
     from_list_get_active_status(road=work_road, idea_list=idea_list)
 
@@ -122,11 +122,11 @@ def test_pact_requiredheirs_AreCorrectlyInherited_v1():
 
 def test_pact_requiredheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
     # GIVEN
-    a4 = example_pacts_get_pact_with_4_levels()
+    a4_pact = example_pacts_get_pact_with_4_levels()
     work_text = "work"
-    work_road = f"{a4._cure_handle},{work_text}"
+    work_road = f"{a4_pact._cure_handle},{work_text}"
     week_text = "weekdays"
-    week_road = f"{a4._cure_handle},{week_text}"
+    week_road = f"{a4_pact._cure_handle},{week_text}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
 
@@ -142,19 +142,19 @@ def test_pact_requiredheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
         _status=False,
         _curr_idea_active_status=True,
     )
-    a4.edit_idea_attr(road=work_road, required=work_wk_build_requiredunit)
+    a4_pact.edit_idea_attr(road=work_road, required=work_wk_build_requiredunit)
 
     # WHEN
     rla_text = "hp"
     rla_road = f"{work_road},{rla_text}"
-    a4.add_idea(idea_kid=IdeaKid(_label=rla_text), pad=rla_road)
+    a4_pact.add_idea(idea_kid=IdeaKid(_label=rla_text), pad=rla_road)
     cost_text = "cost_tracking"
     cost_road = f"{rla_road},{cost_text}"
-    a4.add_idea(idea_kid=IdeaKid(_label=cost_text), pad=cost_road)
-    a4.get_idea_list()
+    a4_pact.add_idea(idea_kid=IdeaKid(_label=cost_text), pad=cost_road)
+    a4_pact.get_idea_list()
 
     # THEN
-    work_idea = a4._idearoot._kids[work_text]
+    work_idea = a4_pact._idearoot._kids[work_text]
     rla_idea = work_idea._kids[rla_text]
     cost_idea = rla_idea._kids[cost_text]
 
@@ -190,11 +190,11 @@ def test_pact_requiredheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
 
 
 def test_pact_requiredheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
-    a4 = example_pacts_get_pact_with_4_levels()
+    a4_pact = example_pacts_get_pact_with_4_levels()
     work_text = "work"
-    work_road = f"{a4._cure_handle},{work_text}"
+    work_road = f"{a4_pact._cure_handle},{work_text}"
     week_label = "weekdays"
-    week_road = f"{a4._cure_handle},{week_label}"
+    week_road = f"{a4_pact._cure_handle},{week_label}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
 
@@ -209,28 +209,28 @@ def test_pact_requiredheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
         _status=False,
         _curr_idea_active_status=True,
     )
-    a4.edit_idea_attr(road=work_road, required=work_wk_build_requiredunit)
+    a4_pact.edit_idea_attr(road=work_road, required=work_wk_build_requiredunit)
     rla_text = "hp"
     rla_road = f"{work_road},{rla_text}"
-    a4.add_idea(idea_kid=IdeaKid(_label=rla_text), pad=rla_road)
+    a4_pact.add_idea(idea_kid=IdeaKid(_label=rla_text), pad=rla_road)
     cost_text = "cost_tracking"
     cost_road = f"{rla_road},{cost_text}"
-    a4.add_idea(idea_kid=IdeaKid(_label=cost_text), pad=cost_road)
+    a4_pact.add_idea(idea_kid=IdeaKid(_label=cost_text), pad=cost_road)
 
-    work_idea = a4._idearoot._kids[work_text]
+    work_idea = a4_pact._idearoot._kids[work_text]
     rla_idea = work_idea._kids[rla_text]
     cost_idea = rla_idea._kids[cost_text]
 
-    assert a4._idearoot._requiredheirs is None
+    assert a4_pact._idearoot._requiredheirs is None
     assert work_idea._requiredheirs is None
     assert rla_idea._requiredheirs is None
     assert cost_idea._requiredheirs is None
 
     # WHEN
-    idea_list = a4.get_idea_list()
+    idea_list = a4_pact.get_idea_list()
 
     # THEN
-    assert a4._idearoot._requiredheirs == {}  # work_wk_built_requiredheir
+    assert a4_pact._idearoot._requiredheirs == {}  # work_wk_built_requiredheir
 
     # 1
     assert work_idea._requiredheirs[week_road] == work_wk_built_requiredheir
@@ -264,21 +264,21 @@ def test_pact_requiredheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
 
 def test_pact_requiredunits_set_UnCoupledMethod():
     # Given
-    cx = example_pacts_get_pact_with_4_levels()
+    x_pact = example_pacts_get_pact_with_4_levels()
     work_text = "work"
-    work_road = f"{cx._cure_handle},{work_text}"
+    work_road = f"{x_pact._cure_handle},{work_text}"
     week_text = "weekdays"
-    week_road = f"{cx._cure_handle},{week_text}"
+    week_road = f"{x_pact._cure_handle},{week_text}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
 
     # When
-    cx.edit_idea_attr(
+    x_pact.edit_idea_attr(
         road=work_road, required_base=week_road, required_sufffact=wed_road
     )
 
     # Then
-    work_idea1 = cx.get_idea_kid(road=work_road)
+    work_idea1 = x_pact.get_idea_kid(road=work_road)
     assert work_idea1._requiredunits != None
     print(work_idea1._requiredunits)
     assert work_idea1._requiredunits[week_road] != None
@@ -297,7 +297,7 @@ def test_pact_requiredunits_set_UnCoupledMethod():
     nigh_x = 12
 
     # When
-    cx.edit_idea_attr(
+    x_pact.edit_idea_attr(
         road=work_road,
         required_base=week_road,
         required_sufffact=wed_road,
@@ -323,7 +323,7 @@ def test_pact_requiredunits_set_UnCoupledMethod():
     # When
     thu_text = "Thursday"
     thu_road = f"{week_road},{thu_text}"
-    cx.edit_idea_attr(
+    x_pact.edit_idea_attr(
         road=work_road,
         required_base=week_road,
         required_sufffact=thu_road,
@@ -338,21 +338,21 @@ def test_pact_requiredunits_set_UnCoupledMethod():
 
 def test_pact_requiredunits_set_sufffactIdeaWithDenomSetsSuffFactDivision():
     # Given
-    cx = example_pacts_get_pact_with_4_levels()
+    x_pact = example_pacts_get_pact_with_4_levels()
     work_text = "work"
-    work_road = f"{cx._cure_handle},{work_text}"
+    work_road = f"{x_pact._cure_handle},{work_text}"
     time_text = "time"
-    time_road = f"{cx._cure_handle},{time_text}"
+    time_road = f"{x_pact._cure_handle},{time_text}"
     week_text = "week"
-    week_road = f"{cx._cure_handle},{time_text},{week_text}"
-    cx.add_idea(
+    week_road = f"{x_pact._cure_handle},{time_text},{week_text}"
+    x_pact.add_idea(
         idea_kid=IdeaKid(_label=time_text, _begin=100, _close=2000),
-        pad=cx._cure_handle,
+        pad=x_pact._cure_handle,
     )
-    cx.add_idea(idea_kid=IdeaKid(_label=week_text, _denom=7), pad=time_road)
+    x_pact.add_idea(idea_kid=IdeaKid(_label=week_text, _denom=7), pad=time_road)
 
     # When
-    cx.edit_idea_attr(
+    x_pact.edit_idea_attr(
         road=work_road,
         required_base=time_road,
         required_sufffact=week_road,
@@ -362,7 +362,7 @@ def test_pact_requiredunits_set_sufffactIdeaWithDenomSetsSuffFactDivision():
     )
 
     # Then
-    work_idea1 = cx.get_idea_kid(road=work_road)
+    work_idea1 = x_pact.get_idea_kid(road=work_road)
     assert work_idea1._requiredunits[time_road] != None
     assert work_idea1._requiredunits[time_road].sufffacts[week_road].divisor == 7
     assert work_idea1._requiredunits[time_road].sufffacts[week_road].open == 2
@@ -371,20 +371,22 @@ def test_pact_requiredunits_set_sufffactIdeaWithDenomSetsSuffFactDivision():
 
 def test_pact_requiredunits_set_sufffactIdeaWithBeginCloseSetsSuffFactOpenNigh():
     # Given
-    cx = example_pacts_get_pact_with_4_levels()
+    x_pact = example_pacts_get_pact_with_4_levels()
     work = "work"
-    work_road = f"{cx._cure_handle},{work}"
+    work_road = f"{x_pact._cure_handle},{work}"
     time = "time"
-    time_road = f"{cx._cure_handle},{time}"
+    time_road = f"{x_pact._cure_handle},{time}"
     rus_war = "rus_war"
-    rus_war_road = f"{cx._cure_handle},{time},{rus_war}"
-    cx.add_idea(
-        idea_kid=IdeaKid(_label=time, _begin=100, _close=2000), pad=cx._cure_handle
+    rus_war_road = f"{x_pact._cure_handle},{time},{rus_war}"
+    x_pact.add_idea(
+        idea_kid=IdeaKid(_label=time, _begin=100, _close=2000), pad=x_pact._cure_handle
     )
-    cx.add_idea(idea_kid=IdeaKid(_label=rus_war, _begin=22, _close=34), pad=time_road)
+    x_pact.add_idea(
+        idea_kid=IdeaKid(_label=rus_war, _begin=22, _close=34), pad=time_road
+    )
 
     # When
-    cx.edit_idea_attr(
+    x_pact.edit_idea_attr(
         road=work_road,
         required_base=time_road,
         required_sufffact=rus_war_road,
@@ -394,7 +396,7 @@ def test_pact_requiredunits_set_sufffactIdeaWithBeginCloseSetsSuffFactOpenNigh()
     )
 
     # Then
-    work_idea1 = cx.get_idea_kid(road=work_road)
+    work_idea1 = x_pact.get_idea_kid(road=work_road)
     assert work_idea1._requiredunits[time_road] != None
     assert work_idea1._requiredunits[time_road].sufffacts[rus_war_road].divisor is None
     assert work_idea1._requiredunits[time_road].sufffacts[rus_war_road].open == 22
@@ -403,25 +405,25 @@ def test_pact_requiredunits_set_sufffactIdeaWithBeginCloseSetsSuffFactOpenNigh()
 
 def test_pact_requiredunits_del_required_sufffact_UncoupledMethod1():
     # Given
-    cx = example_pacts_get_pact_with_4_levels()
-    work_road = f"{cx._cure_handle},work"
-    weekday_road = f"{cx._cure_handle},weekdays"
-    wed_road = f"{cx._cure_handle},weekdays,Wednesday"
+    x_pact = example_pacts_get_pact_with_4_levels()
+    work_road = f"{x_pact._cure_handle},work"
+    weekday_road = f"{x_pact._cure_handle},weekdays"
+    wed_road = f"{x_pact._cure_handle},weekdays,Wednesday"
 
-    cx.edit_idea_attr(
+    x_pact.edit_idea_attr(
         road=work_road, required_base=weekday_road, required_sufffact=wed_road
     )
-    thu_road = f"{cx._cure_handle},weekdays,Thursday"
-    cx.edit_idea_attr(
+    thu_road = f"{x_pact._cure_handle},weekdays,Thursday"
+    x_pact.edit_idea_attr(
         road=work_road,
         required_base=weekday_road,
         required_sufffact=thu_road,
     )
-    work_idea1 = cx.get_idea_kid(road=work_road)
+    work_idea1 = x_pact.get_idea_kid(road=work_road)
     assert len(work_idea1._requiredunits[weekday_road].sufffacts) == 2
 
     # When
-    cx.del_idea_required_sufffact(
+    x_pact.del_idea_required_sufffact(
         road=work_road,
         required_base=weekday_road,
         required_sufffact=thu_road,
@@ -431,7 +433,7 @@ def test_pact_requiredunits_del_required_sufffact_UncoupledMethod1():
     assert len(work_idea1._requiredunits[weekday_road].sufffacts) == 1
 
     # When
-    cx.del_idea_required_sufffact(
+    x_pact.del_idea_required_sufffact(
         road=work_road,
         required_base=weekday_road,
         required_sufffact=wed_road,
@@ -446,10 +448,10 @@ def test_pact_requiredunits_del_required_sufffact_UncoupledMethod1():
 
 def test_pact_requiredunits_del_required_sufffact_UncoupledMethod2():
     # Given
-    cx = example_pacts_get_pact_with_4_levels()
-    work_road = f"{cx._cure_handle},work"
-    weekdays_road = f"{cx._cure_handle},weekdays"
-    work_idea1 = cx.get_idea_kid(road=work_road)
+    x_pact = example_pacts_get_pact_with_4_levels()
+    work_road = f"{x_pact._cure_handle},work"
+    weekdays_road = f"{x_pact._cure_handle},weekdays"
+    work_idea1 = x_pact.get_idea_kid(road=work_road)
     work_idea1.set_requiredunits_empty_if_null()
     assert len(work_idea1._requiredunits) == 0
 
@@ -463,19 +465,19 @@ def test_pact_edit_idea_attr_pactIsAbleToEdit_suff_idea_active_status_AnyIdeaIfI
     # _suff_idea_active_status: str = None
     # must be 1 of 3: bool: True, bool: False, str="Set to Ignore"
     # GIVEN
-    cx = example_pacts_get_pact_with_4_levels()
+    x_pact = example_pacts_get_pact_with_4_levels()
     work_text = "work"
-    work_road = f"{cx._cure_handle},{work_text}"
+    work_road = f"{x_pact._cure_handle},{work_text}"
 
     commute_text = "commute to work"
-    commute_road = f"{cx._cure_handle},{commute_text}"
-    cx.add_idea(idea_kid=IdeaKid(_label=commute_text), pad=cx._cure_handle)
-    cx.get_idea_list()  # set tree metrics
-    commute_idea = cx.get_idea_kid(road=commute_road)
+    commute_road = f"{x_pact._cure_handle},{commute_text}"
+    x_pact.add_idea(idea_kid=IdeaKid(_label=commute_text), pad=x_pact._cure_handle)
+    x_pact.get_idea_list()  # set tree metrics
+    commute_idea = x_pact.get_idea_kid(road=commute_road)
     assert len(commute_idea._requiredunits) == 0
 
     # WHEN
-    cx.edit_idea_attr(
+    x_pact.edit_idea_attr(
         road=commute_road,
         required_base=work_road,
         required_suff_idea_active_status=True,
@@ -489,7 +491,7 @@ def test_pact_edit_idea_attr_pactIsAbleToEdit_suff_idea_active_status_AnyIdeaIfI
     assert requiredunit_work.suff_idea_active_status == True
 
     # WHEN
-    cx.edit_idea_attr(
+    x_pact.edit_idea_attr(
         road=commute_road,
         required_base=work_road,
         required_suff_idea_active_status=False,
@@ -503,7 +505,7 @@ def test_pact_edit_idea_attr_pactIsAbleToEdit_suff_idea_active_status_AnyIdeaIfI
     assert requiredunit_work.suff_idea_active_status == False
 
     # WHEN
-    cx.edit_idea_attr(
+    x_pact.edit_idea_attr(
         road=commute_road,
         required_base=work_road,
         required_suff_idea_active_status="Set to Ignore",
@@ -522,11 +524,11 @@ def test_pact_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus():
     # 1. idea(...,weekdays) exists
     # 2. idea(...,weekdays,wednesday) exists
     # 3. idea(...,weekdays,thursday) exists
-    cx = example_pacts_get_pact_with_4_levels()
+    x_pact = example_pacts_get_pact_with_4_levels()
     work_text = "work"
-    work_road = f"{cx._cure_handle},{work_text}"
+    work_road = f"{x_pact._cure_handle},{work_text}"
     weekdays_text = "weekdays"
-    weekdays_road = f"{cx._cure_handle},{weekdays_text}"
+    weekdays_road = f"{x_pact._cure_handle},{weekdays_text}"
     wed_text = "Wednesday"
     wed_road = f"{weekdays_road},{wed_text}"
     thu_text = "Thursday"
@@ -535,42 +537,42 @@ def test_pact_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus():
     # 4. idea(...,work) with
     # 4.1 RequiredUnit: base=weekdays_road, need=thu_road
     # 4.2 .active_status = False
-    cx.edit_idea_attr(
+    x_pact.edit_idea_attr(
         road=work_road,
         required_base=weekdays_road,
         required_sufffact=thu_road,
     )
-    cx.get_idea_list()  # set tree metrics
-    work_idea = cx.get_idea_kid(road=work_road)
+    x_pact.get_idea_list()  # set tree metrics
+    work_idea = x_pact.get_idea_kid(road=work_road)
     assert work_idea._active_status == False
 
     # 5. idea(...,commute to work) with
     # 5.1. RequiredUnit: idea(base=...,work) has .suff_idea_active_status = True
     # 5.2. idea(...,work).active_status = False
     commute_text = "commute to work"
-    commute_road = f"{cx._cure_handle},{commute_text}"
-    cx.add_idea(idea_kid=IdeaKid(_label=commute_text), pad=cx._cure_handle)
-    cx.edit_idea_attr(
+    commute_road = f"{x_pact._cure_handle},{commute_text}"
+    x_pact.add_idea(idea_kid=IdeaKid(_label=commute_text), pad=x_pact._cure_handle)
+    x_pact.edit_idea_attr(
         road=commute_road,
         required_base=work_road,
         required_suff_idea_active_status=True,
     )
-    commute_idea = cx.get_idea_kid(road=commute_road)
-    cx.get_idea_list()
+    commute_idea = x_pact.get_idea_kid(road=commute_road)
+    x_pact.get_idea_list()
     assert commute_idea._active_status == False
 
     # AcptFact: base: (...,weekdays) pick: (...,weekdays,wednesday)
-    cx.set_acptfact(base=weekdays_road, pick=wed_road)
-    cx.set_pact_metrics()
+    x_pact.set_acptfact(base=weekdays_road, pick=wed_road)
+    x_pact.set_pact_metrics()
 
     assert work_idea._active_status == False
     assert commute_idea._active_status == False
 
     # WHEN
     print("before changing acptfact")
-    cx.set_acptfact(base=weekdays_road, pick=thu_road)
+    x_pact.set_acptfact(base=weekdays_road, pick=thu_road)
     print("after changing acptfact")
-    cx.get_idea_list()
+    x_pact.get_idea_list()
     assert work_idea._active_status == True
 
     # THEN
@@ -579,44 +581,44 @@ def test_pact_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus():
 
 def test_pact_set_pact_metrics_InitipartySetsRationalAttrToFalse():
     # GIVEN
-    cx = example_pacts_get_pact_with_4_levels()
-    assert cx._rational == False
-    # cx.set_pact_metrics()
-    cx._rational = True
-    assert cx._rational
+    x_pact = example_pacts_get_pact_with_4_levels()
+    assert x_pact._rational == False
+    # x_pact.set_pact_metrics()
+    x_pact._rational = True
+    assert x_pact._rational
 
     # WHEN
     # hack pact to set _max_tree_traverse = 1 (not allowed, should always be 2 or more)
-    cx._max_tree_traverse = 1
-    cx.set_pact_metrics()
+    x_pact._max_tree_traverse = 1
+    x_pact.set_pact_metrics()
 
     # THEN
-    assert not cx._rational
+    assert not x_pact._rational
 
 
 def test_pact_tree_traverses_StopWhenNoChangeInStatusIsDetected():
     # GIVEN
-    cx = example_pacts_get_pact_with_4_levels()
-    assert cx._max_tree_traverse != 2
+    x_pact = example_pacts_get_pact_with_4_levels()
+    assert x_pact._max_tree_traverse != 2
 
     # WHEN
-    cx.set_pact_metrics()
-    # for idea_key in cx._idea_dict.keys():
+    x_pact.set_pact_metrics()
+    # for idea_key in x_pact._idea_dict.keys():
     #     print(f"{idea_key=}")
 
     # THEN
-    assert cx._tree_traverse_count == 2
+    assert x_pact._tree_traverse_count == 2
 
 
 def test_pact_tree_traverse_count_CorrectlyCountsTreeTraversesForIrrationalPacts():
     # GIVEN irrational pact
-    cx = example_pacts_get_pact_irrational_example()
-    cx.set_pact_metrics()
-    assert cx._tree_traverse_count == 3
+    x_pact = example_pacts_get_pact_irrational_example()
+    x_pact.set_pact_metrics()
+    assert x_pact._tree_traverse_count == 3
 
     # WHEN
-    cx.set_max_tree_traverse(int_x=21)
-    cx.set_pact_metrics()
+    x_pact.set_max_tree_traverse(int_x=21)
+    x_pact.set_pact_metrics()
 
     # THEN
-    assert cx._tree_traverse_count == 21
+    assert x_pact._tree_traverse_count == 21

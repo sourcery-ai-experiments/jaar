@@ -171,11 +171,11 @@ def test_healingunit_save_pact_to_digest_SavesFileCorrectly(
     # for path_x in os_scandir(ux._admin._pacts_digest_dir):
     #     print(f"{path_x=}")
     assert x_func_count_files(ux._admin._pacts_digest_dir) == 1
-    digest_cx_json = x_func_open_file(
+    digest_x_pact_json = x_func_open_file(
         dest_dir=ux._admin._pacts_digest_dir,
         file_title=f"{src_pact_healer}.json",
     )
-    assert digest_cx_json == cx.get_json()
+    assert digest_x_pact_json == cx.get_json()
 
 
 def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestPact(
@@ -201,11 +201,11 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestPact(
     # for path_x in os_scandir(sue_cx._admin._pacts_digest_dir):
     #     print(f"{path_x=}")
     assert x_func_count_files(sue_cx._admin._pacts_digest_dir) == 1
-    digest_cx_json = x_func_open_file(
+    digest_x_pact_json = x_func_open_file(
         dest_dir=sue_cx._admin._pacts_digest_dir,
         file_title=f"{src_pact_healer}.json",
     )
-    assert digest_cx_json == cx.get_json()
+    assert digest_x_pact_json == cx.get_json()
 
 
 def test_healer_get_remelded_output_pact_withEmptyDigestDict(

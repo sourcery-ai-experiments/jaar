@@ -15,14 +15,16 @@ def test_pact_acptfact_exists():
     sx = examples_get_pact_with_4_levels()
     weekday_road = Road(f"{sx._cure_handle},weekdays")
     sunday_road = Road(f"{sx._cure_handle},weekdays,Sunday")
-    sunday_cx_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
-    print(sunday_cx_acptfact)
-    sx._idearoot._acptfactunits = {sunday_cx_acptfact.base: sunday_cx_acptfact}
+    sunday_pact_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
+    print(sunday_pact_acptfact)
+    sx._idearoot._acptfactunits = {sunday_pact_acptfact.base: sunday_pact_acptfact}
     assert sx._idearoot._acptfactunits != None
     sx._idearoot._acptfactunits = None
     assert sx._idearoot._acptfactunits is None
     sx.set_acptfact(base=weekday_road, pick=sunday_road)
-    assert sx._idearoot._acptfactunits == {sunday_cx_acptfact.base: sunday_cx_acptfact}
+    assert sx._idearoot._acptfactunits == {
+        sunday_pact_acptfact.base: sunday_pact_acptfact
+    }
 
     sx._idearoot._acptfactunits = None
     assert sx._idearoot._acptfactunits is None
@@ -44,8 +46,10 @@ def test_pact_acptfact_create():
     sunday_road = Road(f"{sx._cure_handle},weekdays,Sunday")
     weekday_road = Road(f"{sx._cure_handle},weekdays")
     sx.set_acptfact(base=weekday_road, pick=sunday_road)
-    sunday_cx_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
-    assert sx._idearoot._acptfactunits == {sunday_cx_acptfact.base: sunday_cx_acptfact}
+    sunday_pact_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
+    assert sx._idearoot._acptfactunits == {
+        sunday_pact_acptfact.base: sunday_pact_acptfact
+    }
 
 
 def test_set_acptfact_FailsToCreateWhenBaseAndAcptFactAreDifferenctAndAcptFactIdeaIsNotRangeRoot():
@@ -80,8 +84,10 @@ def test_pact_acptfact_create():
     sunday_road = Road(f"{sx._cure_handle},weekdays,Sunday")
     weekday_road = Road(f"{sx._cure_handle},weekdays")
     sx.set_acptfact(base=weekday_road, pick=sunday_road)
-    sunday_cx_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
-    assert sx._idearoot._acptfactunits == {sunday_cx_acptfact.base: sunday_cx_acptfact}
+    sunday_pact_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
+    assert sx._idearoot._acptfactunits == {
+        sunday_pact_acptfact.base: sunday_pact_acptfact
+    }
 
     # When
     sx.del_acptfact(base=weekday_road)

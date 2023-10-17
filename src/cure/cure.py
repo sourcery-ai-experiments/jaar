@@ -188,7 +188,7 @@ class CureUnit:
     def _bank_populate_pacts_data(self):
         for file_title in self.get_public_dir_file_titles_list():
             pact_json = x_func_open_file(self.get_public_dir(), file_title)
-            pactunit_x = get_pact_from_json(cx_json=pact_json)
+            pactunit_x = get_pact_from_json(x_pact_json=pact_json)
             pactunit_x.set_pact_metrics()
 
             self._bank_insert_pactunit(pactunit_x)
@@ -324,9 +324,9 @@ class CureUnit:
         )
 
     def create_healingunit_from_public(self, title: str):
-        cx = self.get_public_pact(healer=title)
+        x_pact = self.get_public_pact(healer=title)
         x_healingunit = healingunit_shop(
-            title=cx._healer, env_dir=self.get_object_root_dir()
+            title=x_pact._healer, env_dir=self.get_object_root_dir()
         )
         self.set_healingunits_empty_if_null()
         self.set_healingunit_to_cure(x_healingunit)

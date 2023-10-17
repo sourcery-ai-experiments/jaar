@@ -2254,8 +2254,8 @@ class PactUnit:
             self._auto_output_to_public = bool_x is not None and bool_x
 
 
-def get_from_json(cx_json: str) -> PactUnit:
-    return get_from_dict(cx_dict=json.loads(cx_json))
+def get_from_json(x_pact_json: str) -> PactUnit:
+    return get_from_dict(cx_dict=json.loads(x_pact_json))
 
 
 def get_from_dict(cx_dict: dict) -> PactUnit:
@@ -2361,14 +2361,16 @@ def get_dict_of_pact_from_dict(x_dict: dict[str:dict]) -> dict[str:PactUnit]:
     return pactunits
 
 
-def get_meld_of_pact_files(cx_primary: PactUnit, meldees_dir: str) -> PactUnit:
-    cx_primary.set_pact_metrics()
+def get_meld_of_pact_files(primary_pact: PactUnit, meldees_dir: str) -> PactUnit:
+    primary_pact.set_pact_metrics()
     for meldee_file_x in x_func_dir_files(dir_path=meldees_dir):
-        meldee_x = get_from_json(cx_json=x_func_open_file(meldees_dir, meldee_file_x))
-        cx_primary.meld(other_pact=meldee_x)
+        meldee_x = get_from_json(
+            x_pact_json=x_func_open_file(meldees_dir, meldee_file_x)
+        )
+        primary_pact.meld(other_pact=meldee_x)
 
-    cx_primary.set_pact_metrics()
-    return cx_primary
+    primary_pact.set_pact_metrics()
+    return primary_pact
 
 
 def get_intersection_of_partys(

@@ -347,13 +347,13 @@ def test_pactunit_export_all_bonds_ExportsFileOfBonds_2files(env_dir_setup_clean
 #     file_17_title = "17.json"
 #     assert dir_files[file_17_title]
 #     json_17 = x_func_open_file(dest_dir=get_temp_env_dir(), file_title=file_17_title)
-#     bond_17 = pact_get_from_json(cx_json=json_17)
+#     bond_17 = pact_get_from_json(x_pact_json=json_17)
 #     assert bond_17.get_bond_status()
 
 #     file_2_title = "2.json"
 #     assert dir_files[file_2_title]
 #     json_2 = x_func_open_file(dest_dir=get_temp_env_dir(), file_title=file_2_title)
-#     bond_2 = pact_get_from_json(cx_json=json_2)
+#     bond_2 = pact_get_from_json(x_pact_json=json_2)
 #     assert bond_2.get_bond_status()
 
 
@@ -362,38 +362,38 @@ def test_pactunit_get_meld_of_pact_files_MeldsIntoSourcePact_Scenario1(
 ):
     # GIVEN
     healer_text = "Nia"
-    primary_cx = PactUnit(_healer=healer_text, _weight=10)
+    primary_pact = PactUnit(_healer=healer_text, _weight=10)
 
     work = "work"
     idea_kid_work = IdeaKid(_weight=30, _label=work, promise=True)
-    primary_cx.add_idea(idea_kid=idea_kid_work, pad=f"{primary_cx._cure_handle}")
+    primary_pact.add_idea(idea_kid=idea_kid_work, pad=f"{primary_pact._cure_handle}")
 
     cat = "feed cat"
     idea_kid_feedcat = IdeaKid(_weight=20, _label=cat, promise=True)
-    primary_cx.add_idea(idea_kid=idea_kid_feedcat, pad=f"{primary_cx._cure_handle}")
+    primary_pact.add_idea(idea_kid=idea_kid_feedcat, pad=f"{primary_pact._cure_handle}")
 
-    primary_cx.export_all_bonds(dir=get_temp_env_dir())
+    primary_pact.export_all_bonds(dir=get_temp_env_dir())
     cat_t = "feed cat"
-    src_cat_idea = primary_cx._idearoot._kids.get(cat_t)
+    src_cat_idea = primary_pact._idearoot._kids.get(cat_t)
     src_cat_idea.set_originunit_empty_if_null()
 
     # WHEN
-    new_cx = get_meld_of_pact_files(
-        cx_primary=primary_cx,
+    new_pact = get_meld_of_pact_files(
+        primary_pact=primary_pact,
         meldees_dir=get_temp_env_dir(),
     )
 
     # THEN
-    assert primary_cx._weight == new_cx._weight
-    assert primary_cx._idearoot._weight == new_cx._idearoot._weight
-    src_cat_idea = primary_cx._idearoot._kids.get(cat_t)
-    new_cat_idea = new_cx._idearoot._kids.get(cat_t)
+    assert primary_pact._weight == new_pact._weight
+    assert primary_pact._idearoot._weight == new_pact._idearoot._weight
+    src_cat_idea = primary_pact._idearoot._kids.get(cat_t)
+    new_cat_idea = new_pact._idearoot._kids.get(cat_t)
     assert src_cat_idea._pact_coin_onset == new_cat_idea._pact_coin_onset
     assert src_cat_idea._originunit == new_cat_idea._originunit
     assert src_cat_idea == new_cat_idea
-    assert primary_cx._idearoot._kids == new_cx._idearoot._kids
-    assert primary_cx._idearoot == new_cx._idearoot
-    assert primary_cx == new_cx
+    assert primary_pact._idearoot._kids == new_pact._idearoot._kids
+    assert primary_pact._idearoot == new_pact._idearoot
+    assert primary_pact == new_pact
 
 
 # def test_pactunit_get_meld_of_pact_files_MeldsIntoSourcePact_Scenario2(
@@ -407,35 +407,35 @@ def test_pactunit_get_meld_of_pact_files_MeldsIntoSourcePact_Scenario1(
 
 #     cat_text = "feed cat"
 #     cat_idea = IdeaKid(_weight=20, _label=cat_text, promise=True)
-#     sourrce_cx.add_idea(idea_kid=cat_idea, pad=work_road)
+#     sourrce_pact.add_idea(idea_kid=cat_idea, pad=work_road)
 
 #     plant_text = "water plant"
 #     plant_idea = IdeaKid(_weight=30, _label=plant_text, promise=True)
-#     sourrce_cx.add_idea(idea_kid=plant_idea, pad=work_road)
-#     sourrce_cx.export_all_bonds(dir=get_temp_env_dir())
+#     sourrce_pact.add_idea(idea_kid=plant_idea, pad=work_road)
+#     sourrce_pact.export_all_bonds(dir=get_temp_env_dir())
 
 #     # WHEN
-#     new_cx = get_meld_of_pact_files(
-#         pactunit=PactUnit(_healer=sourrce_cx._healer, _weight=0), dir=get_temp_env_dir()
+#     new_pact = get_meld_of_pact_files(
+#         pactunit=PactUnit(_healer=sourrce_pact._healer, _weight=0), dir=get_temp_env_dir()
 #     )
 
 #     # THEN
-#     assert sourrce_cx._weight == new_cx._weight
-#     assert sourrce_cx._idearoot._weight == new_cx._idearoot._weight
-#     assert len(sourrce_cx._idearoot._kids) == 1
-#     assert len(sourrce_cx._idearoot._kids) == len(new_cx._idearoot._kids)
-#     sourrce_work_idea = sourrce_cx._idearoot._kids.get(work_text)
-#     new_work_idea = new_cx._idearoot._kids.get(work_text)
+#     assert sourrce_pact._weight == new_pact._weight
+#     assert sourrce_pact._idearoot._weight == new_pact._idearoot._weight
+#     assert len(sourrce_pact._idearoot._kids) == 1
+#     assert len(sourrce_pact._idearoot._kids) == len(new_pact._idearoot._kids)
+#     sourrce_work_idea = sourrce_pact._idearoot._kids.get(work_text)
+#     new_work_idea = new_pact._idearoot._kids.get(work_text)
 #     sourrce_cat_idea = sourrce_work_idea._kids.get(cat_text)
 #     new_cat_idea = new_work_idea._kids.get(cat_text)
 #     print(f"{sourrce_cat_idea._pact_importance=} {new_cat_idea._pact_importance=}")
 #     assert sourrce_cat_idea._weight == new_cat_idea._weight
 #     assert sourrce_work_idea._kids.get(cat_text) == new_work_idea._kids.get(cat_text)
 
-#     assert sourrce_cx._idearoot._kids.get(cat_text) == new_cx._idearoot._kids.get(cat_text)
-#     assert sourrce_cx._idearoot._kids == new_cx._idearoot._kids
-#     assert sourrce_cx._idearoot == new_cx._idearoot
-#     assert sourrce_cx == new_cx
+#     assert sourrce_pact._idearoot._kids.get(cat_text) == new_pact._idearoot._kids.get(cat_text)
+#     assert sourrce_pact._idearoot._kids == new_pact._idearoot._kids
+#     assert sourrce_pact._idearoot == new_pact._idearoot
+#     assert sourrce_pact == new_pact
 
 
 # - [ ] create test_pactunit_get_bond_status_ReturnsFalseWhenNotOnlyActionIdeaAcptFactsExist
