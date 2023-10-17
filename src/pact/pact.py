@@ -81,13 +81,13 @@ class AssignmentPartyException(Exception):
     pass
 
 
-class PactHealer(str):
+class PersonName(str):
     pass
 
 
 @dataclasses.dataclass
 class PactUnit:
-    _healer: PactHealer = None
+    _healer: PersonName = None
     _weight: float = None
     _partys: dict[PartyTitle:PartyUnit] = None
     _groups: dict[GroupBrand:GroupUnit] = None
@@ -2182,7 +2182,7 @@ class PactUnit:
         pact_x,
         assignor_partys: dict[PartyTitle:PartyUnit],
         assignor_title: PartyTitle,
-    ) -> PactHealer:
+    ) -> PersonName:
         self.set_pact_metrics()
         self._set_assignment_partys(pact_x, assignor_partys, assignor_title)
         self._set_assignment_groups(pact_x)

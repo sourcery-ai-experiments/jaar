@@ -82,7 +82,7 @@ def test_healeropen_isol_pact_WhenStartingPactFileDoesNotExists(
     assert list(isol_pact._groups.keys()) == [tim_text]
 
 
-def test_healer_save_isol_pact_IsolPactHealerMustBeHealer(
+def test_healer_save_isol_pact_IsolPersonNameMustBeHealer(
     healer_dir_setup_cleanup,
 ):
     # GIVEN

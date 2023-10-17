@@ -2,7 +2,7 @@ from src.pact.pact import (
     get_from_json as pactunit_get_from_json,
     get_dict_of_pact_from_dict,
     get_meld_of_pact_files,
-    PactHealer,
+    PersonName,
     PactUnit,
     partyunit_shop,
     get_from_json as pactunit_get_from_json,
@@ -136,16 +136,16 @@ class HealerAdmin:
         file_title = self._pact_output_file_title
         self._save_pact_to_path(pact_x, dest_dir, file_title)
 
-    def open_public_pact(self, healer: PactHealer) -> str:
+    def open_public_pact(self, healer: PersonName) -> str:
         file_title_x = f"{healer}.json"
         return x_func_open_file(self._pacts_public_dir, file_title_x)
 
-    def open_depot_pact(self, healer: PactHealer) -> PactUnit:
+    def open_depot_pact(self, healer: PersonName) -> PactUnit:
         file_title_x = f"{healer}.json"
         cx_json = x_func_open_file(self._pacts_depot_dir, file_title_x)
         return pactunit_get_from_json(cx_json=cx_json)
 
-    def open_ignore_pact(self, healer: PactHealer) -> PactUnit:
+    def open_ignore_pact(self, healer: PersonName) -> PactUnit:
         ignore_file_title = f"{healer}.json"
         pact_json = x_func_open_file(self._pacts_ignore_dir, ignore_file_title)
         pact_obj = pactunit_get_from_json(cx_json=pact_json)

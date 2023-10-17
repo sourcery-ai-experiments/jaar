@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from src.cure.cure import CureHandle
+from src.pact.pact import PersonName
 
 
 @dataclass
@@ -23,10 +24,6 @@ def curelink_shop(handle: CureHandle, weight: float = None) -> CureLink:
     if weight is None:
         weight = 1
     return CureLink(handle=handle, weight=weight)
-
-
-class PersonName(str):
-    pass
 
 
 @dataclass
