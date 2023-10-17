@@ -100,15 +100,15 @@ class Ui_MainWindow(object):
         self.acptfacts_table.setHorizontalHeaderItem(4, item)
         item = QtWidgets.QTableWidgetItem()
         self.acptfacts_table.setHorizontalHeaderItem(5, item)
-        self.pact_l = QtWidgets.QLabel(self.centralwidget)
-        self.pact_l.setGeometry(QtCore.QRect(30, 10, 91, 16))
-        self.pact_l.setObjectName("pact_l")
+        self.oath_l = QtWidgets.QLabel(self.centralwidget)
+        self.oath_l.setGeometry(QtCore.QRect(30, 10, 91, 16))
+        self.oath_l.setObjectName("oath_l")
         self.lw_label_update_button = QtWidgets.QPushButton(self.centralwidget)
         self.lw_label_update_button.setGeometry(QtCore.QRect(310, 10, 101, 21))
         self.lw_label_update_button.setObjectName("lw_label_update_button")
-        self.pact_healer = QtWidgets.QLineEdit(self.centralwidget)
-        self.pact_healer.setGeometry(QtCore.QRect(100, 10, 201, 22))
-        self.pact_healer.setObjectName("pact_healer")
+        self.oath_healer = QtWidgets.QLineEdit(self.centralwidget)
+        self.oath_healer.setGeometry(QtCore.QRect(100, 10, 201, 22))
+        self.oath_healer.setObjectName("oath_healer")
         self.label_agenda_day_header = QtWidgets.QLabel(self.centralwidget)
         self.label_agenda_day_header.setGeometry(QtCore.QRect(30, 500, 91, 31))
         font = QtGui.QFont()
@@ -127,15 +127,15 @@ class Ui_MainWindow(object):
         font.setPointSize(20)
         self.label_agenda_end_header.setFont(font)
         self.label_agenda_end_header.setObjectName("label_agenda_end_header")
-        self.label_agenda_pact_importance_header1 = QtWidgets.QLabel(self.centralwidget)
-        self.label_agenda_pact_importance_header1.setGeometry(
+        self.label_agenda_oath_importance_header1 = QtWidgets.QLabel(self.centralwidget)
+        self.label_agenda_oath_importance_header1.setGeometry(
             QtCore.QRect(30, 640, 91, 31)
         )
         font = QtGui.QFont()
         font.setPointSize(11)
-        self.label_agenda_pact_importance_header1.setFont(font)
-        self.label_agenda_pact_importance_header1.setObjectName(
-            "label_agenda_pact_importance_header1"
+        self.label_agenda_oath_importance_header1.setFont(font)
+        self.label_agenda_oath_importance_header1.setObjectName(
+            "label_agenda_oath_importance_header1"
         )
         self.label_agenda_family_header1 = QtWidgets.QLabel(self.centralwidget)
         self.label_agenda_family_header1.setGeometry(QtCore.QRect(30, 700, 81, 31))
@@ -163,15 +163,15 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         self.label_agenda_family_header2.setFont(font)
         self.label_agenda_family_header2.setObjectName("label_agenda_family_header2")
-        self.label_agenda_pact_importance_header2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_agenda_pact_importance_header2.setGeometry(
+        self.label_agenda_oath_importance_header2 = QtWidgets.QLabel(self.centralwidget)
+        self.label_agenda_oath_importance_header2.setGeometry(
             QtCore.QRect(30, 660, 101, 31)
         )
         font = QtGui.QFont()
         font.setPointSize(11)
-        self.label_agenda_pact_importance_header2.setFont(font)
-        self.label_agenda_pact_importance_header2.setObjectName(
-            "label_agenda_pact_importance_header2"
+        self.label_agenda_oath_importance_header2.setFont(font)
+        self.label_agenda_oath_importance_header2.setObjectName(
+            "label_agenda_oath_importance_header2"
         )
         self.label_agenda_road_data = QtWidgets.QLabel(self.centralwidget)
         self.label_agenda_road_data.setGeometry(QtCore.QRect(80, 330, 561, 21))
@@ -189,17 +189,17 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.label_agenda_family_data.setFont(font)
         self.label_agenda_family_data.setObjectName("label_agenda_family_data")
-        self.label_agenda_pact_importance_data = QtWidgets.QLabel(self.centralwidget)
-        self.label_agenda_pact_importance_data.setGeometry(
+        self.label_agenda_oath_importance_data = QtWidgets.QLabel(self.centralwidget)
+        self.label_agenda_oath_importance_data.setGeometry(
             QtCore.QRect(130, 650, 221, 41)
         )
         font = QtGui.QFont()
         font.setPointSize(22)
         font.setBold(True)
         font.setWeight(75)
-        self.label_agenda_pact_importance_data.setFont(font)
-        self.label_agenda_pact_importance_data.setObjectName(
-            "label_agenda_pact_importance_data"
+        self.label_agenda_oath_importance_data.setFont(font)
+        self.label_agenda_oath_importance_data.setObjectName(
+            "label_agenda_oath_importance_data"
         )
         self.label_agenda_end_data = QtWidgets.QLabel(self.centralwidget)
         self.label_agenda_end_data.setGeometry(QtCore.QRect(130, 610, 221, 31))
@@ -324,7 +324,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.editmain_button.setText(
-            _translate("MainWindow", "Pacts /  Party /  dimension")
+            _translate("MainWindow", "Oaths /  Party /  dimension")
         )
         self.acptfact_open_lower_spec1.setText(
             _translate("MainWindow", "set minutes next midnight")
@@ -358,23 +358,23 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Open"))
         item = self.acptfacts_table.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "Close"))
-        self.pact_l.setText(_translate("MainWindow", "PACT: "))
+        self.oath_l.setText(_translate("MainWindow", "OATH: "))
         self.lw_label_update_button.setText(_translate("MainWindow", "Update"))
         self.label_agenda_day_header.setText(_translate("MainWindow", "Day:"))
         self.label_agenda_time_header.setText(_translate("MainWindow", "Time:"))
         self.label_agenda_end_header.setText(_translate("MainWindow", "End:"))
-        self.label_agenda_pact_importance_header1.setText(
+        self.label_agenda_oath_importance_header1.setText(
             _translate("MainWindow", "root_relative")
         )
         self.label_agenda_family_header1.setText(_translate("MainWindow", "Agenda"))
         self.label_agenda_road_header.setText(_translate("MainWindow", "Road:"))
         self.label_agenda_family_header2.setText(_translate("MainWindow", "Family:"))
-        self.label_agenda_pact_importance_header2.setText(
+        self.label_agenda_oath_importance_header2.setText(
             _translate("MainWindow", "weight:")
         )
         self.label_agenda_road_data.setText(_translate("MainWindow", "Idea_id:"))
         self.label_agenda_family_data.setText(_translate("MainWindow", "Agenda"))
-        self.label_agenda_pact_importance_data.setText(
+        self.label_agenda_oath_importance_data.setText(
             _translate("MainWindow", "weight:")
         )
         self.label_agenda_end_data.setText(_translate("MainWindow", "End:"))
@@ -388,7 +388,7 @@ class Ui_MainWindow(object):
         item = self.agenda_states.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "label"))
         item = self.agenda_states.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "pact_importance"))
+        item.setText(_translate("MainWindow", "oath_importance"))
         item = self.agenda_states.horizontalHeaderItem(3)
         item.setText(_translate("MainWindow", "idea_road"))
         item = self.agenda_states.horizontalHeaderItem(4)

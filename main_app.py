@@ -6,15 +6,15 @@ from EditMain import EditMainView
 from EditAcptFactTime import EditAcptFactTime
 from Edit_Agenda import Edit_Agenda
 from EditProblem import EditProblem
-from src.pact.pact import PactUnit, get_from_json
-from src.pact.examples.pact_env import pact_env
-from src.pact.hreg_time import convert1440toHHMM
+from src.oath.oath import OathUnit, get_from_json
+from src.oath.examples.oath_env import oath_env
+from src.oath.hreg_time import convert1440toHHMM
 from pyqt_func import (
-    pact_importance_diplay as pyqt_func_pact_importance_diplay,
+    oath_importance_diplay as pyqt_func_oath_importance_diplay,
     str2float as pyqt_func_str2float,
     num2str as pyqt_func_num2str,
 )
-from src.pact.x_func import (
+from src.oath.x_func import (
     save_file as x_func_save_file,
     open_file as x_func_open_file,
 )
@@ -66,22 +66,22 @@ class MainApp(QApplication):
         self.edittime_view.root_changes_submitted.connect(self.main_window.refresh_all)
 
     def editmain_show(self):
-        self.editmain_view.pact_x = self.main_window.pact_x
+        self.editmain_view.oath_x = self.main_window.oath_x
         self.editmain_view.refresh_all()
         self.editmain_view.show()
 
     def editproblem_show(self):
-        self.editproblem_view.pact_x = self.main_window.pact_x
+        self.editproblem_view.oath_x = self.main_window.oath_x
         self.editproblem_view.refresh_all()
         self.editproblem_view.show()
 
     def edit_agenda_show(self):
-        self.edit_agenda_view.pact_x = self.main_window.pact_x
+        self.edit_agenda_view.oath_x = self.main_window.oath_x
         self.edit_agenda_view.refresh_all()
         self.edit_agenda_view.show()
 
     def editacptfact_show(self):
-        self.edittime_view.pact_x = self.main_window.pact_x
+        self.edittime_view.oath_x = self.main_window.oath_x
         self.edittime_view.display_acptfact_time()
         self.edittime_view.show()
 
@@ -93,7 +93,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     open_editproblem = qtc.pyqtSignal(bool)
     open_edit_agenda = qtc.pyqtSignal(bool)
     open_edittime = qtc.pyqtSignal(bool)
-    pact_x_signal = qtc.pyqtSignal(PactUnit)
+    oath_x_signal = qtc.pyqtSignal(OathUnit)
 
     def __init__(self, file_open_path):
         super().__init__()
@@ -121,10 +121,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.fm_open.triggered.connect(self.get_file_path)
         self.fm_save.triggered.connect(self.save_file)
         self.save_as.triggered.connect(self.save_as_file)
-        self.fm_new.triggered.connect(self.pact_new)
+        self.fm_new.triggered.connect(self.oath_new)
 
         # self.acptfacts_table.itemClicked.connect(self.acptfact_base_combo_set)
-        self.acptfacts_table.setObjectName("Pact AcptFacts")
+        self.acptfacts_table.setObjectName("Oath AcptFacts")
         self.acptfacts_table.setColumnWidth(0, 300)
         self.acptfacts_table.setColumnWidth(1, 300)
         self.acptfacts_table.setColumnWidth(2, 30)
@@ -145,17 +145,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agenda_states.itemClicked.connect(self.agenda_task_display)
         # self.acptfact_update_combo.activated.connect(self.acptfact_update_heir)
 
-        self.pact_x_json = None
+        self.oath_x_json = None
         # if "delete me this is for dev only":
         self.file_path = None
         if file_open_path is None:
-            self.file_path = f"{pact_env()}/example_pact2.json"
+            self.file_path = f"{oath_env()}/example_oath2.json"
         else:
             self.file_path = file_open_path
         self.open_file()
 
         self.refresh_all()
-        self.emit_pact()
+        self.emit_oath()
 
     def save_file_and_quit(self):
         self.save_file()
@@ -181,8 +181,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.current_task_road is None:
             self.label_last_label.setText("")
         else:
-            base_x = "Mypact,time,jajatime"
-            self.pact_x.set_agenda_task_complete(
+            base_x = "Myoath,time,jajatime"
+            self.oath_x.set_agenda_task_complete(
                 task_road=self.current_task_road, base=base_x
             )
         self.label_last_label.setText(self.current_task_road)
@@ -190,22 +190,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_acptfact_time_open_5daysago(self):
         days5ago_x = datetime.now() - timedelta(days=5)
-        road_minute = f"{self.pact_x._cure_handle},time,jajatime"
+        road_minute = f"{self.oath_x._cure_handle},time,jajatime"
         # self.root_datetime_curr_l.setText(f"Now: {str(now_x)}")
-        self.pact_x.set_acptfact(
+        self.oath_x.set_acptfact(
             base=road_minute,
             pick=road_minute,
-            open=self.pact_x.get_time_min_from_dt(dt=days5ago_x),
+            open=self.oath_x.get_time_min_from_dt(dt=days5ago_x),
         )
         self.refresh_all()
 
     def _set_acptfact_time_open_midnight_attr(self):
-        road_minute = f"{self.pact_x._cure_handle},time,jajatime"
-        open_dt = self.pact_x.get_time_dt_from_min(
-            self.pact_x._idearoot._acptfactunits[road_minute].open
+        road_minute = f"{self.oath_x._cure_handle},time,jajatime"
+        open_dt = self.oath_x.get_time_dt_from_min(
+            self.oath_x._idearoot._acptfactunits[road_minute].open
         )
-        nigh_dt = self.pact_x.get_time_dt_from_min(
-            self.pact_x._idearoot._acptfactunits[road_minute].nigh
+        nigh_dt = self.oath_x.get_time_dt_from_min(
+            self.oath_x._idearoot._acptfactunits[road_minute].nigh
         )
         open_midnight = datetime(
             year=open_dt.year,
@@ -216,10 +216,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ) + timedelta(days=1)
         open_minutes = None
         if open_dt < nigh_dt and open_midnight < nigh_dt:
-            open_minutes = self.pact_x.get_time_min_from_dt(open_midnight)
+            open_minutes = self.oath_x.get_time_min_from_dt(open_midnight)
         else:
-            open_minutes = self.pact_x.get_time_min_from_dt(dt=nigh_dt)
-        self.pact_x.set_acptfact(
+            open_minutes = self.oath_x.get_time_min_from_dt(dt=nigh_dt)
+        self.oath_x.set_acptfact(
             base=road_minute,
             pick=road_minute,
             open=open_minutes,
@@ -229,32 +229,32 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         try:
             self._set_acptfact_time_open_midnight_attr()
         except Exception:
-            print("pact does not have jajatime framework")
+            print("oath does not have jajatime framework")
         self.refresh_all()
 
     def set_acptfact_time_open_soft(self):
         # now_x = datetime.now()
-        # road_minute = f"{self.pact_x._cure_handle},time,jajatime"
+        # road_minute = f"{self.oath_x._cure_handle},time,jajatime"
         # self.root_datetime_curr_l.setText(f"Now: {str(now_x)}")
-        # self.pact_x.set_acptfact(
+        # self.oath_x.set_acptfact(
         #     base=road_minute,
         #     pick=road_minute,
-        #     open=self.pact_x.get_time_min_from_dt(dt=now_x),
+        #     open=self.oath_x.get_time_min_from_dt(dt=now_x),
         # )
         self.refresh_all()
 
     def set_acptfact_time_nigh_now(self):
         now_x = datetime.now()
-        road_minute = f"{self.pact_x._cure_handle},time,jajatime"
-        self.pact_x.set_acptfact(
+        road_minute = f"{self.oath_x._cure_handle},time,jajatime"
+        self.oath_x.set_acptfact(
             base=road_minute,
             pick=road_minute,
-            nigh=self.pact_x.get_time_min_from_dt(dt=now_x),
+            nigh=self.oath_x.get_time_min_from_dt(dt=now_x),
         )
         self.refresh_all()
 
-    def emit_pact(self):
-        self.pact_x_signal.emit(self.pact_x)
+    def emit_oath(self):
+        self.oath_x_signal.emit(self.oath_x)
 
     def get_file_path(self):
         x_file_path, _ = QFileDialog.getOpenFileTitle()
@@ -270,21 +270,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def save_file(self):
         if self.file_path is None:
-            self.file_path = f"{pact_env()}/{self._get_file_title()}"
+            self.file_path = f"{oath_env()}/{self._get_file_title()}"
         self._commit_file_save()
 
     def _get_file_title(self):
-        return f"pact_{self.pact_x._healer}.json"
+        return f"oath_{self.oath_x._healer}.json"
 
     def _commit_file_save(self):
-        pact_x_json = self.pact_x.get_json()
+        oath_x_json = self.oath_x.get_json()
         with open(f"{self.file_path}", "w") as f:
-            f.write(pact_x_json)
+            f.write(oath_x_json)
         self.current_file_path_l.setText(self.file_path)
         # x_func_save_file(
-        #     dest_dir=pact_healingunit_dir,
-        #     file_title=f"{self.pact_x._cure_handle}.json",
-        #     file_text=pact_x.get_json(),
+        #     dest_dir=oath_healingunit_dir,
+        #     file_title=f"{self.oath_x._cure_handle}.json",
+        #     file_text=oath_x.get_json(),
         # )
 
     def load_file(self):
@@ -294,28 +294,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return x_json
 
     def open_file(self):
-        self.pact_x_json = self.load_file()
-        self.pact_load(x_pact_json=self.pact_x_json)
+        self.oath_x_json = self.load_file()
+        self.oath_load(x_oath_json=self.oath_x_json)
 
-    def pact_new(self):
-        self.pact_x = PactUnit(_healer="new")
-        self.pact_x._set_acptfacts_empty_if_null()
-        self.pact_x.set_partys_empty_if_null()
-        self.pact_x.set_groupunits_empty_if_null()
-        self.pact_x.set_time_hreg_ideas(c400_count=7)
-        road_minute = f"{self.pact_x._cure_handle},time,jajatime"
-        self.pact_x.set_acptfact(
+    def oath_new(self):
+        self.oath_x = OathUnit(_healer="new")
+        self.oath_x._set_acptfacts_empty_if_null()
+        self.oath_x.set_partys_empty_if_null()
+        self.oath_x.set_groupunits_empty_if_null()
+        self.oath_x.set_time_hreg_ideas(c400_count=7)
+        road_minute = f"{self.oath_x._cure_handle},time,jajatime"
+        self.oath_x.set_acptfact(
             base=road_minute, pick=road_minute, open=1000000, nigh=1000000
         )
         self.refresh_all()
 
     def refresh_datetime_display(self):
-        road_minute = f"{self.pact_x._cure_handle},time,jajatime"
-        jajatime_open = self.pact_x.get_time_dt_from_min(
-            self.pact_x._idearoot._acptfactunits[road_minute].open
+        road_minute = f"{self.oath_x._cure_handle},time,jajatime"
+        jajatime_open = self.oath_x.get_time_dt_from_min(
+            self.oath_x._idearoot._acptfactunits[road_minute].open
         )
-        jajatime_nigh = self.pact_x.get_time_dt_from_min(
-            self.pact_x._idearoot._acptfactunits[road_minute].nigh
+        jajatime_nigh = self.oath_x.get_time_dt_from_min(
+            self.oath_x._idearoot._acptfactunits[road_minute].nigh
         )
         week_days = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
         self.root_datetime_curr_l.setText(
@@ -330,31 +330,31 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.root_datetime_prev_l.setText("")
         with contextlib.suppress(Exception):
             self.refresh_datetime_display()
-        self.pact_healer.setText(self.pact_x._healer)
+        self.oath_healer.setText(self.oath_x._healer)
         self.acptfacts_table_load()
         self.agenda_states_load()
 
-    def pact_load(self, x_pact_json: str):
-        self.pact_x = get_from_json(x_pact_json=x_pact_json)
-        self.promise_items = self.pact_x.get_agenda_items()
+    def oath_load(self, x_oath_json: str):
+        self.oath_x = get_from_json(x_oath_json=x_oath_json)
+        self.promise_items = self.oath_x.get_agenda_items()
         self.refresh_all()
 
     def get_acptfacts_list(self):
-        return self.pact_x._idearoot._acptfactunits.values()
+        return self.oath_x._idearoot._acptfactunits.values()
 
     def acptfacts_table_load(self):
         self.acptfacts_table.setRowCount(0)
 
         row = 0
         for acptfact in self.get_acptfacts_list():
-            base_text = acptfact.base.replace(f"{self.pact_x._healer}", "")
+            base_text = acptfact.base.replace(f"{self.oath_x._healer}", "")
             base_text = base_text[1:]
             acptfact_text = acptfact.pick.replace(acptfact.base, "")
             acptfact_text = acptfact_text[1:]
             if acptfact.open is None:
                 acptfact_text = f"{acptfact_text}"
             elif base_text == "time,jajatime":
-                acptfact_text = f"{self.pact_x.get_jajatime_legible_one_time_event(acptfact.open)}-{self.pact_x.get_jajatime_repeating_legible_text(acptfact.nigh)}"
+                acptfact_text = f"{self.oath_x.get_jajatime_legible_one_time_event(acptfact.open)}-{self.oath_x.get_jajatime_repeating_legible_text(acptfact.nigh)}"
             else:
                 acptfact_text = (
                     f"{acptfact_text} Open-Nigh {acptfact.open}-{acptfact.nigh}"
@@ -367,8 +367,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.acptfacts_table.setItem(row, 5, qtw1(pyqt_func_num2str(acptfact.nigh)))
             row += 1
 
-        for base, count in self.pact_x.get_missing_acptfact_bases().items():
-            base_text = base.replace(f"{self.pact_x._healer}", "")
+        for base, count in self.oath_x.get_missing_acptfact_bases().items():
+            base_text = base.replace(f"{self.oath_x._healer}", "")
             base_text = base_text[1:]
 
             base_lecture_text = f"{base_text} ({count} nodes)"
@@ -395,16 +395,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ):
             raise MainAppException("No table selection for acptfact update.")
         acptfact_update_combo_text = self.acptfact_update_combo.currentText()
-        self.pact_x._idearoot._acptfactunits[
+        self.oath_x._idearoot._acptfactunits[
             base_road
         ].acptfact = acptfact_update_combo_text
         self.base_road = None
         self.refresh_all
 
     def agenda_states_load(self):
-        self.pact_x.get_tree_metrics()
-        agenda_list = self.pact_x.get_agenda_items()
-        agenda_list.sort(key=lambda x: x._pact_importance, reverse=True)
+        self.oath_x.get_tree_metrics()
+        agenda_list = self.oath_x.get_agenda_items()
+        agenda_list.sort(key=lambda x: x._oath_importance, reverse=True)
         self.agenda_states.setSortingEnabled(True)
         self.agenda_states.setRowCount(0)
         self.set_agenda_states_table_properties()
@@ -430,16 +430,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agenda_states.setItem(row, 0, qtw1(str(ax._uid)))
         self.agenda_states.setItem(row, 1, qtw1(ax._label))
 
-        if ax._requiredunits.get(f"{self.pact_x._cure_handle},time,jajatime") != None:
+        if ax._requiredunits.get(f"{self.oath_x._cure_handle},time,jajatime") != None:
             jajatime_required = ax._requiredunits.get(
-                f"{self.pact_x._cure_handle},time,jajatime"
+                f"{self.oath_x._cure_handle},time,jajatime"
             )
             sufffact_x = jajatime_required.sufffacts.get(
-                f"{self.pact_x._cure_handle},time,jajatime"
+                f"{self.oath_x._cure_handle},time,jajatime"
             )
             if sufffact_x != None and sufffact_x.open != 0:
                 tw_open = qtw1(
-                    self.pact_x.get_jajatime_repeating_legible_text(
+                    self.oath_x.get_jajatime_repeating_legible_text(
                         open=sufffact_x.open,
                         nigh=sufffact_x.nigh,
                         divisor=sufffact_x.divisor,
@@ -450,7 +450,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.agenda_states.setItem(row, 3, tw_nigh)
 
         self.agenda_states.setItem(
-            row, 4, qtw1(pyqt_func_pact_importance_diplay(ax._pact_importance))
+            row, 4, qtw1(pyqt_func_oath_importance_diplay(ax._oath_importance))
         )
         self.agenda_states.setItem(row, 5, qtw1(ax._pad))
         self.agenda_states.setItem(row, 6, qtw1(""))
@@ -477,7 +477,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 "label",
                 "jajatime",
                 "jaja_nigh",
-                "pact_importance",
+                "oath_importance",
                 "idea_road",
                 "branch_percent",
             ]
@@ -486,14 +486,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def agenda_task_display(self, agenda_item):
         self.label_agenda_label_data.setText(agenda_item._label)
         if (
-            agenda_item._requiredunits.get(f"{self.pact_x._cure_handle},time,jajatime")
+            agenda_item._requiredunits.get(f"{self.oath_x._cure_handle},time,jajatime")
             != None
         ):
             jajatime_required = agenda_item._requiredunits.get(
-                f"{self.pact_x._cure_handle},time,jajatime"
+                f"{self.oath_x._cure_handle},time,jajatime"
             )
             sufffact_x = jajatime_required.sufffacts.get(
-                f"{self.pact_x._cure_handle},time,jajatime,day"
+                f"{self.oath_x._cure_handle},time,jajatime,day"
             )
             if sufffact_x != None:
                 self.label_agenda_day_data.setText("day_stuff")
@@ -503,18 +503,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.label_agenda_end_data.setText(
                     convert1440toHHMM(min1440=sufffact_x.nigh)
                 )
-        self.label_agenda_pact_importance_data.setText(
-            str(agenda_item._pact_importance)
+        self.label_agenda_oath_importance_data.setText(
+            str(agenda_item._oath_importance)
         )
         self.label_agenda_family_data.setText("")
         self.label_agenda_road_data.setText(agenda_item._pad)
 
     def get_jajaday_open_nigh(self, agenda_item):
         jajatime_required = agenda_item._requiredunits.get(
-            f"{self.pact_x._cure_handle},time,jajatime"
+            f"{self.oath_x._cure_handle},time,jajatime"
         )
         sufffact_x = jajatime_required.sufffacts.get(
-            f"{self.pact_x._cure_handle},time,jajatime,day"
+            f"{self.oath_x._cure_handle},time,jajatime,day"
         )
         if sufffact_x != None:
             open_x = sufffact_x.open

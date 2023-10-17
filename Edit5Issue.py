@@ -3,10 +3,10 @@ import sys
 from ui.Cure5IssueUI import Ui_Form
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
-from pyqt_func import pact_importance_diplay
-from src.pact.pact import PactUnit
-from src.pact.group import groupunit_shop
-from src.pact.party import partylink_shop
+from pyqt_func import oath_importance_diplay
+from src.oath.oath import OathUnit
+from src.oath.group import groupunit_shop
+from src.oath.party import partylink_shop
 
 
 class Edit5Issue(qtw.QTableWidget, Ui_Form):

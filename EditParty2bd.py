@@ -29,7 +29,7 @@ class EditParty2bd(qtw.QWidget, Ui_Form):
         self.gp_delete_button.clicked.connect(self.gp_delete)
         self.gp_update_button.clicked.connect(self.gp_update)
 
-        # self.EditParty2bd.pact_x = self.pact_x
+        # self.EditParty2bd.oath_x = self.oath_x
         # self.EditParty2bd.selected_party_title = self.selected_party_title
 
     def gp_insert(self):

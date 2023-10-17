@@ -1,4 +1,4 @@
-from src.pact.pact import PactUnit, partyunit_shop
+from src.oath.oath import OathUnit, partyunit_shop
 from src.cure.cure import cureunit_shop
 from src.cure.examples.cure_env_kit import (
     get_temp_env_handle,
@@ -33,9 +33,9 @@ from src.cure.bank_sqlstr import (
     get_table_count_sqlstr,
 )
 from src.cure.examples.example_healers import (
-    get_3node_pact,
-    get_6node_pact,
-    get_pact_3CleanNodesRandomWeights,
+    get_3node_oath,
+    get_6node_oath,
+    get_oath_3CleanNodesRandomWeights,
 )
 from src.cure.y_func import get_single_result_back
 
@@ -51,21 +51,21 @@ def test_cure_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     bob_text = "bob"
     tim_text = "tim"
-    pact_x = PactUnit(_healer=bob_text)
+    oath_x = OathUnit(_healer=bob_text)
     partyunit_x = partyunit_shop(
         title=tim_text,
-        _pact_credit=0.9,
-        _pact_debt=0.8,
-        _pact_agenda_credit=0.7,
-        _pact_agenda_debt=0.6,
-        _pact_agenda_ratio_credit=0.5,
-        _pact_agenda_ratio_debt=0.4,
+        _oath_credit=0.9,
+        _oath_debt=0.8,
+        _oath_agenda_credit=0.7,
+        _oath_agenda_debt=0.6,
+        _oath_agenda_ratio_credit=0.5,
+        _oath_agenda_ratio_debt=0.4,
         _creditor_active=True,
         _debtor_active=False,
     )
 
     insert_sqlstr = get_ledger_table_insert_sqlstr(
-        pact_x=pact_x, partyunit_x=partyunit_x
+        oath_x=oath_x, partyunit_x=partyunit_x
     )
     print(insert_sqlstr)
 
@@ -81,14 +81,14 @@ def test_cure_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     # THEN
     ledger_x = ledger_dict.get(tim_text)
-    assert ledger_x.pact_healer == bob_text
+    assert ledger_x.oath_healer == bob_text
     assert ledger_x.party_title == tim_text
-    assert ledger_x._pact_credit == 0.9
-    assert ledger_x._pact_debt == 0.8
-    assert ledger_x._pact_agenda_credit == 0.7
-    assert ledger_x._pact_agenda_debt == 0.6
-    assert ledger_x._pact_agenda_ratio_credit == 0.5
-    assert ledger_x._pact_agenda_ratio_debt == 0.4
+    assert ledger_x._oath_credit == 0.9
+    assert ledger_x._oath_debt == 0.8
+    assert ledger_x._oath_agenda_credit == 0.7
+    assert ledger_x._oath_agenda_debt == 0.6
+    assert ledger_x._oath_agenda_ratio_credit == 0.5
+    assert ledger_x._oath_agenda_ratio_debt == 0.4
     assert ledger_x._creditor_active
     assert ledger_x._debtor_active == False
 
@@ -105,7 +105,7 @@ def test_RiverFlowUnit_exists():
 
     # WHEN
     river_flow_x = RiverFlowUnit(
-        currency_pact_healer=bob_text,
+        currency_oath_healer=bob_text,
         src_title=None,
         dst_title=tom_text,
         currency_start=currency_onset,
@@ -116,7 +116,7 @@ def test_RiverFlowUnit_exists():
     )
 
     # THEN
-    assert river_flow_x.currency_pact_healer == bob_text
+    assert river_flow_x.currency_oath_healer == bob_text
     assert river_flow_x.src_title is None
     assert river_flow_x.dst_title == tom_text
     assert river_flow_x.currency_start == currency_onset
@@ -139,7 +139,7 @@ def test_RiverFlowUnit_flow_returned_WorksCorrectly():
 
     # WHEN
     river_flow_x = RiverFlowUnit(
-        currency_pact_healer=bob_text,
+        currency_oath_healer=bob_text,
         src_title=sal_text,
         dst_title=tom_text,
         currency_start=currency_onset,
@@ -148,7 +148,7 @@ def test_RiverFlowUnit_flow_returned_WorksCorrectly():
         parent_flow_num=parent_flow_num,
         river_tree_level=river_tree_level,
     )
-    assert river_flow_x.currency_pact_healer != river_flow_x.dst_title
+    assert river_flow_x.currency_oath_healer != river_flow_x.dst_title
 
     # THEN
     assert river_flow_x.flow_returned() == False
@@ -169,36 +169,36 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
 
     bob_text = "bob"
     sal_text = "sal"
-    pact_bob = PactUnit(_healer=bob_text)
+    oath_bob = OathUnit(_healer=bob_text)
     partyunit_sal = partyunit_shop(
         title=sal_text,
-        _pact_credit=0.9,
-        _pact_debt=0.8,
-        _pact_agenda_credit=0.7,
-        _pact_agenda_debt=0.6,
-        _pact_agenda_ratio_credit=0.5,
-        _pact_agenda_ratio_debt=0.4,
+        _oath_credit=0.9,
+        _oath_debt=0.8,
+        _oath_agenda_credit=0.7,
+        _oath_agenda_debt=0.6,
+        _oath_agenda_ratio_credit=0.5,
+        _oath_agenda_ratio_debt=0.4,
         _creditor_active=True,
         _debtor_active=False,
     )
     insert_sqlstr_sal = get_ledger_table_insert_sqlstr(
-        pact_x=pact_bob, partyunit_x=partyunit_sal
+        oath_x=oath_bob, partyunit_x=partyunit_sal
     )
 
     tim_text = "tim"
     partyunit_tim = partyunit_shop(
         title=tim_text,
-        _pact_credit=0.012,
-        _pact_debt=0.017,
-        _pact_agenda_credit=0.077,
-        _pact_agenda_debt=0.066,
-        _pact_agenda_ratio_credit=0.051,
-        _pact_agenda_ratio_debt=0.049,
+        _oath_credit=0.012,
+        _oath_debt=0.017,
+        _oath_agenda_credit=0.077,
+        _oath_agenda_debt=0.066,
+        _oath_agenda_ratio_credit=0.051,
+        _oath_agenda_ratio_debt=0.049,
         _creditor_active=True,
         _debtor_active=False,
     )
     insert_sqlstr_tim = get_ledger_table_insert_sqlstr(
-        pact_x=pact_bob, partyunit_x=partyunit_tim
+        oath_x=oath_bob, partyunit_x=partyunit_tim
     )
 
     with sx.get_bank_conn() as bank_conn:
@@ -208,7 +208,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
 
     # WHEN
     river_flow_x = RiverFlowUnit(
-        currency_pact_healer=bob_text,
+        currency_oath_healer=bob_text,
         src_title=None,
         dst_title=bob_text,
         currency_start=0.225,
@@ -221,7 +221,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
         river_ledger_x = get_river_ledger_unit(bank_conn, river_flow_x)
 
     # THEN
-    assert river_ledger_x.pact_healer == bob_text
+    assert river_ledger_x.oath_healer == bob_text
     assert river_ledger_x.currency_onset == 0.225
     assert river_ledger_x.currency_cease == 0.387
     assert river_ledger_x.river_tree_level == 4
@@ -242,7 +242,7 @@ def test_river_flow_insert_CorrectlyPopulatesTable01(
     sal_text = "sal"
 
     river_flow_unit = RiverFlowUnit(
-        currency_pact_healer=bob_text,
+        currency_oath_healer=bob_text,
         src_title=tim_text,
         dst_title=sal_text,
         currency_start=0.2,
@@ -257,14 +257,14 @@ def test_river_flow_insert_CorrectlyPopulatesTable01(
     # WHEN
     with sx.get_bank_conn() as bank_conn:
         bank_conn.execute(insert_sqlstr)
-        river_flows = get_river_flow_dict(bank_conn, currency_pact_healer=bob_text)
+        river_flows = get_river_flow_dict(bank_conn, currency_oath_healer=bob_text)
         print(f"{river_flows=}")
 
     # THEN
     print(f"{river_flows.keys()=}")
     # for value in river_flows.values():
     flow_0 = river_flows.get(0)
-    assert flow_0.currency_pact_healer == bob_text
+    assert flow_0.currency_oath_healer == bob_text
     assert flow_0.src_title == tim_text
     assert flow_0.dst_title == sal_text
     assert flow_0.currency_start == 0.2
@@ -280,26 +280,26 @@ def test_RiverLedgerUnit_Exists():
     sal_text = "sal"
     tom_text = "tom"
     ledger_unit_01 = LedgerUnit(
-        pact_healer=bob_text,
+        oath_healer=bob_text,
         party_title=sal_text,
-        _pact_credit=0.66,
-        _pact_debt=0.2,
-        _pact_agenda_credit=0.4,
-        _pact_agenda_debt=0.15,
-        _pact_agenda_ratio_credit=0.5,
-        _pact_agenda_ratio_debt=0.12,
+        _oath_credit=0.66,
+        _oath_debt=0.2,
+        _oath_agenda_credit=0.4,
+        _oath_agenda_debt=0.15,
+        _oath_agenda_ratio_credit=0.5,
+        _oath_agenda_ratio_debt=0.12,
         _creditor_active=True,
         _debtor_active=True,
     )
     ledger_unit_02 = LedgerUnit(
-        pact_healer=bob_text,
+        oath_healer=bob_text,
         party_title=tom_text,
-        _pact_credit=0.05,
-        _pact_debt=0.09,
-        _pact_agenda_credit=0.055,
-        _pact_agenda_debt=0.0715,
-        _pact_agenda_ratio_credit=0.00995,
-        _pact_agenda_ratio_debt=0.00012,
+        _oath_credit=0.05,
+        _oath_debt=0.09,
+        _oath_agenda_credit=0.055,
+        _oath_agenda_debt=0.0715,
+        _oath_agenda_ratio_credit=0.00995,
+        _oath_agenda_ratio_debt=0.00012,
         _creditor_active=True,
         _debtor_active=True,
     )
@@ -310,7 +310,7 @@ def test_RiverLedgerUnit_Exists():
 
     # WHEN
     river_ledger_unit = RiverLedgerUnit(
-        pact_healer=bob_text,
+        oath_healer=bob_text,
         currency_onset=0.6,
         currency_cease=0.8,
         _ledgers=ledger_dict,
@@ -319,7 +319,7 @@ def test_RiverLedgerUnit_Exists():
     )
 
     # THEN
-    assert river_ledger_unit.pact_healer == bob_text
+    assert river_ledger_unit.oath_healer == bob_text
     assert river_ledger_unit.currency_onset == 0.6
     assert river_ledger_unit.currency_cease == 0.8
     assert river_ledger_unit.river_tree_level == 7
@@ -340,34 +340,34 @@ def test_get_river_tparty_table_insert_sqlstr_CorrectlyPopulatesTable01(
     tom_text = "tom"
     sal_text = "sal"
 
-    pact_bob = PactUnit(_healer=bob_text)
+    oath_bob = OathUnit(_healer=bob_text)
     partyunit_tom = partyunit_shop(
         title=tom_text,
-        _pact_credit=0.9,
-        _pact_debt=0.8,
-        _pact_agenda_credit=0.7,
-        _pact_agenda_debt=0.6,
-        _pact_agenda_ratio_credit=0.5,
-        _pact_agenda_ratio_debt=0.411,
+        _oath_credit=0.9,
+        _oath_debt=0.8,
+        _oath_agenda_credit=0.7,
+        _oath_agenda_debt=0.6,
+        _oath_agenda_ratio_credit=0.5,
+        _oath_agenda_ratio_debt=0.411,
         _creditor_active=True,
         _debtor_active=False,
     )
     insert_sqlstr_tom = get_ledger_table_insert_sqlstr(
-        pact_x=pact_bob, partyunit_x=partyunit_tom
+        oath_x=oath_bob, partyunit_x=partyunit_tom
     )
     partyunit_sal = partyunit_shop(
         title=sal_text,
-        _pact_credit=0.9,
-        _pact_debt=0.8,
-        _pact_agenda_credit=0.7,
-        _pact_agenda_debt=0.6,
-        _pact_agenda_ratio_credit=0.5,
-        _pact_agenda_ratio_debt=0.455,
+        _oath_credit=0.9,
+        _oath_debt=0.8,
+        _oath_agenda_credit=0.7,
+        _oath_agenda_debt=0.6,
+        _oath_agenda_ratio_credit=0.5,
+        _oath_agenda_ratio_debt=0.455,
         _creditor_active=True,
         _debtor_active=False,
     )
     insert_sqlstr_sal = get_ledger_table_insert_sqlstr(
-        pact_x=pact_bob, partyunit_x=partyunit_sal
+        oath_x=oath_bob, partyunit_x=partyunit_sal
     )
 
     river_flow_1 = RiverFlowUnit(bob_text, bob_text, tom_text, 0.0, 0.2, 0, None, 1)
@@ -388,14 +388,14 @@ def test_get_river_tparty_table_insert_sqlstr_CorrectlyPopulatesTable01(
         bank_conn.execute(ss0)
 
     # WHEN
-    mstr_sqlstr = get_river_tparty_table_insert_sqlstr(currency_pact_healer=bob_text)
+    mstr_sqlstr = get_river_tparty_table_insert_sqlstr(currency_oath_healer=bob_text)
     with sx.get_bank_conn() as bank_conn:
         print(mstr_sqlstr)
         bank_conn.execute(mstr_sqlstr)
 
     # THEN
     with sx.get_bank_conn() as bank_conn:
-        river_tpartys = get_river_tparty_dict(bank_conn, currency_pact_healer=bob_text)
+        river_tpartys = get_river_tparty_dict(bank_conn, currency_oath_healer=bob_text)
         print(f"{river_tpartys=}")
 
     assert len(river_tpartys) == 2
@@ -436,19 +436,19 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_pact = PactUnit(_healer=sal_text)
-    sal_pact.add_partyunit(title=bob_text, creditor_weight=2)
-    sal_pact.add_partyunit(title=tom_text, creditor_weight=7)
-    sal_pact.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_pact(pact_x=sal_pact)
+    sal_oath = OathUnit(_healer=sal_text)
+    sal_oath.add_partyunit(title=bob_text, creditor_weight=2)
+    sal_oath.add_partyunit(title=tom_text, creditor_weight=7)
+    sal_oath.add_partyunit(title=ava_text, creditor_weight=1)
+    sx.save_public_oath(oath_x=sal_oath)
 
-    bob_pact = PactUnit(_healer=bob_text)
-    bob_pact.add_partyunit(title=sal_text, creditor_weight=3)
-    bob_pact.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_pact(pact_x=bob_pact)
+    bob_oath = OathUnit(_healer=bob_text)
+    bob_oath.add_partyunit(title=sal_text, creditor_weight=3)
+    bob_oath.add_partyunit(title=ava_text, creditor_weight=1)
+    sx.save_public_oath(oath_x=bob_oath)
 
     sx.refresh_bank_metrics()
-    sx.set_river_sphere_for_pact(pact_healer=sal_text)
+    sx.set_river_sphere_for_oath(oath_healer=sal_text)
 
     with sx.get_bank_conn() as bank_conn:
         assert len(get_river_bucket_dict(bank_conn, sal_text)) > 0
@@ -477,48 +477,48 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_pact = PactUnit(_healer=sal_text)
-    sal_pact.add_partyunit(title=bob_text, creditor_weight=2)
-    sal_pact.add_partyunit(title=tom_text, creditor_weight=7)
-    sal_pact.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_pact(pact_x=sal_pact)
+    sal_oath = OathUnit(_healer=sal_text)
+    sal_oath.add_partyunit(title=bob_text, creditor_weight=2)
+    sal_oath.add_partyunit(title=tom_text, creditor_weight=7)
+    sal_oath.add_partyunit(title=ava_text, creditor_weight=1)
+    sx.save_public_oath(oath_x=sal_oath)
 
-    bob_pact = PactUnit(_healer=bob_text)
-    bob_pact.add_partyunit(title=sal_text, creditor_weight=3)
-    bob_pact.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_pact(pact_x=bob_pact)
+    bob_oath = OathUnit(_healer=bob_text)
+    bob_oath.add_partyunit(title=sal_text, creditor_weight=3)
+    bob_oath.add_partyunit(title=ava_text, creditor_weight=1)
+    sx.save_public_oath(oath_x=bob_oath)
 
-    tom_pact = PactUnit(_healer=tom_text)
-    tom_pact.add_partyunit(title=sal_text, creditor_weight=2)
-    sx.save_public_pact(pact_x=tom_pact)
+    tom_oath = OathUnit(_healer=tom_text)
+    tom_oath.add_partyunit(title=sal_text, creditor_weight=2)
+    sx.save_public_oath(oath_x=tom_oath)
 
-    ava_pact = PactUnit(_healer=ava_text)
-    ava_pact.add_partyunit(title=elu_text, creditor_weight=2)
-    sx.save_public_pact(pact_x=ava_pact)
+    ava_oath = OathUnit(_healer=ava_text)
+    ava_oath.add_partyunit(title=elu_text, creditor_weight=2)
+    sx.save_public_oath(oath_x=ava_oath)
 
-    elu_pact = PactUnit(_healer=elu_text)
-    elu_pact.add_partyunit(title=ava_text, creditor_weight=19)
-    elu_pact.add_partyunit(title=sal_text, creditor_weight=1)
-    sx.save_public_pact(pact_x=elu_pact)
+    elu_oath = OathUnit(_healer=elu_text)
+    elu_oath.add_partyunit(title=ava_text, creditor_weight=19)
+    elu_oath.add_partyunit(title=sal_text, creditor_weight=1)
+    sx.save_public_oath(oath_x=elu_oath)
 
     sx.refresh_bank_metrics()
-    sx.set_river_sphere_for_pact(pact_healer=sal_text, max_flows_count=100)
+    sx.set_river_sphere_for_oath(oath_healer=sal_text, max_flows_count=100)
     with sx.get_bank_conn() as bank_conn:
         bank_conn.execute(get_river_bucket_table_delete_sqlstr(sal_text))
-        assert len(get_river_bucket_dict(bank_conn, currency_pact_healer=sal_text)) == 0
+        assert len(get_river_bucket_dict(bank_conn, currency_oath_healer=sal_text)) == 0
 
     # WHEN / THEN
-    mstr_sqlstr = get_river_bucket_table_insert_sqlstr(currency_pact_healer=sal_text)
+    mstr_sqlstr = get_river_bucket_table_insert_sqlstr(currency_oath_healer=sal_text)
     with sx.get_bank_conn() as bank_conn:
         print(mstr_sqlstr)
         bank_conn.execute(mstr_sqlstr)
-        # river_flows = get_river_flow_dict(bank_conn, currency_pact_healer=sal_text)
+        # river_flows = get_river_flow_dict(bank_conn, currency_oath_healer=sal_text)
         # for river_flow in river_flows.values():
         #     print(f"{river_flow=}")
 
     # THEN
     with sx.get_bank_conn() as bank_conn:
-        river_buckets = get_river_bucket_dict(bank_conn, currency_pact_healer=sal_text)
+        river_buckets = get_river_bucket_dict(bank_conn, currency_oath_healer=sal_text)
         # for river_bucket in river_buckets.values():
         #     print(f"huh {river_bucket=}")
 
@@ -562,7 +562,7 @@ def test_cure_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     # WHEN
     water_road = f"{get_temp_env_handle()},elements,water"
-    water_idea_catalog = IdeaCatalog(pact_healer=bob_text, idea_road=water_road)
+    water_idea_catalog = IdeaCatalog(oath_healer=bob_text, idea_road=water_road)
     water_insert_sqlstr = get_idea_catalog_table_insert_sqlstr(water_idea_catalog)
     with sx.get_bank_conn() as bank_conn:
         print(water_insert_sqlstr)
@@ -581,15 +581,15 @@ def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup
     bob_text = "bob"
     sal_text = "sal"
     tim_text = "tim"
-    bob_pact = get_3node_pact()
-    tim_pact = get_6node_pact()
-    sal_pact = get_pact_3CleanNodesRandomWeights()
-    bob_pact.set_healer(new_healer=bob_text)
-    tim_pact.set_healer(new_healer=tim_text)
-    sal_pact.set_healer(new_healer=sal_text)
-    sx.save_public_pact(pact_x=bob_pact)
-    sx.save_public_pact(pact_x=tim_pact)
-    sx.save_public_pact(pact_x=sal_pact)
+    bob_oath = get_3node_oath()
+    tim_oath = get_6node_oath()
+    sal_oath = get_oath_3CleanNodesRandomWeights()
+    bob_oath.set_healer(new_healer=bob_text)
+    tim_oath.set_healer(new_healer=tim_text)
+    sal_oath.set_healer(new_healer=sal_text)
+    sx.save_public_oath(oath_x=bob_oath)
+    sx.save_public_oath(oath_x=tim_oath)
+    sx.save_public_oath(oath_x=sal_oath)
 
     with sx.get_bank_conn() as bank_conn:
         assert get_idea_catalog_table_count(bank_conn, bob_text) == 0
@@ -614,18 +614,18 @@ def test_cure_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     sal_text = "sal"
     tim_text = "tim"
     elu_text = "elu"
-    bob_pact = get_3node_pact()
-    tim_pact = get_6node_pact()
-    sal_pact = get_pact_3CleanNodesRandomWeights()
-    elu_pact = get_6node_pact()
-    bob_pact.set_healer(new_healer=bob_text)
-    tim_pact.set_healer(new_healer=tim_text)
-    sal_pact.set_healer(new_healer=sal_text)
-    elu_pact.set_healer(new_healer=elu_text)
-    sx.save_public_pact(pact_x=bob_pact)
-    sx.save_public_pact(pact_x=tim_pact)
-    sx.save_public_pact(pact_x=sal_pact)
-    sx.save_public_pact(pact_x=elu_pact)
+    bob_oath = get_3node_oath()
+    tim_oath = get_6node_oath()
+    sal_oath = get_oath_3CleanNodesRandomWeights()
+    elu_oath = get_6node_oath()
+    bob_oath.set_healer(new_healer=bob_text)
+    tim_oath.set_healer(new_healer=tim_text)
+    sal_oath.set_healer(new_healer=sal_text)
+    elu_oath.set_healer(new_healer=elu_text)
+    sx.save_public_oath(oath_x=bob_oath)
+    sx.save_public_oath(oath_x=tim_oath)
+    sx.save_public_oath(oath_x=sal_oath)
+    sx.save_public_oath(oath_x=elu_oath)
     sx.refresh_bank_metrics()
     i_count_sqlstr = get_table_count_sqlstr("idea_catalog")
     with sx.get_bank_conn() as bank_conn:
@@ -657,7 +657,7 @@ def test_cure_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01
 
     # WHEN
     weather_rain = AcptFactCatalog(
-        pact_healer=bob_text,
+        oath_healer=bob_text,
         base=f"{get_temp_env_handle()},weather",
         pick=f"{get_temp_env_handle()},weather,rain",
     )
@@ -679,38 +679,38 @@ def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
-    # TODO create 3 pacts with varying numbers of acpt facts
+    # TODO create 3 oaths with varying numbers of acpt facts
     bob_text = "bob"
     sal_text = "sal"
     tim_text = "tim"
-    bob_pact = get_3node_pact()
-    tim_pact = get_6node_pact()
-    sal_pact = get_pact_3CleanNodesRandomWeights()
-    bob_pact.set_healer(new_healer=bob_text)
-    tim_pact.set_healer(new_healer=tim_text)
-    sal_pact.set_healer(new_healer=sal_text)
+    bob_oath = get_3node_oath()
+    tim_oath = get_6node_oath()
+    sal_oath = get_oath_3CleanNodesRandomWeights()
+    bob_oath.set_healer(new_healer=bob_text)
+    tim_oath.set_healer(new_healer=tim_text)
+    sal_oath.set_healer(new_healer=sal_text)
     c_text = "C"
-    c_road = f"{tim_pact._healer},{c_text}"
+    c_road = f"{tim_oath._healer},{c_text}"
     f_text = "F"
     f_road = f"{c_road},{f_text}"
     b_text = "B"
-    b_road = f"{tim_pact._healer},{b_text}"
-    # for idea_x in tim_pact._idea_dict.values():
+    b_road = f"{tim_oath._healer},{b_text}"
+    # for idea_x in tim_oath._idea_dict.values():
     #     print(f"{f_road=} {idea_x.get_road()=}")
-    tim_pact.set_acptfact(base=c_road, pick=f_road)
+    tim_oath.set_acptfact(base=c_road, pick=f_road)
 
-    bob_pact.set_acptfact(base=c_road, pick=f_road)
-    bob_pact.set_acptfact(base=b_road, pick=b_road)
+    bob_oath.set_acptfact(base=c_road, pick=f_road)
+    bob_oath.set_acptfact(base=b_road, pick=b_road)
 
     casa_text = "casa"
-    casa_road = f"{sal_pact._healer},{casa_text}"
+    casa_road = f"{sal_oath._healer},{casa_text}"
     cookery_text = "clean cookery"
     cookery_road = f"{casa_road},{cookery_text}"
-    sal_pact.set_acptfact(base=cookery_road, pick=cookery_road)
+    sal_oath.set_acptfact(base=cookery_road, pick=cookery_road)
 
-    sx.save_public_pact(pact_x=bob_pact)
-    sx.save_public_pact(pact_x=tim_pact)
-    sx.save_public_pact(pact_x=sal_pact)
+    sx.save_public_oath(oath_x=bob_oath)
+    sx.save_public_oath(oath_x=tim_oath)
+    sx.save_public_oath(oath_x=sal_oath)
 
     with sx.get_bank_conn() as bank_conn:
         assert get_acptfact_catalog_table_count(bank_conn, bob_text) == 0
@@ -745,7 +745,7 @@ def test_cure_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTable0
 
     # WHEN
     bob_group_x = GroupUnitCatalog(
-        pact_healer=bob_text,
+        oath_healer=bob_text,
         groupunit_brand="US Dollar",
         partylinks_set_by_cure_road=f"{get_temp_env_handle()},USA",
     )
@@ -768,13 +768,13 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     bob_text = "bob"
     tom_text = "tom"
     elu_text = "elu"
-    bob_pact = PactUnit(_healer=bob_text)
-    tom_pact = PactUnit(_healer=tom_text)
-    bob_pact.add_partyunit(title=tom_text)
-    tom_pact.add_partyunit(title=bob_text)
-    tom_pact.add_partyunit(title=elu_text)
-    sx.save_public_pact(pact_x=bob_pact)
-    sx.save_public_pact(pact_x=tom_pact)
+    bob_oath = OathUnit(_healer=bob_text)
+    tom_oath = OathUnit(_healer=tom_text)
+    bob_oath.add_partyunit(title=tom_text)
+    tom_oath.add_partyunit(title=bob_text)
+    tom_oath.add_partyunit(title=elu_text)
+    sx.save_public_oath(oath_x=bob_oath)
+    sx.save_public_oath(oath_x=tom_oath)
     sx.refresh_bank_metrics()
     sqlstr = get_table_count_sqlstr("groupunit_catalog")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr) == 3
@@ -786,9 +786,9 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
 
     # THEN
     assert len(groupunit_catalog_dict) == 3
-    bob_pact_tom_group = f"{bob_text} {tom_text}"
-    tom_pact_bob_group = f"{tom_text} {bob_text}"
-    tom_pact_elu_group = f"{tom_text} {elu_text}"
-    assert groupunit_catalog_dict.get(bob_pact_tom_group) != None
-    assert groupunit_catalog_dict.get(tom_pact_bob_group) != None
-    assert groupunit_catalog_dict.get(tom_pact_elu_group) != None
+    bob_oath_tom_group = f"{bob_text} {tom_text}"
+    tom_oath_bob_group = f"{tom_text} {bob_text}"
+    tom_oath_elu_group = f"{tom_text} {elu_text}"
+    assert groupunit_catalog_dict.get(bob_oath_tom_group) != None
+    assert groupunit_catalog_dict.get(tom_oath_bob_group) != None
+    assert groupunit_catalog_dict.get(tom_oath_elu_group) != None

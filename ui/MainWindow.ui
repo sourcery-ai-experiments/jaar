@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property title="text">
-     <string>Pacts /  Party /  dimension</string>
+     <string>Oaths /  Party /  dimension</string>
     </property>
    </widget>
    <widget class="QPushButton" title="acptfact_open_lower_spec1">
@@ -280,7 +280,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QLabel" title="pact_l">
+   <widget class="QLabel" title="oath_l">
     <property title="geometry">
      <rect>
       <x>30</x>
@@ -290,7 +290,7 @@
      </rect>
     </property>
     <property title="text">
-     <string>PACT: </string>
+     <string>OATH: </string>
     </property>
    </widget>
    <widget class="QPushButton" title="lw_label_update_button">
@@ -306,7 +306,7 @@
      <string>Update</string>
     </property>
    </widget>
-   <widget class="QLineEdit" title="pact_healer">
+   <widget class="QLineEdit" title="oath_healer">
     <property title="geometry">
      <rect>
       <x>100</x>
@@ -370,7 +370,7 @@
      <string>End:</string>
     </property>
    </widget>
-   <widget class="QLabel" title="label_agenda_pact_importance_header1">
+   <widget class="QLabel" title="label_agenda_oath_importance_header1">
     <property title="geometry">
      <rect>
       <x>30</x>
@@ -463,7 +463,7 @@
      <string>Family:</string>
     </property>
    </widget>
-   <widget class="QLabel" title="label_agenda_pact_importance_header2">
+   <widget class="QLabel" title="label_agenda_oath_importance_header2">
     <property title="geometry">
      <rect>
       <x>30</x>
@@ -521,7 +521,7 @@
      <string>Agenda</string>
     </property>
    </widget>
-   <widget class="QLabel" title="label_agenda_pact_importance_data">
+   <widget class="QLabel" title="label_agenda_oath_importance_data">
     <property title="geometry">
      <rect>
       <x>130</x>
@@ -653,7 +653,7 @@
     </column>
     <column>
      <property title="text">
-      <string>pact_importance</string>
+      <string>oath_importance</string>
      </property>
     </column>
     <column>

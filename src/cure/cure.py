@@ -1,10 +1,10 @@
-from src.pact.pact import (
-    PactUnit,
-    get_from_json as get_pact_from_json,
+from src.oath.oath import (
+    OathUnit,
+    get_from_json as get_oath_from_json,
     partylink_shop,
     PartyTitle,
 )
-from src.pact.x_func import (
+from src.oath.x_func import (
     single_dir_create_if_null,
     delete_dir as x_func_delete_dir,
     save_file as x_func_save_file,
@@ -23,7 +23,7 @@ from src.cure.bank_sqlstr import (
     get_river_bucket_table_insert_sqlstr,
     get_create_table_if_not_exist_sqlstrs,
     get_ledger_table_insert_sqlstr,
-    get_pact_table_insert_sqlstr,
+    get_oath_table_insert_sqlstr,
     get_river_ledger_unit,
     LedgerUnit,
     RiverLedgerUnit,
@@ -56,45 +56,45 @@ class CureUnit:
         self._person_importance = person_importance
 
     # banking
-    def set_pact_bank_attrs(self, pact_healer: str):
-        pact_obj = self.get_public_pact(pact_healer)
+    def set_oath_bank_attrs(self, oath_healer: str):
+        oath_obj = self.get_public_oath(oath_healer)
 
-        for groupunit_x in pact_obj._groups.values():
+        for groupunit_x in oath_obj._groups.values():
             if groupunit_x._partylinks_set_by_cure_road != None:
                 groupunit_x.clear_partylinks()
                 ic = get_idea_catalog_dict(
                     self.get_bank_conn(), groupunit_x._partylinks_set_by_cure_road
                 )
                 for idea_catalog in ic.values():
-                    if pact_healer != idea_catalog.pact_healer:
-                        partylink_x = partylink_shop(title=idea_catalog.pact_healer)
+                    if oath_healer != idea_catalog.oath_healer:
+                        partylink_x = partylink_shop(title=idea_catalog.oath_healer)
                         groupunit_x.set_partylink(partylink_x)
-        self.save_public_pact(pact_obj)
+        self.save_public_oath(oath_obj)
 
         # refresh bank metrics
         self.refresh_bank_metrics()
 
-    def set_river_sphere_for_pact(self, pact_healer: str, max_flows_count: int = None):
-        self._clear_all_source_river_data(pact_healer)
-        general_bucket = [self._get_root_river_ledger_unit(pact_healer)]
+    def set_river_sphere_for_oath(self, oath_healer: str, max_flows_count: int = None):
+        self._clear_all_source_river_data(oath_healer)
+        general_bucket = [self._get_root_river_ledger_unit(oath_healer)]
 
         if max_flows_count is None:
             max_flows_count = 40
 
         flows_count = 0
         while flows_count < max_flows_count and general_bucket != []:
-            parent_pact_ledger = general_bucket.pop(0)
+            parent_oath_ledger = general_bucket.pop(0)
 
-            parent_range = parent_pact_ledger.get_range()
-            parent_close = parent_pact_ledger.currency_cease
-            curr_onset = parent_pact_ledger.currency_onset
+            parent_range = parent_oath_ledger.get_range()
+            parent_close = parent_oath_ledger.currency_cease
+            curr_onset = parent_oath_ledger.currency_onset
 
-            ledgers_len = len(parent_pact_ledger._ledgers.values())
+            ledgers_len = len(parent_oath_ledger._ledgers.values())
             ledgers_count = 0
-            for led_x in parent_pact_ledger._ledgers.values():
+            for led_x in parent_oath_ledger._ledgers.values():
                 ledgers_count += 1
 
-                curr_range = parent_range * led_x._pact_agenda_ratio_credit
+                curr_range = parent_range * led_x._oath_agenda_ratio_credit
                 curr_close = curr_onset + curr_range
 
                 # implies last element in dict
@@ -102,14 +102,14 @@ class CureUnit:
                     curr_close = parent_close
 
                 river_flow_x = RiverFlowUnit(
-                    currency_pact_healer=pact_healer,
-                    src_title=led_x.pact_healer,
+                    currency_oath_healer=oath_healer,
+                    src_title=led_x.oath_healer,
                     dst_title=led_x.party_title,
                     currency_start=curr_onset,
                     currency_close=curr_close,
                     flow_num=flows_count,
-                    parent_flow_num=parent_pact_ledger.flow_num,
-                    river_tree_level=parent_pact_ledger.river_tree_level + 1,
+                    parent_flow_num=parent_oath_ledger.flow_num,
+                    river_tree_level=parent_oath_ledger.river_tree_level + 1,
                 )
                 river_ledger_x = self._insert_river_flow_grab_river_ledger(river_flow_x)
                 if river_ledger_x != None:
@@ -122,7 +122,7 @@ class CureUnit:
                 # change curr_onset for next
                 curr_onset += curr_range
 
-        self._set_river_tpartys_buckets(pact_healer)
+        self._set_river_tpartys_buckets(oath_healer)
 
     def _insert_river_flow_grab_river_ledger(
         self, river_flow_x: RiverFlowUnit
@@ -137,23 +137,23 @@ class CureUnit:
 
         return river_ledger_x
 
-    def _clear_all_source_river_data(self, pact_healer: str):
+    def _clear_all_source_river_data(self, oath_healer: str):
         with self.get_bank_conn() as bank_conn:
-            flow_s = get_river_flow_table_delete_sqlstr(pact_healer)
-            mstr_s = get_river_tparty_table_delete_sqlstr(pact_healer)
+            flow_s = get_river_flow_table_delete_sqlstr(oath_healer)
+            mstr_s = get_river_tparty_table_delete_sqlstr(oath_healer)
             bank_conn.execute(flow_s)
             bank_conn.execute(mstr_s)
 
-    def _get_root_river_ledger_unit(self, pact_healer: str) -> RiverLedgerUnit:
+    def _get_root_river_ledger_unit(self, oath_healer: str) -> RiverLedgerUnit:
         default_currency_onset = 0.0
         default_currency_cease = 1.0
         default_root_river_tree_level = 0
         default_root_flow_num = None  # maybe change to 1?
         default_root_parent_flow_num = None
         root_river_flow = RiverFlowUnit(
-            currency_pact_healer=pact_healer,
+            currency_oath_healer=oath_healer,
             src_title=None,
-            dst_title=pact_healer,
+            dst_title=oath_healer,
             currency_start=default_currency_onset,
             currency_close=default_currency_cease,
             flow_num=default_root_flow_num,
@@ -164,77 +164,77 @@ class CureUnit:
             source_river_ledger = get_river_ledger_unit(bank_conn, root_river_flow)
         return source_river_ledger
 
-    def _set_river_tpartys_buckets(self, pact_healer: str):
+    def _set_river_tpartys_buckets(self, oath_healer: str):
         with self.get_bank_conn() as bank_conn:
-            bank_conn.execute(get_river_tparty_table_insert_sqlstr(pact_healer))
-            bank_conn.execute(get_river_bucket_table_insert_sqlstr(pact_healer))
+            bank_conn.execute(get_river_tparty_table_insert_sqlstr(oath_healer))
+            bank_conn.execute(get_river_bucket_table_insert_sqlstr(oath_healer))
 
-            sal_river_tpartys = get_river_tparty_dict(bank_conn, pact_healer)
-            pact_x = self.get_public_pact(healer=pact_healer)
-            pact_x.set_banking_attr_partyunits(sal_river_tpartys)
-            self.save_public_pact(pact_x=pact_x)
+            sal_river_tpartys = get_river_tparty_dict(bank_conn, oath_healer)
+            oath_x = self.get_public_oath(healer=oath_healer)
+            oath_x.set_banking_attr_partyunits(sal_river_tpartys)
+            self.save_public_oath(oath_x=oath_x)
 
-    def get_river_tpartys(self, pact_healer: str) -> dict[str:RiverTpartyUnit]:
+    def get_river_tpartys(self, oath_healer: str) -> dict[str:RiverTpartyUnit]:
         with self.get_bank_conn() as bank_conn:
-            river_tpartys = get_river_tparty_dict(bank_conn, pact_healer)
+            river_tpartys = get_river_tparty_dict(bank_conn, oath_healer)
         return river_tpartys
 
     def refresh_bank_metrics(self, in_memory: bool = None):
         if in_memory is None and self._bank_db != None:
             in_memory = True
         self._create_bank_db(in_memory=in_memory, overwrite=True)
-        self._bank_populate_pacts_data()
+        self._bank_populate_oaths_data()
 
-    def _bank_populate_pacts_data(self):
+    def _bank_populate_oaths_data(self):
         for file_title in self.get_public_dir_file_titles_list():
-            pact_json = x_func_open_file(self.get_public_dir(), file_title)
-            pactunit_x = get_pact_from_json(x_pact_json=pact_json)
-            pactunit_x.set_pact_metrics()
+            oath_json = x_func_open_file(self.get_public_dir(), file_title)
+            oathunit_x = get_oath_from_json(x_oath_json=oath_json)
+            oathunit_x.set_oath_metrics()
 
-            self._bank_insert_pactunit(pactunit_x)
-            self._bank_insert_partyunit(pactunit_x)
-            self._bank_insert_groupunit(pactunit_x)
-            self._bank_insert_ideaunit(pactunit_x)
-            self._bank_insert_acptfact(pactunit_x)
+            self._bank_insert_oathunit(oathunit_x)
+            self._bank_insert_partyunit(oathunit_x)
+            self._bank_insert_groupunit(oathunit_x)
+            self._bank_insert_ideaunit(oathunit_x)
+            self._bank_insert_acptfact(oathunit_x)
 
-    def _bank_insert_pactunit(self, pactunit_x: PactUnit):
+    def _bank_insert_oathunit(self, oathunit_x: OathUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            cur.execute(get_pact_table_insert_sqlstr(pact_x=pactunit_x))
+            cur.execute(get_oath_table_insert_sqlstr(oath_x=oathunit_x))
 
-    def _bank_insert_partyunit(self, pactunit_x: PactUnit):
+    def _bank_insert_partyunit(self, oathunit_x: OathUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            for partyunit_x in pactunit_x._partys.values():
-                sqlstr = get_ledger_table_insert_sqlstr(pactunit_x, partyunit_x)
+            for partyunit_x in oathunit_x._partys.values():
+                sqlstr = get_ledger_table_insert_sqlstr(oathunit_x, partyunit_x)
                 cur.execute(sqlstr)
 
-    def _bank_insert_groupunit(self, pactunit_x: PactUnit):
+    def _bank_insert_groupunit(self, oathunit_x: OathUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            for groupunit_x in pactunit_x._groups.values():
+            for groupunit_x in oathunit_x._groups.values():
                 groupunit_catalog_x = GroupUnitCatalog(
-                    pact_healer=pactunit_x._healer,
+                    oath_healer=oathunit_x._healer,
                     groupunit_brand=groupunit_x.brand,
                     partylinks_set_by_cure_road=groupunit_x._partylinks_set_by_cure_road,
                 )
                 sqlstr = get_groupunit_catalog_table_insert_sqlstr(groupunit_catalog_x)
                 cur.execute(sqlstr)
 
-    def _bank_insert_ideaunit(self, pactunit_x: PactUnit):
+    def _bank_insert_ideaunit(self, oathunit_x: OathUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            for idea_x in pactunit_x._idea_dict.values():
-                idea_catalog_x = IdeaCatalog(pactunit_x._healer, idea_x.get_road())
+            for idea_x in oathunit_x._idea_dict.values():
+                idea_catalog_x = IdeaCatalog(oathunit_x._healer, idea_x.get_road())
                 sqlstr = get_idea_catalog_table_insert_sqlstr(idea_catalog_x)
                 cur.execute(sqlstr)
 
-    def _bank_insert_acptfact(self, pactunit_x: PactUnit):
+    def _bank_insert_acptfact(self, oathunit_x: OathUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            for acptfact_x in pactunit_x._idearoot._acptfactunits.values():
+            for acptfact_x in oathunit_x._idearoot._acptfactunits.values():
                 acptfact_catalog_x = AcptFactCatalog(
-                    pact_healer=pactunit_x._healer,
+                    oath_healer=oathunit_x._healer,
                     base=acptfact_x.base,
                     pick=acptfact_x.pick,
                 )
@@ -287,10 +287,10 @@ class CureUnit:
 
     def create_dirs_if_null(self, in_memory_bank: bool = None):
         cure_dir = self.get_object_root_dir()
-        pacts_dir = self.get_public_dir()
+        oaths_dir = self.get_public_dir()
         healingunits_dir = self.get_healingunits_dir()
         single_dir_create_if_null(x_path=cure_dir)
-        single_dir_create_if_null(x_path=pacts_dir)
+        single_dir_create_if_null(x_path=oaths_dir)
         single_dir_create_if_null(x_path=healingunits_dir)
         self._create_main_file_if_null(x_dir=cure_dir)
         self._create_bank_db(in_memory=in_memory_bank, overwrite=True)
@@ -324,9 +324,9 @@ class CureUnit:
         )
 
     def create_healingunit_from_public(self, title: str):
-        x_pact = self.get_public_pact(healer=title)
+        x_oath = self.get_public_oath(healer=title)
         x_healingunit = healingunit_shop(
-            title=x_pact._healer, env_dir=self.get_object_root_dir()
+            title=x_oath._healer, env_dir=self.get_object_root_dir()
         )
         self.set_healingunits_empty_if_null()
         self.set_healingunit_to_cure(x_healingunit)
@@ -337,7 +337,7 @@ class CureUnit:
 
     def save_healingunit_file(self, healing_title: str):
         x_healingunit = self.get_healingunit(title=healing_title)
-        x_healingunit._admin.save_isol_pact(x_healingunit.get_isol())
+        x_healingunit._admin.save_isol_oath(x_healingunit.get_isol())
 
     def rename_healingunit(self, old_title: str, new_title: str):
         healing_x = self.get_healingunit(title=old_title)
@@ -355,111 +355,111 @@ class CureUnit:
 
     # public dir management
     def get_public_dir(self):
-        return f"{self.get_object_root_dir()}/pacts"
+        return f"{self.get_object_root_dir()}/oaths"
 
     def get_ignores_dir(self, healing_title: str):
         per_x = self.get_healingunit(healing_title)
-        return per_x._admin._pacts_ignore_dir
+        return per_x._admin._oaths_ignore_dir
 
-    def get_public_pact(self, healer: str) -> PactUnit:
-        return get_pact_from_json(
+    def get_public_oath(self, healer: str) -> OathUnit:
+        return get_oath_from_json(
             x_func_open_file(
                 dest_dir=self.get_public_dir(), file_title=f"{healer}.json"
             )
         )
 
-    def get_pact_from_ignores_dir(self, healing_title: str, _healer: str) -> PactUnit:
-        return get_pact_from_json(
+    def get_oath_from_ignores_dir(self, healing_title: str, _healer: str) -> OathUnit:
+        return get_oath_from_json(
             x_func_open_file(
                 dest_dir=self.get_ignores_dir(healing_title=healing_title),
                 file_title=f"{_healer}.json",
             )
         )
 
-    def set_ignore_pact_file(self, healing_title: str, pact_obj: PactUnit):
+    def set_ignore_oath_file(self, healing_title: str, oath_obj: OathUnit):
         x_healingunit = self.get_healingunit(title=healing_title)
-        x_healingunit.set_ignore_pact_file(
-            pactunit=pact_obj, src_pact_healer=pact_obj._healer
+        x_healingunit.set_ignore_oath_file(
+            oathunit=oath_obj, src_oath_healer=oath_obj._healer
         )
 
-    def rename_public_pact(self, old_healer: str, new_healer: str):
-        pact_x = self.get_public_pact(healer=old_healer)
-        pact_x.set_healer(new_healer=new_healer)
-        self.save_public_pact(pact_x=pact_x)
-        self.del_public_pact(pact_x_healer=old_healer)
+    def rename_public_oath(self, old_healer: str, new_healer: str):
+        oath_x = self.get_public_oath(healer=old_healer)
+        oath_x.set_healer(new_healer=new_healer)
+        self.save_public_oath(oath_x=oath_x)
+        self.del_public_oath(oath_x_healer=old_healer)
 
-    def del_public_pact(self, pact_x_healer: str):
-        x_func_delete_dir(f"{self.get_public_dir()}/{pact_x_healer}.json")
+    def del_public_oath(self, oath_x_healer: str):
+        x_func_delete_dir(f"{self.get_public_dir()}/{oath_x_healer}.json")
 
-    def save_public_pact(self, pact_x: PactUnit):
-        pact_x.set_cure_handle(cure_handle=self.handle)
+    def save_public_oath(self, oath_x: OathUnit):
+        oath_x.set_cure_handle(cure_handle=self.handle)
         x_func_save_file(
             dest_dir=self.get_public_dir(),
-            file_title=f"{pact_x._healer}.json",
-            file_text=pact_x.get_json(),
+            file_title=f"{oath_x._healer}.json",
+            file_text=oath_x.get_json(),
         )
 
-    def reload_all_healingunits_src_pactunits(self):
+    def reload_all_healingunits_src_oathunits(self):
         for x_healingunit in self._healingunits.values():
-            x_healingunit.refresh_depot_pacts()
+            x_healingunit.refresh_depot_oaths()
 
     def get_public_dir_file_titles_list(self):
         return list(x_func_dir_files(dir_path=self.get_public_dir()).keys())
 
-    # pacts_dir to healer_pacts_dir management
-    def _healingunit_set_depot_pact(
+    # oaths_dir to healer_oaths_dir management
+    def _healingunit_set_depot_oath(
         self,
         healingunit: HealingUnit,
-        pactunit: PactUnit,
+        oathunit: OathUnit,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
-        ignore_pact: PactUnit = None,
+        ignore_oath: OathUnit = None,
     ):
-        healingunit.set_depot_pact(
-            pact_x=pactunit,
+        healingunit.set_depot_oath(
+            oath_x=oathunit,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
         )
-        if depotlink_type == "ignore" and ignore_pact != None:
-            healingunit.set_ignore_pact_file(
-                pactunit=ignore_pact, src_pact_healer=pactunit._healer
+        if depotlink_type == "ignore" and ignore_oath != None:
+            healingunit.set_ignore_oath_file(
+                oathunit=ignore_oath, src_oath_healer=oathunit._healer
             )
 
     def set_healer_depotlink(
         self,
         healing_title: str,
-        pact_healer: str,
+        oath_healer: str,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
-        ignore_pact: PactUnit = None,
+        ignore_oath: OathUnit = None,
     ):
         x_healingunit = self.get_healingunit(title=healing_title)
-        pact_x = self.get_public_pact(healer=pact_healer)
-        self._healingunit_set_depot_pact(
+        oath_x = self.get_public_oath(healer=oath_healer)
+        self._healingunit_set_depot_oath(
             healingunit=x_healingunit,
-            pactunit=pact_x,
+            oathunit=oath_x,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
-            ignore_pact=ignore_pact,
+            ignore_oath=ignore_oath,
         )
 
-    def create_depotlink_to_generated_pact(
+    def create_depotlink_to_generated_oath(
         self,
         healing_title: str,
-        pact_healer: str,
+        oath_healer: str,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
         x_healingunit = self.get_healingunit(title=healing_title)
-        pact_x = PactUnit(_healer=pact_healer)
-        self._healingunit_set_depot_pact(
+        oath_x = OathUnit(_healer=oath_healer)
+        self._healingunit_set_depot_oath(
             healingunit=x_healingunit,
-            pactunit=pact_x,
+            oathunit=oath_x,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
@@ -474,23 +474,23 @@ class CureUnit:
         debtor_weight: str,
     ):
         x_healingunit = self.get_healingunit(title=healing_title)
-        pact_x = self.get_public_pact(_healer=partytitle)
-        self._healingunit_set_depot_pact(
+        oath_x = self.get_public_oath(_healer=partytitle)
+        self._healingunit_set_depot_oath(
             healingunit=x_healingunit,
-            pactunit=pact_x,
+            oathunit=oath_x,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
         )
 
-    def del_depotlink(self, healing_title: str, pactunit_healer: str):
+    def del_depotlink(self, healing_title: str, oathunit_healer: str):
         x_healingunit = self.get_healingunit(title=healing_title)
-        x_healingunit.del_depot_pact(pact_healer=pactunit_healer)
+        x_healingunit.del_depot_oath(oath_healer=oathunit_healer)
 
-    # Healer output_pact
-    def get_output_pact(self, healing_title: str) -> PactUnit:
+    # Healer output_oath
+    def get_output_oath(self, healing_title: str) -> OathUnit:
         x_healingunit = self.get_healingunit(title=healing_title)
-        return x_healingunit._admin.get_remelded_output_pact()
+        return x_healingunit._admin.get_remelded_output_oath()
 
 
 def cureunit_shop(

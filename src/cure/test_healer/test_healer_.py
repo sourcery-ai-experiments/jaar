@@ -1,5 +1,5 @@
-from src.pact.pact import PactUnit
-from src.pact.x_func import (
+from src.oath.oath import OathUnit
+from src.oath.x_func import (
     count_files as x_func_count_files,
     open_file as x_func_open_file,
     delete_dir as x_func_delete_dir,
@@ -31,7 +31,7 @@ def test_healingunit_exists(healer_dir_setup_cleanup):
     assert ux._isol is None
 
 
-def test_healingunit_auto_output_to_public_SavesPactToPublicDirWhenTrue(
+def test_healingunit_auto_output_to_public_SavesOathToPublicDirWhenTrue(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
@@ -39,23 +39,23 @@ def test_healingunit_auto_output_to_public_SavesPactToPublicDirWhenTrue(
     cure_handle = get_temp_cure_handle()
     tim_text = "Tim"
     public_file_title = f"{tim_text}.json"
-    public_file_path = f"{get_temp_healingunit_dir()}/pacts/{public_file_title}"
+    public_file_path = f"{get_temp_healingunit_dir()}/oaths/{public_file_title}"
     print(f"{public_file_path=}")
-    # public_file_path = f"src/cure/examples/ex_env/pacts/{public_file_title}"
+    # public_file_path = f"src/cure/examples/ex_env/oaths/{public_file_title}"
     ux = healingunit_shop(tim_text, env_dir, cure_handle, _auto_output_to_public=True)
     ux.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
 
     # WHEN
-    tim_pact = PactUnit(_healer=tim_text)
-    tim_pact.set_cure_handle(cure_handle)
-    ux.set_depot_pact(tim_pact, "blind_trust")
+    tim_oath = OathUnit(_healer=tim_text)
+    tim_oath.set_cure_handle(cure_handle)
+    ux.set_depot_oath(tim_oath, "blind_trust")
 
     # THEN
     assert os_path.exists(public_file_path)
 
 
-def test_healingunit_auto_output_to_public_DoesNotSavePactToPublicDirWhenFalse(
+def test_healingunit_auto_output_to_public_DoesNotSaveOathToPublicDirWhenFalse(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
@@ -63,21 +63,21 @@ def test_healingunit_auto_output_to_public_DoesNotSavePactToPublicDirWhenFalse(
     cure_handle = get_temp_cure_handle()
     tim_text = "Tim"
     public_file_title = f"{tim_text}.json"
-    public_file_path = f"{get_temp_healingunit_dir()}/pacts/{public_file_title}"
+    public_file_path = f"{get_temp_healingunit_dir()}/oaths/{public_file_title}"
     print(f"{public_file_path=}")
-    # public_file_path = f"src/cure/examples/ex_env/pacts/{public_file_title}"
+    # public_file_path = f"src/cure/examples/ex_env/oaths/{public_file_title}"
     ux = healingunit_shop(tim_text, env_dir, cure_handle, _auto_output_to_public=False)
     ux.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
 
     # WHEN
-    ux.set_depot_pact(PactUnit(_healer=tim_text), depotlink_type="blind_trust")
+    ux.set_depot_oath(OathUnit(_healer=tim_text), depotlink_type="blind_trust")
 
     # THEN
     assert os_path.exists(public_file_path) is False
 
 
-def test_healingunit_get_isol_createsEmptyPactWhenFileDoesNotExist(
+def test_healingunit_get_isol_createsEmptyOathWhenFileDoesNotExist(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
@@ -99,7 +99,7 @@ def test_healingunit_get_isol_createsEmptyPactWhenFileDoesNotExist(
     assert tim_ux._isol != None
 
 
-def test_healingunit_get_isol_getsMemoryPactIfExists(
+def test_healingunit_get_isol_getsMemoryOathIfExists(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
@@ -117,7 +117,7 @@ def test_healingunit_get_isol_getsMemoryPactIfExists(
 
     # WHEN
     ray_text = "Ray"
-    tim_ux._isol = PactUnit(_healer=ray_text)
+    tim_ux._isol = OathUnit(_healer=ray_text)
     cx_isol2 = tim_ux.get_isol()
 
     # THEN
@@ -133,7 +133,7 @@ def test_healingunit_get_isol_getsMemoryPactIfExists(
     assert cx_isol3 == cx_isol1
 
 
-def test_healingunit_set_isol_savesIsolPactSet_isol_None(
+def test_healingunit_set_isol_savesIsolOathSet_isol_None(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
@@ -161,7 +161,7 @@ def test_healingunit_set_isol_savesIsolPactSet_isol_None(
     assert cx_isol2._idearoot._uid == uid_text
 
 
-def test_healingunit_set_isol_savesGivenPactSet_isol_None(
+def test_healingunit_set_isol_savesGivenOathSet_isol_None(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
@@ -177,8 +177,8 @@ def test_healingunit_set_isol_savesGivenPactSet_isol_None(
     isol_uid_text = "this is ._isol uid"
     ux._isol._idearoot._uid = isol_uid_text
 
-    new_cx = PactUnit(_healer=tim_text)
-    new_cx_uid_text = "this is pulled PactUnit uid"
+    new_cx = OathUnit(_healer=tim_text)
+    new_cx_uid_text = "this is pulled OathUnit uid"
     new_cx._idearoot._uid = new_cx_uid_text
 
     ux.set_isol(new_cx)
@@ -213,8 +213,8 @@ def test_healingunit_set_isol_if_emtpy_DoesNotReplace_isol(
     tim_text = "Tim"
     ux = healingunit_shop(tim_text, get_temp_healingunit_dir(), get_temp_cure_handle())
     ux.create_core_dir_and_files()
-    saved_cx = PactUnit(_healer=tim_text)
-    saved_cx_uid_text = "this is pulled PactUnit uid"
+    saved_cx = OathUnit(_healer=tim_text)
+    saved_cx_uid_text = "this is pulled OathUnit uid"
     saved_cx._idearoot._uid = saved_cx_uid_text
     ux.set_isol(saved_cx)
     ux.get_isol()

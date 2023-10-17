@@ -1,14 +1,14 @@
-from src.pact.pact import (
-    get_from_json as pactunit_get_from_json,
-    get_dict_of_pact_from_dict,
-    get_meld_of_pact_files,
+from src.oath.oath import (
+    get_from_json as oathunit_get_from_json,
+    get_dict_of_oath_from_dict,
+    get_meld_of_oath_files,
     PersonName,
-    PactUnit,
+    OathUnit,
     partyunit_shop,
-    get_from_json as pactunit_get_from_json,
+    get_from_json as oathunit_get_from_json,
     PartyTitle,
 )
-from src.pact.x_func import (
+from src.oath.x_func import (
     x_get_json,
     single_dir_create_if_null,
     rename_dir,
@@ -35,32 +35,32 @@ class HealingAdmin:
     _healingunits_dir: str = None
     _isol_file_title: str = None
     _isol_file_path: str = None
-    _pact_output_file_title: str = None
-    _pact_output_file_path: str = None
+    _oath_output_file_title: str = None
+    _oath_output_file_path: str = None
     _public_file_title: str = None
-    _pacts_public_dir: str = None
-    _pacts_depot_dir: str = None
-    _pacts_ignore_dir: str = None
-    _pacts_bond_dir: str = None
-    _pacts_digest_dir: str = None
+    _oaths_public_dir: str = None
+    _oaths_depot_dir: str = None
+    _oaths_ignore_dir: str = None
+    _oaths_bond_dir: str = None
+    _oaths_digest_dir: str = None
 
     def set_dirs(self):
         env_healingunits_folder = "healingunits"
-        pacts_str = "pacts"
+        oaths_str = "oaths"
         self._healingunits_dir = f"{self._env_dir}/{env_healingunits_folder}"
         self._healingunit_dir = f"{self._healingunits_dir}/{self._healing_title}"
-        self._isol_file_title = "isol_pact.json"
+        self._isol_file_title = "isol_oath.json"
         self._isol_file_path = f"{self._healingunit_dir}/{self._isol_file_title}"
-        self._pact_output_file_title = "output_pact.json"
-        self._pact_output_file_path = (
-            f"{self._healingunit_dir}/{self._pact_output_file_title}"
+        self._oath_output_file_title = "output_oath.json"
+        self._oath_output_file_path = (
+            f"{self._healingunit_dir}/{self._oath_output_file_title}"
         )
         self._public_file_title = f"{self._healing_title}.json"
-        self._pacts_public_dir = f"{self._env_dir}/{pacts_str}"
-        self._pacts_depot_dir = f"{self._healingunit_dir}/{pacts_str}"
-        self._pacts_ignore_dir = f"{self._healingunit_dir}/ignores"
-        self._pacts_bond_dir = f"{self._healingunit_dir}/bonds"
-        self._pacts_digest_dir = f"{self._healingunit_dir}/digests"
+        self._oaths_public_dir = f"{self._env_dir}/{oaths_str}"
+        self._oaths_depot_dir = f"{self._healingunit_dir}/{oaths_str}"
+        self._oaths_ignore_dir = f"{self._healingunit_dir}/ignores"
+        self._oaths_bond_dir = f"{self._healingunit_dir}/bonds"
+        self._oaths_digest_dir = f"{self._healingunit_dir}/digests"
 
     def set_healing_title(self, new_title: str):
         old_healingunit_dir = self._healingunit_dir
@@ -69,131 +69,131 @@ class HealingAdmin:
 
         rename_dir(src=old_healingunit_dir, dst=self._healingunit_dir)
 
-    def create_core_dir_and_files(self, isol_pact: PactUnit = None):
+    def create_core_dir_and_files(self, isol_oath: OathUnit = None):
         single_dir_create_if_null(x_path=self._healingunit_dir)
-        single_dir_create_if_null(x_path=self._pacts_public_dir)
-        single_dir_create_if_null(x_path=self._pacts_depot_dir)
-        single_dir_create_if_null(x_path=self._pacts_digest_dir)
-        single_dir_create_if_null(x_path=self._pacts_ignore_dir)
-        single_dir_create_if_null(x_path=self._pacts_bond_dir)
-        if isol_pact is None and self._isol_pact_exists() == False:
-            self.save_isol_pact(self._get_empty_isol_pact())
-        elif isol_pact != None and self._isol_pact_exists() == False:
-            self.save_isol_pact(isol_pact)
+        single_dir_create_if_null(x_path=self._oaths_public_dir)
+        single_dir_create_if_null(x_path=self._oaths_depot_dir)
+        single_dir_create_if_null(x_path=self._oaths_digest_dir)
+        single_dir_create_if_null(x_path=self._oaths_ignore_dir)
+        single_dir_create_if_null(x_path=self._oaths_bond_dir)
+        if isol_oath is None and self._isol_oath_exists() == False:
+            self.save_isol_oath(self._get_empty_isol_oath())
+        elif isol_oath != None and self._isol_oath_exists() == False:
+            self.save_isol_oath(isol_oath)
 
-    def _save_pact_to_path(
-        self, pact_x: PactUnit, dest_dir: str, file_title: str = None
+    def _save_oath_to_path(
+        self, oath_x: OathUnit, dest_dir: str, file_title: str = None
     ):
         if file_title is None:
-            file_title = f"{pact_x._healer}.json"
-        # if dest_dir == self._pacts_public_dir:
+            file_title = f"{oath_x._healer}.json"
+        # if dest_dir == self._oaths_public_dir:
         #     file_title = self._public_file_title
         x_func_save_file(
             dest_dir=dest_dir,
             file_title=file_title,
-            file_text=pact_x.get_json(),
+            file_text=oath_x.get_json(),
             replace=True,
         )
 
-    def save_pact_to_public(self, pact_x: PactUnit):
-        dest_dir = self._pacts_public_dir
-        self._save_pact_to_path(pact_x, dest_dir)
+    def save_oath_to_public(self, oath_x: OathUnit):
+        dest_dir = self._oaths_public_dir
+        self._save_oath_to_path(oath_x, dest_dir)
 
-    def save_ignore_pact(self, pact_x: PactUnit, src_pact_healer: str):
-        dest_dir = self._pacts_ignore_dir
+    def save_ignore_oath(self, oath_x: OathUnit, src_oath_healer: str):
+        dest_dir = self._oaths_ignore_dir
         file_title = None
-        if src_pact_healer != None:
-            file_title = f"{src_pact_healer}.json"
+        if src_oath_healer != None:
+            file_title = f"{src_oath_healer}.json"
         else:
-            file_title = f"{pact_x._healer}.json"
-        self._save_pact_to_path(pact_x, dest_dir, file_title)
+            file_title = f"{oath_x._healer}.json"
+        self._save_oath_to_path(oath_x, dest_dir, file_title)
 
-    def save_pact_to_digest(self, pact_x: PactUnit, src_pact_healer: str = None):
-        dest_dir = self._pacts_digest_dir
+    def save_oath_to_digest(self, oath_x: OathUnit, src_oath_healer: str = None):
+        dest_dir = self._oaths_digest_dir
         file_title = None
-        if src_pact_healer != None:
-            file_title = f"{src_pact_healer}.json"
+        if src_oath_healer != None:
+            file_title = f"{src_oath_healer}.json"
         else:
-            file_title = f"{pact_x._healer}.json"
-        self._save_pact_to_path(pact_x, dest_dir, file_title)
+            file_title = f"{oath_x._healer}.json"
+        self._save_oath_to_path(oath_x, dest_dir, file_title)
 
-    def save_isol_pact(self, pact_x: PactUnit):
-        pact_x.set_healer(self._healing_title)
-        self._save_pact_to_path(pact_x, self._healingunit_dir, self._isol_file_title)
+    def save_isol_oath(self, oath_x: OathUnit):
+        oath_x.set_healer(self._healing_title)
+        self._save_oath_to_path(oath_x, self._healingunit_dir, self._isol_file_title)
 
-    def save_pact_to_depot(self, pact_x: PactUnit):
-        dest_dir = self._pacts_depot_dir
-        self._save_pact_to_path(pact_x, dest_dir)
+    def save_oath_to_depot(self, oath_x: OathUnit):
+        dest_dir = self._oaths_depot_dir
+        self._save_oath_to_path(oath_x, dest_dir)
 
-    def save_output_pact(self) -> PactUnit:
-        isol_pact_x = self.open_isol_pact()
-        isol_pact_x.meld(isol_pact_x, party_weight=1)
-        pact_x = get_meld_of_pact_files(
-            primary_pact=isol_pact_x,
-            meldees_dir=self._pacts_digest_dir,
+    def save_output_oath(self) -> OathUnit:
+        isol_oath_x = self.open_isol_oath()
+        isol_oath_x.meld(isol_oath_x, party_weight=1)
+        oath_x = get_meld_of_oath_files(
+            primary_oath=isol_oath_x,
+            meldees_dir=self._oaths_digest_dir,
         )
         dest_dir = self._healingunit_dir
-        file_title = self._pact_output_file_title
-        self._save_pact_to_path(pact_x, dest_dir, file_title)
+        file_title = self._oath_output_file_title
+        self._save_oath_to_path(oath_x, dest_dir, file_title)
 
-    def open_public_pact(self, healer: PersonName) -> str:
+    def open_public_oath(self, healer: PersonName) -> str:
         file_title_x = f"{healer}.json"
-        return x_func_open_file(self._pacts_public_dir, file_title_x)
+        return x_func_open_file(self._oaths_public_dir, file_title_x)
 
-    def open_depot_pact(self, healer: PersonName) -> PactUnit:
+    def open_depot_oath(self, healer: PersonName) -> OathUnit:
         file_title_x = f"{healer}.json"
-        x_pact_json = x_func_open_file(self._pacts_depot_dir, file_title_x)
-        return pactunit_get_from_json(x_pact_json=x_pact_json)
+        x_oath_json = x_func_open_file(self._oaths_depot_dir, file_title_x)
+        return oathunit_get_from_json(x_oath_json=x_oath_json)
 
-    def open_ignore_pact(self, healer: PersonName) -> PactUnit:
+    def open_ignore_oath(self, healer: PersonName) -> OathUnit:
         ignore_file_title = f"{healer}.json"
-        pact_json = x_func_open_file(self._pacts_ignore_dir, ignore_file_title)
-        pact_obj = pactunit_get_from_json(x_pact_json=pact_json)
-        pact_obj.set_pact_metrics()
-        return pact_obj
+        oath_json = x_func_open_file(self._oaths_ignore_dir, ignore_file_title)
+        oath_obj = oathunit_get_from_json(x_oath_json=oath_json)
+        oath_obj.set_oath_metrics()
+        return oath_obj
 
-    def open_isol_pact(self) -> PactUnit:
-        x_pact = None
-        if not self._isol_pact_exists():
-            self.save_isol_pact(self._get_empty_isol_pact())
+    def open_isol_oath(self) -> OathUnit:
+        x_oath = None
+        if not self._isol_oath_exists():
+            self.save_isol_oath(self._get_empty_isol_oath())
         ct = x_func_open_file(self._healingunit_dir, self._isol_file_title)
-        x_pact = pactunit_get_from_json(x_pact_json=ct)
-        x_pact.set_pact_metrics()
-        return x_pact
+        x_oath = oathunit_get_from_json(x_oath_json=ct)
+        x_oath.set_oath_metrics()
+        return x_oath
 
-    def open_output_pact(self) -> PactUnit:
-        x_pact_json = x_func_open_file(
-            self._healingunit_dir, self._pact_output_file_title
+    def open_output_oath(self) -> OathUnit:
+        x_oath_json = x_func_open_file(
+            self._healingunit_dir, self._oath_output_file_title
         )
-        x_pact = pactunit_get_from_json(x_pact_json)
-        x_pact.set_pact_metrics()
-        return x_pact
+        x_oath = oathunit_get_from_json(x_oath_json)
+        x_oath.set_oath_metrics()
+        return x_oath
 
-    def _get_empty_isol_pact(self):
-        x_pact = PactUnit(_healer=self._healing_title, _weight=0)
-        x_pact.add_partyunit(title=self._healing_title)
-        x_pact.set_cure_handle(self._cure_handle)
-        return x_pact
+    def _get_empty_isol_oath(self):
+        x_oath = OathUnit(_healer=self._healing_title, _weight=0)
+        x_oath.add_partyunit(title=self._healing_title)
+        x_oath.set_cure_handle(self._cure_handle)
+        return x_oath
 
-    def erase_depot_pact(self, healer):
-        x_func_delete_dir(f"{self._pacts_depot_dir}/{healer}.json")
+    def erase_depot_oath(self, healer):
+        x_func_delete_dir(f"{self._oaths_depot_dir}/{healer}.json")
 
-    def erase_digest_pact(self, healer):
-        x_func_delete_dir(f"{self._pacts_digest_dir}/{healer}.json")
+    def erase_digest_oath(self, healer):
+        x_func_delete_dir(f"{self._oaths_digest_dir}/{healer}.json")
 
-    def erase_isol_pact_file(self):
+    def erase_isol_oath_file(self):
         x_func_delete_dir(dir=f"{self._healingunit_dir}/{self._isol_file_title}")
 
     def raise_exception_if_no_file(self, dir_type: str, healer: str):
-        x_pact_file_title = f"{healer}.json"
+        x_oath_file_title = f"{healer}.json"
         if dir_type == "depot":
-            x_pact_file_path = f"{self._pacts_depot_dir}/{x_pact_file_title}"
-        if not os_path.exists(x_pact_file_path):
+            x_oath_file_path = f"{self._oaths_depot_dir}/{x_oath_file_title}"
+        if not os_path.exists(x_oath_file_path):
             raise InvalidHealingException(
-                f"Healer {self._healing_title} cannot find pact {healer} in {x_pact_file_path}"
+                f"Healer {self._healing_title} cannot find oath {healer} in {x_oath_file_path}"
             )
 
-    def _isol_pact_exists(self):
+    def _isol_oath_exists(self):
         bool_x = None
         try:
             x_func_open_file(self._healingunit_dir, self._isol_file_title)
@@ -202,12 +202,12 @@ class HealingAdmin:
             bool_x = False
         return bool_x
 
-    def get_remelded_output_pact(self):
-        self.save_output_pact()
-        return self.open_output_pact()
+    def get_remelded_output_oath(self):
+        self.save_output_oath()
+        return self.open_output_oath()
 
     def save_refreshed_output_to_public(self):
-        self.save_pact_to_public(self.get_remelded_output_pact())
+        self.save_oath_to_public(self.get_remelded_output_oath())
 
 
 def healingadmin_shop(
@@ -223,32 +223,32 @@ def healingadmin_shop(
 @dataclass
 class HealingUnit:
     _admin: HealingAdmin = None
-    _isol: PactUnit = None
+    _isol: OathUnit = None
 
-    def refresh_depot_pacts(self):
+    def refresh_depot_oaths(self):
         for party_x in self._isol._partys.values():
             if party_x.title != self._admin._healing_title:
-                party_pact = pactunit_get_from_json(
-                    x_pact_json=self._admin.open_public_pact(party_x.title)
+                party_oath = oathunit_get_from_json(
+                    x_oath_json=self._admin.open_public_oath(party_x.title)
                 )
-                self.set_depot_pact(
-                    pact_x=party_pact,
+                self.set_depot_oath(
+                    oath_x=party_oath,
                     depotlink_type=party_x.depotlink_type,
                     creditor_weight=party_x.creditor_weight,
                     debtor_weight=party_x.debtor_weight,
                 )
 
-    def set_depot_pact(
+    def set_depot_oath(
         self,
-        pact_x: PactUnit,
+        oath_x: OathUnit,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
         self.set_isol_if_empty()
-        self._admin.save_pact_to_depot(pact_x)
+        self._admin.save_oath_to_depot(oath_x)
         self._set_depotlink(
-            pact_x._healer, depotlink_type, creditor_weight, debtor_weight
+            oath_x._healer, depotlink_type, creditor_weight, debtor_weight
         )
         if self.get_isol()._auto_output_to_public:
             self._admin.save_refreshed_output_to_public()
@@ -272,23 +272,23 @@ class HealingUnit:
         if link_type == "assignment":
             self._set_assignment_depotlink(outer_healer)
         elif link_type == "blind_trust":
-            x_pact = self._admin.open_depot_pact(healer=outer_healer)
-            self._admin.save_pact_to_digest(x_pact)
+            x_oath = self._admin.open_depot_oath(healer=outer_healer)
+            self._admin.save_oath_to_digest(x_oath)
         elif link_type == "ignore":
-            new_x_pact = PactUnit(_healer=outer_healer)
-            new_x_pact.set_cure_handle(self._admin._cure_handle)
-            self.set_ignore_pact_file(new_x_pact, new_x_pact._healer)
+            new_x_oath = OathUnit(_healer=outer_healer)
+            new_x_oath.set_cure_handle(self._admin._cure_handle)
+            self.set_ignore_oath_file(new_x_oath, new_x_oath._healer)
 
     def _set_assignment_depotlink(self, outer_healer):
-        src_pact = self._admin.open_depot_pact(outer_healer)
-        src_pact.set_pact_metrics()
-        empty_pact = PactUnit(_healer=self._admin._healing_title)
-        empty_pact.set_cure_handle(self._admin._cure_handle)
-        assign_pact = src_pact.get_assignment(
-            empty_pact, self.get_isol()._partys, self._admin._healing_title
+        src_oath = self._admin.open_depot_oath(outer_healer)
+        src_oath.set_oath_metrics()
+        empty_oath = OathUnit(_healer=self._admin._healing_title)
+        empty_oath.set_cure_handle(self._admin._cure_handle)
+        assign_oath = src_oath.get_assignment(
+            empty_oath, self.get_isol()._partys, self._admin._healing_title
         )
-        assign_pact.set_pact_metrics()
-        self._admin.save_pact_to_digest(assign_pact, src_pact._healer)
+        assign_oath.set_oath_metrics()
+        self._admin.save_oath_to_digest(assign_oath, src_oath._healer)
 
     def _set_partyunit_depotlink(
         self,
@@ -310,32 +310,32 @@ class HealingUnit:
         else:
             party_x.set_depotlink_type(link_type, creditor_weight, debtor_weight)
 
-    def del_depot_pact(self, pact_healer: str):
-        self._del_depotlink(partytitle=pact_healer)
-        self._admin.erase_depot_pact(pact_healer)
-        self._admin.erase_digest_pact(pact_healer)
+    def del_depot_oath(self, oath_healer: str):
+        self._del_depotlink(partytitle=oath_healer)
+        self._admin.erase_depot_oath(oath_healer)
+        self._admin.erase_digest_oath(oath_healer)
 
     def _del_depotlink(self, partytitle: PartyTitle):
         self._isol.get_party(partytitle).del_depotlink_type()
 
     def get_isol(self):
         if self._isol is None:
-            self._isol = self._admin.open_isol_pact()
+            self._isol = self._admin.open_isol_oath()
         return self._isol
 
-    def set_isol(self, pact_x: PactUnit = None):
-        if pact_x != None:
-            self._isol = pact_x
-        self._admin.save_isol_pact(self._isol)
+    def set_isol(self, oath_x: OathUnit = None):
+        if oath_x != None:
+            self._isol = oath_x
+        self._admin.save_isol_oath(self._isol)
         self._isol = None
 
     def set_isol_if_empty(self):
         # if self._isol is None:
         self.get_isol()
 
-    def set_ignore_pact_file(self, pactunit: PactUnit, src_pact_healer: str):
-        self._admin.save_ignore_pact(pactunit, src_pact_healer)
-        self._admin.save_pact_to_digest(pactunit, src_pact_healer)
+    def set_ignore_oath_file(self, oathunit: OathUnit, src_oath_healer: str):
+        self._admin.save_ignore_oath(oathunit, src_oath_healer)
+        self._admin.save_oath_to_digest(oathunit, src_oath_healer)
 
     # housekeeping
     def set_env_dir(self, env_dir: str, healing_title: str, cure_handle: str):
@@ -343,8 +343,8 @@ class HealingUnit:
             _healing_title=healing_title, _env_dir=env_dir, _cure_handle=cure_handle
         )
 
-    def create_core_dir_and_files(self, isol_pact: PactUnit = None):
-        self._admin.create_core_dir_and_files(isol_pact)
+    def create_core_dir_and_files(self, isol_oath: OathUnit = None):
+        self._admin.create_core_dir_and_files(isol_oath)
 
 
 def healingunit_shop(

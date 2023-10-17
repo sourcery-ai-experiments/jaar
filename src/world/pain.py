@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from src.cure.cure import CureHandle
-from src.pact.pact import PersonName
+from src.oath.oath import PersonName
 
 
 @dataclass
