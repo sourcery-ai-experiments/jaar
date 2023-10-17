@@ -147,16 +147,17 @@ def test_contractunit_get_bond_status_ChecksActionIdeaGroupsheirsEqualContractGr
     cx.add_partyunit(title=tom_text)
     bob_text = "bob"
     cx.add_partyunit(title=bob_text)
-    home_occupants_text = "home occupants"
-    home_occupants_groupunit = groupunit_shop(brand=home_occupants_text)
-    home_occupants_groupunit.set_partylink(partylink=partylink_shop(title=tom_text))
-    home_occupants_groupunit.set_partylink(partylink=partylink_shop(title=bob_text))
-    cx.set_groupunit(groupunit=home_occupants_groupunit)
+    house_occupants_text = "house occupants"
+    house_occupants_groupunit = groupunit_shop(brand=house_occupants_text)
+    house_occupants_groupunit.set_partylink(partylink=partylink_shop(title=tom_text))
+    house_occupants_groupunit.set_partylink(partylink=partylink_shop(title=bob_text))
+    cx.set_groupunit(groupunit=house_occupants_groupunit)
     assert cx.get_bond_status() == False
 
     # WHEN
     cx.edit_idea_attr(
-        road=clean_cookery_road, balancelink=balancelink_shop(brand=home_occupants_text)
+        road=clean_cookery_road,
+        balancelink=balancelink_shop(brand=house_occupants_text),
     )
     # THEN
     assert cx.get_bond_status()

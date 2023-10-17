@@ -3,16 +3,16 @@ from src.world.pain import painunit_shop, curelink_shop, healerlink_shop
 
 def test_curelink_set_relative_weight_SetsCorrectly():
     # GIVEN
-    home_text = "home"
-    home_curelink = curelink_shop(handle=home_text)
-    assert home_curelink._relative_weight is None
+    diet_text = "diet"
+    diet_curelink = curelink_shop(handle=diet_text)
+    assert diet_curelink._relative_weight is None
 
     # WHEN
     x_relative_weight = 0.45
-    home_curelink.set_relative_weight(x_relative_weight)
+    diet_curelink.set_relative_weight(x_relative_weight)
 
     # THEN
-    assert home_curelink._relative_weight == x_relative_weight
+    assert diet_curelink._relative_weight == x_relative_weight
 
 
 def test_healerunit_set_relative_weight_SetsCorrectly():
@@ -45,16 +45,16 @@ def test_painunit_set_relative_weight_SetsCorrectly():
 
 def test_curelink_set_person_importance_SetsCorrectly():
     # GIVEN
-    home_text = "home"
-    home_curelink = curelink_shop(handle=home_text)
-    assert home_curelink._person_importance is None
+    diet_text = "diet"
+    diet_curelink = curelink_shop(handle=diet_text)
+    assert diet_curelink._person_importance is None
 
     # WHEN
     x_person_importance = 0.45
-    home_curelink.set_person_importance(x_person_importance)
+    diet_curelink.set_person_importance(x_person_importance)
 
     # THEN
-    assert home_curelink._person_importance == x_person_importance
+    assert diet_curelink._person_importance == x_person_importance
 
 
 def test_healerunit_set_person_importance_SetsCorrectly():

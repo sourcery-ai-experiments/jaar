@@ -620,10 +620,10 @@ def test_contract_create_agenda_item_CorrectlyCreatesAllContractAttributes():
     clean_cookery_road = Road(f"{clean_things_road},{clean_cookery_text}")
     clean_cookery_idea = IdeaKid(_label=clean_cookery_text, _walk=clean_things_road)
     print(f"{clean_cookery_idea.get_road()=}")
-    home_text = "home"
-    home_road = Road(f"{a1._cure_handle},{home_text}")
+    house_text = "house"
+    house_road = Road(f"{a1._cure_handle},{house_text}")
     cookery_room_text = "cookery room"
-    cookery_room_road = Road(f"{home_road},{cookery_room_text}")
+    cookery_room_road = Road(f"{house_road},{cookery_room_text}")
     cookery_dirty_text = "dirty"
     cookery_dirty_road = Road(f"{cookery_room_road},{cookery_dirty_text}")
 

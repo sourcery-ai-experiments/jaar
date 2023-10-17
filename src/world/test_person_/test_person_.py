@@ -47,15 +47,15 @@ def test_personunit_set_cureunit_CorrectlyCreatesCureUnit():
     xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
 
     # WHEN
-    home_text = "home"
-    xao_person_obj.set_cureunit(cure_handle=home_text)
+    diet_text = "diet"
+    xao_person_obj.set_cureunit(cure_handle=diet_text)
 
     # THEN
-    # home_cure = xao_person.get_cure()
-    home_cure = xao_person_obj._cures.get(home_text)
-    assert home_cure != None
-    assert home_cure.handle == home_text
-    assert home_cure.cures_dir == f"{xao_person_dir}/cures"
+    # diet_cure = xao_person.get_cure()
+    diet_cure = xao_person_obj._cures.get(diet_text)
+    assert diet_cure != None
+    assert diet_cure.handle == diet_text
+    assert diet_cure.cures_dir == f"{xao_person_dir}/cures"
 
 
 def test_personunit_get_cureunit_CorrectlyGetsCureUnit():
@@ -63,16 +63,16 @@ def test_personunit_get_cureunit_CorrectlyGetsCureUnit():
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
     xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
-    home_text = "home"
-    xao_person_obj.set_cureunit(home_text)
+    diet_text = "diet"
+    xao_person_obj.set_cureunit(diet_text)
 
     # WHEN
-    home_cure = xao_person_obj.get_cureunit(home_text)
+    diet_cure = xao_person_obj.get_cureunit(diet_text)
 
     # THEN
-    assert home_cure != None
-    assert home_cure.handle == home_text
-    assert home_cure.cures_dir == f"{xao_person_dir}/cures"
+    assert diet_cure != None
+    assert diet_cure.handle == diet_text
+    assert diet_cure.cures_dir == f"{xao_person_dir}/cures"
 
 
 def test_personunit_del_cureunit_CorrectlyDeletesCureUnit():
@@ -80,19 +80,19 @@ def test_personunit_del_cureunit_CorrectlyDeletesCureUnit():
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
     xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
-    home_text = "home"
-    xao_person_obj.set_cureunit(home_text)
-    before_home_cure = xao_person_obj.get_cureunit(home_text)
-    assert before_home_cure != None
-    assert before_home_cure.handle == home_text
-    assert before_home_cure.cures_dir == f"{xao_person_dir}/cures"
+    diet_text = "diet"
+    xao_person_obj.set_cureunit(diet_text)
+    before_diet_cure = xao_person_obj.get_cureunit(diet_text)
+    assert before_diet_cure != None
+    assert before_diet_cure.handle == diet_text
+    assert before_diet_cure.cures_dir == f"{xao_person_dir}/cures"
 
     # WHEN
-    xao_person_obj.del_cureunit(home_text)
+    xao_person_obj.del_cureunit(diet_text)
 
     # THEN
-    after_home_cure = xao_person_obj.get_cureunit(home_text)
-    assert after_home_cure is None
+    after_diet_cure = xao_person_obj.get_cureunit(diet_text)
+    assert after_diet_cure is None
 
 
 def test_personunit_create_painunit_from_kind_CorrectlyCreatesPainUnit():

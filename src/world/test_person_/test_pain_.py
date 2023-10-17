@@ -11,46 +11,46 @@ from src.world.pain import (
 
 def test_curelink_exists():
     # GIVEN
-    home_text = "home"
-    home_weight = 3
+    diet_text = "diet"
+    diet_weight = 3
 
     # WHEN
-    home_curelink = CureLink(handle=home_text, weight=home_weight)
+    diet_curelink = CureLink(handle=diet_text, weight=diet_weight)
 
     # THEN
-    assert home_curelink.handle == home_text
-    assert home_curelink.weight == home_weight
-    assert home_curelink._relative_weight is None
-    assert home_curelink._person_importance is None
+    assert diet_curelink.handle == diet_text
+    assert diet_curelink.weight == diet_weight
+    assert diet_curelink._relative_weight is None
+    assert diet_curelink._person_importance is None
 
 
 def test_curelink_shop_ReturnsCorrectObj():
     # GIVEN
-    home_text = "home"
-    home_weight = 5
+    diet_text = "diet"
+    diet_weight = 5
 
     # WHEN
-    home_curelink = curelink_shop(handle=home_text, weight=home_weight)
+    diet_curelink = curelink_shop(handle=diet_text, weight=diet_weight)
 
     # THEN
-    assert home_curelink.handle == home_text
-    assert home_curelink.weight == home_weight
-    assert home_curelink._relative_weight is None
-    assert home_curelink._person_importance is None
+    assert diet_curelink.handle == diet_text
+    assert diet_curelink.weight == diet_weight
+    assert diet_curelink._relative_weight is None
+    assert diet_curelink._person_importance is None
 
 
 def test_curelink_shop_ReturnsCorrectObj_EmptyWeight():
     # GIVEN
-    cure_text = "home"
+    cure_text = "diet"
 
     # WHEN
-    home_curelink = curelink_shop(handle=cure_text)
+    diet_curelink = curelink_shop(handle=cure_text)
 
     # THEN
-    assert home_curelink.handle == cure_text
-    assert home_curelink.weight == 1
-    assert home_curelink._relative_weight is None
-    assert home_curelink._person_importance is None
+    assert diet_curelink.handle == cure_text
+    assert diet_curelink.weight == 1
+    assert diet_curelink._relative_weight is None
+    assert diet_curelink._person_importance is None
 
 
 def test_healerlink_exists():
@@ -113,50 +113,50 @@ def test_healerlink_set_curelink_CorrectlySetsCureLink():
     yao_healerlink = healerlink_shop(person_name=yao_text)
 
     # WHEN
-    home_text = "home"
-    home_curelink = curelink_shop(handle=home_text)
-    yao_healerlink.set_curelink(home_curelink)
+    diet_text = "diet"
+    diet_curelink = curelink_shop(handle=diet_text)
+    yao_healerlink.set_curelink(diet_curelink)
 
     # THEN
-    # home_cure = xao_pain.get_cure()
-    home_cure = yao_healerlink._curelinks.get(home_text)
-    assert home_cure != None
-    assert home_cure.handle == home_text
+    # diet_cure = xao_pain.get_cure()
+    diet_cure = yao_healerlink._curelinks.get(diet_text)
+    assert diet_cure != None
+    assert diet_cure.handle == diet_text
 
 
 def test_healerlink_get_cureunit_CorrectlyGetsAnCureUnit():
     # GIVEN
     yao_text = "yao"
     yao_healerlink = healerlink_shop(person_name=yao_text)
-    home_text = "home"
-    home_curelink = curelink_shop(handle=home_text)
-    yao_healerlink.set_curelink(home_curelink)
+    diet_text = "diet"
+    diet_curelink = curelink_shop(handle=diet_text)
+    yao_healerlink.set_curelink(diet_curelink)
 
     # WHEN
-    home_cure = yao_healerlink.get_curelink(home_text)
+    diet_cure = yao_healerlink.get_curelink(diet_text)
 
     # THEN
-    assert home_cure != None
-    assert home_cure.handle == home_text
+    assert diet_cure != None
+    assert diet_cure.handle == diet_text
 
 
 def test_healerlink_del_cureunit_CorrectlyDeletesCureUnit():
     # GIVEN
     yao_text = "yao"
     yao_healerlink = healerlink_shop(person_name=yao_text)
-    home_text = "home"
-    home_curelink = curelink_shop(handle=home_text)
-    yao_healerlink.set_curelink(home_curelink)
-    home_cure = yao_healerlink.get_curelink(home_text)
-    assert home_cure != None
-    assert home_cure.handle == home_text
+    diet_text = "diet"
+    diet_curelink = curelink_shop(handle=diet_text)
+    yao_healerlink.set_curelink(diet_curelink)
+    diet_cure = yao_healerlink.get_curelink(diet_text)
+    assert diet_cure != None
+    assert diet_cure.handle == diet_text
 
     # WHEN
-    yao_healerlink.del_curelink(curehandle=home_text)
+    yao_healerlink.del_curelink(curehandle=diet_text)
 
     # THEN
-    after_home_cure = yao_healerlink.get_curelink(home_text)
-    assert after_home_cure is None
+    after_diet_cure = yao_healerlink.get_curelink(diet_text)
+    assert after_diet_cure is None
 
 
 def test_painunit_exists():

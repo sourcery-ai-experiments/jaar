@@ -3,15 +3,15 @@ from src.world.pain import painunit_shop, curelink_shop, healerlink_shop
 
 def test_curelink_get_dict_ReturnsCorrectDict():
     # GIVEN
-    home_text = "home"
-    home_weight = 5
-    home_curelink = curelink_shop(handle=home_text, weight=home_weight)
+    diet_text = "diet"
+    diet_weight = 5
+    diet_curelink = curelink_shop(handle=diet_text, weight=diet_weight)
 
     # WHEN
-    home_dict = home_curelink.get_dict()
+    diet_dict = diet_curelink.get_dict()
 
     # THEN
-    assert home_dict == {"handle": home_text, "weight": home_weight}
+    assert diet_dict == {"handle": diet_text, "weight": diet_weight}
 
 
 def test_healerlink_get_dict_ReturnsCorrectDict():
@@ -19,13 +19,13 @@ def test_healerlink_get_dict_ReturnsCorrectDict():
     yao_text = "yao"
     yao_weight = 5
     yao_healerlink = healerlink_shop(person_name=yao_text, weight=yao_weight)
-    home_text = "home"
-    home_weight = 7
-    home_curelink = curelink_shop(handle=home_text, weight=home_weight)
-    yao_healerlink.set_curelink(home_curelink)
-    home_cure = yao_healerlink.get_curelink(home_text)
-    assert home_cure != None
-    assert home_cure.handle == home_text
+    diet_text = "diet"
+    diet_weight = 7
+    diet_curelink = curelink_shop(handle=diet_text, weight=diet_weight)
+    yao_healerlink.set_curelink(diet_curelink)
+    diet_cure = yao_healerlink.get_curelink(diet_text)
+    assert diet_cure != None
+    assert diet_cure.handle == diet_text
 
     # WHEN
     yao_dict = yao_healerlink.get_dict()
@@ -34,7 +34,7 @@ def test_healerlink_get_dict_ReturnsCorrectDict():
     assert yao_dict == {
         "person_name": yao_text,
         "weight": yao_weight,
-        "_curelinks": {home_text: {"handle": home_text, "weight": home_weight}},
+        "_curelinks": {diet_text: {"handle": diet_text, "weight": diet_weight}},
     }
 
 
@@ -48,10 +48,10 @@ def test_painunit_get_dict_ReturnsCorrectDict():
     yao_weight = 7
     yao_healerlink = healerlink_shop(person_name=yao_text, weight=yao_weight)
 
-    home_text = "home"
-    home_weight = 3
-    home_curelink = curelink_shop(handle=home_text, weight=home_weight)
-    yao_healerlink.set_curelink(home_curelink)
+    diet_text = "diet"
+    diet_weight = 3
+    diet_curelink = curelink_shop(handle=diet_text, weight=diet_weight)
+    yao_healerlink.set_curelink(diet_curelink)
 
     fear_painunit.set_healerlink(yao_healerlink)
 
@@ -70,17 +70,17 @@ def test_painunit_get_dict_ReturnsCorrectDict():
     assert len(yao_curelinks_dict) == 1
     assert len(fear_dict.get("_healerlinks")) == 1
     assert fear_dict.get("kind") == fear_text
-    home_curelink_dict = yao_curelinks_dict.get(home_text)
-    assert home_curelink_dict == {"handle": home_text, "weight": home_weight}
+    diet_curelink_dict = yao_curelinks_dict.get(diet_text)
+    assert diet_curelink_dict == {"handle": diet_text, "weight": diet_weight}
     assert yao_curelinks_dict == {
-        home_text: {"handle": home_text, "weight": home_weight}
+        diet_text: {"handle": diet_text, "weight": diet_weight}
     }
 
     assert x_healerlinks_dict == {
         yao_text: {
             "person_name": yao_text,
             "weight": yao_weight,
-            "_curelinks": {home_text: {"handle": home_text, "weight": home_weight}},
+            "_curelinks": {diet_text: {"handle": diet_text, "weight": diet_weight}},
         }
     }
     assert fear_dict == {
@@ -90,7 +90,7 @@ def test_painunit_get_dict_ReturnsCorrectDict():
             yao_text: {
                 "person_name": yao_text,
                 "weight": yao_weight,
-                "_curelinks": {home_text: {"handle": home_text, "weight": home_weight}},
+                "_curelinks": {diet_text: {"handle": diet_text, "weight": diet_weight}},
             }
         },
     }
