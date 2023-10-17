@@ -7,7 +7,7 @@ from src.pact.x_func import (
 )
 from src.cure.examples.healer_env_kit import (
     healer_dir_setup_cleanup,
-    get_temp_healer_dir,
+    get_temp_healingunit_dir,
     create_pact_file,
 )
 from pytest import raises as pytest_raises
@@ -15,7 +15,7 @@ from pytest import raises as pytest_raises
 
 def test_x_func_dir_files_correctlyGrabsFileData(healer_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_healer_dir()
+    env_dir = get_temp_healingunit_dir()
     x1_file_title = "x1.txt"
     x2_file_title = "x2.txt"
     x1_file_text = "trying this"
@@ -34,7 +34,7 @@ def test_x_func_dir_files_correctlyGrabsFileData(healer_dir_setup_cleanup):
 
 def test_x_func_dir_files_removesFileExtension(healer_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_healer_dir()
+    env_dir = get_temp_healingunit_dir()
     x1_title = "x1"
     x2_title = "x2"
     x1_file_ext = "txt"
@@ -56,7 +56,7 @@ def test_x_func_dir_files_removesFileExtension(healer_dir_setup_cleanup):
 
 def test_x_func_dir_files_returnsSubDirs(healer_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_healer_dir()
+    env_dir = get_temp_healingunit_dir()
     x1_title = "x1"
     x2_title = "x2"
     x1_file_ext = "txt"
@@ -88,7 +88,7 @@ def test_x_func_dir_files_returnsSubDirs(healer_dir_setup_cleanup):
 
 def test_x_func_dir_files_doesNotReturnsFiles(healer_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_healer_dir()
+    env_dir = get_temp_healingunit_dir()
     x1_title = "x1"
     x1_file_ext = "txt"
     x1_file_title = f"{x1_title}.{x1_file_ext}"
@@ -120,7 +120,7 @@ def test_x_func_open_file_OpensFilesCorrectlyWhenGivenDirectoryAndFileTitle(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_healer_dir()
+    env_dir = get_temp_healingunit_dir()
     x1_title = "x1"
     x2_title = "x2"
     x1_file_ext = "txt"
@@ -142,7 +142,7 @@ def test_x_func_open_file_OpensFilesCorrectlyWhenGivenOnlyFilePath(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_healer_dir()
+    env_dir = get_temp_healingunit_dir()
     x1_title = "x1"
     x2_title = "x2"
     x1_file_ext = "txt"
@@ -166,7 +166,7 @@ def test_x_func_open_file_OpensFilesCorrectlyWhenGivenOnlyFilePath(
 
 def test_x_func_save_file_ReplacesFileAsDefault(healer_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_healer_dir()
+    env_dir = get_temp_healingunit_dir()
     x_old_title = "x_old"
     # x_new_title = "x_new"
     x_old_file_ext = "txt"
@@ -201,7 +201,7 @@ def test_x_func_save_file_ReplacesFileAsDefault(healer_dir_setup_cleanup):
 
 def test_x_func_save_file_DoesNotreplaceFile(healer_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_healer_dir()
+    env_dir = get_temp_healingunit_dir()
     x_old_title = "x_old"
     # x_new_title = "x_new"
     x_old_file_ext = "txt"
@@ -238,7 +238,7 @@ def test_x_func_count_files_ReturnsNoneIfDirectoryDoesNotExist(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_healer_dir()
+    env_dir = get_temp_healingunit_dir()
     does_not_exist_dir = f"{env_dir}/swim"
 
     # WHEN

@@ -88,45 +88,44 @@ def _delete_and_set_ex3():
     sx.save_public_pact(pact_x=example_pacts_pact_v001())
     sx.save_public_pact(pact_x=example_pacts_pact_v002())
 
-    # sx.set_healer(healer_x=healerunit_shop(title="w1", env_dir=sx.get_object_root_dir()))
-    # sx.set_healer(healer_x=healerunit_shop(title="w2", env_dir=sx.get_object_root_dir()))
+    # sx.set_healer(x_healing=healingunit_shop(title="w1", env_dir=sx.get_object_root_dir()))
+    # sx.set_healer(x_healing=healingunit_shop(title="w2", env_dir=sx.get_object_root_dir()))
     xia_text = "Xia"
-    sx.create_new_healerunit(healer_title=xia_text)
+    sx.create_new_healingunit(healing_title=xia_text)
     healer_text = "Mypact"
     sx.set_healer_depotlink(
         xia_text, pact_healer=healer_text, depotlink_type="blind_trust"
     )
-    # w1_obj = sx.get_healer_obj(title=w1_text)
+    # w1_obj = sx.get_healingunit(title=w1_text)
 
     bob_text = "bob wurld"
     create_pact_file_for_cures(sx.get_object_root_dir(), bob_text)
     # print(f"create pact_list {w1_text=}")
     sx.create_depotlink_to_generated_pact(
-        healer_title=xia_text, pact_healer=bob_text, depotlink_type="ignore"
+        healing_title=xia_text, pact_healer=bob_text, depotlink_type="ignore"
     )
     land_text = "tim wurld"
     create_pact_file_for_cures(cure_dir=sx.get_object_root_dir(), pact_healer=land_text)
     sx.create_depotlink_to_generated_pact(
-        healer_title=xia_text, pact_healer=land_text, depotlink_type="blind_trust"
+        healing_title=xia_text, pact_healer=land_text, depotlink_type="blind_trust"
     )
-    # sx.create_depotlink_to_generated_pact(healer_title=w1_text, pact_healer="test9")
-    # sx.create_depotlink_to_generated_pact(healer_title=w1_text, pact_healer="Bobs pact")
-    sx.save_healer_file(healer_title=xia_text)
+    # sx.create_depotlink_to_generated_pact(healing_title=w1_text, pact_healer="test9")
+    # sx.create_depotlink_to_generated_pact(healing_title=w1_text, pact_healer="Bobs pact")
+    sx.save_healingunit_file(healing_title=xia_text)
     # print(f"WHAT WHAT {sx.get_object_root_dir()}")
-    # print(f"WHAT WHAT {sx.get_object_root_dir()}/healers/w1/w1.json")
+    # print(f"WHAT WHAT {sx.get_object_root_dir()}/healingunits/w1/w1.json")
     # file_text = x_func_open_file(
-    #     dest_dir=f"{sx.get_object_root_dir}/healers/w1", file_title="w1.json"
+    #     dest_dir=f"{sx.get_object_root_dir}/healingunits/w1", file_title="w1.json"
     # )
     # print(f"{file_text=}")
-    # print(f"{len(sx._healerunits.get(w1_text)._depotlinks)=}")
-    # print(f"{sx._healerunits.get(w1_text)._depotlinks.get(bob_text)=}")
-    # print(f"{sx._healerunits.get(w1_text).get_json=}")
+    # print(f"{len(sx._healingunits.get(w1_text)._depotlinks)=}")
+    # print(f"{sx._healingunits.get(w1_text)._depotlinks.get(bob_text)=}")
+    # print(f"{sx._healingunits.get(w1_text).get_json=}")
 
     w2_text = "w2"
-    sx.create_new_healerunit(
-        healer_title=w2_text
-    )  # , env_dir=sx.get_object_root_dir())
-    sx.save_healer_file(healer_title=w2_text)
+    sx.create_new_healingunit(healing_title=w2_text)
+    # , env_dir=sx.get_object_root_dir())
+    sx.save_healingunit_file(healing_title=w2_text)
 
 
 def _delete_and_set_ex4():
@@ -163,11 +162,11 @@ def _delete_and_set_ex5():
     sx.save_public_pact(pact_x=pact_4)
     sx.save_public_pact(pact_x=pact_5)
 
-    sx.create_new_healerunit(healer_title=pact_1._healer)
-    sx.create_new_healerunit(healer_title=pact_2._healer)
-    sx.create_new_healerunit(healer_title=pact_3._healer)
-    sx.create_new_healerunit(healer_title=pact_4._healer)
-    sx.create_new_healerunit(healer_title=pact_5._healer)
+    sx.create_new_healingunit(healing_title=pact_1._healer)
+    sx.create_new_healingunit(healing_title=pact_2._healer)
+    sx.create_new_healingunit(healing_title=pact_3._healer)
+    sx.create_new_healingunit(healing_title=pact_4._healer)
+    sx.create_new_healingunit(healing_title=pact_5._healer)
 
     sx.set_healer_depotlink(pact_1._healer, pact_2._healer, "blind_trust", 3, 3.1)
     sx.set_healer_depotlink(pact_1._healer, pact_3._healer, "blind_trust", 7, 7.1)
@@ -195,11 +194,11 @@ def _delete_and_set_ex5():
     sx.set_healer_depotlink(pact_5._healer, pact_3._healer, "blind_trust", 4, 4.1)
     sx.set_healer_depotlink(pact_5._healer, pact_4._healer, "blind_trust", 5, 5.1)
 
-    sx.save_healer_file(healer_title=pact_1._healer)
-    sx.save_healer_file(healer_title=pact_2._healer)
-    sx.save_healer_file(healer_title=pact_3._healer)
-    sx.save_healer_file(healer_title=pact_4._healer)
-    sx.save_healer_file(healer_title=pact_5._healer)
+    sx.save_healingunit_file(healing_title=pact_1._healer)
+    sx.save_healingunit_file(healing_title=pact_2._healer)
+    sx.save_healingunit_file(healing_title=pact_3._healer)
+    sx.save_healingunit_file(healing_title=pact_4._healer)
+    sx.save_healingunit_file(healing_title=pact_5._healer)
 
 
 def _delete_and_set_ex6():

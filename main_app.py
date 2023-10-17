@@ -282,7 +282,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             f.write(pact_x_json)
         self.current_file_path_l.setText(self.file_path)
         # x_func_save_file(
-        #     dest_dir=pact_healer_dir,
+        #     dest_dir=pact_healingunit_dir,
         #     file_title=f"{self.pact_x._cure_handle}.json",
         #     file_text=pact_x.get_json(),
         # )

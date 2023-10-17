@@ -15,8 +15,8 @@ def test_cure_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanup):
 
     # GIVEN
     america_text = "America"
-    sx.create_new_healerunit(healer_title=america_text)
-    america_ux = sx.get_healer_obj(title=america_text)
+    sx.create_new_healingunit(healing_title=america_text)
+    america_ux = sx.get_healingunit(title=america_text)
     laundry_pact = get_pact_assignment_laundry_example1()
     laundry_pact.set_cure_handle(sx.handle)
     america_ux.set_isol(laundry_pact)
@@ -39,8 +39,8 @@ def test_cure_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanup):
 
     # create assignment for Joachim
     joachim_text = "Joachim"
-    sx.create_new_healerunit(healer_title=joachim_text)
-    joachim_ux = sx.get_healer_obj(title=joachim_text)
+    sx.create_new_healingunit(healing_title=joachim_text)
+    joachim_ux = sx.get_healingunit(title=joachim_text)
     joachim_ux.set_depot_pact(america_output, "assignment")
     old_joachim_cx = sx.get_output_pact(joachim_text)
     # print(f"{old_joachim_cx._partys.keys()=}")
@@ -120,7 +120,7 @@ def test_cure_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanup):
 
 #     # # WHEN
 #     # america_healer.save_output_pact_to_public()
-#     # new_joa_healer = sx.get_healer_obj(title=joachim_text)
+#     # new_joa_healer = sx.get_healingunit(title=joachim_text)
 #     # new_joa_healer.save_output_pact_to_public()
 #     # new_joa_dest_c = sx.get_public_pact(joachim_text)
 #     # new_joa_agenda = new_joa_dest_c.get_agenda_items()
@@ -132,15 +132,15 @@ def test_cure_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanup):
 #     assert len(joachim_cx.get_agenda_items()) == 1
 #     assert joachim_cx.get_agenda_items()[0].get_road() == do_laundry_road
 
-#     # sx.create_new_healerunit(healer_title=america_text)
-#     # america_healer = sx.get_healer_obj(title=america_text)
+#     # sx.create_new_healingunit(healing_title=america_text)
+#     # america_healer = sx.get_healingunit(title=america_text)
 #     # america_healer.save_output_pact_to_public()
 #     # assert sx.get_public_pact(america_text) != None
 
 #     # # Create healer2
 
-#     # sx.create_new_healerunit(healer_title=joachim_text)
-#     # old_joa_healer = sx.get_healer_obj(title=joachim_text)
+#     # sx.create_new_healingunit(healing_title=joachim_text)
+#     # old_joa_healer = sx.get_healingunit(title=joachim_text)
 #     # old_joa_healer._set_depotlink(america_cx._healert, depotlink_type="blind_trust")
 #     # old_joa_healer.save_output_pact_to_public()
 #     # old_joa_dest_c = sx.get_public_pact(joachim_text)

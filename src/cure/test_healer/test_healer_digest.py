@@ -6,14 +6,14 @@ from src.pact.x_func import (
     open_file as x_func_open_file,
     count_files as x_func_count_files,
 )
-from src.cure.healer import healerunit_shop
+from src.cure.healing import healingunit_shop
 from src.cure.examples.example_healers import (
     get_2node_pact as example_healers_get_2node_pact,
     get_7nodeJRoot_pact as example_healers_get_7nodeJRoot_pact,
 )
 from src.cure.examples.healer_env_kit import (
     healer_dir_setup_cleanup,
-    get_temp_healer_dir,
+    get_temp_healingunit_dir,
     get_temp_cure_handle,
 )
 from os import path as os_path
@@ -25,11 +25,11 @@ from pytest import raises as pytest_raises
 # ):
 #     # GIVEN
 #     lai_title = "Lai"
-#     env_dir = get_temp_healer_dir()
-#     lai_pact = healerunit_shop(title=lai_title, env_dir=env_dir)
+#     env_dir = get_temp_healingunit_dir()
+#     lai_pact = healingunit_shop(title=lai_title, env_dir=env_dir)
 #     lai_isol_file_title = lai_pact._admin._isol_file_title
 #     with pytest_raises(Exception) as excinfo:
-#         x_func_open_file(lai_pact._admin._healer_dir, lai_isol_file_title)
+#         x_func_open_file(lai_pact._admin._healingunit_dir, lai_isol_file_title)
 #     assert (
 #         str(excinfo.value)
 #         == f"Could not load file {lai_pact._admin._isol_file_path} (2, 'No such file or directory')"
@@ -41,7 +41,7 @@ from pytest import raises as pytest_raises
 #     )
 
 #     # THEN
-#     assert x_func_open_file(lai_pact._admin._healer_dir, lai_isol_file_title) != None
+#     assert x_func_open_file(lai_pact._admin._healingunit_dir, lai_isol_file_title) != None
 
 
 def test_healeropen_isol_pact_WhenStartingPactFileDoesNotExists(
@@ -49,9 +49,9 @@ def test_healeropen_isol_pact_WhenStartingPactFileDoesNotExists(
 ):
     # GIVEN
     tim_text = "Tim"
-    env_dir = get_temp_healer_dir()
+    env_dir = get_temp_healingunit_dir()
     cure_handle_text = get_temp_cure_handle()
-    ux = healerunit_shop(title=tim_text, env_dir=env_dir, cure_handle=cure_handle_text)
+    ux = healingunit_shop(title=tim_text, env_dir=env_dir, cure_handle=cure_handle_text)
 
     # WHEN
     isol_pact = ux._admin.open_isol_pact()
@@ -87,8 +87,8 @@ def test_healer_save_isol_pact_IsolPersonNameMustBeHealer(
 ):
     # GIVEN
     p_title = "Game1"
-    env_dir = get_temp_healer_dir()
-    ux = healerunit_shop(p_title, env_dir, get_temp_cure_handle())
+    env_dir = get_temp_healingunit_dir()
+    ux = healingunit_shop(p_title, env_dir, get_temp_cure_handle())
     cx1 = example_pacts_get_pact_with_4_levels()
     assert cx1._healer != p_title
 
@@ -96,7 +96,7 @@ def test_healer_save_isol_pact_IsolPersonNameMustBeHealer(
     ux._admin.save_isol_pact(pact_x=cx1)
 
     # THEN
-    assert ux._admin.open_isol_pact()._healer == ux._admin._healer_title
+    assert ux._admin.open_isol_pact()._healer == ux._admin._healing_title
 
 
 def test_healer_open_isol_pact_WhenStartingPactFileExists(
@@ -104,8 +104,8 @@ def test_healer_open_isol_pact_WhenStartingPactFileExists(
 ):
     # GIVEN
     p_title = "Game1"
-    env_dir = get_temp_healer_dir()
-    ux = healerunit_shop(p_title, env_dir, get_temp_cure_handle())
+    env_dir = get_temp_healingunit_dir()
+    ux = healingunit_shop(p_title, env_dir, get_temp_cure_handle())
     ux._admin.save_isol_pact(pact_x=example_pacts_get_pact_with_4_levels())
 
     # WHEN
@@ -122,7 +122,7 @@ def test_healer_open_isol_pact_WhenStartingPactFileExists(
     assert isol_pact._idearoot._acptfactunits == {}
     assert isol_pact._partys == {}
     assert isol_pact._groups == {}
-    assert isol_pact._healer == ux._admin._healer_title
+    assert isol_pact._healer == ux._admin._healing_title
 
 
 def test_healer_erase_isol_pact_file_DeletesFileCorrectly(
@@ -130,31 +130,31 @@ def test_healer_erase_isol_pact_file_DeletesFileCorrectly(
 ):
     # GIVEN
     p_title = "Game1"
-    env_dir = get_temp_healer_dir()
-    ux = healerunit_shop(p_title, env_dir, get_temp_cure_handle())
+    env_dir = get_temp_healingunit_dir()
+    ux = healingunit_shop(p_title, env_dir, get_temp_cure_handle())
     ux._admin.save_isol_pact(example_pacts_get_pact_with_4_levels())
     file_title = ux._admin._isol_file_title
-    assert x_func_open_file(ux._admin._healer_dir, file_title) != None
+    assert x_func_open_file(ux._admin._healingunit_dir, file_title) != None
 
     # WHEN
     ux._admin.erase_isol_pact_file()
 
     # THEN
     with pytest_raises(Exception) as excinfo:
-        x_func_open_file(ux._admin._healer_dir, file_title)
+        x_func_open_file(ux._admin._healingunit_dir, file_title)
     assert (
         str(excinfo.value)
-        == f"Could not load file {ux._admin._healer_dir}/isol_pact.json (2, 'No such file or directory')"
+        == f"Could not load file {ux._admin._healingunit_dir}/isol_pact.json (2, 'No such file or directory')"
     )
 
 
-def test_healerunit_save_pact_to_digest_SavesFileCorrectly(
+def test_healingunit_save_pact_to_digest_SavesFileCorrectly(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
-    healer_title = "healer1"
-    env_dir = get_temp_healer_dir()
-    ux = healerunit_shop(healer_title, env_dir, get_temp_cure_handle())
+    healing_title = "healer1"
+    env_dir = get_temp_healingunit_dir()
+    ux = healingunit_shop(healing_title, env_dir, get_temp_cure_handle())
     ux.create_core_dir_and_files()
     cx = example_healers_get_2node_pact()
     src_pact_healer = cx._healer
@@ -183,8 +183,8 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestPact(
 ):
     # GIVEN
     sue_text = "Sue"
-    env_dir = get_temp_healer_dir()
-    sue_cx = healerunit_shop(sue_text, env_dir, get_temp_cure_handle())
+    env_dir = get_temp_healingunit_dir()
+    sue_cx = healingunit_shop(sue_text, env_dir, get_temp_cure_handle())
     sue_cx.create_core_dir_and_files()
     cx = example_healers_get_2node_pact()
     src_pact_healer = cx._healer
@@ -212,12 +212,14 @@ def test_healer_get_remelded_output_pact_withEmptyDigestDict(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
-    healer_title_x = "boots3"
-    ux = healerunit_shop(healer_title_x, get_temp_healer_dir(), get_temp_cure_handle())
+    healing_title_x = "boots3"
+    ux = healingunit_shop(
+        healing_title_x, get_temp_healingunit_dir(), get_temp_cure_handle()
+    )
     ux.create_core_dir_and_files()
     sx_output_before = ux._admin.get_remelded_output_pact()
     assert str(type(sx_output_before)).find(".pact.PactUnit'>")
-    assert sx_output_before._healer == healer_title_x
+    assert sx_output_before._healer == healing_title_x
     assert sx_output_before._idearoot._label == get_temp_cure_handle()
     # ux.set_digested_pact(pact_x=PactUnit(_healer="digested1"))
 
@@ -225,7 +227,7 @@ def test_healer_get_remelded_output_pact_withEmptyDigestDict(
     sx_output_after = ux._admin.get_remelded_output_pact()
 
     # THEN
-    healer_pact_x = PactUnit(_healer=healer_title_x, _weight=0.0)
+    healer_pact_x = PactUnit(_healer=healing_title_x, _weight=0.0)
     healer_pact_x.set_cure_handle(get_temp_cure_handle())
     healer_pact_x._idearoot._pad = ""
     healer_pact_x.set_pact_metrics()
@@ -245,8 +247,8 @@ def test_healer_get_remelded_output_pact_with1DigestedPact(
 ):
     # GIVEN
     yao_text = "Yao"
-    env_dir = get_temp_healer_dir()
-    ux = healerunit_shop(yao_text, env_dir, get_temp_cure_handle())
+    env_dir = get_temp_healingunit_dir()
+    ux = healingunit_shop(yao_text, env_dir, get_temp_cure_handle())
     ux.create_core_dir_and_files()
     sx_output_old = ux._admin.get_remelded_output_pact()
     assert str(type(sx_output_old)).find(".pact.PactUnit'>")
@@ -280,8 +282,8 @@ def test_healer_get_remelded_output_pact_with1DigestedPact(
 
 # def test_healer_set_digested_pact_with2Groups(healer_dir_setup_cleanup):
 #     # GIVEN
-#     env_dir = get_temp_healer_dir()
-#     ux = healerunit_shop(title="test8", env_dir=env_dir)
+#     env_dir = get_temp_healingunit_dir()
+#     ux = healingunit_shop(title="test8", env_dir=env_dir)
 #     sx_output_old = ux._admin.get_remelded_output_pact()
 #     assert str(type(sx_output_old)).find(".pact.PactUnit'>")
 #     assert sx_output_old._groups == {}
@@ -333,7 +335,7 @@ def test_healer_isol_pact_CorrectlysHasOriginLinksWithHealerAsSource(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
-    # healerunit with isol_pact and no other depot pacts
+    # healingunit with isol_pact and no other depot pacts
     yao_text = "Yao"
     isol_origin_weight = 1
     yao_originunit = originunit_shop()
@@ -344,7 +346,7 @@ def test_healer_isol_pact_CorrectlysHasOriginLinksWithHealerAsSource(
     assert isol_pact_x._idearoot._originunit == originunit_shop()
     assert isol_pact_x._idearoot._originunit != yao_originunit
 
-    ux = healerunit_shop(yao_text, get_temp_healer_dir(), get_temp_cure_handle())
+    ux = healingunit_shop(yao_text, get_temp_healingunit_dir(), get_temp_cure_handle())
     ux.create_core_dir_and_files()
     ux._admin.save_isol_pact(pact_x=isol_pact_x)
 

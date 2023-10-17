@@ -52,7 +52,7 @@ class MainApp(QApplication):
 
     def editmain_show(self):
         if self.main_window.ignore_pact_x is None:
-            self.main_window.isol = self.main_window.healer_x._admin.open_isol_pact()
+            self.main_window.isol = self.main_window.x_healing._admin.open_isol_pact()
             self.editmain_view.pact_x = self.main_window.isol
         else:
             self.editmain_view.pact_x = self.main_window.ignore_pact_x
@@ -60,8 +60,8 @@ class MainApp(QApplication):
         self.editmain_view.show()
 
     def edit5issue_show(self):
-        if self.main_window.healer_x != None:
-            self.edit5issue_view.healer_x = self.main_window.healer_x
+        if self.main_window.x_healing != None:
+            self.edit5issue_view.x_healing = self.main_window.x_healing
             self.edit5issue_view.refresh_all()
             self.edit5issue_view.show()
 
@@ -111,7 +111,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.five_issue_button.clicked.connect(self.open_edit5issue)
 
         self.cure_x = None
-        self.healer_x = None
+        self.x_healing = None
         self.ignore_pact_x = None
         setup_test_example_environment()
         first_env = "ex5"
@@ -119,24 +119,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_cure()
         self.cure_handle_combo_refresh()
         self.cure_handle_combo.setCurrentText(first_env)
-        self._healer_load(healer_title="ernie")
+        self._healer_load(healing_title="ernie")
 
     def save_isol(self):
         if self.isol != None:
-            self.healer_x._admin.save_isol_pact(self.isol)
+            self.x_healing._admin.save_isol_pact(self.isol)
         self.refresh_healer()
 
     def reload_all_src_pacts(self):
         if self.cure_x != None:
-            self.cure_x.reload_all_healers_src_pactunits()
+            self.cure_x.reload_all_healingunits_src_pactunits()
 
     def set_public_and_reload_srcs(self):
         self.save_output_pact_to_public()
         self.reload_all_src_pacts()
 
     def save_output_pact_to_public(self):
-        if self.healer_x != None:
-            self.healer_x.save_output_pact_to_public()
+        if self.x_healing != None:
+            self.x_healing.save_output_pact_to_public()
         self.refresh_cure()
 
     def cure_load_from_file(self):
@@ -160,15 +160,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.depotlink_title.setText(f"{selected_healer} - {selected_pact}")
 
     def healers_table_select(self):
-        healer_x_title = self.healers_table.item(
+        x_healing_title = self.healers_table.item(
             self.healers_table.currentRow(), 0
         ).text()
-        self._healer_load(healer_title=healer_x_title)
+        self._healer_load(healing_title=x_healing_title)
 
-    def _healer_load(self, healer_title: str):
-        self.cure_x.create_healerunit_from_public(title=healer_title)
-        self.healer_x = self.cure_x._healerunits.get(healer_title)
-        self.healer_title.setText(self.healer_x._admin.title)
+    def _healer_load(self, healing_title: str):
+        self.cure_x.create_healingunit_from_public(title=healing_title)
+        self.x_healing = self.cure_x._healingunits.get(healing_title)
+        self.healing_title.setText(self.x_healing._admin.title)
         self.refresh_healer()
 
     def depotlinks_table_select(self):
@@ -188,13 +188,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         # self.ignore_pact_x = self.cure_x.get_public_pact(
         self.ignore_pact_x = self.cure_x.get_pact_from_ignores_dir(
-            healer_title=self.healer_x._admin.title, _healer=ignore_pact_healer
+            healing_title=self.x_healing._admin.title, _healer=ignore_pact_healer
         )
         self.edit_pact = self.ignore_pact_x
 
     def ignore_pact_file_update(self):
         self.cure_x.set_ignore_pact_file(
-            healer_title=self.healer_x._admin.title, pact_obj=self.ignore_pact_x
+            healing_title=self.x_healing._admin.title, pact_obj=self.ignore_pact_x
         )
         self.refresh_healer()
 
@@ -242,23 +242,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_cure()
 
     def healer_insert(self):
-        self.cure_x.create_new_healerunit(healer_title=self.healer_title.text())
+        self.cure_x.create_new_healingunit(healing_title=self.healing_title.text())
         self.refresh_healers()
 
     def healer_update_title(self):
         currently_selected = self.healers_table.item(
             self.healers_table.currentRow(), 0
         ).text()
-        typed_in = self.healer_title.text()
+        typed_in = self.healing_title.text()
         if currently_selected != typed_in:
-            self.cure_x.rename_healerunit(
+            self.cure_x.rename_healingunit(
                 old_label=currently_selected, new_label=typed_in
             )
             self.refresh_healers()
 
     def healer_delete(self):
-        self.cure_x.del_healer_dir(
-            healer_title=self.healers_table.item(
+        self.cure_x.del_healingunit_dir(
+            healing_title=self.healers_table.item(
                 self.healers_table.currentRow(), 0
             ).text()
         )
@@ -266,38 +266,38 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def depotlink_insert(self):
         pact_healer = self.pacts_table.item(self.pacts_table.currentRow(), 0).text()
-        if self.healer_x != None:
+        if self.x_healing != None:
             pact_json = x_func_open_file(
-                dest_dir=self.healer_x._admin._pacts_public_dir,
+                dest_dir=self.x_healing._admin._pacts_public_dir,
                 file_title=f"{pact_healer}.json",
             )
             pact_x = get_pact_from_json(pact_json)
-            self.healer_x.set_depot_pact(
+            self.x_healing.set_depot_pact(
                 pact_x=pact_x,
                 depotlink_type=self.depotlink_type_combo.currentText(),
                 depotlink_weight=self.depotlink_weight.text(),
             )
-            self.cure_x.save_healer_file(healer_title=self.healer_x._admin.title)
+            self.cure_x.save_healingunit_file(healing_title=self.x_healing._admin.title)
         self.refresh_healer()
 
     def depotlink_update(self):
-        healer_title_x = self.healer_x._admin.title
+        healing_title_x = self.x_healing._admin.title
         self.cure_x.update_depotlink(
-            healer_title=healer_title_x,
+            healing_title=healing_title_x,
             partytitle=self.depotlink_title.text(),
             depotlink_type=self.depotlink_type_combo.currentText(),
             creditor_weight=self.depotlink_weight.text(),
             debtor_weight=self.depotlink_weight.text(),
         )
-        self.cure_x.save_healer_file(healer_title=healer_title_x)
+        self.cure_x.save_healingunit_file(healing_title=healing_title_x)
         self.refresh_healer()
 
     def depotlink_delete(self):
-        healer_title_x = self.healer_x._admin.title
+        healing_title_x = self.x_healing._admin.title
         self.cure_x.del_depotlink(
-            healer_title=healer_title_x, pactunit_healer=self.depotlink_title.text()
+            healing_title=healing_title_x, pactunit_healer=self.depotlink_title.text()
         )
-        self.cure_x.save_healer_file(healer_title=healer_title_x)
+        self.cure_x.save_healingunit_file(healing_title=healing_title_x)
         self.refresh_healer()
 
     def get_pact_healer_list(self):
@@ -309,18 +309,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             pacts_list.append(get_pact_from_json(cx_json=pact_json))
         return pacts_list
 
-    def get_healer_title_list(self):
+    def get_healing_title_list(self):
         healers_healer_list = []
         if self.cure_x != None:
             healers_healer_list.extend(
-                [healer_dir] for healer_dir in self.cure_x.get_healer_dir_paths_list()
+                [healer_dir]
+                for healer_dir in self.cure_x.get_healingunit_dir_paths_list()
             )
         return healers_healer_list
 
     def get_depotlink_list(self):
         depotlinks_list = []
-        if self.healer_x != None:
-            for cl_val in self.healer_x._depotlinks.values():
+        if self.x_healing != None:
+            for cl_val in self.x_healing._depotlinks.values():
                 depotlink_row = [
                     cl_val.pact_healer,
                     cl_val.depotlink_type,
@@ -331,9 +332,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_digests_list(self):
         x_list = []
-        if self.healer_x != None:
+        if self.x_healing != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.healer_x_admin._pacts_digest_dir,
+                dir_path=self.x_healing_admin._pacts_digest_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -343,9 +344,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_ignores_list(self):
         x_list = []
-        if self.healer_x != None:
+        if self.x_healing != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.healer_x._admin._pacts_ignore_dir,
+                dir_path=self.x_healing._admin._pacts_ignore_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -439,7 +440,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def _sub_refresh_healers_table(self):
         self.refresh_x(
-            self.healers_table, ["Healers Table"], self.get_healer_title_list()
+            self.healers_table, ["Healers Table"], self.get_healing_title_list()
         )
 
     def _sub_refresh_depotlinks_table(self):
@@ -449,10 +450,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.depotlink_type_combo.addItems(depotlink_types)
         self.depotlink_type_combo.setCurrentText("")
         column_header = ""
-        if self.healer_x is None:
+        if self.x_healing is None:
             column_header = "Pactlinks Table"
-        elif self.healer_x != None:
-            column_header = f"'{self.healer_x._admin.title}' Pactlinks"
+        elif self.x_healing != None:
+            column_header = f"'{self.x_healing._admin.title}' Pactlinks"
         self.refresh_x(
             self.depotlinks_table,
             [column_header, "Link Type", "Weight"],
@@ -557,7 +558,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.cure_handle_combo.addItems(create_example_cures_list())
 
     def refresh_healers(self):
-        self.healer_x = None
+        self.x_healing = None
         self._sub_refresh_healers_table()
         self.refresh_healer()
 
@@ -566,8 +567,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._sub_refresh_digests_table()
         self._sub_refresh_ignores_table()
         self.healer_output_pact = None
-        if self.healer_x != None:
-            self.healer_output_pact = self.healer_x._admin.get_remelded_output_pact()
+        if self.x_healing != None:
+            self.healer_output_pact = self.x_healing._admin.get_remelded_output_pact()
         self._sub_refresh_p_ideas_table()
         self._sub_refresh_p_partys_table()
         self._sub_refresh_p_groups_table()

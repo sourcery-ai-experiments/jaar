@@ -1,10 +1,10 @@
-from src.cure.healer import healerunit_shop
+from src.cure.healing import healingunit_shop
 from src.cure.examples.example_healers import (
     get_pact_assignment_laundry_example1,
 )
 from src.cure.examples.healer_env_kit import (
     healer_dir_setup_cleanup,
-    get_temp_healer_dir,
+    get_temp_healingunit_dir,
     get_temp_cure_handle,
 )
 
@@ -16,8 +16,8 @@ def test_healer_save_pact_to_depot_assignment_link_CorrectlyCreatesAssignmentFil
     america_cx = get_pact_assignment_laundry_example1()
     america_cx.set_cure_handle(get_temp_cure_handle())
     joachim_text = "Joachim"
-    joachim_ux = healerunit_shop(
-        joachim_text, get_temp_healer_dir(), get_temp_cure_handle()
+    joachim_ux = healingunit_shop(
+        joachim_text, get_temp_healingunit_dir(), get_temp_cure_handle()
     )
     joachim_ux.create_core_dir_and_files()
     print(f"{america_cx._idearoot._label=}")

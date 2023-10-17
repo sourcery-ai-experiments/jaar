@@ -65,9 +65,9 @@ base attributes vs required attributess
 <!-- TODO: Add explanations -->
 CureUnit objects
 
-CureUnit HealerUnit objects
+CureUnit HealingUnit objects
 
-CureUnit HealerUnit PactLink objects
+CureUnit HealingUnit PactLink objects
 
 CureUnit Bank objects
 

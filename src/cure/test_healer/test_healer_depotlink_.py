@@ -3,7 +3,7 @@ from src.pact.x_func import (
     count_files as x_func_count_files,
     open_file as x_func_open_file,
 )
-from src.cure.healer import healerunit_shop
+from src.cure.healing import healingunit_shop
 from src.cure.examples.example_healers import (
     get_2node_pact,
     get_pact_2CleanNodesRandomWeights as get_cal2nodes,
@@ -12,7 +12,7 @@ from src.cure.examples.example_healers import (
 )
 from src.cure.examples.healer_env_kit import (
     healer_dir_setup_cleanup,
-    get_temp_healer_dir,
+    get_temp_healingunit_dir,
     get_temp_cure_handle,
     create_pact_file,
 )
@@ -22,13 +22,13 @@ from os import path as os_path
 from pytest import raises as pytest_raises
 
 
-def test_healerunit_set_depotlink_RaisesErrorWhenPactDoesNotExist(
+def test_healingunit_set_depotlink_RaisesErrorWhenPactDoesNotExist(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
-    env_dir = get_temp_healer_dir()
-    sue_cx = healerunit_shop(sue_text, env_dir, get_temp_cure_handle())
+    env_dir = get_temp_healingunit_dir()
+    sue_cx = healingunit_shop(sue_text, env_dir, get_temp_cure_handle())
     sue_cx.set_isol_if_empty()
     tim_text = "Tim"
     assert list(sue_cx._isol._partys.keys()) == [sue_text]
@@ -44,11 +44,11 @@ def test_healerunit_set_depotlink_RaisesErrorWhenPactDoesNotExist(
     )
 
 
-def test_healerunit_set_depotlink_CorrectlySetsIsolPartys(healer_dir_setup_cleanup):
+def test_healingunit_set_depotlink_CorrectlySetsIsolPartys(healer_dir_setup_cleanup):
     # GIVEN
     yao_text = "yao"
-    env_dir = get_temp_healer_dir()
-    yao_ux = healerunit_shop(yao_text, env_dir, get_temp_cure_handle())
+    env_dir = get_temp_healingunit_dir()
+    yao_ux = healingunit_shop(yao_text, env_dir, get_temp_cure_handle())
     yao_ux.set_isol_if_empty()
     sue_text = "sue"
     create_pact_file(yao_ux._admin._pacts_depot_dir, sue_text)
@@ -62,13 +62,13 @@ def test_healerunit_set_depotlink_CorrectlySetsIsolPartys(healer_dir_setup_clean
     assert yao_ux._isol.get_party(sue_text).depotlink_type is None
 
 
-def test_healerunit_set_depotlink_CorrectlySetsAssignment(healer_dir_setup_cleanup):
+def test_healingunit_set_depotlink_CorrectlySetsAssignment(healer_dir_setup_cleanup):
     # GIVEN
     america_cx = get_america_assign_ex()
     print(f"{len(america_cx._idea_dict)=}")
     joachim_text = "Joachim"
-    joachim_ux = healerunit_shop(
-        joachim_text, get_temp_healer_dir(), get_temp_cure_handle()
+    joachim_ux = healingunit_shop(
+        joachim_text, get_temp_healingunit_dir(), get_temp_cure_handle()
     )
     joachim_ux.create_core_dir_and_files()
     joachim_ux.set_isol_if_empty()
@@ -102,11 +102,11 @@ def test_healerunit_set_depotlink_CorrectlySetsAssignment(healer_dir_setup_clean
     assert digest_cx._healer == joachim_text
 
 
-def test_healerunit_del_depot_pact_CorrectlyDeletesObj(healer_dir_setup_cleanup):
+def test_healingunit_del_depot_pact_CorrectlyDeletesObj(healer_dir_setup_cleanup):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_healer_dir()
-    bob_cx = healerunit_shop(bob_text, env_dir, get_temp_cure_handle())
+    env_dir = get_temp_healingunit_dir()
+    bob_cx = healingunit_shop(bob_text, env_dir, get_temp_cure_handle())
     yao_text = "Yao"
     create_pact_file(bob_cx._admin._pacts_depot_dir, yao_text)
     assignment_text = "assignment"
@@ -123,13 +123,13 @@ def test_healerunit_del_depot_pact_CorrectlyDeletesObj(healer_dir_setup_cleanup)
     assert bob_cx._isol.get_party(yao_text).depotlink_type is None
 
 
-def test_healerunit_del_depot_pact_CorrectlyDeletesBlindTrustFile(
+def test_healingunit_del_depot_pact_CorrectlyDeletesBlindTrustFile(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_healer_dir()
-    bob_cx = healerunit_shop(bob_text, env_dir, get_temp_cure_handle())
+    env_dir = get_temp_healingunit_dir()
+    bob_cx = healingunit_shop(bob_text, env_dir, get_temp_cure_handle())
     lai_text = "Lai"
     create_pact_file(bob_cx._admin._pacts_depot_dir, lai_text)
     bob_cx.set_isol_if_empty()
@@ -145,13 +145,13 @@ def test_healerunit_del_depot_pact_CorrectlyDeletesBlindTrustFile(
     assert x_func_count_files(dir_path=bob_cx._admin._pacts_digest_dir) == 0
 
 
-def test_healerunit_set_depot_pact_SavesFileCorrectly(
+def test_healingunit_set_depot_pact_SavesFileCorrectly(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_healer_dir()
-    bob_cx = healerunit_shop(bob_text, env_dir, get_temp_cure_handle())
+    env_dir = get_temp_healingunit_dir()
+    bob_cx = healingunit_shop(bob_text, env_dir, get_temp_cure_handle())
     cal1 = get_2node_pact()
     assert (
         x_func_count_files(bob_cx._admin._pacts_depot_dir) is None
@@ -168,13 +168,13 @@ def test_healerunit_set_depot_pact_SavesFileCorrectly(
     assert x_func_count_files(bob_cx._admin._pacts_depot_dir) == 1
 
 
-def test_healerunit_delete_ignore_depotlink_CorrectlyDeletesObj(
+def test_healingunit_delete_ignore_depotlink_CorrectlyDeletesObj(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_healer_dir()
-    bob_cx = healerunit_shop(bob_text, env_dir, get_temp_cure_handle())
+    env_dir = get_temp_healingunit_dir()
+    bob_cx = healingunit_shop(bob_text, env_dir, get_temp_cure_handle())
     yao_text = "Yao"
     create_pact_file(bob_cx._admin._pacts_depot_dir, yao_text)
     assignment_text = "assignment"
@@ -191,13 +191,13 @@ def test_healerunit_delete_ignore_depotlink_CorrectlyDeletesObj(
     assert bob_cx._isol.get_party(yao_text).depotlink_type is None
 
 
-def test_healerunit_del_depot_pact_CorrectlyDoesNotDeletesIgnoreFile(
+def test_healingunit_del_depot_pact_CorrectlyDoesNotDeletesIgnoreFile(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "bob"
-    env_dir = get_temp_healer_dir()
-    bob_cx = healerunit_shop(bob_text, env_dir, get_temp_cure_handle())
+    env_dir = get_temp_healingunit_dir()
+    bob_cx = healingunit_shop(bob_text, env_dir, get_temp_cure_handle())
     zia_text = "Zia"
     create_pact_file(bob_cx._admin._pacts_depot_dir, zia_text)
     bob_cx.set_isol_if_empty()
@@ -215,13 +215,13 @@ def test_healerunit_del_depot_pact_CorrectlyDoesNotDeletesIgnoreFile(
     assert x_func_count_files(dir_path=bob_cx._admin._pacts_ignore_dir) == 1
 
 
-def test_healerunit_set_ignore_pact_file_CorrectlyUpdatesIgnoreFile(
+def test_healingunit_set_ignore_pact_file_CorrectlyUpdatesIgnoreFile(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_healer_dir()
-    bob_ux = healerunit_shop(bob_text, env_dir, get_temp_cure_handle())
+    env_dir = get_temp_healingunit_dir()
+    bob_ux = healingunit_shop(bob_text, env_dir, get_temp_cure_handle())
     zia_text = "Zia"
     create_pact_file(bob_ux._admin._pacts_depot_dir, zia_text)
     bob_ux.set_isol_if_empty()
@@ -242,16 +242,16 @@ def test_healerunit_set_ignore_pact_file_CorrectlyUpdatesIgnoreFile(
     assert x_func_count_files(dir_path=bob_ux._admin._pacts_ignore_dir) == 1
 
 
-def test_healerunit_refresh_depotlinks_CorrectlyPullsAllPublicPacts(
+def test_healingunit_refresh_depotlinks_CorrectlyPullsAllPublicPacts(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_healer_dir()
+    env_dir = get_temp_healingunit_dir()
     cure_handle = get_temp_env_handle()
     sx = cureunit_shop(handle=cure_handle, cures_dir=env_dir)
     yao_text = "Yao"
-    sx.create_new_healerunit(healer_title=yao_text)
-    yao_pact = sx.get_healer_obj(title=yao_text)
+    sx.create_new_healingunit(healing_title=yao_text)
+    yao_pact = sx.get_healingunit(title=yao_text)
     assert len(yao_pact._admin.get_remelded_output_pact().get_idea_list()) == 1
 
     ernie_text = "ernie"

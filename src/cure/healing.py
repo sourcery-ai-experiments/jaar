@@ -22,17 +22,17 @@ from os import path as os_path
 from json import loads as json_loads
 
 
-class InvalidHealerException(Exception):
+class InvalidHealingException(Exception):
     pass
 
 
 @dataclass
-class HealerAdmin:
-    _healer_title: str
+class HealingAdmin:
+    _healing_title: str
     _env_dir: str
     _cure_handle: str
-    _healer_dir: str = None
-    _healers_dir: str = None
+    _healingunit_dir: str = None
+    _healingunits_dir: str = None
     _isol_file_title: str = None
     _isol_file_path: str = None
     _pact_output_file_title: str = None
@@ -45,32 +45,32 @@ class HealerAdmin:
     _pacts_digest_dir: str = None
 
     def set_dirs(self):
-        env_healers_dir_title = "healers"
+        env_healingunits_folder = "healingunits"
         pacts_str = "pacts"
-        self._healers_dir = f"{self._env_dir}/{env_healers_dir_title}"
-        self._healer_dir = f"{self._healers_dir}/{self._healer_title}"
+        self._healingunits_dir = f"{self._env_dir}/{env_healingunits_folder}"
+        self._healingunit_dir = f"{self._healingunits_dir}/{self._healing_title}"
         self._isol_file_title = "isol_pact.json"
-        self._isol_file_path = f"{self._healer_dir}/{self._isol_file_title}"
+        self._isol_file_path = f"{self._healingunit_dir}/{self._isol_file_title}"
         self._pact_output_file_title = "output_pact.json"
         self._pact_output_file_path = (
-            f"{self._healer_dir}/{self._pact_output_file_title}"
+            f"{self._healingunit_dir}/{self._pact_output_file_title}"
         )
-        self._public_file_title = f"{self._healer_title}.json"
+        self._public_file_title = f"{self._healing_title}.json"
         self._pacts_public_dir = f"{self._env_dir}/{pacts_str}"
-        self._pacts_depot_dir = f"{self._healer_dir}/{pacts_str}"
-        self._pacts_ignore_dir = f"{self._healer_dir}/ignores"
-        self._pacts_bond_dir = f"{self._healer_dir}/bonds"
-        self._pacts_digest_dir = f"{self._healer_dir}/digests"
+        self._pacts_depot_dir = f"{self._healingunit_dir}/{pacts_str}"
+        self._pacts_ignore_dir = f"{self._healingunit_dir}/ignores"
+        self._pacts_bond_dir = f"{self._healingunit_dir}/bonds"
+        self._pacts_digest_dir = f"{self._healingunit_dir}/digests"
 
-    def set_healer_title(self, new_title: str):
-        old_healer_dir = self._healer_dir
-        self._healer_title = new_title
+    def set_healing_title(self, new_title: str):
+        old_healingunit_dir = self._healingunit_dir
+        self._healing_title = new_title
         self.set_dirs()
 
-        rename_dir(src=old_healer_dir, dst=self._healer_dir)
+        rename_dir(src=old_healingunit_dir, dst=self._healingunit_dir)
 
     def create_core_dir_and_files(self, isol_cx: PactUnit = None):
-        single_dir_create_if_null(x_path=self._healer_dir)
+        single_dir_create_if_null(x_path=self._healingunit_dir)
         single_dir_create_if_null(x_path=self._pacts_public_dir)
         single_dir_create_if_null(x_path=self._pacts_depot_dir)
         single_dir_create_if_null(x_path=self._pacts_digest_dir)
@@ -118,8 +118,8 @@ class HealerAdmin:
         self._save_pact_to_path(pact_x, dest_dir, file_title)
 
     def save_isol_pact(self, pact_x: PactUnit):
-        pact_x.set_healer(self._healer_title)
-        self._save_pact_to_path(pact_x, self._healer_dir, self._isol_file_title)
+        pact_x.set_healer(self._healing_title)
+        self._save_pact_to_path(pact_x, self._healingunit_dir, self._isol_file_title)
 
     def save_pact_to_depot(self, pact_x: PactUnit):
         dest_dir = self._pacts_depot_dir
@@ -132,7 +132,7 @@ class HealerAdmin:
             cx_primary=isol_pact_x,
             meldees_dir=self._pacts_digest_dir,
         )
-        dest_dir = self._healer_dir
+        dest_dir = self._healingunit_dir
         file_title = self._pact_output_file_title
         self._save_pact_to_path(pact_x, dest_dir, file_title)
 
@@ -156,20 +156,20 @@ class HealerAdmin:
         cx = None
         if not self._isol_pact_exists():
             self.save_isol_pact(self._get_empty_isol_pact())
-        ct = x_func_open_file(self._healer_dir, self._isol_file_title)
+        ct = x_func_open_file(self._healingunit_dir, self._isol_file_title)
         cx = pactunit_get_from_json(cx_json=ct)
         cx.set_pact_metrics()
         return cx
 
     def open_output_pact(self) -> PactUnit:
-        cx_json = x_func_open_file(self._healer_dir, self._pact_output_file_title)
+        cx_json = x_func_open_file(self._healingunit_dir, self._pact_output_file_title)
         cx_obj = pactunit_get_from_json(cx_json)
         cx_obj.set_pact_metrics()
         return cx_obj
 
     def _get_empty_isol_pact(self):
-        cx = PactUnit(_healer=self._healer_title, _weight=0)
-        cx.add_partyunit(title=self._healer_title)
+        cx = PactUnit(_healer=self._healing_title, _weight=0)
+        cx.add_partyunit(title=self._healing_title)
         cx.set_cure_handle(self._cure_handle)
         return cx
 
@@ -180,21 +180,21 @@ class HealerAdmin:
         x_func_delete_dir(f"{self._pacts_digest_dir}/{healer}.json")
 
     def erase_isol_pact_file(self):
-        x_func_delete_dir(dir=f"{self._healer_dir}/{self._isol_file_title}")
+        x_func_delete_dir(dir=f"{self._healingunit_dir}/{self._isol_file_title}")
 
     def raise_exception_if_no_file(self, dir_type: str, healer: str):
         cx_file_title = f"{healer}.json"
         if dir_type == "depot":
             cx_file_path = f"{self._pacts_depot_dir}/{cx_file_title}"
         if not os_path.exists(cx_file_path):
-            raise InvalidHealerException(
-                f"Healer {self._healer_title} cannot find pact {healer} in {cx_file_path}"
+            raise InvalidHealingException(
+                f"Healer {self._healing_title} cannot find pact {healer} in {cx_file_path}"
             )
 
     def _isol_pact_exists(self):
         bool_x = None
         try:
-            x_func_open_file(self._healer_dir, self._isol_file_title)
+            x_func_open_file(self._healingunit_dir, self._isol_file_title)
             bool_x = True
         except Exception:
             bool_x = False
@@ -208,24 +208,24 @@ class HealerAdmin:
         self.save_pact_to_public(self.get_remelded_output_pact())
 
 
-def healeradmin_shop(
-    _healer_title: str, _env_dir: str, _cure_handle: str
-) -> HealerAdmin:
-    uax = HealerAdmin(
-        _healer_title=_healer_title, _env_dir=_env_dir, _cure_handle=_cure_handle
+def healingadmin_shop(
+    _healing_title: str, _env_dir: str, _cure_handle: str
+) -> HealingAdmin:
+    uax = HealingAdmin(
+        _healing_title=_healing_title, _env_dir=_env_dir, _cure_handle=_cure_handle
     )
     uax.set_dirs()
     return uax
 
 
 @dataclass
-class HealerUnit:
-    _admin: HealerAdmin = None
+class HealingUnit:
+    _admin: HealingAdmin = None
     _isol: PactUnit = None
 
     def refresh_depot_pacts(self):
         for party_x in self._isol._partys.values():
-            if party_x.title != self._admin._healer_title:
+            if party_x.title != self._admin._healing_title:
                 party_pact = pactunit_get_from_json(
                     cx_json=self._admin.open_public_pact(party_x.title)
                 )
@@ -280,10 +280,10 @@ class HealerUnit:
     def _set_assignment_depotlink(self, outer_healer):
         src_cx = self._admin.open_depot_pact(outer_healer)
         src_cx.set_pact_metrics()
-        empty_cx = PactUnit(_healer=self._admin._healer_title)
+        empty_cx = PactUnit(_healer=self._admin._healing_title)
         empty_cx.set_cure_handle(self._admin._cure_handle)
         assign_cx = src_cx.get_assignment(
-            empty_cx, self.get_isol()._partys, self._admin._healer_title
+            empty_cx, self.get_isol()._partys, self._admin._healing_title
         )
         assign_cx.set_pact_metrics()
         self._admin.save_pact_to_digest(assign_cx, src_cx._healer)
@@ -336,21 +336,21 @@ class HealerUnit:
         self._admin.save_pact_to_digest(pactunit, src_pact_healer)
 
     # housekeeping
-    def set_env_dir(self, env_dir: str, healer_title: str, cure_handle: str):
-        self._admin = healeradmin_shop(
-            _healer_title=healer_title, _env_dir=env_dir, _cure_handle=cure_handle
+    def set_env_dir(self, env_dir: str, healing_title: str, cure_handle: str):
+        self._admin = healingadmin_shop(
+            _healing_title=healing_title, _env_dir=env_dir, _cure_handle=cure_handle
         )
 
     def create_core_dir_and_files(self, isol_cx: PactUnit = None):
         self._admin.create_core_dir_and_files(isol_cx)
 
 
-def healerunit_shop(
+def healingunit_shop(
     title: str, env_dir: str, cure_handle: str, _auto_output_to_public: bool = None
-) -> HealerUnit:
-    healer_x = HealerUnit()
-    healer_x.set_env_dir(env_dir, title, cure_handle=cure_handle)
-    healer_x.get_isol()
-    healer_x._isol._set_auto_output_to_public(_auto_output_to_public)
-    healer_x.set_isol()
-    return healer_x
+) -> HealingUnit:
+    x_healing = HealingUnit()
+    x_healing.set_env_dir(env_dir, title, cure_handle=cure_handle)
+    x_healing.get_isol()
+    x_healing._isol._set_auto_output_to_public(_auto_output_to_public)
+    x_healing.set_isol()
+    return x_healing

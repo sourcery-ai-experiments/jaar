@@ -1,5 +1,5 @@
 from src.pact.pact import PactUnit, IdeaKid, assigned_unit_shop
-from src.cure.healer import healerunit_shop, HealerUnit
+from src.cure.healing import healingunit_shop, HealingUnit
 from src.cure.examples.healer_env_kit import get_temp_cure_handle
 
 from random import randrange
@@ -154,9 +154,9 @@ def get_7nodeJRootWithH_pact() -> PactUnit:
     return pact_x
 
 
-def get_healer_2pact(env_dir, cure_handle) -> HealerUnit:
+def get_healer_2pact(env_dir, cure_handle) -> HealingUnit:
     yao_text = "Xio"
-    yao_healer = healerunit_shop(yao_text, env_dir, cure_handle)
+    yao_healer = healingunit_shop(yao_text, env_dir, cure_handle)
     yao_healer.set_depot_pact(get_1node_pact(), depotlink_type="blind_trust")
     yao_healer.set_depot_pact(get_Jnode2node_pact(), depotlink_type="blind_trust")
     return yao_healer

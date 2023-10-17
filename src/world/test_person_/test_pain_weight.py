@@ -15,7 +15,7 @@ def test_curelink_set_relative_weight_SetsCorrectly():
     assert diet_curelink._relative_weight == x_relative_weight
 
 
-def test_healerunit_set_relative_weight_SetsCorrectly():
+def test_healingunit_set_relative_weight_SetsCorrectly():
     # GIVEN
     yao_text = "Yao"
     yao_healerlink = healerlink_shop(person_name=yao_text)
@@ -57,7 +57,7 @@ def test_curelink_set_person_importance_SetsCorrectly():
     assert diet_curelink._person_importance == x_person_importance
 
 
-def test_healerunit_set_person_importance_SetsCorrectly():
+def test_healingunit_set_person_importance_SetsCorrectly():
     # GIVEN
     yao_text = "Yao"
     yao_healerlink = healerlink_shop(person_name=yao_text)
@@ -85,7 +85,7 @@ def test_painunit_set_person_importance_SetsCorrectly():
     assert fear_painunit._person_importance == x_person_importance
 
 
-def test_healerunit_set_curelinks_weight_metrics_SetsCorrectly():
+def test_healingunit_set_curelinks_weight_metrics_SetsCorrectly():
     # GIVEN
     yao_text = "Yao"
     yao_hl = healerlink_shop(person_name=yao_text)

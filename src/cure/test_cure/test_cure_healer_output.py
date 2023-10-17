@@ -25,14 +25,14 @@ def test_cure_get_output_pact_ReturnsCorrectPactObjScenario1(
     # sx.save_public_pact(ex_cxs_get_pact_1Task_1CE0MinutesRequired_1AcptFact())
     # sx.save_public_pact(ex_cxs_pact_v001())
     xia_text = "Xia"
-    sx.create_new_healerunit(healer_title=xia_text)
+    sx.create_new_healingunit(healing_title=xia_text)
     sx.set_healer_depotlink(xia_text, input_cx._healer, depotlink_type="blind_trust")
-    sx.save_healer_file(healer_title=xia_text)
-    xia_healer = sx.get_healer_obj(title=xia_text)
+    sx.save_healingunit_file(healing_title=xia_text)
+    xia_healer = sx.get_healingunit(title=xia_text)
     # print(f"{xia_healer._isol._partys.keys()=}")
 
     # WHEN
-    output_cx = sx.get_output_pact(healer_title=xia_text)
+    output_cx = sx.get_output_pact(healing_title=xia_text)
     # input pact must be melded to itself to create originunits
     input_cx.meld(input_cx)
     input_cx.set_healer(new_healer=xia_text)
@@ -100,15 +100,15 @@ def test_cure_get_output_pact_ReturnsCorrectPactObjScenario2(
     # sx.save_public_pact(ex_cxs_get_pact_1Task_1CE0MinutesRequired_1AcptFact())
     # sx.save_public_pact(ex_cxs_pact_v001())
     xia_text = "Xia"
-    sx.create_new_healerunit(healer_title=xia_text)
+    sx.create_new_healingunit(healing_title=xia_text)
     sx.set_healer_depotlink(xia_text, cx1._healer, depotlink_type="blind_trust")
     sx.set_healer_depotlink(xia_text, cx2._healer, depotlink_type="blind_trust")
-    sx.save_healer_file(healer_title=xia_text)
-    xia_healer = sx.get_healer_obj(title=xia_text)
+    sx.save_healingunit_file(healing_title=xia_text)
+    xia_healer = sx.get_healingunit(title=xia_text)
     print(f"{xia_healer._isol._partys.keys()=}")
 
     # WHEN
-    output_cx = sx.get_output_pact(healer_title=xia_text)
+    output_cx = sx.get_output_pact(healing_title=xia_text)
 
     # THEN
     output_cx_d_road = f"{output_cx._cure_handle},C,D"
@@ -142,7 +142,7 @@ def test_cure_get_output_pact_ReturnsCorrectPactObjScenario2(
     assert output_cx._idearoot != cx2._idearoot
 
 
-def test_healerunit_refresh_depotlinks_CorrectlyPullsAllPublicPacts(
+def test_healingunit_refresh_depotlinks_CorrectlyPullsAllPublicPacts(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -150,7 +150,7 @@ def test_healerunit_refresh_depotlinks_CorrectlyPullsAllPublicPacts(
     cure_handle = get_temp_env_handle()
     sx = cureunit_shop(handle=cure_handle, cures_dir=env_dir)
     sx.create_dirs_if_null(in_memory_bank=True)
-    # ux = healerunit_shop(title=healer1_text, env_dir=env_dir)
+    # ux = healingunit_shop(title=healer1_text, env_dir=env_dir)
 
     ernie_text = "ernie"
     jessi_text = "jessi"
@@ -161,12 +161,12 @@ def test_healerunit_refresh_depotlinks_CorrectlyPullsAllPublicPacts(
     sx.save_public_pact(pact_x=ernie_pact)
     sx.save_public_pact(pact_x=jessi_pact)
     sx.save_public_pact(pact_x=old_steve_cx)
-    sx.create_new_healerunit(healer_title=ernie_text)
-    sx.create_new_healerunit(healer_title=jessi_text)
-    # sx.create_new_healerunit(healer_title=steve_text)
-    ux_ernie = sx.get_healer_obj(title=ernie_text)
-    ux_jessi = sx.get_healer_obj(title=jessi_text)
-    # ux_steve = sx.get_healer_obj(title=steve_text)
+    sx.create_new_healingunit(healing_title=ernie_text)
+    sx.create_new_healingunit(healing_title=jessi_text)
+    # sx.create_new_healingunit(healing_title=steve_text)
+    ux_ernie = sx.get_healingunit(title=ernie_text)
+    ux_jessi = sx.get_healingunit(title=jessi_text)
+    # ux_steve = sx.get_healingunit(title=steve_text)
     ux_ernie.set_depot_pact(pact_x=jessi_pact, depotlink_type="blind_trust")
     ux_ernie.set_depot_pact(pact_x=old_steve_cx, depotlink_type="blind_trust")
     ux_jessi.set_depot_pact(pact_x=ernie_pact, depotlink_type="blind_trust")
@@ -186,7 +186,7 @@ def test_healerunit_refresh_depotlinks_CorrectlyPullsAllPublicPacts(
     #     print(f"{ux._admin._pacts_public_dir=} {file_title=}")
 
     # WHEN
-    sx.reload_all_healers_src_pactunits()
+    sx.reload_all_healingunits_src_pactunits()
 
     # THEN
     assert len(ux_ernie._admin.get_remelded_output_pact().get_idea_list()) == 5
