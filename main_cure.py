@@ -3,9 +3,9 @@ from ui.CureMainUI import Ui_MainWindow
 from Edit5Issue import Edit5Issue
 from EditMain import EditMainView
 from PyQt5 import QtCore as qtc
-from src.contract.contract import (
+from src.pact.pact import (
     ContractUnit,
-    get_from_json as get_contract_from_json,
+    get_from_json as get_pact_from_json,
 )
 from sys import argv as sys_argv, exit as sys_exit
 from PyQt5.QtWidgets import (
@@ -23,12 +23,12 @@ from src.cure.examples.cure_env_kit import (
     get_test_cures_dir,
 )
 
-from src.contract.party import get_depotlink_types
-from src.contract.x_func import (
+from src.pact.party import get_depotlink_types
+from src.pact.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
 )
-from pyqt_func import contract_importance_diplay
+from pyqt_func import pact_importance_diplay
 
 
 class MainApp(QApplication):
@@ -51,13 +51,11 @@ class MainApp(QApplication):
         self.main_window.open_edit5issue.connect(self.edit5issue_show)
 
     def editmain_show(self):
-        if self.main_window.ignore_contract_x is None:
-            self.main_window.isol = (
-                self.main_window.healer_x._admin.open_isol_contract()
-            )
-            self.editmain_view.contract_x = self.main_window.isol
+        if self.main_window.ignore_pact_x is None:
+            self.main_window.isol = self.main_window.healer_x._admin.open_isol_pact()
+            self.editmain_view.pact_x = self.main_window.isol
         else:
-            self.editmain_view.contract_x = self.main_window.ignore_contract_x
+            self.editmain_view.pact_x = self.main_window.ignore_pact_x
         self.editmain_view.refresh_all()
         self.editmain_view.show()
 
@@ -84,26 +82,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.cure_load_button.clicked.connect(self.cure_load_from_file)
         self.cure_update_button.clicked.connect(self.cure_update_title)
         self.cure_delete_button.clicked.connect(self.cure_delete)
-        self.contract_insert_button.clicked.connect(self.contract_insert)
-        self.contract_update_button.clicked.connect(self.contract_update_title)
-        self.contract_delete_button.clicked.connect(self.contract_delete)
-        self.contracts_table.itemClicked.connect(self.contracts_table_select)
+        self.pact_insert_button.clicked.connect(self.pact_insert)
+        self.pact_update_button.clicked.connect(self.pact_update_title)
+        self.pact_delete_button.clicked.connect(self.pact_delete)
+        self.pacts_table.itemClicked.connect(self.pacts_table_select)
         self.healer_insert_button.clicked.connect(self.healer_insert)
         self.healer_update_button.clicked.connect(self.healer_update_title)
         self.healer_delete_button.clicked.connect(self.healer_delete)
         self.healers_table.itemClicked.connect(self.healers_table_select)
-        self.reload_all_src_contracts_button.clicked.connect(
-            self.reload_all_src_contracts
-        )
-        self.set_public_contract_button.clicked.connect(
-            self.save_output_contract_to_public()
-        )
+        self.reload_all_src_pacts_button.clicked.connect(self.reload_all_src_pacts)
+        self.set_public_pact_button.clicked.connect(self.save_output_pact_to_public())
         self.set_public_and_reload_srcs_button.clicked.connect(
             self.set_public_and_reload_srcs
         )
         self.ignores_table.itemClicked.connect(self.ignores_table_select)
         self.open_ignore_button.clicked.connect(self.open_editmain)
-        self.save_ignore_button.clicked.connect(self.ignore_contract_file_update)
+        self.save_ignore_button.clicked.connect(self.ignore_pact_file_update)
         self.ignores_table.setHidden(True)
         self.show_ignores_button.clicked.connect(self.show_ignores_table)
         self.show_digests_button.clicked.connect(self.show_digests_table)
@@ -118,7 +112,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.cure_x = None
         self.healer_x = None
-        self.ignore_contract_x = None
+        self.ignore_pact_x = None
         setup_test_example_environment()
         first_env = "ex5"
         self.cure_x = cureunit_shop(title=first_env, cures_dir=get_test_cures_dir())
@@ -129,20 +123,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def save_isol(self):
         if self.isol != None:
-            self.healer_x._admin.save_isol_contract(self.isol)
+            self.healer_x._admin.save_isol_pact(self.isol)
         self.refresh_healer()
 
-    def reload_all_src_contracts(self):
+    def reload_all_src_pacts(self):
         if self.cure_x != None:
-            self.cure_x.reload_all_healers_src_contractunits()
+            self.cure_x.reload_all_healers_src_pactunits()
 
     def set_public_and_reload_srcs(self):
-        self.save_output_contract_to_public()
-        self.reload_all_src_contracts()
+        self.save_output_pact_to_public()
+        self.reload_all_src_pacts()
 
-    def save_output_contract_to_public(self):
+    def save_output_pact_to_public(self):
         if self.healer_x != None:
-            self.healer_x.save_output_contract_to_public()
+            self.healer_x.save_output_pact_to_public()
         self.refresh_cure()
 
     def cure_load_from_file(self):
@@ -152,18 +146,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.cure_handle.setText(cure_selected)
         self.refresh_cure()
 
-    def contracts_table_select(self):
-        self.contract_healer.setText(
-            self.contracts_table.item(self.contracts_table.currentRow(), 0).text()
+    def pacts_table_select(self):
+        self.pact_healer.setText(
+            self.pacts_table.item(self.pacts_table.currentRow(), 0).text()
         )
         if self.healers_table.currentRow() != -1:
             selected_healer = self.healers_table.item(
                 self.healers_table.currentRow(), 0
             ).text()
-            selected_contract = self.contracts_table.item(
-                self.contracts_table.currentRow(), 0
+            selected_pact = self.pacts_table.item(
+                self.pacts_table.currentRow(), 0
             ).text()
-            self.depotlink_title.setText(f"{selected_healer} - {selected_contract}")
+            self.depotlink_title.setText(f"{selected_healer} - {selected_pact}")
 
     def healers_table_select(self):
         healer_x_title = self.healers_table.item(
@@ -189,18 +183,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
 
     def ignores_table_select(self):
-        ignore_contract_healer = self.ignores_table.item(
+        ignore_pact_healer = self.ignores_table.item(
             self.ignores_table.currentRow(), 0
         ).text()
-        # self.ignore_contract_x = self.cure_x.get_public_contract(
-        self.ignore_contract_x = self.cure_x.get_contract_from_ignores_dir(
-            healer_title=self.healer_x._admin.title, _healer=ignore_contract_healer
+        # self.ignore_pact_x = self.cure_x.get_public_pact(
+        self.ignore_pact_x = self.cure_x.get_pact_from_ignores_dir(
+            healer_title=self.healer_x._admin.title, _healer=ignore_pact_healer
         )
-        self.edit_contract = self.ignore_contract_x
+        self.edit_pact = self.ignore_pact_x
 
-    def ignore_contract_file_update(self):
-        self.cure_x.set_ignore_contract_file(
-            healer_title=self.healer_x._admin.title, contract_obj=self.ignore_contract_x
+    def ignore_pact_file_update(self):
+        self.cure_x.set_ignore_pact_file(
+            healer_title=self.healer_x._admin.title, pact_obj=self.ignore_pact_x
         )
         self.refresh_healer()
 
@@ -226,28 +220,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.cure_handle_combo_refresh()
         self.refresh_cure()
 
-    def contract_insert(self):
-        self.cure_x.save_public_contract(
-            contract_x=ContractUnit(_healer=self.contract_healer.text())
+    def pact_insert(self):
+        self.cure_x.save_public_pact(
+            pact_x=ContractUnit(_healer=self.pact_healer.text())
         )
         self.refresh_cure()
 
-    def contract_update_title(self):
-        currently_selected = self.contracts_table.item(
-            self.contracts_table.currentRow(), 0
+    def pact_update_title(self):
+        currently_selected = self.pacts_table.item(
+            self.pacts_table.currentRow(), 0
         ).text()
-        typed_in = self.contract_healer.text()
+        typed_in = self.pact_healer.text()
         if currently_selected != typed_in:
-            self.cure_x.rename_public_contract(
+            self.cure_x.rename_public_pact(
                 old_label=currently_selected, new_label=typed_in
             )
             self.refresh_cure()
 
-    def contract_delete(self):
-        self.cure_x.del_public_contract(
-            contract_x_label=self.contracts_table.item(
-                self.contracts_table.currentRow(), 0
-            ).text()
+    def pact_delete(self):
+        self.cure_x.del_public_pact(
+            pact_x_label=self.pacts_table.item(self.pacts_table.currentRow(), 0).text()
         )
         self.refresh_cure()
 
@@ -275,17 +267,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_healers()
 
     def depotlink_insert(self):
-        contract_healer = self.contracts_table.item(
-            self.contracts_table.currentRow(), 0
-        ).text()
+        pact_healer = self.pacts_table.item(self.pacts_table.currentRow(), 0).text()
         if self.healer_x != None:
-            contract_json = x_func_open_file(
-                dest_dir=self.healer_x._admin._contracts_public_dir,
-                file_title=f"{contract_healer}.json",
+            pact_json = x_func_open_file(
+                dest_dir=self.healer_x._admin._pacts_public_dir,
+                file_title=f"{pact_healer}.json",
             )
-            contract_x = get_contract_from_json(contract_json)
-            self.healer_x.set_depot_contract(
-                contract_x=contract_x,
+            pact_x = get_pact_from_json(pact_json)
+            self.healer_x.set_depot_pact(
+                pact_x=pact_x,
                 depotlink_type=self.depotlink_type_combo.currentText(),
                 depotlink_weight=self.depotlink_weight.text(),
             )
@@ -307,19 +297,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def depotlink_delete(self):
         healer_title_x = self.healer_x._admin.title
         self.cure_x.del_depotlink(
-            healer_title=healer_title_x, contractunit_healer=self.depotlink_title.text()
+            healer_title=healer_title_x, pactunit_healer=self.depotlink_title.text()
         )
         self.cure_x.save_healer_file(healer_title=healer_title_x)
         self.refresh_healer()
 
-    def get_contract_healer_list(self):
-        contracts_list = []
+    def get_pact_healer_list(self):
+        pacts_list = []
         for file_title in self.get_public_dir_file_titles_list():
-            contract_json = x_func_open_file(
+            pact_json = x_func_open_file(
                 dest_dir=self.get_public_dir(), file_title=file_title
             )
-            contracts_list.append(get_contract_from_json(cx_json=contract_json))
-        return contracts_list
+            pacts_list.append(get_pact_from_json(cx_json=pact_json))
+        return pacts_list
 
     def get_healer_title_list(self):
         healers_healer_list = []
@@ -334,7 +324,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.healer_x != None:
             for cl_val in self.healer_x._depotlinks.values():
                 depotlink_row = [
-                    cl_val.contract_healer,
+                    cl_val.pact_healer,
                     cl_val.depotlink_type,
                     str(cl_val.weight),
                 ]
@@ -345,7 +335,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         x_list = []
         if self.healer_x != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.healer_x_admin._contracts_digest_dir,
+                dir_path=self.healer_x_admin._pacts_digest_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -357,7 +347,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         x_list = []
         if self.healer_x != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.healer_x._admin._contracts_ignore_dir,
+                dir_path=self.healer_x._admin._pacts_ignore_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -367,16 +357,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_ideas_list(self):
         x_list = []
-        if self.healer_output_contract != None:
-            idea_list = self.healer_output_contract.get_idea_tree_ordered_road_list()
+        if self.healer_output_pact != None:
+            idea_list = self.healer_output_pact.get_idea_tree_ordered_road_list()
 
             for idea_road in idea_list:
-                idea_obj = self.healer_output_contract.get_idea_kid(idea_road)
+                idea_obj = self.healer_output_pact.get_idea_kid(idea_road)
 
                 if idea_obj._pad.find("time") != 3:
                     x_list.append(
                         [
-                            contract_importance_diplay(idea_obj._contract_importance),
+                            pact_importance_diplay(idea_obj._pact_importance),
                             idea_road,
                             len(idea_obj._balancelinks),
                         ]
@@ -386,36 +376,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_partys_list(self):
         x_list = []
-        if self.healer_output_contract != None:
+        if self.healer_output_pact != None:
             x_list.extend(
                 [
-                    f"{contract_importance_diplay(partyunit._contract_credit)}/{contract_importance_diplay(partyunit._contract_debt)}",
+                    f"{pact_importance_diplay(partyunit._pact_credit)}/{pact_importance_diplay(partyunit._pact_debt)}",
                     partyunit.title,
                     f"{partyunit.creditor_weight}/{partyunit.debtor_weight}",
                 ]
-                for partyunit in self.healer_output_contract._partys.values()
+                for partyunit in self.healer_output_pact._partys.values()
             )
         return x_list
 
     def get_p_groups_list(self):
         x_list = []
-        if self.healer_output_contract != None:
+        if self.healer_output_pact != None:
             x_list.extend(
                 [
-                    f"{contract_importance_diplay(groupunit._contract_debt)}/{contract_importance_diplay(groupunit._contract_credit)}",
+                    f"{pact_importance_diplay(groupunit._pact_debt)}/{pact_importance_diplay(groupunit._pact_credit)}",
                     groupunit.brand,
                     len(groupunit._partys),
                 ]
-                for groupunit in self.healer_output_contract._groups.values()
+                for groupunit in self.healer_output_pact._groups.values()
             )
         return x_list
 
     def get_p_acptfacts_list(self):
         x_list = []
-        if self.healer_output_contract != None:
+        if self.healer_output_pact != None:
             for (
                 acptfactunit
-            ) in self.healer_output_contract._idearoot._acptfactunits.values():
+            ) in self.healer_output_pact._idearoot._acptfactunits.values():
                 open_nigh = ""
                 if acptfactunit.open is None and acptfactunit.nigh is None:
                     open_nigh = ""
@@ -433,12 +423,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_agenda_list(self):
         x_list = []
-        if self.healer_output_contract != None:
-            agenda_list = self.healer_output_contract.get_agenda_items()
-            agenda_list.sort(key=lambda x: x._contract_importance, reverse=True)
+        if self.healer_output_pact != None:
+            agenda_list = self.healer_output_pact.get_agenda_items()
+            agenda_list.sort(key=lambda x: x._pact_importance, reverse=True)
             x_list.extend(
                 [
-                    contract_importance_diplay(agenda_item._contract_importance),
+                    pact_importance_diplay(agenda_item._pact_importance),
                     agenda_item._label,
                     agenda_item._pad,
                 ]
@@ -486,13 +476,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         p_ideas_list = self.get_p_ideas_list()
         if len(p_ideas_list) >= 0:
             column_headers = [
-                "contract_importance",
+                "pact_importance",
                 f"Ideas Table ({len(p_ideas_list)})",
                 "balancelinks",
             ]
         else:
             column_headers = [
-                "contract_importance",
+                "pact_importance",
                 "Ideas Table",
                 "balancelinks",
             ]
@@ -511,7 +501,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _sub_refresh_p_partys_table(self):
         p_partys_list = self.get_p_partys_list()
         column_headers = [
-            "contract_debt/contract_credit",
+            "pact_debt/pact_credit",
             f"Partys ({len(p_partys_list)})",
             "creditor_weight/debtor_weight",
         ]
@@ -526,7 +516,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _sub_refresh_p_groups_table(self):
         p_groups_list = self.get_p_groups_list()
         column_headers = [
-            "contract_debt/contract_credit",
+            "pact_debt/pact_credit",
             f"groups ({len(p_groups_list)})",
             "Partys",
         ]
@@ -552,7 +542,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _sub_refresh_p_agenda_table(self):
         p_agenda_list = self.get_p_agenda_list()
         column_headers = [
-            "contract_importance",
+            "pact_importance",
             f"Agenda ({len(p_agenda_list)})",
             "Idea Walk",
         ]
@@ -577,11 +567,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._sub_refresh_depotlinks_table()
         self._sub_refresh_digests_table()
         self._sub_refresh_ignores_table()
-        self.healer_output_contract = None
+        self.healer_output_pact = None
         if self.healer_x != None:
-            self.healer_output_contract = (
-                self.healer_x._admin.get_remelded_output_contract()
-            )
+            self.healer_output_pact = self.healer_x._admin.get_remelded_output_pact()
         self._sub_refresh_p_ideas_table()
         self._sub_refresh_p_partys_table()
         self._sub_refresh_p_groups_table()
@@ -590,7 +578,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def refresh_cure(self):
         self.refresh_x(
-            self.contracts_table, ["Contracts Table"], self.get_contract_healer_list()
+            self.pacts_table, ["Contracts Table"], self.get_pact_healer_list()
         )
         self.refresh_healers()
 

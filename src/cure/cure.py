@@ -1,10 +1,10 @@
-from src.contract.contract import (
+from src.pact.pact import (
     ContractUnit,
-    get_from_json as get_contract_from_json,
+    get_from_json as get_pact_from_json,
     partylink_shop,
     PartyTitle,
 )
-from src.contract.x_func import (
+from src.pact.x_func import (
     single_dir_create_if_null,
     delete_dir as x_func_delete_dir,
     save_file as x_func_save_file,
@@ -23,7 +23,7 @@ from src.cure.bank_sqlstr import (
     get_river_bucket_table_insert_sqlstr,
     get_create_table_if_not_exist_sqlstrs,
     get_ledger_table_insert_sqlstr,
-    get_contract_table_insert_sqlstr,
+    get_pact_table_insert_sqlstr,
     get_river_ledger_unit,
     LedgerUnit,
     RiverLedgerUnit,
@@ -55,48 +55,46 @@ class CureUnit:
     def set_person_importance(self, person_importance: float):
         self._person_importance = person_importance
 
-    def set_contract_bank_attrs(self, contract_healer: str):
-        contract_obj = self.get_public_contract(contract_healer)
+    def set_pact_bank_attrs(self, pact_healer: str):
+        pact_obj = self.get_public_pact(pact_healer)
 
-        for groupunit_x in contract_obj._groups.values():
+        for groupunit_x in pact_obj._groups.values():
             if groupunit_x._partylinks_set_by_cure_road != None:
                 groupunit_x.clear_partylinks()
                 ic = get_idea_catalog_dict(
                     self.get_bank_conn(), groupunit_x._partylinks_set_by_cure_road
                 )
                 for idea_catalog in ic.values():
-                    if contract_healer != idea_catalog.contract_healer:
-                        partylink_x = partylink_shop(title=idea_catalog.contract_healer)
+                    if pact_healer != idea_catalog.pact_healer:
+                        partylink_x = partylink_shop(title=idea_catalog.pact_healer)
                         groupunit_x.set_partylink(partylink_x)
-        self.save_public_contract(contract_obj)
+        self.save_public_pact(pact_obj)
 
         # refresh bank metrics
         self.refresh_bank_metrics()
 
     # banking
-    def set_river_sphere_for_contract(
-        self, contract_healer: str, max_flows_count: int = None
-    ):
-        self._clear_all_source_river_data(contract_healer)
-        general_bucket = [self._get_root_river_ledger_unit(contract_healer)]
+    def set_river_sphere_for_pact(self, pact_healer: str, max_flows_count: int = None):
+        self._clear_all_source_river_data(pact_healer)
+        general_bucket = [self._get_root_river_ledger_unit(pact_healer)]
 
         if max_flows_count is None:
             max_flows_count = 40
 
         flows_count = 0
         while flows_count < max_flows_count and general_bucket != []:
-            parent_contract_ledger = general_bucket.pop(0)
+            parent_pact_ledger = general_bucket.pop(0)
 
-            parent_range = parent_contract_ledger.get_range()
-            parent_close = parent_contract_ledger.currency_cease
-            curr_onset = parent_contract_ledger.currency_onset
+            parent_range = parent_pact_ledger.get_range()
+            parent_close = parent_pact_ledger.currency_cease
+            curr_onset = parent_pact_ledger.currency_onset
 
-            ledgers_len = len(parent_contract_ledger._ledgers.values())
+            ledgers_len = len(parent_pact_ledger._ledgers.values())
             ledgers_count = 0
-            for led_x in parent_contract_ledger._ledgers.values():
+            for led_x in parent_pact_ledger._ledgers.values():
                 ledgers_count += 1
 
-                curr_range = parent_range * led_x._contract_agenda_ratio_credit
+                curr_range = parent_range * led_x._pact_agenda_ratio_credit
                 curr_close = curr_onset + curr_range
 
                 # implies last element in dict
@@ -104,14 +102,14 @@ class CureUnit:
                     curr_close = parent_close
 
                 river_flow_x = RiverFlowUnit(
-                    currency_contract_healer=contract_healer,
-                    src_title=led_x.contract_healer,
+                    currency_pact_healer=pact_healer,
+                    src_title=led_x.pact_healer,
                     dst_title=led_x.party_title,
                     currency_start=curr_onset,
                     currency_close=curr_close,
                     flow_num=flows_count,
-                    parent_flow_num=parent_contract_ledger.flow_num,
-                    river_tree_level=parent_contract_ledger.river_tree_level + 1,
+                    parent_flow_num=parent_pact_ledger.flow_num,
+                    river_tree_level=parent_pact_ledger.river_tree_level + 1,
                 )
                 river_ledger_x = self._insert_river_flow_grab_river_ledger(river_flow_x)
                 if river_ledger_x != None:
@@ -124,7 +122,7 @@ class CureUnit:
                 # change curr_onset for next
                 curr_onset += curr_range
 
-        self._set_river_tpartys_buckets(contract_healer)
+        self._set_river_tpartys_buckets(pact_healer)
 
     def _insert_river_flow_grab_river_ledger(
         self, river_flow_x: RiverFlowUnit
@@ -139,23 +137,23 @@ class CureUnit:
 
         return river_ledger_x
 
-    def _clear_all_source_river_data(self, contract_healer: str):
+    def _clear_all_source_river_data(self, pact_healer: str):
         with self.get_bank_conn() as bank_conn:
-            flow_s = get_river_flow_table_delete_sqlstr(contract_healer)
-            mstr_s = get_river_tparty_table_delete_sqlstr(contract_healer)
+            flow_s = get_river_flow_table_delete_sqlstr(pact_healer)
+            mstr_s = get_river_tparty_table_delete_sqlstr(pact_healer)
             bank_conn.execute(flow_s)
             bank_conn.execute(mstr_s)
 
-    def _get_root_river_ledger_unit(self, contract_healer: str) -> RiverLedgerUnit:
+    def _get_root_river_ledger_unit(self, pact_healer: str) -> RiverLedgerUnit:
         default_currency_onset = 0.0
         default_currency_cease = 1.0
         default_root_river_tree_level = 0
         default_root_flow_num = None  # maybe change to 1?
         default_root_parent_flow_num = None
         root_river_flow = RiverFlowUnit(
-            currency_contract_healer=contract_healer,
+            currency_pact_healer=pact_healer,
             src_title=None,
-            dst_title=contract_healer,
+            dst_title=pact_healer,
             currency_start=default_currency_onset,
             currency_close=default_currency_cease,
             flow_num=default_root_flow_num,
@@ -166,77 +164,77 @@ class CureUnit:
             source_river_ledger = get_river_ledger_unit(bank_conn, root_river_flow)
         return source_river_ledger
 
-    def _set_river_tpartys_buckets(self, contract_healer: str):
+    def _set_river_tpartys_buckets(self, pact_healer: str):
         with self.get_bank_conn() as bank_conn:
-            bank_conn.execute(get_river_tparty_table_insert_sqlstr(contract_healer))
-            bank_conn.execute(get_river_bucket_table_insert_sqlstr(contract_healer))
+            bank_conn.execute(get_river_tparty_table_insert_sqlstr(pact_healer))
+            bank_conn.execute(get_river_bucket_table_insert_sqlstr(pact_healer))
 
-            sal_river_tpartys = get_river_tparty_dict(bank_conn, contract_healer)
-            contract_x = self.get_public_contract(healer=contract_healer)
-            contract_x.set_banking_attr_partyunits(sal_river_tpartys)
-            self.save_public_contract(contract_x=contract_x)
+            sal_river_tpartys = get_river_tparty_dict(bank_conn, pact_healer)
+            pact_x = self.get_public_pact(healer=pact_healer)
+            pact_x.set_banking_attr_partyunits(sal_river_tpartys)
+            self.save_public_pact(pact_x=pact_x)
 
-    def get_river_tpartys(self, contract_healer: str) -> dict[str:RiverTpartyUnit]:
+    def get_river_tpartys(self, pact_healer: str) -> dict[str:RiverTpartyUnit]:
         with self.get_bank_conn() as bank_conn:
-            river_tpartys = get_river_tparty_dict(bank_conn, contract_healer)
+            river_tpartys = get_river_tparty_dict(bank_conn, pact_healer)
         return river_tpartys
 
     def refresh_bank_metrics(self, in_memory: bool = None):
         if in_memory is None and self._bank_db != None:
             in_memory = True
         self._create_bank_db(in_memory=in_memory, overwrite=True)
-        self._bank_populate_contracts_data()
+        self._bank_populate_pacts_data()
 
-    def _bank_populate_contracts_data(self):
+    def _bank_populate_pacts_data(self):
         for file_title in self.get_public_dir_file_titles_list():
-            contract_json = x_func_open_file(self.get_public_dir(), file_title)
-            contractunit_x = get_contract_from_json(cx_json=contract_json)
-            contractunit_x.set_contract_metrics()
+            pact_json = x_func_open_file(self.get_public_dir(), file_title)
+            pactunit_x = get_pact_from_json(cx_json=pact_json)
+            pactunit_x.set_pact_metrics()
 
-            self._bank_insert_contractunit(contractunit_x)
-            self._bank_insert_partyunit(contractunit_x)
-            self._bank_insert_groupunit(contractunit_x)
-            self._bank_insert_ideaunit(contractunit_x)
-            self._bank_insert_acptfact(contractunit_x)
+            self._bank_insert_pactunit(pactunit_x)
+            self._bank_insert_partyunit(pactunit_x)
+            self._bank_insert_groupunit(pactunit_x)
+            self._bank_insert_ideaunit(pactunit_x)
+            self._bank_insert_acptfact(pactunit_x)
 
-    def _bank_insert_contractunit(self, contractunit_x: ContractUnit):
+    def _bank_insert_pactunit(self, pactunit_x: ContractUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            cur.execute(get_contract_table_insert_sqlstr(contract_x=contractunit_x))
+            cur.execute(get_pact_table_insert_sqlstr(pact_x=pactunit_x))
 
-    def _bank_insert_partyunit(self, contractunit_x: ContractUnit):
+    def _bank_insert_partyunit(self, pactunit_x: ContractUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            for partyunit_x in contractunit_x._partys.values():
-                sqlstr = get_ledger_table_insert_sqlstr(contractunit_x, partyunit_x)
+            for partyunit_x in pactunit_x._partys.values():
+                sqlstr = get_ledger_table_insert_sqlstr(pactunit_x, partyunit_x)
                 cur.execute(sqlstr)
 
-    def _bank_insert_groupunit(self, contractunit_x: ContractUnit):
+    def _bank_insert_groupunit(self, pactunit_x: ContractUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            for groupunit_x in contractunit_x._groups.values():
+            for groupunit_x in pactunit_x._groups.values():
                 groupunit_catalog_x = GroupUnitCatalog(
-                    contract_healer=contractunit_x._healer,
+                    pact_healer=pactunit_x._healer,
                     groupunit_brand=groupunit_x.brand,
                     partylinks_set_by_cure_road=groupunit_x._partylinks_set_by_cure_road,
                 )
                 sqlstr = get_groupunit_catalog_table_insert_sqlstr(groupunit_catalog_x)
                 cur.execute(sqlstr)
 
-    def _bank_insert_ideaunit(self, contractunit_x: ContractUnit):
+    def _bank_insert_ideaunit(self, pactunit_x: ContractUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            for idea_x in contractunit_x._idea_dict.values():
-                idea_catalog_x = IdeaCatalog(contractunit_x._healer, idea_x.get_road())
+            for idea_x in pactunit_x._idea_dict.values():
+                idea_catalog_x = IdeaCatalog(pactunit_x._healer, idea_x.get_road())
                 sqlstr = get_idea_catalog_table_insert_sqlstr(idea_catalog_x)
                 cur.execute(sqlstr)
 
-    def _bank_insert_acptfact(self, contractunit_x: ContractUnit):
+    def _bank_insert_acptfact(self, pactunit_x: ContractUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            for acptfact_x in contractunit_x._idearoot._acptfactunits.values():
+            for acptfact_x in pactunit_x._idearoot._acptfactunits.values():
                 acptfact_catalog_x = AcptFactCatalog(
-                    contract_healer=contractunit_x._healer,
+                    pact_healer=pactunit_x._healer,
                     base=acptfact_x.base,
                     pick=acptfact_x.pick,
                 )
@@ -289,10 +287,10 @@ class CureUnit:
 
     def create_dirs_if_null(self, in_memory_bank: bool = None):
         cure_dir = self.get_object_root_dir()
-        contracts_dir = self.get_public_dir()
+        pacts_dir = self.get_public_dir()
         healers_dir = self.get_healers_dir()
         single_dir_create_if_null(x_path=cure_dir)
-        single_dir_create_if_null(x_path=contracts_dir)
+        single_dir_create_if_null(x_path=pacts_dir)
         single_dir_create_if_null(x_path=healers_dir)
         self._create_main_file_if_null(x_dir=cure_dir)
         self._create_bank_db(in_memory=in_memory_bank, overwrite=True)
@@ -326,7 +324,7 @@ class CureUnit:
         )
 
     def create_healerunit_from_public(self, title: str):
-        cx = self.get_public_contract(healer=title)
+        cx = self.get_public_pact(healer=title)
         healer_x = healerunit_shop(title=cx._healer, env_dir=self.get_object_root_dir())
         self.set_healerunits_empty_if_null()
         self.set_healerunit_to_cure(healer_x)
@@ -337,7 +335,7 @@ class CureUnit:
 
     def save_healer_file(self, healer_title: str):
         healer_x = self.get_healer_obj(title=healer_title)
-        healer_x._admin.save_isol_contract(healer_x.get_isol())
+        healer_x._admin.save_isol_pact(healer_x.get_isol())
 
     def rename_healerunit(self, old_title: str, new_title: str):
         healer_x = self.get_healer_obj(title=old_title)
@@ -355,113 +353,113 @@ class CureUnit:
 
     # public dir management
     def get_public_dir(self):
-        return f"{self.get_object_root_dir()}/contracts"
+        return f"{self.get_object_root_dir()}/pacts"
 
     def get_ignores_dir(self, healer_title: str):
         per_x = self.get_healer_obj(healer_title)
-        return per_x._admin._contracts_ignore_dir
+        return per_x._admin._pacts_ignore_dir
 
-    def get_public_contract(self, healer: str) -> ContractUnit:
-        return get_contract_from_json(
+    def get_public_pact(self, healer: str) -> ContractUnit:
+        return get_pact_from_json(
             x_func_open_file(
                 dest_dir=self.get_public_dir(), file_title=f"{healer}.json"
             )
         )
 
-    def get_contract_from_ignores_dir(
+    def get_pact_from_ignores_dir(
         self, healer_title: str, _healer: str
     ) -> ContractUnit:
-        return get_contract_from_json(
+        return get_pact_from_json(
             x_func_open_file(
                 dest_dir=self.get_ignores_dir(healer_title=healer_title),
                 file_title=f"{_healer}.json",
             )
         )
 
-    def set_ignore_contract_file(self, healer_title: str, contract_obj: ContractUnit):
+    def set_ignore_pact_file(self, healer_title: str, pact_obj: ContractUnit):
         healer_x = self.get_healer_obj(title=healer_title)
-        healer_x.set_ignore_contract_file(
-            contractunit=contract_obj, src_contract_healer=contract_obj._healer
+        healer_x.set_ignore_pact_file(
+            pactunit=pact_obj, src_pact_healer=pact_obj._healer
         )
 
-    def rename_public_contract(self, old_healer: str, new_healer: str):
-        contract_x = self.get_public_contract(healer=old_healer)
-        contract_x.set_healer(new_healer=new_healer)
-        self.save_public_contract(contract_x=contract_x)
-        self.del_public_contract(contract_x_healer=old_healer)
+    def rename_public_pact(self, old_healer: str, new_healer: str):
+        pact_x = self.get_public_pact(healer=old_healer)
+        pact_x.set_healer(new_healer=new_healer)
+        self.save_public_pact(pact_x=pact_x)
+        self.del_public_pact(pact_x_healer=old_healer)
 
-    def del_public_contract(self, contract_x_healer: str):
-        x_func_delete_dir(f"{self.get_public_dir()}/{contract_x_healer}.json")
+    def del_public_pact(self, pact_x_healer: str):
+        x_func_delete_dir(f"{self.get_public_dir()}/{pact_x_healer}.json")
 
-    def save_public_contract(self, contract_x: ContractUnit):
-        contract_x.set_cure_handle(cure_handle=self.handle)
+    def save_public_pact(self, pact_x: ContractUnit):
+        pact_x.set_cure_handle(cure_handle=self.handle)
         x_func_save_file(
             dest_dir=self.get_public_dir(),
-            file_title=f"{contract_x._healer}.json",
-            file_text=contract_x.get_json(),
+            file_title=f"{pact_x._healer}.json",
+            file_text=pact_x.get_json(),
         )
 
-    def reload_all_healers_src_contractunits(self):
+    def reload_all_healers_src_pactunits(self):
         for healer_x in self._healerunits.values():
-            healer_x.refresh_depot_contracts()
+            healer_x.refresh_depot_pacts()
 
     def get_public_dir_file_titles_list(self):
         return list(x_func_dir_files(dir_path=self.get_public_dir()).keys())
 
-    # contracts_dir to healer_contracts_dir management
-    def _healer_set_depot_contract(
+    # pacts_dir to healer_pacts_dir management
+    def _healer_set_depot_pact(
         self,
         healerunit: HealerUnit,
-        contractunit: ContractUnit,
+        pactunit: ContractUnit,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
-        ignore_contract: ContractUnit = None,
+        ignore_pact: ContractUnit = None,
     ):
-        healerunit.set_depot_contract(
-            contract_x=contractunit,
+        healerunit.set_depot_pact(
+            pact_x=pactunit,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
         )
-        if depotlink_type == "ignore" and ignore_contract != None:
-            healerunit.set_ignore_contract_file(
-                contractunit=ignore_contract, src_contract_healer=contractunit._healer
+        if depotlink_type == "ignore" and ignore_pact != None:
+            healerunit.set_ignore_pact_file(
+                pactunit=ignore_pact, src_pact_healer=pactunit._healer
             )
 
     def set_healer_depotlink(
         self,
         healer_title: str,
-        contract_healer: str,
+        pact_healer: str,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
-        ignore_contract: ContractUnit = None,
+        ignore_pact: ContractUnit = None,
     ):
         healer_x = self.get_healer_obj(title=healer_title)
-        contract_x = self.get_public_contract(healer=contract_healer)
-        self._healer_set_depot_contract(
+        pact_x = self.get_public_pact(healer=pact_healer)
+        self._healer_set_depot_pact(
             healerunit=healer_x,
-            contractunit=contract_x,
+            pactunit=pact_x,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
-            ignore_contract=ignore_contract,
+            ignore_pact=ignore_pact,
         )
 
-    def create_depotlink_to_generated_contract(
+    def create_depotlink_to_generated_pact(
         self,
         healer_title: str,
-        contract_healer: str,
+        pact_healer: str,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
         healer_x = self.get_healer_obj(title=healer_title)
-        contract_x = ContractUnit(_healer=contract_healer)
-        self._healer_set_depot_contract(
+        pact_x = ContractUnit(_healer=pact_healer)
+        self._healer_set_depot_pact(
             healerunit=healer_x,
-            contractunit=contract_x,
+            pactunit=pact_x,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
@@ -476,23 +474,23 @@ class CureUnit:
         debtor_weight: str,
     ):
         healer_x = self.get_healer_obj(title=healer_title)
-        contract_x = self.get_public_contract(_healer=partytitle)
-        self._healer_set_depot_contract(
+        pact_x = self.get_public_pact(_healer=partytitle)
+        self._healer_set_depot_pact(
             healerunit=healer_x,
-            contractunit=contract_x,
+            pactunit=pact_x,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
         )
 
-    def del_depotlink(self, healer_title: str, contractunit_healer: str):
+    def del_depotlink(self, healer_title: str, pactunit_healer: str):
         healer_x = self.get_healer_obj(title=healer_title)
-        healer_x.del_depot_contract(contract_healer=contractunit_healer)
+        healer_x.del_depot_pact(pact_healer=pactunit_healer)
 
-    # Healer output_contract
-    def get_output_contract(self, healer_title: str) -> ContractUnit:
+    # Healer output_pact
+    def get_output_pact(self, healer_title: str) -> ContractUnit:
         healer_x = self.get_healer_obj(title=healer_title)
-        return healer_x._admin.get_remelded_output_contract()
+        return healer_x._admin.get_remelded_output_pact()
 
 
 def cureunit_shop(

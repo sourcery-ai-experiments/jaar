@@ -1,4 +1,4 @@
-from src.contract.x_func import (
+from src.pact.x_func import (
     single_dir_create_if_null,
     delete_dir as x_func_delete_dir,
     copy_dir,

@@ -1,6 +1,6 @@
 from src.cure.healer import healerunit_shop
 from src.cure.examples.example_healers import (
-    get_contract_assignment_laundry_example1,
+    get_pact_assignment_laundry_example1,
 )
 from src.cure.examples.healer_env_kit import (
     healer_dir_setup_cleanup,
@@ -9,11 +9,11 @@ from src.cure.examples.healer_env_kit import (
 )
 
 
-def test_healer_save_contract_to_depot_assignment_link_CorrectlyCreatesAssignmentFile(
+def test_healer_save_pact_to_depot_assignment_link_CorrectlyCreatesAssignmentFile(
     healer_dir_setup_cleanup,
 ):
     # GIVEN
-    america_cx = get_contract_assignment_laundry_example1()
+    america_cx = get_pact_assignment_laundry_example1()
     america_cx.set_cure_handle(get_temp_cure_handle())
     joachim_text = "Joachim"
     joachim_ux = healerunit_shop(
@@ -26,12 +26,12 @@ def test_healer_save_contract_to_depot_assignment_link_CorrectlyCreatesAssignmen
     print(f"{america_cx._healer} {america_cx._idearoot._label=}")
 
     # WHEN
-    joachim_ux.set_depot_contract(contract_x=america_cx, depotlink_type="assignment")
-    output_cx = joachim_ux._admin.get_remelded_output_contract()
+    joachim_ux.set_depot_pact(pact_x=america_cx, depotlink_type="assignment")
+    output_cx = joachim_ux._admin.get_remelded_output_pact()
 
     # THEN
     assert output_cx != None
-    output_cx.set_contract_metrics()
+    output_cx.set_pact_metrics()
     assert len(output_cx._idea_dict.keys()) == 9
 
     casa_text = "casa"

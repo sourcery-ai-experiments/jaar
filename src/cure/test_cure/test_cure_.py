@@ -1,4 +1,4 @@
-from src.contract.x_func import delete_dir as x_func_delete_dir
+from src.pact.x_func import delete_dir as x_func_delete_dir
 from os import path as os_path
 from src.cure.cure import CureUnit, cureunit_shop
 from src.cure.examples.cure_env_kit import (
@@ -34,7 +34,7 @@ def test_cure_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     cure_dir = f"src/cure/examples/cures/{cure_handle}"
     cure_file_title = "cure.json"
     cure_file_path = f"{cure_dir}/{cure_file_title}"
-    contracts_dir = f"{cure_dir}/contracts"
+    pacts_dir = f"{cure_dir}/pacts"
     healers_dir = f"{cure_dir}/healers"
     bank_file_title = "bank.db"
     bank_file_path = f"{cure_dir}/{bank_file_title}"
@@ -42,22 +42,22 @@ def test_cure_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.exists(cure_dir) is False
     assert os_path.isdir(cure_dir) is False
     assert os_path.exists(cure_file_path) is False
-    assert os_path.exists(contracts_dir) is False
+    assert os_path.exists(pacts_dir) is False
     assert os_path.exists(healers_dir) is False
     assert os_path.exists(bank_file_path) is False
 
     # WHEN
     x_cureunit.create_dirs_if_null(in_memory_bank=False)
 
-    # THEN check contracts src directory created
+    # THEN check pacts src directory created
     assert os_path.exists(cure_dir)
     assert os_path.isdir(cure_dir)
     assert os_path.exists(cure_file_path)
-    assert os_path.exists(contracts_dir)
+    assert os_path.exists(pacts_dir)
     assert os_path.exists(healers_dir)
     assert os_path.exists(bank_file_path)
     assert x_cureunit.get_object_root_dir() == cure_dir
-    assert x_cureunit.get_public_dir() == contracts_dir
+    assert x_cureunit.get_public_dir() == pacts_dir
     assert x_cureunit.get_healers_dir() == healers_dir
     assert x_cureunit.get_bank_db_path() == bank_file_path
 
@@ -68,14 +68,14 @@ def test_rename_example_cure_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup):
     old_cure_dir = f"src/cure/examples/cures/{old_cure_handle}"
     old_cure_file_title = "cure.json"
     old_cure_file_path = f"{old_cure_dir}/{old_cure_file_title}"
-    old_contracts_dir = f"{old_cure_dir}/contracts"
+    old_pacts_dir = f"{old_cure_dir}/pacts"
     old_healers_dir = f"{old_cure_dir}/healers"
 
     new_cure_handle = "ex_env1"
     new_cure_dir = f"src/cure/examples/cures/{new_cure_handle}"
     new_cure_file_title = "cure.json"
     new_cure_file_path = f"{new_cure_dir}/{new_cure_file_title}"
-    new_contracts_dir = f"{new_cure_dir}/contracts"
+    new_pacts_dir = f"{new_cure_dir}/pacts"
     new_healers_dir = f"{new_cure_dir}/healers"
     x_func_delete_dir(dir=new_cure_dir)
     print(f"{new_cure_dir=}")
@@ -89,38 +89,38 @@ def test_rename_example_cure_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.exists(old_cure_dir)
     assert os_path.isdir(old_cure_dir)
     assert os_path.exists(old_cure_file_path)
-    assert os_path.exists(old_contracts_dir)
+    assert os_path.exists(old_pacts_dir)
     assert os_path.exists(old_healers_dir)
-    assert x_cureunit.get_public_dir() == old_contracts_dir
+    assert x_cureunit.get_public_dir() == old_pacts_dir
     assert x_cureunit.get_healers_dir() == old_healers_dir
 
     assert os_path.exists(new_cure_dir) is False
     assert os_path.isdir(new_cure_dir) is False
     assert os_path.exists(new_cure_file_path) is False
-    assert os_path.exists(new_contracts_dir) is False
+    assert os_path.exists(new_pacts_dir) is False
     assert os_path.exists(new_healers_dir) is False
-    assert x_cureunit.get_public_dir() != new_contracts_dir
+    assert x_cureunit.get_public_dir() != new_pacts_dir
     assert x_cureunit.get_healers_dir() != new_healers_dir
     assert x_cureunit.handle != new_cure_handle
 
     # WHEN
     rename_example_cure(cure_obj=x_cureunit, new_title=new_cure_handle)
 
-    # THEN check contracts src directory created
+    # THEN check pacts src directory created
     assert os_path.exists(old_cure_dir) is False
     assert os_path.isdir(old_cure_dir) is False
     assert os_path.exists(old_cure_file_path) is False
-    assert os_path.exists(old_contracts_dir) is False
+    assert os_path.exists(old_pacts_dir) is False
     assert os_path.exists(old_healers_dir) is False
-    assert x_cureunit.get_public_dir() != old_contracts_dir
+    assert x_cureunit.get_public_dir() != old_pacts_dir
     assert x_cureunit.get_healers_dir() != old_healers_dir
 
     assert os_path.exists(new_cure_dir)
     assert os_path.isdir(new_cure_dir)
     assert os_path.exists(new_cure_file_path)
-    assert os_path.exists(new_contracts_dir)
+    assert os_path.exists(new_pacts_dir)
     assert os_path.exists(new_healers_dir)
-    assert x_cureunit.get_public_dir() == new_contracts_dir
+    assert x_cureunit.get_public_dir() == new_pacts_dir
     assert x_cureunit.get_healers_dir() == new_healers_dir
     assert x_cureunit.handle == new_cure_handle
 
@@ -137,7 +137,7 @@ def test_copy_evaluation_cure_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup):
     old_cure_dir = f"src/cure/examples/cures/{old_cure_handle}"
     old_cure_file_title = "cure.json"
     old_cure_file_path = f"{old_cure_dir}/{old_cure_file_title}"
-    old_contracts_dir = f"{old_cure_dir}/contracts"
+    old_pacts_dir = f"{old_cure_dir}/pacts"
     old_healers_dir = f"{old_cure_dir}/healers"
 
     x_cureunit = cureunit_shop(handle=old_cure_handle, cures_dir=get_test_cures_dir())
@@ -146,45 +146,45 @@ def test_copy_evaluation_cure_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.exists(old_cure_dir)
     assert os_path.isdir(old_cure_dir)
     assert os_path.exists(old_cure_file_path)
-    assert os_path.exists(old_contracts_dir)
+    assert os_path.exists(old_pacts_dir)
     assert os_path.exists(old_healers_dir)
-    assert x_cureunit.get_public_dir() == old_contracts_dir
+    assert x_cureunit.get_public_dir() == old_pacts_dir
     assert x_cureunit.get_healers_dir() == old_healers_dir
 
     new_cure_handle = "ex_env1"
     new_cure_dir = f"src/cure/examples/cures/{new_cure_handle}"
     new_cure_file_title = "cure.json"
     new_cure_file_path = f"{new_cure_dir}/{new_cure_file_title}"
-    new_contracts_dir = f"{new_cure_dir}/contracts"
+    new_pacts_dir = f"{new_cure_dir}/pacts"
     new_healers_dir = f"{new_cure_dir}/healers"
 
     assert os_path.exists(new_cure_dir) is False
     assert os_path.isdir(new_cure_dir) is False
     assert os_path.exists(new_cure_file_path) is False
-    assert os_path.exists(new_contracts_dir) is False
+    assert os_path.exists(new_pacts_dir) is False
     assert os_path.exists(new_healers_dir) is False
-    assert x_cureunit.get_public_dir() != new_contracts_dir
+    assert x_cureunit.get_public_dir() != new_pacts_dir
     assert x_cureunit.get_healers_dir() != new_healers_dir
     assert x_cureunit.handle != new_cure_handle
 
     # WHEN
     copy_evaluation_cure(src_handle=x_cureunit.handle, dest_handle=new_cure_handle)
 
-    # THEN check contracts src directory created
+    # THEN check pacts src directory created
     assert os_path.exists(old_cure_dir)
     assert os_path.isdir(old_cure_dir)
     assert os_path.exists(old_cure_file_path)
-    assert os_path.exists(old_contracts_dir)
+    assert os_path.exists(old_pacts_dir)
     assert os_path.exists(old_healers_dir)
-    assert x_cureunit.get_public_dir() == old_contracts_dir
+    assert x_cureunit.get_public_dir() == old_pacts_dir
     assert x_cureunit.get_healers_dir() == old_healers_dir
 
     assert os_path.exists(new_cure_dir)
     assert os_path.isdir(new_cure_dir)
     assert os_path.exists(new_cure_file_path)
-    assert os_path.exists(new_contracts_dir)
+    assert os_path.exists(new_pacts_dir)
     assert os_path.exists(new_healers_dir)
-    assert x_cureunit.get_public_dir() != new_contracts_dir
+    assert x_cureunit.get_public_dir() != new_pacts_dir
     assert x_cureunit.get_healers_dir() != new_healers_dir
     assert x_cureunit.handle != new_cure_handle
 

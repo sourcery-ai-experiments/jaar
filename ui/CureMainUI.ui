@@ -64,7 +64,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" title="contracts_table">
+   <widget class="QTableWidget" title="pacts_table">
     <property title="geometry">
      <rect>
       <x>10</x>
@@ -193,7 +193,7 @@
      <string>Change Title</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="contract_update_button">
+   <widget class="QPushButton" title="pact_update_button">
     <property title="geometry">
      <rect>
       <x>10</x>
@@ -211,7 +211,7 @@
      <string>Change Contract Title</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="contract_insert_button">
+   <widget class="QPushButton" title="pact_insert_button">
     <property title="geometry">
      <rect>
       <x>10</x>
@@ -229,7 +229,7 @@
      <string>Add new Contract</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="contract_delete_button">
+   <widget class="QPushButton" title="pact_delete_button">
     <property title="geometry">
      <rect>
       <x>80</x>
@@ -247,7 +247,7 @@
      <string>Delete</string>
     </property>
    </widget>
-   <widget class="QLineEdit" title="contract_healer">
+   <widget class="QLineEdit" title="pact_healer">
     <property title="geometry">
      <rect>
       <x>10</x>
@@ -418,7 +418,7 @@
      <string>refresh</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="contract_edit_button">
+   <widget class="QPushButton" title="pact_edit_button">
     <property title="geometry">
      <rect>
       <x>10</x>
@@ -818,7 +818,7 @@
      <string>s</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="set_public_contract_button">
+   <widget class="QPushButton" title="set_public_pact_button">
     <property title="geometry">
      <rect>
       <x>190</x>
@@ -833,10 +833,10 @@
      </font>
     </property>
     <property title="text">
-     <string>output_contract to public_dir</string>
+     <string>output_pact to public_dir</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="reload_all_src_contracts_button">
+   <widget class="QPushButton" title="reload_all_src_pacts_button">
     <property title="geometry">
      <rect>
       <x>190</x>
@@ -851,7 +851,7 @@
      </font>
     </property>
     <property title="text">
-     <string>refresh_all_src_contracts</string>
+     <string>refresh_all_src_pacts</string>
     </property>
    </widget>
    <widget class="QPushButton" title="set_public_and_reload_srcs_button">

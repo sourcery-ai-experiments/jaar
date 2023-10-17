@@ -60,20 +60,20 @@ class EditAcptFactTime(qtw.QTableWidget, Ui_Form):
             minute=int(nigh_minute),
         )
 
-        self.contract_x.set_time_acptfacts(open=open_dt_x, nigh=nigh_dt_x)
+        self.pact_x.set_time_acptfacts(open=open_dt_x, nigh=nigh_dt_x)
         self.root_changes_submitted.emit(True)
         self.close()
 
     def display_acptfact_time(self):
-        # minutes_idea = self.contract_x.get_idea_kid(
+        # minutes_idea = self.pact_x.get_idea_kid(
         #     road=f"{root_label},time,jajatime"
         # )
-        minutes_acptfact = self.contract_x._idearoot._acptfactunits[
-            f"{self.contract_x._cure_handle},time,jajatime"
+        minutes_acptfact = self.pact_x._idearoot._acptfactunits[
+            f"{self.pact_x._cure_handle},time,jajatime"
         ]
 
-        dt_open = self.contract_x.get_time_dt_from_min(min=minutes_acptfact.open)
-        dt_nigh = self.contract_x.get_time_dt_from_min(min=minutes_acptfact.nigh)
+        dt_open = self.pact_x.get_time_dt_from_min(min=minutes_acptfact.open)
+        dt_nigh = self.pact_x.get_time_dt_from_min(min=minutes_acptfact.nigh)
 
         self.curr_hour.setCurrentIndex(self.curr_hour.findText(str(dt_nigh.hour)))
         self.curr_min.setCurrentIndex(self.curr_min.findText(str(dt_nigh.minute)))

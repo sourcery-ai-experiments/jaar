@@ -3,10 +3,10 @@ import sys
 from ui.Cure5IssueUI import Ui_Form
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
-from pyqt_func import contract_importance_diplay
-from src.contract.contract import ContractUnit
-from src.contract.group import groupunit_shop
-from src.contract.party import partylink_shop
+from pyqt_func import pact_importance_diplay
+from src.pact.pact import ContractUnit
+from src.pact.group import groupunit_shop
+from src.pact.party import partylink_shop
 
 
 class Edit5Issue(qtw.QTableWidget, Ui_Form):

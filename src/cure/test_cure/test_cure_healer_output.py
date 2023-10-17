@@ -1,11 +1,11 @@
-from src.contract.examples.example_contracts import (
-    contract_v002 as ex_cxs_contract_v002,
+from src.pact.examples.example_pacts import (
+    pact_v002 as ex_cxs_pact_v002,
 )
 from src.cure.cure import cureunit_shop
 from src.cure.examples.example_healers import (
-    get_6node_contract as example_healers_get_6node_contract,
-    get_contract_2CleanNodesRandomWeights,
-    get_contract_3CleanNodesRandomWeights,
+    get_6node_pact as example_healers_get_6node_pact,
+    get_pact_2CleanNodesRandomWeights,
+    get_pact_3CleanNodesRandomWeights,
 )
 from src.cure.examples.cure_env_kit import (
     get_temp_env_handle,
@@ -14,16 +14,16 @@ from src.cure.examples.cure_env_kit import (
 )
 
 
-def test_cure_get_output_contract_ReturnsCorrectContractObjScenario1(
+def test_cure_get_output_pact_ReturnsCorrectContractObjScenario1(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     sx = cureunit_shop(handle=get_temp_env_handle(), cures_dir=get_test_cures_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
-    input_cx = example_healers_get_6node_contract()
-    sx.save_public_contract(input_cx)
-    # sx.save_public_contract(ex_cxs_get_contract_1Task_1CE0MinutesRequired_1AcptFact())
-    # sx.save_public_contract(ex_cxs_contract_v001())
+    input_cx = example_healers_get_6node_pact()
+    sx.save_public_pact(input_cx)
+    # sx.save_public_pact(ex_cxs_get_pact_1Task_1CE0MinutesRequired_1AcptFact())
+    # sx.save_public_pact(ex_cxs_pact_v001())
     xia_text = "Xia"
     sx.create_new_healerunit(healer_title=xia_text)
     sx.set_healer_depotlink(xia_text, input_cx._healer, depotlink_type="blind_trust")
@@ -32,8 +32,8 @@ def test_cure_get_output_contract_ReturnsCorrectContractObjScenario1(
     # print(f"{xia_healer._isol._partys.keys()=}")
 
     # WHEN
-    output_cx = sx.get_output_contract(healer_title=xia_text)
-    # input contract must be melded to itself to create originunits
+    output_cx = sx.get_output_pact(healer_title=xia_text)
+    # input pact must be melded to itself to create originunits
     input_cx.meld(input_cx)
     input_cx.set_healer(new_healer=xia_text)
     input_cx._originunit.set_originlink(title=xia_text, weight=1)
@@ -86,19 +86,19 @@ def test_cure_get_output_contract_ReturnsCorrectContractObjScenario1(
     assert output_cx._idearoot == input_cx._idearoot
 
 
-def test_cure_get_output_contract_ReturnsCorrectContractObjScenario2(
+def test_cure_get_output_pact_ReturnsCorrectContractObjScenario2(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     sx = cureunit_shop(handle=get_temp_env_handle(), cures_dir=get_test_cures_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
-    cx1 = example_healers_get_6node_contract()
-    cx2 = ex_cxs_contract_v002()
+    cx1 = example_healers_get_6node_pact()
+    cx2 = ex_cxs_pact_v002()
 
-    sx.save_public_contract(cx1)
-    sx.save_public_contract(cx2)
-    # sx.save_public_contract(ex_cxs_get_contract_1Task_1CE0MinutesRequired_1AcptFact())
-    # sx.save_public_contract(ex_cxs_contract_v001())
+    sx.save_public_pact(cx1)
+    sx.save_public_pact(cx2)
+    # sx.save_public_pact(ex_cxs_get_pact_1Task_1CE0MinutesRequired_1AcptFact())
+    # sx.save_public_pact(ex_cxs_pact_v001())
     xia_text = "Xia"
     sx.create_new_healerunit(healer_title=xia_text)
     sx.set_healer_depotlink(xia_text, cx1._healer, depotlink_type="blind_trust")
@@ -108,7 +108,7 @@ def test_cure_get_output_contract_ReturnsCorrectContractObjScenario2(
     print(f"{xia_healer._isol._partys.keys()=}")
 
     # WHEN
-    output_cx = sx.get_output_contract(healer_title=xia_text)
+    output_cx = sx.get_output_pact(healer_title=xia_text)
 
     # THEN
     output_cx_d_road = f"{output_cx._cure_handle},C,D"
@@ -155,39 +155,39 @@ def test_healerunit_refresh_depotlinks_CorrectlyPullsAllPublicContracts(
     ernie_text = "ernie"
     jessi_text = "jessi"
     steve_text = "steve"
-    ernie_contract = get_contract_2CleanNodesRandomWeights(_healer=ernie_text)
-    jessi_contract = get_contract_2CleanNodesRandomWeights(_healer=jessi_text)
-    old_steve_cx = get_contract_2CleanNodesRandomWeights(_healer=steve_text)
-    sx.save_public_contract(contract_x=ernie_contract)
-    sx.save_public_contract(contract_x=jessi_contract)
-    sx.save_public_contract(contract_x=old_steve_cx)
+    ernie_pact = get_pact_2CleanNodesRandomWeights(_healer=ernie_text)
+    jessi_pact = get_pact_2CleanNodesRandomWeights(_healer=jessi_text)
+    old_steve_cx = get_pact_2CleanNodesRandomWeights(_healer=steve_text)
+    sx.save_public_pact(pact_x=ernie_pact)
+    sx.save_public_pact(pact_x=jessi_pact)
+    sx.save_public_pact(pact_x=old_steve_cx)
     sx.create_new_healerunit(healer_title=ernie_text)
     sx.create_new_healerunit(healer_title=jessi_text)
     # sx.create_new_healerunit(healer_title=steve_text)
     ux_ernie = sx.get_healer_obj(title=ernie_text)
     ux_jessi = sx.get_healer_obj(title=jessi_text)
     # ux_steve = sx.get_healer_obj(title=steve_text)
-    ux_ernie.set_depot_contract(contract_x=jessi_contract, depotlink_type="blind_trust")
-    ux_ernie.set_depot_contract(contract_x=old_steve_cx, depotlink_type="blind_trust")
-    ux_jessi.set_depot_contract(contract_x=ernie_contract, depotlink_type="blind_trust")
-    ux_jessi.set_depot_contract(contract_x=old_steve_cx, depotlink_type="blind_trust")
-    # ux_steve.set_depot_contract(contract_x=ernie_contract, depotlink_type="blind_trust")
-    # ux_steve.set_depot_contract(contract_x=jessi_contract, depotlink_type="blind_trust")
-    assert len(ux_ernie._admin.get_remelded_output_contract().get_idea_list()) == 4
-    assert len(ux_jessi._admin.get_remelded_output_contract().get_idea_list()) == 4
-    # assert len(ux_steve._admin.get_remelded_output_contract().get_idea_list()) == 4
-    new_steve_contract = get_contract_3CleanNodesRandomWeights(_healer="steve")
-    sx.save_public_contract(contract_x=new_steve_contract)
-    # print(f"{env_dir=} {ux._admin._contracts_public_dir=}")
+    ux_ernie.set_depot_pact(pact_x=jessi_pact, depotlink_type="blind_trust")
+    ux_ernie.set_depot_pact(pact_x=old_steve_cx, depotlink_type="blind_trust")
+    ux_jessi.set_depot_pact(pact_x=ernie_pact, depotlink_type="blind_trust")
+    ux_jessi.set_depot_pact(pact_x=old_steve_cx, depotlink_type="blind_trust")
+    # ux_steve.set_depot_pact(pact_x=ernie_pact, depotlink_type="blind_trust")
+    # ux_steve.set_depot_pact(pact_x=jessi_pact, depotlink_type="blind_trust")
+    assert len(ux_ernie._admin.get_remelded_output_pact().get_idea_list()) == 4
+    assert len(ux_jessi._admin.get_remelded_output_pact().get_idea_list()) == 4
+    # assert len(ux_steve._admin.get_remelded_output_pact().get_idea_list()) == 4
+    new_steve_pact = get_pact_3CleanNodesRandomWeights(_healer="steve")
+    sx.save_public_pact(pact_x=new_steve_pact)
+    # print(f"{env_dir=} {ux._admin._pacts_public_dir=}")
     # for file_title in x_func_dir_files(dir_path=env_dir):
-    #     print(f"{ux._admin._contracts_public_dir=} {file_title=}")
+    #     print(f"{ux._admin._pacts_public_dir=} {file_title=}")
 
-    # for file_title in x_func_dir_files(dir_path=ux._admin._contracts_public_dir):
-    #     print(f"{ux._admin._contracts_public_dir=} {file_title=}")
+    # for file_title in x_func_dir_files(dir_path=ux._admin._pacts_public_dir):
+    #     print(f"{ux._admin._pacts_public_dir=} {file_title=}")
 
     # WHEN
-    sx.reload_all_healers_src_contractunits()
+    sx.reload_all_healers_src_pactunits()
 
     # THEN
-    assert len(ux_ernie._admin.get_remelded_output_contract().get_idea_list()) == 5
-    assert len(ux_jessi._admin.get_remelded_output_contract().get_idea_list()) == 5
+    assert len(ux_ernie._admin.get_remelded_output_pact().get_idea_list()) == 5
+    assert len(ux_jessi._admin.get_remelded_output_pact().get_idea_list()) == 5

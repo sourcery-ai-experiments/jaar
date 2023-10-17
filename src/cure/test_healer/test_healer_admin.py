@@ -1,11 +1,11 @@
-from src.contract.x_func import (
+from src.pact.x_func import (
     open_file as x_func_open_file,
     save_file as x_func_save_file,
 )
 from src.cure.healer import HealerAdmin, healeradmin_shop
 from src.cure.examples.example_healers import (
-    get_6node_contract as example_healers_get_6node_contract,
-    get_6node_contract as example_healers_get_7nodeJRootWithH_contract,
+    get_6node_pact as example_healers_get_6node_pact,
+    get_6node_pact as example_healers_get_7nodeJRootWithH_pact,
 )
 from src.cure.examples.healer_env_kit import (
     get_temp_healer_dir,
@@ -30,14 +30,14 @@ def test_admin_exists():
     assert pdx._healer_dir is None
     assert pdx._isol_file_title is None
     assert pdx._isol_file_path is None
-    assert pdx._contract_output_file_title is None
-    assert pdx._contract_output_file_path is None
+    assert pdx._pact_output_file_title is None
+    assert pdx._pact_output_file_path is None
     assert pdx._public_file_title is None
-    assert pdx._contracts_public_dir is None
-    assert pdx._contracts_depot_dir is None
-    assert pdx._contracts_ignore_dir is None
-    assert pdx._contracts_bond_dir is None
-    assert pdx._contracts_digest_dir is None
+    assert pdx._pacts_public_dir is None
+    assert pdx._pacts_depot_dir is None
+    assert pdx._pacts_ignore_dir is None
+    assert pdx._pacts_bond_dir is None
+    assert pdx._pacts_digest_dir is None
 
 
 def test_HealerAdmin_set_dir_CorrectSetsHealerAdminAttribute():
@@ -46,14 +46,14 @@ def test_HealerAdmin_set_dir_CorrectSetsHealerAdminAttribute():
     env_dir = get_temp_healer_dir()
     pdx = HealerAdmin(bob_text, env_dir, get_temp_cure_handle())
     assert pdx._healer_dir is None
-    assert pdx._contract_output_file_title is None
-    assert pdx._contract_output_file_path is None
+    assert pdx._pact_output_file_title is None
+    assert pdx._pact_output_file_path is None
     assert pdx._public_file_title is None
-    assert pdx._contracts_public_dir is None
-    assert pdx._contracts_depot_dir is None
-    assert pdx._contracts_ignore_dir is None
-    assert pdx._contracts_digest_dir is None
-    assert pdx._contracts_bond_dir is None
+    assert pdx._pacts_public_dir is None
+    assert pdx._pacts_depot_dir is None
+    assert pdx._pacts_ignore_dir is None
+    assert pdx._pacts_digest_dir is None
+    assert pdx._pacts_bond_dir is None
     assert pdx._isol_file_title is None
     assert pdx._isol_file_path is None
     # WHEN
@@ -61,14 +61,14 @@ def test_HealerAdmin_set_dir_CorrectSetsHealerAdminAttribute():
 
     # THEN
     assert pdx._healer_dir != None
-    assert pdx._contract_output_file_title != None
-    assert pdx._contract_output_file_path != None
+    assert pdx._pact_output_file_title != None
+    assert pdx._pact_output_file_path != None
     assert pdx._public_file_title != None
-    assert pdx._contracts_public_dir != None
-    assert pdx._contracts_depot_dir != None
-    assert pdx._contracts_ignore_dir != None
-    assert pdx._contracts_digest_dir != None
-    assert pdx._contracts_bond_dir != None
+    assert pdx._pacts_public_dir != None
+    assert pdx._pacts_depot_dir != None
+    assert pdx._pacts_ignore_dir != None
+    assert pdx._pacts_digest_dir != None
+    assert pdx._pacts_bond_dir != None
     assert pdx._isol_file_title != None
     assert pdx._isol_file_path != None
 
@@ -76,28 +76,28 @@ def test_HealerAdmin_set_dir_CorrectSetsHealerAdminAttribute():
     x_healers_dir = f"{env_dir}/{healers_drectory_title}"
     x_healer_dir = f"{x_healers_dir}/{bob_text}"
     x_public_file_title = f"{bob_text}.json"
-    x_isol_file_title = "isol_contract.json"
+    x_isol_file_title = "isol_pact.json"
     x_isol_file_path = f"{x_healer_dir}/{x_isol_file_title}"
-    x_contract_output_file_title = "output_contract.json"
-    x_contract_output_file_path = f"{x_healer_dir}/{x_contract_output_file_title}"
-    contracts_str = "contracts"
-    x_contracts_depot_dir = f"{x_healer_dir}/{contracts_str}"
-    x_contracts_ignore_dir = f"{x_healer_dir}/ignores"
-    x_contracts_bond_dir = f"{x_healer_dir}/bonds"
-    x_contracts_digest_dir = f"{x_healer_dir}/digests"
-    x_contracts_public_dir = f"{env_dir}/{contracts_str}"
+    x_pact_output_file_title = "output_pact.json"
+    x_pact_output_file_path = f"{x_healer_dir}/{x_pact_output_file_title}"
+    pacts_str = "pacts"
+    x_pacts_depot_dir = f"{x_healer_dir}/{pacts_str}"
+    x_pacts_ignore_dir = f"{x_healer_dir}/ignores"
+    x_pacts_bond_dir = f"{x_healer_dir}/bonds"
+    x_pacts_digest_dir = f"{x_healer_dir}/digests"
+    x_pacts_public_dir = f"{env_dir}/{pacts_str}"
     assert pdx._healers_dir == x_healers_dir
     assert pdx._healer_dir == x_healer_dir
     assert pdx._isol_file_title == x_isol_file_title
     assert pdx._isol_file_path == x_isol_file_path
-    assert pdx._contract_output_file_title == x_contract_output_file_title
-    assert pdx._contract_output_file_path == x_contract_output_file_path
-    assert pdx._contracts_depot_dir == x_contracts_depot_dir
-    assert pdx._contracts_ignore_dir == x_contracts_ignore_dir
-    assert pdx._contracts_bond_dir == x_contracts_bond_dir
-    assert pdx._contracts_digest_dir == x_contracts_digest_dir
+    assert pdx._pact_output_file_title == x_pact_output_file_title
+    assert pdx._pact_output_file_path == x_pact_output_file_path
+    assert pdx._pacts_depot_dir == x_pacts_depot_dir
+    assert pdx._pacts_ignore_dir == x_pacts_ignore_dir
+    assert pdx._pacts_bond_dir == x_pacts_bond_dir
+    assert pdx._pacts_digest_dir == x_pacts_digest_dir
     assert pdx._public_file_title == x_public_file_title
-    assert pdx._contracts_public_dir == x_contracts_public_dir
+    assert pdx._pacts_public_dir == x_pacts_public_dir
 
 
 def test_HealerAdmin_create_core_dir_and_files_CreatesDirsAndFiles(
@@ -112,26 +112,26 @@ def test_HealerAdmin_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path.exists(pdx._healer_dir) is False
     assert os_path.exists(pdx._isol_file_path) is False
     assert os_path.isdir(pdx._healer_dir) is False
-    assert os_path.exists(pdx._contracts_depot_dir) is False
-    assert os_path.exists(pdx._contracts_digest_dir) is False
-    assert os_path.exists(pdx._contracts_ignore_dir) is False
-    assert os_path.exists(pdx._contracts_bond_dir) is False
+    assert os_path.exists(pdx._pacts_depot_dir) is False
+    assert os_path.exists(pdx._pacts_digest_dir) is False
+    assert os_path.exists(pdx._pacts_ignore_dir) is False
+    assert os_path.exists(pdx._pacts_bond_dir) is False
 
     # WHEN
-    contract_x = example_healers_get_7nodeJRootWithH_contract()
-    pdx.create_core_dir_and_files(contract_x)
+    pact_x = example_healers_get_7nodeJRootWithH_pact()
+    pdx.create_core_dir_and_files(pact_x)
 
-    # THEN check contracts src directory created
+    # THEN check pacts src directory created
     print(f"Checking {pdx._healers_dir=}")
     print(f"Checking {pdx._healer_dir=}")
     assert os_path.exists(pdx._healers_dir)
     assert os_path.exists(pdx._healer_dir)
     assert os_path.exists(pdx._isol_file_path)
     assert os_path.isdir(pdx._healer_dir)
-    assert os_path.exists(pdx._contracts_depot_dir)
-    assert os_path.exists(pdx._contracts_digest_dir)
-    assert os_path.exists(pdx._contracts_ignore_dir)
-    assert os_path.exists(pdx._contracts_bond_dir)
+    assert os_path.exists(pdx._pacts_depot_dir)
+    assert os_path.exists(pdx._pacts_digest_dir)
+    assert os_path.exists(pdx._pacts_ignore_dir)
+    assert os_path.exists(pdx._pacts_bond_dir)
 
 
 def test_HealerAdmin_create_core_dir_and_files_DoesNotOverWriteIsolContract(
@@ -142,10 +142,10 @@ def test_HealerAdmin_create_core_dir_and_files_DoesNotOverWriteIsolContract(
     env_dir = get_temp_healer_dir()
     jul_pdx = HealerAdmin(jul_text, env_dir, get_temp_cure_handle())
     jul_pdx.set_dirs()
-    contract_x = example_healers_get_7nodeJRootWithH_contract()
-    jul_pdx.create_core_dir_and_files(contract_x)
+    pact_x = example_healers_get_7nodeJRootWithH_pact()
+    jul_pdx.create_core_dir_and_files(pact_x)
     assert os_path.exists(jul_pdx._isol_file_path)
-    # jul_cx = contract_get_from_json(x_func_open_file(jul_pdx._isol_file_path))
+    # jul_cx = pact_get_from_json(x_func_open_file(jul_pdx._isol_file_path))
     ex1 = "teesting text"
     x_func_save_file(
         dest_dir=jul_pdx._healer_dir,
@@ -155,7 +155,7 @@ def test_HealerAdmin_create_core_dir_and_files_DoesNotOverWriteIsolContract(
     assert x_func_open_file(jul_pdx._healer_dir, jul_pdx._isol_file_title) == ex1
 
     # WHEN
-    jul_pdx.create_core_dir_and_files(contract_x)
+    jul_pdx.create_core_dir_and_files(pact_x)
 
     # THEN
     assert x_func_open_file(jul_pdx._healer_dir, jul_pdx._isol_file_title) == ex1
@@ -167,14 +167,14 @@ def test_HealerAdmin_set_healer_title_WorksCorrectly(healer_dir_setup_cleanup):
 
     old_healer_text = "bob"
     pdx = HealerAdmin(old_healer_text, env_dir, get_temp_cure_handle())
-    contract_x = example_healers_get_7nodeJRootWithH_contract()
+    pact_x = example_healers_get_7nodeJRootWithH_pact()
     pdx.set_dirs()
-    pdx.create_core_dir_and_files(contract_x)
+    pdx.create_core_dir_and_files(pact_x)
     old_healer_dir = pdx._healer_dir
     # old_healer_dir = f"{env_dir}/healers/{old_healer_text}"
     print(f"{pdx._healer_dir}")
     print(f"{env_dir}/healers/{old_healer_text}")
-    isol_file_title = "isol_contract.json"
+    isol_file_title = "isol_pact.json"
     old_isol_file_path = f"{old_healer_dir}/{isol_file_title}"
 
     assert os_path.exists(old_healer_dir)
@@ -206,16 +206,16 @@ def test_healerunit_auto_output_to_public_SavesContractToPublicDir(
     # GIVEN
     bob_text = "bob"
     pdx = healeradmin_shop(bob_text, get_temp_healer_dir(), get_temp_cure_handle())
-    contract_x = example_healers_get_6node_contract()
-    contract_x.set_healer(new_healer=bob_text)
-    pdx.create_core_dir_and_files(contract_x)
+    pact_x = example_healers_get_6node_pact()
+    pact_x.set_healer(new_healer=bob_text)
+    pdx.create_core_dir_and_files(pact_x)
 
-    public_file_path = f"{pdx._contracts_public_dir}/{pdx._public_file_title}"
+    public_file_path = f"{pdx._pacts_public_dir}/{pdx._public_file_title}"
     print(f"{public_file_path=}")
     assert os_path.exists(public_file_path) is False
 
     # WHEN
-    pdx.save_contract_to_public(contract_x=contract_x)
+    pdx.save_pact_to_public(pact_x=pact_x)
 
     # THEN
     assert os_path.exists(public_file_path)

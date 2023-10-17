@@ -1,5 +1,5 @@
-from src.contract.contract import ContractUnit
-from src.contract.x_func import (
+from src.pact.pact import ContractUnit
+from src.pact.x_func import (
     count_files as x_func_count_files,
     open_file as x_func_open_file,
     delete_dir as x_func_delete_dir,
@@ -39,17 +39,17 @@ def test_healerunit_auto_output_to_public_SavesContractToPublicDirWhenTrue(
     cure_handle = get_temp_cure_handle()
     tim_text = "Tim"
     public_file_title = f"{tim_text}.json"
-    public_file_path = f"{get_temp_healer_dir()}/contracts/{public_file_title}"
+    public_file_path = f"{get_temp_healer_dir()}/pacts/{public_file_title}"
     print(f"{public_file_path=}")
-    # public_file_path = f"src/cure/examples/ex_env/contracts/{public_file_title}"
+    # public_file_path = f"src/cure/examples/ex_env/pacts/{public_file_title}"
     ux = healerunit_shop(tim_text, env_dir, cure_handle, _auto_output_to_public=True)
     ux.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
 
     # WHEN
-    tim_contract = ContractUnit(_healer=tim_text)
-    tim_contract.set_cure_handle(cure_handle)
-    ux.set_depot_contract(tim_contract, "blind_trust")
+    tim_pact = ContractUnit(_healer=tim_text)
+    tim_pact.set_cure_handle(cure_handle)
+    ux.set_depot_pact(tim_pact, "blind_trust")
 
     # THEN
     assert os_path.exists(public_file_path)
@@ -63,15 +63,15 @@ def test_healerunit_auto_output_to_public_DoesNotSaveContractToPublicDirWhenFals
     cure_handle = get_temp_cure_handle()
     tim_text = "Tim"
     public_file_title = f"{tim_text}.json"
-    public_file_path = f"{get_temp_healer_dir()}/contracts/{public_file_title}"
+    public_file_path = f"{get_temp_healer_dir()}/pacts/{public_file_title}"
     print(f"{public_file_path=}")
-    # public_file_path = f"src/cure/examples/ex_env/contracts/{public_file_title}"
+    # public_file_path = f"src/cure/examples/ex_env/pacts/{public_file_title}"
     ux = healerunit_shop(tim_text, env_dir, cure_handle, _auto_output_to_public=False)
     ux.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
 
     # WHEN
-    ux.set_depot_contract(ContractUnit(_healer=tim_text), depotlink_type="blind_trust")
+    ux.set_depot_pact(ContractUnit(_healer=tim_text), depotlink_type="blind_trust")
 
     # THEN
     assert os_path.exists(public_file_path) is False

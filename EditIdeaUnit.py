@@ -1,20 +1,20 @@
 # command to for converting ui form to python file: pyuic5 ui\EditIdeaUnitUI.ui -o ui\EditIdeaUnitUI.py
 import sys
-from src.contract.idea import IdeaKid, IdeaAttrHolder
+from src.pact.idea import IdeaKid, IdeaAttrHolder
 from ui.EditIdeaUnitUI import Ui_Form
 from PyQt5 import QtWidgets as qtw, QtCore
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1, QTableWidget as qtw0
-from src.contract.hreg_time import SuffFactUnitHregTime
-from src.contract.group import Balancelink, GroupBrand
-from src.contract.required_idea import Road
-from src.contract.hreg_time import get_24hr, get_60min
+from src.pact.hreg_time import SuffFactUnitHregTime
+from src.pact.group import Balancelink, GroupBrand
+from src.pact.required_idea import Road
+from src.pact.hreg_time import get_24hr, get_60min
 from pyqt_func import (
     num2str,
     bool_val,
     str2float,
     get_pyqttree,
     emptystr,
-    contract_importance_diplay,
+    pact_importance_diplay,
     emptystring_returns_none,
 )
 
@@ -79,7 +79,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.sufffactunit_hreg_update_weeks
         )
         self.button_hreg_base.clicked.connect(self.set_base_to_hregtime)
-        self.create_hreg_button.clicked.connect(self.add_hreg_to_contract)
+        self.create_hreg_button.clicked.connect(self.add_hreg_to_pact)
         self.button_view_requiredheirs.clicked.connect(self.toogle_requiredheir_tables)
         self.requiredheir_table_hidden = True
 
@@ -92,10 +92,10 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.requiredheir_table.setHidden(self.requiredheir_table_hidden)
 
     def set_base_to_hregtime(self):
-        self.required_base_combo.setCurrentText("Mycontract,time,jajatime")
+        self.required_base_combo.setCurrentText("Mypact,time,jajatime")
 
-    def add_hreg_to_contract(self):
-        self.contract_x.set_time_hreg_ideas(c400_count=7)
+    def add_hreg_to_pact(self):
+        self.pact_x.set_time_hreg_ideas(c400_count=7)
         self.refresh_tree()
 
     def yo_tree_item_setHidden(self, setHiddenBool):
@@ -229,7 +229,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.yo_begin.setText(num2str(self.yo_x._begin))
         self.yo_range_source_road.clear()
         self.yo_numeric_road.clear()
-        if f"{type(self.yo_x)}" != "<class 'lw.contract.ContractUnit'>":
+        if f"{type(self.yo_x)}" != "<class 'lw.pact.ContractUnit'>":
             self.populate_idea_kid_actions()
         self.yo_close.setText(num2str(self.yo_x._close))
         self.yo_action_cb.setChecked(self.yo_x.promise)
@@ -243,14 +243,14 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.idea2group_table_load()
         self.idea2group_insert_combo_load()
         if self.combo_dim_root.currentText() == "":
-            self.combo_dim_root.addItems(list(self.contract_x.get_required_bases()))
+            self.combo_dim_root.addItems(list(self.pact_x.get_required_bases()))
 
     def populate_idea_kid_actions(self):
         self.yo_addin.setText(num2str(self.yo_x._addin))
         self.yo_numor.setText(num2str(self.yo_x._numor))
         self.yo_denom.setText(num2str(self.yo_x._denom))
         self.yo_reest.setChecked(bool_val(self.yo_x._reest))
-        idea_road_list = self.contract_x.get_idea_tree_ordered_road_list()
+        idea_road_list = self.pact_x.get_idea_tree_ordered_road_list()
         idea_road_list.append("")
         self.yo_range_source_road.addItems(idea_road_list)
         self.yo_range_source_road.setCurrentText(self.yo_x._range_source_road)
@@ -261,9 +261,9 @@ class EditIdeaUnit(qtw0, Ui_Form):
         idea_label = self.baseideaunit.currentItem().data(2, 10)
         idea_pad = self.baseideaunit.currentItem().data(2, 11)
         if idea_pad not in ("", None):
-            self.yo_x = self.contract_x.get_idea_kid(road=f"{idea_pad},{idea_label}")
+            self.yo_x = self.pact_x.get_idea_kid(road=f"{idea_pad},{idea_label}")
         else:
-            self.yo_x = self.contract_x._idearoot
+            self.yo_x = self.pact_x._idearoot
         self.yo_tree_item_setHidden(setHiddenBool=False)
 
     def yo_tree_item_expanded(self):
@@ -274,28 +274,26 @@ class EditIdeaUnit(qtw0, Ui_Form):
         # create list of all idea roads (road+_label)
         self.required_base_combo.clear()
         self.required_base_combo.addItems([""])
-        self.required_base_combo.addItems(
-            self.contract_x.get_idea_tree_ordered_road_list()
-        )
+        self.required_base_combo.addItems(self.pact_x.get_idea_tree_ordered_road_list())
 
     def required_sufffact_combo_load(self):
         self.required_sufffact_combo.clear()
         self.required_sufffact_combo.addItems([""])
         self.required_sufffact_combo.addItems(
-            self.contract_x.get_heir_road_list(self.required_base_combo.currentText())
+            self.pact_x.get_heir_road_list(self.required_base_combo.currentText())
         )
 
     def required_sufffact_xxxx_combo_load(self):
         filtered_list = []
         if self.required_sufffact_combo.currentText() not in [
-            self.contract_x._healer,
+            self.pact_x._healer,
             "",
         ]:
-            sufffact_idea = self.contract_x.get_idea_kid(
+            sufffact_idea = self.pact_x.get_idea_kid(
                 road=self.required_sufffact_combo.currentText()
             )
             if sufffact_idea._range_source_road != None:
-                filtered_list = self.contract_x.get_heir_road_list(
+                filtered_list = self.pact_x.get_heir_road_list(
                     sufffact_idea._range_source_road
                 )
         self.required_sufffact_open_combo.clear()
@@ -314,13 +312,13 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.required_sufffact_divisor.setText("")
 
         if self.required_sufffact_open_combo.currentText() not in [
-            self.contract_x._healer,
+            self.pact_x._healer,
             "",
         ]:
             self.required_sufffact_open_combo_sel_actions()
 
     def required_sufffact_open_combo_sel_actions(self):
-        open_idea_x = self.contract_x.get_idea_kid(
+        open_idea_x = self.pact_x.get_idea_kid(
             road=self.required_sufffact_open_combo.currentText()
         )
         if open_idea_x._begin != None:
@@ -338,16 +336,16 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
     def numeric_road_combo_select(self):
         if self.required_sufffact_open_combo.currentText() not in [
-            self.contract_x._healer,
+            self.pact_x._healer,
             "",
         ]:
-            open_idea_x = self.contract_x.get_idea_kid(
+            open_idea_x = self.pact_x.get_idea_kid(
                 road=self.required_sufffact_open_combo.currentText()
             )
-            # nigh_idea_x = self.contract_x.get_idea_kid(
+            # nigh_idea_x = self.pact_x.get_idea_kid(
             #     road=self.required_sufffact_nigh_combo.currentText()
             # )
-            # divisor_idea_x = self.contract_x.get_idea_kid(
+            # divisor_idea_x = self.pact_x.get_idea_kid(
             #     road=self.required_sufffact_divisor_combo.currentText()
             # )
             # if open_idea_x._begin != None:
@@ -359,12 +357,12 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if (
             self.required_sufffact_open_combo.currentText()
             not in [
-                self.contract_x._healer,
+                self.pact_x._healer,
                 "",
             ]
             and self.required_sufffact_open.toPlainText() != ""
         ):
-            open_idea_x = self.contract_x.get_idea_kid(
+            open_idea_x = self.pact_x.get_idea_kid(
                 road=self.required_sufffact_open_combo.currentText()
             )
             open_int = str2float(self.required_sufffact_open.toPlainText())
@@ -379,12 +377,12 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if (
             self.required_sufffact_nigh_combo.currentText()
             not in [
-                self.contract_x._healer,
+                self.pact_x._healer,
                 "",
             ]
             and self.required_sufffact_nigh.toPlainText() != ""
         ):
-            nigh_idea_x = self.contract_x.get_idea_kid(
+            nigh_idea_x = self.pact_x.get_idea_kid(
                 road=self.required_sufffact_nigh_combo.currentText()
             )
             nigh_int = int(self.required_sufffact_nigh.toPlainText())
@@ -399,12 +397,12 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if (
             self.required_sufffact_divisor_combo.currentText()
             not in [
-                self.contract_x._healer,
+                self.pact_x._healer,
                 "",
             ]
             and self.required_sufffact_divisor.toPlainText() != ""
         ):
-            divisor_idea_x = self.contract_x.get_idea_kid(
+            divisor_idea_x = self.pact_x.get_idea_kid(
                 road=self.required_sufffact_divisor_combo.currentText()
             )
             divisor_int = int(self.required_sufffact_divisor.toPlainText())
@@ -420,10 +418,10 @@ class EditIdeaUnit(qtw0, Ui_Form):
     def required_sufffact_nigh_combo_select(self):
         self.required_sufffact_nigh.setText("")
         if self.required_sufffact_nigh_combo.currentText() not in [
-            self.contract_x._healer,
+            self.pact_x._healer,
             "",
         ]:
-            nigh_idea_x = self.contract_x.get_idea_kid(
+            nigh_idea_x = self.pact_x.get_idea_kid(
                 road=self.required_sufffact_nigh_combo.currentText()
             )
             if nigh_idea_x._close != None:
@@ -432,10 +430,10 @@ class EditIdeaUnit(qtw0, Ui_Form):
     def required_sufffact_divisor_combo_select(self):
         self.required_sufffact_divisor.setText("")
         if self.required_sufffact_divisor_combo.currentText() not in [
-            self.contract_x._healer,
+            self.pact_x._healer,
             "",
         ]:
-            divisor_idea_x = self.contract_x.get_idea_kid(
+            divisor_idea_x = self.pact_x.get_idea_kid(
                 road=self.required_sufffact_divisor_combo.currentText()
             )
             if divisor_idea_x._denom != None:
@@ -447,14 +445,14 @@ class EditIdeaUnit(qtw0, Ui_Form):
         for required in self.yo_x._requiredunits.values():
             requiredheir = self.yo_x._requiredheirs.get(required.base)
             for sufffact in required.sufffacts.values():
-                required_text = required.base.replace(f"{self.contract_x._healer}", "")
+                required_text = required.base.replace(f"{self.pact_x._healer}", "")
                 required_text = required_text[1:]
                 sufffact_text = sufffact.need.replace(required.base, "")
                 sufffact_text = sufffact_text[1:]
                 sufffact_open = sufffact.open
                 sufffact_nigh = sufffact.nigh
                 if required_text == "time,jajatime":
-                    sufffact_open = self.contract_x.get_jajatime_repeating_legible_text(
+                    sufffact_open = self.pact_x.get_jajatime_repeating_legible_text(
                         open=sufffact.open,
                         nigh=sufffact.nigh,
                         divisor=sufffact.divisor,
@@ -531,7 +529,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         for requiredheir in self.yo_x._requiredheirs.values():
             for sufffact in requiredheir.sufffacts.values():
                 requiredheir_text = requiredheir.base.replace(
-                    f"{self.contract_x._healer}", ""
+                    f"{self.pact_x._healer}", ""
                 )
                 requiredheir_text = requiredheir_text[1:]
                 sufffact_text = sufffact.need.replace(requiredheir.base, "")
@@ -539,7 +537,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
                 sufffact_open = sufffact.open
                 sufffact_nigh = sufffact.nigh
                 if requiredheir_text == "time,jajatime":
-                    sufffact_open = self.contract_x.get_jajatime_repeating_legible_text(
+                    sufffact_open = self.pact_x.get_jajatime_repeating_legible_text(
                         open=sufffact.open,
                         nigh=sufffact.nigh,
                         divisor=sufffact.divisor,
@@ -692,7 +690,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             divisor_x = str2float(self.required_sufffact_divisor.toPlainText())
             idea_label = self.baseideaunit.currentItem().data(2, 10)
             idea_pad = self.baseideaunit.currentItem().data(2, 11)
-            self.contract_x.edit_idea_attr(
+            self.pact_x.edit_idea_attr(
                 road=f"{idea_pad},{idea_label}",
                 required_base=base_x,
                 required_sufffact=sufffact_x,
@@ -708,7 +706,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             #     nigh=nigh_x,
             #     divisor=divisor_x,
             # )
-            self.contract_x.get_idea_list()
+            self.pact_x.get_idea_list()
             self.required_table_load()
 
     def required_delete(self):
@@ -760,15 +758,15 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.idea2group_table.setItem(
                 row - 1,
                 2,
-                qtw1(contract_importance_diplay(balanceheir._contract_credit)),
+                qtw1(pact_importance_diplay(balanceheir._pact_credit)),
             )
 
         self.idea2group_table.sortItems(1, QtCore.Qt.AscendingOrder)
 
     def idea2group_insert_combo_load(self):
-        # groupunits_list = list(self.contract_x._groupunits.values())
+        # groupunits_list = list(self.pact_x._groupunits.values())
         groupunits_titles_list = []
-        for groupunit in self.contract_x._groups.values():
+        for groupunit in self.pact_x._groups.values():
             group_previously_selected = any(
                 groupunit.brand == balancelink.brand
                 for balancelink in self.yo_x._balancelinks.values()
@@ -785,7 +783,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if bd_title_new == "":
             raise Exception("bd_title is empty, idea2bd cannot be updated")
         balancelink_new = Balancelink(brand=GroupBrand(bd_title_new), weight=1)
-        self.contract_x.edit_idea_attr(
+        self.pact_x.edit_idea_attr(
             road=f"{self.yo_x._pad},{self.yo_x._label}", balancelink=balancelink_new
         )
         self.idea2group_insert_combo_load()
@@ -797,7 +795,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             delete_group_title = self.idea2group_table.item(
                 self.idea2group_table.currentRow(), 1
             ).text()
-            self.contract_x.edit_idea_attr(
+            self.pact_x.edit_idea_attr(
                 road=f"{self.yo_x._pad},{self.yo_x._label}",
                 balancelink_del=delete_group_title,
             )
@@ -805,12 +803,12 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.idea2group_table_load()
 
     def idea_delete(self):
-        self.contract_x.del_idea_kid(road=f"{self.yo_x._pad},{self.yo_x._label}")
+        self.pact_x.del_idea_kid(road=f"{self.yo_x._pad},{self.yo_x._label}")
         self.baseideaunit.clear()
         self.refresh_tree(disable_is_expanded=True)
 
     def idea_edit_nonroad_data(self, idea_road):
-        self.contract_x.edit_idea_attr(
+        self.pact_x.edit_idea_attr(
             road=idea_road,
             weight=float(self.yo_weight.toPlainText()),
             begin=str2float(self.yo_begin.toPlainText()),
@@ -840,7 +838,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         )
 
     def idea_edit_road(self, idea_road):
-        self.contract_x.edit_idea_label(
+        self.pact_x.edit_idea_label(
             old_road=idea_road,
             new_label=self.yo_deescription.toPlainText(),
         )
@@ -874,22 +872,22 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
         # add done/not_done children
         not_done_text = "not done"
-        self.contract_x.add_idea(
+        self.pact_x.add_idea(
             idea_kid=IdeaKid(_label=not_done_text),
             pad=new_road,
         )
         done_text = "done"
-        self.contract_x.add_idea(
+        self.pact_x.add_idea(
             idea_kid=IdeaKid(_label=done_text),
             pad=new_road,
         )
         # set required to "not done"
-        self.contract_x.edit_idea_attr(
+        self.pact_x.edit_idea_attr(
             road=new_road,
             required_base=new_road,
             required_sufffact=f"{new_road},{not_done_text}",
         )
-        self.contract_x.set_acptfact(
+        self.pact_x.set_acptfact(
             base=new_road,
             pick=f"{new_road},{not_done_text}",
         )
@@ -934,7 +932,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         new_pad = f"{self.yo_x._label}"
         if self.yo_x._pad not in ("", None):
             new_pad = f"{self.yo_x._pad},{self.yo_x._label}"
-        self.contract_x.add_idea(
+        self.pact_x.add_idea(
             idea_kid=new_idea,
             pad=new_pad,
         )
@@ -964,7 +962,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.idea_tree_set_is_expanded(root)
 
         tree_root = get_pyqttree(
-            idearoot=self.contract_x._idearoot,
+            idearoot=self.pact_x._idearoot,
             yo_agenda_flag=yo_agenda_flag,
             yo_action_flag=yo_action_flag,
             yo_acptfactunit_time_flag=yo_acptfactunit_time_flag,
@@ -978,7 +976,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             required_view_title=required_view_base,
             acptfactheir_view_flag=acptfactheir_view_flag,
             root_percent_flag=root_percent_flag,
-            source_contract=self.contract_x,
+            source_pact=self.pact_x,
         )
 
         self.baseideaunit.clear()
@@ -988,7 +986,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.pyqt_tree_setExpanded(root)
         # self.yo_tree_item_setHidden(setHiddenBool=True)
 
-    # expand to depth set by contract
+    # expand to depth set by pact
     def pyqt_tree_setExpanded(self, root):
         child_count = root.childCount()
         for i in range(child_count):
@@ -1008,7 +1006,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             # print(f"road={road_x},{label_x}")
             # print(f"{_road=}")
 
-            self.contract_x.edit_idea_attr(road=_road, is_expanded=is_expanded)
+            self.pact_x.edit_idea_attr(road=_road, is_expanded=is_expanded)
             self.idea_tree_set_is_expanded(item)
 
     def required_table_select(self):

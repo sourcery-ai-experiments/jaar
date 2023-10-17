@@ -280,7 +280,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QLabel" title="contract_l">
+   <widget class="QLabel" title="pact_l">
     <property title="geometry">
      <rect>
       <x>30</x>
@@ -306,7 +306,7 @@
      <string>Update</string>
     </property>
    </widget>
-   <widget class="QLineEdit" title="contract_healer">
+   <widget class="QLineEdit" title="pact_healer">
     <property title="geometry">
      <rect>
       <x>100</x>
@@ -370,7 +370,7 @@
      <string>End:</string>
     </property>
    </widget>
-   <widget class="QLabel" title="label_agenda_contract_importance_header1">
+   <widget class="QLabel" title="label_agenda_pact_importance_header1">
     <property title="geometry">
      <rect>
       <x>30</x>
@@ -463,7 +463,7 @@
      <string>Family:</string>
     </property>
    </widget>
-   <widget class="QLabel" title="label_agenda_contract_importance_header2">
+   <widget class="QLabel" title="label_agenda_pact_importance_header2">
     <property title="geometry">
      <rect>
       <x>30</x>
@@ -521,7 +521,7 @@
      <string>Agenda</string>
     </property>
    </widget>
-   <widget class="QLabel" title="label_agenda_contract_importance_data">
+   <widget class="QLabel" title="label_agenda_pact_importance_data">
     <property title="geometry">
      <rect>
       <x>130</x>
@@ -653,7 +653,7 @@
     </column>
     <column>
      <property title="text">
-      <string>contract_importance</string>
+      <string>pact_importance</string>
      </property>
     </column>
     <column>

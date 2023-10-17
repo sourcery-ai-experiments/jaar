@@ -6,10 +6,10 @@ from PyQt5 import QtCore as qtc
 from PyQt5.QtWidgets import QTableWidgetItem as qti
 from EditIdeaUnit import EditIdeaUnit
 from EditParty import EditParty
-from pyqt_func import contract_importance_diplay, get_pyqttree, num2str
-from src.contract.group import groupunit_shop, balancelink_shop
-from src.contract.idea import IdeaKid
-from src.contract.road import Road, get_pad_from_road, get_terminus_node_from_road
+from pyqt_func import pact_importance_diplay, get_pyqttree, num2str
+from src.pact.group import groupunit_shop, balancelink_shop
+from src.pact.idea import IdeaKid
+from src.pact.road import Road, get_pad_from_road, get_terminus_node_from_road
 from sys import exit as sys_exit
 
 # self.problem_title_text
@@ -65,7 +65,7 @@ class EditProblem(qtw.QWidget, Ui_Form):
         self.agenda_table.setObjectName("Current Agenda")
         self.agenda_table.setRowCount(0)
 
-        self.contract_x = None
+        self.pact_x = None
 
     def select_problem_title_combo(self):
         self.problem_title_text.setText(self.problem_title_combo.currentText())
@@ -128,13 +128,11 @@ class EditProblem(qtw.QWidget, Ui_Form):
             prob_idea = IdeaKid(_label=prob_label, _pad=prob_pad)
             for balancelink_x in self.create_balancelinks_list():
                 prob_idea.set_balancelink(balancelink_x)
-            self.contract_x.set_dominate_promise_idea(idea_kid=prob_idea)
+            self.pact_x.set_dominate_promise_idea(idea_kid=prob_idea)
 
     def add_group(self):
         if self.add_group_text not in (None, ""):
-            self.contract_x.set_groupunit(
-                groupunit_shop(brand=self.add_group_text.text())
-            )
+            self.pact_x.set_groupunit(groupunit_shop(brand=self.add_group_text.text()))
         self.refresh_all()
 
     def refresh_all(self):
@@ -148,11 +146,11 @@ class EditProblem(qtw.QWidget, Ui_Form):
         self.action3_text.setText("")
         self.add_group_text.setText("")
 
-        if self.contract_x != None:
+        if self.pact_x != None:
             self.refresh_agenda_list()
             self.refresh_idea_tree()
 
-            idea_road_list = self.contract_x.get_idea_tree_ordered_road_list()
+            idea_road_list = self.pact_x.get_idea_tree_ordered_road_list()
             idea_road_list.insert(0, "")
 
             self.problem_title_combo.clear()
@@ -162,15 +160,9 @@ class EditProblem(qtw.QWidget, Ui_Form):
             self.group1_title_combo.clear()
             self.group2_title_combo.clear()
             self.group3_title_combo.clear()
-            self.group1_title_combo.addItems(
-                self.contract_x.get_groupunits_brand_list()
-            )
-            self.group2_title_combo.addItems(
-                self.contract_x.get_groupunits_brand_list()
-            )
-            self.group3_title_combo.addItems(
-                self.contract_x.get_groupunits_brand_list()
-            )
+            self.group1_title_combo.addItems(self.pact_x.get_groupunits_brand_list())
+            self.group2_title_combo.addItems(self.pact_x.get_groupunits_brand_list())
+            self.group3_title_combo.addItems(self.pact_x.get_groupunits_brand_list())
             self.action1_combo.clear()
             self.action2_combo.clear()
             self.action3_combo.clear()
@@ -191,10 +183,10 @@ class EditProblem(qtw.QWidget, Ui_Form):
         #     base_x = None
         base_x = None
 
-        agenda_list = self.contract_x.get_agenda_items(
+        agenda_list = self.pact_x.get_agenda_items(
             agenda_todo=True, agenda_state=True, base=base_x
         )
-        agenda_list.sort(key=lambda x: x._contract_importance, reverse=True)
+        agenda_list.sort(key=lambda x: x._pact_importance, reverse=True)
 
         row = 0
         for agenda_item in agenda_list:
@@ -210,9 +202,7 @@ class EditProblem(qtw.QWidget, Ui_Form):
         sufffact_open_x = None
         sufffact_nigh_x = None
         sufffact_divisor_x = None
-        lw_display_x = contract_importance_diplay(
-            contract_importance=a._contract_importance
-        )
+        lw_display_x = pact_importance_diplay(pact_importance=a._pact_importance)
 
         if requiredheir_x != None:
             for sufffact in requiredheir_x.sufffacts.values():
@@ -257,7 +247,7 @@ class EditProblem(qtw.QWidget, Ui_Form):
             [
                 "_label",
                 "road",
-                "contract_importance",
+                "pact_importance",
                 "weight",
                 "acptfact",
                 "open",
@@ -268,22 +258,22 @@ class EditProblem(qtw.QWidget, Ui_Form):
 
     def open_editideaunit(self):
         self.EditIdeaunit = EditIdeaUnit()
-        self.EditIdeaunit.contract_x = self.contract_x
+        self.EditIdeaunit.pact_x = self.pact_x
         self.EditIdeaunit.refresh_tree()
         self.EditIdeaunit.show()
 
     def open_edit_party(self):
         self.edit_party = EditParty()
-        self.edit_party.contract_x = self.contract_x
+        self.edit_party.pact_x = self.pact_x
         self.edit_party.refresh_all()
         self.edit_party.show()
 
     def refresh_idea_tree(self):
-        tree_root = get_pyqttree(idearoot=self.contract_x._idearoot)
+        tree_root = get_pyqttree(idearoot=self.pact_x._idearoot)
         self.baseideaunit.clear()
         self.baseideaunit.insertTopLevelItems(0, [tree_root])
 
-        # expand to depth set by contract
+        # expand to depth set by pact
         def yo_tree_setExpanded(root):
             child_count = root.childCount()
             for i in range(child_count):
