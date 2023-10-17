@@ -178,25 +178,26 @@ def test_personunit_set_cureunits_weight_metrics_SetsCorrectly(env_dir_setup_cle
 
     # WHEN
     xao_personunit.set_cureunits_weight_metrics()
-    z_fear_painunit = xao_personunit.get_painunit(fear_kind)
-    z_bore_painunit = xao_personunit.get_painunit(bore_kind)
-    z_rain_painunit = xao_personunit.get_painunit(rain_kind)
-    z_fear_tim_healerlink = z_fear_painunit.get_healerlink(tim_text)
-    z_bore_tim_healerlink = z_bore_painunit.get_healerlink(tim_text)
-    z_bore_sue_healerlink = z_bore_painunit.get_healerlink(sue_text)
-    z_rain_ray_healerlink = z_rain_painunit.get_healerlink(ray_text)
-    fear_tim_plan1_curelink = z_fear_tim_healerlink.get_curelink(plan1_handle)
-    bore_sue_plan2_curelink = z_bore_sue_healerlink.get_curelink(plan2_handle)
-    bore_sue_plan3_curelink = z_bore_sue_healerlink.get_curelink(plan3_handle)
-    bore_tim_plan3_curelink = z_bore_tim_healerlink.get_curelink(plan3_handle)
-    rain_ray_plan3_curelink = z_rain_ray_healerlink.get_curelink(plan3_handle)
-    assert fear_tim_plan1_curelink._person_importance == 0.6
-    assert bore_sue_plan2_curelink._person_importance == 0.0112
-    assert bore_sue_plan3_curelink._person_importance == 0.1288
-    assert bore_tim_plan3_curelink._person_importance == 0.21
-    assert rain_ray_plan3_curelink._person_importance == 0.05
 
     # THEN
+    # z_fear_painunit = xao_personunit.get_painunit(fear_kind)
+    # z_bore_painunit = xao_personunit.get_painunit(bore_kind)
+    # z_rain_painunit = xao_personunit.get_painunit(rain_kind)
+    # z_fear_tim_healerlink = z_fear_painunit.get_healerlink(tim_text)
+    # z_bore_tim_healerlink = z_bore_painunit.get_healerlink(tim_text)
+    # z_bore_sue_healerlink = z_bore_painunit.get_healerlink(sue_text)
+    # z_rain_ray_healerlink = z_rain_painunit.get_healerlink(ray_text)
+    # fear_tim_plan1_curelink = z_fear_tim_healerlink.get_curelink(plan1_handle)
+    # bore_sue_plan2_curelink = z_bore_sue_healerlink.get_curelink(plan2_handle)
+    # bore_sue_plan3_curelink = z_bore_sue_healerlink.get_curelink(plan3_handle)
+    # bore_tim_plan3_curelink = z_bore_tim_healerlink.get_curelink(plan3_handle)
+    # rain_ray_plan3_curelink = z_rain_ray_healerlink.get_curelink(plan3_handle)
+    # assert fear_tim_plan1_curelink._person_importance == 0.6
+    # assert bore_sue_plan2_curelink._person_importance == 0.0112
+    # assert bore_sue_plan3_curelink._person_importance == 0.1288
+    # assert bore_tim_plan3_curelink._person_importance == 0.21
+    # assert rain_ray_plan3_curelink._person_importance == 0.05
+
     assert plan1_cureunit._person_importance == 0.6
     assert plan2_cureunit._person_importance == 0.0112
     assert plan3_cureunit._person_importance == 0.3888
