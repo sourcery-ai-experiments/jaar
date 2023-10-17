@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src.cure.cure import CureUnit, CureHandle, cureunit_shop
+from src.fix.fix import FixUnit, FixHandle, fixunit_shop
 from src.world.pain import PainKind, PainUnit, PersonName, painunit_shop
 
 
@@ -7,7 +7,7 @@ from src.world.pain import PainKind, PainUnit, PersonName, painunit_shop
 class PersonUnit:
     name: PersonName = None
     person_dir: str = None
-    _cures: dict[CureHandle:CureUnit] = None
+    _fixs: dict[FixHandle:FixUnit] = None
     _pains: dict[PainKind:PainUnit] = None
 
     def set_pains_empty_if_none(self):
@@ -33,38 +33,36 @@ class PersonUnit:
         for x_painunit in self._pains.values():
             x_painunit.set_relative_weight(x_painunit.weight / total_painunits_weight)
 
-    def set_cureunits_weight_metrics(self):
+    def set_fixunits_weight_metrics(self):
         self.set_painunits_weight_metrics()
-        cureunit_handles = {x_cureunit.handle: 0 for x_cureunit in self._cures.values()}
+        fixunit_handles = {x_fixunit.handle: 0 for x_fixunit in self._fixs.values()}
 
         for x_painunit in self._pains.values():
             for x_healerlink in x_painunit._healerlinks.values():
-                for x_curelink in x_healerlink._curelinks.values():
-                    cureunit_handles[x_curelink.handle] += x_curelink._person_importance
+                for x_fixlink in x_healerlink._fixlinks.values():
+                    fixunit_handles[x_fixlink.handle] += x_fixlink._person_importance
 
-        for x_cureunit_handle, x_cureunit_person_importance in cureunit_handles.items():
-            self._cures.get(x_cureunit_handle).set_person_importance(
-                x_cureunit_person_importance
+        for x_fixunit_handle, x_fixunit_person_importance in fixunit_handles.items():
+            self._fixs.get(x_fixunit_handle).set_person_importance(
+                x_fixunit_person_importance
             )
 
-    def set_cures_empty_if_none(self):
-        if self._cures is None:
-            self._cures = {}
+    def set_fixs_empty_if_none(self):
+        if self._fixs is None:
+            self._fixs = {}
 
-    def set_cureunit(self, cure_handle: CureHandle):
-        cures_dir = f"{self.person_dir}/cures"
-        self._cures[cure_handle] = cureunit_shop(
-            handle=cure_handle, cures_dir=cures_dir
-        )
+    def set_fixunit(self, fix_handle: FixHandle):
+        fixs_dir = f"{self.person_dir}/fixs"
+        self._fixs[fix_handle] = fixunit_shop(handle=fix_handle, fixs_dir=fixs_dir)
 
-    def get_cureunit(self, cure_handle: CureHandle) -> CureUnit:
-        return self._cures.get(cure_handle)
+    def get_fixunit(self, fix_handle: FixHandle) -> FixUnit:
+        return self._fixs.get(fix_handle)
 
-    def del_cureunit(self, cure_handle: CureHandle):
-        self._cures.pop(cure_handle)
+    def del_fixunit(self, fix_handle: FixHandle):
+        self._fixs.pop(fix_handle)
 
-    def get_cures_dict(self) -> dict:
-        return {cureunit_x.handle: None for cureunit_x in self._cures.values()}
+    def get_fixs_dict(self) -> dict:
+        return {fixunit_x.handle: None for fixunit_x in self._fixs.values()}
 
     def get_pains_dict(self) -> dict:
         return {
@@ -75,7 +73,7 @@ class PersonUnit:
     def get_dict(self) -> dict:
         return {
             "name": self.name,
-            "_cures": self.get_cures_dict(),
+            "_fixs": self.get_fixs_dict(),
             "_pains": self.get_pains_dict(),
         }
 
@@ -84,7 +82,7 @@ def personunit_shop(name: PersonName, person_dir: str = None) -> PersonUnit:
     if person_dir is None:
         person_dir = ""
     person_x = PersonUnit(name=name, person_dir=person_dir)
-    person_x.set_cures_empty_if_none()
+    person_x.set_fixs_empty_if_none()
     person_x.set_pains_empty_if_none()
     return person_x
 

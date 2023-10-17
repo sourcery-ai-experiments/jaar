@@ -1,18 +1,18 @@
-from src.world.pain import painunit_shop, curelink_shop, healerlink_shop
+from src.world.pain import painunit_shop, fixlink_shop, healerlink_shop
 
 
-def test_curelink_set_relative_weight_SetsCorrectly():
+def test_fixlink_set_relative_weight_SetsCorrectly():
     # GIVEN
     diet_text = "diet"
-    diet_curelink = curelink_shop(handle=diet_text)
-    assert diet_curelink._relative_weight is None
+    diet_fixlink = fixlink_shop(handle=diet_text)
+    assert diet_fixlink._relative_weight is None
 
     # WHEN
     x_relative_weight = 0.45
-    diet_curelink.set_relative_weight(x_relative_weight)
+    diet_fixlink.set_relative_weight(x_relative_weight)
 
     # THEN
-    assert diet_curelink._relative_weight == x_relative_weight
+    assert diet_fixlink._relative_weight == x_relative_weight
 
 
 def test_healingunit_set_relative_weight_SetsCorrectly():
@@ -43,18 +43,18 @@ def test_painunit_set_relative_weight_SetsCorrectly():
     assert fear_painunit._relative_weight == x_relative_weight
 
 
-def test_curelink_set_person_importance_SetsCorrectly():
+def test_fixlink_set_person_importance_SetsCorrectly():
     # GIVEN
     diet_text = "diet"
-    diet_curelink = curelink_shop(handle=diet_text)
-    assert diet_curelink._person_importance is None
+    diet_fixlink = fixlink_shop(handle=diet_text)
+    assert diet_fixlink._person_importance is None
 
     # WHEN
     x_person_importance = 0.45
-    diet_curelink.set_person_importance(x_person_importance)
+    diet_fixlink.set_person_importance(x_person_importance)
 
     # THEN
-    assert diet_curelink._person_importance == x_person_importance
+    assert diet_fixlink._person_importance == x_person_importance
 
 
 def test_healingunit_set_person_importance_SetsCorrectly():
@@ -85,7 +85,7 @@ def test_painunit_set_person_importance_SetsCorrectly():
     assert fear_painunit._person_importance == x_person_importance
 
 
-def test_healingunit_set_curelinks_weight_metrics_SetsCorrectly():
+def test_healingunit_set_fixlinks_weight_metrics_SetsCorrectly():
     # GIVEN
     yao_text = "Yao"
     yao_hl = healerlink_shop(person_name=yao_text)
@@ -93,29 +93,29 @@ def test_healingunit_set_curelinks_weight_metrics_SetsCorrectly():
     fight_text = "fight"
     flee_text = "flee"
     nego_text = "negoiate"
-    yao_hl.set_curelink(curelink_shop(fight_text, weight=10))
-    yao_hl.set_curelink(curelink_shop(flee_text, weight=7))
-    yao_hl.set_curelink(curelink_shop(nego_text, weight=3))
-    fight_curelink = yao_hl.get_curelink(fight_text)
-    flee_curelink = yao_hl.get_curelink(flee_text)
-    nego_curelink = yao_hl.get_curelink(nego_text)
-    assert fight_curelink._relative_weight is None
-    assert flee_curelink._relative_weight is None
-    assert nego_curelink._relative_weight is None
-    assert fight_curelink._person_importance is None
-    assert flee_curelink._person_importance is None
-    assert nego_curelink._person_importance is None
+    yao_hl.set_fixlink(fixlink_shop(fight_text, weight=10))
+    yao_hl.set_fixlink(fixlink_shop(flee_text, weight=7))
+    yao_hl.set_fixlink(fixlink_shop(nego_text, weight=3))
+    fight_fixlink = yao_hl.get_fixlink(fight_text)
+    flee_fixlink = yao_hl.get_fixlink(flee_text)
+    nego_fixlink = yao_hl.get_fixlink(nego_text)
+    assert fight_fixlink._relative_weight is None
+    assert flee_fixlink._relative_weight is None
+    assert nego_fixlink._relative_weight is None
+    assert fight_fixlink._person_importance is None
+    assert flee_fixlink._person_importance is None
+    assert nego_fixlink._person_importance is None
 
     # WHEN
-    yao_hl.set_curelinks_weight_metrics()
+    yao_hl.set_fixlinks_weight_metrics()
 
     # THEN
-    assert fight_curelink._relative_weight == 0.5
-    assert flee_curelink._relative_weight == 0.35
-    assert nego_curelink._relative_weight == 0.15
-    assert fight_curelink._person_importance == 0.125
-    assert flee_curelink._person_importance == 0.0875
-    assert nego_curelink._person_importance == 0.0375
+    assert fight_fixlink._relative_weight == 0.5
+    assert flee_fixlink._relative_weight == 0.35
+    assert nego_fixlink._relative_weight == 0.15
+    assert fight_fixlink._person_importance == 0.125
+    assert flee_fixlink._person_importance == 0.0875
+    assert nego_fixlink._person_importance == 0.0375
 
 
 def test_painunit_set_healerlinks_weight_metrics_SetsCorrectly():

@@ -1,5 +1,5 @@
 from src.world.person import PersonUnit, personunit_shop
-from src.world.pain import painunit_shop, healerlink_shop, curelink_shop
+from src.world.pain import painunit_shop, healerlink_shop, fixlink_shop
 
 
 def test_personunit_exists():
@@ -9,7 +9,7 @@ def test_personunit_exists():
     # THEN
     assert px.name is None
     assert px.person_dir is None
-    assert px._cures is None
+    assert px._fixs is None
     assert px._pains is None
 
 
@@ -23,7 +23,7 @@ def test_personunit_shop_ReturnsNonePersonUnitWithCorrectAttrs_v1():
     # THEN
     assert px.name == dallas_text
     assert px.person_dir == ""
-    assert px._cures == {}
+    assert px._fixs == {}
     assert px._pains == {}
 
 
@@ -40,7 +40,7 @@ def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
     assert px.person_dir == dallas_dir
 
 
-def test_personunit_set_cureunit_CorrectlyCreatesCureUnit():
+def test_personunit_set_fixunit_CorrectlyCreatesFixUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
@@ -48,51 +48,51 @@ def test_personunit_set_cureunit_CorrectlyCreatesCureUnit():
 
     # WHEN
     diet_text = "diet"
-    xao_person_obj.set_cureunit(cure_handle=diet_text)
+    xao_person_obj.set_fixunit(fix_handle=diet_text)
 
     # THEN
-    # diet_cure = xao_person.get_cure()
-    diet_cure = xao_person_obj._cures.get(diet_text)
-    assert diet_cure != None
-    assert diet_cure.handle == diet_text
-    assert diet_cure.cures_dir == f"{xao_person_dir}/cures"
+    # diet_fix = xao_person.get_fix()
+    diet_fix = xao_person_obj._fixs.get(diet_text)
+    assert diet_fix != None
+    assert diet_fix.handle == diet_text
+    assert diet_fix.fixs_dir == f"{xao_person_dir}/fixs"
 
 
-def test_personunit_get_cureunit_CorrectlyGetsCureUnit():
+def test_personunit_get_fixunit_CorrectlyGetsFixUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
     xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
     diet_text = "diet"
-    xao_person_obj.set_cureunit(diet_text)
+    xao_person_obj.set_fixunit(diet_text)
 
     # WHEN
-    diet_cure = xao_person_obj.get_cureunit(diet_text)
+    diet_fix = xao_person_obj.get_fixunit(diet_text)
 
     # THEN
-    assert diet_cure != None
-    assert diet_cure.handle == diet_text
-    assert diet_cure.cures_dir == f"{xao_person_dir}/cures"
+    assert diet_fix != None
+    assert diet_fix.handle == diet_text
+    assert diet_fix.fixs_dir == f"{xao_person_dir}/fixs"
 
 
-def test_personunit_del_cureunit_CorrectlyDeletesCureUnit():
+def test_personunit_del_fixunit_CorrectlyDeletesFixUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
     xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
     diet_text = "diet"
-    xao_person_obj.set_cureunit(diet_text)
-    before_diet_cure = xao_person_obj.get_cureunit(diet_text)
-    assert before_diet_cure != None
-    assert before_diet_cure.handle == diet_text
-    assert before_diet_cure.cures_dir == f"{xao_person_dir}/cures"
+    xao_person_obj.set_fixunit(diet_text)
+    before_diet_fix = xao_person_obj.get_fixunit(diet_text)
+    assert before_diet_fix != None
+    assert before_diet_fix.handle == diet_text
+    assert before_diet_fix.fixs_dir == f"{xao_person_dir}/fixs"
 
     # WHEN
-    xao_person_obj.del_cureunit(diet_text)
+    xao_person_obj.del_fixunit(diet_text)
 
     # THEN
-    after_diet_cure = xao_person_obj.get_cureunit(diet_text)
-    assert after_diet_cure is None
+    after_diet_fix = xao_person_obj.get_fixunit(diet_text)
+    assert after_diet_fix is None
 
 
 def test_personunit_create_painunit_from_kind_CorrectlyCreatesPainUnit():

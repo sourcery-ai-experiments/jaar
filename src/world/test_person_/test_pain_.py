@@ -2,55 +2,55 @@ from src.world.pain import (
     PainUnit,
     PainKind,
     painunit_shop,
-    CureLink,
-    curelink_shop,
+    FixLink,
+    fixlink_shop,
     HealerLink,
     healerlink_shop,
 )
 
 
-def test_curelink_exists():
+def test_fixlink_exists():
     # GIVEN
     diet_text = "diet"
     diet_weight = 3
 
     # WHEN
-    diet_curelink = CureLink(handle=diet_text, weight=diet_weight)
+    diet_fixlink = FixLink(handle=diet_text, weight=diet_weight)
 
     # THEN
-    assert diet_curelink.handle == diet_text
-    assert diet_curelink.weight == diet_weight
-    assert diet_curelink._relative_weight is None
-    assert diet_curelink._person_importance is None
+    assert diet_fixlink.handle == diet_text
+    assert diet_fixlink.weight == diet_weight
+    assert diet_fixlink._relative_weight is None
+    assert diet_fixlink._person_importance is None
 
 
-def test_curelink_shop_ReturnsCorrectObj():
+def test_fixlink_shop_ReturnsCorrectObj():
     # GIVEN
     diet_text = "diet"
     diet_weight = 5
 
     # WHEN
-    diet_curelink = curelink_shop(handle=diet_text, weight=diet_weight)
+    diet_fixlink = fixlink_shop(handle=diet_text, weight=diet_weight)
 
     # THEN
-    assert diet_curelink.handle == diet_text
-    assert diet_curelink.weight == diet_weight
-    assert diet_curelink._relative_weight is None
-    assert diet_curelink._person_importance is None
+    assert diet_fixlink.handle == diet_text
+    assert diet_fixlink.weight == diet_weight
+    assert diet_fixlink._relative_weight is None
+    assert diet_fixlink._person_importance is None
 
 
-def test_curelink_shop_ReturnsCorrectObj_EmptyWeight():
+def test_fixlink_shop_ReturnsCorrectObj_EmptyWeight():
     # GIVEN
-    cure_text = "diet"
+    fix_text = "diet"
 
     # WHEN
-    diet_curelink = curelink_shop(handle=cure_text)
+    diet_fixlink = fixlink_shop(handle=fix_text)
 
     # THEN
-    assert diet_curelink.handle == cure_text
-    assert diet_curelink.weight == 1
-    assert diet_curelink._relative_weight is None
-    assert diet_curelink._person_importance is None
+    assert diet_fixlink.handle == fix_text
+    assert diet_fixlink.weight == 1
+    assert diet_fixlink._relative_weight is None
+    assert diet_fixlink._person_importance is None
 
 
 def test_healerlink_exists():
@@ -66,7 +66,7 @@ def test_healerlink_exists():
     assert yao_healerlink.person_name == yao_text
     assert yao_healerlink.weight == yao_weight
     assert yao_healerlink.in_tribe == yao_in_tribe
-    assert yao_healerlink._curelinks is None
+    assert yao_healerlink._fixlinks is None
     assert yao_healerlink._relative_weight is None
     assert yao_healerlink._person_importance is None
 
@@ -86,7 +86,7 @@ def test_healerlink_shop_ReturnsCorrectObj():
     assert yao_healerlink.person_name == yao_text
     assert yao_healerlink.weight == yao_weight
     assert yao_healerlink.in_tribe == yao_in_tribe
-    assert yao_healerlink._curelinks == {}
+    assert yao_healerlink._fixlinks == {}
     assert yao_healerlink._relative_weight is None
     assert yao_healerlink._person_importance is None
 
@@ -102,61 +102,61 @@ def test_healerlink_shop_ReturnsCorrectObj_EmptyWeight():
     assert yao_healerlink.person_name == yao_text
     assert yao_healerlink.weight == 1
     assert yao_healerlink.in_tribe is None
-    assert yao_healerlink._curelinks == {}
+    assert yao_healerlink._fixlinks == {}
     assert yao_healerlink._relative_weight is None
     assert yao_healerlink._person_importance is None
 
 
-def test_healerlink_set_curelink_CorrectlySetsCureLink():
+def test_healerlink_set_fixlink_CorrectlySetsFixLink():
     # GIVEN
     yao_text = "yao"
     yao_healerlink = healerlink_shop(person_name=yao_text)
 
     # WHEN
     diet_text = "diet"
-    diet_curelink = curelink_shop(handle=diet_text)
-    yao_healerlink.set_curelink(diet_curelink)
+    diet_fixlink = fixlink_shop(handle=diet_text)
+    yao_healerlink.set_fixlink(diet_fixlink)
 
     # THEN
-    # diet_cure = xao_pain.get_cure()
-    diet_cure = yao_healerlink._curelinks.get(diet_text)
-    assert diet_cure != None
-    assert diet_cure.handle == diet_text
+    # diet_fix = xao_pain.get_fix()
+    diet_fix = yao_healerlink._fixlinks.get(diet_text)
+    assert diet_fix != None
+    assert diet_fix.handle == diet_text
 
 
-def test_healerlink_get_cureunit_CorrectlyGetsAnCureUnit():
+def test_healerlink_get_fixunit_CorrectlyGetsAnFixUnit():
     # GIVEN
     yao_text = "yao"
     yao_healerlink = healerlink_shop(person_name=yao_text)
     diet_text = "diet"
-    diet_curelink = curelink_shop(handle=diet_text)
-    yao_healerlink.set_curelink(diet_curelink)
+    diet_fixlink = fixlink_shop(handle=diet_text)
+    yao_healerlink.set_fixlink(diet_fixlink)
 
     # WHEN
-    diet_cure = yao_healerlink.get_curelink(diet_text)
+    diet_fix = yao_healerlink.get_fixlink(diet_text)
 
     # THEN
-    assert diet_cure != None
-    assert diet_cure.handle == diet_text
+    assert diet_fix != None
+    assert diet_fix.handle == diet_text
 
 
-def test_healerlink_del_cureunit_CorrectlyDeletesCureUnit():
+def test_healerlink_del_fixunit_CorrectlyDeletesFixUnit():
     # GIVEN
     yao_text = "yao"
     yao_healerlink = healerlink_shop(person_name=yao_text)
     diet_text = "diet"
-    diet_curelink = curelink_shop(handle=diet_text)
-    yao_healerlink.set_curelink(diet_curelink)
-    diet_cure = yao_healerlink.get_curelink(diet_text)
-    assert diet_cure != None
-    assert diet_cure.handle == diet_text
+    diet_fixlink = fixlink_shop(handle=diet_text)
+    yao_healerlink.set_fixlink(diet_fixlink)
+    diet_fix = yao_healerlink.get_fixlink(diet_text)
+    assert diet_fix != None
+    assert diet_fix.handle == diet_text
 
     # WHEN
-    yao_healerlink.del_curelink(curehandle=diet_text)
+    yao_healerlink.del_fixlink(fixhandle=diet_text)
 
     # THEN
-    after_diet_cure = yao_healerlink.get_curelink(diet_text)
-    assert after_diet_cure is None
+    after_diet_fix = yao_healerlink.get_fixlink(diet_text)
+    assert after_diet_fix is None
 
 
 def test_painunit_exists():

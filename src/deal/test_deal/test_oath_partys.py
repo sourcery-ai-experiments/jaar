@@ -7,7 +7,7 @@ from src.deal.examples.example_deals import (
 from src.deal.deal import DealUnit, get_intersection_of_partys
 from src.deal.idea import IdeaKid
 from pytest import raises as pytest_raises
-from src.cure.bank_sqlstr import RiverTpartyUnit
+from src.fix.bank_sqlstr import RiverTpartyUnit
 
 
 def test_deal_partys_exists():

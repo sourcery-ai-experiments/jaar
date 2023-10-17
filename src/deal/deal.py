@@ -46,7 +46,7 @@ from src.deal.hreg_time import (
     _get_time_hreg_src_idea,
     get_time_min_from_dt as hreg_get_time_min_from_dt,
     convert1440toReadableTime,
-    get_number_with_postfix,
+    get_number_with_letter_ending,
     get_jajatime_legible_from_dt,
 )
 from src.deal.lemma import Lemmas
@@ -58,7 +58,7 @@ from src.deal.road import (
     get_terminus_node_from_road,
     find_replace_road_key_dict,
     get_ancestor_roads,
-    get_default_cure_root_label as root_label,
+    get_default_fix_root_label as root_label,
     get_road_from_nodes,
     get_all_road_nodes,
     get_forefather_roads,
@@ -97,7 +97,7 @@ class DealUnit:
     _tree_traverse_count: int = None
     _rational: bool = False
     _originunit: OriginUnit = None
-    _cure_handle: str = None
+    _fix_handle: str = None
     _auto_output_to_public: bool = None
 
     def __init__(
@@ -108,16 +108,16 @@ class DealUnit:
         self._weight = _weight
         if _healer is None:
             _healer = ""
-        self._cure_handle = root_label()
+        self._fix_handle = root_label()
         self._idearoot = IdeaRoot(_label=self._idearoot, _uid=1, _level=0)
         self._healer = _healer
         self._originunit = originunit_shop()
         self._auto_output_to_public = bool(_auto_output_to_public)
 
-    def set_cure_handle(self, cure_handle: str):
-        old_cure_handle = copy_deepcopy(self._cure_handle)
-        self._cure_handle = cure_handle
-        self.edit_idea_label(old_road=old_cure_handle, new_label=self._cure_handle)
+    def set_fix_handle(self, fix_handle: str):
+        old_fix_handle = copy_deepcopy(self._fix_handle)
+        self._fix_handle = fix_handle
+        self.edit_idea_label(old_road=old_fix_handle, new_label=self._fix_handle)
         self.set_deal_metrics()
 
     def set_banking_attr_partyunits(self, river_tpartys: dict):
@@ -274,7 +274,7 @@ class DealUnit:
         return hreg_get_time_min_from_dt(dt=dt)
 
     def get_time_c400_from_min(self, min: int) -> int:
-        c400_idea = self.get_idea_kid(f"{self._cure_handle},time,tech,400 year cycle")
+        c400_idea = self.get_idea_kid(f"{self._fix_handle},time,tech,400 year cycle")
         c400_min = c400_idea._close
         return int(min / c400_min), c400_idea, min % c400_min
 
@@ -290,13 +290,13 @@ class DealUnit:
             52596000,
         ):  # 96 year and 100 year spans
             yr4_1461 = self.get_idea_kid(
-                f"{self._cure_handle},time,tech,4year with leap"
+                f"{self._fix_handle},time,tech,4year with leap"
             )
             yr4_cycles = int(cXXXyr_min / yr4_1461._close)
             cXyr_min = cXXXyr_min % yr4_1461._close
             yr1_idea = yr4_1461.get_kids_in_range(begin=cXyr_min, close=cXyr_min)[0]
         elif c100_4_96y._close - c100_4_96y._begin == 2102400:
-            yr4_1460 = self.get_idea_kid(f"{self._cure_handle},time,tech,4year wo leap")
+            yr4_1460 = self.get_idea_kid(f"{self._fix_handle},time,tech,4year wo leap")
             yr4_cycles = 0
             yr1_idea = yr4_1460.get_kids_in_range(begin=cXXXyr_min, close=cXXXyr_min)[0]
             cXyr_min = cXXXyr_min % yr4_1460._close
@@ -312,13 +312,13 @@ class DealUnit:
         year_num, yr1_idea, yr1_idea_rem_min = self.get_time_c400yr_from_min(min=min)
         yrx = None
         if yr1_idea._close - yr1_idea._begin == 525600:
-            yrx = self.get_idea_kid(f"{self._cure_handle},time,tech,365 year")
+            yrx = self.get_idea_kid(f"{self._fix_handle},time,tech,365 year")
         elif yr1_idea._close - yr1_idea._begin == 527040:
-            yrx = self.get_idea_kid(f"{self._cure_handle},time,tech,366 year")
+            yrx = self.get_idea_kid(f"{self._fix_handle},time,tech,366 year")
         mon_x = yrx.get_kids_in_range(begin=yr1_idea_rem_min, close=yr1_idea_rem_min)[0]
         month_rem_min = yr1_idea_rem_min - mon_x._begin
         month_num = int(mon_x._label.split("-")[0])
-        day_x = self.get_idea_kid(f"{self._cure_handle},time,tech,day")
+        day_x = self.get_idea_kid(f"{self._fix_handle},time,tech,day")
         day_num = int(month_rem_min / day_x._close)
         day_rem_min = month_rem_min % day_x._close
         return month_num, day_num, day_rem_min, day_x
@@ -360,8 +360,8 @@ class DealUnit:
                 str_x = f"every day at {convert1440toReadableTime(min1440=open)}"
             else:
                 num_days = int(divisor / 1440)
-                num_with_postfix = get_number_with_postfix(num=num_days)
-                str_x = f"every {num_with_postfix} day at {convert1440toReadableTime(min1440=open)}"
+                num_with_letter_ending = get_number_with_letter_ending(num=num_days)
+                str_x = f"every {num_with_letter_ending} day at {convert1440toReadableTime(min1440=open)}"
         else:
             str_x = "unknown"
 
@@ -369,7 +369,7 @@ class DealUnit:
 
     def _get_jajatime_week_legible_text(self, open: int, divisor: int) -> str:
         open_in_week = open % divisor
-        week_road = f"{self._cure_handle},time,tech,week"
+        week_road = f"{self._fix_handle},time,tech,week"
         weekday_ideas_dict = self.get_idea_ranged_kids(
             idea_road=week_road, begin=open_in_week
         )
@@ -379,8 +379,8 @@ class DealUnit:
 
         if divisor == 10080:
             return f"every {weekday_idea_node._label} at {convert1440toReadableTime(min1440=open % 1440)}"
-        num_with_postfix = get_number_with_postfix(num=divisor // 10080)
-        return f"every {num_with_postfix} {weekday_idea_node._label} at {convert1440toReadableTime(min1440=open % 1440)}"
+        num_with_letter_ending = get_number_with_letter_ending(num=divisor // 10080)
+        return f"every {num_with_letter_ending} {weekday_idea_node._label} at {convert1440toReadableTime(min1440=open % 1440)}"
 
     def get_partys_metrics(self):
         tree_metrics = self.get_tree_metrics()
@@ -726,7 +726,7 @@ class DealUnit:
     def set_time_acptfacts(self, open: datetime = None, nigh: datetime = None) -> None:
         open_minutes = self.get_time_min_from_dt(dt=open) if open != None else None
         nigh_minutes = self.get_time_min_from_dt(dt=nigh) if nigh != None else None
-        minutes_acptfact = f"{self._cure_handle},time,jajatime"
+        minutes_acptfact = f"{self._fix_handle},time,jajatime"
         self.set_acptfact(
             base=minutes_acptfact,
             pick=minutes_acptfact,
@@ -736,7 +736,7 @@ class DealUnit:
 
     def _is_idea_rangeroot(self, idea_road: Road) -> bool:
         anc_roads = get_ancestor_roads(road=idea_road)
-        parent_road = self._cure_handle if len(anc_roads) == 1 else anc_roads[1]
+        parent_road = self._fix_handle if len(anc_roads) == 1 else anc_roads[1]
 
         # figure out if parent is range
         parent_range = None
@@ -1024,8 +1024,8 @@ class DealUnit:
         temp_road = pad_nodes.pop(0)
 
         # idearoot cannot be replaced
-        if temp_road == self._cure_handle and pad_nodes == []:
-            idea_kid.set_pad(parent_road=Road(self._cure_handle))
+        if temp_road == self._fix_handle and pad_nodes == []:
+            idea_kid.set_pad(parent_road=Road(self._fix_handle))
         else:
             road_nodes = [temp_road]
             while pad_nodes != []:
@@ -1179,7 +1179,7 @@ class DealUnit:
             # if root _label is changed
             if pad == "":
                 self._idearoot.set_idea_label(
-                    new_label, deal_cure_handle=self._cure_handle
+                    new_label, deal_fix_handle=self._fix_handle
                 )
                 self._idearoot._pad = pad
             else:
@@ -1237,7 +1237,7 @@ class DealUnit:
             anc_roads
         ) == 1:
             raise InvalidDealException("Root Idea cannot have numor denom reest.")
-        parent_road = self._cure_handle if len(anc_roads) == 1 else anc_roads[1]
+        parent_road = self._fix_handle if len(anc_roads) == 1 else anc_roads[1]
 
         parent_has_range = None
         parent_idea_x = self.get_idea_kid(road=parent_road)
@@ -1966,7 +1966,7 @@ class DealUnit:
             "_originunit": self._originunit.get_dict(),
             "_weight": self._weight,
             "_healer": self._healer,
-            "_cure_handle": self._cure_handle,
+            "_fix_handle": self._fix_handle,
             "_uid": self._idearoot._uid,
             "_begin": self._idearoot._begin,
             "_close": self._idearoot._close,
@@ -1993,7 +1993,7 @@ class DealUnit:
             yb = ideabase_list.pop(0)
             range_source_road_x = None
             if yb.sr != None:
-                range_source_road_x = f"{self._cure_handle},{yb.sr}"
+                range_source_road_x = f"{self._fix_handle},{yb.sr}"
 
             idea_x = IdeaKid(
                 _label=yb.n,
@@ -2007,12 +2007,12 @@ class DealUnit:
                 _reest=yb.mr,
                 _range_source_road=range_source_road_x,
             )
-            road_x = f"{self._cure_handle},{yb.rr}"
+            road_x = f"{self._fix_handle},{yb.rr}"
             self.add_idea(idea_kid=idea_x, pad=road_x)
 
             numeric_road_x = None
             if yb.nr != None:
-                numeric_road_x = f"{self._cure_handle},{yb.nr}"
+                numeric_road_x = f"{self._fix_handle},{yb.nr}"
                 self.edit_idea_attr(
                     road=f"{road_x},{yb.n}", numeric_road=numeric_road_x
                 )
@@ -2232,7 +2232,7 @@ def get_from_json(x_deal_json: str) -> DealUnit:
 
 def get_from_dict(cx_dict: dict) -> DealUnit:
     c_x = DealUnit()
-    c_x.set_cure_handle(cx_dict["_cure_handle"])
+    c_x.set_fix_handle(cx_dict["_fix_handle"])
     c_x._idearoot._requiredunits = requireds_get_from_dict(
         requireds_dict=cx_dict["_requiredunits"]
     )
@@ -2258,7 +2258,7 @@ def get_from_dict(cx_dict: dict) -> DealUnit:
         c_x._auto_output_to_public = False
     c_x._partys = partyunits_get_from_dict(x_dict=cx_dict["_partys"])
     c_x._healer = cx_dict["_healer"]
-    c_x._idearoot.set_idea_label(c_x._cure_handle, c_x._cure_handle)
+    c_x._idearoot.set_idea_label(c_x._fix_handle, c_x._fix_handle)
     c_x._weight = cx_dict["_weight"]
     c_x._max_tree_traverse = cx_dict.get("_max_tree_traverse")
     if cx_dict.get("_max_tree_traverse") is None:

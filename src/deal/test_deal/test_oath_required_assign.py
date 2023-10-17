@@ -13,8 +13,8 @@ def test_deal_edit_idea_attr_CorrectlySetsAssignedUnit():
     healer_text = "Xio"
     x_deal = DealUnit(_healer=healer_text)
     run_text = "run"
-    run_road = f"{x_deal._cure_handle},{run_text}"
-    x_deal.add_idea(IdeaKid(_label=run_text), pad=x_deal._cure_handle)
+    run_road = f"{x_deal._fix_handle},{run_text}"
+    x_deal.add_idea(IdeaKid(_label=run_text), pad=x_deal._fix_handle)
     run_idea = x_deal.get_idea_kid(road=run_road)
     assert run_idea._assignedunit is None
 
@@ -32,7 +32,7 @@ def test_deal_idearoot_assignedunit_CorrectlySets_idea_assignedheir():
 
     healer_text = "Tim"
     x_deal = DealUnit(_healer=healer_text)
-    x_deal.edit_idea_attr(assignedunit=assigned_unit_x, road=x_deal._cure_handle)
+    x_deal.edit_idea_attr(assignedunit=assigned_unit_x, road=x_deal._fix_handle)
     assert x_deal._idearoot._assignedunit == assigned_unit_x
     assert x_deal._idearoot._assignedheir is None
 
@@ -84,7 +84,7 @@ def test_deal_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir():
     healer_text = "Noa"
     x_deal = DealUnit(_healer=healer_text)
     swim_text = "swiming"
-    swim_road = f"{x_deal._cure_handle},{swim_text}"
+    swim_road = f"{x_deal._fix_handle},{swim_text}"
     morn_text = "morning"
     morn_road = f"{swim_road},{morn_text}"
     four_text = "fourth"
@@ -94,7 +94,7 @@ def test_deal_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir():
     assigned_unit_x.set_suffgroup(title=swimmers_text)
 
     x_deal.set_groupunit(groupunit=groupunit_shop(brand=swimmers_text))
-    x_deal.add_idea(IdeaKid(_label=swim_text), pad=x_deal._cure_handle)
+    x_deal.add_idea(IdeaKid(_label=swim_text), pad=x_deal._fix_handle)
     x_deal.add_idea(IdeaKid(_label=morn_text), pad=swim_road)
     x_deal.add_idea(IdeaKid(_label=four_text), pad=morn_road)
     x_deal.edit_idea_attr(road=swim_road, assignedunit=assigned_unit_x)
@@ -125,11 +125,11 @@ def test_DealUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignUni
     x_deal1.add_partyunit(title=zoa_text)
 
     work_text = "work"
-    work_road = f"{x_deal1._cure_handle},{work_text}"
+    work_road = f"{x_deal1._fix_handle},{work_text}"
     swim_text = "swim"
-    swim_road = f"{x_deal1._cure_handle},{swim_text}"
-    x_deal1.add_idea(IdeaKid(_label=work_text), pad=x_deal1._cure_handle)
-    x_deal1.add_idea(IdeaKid(_label=swim_text), pad=x_deal1._cure_handle)
+    swim_road = f"{x_deal1._fix_handle},{swim_text}"
+    x_deal1.add_idea(IdeaKid(_label=work_text), pad=x_deal1._fix_handle)
+    x_deal1.add_idea(IdeaKid(_label=swim_text), pad=x_deal1._fix_handle)
     swim_assignedunit = assigned_unit_shop()
     swim_assignedunit.set_suffgroup(title=xia_text)
     swim_assignedunit.set_suffgroup(title=zoa_text)
@@ -159,11 +159,11 @@ def test_DealUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     x_deal1.add_partyunit(title=zoa_text)
 
     work_text = "work"
-    work_road = f"{x_deal1._cure_handle},{work_text}"
+    work_road = f"{x_deal1._fix_handle},{work_text}"
     swim_text = "swim"
-    swim_road = f"{x_deal1._cure_handle},{swim_text}"
-    x_deal1.add_idea(IdeaKid(_label=work_text), pad=x_deal1._cure_handle)
-    x_deal1.add_idea(IdeaKid(_label=swim_text), pad=x_deal1._cure_handle)
+    swim_road = f"{x_deal1._fix_handle},{swim_text}"
+    x_deal1.add_idea(IdeaKid(_label=work_text), pad=x_deal1._fix_handle)
+    x_deal1.add_idea(IdeaKid(_label=swim_text), pad=x_deal1._fix_handle)
     swim_assignedunit = assigned_unit_shop()
     swim_assignedunit.set_suffgroup(title=xia_text)
     swim_assignedunit.set_suffgroup(title=zoa_text)
@@ -177,7 +177,7 @@ def test_DealUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     x_deal2.add_partyunit(title=xia_text)
     x_deal2.add_idea(
         idea_kid=x_deal1_swim_idea,
-        pad=x_deal2._cure_handle,
+        pad=x_deal2._fix_handle,
         create_missing_ideas_groups=False,
     )
 

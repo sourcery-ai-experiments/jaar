@@ -663,7 +663,7 @@ def _get_time_hreg_hour(local_root: str, multipler: int):
 def get_jajatime_legible_from_dt(dt: datetime) -> str:
     weekday_text = dt.strftime("%A")
     monthtitle_text = dt.strftime("%B")
-    monthday_text = get_number_with_postfix(int(dt.strftime("%d")))
+    monthday_text = get_number_with_letter_ending(int(dt.strftime("%d")))
     year_text = dt.strftime("%Y")
     hour_int = int(dt.strftime("%H"))
     min_int = int(dt.strftime("%M"))
@@ -715,7 +715,7 @@ def get_60min():
     return [""] + [str(x) for x in range(60)]
 
 
-def get_number_with_postfix(num: int) -> str:
+def get_number_with_letter_ending(num: int) -> str:
     tens_digit = num % 100
     singles_digit = num % 10
     if tens_digit in [11, 12, 13] or singles_digit not in [1, 2, 3]:

@@ -70,7 +70,7 @@ def test_example_has_groups():
     idea_dict = cx._idea_dict
 
     # THEN
-    db_idea = idea_dict.get(f"{cx._cure_handle},D&B")
+    db_idea = idea_dict.get(f"{cx._fix_handle},D&B")
     print(f"{db_idea._label=} {db_idea._balancelinks=}")
     assert len(db_idea._balancelinks) == 3
     # for idea_key in idea_dict:
@@ -598,7 +598,7 @@ def test_deal_add_idea_CreatesMissingGroups():
     healer_text = "bob"
     x_deal = DealUnit(_healer=healer_text)
     x_deal.set_groupunits_empty_if_null()
-    new_idea_parent_road = f"{x_deal._cure_handle},work,cleaning"
+    new_idea_parent_road = f"{x_deal._fix_handle},work,cleaning"
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = IdeaKid(_weight=40, _label=clean_cookery_text, promise=True)
 
@@ -631,11 +631,11 @@ def test_DealUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balanceli
     cx1.add_partyunit(title=zoa_text)
 
     work_text = "work"
-    work_road = f"{cx1._cure_handle},{work_text}"
+    work_road = f"{cx1._fix_handle},{work_text}"
     swim_text = "swim"
-    swim_road = f"{cx1._cure_handle},{swim_text}"
-    cx1.add_idea(IdeaKid(_label=work_text), pad=cx1._cure_handle)
-    cx1.add_idea(IdeaKid(_label=swim_text), pad=cx1._cure_handle)
+    swim_road = f"{cx1._fix_handle},{swim_text}"
+    cx1.add_idea(IdeaKid(_label=work_text), pad=cx1._fix_handle)
+    cx1.add_idea(IdeaKid(_label=swim_text), pad=cx1._fix_handle)
     cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=xia_text))
     cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=zoa_text))
     cx1_swim_idea = cx1.get_idea_kid(swim_road)
@@ -661,11 +661,11 @@ def test_DealUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     cx1.add_partyunit(title=zoa_text)
 
     work_text = "work"
-    work_road = f"{cx1._cure_handle},{work_text}"
+    work_road = f"{cx1._fix_handle},{work_text}"
     swim_text = "swim"
-    swim_road = f"{cx1._cure_handle},{swim_text}"
-    cx1.add_idea(IdeaKid(_label=work_text), pad=cx1._cure_handle)
-    cx1.add_idea(IdeaKid(_label=swim_text), pad=cx1._cure_handle)
+    swim_road = f"{cx1._fix_handle},{swim_text}"
+    cx1.add_idea(IdeaKid(_label=work_text), pad=cx1._fix_handle)
+    cx1.add_idea(IdeaKid(_label=swim_text), pad=cx1._fix_handle)
     cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=xia_text))
     cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=zoa_text))
     cx1_swim_idea = cx1.get_idea_kid(swim_road)
@@ -676,7 +676,7 @@ def test_DealUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     cx2.add_partyunit(title=xia_text)
     cx2.add_idea(
         idea_kid=cx1_swim_idea,
-        pad=cx2._cure_handle,
+        pad=cx2._fix_handle,
         create_missing_ideas_groups=False,
     )
 
@@ -691,7 +691,7 @@ def test_deal_add_idea_DoesNotOverwriteGroups():
     healer_text = "bob"
     x_deal = DealUnit(_healer=healer_text)
     x_deal.set_groupunits_empty_if_null()
-    new_idea_parent_road = f"{x_deal._cure_handle},work,cleaning"
+    new_idea_parent_road = f"{x_deal._fix_handle},work,cleaning"
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = IdeaKid(_weight=40, _label=clean_cookery_text, promise=True)
 

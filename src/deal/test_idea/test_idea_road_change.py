@@ -5,7 +5,7 @@ from src.deal.required_idea import (
     Road,
     acptfactunit_shop,
 )
-from src.deal.road import get_default_cure_root_label as root_label
+from src.deal.road import get_default_fix_root_label as root_label
 from pytest import raises as pytest_raises
 
 

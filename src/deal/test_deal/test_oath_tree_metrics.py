@@ -72,15 +72,15 @@ def test_deal_deal_get_tree_metrics_sets_uids_correctly():
     swim_text = "swim"
     pad_text = "pad"
     x_deal.add_idea(
-        idea_kid=IdeaKid(_label=swim_text, _uid=None), pad=x_deal._cure_handle
+        idea_kid=IdeaKid(_label=swim_text, _uid=None), pad=x_deal._fix_handle
     )
-    x_deal.add_idea(idea_kid=IdeaKid(_label=pad_text, _uid=2), pad=x_deal._cure_handle)
-    assert x_deal.get_idea_kid(road=f"{x_deal._cure_handle},{swim_text}")._uid is None
+    x_deal.add_idea(idea_kid=IdeaKid(_label=pad_text, _uid=2), pad=x_deal._fix_handle)
+    assert x_deal.get_idea_kid(road=f"{x_deal._fix_handle},{swim_text}")._uid is None
 
     x_deal.set_all_idea_uids_unique()
 
     # THEN
-    assert x_deal.get_idea_kid(road=f"{x_deal._cure_handle},{swim_text}")._uid != None
+    assert x_deal.get_idea_kid(road=f"{x_deal._fix_handle},{swim_text}")._uid != None
 
 
 def test_deal_get_tree_metrics_ReturnsANoneActionIdeaRoad():
@@ -89,7 +89,7 @@ def test_deal_get_tree_metrics_ReturnsANoneActionIdeaRoad():
     x_deal = DealUnit(_healer=healer_text, _weight=10)
     weekdays = "weekdays"
     idea_kid_weekdays = IdeaKid(_weight=40, _label=weekdays)
-    x_deal.add_idea(idea_kid=idea_kid_weekdays, pad=f"{x_deal._cure_handle}")
+    x_deal.add_idea(idea_kid=idea_kid_weekdays, pad=f"{x_deal._fix_handle}")
     tree_metrics_before = x_deal.get_tree_metrics()
     # WHEN/THEN
     assert tree_metrics_before.an_promise_idea_road is None
@@ -102,5 +102,5 @@ def test_deal_get_tree_metrics_ReturnsAnActionIdeaRoad():
     # WHEN/THEN
     assert (
         tree_metrics_before.an_promise_idea_road
-        == f"{x_deal._cure_handle},ACME,ACME Employee Responsiblities,Know Abuse Prevention and Reporting guildlines,Take Fall 2021 training"
+        == f"{x_deal._fix_handle},ACME,ACME Employee Responsiblities,Know Abuse Prevention and Reporting guildlines,Take Fall 2021 training"
     )

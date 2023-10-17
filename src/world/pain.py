@@ -1,11 +1,11 @@
 from dataclasses import dataclass
-from src.cure.cure import CureHandle
+from src.fix.fix import FixHandle
 from src.deal.deal import PersonName
 
 
 @dataclass
-class CureLink:
-    handle: CureHandle
+class FixLink:
+    handle: FixHandle
     weight: float
     _relative_weight: float = None
     _person_importance: float = None
@@ -20,10 +20,10 @@ class CureLink:
         return {"handle": self.handle, "weight": self.weight}
 
 
-def curelink_shop(handle: CureHandle, weight: float = None) -> CureLink:
+def fixlink_shop(handle: FixHandle, weight: float = None) -> FixLink:
     if weight is None:
         weight = 1
-    return CureLink(handle=handle, weight=weight)
+    return FixLink(handle=handle, weight=weight)
 
 
 @dataclass
@@ -31,18 +31,18 @@ class HealerLink:
     person_name: PersonName
     weight: float
     in_tribe: bool
-    _curelinks: dict[CureHandle:CureLink] = None
+    _fixlinks: dict[FixHandle:FixLink] = None
     _relative_weight: float = None
     _person_importance: float = None
 
-    def set_curelinks_weight_metrics(self):
-        total_curelinks_weight = sum(
-            x_curelink.weight for x_curelink in self._curelinks.values()
+    def set_fixlinks_weight_metrics(self):
+        total_fixlinks_weight = sum(
+            x_fixlink.weight for x_fixlink in self._fixlinks.values()
         )
-        for x_curelink in self._curelinks.values():
-            x_curelink.set_relative_weight(x_curelink.weight / total_curelinks_weight)
-            x_curelink.set_person_importance(
-                x_curelink._relative_weight * self._person_importance
+        for x_fixlink in self._fixlinks.values():
+            x_fixlink.set_relative_weight(x_fixlink.weight / total_fixlinks_weight)
+            x_fixlink.set_person_importance(
+                x_fixlink._relative_weight * self._person_importance
             )
 
     def set_relative_weight(self, relative_weight: float):
@@ -50,32 +50,32 @@ class HealerLink:
 
     def set_person_importance(self, person_importance: float):
         self._person_importance = person_importance
-        self.set_curelinks_weight_metrics()
+        self.set_fixlinks_weight_metrics()
 
-    def set_curelinks_empty_if_none(self):
-        if self._curelinks is None:
-            self._curelinks = {}
+    def set_fixlinks_empty_if_none(self):
+        if self._fixlinks is None:
+            self._fixlinks = {}
 
-    def set_curelink(self, curelink: CureLink):
-        self._curelinks[curelink.handle] = curelink
+    def set_fixlink(self, fixlink: FixLink):
+        self._fixlinks[fixlink.handle] = fixlink
 
-    def get_curelink(self, curehandle: CureHandle) -> CureLink:
-        return self._curelinks.get(curehandle)
+    def get_fixlink(self, fixhandle: FixHandle) -> FixLink:
+        return self._fixlinks.get(fixhandle)
 
-    def del_curelink(self, curehandle: CureHandle):
-        self._curelinks.pop(curehandle)
+    def del_fixlink(self, fixhandle: FixHandle):
+        self._fixlinks.pop(fixhandle)
 
-    def get_curelinks_dict(self) -> dict:
+    def get_fixlinks_dict(self) -> dict:
         return {
-            curelink_x.handle: curelink_x.get_dict()
-            for curelink_x in self._curelinks.values()
+            fixlink_x.handle: fixlink_x.get_dict()
+            for fixlink_x in self._fixlinks.values()
         }
 
     def get_dict(self):
         return {
             "person_name": self.person_name,
             "weight": self.weight,
-            "_curelinks": self.get_curelinks_dict(),
+            "_fixlinks": self.get_fixlinks_dict(),
         }
 
 
@@ -85,7 +85,7 @@ def healerlink_shop(
     if weight is None:
         weight = 1
     x_healer = HealerLink(person_name=person_name, weight=weight, in_tribe=in_tribe)
-    x_healer.set_curelinks_empty_if_none()
+    x_healer.set_fixlinks_empty_if_none()
     return x_healer
 
 

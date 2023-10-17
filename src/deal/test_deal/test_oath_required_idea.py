@@ -12,9 +12,9 @@ from src.deal.x_func import from_list_get_active_status
 def test_deal_requiredunits_create():
     x_deal = example_deals_get_deal_with_4_levels()
     work_text = "work"
-    work_road = f"{x_deal._cure_handle},{work_text}"
+    work_road = f"{x_deal._fix_handle},{work_text}"
     weekday_text = "weekdays"
-    weekday_road = f"{x_deal._cure_handle},{weekday_text}"
+    weekday_road = f"{x_deal._fix_handle},{weekday_text}"
     wed_text = "Wednesday"
     wed_road = f"{weekday_road},{wed_text}"
 
@@ -35,9 +35,9 @@ def test_deal_requiredunits_create():
 def test_deal_set_requiredunits_status():
     x_deal = example_deals_get_deal_with_4_levels()
     work_text = "work"
-    work_road = f"{x_deal._cure_handle},{work_text}"
+    work_road = f"{x_deal._fix_handle},{work_text}"
     weekday_text = "weekdays"
-    weekday_road = f"{x_deal._cure_handle},{weekday_text}"
+    weekday_road = f"{x_deal._fix_handle},{weekday_text}"
     wed_text = "Wednesday"
     wed_road = f"{weekday_road},{wed_text}"
 
@@ -68,9 +68,9 @@ def test_deal_requiredheirs_AreCorrectlyInherited_v1():
     # GIVEN
     x_deal = example_deals_get_deal_with_4_levels()
     work_text = "work"
-    work_road = f"{x_deal._cure_handle},{work_text}"
+    work_road = f"{x_deal._fix_handle},{work_text}"
     week_label = "weekdays"
-    week_road = f"{x_deal._cure_handle},{week_label}"
+    week_road = f"{x_deal._fix_handle},{week_label}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
 
@@ -124,9 +124,9 @@ def test_deal_requiredheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
     # GIVEN
     a4_deal = example_deals_get_deal_with_4_levels()
     work_text = "work"
-    work_road = f"{a4_deal._cure_handle},{work_text}"
+    work_road = f"{a4_deal._fix_handle},{work_text}"
     week_text = "weekdays"
-    week_road = f"{a4_deal._cure_handle},{week_text}"
+    week_road = f"{a4_deal._fix_handle},{week_text}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
 
@@ -192,9 +192,9 @@ def test_deal_requiredheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
 def test_deal_requiredheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     a4_deal = example_deals_get_deal_with_4_levels()
     work_text = "work"
-    work_road = f"{a4_deal._cure_handle},{work_text}"
+    work_road = f"{a4_deal._fix_handle},{work_text}"
     week_label = "weekdays"
-    week_road = f"{a4_deal._cure_handle},{week_label}"
+    week_road = f"{a4_deal._fix_handle},{week_label}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
 
@@ -266,9 +266,9 @@ def test_deal_requiredunits_set_UnCoupledMethod():
     # Given
     x_deal = example_deals_get_deal_with_4_levels()
     work_text = "work"
-    work_road = f"{x_deal._cure_handle},{work_text}"
+    work_road = f"{x_deal._fix_handle},{work_text}"
     week_text = "weekdays"
-    week_road = f"{x_deal._cure_handle},{week_text}"
+    week_road = f"{x_deal._fix_handle},{week_text}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
 
@@ -340,14 +340,14 @@ def test_deal_requiredunits_set_sufffactIdeaWithDenomSetsSuffFactDivision():
     # Given
     x_deal = example_deals_get_deal_with_4_levels()
     work_text = "work"
-    work_road = f"{x_deal._cure_handle},{work_text}"
+    work_road = f"{x_deal._fix_handle},{work_text}"
     time_text = "time"
-    time_road = f"{x_deal._cure_handle},{time_text}"
+    time_road = f"{x_deal._fix_handle},{time_text}"
     week_text = "week"
-    week_road = f"{x_deal._cure_handle},{time_text},{week_text}"
+    week_road = f"{x_deal._fix_handle},{time_text},{week_text}"
     x_deal.add_idea(
         idea_kid=IdeaKid(_label=time_text, _begin=100, _close=2000),
-        pad=x_deal._cure_handle,
+        pad=x_deal._fix_handle,
     )
     x_deal.add_idea(idea_kid=IdeaKid(_label=week_text, _denom=7), pad=time_road)
 
@@ -373,13 +373,13 @@ def test_deal_requiredunits_set_sufffactIdeaWithBeginCloseSetsSuffFactOpenNigh()
     # Given
     x_deal = example_deals_get_deal_with_4_levels()
     work = "work"
-    work_road = f"{x_deal._cure_handle},{work}"
+    work_road = f"{x_deal._fix_handle},{work}"
     time = "time"
-    time_road = f"{x_deal._cure_handle},{time}"
+    time_road = f"{x_deal._fix_handle},{time}"
     rus_war = "rus_war"
-    rus_war_road = f"{x_deal._cure_handle},{time},{rus_war}"
+    rus_war_road = f"{x_deal._fix_handle},{time},{rus_war}"
     x_deal.add_idea(
-        idea_kid=IdeaKid(_label=time, _begin=100, _close=2000), pad=x_deal._cure_handle
+        idea_kid=IdeaKid(_label=time, _begin=100, _close=2000), pad=x_deal._fix_handle
     )
     x_deal.add_idea(
         idea_kid=IdeaKid(_label=rus_war, _begin=22, _close=34), pad=time_road
@@ -406,14 +406,14 @@ def test_deal_requiredunits_set_sufffactIdeaWithBeginCloseSetsSuffFactOpenNigh()
 def test_deal_requiredunits_del_required_sufffact_UncoupledMethod1():
     # Given
     x_deal = example_deals_get_deal_with_4_levels()
-    work_road = f"{x_deal._cure_handle},work"
-    weekday_road = f"{x_deal._cure_handle},weekdays"
-    wed_road = f"{x_deal._cure_handle},weekdays,Wednesday"
+    work_road = f"{x_deal._fix_handle},work"
+    weekday_road = f"{x_deal._fix_handle},weekdays"
+    wed_road = f"{x_deal._fix_handle},weekdays,Wednesday"
 
     x_deal.edit_idea_attr(
         road=work_road, required_base=weekday_road, required_sufffact=wed_road
     )
-    thu_road = f"{x_deal._cure_handle},weekdays,Thursday"
+    thu_road = f"{x_deal._fix_handle},weekdays,Thursday"
     x_deal.edit_idea_attr(
         road=work_road,
         required_base=weekday_road,
@@ -449,8 +449,8 @@ def test_deal_requiredunits_del_required_sufffact_UncoupledMethod1():
 def test_deal_requiredunits_del_required_sufffact_UncoupledMethod2():
     # Given
     x_deal = example_deals_get_deal_with_4_levels()
-    work_road = f"{x_deal._cure_handle},work"
-    weekdays_road = f"{x_deal._cure_handle},weekdays"
+    work_road = f"{x_deal._fix_handle},work"
+    weekdays_road = f"{x_deal._fix_handle},weekdays"
     work_idea1 = x_deal.get_idea_kid(road=work_road)
     work_idea1.set_requiredunits_empty_if_null()
     assert len(work_idea1._requiredunits) == 0
@@ -467,11 +467,11 @@ def test_deal_edit_idea_attr_dealIsAbleToEdit_suff_idea_active_status_AnyIdeaIfI
     # GIVEN
     x_deal = example_deals_get_deal_with_4_levels()
     work_text = "work"
-    work_road = f"{x_deal._cure_handle},{work_text}"
+    work_road = f"{x_deal._fix_handle},{work_text}"
 
     commute_text = "commute to work"
-    commute_road = f"{x_deal._cure_handle},{commute_text}"
-    x_deal.add_idea(idea_kid=IdeaKid(_label=commute_text), pad=x_deal._cure_handle)
+    commute_road = f"{x_deal._fix_handle},{commute_text}"
+    x_deal.add_idea(idea_kid=IdeaKid(_label=commute_text), pad=x_deal._fix_handle)
     x_deal.get_idea_list()  # set tree metrics
     commute_idea = x_deal.get_idea_kid(road=commute_road)
     assert len(commute_idea._requiredunits) == 0
@@ -526,9 +526,9 @@ def test_deal_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus():
     # 3. idea(...,weekdays,thursday) exists
     x_deal = example_deals_get_deal_with_4_levels()
     work_text = "work"
-    work_road = f"{x_deal._cure_handle},{work_text}"
+    work_road = f"{x_deal._fix_handle},{work_text}"
     weekdays_text = "weekdays"
-    weekdays_road = f"{x_deal._cure_handle},{weekdays_text}"
+    weekdays_road = f"{x_deal._fix_handle},{weekdays_text}"
     wed_text = "Wednesday"
     wed_road = f"{weekdays_road},{wed_text}"
     thu_text = "Thursday"
@@ -550,8 +550,8 @@ def test_deal_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus():
     # 5.1. RequiredUnit: idea(base=...,work) has .suff_idea_active_status = True
     # 5.2. idea(...,work).active_status = False
     commute_text = "commute to work"
-    commute_road = f"{x_deal._cure_handle},{commute_text}"
-    x_deal.add_idea(idea_kid=IdeaKid(_label=commute_text), pad=x_deal._cure_handle)
+    commute_road = f"{x_deal._fix_handle},{commute_text}"
+    x_deal.add_idea(idea_kid=IdeaKid(_label=commute_text), pad=x_deal._fix_handle)
     x_deal.edit_idea_attr(
         road=commute_road,
         required_base=work_road,

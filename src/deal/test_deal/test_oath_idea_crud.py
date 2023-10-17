@@ -75,7 +75,7 @@ def test_deal_add_idea_CanAddKidToKidIdea():
     assert x_deal.get_node_count() == 17
     assert x_deal.get_level_count(level=2) == 10
 
-    new_idea_parent_road = f"{x_deal._cure_handle},work"
+    new_idea_parent_road = f"{x_deal._fix_handle},work"
     new_idea = IdeaKid(_weight=40, _label="new_york")
 
     # WHEN
@@ -90,7 +90,7 @@ def test_deal_add_idea_CanAddKidToKidIdea():
     assert x_deal.get_level_count(level=2) == 11
     assert (
         x_deal._idearoot._kids["work"]._kids["new_york"]._pad
-        == f"{x_deal._cure_handle},work"
+        == f"{x_deal._fix_handle},work"
     )
     x_deal._idearoot._kids["work"]._kids["new_york"].set_pad(parent_road="testing")
     assert x_deal._idearoot._kids["work"]._kids["new_york"]._pad == "testing"
@@ -104,7 +104,7 @@ def test_deal_add_idea_CanAddKidToGrandkidIdea():
 
     assert x_deal.get_node_count() == 17
     assert x_deal.get_level_count(level=3) == 2
-    new_idea_parent_road = f"{x_deal._cure_handle},weekdays,Wednesday"
+    new_idea_parent_road = f"{x_deal._fix_handle},weekdays,Wednesday"
     new_idea = IdeaKid(_weight=40, _label="new_idea")
 
     # WHEN
@@ -126,7 +126,7 @@ def test_deal_add_idea_CanCreateRoadToGrandkidIdea():
 
     assert x_deal.get_node_count() == 17
     assert x_deal.get_level_count(level=3) == 2
-    new_idea_parent_road = f"{x_deal._cure_handle},ww2,battles,coralsea"
+    new_idea_parent_road = f"{x_deal._fix_handle},ww2,battles,coralsea"
     new_idea = IdeaKid(_weight=40, _label="USS Saratoga")
 
     # WHEN
@@ -149,15 +149,15 @@ def test_deal_add_idea_creates_requireds_ideas():
 
     assert x_deal.get_node_count() == 17
     assert x_deal.get_level_count(level=3) == 2
-    new_idea_parent_road = f"{x_deal._cure_handle},work,cleaning"
+    new_idea_parent_road = f"{x_deal._fix_handle},work,cleaning"
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = IdeaKid(_weight=40, _label=clean_cookery_text, promise=True)
 
     buildings_text = "buildings"
-    buildings_road = Road(f"{x_deal._cure_handle},{buildings_text}")
+    buildings_road = Road(f"{x_deal._fix_handle},{buildings_text}")
     cookery_room_text = "cookery"
     cookery_room_road = Road(
-        f"{x_deal._cure_handle},{buildings_text},{cookery_room_text}"
+        f"{x_deal._fix_handle},{buildings_text},{cookery_room_text}"
     )
     cookery_dirty_text = "dirty"
     cookery_dirty_road = Road(f"{cookery_room_road},{cookery_dirty_text}")
@@ -191,7 +191,7 @@ def test_deal_idearoot_is_heir_CorrectlyChecksLineage():
     x_deal.set_deal_metrics()
 
     week_text = "weekdays"
-    week_road = f"{x_deal._cure_handle},{week_text}"
+    week_road = f"{x_deal._fix_handle},{week_text}"
     sun_text = "Sunday"
     sun_road = f"{week_road},{sun_text}"
     assert x_deal._idearoot.is_heir(src=week_road, heir=week_road)
@@ -202,7 +202,7 @@ def test_deal_idearoot_is_heir_CorrectlyChecksLineage():
 def test_deal_del_idea_kid_Level0CannotBeDeleted():
     # GIVEN
     x_deal = get_deal_with_4_levels()
-    root_road = f"{x_deal._cure_handle}"
+    root_road = f"{x_deal._fix_handle}"
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -214,7 +214,7 @@ def test_deal_del_idea_kid_Level1CanBeDeleted_ChildrenDeleted():
     # GIVEN
     x_deal = get_deal_with_4_levels()
     week_text = "weekdays"
-    week_road = f"{x_deal._cure_handle},{week_text}"
+    week_road = f"{x_deal._fix_handle},{week_text}"
     sun_text = "Sunday"
     sun_road = f"{week_road},{sun_text}"
     assert x_deal.get_idea_kid(road=week_road)
@@ -230,7 +230,7 @@ def test_deal_del_idea_kid_Level1CanBeDeleted_ChildrenDeleted():
         str(excinfo.value)
         == f"Getting idea_label='weekdays' failed no item at '{week_road}'"
     )
-    new_sunday_road = f"{x_deal._cure_handle},Sunday"
+    new_sunday_road = f"{x_deal._fix_handle},Sunday"
     with pytest_raises(Exception) as excinfo:
         x_deal.get_idea_kid(road=new_sunday_road)
     assert (
@@ -244,7 +244,7 @@ def test_deal_del_idea_kid_Level1CanBeDeleted_ChildrenInherited():
     x_deal = get_deal_with_4_levels()
     x_deal.set_deal_metrics()
     week_text = "weekdays"
-    week_road = f"{x_deal._cure_handle},{week_text}"
+    week_road = f"{x_deal._fix_handle},{week_text}"
     sun_text = "Sunday"
     old_sunday_road = f"{week_road},{sun_text}"
     assert x_deal.get_idea_kid(road=old_sunday_road)
@@ -259,17 +259,17 @@ def test_deal_del_idea_kid_Level1CanBeDeleted_ChildrenInherited():
         str(excinfo.value)
         == f"Getting idea_label='{sun_text}' failed no item at '{old_sunday_road}'"
     )
-    new_sunday_road = f"{x_deal._cure_handle},{sun_text}"
+    new_sunday_road = f"{x_deal._fix_handle},{sun_text}"
     assert x_deal.get_idea_kid(road=new_sunday_road)
     new_sunday_idea = x_deal.get_idea_kid(road=new_sunday_road)
-    assert new_sunday_idea._pad == x_deal._cure_handle
+    assert new_sunday_idea._pad == x_deal._fix_handle
 
 
 def test_deal_del_idea_kid_LevelNCanBeDeleted_ChildrenInherited():
     # GIVEN
     x_deal = get_deal_with_4_levels()
     states_text = "nation-state"
-    states_road = f"{x_deal._cure_handle},{states_text}"
+    states_road = f"{x_deal._fix_handle},{states_text}"
     usa_text = "USA"
     usa_road = f"{states_road},{usa_text}"
     texas_text = "Texas"
@@ -300,7 +300,7 @@ def test_deal_del_idea_kid_LevelNCanBeDeleted_ChildrenInherited():
 def test_deal_del_idea_kid_Level2CanBeDeleted_ChildrenDeleted():
     # GIVEN
     x_deal = get_deal_with_4_levels()
-    monday_road = f"{x_deal._cure_handle},weekdays,Monday"
+    monday_road = f"{x_deal._fix_handle},weekdays,Monday"
     assert x_deal.get_idea_kid(road=monday_road)
 
     # WHEN
@@ -319,7 +319,7 @@ def test_deal_del_idea_kid_LevelNCanBeDeleted_ChildrenDeleted():
     # GIVEN
     x_deal = get_deal_with_4_levels()
     states_text = "nation-state"
-    states_road = f"{x_deal._cure_handle},{states_text}"
+    states_road = f"{x_deal._fix_handle},{states_text}"
     usa_text = "USA"
     usa_road = f"{states_road},{usa_text}"
     texas_text = "Texas"
@@ -341,7 +341,7 @@ def test_deal_del_idea_kid_LevelNCanBeDeleted_ChildrenDeleted():
 def test_deal_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     x_deal = get_deal_with_4_levels()
     work_text = "work"
-    work_road = f"{x_deal._cure_handle},{work_text}"
+    work_road = f"{x_deal._fix_handle},{work_text}"
     print(f"{work_road=}")
     current_weight = x_deal._idearoot._kids[work_text]._weight
     assert current_weight == 30
@@ -372,7 +372,7 @@ def test_deal_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     # acptfactunit: acptfactunit_shop = None,
     # x_deal._idearoot._kids[work_text]._acptfactunits = None
     assert x_deal._idearoot._kids[work_text]._acptfactunits is None
-    acptfact_road = f"{x_deal._cure_handle},weekdays,Sunday"
+    acptfact_road = f"{x_deal._fix_handle},weekdays,Sunday"
     acptfactunit_x = acptfactunit_shop(base=acptfact_road, pick=acptfact_road)
 
     work_acptfactunits = x_deal._idearoot._kids[work_text]._acptfactunits
@@ -459,7 +459,7 @@ def test_deal_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
 
 def test_deal_edit_idea_attr_dealIsAbleToEdit_on_meld_weight_action_AnyIdeaIfInvaildThrowsError():
     x_deal = get_deal_with_4_levels()
-    work_road = f"{x_deal._cure_handle},work"
+    work_road = f"{x_deal._fix_handle},work"
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -479,9 +479,9 @@ def test_deal_edit_idea_attr_dealIsAbleToEditDenomAnyIdeaIfInvaildDenomThrowsErr
     assert str(excinfo.value) == "Root Idea cannot have numor denom reest."
 
     work = "work"
-    w_road = f"{x_deal._cure_handle},{work}"
+    w_road = f"{x_deal._fix_handle},{work}"
     work_idea = IdeaKid(_label=work)
-    x_deal.add_idea(work_idea, pad=x_deal._cure_handle)
+    x_deal.add_idea(work_idea, pad=x_deal._fix_handle)
     clean = "clean"
     clean_idea = IdeaKid(_label=clean)
     c_road = f"{w_road},{clean}"
@@ -492,7 +492,7 @@ def test_deal_edit_idea_attr_dealIsAbleToEditDenomAnyIdeaIfInvaildDenomThrowsErr
         x_deal.edit_idea_attr(road=c_road, denom=46)
     assert (
         str(excinfo.value)
-        == f"Idea cannot edit numor=1/denom/reest of '{x_deal._cure_handle},work,clean' if parent '{x_deal._cure_handle},work' or ideacore._numeric_road does not have begin/close range"
+        == f"Idea cannot edit numor=1/denom/reest of '{x_deal._fix_handle},work,clean' if parent '{x_deal._fix_handle},work' or ideacore._numeric_road does not have begin/close range"
     )
 
     # GIVEN
@@ -508,9 +508,9 @@ def test_deal_edit_idea_attr_dealIsAbleToEditDenomAnyIdeaInvaildDenomThrowsError
     healer_text = "Yao"
     x_deal = DealUnit(_healer=healer_text)
     work = "work"
-    w_road = f"{x_deal._cure_handle},{work}"
+    w_road = f"{x_deal._fix_handle},{work}"
     work_idea = IdeaKid(_label=work, _begin=8, _close=14)
-    x_deal.add_idea(work_idea, pad=x_deal._cure_handle)
+    x_deal.add_idea(work_idea, pad=x_deal._fix_handle)
 
     clean = "clean"
     clean_idea = IdeaKid(_label=clean, _denom=1)
@@ -521,8 +521,8 @@ def test_deal_edit_idea_attr_dealIsAbleToEditDenomAnyIdeaInvaildDenomThrowsError
 
     day = "day_range"
     day_idea = IdeaKid(_label=day, _begin=44, _close=110)
-    day_road = f"{x_deal._cure_handle},{day}"
-    x_deal.add_idea(day_idea, pad=x_deal._cure_handle)
+    day_road = f"{x_deal._fix_handle},{day}"
+    x_deal.add_idea(day_idea, pad=x_deal._fix_handle)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -540,12 +540,12 @@ def test_deal_edit_idea_attr_dealWhenParentAndNumeric_roadBothHaveRangeThrowErro
     healer_text = "Yao"
     x_deal = DealUnit(_healer=healer_text)
     work_text = "work"
-    work_road = f"{x_deal._cure_handle},{work_text}"
-    x_deal.add_idea(IdeaKid(_label=work_text), pad=x_deal._cure_handle)
+    work_road = f"{x_deal._fix_handle},{work_text}"
+    x_deal.add_idea(IdeaKid(_label=work_text), pad=x_deal._fix_handle)
     day_text = "day_range"
     day_idea = IdeaKid(_label=day_text, _begin=44, _close=110)
-    day_road = f"{x_deal._cure_handle},{day_text}"
-    x_deal.add_idea(day_idea, pad=x_deal._cure_handle)
+    day_road = f"{x_deal._fix_handle},{day_text}"
+    x_deal.add_idea(day_idea, pad=x_deal._fix_handle)
 
     work_idea = x_deal.get_idea_kid(road=work_road)
     assert work_idea._begin is None
@@ -556,7 +556,7 @@ def test_deal_edit_idea_attr_dealWhenParentAndNumeric_roadBothHaveRangeThrowErro
         x_deal.edit_idea_attr(road=work_road, denom=11)
     assert (
         str(excinfo.value)
-        == f"Idea cannot edit numor=1/denom/reest of '{x_deal._cure_handle},work' if parent '{x_deal._cure_handle}' or ideacore._numeric_road does not have begin/close range"
+        == f"Idea cannot edit numor=1/denom/reest of '{x_deal._fix_handle},work' if parent '{x_deal._fix_handle}' or ideacore._numeric_road does not have begin/close range"
     )
 
     # WHEN
@@ -584,9 +584,9 @@ def test_deal_add_idea_MustReorderKidsDictToBeAlphabetical():
     healer_text = "Noa"
     x_deal = DealUnit(_healer=healer_text)
     work_text = "work"
-    x_deal.add_idea(IdeaKid(_label=work_text), pad=x_deal._cure_handle)
+    x_deal.add_idea(IdeaKid(_label=work_text), pad=x_deal._fix_handle)
     swim_text = "swim"
-    x_deal.add_idea(IdeaKid(_label=swim_text), pad=x_deal._cure_handle)
+    x_deal.add_idea(IdeaKid(_label=swim_text), pad=x_deal._fix_handle)
 
     # WHEN
     idea_list = list(x_deal._idearoot._kids.values())
@@ -599,8 +599,8 @@ def test_deal_add_idea_adoptee_RaisesErrorIfAdopteeIdeaDoesNotHaveCorrectParent(
     healer_text = "Noa"
     x_deal = DealUnit(_healer=healer_text)
     sports_text = "sports"
-    sports_road = f"{x_deal._cure_handle},{sports_text}"
-    x_deal.add_idea(IdeaKid(_label=sports_text), pad=x_deal._cure_handle)
+    sports_road = f"{x_deal._fix_handle},{sports_text}"
+    x_deal.add_idea(IdeaKid(_label=sports_text), pad=x_deal._fix_handle)
     swim_text = "swim"
     x_deal.add_idea(IdeaKid(_label=swim_text), pad=sports_road)
 
@@ -624,8 +624,8 @@ def test_deal_add_idea_adoptee_CorrectlyAddsAdoptee():
     healer_text = "Noa"
     x_deal = DealUnit(_healer=healer_text)
     sports_text = "sports"
-    sports_road = f"{x_deal._cure_handle},{sports_text}"
-    x_deal.add_idea(IdeaKid(_label=sports_text), pad=x_deal._cure_handle)
+    sports_road = f"{x_deal._fix_handle},{sports_text}"
+    x_deal.add_idea(IdeaKid(_label=sports_text), pad=x_deal._fix_handle)
     swim_text = "swim"
     x_deal.add_idea(IdeaKid(_label=swim_text), pad=sports_road)
     hike_text = "hike"
@@ -664,8 +664,8 @@ def test_deal_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdoptedIdeas(
     healer_text = "Noa"
     x_deal = DealUnit(_healer=healer_text)
     sports_text = "sports"
-    sports_road = f"{x_deal._cure_handle},{sports_text}"
-    x_deal.add_idea(IdeaKid(_label=sports_text, _weight=2), pad=x_deal._cure_handle)
+    sports_road = f"{x_deal._fix_handle},{sports_text}"
+    x_deal.add_idea(IdeaKid(_label=sports_text, _weight=2), pad=x_deal._fix_handle)
     swim_text = "swim"
     swim_weight = 3
     x_deal.add_idea(IdeaKid(_label=swim_text, _weight=swim_weight), pad=sports_road)
@@ -715,8 +715,8 @@ def test_deal_del_idea_kid_DeletingBundledIdeaReturnsIdeasToOriginalState():
     healer_text = "Noa"
     x_deal = DealUnit(_healer=healer_text)
     sports_text = "sports"
-    sports_road = f"{x_deal._cure_handle},{sports_text}"
-    x_deal.add_idea(IdeaKid(_label=sports_text, _weight=2), pad=x_deal._cure_handle)
+    sports_road = f"{x_deal._fix_handle},{sports_text}"
+    x_deal.add_idea(IdeaKid(_label=sports_text, _weight=2), pad=x_deal._fix_handle)
     swim_text = "swim"
     swim_weight = 3
     x_deal.add_idea(IdeaKid(_label=swim_text, _weight=swim_weight), pad=sports_road)

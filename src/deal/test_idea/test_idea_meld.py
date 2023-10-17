@@ -5,7 +5,7 @@ from src.deal.required_idea import (
     acptfactunit_shop as c_acptfactunit,
     Road,
 )
-from src.deal.road import get_default_cure_root_label as root_label
+from src.deal.road import get_default_fix_root_label as root_label
 from src.deal.origin import originunit_shop
 from pytest import raises as pytest_raises
 from copy import deepcopy

@@ -34,7 +34,7 @@ def test_deal_get_idea_list_SetsSatiateStatusCorrectlyWhenAcptFactSaysNo():
     # GIVEN
     x_deal = get_deal_with_4_levels_and_2requireds()
     week_text = "weekdays"
-    week_road = f"{x_deal._cure_handle},{week_text}"
+    week_road = f"{x_deal._fix_handle},{week_text}"
     sun_text = "Sunday"
     sun_road = f"{week_road},{sun_text}"
 
@@ -49,7 +49,7 @@ def test_deal_get_idea_list_SetsSatiateStatusCorrectlyWhenAcptFactSaysNo():
     # for idea in x_deal._idea_dict.values():
     #     print(f"{work_road=} {idea.get_road()=}")
     work_text = "work"
-    work_road = f"{x_deal._cure_handle},{work_text}"
+    work_road = f"{x_deal._fix_handle},{work_text}"
     assert x_deal._idea_dict.get(work_road)._active_status == False
 
 
@@ -57,11 +57,11 @@ def test_deal_get_idea_list_SetsSatiateStatusCorrectlyWhenAcptFactChanges():
     # GIVEN
     x_deal = get_deal_with_4_levels_and_2requireds()
     week_text = "weekdays"
-    week_road = f"{x_deal._cure_handle},{week_text}"
+    week_road = f"{x_deal._fix_handle},{week_text}"
     sun_text = "Wednesday"
     sun_road = f"{week_road},{sun_text}"
     work_text = "work"
-    work_road = f"{x_deal._cure_handle},{work_text}"
+    work_road = f"{x_deal._fix_handle},{work_text}"
 
     # WHEN
     x_deal.set_acptfact(base=week_road, pick=sun_road)
@@ -74,7 +74,7 @@ def test_deal_get_idea_list_SetsSatiateStatusCorrectlyWhenAcptFactChanges():
 
     # WHEN
     states_text = "nation-state"
-    states_road = f"{x_deal._cure_handle},{states_text}"
+    states_road = f"{x_deal._fix_handle},{states_text}"
     usa_text = "USA"
     usa_road = f"{states_road},{usa_text}"
     x_deal.set_acptfact(base=states_road, pick=usa_road)
@@ -101,18 +101,18 @@ def test_deal_get_idea_list_returns_correct_list():
     # GIVEN
     x_deal = get_deal_with_4_levels_and_2requireds()
     week_text = "weekdays"
-    week_road = f"{x_deal._cure_handle},{week_text}"
+    week_road = f"{x_deal._fix_handle},{week_text}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
     state_text = "nation-state"
-    state_road = f"{x_deal._cure_handle},{state_text}"
+    state_road = f"{x_deal._fix_handle},{state_text}"
     france_text = "France"
     france_road = f"{state_road},{france_text}"
     x_deal.set_acptfact(base=week_road, pick=wed_road)
     x_deal.set_acptfact(base=state_road, pick=france_road)
 
     work_text = "work"
-    work_road = f"{x_deal._cure_handle},{work_text}"
+    work_road = f"{x_deal._fix_handle},{work_text}"
     work_idea = x_deal.get_idea_kid(work_road)
     print(f"{x_deal._healer=} {len(work_idea._requiredunits)=}")
     # print(f"{work_idea._requiredunits=}")
@@ -167,7 +167,7 @@ def test_deal_get_idea_list_returns_correct_list():
     # THEN
     work_idea = x_deal._idea_dict.get(work_road)
     print(f"\nlook at {work_idea.get_road()=}")
-    assert work_idea._pad == f"{x_deal._cure_handle}"
+    assert work_idea._pad == f"{x_deal._fix_handle}"
     assert work_idea._kids == {}
     assert work_idea._weight == 30
     assert work_idea._label == work_text
@@ -265,12 +265,12 @@ def test_deal_get_idea_list_CorrectlyCalculatesIdeaAttr_deal_coin():
 
     auto_text = "auto"
     auto_idea = IdeaKid(_label=auto_text, _weight=10)
-    x_deal.add_idea(idea_kid=auto_idea, pad=x_deal._cure_handle)
+    x_deal.add_idea(idea_kid=auto_idea, pad=x_deal._fix_handle)
 
     barn_text = "barn"
-    barn_road = f"{x_deal._cure_handle},{barn_text}"
+    barn_road = f"{x_deal._fix_handle},{barn_text}"
     barn_idea = IdeaKid(_label=barn_text, _weight=60)
-    x_deal.add_idea(idea_kid=barn_idea, pad=x_deal._cure_handle)
+    x_deal.add_idea(idea_kid=barn_idea, pad=x_deal._fix_handle)
     lamb_text = "lambs"
     lamb_road = f"{barn_road},{lamb_text}"
     lamb_idea = IdeaKid(_label=lamb_text, _weight=1)
@@ -282,7 +282,7 @@ def test_deal_get_idea_list_CorrectlyCalculatesIdeaAttr_deal_coin():
 
     coal_text = "coal"
     coal_idea = IdeaKid(_label=coal_text, _weight=30)
-    x_deal.add_idea(idea_kid=coal_idea, pad=x_deal._cure_handle)
+    x_deal.add_idea(idea_kid=coal_idea, pad=x_deal._fix_handle)
 
     assert x_deal._idearoot._deal_coin_onset is None
     assert x_deal._idearoot._deal_coin_cease is None
@@ -344,14 +344,14 @@ def test_deal_get_idea_list_CorrectlyCalculatesRangeAttributes():
     x_deal = get_deal_with7amCleanTableRequired()
     idea_list = x_deal.get_idea_list()
     house_text = "housework"
-    house_road = f"{x_deal._cure_handle},{house_text}"
+    house_road = f"{x_deal._fix_handle},{house_text}"
     clean_text = "clean table"
     clean_road = f"{house_road},{clean_text}"
     assert x_deal._idea_dict.get(clean_road)._active_status == False
 
     # set acptfacts as midnight to 8am
     time_text = "timetech"
-    time_road = f"{x_deal._cure_handle},{time_text}"
+    time_road = f"{x_deal._fix_handle},{time_text}"
     day24hr_text = "24hr day"
     day24hr_road = f"{time_road},{day24hr_text}"
     day24hr_base = day24hr_road
@@ -401,28 +401,28 @@ def test_get_agenda_items():
 def test_exammple_idea_list_HasCorrectData():
     x_deal = deal_v001()
     print(f"{x_deal.get_required_bases()=}")
-    # day_hour = f"{x_deal._cure_handle},day_hour"
+    # day_hour = f"{x_deal._fix_handle},day_hour"
     # x_deal.set_acptfact(base=day_hour, pick=day_hour, open=0, nigh=23)
     day_min_text = "day_minute"
-    day_min_road = f"{x_deal._cure_handle},{day_min_text}"
+    day_min_road = f"{x_deal._fix_handle},{day_min_text}"
     x_deal.set_acptfact(base=day_min_road, pick=day_min_road, open=0, nigh=1439)
 
     mood_text = "Moods"
-    mood_road = f"{x_deal._cure_handle},{mood_text}"
+    mood_road = f"{x_deal._fix_handle},{mood_text}"
     x_deal.set_acptfact(base=mood_road, pick=mood_road)
     print(f"{x_deal.get_required_bases()=}")
 
     yr_mon_text = "year_month"
-    yr_mon_road = f"{x_deal._cure_handle},{yr_mon_text}"
+    yr_mon_road = f"{x_deal._fix_handle},{yr_mon_text}"
     x_deal.set_acptfact(base=yr_mon_road, pick=yr_mon_road)
     inter_text = "Internet"
-    inter_road = f"{x_deal._cure_handle},{inter_text}"
+    inter_road = f"{x_deal._fix_handle},{inter_text}"
     x_deal.set_acptfact(base=inter_road, pick=inter_road)
     assert x_deal != None
     # print(f"{x_deal._healer=}")
     # print(f"{len(x_deal._idearoot._kids)=}")
     ulty_text = "Ultimate Frisbee"
-    ulty_road = f"{x_deal._cure_handle},{ulty_text}"
+    ulty_road = f"{x_deal._fix_handle},{ulty_text}"
 
     # if x_deal._idearoot._kids["Ultimate Frisbee"]._label == "Ultimate Frisbee":
     assert x_deal._idearoot._kids[ulty_text]._requiredunits != None
@@ -435,7 +435,7 @@ def test_exammple_idea_list_HasCorrectData():
     # print(f"{str(type(idea))=}")
     # print(f"{len(idea_list)=}")
     laundry_text = "laundry monday"
-    laundry_road = f"{x_deal._cure_handle},casa,cleaning,{laundry_text}"
+    laundry_road = f"{x_deal._fix_handle},casa,cleaning,{laundry_text}"
 
     # for idea in idea_list:
     #     assert (
@@ -451,7 +451,7 @@ def test_exammple_idea_list_HasCorrectData():
 
     # WHEN
     week_text = "weekdays"
-    week_road = f"{x_deal._cure_handle},{week_text}"
+    week_road = f"{x_deal._fix_handle},{week_text}"
     mon_text = "Monday"
     mon_road = f"{week_road},{mon_text}"
     x_deal.set_acptfact(base=week_road, pick=mon_road)
@@ -467,28 +467,28 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
     x_deal = deal_v001()
 
     day_hr_text = "day_hour"
-    day_hr_road = f"{x_deal._cure_handle},{day_hr_text}"
+    day_hr_road = f"{x_deal._fix_handle},{day_hr_text}"
     x_deal.set_acptfact(base=day_hr_road, pick=day_hr_road, open=0, nigh=23)
     day_min_text = "day_minute"
-    day_min_road = f"{x_deal._cure_handle},{day_min_text}"
+    day_min_road = f"{x_deal._fix_handle},{day_min_text}"
     x_deal.set_acptfact(base=day_min_road, pick=day_min_road, open=0, nigh=59)
     mon_wk_text = "month_week"
-    mon_wk_road = f"{x_deal._cure_handle},{mon_wk_text}"
+    mon_wk_road = f"{x_deal._fix_handle},{mon_wk_text}"
     x_deal.set_acptfact(base=mon_wk_road, pick=mon_wk_road)
     nation_text = "Nation-States"
-    nation_road = f"{x_deal._cure_handle},{nation_text}"
+    nation_road = f"{x_deal._fix_handle},{nation_text}"
     x_deal.set_acptfact(base=nation_road, pick=nation_road)
     mood_text = "Moods"
-    mood_road = f"{x_deal._cure_handle},{mood_text}"
+    mood_road = f"{x_deal._fix_handle},{mood_text}"
     x_deal.set_acptfact(base=mood_road, pick=mood_road)
     aaron_text = "Aaron Donald sphere"
-    aaron_road = f"{x_deal._cure_handle},{aaron_text}"
+    aaron_road = f"{x_deal._fix_handle},{aaron_text}"
     x_deal.set_acptfact(base=aaron_road, pick=aaron_road)
     inter_text = "Internet"
-    inter_road = f"{x_deal._cure_handle},{inter_text}"
+    inter_road = f"{x_deal._fix_handle},{inter_text}"
     x_deal.set_acptfact(base=inter_road, pick=inter_road)
     yr_mon_text = "year_month"
-    yr_mon_road = f"{x_deal._cure_handle},{yr_mon_text}"
+    yr_mon_road = f"{x_deal._fix_handle},{yr_mon_text}"
     x_deal.set_acptfact(base=yr_mon_road, pick=yr_mon_road, open=0, nigh=1000)
 
     idea_list = x_deal.get_idea_list()
@@ -496,7 +496,7 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
     # for missing_acptfact, count in missing_acptfacts.items():
     #     print(f"{missing_acptfact=} {count=}")
 
-    week_road = f"{x_deal._cure_handle},weekdays"
+    week_road = f"{x_deal._fix_handle},weekdays"
     mon_road = f"{week_road},Monday"
     tue_road = f"{week_road},Tuesday"
     mon_sufffact_x = sufffactunit_shop(need=mon_road)
@@ -532,7 +532,7 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
     assert x_deal._idearoot._requiredheirs[week_road] == mt_required_x
 
     casa_text = "casa"
-    casa_road = f"{x_deal._cure_handle},{casa_text}"
+    casa_road = f"{x_deal._fix_handle},{casa_text}"
     bird_text = "say hi to birds"
     bird_road = Road(f"{casa_road},{bird_text}")
     assert from_list_get_active_status(road=bird_road, idea_list=idea_list) == False
@@ -547,11 +547,11 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
 
     # assert YR.get_active_status(road=bird_idea, idea_list=idea_list) == True
 
-    # x_deal.set_acptfact(base=f"{x_deal._cure_handle},weekdays", pick=f"{x_deal._cure_handle},weekdays,Tuesday")
+    # x_deal.set_acptfact(base=f"{x_deal._fix_handle},weekdays", pick=f"{x_deal._fix_handle},weekdays,Tuesday")
     # idea_list = x_deal.get_idea_list()
     # assert YR.get_active_status(road=bird_idea, idea_list=idea_list) == True
 
-    # x_deal.set_acptfact(base=f"{x_deal._cure_handle},weekdays", pick=f"{x_deal._cure_handle},weekdays,Wednesday")
+    # x_deal.set_acptfact(base=f"{x_deal._fix_handle},weekdays", pick=f"{x_deal._fix_handle},weekdays,Wednesday")
     # idea_list = x_deal.get_idea_list()
     # assert YR.get_active_status(road=bird_idea, idea_list=idea_list) == False
 
@@ -560,9 +560,9 @@ def test_exammple_idea_list_Every6WeeksRequired():
     # GIVEN
     x_deal = deal_v001()
     day_text = "day_hour"
-    day_road = f"{x_deal._cure_handle},{day_text}"
+    day_road = f"{x_deal._fix_handle},{day_text}"
     min_text = "day_minute"
-    min_road = f"{x_deal._cure_handle},{day_text}"
+    min_road = f"{x_deal._fix_handle},{day_text}"
 
     # WHEN
     x_deal.set_acptfact(base=day_road, pick=day_road, open=0, nigh=23)
@@ -570,16 +570,14 @@ def test_exammple_idea_list_Every6WeeksRequired():
     idea_list = x_deal.get_idea_list()
 
     # THEN
-    ced_week_base = f"{x_deal._cure_handle},ced_week"
+    ced_week_base = f"{x_deal._fix_handle},ced_week"
 
     sufffact_divisor = None
     sufffact_open = None
     sufffact_nigh = None
     print(f"{len(idea_list)=}")
 
-    clean_sheet_road = (
-        f"{x_deal._cure_handle},casa,cleaning,clean sheets couch blankets"
-    )
+    clean_sheet_road = f"{x_deal._fix_handle},casa,cleaning,clean sheets couch blankets"
     clean_sheet_idea = x_deal.get_idea_kid(road=clean_sheet_road)
     # print(f"{clean_sheet_idea._requiredunits.values()=}")
     ced_week_required = clean_sheet_idea._requiredunits.get(ced_week_base)
@@ -612,7 +610,7 @@ def test_exammple_idea_list_Every6WeeksRequired():
         base=ced_week_base, pick=ced_week_base, open=ced_week_open, nigh=ced_week_open
     )
     nation_text = "Nation-States"
-    nation_road = f"{x_deal._cure_handle},{nation_text}"
+    nation_road = f"{x_deal._fix_handle},{nation_text}"
     x_deal.set_acptfact(base=nation_road, pick=nation_road)
     print(
         f"Nation-states set and also acptfact set: {ced_week_base=} with {ced_week_open=} and {ced_week_open=}"
@@ -622,9 +620,9 @@ def test_exammple_idea_list_Every6WeeksRequired():
 
     # THEN
     week_text = "ced_week"
-    week_road = f"{x_deal._cure_handle},{week_text}"
+    week_road = f"{x_deal._fix_handle},{week_text}"
     clean_couch_text = "clean sheets couch blankets"
-    clean_couch_road = f"{x_deal._cure_handle},casa,cleaning,{clean_couch_text}"
+    clean_couch_road = f"{x_deal._fix_handle},casa,cleaning,{clean_couch_text}"
     clean_couch_idea = x_deal.get_idea_kid(road=clean_couch_road)
     week_required = clean_couch_idea._requiredunits.get(week_road)
     week_sufffact = week_required.sufffacts.get(week_road)
@@ -691,31 +689,31 @@ def test_exammple_idea_list_EveryOtherMonthWorks():
     # GIVEN
     x_deal = deal_v001()
     minute_text = "day_minute"
-    minute_road = f"{x_deal._cure_handle},{minute_text}"
+    minute_road = f"{x_deal._fix_handle},{minute_text}"
     x_deal.set_acptfact(base=minute_road, pick=minute_road, open=0, nigh=1399)
     month_text = "month_week"
-    month_road = f"{x_deal._cure_handle},{month_text}"
+    month_road = f"{x_deal._fix_handle},{month_text}"
     x_deal.set_acptfact(base=month_road, pick=month_road)
     nations_text = "Nation-States"
-    nations_road = f"{x_deal._cure_handle},{nations_text}"
+    nations_road = f"{x_deal._fix_handle},{nations_text}"
     x_deal.set_acptfact(base=nations_road, pick=nations_road)
     mood_text = "Moods"
-    mood_road = f"{x_deal._cure_handle},{mood_text}"
+    mood_road = f"{x_deal._fix_handle},{mood_text}"
     x_deal.set_acptfact(base=mood_road, pick=mood_road)
     aaron_text = "Aaron Donald sphere"
-    aaron_road = f"{x_deal._cure_handle},{aaron_text}"
+    aaron_road = f"{x_deal._fix_handle},{aaron_text}"
     x_deal.set_acptfact(base=aaron_road, pick=aaron_road)
     internet_text = "Internet"
-    internet_road = f"{x_deal._cure_handle},{internet_text}"
+    internet_road = f"{x_deal._fix_handle},{internet_text}"
     x_deal.set_acptfact(base=internet_road, pick=internet_road)
     weekdays_text = "weekdays"
-    weekdays_road = f"{x_deal._cure_handle},{weekdays_text}"
+    weekdays_road = f"{x_deal._fix_handle},{weekdays_text}"
     x_deal.set_acptfact(base=weekdays_road, pick=weekdays_road)
     idea_list = x_deal.get_idea_list()
     print(f"{len(idea_list)=}")
 
     casa_text = "casa"
-    casa_road = f"{x_deal._cure_handle},{casa_text}"
+    casa_road = f"{x_deal._fix_handle},{casa_text}"
     clean_text = "cleaning"
     clean_road = f"{casa_road},{clean_text}"
     mat_label = "deep clean play mat"
@@ -723,12 +721,12 @@ def test_exammple_idea_list_EveryOtherMonthWorks():
     # commented out since it's difficult to understand
     assert from_list_get_active_status(road=mat_road, idea_list=idea_list) == False
 
-    year_month_base = f"{x_deal._cure_handle},year_month"
+    year_month_base = f"{x_deal._fix_handle},year_month"
     print(f"{year_month_base=}, {year_month_base=}")
 
     # WHEN
     x_deal.set_acptfact(base=year_month_base, pick=year_month_base, open=0, nigh=8)
-    ced_week = f"{x_deal._cure_handle},ced_week"
+    ced_week = f"{x_deal._fix_handle},ced_week"
     x_deal.set_acptfact(base=ced_week, pick=ced_week, open=0, nigh=4)
 
     # THEN

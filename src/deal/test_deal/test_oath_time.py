@@ -124,7 +124,7 @@ def test_get_time_():
 
     # Then
     time_text = "time"
-    time_road = f"{x_deal._cure_handle},{time_text}"
+    time_road = f"{x_deal._fix_handle},{time_text}"
     jaja_text = "jajatime"
     jaja_road = f"{time_road},{jaja_text}"
     assert x_deal._idearoot._acptfactunits[jaja_road]

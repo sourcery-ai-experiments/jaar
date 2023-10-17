@@ -23,7 +23,7 @@ from src.deal.required_idea import (
 )
 from src.deal.road import (
     is_sub_road,
-    get_default_cure_root_label as root_label,
+    get_default_fix_root_label as root_label,
 )
 from src.deal.group import (
     BalanceHeir,
@@ -979,16 +979,16 @@ class IdeaRoot(IdeaCore):
     def __post_init__(self):
         self.set_idea_label(_label=root_label())
 
-    def set_idea_label(self, _label: str, deal_cure_handle: str = None):
-        if _label != root_label() and deal_cure_handle is None:
+    def set_idea_label(self, _label: str, deal_fix_handle: str = None):
+        if _label != root_label() and deal_fix_handle is None:
             raise IdeaRootLabelNotEmptyException(
                 f"Cannot set idearoot to string other than '{root_label()}'"
             )
-        elif _label != deal_cure_handle != None:
+        elif _label != deal_fix_handle != None:
             raise IdeaRootLabelNotEmptyException(
-                f"Cannot set idearoot to string other than '{deal_cure_handle}'"
+                f"Cannot set idearoot to string other than '{deal_fix_handle}'"
             )
-        elif _label != root_label() and deal_cure_handle == _label:
+        elif _label != root_label() and deal_fix_handle == _label:
             self._label = _label
         else:
             self._label = root_label()

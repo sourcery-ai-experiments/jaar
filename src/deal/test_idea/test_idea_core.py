@@ -8,7 +8,7 @@ from src.deal.required_idea import (
     Road,
 )
 from src.deal.required_assign import assigned_unit_shop, assigned_heir_shop
-from src.deal.road import get_default_cure_root_label as root_label
+from src.deal.road import get_default_fix_root_label as root_label
 from pytest import raises as pytest_raises
 
 

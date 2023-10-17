@@ -41,11 +41,11 @@ def create_example_worlds_list():
 #     sx.create_dirs_if_null(in_memory_bank=True)
 
 
-# def delete_dir_example_world(world_obj: CureUnit):
+# def delete_dir_example_world(world_obj: FixUnit):
 #     x_func_delete_dir(world_obj.get_object_root_dir())
 
 
-# def rename_example_world(world_obj: CureUnit, new_title):
+# def rename_example_world(world_obj: FixUnit, new_title):
 #     # base_dir = world_obj.get_object_root_dir()
 #     base_dir = "src/world/examples/worlds"
 #     src_dir = f"{base_dir}/{world_obj.kind}"
@@ -54,7 +54,7 @@ def create_example_worlds_list():
 #     world_obj.set_worldunit_kind(kind=new_title)
 
 
-# class InvalidCureCopyException(Exception):
+# class InvalidFixCopyException(Exception):
 #     pass
 
 
@@ -62,7 +62,7 @@ def create_example_worlds_list():
 #     base_dir = "src/world/examples/worlds"
 #     new_dir = f"{base_dir}/{dest_handle}"
 #     if os_path.exists(new_dir):
-#         raise InvalidCureCopyException(
+#         raise InvalidFixCopyException(
 #             f"Cannot copy world to '{new_dir}' directory because '{new_dir}' exists."
 #         )
 #     # base_dir = world_obj.get_object_root_dir()

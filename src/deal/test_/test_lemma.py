@@ -1,7 +1,7 @@
 from src.deal.required_idea import acptfactunit_shop
 from src.deal.lemma import Lemma, Lemmas
 from src.deal.idea import IdeaKid
-from src.deal.road import get_default_cure_root_label as root_label
+from src.deal.road import get_default_fix_root_label as root_label
 
 
 def test_lemma_attributes_exist():
