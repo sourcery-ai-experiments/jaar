@@ -65,6 +65,13 @@ class PartyUnit(PartyCore):
     _partyrings: dict[PartyTitle:PartyRing] = None
     _bank_tax_paid: float = None
     _bank_tax_diff: float = None
+    _output_deal_meld_order: int = None
+
+    def clear_output_deal_meld_order(self):
+        self._output_deal_meld_order = None
+
+    def set_output_deal_meld_order(self, _output_deal_meld_order: int):
+        self._output_deal_meld_order = _output_deal_meld_order
 
     def set_depotlink_type(
         self,

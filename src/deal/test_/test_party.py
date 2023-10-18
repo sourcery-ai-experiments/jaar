@@ -79,6 +79,36 @@ def test_PartyUnit_exists():
     assert bob_party._bank_tax_paid is None
     assert bob_party._bank_tax_diff is None
     assert bob_party.depotlink_type is None
+    assert bob_party._output_deal_meld_order is None
+
+
+def test_PartyUnit_set_output_deal_meld_order_CorrectlySetsAttribute():
+    # GIVEN
+    bob_title = "bob"
+    bob_party = partyunit_shop(title=bob_title)
+    assert bob_party._output_deal_meld_order is None
+
+    # WHEN
+    x_output_deal_meld_order = 5
+    bob_party.set_output_deal_meld_order(x_output_deal_meld_order)
+
+    # THEN
+    assert bob_party._output_deal_meld_order == x_output_deal_meld_order
+
+
+def test_PartyUnit_clear_output_deal_meld_order_CorrectlySetsAttribute():
+    # GIVEN
+    bob_title = "bob"
+    bob_party = partyunit_shop(title=bob_title)
+    x_output_deal_meld_order = 5
+    bob_party.set_output_deal_meld_order(x_output_deal_meld_order)
+    assert bob_party._output_deal_meld_order == x_output_deal_meld_order
+
+    # WHEN
+    bob_party.clear_output_deal_meld_order()
+
+    # THEN
+    assert bob_party._output_deal_meld_order is None
 
 
 def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeNoNulls():
