@@ -29,9 +29,9 @@ def test_collectunit_set_depotlink_RaisesErrorWhenDealDoesNotExist(
     sue_text = "Sue"
     env_dir = get_temp_collectunit_dir()
     sue_cx = collectunit_shop(sue_text, env_dir, get_temp_fix_handle())
-    sue_cx.set_isol_if_empty()
+    sue_cx.set_seed_if_empty()
     tim_text = "Tim"
-    assert list(sue_cx._isol._partys.keys()) == [sue_text]
+    assert list(sue_cx._seed._partys.keys()) == [sue_text]
 
     # WHEN / THEN
     file_path_x = f"{sue_cx._admin._deals_depot_dir}/{tim_text}.json"
@@ -44,22 +44,22 @@ def test_collectunit_set_depotlink_RaisesErrorWhenDealDoesNotExist(
     )
 
 
-def test_collectunit_set_depotlink_CorrectlySetsIsolPartys(collect_dir_setup_cleanup):
+def test_collectunit_set_depotlink_CorrectlySetsseedPartys(collect_dir_setup_cleanup):
     # GIVEN
     yao_text = "yao"
     env_dir = get_temp_collectunit_dir()
     yao_ux = collectunit_shop(yao_text, env_dir, get_temp_fix_handle())
-    yao_ux.set_isol_if_empty()
+    yao_ux.set_seed_if_empty()
     sue_text = "sue"
     create_deal_file(yao_ux._admin._deals_depot_dir, sue_text)
-    assert list(yao_ux._isol._partys.keys()) == [yao_text]
+    assert list(yao_ux._seed._partys.keys()) == [yao_text]
 
     # WHEN
     yao_ux._set_depotlink(outer_healer=sue_text)
 
     # THEN
-    assert list(yao_ux._isol._partys.keys()) == [yao_text, sue_text]
-    assert yao_ux._isol.get_party(sue_text).depotlink_type is None
+    assert list(yao_ux._seed._partys.keys()) == [yao_text, sue_text]
+    assert yao_ux._seed.get_party(sue_text).depotlink_type is None
 
 
 def test_collectunit_set_depotlink_CorrectlySetsAssignment(collect_dir_setup_cleanup):
@@ -71,9 +71,9 @@ def test_collectunit_set_depotlink_CorrectlySetsAssignment(collect_dir_setup_cle
         joachim_text, get_temp_collectunit_dir(), get_temp_fix_handle()
     )
     joachim_ux.create_core_dir_and_files()
-    joachim_ux.set_isol_if_empty()
+    joachim_ux.set_seed_if_empty()
     joachim_ux._admin.save_deal_to_depot(america_cx)
-    assert joachim_ux.get_isol().get_party(america_cx._healer) is None
+    assert joachim_ux.get_seed().get_party(america_cx._healer) is None
     america_digest_path = (
         f"{joachim_ux._admin._deals_digest_dir}/{america_cx._healer}.json"
     )
@@ -85,7 +85,7 @@ def test_collectunit_set_depotlink_CorrectlySetsAssignment(collect_dir_setup_cle
 
     # THEN
     assert (
-        joachim_ux.get_isol().get_party(america_cx._healer).depotlink_type
+        joachim_ux.get_seed().get_party(america_cx._healer).depotlink_type
         == assignment_text
     )
     assert os_path.exists(america_digest_path)
@@ -112,15 +112,15 @@ def test_collectunit_del_depot_deal_CorrectlyDeletesObj(collect_dir_setup_cleanu
     assignment_text = "assignment"
     bob_cx._set_depotlinks_empty_if_null()
     bob_cx._set_depotlink(yao_text, link_type=assignment_text)
-    assert list(bob_cx._isol._partys.keys()) == [bob_text, yao_text]
-    assert bob_cx._isol.get_party(yao_text).depotlink_type == assignment_text
+    assert list(bob_cx._seed._partys.keys()) == [bob_text, yao_text]
+    assert bob_cx._seed.get_party(yao_text).depotlink_type == assignment_text
 
     # WHEN
     bob_cx.del_depot_deal(deal_healer=yao_text)
 
     # THEN
-    assert list(bob_cx._isol._partys.keys()) == [bob_text, yao_text]
-    assert bob_cx._isol.get_party(yao_text).depotlink_type is None
+    assert list(bob_cx._seed._partys.keys()) == [bob_text, yao_text]
+    assert bob_cx._seed.get_party(yao_text).depotlink_type is None
 
 
 def test_collectunit_del_depot_deal_CorrectlyDeletesBlindTrustFile(
@@ -132,7 +132,7 @@ def test_collectunit_del_depot_deal_CorrectlyDeletesBlindTrustFile(
     bob_cx = collectunit_shop(bob_text, env_dir, get_temp_fix_handle())
     lai_text = "Lai"
     create_deal_file(bob_cx._admin._deals_depot_dir, lai_text)
-    bob_cx.set_isol_if_empty()
+    bob_cx.set_seed_if_empty()
     bob_cx._set_depotlink(lai_text, link_type="blind_trust")
     assert x_func_count_files(dir_path=bob_cx._admin._deals_depot_dir) == 1
     assert x_func_count_files(dir_path=bob_cx._admin._deals_digest_dir) == 1
@@ -158,7 +158,7 @@ def test_collectunit_set_depot_deal_SavesFileCorrectly(
     )  # dir does not exist
 
     # WHEN
-    bob_cx.set_isol_if_empty()
+    bob_cx.set_seed_if_empty()
     bob_cx.set_depot_deal(deal_x=cal1, depotlink_type="blind_trust")
 
     # THEN
@@ -178,17 +178,17 @@ def test_collectunit_delete_ignore_depotlink_CorrectlyDeletesObj(
     yao_text = "Yao"
     create_deal_file(bob_cx._admin._deals_depot_dir, yao_text)
     assignment_text = "assignment"
-    bob_cx.set_isol_if_empty()
+    bob_cx.set_seed_if_empty()
     bob_cx._set_depotlink(yao_text, link_type=assignment_text)
-    assert list(bob_cx._isol._partys.keys()) == [bob_text, yao_text]
-    assert bob_cx._isol.get_party(yao_text).depotlink_type == assignment_text
+    assert list(bob_cx._seed._partys.keys()) == [bob_text, yao_text]
+    assert bob_cx._seed.get_party(yao_text).depotlink_type == assignment_text
 
     # WHEN
     bob_cx.del_depot_deal(deal_healer=yao_text)
 
     # THEN
-    assert list(bob_cx._isol._partys.keys()) == [bob_text, yao_text]
-    assert bob_cx._isol.get_party(yao_text).depotlink_type is None
+    assert list(bob_cx._seed._partys.keys()) == [bob_text, yao_text]
+    assert bob_cx._seed.get_party(yao_text).depotlink_type is None
 
 
 def test_collectunit_del_depot_deal_CorrectlyDoesNotDeletesIgnoreFile(
@@ -200,7 +200,7 @@ def test_collectunit_del_depot_deal_CorrectlyDoesNotDeletesIgnoreFile(
     bob_cx = collectunit_shop(bob_text, env_dir, get_temp_fix_handle())
     zia_text = "Zia"
     create_deal_file(bob_cx._admin._deals_depot_dir, zia_text)
-    bob_cx.set_isol_if_empty()
+    bob_cx.set_seed_if_empty()
     bob_cx._set_depotlink(zia_text, link_type="ignore")
     assert x_func_count_files(dir_path=bob_cx._admin._deals_depot_dir) == 1
     assert x_func_count_files(dir_path=bob_cx._admin._deals_digest_dir) == 1
@@ -224,7 +224,7 @@ def test_collectunit_set_ignore_deal_file_CorrectlyUpdatesIgnoreFile(
     bob_ux = collectunit_shop(bob_text, env_dir, get_temp_fix_handle())
     zia_text = "Zia"
     create_deal_file(bob_ux._admin._deals_depot_dir, zia_text)
-    bob_ux.set_isol_if_empty()
+    bob_ux.set_seed_if_empty()
     bob_ux._set_depotlink(zia_text, link_type="ignore")
     assert x_func_count_files(dir_path=bob_ux._admin._deals_ignore_dir) == 1
     cx1 = bob_ux._admin.open_ignore_deal(healer=zia_text)

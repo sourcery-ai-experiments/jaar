@@ -20,31 +20,31 @@ from os import path as os_path
 from pytest import raises as pytest_raises
 
 
-# def test_healer_save_isol_deal_CreateStartingDealFile(
+# def test_healer_save_seed_deal_CreateStartingDealFile(
 #     collect_dir_setup_cleanup,
 # ):
 #     # GIVEN
 #     lai_title = "Lai"
 #     env_dir = get_temp_collectunit_dir()
 #     lai_deal = collectunit_shop(title=lai_title, env_dir=env_dir)
-#     lai_isol_file_title = lai_deal._admin._isol_file_title
+#     lai_seed_file_title = lai_deal._admin._seed_file_title
 #     with pytest_raises(Exception) as excinfo:
-#         x_func_open_file(lai_deal._admin._collectunit_dir, lai_isol_file_title)
+#         x_func_open_file(lai_deal._admin._collectunit_dir, lai_seed_file_title)
 #     assert (
 #         str(excinfo.value)
-#         == f"Could not load file {lai_deal._admin._isol_file_path} (2, 'No such file or directory')"
+#         == f"Could not load file {lai_deal._admin._seed_file_path} (2, 'No such file or directory')"
 #     )
 
 #     # WHEN
-#     lai_deal._admin.save_isol_deal(
+#     lai_deal._admin.save_seed_deal(
 #         deal_x=example_deals_get_deal_with_4_levels()
 #     )
 
 #     # THEN
-#     assert x_func_open_file(lai_deal._admin._collectunit_dir, lai_isol_file_title) != None
+#     assert x_func_open_file(lai_deal._admin._collectunit_dir, lai_seed_file_title) != None
 
 
-def test_healeropen_isol_deal_WhenStartingDealFileDoesNotExists(
+def test_healeropen_seed_deal_WhenStartingDealFileDoesNotExists(
     collect_dir_setup_cleanup,
 ):
     # GIVEN
@@ -54,9 +54,9 @@ def test_healeropen_isol_deal_WhenStartingDealFileDoesNotExists(
     ux = collectunit_shop(title=tim_text, env_dir=env_dir, fix_handle=fix_handle_text)
 
     # WHEN
-    isol_deal = ux._admin.open_isol_deal()
-    assert isol_deal != None
-    assert isol_deal._fix_handle == fix_handle_text
+    seed_deal = ux._admin.open_seed_deal()
+    assert seed_deal != None
+    assert seed_deal._fix_handle == fix_handle_text
 
     # THEN
     x_deal = DealUnit(_healer=tim_text)
@@ -76,13 +76,13 @@ def test_healeropen_isol_deal_WhenStartingDealFileDoesNotExists(
     # x_idearoot._all_party_credit = True
     # x_idearoot._all_party_debt = True
 
-    assert isol_deal._idearoot == x_deal._idearoot
-    assert isol_deal._idearoot._acptfactunits == {}
-    assert list(isol_deal._partys.keys()) == [tim_text]
-    assert list(isol_deal._groups.keys()) == [tim_text]
+    assert seed_deal._idearoot == x_deal._idearoot
+    assert seed_deal._idearoot._acptfactunits == {}
+    assert list(seed_deal._partys.keys()) == [tim_text]
+    assert list(seed_deal._groups.keys()) == [tim_text]
 
 
-def test_healer_save_isol_deal_IsolPersonNameMustBeHealer(
+def test_healer_save_seed_deal_seedPersonNameMustBeHealer(
     collect_dir_setup_cleanup,
 ):
     # GIVEN
@@ -93,58 +93,58 @@ def test_healer_save_isol_deal_IsolPersonNameMustBeHealer(
     assert cx1._healer != p_title
 
     # WHEN
-    ux._admin.save_isol_deal(deal_x=cx1)
+    ux._admin.save_seed_deal(deal_x=cx1)
 
     # THEN
-    assert ux._admin.open_isol_deal()._healer == ux._admin._collect_title
+    assert ux._admin.open_seed_deal()._healer == ux._admin._collect_title
 
 
-def test_healer_open_isol_deal_WhenStartingDealFileExists(
+def test_healer_open_seed_deal_WhenStartingDealFileExists(
     collect_dir_setup_cleanup,
 ):
     # GIVEN
     p_title = "Game1"
     env_dir = get_temp_collectunit_dir()
     ux = collectunit_shop(p_title, env_dir, get_temp_fix_handle())
-    ux._admin.save_isol_deal(deal_x=example_deals_get_deal_with_4_levels())
+    ux._admin.save_seed_deal(deal_x=example_deals_get_deal_with_4_levels())
 
     # WHEN
-    assert ux._admin.open_isol_deal() != None
-    isol_deal = ux._admin.open_isol_deal()
+    assert ux._admin.open_seed_deal() != None
+    seed_deal = ux._admin.open_seed_deal()
 
     # THEN
     x_deal = example_deals_get_deal_with_4_levels()
     x_deal.set_healer(new_healer=p_title)
     x_deal.set_deal_metrics()
 
-    assert isol_deal._idearoot._kids == x_deal._idearoot._kids
-    assert isol_deal._idearoot == x_deal._idearoot
-    assert isol_deal._idearoot._acptfactunits == {}
-    assert isol_deal._partys == {}
-    assert isol_deal._groups == {}
-    assert isol_deal._healer == ux._admin._collect_title
+    assert seed_deal._idearoot._kids == x_deal._idearoot._kids
+    assert seed_deal._idearoot == x_deal._idearoot
+    assert seed_deal._idearoot._acptfactunits == {}
+    assert seed_deal._partys == {}
+    assert seed_deal._groups == {}
+    assert seed_deal._healer == ux._admin._collect_title
 
 
-def test_healer_erase_isol_deal_file_DeletesFileCorrectly(
+def test_healer_erase_seed_deal_file_DeletesFileCorrectly(
     collect_dir_setup_cleanup,
 ):
     # GIVEN
     p_title = "Game1"
     env_dir = get_temp_collectunit_dir()
     ux = collectunit_shop(p_title, env_dir, get_temp_fix_handle())
-    ux._admin.save_isol_deal(example_deals_get_deal_with_4_levels())
-    file_title = ux._admin._isol_file_title
+    ux._admin.save_seed_deal(example_deals_get_deal_with_4_levels())
+    file_title = ux._admin._seed_file_title
     assert x_func_open_file(ux._admin._collectunit_dir, file_title) != None
 
     # WHEN
-    ux._admin.erase_isol_deal_file()
+    ux._admin.erase_seed_deal_file()
 
     # THEN
     with pytest_raises(Exception) as excinfo:
         x_func_open_file(ux._admin._collectunit_dir, file_title)
     assert (
         str(excinfo.value)
-        == f"Could not load file {ux._admin._collectunit_dir}/isol_deal.json (2, 'No such file or directory')"
+        == f"Could not load file {ux._admin._collectunit_dir}/seed_deal.json (2, 'No such file or directory')"
     )
 
 
@@ -331,24 +331,24 @@ def test_healer_get_remelded_output_deal_with1DigestedDeal(
 #     assert sx_output_new != s1
 
 
-def test_healer_isol_deal_CorrectlysHasOriginLinksWithHealerAsSource(
+def test_healer_seed_deal_CorrectlysHasOriginLinksWithHealerAsSource(
     collect_dir_setup_cleanup,
 ):
     # GIVEN
-    # collectunit with isol_deal and no other depot deals
+    # collectunit with seed_deal and no other depot deals
     yao_text = "Yao"
-    isol_origin_weight = 1
+    seed_origin_weight = 1
     yao_originunit = originunit_shop()
-    yao_originunit.set_originlink(title=yao_text, weight=isol_origin_weight)
-    isol_deal_x = example_healers_get_7nodeJRoot_deal()
-    isol_deal_x.set_healer(yao_text)
+    yao_originunit.set_originlink(title=yao_text, weight=seed_origin_weight)
+    seed_deal_x = example_healers_get_7nodeJRoot_deal()
+    seed_deal_x.set_healer(yao_text)
 
-    assert isol_deal_x._idearoot._originunit == originunit_shop()
-    assert isol_deal_x._idearoot._originunit != yao_originunit
+    assert seed_deal_x._idearoot._originunit == originunit_shop()
+    assert seed_deal_x._idearoot._originunit != yao_originunit
 
     ux = collectunit_shop(yao_text, get_temp_collectunit_dir(), get_temp_fix_handle())
     ux.create_core_dir_and_files()
-    ux._admin.save_isol_deal(deal_x=isol_deal_x)
+    ux._admin.save_seed_deal(deal_x=seed_deal_x)
 
     # WHEN
     output_deal_x = ux._admin.get_remelded_output_deal()
@@ -364,4 +364,4 @@ def test_healer_isol_deal_CorrectlysHasOriginLinksWithHealerAsSource(
 
     output_originlink = output_deal_x._originunit._links.get(yao_text)
     assert output_originlink.title == yao_text
-    assert output_originlink.weight == isol_origin_weight
+    assert output_originlink.weight == seed_origin_weight

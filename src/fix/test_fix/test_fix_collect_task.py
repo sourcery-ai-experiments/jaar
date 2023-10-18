@@ -19,7 +19,7 @@ def test_fix_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanup):
     america_ux = sx.get_collectunit(title=america_text)
     laundry_deal = get_deal_assignment_laundry_example1()
     laundry_deal.set_fix_handle(sx.handle)
-    america_ux.set_isol(laundry_deal)
+    america_ux.set_seed(laundry_deal)
 
     casa_text = "casa"
     casa_road = f"{sx.handle},{casa_text}"
@@ -30,8 +30,8 @@ def test_fix_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanup):
     b_bare_text = "bare"
     b_bare_road = f"{basket_road},{b_bare_text}"
     # set basket status to "bare"
-    isol_x = america_ux.get_isol().set_acptfact(base=basket_road, pick=b_bare_road)
-    america_ux.set_isol(isol_x)
+    seed_x = america_ux.get_seed().set_acptfact(base=basket_road, pick=b_bare_road)
+    america_ux.set_seed(seed_x)
     # save fact change to public
     america_ux._admin.save_refreshed_output_to_public()
     # print(f"{sx.get_public_deal(america_text)._idearoot._acptfactunits.keys()=}")
@@ -51,8 +51,8 @@ def test_fix_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanup):
 
     # WHEN
     # set basket status to "full"
-    america_ux.get_isol().set_acptfact(base=basket_road, pick=b_full_road)
-    america_ux.set_isol()
+    america_ux.get_seed().set_acptfact(base=basket_road, pick=b_full_road)
+    america_ux.set_seed()
     america_ux._admin.save_refreshed_output_to_public()
 
     joachim_ux.refresh_depot_deals()

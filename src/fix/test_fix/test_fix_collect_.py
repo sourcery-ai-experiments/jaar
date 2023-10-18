@@ -53,7 +53,7 @@ def test_fix_rename_collectunit_WorksCorrectly(env_dir_setup_cleanup):
     e5.create_dirs_if_null(in_memory_bank=True)
     old_bob_text = "old Bob"
     old_bob_dir = f"{e5.get_collectunits_dir()}/{old_bob_text}"
-    old_bob_file_path = f"{old_bob_dir}/isol_deal.json"
+    old_bob_file_path = f"{old_bob_dir}/seed_deal.json"
     wx5_obj = collectunit_shop(
         old_bob_text, e5.get_object_root_dir(), get_temp_env_handle()
     )
@@ -63,7 +63,7 @@ def test_fix_rename_collectunit_WorksCorrectly(env_dir_setup_cleanup):
 
     new_bob_text = "new Bob"
     new_bob_dir = f"{e5.get_collectunits_dir()}/{new_bob_text}"
-    new_bob_file_path = f"{new_bob_dir}/isol_deal.json"
+    new_bob_file_path = f"{new_bob_dir}/seed_deal.json"
     assert os_path.exists(new_bob_dir) == False
     assert os_path.exists(old_bob_dir)
     assert os_path.exists(new_bob_file_path) == False
@@ -94,7 +94,7 @@ def test_fix_del_collectunit_dir_WorksCorrectly(env_dir_setup_cleanup):
     sx = fixunit_shop(handle=fix_handle, fixs_dir=get_test_fixs_dir())
     xia_text = "Xia"
     xia_dir = f"{sx.get_collectunits_dir()}/{xia_text}"
-    xia_file_path = f"{xia_dir}/isol_deal.json"
+    xia_file_path = f"{xia_dir}/seed_deal.json"
     sx.create_new_collectunit(collect_title=xia_text)
     sx.save_collectunit_file(collect_title=xia_text)
     print(f"{xia_file_path=}")

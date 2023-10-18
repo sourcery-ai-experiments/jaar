@@ -28,7 +28,7 @@ def test_collectunit_exists(collect_dir_setup_cleanup):
     assert ux._admin._collect_title != None
     assert ux._admin._fix_handle != None
     assert ux._admin._fix_handle == get_temp_fix_handle()
-    assert ux._isol is None
+    assert ux._seed is None
 
 
 def test_collectunit_auto_output_to_public_SavesDealToPublicDirWhenTrue(
@@ -77,7 +77,7 @@ def test_collectunit_auto_output_to_public_DoesNotSaveDealToPublicDirWhenFalse(
     assert os_path.exists(public_file_path) is False
 
 
-def test_collectunit_get_isol_createsEmptyDealWhenFileDoesNotExist(
+def test_collectunit_get_seed_createsEmptyDealWhenFileDoesNotExist(
     collect_dir_setup_cleanup,
 ):
     # GIVEN
@@ -86,20 +86,20 @@ def test_collectunit_get_isol_createsEmptyDealWhenFileDoesNotExist(
         tim_text, get_temp_collectunit_dir(), get_temp_fix_handle()
     )
     tim_ux.create_core_dir_and_files()
-    assert os_path.exists(tim_ux._admin._isol_file_path)
-    x_func_delete_dir(dir=tim_ux._admin._isol_file_path)
-    assert os_path.exists(tim_ux._admin._isol_file_path) is False
-    assert tim_ux._isol is None
+    assert os_path.exists(tim_ux._admin._seed_file_path)
+    x_func_delete_dir(dir=tim_ux._admin._seed_file_path)
+    assert os_path.exists(tim_ux._admin._seed_file_path) is False
+    assert tim_ux._seed is None
 
     # WHEN
-    cx_isol = tim_ux.get_isol()
+    cx_seed = tim_ux.get_seed()
 
     # THEN
-    assert os_path.exists(tim_ux._admin._isol_file_path)
-    assert tim_ux._isol != None
+    assert os_path.exists(tim_ux._admin._seed_file_path)
+    assert tim_ux._seed != None
 
 
-def test_collectunit_get_isol_getsMemoryDealIfExists(
+def test_collectunit_get_seed_getsMemoryDealIfExists(
     collect_dir_setup_cleanup,
 ):
     # GIVEN
@@ -108,32 +108,32 @@ def test_collectunit_get_isol_getsMemoryDealIfExists(
         tim_text, get_temp_collectunit_dir(), get_temp_fix_handle()
     )
     tim_ux.create_core_dir_and_files()
-    isol_file_path = (
-        f"{tim_ux._admin._collectunit_dir}/{tim_ux._admin._isol_file_title}"
+    seed_file_path = (
+        f"{tim_ux._admin._collectunit_dir}/{tim_ux._admin._seed_file_title}"
     )
-    cx_isol1 = tim_ux.get_isol()
-    assert os_path.exists(isol_file_path)
-    assert tim_ux._isol != None
+    cx_seed1 = tim_ux.get_seed()
+    assert os_path.exists(seed_file_path)
+    assert tim_ux._seed != None
 
     # WHEN
     ray_text = "Ray"
-    tim_ux._isol = DealUnit(_healer=ray_text)
-    cx_isol2 = tim_ux.get_isol()
+    tim_ux._seed = DealUnit(_healer=ray_text)
+    cx_seed2 = tim_ux.get_seed()
 
     # THEN
-    assert cx_isol2._healer == ray_text
-    assert cx_isol2 != cx_isol1
+    assert cx_seed2._healer == ray_text
+    assert cx_seed2 != cx_seed1
 
     # WHEN
-    tim_ux._isol = None
-    cx_isol3 = tim_ux.get_isol()
+    tim_ux._seed = None
+    cx_seed3 = tim_ux.get_seed()
 
     # THEN
-    assert cx_isol3._healer != ray_text
-    assert cx_isol3 == cx_isol1
+    assert cx_seed3._healer != ray_text
+    assert cx_seed3 == cx_seed1
 
 
-def test_collectunit_set_isol_savesIsolDealSet_isol_None(
+def test_collectunit_set_seed_savesseedDealSet_seed_None(
     collect_dir_setup_cleanup,
 ):
     # GIVEN
@@ -142,71 +142,71 @@ def test_collectunit_set_isol_savesIsolDealSet_isol_None(
         tim_text, get_temp_collectunit_dir(), get_temp_fix_handle()
     )
     tim_ux.create_core_dir_and_files()
-    isol_file_path = (
-        f"{tim_ux._admin._collectunit_dir}/{tim_ux._admin._isol_file_title}"
+    seed_file_path = (
+        f"{tim_ux._admin._collectunit_dir}/{tim_ux._admin._seed_file_title}"
     )
-    cx_isol1 = tim_ux.get_isol()
-    assert os_path.exists(isol_file_path)
-    assert tim_ux._isol != None
+    cx_seed1 = tim_ux.get_seed()
+    assert os_path.exists(seed_file_path)
+    assert tim_ux._seed != None
 
     # WHEN
     uid_text = "Not a real uid"
-    tim_ux._isol._idearoot._uid = uid_text
-    tim_ux.set_isol()
+    tim_ux._seed._idearoot._uid = uid_text
+    tim_ux.set_seed()
 
     # THEN
-    assert os_path.exists(isol_file_path)
-    assert tim_ux._isol is None
-    cx_isol2 = tim_ux.get_isol()
-    assert cx_isol2._idearoot._uid == uid_text
+    assert os_path.exists(seed_file_path)
+    assert tim_ux._seed is None
+    cx_seed2 = tim_ux.get_seed()
+    assert cx_seed2._idearoot._uid == uid_text
 
 
-def test_collectunit_set_isol_savesGivenDealSet_isol_None(
+def test_collectunit_set_seed_savesGivenDealSet_seed_None(
     collect_dir_setup_cleanup,
 ):
     # GIVEN
     tim_text = "Tim"
     ux = collectunit_shop(tim_text, get_temp_collectunit_dir(), get_temp_fix_handle())
     ux.create_core_dir_and_files()
-    isol_file_path = f"{ux._admin._collectunit_dir}/{ux._admin._isol_file_title}"
-    cx_isol1 = ux.get_isol()
-    assert os_path.exists(isol_file_path)
-    assert ux._isol != None
+    seed_file_path = f"{ux._admin._collectunit_dir}/{ux._admin._seed_file_title}"
+    cx_seed1 = ux.get_seed()
+    assert os_path.exists(seed_file_path)
+    assert ux._seed != None
 
     # WHEN
-    isol_uid_text = "this is ._isol uid"
-    ux._isol._idearoot._uid = isol_uid_text
+    seed_uid_text = "this is ._seed uid"
+    ux._seed._idearoot._uid = seed_uid_text
 
     new_cx = DealUnit(_healer=tim_text)
     new_cx_uid_text = "this is pulled DealUnit uid"
     new_cx._idearoot._uid = new_cx_uid_text
 
-    ux.set_isol(new_cx)
+    ux.set_seed(new_cx)
 
     # THEN
-    assert os_path.exists(isol_file_path)
-    assert ux._isol is None
-    assert ux.get_isol()._idearoot._uid != isol_uid_text
-    assert ux.get_isol()._idearoot._uid == new_cx_uid_text
+    assert os_path.exists(seed_file_path)
+    assert ux._seed is None
+    assert ux.get_seed()._idearoot._uid != seed_uid_text
+    assert ux.get_seed()._idearoot._uid == new_cx_uid_text
 
     # GIVEN
-    ux.set_isol(new_cx)
-    assert os_path.exists(isol_file_path)
-    assert ux._isol is None
+    ux.set_seed(new_cx)
+    assert os_path.exists(seed_file_path)
+    assert ux._seed is None
 
     # WHEN
-    ux.set_isol_if_empty()
+    ux.set_seed_if_empty()
 
     # THEN
-    assert ux._isol != None
-    assert os_path.exists(isol_file_path)
+    assert ux._seed != None
+    assert os_path.exists(seed_file_path)
 
     # WHEN
-    isol_uid_text = "this is ._isol uid"
-    ux._isol._idearoot._uid = isol_uid_text
+    seed_uid_text = "this is ._seed uid"
+    ux._seed._idearoot._uid = seed_uid_text
 
 
-def test_collectunit_set_isol_if_emtpy_DoesNotReplace_isol(
+def test_collectunit_set_seed_if_emtpy_DoesNotReplace_seed(
     collect_dir_setup_cleanup,
 ):
     # GIVEN
@@ -216,16 +216,16 @@ def test_collectunit_set_isol_if_emtpy_DoesNotReplace_isol(
     saved_cx = DealUnit(_healer=tim_text)
     saved_cx_uid_text = "this is pulled DealUnit uid"
     saved_cx._idearoot._uid = saved_cx_uid_text
-    ux.set_isol(saved_cx)
-    ux.get_isol()
-    assert ux._isol != None
+    ux.set_seed(saved_cx)
+    ux.get_seed()
+    assert ux._seed != None
 
     # WHEN
-    isol_uid_text = "this is ._isol uid"
-    ux._isol._idearoot._uid = isol_uid_text
-    ux.set_isol_if_empty()
+    seed_uid_text = "this is ._seed uid"
+    ux._seed._idearoot._uid = seed_uid_text
+    ux.set_seed_if_empty()
 
     # THEN
-    assert ux._isol != None
-    assert ux._isol._idearoot._uid == isol_uid_text
-    assert ux._isol._idearoot._uid != saved_cx_uid_text
+    assert ux._seed != None
+    assert ux._seed._idearoot._uid == seed_uid_text
+    assert ux._seed._idearoot._uid != saved_cx_uid_text

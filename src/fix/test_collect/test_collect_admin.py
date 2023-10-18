@@ -28,8 +28,8 @@ def test_admin_exists():
     assert pdx._env_dir != None
     assert pdx._fix_handle != None
     assert pdx._collectunit_dir is None
-    assert pdx._isol_file_title is None
-    assert pdx._isol_file_path is None
+    assert pdx._seed_file_title is None
+    assert pdx._seed_file_path is None
     assert pdx._deal_output_file_title is None
     assert pdx._deal_output_file_path is None
     assert pdx._public_file_title is None
@@ -52,8 +52,8 @@ def test_CollectAdmin_set_dir_CorrectSetsCollectAdminAttribute():
     assert pdx._deals_depot_dir is None
     assert pdx._deals_ignore_dir is None
     assert pdx._deals_digest_dir is None
-    assert pdx._isol_file_title is None
-    assert pdx._isol_file_path is None
+    assert pdx._seed_file_title is None
+    assert pdx._seed_file_path is None
     # WHEN
     pdx.set_dirs()
 
@@ -66,15 +66,15 @@ def test_CollectAdmin_set_dir_CorrectSetsCollectAdminAttribute():
     assert pdx._deals_depot_dir != None
     assert pdx._deals_ignore_dir != None
     assert pdx._deals_digest_dir != None
-    assert pdx._isol_file_title != None
-    assert pdx._isol_file_path != None
+    assert pdx._seed_file_title != None
+    assert pdx._seed_file_path != None
 
     healers_drectory_folder = "collectunits"
     x_collectunits_dir = f"{env_dir}/{healers_drectory_folder}"
     x_collectunit_dir = f"{x_collectunits_dir}/{bob_text}"
     x_public_file_title = f"{bob_text}.json"
-    x_isol_file_title = "isol_deal.json"
-    x_isol_file_path = f"{x_collectunit_dir}/{x_isol_file_title}"
+    x_seed_file_title = "seed_deal.json"
+    x_seed_file_path = f"{x_collectunit_dir}/{x_seed_file_title}"
     x_deal_output_file_title = "output_deal.json"
     x_deal_output_file_path = f"{x_collectunit_dir}/{x_deal_output_file_title}"
     deals_str = "deals"
@@ -84,8 +84,8 @@ def test_CollectAdmin_set_dir_CorrectSetsCollectAdminAttribute():
     x_deals_public_dir = f"{env_dir}/{deals_str}"
     assert pdx._collectunits_dir == x_collectunits_dir
     assert pdx._collectunit_dir == x_collectunit_dir
-    assert pdx._isol_file_title == x_isol_file_title
-    assert pdx._isol_file_path == x_isol_file_path
+    assert pdx._seed_file_title == x_seed_file_title
+    assert pdx._seed_file_path == x_seed_file_path
     assert pdx._deal_output_file_title == x_deal_output_file_title
     assert pdx._deal_output_file_path == x_deal_output_file_path
     assert pdx._deals_depot_dir == x_deals_depot_dir
@@ -105,7 +105,7 @@ def test_CollectAdmin_create_core_dir_and_files_CreatesDirsAndFiles(
     pdx.set_dirs()
     assert os_path.exists(pdx._collectunits_dir) is False
     assert os_path.exists(pdx._collectunit_dir) is False
-    assert os_path.exists(pdx._isol_file_path) is False
+    assert os_path.exists(pdx._seed_file_path) is False
     assert os_path.isdir(pdx._collectunit_dir) is False
     assert os_path.exists(pdx._deals_depot_dir) is False
     assert os_path.exists(pdx._deals_digest_dir) is False
@@ -120,14 +120,14 @@ def test_CollectAdmin_create_core_dir_and_files_CreatesDirsAndFiles(
     print(f"Checking {pdx._collectunit_dir=}")
     assert os_path.exists(pdx._collectunits_dir)
     assert os_path.exists(pdx._collectunit_dir)
-    assert os_path.exists(pdx._isol_file_path)
+    assert os_path.exists(pdx._seed_file_path)
     assert os_path.isdir(pdx._collectunit_dir)
     assert os_path.exists(pdx._deals_depot_dir)
     assert os_path.exists(pdx._deals_digest_dir)
     assert os_path.exists(pdx._deals_ignore_dir)
 
 
-def test_CollectAdmin_create_core_dir_and_files_DoesNotOverWriteIsolDeal(
+def test_CollectAdmin_create_core_dir_and_files_DoesNotOverWriteseedDeal(
     collect_dir_setup_cleanup,
 ):
     # GIVEN create healer
@@ -137,21 +137,21 @@ def test_CollectAdmin_create_core_dir_and_files_DoesNotOverWriteIsolDeal(
     jul_pdx.set_dirs()
     deal_x = example_healers_get_7nodeJRootWithH_deal()
     jul_pdx.create_core_dir_and_files(deal_x)
-    assert os_path.exists(jul_pdx._isol_file_path)
-    # jul_cx = deal_get_from_json(x_func_open_file(jul_pdx._isol_file_path))
+    assert os_path.exists(jul_pdx._seed_file_path)
+    # jul_cx = deal_get_from_json(x_func_open_file(jul_pdx._seed_file_path))
     ex1 = "teesting text"
     x_func_save_file(
         dest_dir=jul_pdx._collectunit_dir,
-        file_title=jul_pdx._isol_file_title,
+        file_title=jul_pdx._seed_file_title,
         file_text=ex1,
     )
-    assert x_func_open_file(jul_pdx._collectunit_dir, jul_pdx._isol_file_title) == ex1
+    assert x_func_open_file(jul_pdx._collectunit_dir, jul_pdx._seed_file_title) == ex1
 
     # WHEN
     jul_pdx.create_core_dir_and_files(deal_x)
 
     # THEN
-    assert x_func_open_file(jul_pdx._collectunit_dir, jul_pdx._isol_file_title) == ex1
+    assert x_func_open_file(jul_pdx._collectunit_dir, jul_pdx._seed_file_title) == ex1
 
 
 def test_CollectAdmin_set_collect_title_WorksCorrectly(collect_dir_setup_cleanup):
@@ -167,19 +167,19 @@ def test_CollectAdmin_set_collect_title_WorksCorrectly(collect_dir_setup_cleanup
     # old_collectunit_dir = f"{env_dir}/collectunits/{old_healer_text}"
     print(f"{pdx._collectunit_dir}")
     print(f"{env_dir}/collectunits/{old_healer_text}")
-    isol_file_title = "isol_deal.json"
-    old_isol_file_path = f"{old_collectunit_dir}/{isol_file_title}"
+    seed_file_title = "seed_deal.json"
+    old_seed_file_path = f"{old_collectunit_dir}/{seed_file_title}"
 
     assert os_path.exists(old_collectunit_dir)
     assert os_path.isdir(old_collectunit_dir)
-    assert os_path.exists(old_isol_file_path)
+    assert os_path.exists(old_seed_file_path)
 
     new_healer_text = "tim"
     new_collectunit_dir = f"{env_dir}/collectunits/{new_healer_text}"
-    new_isol_file_path = f"{new_collectunit_dir}/{isol_file_title}"
+    new_seed_file_path = f"{new_collectunit_dir}/{seed_file_title}"
     assert os_path.exists(new_collectunit_dir) == False
     assert os_path.isdir(new_collectunit_dir) == False
-    assert os_path.exists(new_isol_file_path) == False
+    assert os_path.exists(new_seed_file_path) == False
 
     # WHEN
     pdx.set_collect_title(new_title=new_healer_text)
@@ -187,10 +187,10 @@ def test_CollectAdmin_set_collect_title_WorksCorrectly(collect_dir_setup_cleanup
     # THEN
     assert os_path.exists(old_collectunit_dir) == False
     assert os_path.isdir(old_collectunit_dir) == False
-    assert os_path.exists(old_isol_file_path) == False
+    assert os_path.exists(old_seed_file_path) == False
     assert os_path.exists(new_collectunit_dir)
     assert os_path.isdir(new_collectunit_dir)
-    assert os_path.exists(new_isol_file_path)
+    assert os_path.exists(new_seed_file_path)
 
 
 def test_collectunit_auto_output_to_public_SavesDealToPublicDir(

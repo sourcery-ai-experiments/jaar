@@ -13,8 +13,8 @@ def test_collectunit_set_depot_deal_SetsCorrectInfo(collect_dir_setup_cleanup):
     # GIVEN
     env_dir = get_temp_collectunit_dir()
     x_collect = healer_examples_get_healer_2deal(env_dir, get_temp_fix_handle())
-    assert x_collect._isol.get_partys_depotlink_count() == 2
-    print(f"{x_collect._isol._partys.keys()=}")
+    assert x_collect._seed.get_partys_depotlink_count() == 2
+    print(f"{x_collect._seed._partys.keys()=}")
 
     # WHEN
     assignment_text = "assignment"
@@ -24,5 +24,5 @@ def test_collectunit_set_depot_deal_SetsCorrectInfo(collect_dir_setup_cleanup):
     x_collect.set_depot_deal(DealUnit(_healer=zoa_text), assignment_text)
 
     # THEN
-    print(f"{x_collect._isol._partys.keys()=}")
-    assert x_collect._isol.get_partys_depotlink_count() == 4
+    print(f"{x_collect._seed._partys.keys()=}")
+    assert x_collect._seed.get_partys_depotlink_count() == 4

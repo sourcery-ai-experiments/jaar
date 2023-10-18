@@ -29,7 +29,7 @@ def test_fix_get_output_deal_ReturnsCorrectDealObjScenario1(
     sx.set_healer_depotlink(xia_text, input_cx._healer, depotlink_type="blind_trust")
     sx.save_collectunit_file(collect_title=xia_text)
     xia_healer = sx.get_collectunit(title=xia_text)
-    # print(f"{xia_healer._isol._partys.keys()=}")
+    # print(f"{xia_healer._seed._partys.keys()=}")
 
     # WHEN
     output_cx = sx.get_output_deal(collect_title=xia_text)
@@ -105,7 +105,7 @@ def test_fix_get_output_deal_ReturnsCorrectDealObjScenario2(
     sx.set_healer_depotlink(xia_text, cx2._healer, depotlink_type="blind_trust")
     sx.save_collectunit_file(collect_title=xia_text)
     xia_healer = sx.get_collectunit(title=xia_text)
-    print(f"{xia_healer._isol._partys.keys()=}")
+    print(f"{xia_healer._seed._partys.keys()=}")
 
     # WHEN
     output_cx = sx.get_output_deal(collect_title=xia_text)

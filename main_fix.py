@@ -52,8 +52,8 @@ class MainApp(QApplication):
 
     def editmain_show(self):
         if self.main_window.ignore_deal_x is None:
-            self.main_window.isol = self.main_window.x_collect._admin.open_isol_deal()
-            self.editmain_view.deal_x = self.main_window.isol
+            self.main_window.seed = self.main_window.x_collect._admin.open_seed_deal()
+            self.editmain_view.deal_x = self.main_window.seed
         else:
             self.editmain_view.deal_x = self.main_window.ignore_deal_x
         self.editmain_view.refresh_all()
@@ -101,8 +101,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.ignores_table.setHidden(True)
         self.show_ignores_button.clicked.connect(self.show_ignores_table)
         self.show_digests_button.clicked.connect(self.show_digests_table)
-        self.isol_open_button.clicked.connect(self.open_editmain)
-        self.isol_save_button.clicked.connect(self.save_isol)
+        self.seed_open_button.clicked.connect(self.open_editmain)
+        self.seed_save_button.clicked.connect(self.save_seed)
 
         self.depotlink_insert_button.clicked.connect(self.depotlink_insert)
         self.depotlink_update_button.clicked.connect(self.depotlink_update)
@@ -121,9 +121,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.fix_handle_combo.setCurrentText(first_env)
         self._healer_load(collect_title="ernie")
 
-    def save_isol(self):
-        if self.isol != None:
-            self.x_collect._admin.save_isol_deal(self.isol)
+    def save_seed(self):
+        if self.seed != None:
+            self.x_collect._admin.save_seed_deal(self.seed)
         self.refresh_healer()
 
     def reload_all_src_deals(self):

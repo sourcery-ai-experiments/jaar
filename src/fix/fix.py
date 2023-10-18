@@ -337,7 +337,7 @@ class FixUnit:
 
     def save_collectunit_file(self, collect_title: str):
         x_collectunit = self.get_collectunit(title=collect_title)
-        x_collectunit._admin.save_isol_deal(x_collectunit.get_isol())
+        x_collectunit._admin.save_seed_deal(x_collectunit.get_seed())
 
     def rename_collectunit(self, old_title: str, new_title: str):
         collect_x = self.get_collectunit(title=old_title)

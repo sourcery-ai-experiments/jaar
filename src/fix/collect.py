@@ -33,8 +33,8 @@ class CollectAdmin:
     _fix_handle: str
     _collectunit_dir: str = None
     _collectunits_dir: str = None
-    _isol_file_title: str = None
-    _isol_file_path: str = None
+    _seed_file_title: str = None
+    _seed_file_path: str = None
     _deal_output_file_title: str = None
     _deal_output_file_path: str = None
     _public_file_title: str = None
@@ -48,8 +48,8 @@ class CollectAdmin:
         deals_str = "deals"
         self._collectunits_dir = f"{self._env_dir}/{env_collectunits_folder}"
         self._collectunit_dir = f"{self._collectunits_dir}/{self._collect_title}"
-        self._isol_file_title = "isol_deal.json"
-        self._isol_file_path = f"{self._collectunit_dir}/{self._isol_file_title}"
+        self._seed_file_title = "seed_deal.json"
+        self._seed_file_path = f"{self._collectunit_dir}/{self._seed_file_title}"
         self._deal_output_file_title = "output_deal.json"
         self._deal_output_file_path = (
             f"{self._collectunit_dir}/{self._deal_output_file_title}"
@@ -67,16 +67,16 @@ class CollectAdmin:
 
         rename_dir(src=old_collectunit_dir, dst=self._collectunit_dir)
 
-    def create_core_dir_and_files(self, isol_deal: DealUnit = None):
+    def create_core_dir_and_files(self, seed_deal: DealUnit = None):
         single_dir_create_if_null(x_path=self._collectunit_dir)
         single_dir_create_if_null(x_path=self._deals_public_dir)
         single_dir_create_if_null(x_path=self._deals_depot_dir)
         single_dir_create_if_null(x_path=self._deals_digest_dir)
         single_dir_create_if_null(x_path=self._deals_ignore_dir)
-        if isol_deal is None and self._isol_deal_exists() == False:
-            self.save_isol_deal(self._get_empty_isol_deal())
-        elif isol_deal != None and self._isol_deal_exists() == False:
-            self.save_isol_deal(isol_deal)
+        if seed_deal is None and self._seed_deal_exists() == False:
+            self.save_seed_deal(self._get_empty_seed_deal())
+        elif seed_deal != None and self._seed_deal_exists() == False:
+            self.save_seed_deal(seed_deal)
 
     def _save_deal_to_path(
         self, deal_x: DealUnit, dest_dir: str, file_title: str = None
@@ -114,19 +114,19 @@ class CollectAdmin:
             file_title = f"{deal_x._healer}.json"
         self._save_deal_to_path(deal_x, dest_dir, file_title)
 
-    def save_isol_deal(self, deal_x: DealUnit):
+    def save_seed_deal(self, deal_x: DealUnit):
         deal_x.set_healer(self._collect_title)
-        self._save_deal_to_path(deal_x, self._collectunit_dir, self._isol_file_title)
+        self._save_deal_to_path(deal_x, self._collectunit_dir, self._seed_file_title)
 
     def save_deal_to_depot(self, deal_x: DealUnit):
         dest_dir = self._deals_depot_dir
         self._save_deal_to_path(deal_x, dest_dir)
 
     def save_output_deal(self) -> DealUnit:
-        isol_deal_x = self.open_isol_deal()
-        isol_deal_x.meld(isol_deal_x, party_weight=1)
+        seed_deal_x = self.open_seed_deal()
+        seed_deal_x.meld(seed_deal_x, party_weight=1)
         deal_x = get_meld_of_deal_files(
-            primary_deal=isol_deal_x,
+            primary_deal=seed_deal_x,
             meldees_dir=self._deals_digest_dir,
         )
         dest_dir = self._collectunit_dir
@@ -149,11 +149,11 @@ class CollectAdmin:
         deal_obj.set_deal_metrics()
         return deal_obj
 
-    def open_isol_deal(self) -> DealUnit:
+    def open_seed_deal(self) -> DealUnit:
         x_deal = None
-        if not self._isol_deal_exists():
-            self.save_isol_deal(self._get_empty_isol_deal())
-        ct = x_func_open_file(self._collectunit_dir, self._isol_file_title)
+        if not self._seed_deal_exists():
+            self.save_seed_deal(self._get_empty_seed_deal())
+        ct = x_func_open_file(self._collectunit_dir, self._seed_file_title)
         x_deal = dealunit_get_from_json(x_deal_json=ct)
         x_deal.set_deal_metrics()
         return x_deal
@@ -166,7 +166,7 @@ class CollectAdmin:
         x_deal.set_deal_metrics()
         return x_deal
 
-    def _get_empty_isol_deal(self):
+    def _get_empty_seed_deal(self):
         x_deal = DealUnit(_healer=self._collect_title, _weight=0)
         x_deal.add_partyunit(title=self._collect_title)
         x_deal.set_fix_handle(self._fix_handle)
@@ -178,8 +178,8 @@ class CollectAdmin:
     def erase_digest_deal(self, healer):
         x_func_delete_dir(f"{self._deals_digest_dir}/{healer}.json")
 
-    def erase_isol_deal_file(self):
-        x_func_delete_dir(dir=f"{self._collectunit_dir}/{self._isol_file_title}")
+    def erase_seed_deal_file(self):
+        x_func_delete_dir(dir=f"{self._collectunit_dir}/{self._seed_file_title}")
 
     def raise_exception_if_no_file(self, dir_type: str, healer: str):
         x_deal_file_title = f"{healer}.json"
@@ -190,10 +190,10 @@ class CollectAdmin:
                 f"Healer {self._collect_title} cannot find deal {healer} in {x_deal_file_path}"
             )
 
-    def _isol_deal_exists(self):
+    def _seed_deal_exists(self):
         bool_x = None
         try:
-            x_func_open_file(self._collectunit_dir, self._isol_file_title)
+            x_func_open_file(self._collectunit_dir, self._seed_file_title)
             bool_x = True
         except Exception:
             bool_x = False
@@ -220,10 +220,10 @@ def collectadmin_shop(
 @dataclass
 class CollectUnit:
     _admin: CollectAdmin = None
-    _isol: DealUnit = None
+    _seed: DealUnit = None
 
     def refresh_depot_deals(self):
-        for party_x in self._isol._partys.values():
+        for party_x in self._seed._partys.values():
             if party_x.title != self._admin._collect_title:
                 party_deal = dealunit_get_from_json(
                     x_deal_json=self._admin.open_public_deal(party_x.title)
@@ -242,17 +242,17 @@ class CollectUnit:
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
-        self.set_isol_if_empty()
+        self.set_seed_if_empty()
         self._admin.save_deal_to_depot(deal_x)
         self._set_depotlink(
             deal_x._healer, depotlink_type, creditor_weight, debtor_weight
         )
-        if self.get_isol()._auto_output_to_public:
+        if self.get_seed()._auto_output_to_public:
             self._admin.save_refreshed_output_to_public()
 
     def _set_depotlinks_empty_if_null(self):
-        self.set_isol_if_empty()
-        self._isol.set_partys_empty_if_null()
+        self.set_seed_if_empty()
+        self._seed.set_partys_empty_if_null()
 
     def _set_depotlink(
         self,
@@ -282,7 +282,7 @@ class CollectUnit:
         empty_deal = DealUnit(_healer=self._admin._collect_title)
         empty_deal.set_fix_handle(self._admin._fix_handle)
         assign_deal = src_deal.get_assignment(
-            empty_deal, self.get_isol()._partys, self._admin._collect_title
+            empty_deal, self.get_seed()._partys, self._admin._collect_title
         )
         assign_deal.set_deal_metrics()
         self._admin.save_deal_to_digest(assign_deal, src_deal._healer)
@@ -294,9 +294,9 @@ class CollectUnit:
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
-        party_x = self.get_isol().get_party(title)
+        party_x = self.get_seed().get_party(title)
         if party_x is None:
-            self.get_isol().set_partyunit(
+            self.get_seed().set_partyunit(
                 partyunit_shop(
                     title=title,
                     depotlink_type=link_type,
@@ -313,22 +313,22 @@ class CollectUnit:
         self._admin.erase_digest_deal(deal_healer)
 
     def _del_depotlink(self, partytitle: PartyTitle):
-        self._isol.get_party(partytitle).del_depotlink_type()
+        self._seed.get_party(partytitle).del_depotlink_type()
 
-    def get_isol(self):
-        if self._isol is None:
-            self._isol = self._admin.open_isol_deal()
-        return self._isol
+    def get_seed(self):
+        if self._seed is None:
+            self._seed = self._admin.open_seed_deal()
+        return self._seed
 
-    def set_isol(self, deal_x: DealUnit = None):
+    def set_seed(self, deal_x: DealUnit = None):
         if deal_x != None:
-            self._isol = deal_x
-        self._admin.save_isol_deal(self._isol)
-        self._isol = None
+            self._seed = deal_x
+        self._admin.save_seed_deal(self._seed)
+        self._seed = None
 
-    def set_isol_if_empty(self):
-        # if self._isol is None:
-        self.get_isol()
+    def set_seed_if_empty(self):
+        # if self._seed is None:
+        self.get_seed()
 
     def set_ignore_deal_file(self, dealunit: DealUnit, src_deal_healer: str):
         self._admin.save_ignore_deal(dealunit, src_deal_healer)
@@ -340,8 +340,8 @@ class CollectUnit:
             _collect_title=collect_title, _env_dir=env_dir, _fix_handle=fix_handle
         )
 
-    def create_core_dir_and_files(self, isol_deal: DealUnit = None):
-        self._admin.create_core_dir_and_files(isol_deal)
+    def create_core_dir_and_files(self, seed_deal: DealUnit = None):
+        self._admin.create_core_dir_and_files(seed_deal)
 
 
 def collectunit_shop(
@@ -349,7 +349,7 @@ def collectunit_shop(
 ) -> CollectUnit:
     x_collect = CollectUnit()
     x_collect.set_env_dir(env_dir, title, fix_handle=fix_handle)
-    x_collect.get_isol()
-    x_collect._isol._set_auto_output_to_public(_auto_output_to_public)
-    x_collect.set_isol()
+    x_collect.get_seed()
+    x_collect._seed._set_auto_output_to_public(_auto_output_to_public)
+    x_collect.set_seed()
     return x_collect
