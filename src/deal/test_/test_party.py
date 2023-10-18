@@ -78,6 +78,8 @@ def test_PartyUnit_exists():
     assert bob_party._partyrings is None
     assert bob_party._bank_tax_paid is None
     assert bob_party._bank_tax_diff is None
+    assert bob_party._bank_credit_score is None
+    assert bob_party._bank_credit_rank is None
     assert bob_party.depotlink_type is None
     assert bob_party._output_deal_meld_order is None
 
@@ -344,35 +346,39 @@ def test_PartyUnit_set_deal_agenda_ratio_credit_debt_MethodWorkCorrectly():
 def test_PartyUnit_set_banking_data_MethodWorkCorrectly():
     # GIVEN
     bob_title = "bob"
+    x_deal_agenda_ratio_credit = 0.077
+    x_deal_agenda_ratio_debt = 0.066
+
     bob_party = partyunit_shop(
         title=bob_title,
-        _deal_agenda_ratio_credit=0.077,
-        _deal_agenda_ratio_debt=0.066,
+        _deal_agenda_ratio_credit=x_deal_agenda_ratio_credit,
+        _deal_agenda_ratio_debt=x_deal_agenda_ratio_debt,
     )
     assert bob_party._deal_agenda_ratio_credit == 0.077
     assert bob_party._deal_agenda_ratio_debt == 0.066
     assert bob_party._bank_tax_paid is None
     assert bob_party._bank_tax_diff is None
+    assert bob_party._bank_credit_score is None
+    assert bob_party._bank_credit_rank is None
 
     # WHEN
-    tax_paid_v1 = 0.2
-    tax_diff = 0.123
-    bob_party.set_banking_data(tax_paid=tax_paid_v1, tax_diff=tax_diff)
+    x_tax_paid = 0.2
+    x_tax_diff = 0.123
+    x_bank_credit_score = 900
+    x_bank_credit_rank = 45
+    bob_party.set_banking_data(
+        tax_paid=x_tax_paid,
+        tax_diff=x_tax_diff,
+        credit_score=x_bank_credit_score,
+        credit_rank=x_bank_credit_rank,
+    )
     # THEN
-    assert bob_party._deal_agenda_ratio_credit == 0.077
-    assert bob_party._deal_agenda_ratio_debt == 0.066
-    assert bob_party._bank_tax_paid == tax_paid_v1
-    assert bob_party._bank_tax_diff == tax_diff
-
-    # tax_paid_v2 = 0.3
-
-    # # WHEN / Then
-    # with pytest_raises(Exception) as excinfo:
-    #     bob_party.set_banking_data(tax_paid=tax_paid_v2, tax_diff=tax_diff)
-    # assert (
-    #     str(excinfo.value)
-    #     == f"PartyUnit.set_banking_data fail: tax_paid={tax_paid_v2} + tax_diff={tax_diff} not equal to _deal_agenda_ratio_credit={bob_party._deal_agenda_ratio_credit}"
-    # )
+    assert bob_party._deal_agenda_ratio_credit == x_deal_agenda_ratio_credit
+    assert bob_party._deal_agenda_ratio_debt == x_deal_agenda_ratio_debt
+    assert bob_party._bank_tax_paid == x_tax_paid
+    assert bob_party._bank_tax_diff == x_tax_diff
+    assert bob_party._bank_credit_score == x_bank_credit_score
+    assert bob_party._bank_credit_rank == x_bank_credit_rank
 
 
 def test_PartyUnit_clear_banking_data_MethodWorkCorrectly():
@@ -383,9 +389,18 @@ def test_PartyUnit_clear_banking_data_MethodWorkCorrectly():
         _deal_agenda_ratio_credit=0.355,
         _deal_agenda_ratio_debt=0.066,
     )
-    bob_party.set_banking_data(tax_paid=0.399, tax_diff=0.044)
+    x_bank_credit_score = 900
+    x_bank_credit_rank = 45
+    bob_party.set_banking_data(
+        tax_paid=0.399,
+        tax_diff=0.044,
+        credit_score=x_bank_credit_score,
+        credit_rank=x_bank_credit_rank,
+    )
     assert bob_party._bank_tax_paid == 0.399
     assert bob_party._bank_tax_diff == 0.044
+    assert bob_party._bank_credit_score == x_bank_credit_score
+    assert bob_party._bank_credit_rank == x_bank_credit_rank
 
     # WHEN
     bob_party.clear_banking_data()
@@ -393,6 +408,8 @@ def test_PartyUnit_clear_banking_data_MethodWorkCorrectly():
     # THEN
     assert bob_party._bank_tax_paid is None
     assert bob_party._bank_tax_diff is None
+    assert bob_party._bank_credit_score is None
+    assert bob_party._bank_credit_rank is None
 
 
 def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():

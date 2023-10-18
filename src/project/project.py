@@ -17,9 +17,9 @@ from sqlite3 import connect as sqlite3_connect, Connection
 from src.project.bank_sqlstr import (
     get_river_flow_table_delete_sqlstr,
     get_river_flow_table_insert_sqlstr,
-    get_river_tparty_table_delete_sqlstr,
-    get_river_tparty_table_insert_sqlstr,
-    get_river_tparty_dict,
+    get_river_tally_table_delete_sqlstr,
+    get_river_tally_table_insert_sqlstr,
+    get_river_tally_dict,
     get_river_bucket_table_insert_sqlstr,
     get_create_table_if_not_exist_sqlstrs,
     get_ledger_table_insert_sqlstr,
@@ -28,7 +28,7 @@ from src.project.bank_sqlstr import (
     LedgerUnit,
     RiverLedgerUnit,
     RiverFlowUnit,
-    RiverTpartyUnit,
+    RiverTallyUnit,
     IdeaCatalog,
     get_idea_catalog_table_insert_sqlstr,
     get_idea_catalog_dict,
@@ -122,7 +122,7 @@ class ProjectUnit:
                 # change curr_onset for next
                 curr_onset += curr_range
 
-        self._set_river_tpartys_buckets(deal_healer)
+        self._set_river_tallys_buckets(deal_healer)
 
     def _insert_river_flow_grab_river_ledger(
         self, river_flow_x: RiverFlowUnit
@@ -140,7 +140,7 @@ class ProjectUnit:
     def _clear_all_source_river_data(self, deal_healer: str):
         with self.get_bank_conn() as bank_conn:
             flow_s = get_river_flow_table_delete_sqlstr(deal_healer)
-            mstr_s = get_river_tparty_table_delete_sqlstr(deal_healer)
+            mstr_s = get_river_tally_table_delete_sqlstr(deal_healer)
             bank_conn.execute(flow_s)
             bank_conn.execute(mstr_s)
 
@@ -164,20 +164,20 @@ class ProjectUnit:
             source_river_ledger = get_river_ledger_unit(bank_conn, root_river_flow)
         return source_river_ledger
 
-    def _set_river_tpartys_buckets(self, deal_healer: str):
+    def _set_river_tallys_buckets(self, deal_healer: str):
         with self.get_bank_conn() as bank_conn:
-            bank_conn.execute(get_river_tparty_table_insert_sqlstr(deal_healer))
+            bank_conn.execute(get_river_tally_table_insert_sqlstr(deal_healer))
             bank_conn.execute(get_river_bucket_table_insert_sqlstr(deal_healer))
 
-            sal_river_tpartys = get_river_tparty_dict(bank_conn, deal_healer)
+            sal_river_tallys = get_river_tally_dict(bank_conn, deal_healer)
             deal_x = self.get_public_deal(healer=deal_healer)
-            deal_x.set_banking_attr_partyunits(sal_river_tpartys)
+            deal_x.set_banking_attr_partyunits(sal_river_tallys)
             self.save_public_deal(deal_x=deal_x)
 
-    def get_river_tpartys(self, deal_healer: str) -> dict[str:RiverTpartyUnit]:
+    def get_river_tallys(self, deal_healer: str) -> dict[str:RiverTallyUnit]:
         with self.get_bank_conn() as bank_conn:
-            river_tpartys = get_river_tparty_dict(bank_conn, deal_healer)
-        return river_tpartys
+            river_tallys = get_river_tally_dict(bank_conn, deal_healer)
+        return river_tallys
 
     def refresh_bank_metrics(self, in_memory: bool = None):
         if in_memory is None and self._bank_db != None:

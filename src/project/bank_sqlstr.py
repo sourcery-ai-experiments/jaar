@@ -213,17 +213,17 @@ def get_river_bucket_dict(
     return dict_x
 
 
-def get_river_tparty_table_delete_sqlstr(currency_deal_healer: str) -> str:
+def get_river_tally_table_delete_sqlstr(currency_deal_healer: str) -> str:
     return f"""
-        DELETE FROM river_tparty
+        DELETE FROM river_tally
         WHERE currency_title = '{currency_deal_healer}' 
         ;
     """
 
 
-def get_river_tparty_table_create_sqlstr() -> str:
+def get_river_tally_table_create_sqlstr() -> str:
     return """
-        CREATE TABLE IF NOT EXISTS river_tparty (
+        CREATE TABLE IF NOT EXISTS river_tally (
           currency_title VARCHAR(255) NOT NULL
         , tax_title VARCHAR(255) NOT NULL
         , tax_total FLOAT NOT NULL
@@ -236,9 +236,9 @@ def get_river_tparty_table_create_sqlstr() -> str:
     """
 
 
-def get_river_tparty_table_insert_sqlstr(currency_deal_healer: str) -> str:
+def get_river_tally_table_insert_sqlstr(currency_deal_healer: str) -> str:
     return f"""
-        INSERT INTO river_tparty (
+        INSERT INTO river_tally (
           currency_title
         , tax_title
         , tax_total
@@ -260,7 +260,7 @@ def get_river_tparty_table_insert_sqlstr(currency_deal_healer: str) -> str:
 
 
 @dataclass
-class RiverTpartyUnit:
+class RiverTallyUnit:
     currency_title: str
     tax_title: str
     tax_total: float
@@ -268,9 +268,9 @@ class RiverTpartyUnit:
     tax_diff: float
 
 
-def get_river_tparty_dict(
+def get_river_tally_dict(
     db_conn: Connection, currency_deal_healer: str
-) -> dict[str:RiverTpartyUnit]:
+) -> dict[str:RiverTallyUnit]:
     sqlstr = f"""
         SELECT
           currency_title
@@ -278,7 +278,7 @@ def get_river_tparty_dict(
         , tax_total
         , debt
         , tax_diff
-        FROM river_tparty
+        FROM river_tally
         WHERE currency_title = '{currency_deal_healer}'
         ;
     """
@@ -286,14 +286,14 @@ def get_river_tparty_dict(
     results = db_conn.execute(sqlstr)
 
     for row in results.fetchall():
-        river_tparty_x = RiverTpartyUnit(
+        river_tally_x = RiverTallyUnit(
             currency_title=row[0],
             tax_title=row[1],
             tax_total=row[2],
             debt=row[3],
             tax_diff=row[4],
         )
-        dict_x[river_tparty_x.tax_title] = river_tparty_x
+        dict_x[river_tally_x.tax_title] = river_tally_x
     return dict_x
 
 
@@ -645,7 +645,7 @@ def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x.append(get_ledger_table_create_sqlstr())
     list_x.append(get_river_flow_table_create_sqlstr())
     list_x.append(get_river_bucket_table_create_sqlstr())
-    list_x.append(get_river_tparty_table_create_sqlstr())
+    list_x.append(get_river_tally_table_create_sqlstr())
     list_x.append(get_groupunit_catalog_table_create_sqlstr())
     return list_x
 

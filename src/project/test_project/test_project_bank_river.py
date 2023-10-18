@@ -8,13 +8,13 @@ from src.project.examples.project_env_kit import (
 from pytest import raises as pytest_raises
 from src.project.y_func import check_connection, get_single_result_back
 from src.project.bank_sqlstr import (
-    get_river_tparty_dict,
+    get_river_tally_dict,
     get_river_flow_dict,
     get_table_count_sqlstr,
 )
 
 
-def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable01(
+def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example project with 4 Healers, each with 3 Partyunits = 12 ledger rows
@@ -44,10 +44,10 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable01
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 4
 
-    sqlstr_count_river_tparty = get_table_count_sqlstr("river_tparty")
+    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 0
 
     # WHEN
     sx.set_river_sphere_for_deal(deal_healer=sal_text)
@@ -70,13 +70,13 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable01
     assert flow_3.river_tree_level == 2
     assert flow_3.parent_flow_num == 1
 
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 2
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 2
 
     with sx.get_bank_conn() as bank_conn:
-        river_tpartys = get_river_tparty_dict(bank_conn, sal_text)
-    assert len(river_tpartys) == 2
-    river_sal_tax_bob = river_tpartys.get(bob_text)
-    river_sal_tax_tom = river_tpartys.get(tom_text)
+        river_tallys = get_river_tally_dict(bank_conn, sal_text)
+    assert len(river_tallys) == 2
+    river_sal_tax_bob = river_tallys.get(bob_text)
+    river_sal_tax_tom = river_tallys.get(tom_text)
 
     print(f"{river_sal_tax_bob=}")
     print(f"{river_sal_tax_tom=}")
@@ -85,7 +85,7 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable01
     assert river_sal_tax_tom.tax_total == 0.75
 
 
-def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable02(
+def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable02(
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 deals, 100% of river flows to sal
@@ -120,10 +120,10 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable02
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 6
 
-    sqlstr_count_river_tparty = get_table_count_sqlstr("river_tparty")
+    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 0
 
     # WHEN
     sx.set_river_sphere_for_deal(deal_healer=sal_text)
@@ -135,20 +135,20 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable02
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 1
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 1
 
     with sx.get_bank_conn() as bank_conn:
-        river_tpartys = get_river_tparty_dict(bank_conn, sal_text)
-    assert len(river_tpartys) == 1
-    assert river_tpartys.get(bob_text) is None
-    assert river_tpartys.get(tom_text) is None
-    river_sal_tax_elu = river_tpartys.get(elu_text)
+        river_tallys = get_river_tally_dict(bank_conn, sal_text)
+    assert len(river_tallys) == 1
+    assert river_tallys.get(bob_text) is None
+    assert river_tallys.get(tom_text) is None
+    river_sal_tax_elu = river_tallys.get(elu_text)
 
     print(f"{river_sal_tax_elu=}")
     assert river_sal_tax_elu.tax_total == 1.0
 
 
-def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable03(
+def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable03(
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 deals, 85% of river flows to sal
@@ -183,10 +183,10 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable03
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 6
 
-    sqlstr_count_river_tparty = get_table_count_sqlstr("river_tparty")
+    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 0
 
     # WHEN
     sx.set_river_sphere_for_deal(deal_healer=sal_text)
@@ -198,25 +198,25 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable03
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 2
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 2
 
     with sx.get_bank_conn() as bank_conn:
-        river_tpartys = get_river_tparty_dict(bank_conn, sal_text)
-    assert len(river_tpartys) == 2
-    assert river_tpartys.get(bob_text) != None
-    assert river_tpartys.get(tom_text) != None
-    assert river_tpartys.get(ava_text) is None
+        river_tallys = get_river_tally_dict(bank_conn, sal_text)
+    assert len(river_tallys) == 2
+    assert river_tallys.get(bob_text) != None
+    assert river_tallys.get(tom_text) != None
+    assert river_tallys.get(ava_text) is None
 
-    river_sal_tax_bob = river_tpartys.get(bob_text)
+    river_sal_tax_bob = river_tallys.get(bob_text)
     print(f"{river_sal_tax_bob=}")
-    river_sal_tax_tom = river_tpartys.get(tom_text)
+    river_sal_tax_tom = river_tallys.get(tom_text)
     print(f"{river_sal_tax_tom=}")
 
     assert round(river_sal_tax_bob.tax_total, 15) == 0.15
     assert river_sal_tax_tom.tax_total == 0.7
 
 
-def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable04(
+def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable04(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 deals, 85% of river flows to sal, left over %15 goes on endless loop
@@ -258,10 +258,10 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable04
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 8
 
-    sqlstr_count_river_tparty = get_table_count_sqlstr("river_tparty")
+    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 0
 
     # WHEN
     sx.set_river_sphere_for_deal(deal_healer=sal_text)
@@ -273,25 +273,25 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable04
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 2
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 2
 
     with sx.get_bank_conn() as bank_conn:
-        river_tpartys = get_river_tparty_dict(bank_conn, sal_text)
-    assert len(river_tpartys) == 2
-    assert river_tpartys.get(bob_text) != None
-    assert river_tpartys.get(tom_text) != None
-    assert river_tpartys.get(ava_text) is None
+        river_tallys = get_river_tally_dict(bank_conn, sal_text)
+    assert len(river_tallys) == 2
+    assert river_tallys.get(bob_text) != None
+    assert river_tallys.get(tom_text) != None
+    assert river_tallys.get(ava_text) is None
 
-    river_sal_tax_bob = river_tpartys.get(bob_text)
+    river_sal_tax_bob = river_tallys.get(bob_text)
     print(f"{river_sal_tax_bob=}")
-    river_sal_tax_tom = river_tpartys.get(tom_text)
+    river_sal_tax_tom = river_tallys.get(tom_text)
     print(f"{river_sal_tax_tom=}")
 
     assert round(river_sal_tax_bob.tax_total, 15) == 0.15
     assert river_sal_tax_tom.tax_total == 0.7
 
 
-def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable05(
+def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable05(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 deals, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
@@ -334,10 +334,10 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable05
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 9
 
-    sqlstr_count_river_tparty = get_table_count_sqlstr("river_tparty")
+    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 0
 
     # WHEN
     sx.set_river_sphere_for_deal(deal_healer=sal_text)
@@ -349,19 +349,19 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable05
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 3
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 3
 
     with sx.get_bank_conn() as bank_conn:
-        river_tpartys = get_river_tparty_dict(bank_conn, sal_text)
-    assert len(river_tpartys) == 3
-    assert river_tpartys.get(bob_text) != None
-    assert river_tpartys.get(tom_text) != None
-    assert river_tpartys.get(elu_text) != None
-    assert river_tpartys.get(ava_text) is None
+        river_tallys = get_river_tally_dict(bank_conn, sal_text)
+    assert len(river_tallys) == 3
+    assert river_tallys.get(bob_text) != None
+    assert river_tallys.get(tom_text) != None
+    assert river_tallys.get(elu_text) != None
+    assert river_tallys.get(ava_text) is None
 
-    river_sal_tax_bob = river_tpartys.get(bob_text)
-    river_sal_tax_tom = river_tpartys.get(tom_text)
-    river_sal_tax_elu = river_tpartys.get(elu_text)
+    river_sal_tax_bob = river_tallys.get(bob_text)
+    river_sal_tax_tom = river_tallys.get(tom_text)
+    river_sal_tax_elu = river_tallys.get(elu_text)
     print(f"{river_sal_tax_bob=}")
     print(f"{river_sal_tax_tom=}")
     print(f"{river_sal_tax_elu=}")
@@ -407,7 +407,7 @@ def test_project_set_river_sphere_for_deal_CorrectlyDeletesPreviousRiver(
     sx.set_river_sphere_for_deal(deal_healer=sal_text)
     sx.set_river_sphere_for_deal(deal_healer=elu_text)
 
-    sqlstr_count_river_tparty = get_table_count_sqlstr("river_tparty")
+    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 16
 
@@ -415,7 +415,7 @@ def test_project_set_river_sphere_for_deal_CorrectlyDeletesPreviousRiver(
         river_flows = get_river_flow_dict(bank_conn, currency_deal_healer=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 3
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 3
 
     # WHEN
     # sal.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
@@ -427,7 +427,7 @@ def test_project_set_river_sphere_for_deal_CorrectlyDeletesPreviousRiver(
         river_flows = get_river_flow_dict(bank_conn, currency_deal_healer=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 3
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 3
 
 
 def test_project_set_river_sphere_for_deal_CorrectlyUsesMaxFlowsCount(
@@ -473,10 +473,10 @@ def test_project_set_river_sphere_for_deal_CorrectlyUsesMaxFlowsCount(
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 9
 
-    sqlstr_count_river_tparty = get_table_count_sqlstr("river_tparty")
+    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 0
 
     # WHEN
     mtc = 13
@@ -491,7 +491,7 @@ def test_project_set_river_sphere_for_deal_CorrectlyUsesMaxFlowsCount(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == mtc
 
 
-def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable05(
+def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable05(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 deals, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
@@ -534,10 +534,10 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable05
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 9
 
-    sqlstr_count_river_tparty = get_table_count_sqlstr("river_tparty")
+    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 0
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 0
 
     # WHEN
     sx.set_river_sphere_for_deal(deal_healer=sal_text)
@@ -549,20 +549,20 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable05
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 3
+    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 3
 
     with sx.get_bank_conn() as bank_conn:
-        river_tpartys = get_river_tparty_dict(bank_conn, sal_text)
-    river_tpartys = sx.get_river_tpartys(sal_text)
-    assert len(river_tpartys) == 3
-    assert river_tpartys.get(bob_text) != None
-    assert river_tpartys.get(tom_text) != None
-    assert river_tpartys.get(elu_text) != None
-    assert river_tpartys.get(ava_text) is None
+        river_tallys = get_river_tally_dict(bank_conn, sal_text)
+    river_tallys = sx.get_river_tallys(sal_text)
+    assert len(river_tallys) == 3
+    assert river_tallys.get(bob_text) != None
+    assert river_tallys.get(tom_text) != None
+    assert river_tallys.get(elu_text) != None
+    assert river_tallys.get(ava_text) is None
 
-    river_sal_tax_bob = river_tpartys.get(bob_text)
-    river_sal_tax_tom = river_tpartys.get(tom_text)
-    river_sal_tax_elu = river_tpartys.get(elu_text)
+    river_sal_tax_bob = river_tallys.get(bob_text)
+    river_sal_tax_tom = river_tallys.get(tom_text)
+    river_sal_tax_elu = river_tallys.get(elu_text)
     print(f"{river_sal_tax_bob=}")
     print(f"{river_sal_tax_tom=}")
     print(f"{river_sal_tax_elu=}")
@@ -701,57 +701,57 @@ def test_project_set_river_sphere_for_deal_CorrectlyUpatesDealPartyUnits(
     sx.set_river_sphere_for_deal(deal_healer=sal_text)
 
     # THEN
-    sal_river_tpartys = sx.get_river_tpartys(deal_healer=sal_text)
-    assert len(sal_river_tpartys) == 3
+    sal_river_tallys = sx.get_river_tallys(deal_healer=sal_text)
+    assert len(sal_river_tallys) == 3
 
     sal_deal_after = sx.get_public_deal(healer=sal_text)
 
-    bob_tparty = sal_river_tpartys.get(bob_text)
-    tom_tparty = sal_river_tpartys.get(tom_text)
-    elu_tparty = sal_river_tpartys.get(elu_text)
-    assert bob_tparty.tax_title == bob_text
-    assert tom_tparty.tax_title == tom_text
-    assert elu_tparty.tax_title == elu_text
-    assert bob_tparty.currency_title == sal_text
-    assert tom_tparty.currency_title == sal_text
-    assert elu_tparty.currency_title == sal_text
+    bob_tally = sal_river_tallys.get(bob_text)
+    tom_tally = sal_river_tallys.get(tom_text)
+    elu_tally = sal_river_tallys.get(elu_text)
+    assert bob_tally.tax_title == bob_text
+    assert tom_tally.tax_title == tom_text
+    assert elu_tally.tax_title == elu_text
+    assert bob_tally.currency_title == sal_text
+    assert tom_tally.currency_title == sal_text
+    assert elu_tally.currency_title == sal_text
 
     bob_party = sal_deal_after._partys.get(bob_text)
     tom_party = sal_deal_after._partys.get(tom_text)
     ava_party = sal_deal_after._partys.get(ava_text)
     elu_party = sal_deal_after._partys.get(elu_text)
 
-    assert bob_tparty.tax_total == bob_party._bank_tax_paid
-    assert bob_tparty.tax_diff == bob_party._bank_tax_diff
-    assert tom_tparty.tax_total == tom_party._bank_tax_paid
-    assert tom_tparty.tax_diff == tom_party._bank_tax_diff
+    assert bob_tally.tax_total == bob_party._bank_tax_paid
+    assert bob_tally.tax_diff == bob_party._bank_tax_diff
+    assert tom_tally.tax_total == tom_party._bank_tax_paid
+    assert tom_tally.tax_diff == tom_party._bank_tax_diff
     assert elu_party is None
-    assert elu_tparty.tax_total < 0.31 and elu_tparty.tax_total > 0.3
-    assert elu_tparty.tax_diff is None
+    assert elu_tally.tax_total < 0.31 and elu_tally.tax_total > 0.3
+    assert elu_tally.tax_diff is None
 
-    # for tparty_uid, sal_river_tparty in sal_river_tpartys.items():
-    #     print(f"{tparty_uid=} {sal_river_tparty=}")
-    #     assert sal_river_tparty.currency_title == sal_text
-    #     assert sal_river_tparty.tax_title in [bob_text, tom_text, elu_text]
-    #     partyunit_x = sal_deal_after._partys.get(sal_river_tparty.tax_title)
+    # for tally_uid, sal_river_tally in sal_river_tallys.items():
+    #     print(f"{tally_uid=} {sal_river_tally=}")
+    #     assert sal_river_tally.currency_title == sal_text
+    #     assert sal_river_tally.tax_title in [bob_text, tom_text, elu_text]
+    #     partyunit_x = sal_deal_after._partys.get(sal_river_tally.tax_title)
     #     if partyunit_x != None:
     #         # print(
-    #         #     f"{sal_river_tparty.currency_title=} {sal_river_tparty.tax_title=} {partyunit_x.title=} tax_total: {sal_river_tparty.tax_total} Tax Paid: {partyunit_x._bank_tax_paid}"
+    #         #     f"{sal_river_tally.currency_title=} {sal_river_tally.tax_title=} {partyunit_x.title=} tax_total: {sal_river_tally.tax_total} Tax Paid: {partyunit_x._bank_tax_paid}"
     #         # )
     #         # print(
-    #         #     f"{sal_river_tparty.currency_title=} {sal_river_tparty.tax_title=} {partyunit_x.title=} tax_diff:  {sal_river_tparty.tax_diff} Tax Paid: {partyunit_x._bank_tax_diff}"
+    #         #     f"{sal_river_tally.currency_title=} {sal_river_tally.tax_title=} {partyunit_x.title=} tax_diff:  {sal_river_tally.tax_diff} Tax Paid: {partyunit_x._bank_tax_diff}"
     #         # )
-    #         assert sal_river_tparty.tax_total == partyunit_x._bank_tax_paid
-    #         assert sal_river_tparty.tax_diff == partyunit_x._bank_tax_diff
+    #         assert sal_river_tally.tax_total == partyunit_x._bank_tax_paid
+    #         assert sal_river_tally.tax_diff == partyunit_x._bank_tax_diff
 
-    assert sal_river_tpartys.get(ava_text) is None
+    assert sal_river_tallys.get(ava_text) is None
     assert ava_party._bank_tax_paid is None
     assert ava_party._bank_tax_diff is None
 
     # for partyunit_x in sal_deal_after._partys.values():
     #     print(f"sal_deal_after {partyunit_x.title=} {partyunit_x._bank_tax_paid=}")
-    #     river_tparty_x = sal_river_tpartys.get(partyunit_x.title)
-    #     if river_tparty_x is None:
+    #     river_tally_x = sal_river_tallys.get(partyunit_x.title)
+    #     if river_tally_x is None:
     #         assert partyunit_x._bank_tax_paid is None
     #         assert partyunit_x._bank_tax_diff is None
     #     else:

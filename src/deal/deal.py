@@ -135,13 +135,16 @@ class DealUnit:
         )
         self.set_deal_metrics()
 
-    def set_banking_attr_partyunits(self, river_tpartys: dict):
+    def set_banking_attr_partyunits(self, river_tallys: dict):
         for partyunit_x in self._partys.values():
             partyunit_x.clear_banking_data()
-            river_tparty = river_tpartys.get(partyunit_x.title)
-            if river_tparty != None:
+            river_tally = river_tallys.get(partyunit_x.title)
+            if river_tally != None:
                 partyunit_x.set_banking_data(
-                    river_tparty.tax_total, river_tparty.tax_diff
+                    tax_paid=river_tally.tax_total,
+                    tax_diff=river_tally.tax_diff,
+                    credit_score=None,
+                    credit_rank=None,
                 )
 
     def import_external_partyunit_metrics(

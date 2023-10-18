@@ -11,8 +11,8 @@ from src.project.bank_sqlstr import (
     get_river_bucket_table_insert_sqlstr,
     get_river_bucket_dict,
     get_river_bucket_table_delete_sqlstr,
-    get_river_tparty_table_insert_sqlstr,
-    get_river_tparty_dict,
+    get_river_tally_table_insert_sqlstr,
+    get_river_tally_dict,
     get_ledger_table_insert_sqlstr,
     get_ledger_dict,
     LedgerUnit,
@@ -334,7 +334,7 @@ def test_RiverLedgerUnit_Exists():
     assert abs(river_ledger_unit.get_range() - 0.2) < 0.00000001
 
 
-def test_get_river_tparty_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_get_river_tally_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example project with 4 Healers, each with 3 Partyunits = 12 ledger rows
@@ -396,33 +396,33 @@ def test_get_river_tparty_table_insert_sqlstr_CorrectlyPopulatesTable01(
         bank_conn.execute(ss0)
 
     # WHEN
-    mstr_sqlstr = get_river_tparty_table_insert_sqlstr(currency_deal_healer=bob_text)
+    mstr_sqlstr = get_river_tally_table_insert_sqlstr(currency_deal_healer=bob_text)
     with sx.get_bank_conn() as bank_conn:
         print(mstr_sqlstr)
         bank_conn.execute(mstr_sqlstr)
 
     # THEN
     with sx.get_bank_conn() as bank_conn:
-        river_tpartys = get_river_tparty_dict(bank_conn, currency_deal_healer=bob_text)
-        print(f"{river_tpartys=}")
+        river_tallys = get_river_tally_dict(bank_conn, currency_deal_healer=bob_text)
+        print(f"{river_tallys=}")
 
-    assert len(river_tpartys) == 2
+    assert len(river_tallys) == 2
 
-    bob_tom_x = river_tpartys.get(tom_text)
+    bob_tom_x = river_tallys.get(tom_text)
     assert bob_tom_x.currency_title == bob_text
     assert bob_tom_x.tax_title == tom_text
     assert bob_tom_x.tax_total == 0.2
     assert bob_tom_x.debt == 0.411
     assert round(bob_tom_x.tax_diff, 15) == 0.211
 
-    bob_sal_x = river_tpartys.get(sal_text)
+    bob_sal_x = river_tallys.get(sal_text)
     assert bob_sal_x.currency_title == bob_text
     assert bob_sal_x.tax_title == sal_text
     assert bob_sal_x.tax_total == 0.8
     assert bob_sal_x.debt == 0.455
     assert round(bob_sal_x.tax_diff, 15) == -0.345
 
-    # for value in river_tpartys.values():
+    # for value in river_tallys.values():
     #     assert value.currency_title == bob_text
     #     assert value.tax_title in [tom_text, sal_text]
     #     assert value.tax_total in [0.2, 0.8]

@@ -33,7 +33,7 @@ def test_project_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     curr_tables = {
         0: "dealunits",
         1: "ledger",
-        2: "river_tparty",
+        2: "river_tally",
         3: "river_flow",
         4: "river_bucket",
         5: "idea_catalog",

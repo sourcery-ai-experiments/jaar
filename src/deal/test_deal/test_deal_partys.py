@@ -7,7 +7,7 @@ from src.deal.examples.example_deals import (
 from src.deal.deal import DealUnit, get_intersection_of_partys
 from src.deal.idea import IdeaKid
 from pytest import raises as pytest_raises
-from src.project.bank_sqlstr import RiverTpartyUnit
+from src.project.bank_sqlstr import RiverTallyUnit
 
 
 def test_deal_partys_exists():
@@ -1248,16 +1248,16 @@ def test_deal_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr():
     assert x_deal._partys.get(elu_text)._bank_tax_paid == 0.003
     assert x_deal._partys.get(elu_text)._bank_tax_diff == 0.007
 
-    river_tparty_sam = RiverTpartyUnit(bob_text, sam_text, 0.209, 0, 0.034)
-    river_tparty_wil = RiverTpartyUnit(bob_text, wil_text, 0.501, 0, 0.024)
-    river_tparty_fry = RiverTpartyUnit(bob_text, fry_text, 0.111, 0, 0.006)
-    river_tpartys = {
-        river_tparty_sam.tax_title: river_tparty_sam,
-        river_tparty_wil.tax_title: river_tparty_wil,
-        river_tparty_fry.tax_title: river_tparty_fry,
+    river_tally_sam = RiverTallyUnit(bob_text, sam_text, 0.209, 0, 0.034)
+    river_tally_wil = RiverTallyUnit(bob_text, wil_text, 0.501, 0, 0.024)
+    river_tally_fry = RiverTallyUnit(bob_text, fry_text, 0.111, 0, 0.006)
+    river_tallys = {
+        river_tally_sam.tax_title: river_tally_sam,
+        river_tally_wil.tax_title: river_tally_wil,
+        river_tally_fry.tax_title: river_tally_fry,
     }
     # WHEN
-    x_deal.set_banking_attr_partyunits(river_tpartys=river_tpartys)
+    x_deal.set_banking_attr_partyunits(river_tallys=river_tallys)
 
     # THEN
     assert x_deal._partys.get(sam_text)._bank_tax_paid == 0.209
