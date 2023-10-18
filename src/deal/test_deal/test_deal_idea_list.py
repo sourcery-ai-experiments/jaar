@@ -19,7 +19,7 @@ def _check_all_elements_in_dict_are_correct_type(x_dict: dict, type_str: str) ->
     return bool_x
 
 
-def test_deal_yoke_dict_isDictionaryAndIsFullyPopulated():
+def test_deal_idea_dict_isDictionaryAndIsFullyPopulated():
     # GIVEN
     x_deal = get_deal_with_4_levels_and_2requireds()
 
