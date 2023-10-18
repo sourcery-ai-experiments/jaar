@@ -1248,9 +1248,9 @@ def test_deal_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr():
     assert x_deal._partys.get(elu_text)._bank_tax_paid == 0.003
     assert x_deal._partys.get(elu_text)._bank_tax_diff == 0.007
 
-    river_tally_sam = RiverTallyUnit(bob_text, sam_text, 0.209, 0, 0.034)
-    river_tally_wil = RiverTallyUnit(bob_text, wil_text, 0.501, 0, 0.024)
-    river_tally_fry = RiverTallyUnit(bob_text, fry_text, 0.111, 0, 0.006)
+    river_tally_sam = RiverTallyUnit(bob_text, sam_text, 0.209, 0, 0.034, None, None)
+    river_tally_wil = RiverTallyUnit(bob_text, wil_text, 0.501, 0, 0.024, None, None)
+    river_tally_fry = RiverTallyUnit(bob_text, fry_text, 0.111, 0, 0.006, None, None)
     river_tallys = {
         river_tally_sam.tax_title: river_tally_sam,
         river_tally_wil.tax_title: river_tally_wil,

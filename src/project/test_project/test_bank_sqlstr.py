@@ -11,6 +11,7 @@ from src.project.bank_sqlstr import (
     get_river_bucket_table_insert_sqlstr,
     get_river_bucket_dict,
     get_river_bucket_table_delete_sqlstr,
+    RiverTallyUnit,
     get_river_tally_table_insert_sqlstr,
     get_river_tally_dict,
     get_ledger_table_insert_sqlstr,
@@ -332,6 +333,37 @@ def test_RiverLedgerUnit_Exists():
     assert river_ledger_unit.flow_num == 89
     assert river_ledger_unit._ledgers == ledger_dict
     assert abs(river_ledger_unit.get_range() - 0.2) < 0.00000001
+
+
+def test_RiverTallyUnit_exists():
+    # GIVEN
+    x_currency_title = "x_currency_title"
+    x_tax_title = "x_tax_title"
+    x_tax_total = "x_tax_total"
+    x_debt = "x_debt"
+    x_tax_diff = "x_tax_diff"
+    x_credit_score = "credit_score"
+    x_credit_rank = "credit_rank"
+
+    # WHEN
+    x_rivertally = RiverTallyUnit(
+        currency_title=x_currency_title,
+        tax_title=x_tax_title,
+        tax_total=x_tax_total,
+        debt=x_debt,
+        tax_diff=x_tax_diff,
+        credit_score=x_credit_score,
+        credit_rank=x_credit_rank,
+    )
+
+    # THEN
+    assert x_rivertally.currency_title == x_currency_title
+    assert x_rivertally.tax_title == x_tax_title
+    assert x_rivertally.tax_total == x_tax_total
+    assert x_rivertally.debt == x_debt
+    assert x_rivertally.tax_diff == x_tax_diff
+    assert x_rivertally.credit_score == x_credit_score
+    assert x_rivertally.credit_rank == x_credit_rank
 
 
 def test_get_river_tally_table_insert_sqlstr_CorrectlyPopulatesTable01(

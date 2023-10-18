@@ -266,6 +266,8 @@ class RiverTallyUnit:
     tax_total: float
     debt: float
     tax_diff: float
+    credit_score: float
+    credit_rank: int
 
 
 def get_river_tally_dict(
@@ -292,6 +294,8 @@ def get_river_tally_dict(
             tax_total=row[2],
             debt=row[3],
             tax_diff=row[4],
+            credit_score=None,
+            credit_rank=None,
         )
         dict_x[river_tally_x.tax_title] = river_tally_x
     return dict_x

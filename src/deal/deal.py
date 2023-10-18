@@ -135,7 +135,7 @@ class DealUnit:
         )
         self.set_deal_metrics()
 
-    def set_banking_attr_partyunits(self, river_tallys: dict):
+    def set_banking_attr_partyunits(self, river_tallys: dict[str:]):
         for partyunit_x in self._partys.values():
             partyunit_x.clear_banking_data()
             river_tally = river_tallys.get(partyunit_x.title)
@@ -143,8 +143,8 @@ class DealUnit:
                 partyunit_x.set_banking_data(
                     tax_paid=river_tally.tax_total,
                     tax_diff=river_tally.tax_diff,
-                    credit_score=None,
-                    credit_rank=None,
+                    credit_score=river_tally.credit_score,
+                    credit_rank=river_tally.credit_rank,
                 )
 
     def import_external_partyunit_metrics(
