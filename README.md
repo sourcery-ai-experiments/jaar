@@ -9,8 +9,8 @@
 [![Number of Tests : 615](https://img.shields.io/badge/number%20of%20tests-615-green)]()
 [![Python : 3.8 | 3.9 | 3.10 ](https://img.shields.io/badge/python-3.8%20&#124;%203.9%20&#124;%203.10-green)]() 
 
-[![Downloads](https://pepy.tech/badge/borb)](https://pepy.tech/project/borb)
-[![Downloads](https://pepy.tech/badge/borb/month)](https://pepy.tech/project/borb)
+[![Downloads](https://pepy.tech/badge/borb)](https://pepy.tech/projeect/borb)
+[![Downloads](https://pepy.tech/badge/borb/month)](https://pepy.tech/projeect/borb)
 -->
 
 `jaar` is a python library for listening to the climate of a community.
@@ -27,7 +27,7 @@ A healer's agenda in the community is built by the the weighted intreprtation of
 
 Each agenda is saved as a JSON file. 
 
-This is currently a one-man project.
+This is currently a one-man projeect.
 
  
 ### 1.0 Installing `jaar`

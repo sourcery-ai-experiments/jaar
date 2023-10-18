@@ -6453,14 +6453,14 @@
             "_weight": 1,
             "promise": false
         },
-        "Things better Project": {
+        "Things better Proposal": {
             "_acptfactunits": {},
             "_addin": null,
             "_begin": null,
             "_balancelinks": {},
             "_close": null,
             "_denom": null,
-            "_label": "Things better Project",
+            "_label": "Things better Proposal",
             "_is_expanded": false,
             "_kids": {
                 "decrease carbon footprint": {
