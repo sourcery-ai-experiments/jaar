@@ -1299,3 +1299,33 @@ def test_get_intersection_of_partys_CorrectlyReturnsUnionOfKeysOfTwoDictionarys_
 
     # THEN
     assert intersection_x == {bob_text: -1, wil_text: -1, fry_text: -1}
+
+
+def test_deal_clear_output_deal_meld_orders_CorrectlyClearsAttrs():
+    # GIVEN
+    prom_text = "prom"
+    x_deal = DealUnit(_healer=prom_text)
+    rico_text = "rico"
+    carm_text = "carmen"
+    patr_text = "patrick"
+    x_deal.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(rico_text)))
+    x_deal.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
+    x_deal.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
+    rico_partyunit = x_deal.get_party(rico_text)
+    carm_partyunit = x_deal.get_party(carm_text)
+    patr_partyunit = x_deal.get_party(patr_text)
+    rico_partyunit.set_output_deal_meld_order(3)
+    carm_partyunit.set_output_deal_meld_order(4)
+    patr_partyunit.set_output_deal_meld_order(5)
+
+    assert rico_partyunit._output_deal_meld_order != None
+    assert carm_partyunit._output_deal_meld_order != None
+    assert patr_partyunit._output_deal_meld_order != None
+
+    # WHEN
+    x_deal.clear_partys_output_deal_meld_order()
+
+    # THEN
+    assert rico_partyunit._output_deal_meld_order is None
+    assert carm_partyunit._output_deal_meld_order is None
+    assert patr_partyunit._output_deal_meld_order is None

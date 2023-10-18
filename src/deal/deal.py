@@ -117,6 +117,10 @@ class DealUnit:
         self._originunit = originunit_shop()
         self._auto_output_to_public = _auto_output_to_public
 
+    def clear_partys_output_deal_meld_order(self):
+        for x_partyunit in self._partys.values():
+            x_partyunit.clear_output_deal_meld_order()
+
     def set_project_handle(self, project_handle: str):
         old_project_handle = copy_deepcopy(self._project_handle)
         self._project_handle = project_handle
