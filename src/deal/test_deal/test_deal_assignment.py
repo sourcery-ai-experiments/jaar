@@ -8,7 +8,7 @@ from src.deal.examples.example_deals import (
     get_deal_with7amCleanTableRequired as example_deals_get_deal_with7amCleanTableRequired,
     get_assignment_deal_example1 as example_deal_get_assignment_deal_example1,
 )
-from src.fix.examples.example_healers import (
+from src.fix.examples.example_remedys import (
     get_deal_assignment_laundry_example1,
 )
 

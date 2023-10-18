@@ -32,7 +32,7 @@ from src.fix.bank_sqlstr import (
     get_groupunit_catalog_dict,
     get_table_count_sqlstr,
 )
-from src.fix.examples.example_healers import (
+from src.fix.examples.example_remedys import (
     get_3node_deal,
     get_6node_deal,
     get_deal_3CleanNodesRandomWeights,

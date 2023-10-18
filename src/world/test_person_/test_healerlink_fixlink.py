@@ -53,7 +53,7 @@ def test_healerlink_del_fixunit_CorrectlyDeletesFixUnit():
     assert after_diet_fix is None
 
 
-def test_healingunit_set_fixlinks_weight_metrics_SetsCorrectly():
+def test_healerlink_set_fixlinks_weight_metrics_SetsCorrectly():
     # GIVEN
     yao_text = "Yao"
     yao_hl = healerlink_shop(person_name=yao_text)

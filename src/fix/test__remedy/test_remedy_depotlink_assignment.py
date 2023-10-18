@@ -1,23 +1,23 @@
-from src.fix.healing import healingunit_shop
-from src.fix.examples.example_healers import (
+from src.fix.remedy import remedyunit_shop
+from src.fix.examples.example_remedys import (
     get_deal_assignment_laundry_example1,
 )
-from src.fix.examples.healer_env_kit import (
-    healer_dir_setup_cleanup,
-    get_temp_healingunit_dir,
+from src.fix.examples.remedy_env_kit import (
+    remedy_dir_setup_cleanup,
+    get_temp_remedyunit_dir,
     get_temp_fix_handle,
 )
 
 
 def test_healer_save_deal_to_depot_assignment_link_CorrectlyCreatesAssignmentFile(
-    healer_dir_setup_cleanup,
+    remedy_dir_setup_cleanup,
 ):
     # GIVEN
     america_cx = get_deal_assignment_laundry_example1()
     america_cx.set_fix_handle(get_temp_fix_handle())
     joachim_text = "Joachim"
-    joachim_ux = healingunit_shop(
-        joachim_text, get_temp_healingunit_dir(), get_temp_fix_handle()
+    joachim_ux = remedyunit_shop(
+        joachim_text, get_temp_remedyunit_dir(), get_temp_fix_handle()
     )
     joachim_ux.create_core_dir_and_files()
     print(f"{america_cx._idearoot._label=}")

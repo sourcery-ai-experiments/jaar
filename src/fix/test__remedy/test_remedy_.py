@@ -4,45 +4,45 @@ from src.deal.x_func import (
     open_file as x_func_open_file,
     delete_dir as x_func_delete_dir,
 )
-from src.fix.healing import healingunit_shop
-from src.fix.examples.healer_env_kit import (
-    healer_dir_setup_cleanup,
-    get_temp_healingunit_dir,
+from src.fix.remedy import remedyunit_shop
+from src.fix.examples.remedy_env_kit import (
+    remedy_dir_setup_cleanup,
+    get_temp_remedyunit_dir,
     get_temp_fix_handle,
 )
 from os import path as os_path
 
 
-def test_healingunit_exists(healer_dir_setup_cleanup):
+def test_remedyunit_exists(remedy_dir_setup_cleanup):
     # GIVEN
     healer_text = "test1"
 
     # WHEN
-    ux = healingunit_shop(
+    ux = remedyunit_shop(
         title=healer_text,
-        env_dir=get_temp_healingunit_dir(),
+        env_dir=get_temp_remedyunit_dir(),
         fix_handle=get_temp_fix_handle(),
     )
 
     # GIVEN
-    assert ux._admin._healing_title != None
+    assert ux._admin._remedy_title != None
     assert ux._admin._fix_handle != None
     assert ux._admin._fix_handle == get_temp_fix_handle()
     assert ux._isol is None
 
 
-def test_healingunit_auto_output_to_public_SavesDealToPublicDirWhenTrue(
-    healer_dir_setup_cleanup,
+def test_remedyunit_auto_output_to_public_SavesDealToPublicDirWhenTrue(
+    remedy_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_healingunit_dir()
+    env_dir = get_temp_remedyunit_dir()
     fix_handle = get_temp_fix_handle()
     tim_text = "Tim"
     public_file_title = f"{tim_text}.json"
-    public_file_path = f"{get_temp_healingunit_dir()}/deals/{public_file_title}"
+    public_file_path = f"{get_temp_remedyunit_dir()}/deals/{public_file_title}"
     print(f"{public_file_path=}")
     # public_file_path = f"src/fix/examples/ex_env/deals/{public_file_title}"
-    ux = healingunit_shop(tim_text, env_dir, fix_handle, _auto_output_to_public=True)
+    ux = remedyunit_shop(tim_text, env_dir, fix_handle, _auto_output_to_public=True)
     ux.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
 
@@ -55,18 +55,18 @@ def test_healingunit_auto_output_to_public_SavesDealToPublicDirWhenTrue(
     assert os_path.exists(public_file_path)
 
 
-def test_healingunit_auto_output_to_public_DoesNotSaveDealToPublicDirWhenFalse(
-    healer_dir_setup_cleanup,
+def test_remedyunit_auto_output_to_public_DoesNotSaveDealToPublicDirWhenFalse(
+    remedy_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_healingunit_dir()
+    env_dir = get_temp_remedyunit_dir()
     fix_handle = get_temp_fix_handle()
     tim_text = "Tim"
     public_file_title = f"{tim_text}.json"
-    public_file_path = f"{get_temp_healingunit_dir()}/deals/{public_file_title}"
+    public_file_path = f"{get_temp_remedyunit_dir()}/deals/{public_file_title}"
     print(f"{public_file_path=}")
     # public_file_path = f"src/fix/examples/ex_env/deals/{public_file_title}"
-    ux = healingunit_shop(tim_text, env_dir, fix_handle, _auto_output_to_public=False)
+    ux = remedyunit_shop(tim_text, env_dir, fix_handle, _auto_output_to_public=False)
     ux.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
 
@@ -77,14 +77,12 @@ def test_healingunit_auto_output_to_public_DoesNotSaveDealToPublicDirWhenFalse(
     assert os_path.exists(public_file_path) is False
 
 
-def test_healingunit_get_isol_createsEmptyDealWhenFileDoesNotExist(
-    healer_dir_setup_cleanup,
+def test_remedyunit_get_isol_createsEmptyDealWhenFileDoesNotExist(
+    remedy_dir_setup_cleanup,
 ):
     # GIVEN
     tim_text = "Tim"
-    tim_ux = healingunit_shop(
-        tim_text, get_temp_healingunit_dir(), get_temp_fix_handle()
-    )
+    tim_ux = remedyunit_shop(tim_text, get_temp_remedyunit_dir(), get_temp_fix_handle())
     tim_ux.create_core_dir_and_files()
     assert os_path.exists(tim_ux._admin._isol_file_path)
     x_func_delete_dir(dir=tim_ux._admin._isol_file_path)
@@ -99,18 +97,14 @@ def test_healingunit_get_isol_createsEmptyDealWhenFileDoesNotExist(
     assert tim_ux._isol != None
 
 
-def test_healingunit_get_isol_getsMemoryDealIfExists(
-    healer_dir_setup_cleanup,
+def test_remedyunit_get_isol_getsMemoryDealIfExists(
+    remedy_dir_setup_cleanup,
 ):
     # GIVEN
     tim_text = "Tim"
-    tim_ux = healingunit_shop(
-        tim_text, get_temp_healingunit_dir(), get_temp_fix_handle()
-    )
+    tim_ux = remedyunit_shop(tim_text, get_temp_remedyunit_dir(), get_temp_fix_handle())
     tim_ux.create_core_dir_and_files()
-    isol_file_path = (
-        f"{tim_ux._admin._healingunit_dir}/{tim_ux._admin._isol_file_title}"
-    )
+    isol_file_path = f"{tim_ux._admin._remedyunit_dir}/{tim_ux._admin._isol_file_title}"
     cx_isol1 = tim_ux.get_isol()
     assert os_path.exists(isol_file_path)
     assert tim_ux._isol != None
@@ -133,18 +127,14 @@ def test_healingunit_get_isol_getsMemoryDealIfExists(
     assert cx_isol3 == cx_isol1
 
 
-def test_healingunit_set_isol_savesIsolDealSet_isol_None(
-    healer_dir_setup_cleanup,
+def test_remedyunit_set_isol_savesIsolDealSet_isol_None(
+    remedy_dir_setup_cleanup,
 ):
     # GIVEN
     tim_text = "Tim"
-    tim_ux = healingunit_shop(
-        tim_text, get_temp_healingunit_dir(), get_temp_fix_handle()
-    )
+    tim_ux = remedyunit_shop(tim_text, get_temp_remedyunit_dir(), get_temp_fix_handle())
     tim_ux.create_core_dir_and_files()
-    isol_file_path = (
-        f"{tim_ux._admin._healingunit_dir}/{tim_ux._admin._isol_file_title}"
-    )
+    isol_file_path = f"{tim_ux._admin._remedyunit_dir}/{tim_ux._admin._isol_file_title}"
     cx_isol1 = tim_ux.get_isol()
     assert os_path.exists(isol_file_path)
     assert tim_ux._isol != None
@@ -161,14 +151,14 @@ def test_healingunit_set_isol_savesIsolDealSet_isol_None(
     assert cx_isol2._idearoot._uid == uid_text
 
 
-def test_healingunit_set_isol_savesGivenDealSet_isol_None(
-    healer_dir_setup_cleanup,
+def test_remedyunit_set_isol_savesGivenDealSet_isol_None(
+    remedy_dir_setup_cleanup,
 ):
     # GIVEN
     tim_text = "Tim"
-    ux = healingunit_shop(tim_text, get_temp_healingunit_dir(), get_temp_fix_handle())
+    ux = remedyunit_shop(tim_text, get_temp_remedyunit_dir(), get_temp_fix_handle())
     ux.create_core_dir_and_files()
-    isol_file_path = f"{ux._admin._healingunit_dir}/{ux._admin._isol_file_title}"
+    isol_file_path = f"{ux._admin._remedyunit_dir}/{ux._admin._isol_file_title}"
     cx_isol1 = ux.get_isol()
     assert os_path.exists(isol_file_path)
     assert ux._isol != None
@@ -206,12 +196,12 @@ def test_healingunit_set_isol_savesGivenDealSet_isol_None(
     ux._isol._idearoot._uid = isol_uid_text
 
 
-def test_healingunit_set_isol_if_emtpy_DoesNotReplace_isol(
-    healer_dir_setup_cleanup,
+def test_remedyunit_set_isol_if_emtpy_DoesNotReplace_isol(
+    remedy_dir_setup_cleanup,
 ):
     # GIVEN
     tim_text = "Tim"
-    ux = healingunit_shop(tim_text, get_temp_healingunit_dir(), get_temp_fix_handle())
+    ux = remedyunit_shop(tim_text, get_temp_remedyunit_dir(), get_temp_fix_handle())
     ux.create_core_dir_and_files()
     saved_cx = DealUnit(_healer=tim_text)
     saved_cx_uid_text = "this is pulled DealUnit uid"

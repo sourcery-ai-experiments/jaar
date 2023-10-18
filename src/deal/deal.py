@@ -101,7 +101,10 @@ class DealUnit:
     _auto_output_to_public: bool = None
 
     def __init__(
-        self, _weight: float = None, _healer=None, _auto_output_to_public=None
+        self,
+        _healer: PersonName = None,
+        _weight: float = None,
+        _auto_output_to_public: bool = False,
     ) -> None:
         if _weight is None:
             _weight = 1
@@ -112,7 +115,7 @@ class DealUnit:
         self._idearoot = IdeaRoot(_label=self._idearoot, _uid=1, _level=0)
         self._healer = _healer
         self._originunit = originunit_shop()
-        self._auto_output_to_public = bool(_auto_output_to_public)
+        self._auto_output_to_public = _auto_output_to_public
 
     def set_fix_handle(self, fix_handle: str):
         old_fix_handle = copy_deepcopy(self._fix_handle)
