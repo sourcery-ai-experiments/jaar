@@ -761,18 +761,18 @@ def test_deal_set_acptfact_create_missing_ideas_CreatesBaseAndAcptFact():
     healer_text = "Tim"
     sx = DealUnit(_healer=healer_text)
     sx._idearoot.set_kids_empty_if_null()
-    prob_text = "problems"
-    prob_road = Road(f"{sx._fix_handle},{prob_text}")
+    issue_text = "issues"
+    issue_road = Road(f"{sx._fix_handle},{issue_text}")
     climate_text = "climate"
-    climate_road = Road(f"{sx._fix_handle},{prob_text},{climate_text}")
-    assert sx._idearoot._kids.get(prob_text) is None
+    climate_road = Road(f"{sx._fix_handle},{issue_text},{climate_text}")
+    assert sx._idearoot._kids.get(issue_text) is None
 
     # WHEN
-    sx.set_acptfact(base=prob_road, pick=climate_road, create_missing_ideas=True)
+    sx.set_acptfact(base=issue_road, pick=climate_road, create_missing_ideas=True)
 
     # THEN
-    assert sx._idearoot._kids.get(prob_text) != None
-    assert sx.get_idea_kid(road=prob_road) != None
+    assert sx._idearoot._kids.get(issue_text) != None
+    assert sx.get_idea_kid(road=issue_road) != None
     assert sx.get_idea_kid(road=climate_road) != None
 
 
@@ -782,11 +782,11 @@ def test_deal_get_acptfactunits_base_and_acptfact_list_CorrectlyReturnsListOfAcp
     sx = DealUnit(_healer=healer_text)
     sx._idearoot.set_kids_empty_if_null()
 
-    prob_text = "problems"
-    prob_road = Road(f"{sx._fix_handle},{prob_text}")
+    issue_text = "issues"
+    issue_road = Road(f"{sx._fix_handle},{issue_text}")
     climate_text = "climate"
-    climate_road = Road(f"{sx._fix_handle},{prob_text},{climate_text}")
-    sx.set_acptfact(base=prob_road, pick=climate_road, create_missing_ideas=True)
+    climate_road = Road(f"{sx._fix_handle},{issue_text},{climate_text}")
+    sx.set_acptfact(base=issue_road, pick=climate_road, create_missing_ideas=True)
 
     weather_text = "weather"
     weather_road = Road(f"{sx._fix_handle},{weather_text}")
@@ -813,7 +813,7 @@ def test_deal_get_acptfactunits_base_and_acptfact_list_CorrectlyReturnsListOfAcp
     assert acptfactunit_list_x[0][0] == ""
     assert acptfactunit_list_x[1][0] == games_road
     assert acptfactunit_list_x[1][1] == football_road
-    assert acptfactunit_list_x[2][0] == prob_road
+    assert acptfactunit_list_x[2][0] == issue_road
     assert acptfactunit_list_x[2][1] == climate_road
     assert acptfactunit_list_x[3][0] == weather_road
     assert acptfactunit_list_x[3][1] == cold_road
