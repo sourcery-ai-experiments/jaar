@@ -4,7 +4,7 @@ from src.project.examples.project_env_kit import (
     env_dir_setup_cleanup,
     get_test_projects_dir,
 )
-from src.project.examples.example_harvests import (
+from src.project.examples.example_kitchens import (
     get_deal_assignment_laundry_example1,
 )
 
@@ -15,8 +15,8 @@ def test_project_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
 
     # GIVEN
     america_text = "America"
-    sx.create_new_harvestunit(harvest_title=america_text)
-    america_ux = sx.get_harvestunit(title=america_text)
+    sx.create_new_kitchenunit(kitchen_title=america_text)
+    america_ux = sx.get_kitchenunit(title=america_text)
     laundry_deal = get_deal_assignment_laundry_example1()
     laundry_deal.set_project_handle(sx.handle)
     america_ux.set_seed(laundry_deal)
@@ -39,8 +39,8 @@ def test_project_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
 
     # create assignment for Joachim
     joachim_text = "Joachim"
-    sx.create_new_harvestunit(harvest_title=joachim_text)
-    joachim_ux = sx.get_harvestunit(title=joachim_text)
+    sx.create_new_kitchenunit(kitchen_title=joachim_text)
+    joachim_ux = sx.get_kitchenunit(title=joachim_text)
     joachim_ux.set_depot_deal(america_output, "assignment")
     old_joachim_cx = sx.get_output_deal(joachim_text)
     # print(f"{old_joachim_cx._partys.keys()=}")
@@ -120,7 +120,7 @@ def test_project_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
 
 #     # # WHEN
 #     # america_healer.save_output_deal_to_public()
-#     # new_joa_healer = sx.get_harvestunit(title=joachim_text)
+#     # new_joa_healer = sx.get_kitchenunit(title=joachim_text)
 #     # new_joa_healer.save_output_deal_to_public()
 #     # new_joa_dest_c = sx.get_public_deal(joachim_text)
 #     # new_joa_agenda = new_joa_dest_c.get_agenda_items()
@@ -132,15 +132,15 @@ def test_project_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
 #     assert len(joachim_cx.get_agenda_items()) == 1
 #     assert joachim_cx.get_agenda_items()[0].get_road() == do_laundry_road
 
-#     # sx.create_new_harvestunit(harvest_title=america_text)
-#     # america_healer = sx.get_harvestunit(title=america_text)
+#     # sx.create_new_kitchenunit(kitchen_title=america_text)
+#     # america_healer = sx.get_kitchenunit(title=america_text)
 #     # america_healer.save_output_deal_to_public()
 #     # assert sx.get_public_deal(america_text) != None
 
 #     # # Create healer2
 
-#     # sx.create_new_harvestunit(harvest_title=joachim_text)
-#     # old_joa_healer = sx.get_harvestunit(title=joachim_text)
+#     # sx.create_new_kitchenunit(kitchen_title=joachim_text)
+#     # old_joa_healer = sx.get_kitchenunit(title=joachim_text)
 #     # old_joa_healer._set_depotlink(america_cx._healert, depotlink_type="blind_trust")
 #     # old_joa_healer.save_output_deal_to_public()
 #     # old_joa_dest_c = sx.get_public_deal(joachim_text)

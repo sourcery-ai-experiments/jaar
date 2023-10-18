@@ -11,7 +11,7 @@ from src.deal.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
 )
-from src.project.harvest import HarvestUnit, harvestunit_shop
+from src.project.kitchen import KitchenUnit, kitchenunit_shop
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 from src.project.bank_sqlstr import (
@@ -49,7 +49,7 @@ class ProjectUnit:
     handle: ProjectHandle
     projects_dir: str
     _person_importance: float = None
-    _harvestunits: dict[str:HarvestUnit] = None
+    _kitchenunits: dict[str:KitchenUnit] = None
     _bank_db = None
 
     def set_person_importance(self, person_importance: float):
@@ -288,77 +288,77 @@ class ProjectUnit:
     def create_dirs_if_null(self, in_memory_bank: bool = None):
         project_dir = self.get_object_root_dir()
         deals_dir = self.get_public_dir()
-        harvestunits_dir = self.get_harvestunits_dir()
+        kitchenunits_dir = self.get_kitchenunits_dir()
         single_dir_create_if_null(x_path=project_dir)
         single_dir_create_if_null(x_path=deals_dir)
-        single_dir_create_if_null(x_path=harvestunits_dir)
+        single_dir_create_if_null(x_path=kitchenunits_dir)
         self._create_main_file_if_null(x_dir=project_dir)
         self._create_bank_db(in_memory=in_memory_bank, overwrite=True)
 
-    # HarvestUnit management
-    def get_harvestunits_dir(self):
-        return f"{self.get_object_root_dir()}/harvestunits"
+    # KitchenUnit management
+    def get_kitchenunits_dir(self):
+        return f"{self.get_object_root_dir()}/kitchenunits"
 
-    def get_harvestunit_dir_paths_list(self):
+    def get_kitchenunit_dir_paths_list(self):
         return list(
             x_func_dir_files(
-                dir_path=self.get_harvestunits_dir(),
+                dir_path=self.get_kitchenunits_dir(),
                 remove_extensions=False,
                 include_dirs=True,
             ).keys()
         )
 
-    def set_harvestunits_empty_if_null(self):
-        if self._harvestunits is None:
-            self._harvestunits = {}
+    def set_kitchenunits_empty_if_null(self):
+        if self._kitchenunits is None:
+            self._kitchenunits = {}
 
-    def create_new_harvestunit(self, harvest_title: str):
-        self.set_harvestunits_empty_if_null()
-        ux = harvestunit_shop(harvest_title, self.get_object_root_dir(), self.handle)
+    def create_new_kitchenunit(self, kitchen_title: str):
+        self.set_kitchenunits_empty_if_null()
+        ux = kitchenunit_shop(kitchen_title, self.get_object_root_dir(), self.handle)
         ux.create_core_dir_and_files()
-        self._harvestunits[ux._admin._harvest_title] = ux
+        self._kitchenunits[ux._admin._kitchen_title] = ux
 
-    def get_harvestunit(self, title: str) -> HarvestUnit:
+    def get_kitchenunit(self, title: str) -> KitchenUnit:
         return (
-            None if self._harvestunits.get(title) is None else self._harvestunits[title]
+            None if self._kitchenunits.get(title) is None else self._kitchenunits[title]
         )
 
-    def create_harvestunit_from_public(self, title: str):
+    def create_kitchenunit_from_public(self, title: str):
         x_deal = self.get_public_deal(healer=title)
-        x_harvestunit = harvestunit_shop(
+        x_kitchenunit = kitchenunit_shop(
             title=x_deal._healer, env_dir=self.get_object_root_dir()
         )
-        self.set_harvestunits_empty_if_null()
-        self.set_harvestunit_to_project(x_harvestunit)
+        self.set_kitchenunits_empty_if_null()
+        self.set_kitchenunit_to_project(x_kitchenunit)
 
-    def set_harvestunit_to_project(self, harvestunit: HarvestUnit):
-        self._harvestunits[harvestunit._admin._harvest_title] = harvestunit
-        self.save_harvestunit_file(harvest_title=harvestunit._admin._harvest_title)
+    def set_kitchenunit_to_project(self, kitchenunit: KitchenUnit):
+        self._kitchenunits[kitchenunit._admin._kitchen_title] = kitchenunit
+        self.save_kitchenunit_file(kitchen_title=kitchenunit._admin._kitchen_title)
 
-    def save_harvestunit_file(self, harvest_title: str):
-        x_harvestunit = self.get_harvestunit(title=harvest_title)
-        x_harvestunit._admin.save_seed_deal(x_harvestunit.get_seed())
+    def save_kitchenunit_file(self, kitchen_title: str):
+        x_kitchenunit = self.get_kitchenunit(title=kitchen_title)
+        x_kitchenunit._admin.save_seed_deal(x_kitchenunit.get_seed())
 
-    def rename_harvestunit(self, old_title: str, new_title: str):
-        harvest_x = self.get_harvestunit(title=old_title)
-        old_harvestunit_dir = harvest_x._admin._harvestunit_dir
-        harvest_x._admin.set_harvest_title(new_title=new_title)
-        self.set_harvestunit_to_project(harvest_x)
-        x_func_delete_dir(old_harvestunit_dir)
-        self.del_harvestunit_from_project(harvest_title=old_title)
+    def rename_kitchenunit(self, old_title: str, new_title: str):
+        kitchen_x = self.get_kitchenunit(title=old_title)
+        old_kitchenunit_dir = kitchen_x._admin._kitchenunit_dir
+        kitchen_x._admin.set_kitchen_title(new_title=new_title)
+        self.set_kitchenunit_to_project(kitchen_x)
+        x_func_delete_dir(old_kitchenunit_dir)
+        self.del_kitchenunit_from_project(kitchen_title=old_title)
 
-    def del_harvestunit_from_project(self, harvest_title):
-        self._harvestunits.pop(harvest_title)
+    def del_kitchenunit_from_project(self, kitchen_title):
+        self._kitchenunits.pop(kitchen_title)
 
-    def del_harvestunit_dir(self, harvest_title: str):
-        x_func_delete_dir(f"{self.get_harvestunits_dir()}/{harvest_title}")
+    def del_kitchenunit_dir(self, kitchen_title: str):
+        x_func_delete_dir(f"{self.get_kitchenunits_dir()}/{kitchen_title}")
 
     # public dir management
     def get_public_dir(self):
         return f"{self.get_object_root_dir()}/deals"
 
-    def get_ignores_dir(self, harvest_title: str):
-        per_x = self.get_harvestunit(harvest_title)
+    def get_ignores_dir(self, kitchen_title: str):
+        per_x = self.get_kitchenunit(kitchen_title)
         return per_x._admin._deals_ignore_dir
 
     def get_public_deal(self, healer: str) -> DealUnit:
@@ -368,17 +368,17 @@ class ProjectUnit:
             )
         )
 
-    def get_deal_from_ignores_dir(self, harvest_title: str, _healer: str) -> DealUnit:
+    def get_deal_from_ignores_dir(self, kitchen_title: str, _healer: str) -> DealUnit:
         return get_deal_from_json(
             x_func_open_file(
-                dest_dir=self.get_ignores_dir(harvest_title=harvest_title),
+                dest_dir=self.get_ignores_dir(kitchen_title=kitchen_title),
                 file_title=f"{_healer}.json",
             )
         )
 
-    def set_ignore_deal_file(self, harvest_title: str, deal_obj: DealUnit):
-        x_harvestunit = self.get_harvestunit(title=harvest_title)
-        x_harvestunit.set_ignore_deal_file(
+    def set_ignore_deal_file(self, kitchen_title: str, deal_obj: DealUnit):
+        x_kitchenunit = self.get_kitchenunit(title=kitchen_title)
+        x_kitchenunit.set_ignore_deal_file(
             dealunit=deal_obj, src_deal_healer=deal_obj._healer
         )
 
@@ -399,47 +399,47 @@ class ProjectUnit:
             file_text=deal_x.get_json(),
         )
 
-    def reload_all_harvestunits_src_dealunits(self):
-        for x_harvestunit in self._harvestunits.values():
-            x_harvestunit.refresh_depot_deals()
+    def reload_all_kitchenunits_src_dealunits(self):
+        for x_kitchenunit in self._kitchenunits.values():
+            x_kitchenunit.refresh_depot_deals()
 
     def get_public_dir_file_titles_list(self):
         return list(x_func_dir_files(dir_path=self.get_public_dir()).keys())
 
     # deals_dir to healer_deals_dir management
-    def _harvestunit_set_depot_deal(
+    def _kitchenunit_set_depot_deal(
         self,
-        harvestunit: HarvestUnit,
+        kitchenunit: KitchenUnit,
         dealunit: DealUnit,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
         ignore_deal: DealUnit = None,
     ):
-        harvestunit.set_depot_deal(
+        kitchenunit.set_depot_deal(
             deal_x=dealunit,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
         )
         if depotlink_type == "ignore" and ignore_deal != None:
-            harvestunit.set_ignore_deal_file(
+            kitchenunit.set_ignore_deal_file(
                 dealunit=ignore_deal, src_deal_healer=dealunit._healer
             )
 
     def set_healer_depotlink(
         self,
-        harvest_title: str,
+        kitchen_title: str,
         deal_healer: str,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
         ignore_deal: DealUnit = None,
     ):
-        x_harvestunit = self.get_harvestunit(title=harvest_title)
+        x_kitchenunit = self.get_kitchenunit(title=kitchen_title)
         deal_x = self.get_public_deal(healer=deal_healer)
-        self._harvestunit_set_depot_deal(
-            harvestunit=x_harvestunit,
+        self._kitchenunit_set_depot_deal(
+            kitchenunit=x_kitchenunit,
             dealunit=deal_x,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
@@ -449,16 +449,16 @@ class ProjectUnit:
 
     def create_depotlink_to_generated_deal(
         self,
-        harvest_title: str,
+        kitchen_title: str,
         deal_healer: str,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
-        x_harvestunit = self.get_harvestunit(title=harvest_title)
+        x_kitchenunit = self.get_kitchenunit(title=kitchen_title)
         deal_x = DealUnit(_healer=deal_healer)
-        self._harvestunit_set_depot_deal(
-            harvestunit=x_harvestunit,
+        self._kitchenunit_set_depot_deal(
+            kitchenunit=x_kitchenunit,
             dealunit=deal_x,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
@@ -467,42 +467,42 @@ class ProjectUnit:
 
     def update_depotlink(
         self,
-        harvest_title: str,
+        kitchen_title: str,
         partytitle: PartyTitle,
         depotlink_type: str,
         creditor_weight: str,
         debtor_weight: str,
     ):
-        x_harvestunit = self.get_harvestunit(title=harvest_title)
+        x_kitchenunit = self.get_kitchenunit(title=kitchen_title)
         deal_x = self.get_public_deal(_healer=partytitle)
-        self._harvestunit_set_depot_deal(
-            harvestunit=x_harvestunit,
+        self._kitchenunit_set_depot_deal(
+            kitchenunit=x_kitchenunit,
             dealunit=deal_x,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
         )
 
-    def del_depotlink(self, harvest_title: str, dealunit_healer: str):
-        x_harvestunit = self.get_harvestunit(title=harvest_title)
-        x_harvestunit.del_depot_deal(deal_healer=dealunit_healer)
+    def del_depotlink(self, kitchen_title: str, dealunit_healer: str):
+        x_kitchenunit = self.get_kitchenunit(title=kitchen_title)
+        x_kitchenunit.del_depot_deal(deal_healer=dealunit_healer)
 
     # Healer output_deal
-    def get_output_deal(self, harvest_title: str) -> DealUnit:
-        x_harvestunit = self.get_harvestunit(title=harvest_title)
-        return x_harvestunit._admin.get_remelded_output_deal()
+    def get_output_deal(self, kitchen_title: str) -> DealUnit:
+        x_kitchenunit = self.get_kitchenunit(title=kitchen_title)
+        return x_kitchenunit._admin.get_remelded_output_deal()
 
 
 def projectunit_shop(
     handle: str,
     projects_dir: str,
-    _harvestunits: dict[str:HarvestUnit] = None,
+    _kitchenunits: dict[str:KitchenUnit] = None,
     in_memory_bank: bool = None,
 ):
     if in_memory_bank is None:
         in_memory_bank = True
     project_x = ProjectUnit(
-        handle=handle, projects_dir=projects_dir, _harvestunits=_harvestunits
+        handle=handle, projects_dir=projects_dir, _kitchenunits=_kitchenunits
     )
     project_x.create_dirs_if_null(in_memory_bank=in_memory_bank)
     return project_x

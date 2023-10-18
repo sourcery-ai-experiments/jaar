@@ -2,7 +2,7 @@ from src.deal.examples.example_deals import (
     deal_v002 as ex_cxs_deal_v002,
 )
 from src.project.project import projectunit_shop
-from src.project.examples.example_harvests import (
+from src.project.examples.example_kitchens import (
     get_6node_deal as example_healers_get_6node_deal,
     get_deal_2CleanNodesRandomWeights,
     get_deal_3CleanNodesRandomWeights,
@@ -27,14 +27,14 @@ def test_project_get_output_deal_ReturnsCorrectDealObjScenario1(
     # sx.save_public_deal(ex_cxs_get_deal_1Task_1CE0MinutesRequired_1AcptFact())
     # sx.save_public_deal(ex_cxs_deal_v001())
     xia_text = "Xia"
-    sx.create_new_harvestunit(harvest_title=xia_text)
+    sx.create_new_kitchenunit(kitchen_title=xia_text)
     sx.set_healer_depotlink(xia_text, input_cx._healer, depotlink_type="blind_trust")
-    sx.save_harvestunit_file(harvest_title=xia_text)
-    xia_healer = sx.get_harvestunit(title=xia_text)
+    sx.save_kitchenunit_file(kitchen_title=xia_text)
+    xia_healer = sx.get_kitchenunit(title=xia_text)
     # print(f"{xia_healer._seed._partys.keys()=}")
 
     # WHEN
-    output_cx = sx.get_output_deal(harvest_title=xia_text)
+    output_cx = sx.get_output_deal(kitchen_title=xia_text)
     # input deal must be melded to itself to create originunits
     input_cx.meld(input_cx)
     input_cx.set_healer(new_healer=xia_text)
@@ -104,15 +104,15 @@ def test_project_get_output_deal_ReturnsCorrectDealObjScenario2(
     # sx.save_public_deal(ex_cxs_get_deal_1Task_1CE0MinutesRequired_1AcptFact())
     # sx.save_public_deal(ex_cxs_deal_v001())
     xia_text = "Xia"
-    sx.create_new_harvestunit(harvest_title=xia_text)
+    sx.create_new_kitchenunit(kitchen_title=xia_text)
     sx.set_healer_depotlink(xia_text, cx1._healer, depotlink_type="blind_trust")
     sx.set_healer_depotlink(xia_text, cx2._healer, depotlink_type="blind_trust")
-    sx.save_harvestunit_file(harvest_title=xia_text)
-    xia_healer = sx.get_harvestunit(title=xia_text)
+    sx.save_kitchenunit_file(kitchen_title=xia_text)
+    xia_healer = sx.get_kitchenunit(title=xia_text)
     print(f"{xia_healer._seed._partys.keys()=}")
 
     # WHEN
-    output_cx = sx.get_output_deal(harvest_title=xia_text)
+    output_cx = sx.get_output_deal(kitchen_title=xia_text)
 
     # THEN
     output_cx_d_road = f"{output_cx._project_handle},C,D"
@@ -146,7 +146,7 @@ def test_project_get_output_deal_ReturnsCorrectDealObjScenario2(
     assert output_cx._idearoot != cx2._idearoot
 
 
-def test_harvestunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
+def test_kitchenunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -154,7 +154,7 @@ def test_harvestunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
     project_handle = get_temp_env_handle()
     sx = projectunit_shop(handle=project_handle, projects_dir=env_dir)
     sx.create_dirs_if_null(in_memory_bank=True)
-    # ux = harvestunit_shop(title=healer1_text, env_dir=env_dir)
+    # ux = kitchenunit_shop(title=healer1_text, env_dir=env_dir)
 
     ernie_text = "ernie"
     jessi_text = "jessi"
@@ -165,12 +165,12 @@ def test_harvestunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
     sx.save_public_deal(deal_x=ernie_deal)
     sx.save_public_deal(deal_x=jessi_deal)
     sx.save_public_deal(deal_x=old_steve_cx)
-    sx.create_new_harvestunit(harvest_title=ernie_text)
-    sx.create_new_harvestunit(harvest_title=jessi_text)
-    # sx.create_new_harvestunit(harvest_title=steve_text)
-    ux_ernie = sx.get_harvestunit(title=ernie_text)
-    ux_jessi = sx.get_harvestunit(title=jessi_text)
-    # ux_steve = sx.get_harvestunit(title=steve_text)
+    sx.create_new_kitchenunit(kitchen_title=ernie_text)
+    sx.create_new_kitchenunit(kitchen_title=jessi_text)
+    # sx.create_new_kitchenunit(kitchen_title=steve_text)
+    ux_ernie = sx.get_kitchenunit(title=ernie_text)
+    ux_jessi = sx.get_kitchenunit(title=jessi_text)
+    # ux_steve = sx.get_kitchenunit(title=steve_text)
     ux_ernie.set_depot_deal(deal_x=jessi_deal, depotlink_type="blind_trust")
     ux_ernie.set_depot_deal(deal_x=old_steve_cx, depotlink_type="blind_trust")
     ux_jessi.set_depot_deal(deal_x=ernie_deal, depotlink_type="blind_trust")
@@ -190,7 +190,7 @@ def test_harvestunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
     #     print(f"{ux._admin._deals_public_dir=} {file_title=}")
 
     # WHEN
-    sx.reload_all_harvestunits_src_dealunits()
+    sx.reload_all_kitchenunits_src_dealunits()
 
     # THEN
     assert len(ux_ernie._admin.get_remelded_output_deal().get_idea_list()) == 5

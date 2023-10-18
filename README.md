@@ -65,9 +65,9 @@ base attributes vs required attributess
 <!-- TODO: Add explanations -->
 ProjectUnit objects
 
-ProjectUnit HarvestUnit objects
+ProjectUnit KitchenUnit objects
 
-ProjectUnit HarvestUnit DealLink objects
+ProjectUnit KitchenUnit DealLink objects
 
 ProjectUnit Bank objects
 

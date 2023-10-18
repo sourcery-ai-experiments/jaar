@@ -39,7 +39,7 @@ def test_project_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     project_file_title = "project.json"
     project_file_path = f"{project_dir}/{project_file_title}"
     deals_dir = f"{project_dir}/deals"
-    harvestunits_dir = f"{project_dir}/harvestunits"
+    kitchenunits_dir = f"{project_dir}/kitchenunits"
     bank_file_title = "bank.db"
     bank_file_path = f"{project_dir}/{bank_file_title}"
 
@@ -47,7 +47,7 @@ def test_project_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.isdir(project_dir) is False
     assert os_path.exists(project_file_path) is False
     assert os_path.exists(deals_dir) is False
-    assert os_path.exists(harvestunits_dir) is False
+    assert os_path.exists(kitchenunits_dir) is False
     assert os_path.exists(bank_file_path) is False
 
     # WHEN
@@ -58,11 +58,11 @@ def test_project_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.isdir(project_dir)
     assert os_path.exists(project_file_path)
     assert os_path.exists(deals_dir)
-    assert os_path.exists(harvestunits_dir)
+    assert os_path.exists(kitchenunits_dir)
     assert os_path.exists(bank_file_path)
     assert x_projectunit.get_object_root_dir() == project_dir
     assert x_projectunit.get_public_dir() == deals_dir
-    assert x_projectunit.get_harvestunits_dir() == harvestunits_dir
+    assert x_projectunit.get_kitchenunits_dir() == kitchenunits_dir
     assert x_projectunit.get_bank_db_path() == bank_file_path
 
 
@@ -73,14 +73,14 @@ def test_rename_example_project_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanu
     old_project_file_title = "project.json"
     old_project_file_path = f"{old_project_dir}/{old_project_file_title}"
     old_deals_dir = f"{old_project_dir}/deals"
-    old_harvestunits_dir = f"{old_project_dir}/harvestunits"
+    old_kitchenunits_dir = f"{old_project_dir}/kitchenunits"
 
     new_project_handle = "ex_env1"
     new_project_dir = f"src/project/examples/projects/{new_project_handle}"
     new_project_file_title = "project.json"
     new_project_file_path = f"{new_project_dir}/{new_project_file_title}"
     new_deals_dir = f"{new_project_dir}/deals"
-    new_harvestunits_dir = f"{new_project_dir}/harvestunits"
+    new_kitchenunits_dir = f"{new_project_dir}/kitchenunits"
     x_func_delete_dir(dir=new_project_dir)
     print(f"{new_project_dir=}")
 
@@ -96,17 +96,17 @@ def test_rename_example_project_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanu
     assert os_path.isdir(old_project_dir)
     assert os_path.exists(old_project_file_path)
     assert os_path.exists(old_deals_dir)
-    assert os_path.exists(old_harvestunits_dir)
+    assert os_path.exists(old_kitchenunits_dir)
     assert x_projectunit.get_public_dir() == old_deals_dir
-    assert x_projectunit.get_harvestunits_dir() == old_harvestunits_dir
+    assert x_projectunit.get_kitchenunits_dir() == old_kitchenunits_dir
 
     assert os_path.exists(new_project_dir) is False
     assert os_path.isdir(new_project_dir) is False
     assert os_path.exists(new_project_file_path) is False
     assert os_path.exists(new_deals_dir) is False
-    assert os_path.exists(new_harvestunits_dir) is False
+    assert os_path.exists(new_kitchenunits_dir) is False
     assert x_projectunit.get_public_dir() != new_deals_dir
-    assert x_projectunit.get_harvestunits_dir() != new_harvestunits_dir
+    assert x_projectunit.get_kitchenunits_dir() != new_kitchenunits_dir
     assert x_projectunit.handle != new_project_handle
 
     # WHEN
@@ -117,17 +117,17 @@ def test_rename_example_project_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanu
     assert os_path.isdir(old_project_dir) is False
     assert os_path.exists(old_project_file_path) is False
     assert os_path.exists(old_deals_dir) is False
-    assert os_path.exists(old_harvestunits_dir) is False
+    assert os_path.exists(old_kitchenunits_dir) is False
     assert x_projectunit.get_public_dir() != old_deals_dir
-    assert x_projectunit.get_harvestunits_dir() != old_harvestunits_dir
+    assert x_projectunit.get_kitchenunits_dir() != old_kitchenunits_dir
 
     assert os_path.exists(new_project_dir)
     assert os_path.isdir(new_project_dir)
     assert os_path.exists(new_project_file_path)
     assert os_path.exists(new_deals_dir)
-    assert os_path.exists(new_harvestunits_dir)
+    assert os_path.exists(new_kitchenunits_dir)
     assert x_projectunit.get_public_dir() == new_deals_dir
-    assert x_projectunit.get_harvestunits_dir() == new_harvestunits_dir
+    assert x_projectunit.get_kitchenunits_dir() == new_kitchenunits_dir
     assert x_projectunit.handle == new_project_handle
 
     # Undo change to directory
@@ -144,7 +144,7 @@ def test_copy_evaluation_project_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     old_project_file_title = "project.json"
     old_project_file_path = f"{old_project_dir}/{old_project_file_title}"
     old_deals_dir = f"{old_project_dir}/deals"
-    old_harvestunits_dir = f"{old_project_dir}/harvestunits"
+    old_kitchenunits_dir = f"{old_project_dir}/kitchenunits"
 
     x_projectunit = projectunit_shop(
         handle=old_project_handle, projects_dir=get_test_projects_dir()
@@ -155,24 +155,24 @@ def test_copy_evaluation_project_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     assert os_path.isdir(old_project_dir)
     assert os_path.exists(old_project_file_path)
     assert os_path.exists(old_deals_dir)
-    assert os_path.exists(old_harvestunits_dir)
+    assert os_path.exists(old_kitchenunits_dir)
     assert x_projectunit.get_public_dir() == old_deals_dir
-    assert x_projectunit.get_harvestunits_dir() == old_harvestunits_dir
+    assert x_projectunit.get_kitchenunits_dir() == old_kitchenunits_dir
 
     new_project_handle = "ex_env1"
     new_project_dir = f"src/project/examples/projects/{new_project_handle}"
     new_project_file_title = "project.json"
     new_project_file_path = f"{new_project_dir}/{new_project_file_title}"
     new_deals_dir = f"{new_project_dir}/deals"
-    new_harvestunits_dir = f"{new_project_dir}/harvestunits"
+    new_kitchenunits_dir = f"{new_project_dir}/kitchenunits"
 
     assert os_path.exists(new_project_dir) is False
     assert os_path.isdir(new_project_dir) is False
     assert os_path.exists(new_project_file_path) is False
     assert os_path.exists(new_deals_dir) is False
-    assert os_path.exists(new_harvestunits_dir) is False
+    assert os_path.exists(new_kitchenunits_dir) is False
     assert x_projectunit.get_public_dir() != new_deals_dir
-    assert x_projectunit.get_harvestunits_dir() != new_harvestunits_dir
+    assert x_projectunit.get_kitchenunits_dir() != new_kitchenunits_dir
     assert x_projectunit.handle != new_project_handle
 
     # WHEN
@@ -185,17 +185,17 @@ def test_copy_evaluation_project_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     assert os_path.isdir(old_project_dir)
     assert os_path.exists(old_project_file_path)
     assert os_path.exists(old_deals_dir)
-    assert os_path.exists(old_harvestunits_dir)
+    assert os_path.exists(old_kitchenunits_dir)
     assert x_projectunit.get_public_dir() == old_deals_dir
-    assert x_projectunit.get_harvestunits_dir() == old_harvestunits_dir
+    assert x_projectunit.get_kitchenunits_dir() == old_kitchenunits_dir
 
     assert os_path.exists(new_project_dir)
     assert os_path.isdir(new_project_dir)
     assert os_path.exists(new_project_file_path)
     assert os_path.exists(new_deals_dir)
-    assert os_path.exists(new_harvestunits_dir)
+    assert os_path.exists(new_kitchenunits_dir)
     assert x_projectunit.get_public_dir() != new_deals_dir
-    assert x_projectunit.get_harvestunits_dir() != new_harvestunits_dir
+    assert x_projectunit.get_kitchenunits_dir() != new_kitchenunits_dir
     assert x_projectunit.handle != new_project_handle
 
     # Undo change to directory

@@ -4,7 +4,7 @@ from src.deal.examples.example_deals import (
     deal_v001 as example_deals_deal_v001,
 )
 from src.project.project import projectunit_shop
-from src.project.examples.example_harvests import (
+from src.project.examples.example_kitchens import (
     get_1node_deal as example_healers_get_1node_deal,
     get_1node_deal as example_healers_get_7nodeJRootWithH_deal,
 )

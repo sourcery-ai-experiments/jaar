@@ -32,7 +32,7 @@ from src.project.bank_sqlstr import (
     get_groupunit_catalog_dict,
     get_table_count_sqlstr,
 )
-from src.project.examples.example_harvests import (
+from src.project.examples.example_kitchens import (
     get_3node_deal,
     get_6node_deal,
     get_deal_3CleanNodesRandomWeights,

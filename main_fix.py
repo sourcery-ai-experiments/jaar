@@ -52,7 +52,7 @@ class MainApp(QApplication):
 
     def editmain_show(self):
         if self.main_window.ignore_deal_x is None:
-            self.main_window.seed = self.main_window.x_harvest._admin.open_seed_deal()
+            self.main_window.seed = self.main_window.x_kitchen._admin.open_seed_deal()
             self.editmain_view.deal_x = self.main_window.seed
         else:
             self.editmain_view.deal_x = self.main_window.ignore_deal_x
@@ -60,8 +60,8 @@ class MainApp(QApplication):
         self.editmain_view.show()
 
     def edit5issue_show(self):
-        if self.main_window.x_harvest != None:
-            self.edit5issue_view.x_harvest = self.main_window.x_harvest
+        if self.main_window.x_kitchen != None:
+            self.edit5issue_view.x_kitchen = self.main_window.x_kitchen
             self.edit5issue_view.refresh_all()
             self.edit5issue_view.show()
 
@@ -111,7 +111,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.five_issue_button.clicked.connect(self.open_edit5issue)
 
         self.project_x = None
-        self.x_harvest = None
+        self.x_kitchen = None
         self.ignore_deal_x = None
         setup_test_example_environment()
         first_env = "ex5"
@@ -121,24 +121,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_project()
         self.project_handle_combo_refresh()
         self.project_handle_combo.setCurrentText(first_env)
-        self._healer_load(harvest_title="ernie")
+        self._healer_load(kitchen_title="ernie")
 
     def save_seed(self):
         if self.seed != None:
-            self.x_harvest._admin.save_seed_deal(self.seed)
+            self.x_kitchen._admin.save_seed_deal(self.seed)
         self.refresh_healer()
 
     def reload_all_src_deals(self):
         if self.project_x != None:
-            self.project_x.reload_all_harvestunits_src_dealunits()
+            self.project_x.reload_all_kitchenunits_src_dealunits()
 
     def set_public_and_reload_srcs(self):
         self.save_output_deal_to_public()
         self.reload_all_src_deals()
 
     def save_output_deal_to_public(self):
-        if self.x_harvest != None:
-            self.x_harvest.save_output_deal_to_public()
+        if self.x_kitchen != None:
+            self.x_kitchen.save_output_deal_to_public()
         self.refresh_project()
 
     def project_load_from_file(self):
@@ -164,15 +164,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.depotlink_title.setText(f"{selected_healer} - {selected_deal}")
 
     def healers_table_select(self):
-        x_harvest_title = self.healers_table.item(
+        x_kitchen_title = self.healers_table.item(
             self.healers_table.currentRow(), 0
         ).text()
-        self._healer_load(harvest_title=x_harvest_title)
+        self._healer_load(kitchen_title=x_kitchen_title)
 
-    def _healer_load(self, harvest_title: str):
-        self.project_x.create_harvestunit_from_public(title=harvest_title)
-        self.x_harvest = self.project_x._harvestunits.get(harvest_title)
-        self.harvest_title.setText(self.x_harvest._admin.title)
+    def _healer_load(self, kitchen_title: str):
+        self.project_x.create_kitchenunit_from_public(title=kitchen_title)
+        self.x_kitchen = self.project_x._kitchenunits.get(kitchen_title)
+        self.kitchen_title.setText(self.x_kitchen._admin.title)
         self.refresh_healer()
 
     def depotlinks_table_select(self):
@@ -192,13 +192,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         # self.ignore_deal_x = self.project_x.get_public_deal(
         self.ignore_deal_x = self.project_x.get_deal_from_ignores_dir(
-            harvest_title=self.x_harvest._admin.title, _healer=ignore_deal_healer
+            kitchen_title=self.x_kitchen._admin.title, _healer=ignore_deal_healer
         )
         self.edit_deal = self.ignore_deal_x
 
     def ignore_deal_file_update(self):
         self.project_x.set_ignore_deal_file(
-            harvest_title=self.x_harvest._admin.title, deal_obj=self.ignore_deal_x
+            kitchen_title=self.x_kitchen._admin.title, deal_obj=self.ignore_deal_x
         )
         self.refresh_healer()
 
@@ -250,23 +250,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_project()
 
     def healer_insert(self):
-        self.project_x.create_new_harvestunit(harvest_title=self.harvest_title.text())
+        self.project_x.create_new_kitchenunit(kitchen_title=self.kitchen_title.text())
         self.refresh_healers()
 
     def healer_update_title(self):
         currently_selected = self.healers_table.item(
             self.healers_table.currentRow(), 0
         ).text()
-        typed_in = self.harvest_title.text()
+        typed_in = self.kitchen_title.text()
         if currently_selected != typed_in:
-            self.project_x.rename_harvestunit(
+            self.project_x.rename_kitchenunit(
                 old_label=currently_selected, new_label=typed_in
             )
             self.refresh_healers()
 
     def healer_delete(self):
-        self.project_x.del_harvestunit_dir(
-            harvest_title=self.healers_table.item(
+        self.project_x.del_kitchenunit_dir(
+            kitchen_title=self.healers_table.item(
                 self.healers_table.currentRow(), 0
             ).text()
         )
@@ -274,40 +274,40 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def depotlink_insert(self):
         deal_healer = self.deals_table.item(self.deals_table.currentRow(), 0).text()
-        if self.x_harvest != None:
+        if self.x_kitchen != None:
             deal_json = x_func_open_file(
-                dest_dir=self.x_harvest._admin._deals_public_dir,
+                dest_dir=self.x_kitchen._admin._deals_public_dir,
                 file_title=f"{deal_healer}.json",
             )
             deal_x = get_deal_from_json(deal_json)
-            self.x_harvest.set_depot_deal(
+            self.x_kitchen.set_depot_deal(
                 deal_x=deal_x,
                 depotlink_type=self.depotlink_type_combo.currentText(),
                 depotlink_weight=self.depotlink_weight.text(),
             )
-            self.project_x.save_harvestunit_file(
-                harvest_title=self.x_harvest._admin.title
+            self.project_x.save_kitchenunit_file(
+                kitchen_title=self.x_kitchen._admin.title
             )
         self.refresh_healer()
 
     def depotlink_update(self):
-        harvest_title_x = self.x_harvest._admin.title
+        kitchen_title_x = self.x_kitchen._admin.title
         self.project_x.update_depotlink(
-            harvest_title=harvest_title_x,
+            kitchen_title=kitchen_title_x,
             partytitle=self.depotlink_title.text(),
             depotlink_type=self.depotlink_type_combo.currentText(),
             creditor_weight=self.depotlink_weight.text(),
             debtor_weight=self.depotlink_weight.text(),
         )
-        self.project_x.save_harvestunit_file(harvest_title=harvest_title_x)
+        self.project_x.save_kitchenunit_file(kitchen_title=kitchen_title_x)
         self.refresh_healer()
 
     def depotlink_delete(self):
-        harvest_title_x = self.x_harvest._admin.title
+        kitchen_title_x = self.x_kitchen._admin.title
         self.project_x.del_depotlink(
-            harvest_title=harvest_title_x, dealunit_healer=self.depotlink_title.text()
+            kitchen_title=kitchen_title_x, dealunit_healer=self.depotlink_title.text()
         )
-        self.project_x.save_harvestunit_file(harvest_title=harvest_title_x)
+        self.project_x.save_kitchenunit_file(kitchen_title=kitchen_title_x)
         self.refresh_healer()
 
     def get_deal_healer_list(self):
@@ -319,19 +319,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             deals_list.append(get_deal_from_json(x_deal_json=deal_json))
         return deals_list
 
-    def get_harvest_title_list(self):
+    def get_kitchen_title_list(self):
         healers_healer_list = []
         if self.project_x != None:
             healers_healer_list.extend(
                 [healer_dir]
-                for healer_dir in self.project_x.get_harvestunit_dir_paths_list()
+                for healer_dir in self.project_x.get_kitchenunit_dir_paths_list()
             )
         return healers_healer_list
 
     def get_depotlink_list(self):
         depotlinks_list = []
-        if self.x_harvest != None:
-            for cl_val in self.x_harvest._depotlinks.values():
+        if self.x_kitchen != None:
+            for cl_val in self.x_kitchen._depotlinks.values():
                 depotlink_row = [
                     cl_val.deal_healer,
                     cl_val.depotlink_type,
@@ -342,9 +342,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_digests_list(self):
         x_list = []
-        if self.x_harvest != None:
+        if self.x_kitchen != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.x_harvest_admin._deals_digest_dir,
+                dir_path=self.x_kitchen_admin._deals_digest_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -354,9 +354,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_ignores_list(self):
         x_list = []
-        if self.x_harvest != None:
+        if self.x_kitchen != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.x_harvest._admin._deals_ignore_dir,
+                dir_path=self.x_kitchen._admin._deals_ignore_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -450,7 +450,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def _sub_refresh_healers_table(self):
         self.refresh_x(
-            self.healers_table, ["Healers Table"], self.get_harvest_title_list()
+            self.healers_table, ["Healers Table"], self.get_kitchen_title_list()
         )
 
     def _sub_refresh_depotlinks_table(self):
@@ -460,10 +460,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.depotlink_type_combo.addItems(depotlink_types)
         self.depotlink_type_combo.setCurrentText("")
         column_header = ""
-        if self.x_harvest is None:
+        if self.x_kitchen is None:
             column_header = "Deallinks Table"
-        elif self.x_harvest != None:
-            column_header = f"'{self.x_harvest._admin.title}' Deallinks"
+        elif self.x_kitchen != None:
+            column_header = f"'{self.x_kitchen._admin.title}' Deallinks"
         self.refresh_x(
             self.depotlinks_table,
             [column_header, "Link Type", "Weight"],
@@ -568,7 +568,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.project_handle_combo.addItems(create_example_projects_list())
 
     def refresh_healers(self):
-        self.x_harvest = None
+        self.x_kitchen = None
         self._sub_refresh_healers_table()
         self.refresh_healer()
 
@@ -577,8 +577,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._sub_refresh_digests_table()
         self._sub_refresh_ignores_table()
         self.healer_output_deal = None
-        if self.x_harvest != None:
-            self.healer_output_deal = self.x_harvest._admin.get_remelded_output_deal()
+        if self.x_kitchen != None:
+            self.healer_output_deal = self.x_kitchen._admin.get_remelded_output_deal()
         self._sub_refresh_p_ideas_table()
         self._sub_refresh_p_partys_table()
         self._sub_refresh_p_groups_table()

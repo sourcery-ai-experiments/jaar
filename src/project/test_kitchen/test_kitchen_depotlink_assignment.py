@@ -1,23 +1,23 @@
-from src.project.harvest import harvestunit_shop
-from src.project.examples.example_harvests import (
+from src.project.kitchen import kitchenunit_shop
+from src.project.examples.example_kitchens import (
     get_deal_assignment_laundry_example1,
 )
-from src.project.examples.harvest_env_kit import (
-    harvest_dir_setup_cleanup,
-    get_temp_harvestunit_dir,
+from src.project.examples.kitchen_env_kit import (
+    kitchen_dir_setup_cleanup,
+    get_temp_kitchenunit_dir,
     get_temp_project_handle,
 )
 
 
 def test_healer_save_deal_to_depot_assignment_link_CorrectlyCreatesAssignmentFile(
-    harvest_dir_setup_cleanup,
+    kitchen_dir_setup_cleanup,
 ):
     # GIVEN
     america_cx = get_deal_assignment_laundry_example1()
     america_cx.set_project_handle(get_temp_project_handle())
     joachim_text = "Joachim"
-    joachim_ux = harvestunit_shop(
-        joachim_text, get_temp_harvestunit_dir(), get_temp_project_handle()
+    joachim_ux = kitchenunit_shop(
+        joachim_text, get_temp_kitchenunit_dir(), get_temp_project_handle()
     )
     joachim_ux.create_core_dir_and_files()
     print(f"{america_cx._idearoot._label=}")
