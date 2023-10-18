@@ -204,7 +204,6 @@ def test_set_deal_metrics_NLevelCorrectlySetsDescendantAttributes_2():
 
 
 def test_TreeTraverseSetsClearsBalancelineestorsCorrectly():
-    # sourcery skip: simplify-empty-collection-comparison
     x_deal = example_deals_get_deal_with_4_levels()
     x_deal.set_deal_metrics()
     # idea tree has no balancelinks
@@ -212,13 +211,13 @@ def test_TreeTraverseSetsClearsBalancelineestorsCorrectly():
     x_deal._idearoot._balancelines = {1: "testtest"}
     assert x_deal._idearoot._balancelines != {}
     x_deal.set_deal_metrics()
-    assert x_deal._idearoot._balancelines == {}
+    assert not x_deal._idearoot._balancelines
 
     # test for level 1 and level n
     x_deal._idearoot._kids["work"]._balancelines = {1: "testtest"}
     assert x_deal._idearoot._kids["work"]._balancelines != {}
     x_deal.set_deal_metrics()
-    assert x_deal._idearoot._kids["work"]._balancelines == {}
+    assert not x_deal._idearoot._kids["work"]._balancelines
 
 
 def test_TreeTraverseSetsBalancelineestorFromRootCorrectly():

@@ -790,7 +790,7 @@ class DealUnit:
             self._get_rangeroot_acptfactunits()
         )
 
-        # Now collect associates (all their descendants and range_source_roads)
+        # Now get associates (all their descendants and range_source_roads)
         lemma_acptfactunits = {}  # acptfact.base : acptfactUnit
         count_x = 0
         while lemmas_x.is_lemmas_evaluated() == False or count_x > 10000:

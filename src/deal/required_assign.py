@@ -77,12 +77,12 @@ class AssignedHeir:
             for suffgroup in parent_assignheir._suffgroups.keys():
                 dict_x[suffgroup] = -1
         else:
-            # collect all_partys of parent assignedheir groups
+            # get all_partys of parent assignedheir groups
             all_parent_assignedheir_partys = self._get_all_partys(
                 deal_groups=deal_groups,
                 groupbrand_dict=parent_assignheir._suffgroups,
             )
-            # collect all_partys of assignedunit groups
+            # get all_partys of assignedunit groups
             all_assignedunit_partys = self._get_all_partys(
                 deal_groups=deal_groups,
                 groupbrand_dict=assignunit._suffgroups,
