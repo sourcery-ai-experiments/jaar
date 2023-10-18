@@ -207,16 +207,16 @@ class HarvestAdmin:
         self.save_deal_to_public(self.get_remelded_output_deal())
 
 
-def HarvestAdmin_shop(
+def harvestadmin_shop(
     _harvest_title: str, _env_dir: str, _project_handle: str
 ) -> HarvestAdmin:
-    uax = HarvestAdmin(
+    x_harvestadmin = HarvestAdmin(
         _harvest_title=_harvest_title,
         _env_dir=_env_dir,
         _project_handle=_project_handle,
     )
-    uax.set_dirs()
-    return uax
+    x_harvestadmin.set_dirs()
+    return x_harvestadmin
 
 
 @dataclass
@@ -338,7 +338,7 @@ class HarvestUnit:
 
     # housekeeping
     def set_env_dir(self, env_dir: str, harvest_title: str, project_handle: str):
-        self._admin = HarvestAdmin_shop(
+        self._admin = harvestadmin_shop(
             _harvest_title=harvest_title,
             _env_dir=env_dir,
             _project_handle=project_handle,

@@ -2,7 +2,7 @@ from src.deal.x_func import (
     open_file as x_func_open_file,
     save_file as x_func_save_file,
 )
-from src.project.harvest import HarvestAdmin, HarvestAdmin_shop
+from src.project.harvest import HarvestAdmin, harvestadmin_shop
 from src.project.examples.example_harvests import (
     get_6node_deal as example_healers_get_6node_deal,
     get_6node_deal as example_healers_get_7nodeJRootWithH_deal,
@@ -15,7 +15,7 @@ from src.project.examples.harvest_env_kit import (
 from os import path as os_path
 
 
-def test_admin_exists():
+def test_HarvestAdmin_exists():
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_harvestunit_dir()
@@ -101,7 +101,7 @@ def test_HarvestAdmin_create_core_dir_and_files_CreatesDirsAndFiles(
     # GIVEN create healer
     jul_text = "julian"
     env_dir = get_temp_harvestunit_dir()
-    pdx = HarvestAdmin(jul_text, env_dir, get_temp_project_handle())
+    pdx = harvestadmin_shop(jul_text, env_dir, get_temp_project_handle())
     pdx.set_dirs()
     assert os_path.exists(pdx._harvestunits_dir) is False
     assert os_path.exists(pdx._harvestunit_dir) is False
@@ -133,7 +133,7 @@ def test_HarvestAdmin_create_core_dir_and_files_DoesNotOverWriteseedDeal(
     # GIVEN create healer
     jul_text = "julian"
     env_dir = get_temp_harvestunit_dir()
-    jul_pdx = HarvestAdmin(jul_text, env_dir, get_temp_project_handle())
+    jul_pdx = harvestadmin_shop(jul_text, env_dir, get_temp_project_handle())
     jul_pdx.set_dirs()
     deal_x = example_healers_get_7nodeJRootWithH_deal()
     jul_pdx.create_core_dir_and_files(deal_x)
@@ -159,7 +159,7 @@ def test_HarvestAdmin_set_harvest_title_WorksCorrectly(harvest_dir_setup_cleanup
     env_dir = get_temp_harvestunit_dir()
 
     old_healer_text = "bob"
-    pdx = HarvestAdmin(old_healer_text, env_dir, get_temp_project_handle())
+    pdx = harvestadmin_shop(old_healer_text, env_dir, get_temp_project_handle())
     deal_x = example_healers_get_7nodeJRootWithH_deal()
     pdx.set_dirs()
     pdx.create_core_dir_and_files(deal_x)
@@ -198,7 +198,7 @@ def test_harvestunit_auto_output_to_public_SavesDealToPublicDir(
 ):
     # GIVEN
     bob_text = "bob"
-    pdx = HarvestAdmin_shop(
+    pdx = harvestadmin_shop(
         bob_text, get_temp_harvestunit_dir(), get_temp_project_handle()
     )
     deal_x = example_healers_get_6node_deal()
