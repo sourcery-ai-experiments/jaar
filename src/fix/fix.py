@@ -11,7 +11,7 @@ from src.deal.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
 )
-from src.fix.remedy import RemedyUnit, remedyunit_shop
+from src.fix.collect import CollectUnit, collectunit_shop
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 from src.fix.bank_sqlstr import (
@@ -49,7 +49,7 @@ class FixUnit:
     handle: FixHandle
     fixs_dir: str
     _person_importance: float = None
-    _remedyunits: dict[str:RemedyUnit] = None
+    _collectunits: dict[str:CollectUnit] = None
     _bank_db = None
 
     def set_person_importance(self, person_importance: float):
@@ -288,77 +288,77 @@ class FixUnit:
     def create_dirs_if_null(self, in_memory_bank: bool = None):
         fix_dir = self.get_object_root_dir()
         deals_dir = self.get_public_dir()
-        remedyunits_dir = self.get_remedyunits_dir()
+        collectunits_dir = self.get_collectunits_dir()
         single_dir_create_if_null(x_path=fix_dir)
         single_dir_create_if_null(x_path=deals_dir)
-        single_dir_create_if_null(x_path=remedyunits_dir)
+        single_dir_create_if_null(x_path=collectunits_dir)
         self._create_main_file_if_null(x_dir=fix_dir)
         self._create_bank_db(in_memory=in_memory_bank, overwrite=True)
 
-    # RemedyUnit management
-    def get_remedyunits_dir(self):
-        return f"{self.get_object_root_dir()}/remedyunits"
+    # CollectUnit management
+    def get_collectunits_dir(self):
+        return f"{self.get_object_root_dir()}/collectunits"
 
-    def get_remedyunit_dir_paths_list(self):
+    def get_collectunit_dir_paths_list(self):
         return list(
             x_func_dir_files(
-                dir_path=self.get_remedyunits_dir(),
+                dir_path=self.get_collectunits_dir(),
                 remove_extensions=False,
                 include_dirs=True,
             ).keys()
         )
 
-    def set_remedyunits_empty_if_null(self):
-        if self._remedyunits is None:
-            self._remedyunits = {}
+    def set_collectunits_empty_if_null(self):
+        if self._collectunits is None:
+            self._collectunits = {}
 
-    def create_new_remedyunit(self, remedy_title: str):
-        self.set_remedyunits_empty_if_null()
-        ux = remedyunit_shop(remedy_title, self.get_object_root_dir(), self.handle)
+    def create_new_collectunit(self, collect_title: str):
+        self.set_collectunits_empty_if_null()
+        ux = collectunit_shop(collect_title, self.get_object_root_dir(), self.handle)
         ux.create_core_dir_and_files()
-        self._remedyunits[ux._admin._remedy_title] = ux
+        self._collectunits[ux._admin._collect_title] = ux
 
-    def get_remedyunit(self, title: str) -> RemedyUnit:
+    def get_collectunit(self, title: str) -> CollectUnit:
         return (
-            None if self._remedyunits.get(title) is None else self._remedyunits[title]
+            None if self._collectunits.get(title) is None else self._collectunits[title]
         )
 
-    def create_remedyunit_from_public(self, title: str):
+    def create_collectunit_from_public(self, title: str):
         x_deal = self.get_public_deal(healer=title)
-        x_remedyunit = remedyunit_shop(
+        x_collectunit = collectunit_shop(
             title=x_deal._healer, env_dir=self.get_object_root_dir()
         )
-        self.set_remedyunits_empty_if_null()
-        self.set_remedyunit_to_fix(x_remedyunit)
+        self.set_collectunits_empty_if_null()
+        self.set_collectunit_to_fix(x_collectunit)
 
-    def set_remedyunit_to_fix(self, remedyunit: RemedyUnit):
-        self._remedyunits[remedyunit._admin._remedy_title] = remedyunit
-        self.save_remedyunit_file(remedy_title=remedyunit._admin._remedy_title)
+    def set_collectunit_to_fix(self, collectunit: CollectUnit):
+        self._collectunits[collectunit._admin._collect_title] = collectunit
+        self.save_collectunit_file(collect_title=collectunit._admin._collect_title)
 
-    def save_remedyunit_file(self, remedy_title: str):
-        x_remedyunit = self.get_remedyunit(title=remedy_title)
-        x_remedyunit._admin.save_isol_deal(x_remedyunit.get_isol())
+    def save_collectunit_file(self, collect_title: str):
+        x_collectunit = self.get_collectunit(title=collect_title)
+        x_collectunit._admin.save_isol_deal(x_collectunit.get_isol())
 
-    def rename_remedyunit(self, old_title: str, new_title: str):
-        remedy_x = self.get_remedyunit(title=old_title)
-        old_remedyunit_dir = remedy_x._admin._remedyunit_dir
-        remedy_x._admin.set_remedy_title(new_title=new_title)
-        self.set_remedyunit_to_fix(remedy_x)
-        x_func_delete_dir(old_remedyunit_dir)
-        self.del_remedyunit_from_fix(remedy_title=old_title)
+    def rename_collectunit(self, old_title: str, new_title: str):
+        collect_x = self.get_collectunit(title=old_title)
+        old_collectunit_dir = collect_x._admin._collectunit_dir
+        collect_x._admin.set_collect_title(new_title=new_title)
+        self.set_collectunit_to_fix(collect_x)
+        x_func_delete_dir(old_collectunit_dir)
+        self.del_collectunit_from_fix(collect_title=old_title)
 
-    def del_remedyunit_from_fix(self, remedy_title):
-        self._remedyunits.pop(remedy_title)
+    def del_collectunit_from_fix(self, collect_title):
+        self._collectunits.pop(collect_title)
 
-    def del_remedyunit_dir(self, remedy_title: str):
-        x_func_delete_dir(f"{self.get_remedyunits_dir()}/{remedy_title}")
+    def del_collectunit_dir(self, collect_title: str):
+        x_func_delete_dir(f"{self.get_collectunits_dir()}/{collect_title}")
 
     # public dir management
     def get_public_dir(self):
         return f"{self.get_object_root_dir()}/deals"
 
-    def get_ignores_dir(self, remedy_title: str):
-        per_x = self.get_remedyunit(remedy_title)
+    def get_ignores_dir(self, collect_title: str):
+        per_x = self.get_collectunit(collect_title)
         return per_x._admin._deals_ignore_dir
 
     def get_public_deal(self, healer: str) -> DealUnit:
@@ -368,17 +368,17 @@ class FixUnit:
             )
         )
 
-    def get_deal_from_ignores_dir(self, remedy_title: str, _healer: str) -> DealUnit:
+    def get_deal_from_ignores_dir(self, collect_title: str, _healer: str) -> DealUnit:
         return get_deal_from_json(
             x_func_open_file(
-                dest_dir=self.get_ignores_dir(remedy_title=remedy_title),
+                dest_dir=self.get_ignores_dir(collect_title=collect_title),
                 file_title=f"{_healer}.json",
             )
         )
 
-    def set_ignore_deal_file(self, remedy_title: str, deal_obj: DealUnit):
-        x_remedyunit = self.get_remedyunit(title=remedy_title)
-        x_remedyunit.set_ignore_deal_file(
+    def set_ignore_deal_file(self, collect_title: str, deal_obj: DealUnit):
+        x_collectunit = self.get_collectunit(title=collect_title)
+        x_collectunit.set_ignore_deal_file(
             dealunit=deal_obj, src_deal_healer=deal_obj._healer
         )
 
@@ -399,47 +399,47 @@ class FixUnit:
             file_text=deal_x.get_json(),
         )
 
-    def reload_all_remedyunits_src_dealunits(self):
-        for x_remedyunit in self._remedyunits.values():
-            x_remedyunit.refresh_depot_deals()
+    def reload_all_collectunits_src_dealunits(self):
+        for x_collectunit in self._collectunits.values():
+            x_collectunit.refresh_depot_deals()
 
     def get_public_dir_file_titles_list(self):
         return list(x_func_dir_files(dir_path=self.get_public_dir()).keys())
 
     # deals_dir to healer_deals_dir management
-    def _remedyunit_set_depot_deal(
+    def _collectunit_set_depot_deal(
         self,
-        remedyunit: RemedyUnit,
+        collectunit: CollectUnit,
         dealunit: DealUnit,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
         ignore_deal: DealUnit = None,
     ):
-        remedyunit.set_depot_deal(
+        collectunit.set_depot_deal(
             deal_x=dealunit,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
         )
         if depotlink_type == "ignore" and ignore_deal != None:
-            remedyunit.set_ignore_deal_file(
+            collectunit.set_ignore_deal_file(
                 dealunit=ignore_deal, src_deal_healer=dealunit._healer
             )
 
     def set_healer_depotlink(
         self,
-        remedy_title: str,
+        collect_title: str,
         deal_healer: str,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
         ignore_deal: DealUnit = None,
     ):
-        x_remedyunit = self.get_remedyunit(title=remedy_title)
+        x_collectunit = self.get_collectunit(title=collect_title)
         deal_x = self.get_public_deal(healer=deal_healer)
-        self._remedyunit_set_depot_deal(
-            remedyunit=x_remedyunit,
+        self._collectunit_set_depot_deal(
+            collectunit=x_collectunit,
             dealunit=deal_x,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
@@ -449,16 +449,16 @@ class FixUnit:
 
     def create_depotlink_to_generated_deal(
         self,
-        remedy_title: str,
+        collect_title: str,
         deal_healer: str,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
-        x_remedyunit = self.get_remedyunit(title=remedy_title)
+        x_collectunit = self.get_collectunit(title=collect_title)
         deal_x = DealUnit(_healer=deal_healer)
-        self._remedyunit_set_depot_deal(
-            remedyunit=x_remedyunit,
+        self._collectunit_set_depot_deal(
+            collectunit=x_collectunit,
             dealunit=deal_x,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
@@ -467,40 +467,40 @@ class FixUnit:
 
     def update_depotlink(
         self,
-        remedy_title: str,
+        collect_title: str,
         partytitle: PartyTitle,
         depotlink_type: str,
         creditor_weight: str,
         debtor_weight: str,
     ):
-        x_remedyunit = self.get_remedyunit(title=remedy_title)
+        x_collectunit = self.get_collectunit(title=collect_title)
         deal_x = self.get_public_deal(_healer=partytitle)
-        self._remedyunit_set_depot_deal(
-            remedyunit=x_remedyunit,
+        self._collectunit_set_depot_deal(
+            collectunit=x_collectunit,
             dealunit=deal_x,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
         )
 
-    def del_depotlink(self, remedy_title: str, dealunit_healer: str):
-        x_remedyunit = self.get_remedyunit(title=remedy_title)
-        x_remedyunit.del_depot_deal(deal_healer=dealunit_healer)
+    def del_depotlink(self, collect_title: str, dealunit_healer: str):
+        x_collectunit = self.get_collectunit(title=collect_title)
+        x_collectunit.del_depot_deal(deal_healer=dealunit_healer)
 
     # Healer output_deal
-    def get_output_deal(self, remedy_title: str) -> DealUnit:
-        x_remedyunit = self.get_remedyunit(title=remedy_title)
-        return x_remedyunit._admin.get_remelded_output_deal()
+    def get_output_deal(self, collect_title: str) -> DealUnit:
+        x_collectunit = self.get_collectunit(title=collect_title)
+        return x_collectunit._admin.get_remelded_output_deal()
 
 
 def fixunit_shop(
     handle: str,
     fixs_dir: str,
-    _remedyunits: dict[str:RemedyUnit] = None,
+    _collectunits: dict[str:CollectUnit] = None,
     in_memory_bank: bool = None,
 ):
     if in_memory_bank is None:
         in_memory_bank = True
-    fix_x = FixUnit(handle=handle, fixs_dir=fixs_dir, _remedyunits=_remedyunits)
+    fix_x = FixUnit(handle=handle, fixs_dir=fixs_dir, _collectunits=_collectunits)
     fix_x.create_dirs_if_null(in_memory_bank=in_memory_bank)
     return fix_x

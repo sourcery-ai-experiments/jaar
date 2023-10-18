@@ -65,9 +65,9 @@ base attributes vs required attributess
 <!-- TODO: Add explanations -->
 FixUnit objects
 
-FixUnit RemedyUnit objects
+FixUnit CollectUnit objects
 
-FixUnit RemedyUnit DealLink objects
+FixUnit CollectUnit DealLink objects
 
 FixUnit Bank objects
 

@@ -35,7 +35,7 @@ def test_fix_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     fix_file_title = "fix.json"
     fix_file_path = f"{fix_dir}/{fix_file_title}"
     deals_dir = f"{fix_dir}/deals"
-    remedyunits_dir = f"{fix_dir}/remedyunits"
+    collectunits_dir = f"{fix_dir}/collectunits"
     bank_file_title = "bank.db"
     bank_file_path = f"{fix_dir}/{bank_file_title}"
 
@@ -43,7 +43,7 @@ def test_fix_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.isdir(fix_dir) is False
     assert os_path.exists(fix_file_path) is False
     assert os_path.exists(deals_dir) is False
-    assert os_path.exists(remedyunits_dir) is False
+    assert os_path.exists(collectunits_dir) is False
     assert os_path.exists(bank_file_path) is False
 
     # WHEN
@@ -54,11 +54,11 @@ def test_fix_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.isdir(fix_dir)
     assert os_path.exists(fix_file_path)
     assert os_path.exists(deals_dir)
-    assert os_path.exists(remedyunits_dir)
+    assert os_path.exists(collectunits_dir)
     assert os_path.exists(bank_file_path)
     assert x_fixunit.get_object_root_dir() == fix_dir
     assert x_fixunit.get_public_dir() == deals_dir
-    assert x_fixunit.get_remedyunits_dir() == remedyunits_dir
+    assert x_fixunit.get_collectunits_dir() == collectunits_dir
     assert x_fixunit.get_bank_db_path() == bank_file_path
 
 
@@ -69,14 +69,14 @@ def test_rename_example_fix_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup):
     old_fix_file_title = "fix.json"
     old_fix_file_path = f"{old_fix_dir}/{old_fix_file_title}"
     old_deals_dir = f"{old_fix_dir}/deals"
-    old_remedyunits_dir = f"{old_fix_dir}/remedyunits"
+    old_collectunits_dir = f"{old_fix_dir}/collectunits"
 
     new_fix_handle = "ex_env1"
     new_fix_dir = f"src/fix/examples/fixs/{new_fix_handle}"
     new_fix_file_title = "fix.json"
     new_fix_file_path = f"{new_fix_dir}/{new_fix_file_title}"
     new_deals_dir = f"{new_fix_dir}/deals"
-    new_remedyunits_dir = f"{new_fix_dir}/remedyunits"
+    new_collectunits_dir = f"{new_fix_dir}/collectunits"
     x_func_delete_dir(dir=new_fix_dir)
     print(f"{new_fix_dir=}")
 
@@ -90,17 +90,17 @@ def test_rename_example_fix_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.isdir(old_fix_dir)
     assert os_path.exists(old_fix_file_path)
     assert os_path.exists(old_deals_dir)
-    assert os_path.exists(old_remedyunits_dir)
+    assert os_path.exists(old_collectunits_dir)
     assert x_fixunit.get_public_dir() == old_deals_dir
-    assert x_fixunit.get_remedyunits_dir() == old_remedyunits_dir
+    assert x_fixunit.get_collectunits_dir() == old_collectunits_dir
 
     assert os_path.exists(new_fix_dir) is False
     assert os_path.isdir(new_fix_dir) is False
     assert os_path.exists(new_fix_file_path) is False
     assert os_path.exists(new_deals_dir) is False
-    assert os_path.exists(new_remedyunits_dir) is False
+    assert os_path.exists(new_collectunits_dir) is False
     assert x_fixunit.get_public_dir() != new_deals_dir
-    assert x_fixunit.get_remedyunits_dir() != new_remedyunits_dir
+    assert x_fixunit.get_collectunits_dir() != new_collectunits_dir
     assert x_fixunit.handle != new_fix_handle
 
     # WHEN
@@ -111,17 +111,17 @@ def test_rename_example_fix_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.isdir(old_fix_dir) is False
     assert os_path.exists(old_fix_file_path) is False
     assert os_path.exists(old_deals_dir) is False
-    assert os_path.exists(old_remedyunits_dir) is False
+    assert os_path.exists(old_collectunits_dir) is False
     assert x_fixunit.get_public_dir() != old_deals_dir
-    assert x_fixunit.get_remedyunits_dir() != old_remedyunits_dir
+    assert x_fixunit.get_collectunits_dir() != old_collectunits_dir
 
     assert os_path.exists(new_fix_dir)
     assert os_path.isdir(new_fix_dir)
     assert os_path.exists(new_fix_file_path)
     assert os_path.exists(new_deals_dir)
-    assert os_path.exists(new_remedyunits_dir)
+    assert os_path.exists(new_collectunits_dir)
     assert x_fixunit.get_public_dir() == new_deals_dir
-    assert x_fixunit.get_remedyunits_dir() == new_remedyunits_dir
+    assert x_fixunit.get_collectunits_dir() == new_collectunits_dir
     assert x_fixunit.handle == new_fix_handle
 
     # Undo change to directory
@@ -138,7 +138,7 @@ def test_copy_evaluation_fix_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup):
     old_fix_file_title = "fix.json"
     old_fix_file_path = f"{old_fix_dir}/{old_fix_file_title}"
     old_deals_dir = f"{old_fix_dir}/deals"
-    old_remedyunits_dir = f"{old_fix_dir}/remedyunits"
+    old_collectunits_dir = f"{old_fix_dir}/collectunits"
 
     x_fixunit = fixunit_shop(handle=old_fix_handle, fixs_dir=get_test_fixs_dir())
     x_fixunit.create_dirs_if_null()
@@ -147,24 +147,24 @@ def test_copy_evaluation_fix_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.isdir(old_fix_dir)
     assert os_path.exists(old_fix_file_path)
     assert os_path.exists(old_deals_dir)
-    assert os_path.exists(old_remedyunits_dir)
+    assert os_path.exists(old_collectunits_dir)
     assert x_fixunit.get_public_dir() == old_deals_dir
-    assert x_fixunit.get_remedyunits_dir() == old_remedyunits_dir
+    assert x_fixunit.get_collectunits_dir() == old_collectunits_dir
 
     new_fix_handle = "ex_env1"
     new_fix_dir = f"src/fix/examples/fixs/{new_fix_handle}"
     new_fix_file_title = "fix.json"
     new_fix_file_path = f"{new_fix_dir}/{new_fix_file_title}"
     new_deals_dir = f"{new_fix_dir}/deals"
-    new_remedyunits_dir = f"{new_fix_dir}/remedyunits"
+    new_collectunits_dir = f"{new_fix_dir}/collectunits"
 
     assert os_path.exists(new_fix_dir) is False
     assert os_path.isdir(new_fix_dir) is False
     assert os_path.exists(new_fix_file_path) is False
     assert os_path.exists(new_deals_dir) is False
-    assert os_path.exists(new_remedyunits_dir) is False
+    assert os_path.exists(new_collectunits_dir) is False
     assert x_fixunit.get_public_dir() != new_deals_dir
-    assert x_fixunit.get_remedyunits_dir() != new_remedyunits_dir
+    assert x_fixunit.get_collectunits_dir() != new_collectunits_dir
     assert x_fixunit.handle != new_fix_handle
 
     # WHEN
@@ -175,17 +175,17 @@ def test_copy_evaluation_fix_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.isdir(old_fix_dir)
     assert os_path.exists(old_fix_file_path)
     assert os_path.exists(old_deals_dir)
-    assert os_path.exists(old_remedyunits_dir)
+    assert os_path.exists(old_collectunits_dir)
     assert x_fixunit.get_public_dir() == old_deals_dir
-    assert x_fixunit.get_remedyunits_dir() == old_remedyunits_dir
+    assert x_fixunit.get_collectunits_dir() == old_collectunits_dir
 
     assert os_path.exists(new_fix_dir)
     assert os_path.isdir(new_fix_dir)
     assert os_path.exists(new_fix_file_path)
     assert os_path.exists(new_deals_dir)
-    assert os_path.exists(new_remedyunits_dir)
+    assert os_path.exists(new_collectunits_dir)
     assert x_fixunit.get_public_dir() != new_deals_dir
-    assert x_fixunit.get_remedyunits_dir() != new_remedyunits_dir
+    assert x_fixunit.get_collectunits_dir() != new_collectunits_dir
     assert x_fixunit.handle != new_fix_handle
 
     # Undo change to directory

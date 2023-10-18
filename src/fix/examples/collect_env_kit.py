@@ -4,7 +4,7 @@ from src.deal.deal import DealUnit
 from src.deal.x_func import delete_dir, save_file as x_func_save_file
 
 
-def get_temp_remedyunit_dir() -> str:
+def get_temp_collectunit_dir() -> str:
     return f"src/fix/examples/{get_temp_fix_handle()}"
 
 
@@ -13,23 +13,23 @@ def get_temp_fix_handle() -> str:
 
 
 @pytest_fixture()
-def remedy_dir_setup_cleanup():
-    healer_dir = get_temp_remedyunit_dir()
+def collect_dir_setup_cleanup():
+    healer_dir = get_temp_collectunit_dir()
     delete_dir(dir=healer_dir)
     yield healer_dir
     delete_dir(dir=healer_dir)
 
 
-def create_deal_file(deal_remedyunit_dir: str, deal_healer: str):
+def create_deal_file(deal_collectunit_dir: str, deal_healer: str):
     deal_x = DealUnit(_healer=deal_healer)
-    # file_path = f"{deal_remedyunit_dir}/{deal_x._healer}.json"
+    # file_path = f"{deal_collectunit_dir}/{deal_x._healer}.json"
     # # if not path.exists(file_path):
     # print(f"{file_path=} {deal_x._healer=}")
     # with open(f"{file_path}", "w") as f:
     #     print(f" saving {deal_x._healer=} to {file_path=}")
     #     f.write(deal_x.get_json())
     x_func_save_file(
-        dest_dir=deal_remedyunit_dir,
+        dest_dir=deal_collectunit_dir,
         file_title=f"{deal_x._healer}.json",
         file_text=deal_x.get_json(),
     )

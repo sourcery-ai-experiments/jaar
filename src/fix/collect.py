@@ -22,17 +22,17 @@ from os import path as os_path
 from json import loads as json_loads
 
 
-class InvalidRemedyException(Exception):
+class InvalidCollectException(Exception):
     pass
 
 
 @dataclass
-class RemedyAdmin:
-    _remedy_title: str
+class CollectAdmin:
+    _collect_title: str
     _env_dir: str
     _fix_handle: str
-    _remedyunit_dir: str = None
-    _remedyunits_dir: str = None
+    _collectunit_dir: str = None
+    _collectunits_dir: str = None
     _isol_file_title: str = None
     _isol_file_path: str = None
     _deal_output_file_title: str = None
@@ -44,31 +44,31 @@ class RemedyAdmin:
     _deals_digest_dir: str = None
 
     def set_dirs(self):
-        env_remedyunits_folder = "remedyunits"
+        env_collectunits_folder = "collectunits"
         deals_str = "deals"
-        self._remedyunits_dir = f"{self._env_dir}/{env_remedyunits_folder}"
-        self._remedyunit_dir = f"{self._remedyunits_dir}/{self._remedy_title}"
+        self._collectunits_dir = f"{self._env_dir}/{env_collectunits_folder}"
+        self._collectunit_dir = f"{self._collectunits_dir}/{self._collect_title}"
         self._isol_file_title = "isol_deal.json"
-        self._isol_file_path = f"{self._remedyunit_dir}/{self._isol_file_title}"
+        self._isol_file_path = f"{self._collectunit_dir}/{self._isol_file_title}"
         self._deal_output_file_title = "output_deal.json"
         self._deal_output_file_path = (
-            f"{self._remedyunit_dir}/{self._deal_output_file_title}"
+            f"{self._collectunit_dir}/{self._deal_output_file_title}"
         )
-        self._public_file_title = f"{self._remedy_title}.json"
+        self._public_file_title = f"{self._collect_title}.json"
         self._deals_public_dir = f"{self._env_dir}/{deals_str}"
-        self._deals_depot_dir = f"{self._remedyunit_dir}/{deals_str}"
-        self._deals_ignore_dir = f"{self._remedyunit_dir}/ignores"
-        self._deals_digest_dir = f"{self._remedyunit_dir}/digests"
+        self._deals_depot_dir = f"{self._collectunit_dir}/{deals_str}"
+        self._deals_ignore_dir = f"{self._collectunit_dir}/ignores"
+        self._deals_digest_dir = f"{self._collectunit_dir}/digests"
 
-    def set_remedy_title(self, new_title: str):
-        old_remedyunit_dir = self._remedyunit_dir
-        self._remedy_title = new_title
+    def set_collect_title(self, new_title: str):
+        old_collectunit_dir = self._collectunit_dir
+        self._collect_title = new_title
         self.set_dirs()
 
-        rename_dir(src=old_remedyunit_dir, dst=self._remedyunit_dir)
+        rename_dir(src=old_collectunit_dir, dst=self._collectunit_dir)
 
     def create_core_dir_and_files(self, isol_deal: DealUnit = None):
-        single_dir_create_if_null(x_path=self._remedyunit_dir)
+        single_dir_create_if_null(x_path=self._collectunit_dir)
         single_dir_create_if_null(x_path=self._deals_public_dir)
         single_dir_create_if_null(x_path=self._deals_depot_dir)
         single_dir_create_if_null(x_path=self._deals_digest_dir)
@@ -115,8 +115,8 @@ class RemedyAdmin:
         self._save_deal_to_path(deal_x, dest_dir, file_title)
 
     def save_isol_deal(self, deal_x: DealUnit):
-        deal_x.set_healer(self._remedy_title)
-        self._save_deal_to_path(deal_x, self._remedyunit_dir, self._isol_file_title)
+        deal_x.set_healer(self._collect_title)
+        self._save_deal_to_path(deal_x, self._collectunit_dir, self._isol_file_title)
 
     def save_deal_to_depot(self, deal_x: DealUnit):
         dest_dir = self._deals_depot_dir
@@ -129,7 +129,7 @@ class RemedyAdmin:
             primary_deal=isol_deal_x,
             meldees_dir=self._deals_digest_dir,
         )
-        dest_dir = self._remedyunit_dir
+        dest_dir = self._collectunit_dir
         file_title = self._deal_output_file_title
         self._save_deal_to_path(deal_x, dest_dir, file_title)
 
@@ -153,22 +153,22 @@ class RemedyAdmin:
         x_deal = None
         if not self._isol_deal_exists():
             self.save_isol_deal(self._get_empty_isol_deal())
-        ct = x_func_open_file(self._remedyunit_dir, self._isol_file_title)
+        ct = x_func_open_file(self._collectunit_dir, self._isol_file_title)
         x_deal = dealunit_get_from_json(x_deal_json=ct)
         x_deal.set_deal_metrics()
         return x_deal
 
     def open_output_deal(self) -> DealUnit:
         x_deal_json = x_func_open_file(
-            self._remedyunit_dir, self._deal_output_file_title
+            self._collectunit_dir, self._deal_output_file_title
         )
         x_deal = dealunit_get_from_json(x_deal_json)
         x_deal.set_deal_metrics()
         return x_deal
 
     def _get_empty_isol_deal(self):
-        x_deal = DealUnit(_healer=self._remedy_title, _weight=0)
-        x_deal.add_partyunit(title=self._remedy_title)
+        x_deal = DealUnit(_healer=self._collect_title, _weight=0)
+        x_deal.add_partyunit(title=self._collect_title)
         x_deal.set_fix_handle(self._fix_handle)
         return x_deal
 
@@ -179,21 +179,21 @@ class RemedyAdmin:
         x_func_delete_dir(f"{self._deals_digest_dir}/{healer}.json")
 
     def erase_isol_deal_file(self):
-        x_func_delete_dir(dir=f"{self._remedyunit_dir}/{self._isol_file_title}")
+        x_func_delete_dir(dir=f"{self._collectunit_dir}/{self._isol_file_title}")
 
     def raise_exception_if_no_file(self, dir_type: str, healer: str):
         x_deal_file_title = f"{healer}.json"
         if dir_type == "depot":
             x_deal_file_path = f"{self._deals_depot_dir}/{x_deal_file_title}"
         if not os_path.exists(x_deal_file_path):
-            raise InvalidRemedyException(
-                f"Healer {self._remedy_title} cannot find deal {healer} in {x_deal_file_path}"
+            raise InvalidCollectException(
+                f"Healer {self._collect_title} cannot find deal {healer} in {x_deal_file_path}"
             )
 
     def _isol_deal_exists(self):
         bool_x = None
         try:
-            x_func_open_file(self._remedyunit_dir, self._isol_file_title)
+            x_func_open_file(self._collectunit_dir, self._isol_file_title)
             bool_x = True
         except Exception:
             bool_x = False
@@ -207,24 +207,24 @@ class RemedyAdmin:
         self.save_deal_to_public(self.get_remelded_output_deal())
 
 
-def remedyadmin_shop(
-    _remedy_title: str, _env_dir: str, _fix_handle: str
-) -> RemedyAdmin:
-    uax = RemedyAdmin(
-        _remedy_title=_remedy_title, _env_dir=_env_dir, _fix_handle=_fix_handle
+def collectadmin_shop(
+    _collect_title: str, _env_dir: str, _fix_handle: str
+) -> CollectAdmin:
+    uax = CollectAdmin(
+        _collect_title=_collect_title, _env_dir=_env_dir, _fix_handle=_fix_handle
     )
     uax.set_dirs()
     return uax
 
 
 @dataclass
-class RemedyUnit:
-    _admin: RemedyAdmin = None
+class CollectUnit:
+    _admin: CollectAdmin = None
     _isol: DealUnit = None
 
     def refresh_depot_deals(self):
         for party_x in self._isol._partys.values():
-            if party_x.title != self._admin._remedy_title:
+            if party_x.title != self._admin._collect_title:
                 party_deal = dealunit_get_from_json(
                     x_deal_json=self._admin.open_public_deal(party_x.title)
                 )
@@ -279,10 +279,10 @@ class RemedyUnit:
     def _set_assignment_depotlink(self, outer_healer):
         src_deal = self._admin.open_depot_deal(outer_healer)
         src_deal.set_deal_metrics()
-        empty_deal = DealUnit(_healer=self._admin._remedy_title)
+        empty_deal = DealUnit(_healer=self._admin._collect_title)
         empty_deal.set_fix_handle(self._admin._fix_handle)
         assign_deal = src_deal.get_assignment(
-            empty_deal, self.get_isol()._partys, self._admin._remedy_title
+            empty_deal, self.get_isol()._partys, self._admin._collect_title
         )
         assign_deal.set_deal_metrics()
         self._admin.save_deal_to_digest(assign_deal, src_deal._healer)
@@ -335,21 +335,21 @@ class RemedyUnit:
         self._admin.save_deal_to_digest(dealunit, src_deal_healer)
 
     # housekeeping
-    def set_env_dir(self, env_dir: str, remedy_title: str, fix_handle: str):
-        self._admin = remedyadmin_shop(
-            _remedy_title=remedy_title, _env_dir=env_dir, _fix_handle=fix_handle
+    def set_env_dir(self, env_dir: str, collect_title: str, fix_handle: str):
+        self._admin = collectadmin_shop(
+            _collect_title=collect_title, _env_dir=env_dir, _fix_handle=fix_handle
         )
 
     def create_core_dir_and_files(self, isol_deal: DealUnit = None):
         self._admin.create_core_dir_and_files(isol_deal)
 
 
-def remedyunit_shop(
+def collectunit_shop(
     title: str, env_dir: str, fix_handle: str, _auto_output_to_public: bool = None
-) -> RemedyUnit:
-    x_remedy = RemedyUnit()
-    x_remedy.set_env_dir(env_dir, title, fix_handle=fix_handle)
-    x_remedy.get_isol()
-    x_remedy._isol._set_auto_output_to_public(_auto_output_to_public)
-    x_remedy.set_isol()
-    return x_remedy
+) -> CollectUnit:
+    x_collect = CollectUnit()
+    x_collect.set_env_dir(env_dir, title, fix_handle=fix_handle)
+    x_collect.get_isol()
+    x_collect._isol._set_auto_output_to_public(_auto_output_to_public)
+    x_collect.set_isol()
+    return x_collect

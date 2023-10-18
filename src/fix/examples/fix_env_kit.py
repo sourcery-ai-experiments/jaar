@@ -18,7 +18,7 @@ from src.deal.examples.example_deals import (
 )
 
 from src.fix.fix import FixUnit, fixunit_shop
-from src.fix.examples.example_remedys import (
+from src.fix.examples.example_collects import (
     get_1node_deal as example_healers_get_1node_deal,
     get_7nodeJRootWithH_deal as example_healers_get_7nodeJRootWithH_deal,
     get_deal_2CleanNodesRandomWeights as example_healers_get_deal_2CleanNodesRandomWeights,
@@ -88,46 +88,46 @@ def _delete_and_set_ex3():
     x_fix.save_public_deal(deal_x=example_deals_deal_v001())
     x_fix.save_public_deal(deal_x=example_deals_deal_v002())
 
-    # x_fix.set_healer(x_remedy=remedyunit_shop(title="w1", env_dir=x_fix.get_object_root_dir()))
-    # x_fix.set_healer(x_remedy=remedyunit_shop(title="w2", env_dir=x_fix.get_object_root_dir()))
+    # x_fix.set_healer(x_collect=collectunit_shop(title="w1", env_dir=x_fix.get_object_root_dir()))
+    # x_fix.set_healer(x_collect=collectunit_shop(title="w2", env_dir=x_fix.get_object_root_dir()))
     xia_text = "Xia"
-    x_fix.create_new_remedyunit(remedy_title=xia_text)
+    x_fix.create_new_collectunit(collect_title=xia_text)
     healer_text = "Mydeal"
     x_fix.set_healer_depotlink(
         xia_text, deal_healer=healer_text, depotlink_type="blind_trust"
     )
-    # w1_obj = x_fix.get_remedyunit(title=w1_text)
+    # w1_obj = x_fix.get_collectunit(title=w1_text)
 
     bob_text = "bob wurld"
     create_deal_file_for_fixs(x_fix.get_object_root_dir(), bob_text)
     # print(f"create deal_list {w1_text=}")
     x_fix.create_depotlink_to_generated_deal(
-        remedy_title=xia_text, deal_healer=bob_text, depotlink_type="ignore"
+        collect_title=xia_text, deal_healer=bob_text, depotlink_type="ignore"
     )
     land_text = "tim wurld"
     create_deal_file_for_fixs(
         fix_dir=x_fix.get_object_root_dir(), deal_healer=land_text
     )
     x_fix.create_depotlink_to_generated_deal(
-        remedy_title=xia_text, deal_healer=land_text, depotlink_type="blind_trust"
+        collect_title=xia_text, deal_healer=land_text, depotlink_type="blind_trust"
     )
-    # x_fix.create_depotlink_to_generated_deal(remedy_title=w1_text, deal_healer="test9")
-    # x_fix.create_depotlink_to_generated_deal(remedy_title=w1_text, deal_healer="Bobs deal")
-    x_fix.save_remedyunit_file(remedy_title=xia_text)
+    # x_fix.create_depotlink_to_generated_deal(collect_title=w1_text, deal_healer="test9")
+    # x_fix.create_depotlink_to_generated_deal(collect_title=w1_text, deal_healer="Bobs deal")
+    x_fix.save_collectunit_file(collect_title=xia_text)
     # print(f"WHAT WHAT {x_fix.get_object_root_dir()}")
-    # print(f"WHAT WHAT {x_fix.get_object_root_dir()}/remedyunits/w1/w1.json")
+    # print(f"WHAT WHAT {x_fix.get_object_root_dir()}/collectunits/w1/w1.json")
     # file_text = x_func_open_file(
-    #     dest_dir=f"{x_fix.get_object_root_dir}/remedyunits/w1", file_title="w1.json"
+    #     dest_dir=f"{x_fix.get_object_root_dir}/collectunits/w1", file_title="w1.json"
     # )
     # print(f"{file_text=}")
-    # print(f"{len(x_fix._remedyunits.get(w1_text)._depotlinks)=}")
-    # print(f"{x_fix._remedyunits.get(w1_text)._depotlinks.get(bob_text)=}")
-    # print(f"{x_fix._remedyunits.get(w1_text).get_json=}")
+    # print(f"{len(x_fix._collectunits.get(w1_text)._depotlinks)=}")
+    # print(f"{x_fix._collectunits.get(w1_text)._depotlinks.get(bob_text)=}")
+    # print(f"{x_fix._collectunits.get(w1_text).get_json=}")
 
     w2_text = "w2"
-    x_fix.create_new_remedyunit(remedy_title=w2_text)
+    x_fix.create_new_collectunit(collect_title=w2_text)
     # , env_dir=x_fix.get_object_root_dir())
-    x_fix.save_remedyunit_file(remedy_title=w2_text)
+    x_fix.save_collectunit_file(collect_title=w2_text)
 
 
 def _delete_and_set_ex4():
@@ -164,11 +164,11 @@ def _delete_and_set_ex5():
     x_fix.save_public_deal(deal_x=deal_4)
     x_fix.save_public_deal(deal_x=deal_5)
 
-    x_fix.create_new_remedyunit(remedy_title=deal_1._healer)
-    x_fix.create_new_remedyunit(remedy_title=deal_2._healer)
-    x_fix.create_new_remedyunit(remedy_title=deal_3._healer)
-    x_fix.create_new_remedyunit(remedy_title=deal_4._healer)
-    x_fix.create_new_remedyunit(remedy_title=deal_5._healer)
+    x_fix.create_new_collectunit(collect_title=deal_1._healer)
+    x_fix.create_new_collectunit(collect_title=deal_2._healer)
+    x_fix.create_new_collectunit(collect_title=deal_3._healer)
+    x_fix.create_new_collectunit(collect_title=deal_4._healer)
+    x_fix.create_new_collectunit(collect_title=deal_5._healer)
 
     x_fix.set_healer_depotlink(deal_1._healer, deal_2._healer, "blind_trust", 3, 3.1)
     x_fix.set_healer_depotlink(deal_1._healer, deal_3._healer, "blind_trust", 7, 7.1)
@@ -196,11 +196,11 @@ def _delete_and_set_ex5():
     x_fix.set_healer_depotlink(deal_5._healer, deal_3._healer, "blind_trust", 4, 4.1)
     x_fix.set_healer_depotlink(deal_5._healer, deal_4._healer, "blind_trust", 5, 5.1)
 
-    x_fix.save_remedyunit_file(remedy_title=deal_1._healer)
-    x_fix.save_remedyunit_file(remedy_title=deal_2._healer)
-    x_fix.save_remedyunit_file(remedy_title=deal_3._healer)
-    x_fix.save_remedyunit_file(remedy_title=deal_4._healer)
-    x_fix.save_remedyunit_file(remedy_title=deal_5._healer)
+    x_fix.save_collectunit_file(collect_title=deal_1._healer)
+    x_fix.save_collectunit_file(collect_title=deal_2._healer)
+    x_fix.save_collectunit_file(collect_title=deal_3._healer)
+    x_fix.save_collectunit_file(collect_title=deal_4._healer)
+    x_fix.save_collectunit_file(collect_title=deal_5._healer)
 
 
 def _delete_and_set_ex6():

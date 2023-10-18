@@ -3,16 +3,16 @@ from src.deal.x_func import (
     count_files as x_func_count_files,
     open_file as x_func_open_file,
 )
-from src.fix.remedy import remedyunit_shop
-from src.fix.examples.example_remedys import (
+from src.fix.collect import collectunit_shop
+from src.fix.examples.example_collects import (
     get_2node_deal,
     get_deal_2CleanNodesRandomWeights as get_cal2nodes,
     get_deal_3CleanNodesRandomWeights as get_cal3nodes,
     get_deal_assignment_laundry_example1 as get_america_assign_ex,
 )
-from src.fix.examples.remedy_env_kit import (
-    remedy_dir_setup_cleanup,
-    get_temp_remedyunit_dir,
+from src.fix.examples.collect_env_kit import (
+    collect_dir_setup_cleanup,
+    get_temp_collectunit_dir,
     get_temp_fix_handle,
     create_deal_file,
 )
@@ -22,13 +22,13 @@ from os import path as os_path
 from pytest import raises as pytest_raises
 
 
-def test_remedyunit_set_depotlink_RaisesErrorWhenDealDoesNotExist(
-    remedy_dir_setup_cleanup,
+def test_collectunit_set_depotlink_RaisesErrorWhenDealDoesNotExist(
+    collect_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
-    env_dir = get_temp_remedyunit_dir()
-    sue_cx = remedyunit_shop(sue_text, env_dir, get_temp_fix_handle())
+    env_dir = get_temp_collectunit_dir()
+    sue_cx = collectunit_shop(sue_text, env_dir, get_temp_fix_handle())
     sue_cx.set_isol_if_empty()
     tim_text = "Tim"
     assert list(sue_cx._isol._partys.keys()) == [sue_text]
@@ -44,11 +44,11 @@ def test_remedyunit_set_depotlink_RaisesErrorWhenDealDoesNotExist(
     )
 
 
-def test_remedyunit_set_depotlink_CorrectlySetsIsolPartys(remedy_dir_setup_cleanup):
+def test_collectunit_set_depotlink_CorrectlySetsIsolPartys(collect_dir_setup_cleanup):
     # GIVEN
     yao_text = "yao"
-    env_dir = get_temp_remedyunit_dir()
-    yao_ux = remedyunit_shop(yao_text, env_dir, get_temp_fix_handle())
+    env_dir = get_temp_collectunit_dir()
+    yao_ux = collectunit_shop(yao_text, env_dir, get_temp_fix_handle())
     yao_ux.set_isol_if_empty()
     sue_text = "sue"
     create_deal_file(yao_ux._admin._deals_depot_dir, sue_text)
@@ -62,13 +62,13 @@ def test_remedyunit_set_depotlink_CorrectlySetsIsolPartys(remedy_dir_setup_clean
     assert yao_ux._isol.get_party(sue_text).depotlink_type is None
 
 
-def test_remedyunit_set_depotlink_CorrectlySetsAssignment(remedy_dir_setup_cleanup):
+def test_collectunit_set_depotlink_CorrectlySetsAssignment(collect_dir_setup_cleanup):
     # GIVEN
     america_cx = get_america_assign_ex()
     print(f"{len(america_cx._idea_dict)=}")
     joachim_text = "Joachim"
-    joachim_ux = remedyunit_shop(
-        joachim_text, get_temp_remedyunit_dir(), get_temp_fix_handle()
+    joachim_ux = collectunit_shop(
+        joachim_text, get_temp_collectunit_dir(), get_temp_fix_handle()
     )
     joachim_ux.create_core_dir_and_files()
     joachim_ux.set_isol_if_empty()
@@ -102,11 +102,11 @@ def test_remedyunit_set_depotlink_CorrectlySetsAssignment(remedy_dir_setup_clean
     assert digest_cx._healer == joachim_text
 
 
-def test_remedyunit_del_depot_deal_CorrectlyDeletesObj(remedy_dir_setup_cleanup):
+def test_collectunit_del_depot_deal_CorrectlyDeletesObj(collect_dir_setup_cleanup):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_remedyunit_dir()
-    bob_cx = remedyunit_shop(bob_text, env_dir, get_temp_fix_handle())
+    env_dir = get_temp_collectunit_dir()
+    bob_cx = collectunit_shop(bob_text, env_dir, get_temp_fix_handle())
     yao_text = "Yao"
     create_deal_file(bob_cx._admin._deals_depot_dir, yao_text)
     assignment_text = "assignment"
@@ -123,13 +123,13 @@ def test_remedyunit_del_depot_deal_CorrectlyDeletesObj(remedy_dir_setup_cleanup)
     assert bob_cx._isol.get_party(yao_text).depotlink_type is None
 
 
-def test_remedyunit_del_depot_deal_CorrectlyDeletesBlindTrustFile(
-    remedy_dir_setup_cleanup,
+def test_collectunit_del_depot_deal_CorrectlyDeletesBlindTrustFile(
+    collect_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_remedyunit_dir()
-    bob_cx = remedyunit_shop(bob_text, env_dir, get_temp_fix_handle())
+    env_dir = get_temp_collectunit_dir()
+    bob_cx = collectunit_shop(bob_text, env_dir, get_temp_fix_handle())
     lai_text = "Lai"
     create_deal_file(bob_cx._admin._deals_depot_dir, lai_text)
     bob_cx.set_isol_if_empty()
@@ -145,13 +145,13 @@ def test_remedyunit_del_depot_deal_CorrectlyDeletesBlindTrustFile(
     assert x_func_count_files(dir_path=bob_cx._admin._deals_digest_dir) == 0
 
 
-def test_remedyunit_set_depot_deal_SavesFileCorrectly(
-    remedy_dir_setup_cleanup,
+def test_collectunit_set_depot_deal_SavesFileCorrectly(
+    collect_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_remedyunit_dir()
-    bob_cx = remedyunit_shop(bob_text, env_dir, get_temp_fix_handle())
+    env_dir = get_temp_collectunit_dir()
+    bob_cx = collectunit_shop(bob_text, env_dir, get_temp_fix_handle())
     cal1 = get_2node_deal()
     assert (
         x_func_count_files(bob_cx._admin._deals_depot_dir) is None
@@ -168,13 +168,13 @@ def test_remedyunit_set_depot_deal_SavesFileCorrectly(
     assert x_func_count_files(bob_cx._admin._deals_depot_dir) == 1
 
 
-def test_remedyunit_delete_ignore_depotlink_CorrectlyDeletesObj(
-    remedy_dir_setup_cleanup,
+def test_collectunit_delete_ignore_depotlink_CorrectlyDeletesObj(
+    collect_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_remedyunit_dir()
-    bob_cx = remedyunit_shop(bob_text, env_dir, get_temp_fix_handle())
+    env_dir = get_temp_collectunit_dir()
+    bob_cx = collectunit_shop(bob_text, env_dir, get_temp_fix_handle())
     yao_text = "Yao"
     create_deal_file(bob_cx._admin._deals_depot_dir, yao_text)
     assignment_text = "assignment"
@@ -191,13 +191,13 @@ def test_remedyunit_delete_ignore_depotlink_CorrectlyDeletesObj(
     assert bob_cx._isol.get_party(yao_text).depotlink_type is None
 
 
-def test_remedyunit_del_depot_deal_CorrectlyDoesNotDeletesIgnoreFile(
-    remedy_dir_setup_cleanup,
+def test_collectunit_del_depot_deal_CorrectlyDoesNotDeletesIgnoreFile(
+    collect_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "bob"
-    env_dir = get_temp_remedyunit_dir()
-    bob_cx = remedyunit_shop(bob_text, env_dir, get_temp_fix_handle())
+    env_dir = get_temp_collectunit_dir()
+    bob_cx = collectunit_shop(bob_text, env_dir, get_temp_fix_handle())
     zia_text = "Zia"
     create_deal_file(bob_cx._admin._deals_depot_dir, zia_text)
     bob_cx.set_isol_if_empty()
@@ -215,13 +215,13 @@ def test_remedyunit_del_depot_deal_CorrectlyDoesNotDeletesIgnoreFile(
     assert x_func_count_files(dir_path=bob_cx._admin._deals_ignore_dir) == 1
 
 
-def test_remedyunit_set_ignore_deal_file_CorrectlyUpdatesIgnoreFile(
-    remedy_dir_setup_cleanup,
+def test_collectunit_set_ignore_deal_file_CorrectlyUpdatesIgnoreFile(
+    collect_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_remedyunit_dir()
-    bob_ux = remedyunit_shop(bob_text, env_dir, get_temp_fix_handle())
+    env_dir = get_temp_collectunit_dir()
+    bob_ux = collectunit_shop(bob_text, env_dir, get_temp_fix_handle())
     zia_text = "Zia"
     create_deal_file(bob_ux._admin._deals_depot_dir, zia_text)
     bob_ux.set_isol_if_empty()
@@ -242,16 +242,16 @@ def test_remedyunit_set_ignore_deal_file_CorrectlyUpdatesIgnoreFile(
     assert x_func_count_files(dir_path=bob_ux._admin._deals_ignore_dir) == 1
 
 
-def test_remedyunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
-    remedy_dir_setup_cleanup,
+def test_collectunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
+    collect_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_remedyunit_dir()
+    env_dir = get_temp_collectunit_dir()
     fix_handle = get_temp_env_handle()
     sx = fixunit_shop(handle=fix_handle, fixs_dir=env_dir)
     yao_text = "Yao"
-    sx.create_new_remedyunit(remedy_title=yao_text)
-    yao_deal = sx.get_remedyunit(title=yao_text)
+    sx.create_new_collectunit(collect_title=yao_text)
+    yao_deal = sx.get_collectunit(title=yao_text)
     assert len(yao_deal._admin.get_remelded_output_deal().get_idea_list()) == 1
 
     ernie_text = "ernie"

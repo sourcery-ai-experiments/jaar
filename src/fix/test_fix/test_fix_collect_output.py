@@ -2,7 +2,7 @@ from src.deal.examples.example_deals import (
     deal_v002 as ex_cxs_deal_v002,
 )
 from src.fix.fix import fixunit_shop
-from src.fix.examples.example_remedys import (
+from src.fix.examples.example_collects import (
     get_6node_deal as example_healers_get_6node_deal,
     get_deal_2CleanNodesRandomWeights,
     get_deal_3CleanNodesRandomWeights,
@@ -25,14 +25,14 @@ def test_fix_get_output_deal_ReturnsCorrectDealObjScenario1(
     # sx.save_public_deal(ex_cxs_get_deal_1Task_1CE0MinutesRequired_1AcptFact())
     # sx.save_public_deal(ex_cxs_deal_v001())
     xia_text = "Xia"
-    sx.create_new_remedyunit(remedy_title=xia_text)
+    sx.create_new_collectunit(collect_title=xia_text)
     sx.set_healer_depotlink(xia_text, input_cx._healer, depotlink_type="blind_trust")
-    sx.save_remedyunit_file(remedy_title=xia_text)
-    xia_healer = sx.get_remedyunit(title=xia_text)
+    sx.save_collectunit_file(collect_title=xia_text)
+    xia_healer = sx.get_collectunit(title=xia_text)
     # print(f"{xia_healer._isol._partys.keys()=}")
 
     # WHEN
-    output_cx = sx.get_output_deal(remedy_title=xia_text)
+    output_cx = sx.get_output_deal(collect_title=xia_text)
     # input deal must be melded to itself to create originunits
     input_cx.meld(input_cx)
     input_cx.set_healer(new_healer=xia_text)
@@ -100,15 +100,15 @@ def test_fix_get_output_deal_ReturnsCorrectDealObjScenario2(
     # sx.save_public_deal(ex_cxs_get_deal_1Task_1CE0MinutesRequired_1AcptFact())
     # sx.save_public_deal(ex_cxs_deal_v001())
     xia_text = "Xia"
-    sx.create_new_remedyunit(remedy_title=xia_text)
+    sx.create_new_collectunit(collect_title=xia_text)
     sx.set_healer_depotlink(xia_text, cx1._healer, depotlink_type="blind_trust")
     sx.set_healer_depotlink(xia_text, cx2._healer, depotlink_type="blind_trust")
-    sx.save_remedyunit_file(remedy_title=xia_text)
-    xia_healer = sx.get_remedyunit(title=xia_text)
+    sx.save_collectunit_file(collect_title=xia_text)
+    xia_healer = sx.get_collectunit(title=xia_text)
     print(f"{xia_healer._isol._partys.keys()=}")
 
     # WHEN
-    output_cx = sx.get_output_deal(remedy_title=xia_text)
+    output_cx = sx.get_output_deal(collect_title=xia_text)
 
     # THEN
     output_cx_d_road = f"{output_cx._fix_handle},C,D"
@@ -142,7 +142,7 @@ def test_fix_get_output_deal_ReturnsCorrectDealObjScenario2(
     assert output_cx._idearoot != cx2._idearoot
 
 
-def test_remedyunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
+def test_collectunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -150,7 +150,7 @@ def test_remedyunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
     fix_handle = get_temp_env_handle()
     sx = fixunit_shop(handle=fix_handle, fixs_dir=env_dir)
     sx.create_dirs_if_null(in_memory_bank=True)
-    # ux = remedyunit_shop(title=healer1_text, env_dir=env_dir)
+    # ux = collectunit_shop(title=healer1_text, env_dir=env_dir)
 
     ernie_text = "ernie"
     jessi_text = "jessi"
@@ -161,12 +161,12 @@ def test_remedyunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
     sx.save_public_deal(deal_x=ernie_deal)
     sx.save_public_deal(deal_x=jessi_deal)
     sx.save_public_deal(deal_x=old_steve_cx)
-    sx.create_new_remedyunit(remedy_title=ernie_text)
-    sx.create_new_remedyunit(remedy_title=jessi_text)
-    # sx.create_new_remedyunit(remedy_title=steve_text)
-    ux_ernie = sx.get_remedyunit(title=ernie_text)
-    ux_jessi = sx.get_remedyunit(title=jessi_text)
-    # ux_steve = sx.get_remedyunit(title=steve_text)
+    sx.create_new_collectunit(collect_title=ernie_text)
+    sx.create_new_collectunit(collect_title=jessi_text)
+    # sx.create_new_collectunit(collect_title=steve_text)
+    ux_ernie = sx.get_collectunit(title=ernie_text)
+    ux_jessi = sx.get_collectunit(title=jessi_text)
+    # ux_steve = sx.get_collectunit(title=steve_text)
     ux_ernie.set_depot_deal(deal_x=jessi_deal, depotlink_type="blind_trust")
     ux_ernie.set_depot_deal(deal_x=old_steve_cx, depotlink_type="blind_trust")
     ux_jessi.set_depot_deal(deal_x=ernie_deal, depotlink_type="blind_trust")
@@ -186,7 +186,7 @@ def test_remedyunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
     #     print(f"{ux._admin._deals_public_dir=} {file_title=}")
 
     # WHEN
-    sx.reload_all_remedyunits_src_dealunits()
+    sx.reload_all_collectunits_src_dealunits()
 
     # THEN
     assert len(ux_ernie._admin.get_remelded_output_deal().get_idea_list()) == 5

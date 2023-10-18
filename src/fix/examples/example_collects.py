@@ -1,6 +1,6 @@
 from src.deal.deal import DealUnit, IdeaKid, assigned_unit_shop
-from src.fix.remedy import remedyunit_shop, RemedyUnit
-from src.fix.examples.remedy_env_kit import get_temp_fix_handle
+from src.fix.collect import collectunit_shop, CollectUnit
+from src.fix.examples.collect_env_kit import get_temp_fix_handle
 
 from random import randrange
 
@@ -154,9 +154,9 @@ def get_7nodeJRootWithH_deal() -> DealUnit:
     return x_deal
 
 
-def get_healer_2deal(env_dir, fix_handle) -> RemedyUnit:
+def get_healer_2deal(env_dir, fix_handle) -> CollectUnit:
     yao_text = "Xio"
-    yao_healer = remedyunit_shop(yao_text, env_dir, fix_handle)
+    yao_healer = collectunit_shop(yao_text, env_dir, fix_handle)
     yao_healer.set_depot_deal(get_1node_deal(), depotlink_type="blind_trust")
     yao_healer.set_depot_deal(get_Jnode2node_deal(), depotlink_type="blind_trust")
     return yao_healer

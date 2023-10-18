@@ -280,7 +280,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             f.write(deal_x_json)
         self.current_file_path_l.setText(self.file_path)
         # x_func_save_file(
-        #     dest_dir=deal_remedyunit_dir,
+        #     dest_dir=deal_collectunit_dir,
         #     file_title=f"{self.deal_x._fix_handle}.json",
         #     file_text=deal_x.get_json(),
         # )
