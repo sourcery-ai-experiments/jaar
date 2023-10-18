@@ -56,7 +56,7 @@ rule_settings:
 #   labels: []
 #   ignore_labels:
 #   - sourcery-ignore
-#   request_review: author
+#   requeest_review: author
 #   sourcery_branch: sourcery/{base_branch}
 
 # clone_detection:
