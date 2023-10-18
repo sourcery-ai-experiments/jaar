@@ -1329,3 +1329,35 @@ def test_deal_clear_output_deal_meld_orders_CorrectlyClearsAttrs():
     assert rico_partyunit._output_deal_meld_order is None
     assert carm_partyunit._output_deal_meld_order is None
     assert patr_partyunit._output_deal_meld_order is None
+
+
+def test_deal_clear_output_deal_meld_orders_WithNoArgsCorrectlySetOrder():
+    # GIVEN
+    prom_text = "prom"
+    x_deal = DealUnit(_healer=prom_text)
+    rico_text = "rico"
+    carm_text = "carmen"
+    patr_text = "patrick"
+    x_deal.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(rico_text)))
+    x_deal.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
+    x_deal.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
+    rico_partyunit = x_deal.get_party(rico_text)
+    carm_partyunit = x_deal.get_party(carm_text)
+    patr_partyunit = x_deal.get_party(patr_text)
+    assert rico_partyunit._output_deal_meld_order is None
+    assert carm_partyunit._output_deal_meld_order is None
+    assert patr_partyunit._output_deal_meld_order is None
+
+    # WHEN
+    x_deal.set_partys_output_deal_meld_order()
+
+    # THEN
+    assert rico_partyunit._output_deal_meld_order != None
+    assert carm_partyunit._output_deal_meld_order != None
+    assert patr_partyunit._output_deal_meld_order != None
+    print(f"{rico_partyunit._output_deal_meld_order=}")
+    print(f"{carm_partyunit._output_deal_meld_order=}")
+    print(f"{patr_partyunit._output_deal_meld_order=}")
+    assert rico_partyunit._output_deal_meld_order == 2
+    assert carm_partyunit._output_deal_meld_order == 0
+    assert patr_partyunit._output_deal_meld_order == 1

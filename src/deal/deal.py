@@ -117,6 +117,12 @@ class DealUnit:
         self._originunit = originunit_shop()
         self._auto_output_to_public = _auto_output_to_public
 
+    def set_partys_output_deal_meld_order(self):
+        sort_partys_list = list(self._partys.values())
+        sort_partys_list.sort(key=lambda x: x.title.lower(), reverse=False)
+        for count_x, x_partyunit in enumerate(sort_partys_list):
+            x_partyunit.set_output_deal_meld_order(count_x)
+
     def clear_partys_output_deal_meld_order(self):
         for x_partyunit in self._partys.values():
             x_partyunit.clear_output_deal_meld_order()
