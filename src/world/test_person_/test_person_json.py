@@ -10,7 +10,7 @@ def test_personunit_get_dict_CorrectlyGetsDict():
     xao_personunit.set_fixunit(diet_text)
 
     fear_text = "fear"
-    xao_personunit.create_painunit_from_kind(fear_text)
+    xao_personunit.create_painunit_from_genus(fear_text)
 
     # WHEN
     xao_personunit_get_dict = xao_personunit.get_dict()

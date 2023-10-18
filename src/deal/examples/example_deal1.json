@@ -1146,7 +1146,7 @@
                             "_weight": 1,
                             "promise": false
                         },
-                        "PC1027 Adult Sexual Misconduct: Staff to Student/ kind IX": {
+                        "PC1027 Adult Sexual Misconduct: Staff to Student/ IX": {
                             "_acptfactunits": {},
                             "_addin": null,
                             "_assignedunit": {
@@ -1206,7 +1206,7 @@
                                     "promise": true
                                 }
                             },
-                            "_label": "PC1027 Adult Sexual Misconduct: Staff to Student/ kind IX",
+                            "_label": "PC1027 Adult Sexual Misconduct: Staff to Student/ IX",
                             "_numeric_road": null,
                             "_numor": null,
                             "_on_meld_weight_action": "default",

@@ -89,13 +89,13 @@ def healerlink_shop(
     return x_healer
 
 
-class PainKind(str):
+class PainGenus(str):
     pass
 
 
 @dataclass
 class PainUnit:
-    kind: PainKind
+    genus: PainGenus
     weight: float = None
     _healerlinks: dict[PersonName:HealerLink] = None
     _relative_weight: float = None
@@ -143,15 +143,15 @@ class PainUnit:
 
     def get_dict(self):
         return {
-            "kind": self.kind,
+            "genus": self.genus,
             "weight": self.weight,
             "_healerlinks": self.get_healerlinks_dict(),
         }
 
 
-def painunit_shop(kind: PainKind, weight: float = None) -> PainUnit:
+def painunit_shop(genus: PainGenus, weight: float = None) -> PainUnit:
     if weight is None:
         weight = 1
-    pain_x = PainUnit(kind=kind, weight=weight)
+    pain_x = PainUnit(genus=genus, weight=weight)
     pain_x.set_healerlinks_empty_if_none()
     return pain_x

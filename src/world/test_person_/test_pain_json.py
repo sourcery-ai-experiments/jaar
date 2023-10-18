@@ -42,7 +42,7 @@ def test_painunit_get_dict_ReturnsCorrectDict():
     # GIVEN
     fear_text = "fear"
     fear_weight = 13
-    fear_painunit = painunit_shop(kind=fear_text, weight=fear_weight)
+    fear_painunit = painunit_shop(genus=fear_text, weight=fear_weight)
 
     yao_text = "yao"
     yao_weight = 7
@@ -69,7 +69,7 @@ def test_painunit_get_dict_ReturnsCorrectDict():
     print(f"{yao_fixlinks_dict=}")
     assert len(yao_fixlinks_dict) == 1
     assert len(fear_dict.get("_healerlinks")) == 1
-    assert fear_dict.get("kind") == fear_text
+    assert fear_dict.get("genus") == fear_text
     diet_fixlink_dict = yao_fixlinks_dict.get(diet_text)
     assert diet_fixlink_dict == {"handle": diet_text, "weight": diet_weight}
     assert yao_fixlinks_dict == {
@@ -84,7 +84,7 @@ def test_painunit_get_dict_ReturnsCorrectDict():
         }
     }
     assert fear_dict == {
-        "kind": fear_text,
+        "genus": fear_text,
         "weight": fear_weight,
         "_healerlinks": {
             yao_text: {

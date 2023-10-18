@@ -4,7 +4,7 @@ from src.world.pain import painunit_shop, healerlink_shop
 def test_painunit_set_healerlink_CorrectlySetsHealerLink():
     # GIVEN
     fear_text = "fear"
-    fear_painunit = painunit_shop(kind=fear_text)
+    fear_painunit = painunit_shop(genus=fear_text)
 
     # WHEN
     yao_text = "yao"
@@ -21,7 +21,7 @@ def test_painunit_set_healerlink_CorrectlySetsHealerLink():
 def test_painunit_get_healerlink_CorrectlyGetsObj():
     # GIVEN
     fear_text = "fear"
-    fear_painunit = painunit_shop(kind=fear_text)
+    fear_painunit = painunit_shop(genus=fear_text)
     yao_text = "yao"
     yao_healerlink = healerlink_shop(person_name=yao_text)
     fear_painunit.set_healerlink(yao_healerlink)
@@ -37,7 +37,7 @@ def test_painunit_get_healerlink_CorrectlyGetsObj():
 def test_painunit_del_healerlink_CorrectlyDeletesObj():
     # GIVEN
     fear_text = "fear"
-    fear_painunit = painunit_shop(kind=fear_text)
+    fear_painunit = painunit_shop(genus=fear_text)
     yao_text = "yao"
     yao_healerlink = healerlink_shop(person_name=yao_text)
     fear_painunit.set_healerlink(yao_healerlink)

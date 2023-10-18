@@ -95,7 +95,7 @@ def test_personunit_del_fixunit_CorrectlyDeletesFixUnit():
     assert after_diet_fix is None
 
 
-def test_personunit_create_painunit_from_kind_CorrectlyCreatesPainUnit():
+def test_personunit_create_painunit_from_genus_CorrectlyCreatesPainUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
@@ -103,15 +103,15 @@ def test_personunit_create_painunit_from_kind_CorrectlyCreatesPainUnit():
 
     # WHEN
     fear_text = "fear"
-    xao_person_obj.create_painunit_from_kind(fear_text)
+    xao_person_obj.create_painunit_from_genus(fear_text)
 
     # THEN
     fear_pain = xao_person_obj._pains.get(fear_text)
     assert fear_pain != None
-    assert fear_pain.kind == fear_text
+    assert fear_pain.genus == fear_text
 
 
-def test_personunit_create_painunit_from_kind_CorrectlyCreatesPainUnit():
+def test_personunit_create_painunit_from_genus_CorrectlyCreatesPainUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
@@ -125,7 +125,7 @@ def test_personunit_create_painunit_from_kind_CorrectlyCreatesPainUnit():
     # THEN
     fear_pain = xao_person_obj._pains.get(fear_text)
     assert fear_pain != None
-    assert fear_pain.kind == fear_text
+    assert fear_pain.genus == fear_text
 
 
 def test_personunit_get_painunit_CorrectlyGetsPainUnit():
@@ -134,14 +134,14 @@ def test_personunit_get_painunit_CorrectlyGetsPainUnit():
     xao_person_dir = f"/persons/{xao_text}"
     xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
     fear_text = "fear"
-    xao_person_obj.create_painunit_from_kind(fear_text)
+    xao_person_obj.create_painunit_from_genus(fear_text)
 
     # WHEN
     fear_pain = xao_person_obj.get_painunit(fear_text)
 
     # THEN
     assert fear_pain != None
-    assert fear_pain.kind == fear_text
+    assert fear_pain.genus == fear_text
 
 
 def test_personunit_del_painunit_CorrectlyDeletesPainUnit():
@@ -150,10 +150,10 @@ def test_personunit_del_painunit_CorrectlyDeletesPainUnit():
     xao_person_dir = f"/persons/{xao_text}"
     xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
     fear_text = "fear"
-    xao_person_obj.create_painunit_from_kind(fear_text)
+    xao_person_obj.create_painunit_from_genus(fear_text)
     before_fear_pain = xao_person_obj.get_painunit(fear_text)
     assert before_fear_pain != None
-    assert before_fear_pain.kind == fear_text
+    assert before_fear_pain.genus == fear_text
 
     # WHEN
     xao_person_obj.del_painunit(fear_text)

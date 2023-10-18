@@ -1634,7 +1634,6 @@ class DealUnit:
 
         if nodes == [] and src == self._idearoot._label:
             temp_idea = self._idearoot
-            # raise InvalidDealException(f"Cannot return root '{self._economic_kind()}'")
         else:
             idea_label = src if nodes == [] else nodes.pop(0)
             try:

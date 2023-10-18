@@ -277,7 +277,7 @@ class IdeaCore:
         return acptfactunits_dict
 
     def set_acptfactunit_to_complete(self, base_acptfactunit: AcptFactUnit):
-        # if a idea is considered a task that means a acptfactheir.open attribute can be increased to
+        # if a idea is considered a task then a acptfactheir.open attribute can be increased to
         # a number <= acptfactheir.nighmake that makes the idea no longer a task. This method finds
         # the minimal acptfactheir.open to change idea._task == False. idea_core._acptfactheir cannot be straight up manpulated
         # so idea._acptfactunit reqquires being changed.

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from src.fix.fix import FixUnit, FixHandle, fixunit_shop
-from src.world.pain import PainKind, PainUnit, PersonName, painunit_shop
+from src.world.pain import PainGenus, PainUnit, PersonName, painunit_shop
 
 
 @dataclass
@@ -8,23 +8,23 @@ class PersonUnit:
     name: PersonName = None
     person_dir: str = None
     _fixs: dict[FixHandle:FixUnit] = None
-    _pains: dict[PainKind:PainUnit] = None
+    _pains: dict[PainGenus:PainUnit] = None
 
     def set_pains_empty_if_none(self):
         if self._pains is None:
             self._pains = {}
 
-    def create_painunit_from_kind(self, pain_kind: PainKind):
-        self._pains[pain_kind] = painunit_shop(kind=pain_kind)
+    def create_painunit_from_genus(self, pain_genus: PainGenus):
+        self._pains[pain_genus] = painunit_shop(genus=pain_genus)
 
     def set_painunit(self, painunit: PainUnit):
-        self._pains[painunit.kind] = painunit
+        self._pains[painunit.genus] = painunit
 
-    def get_painunit(self, pain_kind: PainKind) -> PainUnit:
-        return self._pains.get(pain_kind)
+    def get_painunit(self, pain_genus: PainGenus) -> PainUnit:
+        return self._pains.get(pain_genus)
 
-    def del_painunit(self, pain_kind: PainKind):
-        self._pains.pop(pain_kind)
+    def del_painunit(self, pain_genus: PainGenus):
+        self._pains.pop(pain_genus)
 
     def set_painunits_weight_metrics(self):
         total_painunits_weight = sum(
@@ -66,7 +66,7 @@ class PersonUnit:
 
     def get_pains_dict(self) -> dict:
         return {
-            painunit_x.kind: painunit_x.get_dict()
+            painunit_x.genus: painunit_x.get_dict()
             for painunit_x in self._pains.values()
         }
 

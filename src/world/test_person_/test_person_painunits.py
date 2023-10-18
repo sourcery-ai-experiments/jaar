@@ -18,9 +18,9 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectly(env_dir_setup_cle
     bore_text = "bore"
     rain_text = "rain"
 
-    xao_personunit.set_painunit(painunit_shop(kind=fear_text, weight=60))
-    xao_personunit.set_painunit(painunit_shop(kind=bore_text, weight=35))
-    xao_personunit.set_painunit(painunit_shop(kind=rain_text, weight=5))
+    xao_personunit.set_painunit(painunit_shop(genus=fear_text, weight=60))
+    xao_personunit.set_painunit(painunit_shop(genus=bore_text, weight=35))
+    xao_personunit.set_painunit(painunit_shop(genus=rain_text, weight=5))
 
     fear_painunit = xao_personunit.get_painunit(fear_text)
     bore_painunit = xao_personunit.get_painunit(bore_text)
@@ -48,13 +48,13 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectly(env_dir_setup_cle
     xao_person_dir = f"{get_temp_env_dir}/persons/{xao_name}"
     xao_personunit = personunit_shop(name=xao_name, person_dir=xao_person_dir)
 
-    fear_kind = "fear"
-    bore_kind = "bore"
-    rain_kind = "rain"
+    fear_genus = "fear"
+    bore_genus = "bore"
+    rain_genus = "rain"
 
-    x_fear_painunit = painunit_shop(fear_kind, 60)
-    x_bore_painunit = painunit_shop(bore_kind, 35)
-    x_rain_painunit = painunit_shop(rain_kind, 5)
+    x_fear_painunit = painunit_shop(fear_genus, 60)
+    x_bore_painunit = painunit_shop(bore_genus, 35)
+    x_rain_painunit = painunit_shop(rain_genus, 5)
 
     tim_text = "Tim"
     sue_text = "Sue"
@@ -86,9 +86,9 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectly(env_dir_setup_cle
     xao_personunit.set_painunits_weight_metrics()
 
     # THEN
-    z_fear_painunit = xao_personunit.get_painunit(fear_kind)
-    z_bore_painunit = xao_personunit.get_painunit(bore_kind)
-    z_rain_painunit = xao_personunit.get_painunit(rain_kind)
+    z_fear_painunit = xao_personunit.get_painunit(fear_genus)
+    z_bore_painunit = xao_personunit.get_painunit(bore_genus)
+    z_rain_painunit = xao_personunit.get_painunit(rain_genus)
     assert z_fear_painunit._relative_weight == 0.6
     assert z_bore_painunit._relative_weight == 0.35
     assert z_rain_painunit._relative_weight == 0.05
@@ -126,13 +126,13 @@ def test_personunit_set_fixunits_weight_metrics_SetsCorrectly(env_dir_setup_clea
     xao_person_dir = f"{get_temp_env_dir()}/persons/{xao_name}"
     xao_personunit = personunit_shop(name=xao_name, person_dir=xao_person_dir)
 
-    fear_kind = "fear"
-    bore_kind = "bore"
-    rain_kind = "rain"
+    fear_genus = "fear"
+    bore_genus = "bore"
+    rain_genus = "rain"
 
-    x_fear_painunit = painunit_shop(fear_kind, 60)
-    x_bore_painunit = painunit_shop(bore_kind, 35)
-    x_rain_painunit = painunit_shop(rain_kind, 5)
+    x_fear_painunit = painunit_shop(fear_genus, 60)
+    x_bore_painunit = painunit_shop(bore_genus, 35)
+    x_rain_painunit = painunit_shop(rain_genus, 5)
 
     tim_text = "Tim"
     sue_text = "Sue"
@@ -180,9 +180,9 @@ def test_personunit_set_fixunits_weight_metrics_SetsCorrectly(env_dir_setup_clea
     xao_personunit.set_fixunits_weight_metrics()
 
     # THEN
-    # z_fear_painunit = xao_personunit.get_painunit(fear_kind)
-    # z_bore_painunit = xao_personunit.get_painunit(bore_kind)
-    # z_rain_painunit = xao_personunit.get_painunit(rain_kind)
+    # z_fear_painunit = xao_personunit.get_painunit(fear_genus)
+    # z_bore_painunit = xao_personunit.get_painunit(bore_genus)
+    # z_rain_painunit = xao_personunit.get_painunit(rain_genus)
     # z_fear_tim_healerlink = z_fear_painunit.get_healerlink(tim_text)
     # z_bore_tim_healerlink = z_bore_painunit.get_healerlink(tim_text)
     # z_bore_sue_healerlink = z_bore_painunit.get_healerlink(sue_text)

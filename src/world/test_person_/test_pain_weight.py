@@ -4,7 +4,7 @@ from src.world.pain import painunit_shop, healerlink_shop
 def test_painunit_set_relative_weight_SetsCorrectly():
     # GIVEN
     fear_text = "fear"
-    fear_painunit = painunit_shop(kind=fear_text)
+    fear_painunit = painunit_shop(genus=fear_text)
     assert fear_painunit._relative_weight is None
 
     # WHEN
@@ -18,7 +18,7 @@ def test_painunit_set_relative_weight_SetsCorrectly():
 def test_painunit_set_person_importance_SetsCorrectly():
     # GIVEN
     fear_text = "fear"
-    fear_painunit = painunit_shop(kind=fear_text)
+    fear_painunit = painunit_shop(genus=fear_text)
     assert fear_painunit._person_importance is None
 
     # WHEN
@@ -32,7 +32,7 @@ def test_painunit_set_person_importance_SetsCorrectly():
 def test_painunit_set_healerlinks_weight_metrics_SetsCorrectly():
     # GIVEN
     fear_text = "fear"
-    fear_painunit = painunit_shop(kind=fear_text)
+    fear_painunit = painunit_shop(genus=fear_text)
     fear_painunit._person_importance = 0.25
 
     yao_text = "Yao"

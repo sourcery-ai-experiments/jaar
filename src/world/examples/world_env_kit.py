@@ -36,8 +36,8 @@ def create_example_worlds_list():
     )
 
 
-# def create_example_world(world_kind: str):
-#     sx = worldunit_shop(kind=world_kind, worlds_dir=get_test_worlds_dir())
+# def create_example_world(world_genus: str):
+#     sx = worldunit_shop(genus=world_genus, worlds_dir=get_test_worlds_dir())
 #     sx.create_dirs_if_null(in_memory_bank=True)
 
 
@@ -48,10 +48,10 @@ def create_example_worlds_list():
 # def rename_example_world(world_obj: FixUnit, new_title):
 #     # base_dir = world_obj.get_object_root_dir()
 #     base_dir = "src/world/examples/worlds"
-#     src_dir = f"{base_dir}/{world_obj.kind}"
+#     src_dir = f"{base_dir}/{world_obj.genus}"
 #     dst_dir = f"{base_dir}/{new_title}"
 #     os_rename(src=src_dir, dst=dst_dir)
-#     world_obj.set_worldunit_kind(kind=new_title)
+#     world_obj.set_worldunit_genus(genus=new_title)
 
 
 # class InvalidFixCopyException(Exception):

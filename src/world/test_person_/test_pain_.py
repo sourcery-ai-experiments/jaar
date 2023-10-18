@@ -12,10 +12,10 @@ def test_painunit_exists():
     fear_weight = 13
 
     # WHEN
-    fear_painunit = PainUnit(kind=fear_text, weight=fear_weight)
+    fear_painunit = PainUnit(genus=fear_text, weight=fear_weight)
 
     # THEN
-    assert fear_painunit.kind == fear_text
+    assert fear_painunit.genus == fear_text
     assert fear_painunit.weight == fear_weight
     assert fear_painunit._healerlinks is None
     assert fear_painunit._relative_weight is None
@@ -27,10 +27,10 @@ def test_painunit_shop_ReturnsNonePainUnitWithCorrectAttrs_v1():
     fear_text = "dallas"
 
     # WHEN
-    fear_painunit = painunit_shop(kind=fear_text)
+    fear_painunit = painunit_shop(genus=fear_text)
 
     # THEN
-    assert fear_painunit.kind == fear_text
+    assert fear_painunit.genus == fear_text
     assert fear_painunit.weight == 1
     assert fear_painunit._healerlinks == {}
     assert fear_painunit._relative_weight is None
