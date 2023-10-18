@@ -40,7 +40,7 @@ def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
     assert px.person_dir == dallas_dir
 
 
-def test_personunit_set_projectunit_CorrectlyCreatesprojectUnit():
+def test_personunit_set_projectunit_CorrectlyCreatesProjectUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
@@ -58,7 +58,7 @@ def test_personunit_set_projectunit_CorrectlyCreatesprojectUnit():
     assert diet_project.projects_dir == f"{xao_person_dir}/projects"
 
 
-def test_personunit_get_projectunit_CorrectlyGetsprojectUnit():
+def test_personunit_get_projectunit_CorrectlyGetsProjectUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
@@ -75,7 +75,7 @@ def test_personunit_get_projectunit_CorrectlyGetsprojectUnit():
     assert diet_project.projects_dir == f"{xao_person_dir}/projects"
 
 
-def test_personunit_del_projectunit_CorrectlyDeletesprojectUnit():
+def test_personunit_del_projectunit_CorrectlyDeletesProjectUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"

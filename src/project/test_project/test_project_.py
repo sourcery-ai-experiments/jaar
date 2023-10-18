@@ -1,6 +1,6 @@
 from src.deal.x_func import delete_dir as x_func_delete_dir
 from os import path as os_path
-from src.project.project import projectUnit, projectunit_shop
+from src.project.project import ProjectUnit, projectunit_shop
 from src.project.examples.project_env_kit import (
     get_temp_env_handle,
     get_test_projects_dir,
@@ -16,7 +16,7 @@ def test_project_exists():
     project_handle = "test1"
 
     # WHEN
-    x_projectunit = projectUnit(
+    x_projectunit = ProjectUnit(
         handle=project_handle, projects_dir=get_test_projects_dir()
     )
 
@@ -29,7 +29,7 @@ def test_project_exists():
 def test_project_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     # GIVEN create project
     project_handle = get_temp_env_handle()
-    x_projectunit = projectUnit(
+    x_projectunit = ProjectUnit(
         handle=project_handle, projects_dir=get_test_projects_dir()
     )
     print(f"{get_test_projects_dir()=} {x_projectunit.projects_dir=}")

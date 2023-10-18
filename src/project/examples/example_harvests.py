@@ -1,5 +1,5 @@
 from src.deal.deal import DealUnit, IdeaKid, assigned_unit_shop
-from src.project.harvest import harvestunit_shop, harvestUnit
+from src.project.harvest import harvestunit_shop, HarvestUnit
 from src.project.examples.harvest_env_kit import get_temp_project_handle
 
 from random import randrange
@@ -154,7 +154,7 @@ def get_7nodeJRootWithH_deal() -> DealUnit:
     return x_deal
 
 
-def get_healer_2deal(env_dir, project_handle) -> harvestUnit:
+def get_healer_2deal(env_dir, project_handle) -> HarvestUnit:
     yao_text = "Xio"
     yao_healer = harvestunit_shop(yao_text, env_dir, project_handle)
     yao_healer.set_depot_deal(get_1node_deal(), depotlink_type="blind_trust")

@@ -63,13 +63,13 @@ screenshots and explanatory text.
 base attributes vs required attributess
 
 <!-- TODO: Add explanations -->
-projectUnit objects
+ProjectUnit objects
 
-projectUnit harvestUnit objects
+ProjectUnit HarvestUnit objects
 
-projectUnit harvestUnit DealLink objects
+ProjectUnit HarvestUnit DealLink objects
 
-projectUnit Bank objects
+ProjectUnit Bank objects
 
 <!-- TODO: Add explanations -->
 DealUnit objects

@@ -1,11 +1,11 @@
 from dataclasses import dataclass
-from src.project.project import projectHandle
+from src.project.project import ProjectHandle
 from src.deal.deal import PersonName
 
 
 @dataclass
 class projectLink:
-    handle: projectHandle
+    handle: ProjectHandle
     weight: float
     _relative_weight: float = None
     _person_importance: float = None
@@ -20,7 +20,7 @@ class projectLink:
         return {"handle": self.handle, "weight": self.weight}
 
 
-def projectlink_shop(handle: projectHandle, weight: float = None) -> projectLink:
+def projectlink_shop(handle: ProjectHandle, weight: float = None) -> projectLink:
     if weight is None:
         weight = 1
     return projectLink(handle=handle, weight=weight)
@@ -31,7 +31,7 @@ class HealerLink:
     person_name: PersonName
     weight: float
     in_tribe: bool
-    _projectlinks: dict[projectHandle:projectLink] = None
+    _projectlinks: dict[ProjectHandle:projectLink] = None
     _relative_weight: float = None
     _person_importance: float = None
 
@@ -61,10 +61,10 @@ class HealerLink:
     def set_projectlink(self, projectlink: projectLink):
         self._projectlinks[projectlink.handle] = projectlink
 
-    def get_projectlink(self, projecthandle: projectHandle) -> projectLink:
+    def get_projectlink(self, projecthandle: ProjectHandle) -> projectLink:
         return self._projectlinks.get(projecthandle)
 
-    def del_projectlink(self, projecthandle: projectHandle):
+    def del_projectlink(self, projecthandle: ProjectHandle):
         self._projectlinks.pop(projecthandle)
 
     def get_projectlinks_dict(self) -> dict:

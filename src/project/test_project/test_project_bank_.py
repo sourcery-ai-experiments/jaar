@@ -1,5 +1,5 @@
 from src.deal.x_func import delete_dir as x_func_delete_dir
-from src.project.project import projectunit_shop, projectUnit
+from src.project.project import projectunit_shop, ProjectUnit
 from os import path as os_path
 from src.project.examples.project_env_kit import (
     get_temp_env_handle,
@@ -71,7 +71,7 @@ def test_project_refresh_bank_metrics_CanConnectToBankInMemory(
 
 def test_project_get_bank_db_conn_CreatesBankDBIfItDoesNotExist(env_dir_setup_cleanup):
     # GIVEN create project
-    sx = projectUnit(handle=get_temp_env_handle(), projects_dir=get_test_projects_dir())
+    sx = ProjectUnit(handle=get_temp_env_handle(), projects_dir=get_test_projects_dir())
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         check_connection(sx.get_bank_conn())

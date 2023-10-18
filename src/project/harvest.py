@@ -27,7 +27,7 @@ class InvalidharvestException(Exception):
 
 
 @dataclass
-class harvestAdmin:
+class HarvestAdmin:
     _harvest_title: str
     _env_dir: str
     _project_handle: str
@@ -207,10 +207,10 @@ class harvestAdmin:
         self.save_deal_to_public(self.get_remelded_output_deal())
 
 
-def harvestadmin_shop(
+def HarvestAdmin_shop(
     _harvest_title: str, _env_dir: str, _project_handle: str
-) -> harvestAdmin:
-    uax = harvestAdmin(
+) -> HarvestAdmin:
+    uax = HarvestAdmin(
         _harvest_title=_harvest_title,
         _env_dir=_env_dir,
         _project_handle=_project_handle,
@@ -220,8 +220,8 @@ def harvestadmin_shop(
 
 
 @dataclass
-class harvestUnit:
-    _admin: harvestAdmin = None
+class HarvestUnit:
+    _admin: HarvestAdmin = None
     _seed: DealUnit = None
 
     def refresh_depot_deals(self):
@@ -338,7 +338,7 @@ class harvestUnit:
 
     # housekeeping
     def set_env_dir(self, env_dir: str, harvest_title: str, project_handle: str):
-        self._admin = harvestadmin_shop(
+        self._admin = HarvestAdmin_shop(
             _harvest_title=harvest_title,
             _env_dir=env_dir,
             _project_handle=project_handle,
@@ -350,8 +350,8 @@ class harvestUnit:
 
 def harvestunit_shop(
     title: str, env_dir: str, project_handle: str, _auto_output_to_public: bool = None
-) -> harvestUnit:
-    x_harvest = harvestUnit()
+) -> HarvestUnit:
+    x_harvest = HarvestUnit()
     x_harvest.set_env_dir(env_dir, title, project_handle=project_handle)
     x_harvest.get_seed()
     x_harvest._seed._set_auto_output_to_public(_auto_output_to_public)

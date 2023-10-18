@@ -11,7 +11,7 @@ from src.deal.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
 )
-from src.project.harvest import harvestUnit, harvestunit_shop
+from src.project.harvest import HarvestUnit, harvestunit_shop
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 from src.project.bank_sqlstr import (
@@ -40,16 +40,16 @@ from src.project.bank_sqlstr import (
 )
 
 
-class projectHandle(str):
+class ProjectHandle(str):
     pass
 
 
 @dataclass
-class projectUnit:
-    handle: projectHandle
+class ProjectUnit:
+    handle: ProjectHandle
     projects_dir: str
     _person_importance: float = None
-    _harvestunits: dict[str:harvestUnit] = None
+    _harvestunits: dict[str:HarvestUnit] = None
     _bank_db = None
 
     def set_person_importance(self, person_importance: float):
@@ -295,7 +295,7 @@ class projectUnit:
         self._create_main_file_if_null(x_dir=project_dir)
         self._create_bank_db(in_memory=in_memory_bank, overwrite=True)
 
-    # harvestUnit management
+    # HarvestUnit management
     def get_harvestunits_dir(self):
         return f"{self.get_object_root_dir()}/harvestunits"
 
@@ -318,7 +318,7 @@ class projectUnit:
         ux.create_core_dir_and_files()
         self._harvestunits[ux._admin._harvest_title] = ux
 
-    def get_harvestunit(self, title: str) -> harvestUnit:
+    def get_harvestunit(self, title: str) -> HarvestUnit:
         return (
             None if self._harvestunits.get(title) is None else self._harvestunits[title]
         )
@@ -331,7 +331,7 @@ class projectUnit:
         self.set_harvestunits_empty_if_null()
         self.set_harvestunit_to_project(x_harvestunit)
 
-    def set_harvestunit_to_project(self, harvestunit: harvestUnit):
+    def set_harvestunit_to_project(self, harvestunit: HarvestUnit):
         self._harvestunits[harvestunit._admin._harvest_title] = harvestunit
         self.save_harvestunit_file(harvest_title=harvestunit._admin._harvest_title)
 
@@ -409,7 +409,7 @@ class projectUnit:
     # deals_dir to healer_deals_dir management
     def _harvestunit_set_depot_deal(
         self,
-        harvestunit: harvestUnit,
+        harvestunit: HarvestUnit,
         dealunit: DealUnit,
         depotlink_type: str,
         creditor_weight: float = None,
@@ -496,12 +496,12 @@ class projectUnit:
 def projectunit_shop(
     handle: str,
     projects_dir: str,
-    _harvestunits: dict[str:harvestUnit] = None,
+    _harvestunits: dict[str:HarvestUnit] = None,
     in_memory_bank: bool = None,
 ):
     if in_memory_bank is None:
         in_memory_bank = True
-    project_x = projectUnit(
+    project_x = ProjectUnit(
         handle=handle, projects_dir=projects_dir, _harvestunits=_harvestunits
     )
     project_x.create_dirs_if_null(in_memory_bank=in_memory_bank)

@@ -2,7 +2,7 @@ from src.deal.x_func import (
     open_file as x_func_open_file,
     save_file as x_func_save_file,
 )
-from src.project.harvest import harvestAdmin, harvestadmin_shop
+from src.project.harvest import HarvestAdmin, HarvestAdmin_shop
 from src.project.examples.example_harvests import (
     get_6node_deal as example_healers_get_6node_deal,
     get_6node_deal as example_healers_get_7nodeJRootWithH_deal,
@@ -21,7 +21,7 @@ def test_admin_exists():
     env_dir = get_temp_harvestunit_dir()
 
     # WHEN
-    pdx = harvestAdmin(bob_text, env_dir, get_temp_project_handle())
+    pdx = HarvestAdmin(bob_text, env_dir, get_temp_project_handle())
 
     # THEN
     assert pdx._harvest_title != None
@@ -39,11 +39,11 @@ def test_admin_exists():
     assert pdx._deals_digest_dir is None
 
 
-def test_harvestAdmin_set_dir_CorrectSetsharvestAdminAttribute():
+def test_HarvestAdmin_set_dir_CorrectSetsHarvestAdminAttribute():
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_harvestunit_dir()
-    pdx = harvestAdmin(bob_text, env_dir, get_temp_project_handle())
+    pdx = HarvestAdmin(bob_text, env_dir, get_temp_project_handle())
     assert pdx._harvestunit_dir is None
     assert pdx._deal_output_file_title is None
     assert pdx._deal_output_file_path is None
@@ -95,13 +95,13 @@ def test_harvestAdmin_set_dir_CorrectSetsharvestAdminAttribute():
     assert pdx._deals_public_dir == x_deals_public_dir
 
 
-def test_harvestAdmin_create_core_dir_and_files_CreatesDirsAndFiles(
+def test_HarvestAdmin_create_core_dir_and_files_CreatesDirsAndFiles(
     harvest_dir_setup_cleanup,
 ):
     # GIVEN create healer
     jul_text = "julian"
     env_dir = get_temp_harvestunit_dir()
-    pdx = harvestAdmin(jul_text, env_dir, get_temp_project_handle())
+    pdx = HarvestAdmin(jul_text, env_dir, get_temp_project_handle())
     pdx.set_dirs()
     assert os_path.exists(pdx._harvestunits_dir) is False
     assert os_path.exists(pdx._harvestunit_dir) is False
@@ -127,13 +127,13 @@ def test_harvestAdmin_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path.exists(pdx._deals_ignore_dir)
 
 
-def test_harvestAdmin_create_core_dir_and_files_DoesNotOverWriteseedDeal(
+def test_HarvestAdmin_create_core_dir_and_files_DoesNotOverWriteseedDeal(
     harvest_dir_setup_cleanup,
 ):
     # GIVEN create healer
     jul_text = "julian"
     env_dir = get_temp_harvestunit_dir()
-    jul_pdx = harvestAdmin(jul_text, env_dir, get_temp_project_handle())
+    jul_pdx = HarvestAdmin(jul_text, env_dir, get_temp_project_handle())
     jul_pdx.set_dirs()
     deal_x = example_healers_get_7nodeJRootWithH_deal()
     jul_pdx.create_core_dir_and_files(deal_x)
@@ -154,12 +154,12 @@ def test_harvestAdmin_create_core_dir_and_files_DoesNotOverWriteseedDeal(
     assert x_func_open_file(jul_pdx._harvestunit_dir, jul_pdx._seed_file_title) == ex1
 
 
-def test_harvestAdmin_set_harvest_title_WorksCorrectly(harvest_dir_setup_cleanup):
+def test_HarvestAdmin_set_harvest_title_WorksCorrectly(harvest_dir_setup_cleanup):
     # GIVEN create healer
     env_dir = get_temp_harvestunit_dir()
 
     old_healer_text = "bob"
-    pdx = harvestAdmin(old_healer_text, env_dir, get_temp_project_handle())
+    pdx = HarvestAdmin(old_healer_text, env_dir, get_temp_project_handle())
     deal_x = example_healers_get_7nodeJRootWithH_deal()
     pdx.set_dirs()
     pdx.create_core_dir_and_files(deal_x)
@@ -198,7 +198,7 @@ def test_harvestunit_auto_output_to_public_SavesDealToPublicDir(
 ):
     # GIVEN
     bob_text = "bob"
-    pdx = harvestadmin_shop(
+    pdx = HarvestAdmin_shop(
         bob_text, get_temp_harvestunit_dir(), get_temp_project_handle()
     )
     deal_x = example_healers_get_6node_deal()

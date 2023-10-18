@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src.project.project import projectUnit, projectHandle, projectunit_shop
+from src.project.project import ProjectUnit, ProjectHandle, projectunit_shop
 from src.world.pain import PainGenus, PainUnit, PersonName, painunit_shop
 
 
@@ -7,7 +7,7 @@ from src.world.pain import PainGenus, PainUnit, PersonName, painunit_shop
 class PersonUnit:
     name: PersonName = None
     person_dir: str = None
-    _projects: dict[projectHandle:projectUnit] = None
+    _projects: dict[ProjectHandle:ProjectUnit] = None
     _pains: dict[PainGenus:PainUnit] = None
 
     def set_pains_empty_if_none(self):
@@ -58,16 +58,16 @@ class PersonUnit:
         if self._projects is None:
             self._projects = {}
 
-    def set_projectunit(self, project_handle: projectHandle):
+    def set_projectunit(self, project_handle: ProjectHandle):
         projects_dir = f"{self.person_dir}/projects"
         self._projects[project_handle] = projectunit_shop(
             handle=project_handle, projects_dir=projects_dir
         )
 
-    def get_projectunit(self, project_handle: projectHandle) -> projectUnit:
+    def get_projectunit(self, project_handle: ProjectHandle) -> ProjectUnit:
         return self._projects.get(project_handle)
 
-    def del_projectunit(self, project_handle: projectHandle):
+    def del_projectunit(self, project_handle: ProjectHandle):
         self._projects.pop(project_handle)
 
     def get_projects_dict(self) -> dict:

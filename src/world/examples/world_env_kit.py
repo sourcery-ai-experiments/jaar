@@ -41,11 +41,11 @@ def create_example_worlds_list():
 #     sx.create_dirs_if_null(in_memory_bank=True)
 
 
-# def delete_dir_example_world(world_obj: projectUnit):
+# def delete_dir_example_world(world_obj: ProjectUnit):
 #     x_func_delete_dir(world_obj.get_object_root_dir())
 
 
-# def rename_example_world(world_obj: projectUnit, new_title):
+# def rename_example_world(world_obj: ProjectUnit, new_title):
 #     # base_dir = world_obj.get_object_root_dir()
 #     base_dir = "src/world/examples/worlds"
 #     src_dir = f"{base_dir}/{world_obj.genus}"

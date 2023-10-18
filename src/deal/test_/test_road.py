@@ -162,7 +162,7 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
     assert new_sufffacts_x.get(old_seasons_road) is None
 
 
-def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeprojectHandleScenario():
+def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeProjectHandleScenario():
     # GIVEN
     old_project_handle = "El Paso"
     healer_text = "healer"

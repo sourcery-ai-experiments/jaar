@@ -17,7 +17,7 @@ from src.deal.examples.example_deals import (
     get_deal_x1_3levels_1required_1acptfacts as example_deals_get_deal_x1_3levels_1required_1acptfacts,
 )
 
-from src.project.project import projectUnit, projectunit_shop
+from src.project.project import ProjectUnit, projectunit_shop
 from src.project.examples.example_harvests import (
     get_1node_deal as example_healers_get_1node_deal,
     get_7nodeJRootWithH_deal as example_healers_get_7nodeJRootWithH_deal,
@@ -298,11 +298,11 @@ def create_example_project(project_handle: str):
     x_project.create_dirs_if_null(in_memory_bank=True)
 
 
-def delete_dir_example_project(project_obj: projectUnit):
+def delete_dir_example_project(project_obj: ProjectUnit):
     x_func_delete_dir(project_obj.get_object_root_dir())
 
 
-def rename_example_project(project_obj: projectUnit, new_title):
+def rename_example_project(project_obj: ProjectUnit, new_title):
     # base_dir = project_obj.get_object_root_dir()
     base_dir = "src/project/examples/projects"
     src_dir = f"{base_dir}/{project_obj.handle}"

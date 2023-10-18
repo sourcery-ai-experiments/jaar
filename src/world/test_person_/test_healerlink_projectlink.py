@@ -18,7 +18,7 @@ def test_healerlink_set_projectlink_CorrectlySetsprojectLink():
     assert diet_project.handle == diet_text
 
 
-def test_healerlink_get_projectunit_CorrectlyGetsAnprojectUnit():
+def test_healerlink_get_projectunit_CorrectlyGetsAnProjectUnit():
     # GIVEN
     yao_text = "yao"
     yao_healerlink = healerlink_shop(person_name=yao_text)
@@ -34,7 +34,7 @@ def test_healerlink_get_projectunit_CorrectlyGetsAnprojectUnit():
     assert diet_project.handle == diet_text
 
 
-def test_healerlink_del_projectunit_CorrectlyDeletesprojectUnit():
+def test_healerlink_del_projectunit_CorrectlyDeletesProjectUnit():
     # GIVEN
     yao_text = "yao"
     yao_healerlink = healerlink_shop(person_name=yao_text)
