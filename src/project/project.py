@@ -11,10 +11,10 @@ from src.deal.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
 )
-from src.fix.collect import CollectUnit, collectunit_shop
+from src.project.harvest import harvestUnit, harvestunit_shop
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
-from src.fix.bank_sqlstr import (
+from src.project.bank_sqlstr import (
     get_river_flow_table_delete_sqlstr,
     get_river_flow_table_insert_sqlstr,
     get_river_tparty_table_delete_sqlstr,
@@ -40,16 +40,16 @@ from src.fix.bank_sqlstr import (
 )
 
 
-class FixHandle(str):
+class projectHandle(str):
     pass
 
 
 @dataclass
-class FixUnit:
-    handle: FixHandle
-    fixs_dir: str
+class projectUnit:
+    handle: projectHandle
+    projects_dir: str
     _person_importance: float = None
-    _collectunits: dict[str:CollectUnit] = None
+    _harvestunits: dict[str:harvestUnit] = None
     _bank_db = None
 
     def set_person_importance(self, person_importance: float):
@@ -60,10 +60,10 @@ class FixUnit:
         deal_obj = self.get_public_deal(deal_healer)
 
         for groupunit_x in deal_obj._groups.values():
-            if groupunit_x._partylinks_set_by_fix_road != None:
+            if groupunit_x._partylinks_set_by_project_road != None:
                 groupunit_x.clear_partylinks()
                 ic = get_idea_catalog_dict(
-                    self.get_bank_conn(), groupunit_x._partylinks_set_by_fix_road
+                    self.get_bank_conn(), groupunit_x._partylinks_set_by_project_road
                 )
                 for idea_catalog in ic.values():
                     if deal_healer != idea_catalog.deal_healer:
@@ -216,7 +216,7 @@ class FixUnit:
                 groupunit_catalog_x = GroupUnitCatalog(
                     deal_healer=dealunit_x._healer,
                     groupunit_brand=groupunit_x.brand,
-                    partylinks_set_by_fix_road=groupunit_x._partylinks_set_by_fix_road,
+                    partylinks_set_by_project_road=groupunit_x._partylinks_set_by_project_road,
                 )
                 sqlstr = get_groupunit_catalog_table_insert_sqlstr(groupunit_catalog_x)
                 cur.execute(sqlstr)
@@ -268,97 +268,97 @@ class FixUnit:
         self._bank_db = None
         x_func_delete_dir(dir=self.get_bank_db_path())
 
-    def set_fixunit_handle(self, handle: str):
+    def set_projectunit_handle(self, handle: str):
         self.handle = handle
 
     def get_bank_db_path(self):
         return f"{self.get_object_root_dir()}/bank.db"
 
     def get_object_root_dir(self):
-        return f"{self.fixs_dir}/{self.handle}"
+        return f"{self.projects_dir}/{self.handle}"
 
     def _create_main_file_if_null(self, x_dir):
-        fix_file_title = "fix.json"
+        project_file_title = "project.json"
         x_func_save_file(
             dest_dir=x_dir,
-            file_title=fix_file_title,
+            file_title=project_file_title,
             file_text="",
         )
 
     def create_dirs_if_null(self, in_memory_bank: bool = None):
-        fix_dir = self.get_object_root_dir()
+        project_dir = self.get_object_root_dir()
         deals_dir = self.get_public_dir()
-        collectunits_dir = self.get_collectunits_dir()
-        single_dir_create_if_null(x_path=fix_dir)
+        harvestunits_dir = self.get_harvestunits_dir()
+        single_dir_create_if_null(x_path=project_dir)
         single_dir_create_if_null(x_path=deals_dir)
-        single_dir_create_if_null(x_path=collectunits_dir)
-        self._create_main_file_if_null(x_dir=fix_dir)
+        single_dir_create_if_null(x_path=harvestunits_dir)
+        self._create_main_file_if_null(x_dir=project_dir)
         self._create_bank_db(in_memory=in_memory_bank, overwrite=True)
 
-    # CollectUnit management
-    def get_collectunits_dir(self):
-        return f"{self.get_object_root_dir()}/collectunits"
+    # harvestUnit management
+    def get_harvestunits_dir(self):
+        return f"{self.get_object_root_dir()}/harvestunits"
 
-    def get_collectunit_dir_paths_list(self):
+    def get_harvestunit_dir_paths_list(self):
         return list(
             x_func_dir_files(
-                dir_path=self.get_collectunits_dir(),
+                dir_path=self.get_harvestunits_dir(),
                 remove_extensions=False,
                 include_dirs=True,
             ).keys()
         )
 
-    def set_collectunits_empty_if_null(self):
-        if self._collectunits is None:
-            self._collectunits = {}
+    def set_harvestunits_empty_if_null(self):
+        if self._harvestunits is None:
+            self._harvestunits = {}
 
-    def create_new_collectunit(self, collect_title: str):
-        self.set_collectunits_empty_if_null()
-        ux = collectunit_shop(collect_title, self.get_object_root_dir(), self.handle)
+    def create_new_harvestunit(self, harvest_title: str):
+        self.set_harvestunits_empty_if_null()
+        ux = harvestunit_shop(harvest_title, self.get_object_root_dir(), self.handle)
         ux.create_core_dir_and_files()
-        self._collectunits[ux._admin._collect_title] = ux
+        self._harvestunits[ux._admin._harvest_title] = ux
 
-    def get_collectunit(self, title: str) -> CollectUnit:
+    def get_harvestunit(self, title: str) -> harvestUnit:
         return (
-            None if self._collectunits.get(title) is None else self._collectunits[title]
+            None if self._harvestunits.get(title) is None else self._harvestunits[title]
         )
 
-    def create_collectunit_from_public(self, title: str):
+    def create_harvestunit_from_public(self, title: str):
         x_deal = self.get_public_deal(healer=title)
-        x_collectunit = collectunit_shop(
+        x_harvestunit = harvestunit_shop(
             title=x_deal._healer, env_dir=self.get_object_root_dir()
         )
-        self.set_collectunits_empty_if_null()
-        self.set_collectunit_to_fix(x_collectunit)
+        self.set_harvestunits_empty_if_null()
+        self.set_harvestunit_to_project(x_harvestunit)
 
-    def set_collectunit_to_fix(self, collectunit: CollectUnit):
-        self._collectunits[collectunit._admin._collect_title] = collectunit
-        self.save_collectunit_file(collect_title=collectunit._admin._collect_title)
+    def set_harvestunit_to_project(self, harvestunit: harvestUnit):
+        self._harvestunits[harvestunit._admin._harvest_title] = harvestunit
+        self.save_harvestunit_file(harvest_title=harvestunit._admin._harvest_title)
 
-    def save_collectunit_file(self, collect_title: str):
-        x_collectunit = self.get_collectunit(title=collect_title)
-        x_collectunit._admin.save_seed_deal(x_collectunit.get_seed())
+    def save_harvestunit_file(self, harvest_title: str):
+        x_harvestunit = self.get_harvestunit(title=harvest_title)
+        x_harvestunit._admin.save_seed_deal(x_harvestunit.get_seed())
 
-    def rename_collectunit(self, old_title: str, new_title: str):
-        collect_x = self.get_collectunit(title=old_title)
-        old_collectunit_dir = collect_x._admin._collectunit_dir
-        collect_x._admin.set_collect_title(new_title=new_title)
-        self.set_collectunit_to_fix(collect_x)
-        x_func_delete_dir(old_collectunit_dir)
-        self.del_collectunit_from_fix(collect_title=old_title)
+    def rename_harvestunit(self, old_title: str, new_title: str):
+        harvest_x = self.get_harvestunit(title=old_title)
+        old_harvestunit_dir = harvest_x._admin._harvestunit_dir
+        harvest_x._admin.set_harvest_title(new_title=new_title)
+        self.set_harvestunit_to_project(harvest_x)
+        x_func_delete_dir(old_harvestunit_dir)
+        self.del_harvestunit_from_project(harvest_title=old_title)
 
-    def del_collectunit_from_fix(self, collect_title):
-        self._collectunits.pop(collect_title)
+    def del_harvestunit_from_project(self, harvest_title):
+        self._harvestunits.pop(harvest_title)
 
-    def del_collectunit_dir(self, collect_title: str):
-        x_func_delete_dir(f"{self.get_collectunits_dir()}/{collect_title}")
+    def del_harvestunit_dir(self, harvest_title: str):
+        x_func_delete_dir(f"{self.get_harvestunits_dir()}/{harvest_title}")
 
     # public dir management
     def get_public_dir(self):
         return f"{self.get_object_root_dir()}/deals"
 
-    def get_ignores_dir(self, collect_title: str):
-        per_x = self.get_collectunit(collect_title)
+    def get_ignores_dir(self, harvest_title: str):
+        per_x = self.get_harvestunit(harvest_title)
         return per_x._admin._deals_ignore_dir
 
     def get_public_deal(self, healer: str) -> DealUnit:
@@ -368,17 +368,17 @@ class FixUnit:
             )
         )
 
-    def get_deal_from_ignores_dir(self, collect_title: str, _healer: str) -> DealUnit:
+    def get_deal_from_ignores_dir(self, harvest_title: str, _healer: str) -> DealUnit:
         return get_deal_from_json(
             x_func_open_file(
-                dest_dir=self.get_ignores_dir(collect_title=collect_title),
+                dest_dir=self.get_ignores_dir(harvest_title=harvest_title),
                 file_title=f"{_healer}.json",
             )
         )
 
-    def set_ignore_deal_file(self, collect_title: str, deal_obj: DealUnit):
-        x_collectunit = self.get_collectunit(title=collect_title)
-        x_collectunit.set_ignore_deal_file(
+    def set_ignore_deal_file(self, harvest_title: str, deal_obj: DealUnit):
+        x_harvestunit = self.get_harvestunit(title=harvest_title)
+        x_harvestunit.set_ignore_deal_file(
             dealunit=deal_obj, src_deal_healer=deal_obj._healer
         )
 
@@ -392,54 +392,54 @@ class FixUnit:
         x_func_delete_dir(f"{self.get_public_dir()}/{deal_x_healer}.json")
 
     def save_public_deal(self, deal_x: DealUnit):
-        deal_x.set_fix_handle(fix_handle=self.handle)
+        deal_x.set_project_handle(project_handle=self.handle)
         x_func_save_file(
             dest_dir=self.get_public_dir(),
             file_title=f"{deal_x._healer}.json",
             file_text=deal_x.get_json(),
         )
 
-    def reload_all_collectunits_src_dealunits(self):
-        for x_collectunit in self._collectunits.values():
-            x_collectunit.refresh_depot_deals()
+    def reload_all_harvestunits_src_dealunits(self):
+        for x_harvestunit in self._harvestunits.values():
+            x_harvestunit.refresh_depot_deals()
 
     def get_public_dir_file_titles_list(self):
         return list(x_func_dir_files(dir_path=self.get_public_dir()).keys())
 
     # deals_dir to healer_deals_dir management
-    def _collectunit_set_depot_deal(
+    def _harvestunit_set_depot_deal(
         self,
-        collectunit: CollectUnit,
+        harvestunit: harvestUnit,
         dealunit: DealUnit,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
         ignore_deal: DealUnit = None,
     ):
-        collectunit.set_depot_deal(
+        harvestunit.set_depot_deal(
             deal_x=dealunit,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
         )
         if depotlink_type == "ignore" and ignore_deal != None:
-            collectunit.set_ignore_deal_file(
+            harvestunit.set_ignore_deal_file(
                 dealunit=ignore_deal, src_deal_healer=dealunit._healer
             )
 
     def set_healer_depotlink(
         self,
-        collect_title: str,
+        harvest_title: str,
         deal_healer: str,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
         ignore_deal: DealUnit = None,
     ):
-        x_collectunit = self.get_collectunit(title=collect_title)
+        x_harvestunit = self.get_harvestunit(title=harvest_title)
         deal_x = self.get_public_deal(healer=deal_healer)
-        self._collectunit_set_depot_deal(
-            collectunit=x_collectunit,
+        self._harvestunit_set_depot_deal(
+            harvestunit=x_harvestunit,
             dealunit=deal_x,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
@@ -449,16 +449,16 @@ class FixUnit:
 
     def create_depotlink_to_generated_deal(
         self,
-        collect_title: str,
+        harvest_title: str,
         deal_healer: str,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
-        x_collectunit = self.get_collectunit(title=collect_title)
+        x_harvestunit = self.get_harvestunit(title=harvest_title)
         deal_x = DealUnit(_healer=deal_healer)
-        self._collectunit_set_depot_deal(
-            collectunit=x_collectunit,
+        self._harvestunit_set_depot_deal(
+            harvestunit=x_harvestunit,
             dealunit=deal_x,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
@@ -467,40 +467,42 @@ class FixUnit:
 
     def update_depotlink(
         self,
-        collect_title: str,
+        harvest_title: str,
         partytitle: PartyTitle,
         depotlink_type: str,
         creditor_weight: str,
         debtor_weight: str,
     ):
-        x_collectunit = self.get_collectunit(title=collect_title)
+        x_harvestunit = self.get_harvestunit(title=harvest_title)
         deal_x = self.get_public_deal(_healer=partytitle)
-        self._collectunit_set_depot_deal(
-            collectunit=x_collectunit,
+        self._harvestunit_set_depot_deal(
+            harvestunit=x_harvestunit,
             dealunit=deal_x,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
         )
 
-    def del_depotlink(self, collect_title: str, dealunit_healer: str):
-        x_collectunit = self.get_collectunit(title=collect_title)
-        x_collectunit.del_depot_deal(deal_healer=dealunit_healer)
+    def del_depotlink(self, harvest_title: str, dealunit_healer: str):
+        x_harvestunit = self.get_harvestunit(title=harvest_title)
+        x_harvestunit.del_depot_deal(deal_healer=dealunit_healer)
 
     # Healer output_deal
-    def get_output_deal(self, collect_title: str) -> DealUnit:
-        x_collectunit = self.get_collectunit(title=collect_title)
-        return x_collectunit._admin.get_remelded_output_deal()
+    def get_output_deal(self, harvest_title: str) -> DealUnit:
+        x_harvestunit = self.get_harvestunit(title=harvest_title)
+        return x_harvestunit._admin.get_remelded_output_deal()
 
 
-def fixunit_shop(
+def projectunit_shop(
     handle: str,
-    fixs_dir: str,
-    _collectunits: dict[str:CollectUnit] = None,
+    projects_dir: str,
+    _harvestunits: dict[str:harvestUnit] = None,
     in_memory_bank: bool = None,
 ):
     if in_memory_bank is None:
         in_memory_bank = True
-    fix_x = FixUnit(handle=handle, fixs_dir=fixs_dir, _collectunits=_collectunits)
-    fix_x.create_dirs_if_null(in_memory_bank=in_memory_bank)
-    return fix_x
+    project_x = projectUnit(
+        handle=handle, projects_dir=projects_dir, _harvestunits=_harvestunits
+    )
+    project_x.create_dirs_if_null(in_memory_bank=in_memory_bank)
+    return project_x

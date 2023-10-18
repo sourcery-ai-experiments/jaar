@@ -1,38 +1,40 @@
 from src.deal.examples.example_deals import (
     deal_v002 as ex_cxs_deal_v002,
 )
-from src.fix.fix import fixunit_shop
-from src.fix.examples.example_collects import (
+from src.project.project import projectunit_shop
+from src.project.examples.example_harvests import (
     get_6node_deal as example_healers_get_6node_deal,
     get_deal_2CleanNodesRandomWeights,
     get_deal_3CleanNodesRandomWeights,
 )
-from src.fix.examples.fix_env_kit import (
+from src.project.examples.project_env_kit import (
     get_temp_env_handle,
-    get_test_fixs_dir,
+    get_test_projects_dir,
     env_dir_setup_cleanup,
 )
 
 
-def test_fix_get_output_deal_ReturnsCorrectDealObjScenario1(
+def test_project_get_output_deal_ReturnsCorrectDealObjScenario1(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
     input_cx = example_healers_get_6node_deal()
     sx.save_public_deal(input_cx)
     # sx.save_public_deal(ex_cxs_get_deal_1Task_1CE0MinutesRequired_1AcptFact())
     # sx.save_public_deal(ex_cxs_deal_v001())
     xia_text = "Xia"
-    sx.create_new_collectunit(collect_title=xia_text)
+    sx.create_new_harvestunit(harvest_title=xia_text)
     sx.set_healer_depotlink(xia_text, input_cx._healer, depotlink_type="blind_trust")
-    sx.save_collectunit_file(collect_title=xia_text)
-    xia_healer = sx.get_collectunit(title=xia_text)
+    sx.save_harvestunit_file(harvest_title=xia_text)
+    xia_healer = sx.get_harvestunit(title=xia_text)
     # print(f"{xia_healer._seed._partys.keys()=}")
 
     # WHEN
-    output_cx = sx.get_output_deal(collect_title=xia_text)
+    output_cx = sx.get_output_deal(harvest_title=xia_text)
     # input deal must be melded to itself to create originunits
     input_cx.meld(input_cx)
     input_cx.set_healer(new_healer=xia_text)
@@ -41,7 +43,7 @@ def test_fix_get_output_deal_ReturnsCorrectDealObjScenario1(
     # THEN
     a_text = "A"
     c_text = "C"
-    c_road = f"{input_cx._fix_handle},{c_text}"
+    c_road = f"{input_cx._project_handle},{c_text}"
     d_text = "D"
     d_road = f"{c_road},{d_text}"
     print(f"{output_cx._healer=}")
@@ -86,11 +88,13 @@ def test_fix_get_output_deal_ReturnsCorrectDealObjScenario1(
     assert output_cx._idearoot == input_cx._idearoot
 
 
-def test_fix_get_output_deal_ReturnsCorrectDealObjScenario2(
+def test_project_get_output_deal_ReturnsCorrectDealObjScenario2(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
     cx1 = example_healers_get_6node_deal()
     cx2 = ex_cxs_deal_v002()
@@ -100,18 +104,18 @@ def test_fix_get_output_deal_ReturnsCorrectDealObjScenario2(
     # sx.save_public_deal(ex_cxs_get_deal_1Task_1CE0MinutesRequired_1AcptFact())
     # sx.save_public_deal(ex_cxs_deal_v001())
     xia_text = "Xia"
-    sx.create_new_collectunit(collect_title=xia_text)
+    sx.create_new_harvestunit(harvest_title=xia_text)
     sx.set_healer_depotlink(xia_text, cx1._healer, depotlink_type="blind_trust")
     sx.set_healer_depotlink(xia_text, cx2._healer, depotlink_type="blind_trust")
-    sx.save_collectunit_file(collect_title=xia_text)
-    xia_healer = sx.get_collectunit(title=xia_text)
+    sx.save_harvestunit_file(harvest_title=xia_text)
+    xia_healer = sx.get_harvestunit(title=xia_text)
     print(f"{xia_healer._seed._partys.keys()=}")
 
     # WHEN
-    output_cx = sx.get_output_deal(collect_title=xia_text)
+    output_cx = sx.get_output_deal(harvest_title=xia_text)
 
     # THEN
-    output_cx_d_road = f"{output_cx._fix_handle},C,D"
+    output_cx_d_road = f"{output_cx._project_handle},C,D"
     output_cx_d_idea = output_cx.get_idea_kid(output_cx_d_road)
     print(f" {output_cx_d_idea._weight=} ")
     assert output_cx != None
@@ -142,15 +146,15 @@ def test_fix_get_output_deal_ReturnsCorrectDealObjScenario2(
     assert output_cx._idearoot != cx2._idearoot
 
 
-def test_collectunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
+def test_harvestunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_test_fixs_dir()
-    fix_handle = get_temp_env_handle()
-    sx = fixunit_shop(handle=fix_handle, fixs_dir=env_dir)
+    env_dir = get_test_projects_dir()
+    project_handle = get_temp_env_handle()
+    sx = projectunit_shop(handle=project_handle, projects_dir=env_dir)
     sx.create_dirs_if_null(in_memory_bank=True)
-    # ux = collectunit_shop(title=healer1_text, env_dir=env_dir)
+    # ux = harvestunit_shop(title=healer1_text, env_dir=env_dir)
 
     ernie_text = "ernie"
     jessi_text = "jessi"
@@ -161,12 +165,12 @@ def test_collectunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
     sx.save_public_deal(deal_x=ernie_deal)
     sx.save_public_deal(deal_x=jessi_deal)
     sx.save_public_deal(deal_x=old_steve_cx)
-    sx.create_new_collectunit(collect_title=ernie_text)
-    sx.create_new_collectunit(collect_title=jessi_text)
-    # sx.create_new_collectunit(collect_title=steve_text)
-    ux_ernie = sx.get_collectunit(title=ernie_text)
-    ux_jessi = sx.get_collectunit(title=jessi_text)
-    # ux_steve = sx.get_collectunit(title=steve_text)
+    sx.create_new_harvestunit(harvest_title=ernie_text)
+    sx.create_new_harvestunit(harvest_title=jessi_text)
+    # sx.create_new_harvestunit(harvest_title=steve_text)
+    ux_ernie = sx.get_harvestunit(title=ernie_text)
+    ux_jessi = sx.get_harvestunit(title=jessi_text)
+    # ux_steve = sx.get_harvestunit(title=steve_text)
     ux_ernie.set_depot_deal(deal_x=jessi_deal, depotlink_type="blind_trust")
     ux_ernie.set_depot_deal(deal_x=old_steve_cx, depotlink_type="blind_trust")
     ux_jessi.set_depot_deal(deal_x=ernie_deal, depotlink_type="blind_trust")
@@ -186,7 +190,7 @@ def test_collectunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
     #     print(f"{ux._admin._deals_public_dir=} {file_title=}")
 
     # WHEN
-    sx.reload_all_collectunits_src_dealunits()
+    sx.reload_all_harvestunits_src_dealunits()
 
     # THEN
     assert len(ux_ernie._admin.get_remelded_output_deal().get_idea_list()) == 5

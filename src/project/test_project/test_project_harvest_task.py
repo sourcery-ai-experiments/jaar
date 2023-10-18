@@ -1,24 +1,24 @@
-from src.fix.fix import fixunit_shop
-from src.fix.examples.fix_env_kit import (
+from src.project.project import projectunit_shop
+from src.project.examples.project_env_kit import (
     get_temp_env_handle,
     env_dir_setup_cleanup,
-    get_test_fixs_dir,
+    get_test_projects_dir,
 )
-from src.fix.examples.example_collects import (
+from src.project.examples.example_harvests import (
     get_deal_assignment_laundry_example1,
 )
 
 
-def test_fix_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanup):
-    sx = fixunit_shop(get_temp_env_handle(), get_test_fixs_dir())
+def test_project_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanup):
+    sx = projectunit_shop(get_temp_env_handle(), get_test_projects_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     # GIVEN
     america_text = "America"
-    sx.create_new_collectunit(collect_title=america_text)
-    america_ux = sx.get_collectunit(title=america_text)
+    sx.create_new_harvestunit(harvest_title=america_text)
+    america_ux = sx.get_harvestunit(title=america_text)
     laundry_deal = get_deal_assignment_laundry_example1()
-    laundry_deal.set_fix_handle(sx.handle)
+    laundry_deal.set_project_handle(sx.handle)
     america_ux.set_seed(laundry_deal)
 
     casa_text = "casa"
@@ -39,8 +39,8 @@ def test_fix_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanup):
 
     # create assignment for Joachim
     joachim_text = "Joachim"
-    sx.create_new_collectunit(collect_title=joachim_text)
-    joachim_ux = sx.get_collectunit(title=joachim_text)
+    sx.create_new_harvestunit(harvest_title=joachim_text)
+    joachim_ux = sx.get_harvestunit(title=joachim_text)
     joachim_ux.set_depot_deal(america_output, "assignment")
     old_joachim_cx = sx.get_output_deal(joachim_text)
     # print(f"{old_joachim_cx._partys.keys()=}")
@@ -73,9 +73,9 @@ def test_fix_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanup):
     assert new_joachim_cx.get_agenda_items()[0].get_road() == laundry_task_road
 
 
-# def test_fix_create_task_CorrectlyCreatesTask(env_dir_setup_cleanup):
-#     sx = fixunit_shop(
-#         handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir()
+# def test_project_create_task_CorrectlyCreatesTask(env_dir_setup_cleanup):
+#     sx = projectunit_shop(
+#         handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
 #     )
 #     sx.create_dirs_if_null(in_memory_bank=True)
 
@@ -120,7 +120,7 @@ def test_fix_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanup):
 
 #     # # WHEN
 #     # america_healer.save_output_deal_to_public()
-#     # new_joa_healer = sx.get_collectunit(title=joachim_text)
+#     # new_joa_healer = sx.get_harvestunit(title=joachim_text)
 #     # new_joa_healer.save_output_deal_to_public()
 #     # new_joa_dest_c = sx.get_public_deal(joachim_text)
 #     # new_joa_agenda = new_joa_dest_c.get_agenda_items()
@@ -132,15 +132,15 @@ def test_fix_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanup):
 #     assert len(joachim_cx.get_agenda_items()) == 1
 #     assert joachim_cx.get_agenda_items()[0].get_road() == do_laundry_road
 
-#     # sx.create_new_collectunit(collect_title=america_text)
-#     # america_healer = sx.get_collectunit(title=america_text)
+#     # sx.create_new_harvestunit(harvest_title=america_text)
+#     # america_healer = sx.get_harvestunit(title=america_text)
 #     # america_healer.save_output_deal_to_public()
 #     # assert sx.get_public_deal(america_text) != None
 
 #     # # Create healer2
 
-#     # sx.create_new_collectunit(collect_title=joachim_text)
-#     # old_joa_healer = sx.get_collectunit(title=joachim_text)
+#     # sx.create_new_harvestunit(harvest_title=joachim_text)
+#     # old_joa_healer = sx.get_harvestunit(title=joachim_text)
 #     # old_joa_healer._set_depotlink(america_cx._healert, depotlink_type="blind_trust")
 #     # old_joa_healer.save_output_deal_to_public()
 #     # old_joa_dest_c = sx.get_public_deal(joachim_text)

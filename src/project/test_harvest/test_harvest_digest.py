@@ -6,30 +6,30 @@ from src.deal.x_func import (
     open_file as x_func_open_file,
     count_files as x_func_count_files,
 )
-from src.fix.collect import collectunit_shop
-from src.fix.examples.example_collects import (
+from src.project.harvest import harvestunit_shop
+from src.project.examples.example_harvests import (
     get_2node_deal as example_healers_get_2node_deal,
     get_7nodeJRoot_deal as example_healers_get_7nodeJRoot_deal,
 )
-from src.fix.examples.collect_env_kit import (
-    collect_dir_setup_cleanup,
-    get_temp_collectunit_dir,
-    get_temp_fix_handle,
+from src.project.examples.harvest_env_kit import (
+    harvest_dir_setup_cleanup,
+    get_temp_harvestunit_dir,
+    get_temp_project_handle,
 )
 from os import path as os_path
 from pytest import raises as pytest_raises
 
 
 # def test_healer_save_seed_deal_CreateStartingDealFile(
-#     collect_dir_setup_cleanup,
+#     harvest_dir_setup_cleanup,
 # ):
 #     # GIVEN
 #     lai_title = "Lai"
-#     env_dir = get_temp_collectunit_dir()
-#     lai_deal = collectunit_shop(title=lai_title, env_dir=env_dir)
+#     env_dir = get_temp_harvestunit_dir()
+#     lai_deal = harvestunit_shop(title=lai_title, env_dir=env_dir)
 #     lai_seed_file_title = lai_deal._admin._seed_file_title
 #     with pytest_raises(Exception) as excinfo:
-#         x_func_open_file(lai_deal._admin._collectunit_dir, lai_seed_file_title)
+#         x_func_open_file(lai_deal._admin._harvestunit_dir, lai_seed_file_title)
 #     assert (
 #         str(excinfo.value)
 #         == f"Could not load file {lai_deal._admin._seed_file_path} (2, 'No such file or directory')"
@@ -41,26 +41,28 @@ from pytest import raises as pytest_raises
 #     )
 
 #     # THEN
-#     assert x_func_open_file(lai_deal._admin._collectunit_dir, lai_seed_file_title) != None
+#     assert x_func_open_file(lai_deal._admin._harvestunit_dir, lai_seed_file_title) != None
 
 
 def test_healeropen_seed_deal_WhenStartingDealFileDoesNotExists(
-    collect_dir_setup_cleanup,
+    harvest_dir_setup_cleanup,
 ):
     # GIVEN
     tim_text = "Tim"
-    env_dir = get_temp_collectunit_dir()
-    fix_handle_text = get_temp_fix_handle()
-    ux = collectunit_shop(title=tim_text, env_dir=env_dir, fix_handle=fix_handle_text)
+    env_dir = get_temp_harvestunit_dir()
+    project_handle_text = get_temp_project_handle()
+    ux = harvestunit_shop(
+        title=tim_text, env_dir=env_dir, project_handle=project_handle_text
+    )
 
     # WHEN
     seed_deal = ux._admin.open_seed_deal()
     assert seed_deal != None
-    assert seed_deal._fix_handle == fix_handle_text
+    assert seed_deal._project_handle == project_handle_text
 
     # THEN
     x_deal = DealUnit(_healer=tim_text)
-    x_deal.set_fix_handle(get_temp_fix_handle())
+    x_deal.set_project_handle(get_temp_project_handle())
     x_deal.set_deal_metrics()
     # x_idearoot = IdeaRoot(_label=p_title, _pad="")
     # x_idearoot.set_balancelines_empty_if_null()
@@ -83,12 +85,12 @@ def test_healeropen_seed_deal_WhenStartingDealFileDoesNotExists(
 
 
 def test_healer_save_seed_deal_seedPersonNameMustBeHealer(
-    collect_dir_setup_cleanup,
+    harvest_dir_setup_cleanup,
 ):
     # GIVEN
     p_title = "Game1"
-    env_dir = get_temp_collectunit_dir()
-    ux = collectunit_shop(p_title, env_dir, get_temp_fix_handle())
+    env_dir = get_temp_harvestunit_dir()
+    ux = harvestunit_shop(p_title, env_dir, get_temp_project_handle())
     cx1 = example_deals_get_deal_with_4_levels()
     assert cx1._healer != p_title
 
@@ -96,16 +98,16 @@ def test_healer_save_seed_deal_seedPersonNameMustBeHealer(
     ux._admin.save_seed_deal(deal_x=cx1)
 
     # THEN
-    assert ux._admin.open_seed_deal()._healer == ux._admin._collect_title
+    assert ux._admin.open_seed_deal()._healer == ux._admin._harvest_title
 
 
 def test_healer_open_seed_deal_WhenStartingDealFileExists(
-    collect_dir_setup_cleanup,
+    harvest_dir_setup_cleanup,
 ):
     # GIVEN
     p_title = "Game1"
-    env_dir = get_temp_collectunit_dir()
-    ux = collectunit_shop(p_title, env_dir, get_temp_fix_handle())
+    env_dir = get_temp_harvestunit_dir()
+    ux = harvestunit_shop(p_title, env_dir, get_temp_project_handle())
     ux._admin.save_seed_deal(deal_x=example_deals_get_deal_with_4_levels())
 
     # WHEN
@@ -122,39 +124,39 @@ def test_healer_open_seed_deal_WhenStartingDealFileExists(
     assert seed_deal._idearoot._acptfactunits == {}
     assert seed_deal._partys == {}
     assert seed_deal._groups == {}
-    assert seed_deal._healer == ux._admin._collect_title
+    assert seed_deal._healer == ux._admin._harvest_title
 
 
 def test_healer_erase_seed_deal_file_DeletesFileCorrectly(
-    collect_dir_setup_cleanup,
+    harvest_dir_setup_cleanup,
 ):
     # GIVEN
     p_title = "Game1"
-    env_dir = get_temp_collectunit_dir()
-    ux = collectunit_shop(p_title, env_dir, get_temp_fix_handle())
+    env_dir = get_temp_harvestunit_dir()
+    ux = harvestunit_shop(p_title, env_dir, get_temp_project_handle())
     ux._admin.save_seed_deal(example_deals_get_deal_with_4_levels())
     file_title = ux._admin._seed_file_title
-    assert x_func_open_file(ux._admin._collectunit_dir, file_title) != None
+    assert x_func_open_file(ux._admin._harvestunit_dir, file_title) != None
 
     # WHEN
     ux._admin.erase_seed_deal_file()
 
     # THEN
     with pytest_raises(Exception) as excinfo:
-        x_func_open_file(ux._admin._collectunit_dir, file_title)
+        x_func_open_file(ux._admin._harvestunit_dir, file_title)
     assert (
         str(excinfo.value)
-        == f"Could not load file {ux._admin._collectunit_dir}/seed_deal.json (2, 'No such file or directory')"
+        == f"Could not load file {ux._admin._harvestunit_dir}/seed_deal.json (2, 'No such file or directory')"
     )
 
 
-def test_collectunit_save_deal_to_digest_SavesFileCorrectly(
-    collect_dir_setup_cleanup,
+def test_harvestunit_save_deal_to_digest_SavesFileCorrectly(
+    harvest_dir_setup_cleanup,
 ):
     # GIVEN
-    collect_title = "healer1"
-    env_dir = get_temp_collectunit_dir()
-    ux = collectunit_shop(collect_title, env_dir, get_temp_fix_handle())
+    harvest_title = "healer1"
+    env_dir = get_temp_harvestunit_dir()
+    ux = harvestunit_shop(harvest_title, env_dir, get_temp_project_handle())
     ux.create_core_dir_and_files()
     cx = example_healers_get_2node_deal()
     src_deal_healer = cx._healer
@@ -179,12 +181,12 @@ def test_collectunit_save_deal_to_digest_SavesFileCorrectly(
 
 
 def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestDeal(
-    collect_dir_setup_cleanup,
+    harvest_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
-    env_dir = get_temp_collectunit_dir()
-    sue_cx = collectunit_shop(sue_text, env_dir, get_temp_fix_handle())
+    env_dir = get_temp_harvestunit_dir()
+    sue_cx = harvestunit_shop(sue_text, env_dir, get_temp_project_handle())
     sue_cx.create_core_dir_and_files()
     cx = example_healers_get_2node_deal()
     src_deal_healer = cx._healer
@@ -209,26 +211,26 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestDeal(
 
 
 def test_healer_get_remelded_output_deal_withEmptyDigestDict(
-    collect_dir_setup_cleanup,
+    harvest_dir_setup_cleanup,
 ):
     # GIVEN
-    collect_title_x = "boots3"
-    ux = collectunit_shop(
-        collect_title_x, get_temp_collectunit_dir(), get_temp_fix_handle()
+    harvest_title_x = "boots3"
+    ux = harvestunit_shop(
+        harvest_title_x, get_temp_harvestunit_dir(), get_temp_project_handle()
     )
     ux.create_core_dir_and_files()
     sx_output_before = ux._admin.get_remelded_output_deal()
     assert str(type(sx_output_before)).find(".deal.DealUnit'>")
-    assert sx_output_before._healer == collect_title_x
-    assert sx_output_before._idearoot._label == get_temp_fix_handle()
+    assert sx_output_before._healer == harvest_title_x
+    assert sx_output_before._idearoot._label == get_temp_project_handle()
     # ux.set_digested_deal(deal_x=DealUnit(_healer="digested1"))
 
     # WHEN
     sx_output_after = ux._admin.get_remelded_output_deal()
 
     # THEN
-    healer_deal_x = DealUnit(_healer=collect_title_x, _weight=0.0)
-    healer_deal_x.set_fix_handle(get_temp_fix_handle())
+    healer_deal_x = DealUnit(_healer=harvest_title_x, _weight=0.0)
+    healer_deal_x.set_project_handle(get_temp_project_handle())
     healer_deal_x._idearoot._pad = ""
     healer_deal_x.set_deal_metrics()
 
@@ -243,17 +245,17 @@ def test_healer_get_remelded_output_deal_withEmptyDigestDict(
 
 
 def test_healer_get_remelded_output_deal_with1DigestedDeal(
-    collect_dir_setup_cleanup,
+    harvest_dir_setup_cleanup,
 ):
     # GIVEN
     yao_text = "Yao"
-    env_dir = get_temp_collectunit_dir()
-    ux = collectunit_shop(yao_text, env_dir, get_temp_fix_handle())
+    env_dir = get_temp_harvestunit_dir()
+    ux = harvestunit_shop(yao_text, env_dir, get_temp_project_handle())
     ux.create_core_dir_and_files()
     sx_output_old = ux._admin.get_remelded_output_deal()
     assert str(type(sx_output_old)).find(".deal.DealUnit'>")
     assert sx_output_old._healer == yao_text
-    assert sx_output_old._idearoot._label == get_temp_fix_handle()
+    assert sx_output_old._idearoot._label == get_temp_project_handle()
     input_deal = example_healers_get_2node_deal()
     input_deal.meld(input_deal)
     ux.set_depot_deal(deal_x=input_deal, depotlink_type="blind_trust")
@@ -280,10 +282,10 @@ def test_healer_get_remelded_output_deal_with1DigestedDeal(
     assert sx_output_new != input_deal
 
 
-# def test_healer_set_digested_deal_with2Groups(collect_dir_setup_cleanup):
+# def test_healer_set_digested_deal_with2Groups(harvest_dir_setup_cleanup):
 #     # GIVEN
-#     env_dir = get_temp_collectunit_dir()
-#     ux = collectunit_shop(title="test8", env_dir=env_dir)
+#     env_dir = get_temp_harvestunit_dir()
+#     ux = harvestunit_shop(title="test8", env_dir=env_dir)
 #     sx_output_old = ux._admin.get_remelded_output_deal()
 #     assert str(type(sx_output_old)).find(".deal.DealUnit'>")
 #     assert sx_output_old._groups == {}
@@ -332,10 +334,10 @@ def test_healer_get_remelded_output_deal_with1DigestedDeal(
 
 
 def test_healer_seed_deal_CorrectlysHasOriginLinksWithHealerAsSource(
-    collect_dir_setup_cleanup,
+    harvest_dir_setup_cleanup,
 ):
     # GIVEN
-    # collectunit with seed_deal and no other depot deals
+    # harvestunit with seed_deal and no other depot deals
     yao_text = "Yao"
     seed_origin_weight = 1
     yao_originunit = originunit_shop()
@@ -346,7 +348,9 @@ def test_healer_seed_deal_CorrectlysHasOriginLinksWithHealerAsSource(
     assert seed_deal_x._idearoot._originunit == originunit_shop()
     assert seed_deal_x._idearoot._originunit != yao_originunit
 
-    ux = collectunit_shop(yao_text, get_temp_collectunit_dir(), get_temp_fix_handle())
+    ux = harvestunit_shop(
+        yao_text, get_temp_harvestunit_dir(), get_temp_project_handle()
+    )
     ux.create_core_dir_and_files()
     ux._admin.save_seed_deal(deal_x=seed_deal_x)
 

@@ -1,4 +1,4 @@
-from src.fix.y_func import sqlite_bool, sqlite_text, sqlite_null
+from src.project.y_func import sqlite_bool, sqlite_text, sqlite_null
 from pytest import raises as pytest_raises
 
 

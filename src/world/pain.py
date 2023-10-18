@@ -1,11 +1,11 @@
 from dataclasses import dataclass
-from src.fix.fix import FixHandle
+from src.project.project import projectHandle
 from src.deal.deal import PersonName
 
 
 @dataclass
-class FixLink:
-    handle: FixHandle
+class projectLink:
+    handle: projectHandle
     weight: float
     _relative_weight: float = None
     _person_importance: float = None
@@ -20,10 +20,10 @@ class FixLink:
         return {"handle": self.handle, "weight": self.weight}
 
 
-def fixlink_shop(handle: FixHandle, weight: float = None) -> FixLink:
+def projectlink_shop(handle: projectHandle, weight: float = None) -> projectLink:
     if weight is None:
         weight = 1
-    return FixLink(handle=handle, weight=weight)
+    return projectLink(handle=handle, weight=weight)
 
 
 @dataclass
@@ -31,18 +31,20 @@ class HealerLink:
     person_name: PersonName
     weight: float
     in_tribe: bool
-    _fixlinks: dict[FixHandle:FixLink] = None
+    _projectlinks: dict[projectHandle:projectLink] = None
     _relative_weight: float = None
     _person_importance: float = None
 
-    def set_fixlinks_weight_metrics(self):
-        total_fixlinks_weight = sum(
-            x_fixlink.weight for x_fixlink in self._fixlinks.values()
+    def set_projectlinks_weight_metrics(self):
+        total_projectlinks_weight = sum(
+            x_projectlink.weight for x_projectlink in self._projectlinks.values()
         )
-        for x_fixlink in self._fixlinks.values():
-            x_fixlink.set_relative_weight(x_fixlink.weight / total_fixlinks_weight)
-            x_fixlink.set_person_importance(
-                x_fixlink._relative_weight * self._person_importance
+        for x_projectlink in self._projectlinks.values():
+            x_projectlink.set_relative_weight(
+                x_projectlink.weight / total_projectlinks_weight
+            )
+            x_projectlink.set_person_importance(
+                x_projectlink._relative_weight * self._person_importance
             )
 
     def set_relative_weight(self, relative_weight: float):
@@ -50,32 +52,32 @@ class HealerLink:
 
     def set_person_importance(self, person_importance: float):
         self._person_importance = person_importance
-        self.set_fixlinks_weight_metrics()
+        self.set_projectlinks_weight_metrics()
 
-    def set_fixlinks_empty_if_none(self):
-        if self._fixlinks is None:
-            self._fixlinks = {}
+    def set_projectlinks_empty_if_none(self):
+        if self._projectlinks is None:
+            self._projectlinks = {}
 
-    def set_fixlink(self, fixlink: FixLink):
-        self._fixlinks[fixlink.handle] = fixlink
+    def set_projectlink(self, projectlink: projectLink):
+        self._projectlinks[projectlink.handle] = projectlink
 
-    def get_fixlink(self, fixhandle: FixHandle) -> FixLink:
-        return self._fixlinks.get(fixhandle)
+    def get_projectlink(self, projecthandle: projectHandle) -> projectLink:
+        return self._projectlinks.get(projecthandle)
 
-    def del_fixlink(self, fixhandle: FixHandle):
-        self._fixlinks.pop(fixhandle)
+    def del_projectlink(self, projecthandle: projectHandle):
+        self._projectlinks.pop(projecthandle)
 
-    def get_fixlinks_dict(self) -> dict:
+    def get_projectlinks_dict(self) -> dict:
         return {
-            fixlink_x.handle: fixlink_x.get_dict()
-            for fixlink_x in self._fixlinks.values()
+            projectlink_x.handle: projectlink_x.get_dict()
+            for projectlink_x in self._projectlinks.values()
         }
 
     def get_dict(self):
         return {
             "person_name": self.person_name,
             "weight": self.weight,
-            "_fixlinks": self.get_fixlinks_dict(),
+            "_projectlinks": self.get_projectlinks_dict(),
         }
 
 
@@ -85,7 +87,7 @@ def healerlink_shop(
     if weight is None:
         weight = 1
     x_healer = HealerLink(person_name=person_name, weight=weight, in_tribe=in_tribe)
-    x_healer.set_fixlinks_empty_if_none()
+    x_healer.set_projectlinks_empty_if_none()
     return x_healer
 
 

@@ -5,7 +5,7 @@ from src.deal.examples.example_deals import (
 )
 from pytest import raises as pytest_raises
 from src.deal.required_idea import Road, AcptFactUnit
-from src.deal.road import get_default_fix_root_label as root_label
+from src.deal.road import get_default_project_root_label as root_label
 
 
 def test_idea_label_fails_when_idea_does_not_exist():
@@ -14,13 +14,13 @@ def test_idea_label_fails_when_idea_does_not_exist():
     x_deal = DealUnit(_healer=healer_text)
 
     work_text = "work"
-    work_road = f"{x_deal._fix_handle},{work_text}"
+    work_road = f"{x_deal._project_handle},{work_text}"
     swim_text = "swim"
-    x_deal.add_idea(pad=x_deal._fix_handle, idea_kid=IdeaKid(_label=work_text))
+    x_deal.add_idea(pad=x_deal._project_handle, idea_kid=IdeaKid(_label=work_text))
     x_deal.add_idea(pad=work_road, idea_kid=IdeaKid(_label=swim_text))
 
     # When/Then
-    no_idea_road = Road(f"{x_deal._fix_handle},bees")
+    no_idea_road = Road(f"{x_deal._project_handle},bees")
     with pytest_raises(Exception) as excinfo:
         x_deal.edit_idea_label(old_road=no_idea_road, new_label="pigeons")
     assert (
@@ -29,22 +29,22 @@ def test_idea_label_fails_when_idea_does_not_exist():
     )
 
 
-def test_Deal_level0_idea_edit_idea_label_RaisesError_fix_handle_IsNone():
+def test_Deal_level0_idea_edit_idea_label_RaisesError_project_handle_IsNone():
     # GIVEN
     healer_text = "Tim"
     x_deal = DealUnit(_healer=healer_text)
 
     work_text = "work"
-    work_road = f"{x_deal._fix_handle},{work_text}"
+    work_road = f"{x_deal._project_handle},{work_text}"
     swim_text = "swim"
-    swim_road = f"{x_deal._fix_handle},{work_text},{swim_text}"
-    x_deal.add_idea(pad=x_deal._fix_handle, idea_kid=IdeaKid(_label=work_text))
+    swim_road = f"{x_deal._project_handle},{work_text},{swim_text}"
+    x_deal.add_idea(pad=x_deal._project_handle, idea_kid=IdeaKid(_label=work_text))
     x_deal.add_idea(pad=work_road, idea_kid=IdeaKid(_label=swim_text))
     assert x_deal._healer == healer_text
-    assert x_deal._fix_handle == x_deal._fix_handle
-    assert x_deal._idearoot._label == x_deal._fix_handle
+    assert x_deal._project_handle == x_deal._project_handle
+    assert x_deal._idearoot._label == x_deal._project_handle
     work_idea = x_deal.get_idea_kid(road=work_road)
-    assert work_idea._pad == x_deal._fix_handle
+    assert work_idea._pad == x_deal._project_handle
     swim_idea = x_deal.get_idea_kid(road=swim_road)
     assert swim_idea._pad == work_road
 
@@ -52,27 +52,27 @@ def test_Deal_level0_idea_edit_idea_label_RaisesError_fix_handle_IsNone():
 
     with pytest_raises(Exception) as excinfo:
         moon_text = "moon"
-        x_deal.edit_idea_label(old_road=x_deal._fix_handle, new_label=moon_text)
+        x_deal.edit_idea_label(old_road=x_deal._project_handle, new_label=moon_text)
     assert (
         str(excinfo.value)
-        == f"Cannot set idearoot to string other than '{x_deal._fix_handle}'"
+        == f"Cannot set idearoot to string other than '{x_deal._project_handle}'"
     )
 
 
-def test_Deal_level0_idea_edit_idea_label_RaisesError_fix_handle_IsDifferent():
+def test_Deal_level0_idea_edit_idea_label_RaisesError_project_handle_IsDifferent():
     # GIVEN
     healer_text = "Tim"
     x_deal = DealUnit(_healer=healer_text)
     work_text = "work"
-    work_road = f"{x_deal._fix_handle},{work_text}"
+    work_road = f"{x_deal._project_handle},{work_text}"
     swim_text = "swim"
-    swim_road = f"{x_deal._fix_handle},{work_text},{swim_text}"
-    x_deal.add_idea(pad=x_deal._fix_handle, idea_kid=IdeaKid(_label=work_text))
+    swim_road = f"{x_deal._project_handle},{work_text},{swim_text}"
+    x_deal.add_idea(pad=x_deal._project_handle, idea_kid=IdeaKid(_label=work_text))
     x_deal.add_idea(pad=work_road, idea_kid=IdeaKid(_label=swim_text))
     sun_text = "sun"
-    x_deal._fix_handle = sun_text
+    x_deal._project_handle = sun_text
     assert x_deal._healer == healer_text
-    assert x_deal._fix_handle == sun_text
+    assert x_deal._project_handle == sun_text
     assert x_deal._idearoot._label == root_label()
     work_idea = x_deal.get_idea_kid(road=work_road)
     assert work_idea._pad == root_label()
@@ -89,36 +89,36 @@ def test_Deal_level0_idea_edit_idea_label_RaisesError_fix_handle_IsDifferent():
     )
 
 
-def test_deal_set_fix_handle_CorrectlySetsAttr():
+def test_deal_set_project_handle_CorrectlySetsAttr():
     # GIVEN
     healer_text = "Tim"
     x_deal = DealUnit(_healer=healer_text)
     work_text = "work"
-    old_work_road = f"{x_deal._fix_handle},{work_text}"
+    old_work_road = f"{x_deal._project_handle},{work_text}"
     swim_text = "swim"
     old_swim_road = f"{old_work_road},{swim_text}"
-    x_deal.add_idea(pad=x_deal._fix_handle, idea_kid=IdeaKid(_label=work_text))
+    x_deal.add_idea(pad=x_deal._project_handle, idea_kid=IdeaKid(_label=work_text))
     x_deal.add_idea(pad=old_work_road, idea_kid=IdeaKid(_label=swim_text))
     assert x_deal._healer == healer_text
-    assert x_deal._idearoot._label == x_deal._fix_handle
+    assert x_deal._idearoot._label == x_deal._project_handle
     work_idea = x_deal.get_idea_kid(road=old_work_road)
-    assert work_idea._pad == x_deal._fix_handle
+    assert work_idea._pad == x_deal._project_handle
     swim_idea = x_deal.get_idea_kid(road=old_swim_road)
     assert swim_idea._pad == old_work_road
-    assert x_deal._fix_handle == x_deal._fix_handle
+    assert x_deal._project_handle == x_deal._project_handle
 
     # WHEN
-    fix_handle_text = "Sun"
-    x_deal.set_fix_handle(fix_handle=fix_handle_text)
+    project_handle_text = "Sun"
+    x_deal.set_project_handle(project_handle=project_handle_text)
 
     # THEN
-    new_work_road = f"{fix_handle_text},{work_text}"
+    new_work_road = f"{project_handle_text},{work_text}"
     swim_text = "swim"
     new_swim_road = f"{new_work_road},{swim_text}"
-    assert x_deal._fix_handle == fix_handle_text
-    assert x_deal._idearoot._label == fix_handle_text
+    assert x_deal._project_handle == project_handle_text
+    assert x_deal._idearoot._label == project_handle_text
     work_idea = x_deal.get_idea_kid(road=new_work_road)
-    assert work_idea._pad == fix_handle_text
+    assert work_idea._pad == project_handle_text
     swim_idea = x_deal.get_idea_kid(road=new_swim_road)
     assert swim_idea._pad == new_work_road
 
@@ -129,19 +129,23 @@ def test_idea_find_replace_road_Changes_kids_scenario1():
     x_deal = DealUnit(_healer=healer_text)
 
     old_healer_text = "healer"
-    old_healer_road = Road(f"{x_deal._fix_handle},{old_healer_text}")
+    old_healer_road = Road(f"{x_deal._project_handle},{old_healer_text}")
     bloomers_text = "bloomers"
-    old_bloomers_road = Road(f"{x_deal._fix_handle},{old_healer_text},{bloomers_text}")
+    old_bloomers_road = Road(
+        f"{x_deal._project_handle},{old_healer_text},{bloomers_text}"
+    )
     roses_text = "roses"
     old_roses_road = Road(
-        f"{x_deal._fix_handle},{old_healer_text},{bloomers_text},{roses_text}"
+        f"{x_deal._project_handle},{old_healer_text},{bloomers_text},{roses_text}"
     )
     red_text = "red"
     old_red_road = Road(
-        f"{x_deal._fix_handle},{old_healer_text},{bloomers_text},{roses_text},{red_text}"
+        f"{x_deal._project_handle},{old_healer_text},{bloomers_text},{roses_text},{red_text}"
     )
 
-    x_deal.add_idea(pad=x_deal._fix_handle, idea_kid=IdeaKid(_label=old_healer_text))
+    x_deal.add_idea(
+        pad=x_deal._project_handle, idea_kid=IdeaKid(_label=old_healer_text)
+    )
     x_deal.add_idea(pad=old_healer_road, idea_kid=IdeaKid(_label=bloomers_text))
     x_deal.add_idea(pad=old_bloomers_road, idea_kid=IdeaKid(_label=roses_text))
     x_deal.add_idea(pad=old_roses_road, idea_kid=IdeaKid(_label=red_text))
@@ -156,7 +160,7 @@ def test_idea_find_replace_road_Changes_kids_scenario1():
 
     # WHEN
     new_healer_text = "globe"
-    new_healer_road = Road(f"{x_deal._fix_handle},{new_healer_text}")
+    new_healer_road = Road(f"{x_deal._project_handle},{new_healer_text}")
     x_deal.edit_idea_label(old_road=old_healer_road, new_label=new_healer_text)
 
     # THEN
@@ -167,12 +171,14 @@ def test_idea_find_replace_road_Changes_kids_scenario1():
     assert r_idea_bloomers._kids.get(roses_text) != None
 
     r_idea_roses = r_idea_bloomers._kids.get(roses_text)
-    new_bloomers_road = Road(f"{x_deal._fix_handle},{new_healer_text},{bloomers_text}")
+    new_bloomers_road = Road(
+        f"{x_deal._project_handle},{new_healer_text},{bloomers_text}"
+    )
     assert r_idea_roses._pad == new_bloomers_road
     assert r_idea_roses._kids.get(red_text) != None
     r_idea_red = r_idea_roses._kids.get(red_text)
     new_roses_road = Road(
-        f"{x_deal._fix_handle},{new_healer_text},{bloomers_text},{roses_text}"
+        f"{x_deal._project_handle},{new_healer_text},{bloomers_text},{roses_text}"
     )
     assert r_idea_red._pad == new_roses_road
 
@@ -184,15 +190,15 @@ def test_deal_edit_idea_label_Changes_acptfactunits():
 
     healer = "healer"
     bloomers_text = "bloomers"
-    bloomers_road = f"{x_deal._fix_handle},{healer},{bloomers_text}"
+    bloomers_road = f"{x_deal._project_handle},{healer},{bloomers_text}"
     roses_text = "roses"
-    roses_road = f"{x_deal._fix_handle},{healer},{bloomers_text},{roses_text}"
+    roses_road = f"{x_deal._project_handle},{healer},{bloomers_text},{roses_text}"
     old_water_text = "water"
-    old_water_road = f"{x_deal._fix_handle},{old_water_text}"
+    old_water_road = f"{x_deal._project_handle},{old_water_text}"
     rain_text = "rain"
-    old_rain_road = f"{x_deal._fix_handle},{old_water_text},{rain_text}"
+    old_rain_road = f"{x_deal._project_handle},{old_water_text},{rain_text}"
 
-    x_deal.add_idea(pad=x_deal._fix_handle, idea_kid=IdeaKid(_label=healer))
+    x_deal.add_idea(pad=x_deal._project_handle, idea_kid=IdeaKid(_label=healer))
     x_deal.add_idea(pad=bloomers_road, idea_kid=IdeaKid(_label=roses_text))
     x_deal.add_idea(pad=old_water_road, idea_kid=IdeaKid(_label=rain_text))
     x_deal.set_acptfact(base=old_water_road, pick=old_rain_road)
@@ -205,8 +211,8 @@ def test_deal_edit_idea_label_Changes_acptfactunits():
 
     # WHEN
     new_water_text = "h2o"
-    new_water_road = f"{x_deal._fix_handle},{new_water_text}"
-    x_deal.add_idea(pad=x_deal._fix_handle, idea_kid=IdeaKid(_label=new_water_text))
+    new_water_road = f"{x_deal._project_handle},{new_water_text}"
+    x_deal.add_idea(pad=x_deal._project_handle, idea_kid=IdeaKid(_label=new_water_text))
     assert x_deal._idearoot._acptfactunits.get(new_water_road) is None
     x_deal.edit_idea_label(old_road=old_water_road, new_label=new_water_text)
 
@@ -215,7 +221,7 @@ def test_deal_edit_idea_label_Changes_acptfactunits():
     assert x_deal._idearoot._acptfactunits.get(new_water_road) != None
     new_water_rain_acptfactunit = x_deal._idearoot._acptfactunits[new_water_road]
     assert new_water_rain_acptfactunit.base == new_water_road
-    new_rain_road = f"{x_deal._fix_handle},{new_water_text},{rain_text}"
+    new_rain_road = f"{x_deal._project_handle},{new_water_text},{rain_text}"
     assert new_water_rain_acptfactunit.pick == new_rain_road
 
     assert x_deal._idearoot._acptfactunits.get(new_water_road)
@@ -232,9 +238,13 @@ def test_deal_edit_idea_label_ChangesIdeaRoot_range_source_road():
     x_deal = DealUnit(_healer=healer_text)
 
     old_healer_text = "healer"
-    old_healer_road = Road(f"{x_deal._fix_handle},{old_healer_text}")
-    x_deal.add_idea(pad=x_deal._fix_handle, idea_kid=IdeaKid(_label=old_healer_text))
-    x_deal.edit_idea_attr(road=x_deal._fix_handle, range_source_road=old_healer_road)
+    old_healer_road = Road(f"{x_deal._project_handle},{old_healer_text}")
+    x_deal.add_idea(
+        pad=x_deal._project_handle, idea_kid=IdeaKid(_label=old_healer_text)
+    )
+    x_deal.edit_idea_attr(
+        road=x_deal._project_handle, range_source_road=old_healer_road
+    )
     assert x_deal._idearoot._range_source_road == old_healer_road
 
     # WHEN
@@ -242,7 +252,7 @@ def test_deal_edit_idea_label_ChangesIdeaRoot_range_source_road():
     x_deal.edit_idea_label(old_road=old_healer_road, new_label=new_healer_text)
 
     # THEN
-    new_healer_road = Road(f"{x_deal._fix_handle},{new_healer_text}")
+    new_healer_road = Road(f"{x_deal._project_handle},{new_healer_text}")
     assert x_deal._idearoot._range_source_road == new_healer_road
 
 
@@ -251,17 +261,19 @@ def test_deal_edit_idea_label_ChangesIdeaKidN_range_source_road():
     x_deal = DealUnit(_healer=healer_text)
 
     healer_text = "healer"
-    healer_road = Road(f"{x_deal._fix_handle},{healer_text}")
+    healer_road = Road(f"{x_deal._project_handle},{healer_text}")
     old_water_text = "water"
-    old_water_road = f"{x_deal._fix_handle},{healer_text},{old_water_text}"
+    old_water_road = f"{x_deal._project_handle},{healer_text},{old_water_text}"
     rain_text = "rain"
-    old_rain_road = f"{x_deal._fix_handle},{healer_text},{old_water_text},{rain_text}"
+    old_rain_road = (
+        f"{x_deal._project_handle},{healer_text},{old_water_text},{rain_text}"
+    )
     mood_text = "mood"
-    mood_road = Road(f"{x_deal._fix_handle},{mood_text}")
-    x_deal.add_idea(pad=x_deal._fix_handle, idea_kid=IdeaKid(_label=healer_text))
+    mood_road = Road(f"{x_deal._project_handle},{mood_text}")
+    x_deal.add_idea(pad=x_deal._project_handle, idea_kid=IdeaKid(_label=healer_text))
     x_deal.add_idea(pad=healer_road, idea_kid=IdeaKid(_label=old_water_text))
     x_deal.add_idea(pad=old_water_road, idea_kid=IdeaKid(_label=rain_text))
-    x_deal.add_idea(pad=x_deal._fix_handle, idea_kid=IdeaKid(_label=mood_text))
+    x_deal.add_idea(pad=x_deal._project_handle, idea_kid=IdeaKid(_label=mood_text))
 
     x_deal.edit_idea_attr(road=mood_road, range_source_road=old_rain_road)
     mood_idea = x_deal.get_idea_kid(road=mood_road)
@@ -269,7 +281,9 @@ def test_deal_edit_idea_label_ChangesIdeaKidN_range_source_road():
 
     # WHEN
     new_water_text = "h2o"
-    new_rain_road = f"{x_deal._fix_handle},{healer_text},{new_water_text},{rain_text}"
+    new_rain_road = (
+        f"{x_deal._project_handle},{healer_text},{new_water_text},{rain_text}"
+    )
     x_deal.edit_idea_label(old_road=old_water_road, new_label=new_water_text)
 
     # THEN
@@ -289,12 +303,12 @@ def test_deal_edit_idea_label_ChangesIdeaRequiredUnitsScenario1():
     # GIVEN
     x_deal = get_deal_with_4_levels_and_2requireds_2acptfacts()
     old_weekday_text = "weekdays"
-    old_weekday_road = f"{x_deal._fix_handle},{old_weekday_text}"
+    old_weekday_road = f"{x_deal._project_handle},{old_weekday_text}"
     wednesday_text = "Wednesday"
-    old_wednesday_road = f"{x_deal._fix_handle},{old_weekday_text},{wednesday_text}"
-    work_idea = x_deal.get_idea_kid(f"{x_deal._fix_handle},work")
-    usa = f"{x_deal._fix_handle},nation-state,USA"
-    nationstate = f"{x_deal._fix_handle},nation-state"
+    old_wednesday_road = f"{x_deal._project_handle},{old_weekday_text},{wednesday_text}"
+    work_idea = x_deal.get_idea_kid(f"{x_deal._project_handle},work")
+    usa = f"{x_deal._project_handle},nation-state,USA"
+    nationstate = f"{x_deal._project_handle},nation-state"
     # work_wk_required = RequiredUnit(base=weekday, sufffacts={wed_sufffact.need: wed_sufffact})
     # nation_required = RequiredUnit(base=nationstate, sufffacts={usa_sufffact.need: usa_sufffact})
     assert len(work_idea._requiredunits) == 2
@@ -307,8 +321,8 @@ def test_deal_edit_idea_label_ChangesIdeaRequiredUnitsScenario1():
         == old_wednesday_road
     )
     new_weekday_text = "days of week"
-    new_weekday_road = f"{x_deal._fix_handle},{new_weekday_text}"
-    new_wednesday_road = f"{x_deal._fix_handle},{new_weekday_text},{wednesday_text}"
+    new_weekday_road = f"{x_deal._project_handle},{new_weekday_text}"
+    new_wednesday_road = f"{x_deal._project_handle},{new_weekday_text},{wednesday_text}"
     assert work_idea._requiredunits.get(new_weekday_text) is None
 
     # WHEN
@@ -338,7 +352,7 @@ def test_deal_set_healer_CorrectlyChangesBoth():
     # GIVEN
     x_deal = get_deal_with_4_levels_and_2requireds_2acptfacts()
     assert x_deal._healer == "Noa"
-    assert x_deal._idearoot._label == x_deal._fix_handle
+    assert x_deal._idearoot._label == x_deal._project_handle
     # mid_label1 = "tim"
     # x_deal.edit_idea_label(old_road=old_label, new_label=mid_label1)
     # assert x_deal._healer == old_label
@@ -350,4 +364,4 @@ def test_deal_set_healer_CorrectlyChangesBoth():
 
     # THEN
     assert x_deal._healer == new_label2
-    assert x_deal._idearoot._label == x_deal._fix_handle
+    assert x_deal._idearoot._label == x_deal._project_handle

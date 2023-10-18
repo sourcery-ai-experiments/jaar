@@ -80,7 +80,7 @@
     </property>
     <column>
      <property title="text">
-      <string>FIX Stories</string>
+      <string>project Stories</string>
      </property>
     </column>
     <column>
@@ -124,7 +124,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QPushButton" title="fix_delete_button">
+   <widget class="QPushButton" title="project_delete_button">
     <property title="geometry">
      <rect>
       <x>170</x>
@@ -142,7 +142,7 @@
      <string>delete </string>
     </property>
    </widget>
-   <widget class="QPushButton" title="fix_insert_button">
+   <widget class="QPushButton" title="project_insert_button">
     <property title="geometry">
      <rect>
       <x>20</x>
@@ -157,10 +157,10 @@
      </font>
     </property>
     <property title="text">
-     <string>Add new Fix</string>
+     <string>Add new project</string>
     </property>
    </widget>
-   <widget class="QLineEdit" title="fix_handle">
+   <widget class="QLineEdit" title="project_handle">
     <property title="geometry">
      <rect>
       <x>20</x>
@@ -175,7 +175,7 @@
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" title="fix_update_button">
+   <widget class="QPushButton" title="project_update_button">
     <property title="geometry">
      <rect>
       <x>20</x>
@@ -316,7 +316,7 @@
      <string>delete Healer</string>
     </property>
    </widget>
-   <widget class="QLineEdit" title="collect_title">
+   <widget class="QLineEdit" title="harvest_title">
     <property title="geometry">
      <rect>
       <x>190</x>
@@ -622,7 +622,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QComboBox" title="fix_handle_combo">
+   <widget class="QComboBox" title="project_handle_combo">
     <property title="geometry">
      <rect>
       <x>20</x>
@@ -637,7 +637,7 @@
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" title="fix_copy_button">
+   <widget class="QPushButton" title="project_copy_button">
     <property title="geometry">
      <rect>
       <x>100</x>
@@ -670,7 +670,7 @@
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" title="fix_load_button">
+   <widget class="QPushButton" title="project_load_button">
     <property title="geometry">
      <rect>
       <x>100</x>

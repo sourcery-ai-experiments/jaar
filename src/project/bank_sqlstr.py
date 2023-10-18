@@ -1,6 +1,6 @@
 from src.deal.deal import DealUnit, PartyUnit, Road
 from src.deal.road import get_road_without_root_node
-from src.fix.y_func import sqlite_bool, sqlite_null
+from src.project.y_func import sqlite_bool, sqlite_null
 from dataclasses import dataclass
 from sqlite3 import Connection
 
@@ -570,7 +570,7 @@ def get_groupunit_catalog_table_create_sqlstr() -> str:
         CREATE TABLE IF NOT EXISTS groupunit_catalog (
           deal_healer VARCHAR(255) NOT NULL
         , groupunit_brand VARCHAR(1000) NOT NULL
-        , partylinks_set_by_fix_road VARCHAR(1000) NULL
+        , partylinks_set_by_project_road VARCHAR(1000) NULL
         )
         ;
     """
@@ -592,7 +592,7 @@ def get_groupunit_catalog_table_count(db_conn: Connection, deal_healer: str) -> 
 class GroupUnitCatalog:
     deal_healer: str
     groupunit_brand: str
-    partylinks_set_by_fix_road: str
+    partylinks_set_by_project_road: str
 
 
 def get_groupunit_catalog_table_insert_sqlstr(
@@ -602,12 +602,12 @@ def get_groupunit_catalog_table_insert_sqlstr(
         INSERT INTO groupunit_catalog (
           deal_healer
         , groupunit_brand
-        , partylinks_set_by_fix_road
+        , partylinks_set_by_project_road
         )
         VALUES (
           '{groupunit_catalog.deal_healer}'
         , '{groupunit_catalog.groupunit_brand}'
-        , '{groupunit_catalog.partylinks_set_by_fix_road}'
+        , '{groupunit_catalog.partylinks_set_by_project_road}'
         )
         ;
     """
@@ -618,7 +618,7 @@ def get_groupunit_catalog_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog
         SELECT 
           deal_healer
         , groupunit_brand
-        , partylinks_set_by_fix_road
+        , partylinks_set_by_project_road
         FROM groupunit_catalog
         ;
     """
@@ -629,7 +629,7 @@ def get_groupunit_catalog_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog
         groupunit_catalog_x = GroupUnitCatalog(
             deal_healer=row[0],
             groupunit_brand=row[1],
-            partylinks_set_by_fix_road=row[2],
+            partylinks_set_by_project_road=row[2],
         )
         dict_key = (
             f"{groupunit_catalog_x.deal_healer} {groupunit_catalog_x.groupunit_brand}"

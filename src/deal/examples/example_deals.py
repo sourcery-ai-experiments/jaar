@@ -19,29 +19,29 @@ def deal_v001() -> DealUnit:
 def deal_v001_with_large_agenda() -> DealUnit:
     a1 = deal_v001()
     day_minute_text = "day_minute"
-    day_minute_road = f"{a1._fix_handle},{day_minute_text}"
+    day_minute_road = f"{a1._project_handle},{day_minute_text}"
     month_week_text = "month_week"
-    month_week_road = f"{a1._fix_handle},{month_week_text}"
+    month_week_road = f"{a1._project_handle},{month_week_text}"
     nations_text = "Nation-States"
-    nations_road = f"{a1._fix_handle},{nations_text}"
+    nations_road = f"{a1._project_handle},{nations_text}"
     mood_text = "Moods"
-    mood_road = f"{a1._fix_handle},{mood_text}"
+    mood_road = f"{a1._project_handle},{mood_text}"
     aaron_text = "Aaron Donald sphere"
-    aaron_road = f"{a1._fix_handle},{aaron_text}"
+    aaron_road = f"{a1._project_handle},{aaron_text}"
     # internet_text = "Internet"
-    # internet_road = f"{a1._fix_handle},{internet_text}"
+    # internet_road = f"{a1._project_handle},{internet_text}"
     year_month_text = "year_month"
-    year_month_road = f"{a1._fix_handle},{year_month_text}"
+    year_month_road = f"{a1._project_handle},{year_month_text}"
     season_text = "Seasons"
-    season_road = f"{a1._fix_handle},{season_text}"
+    season_road = f"{a1._project_handle},{season_text}"
     ced_week_text = "ced_week"
-    ced_week_road = f"{a1._fix_handle},{ced_week_text}"
+    ced_week_road = f"{a1._project_handle},{ced_week_text}"
     # water_text = "WaterBeing"
-    # water_road = f"{a1._fix_handle},{water_text}"
+    # water_road = f"{a1._project_handle},{water_text}"
     weekdays_text = "weekdays"
-    weekdays_road = f"{a1._fix_handle},{weekdays_text}"
+    weekdays_road = f"{a1._project_handle},{weekdays_text}"
     # movie_text = "No Movie playing"
-    # movie_road = f"{a1._fix_handle},{movie_text}"
+    # movie_road = f"{a1._project_handle},{movie_text}"
 
     a1.set_acptfact(base=aaron_road, pick=aaron_road)
     a1.set_acptfact(base=ced_week_road, pick=ced_week_road, open=0, nigh=53)
@@ -71,16 +71,16 @@ def get_deal_with_4_levels() -> DealUnit:
 
     work = "work"
     idea_kid_work = IdeaKid(_weight=30, _label=work, promise=True)
-    a1.add_idea(idea_kid=idea_kid_work, pad=a1._fix_handle)
+    a1.add_idea(idea_kid=idea_kid_work, pad=a1._project_handle)
 
     cat = "feed cat"
     idea_kid_feedcat = IdeaKid(_weight=30, _label=cat, promise=True)
-    a1.add_idea(idea_kid=idea_kid_feedcat, pad=a1._fix_handle)
+    a1.add_idea(idea_kid=idea_kid_feedcat, pad=a1._project_handle)
 
     week_text = "weekdays"
-    week_road = f"{a1._fix_handle},{week_text}"
+    week_road = f"{a1._project_handle},{week_text}"
     idea_kid_weekdays = IdeaKid(_weight=40, _label=week_text)
-    a1.add_idea(idea_kid=idea_kid_weekdays, pad=a1._fix_handle)
+    a1.add_idea(idea_kid=idea_kid_weekdays, pad=a1._project_handle)
 
     sun_text = "Sunday"
     mon_text = "Monday"
@@ -107,9 +107,9 @@ def get_deal_with_4_levels() -> DealUnit:
     a1.add_idea(idea_grandkidA, week_road)
 
     states_text = "nation-state"
-    states_road = f"{a1._fix_handle},{states_text}"
+    states_road = f"{a1._project_handle},{states_text}"
     idea_kid_states = IdeaKid(_weight=30, _label=states_text)
-    a1.add_idea(idea_kid=idea_kid_states, pad=f"{a1._fix_handle}")
+    a1.add_idea(idea_kid=idea_kid_states, pad=f"{a1._project_handle}")
 
     usa_text = "USA"
     usa_road = f"{states_road},{usa_text}"
@@ -134,21 +134,21 @@ def get_deal_with_4_levels() -> DealUnit:
 def get_deal_with_4_levels_and_2requireds() -> DealUnit:
     a1 = get_deal_with_4_levels()
     week_text = "weekdays"
-    week_road = f"{a1._fix_handle},{week_text}"
+    week_road = f"{a1._project_handle},{week_text}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
     week_required = RequiredUnit(base=week_road, sufffacts={})
     week_required.set_sufffact(wed_road)
 
     nation_text = "nation-state"
-    nation_road = f"{a1._fix_handle},{nation_text}"
+    nation_road = f"{a1._project_handle},{nation_text}"
     usa_text = "USA"
     usa_road = f"{nation_road},{usa_text}"
     nation_required = RequiredUnit(base=nation_road, sufffacts={})
     nation_required.set_sufffact(usa_road)
 
     work_text = "work"
-    work_road = f"{a1._fix_handle},{work_text}"
+    work_road = f"{a1._project_handle},{work_text}"
     a1.edit_idea_attr(road=work_road, required=week_required)
     a1.edit_idea_attr(road=work_road, required=nation_required)
     return a1
@@ -157,11 +157,11 @@ def get_deal_with_4_levels_and_2requireds() -> DealUnit:
 def get_deal_with_4_levels_and_2requireds_2acptfacts() -> DealUnit:
     a1 = get_deal_with_4_levels_and_2requireds()
     week_text = "weekdays"
-    week_road = f"{a1._fix_handle},{week_text}"
+    week_road = f"{a1._project_handle},{week_text}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
     states_text = "nation-state"
-    states_road = f"{a1._fix_handle},{states_text}"
+    states_road = f"{a1._project_handle},{states_text}"
     usa_text = "USA"
     usa_road = f"{states_road},{usa_text}"
     a1.set_acptfact(base=week_road, pick=wed_road)
@@ -173,7 +173,7 @@ def get_deal_with7amCleanTableRequired() -> DealUnit:
     a1 = get_deal_with_4_levels_and_2requireds_2acptfacts()
 
     time_text = "timetech"
-    time_road = f"{a1._fix_handle},{time_text}"
+    time_road = f"{a1._project_handle},{time_text}"
     time_idea = IdeaKid(_label=time_text)
 
     day24hr_text = "24hr day"
@@ -192,7 +192,7 @@ def get_deal_with7amCleanTableRequired() -> DealUnit:
     n2_idea = IdeaKid(_label=n2_text, _begin=2, _close=3)
     n3_idea = IdeaKid(_label=n3_text, _begin=3, _close=4)
 
-    a1.add_idea(time_idea, a1._fix_handle)
+    a1.add_idea(time_idea, a1._project_handle)
     a1.add_idea(day24hr_idea, time_road)
     a1.add_idea(am_idea, day24hr_road)
     a1.add_idea(pm_idea, day24hr_road)
@@ -201,7 +201,7 @@ def get_deal_with7amCleanTableRequired() -> DealUnit:
     a1.add_idea(n3_idea, am_road)  # idea_am
 
     house_text = "housework"
-    house_road = f"{a1._fix_handle},{house_text}"
+    house_road = f"{a1._project_handle},{house_text}"
     clean_text = "clean table"
     clean_road = f"{house_road},{clean_text}"
     dish_text = "remove dishs"
@@ -215,7 +215,7 @@ def get_deal_with7amCleanTableRequired() -> DealUnit:
     soap_idea = IdeaKid(_label=soap_text, promise=True)
     grab_idea = IdeaKid(_label=grab_text, promise=True)
 
-    a1.add_idea(idea_kid=house_idea, pad=a1._fix_handle)
+    a1.add_idea(idea_kid=house_idea, pad=a1._project_handle)
     a1.add_idea(idea_kid=clean_idea, pad=house_road)
     a1.add_idea(idea_kid=dish_idea, pad=clean_road)
     a1.add_idea(idea_kid=soap_idea, pad=clean_road)
@@ -233,7 +233,7 @@ def get_deal_with7amCleanTableRequired() -> DealUnit:
     )
     a1.edit_idea_attr(road=clean_road, required=clean_table_7am_required)
     work_text = "work"
-    work_road = f"{a1._fix_handle},{work_text}"
+    work_road = f"{a1._project_handle},{work_text}"
     a1.edit_idea_attr(road=work_road, required=clean_table_7am_required)
     return a1
 
@@ -243,17 +243,17 @@ def get_deal_1Task_1CE0MinutesRequired_1AcptFact() -> DealUnit:
     a1 = DealUnit(_healer=healer_text, _weight=10)
     ced_min_label = "CE0_minutes"
     ced_minutes = IdeaKid(_label=ced_min_label)
-    ced_road = f"{a1._fix_handle},{ced_min_label}"
-    a1.add_idea(idea_kid=ced_minutes, pad=a1._fix_handle)
+    ced_road = f"{a1._project_handle},{ced_min_label}"
+    a1.add_idea(idea_kid=ced_minutes, pad=a1._project_handle)
     mail_label = "obtain mail"
     mail_task = IdeaKid(_label=mail_label, promise=True)
-    a1.add_idea(idea_kid=mail_task, pad=a1._fix_handle)
+    a1.add_idea(idea_kid=mail_task, pad=a1._project_handle)
 
     sufffact_x = sufffactunit_shop(need=ced_road, open=80, nigh=90)
     x_task_required = RequiredUnit(
         base=sufffact_x.need, sufffacts={sufffact_x.need: sufffact_x}
     )
-    mail_road = f"{a1._fix_handle},{mail_label}"
+    mail_road = f"{a1._project_handle},{mail_label}"
     a1.edit_idea_attr(road=mail_road, required=x_task_required)
 
     x_acptfact = acptfactunit_shop(base=ced_road, pick=ced_road, open=85, nigh=95)
@@ -275,13 +275,13 @@ def get_deal_x1_3levels_1required_1acptfacts() -> DealUnit:
     healer_text = "Kol"
     a1 = DealUnit(_healer=healer_text, _weight=10)
     shave_text = "shave"
-    shave_road = f"{a1._fix_handle},{shave_text}"
+    shave_road = f"{a1._project_handle},{shave_text}"
     idea_kid_shave = IdeaKid(_weight=30, _label=shave_text, promise=True)
-    a1.add_idea(idea_kid=idea_kid_shave, pad=a1._fix_handle)
+    a1.add_idea(idea_kid=idea_kid_shave, pad=a1._project_handle)
     week_text = "weekdays"
-    week_road = f"{a1._fix_handle},{week_text}"
+    week_road = f"{a1._project_handle},{week_text}"
     week_idea = IdeaKid(_weight=40, _label=week_text)
-    a1.add_idea(idea_kid=week_idea, pad=a1._fix_handle)
+    a1.add_idea(idea_kid=week_idea, pad=a1._project_handle)
 
     sun_text = "Sunday"
     sun_road = f"{week_road},{sun_text}"
@@ -335,12 +335,12 @@ def get_deal_irrational_example() -> DealUnit:
     a1.set_max_tree_traverse(3)
 
     egg_text = "egg first"
-    egg_road = f"{a1._fix_handle},{egg_text}"
-    a1.add_idea(idea_kid=IdeaKid(_label=egg_text), pad=a1._fix_handle)
+    egg_road = f"{a1._project_handle},{egg_text}"
+    a1.add_idea(idea_kid=IdeaKid(_label=egg_text), pad=a1._project_handle)
 
     chicken_text = "chicken first"
-    chicken_road = f"{a1._fix_handle},{chicken_text}"
-    a1.add_idea(idea_kid=IdeaKid(_label=chicken_text), pad=a1._fix_handle)
+    chicken_road = f"{a1._project_handle},{chicken_text}"
+    a1.add_idea(idea_kid=IdeaKid(_label=chicken_text), pad=a1._project_handle)
 
     # set egg promise is True when chicken first is False
     a1.edit_idea_attr(
@@ -365,16 +365,16 @@ def get_assignment_deal_example1():
     healer_text = "Neo"
     a1 = DealUnit(_healer=healer_text)
     casa_text = "casa"
-    casa_road = f"{a1._fix_handle},{casa_text}"
+    casa_road = f"{a1._project_handle},{casa_text}"
     floor_text = "mop floor"
     floor_road = f"{casa_road},{floor_text}"
     floor_idea = IdeaKid(_label=floor_text, promise=True)
     a1.add_idea(idea_kid=floor_idea, pad=casa_road)
 
     unim_text = "unimportant"
-    unim_road = f"{a1._fix_handle},{unim_text}"
+    unim_road = f"{a1._project_handle},{unim_text}"
     unim_idea = IdeaKid(_label=unim_text)
-    a1.add_idea(idea_kid=unim_idea, pad=a1._fix_handle)
+    a1.add_idea(idea_kid=unim_idea, pad=a1._project_handle)
 
     status_text = "cleaniness status"
     status_road = f"{casa_road},{status_text}"

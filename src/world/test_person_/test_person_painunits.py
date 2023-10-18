@@ -1,5 +1,5 @@
 from src.world.person import personunit_shop
-from src.world.pain import painunit_shop, healerlink_shop, fixlink_shop
+from src.world.pain import painunit_shop, healerlink_shop, projectlink_shop
 from src.world.examples.world_env_kit import (
     get_temp_env_dir,
     get_temp_env_handle,
@@ -67,11 +67,11 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectly(env_dir_setup_cle
     plan1_handle = "plan1"
     plan2_handle = "plan2"
     plan3_handle = "plan3"
-    fear_tim_healerlink.set_fixlink(fixlink_shop(plan1_handle, 7))
-    bore_sue_healerlink.set_fixlink(fixlink_shop(plan2_handle, 2))
-    bore_sue_healerlink.set_fixlink(fixlink_shop(plan3_handle, 23))
-    bore_tim_healerlink.set_fixlink(fixlink_shop(plan3_handle, 8))
-    rain_ray_healerlink.set_fixlink(fixlink_shop(plan3_handle, 11))
+    fear_tim_healerlink.set_projectlink(projectlink_shop(plan1_handle, 7))
+    bore_sue_healerlink.set_projectlink(projectlink_shop(plan2_handle, 2))
+    bore_sue_healerlink.set_projectlink(projectlink_shop(plan3_handle, 23))
+    bore_tim_healerlink.set_projectlink(projectlink_shop(plan3_handle, 8))
+    rain_ray_healerlink.set_projectlink(projectlink_shop(plan3_handle, 11))
 
     x_fear_painunit.set_healerlink(fear_tim_healerlink)
     x_bore_painunit.set_healerlink(bore_sue_healerlink)
@@ -107,20 +107,22 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectly(env_dir_setup_cle
     assert z_bore_sue_healerlink._person_importance > 0.139999
     assert z_rain_ray_healerlink._person_importance == 0.05
 
-    fear_tim_plan1_fixlink = z_fear_tim_healerlink.get_fixlink(plan1_handle)
-    bore_sue_plan2_fixlink = z_bore_sue_healerlink.get_fixlink(plan2_handle)
-    bore_sue_plan3_fixlink = z_bore_sue_healerlink.get_fixlink(plan3_handle)
-    bore_tim_plan3_fixlink = z_bore_tim_healerlink.get_fixlink(plan3_handle)
-    rain_ray_plan3_fixlink = z_rain_ray_healerlink.get_fixlink(plan3_handle)
+    fear_tim_plan1_projectlink = z_fear_tim_healerlink.get_projectlink(plan1_handle)
+    bore_sue_plan2_projectlink = z_bore_sue_healerlink.get_projectlink(plan2_handle)
+    bore_sue_plan3_projectlink = z_bore_sue_healerlink.get_projectlink(plan3_handle)
+    bore_tim_plan3_projectlink = z_bore_tim_healerlink.get_projectlink(plan3_handle)
+    rain_ray_plan3_projectlink = z_rain_ray_healerlink.get_projectlink(plan3_handle)
 
-    assert fear_tim_plan1_fixlink._person_importance == 0.6
-    assert bore_sue_plan2_fixlink._person_importance == 0.0112
-    assert bore_sue_plan3_fixlink._person_importance == 0.1288
-    assert bore_tim_plan3_fixlink._person_importance == 0.21
-    assert rain_ray_plan3_fixlink._person_importance == 0.05
+    assert fear_tim_plan1_projectlink._person_importance == 0.6
+    assert bore_sue_plan2_projectlink._person_importance == 0.0112
+    assert bore_sue_plan3_projectlink._person_importance == 0.1288
+    assert bore_tim_plan3_projectlink._person_importance == 0.21
+    assert rain_ray_plan3_projectlink._person_importance == 0.05
 
 
-def test_personunit_set_fixunits_weight_metrics_SetsCorrectly(env_dir_setup_cleanup):
+def test_personunit_set_projectunits_weight_metrics_SetsCorrectly(
+    env_dir_setup_cleanup,
+):
     # GIVEN
     xao_name = "Xao"
     xao_person_dir = f"{get_temp_env_dir()}/persons/{xao_name}"
@@ -146,11 +148,11 @@ def test_personunit_set_fixunits_weight_metrics_SetsCorrectly(env_dir_setup_clea
     plan2_handle = "plan2"
     plan3_handle = "plan3"
     plan4_handle = "plan4"
-    x_fear_tim_healerlink.set_fixlink(fixlink_shop(plan1_handle, 7))
-    x_bore_sue_healerlink.set_fixlink(fixlink_shop(plan2_handle, 2))
-    x_bore_sue_healerlink.set_fixlink(fixlink_shop(plan3_handle, 23))
-    x_bore_tim_healerlink.set_fixlink(fixlink_shop(plan3_handle, 8))
-    x_rain_ray_healerlink.set_fixlink(fixlink_shop(plan3_handle, 11))
+    x_fear_tim_healerlink.set_projectlink(projectlink_shop(plan1_handle, 7))
+    x_bore_sue_healerlink.set_projectlink(projectlink_shop(plan2_handle, 2))
+    x_bore_sue_healerlink.set_projectlink(projectlink_shop(plan3_handle, 23))
+    x_bore_tim_healerlink.set_projectlink(projectlink_shop(plan3_handle, 8))
+    x_rain_ray_healerlink.set_projectlink(projectlink_shop(plan3_handle, 11))
 
     x_fear_painunit.set_healerlink(x_fear_tim_healerlink)
     x_bore_painunit.set_healerlink(x_bore_sue_healerlink)
@@ -161,23 +163,23 @@ def test_personunit_set_fixunits_weight_metrics_SetsCorrectly(env_dir_setup_clea
     xao_personunit.set_painunit(x_bore_painunit)
     xao_personunit.set_painunit(x_rain_painunit)
 
-    xao_personunit.set_fixunit(plan1_handle)
-    xao_personunit.set_fixunit(plan2_handle)
-    xao_personunit.set_fixunit(plan3_handle)
-    xao_personunit.set_fixunit(plan4_handle)
+    xao_personunit.set_projectunit(plan1_handle)
+    xao_personunit.set_projectunit(plan2_handle)
+    xao_personunit.set_projectunit(plan3_handle)
+    xao_personunit.set_projectunit(plan4_handle)
 
-    plan1_fixunit = xao_personunit.get_fixunit(plan1_handle)
-    plan2_fixunit = xao_personunit.get_fixunit(plan2_handle)
-    plan3_fixunit = xao_personunit.get_fixunit(plan3_handle)
-    plan4_fixunit = xao_personunit.get_fixunit(plan4_handle)
+    plan1_projectunit = xao_personunit.get_projectunit(plan1_handle)
+    plan2_projectunit = xao_personunit.get_projectunit(plan2_handle)
+    plan3_projectunit = xao_personunit.get_projectunit(plan3_handle)
+    plan4_projectunit = xao_personunit.get_projectunit(plan4_handle)
 
-    assert plan1_fixunit._person_importance is None
-    assert plan2_fixunit._person_importance is None
-    assert plan3_fixunit._person_importance is None
-    assert plan4_fixunit._person_importance is None
+    assert plan1_projectunit._person_importance is None
+    assert plan2_projectunit._person_importance is None
+    assert plan3_projectunit._person_importance is None
+    assert plan4_projectunit._person_importance is None
 
     # WHEN
-    xao_personunit.set_fixunits_weight_metrics()
+    xao_personunit.set_projectunits_weight_metrics()
 
     # THEN
     # z_fear_painunit = xao_personunit.get_painunit(fear_genus)
@@ -187,18 +189,18 @@ def test_personunit_set_fixunits_weight_metrics_SetsCorrectly(env_dir_setup_clea
     # z_bore_tim_healerlink = z_bore_painunit.get_healerlink(tim_text)
     # z_bore_sue_healerlink = z_bore_painunit.get_healerlink(sue_text)
     # z_rain_ray_healerlink = z_rain_painunit.get_healerlink(ray_text)
-    # fear_tim_plan1_fixlink = z_fear_tim_healerlink.get_fixlink(plan1_handle)
-    # bore_sue_plan2_fixlink = z_bore_sue_healerlink.get_fixlink(plan2_handle)
-    # bore_sue_plan3_fixlink = z_bore_sue_healerlink.get_fixlink(plan3_handle)
-    # bore_tim_plan3_fixlink = z_bore_tim_healerlink.get_fixlink(plan3_handle)
-    # rain_ray_plan3_fixlink = z_rain_ray_healerlink.get_fixlink(plan3_handle)
-    # assert fear_tim_plan1_fixlink._person_importance == 0.6
-    # assert bore_sue_plan2_fixlink._person_importance == 0.0112
-    # assert bore_sue_plan3_fixlink._person_importance == 0.1288
-    # assert bore_tim_plan3_fixlink._person_importance == 0.21
-    # assert rain_ray_plan3_fixlink._person_importance == 0.05
+    # fear_tim_plan1_projectlink = z_fear_tim_healerlink.get_projectlink(plan1_handle)
+    # bore_sue_plan2_projectlink = z_bore_sue_healerlink.get_projectlink(plan2_handle)
+    # bore_sue_plan3_projectlink = z_bore_sue_healerlink.get_projectlink(plan3_handle)
+    # bore_tim_plan3_projectlink = z_bore_tim_healerlink.get_projectlink(plan3_handle)
+    # rain_ray_plan3_projectlink = z_rain_ray_healerlink.get_projectlink(plan3_handle)
+    # assert fear_tim_plan1_projectlink._person_importance == 0.6
+    # assert bore_sue_plan2_projectlink._person_importance == 0.0112
+    # assert bore_sue_plan3_projectlink._person_importance == 0.1288
+    # assert bore_tim_plan3_projectlink._person_importance == 0.21
+    # assert rain_ray_plan3_projectlink._person_importance == 0.05
 
-    assert plan1_fixunit._person_importance == 0.6
-    assert plan2_fixunit._person_importance == 0.0112
-    assert plan3_fixunit._person_importance == 0.3888
-    assert plan4_fixunit._person_importance == 0
+    assert plan1_projectunit._person_importance == 0.6
+    assert plan2_projectunit._person_importance == 0.0112
+    assert plan3_projectunit._person_importance == 0.3888
+    assert plan4_projectunit._person_importance == 0

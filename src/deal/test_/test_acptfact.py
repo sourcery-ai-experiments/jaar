@@ -6,7 +6,7 @@ from src.deal.required_idea import (
     AcptFactCore,
     acptfactunit_shop as c_acptfactunit,
 )
-from src.deal.road import get_default_fix_root_label as root_label
+from src.deal.road import get_default_project_root_label as root_label
 from pytest import raises as pytest_raises
 
 

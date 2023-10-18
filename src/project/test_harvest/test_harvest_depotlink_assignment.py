@@ -1,27 +1,27 @@
-from src.fix.collect import collectunit_shop
-from src.fix.examples.example_collects import (
+from src.project.harvest import harvestunit_shop
+from src.project.examples.example_harvests import (
     get_deal_assignment_laundry_example1,
 )
-from src.fix.examples.collect_env_kit import (
-    collect_dir_setup_cleanup,
-    get_temp_collectunit_dir,
-    get_temp_fix_handle,
+from src.project.examples.harvest_env_kit import (
+    harvest_dir_setup_cleanup,
+    get_temp_harvestunit_dir,
+    get_temp_project_handle,
 )
 
 
 def test_healer_save_deal_to_depot_assignment_link_CorrectlyCreatesAssignmentFile(
-    collect_dir_setup_cleanup,
+    harvest_dir_setup_cleanup,
 ):
     # GIVEN
     america_cx = get_deal_assignment_laundry_example1()
-    america_cx.set_fix_handle(get_temp_fix_handle())
+    america_cx.set_project_handle(get_temp_project_handle())
     joachim_text = "Joachim"
-    joachim_ux = collectunit_shop(
-        joachim_text, get_temp_collectunit_dir(), get_temp_fix_handle()
+    joachim_ux = harvestunit_shop(
+        joachim_text, get_temp_harvestunit_dir(), get_temp_project_handle()
     )
     joachim_ux.create_core_dir_and_files()
     print(f"{america_cx._idearoot._label=}")
-    assert america_cx._idearoot._label == get_temp_fix_handle()
+    assert america_cx._idearoot._label == get_temp_project_handle()
     assert america_cx._healer == "America"
     print(f"{america_cx._healer} {america_cx._idearoot._label=}")
 
@@ -35,7 +35,7 @@ def test_healer_save_deal_to_depot_assignment_link_CorrectlyCreatesAssignmentFil
     assert len(output_cx._idea_dict.keys()) == 9
 
     casa_text = "casa"
-    casa_road = f"{get_temp_fix_handle()},{casa_text}"
+    casa_road = f"{get_temp_project_handle()},{casa_text}"
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
     b_full_text = "full"

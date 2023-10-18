@@ -1,20 +1,22 @@
 from src.deal.deal import DealUnit, IdeaKid, groupunit_shop, partylink_shop
-from src.fix.fix import fixunit_shop
-from src.fix.examples.fix_env_kit import (
+from src.project.project import projectunit_shop
+from src.project.examples.project_env_kit import (
     get_temp_env_handle,
-    get_test_fixs_dir,
+    get_test_projects_dir,
     env_dir_setup_cleanup,
 )
-from src.fix.y_func import get_single_result_back
-from src.fix.bank_sqlstr import (
+from src.project.y_func import get_single_result_back
+from src.project.bank_sqlstr import (
     get_db_tables,
     get_table_count_sqlstr,
 )
 
 
-def test_fix_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
-    # GIVEN create fix
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+def test_project_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
+    # GIVEN create project
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
 
     # WHEN
     sx.create_dirs_if_null(in_memory_bank=True)
@@ -50,11 +52,13 @@ def test_fix_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_cleanup)
     assert len(tables_dict) == len(curr_tables)
 
 
-def test_fix_refresh_bank_metrics_CorrectlyDeletesOldBankInMemory(
+def test_project_refresh_bank_metrics_CorrectlyDeletesOldBankInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -74,11 +78,13 @@ def test_fix_refresh_bank_metrics_CorrectlyDeletesOldBankInMemory(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 1
 
 
-def test_fix_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
+def test_project_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=False)
 
     bob_text = "bob"
@@ -98,11 +104,13 @@ def test_fix_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 1
 
 
-def test_fix_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
+def test_project_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example fix with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+    # GIVEN Create example project with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -144,11 +152,13 @@ def test_fix_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 12
 
 
-def test_fix_refresh_bank_metrics_CorrectlyPopulatesDealTable01(
+def test_project_refresh_bank_metrics_CorrectlyPopulatesDealTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example fix with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+    # GIVEN Create example project with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -171,11 +181,13 @@ def test_fix_refresh_bank_metrics_CorrectlyPopulatesDealTable01(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_deals) == 4
 
 
-def test_fix_refresh_bank_metrics_CorrectlyPopulatesDealTable01(
+def test_project_refresh_bank_metrics_CorrectlyPopulatesDealTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example fix with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+    # GIVEN Create example project with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -198,11 +210,13 @@ def test_fix_refresh_bank_metrics_CorrectlyPopulatesDealTable01(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_deals) == 4
 
 
-def test_fix_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
+def test_project_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -226,20 +240,22 @@ def test_fix_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr) == 3
 
 
-def test_fix_set_deal_bank_attrs_CorrectlyPopulatesDeal_Groupunit_Partylinks(
+def test_project_set_deal_bank_attrs_CorrectlyPopulatesDeal_Groupunit_Partylinks(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     # create 4 deals, 1 with group "swimming expert" linked to 1 party
     # two others have idea f"{root_label()},sports,swimming"
     # run set_bank_metrics
     # assert
-    # _partylinks_set_by_fix_road
+    # _partylinks_set_by_project_road
     # assert group "swimming expert" has 1 party
-    # change groupunit "swimming expert" _partylinks_set_by_fix_road ==  f"{root_label()}sports,swimmer"
+    # change groupunit "swimming expert" _partylinks_set_by_project_road ==  f"{root_label()}sports,swimmer"
     # run set_bank_metrics
     # assert group "swimming expert" has 2 different party
 
@@ -281,9 +297,9 @@ def test_fix_set_deal_bank_attrs_CorrectlyPopulatesDeal_Groupunit_Partylinks(
     assert len(e1_sal_deal._groups.get(swim_group_text)._partys) == 1
 
     # WHEN
-    # change groupunit "swimming expert" _partylinks_set_by_fix_road ==  f"{root_label()},sports,swimmer"
+    # change groupunit "swimming expert" _partylinks_set_by_project_road ==  f"{root_label()},sports,swimmer"
     sal_swim_road = f"{sal_sports_road},{swim_text}"
-    swim_group_unit.set_attr(_partylinks_set_by_fix_road=sal_swim_road)
+    swim_group_unit.set_attr(_partylinks_set_by_project_road=sal_swim_road)
     sal_deal.set_groupunit(groupunit=swim_group_unit)
     sx.save_public_deal(deal_x=sal_deal)
     sx.set_deal_bank_attrs(deal_healer=sal_text)

@@ -22,17 +22,17 @@ from os import path as os_path
 from json import loads as json_loads
 
 
-class InvalidCollectException(Exception):
+class InvalidharvestException(Exception):
     pass
 
 
 @dataclass
-class CollectAdmin:
-    _collect_title: str
+class harvestAdmin:
+    _harvest_title: str
     _env_dir: str
-    _fix_handle: str
-    _collectunit_dir: str = None
-    _collectunits_dir: str = None
+    _project_handle: str
+    _harvestunit_dir: str = None
+    _harvestunits_dir: str = None
     _seed_file_title: str = None
     _seed_file_path: str = None
     _deal_output_file_title: str = None
@@ -44,31 +44,31 @@ class CollectAdmin:
     _deals_digest_dir: str = None
 
     def set_dirs(self):
-        env_collectunits_folder = "collectunits"
+        env_harvestunits_folder = "harvestunits"
         deals_str = "deals"
-        self._collectunits_dir = f"{self._env_dir}/{env_collectunits_folder}"
-        self._collectunit_dir = f"{self._collectunits_dir}/{self._collect_title}"
+        self._harvestunits_dir = f"{self._env_dir}/{env_harvestunits_folder}"
+        self._harvestunit_dir = f"{self._harvestunits_dir}/{self._harvest_title}"
         self._seed_file_title = "seed_deal.json"
-        self._seed_file_path = f"{self._collectunit_dir}/{self._seed_file_title}"
+        self._seed_file_path = f"{self._harvestunit_dir}/{self._seed_file_title}"
         self._deal_output_file_title = "output_deal.json"
         self._deal_output_file_path = (
-            f"{self._collectunit_dir}/{self._deal_output_file_title}"
+            f"{self._harvestunit_dir}/{self._deal_output_file_title}"
         )
-        self._public_file_title = f"{self._collect_title}.json"
+        self._public_file_title = f"{self._harvest_title}.json"
         self._deals_public_dir = f"{self._env_dir}/{deals_str}"
-        self._deals_depot_dir = f"{self._collectunit_dir}/{deals_str}"
-        self._deals_ignore_dir = f"{self._collectunit_dir}/ignores"
-        self._deals_digest_dir = f"{self._collectunit_dir}/digests"
+        self._deals_depot_dir = f"{self._harvestunit_dir}/{deals_str}"
+        self._deals_ignore_dir = f"{self._harvestunit_dir}/ignores"
+        self._deals_digest_dir = f"{self._harvestunit_dir}/digests"
 
-    def set_collect_title(self, new_title: str):
-        old_collectunit_dir = self._collectunit_dir
-        self._collect_title = new_title
+    def set_harvest_title(self, new_title: str):
+        old_harvestunit_dir = self._harvestunit_dir
+        self._harvest_title = new_title
         self.set_dirs()
 
-        rename_dir(src=old_collectunit_dir, dst=self._collectunit_dir)
+        rename_dir(src=old_harvestunit_dir, dst=self._harvestunit_dir)
 
     def create_core_dir_and_files(self, seed_deal: DealUnit = None):
-        single_dir_create_if_null(x_path=self._collectunit_dir)
+        single_dir_create_if_null(x_path=self._harvestunit_dir)
         single_dir_create_if_null(x_path=self._deals_public_dir)
         single_dir_create_if_null(x_path=self._deals_depot_dir)
         single_dir_create_if_null(x_path=self._deals_digest_dir)
@@ -115,8 +115,8 @@ class CollectAdmin:
         self._save_deal_to_path(deal_x, dest_dir, file_title)
 
     def save_seed_deal(self, deal_x: DealUnit):
-        deal_x.set_healer(self._collect_title)
-        self._save_deal_to_path(deal_x, self._collectunit_dir, self._seed_file_title)
+        deal_x.set_healer(self._harvest_title)
+        self._save_deal_to_path(deal_x, self._harvestunit_dir, self._seed_file_title)
 
     def save_deal_to_depot(self, deal_x: DealUnit):
         dest_dir = self._deals_depot_dir
@@ -129,7 +129,7 @@ class CollectAdmin:
             primary_deal=seed_deal_x,
             meldees_dir=self._deals_digest_dir,
         )
-        dest_dir = self._collectunit_dir
+        dest_dir = self._harvestunit_dir
         file_title = self._deal_output_file_title
         self._save_deal_to_path(deal_x, dest_dir, file_title)
 
@@ -153,23 +153,23 @@ class CollectAdmin:
         x_deal = None
         if not self._seed_deal_exists():
             self.save_seed_deal(self._get_empty_seed_deal())
-        ct = x_func_open_file(self._collectunit_dir, self._seed_file_title)
+        ct = x_func_open_file(self._harvestunit_dir, self._seed_file_title)
         x_deal = dealunit_get_from_json(x_deal_json=ct)
         x_deal.set_deal_metrics()
         return x_deal
 
     def open_output_deal(self) -> DealUnit:
         x_deal_json = x_func_open_file(
-            self._collectunit_dir, self._deal_output_file_title
+            self._harvestunit_dir, self._deal_output_file_title
         )
         x_deal = dealunit_get_from_json(x_deal_json)
         x_deal.set_deal_metrics()
         return x_deal
 
     def _get_empty_seed_deal(self):
-        x_deal = DealUnit(_healer=self._collect_title, _weight=0)
-        x_deal.add_partyunit(title=self._collect_title)
-        x_deal.set_fix_handle(self._fix_handle)
+        x_deal = DealUnit(_healer=self._harvest_title, _weight=0)
+        x_deal.add_partyunit(title=self._harvest_title)
+        x_deal.set_project_handle(self._project_handle)
         return x_deal
 
     def erase_depot_deal(self, healer):
@@ -179,21 +179,21 @@ class CollectAdmin:
         x_func_delete_dir(f"{self._deals_digest_dir}/{healer}.json")
 
     def erase_seed_deal_file(self):
-        x_func_delete_dir(dir=f"{self._collectunit_dir}/{self._seed_file_title}")
+        x_func_delete_dir(dir=f"{self._harvestunit_dir}/{self._seed_file_title}")
 
     def raise_exception_if_no_file(self, dir_type: str, healer: str):
         x_deal_file_title = f"{healer}.json"
         if dir_type == "depot":
             x_deal_file_path = f"{self._deals_depot_dir}/{x_deal_file_title}"
         if not os_path.exists(x_deal_file_path):
-            raise InvalidCollectException(
-                f"Healer {self._collect_title} cannot find deal {healer} in {x_deal_file_path}"
+            raise InvalidharvestException(
+                f"Healer {self._harvest_title} cannot find deal {healer} in {x_deal_file_path}"
             )
 
     def _seed_deal_exists(self):
         bool_x = None
         try:
-            x_func_open_file(self._collectunit_dir, self._seed_file_title)
+            x_func_open_file(self._harvestunit_dir, self._seed_file_title)
             bool_x = True
         except Exception:
             bool_x = False
@@ -207,24 +207,26 @@ class CollectAdmin:
         self.save_deal_to_public(self.get_remelded_output_deal())
 
 
-def collectadmin_shop(
-    _collect_title: str, _env_dir: str, _fix_handle: str
-) -> CollectAdmin:
-    uax = CollectAdmin(
-        _collect_title=_collect_title, _env_dir=_env_dir, _fix_handle=_fix_handle
+def harvestadmin_shop(
+    _harvest_title: str, _env_dir: str, _project_handle: str
+) -> harvestAdmin:
+    uax = harvestAdmin(
+        _harvest_title=_harvest_title,
+        _env_dir=_env_dir,
+        _project_handle=_project_handle,
     )
     uax.set_dirs()
     return uax
 
 
 @dataclass
-class CollectUnit:
-    _admin: CollectAdmin = None
+class harvestUnit:
+    _admin: harvestAdmin = None
     _seed: DealUnit = None
 
     def refresh_depot_deals(self):
         for party_x in self._seed._partys.values():
-            if party_x.title != self._admin._collect_title:
+            if party_x.title != self._admin._harvest_title:
                 party_deal = dealunit_get_from_json(
                     x_deal_json=self._admin.open_public_deal(party_x.title)
                 )
@@ -273,16 +275,16 @@ class CollectUnit:
             self._admin.save_deal_to_digest(x_deal)
         elif link_type == "ignore":
             new_x_deal = DealUnit(_healer=outer_healer)
-            new_x_deal.set_fix_handle(self._admin._fix_handle)
+            new_x_deal.set_project_handle(self._admin._project_handle)
             self.set_ignore_deal_file(new_x_deal, new_x_deal._healer)
 
     def _set_assignment_depotlink(self, outer_healer):
         src_deal = self._admin.open_depot_deal(outer_healer)
         src_deal.set_deal_metrics()
-        empty_deal = DealUnit(_healer=self._admin._collect_title)
-        empty_deal.set_fix_handle(self._admin._fix_handle)
+        empty_deal = DealUnit(_healer=self._admin._harvest_title)
+        empty_deal.set_project_handle(self._admin._project_handle)
         assign_deal = src_deal.get_assignment(
-            empty_deal, self.get_seed()._partys, self._admin._collect_title
+            empty_deal, self.get_seed()._partys, self._admin._harvest_title
         )
         assign_deal.set_deal_metrics()
         self._admin.save_deal_to_digest(assign_deal, src_deal._healer)
@@ -335,21 +337,23 @@ class CollectUnit:
         self._admin.save_deal_to_digest(dealunit, src_deal_healer)
 
     # housekeeping
-    def set_env_dir(self, env_dir: str, collect_title: str, fix_handle: str):
-        self._admin = collectadmin_shop(
-            _collect_title=collect_title, _env_dir=env_dir, _fix_handle=fix_handle
+    def set_env_dir(self, env_dir: str, harvest_title: str, project_handle: str):
+        self._admin = harvestadmin_shop(
+            _harvest_title=harvest_title,
+            _env_dir=env_dir,
+            _project_handle=project_handle,
         )
 
     def create_core_dir_and_files(self, seed_deal: DealUnit = None):
         self._admin.create_core_dir_and_files(seed_deal)
 
 
-def collectunit_shop(
-    title: str, env_dir: str, fix_handle: str, _auto_output_to_public: bool = None
-) -> CollectUnit:
-    x_collect = CollectUnit()
-    x_collect.set_env_dir(env_dir, title, fix_handle=fix_handle)
-    x_collect.get_seed()
-    x_collect._seed._set_auto_output_to_public(_auto_output_to_public)
-    x_collect.set_seed()
-    return x_collect
+def harvestunit_shop(
+    title: str, env_dir: str, project_handle: str, _auto_output_to_public: bool = None
+) -> harvestUnit:
+    x_harvest = harvestUnit()
+    x_harvest.set_env_dir(env_dir, title, project_handle=project_handle)
+    x_harvest.get_seed()
+    x_harvest._seed._set_auto_output_to_public(_auto_output_to_public)
+    x_harvest.set_seed()
+    return x_harvest

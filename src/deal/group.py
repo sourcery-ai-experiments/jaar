@@ -36,15 +36,15 @@ class GroupUnit(GroupCore):
     _deal_debt: float = None
     _deal_agenda_credit: float = None
     _deal_agenda_debt: float = None
-    _partylinks_set_by_fix_road: Road = None
+    _partylinks_set_by_project_road: Road = None
 
     def set_brand(self, brand: GroupBrand = None):
         if brand != None:
             self.brand = brand
 
-    def set_attr(self, _partylinks_set_by_fix_road: Road):
-        if _partylinks_set_by_fix_road != None:
-            self._partylinks_set_by_fix_road = _partylinks_set_by_fix_road
+    def set_attr(self, _partylinks_set_by_project_road: Road):
+        if _partylinks_set_by_project_road != None:
+            self._partylinks_set_by_project_road = _partylinks_set_by_project_road
 
     def get_dict(self):
         return {
@@ -53,7 +53,7 @@ class GroupUnit(GroupCore):
             "single_party_id": self.single_party_id,
             "_single_party": self._single_party,
             "_partys": self.get_partys_dict(),
-            "_partylinks_set_by_fix_road": self._partylinks_set_by_fix_road,
+            "_partylinks_set_by_project_road": self._partylinks_set_by_project_road,
         }
 
     def set_empty_deal_credit_debt_to_zero(self):
@@ -158,11 +158,11 @@ def get_from_dict(x_dict: dict):
 
     for groupunits_dict in x_dict.values():
         try:
-            ex_partylinks_set_by_fix_road = groupunits_dict[
-                "_partylinks_set_by_fix_road"
+            ex_partylinks_set_by_project_road = groupunits_dict[
+                "_partylinks_set_by_project_road"
             ]
         except KeyError:
-            ex_partylinks_set_by_fix_road = None
+            ex_partylinks_set_by_project_road = None
 
         x_group = groupunit_shop(
             brand=groupunits_dict["brand"],
@@ -170,7 +170,7 @@ def get_from_dict(x_dict: dict):
             _single_party=groupunits_dict["_single_party"],
             single_party_id=groupunits_dict["single_party_id"],
             _partys=partylinks_get_from_dict(x_dict=groupunits_dict["_partys"]),
-            _partylinks_set_by_fix_road=ex_partylinks_set_by_fix_road,
+            _partylinks_set_by_project_road=ex_partylinks_set_by_project_road,
         )
         groupunits[x_group.brand] = x_group
     return groupunits
@@ -186,11 +186,11 @@ def groupunit_shop(
     _deal_debt: float = None,
     _deal_agenda_credit: float = None,
     _deal_agenda_debt: float = None,
-    _partylinks_set_by_fix_road: Road = None,
+    _partylinks_set_by_project_road: Road = None,
 ) -> GroupUnit:
-    if _single_party and _partylinks_set_by_fix_road != None:
+    if _single_party and _partylinks_set_by_project_road != None:
         raise InvalidGroupException(
-            f"_partylinks_set_by_fix_road cannot be '{_partylinks_set_by_fix_road}' for a single_party GroupUnit. It must have no value."
+            f"_partylinks_set_by_project_road cannot be '{_partylinks_set_by_project_road}' for a single_party GroupUnit. It must have no value."
         )
 
     if _partys is None:
@@ -207,7 +207,7 @@ def groupunit_shop(
         _deal_debt=_deal_debt,
         _deal_agenda_credit=_deal_agenda_credit,
         _deal_agenda_debt=_deal_agenda_debt,
-        _partylinks_set_by_fix_road=_partylinks_set_by_fix_road,
+        _partylinks_set_by_project_road=_partylinks_set_by_project_road,
     )
 
 

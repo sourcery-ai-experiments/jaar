@@ -3,32 +3,32 @@ from src.deal.x_func import (
     count_files as x_func_count_files,
     open_file as x_func_open_file,
 )
-from src.fix.collect import collectunit_shop
-from src.fix.examples.example_collects import (
+from src.project.harvest import harvestunit_shop
+from src.project.examples.example_harvests import (
     get_2node_deal,
     get_deal_2CleanNodesRandomWeights as get_cal2nodes,
     get_deal_3CleanNodesRandomWeights as get_cal3nodes,
     get_deal_assignment_laundry_example1 as get_america_assign_ex,
 )
-from src.fix.examples.collect_env_kit import (
-    collect_dir_setup_cleanup,
-    get_temp_collectunit_dir,
-    get_temp_fix_handle,
+from src.project.examples.harvest_env_kit import (
+    harvest_dir_setup_cleanup,
+    get_temp_harvestunit_dir,
+    get_temp_project_handle,
     create_deal_file,
 )
-from src.fix.examples.fix_env_kit import get_temp_env_handle
-from src.fix.fix import fixunit_shop
+from src.project.examples.project_env_kit import get_temp_env_handle
+from src.project.project import projectunit_shop
 from os import path as os_path
 from pytest import raises as pytest_raises
 
 
-def test_collectunit_set_depotlink_RaisesErrorWhenDealDoesNotExist(
-    collect_dir_setup_cleanup,
+def test_harvestunit_set_depotlink_RaisesErrorWhenDealDoesNotExist(
+    harvest_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
-    env_dir = get_temp_collectunit_dir()
-    sue_cx = collectunit_shop(sue_text, env_dir, get_temp_fix_handle())
+    env_dir = get_temp_harvestunit_dir()
+    sue_cx = harvestunit_shop(sue_text, env_dir, get_temp_project_handle())
     sue_cx.set_seed_if_empty()
     tim_text = "Tim"
     assert list(sue_cx._seed._partys.keys()) == [sue_text]
@@ -44,11 +44,11 @@ def test_collectunit_set_depotlink_RaisesErrorWhenDealDoesNotExist(
     )
 
 
-def test_collectunit_set_depotlink_CorrectlySetsseedPartys(collect_dir_setup_cleanup):
+def test_harvestunit_set_depotlink_CorrectlySetsseedPartys(harvest_dir_setup_cleanup):
     # GIVEN
     yao_text = "yao"
-    env_dir = get_temp_collectunit_dir()
-    yao_ux = collectunit_shop(yao_text, env_dir, get_temp_fix_handle())
+    env_dir = get_temp_harvestunit_dir()
+    yao_ux = harvestunit_shop(yao_text, env_dir, get_temp_project_handle())
     yao_ux.set_seed_if_empty()
     sue_text = "sue"
     create_deal_file(yao_ux._admin._deals_depot_dir, sue_text)
@@ -62,13 +62,13 @@ def test_collectunit_set_depotlink_CorrectlySetsseedPartys(collect_dir_setup_cle
     assert yao_ux._seed.get_party(sue_text).depotlink_type is None
 
 
-def test_collectunit_set_depotlink_CorrectlySetsAssignment(collect_dir_setup_cleanup):
+def test_harvestunit_set_depotlink_CorrectlySetsAssignment(harvest_dir_setup_cleanup):
     # GIVEN
     america_cx = get_america_assign_ex()
     print(f"{len(america_cx._idea_dict)=}")
     joachim_text = "Joachim"
-    joachim_ux = collectunit_shop(
-        joachim_text, get_temp_collectunit_dir(), get_temp_fix_handle()
+    joachim_ux = harvestunit_shop(
+        joachim_text, get_temp_harvestunit_dir(), get_temp_project_handle()
     )
     joachim_ux.create_core_dir_and_files()
     joachim_ux.set_seed_if_empty()
@@ -102,11 +102,11 @@ def test_collectunit_set_depotlink_CorrectlySetsAssignment(collect_dir_setup_cle
     assert digest_cx._healer == joachim_text
 
 
-def test_collectunit_del_depot_deal_CorrectlyDeletesObj(collect_dir_setup_cleanup):
+def test_harvestunit_del_depot_deal_CorrectlyDeletesObj(harvest_dir_setup_cleanup):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_collectunit_dir()
-    bob_cx = collectunit_shop(bob_text, env_dir, get_temp_fix_handle())
+    env_dir = get_temp_harvestunit_dir()
+    bob_cx = harvestunit_shop(bob_text, env_dir, get_temp_project_handle())
     yao_text = "Yao"
     create_deal_file(bob_cx._admin._deals_depot_dir, yao_text)
     assignment_text = "assignment"
@@ -123,13 +123,13 @@ def test_collectunit_del_depot_deal_CorrectlyDeletesObj(collect_dir_setup_cleanu
     assert bob_cx._seed.get_party(yao_text).depotlink_type is None
 
 
-def test_collectunit_del_depot_deal_CorrectlyDeletesBlindTrustFile(
-    collect_dir_setup_cleanup,
+def test_harvestunit_del_depot_deal_CorrectlyDeletesBlindTrustFile(
+    harvest_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_collectunit_dir()
-    bob_cx = collectunit_shop(bob_text, env_dir, get_temp_fix_handle())
+    env_dir = get_temp_harvestunit_dir()
+    bob_cx = harvestunit_shop(bob_text, env_dir, get_temp_project_handle())
     lai_text = "Lai"
     create_deal_file(bob_cx._admin._deals_depot_dir, lai_text)
     bob_cx.set_seed_if_empty()
@@ -145,13 +145,13 @@ def test_collectunit_del_depot_deal_CorrectlyDeletesBlindTrustFile(
     assert x_func_count_files(dir_path=bob_cx._admin._deals_digest_dir) == 0
 
 
-def test_collectunit_set_depot_deal_SavesFileCorrectly(
-    collect_dir_setup_cleanup,
+def test_harvestunit_set_depot_deal_SavesFileCorrectly(
+    harvest_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_collectunit_dir()
-    bob_cx = collectunit_shop(bob_text, env_dir, get_temp_fix_handle())
+    env_dir = get_temp_harvestunit_dir()
+    bob_cx = harvestunit_shop(bob_text, env_dir, get_temp_project_handle())
     cal1 = get_2node_deal()
     assert (
         x_func_count_files(bob_cx._admin._deals_depot_dir) is None
@@ -168,13 +168,13 @@ def test_collectunit_set_depot_deal_SavesFileCorrectly(
     assert x_func_count_files(bob_cx._admin._deals_depot_dir) == 1
 
 
-def test_collectunit_delete_ignore_depotlink_CorrectlyDeletesObj(
-    collect_dir_setup_cleanup,
+def test_harvestunit_delete_ignore_depotlink_CorrectlyDeletesObj(
+    harvest_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_collectunit_dir()
-    bob_cx = collectunit_shop(bob_text, env_dir, get_temp_fix_handle())
+    env_dir = get_temp_harvestunit_dir()
+    bob_cx = harvestunit_shop(bob_text, env_dir, get_temp_project_handle())
     yao_text = "Yao"
     create_deal_file(bob_cx._admin._deals_depot_dir, yao_text)
     assignment_text = "assignment"
@@ -191,13 +191,13 @@ def test_collectunit_delete_ignore_depotlink_CorrectlyDeletesObj(
     assert bob_cx._seed.get_party(yao_text).depotlink_type is None
 
 
-def test_collectunit_del_depot_deal_CorrectlyDoesNotDeletesIgnoreFile(
-    collect_dir_setup_cleanup,
+def test_harvestunit_del_depot_deal_CorrectlyDoesNotDeletesIgnoreFile(
+    harvest_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "bob"
-    env_dir = get_temp_collectunit_dir()
-    bob_cx = collectunit_shop(bob_text, env_dir, get_temp_fix_handle())
+    env_dir = get_temp_harvestunit_dir()
+    bob_cx = harvestunit_shop(bob_text, env_dir, get_temp_project_handle())
     zia_text = "Zia"
     create_deal_file(bob_cx._admin._deals_depot_dir, zia_text)
     bob_cx.set_seed_if_empty()
@@ -215,13 +215,13 @@ def test_collectunit_del_depot_deal_CorrectlyDoesNotDeletesIgnoreFile(
     assert x_func_count_files(dir_path=bob_cx._admin._deals_ignore_dir) == 1
 
 
-def test_collectunit_set_ignore_deal_file_CorrectlyUpdatesIgnoreFile(
-    collect_dir_setup_cleanup,
+def test_harvestunit_set_ignore_deal_file_CorrectlyUpdatesIgnoreFile(
+    harvest_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_collectunit_dir()
-    bob_ux = collectunit_shop(bob_text, env_dir, get_temp_fix_handle())
+    env_dir = get_temp_harvestunit_dir()
+    bob_ux = harvestunit_shop(bob_text, env_dir, get_temp_project_handle())
     zia_text = "Zia"
     create_deal_file(bob_ux._admin._deals_depot_dir, zia_text)
     bob_ux.set_seed_if_empty()
@@ -242,16 +242,16 @@ def test_collectunit_set_ignore_deal_file_CorrectlyUpdatesIgnoreFile(
     assert x_func_count_files(dir_path=bob_ux._admin._deals_ignore_dir) == 1
 
 
-def test_collectunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
-    collect_dir_setup_cleanup,
+def test_harvestunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
+    harvest_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_collectunit_dir()
-    fix_handle = get_temp_env_handle()
-    sx = fixunit_shop(handle=fix_handle, fixs_dir=env_dir)
+    env_dir = get_temp_harvestunit_dir()
+    project_handle = get_temp_env_handle()
+    sx = projectunit_shop(handle=project_handle, projects_dir=env_dir)
     yao_text = "Yao"
-    sx.create_new_collectunit(collect_title=yao_text)
-    yao_deal = sx.get_collectunit(title=yao_text)
+    sx.create_new_harvestunit(harvest_title=yao_text)
+    yao_deal = sx.get_harvestunit(title=yao_text)
     assert len(yao_deal._admin.get_remelded_output_deal().get_idea_list()) == 1
 
     ernie_text = "ernie"

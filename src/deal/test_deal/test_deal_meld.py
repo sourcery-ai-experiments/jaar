@@ -104,7 +104,7 @@ def test_deal_idearoot_meld_IdeaRootAttrCorrectlyMelded():
         x_deal1.meld(x_deal2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea=None,{x_deal1._fix_handle} _uid:1 with None,{x_deal2._fix_handle} _uid:4"
+        == f"Meld fail idea=None,{x_deal1._project_handle} _uid:1 with None,{x_deal2._project_handle} _uid:4"
     )
 
 
@@ -114,16 +114,16 @@ def test_deal_idearoot_meld_Add4IdeasScenario():
     x_deal1 = DealUnit(_healer=spirit_text)
 
     tech_text = "tech"
-    tech_road = f"{x_deal1._fix_handle},{tech_text}"
+    tech_road = f"{x_deal1._project_handle},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{x_deal1._fix_handle},{tech_text},{bowl_text}"
+    bowl_road = f"{x_deal1._project_handle},{tech_text},{bowl_text}"
     swim_text = "swim"
-    swim_road = f"{x_deal1._fix_handle},{swim_text}"
+    swim_road = f"{x_deal1._project_handle},{swim_text}"
     free_text = "freestyle"
-    free_road = f"{x_deal1._fix_handle},{swim_text},{free_text}"
+    free_road = f"{x_deal1._project_handle},{swim_text},{free_text}"
 
     x_deal2 = DealUnit(_healer=spirit_text)
-    x_deal2.add_idea(pad=x_deal2._fix_handle, idea_kid=IdeaKid(_label=tech_text))
+    x_deal2.add_idea(pad=x_deal2._project_handle, idea_kid=IdeaKid(_label=tech_text))
     x_deal2.add_idea(pad=tech_road, idea_kid=IdeaKid(_label=bowl_text))
     x_deal2.add_idea(pad=swim_road, idea_kid=IdeaKid(_label=free_text))
 
@@ -143,15 +143,15 @@ def test_deal_idearoot_meld_2SameIdeasScenario():
     healer_text = "Yoa"
     x_deal1 = DealUnit(_healer=healer_text)
     tech_text = "tech"
-    tech_road = f"{x_deal1._fix_handle},{tech_text}"
+    tech_road = f"{x_deal1._project_handle},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{x_deal1._fix_handle},{tech_text},{bowl_text}"
+    bowl_road = f"{x_deal1._project_handle},{tech_text},{bowl_text}"
 
-    x_deal1.add_idea(pad=x_deal1._fix_handle, idea_kid=IdeaKid(_label=tech_text))
+    x_deal1.add_idea(pad=x_deal1._project_handle, idea_kid=IdeaKid(_label=tech_text))
     x_deal1.add_idea(pad=tech_road, idea_kid=IdeaKid(_label=bowl_text))
 
     x_deal2 = DealUnit(_healer=healer_text)
-    x_deal2.add_idea(pad=x_deal2._fix_handle, idea_kid=IdeaKid(_label=tech_text))
+    x_deal2.add_idea(pad=x_deal2._project_handle, idea_kid=IdeaKid(_label=tech_text))
     x_deal2.add_idea(pad=tech_road, idea_kid=IdeaKid(_label=bowl_text))
 
     assert x_deal1.get_idea_kid(road=bowl_road)._weight == 1
@@ -167,16 +167,16 @@ def test_deal_acptfactunits_meld_BaseScenarioWorks():
     # GIVEN
     x_deal1 = DealUnit(_healer="test7")
     tech_text = "tech"
-    tech_road = f"{x_deal1._fix_handle},{tech_text}"
+    tech_road = f"{x_deal1._project_handle},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{x_deal1._fix_handle},{tech_text},{bowl_text}"
+    bowl_road = f"{x_deal1._project_handle},{tech_text},{bowl_text}"
 
-    x_deal1.add_idea(pad=x_deal1._fix_handle, idea_kid=IdeaKid(_label=tech_text))
+    x_deal1.add_idea(pad=x_deal1._project_handle, idea_kid=IdeaKid(_label=tech_text))
     x_deal1.add_idea(pad=tech_road, idea_kid=IdeaKid(_label=bowl_text))
     x_deal1.set_acptfact(base=tech_road, pick=bowl_road)
 
     x_deal2 = DealUnit(_healer="test7")
-    x_deal2.add_idea(pad=x_deal2._fix_handle, idea_kid=IdeaKid(_label=tech_text))
+    x_deal2.add_idea(pad=x_deal2._project_handle, idea_kid=IdeaKid(_label=tech_text))
     x_deal2.add_idea(pad=tech_road, idea_kid=IdeaKid(_label=bowl_text))
     x_deal2.set_acptfact(base=tech_road, pick=bowl_road)
 
@@ -195,20 +195,20 @@ def test_deal_acptfactunits_meld_2AcptFactUnitsWorks():
     # GIVEN
     x_deal1 = DealUnit(_healer="test7")
     tech_text = "tech"
-    tech_road = f"{x_deal1._fix_handle},{tech_text}"
+    tech_road = f"{x_deal1._project_handle},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{x_deal1._fix_handle},{tech_text},{bowl_text}"
+    bowl_road = f"{x_deal1._project_handle},{tech_text},{bowl_text}"
     swim_text = "swim"
-    swim_road = f"{x_deal1._fix_handle},{swim_text}"
+    swim_road = f"{x_deal1._project_handle},{swim_text}"
     free_text = "freestyle"
 
-    x_deal1.add_idea(pad=x_deal1._fix_handle, idea_kid=IdeaKid(_label=tech_text))
+    x_deal1.add_idea(pad=x_deal1._project_handle, idea_kid=IdeaKid(_label=tech_text))
     x_deal1.add_idea(pad=tech_road, idea_kid=IdeaKid(_label=bowl_text))
     x_deal1.add_idea(pad=swim_road, idea_kid=IdeaKid(_label=free_text))
     x_deal1.set_acptfact(base=tech_road, pick=bowl_road)
 
     x_deal2 = DealUnit(_healer="test7")
-    x_deal2.add_idea(pad=x_deal2._fix_handle, idea_kid=IdeaKid(_label=tech_text))
+    x_deal2.add_idea(pad=x_deal2._project_handle, idea_kid=IdeaKid(_label=tech_text))
     x_deal2.add_idea(pad=tech_road, idea_kid=IdeaKid(_label=bowl_text))
     x_deal2.add_idea(pad=swim_road, idea_kid=IdeaKid(_label=free_text))
     x_deal2.set_acptfact(base=tech_road, pick=bowl_road)
@@ -230,7 +230,7 @@ def test_deal_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
     x_deal1 = DealUnit(_healer="test7")
 
     swim_text = "swim"
-    swim_road = f"{x_deal1._fix_handle},{swim_text}"
+    swim_road = f"{x_deal1._project_handle},{swim_text}"
     free_text = "freestyle"
 
     x_deal2 = DealUnit(_healer="test7")
@@ -278,9 +278,9 @@ def test_deal_acptfactunits_meld_AcptFactsAttributeCorrectlySet():
     x_deal1 = DealUnit(_healer="test7")
 
     swim_text = "swim"
-    swim_road = f"{x_deal1._fix_handle},{swim_text}"
+    swim_road = f"{x_deal1._project_handle},{swim_text}"
     free_text = "freestyle"
-    free_road = f"{x_deal1._fix_handle},{free_text}"
+    free_road = f"{x_deal1._project_handle},{free_text}"
     x_deal1.add_idea(pad=swim_road, idea_kid=IdeaKid(_label=free_text))
 
     x_deal2 = DealUnit(_healer="test7")
@@ -416,7 +416,7 @@ def test_deal_meld_OriginUnitsCorrectlySet():
     bob_x_deal = DealUnit(_healer=bob_text)
 
     swim_text = "swim"
-    swim_road = f"{bob_x_deal._fix_handle},{swim_text}"
+    swim_road = f"{bob_x_deal._project_handle},{swim_text}"
     free_text = "freestyle"
     free_road = f"{swim_road},{free_text}"
     back_text = "backstroke"

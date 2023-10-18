@@ -1,11 +1,11 @@
 from src.deal.deal import DealUnit, partyunit_shop
-from src.fix.fix import fixunit_shop
-from src.fix.examples.fix_env_kit import (
+from src.project.project import projectunit_shop
+from src.project.examples.project_env_kit import (
     get_temp_env_handle,
-    get_test_fixs_dir,
+    get_test_projects_dir,
     env_dir_setup_cleanup,
 )
-from src.fix.bank_sqlstr import (
+from src.project.bank_sqlstr import (
     get_river_flow_table_insert_sqlstr as river_flow_insert,
     get_river_flow_dict,
     get_river_bucket_table_insert_sqlstr,
@@ -32,20 +32,22 @@ from src.fix.bank_sqlstr import (
     get_groupunit_catalog_dict,
     get_table_count_sqlstr,
 )
-from src.fix.examples.example_collects import (
+from src.project.examples.example_harvests import (
     get_3node_deal,
     get_6node_deal,
     get_deal_3CleanNodesRandomWeights,
 )
-from src.fix.y_func import get_single_result_back
+from src.project.y_func import get_single_result_back
 
 
-def test_fix_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_project_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example fix with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    # GIVEN Create example project with 4 Healers, each with 3 Partyunits = 12 ledger rows
 
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -161,9 +163,11 @@ def test_RiverFlowUnit_flow_returned_WorksCorrectly():
 
 
 def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cleanup):
-    # GIVEN Create example fix with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    # GIVEN Create example project with 4 Healers, each with 3 Partyunits = 12 ledger rows
 
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -232,9 +236,11 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
 def test_river_flow_insert_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example fix with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    # GIVEN Create example project with 4 Healers, each with 3 Partyunits = 12 ledger rows
 
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -331,9 +337,11 @@ def test_RiverLedgerUnit_Exists():
 def test_get_river_tparty_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example fix with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    # GIVEN Create example project with 4 Healers, each with 3 Partyunits = 12 ledger rows
 
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -425,9 +433,11 @@ def test_get_river_tparty_table_insert_sqlstr_CorrectlyPopulatesTable01(
 def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example fix with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    # GIVEN Create example project with 4 Healers, each with 3 Partyunits = 12 ledger rows
 
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -466,9 +476,11 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
 def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example fix with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    # GIVEN Create example project with 4 Healers, each with 3 Partyunits = 12 ledger rows
 
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -548,11 +560,13 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     #     assert value.curr_close in [0.1, 1.0]
 
 
-def test_fix_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_project_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -573,8 +587,10 @@ def test_fix_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
 
 def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup):
-    # GIVEN Create example fix with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+    # GIVEN Create example project with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -604,9 +620,11 @@ def test_refresh_bank_metrics_Populates_idea_catalog_table(env_dir_setup_cleanup
         assert get_idea_catalog_table_count(bank_conn, sal_text) == 5
 
 
-def test_fix_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
+def test_project_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     # GIVEN
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -642,12 +660,14 @@ def test_fix_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     assert len(get_idea_catalog_dict(sx.get_bank_conn(), ex_road)) == 4
 
 
-def test_fix_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_project_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example fix with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    # GIVEN Create example project with 4 Healers, each with 3 Partyunits = 12 ledger rows
 
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -673,9 +693,11 @@ def test_fix_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
 def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example fix with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    # GIVEN Create example project with 4 Healers, each with 3 Partyunits = 12 ledger rows
 
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -730,12 +752,14 @@ def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
         assert get_acptfact_catalog_table_count(bank_conn, sal_text) == 1
 
 
-def test_fix_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_project_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example fix with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    # GIVEN Create example project with 4 Healers, each with 3 Partyunits = 12 ledger rows
 
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
     sx.refresh_bank_metrics()
 
@@ -747,7 +771,7 @@ def test_fix_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01
     bob_group_x = GroupUnitCatalog(
         deal_healer=bob_text,
         groupunit_brand="US Dollar",
-        partylinks_set_by_fix_road=f"{get_temp_env_handle()},USA",
+        partylinks_set_by_project_road=f"{get_temp_env_handle()},USA",
     )
     bob_group_sqlstr = get_groupunit_catalog_table_insert_sqlstr(bob_group_x)
     with sx.get_bank_conn() as bank_conn:
@@ -762,7 +786,9 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = fixunit_shop(handle=get_temp_env_handle(), fixs_dir=get_test_fixs_dir())
+    sx = projectunit_shop(
+        handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
+    )
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"

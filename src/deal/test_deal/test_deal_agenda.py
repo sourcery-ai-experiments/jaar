@@ -36,7 +36,7 @@ def test_get_agenda_returns_agenda_with_only_required_allowed():
     # GIVEN
     x_deal = example_deals_get_deal_with_4_levels_and_2requireds()
     week_text = "weekdays"
-    week_road = f"{x_deal._fix_handle},{week_text}"
+    week_road = f"{x_deal._project_handle},{week_text}"
     sun_text = "Sunday"
     sun_road = f"{week_road},{sun_text}"
     x_deal.set_acptfact(base=week_road, pick=sun_road)
@@ -97,7 +97,7 @@ def test_get_agenda_with_7amItem():
     assert len(x_deal.get_agenda_items()) == 1
 
     # WHEN
-    day24hr_road = f"{x_deal._fix_handle},timetech,24hr day"
+    day24hr_road = f"{x_deal._project_handle},timetech,24hr day"
     day24hr_open = 0.0
     day24hr_nigh = 8.0
     housework_text = "housework"
@@ -123,10 +123,10 @@ def test_get_agenda_does_not_return_promise_items_outside_range():
     x_deal.set_time_hreg_ideas(c400_count=7)
     c_label = "clean"
     c_idea = IdeaKid(_label=c_label, promise=True)
-    x_deal.add_idea(idea_kid=c_idea, pad=x_deal._fix_handle)
-    c_road = f"{x_deal._fix_handle},{c_label}"
-    jajatime = f"{x_deal._fix_handle},time,jajatime"
-    jajaday = f"{x_deal._fix_handle},time,jajatime,day"
+    x_deal.add_idea(idea_kid=c_idea, pad=x_deal._project_handle)
+    c_road = f"{x_deal._project_handle},{c_label}"
+    jajatime = f"{x_deal._project_handle},time,jajatime"
+    jajaday = f"{x_deal._project_handle},time,jajatime,day"
 
     x_deal.edit_idea_attr(
         road=c_road,
@@ -156,7 +156,7 @@ def test_exammple_agenda_exists():
     # GIVEN
     x_deal = example_deals_deal_v001()
     min_text = "day_minute"
-    min_road = f"{x_deal._fix_handle},{min_text}"
+    min_road = f"{x_deal._project_handle},{min_text}"
     x_deal.set_acptfact(base=min_road, pick=min_road, open=0, nigh=1399)
     assert x_deal
     # for idea_kid in x_deal._idearoot._kids.values():
@@ -181,20 +181,20 @@ def test_exammple_AgendaHasCorrectAttributes():
     x_deal = example_deals_deal_v001()
 
     day_min_text = "day_minute"
-    day_min_road = f"{x_deal._fix_handle},{day_min_text}"
+    day_min_road = f"{x_deal._project_handle},{day_min_text}"
     x_deal.set_acptfact(base=day_min_road, pick=day_min_road, open=0, nigh=1399)
     month_week_text = "month_week"
-    month_week_road = f"{x_deal._fix_handle},{month_week_text}"
+    month_week_road = f"{x_deal._project_handle},{month_week_text}"
     nations_text = "Nation-States"
-    nations_road = f"{x_deal._fix_handle},{nations_text}"
+    nations_road = f"{x_deal._project_handle},{nations_text}"
     mood_text = "Moods"
-    mood_road = f"{x_deal._fix_handle},{mood_text}"
+    mood_road = f"{x_deal._project_handle},{mood_text}"
     aaron_text = "Aaron Donald sphere"
-    aaron_road = f"{x_deal._fix_handle},{aaron_text}"
+    aaron_road = f"{x_deal._project_handle},{aaron_text}"
     # internet_text = "Internet"
-    # internet_road = f"{x_deal._fix_handle},{internet_text}"
+    # internet_road = f"{x_deal._project_handle},{internet_text}"
     year_month_text = "year_month"
-    year_month_road = f"{x_deal._fix_handle},{year_month_text}"
+    year_month_road = f"{x_deal._project_handle},{year_month_text}"
     x_deal.set_acptfact(base=month_week_road, pick=month_week_road)
     x_deal.set_acptfact(base=nations_road, pick=nations_road)
     x_deal.set_acptfact(base=mood_road, pick=mood_road)
@@ -202,16 +202,16 @@ def test_exammple_AgendaHasCorrectAttributes():
     # x_deal.set_acptfact(base=internet_road, pick=internet_road)
     x_deal.set_acptfact(base=year_month_road, pick=year_month_road)
     # season_text = "Seasons"
-    # season_road = f"{x_deal._fix_handle},{season_text}"
+    # season_road = f"{x_deal._project_handle},{season_text}"
     # x_deal.set_acptfact(base=season_road, pick=season_road)
     ced_week_text = "ced_week"
-    ced_week_road = f"{x_deal._fix_handle},{ced_week_text}"
+    ced_week_road = f"{x_deal._project_handle},{ced_week_text}"
     x_deal.set_acptfact(base=ced_week_road, pick=ced_week_road)
     # water_text = "WaterBeing"
-    # water_road = f"{x_deal._fix_handle},{water_text}"
+    # water_road = f"{x_deal._project_handle},{water_text}"
     # x_deal.set_acptfact(base=water_road, pick=water_road)
     # movie_text = "No Movie playing"
-    # movie_road = f"{x_deal._fix_handle},{movie_text}"
+    # movie_road = f"{x_deal._project_handle},{movie_text}"
     # x_deal.set_acptfact(base=movie_road, pick=movie_text)
 
     # WHEN
@@ -226,7 +226,7 @@ def test_exammple_AgendaHasCorrectAttributes():
     assert len(idea_action_list) == 27
 
     weekday_text = "weekdays"
-    weekday_road = f"{x_deal._fix_handle},{weekday_text}"
+    weekday_road = f"{x_deal._project_handle},{weekday_text}"
     monday_text = "Monday"
     monday_road = f"{weekday_road},{monday_text}"
 
@@ -259,7 +259,7 @@ def test_exammple_AgendaCanFiltersOnBase():
     # GIVEN
     x_deal = example_deals_deal_v001_with_large_agenda()
     week_text = "weekdays"
-    week_road = f"{x_deal._fix_handle},{week_text}"
+    week_road = f"{x_deal._project_handle},{week_text}"
     print(f"{type(x_deal)=}")
     # for base in x_deal.get_missing_acptfact_bases():
     #     print(f"{base=}")
@@ -273,7 +273,7 @@ def test_exammple_AgendaCanFiltersOnBase():
     #             print(f"         {weekdays}")
 
     # x_deal.edit_idea_attr(
-    #     road="{x_deal._fix_handle},sufffacts,cleaning,laundry wednesday",
+    #     road="{x_deal._project_handle},sufffacts,cleaning,laundry wednesday",
     #     required_del_sufffact_base=weekdays,
     #     required_del_sufffact_need=weekdays,
     # )
@@ -293,14 +293,14 @@ def test_set_agenda_task_as_complete_RangeWorksCorrectly():
     x_deal = DealUnit(_healer=healer_text)
 
     run_text = "run"
-    run_road = f"{x_deal._fix_handle},{run_text}"
+    run_road = f"{x_deal._project_handle},{run_text}"
     time_text = "time"
-    time_road = f"{x_deal._fix_handle},{time_text}"
+    time_road = f"{x_deal._project_handle},{time_text}"
     day_text = "day"
     day_road = f"{time_road},{day_text}"
 
     x_deal.add_idea(
-        idea_kid=IdeaKid(_label=run_text, promise=True), pad=x_deal._fix_handle
+        idea_kid=IdeaKid(_label=run_text, promise=True), pad=x_deal._project_handle
     )
     x_deal.add_idea(
         idea_kid=IdeaKid(_label=day_text, _begin=0, _close=500), pad=time_road
@@ -338,14 +338,14 @@ def test_set_agenda_task_as_complete_DivisionWorksCorrectly():
     x_deal = DealUnit(_healer=healer_text)
 
     run_text = "run"
-    run_road = f"{x_deal._fix_handle},{run_text}"
+    run_road = f"{x_deal._project_handle},{run_text}"
     time_text = "time"
-    time_road = f"{x_deal._fix_handle},{time_text}"
+    time_road = f"{x_deal._project_handle},{time_text}"
     day_text = "day"
     day_road = f"{time_road},{day_text}"
 
     x_deal.add_idea(
-        idea_kid=IdeaKid(_label=run_text, promise=True), pad=x_deal._fix_handle
+        idea_kid=IdeaKid(_label=run_text, promise=True), pad=x_deal._project_handle
     )
     x_deal.add_idea(
         idea_kid=IdeaKid(_label=day_text, _begin=0, _close=500), pad=time_road
@@ -392,7 +392,7 @@ def test_deal_get_from_json_LoadsActionFromJSONCorrectly():
     assert len(x_deal.get_idea_list()) == 253
     print(f"{len(x_deal.get_idea_list())=}")
     casa_text = "casa"
-    casa_road = f"{x_deal._fix_handle},{casa_text}"
+    casa_road = f"{x_deal._project_handle},{casa_text}"
     body_text = "workout"
     body_road = f"{casa_road},{body_text}"
     veg_text = "make veggies every morning"
@@ -419,7 +419,7 @@ def test_deal_get_from_json_LoadsActionFromJSONCorrectly():
 
     # WHEN
     day_min_text = "day_minute"
-    day_min_road = f"{x_deal._fix_handle},{day_min_text}"
+    day_min_road = f"{x_deal._project_handle},{day_min_text}"
     x_deal.set_acptfact(base=day_min_road, pick=day_min_road, open=0, nigh=1399)
 
     # THEN
@@ -435,8 +435,8 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     x_deal.set_time_hreg_ideas(c400_count=7)
 
     things_text = "things to do"
-    x_deal.add_idea(IdeaKid(_label=things_text), pad=x_deal._fix_handle)
-    t_road = f"{x_deal._fix_handle},{things_text}"
+    x_deal.add_idea(IdeaKid(_label=things_text), pad=x_deal._project_handle)
+    t_road = f"{x_deal._project_handle},{things_text}"
     clean = "clean"
     run = "run"
     swim = "swim"
@@ -450,7 +450,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     x_deal.add_idea(IdeaKid(_label=veg, promise=True), pad=t_road)
     x_deal.add_idea(IdeaKid(_label=lift, promise=True), pad=t_road)
     time_text = "time"
-    time_road = f"{x_deal._fix_handle},{time_text}"
+    time_road = f"{x_deal._project_handle},{time_text}"
     jaja_text = "jajatime"
     jaja_road = f"{time_road},{jaja_text}"
     tech_text = "tech"
@@ -463,7 +463,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     fri_road = f"{w_road},Friday"
     sat_road = f"{w_road},Saturday"
     sun_road = f"{w_road},Sunday"
-    t_road = f"{x_deal._fix_handle},{things_text}"
+    t_road = f"{x_deal._project_handle},{things_text}"
     c_road = f"{t_road},{clean}"
     r_road = f"{t_road},{run}"
     s_road = f"{t_road},{swim}"
@@ -625,13 +625,13 @@ def test_deal_create_agenda_item_CorrectlyCreatesAllDealAttributes():
     assert len(x_deal._idearoot._kids) == 0
 
     clean_things_text = "cleaning things"
-    clean_things_road = Road(f"{x_deal._fix_handle},{clean_things_text}")
+    clean_things_road = Road(f"{x_deal._project_handle},{clean_things_text}")
     clean_cookery_text = "clean cookery"
     clean_cookery_road = Road(f"{clean_things_road},{clean_cookery_text}")
     clean_cookery_idea = IdeaKid(_label=clean_cookery_text, _pad=clean_things_road)
     print(f"{clean_cookery_idea.get_road()=}")
     house_text = "house"
-    house_road = Road(f"{x_deal._fix_handle},{house_text}")
+    house_road = Road(f"{x_deal._project_handle},{house_text}")
     cookery_room_text = "cookery room"
     cookery_room_road = Road(f"{house_road},{cookery_room_text}")
     cookery_dirty_text = "dirty"
@@ -639,7 +639,7 @@ def test_deal_create_agenda_item_CorrectlyCreatesAllDealAttributes():
 
     # create gregorian timeline
     x_deal.set_time_hreg_ideas(c400_count=7)
-    daytime_road = Road(f"{x_deal._fix_handle},time,jajatime,day")
+    daytime_road = Road(f"{x_deal._project_handle},time,jajatime,day")
     open_8am = 480
     nigh_8am = 480
 
@@ -705,7 +705,7 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
     x_deal = example_deals_deal_v002()
 
     assert len(x_deal.get_agenda_items()) == 44
-    jajatime_road = f"{x_deal._fix_handle},time,jajatime"
+    jajatime_road = f"{x_deal._project_handle},time,jajatime"
 
     # WHEN
     x_deal.set_acptfact(
@@ -715,9 +715,9 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
 
     # THEN
     assert len(action_idea_list) == 66
-    jajatime_road = f"{x_deal._fix_handle},time,jajatime"
+    jajatime_road = f"{x_deal._project_handle},time,jajatime"
     night_text = "late_night_go_to_sleep"
-    night_road = f"{x_deal._fix_handle},D&B,{night_text}"
+    night_road = f"{x_deal._project_handle},D&B,{night_text}"
     night_idea = x_deal._idea_dict.get(night_road)
     # for idea_x in x_deal.get_agenda_items():
     #     # if idea_x._task != True:

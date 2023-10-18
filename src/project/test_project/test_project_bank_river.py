@@ -1,25 +1,25 @@
 from src.deal.deal import DealUnit
-from src.fix.fix import fixunit_shop
-from src.fix.examples.fix_env_kit import (
+from src.project.project import projectunit_shop
+from src.project.examples.project_env_kit import (
     get_temp_env_handle,
-    get_test_fixs_dir,
+    get_test_projects_dir,
     env_dir_setup_cleanup,
 )
 from pytest import raises as pytest_raises
-from src.fix.y_func import check_connection, get_single_result_back
-from src.fix.bank_sqlstr import (
+from src.project.y_func import check_connection, get_single_result_back
+from src.project.bank_sqlstr import (
     get_river_tparty_dict,
     get_river_flow_dict,
     get_table_count_sqlstr,
 )
 
 
-def test_fix_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable01(
+def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example fix with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    fix_handle = get_temp_env_handle()
-    sx = fixunit_shop(handle=fix_handle, fixs_dir=get_test_fixs_dir())
+    # GIVEN Create example project with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    project_handle = get_temp_env_handle()
+    sx = projectunit_shop(handle=project_handle, projects_dir=get_test_projects_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
@@ -85,12 +85,12 @@ def test_fix_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable01(
     assert river_sal_tax_tom.tax_total == 0.75
 
 
-def test_fix_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable02(
+def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable02(
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 deals, 100% of river flows to sal
-    fix_handle = get_temp_env_handle()
-    sx = fixunit_shop(handle=fix_handle, fixs_dir=get_test_fixs_dir())
+    project_handle = get_temp_env_handle()
+    sx = projectunit_shop(handle=project_handle, projects_dir=get_test_projects_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -148,12 +148,12 @@ def test_fix_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable02(
     assert river_sal_tax_elu.tax_total == 1.0
 
 
-def test_fix_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable03(
+def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable03(
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 deals, 85% of river flows to sal
-    fix_handle = get_temp_env_handle()
-    sx = fixunit_shop(handle=fix_handle, fixs_dir=get_test_fixs_dir())
+    project_handle = get_temp_env_handle()
+    sx = projectunit_shop(handle=project_handle, projects_dir=get_test_projects_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -216,12 +216,12 @@ def test_fix_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable03(
     assert river_sal_tax_tom.tax_total == 0.7
 
 
-def test_fix_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable04(
+def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable04(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 deals, 85% of river flows to sal, left over %15 goes on endless loop
-    fix_handle = get_temp_env_handle()
-    sx = fixunit_shop(handle=fix_handle, fixs_dir=get_test_fixs_dir())
+    project_handle = get_temp_env_handle()
+    sx = projectunit_shop(handle=project_handle, projects_dir=get_test_projects_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -291,12 +291,12 @@ def test_fix_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable04(
     assert river_sal_tax_tom.tax_total == 0.7
 
 
-def test_fix_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable05(
+def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable05(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 deals, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    fix_handle = get_temp_env_handle()
-    sx = fixunit_shop(handle=fix_handle, fixs_dir=get_test_fixs_dir())
+    project_handle = get_temp_env_handle()
+    sx = projectunit_shop(handle=project_handle, projects_dir=get_test_projects_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -372,12 +372,12 @@ def test_fix_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable05(
     assert round(river_sal_tax_elu.tax_total, 15) == 0.0378017640625
 
 
-def test_fix_set_river_sphere_for_deal_CorrectlyDeletesPreviousRiver(
+def test_project_set_river_sphere_for_deal_CorrectlyDeletesPreviousRiver(
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 deals, 100% of river flows to sal
-    fix_handle = get_temp_env_handle()
-    sx = fixunit_shop(handle=fix_handle, fixs_dir=get_test_fixs_dir())
+    project_handle = get_temp_env_handle()
+    sx = projectunit_shop(handle=project_handle, projects_dir=get_test_projects_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -430,12 +430,12 @@ def test_fix_set_river_sphere_for_deal_CorrectlyDeletesPreviousRiver(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tparty) == 3
 
 
-def test_fix_set_river_sphere_for_deal_CorrectlyUsesMaxFlowsCount(
+def test_project_set_river_sphere_for_deal_CorrectlyUsesMaxFlowsCount(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 deals, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    fix_handle = get_temp_env_handle()
-    sx = fixunit_shop(handle=fix_handle, fixs_dir=get_test_fixs_dir())
+    project_handle = get_temp_env_handle()
+    sx = projectunit_shop(handle=project_handle, projects_dir=get_test_projects_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -491,12 +491,12 @@ def test_fix_set_river_sphere_for_deal_CorrectlyUsesMaxFlowsCount(
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == mtc
 
 
-def test_fix_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable05(
+def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable05(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 deals, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    fix_handle = get_temp_env_handle()
-    sx = fixunit_shop(handle=fix_handle, fixs_dir=get_test_fixs_dir())
+    project_handle = get_temp_env_handle()
+    sx = projectunit_shop(handle=project_handle, projects_dir=get_test_projects_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -573,12 +573,12 @@ def test_fix_set_river_sphere_for_deal_CorrectlyPopulatesriver_tpartyTable05(
     assert round(river_sal_tax_elu.tax_total, 15) == 0.0378017640625
 
 
-def test_fix_set_river_sphere_for_deal_CorrectlyBuildsASingleContinuousRange(
+def test_project_set_river_sphere_for_deal_CorrectlyBuildsASingleContinuousRange(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 deals, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    fix_handle = get_temp_env_handle()
-    sx = fixunit_shop(handle=fix_handle, fixs_dir=get_test_fixs_dir())
+    project_handle = get_temp_env_handle()
+    sx = projectunit_shop(handle=project_handle, projects_dir=get_test_projects_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
@@ -643,12 +643,12 @@ def test_fix_set_river_sphere_for_deal_CorrectlyBuildsASingleContinuousRange(
         assert get_single_result_back(bank_conn, count_range_fails_sql) == 0
 
 
-def test_fix_set_river_sphere_for_deal_CorrectlyUpatesDealPartyUnits(
+def test_project_set_river_sphere_for_deal_CorrectlyUpatesDealPartyUnits(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 deals, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    fix_handle = get_temp_env_handle()
-    sx = fixunit_shop(handle=fix_handle, fixs_dir=get_test_fixs_dir())
+    project_handle = get_temp_env_handle()
+    sx = projectunit_shop(handle=project_handle, projects_dir=get_test_projects_dir())
     sx.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"

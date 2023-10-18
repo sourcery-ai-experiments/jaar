@@ -3,7 +3,7 @@ from src.deal.examples.example_deals import (
     get_deal_with_4_levels,
 )
 from src.deal.deal import DealUnit
-from src.deal.road import get_default_fix_root_label as root_label
+from src.deal.road import get_default_project_root_label as root_label
 from src.deal.origin import originunit_shop
 from pytest import raises as pytest_raises
 
@@ -17,7 +17,7 @@ def test_deal_exists():
 
     assert x_deal
     assert x_deal._healer == healer_text
-    assert x_deal._fix_handle == root_label()
+    assert x_deal._project_handle == root_label()
     assert x_deal._weight == 1
     assert x_deal._max_tree_traverse == 3
     assert x_deal._tree_traverse_count is None
@@ -40,7 +40,7 @@ def test_deal_IsAbleToSetTaskAsComplete():
     assert mail_idea._task == True
 
     ced_min_label = "CE0_minutes"
-    ced_road = f"{x_deal._fix_handle},{ced_min_label}"
+    ced_road = f"{x_deal._project_handle},{ced_min_label}"
     x_deal.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=85)
     idea_list = x_deal.get_idea_list()
     assert mail_idea.promise == True
@@ -50,7 +50,7 @@ def test_deal_IsAbleToSetTaskAsComplete():
 def test_deal_IsAbleToEditAcptFactUnitAnyAncestor_Idea_1():
     x_deal = get_deal_1Task_1CE0MinutesRequired_1AcptFact()
     ced_min_label = "CE0_minutes"
-    ced_road = f"{x_deal._fix_handle},{ced_min_label}"
+    ced_road = f"{x_deal._project_handle},{ced_min_label}"
     x_deal.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=85)
     idea_list = x_deal.get_idea_list()
     mail_idea = idea_list[1]
@@ -150,15 +150,15 @@ def test_deal_init_CorrectlySetsGiven_auto_output_to_public():
     assert x_deal._auto_output_to_public == True
 
 
-def test_deal_set_fix_handle_CorrectlySetsAttr():
+def test_deal_set_project_handle_CorrectlySetsAttr():
     # GIVEN
-    fix_handle_text = "Sun"
+    project_handle_text = "Sun"
     healer_text = "Noa"
     x_deal = DealUnit(_healer=healer_text, _auto_output_to_public=True)
-    assert x_deal._fix_handle == root_label()
+    assert x_deal._project_handle == root_label()
 
     # WHEN
-    x_deal.set_fix_handle(fix_handle=fix_handle_text)
+    x_deal.set_project_handle(project_handle=project_handle_text)
 
     # THEN
-    assert x_deal._fix_handle == fix_handle_text
+    assert x_deal._project_handle == project_handle_text

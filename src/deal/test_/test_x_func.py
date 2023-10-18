@@ -5,17 +5,17 @@ from src.deal.x_func import (
     count_files as x_func_count_files,
     return1ifnone as x_func_return1ifnone,
 )
-from src.fix.examples.collect_env_kit import (
-    collect_dir_setup_cleanup,
-    get_temp_collectunit_dir,
+from src.project.examples.harvest_env_kit import (
+    harvest_dir_setup_cleanup,
+    get_temp_harvestunit_dir,
     create_deal_file,
 )
 from pytest import raises as pytest_raises
 
 
-def test_x_func_dir_files_correctlyGrabsFileData(collect_dir_setup_cleanup):
+def test_x_func_dir_files_correctlyGrabsFileData(harvest_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_collectunit_dir()
+    env_dir = get_temp_harvestunit_dir()
     x1_file_title = "x1.txt"
     x2_file_title = "x2.txt"
     x1_file_text = "trying this"
@@ -32,9 +32,9 @@ def test_x_func_dir_files_correctlyGrabsFileData(collect_dir_setup_cleanup):
     assert files_dict.get(x2_file_title) == x2_file_text
 
 
-def test_x_func_dir_files_removesFileExtension(collect_dir_setup_cleanup):
+def test_x_func_dir_files_removesFileExtension(harvest_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_collectunit_dir()
+    env_dir = get_temp_harvestunit_dir()
     x1_title = "x1"
     x2_title = "x2"
     x1_file_ext = "txt"
@@ -54,9 +54,9 @@ def test_x_func_dir_files_removesFileExtension(collect_dir_setup_cleanup):
     assert files_dict.get(x2_title) == x2_file_text
 
 
-def test_x_func_dir_files_returnsSubDirs(collect_dir_setup_cleanup):
+def test_x_func_dir_files_returnsSubDirs(harvest_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_collectunit_dir()
+    env_dir = get_temp_harvestunit_dir()
     x1_title = "x1"
     x2_title = "x2"
     x1_file_ext = "txt"
@@ -86,9 +86,9 @@ def test_x_func_dir_files_returnsSubDirs(collect_dir_setup_cleanup):
     assert files_dict.get(x2_title) == True
 
 
-def test_x_func_dir_files_doesNotReturnsFiles(collect_dir_setup_cleanup):
+def test_x_func_dir_files_doesNotReturnsFiles(harvest_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_collectunit_dir()
+    env_dir = get_temp_harvestunit_dir()
     x1_title = "x1"
     x1_file_ext = "txt"
     x1_file_title = f"{x1_title}.{x1_file_ext}"
@@ -117,10 +117,10 @@ def test_x_func_dir_files_doesNotReturnsFiles(collect_dir_setup_cleanup):
 
 
 def test_x_func_open_file_OpensFilesCorrectlyWhenGivenDirectoryAndFileTitle(
-    collect_dir_setup_cleanup,
+    harvest_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_collectunit_dir()
+    env_dir = get_temp_harvestunit_dir()
     x1_title = "x1"
     x2_title = "x2"
     x1_file_ext = "txt"
@@ -139,10 +139,10 @@ def test_x_func_open_file_OpensFilesCorrectlyWhenGivenDirectoryAndFileTitle(
 
 
 def test_x_func_open_file_OpensFilesCorrectlyWhenGivenOnlyFilePath(
-    collect_dir_setup_cleanup,
+    harvest_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_collectunit_dir()
+    env_dir = get_temp_harvestunit_dir()
     x1_title = "x1"
     x2_title = "x2"
     x1_file_ext = "txt"
@@ -164,9 +164,9 @@ def test_x_func_open_file_OpensFilesCorrectlyWhenGivenOnlyFilePath(
     assert x_func_open_file(dest_dir=x2_file_path, file_title=None) == x2_file_text
 
 
-def test_x_func_save_file_ReplacesFileAsDefault(collect_dir_setup_cleanup):
+def test_x_func_save_file_ReplacesFileAsDefault(harvest_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_collectunit_dir()
+    env_dir = get_temp_harvestunit_dir()
     x_old_title = "x_old"
     # x_new_title = "x_new"
     x_old_file_ext = "txt"
@@ -199,9 +199,9 @@ def test_x_func_save_file_ReplacesFileAsDefault(collect_dir_setup_cleanup):
     )
 
 
-def test_x_func_save_file_DoesNotreplaceFile(collect_dir_setup_cleanup):
+def test_x_func_save_file_DoesNotreplaceFile(harvest_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_temp_collectunit_dir()
+    env_dir = get_temp_harvestunit_dir()
     x_old_title = "x_old"
     # x_new_title = "x_new"
     x_old_file_ext = "txt"
@@ -235,10 +235,10 @@ def test_x_func_save_file_DoesNotreplaceFile(collect_dir_setup_cleanup):
 
 
 def test_x_func_count_files_ReturnsNoneIfDirectoryDoesNotExist(
-    collect_dir_setup_cleanup,
+    harvest_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_collectunit_dir()
+    env_dir = get_temp_harvestunit_dir()
     does_not_exist_dir = f"{env_dir}/swim"
 
     # WHEN
