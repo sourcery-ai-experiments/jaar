@@ -1252,9 +1252,9 @@ def test_deal_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr():
     river_tally_wil = RiverTallyUnit(bob_text, wil_text, 0.501, 0, 0.024, None, None)
     river_tally_fry = RiverTallyUnit(bob_text, fry_text, 0.111, 0, 0.006, None, None)
     river_tallys = {
-        river_tally_sam.tax_title: river_tally_sam,
-        river_tally_wil.tax_title: river_tally_wil,
-        river_tally_fry.tax_title: river_tally_fry,
+        river_tally_sam.tax_healer: river_tally_sam,
+        river_tally_wil.tax_healer: river_tally_wil,
+        river_tally_fry.tax_healer: river_tally_fry,
     }
     # WHEN
     x_deal.set_banking_attr_partyunits(river_tallys=river_tallys)

@@ -2,6 +2,7 @@ import dataclasses
 import json
 from datetime import datetime
 from src.deal.party import (
+    PersonName,
     PartyTitle,
     PartyUnit,
     PartyLink,
@@ -78,10 +79,6 @@ class InvalidDealException(Exception):
 
 
 class AssignmentPartyException(Exception):
-    pass
-
-
-class PersonName(str):
     pass
 
 

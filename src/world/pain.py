@@ -91,7 +91,7 @@ def healerlink_shop(
     return x_healer
 
 
-class PainGenus(str):
+class PainGenus(str):  # Created to help track the concept
     pass
 
 

@@ -59,14 +59,14 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable01(
 
     flow_0 = river_flows.get(0)
     flow_1 = river_flows.get(1)
-    assert flow_1.src_title == "sal" and flow_1.dst_title == "tom"
+    assert flow_1.src_healer == "sal" and flow_1.dst_healer == "tom"
     assert flow_1.river_tree_level == 1
     assert flow_1.currency_start == 0.25
     assert flow_1.currency_close == 1
     assert flow_1.parent_flow_num is None
     flow_2 = river_flows.get(2)
     flow_3 = river_flows.get(3)
-    assert flow_3.src_title == "tom" and flow_3.dst_title == "sal"
+    assert flow_3.src_healer == "tom" and flow_3.dst_healer == "sal"
     assert flow_3.river_tree_level == 2
     assert flow_3.parent_flow_num == 1
 
@@ -631,7 +631,7 @@ def test_project_set_river_sphere_for_deal_CorrectlyBuildsASingleContinuousRange
         , river_tree_level
         , lag(river_tree_level) OVER (ORDER BY currency_start, currency_close) AS prev_parent_river_tree_level
         FROM river_flow rt1
-        --  WHERE dst_title = 'sal' and currency_title = dst_title
+        --  WHERE dst_healer = 'sal' and currency_healer = dst_healer
         ORDER BY rt1.currency_start, rt1.currency_close
     ) x
     WHERE x.prev_diff <> 0
@@ -709,12 +709,12 @@ def test_project_set_river_sphere_for_deal_CorrectlyUpatesDealPartyUnits(
     bob_tally = sal_river_tallys.get(bob_text)
     tom_tally = sal_river_tallys.get(tom_text)
     elu_tally = sal_river_tallys.get(elu_text)
-    assert bob_tally.tax_title == bob_text
-    assert tom_tally.tax_title == tom_text
-    assert elu_tally.tax_title == elu_text
-    assert bob_tally.currency_title == sal_text
-    assert tom_tally.currency_title == sal_text
-    assert elu_tally.currency_title == sal_text
+    assert bob_tally.tax_healer == bob_text
+    assert tom_tally.tax_healer == tom_text
+    assert elu_tally.tax_healer == elu_text
+    assert bob_tally.currency_healer == sal_text
+    assert tom_tally.currency_healer == sal_text
+    assert elu_tally.currency_healer == sal_text
 
     bob_party = sal_deal_after._partys.get(bob_text)
     tom_party = sal_deal_after._partys.get(tom_text)
@@ -731,15 +731,15 @@ def test_project_set_river_sphere_for_deal_CorrectlyUpatesDealPartyUnits(
 
     # for tally_uid, sal_river_tally in sal_river_tallys.items():
     #     print(f"{tally_uid=} {sal_river_tally=}")
-    #     assert sal_river_tally.currency_title == sal_text
-    #     assert sal_river_tally.tax_title in [bob_text, tom_text, elu_text]
-    #     partyunit_x = sal_deal_after._partys.get(sal_river_tally.tax_title)
+    #     assert sal_river_tally.currency_healer == sal_text
+    #     assert sal_river_tally.tax_healer in [bob_text, tom_text, elu_text]
+    #     partyunit_x = sal_deal_after._partys.get(sal_river_tally.tax_healer)
     #     if partyunit_x != None:
     #         # print(
-    #         #     f"{sal_river_tally.currency_title=} {sal_river_tally.tax_title=} {partyunit_x.title=} tax_total: {sal_river_tally.tax_total} Tax Paid: {partyunit_x._bank_tax_paid}"
+    #         #     f"{sal_river_tally.currency_healer=} {sal_river_tally.tax_healer=} {partyunit_x.title=} tax_total: {sal_river_tally.tax_total} Tax Paid: {partyunit_x._bank_tax_paid}"
     #         # )
     #         # print(
-    #         #     f"{sal_river_tally.currency_title=} {sal_river_tally.tax_title=} {partyunit_x.title=} tax_diff:  {sal_river_tally.tax_diff} Tax Paid: {partyunit_x._bank_tax_diff}"
+    #         #     f"{sal_river_tally.currency_healer=} {sal_river_tally.tax_healer=} {partyunit_x.title=} tax_diff:  {sal_river_tally.tax_diff} Tax Paid: {partyunit_x._bank_tax_diff}"
     #         # )
     #         assert sal_river_tally.tax_total == partyunit_x._bank_tax_paid
     #         assert sal_river_tally.tax_diff == partyunit_x._bank_tax_diff

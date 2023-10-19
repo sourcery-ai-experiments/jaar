@@ -5,15 +5,19 @@ from dataclasses import dataclass
 from sqlite3 import Connection
 
 
-def get_table_count_sqlstr(table_title: str) -> str:
-    return f"SELECT COUNT(*) FROM {table_title}"
+def get_table_count_sqlstr(
+    table_mame: str,
+) -> (
+    str
+):  # "mame" is intially mispelled so that it does not interfere with person_name in the codebase
+    return f"SELECT COUNT(*) FROM {table_mame}"
 
 
 # river_flow
 def get_river_flow_table_delete_sqlstr(currency_deal_healer: str) -> str:
     return f"""
         DELETE FROM river_flow
-        WHERE currency_title = '{currency_deal_healer}' 
+        WHERE currency_healer = '{currency_deal_healer}' 
         ;
     """
 
@@ -21,17 +25,17 @@ def get_river_flow_table_delete_sqlstr(currency_deal_healer: str) -> str:
 def get_river_flow_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS river_flow (
-          currency_title VARCHAR(255) NOT NULL
-        , src_title VARCHAR(255) NOT NULL
-        , dst_title VARCHAR(255) NOT NULL
+          currency_healer VARCHAR(255) NOT NULL
+        , src_healer VARCHAR(255) NOT NULL
+        , dst_healer VARCHAR(255) NOT NULL
         , currency_start FLOAT NOT NULL
         , currency_close FLOAT NOT NULL
         , flow_num INT NOT NULL
         , parent_flow_num INT NULL
         , river_tree_level INT NOT NULL
-        , FOREIGN KEY(currency_title) REFERENCES dealunits(title)
-        , FOREIGN KEY(src_title) REFERENCES dealunits(title)
-        , FOREIGN KEY(dst_title) REFERENCES dealunits(title)
+        , FOREIGN KEY(currency_healer) REFERENCES dealunits(healer)
+        , FOREIGN KEY(src_healer) REFERENCES dealunits(healer)
+        , FOREIGN KEY(dst_healer) REFERENCES dealunits(healer)
         )
         ;
     """
@@ -40,8 +44,8 @@ def get_river_flow_table_create_sqlstr() -> str:
 @dataclass
 class RiverFlowUnit:
     currency_deal_healer: str
-    src_title: str
-    dst_title: str
+    src_healer: str
+    dst_healer: str
     currency_start: float
     currency_close: float
     flow_num: int
@@ -49,7 +53,7 @@ class RiverFlowUnit:
     river_tree_level: int
 
     def flow_returned(self) -> bool:
-        return self.currency_deal_healer == self.dst_title
+        return self.currency_deal_healer == self.dst_healer
 
 
 def get_river_flow_table_insert_sqlstr(
@@ -57,9 +61,9 @@ def get_river_flow_table_insert_sqlstr(
 ) -> str:
     return f"""
         INSERT INTO river_flow (
-          currency_title
-        , src_title
-        , dst_title
+          currency_healer
+        , src_healer
+        , dst_healer
         , currency_start 
         , currency_close
         , flow_num
@@ -68,8 +72,8 @@ def get_river_flow_table_insert_sqlstr(
         )
         VALUES (
           '{river_flow_x.currency_deal_healer}'
-        , '{river_flow_x.src_title}'
-        , '{river_flow_x.dst_title}'
+        , '{river_flow_x.src_healer}'
+        , '{river_flow_x.dst_healer}'
         , {sqlite_null(river_flow_x.currency_start)}
         , {sqlite_null(river_flow_x.currency_close)}
         , {river_flow_x.flow_num}
@@ -85,16 +89,16 @@ def get_river_flow_dict(
 ) -> dict[str:RiverFlowUnit]:
     sqlstr = f"""
         SELECT 
-          currency_title
-        , src_title
-        , dst_title
+          currency_healer
+        , src_healer
+        , dst_healer
         , currency_start
         , currency_close
         , flow_num
         , parent_flow_num
         , river_tree_level
         FROM river_flow
-        WHERE currency_title = '{currency_deal_healer}' 
+        WHERE currency_healer = '{currency_deal_healer}' 
         ;
     """
     dict_x = {}
@@ -105,8 +109,8 @@ def get_river_flow_dict(
     for count_x, row in enumerate(results_x):
         river_flow_x = RiverFlowUnit(
             currency_deal_healer=row[0],
-            src_title=row[1],
-            dst_title=row[2],
+            src_healer=row[1],
+            dst_healer=row[2],
             currency_start=row[3],
             currency_close=row[4],
             flow_num=row[5],
@@ -121,7 +125,7 @@ def get_river_flow_dict(
 def get_river_bucket_table_delete_sqlstr(currency_deal_healer: str) -> str:
     return f"""
         DELETE FROM river_bucket
-        WHERE currency_title = '{currency_deal_healer}' 
+        WHERE currency_healer = '{currency_deal_healer}' 
         ;
     """
 
@@ -129,13 +133,13 @@ def get_river_bucket_table_delete_sqlstr(currency_deal_healer: str) -> str:
 def get_river_bucket_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS river_bucket (
-          currency_title VARCHAR(255) NOT NULL
-        , dst_title VARCHAR(255) NOT NULL
+          currency_healer VARCHAR(255) NOT NULL
+        , dst_healer VARCHAR(255) NOT NULL
         , bucket_num INT NOT NULL
         , curr_start FLOAT NOT NULL
         , curr_close FLOAT NOT NULL
-        , FOREIGN KEY(currency_title) REFERENCES dealunits(title)
-        , FOREIGN KEY(dst_title) REFERENCES dealunits(title)
+        , FOREIGN KEY(currency_healer) REFERENCES dealunits(healer)
+        , FOREIGN KEY(dst_healer) REFERENCES dealunits(healer)
         )
     ;
     """
@@ -144,15 +148,15 @@ def get_river_bucket_table_create_sqlstr() -> str:
 def get_river_bucket_table_insert_sqlstr(currency_deal_healer: str) -> str:
     return f"""
         INSERT INTO river_bucket (
-          currency_title
-        , dst_title
+          currency_healer
+        , dst_healer
         , bucket_num
         , curr_start
         , curr_close
         )
         SELECT 
-          currency_title
-        , dst_title
+          currency_healer
+        , dst_healer
         , currency_bucket_num
         , min(currency_start) currency_bucket_start
         , max(currency_close) currency_bucket_close
@@ -168,10 +172,10 @@ def get_river_bucket_table_insert_sqlstr(currency_deal_healer: str) -> str:
             END AS step
             , *
             FROM  river_flow
-            WHERE currency_title = '{currency_deal_healer}' and dst_title = currency_title 
+            WHERE currency_healer = '{currency_deal_healer}' and dst_healer = currency_healer 
             ) b
         ) c
-        GROUP BY currency_title, dst_title, currency_bucket_num
+        GROUP BY currency_healer, dst_healer, currency_bucket_num
         ORDER BY currency_bucket_start
         ;
     """
@@ -179,8 +183,8 @@ def get_river_bucket_table_insert_sqlstr(currency_deal_healer: str) -> str:
 
 @dataclass
 class RiverBucketUnit:
-    currency_title: str
-    dst_title: str
+    currency_healer: str
+    dst_healer: str
     bucket_num: int
     curr_start: float
     curr_close: float
@@ -191,13 +195,13 @@ def get_river_bucket_dict(
 ) -> dict[str:RiverBucketUnit]:
     sqlstr = f"""
         SELECT
-          currency_title
-        , dst_title
+          currency_healer
+        , dst_healer
         , bucket_num
         , curr_start
         , curr_close
         FROM river_bucket
-        WHERE currency_title = '{currency_deal_healer}'
+        WHERE currency_healer = '{currency_deal_healer}'
         ;
     """
     dict_x = {}
@@ -205,8 +209,8 @@ def get_river_bucket_dict(
 
     for row in results.fetchall():
         river_bucket_x = RiverBucketUnit(
-            currency_title=row[0],
-            dst_title=row[1],
+            currency_healer=row[0],
+            dst_healer=row[1],
             bucket_num=row[2],
             curr_start=row[3],
             curr_close=row[4],
@@ -219,7 +223,7 @@ def get_river_bucket_dict(
 def get_river_tally_table_delete_sqlstr(currency_deal_healer: str) -> str:
     return f"""
         DELETE FROM river_tally
-        WHERE currency_title = '{currency_deal_healer}' 
+        WHERE currency_healer = '{currency_deal_healer}' 
         ;
     """
 
@@ -227,13 +231,13 @@ def get_river_tally_table_delete_sqlstr(currency_deal_healer: str) -> str:
 def get_river_tally_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS river_tally (
-          currency_title VARCHAR(255) NOT NULL
-        , tax_title VARCHAR(255) NOT NULL
+          currency_healer VARCHAR(255) NOT NULL
+        , tax_healer VARCHAR(255) NOT NULL
         , tax_total FLOAT NOT NULL
         , debt FLOAT NULL
         , tax_diff FLOAT NULL
-        , FOREIGN KEY(currency_title) REFERENCES dealunits(title)
-        , FOREIGN KEY(tax_title) REFERENCES dealunits(title)
+        , FOREIGN KEY(currency_healer) REFERENCES dealunits(healer)
+        , FOREIGN KEY(tax_healer) REFERENCES dealunits(healer)
         )
     ;
     """
@@ -242,30 +246,30 @@ def get_river_tally_table_create_sqlstr() -> str:
 def get_river_tally_table_insert_sqlstr(currency_deal_healer: str) -> str:
     return f"""
         INSERT INTO river_tally (
-          currency_title
-        , tax_title
+          currency_healer
+        , tax_healer
         , tax_total
         , debt
         , tax_diff
         )
         SELECT 
-          rt.currency_title
-        , rt.src_title
+          rt.currency_healer
+        , rt.src_healer
         , SUM(rt.currency_close-rt.currency_start) tax_paid
         , l._deal_agenda_ratio_debt
         , l._deal_agenda_ratio_debt - SUM(rt.currency_close-rt.currency_start)
         FROM river_flow rt
-        LEFT JOIN ledger l ON l.deal_healer = rt.currency_title AND l.party_title = rt.src_title
-        WHERE rt.currency_title='{currency_deal_healer}' and rt.dst_title=rt.currency_title
-        GROUP BY rt.currency_title, rt.src_title
+        LEFT JOIN ledger l ON l.deal_healer = rt.currency_healer AND l.party_title = rt.src_healer
+        WHERE rt.currency_healer='{currency_deal_healer}' and rt.dst_healer=rt.currency_healer
+        GROUP BY rt.currency_healer, rt.src_healer
         ;
     """
 
 
 @dataclass
 class RiverTallyUnit:
-    currency_title: str
-    tax_title: str
+    currency_healer: str
+    tax_healer: str
     tax_total: float
     debt: float
     tax_diff: float
@@ -278,13 +282,13 @@ def get_river_tally_dict(
 ) -> dict[str:RiverTallyUnit]:
     sqlstr = f"""
         SELECT
-          currency_title
-        , tax_title
+          currency_healer
+        , tax_healer
         , tax_total
         , debt
         , tax_diff
         FROM river_tally
-        WHERE currency_title = '{currency_deal_healer}'
+        WHERE currency_healer = '{currency_deal_healer}'
         ;
     """
     dict_x = {}
@@ -292,15 +296,15 @@ def get_river_tally_dict(
 
     for row in results.fetchall():
         river_tally_x = RiverTallyUnit(
-            currency_title=row[0],
-            tax_title=row[1],
+            currency_healer=row[0],
+            tax_healer=row[1],
             tax_total=row[2],
             debt=row[3],
             tax_diff=row[4],
             credit_score=None,
             credit_rank=None,
         )
-        dict_x[river_tally_x.tax_title] = river_tally_x
+        dict_x[river_tally_x.tax_healer] = river_tally_x
     return dict_x
 
 
@@ -308,8 +312,8 @@ def get_river_tally_dict(
 def get_deal_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS dealunits (
-          title VARCHAR(255) PRIMARY KEY ASC
-        , UNIQUE(title)
+          healer VARCHAR(255) PRIMARY KEY ASC
+        , UNIQUE(healer)
         )
     ;
     """
@@ -318,7 +322,7 @@ def get_deal_table_create_sqlstr() -> str:
 def get_deal_table_insert_sqlstr(deal_x: DealUnit) -> str:
     return f"""
         INSERT INTO dealunits (
-            title
+            healer
             )
         VALUES (
             '{deal_x._healer}' 
@@ -341,8 +345,8 @@ def get_ledger_table_create_sqlstr() -> str:
         , _deal_agenda_ratio_debt FLOAT
         , _creditor_active INT
         , _debtor_active INT
-        , FOREIGN KEY(deal_healer) REFERENCES dealunits(title)
-        , FOREIGN KEY(party_title) REFERENCES dealunits(title)
+        , FOREIGN KEY(deal_healer) REFERENCES dealunits(healer)
+        , FOREIGN KEY(party_title) REFERENCES dealunits(healer)
         , UNIQUE(deal_healer, party_title)
         )
     ;
@@ -393,7 +397,7 @@ class LedgerUnit:
     _debtor_active: float
 
 
-def get_ledger_dict(db_conn: Connection, payer_title: str) -> dict[str:LedgerUnit]:
+def get_ledger_dict(db_conn: Connection, payer_healer: str) -> dict[str:LedgerUnit]:
     sqlstr = f"""
         SELECT 
           deal_healer
@@ -407,7 +411,7 @@ def get_ledger_dict(db_conn: Connection, payer_title: str) -> dict[str:LedgerUni
         , _creditor_active
         , _debtor_active
         FROM ledger
-        WHERE deal_healer = '{payer_title}' 
+        WHERE deal_healer = '{payer_healer}' 
         ;
     """
     dict_x = {}
@@ -446,9 +450,9 @@ class RiverLedgerUnit:
 def get_river_ledger_unit(
     db_conn: Connection, river_flow_x: RiverFlowUnit = None
 ) -> RiverLedgerUnit:
-    ledger_x = get_ledger_dict(db_conn, river_flow_x.dst_title)
+    ledger_x = get_ledger_dict(db_conn, river_flow_x.dst_healer)
     return RiverLedgerUnit(
-        deal_healer=river_flow_x.dst_title,
+        deal_healer=river_flow_x.dst_healer,
         currency_onset=river_flow_x.currency_start,
         currency_cease=river_flow_x.currency_close,
         _ledgers=ledger_x,

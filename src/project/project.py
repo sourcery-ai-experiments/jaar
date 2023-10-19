@@ -42,7 +42,7 @@ from src.project.bank_sqlstr import (
 )
 
 
-class ProjectHandle(str):
+class ProjectHandle(str):  # Created to help track the concept
     pass
 
 
@@ -109,8 +109,8 @@ class ProjectUnit:
 
                 river_flow_x = RiverFlowUnit(
                     currency_deal_healer=x_deal_healer,
-                    src_title=led_x.deal_healer,
-                    dst_title=led_x.party_title,
+                    src_healer=led_x.deal_healer,
+                    dst_healer=led_x.party_title,
                     currency_start=curr_onset,
                     currency_close=curr_close,
                     flow_num=flows_count,
@@ -156,8 +156,8 @@ class ProjectUnit:
         default_root_parent_flow_num = None
         root_river_flow = RiverFlowUnit(
             currency_deal_healer=deal_healer,
-            src_title=None,
-            dst_title=deal_healer,
+            src_healer=None,
+            dst_healer=deal_healer,
             currency_start=default_currency_onset,
             currency_close=default_currency_cease,
             flow_num=default_root_flow_num,

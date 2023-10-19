@@ -26,9 +26,9 @@ def test_project_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
         tables_dict = get_db_tables(bank_conn)
 
     # row_count = 0
-    # for table_title, table_x in tables_dict.items():
+    # for table_mame, table_x in tables_dict.items():
     #     row_count += 1
-    #     print(f" {table_x=} {row_count}. {table_title=}")
+    #     print(f" {table_x=} {row_count}. {table_mame=}")
 
     curr_tables = {
         0: "dealunits",

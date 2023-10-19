@@ -17,7 +17,7 @@ class InvalidGroupException(Exception):
     pass
 
 
-class GroupBrand(str):
+class GroupBrand(str):  # Created to help track the concept
     pass
 
 

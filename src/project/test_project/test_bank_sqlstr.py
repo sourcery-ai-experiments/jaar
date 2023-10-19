@@ -76,7 +76,7 @@ def test_project_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
     with sx.get_bank_conn() as bank_conn:
         bank_conn.execute(insert_sqlstr)
 
-    ledger_dict = get_ledger_dict(db_conn=sx.get_bank_conn(), payer_title=bob_text)
+    ledger_dict = get_ledger_dict(db_conn=sx.get_bank_conn(), payer_healer=bob_text)
     # ledger_x = None
     # for key, value in ledger_dict.items():
     #     print(f"{key=} {value=}")
@@ -109,8 +109,8 @@ def test_RiverFlowUnit_exists():
     # WHEN
     river_flow_x = RiverFlowUnit(
         currency_deal_healer=bob_text,
-        src_title=None,
-        dst_title=tom_text,
+        src_healer=None,
+        dst_healer=tom_text,
         currency_start=currency_onset,
         currency_close=currency_cease,
         flow_num=flow_num,
@@ -120,8 +120,8 @@ def test_RiverFlowUnit_exists():
 
     # THEN
     assert river_flow_x.currency_deal_healer == bob_text
-    assert river_flow_x.src_title is None
-    assert river_flow_x.dst_title == tom_text
+    assert river_flow_x.src_healer is None
+    assert river_flow_x.dst_healer == tom_text
     assert river_flow_x.currency_start == currency_onset
     assert river_flow_x.currency_close == currency_cease
     assert river_flow_x.flow_num == flow_num
@@ -143,21 +143,21 @@ def test_RiverFlowUnit_flow_returned_WorksCorrectly():
     # WHEN
     river_flow_x = RiverFlowUnit(
         currency_deal_healer=bob_text,
-        src_title=sal_text,
-        dst_title=tom_text,
+        src_healer=sal_text,
+        dst_healer=tom_text,
         currency_start=currency_onset,
         currency_close=currency_cease,
         flow_num=flow_num,
         parent_flow_num=parent_flow_num,
         river_tree_level=river_tree_level,
     )
-    assert river_flow_x.currency_deal_healer != river_flow_x.dst_title
+    assert river_flow_x.currency_deal_healer != river_flow_x.dst_healer
 
     # THEN
     assert river_flow_x.flow_returned() == False
 
     # WHEN
-    river_flow_x.dst_title = bob_text
+    river_flow_x.dst_healer = bob_text
 
     # THEN
     assert river_flow_x.flow_returned()
@@ -209,13 +209,13 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
     with sx.get_bank_conn() as bank_conn:
         bank_conn.execute(insert_sqlstr_sal)
         bank_conn.execute(insert_sqlstr_tim)
-        ledger_dict_x = get_ledger_dict(db_conn=bank_conn, payer_title=bob_text)
+        ledger_dict_x = get_ledger_dict(db_conn=bank_conn, payer_healer=bob_text)
 
     # WHEN
     river_flow_x = RiverFlowUnit(
         currency_deal_healer=bob_text,
-        src_title=None,
-        dst_title=bob_text,
+        src_healer=None,
+        dst_healer=bob_text,
         currency_start=0.225,
         currency_close=0.387,
         flow_num=51,
@@ -250,8 +250,8 @@ def test_river_flow_insert_CorrectlyPopulatesTable01(
 
     river_flow_unit = RiverFlowUnit(
         currency_deal_healer=bob_text,
-        src_title=tim_text,
-        dst_title=sal_text,
+        src_healer=tim_text,
+        dst_healer=sal_text,
         currency_start=0.2,
         currency_close=0.5,
         flow_num=5,
@@ -272,8 +272,8 @@ def test_river_flow_insert_CorrectlyPopulatesTable01(
     # for value in river_flows.values():
     flow_0 = river_flows.get(0)
     assert flow_0.currency_deal_healer == bob_text
-    assert flow_0.src_title == tim_text
-    assert flow_0.dst_title == sal_text
+    assert flow_0.src_healer == tim_text
+    assert flow_0.dst_healer == sal_text
     assert flow_0.currency_start == 0.2
     assert flow_0.currency_close == 0.5
     assert flow_0.flow_num == 5
@@ -337,8 +337,8 @@ def test_RiverLedgerUnit_Exists():
 
 def test_RiverTallyUnit_exists():
     # GIVEN
-    x_currency_title = "x_currency_title"
-    x_tax_title = "x_tax_title"
+    x_currency_healer = "x_currency_healer"
+    x_tax_healer = "x_tax_healer"
     x_tax_total = "x_tax_total"
     x_debt = "x_debt"
     x_tax_diff = "x_tax_diff"
@@ -347,8 +347,8 @@ def test_RiverTallyUnit_exists():
 
     # WHEN
     x_rivertally = RiverTallyUnit(
-        currency_title=x_currency_title,
-        tax_title=x_tax_title,
+        currency_healer=x_currency_healer,
+        tax_healer=x_tax_healer,
         tax_total=x_tax_total,
         debt=x_debt,
         tax_diff=x_tax_diff,
@@ -357,8 +357,8 @@ def test_RiverTallyUnit_exists():
     )
 
     # THEN
-    assert x_rivertally.currency_title == x_currency_title
-    assert x_rivertally.tax_title == x_tax_title
+    assert x_rivertally.currency_healer == x_currency_healer
+    assert x_rivertally.tax_healer == x_tax_healer
     assert x_rivertally.tax_total == x_tax_total
     assert x_rivertally.debt == x_debt
     assert x_rivertally.tax_diff == x_tax_diff
@@ -441,22 +441,22 @@ def test_get_river_tally_table_insert_sqlstr_CorrectlyPopulatesTable01(
     assert len(river_tallys) == 2
 
     bob_tom_x = river_tallys.get(tom_text)
-    assert bob_tom_x.currency_title == bob_text
-    assert bob_tom_x.tax_title == tom_text
+    assert bob_tom_x.currency_healer == bob_text
+    assert bob_tom_x.tax_healer == tom_text
     assert bob_tom_x.tax_total == 0.2
     assert bob_tom_x.debt == 0.411
     assert round(bob_tom_x.tax_diff, 15) == 0.211
 
     bob_sal_x = river_tallys.get(sal_text)
-    assert bob_sal_x.currency_title == bob_text
-    assert bob_sal_x.tax_title == sal_text
+    assert bob_sal_x.currency_healer == bob_text
+    assert bob_sal_x.tax_healer == sal_text
     assert bob_sal_x.tax_total == 0.8
     assert bob_sal_x.debt == 0.455
     assert round(bob_sal_x.tax_diff, 15) == -0.345
 
     # for value in river_tallys.values():
-    #     assert value.currency_title == bob_text
-    #     assert value.tax_title in [tom_text, sal_text]
+    #     assert value.currency_healer == bob_text
+    #     assert value.tax_healer in [tom_text, sal_text]
     #     assert value.tax_total in [0.2, 0.8]
     #     assert value.debt in [0.411, 0.455]
     #     assert round(value.tax_diff, 15) in [0.211, -0.345]
@@ -571,22 +571,22 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     #     print(f"{river_bucket=}")
 
     bucket_0 = river_buckets[0]
-    assert bucket_0.currency_title == sal_text
-    assert bucket_0.dst_title == sal_text
+    assert bucket_0.currency_healer == sal_text
+    assert bucket_0.dst_healer == sal_text
     assert bucket_0.bucket_num == 0
     assert bucket_0.curr_start == 0.04401266686517654
     assert bucket_0.curr_close == 0.1
 
     bucket_1 = river_buckets[1]
-    assert bucket_1.currency_title == sal_text
-    assert bucket_1.dst_title == sal_text
+    assert bucket_1.currency_healer == sal_text
+    assert bucket_1.dst_healer == sal_text
     assert bucket_1.bucket_num == 1
     assert bucket_1.curr_start == 0.12316456150798766
     assert bucket_1.curr_close == 1.0
 
     # for value in river_buckets.values():
-    #     assert value.currency_title == sal_text
-    #     assert value.dst_title == sal_text
+    #     assert value.currency_healer == sal_text
+    #     assert value.dst_healer == sal_text
     #     assert value.bucket_num in [0, 1]
     #     assert value.curr_start in [0.12316456150798766, 0.04401266686517654]
     #     assert value.curr_close in [0.1, 1.0]

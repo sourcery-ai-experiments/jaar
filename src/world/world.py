@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from src.world.person import PersonName, PersonUnit, personunit_shop
 
 
-class WorldMark(str):
+class WorldMark(str):  # Created to help track the concept
     pass
 
 

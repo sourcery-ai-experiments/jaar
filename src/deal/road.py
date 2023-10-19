@@ -2,7 +2,7 @@ class InvalidRoadException(Exception):
     pass
 
 
-class Road(str):
+class Road(str):  # Created to help track the concept
     pass
 
 
