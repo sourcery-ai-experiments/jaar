@@ -16,28 +16,28 @@ def get_table_count_sqlstr(
 # river_flow
 def get_river_flow_table_delete_sqlstr(currency_deal_healer: str) -> str:
     return f"""
-        DELETE FROM river_flow
-        WHERE currency_healer = '{currency_deal_healer}' 
-        ;
+DELETE FROM river_flow
+WHERE currency_healer = '{currency_deal_healer}' 
+;
     """
 
 
 def get_river_flow_table_create_sqlstr() -> str:
     return """
-        CREATE TABLE IF NOT EXISTS river_flow (
-          currency_healer VARCHAR(255) NOT NULL
-        , src_healer VARCHAR(255) NOT NULL
-        , dst_healer VARCHAR(255) NOT NULL
-        , currency_start FLOAT NOT NULL
-        , currency_close FLOAT NOT NULL
-        , flow_num INT NOT NULL
-        , parent_flow_num INT NULL
-        , river_tree_level INT NOT NULL
-        , FOREIGN KEY(currency_healer) REFERENCES dealunits(healer)
-        , FOREIGN KEY(src_healer) REFERENCES dealunits(healer)
-        , FOREIGN KEY(dst_healer) REFERENCES dealunits(healer)
-        )
-        ;
+CREATE TABLE IF NOT EXISTS river_flow (
+  currency_healer VARCHAR(255) NOT NULL
+, src_healer VARCHAR(255) NOT NULL
+, dst_healer VARCHAR(255) NOT NULL
+, currency_start FLOAT NOT NULL
+, currency_close FLOAT NOT NULL
+, flow_num INT NOT NULL
+, parent_flow_num INT NULL
+, river_tree_level INT NOT NULL
+, FOREIGN KEY(currency_healer) REFERENCES dealunits(healer)
+, FOREIGN KEY(src_healer) REFERENCES dealunits(healer)
+, FOREIGN KEY(dst_healer) REFERENCES dealunits(healer)
+)
+;
     """
 
 
@@ -60,47 +60,47 @@ def get_river_flow_table_insert_sqlstr(
     river_flow_x: RiverFlowUnit,
 ) -> str:
     return f"""
-        INSERT INTO river_flow (
-          currency_healer
-        , src_healer
-        , dst_healer
-        , currency_start 
-        , currency_close
-        , flow_num
-        , parent_flow_num
-        , river_tree_level
-        )
-        VALUES (
-          '{river_flow_x.currency_deal_healer}'
-        , '{river_flow_x.src_healer}'
-        , '{river_flow_x.dst_healer}'
-        , {sqlite_null(river_flow_x.currency_start)}
-        , {sqlite_null(river_flow_x.currency_close)}
-        , {river_flow_x.flow_num}
-        , {sqlite_null(river_flow_x.parent_flow_num)}
-        , {river_flow_x.river_tree_level}
-        )
-        ;
-    """
+INSERT INTO river_flow (
+    currency_healer
+, src_healer
+, dst_healer
+, currency_start 
+, currency_close
+, flow_num
+, parent_flow_num
+, river_tree_level
+)
+VALUES (
+    '{river_flow_x.currency_deal_healer}'
+, '{river_flow_x.src_healer}'
+, '{river_flow_x.dst_healer}'
+, {sqlite_null(river_flow_x.currency_start)}
+, {sqlite_null(river_flow_x.currency_close)}
+, {river_flow_x.flow_num}
+, {sqlite_null(river_flow_x.parent_flow_num)}
+, {river_flow_x.river_tree_level}
+)
+;
+"""
 
 
 def get_river_flow_dict(
     db_conn: str, currency_deal_healer: str
 ) -> dict[str:RiverFlowUnit]:
     sqlstr = f"""
-        SELECT 
-          currency_healer
-        , src_healer
-        , dst_healer
-        , currency_start
-        , currency_close
-        , flow_num
-        , parent_flow_num
-        , river_tree_level
-        FROM river_flow
-        WHERE currency_healer = '{currency_deal_healer}' 
-        ;
-    """
+SELECT 
+    currency_healer
+, src_healer
+, dst_healer
+, currency_start
+, currency_close
+, flow_num
+, parent_flow_num
+, river_tree_level
+FROM river_flow
+WHERE currency_healer = '{currency_deal_healer}' 
+;
+"""
     dict_x = {}
     cursor_x = db_conn.cursor()
     results_cursor_x = cursor_x.execute(sqlstr)
@@ -124,60 +124,60 @@ def get_river_flow_dict(
 # river_bucket
 def get_river_bucket_table_delete_sqlstr(currency_deal_healer: str) -> str:
     return f"""
-        DELETE FROM river_bucket
-        WHERE currency_healer = '{currency_deal_healer}' 
-        ;
+DELETE FROM river_bucket
+WHERE currency_healer = '{currency_deal_healer}' 
+;
     """
 
 
 def get_river_bucket_table_create_sqlstr() -> str:
     return """
-        CREATE TABLE IF NOT EXISTS river_bucket (
-          currency_healer VARCHAR(255) NOT NULL
-        , dst_healer VARCHAR(255) NOT NULL
-        , bucket_num INT NOT NULL
-        , curr_start FLOAT NOT NULL
-        , curr_close FLOAT NOT NULL
-        , FOREIGN KEY(currency_healer) REFERENCES dealunits(healer)
-        , FOREIGN KEY(dst_healer) REFERENCES dealunits(healer)
-        )
-    ;
-    """
+CREATE TABLE IF NOT EXISTS river_bucket (
+    currency_healer VARCHAR(255) NOT NULL
+, dst_healer VARCHAR(255) NOT NULL
+, bucket_num INT NOT NULL
+, curr_start FLOAT NOT NULL
+, curr_close FLOAT NOT NULL
+, FOREIGN KEY(currency_healer) REFERENCES dealunits(healer)
+, FOREIGN KEY(dst_healer) REFERENCES dealunits(healer)
+)
+;
+"""
 
 
 def get_river_bucket_table_insert_sqlstr(currency_deal_healer: str) -> str:
     return f"""
-        INSERT INTO river_bucket (
-          currency_healer
-        , dst_healer
-        , bucket_num
-        , curr_start
-        , curr_close
-        )
-        SELECT 
-          currency_healer
-        , dst_healer
-        , currency_bucket_num
-        , min(currency_start) currency_bucket_start
-        , max(currency_close) currency_bucket_close
-        FROM  (
-        SELECT *, SUM(step) OVER (ORDER BY currency_start) AS currency_bucket_num
-        FROM  (
-            SELECT 
-            CASE 
-            WHEN lag(currency_close) OVER (ORDER BY currency_start) < currency_start 
-                OR lag(currency_close) OVER (ORDER BY currency_start) = NULL 
-            THEN 1
-            ELSE 0
-            END AS step
-            , *
-            FROM  river_flow
-            WHERE currency_healer = '{currency_deal_healer}' and dst_healer = currency_healer 
-            ) b
-        ) c
-        GROUP BY currency_healer, dst_healer, currency_bucket_num
-        ORDER BY currency_bucket_start
-        ;
+INSERT INTO river_bucket (
+  currency_healer
+, dst_healer
+, bucket_num
+, curr_start
+, curr_close
+)
+SELECT 
+  currency_healer
+, dst_healer
+, currency_bucket_num
+, min(currency_start) currency_bucket_start
+, max(currency_close) currency_bucket_close
+FROM  (
+SELECT *, SUM(step) OVER (ORDER BY currency_start) AS currency_bucket_num
+FROM  (
+    SELECT 
+    CASE 
+    WHEN lag(currency_close) OVER (ORDER BY currency_start) < currency_start 
+        OR lag(currency_close) OVER (ORDER BY currency_start) = NULL 
+    THEN 1
+    ELSE 0
+    END AS step
+    , *
+    FROM  river_flow
+    WHERE currency_healer = '{currency_deal_healer}' and dst_healer = currency_healer 
+    ) b
+) c
+GROUP BY currency_healer, dst_healer, currency_bucket_num
+ORDER BY currency_bucket_start
+;
     """
 
 
@@ -194,16 +194,16 @@ def get_river_bucket_dict(
     db_conn: Connection, currency_deal_healer: str
 ) -> dict[str:RiverBucketUnit]:
     sqlstr = f"""
-        SELECT
-          currency_healer
-        , dst_healer
-        , bucket_num
-        , curr_start
-        , curr_close
-        FROM river_bucket
-        WHERE currency_healer = '{currency_deal_healer}'
-        ;
-    """
+SELECT
+    currency_healer
+, dst_healer
+, bucket_num
+, curr_start
+, curr_close
+FROM river_bucket
+WHERE currency_healer = '{currency_deal_healer}'
+;
+"""
     dict_x = {}
     results = db_conn.execute(sqlstr)
 
@@ -222,48 +222,48 @@ def get_river_bucket_dict(
 # river tally
 def get_river_tally_table_delete_sqlstr(currency_deal_healer: str) -> str:
     return f"""
-        DELETE FROM river_tally
-        WHERE currency_healer = '{currency_deal_healer}' 
-        ;
-    """
+DELETE FROM river_tally
+WHERE currency_healer = '{currency_deal_healer}' 
+;
+"""
 
 
 def get_river_tally_table_create_sqlstr() -> str:
     return """
-        CREATE TABLE IF NOT EXISTS river_tally (
-          currency_healer VARCHAR(255) NOT NULL
-        , tax_healer VARCHAR(255) NOT NULL
-        , tax_total FLOAT NOT NULL
-        , debt FLOAT NULL
-        , tax_diff FLOAT NULL
-        , FOREIGN KEY(currency_healer) REFERENCES dealunits(healer)
-        , FOREIGN KEY(tax_healer) REFERENCES dealunits(healer)
-        )
-    ;
-    """
+CREATE TABLE IF NOT EXISTS river_tally (
+    currency_healer VARCHAR(255) NOT NULL
+, tax_healer VARCHAR(255) NOT NULL
+, tax_total FLOAT NOT NULL
+, debt FLOAT NULL
+, tax_diff FLOAT NULL
+, FOREIGN KEY(currency_healer) REFERENCES dealunits(healer)
+, FOREIGN KEY(tax_healer) REFERENCES dealunits(healer)
+)
+;
+"""
 
 
 def get_river_tally_table_insert_sqlstr(currency_deal_healer: str) -> str:
     return f"""
-        INSERT INTO river_tally (
-          currency_healer
-        , tax_healer
-        , tax_total
-        , debt
-        , tax_diff
-        )
-        SELECT 
-          rt.currency_healer
-        , rt.src_healer
-        , SUM(rt.currency_close-rt.currency_start) tax_paid
-        , l._deal_agenda_ratio_debt
-        , l._deal_agenda_ratio_debt - SUM(rt.currency_close-rt.currency_start)
-        FROM river_flow rt
-        LEFT JOIN ledger l ON l.deal_healer = rt.currency_healer AND l.party_title = rt.src_healer
-        WHERE rt.currency_healer='{currency_deal_healer}' and rt.dst_healer=rt.currency_healer
-        GROUP BY rt.currency_healer, rt.src_healer
-        ;
-    """
+INSERT INTO river_tally (
+    currency_healer
+, tax_healer
+, tax_total
+, debt
+, tax_diff
+)
+SELECT 
+    rt.currency_healer
+, rt.src_healer
+, SUM(rt.currency_close-rt.currency_start) tax_paid
+, l._deal_agenda_ratio_debt
+, l._deal_agenda_ratio_debt - SUM(rt.currency_close-rt.currency_start)
+FROM river_flow rt
+LEFT JOIN ledger l ON l.deal_healer = rt.currency_healer AND l.party_title = rt.src_healer
+WHERE rt.currency_healer='{currency_deal_healer}' and rt.dst_healer=rt.currency_healer
+GROUP BY rt.currency_healer, rt.src_healer
+;
+"""
 
 
 @dataclass
@@ -281,16 +281,16 @@ def get_river_tally_dict(
     db_conn: Connection, currency_deal_healer: str
 ) -> dict[str:RiverTallyUnit]:
     sqlstr = f"""
-        SELECT
-          currency_healer
-        , tax_healer
-        , tax_total
-        , debt
-        , tax_diff
-        FROM river_tally
-        WHERE currency_healer = '{currency_deal_healer}'
-        ;
-    """
+SELECT
+  currency_healer
+, tax_healer
+, tax_total
+, debt
+, tax_diff
+FROM river_tally
+WHERE currency_healer = '{currency_deal_healer}'
+;
+"""
     dict_x = {}
     results = db_conn.execute(sqlstr)
 
@@ -311,76 +311,76 @@ def get_river_tally_dict(
 # deal
 def get_deal_table_create_sqlstr() -> str:
     return """
-        CREATE TABLE IF NOT EXISTS dealunits (
-          healer VARCHAR(255) PRIMARY KEY ASC
-        , UNIQUE(healer)
-        )
-    ;
-    """
+CREATE TABLE IF NOT EXISTS dealunits (
+  healer VARCHAR(255) PRIMARY KEY ASC
+, UNIQUE(healer)
+)
+;
+"""
 
 
 def get_deal_table_insert_sqlstr(deal_x: DealUnit) -> str:
     return f"""
-        INSERT INTO dealunits (
-            healer
-            )
-        VALUES (
-            '{deal_x._healer}' 
-        )
-        ;
-        """
+INSERT INTO dealunits (
+  healer
+)
+VALUES (
+  '{deal_x._healer}' 
+)
+;
+"""
 
 
 # ledger
 def get_ledger_table_create_sqlstr() -> str:
     return """
-        CREATE TABLE IF NOT EXISTS ledger (
-          deal_healer VARCHAR(255) NOT NULL 
-        , party_title VARCHAR(255) NOT NULL
-        , _deal_credit FLOAT
-        , _deal_debt FLOAT
-        , _deal_agenda_credit FLOAT
-        , _deal_agenda_debt FLOAT
-        , _deal_agenda_ratio_credit FLOAT
-        , _deal_agenda_ratio_debt FLOAT
-        , _creditor_active INT
-        , _debtor_active INT
-        , FOREIGN KEY(deal_healer) REFERENCES dealunits(healer)
-        , FOREIGN KEY(party_title) REFERENCES dealunits(healer)
-        , UNIQUE(deal_healer, party_title)
-        )
-    ;
-    """
+CREATE TABLE IF NOT EXISTS ledger (
+  deal_healer VARCHAR(255) NOT NULL 
+, party_title VARCHAR(255) NOT NULL
+, _deal_credit FLOAT
+, _deal_debt FLOAT
+, _deal_agenda_credit FLOAT
+, _deal_agenda_debt FLOAT
+, _deal_agenda_ratio_credit FLOAT
+, _deal_agenda_ratio_debt FLOAT
+, _creditor_active INT
+, _debtor_active INT
+, FOREIGN KEY(deal_healer) REFERENCES dealunits(healer)
+, FOREIGN KEY(party_title) REFERENCES dealunits(healer)
+, UNIQUE(deal_healer, party_title)
+)
+;
+"""
 
 
 def get_ledger_table_insert_sqlstr(deal_x: DealUnit, partyunit_x: PartyUnit) -> str:
     return f"""
-        INSERT INTO ledger (
-              deal_healer
-            , party_title
-            , _deal_credit
-            , _deal_debt
-            , _deal_agenda_credit
-            , _deal_agenda_debt
-            , _deal_agenda_ratio_credit
-            , _deal_agenda_ratio_debt
-            , _creditor_active
-            , _debtor_active
-            )
-        VALUES (
-            '{deal_x._healer}' 
-            , '{partyunit_x.title}'
-            , {sqlite_null(partyunit_x._deal_credit)} 
-            , {sqlite_null(partyunit_x._deal_debt)}
-            , {sqlite_null(partyunit_x._deal_agenda_credit)}
-            , {sqlite_null(partyunit_x._deal_agenda_debt)}
-            , {sqlite_null(partyunit_x._deal_agenda_ratio_credit)}
-            , {sqlite_null(partyunit_x._deal_agenda_ratio_debt)}
-            , {sqlite_bool(partyunit_x._creditor_active)}
-            , {sqlite_bool(partyunit_x._debtor_active)}
-        )
-        ;
-        """
+INSERT INTO ledger (
+  deal_healer
+, party_title
+, _deal_credit
+, _deal_debt
+, _deal_agenda_credit
+, _deal_agenda_debt
+, _deal_agenda_ratio_credit
+, _deal_agenda_ratio_debt
+, _creditor_active
+, _debtor_active
+)
+VALUES (
+  '{deal_x._healer}' 
+, '{partyunit_x.title}'
+, {sqlite_null(partyunit_x._deal_credit)} 
+, {sqlite_null(partyunit_x._deal_debt)}
+, {sqlite_null(partyunit_x._deal_agenda_credit)}
+, {sqlite_null(partyunit_x._deal_agenda_debt)}
+, {sqlite_null(partyunit_x._deal_agenda_ratio_credit)}
+, {sqlite_null(partyunit_x._deal_agenda_ratio_debt)}
+, {sqlite_bool(partyunit_x._creditor_active)}
+, {sqlite_bool(partyunit_x._debtor_active)}
+)
+;
+"""
 
 
 @dataclass
@@ -399,21 +399,21 @@ class LedgerUnit:
 
 def get_ledger_dict(db_conn: Connection, payer_healer: str) -> dict[str:LedgerUnit]:
     sqlstr = f"""
-        SELECT 
-          deal_healer
-        , party_title
-        , _deal_credit
-        , _deal_debt
-        , _deal_agenda_credit
-        , _deal_agenda_debt
-        , _deal_agenda_ratio_credit
-        , _deal_agenda_ratio_debt
-        , _creditor_active
-        , _debtor_active
-        FROM ledger
-        WHERE deal_healer = '{payer_healer}' 
-        ;
-    """
+SELECT 
+  deal_healer
+, party_title
+, _deal_credit
+, _deal_debt
+, _deal_agenda_credit
+, _deal_agenda_debt
+, _deal_agenda_ratio_credit
+, _deal_agenda_ratio_debt
+, _creditor_active
+, _debtor_active
+FROM ledger
+WHERE deal_healer = '{payer_healer}' 
+;
+"""
     dict_x = {}
     results = db_conn.execute(sqlstr)
 
@@ -464,19 +464,19 @@ def get_river_ledger_unit(
 # idea_catalog
 def get_idea_catalog_table_create_sqlstr() -> str:
     return """
-        CREATE TABLE IF NOT EXISTS idea_catalog (
-          deal_healer VARCHAR(255) NOT NULL
-        , idea_road VARCHAR(1000) NOT NULL
-        )
-        ;
-    """
+CREATE TABLE IF NOT EXISTS idea_catalog (
+  deal_healer VARCHAR(255) NOT NULL
+, idea_road VARCHAR(1000) NOT NULL
+)
+;
+"""
 
 
 def get_idea_catalog_table_count(db_conn: Connection, deal_healer: str) -> str:
     sqlstr = f"""
-        {get_table_count_sqlstr("idea_catalog")} WHERE deal_healer = '{deal_healer}'
-        ;
-    """
+{get_table_count_sqlstr("idea_catalog")} WHERE deal_healer = '{deal_healer}'
+;
+"""
     results = db_conn.execute(sqlstr)
     deal_row_count = 0
     for row in results.fetchall():
@@ -495,16 +495,16 @@ def get_idea_catalog_table_insert_sqlstr(
 ) -> str:
     # return f"""INSERT INTO idea_catalog (deal_healer, idea_road) VALUES ('{idea_catalog.deal_healer}', '{idea_catalog.idea_road}');"""
     return f"""
-        INSERT INTO idea_catalog (
-          deal_healer
-        , idea_road
-        )
-        VALUES (
-          '{idea_catalog.deal_healer}'
-        , '{get_road_without_root_node(idea_catalog.idea_road)}'
-        )
-        ;
-    """
+INSERT INTO idea_catalog (
+  deal_healer
+, idea_road
+)
+VALUES (
+  '{idea_catalog.deal_healer}'
+, '{get_road_without_root_node(idea_catalog.idea_road)}'
+)
+;
+"""
 
 
 def get_idea_catalog_dict(db_conn: Connection, search_road: Road = None):
@@ -514,13 +514,13 @@ def get_idea_catalog_dict(db_conn: Connection, search_road: Road = None):
         search_road_without_root_node = get_road_without_root_node(search_road)
         where_clause = f"WHERE idea_road = '{search_road_without_root_node}'"
     sqlstr = f"""
-        SELECT 
-          deal_healer
-        , idea_road
-        FROM idea_catalog
-        {where_clause}
-        ;
-    """
+SELECT 
+  deal_healer
+, idea_road
+FROM idea_catalog
+{where_clause}
+;
+"""
     results = db_conn.execute(sqlstr)
 
     dict_x = {}
@@ -534,20 +534,20 @@ def get_idea_catalog_dict(db_conn: Connection, search_road: Road = None):
 # acptfact_catalog
 def get_acptfact_catalog_table_create_sqlstr() -> str:
     return """
-        CREATE TABLE IF NOT EXISTS acptfact_catalog (
-          deal_healer VARCHAR(255) NOT NULL
-        , base VARCHAR(1000) NOT NULL
-        , pick VARCHAR(1000) NOT NULL
-        )
-        ;
-    """
+CREATE TABLE IF NOT EXISTS acptfact_catalog (
+  deal_healer VARCHAR(255) NOT NULL
+, base VARCHAR(1000) NOT NULL
+, pick VARCHAR(1000) NOT NULL
+)
+;
+"""
 
 
 def get_acptfact_catalog_table_count(db_conn: Connection, deal_healer: str) -> str:
     sqlstr = f"""
-        {get_table_count_sqlstr("acptfact_catalog")} WHERE deal_healer = '{deal_healer}'
-        ;
-    """
+{get_table_count_sqlstr("acptfact_catalog")} WHERE deal_healer = '{deal_healer}'
+;
+"""
     results = db_conn.execute(sqlstr)
     deal_row_count = 0
     for row in results.fetchall():
@@ -566,37 +566,37 @@ def get_acptfact_catalog_table_insert_sqlstr(
     acptfact_catalog: AcptFactCatalog,
 ) -> str:
     return f"""
-        INSERT INTO acptfact_catalog (
-          deal_healer
-        , base
-        , pick
-        )
-        VALUES (
-          '{acptfact_catalog.deal_healer}'
-        , '{acptfact_catalog.base}'
-        , '{acptfact_catalog.pick}'
-        )
-        ;
-    """
+INSERT INTO acptfact_catalog (
+  deal_healer
+, base
+, pick
+)
+VALUES (
+  '{acptfact_catalog.deal_healer}'
+, '{acptfact_catalog.base}'
+, '{acptfact_catalog.pick}'
+)
+;
+"""
 
 
 # groupunit_catalog
 def get_groupunit_catalog_table_create_sqlstr() -> str:
     return """
-        CREATE TABLE IF NOT EXISTS groupunit_catalog (
-          deal_healer VARCHAR(255) NOT NULL
-        , groupunit_brand VARCHAR(1000) NOT NULL
-        , partylinks_set_by_project_road VARCHAR(1000) NULL
-        )
-        ;
-    """
+CREATE TABLE IF NOT EXISTS groupunit_catalog (
+  deal_healer VARCHAR(255) NOT NULL
+, groupunit_brand VARCHAR(1000) NOT NULL
+, partylinks_set_by_project_road VARCHAR(1000) NULL
+)
+;
+"""
 
 
 def get_groupunit_catalog_table_count(db_conn: Connection, deal_healer: str) -> str:
     sqlstr = f"""
-        {get_table_count_sqlstr("groupunit_catalog")} WHERE deal_healer = '{deal_healer}'
-        ;
-    """
+{get_table_count_sqlstr("groupunit_catalog")} WHERE deal_healer = '{deal_healer}'
+;
+"""
     results = db_conn.execute(sqlstr)
     deal_row_count = 0
     for row in results.fetchall():
@@ -615,29 +615,29 @@ def get_groupunit_catalog_table_insert_sqlstr(
     groupunit_catalog: GroupUnitCatalog,
 ) -> str:
     return f"""
-        INSERT INTO groupunit_catalog (
-          deal_healer
-        , groupunit_brand
-        , partylinks_set_by_project_road
-        )
-        VALUES (
-          '{groupunit_catalog.deal_healer}'
-        , '{groupunit_catalog.groupunit_brand}'
-        , '{groupunit_catalog.partylinks_set_by_project_road}'
-        )
-        ;
-    """
+INSERT INTO groupunit_catalog (
+  deal_healer
+, groupunit_brand
+, partylinks_set_by_project_road
+)
+VALUES (
+  '{groupunit_catalog.deal_healer}'
+, '{groupunit_catalog.groupunit_brand}'
+, '{groupunit_catalog.partylinks_set_by_project_road}'
+)
+;
+"""
 
 
 def get_groupunit_catalog_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog]:
     sqlstr = """
-        SELECT 
-          deal_healer
-        , groupunit_brand
-        , partylinks_set_by_project_road
-        FROM groupunit_catalog
-        ;
-    """
+SELECT 
+  deal_healer
+, groupunit_brand
+, partylinks_set_by_project_road
+FROM groupunit_catalog
+;
+"""
     results = db_conn.execute(sqlstr)
 
     dict_x = {}
