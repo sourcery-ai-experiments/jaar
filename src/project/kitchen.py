@@ -80,59 +80,59 @@ class KitchenAdmin:
             self.save_seed_deal(seed_deal)
 
     def _save_deal_to_path(
-        self, deal_x: DealUnit, dest_dir: str, file_title: str = None
+        self, x_deal: DealUnit, dest_dir: str, file_title: str = None
     ):
         if file_title is None:
-            file_title = f"{deal_x._healer}.json"
+            file_title = f"{x_deal._healer}.json"
         # if dest_dir == self._deals_public_dir:
         #     file_title = self._public_file_title
         x_func_save_file(
             dest_dir=dest_dir,
             file_title=file_title,
-            file_text=deal_x.get_json(),
+            file_text=x_deal.get_json(),
             replace=True,
         )
 
-    def save_deal_to_public(self, deal_x: DealUnit):
+    def save_deal_to_public(self, x_deal: DealUnit):
         dest_dir = self._deals_public_dir
-        self._save_deal_to_path(deal_x, dest_dir)
+        self._save_deal_to_path(x_deal, dest_dir)
 
-    def save_ignore_deal(self, deal_x: DealUnit, src_deal_healer: str):
+    def save_ignore_deal(self, x_deal: DealUnit, src_deal_healer: str):
         dest_dir = self._deals_ignore_dir
         file_title = None
         if src_deal_healer != None:
             file_title = f"{src_deal_healer}.json"
         else:
-            file_title = f"{deal_x._healer}.json"
-        self._save_deal_to_path(deal_x, dest_dir, file_title)
+            file_title = f"{x_deal._healer}.json"
+        self._save_deal_to_path(x_deal, dest_dir, file_title)
 
-    def save_deal_to_digest(self, deal_x: DealUnit, src_deal_healer: str = None):
+    def save_deal_to_digest(self, x_deal: DealUnit, src_deal_healer: str = None):
         dest_dir = self._deals_digest_dir
         file_title = None
         if src_deal_healer != None:
             file_title = f"{src_deal_healer}.json"
         else:
-            file_title = f"{deal_x._healer}.json"
-        self._save_deal_to_path(deal_x, dest_dir, file_title)
+            file_title = f"{x_deal._healer}.json"
+        self._save_deal_to_path(x_deal, dest_dir, file_title)
 
-    def save_seed_deal(self, deal_x: DealUnit):
-        deal_x.set_healer(self._kitchen_title)
-        self._save_deal_to_path(deal_x, self._kitchenunit_dir, self._seed_file_title)
+    def save_seed_deal(self, x_deal: DealUnit):
+        x_deal.set_healer(self._kitchen_title)
+        self._save_deal_to_path(x_deal, self._kitchenunit_dir, self._seed_file_title)
 
-    def save_deal_to_depot(self, deal_x: DealUnit):
+    def save_deal_to_depot(self, x_deal: DealUnit):
         dest_dir = self._deals_depot_dir
-        self._save_deal_to_path(deal_x, dest_dir)
+        self._save_deal_to_path(x_deal, dest_dir)
 
     def save_output_deal(self) -> DealUnit:
-        seed_deal_x = self.open_seed_deal()
-        seed_deal_x.meld(seed_deal_x, party_weight=1)
-        deal_x = get_meld_of_deal_files(
-            primary_deal=seed_deal_x,
+        x_seed_deal = self.open_seed_deal()
+        x_seed_deal.meld(x_seed_deal, party_weight=1)
+        x_deal = get_meld_of_deal_files(
+            primary_deal=x_seed_deal,
             meldees_dir=self._deals_digest_dir,
         )
         dest_dir = self._kitchenunit_dir
         file_title = self._deal_output_file_title
-        self._save_deal_to_path(deal_x, dest_dir, file_title)
+        self._save_deal_to_path(x_deal, dest_dir, file_title)
 
     def open_public_deal(self, healer: PersonName) -> str:
         file_title_x = f"{healer}.json"
@@ -232,7 +232,7 @@ class KitchenUnit:
                     x_deal_json=self._admin.open_public_deal(party_x.title)
                 )
                 self.set_depot_deal(
-                    deal_x=party_deal,
+                    x_deal=party_deal,
                     depotlink_type=party_x.depotlink_type,
                     creditor_weight=party_x.creditor_weight,
                     debtor_weight=party_x.debtor_weight,
@@ -240,15 +240,15 @@ class KitchenUnit:
 
     def set_depot_deal(
         self,
-        deal_x: DealUnit,
+        x_deal: DealUnit,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
         self.set_seed_if_empty()
-        self._admin.save_deal_to_depot(deal_x)
+        self._admin.save_deal_to_depot(x_deal)
         self._set_depotlink(
-            deal_x._healer, depotlink_type, creditor_weight, debtor_weight
+            x_deal._healer, depotlink_type, creditor_weight, debtor_weight
         )
         if self.get_seed()._auto_output_to_public:
             self._admin.save_refreshed_output_to_public()
@@ -323,9 +323,9 @@ class KitchenUnit:
             self._seed = self._admin.open_seed_deal()
         return self._seed
 
-    def set_seed(self, deal_x: DealUnit = None):
-        if deal_x != None:
-            self._seed = deal_x
+    def set_seed(self, x_deal: DealUnit = None):
+        if x_deal != None:
+            self._seed = x_deal
         self._admin.save_seed_deal(self._seed)
         self._seed = None
 

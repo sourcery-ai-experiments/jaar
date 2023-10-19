@@ -159,7 +159,7 @@ def test_kitchenunit_set_depot_deal_SavesFileCorrectly(
 
     # WHEN
     bob_cx.set_seed_if_empty()
-    bob_cx.set_depot_deal(deal_x=cal1, depotlink_type="blind_trust")
+    bob_cx.set_depot_deal(x_deal=cal1, depotlink_type="blind_trust")
 
     # THEN
     print(f"Saving to {bob_cx._admin._deals_depot_dir=}")
@@ -258,14 +258,14 @@ def test_kitchenunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
     ernie_deal = get_cal2nodes(_healer=ernie_text)
     steve_text = "steve"
     old_steve_deal = get_cal2nodes(_healer=steve_text)
-    sx.save_public_deal(deal_x=ernie_deal)
-    sx.save_public_deal(deal_x=old_steve_deal)
-    yao_deal.set_depot_deal(deal_x=ernie_deal, depotlink_type="blind_trust")
-    yao_deal.set_depot_deal(deal_x=old_steve_deal, depotlink_type="blind_trust")
+    sx.save_public_deal(x_deal=ernie_deal)
+    sx.save_public_deal(x_deal=old_steve_deal)
+    yao_deal.set_depot_deal(x_deal=ernie_deal, depotlink_type="blind_trust")
+    yao_deal.set_depot_deal(x_deal=old_steve_deal, depotlink_type="blind_trust")
 
     assert len(yao_deal._admin.get_remelded_output_deal().get_idea_list()) == 4
     new_steve_deal = get_cal3nodes(_healer=steve_text)
-    sx.save_public_deal(deal_x=new_steve_deal)
+    sx.save_public_deal(x_deal=new_steve_deal)
     print(f"{env_dir=} {yao_deal._admin._deals_public_dir=}")
     # for file_title in x_func_dir_files(dir_path=env_dir):
     #     print(f"{bob_cx._admin._deals_public_dir=} {file_title=}")

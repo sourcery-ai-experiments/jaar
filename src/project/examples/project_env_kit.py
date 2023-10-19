@@ -49,16 +49,16 @@ def env_dir_setup_cleanup():
 
 
 def create_deal_file_for_projects(project_dir: str, deal_healer: str):
-    deal_x = dealunit_shop(_healer=deal_healer)
+    x_deal = dealunit_shop(_healer=deal_healer)
     deal_dir = f"{project_dir}/deals"
-    # file_path = f"{deal_dir}/{deal_x._healer}.json"
+    # file_path = f"{deal_dir}/{x_deal._healer}.json"
     # if not path.exists(file_path):
-    # print(f"{file_path=} {deal_x._healer=}")
+    # print(f"{file_path=} {x_deal._healer=}")
 
     x_func_save_file(
         dest_dir=deal_dir,
-        file_title=f"{deal_x._healer}.json",
-        file_text=deal_x.get_json(),
+        file_title=f"{x_deal._healer}.json",
+        file_text=x_deal.get_json(),
     )
 
 
@@ -83,12 +83,12 @@ def _delete_and_set_ex3():
     x_func_delete_dir(x_project.get_object_root_dir())
     x_project.create_dirs_if_null(in_memory_bank=True)
 
-    x_project.save_public_deal(deal_x=example_healers_get_1node_deal())
+    x_project.save_public_deal(x_deal=example_healers_get_1node_deal())
     x_project.save_public_deal(
-        deal_x=example_deals_get_deal_1Task_1CE0MinutesRequired_1AcptFact()
+        example_deals_get_deal_1Task_1CE0MinutesRequired_1AcptFact()
     )
-    x_project.save_public_deal(deal_x=example_deals_deal_v001())
-    x_project.save_public_deal(deal_x=example_deals_deal_v002())
+    x_project.save_public_deal(x_deal=example_deals_deal_v001())
+    x_project.save_public_deal(x_deal=example_deals_deal_v002())
 
     # x_project.set_healer(x_kitchen=kitchenunit_shop(title="w1", env_dir=x_project.get_object_root_dir()))
     # x_project.set_healer(x_kitchen=kitchenunit_shop(title="w2", env_dir=x_project.get_object_root_dir()))
@@ -133,10 +133,8 @@ def _delete_and_set_ex3():
 
 
 def _delete_and_set_ex4():
-    project_handle = "ex4"
-    x_project = projectunit_shop(
-        handle=project_handle, projects_dir=get_test_projects_dir()
-    )
+    x_handle = "ex4"
+    x_project = projectunit_shop(handle=x_handle, projects_dir=get_test_projects_dir())
     x_func_delete_dir(x_project.get_object_root_dir())
     x_project.create_dirs_if_null(in_memory_bank=True)
     x_project.save_public_deal(example_healers_get_7nodeJRootWithH_deal())
@@ -146,12 +144,10 @@ def _delete_and_set_ex4():
 
 
 def _delete_and_set_ex5():
-    project_handle = "ex5"
-    x_project = projectunit_shop(
-        handle=project_handle, projects_dir=get_test_projects_dir()
-    )
-    x_func_delete_dir(x_project.get_object_root_dir())
-    x_project.create_dirs_if_null(in_memory_bank=True)
+    x_handle = "ex5"
+    x_p = projectunit_shop(handle=x_handle, projects_dir=get_test_projects_dir())
+    x_func_delete_dir(x_p.get_object_root_dir())
+    x_p.create_dirs_if_null(in_memory_bank=True)
 
     # ethical code ernie
     # ethical code steve
@@ -164,96 +160,54 @@ def _delete_and_set_ex5():
     deal_4 = example_healers_get_deal_2CleanNodesRandomWeights(_healer="francine")
     deal_5 = example_healers_get_deal_2CleanNodesRandomWeights(_healer="clay")
 
-    x_project.save_public_deal(deal_x=deal_1)
-    x_project.save_public_deal(deal_x=deal_2)
-    x_project.save_public_deal(deal_x=deal_3)
-    x_project.save_public_deal(deal_x=deal_4)
-    x_project.save_public_deal(deal_x=deal_5)
+    x_p.save_public_deal(x_deal=deal_1)
+    x_p.save_public_deal(x_deal=deal_2)
+    x_p.save_public_deal(x_deal=deal_3)
+    x_p.save_public_deal(x_deal=deal_4)
+    x_p.save_public_deal(x_deal=deal_5)
 
-    x_project.create_new_kitchenunit(kitchen_title=deal_1._healer)
-    x_project.create_new_kitchenunit(kitchen_title=deal_2._healer)
-    x_project.create_new_kitchenunit(kitchen_title=deal_3._healer)
-    x_project.create_new_kitchenunit(kitchen_title=deal_4._healer)
-    x_project.create_new_kitchenunit(kitchen_title=deal_5._healer)
+    x_p.create_new_kitchenunit(kitchen_title=deal_1._healer)
+    x_p.create_new_kitchenunit(kitchen_title=deal_2._healer)
+    x_p.create_new_kitchenunit(kitchen_title=deal_3._healer)
+    x_p.create_new_kitchenunit(kitchen_title=deal_4._healer)
+    x_p.create_new_kitchenunit(kitchen_title=deal_5._healer)
 
-    x_project.set_healer_depotlink(
-        deal_1._healer, deal_2._healer, "blind_trust", 3, 3.1
-    )
-    x_project.set_healer_depotlink(
-        deal_1._healer, deal_3._healer, "blind_trust", 7, 7.1
-    )
-    x_project.set_healer_depotlink(
-        deal_1._healer, deal_4._healer, "blind_trust", 4, 4.1
-    )
-    x_project.set_healer_depotlink(
-        deal_1._healer, deal_5._healer, "blind_trust", 5, 5.1
-    )
+    x_p.set_healer_depotlink(deal_1._healer, deal_2._healer, "blind_trust", 3, 3.1)
+    x_p.set_healer_depotlink(deal_1._healer, deal_3._healer, "blind_trust", 7, 7.1)
+    x_p.set_healer_depotlink(deal_1._healer, deal_4._healer, "blind_trust", 4, 4.1)
+    x_p.set_healer_depotlink(deal_1._healer, deal_5._healer, "blind_trust", 5, 5.1)
 
-    x_project.set_healer_depotlink(
-        deal_2._healer, deal_1._healer, "blind_trust", 3, 3.1
-    )
-    x_project.set_healer_depotlink(
-        deal_2._healer, deal_3._healer, "blind_trust", 7, 7.1
-    )
-    x_project.set_healer_depotlink(
-        deal_2._healer, deal_4._healer, "blind_trust", 4, 4.1
-    )
+    x_p.set_healer_depotlink(deal_2._healer, deal_1._healer, "blind_trust", 3, 3.1)
+    x_p.set_healer_depotlink(deal_2._healer, deal_3._healer, "blind_trust", 7, 7.1)
+    x_p.set_healer_depotlink(deal_2._healer, deal_4._healer, "blind_trust", 4, 4.1)
     x_deal = example_healers_get_deal_3CleanNodesRandomWeights()
-    x_project.set_healer_depotlink(
-        deal_2._healer, deal_5._healer, "ignore", 5, 5.1, x_deal
-    )
+    x_p.set_healer_depotlink(deal_2._healer, deal_5._healer, "ignore", 5, 5.1, x_deal)
 
-    x_project.set_healer_depotlink(
-        deal_3._healer, deal_1._healer, "blind_trust", 3, 3.1
-    )
-    x_project.set_healer_depotlink(
-        deal_3._healer, deal_2._healer, "blind_trust", 7, 7.1
-    )
-    x_project.set_healer_depotlink(
-        deal_3._healer, deal_4._healer, "blind_trust", 4, 4.1
-    )
-    x_project.set_healer_depotlink(
-        deal_3._healer, deal_5._healer, "blind_trust", 5, 5.1
-    )
+    x_p.set_healer_depotlink(deal_3._healer, deal_1._healer, "blind_trust", 3, 3.1)
+    x_p.set_healer_depotlink(deal_3._healer, deal_2._healer, "blind_trust", 7, 7.1)
+    x_p.set_healer_depotlink(deal_3._healer, deal_4._healer, "blind_trust", 4, 4.1)
+    x_p.set_healer_depotlink(deal_3._healer, deal_5._healer, "blind_trust", 5, 5.1)
 
-    x_project.set_healer_depotlink(
-        deal_4._healer, deal_1._healer, "blind_trust", 3, 3.1
-    )
-    x_project.set_healer_depotlink(
-        deal_4._healer, deal_2._healer, "blind_trust", 7, 7.1
-    )
-    x_project.set_healer_depotlink(
-        deal_4._healer, deal_3._healer, "blind_trust", 4, 4.1
-    )
-    x_project.set_healer_depotlink(
-        deal_4._healer, deal_5._healer, "blind_trust", 5, 5.1
-    )
+    x_p.set_healer_depotlink(deal_4._healer, deal_1._healer, "blind_trust", 3, 3.1)
+    x_p.set_healer_depotlink(deal_4._healer, deal_2._healer, "blind_trust", 7, 7.1)
+    x_p.set_healer_depotlink(deal_4._healer, deal_3._healer, "blind_trust", 4, 4.1)
+    x_p.set_healer_depotlink(deal_4._healer, deal_5._healer, "blind_trust", 5, 5.1)
 
-    x_project.set_healer_depotlink(
-        deal_5._healer, deal_1._healer, "blind_trust", 3, 3.1
-    )
-    x_project.set_healer_depotlink(
-        deal_5._healer, deal_2._healer, "blind_trust", 7, 7.1
-    )
-    x_project.set_healer_depotlink(
-        deal_5._healer, deal_3._healer, "blind_trust", 4, 4.1
-    )
-    x_project.set_healer_depotlink(
-        deal_5._healer, deal_4._healer, "blind_trust", 5, 5.1
-    )
+    x_p.set_healer_depotlink(deal_5._healer, deal_1._healer, "blind_trust", 3, 3.1)
+    x_p.set_healer_depotlink(deal_5._healer, deal_2._healer, "blind_trust", 7, 7.1)
+    x_p.set_healer_depotlink(deal_5._healer, deal_3._healer, "blind_trust", 4, 4.1)
+    x_p.set_healer_depotlink(deal_5._healer, deal_4._healer, "blind_trust", 5, 5.1)
 
-    x_project.save_kitchenunit_file(kitchen_title=deal_1._healer)
-    x_project.save_kitchenunit_file(kitchen_title=deal_2._healer)
-    x_project.save_kitchenunit_file(kitchen_title=deal_3._healer)
-    x_project.save_kitchenunit_file(kitchen_title=deal_4._healer)
-    x_project.save_kitchenunit_file(kitchen_title=deal_5._healer)
+    x_p.save_kitchenunit_file(kitchen_title=deal_1._healer)
+    x_p.save_kitchenunit_file(kitchen_title=deal_2._healer)
+    x_p.save_kitchenunit_file(kitchen_title=deal_3._healer)
+    x_p.save_kitchenunit_file(kitchen_title=deal_4._healer)
+    x_p.save_kitchenunit_file(kitchen_title=deal_5._healer)
 
 
 def _delete_and_set_ex6():
-    project_handle = "ex6"
-    x_project = projectunit_shop(
-        handle=project_handle, projects_dir=get_test_projects_dir()
-    )
+    x_handle = "ex6"
+    x_project = projectunit_shop(handle=x_handle, projects_dir=get_test_projects_dir())
     x_func_delete_dir(x_project.get_object_root_dir())
     x_project.create_dirs_if_null(in_memory_bank=False)
 
@@ -267,25 +221,25 @@ def _delete_and_set_ex6():
     sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
     sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
     sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
-    x_project.save_public_deal(deal_x=sal_deal)
+    x_project.save_public_deal(x_deal=sal_deal)
 
     bob_deal = dealunit_shop(_healer=bob_text)
     bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
     bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
-    x_project.save_public_deal(deal_x=bob_deal)
+    x_project.save_public_deal(x_deal=bob_deal)
 
     tom_deal = dealunit_shop(_healer=tom_text)
     tom_deal.add_partyunit(title=sal_text, creditor_weight=2)
-    x_project.save_public_deal(deal_x=tom_deal)
+    x_project.save_public_deal(x_deal=tom_deal)
 
     ava_deal = dealunit_shop(_healer=ava_text)
     ava_deal.add_partyunit(title=elu_text, creditor_weight=2)
-    x_project.save_public_deal(deal_x=ava_deal)
+    x_project.save_public_deal(x_deal=ava_deal)
 
     elu_deal = dealunit_shop(_healer=elu_text)
     elu_deal.add_partyunit(title=ava_text, creditor_weight=19)
     elu_deal.add_partyunit(title=sal_text, creditor_weight=1)
-    x_project.save_public_deal(deal_x=elu_deal)
+    x_project.save_public_deal(x_deal=elu_deal)
 
     x_project.refresh_bank_metrics()
     x_project.set_river_sphere_for_deal(deal_healer=sal_text, max_flows_count=100)

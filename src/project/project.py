@@ -174,9 +174,9 @@ class ProjectUnit:
             bank_conn.execute(get_river_bucket_table_insert_sqlstr(deal_healer))
 
             sal_river_tallys = get_river_tally_dict(bank_conn, deal_healer)
-            deal_x = self.get_public_deal(healer=deal_healer)
-            deal_x.set_banking_attr_partyunits(sal_river_tallys)
-            self.save_public_deal(deal_x=deal_x)
+            x_deal = self.get_public_deal(healer=deal_healer)
+            x_deal.set_banking_attr_partyunits(sal_river_tallys)
+            self.save_public_deal(x_deal=x_deal)
 
     def get_river_tallys(self, deal_healer: str) -> dict[str:RiverTallyUnit]:
         with self.get_bank_conn() as bank_conn:
@@ -204,7 +204,7 @@ class ProjectUnit:
     def _bank_insert_dealunit(self, dealunit_x: DealUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            cur.execute(get_deal_table_insert_sqlstr(deal_x=dealunit_x))
+            cur.execute(get_deal_table_insert_sqlstr(x_deal=dealunit_x))
 
     def _bank_insert_partyunit(self, dealunit_x: DealUnit):
         with self.get_bank_conn() as bank_conn:
@@ -387,20 +387,20 @@ class ProjectUnit:
         )
 
     def rename_public_deal(self, old_healer: str, new_healer: str):
-        deal_x = self.get_public_deal(healer=old_healer)
-        deal_x.set_healer(new_healer=new_healer)
-        self.save_public_deal(deal_x=deal_x)
-        self.del_public_deal(deal_x_healer=old_healer)
+        x_deal = self.get_public_deal(healer=old_healer)
+        x_deal.set_healer(new_healer=new_healer)
+        self.save_public_deal(x_deal=x_deal)
+        self.del_public_deal(x_deal_healer=old_healer)
 
-    def del_public_deal(self, deal_x_healer: str):
-        x_func_delete_dir(f"{self.get_public_dir()}/{deal_x_healer}.json")
+    def del_public_deal(self, x_deal_healer: str):
+        x_func_delete_dir(f"{self.get_public_dir()}/{x_deal_healer}.json")
 
-    def save_public_deal(self, deal_x: DealUnit):
-        deal_x.set_project_handle(project_handle=self.handle)
+    def save_public_deal(self, x_deal: DealUnit):
+        x_deal.set_project_handle(project_handle=self.handle)
         x_func_save_file(
             dest_dir=self.get_public_dir(),
-            file_title=f"{deal_x._healer}.json",
-            file_text=deal_x.get_json(),
+            file_title=f"{x_deal._healer}.json",
+            file_text=x_deal.get_json(),
         )
 
     def reload_all_kitchenunits_src_dealunits(self):
@@ -421,7 +421,7 @@ class ProjectUnit:
         ignore_deal: DealUnit = None,
     ):
         kitchenunit.set_depot_deal(
-            deal_x=dealunit,
+            x_deal=dealunit,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
@@ -441,10 +441,10 @@ class ProjectUnit:
         ignore_deal: DealUnit = None,
     ):
         x_kitchenunit = self.get_kitchenunit(title=kitchen_title)
-        deal_x = self.get_public_deal(healer=deal_healer)
+        x_deal = self.get_public_deal(healer=deal_healer)
         self._kitchenunit_set_depot_deal(
             kitchenunit=x_kitchenunit,
-            dealunit=deal_x,
+            dealunit=x_deal,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
@@ -460,10 +460,10 @@ class ProjectUnit:
         debtor_weight: float = None,
     ):
         x_kitchenunit = self.get_kitchenunit(title=kitchen_title)
-        deal_x = dealunit_shop(_healer=deal_healer)
+        x_deal = dealunit_shop(_healer=deal_healer)
         self._kitchenunit_set_depot_deal(
             kitchenunit=x_kitchenunit,
-            dealunit=deal_x,
+            dealunit=x_deal,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
@@ -478,10 +478,10 @@ class ProjectUnit:
         debtor_weight: str,
     ):
         x_kitchenunit = self.get_kitchenunit(title=kitchen_title)
-        deal_x = self.get_public_deal(_healer=partytitle)
+        x_deal = self.get_public_deal(_healer=partytitle)
         self._kitchenunit_set_depot_deal(
             kitchenunit=x_kitchenunit,
-            dealunit=deal_x,
+            dealunit=x_deal,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,

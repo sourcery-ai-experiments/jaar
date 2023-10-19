@@ -19,8 +19,10 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable01(
 ):
     # GIVEN Create example project with 4 Healers, each with 3 Partyunits = 12 ledger rows
     project_handle = get_temp_env_handle()
-    sx = projectunit_shop(handle=project_handle, projects_dir=get_test_projects_dir())
-    sx.create_dirs_if_null(in_memory_bank=True)
+    x_project = projectunit_shop(
+        handle=project_handle, projects_dir=get_test_projects_dir()
+    )
+    x_project.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tom_text = "tom"
@@ -29,32 +31,38 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable01(
     sal = dealunit_shop(_healer=sal_text)
     sal.add_partyunit(title=bob_text, creditor_weight=1)
     sal.add_partyunit(title=tom_text, creditor_weight=3)
-    sx.save_public_deal(deal_x=sal)
+    x_project.save_public_deal(x_deal=sal)
 
     bob = dealunit_shop(_healer=bob_text)
     bob.add_partyunit(title=sal_text, creditor_weight=1)
-    sx.save_public_deal(deal_x=bob)
+    x_project.save_public_deal(x_deal=bob)
 
     tom = dealunit_shop(_healer=tom_text)
     tom.add_partyunit(title=sal_text, creditor_weight=1)
-    sx.save_public_deal(deal_x=tom)
+    x_project.save_public_deal(x_deal=tom)
 
-    sx.refresh_bank_metrics()
+    x_project.refresh_bank_metrics()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 4
+    assert get_single_result_back(x_project.get_bank_conn(), sqlstr_count_ledger) == 4
 
     sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 0
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_flow) == 0
+    )
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_tally) == 0
+    )
 
     # WHEN
-    sx.set_river_sphere_for_deal(deal_healer=sal_text)
+    x_project.set_river_sphere_for_deal(deal_healer=sal_text)
 
     # THEN
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 4
-    with sx.get_bank_conn() as bank_conn:
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_flow) == 4
+    )
+    with x_project.get_bank_conn() as bank_conn:
         river_flows = get_river_flow_dict(bank_conn, currency_deal_healer=sal_text)
 
     flow_0 = river_flows.get(0)
@@ -70,9 +78,11 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable01(
     assert flow_3.river_tree_level == 2
     assert flow_3.parent_flow_num == 1
 
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 2
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_tally) == 2
+    )
 
-    with sx.get_bank_conn() as bank_conn:
+    with x_project.get_bank_conn() as bank_conn:
         river_tallys = get_river_tally_dict(bank_conn, sal_text)
     assert len(river_tallys) == 2
     river_sal_tax_bob = river_tallys.get(bob_text)
@@ -90,8 +100,10 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable02(
 ):
     # GIVEN 4 deals, 100% of river flows to sal
     project_handle = get_temp_env_handle()
-    sx = projectunit_shop(handle=project_handle, projects_dir=get_test_projects_dir())
-    sx.create_dirs_if_null(in_memory_bank=True)
+    x_project = projectunit_shop(
+        handle=project_handle, projects_dir=get_test_projects_dir()
+    )
+    x_project.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -101,43 +113,51 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable02(
     sal = dealunit_shop(_healer=sal_text)
     sal.add_partyunit(title=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
-    sx.save_public_deal(deal_x=sal)
+    x_project.save_public_deal(x_deal=sal)
 
     bob = dealunit_shop(_healer=bob_text)
     bob.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=1)
     bob.add_partyunit(title=tom_text, creditor_weight=1, debtor_weight=1)
-    sx.save_public_deal(deal_x=bob)
+    x_project.save_public_deal(x_deal=bob)
 
     tom = dealunit_shop(_healer=tom_text)
     tom.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=8)
-    sx.save_public_deal(deal_x=tom)
+    x_project.save_public_deal(x_deal=tom)
 
     elu = dealunit_shop(_healer=elu_text)
     elu.add_partyunit(title=sal_text, creditor_weight=1, debtor_weight=8)
-    sx.save_public_deal(deal_x=elu)
-    sx.refresh_bank_metrics()
+    x_project.save_public_deal(x_deal=elu)
+    x_project.refresh_bank_metrics()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 6
+    assert get_single_result_back(x_project.get_bank_conn(), sqlstr_count_ledger) == 6
 
     sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 0
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_flow) == 0
+    )
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_tally) == 0
+    )
 
     # WHEN
-    sx.set_river_sphere_for_deal(deal_healer=sal_text)
+    x_project.set_river_sphere_for_deal(deal_healer=sal_text)
 
     # THEN
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 9
-    with sx.get_bank_conn() as bank_conn:
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_flow) == 9
+    )
+    with x_project.get_bank_conn() as bank_conn:
         river_flows = get_river_flow_dict(bank_conn, currency_deal_healer=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 1
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_tally) == 1
+    )
 
-    with sx.get_bank_conn() as bank_conn:
+    with x_project.get_bank_conn() as bank_conn:
         river_tallys = get_river_tally_dict(bank_conn, sal_text)
     assert len(river_tallys) == 1
     assert river_tallys.get(bob_text) is None
@@ -153,8 +173,10 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable03(
 ):
     # GIVEN 4 deals, 85% of river flows to sal
     project_handle = get_temp_env_handle()
-    sx = projectunit_shop(handle=project_handle, projects_dir=get_test_projects_dir())
-    sx.create_dirs_if_null(in_memory_bank=True)
+    x_project = projectunit_shop(
+        handle=project_handle, projects_dir=get_test_projects_dir()
+    )
+    x_project.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -165,42 +187,50 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable03(
     sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
     sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
     sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_deal(deal_x=sal_deal)
+    x_project.save_public_deal(x_deal=sal_deal)
 
     bob_deal = dealunit_shop(_healer=bob_text)
     bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
     bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_deal(deal_x=bob_deal)
+    x_project.save_public_deal(x_deal=bob_deal)
 
     tom_deal = dealunit_shop(_healer=tom_text)
     tom_deal.add_partyunit(title=sal_text, creditor_weight=2)
-    sx.save_public_deal(deal_x=tom_deal)
+    x_project.save_public_deal(x_deal=tom_deal)
 
     ava_deal = dealunit_shop(_healer=ava_text)
-    sx.save_public_deal(deal_x=ava_deal)
-    sx.refresh_bank_metrics()
+    x_project.save_public_deal(x_deal=ava_deal)
+    x_project.refresh_bank_metrics()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 6
+    assert get_single_result_back(x_project.get_bank_conn(), sqlstr_count_ledger) == 6
 
     sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 0
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_flow) == 0
+    )
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_tally) == 0
+    )
 
     # WHEN
-    sx.set_river_sphere_for_deal(deal_healer=sal_text)
+    x_project.set_river_sphere_for_deal(deal_healer=sal_text)
 
     # THEN
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 6
-    with sx.get_bank_conn() as bank_conn:
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_flow) == 6
+    )
+    with x_project.get_bank_conn() as bank_conn:
         river_flows = get_river_flow_dict(bank_conn, currency_deal_healer=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 2
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_tally) == 2
+    )
 
-    with sx.get_bank_conn() as bank_conn:
+    with x_project.get_bank_conn() as bank_conn:
         river_tallys = get_river_tally_dict(bank_conn, sal_text)
     assert len(river_tallys) == 2
     assert river_tallys.get(bob_text) != None
@@ -221,8 +251,10 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable04(
 ):
     # GIVEN 5 deals, 85% of river flows to sal, left over %15 goes on endless loop
     project_handle = get_temp_env_handle()
-    sx = projectunit_shop(handle=project_handle, projects_dir=get_test_projects_dir())
-    sx.create_dirs_if_null(in_memory_bank=True)
+    x_project = projectunit_shop(
+        handle=project_handle, projects_dir=get_test_projects_dir()
+    )
+    x_project.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -234,48 +266,56 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable04(
     sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
     sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
     sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_deal(deal_x=sal_deal)
+    x_project.save_public_deal(x_deal=sal_deal)
 
     bob_deal = dealunit_shop(_healer=bob_text)
     bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
     bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_deal(deal_x=bob_deal)
+    x_project.save_public_deal(x_deal=bob_deal)
 
     tom_deal = dealunit_shop(_healer=tom_text)
     tom_deal.add_partyunit(title=sal_text, creditor_weight=2)
-    sx.save_public_deal(deal_x=tom_deal)
+    x_project.save_public_deal(x_deal=tom_deal)
 
     ava_deal = dealunit_shop(_healer=ava_text)
     ava_deal.add_partyunit(title=elu_text, creditor_weight=2)
-    sx.save_public_deal(deal_x=ava_deal)
+    x_project.save_public_deal(x_deal=ava_deal)
 
     elu_deal = dealunit_shop(_healer=elu_text)
     elu_deal.add_partyunit(title=ava_text, creditor_weight=2)
-    sx.save_public_deal(deal_x=elu_deal)
+    x_project.save_public_deal(x_deal=elu_deal)
 
-    sx.refresh_bank_metrics()
+    x_project.refresh_bank_metrics()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 8
+    assert get_single_result_back(x_project.get_bank_conn(), sqlstr_count_ledger) == 8
 
     sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 0
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_flow) == 0
+    )
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_tally) == 0
+    )
 
     # WHEN
-    sx.set_river_sphere_for_deal(deal_healer=sal_text)
+    x_project.set_river_sphere_for_deal(deal_healer=sal_text)
 
     # THEN
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 40
-    # with sx.get_bank_conn() as bank_conn:
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_flow) == 40
+    )
+    # with x_project.get_bank_conn() as bank_conn:
     #     river_flows = get_river_flow_dict(bank_conn, currency_deal_healer=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 2
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_tally) == 2
+    )
 
-    with sx.get_bank_conn() as bank_conn:
+    with x_project.get_bank_conn() as bank_conn:
         river_tallys = get_river_tally_dict(bank_conn, sal_text)
     assert len(river_tallys) == 2
     assert river_tallys.get(bob_text) != None
@@ -296,8 +336,10 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable05(
 ):
     # GIVEN 5 deals, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     project_handle = get_temp_env_handle()
-    sx = projectunit_shop(handle=project_handle, projects_dir=get_test_projects_dir())
-    sx.create_dirs_if_null(in_memory_bank=True)
+    x_project = projectunit_shop(
+        handle=project_handle, projects_dir=get_test_projects_dir()
+    )
+    x_project.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -309,49 +351,57 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable05(
     sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
     sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
     sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_deal(deal_x=sal_deal)
+    x_project.save_public_deal(x_deal=sal_deal)
 
     bob_deal = dealunit_shop(_healer=bob_text)
     bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
     bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_deal(deal_x=bob_deal)
+    x_project.save_public_deal(x_deal=bob_deal)
 
     tom_deal = dealunit_shop(_healer=tom_text)
     tom_deal.add_partyunit(title=sal_text, creditor_weight=2)
-    sx.save_public_deal(deal_x=tom_deal)
+    x_project.save_public_deal(x_deal=tom_deal)
 
     ava_deal = dealunit_shop(_healer=ava_text)
     ava_deal.add_partyunit(title=elu_text, creditor_weight=2)
-    sx.save_public_deal(deal_x=ava_deal)
+    x_project.save_public_deal(x_deal=ava_deal)
 
     elu_deal = dealunit_shop(_healer=elu_text)
     elu_deal.add_partyunit(title=ava_text, creditor_weight=19)
     elu_deal.add_partyunit(title=sal_text, creditor_weight=1)
-    sx.save_public_deal(deal_x=elu_deal)
+    x_project.save_public_deal(x_deal=elu_deal)
 
-    sx.refresh_bank_metrics()
+    x_project.refresh_bank_metrics()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 9
+    assert get_single_result_back(x_project.get_bank_conn(), sqlstr_count_ledger) == 9
 
     sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 0
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_flow) == 0
+    )
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_tally) == 0
+    )
 
     # WHEN
-    sx.set_river_sphere_for_deal(deal_healer=sal_text)
+    x_project.set_river_sphere_for_deal(deal_healer=sal_text)
 
     # THEN
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 40
-    # with sx.get_bank_conn() as bank_conn:
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_flow) == 40
+    )
+    # with x_project.get_bank_conn() as bank_conn:
     #     river_flows = get_river_flow_dict(bank_conn, currency_deal_healer=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 3
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_tally) == 3
+    )
 
-    with sx.get_bank_conn() as bank_conn:
+    with x_project.get_bank_conn() as bank_conn:
         river_tallys = get_river_tally_dict(bank_conn, sal_text)
     assert len(river_tallys) == 3
     assert river_tallys.get(bob_text) != None
@@ -377,8 +427,10 @@ def test_project_set_river_sphere_for_deal_CorrectlyDeletesPreviousRiver(
 ):
     # GIVEN 4 deals, 100% of river flows to sal
     project_handle = get_temp_env_handle()
-    sx = projectunit_shop(handle=project_handle, projects_dir=get_test_projects_dir())
-    sx.create_dirs_if_null(in_memory_bank=True)
+    x_project = projectunit_shop(
+        handle=project_handle, projects_dir=get_test_projects_dir()
+    )
+    x_project.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -388,46 +440,54 @@ def test_project_set_river_sphere_for_deal_CorrectlyDeletesPreviousRiver(
     sal = dealunit_shop(_healer=sal_text)
     sal.add_partyunit(title=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
-    sx.save_public_deal(deal_x=sal)
+    x_project.save_public_deal(x_deal=sal)
 
     bob = dealunit_shop(_healer=bob_text)
     bob.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=1)
     bob.add_partyunit(title=tom_text, creditor_weight=1, debtor_weight=1)
-    sx.save_public_deal(deal_x=bob)
+    x_project.save_public_deal(x_deal=bob)
 
     tom = dealunit_shop(_healer=tom_text)
     tom.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=8)
-    sx.save_public_deal(deal_x=tom)
+    x_project.save_public_deal(x_deal=tom)
 
     elu = dealunit_shop(_healer=elu_text)
     elu.add_partyunit(title=sal_text, creditor_weight=1, debtor_weight=8)
-    sx.save_public_deal(deal_x=elu)
-    sx.refresh_bank_metrics()
+    x_project.save_public_deal(x_deal=elu)
+    x_project.refresh_bank_metrics()
 
-    sx.set_river_sphere_for_deal(deal_healer=sal_text)
-    sx.set_river_sphere_for_deal(deal_healer=elu_text)
+    x_project.set_river_sphere_for_deal(deal_healer=sal_text)
+    x_project.set_river_sphere_for_deal(deal_healer=elu_text)
 
     sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 16
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_flow) == 16
+    )
 
-    with sx.get_bank_conn() as bank_conn:
+    with x_project.get_bank_conn() as bank_conn:
         river_flows = get_river_flow_dict(bank_conn, currency_deal_healer=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 3
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_tally) == 3
+    )
 
     # WHEN
     # sal.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
-    # sx.save_public_deal(deal_x=sal)
-    sx.set_river_sphere_for_deal(deal_healer=sal_text)
+    # x_project.save_public_deal(x_deal=sal)
+    x_project.set_river_sphere_for_deal(deal_healer=sal_text)
 
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 16
-    with sx.get_bank_conn() as bank_conn:
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_flow) == 16
+    )
+    with x_project.get_bank_conn() as bank_conn:
         river_flows = get_river_flow_dict(bank_conn, currency_deal_healer=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 3
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_tally) == 3
+    )
 
 
 def test_project_set_river_sphere_for_deal_CorrectlyUsesMaxFlowsCount(
@@ -435,8 +495,10 @@ def test_project_set_river_sphere_for_deal_CorrectlyUsesMaxFlowsCount(
 ):
     # GIVEN 5 deals, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     project_handle = get_temp_env_handle()
-    sx = projectunit_shop(handle=project_handle, projects_dir=get_test_projects_dir())
-    sx.create_dirs_if_null(in_memory_bank=True)
+    x_project = projectunit_shop(
+        handle=project_handle, projects_dir=get_test_projects_dir()
+    )
+    x_project.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -448,47 +510,54 @@ def test_project_set_river_sphere_for_deal_CorrectlyUsesMaxFlowsCount(
     sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
     sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
     sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_deal(deal_x=sal_deal)
+    x_project.save_public_deal(x_deal=sal_deal)
 
     bob_deal = dealunit_shop(_healer=bob_text)
     bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
     bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_deal(deal_x=bob_deal)
+    x_project.save_public_deal(x_deal=bob_deal)
 
     tom_deal = dealunit_shop(_healer=tom_text)
     tom_deal.add_partyunit(title=sal_text, creditor_weight=2)
-    sx.save_public_deal(deal_x=tom_deal)
+    x_project.save_public_deal(x_deal=tom_deal)
 
     ava_deal = dealunit_shop(_healer=ava_text)
     ava_deal.add_partyunit(title=elu_text, creditor_weight=2)
-    sx.save_public_deal(deal_x=ava_deal)
+    x_project.save_public_deal(x_deal=ava_deal)
 
     elu_deal = dealunit_shop(_healer=elu_text)
     elu_deal.add_partyunit(title=ava_text, creditor_weight=19)
     elu_deal.add_partyunit(title=sal_text, creditor_weight=1)
-    sx.save_public_deal(deal_x=elu_deal)
+    x_project.save_public_deal(x_deal=elu_deal)
 
-    sx.refresh_bank_metrics()
+    x_project.refresh_bank_metrics()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 9
+    assert get_single_result_back(x_project.get_bank_conn(), sqlstr_count_ledger) == 9
 
     sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 0
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_flow) == 0
+    )
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_tally) == 0
+    )
 
     # WHEN
     mtc = 13
-    sx.set_river_sphere_for_deal(deal_healer=sal_text, max_flows_count=mtc)
+    x_project.set_river_sphere_for_deal(deal_healer=sal_text, max_flows_count=mtc)
 
     # THEN
-    with sx.get_bank_conn() as bank_conn:
+    with x_project.get_bank_conn() as bank_conn:
         river_flows = get_river_flow_dict(bank_conn, currency_deal_healer=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == mtc
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_flow)
+        == mtc
+    )
 
 
 def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable05(
@@ -496,8 +565,10 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable05(
 ):
     # GIVEN 5 deals, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     project_handle = get_temp_env_handle()
-    sx = projectunit_shop(handle=project_handle, projects_dir=get_test_projects_dir())
-    sx.create_dirs_if_null(in_memory_bank=True)
+    x_project = projectunit_shop(
+        handle=project_handle, projects_dir=get_test_projects_dir()
+    )
+    x_project.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -509,51 +580,59 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable05(
     sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
     sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
     sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_deal(deal_x=sal_deal)
+    x_project.save_public_deal(x_deal=sal_deal)
 
     bob_deal = dealunit_shop(_healer=bob_text)
     bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
     bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_deal(deal_x=bob_deal)
+    x_project.save_public_deal(x_deal=bob_deal)
 
     tom_deal = dealunit_shop(_healer=tom_text)
     tom_deal.add_partyunit(title=sal_text, creditor_weight=2)
-    sx.save_public_deal(deal_x=tom_deal)
+    x_project.save_public_deal(x_deal=tom_deal)
 
     ava_deal = dealunit_shop(_healer=ava_text)
     ava_deal.add_partyunit(title=elu_text, creditor_weight=2)
-    sx.save_public_deal(deal_x=ava_deal)
+    x_project.save_public_deal(x_deal=ava_deal)
 
     elu_deal = dealunit_shop(_healer=elu_text)
     elu_deal.add_partyunit(title=ava_text, creditor_weight=19)
     elu_deal.add_partyunit(title=sal_text, creditor_weight=1)
-    sx.save_public_deal(deal_x=elu_deal)
+    x_project.save_public_deal(x_deal=elu_deal)
 
-    sx.refresh_bank_metrics()
+    x_project.refresh_bank_metrics()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 9
+    assert get_single_result_back(x_project.get_bank_conn(), sqlstr_count_ledger) == 9
 
     sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 0
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 0
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_flow) == 0
+    )
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_tally) == 0
+    )
 
     # WHEN
-    sx.set_river_sphere_for_deal(deal_healer=sal_text)
+    x_project.set_river_sphere_for_deal(deal_healer=sal_text)
 
     # THEN
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_flow) == 40
-    with sx.get_bank_conn() as bank_conn:
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_flow) == 40
+    )
+    with x_project.get_bank_conn() as bank_conn:
         river_flows = get_river_flow_dict(bank_conn, currency_deal_healer=sal_text)
     # for river_flow in river_flows.values():
     #     print(f"{river_flow=}")
 
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_river_tally) == 3
+    assert (
+        get_single_result_back(x_project.get_bank_conn(), sqlstr_count_river_tally) == 3
+    )
 
-    with sx.get_bank_conn() as bank_conn:
+    with x_project.get_bank_conn() as bank_conn:
         river_tallys = get_river_tally_dict(bank_conn, sal_text)
-    river_tallys = sx.get_river_tallys(sal_text)
+    river_tallys = x_project.get_river_tallys(sal_text)
     assert len(river_tallys) == 3
     assert river_tallys.get(bob_text) != None
     assert river_tallys.get(tom_text) != None
@@ -578,8 +657,10 @@ def test_project_set_river_sphere_for_deal_CorrectlyBuildsASingleContinuousRange
 ):
     # GIVEN 5 deals, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     project_handle = get_temp_env_handle()
-    sx = projectunit_shop(handle=project_handle, projects_dir=get_test_projects_dir())
-    sx.create_dirs_if_null(in_memory_bank=True)
+    x_project = projectunit_shop(
+        handle=project_handle, projects_dir=get_test_projects_dir()
+    )
+    x_project.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -591,30 +672,30 @@ def test_project_set_river_sphere_for_deal_CorrectlyBuildsASingleContinuousRange
     sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
     sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
     sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_deal(deal_x=sal_deal)
+    x_project.save_public_deal(x_deal=sal_deal)
 
     bob_deal = dealunit_shop(_healer=bob_text)
     bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
     bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_deal(deal_x=bob_deal)
+    x_project.save_public_deal(x_deal=bob_deal)
 
     tom_deal = dealunit_shop(_healer=tom_text)
     tom_deal.add_partyunit(title=sal_text, creditor_weight=2)
-    sx.save_public_deal(deal_x=tom_deal)
+    x_project.save_public_deal(x_deal=tom_deal)
 
     ava_deal = dealunit_shop(_healer=ava_text)
     ava_deal.add_partyunit(title=elu_text, creditor_weight=2)
-    sx.save_public_deal(deal_x=ava_deal)
+    x_project.save_public_deal(x_deal=ava_deal)
 
     elu_deal = dealunit_shop(_healer=elu_text)
     elu_deal.add_partyunit(title=ava_text, creditor_weight=19)
     elu_deal.add_partyunit(title=sal_text, creditor_weight=1)
-    sx.save_public_deal(deal_x=elu_deal)
+    x_project.save_public_deal(x_deal=elu_deal)
 
-    sx.refresh_bank_metrics()
+    x_project.refresh_bank_metrics()
 
     # WHEN
-    sx.set_river_sphere_for_deal(deal_healer=sal_text, max_flows_count=100)
+    x_project.set_river_sphere_for_deal(deal_healer=sal_text, max_flows_count=100)
 
     # THEN
     count_range_fails_sql = """
@@ -639,7 +720,7 @@ def test_project_set_river_sphere_for_deal_CorrectlyBuildsASingleContinuousRange
     ;
     
     """
-    with sx.get_bank_conn() as bank_conn:
+    with x_project.get_bank_conn() as bank_conn:
         assert get_single_result_back(bank_conn, count_range_fails_sql) == 0
 
 
@@ -648,8 +729,10 @@ def test_project_set_river_sphere_for_deal_CorrectlyUpatesDealPartyUnits(
 ):
     # GIVEN 5 deals, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
     project_handle = get_temp_env_handle()
-    sx = projectunit_shop(handle=project_handle, projects_dir=get_test_projects_dir())
-    sx.create_dirs_if_null(in_memory_bank=True)
+    x_project = projectunit_shop(
+        handle=project_handle, projects_dir=get_test_projects_dir()
+    )
+    x_project.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -661,30 +744,30 @@ def test_project_set_river_sphere_for_deal_CorrectlyUpatesDealPartyUnits(
     sal_deal_src.add_partyunit(title=bob_text, creditor_weight=2, debtor_weight=2)
     sal_deal_src.add_partyunit(title=tom_text, creditor_weight=2, debtor_weight=1)
     sal_deal_src.add_partyunit(title=ava_text, creditor_weight=2, debtor_weight=2)
-    sx.save_public_deal(deal_x=sal_deal_src)
+    x_project.save_public_deal(x_deal=sal_deal_src)
 
     bob_deal = dealunit_shop(_healer=bob_text)
     bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
     bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
-    sx.save_public_deal(deal_x=bob_deal)
+    x_project.save_public_deal(x_deal=bob_deal)
 
     tom_deal = dealunit_shop(_healer=tom_text)
     tom_deal.add_partyunit(title=sal_text)
-    sx.save_public_deal(deal_x=tom_deal)
+    x_project.save_public_deal(x_deal=tom_deal)
 
     ava_deal = dealunit_shop(_healer=ava_text)
     ava_deal.add_partyunit(title=elu_text, creditor_weight=2)
-    sx.save_public_deal(deal_x=ava_deal)
+    x_project.save_public_deal(x_deal=ava_deal)
 
     elu_deal = dealunit_shop(_healer=elu_text)
     elu_deal.add_partyunit(title=ava_text, creditor_weight=8)
     elu_deal.add_partyunit(title=sal_text, creditor_weight=2)
-    sx.save_public_deal(deal_x=elu_deal)
+    x_project.save_public_deal(x_deal=elu_deal)
 
-    sx.refresh_bank_metrics()
-    sal_deal_before = sx.get_public_deal(healer=sal_text)
+    x_project.refresh_bank_metrics()
+    sal_deal_before = x_project.get_public_deal(healer=sal_text)
 
-    sx.set_river_sphere_for_deal(deal_healer=sal_text, max_flows_count=100)
+    x_project.set_river_sphere_for_deal(deal_healer=sal_text, max_flows_count=100)
     assert len(sal_deal_before._partys) == 3
     print(f"{len(sal_deal_before._partys)=}")
     bob_party = sal_deal_before._partys.get(bob_text)
@@ -698,13 +781,13 @@ def test_project_set_river_sphere_for_deal_CorrectlyUpatesDealPartyUnits(
     assert ava_party._bank_tax_diff is None
 
     # WHEN
-    sx.set_river_sphere_for_deal(deal_healer=sal_text)
+    x_project.set_river_sphere_for_deal(deal_healer=sal_text)
 
     # THEN
-    sal_river_tallys = sx.get_river_tallys(deal_healer=sal_text)
+    sal_river_tallys = x_project.get_river_tallys(deal_healer=sal_text)
     assert len(sal_river_tallys) == 3
 
-    sal_deal_after = sx.get_public_deal(healer=sal_text)
+    sal_deal_after = x_project.get_public_deal(healer=sal_text)
 
     bob_tally = sal_river_tallys.get(bob_text)
     tom_tally = sal_river_tallys.get(tom_text)

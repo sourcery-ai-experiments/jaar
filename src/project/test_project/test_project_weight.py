@@ -9,16 +9,14 @@ from src.project.examples.project_env_kit import (
 
 def test_projectunit_set_person_importance_CorrectsSetsData(env_dir_setup_cleanup):
     # GIVEN
-    park_text = get_temp_env_handle()
-    x_projectunit = projectunit_shop(
-        handle=park_text, projects_dir=get_test_projects_dir()
-    )
-    assert x_projectunit.handle == park_text
-    assert x_projectunit._person_importance is None
+    x_handle = get_temp_env_handle()
+    x_project = projectunit_shop(handle=x_handle, projects_dir=get_test_projects_dir())
+    assert x_project.handle == x_handle
+    assert x_project._person_importance is None
 
     # WHEN
     x_person_importance = 0.77
-    x_projectunit.set_person_importance(x_person_importance)
+    x_project.set_person_importance(x_person_importance)
 
     # THEN
-    assert x_projectunit._person_importance == x_person_importance
+    assert x_project._person_importance == x_person_importance

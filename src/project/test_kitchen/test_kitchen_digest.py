@@ -95,7 +95,7 @@ def test_healer_save_seed_deal_seedPersonNameMustBeHealer(
     assert cx1._healer != p_title
 
     # WHEN
-    ux._admin.save_seed_deal(deal_x=cx1)
+    ux._admin.save_seed_deal(x_deal=cx1)
 
     # THEN
     assert ux._admin.open_seed_deal()._healer == ux._admin._kitchen_title
@@ -108,7 +108,7 @@ def test_healer_open_seed_deal_WhenStartingDealFileExists(
     p_title = "Game1"
     env_dir = get_temp_kitchenunit_dir()
     ux = kitchenunit_shop(p_title, env_dir, get_temp_project_handle())
-    ux._admin.save_seed_deal(deal_x=example_deals_get_deal_with_4_levels())
+    ux._admin.save_seed_deal(x_deal=example_deals_get_deal_with_4_levels())
 
     # WHEN
     assert ux._admin.open_seed_deal() != None
@@ -193,7 +193,7 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestDeal(
     assert x_func_count_files(sue_cx._admin._deals_digest_dir) == 0
 
     # WHEN
-    sue_cx.set_depot_deal(deal_x=cx, depotlink_type="blind_trust")
+    sue_cx.set_depot_deal(x_deal=cx, depotlink_type="blind_trust")
 
     # THEN
     cx_file_title = f"{cx._healer}.json"
@@ -258,7 +258,7 @@ def test_healer_get_remelded_output_deal_with1DigestedDeal(
     assert sx_output_old._idearoot._label == get_temp_project_handle()
     input_deal = example_healers_get_2node_deal()
     input_deal.meld(input_deal)
-    ux.set_depot_deal(deal_x=input_deal, depotlink_type="blind_trust")
+    ux.set_depot_deal(x_deal=input_deal, depotlink_type="blind_trust")
 
     # WHEN
     sx_output_new = ux._admin.get_remelded_output_deal()
@@ -352,7 +352,7 @@ def test_healer_seed_deal_CorrectlysHasOriginLinksWithHealerAsSource(
         yao_text, get_temp_kitchenunit_dir(), get_temp_project_handle()
     )
     ux.create_core_dir_and_files()
-    ux._admin.save_seed_deal(deal_x=seed_deal_x)
+    ux._admin.save_seed_deal(x_deal=seed_deal_x)
 
     # WHEN
     output_deal_x = ux._admin.get_remelded_output_deal()

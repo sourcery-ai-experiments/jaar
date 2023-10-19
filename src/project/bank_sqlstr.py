@@ -320,13 +320,13 @@ CREATE TABLE IF NOT EXISTS dealunit (
 """
 
 
-def get_deal_table_insert_sqlstr(deal_x: DealUnit) -> str:
+def get_deal_table_insert_sqlstr(x_deal: DealUnit) -> str:
     return f"""
 INSERT INTO dealunit (
   healer
 )
 VALUES (
-  '{deal_x._healer}' 
+  '{x_deal._healer}' 
 )
 ;
 """
@@ -354,7 +354,7 @@ CREATE TABLE IF NOT EXISTS ledger (
 """
 
 
-def get_ledger_table_insert_sqlstr(deal_x: DealUnit, partyunit_x: PartyUnit) -> str:
+def get_ledger_table_insert_sqlstr(x_deal: DealUnit, partyunit_x: PartyUnit) -> str:
     return f"""
 INSERT INTO ledger (
   deal_healer
@@ -369,7 +369,7 @@ INSERT INTO ledger (
 , _debtor_active
 )
 VALUES (
-  '{deal_x._healer}' 
+  '{x_deal._healer}' 
 , '{partyunit_x.title}'
 , {sqlite_null(partyunit_x._deal_credit)} 
 , {sqlite_null(partyunit_x._deal_debt)}

@@ -26,7 +26,7 @@ def test_healer_save_deal_to_depot_assignment_link_CorrectlyCreatesAssignmentFil
     print(f"{america_cx._healer} {america_cx._idearoot._label=}")
 
     # WHEN
-    joachim_ux.set_depot_deal(deal_x=america_cx, depotlink_type="assignment")
+    joachim_ux.set_depot_deal(x_deal=america_cx, depotlink_type="assignment")
     output_cx = joachim_ux._admin.get_remelded_output_deal()
 
     # THEN

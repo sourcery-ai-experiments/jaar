@@ -14,15 +14,15 @@ from src.project.bank_sqlstr import (
 
 def test_project_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
     # GIVEN create project
-    sx = projectunit_shop(
+    x_project = projectunit_shop(
         handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
     )
 
     # WHEN
-    sx.create_dirs_if_null(in_memory_bank=True)
+    x_project.create_dirs_if_null(in_memory_bank=True)
 
     # THEN
-    with sx.get_bank_conn() as bank_conn:
+    with x_project.get_bank_conn() as bank_conn:
         tables_dict = get_db_tables(bank_conn)
 
     # row_count = 0
@@ -59,62 +59,62 @@ def test_project_refresh_bank_metrics_CorrectlyDeletesOldBankInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = projectunit_shop(
+    x_project = projectunit_shop(
         handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
     )
-    sx.create_dirs_if_null(in_memory_bank=True)
+    x_project.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tom_text = "tom"
 
     bob = dealunit_shop(_healer=bob_text)
     bob.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
-    sx.save_public_deal(deal_x=bob)
-    sx.refresh_bank_metrics()
+    x_project.save_public_deal(x_deal=bob)
+    x_project.refresh_bank_metrics()
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 1
+    assert get_single_result_back(x_project.get_bank_conn(), sqlstr_count_ledger) == 1
 
     # WHEN
-    sx.refresh_bank_metrics()
+    x_project.refresh_bank_metrics()
 
     # THEN
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 1
+    assert get_single_result_back(x_project.get_bank_conn(), sqlstr_count_ledger) == 1
 
 
 def test_project_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = projectunit_shop(
+    x_project = projectunit_shop(
         handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
     )
-    sx.create_dirs_if_null(in_memory_bank=False)
+    x_project.create_dirs_if_null(in_memory_bank=False)
 
     bob_text = "bob"
     tom_text = "tom"
 
     bob = dealunit_shop(_healer=bob_text)
     bob.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
-    sx.save_public_deal(deal_x=bob)
-    sx.refresh_bank_metrics()
+    x_project.save_public_deal(x_deal=bob)
+    x_project.refresh_bank_metrics()
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 1
+    assert get_single_result_back(x_project.get_bank_conn(), sqlstr_count_ledger) == 1
 
     # WHEN
-    sx.refresh_bank_metrics()
+    x_project.refresh_bank_metrics()
 
     # THEN
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 1
+    assert get_single_result_back(x_project.get_bank_conn(), sqlstr_count_ledger) == 1
 
 
 def test_project_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example project with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    sx = projectunit_shop(
+    x_project = projectunit_shop(
         handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
     )
-    sx.create_dirs_if_null(in_memory_bank=True)
+    x_project.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tom_text = "tom"
@@ -125,102 +125,102 @@ def test_project_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     bob.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
     bob.add_partyunit(title=sal_text, creditor_weight=1, debtor_weight=4)
     bob.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
-    sx.save_public_deal(deal_x=bob)
+    x_project.save_public_deal(x_deal=bob)
 
     sal = dealunit_shop(_healer=sal_text)
     sal.add_partyunit(title=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
     sal.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
-    sx.save_public_deal(deal_x=sal)
+    x_project.save_public_deal(x_deal=sal)
 
     tom = dealunit_shop(_healer=tom_text)
     tom.add_partyunit(title=bob_text, creditor_weight=3, debtor_weight=1)
     tom.add_partyunit(title=sal_text, creditor_weight=1, debtor_weight=4)
     tom.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
-    sx.save_public_deal(deal_x=tom)
+    x_project.save_public_deal(x_deal=tom)
 
     elu = dealunit_shop(_healer=elu_text)
     elu.add_partyunit(title=bob_text, creditor_weight=3, debtor_weight=1)
     elu.add_partyunit(title=tom_text, creditor_weight=1, debtor_weight=4)
     elu.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
-    sx.save_public_deal(deal_x=elu)
+    x_project.save_public_deal(x_deal=elu)
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 0
+    assert get_single_result_back(x_project.get_bank_conn(), sqlstr_count_ledger) == 0
 
     # WHEN
-    sx.refresh_bank_metrics()
+    x_project.refresh_bank_metrics()
 
     # THEN
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_ledger) == 12
+    assert get_single_result_back(x_project.get_bank_conn(), sqlstr_count_ledger) == 12
 
 
 def test_project_refresh_bank_metrics_CorrectlyPopulatesDealTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example project with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    sx = projectunit_shop(
+    x_project = projectunit_shop(
         handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
     )
-    sx.create_dirs_if_null(in_memory_bank=True)
+    x_project.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tom_text = "tom"
     sal_text = "sal"
     elu_text = "elu"
 
-    sx.save_public_deal(deal_x=dealunit_shop(_healer=bob_text))
-    sx.save_public_deal(deal_x=dealunit_shop(_healer=tom_text))
-    sx.save_public_deal(deal_x=dealunit_shop(_healer=sal_text))
-    sx.save_public_deal(deal_x=dealunit_shop(_healer=elu_text))
+    x_project.save_public_deal(x_deal=dealunit_shop(_healer=bob_text))
+    x_project.save_public_deal(x_deal=dealunit_shop(_healer=tom_text))
+    x_project.save_public_deal(x_deal=dealunit_shop(_healer=sal_text))
+    x_project.save_public_deal(x_deal=dealunit_shop(_healer=elu_text))
 
     sqlstr_count_deals = get_table_count_sqlstr("dealunit")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_deals) == 0
+    assert get_single_result_back(x_project.get_bank_conn(), sqlstr_count_deals) == 0
 
     # WHEN
-    sx.refresh_bank_metrics()
+    x_project.refresh_bank_metrics()
 
     # THEN
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_deals) == 4
+    assert get_single_result_back(x_project.get_bank_conn(), sqlstr_count_deals) == 4
 
 
 def test_project_refresh_bank_metrics_CorrectlyPopulatesDealTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example project with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    sx = projectunit_shop(
+    x_project = projectunit_shop(
         handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
     )
-    sx.create_dirs_if_null(in_memory_bank=True)
+    x_project.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tom_text = "tom"
     sal_text = "sal"
     elu_text = "elu"
 
-    sx.save_public_deal(deal_x=dealunit_shop(_healer=bob_text))
-    sx.save_public_deal(deal_x=dealunit_shop(_healer=tom_text))
-    sx.save_public_deal(deal_x=dealunit_shop(_healer=sal_text))
-    sx.save_public_deal(deal_x=dealunit_shop(_healer=elu_text))
+    x_project.save_public_deal(x_deal=dealunit_shop(_healer=bob_text))
+    x_project.save_public_deal(x_deal=dealunit_shop(_healer=tom_text))
+    x_project.save_public_deal(x_deal=dealunit_shop(_healer=sal_text))
+    x_project.save_public_deal(x_deal=dealunit_shop(_healer=elu_text))
 
     sqlstr_count_deals = get_table_count_sqlstr("dealunit")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_deals) == 0
+    assert get_single_result_back(x_project.get_bank_conn(), sqlstr_count_deals) == 0
 
     # WHEN
-    sx.refresh_bank_metrics()
+    x_project.refresh_bank_metrics()
 
     # THEN
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_deals) == 4
+    assert get_single_result_back(x_project.get_bank_conn(), sqlstr_count_deals) == 4
 
 
 def test_project_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = projectunit_shop(
+    x_project = projectunit_shop(
         handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
     )
-    sx.create_dirs_if_null(in_memory_bank=True)
+    x_project.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tom_text = "tom"
@@ -230,27 +230,27 @@ def test_project_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     bob_deal.add_partyunit(title=tom_text)
     tom_deal.add_partyunit(title=bob_text)
     tom_deal.add_partyunit(title=elu_text)
-    sx.save_public_deal(deal_x=bob_deal)
-    sx.save_public_deal(deal_x=tom_deal)
+    x_project.save_public_deal(x_deal=bob_deal)
+    x_project.save_public_deal(x_deal=tom_deal)
 
     sqlstr = get_table_count_sqlstr("groupunit_catalog")
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr) == 0
+    assert get_single_result_back(x_project.get_bank_conn(), sqlstr) == 0
 
     # WHEN
-    sx.refresh_bank_metrics()
+    x_project.refresh_bank_metrics()
 
     # THEN
-    assert get_single_result_back(sx.get_bank_conn(), sqlstr) == 3
+    assert get_single_result_back(x_project.get_bank_conn(), sqlstr) == 3
 
 
 def test_project_set_deal_bank_attrs_CorrectlyPopulatesDeal_Groupunit_Partylinks(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = projectunit_shop(
+    x_project = projectunit_shop(
         handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
     )
-    sx.create_dirs_if_null(in_memory_bank=True)
+    x_project.create_dirs_if_null(in_memory_bank=True)
 
     # create 4 deals, 1 with group "swimming expert" linked to 1 party
     # two others have idea f"{root_label()},sports,swimming"
@@ -274,9 +274,9 @@ def test_project_set_deal_bank_attrs_CorrectlyPopulatesDeal_Groupunit_Partylinks
 
     swim_text = "swimming"
     sports_text = "sports"
-    sal_sports_road = f"{sx.handle},{sports_text}"
-    bob_sports_road = f"{sx.handle},{sports_text}"
-    tom_sports_road = f"{sx.handle},{sports_text}"
+    sal_sports_road = f"{x_project.handle},{sports_text}"
+    bob_sports_road = f"{x_project.handle},{sports_text}"
+    tom_sports_road = f"{x_project.handle},{sports_text}"
 
     sal_deal.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=sal_sports_road)
     bob_deal.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=bob_sports_road)
@@ -290,13 +290,13 @@ def test_project_set_deal_bank_attrs_CorrectlyPopulatesDeal_Groupunit_Partylinks
     swim_group_unit.set_partylink(partylink=bob_link)
     sal_deal.set_groupunit(groupunit=swim_group_unit)
 
-    sx.save_public_deal(deal_x=sal_deal)
-    sx.save_public_deal(deal_x=bob_deal)
-    sx.save_public_deal(deal_x=tom_deal)
-    sx.save_public_deal(deal_x=ava_deal)
+    x_project.save_public_deal(x_deal=sal_deal)
+    x_project.save_public_deal(x_deal=bob_deal)
+    x_project.save_public_deal(x_deal=tom_deal)
+    x_project.save_public_deal(x_deal=ava_deal)
 
-    sx.set_deal_bank_attrs(deal_healer=sal_text)
-    e1_sal_deal = sx.get_public_deal(healer=sal_text)
+    x_project.set_deal_bank_attrs(deal_healer=sal_text)
+    e1_sal_deal = x_project.get_public_deal(healer=sal_text)
     assert len(e1_sal_deal._groups.get(swim_group_text)._partys) == 1
 
     # WHEN
@@ -304,9 +304,9 @@ def test_project_set_deal_bank_attrs_CorrectlyPopulatesDeal_Groupunit_Partylinks
     sal_swim_road = f"{sal_sports_road},{swim_text}"
     swim_group_unit.set_attr(_partylinks_set_by_project_road=sal_swim_road)
     sal_deal.set_groupunit(groupunit=swim_group_unit)
-    sx.save_public_deal(deal_x=sal_deal)
-    sx.set_deal_bank_attrs(deal_healer=sal_text)
+    x_project.save_public_deal(x_deal=sal_deal)
+    x_project.set_deal_bank_attrs(deal_healer=sal_text)
 
     # THEN
-    e1_sal_deal = sx.get_public_deal(healer=sal_text)
+    e1_sal_deal = x_project.get_public_deal(healer=sal_text)
     assert len(e1_sal_deal._groups.get(swim_group_text)._partys) == 2

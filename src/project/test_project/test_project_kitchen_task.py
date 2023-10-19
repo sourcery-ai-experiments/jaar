@@ -10,19 +10,19 @@ from src.project.examples.example_kitchens import (
 
 
 def test_project_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanup):
-    sx = projectunit_shop(get_temp_env_handle(), get_test_projects_dir())
-    sx.create_dirs_if_null(in_memory_bank=True)
+    x_project = projectunit_shop(get_temp_env_handle(), get_test_projects_dir())
+    x_project.create_dirs_if_null(in_memory_bank=True)
 
     # GIVEN
     america_text = "America"
-    sx.create_new_kitchenunit(kitchen_title=america_text)
-    america_ux = sx.get_kitchenunit(title=america_text)
+    x_project.create_new_kitchenunit(kitchen_title=america_text)
+    america_ux = x_project.get_kitchenunit(title=america_text)
     laundry_deal = get_deal_assignment_laundry_example1()
-    laundry_deal.set_project_handle(sx.handle)
+    laundry_deal.set_project_handle(x_project.handle)
     america_ux.set_seed(laundry_deal)
 
     casa_text = "casa"
-    casa_road = f"{sx.handle},{casa_text}"
+    casa_road = f"{x_project.handle},{casa_text}"
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
     b_full_text = "full"
@@ -34,15 +34,15 @@ def test_project_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     america_ux.set_seed(seed_x)
     # save fact change to public
     america_ux._admin.save_refreshed_output_to_public()
-    # print(f"{sx.get_public_deal(america_text)._idearoot._acptfactunits.keys()=}")
-    america_output = sx.get_public_deal(america_text)
+    # print(f"{x_project.get_public_deal(america_text)._idearoot._acptfactunits.keys()=}")
+    america_output = x_project.get_public_deal(america_text)
 
     # create assignment for Joachim
     joachim_text = "Joachim"
-    sx.create_new_kitchenunit(kitchen_title=joachim_text)
-    joachim_ux = sx.get_kitchenunit(title=joachim_text)
+    x_project.create_new_kitchenunit(kitchen_title=joachim_text)
+    joachim_ux = x_project.get_kitchenunit(title=joachim_text)
     joachim_ux.set_depot_deal(america_output, "assignment")
-    old_joachim_cx = sx.get_output_deal(joachim_text)
+    old_joachim_cx = x_project.get_output_deal(joachim_text)
     # print(f"{old_joachim_cx._partys.keys()=}")
     # print(f"{old_joachim_cx._idearoot._acptfactunits.keys()=}")
     basket_acptfact = old_joachim_cx._idearoot._acptfactunits.get(basket_road)
@@ -58,7 +58,7 @@ def test_project_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     joachim_ux.refresh_depot_deals()
     new_joachim_cx = joachim_ux._admin.get_remelded_output_deal()
 
-    # new_public_america = sx.get_public_deal(america_text)
+    # new_public_america = x_project.get_public_deal(america_text)
     # a_basket_acptfact = new_public_america._idearoot._acptfactunits.get(basket_road)
     # print(f"America after when {a_basket_acptfact.base=} {a_basket_acptfact.pick=}")
 
@@ -74,10 +74,10 @@ def test_project_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
 
 
 # def test_project_create_task_CorrectlyCreatesTask(env_dir_setup_cleanup):
-#     sx = projectunit_shop(
+#     x_project = projectunit_shop(
 #         handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
 #     )
-#     sx.create_dirs_if_null(in_memory_bank=True)
+#     x_project.create_dirs_if_null(in_memory_bank=True)
 
 #     america_text = "America"
 #     joachim_text = "Joachim"
@@ -105,7 +105,7 @@ def test_project_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
 #     }
 #     for_group_x = {america_text: -1, joachim_text: -1}
 #     assigned_group_x = {joachim_text: -1}
-#     sx.create_task(
+#     x_project.create_task(
 #         from_healer=america_text,
 #         to_group=joachim_text,
 #         group_partys={joachim_text},
@@ -120,30 +120,30 @@ def test_project_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
 
 #     # # WHEN
 #     # america_healer.save_output_deal_to_public()
-#     # new_joa_healer = sx.get_kitchenunit(title=joachim_text)
+#     # new_joa_healer = x_project.get_kitchenunit(title=joachim_text)
 #     # new_joa_healer.save_output_deal_to_public()
-#     # new_joa_dest_c = sx.get_public_deal(joachim_text)
+#     # new_joa_dest_c = x_project.get_public_deal(joachim_text)
 #     # new_joa_agenda = new_joa_dest_c.get_agenda_items()
 #     # assert len(new_joa_agenda) == 1
 #     # print(f"{new_joa_agenda[0]._label=}")
 #     # assert new_joa_agenda[0]._label == task_text
-#     joachim_cx = sx.get_public_deal(joachim_text)
+#     joachim_cx = x_project.get_public_deal(joachim_text)
 
 #     assert len(joachim_cx.get_agenda_items()) == 1
 #     assert joachim_cx.get_agenda_items()[0].get_road() == do_laundry_road
 
-#     # sx.create_new_kitchenunit(kitchen_title=america_text)
-#     # america_healer = sx.get_kitchenunit(title=america_text)
+#     # x_project.create_new_kitchenunit(kitchen_title=america_text)
+#     # america_healer = x_project.get_kitchenunit(title=america_text)
 #     # america_healer.save_output_deal_to_public()
-#     # assert sx.get_public_deal(america_text) != None
+#     # assert x_project.get_public_deal(america_text) != None
 
 #     # # Create healer2
 
-#     # sx.create_new_kitchenunit(kitchen_title=joachim_text)
-#     # old_joa_healer = sx.get_kitchenunit(title=joachim_text)
+#     # x_project.create_new_kitchenunit(kitchen_title=joachim_text)
+#     # old_joa_healer = x_project.get_kitchenunit(title=joachim_text)
 #     # old_joa_healer._set_depotlink(america_cx._healert, depotlink_type="blind_trust")
 #     # old_joa_healer.save_output_deal_to_public()
-#     # old_joa_dest_c = sx.get_public_deal(joachim_text)
+#     # old_joa_dest_c = x_project.get_public_deal(joachim_text)
 #     # old_joa_agenda = old_joa_dest_c.get_agenda_items()
 #     # # assert len(old_joa_agenda) == 0
 
