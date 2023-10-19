@@ -1,6 +1,6 @@
 # from os import listdir as os_listdir
 from pytest import fixture as pytest_fixture
-from src.deal.deal import DealUnit
+from src.deal.deal import dealunit_shop
 from src.deal.x_func import delete_dir, save_file as x_func_save_file
 
 
@@ -21,7 +21,7 @@ def kitchen_dir_setup_cleanup():
 
 
 def create_deal_file(deal_kitchenunit_dir: str, deal_healer: str):
-    deal_x = DealUnit(_healer=deal_healer)
+    deal_x = dealunit_shop(_healer=deal_healer)
     # file_path = f"{deal_kitchenunit_dir}/{deal_x._healer}.json"
     # # if not path.exists(file_path):
     # print(f"{file_path=} {deal_x._healer=}")

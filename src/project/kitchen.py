@@ -4,6 +4,7 @@ from src.deal.deal import (
     get_meld_of_deal_files,
     PersonName,
     DealUnit,
+    dealunit_shop,
     partyunit_shop,
     get_from_json as dealunit_get_from_json,
     PartyTitle,
@@ -167,7 +168,7 @@ class KitchenAdmin:
         return x_deal
 
     def _get_empty_seed_deal(self):
-        x_deal = DealUnit(_healer=self._kitchen_title, _weight=0)
+        x_deal = dealunit_shop(_healer=self._kitchen_title, _weight=0)
         x_deal.add_partyunit(title=self._kitchen_title)
         x_deal.set_project_handle(self._project_handle)
         return x_deal
@@ -274,14 +275,14 @@ class KitchenUnit:
             x_deal = self._admin.open_depot_deal(healer=outer_healer)
             self._admin.save_deal_to_digest(x_deal)
         elif link_type == "ignore":
-            new_x_deal = DealUnit(_healer=outer_healer)
+            new_x_deal = dealunit_shop(_healer=outer_healer)
             new_x_deal.set_project_handle(self._admin._project_handle)
             self.set_ignore_deal_file(new_x_deal, new_x_deal._healer)
 
     def _set_assignment_depotlink(self, outer_healer):
         src_deal = self._admin.open_depot_deal(outer_healer)
         src_deal.set_deal_metrics()
-        empty_deal = DealUnit(_healer=self._admin._kitchen_title)
+        empty_deal = dealunit_shop(_healer=self._admin._kitchen_title)
         empty_deal.set_project_handle(self._admin._project_handle)
         assign_deal = src_deal.get_assignment(
             empty_deal, self.get_seed()._partys, self._admin._kitchen_title

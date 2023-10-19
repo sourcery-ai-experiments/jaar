@@ -1,5 +1,5 @@
 from datetime import datetime
-from src.deal.deal import DealUnit, get_from_json
+from src.deal.deal import dealunit_shop, get_from_json
 from src.deal.examples.deal_env import deal_env
 from src.deal.idea import IdeaCore, IdeaKid
 from src.deal.road import Road
@@ -119,7 +119,7 @@ def test_get_agenda_with_7amItem():
 
 def test_get_agenda_does_not_return_promise_items_outside_range():
     healer_text = "Zia"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     x_deal.set_time_hreg_ideas(c400_count=7)
     c_label = "clean"
     c_idea = IdeaKid(_label=c_label, promise=True)
@@ -290,7 +290,7 @@ def test_exammple_AgendaCanFiltersOnBase():
 def test_set_agenda_task_as_complete_RangeWorksCorrectly():
     # GIVEN
     healer_text = "Zia"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
 
     run_text = "run"
     run_road = f"{x_deal._project_handle},{run_text}"
@@ -335,7 +335,7 @@ def test_set_agenda_task_as_complete_RangeWorksCorrectly():
 def test_set_agenda_task_as_complete_DivisionWorksCorrectly():
     # GIVEN
     healer_text = "Zia"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
 
     run_text = "run"
     run_road = f"{x_deal._project_handle},{run_text}"
@@ -429,7 +429,7 @@ def test_deal_get_from_json_LoadsActionFromJSONCorrectly():
 def test_weekdayAgendaItemsCorrectlyReturned():
     # Given
     healer_text = "Zia"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
 
     x_deal._set_acptfacts_empty_if_null()
     x_deal.set_time_hreg_ideas(c400_count=7)
@@ -617,7 +617,7 @@ def test_deal_create_agenda_item_CorrectlyCreatesAllDealAttributes():
 
     # GIVEN
     healer_text = "Zia"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
 
     x_deal.set_deal_metrics()
     assert len(x_deal._partys) == 0
@@ -767,7 +767,7 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
 def test_agenda_IsSetByAssignedUnit_1PartyGroup():
     # GIVEN
     bob_text = "bob"
-    cx = DealUnit(_healer=bob_text)
+    cx = dealunit_shop(_healer=bob_text)
     work_text = "work"
     work_road = f"{bob_text},{work_text}"
     cx.add_idea(idea_kid=IdeaKid(_label=work_text, promise=True), pad=bob_text)
@@ -803,7 +803,7 @@ def test_agenda_IsSetByAssignedUnit_1PartyGroup():
 def test_agenda_IsSetByAssignedUnit_2PartyGroup():
     # GIVEN
     bob_text = "bob"
-    cx = DealUnit(_healer=bob_text)
+    cx = dealunit_shop(_healer=bob_text)
     cx.add_partyunit(title=bob_text)
     work_text = "work"
     work_road = f"{bob_text},{work_text}"

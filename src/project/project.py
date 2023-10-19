@@ -1,5 +1,6 @@
 from src.deal.deal import (
     DealUnit,
+    dealunit_shop,
     get_from_json as get_deal_from_json,
     partylink_shop,
     PartyTitle,
@@ -456,7 +457,7 @@ class ProjectUnit:
         debtor_weight: float = None,
     ):
         x_kitchenunit = self.get_kitchenunit(title=kitchen_title)
-        deal_x = DealUnit(_healer=deal_healer)
+        deal_x = dealunit_shop(_healer=deal_healer)
         self._kitchenunit_set_depot_deal(
             kitchenunit=x_kitchenunit,
             dealunit=deal_x,

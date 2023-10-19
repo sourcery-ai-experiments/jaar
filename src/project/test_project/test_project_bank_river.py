@@ -1,4 +1,4 @@
-from src.deal.deal import DealUnit
+from src.deal.deal import dealunit_shop
 from src.project.project import projectunit_shop
 from src.project.examples.project_env_kit import (
     get_temp_env_handle,
@@ -26,16 +26,16 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable01(
     tom_text = "tom"
     sal_text = "sal"
 
-    sal = DealUnit(_healer=sal_text)
+    sal = dealunit_shop(_healer=sal_text)
     sal.add_partyunit(title=bob_text, creditor_weight=1)
     sal.add_partyunit(title=tom_text, creditor_weight=3)
     sx.save_public_deal(deal_x=sal)
 
-    bob = DealUnit(_healer=bob_text)
+    bob = dealunit_shop(_healer=bob_text)
     bob.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_deal(deal_x=bob)
 
-    tom = DealUnit(_healer=tom_text)
+    tom = dealunit_shop(_healer=tom_text)
     tom.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_deal(deal_x=tom)
 
@@ -98,21 +98,21 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable02(
     tom_text = "tom"
     elu_text = "elu"
 
-    sal = DealUnit(_healer=sal_text)
+    sal = dealunit_shop(_healer=sal_text)
     sal.add_partyunit(title=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
     sx.save_public_deal(deal_x=sal)
 
-    bob = DealUnit(_healer=bob_text)
+    bob = dealunit_shop(_healer=bob_text)
     bob.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=1)
     bob.add_partyunit(title=tom_text, creditor_weight=1, debtor_weight=1)
     sx.save_public_deal(deal_x=bob)
 
-    tom = DealUnit(_healer=tom_text)
+    tom = dealunit_shop(_healer=tom_text)
     tom.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=8)
     sx.save_public_deal(deal_x=tom)
 
-    elu = DealUnit(_healer=elu_text)
+    elu = dealunit_shop(_healer=elu_text)
     elu.add_partyunit(title=sal_text, creditor_weight=1, debtor_weight=8)
     sx.save_public_deal(deal_x=elu)
     sx.refresh_bank_metrics()
@@ -161,22 +161,22 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable03(
     tom_text = "tom"
     ava_text = "ava"
 
-    sal_deal = DealUnit(_healer=sal_text)
+    sal_deal = dealunit_shop(_healer=sal_text)
     sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
     sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
     sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_deal(deal_x=sal_deal)
 
-    bob_deal = DealUnit(_healer=bob_text)
+    bob_deal = dealunit_shop(_healer=bob_text)
     bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
     bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_deal(deal_x=bob_deal)
 
-    tom_deal = DealUnit(_healer=tom_text)
+    tom_deal = dealunit_shop(_healer=tom_text)
     tom_deal.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_deal(deal_x=tom_deal)
 
-    ava_deal = DealUnit(_healer=ava_text)
+    ava_deal = dealunit_shop(_healer=ava_text)
     sx.save_public_deal(deal_x=ava_deal)
     sx.refresh_bank_metrics()
 
@@ -230,26 +230,26 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable04(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_deal = DealUnit(_healer=sal_text)
+    sal_deal = dealunit_shop(_healer=sal_text)
     sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
     sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
     sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_deal(deal_x=sal_deal)
 
-    bob_deal = DealUnit(_healer=bob_text)
+    bob_deal = dealunit_shop(_healer=bob_text)
     bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
     bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_deal(deal_x=bob_deal)
 
-    tom_deal = DealUnit(_healer=tom_text)
+    tom_deal = dealunit_shop(_healer=tom_text)
     tom_deal.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_deal(deal_x=tom_deal)
 
-    ava_deal = DealUnit(_healer=ava_text)
+    ava_deal = dealunit_shop(_healer=ava_text)
     ava_deal.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_deal(deal_x=ava_deal)
 
-    elu_deal = DealUnit(_healer=elu_text)
+    elu_deal = dealunit_shop(_healer=elu_text)
     elu_deal.add_partyunit(title=ava_text, creditor_weight=2)
     sx.save_public_deal(deal_x=elu_deal)
 
@@ -305,26 +305,26 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable05(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_deal = DealUnit(_healer=sal_text)
+    sal_deal = dealunit_shop(_healer=sal_text)
     sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
     sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
     sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_deal(deal_x=sal_deal)
 
-    bob_deal = DealUnit(_healer=bob_text)
+    bob_deal = dealunit_shop(_healer=bob_text)
     bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
     bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_deal(deal_x=bob_deal)
 
-    tom_deal = DealUnit(_healer=tom_text)
+    tom_deal = dealunit_shop(_healer=tom_text)
     tom_deal.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_deal(deal_x=tom_deal)
 
-    ava_deal = DealUnit(_healer=ava_text)
+    ava_deal = dealunit_shop(_healer=ava_text)
     ava_deal.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_deal(deal_x=ava_deal)
 
-    elu_deal = DealUnit(_healer=elu_text)
+    elu_deal = dealunit_shop(_healer=elu_text)
     elu_deal.add_partyunit(title=ava_text, creditor_weight=19)
     elu_deal.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_deal(deal_x=elu_deal)
@@ -385,21 +385,21 @@ def test_project_set_river_sphere_for_deal_CorrectlyDeletesPreviousRiver(
     tom_text = "tom"
     elu_text = "elu"
 
-    sal = DealUnit(_healer=sal_text)
+    sal = dealunit_shop(_healer=sal_text)
     sal.add_partyunit(title=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
     sx.save_public_deal(deal_x=sal)
 
-    bob = DealUnit(_healer=bob_text)
+    bob = dealunit_shop(_healer=bob_text)
     bob.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=1)
     bob.add_partyunit(title=tom_text, creditor_weight=1, debtor_weight=1)
     sx.save_public_deal(deal_x=bob)
 
-    tom = DealUnit(_healer=tom_text)
+    tom = dealunit_shop(_healer=tom_text)
     tom.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=8)
     sx.save_public_deal(deal_x=tom)
 
-    elu = DealUnit(_healer=elu_text)
+    elu = dealunit_shop(_healer=elu_text)
     elu.add_partyunit(title=sal_text, creditor_weight=1, debtor_weight=8)
     sx.save_public_deal(deal_x=elu)
     sx.refresh_bank_metrics()
@@ -444,26 +444,26 @@ def test_project_set_river_sphere_for_deal_CorrectlyUsesMaxFlowsCount(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_deal = DealUnit(_healer=sal_text)
+    sal_deal = dealunit_shop(_healer=sal_text)
     sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
     sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
     sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_deal(deal_x=sal_deal)
 
-    bob_deal = DealUnit(_healer=bob_text)
+    bob_deal = dealunit_shop(_healer=bob_text)
     bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
     bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_deal(deal_x=bob_deal)
 
-    tom_deal = DealUnit(_healer=tom_text)
+    tom_deal = dealunit_shop(_healer=tom_text)
     tom_deal.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_deal(deal_x=tom_deal)
 
-    ava_deal = DealUnit(_healer=ava_text)
+    ava_deal = dealunit_shop(_healer=ava_text)
     ava_deal.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_deal(deal_x=ava_deal)
 
-    elu_deal = DealUnit(_healer=elu_text)
+    elu_deal = dealunit_shop(_healer=elu_text)
     elu_deal.add_partyunit(title=ava_text, creditor_weight=19)
     elu_deal.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_deal(deal_x=elu_deal)
@@ -505,26 +505,26 @@ def test_project_set_river_sphere_for_deal_CorrectlyPopulatesriver_tallyTable05(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_deal = DealUnit(_healer=sal_text)
+    sal_deal = dealunit_shop(_healer=sal_text)
     sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
     sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
     sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_deal(deal_x=sal_deal)
 
-    bob_deal = DealUnit(_healer=bob_text)
+    bob_deal = dealunit_shop(_healer=bob_text)
     bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
     bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_deal(deal_x=bob_deal)
 
-    tom_deal = DealUnit(_healer=tom_text)
+    tom_deal = dealunit_shop(_healer=tom_text)
     tom_deal.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_deal(deal_x=tom_deal)
 
-    ava_deal = DealUnit(_healer=ava_text)
+    ava_deal = dealunit_shop(_healer=ava_text)
     ava_deal.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_deal(deal_x=ava_deal)
 
-    elu_deal = DealUnit(_healer=elu_text)
+    elu_deal = dealunit_shop(_healer=elu_text)
     elu_deal.add_partyunit(title=ava_text, creditor_weight=19)
     elu_deal.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_deal(deal_x=elu_deal)
@@ -587,26 +587,26 @@ def test_project_set_river_sphere_for_deal_CorrectlyBuildsASingleContinuousRange
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_deal = DealUnit(_healer=sal_text)
+    sal_deal = dealunit_shop(_healer=sal_text)
     sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
     sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
     sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_deal(deal_x=sal_deal)
 
-    bob_deal = DealUnit(_healer=bob_text)
+    bob_deal = dealunit_shop(_healer=bob_text)
     bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
     bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_deal(deal_x=bob_deal)
 
-    tom_deal = DealUnit(_healer=tom_text)
+    tom_deal = dealunit_shop(_healer=tom_text)
     tom_deal.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_deal(deal_x=tom_deal)
 
-    ava_deal = DealUnit(_healer=ava_text)
+    ava_deal = dealunit_shop(_healer=ava_text)
     ava_deal.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_deal(deal_x=ava_deal)
 
-    elu_deal = DealUnit(_healer=elu_text)
+    elu_deal = dealunit_shop(_healer=elu_text)
     elu_deal.add_partyunit(title=ava_text, creditor_weight=19)
     elu_deal.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_deal(deal_x=elu_deal)
@@ -657,26 +657,26 @@ def test_project_set_river_sphere_for_deal_CorrectlyUpatesDealPartyUnits(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_deal_src = DealUnit(_healer=sal_text)
+    sal_deal_src = dealunit_shop(_healer=sal_text)
     sal_deal_src.add_partyunit(title=bob_text, creditor_weight=2, debtor_weight=2)
     sal_deal_src.add_partyunit(title=tom_text, creditor_weight=2, debtor_weight=1)
     sal_deal_src.add_partyunit(title=ava_text, creditor_weight=2, debtor_weight=2)
     sx.save_public_deal(deal_x=sal_deal_src)
 
-    bob_deal = DealUnit(_healer=bob_text)
+    bob_deal = dealunit_shop(_healer=bob_text)
     bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
     bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_deal(deal_x=bob_deal)
 
-    tom_deal = DealUnit(_healer=tom_text)
+    tom_deal = dealunit_shop(_healer=tom_text)
     tom_deal.add_partyunit(title=sal_text)
     sx.save_public_deal(deal_x=tom_deal)
 
-    ava_deal = DealUnit(_healer=ava_text)
+    ava_deal = dealunit_shop(_healer=ava_text)
     ava_deal.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_deal(deal_x=ava_deal)
 
-    elu_deal = DealUnit(_healer=elu_text)
+    elu_deal = dealunit_shop(_healer=elu_text)
     elu_deal.add_partyunit(title=ava_text, creditor_weight=8)
     elu_deal.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_deal(deal_x=elu_deal)

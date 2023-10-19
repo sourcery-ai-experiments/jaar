@@ -3,7 +3,7 @@ from src.deal.examples.example_deals import (
 )
 from src.deal.party import PartyTitle, partyunit_shop
 from src.deal.group import GroupBrand, balancelink_shop, groupunit_shop
-from src.deal.deal import DealUnit
+from src.deal.deal import dealunit_shop
 
 
 def test_deal_get_tree_metrics_TracksRequiredsThatHaveNoAcptFactBases():
@@ -43,7 +43,7 @@ def test_deal_3AdvocatesNoIdeaKid():
     carm_text = "carmen"
     patr_text = "patrick"
 
-    x_deal = DealUnit(_healer="prom")
+    x_deal = dealunit_shop(_healer="prom")
     au_rico = partyunit_shop(title=rico_text, uid=7)
     au_carm = partyunit_shop(title=carm_text, uid=2)
     au_patr = partyunit_shop(title=patr_text, uid=13)
@@ -90,7 +90,7 @@ def test_deal_get_partyunits_uid_max_WorksCorrectly():
     carr_text = "carmen"
     patr_text = "patrick"
 
-    x_deal = DealUnit(_healer="prom")
+    x_deal = dealunit_shop(_healer="prom")
     x_deal.set_partyunit(partyunit=partyunit_shop(title=rico_text, uid=4))
     x_deal.set_partyunit(partyunit=partyunit_shop(title=carr_text, uid=13))
     x_deal.set_partyunit(partyunit=partyunit_shop(title=patr_text, uid=7))
@@ -105,7 +105,7 @@ def test_deal_get_groupunits_uid_max_WorksCorrectly():
     carr_text = "carmen"
     patr_text = "patrick"
 
-    x_deal = DealUnit(_healer="prom")
+    x_deal = dealunit_shop(_healer="prom")
     x_deal.set_groupunit(groupunit=groupunit_shop(brand=rico_text, uid=4))
     x_deal.set_groupunit(groupunit=groupunit_shop(brand=carr_text, uid=12))
     x_deal.set_groupunit(groupunit=groupunit_shop(brand=patr_text, uid=7))

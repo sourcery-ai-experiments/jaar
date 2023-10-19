@@ -6,7 +6,7 @@ from src.project.examples.kitchen_env_kit import (
     get_temp_kitchenunit_dir,
     get_temp_project_handle,
 )
-from src.deal.deal import DealUnit
+from src.deal.deal import dealunit_shop
 
 
 def test_kitchenunit_set_depot_deal_SetsCorrectInfo(kitchen_dir_setup_cleanup):
@@ -19,9 +19,9 @@ def test_kitchenunit_set_depot_deal_SetsCorrectInfo(kitchen_dir_setup_cleanup):
     # WHEN
     assignment_text = "assignment"
     zia_text = "Zia"
-    x_kitchen.set_depot_deal(DealUnit(_healer=zia_text), assignment_text)
+    x_kitchen.set_depot_deal(dealunit_shop(_healer=zia_text), assignment_text)
     zoa_text = "Zoa"
-    x_kitchen.set_depot_deal(DealUnit(_healer=zoa_text), assignment_text)
+    x_kitchen.set_depot_deal(dealunit_shop(_healer=zoa_text), assignment_text)
 
     # THEN
     print(f"{x_kitchen._seed._partys.keys()=}")

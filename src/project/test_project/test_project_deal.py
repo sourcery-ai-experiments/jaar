@@ -1,4 +1,4 @@
-from src.deal.deal import DealUnit
+from src.deal.deal import dealunit_shop
 from src.deal.examples.example_deals import (
     get_deal_1Task_1CE0MinutesRequired_1AcptFact as example_deals_get_deal_1Task_1CE0MinutesRequired_1AcptFact,
     deal_v001 as example_deals_deal_v001,
@@ -54,7 +54,7 @@ def test_project_rename_public_deal_ChangesDealTitle(
     e5 = projectunit_shop(handle=project_handle, projects_dir=get_test_projects_dir())
     e5.create_dirs_if_null(in_memory_bank=True)
     old_deal_healer = "old1"
-    sx5_obj = DealUnit(_healer=old_deal_healer)
+    sx5_obj = dealunit_shop(_healer=old_deal_healer)
     old_sx5_path = f"{e5.get_public_dir()}/{old_deal_healer}.json"
     e5.save_public_deal(deal_x=sx5_obj)
     print(f"{old_sx5_path=}")

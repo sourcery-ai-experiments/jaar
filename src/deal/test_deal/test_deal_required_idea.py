@@ -5,7 +5,7 @@ from src.deal.examples.example_deals import (
 )
 from src.deal.idea import IdeaKid
 from src.deal.required_idea import sufffactunit_shop, RequiredUnit, RequiredHeir
-from src.deal.deal import DealUnit
+from src.deal.deal import dealunit_shop
 from src.deal.x_func import from_list_get_active_status
 
 

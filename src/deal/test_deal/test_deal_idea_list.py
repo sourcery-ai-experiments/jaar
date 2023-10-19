@@ -7,7 +7,7 @@ from src.deal.examples.example_deals import (
 from src.deal.idea import IdeaKid
 from src.deal.required_idea import sufffactunit_shop, RequiredUnit, RequiredHeir
 from src.deal.road import Road
-from src.deal.deal import DealUnit
+from src.deal.deal import dealunit_shop
 
 
 def _check_all_elements_in_dict_are_correct_type(x_dict: dict, type_str: str) -> bool:
@@ -261,7 +261,7 @@ def test_deal_set_deal_metrics_CorrectlyClears_deal_coin():
 def test_deal_get_idea_list_CorrectlyCalculatesIdeaAttr_deal_coin():
     # GIVEN
     healer_text = "Yao"
-    x_deal = DealUnit(_healer=healer_text, _weight=10)
+    x_deal = dealunit_shop(_healer=healer_text, _weight=10)
 
     auto_text = "auto"
     auto_idea = IdeaKid(_label=auto_text, _weight=10)

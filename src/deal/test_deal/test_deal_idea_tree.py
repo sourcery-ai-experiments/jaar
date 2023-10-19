@@ -3,7 +3,7 @@ from src.deal.examples.example_deals import (
 )
 from src.deal.party import PartyTitle
 from src.deal.idea import IdeaKid
-from src.deal.deal import DealUnit
+from src.deal.deal import dealunit_shop
 from src.deal.group import Balanceline, Balancelink
 from pytest import raises as pytest_raises
 
@@ -105,7 +105,7 @@ def test_get_idea_kid_CorrectlyReturnsIdea():
 
 def test_set_deal_metrics_RootOnlyCorrectlySetsDescendantAttributes():
     healer_text = "Tim"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     assert x_deal._idearoot._descendant_promise_count is None
     assert x_deal._idearoot._all_party_credit is None
     assert x_deal._idearoot._all_party_debt is None
@@ -372,13 +372,13 @@ def test_deal_get_orderd_node_list_WorksCorrectly():
         == f"{x_deal._project_handle},weekdays"
     )
 
-    lw_y = DealUnit(_healer="MyDeal")
+    lw_y = dealunit_shop(_healer="MyDeal")
     assert lw_y.get_idea_tree_ordered_road_list()[0] == x_deal._project_handle
 
 
 def test_deal_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoads():
     healer_text = "Tim"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     time = "timeline"
     x_deal.add_idea(
         IdeaKid(_label=time, _begin=0, _close=700), pad=x_deal._project_handle
@@ -405,7 +405,7 @@ def test_deal_get_heir_road_list_returnsCorrectList():
 
 
 # def test_deal4party_hasCorrectLevel1StructureWithGrouplessBranches_2():
-#     x_deal = DealUnit(_healer=healer_text)
+#     x_deal = dealunit_shop(_healer=healer_text)
 #     x_deal.add_idea(idea_kid=IdeaKid(_label="A", _weight=7), pad="blahblah")
 #     x_deal.add_idea(idea_kid=IdeaKid(_label="C", _weight=3), pad=f"{x_deal._project_handle},A")
 #     x_deal.add_idea(idea_kid=IdeaKid(_label="E", _weight=7), pad=f"{x_deal._project_handle},A,C")
@@ -433,7 +433,7 @@ def test_deal_get_heir_road_list_returnsCorrectList():
 #     x_deal.edit_idea_attr(road=f"{x_deal._project_handle},A,C,E", balancelink=sandy_bl)
 
 #     # expected sandy
-#     exp_sandy = DealUnit(_healer=healer_text)
+#     exp_sandy = dealunit_shop(_healer=healer_text)
 #     exp_sandy.add_idea(idea_kid=IdeaKid(_label="A", _deal_importance=0.07), pad="blahblah")
 #     exp_sandy.add_idea(idea_kid=IdeaKid(_label="C", _deal_importance=0.07), pad=f"{x_deal._project_handle},A")
 #     exp_sandy.add_idea(idea_kid=IdeaKid(_label="E", _deal_importance=0.5), pad=f"{x_deal._project_handle},A,C")

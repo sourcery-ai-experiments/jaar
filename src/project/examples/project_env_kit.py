@@ -1,5 +1,5 @@
 # from lw.deal import DealUnit
-from src.deal.deal import DealUnit
+from src.deal.deal import dealunit_shop
 from src.deal.x_func import (
     single_dir_create_if_null,
     delete_dir as x_func_delete_dir,
@@ -49,7 +49,7 @@ def env_dir_setup_cleanup():
 
 
 def create_deal_file_for_projects(project_dir: str, deal_healer: str):
-    deal_x = DealUnit(_healer=deal_healer)
+    deal_x = dealunit_shop(_healer=deal_healer)
     deal_dir = f"{project_dir}/deals"
     # file_path = f"{deal_dir}/{deal_x._healer}.json"
     # if not path.exists(file_path):
@@ -263,26 +263,26 @@ def _delete_and_set_ex6():
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_deal = DealUnit(_healer=sal_text)
+    sal_deal = dealunit_shop(_healer=sal_text)
     sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
     sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
     sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
     x_project.save_public_deal(deal_x=sal_deal)
 
-    bob_deal = DealUnit(_healer=bob_text)
+    bob_deal = dealunit_shop(_healer=bob_text)
     bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
     bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
     x_project.save_public_deal(deal_x=bob_deal)
 
-    tom_deal = DealUnit(_healer=tom_text)
+    tom_deal = dealunit_shop(_healer=tom_text)
     tom_deal.add_partyunit(title=sal_text, creditor_weight=2)
     x_project.save_public_deal(deal_x=tom_deal)
 
-    ava_deal = DealUnit(_healer=ava_text)
+    ava_deal = dealunit_shop(_healer=ava_text)
     ava_deal.add_partyunit(title=elu_text, creditor_weight=2)
     x_project.save_public_deal(deal_x=ava_deal)
 
-    elu_deal = DealUnit(_healer=elu_text)
+    elu_deal = dealunit_shop(_healer=elu_text)
     elu_deal.add_partyunit(title=ava_text, creditor_weight=19)
     elu_deal.add_partyunit(title=sal_text, creditor_weight=1)
     x_project.save_public_deal(deal_x=elu_deal)

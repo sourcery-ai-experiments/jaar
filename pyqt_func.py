@@ -1,4 +1,4 @@
-from src.deal.deal import DealUnit, IdeaCore
+from src.deal.deal import dealunit_shop, IdeaCore
 from PyQt5.QtWidgets import QTreeWidgetItem
 from dataclasses import dataclass
 

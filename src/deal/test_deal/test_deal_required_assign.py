@@ -3,7 +3,7 @@ from src.deal.required_assign import (
     assigned_heir_shop,
     assigned_unit_shop,
 )
-from src.deal.deal import DealUnit
+from src.deal.deal import dealunit_shop
 from src.deal.idea import IdeaKid
 from src.deal.group import groupunit_shop
 
@@ -11,7 +11,7 @@ from src.deal.group import groupunit_shop
 def test_deal_edit_idea_attr_CorrectlySetsAssignedUnit():
     # GIVEN
     healer_text = "Xio"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     run_text = "run"
     run_road = f"{x_deal._project_handle},{run_text}"
     x_deal.add_idea(IdeaKid(_label=run_text), pad=x_deal._project_handle)
@@ -31,7 +31,7 @@ def test_deal_idearoot_assignedunit_CorrectlySets_idea_assignedheir():
     assigned_unit_x = assigned_unit_shop()
 
     healer_text = "Tim"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     x_deal.edit_idea_attr(assignedunit=assigned_unit_x, road=x_deal._project_handle)
     assert x_deal._idearoot._assignedunit == assigned_unit_x
     assert x_deal._idearoot._assignedheir is None
@@ -55,7 +55,7 @@ def test_deal_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
     run_road = f"{bob_text},{run_text}"
     assigned_unit_x = assigned_unit_shop()
 
-    x_deal = DealUnit(_healer=bob_text)
+    x_deal = dealunit_shop(_healer=bob_text)
     x_deal.add_partyunit(title=bob_text)
     x_deal.add_idea(IdeaKid(_label=run_text), pad=bob_text)
     x_deal.edit_idea_attr(road=run_road, assignedunit=assigned_unit_x)
@@ -82,7 +82,7 @@ def test_deal_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
 def test_deal_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir():
     # GIVEN
     healer_text = "Noa"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     swim_text = "swiming"
     swim_road = f"{x_deal._project_handle},{swim_text}"
     morn_text = "morning"
@@ -118,7 +118,7 @@ def test_deal_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir():
 def test_DealUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignUnit():
     # GIVEN
     healer_text = "Noa"
-    x_deal1 = DealUnit(_healer=healer_text)
+    x_deal1 = dealunit_shop(_healer=healer_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
     x_deal1.add_partyunit(title=xia_text)
@@ -139,7 +139,7 @@ def test_DealUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignUni
     assert len(x_deal1_swim_suffgroups) == 2
 
     # WHEN
-    x_deal2 = DealUnit(_healer=healer_text)
+    x_deal2 = dealunit_shop(_healer=healer_text)
     x_deal2.add_partyunit(title=xia_text)
     filtered_idea = x_deal2._get_filtered_balancelinks_idea(x_deal1_swim_idea)
 
@@ -152,7 +152,7 @@ def test_DealUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignUni
 def test_DealUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     # GIVEN
     healer_text = "Noa"
-    x_deal1 = DealUnit(_healer=healer_text)
+    x_deal1 = dealunit_shop(_healer=healer_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
     x_deal1.add_partyunit(title=xia_text)
@@ -173,7 +173,7 @@ def test_DealUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     assert len(x_deal1_swim_suffgroups) == 2
 
     # WHEN
-    x_deal2 = DealUnit(_healer=healer_text)
+    x_deal2 = dealunit_shop(_healer=healer_text)
     x_deal2.add_partyunit(title=xia_text)
     x_deal2.add_idea(
         idea_kid=x_deal1_swim_idea,

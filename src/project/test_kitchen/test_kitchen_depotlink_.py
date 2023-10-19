@@ -1,4 +1,4 @@
-from src.deal.deal import DealUnit, get_from_json as deal_get_from_json
+from src.deal.deal import dealunit_shop, get_from_json as deal_get_from_json
 from src.deal.x_func import (
     count_files as x_func_count_files,
     open_file as x_func_open_file,
@@ -233,7 +233,7 @@ def test_kitchenunit_set_ignore_deal_file_CorrectlyUpdatesIgnoreFile(
     assert len(cx1._partys) == 1
 
     # WHEN
-    zia_deal = DealUnit(_healer=zia_text)
+    zia_deal = dealunit_shop(_healer=zia_text)
     bob_ux.set_ignore_deal_file(zia_deal, src_deal_healer=None)
 
     # THEN

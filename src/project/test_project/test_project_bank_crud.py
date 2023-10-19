@@ -1,4 +1,4 @@
-from src.deal.deal import DealUnit, IdeaKid, groupunit_shop, partylink_shop
+from src.deal.deal import dealunit_shop, IdeaKid, groupunit_shop, partylink_shop
 from src.project.project import projectunit_shop
 from src.project.examples.project_env_kit import (
     get_temp_env_handle,
@@ -64,7 +64,7 @@ def test_project_refresh_bank_metrics_CorrectlyDeletesOldBankInMemory(
     bob_text = "bob"
     tom_text = "tom"
 
-    bob = DealUnit(_healer=bob_text)
+    bob = dealunit_shop(_healer=bob_text)
     bob.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
     sx.save_public_deal(deal_x=bob)
     sx.refresh_bank_metrics()
@@ -90,7 +90,7 @@ def test_project_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
     bob_text = "bob"
     tom_text = "tom"
 
-    bob = DealUnit(_healer=bob_text)
+    bob = dealunit_shop(_healer=bob_text)
     bob.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
     sx.save_public_deal(deal_x=bob)
     sx.refresh_bank_metrics()
@@ -118,25 +118,25 @@ def test_project_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     sal_text = "sal"
     elu_text = "elu"
 
-    bob = DealUnit(_healer=bob_text)
+    bob = dealunit_shop(_healer=bob_text)
     bob.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
     bob.add_partyunit(title=sal_text, creditor_weight=1, debtor_weight=4)
     bob.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
     sx.save_public_deal(deal_x=bob)
 
-    sal = DealUnit(_healer=sal_text)
+    sal = dealunit_shop(_healer=sal_text)
     sal.add_partyunit(title=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
     sal.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
     sx.save_public_deal(deal_x=sal)
 
-    tom = DealUnit(_healer=tom_text)
+    tom = dealunit_shop(_healer=tom_text)
     tom.add_partyunit(title=bob_text, creditor_weight=3, debtor_weight=1)
     tom.add_partyunit(title=sal_text, creditor_weight=1, debtor_weight=4)
     tom.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
     sx.save_public_deal(deal_x=tom)
 
-    elu = DealUnit(_healer=elu_text)
+    elu = dealunit_shop(_healer=elu_text)
     elu.add_partyunit(title=bob_text, creditor_weight=3, debtor_weight=1)
     elu.add_partyunit(title=tom_text, creditor_weight=1, debtor_weight=4)
     elu.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
@@ -166,10 +166,10 @@ def test_project_refresh_bank_metrics_CorrectlyPopulatesDealTable01(
     sal_text = "sal"
     elu_text = "elu"
 
-    sx.save_public_deal(deal_x=DealUnit(_healer=bob_text))
-    sx.save_public_deal(deal_x=DealUnit(_healer=tom_text))
-    sx.save_public_deal(deal_x=DealUnit(_healer=sal_text))
-    sx.save_public_deal(deal_x=DealUnit(_healer=elu_text))
+    sx.save_public_deal(deal_x=dealunit_shop(_healer=bob_text))
+    sx.save_public_deal(deal_x=dealunit_shop(_healer=tom_text))
+    sx.save_public_deal(deal_x=dealunit_shop(_healer=sal_text))
+    sx.save_public_deal(deal_x=dealunit_shop(_healer=elu_text))
 
     sqlstr_count_deals = get_table_count_sqlstr("dealunits")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_deals) == 0
@@ -195,10 +195,10 @@ def test_project_refresh_bank_metrics_CorrectlyPopulatesDealTable01(
     sal_text = "sal"
     elu_text = "elu"
 
-    sx.save_public_deal(deal_x=DealUnit(_healer=bob_text))
-    sx.save_public_deal(deal_x=DealUnit(_healer=tom_text))
-    sx.save_public_deal(deal_x=DealUnit(_healer=sal_text))
-    sx.save_public_deal(deal_x=DealUnit(_healer=elu_text))
+    sx.save_public_deal(deal_x=dealunit_shop(_healer=bob_text))
+    sx.save_public_deal(deal_x=dealunit_shop(_healer=tom_text))
+    sx.save_public_deal(deal_x=dealunit_shop(_healer=sal_text))
+    sx.save_public_deal(deal_x=dealunit_shop(_healer=elu_text))
 
     sqlstr_count_deals = get_table_count_sqlstr("dealunits")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_deals) == 0
@@ -222,8 +222,8 @@ def test_project_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     bob_text = "bob"
     tom_text = "tom"
     elu_text = "elu"
-    bob_deal = DealUnit(_healer=bob_text)
-    tom_deal = DealUnit(_healer=tom_text)
+    bob_deal = dealunit_shop(_healer=bob_text)
+    tom_deal = dealunit_shop(_healer=tom_text)
     bob_deal.add_partyunit(title=tom_text)
     tom_deal.add_partyunit(title=bob_text)
     tom_deal.add_partyunit(title=elu_text)
@@ -264,10 +264,10 @@ def test_project_set_deal_bank_attrs_CorrectlyPopulatesDeal_Groupunit_Partylinks
     tom_text = "tom"
     ava_text = "ava"
 
-    sal_deal = DealUnit(_healer=sal_text)
-    bob_deal = DealUnit(_healer=bob_text)
-    tom_deal = DealUnit(_healer=tom_text)
-    ava_deal = DealUnit(_healer=ava_text)
+    sal_deal = dealunit_shop(_healer=sal_text)
+    bob_deal = dealunit_shop(_healer=bob_text)
+    tom_deal = dealunit_shop(_healer=tom_text)
+    ava_deal = dealunit_shop(_healer=ava_text)
 
     swim_text = "swimming"
     sports_text = "sports"

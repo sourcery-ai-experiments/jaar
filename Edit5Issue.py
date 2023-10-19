@@ -1,10 +1,10 @@
 # command to for converting ui form to python file: pyuic5 ui\project5IssueUI.ui -o ui\project5IssueUI.py
 import sys
-from ui.project5IssueUI import Ui_Form
+from ui.Project5IssueUI import Ui_Form
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from pyqt_func import deal_importance_diplay
-from src.deal.deal import DealUnit
+from src.deal.deal import dealunit_shop
 from src.deal.group import groupunit_shop
 from src.deal.party import partylink_shop
 

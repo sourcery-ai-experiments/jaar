@@ -6,7 +6,7 @@ from EditMain import EditMainView
 from EditAcptFactTime import EditAcptFactTime
 from Edit_Agenda import Edit_Agenda
 from EditProblem import EditProblem
-from src.deal.deal import DealUnit, get_from_json
+from src.deal.deal import dealunit_shop, get_from_json
 from src.deal.examples.deal_env import deal_env
 from src.deal.hreg_time import convert1440toHHMM
 from pyqt_func import (

@@ -1,4 +1,4 @@
-from src.deal.deal import DealUnit, IdeaKid, assigned_unit_shop
+from src.deal.deal import DealUnit, dealunit_shop, IdeaKid, assigned_unit_shop
 from src.project.kitchen import kitchenunit_shop, KitchenUnit
 from src.project.examples.kitchen_env_kit import get_temp_project_handle
 
@@ -7,7 +7,7 @@ from random import randrange
 
 def get_1node_deal() -> DealUnit:
     a_text = "A"
-    x_deal = DealUnit(_healer=a_text)
+    x_deal = dealunit_shop(_healer=a_text)
     x_deal.set_project_handle(get_temp_project_handle())
     x_deal.set_deal_metrics()
     return x_deal
@@ -15,7 +15,7 @@ def get_1node_deal() -> DealUnit:
 
 def get_Jnode2node_deal() -> DealUnit:
     healer_text = "J"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     x_deal.set_project_handle(get_temp_project_handle())
     a_text = "A"
     idea_a = IdeaKid(_label=a_text)
@@ -27,7 +27,7 @@ def get_Jnode2node_deal() -> DealUnit:
 def get_2node_deal() -> DealUnit:
     healer_text = "A"
     b_text = "B"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     x_deal.set_project_handle(get_temp_project_handle())
     idea_b = IdeaKid(_label=b_text)
     x_deal.add_idea(idea_kid=idea_b, pad=get_temp_project_handle())
@@ -38,7 +38,7 @@ def get_2node_deal() -> DealUnit:
 def get_3node_deal() -> DealUnit:
     a_text = "A"
     a_road = a_text
-    x_deal = DealUnit(_healer=a_text)
+    x_deal = dealunit_shop(_healer=a_text)
     x_deal.set_project_handle(get_temp_project_handle())
     b_text = "B"
     idea_b = IdeaKid(_label=b_text)
@@ -53,7 +53,7 @@ def get_3node_deal() -> DealUnit:
 def get_3node_D_E_F_deal() -> DealUnit:
     d_text = "D"
     d_road = d_text
-    x_deal = DealUnit(_healer=d_text)
+    x_deal = dealunit_shop(_healer=d_text)
     x_deal.set_project_handle(get_temp_project_handle())
     b_text = "E"
     idea_b = IdeaKid(_label=b_text)
@@ -66,7 +66,7 @@ def get_3node_D_E_F_deal() -> DealUnit:
 
 
 def get_6node_deal() -> DealUnit:
-    x_deal = DealUnit(_healer="A")
+    x_deal = dealunit_shop(_healer="A")
     x_deal.set_project_handle(get_temp_project_handle())
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
@@ -83,7 +83,7 @@ def get_6node_deal() -> DealUnit:
 
 
 def get_7nodeInsertH_deal() -> DealUnit:
-    x_deal = DealUnit(_healer="A")
+    x_deal = dealunit_shop(_healer="A")
     x_deal.set_project_handle(get_temp_project_handle())
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
@@ -102,7 +102,7 @@ def get_7nodeInsertH_deal() -> DealUnit:
 
 
 def get_5nodeHG_deal() -> DealUnit:
-    x_deal = DealUnit(_healer="A")
+    x_deal = dealunit_shop(_healer="A")
     x_deal.set_project_handle(get_temp_project_handle())
     idea_b = IdeaKid(_label="B")
     idea_c = IdeaKid(_label="C")
@@ -117,7 +117,7 @@ def get_5nodeHG_deal() -> DealUnit:
 
 
 def get_7nodeJRoot_deal() -> DealUnit:
-    x_deal = DealUnit(_healer="J")
+    x_deal = dealunit_shop(_healer="J")
     x_deal.set_project_handle(get_temp_project_handle())
     idea_a = IdeaKid(_label="A")
     idea_b = IdeaKid(_label="B")
@@ -136,7 +136,7 @@ def get_7nodeJRoot_deal() -> DealUnit:
 
 
 def get_7nodeJRootWithH_deal() -> DealUnit:
-    x_deal = DealUnit(_healer="J")
+    x_deal = dealunit_shop(_healer="J")
     x_deal.set_project_handle(get_temp_project_handle())
     idea_a = IdeaKid(_label="A")
     idea_b = IdeaKid(_label="B")
@@ -164,7 +164,7 @@ def get_healer_2deal(env_dir, project_handle) -> KitchenUnit:
 
 def get_deal_2CleanNodesRandomWeights(_healer: str = None) -> DealUnit:
     healer_text = _healer if _healer != None else "ernie"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     casa_text = "casa"
     x_deal.add_idea(idea_kid=IdeaKid(_label=casa_text), pad="")
     casa_road = f"{x_deal._project_handle},{casa_text}"
@@ -180,7 +180,7 @@ def get_deal_2CleanNodesRandomWeights(_healer: str = None) -> DealUnit:
 
 def get_deal_3CleanNodesRandomWeights(_healer: str = None) -> DealUnit:
     healer_text = _healer if _healer != None else "ernie"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     casa_text = "casa"
     x_deal.add_idea(idea_kid=IdeaKid(_label=casa_text), pad="")
     casa_road = f"{x_deal._project_handle},{casa_text}"
@@ -199,7 +199,7 @@ def get_deal_3CleanNodesRandomWeights(_healer: str = None) -> DealUnit:
 
 def get_deal_assignment_laundry_example1() -> DealUnit:
     america_text = "America"
-    america_deal = DealUnit(_healer=america_text)
+    america_deal = dealunit_shop(_healer=america_text)
     joachim_text = "Joachim"
     america_deal.add_partyunit(america_text)
     america_deal.add_partyunit(joachim_text)

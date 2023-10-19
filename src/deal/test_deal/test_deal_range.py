@@ -1,11 +1,11 @@
 from src.deal.idea import IdeaKid
-from src.deal.deal import DealUnit
+from src.deal.deal import dealunit_shop
 
 
 def test_dealAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
     # Given
     healer_text = "Mia"
-    x_deal = DealUnit(_healer=healer_text, _weight=10)
+    x_deal = dealunit_shop(_healer=healer_text, _weight=10)
 
     l1 = "level1"
     idea_kid_l1 = IdeaKid(_weight=30, _label=l1)
@@ -42,7 +42,7 @@ def test_dealAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
 def test_dealAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
     # Given
     healer_text = "Bob"
-    x_deal = DealUnit(_healer=healer_text, _weight=10)
+    x_deal = dealunit_shop(_healer=healer_text, _weight=10)
 
     l1 = "level1"
     idea_kid_l1 = IdeaKid(_weight=30, _label=l1)
@@ -82,7 +82,7 @@ def test_dealAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
 def test_get_idea_ranged_kids_CorrectlyReturnsAllChildren():
     # GIVEN
     healer_text = "Noa"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     x_deal.set_time_hreg_ideas(c400_count=7)
 
     # WHEN
@@ -96,7 +96,7 @@ def test_get_idea_ranged_kids_CorrectlyReturnsAllChildren():
 def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen1():
     # GIVEN
     healer_text = "Noa"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     x_deal.set_time_hreg_ideas(c400_count=7)
 
     # WHEN
@@ -118,7 +118,7 @@ def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen1():
 def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen2():
     # GIVEN
     healer_text = "Noa"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     x_deal.set_time_hreg_ideas(c400_count=7)
 
     # WHEN THEN
@@ -137,7 +137,7 @@ def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen2():
 def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen3():
     # GIVEN
     healer_text = "Noa"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     x_deal.set_time_hreg_ideas(c400_count=7)
 
     # WHEN THEN

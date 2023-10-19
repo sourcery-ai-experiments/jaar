@@ -5,7 +5,7 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from EditParty2bd import EditParty2bd
 from pyqt_func import deal_importance_diplay
-from src.deal.deal import DealUnit
+from src.deal.deal import dealunit_shop
 from src.deal.group import groupunit_shop
 from src.deal.party import partylink_shop
 

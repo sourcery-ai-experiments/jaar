@@ -1,5 +1,5 @@
 from src.deal.idea import IdeaKid
-from src.deal.deal import DealUnit
+from src.deal.deal import dealunit_shop
 from src.deal.group import groupunit_shop
 from src.deal.party import partyunit_shop
 from src.deal.origin import originunit_shop
@@ -11,8 +11,8 @@ from src.deal.x_func import get_on_meld_weight_actions
 def test_deal_meld_BaseScenario():
     # GIVEN
     deal_text = "x_deal"
-    x_deal1 = DealUnit(_healer=deal_text)
-    x_deal2 = DealUnit(_healer=deal_text)
+    x_deal1 = dealunit_shop(_healer=deal_text)
+    x_deal2 = dealunit_shop(_healer=deal_text)
 
     # WHEN
     x_deal1.meld(other_deal=x_deal2)
@@ -25,9 +25,9 @@ def test_deal_meld_BaseScenario():
 def test_deal_meld_WeightDoesNotCombine():
     # GIVEN
     deal_text = "x_deal"
-    x_deal1 = DealUnit(_healer=deal_text)
+    x_deal1 = dealunit_shop(_healer=deal_text)
     x_deal1._weight = 3
-    x_deal2 = DealUnit(_healer=deal_text)
+    x_deal2 = dealunit_shop(_healer=deal_text)
     x_deal2._weight = 5
 
     # WHEN
@@ -43,10 +43,10 @@ def test_deal_meld_PartyUnits():
     x1_party = partyunit_shop(title=x1_title)
 
     deal_text = "x_deal"
-    x_deal1 = DealUnit(_healer=deal_text)
+    x_deal1 = dealunit_shop(_healer=deal_text)
     x_deal1.set_partyunit(partyunit=x1_party)
 
-    x_deal2 = DealUnit(_healer=deal_text)
+    x_deal2 = dealunit_shop(_healer=deal_text)
     x_deal2.set_partyunit(partyunit=x1_party)
     x2_title = "x2_party"
     x2_party = partyunit_shop(title=x2_title)
@@ -68,10 +68,10 @@ def test_deal_meld_GroupUnits():
     x1_group = groupunit_shop(brand=x1_title)
 
     deal_text = "x_deal"
-    x_deal1 = DealUnit(_healer=deal_text)
+    x_deal1 = dealunit_shop(_healer=deal_text)
     x_deal1.set_groupunit(groupunit=x1_group)
 
-    x_deal2 = DealUnit(_healer=deal_text)
+    x_deal2 = dealunit_shop(_healer=deal_text)
     x_deal2.set_groupunit(groupunit=x1_group)
     x2_title = "x2_group"
     x2_group = groupunit_shop(brand=x2_title, uid=5)
@@ -93,8 +93,8 @@ def test_deal_meld_GroupUnits():
 
 def test_deal_idearoot_meld_IdeaRootAttrCorrectlyMelded():
     # GIVEN
-    x_deal1 = DealUnit(_healer="spirit")
-    x_deal2 = DealUnit(_healer="spirit")
+    x_deal1 = dealunit_shop(_healer="spirit")
+    x_deal2 = dealunit_shop(_healer="spirit")
     x_deal2._idearoot._uid = 4
     assert x_deal1._idearoot._uid == 1
     assert x_deal2._idearoot._uid == 4
@@ -111,7 +111,7 @@ def test_deal_idearoot_meld_IdeaRootAttrCorrectlyMelded():
 def test_deal_idearoot_meld_Add4IdeasScenario():
     # GIVEN
     spirit_text = "spirit"
-    x_deal1 = DealUnit(_healer=spirit_text)
+    x_deal1 = dealunit_shop(_healer=spirit_text)
 
     tech_text = "tech"
     tech_road = f"{x_deal1._project_handle},{tech_text}"
@@ -122,7 +122,7 @@ def test_deal_idearoot_meld_Add4IdeasScenario():
     free_text = "freestyle"
     free_road = f"{x_deal1._project_handle},{swim_text},{free_text}"
 
-    x_deal2 = DealUnit(_healer=spirit_text)
+    x_deal2 = dealunit_shop(_healer=spirit_text)
     x_deal2.add_idea(pad=x_deal2._project_handle, idea_kid=IdeaKid(_label=tech_text))
     x_deal2.add_idea(pad=tech_road, idea_kid=IdeaKid(_label=bowl_text))
     x_deal2.add_idea(pad=swim_road, idea_kid=IdeaKid(_label=free_text))
@@ -141,7 +141,7 @@ def test_deal_idearoot_meld_Add4IdeasScenario():
 def test_deal_idearoot_meld_2SameIdeasScenario():
     # GIVEN
     healer_text = "Yoa"
-    x_deal1 = DealUnit(_healer=healer_text)
+    x_deal1 = dealunit_shop(_healer=healer_text)
     tech_text = "tech"
     tech_road = f"{x_deal1._project_handle},{tech_text}"
     bowl_text = "bowl"
@@ -150,7 +150,7 @@ def test_deal_idearoot_meld_2SameIdeasScenario():
     x_deal1.add_idea(pad=x_deal1._project_handle, idea_kid=IdeaKid(_label=tech_text))
     x_deal1.add_idea(pad=tech_road, idea_kid=IdeaKid(_label=bowl_text))
 
-    x_deal2 = DealUnit(_healer=healer_text)
+    x_deal2 = dealunit_shop(_healer=healer_text)
     x_deal2.add_idea(pad=x_deal2._project_handle, idea_kid=IdeaKid(_label=tech_text))
     x_deal2.add_idea(pad=tech_road, idea_kid=IdeaKid(_label=bowl_text))
 
@@ -165,7 +165,7 @@ def test_deal_idearoot_meld_2SameIdeasScenario():
 
 def test_deal_acptfactunits_meld_BaseScenarioWorks():
     # GIVEN
-    x_deal1 = DealUnit(_healer="test7")
+    x_deal1 = dealunit_shop(_healer="test7")
     tech_text = "tech"
     tech_road = f"{x_deal1._project_handle},{tech_text}"
     bowl_text = "bowl"
@@ -175,7 +175,7 @@ def test_deal_acptfactunits_meld_BaseScenarioWorks():
     x_deal1.add_idea(pad=tech_road, idea_kid=IdeaKid(_label=bowl_text))
     x_deal1.set_acptfact(base=tech_road, pick=bowl_road)
 
-    x_deal2 = DealUnit(_healer="test7")
+    x_deal2 = dealunit_shop(_healer="test7")
     x_deal2.add_idea(pad=x_deal2._project_handle, idea_kid=IdeaKid(_label=tech_text))
     x_deal2.add_idea(pad=tech_road, idea_kid=IdeaKid(_label=bowl_text))
     x_deal2.set_acptfact(base=tech_road, pick=bowl_road)
@@ -193,7 +193,7 @@ def test_deal_acptfactunits_meld_BaseScenarioWorks():
 
 def test_deal_acptfactunits_meld_2AcptFactUnitsWorks():
     # GIVEN
-    x_deal1 = DealUnit(_healer="test7")
+    x_deal1 = dealunit_shop(_healer="test7")
     tech_text = "tech"
     tech_road = f"{x_deal1._project_handle},{tech_text}"
     bowl_text = "bowl"
@@ -207,7 +207,7 @@ def test_deal_acptfactunits_meld_2AcptFactUnitsWorks():
     x_deal1.add_idea(pad=swim_road, idea_kid=IdeaKid(_label=free_text))
     x_deal1.set_acptfact(base=tech_road, pick=bowl_road)
 
-    x_deal2 = DealUnit(_healer="test7")
+    x_deal2 = dealunit_shop(_healer="test7")
     x_deal2.add_idea(pad=x_deal2._project_handle, idea_kid=IdeaKid(_label=tech_text))
     x_deal2.add_idea(pad=tech_road, idea_kid=IdeaKid(_label=bowl_text))
     x_deal2.add_idea(pad=swim_road, idea_kid=IdeaKid(_label=free_text))
@@ -227,13 +227,13 @@ def test_deal_acptfactunits_meld_2AcptFactUnitsWorks():
 
 def test_deal_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
     # GIVEN
-    x_deal1 = DealUnit(_healer="test7")
+    x_deal1 = dealunit_shop(_healer="test7")
 
     swim_text = "swim"
     swim_road = f"{x_deal1._project_handle},{swim_text}"
     free_text = "freestyle"
 
-    x_deal2 = DealUnit(_healer="test7")
+    x_deal2 = dealunit_shop(_healer="test7")
     x_deal2.add_idea(pad=swim_road, idea_kid=IdeaKid(_label=free_text))
     x_deal2.set_acptfact(base=swim_road, pick=swim_road)
 
@@ -254,8 +254,8 @@ def test_deal_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
 def test_deal_acptfactunits_meld_GroupsMeldedBefore_Partys():
     # GIVEN
     healer_text = "Yoa"
-    x_deal1 = DealUnit(_healer=healer_text)
-    x_deal2 = DealUnit(_healer=healer_text)
+    x_deal1 = dealunit_shop(_healer=healer_text)
+    x_deal2 = dealunit_shop(_healer=healer_text)
     bob = "bob"
     x_deal2.set_partyunit(partyunit_shop(title=bob))
     assert x_deal2._groups.get(bob) != None
@@ -275,7 +275,7 @@ def test_deal_acptfactunits_meld_GroupsMeldedBefore_Partys():
 
 def test_deal_acptfactunits_meld_AcptFactsAttributeCorrectlySet():
     # GIVEN
-    x_deal1 = DealUnit(_healer="test7")
+    x_deal1 = dealunit_shop(_healer="test7")
 
     swim_text = "swim"
     swim_road = f"{x_deal1._project_handle},{swim_text}"
@@ -283,7 +283,7 @@ def test_deal_acptfactunits_meld_AcptFactsAttributeCorrectlySet():
     free_road = f"{x_deal1._project_handle},{free_text}"
     x_deal1.add_idea(pad=swim_road, idea_kid=IdeaKid(_label=free_text))
 
-    x_deal2 = DealUnit(_healer="test7")
+    x_deal2 = dealunit_shop(_healer="test7")
     x_deal2.add_idea(pad=swim_road, idea_kid=IdeaKid(_label=free_text))
     x_deal2.set_acptfact(base=swim_road, pick=free_road, open=23, nigh=27)
 
@@ -302,7 +302,7 @@ def test_deal_acptfactunits_meld_AcptFactsAttributeCorrectlySet():
 def test_deal_meld_worksCorrectlyForLargeExample():
     # GIVEN
     healer_text = "TlME"
-    x_deal1 = DealUnit(_healer=healer_text)
+    x_deal1 = dealunit_shop(_healer=healer_text)
     x_deal1._idearoot._uid = 1
     x_deal2 = deal_v001()
 
@@ -397,7 +397,7 @@ def test_deal__meld_originlinks_CorrectlySetsOriginLinks():
     bob_text = "Bob"
     sue_text = "Sue"
     sue_weight = 4
-    bob_x_deal = DealUnit(_healer=bob_text)
+    bob_x_deal = dealunit_shop(_healer=bob_text)
     assert len(bob_x_deal._originunit._links) == 0
 
     # WHEN
@@ -413,7 +413,7 @@ def test_deal__meld_originlinks_CorrectlySetsOriginLinks():
 def test_deal_meld_OriginUnitsCorrectlySet():
     # GIVEN
     bob_text = "Bob"
-    bob_x_deal = DealUnit(_healer=bob_text)
+    bob_x_deal = dealunit_shop(_healer=bob_text)
 
     swim_text = "swim"
     swim_road = f"{bob_x_deal._project_handle},{swim_text}"
@@ -425,7 +425,7 @@ def test_deal_meld_OriginUnitsCorrectlySet():
 
     sue_text = "Sue"
     sue_weight = 4
-    sue_x_deal = DealUnit(_healer=sue_text)
+    sue_x_deal = dealunit_shop(_healer=sue_text)
     sue_x_deal.add_idea(pad=swim_road, idea_kid=IdeaKid(_label=free_text))
     sue_x_deal.set_acptfact(base=swim_road, pick=free_road, open=23, nigh=27)
     sue_x_deal.add_idea(pad=swim_road, idea_kid=IdeaKid(_label=back_text))

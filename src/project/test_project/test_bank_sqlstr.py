@@ -1,4 +1,4 @@
-from src.deal.deal import DealUnit, partyunit_shop
+from src.deal.deal import dealunit_shop, partyunit_shop
 from src.project.project import projectunit_shop
 from src.project.examples.project_env_kit import (
     get_temp_env_handle,
@@ -54,7 +54,7 @@ def test_project_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     bob_text = "bob"
     tim_text = "tim"
-    deal_x = DealUnit(_healer=bob_text)
+    deal_x = dealunit_shop(_healer=bob_text)
     partyunit_x = partyunit_shop(
         title=tim_text,
         _deal_credit=0.9,
@@ -174,7 +174,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
 
     bob_text = "bob"
     sal_text = "sal"
-    deal_bob = DealUnit(_healer=bob_text)
+    deal_bob = dealunit_shop(_healer=bob_text)
     partyunit_sal = partyunit_shop(
         title=sal_text,
         _deal_credit=0.9,
@@ -380,7 +380,7 @@ def test_get_river_tally_table_insert_sqlstr_CorrectlyPopulatesTable01(
     tom_text = "tom"
     sal_text = "sal"
 
-    deal_bob = DealUnit(_healer=bob_text)
+    deal_bob = dealunit_shop(_healer=bob_text)
     partyunit_tom = partyunit_shop(
         title=tom_text,
         _deal_credit=0.9,
@@ -478,13 +478,13 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_deal = DealUnit(_healer=sal_text)
+    sal_deal = dealunit_shop(_healer=sal_text)
     sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
     sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
     sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_deal(deal_x=sal_deal)
 
-    bob_deal = DealUnit(_healer=bob_text)
+    bob_deal = dealunit_shop(_healer=bob_text)
     bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
     bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_deal(deal_x=bob_deal)
@@ -521,26 +521,26 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_deal = DealUnit(_healer=sal_text)
+    sal_deal = dealunit_shop(_healer=sal_text)
     sal_deal.add_partyunit(title=bob_text, creditor_weight=2)
     sal_deal.add_partyunit(title=tom_text, creditor_weight=7)
     sal_deal.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_deal(deal_x=sal_deal)
 
-    bob_deal = DealUnit(_healer=bob_text)
+    bob_deal = dealunit_shop(_healer=bob_text)
     bob_deal.add_partyunit(title=sal_text, creditor_weight=3)
     bob_deal.add_partyunit(title=ava_text, creditor_weight=1)
     sx.save_public_deal(deal_x=bob_deal)
 
-    tom_deal = DealUnit(_healer=tom_text)
+    tom_deal = dealunit_shop(_healer=tom_text)
     tom_deal.add_partyunit(title=sal_text, creditor_weight=2)
     sx.save_public_deal(deal_x=tom_deal)
 
-    ava_deal = DealUnit(_healer=ava_text)
+    ava_deal = dealunit_shop(_healer=ava_text)
     ava_deal.add_partyunit(title=elu_text, creditor_weight=2)
     sx.save_public_deal(deal_x=ava_deal)
 
-    elu_deal = DealUnit(_healer=elu_text)
+    elu_deal = dealunit_shop(_healer=elu_text)
     elu_deal.add_partyunit(title=ava_text, creditor_weight=19)
     elu_deal.add_partyunit(title=sal_text, creditor_weight=1)
     sx.save_public_deal(deal_x=elu_deal)
@@ -826,8 +826,8 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     bob_text = "bob"
     tom_text = "tom"
     elu_text = "elu"
-    bob_deal = DealUnit(_healer=bob_text)
-    tom_deal = DealUnit(_healer=tom_text)
+    bob_deal = dealunit_shop(_healer=bob_text)
+    tom_deal = dealunit_shop(_healer=tom_text)
     bob_deal.add_partyunit(title=tom_text)
     tom_deal.add_partyunit(title=bob_text)
     tom_deal.add_partyunit(title=elu_text)

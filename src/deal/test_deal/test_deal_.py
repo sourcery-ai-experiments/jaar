@@ -2,18 +2,37 @@ from src.deal.examples.example_deals import (
     get_deal_1Task_1CE0MinutesRequired_1AcptFact,
     get_deal_with_4_levels,
 )
-from src.deal.deal import DealUnit
+from src.deal.deal import dealunit_shop, DealUnit
 from src.deal.road import get_default_project_root_label as root_label
 from src.deal.origin import originunit_shop
 from pytest import raises as pytest_raises
 
 
-def test_deal_exists():
+def test_DealUnit_exists():
     # GIVEN
 
     # WHEN
+    x_deal = DealUnit()
+
+    assert x_deal
+    assert x_deal._healer is None
+    assert x_deal._project_handle is None
+    assert x_deal._weight is None
+    assert x_deal._max_tree_traverse is None
+    assert x_deal._tree_traverse_count is None
+    assert x_deal._rational is None
+    assert x_deal._originunit is None
+    assert x_deal._auto_output_to_public is None
+    assert x_deal._idearoot is None
+    assert str(type(x_deal._idearoot)).find("None") == 8
+
+
+def test_dealunit_shop_ReturnsCorrectObjectWithFilledFields():
+    # GIVEN
     healer_text = "Noa"
-    x_deal = DealUnit(_healer=healer_text)
+
+    # WHEN
+    x_deal = dealunit_shop(_healer=healer_text)
 
     assert x_deal
     assert x_deal._healer == healer_text
@@ -24,7 +43,16 @@ def test_deal_exists():
     assert x_deal._rational == False
     assert x_deal._originunit == originunit_shop()
     assert x_deal._auto_output_to_public == False
-    assert str(type(x_deal._idearoot)).find(".idea.IdeaRoot'>")
+    assert x_deal._idearoot != None
+    print(f"{type(x_deal._idearoot)=}") == 0
+    assert str(type(x_deal._idearoot)).find(".idea.IdeaRoot'>") > 0
+
+
+def test_dealunit_shop_ReturnsCorrectObjectWithCorrectEmptyField():
+    # GIVE/ WHEN
+    x_deal = dealunit_shop()
+
+    assert x_deal._healer == ""
 
 
 def test_deal_IsAbleToSetTaskAsComplete():
@@ -69,7 +97,7 @@ def test_deal_ideaoot_uid_isAlwaysEqualTo1():
     healer_text = "Zia"
 
     # WHEN
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
 
     # THEN
     assert x_deal._idearoot._uid == 1
@@ -78,7 +106,7 @@ def test_deal_ideaoot_uid_isAlwaysEqualTo1():
 def test_deal_set_max_tree_traverse_CorrectlySetsInt():
     # GIVEN
     healer_text = "Zia"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     assert x_deal._max_tree_traverse == 3
 
     # WHEN
@@ -91,7 +119,7 @@ def test_deal_set_max_tree_traverse_CorrectlySetsInt():
 def test_deal_set_max_tree_traverse_CorrectlyRaisesError():
     # GIVEN
     healer_text = "Zia"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     assert x_deal._max_tree_traverse == 3
 
     # WHEN/THEN
@@ -144,7 +172,7 @@ def test_deal_init_CorrectlySetsGiven_auto_output_to_public():
 
     # WHEN
     healer_text = "Noa"
-    x_deal = DealUnit(_healer=healer_text, _auto_output_to_public=True)
+    x_deal = dealunit_shop(_healer=healer_text, _auto_output_to_public=True)
 
     # THEN
     assert x_deal._auto_output_to_public == True
@@ -154,7 +182,7 @@ def test_deal_set_project_handle_CorrectlySetsAttr():
     # GIVEN
     project_handle_text = "Sun"
     healer_text = "Noa"
-    x_deal = DealUnit(_healer=healer_text, _auto_output_to_public=True)
+    x_deal = dealunit_shop(_healer=healer_text, _auto_output_to_public=True)
     assert x_deal._project_handle == root_label()
 
     # WHEN

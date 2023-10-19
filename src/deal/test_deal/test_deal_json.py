@@ -1,5 +1,5 @@
 import contextlib
-from src.deal.deal import DealUnit
+from src.deal.deal import dealunit_shop
 from src.deal.idea import IdeaKid
 from src.deal.required_idea import acptfactunit_shop
 from src.deal.examples.example_deals import (
@@ -108,7 +108,7 @@ def test_deal_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
     # GIVEN
     run_text = "runners"
     healer_text = "Tom"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(title=run_text)
     x_deal.edit_idea_attr(assignedunit=assigned_unit_x, road=x_deal._project_handle)
@@ -124,7 +124,7 @@ def test_deal_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
 def test_deal_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
     # GIVEN
     healer_text = "Tom"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     run_text = "run"
     x_deal.set_groupunit(groupunit=groupunit_shop(run_text))
 

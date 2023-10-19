@@ -1,4 +1,4 @@
-from src.deal.deal import DealUnit, originunit_shop
+from src.deal.deal import dealunit_shop, originunit_shop
 from src.deal.examples.example_deals import (
     get_deal_with_4_levels as example_deals_get_deal_with_4_levels,
 )
@@ -61,7 +61,7 @@ def test_healeropen_seed_deal_WhenStartingDealFileDoesNotExists(
     assert seed_deal._project_handle == project_handle_text
 
     # THEN
-    x_deal = DealUnit(_healer=tim_text)
+    x_deal = dealunit_shop(_healer=tim_text)
     x_deal.set_project_handle(get_temp_project_handle())
     x_deal.set_deal_metrics()
     # x_idearoot = IdeaRoot(_label=p_title, _pad="")
@@ -229,7 +229,7 @@ def test_healer_get_remelded_output_deal_withEmptyDigestDict(
     sx_output_after = ux._admin.get_remelded_output_deal()
 
     # THEN
-    healer_deal_x = DealUnit(_healer=kitchen_title_x, _weight=0.0)
+    healer_deal_x = dealunit_shop(_healer=kitchen_title_x, _weight=0.0)
     healer_deal_x.set_project_handle(get_temp_project_handle())
     healer_deal_x._idearoot._pad = ""
     healer_deal_x.set_deal_metrics()
@@ -294,7 +294,7 @@ def test_healer_get_remelded_output_deal_with1DigestedDeal(
 
 #     src1 = "test1"
 #     src1_road = Road(f"{src1}")
-#     s1 = DealUnit(_healer=src1)
+#     s1 = dealunit_shop(_healer=src1)
 
 #     ceci_text = "Ceci"
 #     s1.set_partyunit(partyunit=PartyUnit(title=ceci_text))

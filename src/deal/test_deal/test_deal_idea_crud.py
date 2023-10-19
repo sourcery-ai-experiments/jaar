@@ -1,7 +1,7 @@
 from src.deal.examples.example_deals import get_deal_with_4_levels
 from src.deal.idea import IdeaKid
 from src.deal.required_idea import RequiredUnit, acptfactunit_shop
-from src.deal.deal import DealUnit
+from src.deal.deal import dealunit_shop
 from src.deal.group import balancelink_shop
 from pytest import raises as pytest_raises
 from src.deal.road import Road
@@ -9,7 +9,7 @@ from src.deal.road import Road
 
 def test_root_has_kids():
     # GIVEN
-    x_deal = DealUnit(_healer="prom")
+    x_deal = dealunit_shop(_healer="prom")
     idearoot_x = x_deal._idearoot
     idea1 = IdeaKid(_weight=30, _label="work")
     idea2 = IdeaKid(_weight=40, _label="ulty")
@@ -472,7 +472,7 @@ def test_deal_edit_idea_attr_dealIsAbleToEdit_on_meld_weight_action_AnyIdeaIfInv
 
 def test_deal_edit_idea_attr_dealIsAbleToEditDenomAnyIdeaIfInvaildDenomThrowsError():
     healer_text = "Yao"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         x_deal.edit_idea_attr(road="", denom=46)
@@ -506,7 +506,7 @@ def test_deal_edit_idea_attr_dealIsAbleToEditDenomAnyIdeaIfInvaildDenomThrowsErr
 def test_deal_edit_idea_attr_dealIsAbleToEditDenomAnyIdeaInvaildDenomThrowsError():
     # GIVEN
     healer_text = "Yao"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     work = "work"
     w_road = f"{x_deal._project_handle},{work}"
     work_idea = IdeaKid(_label=work, _begin=8, _close=14)
@@ -538,7 +538,7 @@ def test_deal_edit_idea_attr_dealIsAbleToEditDenomAnyIdeaInvaildDenomThrowsError
 def test_deal_edit_idea_attr_dealWhenParentAndNumeric_roadBothHaveRangeThrowError():
     # GIVEN
     healer_text = "Yao"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     work_text = "work"
     work_road = f"{x_deal._project_handle},{work_text}"
     x_deal.add_idea(IdeaKid(_label=work_text), pad=x_deal._project_handle)
@@ -582,7 +582,7 @@ def test_deal_edit_idea_attr_dealWhenParentAndNumeric_roadBothHaveRangeThrowErro
 def test_deal_add_idea_MustReorderKidsDictToBeAlphabetical():
     # GIVEN
     healer_text = "Noa"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     work_text = "work"
     x_deal.add_idea(IdeaKid(_label=work_text), pad=x_deal._project_handle)
     swim_text = "swim"
@@ -597,7 +597,7 @@ def test_deal_add_idea_MustReorderKidsDictToBeAlphabetical():
 
 def test_deal_add_idea_adoptee_RaisesErrorIfAdopteeIdeaDoesNotHaveCorrectParent():
     healer_text = "Noa"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     sports_text = "sports"
     sports_road = f"{x_deal._project_handle},{sports_text}"
     x_deal.add_idea(IdeaKid(_label=sports_text), pad=x_deal._project_handle)
@@ -622,7 +622,7 @@ def test_deal_add_idea_adoptee_RaisesErrorIfAdopteeIdeaDoesNotHaveCorrectParent(
 
 def test_deal_add_idea_adoptee_CorrectlyAddsAdoptee():
     healer_text = "Noa"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     sports_text = "sports"
     sports_road = f"{x_deal._project_handle},{sports_text}"
     x_deal.add_idea(IdeaKid(_label=sports_text), pad=x_deal._project_handle)
@@ -662,7 +662,7 @@ def test_deal_add_idea_adoptee_CorrectlyAddsAdoptee():
 
 def test_deal_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdoptedIdeas():
     healer_text = "Noa"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     sports_text = "sports"
     sports_road = f"{x_deal._project_handle},{sports_text}"
     x_deal.add_idea(IdeaKid(_label=sports_text, _weight=2), pad=x_deal._project_handle)
@@ -713,7 +713,7 @@ def test_deal_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdoptedIdeas(
 
 def test_deal_del_idea_kid_DeletingBundledIdeaReturnsIdeasToOriginalState():
     healer_text = "Noa"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     sports_text = "sports"
     sports_road = f"{x_deal._project_handle},{sports_text}"
     x_deal.add_idea(IdeaKid(_label=sports_text, _weight=2), pad=x_deal._project_handle)

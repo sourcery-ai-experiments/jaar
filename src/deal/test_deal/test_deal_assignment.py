@@ -1,4 +1,4 @@
-from src.deal.deal import DealUnit
+from src.deal.deal import dealunit_shop, DealUnit
 from src.deal.idea import IdeaKid
 from src.deal.required_idea import RequiredUnit
 from src.deal.party import partyunit_shop, partylink_shop
@@ -16,23 +16,23 @@ from src.project.examples.example_kitchens import (
 def test_dealunit_get_assignment_ReturnsDeal():
     # GIVEN
     jes_text = "jessi"
-    jes1_deal = DealUnit(_healer=jes_text)
+    jes1_deal = dealunit_shop(_healer=jes_text)
     jes1_deal.set_groupunits_empty_if_null()
 
     # WHEN
     bob_text = "bob"
-    deal_x = DealUnit(_healer=jes_text)
+    deal_x = dealunit_shop(_healer=jes_text)
     deal_x.set_groupunits_empty_if_null()
     assignor_known_partys_x = {}
-    cx_assignment = jes1_deal.get_assignment(
+    x_assignment_deal = jes1_deal.get_assignment(
         deal_x=deal_x,
         assignor_partys=assignor_known_partys_x,
         assignor_title=bob_text,
     )
 
     # THEN
-    assert str(type(cx_assignment)) == "<class 'src.deal.deal.DealUnit'>"
-    assert cx_assignment == deal_x
+    assert str(type(x_assignment_deal)) == "<class 'src.deal.deal.DealUnit'>"
+    assert x_assignment_deal == deal_x
 
 
 def test_dealunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInPartys():
@@ -47,23 +47,23 @@ def test_dealunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInPartys():
 
     # WHEN
     bob_text = "bob"
-    cx = DealUnit(_healer=noa_text)
-    tx = DealUnit()
-    tx.set_partys_empty_if_null()
-    tx.set_partyunit(partyunit=partyunit_shop(title=zia_text))
-    tx.set_partyunit(partyunit=partyunit_shop(title=noa_text))
+    y_deal = dealunit_shop(_healer=noa_text)
+    x_deal = dealunit_shop()
+    x_deal.set_partys_empty_if_null()
+    x_deal.set_partyunit(partyunit=partyunit_shop(title=zia_text))
+    x_deal.set_partyunit(partyunit=partyunit_shop(title=noa_text))
 
-    cx_assignment = noa_deal.get_assignment(cx, tx._partys, bob_text)
+    x_assignment_deal = noa_deal.get_assignment(y_deal, x_deal._partys, bob_text)
 
     # THEN
     assert len(noa_deal._partys) == 3
-    assert len(cx_assignment._partys) == 0
+    assert len(x_assignment_deal._partys) == 0
 
 
 def test_dealunit_get_assignment_ReturnsCorrectPartys():
     # GIVEN
     jes_text = "Jessi"
-    jes_deal = DealUnit(_healer=jes_text)
+    jes_deal = dealunit_shop(_healer=jes_text)
     jes_deal.set_partyunit(partyunit_shop(title=jes_text))
     bob_text = "Bob"
     zia_text = "Zia"
@@ -75,27 +75,27 @@ def test_dealunit_get_assignment_ReturnsCorrectPartys():
     jes_deal.set_partyunit(partyunit_shop(title=yao_text))
 
     # WHEN
-    tx = DealUnit()
+    tx = dealunit_shop()
     tx.set_partys_empty_if_null()
     tx.set_partyunit(partyunit=partyunit_shop(title=bob_text))
     tx.set_partyunit(partyunit=partyunit_shop(title=zia_text))
     tx.set_partyunit(partyunit=partyunit_shop(title=noa_text))
 
-    empty_deal = DealUnit(_healer=jes_text)
-    cx_assignment = jes_deal.get_assignment(empty_deal, tx._partys, bob_text)
+    empty_deal = dealunit_shop(_healer=jes_text)
+    x_assignment_deal = jes_deal.get_assignment(empty_deal, tx._partys, bob_text)
 
     # THEN
-    assert len(cx_assignment._partys) == 3
-    assert cx_assignment._partys.get(bob_text) != None
-    assert cx_assignment._partys.get(zia_text) != None
-    assert cx_assignment._partys.get(noa_text) != None
-    assert cx_assignment._partys.get(yao_text) is None
+    assert len(x_assignment_deal._partys) == 3
+    assert x_assignment_deal._partys.get(bob_text) != None
+    assert x_assignment_deal._partys.get(zia_text) != None
+    assert x_assignment_deal._partys.get(noa_text) != None
+    assert x_assignment_deal._partys.get(yao_text) is None
 
 
 def test_dealunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     # GIVEN
     jes_text = "Jessi"
-    jes_deal = DealUnit(_healer=jes_text)
+    jes_deal = dealunit_shop(_healer=jes_text)
     jes_deal.set_partyunit(partyunit_shop(title=jes_text))
     bob_text = "Bob"
     noa_text = "Noa"
@@ -121,7 +121,7 @@ def test_dealunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     hike_group.set_partylink(partylink_shop(eli_text))
 
     # WHEN
-    tx = DealUnit()
+    tx = dealunit_shop()
     tx.set_partys_empty_if_null()
     zia_text = "Zia"
     yao_text = "Yao"
@@ -129,51 +129,51 @@ def test_dealunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     tx.set_partyunit(partyunit=partyunit_shop(title=zia_text))
     tx.set_partyunit(partyunit=partyunit_shop(title=noa_text))
 
-    empty_deal = DealUnit(_healer=jes_text)
-    cx_assignment = jes_deal.get_assignment(empty_deal, tx._partys, bob_text)
+    empty_deal = dealunit_shop(_healer=jes_text)
+    x_assignment_deal = jes_deal.get_assignment(empty_deal, tx._partys, bob_text)
 
     # THEN
-    assert len(cx_assignment._groups) == 5
-    assert cx_assignment._groups.get(bob_text) != None
-    assert cx_assignment._groups.get(noa_text) != None
-    assert cx_assignment._groups.get(zia_text) is None
-    assert cx_assignment._groups.get(yao_text) is None
-    assert cx_assignment._groups.get(swim_text) != None
-    assert cx_assignment._groups.get(hike_text) != None
-    assert cx_assignment._groups.get(hunt_text) != None
-    hunt_group = cx_assignment._groups.get(hunt_text)
+    assert len(x_assignment_deal._groups) == 5
+    assert x_assignment_deal._groups.get(bob_text) != None
+    assert x_assignment_deal._groups.get(noa_text) != None
+    assert x_assignment_deal._groups.get(zia_text) is None
+    assert x_assignment_deal._groups.get(yao_text) is None
+    assert x_assignment_deal._groups.get(swim_text) != None
+    assert x_assignment_deal._groups.get(hike_text) != None
+    assert x_assignment_deal._groups.get(hunt_text) != None
+    hunt_group = x_assignment_deal._groups.get(hunt_text)
     assert hunt_group._partys.get(noa_text) != None
     assert len(hunt_group._partys) == 1
 
 
 def test_deal__get_assignor_promise_ideas_ReturnsCorrectIdeaRoads():
     # GIVEN
-    cx = example_deals_get_deal_with7amCleanTableRequired()
-    cx.set_deal_metrics()
+    x_deal = example_deals_get_deal_with7amCleanTableRequired()
+    x_deal.set_deal_metrics()
 
     # WHEN
-    assignor_promises = cx._get_assignor_promise_ideas(cx, "any")
+    assignor_promises = x_deal._get_assignor_promise_ideas(x_deal, "any")
 
     # THEN
     print(f"{assignor_promises=}")
     x_dict = {
-        f"{cx._project_handle},work": -1,
-        f"{cx._project_handle},housework,clean table": -1,
-        f"{cx._project_handle},housework,clean table,remove dishs": -1,
-        f"{cx._project_handle},housework,clean table,get soap": -1,
-        f"{cx._project_handle},housework,clean table,get soap,grab soap": -1,
-        f"{cx._project_handle},feed cat": -1,
+        f"{x_deal._project_handle},work": -1,
+        f"{x_deal._project_handle},housework,clean table": -1,
+        f"{x_deal._project_handle},housework,clean table,remove dishs": -1,
+        f"{x_deal._project_handle},housework,clean table,get soap": -1,
+        f"{x_deal._project_handle},housework,clean table,get soap,grab soap": -1,
+        f"{x_deal._project_handle},feed cat": -1,
     }
     assert assignor_promises == x_dict
 
 
 def test_deal__get_relevant_roads_EmptyRoadReturnsEmpty():
     # GIVEN
-    cx = example_deals_get_deal_with_4_levels()
-    cx.set_deal_metrics()
+    x_deal = example_deals_get_deal_with_4_levels()
+    x_deal.set_deal_metrics()
 
     # WHEN
-    relevant_roads = cx._get_relevant_roads({})
+    relevant_roads = x_deal._get_relevant_roads({})
 
     # THEN
     print(f"{relevant_roads=}")
@@ -183,72 +183,72 @@ def test_deal__get_relevant_roads_EmptyRoadReturnsEmpty():
 
 def test_deal__get_relevant_roads_RootRoadReturnsOnlyItself():
     # GIVEN
-    cx = example_deals_get_deal_with_4_levels()
-    cx.set_deal_metrics()
+    x_deal = example_deals_get_deal_with_4_levels()
+    x_deal.set_deal_metrics()
 
     # WHEN
-    root_dict = {cx._project_handle: -1}
-    relevant_roads = cx._get_relevant_roads(root_dict)
+    root_dict = {x_deal._project_handle: -1}
+    relevant_roads = x_deal._get_relevant_roads(root_dict)
 
     # THEN
     print(f"{relevant_roads=}")
     assert len(relevant_roads) == 1
-    assert relevant_roads == {cx._project_handle: -1}
+    assert relevant_roads == {x_deal._project_handle: -1}
 
 
 def test_deal__get_relevant_roads_SimpleReturnsOnlyAncestors():
     # GIVEN
-    cx = example_deals_get_deal_with_4_levels()
-    cx.set_deal_metrics()
+    x_deal = example_deals_get_deal_with_4_levels()
+    x_deal.set_deal_metrics()
 
     # WHEN
     week_text = "weekdays"
-    week_road = f"{cx._project_handle},{week_text}"
+    week_road = f"{x_deal._project_handle},{week_text}"
     sun_text = "Sunday"
     sun_road = f"{week_road},{sun_text}"
     sun_dict = {sun_road}
-    relevant_roads = cx._get_relevant_roads(sun_dict)
+    relevant_roads = x_deal._get_relevant_roads(sun_dict)
 
     # THEN
     print(f"{relevant_roads=}")
     assert len(relevant_roads) == 3
-    assert relevant_roads == {cx._project_handle: -1, sun_road: -1, week_road: -1}
+    assert relevant_roads == {x_deal._project_handle: -1, sun_road: -1, week_road: -1}
 
 
 def test_deal__get_relevant_roads_ReturnsSimpleRequiredUnitBase():
     # GIVEN
     healer_text = "Neo"
-    cx = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     casa_text = "casa"
-    casa_road = f"{cx._project_handle},{casa_text}"
+    casa_road = f"{x_deal._project_handle},{casa_text}"
     floor_text = "mop floor"
     floor_road = f"{casa_road},{floor_text}"
     floor_idea = IdeaKid(_label=floor_text)
-    cx.add_idea(idea_kid=floor_idea, pad=casa_road)
+    x_deal.add_idea(idea_kid=floor_idea, pad=casa_road)
 
     unim_text = "unimportant"
-    unim_road = f"{cx._project_handle},{unim_text}"
+    unim_road = f"{x_deal._project_handle},{unim_text}"
     unim_idea = IdeaKid(_label=unim_text)
-    cx.add_idea(idea_kid=unim_idea, pad=cx._project_handle)
+    x_deal.add_idea(idea_kid=unim_idea, pad=x_deal._project_handle)
 
     status_text = "cleaniness status"
     status_road = f"{casa_road},{status_text}"
     status_idea = IdeaKid(_label=status_text)
-    cx.add_idea(idea_kid=status_idea, pad=casa_road)
+    x_deal.add_idea(idea_kid=status_idea, pad=casa_road)
     floor_required = RequiredUnit(base=status_road, sufffacts={})
     floor_required.set_sufffact(sufffact=status_road)
-    cx.edit_idea_attr(road=floor_road, required=floor_required)
+    x_deal.edit_idea_attr(road=floor_road, required=floor_required)
 
     # WHEN
-    cx.set_deal_metrics()
+    x_deal.set_deal_metrics()
     floor_dict = {floor_road}
-    relevant_roads = cx._get_relevant_roads(floor_dict)
+    relevant_roads = x_deal._get_relevant_roads(floor_dict)
 
     # THEN
     print(f"{relevant_roads=}")
     assert len(relevant_roads) == 4
     assert relevant_roads == {
-        cx._project_handle: -1,
+        x_deal._project_handle: -1,
         casa_road: -1,
         status_road: -1,
         floor_road: -1,
@@ -258,14 +258,14 @@ def test_deal__get_relevant_roads_ReturnsSimpleRequiredUnitBase():
 
 def test_deal__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
     # GIVEN
-    cx = example_deal_get_assignment_deal_example1()
+    x_deal = example_deal_get_assignment_deal_example1()
     casa_text = "casa"
-    casa_road = f"{cx._project_handle},{casa_text}"
+    casa_road = f"{x_deal._project_handle},{casa_text}"
     floor_text = "mop floor"
     floor_road = f"{casa_road},{floor_text}"
 
     unim_text = "unimportant"
-    unim_road = f"{cx._project_handle},{unim_text}"
+    unim_road = f"{x_deal._project_handle},{unim_text}"
 
     status_text = "cleaniness status"
     status_road = f"{casa_road},{status_text}"
@@ -283,9 +283,9 @@ def test_deal__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
     dirty_road = f"{status_road},{dirty_text}"
 
     # WHEN
-    cx.set_deal_metrics()
+    x_deal.set_deal_metrics()
     floor_dict = {floor_road}
-    relevant_roads = cx._get_relevant_roads(floor_dict)
+    relevant_roads = x_deal._get_relevant_roads(floor_dict)
 
     # THEN
     print(f"{relevant_roads=}")
@@ -295,7 +295,7 @@ def test_deal__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
     assert relevant_roads.get(moderately_road) != None
     assert relevant_roads.get(very_much_road) != None
     assert relevant_roads == {
-        cx._project_handle: -1,
+        x_deal._project_handle: -1,
         casa_road: -1,
         status_road: -1,
         floor_road: -1,
@@ -313,24 +313,24 @@ def test_deal__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
 
 def test_deal__get_relevant_roads_numeric_road_ReturnSimple():
     # GIVEN
-    healer_text = "Yao"
-    cx = DealUnit(_healer=healer_text)
+    yao_text = "Yao"
+    yao_deal = dealunit_shop(_healer=yao_text)
     work_text = "work"
-    work_road = f"{cx._project_handle},{work_text}"
-    cx.add_idea(IdeaKid(_label=work_text), pad=cx._project_handle)
-    work_idea = cx.get_idea_kid(road=work_road)
+    work_road = f"{yao_deal._project_handle},{work_text}"
+    yao_deal.add_idea(IdeaKid(_label=work_text), pad=yao_deal._project_handle)
+    work_idea = yao_deal.get_idea_kid(road=work_road)
     day_text = "day_range"
-    day_road = f"{cx._project_handle},{day_text}"
+    day_road = f"{yao_deal._project_handle},{day_text}"
     day_idea = IdeaKid(_label=day_text, _begin=44, _close=110)
-    cx.add_idea(day_idea, pad=cx._project_handle)
-    cx.edit_idea_attr(road=work_road, denom=11, numeric_road=day_road)
+    yao_deal.add_idea(day_idea, pad=yao_deal._project_handle)
+    yao_deal.edit_idea_attr(road=work_road, denom=11, numeric_road=day_road)
     assert work_idea._begin == 4
     print(f"{work_idea._label=} {work_idea._begin=} {work_idea._close=}")
 
     # WHEN
-    cx.set_deal_metrics()
+    yao_deal.set_deal_metrics()
     roads_dict = {work_road}
-    relevant_roads = cx._get_relevant_roads(roads_dict)
+    relevant_roads = yao_deal._get_relevant_roads(roads_dict)
 
     # THEN
     print(f"{relevant_roads=}")
@@ -338,7 +338,7 @@ def test_deal__get_relevant_roads_numeric_road_ReturnSimple():
     assert relevant_roads.get(work_road) != None
     assert relevant_roads.get(day_road) != None
     assert relevant_roads == {
-        cx._project_handle: -1,
+        yao_deal._project_handle: -1,
         work_road: -1,
         day_road: -1,
     }
@@ -346,28 +346,28 @@ def test_deal__get_relevant_roads_numeric_road_ReturnSimple():
 
 def test_deal__get_relevant_roads_range_source_road_ReturnSimple():
     # GIVEN
-    healer_text = "Yao"
-    cx = DealUnit(_healer=healer_text)
+    yao_text = "Yao"
+    yao_deal = dealunit_shop(_healer=yao_text)
     min_range_text = "a_minute_range"
-    min_range_road = f"{cx._project_handle},{min_range_text}"
+    min_range_road = f"{yao_deal._project_handle},{min_range_text}"
     min_range_idea = IdeaKid(_label=min_range_text, _begin=0, _close=2880)
-    cx.add_idea(min_range_idea, pad=cx._project_handle)
+    yao_deal.add_idea(min_range_idea, pad=yao_deal._project_handle)
 
     day_len_text = "day_length"
-    day_len_road = f"{cx._project_handle},{day_len_text}"
+    day_len_road = f"{yao_deal._project_handle},{day_len_text}"
     day_len_idea = IdeaKid(_label=day_len_text, _begin=0, _close=1440)
-    cx.add_idea(day_len_idea, pad=cx._project_handle)
+    yao_deal.add_idea(day_len_idea, pad=yao_deal._project_handle)
 
     min_days_text = "days in minute_range"
     min_days_road = f"{min_range_road},{min_days_text}"
     min_days_idea = IdeaKid(_label=min_days_text, _range_source_road=day_len_road)
-    cx.add_idea(min_days_idea, pad=min_range_road)
+    yao_deal.add_idea(min_days_idea, pad=min_range_road)
 
     # WHEN
-    cx.set_deal_metrics()
-    print(f"{cx._idea_dict.keys()}")
+    yao_deal.set_deal_metrics()
+    print(f"{yao_deal._idea_dict.keys()}")
     roads_dict = {min_days_road}
-    relevant_roads = cx._get_relevant_roads(roads_dict)
+    relevant_roads = yao_deal._get_relevant_roads(roads_dict)
 
     # THEN
     print(f"{relevant_roads=}")
@@ -375,8 +375,8 @@ def test_deal__get_relevant_roads_range_source_road_ReturnSimple():
     assert relevant_roads.get(min_range_road) != None
     assert relevant_roads.get(day_len_road) != None
     assert relevant_roads.get(min_days_road) != None
-    assert relevant_roads.get(cx._project_handle) != None
-    # min_days_idea = cx.get_idea_kid(road=min_days_road)
+    assert relevant_roads.get(yao_deal._project_handle) != None
+    # min_days_idea = yao_deal.get_idea_kid(road=min_days_road)
     # print(f"{min_days_idea=}")
     # assert 1 == 2
 
@@ -386,7 +386,7 @@ def test_deal__get_relevant_roads_range_source_road_ReturnSimple():
 def test_deal__set_assignment_ideas_ReturnsCorrectIdeas():
     # GIVEN
     yao_text = "Yao"
-    yao_deal = DealUnit(_healer=yao_text)
+    yao_deal = dealunit_shop(_healer=yao_text)
     casa_text = "casa"
     casa_road = f"{yao_deal._project_handle},{casa_text}"
     yao_deal.add_idea(IdeaKid(_label=casa_text), pad=yao_deal._project_handle)
@@ -394,7 +394,7 @@ def test_deal__set_assignment_ideas_ReturnsCorrectIdeas():
 
     # WHEN
     bob_text = "Bob"
-    bob_deal = DealUnit(_healer=bob_text)
+    bob_deal = dealunit_shop(_healer=bob_text)
     relevant_roads = {
         yao_deal._project_handle: "descendant",
         casa_road: "requirementunit_base",
@@ -411,7 +411,7 @@ def test_deal__set_assignment_ideas_ReturnsCorrectIdeas():
 def test_deal__set_assignment_ideas_ReturnsCorrectIdeaRoot_acptfacts():
     # GIVEN
     yao_text = "Yao"
-    yao_deal = DealUnit(_healer=yao_text)
+    yao_deal = dealunit_shop(_healer=yao_text)
 
     casa_text = "casa"
     casa_road = f"{yao_deal._project_handle},{casa_text}"
@@ -430,7 +430,7 @@ def test_deal__set_assignment_ideas_ReturnsCorrectIdeaRoot_acptfacts():
     print(f"{list(yao_deal._idearoot._acptfactunits.keys())=}")
 
     bob_text = "Bob"
-    bob_deal = DealUnit(_healer=bob_text)
+    bob_deal = dealunit_shop(_healer=bob_text)
 
     yao_deal.set_deal_metrics()
     bob_deal.set_deal_metrics()
@@ -453,13 +453,13 @@ def test_deal__set_assignment_ideas_ReturnsCorrectIdeaRoot_acptfacts():
 
 def test_deal_get_assignment_getsCorrectIdeas_scenario1():
     # GIVEN
-    cx = example_deal_get_assignment_deal_example1()
+    x_deal = example_deal_get_assignment_deal_example1()
     casa_text = "casa"
-    casa_road = f"{cx._project_handle},{casa_text}"
+    casa_road = f"{x_deal._project_handle},{casa_text}"
     floor_text = "mop floor"
     floor_road = f"{casa_road},{floor_text}"
     unim_text = "unimportant"
-    unim_road = f"{cx._project_handle},{unim_text}"
+    unim_road = f"{x_deal._project_handle},{unim_text}"
     status_text = "cleaniness status"
     status_road = f"{casa_road},{status_text}"
     clean_text = "clean"
@@ -471,11 +471,11 @@ def test_deal_get_assignment_getsCorrectIdeas_scenario1():
     dirty_text = "dirty"
     dirty_road = f"{status_road},{dirty_text}"
     bob_text = "Bob"
-    cx.add_partyunit(title=bob_text)
+    x_deal.add_partyunit(title=bob_text)
 
     # WHEN
-    assignment_x = cx.get_assignment(
-        deal_x=DealUnit(_healer=bob_text),
+    assignment_x = x_deal.get_assignment(
+        deal_x=dealunit_shop(_healer=bob_text),
         assignor_partys={bob_text: -1},
         assignor_title=bob_text,
     )
@@ -503,7 +503,7 @@ def test_deal_get_assignment_CorrectlyCreatesAssignmentFile_v1():
 
     # WHEN
     joachim_text = "Joachim"
-    joachim_deal = DealUnit(_healer=joachim_text)
+    joachim_deal = dealunit_shop(_healer=joachim_text)
     joachim_deal.set_project_handle(project_handle_text)
     print(f"{joachim_deal._project_handle=} {joachim_deal._idea_dict.keys()=}")
     joachim_assignment = america_deal.get_assignment(

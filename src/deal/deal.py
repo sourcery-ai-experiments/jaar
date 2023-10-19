@@ -93,29 +93,22 @@ class DealUnit:
     _groups: dict[GroupBrand:GroupUnit] = None
     _idearoot: IdeaRoot = None
     _idea_dict: dict[Road:IdeaCore] = None
-    _max_tree_traverse: int = 3
+    _max_tree_traverse: int = None
     _tree_traverse_count: int = None
-    _rational: bool = False
+    _rational: bool = None
     _originunit: OriginUnit = None
     _project_handle: str = None
     _auto_output_to_public: bool = None
 
-    def __init__(
-        self,
-        _healer: PersonName = None,
-        _weight: float = None,
-        _auto_output_to_public: bool = False,
-    ) -> None:
-        if _weight is None:
-            _weight = 1
-        self._weight = _weight
-        if _healer is None:
-            _healer = ""
-        self._project_handle = root_label()
-        self._idearoot = IdeaRoot(_label=self._idearoot, _uid=1, _level=0)
-        self._healer = _healer
-        self._originunit = originunit_shop()
-        self._auto_output_to_public = _auto_output_to_public
+    # def __init__(
+    #     self,
+    #     _healer: PersonName = None,
+    #     _weight: float = None,
+    #     _auto_output_to_public: bool = False,
+    # ) -> None:
+    #     self._weight = _weight
+    #     self._idearoot = IdeaRoot(_label=self._idearoot, _uid=1, _level=0)
+    #     self._healer = _healer
 
     def set_partys_output_deal_meld_order(self):
         sort_partys_list = list(self._partys.values())
@@ -2048,7 +2041,7 @@ class DealUnit:
         self, party_title: PartyTitle, acptfacts: dict[Road:AcptFactCore]
     ):
         self.set_deal_metrics()
-        deal4party = DealUnit(_healer=party_title)
+        deal4party = dealunit_shop(_healer=party_title)
         deal4party._idearoot._deal_importance = self._idearoot._deal_importance
         # get party's partys: partyzone
 
@@ -2247,57 +2240,79 @@ class DealUnit:
             self._auto_output_to_public = bool_x is not None and bool_x
 
 
+def dealunit_shop(
+    _healer: PersonName = None,
+    _weight: float = None,
+    _auto_output_to_public: bool = None,
+) -> DealUnit:
+    if _weight is None:
+        _weight = 1
+    if _healer is None:
+        _healer = ""
+    if _auto_output_to_public is None:
+        _auto_output_to_public = False
+    x_deal = DealUnit(
+        _healer=_healer, _weight=_weight, _auto_output_to_public=_auto_output_to_public
+    )
+    x_deal._project_handle = root_label()
+    x_deal._idearoot = IdeaRoot(_label=None, _uid=1, _level=0)
+    x_deal.set_max_tree_traverse(3)
+    x_deal._rational = False
+    x_deal._originunit = originunit_shop()
+    return x_deal
+
+
 def get_from_json(x_deal_json: str) -> DealUnit:
     return get_from_dict(cx_dict=json.loads(x_deal_json))
 
 
 def get_from_dict(cx_dict: dict) -> DealUnit:
-    c_x = DealUnit()
-    c_x.set_project_handle(cx_dict["_project_handle"])
-    c_x._idearoot._requiredunits = requireds_get_from_dict(
+    x_deal = dealunit_shop()
+    x_deal.set_project_handle(cx_dict["_project_handle"])
+    x_deal._idearoot._requiredunits = requireds_get_from_dict(
         requireds_dict=cx_dict["_requiredunits"]
     )
     _assignedunit = "_assignedunit"
     if cx_dict.get(_assignedunit):
-        c_x._idearoot._assignedunit = assignedunit_get_from_dict(
+        x_deal._idearoot._assignedunit = assignedunit_get_from_dict(
             assignedunit_dict=cx_dict.get(_assignedunit)
         )
-    c_x._idearoot._acptfactunits = acptfactunits_get_from_dict(
+    x_deal._idearoot._acptfactunits = acptfactunits_get_from_dict(
         x_dict=cx_dict["_acptfactunits"]
     )
-    c_x._groups = groupunits_get_from_dict(x_dict=cx_dict["_groups"])
-    c_x._idearoot._balancelinks = balancelinks_get_from_dict(
+    x_deal._groups = groupunits_get_from_dict(x_dict=cx_dict["_groups"])
+    x_deal._idearoot._balancelinks = balancelinks_get_from_dict(
         x_dict=cx_dict["_balancelinks"]
     )
     try:
-        c_x._originunit = originunit_get_from_dict(x_dict=cx_dict["_originunit"])
+        x_deal._originunit = originunit_get_from_dict(x_dict=cx_dict["_originunit"])
     except Exception:
-        c_x._originunit = originunit_shop()
+        x_deal._originunit = originunit_shop()
     try:
-        c_x._auto_output_to_public = cx_dict["_auto_output_to_public"]
+        x_deal._auto_output_to_public = cx_dict["_auto_output_to_public"]
     except Exception:
-        c_x._auto_output_to_public = False
-    c_x._partys = partyunits_get_from_dict(x_dict=cx_dict["_partys"])
-    c_x._healer = cx_dict["_healer"]
-    c_x._idearoot.set_idea_label(c_x._project_handle, c_x._project_handle)
-    c_x._weight = cx_dict["_weight"]
-    c_x._max_tree_traverse = cx_dict.get("_max_tree_traverse")
+        x_deal._auto_output_to_public = False
+    x_deal._partys = partyunits_get_from_dict(x_dict=cx_dict["_partys"])
+    x_deal._healer = cx_dict["_healer"]
+    x_deal._idearoot.set_idea_label(x_deal._project_handle, x_deal._project_handle)
+    x_deal._weight = cx_dict["_weight"]
+    x_deal._max_tree_traverse = cx_dict.get("_max_tree_traverse")
     if cx_dict.get("_max_tree_traverse") is None:
-        c_x._max_tree_traverse = 20
-    c_x._idearoot._weight = cx_dict["_weight"]
-    c_x._idearoot._uid = cx_dict["_uid"]
-    c_x._idearoot._begin = cx_dict["_begin"]
-    c_x._idearoot._close = cx_dict["_close"]
-    c_x._idearoot._numor = cx_dict["_numor"]
-    c_x._idearoot._denom = cx_dict["_denom"]
-    c_x._idearoot._reest = cx_dict["_reest"]
-    c_x._idearoot._range_source_road = cx_dict["_range_source_road"]
-    c_x._idearoot._numeric_road = cx_dict["_numeric_road"]
-    c_x._idearoot._is_expanded = cx_dict["_is_expanded"]
+        x_deal._max_tree_traverse = 20
+    x_deal._idearoot._weight = cx_dict["_weight"]
+    x_deal._idearoot._uid = cx_dict["_uid"]
+    x_deal._idearoot._begin = cx_dict["_begin"]
+    x_deal._idearoot._close = cx_dict["_close"]
+    x_deal._idearoot._numor = cx_dict["_numor"]
+    x_deal._idearoot._denom = cx_dict["_denom"]
+    x_deal._idearoot._reest = cx_dict["_reest"]
+    x_deal._idearoot._range_source_road = cx_dict["_range_source_road"]
+    x_deal._idearoot._numeric_road = cx_dict["_numeric_road"]
+    x_deal._idearoot._is_expanded = cx_dict["_is_expanded"]
 
     idea_dict_list = []
     for x_dict in cx_dict["_kids"].values():
-        x_dict["temp_road"] = c_x._healer
+        x_dict["temp_road"] = x_deal._healer
         idea_dict_list.append(x_dict)
 
     while idea_dict_list != []:
@@ -2340,10 +2355,10 @@ def get_from_dict(cx_dict: dict) -> DealUnit:
             _range_source_road=idea_dict["_range_source_road"],
             _numeric_road=idea_dict["_numeric_road"],
         )
-        c_x.add_idea(idea_kid=idea_obj, pad=idea_dict["temp_road"])
+        x_deal.add_idea(idea_kid=idea_obj, pad=idea_dict["temp_road"])
 
-    c_x.set_deal_metrics()  # clean up tree traverse defined fields
-    return c_x
+    x_deal.set_deal_metrics()  # clean up tree traverse defined fields
+    return x_deal
 
 
 def get_dict_of_deal_from_dict(x_dict: dict[str:dict]) -> dict[str:DealUnit]:

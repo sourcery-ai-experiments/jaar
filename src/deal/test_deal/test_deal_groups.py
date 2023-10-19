@@ -6,7 +6,7 @@ from src.deal.examples.example_deals import (
     deal_v001 as examples_deal_v001,
 )
 from src.deal.deal import (
-    DealUnit,
+    dealunit_shop,
     get_partys_relevant_groups,
     get_party_relevant_groups,
 )
@@ -15,12 +15,12 @@ from pytest import raises as pytest_raises
 
 def test_deal_groups_set_groupunit_worksCorrectly():
     # GIVEN
-    cx = DealUnit()
+    cx = dealunit_shop()
     assert cx._groups is None
     swim_text = "swim"
     groupbrand_x = GroupBrand(swim_text)
     every1_groups = {groupbrand_x: groupunit_shop(brand=groupbrand_x)}
-    cx2 = DealUnit()
+    cx2 = dealunit_shop()
 
     # WHEN
     cx2.set_groupunit(groupunit=groupunit_shop(brand=groupbrand_x))
@@ -41,7 +41,7 @@ def test_deal_groups_set_groupunit_worksCorrectly():
 
 def test_deal_groups_del_groupunit_worksCorrectly():
     # GIVEN
-    deal = DealUnit()
+    deal = dealunit_shop()
     swim_text = "swimmers"
     group_x = groupunit_shop(brand=GroupBrand(swim_text))
     deal.set_groupunit(groupunit=group_x)
@@ -84,7 +84,7 @@ def test_example_has_groups():
 def test_deal_set_balancelink_correctly_sets_balancelinks():
     # GIVEN
     prom_text = "prom"
-    cx = DealUnit(_healer=prom_text)
+    cx = dealunit_shop(_healer=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -131,7 +131,7 @@ def test_deal_set_balancelink_correctly_sets_balancelinks():
 def test_deal_set_balancelink_correctly_deletes_balancelinks():
     # GIVEN
     prom_text = "prom"
-    x_deal = DealUnit(_healer=prom_text)
+    x_deal = dealunit_shop(_healer=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -179,7 +179,7 @@ def test_deal_set_balancelink_correctly_deletes_balancelinks():
 
 def test_deal_set_balancelink_CorrectlyCalculatesInheritedBalancelinkDealImportance():
     # GIVEN
-    x_deal = DealUnit(_healer="prom")
+    x_deal = dealunit_shop(_healer="prom")
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -233,7 +233,7 @@ def test_deal_set_balancelink_CorrectlyCalculatesInheritedBalancelinkDealImporta
 def test_deal_get_idea_list_CorrectlyCalculates1LevelDealGroupDealImportance():
     # GIVEN
     prom_text = "prom"
-    x_deal = DealUnit(_healer=prom_text)
+    x_deal = dealunit_shop(_healer=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -304,7 +304,7 @@ def test_deal_get_idea_list_CorrectlyCalculates1LevelDealGroupDealImportance():
 def test_deal_get_idea_list_CorrectlyCalculates3levelDealGroupDealImportance():
     # GIVEN
     prom_text = "prom"
-    x_deal = DealUnit(_healer=prom_text)
+    x_deal = dealunit_shop(_healer=prom_text)
     swim_text = "swim"
     x_deal.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
 
@@ -348,7 +348,7 @@ def test_deal_get_idea_list_CorrectlyCalculates3levelDealGroupDealImportance():
 def test_deal_get_idea_list_CorrectlyCalculatesGroupDealImportanceLWwithGroupEmptyBranch():
     # GIVEN
     prom_text = "prom"
-    x_deal = DealUnit(_healer=prom_text)
+    x_deal = dealunit_shop(_healer=prom_text)
     swim_text = "swim"
     x_deal.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
 
@@ -418,7 +418,7 @@ def test_deal_get_idea_list_CorrectlyCalculatesGroupDealImportanceLWwithGroupEmp
 
 def test_deal_edit_groupunit_brand_CorrectlyCreatesNewTitle():
     # GIVEN
-    deal = DealUnit(_healer="prom")
+    deal = dealunit_shop(_healer="prom")
     rico_text = "rico"
     deal.add_partyunit(title=rico_text)
     swim_text = "swim"
@@ -450,7 +450,7 @@ def test_deal_edit_groupunit_brand_CorrectlyCreatesNewTitle():
 
 def test_deal_edit_Groupunit_brand_raiseErrorNewTitlePreviouslyExists():
     # GIVEN
-    deal = DealUnit(_healer="prom")
+    deal = dealunit_shop(_healer="prom")
     rico_text = "rico"
     deal.add_partyunit(title=rico_text)
     swim_text = "swim"
@@ -473,7 +473,7 @@ def test_deal_edit_Groupunit_brand_raiseErrorNewTitlePreviouslyExists():
 
 def test_deal_edit_groupunit_brand_CorrectlyMeldTitles():
     # GIVEN
-    deal = DealUnit(_healer="prom")
+    deal = dealunit_shop(_healer="prom")
     rico_text = "rico"
     deal.add_partyunit(title=rico_text)
     swim_text = "swim"
@@ -512,7 +512,7 @@ def test_deal_edit_groupunit_brand_CorrectlyMeldTitles():
 
 def test_deal_edit_groupunit_brand_CorrectlyChangesBalancelinks():
     # GIVEN
-    x_deal = DealUnit(_healer="prom")
+    x_deal = dealunit_shop(_healer="prom")
     rico_text = "rico"
     x_deal.add_partyunit(title=rico_text)
     swim_text = "swim"
@@ -548,7 +548,7 @@ def test_deal_edit_groupunit_brand_CorrectlyChangesBalancelinks():
 
 def test_deal_edit_groupunit_brand_CorrectlyMeldsBalancelinesBalancelinksBalanceHeirs():
     # GIVEN
-    x_deal = DealUnit(_healer="prom")
+    x_deal = dealunit_shop(_healer="prom")
     rico_text = "rico"
     x_deal.add_partyunit(title=rico_text)
     swim_text = "swim"
@@ -596,7 +596,7 @@ def test_deal_edit_groupunit_brand_CorrectlyMeldsBalancelinesBalancelinksBalance
 def test_deal_add_idea_CreatesMissingGroups():
     # GIVEN
     healer_text = "bob"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     x_deal.set_groupunits_empty_if_null()
     new_idea_parent_road = f"{x_deal._project_handle},work,cleaning"
     clean_cookery_text = "clean_cookery"
@@ -624,7 +624,7 @@ def test_deal_add_idea_CreatesMissingGroups():
 def test_DealUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balancelinks():
     # GIVEN
     healer_text = "Noa"
-    cx1 = DealUnit(_healer=healer_text)
+    cx1 = dealunit_shop(_healer=healer_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
     cx1.add_partyunit(title=xia_text)
@@ -640,7 +640,7 @@ def test_DealUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balanceli
     cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=zoa_text))
     cx1_swim_idea = cx1.get_idea_kid(swim_road)
     assert len(cx1_swim_idea._balancelinks) == 2
-    cx2 = DealUnit(_healer=healer_text)
+    cx2 = dealunit_shop(_healer=healer_text)
     cx2.add_partyunit(title=xia_text)
 
     # WHEN
@@ -654,7 +654,7 @@ def test_DealUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balanceli
 def test_DealUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     # GIVEN
     healer_text = "Noa"
-    cx1 = DealUnit(_healer=healer_text)
+    cx1 = dealunit_shop(_healer=healer_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
     cx1.add_partyunit(title=xia_text)
@@ -672,7 +672,7 @@ def test_DealUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     assert len(cx1_swim_idea._balancelinks) == 2
 
     # WHEN
-    cx2 = DealUnit(_healer=healer_text)
+    cx2 = dealunit_shop(_healer=healer_text)
     cx2.add_partyunit(title=xia_text)
     cx2.add_idea(
         idea_kid=cx1_swim_idea,
@@ -689,7 +689,7 @@ def test_DealUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
 def test_deal_add_idea_DoesNotOverwriteGroups():
     # GIVEN
     healer_text = "bob"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     x_deal.set_groupunits_empty_if_null()
     new_idea_parent_road = f"{x_deal._project_handle},work,cleaning"
     clean_cookery_text = "clean_cookery"
@@ -732,7 +732,7 @@ def test_deal_add_idea_DoesNotOverwriteGroups():
 def test_deal_set_groupunits_create_missing_partys_DoesCreateMissingPartys():
     # GIVEN
     healer_text = "bob"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     x_deal.set_partys_empty_if_null()
     x_deal.set_groupunits_empty_if_null()
     family_text = "family"
@@ -771,7 +771,7 @@ def test_deal_set_groupunits_create_missing_partys_DoesCreateMissingPartys():
 def test_deal_set_groupunits_create_missing_partys_DoesNotReplacePartys():
     # GIVEN
     healer_text = "bob"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     x_deal.set_partys_empty_if_null()
     family_text = "family"
     anna_text = "anna"
@@ -814,7 +814,7 @@ def test_deal_set_groupunits_create_missing_partys_DoesNotReplacePartys():
 def test_deal_get_groupunits_dict_CorrectlyReturnsDictOfGroups():
     # GIVEN
     healer_text = "bob"
-    deal = DealUnit(_healer=healer_text)
+    deal = dealunit_shop(_healer=healer_text)
     deal.set_partys_empty_if_null()
     swim_text = "swim"
     wiggle_text = "wiggle"
@@ -838,7 +838,7 @@ def test_deal_get_groupunits_dict_CorrectlyReturnsDictOfGroups():
 def test_deal_set_all_groupunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
     # GIVEN
     healer_text = "bob"
-    deal = DealUnit(_healer=healer_text)
+    deal = dealunit_shop(_healer=healer_text)
     deal.set_partys_empty_if_null()
     swim_text = "swim"
     pad_text = "pad"
@@ -862,7 +862,7 @@ def test_deal_set_all_groupunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
 def test_deal_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs():
     # GIVEN
     healer_text = "bob"
-    deal = DealUnit(_healer=healer_text)
+    deal = dealunit_shop(_healer=healer_text)
     deal.set_partys_empty_if_null()
     swim_text = "swim"
     pad_text = "pad"
@@ -889,7 +889,7 @@ def test_deal_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs()
 def test_deal_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs():
     # GIVEN
     healer_text = "Noa"
-    deal = DealUnit(_healer=healer_text)
+    deal = dealunit_shop(_healer=healer_text)
     deal.set_partys_empty_if_null()
     swim_text = "swim"
     pad_text = "pad"
@@ -916,7 +916,7 @@ def test_deal_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs()
 def test_deal_all_groupunits_uids_are_unique_ReturnsCorrectBoolean():
     # GIVEN
     healer_text = "Noa"
-    deal = DealUnit(_healer=healer_text)
+    deal = dealunit_shop(_healer=healer_text)
     deal.set_partys_empty_if_null()
     swim_text = "swim"
     pad_text = "pad"
@@ -947,7 +947,7 @@ def test_deal_all_groupunits_uids_are_unique_ReturnsCorrectBoolean():
 def test_get_partys_relevant_groups_CorrectlyReturnsEmptyDict():
     # GIVEN
     bob_text = "bob"
-    deal_with_partys = DealUnit(_healer=bob_text)
+    deal_with_partys = dealunit_shop(_healer=bob_text)
     deal_with_partys.set_partys_empty_if_null()
 
     sam_text = "sam"
@@ -955,7 +955,7 @@ def test_get_partys_relevant_groups_CorrectlyReturnsEmptyDict():
     deal_with_partys.set_partyunit(partyunit=partyunit_shop(title=bob_text))
     deal_with_partys.set_partyunit(partyunit=partyunit_shop(title=sam_text))
 
-    deal_with_groups = DealUnit()
+    deal_with_groups = dealunit_shop()
     deal_with_groups.set_partys_empty_if_null()
     deal_with_groups.set_groupunits_empty_if_null()
 
@@ -974,13 +974,13 @@ def test_get_partys_relevant_groups_CorrectlyReturns2SinglePartyGroups():
     bob_text = "Bob"
     sam_text = "Sam"
     wil_text = "Wil"
-    deal_3groups = DealUnit(_healer=bob_text)
+    deal_3groups = dealunit_shop(_healer=bob_text)
     deal_3groups.set_partys_empty_if_null()
     deal_3groups.set_partyunit(partyunit=partyunit_shop(title=bob_text))
     deal_3groups.set_partyunit(partyunit=partyunit_shop(title=sam_text))
     deal_3groups.set_partyunit(partyunit=partyunit_shop(title=wil_text))
 
-    deal_2partys = DealUnit(_healer=bob_text)
+    deal_2partys = dealunit_shop(_healer=bob_text)
     deal_2partys.set_partys_empty_if_null()
     deal_2partys.set_partyunit(partyunit=partyunit_shop(title=bob_text))
     deal_2partys.set_partyunit(partyunit=partyunit_shop(title=sam_text))
@@ -996,7 +996,7 @@ def test_get_partys_relevant_groups_CorrectlyReturns2SinglePartyGroups():
 def test_get_party_relevant_groups_CorrectlyReturnsCorrectDict():
     # GIVEN
     jes_text = "Jessi"
-    jes_deal = DealUnit(_healer=jes_text)
+    jes_deal = dealunit_shop(_healer=jes_text)
     bob_text = "Bob"
     jes_deal.set_partyunit(partyunit_shop(title=jes_text))
     jes_deal.set_partyunit(partyunit_shop(title=bob_text))
@@ -1017,7 +1017,7 @@ def test_get_party_relevant_groups_CorrectlyReturnsCorrectDict():
 def test_get_party_relevant_groups_CorrectlyReturnsCorrectDict():
     # GIVEN
     jes_text = "Jessi"
-    jes_deal = DealUnit(_healer=jes_text)
+    jes_deal = dealunit_shop(_healer=jes_text)
     bob_text = "Bob"
     noa_text = "Noa"
     eli_text = "Eli"

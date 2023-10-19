@@ -2,7 +2,7 @@ from src.deal.examples.example_deals import (
     deal_v001,
     get_deal_with_4_levels,
 )
-from src.deal.deal import DealUnit
+from src.deal.deal import dealunit_shop
 from src.deal.tree_metrics import TreeMetrics
 from src.deal.idea import IdeaKid
 
@@ -13,7 +13,7 @@ def test_deal_get_tree_metrics_exists():
     assert tree_metrics != None
 
     # WHEN
-    x_deal = DealUnit(_healer="Zia")
+    x_deal = dealunit_shop(_healer="Zia")
     x_deal_tree_metrics = x_deal.get_tree_metrics()
 
     # THEN
@@ -68,7 +68,7 @@ def test_deal_get_tree_set_all_idea_uids_unique():
 def test_deal_deal_get_tree_metrics_sets_uids_correctly():
     # GIVEN
     healer_text = "Zia"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     swim_text = "swim"
     pad_text = "pad"
     x_deal.add_idea(
@@ -92,7 +92,7 @@ def test_deal_deal_get_tree_metrics_sets_uids_correctly():
 def test_deal_get_tree_metrics_ReturnsANoneActionIdeaRoad():
     # GIVEN
     healer_text = "Nia"
-    x_deal = DealUnit(_healer=healer_text, _weight=10)
+    x_deal = dealunit_shop(_healer=healer_text, _weight=10)
     weekdays = "weekdays"
     idea_kid_weekdays = IdeaKid(_weight=40, _label=weekdays)
     x_deal.add_idea(idea_kid=idea_kid_weekdays, pad=f"{x_deal._project_handle}")

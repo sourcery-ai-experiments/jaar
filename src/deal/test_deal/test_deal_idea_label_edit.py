@@ -1,4 +1,4 @@
-from src.deal.deal import DealUnit
+from src.deal.deal import dealunit_shop
 from src.deal.idea import IdeaKid
 from src.deal.examples.example_deals import (
     get_deal_with_4_levels_and_2requireds_2acptfacts,
@@ -11,7 +11,7 @@ from src.deal.road import get_default_project_root_label as root_label
 def test_idea_label_fails_when_idea_does_not_exist():
     # GIVEN
     healer_text = "Noa"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
 
     work_text = "work"
     work_road = f"{x_deal._project_handle},{work_text}"
@@ -32,7 +32,7 @@ def test_idea_label_fails_when_idea_does_not_exist():
 def test_Deal_level0_idea_edit_idea_label_RaisesError_project_handle_IsNone():
     # GIVEN
     healer_text = "Tim"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
 
     work_text = "work"
     work_road = f"{x_deal._project_handle},{work_text}"
@@ -62,7 +62,7 @@ def test_Deal_level0_idea_edit_idea_label_RaisesError_project_handle_IsNone():
 def test_Deal_level0_idea_edit_idea_label_RaisesError_project_handle_IsDifferent():
     # GIVEN
     healer_text = "Tim"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     work_text = "work"
     work_road = f"{x_deal._project_handle},{work_text}"
     swim_text = "swim"
@@ -92,7 +92,7 @@ def test_Deal_level0_idea_edit_idea_label_RaisesError_project_handle_IsDifferent
 def test_deal_set_project_handle_CorrectlySetsAttr():
     # GIVEN
     healer_text = "Tim"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     work_text = "work"
     old_work_road = f"{x_deal._project_handle},{work_text}"
     swim_text = "swim"
@@ -126,7 +126,7 @@ def test_deal_set_project_handle_CorrectlySetsAttr():
 def test_idea_find_replace_road_Changes_kids_scenario1():
     # GIVEN Idea with kids that will be changed
     healer_text = "Tim"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
 
     old_healer_text = "healer"
     old_healer_road = Road(f"{x_deal._project_handle},{old_healer_text}")
@@ -186,7 +186,7 @@ def test_idea_find_replace_road_Changes_kids_scenario1():
 def test_deal_edit_idea_label_Changes_acptfactunits():
     # GIVEN deal with acptfactunits that will be changed
     healer_text = "Tim"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
 
     healer = "healer"
     bloomers_text = "bloomers"
@@ -235,7 +235,7 @@ def test_deal_edit_idea_label_Changes_acptfactunits():
 def test_deal_edit_idea_label_ChangesIdeaRoot_range_source_road():
     # GIVEN this should never happen but it's not currently banned
     healer_text = "Tim"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
 
     old_healer_text = "healer"
     old_healer_road = Road(f"{x_deal._project_handle},{old_healer_text}")
@@ -258,7 +258,7 @@ def test_deal_edit_idea_label_ChangesIdeaRoot_range_source_road():
 
 def test_deal_edit_idea_label_ChangesIdeaKidN_range_source_road():
     healer_text = "Bob"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
 
     healer_text = "healer"
     healer_road = Road(f"{x_deal._project_handle},{healer_text}")

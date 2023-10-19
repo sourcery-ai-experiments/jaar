@@ -4,7 +4,7 @@ from src.deal.examples.example_deals import (
     deal_v001 as examples_deal_v001,
     deal_v001_with_large_agenda as examples_deal_v001_with_large_agenda,
 )
-from src.deal.deal import DealUnit, get_intersection_of_partys
+from src.deal.deal import DealUnit, dealunit_shop, get_intersection_of_partys
 from src.deal.idea import IdeaKid
 from pytest import raises as pytest_raises
 from src.project.bank_sqlstr import RiverTallyUnit
@@ -12,7 +12,7 @@ from src.project.bank_sqlstr import RiverTallyUnit
 
 def test_deal_partys_exists():
     # GIVEN / WHEN
-    x_deal = DealUnit()
+    x_deal = dealunit_shop()
 
     # THEN
     assert x_deal._partys is None
@@ -20,7 +20,7 @@ def test_deal_partys_exists():
     # GIVEN
     yahri_party = partyunit_shop(title=PartyTitle("yahri"))
     partys_x = {yahri_party.title: yahri_party}
-    x_deal2 = DealUnit()
+    x_deal2 = dealunit_shop()
 
     # WHEN
     x_deal2.set_partyunit(partyunit=yahri_party)
@@ -40,7 +40,7 @@ def test_example_has_partys():
 
 def test_deal_set_party_correctly_sets_partys_1():
     # GIVEN
-    x_deal = DealUnit(_healer="prom")
+    x_deal = dealunit_shop(_healer="prom")
     x_deal.set_deal_metrics()
     assert len(x_deal._partys) == 0
     assert len(x_deal._groups) == 0
@@ -70,7 +70,7 @@ def test_deal_set_party_correctly_sets_partys_1():
 
 def test_deal_set_party_correctly_sets_partys_2():
     # GIVEN
-    x_deal = DealUnit(_healer="prom")
+    x_deal = dealunit_shop(_healer="prom")
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -94,7 +94,7 @@ def test_deal_set_party_correctly_sets_partys_2():
 
 def test_deal_get_party_CorrectlyGetsParty():
     # GIVEN
-    x_deal = DealUnit(_healer="prom")
+    x_deal = dealunit_shop(_healer="prom")
     rico_text = "rico"
     carm_text = "carmen"
     x_deal.add_partyunit(title=rico_text)
@@ -112,7 +112,7 @@ def test_deal_get_party_CorrectlyGetsParty():
 def test_deal_get_partys_depotlink_count_GetsCorrectCount():
     # GIVEN
     sue_text = "sue"
-    sue_x_deal = DealUnit(_healer=sue_text)
+    sue_x_deal = dealunit_shop(_healer=sue_text)
     assign_text = "assignment"
 
     # WHEN
@@ -142,7 +142,7 @@ def test_deal_get_partys_depotlink_count_GetsCorrectCount():
 def test_deal_get_idea_list_CorrectlySetsPartyLinkDealCreditAndDebt():
     # GIVEN
     prom_text = "prom"
-    x_deal = DealUnit(_healer=prom_text)
+    x_deal = dealunit_shop(_healer=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -292,7 +292,7 @@ def test_deal_get_idea_list_CorrectlySetsPartyLinkDealCreditAndDebt():
 def test_deal_get_idea_list_CorrectlySetsPartyUnitDealImportance():
     # GIVEN
     prom_text = "prom"
-    x_deal = DealUnit(_healer=prom_text)
+    x_deal = dealunit_shop(_healer=prom_text)
     swim_text = "swim"
     x_deal.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
     rico_text = "rico"
@@ -438,7 +438,7 @@ def test_deal_get_idea_list_CorrectlySetsPartyUnitDealImportance():
 def test_deal_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitDealImportance():
     # GIVEN
     prom_text = "prom"
-    x_deal = DealUnit(_healer=prom_text)
+    x_deal = dealunit_shop(_healer=prom_text)
     swim_text = "swim"
     x_deal.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
     rico_text = "rico"
@@ -550,7 +550,7 @@ def test_deal_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitDealImportance():
 
 def test_deal_get_idea_list_WithAllPartysWeighted():
     # GIVEN
-    x_deal = DealUnit(_healer="prom")
+    x_deal = dealunit_shop(_healer="prom")
     x_deal.add_idea(idea_kid=IdeaKid(_label="swim"), pad="prom")
     rico_text = "rico"
     carm_text = "carmen"
@@ -748,7 +748,7 @@ def test_deal_agenda_credit_debt_IsCorrectlySet():
 def test_deal_agenda_ratio_credit_debt_IsCorrectlySetWhenAgendaIsEmpty():
     # GIVEN
     healer_text = "Noa"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -794,7 +794,7 @@ def test_deal_agenda_ratio_credit_debt_IsCorrectlySetWhenAgendaIsEmpty():
 
 
 def test_deal_get_party_groups_returnsCorrectData():
-    x_deal = DealUnit(_healer="prom")
+    x_deal = dealunit_shop(_healer="prom")
     x_deal.add_idea(idea_kid=IdeaKid(_label="swim"), pad="prom")
     rico_text = "rico"
     carm_text = "carmen"
@@ -816,7 +816,7 @@ def test_deal_get_party_groups_returnsCorrectData():
 
 def test_deal_PartyUnit_CorrectlyCreatesNewTitle():
     # GIVEN
-    x_deal = DealUnit(_healer="prom")
+    x_deal = dealunit_shop(_healer="prom")
     rico_text = "rico"
     x_deal.add_partyunit(title=rico_text, uid=61, creditor_weight=13)
     x_deal.add_partyunit(title="carmen", uid=5)
@@ -850,7 +850,7 @@ def test_deal_PartyUnit_CorrectlyCreatesNewTitle():
 
 def test_deal_PartyUnit_raiseErrorNewTitlePreviouslyExists():
     # GIVEN
-    x_deal = DealUnit(_healer="prom")
+    x_deal = dealunit_shop(_healer="prom")
     rico_text = "rico"
     x_deal.add_partyunit(title=rico_text, uid=61, creditor_weight=13)
     carmen_text = "carmen"
@@ -880,7 +880,7 @@ def test_deal_PartyUnit_raiseErrorNewTitlePreviouslyExists():
 def test_deal_PartyUnit_CorrectlyChangesGroupUnitPartyLinks():
     # GIVEN
     prom_text = "prom"
-    x_deal = DealUnit(_healer=prom_text)
+    x_deal = dealunit_shop(_healer=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -925,7 +925,7 @@ def test_deal_PartyUnit_CorrectlyChangesGroupUnitPartyLinks():
 def test_deal_PartyUnit_CorrectlyMergesTitles():
     # GIVEN
     prom_text = "prom"
-    x_deal = DealUnit(_healer=prom_text)
+    x_deal = dealunit_shop(_healer=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -969,7 +969,7 @@ def test_deal_PartyUnit_CorrectlyMergesGroupUnitPartyLinks():
     # GIVEN
     # GIVEN
     prom_text = "prom"
-    x_deal = DealUnit(_healer=prom_text)
+    x_deal = dealunit_shop(_healer=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -1015,7 +1015,7 @@ def test_deal_PartyUnit_CorrectlyMergesGroupUnitPartyLinks():
 
 def test_deal_PartyUnit_raiseErrorNewTitleGroupUnitPreviouslyExists():
     # GIVEN
-    x_deal = DealUnit(_healer="prom")
+    x_deal = dealunit_shop(_healer="prom")
     rico_text = "rico"
     x_deal.add_partyunit(title=rico_text, uid=61, creditor_weight=13)
     anna_text = "anna"
@@ -1046,7 +1046,7 @@ def test_deal_PartyUnit_raiseErrorNewTitleGroupUnitPreviouslyExists():
 
 def test_deal_PartyUnit_CorrectlyOverwriteNewTitleGroupUnit():
     # GIVEN
-    x_deal = DealUnit(_healer="prom")
+    x_deal = dealunit_shop(_healer="prom")
     rico_text = "rico"
     x_deal.add_partyunit(title=rico_text, uid=61, creditor_weight=13)
     anna_text = "anna"
@@ -1088,7 +1088,7 @@ def test_deal_PartyUnit_CorrectlyOverwriteNewTitleGroupUnit():
 def test_deal_set_all_partyunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
     # GIVEN
     healer_text = "Noa"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     x_deal.set_partys_empty_if_null()
     swim_text = "swim"
     pad_text = "pad"
@@ -1112,7 +1112,7 @@ def test_deal_set_all_partyunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
 def test_deal_set_all_partyunits_uids_unique_CorrectlySetsChangesSameGroupUIDs():
     # GIVEN
     healer_text = "Noa"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     x_deal.set_partys_empty_if_null()
     swim_text = "swim"
     pad_text = "pad"
@@ -1139,7 +1139,7 @@ def test_deal_set_all_partyunits_uids_unique_CorrectlySetsChangesSameGroupUIDs()
 def test_deal_set_all_partyunits_uids_unique_CorrectlySetsChangesSameGroupUIDs():
     # GIVEN
     healer_text = "Noa"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     x_deal.set_partys_empty_if_null()
     swim_text = "swim"
     pad_text = "pad"
@@ -1166,7 +1166,7 @@ def test_deal_set_all_partyunits_uids_unique_CorrectlySetsChangesSameGroupUIDs()
 def test_deal_all_partyunits_uids_are_unique_ReturnsCorrectBoolean():
     # GIVEN
     healer_text = "Noa"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     x_deal.set_partys_empty_if_null()
     swim_text = "swim"
     pad_text = "pad"
@@ -1197,7 +1197,7 @@ def test_deal_all_partyunits_uids_are_unique_ReturnsCorrectBoolean():
 def test_deal_get_partyunits_title_list_CorrectlyReturnsListOfPartyUnits():
     # GIVEN
     healer_text = "Noa"
-    x_deal = DealUnit(_healer=healer_text)
+    x_deal = dealunit_shop(_healer=healer_text)
     x_deal.set_partys_empty_if_null()
     sam_text = "sam"
     will_text = "will"
@@ -1226,7 +1226,7 @@ def test_deal_get_partyunits_title_list_CorrectlyReturnsListOfPartyUnits():
 def test_deal_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr():
     # GIVEN
     bob_text = "bob"
-    x_deal = DealUnit(_healer=bob_text)
+    x_deal = dealunit_shop(_healer=bob_text)
     x_deal.set_partys_empty_if_null()
     sam_text = "sam"
     wil_text = "wil"
@@ -1273,7 +1273,7 @@ def test_deal_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr():
 def test_get_intersection_of_partys_CorrectlyReturnsUnionOfKeysOfTwoDictionarys_scenario1():
     # GIVEN
     bob_text = "bob"
-    x_deal = DealUnit(_healer=bob_text)
+    x_deal = dealunit_shop(_healer=bob_text)
     x_deal.set_partys_empty_if_null()
 
     sam_text = "sam"
@@ -1285,7 +1285,7 @@ def test_get_intersection_of_partys_CorrectlyReturnsUnionOfKeysOfTwoDictionarys_
     x_deal.set_partyunit(partyunit=partyunit_shop(title=wil_text))
     x_deal.set_partyunit(partyunit=partyunit_shop(title=fry_text))
 
-    y_deal = DealUnit()
+    y_deal = dealunit_shop()
     y_deal.set_partys_empty_if_null()
 
     y_deal.set_partyunit(partyunit=partyunit_shop(title=bob_text))
@@ -1304,7 +1304,7 @@ def test_get_intersection_of_partys_CorrectlyReturnsUnionOfKeysOfTwoDictionarys_
 def test_deal_clear_output_deal_meld_orders_CorrectlyClearsAttrs():
     # GIVEN
     prom_text = "prom"
-    x_deal = DealUnit(_healer=prom_text)
+    x_deal = dealunit_shop(_healer=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -1334,7 +1334,7 @@ def test_deal_clear_output_deal_meld_orders_CorrectlyClearsAttrs():
 def test_deal_clear_output_deal_meld_orders_WithNoArgsCorrectlySetOrder():
     # GIVEN
     prom_text = "prom"
-    x_deal = DealUnit(_healer=prom_text)
+    x_deal = dealunit_shop(_healer=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
