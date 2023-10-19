@@ -61,7 +61,7 @@ def get_river_flow_table_insert_sqlstr(
 ) -> str:
     return f"""
 INSERT INTO river_flow (
-    currency_healer
+  currency_healer
 , src_healer
 , dst_healer
 , currency_start 
@@ -71,7 +71,7 @@ INSERT INTO river_flow (
 , river_tree_level
 )
 VALUES (
-    '{river_flow_x.currency_deal_healer}'
+  '{river_flow_x.currency_deal_healer}'
 , '{river_flow_x.src_healer}'
 , '{river_flow_x.dst_healer}'
 , {sqlite_null(river_flow_x.currency_start)}
@@ -89,7 +89,7 @@ def get_river_flow_dict(
 ) -> dict[str:RiverFlowUnit]:
     sqlstr = f"""
 SELECT 
-    currency_healer
+  currency_healer
 , src_healer
 , dst_healer
 , currency_start
@@ -133,7 +133,7 @@ WHERE currency_healer = '{currency_deal_healer}'
 def get_river_bucket_table_create_sqlstr() -> str:
     return """
 CREATE TABLE IF NOT EXISTS river_bucket (
-    currency_healer VARCHAR(255) NOT NULL
+  currency_healer VARCHAR(255) NOT NULL
 , dst_healer VARCHAR(255) NOT NULL
 , bucket_num INT NOT NULL
 , curr_start FLOAT NOT NULL
