@@ -4,6 +4,7 @@ from src.deal.deal import (
     get_from_json as get_deal_from_json,
     partylink_shop,
     PartyTitle,
+    PersonName,
 )
 from src.deal.x_func import (
     single_dir_create_if_null,
@@ -75,23 +76,27 @@ class ProjectUnit:
         # refresh bank metrics
         self.refresh_bank_metrics()
 
-    def set_river_sphere_for_deal(self, deal_healer: str, max_flows_count: int = None):
+    def set_river_sphere_for_deal(
+        self, deal_healer: PersonName, max_flows_count: int = None
+    ):
         self._clear_all_source_river_data(deal_healer)
-        general_bucket = [self._get_root_river_ledger_unit(deal_healer)]
-
         if max_flows_count is None:
             max_flows_count = 40
+        self._set_river_flows(deal_healer, max_flows_count)
+        self._set_river_tallys_buckets(deal_healer)
 
-        flows_count = 0
+    def _set_river_flows(self, x_deal_healer: PersonName, max_flows_count: int):
+        # changes in river_flow loop
+        general_bucket = [self._get_root_river_ledger_unit(x_deal_healer)]
+        flows_count = 0  # changes in river_flow loop
         while flows_count < max_flows_count and general_bucket != []:
             parent_deal_ledger = general_bucket.pop(0)
-
+            ledgers_len = len(parent_deal_ledger._ledgers.values())
             parent_range = parent_deal_ledger.get_range()
             parent_close = parent_deal_ledger.currency_cease
-            curr_onset = parent_deal_ledger.currency_onset
 
-            ledgers_len = len(parent_deal_ledger._ledgers.values())
-            ledgers_count = 0
+            curr_onset = parent_deal_ledger.currency_onset  # changes in river_flow loop
+            ledgers_count = 0  # changes in river_flow loop
             for led_x in parent_deal_ledger._ledgers.values():
                 ledgers_count += 1
 
@@ -103,7 +108,7 @@ class ProjectUnit:
                     curr_close = parent_close
 
                 river_flow_x = RiverFlowUnit(
-                    currency_deal_healer=deal_healer,
+                    currency_deal_healer=x_deal_healer,
                     src_title=led_x.deal_healer,
                     dst_title=led_x.party_title,
                     currency_start=curr_onset,
@@ -122,8 +127,6 @@ class ProjectUnit:
 
                 # change curr_onset for next
                 curr_onset += curr_range
-
-        self._set_river_tallys_buckets(deal_healer)
 
     def _insert_river_flow_grab_river_ledger(
         self, river_flow_x: RiverFlowUnit

@@ -9,6 +9,7 @@ def get_table_count_sqlstr(table_title: str) -> str:
     return f"SELECT COUNT(*) FROM {table_title}"
 
 
+# river_flow
 def get_river_flow_table_delete_sqlstr(currency_deal_healer: str) -> str:
     return f"""
         DELETE FROM river_flow
@@ -116,6 +117,7 @@ def get_river_flow_dict(
     return dict_x
 
 
+# river_bucket
 def get_river_bucket_table_delete_sqlstr(currency_deal_healer: str) -> str:
     return f"""
         DELETE FROM river_bucket
@@ -213,6 +215,7 @@ def get_river_bucket_dict(
     return dict_x
 
 
+# river tally
 def get_river_tally_table_delete_sqlstr(currency_deal_healer: str) -> str:
     return f"""
         DELETE FROM river_tally
@@ -301,6 +304,7 @@ def get_river_tally_dict(
     return dict_x
 
 
+# deal
 def get_deal_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS dealunits (
@@ -323,11 +327,12 @@ def get_deal_table_insert_sqlstr(deal_x: DealUnit) -> str:
         """
 
 
+# ledger
 def get_ledger_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS ledger (
-          deal_healer INTEGER 
-        , party_title INTEGER
+          deal_healer VARCHAR(255) NOT NULL 
+        , party_title VARCHAR(255) NOT NULL
         , _deal_credit FLOAT
         , _deal_debt FLOAT
         , _deal_agenda_credit FLOAT
@@ -452,6 +457,7 @@ def get_river_ledger_unit(
     )
 
 
+# idea_catalog
 def get_idea_catalog_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS idea_catalog (
@@ -521,6 +527,7 @@ def get_idea_catalog_dict(db_conn: Connection, search_road: Road = None):
     return dict_x
 
 
+# acptfact_catalog
 def get_acptfact_catalog_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS acptfact_catalog (
@@ -569,6 +576,7 @@ def get_acptfact_catalog_table_insert_sqlstr(
     """
 
 
+# groupunit_catalog
 def get_groupunit_catalog_table_create_sqlstr() -> str:
     return """
         CREATE TABLE IF NOT EXISTS groupunit_catalog (
