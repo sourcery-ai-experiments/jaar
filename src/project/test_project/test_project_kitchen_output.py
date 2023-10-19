@@ -18,23 +18,25 @@ def test_project_get_output_deal_ReturnsCorrectDealObjScenario1(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = projectunit_shop(
+    x_project = projectunit_shop(
         handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
     )
-    sx.create_dirs_if_null(in_memory_bank=True)
+    x_project.create_dirs_if_null(in_memory_bank=True)
     input_cx = example_healers_get_6node_deal()
-    sx.save_public_deal(input_cx)
-    # sx.save_public_deal(ex_cxs_get_deal_1Task_1CE0MinutesRequired_1AcptFact())
-    # sx.save_public_deal(ex_cxs_deal_v001())
+    x_project.save_public_deal(input_cx)
+    # x_project.save_public_deal(ex_cxs_get_deal_1Task_1CE0MinutesRequired_1AcptFact())
+    # x_project.save_public_deal(ex_cxs_deal_v001())
     xia_text = "Xia"
-    sx.create_new_kitchenunit(kitchen_title=xia_text)
-    sx.set_healer_depotlink(xia_text, input_cx._healer, depotlink_type="blind_trust")
-    sx.save_kitchenunit_file(kitchen_title=xia_text)
-    xia_healer = sx.get_kitchenunit(title=xia_text)
+    x_project.create_new_kitchenunit(kitchen_title=xia_text)
+    x_project.set_healer_depotlink(
+        xia_text, input_cx._healer, depotlink_type="blind_trust"
+    )
+    x_project.save_kitchenunit_file(kitchen_title=xia_text)
+    xia_healer = x_project.get_kitchenunit(title=xia_text)
     # print(f"{xia_healer._seed._partys.keys()=}")
 
     # WHEN
-    output_cx = sx.get_output_deal(kitchen_title=xia_text)
+    output_cx = x_project.get_output_deal(kitchen_title=xia_text)
     # input deal must be melded to itself to create originunits
     input_cx.meld(input_cx)
     input_cx.set_healer(new_healer=xia_text)
@@ -92,27 +94,27 @@ def test_project_get_output_deal_ReturnsCorrectDealObjScenario2(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    sx = projectunit_shop(
+    x_project = projectunit_shop(
         handle=get_temp_env_handle(), projects_dir=get_test_projects_dir()
     )
-    sx.create_dirs_if_null(in_memory_bank=True)
+    x_project.create_dirs_if_null(in_memory_bank=True)
     cx1 = example_healers_get_6node_deal()
     cx2 = ex_cxs_deal_v002()
 
-    sx.save_public_deal(cx1)
-    sx.save_public_deal(cx2)
-    # sx.save_public_deal(ex_cxs_get_deal_1Task_1CE0MinutesRequired_1AcptFact())
-    # sx.save_public_deal(ex_cxs_deal_v001())
+    x_project.save_public_deal(cx1)
+    x_project.save_public_deal(cx2)
+    # x_project.save_public_deal(ex_cxs_get_deal_1Task_1CE0MinutesRequired_1AcptFact())
+    # x_project.save_public_deal(ex_cxs_deal_v001())
     xia_text = "Xia"
-    sx.create_new_kitchenunit(kitchen_title=xia_text)
-    sx.set_healer_depotlink(xia_text, cx1._healer, depotlink_type="blind_trust")
-    sx.set_healer_depotlink(xia_text, cx2._healer, depotlink_type="blind_trust")
-    sx.save_kitchenunit_file(kitchen_title=xia_text)
-    xia_healer = sx.get_kitchenunit(title=xia_text)
+    x_project.create_new_kitchenunit(kitchen_title=xia_text)
+    x_project.set_healer_depotlink(xia_text, cx1._healer, depotlink_type="blind_trust")
+    x_project.set_healer_depotlink(xia_text, cx2._healer, depotlink_type="blind_trust")
+    x_project.save_kitchenunit_file(kitchen_title=xia_text)
+    xia_healer = x_project.get_kitchenunit(title=xia_text)
     print(f"{xia_healer._seed._partys.keys()=}")
 
     # WHEN
-    output_cx = sx.get_output_deal(kitchen_title=xia_text)
+    output_cx = x_project.get_output_deal(kitchen_title=xia_text)
 
     # THEN
     output_cx_d_road = f"{output_cx._project_handle},C,D"
@@ -152,8 +154,8 @@ def test_kitchenunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
     # GIVEN
     env_dir = get_test_projects_dir()
     project_handle = get_temp_env_handle()
-    sx = projectunit_shop(handle=project_handle, projects_dir=env_dir)
-    sx.create_dirs_if_null(in_memory_bank=True)
+    x_project = projectunit_shop(handle=project_handle, projects_dir=env_dir)
+    x_project.create_dirs_if_null(in_memory_bank=True)
     # ux = kitchenunit_shop(title=healer1_text, env_dir=env_dir)
 
     ernie_text = "ernie"
@@ -162,15 +164,15 @@ def test_kitchenunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
     ernie_deal = get_deal_2CleanNodesRandomWeights(_healer=ernie_text)
     jessi_deal = get_deal_2CleanNodesRandomWeights(_healer=jessi_text)
     old_steve_cx = get_deal_2CleanNodesRandomWeights(_healer=steve_text)
-    sx.save_public_deal(deal_x=ernie_deal)
-    sx.save_public_deal(deal_x=jessi_deal)
-    sx.save_public_deal(deal_x=old_steve_cx)
-    sx.create_new_kitchenunit(kitchen_title=ernie_text)
-    sx.create_new_kitchenunit(kitchen_title=jessi_text)
-    # sx.create_new_kitchenunit(kitchen_title=steve_text)
-    ux_ernie = sx.get_kitchenunit(title=ernie_text)
-    ux_jessi = sx.get_kitchenunit(title=jessi_text)
-    # ux_steve = sx.get_kitchenunit(title=steve_text)
+    x_project.save_public_deal(deal_x=ernie_deal)
+    x_project.save_public_deal(deal_x=jessi_deal)
+    x_project.save_public_deal(deal_x=old_steve_cx)
+    x_project.create_new_kitchenunit(kitchen_title=ernie_text)
+    x_project.create_new_kitchenunit(kitchen_title=jessi_text)
+    # x_project.create_new_kitchenunit(kitchen_title=steve_text)
+    ux_ernie = x_project.get_kitchenunit(title=ernie_text)
+    ux_jessi = x_project.get_kitchenunit(title=jessi_text)
+    # ux_steve = x_project.get_kitchenunit(title=steve_text)
     ux_ernie.set_depot_deal(deal_x=jessi_deal, depotlink_type="blind_trust")
     ux_ernie.set_depot_deal(deal_x=old_steve_cx, depotlink_type="blind_trust")
     ux_jessi.set_depot_deal(deal_x=ernie_deal, depotlink_type="blind_trust")
@@ -181,7 +183,7 @@ def test_kitchenunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
     assert len(ux_jessi._admin.get_remelded_output_deal().get_idea_list()) == 4
     # assert len(ux_steve._admin.get_remelded_output_deal().get_idea_list()) == 4
     new_steve_deal = get_deal_3CleanNodesRandomWeights(_healer="steve")
-    sx.save_public_deal(deal_x=new_steve_deal)
+    x_project.save_public_deal(deal_x=new_steve_deal)
     # print(f"{env_dir=} {ux._admin._deals_public_dir=}")
     # for file_title in x_func_dir_files(dir_path=env_dir):
     #     print(f"{ux._admin._deals_public_dir=} {file_title=}")
@@ -190,7 +192,7 @@ def test_kitchenunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
     #     print(f"{ux._admin._deals_public_dir=} {file_title=}")
 
     # WHEN
-    sx.reload_all_kitchenunits_src_dealunits()
+    x_project.reload_all_kitchenunits_src_dealunits()
 
     # THEN
     assert len(ux_ernie._admin.get_remelded_output_deal().get_idea_list()) == 5

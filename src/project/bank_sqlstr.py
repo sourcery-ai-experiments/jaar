@@ -33,9 +33,9 @@ CREATE TABLE IF NOT EXISTS river_flow (
 , flow_num INT NOT NULL
 , parent_flow_num INT NULL
 , river_tree_level INT NOT NULL
-, FOREIGN KEY(currency_healer) REFERENCES dealunits(healer)
-, FOREIGN KEY(src_healer) REFERENCES dealunits(healer)
-, FOREIGN KEY(dst_healer) REFERENCES dealunits(healer)
+, FOREIGN KEY(currency_healer) REFERENCES dealunit(healer)
+, FOREIGN KEY(src_healer) REFERENCES dealunit(healer)
+, FOREIGN KEY(dst_healer) REFERENCES dealunit(healer)
 )
 ;
 """
@@ -138,14 +138,15 @@ CREATE TABLE IF NOT EXISTS river_bucket (
 , bucket_num INT NOT NULL
 , curr_start FLOAT NOT NULL
 , curr_close FLOAT NOT NULL
-, FOREIGN KEY(currency_healer) REFERENCES dealunits(healer)
-, FOREIGN KEY(dst_healer) REFERENCES dealunits(healer)
+, FOREIGN KEY(currency_healer) REFERENCES dealunit(healer)
+, FOREIGN KEY(dst_healer) REFERENCES dealunit(healer)
 )
 ;
 """
 
 
 def get_river_bucket_table_insert_sqlstr(currency_deal_healer: str) -> str:
+    """ """
     return f"""
 INSERT INTO river_bucket (
   currency_healer
@@ -236,8 +237,8 @@ CREATE TABLE IF NOT EXISTS river_tally (
 , tax_total FLOAT NOT NULL
 , debt FLOAT NULL
 , tax_diff FLOAT NULL
-, FOREIGN KEY(currency_healer) REFERENCES dealunits(healer)
-, FOREIGN KEY(tax_healer) REFERENCES dealunits(healer)
+, FOREIGN KEY(currency_healer) REFERENCES dealunit(healer)
+, FOREIGN KEY(tax_healer) REFERENCES dealunit(healer)
 )
 ;
 """
@@ -311,7 +312,7 @@ WHERE currency_healer = '{currency_deal_healer}'
 # deal
 def get_deal_table_create_sqlstr() -> str:
     return """
-CREATE TABLE IF NOT EXISTS dealunits (
+CREATE TABLE IF NOT EXISTS dealunit (
   healer VARCHAR(255) PRIMARY KEY ASC
 , UNIQUE(healer)
 )
@@ -321,7 +322,7 @@ CREATE TABLE IF NOT EXISTS dealunits (
 
 def get_deal_table_insert_sqlstr(deal_x: DealUnit) -> str:
     return f"""
-INSERT INTO dealunits (
+INSERT INTO dealunit (
   healer
 )
 VALUES (
@@ -345,8 +346,8 @@ CREATE TABLE IF NOT EXISTS ledger (
 , _deal_agenda_ratio_debt FLOAT
 , _creditor_active INT
 , _debtor_active INT
-, FOREIGN KEY(deal_healer) REFERENCES dealunits(healer)
-, FOREIGN KEY(party_title) REFERENCES dealunits(healer)
+, FOREIGN KEY(deal_healer) REFERENCES dealunit(healer)
+, FOREIGN KEY(party_title) REFERENCES dealunit(healer)
 , UNIQUE(deal_healer, party_title)
 )
 ;

@@ -31,7 +31,7 @@ def test_project_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     #     print(f" {table_x=} {row_count}. {table_mame=}")
 
     curr_tables = {
-        0: "dealunits",
+        0: "dealunit",
         1: "ledger",
         2: "river_tally",
         3: "river_flow",
@@ -40,6 +40,9 @@ def test_project_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
         6: "acptfact_catalog",
         7: "groupunit_catalog",
     }
+
+    # for x_table_key, x_table_value in tables_dict.items():
+    #     print(f"{x_table_key=} {x_table_value=}")
 
     assert tables_dict.get(curr_tables[0]) != None
     assert tables_dict.get(curr_tables[1]) != None
@@ -171,7 +174,7 @@ def test_project_refresh_bank_metrics_CorrectlyPopulatesDealTable01(
     sx.save_public_deal(deal_x=dealunit_shop(_healer=sal_text))
     sx.save_public_deal(deal_x=dealunit_shop(_healer=elu_text))
 
-    sqlstr_count_deals = get_table_count_sqlstr("dealunits")
+    sqlstr_count_deals = get_table_count_sqlstr("dealunit")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_deals) == 0
 
     # WHEN
@@ -200,7 +203,7 @@ def test_project_refresh_bank_metrics_CorrectlyPopulatesDealTable01(
     sx.save_public_deal(deal_x=dealunit_shop(_healer=sal_text))
     sx.save_public_deal(deal_x=dealunit_shop(_healer=elu_text))
 
-    sqlstr_count_deals = get_table_count_sqlstr("dealunits")
+    sqlstr_count_deals = get_table_count_sqlstr("dealunit")
     assert get_single_result_back(sx.get_bank_conn(), sqlstr_count_deals) == 0
 
     # WHEN
