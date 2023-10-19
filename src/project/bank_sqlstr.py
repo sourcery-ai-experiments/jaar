@@ -195,7 +195,7 @@ def get_river_bucket_dict(
 ) -> dict[str:RiverBucketUnit]:
     sqlstr = f"""
 SELECT
-    currency_healer
+  currency_healer
 , dst_healer
 , bucket_num
 , curr_start
@@ -231,7 +231,7 @@ WHERE currency_healer = '{currency_deal_healer}'
 def get_river_tally_table_create_sqlstr() -> str:
     return """
 CREATE TABLE IF NOT EXISTS river_tally (
-    currency_healer VARCHAR(255) NOT NULL
+  currency_healer VARCHAR(255) NOT NULL
 , tax_healer VARCHAR(255) NOT NULL
 , tax_total FLOAT NOT NULL
 , debt FLOAT NULL
@@ -246,14 +246,14 @@ CREATE TABLE IF NOT EXISTS river_tally (
 def get_river_tally_table_insert_sqlstr(currency_deal_healer: str) -> str:
     return f"""
 INSERT INTO river_tally (
-    currency_healer
+  currency_healer
 , tax_healer
 , tax_total
 , debt
 , tax_diff
 )
 SELECT 
-    rt.currency_healer
+  rt.currency_healer
 , rt.src_healer
 , SUM(rt.currency_close-rt.currency_start) tax_paid
 , l._deal_agenda_ratio_debt
