@@ -1,7 +1,7 @@
 from src.world.pain import projectlink_shop, healerlink_shop
 
 
-def test_healerlink_set_projectlink_CorrectlySetsprojectLink():
+def test_healerlink_set_projectlink_CorrectlySetsObj():
     # GIVEN
     yao_text = "yao"
     yao_healerlink = healerlink_shop(person_name=yao_text)
@@ -18,7 +18,7 @@ def test_healerlink_set_projectlink_CorrectlySetsprojectLink():
     assert diet_project.handle == diet_text
 
 
-def test_healerlink_get_projectunit_CorrectlyGetsAnProjectUnit():
+def test_healerlink_get_projectunit_CorrectlyGetsObj():
     # GIVEN
     yao_text = "yao"
     yao_healerlink = healerlink_shop(person_name=yao_text)
@@ -34,7 +34,7 @@ def test_healerlink_get_projectunit_CorrectlyGetsAnProjectUnit():
     assert diet_project.handle == diet_text
 
 
-def test_healerlink_del_projectunit_CorrectlyDeletesProjectUnit():
+def test_healerlink_del_projectunit_CorrectlyDeletesObj():
     # GIVEN
     yao_text = "yao"
     yao_healerlink = healerlink_shop(person_name=yao_text)

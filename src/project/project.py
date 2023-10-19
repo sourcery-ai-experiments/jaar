@@ -97,10 +97,10 @@ class ProjectUnit:
 
             curr_onset = parent_deal_ledger.currency_onset  # changes in river_flow loop
             ledgers_count = 0  # changes in river_flow loop
-            for led_x in parent_deal_ledger._ledgers.values():
+            for x_child_ledger in parent_deal_ledger._ledgers.values():
                 ledgers_count += 1
 
-                curr_range = parent_range * led_x._deal_agenda_ratio_credit
+                curr_range = parent_range * x_child_ledger._deal_agenda_ratio_credit
                 curr_close = curr_onset + curr_range
 
                 # implies last element in dict
@@ -109,8 +109,8 @@ class ProjectUnit:
 
                 river_flow_x = RiverFlowUnit(
                     currency_deal_healer=x_deal_healer,
-                    src_healer=led_x.deal_healer,
-                    dst_healer=led_x.party_title,
+                    src_healer=x_child_ledger.deal_healer,
+                    dst_healer=x_child_ledger.party_title,
                     currency_start=curr_onset,
                     currency_close=curr_close,
                     flow_num=flows_count,
