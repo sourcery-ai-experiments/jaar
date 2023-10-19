@@ -19,7 +19,7 @@ def get_river_flow_table_delete_sqlstr(currency_deal_healer: str) -> str:
 DELETE FROM river_flow
 WHERE currency_healer = '{currency_deal_healer}' 
 ;
-    """
+"""
 
 
 def get_river_flow_table_create_sqlstr() -> str:
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS river_flow (
 , FOREIGN KEY(dst_healer) REFERENCES dealunits(healer)
 )
 ;
-    """
+"""
 
 
 @dataclass
@@ -127,7 +127,7 @@ def get_river_bucket_table_delete_sqlstr(currency_deal_healer: str) -> str:
 DELETE FROM river_bucket
 WHERE currency_healer = '{currency_deal_healer}' 
 ;
-    """
+"""
 
 
 def get_river_bucket_table_create_sqlstr() -> str:
@@ -178,7 +178,7 @@ FROM  (
 GROUP BY currency_healer, dst_healer, currency_bucket_num
 ORDER BY currency_bucket_start
 ;
-    """
+"""
 
 
 @dataclass
