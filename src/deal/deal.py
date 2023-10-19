@@ -100,16 +100,6 @@ class DealUnit:
     _project_handle: str = None
     _auto_output_to_public: bool = None
 
-    # def __init__(
-    #     self,
-    #     _healer: PersonName = None,
-    #     _weight: float = None,
-    #     _auto_output_to_public: bool = False,
-    # ) -> None:
-    #     self._weight = _weight
-    #     self._idearoot = IdeaRoot(_label=self._idearoot, _uid=1, _level=0)
-    #     self._healer = _healer
-
     def set_partys_output_deal_meld_order(self):
         sort_partys_list = list(self._partys.values())
         sort_partys_list.sort(key=lambda x: x.title.lower(), reverse=False)
