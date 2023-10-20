@@ -1,4 +1,4 @@
-from src.agenda.idea import IdeaRoot
+from src.agenda.idea import IdeaRoot, idearoot_shop
 from src.agenda.road import get_default_culture_root_label as root_label
 from pytest import raises as pytest_raises
 
@@ -10,13 +10,24 @@ def test_IdeaRoot_exists():
     # THEN
     assert new_obj
 
+    assert new_obj._label is None
+    assert new_obj._kids is None
+
+
+def test_idearoot_shop_ReturnsCorrectObj():
+    # GIVEN / WHEN
+    new_obj = idearoot_shop()
+
+    # THEN
+    assert new_obj
+
     assert new_obj._label == root_label()
     assert new_obj._kids is None
 
 
 def test_IdeaRoot_set_idea_label_get_default_culture_root_label_DoesNotRaisesError():
     # GIVEN
-    new_obj = IdeaRoot()
+    new_obj = idearoot_shop()
 
     # WHEN
 
@@ -28,7 +39,7 @@ def test_IdeaRoot_set_idea_label_get_default_culture_root_label_DoesNotRaisesErr
 
 def test_IdeaRoot_set_idea_label_CorrectlyDoesNotRaisesError():
     # GIVEN
-    new_obj = IdeaRoot()
+    new_obj = idearoot_shop()
     culture_handle = "El Paso"
 
     # WHEN
@@ -41,7 +52,7 @@ def test_IdeaRoot_set_idea_label_CorrectlyDoesNotRaisesError():
 
 def test_IdeaRoot_set_idea_label_InCorrectlyDoesRaisesError():
     # GIVEN
-    new_obj = IdeaRoot()
+    new_obj = idearoot_shop()
     culture_handle = "El Paso"
 
     with pytest_raises(Exception) as excinfo:
@@ -55,7 +66,7 @@ def test_IdeaRoot_set_idea_label_InCorrectlyDoesRaisesError():
 
 def test_IdeaRoot_set_idea_label_RaisesErrorWhen_agenda_culture_handle_IsNone():
     # GIVEN
-    new_obj = IdeaRoot()
+    new_obj = idearoot_shop()
 
     # WHEN/THEN
 
@@ -70,7 +81,7 @@ def test_IdeaRoot_set_idea_label_RaisesErrorWhen_agenda_culture_handle_IsNone():
 
 def test_IdeaRoot_set_idea_label_agenda_culture_handle_EqualRootLabelDoesNotRaisesError():
     # GIVEN
-    new_obj = IdeaRoot()
+    new_obj = idearoot_shop()
 
     # WHEN
 

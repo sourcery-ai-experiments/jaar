@@ -1072,9 +1072,6 @@ class IdeaRootLabelNotEmptyException(Exception):
 
 @dataclasses.dataclass
 class IdeaRoot(IdeaCore):
-    def __post_init__(self):
-        self.set_idea_label(_label=root_label())
-
     def set_idea_label(self, _label: str, agenda_culture_handle: str = None):
         if _label != root_label() and agenda_culture_handle is None:
             raise IdeaRootLabelNotEmptyException(

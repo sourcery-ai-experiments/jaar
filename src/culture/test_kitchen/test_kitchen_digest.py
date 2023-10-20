@@ -64,7 +64,7 @@ def test_healeropen_seed_agenda_WhenStartingDealFileDoesNotExists(
     x_agenda = agendaunit_shop(_healer=tim_text)
     x_agenda.set_culture_handle(get_temp_culture_handle())
     x_agenda.set_agenda_metrics()
-    # x_idearoot = IdeaRoot(_label=p_title, _pad="")
+    # x_idearoot = idearoot_shop(_label=p_title, _pad="")
     # x_idearoot.set_balancelines_empty_if_null()
     # x_idearoot.set_kids_empty_if_null()
     # x_idearoot.set_balancelink_empty_if_null()
