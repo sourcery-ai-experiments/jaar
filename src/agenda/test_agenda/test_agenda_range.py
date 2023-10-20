@@ -1,4 +1,4 @@
-from src.agenda.idea import IdeaKid
+from src.agenda.idea import ideacore_shop
 from src.agenda.agenda import agendaunit_shop
 
 
@@ -8,12 +8,12 @@ def test_agendaAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
     x_agenda = agendaunit_shop(_healer=healer_text, _weight=10)
 
     l1 = "level1"
-    idea_kid_l1 = IdeaKid(_weight=30, _label=l1)
+    idea_kid_l1 = ideacore_shop(_weight=30, _label=l1)
     x_agenda.add_idea(pad=x_agenda._culture_handle, idea_kid=idea_kid_l1)
     l1_road = f"{x_agenda._culture_handle},{l1}"
 
     rx1 = "range_root_example"
-    idea_kid_rx1 = IdeaKid(_weight=30, _label=rx1)
+    idea_kid_rx1 = ideacore_shop(_weight=30, _label=rx1)
     x_agenda.add_idea(pad=l1_road, idea_kid=idea_kid_rx1)
     rx1_road = f"{l1_road},{rx1}"
     x_agenda.edit_idea_attr(road=rx1_road, begin=10, close=25)
@@ -22,7 +22,7 @@ def test_agendaAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
     print(f"Add example child idea to road='{rx1_road}'")
 
     rcA = "range_child_example"
-    idea_kid_rcA = IdeaKid(_weight=30, _begin=10, _close=25, _label=rcA)
+    idea_kid_rcA = ideacore_shop(_weight=30, _begin=10, _close=25, _label=rcA)
     x_agenda.add_idea(pad=rx1_road, idea_kid=idea_kid_rcA)
 
     rcA_road = f"{rx1_road},{rcA}"
@@ -45,12 +45,12 @@ def test_agendaAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
     x_agenda = agendaunit_shop(_healer=healer_text, _weight=10)
 
     l1 = "level1"
-    idea_kid_l1 = IdeaKid(_weight=30, _label=l1)
+    idea_kid_l1 = ideacore_shop(_weight=30, _label=l1)
     x_agenda.add_idea(pad=x_agenda._culture_handle, idea_kid=idea_kid_l1)
     l1_road = f"{x_agenda._culture_handle},{l1}"
 
     rx1 = "range_root_example"
-    idea_kid_rx1 = IdeaKid(_weight=30, _label=rx1)
+    idea_kid_rx1 = ideacore_shop(_weight=30, _label=rx1)
     x_agenda.add_idea(pad=l1_road, idea_kid=idea_kid_rx1)
     rx1_road = f"{l1_road},{rx1}"
     x_agenda.edit_idea_attr(road=rx1_road, begin=10, close=25)
@@ -59,7 +59,7 @@ def test_agendaAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
     print(f"Add example child idea to road='{rx1_road}'")
 
     rcA = "range_child_example"
-    idea_kid_rcA = IdeaKid(_weight=30, _begin=10, _close=25, _label=rcA)
+    idea_kid_rcA = ideacore_shop(_weight=30, _begin=10, _close=25, _label=rcA)
     x_agenda.add_idea(pad=rx1_road, idea_kid=idea_kid_rcA)
 
     rcA_road = f"{rx1_road},{rcA}"

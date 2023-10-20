@@ -305,7 +305,7 @@ def test_healer_get_remelded_output_agenda_with1DigestedDeal(
 
 #     yaya_text = "yaya"
 #     yaya_road = Road(f"{src1},{yaya_text}")
-#     s1.add_idea(idea_kid=IdeaKid(_label=yaya_text), pad=src1_road)
+#     s1.add_idea(idea_kid=ideacore_shop(_label=yaya_text), pad=src1_road)
 #     s1.set_acptfact(base=yaya_road, acptfact=yaya_road)
 
 #     assert s1._groups.get(swim_text).title == swim_text

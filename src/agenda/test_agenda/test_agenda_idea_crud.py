@@ -1,5 +1,5 @@
 from src.agenda.examples.example_agendas import get_agenda_with_4_levels
-from src.agenda.idea import IdeaKid
+from src.agenda.idea import ideacore_shop
 from src.agenda.required_idea import RequiredUnit, acptfactunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.group import balancelink_shop
@@ -11,8 +11,8 @@ def test_root_has_kids():
     # GIVEN
     x_agenda = agendaunit_shop(_healer="prom")
     idearoot_x = x_agenda._idearoot
-    idea1 = IdeaKid(_weight=30, _label="work")
-    idea2 = IdeaKid(_weight=40, _label="ulty")
+    idea1 = ideacore_shop(_weight=30, _label="work")
+    idea2 = ideacore_shop(_weight=40, _label="ulty")
 
     # WHEN
     x_agenda.add_idea(idea_kid=idea1, pad=x_agenda._healer)
@@ -54,7 +54,7 @@ def test_agenda_add_idea_CanAddKidToRootIdea():
     assert x_agenda.get_level_count(level=1) == 4
 
     new_idea_parent_road = x_agenda._healer
-    new_idea = IdeaKid(_weight=40, _label="new_idea")
+    new_idea = ideacore_shop(_weight=40, _label="new_idea")
 
     # WHEN
     x_agenda.add_idea(idea_kid=new_idea, pad=new_idea_parent_road)
@@ -76,7 +76,7 @@ def test_agenda_add_idea_CanAddKidToKidIdea():
     assert x_agenda.get_level_count(level=2) == 10
 
     new_idea_parent_road = f"{x_agenda._culture_handle},work"
-    new_idea = IdeaKid(_weight=40, _label="new_york")
+    new_idea = ideacore_shop(_weight=40, _label="new_york")
 
     # WHEN
     x_agenda.add_idea(idea_kid=new_idea, pad=new_idea_parent_road)
@@ -105,7 +105,7 @@ def test_agenda_add_idea_CanAddKidToGrandkidIdea():
     assert x_agenda.get_node_count() == 17
     assert x_agenda.get_level_count(level=3) == 2
     new_idea_parent_road = f"{x_agenda._culture_handle},weekdays,Wednesday"
-    new_idea = IdeaKid(_weight=40, _label="new_idea")
+    new_idea = ideacore_shop(_weight=40, _label="new_idea")
 
     # WHEN
     x_agenda.add_idea(idea_kid=new_idea, pad=new_idea_parent_road)
@@ -127,7 +127,7 @@ def test_agenda_add_idea_CanCreateRoadToGrandkidIdea():
     assert x_agenda.get_node_count() == 17
     assert x_agenda.get_level_count(level=3) == 2
     new_idea_parent_road = f"{x_agenda._culture_handle},ww2,battles,coralsea"
-    new_idea = IdeaKid(_weight=40, _label="USS Saratoga")
+    new_idea = ideacore_shop(_weight=40, _label="USS Saratoga")
 
     # WHEN
     x_agenda.add_idea(idea_kid=new_idea, pad=new_idea_parent_road)
@@ -151,7 +151,9 @@ def test_agenda_add_idea_creates_requireds_ideas():
     assert x_agenda.get_level_count(level=3) == 2
     new_idea_parent_road = f"{x_agenda._culture_handle},work,cleaning"
     clean_cookery_text = "clean_cookery"
-    clean_cookery_idea = IdeaKid(_weight=40, _label=clean_cookery_text, promise=True)
+    clean_cookery_idea = ideacore_shop(
+        _weight=40, _label=clean_cookery_text, promise=True
+    )
 
     buildings_text = "buildings"
     buildings_road = Road(f"{x_agenda._culture_handle},{buildings_text}")
@@ -480,10 +482,10 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEditDenomAnyIdeaIfInvaildDenomThrow
 
     work = "work"
     w_road = f"{x_agenda._culture_handle},{work}"
-    work_idea = IdeaKid(_label=work)
+    work_idea = ideacore_shop(_label=work)
     x_agenda.add_idea(work_idea, pad=x_agenda._culture_handle)
     clean = "clean"
-    clean_idea = IdeaKid(_label=clean)
+    clean_idea = ideacore_shop(_label=clean)
     c_road = f"{w_road},{clean}"
     x_agenda.add_idea(clean_idea, pad=w_road)
 
@@ -509,18 +511,18 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEditDenomAnyIdeaInvaildDenomThrowsE
     x_agenda = agendaunit_shop(_healer=healer_text)
     work = "work"
     w_road = f"{x_agenda._culture_handle},{work}"
-    work_idea = IdeaKid(_label=work, _begin=8, _close=14)
+    work_idea = ideacore_shop(_label=work, _begin=8, _close=14)
     x_agenda.add_idea(work_idea, pad=x_agenda._culture_handle)
 
     clean = "clean"
-    clean_idea = IdeaKid(_label=clean, _denom=1)
+    clean_idea = ideacore_shop(_label=clean, _denom=1)
     c_road = f"{w_road},{clean}"
     x_agenda.add_idea(clean_idea, pad=w_road)
 
     clean_idea = x_agenda.get_idea_kid(road=c_road)
 
     day = "day_range"
-    day_idea = IdeaKid(_label=day, _begin=44, _close=110)
+    day_idea = ideacore_shop(_label=day, _begin=44, _close=110)
     day_road = f"{x_agenda._culture_handle},{day}"
     x_agenda.add_idea(day_idea, pad=x_agenda._culture_handle)
 
@@ -541,9 +543,9 @@ def test_agenda_edit_idea_attr_agendaWhenParentAndNumeric_roadBothHaveRangeThrow
     x_agenda = agendaunit_shop(_healer=healer_text)
     work_text = "work"
     work_road = f"{x_agenda._culture_handle},{work_text}"
-    x_agenda.add_idea(IdeaKid(_label=work_text), pad=x_agenda._culture_handle)
+    x_agenda.add_idea(ideacore_shop(_label=work_text), pad=x_agenda._culture_handle)
     day_text = "day_range"
-    day_idea = IdeaKid(_label=day_text, _begin=44, _close=110)
+    day_idea = ideacore_shop(_label=day_text, _begin=44, _close=110)
     day_road = f"{x_agenda._culture_handle},{day_text}"
     x_agenda.add_idea(day_idea, pad=x_agenda._culture_handle)
 
@@ -584,9 +586,9 @@ def test_agenda_add_idea_MustReorderKidsDictToBeAlphabetical():
     healer_text = "Noa"
     x_agenda = agendaunit_shop(_healer=healer_text)
     work_text = "work"
-    x_agenda.add_idea(IdeaKid(_label=work_text), pad=x_agenda._culture_handle)
+    x_agenda.add_idea(ideacore_shop(_label=work_text), pad=x_agenda._culture_handle)
     swim_text = "swim"
-    x_agenda.add_idea(IdeaKid(_label=swim_text), pad=x_agenda._culture_handle)
+    x_agenda.add_idea(ideacore_shop(_label=swim_text), pad=x_agenda._culture_handle)
 
     # WHEN
     idea_list = list(x_agenda._idearoot._kids.values())
@@ -600,9 +602,9 @@ def test_agenda_add_idea_adoptee_RaisesErrorIfAdopteeIdeaDoesNotHaveCorrectParen
     x_agenda = agendaunit_shop(_healer=healer_text)
     sports_text = "sports"
     sports_road = f"{x_agenda._culture_handle},{sports_text}"
-    x_agenda.add_idea(IdeaKid(_label=sports_text), pad=x_agenda._culture_handle)
+    x_agenda.add_idea(ideacore_shop(_label=sports_text), pad=x_agenda._culture_handle)
     swim_text = "swim"
-    x_agenda.add_idea(IdeaKid(_label=swim_text), pad=sports_road)
+    x_agenda.add_idea(ideacore_shop(_label=swim_text), pad=sports_road)
 
     # WHEN / THEN
     summer_text = "summer"
@@ -610,7 +612,7 @@ def test_agenda_add_idea_adoptee_RaisesErrorIfAdopteeIdeaDoesNotHaveCorrectParen
     hike_road = f"{sports_road},{hike_text}"
     with pytest_raises(Exception) as excinfo:
         x_agenda.add_idea(
-            idea_kid=IdeaKid(_label=summer_text),
+            idea_kid=ideacore_shop(_label=summer_text),
             pad=sports_road,
             adoptees=[swim_text, hike_text],
         )
@@ -625,11 +627,11 @@ def test_agenda_add_idea_adoptee_CorrectlyAddsAdoptee():
     x_agenda = agendaunit_shop(_healer=healer_text)
     sports_text = "sports"
     sports_road = f"{x_agenda._culture_handle},{sports_text}"
-    x_agenda.add_idea(IdeaKid(_label=sports_text), pad=x_agenda._culture_handle)
+    x_agenda.add_idea(ideacore_shop(_label=sports_text), pad=x_agenda._culture_handle)
     swim_text = "swim"
-    x_agenda.add_idea(IdeaKid(_label=swim_text), pad=sports_road)
+    x_agenda.add_idea(ideacore_shop(_label=swim_text), pad=sports_road)
     hike_text = "hike"
-    x_agenda.add_idea(IdeaKid(_label=hike_text), pad=sports_road)
+    x_agenda.add_idea(ideacore_shop(_label=hike_text), pad=sports_road)
 
     x_agenda.set_agenda_metrics()
     sports_swim_road = f"{sports_road},{swim_text}"
@@ -645,7 +647,7 @@ def test_agenda_add_idea_adoptee_CorrectlyAddsAdoptee():
 
     # WHEN / THEN
     x_agenda.add_idea(
-        idea_kid=IdeaKid(_label=summer_text),
+        idea_kid=ideacore_shop(_label=summer_text),
         pad=sports_road,
         adoptees=[swim_text, hike_text],
     )
@@ -666,17 +668,23 @@ def test_agenda_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdoptedIdea
     sports_text = "sports"
     sports_road = f"{x_agenda._culture_handle},{sports_text}"
     x_agenda.add_idea(
-        IdeaKid(_label=sports_text, _weight=2), pad=x_agenda._culture_handle
+        ideacore_shop(_label=sports_text, _weight=2), pad=x_agenda._culture_handle
     )
     swim_text = "swim"
     swim_weight = 3
-    x_agenda.add_idea(IdeaKid(_label=swim_text, _weight=swim_weight), pad=sports_road)
+    x_agenda.add_idea(
+        ideacore_shop(_label=swim_text, _weight=swim_weight), pad=sports_road
+    )
     hike_text = "hike"
     hike_weight = 5
-    x_agenda.add_idea(IdeaKid(_label=hike_text, _weight=hike_weight), pad=sports_road)
+    x_agenda.add_idea(
+        ideacore_shop(_label=hike_text, _weight=hike_weight), pad=sports_road
+    )
     bball_text = "bball"
     bball_weight = 7
-    x_agenda.add_idea(IdeaKid(_label=bball_text, _weight=bball_weight), pad=sports_road)
+    x_agenda.add_idea(
+        ideacore_shop(_label=bball_text, _weight=bball_weight), pad=sports_road
+    )
 
     x_agenda.set_agenda_metrics()
     sports_swim_road = f"{sports_road},{swim_text}"
@@ -696,7 +704,7 @@ def test_agenda_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdoptedIdea
 
     # WHEN / THEN
     x_agenda.add_idea(
-        idea_kid=IdeaKid(_label=summer_text),
+        idea_kid=ideacore_shop(_label=summer_text),
         pad=sports_road,
         adoptees=[swim_text, hike_text],
         bundling=True,
@@ -719,17 +727,23 @@ def test_agenda_del_idea_kid_DeletingBundledIdeaReturnsIdeasToOriginalState():
     sports_text = "sports"
     sports_road = f"{x_agenda._culture_handle},{sports_text}"
     x_agenda.add_idea(
-        IdeaKid(_label=sports_text, _weight=2), pad=x_agenda._culture_handle
+        ideacore_shop(_label=sports_text, _weight=2), pad=x_agenda._culture_handle
     )
     swim_text = "swim"
     swim_weight = 3
-    x_agenda.add_idea(IdeaKid(_label=swim_text, _weight=swim_weight), pad=sports_road)
+    x_agenda.add_idea(
+        ideacore_shop(_label=swim_text, _weight=swim_weight), pad=sports_road
+    )
     hike_text = "hike"
     hike_weight = 5
-    x_agenda.add_idea(IdeaKid(_label=hike_text, _weight=hike_weight), pad=sports_road)
+    x_agenda.add_idea(
+        ideacore_shop(_label=hike_text, _weight=hike_weight), pad=sports_road
+    )
     bball_text = "bball"
     bball_weight = 7
-    x_agenda.add_idea(IdeaKid(_label=bball_text, _weight=bball_weight), pad=sports_road)
+    x_agenda.add_idea(
+        ideacore_shop(_label=bball_text, _weight=bball_weight), pad=sports_road
+    )
 
     x_agenda.set_agenda_metrics()
     sports_swim_road = f"{sports_road},{swim_text}"
@@ -747,7 +761,7 @@ def test_agenda_del_idea_kid_DeletingBundledIdeaReturnsIdeasToOriginalState():
     assert x_agenda._idea_dict.get(summer_hike_road) is None
     assert x_agenda._idea_dict.get(summer_bball_road) is None
     x_agenda.add_idea(
-        idea_kid=IdeaKid(_label=summer_text),
+        idea_kid=ideacore_shop(_label=summer_text),
         pad=sports_road,
         adoptees=[swim_text, hike_text],
         bundling=True,

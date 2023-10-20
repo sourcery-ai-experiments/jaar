@@ -4,7 +4,7 @@ from src.agenda.examples.example_agendas import (
 )
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.tree_metrics import TreeMetrics
-from src.agenda.idea import IdeaKid
+from src.agenda.idea import ideacore_shop
 
 
 def test_agenda_get_tree_metrics_exists():
@@ -72,10 +72,11 @@ def test_agenda_agenda_get_tree_metrics_sets_uids_correctly():
     swim_text = "swim"
     pad_text = "pad"
     x_agenda.add_idea(
-        idea_kid=IdeaKid(_label=swim_text, _uid=None), pad=x_agenda._culture_handle
+        idea_kid=ideacore_shop(_label=swim_text, _uid=None),
+        pad=x_agenda._culture_handle,
     )
     x_agenda.add_idea(
-        idea_kid=IdeaKid(_label=pad_text, _uid=2), pad=x_agenda._culture_handle
+        idea_kid=ideacore_shop(_label=pad_text, _uid=2), pad=x_agenda._culture_handle
     )
     assert (
         x_agenda.get_idea_kid(road=f"{x_agenda._culture_handle},{swim_text}")._uid
@@ -96,7 +97,7 @@ def test_agenda_get_tree_metrics_ReturnsANoneActionIdeaRoad():
     healer_text = "Nia"
     x_agenda = agendaunit_shop(_healer=healer_text, _weight=10)
     weekdays = "weekdays"
-    idea_kid_weekdays = IdeaKid(_weight=40, _label=weekdays)
+    idea_kid_weekdays = ideacore_shop(_weight=40, _label=weekdays)
     x_agenda.add_idea(idea_kid=idea_kid_weekdays, pad=f"{x_agenda._culture_handle}")
     tree_metrics_before = x_agenda.get_tree_metrics()
     # WHEN/THEN

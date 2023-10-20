@@ -1,6 +1,6 @@
 from src.agenda.group import GroupBrand, balancelink_shop, groupunit_shop
 from src.agenda.party import PartyTitle, partyunit_shop, partylink_shop
-from src.agenda.idea import IdeaKid
+from src.agenda.idea import ideacore_shop
 from src.agenda.required_idea import Road
 from src.agenda.examples.example_agendas import (
     agenda_v001 as examples_agenda_v001,
@@ -95,7 +95,7 @@ def test_agenda_set_balancelink_correctly_sets_balancelinks():
     assert len(cx._partys) == 3
     assert len(cx._groups) == 3
     swim_text = "swim"
-    cx.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
+    cx.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=prom_text)
     balancelink_rico = balancelink_shop(brand=GroupBrand(rico_text), creditor_weight=10)
     balancelink_carm = balancelink_shop(brand=GroupBrand(carm_text), creditor_weight=10)
     balancelink_patr = balancelink_shop(brand=GroupBrand(patr_text), creditor_weight=10)
@@ -107,7 +107,7 @@ def test_agenda_set_balancelink_correctly_sets_balancelinks():
     assert cx._idearoot._balancelinks in (None, {})
     assert len(cx._idearoot._kids[swim_text]._balancelinks) == 3
 
-    cx.add_idea(idea_kid=IdeaKid(_label="streets"), pad=swim_road)
+    cx.add_idea(idea_kid=ideacore_shop(_label="streets"), pad=swim_road)
 
     # WHEN
     idea_list = cx.get_idea_list()
@@ -142,7 +142,7 @@ def test_agenda_set_balancelink_correctly_deletes_balancelinks():
     swim_text = "swim"
     swim_road = f"{prom_text},{swim_text}"
 
-    x_agenda.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
+    x_agenda.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=prom_text)
     balancelink_rico = balancelink_shop(brand=GroupBrand(rico_text), creditor_weight=10)
     balancelink_carm = balancelink_shop(brand=GroupBrand(carm_text), creditor_weight=10)
     balancelink_patr = balancelink_shop(brand=GroupBrand(patr_text), creditor_weight=10)
@@ -316,7 +316,7 @@ def test_agenda_get_idea_list_CorrectlyCalculates3levelDealGroupDealImportance()
     prom_text = "prom"
     x_agenda = agendaunit_shop(_healer=prom_text)
     swim_text = "swim"
-    x_agenda.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
+    x_agenda.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=prom_text)
 
     rico_text = "rico"
     carm_text = "carmen"
@@ -365,7 +365,7 @@ def test_agenda_get_idea_list_CorrectlyCalculatesGroupDealImportanceLWwithGroupE
     prom_text = "prom"
     x_agenda = agendaunit_shop(_healer=prom_text)
     swim_text = "swim"
-    x_agenda.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
+    x_agenda.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=prom_text)
 
     rico_text = "rico"
     carm_text = "carmen"
@@ -385,7 +385,7 @@ def test_agenda_get_idea_list_CorrectlyCalculatesGroupDealImportanceLWwithGroupE
     x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=parm_balancelink)
 
     # no balancelinks attached to this one
-    x_agenda.add_idea(idea_kid=IdeaKid(_label="hunt", _weight=3), pad="prom")
+    x_agenda.add_idea(idea_kid=ideacore_shop(_label="hunt", _weight=3), pad="prom")
 
     assert x_agenda._idearoot._balancelinks is None
 
@@ -542,7 +542,7 @@ def test_agenda_edit_groupunit_brand_CorrectlyChangesBalancelinks():
     outdoor_road = Road(f"{x_agenda._healer},{outdoor_text}")
     camping_text = "camping"
     camping_road = Road(f"{x_agenda._healer},{outdoor_text},{camping_text}")
-    x_agenda.add_idea(pad=outdoor_road, idea_kid=IdeaKid(_label=camping_text))
+    x_agenda.add_idea(pad=outdoor_road, idea_kid=ideacore_shop(_label=camping_text))
 
     camping_idea = x_agenda.get_idea_kid(camping_road)
     swim_balancelink = balancelink_shop(
@@ -583,7 +583,7 @@ def test_agenda_edit_groupunit_brand_CorrectlyMeldsBalancelinesBalancelinksBalan
     outdoor_road = Road(f"{x_agenda._healer},{outdoor_text}")
     camping_text = "camping"
     camping_road = Road(f"{x_agenda._healer},{outdoor_text},{camping_text}")
-    x_agenda.add_idea(pad=outdoor_road, idea_kid=IdeaKid(_label=camping_text))
+    x_agenda.add_idea(pad=outdoor_road, idea_kid=ideacore_shop(_label=camping_text))
 
     camping_idea = x_agenda.get_idea_kid(camping_road)
     swim_balancelink = balancelink_shop(
@@ -620,7 +620,9 @@ def test_agenda_add_idea_CreatesMissingGroups():
     x_agenda.set_groupunits_empty_if_null()
     new_idea_parent_road = f"{x_agenda._culture_handle},work,cleaning"
     clean_cookery_text = "clean_cookery"
-    clean_cookery_idea = IdeaKid(_weight=40, _label=clean_cookery_text, promise=True)
+    clean_cookery_idea = ideacore_shop(
+        _weight=40, _label=clean_cookery_text, promise=True
+    )
 
     family_text = "family"
     balancelink_z = balancelink_shop(brand=family_text)
@@ -654,8 +656,8 @@ def test_DealUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balanceli
     work_road = f"{cx1._culture_handle},{work_text}"
     swim_text = "swim"
     swim_road = f"{cx1._culture_handle},{swim_text}"
-    cx1.add_idea(IdeaKid(_label=work_text), pad=cx1._culture_handle)
-    cx1.add_idea(IdeaKid(_label=swim_text), pad=cx1._culture_handle)
+    cx1.add_idea(ideacore_shop(_label=work_text), pad=cx1._culture_handle)
+    cx1.add_idea(ideacore_shop(_label=swim_text), pad=cx1._culture_handle)
     cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=xia_text))
     cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=zoa_text))
     cx1_swim_idea = cx1.get_idea_kid(swim_road)
@@ -684,8 +686,8 @@ def test_DealUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     work_road = f"{cx1._culture_handle},{work_text}"
     swim_text = "swim"
     swim_road = f"{cx1._culture_handle},{swim_text}"
-    cx1.add_idea(IdeaKid(_label=work_text), pad=cx1._culture_handle)
-    cx1.add_idea(IdeaKid(_label=swim_text), pad=cx1._culture_handle)
+    cx1.add_idea(ideacore_shop(_label=work_text), pad=cx1._culture_handle)
+    cx1.add_idea(ideacore_shop(_label=swim_text), pad=cx1._culture_handle)
     cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=xia_text))
     cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=zoa_text))
     cx1_swim_idea = cx1.get_idea_kid(swim_road)
@@ -713,7 +715,9 @@ def test_agenda_add_idea_DoesNotOverwriteGroups():
     x_agenda.set_groupunits_empty_if_null()
     new_idea_parent_road = f"{x_agenda._culture_handle},work,cleaning"
     clean_cookery_text = "clean_cookery"
-    clean_cookery_idea = IdeaKid(_weight=40, _label=clean_cookery_text, promise=True)
+    clean_cookery_idea = ideacore_shop(
+        _weight=40, _label=clean_cookery_text, promise=True
+    )
 
     family_text = "family"
     balancelink_z = balancelink_shop(brand=family_text)

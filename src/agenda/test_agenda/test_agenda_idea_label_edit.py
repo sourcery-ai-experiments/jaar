@@ -1,5 +1,5 @@
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.idea import IdeaKid
+from src.agenda.idea import ideacore_shop
 from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels_and_2requireds_2acptfacts,
 )
@@ -16,8 +16,10 @@ def test_idea_label_fails_when_idea_does_not_exist():
     work_text = "work"
     work_road = f"{x_agenda._culture_handle},{work_text}"
     swim_text = "swim"
-    x_agenda.add_idea(pad=x_agenda._culture_handle, idea_kid=IdeaKid(_label=work_text))
-    x_agenda.add_idea(pad=work_road, idea_kid=IdeaKid(_label=swim_text))
+    x_agenda.add_idea(
+        pad=x_agenda._culture_handle, idea_kid=ideacore_shop(_label=work_text)
+    )
+    x_agenda.add_idea(pad=work_road, idea_kid=ideacore_shop(_label=swim_text))
 
     # When/Then
     no_idea_road = Road(f"{x_agenda._culture_handle},bees")
@@ -38,8 +40,10 @@ def test_Deal_level0_idea_edit_idea_label_RaisesError_culture_handle_IsNone():
     work_road = f"{x_agenda._culture_handle},{work_text}"
     swim_text = "swim"
     swim_road = f"{x_agenda._culture_handle},{work_text},{swim_text}"
-    x_agenda.add_idea(pad=x_agenda._culture_handle, idea_kid=IdeaKid(_label=work_text))
-    x_agenda.add_idea(pad=work_road, idea_kid=IdeaKid(_label=swim_text))
+    x_agenda.add_idea(
+        pad=x_agenda._culture_handle, idea_kid=ideacore_shop(_label=work_text)
+    )
+    x_agenda.add_idea(pad=work_road, idea_kid=ideacore_shop(_label=swim_text))
     assert x_agenda._healer == healer_text
     assert x_agenda._culture_handle == x_agenda._culture_handle
     assert x_agenda._idearoot._label == x_agenda._culture_handle
@@ -67,8 +71,10 @@ def test_Deal_level0_idea_edit_idea_label_RaisesError_culture_handle_IsDifferent
     work_road = f"{x_agenda._culture_handle},{work_text}"
     swim_text = "swim"
     swim_road = f"{x_agenda._culture_handle},{work_text},{swim_text}"
-    x_agenda.add_idea(pad=x_agenda._culture_handle, idea_kid=IdeaKid(_label=work_text))
-    x_agenda.add_idea(pad=work_road, idea_kid=IdeaKid(_label=swim_text))
+    x_agenda.add_idea(
+        pad=x_agenda._culture_handle, idea_kid=ideacore_shop(_label=work_text)
+    )
+    x_agenda.add_idea(pad=work_road, idea_kid=ideacore_shop(_label=swim_text))
     sun_text = "sun"
     x_agenda._culture_handle = sun_text
     assert x_agenda._healer == healer_text
@@ -97,8 +103,10 @@ def test_agenda_set_culture_handle_CorrectlySetsAttr():
     old_work_road = f"{x_agenda._culture_handle},{work_text}"
     swim_text = "swim"
     old_swim_road = f"{old_work_road},{swim_text}"
-    x_agenda.add_idea(pad=x_agenda._culture_handle, idea_kid=IdeaKid(_label=work_text))
-    x_agenda.add_idea(pad=old_work_road, idea_kid=IdeaKid(_label=swim_text))
+    x_agenda.add_idea(
+        pad=x_agenda._culture_handle, idea_kid=ideacore_shop(_label=work_text)
+    )
+    x_agenda.add_idea(pad=old_work_road, idea_kid=ideacore_shop(_label=swim_text))
     assert x_agenda._healer == healer_text
     assert x_agenda._idearoot._label == x_agenda._culture_handle
     work_idea = x_agenda.get_idea_kid(road=old_work_road)
@@ -144,11 +152,11 @@ def test_idea_find_replace_road_Changes_kids_scenario1():
     )
 
     x_agenda.add_idea(
-        pad=x_agenda._culture_handle, idea_kid=IdeaKid(_label=old_healer_text)
+        pad=x_agenda._culture_handle, idea_kid=ideacore_shop(_label=old_healer_text)
     )
-    x_agenda.add_idea(pad=old_healer_road, idea_kid=IdeaKid(_label=bloomers_text))
-    x_agenda.add_idea(pad=old_bloomers_road, idea_kid=IdeaKid(_label=roses_text))
-    x_agenda.add_idea(pad=old_roses_road, idea_kid=IdeaKid(_label=red_text))
+    x_agenda.add_idea(pad=old_healer_road, idea_kid=ideacore_shop(_label=bloomers_text))
+    x_agenda.add_idea(pad=old_bloomers_road, idea_kid=ideacore_shop(_label=roses_text))
+    x_agenda.add_idea(pad=old_roses_road, idea_kid=ideacore_shop(_label=red_text))
     r_idea_roses = x_agenda.get_idea_kid(old_roses_road)
     r_idea_bloomers = x_agenda.get_idea_kid(old_bloomers_road)
 
@@ -198,9 +206,11 @@ def test_agenda_edit_idea_label_Changes_acptfactunits():
     rain_text = "rain"
     old_rain_road = f"{x_agenda._culture_handle},{old_water_text},{rain_text}"
 
-    x_agenda.add_idea(pad=x_agenda._culture_handle, idea_kid=IdeaKid(_label=healer))
-    x_agenda.add_idea(pad=bloomers_road, idea_kid=IdeaKid(_label=roses_text))
-    x_agenda.add_idea(pad=old_water_road, idea_kid=IdeaKid(_label=rain_text))
+    x_agenda.add_idea(
+        pad=x_agenda._culture_handle, idea_kid=ideacore_shop(_label=healer)
+    )
+    x_agenda.add_idea(pad=bloomers_road, idea_kid=ideacore_shop(_label=roses_text))
+    x_agenda.add_idea(pad=old_water_road, idea_kid=ideacore_shop(_label=rain_text))
     x_agenda.set_acptfact(base=old_water_road, pick=old_rain_road)
 
     idea_x = x_agenda.get_idea_kid(road=roses_road)
@@ -213,7 +223,7 @@ def test_agenda_edit_idea_label_Changes_acptfactunits():
     new_water_text = "h2o"
     new_water_road = f"{x_agenda._culture_handle},{new_water_text}"
     x_agenda.add_idea(
-        pad=x_agenda._culture_handle, idea_kid=IdeaKid(_label=new_water_text)
+        pad=x_agenda._culture_handle, idea_kid=ideacore_shop(_label=new_water_text)
     )
     assert x_agenda._idearoot._acptfactunits.get(new_water_road) is None
     x_agenda.edit_idea_label(old_road=old_water_road, new_label=new_water_text)
@@ -242,7 +252,7 @@ def test_agenda_edit_idea_label_ChangesIdeaRoot_range_source_road():
     old_healer_text = "healer"
     old_healer_road = Road(f"{x_agenda._culture_handle},{old_healer_text}")
     x_agenda.add_idea(
-        pad=x_agenda._culture_handle, idea_kid=IdeaKid(_label=old_healer_text)
+        pad=x_agenda._culture_handle, idea_kid=ideacore_shop(_label=old_healer_text)
     )
     x_agenda.edit_idea_attr(
         road=x_agenda._culture_handle, range_source_road=old_healer_road
@@ -273,11 +283,13 @@ def test_agenda_edit_idea_label_ChangesIdeaKidN_range_source_road():
     mood_text = "mood"
     mood_road = Road(f"{x_agenda._culture_handle},{mood_text}")
     x_agenda.add_idea(
-        pad=x_agenda._culture_handle, idea_kid=IdeaKid(_label=healer_text)
+        pad=x_agenda._culture_handle, idea_kid=ideacore_shop(_label=healer_text)
     )
-    x_agenda.add_idea(pad=healer_road, idea_kid=IdeaKid(_label=old_water_text))
-    x_agenda.add_idea(pad=old_water_road, idea_kid=IdeaKid(_label=rain_text))
-    x_agenda.add_idea(pad=x_agenda._culture_handle, idea_kid=IdeaKid(_label=mood_text))
+    x_agenda.add_idea(pad=healer_road, idea_kid=ideacore_shop(_label=old_water_text))
+    x_agenda.add_idea(pad=old_water_road, idea_kid=ideacore_shop(_label=rain_text))
+    x_agenda.add_idea(
+        pad=x_agenda._culture_handle, idea_kid=ideacore_shop(_label=mood_text)
+    )
 
     x_agenda.edit_idea_attr(road=mood_road, range_source_road=old_rain_road)
     mood_idea = x_agenda.get_idea_kid(road=mood_road)

@@ -4,7 +4,7 @@ from src.agenda.examples.example_agendas import (
     get_agenda_with7amCleanTableRequired,
     agenda_v001,
 )
-from src.agenda.idea import IdeaKid
+from src.agenda.idea import ideacore_shop
 from src.agenda.required_idea import sufffactunit_shop, RequiredUnit, RequiredHeir
 from src.agenda.road import Road
 from src.agenda.agenda import agendaunit_shop
@@ -264,24 +264,24 @@ def test_agenda_get_idea_list_CorrectlyCalculatesIdeaAttr_agenda_coin():
     x_agenda = agendaunit_shop(_healer=healer_text, _weight=10)
 
     auto_text = "auto"
-    auto_idea = IdeaKid(_label=auto_text, _weight=10)
+    auto_idea = ideacore_shop(_label=auto_text, _weight=10)
     x_agenda.add_idea(idea_kid=auto_idea, pad=x_agenda._culture_handle)
 
     barn_text = "barn"
     barn_road = f"{x_agenda._culture_handle},{barn_text}"
-    barn_idea = IdeaKid(_label=barn_text, _weight=60)
+    barn_idea = ideacore_shop(_label=barn_text, _weight=60)
     x_agenda.add_idea(idea_kid=barn_idea, pad=x_agenda._culture_handle)
     lamb_text = "lambs"
     lamb_road = f"{barn_road},{lamb_text}"
-    lamb_idea = IdeaKid(_label=lamb_text, _weight=1)
+    lamb_idea = ideacore_shop(_label=lamb_text, _weight=1)
     x_agenda.add_idea(idea_kid=lamb_idea, pad=barn_road)
     duck_text = "ducks"
     duck_road = f"{barn_road},{duck_text}"
-    duck_idea = IdeaKid(_label=duck_text, _weight=2)
+    duck_idea = ideacore_shop(_label=duck_text, _weight=2)
     x_agenda.add_idea(idea_kid=duck_idea, pad=barn_road)
 
     coal_text = "coal"
-    coal_idea = IdeaKid(_label=coal_text, _weight=30)
+    coal_idea = ideacore_shop(_label=coal_text, _weight=30)
     x_agenda.add_idea(idea_kid=coal_idea, pad=x_agenda._culture_handle)
 
     assert x_agenda._idearoot._agenda_coin_onset is None

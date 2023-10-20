@@ -1,7 +1,7 @@
 from datetime import datetime
 from src.agenda.agenda import agendaunit_shop, get_from_json
 from src.agenda.examples.agenda_env import agenda_env
-from src.agenda.idea import IdeaCore, IdeaKid
+from src.agenda.idea import IdeaCore, ideacore_shop
 from src.agenda.road import Road
 from src.agenda.required_idea import RequiredUnit, SuffFactStatusFinder
 from src.agenda.group import groupunit_shop, balancelink_shop
@@ -122,7 +122,7 @@ def test_get_goal_does_not_return_promise_items_outside_range():
     x_agenda = agendaunit_shop(_healer=healer_text)
     x_agenda.set_time_hreg_ideas(c400_count=7)
     c_label = "clean"
-    c_idea = IdeaKid(_label=c_label, promise=True)
+    c_idea = ideacore_shop(_label=c_label, promise=True)
     x_agenda.add_idea(idea_kid=c_idea, pad=x_agenda._culture_handle)
     c_road = f"{x_agenda._culture_handle},{c_label}"
     jajatime = f"{x_agenda._culture_handle},time,jajatime"
@@ -300,10 +300,11 @@ def test_set_goal_task_as_complete_RangeWorksCorrectly():
     day_road = f"{time_road},{day_text}"
 
     x_agenda.add_idea(
-        idea_kid=IdeaKid(_label=run_text, promise=True), pad=x_agenda._culture_handle
+        idea_kid=ideacore_shop(_label=run_text, promise=True),
+        pad=x_agenda._culture_handle,
     )
     x_agenda.add_idea(
-        idea_kid=IdeaKid(_label=day_text, _begin=0, _close=500), pad=time_road
+        idea_kid=ideacore_shop(_label=day_text, _begin=0, _close=500), pad=time_road
     )
     x_agenda.edit_idea_attr(
         road=run_road,
@@ -345,10 +346,11 @@ def test_set_goal_task_as_complete_DivisionWorksCorrectly():
     day_road = f"{time_road},{day_text}"
 
     x_agenda.add_idea(
-        idea_kid=IdeaKid(_label=run_text, promise=True), pad=x_agenda._culture_handle
+        idea_kid=ideacore_shop(_label=run_text, promise=True),
+        pad=x_agenda._culture_handle,
     )
     x_agenda.add_idea(
-        idea_kid=IdeaKid(_label=day_text, _begin=0, _close=500), pad=time_road
+        idea_kid=ideacore_shop(_label=day_text, _begin=0, _close=500), pad=time_road
     )
     x_agenda.edit_idea_attr(
         road=run_road,
@@ -435,7 +437,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     x_agenda.set_time_hreg_ideas(c400_count=7)
 
     things_text = "things to do"
-    x_agenda.add_idea(IdeaKid(_label=things_text), pad=x_agenda._culture_handle)
+    x_agenda.add_idea(ideacore_shop(_label=things_text), pad=x_agenda._culture_handle)
     t_road = f"{x_agenda._culture_handle},{things_text}"
     clean = "clean"
     run = "run"
@@ -443,12 +445,12 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     jog = "jog"
     veg = "veg"
     lift = "life"
-    x_agenda.add_idea(IdeaKid(_label=clean, promise=True), pad=t_road)
-    x_agenda.add_idea(IdeaKid(_label=run, promise=True), pad=t_road)
-    x_agenda.add_idea(IdeaKid(_label=swim, promise=True), pad=t_road)
-    x_agenda.add_idea(IdeaKid(_label=jog, promise=True), pad=t_road)
-    x_agenda.add_idea(IdeaKid(_label=veg, promise=True), pad=t_road)
-    x_agenda.add_idea(IdeaKid(_label=lift, promise=True), pad=t_road)
+    x_agenda.add_idea(ideacore_shop(_label=clean, promise=True), pad=t_road)
+    x_agenda.add_idea(ideacore_shop(_label=run, promise=True), pad=t_road)
+    x_agenda.add_idea(ideacore_shop(_label=swim, promise=True), pad=t_road)
+    x_agenda.add_idea(ideacore_shop(_label=jog, promise=True), pad=t_road)
+    x_agenda.add_idea(ideacore_shop(_label=veg, promise=True), pad=t_road)
+    x_agenda.add_idea(ideacore_shop(_label=lift, promise=True), pad=t_road)
     time_text = "time"
     time_road = f"{x_agenda._culture_handle},{time_text}"
     jaja_text = "jajatime"
@@ -628,7 +630,9 @@ def test_agenda_create_goal_item_CorrectlyCreatesAllDealAttributes():
     clean_things_road = Road(f"{x_agenda._culture_handle},{clean_things_text}")
     clean_cookery_text = "clean cookery"
     clean_cookery_road = Road(f"{clean_things_road},{clean_cookery_text}")
-    clean_cookery_idea = IdeaKid(_label=clean_cookery_text, _pad=clean_things_road)
+    clean_cookery_idea = ideacore_shop(
+        _label=clean_cookery_text, _pad=clean_things_road
+    )
     print(f"{clean_cookery_idea.get_road()=}")
     house_text = "house"
     house_road = Road(f"{x_agenda._culture_handle},{house_text}")
@@ -770,7 +774,7 @@ def test_goal_IsSetByAssignedUnit_1PartyGroup():
     cx = agendaunit_shop(_healer=bob_text)
     work_text = "work"
     work_road = f"{bob_text},{work_text}"
-    cx.add_idea(idea_kid=IdeaKid(_label=work_text, promise=True), pad=bob_text)
+    cx.add_idea(idea_kid=ideacore_shop(_label=work_text, promise=True), pad=bob_text)
     assert len(cx.get_goal_items()) == 1
 
     sue_text = "sue"
@@ -807,7 +811,7 @@ def test_goal_IsSetByAssignedUnit_2PartyGroup():
     cx.add_partyunit(title=bob_text)
     work_text = "work"
     work_road = f"{bob_text},{work_text}"
-    cx.add_idea(idea_kid=IdeaKid(_label=work_text, promise=True), pad=bob_text)
+    cx.add_idea(idea_kid=ideacore_shop(_label=work_text, promise=True), pad=bob_text)
 
     sue_text = "sue"
     cx.add_partyunit(title=sue_text)

@@ -1,4 +1,9 @@
-from src.agenda.agenda import agendaunit_shop, IdeaKid, groupunit_shop, partylink_shop
+from src.agenda.agenda import (
+    agendaunit_shop,
+    ideacore_shop,
+    groupunit_shop,
+    partylink_shop,
+)
 from src.culture.culture import cultureunit_shop
 from src.culture.examples.culture_env_kit import (
     get_temp_env_handle,
@@ -278,9 +283,9 @@ def test_culture_set_agenda_bank_attrs_CorrectlyPopulatesDeal_Groupunit_Partylin
     bob_sports_road = f"{x_culture.handle},{sports_text}"
     tom_sports_road = f"{x_culture.handle},{sports_text}"
 
-    sal_agenda.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=sal_sports_road)
-    bob_agenda.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=bob_sports_road)
-    tom_agenda.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=tom_sports_road)
+    sal_agenda.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=sal_sports_road)
+    bob_agenda.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=bob_sports_road)
+    tom_agenda.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=tom_sports_road)
 
     sal_agenda.add_partyunit(title=bob_text, creditor_weight=2, debtor_weight=2)
 

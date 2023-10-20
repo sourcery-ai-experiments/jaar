@@ -5,7 +5,7 @@ from src.agenda.examples.example_agendas import (
     agenda_v001_with_large_goal as examples_agenda_v001_with_large_goal,
 )
 from src.agenda.agenda import DealUnit, agendaunit_shop, get_intersection_of_partys
-from src.agenda.idea import IdeaKid
+from src.agenda.idea import ideacore_shop
 from pytest import raises as pytest_raises
 from src.culture.bank_sqlstr import RiverTallyUnit
 
@@ -294,7 +294,7 @@ def test_agenda_get_idea_list_CorrectlySetsPartyUnitDealImportance():
     prom_text = "prom"
     x_agenda = agendaunit_shop(_healer=prom_text)
     swim_text = "swim"
-    x_agenda.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
+    x_agenda.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -440,7 +440,7 @@ def test_agenda_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitDealImportance(
     prom_text = "prom"
     x_agenda = agendaunit_shop(_healer=prom_text)
     swim_text = "swim"
-    x_agenda.add_idea(idea_kid=IdeaKid(_label=swim_text), pad=prom_text)
+    x_agenda.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -456,7 +456,9 @@ def test_agenda_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitDealImportance(
 
     # no balancelinks attached to this one
     hunt_text = "hunt"
-    x_agenda.add_idea(idea_kid=IdeaKid(_label=hunt_text, _weight=3), pad=prom_text)
+    x_agenda.add_idea(
+        idea_kid=ideacore_shop(_label=hunt_text, _weight=3), pad=prom_text
+    )
 
     assert x_agenda._idearoot._balancelinks is None
 
@@ -551,7 +553,7 @@ def test_agenda_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitDealImportance(
 def test_agenda_get_idea_list_WithAllPartysWeighted():
     # GIVEN
     x_agenda = agendaunit_shop(_healer="prom")
-    x_agenda.add_idea(idea_kid=IdeaKid(_label="swim"), pad="prom")
+    x_agenda.add_idea(idea_kid=ideacore_shop(_label="swim"), pad="prom")
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -795,7 +797,7 @@ def test_agenda_goal_ratio_credit_debt_IsCorrectlySetWhenAgendaIsEmpty():
 
 def test_agenda_get_party_groups_returnsCorrectData():
     x_agenda = agendaunit_shop(_healer="prom")
-    x_agenda.add_idea(idea_kid=IdeaKid(_label="swim"), pad="prom")
+    x_agenda.add_idea(idea_kid=ideacore_shop(_label="swim"), pad="prom")
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"

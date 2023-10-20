@@ -127,7 +127,7 @@ class IdeaCore:
     _uid: int = None  # Calculated field?
     _pad: str = None
     _kids: dict = None
-    _weight: int = 1
+    _weight: int = None
     _balancelinks: dict[GroupBrand:Balancelink] = None
     _balanceheirs: dict[GroupBrand:BalanceHeir] = None  # Calculated field
     _balancelines: dict[GroupBrand:Balancelink] = None  # Calculated field
@@ -145,13 +145,13 @@ class IdeaCore:
     _reest: bool = None
     _range_source_road: Road = None
     _numeric_road: Road = None
-    promise: bool = False
-    _problem_bool: bool = False
+    promise: bool = None
+    _problem_bool: bool = None
     _originunit: OriginUnit = None
-    _on_meld_weight_action: str = "default"
+    _on_meld_weight_action: str = None
     # Calculated fields
     _level: int = None
-    _kids_total_weight: int = 0
+    _kids_total_weight: int = None
     _agenda_importance: float = None
     _agenda_coin_onset: float = None
     _agenda_coin_cease: float = None
@@ -161,8 +161,7 @@ class IdeaCore:
     _descendant_promise_count: int = None
     _all_party_credit: bool = None
     _all_party_debt: bool = None
-    _is_expanded: bool = True
-    _active_status: bool = None
+    _is_expanded: bool = None
     _sibling_total_weight: int = None
     _active_status_hx: dict[int:bool] = None
 
@@ -970,6 +969,103 @@ class IdeaKid(IdeaCore):
     pass
 
 
+def ideacore_shop(
+    _label: str = None,
+    _uid: int = None,  # Calculated field?
+    _pad: str = None,
+    _kids: dict = None,
+    _weight: int = 1,
+    _balancelinks: dict[GroupBrand:Balancelink] = None,
+    _balanceheirs: dict[GroupBrand:BalanceHeir] = None,  # Calculated field
+    _balancelines: dict[GroupBrand:Balancelink] = None,  # Calculated field
+    _requiredunits: dict[Road:RequiredUnit] = None,
+    _requiredheirs: dict[Road:RequiredHeir] = None,  # Calculated field
+    _assignedunit: AssignedUnit = None,
+    _assignedheir: AssignedHeir = None,  # Calculated field
+    _acptfactunits: dict[AcptFactUnit] = None,
+    _acptfactheirs: dict[AcptFactHeir] = None,  # Calculated field
+    _begin: float = None,
+    _close: float = None,
+    _addin: float = None,
+    _denom: int = None,
+    _numor: int = None,
+    _reest: bool = None,
+    _range_source_road: Road = None,
+    _numeric_road: Road = None,
+    promise: bool = None,
+    _problem_bool: bool = None,
+    _originunit: OriginUnit = None,
+    _on_meld_weight_action: str = None,
+    # Calculated fields
+    _level: int = None,
+    _kids_total_weight: int = None,
+    _agenda_importance: float = None,
+    _agenda_coin_onset: float = None,
+    _agenda_coin_cease: float = None,
+    _task: bool = None,
+    _active_status: bool = None,
+    _ancestor_promise_count: int = None,
+    _descendant_promise_count: int = None,
+    _all_party_credit: bool = None,
+    _all_party_debt: bool = None,
+    _is_expanded: bool = True,
+    _sibling_total_weight: int = None,
+    _active_status_hx: dict[int:bool] = None,
+) -> IdeaCore:
+    if promise is None:
+        promise = False
+    if _problem_bool is None:
+        _problem_bool = False
+    if _on_meld_weight_action is None:
+        _on_meld_weight_action = "default"
+    if _kids_total_weight is None:
+        _kids_total_weight = 0
+
+    return IdeaKid(
+        _label=_label,
+        _uid=_uid,
+        _pad=_pad,
+        _kids=_kids,
+        _weight=_weight,
+        _balancelinks=_balancelinks,
+        _balanceheirs=_balanceheirs,
+        _balancelines=_balancelines,
+        _requiredunits=_requiredunits,
+        _requiredheirs=_requiredheirs,
+        _assignedunit=_assignedunit,
+        _assignedheir=_assignedheir,
+        _acptfactunits=_acptfactunits,
+        _acptfactheirs=_acptfactheirs,
+        _begin=_begin,
+        _close=_close,
+        _addin=_addin,
+        _denom=_denom,
+        _numor=_numor,
+        _reest=_reest,
+        _range_source_road=_range_source_road,
+        _numeric_road=_numeric_road,
+        promise=promise,
+        _problem_bool=_problem_bool,
+        _originunit=_originunit,
+        _on_meld_weight_action=_on_meld_weight_action,
+        # Calculated fields
+        _level=_level,
+        _kids_total_weight=_kids_total_weight,
+        _agenda_importance=_agenda_importance,
+        _agenda_coin_onset=_agenda_coin_onset,
+        _agenda_coin_cease=_agenda_coin_cease,
+        _task=_task,
+        _active_status=_active_status,
+        _ancestor_promise_count=_ancestor_promise_count,
+        _descendant_promise_count=_descendant_promise_count,
+        _all_party_credit=_all_party_credit,
+        _all_party_debt=_all_party_debt,
+        _is_expanded=_is_expanded,
+        _sibling_total_weight=_sibling_total_weight,
+        _active_status_hx=_active_status_hx,
+    )
+
+
 class IdeaRootLabelNotEmptyException(Exception):
     pass
 
@@ -992,3 +1088,102 @@ class IdeaRoot(IdeaCore):
             self._label = _label
         else:
             self._label = root_label()
+
+
+def idearoot_shop(
+    _label: str = None,
+    _uid: int = None,  # Calculated field?
+    _pad: str = None,
+    _kids: dict = None,
+    _weight: int = 1,
+    _balancelinks: dict[GroupBrand:Balancelink] = None,
+    _balanceheirs: dict[GroupBrand:BalanceHeir] = None,  # Calculated field
+    _balancelines: dict[GroupBrand:Balancelink] = None,  # Calculated field
+    _requiredunits: dict[Road:RequiredUnit] = None,
+    _requiredheirs: dict[Road:RequiredHeir] = None,  # Calculated field
+    _assignedunit: AssignedUnit = None,
+    _assignedheir: AssignedHeir = None,  # Calculated field
+    _acptfactunits: dict[AcptFactUnit] = None,
+    _acptfactheirs: dict[AcptFactHeir] = None,  # Calculated field
+    _begin: float = None,
+    _close: float = None,
+    _addin: float = None,
+    _denom: int = None,
+    _numor: int = None,
+    _reest: bool = None,
+    _range_source_road: Road = None,
+    _numeric_road: Road = None,
+    promise: bool = None,
+    _problem_bool: bool = None,
+    _originunit: OriginUnit = None,
+    _on_meld_weight_action: str = None,
+    # Calculated fields
+    _level: int = None,
+    _kids_total_weight: int = None,
+    _agenda_importance: float = None,
+    _agenda_coin_onset: float = None,
+    _agenda_coin_cease: float = None,
+    _task: bool = None,
+    _active_status: bool = None,
+    _ancestor_promise_count: int = None,
+    _descendant_promise_count: int = None,
+    _all_party_credit: bool = None,
+    _all_party_debt: bool = None,
+    _is_expanded: bool = True,
+    _sibling_total_weight: int = None,
+    _active_status_hx: dict[int:bool] = None,
+) -> IdeaCore:
+    if promise is None:
+        promise = False
+    if _problem_bool is None:
+        _problem_bool = False
+    if _on_meld_weight_action is None:
+        _on_meld_weight_action = "default"
+    if _kids_total_weight is None:
+        _kids_total_weight = 0
+
+    x_idearoot = IdeaRoot(
+        _label=_label,
+        _uid=_uid,
+        _pad=_pad,
+        _kids=_kids,
+        _weight=_weight,
+        _balancelinks=_balancelinks,
+        _balanceheirs=_balanceheirs,
+        _balancelines=_balancelines,
+        _requiredunits=_requiredunits,
+        _requiredheirs=_requiredheirs,
+        _assignedunit=_assignedunit,
+        _assignedheir=_assignedheir,
+        _acptfactunits=_acptfactunits,
+        _acptfactheirs=_acptfactheirs,
+        _begin=_begin,
+        _close=_close,
+        _addin=_addin,
+        _denom=_denom,
+        _numor=_numor,
+        _reest=_reest,
+        _range_source_road=_range_source_road,
+        _numeric_road=_numeric_road,
+        promise=promise,
+        _problem_bool=_problem_bool,
+        _originunit=_originunit,
+        _on_meld_weight_action=_on_meld_weight_action,
+        # Calculated fields
+        _level=_level,
+        _kids_total_weight=_kids_total_weight,
+        _agenda_importance=_agenda_importance,
+        _agenda_coin_onset=_agenda_coin_onset,
+        _agenda_coin_cease=_agenda_coin_cease,
+        _task=_task,
+        _active_status=_active_status,
+        _ancestor_promise_count=_ancestor_promise_count,
+        _descendant_promise_count=_descendant_promise_count,
+        _all_party_credit=_all_party_credit,
+        _all_party_debt=_all_party_debt,
+        _is_expanded=_is_expanded,
+        _sibling_total_weight=_sibling_total_weight,
+        _active_status_hx=_active_status_hx,
+    )
+    x_idearoot.set_idea_label(_label=root_label())
+    return x_idearoot

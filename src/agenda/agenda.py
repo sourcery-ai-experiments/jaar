@@ -42,7 +42,13 @@ from src.agenda.required_assign import (
 )
 from src.agenda.tree_metrics import TreeMetrics
 from src.agenda.x_func import x_get_json
-from src.agenda.idea import IdeaCore, IdeaKid, IdeaRoot, IdeaAttrHolder
+from src.agenda.idea import (
+    IdeaCore,
+    ideacore_shop,
+    IdeaRoot,
+    idearoot_shop,
+    IdeaAttrHolder,
+)
 from src.agenda.hreg_time import (
     _get_time_hreg_src_idea,
     get_time_min_from_dt as hreg_get_time_min_from_dt,
@@ -1059,7 +1065,7 @@ class DealUnit:
             self._create_missing_ideas(road=Road(f"{pad},{idea_kid._label}"))
             self._create_missing_groups_partys(balancelinks=idea_kid._balancelinks)
 
-    def _get_filtered_balancelinks_idea(self, idea: IdeaKid) -> IdeaKid:
+    def _get_filtered_balancelinks_idea(self, idea: IdeaCore) -> IdeaCore:
         idea.set_balancelink_empty_if_null()
         _balancelinks_to_delete = [
             _balancelink_title
@@ -1103,19 +1109,19 @@ class DealUnit:
         try:
             self.get_idea_kid(road)
         except InvalidDealException:
-            base_idea = IdeaKid(
+            base_idea = ideacore_shop(
                 _label=get_terminus_node_from_road(road=road),
                 _pad=get_pad_from_road(road=road),
             )
             self.add_idea(idea_kid=base_idea, pad=base_idea._pad)
 
-    # def _get_or_create_level1_idea(self, idea_label: str) -> IdeaKid:
+    # def _get_or_create_level1_idea(self, idea_label: str) -> IdeaCore:
     #     return_idea = None
     #     try:
     #         return_idea = self._kids[idea_label]
     #     except Exception:
     #         KeyError
-    #         self.add_kid(IdeaKid(_label=idea_label))
+    #         self.add_kid(ideacore_shop(_label=idea_label))
     #         return_idea = self._kids[idea_label]
 
     #     return return_idea
@@ -1126,7 +1132,7 @@ class DealUnit:
             return_idea = parent_idea._kids[idea_label]
         except Exception:
             KeyError
-            parent_idea.add_kid(IdeaKid(_label=idea_label))
+            parent_idea.add_kid(ideacore_shop(_label=idea_label))
             return_idea = parent_idea._kids[idea_label]
 
         return return_idea
@@ -1625,7 +1631,7 @@ class DealUnit:
             x_dict[x_required.base] = x_required
         self._idearoot._requiredheirs = x_dict
 
-    def get_idea_kid(self, road: Road) -> IdeaKid:
+    def get_idea_kid(self, road: Road) -> IdeaCore:
         if road is None:
             raise InvalidDealException("get_idea_kid received road=None")
         nodes = get_all_road_nodes(road)
@@ -1761,11 +1767,11 @@ class DealUnit:
 
     def _set_kids_attributes(
         self,
-        idea_kid: IdeaKid,
+        idea_kid: IdeaCore,
         coin_onset: float,
         parent_coin_cease: float,
-        parent_idea: IdeaKid = None,
-    ) -> IdeaKid:
+        parent_idea: IdeaCore = None,
+    ) -> IdeaCore:
         parent_acptfacts = None
         parent_requiredheirs = None
 
@@ -1994,7 +2000,7 @@ class DealUnit:
             if yb.sr != None:
                 range_source_road_x = f"{self._culture_handle},{yb.sr}"
 
-            idea_x = IdeaKid(
+            idea_x = ideacore_shop(
                 _label=yb.n,
                 _begin=yb.b,
                 _close=yb.c,
@@ -2044,7 +2050,7 @@ class DealUnit:
             )
 
             if y4a_included:
-                y4a_new = IdeaKid(
+                y4a_new = ideacore_shop(
                     _label=ykx._label,
                     _agenda_importance=ykx._agenda_importance,
                     _requiredunits=ykx._requiredunits,
@@ -2059,7 +2065,7 @@ class DealUnit:
                 not_included_agenda_importance += ykx._agenda_importance
 
         if not_included_agenda_importance > 0:
-            y4a_other = IdeaKid(
+            y4a_other = ideacore_shop(
                 _label="__other__",
                 _agenda_importance=not_included_agenda_importance,
             )
@@ -2072,7 +2078,7 @@ class DealUnit:
     # ) -> list[IdeaCore]:
     #     return list(self.get_goal_items(base=base))
 
-    def set_dominate_promise_idea(self, idea_kid: IdeaKid):
+    def set_dominate_promise_idea(self, idea_kid: IdeaCore):
         idea_kid.promise = True
         self.add_idea(
             idea_kid=idea_kid,
@@ -2240,7 +2246,7 @@ def agendaunit_shop(
         _healer=_healer, _weight=_weight, _auto_output_to_public=_auto_output_to_public
     )
     x_agenda._culture_handle = root_label()
-    x_agenda._idearoot = IdeaRoot(_label=None, _uid=1, _level=0)
+    x_agenda._idearoot = idearoot_shop(_label=None, _uid=1, _level=0)
     x_agenda.set_max_tree_traverse(3)
     x_agenda._rational = False
     x_agenda._originunit = originunit_shop()
@@ -2321,7 +2327,7 @@ def get_from_dict(cx_dict: dict) -> DealUnit:
         except Exception:
             originunit_from_dict = originunit_shop()
 
-        idea_obj = IdeaKid(
+        idea_obj = ideacore_shop(
             _label=idea_dict["_label"],
             _weight=idea_dict["_weight"],
             _uid=idea_dict["_uid"],

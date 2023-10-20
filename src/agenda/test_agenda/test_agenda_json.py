@@ -1,6 +1,6 @@
 import contextlib
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.idea import IdeaKid
+from src.agenda.idea import ideacore_shop
 from src.agenda.required_idea import acptfactunit_shop
 from src.agenda.examples.example_agendas import (
     agenda_v001 as example_agendas_agenda_v001,
@@ -130,7 +130,9 @@ def test_agenda_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
 
     morn_text = "morning"
     morn_road = f"{x_agenda._culture_handle},{morn_text}"
-    x_agenda.add_idea(idea_kid=IdeaKid(_label=morn_text), pad=x_agenda._culture_handle)
+    x_agenda.add_idea(
+        idea_kid=ideacore_shop(_label=morn_text), pad=x_agenda._culture_handle
+    )
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(title=run_text)
     x_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=morn_road)

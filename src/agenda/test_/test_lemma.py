@@ -1,6 +1,6 @@
 from src.agenda.required_idea import acptfactunit_shop
 from src.agenda.lemma import Lemma, Lemmas
-from src.agenda.idea import IdeaKid
+from src.agenda.idea import ideacore_shop
 from src.agenda.road import get_default_culture_root_label as root_label
 
 
@@ -33,8 +33,8 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario1():
 
     # When
     pad_road = root_label()
-    idea_kid = IdeaKid(_label="timerange1", _pad=pad_road, _begin=0, _close=12)
-    src_idea = IdeaKid(_label="whatever", _pad=pad_road, _begin=-13, _close=500)
+    idea_kid = ideacore_shop(_label="timerange1", _pad=pad_road, _begin=0, _close=12)
+    src_idea = ideacore_shop(_label="whatever", _pad=pad_road, _begin=-13, _close=500)
     tr1 = f"{idea_kid._pad},{idea_kid._label}"
     src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
     new_acptfact = lemmas_x._create_new_acptfact(
@@ -54,10 +54,10 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario2():
 
     # When
     pad_road = root_label()
-    idea_kid = IdeaKid(_label="timerange1", _pad=pad_road, _begin=7, _close=12)
+    idea_kid = ideacore_shop(_label="timerange1", _pad=pad_road, _begin=7, _close=12)
     tr1 = f"{idea_kid._pad},{idea_kid._label}"
     src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
-    src_idea = IdeaKid(_label="whatever", _pad=pad_road, _begin=-13, _close=500)
+    src_idea = ideacore_shop(_label="whatever", _pad=pad_road, _begin=-13, _close=500)
     new_acptfact = lemmas_x._create_new_acptfact(
         idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
     )
@@ -74,7 +74,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_denom():
 
     # When
     pad_road = root_label()
-    idea_kid = IdeaKid(
+    idea_kid = ideacore_shop(
         _label="timerange1",
         _pad=pad_road,
         _begin=0,
@@ -85,7 +85,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_denom():
     )
     tr1 = f"{idea_kid._pad},{idea_kid._label}"
     src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
-    src_idea = IdeaKid(_label="whatever", _pad=pad_road, _begin=-13, _close=500)
+    src_idea = ideacore_shop(_label="whatever", _pad=pad_road, _begin=-13, _close=500)
     new_acptfact = lx._create_new_acptfact(
         idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
     )
@@ -102,8 +102,8 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_2_denom():
 
     # When
     pad_road = root_label()
-    ex_idea = IdeaKid(_label="range_x", _pad=pad_road, _begin=0, _close=10080)
-    idea_kid = IdeaKid(
+    ex_idea = ideacore_shop(_label="range_x", _pad=pad_road, _begin=0, _close=10080)
+    idea_kid = ideacore_shop(
         _label="timerange1",
         _pad=f"{root_label()},range_x",
         _begin=7200,
@@ -128,7 +128,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario4_denomReest(
 
     # When
     pad_road = root_label()
-    idea_kid = IdeaKid(
+    idea_kid = ideacore_shop(
         _label="timerange1",
         _pad=pad_road,
         _begin=0,
@@ -139,7 +139,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario4_denomReest(
     )
     tr1 = f"{idea_kid._pad},{idea_kid._label}"
     src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=120, nigh=150)
-    src_idea = IdeaKid(_label="whatever", _pad=pad_road, _begin=-13, _close=500)
+    src_idea = ideacore_shop(_label="whatever", _pad=pad_road, _begin=-13, _close=500)
     new_acptfact = lemmas_x._create_new_acptfact(
         idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
     )
@@ -156,7 +156,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario5_denomReest(
 
     # When
     pad_road = root_label()
-    idea_kid = IdeaKid(
+    idea_kid = ideacore_shop(
         _label="timerange1",
         _pad=pad_road,
         _begin=0,
@@ -167,7 +167,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario5_denomReest(
     )
     tr1 = f"{idea_kid._pad},{idea_kid._label}"
     src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=100, nigh=150)
-    src_idea = IdeaKid(_label="whatever", _pad=pad_road, _begin=-13, _close=500)
+    src_idea = ideacore_shop(_label="whatever", _pad=pad_road, _begin=-13, _close=500)
     new_acptfact = lemmas_x._create_new_acptfact(
         idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
     )
@@ -182,7 +182,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
     pad_road = root_label()
     lemmas_x = Lemmas()
     lemmas_x.set_empty_if_null()
-    idea_src = IdeaKid(
+    idea_src = ideacore_shop(
         _label="timerange1",
         _pad=pad_road,
         _begin=0,
@@ -190,7 +190,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
     )
 
     # When/Then Check
-    tr3_kid = IdeaKid(
+    tr3_kid = ideacore_shop(
         _label="subera",
         _pad=pad_road,
         _begin=40,
@@ -205,7 +205,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
     assert tr3_30_20_acptfact.nigh == 50
 
     # When/Then Check
-    trb_kid = IdeaKid(
+    trb_kid = ideacore_shop(
         _label="subera",
         _pad=pad_road,
         _begin=40,
@@ -220,7 +220,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
     assert trb_30_20_acptfact.nigh == 60
 
     # When/Then Check
-    tr4_kid = IdeaKid(
+    tr4_kid = ideacore_shop(
         _label="subera",
         _pad=pad_road,
         _begin=55,
@@ -235,7 +235,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
     assert tr4_30_20_acptfact.nigh == 10
 
     # When/Then Check
-    tr5_kid = IdeaKid(
+    tr5_kid = ideacore_shop(
         _label="subera",
         _pad=pad_road,
         _begin=0,
@@ -257,7 +257,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario7_denomReest(
 
     # When
     pad_road = root_label()
-    idea_kid = IdeaKid(
+    idea_kid = ideacore_shop(
         _label="timerange1",
         _pad=pad_road,
         _begin=0,
@@ -268,7 +268,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario7_denomReest(
     )
     tr1 = f"{idea_kid._pad},{idea_kid._label}"
     src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=90, nigh=150)
-    src_idea = IdeaKid(_label="whatever", _pad=pad_road, _begin=-13, _close=500)
+    src_idea = ideacore_shop(_label="whatever", _pad=pad_road, _begin=-13, _close=500)
     new_acptfact = lemmas_x._create_new_acptfact(
         idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
     )
@@ -298,14 +298,14 @@ def test_lemmas_get_unevaluated_lemma_ReturnsCorrectLemmaWhenPopulated():
     pad_road = root_label()
     lemmas_x = Lemmas()
     lemmas_x.lemmas = {}
-    src_idea = IdeaKid(_label="whatever", _pad=pad_road, _begin=-13, _close=500)
+    src_idea = ideacore_shop(_label="whatever", _pad=pad_road, _begin=-13, _close=500)
 
-    tr1_idea = IdeaKid(_label="timerange1", _pad=pad_road, _begin=7, _close=12)
+    tr1_idea = ideacore_shop(_label="timerange1", _pad=pad_road, _begin=7, _close=12)
     tr1 = f"{tr1_idea._pad},{tr1_idea._label}"
     src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
     lemmas_x.eval(idea_x=tr1_idea, src_acptfact=src_acptfact, src_idea=src_idea)
 
-    tr2_idea = IdeaKid(_label="timerange2", _pad=pad_road, _begin=40, _close=60)
+    tr2_idea = ideacore_shop(_label="timerange2", _pad=pad_road, _begin=40, _close=60)
     tr2 = f"{tr2_idea._pad},{tr2_idea._label}"
     src_acptfact = acptfactunit_shop(base=tr2, pick=tr2, open=55, nigh=60)
     lemmas_x.eval(idea_x=tr2_idea, src_acptfact=src_acptfact, src_idea=src_idea)
@@ -332,17 +332,17 @@ def test_lemmas_is_lemmas_incomplete_ReturnsCorrectBoolWhenPopulated():
     pad_road = root_label()
     lemmas_z = Lemmas()
     lemmas_z.lemmas = {}
-    src_idea = IdeaKid(_label="whatever", _pad=pad_road, _begin=-13, _close=500)
+    src_idea = ideacore_shop(_label="whatever", _pad=pad_road, _begin=-13, _close=500)
 
     # for lemma in lemmas_z.lemmas.values():
     #     print(f"Does not exist: {lemma.eval_status=} {lemma.calc_acptfact=}")
 
-    tr1_idea = IdeaKid(_label="timerange1", _pad=pad_road, _begin=7, _close=12)
+    tr1_idea = ideacore_shop(_label="timerange1", _pad=pad_road, _begin=7, _close=12)
     tr1_road = f"{tr1_idea._pad},{tr1_idea._label}"
     src_acptfact = acptfactunit_shop(base=tr1_road, pick=tr1_road, open=0, nigh=30)
     lemmas_z.eval(idea_x=tr1_idea, src_acptfact=src_acptfact, src_idea=src_idea)
 
-    tr2_idea = IdeaKid(_label="timerange2", _pad=pad_road, _begin=40, _close=60)
+    tr2_idea = ideacore_shop(_label="timerange2", _pad=pad_road, _begin=40, _close=60)
     tr2_road = f"{tr2_idea._pad},{tr2_idea._label}"
     src_acptfact = acptfactunit_shop(base=tr2_road, pick=tr2_road, open=55, nigh=60)
     lemmas_z.eval(idea_x=tr2_idea, src_acptfact=src_acptfact, src_idea=src_idea)
