@@ -311,6 +311,7 @@ WHERE currency_healer = '{currency_deal_healer}'
 
 # deal
 def get_deal_table_create_sqlstr() -> str:
+    """Create table that references the title of every deal. The healer name of the one running that deal's kitchen."""
     return """
 CREATE TABLE IF NOT EXISTS dealunit (
   healer VARCHAR(255) PRIMARY KEY ASC
@@ -334,6 +335,7 @@ VALUES (
 
 # ledger
 def get_ledger_table_create_sqlstr() -> str:
+    """Create table that holds the starting river metrics for every deal's party. All the metrics."""
     return """
 CREATE TABLE IF NOT EXISTS ledger (
   deal_healer VARCHAR(255) NOT NULL 
@@ -355,6 +357,7 @@ CREATE TABLE IF NOT EXISTS ledger (
 
 
 def get_ledger_table_insert_sqlstr(x_deal: DealUnit, partyunit_x: PartyUnit) -> str:
+    """Create table that holds a the output credit metrics."""
     return f"""
 INSERT INTO ledger (
   deal_healer
@@ -464,6 +467,7 @@ def get_river_ledger_unit(
 
 # idea_catalog
 def get_idea_catalog_table_create_sqlstr() -> str:
+    """table that holds every road and its healer"""
     return """
 CREATE TABLE IF NOT EXISTS idea_catalog (
   deal_healer VARCHAR(255) NOT NULL
@@ -534,6 +538,7 @@ FROM idea_catalog
 
 # acptfact_catalog
 def get_acptfact_catalog_table_create_sqlstr() -> str:
+    """table that holds every accepted fact base and pick of every deal. missing open/nigh. (clearly not used, maybe add in the future)"""
     return """
 CREATE TABLE IF NOT EXISTS acptfact_catalog (
   deal_healer VARCHAR(255) NOT NULL
