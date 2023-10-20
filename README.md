@@ -18,7 +18,7 @@
 ## 0.0 About jaar
 
 `jaar` is a python library for listening to the climate of a community. Individual 
-voices are aggregated by a listener into a coherant goal that can include promises 
+positions are aggregated by a listener into a coherant goal that can include promises 
 of actions and/or promises of being. Listening and acting on it.
 
 A healer's goal in the community is built by the the weighted intreprtation of
