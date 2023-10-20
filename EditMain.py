@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QTableWidgetItem as qtw1
 from EditIdeaUnit import EditIdeaUnit
 from EditParty import EditParty
 from pyqt_func import (
-    deal_importance_diplay,
+    agenda_importance_diplay,
     get_pyqttree,
     str2float as pyqt_func_str2float,
     num2str as pyqt_func_num2str,
@@ -58,10 +58,10 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.acptfact_update_button.clicked.connect(self.acptfact_set_action)
         self.acptfact_delete_button.clicked.connect(self.acptfact_del_action)
 
-        self.deal_x = None
+        self.agenda_x = None
 
     def acptfact_set_action(self):
-        self.deal_x.set_acptfact(
+        self.agenda_x.set_acptfact(
             base=self.acptfact_base_update_combo.currentText(),
             pick=self.acptfact_pick_update_combo.currentText(),
             open=pyqt_func_str2float(self.acptfact_open.text()),
@@ -70,7 +70,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.refresh_all()
 
     def acptfact_del_action(self):
-        self.deal_x.del_acptfact(base=self.acptfact_base_update_combo.currentText())
+        self.agenda_x.del_acptfact(base=self.acptfact_base_update_combo.currentText())
         self.refresh_all()
 
     def get_acptfacts_list(self):
@@ -78,14 +78,14 @@ class EditMainView(qtw.QWidget, Ui_Form):
         if self.display_problem_acptfacts_cb.checkState() == 2:
             x_list.extend(
                 acptfact
-                for acptfact in self.deal_x._idearoot._acptfactunits.values()
+                for acptfact in self.agenda_x._idearoot._acptfactunits.values()
                 if (
-                    self.deal_x.get_idea_kid(road=acptfact.base)._problem_bool
-                    or self.deal_x.get_idea_kid(road=acptfact.pick)._problem_bool
+                    self.agenda_x.get_idea_kid(road=acptfact.base)._problem_bool
+                    or self.agenda_x.get_idea_kid(road=acptfact.pick)._problem_bool
                 )
             )
         else:
-            x_list = self.deal_x._idearoot._acptfactunits.values()
+            x_list = self.agenda_x._idearoot._acptfactunits.values()
         return x_list
 
     def acptfacts_table_load(self):
@@ -93,14 +93,14 @@ class EditMainView(qtw.QWidget, Ui_Form):
 
         row = 0
         for acptfact in self.get_acptfacts_list():
-            base_text = acptfact.base.replace(f"{self.deal_x._healer}", "")
+            base_text = acptfact.base.replace(f"{self.agenda_x._healer}", "")
             base_text = base_text[1:]
             acptfact_text = acptfact.pick.replace(acptfact.base, "")
             acptfact_text = acptfact_text[1:]
             if acptfact.open is None:
                 acptfact_text = f"{acptfact_text}"
             elif base_text == "time,jajatime":
-                acptfact_text = f"{self.deal_x.get_jajatime_legible_one_time_event(acptfact.open)}-{self.deal_x.get_jajatime_repeating_legible_text(acptfact.nigh)}"
+                acptfact_text = f"{self.agenda_x.get_jajatime_legible_one_time_event(acptfact.open)}-{self.agenda_x.get_jajatime_repeating_legible_text(acptfact.nigh)}"
             else:
                 acptfact_text = (
                     f"{acptfact_text} Open-Nigh {acptfact.open}-{acptfact.nigh}"
@@ -113,8 +113,8 @@ class EditMainView(qtw.QWidget, Ui_Form):
             self.acptfacts_table.setItem(row, 5, qtw1(pyqt_func_num2str(acptfact.nigh)))
             row += 1
 
-        for base, count in self.deal_x.get_missing_acptfact_bases().items():
-            base_text = base.replace(f"{self.deal_x._healer}", "")
+        for base, count in self.agenda_x.get_missing_acptfact_bases().items():
+            base_text = base.replace(f"{self.agenda_x._healer}", "")
             base_text = base_text[1:]
 
             base_lecture_text = f"{base_text} ({count} nodes)"
@@ -142,7 +142,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
     def acptfact_table_select(self):
         self.acptfact_base_update_combo.clear()
         self.acptfact_base_update_combo.addItems(
-            self.deal_x.get_idea_tree_ordered_road_list()
+            self.agenda_x.get_idea_tree_ordered_road_list()
         )
         self.acptfact_base_update_combo.setCurrentText(
             self.acptfacts_table.item(self.acptfacts_table.currentRow(), 2).text()
@@ -170,7 +170,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
     def acptfact_pick_combo_load(self):
         self.acptfact_pick_update_combo.clear()
         self.acptfact_pick_update_combo.addItems(
-            self.deal_x.get_heir_road_list(
+            self.agenda_x.get_heir_road_list(
                 self.acptfact_base_update_combo.currentText()
             )
         )
@@ -184,14 +184,14 @@ class EditMainView(qtw.QWidget, Ui_Form):
         ):
             raise EditMainViewException("No table selection for acptfact update.")
         acptfact_update_combo_text = self.acptfact_update_combo.currentText()
-        self.deal_x._idearoot._acptfactunits[
+        self.agenda_x._idearoot._acptfactunits[
             base_road
         ].acptfact = acptfact_update_combo_text
         self.base_road = None
         self.refresh_all
 
     def refresh_all(self):
-        if self.deal_x != None:
+        if self.agenda_x != None:
             self.refresh_party_list()
             self.refresh_idea_tree()
             self.acptfacts_table_load()
@@ -203,42 +203,42 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.party_list.setColumnWidth(0, 170)
         self.party_list.setColumnWidth(1, 70)
         self.party_list.setHorizontalHeaderLabels(["Title", "LW Force"])
-        partys_list = list(self.deal_x._partys.values())
-        partys_list.sort(key=lambda x: x._deal_credit, reverse=True)
+        partys_list = list(self.agenda_x._partys.values())
+        partys_list.sort(key=lambda x: x._agenda_credit, reverse=True)
 
         for row, party in enumerate(partys_list, start=1):
             groups_count = 0
-            for group in self.deal_x._groups.values():
+            for group in self.agenda_x._groups.values():
                 for partylink in group._partys.values():
                     if partylink.title == party.title:
                         groups_count += 1
 
-            qt_deal_credit = qtw.QTableWidgetItem(
-                deal_importance_diplay(party._deal_credit)
+            qt_agenda_credit = qtw.QTableWidgetItem(
+                agenda_importance_diplay(party._agenda_credit)
             )
             qt_group = qtw.QTableWidgetItem(f"{groups_count}")
             self.party_list.setRowCount(row)
             self.party_list.setItem(row - 1, 0, qtw.QTableWidgetItem(party.title))
-            self.party_list.setItem(row - 1, 1, qt_deal_credit)
+            self.party_list.setItem(row - 1, 1, qt_agenda_credit)
 
     def open_editideaunit(self):
         self.EditIdeaunit = EditIdeaUnit()
-        self.EditIdeaunit.deal_x = self.deal_x
+        self.EditIdeaunit.agenda_x = self.agenda_x
         self.EditIdeaunit.refresh_tree()
         self.EditIdeaunit.show()
 
     def open_edit_party(self):
         self.edit_party = EditParty()
-        self.edit_party.deal_x = self.deal_x
+        self.edit_party.agenda_x = self.agenda_x
         self.edit_party.refresh_all()
         self.edit_party.show()
 
     def refresh_idea_tree(self):
-        tree_root = get_pyqttree(idearoot=self.deal_x._idearoot)
+        tree_root = get_pyqttree(idearoot=self.agenda_x._idearoot)
         self.baseideaunit.clear()
         self.baseideaunit.insertTopLevelItems(0, [tree_root])
 
-        # expand to depth set by deal
+        # expand to depth set by agenda
         def yo_tree_setExpanded(root):
             child_count = root.childCount()
             for i in range(child_count):

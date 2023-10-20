@@ -65,7 +65,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QTableWidget" title="agenda_table">
+  <widget class="QTableWidget" title="goal_table">
    <property title="geometry">
     <rect>
      <x>750</x>

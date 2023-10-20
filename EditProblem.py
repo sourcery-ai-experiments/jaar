@@ -6,10 +6,10 @@ from PyQt5 import QtCore as qtc
 from PyQt5.QtWidgets import QTableWidgetItem as qti
 from EditIdeaUnit import EditIdeaUnit
 from EditParty import EditParty
-from pyqt_func import deal_importance_diplay, get_pyqttree, num2str
-from src.deal.group import groupunit_shop, balancelink_shop
-from src.deal.idea import IdeaKid
-from src.deal.road import Road, get_pad_from_road, get_terminus_node_from_road
+from pyqt_func import agenda_importance_diplay, get_pyqttree, num2str
+from src.agenda.group import groupunit_shop, balancelink_shop
+from src.agenda.idea import IdeaKid
+from src.agenda.road import Road, get_pad_from_road, get_terminus_node_from_road
 from sys import exit as sys_exit
 
 # self.problem_title_text
@@ -29,7 +29,7 @@ from sys import exit as sys_exit
 # self.action2_text
 # self.action3_text
 
-# self.agenda_display
+# self.goal_display
 # self.add_group_text
 # self.add_group_button
 # load_problem_button
@@ -61,11 +61,11 @@ class EditProblem(qtw.QWidget, Ui_Form):
         self.action2_combo.currentTextChanged.connect(self.select_action2_combo)
         self.action3_combo.currentTextChanged.connect(self.select_action3_combo)
 
-        self.agenda_table.itemClicked.connect(self.select_agenda_item)
-        self.agenda_table.setObjectName("Current Agenda")
-        self.agenda_table.setRowCount(0)
+        self.goal_table.itemClicked.connect(self.select_goal_item)
+        self.goal_table.setObjectName("Current Agenda")
+        self.goal_table.setRowCount(0)
 
-        self.deal_x = None
+        self.agenda_x = None
 
     def select_problem_title_combo(self):
         self.problem_title_text.setText(self.problem_title_combo.currentText())
@@ -128,11 +128,13 @@ class EditProblem(qtw.QWidget, Ui_Form):
             prob_idea = IdeaKid(_label=prob_label, _pad=prob_pad)
             for balancelink_x in self.create_balancelinks_list():
                 prob_idea.set_balancelink(balancelink_x)
-            self.deal_x.set_dominate_promise_idea(idea_kid=prob_idea)
+            self.agenda_x.set_dominate_promise_idea(idea_kid=prob_idea)
 
     def add_group(self):
         if self.add_group_text not in (None, ""):
-            self.deal_x.set_groupunit(groupunit_shop(brand=self.add_group_text.text()))
+            self.agenda_x.set_groupunit(
+                groupunit_shop(brand=self.add_group_text.text())
+            )
         self.refresh_all()
 
     def refresh_all(self):
@@ -146,11 +148,11 @@ class EditProblem(qtw.QWidget, Ui_Form):
         self.action3_text.setText("")
         self.add_group_text.setText("")
 
-        if self.deal_x != None:
-            self.refresh_agenda_list()
+        if self.agenda_x != None:
+            self.refresh_goal_list()
             self.refresh_idea_tree()
 
-            idea_road_list = self.deal_x.get_idea_tree_ordered_road_list()
+            idea_road_list = self.agenda_x.get_idea_tree_ordered_road_list()
             idea_road_list.insert(0, "")
 
             self.problem_title_combo.clear()
@@ -160,9 +162,9 @@ class EditProblem(qtw.QWidget, Ui_Form):
             self.group1_title_combo.clear()
             self.group2_title_combo.clear()
             self.group3_title_combo.clear()
-            self.group1_title_combo.addItems(self.deal_x.get_groupunits_brand_list())
-            self.group2_title_combo.addItems(self.deal_x.get_groupunits_brand_list())
-            self.group3_title_combo.addItems(self.deal_x.get_groupunits_brand_list())
+            self.group1_title_combo.addItems(self.agenda_x.get_groupunits_brand_list())
+            self.group2_title_combo.addItems(self.agenda_x.get_groupunits_brand_list())
+            self.group3_title_combo.addItems(self.agenda_x.get_groupunits_brand_list())
             self.action1_combo.clear()
             self.action2_combo.clear()
             self.action3_combo.clear()
@@ -170,39 +172,37 @@ class EditProblem(qtw.QWidget, Ui_Form):
             self.action2_combo.addItems(idea_road_list)
             self.action3_combo.addItems(idea_road_list)
 
-    def select_agenda_item(self):
+    def select_goal_item(self):
         pass
 
-    def refresh_agenda_list(self):
-        self.agenda_table.clear()
-        self.agenda_table.setRowCount(0)
-        self.set_agenda_table_gui_attr()
+    def refresh_goal_list(self):
+        self.goal_table.clear()
+        self.goal_table.setRowCount(0)
+        self.set_goal_table_gui_attr()
         # base_x = self.acptfact_base_update_combo.currentText()
         # base_x = ""
         # if base_x == "":
         #     base_x = None
         base_x = None
 
-        agenda_list = self.deal_x.get_agenda_items(
-            agenda_todo=True, agenda_state=True, base=base_x
+        goal_list = self.agenda_x.get_goal_items(
+            goal_enterprise=True, goal_state=True, base=base_x
         )
-        agenda_list.sort(key=lambda x: x._deal_importance, reverse=True)
+        goal_list.sort(key=lambda x: x._agenda_importance, reverse=True)
 
         row = 0
-        for agenda_item in agenda_list:
-            if agenda_item._task == True:
-                self.populate_agenda_table_row(
-                    row=row, agenda_item=agenda_item, base=base_x
-                )
+        for goal_item in goal_list:
+            if goal_item._task == True:
+                self.populate_goal_table_row(row=row, goal_item=goal_item, base=base_x)
                 row += 1
 
-    def populate_agenda_table_row(self, row, agenda_item, base):
-        a = agenda_item
+    def populate_goal_table_row(self, row, goal_item, base):
+        a = goal_item
         requiredheir_x = a.get_requiredheir(base=base)
         sufffact_open_x = None
         sufffact_nigh_x = None
         sufffact_divisor_x = None
-        lw_display_x = deal_importance_diplay(deal_importance=a._deal_importance)
+        lw_display_x = agenda_importance_diplay(agenda_importance=a._agenda_importance)
 
         if requiredheir_x != None:
             for sufffact in requiredheir_x.sufffacts.values():
@@ -211,43 +211,43 @@ class EditProblem(qtw.QWidget, Ui_Form):
                     sufffact_nigh_x = sufffact.nigh
                     sufffact_divisor_x = sufffact.divisor
 
-        self.agenda_table.setRowCount(row + 1)
-        self.agenda_table.setItem(row, 0, qti(a._label))
-        self.agenda_table.setItem(row, 1, qti(a._pad))
-        self.agenda_table.setItem(row, 2, qti(lw_display_x))
-        self.agenda_table.setItem(row, 3, qti(num2str(a._weight)))
-        self.agenda_table.setItem(row, 4, qti(base))
-        self.agenda_table.setItem(row, 5, qti(num2str(sufffact_open_x)))
-        self.agenda_table.setItem(row, 6, qti(num2str(sufffact_nigh_x)))
-        self.agenda_table.setItem(row, 7, qti(num2str(sufffact_divisor_x)))
+        self.goal_table.setRowCount(row + 1)
+        self.goal_table.setItem(row, 0, qti(a._label))
+        self.goal_table.setItem(row, 1, qti(a._pad))
+        self.goal_table.setItem(row, 2, qti(lw_display_x))
+        self.goal_table.setItem(row, 3, qti(num2str(a._weight)))
+        self.goal_table.setItem(row, 4, qti(base))
+        self.goal_table.setItem(row, 5, qti(num2str(sufffact_open_x)))
+        self.goal_table.setItem(row, 6, qti(num2str(sufffact_nigh_x)))
+        self.goal_table.setItem(row, 7, qti(num2str(sufffact_divisor_x)))
         # if a._task in (True, False):
-        #     self.agenda_table.setItem(row, 7, qti(f"task {a._task}"))
+        #     self.goal_table.setItem(row, 7, qti(f"task {a._task}"))
         # else:
-        #     self.agenda_table.setItem(row, 7, qti("bool not set"))
-        self.agenda_table.setRowHeight(row, 5)
+        #     self.goal_table.setItem(row, 7, qti("bool not set"))
+        self.goal_table.setRowHeight(row, 5)
 
-    def set_agenda_table_gui_attr(self):
-        self.agenda_table.setColumnWidth(0, 300)
-        self.agenda_table.setColumnWidth(1, 400)
-        self.agenda_table.setColumnWidth(2, 55)
-        self.agenda_table.setColumnWidth(3, 55)
-        self.agenda_table.setColumnWidth(4, 150)
-        self.agenda_table.setColumnWidth(5, 70)
-        self.agenda_table.setColumnWidth(6, 70)
-        self.agenda_table.setColumnWidth(7, 70)
-        self.agenda_table.setColumnHidden(0, False)
-        self.agenda_table.setColumnHidden(1, False)
-        self.agenda_table.setColumnHidden(2, False)
-        self.agenda_table.setColumnHidden(3, True)
-        self.agenda_table.setColumnHidden(4, False)
-        self.agenda_table.setColumnHidden(5, False)
-        self.agenda_table.setColumnHidden(6, False)
-        self.agenda_table.setColumnHidden(7, False)
-        self.agenda_table.setHorizontalHeaderLabels(
+    def set_goal_table_gui_attr(self):
+        self.goal_table.setColumnWidth(0, 300)
+        self.goal_table.setColumnWidth(1, 400)
+        self.goal_table.setColumnWidth(2, 55)
+        self.goal_table.setColumnWidth(3, 55)
+        self.goal_table.setColumnWidth(4, 150)
+        self.goal_table.setColumnWidth(5, 70)
+        self.goal_table.setColumnWidth(6, 70)
+        self.goal_table.setColumnWidth(7, 70)
+        self.goal_table.setColumnHidden(0, False)
+        self.goal_table.setColumnHidden(1, False)
+        self.goal_table.setColumnHidden(2, False)
+        self.goal_table.setColumnHidden(3, True)
+        self.goal_table.setColumnHidden(4, False)
+        self.goal_table.setColumnHidden(5, False)
+        self.goal_table.setColumnHidden(6, False)
+        self.goal_table.setColumnHidden(7, False)
+        self.goal_table.setHorizontalHeaderLabels(
             [
                 "_label",
                 "road",
-                "deal_importance",
+                "agenda_importance",
                 "weight",
                 "acptfact",
                 "open",
@@ -258,22 +258,22 @@ class EditProblem(qtw.QWidget, Ui_Form):
 
     def open_editideaunit(self):
         self.EditIdeaunit = EditIdeaUnit()
-        self.EditIdeaunit.deal_x = self.deal_x
+        self.EditIdeaunit.agenda_x = self.agenda_x
         self.EditIdeaunit.refresh_tree()
         self.EditIdeaunit.show()
 
     def open_edit_party(self):
         self.edit_party = EditParty()
-        self.edit_party.deal_x = self.deal_x
+        self.edit_party.agenda_x = self.agenda_x
         self.edit_party.refresh_all()
         self.edit_party.show()
 
     def refresh_idea_tree(self):
-        tree_root = get_pyqttree(idearoot=self.deal_x._idearoot)
+        tree_root = get_pyqttree(idearoot=self.agenda_x._idearoot)
         self.baseideaunit.clear()
         self.baseideaunit.insertTopLevelItems(0, [tree_root])
 
-        # expand to depth set by deal
+        # expand to depth set by agenda
         def yo_tree_setExpanded(root):
             child_count = root.childCount()
             for i in range(child_count):

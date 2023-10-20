@@ -1,14 +1,14 @@
-from src.world.pain import painunit_shop, projectlink_shop, healerlink_shop
+from src.world.pain import painunit_shop, culturelink_shop, healerlink_shop
 
 
-def test_projectlink_get_dict_ReturnsCorrectDict():
+def test_culturelink_get_dict_ReturnsCorrectDict():
     # GIVEN
     diet_text = "diet"
     diet_weight = 5
-    diet_projectlink = projectlink_shop(handle=diet_text, weight=diet_weight)
+    diet_culturelink = culturelink_shop(handle=diet_text, weight=diet_weight)
 
     # WHEN
-    diet_dict = diet_projectlink.get_dict()
+    diet_dict = diet_culturelink.get_dict()
 
     # THEN
     assert diet_dict == {"handle": diet_text, "weight": diet_weight}
@@ -21,11 +21,11 @@ def test_healerlink_get_dict_ReturnsCorrectDict():
     yao_healerlink = healerlink_shop(person_name=yao_text, weight=yao_weight)
     diet_text = "diet"
     diet_weight = 7
-    diet_projectlink = projectlink_shop(handle=diet_text, weight=diet_weight)
-    yao_healerlink.set_projectlink(diet_projectlink)
-    diet_project = yao_healerlink.get_projectlink(diet_text)
-    assert diet_project != None
-    assert diet_project.handle == diet_text
+    diet_culturelink = culturelink_shop(handle=diet_text, weight=diet_weight)
+    yao_healerlink.set_culturelink(diet_culturelink)
+    diet_culture = yao_healerlink.get_culturelink(diet_text)
+    assert diet_culture != None
+    assert diet_culture.handle == diet_text
 
     # WHEN
     yao_dict = yao_healerlink.get_dict()
@@ -34,7 +34,7 @@ def test_healerlink_get_dict_ReturnsCorrectDict():
     assert yao_dict == {
         "person_name": yao_text,
         "weight": yao_weight,
-        "_projectlinks": {diet_text: {"handle": diet_text, "weight": diet_weight}},
+        "_culturelinks": {diet_text: {"handle": diet_text, "weight": diet_weight}},
     }
 
 
@@ -50,8 +50,8 @@ def test_painunit_get_dict_ReturnsCorrectDict():
 
     diet_text = "diet"
     diet_weight = 3
-    diet_projectlink = projectlink_shop(handle=diet_text, weight=diet_weight)
-    yao_healerlink.set_projectlink(diet_projectlink)
+    diet_culturelink = culturelink_shop(handle=diet_text, weight=diet_weight)
+    yao_healerlink.set_culturelink(diet_culturelink)
 
     fear_painunit.set_healerlink(yao_healerlink)
 
@@ -65,14 +65,14 @@ def test_painunit_get_dict_ReturnsCorrectDict():
     print(f"{x_healerlinks_dict=}")
     assert len(x_healerlinks_dict) == 1
     yao_healerlink = x_healerlinks_dict.get(yao_text)
-    yao_projectlinks_dict = yao_healerlink.get("_projectlinks")
-    print(f"{yao_projectlinks_dict=}")
-    assert len(yao_projectlinks_dict) == 1
+    yao_culturelinks_dict = yao_healerlink.get("_culturelinks")
+    print(f"{yao_culturelinks_dict=}")
+    assert len(yao_culturelinks_dict) == 1
     assert len(fear_dict.get("_healerlinks")) == 1
     assert fear_dict.get("genus") == fear_text
-    diet_projectlink_dict = yao_projectlinks_dict.get(diet_text)
-    assert diet_projectlink_dict == {"handle": diet_text, "weight": diet_weight}
-    assert yao_projectlinks_dict == {
+    diet_culturelink_dict = yao_culturelinks_dict.get(diet_text)
+    assert diet_culturelink_dict == {"handle": diet_text, "weight": diet_weight}
+    assert yao_culturelinks_dict == {
         diet_text: {"handle": diet_text, "weight": diet_weight}
     }
 
@@ -80,7 +80,7 @@ def test_painunit_get_dict_ReturnsCorrectDict():
         yao_text: {
             "person_name": yao_text,
             "weight": yao_weight,
-            "_projectlinks": {diet_text: {"handle": diet_text, "weight": diet_weight}},
+            "_culturelinks": {diet_text: {"handle": diet_text, "weight": diet_weight}},
         }
     }
     assert fear_dict == {
@@ -90,7 +90,7 @@ def test_painunit_get_dict_ReturnsCorrectDict():
             yao_text: {
                 "person_name": yao_text,
                 "weight": yao_weight,
-                "_projectlinks": {
+                "_culturelinks": {
                     diet_text: {"handle": diet_text, "weight": diet_weight}
                 },
             }

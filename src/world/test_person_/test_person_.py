@@ -1,5 +1,5 @@
 from src.world.person import PersonUnit, personunit_shop
-from src.world.pain import painunit_shop, healerlink_shop, projectlink_shop
+from src.world.pain import painunit_shop, healerlink_shop, culturelink_shop
 
 
 def test_personunit_exists():
@@ -9,7 +9,7 @@ def test_personunit_exists():
     # THEN
     assert px.name is None
     assert px.person_dir is None
-    assert px._projects is None
+    assert px._cultures is None
     assert px._pains is None
 
 
@@ -23,7 +23,7 @@ def test_personunit_shop_ReturnsNonePersonUnitWithCorrectAttrs_v1():
     # THEN
     assert px.name == dallas_text
     assert px.person_dir == ""
-    assert px._projects == {}
+    assert px._cultures == {}
     assert px._pains == {}
 
 
@@ -40,7 +40,7 @@ def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
     assert px.person_dir == dallas_dir
 
 
-def test_personunit_set_projectunit_CorrectlyCreatesProjectUnit():
+def test_personunit_set_cultureunit_CorrectlyCreatesProjectUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
@@ -48,51 +48,51 @@ def test_personunit_set_projectunit_CorrectlyCreatesProjectUnit():
 
     # WHEN
     diet_text = "diet"
-    xao_person_obj.set_projectunit(project_handle=diet_text)
+    xao_person_obj.set_cultureunit(culture_handle=diet_text)
 
     # THEN
-    # diet_project = xao_person.get_project()
-    diet_project = xao_person_obj._projects.get(diet_text)
-    assert diet_project != None
-    assert diet_project.handle == diet_text
-    assert diet_project.projects_dir == f"{xao_person_dir}/projects"
+    # diet_culture = xao_person.get_culture()
+    diet_culture = xao_person_obj._cultures.get(diet_text)
+    assert diet_culture != None
+    assert diet_culture.handle == diet_text
+    assert diet_culture.cultures_dir == f"{xao_person_dir}/cultures"
 
 
-def test_personunit_get_projectunit_CorrectlyGetsProjectUnit():
+def test_personunit_get_cultureunit_CorrectlyGetsProjectUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
     xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
     diet_text = "diet"
-    xao_person_obj.set_projectunit(diet_text)
+    xao_person_obj.set_cultureunit(diet_text)
 
     # WHEN
-    diet_project = xao_person_obj.get_projectunit(diet_text)
+    diet_culture = xao_person_obj.get_cultureunit(diet_text)
 
     # THEN
-    assert diet_project != None
-    assert diet_project.handle == diet_text
-    assert diet_project.projects_dir == f"{xao_person_dir}/projects"
+    assert diet_culture != None
+    assert diet_culture.handle == diet_text
+    assert diet_culture.cultures_dir == f"{xao_person_dir}/cultures"
 
 
-def test_personunit_del_projectunit_CorrectlyDeletesProjectUnit():
+def test_personunit_del_cultureunit_CorrectlyDeletesProjectUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
     xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
     diet_text = "diet"
-    xao_person_obj.set_projectunit(diet_text)
-    before_diet_project = xao_person_obj.get_projectunit(diet_text)
-    assert before_diet_project != None
-    assert before_diet_project.handle == diet_text
-    assert before_diet_project.projects_dir == f"{xao_person_dir}/projects"
+    xao_person_obj.set_cultureunit(diet_text)
+    before_diet_culture = xao_person_obj.get_cultureunit(diet_text)
+    assert before_diet_culture != None
+    assert before_diet_culture.handle == diet_text
+    assert before_diet_culture.cultures_dir == f"{xao_person_dir}/cultures"
 
     # WHEN
-    xao_person_obj.del_projectunit(diet_text)
+    xao_person_obj.del_cultureunit(diet_text)
 
     # THEN
-    after_diet_project = xao_person_obj.get_projectunit(diet_text)
-    assert after_diet_project is None
+    after_diet_culture = xao_person_obj.get_cultureunit(diet_text)
+    assert after_diet_culture is None
 
 
 def test_personunit_create_painunit_from_genus_CorrectlyCreatesPainUnit():

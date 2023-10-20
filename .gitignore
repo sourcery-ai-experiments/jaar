@@ -138,13 +138,13 @@ dmypy.json
 cython_debug/
 
 # automatica_lly generated testing environments on each run
-src/project/examples/projects/ex3/
-src/project/examples/projects/ex4/
-src/project/examples/projects/ex5/
-src/project/examples/projects/ex6/
-src/project/examples/projects/river_env/
-src/project/test_project/sql_worksheet01.sql
-src/deal/examples/js_deal.json
+src/culture/examples/cultures/ex3/
+src/culture/examples/cultures/ex4/
+src/culture/examples/cultures/ex5/
+src/culture/examples/cultures/ex6/
+src/culture/examples/cultures/river_env/
+src/culture/test_culture/sql_worksheet01.sql
+src/agenda/examples/js_agenda.json
 main_cli_app.py
 main_cli_app2.py
 worlds/Joachim/

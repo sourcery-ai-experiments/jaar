@@ -64,7 +64,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" title="deals_table">
+   <widget class="QTableWidget" title="agendas_table">
     <property title="geometry">
      <rect>
       <x>10</x>
@@ -80,7 +80,7 @@
     </property>
     <column>
      <property title="text">
-      <string>project Stories</string>
+      <string>culture Stories</string>
      </property>
     </column>
     <column>
@@ -124,7 +124,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QPushButton" title="project_delete_button">
+   <widget class="QPushButton" title="culture_delete_button">
     <property title="geometry">
      <rect>
       <x>170</x>
@@ -142,7 +142,7 @@
      <string>delete </string>
     </property>
    </widget>
-   <widget class="QPushButton" title="project_insert_button">
+   <widget class="QPushButton" title="culture_insert_button">
     <property title="geometry">
      <rect>
       <x>20</x>
@@ -157,10 +157,10 @@
      </font>
     </property>
     <property title="text">
-     <string>Add new project</string>
+     <string>Add new culture</string>
     </property>
    </widget>
-   <widget class="QLineEdit" title="project_handle">
+   <widget class="QLineEdit" title="culture_handle">
     <property title="geometry">
      <rect>
       <x>20</x>
@@ -175,7 +175,7 @@
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" title="project_update_button">
+   <widget class="QPushButton" title="culture_update_button">
     <property title="geometry">
      <rect>
       <x>20</x>
@@ -193,7 +193,7 @@
      <string>Change Title</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="deal_update_button">
+   <widget class="QPushButton" title="agenda_update_button">
     <property title="geometry">
      <rect>
       <x>10</x>
@@ -211,7 +211,7 @@
      <string>Change Deal Title</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="deal_insert_button">
+   <widget class="QPushButton" title="agenda_insert_button">
     <property title="geometry">
      <rect>
       <x>10</x>
@@ -229,7 +229,7 @@
      <string>Add new Deal</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="deal_delete_button">
+   <widget class="QPushButton" title="agenda_delete_button">
     <property title="geometry">
      <rect>
       <x>80</x>
@@ -247,7 +247,7 @@
      <string>Delete</string>
     </property>
    </widget>
-   <widget class="QLineEdit" title="deal_healer">
+   <widget class="QLineEdit" title="agenda_healer">
     <property title="geometry">
      <rect>
       <x>10</x>
@@ -418,7 +418,7 @@
      <string>refresh</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="deal_edit_button">
+   <widget class="QPushButton" title="agenda_edit_button">
     <property title="geometry">
      <rect>
       <x>10</x>
@@ -472,7 +472,7 @@
      <string>Edit DealLink</string>
     </property>
    </widget>
-   <widget class="QTableWidget" title="w_agenda_table">
+   <widget class="QTableWidget" title="w_goal_table">
     <property title="geometry">
      <rect>
       <x>1180</x>
@@ -622,7 +622,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QComboBox" title="project_handle_combo">
+   <widget class="QComboBox" title="culture_handle_combo">
     <property title="geometry">
      <rect>
       <x>20</x>
@@ -637,7 +637,7 @@
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" title="project_copy_button">
+   <widget class="QPushButton" title="culture_copy_button">
     <property title="geometry">
      <rect>
       <x>100</x>
@@ -670,7 +670,7 @@
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" title="project_load_button">
+   <widget class="QPushButton" title="culture_load_button">
     <property title="geometry">
      <rect>
       <x>100</x>
@@ -818,7 +818,7 @@
      <string>s</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="set_public_deal_button">
+   <widget class="QPushButton" title="set_public_agenda_button">
     <property title="geometry">
      <rect>
       <x>190</x>
@@ -833,10 +833,10 @@
      </font>
     </property>
     <property title="text">
-     <string>output_deal to public_dir</string>
+     <string>output_agenda to public_dir</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="reload_all_src_deals_button">
+   <widget class="QPushButton" title="reload_all_src_agendas_button">
     <property title="geometry">
      <rect>
       <x>190</x>
@@ -851,7 +851,7 @@
      </font>
     </property>
     <property title="text">
-     <string>refresh_all_src_deals</string>
+     <string>refresh_all_src_agendas</string>
     </property>
    </widget>
    <widget class="QPushButton" title="set_public_and_reload_srcs_button">

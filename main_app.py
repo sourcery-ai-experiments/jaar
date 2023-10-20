@@ -6,15 +6,15 @@ from EditMain import EditMainView
 from EditAcptFactTime import EditAcptFactTime
 from Edit_Agenda import Edit_Agenda
 from EditProblem import EditProblem
-from src.deal.deal import dealunit_shop, get_from_json
-from src.deal.examples.deal_env import deal_env
-from src.deal.hreg_time import convert1440toHHMM
+from src.agenda.agenda import agendaunit_shop, get_from_json
+from src.agenda.examples.agenda_env import agenda_env
+from src.agenda.hreg_time import convert1440toHHMM
 from pyqt_func import (
-    deal_importance_diplay as pyqt_func_deal_importance_diplay,
+    agenda_importance_diplay as pyqt_func_agenda_importance_diplay,
     str2float as pyqt_func_str2float,
     num2str as pyqt_func_num2str,
 )
-from src.deal.x_func import (
+from src.agenda.x_func import (
     save_file as x_func_save_file,
     open_file as x_func_open_file,
 )
@@ -50,9 +50,9 @@ class MainApp(QApplication):
         # create slot for making editmain visible
         self.main_window.open_editmain.connect(self.editmain_show)
 
-        self.edit_agenda_view = Edit_Agenda()
+        self.edit_goal_view = Edit_Agenda()
         # create slot for making editmain visible
-        self.main_window.open_edit_agenda.connect(self.edit_agenda_show)
+        self.main_window.open_edit_goal.connect(self.edit_goal_show)
 
         self.edittime_view = EditAcptFactTime()
         # create slot for making editmain visible
@@ -64,22 +64,22 @@ class MainApp(QApplication):
         self.edittime_view.root_changes_submitted.connect(self.main_window.refresh_all)
 
     def editmain_show(self):
-        self.editmain_view.deal_x = self.main_window.deal_x
+        self.editmain_view.agenda_x = self.main_window.agenda_x
         self.editmain_view.refresh_all()
         self.editmain_view.show()
 
     def editproblem_show(self):
-        self.editproblem_view.deal_x = self.main_window.deal_x
+        self.editproblem_view.agenda_x = self.main_window.agenda_x
         self.editproblem_view.refresh_all()
         self.editproblem_view.show()
 
-    def edit_agenda_show(self):
-        self.edit_agenda_view.deal_x = self.main_window.deal_x
-        self.edit_agenda_view.refresh_all()
-        self.edit_agenda_view.show()
+    def edit_goal_show(self):
+        self.edit_goal_view.agenda_x = self.main_window.agenda_x
+        self.edit_goal_view.refresh_all()
+        self.edit_goal_view.show()
 
     def editacptfact_show(self):
-        self.edittime_view.deal_x = self.main_window.deal_x
+        self.edittime_view.agenda_x = self.main_window.agenda_x
         self.edittime_view.display_acptfact_time()
         self.edittime_view.show()
 
@@ -89,9 +89,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     open_editmain = qtc.pyqtSignal(bool)
     open_editproblem = qtc.pyqtSignal(bool)
-    open_edit_agenda = qtc.pyqtSignal(bool)
+    open_edit_goal = qtc.pyqtSignal(bool)
     open_edittime = qtc.pyqtSignal(bool)
-    deal_x_signal = qtc.pyqtSignal(DealUnit)
+    agenda_x_signal = qtc.pyqtSignal(DealUnit)
 
     def __init__(self, file_open_path):
         super().__init__()
@@ -101,7 +101,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.save_close_button.clicked.connect(self.save_file_and_quit)
         self.editmain_button.clicked.connect(self.open_editmain)
         self.problem_popup_button.clicked.connect(self.open_editproblem)
-        self.edit_agenda_button.clicked.connect(self.open_edit_agenda)
+        self.edit_goal_button.clicked.connect(self.open_edit_goal)
         self.acptfact_nigh_now.clicked.connect(self.set_acptfact_time_nigh_now)
         self.acptfact_open_5daysago.clicked.connect(
             self.set_acptfact_time_open_5daysago
@@ -111,7 +111,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.acptfact_open_soft_spec1.clicked.connect(self.set_acptfact_time_open_soft)
         self.root_datetime_view.clicked.connect(self.open_edittime)
-        self.agenda_task_complete.clicked.connect(self.set_agenda_item_complete)
+        self.goal_task_complete.clicked.connect(self.set_goal_item_complete)
         self.cb_update_now_repeat.clicked.connect(self.startTimer)
         self.timer = qtc.QTimer()
         self.timer.timeout.connect(self.showTime)
@@ -119,7 +119,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.fm_open.triggered.connect(self.get_file_path)
         self.fm_save.triggered.connect(self.save_file)
         self.save_as.triggered.connect(self.save_as_file)
-        self.fm_new.triggered.connect(self.deal_new)
+        self.fm_new.triggered.connect(self.agenda_new)
 
         # self.acptfacts_table.itemClicked.connect(self.acptfact_base_combo_set)
         self.acptfacts_table.setObjectName("Deal AcptFacts")
@@ -140,20 +140,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             ["AcptFactBase", "AcptFactSelect", "Base", "AcptFact", "Open", "Nigh"]
         )
         self.acptfacts_table.setRowCount(0)
-        self.agenda_states.itemClicked.connect(self.agenda_task_display)
+        self.goal_states.itemClicked.connect(self.goal_task_display)
         # self.acptfact_update_combo.activated.connect(self.acptfact_update_heir)
 
-        self.deal_x_json = None
+        self.agenda_x_json = None
         # if "delete me this is for dev only":
         self.file_path = None
         if file_open_path is None:
-            self.file_path = f"{deal_env()}/example_deal2.json"
+            self.file_path = f"{agenda_env()}/example_agenda2.json"
         else:
             self.file_path = file_open_path
         self.open_file()
 
         self.refresh_all()
-        self.emit_deal()
+        self.emit_agenda()
 
     def save_file_and_quit(self):
         self.save_file()
@@ -175,12 +175,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.timer.stop()
 
-    def set_agenda_item_complete(self):
+    def set_goal_item_complete(self):
         if self.current_task_road is None:
             self.label_last_label.setText("")
         else:
-            base_x = "Mydeal,time,jajatime"
-            self.deal_x.set_agenda_task_complete(
+            base_x = "Myagenda,time,jajatime"
+            self.agenda_x.set_goal_task_complete(
                 task_road=self.current_task_road, base=base_x
             )
         self.label_last_label.setText(self.current_task_road)
@@ -188,22 +188,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_acptfact_time_open_5daysago(self):
         days5ago_x = datetime.now() - timedelta(days=5)
-        road_minute = f"{self.deal_x._project_handle},time,jajatime"
+        road_minute = f"{self.agenda_x._culture_handle},time,jajatime"
         # self.root_datetime_curr_l.setText(f"Now: {str(now_x)}")
-        self.deal_x.set_acptfact(
+        self.agenda_x.set_acptfact(
             base=road_minute,
             pick=road_minute,
-            open=self.deal_x.get_time_min_from_dt(dt=days5ago_x),
+            open=self.agenda_x.get_time_min_from_dt(dt=days5ago_x),
         )
         self.refresh_all()
 
     def _set_acptfact_time_open_midnight_attr(self):
-        road_minute = f"{self.deal_x._project_handle},time,jajatime"
-        open_dt = self.deal_x.get_time_dt_from_min(
-            self.deal_x._idearoot._acptfactunits[road_minute].open
+        road_minute = f"{self.agenda_x._culture_handle},time,jajatime"
+        open_dt = self.agenda_x.get_time_dt_from_min(
+            self.agenda_x._idearoot._acptfactunits[road_minute].open
         )
-        nigh_dt = self.deal_x.get_time_dt_from_min(
-            self.deal_x._idearoot._acptfactunits[road_minute].nigh
+        nigh_dt = self.agenda_x.get_time_dt_from_min(
+            self.agenda_x._idearoot._acptfactunits[road_minute].nigh
         )
         open_midnight = datetime(
             year=open_dt.year,
@@ -214,10 +214,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ) + timedelta(days=1)
         open_minutes = None
         if open_dt < nigh_dt and open_midnight < nigh_dt:
-            open_minutes = self.deal_x.get_time_min_from_dt(open_midnight)
+            open_minutes = self.agenda_x.get_time_min_from_dt(open_midnight)
         else:
-            open_minutes = self.deal_x.get_time_min_from_dt(dt=nigh_dt)
-        self.deal_x.set_acptfact(
+            open_minutes = self.agenda_x.get_time_min_from_dt(dt=nigh_dt)
+        self.agenda_x.set_acptfact(
             base=road_minute,
             pick=road_minute,
             open=open_minutes,
@@ -227,32 +227,32 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         try:
             self._set_acptfact_time_open_midnight_attr()
         except Exception:
-            print("deal does not have jajatime framework")
+            print("agenda does not have jajatime framework")
         self.refresh_all()
 
     def set_acptfact_time_open_soft(self):
         # now_x = datetime.now()
-        # road_minute = f"{self.deal_x._project_handle},time,jajatime"
+        # road_minute = f"{self.agenda_x._culture_handle},time,jajatime"
         # self.root_datetime_curr_l.setText(f"Now: {str(now_x)}")
-        # self.deal_x.set_acptfact(
+        # self.agenda_x.set_acptfact(
         #     base=road_minute,
         #     pick=road_minute,
-        #     open=self.deal_x.get_time_min_from_dt(dt=now_x),
+        #     open=self.agenda_x.get_time_min_from_dt(dt=now_x),
         # )
         self.refresh_all()
 
     def set_acptfact_time_nigh_now(self):
         now_x = datetime.now()
-        road_minute = f"{self.deal_x._project_handle},time,jajatime"
-        self.deal_x.set_acptfact(
+        road_minute = f"{self.agenda_x._culture_handle},time,jajatime"
+        self.agenda_x.set_acptfact(
             base=road_minute,
             pick=road_minute,
-            nigh=self.deal_x.get_time_min_from_dt(dt=now_x),
+            nigh=self.agenda_x.get_time_min_from_dt(dt=now_x),
         )
         self.refresh_all()
 
-    def emit_deal(self):
-        self.deal_x_signal.emit(self.deal_x)
+    def emit_agenda(self):
+        self.agenda_x_signal.emit(self.agenda_x)
 
     def get_file_path(self):
         x_file_path, _ = QFileDialog.getOpenFileTitle()
@@ -268,21 +268,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def save_file(self):
         if self.file_path is None:
-            self.file_path = f"{deal_env()}/{self._get_file_title()}"
+            self.file_path = f"{agenda_env()}/{self._get_file_title()}"
         self._commit_file_save()
 
     def _get_file_title(self):
-        return f"deal_{self.deal_x._healer}.json"
+        return f"agenda_{self.agenda_x._healer}.json"
 
     def _commit_file_save(self):
-        deal_x_json = self.deal_x.get_json()
+        agenda_x_json = self.agenda_x.get_json()
         with open(f"{self.file_path}", "w") as f:
-            f.write(deal_x_json)
+            f.write(agenda_x_json)
         self.current_file_path_l.setText(self.file_path)
         # x_func_save_file(
-        #     dest_dir=deal_kitchenunit_dir,
-        #     file_title=f"{self.deal_x._project_handle}.json",
-        #     file_text=deal_x.get_json(),
+        #     dest_dir=agenda_kitchenunit_dir,
+        #     file_title=f"{self.agenda_x._culture_handle}.json",
+        #     file_text=agenda_x.get_json(),
         # )
 
     def load_file(self):
@@ -292,28 +292,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return x_json
 
     def open_file(self):
-        self.deal_x_json = self.load_file()
-        self.deal_load(x_deal_json=self.deal_x_json)
+        self.agenda_x_json = self.load_file()
+        self.agenda_load(x_agenda_json=self.agenda_x_json)
 
-    def deal_new(self):
-        self.deal_x = DealUnit(_healer="new")
-        self.deal_x._set_acptfacts_empty_if_null()
-        self.deal_x.set_partys_empty_if_null()
-        self.deal_x.set_groupunits_empty_if_null()
-        self.deal_x.set_time_hreg_ideas(c400_count=7)
-        road_minute = f"{self.deal_x._project_handle},time,jajatime"
-        self.deal_x.set_acptfact(
+    def agenda_new(self):
+        self.agenda_x = DealUnit(_healer="new")
+        self.agenda_x._set_acptfacts_empty_if_null()
+        self.agenda_x.set_partys_empty_if_null()
+        self.agenda_x.set_groupunits_empty_if_null()
+        self.agenda_x.set_time_hreg_ideas(c400_count=7)
+        road_minute = f"{self.agenda_x._culture_handle},time,jajatime"
+        self.agenda_x.set_acptfact(
             base=road_minute, pick=road_minute, open=1000000, nigh=1000000
         )
         self.refresh_all()
 
     def refresh_datetime_display(self):
-        road_minute = f"{self.deal_x._project_handle},time,jajatime"
-        jajatime_open = self.deal_x.get_time_dt_from_min(
-            self.deal_x._idearoot._acptfactunits[road_minute].open
+        road_minute = f"{self.agenda_x._culture_handle},time,jajatime"
+        jajatime_open = self.agenda_x.get_time_dt_from_min(
+            self.agenda_x._idearoot._acptfactunits[road_minute].open
         )
-        jajatime_nigh = self.deal_x.get_time_dt_from_min(
-            self.deal_x._idearoot._acptfactunits[road_minute].nigh
+        jajatime_nigh = self.agenda_x.get_time_dt_from_min(
+            self.agenda_x._idearoot._acptfactunits[road_minute].nigh
         )
         week_days = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
         self.root_datetime_curr_l.setText(
@@ -328,31 +328,31 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.root_datetime_prev_l.setText("")
         with contextlib.suppress(Exception):
             self.refresh_datetime_display()
-        self.deal_healer.setText(self.deal_x._healer)
+        self.agenda_healer.setText(self.agenda_x._healer)
         self.acptfacts_table_load()
-        self.agenda_states_load()
+        self.goal_states_load()
 
-    def deal_load(self, x_deal_json: str):
-        self.deal_x = get_from_json(x_deal_json=x_deal_json)
-        self.promise_items = self.deal_x.get_agenda_items()
+    def agenda_load(self, x_agenda_json: str):
+        self.agenda_x = get_from_json(x_agenda_json=x_agenda_json)
+        self.promise_items = self.agenda_x.get_goal_items()
         self.refresh_all()
 
     def get_acptfacts_list(self):
-        return self.deal_x._idearoot._acptfactunits.values()
+        return self.agenda_x._idearoot._acptfactunits.values()
 
     def acptfacts_table_load(self):
         self.acptfacts_table.setRowCount(0)
 
         row = 0
         for acptfact in self.get_acptfacts_list():
-            base_text = acptfact.base.replace(f"{self.deal_x._healer}", "")
+            base_text = acptfact.base.replace(f"{self.agenda_x._healer}", "")
             base_text = base_text[1:]
             acptfact_text = acptfact.pick.replace(acptfact.base, "")
             acptfact_text = acptfact_text[1:]
             if acptfact.open is None:
                 acptfact_text = f"{acptfact_text}"
             elif base_text == "time,jajatime":
-                acptfact_text = f"{self.deal_x.get_jajatime_legible_one_time_event(acptfact.open)}-{self.deal_x.get_jajatime_repeating_legible_text(acptfact.nigh)}"
+                acptfact_text = f"{self.agenda_x.get_jajatime_legible_one_time_event(acptfact.open)}-{self.agenda_x.get_jajatime_repeating_legible_text(acptfact.nigh)}"
             else:
                 acptfact_text = (
                     f"{acptfact_text} Open-Nigh {acptfact.open}-{acptfact.nigh}"
@@ -365,8 +365,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.acptfacts_table.setItem(row, 5, qtw1(pyqt_func_num2str(acptfact.nigh)))
             row += 1
 
-        for base, count in self.deal_x.get_missing_acptfact_bases().items():
-            base_text = base.replace(f"{self.deal_x._healer}", "")
+        for base, count in self.agenda_x.get_missing_acptfact_bases().items():
+            base_text = base.replace(f"{self.agenda_x._healer}", "")
             base_text = base_text[1:]
 
             base_lecture_text = f"{base_text} ({count} nodes)"
@@ -393,131 +393,131 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ):
             raise MainAppException("No table selection for acptfact update.")
         acptfact_update_combo_text = self.acptfact_update_combo.currentText()
-        self.deal_x._idearoot._acptfactunits[
+        self.agenda_x._idearoot._acptfactunits[
             base_road
         ].acptfact = acptfact_update_combo_text
         self.base_road = None
         self.refresh_all
 
-    def agenda_states_load(self):
-        self.deal_x.get_tree_metrics()
-        agenda_list = self.deal_x.get_agenda_items()
-        agenda_list.sort(key=lambda x: x._deal_importance, reverse=True)
-        self.agenda_states.setSortingEnabled(True)
-        self.agenda_states.setRowCount(0)
-        self.set_agenda_states_table_properties()
+    def goal_states_load(self):
+        self.agenda_x.get_tree_metrics()
+        goal_list = self.agenda_x.get_goal_items()
+        goal_list.sort(key=lambda x: x._agenda_importance, reverse=True)
+        self.goal_states.setSortingEnabled(True)
+        self.goal_states.setRowCount(0)
+        self.set_goal_states_table_properties()
 
-        self.label_agenda_label_data.setText("")
-        self.label_agenda_day_data.setText("")
-        self.label_agenda_time_data.setText("")
-        self.label_agenda_end_data.setText("")
+        self.label_goal_label_data.setText("")
+        self.label_goal_day_data.setText("")
+        self.label_goal_time_data.setText("")
+        self.label_goal_end_data.setText("")
 
         row = 0
         self.current_task_road = None
-        for agenda_item in agenda_list:
-            if agenda_item._task == False:
-                self.populate_agenda_table_row(row=row, agenda_item=agenda_item)
+        for goal_item in goal_list:
+            if goal_item._task == False:
+                self.populate_goal_table_row(row=row, goal_item=goal_item)
                 row += 1
-            elif agenda_item._task == True and self.current_task_road is None:
-                self.current_task_road = f"{agenda_item._pad},{agenda_item._label}"
-                self.agenda_task_display(agenda_item)
+            elif goal_item._task == True and self.current_task_road is None:
+                self.current_task_road = f"{goal_item._pad},{goal_item._label}"
+                self.goal_task_display(goal_item)
 
-    def populate_agenda_table_row(self, row, agenda_item):
-        ax = agenda_item
-        self.agenda_states.setRowCount(row + 1)
-        self.agenda_states.setItem(row, 0, qtw1(str(ax._uid)))
-        self.agenda_states.setItem(row, 1, qtw1(ax._label))
+    def populate_goal_table_row(self, row, goal_item):
+        ax = goal_item
+        self.goal_states.setRowCount(row + 1)
+        self.goal_states.setItem(row, 0, qtw1(str(ax._uid)))
+        self.goal_states.setItem(row, 1, qtw1(ax._label))
 
         if (
-            ax._requiredunits.get(f"{self.deal_x._project_handle},time,jajatime")
+            ax._requiredunits.get(f"{self.agenda_x._culture_handle},time,jajatime")
             != None
         ):
             jajatime_required = ax._requiredunits.get(
-                f"{self.deal_x._project_handle},time,jajatime"
+                f"{self.agenda_x._culture_handle},time,jajatime"
             )
             sufffact_x = jajatime_required.sufffacts.get(
-                f"{self.deal_x._project_handle},time,jajatime"
+                f"{self.agenda_x._culture_handle},time,jajatime"
             )
             if sufffact_x != None and sufffact_x.open != 0:
                 tw_open = qtw1(
-                    self.deal_x.get_jajatime_repeating_legible_text(
+                    self.agenda_x.get_jajatime_repeating_legible_text(
                         open=sufffact_x.open,
                         nigh=sufffact_x.nigh,
                         divisor=sufffact_x.divisor,
                     )
                 )
-                self.agenda_states.setItem(row, 2, tw_open)
+                self.goal_states.setItem(row, 2, tw_open)
                 tw_nigh = qtw1(convert1440toHHMM(min1440=sufffact_x.nigh))
-                self.agenda_states.setItem(row, 3, tw_nigh)
+                self.goal_states.setItem(row, 3, tw_nigh)
 
-        self.agenda_states.setItem(
-            row, 4, qtw1(pyqt_func_deal_importance_diplay(ax._deal_importance))
+        self.goal_states.setItem(
+            row, 4, qtw1(pyqt_func_agenda_importance_diplay(ax._agenda_importance))
         )
-        self.agenda_states.setItem(row, 5, qtw1(ax._pad))
-        self.agenda_states.setItem(row, 6, qtw1(""))
+        self.goal_states.setItem(row, 5, qtw1(ax._pad))
+        self.goal_states.setItem(row, 6, qtw1(""))
 
-    def set_agenda_states_table_properties(self):
-        self.agenda_states.setObjectName("Agenda Being")
-        self.agenda_states.setColumnWidth(0, 30)
-        self.agenda_states.setColumnWidth(1, 200)
-        self.agenda_states.setColumnWidth(2, 120)
-        self.agenda_states.setColumnWidth(3, 50)
-        self.agenda_states.setColumnWidth(4, 70)
-        self.agenda_states.setColumnWidth(5, 500)
-        self.agenda_states.setColumnWidth(6, 100)
-        self.agenda_states.setColumnHidden(0, True)
-        self.agenda_states.setColumnHidden(1, False)
-        self.agenda_states.setColumnHidden(2, False)
-        self.agenda_states.setColumnHidden(3, True)
-        self.agenda_states.setColumnHidden(4, False)
-        self.agenda_states.setColumnHidden(5, False)
-        self.agenda_states.setColumnHidden(6, True)
-        self.agenda_states.setHorizontalHeaderLabels(
+    def set_goal_states_table_properties(self):
+        self.goal_states.setObjectName("Agenda Being")
+        self.goal_states.setColumnWidth(0, 30)
+        self.goal_states.setColumnWidth(1, 200)
+        self.goal_states.setColumnWidth(2, 120)
+        self.goal_states.setColumnWidth(3, 50)
+        self.goal_states.setColumnWidth(4, 70)
+        self.goal_states.setColumnWidth(5, 500)
+        self.goal_states.setColumnWidth(6, 100)
+        self.goal_states.setColumnHidden(0, True)
+        self.goal_states.setColumnHidden(1, False)
+        self.goal_states.setColumnHidden(2, False)
+        self.goal_states.setColumnHidden(3, True)
+        self.goal_states.setColumnHidden(4, False)
+        self.goal_states.setColumnHidden(5, False)
+        self.goal_states.setColumnHidden(6, True)
+        self.goal_states.setHorizontalHeaderLabels(
             [
                 "admiration",
                 "label",
                 "jajatime",
                 "jaja_nigh",
-                "deal_importance",
+                "agenda_importance",
                 "idea_road",
                 "branch_percent",
             ]
         )
 
-    def agenda_task_display(self, agenda_item):
-        self.label_agenda_label_data.setText(agenda_item._label)
+    def goal_task_display(self, goal_item):
+        self.label_goal_label_data.setText(goal_item._label)
         if (
-            agenda_item._requiredunits.get(
-                f"{self.deal_x._project_handle},time,jajatime"
+            goal_item._requiredunits.get(
+                f"{self.agenda_x._culture_handle},time,jajatime"
             )
             != None
         ):
-            jajatime_required = agenda_item._requiredunits.get(
-                f"{self.deal_x._project_handle},time,jajatime"
+            jajatime_required = goal_item._requiredunits.get(
+                f"{self.agenda_x._culture_handle},time,jajatime"
             )
             sufffact_x = jajatime_required.sufffacts.get(
-                f"{self.deal_x._project_handle},time,jajatime,day"
+                f"{self.agenda_x._culture_handle},time,jajatime,day"
             )
             if sufffact_x != None:
-                self.label_agenda_day_data.setText("day_stuff")
-                self.label_agenda_time_data.setText(
+                self.label_goal_day_data.setText("day_stuff")
+                self.label_goal_time_data.setText(
                     convert1440toHHMM(min1440=sufffact_x.open)
                 )
-                self.label_agenda_end_data.setText(
+                self.label_goal_end_data.setText(
                     convert1440toHHMM(min1440=sufffact_x.nigh)
                 )
-        self.label_agenda_deal_importance_data.setText(
-            str(agenda_item._deal_importance)
+        self.label_goal_agenda_importance_data.setText(
+            str(goal_item._agenda_importance)
         )
-        self.label_agenda_family_data.setText("")
-        self.label_agenda_road_data.setText(agenda_item._pad)
+        self.label_goal_family_data.setText("")
+        self.label_goal_road_data.setText(goal_item._pad)
 
-    def get_jajaday_open_nigh(self, agenda_item):
-        jajatime_required = agenda_item._requiredunits.get(
-            f"{self.deal_x._project_handle},time,jajatime"
+    def get_jajaday_open_nigh(self, goal_item):
+        jajatime_required = goal_item._requiredunits.get(
+            f"{self.agenda_x._culture_handle},time,jajatime"
         )
         sufffact_x = jajatime_required.sufffacts.get(
-            f"{self.deal_x._project_handle},time,jajatime,day"
+            f"{self.agenda_x._culture_handle},time,jajatime,day"
         )
         if sufffact_x != None:
             open_x = sufffact_x.open

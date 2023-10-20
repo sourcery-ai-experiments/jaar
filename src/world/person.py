@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src.project.project import ProjectUnit, ProjectHandle, projectunit_shop
+from src.culture.culture import ProjectUnit, ProjectHandle, cultureunit_shop
 from src.world.pain import PainGenus, PainUnit, PersonName, painunit_shop
 
 
@@ -7,7 +7,7 @@ from src.world.pain import PainGenus, PainUnit, PersonName, painunit_shop
 class PersonUnit:
     name: PersonName = None
     person_dir: str = None
-    _projects: dict[ProjectHandle:ProjectUnit] = None
+    _cultures: dict[ProjectHandle:ProjectUnit] = None
     _pains: dict[PainGenus:PainUnit] = None
 
     def set_pains_empty_if_none(self):
@@ -33,45 +33,45 @@ class PersonUnit:
         for x_painunit in self._pains.values():
             x_painunit.set_relative_weight(x_painunit.weight / total_painunits_weight)
 
-    def set_projectunits_weight_metrics(self):
+    def set_cultureunits_weight_metrics(self):
         self.set_painunits_weight_metrics()
-        projectunit_handles = {
-            x_projectunit.handle: 0 for x_projectunit in self._projects.values()
+        cultureunit_handles = {
+            x_cultureunit.handle: 0 for x_cultureunit in self._cultures.values()
         }
 
         for x_painunit in self._pains.values():
             for x_healerlink in x_painunit._healerlinks.values():
-                for x_projectlink in x_healerlink._projectlinks.values():
-                    projectunit_handles[
-                        x_projectlink.handle
-                    ] += x_projectlink._person_importance
+                for x_culturelink in x_healerlink._culturelinks.values():
+                    cultureunit_handles[
+                        x_culturelink.handle
+                    ] += x_culturelink._person_importance
 
         for (
-            x_projectunit_handle,
-            x_projectunit_person_importance,
-        ) in projectunit_handles.items():
-            self._projects.get(x_projectunit_handle).set_person_importance(
-                x_projectunit_person_importance
+            x_cultureunit_handle,
+            x_cultureunit_person_importance,
+        ) in cultureunit_handles.items():
+            self._cultures.get(x_cultureunit_handle).set_person_importance(
+                x_cultureunit_person_importance
             )
 
-    def set_projects_empty_if_none(self):
-        if self._projects is None:
-            self._projects = {}
+    def set_cultures_empty_if_none(self):
+        if self._cultures is None:
+            self._cultures = {}
 
-    def set_projectunit(self, project_handle: ProjectHandle):
-        projects_dir = f"{self.person_dir}/projects"
-        self._projects[project_handle] = projectunit_shop(
-            handle=project_handle, projects_dir=projects_dir
+    def set_cultureunit(self, culture_handle: ProjectHandle):
+        cultures_dir = f"{self.person_dir}/cultures"
+        self._cultures[culture_handle] = cultureunit_shop(
+            handle=culture_handle, cultures_dir=cultures_dir
         )
 
-    def get_projectunit(self, project_handle: ProjectHandle) -> ProjectUnit:
-        return self._projects.get(project_handle)
+    def get_cultureunit(self, culture_handle: ProjectHandle) -> ProjectUnit:
+        return self._cultures.get(culture_handle)
 
-    def del_projectunit(self, project_handle: ProjectHandle):
-        self._projects.pop(project_handle)
+    def del_cultureunit(self, culture_handle: ProjectHandle):
+        self._cultures.pop(culture_handle)
 
-    def get_projects_dict(self) -> dict:
-        return {projectunit_x.handle: None for projectunit_x in self._projects.values()}
+    def get_cultures_dict(self) -> dict:
+        return {cultureunit_x.handle: None for cultureunit_x in self._cultures.values()}
 
     def get_pains_dict(self) -> dict:
         return {
@@ -82,7 +82,7 @@ class PersonUnit:
     def get_dict(self) -> dict:
         return {
             "name": self.name,
-            "_projects": self.get_projects_dict(),
+            "_cultures": self.get_cultures_dict(),
             "_pains": self.get_pains_dict(),
         }
 
@@ -91,7 +91,7 @@ def personunit_shop(name: PersonName, person_dir: str = None) -> PersonUnit:
     if person_dir is None:
         person_dir = ""
     person_x = PersonUnit(name=name, person_dir=person_dir)
-    person_x.set_projects_empty_if_none()
+    person_x.set_cultures_empty_if_none()
     person_x.set_pains_empty_if_none()
     return person_x
 

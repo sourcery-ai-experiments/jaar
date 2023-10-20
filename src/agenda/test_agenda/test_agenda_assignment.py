@@ -1,0 +1,578 @@
+from src.agenda.agenda import agendaunit_shop, DealUnit
+from src.agenda.idea import IdeaKid
+from src.agenda.required_idea import RequiredUnit
+from src.agenda.party import partyunit_shop, partylink_shop
+from src.agenda.group import groupunit_shop
+from src.agenda.examples.example_agendas import (
+    get_agenda_with_4_levels as example_agendas_get_agenda_with_4_levels,
+    get_agenda_with7amCleanTableRequired as example_agendas_get_agenda_with7amCleanTableRequired,
+    get_assignment_agenda_example1 as example_agenda_get_assignment_agenda_example1,
+)
+from src.culture.examples.example_kitchens import (
+    get_agenda_assignment_laundry_example1,
+)
+
+
+def test_agendaunit_get_assignment_ReturnsDeal():
+    # GIVEN
+    jes_text = "jessi"
+    jes1_agenda = agendaunit_shop(_healer=jes_text)
+    jes1_agenda.set_groupunits_empty_if_null()
+
+    # WHEN
+    bob_text = "bob"
+    agenda_x = agendaunit_shop(_healer=jes_text)
+    agenda_x.set_groupunits_empty_if_null()
+    assignor_known_partys_x = {}
+    x_assignment_agenda = jes1_agenda.get_assignment(
+        agenda_x=agenda_x,
+        assignor_partys=assignor_known_partys_x,
+        assignor_title=bob_text,
+    )
+
+    # THEN
+    assert str(type(x_assignment_agenda)) == "<class 'src.agenda.agenda.DealUnit'>"
+    assert x_assignment_agenda == agenda_x
+
+
+def test_agendaunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInPartys():
+    # GIVEN
+    noa_text = "Noa"
+    noa_agenda = example_agendas_get_agenda_with_4_levels()
+    noa_agenda.set_partyunit(partyunit_shop(title=noa_text))
+    zia_text = "Zia"
+    yao_text = "Yao"
+    noa_agenda.set_partyunit(partyunit_shop(title=zia_text))
+    noa_agenda.set_partyunit(partyunit_shop(title=yao_text))
+
+    # WHEN
+    bob_text = "bob"
+    y_agenda = agendaunit_shop(_healer=noa_text)
+    x_agenda = agendaunit_shop()
+    x_agenda.set_partys_empty_if_null()
+    x_agenda.set_partyunit(partyunit=partyunit_shop(title=zia_text))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(title=noa_text))
+
+    x_assignment_agenda = noa_agenda.get_assignment(
+        y_agenda, x_agenda._partys, bob_text
+    )
+
+    # THEN
+    assert len(noa_agenda._partys) == 3
+    assert len(x_assignment_agenda._partys) == 0
+
+
+def test_agendaunit_get_assignment_ReturnsCorrectPartys():
+    # GIVEN
+    jes_text = "Jessi"
+    jes_agenda = agendaunit_shop(_healer=jes_text)
+    jes_agenda.set_partyunit(partyunit_shop(title=jes_text))
+    bob_text = "Bob"
+    zia_text = "Zia"
+    noa_text = "Noa"
+    yao_text = "Yao"
+    jes_agenda.set_partyunit(partyunit_shop(title=bob_text))
+    jes_agenda.set_partyunit(partyunit_shop(title=zia_text))
+    jes_agenda.set_partyunit(partyunit_shop(title=noa_text))
+    jes_agenda.set_partyunit(partyunit_shop(title=yao_text))
+
+    # WHEN
+    tx = agendaunit_shop()
+    tx.set_partys_empty_if_null()
+    tx.set_partyunit(partyunit=partyunit_shop(title=bob_text))
+    tx.set_partyunit(partyunit=partyunit_shop(title=zia_text))
+    tx.set_partyunit(partyunit=partyunit_shop(title=noa_text))
+
+    empty_agenda = agendaunit_shop(_healer=jes_text)
+    x_assignment_agenda = jes_agenda.get_assignment(empty_agenda, tx._partys, bob_text)
+
+    # THEN
+    assert len(x_assignment_agenda._partys) == 3
+    assert x_assignment_agenda._partys.get(bob_text) != None
+    assert x_assignment_agenda._partys.get(zia_text) != None
+    assert x_assignment_agenda._partys.get(noa_text) != None
+    assert x_assignment_agenda._partys.get(yao_text) is None
+
+
+def test_agendaunit_get_assignment_ReturnsCorrectGroups_Scenario1():
+    # GIVEN
+    jes_text = "Jessi"
+    jes_agenda = agendaunit_shop(_healer=jes_text)
+    jes_agenda.set_partyunit(partyunit_shop(title=jes_text))
+    bob_text = "Bob"
+    noa_text = "Noa"
+    eli_text = "Eli"
+    jes_agenda.set_partyunit(partyunit_shop(title=bob_text))
+    jes_agenda.set_partyunit(partyunit_shop(title=noa_text))
+    jes_agenda.set_partyunit(partyunit_shop(title=eli_text))
+    swim_text = "swimmers"
+    jes_agenda.set_groupunit(groupunit_shop(brand=swim_text))
+    swim_group = jes_agenda._groups.get(swim_text)
+    swim_group.set_partylink(partylink_shop(bob_text))
+
+    hike_text = "hikers"
+    jes_agenda.set_groupunit(groupunit_shop(brand=hike_text))
+    hike_group = jes_agenda._groups.get(hike_text)
+    hike_group.set_partylink(partylink_shop(bob_text))
+    hike_group.set_partylink(partylink_shop(noa_text))
+
+    hunt_text = "hunters"
+    jes_agenda.set_groupunit(groupunit_shop(brand=hunt_text))
+    hike_group = jes_agenda._groups.get(hunt_text)
+    hike_group.set_partylink(partylink_shop(noa_text))
+    hike_group.set_partylink(partylink_shop(eli_text))
+
+    # WHEN
+    tx = agendaunit_shop()
+    tx.set_partys_empty_if_null()
+    zia_text = "Zia"
+    yao_text = "Yao"
+    tx.set_partyunit(partyunit=partyunit_shop(title=bob_text))
+    tx.set_partyunit(partyunit=partyunit_shop(title=zia_text))
+    tx.set_partyunit(partyunit=partyunit_shop(title=noa_text))
+
+    empty_agenda = agendaunit_shop(_healer=jes_text)
+    x_assignment_agenda = jes_agenda.get_assignment(empty_agenda, tx._partys, bob_text)
+
+    # THEN
+    assert len(x_assignment_agenda._groups) == 5
+    assert x_assignment_agenda._groups.get(bob_text) != None
+    assert x_assignment_agenda._groups.get(noa_text) != None
+    assert x_assignment_agenda._groups.get(zia_text) is None
+    assert x_assignment_agenda._groups.get(yao_text) is None
+    assert x_assignment_agenda._groups.get(swim_text) != None
+    assert x_assignment_agenda._groups.get(hike_text) != None
+    assert x_assignment_agenda._groups.get(hunt_text) != None
+    hunt_group = x_assignment_agenda._groups.get(hunt_text)
+    assert hunt_group._partys.get(noa_text) != None
+    assert len(hunt_group._partys) == 1
+
+
+def test_agenda__get_assignor_promise_ideas_ReturnsCorrectIdeaRoads():
+    # GIVEN
+    x_agenda = example_agendas_get_agenda_with7amCleanTableRequired()
+    x_agenda.set_agenda_metrics()
+
+    # WHEN
+    assignor_promises = x_agenda._get_assignor_promise_ideas(x_agenda, "any")
+
+    # THEN
+    print(f"{assignor_promises=}")
+    x_dict = {
+        f"{x_agenda._culture_handle},work": -1,
+        f"{x_agenda._culture_handle},housework,clean table": -1,
+        f"{x_agenda._culture_handle},housework,clean table,remove dishs": -1,
+        f"{x_agenda._culture_handle},housework,clean table,get soap": -1,
+        f"{x_agenda._culture_handle},housework,clean table,get soap,grab soap": -1,
+        f"{x_agenda._culture_handle},feed cat": -1,
+    }
+    assert assignor_promises == x_dict
+
+
+def test_agenda__get_relevant_roads_EmptyRoadReturnsEmpty():
+    # GIVEN
+    x_agenda = example_agendas_get_agenda_with_4_levels()
+    x_agenda.set_agenda_metrics()
+
+    # WHEN
+    relevant_roads = x_agenda._get_relevant_roads({})
+
+    # THEN
+    print(f"{relevant_roads=}")
+    assert len(relevant_roads) == 0
+    assert relevant_roads == {}
+
+
+def test_agenda__get_relevant_roads_RootRoadReturnsOnlyItself():
+    # GIVEN
+    x_agenda = example_agendas_get_agenda_with_4_levels()
+    x_agenda.set_agenda_metrics()
+
+    # WHEN
+    root_dict = {x_agenda._culture_handle: -1}
+    relevant_roads = x_agenda._get_relevant_roads(root_dict)
+
+    # THEN
+    print(f"{relevant_roads=}")
+    assert len(relevant_roads) == 1
+    assert relevant_roads == {x_agenda._culture_handle: -1}
+
+
+def test_agenda__get_relevant_roads_SimpleReturnsOnlyAncestors():
+    # GIVEN
+    x_agenda = example_agendas_get_agenda_with_4_levels()
+    x_agenda.set_agenda_metrics()
+
+    # WHEN
+    week_text = "weekdays"
+    week_road = f"{x_agenda._culture_handle},{week_text}"
+    sun_text = "Sunday"
+    sun_road = f"{week_road},{sun_text}"
+    sun_dict = {sun_road}
+    relevant_roads = x_agenda._get_relevant_roads(sun_dict)
+
+    # THEN
+    print(f"{relevant_roads=}")
+    assert len(relevant_roads) == 3
+    assert relevant_roads == {x_agenda._culture_handle: -1, sun_road: -1, week_road: -1}
+
+
+def test_agenda__get_relevant_roads_ReturnsSimpleRequiredUnitBase():
+    # GIVEN
+    healer_text = "Neo"
+    x_agenda = agendaunit_shop(_healer=healer_text)
+    casa_text = "casa"
+    casa_road = f"{x_agenda._culture_handle},{casa_text}"
+    floor_text = "mop floor"
+    floor_road = f"{casa_road},{floor_text}"
+    floor_idea = IdeaKid(_label=floor_text)
+    x_agenda.add_idea(idea_kid=floor_idea, pad=casa_road)
+
+    unim_text = "unimportant"
+    unim_road = f"{x_agenda._culture_handle},{unim_text}"
+    unim_idea = IdeaKid(_label=unim_text)
+    x_agenda.add_idea(idea_kid=unim_idea, pad=x_agenda._culture_handle)
+
+    status_text = "cleaniness status"
+    status_road = f"{casa_road},{status_text}"
+    status_idea = IdeaKid(_label=status_text)
+    x_agenda.add_idea(idea_kid=status_idea, pad=casa_road)
+    floor_required = RequiredUnit(base=status_road, sufffacts={})
+    floor_required.set_sufffact(sufffact=status_road)
+    x_agenda.edit_idea_attr(road=floor_road, required=floor_required)
+
+    # WHEN
+    x_agenda.set_agenda_metrics()
+    floor_dict = {floor_road}
+    relevant_roads = x_agenda._get_relevant_roads(floor_dict)
+
+    # THEN
+    print(f"{relevant_roads=}")
+    assert len(relevant_roads) == 4
+    assert relevant_roads == {
+        x_agenda._culture_handle: -1,
+        casa_road: -1,
+        status_road: -1,
+        floor_road: -1,
+    }
+    assert relevant_roads.get(unim_road) is None
+
+
+def test_agenda__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
+    # GIVEN
+    x_agenda = example_agenda_get_assignment_agenda_example1()
+    casa_text = "casa"
+    casa_road = f"{x_agenda._culture_handle},{casa_text}"
+    floor_text = "mop floor"
+    floor_road = f"{casa_road},{floor_text}"
+
+    unim_text = "unimportant"
+    unim_road = f"{x_agenda._culture_handle},{unim_text}"
+
+    status_text = "cleaniness status"
+    status_road = f"{casa_road},{status_text}"
+
+    clean_text = "clean"
+    clean_road = f"{status_road},{clean_text}"
+
+    very_much_text = "very_much"
+    very_much_road = f"{clean_road},{very_much_text}"
+
+    moderately_text = "moderately"
+    moderately_road = f"{clean_road},{moderately_text}"
+
+    dirty_text = "dirty"
+    dirty_road = f"{status_road},{dirty_text}"
+
+    # WHEN
+    x_agenda.set_agenda_metrics()
+    floor_dict = {floor_road}
+    relevant_roads = x_agenda._get_relevant_roads(floor_dict)
+
+    # THEN
+    print(f"{relevant_roads=}")
+    assert len(relevant_roads) == 8
+    assert relevant_roads.get(clean_road) != None
+    assert relevant_roads.get(dirty_road) != None
+    assert relevant_roads.get(moderately_road) != None
+    assert relevant_roads.get(very_much_road) != None
+    assert relevant_roads == {
+        x_agenda._culture_handle: -1,
+        casa_road: -1,
+        status_road: -1,
+        floor_road: -1,
+        clean_road: -1,
+        dirty_road: -1,
+        very_much_road: -1,
+        moderately_road: -1,
+    }
+    assert relevant_roads.get(unim_road) is None
+
+
+# def test_agenda__get_relevant_roads_ReturnsRequiredUnitBaseRecursively():
+#     pass
+
+
+def test_agenda__get_relevant_roads_numeric_road_ReturnSimple():
+    # GIVEN
+    yao_text = "Yao"
+    yao_agenda = agendaunit_shop(_healer=yao_text)
+    work_text = "work"
+    work_road = f"{yao_agenda._culture_handle},{work_text}"
+    yao_agenda.add_idea(IdeaKid(_label=work_text), pad=yao_agenda._culture_handle)
+    work_idea = yao_agenda.get_idea_kid(road=work_road)
+    day_text = "day_range"
+    day_road = f"{yao_agenda._culture_handle},{day_text}"
+    day_idea = IdeaKid(_label=day_text, _begin=44, _close=110)
+    yao_agenda.add_idea(day_idea, pad=yao_agenda._culture_handle)
+    yao_agenda.edit_idea_attr(road=work_road, denom=11, numeric_road=day_road)
+    assert work_idea._begin == 4
+    print(f"{work_idea._label=} {work_idea._begin=} {work_idea._close=}")
+
+    # WHEN
+    yao_agenda.set_agenda_metrics()
+    roads_dict = {work_road}
+    relevant_roads = yao_agenda._get_relevant_roads(roads_dict)
+
+    # THEN
+    print(f"{relevant_roads=}")
+    assert len(relevant_roads) == 3
+    assert relevant_roads.get(work_road) != None
+    assert relevant_roads.get(day_road) != None
+    assert relevant_roads == {
+        yao_agenda._culture_handle: -1,
+        work_road: -1,
+        day_road: -1,
+    }
+
+
+def test_agenda__get_relevant_roads_range_source_road_ReturnSimple():
+    # GIVEN
+    yao_text = "Yao"
+    yao_agenda = agendaunit_shop(_healer=yao_text)
+    min_range_text = "a_minute_range"
+    min_range_road = f"{yao_agenda._culture_handle},{min_range_text}"
+    min_range_idea = IdeaKid(_label=min_range_text, _begin=0, _close=2880)
+    yao_agenda.add_idea(min_range_idea, pad=yao_agenda._culture_handle)
+
+    day_len_text = "day_length"
+    day_len_road = f"{yao_agenda._culture_handle},{day_len_text}"
+    day_len_idea = IdeaKid(_label=day_len_text, _begin=0, _close=1440)
+    yao_agenda.add_idea(day_len_idea, pad=yao_agenda._culture_handle)
+
+    min_days_text = "days in minute_range"
+    min_days_road = f"{min_range_road},{min_days_text}"
+    min_days_idea = IdeaKid(_label=min_days_text, _range_source_road=day_len_road)
+    yao_agenda.add_idea(min_days_idea, pad=min_range_road)
+
+    # WHEN
+    yao_agenda.set_agenda_metrics()
+    print(f"{yao_agenda._idea_dict.keys()}")
+    roads_dict = {min_days_road}
+    relevant_roads = yao_agenda._get_relevant_roads(roads_dict)
+
+    # THEN
+    print(f"{relevant_roads=}")
+    assert len(relevant_roads) == 4
+    assert relevant_roads.get(min_range_road) != None
+    assert relevant_roads.get(day_len_road) != None
+    assert relevant_roads.get(min_days_road) != None
+    assert relevant_roads.get(yao_agenda._culture_handle) != None
+    # min_days_idea = yao_agenda.get_idea_kid(road=min_days_road)
+    # print(f"{min_days_idea=}")
+    # assert 1 == 2
+
+
+# def test_agenda__get_relevant_roads_numeric_road_range_source_road_ReturnEntireRangeTree():
+#
+def test_agenda__set_assignment_ideas_ReturnsCorrectIdeas():
+    # GIVEN
+    yao_text = "Yao"
+    yao_agenda = agendaunit_shop(_healer=yao_text)
+    casa_text = "casa"
+    casa_road = f"{yao_agenda._culture_handle},{casa_text}"
+    yao_agenda.add_idea(IdeaKid(_label=casa_text), pad=yao_agenda._culture_handle)
+    yao_agenda.set_agenda_metrics()
+
+    # WHEN
+    bob_text = "Bob"
+    bob_agenda = agendaunit_shop(_healer=bob_text)
+    relevant_roads = {
+        yao_agenda._culture_handle: "descendant",
+        casa_road: "requirementunit_base",
+    }
+    yao_agenda._set_assignment_ideas(agenda_x=bob_agenda, relevant_roads=relevant_roads)
+
+    # THEN
+    bob_agenda.set_agenda_metrics()
+    print(f"{bob_agenda._idea_dict.keys()=}")
+    assert len(bob_agenda._idea_dict) == 2
+    assert bob_agenda.get_idea_kid(casa_road) != None
+
+
+def test_agenda__set_assignment_ideas_ReturnsCorrectIdeaRoot_acptfacts():
+    # GIVEN
+    yao_text = "Yao"
+    yao_agenda = agendaunit_shop(_healer=yao_text)
+
+    casa_text = "casa"
+    casa_road = f"{yao_agenda._culture_handle},{casa_text}"
+    yao_agenda.add_idea(IdeaKid(_label=casa_text), pad=yao_agenda._culture_handle)
+
+    basket_text = "laundry basket status"
+    basket_road = f"{casa_road},{basket_text}"
+    yao_agenda.add_idea(IdeaKid(basket_text), pad=casa_road)
+    yao_agenda.set_acptfact(base=basket_road, pick=basket_road)
+    # print(f"{list(yao_agenda._idearoot._acptfactunits.keys())=}")
+
+    room_text = "room status"
+    room_road = f"{casa_road},{room_text}"
+    yao_agenda.add_idea(IdeaKid(room_text), pad=casa_road)
+    yao_agenda.set_acptfact(base=room_road, pick=room_road)
+    print(f"{list(yao_agenda._idearoot._acptfactunits.keys())=}")
+
+    bob_text = "Bob"
+    bob_agenda = agendaunit_shop(_healer=bob_text)
+
+    yao_agenda.set_agenda_metrics()
+    bob_agenda.set_agenda_metrics()
+    assert list(yao_agenda._idearoot._acptfactunits.keys()) == [basket_road, room_road]
+    assert not list(bob_agenda._idearoot._acptfactunits.keys())
+
+    # WHEN
+    relevant_roads = {
+        yao_agenda._culture_handle: "descendant",
+        casa_road: "requirementunit_base",
+        basket_road: "assigned",
+    }
+    yao_agenda._set_assignment_ideas(agenda_x=bob_agenda, relevant_roads=relevant_roads)
+
+    # THEN
+    bob_agenda.set_agenda_metrics()
+    assert bob_agenda._idearoot._acptfactunits.get(room_road) is None
+    assert list(bob_agenda._idearoot._acptfactunits.keys()) == [basket_road]
+
+
+def test_agenda_get_assignment_getsCorrectIdeas_scenario1():
+    # GIVEN
+    x_agenda = example_agenda_get_assignment_agenda_example1()
+    casa_text = "casa"
+    casa_road = f"{x_agenda._culture_handle},{casa_text}"
+    floor_text = "mop floor"
+    floor_road = f"{casa_road},{floor_text}"
+    unim_text = "unimportant"
+    unim_road = f"{x_agenda._culture_handle},{unim_text}"
+    status_text = "cleaniness status"
+    status_road = f"{casa_road},{status_text}"
+    clean_text = "clean"
+    clean_road = f"{status_road},{clean_text}"
+    very_much_text = "very_much"
+    very_much_road = f"{clean_road},{very_much_text}"
+    moderately_text = "moderately"
+    moderately_road = f"{clean_road},{moderately_text}"
+    dirty_text = "dirty"
+    dirty_road = f"{status_road},{dirty_text}"
+    bob_text = "Bob"
+    x_agenda.add_partyunit(title=bob_text)
+
+    # WHEN
+    assignment_x = x_agenda.get_assignment(
+        agenda_x=agendaunit_shop(_healer=bob_text),
+        assignor_partys={bob_text: -1},
+        assignor_title=bob_text,
+    )
+
+    # THEN
+    assignment_x.set_agenda_metrics()
+    print(f"{assignment_x._idea_dict.keys()=}")
+    assert len(assignment_x._idea_dict) == 8
+    assert assignment_x._idea_dict.get(clean_road) != None
+    assert assignment_x._idea_dict.get(dirty_road) != None
+    assert assignment_x._idea_dict.get(moderately_road) != None
+    assert assignment_x._idea_dict.get(very_much_road) != None
+    assert assignment_x._idea_dict.get(unim_road) is None
+
+
+def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
+    # GIVEN
+    america_agenda = get_agenda_assignment_laundry_example1()
+    culture_handle_text = "tiger_econ"
+    print(f"{america_agenda._culture_handle=} {america_agenda._idea_dict.keys()=}")
+    america_agenda.set_culture_handle(culture_handle_text)
+    print(f"{america_agenda._culture_handle=} {america_agenda._idea_dict.keys()=}")
+    do_laundery_idea = america_agenda.get_idea_kid("tiger_econ,casa,do_laundry")
+    print(f"{do_laundery_idea._requiredunits.keys()=}")
+
+    # WHEN
+    joachim_text = "Joachim"
+    joachim_agenda = agendaunit_shop(_healer=joachim_text)
+    joachim_agenda.set_culture_handle(culture_handle_text)
+    print(f"{joachim_agenda._culture_handle=} {joachim_agenda._idea_dict.keys()=}")
+    joachim_assignment = america_agenda.get_assignment(
+        agenda_x=joachim_agenda,
+        assignor_partys={joachim_text: -1, america_agenda._healer: -1},
+        assignor_title=joachim_text,
+    )
+
+    # THEN
+    assert joachim_assignment != None
+    joachim_assignment.set_agenda_metrics()
+    assert len(joachim_assignment._idea_dict.keys()) == 9
+
+    # for road_x in joachim_assignment._idea_dict.keys():
+    #     print(f"{road_x=}")
+    # road_x='A'
+    # road_x='A,casa'
+    # road_x='A,casa,laundry basket status'
+    # road_x='A,casa,laundry basket status,smelly'
+    # road_x='A,casa,laundry basket status,half full'
+    # road_x='A,casa,laundry basket status,full'
+    # road_x='A,casa,laundry basket status,fine'
+    # road_x='A,casa,laundry basket status,bare'
+    # road_x='A,casa,do_laundry'
+    casa_text = "casa"
+    casa_road = f"{america_agenda._culture_handle},{casa_text}"
+    basket_text = "laundry basket status"
+    basket_road = f"{casa_road},{basket_text}"
+    b_full_text = "full"
+    b_full_road = f"{basket_road},{b_full_text}"
+    b_smel_text = "smelly"
+    b_smel_road = f"{basket_road},{b_smel_text}"
+    b_bare_text = "bare"
+    b_bare_road = f"{basket_road},{b_bare_text}"
+    b_fine_text = "fine"
+    b_fine_road = f"{basket_road},{b_fine_text}"
+    b_half_text = "half full"
+    b_half_road = f"{basket_road},{b_half_text}"
+    laundry_task_text = "do_laundry"
+    laundry_task_road = f"{casa_road},{laundry_task_text}"
+
+    assert joachim_assignment._idea_dict.get(casa_road) != None
+    assert joachim_assignment._idea_dict.get(basket_road) != None
+    assert joachim_assignment._idea_dict.get(b_full_road) != None
+    assert joachim_assignment._idea_dict.get(b_smel_road) != None
+    assert joachim_assignment._idea_dict.get(b_bare_road) != None
+    assert joachim_assignment._idea_dict.get(b_fine_road) != None
+    assert joachim_assignment._idea_dict.get(b_half_road) != None
+    assert joachim_assignment._idea_dict.get(laundry_task_road) != None
+
+    laundry_do_idea = joachim_assignment.get_idea_kid(laundry_task_road)
+    print(f"{laundry_do_idea.promise=}")
+    print(f"{laundry_do_idea._requiredunits.keys()=}")
+    print(f"{laundry_do_idea._requiredunits.get(basket_road).sufffacts.keys()=}")
+    print(f"{laundry_do_idea._acptfactheirs=}")
+    print(f"{laundry_do_idea._assignedunit=}")
+
+    assert laundry_do_idea.promise == True
+    assert list(laundry_do_idea._requiredunits.keys()) == [basket_road]
+    laundry_do_sufffacts = laundry_do_idea._requiredunits.get(basket_road).sufffacts
+    assert list(laundry_do_sufffacts.keys()) == [b_full_road, b_smel_road]
+    assert list(laundry_do_idea._assignedunit._suffgroups.keys()) == [joachim_text]
+    assert list(laundry_do_idea._acptfactheirs.keys()) == [basket_road]
+
+    assert laundry_do_idea._acptfactheirs.get(basket_road).pick == b_full_road
+
+    # print(f"{laundry_do_idea=}")
+
+    assert len(joachim_assignment.get_goal_items()) == 1
+    assert joachim_assignment.get_goal_items()[0]._label == "do_laundry"

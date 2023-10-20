@@ -1,4 +1,4 @@
-from src.deal.x_func import (
+from src.agenda.x_func import (
     single_dir_create_if_null,
     delete_dir as x_func_delete_dir,
     copy_dir,
@@ -54,7 +54,7 @@ def create_example_worlds_list():
 #     world_obj.set_worldunit_genus(genus=new_title)
 
 
-# class InvalidprojectCopyException(Exception):
+# class InvalidcultureCopyException(Exception):
 #     pass
 
 
@@ -62,7 +62,7 @@ def create_example_worlds_list():
 #     base_dir = "src/world/examples/worlds"
 #     new_dir = f"{base_dir}/{dest_handle}"
 #     if os_path.exists(new_dir):
-#         raise InvalidprojectCopyException(
+#         raise InvalidcultureCopyException(
 #             f"Cannot copy world to '{new_dir}' directory because '{new_dir}' exists."
 #         )
 #     # base_dir = world_obj.get_object_root_dir()

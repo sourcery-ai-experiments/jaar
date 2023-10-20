@@ -1,12 +1,12 @@
-# command to for converting ui form to python file: pyuic5 ui\project5IssueUI.ui -o ui\project5IssueUI.py
+# command to for converting ui form to python file: pyuic5 ui\culture5IssueUI.ui -o ui\culture5IssueUI.py
 import sys
 from ui.Project5IssueUI import Ui_Form
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
-from pyqt_func import deal_importance_diplay
-from src.deal.deal import dealunit_shop
-from src.deal.group import groupunit_shop
-from src.deal.party import partylink_shop
+from pyqt_func import agenda_importance_diplay
+from src.agenda.agenda import agendaunit_shop
+from src.agenda.group import groupunit_shop
+from src.agenda.party import partylink_shop
 
 
 class Edit5Issue(qtw.QTableWidget, Ui_Form):

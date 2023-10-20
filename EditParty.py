@@ -4,10 +4,10 @@ from ui.EditPartyUI import Ui_Form
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from EditParty2bd import EditParty2bd
-from pyqt_func import deal_importance_diplay
-from src.deal.deal import dealunit_shop
-from src.deal.group import groupunit_shop
-from src.deal.party import partylink_shop
+from pyqt_func import agenda_importance_diplay
+from src.agenda.agenda import agendaunit_shop
+from src.agenda.group import groupunit_shop
+from src.agenda.party import partylink_shop
 
 
 class EditParty(qtw.QTableWidget, Ui_Form):
@@ -37,7 +37,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
 
     def party_select(self):
         party_title = self.party_table.item(self.party_table.currentRow(), 0).text()
-        self.partyunit_x = self.deal_x._partys.get(party_title)
+        self.partyunit_x = self.agenda_x._partys.get(party_title)
         self.party_title.setText(self.partyunit_x.title)
         self.refresh_groups()
 
@@ -45,14 +45,14 @@ class EditParty(qtw.QTableWidget, Ui_Form):
         group_title = self.groups_in_table.item(
             self.groups_in_table.currentRow(), 0
         ).text()
-        self.groupunit_x = self.deal_x._groups.get(group_title)
+        self.groupunit_x = self.agenda_x._groups.get(group_title)
         self.group_title.setText(self.groupunit_x.brand)
 
     def groups_out_select(self):
         group_title = self.groups_out_table.item(
             self.groups_out_table.currentRow(), 0
         ).text()
-        self.groupunit_x = self.deal_x._groups.get(group_title)
+        self.groupunit_x = self.agenda_x._groups.get(group_title)
         self.group_title.setText(self.groupunit_x.brand)
 
     def party_group_set(self):
@@ -70,7 +70,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
         single_group = ""
         groups_count = 0
         group_partylinks = []
-        for group in self.deal_x._groups.values():
+        for group in self.agenda_x._groups.values():
             for partylink in group._partys.values():
                 if partylink.title == party_title and group.brand != partylink.title:
                     groups_count += 1
@@ -92,12 +92,12 @@ class EditParty(qtw.QTableWidget, Ui_Form):
         )
         self.party_table.setRowCount(0)
 
-        partys_list = list(self.deal_x._partys.values())
+        partys_list = list(self.agenda_x._partys.values())
         partys_list.sort(key=lambda x: x.title, reverse=False)
 
         for row, party in enumerate(partys_list, start=1):
             # groups_count = 0
-            # for group in self.deal_x._groups.values():
+            # for group in self.agenda_x._groups.values():
             #     for partylink in group._partys.values():
             #         if partylink.title == party.title:
             #             groups_count += 1
@@ -108,16 +108,16 @@ class EditParty(qtw.QTableWidget, Ui_Form):
 
             self.party_table.setRowCount(row)
             self.party_table.setItem(row - 1, 0, qtw.QTableWidgetItem(party.title))
-            qt_deal_credit = qtw.QTableWidgetItem(
-                deal_importance_diplay(party._deal_credit)
+            qt_agenda_credit = qtw.QTableWidgetItem(
+                agenda_importance_diplay(party._agenda_credit)
             )
-            qt_deal_debt = qtw.QTableWidgetItem(
-                deal_importance_diplay(party._deal_debt)
+            qt_agenda_debt = qtw.QTableWidgetItem(
+                agenda_importance_diplay(party._agenda_debt)
             )
             self.party_table.setItem(row - 1, 1, qtw.QTableWidgetItem(single_group))
             self.party_table.setItem(row - 1, 2, qtw.QTableWidgetItem("#"))
-            self.party_table.setItem(row - 1, 3, qt_deal_credit)
-            # self.party_table.setItem(row - 1, 3, qt_deal_debt)
+            self.party_table.setItem(row - 1, 3, qt_agenda_credit)
+            # self.party_table.setItem(row - 1, 3, qt_agenda_debt)
             self.party_table.setItem(
                 row - 1, 4, qtw.QTableWidgetItem(f"{party.creditor_weight}")
             )
@@ -143,7 +143,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
 
         groups_in_list = [
             groupunit
-            for groupunit in self.deal_x._groups.values()
+            for groupunit in self.agenda_x._groups.values()
             if (
                 self.partyunit_x != None
                 and self.party_in_group(partyunit=self.partyunit_x, groupunit=groupunit)
@@ -174,7 +174,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
 
         groups_out_list = [
             groupunit
-            for groupunit in self.deal_x._groups.values()
+            for groupunit in self.agenda_x._groups.values()
             if (
                 self.partyunit_x != None
                 and groupunit._partys.get(groupunit.brand) is None
@@ -208,7 +208,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
 
         groups_stand_list = [
             groupunit
-            for groupunit in self.deal_x._groups.values()
+            for groupunit in self.agenda_x._groups.values()
             if self.partyunit_x != None
             and (
                 groupunit._partys.get(groupunit.brand) != None
@@ -239,17 +239,17 @@ class EditParty(qtw.QTableWidget, Ui_Form):
         self.refresh_groups_stan_table()
 
     def party_insert(self):
-        self.deal_x.add_partyunit(title=self.party_title.text())
+        self.agenda_x.add_partyunit(title=self.party_title.text())
         self.refresh_all()
 
     def party_delete(self):
-        self.deal_x.del_partyunit(title=self.party_title.text())
+        self.agenda_x.del_partyunit(title=self.party_title.text())
         self.party_title.setText("")
         self.partyunit_x = None
         self.refresh_all()
 
     def party_update(self):
-        self.deal_x.edit_partyunit_title(
+        self.agenda_x.edit_partyunit_title(
             old_title=self.party_table.item(self.party_table.currentRow(), 0).text(),
             new_title=self.party_title.text(),
             allow_party_overwite=True,
@@ -260,17 +260,17 @@ class EditParty(qtw.QTableWidget, Ui_Form):
 
     def group_insert(self):
         bu = groupunit_shop(brand=self.group_title.text())
-        self.deal_x.set_groupunit(groupunit=bu)
+        self.agenda_x.set_groupunit(groupunit=bu)
         self.refresh_groups()
 
     def group_delete(self):
-        self.deal_x.del_groupunit(groupbrand=self.group_title.text())
+        self.agenda_x.del_groupunit(groupbrand=self.group_title.text())
         self.group_title.setText("")
         self.refresh_groups()
 
     def group_update(self):
         if self.group_title != None:
-            self.deal_x.edit_groupunit_brand(
+            self.agenda_x.edit_groupunit_brand(
                 old_title=self.groups_in_table.item(
                     self.groups_in_table.currentRow(), 0
                 ).text(),
