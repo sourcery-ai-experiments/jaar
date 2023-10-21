@@ -1,6 +1,6 @@
-from src.agenda.agenda import DealUnit, PartyUnit, Road
+from src.agenda.agenda import DealUnit, PartyUnit, Road, PersonName
 from src.agenda.road import get_road_without_root_node
-from src.culture.y_func import sqlite_bool, sqlite_null
+from src.culture.y_func import sqlite_bool, sqlite_null, sqlite_to_python
 from dataclasses import dataclass
 from sqlite3 import Connection
 
@@ -310,7 +310,7 @@ WHERE currency_healer = '{currency_agenda_healer}'
 
 
 # agenda
-def get_agenda_table_create_sqlstr() -> str:
+def get_agendaunit_table_create_sqlstr() -> str:
     """Create table that references the title of every agenda. The healer name of the one running that agenda's kitchen."""
     return """
 CREATE TABLE IF NOT EXISTS agendaunit (
@@ -322,14 +322,53 @@ CREATE TABLE IF NOT EXISTS agendaunit (
 """
 
 
-def get_agenda_table_insert_sqlstr(x_agenda: DealUnit) -> str:
+def get_agendaunit_table_insert_sqlstr(x_agenda: DealUnit) -> str:
     return f"""
 INSERT INTO agendaunit (
   healer
+, voice_rank
 )
 VALUES (
   '{x_agenda._healer}' 
+, NULL
 )
+;
+"""
+
+
+def get_agendaunits_select_sqlstr():
+    return """
+SELECT 
+  healer
+, voice_rank
+FROM agendaunit
+;
+"""
+
+
+@dataclass
+class AgendaBankUnit:
+    healer: PersonName
+    voice_rank: int
+
+
+def get_agendabankunits_dict(db_conn: Connection) -> dict[PersonName:AgendaBankUnit]:
+    dict_x = {}
+    results = db_conn.execute(get_agendaunits_select_sqlstr())
+
+    for row in results.fetchall():
+        x_agendabankunit = AgendaBankUnit(
+            healer=row[0], voice_rank=sqlite_to_python(row[1])
+        )
+        dict_x[x_agendabankunit.healer] = x_agendabankunit
+    return dict_x
+
+
+def get_agendaunit_update_sqlstr(healer: PersonName, voice_rank: int) -> str:
+    return f"""
+UPDATE agendaunit
+SET voice_rank = {voice_rank}
+WHERE healer = '{healer}'
 ;
 """
 
@@ -662,7 +701,7 @@ FROM groupunit_catalog
 
 
 def get_create_table_if_not_exist_sqlstrs() -> list[str]:
-    list_x = [get_agenda_table_create_sqlstr()]
+    list_x = [get_agendaunit_table_create_sqlstr()]
     list_x.append(get_acptfact_catalog_table_create_sqlstr())
     list_x.append(get_idea_catalog_table_create_sqlstr())
     list_x.append(get_ledger_table_create_sqlstr())

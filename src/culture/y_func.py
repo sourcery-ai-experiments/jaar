@@ -21,6 +21,10 @@ def sqlite_text(bool_x) -> str:
     return x_text
 
 
+def sqlite_to_python(query_value) -> str:
+    return None if query_value == "NULL" else query_value
+
+
 def check_connection(conn: Connection) -> bool:
     try:
         conn.cursor()

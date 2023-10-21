@@ -25,7 +25,7 @@ from src.culture.bank_sqlstr import (
     get_river_bucket_table_insert_sqlstr,
     get_create_table_if_not_exist_sqlstrs,
     get_ledger_table_insert_sqlstr,
-    get_agenda_table_insert_sqlstr,
+    get_agendaunit_table_insert_sqlstr,
     get_river_ledger_unit,
     LedgerUnit,
     RiverLedgerUnit,
@@ -39,6 +39,8 @@ from src.culture.bank_sqlstr import (
     GroupUnitCatalog,
     get_groupunit_catalog_table_insert_sqlstr,
     get_groupunit_catalog_dict,
+    get_agendabankunits_dict,
+    get_agendaunit_update_sqlstr,
 )
 
 
@@ -56,6 +58,19 @@ class ProjectUnit:
 
     def set_person_importance(self, person_importance: float):
         self._person_importance = person_importance
+
+    def set_all_agendaunit_voice_ranks(self):
+        x_agendabankunits = list(
+            get_agendabankunits_dict(self.get_bank_conn()).values()
+        )
+        x_agendabankunits.sort(key=lambda x: x.healer, reverse=False)
+        for count_x, x_agendabankunit in enumerate(x_agendabankunits):
+            self._set_single_agendaunit_voice_rank(x_agendabankunit.healer, count_x)
+
+    def _set_single_agendaunit_voice_rank(self, healer: PersonName, voice_rank: int):
+        with self.get_bank_conn() as bank_conn:
+            bank_conn.execute(get_agendaunit_update_sqlstr(healer, voice_rank))
+            print(f"{get_agendaunit_update_sqlstr(healer, voice_rank)=}")
 
     # banking
     def set_agenda_bank_attrs(self, agenda_healer: str):
@@ -206,7 +221,7 @@ class ProjectUnit:
     def _bank_insert_agendaunit(self, agendaunit_x: DealUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            cur.execute(get_agenda_table_insert_sqlstr(x_agenda=agendaunit_x))
+            cur.execute(get_agendaunit_table_insert_sqlstr(x_agenda=agendaunit_x))
 
     def _bank_insert_partyunit(self, agendaunit_x: DealUnit):
         with self.get_bank_conn() as bank_conn:

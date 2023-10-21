@@ -727,11 +727,10 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyBuildsASingleContinuousRan
 def test_culture_set_river_sphere_for_agenda_CorrectlyUpatesDealPartyUnits(
     env_dir_setup_cleanup,
 ):
-    # GIVEN 5 agendas, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
+    """GIVEN 5 agendas, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal"""
+    # GIVEN
     culture_handle = get_temp_env_handle()
-    x_culture = cultureunit_shop(
-        handle=culture_handle, cultures_dir=get_test_cultures_dir()
-    )
+    x_culture = cultureunit_shop(culture_handle, get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
