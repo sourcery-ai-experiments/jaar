@@ -4,7 +4,7 @@ from Edit5Issue import Edit5Issue
 from EditMain import EditMainView
 from PyQt5 import QtCore as qtc
 from src.agenda.agenda import (
-    DealUnit,
+    AgendaUnit,
     get_from_json as get_agenda_from_json,
 )
 from sys import argv as sys_argv, exit as sys_exit
@@ -230,7 +230,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def agenda_insert(self):
         self.culture_x.save_public_agenda(
-            agenda_x=DealUnit(_healer=self.agenda_healer.text())
+            agenda_x=AgendaUnit(_healer=self.agenda_healer.text())
         )
         self.refresh_culture()
 

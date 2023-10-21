@@ -6,7 +6,7 @@ from src.agenda.required_idea import (
     acptfactunit_shop,
 )
 from src.agenda.agenda import (
-    DealUnit,
+    AgendaUnit,
     agendaunit_shop,
     get_from_json as agenda_get_from_json,
 )
@@ -14,13 +14,13 @@ from src.agenda.x_func import open_file as x_func_open_file
 from src.agenda.examples.agenda_env import agenda_env
 
 
-def agenda_v001() -> DealUnit:
+def agenda_v001() -> AgendaUnit:
     return agenda_get_from_json(
         x_func_open_file(dest_dir=agenda_env(), file_title="example_agenda1.json")
     )
 
 
-def agenda_v001_with_large_goal() -> DealUnit:
+def agenda_v001_with_large_goal() -> AgendaUnit:
     x_agenda = agenda_v001()
     day_minute_text = "day_minute"
     day_minute_road = f"{x_agenda._culture_handle},{day_minute_text}"
@@ -63,13 +63,13 @@ def agenda_v001_with_large_goal() -> DealUnit:
     return x_agenda
 
 
-def agenda_v002() -> DealUnit:
+def agenda_v002() -> AgendaUnit:
     return agenda_get_from_json(
         x_func_open_file(dest_dir=agenda_env(), file_title="example_agenda2.json")
     )
 
 
-def get_agenda_with_4_levels() -> DealUnit:
+def get_agenda_with_4_levels() -> AgendaUnit:
     healer_text = "Noa"
     x_agenda = agendaunit_shop(_healer=healer_text, _weight=10)
     print(f"{x_agenda._auto_output_to_public=}")
@@ -136,7 +136,7 @@ def get_agenda_with_4_levels() -> DealUnit:
     return x_agenda
 
 
-def get_agenda_with_4_levels_and_2requireds() -> DealUnit:
+def get_agenda_with_4_levels_and_2requireds() -> AgendaUnit:
     x_agenda = get_agenda_with_4_levels()
     week_text = "weekdays"
     week_road = f"{x_agenda._culture_handle},{week_text}"
@@ -159,7 +159,7 @@ def get_agenda_with_4_levels_and_2requireds() -> DealUnit:
     return x_agenda
 
 
-def get_agenda_with_4_levels_and_2requireds_2acptfacts() -> DealUnit:
+def get_agenda_with_4_levels_and_2requireds_2acptfacts() -> AgendaUnit:
     x_agenda = get_agenda_with_4_levels_and_2requireds()
     week_text = "weekdays"
     week_road = f"{x_agenda._culture_handle},{week_text}"
@@ -174,7 +174,7 @@ def get_agenda_with_4_levels_and_2requireds_2acptfacts() -> DealUnit:
     return x_agenda
 
 
-def get_agenda_with7amCleanTableRequired() -> DealUnit:
+def get_agenda_with7amCleanTableRequired() -> AgendaUnit:
     x_agenda = get_agenda_with_4_levels_and_2requireds_2acptfacts()
 
     time_text = "timetech"
@@ -243,7 +243,7 @@ def get_agenda_with7amCleanTableRequired() -> DealUnit:
     return x_agenda
 
 
-def get_agenda_1Task_1CE0MinutesRequired_1AcptFact() -> DealUnit:
+def get_agenda_1Task_1CE0MinutesRequired_1AcptFact() -> AgendaUnit:
     healer_text = "Bob"
     x_agenda = agendaunit_shop(_healer=healer_text, _weight=10)
     ced_min_label = "CE0_minutes"
@@ -276,7 +276,7 @@ def get_agenda_1Task_1CE0MinutesRequired_1AcptFact() -> DealUnit:
     return x_agenda
 
 
-def get_agenda_x1_3levels_1required_1acptfacts() -> DealUnit:
+def get_agenda_x1_3levels_1required_1acptfacts() -> AgendaUnit:
     healer_text = "Kol"
     x_agenda = agendaunit_shop(_healer=healer_text, _weight=10)
     shave_text = "shave"
@@ -312,7 +312,7 @@ def get_agenda_x1_3levels_1required_1acptfacts() -> DealUnit:
     return x_agenda
 
 
-def get_agenda_base_time_example() -> DealUnit:
+def get_agenda_base_time_example() -> AgendaUnit:
     healer_text = "Sue"
     x_agenda = agendaunit_shop(_healer=healer_text)
     plant = "plant"
@@ -322,7 +322,7 @@ def get_agenda_base_time_example() -> DealUnit:
     return x_agenda
 
 
-def get_agenda_irrational_example() -> DealUnit:
+def get_agenda_irrational_example() -> AgendaUnit:
     # this agenda has no conclusive goal because 2 promise ideas are in contradiction
     # "egg first" is true when "chicken first" is false
     # "chicken first" is true when "egg first" is true

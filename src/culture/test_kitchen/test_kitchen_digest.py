@@ -220,10 +220,10 @@ def test_healer_get_remelded_output_agenda_withEmptyDigestDict(
     )
     ux.create_core_dir_and_files()
     sx_output_before = ux._admin.get_remelded_output_agenda()
-    assert str(type(sx_output_before)).find(".agenda.DealUnit'>")
+    assert str(type(sx_output_before)).find(".agenda.AgendaUnit'>")
     assert sx_output_before._healer == kitchen_title_x
     assert sx_output_before._idearoot._label == get_temp_culture_handle()
-    # ux.set_digested_agenda(agenda_x=DealUnit(_healer="digested1"))
+    # ux.set_digested_agenda(agenda_x=AgendaUnit(_healer="digested1"))
 
     # WHEN
     sx_output_after = ux._admin.get_remelded_output_agenda()
@@ -234,7 +234,7 @@ def test_healer_get_remelded_output_agenda_withEmptyDigestDict(
     healer_agenda_x._idearoot._pad = ""
     healer_agenda_x.set_agenda_metrics()
 
-    assert str(type(sx_output_after)).find(".agenda.DealUnit'>")
+    assert str(type(sx_output_after)).find(".agenda.AgendaUnit'>")
     assert sx_output_after._weight == healer_agenda_x._weight
     assert sx_output_after._idearoot._pad == healer_agenda_x._idearoot._pad
     assert (
@@ -253,7 +253,7 @@ def test_healer_get_remelded_output_agenda_with1DigestedDeal(
     ux = kitchenunit_shop(yao_text, env_dir, get_temp_culture_handle())
     ux.create_core_dir_and_files()
     sx_output_old = ux._admin.get_remelded_output_agenda()
-    assert str(type(sx_output_old)).find(".agenda.DealUnit'>")
+    assert str(type(sx_output_old)).find(".agenda.AgendaUnit'>")
     assert sx_output_old._healer == yao_text
     assert sx_output_old._idearoot._label == get_temp_culture_handle()
     input_agenda = example_healers_get_2node_agenda()
@@ -264,7 +264,7 @@ def test_healer_get_remelded_output_agenda_with1DigestedDeal(
     sx_output_new = ux._admin.get_remelded_output_agenda()
 
     # THEN
-    assert str(type(sx_output_new)).find(".agenda.DealUnit'>")
+    assert str(type(sx_output_new)).find(".agenda.AgendaUnit'>")
 
     assert sx_output_new._weight == 0
     assert sx_output_new._weight != input_agenda._weight
@@ -287,7 +287,7 @@ def test_healer_get_remelded_output_agenda_with1DigestedDeal(
 #     env_dir = get_temp_kitchenunit_dir()
 #     ux = kitchenunit_shop(title="test8", env_dir=env_dir)
 #     sx_output_old = ux._admin.get_remelded_output_agenda()
-#     assert str(type(sx_output_old)).find(".agenda.DealUnit'>")
+#     assert str(type(sx_output_old)).find(".agenda.AgendaUnit'>")
 #     assert sx_output_old._groups == {}
 #     assert sx_output_old._partys == {}
 #     assert sx_output_old._acptfacts == {}
@@ -318,7 +318,7 @@ def test_healer_get_remelded_output_agenda_with1DigestedDeal(
 #     sx_output_new = ux._admin.get_remelded_output_agenda()
 
 #     # THEN
-#     assert str(type(sx_output_new)).find(".agenda.DealUnit'>")
+#     assert str(type(sx_output_new)).find(".agenda.AgendaUnit'>")
 #     assert sx_output_new._acptfacts == s1._acptfacts
 #     assert sx_output_new._partys == s1._partys
 #     assert sx_output_new._groups == s1._groups

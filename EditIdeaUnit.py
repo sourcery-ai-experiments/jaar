@@ -229,7 +229,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.yo_begin.setText(num2str(self.yo_x._begin))
         self.yo_range_source_road.clear()
         self.yo_numeric_road.clear()
-        if f"{type(self.yo_x)}" != "<class 'lw.agenda.DealUnit'>":
+        if f"{type(self.yo_x)}" != "<class 'lw.agenda.AgendaUnit'>":
             self.populate_idea_kid_actions()
         self.yo_close.setText(num2str(self.yo_x._close))
         self.yo_action_cb.setChecked(self.yo_x.promise)

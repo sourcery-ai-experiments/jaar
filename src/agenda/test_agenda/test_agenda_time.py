@@ -1,4 +1,4 @@
-from src.agenda.agenda import DealUnit, agendaunit_shop
+from src.agenda.agenda import AgendaUnit, agendaunit_shop
 from datetime import datetime
 from random import randint
 
@@ -41,7 +41,7 @@ def test_get_time_c400year_from_min_WorksCorrectly():
     assert x_agenda.get_time_c400yr_from_min(min=157785120)[0] == 300
 
 
-def _check_time_conversion_works_with_random_inputs(x_agenda: DealUnit):
+def _check_time_conversion_works_with_random_inputs(x_agenda: AgendaUnit):
     py_dt = datetime(
         year=randint(1, 2800),
         month=randint(1, 12),

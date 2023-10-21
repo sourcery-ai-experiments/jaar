@@ -4,7 +4,7 @@ from src.agenda.examples.example_agendas import (
     agenda_v001 as examples_agenda_v001,
     agenda_v001_with_large_goal as examples_agenda_v001_with_large_goal,
 )
-from src.agenda.agenda import DealUnit, agendaunit_shop, get_intersection_of_partys
+from src.agenda.agenda import AgendaUnit, agendaunit_shop, get_intersection_of_partys
 from src.agenda.idea import ideacore_shop
 from pytest import raises as pytest_raises
 from src.culture.bank_sqlstr import RiverTallyUnit
@@ -608,7 +608,7 @@ def test_agenda_get_idea_list_WithAllPartysWeighted():
     # assert partyunit_agenda_debt_sum < 1.00000001
 
 
-def clear_all_partyunits_groupunits_agenda_goal_credit_debt(x_agenda: DealUnit):
+def clear_all_partyunits_groupunits_agenda_goal_credit_debt(x_agenda: AgendaUnit):
     # DELETE agenda_goal_debt and agenda_goal_credit
     for groupunit_x in x_agenda._groups.values():
         groupunit_x.reset_agenda_credit_debt()

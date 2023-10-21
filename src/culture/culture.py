@@ -1,5 +1,5 @@
 from src.agenda.agenda import (
-    DealUnit,
+    AgendaUnit,
     agendaunit_shop,
     get_from_json as get_agenda_from_json,
     partylink_shop,
@@ -218,19 +218,19 @@ class ProjectUnit:
             self._bank_insert_ideaunit(agendaunit_x)
             self._bank_insert_acptfact(agendaunit_x)
 
-    def _bank_insert_agendaunit(self, agendaunit_x: DealUnit):
+    def _bank_insert_agendaunit(self, agendaunit_x: AgendaUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
             cur.execute(get_agendaunit_table_insert_sqlstr(x_agenda=agendaunit_x))
 
-    def _bank_insert_partyunit(self, agendaunit_x: DealUnit):
+    def _bank_insert_partyunit(self, agendaunit_x: AgendaUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
             for partyunit_x in agendaunit_x._partys.values():
                 sqlstr = get_ledger_table_insert_sqlstr(agendaunit_x, partyunit_x)
                 cur.execute(sqlstr)
 
-    def _bank_insert_groupunit(self, agendaunit_x: DealUnit):
+    def _bank_insert_groupunit(self, agendaunit_x: AgendaUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
             for groupunit_x in agendaunit_x._groups.values():
@@ -242,7 +242,7 @@ class ProjectUnit:
                 sqlstr = get_groupunit_catalog_table_insert_sqlstr(groupunit_catalog_x)
                 cur.execute(sqlstr)
 
-    def _bank_insert_ideaunit(self, agendaunit_x: DealUnit):
+    def _bank_insert_ideaunit(self, agendaunit_x: AgendaUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
             for idea_x in agendaunit_x._idea_dict.values():
@@ -250,7 +250,7 @@ class ProjectUnit:
                 sqlstr = get_idea_catalog_table_insert_sqlstr(idea_catalog_x)
                 cur.execute(sqlstr)
 
-    def _bank_insert_acptfact(self, agendaunit_x: DealUnit):
+    def _bank_insert_acptfact(self, agendaunit_x: AgendaUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
             for acptfact_x in agendaunit_x._idearoot._acptfactunits.values():
@@ -382,14 +382,16 @@ class ProjectUnit:
         per_x = self.get_kitchenunit(kitchen_title)
         return per_x._admin._agendas_ignore_dir
 
-    def get_public_agenda(self, healer: str) -> DealUnit:
+    def get_public_agenda(self, healer: str) -> AgendaUnit:
         return get_agenda_from_json(
             x_func_open_file(
                 dest_dir=self.get_public_dir(), file_title=f"{healer}.json"
             )
         )
 
-    def get_agenda_from_ignores_dir(self, kitchen_title: str, _healer: str) -> DealUnit:
+    def get_agenda_from_ignores_dir(
+        self, kitchen_title: str, _healer: str
+    ) -> AgendaUnit:
         return get_agenda_from_json(
             x_func_open_file(
                 dest_dir=self.get_ignores_dir(kitchen_title=kitchen_title),
@@ -397,7 +399,7 @@ class ProjectUnit:
             )
         )
 
-    def set_ignore_agenda_file(self, kitchen_title: str, agenda_obj: DealUnit):
+    def set_ignore_agenda_file(self, kitchen_title: str, agenda_obj: AgendaUnit):
         x_kitchenunit = self.get_kitchenunit(title=kitchen_title)
         x_kitchenunit.set_ignore_agenda_file(
             agendaunit=agenda_obj, src_agenda_healer=agenda_obj._healer
@@ -412,7 +414,7 @@ class ProjectUnit:
     def del_public_agenda(self, x_agenda_healer: str):
         x_func_delete_dir(f"{self.get_public_dir()}/{x_agenda_healer}.json")
 
-    def save_public_agenda(self, x_agenda: DealUnit):
+    def save_public_agenda(self, x_agenda: AgendaUnit):
         x_agenda.set_culture_handle(culture_handle=self.handle)
         x_func_save_file(
             dest_dir=self.get_public_dir(),
@@ -431,11 +433,11 @@ class ProjectUnit:
     def _kitchenunit_set_depot_agenda(
         self,
         kitchenunit: KitchenUnit,
-        agendaunit: DealUnit,
+        agendaunit: AgendaUnit,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
-        ignore_agenda: DealUnit = None,
+        ignore_agenda: AgendaUnit = None,
     ):
         kitchenunit.set_depot_agenda(
             x_agenda=agendaunit,
@@ -455,7 +457,7 @@ class ProjectUnit:
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
-        ignore_agenda: DealUnit = None,
+        ignore_agenda: AgendaUnit = None,
     ):
         x_kitchenunit = self.get_kitchenunit(title=kitchen_title)
         x_agenda = self.get_public_agenda(healer=agenda_healer)
@@ -509,7 +511,7 @@ class ProjectUnit:
         x_kitchenunit.del_depot_agenda(agenda_healer=agendaunit_healer)
 
     # Healer output_agenda
-    def get_output_agenda(self, kitchen_title: str) -> DealUnit:
+    def get_output_agenda(self, kitchen_title: str) -> AgendaUnit:
         x_kitchenunit = self.get_kitchenunit(title=kitchen_title)
         return x_kitchenunit._admin.get_remelded_output_agenda()
 

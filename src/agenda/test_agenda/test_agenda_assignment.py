@@ -1,4 +1,4 @@
-from src.agenda.agenda import agendaunit_shop, DealUnit
+from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src.agenda.idea import ideacore_shop
 from src.agenda.required_idea import RequiredUnit
 from src.agenda.party import partyunit_shop, partylink_shop
@@ -31,7 +31,7 @@ def test_agendaunit_get_assignment_ReturnsDeal():
     )
 
     # THEN
-    assert str(type(x_assignment_agenda)) == "<class 'src.agenda.agenda.DealUnit'>"
+    assert str(type(x_assignment_agenda)) == "<class 'src.agenda.agenda.AgendaUnit'>"
     assert x_assignment_agenda == agenda_x
 
 

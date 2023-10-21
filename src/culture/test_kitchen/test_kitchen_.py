@@ -189,7 +189,7 @@ def test_kitchenunit_set_seed_savesGivenDealSet_seed_None(
     tim_kitchen._seed._idearoot._uid = seed_uid_text
 
     new_agenda = agendaunit_shop(_healer=tim_text)
-    new_agenda_uid_text = "this is pulled DealUnit uid"
+    new_agenda_uid_text = "this is pulled AgendaUnit uid"
     new_agenda._idearoot._uid = new_agenda_uid_text
 
     tim_kitchen.set_seed(new_agenda)
@@ -227,7 +227,7 @@ def test_kitchenunit_set_seed_if_emtpy_DoesNotReplace_seed(
     )
     tim_kitchen.create_core_dir_and_files()
     saved_agenda = agendaunit_shop(_healer=tim_text)
-    saved_agenda_uid_text = "this is pulled DealUnit uid"
+    saved_agenda_uid_text = "this is pulled AgendaUnit uid"
     saved_agenda._idearoot._uid = saved_agenda_uid_text
     tim_kitchen.set_seed(saved_agenda)
     tim_kitchen.get_seed()

@@ -2,17 +2,17 @@ from src.agenda.examples.example_agendas import (
     get_agenda_1Task_1CE0MinutesRequired_1AcptFact,
     get_agenda_with_4_levels,
 )
-from src.agenda.agenda import agendaunit_shop, DealUnit
+from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src.agenda.road import get_default_culture_root_label as root_label
 from src.agenda.origin import originunit_shop
 from pytest import raises as pytest_raises
 
 
-def test_DealUnit_exists():
+def test_AgendaUnit_exists():
     # GIVEN
 
     # WHEN
-    x_agenda = DealUnit()
+    x_agenda = AgendaUnit()
 
     assert x_agenda
     assert x_agenda._healer is None

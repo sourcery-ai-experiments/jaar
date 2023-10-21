@@ -91,7 +91,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     open_editproblem = qtc.pyqtSignal(bool)
     open_edit_goal = qtc.pyqtSignal(bool)
     open_edittime = qtc.pyqtSignal(bool)
-    agenda_x_signal = qtc.pyqtSignal(DealUnit)
+    agenda_x_signal = qtc.pyqtSignal(AgendaUnit)
 
     def __init__(self, file_open_path):
         super().__init__()
@@ -296,7 +296,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agenda_load(x_agenda_json=self.agenda_x_json)
 
     def agenda_new(self):
-        self.agenda_x = DealUnit(_healer="new")
+        self.agenda_x = AgendaUnit(_healer="new")
         self.agenda_x._set_acptfacts_empty_if_null()
         self.agenda_x.set_partys_empty_if_null()
         self.agenda_x.set_groupunits_empty_if_null()

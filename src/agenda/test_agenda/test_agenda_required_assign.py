@@ -119,7 +119,7 @@ def test_agenda_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir(
     assert four_idea._assignedheir == assigned_heir_x
 
 
-def test_DealUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignUnit():
+def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignUnit():
     # GIVEN
     healer_text = "Noa"
     x_agenda1 = agendaunit_shop(_healer=healer_text)
@@ -153,7 +153,7 @@ def test_DealUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignUni
     assert list(filtered_swim_suffgroups) == [xia_text]
 
 
-def test_DealUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
+def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     # GIVEN
     healer_text = "Noa"
     x_agenda1 = agendaunit_shop(_healer=healer_text)

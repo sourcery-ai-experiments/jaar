@@ -314,7 +314,7 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     x_agenda = agenda_get_from_json(x_agenda_json=x_json)
 
     # THEN
-    assert str(type(x_agenda)).find(".agenda.DealUnit'>") > 0
+    assert str(type(x_agenda)).find(".agenda.AgendaUnit'>") > 0
     assert x_agenda._healer != None
     assert x_agenda._healer == y_agenda._healer
     assert x_agenda._culture_handle == y_agenda._culture_handle
@@ -373,7 +373,7 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
 #     x_agenda3 = agenda_get_from_json(x_agenda_json=x_agenda3_json)
 
 #     # THEN
-#     assert str(type(x_agenda3)).find(".agenda.DealUnit'>") > 0
+#     assert str(type(x_agenda3)).find(".agenda.AgendaUnit'>") > 0
 #     assert x_agenda3._healer != None
 #     assert x_agenda3._healer == x_agenda1._healer
 #     assert x_agenda3._max_tree_traverse == 2
@@ -387,7 +387,7 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
 #     assert len(x_agenda3._partys) == 22
 
 
-def test_get_dict_of_agenda_from_dict_ReturnsDictOfDealUnits():
+def test_get_dict_of_agenda_from_dict_ReturnsDictOfAgendaUnits():
     # GIVEN
     x_agenda1 = example_agendas_agenda_v001()
     x_agenda2 = example_agendas_get_agenda_x1_3levels_1required_1acptfacts()

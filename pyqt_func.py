@@ -45,7 +45,7 @@ def get_pyqttree(
     required_view_flag: bool = None,
     required_view_title: bool = None,
     acptfactheir_view_flag: bool = None,
-    source_agenda: DealUnit = None,
+    source_agenda: AgendaUnit = None,
 ) -> QTreeWidgetItem:
     pyqttree_holder = PYQTTreeHolder(
         ideacore=idearoot,

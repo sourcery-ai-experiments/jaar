@@ -1,4 +1,4 @@
-# from lw.agenda import DealUnit
+# from lw.agenda import AgendaUnit
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.x_func import (
     single_dir_create_if_null,

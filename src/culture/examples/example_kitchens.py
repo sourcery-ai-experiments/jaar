@@ -1,5 +1,5 @@
 from src.agenda.agenda import (
-    DealUnit,
+    AgendaUnit,
     agendaunit_shop,
     ideacore_shop,
     assigned_unit_shop,
@@ -10,7 +10,7 @@ from src.culture.examples.kitchen_env_kit import get_temp_culture_handle
 from random import randrange
 
 
-def get_1node_agenda() -> DealUnit:
+def get_1node_agenda() -> AgendaUnit:
     a_text = "A"
     x_agenda = agendaunit_shop(_healer=a_text)
     x_agenda.set_culture_handle(get_temp_culture_handle())
@@ -18,7 +18,7 @@ def get_1node_agenda() -> DealUnit:
     return x_agenda
 
 
-def get_Jnode2node_agenda() -> DealUnit:
+def get_Jnode2node_agenda() -> AgendaUnit:
     healer_text = "J"
     x_agenda = agendaunit_shop(_healer=healer_text)
     x_agenda.set_culture_handle(get_temp_culture_handle())
@@ -29,7 +29,7 @@ def get_Jnode2node_agenda() -> DealUnit:
     return x_agenda
 
 
-def get_2node_agenda() -> DealUnit:
+def get_2node_agenda() -> AgendaUnit:
     healer_text = "A"
     b_text = "B"
     x_agenda = agendaunit_shop(_healer=healer_text)
@@ -40,7 +40,7 @@ def get_2node_agenda() -> DealUnit:
     return x_agenda
 
 
-def get_3node_agenda() -> DealUnit:
+def get_3node_agenda() -> AgendaUnit:
     a_text = "A"
     a_road = a_text
     x_agenda = agendaunit_shop(_healer=a_text)
@@ -55,7 +55,7 @@ def get_3node_agenda() -> DealUnit:
     return x_agenda
 
 
-def get_3node_D_E_F_agenda() -> DealUnit:
+def get_3node_D_E_F_agenda() -> AgendaUnit:
     d_text = "D"
     d_road = d_text
     x_agenda = agendaunit_shop(_healer=d_text)
@@ -70,7 +70,7 @@ def get_3node_D_E_F_agenda() -> DealUnit:
     return x_agenda
 
 
-def get_6node_agenda() -> DealUnit:
+def get_6node_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop(_healer="A")
     x_agenda.set_culture_handle(get_temp_culture_handle())
     idea_b = ideacore_shop(_label="B")
@@ -87,7 +87,7 @@ def get_6node_agenda() -> DealUnit:
     return x_agenda
 
 
-def get_7nodeInsertH_agenda() -> DealUnit:
+def get_7nodeInsertH_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop(_healer="A")
     x_agenda.set_culture_handle(get_temp_culture_handle())
     idea_b = ideacore_shop(_label="B")
@@ -106,7 +106,7 @@ def get_7nodeInsertH_agenda() -> DealUnit:
     return x_agenda
 
 
-def get_5nodeHG_agenda() -> DealUnit:
+def get_5nodeHG_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop(_healer="A")
     x_agenda.set_culture_handle(get_temp_culture_handle())
     idea_b = ideacore_shop(_label="B")
@@ -121,7 +121,7 @@ def get_5nodeHG_agenda() -> DealUnit:
     return x_agenda
 
 
-def get_7nodeJRoot_agenda() -> DealUnit:
+def get_7nodeJRoot_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop(_healer="J")
     x_agenda.set_culture_handle(get_temp_culture_handle())
     idea_a = ideacore_shop(_label="A")
@@ -140,7 +140,7 @@ def get_7nodeJRoot_agenda() -> DealUnit:
     return x_agenda
 
 
-def get_7nodeJRootWithH_agenda() -> DealUnit:
+def get_7nodeJRootWithH_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop(_healer="J")
     x_agenda.set_culture_handle(get_temp_culture_handle())
     idea_a = ideacore_shop(_label="A")
@@ -167,7 +167,7 @@ def get_healer_2agenda(env_dir, culture_handle) -> KitchenUnit:
     return yao_healer
 
 
-def get_agenda_2CleanNodesRandomWeights(_healer: str = None) -> DealUnit:
+def get_agenda_2CleanNodesRandomWeights(_healer: str = None) -> AgendaUnit:
     healer_text = _healer if _healer != None else "ernie"
     x_agenda = agendaunit_shop(_healer=healer_text)
     casa_text = "casa"
@@ -187,7 +187,7 @@ def get_agenda_2CleanNodesRandomWeights(_healer: str = None) -> DealUnit:
     return x_agenda
 
 
-def get_agenda_3CleanNodesRandomWeights(_healer: str = None) -> DealUnit:
+def get_agenda_3CleanNodesRandomWeights(_healer: str = None) -> AgendaUnit:
     healer_text = _healer if _healer != None else "ernie"
     x_agenda = agendaunit_shop(_healer=healer_text)
     casa_text = "casa"
@@ -212,7 +212,7 @@ def get_agenda_3CleanNodesRandomWeights(_healer: str = None) -> DealUnit:
     return x_agenda
 
 
-def get_agenda_assignment_laundry_example1() -> DealUnit:
+def get_agenda_assignment_laundry_example1() -> AgendaUnit:
     amer_text = "Amer"
     amer_agenda = agendaunit_shop(_healer=amer_text)
     cali_text = "Cali"

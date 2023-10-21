@@ -89,7 +89,7 @@ class AssignmentPartyException(Exception):
 
 
 @dataclasses.dataclass
-class DealUnit:
+class AgendaUnit:
     _healer: PersonName = None
     _weight: float = None
     _partys: dict[PartyTitle:PartyUnit] = None
@@ -153,7 +153,7 @@ class DealUnit:
         self.set_agenda_metrics()
         idea_x = self.get_idea_kid(road=road)
         new_weight = self._weight * idea_x._agenda_importance
-        cx = DealUnit(_healer=self._idearoot._label, _weight=new_weight)
+        cx = AgendaUnit(_healer=self._idearoot._label, _weight=new_weight)
 
         for road_assc in sorted(list(self._get_relevant_roads({road}))):
             src_yx = self.get_idea_kid(road=road_assc)
@@ -2235,14 +2235,14 @@ def agendaunit_shop(
     _healer: PersonName = None,
     _weight: float = None,
     _auto_output_to_public: bool = None,
-) -> DealUnit:
+) -> AgendaUnit:
     if _weight is None:
         _weight = 1
     if _healer is None:
         _healer = ""
     if _auto_output_to_public is None:
         _auto_output_to_public = False
-    x_agenda = DealUnit(
+    x_agenda = AgendaUnit(
         _healer=_healer, _weight=_weight, _auto_output_to_public=_auto_output_to_public
     )
     x_agenda._culture_handle = root_label()
@@ -2253,11 +2253,11 @@ def agendaunit_shop(
     return x_agenda
 
 
-def get_from_json(x_agenda_json: str) -> DealUnit:
+def get_from_json(x_agenda_json: str) -> AgendaUnit:
     return get_from_dict(cx_dict=json.loads(x_agenda_json))
 
 
-def get_from_dict(cx_dict: dict) -> DealUnit:
+def get_from_dict(cx_dict: dict) -> AgendaUnit:
     x_agenda = agendaunit_shop()
     x_agenda.set_culture_handle(cx_dict["_culture_handle"])
     x_agenda._idearoot._requiredunits = requireds_get_from_dict(
@@ -2354,7 +2354,7 @@ def get_from_dict(cx_dict: dict) -> DealUnit:
     return x_agenda
 
 
-def get_dict_of_agenda_from_dict(x_dict: dict[str:dict]) -> dict[str:DealUnit]:
+def get_dict_of_agenda_from_dict(x_dict: dict[str:dict]) -> dict[str:AgendaUnit]:
     agendaunits = {}
     for agendaunit_dict in x_dict.values():
         x_agenda = get_from_dict(cx_dict=agendaunit_dict)
@@ -2362,7 +2362,9 @@ def get_dict_of_agenda_from_dict(x_dict: dict[str:dict]) -> dict[str:DealUnit]:
     return agendaunits
 
 
-def get_meld_of_agenda_files(primary_agenda: DealUnit, meldees_dir: str) -> DealUnit:
+def get_meld_of_agenda_files(
+    primary_agenda: AgendaUnit, meldees_dir: str
+) -> AgendaUnit:
     primary_agenda.set_agenda_metrics()
     for meldee_file_x in x_func_dir_files(dir_path=meldees_dir):
         meldee_x = get_from_json(

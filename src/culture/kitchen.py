@@ -3,7 +3,7 @@ from src.agenda.agenda import (
     get_dict_of_agenda_from_dict,
     get_meld_of_agenda_files,
     PersonName,
-    DealUnit,
+    AgendaUnit,
     agendaunit_shop,
     partyunit_shop,
     get_from_json as agendaunit_get_from_json,
@@ -68,7 +68,7 @@ class KitchenAdmin:
 
         rename_dir(src=old_kitchenunit_dir, dst=self._kitchenunit_dir)
 
-    def create_core_dir_and_files(self, seed_agenda: DealUnit = None):
+    def create_core_dir_and_files(self, seed_agenda: AgendaUnit = None):
         single_dir_create_if_null(x_path=self._kitchenunit_dir)
         single_dir_create_if_null(x_path=self._agendas_public_dir)
         single_dir_create_if_null(x_path=self._agendas_depot_dir)
@@ -80,7 +80,7 @@ class KitchenAdmin:
             self.save_seed_agenda(seed_agenda)
 
     def _save_agenda_to_path(
-        self, x_agenda: DealUnit, dest_dir: str, file_title: str = None
+        self, x_agenda: AgendaUnit, dest_dir: str, file_title: str = None
     ):
         if file_title is None:
             file_title = f"{x_agenda._healer}.json"
@@ -93,11 +93,11 @@ class KitchenAdmin:
             replace=True,
         )
 
-    def save_agenda_to_public(self, x_agenda: DealUnit):
+    def save_agenda_to_public(self, x_agenda: AgendaUnit):
         dest_dir = self._agendas_public_dir
         self._save_agenda_to_path(x_agenda, dest_dir)
 
-    def save_ignore_agenda(self, x_agenda: DealUnit, src_agenda_healer: str):
+    def save_ignore_agenda(self, x_agenda: AgendaUnit, src_agenda_healer: str):
         dest_dir = self._agendas_ignore_dir
         file_title = None
         if src_agenda_healer != None:
@@ -106,7 +106,9 @@ class KitchenAdmin:
             file_title = f"{x_agenda._healer}.json"
         self._save_agenda_to_path(x_agenda, dest_dir, file_title)
 
-    def save_agenda_to_digest(self, x_agenda: DealUnit, src_agenda_healer: str = None):
+    def save_agenda_to_digest(
+        self, x_agenda: AgendaUnit, src_agenda_healer: str = None
+    ):
         dest_dir = self._agendas_digest_dir
         file_title = None
         if src_agenda_healer != None:
@@ -115,17 +117,17 @@ class KitchenAdmin:
             file_title = f"{x_agenda._healer}.json"
         self._save_agenda_to_path(x_agenda, dest_dir, file_title)
 
-    def save_seed_agenda(self, x_agenda: DealUnit):
+    def save_seed_agenda(self, x_agenda: AgendaUnit):
         x_agenda.set_healer(self._kitchen_title)
         self._save_agenda_to_path(
             x_agenda, self._kitchenunit_dir, self._seed_file_title
         )
 
-    def save_agenda_to_depot(self, x_agenda: DealUnit):
+    def save_agenda_to_depot(self, x_agenda: AgendaUnit):
         dest_dir = self._agendas_depot_dir
         self._save_agenda_to_path(x_agenda, dest_dir)
 
-    def save_output_agenda(self) -> DealUnit:
+    def save_output_agenda(self) -> AgendaUnit:
         x_seed_agenda = self.open_seed_agenda()
         x_seed_agenda.meld(x_seed_agenda, party_weight=1)
         x_agenda = get_meld_of_agenda_files(
@@ -140,19 +142,19 @@ class KitchenAdmin:
         file_title_x = f"{healer}.json"
         return x_func_open_file(self._agendas_public_dir, file_title_x)
 
-    def open_depot_agenda(self, healer: PersonName) -> DealUnit:
+    def open_depot_agenda(self, healer: PersonName) -> AgendaUnit:
         file_title_x = f"{healer}.json"
         x_agenda_json = x_func_open_file(self._agendas_depot_dir, file_title_x)
         return agendaunit_get_from_json(x_agenda_json=x_agenda_json)
 
-    def open_ignore_agenda(self, healer: PersonName) -> DealUnit:
+    def open_ignore_agenda(self, healer: PersonName) -> AgendaUnit:
         ignore_file_title = f"{healer}.json"
         agenda_json = x_func_open_file(self._agendas_ignore_dir, ignore_file_title)
         agenda_obj = agendaunit_get_from_json(x_agenda_json=agenda_json)
         agenda_obj.set_agenda_metrics()
         return agenda_obj
 
-    def open_seed_agenda(self) -> DealUnit:
+    def open_seed_agenda(self) -> AgendaUnit:
         x_agenda = None
         if not self._seed_agenda_exists():
             self.save_seed_agenda(self._get_empty_seed_agenda())
@@ -161,7 +163,7 @@ class KitchenAdmin:
         x_agenda.set_agenda_metrics()
         return x_agenda
 
-    def open_output_agenda(self) -> DealUnit:
+    def open_output_agenda(self) -> AgendaUnit:
         x_agenda_json = x_func_open_file(
             self._kitchenunit_dir, self._agenda_output_file_title
         )
@@ -225,7 +227,7 @@ def kitchenadmin_shop(
 @dataclass
 class KitchenUnit:
     _admin: KitchenAdmin = None
-    _seed: DealUnit = None
+    _seed: AgendaUnit = None
 
     def refresh_depot_agendas(self):
         for party_x in self._seed._partys.values():
@@ -242,7 +244,7 @@ class KitchenUnit:
 
     def set_depot_agenda(
         self,
-        x_agenda: DealUnit,
+        x_agenda: AgendaUnit,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
@@ -325,7 +327,7 @@ class KitchenUnit:
             self._seed = self._admin.open_seed_agenda()
         return self._seed
 
-    def set_seed(self, x_agenda: DealUnit = None):
+    def set_seed(self, x_agenda: AgendaUnit = None):
         if x_agenda != None:
             self._seed = x_agenda
         self._admin.save_seed_agenda(self._seed)
@@ -335,7 +337,7 @@ class KitchenUnit:
         # if self._seed is None:
         self.get_seed()
 
-    def set_ignore_agenda_file(self, agendaunit: DealUnit, src_agenda_healer: str):
+    def set_ignore_agenda_file(self, agendaunit: AgendaUnit, src_agenda_healer: str):
         self._admin.save_ignore_agenda(agendaunit, src_agenda_healer)
         self._admin.save_agenda_to_digest(agendaunit, src_agenda_healer)
 
@@ -347,7 +349,7 @@ class KitchenUnit:
             _culture_handle=culture_handle,
         )
 
-    def create_core_dir_and_files(self, seed_agenda: DealUnit = None):
+    def create_core_dir_and_files(self, seed_agenda: AgendaUnit = None):
         self._admin.create_core_dir_and_files(seed_agenda)
 
 

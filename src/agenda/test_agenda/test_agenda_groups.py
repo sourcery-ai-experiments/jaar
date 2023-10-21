@@ -643,7 +643,7 @@ def test_agenda_add_idea_CreatesMissingGroups():
     assert x_agenda._groups.get(family_text)._partys in (None, {})
 
 
-def test_DealUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balancelinks():
+def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balancelinks():
     # GIVEN
     healer_text = "Noa"
     cx1 = agendaunit_shop(_healer=healer_text)
@@ -673,7 +673,7 @@ def test_DealUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balanceli
     assert list(filtered_idea._balancelinks.keys()) == [xia_text]
 
 
-def test_DealUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
+def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     # GIVEN
     healer_text = "Noa"
     cx1 = agendaunit_shop(_healer=healer_text)

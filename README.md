@@ -72,31 +72,31 @@ ProjectUnit KitchenUnit DealLink objects
 ProjectUnit Bank objects
 
 <!-- TODO: Add explanations -->
-DealUnit objects
+AgendaUnit objects
 
-DealUnit PartyUnit objects
+AgendaUnit PartyUnit objects
 
-DealUnit GroupUnit objects
+AgendaUnit GroupUnit objects
 
-DealUnit IdeaUnit objects
+AgendaUnit IdeaUnit objects
 
-DealUnit IdeaUnit hierarchical structure
+AgendaUnit IdeaUnit hierarchical structure
 
-DealUnit IdeaUnit Balancelink objects
+AgendaUnit IdeaUnit Balancelink objects
 
-DealUnit IdeaUnit Balanceline objects
+AgendaUnit IdeaUnit Balanceline objects
 
-DealUnit IdeaUnit BalanceHeir objects
+AgendaUnit IdeaUnit BalanceHeir objects
 
-DealUnit IdeaUnit BalanceHeir objects
+AgendaUnit IdeaUnit BalanceHeir objects
 
-DealUnit IdeaUnit RequiredFactUnit objects
+AgendaUnit IdeaUnit RequiredFactUnit objects
 
-DealUnit IdeaUnit RequiredFactHeir objects
+AgendaUnit IdeaUnit RequiredFactHeir objects
 
-DealUnit IdeaUnit AcptFactUnit objects
+AgendaUnit IdeaUnit AcptFactUnit objects
 
-DealUnit IdeaUnit AcptFactHeir objects
+AgendaUnit IdeaUnit AcptFactHeir objects
 
 
 ## 1.3 Test-Driven-Development

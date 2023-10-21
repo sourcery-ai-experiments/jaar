@@ -401,7 +401,7 @@ def test_agenda4party_Exists():
 
     # THEN
     assert sandy_agenda4party
-    assert str(type(sandy_agenda4party)).find(".agenda.DealUnit'>")
+    assert str(type(sandy_agenda4party)).find(".agenda.AgendaUnit'>")
     assert sandy_agenda4party._healer == sandy_title
 
 

@@ -1,4 +1,4 @@
-from src.agenda.agenda import DealUnit, PartyUnit, Road, PersonName
+from src.agenda.agenda import AgendaUnit, PartyUnit, Road, PersonName
 from src.agenda.road import get_road_without_root_node
 from src.culture.y_func import sqlite_bool, sqlite_null, sqlite_to_python
 from dataclasses import dataclass
@@ -322,7 +322,7 @@ CREATE TABLE IF NOT EXISTS agendaunit (
 """
 
 
-def get_agendaunit_table_insert_sqlstr(x_agenda: DealUnit) -> str:
+def get_agendaunit_table_insert_sqlstr(x_agenda: AgendaUnit) -> str:
     return f"""
 INSERT INTO agendaunit (
   healer
@@ -396,7 +396,7 @@ CREATE TABLE IF NOT EXISTS ledger (
 """
 
 
-def get_ledger_table_insert_sqlstr(x_agenda: DealUnit, partyunit_x: PartyUnit) -> str:
+def get_ledger_table_insert_sqlstr(x_agenda: AgendaUnit, partyunit_x: PartyUnit) -> str:
     """Create table that holds a the output credit metrics."""
     return f"""
 INSERT INTO ledger (
