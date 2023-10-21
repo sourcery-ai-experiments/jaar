@@ -213,62 +213,60 @@ def get_agenda_3CleanNodesRandomWeights(_healer: str = None) -> DealUnit:
 
 
 def get_agenda_assignment_laundry_example1() -> DealUnit:
-    america_text = "America"
-    america_agenda = agendaunit_shop(_healer=america_text)
-    joachim_text = "Joachim"
-    america_agenda.add_partyunit(america_text)
-    america_agenda.add_partyunit(joachim_text)
+    amer_text = "Amer"
+    amer_agenda = agendaunit_shop(_healer=amer_text)
+    cali_text = "Cali"
+    amer_agenda.add_partyunit(amer_text)
+    amer_agenda.add_partyunit(cali_text)
 
-    root_road = america_agenda._culture_handle
+    root_road = amer_agenda._culture_handle
     casa_text = "casa"
     casa_road = f"{root_road},{casa_text}"
-    america_agenda.add_idea(ideacore_shop(_label=casa_text), pad=root_road)
+    amer_agenda.add_idea(ideacore_shop(_label=casa_text), pad=root_road)
 
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
-    america_agenda.add_idea(ideacore_shop(_label=basket_text), pad=casa_road)
+    amer_agenda.add_idea(ideacore_shop(_label=basket_text), pad=casa_road)
 
     b_full_text = "full"
     b_full_road = f"{basket_road},{b_full_text}"
-    america_agenda.add_idea(ideacore_shop(_label=b_full_text), pad=basket_road)
+    amer_agenda.add_idea(ideacore_shop(_label=b_full_text), pad=basket_road)
 
     b_smel_text = "smelly"
     b_smel_road = f"{basket_road},{b_smel_text}"
-    america_agenda.add_idea(ideacore_shop(_label=b_smel_text), pad=basket_road)
+    amer_agenda.add_idea(ideacore_shop(_label=b_smel_text), pad=basket_road)
 
     b_bare_text = "bare"
     b_bare_road = f"{basket_road},{b_bare_text}"
-    america_agenda.add_idea(ideacore_shop(_label=b_bare_text), pad=basket_road)
+    amer_agenda.add_idea(ideacore_shop(_label=b_bare_text), pad=basket_road)
 
     b_fine_text = "fine"
     b_fine_road = f"{basket_road},{b_fine_text}"
-    america_agenda.add_idea(ideacore_shop(_label=b_fine_text), pad=basket_road)
+    amer_agenda.add_idea(ideacore_shop(_label=b_fine_text), pad=basket_road)
 
     b_half_text = "half full"
     b_half_road = f"{basket_road},{b_half_text}"
-    america_agenda.add_idea(ideacore_shop(_label=b_half_text), pad=basket_road)
+    amer_agenda.add_idea(ideacore_shop(_label=b_half_text), pad=basket_road)
 
     laundry_task_text = "do_laundry"
     laundry_task_road = f"{casa_road},{laundry_task_text}"
-    america_agenda.add_idea(
+    amer_agenda.add_idea(
         ideacore_shop(_label=laundry_task_text, promise=True), pad=casa_road
     )
 
     # make laundry requirement
-    basket_idea = america_agenda.get_idea_kid(road=basket_road)
-    america_agenda.edit_idea_attr(
+    basket_idea = amer_agenda.get_idea_kid(road=basket_road)
+    amer_agenda.edit_idea_attr(
         road=laundry_task_road, required_base=basket_road, required_sufffact=b_full_road
     )
     # make laundry requirement
-    america_agenda.edit_idea_attr(
+    amer_agenda.edit_idea_attr(
         road=laundry_task_road, required_base=basket_road, required_sufffact=b_smel_road
     )
-    # assign Joachim to task
-    joachim_assignunit = assigned_unit_shop()
-    joachim_assignunit.set_suffgroup(joachim_text)
-    america_agenda.edit_idea_attr(
-        road=laundry_task_road, assignedunit=joachim_assignunit
-    )
-    america_agenda.set_acptfact(base=basket_road, pick=b_full_road)
+    # assign Cali to task
+    cali_assignunit = assigned_unit_shop()
+    cali_assignunit.set_suffgroup(cali_text)
+    amer_agenda.edit_idea_attr(road=laundry_task_road, assignedunit=cali_assignunit)
+    amer_agenda.set_acptfact(base=basket_road, pick=b_full_road)
 
-    return america_agenda
+    return amer_agenda

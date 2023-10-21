@@ -495,31 +495,31 @@ def test_agenda_get_assignment_getsCorrectIdeas_scenario1():
 
 def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     # GIVEN
-    america_agenda = get_agenda_assignment_laundry_example1()
+    amer_agenda = get_agenda_assignment_laundry_example1()
     culture_handle_text = "tiger_econ"
-    print(f"{america_agenda._culture_handle=} {america_agenda._idea_dict.keys()=}")
-    america_agenda.set_culture_handle(culture_handle_text)
-    print(f"{america_agenda._culture_handle=} {america_agenda._idea_dict.keys()=}")
-    do_laundery_idea = america_agenda.get_idea_kid("tiger_econ,casa,do_laundry")
+    print(f"{amer_agenda._culture_handle=} {amer_agenda._idea_dict.keys()=}")
+    amer_agenda.set_culture_handle(culture_handle_text)
+    print(f"{amer_agenda._culture_handle=} {amer_agenda._idea_dict.keys()=}")
+    do_laundery_idea = amer_agenda.get_idea_kid("tiger_econ,casa,do_laundry")
     print(f"{do_laundery_idea._requiredunits.keys()=}")
 
     # WHEN
-    joachim_text = "Joachim"
-    joachim_agenda = agendaunit_shop(_healer=joachim_text)
-    joachim_agenda.set_culture_handle(culture_handle_text)
-    print(f"{joachim_agenda._culture_handle=} {joachim_agenda._idea_dict.keys()=}")
-    joachim_assignment = america_agenda.get_assignment(
-        agenda_x=joachim_agenda,
-        assignor_partys={joachim_text: -1, america_agenda._healer: -1},
-        assignor_title=joachim_text,
+    cali_text = "Cali"
+    cali_agenda = agendaunit_shop(_healer=cali_text)
+    cali_agenda.set_culture_handle(culture_handle_text)
+    print(f"{cali_agenda._culture_handle=} {cali_agenda._idea_dict.keys()=}")
+    cali_assignment = amer_agenda.get_assignment(
+        agenda_x=cali_agenda,
+        assignor_partys={cali_text: -1, amer_agenda._healer: -1},
+        assignor_title=cali_text,
     )
 
     # THEN
-    assert joachim_assignment != None
-    joachim_assignment.set_agenda_metrics()
-    assert len(joachim_assignment._idea_dict.keys()) == 9
+    assert cali_assignment != None
+    cali_assignment.set_agenda_metrics()
+    assert len(cali_assignment._idea_dict.keys()) == 9
 
-    # for road_x in joachim_assignment._idea_dict.keys():
+    # for road_x in cali_assignment._idea_dict.keys():
     #     print(f"{road_x=}")
     # road_x='A'
     # road_x='A,casa'
@@ -531,7 +531,7 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     # road_x='A,casa,laundry basket status,bare'
     # road_x='A,casa,do_laundry'
     casa_text = "casa"
-    casa_road = f"{america_agenda._culture_handle},{casa_text}"
+    casa_road = f"{amer_agenda._culture_handle},{casa_text}"
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
     b_full_text = "full"
@@ -547,16 +547,16 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     laundry_task_text = "do_laundry"
     laundry_task_road = f"{casa_road},{laundry_task_text}"
 
-    assert joachim_assignment._idea_dict.get(casa_road) != None
-    assert joachim_assignment._idea_dict.get(basket_road) != None
-    assert joachim_assignment._idea_dict.get(b_full_road) != None
-    assert joachim_assignment._idea_dict.get(b_smel_road) != None
-    assert joachim_assignment._idea_dict.get(b_bare_road) != None
-    assert joachim_assignment._idea_dict.get(b_fine_road) != None
-    assert joachim_assignment._idea_dict.get(b_half_road) != None
-    assert joachim_assignment._idea_dict.get(laundry_task_road) != None
+    assert cali_assignment._idea_dict.get(casa_road) != None
+    assert cali_assignment._idea_dict.get(basket_road) != None
+    assert cali_assignment._idea_dict.get(b_full_road) != None
+    assert cali_assignment._idea_dict.get(b_smel_road) != None
+    assert cali_assignment._idea_dict.get(b_bare_road) != None
+    assert cali_assignment._idea_dict.get(b_fine_road) != None
+    assert cali_assignment._idea_dict.get(b_half_road) != None
+    assert cali_assignment._idea_dict.get(laundry_task_road) != None
 
-    laundry_do_idea = joachim_assignment.get_idea_kid(laundry_task_road)
+    laundry_do_idea = cali_assignment.get_idea_kid(laundry_task_road)
     print(f"{laundry_do_idea.promise=}")
     print(f"{laundry_do_idea._requiredunits.keys()=}")
     print(f"{laundry_do_idea._requiredunits.get(basket_road).sufffacts.keys()=}")
@@ -567,12 +567,12 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     assert list(laundry_do_idea._requiredunits.keys()) == [basket_road]
     laundry_do_sufffacts = laundry_do_idea._requiredunits.get(basket_road).sufffacts
     assert list(laundry_do_sufffacts.keys()) == [b_full_road, b_smel_road]
-    assert list(laundry_do_idea._assignedunit._suffgroups.keys()) == [joachim_text]
+    assert list(laundry_do_idea._assignedunit._suffgroups.keys()) == [cali_text]
     assert list(laundry_do_idea._acptfactheirs.keys()) == [basket_road]
 
     assert laundry_do_idea._acptfactheirs.get(basket_road).pick == b_full_road
 
     # print(f"{laundry_do_idea=}")
 
-    assert len(joachim_assignment.get_goal_items()) == 1
-    assert joachim_assignment.get_goal_items()[0]._label == "do_laundry"
+    assert len(cali_assignment.get_goal_items()) == 1
+    assert cali_assignment.get_goal_items()[0]._label == "do_laundry"
