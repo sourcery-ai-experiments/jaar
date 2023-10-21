@@ -71,7 +71,7 @@ class PartyUnit(PartyCore):
     _bank_tax_diff: float = None
     _output_agenda_meld_order: int = None
     _bank_credit_score: float = None
-    _bank_credit_rank: int = None
+    _bank_voice_rank: int = None
 
     def clear_output_agenda_meld_order(self):
         self._output_agenda_meld_order = None
@@ -102,19 +102,19 @@ class PartyUnit(PartyCore):
         self._bank_tax_paid = None
         self._bank_tax_diff = None
         self._bank_credit_score = None
-        self._bank_credit_rank = None
+        self._bank_voice_rank = None
 
     def set_banking_data(
         self,
         tax_paid: float,
         tax_diff: float,
         credit_score: float,
-        credit_rank: int,
+        voice_rank: int,
     ):
         self._bank_tax_paid = tax_paid
         self._bank_tax_diff = tax_diff
         self._bank_credit_score = credit_score
-        self._bank_credit_rank = credit_rank
+        self._bank_voice_rank = voice_rank
 
         # if tax_diff is None or self._agenda_goal_ratio_credit is None:
         #     self._bank_tax_diff = tax_diff

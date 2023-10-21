@@ -79,7 +79,7 @@ def test_PartyUnit_exists():
     assert bob_party._bank_tax_paid is None
     assert bob_party._bank_tax_diff is None
     assert bob_party._bank_credit_score is None
-    assert bob_party._bank_credit_rank is None
+    assert bob_party._bank_voice_rank is None
     assert bob_party.depotlink_type is None
     assert bob_party._output_agenda_meld_order is None
 
@@ -359,18 +359,18 @@ def test_PartyUnit_set_banking_data_MethodWorkCorrectly():
     assert bob_party._bank_tax_paid is None
     assert bob_party._bank_tax_diff is None
     assert bob_party._bank_credit_score is None
-    assert bob_party._bank_credit_rank is None
+    assert bob_party._bank_voice_rank is None
 
     # WHEN
     x_tax_paid = 0.2
     x_tax_diff = 0.123
     x_bank_credit_score = 900
-    x_bank_credit_rank = 45
+    x_bank_voice_rank = 45
     bob_party.set_banking_data(
         tax_paid=x_tax_paid,
         tax_diff=x_tax_diff,
         credit_score=x_bank_credit_score,
-        credit_rank=x_bank_credit_rank,
+        voice_rank=x_bank_voice_rank,
     )
     # THEN
     assert bob_party._agenda_goal_ratio_credit == x_agenda_goal_ratio_credit
@@ -378,7 +378,7 @@ def test_PartyUnit_set_banking_data_MethodWorkCorrectly():
     assert bob_party._bank_tax_paid == x_tax_paid
     assert bob_party._bank_tax_diff == x_tax_diff
     assert bob_party._bank_credit_score == x_bank_credit_score
-    assert bob_party._bank_credit_rank == x_bank_credit_rank
+    assert bob_party._bank_voice_rank == x_bank_voice_rank
 
 
 def test_PartyUnit_clear_banking_data_MethodWorkCorrectly():
@@ -390,17 +390,17 @@ def test_PartyUnit_clear_banking_data_MethodWorkCorrectly():
         _agenda_goal_ratio_debt=0.066,
     )
     x_bank_credit_score = 900
-    x_bank_credit_rank = 45
+    x_bank_voice_rank = 45
     bob_party.set_banking_data(
         tax_paid=0.399,
         tax_diff=0.044,
         credit_score=x_bank_credit_score,
-        credit_rank=x_bank_credit_rank,
+        voice_rank=x_bank_voice_rank,
     )
     assert bob_party._bank_tax_paid == 0.399
     assert bob_party._bank_tax_diff == 0.044
     assert bob_party._bank_credit_score == x_bank_credit_score
-    assert bob_party._bank_credit_rank == x_bank_credit_rank
+    assert bob_party._bank_voice_rank == x_bank_voice_rank
 
     # WHEN
     bob_party.clear_banking_data()
@@ -409,7 +409,7 @@ def test_PartyUnit_clear_banking_data_MethodWorkCorrectly():
     assert bob_party._bank_tax_paid is None
     assert bob_party._bank_tax_diff is None
     assert bob_party._bank_credit_score is None
-    assert bob_party._bank_credit_rank is None
+    assert bob_party._bank_voice_rank is None
 
 
 def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():

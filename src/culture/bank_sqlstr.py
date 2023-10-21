@@ -275,7 +275,7 @@ class RiverTallyUnit:
     debt: float
     tax_diff: float
     credit_score: float
-    credit_rank: int
+    voice_rank: int
 
 
 def get_river_tally_dict(
@@ -303,7 +303,7 @@ WHERE currency_healer = '{currency_agenda_healer}'
             debt=row[3],
             tax_diff=row[4],
             credit_score=None,
-            credit_rank=None,
+            voice_rank=None,
         )
         dict_x[river_tally_x.tax_healer] = river_tally_x
     return dict_x
@@ -315,6 +315,7 @@ def get_agenda_table_create_sqlstr() -> str:
     return """
 CREATE TABLE IF NOT EXISTS agendaunit (
   healer VARCHAR(255) PRIMARY KEY ASC
+, voice_rank INT NULL
 , UNIQUE(healer)
 )
 ;
@@ -672,8 +673,19 @@ def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     return list_x
 
 
-def get_db_tables(bank_conn: Connection):
+def get_db_tables(bank_conn: Connection) -> dict[str:int]:
     sqlstr = "SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name;"
     results = bank_conn.execute(sqlstr)
 
     return {row[0]: 1 for row in results}
+
+
+def get_db_columns(bank_conn: Connection) -> dict[str : dict[str:int]]:
+    table_names = get_db_tables(bank_conn)
+    table_column_dict = {}
+    for table_name in table_names.keys():
+        sqlstr = f"SELECT name FROM PRAGMA_TABLE_INFO('{table_name}');"
+        results = bank_conn.execute(sqlstr)
+        table_column_dict[table_name] = {row[0]: 1 for row in results}
+
+    return table_column_dict

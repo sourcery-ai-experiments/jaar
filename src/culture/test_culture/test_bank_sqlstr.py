@@ -335,7 +335,7 @@ def test_RiverTallyUnit_exists():
     x_debt = "x_debt"
     x_tax_diff = "x_tax_diff"
     x_credit_score = "credit_score"
-    x_credit_rank = "credit_rank"
+    x_voice_rank = "voice_rank"
 
     # WHEN
     x_rivertally = RiverTallyUnit(
@@ -345,7 +345,7 @@ def test_RiverTallyUnit_exists():
         debt=x_debt,
         tax_diff=x_tax_diff,
         credit_score=x_credit_score,
-        credit_rank=x_credit_rank,
+        voice_rank=x_voice_rank,
     )
 
     # THEN
@@ -355,7 +355,7 @@ def test_RiverTallyUnit_exists():
     assert x_rivertally.debt == x_debt
     assert x_rivertally.tax_diff == x_tax_diff
     assert x_rivertally.credit_score == x_credit_score
-    assert x_rivertally.credit_rank == x_credit_rank
+    assert x_rivertally.voice_rank == x_voice_rank
 
 
 def test_get_river_tally_table_insert_sqlstr_CorrectlyPopulatesTable01(

@@ -130,7 +130,7 @@ class DealUnit:
                     tax_paid=river_tally.tax_total,
                     tax_diff=river_tally.tax_diff,
                     credit_score=river_tally.credit_score,
-                    credit_rank=river_tally.credit_rank,
+                    voice_rank=river_tally.voice_rank,
                 )
 
     def import_external_partyunit_metrics(
