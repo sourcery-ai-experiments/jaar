@@ -40,23 +40,28 @@ class AcptFactCore:
     def get_key_road(self):
         return self.base
 
-    def meld(self, other_acptfactcore):
-        if other_acptfactcore.base != self.base:
+    def meld(self, other_acptfactcore, same_required: bool = False):
+        if same_required and other_acptfactcore.base != self.base:
             raise InvalidRequiredException(
                 f"Meld fail: base={other_acptfactcore.base} is different {self.base=}"
             )
-        if other_acptfactcore.pick != self.pick:
+        elif same_required and other_acptfactcore.pick != self.pick:
             raise InvalidRequiredException(
                 f"Meld fail: pick={other_acptfactcore.pick} is different {self.pick=}"
             )
-        elif other_acptfactcore.open != self.open:
+        elif same_required and other_acptfactcore.open != self.open:
             raise InvalidRequiredException(
                 f"Meld fail: base={other_acptfactcore.base} open={other_acptfactcore.open} is different {self.open=}"
             )
-        elif other_acptfactcore.nigh != self.nigh:
+        elif same_required and other_acptfactcore.nigh != self.nigh:
             raise InvalidRequiredException(
                 f"Meld fail: base={other_acptfactcore.base} nigh={other_acptfactcore.nigh} is different {self.nigh=}"
             )
+        else:
+            self.base = other_acptfactcore.base
+            self.pick = other_acptfactcore.pick
+            self.open = other_acptfactcore.open
+            self.nigh = other_acptfactcore.nigh
         return self
 
 

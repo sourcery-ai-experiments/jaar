@@ -154,7 +154,7 @@ def test_AcptFactCore_get_key_road_works():
     assert x_acptfactcore.get_key_road() == ced_road
 
 
-def test_acptfactcores_meld_works():
+def test_acptfactcores_meld_CorrectlyMeldLikeObjs_v1():
     # GIVEN
     tech_text = "tech"
     tech_road = f"{root_label()},{tech_text}"
@@ -166,11 +166,47 @@ def test_acptfactcores_meld_works():
     # WHEN/THEN
     assert hc_x1 == hc_x1.meld(hc_y1)  # meld is a AcptFactCore method
 
+
+def test_acptfactcores_meld_CorrectlyMeldLikeObjs_v2():
     # GIVEN
+    tech_text = "tech"
+    tech_road = f"{root_label()},{tech_text}"
+    bowl_text = "bowl"
+    bowl_road = f"{root_label()},{tech_text},{bowl_text}"
     hc_x2 = c_acptfactunit(base=tech_road, pick=bowl_road, open=45, nigh=55)
     hc_y2 = c_acptfactunit(base=tech_road, pick=bowl_road, open=45, nigh=55)
+
     # WHEN/THEN
     assert hc_x2 == hc_x2.meld(hc_y2)
+
+
+def test_acptfactcores_meld_CorrectlyMeldDifferentObjs_v1():
+    # GIVEN
+    tech_text = "tech"
+    tech_road = f"{root_label()},{tech_text}"
+    bowl_text = "bowl"
+    bowl_road = f"{root_label()},{tech_text},{bowl_text}"
+    dish_text = "dish"
+    dish_road = f"{root_label()},{tech_text},{dish_text}"
+    bowl_af = c_acptfactunit(base=tech_road, pick=bowl_road)
+    dish_af = c_acptfactunit(base=tech_road, pick=dish_road)
+
+    # WHEN/THEN
+    assert dish_af == bowl_af.meld(dish_af)  # meld is a AcptFactCore method
+
+
+def test_acptfactcores_meld_CorrectlyMeldDifferentObjs_v2():
+    # GIVEN
+    tech_text = "tech"
+    tech_road = f"{root_label()},{tech_text}"
+    bowl_text = "bowl"
+    bowl_road = f"{root_label()},{tech_text},{bowl_text}"
+    dish_text = "dish"
+    dish_road = f"{root_label()},{tech_text},{dish_text}"
+    bowl_af = c_acptfactunit(base=tech_road, pick=bowl_road, open=45, nigh=55)
+    dish_af = c_acptfactunit(base=tech_road, pick=dish_road, open=45, nigh=55)
+    # WHEN/THEN
+    assert dish_af == bowl_af.meld(dish_af)
 
 
 def test_acptfactcores_meld_raises_NotSameBaseRoadError():
@@ -184,7 +220,7 @@ def test_acptfactcores_meld_raises_NotSameBaseRoadError():
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        hc_x == hc_x.meld(hc_y)  # meld is a AcptFactCore method
+        hc_x == hc_x.meld(hc_y, same_required=True)  # meld is a AcptFactCore method
     assert (
         str(excinfo.value)
         == f"Meld fail: base={hc_y.base} is different self.base='{hc_x.base}'"
@@ -202,7 +238,7 @@ def test_acptfactcores_meld_raises_NotSameAcptFactRoadError():
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        hc_x == hc_x.meld(hc_y)  # meld is a AcptFactCore method
+        hc_x == hc_x.meld(hc_y, same_required=True)  # meld is a AcptFactCore method
     assert (
         str(excinfo.value)
         == f"Meld fail: pick={hc_y.pick} is different self.pick='{hc_x.pick}'"
@@ -220,7 +256,7 @@ def test_acptfactcores_meld_raises_NotSameOpenError():
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        hc_x == hc_x.meld(hc_y)  # meld is a AcptFactCore method
+        hc_x == hc_x.meld(hc_y, same_required=True)  # meld is a AcptFactCore method
     assert (
         str(excinfo.value)
         == f"Meld fail: base={hc_y.base} open={hc_y.open} is different self.open={hc_x.open}"
@@ -238,7 +274,7 @@ def test_acptfactcores_meld_raises_NotSameNighError():
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        hc_x == hc_x.meld(hc_y)  # meld is a AcptFactCore method
+        hc_x == hc_x.meld(hc_y, same_required=True)  # meld is a AcptFactCore method
     assert (
         str(excinfo.value)
         == f"Meld fail: base={hc_y.base} nigh={hc_y.nigh} is different self.nigh={hc_x.nigh}"

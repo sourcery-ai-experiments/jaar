@@ -100,7 +100,7 @@ def test_culture_kitchen_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
 
     # amer public laundry acptfact as "full"
     amer_seed_x = amer_kitchen.get_seed().set_acptfact(basket_road, b_full_road)
-    beto_seed_x = beto_kitchen.get_seed().set_acptfact(basket_road, b_full_road)
+    beto_seed_x = beto_kitchen.get_seed().set_acptfact(basket_road, b_bare_road)
 
     amer_kitchen.set_seed(amer_seed_x)
     beto_kitchen.set_seed(beto_seed_x)
@@ -112,19 +112,43 @@ def test_culture_kitchen_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     cali_text = "Cali"
     x_culture.create_new_kitchenunit(cali_text)
     cali_kichen = x_culture.get_kitchenunit(cali_text)
-    cali_kichen.set_depot_agenda(amer_output, "assignment")
     cali_kichen.set_depot_agenda(beto_output, "assignment")
+    cali_kichen.set_depot_agenda(amer_output, "assignment")
 
     # WHEN
-    cali_kichen.refresh_depot_agendas()
     cali_kichen._admin.save_refreshed_output_to_public()
 
     # THEN
-    cali_output = x_culture.get_public_agenda(cali_text)
-    assert len(cali_output.get_goal_items()) == 1
-    cali_acptfacts = cali_output._idearoot._acptfactunits
-    print(f"{cali_output._idearoot._acptfactunits=}")
-    assert cali_acptfacts.get(basket_road) != None
-    cali_basket_acptfact = cali_acptfacts.get(basket_road)
-    assert cali_basket_acptfact.pick == b_full_road
-    assert cali_basket_acptfact.pick == b_bare_road
+    old_cali_output = x_culture.get_public_agenda(cali_text)
+    assert len(old_cali_output.get_goal_items()) == 0
+    old_cali_acptfacts = old_cali_output._idearoot._acptfactunits
+    # print(f"{old_cali_output._idearoot._acptfactunits=}")
+    assert old_cali_acptfacts.get(basket_road) != None
+    old_cali_basket_acptfact = old_cali_acptfacts.get(basket_road)
+    print(f"{old_cali_basket_acptfact.base=}")
+    print(f"{old_cali_basket_acptfact.pick=}")
+    print(f"{old_cali_basket_acptfact.open=}")
+    print(f"{old_cali_basket_acptfact.nigh=}")
+    assert old_cali_basket_acptfact.pick == b_bare_road
+
+    # WHEN voice_rank is changed
+    cali_seed = cali_kichen.get_seed()
+    cali_amer_party = cali_seed.get_party(amer_text)
+    cali_beto_party = cali_seed.get_party(beto_text)
+    cali_amer_party.set_banking_data(None, None, None, voice_rank=45)
+    cali_beto_party.set_banking_data(None, None, None, voice_rank=100)
+    cali_kichen.set_seed(cali_seed)
+    cali_kichen._admin.save_refreshed_output_to_public()
+
+    # THEN final acptfact changed
+    new_cali_output = x_culture.get_public_agenda(cali_text)
+    assert len(new_cali_output.get_goal_items()) == 0
+    new_cali_acptfacts = new_cali_output._idearoot._acptfactunits
+    # print(f"{new_cali_output._idearoot._acptfactunits=}")
+    assert new_cali_acptfacts.get(basket_road) != None
+    new_cali_basket_acptfact = new_cali_acptfacts.get(basket_road)
+    print(f"{new_cali_basket_acptfact.base=}")
+    print(f"{new_cali_basket_acptfact.pick=}")
+    print(f"{new_cali_basket_acptfact.open=}")
+    print(f"{new_cali_basket_acptfact.nigh=}")
+    assert new_cali_basket_acptfact.pick == b_full_road
