@@ -88,7 +88,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
         self.party_table.setColumnWidth(3, 60)
         self.party_table.setColumnWidth(4, 40)
         self.party_table.setHorizontalHeaderLabels(
-            ["Party", "Group", "Group Count", "DEAL_Importance", "Weight"]
+            ["Party", "Group", "Group Count", "Agenda_Importance", "Weight"]
         )
         self.party_table.setRowCount(0)
 

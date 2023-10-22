@@ -105,7 +105,7 @@
     </property>
     <column>
      <property title="text">
-      <string>Deallinks</string>
+      <string>Agendas</string>
      </property>
     </column>
     <column>
@@ -208,7 +208,7 @@
      </font>
     </property>
     <property title="text">
-     <string>Change Deal Title</string>
+     <string>Change Agenda Title</string>
     </property>
    </widget>
    <widget class="QPushButton" title="agenda_insert_button">
@@ -226,7 +226,7 @@
      </font>
     </property>
     <property title="text">
-     <string>Add new Deal</string>
+     <string>Add new Agenda</string>
     </property>
    </widget>
    <widget class="QPushButton" title="agenda_delete_button">
@@ -346,7 +346,7 @@
      </font>
     </property>
     <property title="text">
-     <string>delete DealLink</string>
+     <string>delete Agenda</string>
     </property>
    </widget>
    <widget class="QLineEdit" title="depotlink_title">
@@ -379,7 +379,7 @@
      </font>
     </property>
     <property title="text">
-     <string>Add new DealLink</string>
+     <string>Add new Agenda</string>
     </property>
    </widget>
    <widget class="QPushButton" title="depotlink_update_button">
@@ -397,7 +397,7 @@
      </font>
     </property>
     <property title="text">
-     <string>Update DealLink</string>
+     <string>Update Agenda</string>
     </property>
    </widget>
    <widget class="QPushButton" title="refresh_all_button">
@@ -469,7 +469,7 @@
      </font>
     </property>
     <property title="text">
-     <string>Edit DealLink</string>
+     <string>Edit Agenda</string>
     </property>
    </widget>
    <widget class="QTableWidget" title="w_goal_table">
@@ -718,7 +718,7 @@
      </font>
     </property>
     <property title="text">
-     <string>Deallink Weight:</string>
+     <string>Agenda Weight:</string>
     </property>
    </widget>
    <widget class="QTableWidget" title="ignores_table">

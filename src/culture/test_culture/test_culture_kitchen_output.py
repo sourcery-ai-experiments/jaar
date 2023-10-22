@@ -14,7 +14,7 @@ from src.culture.examples.culture_env_kit import (
 )
 
 
-def test_culture_get_output_agenda_ReturnsCorrectDealObjScenario1(
+def test_culture_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -90,7 +90,7 @@ def test_culture_get_output_agenda_ReturnsCorrectDealObjScenario1(
     assert output_agenda._idearoot == input_agenda._idearoot
 
 
-def test_culture_get_output_agenda_ReturnsCorrectDealObjScenario2(
+def test_culture_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -148,7 +148,7 @@ def test_culture_get_output_agenda_ReturnsCorrectDealObjScenario2(
     assert output_agenda._idearoot != x2_agenda._idearoot
 
 
-def test_kitchenunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
+def test_kitchenunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     env_dir_setup_cleanup,
 ):
     # GIVEN

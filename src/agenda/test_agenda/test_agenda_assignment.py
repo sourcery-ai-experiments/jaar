@@ -13,7 +13,7 @@ from src.culture.examples.example_kitchens import (
 )
 
 
-def test_agendaunit_get_assignment_ReturnsDeal():
+def test_agendaunit_get_assignment_ReturnsAgenda():
     # GIVEN
     jes_text = "jessi"
     jes1_agenda = agendaunit_shop(_healer=jes_text)

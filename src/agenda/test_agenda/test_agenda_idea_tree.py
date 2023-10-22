@@ -492,7 +492,7 @@ def test_agenda_get_orderd_node_list_WorksCorrectly():
         == f"{x_agenda._culture_handle},{week_text}"
     )
 
-    lw_y = agendaunit_shop(_healer="MyDeal")
+    lw_y = agendaunit_shop(_healer="MyAgenda")
     assert lw_y.get_idea_tree_ordered_road_list()[0] == x_agenda._culture_handle
 
 

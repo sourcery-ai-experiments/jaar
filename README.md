@@ -67,7 +67,7 @@ ProjectUnit objects
 
 ProjectUnit KitchenUnit objects
 
-ProjectUnit KitchenUnit DealLink objects
+ProjectUnit KitchenUnit Agenda objects
 
 ProjectUnit Bank objects
 

@@ -127,7 +127,7 @@ def test_KitchenAdmin_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path.exists(jul_kitchenadmin._agendas_ignore_dir)
 
 
-def test_KitchenAdmin_create_core_dir_and_files_DoesNotOverWriteseedDeal(
+def test_KitchenAdmin_create_core_dir_and_files_DoesNotOverWriteseedAgenda(
     kitchen_dir_setup_cleanup,
 ):
     # GIVEN create healer
@@ -205,7 +205,7 @@ def test_KitchenAdmin_set_kitchen_title_WorksCorrectly(kitchen_dir_setup_cleanup
     assert os_path.exists(new_seed_file_path)
 
 
-def test_kitchenunit_auto_output_to_public_SavesDealToPublicDir(
+def test_kitchenunit_auto_output_to_public_SavesAgendaToPublicDir(
     kitchen_dir_setup_cleanup,
 ):
     # GIVEN

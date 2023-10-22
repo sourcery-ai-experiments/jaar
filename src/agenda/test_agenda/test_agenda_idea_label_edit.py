@@ -31,7 +31,7 @@ def test_idea_label_fails_when_idea_does_not_exist():
     )
 
 
-def test_Deal_level0_idea_edit_idea_label_RaisesError_culture_handle_IsNone():
+def test_Agenda_level0_idea_edit_idea_label_RaisesError_culture_handle_IsNone():
     # GIVEN
     healer_text = "Tim"
     x_agenda = agendaunit_shop(_healer=healer_text)
@@ -63,7 +63,7 @@ def test_Deal_level0_idea_edit_idea_label_RaisesError_culture_handle_IsNone():
     )
 
 
-def test_Deal_level0_idea_edit_idea_label_RaisesError_culture_handle_IsDifferent():
+def test_Agenda_level0_idea_edit_idea_label_RaisesError_culture_handle_IsDifferent():
     # GIVEN
     healer_text = "Tim"
     x_agenda = agendaunit_shop(_healer=healer_text)

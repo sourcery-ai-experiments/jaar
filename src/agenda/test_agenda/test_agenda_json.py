@@ -244,7 +244,7 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     assert len(x_dict[originunit_text][_links])
 
 
-def test_save_file_CorrectlySavesDealJSON(env_dir_setup_cleanup):
+def test_save_file_CorrectlySavesAgendaJSON(env_dir_setup_cleanup):
     # GIVEN
     x_agenda = example_agendas_agenda_v001()
     x_x_agenda_json = x_agenda.get_json()

@@ -523,7 +523,7 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEdit_suff_idea_active_status_AnyIde
 
 
 def test_agenda_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus():
-    # GIVEN an Deal with 5 ideas, 1 AcptFact:
+    # GIVEN an Agenda with 5 ideas, 1 AcptFact:
     # 1. idea(...,weekdays) exists
     # 2. idea(...,weekdays,wednesday) exists
     # 3. idea(...,weekdays,thursday) exists
@@ -615,7 +615,7 @@ def test_agenda_tree_traverses_StopWhenNoChangeInStatusIsDetected():
     assert x_agenda._tree_traverse_count == 2
 
 
-def test_agenda_tree_traverse_count_CorrectlyCountsTreeTraversesForIrrationalDeals():
+def test_agenda_tree_traverse_count_CorrectlyCountsTreeTraversesForIrrationalAgendas():
     # GIVEN irrational agenda
     x_agenda = example_agendas_get_agenda_irrational_example()
     x_agenda.set_agenda_metrics()

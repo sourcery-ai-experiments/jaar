@@ -724,7 +724,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyBuildsASingleContinuousRan
         assert get_single_result_back(bank_conn, count_range_fails_sql) == 0
 
 
-def test_culture_set_river_sphere_for_agenda_CorrectlyUpatesDealPartyUnits(
+def test_culture_set_river_sphere_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     env_dir_setup_cleanup,
 ):
     """GIVEN 5 agendas, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal"""

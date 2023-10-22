@@ -20,7 +20,7 @@ from os import path as os_path
 from pytest import raises as pytest_raises
 
 
-# def test_healer_save_seed_agenda_CreateStartingDealFile(
+# def test_healer_save_seed_agenda_CreateStartingAgendaFile(
 #     kitchen_dir_setup_cleanup,
 # ):
 #     # GIVEN
@@ -44,7 +44,7 @@ from pytest import raises as pytest_raises
 #     assert x_func_open_file(lai_agenda._admin._kitchenunit_dir, lai_seed_file_title) != None
 
 
-def test_healeropen_seed_agenda_WhenStartingDealFileDoesNotExists(
+def test_healeropen_seed_agenda_WhenStartingAgendaFileDoesNotExists(
     kitchen_dir_setup_cleanup,
 ):
     # GIVEN
@@ -101,7 +101,7 @@ def test_healer_save_seed_agenda_seedPersonNameMustBeHealer(
     assert ux._admin.open_seed_agenda()._healer == ux._admin._kitchen_title
 
 
-def test_healer_open_seed_agenda_WhenStartingDealFileExists(
+def test_healer_open_seed_agenda_WhenStartingAgendaFileExists(
     kitchen_dir_setup_cleanup,
 ):
     # GIVEN
@@ -180,7 +180,7 @@ def test_kitchenunit_save_agenda_to_digest_SavesFileCorrectly(
     assert digest_x_agenda_json == cx.get_json()
 
 
-def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestDeal(
+def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestAgenda(
     kitchen_dir_setup_cleanup,
 ):
     # GIVEN
@@ -244,7 +244,7 @@ def test_healer_get_remelded_output_agenda_withEmptyDigestDict(
     assert sx_output_after._idearoot == healer_agenda_x._idearoot
 
 
-def test_healer_get_remelded_output_agenda_with1DigestedDeal(
+def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
     kitchen_dir_setup_cleanup,
 ):
     # GIVEN

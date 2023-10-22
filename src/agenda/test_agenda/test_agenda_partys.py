@@ -139,7 +139,7 @@ def test_agenda_get_partys_depotlink_count_GetsCorrectCount():
     assert sue_x_agenda.get_partys_depotlink_count() == 2
 
 
-def test_agenda_get_idea_list_CorrectlySetsPartyLinkDealCreditAndDebt():
+def test_agenda_get_idea_list_CorrectlySetsPartyLinkAgendaCreditAndDebt():
     # GIVEN
     prom_text = "prom"
     x_agenda = agendaunit_shop(_healer=prom_text)
@@ -289,7 +289,7 @@ def test_agenda_get_idea_list_CorrectlySetsPartyLinkDealCreditAndDebt():
     )
 
 
-def test_agenda_get_idea_list_CorrectlySetsPartyUnitDealImportance():
+def test_agenda_get_idea_list_CorrectlySetsPartyUnitAgendaImportance():
     # GIVEN
     prom_text = "prom"
     x_agenda = agendaunit_shop(_healer=prom_text)
@@ -435,7 +435,7 @@ def test_agenda_get_idea_list_CorrectlySetsPartyUnitDealImportance():
     # assert partyunit_agenda_debt_sum < 1.00000001
 
 
-def test_agenda_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitDealImportance():
+def test_agenda_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitAgendaImportance():
     # GIVEN
     prom_text = "prom"
     x_agenda = agendaunit_shop(_healer=prom_text)

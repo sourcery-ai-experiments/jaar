@@ -122,7 +122,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.fm_new.triggered.connect(self.agenda_new)
 
         # self.acptfacts_table.itemClicked.connect(self.acptfact_base_combo_set)
-        self.acptfacts_table.setObjectName("Deal AcptFacts")
+        self.acptfacts_table.setObjectName("Agenda AcptFacts")
         self.acptfacts_table.setColumnWidth(0, 300)
         self.acptfacts_table.setColumnWidth(1, 300)
         self.acptfacts_table.setColumnWidth(2, 30)

@@ -17,7 +17,7 @@ from os import path as os_path
 from pytest import raises as pytest_raises
 
 
-def test_culture_set_agenda_CreatesDealFile(env_dir_setup_cleanup):
+def test_culture_set_agenda_CreatesAgendaFile(env_dir_setup_cleanup):
     # GIVEN
     x_handle = get_temp_env_handle()
     x_culture = cultureunit_shop(handle=x_handle, cultures_dir=get_test_cultures_dir())
@@ -34,7 +34,7 @@ def test_culture_set_agenda_CreatesDealFile(env_dir_setup_cleanup):
     assert os_path.exists(y_path)
 
 
-def test_culture_get_agenda_currentlyGetsDeal(env_dir_setup_cleanup):
+def test_culture_get_agenda_currentlyGetsAgenda(env_dir_setup_cleanup):
     # GIVEN
     x_handle = get_temp_env_handle()
     x_culture = cultureunit_shop(handle=x_handle, cultures_dir=get_test_cultures_dir())
@@ -46,7 +46,7 @@ def test_culture_get_agenda_currentlyGetsDeal(env_dir_setup_cleanup):
     assert x_culture.get_public_agenda(healer=y_agenda._healer) == y_agenda
 
 
-def test_culture_rename_public_agenda_ChangesDealTitle(
+def test_culture_rename_public_agenda_ChangesAgendaTitle(
     env_dir_setup_cleanup,
 ):
     # GIVEN

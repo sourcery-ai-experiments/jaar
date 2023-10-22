@@ -467,9 +467,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.depotlink_type_combo.setCurrentText("")
         column_header = ""
         if self.x_kitchen is None:
-            column_header = "Deallinks Table"
+            column_header = "Agendalinks Table"
         elif self.x_kitchen != None:
-            column_header = f"'{self.x_kitchen._admin.title}' Deallinks"
+            column_header = f"'{self.x_kitchen._admin.title}' Agendas"
         self.refresh_x(
             self.depotlinks_table,
             [column_header, "Link Type", "Weight"],
@@ -595,7 +595,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def refresh_culture(self):
         self.refresh_x(
-            self.agendas_table, ["Deals Table"], self.get_agenda_healer_list()
+            self.agendas_table, ["Agendas Table"], self.get_agenda_healer_list()
         )
         self.refresh_healers()
 

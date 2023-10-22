@@ -22,7 +22,7 @@ from os import path as os_path
 from pytest import raises as pytest_raises
 
 
-def test_kitchenunit_set_depotlink_RaisesErrorWhenDealDoesNotExist(
+def test_kitchenunit_set_depotlink_RaisesErrorWhenAgendaDoesNotExist(
     kitchen_dir_setup_cleanup,
 ):
     # GIVEN
@@ -242,7 +242,7 @@ def test_kitchenunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
     assert x_func_count_files(dir_path=bob_ux._admin._agendas_ignore_dir) == 1
 
 
-def test_kitchenunit_refresh_depotlinks_CorrectlyPullsAllPublicDeals(
+def test_kitchenunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     kitchen_dir_setup_cleanup,
 ):
     # GIVEN

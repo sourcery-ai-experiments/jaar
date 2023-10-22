@@ -36,7 +36,7 @@ def test_kitchenunit_shop_exists(kitchen_dir_setup_cleanup):
     assert x_kitchen._seed is None
 
 
-def test_kitchenunit_auto_output_to_public_SavesDealToPublicDirWhenTrue(
+def test_kitchenunit_auto_output_to_public_SavesAgendaToPublicDirWhenTrue(
     kitchen_dir_setup_cleanup,
 ):
     # GIVEN
@@ -62,7 +62,7 @@ def test_kitchenunit_auto_output_to_public_SavesDealToPublicDirWhenTrue(
     assert os_path.exists(public_file_path)
 
 
-def test_kitchenunit_auto_output_to_public_DoesNotSaveDealToPublicDirWhenFalse(
+def test_kitchenunit_auto_output_to_public_DoesNotSaveAgendaToPublicDirWhenFalse(
     kitchen_dir_setup_cleanup,
 ):
     # GIVEN
@@ -84,7 +84,7 @@ def test_kitchenunit_auto_output_to_public_DoesNotSaveDealToPublicDirWhenFalse(
     assert os_path.exists(public_file_path) is False
 
 
-def test_kitchenunit_get_seed_createsEmptyDealWhenFileDoesNotExist(
+def test_kitchenunit_get_seed_createsEmptyAgendaWhenFileDoesNotExist(
     kitchen_dir_setup_cleanup,
 ):
     # GIVEN
@@ -106,7 +106,7 @@ def test_kitchenunit_get_seed_createsEmptyDealWhenFileDoesNotExist(
     assert tim_kitchen._seed != None
 
 
-def test_kitchenunit_get_seed_getsMemoryDealIfExists(
+def test_kitchenunit_get_seed_getsMemoryAgendaIfExists(
     kitchen_dir_setup_cleanup,
 ):
     # GIVEN
@@ -140,7 +140,7 @@ def test_kitchenunit_get_seed_getsMemoryDealIfExists(
     assert seed_agenda3 == seed_agenda1
 
 
-def test_kitchenunit_set_seed_savesseedDealSet_seed_None(
+def test_kitchenunit_set_seed_savesseedAgendaSet_seed_None(
     kitchen_dir_setup_cleanup,
 ):
     # GIVEN
@@ -168,7 +168,7 @@ def test_kitchenunit_set_seed_savesseedDealSet_seed_None(
     assert seed_agenda2._idearoot._uid == uid_text
 
 
-def test_kitchenunit_set_seed_savesGivenDealSet_seed_None(
+def test_kitchenunit_set_seed_savesGivenAgendaSet_seed_None(
     kitchen_dir_setup_cleanup,
 ):
     # GIVEN

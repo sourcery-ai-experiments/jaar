@@ -80,7 +80,7 @@ from src.agenda.x_func import (
 )
 
 
-class InvalidDealException(Exception):
+class InvalidAgendaException(Exception):
     pass
 
 
@@ -143,7 +143,7 @@ class AgendaUnit:
 
     def set_max_tree_traverse(self, int_x: int):
         if int_x < 2:
-            raise InvalidDealException(
+            raise InvalidAgendaException(
                 f"set_max_tree_traverse: input '{int_x}' must be number that is 2 or greater"
             )
         else:
@@ -501,7 +501,7 @@ class AgendaUnit:
     ):
         old_title_creditor_weight = self._partys.get(old_title).creditor_weight
         if not allow_party_overwite and self._partys.get(new_title) != None:
-            raise InvalidDealException(
+            raise InvalidAgendaException(
                 f"Party '{old_title}' change to '{new_title}' failed since '{new_title}' exists."
             )
         elif (
@@ -509,7 +509,7 @@ class AgendaUnit:
             and self._groups.get(new_title) != None
             and self._groups.get(new_title)._single_party == False
         ):
-            raise InvalidDealException(
+            raise InvalidAgendaException(
                 f"Party '{old_title}' change to '{new_title}' failed since non-single group '{new_title}' exists."
             )
         elif (
@@ -661,7 +661,7 @@ class AgendaUnit:
         self, old_brand: GroupBrand, new_brand: GroupBrand, allow_group_overwite: bool
     ):
         if not allow_group_overwite and self._groups.get(new_brand) != None:
-            raise InvalidDealException(
+            raise InvalidAgendaException(
                 f"Group '{old_brand}' change to '{new_brand}' failed since '{new_brand}' exists."
             )
         elif self._groups.get(new_brand) != None:
@@ -801,7 +801,7 @@ class AgendaUnit:
         while lemmas_x.is_lemmas_evaluated() == False or count_x > 10000:
             count_x += 1
             if count_x == 9998:
-                raise InvalidDealException("lemma loop failed")
+                raise InvalidAgendaException("lemma loop failed")
 
             lemma_y = lemmas_x.get_unevaluated_lemma()
             idea_x = lemma_y.idea_x
@@ -848,7 +848,7 @@ class AgendaUnit:
             and acptfact_idea._close != None
             and self._is_idea_rangeroot(idea_road=base) == False
         ):
-            raise InvalidDealException(
+            raise InvalidAgendaException(
                 f"Non range-root acptfact:{base} can only be set by range-root acptfact"
             )
 
@@ -1108,7 +1108,7 @@ class AgendaUnit:
     def _set_ideakid_if_empty(self, road: Road):
         try:
             self.get_idea_kid(road)
-        except InvalidDealException:
+        except InvalidAgendaException:
             base_idea = ideacore_shop(
                 _label=get_terminus_node_from_road(road=road),
                 _pad=get_pad_from_road(road=road),
@@ -1143,7 +1143,7 @@ class AgendaUnit:
         temps_d = [temp_label]
 
         if x_road == []:
-            raise InvalidDealException("Object cannot delete itself")
+            raise InvalidAgendaException("Object cannot delete itself")
         temp_label = x_road.pop(0)
         temps_d.append(temp_label)
 
@@ -1179,7 +1179,7 @@ class AgendaUnit:
     ):
         # check idea exists
         if self.get_idea_kid(road=old_road) is None:
-            raise InvalidDealException(f"Idea {old_road=} does not exist")
+            raise InvalidAgendaException(f"Idea {old_road=} does not exist")
 
         pad = get_pad_from_road(road=old_road)
         new_road = Road(f"{new_label}") if pad == "" else Road(f"{pad},{new_label}")
@@ -1244,7 +1244,7 @@ class AgendaUnit:
         if (addin != None or numor != None or denom != None or reest != None) and len(
             anc_roads
         ) == 1:
-            raise InvalidDealException("Root Idea cannot have numor denom reest.")
+            raise InvalidAgendaException("Root Idea cannot have numor denom reest.")
         parent_road = self._culture_handle if len(anc_roads) == 1 else anc_roads[1]
 
         parent_has_range = None
@@ -1281,11 +1281,11 @@ class AgendaUnit:
         )
 
         if parent_has_range and numeric_range:
-            raise InvalidDealException(
+            raise InvalidAgendaException(
                 "Idea has begin-close range parent, cannot have numeric_road"
             )
         elif not parent_has_range and not numeric_range and numor != None:
-            raise InvalidDealException(
+            raise InvalidAgendaException(
                 f"Idea cannot edit {numor=}/denom/reest of '{idea_road}' if parent '{parent_road}' or ideacore._numeric_road does not have begin/close range"
             )
         return begin, close
@@ -1633,7 +1633,7 @@ class AgendaUnit:
 
     def get_idea_kid(self, road: Road) -> IdeaCore:
         if road is None:
-            raise InvalidDealException("get_idea_kid received road=None")
+            raise InvalidAgendaException("get_idea_kid received road=None")
         nodes = get_all_road_nodes(road)
         src = nodes.pop(0)
         temp_idea = None
@@ -1649,11 +1649,11 @@ class AgendaUnit:
                     idea_label = nodes.pop(0)
                     temp_idea = temp_idea._kids[idea_label]
                 if temp_idea is None:
-                    raise InvalidDealException(
+                    raise InvalidAgendaException(
                         f"Temp_idea is None {idea_label=}. No item at '{road}'"
                     )
             except:
-                raise InvalidDealException(
+                raise InvalidAgendaException(
                     f"Getting {idea_label=} failed no item at '{road}'"
                 )
 

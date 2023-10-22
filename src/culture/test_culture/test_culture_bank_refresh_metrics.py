@@ -134,7 +134,7 @@ def test_culture_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 12
 
 
-def test_culture_refresh_bank_metrics_CorrectlyPopulatesDealTable01(
+def test_culture_refresh_bank_metrics_CorrectlyPopulatesAgendaTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
@@ -163,7 +163,7 @@ def test_culture_refresh_bank_metrics_CorrectlyPopulatesDealTable01(
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_agendas) == 4
 
 
-def test_culture_refresh_bank_metrics_CorrectlyPopulatesDealTable01(
+def test_culture_refresh_bank_metrics_CorrectlyPopulatesAgendaTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
@@ -222,7 +222,7 @@ def test_culture_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr) == 3
 
 
-def test_culture_set_agenda_bank_attrs_CorrectlyPopulatesDeal_Groupunit_Partylinks(
+def test_culture_set_agenda_bank_attrs_CorrectlyPopulatesAgenda_Groupunit_Partylinks(
     env_dir_setup_cleanup,
 ):
     # GIVEN

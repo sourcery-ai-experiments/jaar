@@ -614,7 +614,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     # assert x_agenda._idearoot._acptfactunits[fri_road].active == True
 
 
-def test_agenda_create_goal_item_CorrectlyCreatesAllDealAttributes():
+def test_agenda_create_goal_item_CorrectlyCreatesAllAgendaAttributes():
     # WHEN "I am cleaning the cookery since I'm in the apartment and it's 8am and it's dirty and I'm doing this for my family"
 
     # GIVEN

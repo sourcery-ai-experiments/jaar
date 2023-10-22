@@ -177,7 +177,7 @@ def test_agenda_set_balancelink_correctly_deletes_balancelinks():
     assert len(x_agenda._idearoot._kids[swim_text]._balanceheirs) == 2
 
 
-def test_agenda_set_balancelink_CorrectlyCalculatesInheritedBalancelinkDealImportance():
+def test_agenda_set_balancelink_CorrectlyCalculatesInheritedBalancelinkAgendaImportance():
     # GIVEN
     x_agenda = agendaunit_shop(_healer="prom")
     rico_text = "rico"
@@ -235,7 +235,7 @@ def test_agenda_set_balancelink_CorrectlyCalculatesInheritedBalancelinkDealImpor
     # assert agenda_debt_sum == 1
 
 
-def test_agenda_get_idea_list_CorrectlyCalculates1LevelDealGroupDealImportance():
+def test_agenda_get_idea_list_CorrectlyCalculates1LevelAgendaGroupAgendaImportance():
     # GIVEN
     prom_text = "prom"
     x_agenda = agendaunit_shop(_healer=prom_text)
@@ -311,7 +311,7 @@ def test_agenda_get_idea_list_CorrectlyCalculates1LevelDealGroupDealImportance()
     )
 
 
-def test_agenda_get_idea_list_CorrectlyCalculates3levelDealGroupDealImportance():
+def test_agenda_get_idea_list_CorrectlyCalculates3levelAgendaGroupAgendaImportance():
     # GIVEN
     prom_text = "prom"
     x_agenda = agendaunit_shop(_healer=prom_text)
@@ -360,7 +360,7 @@ def test_agenda_get_idea_list_CorrectlyCalculates3levelDealGroupDealImportance()
     )
 
 
-def test_agenda_get_idea_list_CorrectlyCalculatesGroupDealImportanceLWwithGroupEmptyBranch():
+def test_agenda_get_idea_list_CorrectlyCalculatesGroupAgendaImportanceLWwithGroupEmptyBranch():
     # GIVEN
     prom_text = "prom"
     x_agenda = agendaunit_shop(_healer=prom_text)
