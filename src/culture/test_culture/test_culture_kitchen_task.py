@@ -135,9 +135,22 @@ def test_culture_kitchen_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     cali_seed = cali_kichen.get_seed()
     cali_amer_party = cali_seed.get_party(amer_text)
     cali_beto_party = cali_seed.get_party(beto_text)
-    cali_amer_party.set_banking_data(None, None, None, voice_rank=45)
-    cali_beto_party.set_banking_data(None, None, None, voice_rank=100)
+    amer_voice_rank = 100
+    beto_voice_rank = 45
+    cali_amer_party.set_banking_data(None, None, None, voice_rank=amer_voice_rank)
+    cali_beto_party.set_banking_data(None, None, None, voice_rank=beto_voice_rank)
+    print(f"{cali_amer_party._bank_voice_rank=} {amer_voice_rank=}")
+    print(f"{cali_beto_party._bank_voice_rank=} {beto_voice_rank=}")
+
     cali_kichen.set_seed(cali_seed)
+
+    print(f"get new seed...")
+    new_cali_seed = cali_kichen.get_seed()
+    new_cali_amer_party = new_cali_seed.get_party(amer_text)
+    new_cali_beto_party = new_cali_seed.get_party(beto_text)
+    print(f"{new_cali_amer_party._bank_voice_rank=} ")
+    print(f"{new_cali_beto_party._bank_voice_rank=} ")
+
     cali_kichen._admin.save_refreshed_output_to_public()
 
     # THEN final acptfact changed
@@ -152,3 +165,5 @@ def test_culture_kitchen_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     print(f"{new_cali_basket_acptfact.open=}")
     print(f"{new_cali_basket_acptfact.nigh=}")
     assert new_cali_basket_acptfact.pick == b_full_road
+
+    assert 1 == 2

@@ -158,8 +158,8 @@ class KitchenAdmin:
         x_agenda = None
         if not self._seed_agenda_exists():
             self.save_seed_agenda(self._get_empty_seed_agenda())
-        ct = x_func_open_file(self._kitchenunit_dir, self._seed_file_title)
-        x_agenda = agendaunit_get_from_json(x_agenda_json=ct)
+        x_json = x_func_open_file(self._kitchenunit_dir, self._seed_file_title)
+        x_agenda = agendaunit_get_from_json(x_agenda_json=x_json)
         x_agenda.set_agenda_metrics()
         return x_agenda
 
