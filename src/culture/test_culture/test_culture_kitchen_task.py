@@ -144,7 +144,7 @@ def test_culture_kitchen_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
 
     cali_kichen.set_seed(cali_seed)
 
-    print(f"get new seed...")
+    print("get new seed...")
     new_cali_seed = cali_kichen.get_seed()
     new_cali_amer_party = new_cali_seed.get_party(amer_text)
     new_cali_beto_party = new_cali_seed.get_party(beto_text)
