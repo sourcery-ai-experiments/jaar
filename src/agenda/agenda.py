@@ -1,5 +1,5 @@
-import dataclasses
-import json
+from dataclasses import dataclass
+from json import loads as json_loads
 from datetime import datetime
 from src.agenda.party import (
     PersonName,
@@ -88,7 +88,7 @@ class AssignmentPartyException(Exception):
     pass
 
 
-@dataclasses.dataclass
+@dataclass
 class AgendaUnit:
     _healer: PersonName = None
     _weight: float = None
@@ -2254,7 +2254,7 @@ def agendaunit_shop(
 
 
 def get_from_json(x_agenda_json: str) -> AgendaUnit:
-    return get_from_dict(cx_dict=json.loads(x_agenda_json))
+    return get_from_dict(cx_dict=json_loads(x_agenda_json))
 
 
 def get_from_dict(cx_dict: dict) -> AgendaUnit:
