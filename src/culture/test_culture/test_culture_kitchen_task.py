@@ -125,37 +125,37 @@ def test_culture_kitchen_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     # print(f"{old_cali_output._idearoot._acptfactunits=}")
     assert old_cali_acptfacts.get(basket_road) != None
     old_cali_basket_acptfact = old_cali_acptfacts.get(basket_road)
-    print(f"{old_cali_basket_acptfact.base=}")
-    print(f"{old_cali_basket_acptfact.pick=}")
-    print(f"{old_cali_basket_acptfact.open=}")
-    print(f"{old_cali_basket_acptfact.nigh=}")
+    # print(f"{old_cali_basket_acptfact.base=}")
+    # print(f"{old_cali_basket_acptfact.pick=}")
+    # print(f"{old_cali_basket_acptfact.open=}")
+    # print(f"{old_cali_basket_acptfact.nigh=}")
     assert old_cali_basket_acptfact.pick == b_bare_road
 
     # WHEN voice_rank is changed
     cali_seed = cali_kichen.get_seed()
     cali_amer_party = cali_seed.get_party(amer_text)
     cali_beto_party = cali_seed.get_party(beto_text)
-    amer_voice_rank = 100
-    beto_voice_rank = 45
+    amer_voice_rank = 45
+    beto_voice_rank = 100
     cali_amer_party.set_banking_data(None, None, None, voice_rank=amer_voice_rank)
     cali_beto_party.set_banking_data(None, None, None, voice_rank=beto_voice_rank)
-    print(f"{cali_amer_party._bank_voice_rank=} {amer_voice_rank=}")
-    print(f"{cali_beto_party._bank_voice_rank=} {beto_voice_rank=}")
+    # print(f"{cali_amer_party._bank_voice_rank=} {amer_voice_rank=}")
+    # print(f"{cali_beto_party._bank_voice_rank=} {beto_voice_rank=}")
 
     cali_kichen.set_seed(cali_seed)
 
     print("get new seed...")
-    new_cali_seed = cali_kichen.get_seed()
-    new_cali_amer_party = new_cali_seed.get_party(amer_text)
-    new_cali_beto_party = new_cali_seed.get_party(beto_text)
-    print(f"{new_cali_amer_party._bank_voice_rank=} ")
-    print(f"{new_cali_beto_party._bank_voice_rank=} ")
+    # new_cali_seed = cali_kichen.get_seed()
+    # new_cali_amer_party = new_cali_seed.get_party(amer_text)
+    # new_cali_beto_party = new_cali_seed.get_party(beto_text)
+    # print(f"{new_cali_amer_party._bank_voice_rank=} ")
+    # print(f"{new_cali_beto_party._bank_voice_rank=} ")
 
     cali_kichen._admin.save_refreshed_output_to_public()
 
     # THEN final acptfact changed
     new_cali_output = x_culture.get_public_agenda(cali_text)
-    assert len(new_cali_output.get_goal_items()) == 0
+    assert len(new_cali_output.get_goal_items()) == 1
     new_cali_acptfacts = new_cali_output._idearoot._acptfactunits
     # print(f"{new_cali_output._idearoot._acptfactunits=}")
     assert new_cali_acptfacts.get(basket_road) != None
@@ -165,5 +165,3 @@ def test_culture_kitchen_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     print(f"{new_cali_basket_acptfact.open=}")
     print(f"{new_cali_basket_acptfact.nigh=}")
     assert new_cali_basket_acptfact.pick == b_full_road
-
-    assert 1 == 2

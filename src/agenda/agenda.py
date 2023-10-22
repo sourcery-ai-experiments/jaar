@@ -2362,16 +2362,50 @@ def get_dict_of_agenda_from_dict(x_dict: dict[str:dict]) -> dict[str:AgendaUnit]
     return agendaunits
 
 
+@dataclass
+class MeldeeOrderUnit:
+    healer: PersonName
+    voice_rank: int
+    file_name: str
+
+
+def get_meldeeorderunit(primary_agenda: AgendaUnit, meldee_file_name: str):
+    file_src_healer = meldee_file_name.replace(".json", "")
+    primary_meldee_partyunit = primary_agenda.get_party(file_src_healer)
+
+    default_voice_rank = 0
+    if primary_meldee_partyunit is None:
+        primary_voice_rank_for_meldee = default_voice_rank
+    else:
+        primary_voice_rank_for_meldee = primary_meldee_partyunit._bank_voice_rank
+        if primary_voice_rank_for_meldee is None:
+            primary_voice_rank_for_meldee = default_voice_rank
+
+    return MeldeeOrderUnit(
+        healer=file_src_healer,
+        voice_rank=primary_voice_rank_for_meldee,
+        file_name=meldee_file_name,
+    )
+
+
+def get_file_names_in_voice_rank_order(primary_agenda, meldees_dir) -> list[str]:
+    agenda_voice_ranks = {}
+    for meldee_file_name in x_func_dir_files(dir_path=meldees_dir):
+        meldee_orderunit = get_meldeeorderunit(primary_agenda, meldee_file_name)
+        agenda_voice_ranks[meldee_orderunit.healer] = meldee_orderunit
+    agendas_voice_rank_ordered_list = list(agenda_voice_ranks.values())
+    agendas_voice_rank_ordered_list.sort(key=lambda x: (x.voice_rank * -1, x.healer))
+    return [
+        x_meldeeorderunit.file_name
+        for x_meldeeorderunit in agendas_voice_rank_ordered_list
+    ]
+
+
 def get_meld_of_agenda_files(
     primary_agenda: AgendaUnit, meldees_dir: str
 ) -> AgendaUnit:
-    primary_agenda.set_agenda_metrics()
-    for meldee_file_x in x_func_dir_files(dir_path=meldees_dir):
-        meldee_x = get_from_json(
-            x_agenda_json=x_func_open_file(meldees_dir, meldee_file_x)
-        )
-        primary_agenda.meld(other_agenda=meldee_x)
-
+    for x_filename in get_file_names_in_voice_rank_order(primary_agenda, meldees_dir):
+        primary_agenda.meld(get_from_json(x_func_open_file(meldees_dir, x_filename)))
     primary_agenda.set_agenda_metrics()
     return primary_agenda
 
