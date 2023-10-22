@@ -138,6 +138,8 @@ class PartyUnit(PartyCore):
             "_partyrings": self.get_partyrings_dict(),
             "_bank_tax_paid": self._bank_tax_paid,
             "_bank_tax_diff": self._bank_tax_diff,
+            "_bank_credit_score": self._bank_credit_score,
+            "_bank_voice_rank": self._bank_voice_rank,
             "depotlink_type": self.depotlink_type,
         }
 
@@ -249,6 +251,16 @@ def partyunits_get_from_dict(x_dict: dict) -> dict[str:PartyUnit]:
             _bank_tax_diff = None
 
         try:
+            _bank_credit_score = partyunits_dict["_bank_credit_score"]
+        except KeyError:
+            _bank_credit_score = None
+
+        try:
+            _bank_voice_rank = partyunits_dict["_bank_voice_rank"]
+        except KeyError:
+            _bank_voice_rank = None
+
+        try:
             depotlink_type = partyunits_dict["depotlink_type"]
         except KeyError:
             depotlink_type = None
@@ -261,9 +273,13 @@ def partyunits_get_from_dict(x_dict: dict) -> dict[str:PartyUnit]:
             _creditor_active=partyunits_dict["_creditor_active"],
             _debtor_active=partyunits_dict["_debtor_active"],
             _partyrings=partyrings_get_from_dict(x_dict=partyrings),
-            _bank_tax_paid=_bank_tax_paid,
-            _bank_tax_diff=_bank_tax_diff,
             depotlink_type=depotlink_type,
+        )
+        x_partyunit.set_banking_data(
+            tax_paid=_bank_tax_paid,
+            tax_diff=_bank_tax_diff,
+            credit_score=_bank_credit_score,
+            voice_rank=_bank_voice_rank,
         )
         partyunits[x_partyunit.title] = x_partyunit
     return partyunits

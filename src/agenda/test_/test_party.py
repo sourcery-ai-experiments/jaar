@@ -40,19 +40,19 @@ def test_partyrings_get_dict_ReturnsDictWithNecessaryDataForJSON():
 
 def test_partyrings_get_from_JSON_SimpleExampleWorks():
     # GIVEN
-    marie_text = "Marie"
-    marie_json_dict = {marie_text: {"title": marie_text}}
-    marie_json_text = x_get_json(dict_x=marie_json_dict)
-    assert x_is_json(json_x=marie_json_text)
+    yao_text = "Yao"
+    yao_json_dict = {yao_text: {"title": yao_text}}
+    yao_json_text = x_get_json(dict_x=yao_json_dict)
+    assert x_is_json(json_x=yao_json_text)
 
     # WHEN
-    marie_obj_dict = partyrings_get_from_json(partyrings_json=marie_json_text)
+    yao_obj_dict = partyrings_get_from_json(partyrings_json=yao_json_text)
 
     # THEN
-    assert marie_obj_dict != None
-    marie_partyring = PartyRing(title=marie_text)
-    partyrings_dict = {marie_partyring.title: marie_partyring}
-    assert marie_obj_dict == partyrings_dict
+    assert yao_obj_dict != None
+    yao_partyring = PartyRing(title=yao_text)
+    partyrings_dict = {yao_partyring.title: yao_partyring}
+    assert yao_obj_dict == partyrings_dict
 
 
 def test_PartyUnit_exists():
@@ -416,23 +416,35 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
     glen_text = "glen"
     glen_ring = PartyRing(title=glen_text)
-    party_rings = {glen_ring.title: glen_ring}
+    bob_party_rings = {glen_ring.title: glen_ring}
     bob_text = "bob"
-    bank_tax_paid = 0.55
-    bank_tax_diff = 0.66
+    bob_bank_tax_paid = 0.55
+    bob_bank_tax_diff = 0.66
     depotlink_type = "assignment"
     bob_party = partyunit_shop(
         title=bob_text,
-        uid=652,
-        creditor_weight=13,
-        debtor_weight=17,
-        _creditor_active=False,
-        _debtor_active=True,
-        _partyrings=party_rings,
-        _bank_tax_paid=bank_tax_paid,
-        _bank_tax_diff=bank_tax_diff,
+        _partyrings=bob_party_rings,
+        _bank_tax_paid=bob_bank_tax_paid,
+        _bank_tax_diff=bob_bank_tax_diff,
         depotlink_type=depotlink_type,
     )
+    bob_uid = 4321
+    bob_party.uid = bob_uid
+
+    bob_creditor_active = False
+    bob_debtor_active = True
+    bob_party._creditor_active = bob_creditor_active
+    bob_party._debtor_active = bob_debtor_active
+
+    bob_creditor_weight = 13
+    bob_debtor_weight = 17
+    bob_party.creditor_weight = bob_creditor_weight
+    bob_party.debtor_weight = bob_debtor_weight
+
+    bob_bank_credit_score = 7000
+    bob_bank_voice_rank = 898
+    bob_party._bank_credit_score = bob_bank_credit_score
+    bob_party._bank_voice_rank = bob_bank_voice_rank
     print(f"{bob_text}")
 
     # WHEN
@@ -443,86 +455,115 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     assert x_dict != None
     assert x_dict == {
         "title": bob_text,
-        "uid": 652,
-        "creditor_weight": 13,
-        "debtor_weight": 17,
-        "_creditor_active": False,
-        "_debtor_active": True,
+        "uid": bob_uid,
+        "creditor_weight": bob_creditor_weight,
+        "debtor_weight": bob_debtor_weight,
+        "_creditor_active": bob_creditor_active,
+        "_debtor_active": bob_debtor_active,
         "_partyrings": {"glen": {"title": "glen"}},
-        "_bank_tax_paid": bank_tax_paid,
-        "_bank_tax_diff": bank_tax_diff,
+        "_bank_tax_paid": bob_bank_tax_paid,
+        "_bank_tax_diff": bob_bank_tax_diff,
+        "_bank_credit_score": bob_bank_credit_score,
+        "_bank_voice_rank": bob_bank_voice_rank,
         "depotlink_type": depotlink_type,
     }
 
 
 def test_PartyUnisshop_get_from_JSON_SimpleExampleWorks():
     cersei_title = PartyTitle("Cersei")
-    party_rings = {cersei_title: {"title": cersei_title}}
-    marie_text = "Marie"
-    bank_tax_paid = 0.55
-    bank_tax_diff = 0.66
-    depotlink_type = "assignment"
-    marie_json_dict = {
-        marie_text: {
-            "title": marie_text,
-            "uid": 103,
-            "creditor_weight": 17,
-            "debtor_weight": 17,
-            "_creditor_active": False,
-            "_debtor_active": True,
-            "_partyrings": party_rings,
-            "_bank_tax_paid": bank_tax_paid,
-            "_bank_tax_diff": bank_tax_diff,
-            "depotlink_type": depotlink_type,
+    yao_party_rings = {cersei_title: {"title": cersei_title}}
+    yao_text = "Yao"
+    yao_uid = 239
+    yao_creditor_weight = 13
+    yao_debtor_weight = 17
+    yao_creditor_active = False
+    yao_debtor_active = True
+    yao_bank_tax_paid = 0.55
+    yao_bank_tax_diff = 0.66
+    yao_depotlink_type = "assignment"
+    yao_bank_credit_score = 7000
+    yao_bank_voice_rank = 898
+    yao_json_dict = {
+        yao_text: {
+            "title": yao_text,
+            "uid": yao_uid,
+            "creditor_weight": yao_creditor_weight,
+            "debtor_weight": yao_debtor_weight,
+            "_creditor_active": yao_creditor_active,
+            "_debtor_active": yao_debtor_active,
+            "_partyrings": yao_party_rings,
+            "_bank_tax_paid": yao_bank_tax_paid,
+            "_bank_tax_diff": yao_bank_tax_diff,
+            "_bank_credit_score": yao_bank_credit_score,
+            "_bank_voice_rank": yao_bank_voice_rank,
+            "depotlink_type": yao_depotlink_type,
         }
     }
-    marie_json_text = x_get_json(dict_x=marie_json_dict)
-    assert x_is_json(json_x=marie_json_text)
+    yao_json_text = x_get_json(dict_x=yao_json_dict)
+    assert x_is_json(json_x=yao_json_text)
 
 
 def test_PartyUnisshop_get_from_JSON_SimpleExampleWorksWithIncompleteData():
     # GIVEN
     cersei_title = PartyTitle("Cersei")
-    party_rings = {cersei_title: {"title": None}}
-    marie_text = "Marie"
-    bank_tax_paid = 0.55
-    bank_tax_diff = 0.66
-    depotlink_type_x = "assignment"
-    marie_json_dict = {
-        marie_text: {
-            "title": marie_text,
-            "uid": 103,
-            "creditor_weight": 17,
-            "debtor_weight": 15,
-            "_creditor_active": False,
-            "_debtor_active": True,
-            "_bank_tax_paid": bank_tax_paid,
-            "_bank_tax_diff": bank_tax_diff,
-            "depotlink_type": depotlink_type_x,
+    yao_party_rings = {cersei_title: {"title": cersei_title}}
+    yao_text = "Yao"
+    yao_uid = 239
+    yao_creditor_weight = 13
+    yao_debtor_weight = 17
+    yao_creditor_active = False
+    yao_debtor_active = True
+    yao_bank_tax_paid = 0.55
+    yao_bank_tax_diff = 0.66
+    yao_depotlink_type = "assignment"
+    yao_bank_credit_score = 7000
+    yao_bank_voice_rank = 898
+    yao_json_dict = {
+        yao_text: {
+            "title": yao_text,
+            "uid": yao_uid,
+            "creditor_weight": yao_creditor_weight,
+            "debtor_weight": yao_debtor_weight,
+            "_creditor_active": yao_creditor_active,
+            "_debtor_active": yao_debtor_active,
+            "_partyrings": yao_party_rings,
+            "_bank_tax_paid": yao_bank_tax_paid,
+            "_bank_tax_diff": yao_bank_tax_diff,
+            "_bank_credit_score": yao_bank_credit_score,
+            "_bank_voice_rank": yao_bank_voice_rank,
+            "depotlink_type": yao_depotlink_type,
         }
     }
 
     # WHEN
-    marie_json_text = x_get_json(dict_x=marie_json_dict)
+    yao_json_text = x_get_json(dict_x=yao_json_dict)
 
     # THEN
-    assert x_is_json(json_x=marie_json_text)
+    assert x_is_json(json_x=yao_json_text)
 
-    marie_obj_dict = partyunits_get_from_json(partyunits_json=marie_json_text)
-    assert marie_obj_dict[marie_text] != None
-    assert marie_obj_dict[marie_text].creditor_weight == 17
-    assert marie_obj_dict[marie_text].debtor_weight == 15
-    assert marie_obj_dict[marie_text]._creditor_active == False
-    assert marie_obj_dict[marie_text]._debtor_active == True
-    assert marie_obj_dict[marie_text]._bank_tax_paid == 0.55
-    assert marie_obj_dict[marie_text]._bank_tax_diff == 0.66
-    assert marie_obj_dict[marie_text].depotlink_type == depotlink_type_x
-    # assert marie_obj_dict[marie_text]._partyrings == party_rings
+    yao_obj_dict = partyunits_get_from_json(partyunits_json=yao_json_text)
+    assert yao_obj_dict[yao_text] != None
+    yao_partyunit = yao_obj_dict[yao_text]
+
+    assert yao_partyunit.title == yao_text
+    assert yao_partyunit.uid == yao_uid
+    assert yao_partyunit.creditor_weight == yao_creditor_weight
+    assert yao_partyunit.debtor_weight == yao_debtor_weight
+    assert yao_partyunit._creditor_active == yao_creditor_active
+    assert yao_partyunit._debtor_active == yao_debtor_active
+    # assert yao_partyunit._party_rings == yao_party_rings
+    assert yao_partyunit._bank_tax_paid == yao_bank_tax_paid
+    assert yao_partyunit._bank_tax_diff == yao_bank_tax_diff
+    assert yao_partyunit._bank_credit_score == yao_bank_credit_score
+    assert yao_partyunit._bank_voice_rank == yao_bank_voice_rank
+    assert yao_partyunit.depotlink_type == yao_depotlink_type
+
+    # assert yao_obj_dict[yao_text]._partyrings == party_rings
 
 
 def test_PartyLink_exists():
     # GIVEN
-    bikers_title = PartyTitle("Marie")
+    bikers_title = PartyTitle("Yao")
 
     # WHEN
     party_link_x = partylink_shop(title=bikers_title)
@@ -557,7 +598,7 @@ def test_PartyLink_exists():
 
 def test_partylink_shop_set_agenda_credit_debt_CorrectlyWorks():
     # GIVEN
-    bikers_title = PartyTitle("Marie")
+    bikers_title = PartyTitle("Yao")
     bikers_creditor_weight = 3.0
     partylinks_sum_creditor_weight = 60
     group_agenda_credit = 0.5
@@ -616,7 +657,7 @@ def test_partylink_shop_reset_agenda_credit_debt():
 
 def test_partylink_shop_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
-    str_title = "Marie"
+    str_title = "Yao"
     biker_title = PartyTitle(str_title)
     biker_party_link = partylink_shop(
         title=biker_title, creditor_weight=12, debtor_weight=19
@@ -637,25 +678,25 @@ def test_partylink_shop_get_dict_ReturnsDictWithNecessaryDataForJSON():
 
 def test_partylink_get_from_JSON_SimpleExampleWorks():
     # GIVEN
-    marie_text = "Marie"
-    marie_json_dict = {
-        marie_text: {"title": marie_text, "creditor_weight": 12, "debtor_weight": 19}
+    yao_text = "Yao"
+    yao_json_dict = {
+        yao_text: {"title": yao_text, "creditor_weight": 12, "debtor_weight": 19}
     }
-    marie_json_text = x_get_json(dict_x=marie_json_dict)
-    assert x_is_json(json_x=marie_json_text)
+    yao_json_text = x_get_json(dict_x=yao_json_dict)
+    assert x_is_json(json_x=yao_json_text)
 
     # WHEN
-    marie_obj_dict = partylinks_get_from_json(partylinks_json=marie_json_text)
+    yao_obj_dict = partylinks_get_from_json(partylinks_json=yao_json_text)
 
     # THEN
-    assert marie_obj_dict != None
+    assert yao_obj_dict != None
 
-    marie_title = PartyTitle(marie_text)
-    marie_partylink = partylink_shop(
-        title=marie_title, creditor_weight=12, debtor_weight=19
+    yao_title = PartyTitle(yao_text)
+    yao_partylink = partylink_shop(
+        title=yao_title, creditor_weight=12, debtor_weight=19
     )
-    partylinks_dict = {marie_partylink.title: marie_partylink}
-    assert marie_obj_dict == partylinks_dict
+    partylinks_dict = {yao_partylink.title: yao_partylink}
+    assert yao_obj_dict == partylinks_dict
 
 
 def test_partylink_meld_RaiseSameTitleException():
