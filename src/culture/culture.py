@@ -44,13 +44,13 @@ from src.culture.bank_sqlstr import (
 )
 
 
-class ProjectHandle(str):  # Created to help track the concept
+class CultureHandle(str):  # Created to help track the concept
     pass
 
 
 @dataclass
-class ProjectUnit:
-    handle: ProjectHandle
+class CultureUnit:
+    handle: CultureHandle
     cultures_dir: str
     _person_importance: float = None
     _kitchenunits: dict[str:KitchenUnit] = None
@@ -524,7 +524,7 @@ def cultureunit_shop(
 ):
     if in_memory_bank is None:
         in_memory_bank = True
-    culture_x = ProjectUnit(
+    culture_x = CultureUnit(
         handle=handle, cultures_dir=cultures_dir, _kitchenunits=_kitchenunits
     )
     culture_x.create_dirs_if_null(in_memory_bank=in_memory_bank)

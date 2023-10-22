@@ -1,6 +1,6 @@
 # command to for converting ui form to python file: pyuic5 ui\culture5IssueUI.ui -o ui\culture5IssueUI.py
 import sys
-from ui.Project5IssueUI import Ui_Form
+from ui.Culture5IssueUI import Ui_Form
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from pyqt_func import agenda_importance_diplay

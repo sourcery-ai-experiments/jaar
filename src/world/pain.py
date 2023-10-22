@@ -1,11 +1,11 @@
 from dataclasses import dataclass
-from src.culture.culture import ProjectHandle
+from src.culture.culture import CultureHandle
 from src.agenda.agenda import PersonName
 
 
 @dataclass
-class ProjectLink:
-    handle: ProjectHandle
+class CultureLink:
+    handle: CultureHandle
     weight: float
     _relative_weight: float = None
     _person_importance: float = None
@@ -20,10 +20,10 @@ class ProjectLink:
         return {"handle": self.handle, "weight": self.weight}
 
 
-def culturelink_shop(handle: ProjectHandle, weight: float = None) -> ProjectLink:
+def culturelink_shop(handle: CultureHandle, weight: float = None) -> CultureLink:
     if weight is None:
         weight = 1
-    return ProjectLink(handle=handle, weight=weight)
+    return CultureLink(handle=handle, weight=weight)
 
 
 @dataclass
@@ -31,7 +31,7 @@ class HealerLink:
     person_name: PersonName
     weight: float
     in_tribe: bool
-    _culturelinks: dict[ProjectHandle:ProjectLink] = None
+    _culturelinks: dict[CultureHandle:CultureLink] = None
     _relative_weight: float = None
     _person_importance: float = None
 
@@ -58,13 +58,13 @@ class HealerLink:
         if self._culturelinks is None:
             self._culturelinks = {}
 
-    def set_culturelink(self, culturelink: ProjectLink):
+    def set_culturelink(self, culturelink: CultureLink):
         self._culturelinks[culturelink.handle] = culturelink
 
-    def get_culturelink(self, culturehandle: ProjectHandle) -> ProjectLink:
+    def get_culturelink(self, culturehandle: CultureHandle) -> CultureLink:
         return self._culturelinks.get(culturehandle)
 
-    def del_culturelink(self, culturehandle: ProjectHandle):
+    def del_culturelink(self, culturehandle: CultureHandle):
         self._culturelinks.pop(culturehandle)
 
     def get_culturelinks_dict(self) -> dict:

@@ -17,7 +17,7 @@ from src.agenda.examples.example_agendas import (
     get_agenda_x1_3levels_1required_1acptfacts as example_agendas_get_agenda_x1_3levels_1required_1acptfacts,
 )
 
-from src.culture.culture import ProjectUnit, cultureunit_shop
+from src.culture.culture import CultureUnit, cultureunit_shop
 from src.culture.examples.example_kitchens import (
     get_1node_agenda as example_healers_get_1node_agenda,
     get_7nodeJRootWithH_agenda as example_healers_get_7nodeJRootWithH_agenda,
@@ -256,11 +256,11 @@ def create_example_culture(culture_handle: str):
     x_culture.create_dirs_if_null(in_memory_bank=True)
 
 
-def delete_dir_example_culture(culture_obj: ProjectUnit):
+def delete_dir_example_culture(culture_obj: CultureUnit):
     x_func_delete_dir(culture_obj.get_object_root_dir())
 
 
-def rename_example_culture(culture_obj: ProjectUnit, new_title):
+def rename_example_culture(culture_obj: CultureUnit, new_title):
     # base_dir = culture_obj.get_object_root_dir()
     base_dir = "src/culture/examples/cultures"
     src_dir = f"{base_dir}/{culture_obj.handle}"

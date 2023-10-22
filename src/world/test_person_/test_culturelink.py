@@ -1,4 +1,4 @@
-from src.world.pain import ProjectLink, culturelink_shop
+from src.world.pain import CultureLink, culturelink_shop
 
 
 def test_culturelink_exists():
@@ -7,7 +7,7 @@ def test_culturelink_exists():
     diet_weight = 3
 
     # WHEN
-    diet_culturelink = ProjectLink(handle=diet_text, weight=diet_weight)
+    diet_culturelink = CultureLink(handle=diet_text, weight=diet_weight)
 
     # THEN
     assert diet_culturelink.handle == diet_text

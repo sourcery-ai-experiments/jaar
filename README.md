@@ -63,13 +63,13 @@ screenshots and explanatory text.
 base attributes vs required attributess
 
 <!-- TODO: Add explanations -->
-ProjectUnit objects
+CultureUnit objects
 
-ProjectUnit KitchenUnit objects
+CultureUnit KitchenUnit objects
 
-ProjectUnit KitchenUnit Agenda objects
+CultureUnit KitchenUnit Agenda objects
 
-ProjectUnit Bank objects
+CultureUnit Bank objects
 
 <!-- TODO: Add explanations -->
 AgendaUnit objects

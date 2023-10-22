@@ -1,5 +1,5 @@
 from src.agenda.x_func import delete_dir as x_func_delete_dir
-from src.culture.culture import cultureunit_shop, ProjectUnit
+from src.culture.culture import cultureunit_shop, CultureUnit
 from os import path as os_path
 from src.culture.examples.culture_env_kit import (
     get_temp_env_handle,
@@ -71,7 +71,7 @@ def test_culture_refresh_bank_metrics_CanConnectToBankInMemory(
 
 def test_culture_get_bank_db_conn_CreatesBankDBIfItDoesNotExist(env_dir_setup_cleanup):
     # GIVEN create culture
-    x_culture = ProjectUnit(
+    x_culture = CultureUnit(
         handle=get_temp_env_handle(), cultures_dir=get_test_cultures_dir()
     )
     # WHEN/THEN

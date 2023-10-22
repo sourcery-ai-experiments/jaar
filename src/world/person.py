@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src.culture.culture import ProjectUnit, ProjectHandle, cultureunit_shop
+from src.culture.culture import CultureUnit, CultureHandle, cultureunit_shop
 from src.world.pain import PainGenus, PainUnit, PersonName, painunit_shop
 
 
@@ -7,7 +7,7 @@ from src.world.pain import PainGenus, PainUnit, PersonName, painunit_shop
 class PersonUnit:
     name: PersonName = None
     person_dir: str = None
-    _cultures: dict[ProjectHandle:ProjectUnit] = None
+    _cultures: dict[CultureHandle:CultureUnit] = None
     _pains: dict[PainGenus:PainUnit] = None
 
     def set_pains_empty_if_none(self):
@@ -58,16 +58,16 @@ class PersonUnit:
         if self._cultures is None:
             self._cultures = {}
 
-    def set_cultureunit(self, culture_handle: ProjectHandle):
+    def set_cultureunit(self, culture_handle: CultureHandle):
         cultures_dir = f"{self.person_dir}/cultures"
         self._cultures[culture_handle] = cultureunit_shop(
             handle=culture_handle, cultures_dir=cultures_dir
         )
 
-    def get_cultureunit(self, culture_handle: ProjectHandle) -> ProjectUnit:
+    def get_cultureunit(self, culture_handle: CultureHandle) -> CultureUnit:
         return self._cultures.get(culture_handle)
 
-    def del_cultureunit(self, culture_handle: ProjectHandle):
+    def del_cultureunit(self, culture_handle: CultureHandle):
         self._cultures.pop(culture_handle)
 
     def get_cultures_dict(self) -> dict:

@@ -1,6 +1,6 @@
 from src.agenda.x_func import delete_dir as x_func_delete_dir
 from os import path as os_path
-from src.culture.culture import ProjectUnit, cultureunit_shop
+from src.culture.culture import CultureUnit, cultureunit_shop
 from src.culture.examples.culture_env_kit import (
     get_temp_env_handle,
     get_test_cultures_dir,
@@ -16,7 +16,7 @@ def test_culture_exists():
     x_handle = "test1"
 
     # WHEN
-    x_culture = ProjectUnit(handle=x_handle, cultures_dir=get_test_cultures_dir())
+    x_culture = CultureUnit(handle=x_handle, cultures_dir=get_test_cultures_dir())
 
     # THEN
     assert x_culture.handle == x_handle
@@ -27,7 +27,7 @@ def test_culture_exists():
 def test_culture_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     # GIVEN create culture
     x_handle = get_temp_env_handle()
-    x_culture = ProjectUnit(handle=x_handle, cultures_dir=get_test_cultures_dir())
+    x_culture = CultureUnit(handle=x_handle, cultures_dir=get_test_cultures_dir())
     print(f"{get_test_cultures_dir()=} {x_culture.cultures_dir=}")
     # x_func_delete_dir(x_culture.get_object_root_dir())
     print(f"delete {x_culture.get_object_root_dir()=}")
