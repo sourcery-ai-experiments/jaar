@@ -195,7 +195,7 @@ class KitchenAdmin:
                 f"Healer {self._kitchen_title} cannot find agenda {healer} in {x_agenda_file_path}"
             )
 
-    def _seed_agenda_exists(self):
+    def _seed_agenda_exists(self) -> bool:
         bool_x = None
         try:
             x_func_open_file(self._kitchenunit_dir, self._seed_file_title)
@@ -204,7 +204,7 @@ class KitchenAdmin:
             bool_x = False
         return bool_x
 
-    def get_remelded_output_agenda(self):
+    def get_remelded_output_agenda(self) -> AgendaUnit:
         self.save_output_agenda()
         return self.open_output_agenda()
 
