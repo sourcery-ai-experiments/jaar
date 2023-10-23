@@ -18,8 +18,7 @@ def test_culture_create_bank_db_CreatesBankDBIfItDoesNotExist(
         handle=get_temp_env_handle(), cultures_dir=get_test_cultures_dir()
     )
 
-    # clear out any bank.db file
-    x_func_delete_dir(dir=x_culture.get_bank_db_path())
+    x_func_delete_dir(dir=x_culture.get_bank_db_path())  # clear out any bank.db file
     assert os_path.exists(x_culture.get_bank_db_path()) == False
 
     # WHEN
@@ -38,7 +37,6 @@ def test_culture_create_bank_db_CanCreateBankInMemory(
     )
     x_culture.create_dirs_if_null(in_memory_bank=True)
 
-    # clear out any bank.db file
     x_culture._bank_db = None
     assert x_culture._bank_db is None
     assert os_path.exists(x_culture.get_bank_db_path()) == False
