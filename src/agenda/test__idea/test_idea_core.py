@@ -92,17 +92,33 @@ def test_idea_core_shop_ReturnsCorrectObj():
 
 
 def test_idea_core_get_key_road_works():
+    # GIVEN
     round_text = "round_things"
     round_pad = f"{root_label()},{round_text}"
-    x_label = "ball"
-    idea = ideacore_shop(_label=x_label, _pad=round_pad)
-    assert idea.get_key_road() == f"{x_label}"
+    ball_text = "ball"
+
+    # WHEN
+    ball_idea = ideacore_shop(_label=ball_text, _pad=round_pad)
+
+    # THEN
+    assert ball_idea.get_key_road() == ball_text
 
 
 def test_idea_core_is_heir_CorrectlyIdentifiesHeirs():
+    # GIVEN
     idea_core = ideacore_shop()
-    texas_road = f"{root_label()},Nation-States,USA,Texas"
-    usa_road = f"{root_label()},Nation-States,USA"
+    usa_text = "USA"
+    usa_road = f"{root_label()},Nation-States,{usa_text}"
+    texas_text = "Texas"
+    texas_road = f"{usa_road},{texas_text}"
+    # earth_text = "earth"
+    # earth_road = f"{earth_text}"
+    # sea_text = "sea"
+    # sea_road = f"{earth_road},{sea_text}"
+    # seaside_text = "seaside"
+    # seaside_road = f"{earth_road},{seaside_text}"
+
+    # WHEN / THEN
     assert idea_core.is_heir(src=usa_road, heir=usa_road)
     assert idea_core.is_heir(src=usa_road, heir=texas_road)
     assert idea_core.is_heir(src="earth,sea", heir="earth,seaside,beach") == False
@@ -131,10 +147,11 @@ def test_idea_core_balancelinks_exist():
     group_links = {swimmer_link.brand: swimmer_link, biker_link.brand: biker_link}
 
     # WHEN
-    idea_core = ideacore_shop(_label="exercising", _balancelinks=group_links)
+    sport_text = "sport"
+    sport_idea = ideacore_shop(_label=sport_text, _balancelinks=group_links)
 
     # THEN
-    assert idea_core._balancelinks == group_links
+    assert sport_idea._balancelinks == group_links
     # assert group_link_x.weight == 1.0
     # group_link_x = balancelink_shop(brand=bikers_title, weight=bikers_weight)
     # assert group_link_x.weight == 3.0
@@ -164,113 +181,146 @@ def test_idea_core_get_inherited_balanceheirs_weight_sum_WorksCorrectlyWithValue
     group_links = {swimmer_link.brand: swimmer_link, biker_link.brand: biker_link}
 
     # WHEN
-    idea_core = ideacore_shop(_label="exercising", _balanceheirs=group_links)
+    sport_text = "sport"
+    sport_idea = ideacore_shop(_label=sport_text, _balanceheirs=group_links)
 
     # THEN
-    assert idea_core.get_balanceheirs_creditor_weight_sum() != None
-    assert idea_core.get_balanceheirs_creditor_weight_sum() == 41
-    assert idea_core.get_balanceheirs_debtor_weight_sum() != None
-    assert idea_core.get_balanceheirs_debtor_weight_sum() == 47
+    assert sport_idea.get_balanceheirs_creditor_weight_sum() != None
+    assert sport_idea.get_balanceheirs_creditor_weight_sum() == 41
+    assert sport_idea.get_balanceheirs_debtor_weight_sum() != None
+    assert sport_idea.get_balanceheirs_debtor_weight_sum() == 47
 
-    assert len(idea_core._balanceheirs) == 2
+    assert len(sport_idea._balanceheirs) == 2
 
-    swimmer_balanceheir = idea_core._balanceheirs.get(swimmer_text)
+    swimmer_balanceheir = sport_idea._balanceheirs.get(swimmer_text)
     assert swimmer_balanceheir._agenda_credit is None
     assert swimmer_balanceheir._agenda_debt is None
-    biker_balanceheir = idea_core._balanceheirs.get(biker_text)
+    biker_balanceheir = sport_idea._balanceheirs.get(biker_text)
     assert biker_balanceheir._agenda_credit is None
     assert biker_balanceheir._agenda_debt is None
 
     # WHEN
-    idea_core._agenda_importance = 0.25
-    idea_core.set_balanceheirs_agenda_credit_debit()
+    sport_idea._agenda_importance = 0.25
+    sport_idea.set_balanceheirs_agenda_credit_debit()
 
     # THEN
-    print(f"{len(idea_core._balanceheirs)=}")
-    swimmer_balanceheir = idea_core._balanceheirs.get(swimmer_text)
+    print(f"{len(sport_idea._balanceheirs)=}")
+    swimmer_balanceheir = sport_idea._balanceheirs.get(swimmer_text)
     assert swimmer_balanceheir._agenda_credit != None
     assert swimmer_balanceheir._agenda_debt != None
-    biker_balanceheir = idea_core._balanceheirs.get(biker_text)
+    biker_balanceheir = sport_idea._balanceheirs.get(biker_text)
     assert biker_balanceheir._agenda_credit != None
     assert biker_balanceheir._agenda_debt != None
 
 
 def test_idea_core_get_balancelinks_weight_sum_WorksCorrectlyNoValues():
     # GIVEN /WHEN
-    idea_core = ideacore_shop(_label="exercising")
+    sport_text = "sport"
+    sport_idea = ideacore_shop(_label=sport_text)
+    assert sport_idea.get_balanceheirs_creditor_weight_sum() != None
+    assert sport_idea.get_balanceheirs_debtor_weight_sum() != None
 
-    # THEN
-    assert idea_core.get_balanceheirs_creditor_weight_sum() != None
-    assert idea_core.get_balanceheirs_debtor_weight_sum() != None
+    # WHEN / THEN
     # does not crash with empty set
-    idea_core.set_balanceheirs_agenda_credit_debit()
+    sport_idea.set_balanceheirs_agenda_credit_debit()
 
 
 def test_idea_core_set_requiredheirsCorrectlyTakesFromOutside():
     # GIVEN
-    idea = ideacore_shop(_label="ball")
-    sufffact_x = sufffactunit_shop(need="ball,run", open=0, nigh=7)
-    sufffacts = {sufffact_x.need: sufffact_x}
-    requiredunit = RequiredUnit(base="ball,run", sufffacts=sufffacts)
-    requiredunits = {requiredunit.base: requiredunit}
-    requiredheir = RequiredHeir(base="ball,run", sufffacts=sufffacts)
+    ball_text = "ball"
+    ball_road = f"{ball_text}"
+    run_text = "run"
+    run_road = f"{ball_road},{run_text}"
+    ball_idea = ideacore_shop(_label=ball_text)
+    run_sufffact = sufffactunit_shop(need=run_road, open=0, nigh=7)
+    run_sufffacts = {run_sufffact.need: run_sufffact}
+    requiredheir = RequiredHeir(base=run_road, sufffacts=run_sufffacts)
     requiredheirs = {requiredheir.base: requiredheir}
-    assert idea._requiredunits is None
-    assert idea._requiredheirs is None
-    idea.set_requiredheirs(requiredheirs=requiredheirs, agenda_idea_dict=None)
-    assert idea._requiredunits == {}
-    assert idea._requiredheirs == requiredheirs
-    assert id(idea._requiredheirs) != id(requiredheirs)
+    assert ball_idea._requiredunits is None
+    assert ball_idea._requiredheirs is None
+
+    # WHEN
+    ball_idea.set_requiredheirs(requiredheirs=requiredheirs, agenda_idea_dict=None)
+
+    # THEN
+    assert ball_idea._requiredunits == {}
+    assert ball_idea._requiredheirs == requiredheirs
+    assert id(ball_idea._requiredheirs) != id(requiredheirs)
 
 
 def test_idea_core_set_requiredheirsCorrectlyTakesFromSelf():
-    sufffact_x = sufffactunit_shop(need="ball,run", open=0, nigh=7)
-    sufffacts = {sufffact_x.need: sufffact_x}
-    requiredunit = RequiredUnit(base="ball,run", sufffacts=sufffacts)
-    requiredunits = {requiredunit.base: requiredunit}
-    idea = ideacore_shop(_label="ball", _requiredunits=requiredunits)
+    # GIVEN
+    ball_text = "ball"
+    ball_road = f"{ball_text}"
+    run_text = "run"
+    run_road = f"{ball_road},{run_text}"
+    run_sufffact = sufffactunit_shop(need=run_road, open=0, nigh=7)
+    run_sufffacts = {run_sufffact.need: run_sufffact}
+    run_requiredunit = RequiredUnit(base=run_road, sufffacts=run_sufffacts)
+    run_requiredunits = {run_requiredunit.base: run_requiredunit}
+    ball_idea = ideacore_shop(_label=ball_text, _requiredunits=run_requiredunits)
+    assert ball_idea._requiredunits != None
+    assert ball_idea._requiredheirs is None
 
-    requiredheir = RequiredHeir(base="ball,run", sufffacts=sufffacts)
+    # WHEN
+    ball_idea.set_requiredheirs(requiredheirs=None, agenda_idea_dict=None)
+
+    # THEN
+    requiredheir = RequiredHeir(base=run_road, sufffacts=run_sufffacts)
     requiredheirs = {requiredheir.base: requiredheir}
-
-    assert idea._requiredunits != None
-    assert idea._requiredheirs is None
-    idea.set_requiredheirs(requiredheirs=None, agenda_idea_dict=None)
-    assert idea._requiredheirs == requiredheirs
+    assert ball_idea._requiredheirs == requiredheirs
 
 
 def test_idea_core_clear_descendant_promise_count_ClearsCorrectly():
-    idea = ideacore_shop(_label="ball", _descendant_promise_count=55)
-    assert idea._descendant_promise_count == 55
-    idea.clear_descendant_promise_count()
-    assert idea._descendant_promise_count is None
+    # GIVEN
+    ball_text = "ball"
+    ball_idea = ideacore_shop(_label=ball_text, _descendant_promise_count=55)
+    assert ball_idea._descendant_promise_count == 55
+
+    # WHEN
+    ball_idea.clear_descendant_promise_count()
+
+    # THEN
+    assert ball_idea._descendant_promise_count is None
 
 
 def test_idea_core_clear_all_party_credit_debt_ClearsCorrectly():
-    idea = ideacore_shop(_label="ball", _all_party_credit=55, _all_party_debt=33)
-    assert idea._all_party_credit == 55
-    assert idea._all_party_debt == 33
-    idea.clear_all_party_credit_debt()
-    assert idea._all_party_credit is None
-    assert idea._all_party_debt is None
+    # GIVEN
+    ball_text = "ball"
+    ball_idea = ideacore_shop(
+        _label=ball_text, _all_party_credit=55, _all_party_debt=33
+    )
+    assert ball_idea._all_party_credit == 55
+    assert ball_idea._all_party_debt == 33
+
+    # WHEN
+    ball_idea.clear_all_party_credit_debt()
+
+    # THEN
+    assert ball_idea._all_party_credit is None
+    assert ball_idea._all_party_debt is None
 
 
 def test_get_kids_in_range_GetsCorrectIdeas():
     # Given
-    idea_x = ideacore_shop(_label="366months", _begin=0, _close=366)
-    idea_x.add_kid(idea_kid=ideacore_shop(_label="Jan", _begin=0, _close=31))
-    idea_x.add_kid(idea_kid=ideacore_shop(_label="Feb29", _begin=31, _close=60))
-    idea_x.add_kid(idea_kid=ideacore_shop(_label="Mar", _begin=31, _close=91))
+    mon366_text = "366months"
+    mon366_idea = ideacore_shop(_label=mon366_text, _begin=0, _close=366)
+    jan_text = "Jan"
+    feb29_text = "Feb29"
+    mar_text = "Mar"
+    mon366_idea.add_kid(idea_kid=ideacore_shop(_label=jan_text, _begin=0, _close=31))
+    mon366_idea.add_kid(idea_kid=ideacore_shop(_label=feb29_text, _begin=31, _close=60))
+    mon366_idea.add_kid(idea_kid=ideacore_shop(_label=mar_text, _begin=31, _close=91))
 
     # When/Then
-    assert len(idea_x.get_kids_in_range(begin=100, close=120)) == 0
-    assert len(idea_x.get_kids_in_range(begin=0, close=31)) == 1
-    assert len(idea_x.get_kids_in_range(begin=5, close=5)) == 1
-    assert len(idea_x.get_kids_in_range(begin=0, close=61)) == 3
-    assert idea_x.get_kids_in_range(begin=31, close=31)[0]._label == "Feb29"
+    assert len(mon366_idea.get_kids_in_range(begin=100, close=120)) == 0
+    assert len(mon366_idea.get_kids_in_range(begin=0, close=31)) == 1
+    assert len(mon366_idea.get_kids_in_range(begin=5, close=5)) == 1
+    assert len(mon366_idea.get_kids_in_range(begin=0, close=61)) == 3
+    assert mon366_idea.get_kids_in_range(begin=31, close=31)[0]._label == feb29_text
 
 
-def test_idea_get_dict_ReturnsDict():
+def test_idea_get_dict_ReturnsCorrectDict():
     # GIVEN
     week_text = "weekdays"
     week_road = f"{root_label()},{week_text}"
@@ -278,12 +328,8 @@ def test_idea_get_dict_ReturnsDict():
     wed_road = f"{week_road},{wed_text}"
     states_text = "nation-state"
     states_road = f"{root_label()},{states_text}"
-    france_text = "France"
-    france_road = f"{states_road},{france_text}"
     usa_text = "USA"
     usa_road = f"{states_road},{usa_text}"
-    oregon_text = "Oregon"
-    oregon_road = f"{usa_road},{oregon_text}"
 
     wed_sufffact = sufffactunit_shop(need=wed_road)
     wed_sufffact._status = True
@@ -338,12 +384,14 @@ def test_idea_get_dict_ReturnsDict():
     }
     x1_balancelinks = {biker_title: biker_get_dict, flyer_title: flyer_get_dict}
 
-    temp_idea = ideacore_shop(
-        _pad=f"{root_label()},work",
+    work_text = "work"
+    work_road = f"{root_label()},{work_text}"
+    work_idea = ideacore_shop(
+        _pad=work_road,
         _kids=None,
         _balancelinks=biker_and_flyer_balancelinks,
         _weight=30,
-        _label="work",
+        _label=work_text,
         _level=1,
         _requiredunits=x1_requiredunits,
         _requiredheirs=x1_requiredheirs,
@@ -353,53 +401,62 @@ def test_idea_get_dict_ReturnsDict():
         _problem_bool=True,
     )
     acptfactunit_x = acptfactunit_shop(base=week_road, pick=week_road, open=5, nigh=59)
-    temp_idea._set_ideakid_attr(acptfactunit=acptfactunit_x)
-    temp_idea.set_originunit_empty_if_null()
-    temp_idea._originunit.set_originlink(title="Ray", weight=None)
-    temp_idea._originunit.set_originlink(title="Lei", weight=4)
+    work_idea._set_ideakid_attr(acptfactunit=acptfactunit_x)
+    work_idea.set_originunit_empty_if_null()
+    work_idea._originunit.set_originlink(title="Ray", weight=None)
+    work_idea._originunit.set_originlink(title="Lei", weight=4)
 
     # WHEN
-    ideakid_dict = temp_idea.get_dict()
+    work_dict = work_idea.get_dict()
 
     # THEN
-    assert ideakid_dict != None
-    assert ideakid_dict["_kids"] == temp_idea.get_kids_dict()
-    assert ideakid_dict["_requiredunits"] == temp_idea.get_requiredunits_dict()
-    assert ideakid_dict["_balancelinks"] == temp_idea.get_balancelinks_dict()
-    assert ideakid_dict["_balancelinks"] == x1_balancelinks
-    assert ideakid_dict["_originunit"] == temp_idea.get_originunit_dict()
-    assert ideakid_dict["_weight"] == temp_idea._weight
-    assert ideakid_dict["_label"] == temp_idea._label
-    assert ideakid_dict["_uid"] == temp_idea._uid
-    assert ideakid_dict["_begin"] == temp_idea._begin
-    assert ideakid_dict["_close"] == temp_idea._close
-    assert ideakid_dict["_numor"] == temp_idea._numor
-    assert ideakid_dict["_denom"] == temp_idea._denom
-    assert ideakid_dict["_reest"] == temp_idea._reest
-    assert ideakid_dict["_range_source_road"] == temp_idea._range_source_road
-    assert ideakid_dict["promise"] == temp_idea.promise
-    assert ideakid_dict["_problem_bool"] == temp_idea._problem_bool
-    assert ideakid_dict["_is_expanded"] == temp_idea._is_expanded
-    assert len(ideakid_dict["_acptfactunits"]) == len(
-        temp_idea.get_acptfactunits_dict()
-    )
-    assert ideakid_dict["_on_meld_weight_action"] == temp_idea._on_meld_weight_action
+    assert work_dict != None
+    assert work_dict["_kids"] == work_idea.get_kids_dict()
+    assert work_dict["_requiredunits"] == work_idea.get_requiredunits_dict()
+    assert work_dict["_balancelinks"] == work_idea.get_balancelinks_dict()
+    assert work_dict["_balancelinks"] == x1_balancelinks
+    assert work_dict["_originunit"] == work_idea.get_originunit_dict()
+    assert work_dict["_weight"] == work_idea._weight
+    assert work_dict["_label"] == work_idea._label
+    assert work_dict["_uid"] == work_idea._uid
+    assert work_dict["_begin"] == work_idea._begin
+    assert work_dict["_close"] == work_idea._close
+    assert work_dict["_numor"] == work_idea._numor
+    assert work_dict["_denom"] == work_idea._denom
+    assert work_dict["_reest"] == work_idea._reest
+    assert work_dict["_range_source_road"] == work_idea._range_source_road
+    assert work_dict["promise"] == work_idea.promise
+    assert work_dict["_problem_bool"] == work_idea._problem_bool
+    assert work_dict["_is_expanded"] == work_idea._is_expanded
+    assert len(work_dict["_acptfactunits"]) == len(work_idea.get_acptfactunits_dict())
+    assert work_dict["_on_meld_weight_action"] == work_idea._on_meld_weight_action
 
 
 def test_idea_vaild_DenomCorrectInheritsBeginAndClose():
-    parent_idea = ideacore_shop(_label="work", _begin=22.0, _close=66.0)
-    kid_idea_given = ideacore_shop(_label="clean", _numor=1, _denom=11.0, _reest=False)
+    # GIVEN
+    work_text = "work"
+    clean_text = "clean"
+    # parent idea
+    work_idea = ideacore_shop(_label=work_text, _begin=22.0, _close=66.0)
+    # kid idea
+    clean_idea = ideacore_shop(_label=clean_text, _numor=1, _denom=11.0, _reest=False)
+
+    # WHEN
+    work_idea.add_kid(idea_kid=clean_idea)
+
+    # THEN
+    assert work_idea._kids[clean_text]._begin == 2
+    assert work_idea._kids[clean_text]._close == 6
     kid_idea_expected = ideacore_shop(
-        _label="clean", _numor=1, _denom=11.0, _reest=False, _begin=2, _close=6
+        _label=clean_text, _numor=1, _denom=11.0, _reest=False, _begin=2, _close=6
     )
-    parent_idea.add_kid(idea_kid=kid_idea_given)
-    assert parent_idea._kids["clean"]._begin == 2
-    assert parent_idea._kids["clean"]._close == 6
-    assert parent_idea._kids["clean"] == kid_idea_expected
+    assert work_idea._kids[clean_text] == kid_idea_expected
 
 
 def test_idea_invaild_DenomThrowsError():
-    parent_idea = ideacore_shop(_label="work")
+    # GIVEN
+    work_text = "work"
+    parent_idea = ideacore_shop(_label=work_text)
     casa_text = "casa"
     casa_road = f"{root_label()},{casa_text}"
     clean_text = "clean"
@@ -407,7 +464,7 @@ def test_idea_invaild_DenomThrowsError():
     kid_idea = ideacore_shop(
         _label=clean_text, _pad=casa_road, _numor=1, _denom=11.0, _reest=False
     )
-    # When/Then
+    # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         parent_idea.add_kid(idea_kid=kid_idea)
     assert (
@@ -418,31 +475,33 @@ def test_idea_invaild_DenomThrowsError():
 
 def test_idea_get_requiredheir_correctlyReturnsRequiredHeir():
     # GIVEN
-    idea_x = ideacore_shop(_label="test4")
-    test5_text = "test5"
-    required_heir_x = RequiredHeir(base=test5_text, sufffacts={})
+    clean_text = "clean"
+    clean_idea = ideacore_shop(_label=clean_text)
+    tool_text = "tool"
+    required_heir_x = RequiredHeir(base=tool_text, sufffacts={})
     required_heirs_x = {required_heir_x.base: required_heir_x}
-    idea_x.set_requiredheirs(requiredheirs=required_heirs_x, agenda_idea_dict=None)
+    clean_idea.set_requiredheirs(requiredheirs=required_heirs_x, agenda_idea_dict=None)
 
     # WHEN
-    required_heir_z = idea_x.get_requiredheir(base=test5_text)
+    required_heir_z = clean_idea.get_requiredheir(base=tool_text)
 
     # THEN
     assert required_heir_z != None
-    assert required_heir_z.base == test5_text
+    assert required_heir_z.base == tool_text
 
 
 def test_idea_get_requiredheir_correctlyReturnsNone():
     # GIVEN
-    idea_x = ideacore_shop(_label="test4")
-    test5_text = "test5"
-    required_heir_x = RequiredHeir(base=test5_text, sufffacts={})
+    clean_text = "clean"
+    clean_idea = ideacore_shop(_label=clean_text)
+    tool_text = "tool"
+    required_heir_x = RequiredHeir(base=tool_text, sufffacts={})
     required_heirs_x = {required_heir_x.base: required_heir_x}
-    idea_x.set_requiredheirs(requiredheirs=required_heirs_x, agenda_idea_dict=None)
+    clean_idea.set_requiredheirs(requiredheirs=required_heirs_x, agenda_idea_dict=None)
 
     # WHEN
     test6_text = "test6"
-    required_heir_test6 = idea_x.get_requiredheir(base=test6_text)
+    required_heir_test6 = clean_idea.get_requiredheir(base=test6_text)
 
     # THEN
     assert required_heir_test6 is None
@@ -450,137 +509,143 @@ def test_idea_get_requiredheir_correctlyReturnsNone():
 
 def test_idea_set_active_status_SetsNullactive_status_hxToNonEmpty():
     # GIVEN
-    idea_x = ideacore_shop(_label="test4")
-    assert idea_x._active_status_hx is None
+    clean_text = "clean"
+    clean_idea = ideacore_shop(_label=clean_text)
+    assert clean_idea._active_status_hx is None
 
     # WHEN
-    idea_x.set_active_status(tree_traverse_count=3)
+    clean_idea.set_active_status(tree_traverse_count=3)
     # THEN
-    assert idea_x._active_status_hx == {3: True}
+    assert clean_idea._active_status_hx == {3: True}
 
 
 def test_idea_set_active_status_IfFullactive_status_hxResetToTrue():
     # GIVEN
-    idea_x = ideacore_shop(_label="test4")
-    idea_x._active_status_hx = {0: True, 4: False}
-    assert idea_x._active_status_hx != {0: True}
+    clean_text = "clean"
+    clean_idea = ideacore_shop(_label=clean_text)
+    clean_idea._active_status_hx = {0: True, 4: False}
+    assert clean_idea._active_status_hx != {0: True}
     # WHEN
-    idea_x.set_active_status(tree_traverse_count=0)
+    clean_idea.set_active_status(tree_traverse_count=0)
     # THEN
-    assert idea_x._active_status_hx == {0: True}
+    assert clean_idea._active_status_hx == {0: True}
 
 
 # def test_idea_set_active_status_IfFullactive_status_hxResetToFalse():
 #     # GIVEN
-#     idea_x = ideacore_shop(_label="test4")
-#     idea_x.set_required_sufffact(
+# clean_text = "clean"
+# clean_idea = ideacore_shop(_label=clean_text)
+#     clean_idea.set_required_sufffact(
 #         base="testing1,second",
 #         sufffact="testing1,second,next",
 #         open=None,
 #         nigh=None,
 #         divisor=None,
 #     )
-#     idea_x._active_status_hx = {0: True, 4: False}
-#     assert idea_x._active_status_hx != {0: False}
+#     clean_idea._active_status_hx = {0: True, 4: False}
+#     assert clean_idea._active_status_hx != {0: False}
 #     # WHEN
-#     idea_x.set_active_status(tree_traverse_count=0)
+#     clean_idea.set_active_status(tree_traverse_count=0)
 #     # THEN
-#     assert idea_x._active_status_hx == {0: False}
+#     assert clean_idea._active_status_hx == {0: False}
 
 
 def test_idea_record_active_status_hx_CorrectlyRecordsHistorry():
     # GIVEN
-    idea_x = ideacore_shop(_label="test4")
-    assert idea_x._active_status_hx is None
+    clean_text = "clean"
+    clean_idea = ideacore_shop(_label=clean_text)
+    assert clean_idea._active_status_hx is None
 
     # WHEN
-    idea_x.record_active_status_hx(
+    clean_idea.record_active_status_hx(
         tree_traverse_count=0,
         prev_active_status=None,
         curr_active_status=True,
     )
     # THEN
-    assert idea_x._active_status_hx == {0: True}
+    assert clean_idea._active_status_hx == {0: True}
 
     # WHEN
-    idea_x.record_active_status_hx(
+    clean_idea.record_active_status_hx(
         tree_traverse_count=1,
         prev_active_status=True,
         curr_active_status=True,
     )
     # THEN
-    assert idea_x._active_status_hx == {0: True}
+    assert clean_idea._active_status_hx == {0: True}
 
     # WHEN
-    idea_x.record_active_status_hx(
+    clean_idea.record_active_status_hx(
         tree_traverse_count=2,
         prev_active_status=True,
         curr_active_status=False,
     )
     # THEN
-    assert idea_x._active_status_hx == {0: True, 2: False}
+    assert clean_idea._active_status_hx == {0: True, 2: False}
 
     # WHEN
-    idea_x.record_active_status_hx(
+    clean_idea.record_active_status_hx(
         tree_traverse_count=3,
         prev_active_status=False,
         curr_active_status=False,
     )
     # THEN
-    assert idea_x._active_status_hx == {0: True, 2: False}
+    assert clean_idea._active_status_hx == {0: True, 2: False}
 
     # WHEN
-    idea_x.record_active_status_hx(
+    clean_idea.record_active_status_hx(
         tree_traverse_count=4,
         prev_active_status=False,
         curr_active_status=True,
     )
     # THEN
-    assert idea_x._active_status_hx == {0: True, 2: False, 4: True}
+    assert clean_idea._active_status_hx == {0: True, 2: False, 4: True}
 
     # WHEN
-    idea_x.record_active_status_hx(
+    clean_idea.record_active_status_hx(
         tree_traverse_count=0,
         prev_active_status=False,
         curr_active_status=False,
     )
     # THEN
-    assert idea_x._active_status_hx == {0: False}
+    assert clean_idea._active_status_hx == {0: False}
 
 
 def test_idea_set_assignedunit_empty_if_null():
     # GIVEN
-    idea_x = ideacore_shop(_label="run")
-    assert idea_x._assignedunit is None
+    run_text = "run"
+    run_idea = ideacore_shop(_label=run_text)
+    assert run_idea._assignedunit is None
 
     # WHEN
-    idea_x.set_assignedunit_empty_if_null()
+    run_idea.set_assignedunit_empty_if_null()
 
     # THEN
-    assert idea_x._assignedunit != None
-    assert idea_x._assignedunit == assigned_unit_shop()
+    assert run_idea._assignedunit != None
+    assert run_idea._assignedunit == assigned_unit_shop()
 
 
 def test_idea_set_assignedunit_empty_if_null():
     # GIVEN
     swim_text = "swimmers"
-    idea_x = ideacore_shop(_label="run")
-    idea_x.set_assignedunit_empty_if_null()
-    idea_x._assignedunit.set_suffgroup(title=swim_text)
-    assert idea_x._assignedheir is None
+    sport_text = "sports"
+    sport_idea = ideacore_shop(_label=sport_text)
+    sport_idea.set_assignedunit_empty_if_null()
+    sport_idea._assignedunit.set_suffgroup(title=swim_text)
+    assert sport_idea._assignedheir is None
 
     # WHEN
-    idea_x.set_assignedheir(parent_assignheir=None, agenda_groups=None)
+    sport_idea.set_assignedheir(parent_assignheir=None, agenda_groups=None)
 
     # THEN
-    assert idea_x._assignedheir != None
-    assigned_unit_x = assigned_unit_shop()
-    assigned_unit_x.set_suffgroup(title=swim_text)
-    assigned_heir_x = assigned_heir_shop()
-    assigned_heir_x.set_suffgroups(
-        assignunit=assigned_unit_x, parent_assignheir=None, agenda_groups=None
+    assert sport_idea._assignedheir != None
+    swim_assigned_unit = assigned_unit_shop()
+    swim_assigned_unit.set_suffgroup(title=swim_text)
+    swim_assigned_heir = assigned_heir_shop()
+    swim_assigned_heir.set_suffgroups(
+        assignunit=swim_assigned_unit, parent_assignheir=None, agenda_groups=None
     )
-    assert idea_x._assignedheir == assigned_heir_x
+    assert sport_idea._assignedheir == swim_assigned_heir
 
 
 def test_idea_get_descendants_ReturnsNoRoads():
@@ -612,7 +677,7 @@ def test_idea_get_descendants_Returns3DescendantsRoads():
     texas_idea = ideacore_shop(_label=texas_text, _pad=usa_road)
     usa_idea.add_kid(idea_kid=texas_idea)
 
-    iowa_text = "iowa"
+    iowa_text = "Iowa"
     iowa_road = f"{usa_road},{iowa_text}"
     iowa_idea = ideacore_shop(_label=iowa_text, _pad=usa_road)
     usa_idea.add_kid(idea_kid=iowa_idea)
