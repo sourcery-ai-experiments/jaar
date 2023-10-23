@@ -17,7 +17,7 @@ def test_culture_bank_get_agendaunits_ReturnsCorrectEmptyObj(env_dir_setup_clean
     culture_handle = get_temp_env_handle()
     x_culture = cultureunit_shop(culture_handle, get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     # WHEN
     x_agendabankunits = get_agendabankunits_dict(x_culture.get_bank_conn())
@@ -31,7 +31,7 @@ def test_culture_bank_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_cleanu
     culture_handle = get_temp_env_handle()
     x_culture = cultureunit_shop(culture_handle, get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
     assert len(get_agendabankunits_dict(x_culture.get_bank_conn())) == 0
 
     # WHEN
@@ -45,7 +45,7 @@ def test_culture_bank_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_cleanu
     x_culture.save_public_agenda(agendaunit_shop(_healer=tom_text))
     x_culture.save_public_agenda(agendaunit_shop(_healer=ava_text))
     x_culture.save_public_agenda(agendaunit_shop(_healer=elu_text))
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
     x_agendabankunits = get_agendabankunits_dict(x_culture.get_bank_conn())
 
     # THEN
@@ -74,7 +74,7 @@ def test_culture_bank_set_single_agendaunit_voice_rank_CorrectlyUpdatesRecord(
     culture_handle = get_temp_env_handle()
     x_culture = cultureunit_shop(culture_handle, get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
     sal_text = "sal"
     bob_text = "bob"
     tom_text = "tom"
@@ -85,7 +85,7 @@ def test_culture_bank_set_single_agendaunit_voice_rank_CorrectlyUpdatesRecord(
     x_culture.save_public_agenda(agendaunit_shop(_healer=tom_text))
     x_culture.save_public_agenda(agendaunit_shop(_healer=ava_text))
     x_culture.save_public_agenda(agendaunit_shop(_healer=elu_text))
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
     x_agendabankunits = get_agendabankunits_dict(x_culture.get_bank_conn())
     assert x_agendabankunits.get(sal_text).voice_rank is None
     assert x_agendabankunits.get(bob_text).voice_rank is None
@@ -114,7 +114,7 @@ def test_culture_bank_set_all_agendaunit_voice_ranks_CorrectlyUpdatesRecords(
     culture_handle = get_temp_env_handle()
     x_culture = cultureunit_shop(culture_handle, get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
     sal_text = "sal"
     bob_text = "bob"
     tom_text = "tom"
@@ -125,7 +125,7 @@ def test_culture_bank_set_all_agendaunit_voice_ranks_CorrectlyUpdatesRecords(
     x_culture.save_public_agenda(agendaunit_shop(_healer=tom_text))
     x_culture.save_public_agenda(agendaunit_shop(_healer=ava_text))
     x_culture.save_public_agenda(agendaunit_shop(_healer=elu_text))
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
     x_agendabankunits = get_agendabankunits_dict(x_culture.get_bank_conn())
     old_sal_voice_rank = -10
     old_bob_voice_rank = -45

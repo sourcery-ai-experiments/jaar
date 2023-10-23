@@ -34,7 +34,7 @@ from src.culture.examples.example_kitchens import (
 from src.culture.y_func import get_single_result_back
 
 
-def test_culture_refresh_bank_metrics_CorrectlyDeletesOldBankInMemory(
+def test_culture_refresh_bank_agenda_data_CorrectlyDeletesOldBankInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -49,18 +49,18 @@ def test_culture_refresh_bank_metrics_CorrectlyDeletesOldBankInMemory(
     bob = agendaunit_shop(_healer=bob_text)
     bob.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob)
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 1
 
     # WHEN
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     # THEN
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 1
 
 
-def test_culture_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
+def test_culture_refresh_bank_agenda_data_CorrectlyDeletesOldBankFile(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -75,18 +75,18 @@ def test_culture_refresh_bank_metrics_CorrectlyDeletesOldBankFile(
     bob = agendaunit_shop(_healer=bob_text)
     bob.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob)
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 1
 
     # WHEN
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     # THEN
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 1
 
 
-def test_culture_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
+def test_culture_refresh_bank_agenda_data_CorrectlyPopulatesLedgerTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
@@ -128,13 +128,13 @@ def test_culture_refresh_bank_metrics_CorrectlyPopulatesLedgerTable01(
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 0
 
     # WHEN
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     # THEN
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 12
 
 
-def test_culture_refresh_bank_metrics_CorrectlyPopulatesAgendaTable01(
+def test_culture_refresh_bank_agenda_data_CorrectlyPopulatesAgendaTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
@@ -157,13 +157,13 @@ def test_culture_refresh_bank_metrics_CorrectlyPopulatesAgendaTable01(
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_agendas) == 0
 
     # WHEN
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     # THEN
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_agendas) == 4
 
 
-def test_culture_refresh_bank_metrics_CorrectlyPopulatesAgendaTable01(
+def test_culture_refresh_bank_agenda_data_CorrectlyPopulatesAgendaTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
@@ -186,13 +186,13 @@ def test_culture_refresh_bank_metrics_CorrectlyPopulatesAgendaTable01(
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_agendas) == 0
 
     # WHEN
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     # THEN
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_agendas) == 4
 
 
-def test_culture_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
+def test_culture_refresh_bank_agenda_data_CorrectlyPopulates_groupunit_catalog(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -216,7 +216,7 @@ def test_culture_refresh_bank_metrics_CorrectlyPopulates_groupunit_catalog(
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr) == 0
 
     # WHEN
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     # THEN
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr) == 3
@@ -297,7 +297,7 @@ def test_culture_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     # GIVEN
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     bob_text = "bob"
     with x_culture.get_bank_conn() as bank_conn:
@@ -315,13 +315,13 @@ def test_culture_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     assert get_idea_catalog_table_count(bank_conn, bob_text) == 1
 
 
-def test_culture_refresh_bank_metrics_Populates_idea_catalog_table(
+def test_culture_refresh_bank_agenda_data_Populates_idea_catalog_table(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     bob_text = "bob"
     sal_text = "sal"
@@ -340,7 +340,7 @@ def test_culture_refresh_bank_metrics_Populates_idea_catalog_table(
         assert get_idea_catalog_table_count(bank_conn, bob_text) == 0
 
     # WHEN
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     # THEN
     with x_culture.get_bank_conn() as bank_conn:
@@ -353,7 +353,7 @@ def test_culture_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup)
     # GIVEN
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     bob_text = "bob"
     sal_text = "sal"
@@ -371,7 +371,7 @@ def test_culture_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup)
     x_culture.save_public_agenda(x_agenda=tim_agenda)
     x_culture.save_public_agenda(x_agenda=sal_agenda)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
     i_count_sqlstr = get_table_count_sqlstr("idea_catalog")
     with x_culture.get_bank_conn() as bank_conn:
         print(f"{i_count_sqlstr=}")
@@ -394,7 +394,7 @@ def test_culture_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTabl
 
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     bob_text = "bob"
     with x_culture.get_bank_conn() as bank_conn:
@@ -415,14 +415,14 @@ def test_culture_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTabl
     assert get_acptfact_catalog_table_count(bank_conn, bob_text) == 1
 
 
-def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
+def test_refresh_bank_agenda_data_Populates_acptfact_catalog_table(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
 
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     # TODO create 3 agendas with varying numbers of acpt facts
     bob_text = "bob"
@@ -463,7 +463,7 @@ def test_refresh_bank_metrics_Populates_acptfact_catalog_table(
         assert get_acptfact_catalog_table_count(bank_conn, sal_text) == 0
 
     # WHEN
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     # THEN
     print(f"{get_acptfact_catalog_table_count(bank_conn, bob_text)=}")
@@ -482,7 +482,7 @@ def test_culture_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTab
 
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     bob_text = "bob"
     with x_culture.get_bank_conn() as bank_conn:
@@ -520,7 +520,7 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     tom_agenda.add_partyunit(title=elu_text)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
     x_culture.save_public_agenda(x_agenda=tom_agenda)
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
     sqlstr = get_table_count_sqlstr("groupunit_catalog")
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr) == 3
 

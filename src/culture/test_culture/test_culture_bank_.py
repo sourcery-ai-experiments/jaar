@@ -51,7 +51,7 @@ def test_culture_create_bank_db_CanCreateBankInMemory(
     assert os_path.exists(x_culture.get_bank_db_path()) == False
 
 
-def test_culture_refresh_bank_metrics_CanConnectToBankInMemory(
+def test_culture_refresh_bank_agenda_data_CanConnectToBankInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN create culture
@@ -63,7 +63,7 @@ def test_culture_refresh_bank_metrics_CanConnectToBankInMemory(
     assert os_path.exists(x_culture.get_bank_db_path()) == False
 
     # WHEN
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     # THEN
     assert os_path.exists(x_culture.get_bank_db_path()) == False

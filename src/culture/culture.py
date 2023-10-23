@@ -90,7 +90,7 @@ class CultureUnit:
         self.save_public_agenda(agenda_obj)
 
         # refresh bank metrics
-        self.refresh_bank_metrics()
+        self.refresh_bank_agenda_data()
 
     def set_river_sphere_for_agenda(
         self, agenda_healer: PersonName, max_flows_count: int = None
@@ -201,7 +201,7 @@ class CultureUnit:
             river_tallys = get_river_tally_dict(bank_conn, agenda_healer)
         return river_tallys
 
-    def refresh_bank_metrics(self, in_memory: bool = None):
+    def refresh_bank_agenda_data(self, in_memory: bool = None):
         if in_memory is None and self._bank_db != None:
             in_memory = True
         self._create_bank_db(in_memory=in_memory, overwrite=True)

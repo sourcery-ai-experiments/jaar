@@ -41,7 +41,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable0
     tom.add_partyunit(title=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=tom)
 
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 4
@@ -127,7 +127,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable0
     elu = agendaunit_shop(_healer=elu_text)
     elu.add_partyunit(title=sal_text, creditor_weight=1, debtor_weight=8)
     x_culture.save_public_agenda(x_agenda=elu)
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 6
@@ -200,7 +200,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable0
 
     ava_agenda = agendaunit_shop(_healer=ava_text)
     x_culture.save_public_agenda(x_agenda=ava_agenda)
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 6
@@ -285,7 +285,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable0
     elu_agenda.add_partyunit(title=ava_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 8
@@ -371,7 +371,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable0
     elu_agenda.add_partyunit(title=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 9
@@ -454,7 +454,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyDeletesPreviousRiver(
     elu = agendaunit_shop(_healer=elu_text)
     elu.add_partyunit(title=sal_text, creditor_weight=1, debtor_weight=8)
     x_culture.save_public_agenda(x_agenda=elu)
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     x_culture.set_river_sphere_for_agenda(agenda_healer=sal_text)
     x_culture.set_river_sphere_for_agenda(agenda_healer=elu_text)
@@ -530,7 +530,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyUsesMaxFlowsCount(
     elu_agenda.add_partyunit(title=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 9
@@ -600,7 +600,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable0
     elu_agenda.add_partyunit(title=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     sqlstr_count_ledger = get_table_count_sqlstr("ledger")
     assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 9
@@ -692,7 +692,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyBuildsASingleContinuousRan
     elu_agenda.add_partyunit(title=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     # WHEN
     x_culture.set_river_sphere_for_agenda(agenda_healer=sal_text, max_flows_count=100)
@@ -763,7 +763,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     elu_agenda.add_partyunit(title=sal_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
     sal_agenda_before = x_culture.get_public_agenda(healer=sal_text)
 
     x_culture.set_river_sphere_for_agenda(agenda_healer=sal_text, max_flows_count=100)

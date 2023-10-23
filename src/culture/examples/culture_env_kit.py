@@ -245,7 +245,7 @@ def _delete_and_set_ex6():
     elu_agenda.add_partyunit(title=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
     x_culture.set_river_sphere_for_agenda(agenda_healer=sal_text, max_flows_count=100)
 
 

@@ -30,7 +30,7 @@ def test_culture_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     bob_text = "bob"
     tim_text = "tim"
@@ -148,7 +148,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
 
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
 
     bob_text = "bob"
     sal_text = "sal"
@@ -457,7 +457,7 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
     bob_agenda.add_partyunit(title=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
 
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
     x_culture.set_river_sphere_for_agenda(agenda_healer=sal_text)
 
     with x_culture.get_bank_conn() as bank_conn:
@@ -511,7 +511,7 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     elu_agenda.add_partyunit(title=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
-    x_culture.refresh_bank_metrics()
+    x_culture.refresh_bank_agenda_data()
     x_culture.set_river_sphere_for_agenda(agenda_healer=sal_text, max_flows_count=100)
     with x_culture.get_bank_conn() as bank_conn:
         bank_conn.execute(get_river_bucket_table_delete_sqlstr(sal_text))
