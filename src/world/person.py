@@ -44,14 +44,14 @@ class PersonUnit:
                 for x_culturelink in x_healerlink._culturelinks.values():
                     cultureunit_handles[
                         x_culturelink.handle
-                    ] += x_culturelink._person_importance
+                    ] += x_culturelink._manager_importance
 
         for (
             x_cultureunit_handle,
-            x_cultureunit_person_importance,
+            x_cultureunit_manager_importance,
         ) in cultureunit_handles.items():
-            self._cultures.get(x_cultureunit_handle).set_person_importance(
-                x_cultureunit_person_importance
+            self._cultures.get(x_cultureunit_handle).set_manager_importance(
+                x_cultureunit_manager_importance
             )
 
     def set_cultures_empty_if_none(self):
@@ -61,7 +61,7 @@ class PersonUnit:
     def set_cultureunit(self, culture_handle: CultureHandle):
         cultures_dir = f"{self.person_dir}/cultures"
         self._cultures[culture_handle] = cultureunit_shop(
-            handle=culture_handle, cultures_dir=cultures_dir
+            handle=culture_handle, cultures_dir=cultures_dir, _manager_name=self.name
         )
 
     def get_cultureunit(self, culture_handle: CultureHandle) -> CultureUnit:

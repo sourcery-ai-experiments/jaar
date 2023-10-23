@@ -19,7 +19,7 @@ def test_painunit_exists():
     assert fear_painunit.weight == fear_weight
     assert fear_painunit._healerlinks is None
     assert fear_painunit._relative_weight is None
-    assert fear_painunit._person_importance is None
+    assert fear_painunit._manager_importance is None
 
 
 def test_painunit_shop_ReturnsNonePainUnitWithCorrectAttrs_v1():
@@ -34,4 +34,4 @@ def test_painunit_shop_ReturnsNonePainUnitWithCorrectAttrs_v1():
     assert fear_painunit.weight == 1
     assert fear_painunit._healerlinks == {}
     assert fear_painunit._relative_weight is None
-    assert fear_painunit._person_importance is None
+    assert fear_painunit._manager_importance is None

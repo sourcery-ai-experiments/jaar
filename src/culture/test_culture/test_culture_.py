@@ -21,7 +21,8 @@ def test_culture_exists():
     # THEN
     assert x_culture.handle == x_handle
     assert x_culture.cultures_dir == get_test_cultures_dir()
-    assert x_culture._person_importance is None
+    assert x_culture._manager_name is None
+    assert x_culture._manager_importance is None
 
 
 def test_culture_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
@@ -215,14 +216,18 @@ def test_cultureunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
     # GIVEN
     x_handle = get_temp_env_handle()
     culture_dir = f"src/culture/examples/cultures/{x_handle}"
+    sue_text = "Sue"
     assert os_path.exists(culture_dir) is False
 
     # WHEN
-    x_culture = cultureunit_shop(handle=x_handle, cultures_dir=get_test_cultures_dir())
+    x_culture = cultureunit_shop(
+        handle=x_handle, cultures_dir=get_test_cultures_dir(), _manager_name=sue_text
+    )
 
     # THEN
     assert x_culture != None
     assert x_culture.handle == x_handle
     assert os_path.exists(culture_dir)
     assert x_culture._bank_db != None
-    assert x_culture._person_importance is None
+    assert x_culture._manager_name == sue_text
+    assert x_culture._manager_importance is None

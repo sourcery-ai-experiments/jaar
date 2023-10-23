@@ -7,16 +7,16 @@ from src.culture.examples.culture_env_kit import (
 )
 
 
-def test_cultureunit_set_person_importance_CorrectsSetsData(env_dir_setup_cleanup):
+def test_cultureunit_set_manager_importance_CorrectsSetsData(env_dir_setup_cleanup):
     # GIVEN
     x_handle = get_temp_env_handle()
     x_culture = cultureunit_shop(handle=x_handle, cultures_dir=get_test_cultures_dir())
     assert x_culture.handle == x_handle
-    assert x_culture._person_importance is None
+    assert x_culture._manager_importance is None
 
     # WHEN
-    x_person_importance = 0.77
-    x_culture.set_person_importance(x_person_importance)
+    x_manager_importance = 0.77
+    x_culture.set_manager_importance(x_manager_importance)
 
     # THEN
-    assert x_culture._person_importance == x_person_importance
+    assert x_culture._manager_importance == x_manager_importance

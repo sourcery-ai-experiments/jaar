@@ -13,7 +13,7 @@ def test_culturelink_exists():
     assert diet_culturelink.handle == diet_text
     assert diet_culturelink.weight == diet_weight
     assert diet_culturelink._relative_weight is None
-    assert diet_culturelink._person_importance is None
+    assert diet_culturelink._manager_importance is None
 
 
 def test_culturelink_shop_ReturnsCorrectObj():
@@ -28,7 +28,7 @@ def test_culturelink_shop_ReturnsCorrectObj():
     assert diet_culturelink.handle == diet_text
     assert diet_culturelink.weight == diet_weight
     assert diet_culturelink._relative_weight is None
-    assert diet_culturelink._person_importance is None
+    assert diet_culturelink._manager_importance is None
 
 
 def test_culturelink_shop_ReturnsCorrectObj_EmptyWeight():
@@ -42,7 +42,7 @@ def test_culturelink_shop_ReturnsCorrectObj_EmptyWeight():
     assert diet_culturelink.handle == culture_text
     assert diet_culturelink.weight == 1
     assert diet_culturelink._relative_weight is None
-    assert diet_culturelink._person_importance is None
+    assert diet_culturelink._manager_importance is None
 
 
 def test_culturelink_set_relative_weight_SetsCorrectly():
@@ -59,15 +59,15 @@ def test_culturelink_set_relative_weight_SetsCorrectly():
     assert diet_culturelink._relative_weight == x_relative_weight
 
 
-def test_culturelink_set_person_importance_SetsCorrectly():
+def test_culturelink_set_manager_importance_SetsCorrectly():
     # GIVEN
     diet_text = "diet"
     diet_culturelink = culturelink_shop(handle=diet_text)
-    assert diet_culturelink._person_importance is None
+    assert diet_culturelink._manager_importance is None
 
     # WHEN
-    x_person_importance = 0.45
-    diet_culturelink.set_person_importance(x_person_importance)
+    x_manager_importance = 0.45
+    diet_culturelink.set_manager_importance(x_manager_importance)
 
     # THEN
-    assert diet_culturelink._person_importance == x_person_importance
+    assert diet_culturelink._manager_importance == x_manager_importance

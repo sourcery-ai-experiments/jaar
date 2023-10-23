@@ -16,7 +16,7 @@ def test_healerlink_exists():
     assert yao_healerlink.in_tribe == yao_in_tribe
     assert yao_healerlink._culturelinks is None
     assert yao_healerlink._relative_weight is None
-    assert yao_healerlink._person_importance is None
+    assert yao_healerlink._manager_importance is None
 
 
 def test_healerlink_shop_ReturnsCorrectObj():
@@ -36,7 +36,7 @@ def test_healerlink_shop_ReturnsCorrectObj():
     assert yao_healerlink.in_tribe == yao_in_tribe
     assert yao_healerlink._culturelinks == {}
     assert yao_healerlink._relative_weight is None
-    assert yao_healerlink._person_importance is None
+    assert yao_healerlink._manager_importance is None
 
 
 def test_healerlink_shop_ReturnsCorrectObj_EmptyWeight():
@@ -52,7 +52,7 @@ def test_healerlink_shop_ReturnsCorrectObj_EmptyWeight():
     assert yao_healerlink.in_tribe is None
     assert yao_healerlink._culturelinks == {}
     assert yao_healerlink._relative_weight is None
-    assert yao_healerlink._person_importance is None
+    assert yao_healerlink._manager_importance is None
 
 
 def test_healerlink_set_relative_weight_SetsCorrectly():
@@ -69,15 +69,15 @@ def test_healerlink_set_relative_weight_SetsCorrectly():
     assert yao_healerlink._relative_weight == x_relative_weight
 
 
-def test_healerlink_set_person_importance_SetsCorrectly():
+def test_healerlink_set_manager_importance_SetsCorrectly():
     # GIVEN
     yao_text = "Yao"
     yao_healerlink = healerlink_shop(person_name=yao_text)
-    assert yao_healerlink._person_importance is None
+    assert yao_healerlink._manager_importance is None
 
     # WHEN
-    x_person_importance = 0.45
-    yao_healerlink.set_person_importance(x_person_importance)
+    x_manager_importance = 0.45
+    yao_healerlink.set_manager_importance(x_manager_importance)
 
     # THEN
-    assert yao_healerlink._person_importance == x_person_importance
+    assert yao_healerlink._manager_importance == x_manager_importance

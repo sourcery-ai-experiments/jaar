@@ -52,12 +52,13 @@ class CultureHandle(str):  # Created to help track the concept
 class CultureUnit:
     handle: CultureHandle
     cultures_dir: str
-    _person_importance: float = None
+    _manager_name: PersonName = None
+    _manager_importance: float = None
     _kitchenunits: dict[str:KitchenUnit] = None
     _bank_db = None
 
-    def set_person_importance(self, person_importance: float):
-        self._person_importance = person_importance
+    def set_manager_importance(self, person_importance: float):
+        self._manager_importance = person_importance
 
     def set_all_agendaunit_voice_ranks(self):
         x_agendabankunits = list(
@@ -517,15 +518,19 @@ class CultureUnit:
 
 
 def cultureunit_shop(
-    handle: str,
+    handle: CultureHandle,
     cultures_dir: str,
+    _manager_name: PersonName = None,
     _kitchenunits: dict[str:KitchenUnit] = None,
     in_memory_bank: bool = None,
 ):
     if in_memory_bank is None:
         in_memory_bank = True
     culture_x = CultureUnit(
-        handle=handle, cultures_dir=cultures_dir, _kitchenunits=_kitchenunits
+        handle=handle,
+        cultures_dir=cultures_dir,
+        _kitchenunits=_kitchenunits,
+        _manager_name=_manager_name,
     )
     culture_x.create_dirs_if_null(in_memory_bank=in_memory_bank)
     return culture_x

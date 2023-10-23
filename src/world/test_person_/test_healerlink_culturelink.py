@@ -57,7 +57,7 @@ def test_healerlink_set_culturelinks_weight_metrics_SetsCorrectly():
     # GIVEN
     yao_text = "Yao"
     yao_hl = healerlink_shop(person_name=yao_text)
-    yao_hl._person_importance = 0.25
+    yao_hl._manager_importance = 0.25
     fight_text = "fight"
     flee_text = "flee"
     nego_text = "negoiate"
@@ -70,9 +70,9 @@ def test_healerlink_set_culturelinks_weight_metrics_SetsCorrectly():
     assert fight_culturelink._relative_weight is None
     assert flee_culturelink._relative_weight is None
     assert nego_culturelink._relative_weight is None
-    assert fight_culturelink._person_importance is None
-    assert flee_culturelink._person_importance is None
-    assert nego_culturelink._person_importance is None
+    assert fight_culturelink._manager_importance is None
+    assert flee_culturelink._manager_importance is None
+    assert nego_culturelink._manager_importance is None
 
     # WHEN
     yao_hl.set_culturelinks_weight_metrics()
@@ -81,6 +81,6 @@ def test_healerlink_set_culturelinks_weight_metrics_SetsCorrectly():
     assert fight_culturelink._relative_weight == 0.5
     assert flee_culturelink._relative_weight == 0.35
     assert nego_culturelink._relative_weight == 0.15
-    assert fight_culturelink._person_importance == 0.125
-    assert flee_culturelink._person_importance == 0.0875
-    assert nego_culturelink._person_importance == 0.0375
+    assert fight_culturelink._manager_importance == 0.125
+    assert flee_culturelink._manager_importance == 0.0875
+    assert nego_culturelink._manager_importance == 0.0375

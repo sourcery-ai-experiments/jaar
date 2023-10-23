@@ -56,6 +56,7 @@ def test_personunit_set_cultureunit_CorrectlyCreatesCultureUnit():
     assert diet_culture != None
     assert diet_culture.handle == diet_text
     assert diet_culture.cultures_dir == f"{xao_person_dir}/cultures"
+    assert diet_culture._manager_name == xao_text
 
 
 def test_personunit_get_cultureunit_CorrectlyGetsCultureUnit():
