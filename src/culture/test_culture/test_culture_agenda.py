@@ -1,7 +1,6 @@
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.examples.example_agendas import (
     get_agenda_1Task_1CE0MinutesRequired_1AcptFact as example_agendas_get_agenda_1Task_1CE0MinutesRequired_1AcptFact,
-    agenda_v001 as example_agendas_agenda_v001,
 )
 from src.culture.culture import cultureunit_shop
 from src.culture.examples.example_kitchens import (

@@ -1,5 +1,5 @@
 # # command to for converting ui form to python file: pyuic5 ui\cultureMainUI.ui -o ui\cultureMainUI.py
-from ui.cultureMainUI import Ui_MainWindow
+from ui.CultureMainUI import Ui_MainWindow
 from Edit5Issue import Edit5Issue
 from EditMain import EditMainView
 from PyQt5 import QtCore as qtc

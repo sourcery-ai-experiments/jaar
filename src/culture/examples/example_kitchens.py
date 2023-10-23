@@ -2,7 +2,6 @@ from src.agenda.agenda import (
     AgendaUnit,
     agendaunit_shop,
     ideacore_shop,
-    assigned_unit_shop,
 )
 from src.agenda.examples.example_agendas import get_agenda_assignment_laundry_example1
 from src.culture.kitchen import kitchenunit_shop, KitchenUnit

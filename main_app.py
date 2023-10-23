@@ -6,7 +6,7 @@ from EditMain import EditMainView
 from EditAcptFactTime import EditAcptFactTime
 from Edit_Agenda import Edit_Agenda
 from EditProblem import EditProblem
-from src.agenda.agenda import agendaunit_shop, get_from_json
+from src.agenda.agenda import get_from_json
 from src.agenda.examples.agenda_env import agenda_env
 from src.agenda.hreg_time import convert1440toHHMM
 from pyqt_func import (

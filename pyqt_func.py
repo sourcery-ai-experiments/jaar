@@ -1,4 +1,4 @@
-from src.agenda.agenda import agendaunit_shop, IdeaCore
+from src.agenda.agenda import AgendaUnit, IdeaCore
 from PyQt5.QtWidgets import QTreeWidgetItem
 from dataclasses import dataclass
 
