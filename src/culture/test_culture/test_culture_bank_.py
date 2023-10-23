@@ -14,10 +14,7 @@ def test_culture_create_bank_db_CreatesBankDBIfItDoesNotExist(
     env_dir_setup_cleanup,
 ):
     # GIVEN create culture
-    x_culture = cultureunit_shop(
-        handle=get_temp_env_handle(), cultures_dir=get_test_cultures_dir()
-    )
-
+    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
     x_func_delete_dir(dir=x_culture.get_bank_db_path())  # clear out any bank.db file
     assert os_path.exists(x_culture.get_bank_db_path()) == False
 
@@ -32,9 +29,7 @@ def test_culture_create_bank_db_CanCreateBankInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN create culture
-    x_culture = cultureunit_shop(
-        handle=get_temp_env_handle(), cultures_dir=get_test_cultures_dir()
-    )
+    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
 
     x_culture._bank_db = None
@@ -53,9 +48,7 @@ def test_culture_refresh_bank_agenda_data_CanConnectToBankInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN create culture
-    x_culture = cultureunit_shop(
-        handle=get_temp_env_handle(), cultures_dir=get_test_cultures_dir()
-    )
+    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
     # x_culture._create_bank_db(in_memory=True)
     assert os_path.exists(x_culture.get_bank_db_path()) == False
@@ -69,9 +62,7 @@ def test_culture_refresh_bank_agenda_data_CanConnectToBankInMemory(
 
 def test_culture_get_bank_db_conn_CreatesBankDBIfItDoesNotExist(env_dir_setup_cleanup):
     # GIVEN create culture
-    x_culture = CultureUnit(
-        handle=get_temp_env_handle(), cultures_dir=get_test_cultures_dir()
-    )
+    x_culture = CultureUnit(get_temp_env_handle(), get_test_cultures_dir())
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         check_connection(x_culture.get_bank_conn())
