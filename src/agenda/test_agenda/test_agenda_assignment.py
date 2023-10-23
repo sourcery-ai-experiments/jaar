@@ -1,4 +1,4 @@
-from src.agenda.agenda import agendaunit_shop, AgendaUnit
+from src.agenda.agenda import agendaunit_shop
 from src.agenda.idea import ideacore_shop
 from src.agenda.required_idea import RequiredUnit
 from src.agenda.party import partyunit_shop, partylink_shop
