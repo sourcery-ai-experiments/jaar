@@ -7,7 +7,6 @@ from src.agenda.examples.example_agendas import (
 from src.agenda.agenda import AgendaUnit, agendaunit_shop, get_intersection_of_partys
 from src.agenda.idea import ideacore_shop
 from pytest import raises as pytest_raises
-from src.culture.bank_sqlstr import RiverTallyUnit
 
 
 def test_agenda_partys_exists():
@@ -1225,53 +1224,6 @@ def test_agenda_get_partyunits_title_list_CorrectlyReturnsListOfPartyUnits():
     assert partyunit_list_x[1] == fry_text
     assert partyunit_list_x[2] == sam_text
     assert partyunit_list_x[3] == will_text
-
-
-def test_agenda_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr():
-    # GIVEN
-    bob_text = "bob"
-    x_agenda = agendaunit_shop(_healer=bob_text)
-    x_agenda.set_partys_empty_if_null()
-    sam_text = "sam"
-    wil_text = "wil"
-    fry_text = "fry"
-    elu_text = "elu"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=sam_text))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=wil_text))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=fry_text))
-    assert x_agenda._partys.get(sam_text)._bank_tax_paid is None
-    assert x_agenda._partys.get(sam_text)._bank_tax_diff is None
-    assert x_agenda._partys.get(wil_text)._bank_tax_paid is None
-    assert x_agenda._partys.get(wil_text)._bank_tax_diff is None
-    assert x_agenda._partys.get(fry_text)._bank_tax_paid is None
-    assert x_agenda._partys.get(fry_text)._bank_tax_diff is None
-    elu_partyunit = partyunit_shop(title=elu_text)
-    elu_partyunit._bank_tax_paid = 0.003
-    elu_partyunit._bank_tax_diff = 0.007
-    x_agenda.set_partyunit(partyunit=elu_partyunit)
-    assert x_agenda._partys.get(elu_text)._bank_tax_paid == 0.003
-    assert x_agenda._partys.get(elu_text)._bank_tax_diff == 0.007
-
-    river_tally_sam = RiverTallyUnit(bob_text, sam_text, 0.209, 0, 0.034, None, None)
-    river_tally_wil = RiverTallyUnit(bob_text, wil_text, 0.501, 0, 0.024, None, None)
-    river_tally_fry = RiverTallyUnit(bob_text, fry_text, 0.111, 0, 0.006, None, None)
-    river_tallys = {
-        river_tally_sam.tax_healer: river_tally_sam,
-        river_tally_wil.tax_healer: river_tally_wil,
-        river_tally_fry.tax_healer: river_tally_fry,
-    }
-    # WHEN
-    x_agenda.set_banking_attr_partyunits(river_tallys=river_tallys)
-
-    # THEN
-    assert x_agenda._partys.get(sam_text)._bank_tax_paid == 0.209
-    assert x_agenda._partys.get(sam_text)._bank_tax_diff == 0.034
-    assert x_agenda._partys.get(wil_text)._bank_tax_paid == 0.501
-    assert x_agenda._partys.get(wil_text)._bank_tax_diff == 0.024
-    assert x_agenda._partys.get(fry_text)._bank_tax_paid == 0.111
-    assert x_agenda._partys.get(fry_text)._bank_tax_diff == 0.006
-    assert x_agenda._partys.get(elu_text)._bank_tax_paid is None
-    assert x_agenda._partys.get(elu_text)._bank_tax_diff is None
 
 
 def test_get_intersection_of_partys_CorrectlyReturnsUnionOfKeysOfTwoDictionarys_scenario1():

@@ -9,6 +9,7 @@ from src.agenda.agenda import (
     AgendaUnit,
     agendaunit_shop,
     get_from_json as agenda_get_from_json,
+    assigned_unit_shop,
 )
 from src.agenda.x_func import open_file as x_func_open_file
 from src.agenda.examples.agenda_env import agenda_env
@@ -415,3 +416,63 @@ def get_assignment_agenda_example1():
     x_agenda.edit_idea_attr(road=floor_road, required=floor_required)
 
     return x_agenda
+
+
+def get_agenda_assignment_laundry_example1() -> AgendaUnit:
+    amer_text = "Amer"
+    amer_agenda = agendaunit_shop(_healer=amer_text)
+    cali_text = "Cali"
+    amer_agenda.add_partyunit(amer_text)
+    amer_agenda.add_partyunit(cali_text)
+
+    root_road = amer_agenda._culture_handle
+    casa_text = "casa"
+    casa_road = f"{root_road},{casa_text}"
+    amer_agenda.add_idea(ideacore_shop(_label=casa_text), pad=root_road)
+
+    basket_text = "laundry basket status"
+    basket_road = f"{casa_road},{basket_text}"
+    amer_agenda.add_idea(ideacore_shop(_label=basket_text), pad=casa_road)
+
+    b_full_text = "full"
+    b_full_road = f"{basket_road},{b_full_text}"
+    amer_agenda.add_idea(ideacore_shop(_label=b_full_text), pad=basket_road)
+
+    b_smel_text = "smelly"
+    b_smel_road = f"{basket_road},{b_smel_text}"
+    amer_agenda.add_idea(ideacore_shop(_label=b_smel_text), pad=basket_road)
+
+    b_bare_text = "bare"
+    b_bare_road = f"{basket_road},{b_bare_text}"
+    amer_agenda.add_idea(ideacore_shop(_label=b_bare_text), pad=basket_road)
+
+    b_fine_text = "fine"
+    b_fine_road = f"{basket_road},{b_fine_text}"
+    amer_agenda.add_idea(ideacore_shop(_label=b_fine_text), pad=basket_road)
+
+    b_half_text = "half full"
+    b_half_road = f"{basket_road},{b_half_text}"
+    amer_agenda.add_idea(ideacore_shop(_label=b_half_text), pad=basket_road)
+
+    laundry_task_text = "do_laundry"
+    laundry_task_road = f"{casa_road},{laundry_task_text}"
+    amer_agenda.add_idea(
+        ideacore_shop(_label=laundry_task_text, promise=True), pad=casa_road
+    )
+
+    # make laundry requirement
+    basket_idea = amer_agenda.get_idea_kid(road=basket_road)
+    amer_agenda.edit_idea_attr(
+        road=laundry_task_road, required_base=basket_road, required_sufffact=b_full_road
+    )
+    # make laundry requirement
+    amer_agenda.edit_idea_attr(
+        road=laundry_task_road, required_base=basket_road, required_sufffact=b_smel_road
+    )
+    # assign Cali to task
+    cali_assignunit = assigned_unit_shop()
+    cali_assignunit.set_suffgroup(cali_text)
+    amer_agenda.edit_idea_attr(road=laundry_task_road, assignedunit=cali_assignunit)
+    amer_agenda.set_acptfact(base=basket_road, pick=b_full_road)
+
+    return amer_agenda

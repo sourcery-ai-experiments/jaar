@@ -193,7 +193,7 @@ class CultureUnit:
 
             sal_river_tallys = get_river_tally_dict(bank_conn, agenda_healer)
             x_agenda = self.get_public_agenda(healer=agenda_healer)
-            x_agenda.set_banking_attr_partyunits(sal_river_tallys)
+            set_agenda_banking_attr_partyunits(x_agenda, sal_river_tallys)
             self.save_public_agenda(x_agenda=x_agenda)
 
     def get_river_tallys(self, agenda_healer: str) -> dict[str:RiverTallyUnit]:
@@ -534,3 +534,16 @@ def cultureunit_shop(
     )
     culture_x.create_dirs_if_null(in_memory_bank=in_memory_bank)
     return culture_x
+
+
+def set_agenda_banking_attr_partyunits(x_agenda: AgendaUnit, river_tallys: dict[str:]):
+    for partyunit_x in x_agenda._partys.values():
+        partyunit_x.clear_banking_data()
+        river_tally = river_tallys.get(partyunit_x.title)
+        if river_tally != None:
+            partyunit_x.set_banking_data(
+                tax_paid=river_tally.tax_total,
+                tax_diff=river_tally.tax_diff,
+                credit_score=river_tally.credit_score,
+                voice_rank=river_tally.voice_rank,
+            )

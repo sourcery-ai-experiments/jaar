@@ -7,8 +7,6 @@ from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels as example_agendas_get_agenda_with_4_levels,
     get_agenda_with7amCleanTableRequired as example_agendas_get_agenda_with7amCleanTableRequired,
     get_assignment_agenda_example1 as example_agenda_get_assignment_agenda_example1,
-)
-from src.culture.examples.example_kitchens import (
     get_agenda_assignment_laundry_example1,
 )
 
@@ -500,7 +498,11 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     print(f"{amer_agenda._culture_handle=} {amer_agenda._idea_dict.keys()=}")
     amer_agenda.set_culture_handle(culture_handle_text)
     print(f"{amer_agenda._culture_handle=} {amer_agenda._idea_dict.keys()=}")
-    do_laundery_idea = amer_agenda.get_idea_kid("tiger_econ,casa,do_laundry")
+    casa_text = "casa"
+    casa_road = f"{amer_agenda._culture_handle},{casa_text}"
+    laundry_task_road_text = "do_laundry"
+    laundry_task_road_road = f"{casa_road},{laundry_task_road_text}"
+    do_laundery_idea = amer_agenda.get_idea_kid(laundry_task_road_road)
     print(f"{do_laundery_idea._requiredunits.keys()=}")
 
     # WHEN
@@ -529,7 +531,7 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     # road_x='A,casa,laundry basket status,full'
     # road_x='A,casa,laundry basket status,fine'
     # road_x='A,casa,laundry basket status,bare'
-    # road_x='A,casa,do_laundry'
+    # road_x='A,casa,laundry_task_road'
     casa_text = "casa"
     casa_road = f"{amer_agenda._culture_handle},{casa_text}"
     basket_text = "laundry basket status"
@@ -544,8 +546,6 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     b_fine_road = f"{basket_road},{b_fine_text}"
     b_half_text = "half full"
     b_half_road = f"{basket_road},{b_half_text}"
-    laundry_task_text = "do_laundry"
-    laundry_task_road = f"{casa_road},{laundry_task_text}"
 
     assert cali_assignment._idea_dict.get(casa_road) != None
     assert cali_assignment._idea_dict.get(basket_road) != None
@@ -554,9 +554,9 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     assert cali_assignment._idea_dict.get(b_bare_road) != None
     assert cali_assignment._idea_dict.get(b_fine_road) != None
     assert cali_assignment._idea_dict.get(b_half_road) != None
-    assert cali_assignment._idea_dict.get(laundry_task_road) != None
+    assert cali_assignment._idea_dict.get(laundry_task_road_road) != None
 
-    laundry_do_idea = cali_assignment.get_idea_kid(laundry_task_road)
+    laundry_do_idea = cali_assignment.get_idea_kid(laundry_task_road_road)
     print(f"{laundry_do_idea.promise=}")
     print(f"{laundry_do_idea._requiredunits.keys()=}")
     print(f"{laundry_do_idea._requiredunits.get(basket_road).sufffacts.keys()=}")
@@ -575,4 +575,4 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     # print(f"{laundry_do_idea=}")
 
     assert len(cali_assignment.get_goal_items()) == 1
-    assert cali_assignment.get_goal_items()[0]._label == "do_laundry"
+    assert cali_assignment.get_goal_items()[0]._label == laundry_task_road_text

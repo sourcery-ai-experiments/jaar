@@ -1,5 +1,5 @@
 from src.agenda.agenda import agendaunit_shop, partyunit_shop
-from src.culture.culture import cultureunit_shop
+from src.culture.culture import cultureunit_shop, set_agenda_banking_attr_partyunits
 from src.culture.examples.culture_env_kit import (
     get_temp_env_handle,
     get_test_cultures_dir,
@@ -336,6 +336,53 @@ def test_RiverTallyUnit_exists():
     assert x_rivertally.tax_diff == x_tax_diff
     assert x_rivertally.credit_score == x_credit_score
     assert x_rivertally.voice_rank == x_voice_rank
+
+
+def test_agenda_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr():
+    # GIVEN
+    bob_text = "bob"
+    x_agenda = agendaunit_shop(_healer=bob_text)
+    x_agenda.set_partys_empty_if_null()
+    sam_text = "sam"
+    wil_text = "wil"
+    fry_text = "fry"
+    elu_text = "elu"
+    x_agenda.set_partyunit(partyunit=partyunit_shop(title=sam_text))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(title=wil_text))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(title=fry_text))
+    assert x_agenda._partys.get(sam_text)._bank_tax_paid is None
+    assert x_agenda._partys.get(sam_text)._bank_tax_diff is None
+    assert x_agenda._partys.get(wil_text)._bank_tax_paid is None
+    assert x_agenda._partys.get(wil_text)._bank_tax_diff is None
+    assert x_agenda._partys.get(fry_text)._bank_tax_paid is None
+    assert x_agenda._partys.get(fry_text)._bank_tax_diff is None
+    elu_partyunit = partyunit_shop(title=elu_text)
+    elu_partyunit._bank_tax_paid = 0.003
+    elu_partyunit._bank_tax_diff = 0.007
+    x_agenda.set_partyunit(partyunit=elu_partyunit)
+    assert x_agenda._partys.get(elu_text)._bank_tax_paid == 0.003
+    assert x_agenda._partys.get(elu_text)._bank_tax_diff == 0.007
+
+    river_tally_sam = RiverTallyUnit(bob_text, sam_text, 0.209, 0, 0.034, None, None)
+    river_tally_wil = RiverTallyUnit(bob_text, wil_text, 0.501, 0, 0.024, None, None)
+    river_tally_fry = RiverTallyUnit(bob_text, fry_text, 0.111, 0, 0.006, None, None)
+    river_tallys = {
+        river_tally_sam.tax_healer: river_tally_sam,
+        river_tally_wil.tax_healer: river_tally_wil,
+        river_tally_fry.tax_healer: river_tally_fry,
+    }
+    # WHEN
+    set_agenda_banking_attr_partyunits(x_agenda, river_tallys=river_tallys)
+
+    # THEN
+    assert x_agenda._partys.get(sam_text)._bank_tax_paid == 0.209
+    assert x_agenda._partys.get(sam_text)._bank_tax_diff == 0.034
+    assert x_agenda._partys.get(wil_text)._bank_tax_paid == 0.501
+    assert x_agenda._partys.get(wil_text)._bank_tax_diff == 0.024
+    assert x_agenda._partys.get(fry_text)._bank_tax_paid == 0.111
+    assert x_agenda._partys.get(fry_text)._bank_tax_diff == 0.006
+    assert x_agenda._partys.get(elu_text)._bank_tax_paid is None
+    assert x_agenda._partys.get(elu_text)._bank_tax_diff is None
 
 
 def test_get_river_tally_table_insert_sqlstr_CorrectlyPopulatesTable01(

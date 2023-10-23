@@ -121,18 +121,6 @@ class AgendaUnit:
         )
         self.set_agenda_metrics()
 
-    def set_banking_attr_partyunits(self, river_tallys: dict[str:]):
-        for partyunit_x in self._partys.values():
-            partyunit_x.clear_banking_data()
-            river_tally = river_tallys.get(partyunit_x.title)
-            if river_tally != None:
-                partyunit_x.set_banking_data(
-                    tax_paid=river_tally.tax_total,
-                    tax_diff=river_tally.tax_diff,
-                    credit_score=river_tally.credit_score,
-                    voice_rank=river_tally.voice_rank,
-                )
-
     def import_external_partyunit_metrics(
         self, external_metrics: PartyUnitExternalMetrics
     ):
