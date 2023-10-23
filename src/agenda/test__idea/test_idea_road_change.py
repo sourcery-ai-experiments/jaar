@@ -166,6 +166,11 @@ def test_idea_find_replace_road_Changes_acptfactunits():
 
 
 def test_idea_get_key_road_returnsCorrectInfo():
+    # GIVEN
     red_text = "red"
+
+    # WHEN
     idea_red = ideacore_shop(_label=red_text)
+
+    # THEN
     assert idea_red.get_key_road() == red_text

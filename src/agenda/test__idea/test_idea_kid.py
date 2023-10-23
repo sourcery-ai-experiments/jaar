@@ -1,6 +1,6 @@
-from src.agenda.idea import ideacore_shop
+from src.agenda.idea import IdeaKid
 
 
 def test_idea_kid_exists():
-    new_obj = ideacore_shop()
+    new_obj = IdeaKid()
     assert new_obj

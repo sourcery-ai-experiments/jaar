@@ -9,7 +9,6 @@ def test_IdeaRoot_exists():
 
     # THEN
     assert new_obj
-
     assert new_obj._label is None
     assert new_obj._kids is None
 
@@ -20,7 +19,6 @@ def test_idearoot_shop_ReturnsCorrectObj():
 
     # THEN
     assert new_obj
-
     assert new_obj._label == root_label()
     assert new_obj._kids is None
 
@@ -43,7 +41,6 @@ def test_IdeaRoot_set_idea_label_CorrectlyDoesNotRaisesError():
     culture_handle = "El Paso"
 
     # WHEN
-
     new_obj.set_idea_label(_label=culture_handle, agenda_culture_handle=culture_handle)
 
     # THEN
@@ -55,6 +52,7 @@ def test_IdeaRoot_set_idea_label_InCorrectlyDoesRaisesError():
     new_obj = idearoot_shop()
     culture_handle = "El Paso"
 
+    # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         casa_text = "casa"
         new_obj.set_idea_label(_label=casa_text, agenda_culture_handle=culture_handle)
@@ -68,8 +66,7 @@ def test_IdeaRoot_set_idea_label_RaisesErrorWhen_agenda_culture_handle_IsNone():
     # GIVEN
     new_obj = idearoot_shop()
 
-    # WHEN/THEN
-
+    # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         casa_text = "casa"
         new_obj.set_idea_label(_label=casa_text, agenda_culture_handle=None)
@@ -84,7 +81,6 @@ def test_IdeaRoot_set_idea_label_agenda_culture_handle_EqualRootLabelDoesNotRais
     new_obj = idearoot_shop()
 
     # WHEN
-
     new_obj.set_idea_label(_label=root_label(), agenda_culture_handle=root_label())
 
     # THEN
