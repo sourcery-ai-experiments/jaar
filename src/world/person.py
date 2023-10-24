@@ -33,27 +33,6 @@ class PersonUnit:
         for x_painunit in self._pains.values():
             x_painunit.set_relative_weight(x_painunit.weight / total_painunits_weight)
 
-    def set_cultureunits_weight_metrics(self):
-        self.set_painunits_weight_metrics()
-        cultureunit_handles = {
-            x_cultureunit.handle: 0 for x_cultureunit in self._cultures.values()
-        }
-
-        for x_painunit in self._pains.values():
-            for x_healerlink in x_painunit._healerlinks.values():
-                for x_culturelink in x_healerlink._culturelinks.values():
-                    cultureunit_handles[
-                        x_culturelink.handle
-                    ] += x_culturelink._manager_importance
-
-        for (
-            x_cultureunit_handle,
-            x_cultureunit_manager_importance,
-        ) in cultureunit_handles.items():
-            self._cultures.get(x_cultureunit_handle).set_manager_importance(
-                x_cultureunit_manager_importance
-            )
-
     def set_cultures_empty_if_none(self):
         if self._cultures is None:
             self._cultures = {}

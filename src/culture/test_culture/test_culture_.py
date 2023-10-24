@@ -22,7 +22,6 @@ def test_culture_exists():
     assert x_culture.handle == x_handle
     assert x_culture.cultures_dir == get_test_cultures_dir()
     assert x_culture._manager_name is None
-    assert x_culture._manager_importance is None
 
 
 def test_culture_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
@@ -230,4 +229,3 @@ def test_cultureunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
     assert os_path.exists(culture_dir)
     assert x_culture._bank_db != None
     assert x_culture._manager_name == sue_text
-    assert x_culture._manager_importance is None

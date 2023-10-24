@@ -53,12 +53,11 @@ class CultureUnit:
     handle: CultureHandle
     cultures_dir: str
     _manager_name: PersonName = None
-    _manager_importance: float = None
     _kitchenunits: dict[str:KitchenUnit] = None
     _bank_db = None
 
-    def set_manager_importance(self, person_importance: float):
-        self._manager_importance = person_importance
+    def set_manager_name(self, person_name: PersonName):
+        self._manager_name = person_name
 
     def set_manager_voice_ranks(self, sort_order: str):
         if sort_order == "arbitary":

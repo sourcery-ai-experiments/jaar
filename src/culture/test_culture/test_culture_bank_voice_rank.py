@@ -21,7 +21,7 @@ from src.culture.bank_sqlstr import (
 
 def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_cleanup):
     # GIVEN
-    temp_dir = f"{get_test_cultures_dir()}/ex7"
+    temp_dir = f"{get_test_cultures_dir()}/voice_rank_order_temp"
     print(f"{temp_dir=}")
     yao_text = "yao"
 
@@ -61,8 +61,8 @@ def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_c
 
     x1 = get_file_names_in_voice_rank_order(yao_agenda, meldees_dir=temp_dir)
     assert x1 != None
-    for file_name in x1:
-        print(f"{file_name=}")
+    # for file_name in x1:
+    #     print(f"{file_name=}")
     assert x1 == [
         elu_filename,
         cal_filename,
