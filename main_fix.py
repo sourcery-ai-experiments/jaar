@@ -172,7 +172,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._healer_load(kitchen_title=x_kitchen_title)
 
     def _healer_load(self, kitchen_title: str):
-        self.culture_x.create_kitchenunit_from_public(title=kitchen_title)
+        self.culture_x.create_new_kitchenunit(title=kitchen_title)
         self.x_kitchen = self.culture_x._kitchenunits.get(kitchen_title)
         self.kitchen_title.setText(self.x_kitchen._admin.title)
         self.refresh_healer()

@@ -18,12 +18,14 @@ def test_culture_bank_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_arbit
     culture_handle = get_temp_env_handle()
     x_culture = cultureunit_shop(culture_handle, get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
-    x_culture.refresh_bank_agenda_data()
     sal_text = "sal"
     bob_text = "bob"
     tom_text = "tom"
     ava_text = "ava"
     elu_text = "elu"
+    x_culture._manager_name = sal_text
+    x_culture.refresh_bank_agenda_data()
+
     x_culture.save_public_agenda(agendaunit_shop(_healer=sal_text))
     x_culture.save_public_agenda(agendaunit_shop(_healer=bob_text))
     x_culture.save_public_agenda(agendaunit_shop(_healer=tom_text))

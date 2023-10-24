@@ -29,23 +29,6 @@ def test_culture_set_healer_WorksCorrectly(env_dir_setup_cleanup):
     assert os_path.exists(wx_path)
 
 
-def test_culture_create_kitchenunit_from_public_RaisesErrorWhenHealerDoesNotExist(
-    env_dir_setup_cleanup,
-):
-    # GIVEN
-    x_handle = get_temp_env_handle()
-    x_culture = cultureunit_shop(handle=x_handle, cultures_dir=get_test_cultures_dir())
-
-    # WHEN / THEN
-    bobs_text = "bobs wurld"
-    with pytest_raises(Exception) as excinfo:
-        x_culture.create_kitchenunit_from_public(title=bobs_text)
-    assert (
-        str(excinfo.value)
-        == f"Could not load file {x_culture.get_public_dir()}/{bobs_text}.json (2, 'No such file or directory')"
-    )
-
-
 def test_culture_rename_kitchenunit_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     x_handle = get_temp_env_handle()

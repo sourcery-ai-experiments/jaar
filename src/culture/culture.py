@@ -345,14 +345,6 @@ class CultureUnit:
             None if self._kitchenunits.get(title) is None else self._kitchenunits[title]
         )
 
-    def create_kitchenunit_from_public(self, title: str):
-        x_agenda = self.get_public_agenda(healer=title)
-        x_kitchenunit = kitchenunit_shop(
-            title=x_agenda._healer, env_dir=self.get_object_root_dir()
-        )
-        self.set_kitchenunits_empty_if_null()
-        self.set_kitchenunit_to_culture(x_kitchenunit)
-
     def set_kitchenunit_to_culture(self, kitchenunit: KitchenUnit):
         self._kitchenunits[kitchenunit._admin._kitchen_title] = kitchenunit
         self.save_kitchenunit_file(kitchen_title=kitchenunit._admin._kitchen_title)
