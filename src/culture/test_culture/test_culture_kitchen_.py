@@ -22,7 +22,7 @@ def test_culture_set_healer_WorksCorrectly(env_dir_setup_cleanup):
     assert os_path.exists(wx_path) == False
 
     # WHEN
-    x_culture.create_new_kitchenunit(kitchen_title=timmy_text)
+    x_culture.create_new_kitchenunit(kitchen_dub=timmy_text)
 
     # THEN
     print(f"{wx_path=}")
@@ -51,13 +51,13 @@ def test_culture_rename_kitchenunit_WorksCorrectly(env_dir_setup_cleanup):
     assert os_path.exists(old_bob_dir)
     assert os_path.exists(new_bob_file_path) == False
     assert os_path.exists(old_bob_file_path)
-    old_x_kitchen = x_culture.get_kitchenunit(title=old_bob_text)
-    assert x_culture.get_kitchenunit(title=new_bob_text) is None
+    old_x_kitchen = x_culture.get_kitchenunit(dub=old_bob_text)
+    assert x_culture.get_kitchenunit(dub=new_bob_text) is None
     assert old_x_kitchen._admin._kitchenunit_dir == old_bob_dir
     assert old_x_kitchen._admin._kitchenunit_dir != new_bob_dir
 
     # WHEN
-    x_culture.rename_kitchenunit(old_title=old_bob_text, new_title=new_bob_text)
+    x_culture.rename_kitchenunit(old_dub=old_bob_text, new_dub=new_bob_text)
 
     # THEN
     assert os_path.exists(new_bob_dir)
@@ -65,8 +65,8 @@ def test_culture_rename_kitchenunit_WorksCorrectly(env_dir_setup_cleanup):
     print(f"{new_bob_file_path=}")
     assert os_path.exists(new_bob_file_path)
     assert os_path.exists(old_bob_file_path) == False
-    assert x_culture.get_kitchenunit(title=old_bob_text) is None
-    new_x_kitchen = x_culture.get_kitchenunit(title=new_bob_text)
+    assert x_culture.get_kitchenunit(dub=old_bob_text) is None
+    new_x_kitchen = x_culture.get_kitchenunit(dub=new_bob_text)
     assert new_x_kitchen._admin._kitchenunit_dir != old_bob_dir
     assert new_x_kitchen._admin._kitchenunit_dir == new_bob_dir
 
@@ -78,14 +78,14 @@ def test_culture_del_kitchenunit_dir_WorksCorrectly(env_dir_setup_cleanup):
     xia_text = "Xia"
     xia_dir = f"{x_culture.get_kitchenunits_dir()}/{xia_text}"
     xia_file_path = f"{xia_dir}/seed_agenda.json"
-    x_culture.create_new_kitchenunit(kitchen_title=xia_text)
-    x_culture.save_kitchenunit_file(kitchen_title=xia_text)
+    x_culture.create_new_kitchenunit(kitchen_dub=xia_text)
+    x_culture.save_kitchenunit_file(kitchen_dub=xia_text)
     print(f"{xia_file_path=}")
     assert os_path.exists(xia_dir)
     assert os_path.exists(xia_file_path)
 
     # WHEN
-    x_culture.del_kitchenunit_dir(kitchen_title=xia_text)
+    x_culture.del_kitchenunit_dir(kitchen_dub=xia_text)
 
     # THEN
     assert os_path.exists(xia_file_path) == False

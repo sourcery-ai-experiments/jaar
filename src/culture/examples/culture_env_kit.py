@@ -57,7 +57,7 @@ def create_agenda_file_for_cultures(culture_dir: str, agenda_healer: str):
 
     x_func_save_file(
         dest_dir=agenda_dir,
-        file_title=f"{x_agenda._healer}.json",
+        file_name=f"{x_agenda._healer}.json",
         file_text=x_agenda.get_json(),
     )
 
@@ -93,33 +93,33 @@ def _delete_and_set_ex3():
     # x_culture.set_healer(x_kitchen=kitchenunit_shop(title="w1", env_dir=x_culture.get_object_root_dir()))
     # x_culture.set_healer(x_kitchen=kitchenunit_shop(title="w2", env_dir=x_culture.get_object_root_dir()))
     xia_text = "Xia"
-    x_culture.create_new_kitchenunit(kitchen_title=xia_text)
+    x_culture.create_new_kitchenunit(kitchen_dub=xia_text)
     healer_text = "Myagenda"
     x_culture.set_healer_depotlink(
         xia_text, agenda_healer=healer_text, depotlink_type="blind_trust"
     )
-    # w1_obj = x_culture.get_kitchenunit(title=w1_text)
+    # w1_obj = x_culture.get_kitchenunit(dub=w1_text)
 
     bob_text = "bob wurld"
     create_agenda_file_for_cultures(x_culture.get_object_root_dir(), bob_text)
     # print(f"create agenda_list {w1_text=}")
     x_culture.create_depotlink_to_generated_agenda(
-        kitchen_title=xia_text, agenda_healer=bob_text, depotlink_type="ignore"
+        kitchen_dub=xia_text, agenda_healer=bob_text, depotlink_type="ignore"
     )
     land_text = "tim wurld"
     create_agenda_file_for_cultures(
         culture_dir=x_culture.get_object_root_dir(), agenda_healer=land_text
     )
     x_culture.create_depotlink_to_generated_agenda(
-        kitchen_title=xia_text, agenda_healer=land_text, depotlink_type="blind_trust"
+        kitchen_dub=xia_text, agenda_healer=land_text, depotlink_type="blind_trust"
     )
-    # x_culture.create_depotlink_to_generated_agenda(kitchen_title=w1_text, agenda_healer="test9")
-    # x_culture.create_depotlink_to_generated_agenda(kitchen_title=w1_text, agenda_healer="Bobs agenda")
-    x_culture.save_kitchenunit_file(kitchen_title=xia_text)
+    # x_culture.create_depotlink_to_generated_agenda(kitchen_dub=w1_text, agenda_healer="test9")
+    # x_culture.create_depotlink_to_generated_agenda(kitchen_dub=w1_text, agenda_healer="Bobs agenda")
+    x_culture.save_kitchenunit_file(kitchen_dub=xia_text)
     # print(f"WHAT WHAT {x_culture.get_object_root_dir()}")
     # print(f"WHAT WHAT {x_culture.get_object_root_dir()}/kitchenunits/w1/w1.json")
     # file_text = x_func_open_file(
-    #     dest_dir=f"{x_culture.get_object_root_dir}/kitchenunits/w1", file_title="w1.json"
+    #     dest_dir=f"{x_culture.get_object_root_dir}/kitchenunits/w1", file_name="w1.json"
     # )
     # print(f"{file_text=}")
     # print(f"{len(x_culture._kitchenunits.get(w1_text)._depotlinks)=}")
@@ -127,9 +127,9 @@ def _delete_and_set_ex3():
     # print(f"{x_culture._kitchenunits.get(w1_text).get_json=}")
 
     w2_text = "w2"
-    x_culture.create_new_kitchenunit(kitchen_title=w2_text)
+    x_culture.create_new_kitchenunit(kitchen_dub=w2_text)
     # , env_dir=x_culture.get_object_root_dir())
-    x_culture.save_kitchenunit_file(kitchen_title=w2_text)
+    x_culture.save_kitchenunit_file(kitchen_dub=w2_text)
 
 
 def _delete_and_set_ex4():
@@ -168,11 +168,11 @@ def _delete_and_set_ex5():
     x_p.save_public_agenda(x_agenda=agenda_4)
     x_p.save_public_agenda(x_agenda=agenda_5)
 
-    x_p.create_new_kitchenunit(kitchen_title=agenda_1._healer)
-    x_p.create_new_kitchenunit(kitchen_title=agenda_2._healer)
-    x_p.create_new_kitchenunit(kitchen_title=agenda_3._healer)
-    x_p.create_new_kitchenunit(kitchen_title=agenda_4._healer)
-    x_p.create_new_kitchenunit(kitchen_title=agenda_5._healer)
+    x_p.create_new_kitchenunit(kitchen_dub=agenda_1._healer)
+    x_p.create_new_kitchenunit(kitchen_dub=agenda_2._healer)
+    x_p.create_new_kitchenunit(kitchen_dub=agenda_3._healer)
+    x_p.create_new_kitchenunit(kitchen_dub=agenda_4._healer)
+    x_p.create_new_kitchenunit(kitchen_dub=agenda_5._healer)
 
     x_p.set_healer_depotlink(agenda_1._healer, agenda_2._healer, "blind_trust", 3, 3.1)
     x_p.set_healer_depotlink(agenda_1._healer, agenda_3._healer, "blind_trust", 7, 7.1)
@@ -202,11 +202,11 @@ def _delete_and_set_ex5():
     x_p.set_healer_depotlink(agenda_5._healer, agenda_3._healer, "blind_trust", 4, 4.1)
     x_p.set_healer_depotlink(agenda_5._healer, agenda_4._healer, "blind_trust", 5, 5.1)
 
-    x_p.save_kitchenunit_file(kitchen_title=agenda_1._healer)
-    x_p.save_kitchenunit_file(kitchen_title=agenda_2._healer)
-    x_p.save_kitchenunit_file(kitchen_title=agenda_3._healer)
-    x_p.save_kitchenunit_file(kitchen_title=agenda_4._healer)
-    x_p.save_kitchenunit_file(kitchen_title=agenda_5._healer)
+    x_p.save_kitchenunit_file(kitchen_dub=agenda_1._healer)
+    x_p.save_kitchenunit_file(kitchen_dub=agenda_2._healer)
+    x_p.save_kitchenunit_file(kitchen_dub=agenda_3._healer)
+    x_p.save_kitchenunit_file(kitchen_dub=agenda_4._healer)
+    x_p.save_kitchenunit_file(kitchen_dub=agenda_5._healer)
 
 
 def _delete_and_set_ex6():
@@ -260,13 +260,13 @@ def delete_dir_example_culture(culture_obj: CultureUnit):
     x_func_delete_dir(culture_obj.get_object_root_dir())
 
 
-def rename_example_culture(culture_obj: CultureUnit, new_title):
+def rename_example_culture(culture_obj: CultureUnit, new_handle):
     # base_dir = culture_obj.get_object_root_dir()
     base_dir = "src/culture/examples/cultures"
     src_dir = f"{base_dir}/{culture_obj.handle}"
-    dst_dir = f"{base_dir}/{new_title}"
+    dst_dir = f"{base_dir}/{new_handle}"
     os_rename(src=src_dir, dst=dst_dir)
-    culture_obj.set_cultureunit_handle(handle=new_title)
+    culture_obj.set_cultureunit_handle(handle=new_handle)
 
 
 class InvalidcultureCopyException(Exception):

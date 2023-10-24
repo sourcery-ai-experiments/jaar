@@ -268,10 +268,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def save_file(self):
         if self.file_path is None:
-            self.file_path = f"{agenda_env()}/{self._get_file_title()}"
+            self.file_path = f"{agenda_env()}/{self._get_file_name()}"
         self._commit_file_save()
 
-    def _get_file_title(self):
+    def _get_file_name(self):
         return f"agenda_{self.agenda_x._healer}.json"
 
     def _commit_file_save(self):
@@ -281,13 +281,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.current_file_path_l.setText(self.file_path)
         # x_func_save_file(
         #     dest_dir=agenda_kitchenunit_dir,
-        #     file_title=f"{self.agenda_x._culture_handle}.json",
+        #     file_name=f"{self.agenda_x._culture_handle}.json",
         #     file_text=agenda_x.get_json(),
         # )
 
     def load_file(self):
         x_json = ""
-        x_json = x_func_open_file(dest_dir=self.file_path, file_title=None)
+        x_json = x_func_open_file(dest_dir=self.file_path, file_name=None)
         self.current_file_path_l.setText(self.file_path)
         return x_json
 

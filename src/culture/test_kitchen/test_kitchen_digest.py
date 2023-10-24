@@ -27,9 +27,9 @@ from pytest import raises as pytest_raises
 #     lai_title = "Lai"
 #     env_dir = get_temp_kitchenunit_dir()
 #     lai_agenda = kitchenunit_shop(title=lai_title, env_dir=env_dir)
-#     lai_seed_file_title = lai_agenda._admin._seed_file_title
+#     lai_seed_file_name = lai_agenda._admin._seed_file_name
 #     with pytest_raises(Exception) as excinfo:
-#         x_func_open_file(lai_agenda._admin._kitchenunit_dir, lai_seed_file_title)
+#         x_func_open_file(lai_agenda._admin._kitchenunit_dir, lai_seed_file_name)
 #     assert (
 #         str(excinfo.value)
 #         == f"Could not load file {lai_agenda._admin._seed_file_path} (2, 'No such file or directory')"
@@ -41,7 +41,7 @@ from pytest import raises as pytest_raises
 #     )
 
 #     # THEN
-#     assert x_func_open_file(lai_agenda._admin._kitchenunit_dir, lai_seed_file_title) != None
+#     assert x_func_open_file(lai_agenda._admin._kitchenunit_dir, lai_seed_file_name) != None
 
 
 def test_healeropen_seed_agenda_WhenStartingAgendaFileDoesNotExists(
@@ -98,7 +98,7 @@ def test_healer_save_seed_agenda_seedPersonNameMustBeHealer(
     ux._admin.save_seed_agenda(x_agenda=cx1)
 
     # THEN
-    assert ux._admin.open_seed_agenda()._healer == ux._admin._kitchen_title
+    assert ux._admin.open_seed_agenda()._healer == ux._admin._kitchen_dub
 
 
 def test_healer_open_seed_agenda_WhenStartingAgendaFileExists(
@@ -124,7 +124,7 @@ def test_healer_open_seed_agenda_WhenStartingAgendaFileExists(
     assert seed_agenda._idearoot._acptfactunits == {}
     assert seed_agenda._partys == {}
     assert seed_agenda._groups == {}
-    assert seed_agenda._healer == ux._admin._kitchen_title
+    assert seed_agenda._healer == ux._admin._kitchen_dub
 
 
 def test_healer_erase_seed_agenda_file_DeletesFileCorrectly(
@@ -135,15 +135,15 @@ def test_healer_erase_seed_agenda_file_DeletesFileCorrectly(
     env_dir = get_temp_kitchenunit_dir()
     ux = kitchenunit_shop(p_title, env_dir, get_temp_culture_handle())
     ux._admin.save_seed_agenda(example_agendas_get_agenda_with_4_levels())
-    file_title = ux._admin._seed_file_title
-    assert x_func_open_file(ux._admin._kitchenunit_dir, file_title) != None
+    file_name = ux._admin._seed_file_name
+    assert x_func_open_file(ux._admin._kitchenunit_dir, file_name) != None
 
     # WHEN
     ux._admin.erase_seed_agenda_file()
 
     # THEN
     with pytest_raises(Exception) as excinfo:
-        x_func_open_file(ux._admin._kitchenunit_dir, file_title)
+        x_func_open_file(ux._admin._kitchenunit_dir, file_name)
     assert (
         str(excinfo.value)
         == f"Could not load file {ux._admin._kitchenunit_dir}/seed_agenda.json (2, 'No such file or directory')"
@@ -154,9 +154,9 @@ def test_kitchenunit_save_agenda_to_digest_SavesFileCorrectly(
     kitchen_dir_setup_cleanup,
 ):
     # GIVEN
-    kitchen_title = "healer1"
+    kitchen_dub = "healer1"
     env_dir = get_temp_kitchenunit_dir()
-    ux = kitchenunit_shop(kitchen_title, env_dir, get_temp_culture_handle())
+    ux = kitchenunit_shop(kitchen_dub, env_dir, get_temp_culture_handle())
     ux.create_core_dir_and_files()
     cx = example_healers_get_2node_agenda()
     src_agenda_healer = cx._healer
@@ -166,8 +166,8 @@ def test_kitchenunit_save_agenda_to_digest_SavesFileCorrectly(
     ux._admin.save_agenda_to_digest(cx, src_agenda_healer=src_agenda_healer)
 
     # THEN
-    cx_file_title = f"{cx._healer}.json"
-    digest_file_path = f"{ux._admin._agendas_digest_dir}/{cx_file_title}"
+    cx_file_name = f"{cx._healer}.json"
+    digest_file_path = f"{ux._admin._agendas_digest_dir}/{cx_file_name}"
     print(f"Saving to {digest_file_path=}")
     assert os_path.exists(digest_file_path)
     # for path_x in os_scandir(ux._admin._agendas_digest_dir):
@@ -175,7 +175,7 @@ def test_kitchenunit_save_agenda_to_digest_SavesFileCorrectly(
     assert x_func_count_files(ux._admin._agendas_digest_dir) == 1
     digest_x_agenda_json = x_func_open_file(
         dest_dir=ux._admin._agendas_digest_dir,
-        file_title=f"{src_agenda_healer}.json",
+        file_name=f"{src_agenda_healer}.json",
     )
     assert digest_x_agenda_json == cx.get_json()
 
@@ -196,8 +196,8 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestAgenda(
     sue_cx.set_depot_agenda(x_agenda=cx, depotlink_type="blind_trust")
 
     # THEN
-    cx_file_title = f"{cx._healer}.json"
-    digest_file_path = f"{sue_cx._admin._agendas_digest_dir}/{cx_file_title}"
+    cx_file_name = f"{cx._healer}.json"
+    digest_file_path = f"{sue_cx._admin._agendas_digest_dir}/{cx_file_name}"
     print(f"Saving to {digest_file_path=}")
     assert os_path.exists(digest_file_path)
     # for path_x in os_scandir(sue_cx._admin._agendas_digest_dir):
@@ -205,7 +205,7 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestAgenda(
     assert x_func_count_files(sue_cx._admin._agendas_digest_dir) == 1
     digest_x_agenda_json = x_func_open_file(
         dest_dir=sue_cx._admin._agendas_digest_dir,
-        file_title=f"{src_agenda_healer}.json",
+        file_name=f"{src_agenda_healer}.json",
     )
     assert digest_x_agenda_json == cx.get_json()
 
@@ -214,14 +214,14 @@ def test_healer_get_remelded_output_agenda_withEmptyDigestDict(
     kitchen_dir_setup_cleanup,
 ):
     # GIVEN
-    kitchen_title_x = "boots3"
+    kitchen_dub_x = "boots3"
     ux = kitchenunit_shop(
-        kitchen_title_x, get_temp_kitchenunit_dir(), get_temp_culture_handle()
+        kitchen_dub_x, get_temp_kitchenunit_dir(), get_temp_culture_handle()
     )
     ux.create_core_dir_and_files()
     sx_output_before = ux._admin.get_remelded_output_agenda()
     assert str(type(sx_output_before)).find(".agenda.AgendaUnit'>")
-    assert sx_output_before._healer == kitchen_title_x
+    assert sx_output_before._healer == kitchen_dub_x
     assert sx_output_before._idearoot._label == get_temp_culture_handle()
     # ux.set_digested_agenda(agenda_x=AgendaUnit(_healer="digested1"))
 
@@ -229,7 +229,7 @@ def test_healer_get_remelded_output_agenda_withEmptyDigestDict(
     sx_output_after = ux._admin.get_remelded_output_agenda()
 
     # THEN
-    healer_agenda_x = agendaunit_shop(_healer=kitchen_title_x, _weight=0.0)
+    healer_agenda_x = agendaunit_shop(_healer=kitchen_dub_x, _weight=0.0)
     healer_agenda_x.set_culture_handle(get_temp_culture_handle())
     healer_agenda_x._idearoot._pad = ""
     healer_agenda_x.set_agenda_metrics()

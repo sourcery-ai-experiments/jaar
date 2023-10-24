@@ -123,7 +123,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_culture()
         self.culture_handle_combo_refresh()
         self.culture_handle_combo.setCurrentText(first_env)
-        self._healer_load(kitchen_title="ernie")
+        self._healer_load(kitchen_dub="ernie")
 
     def save_seed(self):
         if self.seed != None:
@@ -166,15 +166,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.depotlink_title.setText(f"{selected_healer} - {selected_agenda}")
 
     def healers_table_select(self):
-        x_kitchen_title = self.healers_table.item(
+        x_kitchen_dub = self.healers_table.item(
             self.healers_table.currentRow(), 0
         ).text()
-        self._healer_load(kitchen_title=x_kitchen_title)
+        self._healer_load(kitchen_dub=x_kitchen_dub)
 
-    def _healer_load(self, kitchen_title: str):
-        self.culture_x.create_new_kitchenunit(title=kitchen_title)
-        self.x_kitchen = self.culture_x._kitchenunits.get(kitchen_title)
-        self.kitchen_title.setText(self.x_kitchen._admin.title)
+    def _healer_load(self, kitchen_dub: str):
+        self.culture_x.create_new_kitchenunit(title=kitchen_dub)
+        self.x_kitchen = self.culture_x._kitchenunits.get(kitchen_dub)
+        self.kitchen_dub.setText(self.x_kitchen._admin.title)
         self.refresh_healer()
 
     def depotlinks_table_select(self):
@@ -194,13 +194,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         # self.ignore_agenda_x = self.culture_x.get_public_agenda(
         self.ignore_agenda_x = self.culture_x.get_agenda_from_ignores_dir(
-            kitchen_title=self.x_kitchen._admin.title, _healer=ignore_agenda_healer
+            kitchen_dub=self.x_kitchen._admin.title, _healer=ignore_agenda_healer
         )
         self.edit_agenda = self.ignore_agenda_x
 
     def ignore_agenda_file_update(self):
         self.culture_x.set_ignore_agenda_file(
-            kitchen_title=self.x_kitchen._admin.title, agenda_obj=self.ignore_agenda_x
+            kitchen_dub=self.x_kitchen._admin.title, agenda_obj=self.ignore_agenda_x
         )
         self.refresh_healer()
 
@@ -254,14 +254,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_culture()
 
     def healer_insert(self):
-        self.culture_x.create_new_kitchenunit(kitchen_title=self.kitchen_title.text())
+        self.culture_x.create_new_kitchenunit(kitchen_dub=self.kitchen_dub.text())
         self.refresh_healers()
 
     def healer_update_title(self):
         currently_selected = self.healers_table.item(
             self.healers_table.currentRow(), 0
         ).text()
-        typed_in = self.kitchen_title.text()
+        typed_in = self.kitchen_dub.text()
         if currently_selected != typed_in:
             self.culture_x.rename_kitchenunit(
                 old_label=currently_selected, new_label=typed_in
@@ -270,7 +270,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def healer_delete(self):
         self.culture_x.del_kitchenunit_dir(
-            kitchen_title=self.healers_table.item(
+            kitchen_dub=self.healers_table.item(
                 self.healers_table.currentRow(), 0
             ).text()
         )
@@ -283,7 +283,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.x_kitchen != None:
             agenda_json = x_func_open_file(
                 dest_dir=self.x_kitchen._admin._agendas_public_dir,
-                file_title=f"{agenda_healer}.json",
+                file_name=f"{agenda_healer}.json",
             )
             agenda_x = get_agenda_from_json(agenda_json)
             self.x_kitchen.set_depot_agenda(
@@ -292,40 +292,40 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 depotlink_weight=self.depotlink_weight.text(),
             )
             self.culture_x.save_kitchenunit_file(
-                kitchen_title=self.x_kitchen._admin.title
+                kitchen_dub=self.x_kitchen._admin.title
             )
         self.refresh_healer()
 
     def depotlink_update(self):
-        kitchen_title_x = self.x_kitchen._admin.title
+        kitchen_dub_x = self.x_kitchen._admin.title
         self.culture_x.update_depotlink(
-            kitchen_title=kitchen_title_x,
+            kitchen_dub=kitchen_dub_x,
             partytitle=self.depotlink_title.text(),
             depotlink_type=self.depotlink_type_combo.currentText(),
             creditor_weight=self.depotlink_weight.text(),
             debtor_weight=self.depotlink_weight.text(),
         )
-        self.culture_x.save_kitchenunit_file(kitchen_title=kitchen_title_x)
+        self.culture_x.save_kitchenunit_file(kitchen_dub=kitchen_dub_x)
         self.refresh_healer()
 
     def depotlink_delete(self):
-        kitchen_title_x = self.x_kitchen._admin.title
+        kitchen_dub_x = self.x_kitchen._admin.title
         self.culture_x.del_depotlink(
-            kitchen_title=kitchen_title_x, agendaunit_healer=self.depotlink_title.text()
+            kitchen_dub=kitchen_dub_x, agendaunit_healer=self.depotlink_title.text()
         )
-        self.culture_x.save_kitchenunit_file(kitchen_title=kitchen_title_x)
+        self.culture_x.save_kitchenunit_file(kitchen_dub=kitchen_dub_x)
         self.refresh_healer()
 
     def get_agenda_healer_list(self):
         agendas_list = []
-        for file_title in self.get_public_dir_file_titles_list():
+        for file_name in self.get_public_dir_file_names_list():
             agenda_json = x_func_open_file(
-                dest_dir=self.get_public_dir(), file_title=file_title
+                dest_dir=self.get_public_dir(), file_name=file_name
             )
             agendas_list.append(get_agenda_from_json(x_agenda_json=agenda_json))
         return agendas_list
 
-    def get_kitchen_title_list(self):
+    def get_kitchen_dub_list(self):
         healers_healer_list = []
         if self.culture_x != None:
             healers_healer_list.extend(
@@ -456,7 +456,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def _sub_refresh_healers_table(self):
         self.refresh_x(
-            self.healers_table, ["Healers Table"], self.get_kitchen_title_list()
+            self.healers_table, ["Healers Table"], self.get_kitchen_dub_list()
         )
 
     def _sub_refresh_depotlinks_table(self):

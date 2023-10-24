@@ -33,12 +33,12 @@ def test_culture_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     # x_func_delete_dir(x_culture.get_object_root_dir())
     print(f"delete {x_culture.get_object_root_dir()=}")
     culture_dir = f"src/culture/examples/cultures/{x_handle}"
-    culture_file_title = "culture.json"
-    culture_file_path = f"{culture_dir}/{culture_file_title}"
+    culture_file_name = "culture.json"
+    culture_file_path = f"{culture_dir}/{culture_file_name}"
     agendas_dir = f"{culture_dir}/agendas"
     kitchenunits_dir = f"{culture_dir}/kitchenunits"
-    bank_file_title = "bank.db"
-    bank_file_path = f"{culture_dir}/{bank_file_title}"
+    bank_file_name = "bank.db"
+    bank_file_path = f"{culture_dir}/{bank_file_name}"
 
     assert os_path.exists(culture_dir) is False
     assert os_path.isdir(culture_dir) is False
@@ -67,15 +67,15 @@ def test_rename_example_culture_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanu
     # GIVEN create culture
     old_x_handle = get_temp_env_handle()
     old_culture_dir = f"src/culture/examples/cultures/{old_x_handle}"
-    old_culture_file_title = "culture.json"
-    old_culture_file_path = f"{old_culture_dir}/{old_culture_file_title}"
+    old_culture_file_name = "culture.json"
+    old_culture_file_path = f"{old_culture_dir}/{old_culture_file_name}"
     old_agendas_dir = f"{old_culture_dir}/agendas"
     old_kitchenunits_dir = f"{old_culture_dir}/kitchenunits"
 
     new_x_handle = "ex_env1"
     new_culture_dir = f"src/culture/examples/cultures/{new_x_handle}"
-    new_culture_file_title = "culture.json"
-    new_culture_file_path = f"{new_culture_dir}/{new_culture_file_title}"
+    new_culture_file_name = "culture.json"
+    new_culture_file_path = f"{new_culture_dir}/{new_culture_file_name}"
     new_agendas_dir = f"{new_culture_dir}/agendas"
     new_kitchenunits_dir = f"{new_culture_dir}/kitchenunits"
     x_func_delete_dir(dir=new_culture_dir)
@@ -107,7 +107,7 @@ def test_rename_example_culture_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanu
     assert x_culture.handle != new_x_handle
 
     # WHEN
-    rename_example_culture(culture_obj=x_culture, new_title=new_x_handle)
+    rename_example_culture(culture_obj=x_culture, new_handle=new_x_handle)
 
     # THEN check agendas src directory created
     assert os_path.exists(old_culture_dir) is False
@@ -138,8 +138,8 @@ def test_copy_evaluation_culture_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     # GIVEN create culture
     old_x_handle = get_temp_env_handle()
     old_culture_dir = f"src/culture/examples/cultures/{old_x_handle}"
-    old_culture_file_title = "culture.json"
-    old_culture_file_path = f"{old_culture_dir}/{old_culture_file_title}"
+    old_culture_file_name = "culture.json"
+    old_culture_file_path = f"{old_culture_dir}/{old_culture_file_name}"
     old_agendas_dir = f"{old_culture_dir}/agendas"
     old_kitchenunits_dir = f"{old_culture_dir}/kitchenunits"
 
@@ -156,8 +156,8 @@ def test_copy_evaluation_culture_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
 
     new_x_handle = "ex_env1"
     new_culture_dir = f"src/culture/examples/cultures/{new_x_handle}"
-    new_culture_file_title = "culture.json"
-    new_culture_file_path = f"{new_culture_dir}/{new_culture_file_title}"
+    new_culture_file_name = "culture.json"
+    new_culture_file_path = f"{new_culture_dir}/{new_culture_file_name}"
     new_agendas_dir = f"{new_culture_dir}/agendas"
     new_kitchenunits_dir = f"{new_culture_dir}/kitchenunits"
 

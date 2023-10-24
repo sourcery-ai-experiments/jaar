@@ -1,7 +1,6 @@
 import dataclasses
 from src.agenda.party import (
     PartyTitle,
-    PartyUnit,
     PartyLink,
     partylinks_get_from_dict,
 )

@@ -29,16 +29,16 @@ class InvalidkitchenException(Exception):
 
 @dataclass
 class KitchenAdmin:
-    _kitchen_title: str
+    _kitchen_dub: str
     _env_dir: str
     _culture_handle: str
     _kitchenunit_dir: str = None
     _kitchenunits_dir: str = None
-    _seed_file_title: str = None
+    _seed_file_name: str = None
     _seed_file_path: str = None
-    _agenda_output_file_title: str = None
+    _agenda_output_file_name: str = None
     _agenda_output_file_path: str = None
-    _public_file_title: str = None
+    _public_file_name: str = None
     _agendas_public_dir: str = None
     _agendas_depot_dir: str = None
     _agendas_ignore_dir: str = None
@@ -48,22 +48,22 @@ class KitchenAdmin:
         env_kitchenunits_folder = "kitchenunits"
         agendas_str = "agendas"
         self._kitchenunits_dir = f"{self._env_dir}/{env_kitchenunits_folder}"
-        self._kitchenunit_dir = f"{self._kitchenunits_dir}/{self._kitchen_title}"
-        self._seed_file_title = "seed_agenda.json"
-        self._seed_file_path = f"{self._kitchenunit_dir}/{self._seed_file_title}"
-        self._agenda_output_file_title = "output_agenda.json"
+        self._kitchenunit_dir = f"{self._kitchenunits_dir}/{self._kitchen_dub}"
+        self._seed_file_name = "seed_agenda.json"
+        self._seed_file_path = f"{self._kitchenunit_dir}/{self._seed_file_name}"
+        self._agenda_output_file_name = "output_agenda.json"
         self._agenda_output_file_path = (
-            f"{self._kitchenunit_dir}/{self._agenda_output_file_title}"
+            f"{self._kitchenunit_dir}/{self._agenda_output_file_name}"
         )
-        self._public_file_title = f"{self._kitchen_title}.json"
+        self._public_file_name = f"{self._kitchen_dub}.json"
         self._agendas_public_dir = f"{self._env_dir}/{agendas_str}"
         self._agendas_depot_dir = f"{self._kitchenunit_dir}/{agendas_str}"
         self._agendas_ignore_dir = f"{self._kitchenunit_dir}/ignores"
         self._agendas_digest_dir = f"{self._kitchenunit_dir}/digests"
 
-    def set_kitchen_title(self, new_title: str):
+    def set_kitchen_dub(self, new_dub: str):
         old_kitchenunit_dir = self._kitchenunit_dir
-        self._kitchen_title = new_title
+        self._kitchen_dub = new_dub
         self.set_dirs()
 
         rename_dir(src=old_kitchenunit_dir, dst=self._kitchenunit_dir)
@@ -80,15 +80,15 @@ class KitchenAdmin:
             self.save_seed_agenda(seed_agenda)
 
     def _save_agenda_to_path(
-        self, x_agenda: AgendaUnit, dest_dir: str, file_title: str = None
+        self, x_agenda: AgendaUnit, dest_dir: str, file_name: str = None
     ):
-        if file_title is None:
-            file_title = f"{x_agenda._healer}.json"
+        if file_name is None:
+            file_name = f"{x_agenda._healer}.json"
         # if dest_dir == self._agendas_public_dir:
-        #     file_title = self._public_file_title
+        #     file_name = self._public_file_name
         x_func_save_file(
             dest_dir=dest_dir,
-            file_title=file_title,
+            file_name=file_name,
             file_text=x_agenda.get_json(),
             replace=True,
         )
@@ -99,29 +99,27 @@ class KitchenAdmin:
 
     def save_ignore_agenda(self, x_agenda: AgendaUnit, src_agenda_healer: str):
         dest_dir = self._agendas_ignore_dir
-        file_title = None
+        file_name = None
         if src_agenda_healer != None:
-            file_title = f"{src_agenda_healer}.json"
+            file_name = f"{src_agenda_healer}.json"
         else:
-            file_title = f"{x_agenda._healer}.json"
-        self._save_agenda_to_path(x_agenda, dest_dir, file_title)
+            file_name = f"{x_agenda._healer}.json"
+        self._save_agenda_to_path(x_agenda, dest_dir, file_name)
 
     def save_agenda_to_digest(
         self, x_agenda: AgendaUnit, src_agenda_healer: str = None
     ):
         dest_dir = self._agendas_digest_dir
-        file_title = None
+        file_name = None
         if src_agenda_healer != None:
-            file_title = f"{src_agenda_healer}.json"
+            file_name = f"{src_agenda_healer}.json"
         else:
-            file_title = f"{x_agenda._healer}.json"
-        self._save_agenda_to_path(x_agenda, dest_dir, file_title)
+            file_name = f"{x_agenda._healer}.json"
+        self._save_agenda_to_path(x_agenda, dest_dir, file_name)
 
     def save_seed_agenda(self, x_agenda: AgendaUnit):
-        x_agenda.set_healer(self._kitchen_title)
-        self._save_agenda_to_path(
-            x_agenda, self._kitchenunit_dir, self._seed_file_title
-        )
+        x_agenda.set_healer(self._kitchen_dub)
+        self._save_agenda_to_path(x_agenda, self._kitchenunit_dir, self._seed_file_name)
 
     def save_agenda_to_depot(self, x_agenda: AgendaUnit):
         dest_dir = self._agendas_depot_dir
@@ -135,21 +133,21 @@ class KitchenAdmin:
             meldees_dir=self._agendas_digest_dir,
         )
         dest_dir = self._kitchenunit_dir
-        file_title = self._agenda_output_file_title
-        self._save_agenda_to_path(x_agenda, dest_dir, file_title)
+        file_name = self._agenda_output_file_name
+        self._save_agenda_to_path(x_agenda, dest_dir, file_name)
 
     def open_public_agenda(self, healer: PersonName) -> str:
-        file_title_x = f"{healer}.json"
-        return x_func_open_file(self._agendas_public_dir, file_title_x)
+        file_name_x = f"{healer}.json"
+        return x_func_open_file(self._agendas_public_dir, file_name_x)
 
     def open_depot_agenda(self, healer: PersonName) -> AgendaUnit:
-        file_title_x = f"{healer}.json"
-        x_agenda_json = x_func_open_file(self._agendas_depot_dir, file_title_x)
+        file_name_x = f"{healer}.json"
+        x_agenda_json = x_func_open_file(self._agendas_depot_dir, file_name_x)
         return agendaunit_get_from_json(x_agenda_json=x_agenda_json)
 
     def open_ignore_agenda(self, healer: PersonName) -> AgendaUnit:
-        ignore_file_title = f"{healer}.json"
-        agenda_json = x_func_open_file(self._agendas_ignore_dir, ignore_file_title)
+        ignore_file_name = f"{healer}.json"
+        agenda_json = x_func_open_file(self._agendas_ignore_dir, ignore_file_name)
         agenda_obj = agendaunit_get_from_json(x_agenda_json=agenda_json)
         agenda_obj.set_agenda_metrics()
         return agenda_obj
@@ -158,22 +156,22 @@ class KitchenAdmin:
         x_agenda = None
         if not self._seed_agenda_exists():
             self.save_seed_agenda(self._get_empty_seed_agenda())
-        x_json = x_func_open_file(self._kitchenunit_dir, self._seed_file_title)
+        x_json = x_func_open_file(self._kitchenunit_dir, self._seed_file_name)
         x_agenda = agendaunit_get_from_json(x_agenda_json=x_json)
         x_agenda.set_agenda_metrics()
         return x_agenda
 
     def open_output_agenda(self) -> AgendaUnit:
         x_agenda_json = x_func_open_file(
-            self._kitchenunit_dir, self._agenda_output_file_title
+            self._kitchenunit_dir, self._agenda_output_file_name
         )
         x_agenda = agendaunit_get_from_json(x_agenda_json)
         x_agenda.set_agenda_metrics()
         return x_agenda
 
     def _get_empty_seed_agenda(self):
-        x_agenda = agendaunit_shop(_healer=self._kitchen_title, _weight=0)
-        x_agenda.add_partyunit(title=self._kitchen_title)
+        x_agenda = agendaunit_shop(_healer=self._kitchen_dub, _weight=0)
+        x_agenda.add_partyunit(title=self._kitchen_dub)
         x_agenda.set_culture_handle(self._culture_handle)
         return x_agenda
 
@@ -184,21 +182,21 @@ class KitchenAdmin:
         x_func_delete_dir(f"{self._agendas_digest_dir}/{healer}.json")
 
     def erase_seed_agenda_file(self):
-        x_func_delete_dir(dir=f"{self._kitchenunit_dir}/{self._seed_file_title}")
+        x_func_delete_dir(dir=f"{self._kitchenunit_dir}/{self._seed_file_name}")
 
     def raise_exception_if_no_file(self, dir_type: str, healer: str):
-        x_agenda_file_title = f"{healer}.json"
+        x_agenda_file_name = f"{healer}.json"
         if dir_type == "depot":
-            x_agenda_file_path = f"{self._agendas_depot_dir}/{x_agenda_file_title}"
+            x_agenda_file_path = f"{self._agendas_depot_dir}/{x_agenda_file_name}"
         if not os_path.exists(x_agenda_file_path):
             raise InvalidkitchenException(
-                f"Healer {self._kitchen_title} cannot find agenda {healer} in {x_agenda_file_path}"
+                f"Healer {self._kitchen_dub} cannot find agenda {healer} in {x_agenda_file_path}"
             )
 
     def _seed_agenda_exists(self) -> bool:
         bool_x = None
         try:
-            x_func_open_file(self._kitchenunit_dir, self._seed_file_title)
+            x_func_open_file(self._kitchenunit_dir, self._seed_file_name)
             bool_x = True
         except Exception:
             bool_x = False
@@ -213,10 +211,10 @@ class KitchenAdmin:
 
 
 def kitchenadmin_shop(
-    _kitchen_title: str, _env_dir: str, _culture_handle: str
+    _kitchen_dub: str, _env_dir: str, _culture_handle: str
 ) -> KitchenAdmin:
     x_kitchenadmin = KitchenAdmin(
-        _kitchen_title=_kitchen_title,
+        _kitchen_dub=_kitchen_dub,
         _env_dir=_env_dir,
         _culture_handle=_culture_handle,
     )
@@ -231,7 +229,7 @@ class KitchenUnit:
 
     def refresh_depot_agendas(self):
         for party_x in self._seed._partys.values():
-            if party_x.title != self._admin._kitchen_title:
+            if party_x.title != self._admin._kitchen_dub:
                 party_agenda = agendaunit_get_from_json(
                     x_agenda_json=self._admin.open_public_agenda(party_x.title)
                 )
@@ -286,10 +284,10 @@ class KitchenUnit:
     def _set_assignment_depotlink(self, outer_healer):
         src_agenda = self._admin.open_depot_agenda(outer_healer)
         src_agenda.set_agenda_metrics()
-        empty_agenda = agendaunit_shop(_healer=self._admin._kitchen_title)
+        empty_agenda = agendaunit_shop(_healer=self._admin._kitchen_dub)
         empty_agenda.set_culture_handle(self._admin._culture_handle)
         assign_agenda = src_agenda.get_assignment(
-            empty_agenda, self.get_seed()._partys, self._admin._kitchen_title
+            empty_agenda, self.get_seed()._partys, self._admin._kitchen_dub
         )
         assign_agenda.set_agenda_metrics()
         self._admin.save_agenda_to_digest(assign_agenda, src_agenda._healer)
@@ -342,9 +340,9 @@ class KitchenUnit:
         self._admin.save_agenda_to_digest(agendaunit, src_agenda_healer)
 
     # housekeeping
-    def set_env_dir(self, env_dir: str, kitchen_title: str, culture_handle: str):
+    def set_env_dir(self, env_dir: str, kitchen_dub: str, culture_handle: str):
         self._admin = kitchenadmin_shop(
-            _kitchen_title=kitchen_title,
+            _kitchen_dub=kitchen_dub,
             _env_dir=env_dir,
             _culture_handle=culture_handle,
         )

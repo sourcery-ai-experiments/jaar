@@ -17,7 +17,7 @@ from src.agenda.examples.agenda_env import agenda_env
 
 def agenda_v001() -> AgendaUnit:
     return agenda_get_from_json(
-        x_func_open_file(dest_dir=agenda_env(), file_title="example_agenda1.json")
+        x_func_open_file(dest_dir=agenda_env(), file_name="example_agenda1.json")
     )
 
 
@@ -66,7 +66,7 @@ def agenda_v001_with_large_goal() -> AgendaUnit:
 
 def agenda_v002() -> AgendaUnit:
     return agenda_get_from_json(
-        x_func_open_file(dest_dir=agenda_env(), file_title="example_agenda2.json")
+        x_func_open_file(dest_dir=agenda_env(), file_name="example_agenda2.json")
     )
 
 

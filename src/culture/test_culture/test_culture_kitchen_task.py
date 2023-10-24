@@ -15,8 +15,8 @@ def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
 
     # GIVEN
     amer_text = "Amer"
-    x_culture.create_new_kitchenunit(kitchen_title=amer_text)
-    amer_kitchen = x_culture.get_kitchenunit(title=amer_text)
+    x_culture.create_new_kitchenunit(kitchen_dub=amer_text)
+    amer_kitchen = x_culture.get_kitchenunit(dub=amer_text)
     laundry_agenda = get_agenda_assignment_laundry_example1()
     laundry_agenda.set_culture_handle(x_culture.handle)
     amer_kitchen.set_seed(laundry_agenda)
@@ -39,8 +39,8 @@ def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
 
     # create assignment for Cali
     cali_text = "Cali"
-    x_culture.create_new_kitchenunit(kitchen_title=cali_text)
-    cali_kitchen = x_culture.get_kitchenunit(title=cali_text)
+    x_culture.create_new_kitchenunit(kitchen_dub=cali_text)
+    cali_kitchen = x_culture.get_kitchenunit(dub=cali_text)
     cali_kitchen.set_depot_agenda(amer_output, "assignment")
     old_cali_agenda = x_culture.get_output_agenda(cali_text)
     # print(f"{old_cali_agenda._partys.keys()=}")
@@ -79,10 +79,10 @@ def test_culture_kitchen_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     x_culture.create_dirs_if_null(in_memory_bank=True)
     amer_text = "Amer"
     beto_text = "Beto"
-    x_culture.create_new_kitchenunit(kitchen_title=amer_text)
-    x_culture.create_new_kitchenunit(kitchen_title=beto_text)
-    amer_kitchen = x_culture.get_kitchenunit(title=amer_text)
-    beto_kitchen = x_culture.get_kitchenunit(title=beto_text)
+    x_culture.create_new_kitchenunit(kitchen_dub=amer_text)
+    x_culture.create_new_kitchenunit(kitchen_dub=beto_text)
+    amer_kitchen = x_culture.get_kitchenunit(dub=amer_text)
+    beto_kitchen = x_culture.get_kitchenunit(dub=beto_text)
     # print(f"{beto_kitchen=}")
     laundry_agenda = get_agenda_assignment_laundry_example1()
     laundry_agenda.set_culture_handle(x_culture.handle)

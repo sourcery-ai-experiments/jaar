@@ -92,7 +92,7 @@ def test_kitchenunit_set_depotlink_CorrectlySetsAssignment(kitchen_dir_setup_cle
     digest_agenda = agenda_get_from_json(
         x_func_open_file(
             dest_dir=cali_ux._admin._agendas_digest_dir,
-            file_title=f"{amer_agenda._healer}.json",
+            file_name=f"{amer_agenda._healer}.json",
         )
     )
     print(f"{digest_agenda._healer=}")
@@ -250,8 +250,8 @@ def test_kitchenunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     culture_handle = get_temp_env_handle()
     sx = cultureunit_shop(handle=culture_handle, cultures_dir=env_dir)
     yao_text = "Yao"
-    sx.create_new_kitchenunit(kitchen_title=yao_text)
-    yao_agenda = sx.get_kitchenunit(title=yao_text)
+    sx.create_new_kitchenunit(kitchen_dub=yao_text)
+    yao_agenda = sx.get_kitchenunit(dub=yao_text)
     assert len(yao_agenda._admin.get_remelded_output_agenda().get_idea_list()) == 1
 
     ernie_text = "ernie"
@@ -267,11 +267,11 @@ def test_kitchenunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     new_steve_agenda = get_cal3nodes(_healer=steve_text)
     sx.save_public_agenda(x_agenda=new_steve_agenda)
     print(f"{env_dir=} {yao_agenda._admin._agendas_public_dir=}")
-    # for file_title in x_func_dir_files(dir_path=env_dir):
-    #     print(f"{bob_agenda._admin._agendas_public_dir=} {file_title=}")
+    # for file_name in x_func_dir_files(dir_path=env_dir):
+    #     print(f"{bob_agenda._admin._agendas_public_dir=} {file_name=}")
 
-    # for file_title in x_func_dir_files(dir_path=bob_agenda._admin._agendas_public_dir):
-    #     print(f"{bob_agenda._admin._agendas_public_dir=} {file_title=}")
+    # for file_name in x_func_dir_files(dir_path=bob_agenda._admin._agendas_public_dir):
+    #     print(f"{bob_agenda._admin._agendas_public_dir=} {file_name=}")
 
     # WHEN
     yao_agenda.refresh_depot_agendas()

@@ -25,16 +25,16 @@ def test_culture_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     # x_culture.save_public_agenda(ex_cxs_get_agenda_1Task_1CE0MinutesRequired_1AcptFact())
     # x_culture.save_public_agenda(ex_cxs_agenda_v001())
     xia_text = "Xia"
-    x_culture.create_new_kitchenunit(kitchen_title=xia_text)
+    x_culture.create_new_kitchenunit(kitchen_dub=xia_text)
     x_culture.set_healer_depotlink(
         xia_text, input_agenda._healer, depotlink_type="blind_trust"
     )
-    x_culture.save_kitchenunit_file(kitchen_title=xia_text)
-    xia_healer = x_culture.get_kitchenunit(title=xia_text)
+    x_culture.save_kitchenunit_file(kitchen_dub=xia_text)
+    xia_healer = x_culture.get_kitchenunit(dub=xia_text)
     # print(f"{xia_healer._seed._partys.keys()=}")
 
     # WHEN
-    output_agenda = x_culture.get_output_agenda(kitchen_title=xia_text)
+    output_agenda = x_culture.get_output_agenda(kitchen_dub=xia_text)
     # input agenda must be melded to itself to create originunits
     input_agenda.meld(input_agenda)
     input_agenda.set_healer(new_healer=xia_text)
@@ -104,15 +104,15 @@ def test_culture_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
     # x_culture.save_public_agenda(ex_cxs_get_agenda_1Task_1CE0MinutesRequired_1AcptFact())
     # x_culture.save_public_agenda(ex_cxs_agenda_v001())
     xia_text = "Xia"
-    x_culture.create_new_kitchenunit(kitchen_title=xia_text)
+    x_culture.create_new_kitchenunit(kitchen_dub=xia_text)
     x_culture.set_healer_depotlink(xia_text, x1_agenda._healer, "blind_trust")
     x_culture.set_healer_depotlink(xia_text, x2_agenda._healer, "blind_trust")
-    x_culture.save_kitchenunit_file(kitchen_title=xia_text)
-    xia_healer = x_culture.get_kitchenunit(title=xia_text)
+    x_culture.save_kitchenunit_file(kitchen_dub=xia_text)
+    xia_healer = x_culture.get_kitchenunit(dub=xia_text)
     print(f"{xia_healer._seed._partys.keys()=}")
 
     # WHEN
-    output_agenda = x_culture.get_output_agenda(kitchen_title=xia_text)
+    output_agenda = x_culture.get_output_agenda(kitchen_dub=xia_text)
 
     # THEN
     output_agenda_d_road = f"{output_agenda._culture_handle},C,D"
@@ -167,12 +167,12 @@ def test_kitchenunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     x_culture.save_public_agenda(x_agenda=ernie_agenda)
     x_culture.save_public_agenda(x_agenda=jessi_agenda)
     x_culture.save_public_agenda(x_agenda=old_steve_agenda)
-    x_culture.create_new_kitchenunit(kitchen_title=ernie_text)
-    x_culture.create_new_kitchenunit(kitchen_title=jessi_text)
-    # x_culture.create_new_kitchenunit(kitchen_title=steve_text)
-    ux_ernie = x_culture.get_kitchenunit(title=ernie_text)
-    ux_jessi = x_culture.get_kitchenunit(title=jessi_text)
-    # ux_steve = x_culture.get_kitchenunit(title=steve_text)
+    x_culture.create_new_kitchenunit(kitchen_dub=ernie_text)
+    x_culture.create_new_kitchenunit(kitchen_dub=jessi_text)
+    # x_culture.create_new_kitchenunit(kitchen_dub=steve_text)
+    ux_ernie = x_culture.get_kitchenunit(dub=ernie_text)
+    ux_jessi = x_culture.get_kitchenunit(dub=jessi_text)
+    # ux_steve = x_culture.get_kitchenunit(dub=steve_text)
     ux_ernie.set_depot_agenda(x_agenda=jessi_agenda, depotlink_type="blind_trust")
     ux_ernie.set_depot_agenda(x_agenda=old_steve_agenda, depotlink_type="blind_trust")
     ux_jessi.set_depot_agenda(x_agenda=ernie_agenda, depotlink_type="blind_trust")
@@ -185,11 +185,11 @@ def test_kitchenunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     new_steve_agenda = get_agenda_3CleanNodesRandomWeights(_healer="steve")
     x_culture.save_public_agenda(x_agenda=new_steve_agenda)
     # print(f"{env_dir=} {ux._admin._agendas_public_dir=}")
-    # for file_title in x_func_dir_files(dir_path=env_dir):
-    #     print(f"{ux._admin._agendas_public_dir=} {file_title=}")
+    # for file_name in x_func_dir_files(dir_path=env_dir):
+    #     print(f"{ux._admin._agendas_public_dir=} {file_name=}")
 
-    # for file_title in x_func_dir_files(dir_path=ux._admin._agendas_public_dir):
-    #     print(f"{ux._admin._agendas_public_dir=} {file_title=}")
+    # for file_name in x_func_dir_files(dir_path=ux._admin._agendas_public_dir):
+    #     print(f"{ux._admin._agendas_public_dir=} {file_name=}")
 
     # WHEN
     x_culture.reload_all_kitchenunits_src_agendaunits()

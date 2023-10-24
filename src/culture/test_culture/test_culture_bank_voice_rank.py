@@ -24,8 +24,7 @@ def test_culture_bank_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_arbit
     ava_text = "ava"
     elu_text = "elu"
     x_culture._manager_name = sal_text
-    x_culture.refresh_bank_agenda_data()
-
+    x_culture.create_new_kitchenunit()
     x_culture.save_public_agenda(agendaunit_shop(_healer=sal_text))
     x_culture.save_public_agenda(agendaunit_shop(_healer=bob_text))
     x_culture.save_public_agenda(agendaunit_shop(_healer=tom_text))

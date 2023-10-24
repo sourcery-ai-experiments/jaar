@@ -30,7 +30,7 @@ def create_agenda_file(agenda_kitchenunit_dir: str, agenda_healer: str):
     #     f.write(agenda_x.get_json())
     x_func_save_file(
         dest_dir=agenda_kitchenunit_dir,
-        file_title=f"{agenda_x._healer}.json",
+        file_name=f"{agenda_x._healer}.json",
         file_text=agenda_x.get_json(),
     )
     # print(f"print all {agenda_dir=} {os_listdir(path=agenda_dir)}")

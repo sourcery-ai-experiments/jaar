@@ -271,10 +271,10 @@ class EditParty(qtw.QTableWidget, Ui_Form):
     def group_update(self):
         if self.group_title != None:
             self.agenda_x.edit_groupunit_brand(
-                old_title=self.groups_in_table.item(
+                old_brand=self.groups_in_table.item(
                     self.groups_in_table.currentRow(), 0
                 ).text(),
-                new_title=self.group_title.text(),
+                new_brand=self.group_title.text(),
                 allow_group_overwite=True,
             )
             self.group_title.setText("")

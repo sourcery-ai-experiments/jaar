@@ -384,8 +384,8 @@ def test_set_goal_task_as_complete_DivisionWorksCorrectly():
 def test_agenda_get_from_json_LoadsActionFromJSONCorrectly():
     # GIVEN
     file_dir = agenda_env()
-    file_title = "example_agenda1.json"
-    x_agenda_json = x_func_open_file(dest_dir=file_dir, file_title=file_title)
+    file_name = "example_agenda1.json"
+    x_agenda_json = x_func_open_file(dest_dir=file_dir, file_name=file_name)
 
     # WHEN
     x_agenda = get_from_json(x_agenda_json=x_agenda_json)

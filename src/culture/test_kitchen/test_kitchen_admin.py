@@ -24,15 +24,15 @@ def test_KitchenAdmin_exists():
     bob_kitchenadmin = KitchenAdmin(bob_text, env_dir, get_temp_culture_handle())
 
     # THEN
-    assert bob_kitchenadmin._kitchen_title != None
+    assert bob_kitchenadmin._kitchen_dub != None
     assert bob_kitchenadmin._env_dir != None
     assert bob_kitchenadmin._culture_handle != None
     assert bob_kitchenadmin._kitchenunit_dir is None
-    assert bob_kitchenadmin._seed_file_title is None
+    assert bob_kitchenadmin._seed_file_name is None
     assert bob_kitchenadmin._seed_file_path is None
-    assert bob_kitchenadmin._agenda_output_file_title is None
+    assert bob_kitchenadmin._agenda_output_file_name is None
     assert bob_kitchenadmin._agenda_output_file_path is None
-    assert bob_kitchenadmin._public_file_title is None
+    assert bob_kitchenadmin._public_file_name is None
     assert bob_kitchenadmin._agendas_public_dir is None
     assert bob_kitchenadmin._agendas_depot_dir is None
     assert bob_kitchenadmin._agendas_ignore_dir is None
@@ -45,38 +45,38 @@ def test_KitchenAdmin_set_dir_CorrectSetsKitchenAdminAttribute():
     env_dir = get_temp_kitchenunit_dir()
     bob_kitchenadmin = KitchenAdmin(bob_text, env_dir, get_temp_culture_handle())
     assert bob_kitchenadmin._kitchenunit_dir is None
-    assert bob_kitchenadmin._agenda_output_file_title is None
+    assert bob_kitchenadmin._agenda_output_file_name is None
     assert bob_kitchenadmin._agenda_output_file_path is None
-    assert bob_kitchenadmin._public_file_title is None
+    assert bob_kitchenadmin._public_file_name is None
     assert bob_kitchenadmin._agendas_public_dir is None
     assert bob_kitchenadmin._agendas_depot_dir is None
     assert bob_kitchenadmin._agendas_ignore_dir is None
     assert bob_kitchenadmin._agendas_digest_dir is None
-    assert bob_kitchenadmin._seed_file_title is None
+    assert bob_kitchenadmin._seed_file_name is None
     assert bob_kitchenadmin._seed_file_path is None
     # WHEN
     bob_kitchenadmin.set_dirs()
 
     # THEN
     assert bob_kitchenadmin._kitchenunit_dir != None
-    assert bob_kitchenadmin._agenda_output_file_title != None
+    assert bob_kitchenadmin._agenda_output_file_name != None
     assert bob_kitchenadmin._agenda_output_file_path != None
-    assert bob_kitchenadmin._public_file_title != None
+    assert bob_kitchenadmin._public_file_name != None
     assert bob_kitchenadmin._agendas_public_dir != None
     assert bob_kitchenadmin._agendas_depot_dir != None
     assert bob_kitchenadmin._agendas_ignore_dir != None
     assert bob_kitchenadmin._agendas_digest_dir != None
-    assert bob_kitchenadmin._seed_file_title != None
+    assert bob_kitchenadmin._seed_file_name != None
     assert bob_kitchenadmin._seed_file_path != None
 
     healers_drectory_folder = "kitchenunits"
     x_kitchenunits_dir = f"{env_dir}/{healers_drectory_folder}"
     x_kitchenunit_dir = f"{x_kitchenunits_dir}/{bob_text}"
-    x_public_file_title = f"{bob_text}.json"
-    x_seed_file_title = "seed_agenda.json"
-    x_seed_file_path = f"{x_kitchenunit_dir}/{x_seed_file_title}"
-    x_agenda_output_file_title = "output_agenda.json"
-    x_agenda_output_file_path = f"{x_kitchenunit_dir}/{x_agenda_output_file_title}"
+    x_public_file_name = f"{bob_text}.json"
+    x_seed_file_name = "seed_agenda.json"
+    x_seed_file_path = f"{x_kitchenunit_dir}/{x_seed_file_name}"
+    x_agenda_output_file_name = "output_agenda.json"
+    x_agenda_output_file_path = f"{x_kitchenunit_dir}/{x_agenda_output_file_name}"
     agendas_str = "agendas"
     x_agendas_depot_dir = f"{x_kitchenunit_dir}/{agendas_str}"
     x_agendas_ignore_dir = f"{x_kitchenunit_dir}/ignores"
@@ -84,14 +84,14 @@ def test_KitchenAdmin_set_dir_CorrectSetsKitchenAdminAttribute():
     x_agendas_public_dir = f"{env_dir}/{agendas_str}"
     assert bob_kitchenadmin._kitchenunits_dir == x_kitchenunits_dir
     assert bob_kitchenadmin._kitchenunit_dir == x_kitchenunit_dir
-    assert bob_kitchenadmin._seed_file_title == x_seed_file_title
+    assert bob_kitchenadmin._seed_file_name == x_seed_file_name
     assert bob_kitchenadmin._seed_file_path == x_seed_file_path
-    assert bob_kitchenadmin._agenda_output_file_title == x_agenda_output_file_title
+    assert bob_kitchenadmin._agenda_output_file_name == x_agenda_output_file_name
     assert bob_kitchenadmin._agenda_output_file_path == x_agenda_output_file_path
     assert bob_kitchenadmin._agendas_depot_dir == x_agendas_depot_dir
     assert bob_kitchenadmin._agendas_ignore_dir == x_agendas_ignore_dir
     assert bob_kitchenadmin._agendas_digest_dir == x_agendas_digest_dir
-    assert bob_kitchenadmin._public_file_title == x_public_file_title
+    assert bob_kitchenadmin._public_file_name == x_public_file_name
     assert bob_kitchenadmin._agendas_public_dir == x_agendas_public_dir
 
 
@@ -142,12 +142,12 @@ def test_KitchenAdmin_create_core_dir_and_files_DoesNotOverWriteseedAgenda(
     ex1 = "teesting text"
     x_func_save_file(
         dest_dir=jul_kitchenadmin._kitchenunit_dir,
-        file_title=jul_kitchenadmin._seed_file_title,
+        file_name=jul_kitchenadmin._seed_file_name,
         file_text=ex1,
     )
     assert (
         x_func_open_file(
-            jul_kitchenadmin._kitchenunit_dir, jul_kitchenadmin._seed_file_title
+            jul_kitchenadmin._kitchenunit_dir, jul_kitchenadmin._seed_file_name
         )
         == ex1
     )
@@ -158,13 +158,13 @@ def test_KitchenAdmin_create_core_dir_and_files_DoesNotOverWriteseedAgenda(
     # THEN
     assert (
         x_func_open_file(
-            jul_kitchenadmin._kitchenunit_dir, jul_kitchenadmin._seed_file_title
+            jul_kitchenadmin._kitchenunit_dir, jul_kitchenadmin._seed_file_name
         )
         == ex1
     )
 
 
-def test_KitchenAdmin_set_kitchen_title_WorksCorrectly(kitchen_dir_setup_cleanup):
+def test_KitchenAdmin_set_kitchen_dub_WorksCorrectly(kitchen_dir_setup_cleanup):
     # GIVEN create healer
     env_dir = get_temp_kitchenunit_dir()
 
@@ -179,8 +179,8 @@ def test_KitchenAdmin_set_kitchen_title_WorksCorrectly(kitchen_dir_setup_cleanup
     # old_kitchenunit_dir = f"{env_dir}/kitchenunits/{old_healer_text}"
     print(f"{jul_kitchenadmin._kitchenunit_dir}")
     print(f"{env_dir}/kitchenunits/{old_healer_text}")
-    seed_file_title = "seed_agenda.json"
-    old_seed_file_path = f"{old_kitchenunit_dir}/{seed_file_title}"
+    seed_file_name = "seed_agenda.json"
+    old_seed_file_path = f"{old_kitchenunit_dir}/{seed_file_name}"
 
     assert os_path.exists(old_kitchenunit_dir)
     assert os_path.isdir(old_kitchenunit_dir)
@@ -188,13 +188,13 @@ def test_KitchenAdmin_set_kitchen_title_WorksCorrectly(kitchen_dir_setup_cleanup
 
     new_healer_text = "tim"
     new_kitchenunit_dir = f"{env_dir}/kitchenunits/{new_healer_text}"
-    new_seed_file_path = f"{new_kitchenunit_dir}/{seed_file_title}"
+    new_seed_file_path = f"{new_kitchenunit_dir}/{seed_file_name}"
     assert os_path.exists(new_kitchenunit_dir) == False
     assert os_path.isdir(new_kitchenunit_dir) == False
     assert os_path.exists(new_seed_file_path) == False
 
     # WHEN
-    jul_kitchenadmin.set_kitchen_title(new_title=new_healer_text)
+    jul_kitchenadmin.set_kitchen_dub(new_dub=new_healer_text)
 
     # THEN
     assert os_path.exists(old_kitchenunit_dir) == False
@@ -218,7 +218,7 @@ def test_kitchenunit_auto_output_to_public_SavesAgendaToPublicDir(
     bob_kitchenadmin.create_core_dir_and_files(x_agenda)
 
     public_file_path = (
-        f"{bob_kitchenadmin._agendas_public_dir}/{bob_kitchenadmin._public_file_title}"
+        f"{bob_kitchenadmin._agendas_public_dir}/{bob_kitchenadmin._public_file_name}"
     )
     print(f"{public_file_path=}")
     assert os_path.exists(public_file_path) is False

@@ -30,7 +30,7 @@ def test_kitchenunit_shop_exists(kitchen_dir_setup_cleanup):
     )
 
     # GIVEN
-    assert x_kitchen._admin._kitchen_title != None
+    assert x_kitchen._admin._kitchen_dub != None
     assert x_kitchen._admin._culture_handle != None
     assert x_kitchen._admin._culture_handle == get_temp_culture_handle()
     assert x_kitchen._seed is None
@@ -43,10 +43,10 @@ def test_kitchenunit_auto_output_to_public_SavesAgendaToPublicDirWhenTrue(
     env_dir = get_temp_kitchenunit_dir()
     x_handle = get_temp_culture_handle()
     tim_text = "Tim"
-    public_file_title = f"{tim_text}.json"
-    public_file_path = f"{get_temp_kitchenunit_dir()}/agendas/{public_file_title}"
+    public_file_name = f"{tim_text}.json"
+    public_file_path = f"{get_temp_kitchenunit_dir()}/agendas/{public_file_name}"
     print(f"{public_file_path=}")
-    # public_file_path = f"src/culture/examples/ex_env/agendas/{public_file_title}"
+    # public_file_path = f"src/culture/examples/ex_env/agendas/{public_file_name}"
     x_kitchen = kitchenunit_shop(
         tim_text, env_dir, x_handle, _auto_output_to_public=True
     )
@@ -69,10 +69,10 @@ def test_kitchenunit_auto_output_to_public_DoesNotSaveAgendaToPublicDirWhenFalse
     env_dir = get_temp_kitchenunit_dir()
     x_handle = get_temp_culture_handle()
     tim_text = "Tim"
-    public_file_title = f"{tim_text}.json"
-    public_file_path = f"{get_temp_kitchenunit_dir()}/agendas/{public_file_title}"
+    public_file_name = f"{tim_text}.json"
+    public_file_path = f"{get_temp_kitchenunit_dir()}/agendas/{public_file_name}"
     print(f"{public_file_path=}")
-    # public_file_path = f"src/culture/examples/ex_env/agendas/{public_file_title}"
+    # public_file_path = f"src/culture/examples/ex_env/agendas/{public_file_name}"
     x_kitchen = kitchenunit_shop(tim_text, env_dir, x_handle, False)
     x_kitchen.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
@@ -116,7 +116,7 @@ def test_kitchenunit_get_seed_getsMemoryAgendaIfExists(
     )
     tim_kitchen.create_core_dir_and_files()
     seed_file_path = (
-        f"{tim_kitchen._admin._kitchenunit_dir}/{tim_kitchen._admin._seed_file_title}"
+        f"{tim_kitchen._admin._kitchenunit_dir}/{tim_kitchen._admin._seed_file_name}"
     )
     seed_agenda1 = tim_kitchen.get_seed()
     assert os_path.exists(seed_file_path)
@@ -150,7 +150,7 @@ def test_kitchenunit_set_seed_savesseedAgendaSet_seed_None(
     )
     tim_kitchen.create_core_dir_and_files()
     seed_file_path = (
-        f"{tim_kitchen._admin._kitchenunit_dir}/{tim_kitchen._admin._seed_file_title}"
+        f"{tim_kitchen._admin._kitchenunit_dir}/{tim_kitchen._admin._seed_file_name}"
     )
     seed_agenda1 = tim_kitchen.get_seed()
     assert os_path.exists(seed_file_path)
@@ -178,7 +178,7 @@ def test_kitchenunit_set_seed_savesGivenAgendaSet_seed_None(
     )
     tim_kitchen.create_core_dir_and_files()
     seed_file_path = (
-        f"{tim_kitchen._admin._kitchenunit_dir}/{tim_kitchen._admin._seed_file_title}"
+        f"{tim_kitchen._admin._kitchenunit_dir}/{tim_kitchen._admin._seed_file_name}"
     )
     seed_agenda1 = tim_kitchen.get_seed()
     assert os_path.exists(seed_file_path)
