@@ -27,9 +27,13 @@ class InvalidkitchenException(Exception):
     pass
 
 
+class KitchenDub(PersonName):
+    pass
+
+
 @dataclass
 class KitchenAdmin:
-    _kitchen_dub: str
+    _kitchen_dub: KitchenDub
     _env_dir: str
     _culture_handle: str
     _kitchenunit_dir: str = None
@@ -61,7 +65,7 @@ class KitchenAdmin:
         self._agendas_ignore_dir = f"{self._kitchenunit_dir}/ignores"
         self._agendas_digest_dir = f"{self._kitchenunit_dir}/digests"
 
-    def set_kitchen_dub(self, new_dub: str):
+    def set_kitchen_dub(self, new_dub: KitchenDub):
         old_kitchenunit_dir = self._kitchenunit_dir
         self._kitchen_dub = new_dub
         self.set_dirs()
@@ -211,7 +215,7 @@ class KitchenAdmin:
 
 
 def kitchenadmin_shop(
-    _kitchen_dub: str, _env_dir: str, _culture_handle: str
+    _kitchen_dub: KitchenDub, _env_dir: str, _culture_handle: str
 ) -> KitchenAdmin:
     x_kitchenadmin = KitchenAdmin(
         _kitchen_dub=_kitchen_dub,
@@ -340,7 +344,7 @@ class KitchenUnit:
         self._admin.save_agenda_to_digest(agendaunit, src_agenda_healer)
 
     # housekeeping
-    def set_env_dir(self, env_dir: str, kitchen_dub: str, culture_handle: str):
+    def set_env_dir(self, env_dir: str, kitchen_dub: KitchenDub, culture_handle: str):
         self._admin = kitchenadmin_shop(
             _kitchen_dub=kitchen_dub,
             _env_dir=env_dir,

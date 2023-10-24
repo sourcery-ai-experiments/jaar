@@ -13,7 +13,7 @@ from src.agenda.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
 )
-from src.culture.kitchen import KitchenUnit, kitchenunit_shop
+from src.culture.kitchen import KitchenUnit, kitchenunit_shop, KitchenDub
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 from src.culture.bank_sqlstr import (
@@ -334,24 +334,24 @@ class CultureUnit:
         if self._kitchenunits is None:
             self._kitchenunits = {}
 
-    def create_new_kitchenunit(self, kitchen_dub: str):
+    def create_new_kitchenunit(self, kitchen_dub: KitchenDub):
         self.set_kitchenunits_empty_if_null()
         ux = kitchenunit_shop(kitchen_dub, self.get_object_root_dir(), self.handle)
         ux.create_core_dir_and_files()
         self._kitchenunits[ux._admin._kitchen_dub] = ux
 
-    def get_kitchenunit(self, dub: str) -> KitchenUnit:
+    def get_kitchenunit(self, dub: KitchenDub) -> KitchenUnit:
         return None if self._kitchenunits.get(dub) is None else self._kitchenunits[dub]
 
     def set_kitchenunit_to_culture(self, kitchenunit: KitchenUnit):
         self._kitchenunits[kitchenunit._admin._kitchen_dub] = kitchenunit
         self.save_kitchenunit_file(kitchen_dub=kitchenunit._admin._kitchen_dub)
 
-    def save_kitchenunit_file(self, kitchen_dub: str):
+    def save_kitchenunit_file(self, kitchen_dub: KitchenDub):
         x_kitchenunit = self.get_kitchenunit(dub=kitchen_dub)
         x_kitchenunit._admin.save_seed_agenda(x_kitchenunit.get_seed())
 
-    def rename_kitchenunit(self, old_dub: str, new_dub: str):
+    def rename_kitchenunit(self, old_dub: KitchenDub, new_dub: KitchenDub):
         kitchen_x = self.get_kitchenunit(dub=old_dub)
         old_kitchenunit_dir = kitchen_x._admin._kitchenunit_dir
         kitchen_x._admin.set_kitchen_dub(new_dub=new_dub)
@@ -359,17 +359,17 @@ class CultureUnit:
         x_func_delete_dir(old_kitchenunit_dir)
         self.del_kitchenunit_from_culture(kitchen_dub=old_dub)
 
-    def del_kitchenunit_from_culture(self, kitchen_dub):
+    def del_kitchenunit_from_culture(self, kitchen_dub: KitchenDub):
         self._kitchenunits.pop(kitchen_dub)
 
-    def del_kitchenunit_dir(self, kitchen_dub: str):
+    def del_kitchenunit_dir(self, kitchen_dub: KitchenDub):
         x_func_delete_dir(f"{self.get_kitchenunits_dir()}/{kitchen_dub}")
 
     # public dir management
     def get_public_dir(self):
         return f"{self.get_object_root_dir()}/agendas"
 
-    def get_ignores_dir(self, kitchen_dub: str):
+    def get_ignores_dir(self, kitchen_dub: KitchenDub):
         per_x = self.get_kitchenunit(kitchen_dub)
         return per_x._admin._agendas_ignore_dir
 
@@ -378,7 +378,9 @@ class CultureUnit:
             x_func_open_file(dest_dir=self.get_public_dir(), file_name=f"{healer}.json")
         )
 
-    def get_agenda_from_ignores_dir(self, kitchen_dub: str, _healer: str) -> AgendaUnit:
+    def get_agenda_from_ignores_dir(
+        self, kitchen_dub: KitchenDub, _healer: str
+    ) -> AgendaUnit:
         return get_agenda_from_json(
             x_func_open_file(
                 dest_dir=self.get_ignores_dir(kitchen_dub=kitchen_dub),
@@ -386,7 +388,7 @@ class CultureUnit:
             )
         )
 
-    def set_ignore_agenda_file(self, kitchen_dub: str, agenda_obj: AgendaUnit):
+    def set_ignore_agenda_file(self, kitchen_dub: KitchenDub, agenda_obj: AgendaUnit):
         x_kitchenunit = self.get_kitchenunit(dub=kitchen_dub)
         x_kitchenunit.set_ignore_agenda_file(
             agendaunit=agenda_obj, src_agenda_healer=agenda_obj._healer
@@ -439,7 +441,7 @@ class CultureUnit:
 
     def set_healer_depotlink(
         self,
-        kitchen_dub: str,
+        kitchen_dub: KitchenDub,
         agenda_healer: str,
         depotlink_type: str,
         creditor_weight: float = None,
@@ -459,7 +461,7 @@ class CultureUnit:
 
     def create_depotlink_to_generated_agenda(
         self,
-        kitchen_dub: str,
+        kitchen_dub: KitchenDub,
         agenda_healer: str,
         depotlink_type: str,
         creditor_weight: float = None,
@@ -477,7 +479,7 @@ class CultureUnit:
 
     def update_depotlink(
         self,
-        kitchen_dub: str,
+        kitchen_dub: KitchenDub,
         partytitle: PartyTitle,
         depotlink_type: str,
         creditor_weight: str,
@@ -493,12 +495,12 @@ class CultureUnit:
             debtor_weight=debtor_weight,
         )
 
-    def del_depotlink(self, kitchen_dub: str, agendaunit_healer: str):
+    def del_depotlink(self, kitchen_dub: KitchenDub, agendaunit_healer: str):
         x_kitchenunit = self.get_kitchenunit(dub=kitchen_dub)
         x_kitchenunit.del_depot_agenda(agenda_healer=agendaunit_healer)
 
     # Healer output_agenda
-    def get_output_agenda(self, kitchen_dub: str) -> AgendaUnit:
+    def get_output_agenda(self, kitchen_dub: KitchenDub) -> AgendaUnit:
         x_kitchenunit = self.get_kitchenunit(dub=kitchen_dub)
         return x_kitchenunit._admin.get_remelded_output_agenda()
 
