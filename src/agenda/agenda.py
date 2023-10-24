@@ -2354,6 +2354,7 @@ def get_dict_of_agenda_from_dict(x_dict: dict[str:dict]) -> dict[str:AgendaUnit]
 class MeldeeOrderUnit:
     healer: PersonName
     voice_rank: int
+    voice_hx_lowest_rank: int
     file_name: str
 
 
@@ -2362,16 +2363,23 @@ def get_meldeeorderunit(primary_agenda: AgendaUnit, meldee_file_name: str):
     primary_meldee_partyunit = primary_agenda.get_party(file_src_healer)
 
     default_voice_rank = 0
+    default_voice_hx_lowest_rank = 0
     if primary_meldee_partyunit is None:
         primary_voice_rank_for_meldee = default_voice_rank
+        primary_voice_hx_lowest_rank_for_meldee = default_voice_hx_lowest_rank
     else:
         primary_voice_rank_for_meldee = primary_meldee_partyunit._bank_voice_rank
+        primary_voice_hx_lowest_rank_for_meldee = (
+            primary_meldee_partyunit._bank_voice_hx_lowest_rank
+        )
         if primary_voice_rank_for_meldee is None:
             primary_voice_rank_for_meldee = default_voice_rank
+            primary_voice_hx_lowest_rank_for_meldee = default_voice_hx_lowest_rank
 
     return MeldeeOrderUnit(
         healer=file_src_healer,
         voice_rank=primary_voice_rank_for_meldee,
+        voice_hx_lowest_rank=primary_voice_hx_lowest_rank_for_meldee,
         file_name=meldee_file_name,
     )
 
@@ -2382,7 +2390,9 @@ def get_file_names_in_voice_rank_order(primary_agenda, meldees_dir) -> list[str]
         meldee_orderunit = get_meldeeorderunit(primary_agenda, meldee_file_name)
         agenda_voice_ranks[meldee_orderunit.healer] = meldee_orderunit
     agendas_voice_rank_ordered_list = list(agenda_voice_ranks.values())
-    agendas_voice_rank_ordered_list.sort(key=lambda x: (x.voice_rank * -1, x.healer))
+    agendas_voice_rank_ordered_list.sort(
+        key=lambda x: (x.voice_rank * -1, x.voice_hx_lowest_rank * -1, x.healer)
+    )
     return [
         x_meldeeorderunit.file_name
         for x_meldeeorderunit in agendas_voice_rank_ordered_list
