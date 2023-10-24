@@ -25,9 +25,9 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     #     print(f" {table_x=} {row_count}. {table_mame=}")
 
     healer_text = "healer"
-    voice_rank_text = "voice_rank"
+    rational_text = "rational"
     agendaunit_text = "agendaunit"
-    agendaunit_columns = {healer_text: 1, voice_rank_text: 1}
+    agendaunit_columns = {healer_text: 1, rational_text: 1}
 
     agenda_healer_text = "agenda_healer"
     party_title_text = "party_title"
@@ -148,7 +148,6 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     #         print(f"{y_table_key=} {y_column_key=}")
     #     assert curr_tables.get(y_table_key) == y_columns_value
 
-    assert db_tables_columns.get(agendaunit_text) == agendaunit_columns
     assert db_tables_columns.get(acptfact_catalog_text) == acptfact_catalog_columns
     assert db_tables_columns.get(agendaunit_text) == agendaunit_columns
     assert db_tables_columns.get(groupunit_catalog_text) == groupunit_catalog_columns

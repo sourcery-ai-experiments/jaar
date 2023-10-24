@@ -60,18 +60,18 @@ class CultureUnit:
     def set_manager_importance(self, person_importance: float):
         self._manager_importance = person_importance
 
-    def set_all_agendaunit_voice_ranks(self):
-        x_agendabankunits = list(
-            get_agendabankunits_dict(self.get_bank_conn()).values()
-        )
-        x_agendabankunits.sort(key=lambda x: x.healer, reverse=False)
-        for count_x, x_agendabankunit in enumerate(x_agendabankunits):
-            self._set_single_agendaunit_voice_rank(x_agendabankunit.healer, count_x)
+    def set_manager_voice_ranks(self, sort_order: str):
+        if sort_order == "arbitary":
+            x_agendabankunits = list(
+                get_agendabankunits_dict(self.get_bank_conn()).values()
+            )
+            x_agendabankunits.sort(key=lambda x: x.healer, reverse=False)
+            for count_x, x_agendabankunit in enumerate(x_agendabankunits):
+                self._bank_set_agendaunit_attrs(x_agendabankunit.healer, count_x)
 
-    def _set_single_agendaunit_voice_rank(self, healer: PersonName, voice_rank: int):
+    def _bank_set_agendaunit_attrs(self, agenda: AgendaUnit):
         with self.get_bank_conn() as bank_conn:
-            bank_conn.execute(get_agendaunit_update_sqlstr(healer, voice_rank))
-            print(f"{get_agendaunit_update_sqlstr(healer, voice_rank)=}")
+            bank_conn.execute(get_agendaunit_update_sqlstr(agenda))
 
     # banking
     def set_agenda_bank_attrs(self, agenda_healer: str):

@@ -1,6 +1,6 @@
 from src.agenda.agenda import AgendaUnit, PartyUnit, Road, PersonName
 from src.agenda.road import get_road_without_root_node
-from src.culture.y_func import sqlite_bool, sqlite_null, sqlite_to_python
+from src.culture.y_func import sqlite_bool, sqlite_null, sqlite_text, sqlite_to_python
 from dataclasses import dataclass
 from sqlite3 import Connection
 
@@ -315,7 +315,7 @@ def get_agendaunit_table_create_sqlstr() -> str:
     return """
 CREATE TABLE IF NOT EXISTS agendaunit (
   healer VARCHAR(255) PRIMARY KEY ASC
-, voice_rank INT NULL
+, rational INT NULL
 , UNIQUE(healer)
 )
 ;
@@ -326,7 +326,7 @@ def get_agendaunit_table_insert_sqlstr(x_agenda: AgendaUnit) -> str:
     return f"""
 INSERT INTO agendaunit (
   healer
-, voice_rank
+, rational
 )
 VALUES (
   '{x_agenda._healer}' 
@@ -340,7 +340,7 @@ def get_agendaunits_select_sqlstr():
     return """
 SELECT 
   healer
-, voice_rank
+, rational
 FROM agendaunit
 ;
 """
@@ -349,26 +349,25 @@ FROM agendaunit
 @dataclass
 class AgendaBankUnit:
     healer: PersonName
-    voice_rank: int
+    rational: bool
 
 
 def get_agendabankunits_dict(db_conn: Connection) -> dict[PersonName:AgendaBankUnit]:
-    dict_x = {}
     results = db_conn.execute(get_agendaunits_select_sqlstr())
-
+    dict_x = {}
     for row in results.fetchall():
         x_agendabankunit = AgendaBankUnit(
-            healer=row[0], voice_rank=sqlite_to_python(row[1])
+            healer=row[0], rational=sqlite_to_python(row[1])
         )
         dict_x[x_agendabankunit.healer] = x_agendabankunit
     return dict_x
 
 
-def get_agendaunit_update_sqlstr(healer: PersonName, voice_rank: int) -> str:
+def get_agendaunit_update_sqlstr(agenda: AgendaUnit) -> str:
     return f"""
 UPDATE agendaunit
-SET voice_rank = {voice_rank}
-WHERE healer = '{healer}'
+SET rational = {sqlite_text(agenda._rational)}
+WHERE healer = '{agenda._healer}'
 ;
 """
 
