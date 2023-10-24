@@ -80,6 +80,7 @@ def test_PartyUnit_exists():
     assert bob_party._bank_tax_diff is None
     assert bob_party._bank_credit_score is None
     assert bob_party._bank_voice_rank is None
+    assert bob_party._bank_voice_hx_lowest_rank is None
     assert bob_party.depotlink_type is None
     assert bob_party._output_agenda_meld_order is None
 
@@ -360,6 +361,7 @@ def test_PartyUnit_set_banking_data_MethodWorkCorrectly():
     assert bob_party._bank_tax_diff is None
     assert bob_party._bank_credit_score is None
     assert bob_party._bank_voice_rank is None
+    assert bob_party._bank_voice_hx_lowest_rank is None
 
     # WHEN
     x_tax_paid = 0.2
@@ -379,6 +381,52 @@ def test_PartyUnit_set_banking_data_MethodWorkCorrectly():
     assert bob_party._bank_tax_diff == x_tax_diff
     assert bob_party._bank_credit_score == x_bank_credit_score
     assert bob_party._bank_voice_rank == x_bank_voice_rank
+    assert bob_party._bank_voice_hx_lowest_rank == x_bank_voice_rank
+
+
+def test_PartyUnit_set_banking_data_CorrectlyDecreasesOrIgnores_bank_voice_hx_lowest_rank():
+    # GIVEN
+    bob_title = "bob"
+    x_agenda_goal_ratio_credit = 0.077
+    x_agenda_goal_ratio_debt = 0.066
+    bob_party = partyunit_shop(
+        title=bob_title,
+        _agenda_goal_ratio_credit=x_agenda_goal_ratio_credit,
+        _agenda_goal_ratio_debt=x_agenda_goal_ratio_debt,
+    )
+    x_tax_paid = 0.2
+    x_tax_diff = 0.123
+    x_bank_credit_score = 900
+    old_x_bank_voice_rank = 45
+    bob_party.set_banking_data(
+        tax_paid=x_tax_paid,
+        tax_diff=x_tax_diff,
+        credit_score=x_bank_credit_score,
+        voice_rank=old_x_bank_voice_rank,
+    )
+    assert bob_party._bank_voice_hx_lowest_rank == old_x_bank_voice_rank
+
+    # WHEN
+    new_x_bank_voice_rank = 33
+    bob_party.set_banking_data(
+        tax_paid=x_tax_paid,
+        tax_diff=x_tax_diff,
+        credit_score=x_bank_credit_score,
+        voice_rank=new_x_bank_voice_rank,
+    )
+    # THEN
+    assert bob_party._bank_voice_hx_lowest_rank == new_x_bank_voice_rank
+
+    # WHEN
+    not_lower_x_bank_voice_rank = 60
+    bob_party.set_banking_data(
+        tax_paid=x_tax_paid,
+        tax_diff=x_tax_diff,
+        credit_score=x_bank_credit_score,
+        voice_rank=not_lower_x_bank_voice_rank,
+    )
+    # THEN
+    assert bob_party._bank_voice_hx_lowest_rank == new_x_bank_voice_rank
 
 
 def test_PartyUnit_clear_banking_data_MethodWorkCorrectly():
@@ -443,8 +491,10 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
 
     bob_bank_credit_score = 7000
     bob_bank_voice_rank = 898
+    bob_bank_voice_hx_lowest_rank = 740
     bob_party._bank_credit_score = bob_bank_credit_score
     bob_party._bank_voice_rank = bob_bank_voice_rank
+    bob_party._bank_voice_hx_lowest_rank = bob_bank_voice_hx_lowest_rank
     print(f"{bob_text}")
 
     # WHEN
@@ -465,6 +515,7 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         "_bank_tax_diff": bob_bank_tax_diff,
         "_bank_credit_score": bob_bank_credit_score,
         "_bank_voice_rank": bob_bank_voice_rank,
+        "_bank_voice_hx_lowest_rank": bob_bank_voice_hx_lowest_rank,
         "depotlink_type": depotlink_type,
     }
 
@@ -483,6 +534,7 @@ def test_PartyUnisshop_get_from_JSON_SimpleExampleWorks():
     yao_depotlink_type = "assignment"
     yao_bank_credit_score = 7000
     yao_bank_voice_rank = 898
+    yao_bank_voice_hx_lowest_rank = 740
     yao_json_dict = {
         yao_text: {
             "title": yao_text,
@@ -496,6 +548,7 @@ def test_PartyUnisshop_get_from_JSON_SimpleExampleWorks():
             "_bank_tax_diff": yao_bank_tax_diff,
             "_bank_credit_score": yao_bank_credit_score,
             "_bank_voice_rank": yao_bank_voice_rank,
+            "_bank_voice_hx_lowest_rank": yao_bank_voice_hx_lowest_rank,
             "depotlink_type": yao_depotlink_type,
         }
     }
@@ -518,6 +571,7 @@ def test_PartyUnisshop_get_from_JSON_SimpleExampleWorksWithIncompleteData():
     yao_depotlink_type = "assignment"
     yao_bank_credit_score = 7000
     yao_bank_voice_rank = 898
+    yao_bank_voice_hx_lowest_rank = 740
     yao_json_dict = {
         yao_text: {
             "title": yao_text,
@@ -531,6 +585,7 @@ def test_PartyUnisshop_get_from_JSON_SimpleExampleWorksWithIncompleteData():
             "_bank_tax_diff": yao_bank_tax_diff,
             "_bank_credit_score": yao_bank_credit_score,
             "_bank_voice_rank": yao_bank_voice_rank,
+            "_bank_voice_hx_lowest_rank": yao_bank_voice_hx_lowest_rank,
             "depotlink_type": yao_depotlink_type,
         }
     }
@@ -556,6 +611,7 @@ def test_PartyUnisshop_get_from_JSON_SimpleExampleWorksWithIncompleteData():
     assert yao_partyunit._bank_tax_diff == yao_bank_tax_diff
     assert yao_partyunit._bank_credit_score == yao_bank_credit_score
     assert yao_partyunit._bank_voice_rank == yao_bank_voice_rank
+    assert yao_partyunit._bank_voice_hx_lowest_rank == yao_bank_voice_hx_lowest_rank
     assert yao_partyunit.depotlink_type == yao_depotlink_type
 
     # assert yao_obj_dict[yao_text]._partyrings == party_rings

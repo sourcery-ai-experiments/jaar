@@ -72,6 +72,7 @@ class PartyUnit(PartyCore):
     _output_agenda_meld_order: int = None
     _bank_credit_score: float = None
     _bank_voice_rank: int = None
+    _bank_voice_hx_lowest_rank: int = None
 
     def clear_output_agenda_meld_order(self):
         self._output_agenda_meld_order = None
@@ -115,6 +116,7 @@ class PartyUnit(PartyCore):
         self._bank_tax_diff = tax_diff
         self._bank_credit_score = credit_score
         self._bank_voice_rank = voice_rank
+        self._set_bank_voice_hx_lowest_rank()
 
         # if tax_diff is None or self._agenda_goal_ratio_credit is None:
         #     self._bank_tax_diff = tax_diff
@@ -126,6 +128,18 @@ class PartyUnit(PartyCore):
         #     raise Exception(
         #         f"PartyUnit.set_banking_data fail: tax_paid={tax_paid} + tax_diff={tax_diff} not equal to _agenda_goal_ratio_credit={self._agenda_goal_ratio_credit}"
         #     )
+
+    def _set_bank_voice_hx_lowest_rank(self, bank_voice_hx_lowest_rank: float = None):
+        if (
+            bank_voice_hx_lowest_rank != None
+            and self._bank_voice_hx_lowest_rank != None
+        ):
+            self._bank_voice_hx_lowest_rank = bank_voice_hx_lowest_rank
+
+        if self._bank_voice_hx_lowest_rank is None or (
+            self._bank_voice_hx_lowest_rank > self._bank_voice_rank
+        ):
+            self._bank_voice_hx_lowest_rank = self._bank_voice_rank
 
     def get_dict(self):
         return {
@@ -140,6 +154,7 @@ class PartyUnit(PartyCore):
             "_bank_tax_diff": self._bank_tax_diff,
             "_bank_credit_score": self._bank_credit_score,
             "_bank_voice_rank": self._bank_voice_rank,
+            "_bank_voice_hx_lowest_rank": self._bank_voice_hx_lowest_rank,
             "depotlink_type": self.depotlink_type,
         }
 
@@ -261,6 +276,11 @@ def partyunits_get_from_dict(x_dict: dict) -> dict[str:PartyUnit]:
             _bank_voice_rank = None
 
         try:
+            _bank_voice_hx_lowest_rank = partyunits_dict["_bank_voice_hx_lowest_rank"]
+        except KeyError:
+            _bank_voice_hx_lowest_rank = None
+
+        try:
             depotlink_type = partyunits_dict["depotlink_type"]
         except KeyError:
             depotlink_type = None
@@ -281,6 +301,7 @@ def partyunits_get_from_dict(x_dict: dict) -> dict[str:PartyUnit]:
             credit_score=_bank_credit_score,
             voice_rank=_bank_voice_rank,
         )
+        x_partyunit._set_bank_voice_hx_lowest_rank(_bank_voice_hx_lowest_rank)
         partyunits[x_partyunit.title] = x_partyunit
     return partyunits
 
