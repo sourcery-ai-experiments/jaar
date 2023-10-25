@@ -517,8 +517,8 @@ def cultureunit_shop(
         handle=handle,
         cultures_dir=cultures_dir,
         _kitchenunits=_kitchenunits,
-        _manager_name=_manager_name,
     )
+    culture_x.set_manager_name(_manager_name)
     culture_x.create_dirs_if_null(in_memory_bank=in_memory_bank)
     return culture_x
 

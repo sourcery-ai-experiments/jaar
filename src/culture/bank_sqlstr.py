@@ -23,6 +23,20 @@ WHERE currency_healer = '{currency_agenda_healer}'
 
 
 def get_river_flow_table_create_sqlstr() -> str:
+    """Table that stores each flow of currency from src_healer to dst_healer.
+    currency_healer: every currency starts with a healer as credit source
+        All river flows with destination currency healer stop. For that currency range
+        there is no more flow
+    src_healer: healer that is source of credit
+    dst_healer: healer that is destination of credit.
+    currency_start: range of currency affected start
+    currency_close: range of currency affected close
+    flow_num: the sequence number of transactions before this one
+    parent_flow_num: river flows can have multiple children but only one parent
+    river_tree_level: how many ancestors between currency_healer first credit outflow
+        and this river flow
+    JSchalk 24 Oct 2023
+    """
     return """
 CREATE TABLE IF NOT EXISTS river_flow (
   currency_healer VARCHAR(255) NOT NULL
@@ -131,6 +145,15 @@ WHERE currency_healer = '{currency_agenda_healer}'
 
 
 def get_river_bucket_table_create_sqlstr() -> str:
+    """Table that stores discontinuous currency ranges for each destination healer
+    currency_healer: every currency starts with a healer as credit source
+    dst_healer: healer that is destination of credit.
+        All river flows with destination healer are summed into ranges called buckets
+    bucket_num: all destination healer buckets have a unique number. (sequential 0, 1, 2...)
+    currency_start: range of bucket start
+    currency_close: range of bucket close
+    JSchalk 24 Oct 2023
+    """
     return """
 CREATE TABLE IF NOT EXISTS river_bucket (
   currency_healer VARCHAR(255) NOT NULL
@@ -146,7 +169,6 @@ CREATE TABLE IF NOT EXISTS river_bucket (
 
 
 def get_river_bucket_table_insert_sqlstr(currency_agenda_healer: str) -> str:
-    """ """
     return f"""
 INSERT INTO river_bucket (
   currency_healer
@@ -230,6 +252,16 @@ WHERE currency_healer = '{currency_agenda_healer}'
 
 
 def get_river_tally_table_create_sqlstr() -> str:
+    """Table that stores for sum of source healer's river bucket currency ranges when
+        the bucket destination healer is the currency manager (currency_healer).
+    currency_healer: every currency starts with a healer as credit source
+    tax_healer: river buckets source healer
+        All river buckets have destination healer == currency_healer
+    tax_total: sum of all bucket ranges. Between 0 and 1
+    debt: the debt set by the currency manager's partyunit debt attributes
+    tax_diff: how much debt the tax_healer is under or over sending to currency_healer
+    JSchalk 24 Oct 2023
+    """
     return """
 CREATE TABLE IF NOT EXISTS river_tally (
   currency_healer VARCHAR(255) NOT NULL
