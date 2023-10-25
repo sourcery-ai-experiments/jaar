@@ -11,9 +11,9 @@ from src.culture.examples.culture_env_kit import (
 from src.culture.bank_sqlstr import (
     get_river_flow_table_insert_sqlstr as river_flow_insert,
     get_river_flow_dict,
-    get_river_bucket_table_insert_sqlstr,
-    get_river_bucket_dict,
-    get_river_bucket_table_delete_sqlstr,
+    get_river_circle_table_insert_sqlstr,
+    get_river_circle_dict,
+    get_river_circle_table_delete_sqlstr,
     RiverTallyUnit,
     get_river_tally_table_insert_sqlstr,
     get_river_tally_dict,

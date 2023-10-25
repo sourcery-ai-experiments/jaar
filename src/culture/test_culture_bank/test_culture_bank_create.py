@@ -86,14 +86,14 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
         river_tree_level_text: 1,
     }
 
-    bucket_num_text = "bucket_num"
+    circle_num_text = "circle_num"
     curr_start_text = "curr_start"
     curr_close_text = "curr_close"
-    river_bucket_text = "river_bucket"
-    river_bucket_columns = {
+    river_circle_text = "river_circle"
+    river_circle_columns = {
         currency_healer_text: 1,
         dst_healer_text: 1,
-        bucket_num_text: 1,
+        circle_num_text: 1,
         curr_start_text: 1,
         curr_close_text: 1,
     }
@@ -121,7 +121,7 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
         ledger_text: ledger_columns,
         river_tally_text: river_tally_columns,
         river_flow_text: river_flow_columns,
-        river_bucket_text: river_bucket_columns,
+        river_circle_text: river_circle_columns,
         idea_catalog_text: idea_catalog_columns,
         acptfact_catalog_text: acptfact_catalog_columns,
         groupunit_catalog_text: groupunit_catalog_columns,
@@ -136,7 +136,7 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     assert db_tables.get(groupunit_catalog_text) != None  # 7
     assert db_tables.get(idea_catalog_text) != None  # 5
     assert db_tables.get(ledger_text) != None  # 1
-    assert db_tables.get(river_bucket_text) != None  # 4
+    assert db_tables.get(river_circle_text) != None  # 4
     assert db_tables.get(river_flow_text) != None  # 3
     assert db_tables.get(river_tally_text) != None  # 2
     assert len(db_tables) == 8
@@ -153,6 +153,6 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     assert db_tables_columns.get(groupunit_catalog_text) == groupunit_catalog_columns
     assert db_tables_columns.get(idea_catalog_text) == idea_catalog_columns
     assert db_tables_columns.get(ledger_text) == ledger_columns
-    assert db_tables_columns.get(river_bucket_text) == river_bucket_columns
+    assert db_tables_columns.get(river_circle_text) == river_circle_columns
     assert db_tables_columns.get(river_flow_text) == river_flow_columns
     assert db_tables_columns.get(river_tally_text) == river_tally_columns

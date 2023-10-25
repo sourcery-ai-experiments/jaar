@@ -22,7 +22,7 @@ from src.culture.bank_sqlstr import (
     get_river_tally_table_delete_sqlstr,
     get_river_tally_table_insert_sqlstr,
     get_river_tally_dict,
-    get_river_bucket_table_insert_sqlstr,
+    get_river_circle_table_insert_sqlstr,
     get_create_table_if_not_exist_sqlstrs,
     get_ledger_table_insert_sqlstr,
     get_agendaunit_table_insert_sqlstr,
@@ -94,14 +94,14 @@ class CultureUnit:
         if max_flows_count is None:
             max_flows_count = 40
         self._set_river_flows(agenda_healer, max_flows_count)
-        self._set_river_tallys_buckets(agenda_healer)
+        self._set_river_tallys_circles(agenda_healer)
 
     def _set_river_flows(self, x_agenda_healer: PersonName, max_flows_count: int):
         # changes in river_flow loop
-        general_bucket = [self._get_root_river_ledger_unit(x_agenda_healer)]
+        general_circle = [self._get_root_river_ledger_unit(x_agenda_healer)]
         flows_count = 0  # changes in river_flow loop
-        while flows_count < max_flows_count and general_bucket != []:
-            parent_agenda_ledger = general_bucket.pop(0)
+        while flows_count < max_flows_count and general_circle != []:
+            parent_agenda_ledger = general_circle.pop(0)
             ledgers_len = len(parent_agenda_ledger._ledgers.values())
             parent_range = parent_agenda_ledger.get_range()
             parent_close = parent_agenda_ledger.currency_cease
@@ -132,7 +132,7 @@ class CultureUnit:
                 )
                 river_ledger_x = self._insert_river_flow_grab_river_ledger(river_flow_x)
                 if river_ledger_x != None:
-                    general_bucket.append(river_ledger_x)
+                    general_circle.append(river_ledger_x)
 
                 flows_count += 1
                 if flows_count >= max_flows_count:
@@ -181,10 +181,10 @@ class CultureUnit:
             source_river_ledger = get_river_ledger_unit(bank_conn, root_river_flow)
         return source_river_ledger
 
-    def _set_river_tallys_buckets(self, agenda_healer: str):
+    def _set_river_tallys_circles(self, agenda_healer: str):
         with self.get_bank_conn() as bank_conn:
             bank_conn.execute(get_river_tally_table_insert_sqlstr(agenda_healer))
-            bank_conn.execute(get_river_bucket_table_insert_sqlstr(agenda_healer))
+            bank_conn.execute(get_river_circle_table_insert_sqlstr(agenda_healer))
 
             sal_river_tallys = get_river_tally_dict(bank_conn, agenda_healer)
             x_agenda = self.get_public_agenda(healer=agenda_healer)

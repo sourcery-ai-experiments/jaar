@@ -11,9 +11,9 @@ from src.culture.examples.culture_env_kit import (
 from src.culture.bank_sqlstr import (
     get_river_flow_table_insert_sqlstr as river_flow_insert,
     get_river_flow_dict,
-    get_river_bucket_table_insert_sqlstr,
-    get_river_bucket_dict,
-    get_river_bucket_table_delete_sqlstr,
+    get_river_circle_table_insert_sqlstr,
+    get_river_circle_dict,
+    get_river_circle_table_delete_sqlstr,
     RiverTallyUnit,
     get_river_tally_table_insert_sqlstr,
     get_river_tally_dict,
@@ -482,7 +482,7 @@ def test_get_river_tally_table_insert_sqlstr_CorrectlyPopulatesTable01(
     #     assert round(value.tax_diff, 15) in [0.211, -0.345]
 
 
-def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
+def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
@@ -511,19 +511,19 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
     x_culture.set_credit_lake_for_agenda(agenda_healer=sal_text)
 
     with x_culture.get_bank_conn() as bank_conn:
-        assert len(get_river_bucket_dict(bank_conn, sal_text)) > 0
+        assert len(get_river_circle_dict(bank_conn, sal_text)) > 0
 
     # WHEN
-    sqlstr = get_river_bucket_table_delete_sqlstr(sal_text)
+    sqlstr = get_river_circle_table_delete_sqlstr(sal_text)
     with x_culture.get_bank_conn() as bank_conn:
         bank_conn.execute(sqlstr)
 
     # THEN
     with x_culture.get_bank_conn() as bank_conn:
-        assert len(get_river_bucket_dict(bank_conn, sal_text)) == 0
+        assert len(get_river_circle_dict(bank_conn, sal_text)) == 0
 
 
-def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
@@ -564,13 +564,13 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     x_culture.refresh_bank_agenda_data()
     x_culture.set_credit_lake_for_agenda(agenda_healer=sal_text, max_flows_count=100)
     with x_culture.get_bank_conn() as bank_conn:
-        bank_conn.execute(get_river_bucket_table_delete_sqlstr(sal_text))
+        bank_conn.execute(get_river_circle_table_delete_sqlstr(sal_text))
         assert (
-            len(get_river_bucket_dict(bank_conn, currency_agenda_healer=sal_text)) == 0
+            len(get_river_circle_dict(bank_conn, currency_agenda_healer=sal_text)) == 0
         )
 
     # WHEN / THEN
-    mstr_sqlstr = get_river_bucket_table_insert_sqlstr(currency_agenda_healer=sal_text)
+    mstr_sqlstr = get_river_circle_table_insert_sqlstr(currency_agenda_healer=sal_text)
     with x_culture.get_bank_conn() as bank_conn:
         print(mstr_sqlstr)
         bank_conn.execute(mstr_sqlstr)
@@ -580,33 +580,33 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     # THEN
     with x_culture.get_bank_conn() as bank_conn:
-        river_buckets = get_river_bucket_dict(
+        river_circles = get_river_circle_dict(
             bank_conn, currency_agenda_healer=sal_text
         )
-        # for river_bucket in river_buckets.values():
-        #     print(f"huh {river_bucket=}")
+        # for river_circle in river_circles.values():
+        #     print(f"huh {river_circle=}")
 
-    assert len(river_buckets) == 2
-    # for river_bucket in river_buckets:
-    #     print(f"{river_bucket=}")
+    assert len(river_circles) == 2
+    # for river_circle in river_circles:
+    #     print(f"{river_circle=}")
 
-    bucket_0 = river_buckets[0]
-    assert bucket_0.currency_healer == sal_text
-    assert bucket_0.dst_healer == sal_text
-    assert bucket_0.bucket_num == 0
-    assert bucket_0.curr_start == 0.04401266686517654
-    assert bucket_0.curr_close == 0.1
+    circle_0 = river_circles[0]
+    assert circle_0.currency_healer == sal_text
+    assert circle_0.dst_healer == sal_text
+    assert circle_0.circle_num == 0
+    assert circle_0.curr_start == 0.04401266686517654
+    assert circle_0.curr_close == 0.1
 
-    bucket_1 = river_buckets[1]
-    assert bucket_1.currency_healer == sal_text
-    assert bucket_1.dst_healer == sal_text
-    assert bucket_1.bucket_num == 1
-    assert bucket_1.curr_start == 0.12316456150798766
-    assert bucket_1.curr_close == 1.0
+    circle_1 = river_circles[1]
+    assert circle_1.currency_healer == sal_text
+    assert circle_1.dst_healer == sal_text
+    assert circle_1.circle_num == 1
+    assert circle_1.curr_start == 0.12316456150798766
+    assert circle_1.curr_close == 1.0
 
-    # for value in river_buckets.values():
+    # for value in river_circles.values():
     #     assert value.currency_healer == sal_text
     #     assert value.dst_healer == sal_text
-    #     assert value.bucket_num in [0, 1]
+    #     assert value.circle_num in [0, 1]
     #     assert value.curr_start in [0.12316456150798766, 0.04401266686517654]
     #     assert value.curr_close in [0.1, 1.0]

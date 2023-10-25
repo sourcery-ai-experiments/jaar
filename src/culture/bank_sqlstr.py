@@ -135,30 +135,30 @@ WHERE currency_healer = '{currency_agenda_healer}'
     return dict_x
 
 
-# river_bucket
-def get_river_bucket_table_delete_sqlstr(currency_agenda_healer: str) -> str:
+# river_circle
+def get_river_circle_table_delete_sqlstr(currency_agenda_healer: str) -> str:
     return f"""
-DELETE FROM river_bucket
+DELETE FROM river_circle
 WHERE currency_healer = '{currency_agenda_healer}' 
 ;
 """
 
 
-def get_river_bucket_table_create_sqlstr() -> str:
+def get_river_circle_table_create_sqlstr() -> str:
     """Table that stores discontinuous currency ranges for each destination healer
     currency_healer: every currency starts with a healer as credit source
     dst_healer: healer that is destination of credit.
-        All river flows with destination healer are summed into ranges called buckets
-    bucket_num: all destination healer buckets have a unique number. (sequential 0, 1, 2...)
-    currency_start: range of bucket start
-    currency_close: range of bucket close
+        All river flows with destination healer are summed into ranges called circles
+    circle_num: all destination healer circles have a unique number. (sequential 0, 1, 2...)
+    currency_start: range of circle start
+    currency_close: range of circle close
     JSchalk 24 Oct 2023
     """
     return """
-CREATE TABLE IF NOT EXISTS river_bucket (
+CREATE TABLE IF NOT EXISTS river_circle (
   currency_healer VARCHAR(255) NOT NULL
 , dst_healer VARCHAR(255) NOT NULL
-, bucket_num INT NOT NULL
+, circle_num INT NOT NULL
 , curr_start FLOAT NOT NULL
 , curr_close FLOAT NOT NULL
 , FOREIGN KEY(currency_healer) REFERENCES agendaunit(healer)
@@ -168,23 +168,23 @@ CREATE TABLE IF NOT EXISTS river_bucket (
 """
 
 
-def get_river_bucket_table_insert_sqlstr(currency_agenda_healer: str) -> str:
+def get_river_circle_table_insert_sqlstr(currency_agenda_healer: str) -> str:
     return f"""
-INSERT INTO river_bucket (
+INSERT INTO river_circle (
   currency_healer
 , dst_healer
-, bucket_num
+, circle_num
 , curr_start
 , curr_close
 )
 SELECT 
   currency_healer
 , dst_healer
-, currency_bucket_num
-, min(currency_start) currency_bucket_start
-, max(currency_close) currency_bucket_close
+, currency_circle_num
+, min(currency_start) currency_circle_start
+, max(currency_close) currency_circle_close
 FROM  (
-SELECT *, SUM(step) OVER (ORDER BY currency_start) AS currency_bucket_num
+SELECT *, SUM(step) OVER (ORDER BY currency_start) AS currency_circle_num
 FROM  (
     SELECT 
     CASE 
@@ -198,32 +198,32 @@ FROM  (
     WHERE currency_healer = '{currency_agenda_healer}' and dst_healer = currency_healer 
     ) b
 ) c
-GROUP BY currency_healer, dst_healer, currency_bucket_num
-ORDER BY currency_bucket_start
+GROUP BY currency_healer, dst_healer, currency_circle_num
+ORDER BY currency_circle_start
 ;
 """
 
 
 @dataclass
-class RiverBucketUnit:
+class RivercircleUnit:
     currency_healer: str
     dst_healer: str
-    bucket_num: int
+    circle_num: int
     curr_start: float
     curr_close: float
 
 
-def get_river_bucket_dict(
+def get_river_circle_dict(
     db_conn: Connection, currency_agenda_healer: str
-) -> dict[str:RiverBucketUnit]:
+) -> dict[str:RivercircleUnit]:
     sqlstr = f"""
 SELECT
   currency_healer
 , dst_healer
-, bucket_num
+, circle_num
 , curr_start
 , curr_close
-FROM river_bucket
+FROM river_circle
 WHERE currency_healer = '{currency_agenda_healer}'
 ;
 """
@@ -231,14 +231,14 @@ WHERE currency_healer = '{currency_agenda_healer}'
     results = db_conn.execute(sqlstr)
 
     for row in results.fetchall():
-        river_bucket_x = RiverBucketUnit(
+        river_circle_x = RivercircleUnit(
             currency_healer=row[0],
             dst_healer=row[1],
-            bucket_num=row[2],
+            circle_num=row[2],
             curr_start=row[3],
             curr_close=row[4],
         )
-        dict_x[river_bucket_x.bucket_num] = river_bucket_x
+        dict_x[river_circle_x.circle_num] = river_circle_x
     return dict_x
 
 
@@ -252,12 +252,12 @@ WHERE currency_healer = '{currency_agenda_healer}'
 
 
 def get_river_tally_table_create_sqlstr() -> str:
-    """Table that stores for sum of source healer's river bucket currency ranges when
-        the bucket destination healer is the currency manager (currency_healer).
+    """Table that stores for sum of source healer's river circle currency ranges when
+        the circle destination healer is the currency manager (currency_healer).
     currency_healer: every currency starts with a healer as credit source
-    tax_healer: river buckets source healer
-        All river buckets have destination healer == currency_healer
-    tax_total: sum of all bucket ranges. Between 0 and 1
+    tax_healer: river circles source healer
+        All river circles have destination healer == currency_healer
+    tax_total: sum of all circle ranges. Between 0 and 1
     debt: the debt set by the currency manager's partyunit debt attributes
     tax_diff: how much debt the tax_healer is under or over sending to currency_healer
     JSchalk 24 Oct 2023
@@ -737,7 +737,7 @@ def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x.append(get_idea_catalog_table_create_sqlstr())
     list_x.append(get_ledger_table_create_sqlstr())
     list_x.append(get_river_flow_table_create_sqlstr())
-    list_x.append(get_river_bucket_table_create_sqlstr())
+    list_x.append(get_river_circle_table_create_sqlstr())
     list_x.append(get_river_tally_table_create_sqlstr())
     list_x.append(get_groupunit_catalog_table_create_sqlstr())
     return list_x
