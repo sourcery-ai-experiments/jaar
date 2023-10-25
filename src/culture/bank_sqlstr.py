@@ -13,37 +13,6 @@ def get_table_count_sqlstr(
     return f"SELECT COUNT(*) FROM {table_mame}"
 
 
-def get_select_river_circle_table_sqlstr(healer: PersonName) -> str:
-    return f"""
-SELECT 
-  currency_healer VARCHAR(255) NOT NULL
-, currency_start FLOAT NOT NULL
-, currency_close FLOAT NOT NULL
-, circle_num INT NOT NULL
-FROM river_circle
-WHERE currency_healer = '{healer}'
-)
-;
-"""
-
-
-def get_create_river_circle_table_sqlstr() -> str:
-    """Get the river_buckets=those are the currency ranges such that the credit
-    outgoing from the manager returns to the manger. Call this the
-    manager_tax_paid_ranges or river_circles
-    JSchalk 25 Oct 2023
-    """
-    return """CREATE TABLE IF NOT EXISTS river_circle (
-  currency_healer VARCHAR(255) NOT NULL
-, currency_start FLOAT NOT NULL
-, currency_close FLOAT NOT NULL
-, circle_num INT NOT NULL
-, FOREIGN KEY(currency_healer) REFERENCES agendaunit(healer)
-)
-;
-"""
-
-
 # river_flow
 def get_river_flow_table_delete_sqlstr(currency_agenda_healer: str) -> str:
     return f"""
