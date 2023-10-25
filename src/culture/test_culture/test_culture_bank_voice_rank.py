@@ -127,12 +127,12 @@ def test_culture_bank_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_arbit
     x_culture.set_voice_ranks(yao_text, sort_order=arbitrary_text)
 
     # THEN
-    yao_seed_agenda = yao_kitchen.get_seed()
-    ava_partyunit = yao_seed_agenda.get_party(ava_text)
-    bob_partyunit = yao_seed_agenda.get_party(bob_text)
-    cal_partyunit = yao_seed_agenda.get_party(cal_text)
-    dom_partyunit = yao_seed_agenda.get_party(dom_text)
-    elu_partyunit = yao_seed_agenda.get_party(elu_text)
+    yao_public_agenda = x_culture.get_public_agenda(yao_text)
+    ava_partyunit = yao_public_agenda.get_party(ava_text)
+    bob_partyunit = yao_public_agenda.get_party(bob_text)
+    cal_partyunit = yao_public_agenda.get_party(cal_text)
+    dom_partyunit = yao_public_agenda.get_party(dom_text)
+    elu_partyunit = yao_public_agenda.get_party(elu_text)
     assert ava_partyunit._bank_voice_rank != None
     assert bob_partyunit._bank_voice_rank != None
     assert cal_partyunit._bank_voice_rank != None

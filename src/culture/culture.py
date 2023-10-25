@@ -67,6 +67,7 @@ class CultureUnit:
             for count_x, x_partyunit in enumerate(x_seed._partys.values()):
                 x_partyunit.set_bank_voice_rank(count_x)
             x_kitchen.set_seed(x_seed)
+            x_kitchen._admin.save_refreshed_output_to_public()
 
     def set_agenda_bank_attrs(self, agenda_healer: str):
         agenda_obj = self.get_public_agenda(agenda_healer)

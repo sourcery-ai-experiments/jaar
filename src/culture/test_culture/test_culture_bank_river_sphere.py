@@ -5,7 +5,6 @@ from src.culture.examples.culture_env_kit import (
     get_test_cultures_dir,
     env_dir_setup_cleanup,
 )
-from pytest import raises as pytest_raises
 from src.culture.y_func import check_connection, get_single_result_back
 from src.culture.bank_sqlstr import (
     get_river_tally_dict,
@@ -773,11 +772,17 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     tom_party = sal_agenda_before._partys.get(tom_text)
     ava_party = sal_agenda_before._partys.get(ava_text)
     assert bob_party._bank_tax_paid is None
-    assert bob_party._bank_tax_diff is None
     assert tom_party._bank_tax_paid is None
-    assert tom_party._bank_tax_diff is None
     assert ava_party._bank_tax_paid is None
+    assert bob_party._bank_tax_diff is None
+    assert tom_party._bank_tax_diff is None
     assert ava_party._bank_tax_diff is None
+    assert bob_party._bank_voice_rank is None
+    assert tom_party._bank_voice_rank is None
+    assert ava_party._bank_voice_rank is None
+    assert bob_party._bank_voice_hx_lowest_rank is None
+    assert tom_party._bank_voice_hx_lowest_rank is None
+    assert ava_party._bank_voice_hx_lowest_rank is None
 
     # WHEN
     x_culture.set_river_sphere_for_agenda(agenda_healer=sal_text)
@@ -785,9 +790,6 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     # THEN
     sal_river_tallys = x_culture.get_river_tallys(agenda_healer=sal_text)
     assert len(sal_river_tallys) == 3
-
-    sal_agenda_after = x_culture.get_public_agenda(healer=sal_text)
-
     bob_tally = sal_river_tallys.get(bob_text)
     tom_tally = sal_river_tallys.get(tom_text)
     elu_tally = sal_river_tallys.get(elu_text)
@@ -798,6 +800,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     assert tom_tally.currency_healer == sal_text
     assert elu_tally.currency_healer == sal_text
 
+    sal_agenda_after = x_culture.get_public_agenda(healer=sal_text)
     bob_party = sal_agenda_after._partys.get(bob_text)
     tom_party = sal_agenda_after._partys.get(tom_text)
     ava_party = sal_agenda_after._partys.get(ava_text)
