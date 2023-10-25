@@ -282,7 +282,7 @@ class AgendaUnit:
         if c100_4_96y._close - c100_4_96y._begin in (
             50492160,
             52596000,
-        ):  # 96 year and 100 year spans
+        ):  # 96 year and 100 year ideas
             yr4_1461 = self.get_idea_kid(
                 f"{self._culture_handle},time,tech,4year with leap"
             )
