@@ -481,7 +481,7 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
     mood_text = "Moods"
     mood_road = f"{x_agenda._culture_handle},{mood_text}"
     x_agenda.set_acptfact(base=mood_road, pick=mood_road)
-    aaron_text = "Aaron Donald sphere"
+    aaron_text = "Aaron Donald things effected by him"
     aaron_road = f"{x_agenda._culture_handle},{aaron_text}"
     x_agenda.set_acptfact(base=aaron_road, pick=aaron_road)
     inter_text = "Internet"
@@ -702,7 +702,7 @@ def test_exammple_idea_list_EveryOtherMonthWorks():
     mood_text = "Moods"
     mood_road = f"{x_agenda._culture_handle},{mood_text}"
     x_agenda.set_acptfact(base=mood_road, pick=mood_road)
-    aaron_text = "Aaron Donald sphere"
+    aaron_text = "Aaron Donald things effected by him"
     aaron_road = f"{x_agenda._culture_handle},{aaron_text}"
     x_agenda.set_acptfact(base=aaron_road, pick=aaron_road)
     internet_text = "Internet"

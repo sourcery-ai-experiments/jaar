@@ -13,7 +13,7 @@ from src.culture.bank_sqlstr import (
 )
 
 
-def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable01(
+def test_culture_set_river_lake_for_agenda_CorrectlyPopulatesriver_tallyTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
@@ -55,7 +55,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable0
     )
 
     # WHEN
-    x_culture.set_river_sphere_for_agenda(agenda_healer=sal_text)
+    x_culture.set_river_lake_for_agenda(agenda_healer=sal_text)
 
     # THEN
     assert (
@@ -94,7 +94,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable0
     assert river_sal_tax_tom.tax_total == 0.75
 
 
-def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable02(
+def test_culture_set_river_lake_for_agenda_CorrectlyPopulatesriver_tallyTable02(
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 agendas, 100% of river flows to sal
@@ -141,7 +141,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable0
     )
 
     # WHEN
-    x_culture.set_river_sphere_for_agenda(agenda_healer=sal_text)
+    x_culture.set_river_lake_for_agenda(agenda_healer=sal_text)
 
     # THEN
     assert (
@@ -167,7 +167,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable0
     assert river_sal_tax_elu.tax_total == 1.0
 
 
-def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable03(
+def test_culture_set_river_lake_for_agenda_CorrectlyPopulatesriver_tallyTable03(
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 agendas, 85% of river flows to sal
@@ -214,7 +214,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable0
     )
 
     # WHEN
-    x_culture.set_river_sphere_for_agenda(agenda_healer=sal_text)
+    x_culture.set_river_lake_for_agenda(agenda_healer=sal_text)
 
     # THEN
     assert (
@@ -245,7 +245,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable0
     assert river_sal_tax_tom.tax_total == 0.7
 
 
-def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable04(
+def test_culture_set_river_lake_for_agenda_CorrectlyPopulatesriver_tallyTable04(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river flows to sal, left over %15 goes on endless loop
@@ -299,7 +299,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable0
     )
 
     # WHEN
-    x_culture.set_river_sphere_for_agenda(agenda_healer=sal_text)
+    x_culture.set_river_lake_for_agenda(agenda_healer=sal_text)
 
     # THEN
     assert (
@@ -330,7 +330,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable0
     assert river_sal_tax_tom.tax_total == 0.7
 
 
-def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable05(
+def test_culture_set_river_lake_for_agenda_CorrectlyPopulatesriver_tallyTable05(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
@@ -385,7 +385,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable0
     )
 
     # WHEN
-    x_culture.set_river_sphere_for_agenda(agenda_healer=sal_text)
+    x_culture.set_river_lake_for_agenda(agenda_healer=sal_text)
 
     # THEN
     assert (
@@ -421,7 +421,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable0
     assert round(river_sal_tax_elu.tax_total, 15) == 0.0378017640625
 
 
-def test_culture_set_river_sphere_for_agenda_CorrectlyDeletesPreviousRiver(
+def test_culture_set_river_lake_for_agenda_CorrectlyDeletesPreviousRiver(
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 agendas, 100% of river flows to sal
@@ -455,8 +455,8 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyDeletesPreviousRiver(
     x_culture.save_public_agenda(x_agenda=elu)
     x_culture.refresh_bank_agenda_data()
 
-    x_culture.set_river_sphere_for_agenda(agenda_healer=sal_text)
-    x_culture.set_river_sphere_for_agenda(agenda_healer=elu_text)
+    x_culture.set_river_lake_for_agenda(agenda_healer=sal_text)
+    x_culture.set_river_lake_for_agenda(agenda_healer=elu_text)
 
     sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
     sqlstr_count_river_flow = get_table_count_sqlstr("river_flow")
@@ -475,7 +475,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyDeletesPreviousRiver(
     # WHEN
     # sal.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
     # x_culture.save_public_agenda(x_agenda=sal)
-    x_culture.set_river_sphere_for_agenda(agenda_healer=sal_text)
+    x_culture.set_river_lake_for_agenda(agenda_healer=sal_text)
 
     assert (
         get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_flow) == 16
@@ -489,7 +489,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyDeletesPreviousRiver(
     )
 
 
-def test_culture_set_river_sphere_for_agenda_CorrectlyUsesMaxFlowsCount(
+def test_culture_set_river_lake_for_agenda_CorrectlyUsesMaxFlowsCount(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
@@ -545,7 +545,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyUsesMaxFlowsCount(
 
     # WHEN
     mtc = 13
-    x_culture.set_river_sphere_for_agenda(agenda_healer=sal_text, max_flows_count=mtc)
+    x_culture.set_river_lake_for_agenda(agenda_healer=sal_text, max_flows_count=mtc)
 
     # THEN
     with x_culture.get_bank_conn() as bank_conn:
@@ -559,7 +559,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyUsesMaxFlowsCount(
     )
 
 
-def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable05(
+def test_culture_set_river_lake_for_agenda_CorrectlyPopulatesriver_tallyTable05(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
@@ -614,7 +614,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable0
     )
 
     # WHEN
-    x_culture.set_river_sphere_for_agenda(agenda_healer=sal_text)
+    x_culture.set_river_lake_for_agenda(agenda_healer=sal_text)
 
     # THEN
     assert (
@@ -651,7 +651,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyPopulatesriver_tallyTable0
     assert round(river_sal_tax_elu.tax_total, 15) == 0.0378017640625
 
 
-def test_culture_set_river_sphere_for_agenda_CorrectlyBuildsASingleContinuousRange(
+def test_culture_set_river_lake_for_agenda_CorrectlyBuildsASingleContinuousRange(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal
@@ -694,7 +694,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyBuildsASingleContinuousRan
     x_culture.refresh_bank_agenda_data()
 
     # WHEN
-    x_culture.set_river_sphere_for_agenda(agenda_healer=sal_text, max_flows_count=100)
+    x_culture.set_river_lake_for_agenda(agenda_healer=sal_text, max_flows_count=100)
 
     # THEN
     count_range_fails_sql = """
@@ -723,7 +723,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyBuildsASingleContinuousRan
         assert get_single_result_back(bank_conn, count_range_fails_sql) == 0
 
 
-def test_culture_set_river_sphere_for_agenda_CorrectlyUpatesAgendaPartyUnits(
+def test_culture_set_river_lake_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     env_dir_setup_cleanup,
 ):
     """GIVEN 5 agendas, 85% of river flows to sal, left over %15 goes on endless loop that slowly bleeds to sal"""
@@ -765,7 +765,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     x_culture.refresh_bank_agenda_data()
     sal_agenda_before = x_culture.get_public_agenda(healer=sal_text)
 
-    x_culture.set_river_sphere_for_agenda(agenda_healer=sal_text, max_flows_count=100)
+    x_culture.set_river_lake_for_agenda(agenda_healer=sal_text, max_flows_count=100)
     assert len(sal_agenda_before._partys) == 3
     print(f"{len(sal_agenda_before._partys)=}")
     bob_party = sal_agenda_before._partys.get(bob_text)
@@ -785,7 +785,7 @@ def test_culture_set_river_sphere_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     assert ava_party._bank_voice_hx_lowest_rank is None
 
     # WHEN
-    x_culture.set_river_sphere_for_agenda(agenda_healer=sal_text)
+    x_culture.set_river_lake_for_agenda(agenda_healer=sal_text)
 
     # THEN
     sal_river_tallys = x_culture.get_river_tallys(agenda_healer=sal_text)

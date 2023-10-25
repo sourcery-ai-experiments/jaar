@@ -246,7 +246,7 @@ def _delete_and_set_ex6():
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
     x_culture.refresh_bank_agenda_data()
-    x_culture.set_river_sphere_for_agenda(agenda_healer=sal_text, max_flows_count=100)
+    x_culture.set_river_lake_for_agenda(agenda_healer=sal_text, max_flows_count=100)
 
 
 def create_example_culture(culture_handle: str):

@@ -1,10 +1,10 @@
 {
     "_acptfactunits": {
-        "A,Aaron Donald sphere": {
-            "base": "A,Aaron Donald sphere",
+        "A,Aaron Donald things effected by him": {
+            "base": "A,Aaron Donald things effected by him",
             "nigh": null,
             "open": null,
-            "pick": "A,Aaron Donald sphere"
+            "pick": "A,Aaron Donald things effected by him"
         },
         "A,casa,cleaning,laundry basket status": {
             "base": "A,casa,cleaning,laundry basket status",
@@ -941,14 +941,14 @@
     "_healer": "Myagenda",
     "_is_expanded": true,
     "_kids": {
-        "Aaron Donald sphere": {
+        "Aaron Donald things effected by him": {
             "_acptfactunits": {},
             "_addin": null,
             "_begin": null,
             "_balancelinks": {},
             "_close": null,
             "_denom": null,
-            "_label": "Aaron Donald sphere",
+            "_label": "Aaron Donald things effected by him",
             "_is_expanded": false,
             "_kids": {
                 "interesting": {
@@ -5853,12 +5853,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "A,Aaron Donald sphere": {
-                                    "base": "A,Aaron Donald sphere",
+                                "A,Aaron Donald things effected by him": {
+                                    "base": "A,Aaron Donald things effected by him",
                                     "sufffacts": {
-                                        "A,Aaron Donald sphere,interesting": {
+                                        "A,Aaron Donald things effected by him,interesting": {
                                             "divisor": null,
-                                            "need": "A,Aaron Donald sphere,interesting",
+                                            "need": "A,Aaron Donald things effected by him,interesting",
                                             "nigh": null,
                                             "open": null
                                         }
@@ -5877,12 +5877,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "A,Aaron Donald sphere": {
-                            "base": "A,Aaron Donald sphere",
+                        "A,Aaron Donald things effected by him": {
+                            "base": "A,Aaron Donald things effected by him",
                             "sufffacts": {
-                                "A,Aaron Donald sphere,interesting": {
+                                "A,Aaron Donald things effected by him,interesting": {
                                     "divisor": null,
-                                    "need": "A,Aaron Donald sphere,interesting",
+                                    "need": "A,Aaron Donald things effected by him,interesting",
                                     "nigh": null,
                                     "open": null
                                 }
@@ -5926,12 +5926,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "A,Aaron Donald sphere": {
-                                    "base": "A,Aaron Donald sphere",
+                                "A,Aaron Donald things effected by him": {
+                                    "base": "A,Aaron Donald things effected by him",
                                     "sufffacts": {
-                                        "A,Aaron Donald sphere,interesting": {
+                                        "A,Aaron Donald things effected by him,interesting": {
                                             "divisor": null,
-                                            "need": "A,Aaron Donald sphere,interesting",
+                                            "need": "A,Aaron Donald things effected by him,interesting",
                                             "nigh": null,
                                             "open": null
                                         }
@@ -5961,12 +5961,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "A,Aaron Donald sphere": {
-                            "base": "A,Aaron Donald sphere",
+                        "A,Aaron Donald things effected by him": {
+                            "base": "A,Aaron Donald things effected by him",
                             "sufffacts": {
-                                "A,Aaron Donald sphere,interesting": {
+                                "A,Aaron Donald things effected by him,interesting": {
                                     "divisor": null,
-                                    "need": "A,Aaron Donald sphere,interesting",
+                                    "need": "A,Aaron Donald things effected by him,interesting",
                                     "nigh": null,
                                     "open": null
                                 }
@@ -6010,12 +6010,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "A,Aaron Donald sphere": {
-                                    "base": "A,Aaron Donald sphere",
+                                "A,Aaron Donald things effected by him": {
+                                    "base": "A,Aaron Donald things effected by him",
                                     "sufffacts": {
-                                        "A,Aaron Donald sphere,interesting": {
+                                        "A,Aaron Donald things effected by him,interesting": {
                                             "divisor": null,
-                                            "need": "A,Aaron Donald sphere,interesting",
+                                            "need": "A,Aaron Donald things effected by him,interesting",
                                             "nigh": null,
                                             "open": null
                                         }
@@ -6045,12 +6045,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "A,Aaron Donald sphere": {
-                            "base": "A,Aaron Donald sphere",
+                        "A,Aaron Donald things effected by him": {
+                            "base": "A,Aaron Donald things effected by him",
                             "sufffacts": {
-                                "A,Aaron Donald sphere,interesting": {
+                                "A,Aaron Donald things effected by him,interesting": {
                                     "divisor": null,
-                                    "need": "A,Aaron Donald sphere,interesting",
+                                    "need": "A,Aaron Donald things effected by him,interesting",
                                     "nigh": null,
                                     "open": null
                                 }
@@ -6078,12 +6078,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "A,Aaron Donald sphere": {
-                            "base": "A,Aaron Donald sphere",
+                        "A,Aaron Donald things effected by him": {
+                            "base": "A,Aaron Donald things effected by him",
                             "sufffacts": {
-                                "A,Aaron Donald sphere,interesting": {
+                                "A,Aaron Donald things effected by him,interesting": {
                                     "divisor": null,
-                                    "need": "A,Aaron Donald sphere,interesting",
+                                    "need": "A,Aaron Donald things effected by him,interesting",
                                     "nigh": null,
                                     "open": null
                                 }
@@ -6214,12 +6214,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "A,Aaron Donald sphere": {
-                                            "base": "A,Aaron Donald sphere",
+                                        "A,Aaron Donald things effected by him": {
+                                            "base": "A,Aaron Donald things effected by him",
                                             "sufffacts": {
-                                                "A,Aaron Donald sphere,interesting": {
+                                                "A,Aaron Donald things effected by him,interesting": {
                                                     "divisor": null,
-                                                    "need": "A,Aaron Donald sphere,interesting",
+                                                    "need": "A,Aaron Donald things effected by him,interesting",
                                                     "nigh": null,
                                                     "open": null
                                                 }
@@ -6269,12 +6269,12 @@
                                     "_problem_bool": false,
                                     "_reest": null,
                                     "_requiredunits": {
-                                        "A,Aaron Donald sphere": {
-                                            "base": "A,Aaron Donald sphere",
+                                        "A,Aaron Donald things effected by him": {
+                                            "base": "A,Aaron Donald things effected by him",
                                             "sufffacts": {
-                                                "A,Aaron Donald sphere,interesting": {
+                                                "A,Aaron Donald things effected by him,interesting": {
                                                     "divisor": null,
-                                                    "need": "A,Aaron Donald sphere,interesting",
+                                                    "need": "A,Aaron Donald things effected by him,interesting",
                                                     "nigh": null,
                                                     "open": null
                                                 }
@@ -6304,12 +6304,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "A,Aaron Donald sphere": {
-                                    "base": "A,Aaron Donald sphere",
+                                "A,Aaron Donald things effected by him": {
+                                    "base": "A,Aaron Donald things effected by him",
                                     "sufffacts": {
-                                        "A,Aaron Donald sphere,interesting": {
+                                        "A,Aaron Donald things effected by him,interesting": {
                                             "divisor": null,
-                                            "need": "A,Aaron Donald sphere,interesting",
+                                            "need": "A,Aaron Donald things effected by him,interesting",
                                             "nigh": null,
                                             "open": null
                                         }
@@ -6328,12 +6328,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "A,Aaron Donald sphere": {
-                            "base": "A,Aaron Donald sphere",
+                        "A,Aaron Donald things effected by him": {
+                            "base": "A,Aaron Donald things effected by him",
                             "sufffacts": {
-                                "A,Aaron Donald sphere,interesting": {
+                                "A,Aaron Donald things effected by him,interesting": {
                                     "divisor": null,
-                                    "need": "A,Aaron Donald sphere,interesting",
+                                    "need": "A,Aaron Donald things effected by him,interesting",
                                     "nigh": null,
                                     "open": null
                                 }
@@ -6377,12 +6377,12 @@
                             "_problem_bool": false,
                             "_reest": null,
                             "_requiredunits": {
-                                "A,Aaron Donald sphere": {
-                                    "base": "A,Aaron Donald sphere",
+                                "A,Aaron Donald things effected by him": {
+                                    "base": "A,Aaron Donald things effected by him",
                                     "sufffacts": {
-                                        "A,Aaron Donald sphere,interesting": {
+                                        "A,Aaron Donald things effected by him,interesting": {
                                             "divisor": null,
-                                            "need": "A,Aaron Donald sphere,interesting",
+                                            "need": "A,Aaron Donald things effected by him,interesting",
                                             "nigh": null,
                                             "open": null
                                         }
@@ -6412,12 +6412,12 @@
                     "_problem_bool": false,
                     "_reest": null,
                     "_requiredunits": {
-                        "A,Aaron Donald sphere": {
-                            "base": "A,Aaron Donald sphere",
+                        "A,Aaron Donald things effected by him": {
+                            "base": "A,Aaron Donald things effected by him",
                             "sufffacts": {
-                                "A,Aaron Donald sphere,interesting": {
+                                "A,Aaron Donald things effected by him,interesting": {
                                     "divisor": null,
-                                    "need": "A,Aaron Donald sphere,interesting",
+                                    "need": "A,Aaron Donald things effected by him,interesting",
                                     "nigh": null,
                                     "open": null
                                 }
@@ -6436,12 +6436,12 @@
             "_problem_bool": false,
             "_reest": null,
             "_requiredunits": {
-                "A,Aaron Donald sphere": {
-                    "base": "A,Aaron Donald sphere",
+                "A,Aaron Donald things effected by him": {
+                    "base": "A,Aaron Donald things effected by him",
                     "sufffacts": {
-                        "A,Aaron Donald sphere,interesting": {
+                        "A,Aaron Donald things effected by him,interesting": {
                             "divisor": null,
-                            "need": "A,Aaron Donald sphere,interesting",
+                            "need": "A,Aaron Donald things effected by him,interesting",
                             "nigh": null,
                             "open": null
                         }

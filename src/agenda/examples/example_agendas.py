@@ -31,7 +31,7 @@ def agenda_v001_with_large_goal() -> AgendaUnit:
     nations_road = f"{x_agenda._culture_handle},{nations_text}"
     mood_text = "Moods"
     mood_road = f"{x_agenda._culture_handle},{mood_text}"
-    aaron_text = "Aaron Donald sphere"
+    aaron_text = "Aaron Donald things effected by him"
     aaron_road = f"{x_agenda._culture_handle},{aaron_text}"
     # internet_text = "Internet"
     # internet_road = f"{x_agenda._culture_handle},{internet_text}"
