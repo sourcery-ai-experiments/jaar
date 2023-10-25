@@ -87,7 +87,7 @@ class CultureUnit:
         # refresh bank metrics
         self.refresh_bank_agenda_data()
 
-    def set_river_lake_for_agenda(
+    def set_credit_lake_for_agenda(
         self, agenda_healer: PersonName, max_flows_count: int = None
     ):
         self._clear_all_source_river_data(agenda_healer)

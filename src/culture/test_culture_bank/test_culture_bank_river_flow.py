@@ -508,7 +508,7 @@ def test_get_river_bucket_table_delete_sqlstr_CorrectlyDeletesTable01(
     x_culture.save_public_agenda(x_agenda=bob_agenda)
 
     x_culture.refresh_bank_agenda_data()
-    x_culture.set_river_lake_for_agenda(agenda_healer=sal_text)
+    x_culture.set_credit_lake_for_agenda(agenda_healer=sal_text)
 
     with x_culture.get_bank_conn() as bank_conn:
         assert len(get_river_bucket_dict(bank_conn, sal_text)) > 0
@@ -562,7 +562,7 @@ def test_get_river_bucket_table_insert_sqlstr_CorrectlyPopulatesTable01(
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
     x_culture.refresh_bank_agenda_data()
-    x_culture.set_river_lake_for_agenda(agenda_healer=sal_text, max_flows_count=100)
+    x_culture.set_credit_lake_for_agenda(agenda_healer=sal_text, max_flows_count=100)
     with x_culture.get_bank_conn() as bank_conn:
         bank_conn.execute(get_river_bucket_table_delete_sqlstr(sal_text))
         assert (
