@@ -56,12 +56,12 @@ def test_agenda_set_requiredunits_status():
 
 
 def test_goal_returned_WhenNoRequiredsExist():
-    lw_x = example_agendas_get_agenda_with_4_levels()
-    lw_x.set_agenda_metrics()
+    agenda_x = example_agendas_get_agenda_with_4_levels()
+    agenda_x.set_agenda_metrics()
     work_text = "work"
-    assert lw_x._idearoot._kids[work_text]._task == True
+    assert agenda_x._idearoot._kids[work_text]._task == True
     cat_text = "feed cat"
-    assert lw_x._idearoot._kids[cat_text]._task == True
+    assert agenda_x._idearoot._kids[cat_text]._task == True
 
 
 def test_agenda_requiredheirs_AreCorrectlyInherited_v1():

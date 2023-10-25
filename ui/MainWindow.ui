@@ -293,7 +293,7 @@
      <string>AGENDA: </string>
     </property>
    </widget>
-   <widget class="QPushButton" title="lw_label_update_button">
+   <widget class="QPushButton" title="agenda_label_update_button">
     <property title="geometry">
      <rect>
       <x>310</x>

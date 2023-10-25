@@ -202,7 +202,9 @@ class EditProblem(qtw.QWidget, Ui_Form):
         sufffact_open_x = None
         sufffact_nigh_x = None
         sufffact_divisor_x = None
-        lw_display_x = agenda_importance_diplay(agenda_importance=a._agenda_importance)
+        agenda_display_x = agenda_importance_diplay(
+            agenda_importance=a._agenda_importance
+        )
 
         if requiredheir_x != None:
             for sufffact in requiredheir_x.sufffacts.values():
@@ -214,7 +216,7 @@ class EditProblem(qtw.QWidget, Ui_Form):
         self.goal_table.setRowCount(row + 1)
         self.goal_table.setItem(row, 0, qti(a._label))
         self.goal_table.setItem(row, 1, qti(a._pad))
-        self.goal_table.setItem(row, 2, qti(lw_display_x))
+        self.goal_table.setItem(row, 2, qti(agenda_display_x))
         self.goal_table.setItem(row, 3, qti(num2str(a._weight)))
         self.goal_table.setItem(row, 4, qti(base))
         self.goal_table.setItem(row, 5, qti(num2str(sufffact_open_x)))

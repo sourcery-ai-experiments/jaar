@@ -212,14 +212,14 @@ def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_2():
     week_text = "weekdays"
     mon_text = "Monday"
     tue_text = "Tuesday"
-    sweep_text = "sweep"
+    vaccum_text = "vaccum"
     sandy_text = "sandy"
 
     work_road = f"{x_agenda._culture_handle},{work_text}"
     email_idea = ideacore_shop(_label=email_text, promise=True)
     x_agenda.add_idea(idea_kid=email_idea, pad=work_road)
-    sweep_idea = ideacore_shop(_label=sweep_text, promise=True)
-    x_agenda.add_idea(idea_kid=sweep_idea, pad=work_road)
+    vaccum_idea = ideacore_shop(_label=vaccum_text, promise=True)
+    x_agenda.add_idea(idea_kid=vaccum_idea, pad=work_road)
 
     x_agenda.add_partyunit(title=sandy_text)
     x_balancelink = balancelink_shop(brand=sandy_text)
@@ -238,24 +238,20 @@ def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_2():
     # THEN
     assert x_agenda._idearoot._all_party_credit == False
     assert x_agenda._idearoot._all_party_debt == False
-    assert x_agenda._idearoot._kids[work_text]._all_party_credit == False
-    assert x_agenda._idearoot._kids[work_text]._all_party_debt == False
-    assert (
-        x_agenda._idearoot._kids[work_text]._kids[email_text]._all_party_credit == False
-    )
-    assert (
-        x_agenda._idearoot._kids[work_text]._kids[email_text]._all_party_debt == False
-    )
-    assert (
-        x_agenda._idearoot._kids[work_text]._kids[sweep_text]._all_party_credit == True
-    )
-    assert x_agenda._idearoot._kids[work_text]._kids[sweep_text]._all_party_debt == True
-    assert x_agenda._idearoot._kids[week_text]._all_party_credit == True
-    assert x_agenda._idearoot._kids[week_text]._all_party_debt == True
-    assert x_agenda._idearoot._kids[week_text]._kids[mon_text]._all_party_credit == True
-    assert x_agenda._idearoot._kids[week_text]._kids[mon_text]._all_party_debt == True
-    assert x_agenda._idearoot._kids[week_text]._kids[tue_text]._all_party_credit == True
-    assert x_agenda._idearoot._kids[week_text]._kids[tue_text]._all_party_debt == True
+    work_idea = x_agenda._idearoot._kids[work_text]
+    assert work_idea._all_party_credit == False
+    assert work_idea._all_party_debt == False
+    assert work_idea._kids[email_text]._all_party_credit == False
+    assert work_idea._kids[email_text]._all_party_debt == False
+    assert work_idea._kids[vaccum_text]._all_party_credit == True
+    assert work_idea._kids[vaccum_text]._all_party_debt == True
+    week_idea = x_agenda._idearoot._kids[week_text]
+    assert week_idea._all_party_credit == True
+    assert week_idea._all_party_debt == True
+    assert week_idea._kids[mon_text]._all_party_credit == True
+    assert week_idea._kids[mon_text]._all_party_debt == True
+    assert week_idea._kids[tue_text]._all_party_credit == True
+    assert week_idea._kids[tue_text]._all_party_debt == True
 
 
 def test_TreeTraverseSetsClearsBalancelineestorsCorrectly():
@@ -276,8 +272,9 @@ def test_TreeTraverseSetsClearsBalancelineestorsCorrectly():
     # WHEN
     # test for level 1 and level n
     work_text = "work"
-    x_agenda._idearoot._kids[work_text]._balancelines = {1: "testtest"}
-    assert x_agenda._idearoot._kids[work_text]._balancelines != {}
+    work_idea = x_agenda._idearoot._kids[work_text]
+    work_idea._balancelines = {1: "testtest"}
+    assert work_idea._balancelines != {}
     x_agenda.set_agenda_metrics()
 
     # THEN
@@ -380,13 +377,13 @@ def test_agenda4party_Exists():
     x_agenda = example_agendas_get_agenda_with_4_levels()
     email_text = "email"
     work_text = "work"
-    sweep_text = "sweep"
+    vaccum_text = "vaccum"
     sandy_text = "sandy"
     work_road = f"{x_agenda._culture_handle},{work_text}"
     email_idea = ideacore_shop(_label=email_text, promise=True)
     x_agenda.add_idea(idea_kid=email_idea, pad=work_road)
-    sweep_idea = ideacore_shop(_label=sweep_text, promise=True)
-    x_agenda.add_idea(idea_kid=sweep_idea, pad=work_road)
+    vaccum_idea = ideacore_shop(_label=vaccum_text, promise=True)
+    x_agenda.add_idea(idea_kid=vaccum_idea, pad=work_road)
 
     sandy_title = PartyTitle(sandy_text)
     x_agenda.add_partyunit(title=sandy_title)
@@ -410,15 +407,15 @@ def test_agenda4party_hasCorrectLevel1StructureNoGrouplessBranches():
     x_agenda = example_agendas_get_agenda_with_4_levels()
     email_text = "email"
     work_text = "work"
-    sweep_text = "sweep"
+    vaccum_text = "vaccum"
     sandy_text = "sandy"
     week_text = "weekdays"
     feed_text = "feed cat"
     work_road = f"{x_agenda._culture_handle},{work_text}"
     email_idea = ideacore_shop(_label=email_text, promise=True)
     x_agenda.add_idea(idea_kid=email_idea, pad=work_road)
-    sweep_idea = ideacore_shop(_label=sweep_text, promise=True)
-    x_agenda.add_idea(idea_kid=sweep_idea, pad=work_road)
+    vaccum_idea = ideacore_shop(_label=vaccum_text, promise=True)
+    x_agenda.add_idea(idea_kid=vaccum_idea, pad=work_road)
 
     billy_title = PartyTitle("billy")
     x_agenda.add_partyunit(title=billy_title)
@@ -435,9 +432,7 @@ def test_agenda4party_hasCorrectLevel1StructureNoGrouplessBranches():
     yrx._kids[work_text]._kids[email_text].set_balancelink(balancelink=sandy_bl)
 
     # WHEN
-    sandy_agenda4party = x_agenda.get_agenda4party(
-        acptfacts=None, party_title=sandy_title
-    )
+    sandy_agenda4party = x_agenda.get_agenda4party(sandy_title, acptfacts=None)
 
     # THEN
     assert len(sandy_agenda4party._idearoot._kids) > 0
@@ -484,16 +479,17 @@ def test_agenda_get_orderd_node_list_WorksCorrectly():
 
     # THEN
     assert len(ordered_node_list) == 17
-    assert (
-        x_agenda.get_idea_tree_ordered_road_list()[0] == f"{x_agenda._culture_handle}"
-    )
-    assert (
-        x_agenda.get_idea_tree_ordered_road_list()[8]
-        == f"{x_agenda._culture_handle},{week_text}"
-    )
+    x_1st_road_in_ordered_list = x_agenda.get_idea_tree_ordered_road_list()[0]
+    assert x_1st_road_in_ordered_list == f"{x_agenda._culture_handle}"
+    x_8th_road_in_ordered_list = x_agenda.get_idea_tree_ordered_road_list()[8]
+    assert x_8th_road_in_ordered_list == f"{x_agenda._culture_handle},{week_text}"
 
-    lw_y = agendaunit_shop(_healer="MyAgenda")
-    assert lw_y.get_idea_tree_ordered_road_list()[0] == x_agenda._culture_handle
+    # WHEN
+    y_agenda = agendaunit_shop()
+
+    # THEN
+    y_1st_road_in_ordered_list = y_agenda.get_idea_tree_ordered_road_list()[0]
+    assert y_1st_road_in_ordered_list == x_agenda._culture_handle
 
 
 def test_agenda_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoads():
@@ -530,8 +526,10 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
     #     print(f"{node}")
     assert len(heir_node_road_list) == 8
     assert heir_node_road_list[0] == weekdays
-    assert heir_node_road_list[3] == f"{weekdays},Saturday"
-    assert heir_node_road_list[4] == f"{weekdays},Sunday"
+    sat_text = "Saturday"
+    sun_text = "Sunday"
+    assert heir_node_road_list[3] == f"{weekdays},{sat_text}"
+    assert heir_node_road_list[4] == f"{weekdays},{sun_text}"
 
 
 # def test_agenda4party_hasCorrectLevel1StructureWithGrouplessBranches_2():

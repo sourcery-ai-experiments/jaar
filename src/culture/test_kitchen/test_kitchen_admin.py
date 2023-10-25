@@ -178,7 +178,9 @@ def test_KitchenAdmin_set_kitchen_dub_WorksCorrectly(kitchen_dir_setup_cleanup):
     old_kitchenunit_dir = jul_kitchenadmin._kitchenunit_dir
     # old_kitchenunit_dir = f"{env_dir}/kitchenunits/{old_healer_text}"
     print(f"{jul_kitchenadmin._kitchenunit_dir}")
-    print(f"{env_dir}/kitchenunits/{old_healer_text}")
+    kitchenunits_text = "kitchenunits"
+    kitchenunits_dir = f"{env_dir}/kitchenunits"
+    print(f"{kitchenunits_dir}/{old_healer_text}")
     seed_file_name = "seed_agenda.json"
     old_seed_file_path = f"{old_kitchenunit_dir}/{seed_file_name}"
 
@@ -187,7 +189,7 @@ def test_KitchenAdmin_set_kitchen_dub_WorksCorrectly(kitchen_dir_setup_cleanup):
     assert os_path.exists(old_seed_file_path)
 
     new_healer_text = "tim"
-    new_kitchenunit_dir = f"{env_dir}/kitchenunits/{new_healer_text}"
+    new_kitchenunit_dir = f"{kitchenunits_dir}/{new_healer_text}"
     new_seed_file_path = f"{new_kitchenunit_dir}/{seed_file_name}"
     assert os_path.exists(new_kitchenunit_dir) == False
     assert os_path.isdir(new_kitchenunit_dir) == False
