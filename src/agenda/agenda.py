@@ -1676,7 +1676,7 @@ class AgendaUnit:
             ancestor_roads.pop(len(ancestor_roads) - 1)
 
             while ancestor_roads != []:
-                # youngest_untouched_idea
+                # youngest_unprocessed_idea
                 yu_idea_obj = self.get_idea_kid(road=ancestor_roads.pop(0))
                 yu_idea_obj.set_descendant_promise_count_zero_if_null()
                 yu_idea_obj._descendant_promise_count += da_count
