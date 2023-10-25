@@ -1,5 +1,8 @@
 from src.agenda.agenda import agendaunit_shop, partyunit_shop
-from src.culture.culture import cultureunit_shop, set_agenda_banking_attr_partyunits
+from src.culture.culture import (
+    cultureunit_shop,
+    set_bank_river_tallys_to_agenda_partyunits,
+)
 from src.culture.examples.culture_env_kit import (
     get_temp_env_handle,
     get_test_cultures_dir,
@@ -372,7 +375,7 @@ def test_agenda_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr():
         river_tally_fry.tax_healer: river_tally_fry,
     }
     # WHEN
-    set_agenda_banking_attr_partyunits(x_agenda, river_tallys=river_tallys)
+    set_bank_river_tallys_to_agenda_partyunits(x_agenda, river_tallys=river_tallys)
 
     # THEN
     assert x_agenda._partys.get(sam_text)._bank_tax_paid == 0.209

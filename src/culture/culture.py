@@ -59,20 +59,15 @@ class CultureUnit:
     def set_manager_name(self, person_name: PersonName):
         self._manager_name = person_name
 
-    def set_manager_voice_ranks(self, sort_order: str):
-        if sort_order == "arbitary":
-            x_agendabankunits = list(
-                get_agendabankunits_dict(self.get_bank_conn()).values()
-            )
-            x_agendabankunits.sort(key=lambda x: x.healer, reverse=False)
-            for count_x, x_agendabankunit in enumerate(x_agendabankunits):
-                self._bank_set_agendaunit_attrs(x_agendabankunit.healer, count_x)
-
-    def _bank_set_agendaunit_attrs(self, agenda: AgendaUnit):
-        with self.get_bank_conn() as bank_conn:
-            bank_conn.execute(get_agendaunit_update_sqlstr(agenda))
-
     # banking
+    def set_voice_ranks(self, healer: PersonName, sort_order: str):
+        if sort_order == "arbitary":
+            x_kitchen = self.get_kitchenunit(healer)
+            x_seed = x_kitchen.get_seed()
+            for count_x, x_partyunit in enumerate(x_seed._partys.values()):
+                x_partyunit.set_bank_voice_rank(count_x)
+            x_kitchen.set_seed(x_seed)
+
     def set_agenda_bank_attrs(self, agenda_healer: str):
         agenda_obj = self.get_public_agenda(agenda_healer)
 
@@ -192,7 +187,7 @@ class CultureUnit:
 
             sal_river_tallys = get_river_tally_dict(bank_conn, agenda_healer)
             x_agenda = self.get_public_agenda(healer=agenda_healer)
-            set_agenda_banking_attr_partyunits(x_agenda, sal_river_tallys)
+            set_bank_river_tallys_to_agenda_partyunits(x_agenda, sal_river_tallys)
             self.save_public_agenda(x_agenda=x_agenda)
 
     def get_river_tallys(self, agenda_healer: str) -> dict[str:RiverTallyUnit]:
@@ -222,6 +217,10 @@ class CultureUnit:
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
             cur.execute(get_agendaunit_table_insert_sqlstr(x_agenda=agendaunit_x))
+
+    def _bank_set_agendaunit_attrs(self, agenda: AgendaUnit):
+        with self.get_bank_conn() as bank_conn:
+            bank_conn.execute(get_agendaunit_update_sqlstr(agenda))
 
     def _bank_insert_partyunit(self, agendaunit_x: AgendaUnit):
         with self.get_bank_conn() as bank_conn:
@@ -523,7 +522,9 @@ def cultureunit_shop(
     return culture_x
 
 
-def set_agenda_banking_attr_partyunits(x_agenda: AgendaUnit, river_tallys: dict[str:]):
+def set_bank_river_tallys_to_agenda_partyunits(
+    x_agenda: AgendaUnit, river_tallys: dict[str:]
+):
     for partyunit_x in x_agenda._partys.values():
         partyunit_x.clear_banking_data()
         river_tally = river_tallys.get(partyunit_x.title)

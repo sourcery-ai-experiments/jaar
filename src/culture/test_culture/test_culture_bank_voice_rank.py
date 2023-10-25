@@ -93,54 +93,53 @@ def test_culture_bank_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_arbit
     # GIVEN
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
-    sal_text = "sal"
-    bob_text = "bob"
-    tom_text = "tom"
     ava_text = "ava"
+    bob_text = "bob"
+    cal_text = "cal"
+    dom_text = "dom"
     elu_text = "elu"
-    x_culture._manager_name = sal_text
-    x_culture.create_new_kitchenunit()
-    x_culture.save_public_agenda(agendaunit_shop(_healer=sal_text))
-    x_culture.save_public_agenda(agendaunit_shop(_healer=bob_text))
-    x_culture.save_public_agenda(agendaunit_shop(_healer=tom_text))
-    x_culture.save_public_agenda(agendaunit_shop(_healer=ava_text))
-    x_culture.save_public_agenda(agendaunit_shop(_healer=elu_text))
-    x_culture.refresh_bank_agenda_data()
-    x_agendabankunits = get_agendabankunits_dict(x_culture.get_bank_conn())
-    old_sal_voice_rank = -10
-    old_bob_voice_rank = -45
-    old_tom_voice_rank = -13
-    old_ava_voice_rank = 3
-    old_elu_voice_rank = 4
-    x_culture._bank_set_agendaunit_attrs(sal_text, voice_rank=old_sal_voice_rank)
-    x_culture._bank_set_agendaunit_attrs(bob_text, voice_rank=old_bob_voice_rank)
-    x_culture._bank_set_agendaunit_attrs(tom_text, voice_rank=old_tom_voice_rank)
-    x_culture._bank_set_agendaunit_attrs(ava_text, voice_rank=old_ava_voice_rank)
-    x_culture._bank_set_agendaunit_attrs(elu_text, voice_rank=old_elu_voice_rank)
-    x_agendabankunits = get_agendabankunits_dict(x_culture.get_bank_conn())
-    assert x_agendabankunits.get(sal_text).voice_rank == old_sal_voice_rank
-    assert x_agendabankunits.get(bob_text).voice_rank == old_bob_voice_rank
-    assert x_agendabankunits.get(tom_text).voice_rank == old_tom_voice_rank
-    assert x_agendabankunits.get(ava_text).voice_rank == old_ava_voice_rank
-    assert x_agendabankunits.get(elu_text).voice_rank == old_elu_voice_rank
+
+    yao_text = "yao"
+    yao_new_agenda = agendaunit_shop(_healer=yao_text)
+    yao_new_agenda.set_partyunit(partyunit_shop(ava_text))
+    yao_new_agenda.set_partyunit(partyunit_shop(bob_text))
+    yao_new_agenda.set_partyunit(partyunit_shop(cal_text))
+    yao_new_agenda.set_partyunit(partyunit_shop(dom_text))
+    yao_new_agenda.set_partyunit(partyunit_shop(elu_text))
+    x_culture.create_new_kitchenunit(yao_text)
+    yao_kitchen = x_culture.get_kitchenunit(dub=yao_text)
+    yao_kitchen.set_seed(yao_new_agenda)
+
+    yao_seed_agenda = yao_kitchen.get_seed()
+    ava_partyunit = yao_seed_agenda.get_party(ava_text)
+    bob_partyunit = yao_seed_agenda.get_party(bob_text)
+    cal_partyunit = yao_seed_agenda.get_party(cal_text)
+    dom_partyunit = yao_seed_agenda.get_party(dom_text)
+    elu_partyunit = yao_seed_agenda.get_party(elu_text)
+    assert ava_partyunit._bank_voice_rank is None
+    assert bob_partyunit._bank_voice_rank is None
+    assert cal_partyunit._bank_voice_rank is None
+    assert dom_partyunit._bank_voice_rank is None
+    assert elu_partyunit._bank_voice_rank is None
 
     # WHEN
-    x_culture.set_manager_voice_ranks(sort_order="arbitrary")
+    arbitrary_text = "arbitary"
+    x_culture.set_voice_ranks(yao_text, sort_order=arbitrary_text)
 
     # THEN
-    x_agendabankunits = get_agendabankunits_dict(x_culture.get_bank_conn())
-    print(f"{x_agendabankunits.get(sal_text)=}")
-    print(f"{x_agendabankunits.get(bob_text)=}")
-    print(f"{x_agendabankunits.get(tom_text)=}")
-    print(f"{x_agendabankunits.get(ava_text)=}")
-    print(f"{x_agendabankunits.get(elu_text)=}")
-    new_sal_voice_rank = 3
-    new_bob_voice_rank = 1
-    new_tom_voice_rank = 4
-    new_ava_voice_rank = 0
-    new_elu_voice_rank = 2
-    assert x_agendabankunits.get(sal_text).voice_rank == new_sal_voice_rank
-    assert x_agendabankunits.get(bob_text).voice_rank == new_bob_voice_rank
-    assert x_agendabankunits.get(tom_text).voice_rank == new_tom_voice_rank
-    assert x_agendabankunits.get(ava_text).voice_rank == new_ava_voice_rank
-    assert x_agendabankunits.get(elu_text).voice_rank == new_elu_voice_rank
+    yao_seed_agenda = yao_kitchen.get_seed()
+    ava_partyunit = yao_seed_agenda.get_party(ava_text)
+    bob_partyunit = yao_seed_agenda.get_party(bob_text)
+    cal_partyunit = yao_seed_agenda.get_party(cal_text)
+    dom_partyunit = yao_seed_agenda.get_party(dom_text)
+    elu_partyunit = yao_seed_agenda.get_party(elu_text)
+    assert ava_partyunit._bank_voice_rank != None
+    assert bob_partyunit._bank_voice_rank != None
+    assert cal_partyunit._bank_voice_rank != None
+    assert dom_partyunit._bank_voice_rank != None
+    assert elu_partyunit._bank_voice_rank != None
+    assert ava_partyunit._bank_voice_rank == 0
+    assert bob_partyunit._bank_voice_rank == 1
+    assert cal_partyunit._bank_voice_rank == 2
+    assert dom_partyunit._bank_voice_rank == 3
+    assert elu_partyunit._bank_voice_rank == 4

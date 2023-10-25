@@ -115,8 +115,7 @@ class PartyUnit(PartyCore):
         self._bank_tax_paid = tax_paid
         self._bank_tax_diff = tax_diff
         self._bank_credit_score = credit_score
-        self._bank_voice_rank = voice_rank
-        self._set_bank_voice_hx_lowest_rank()
+        self.set_bank_voice_rank(voice_rank)
 
         # if tax_diff is None or self._agenda_goal_ratio_credit is None:
         #     self._bank_tax_diff = tax_diff
@@ -128,6 +127,10 @@ class PartyUnit(PartyCore):
         #     raise Exception(
         #         f"PartyUnit.set_banking_data fail: tax_paid={tax_paid} + tax_diff={tax_diff} not equal to _agenda_goal_ratio_credit={self._agenda_goal_ratio_credit}"
         #     )
+
+    def set_bank_voice_rank(self, voice_rank: int):
+        self._bank_voice_rank = voice_rank
+        self._set_bank_voice_hx_lowest_rank()
 
     def _set_bank_voice_hx_lowest_rank(self, bank_voice_hx_lowest_rank: float = None):
         if (
