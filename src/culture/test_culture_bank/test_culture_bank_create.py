@@ -71,18 +71,18 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     dst_healer_text = "dst_healer"
     currency_start_text = "currency_start"
     currency_close_text = "currency_close"
-    flow_num_text = "flow_num"
-    parent_flow_num_text = "parent_flow_num"
+    block_num_text = "block_num"
+    parent_block_num_text = "parent_block_num"
     river_tree_level_text = "river_tree_level"
-    river_flow_text = "river_flow"
-    river_flow_columns = {
+    river_block_text = "river_block"
+    river_block_columns = {
         currency_healer_text: 1,
         src_healer_text: 1,
         dst_healer_text: 1,
         currency_start_text: 1,
         currency_close_text: 1,
-        flow_num_text: 1,
-        parent_flow_num_text: 1,
+        block_num_text: 1,
+        parent_block_num_text: 1,
         river_tree_level_text: 1,
     }
 
@@ -120,7 +120,7 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
         agendaunit_text: agendaunit_columns,
         ledger_text: ledger_columns,
         river_tally_text: river_tally_columns,
-        river_flow_text: river_flow_columns,
+        river_block_text: river_block_columns,
         river_circle_text: river_circle_columns,
         idea_catalog_text: idea_catalog_columns,
         acptfact_catalog_text: acptfact_catalog_columns,
@@ -137,7 +137,7 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     assert db_tables.get(idea_catalog_text) != None  # 5
     assert db_tables.get(ledger_text) != None  # 1
     assert db_tables.get(river_circle_text) != None  # 4
-    assert db_tables.get(river_flow_text) != None  # 3
+    assert db_tables.get(river_block_text) != None  # 3
     assert db_tables.get(river_tally_text) != None  # 2
     assert len(db_tables) == 8
     assert len(db_tables) == len(curr_tables)
@@ -154,5 +154,5 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     assert db_tables_columns.get(idea_catalog_text) == idea_catalog_columns
     assert db_tables_columns.get(ledger_text) == ledger_columns
     assert db_tables_columns.get(river_circle_text) == river_circle_columns
-    assert db_tables_columns.get(river_flow_text) == river_flow_columns
+    assert db_tables_columns.get(river_block_text) == river_block_columns
     assert db_tables_columns.get(river_tally_text) == river_tally_columns

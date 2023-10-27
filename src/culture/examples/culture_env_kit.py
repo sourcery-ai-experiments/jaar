@@ -82,7 +82,6 @@ def _delete_and_set_ex3():
     )
     x_func_delete_dir(x_culture.get_object_root_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
-
     x_culture.save_public_agenda(x_agenda=example_healers_get_1node_agenda())
     x_culture.save_public_agenda(
         example_agendas_get_agenda_1Task_1CE0MinutesRequired_1AcptFact()
@@ -245,8 +244,8 @@ def _delete_and_set_ex6():
     elu_agenda.add_partyunit(title=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
-    x_culture.refresh_bank_agenda_data()
-    x_culture.set_credit_lake_for_agenda(agenda_healer=sal_text, max_flows_count=100)
+    x_culture.refresh_bank_public_agendas_data()
+    x_culture.set_credit_flow_for_agenda(agenda_healer=sal_text, max_blocks_count=100)
 
 
 def create_example_culture(culture_handle: str):

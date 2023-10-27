@@ -16,7 +16,7 @@ def test_culture_bank_get_agendaunits_ReturnsCorrectEmptyObj(env_dir_setup_clean
     culture_handle = get_temp_env_handle()
     x_culture = cultureunit_shop(culture_handle, get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
-    x_culture.refresh_bank_agenda_data()
+    x_culture.refresh_bank_public_agendas_data()
 
     # WHEN
     x_agendabankunits = get_agendabankunits_dict(x_culture.get_bank_conn())
@@ -30,7 +30,7 @@ def test_culture_bank_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_cleanu
     culture_handle = get_temp_env_handle()
     x_culture = cultureunit_shop(culture_handle, get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
-    x_culture.refresh_bank_agenda_data()
+    x_culture.refresh_bank_public_agendas_data()
     assert len(get_agendabankunits_dict(x_culture.get_bank_conn())) == 0
 
     # WHEN
@@ -44,7 +44,7 @@ def test_culture_bank_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_cleanu
     x_culture.save_public_agenda(agendaunit_shop(_healer=tom_text))
     x_culture.save_public_agenda(agendaunit_shop(_healer=ava_text))
     x_culture.save_public_agenda(agendaunit_shop(_healer=elu_text))
-    x_culture.refresh_bank_agenda_data()
+    x_culture.refresh_bank_public_agendas_data()
     x_agendabankunits = get_agendabankunits_dict(x_culture.get_bank_conn())
 
     # THEN
@@ -78,7 +78,7 @@ def test_culture_bank_bank_set_agendaunit_attrs_CorrectlyUpdatesRecord(
     culture_handle = get_temp_env_handle()
     x_culture = cultureunit_shop(culture_handle, get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
-    x_culture.refresh_bank_agenda_data()
+    x_culture.refresh_bank_public_agendas_data()
     sal_text = "sal"
     bob_text = "bob"
     tom_text = "tom"
@@ -94,7 +94,7 @@ def test_culture_bank_bank_set_agendaunit_attrs_CorrectlyUpdatesRecord(
     x_culture.save_public_agenda(tom_agenda)
     x_culture.save_public_agenda(ava_agenda)
     x_culture.save_public_agenda(elu_agenda)
-    x_culture.refresh_bank_agenda_data()
+    x_culture.refresh_bank_public_agendas_data()
     x_agendabankunits = get_agendabankunits_dict(x_culture.get_bank_conn())
     assert x_agendabankunits.get(sal_text).rational is None
     assert x_agendabankunits.get(bob_text).rational is None

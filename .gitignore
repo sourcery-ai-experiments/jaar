@@ -147,3 +147,4 @@ src/culture/test_culture/sql_worksheet01.sql
 src/agenda/examples/js_agenda.json
 main_cli_app.py
 main_cli_app2.py
+query_worksheets/

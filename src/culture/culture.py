@@ -17,8 +17,8 @@ from src.culture.kitchen import KitchenUnit, kitchenunit_shop, KitchenDub
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 from src.culture.bank_sqlstr import (
-    get_river_flow_table_delete_sqlstr,
-    get_river_flow_table_insert_sqlstr,
+    get_river_block_table_delete_sqlstr,
+    get_river_block_table_insert_sqlstr,
     get_river_tally_table_delete_sqlstr,
     get_river_tally_table_insert_sqlstr,
     get_river_tally_dict,
@@ -29,7 +29,7 @@ from src.culture.bank_sqlstr import (
     get_river_ledger_unit,
     LedgerUnit,
     RiverLedgerUnit,
-    RiverFlowUnit,
+    RiverBlockUnit,
     RiverTallyUnit,
     IdeaCatalog,
     get_idea_catalog_table_insert_sqlstr,
@@ -69,38 +69,36 @@ class CultureUnit:
             x_kitchen.set_seed(x_seed)
             x_kitchen._admin.save_refreshed_output_to_public()
 
-    def set_agenda_bank_attrs(self, agenda_healer: str):
-        agenda_obj = self.get_public_agenda(agenda_healer)
+    def set_agenda_bank_attrs(self, x_healer: PersonName):
+        healer_agenda = self.get_public_agenda(x_healer)
 
-        for groupunit_x in agenda_obj._groups.values():
+        for groupunit_x in healer_agenda._groups.values():
             if groupunit_x._partylinks_set_by_culture_road != None:
                 groupunit_x.clear_partylinks()
                 ic = get_idea_catalog_dict(
                     self.get_bank_conn(), groupunit_x._partylinks_set_by_culture_road
                 )
                 for idea_catalog in ic.values():
-                    if agenda_healer != idea_catalog.agenda_healer:
+                    if x_healer != idea_catalog.agenda_healer:
                         partylink_x = partylink_shop(title=idea_catalog.agenda_healer)
                         groupunit_x.set_partylink(partylink_x)
-        self.save_public_agenda(agenda_obj)
+        self.save_public_agenda(healer_agenda)
+        self.refresh_bank_public_agendas_data()
 
-        # refresh bank metrics
-        self.refresh_bank_agenda_data()
-
-    def set_credit_lake_for_agenda(
-        self, agenda_healer: PersonName, max_flows_count: int = None
+    def set_credit_flow_for_agenda(
+        self, agenda_healer: PersonName, max_blocks_count: int = None
     ):
         self._clear_all_source_river_data(agenda_healer)
-        if max_flows_count is None:
-            max_flows_count = 40
-        self._set_river_flows(agenda_healer, max_flows_count)
+        if max_blocks_count is None:
+            max_blocks_count = 40
+        self._set_river_blocks(agenda_healer, max_blocks_count)
         self._set_river_tallys_circles(agenda_healer)
 
-    def _set_river_flows(self, x_agenda_healer: PersonName, max_flows_count: int):
-        # changes in river_flow loop
+    def _set_river_blocks(self, x_agenda_healer: PersonName, max_blocks_count: int):
+        # changes in river_block loop
         general_circle = [self._get_root_river_ledger_unit(x_agenda_healer)]
-        flows_count = 0  # changes in river_flow loop
-        while flows_count < max_flows_count and general_circle != []:
+        blocks_count = 0  # changes in river_block loop
+        while blocks_count < max_blocks_count and general_circle != []:
             parent_agenda_ledger = general_circle.pop(0)
             ledgers_len = len(parent_agenda_ledger._ledgers.values())
             parent_range = parent_agenda_ledger.get_range()
@@ -108,8 +106,8 @@ class CultureUnit:
 
             curr_onset = (
                 parent_agenda_ledger.currency_onset
-            )  # changes in river_flow loop
-            ledgers_count = 0  # changes in river_flow loop
+            )  # changes in river_block loop
+            ledgers_count = 0  # changes in river_block loop
             for x_child_ledger in parent_agenda_ledger._ledgers.values():
                 ledgers_count += 1
 
@@ -120,65 +118,67 @@ class CultureUnit:
                 if ledgers_count == ledgers_len and curr_close != parent_close:
                     curr_close = parent_close
 
-                river_flow_x = RiverFlowUnit(
+                river_block_x = RiverBlockUnit(
                     currency_agenda_healer=x_agenda_healer,
                     src_healer=x_child_ledger.agenda_healer,
                     dst_healer=x_child_ledger.party_title,
                     currency_start=curr_onset,
                     currency_close=curr_close,
-                    flow_num=flows_count,
-                    parent_flow_num=parent_agenda_ledger.flow_num,
+                    block_num=blocks_count,
+                    parent_block_num=parent_agenda_ledger.block_num,
                     river_tree_level=parent_agenda_ledger.river_tree_level + 1,
                 )
-                river_ledger_x = self._insert_river_flow_grab_river_ledger(river_flow_x)
+                river_ledger_x = self._insert_river_block_grab_river_ledger(
+                    river_block_x
+                )
                 if river_ledger_x != None:
                     general_circle.append(river_ledger_x)
 
-                flows_count += 1
-                if flows_count >= max_flows_count:
+                blocks_count += 1
+                if blocks_count >= max_blocks_count:
                     break
 
                 # change curr_onset for next
                 curr_onset += curr_range
 
-    def _insert_river_flow_grab_river_ledger(
-        self, river_flow_x: RiverFlowUnit
+    def _insert_river_block_grab_river_ledger(
+        self, river_block_x: RiverBlockUnit
     ) -> RiverLedgerUnit:
         river_ledger_x = None
 
         with self.get_bank_conn() as bank_conn:
-            bank_conn.execute(get_river_flow_table_insert_sqlstr(river_flow_x))
+            bank_conn.execute(get_river_block_table_insert_sqlstr(river_block_x))
 
-            if river_flow_x.flow_returned() == False:
-                river_ledger_x = get_river_ledger_unit(bank_conn, river_flow_x)
+            if river_block_x.block_returned() == False:
+                river_ledger_x = get_river_ledger_unit(bank_conn, river_block_x)
 
         return river_ledger_x
 
     def _clear_all_source_river_data(self, agenda_healer: str):
         with self.get_bank_conn() as bank_conn:
-            flow_s = get_river_flow_table_delete_sqlstr(agenda_healer)
+            block_s = get_river_block_table_delete_sqlstr(agenda_healer)
             mstr_s = get_river_tally_table_delete_sqlstr(agenda_healer)
-            bank_conn.execute(flow_s)
+            bank_conn.execute(block_s)
             bank_conn.execute(mstr_s)
 
     def _get_root_river_ledger_unit(self, agenda_healer: str) -> RiverLedgerUnit:
         default_currency_onset = 0.0
         default_currency_cease = 1.0
         default_root_river_tree_level = 0
-        default_root_flow_num = None  # maybe change to 1?
-        default_root_parent_flow_num = None
-        root_river_flow = RiverFlowUnit(
+        default_root_block_num = None  # maybe change to 1?
+        default_root_parent_block_num = None
+        root_river_block = RiverBlockUnit(
             currency_agenda_healer=agenda_healer,
             src_healer=None,
             dst_healer=agenda_healer,
             currency_start=default_currency_onset,
             currency_close=default_currency_cease,
-            flow_num=default_root_flow_num,
-            parent_flow_num=default_root_parent_flow_num,
+            block_num=default_root_block_num,
+            parent_block_num=default_root_parent_block_num,
             river_tree_level=default_root_river_tree_level,
         )
         with self.get_bank_conn() as bank_conn:
-            source_river_ledger = get_river_ledger_unit(bank_conn, root_river_flow)
+            source_river_ledger = get_river_ledger_unit(bank_conn, root_river_block)
         return source_river_ledger
 
     def _set_river_tallys_circles(self, agenda_healer: str):
@@ -196,7 +196,7 @@ class CultureUnit:
             river_tallys = get_river_tally_dict(bank_conn, agenda_healer)
         return river_tallys
 
-    def refresh_bank_agenda_data(self, in_memory: bool = None):
+    def refresh_bank_public_agendas_data(self, in_memory: bool = None):
         if in_memory is None and self._bank_db != None:
             in_memory = True
         self._create_bank_db(in_memory=in_memory, overwrite=True)

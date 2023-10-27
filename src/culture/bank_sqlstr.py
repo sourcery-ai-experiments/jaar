@@ -13,39 +13,39 @@ def get_table_count_sqlstr(
     return f"SELECT COUNT(*) FROM {table_mame}"
 
 
-# river_flow
-def get_river_flow_table_delete_sqlstr(currency_agenda_healer: str) -> str:
+# river_block
+def get_river_block_table_delete_sqlstr(currency_agenda_healer: str) -> str:
     return f"""
-DELETE FROM river_flow
+DELETE FROM river_block
 WHERE currency_healer = '{currency_agenda_healer}' 
 ;
 """
 
 
-def get_river_flow_table_create_sqlstr() -> str:
-    """Table that stores each flow of currency from src_healer to dst_healer.
+def get_river_block_table_create_sqlstr() -> str:
+    """Table that stores each block of currency from src_healer to dst_healer.
     currency_healer: every currency starts with a healer as credit source
-        All river flows with destination currency healer stop. For that currency range
-        there is no more flow
+        All river blocks with destination currency healer stop. For that currency range
+        there is no more block
     src_healer: healer that is source of credit
     dst_healer: healer that is destination of credit.
     currency_start: range of currency affected start
     currency_close: range of currency affected close
-    flow_num: the sequence number of transactions before this one
-    parent_flow_num: river flows can have multiple children but only one parent
-    river_tree_level: how many ancestors between currency_healer first credit outflow
-        and this river flow
+    block_num: the sequence number of transactions before this one
+    parent_block_num: river blocks can have multiple children but only one parent
+    river_tree_level: how many ancestors between currency_healer first credit outblock
+        and this river block
     JSchalk 24 Oct 2023
     """
     return """
-CREATE TABLE IF NOT EXISTS river_flow (
+CREATE TABLE IF NOT EXISTS river_block (
   currency_healer VARCHAR(255) NOT NULL
 , src_healer VARCHAR(255) NOT NULL
 , dst_healer VARCHAR(255) NOT NULL
 , currency_start FLOAT NOT NULL
 , currency_close FLOAT NOT NULL
-, flow_num INT NOT NULL
-, parent_flow_num INT NULL
+, block_num INT NOT NULL
+, parent_block_num INT NULL
 , river_tree_level INT NOT NULL
 , FOREIGN KEY(currency_healer) REFERENCES agendaunit(healer)
 , FOREIGN KEY(src_healer) REFERENCES agendaunit(healer)
@@ -56,51 +56,51 @@ CREATE TABLE IF NOT EXISTS river_flow (
 
 
 @dataclass
-class RiverFlowUnit:
+class RiverBlockUnit:
     currency_agenda_healer: str
     src_healer: str
     dst_healer: str
     currency_start: float
     currency_close: float
-    flow_num: int
-    parent_flow_num: int
+    block_num: int
+    parent_block_num: int
     river_tree_level: int
 
-    def flow_returned(self) -> bool:
+    def block_returned(self) -> bool:
         return self.currency_agenda_healer == self.dst_healer
 
 
-def get_river_flow_table_insert_sqlstr(
-    river_flow_x: RiverFlowUnit,
+def get_river_block_table_insert_sqlstr(
+    river_block_x: RiverBlockUnit,
 ) -> str:
     return f"""
-INSERT INTO river_flow (
+INSERT INTO river_block (
   currency_healer
 , src_healer
 , dst_healer
 , currency_start 
 , currency_close
-, flow_num
-, parent_flow_num
+, block_num
+, parent_block_num
 , river_tree_level
 )
 VALUES (
-  '{river_flow_x.currency_agenda_healer}'
-, '{river_flow_x.src_healer}'
-, '{river_flow_x.dst_healer}'
-, {sqlite_null(river_flow_x.currency_start)}
-, {sqlite_null(river_flow_x.currency_close)}
-, {river_flow_x.flow_num}
-, {sqlite_null(river_flow_x.parent_flow_num)}
-, {river_flow_x.river_tree_level}
+  '{river_block_x.currency_agenda_healer}'
+, '{river_block_x.src_healer}'
+, '{river_block_x.dst_healer}'
+, {sqlite_null(river_block_x.currency_start)}
+, {sqlite_null(river_block_x.currency_close)}
+, {river_block_x.block_num}
+, {sqlite_null(river_block_x.parent_block_num)}
+, {river_block_x.river_tree_level}
 )
 ;
 """
 
 
-def get_river_flow_dict(
+def get_river_block_dict(
     db_conn: str, currency_agenda_healer: str
-) -> dict[str:RiverFlowUnit]:
+) -> dict[str:RiverBlockUnit]:
     sqlstr = f"""
 SELECT 
   currency_healer
@@ -108,10 +108,10 @@ SELECT
 , dst_healer
 , currency_start
 , currency_close
-, flow_num
-, parent_flow_num
+, block_num
+, parent_block_num
 , river_tree_level
-FROM river_flow
+FROM river_block
 WHERE currency_healer = '{currency_agenda_healer}' 
 ;
 """
@@ -121,17 +121,17 @@ WHERE currency_healer = '{currency_agenda_healer}'
     results_x = results_cursor_x.fetchall()
 
     for count_x, row in enumerate(results_x):
-        river_flow_x = RiverFlowUnit(
+        river_block_x = RiverBlockUnit(
             currency_agenda_healer=row[0],
             src_healer=row[1],
             dst_healer=row[2],
             currency_start=row[3],
             currency_close=row[4],
-            flow_num=row[5],
-            parent_flow_num=row[6],
+            block_num=row[5],
+            parent_block_num=row[6],
             river_tree_level=row[7],
         )
-        dict_x[count_x] = river_flow_x
+        dict_x[count_x] = river_block_x
     return dict_x
 
 
@@ -148,7 +148,7 @@ def get_river_circle_table_create_sqlstr() -> str:
     """Table that stores discontinuous currency ranges for each destination healer
     currency_healer: every currency starts with a healer as credit source
     dst_healer: healer that is destination of credit.
-        All river flows with destination healer are summed into ranges called circles
+        All river blocks with destination healer are summed into ranges called circles
     circle_num: all destination healer circles have a unique number. (sequential 0, 1, 2...)
     currency_start: range of circle start
     currency_close: range of circle close
@@ -194,7 +194,7 @@ FROM  (
     ELSE 0
     END AS step
     , *
-    FROM  river_flow
+    FROM  river_block
     WHERE currency_healer = '{currency_agenda_healer}' and dst_healer = currency_healer 
     ) b
 ) c
@@ -291,7 +291,7 @@ SELECT
 , SUM(rt.currency_close-rt.currency_start) tax_paid
 , l._agenda_goal_ratio_debt
 , l._agenda_goal_ratio_debt - SUM(rt.currency_close-rt.currency_start)
-FROM river_flow rt
+FROM river_block rt
 LEFT JOIN ledger l ON l.agenda_healer = rt.currency_healer AND l.party_title = rt.src_healer
 WHERE rt.currency_healer='{currency_agenda_healer}' and rt.dst_healer=rt.currency_healer
 GROUP BY rt.currency_healer, rt.src_healer
@@ -516,23 +516,23 @@ class RiverLedgerUnit:
     currency_cease: float
     _ledgers: dict[str:LedgerUnit]
     river_tree_level: int
-    flow_num: int
+    block_num: int
 
     def get_range(self):
         return self.currency_cease - self.currency_onset
 
 
 def get_river_ledger_unit(
-    db_conn: Connection, river_flow_x: RiverFlowUnit = None
+    db_conn: Connection, river_block_x: RiverBlockUnit = None
 ) -> RiverLedgerUnit:
-    ledger_x = get_ledger_dict(db_conn, river_flow_x.dst_healer)
+    ledger_x = get_ledger_dict(db_conn, river_block_x.dst_healer)
     return RiverLedgerUnit(
-        agenda_healer=river_flow_x.dst_healer,
-        currency_onset=river_flow_x.currency_start,
-        currency_cease=river_flow_x.currency_close,
+        agenda_healer=river_block_x.dst_healer,
+        currency_onset=river_block_x.currency_start,
+        currency_cease=river_block_x.currency_close,
         _ledgers=ledger_x,
-        river_tree_level=river_flow_x.river_tree_level,
-        flow_num=river_flow_x.flow_num,
+        river_tree_level=river_block_x.river_tree_level,
+        block_num=river_block_x.block_num,
     )
 
 
@@ -736,7 +736,7 @@ def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x.append(get_acptfact_catalog_table_create_sqlstr())
     list_x.append(get_idea_catalog_table_create_sqlstr())
     list_x.append(get_ledger_table_create_sqlstr())
-    list_x.append(get_river_flow_table_create_sqlstr())
+    list_x.append(get_river_block_table_create_sqlstr())
     list_x.append(get_river_circle_table_create_sqlstr())
     list_x.append(get_river_tally_table_create_sqlstr())
     list_x.append(get_groupunit_catalog_table_create_sqlstr())

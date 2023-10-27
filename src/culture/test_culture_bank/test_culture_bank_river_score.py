@@ -9,8 +9,8 @@ from src.culture.examples.culture_env_kit import (
     env_dir_setup_cleanup,
 )
 from src.culture.bank_sqlstr import (
-    get_river_flow_table_insert_sqlstr as river_flow_insert,
-    get_river_flow_dict,
+    get_river_block_table_insert_sqlstr as river_block_insert,
+    get_river_block_dict,
     get_river_circle_table_insert_sqlstr,
     get_river_circle_dict,
     get_river_circle_table_delete_sqlstr,
@@ -21,7 +21,7 @@ from src.culture.bank_sqlstr import (
     get_ledger_dict,
     LedgerUnit,
     RiverLedgerUnit,
-    RiverFlowUnit,
+    RiverBlockUnit,
     get_river_ledger_unit,
 )
 
@@ -30,5 +30,5 @@ def test_culture_clear_river_score_CorrectlyEmptysTable():
     assert 1 == 2
 
 
-def test_culture_set_river_score_CorrectlyInsertsTableContents():
-    assert 1 == 2
+# def test_culture_set_river_score_CorrectlyInsertsTableContents():
+#     assert 1 == 2
