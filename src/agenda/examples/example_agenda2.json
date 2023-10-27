@@ -6984,14 +6984,14 @@
                                                     "_weight": 1,
                                                     "promise": false
                                                 },
-                                                "Park blocks": {
+                                                "Park Squares": {
                                                     "_acptfactunits": {},
                                                     "_addin": null,
                                                     "_begin": null,
                                                     "_balancelinks": {},
                                                     "_close": null,
                                                     "_denom": null,
-                                                    "_label": "Park blocks",
+                                                    "_label": "Park Squares",
                                                     "_is_expanded": true,
                                                     "_kids": {},
                                                     "_numeric_road": null,

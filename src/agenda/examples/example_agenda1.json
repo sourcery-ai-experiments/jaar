@@ -8050,7 +8050,7 @@
                                                     "_weight": 1,
                                                     "promise": false
                                                 },
-                                                "Park blocks": {
+                                                "Park Squares": {
                                                     "_acptfactunits": {},
                                                     "_addin": null,
                                                     "_assignedunit": {
@@ -8062,7 +8062,7 @@
                                                     "_balancelinks": {},
                                                     "_is_expanded": true,
                                                     "_kids": {},
-                                                    "_label": "Park blocks",
+                                                    "_label": "Park Squares",
                                                     "_numeric_road": null,
                                                     "_numor": null,
                                                     "_on_meld_weight_action": "default",
