@@ -1831,12 +1831,12 @@ class AgendaUnit:
             not self._rational and self._tree_traverse_count < self._max_tree_traverse
         ):
             self._execute_tree_traverse()
-            self._run_after_each_tree_traverse()
+            self._check_if_any_idea_active_status_has_changed()
             self._tree_traverse_count += 1
-        self._run_after_idea_all_tree_traverses()
+        self._after_all_tree_traverses_set_credit_debt()
 
     def _execute_tree_traverse(self):
-        self._run_before_idea_tree_traverse()
+        self._pre_tree_traverse_credit_debt_reset()
         self._set_root_attributes()
 
         coin_onset = self._idearoot._agenda_coin_onset
@@ -1871,7 +1871,7 @@ class AgendaUnit:
                     cache_idea_list.append(idea_kid)
                     coin_onset += idea_kid._agenda_importance
 
-    def _run_after_each_tree_traverse(self):
+    def _check_if_any_idea_active_status_has_changed(self):
         any_idea_active_status_changed = False
         for idea in self._idea_dict.values():
             idea.set_active_status_hx_empty_if_null()
@@ -1881,12 +1881,12 @@ class AgendaUnit:
         if any_idea_active_status_changed == False:
             self._rational = True
 
-    def _run_after_idea_all_tree_traverses(self):
+    def _after_all_tree_traverses_set_credit_debt(self):
         self._distribute_agenda_goal_importance()
         self._distribute_groups_agenda_importance()
         self._set_agenda_goal_ratio_credit_debt()
 
-    def _run_before_idea_tree_traverse(self):
+    def _pre_tree_traverse_credit_debt_reset(self):
         self._reset_groupunits_agenda_credit_debt()
         self._reset_groupunits_agenda_credit_debt()
         self._reset_partyunit_agenda_credit_debt()
