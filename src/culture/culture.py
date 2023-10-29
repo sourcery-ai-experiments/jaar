@@ -27,7 +27,7 @@ from src.culture.bank_sqlstr import (
     get_partyunit_table_insert_sqlstr,
     get_agendaunit_table_insert_sqlstr,
     get_river_ledger_unit,
-    PartyViewUnit,
+    PartyDBUnit,
     RiverLedgerUnit,
     RiverBlockUnit,
     RiverTallyUnit,
@@ -121,7 +121,7 @@ class CultureUnit:
                 river_block_x = RiverBlockUnit(
                     currency_agenda_healer=x_agenda_healer,
                     src_healer=x_child_ledger.agenda_healer,
-                    dst_healer=x_child_ledger.party_title,
+                    dst_healer=x_child_ledger.title,
                     currency_start=curr_onset,
                     currency_close=curr_close,
                     block_num=blocks_count,

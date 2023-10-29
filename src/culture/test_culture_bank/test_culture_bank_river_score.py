@@ -19,7 +19,7 @@ from src.culture.bank_sqlstr import (
     get_river_tally_dict,
     get_partyunit_table_insert_sqlstr,
     get_partyview_dict,
-    PartyViewUnit,
+    PartyDBUnit,
     RiverLedgerUnit,
     RiverBlockUnit,
     get_river_ledger_unit,

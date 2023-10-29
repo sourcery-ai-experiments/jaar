@@ -295,7 +295,7 @@ SELECT
 , l._agenda_goal_ratio_debt
 , l._agenda_goal_ratio_debt - SUM(rt.currency_close-rt.currency_start)
 FROM river_block rt
-LEFT JOIN partyunit l ON l.agenda_healer = rt.currency_healer AND l.party_title = rt.src_healer
+LEFT JOIN partyunit l ON l.agenda_healer = rt.currency_healer AND l.title = rt.src_healer
 WHERE rt.currency_healer='{currency_agenda_healer}' and rt.dst_healer=rt.currency_healer
 GROUP BY rt.currency_healer, rt.src_healer
 ;
@@ -413,7 +413,7 @@ def get_partyunit_table_create_sqlstr() -> str:
     return """
 CREATE TABLE IF NOT EXISTS partyunit (
   agenda_healer VARCHAR(255) NOT NULL 
-, party_title VARCHAR(255) NOT NULL
+, title VARCHAR(255) NOT NULL
 , _agenda_credit FLOAT
 , _agenda_debt FLOAT
 , _agenda_goal_credit FLOAT
@@ -422,9 +422,11 @@ CREATE TABLE IF NOT EXISTS partyunit (
 , _agenda_goal_ratio_debt FLOAT
 , _creditor_active INT
 , _debtor_active INT
+, _bank_tax_paid FLOAT
+, _bank_tax_diff FLOAT
 , FOREIGN KEY(agenda_healer) REFERENCES agendaunit(healer)
-, FOREIGN KEY(party_title) REFERENCES agendaunit(healer)
-, UNIQUE(agenda_healer, party_title)
+, FOREIGN KEY(title) REFERENCES agendaunit(healer)
+, UNIQUE(agenda_healer, title)
 )
 ;
 """
@@ -437,7 +439,7 @@ def get_partyunit_table_insert_sqlstr(
     return f"""
 INSERT INTO partyunit (
   agenda_healer
-, party_title
+, title
 , _agenda_credit
 , _agenda_debt
 , _agenda_goal_credit
@@ -446,6 +448,8 @@ INSERT INTO partyunit (
 , _agenda_goal_ratio_debt
 , _creditor_active
 , _debtor_active
+, _bank_tax_paid
+, _bank_tax_diff
 )
 VALUES (
   '{x_agenda._healer}' 
@@ -458,32 +462,23 @@ VALUES (
 , {sqlite_null(partyunit_x._agenda_goal_ratio_debt)}
 , {sqlite_bool(partyunit_x._creditor_active)}
 , {sqlite_bool(partyunit_x._debtor_active)}
+, {sqlite_bool(partyunit_x._bank_tax_paid)}
+, {sqlite_bool(partyunit_x._bank_tax_diff)}
 )
 ;
 """
 
 
 @dataclass
-class PartyViewUnit:
-    agenda_healer: str
-    party_title: str
-    _agenda_credit: float
-    _agenda_debt: float
-    _agenda_goal_credit: float
-    _agenda_goal_debt: float
-    _agenda_goal_ratio_credit: float
-    _agenda_goal_ratio_debt: float
-    _creditor_active: float
-    _debtor_active: float
+class PartyDBUnit(PartyUnit):
+    agenda_healer: str = None
 
 
-def get_partyview_dict(
-    db_conn: Connection, payer_healer: str
-) -> dict[str:PartyViewUnit]:
+def get_partyview_dict(db_conn: Connection, payer_healer: str) -> dict[str:PartyDBUnit]:
     sqlstr = f"""
 SELECT 
   agenda_healer
-, party_title
+, title
 , _agenda_credit
 , _agenda_debt
 , _agenda_goal_credit
@@ -492,6 +487,8 @@ SELECT
 , _agenda_goal_ratio_debt
 , _creditor_active
 , _debtor_active
+, _bank_tax_paid
+, _bank_tax_diff
 FROM partyunit
 WHERE agenda_healer = '{payer_healer}' 
 ;
@@ -500,9 +497,9 @@ WHERE agenda_healer = '{payer_healer}'
     results = db_conn.execute(sqlstr)
 
     for row in results.fetchall():
-        partyview_x = PartyViewUnit(
+        partyview_x = PartyDBUnit(
             agenda_healer=row[0],
-            party_title=row[1],
+            title=row[1],
             _agenda_credit=row[2],
             _agenda_debt=row[3],
             _agenda_goal_credit=row[4],
@@ -511,8 +508,10 @@ WHERE agenda_healer = '{payer_healer}'
             _agenda_goal_ratio_debt=row[7],
             _creditor_active=row[8],
             _debtor_active=row[9],
+            _bank_tax_paid=row[10],
+            _bank_tax_diff=row[11],
         )
-        dict_x[partyview_x.party_title] = partyview_x
+        dict_x[partyview_x.title] = partyview_x
     return dict_x
 
 
@@ -521,7 +520,7 @@ class RiverLedgerUnit:
     agenda_healer: str
     currency_onset: float
     currency_cease: float
-    _partyviews: dict[str:PartyViewUnit]
+    _partyviews: dict[str:PartyDBUnit]
     river_tree_level: int
     block_num: int
 
@@ -557,7 +556,8 @@ CREATE TABLE IF NOT EXISTS idea_catalog (
 
 def get_idea_catalog_table_count(db_conn: Connection, agenda_healer: str) -> str:
     sqlstr = f"""
-{get_table_count_sqlstr("idea_catalog")} WHERE agenda_healer = '{agenda_healer}'
+{get_table_count_sqlstr("idea_catalog")} 
+WHERE agenda_healer = '{agenda_healer}'
 ;
 """
     results = db_conn.execute(sqlstr)

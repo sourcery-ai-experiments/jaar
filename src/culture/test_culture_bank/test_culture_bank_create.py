@@ -30,7 +30,7 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     agendaunit_columns = {healer_text: 1, rational_text: 1}
 
     agenda_healer_text = "agenda_healer"
-    party_title_text = "party_title"
+    title_text = "title"
     _agenda_credit_text = "_agenda_credit"
     _agenda_debt_text = "_agenda_debt"
     _agenda_goal_credit_text = "_agenda_goal_credit"
@@ -39,10 +39,12 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     _agenda_goal_ratio_debt_text = "_agenda_goal_ratio_debt"
     _creditor_active_text = "_creditor_active"
     _debtor_active_text = "_debtor_active"
+    _bank_tax_paid_text = "_bank_tax_paid"
+    _bank_tax_diff_text = "_bank_tax_diff"
     partyunit_text = "partyunit"
     partyunit_columns = {
         agenda_healer_text: 1,
-        party_title_text: 1,
+        title_text: 1,
         _agenda_credit_text: 1,
         _agenda_debt_text: 1,
         _agenda_goal_credit_text: 1,
@@ -51,6 +53,8 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
         _agenda_goal_ratio_debt_text: 1,
         _creditor_active_text: 1,
         _debtor_active_text: 1,
+        _bank_tax_paid_text: 1,
+        _bank_tax_diff_text: 1,
     }
 
     currency_healer_text = "currency_healer"

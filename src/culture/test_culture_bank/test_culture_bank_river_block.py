@@ -16,7 +16,7 @@ from src.culture.bank_sqlstr import (
     get_river_tally_dict,
     get_partyunit_table_insert_sqlstr,
     get_partyview_dict,
-    PartyViewUnit,
+    PartyDBUnit,
     RiverLedgerUnit,
     RiverBlockUnit,
     get_river_ledger_unit,
@@ -64,7 +64,7 @@ def test_culture_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     # THEN
     ledger_x = ledger_dict.get(tim_text)
     assert ledger_x.agenda_healer == bob_text
-    assert ledger_x.party_title == tim_text
+    assert ledger_x.title == tim_text
     assert ledger_x._agenda_credit == 0.9
     assert ledger_x._agenda_debt == 0.8
     assert ledger_x._agenda_goal_credit == 0.7
@@ -255,9 +255,9 @@ def test_RiverLedgerUnit_Exists():
     bob_text = "bob"
     sal_text = "sal"
     tom_text = "tom"
-    x1_partyviewunit = PartyViewUnit(
+    x1_partydbunit = PartyDBUnit(
         agenda_healer=bob_text,
-        party_title=sal_text,
+        title=sal_text,
         _agenda_credit=0.66,
         _agenda_debt=0.2,
         _agenda_goal_credit=0.4,
@@ -267,9 +267,9 @@ def test_RiverLedgerUnit_Exists():
         _creditor_active=True,
         _debtor_active=True,
     )
-    x2_partyviewunit = PartyViewUnit(
+    x2_partydbunit = PartyDBUnit(
         agenda_healer=bob_text,
-        party_title=tom_text,
+        title=tom_text,
         _agenda_credit=0.05,
         _agenda_debt=0.09,
         _agenda_goal_credit=0.055,
@@ -280,8 +280,8 @@ def test_RiverLedgerUnit_Exists():
         _debtor_active=True,
     )
     x_partyview_dict = {
-        x1_partyviewunit.party_title: x1_partyviewunit,
-        x2_partyviewunit.party_title: x2_partyviewunit,
+        x1_partydbunit.title: x1_partydbunit,
+        x2_partydbunit.title: x2_partydbunit,
     }
     # WHEN
     river_ledger_unit = RiverLedgerUnit(
