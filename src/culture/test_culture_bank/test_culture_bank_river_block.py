@@ -14,16 +14,16 @@ from src.culture.bank_sqlstr import (
     RiverTallyUnit,
     get_river_tally_table_insert_sqlstr,
     get_river_tally_dict,
-    get_ledger_table_insert_sqlstr,
-    get_ledger_dict,
-    LedgerUnit,
+    get_partyunit_table_insert_sqlstr,
+    get_partyview_dict,
+    PartyViewUnit,
     RiverLedgerUnit,
     RiverBlockUnit,
     get_river_ledger_unit,
 )
 
 
-def test_culture_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_culture_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
@@ -46,14 +46,14 @@ def test_culture_get_ledger_table_insert_sqlstr_CorrectlyPopulatesTable01(
         _debtor_active=False,
     )
 
-    insert_sqlstr = get_ledger_table_insert_sqlstr(bob_agenda, partyunit_x)
+    insert_sqlstr = get_partyunit_table_insert_sqlstr(bob_agenda, partyunit_x)
     print(insert_sqlstr)
 
     # WHEN
     with x_culture.get_bank_conn() as bank_conn:
         bank_conn.execute(insert_sqlstr)
 
-    ledger_dict = get_ledger_dict(
+    ledger_dict = get_partyview_dict(
         db_conn=x_culture.get_bank_conn(), payer_healer=bob_text
     )
     # ledger_x = None
@@ -162,7 +162,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
         _creditor_active=True,
         _debtor_active=False,
     )
-    insert_sqlstr_sal = get_ledger_table_insert_sqlstr(bob_agenda, partyunit_sal)
+    insert_sqlstr_sal = get_partyunit_table_insert_sqlstr(bob_agenda, partyunit_sal)
 
     tim_text = "tim"
     partyunit_tim = partyunit_shop(
@@ -176,12 +176,12 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
         _creditor_active=True,
         _debtor_active=False,
     )
-    insert_sqlstr_tim = get_ledger_table_insert_sqlstr(bob_agenda, partyunit_tim)
+    insert_sqlstr_tim = get_partyunit_table_insert_sqlstr(bob_agenda, partyunit_tim)
 
     with x_culture.get_bank_conn() as bank_conn:
         bank_conn.execute(insert_sqlstr_sal)
         bank_conn.execute(insert_sqlstr_tim)
-        ledger_dict_x = get_ledger_dict(db_conn=bank_conn, payer_healer=bob_text)
+        partyview_dict_x = get_partyview_dict(db_conn=bank_conn, payer_healer=bob_text)
 
     # WHEN
     river_block_x = RiverBlockUnit(
@@ -202,7 +202,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
     assert river_ledger_x.currency_onset == 0.225
     assert river_ledger_x.currency_cease == 0.387
     assert river_ledger_x.river_tree_level == 4
-    assert river_ledger_x._ledgers == ledger_dict_x
+    assert river_ledger_x._partyviews == partyview_dict_x
     assert river_ledger_x.block_num == 51
 
 
@@ -255,7 +255,7 @@ def test_RiverLedgerUnit_Exists():
     bob_text = "bob"
     sal_text = "sal"
     tom_text = "tom"
-    ledger_unit_01 = LedgerUnit(
+    x1_partyviewunit = PartyViewUnit(
         agenda_healer=bob_text,
         party_title=sal_text,
         _agenda_credit=0.66,
@@ -267,7 +267,7 @@ def test_RiverLedgerUnit_Exists():
         _creditor_active=True,
         _debtor_active=True,
     )
-    ledger_unit_02 = LedgerUnit(
+    x2_partyviewunit = PartyViewUnit(
         agenda_healer=bob_text,
         party_title=tom_text,
         _agenda_credit=0.05,
@@ -279,17 +279,16 @@ def test_RiverLedgerUnit_Exists():
         _creditor_active=True,
         _debtor_active=True,
     )
-    ledger_dict = {
-        ledger_unit_01.party_title: ledger_unit_01,
-        ledger_unit_02.party_title: ledger_unit_02,
+    x_partyview_dict = {
+        x1_partyviewunit.party_title: x1_partyviewunit,
+        x2_partyviewunit.party_title: x2_partyviewunit,
     }
-
     # WHEN
     river_ledger_unit = RiverLedgerUnit(
         agenda_healer=bob_text,
         currency_onset=0.6,
         currency_cease=0.8,
-        _ledgers=ledger_dict,
+        _partyviews=x_partyview_dict,
         river_tree_level=7,
         block_num=89,
     )
@@ -300,7 +299,7 @@ def test_RiverLedgerUnit_Exists():
     assert river_ledger_unit.currency_cease == 0.8
     assert river_ledger_unit.river_tree_level == 7
     assert river_ledger_unit.block_num == 89
-    assert river_ledger_unit._ledgers == ledger_dict
+    assert river_ledger_unit._partyviews == x_partyview_dict
     assert abs(river_ledger_unit.get_range() - 0.2) < 0.00000001
 
 
@@ -405,7 +404,7 @@ def test_get_river_tally_table_insert_sqlstr_CorrectlyPopulatesTable01(
         _creditor_active=True,
         _debtor_active=False,
     )
-    insert_sqlstr_tom = get_ledger_table_insert_sqlstr(
+    insert_sqlstr_tom = get_partyunit_table_insert_sqlstr(
         x_agenda=bob_agenda, partyunit_x=partyunit_tom
     )
     partyunit_sal = partyunit_shop(
@@ -419,7 +418,7 @@ def test_get_river_tally_table_insert_sqlstr_CorrectlyPopulatesTable01(
         _creditor_active=True,
         _debtor_active=False,
     )
-    insert_sqlstr_sal = get_ledger_table_insert_sqlstr(
+    insert_sqlstr_sal = get_partyunit_table_insert_sqlstr(
         x_agenda=bob_agenda, partyunit_x=partyunit_sal
     )
 

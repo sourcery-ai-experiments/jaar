@@ -24,10 +24,10 @@ from src.culture.bank_sqlstr import (
     get_river_tally_dict,
     get_river_circle_table_insert_sqlstr,
     get_create_table_if_not_exist_sqlstrs,
-    get_ledger_table_insert_sqlstr,
+    get_partyunit_table_insert_sqlstr,
     get_agendaunit_table_insert_sqlstr,
     get_river_ledger_unit,
-    LedgerUnit,
+    PartyViewUnit,
     RiverLedgerUnit,
     RiverBlockUnit,
     RiverTallyUnit,
@@ -100,7 +100,7 @@ class CultureUnit:
         blocks_count = 0  # changes in river_block loop
         while blocks_count < max_blocks_count and general_circle != []:
             parent_agenda_ledger = general_circle.pop(0)
-            ledgers_len = len(parent_agenda_ledger._ledgers.values())
+            ledgers_len = len(parent_agenda_ledger._partyviews.values())
             parent_range = parent_agenda_ledger.get_range()
             parent_close = parent_agenda_ledger.currency_cease
 
@@ -108,7 +108,7 @@ class CultureUnit:
                 parent_agenda_ledger.currency_onset
             )  # changes in river_block loop
             ledgers_count = 0  # changes in river_block loop
-            for x_child_ledger in parent_agenda_ledger._ledgers.values():
+            for x_child_ledger in parent_agenda_ledger._partyviews.values():
                 ledgers_count += 1
 
                 curr_range = parent_range * x_child_ledger._agenda_goal_ratio_credit
@@ -227,7 +227,7 @@ class CultureUnit:
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
             for partyunit_x in agendaunit_x._partys.values():
-                sqlstr = get_ledger_table_insert_sqlstr(agendaunit_x, partyunit_x)
+                sqlstr = get_partyunit_table_insert_sqlstr(agendaunit_x, partyunit_x)
                 cur.execute(sqlstr)
 
     def _bank_insert_groupunit(self, agendaunit_x: AgendaUnit):

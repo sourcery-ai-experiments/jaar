@@ -33,6 +33,6 @@ def check_connection(conn: Connection) -> bool:
         return False
 
 
-def get_single_result_back(db_conn: Connection, sqlstr: str) -> str:
+def get_single_result(db_conn: Connection, sqlstr: str) -> str:
     results = db_conn.execute(sqlstr)
     return results.fetchone()[0]

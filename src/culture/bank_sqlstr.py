@@ -208,7 +208,7 @@ ORDER BY currency_circle_start
 
 
 @dataclass
-class RivercircleUnit:
+class RiverCircleUnit:
     currency_healer: str
     dst_healer: str
     circle_num: int
@@ -218,7 +218,7 @@ class RivercircleUnit:
 
 def get_river_circle_dict(
     db_conn: Connection, currency_agenda_healer: str
-) -> dict[str:RivercircleUnit]:
+) -> dict[str:RiverCircleUnit]:
     sqlstr = f"""
 SELECT
   currency_healer
@@ -234,7 +234,7 @@ WHERE currency_healer = '{currency_agenda_healer}'
     results = db_conn.execute(sqlstr)
 
     for row in results.fetchall():
-        river_circle_x = RivercircleUnit(
+        river_circle_x = RiverCircleUnit(
             currency_healer=row[0],
             dst_healer=row[1],
             circle_num=row[2],
@@ -295,7 +295,7 @@ SELECT
 , l._agenda_goal_ratio_debt
 , l._agenda_goal_ratio_debt - SUM(rt.currency_close-rt.currency_start)
 FROM river_block rt
-LEFT JOIN ledger l ON l.agenda_healer = rt.currency_healer AND l.party_title = rt.src_healer
+LEFT JOIN partyunit l ON l.agenda_healer = rt.currency_healer AND l.party_title = rt.src_healer
 WHERE rt.currency_healer='{currency_agenda_healer}' and rt.dst_healer=rt.currency_healer
 GROUP BY rt.currency_healer, rt.src_healer
 ;
@@ -407,11 +407,11 @@ WHERE healer = '{agenda._healer}'
 """
 
 
-# ledger
-def get_ledger_table_create_sqlstr() -> str:
+# partyunit
+def get_partyunit_table_create_sqlstr() -> str:
     """Create table that holds the starting river metrics for every agenda's party. All the metrics."""
     return """
-CREATE TABLE IF NOT EXISTS ledger (
+CREATE TABLE IF NOT EXISTS partyunit (
   agenda_healer VARCHAR(255) NOT NULL 
 , party_title VARCHAR(255) NOT NULL
 , _agenda_credit FLOAT
@@ -430,10 +430,12 @@ CREATE TABLE IF NOT EXISTS ledger (
 """
 
 
-def get_ledger_table_insert_sqlstr(x_agenda: AgendaUnit, partyunit_x: PartyUnit) -> str:
+def get_partyunit_table_insert_sqlstr(
+    x_agenda: AgendaUnit, partyunit_x: PartyUnit
+) -> str:
     """Create table that holds a the output credit metrics."""
     return f"""
-INSERT INTO ledger (
+INSERT INTO partyunit (
   agenda_healer
 , party_title
 , _agenda_credit
@@ -462,7 +464,7 @@ VALUES (
 
 
 @dataclass
-class LedgerUnit:
+class PartyViewUnit:
     agenda_healer: str
     party_title: str
     _agenda_credit: float
@@ -475,7 +477,9 @@ class LedgerUnit:
     _debtor_active: float
 
 
-def get_ledger_dict(db_conn: Connection, payer_healer: str) -> dict[str:LedgerUnit]:
+def get_partyview_dict(
+    db_conn: Connection, payer_healer: str
+) -> dict[str:PartyViewUnit]:
     sqlstr = f"""
 SELECT 
   agenda_healer
@@ -488,7 +492,7 @@ SELECT
 , _agenda_goal_ratio_debt
 , _creditor_active
 , _debtor_active
-FROM ledger
+FROM partyunit
 WHERE agenda_healer = '{payer_healer}' 
 ;
 """
@@ -496,7 +500,7 @@ WHERE agenda_healer = '{payer_healer}'
     results = db_conn.execute(sqlstr)
 
     for row in results.fetchall():
-        ledger_x = LedgerUnit(
+        partyview_x = PartyViewUnit(
             agenda_healer=row[0],
             party_title=row[1],
             _agenda_credit=row[2],
@@ -508,7 +512,7 @@ WHERE agenda_healer = '{payer_healer}'
             _creditor_active=row[8],
             _debtor_active=row[9],
         )
-        dict_x[ledger_x.party_title] = ledger_x
+        dict_x[partyview_x.party_title] = partyview_x
     return dict_x
 
 
@@ -517,7 +521,7 @@ class RiverLedgerUnit:
     agenda_healer: str
     currency_onset: float
     currency_cease: float
-    _ledgers: dict[str:LedgerUnit]
+    _partyviews: dict[str:PartyViewUnit]
     river_tree_level: int
     block_num: int
 
@@ -528,12 +532,12 @@ class RiverLedgerUnit:
 def get_river_ledger_unit(
     db_conn: Connection, river_block_x: RiverBlockUnit = None
 ) -> RiverLedgerUnit:
-    ledger_x = get_ledger_dict(db_conn, river_block_x.dst_healer)
+    partyview_x = get_partyview_dict(db_conn, river_block_x.dst_healer)
     return RiverLedgerUnit(
         agenda_healer=river_block_x.dst_healer,
         currency_onset=river_block_x.currency_start,
         currency_cease=river_block_x.currency_close,
-        _ledgers=ledger_x,
+        _partyviews=partyview_x,
         river_tree_level=river_block_x.river_tree_level,
         block_num=river_block_x.block_num,
     )
@@ -738,7 +742,7 @@ def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x = [get_agendaunit_table_create_sqlstr()]
     list_x.append(get_acptfact_catalog_table_create_sqlstr())
     list_x.append(get_idea_catalog_table_create_sqlstr())
-    list_x.append(get_ledger_table_create_sqlstr())
+    list_x.append(get_partyunit_table_create_sqlstr())
     list_x.append(get_river_block_table_create_sqlstr())
     list_x.append(get_river_circle_table_create_sqlstr())
     list_x.append(get_river_tally_table_create_sqlstr())

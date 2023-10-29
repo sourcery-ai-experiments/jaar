@@ -5,7 +5,7 @@ from src.culture.examples.culture_env_kit import (
     get_test_cultures_dir,
     env_dir_setup_cleanup,
 )
-from src.culture.y_func import check_connection, get_single_result_back
+from src.culture.y_func import check_connection, get_single_result
 from src.culture.bank_sqlstr import (
     get_river_tally_dict,
     get_river_block_dict,
@@ -39,44 +39,36 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable01
 
     x_culture.refresh_bank_public_agendas_data()
 
-    sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 4
+    partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
+    assert get_single_result(x_culture.get_bank_conn(), partyunit_count_sqlstr) == 4
 
-    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
-    sqlstr_count_river_block = get_table_count_sqlstr("river_block")
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_block) == 0
-    )
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_tally) == 0
-    )
+    river_tally_count_sqlstr = get_table_count_sqlstr("river_tally")
+    river_block_count_sqlstr = get_table_count_sqlstr("river_block")
+    assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 0
+    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 0
 
     # WHEN
     x_culture.set_credit_flow_for_agenda(agenda_healer=sal_text)
 
     # THEN
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_block) == 4
-    )
+    assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 4
     with x_culture.get_bank_conn() as bank_conn:
         river_blocks = get_river_block_dict(bank_conn, currency_agenda_healer=sal_text)
 
     block_0 = river_blocks.get(0)
     block_1 = river_blocks.get(1)
-    assert block_1.src_healer == "sal" and block_1.dst_healer == "tom"
+    assert block_1.src_healer == sal_text and block_1.dst_healer == tom_text
     assert block_1.river_tree_level == 1
     assert block_1.currency_start == 0.25
     assert block_1.currency_close == 1
     assert block_1.parent_block_num is None
     block_2 = river_blocks.get(2)
     block_3 = river_blocks.get(3)
-    assert block_3.src_healer == "tom" and block_3.dst_healer == "sal"
+    assert block_3.src_healer == tom_text and block_3.dst_healer == sal_text
     assert block_3.river_tree_level == 2
     assert block_3.parent_block_num == 1
 
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_tally) == 2
-    )
+    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 2
 
     with x_culture.get_bank_conn() as bank_conn:
         river_tallys = get_river_tally_dict(bank_conn, sal_text)
@@ -122,33 +114,25 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable02
     x_culture.save_public_agenda(x_agenda=elu)
     x_culture.refresh_bank_public_agendas_data()
 
-    sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 6
+    partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
+    assert get_single_result(x_culture.get_bank_conn(), partyunit_count_sqlstr) == 6
 
-    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
-    sqlstr_count_river_block = get_table_count_sqlstr("river_block")
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_block) == 0
-    )
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_tally) == 0
-    )
+    river_tally_count_sqlstr = get_table_count_sqlstr("river_tally")
+    river_block_count_sqlstr = get_table_count_sqlstr("river_block")
+    assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 0
+    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 0
 
     # WHEN
     x_culture.set_credit_flow_for_agenda(agenda_healer=sal_text)
 
     # THEN
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_block) == 9
-    )
+    assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 9
     with x_culture.get_bank_conn() as bank_conn:
         river_blocks = get_river_block_dict(bank_conn, currency_agenda_healer=sal_text)
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_tally) == 1
-    )
+    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 1
 
     with x_culture.get_bank_conn() as bank_conn:
         river_tallys = get_river_tally_dict(bank_conn, sal_text)
@@ -192,33 +176,25 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable03
     x_culture.save_public_agenda(x_agenda=ava_agenda)
     x_culture.refresh_bank_public_agendas_data()
 
-    sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 6
+    partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
+    assert get_single_result(x_culture.get_bank_conn(), partyunit_count_sqlstr) == 6
 
-    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
-    sqlstr_count_river_block = get_table_count_sqlstr("river_block")
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_block) == 0
-    )
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_tally) == 0
-    )
+    river_tally_count_sqlstr = get_table_count_sqlstr("river_tally")
+    river_block_count_sqlstr = get_table_count_sqlstr("river_block")
+    assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 0
+    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 0
 
     # WHEN
     x_culture.set_credit_flow_for_agenda(agenda_healer=sal_text)
 
     # THEN
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_block) == 6
-    )
+    assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 6
     with x_culture.get_bank_conn() as bank_conn:
         river_blocks = get_river_block_dict(bank_conn, currency_agenda_healer=sal_text)
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_tally) == 2
-    )
+    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 2
 
     with x_culture.get_bank_conn() as bank_conn:
         river_tallys = get_river_tally_dict(bank_conn, sal_text)
@@ -274,34 +250,25 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable04
 
     x_culture.refresh_bank_public_agendas_data()
 
-    sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 8
+    partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
+    assert get_single_result(x_culture.get_bank_conn(), partyunit_count_sqlstr) == 8
 
-    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
-    sqlstr_count_river_block = get_table_count_sqlstr("river_block")
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_block) == 0
-    )
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_tally) == 0
-    )
+    river_tally_count_sqlstr = get_table_count_sqlstr("river_tally")
+    river_block_count_sqlstr = get_table_count_sqlstr("river_block")
+    assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 0
+    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 0
 
     # WHEN
     x_culture.set_credit_flow_for_agenda(agenda_healer=sal_text)
 
     # THEN
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_block)
-        == 40
-    )
+    assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 40
     # with x_culture.get_bank_conn() as bank_conn:
     #     river_blocks = get_river_block_dict(bank_conn, currency_agenda_healer=sal_text)
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_tally) == 2
-    )
+    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 2
 
     with x_culture.get_bank_conn() as bank_conn:
         river_tallys = get_river_tally_dict(bank_conn, sal_text)
@@ -358,34 +325,25 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable05
 
     x_culture.refresh_bank_public_agendas_data()
 
-    sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 9
+    partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
+    assert get_single_result(x_culture.get_bank_conn(), partyunit_count_sqlstr) == 9
 
-    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
-    sqlstr_count_river_block = get_table_count_sqlstr("river_block")
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_block) == 0
-    )
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_tally) == 0
-    )
+    river_tally_count_sqlstr = get_table_count_sqlstr("river_tally")
+    river_block_count_sqlstr = get_table_count_sqlstr("river_block")
+    assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 0
+    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 0
 
     # WHEN
     x_culture.set_credit_flow_for_agenda(agenda_healer=sal_text)
 
     # THEN
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_block)
-        == 40
-    )
+    assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 40
     # with x_culture.get_bank_conn() as bank_conn:
     #     river_blocks = get_river_block_dict(bank_conn, currency_agenda_healer=sal_text)
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_tally) == 3
-    )
+    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 3
 
     with x_culture.get_bank_conn() as bank_conn:
         river_tallys = get_river_tally_dict(bank_conn, sal_text)
@@ -442,37 +400,27 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyDeletesPreviousRiver(
     x_culture.set_credit_flow_for_agenda(agenda_healer=sal_text)
     x_culture.set_credit_flow_for_agenda(agenda_healer=elu_text)
 
-    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
-    sqlstr_count_river_block = get_table_count_sqlstr("river_block")
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_block)
-        == 16
-    )
+    river_tally_count_sqlstr = get_table_count_sqlstr("river_tally")
+    river_block_count_sqlstr = get_table_count_sqlstr("river_block")
+    assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 16
 
     with x_culture.get_bank_conn() as bank_conn:
         river_blocks = get_river_block_dict(bank_conn, currency_agenda_healer=sal_text)
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_tally) == 3
-    )
+    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 3
 
     # WHEN
     # sal.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
     # x_culture.save_public_agenda(x_agenda=sal)
     x_culture.set_credit_flow_for_agenda(agenda_healer=sal_text)
 
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_block)
-        == 16
-    )
+    assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 16
     with x_culture.get_bank_conn() as bank_conn:
         river_blocks = get_river_block_dict(bank_conn, currency_agenda_healer=sal_text)
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_tally) == 3
-    )
+    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 3
 
 
 def test_culture_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
@@ -514,17 +462,13 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
 
     x_culture.refresh_bank_public_agendas_data()
 
-    sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 9
+    partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
+    assert get_single_result(x_culture.get_bank_conn(), partyunit_count_sqlstr) == 9
 
-    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
-    sqlstr_count_river_block = get_table_count_sqlstr("river_block")
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_block) == 0
-    )
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_tally) == 0
-    )
+    river_tally_count_sqlstr = get_table_count_sqlstr("river_tally")
+    river_block_count_sqlstr = get_table_count_sqlstr("river_block")
+    assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 0
+    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 0
 
     # WHEN
     mbc = 13
@@ -536,10 +480,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_block)
-        == mbc
-    )
+    assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == mbc
 
 
 def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable05(
@@ -581,34 +522,25 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable05
 
     x_culture.refresh_bank_public_agendas_data()
 
-    sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 9
+    partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
+    assert get_single_result(x_culture.get_bank_conn(), partyunit_count_sqlstr) == 9
 
-    sqlstr_count_river_tally = get_table_count_sqlstr("river_tally")
-    sqlstr_count_river_block = get_table_count_sqlstr("river_block")
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_block) == 0
-    )
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_tally) == 0
-    )
+    river_tally_count_sqlstr = get_table_count_sqlstr("river_tally")
+    river_block_count_sqlstr = get_table_count_sqlstr("river_block")
+    assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 0
+    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 0
 
     # WHEN
     x_culture.set_credit_flow_for_agenda(agenda_healer=sal_text)
 
     # THEN
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_block)
-        == 40
-    )
+    assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 40
     with x_culture.get_bank_conn() as bank_conn:
         river_blocks = get_river_block_dict(bank_conn, currency_agenda_healer=sal_text)
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
-    assert (
-        get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_river_tally) == 3
-    )
+    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 3
 
     with x_culture.get_bank_conn() as bank_conn:
         river_tallys = get_river_tally_dict(bank_conn, sal_text)
@@ -698,7 +630,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyBuildsASingleContinuousRang
     
     """
     with x_culture.get_bank_conn() as bank_conn:
-        assert get_single_result_back(bank_conn, count_range_fails_sql) == 0
+        assert get_single_result(bank_conn, count_range_fails_sql) == 0
 
 
 def test_culture_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(

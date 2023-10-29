@@ -39,8 +39,8 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     _agenda_goal_ratio_debt_text = "_agenda_goal_ratio_debt"
     _creditor_active_text = "_creditor_active"
     _debtor_active_text = "_debtor_active"
-    ledger_text = "ledger"
-    ledger_columns = {
+    partyunit_text = "partyunit"
+    partyunit_columns = {
         agenda_healer_text: 1,
         party_title_text: 1,
         _agenda_credit_text: 1,
@@ -118,7 +118,7 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
 
     curr_tables = {
         agendaunit_text: agendaunit_columns,
-        ledger_text: ledger_columns,
+        partyunit_text: partyunit_columns,
         river_tally_text: river_tally_columns,
         river_block_text: river_block_columns,
         river_circle_text: river_circle_columns,
@@ -135,7 +135,7 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     assert db_tables.get(agendaunit_text) != None  # 0
     assert db_tables.get(groupunit_catalog_text) != None  # 7
     assert db_tables.get(idea_catalog_text) != None  # 5
-    assert db_tables.get(ledger_text) != None  # 1
+    assert db_tables.get(partyunit_text) != None  # 1
     assert db_tables.get(river_circle_text) != None  # 4
     assert db_tables.get(river_block_text) != None  # 3
     assert db_tables.get(river_tally_text) != None  # 2
@@ -152,7 +152,7 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     assert db_tables_columns.get(agendaunit_text) == agendaunit_columns
     assert db_tables_columns.get(groupunit_catalog_text) == groupunit_catalog_columns
     assert db_tables_columns.get(idea_catalog_text) == idea_catalog_columns
-    assert db_tables_columns.get(ledger_text) == ledger_columns
+    assert db_tables_columns.get(partyunit_text) == partyunit_columns
     assert db_tables_columns.get(river_circle_text) == river_circle_columns
     assert db_tables_columns.get(river_block_text) == river_block_columns
     assert db_tables_columns.get(river_tally_text) == river_tally_columns

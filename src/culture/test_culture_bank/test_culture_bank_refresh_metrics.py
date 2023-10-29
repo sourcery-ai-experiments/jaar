@@ -10,7 +10,7 @@ from src.culture.examples.culture_env_kit import (
     get_test_cultures_dir,
     env_dir_setup_cleanup,
 )
-from src.culture.y_func import get_single_result_back
+from src.culture.y_func import get_single_result
 from src.culture.bank_sqlstr import (
     get_table_count_sqlstr,
     get_idea_catalog_table_count,
@@ -31,7 +31,7 @@ from src.culture.examples.example_councils import (
     get_6node_agenda,
     get_agenda_3CleanNodesRandomWeights,
 )
-from src.culture.y_func import get_single_result_back
+from src.culture.y_func import get_single_result
 
 
 def test_culture_refresh_bank_public_agendas_data_CorrectlyDeletesOldBankInMemory(
@@ -50,14 +50,14 @@ def test_culture_refresh_bank_public_agendas_data_CorrectlyDeletesOldBankInMemor
     bob.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob)
     x_culture.refresh_bank_public_agendas_data()
-    sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 1
+    partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
+    assert get_single_result(x_culture.get_bank_conn(), partyunit_count_sqlstr) == 1
 
     # WHEN
     x_culture.refresh_bank_public_agendas_data()
 
     # THEN
-    assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 1
+    assert get_single_result(x_culture.get_bank_conn(), partyunit_count_sqlstr) == 1
 
 
 def test_culture_refresh_bank_public_agendas_data_CorrectlyDeletesOldBankFile(
@@ -76,20 +76,20 @@ def test_culture_refresh_bank_public_agendas_data_CorrectlyDeletesOldBankFile(
     bob.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob)
     x_culture.refresh_bank_public_agendas_data()
-    sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 1
+    partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
+    assert get_single_result(x_culture.get_bank_conn(), partyunit_count_sqlstr) == 1
 
     # WHEN
     x_culture.refresh_bank_public_agendas_data()
 
     # THEN
-    assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 1
+    assert get_single_result(x_culture.get_bank_conn(), partyunit_count_sqlstr) == 1
 
 
-def test_culture_refresh_bank_public_agendas_data_CorrectlyPopulatesLedgerTable01(
+def test_culture_refresh_bank_public_agendas_data_CorrectlyPopulatesPartyunitTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_culture = cultureunit_shop(
         handle=get_temp_env_handle(), cultures_dir=get_test_cultures_dir()
     )
@@ -124,20 +124,20 @@ def test_culture_refresh_bank_public_agendas_data_CorrectlyPopulatesLedgerTable0
     elu.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
     x_culture.save_public_agenda(x_agenda=elu)
 
-    sqlstr_count_ledger = get_table_count_sqlstr("ledger")
-    assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 0
+    partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
+    assert get_single_result(x_culture.get_bank_conn(), partyunit_count_sqlstr) == 0
 
     # WHEN
     x_culture.refresh_bank_public_agendas_data()
 
     # THEN
-    assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_ledger) == 12
+    assert get_single_result(x_culture.get_bank_conn(), partyunit_count_sqlstr) == 12
 
 
 def test_culture_refresh_bank_public_agendas_data_CorrectlyPopulatesAgendaTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_culture = cultureunit_shop(
         handle=get_temp_env_handle(), cultures_dir=get_test_cultures_dir()
     )
@@ -153,20 +153,20 @@ def test_culture_refresh_bank_public_agendas_data_CorrectlyPopulatesAgendaTable0
     x_culture.save_public_agenda(x_agenda=agendaunit_shop(_healer=sal_text))
     x_culture.save_public_agenda(x_agenda=agendaunit_shop(_healer=elu_text))
 
-    sqlstr_count_agendas = get_table_count_sqlstr("agendaunit")
-    assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_agendas) == 0
+    agenda_count_sqlstrs = get_table_count_sqlstr("agendaunit")
+    assert get_single_result(x_culture.get_bank_conn(), agenda_count_sqlstrs) == 0
 
     # WHEN
     x_culture.refresh_bank_public_agendas_data()
 
     # THEN
-    assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_agendas) == 4
+    assert get_single_result(x_culture.get_bank_conn(), agenda_count_sqlstrs) == 4
 
 
 def test_culture_refresh_bank_public_agendas_data_CorrectlyPopulatesAgendaTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_culture = cultureunit_shop(
         handle=get_temp_env_handle(), cultures_dir=get_test_cultures_dir()
     )
@@ -182,14 +182,14 @@ def test_culture_refresh_bank_public_agendas_data_CorrectlyPopulatesAgendaTable0
     x_culture.save_public_agenda(x_agenda=agendaunit_shop(_healer=sal_text))
     x_culture.save_public_agenda(x_agenda=agendaunit_shop(_healer=elu_text))
 
-    sqlstr_count_agendas = get_table_count_sqlstr("agendaunit")
-    assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_agendas) == 0
+    agenda_count_sqlstrs = get_table_count_sqlstr("agendaunit")
+    assert get_single_result(x_culture.get_bank_conn(), agenda_count_sqlstrs) == 0
 
     # WHEN
     x_culture.refresh_bank_public_agendas_data()
 
     # THEN
-    assert get_single_result_back(x_culture.get_bank_conn(), sqlstr_count_agendas) == 4
+    assert get_single_result(x_culture.get_bank_conn(), agenda_count_sqlstrs) == 4
 
 
 def test_culture_refresh_bank_public_agendas_data_CorrectlyPopulates_groupunit_catalog(
@@ -213,13 +213,13 @@ def test_culture_refresh_bank_public_agendas_data_CorrectlyPopulates_groupunit_c
     x_culture.save_public_agenda(x_agenda=tom_agenda)
 
     sqlstr = get_table_count_sqlstr("groupunit_catalog")
-    assert get_single_result_back(x_culture.get_bank_conn(), sqlstr) == 0
+    assert get_single_result(x_culture.get_bank_conn(), sqlstr) == 0
 
     # WHEN
     x_culture.refresh_bank_public_agendas_data()
 
     # THEN
-    assert get_single_result_back(x_culture.get_bank_conn(), sqlstr) == 3
+    assert get_single_result(x_culture.get_bank_conn(), sqlstr) == 3
 
 
 def test_culture_set_agenda_bank_attrs_CorrectlyPopulatesAgenda_Groupunit_Partylinks(
@@ -318,7 +318,7 @@ def test_culture_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
 def test_culture_refresh_bank_public_agendas_data_Populates_idea_catalog_table(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
     x_culture.refresh_bank_public_agendas_data()
@@ -375,7 +375,7 @@ def test_culture_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup)
     i_count_sqlstr = get_table_count_sqlstr("idea_catalog")
     with x_culture.get_bank_conn() as bank_conn:
         print(f"{i_count_sqlstr=}")
-        assert get_single_result_back(x_culture.get_bank_conn(), i_count_sqlstr) == 20
+        assert get_single_result(x_culture.get_bank_conn(), i_count_sqlstr) == 20
 
     # WHEN / THEN
     assert len(get_idea_catalog_dict(x_culture.get_bank_conn())) == 20
@@ -390,8 +390,7 @@ def test_culture_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup)
 def test_culture_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
-
+    # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
     x_culture.refresh_bank_public_agendas_data()
@@ -418,8 +417,7 @@ def test_culture_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTabl
 def test_refresh_bank_public_agendas_data_Populates_acptfact_catalog_table(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
-
+    # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
     x_culture.refresh_bank_public_agendas_data()
@@ -478,8 +476,7 @@ def test_refresh_bank_public_agendas_data_Populates_acptfact_catalog_table(
 def test_culture_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
-
+    # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
     x_culture.refresh_bank_public_agendas_data()
@@ -522,7 +519,7 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     x_culture.save_public_agenda(x_agenda=tom_agenda)
     x_culture.refresh_bank_public_agendas_data()
     sqlstr = get_table_count_sqlstr("groupunit_catalog")
-    assert get_single_result_back(x_culture.get_bank_conn(), sqlstr) == 3
+    assert get_single_result(x_culture.get_bank_conn(), sqlstr) == 3
 
     # WHEN
     with x_culture.get_bank_conn() as bank_conn:
