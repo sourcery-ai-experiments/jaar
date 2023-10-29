@@ -52,7 +52,7 @@ class MainApp(QApplication):
 
     def editmain_show(self):
         if self.main_window.ignore_agenda_x is None:
-            self.main_window.seed = self.main_window.x_kitchen._admin.open_seed_agenda()
+            self.main_window.seed = self.main_window.x_council._admin.open_seed_agenda()
             self.editmain_view.agenda_x = self.main_window.seed
         else:
             self.editmain_view.agenda_x = self.main_window.ignore_agenda_x
@@ -60,8 +60,8 @@ class MainApp(QApplication):
         self.editmain_view.show()
 
     def edit5issue_show(self):
-        if self.main_window.x_kitchen != None:
-            self.edit5issue_view.x_kitchen = self.main_window.x_kitchen
+        if self.main_window.x_council != None:
+            self.edit5issue_view.x_council = self.main_window.x_council
             self.edit5issue_view.refresh_all()
             self.edit5issue_view.show()
 
@@ -113,7 +113,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.five_issue_button.clicked.connect(self.open_edit5issue)
 
         self.culture_x = None
-        self.x_kitchen = None
+        self.x_council = None
         self.ignore_agenda_x = None
         setup_test_example_environment()
         first_env = "ex5"
@@ -123,24 +123,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_culture()
         self.culture_handle_combo_refresh()
         self.culture_handle_combo.setCurrentText(first_env)
-        self._healer_load(kitchen_dub="ernie")
+        self._healer_load(council_dub="ernie")
 
     def save_seed(self):
         if self.seed != None:
-            self.x_kitchen._admin.save_seed_agenda(self.seed)
+            self.x_council._admin.save_seed_agenda(self.seed)
         self.refresh_healer()
 
     def reload_all_src_agendas(self):
         if self.culture_x != None:
-            self.culture_x.reload_all_kitchenunits_src_agendaunits()
+            self.culture_x.reload_all_councilunits_src_agendaunits()
 
     def set_public_and_reload_srcs(self):
         self.save_output_agenda_to_public()
         self.reload_all_src_agendas()
 
     def save_output_agenda_to_public(self):
-        if self.x_kitchen != None:
-            self.x_kitchen.save_output_agenda_to_public()
+        if self.x_council != None:
+            self.x_council.save_output_agenda_to_public()
         self.refresh_culture()
 
     def culture_load_from_file(self):
@@ -166,15 +166,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.depotlink_title.setText(f"{selected_healer} - {selected_agenda}")
 
     def healers_table_select(self):
-        x_kitchen_dub = self.healers_table.item(
+        x_council_dub = self.healers_table.item(
             self.healers_table.currentRow(), 0
         ).text()
-        self._healer_load(kitchen_dub=x_kitchen_dub)
+        self._healer_load(council_dub=x_council_dub)
 
-    def _healer_load(self, kitchen_dub: str):
-        self.culture_x.create_new_kitchenunit(title=kitchen_dub)
-        self.x_kitchen = self.culture_x._kitchenunits.get(kitchen_dub)
-        self.kitchen_dub.setText(self.x_kitchen._admin.title)
+    def _healer_load(self, council_dub: str):
+        self.culture_x.create_new_councilunit(title=council_dub)
+        self.x_council = self.culture_x._councilunits.get(council_dub)
+        self.council_dub.setText(self.x_council._admin.title)
         self.refresh_healer()
 
     def depotlinks_table_select(self):
@@ -194,13 +194,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         # self.ignore_agenda_x = self.culture_x.get_public_agenda(
         self.ignore_agenda_x = self.culture_x.get_agenda_from_ignores_dir(
-            kitchen_dub=self.x_kitchen._admin.title, _healer=ignore_agenda_healer
+            council_dub=self.x_council._admin.title, _healer=ignore_agenda_healer
         )
         self.edit_agenda = self.ignore_agenda_x
 
     def ignore_agenda_file_update(self):
         self.culture_x.set_ignore_agenda_file(
-            kitchen_dub=self.x_kitchen._admin.title, agenda_obj=self.ignore_agenda_x
+            council_dub=self.x_council._admin.title, agenda_obj=self.ignore_agenda_x
         )
         self.refresh_healer()
 
@@ -254,23 +254,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_culture()
 
     def healer_insert(self):
-        self.culture_x.create_new_kitchenunit(kitchen_dub=self.kitchen_dub.text())
+        self.culture_x.create_new_councilunit(council_dub=self.council_dub.text())
         self.refresh_healers()
 
     def healer_update_title(self):
         currently_selected = self.healers_table.item(
             self.healers_table.currentRow(), 0
         ).text()
-        typed_in = self.kitchen_dub.text()
+        typed_in = self.council_dub.text()
         if currently_selected != typed_in:
-            self.culture_x.rename_kitchenunit(
+            self.culture_x.rename_councilunit(
                 old_label=currently_selected, new_label=typed_in
             )
             self.refresh_healers()
 
     def healer_delete(self):
-        self.culture_x.del_kitchenunit_dir(
-            kitchen_dub=self.healers_table.item(
+        self.culture_x.del_councilunit_dir(
+            council_dub=self.healers_table.item(
                 self.healers_table.currentRow(), 0
             ).text()
         )
@@ -280,40 +280,40 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         agenda_healer = self.agendas_table.item(
             self.agendas_table.currentRow(), 0
         ).text()
-        if self.x_kitchen != None:
+        if self.x_council != None:
             agenda_json = x_func_open_file(
-                dest_dir=self.x_kitchen._admin._agendas_public_dir,
+                dest_dir=self.x_council._admin._agendas_public_dir,
                 file_name=f"{agenda_healer}.json",
             )
             agenda_x = get_agenda_from_json(agenda_json)
-            self.x_kitchen.set_depot_agenda(
+            self.x_council.set_depot_agenda(
                 agenda_x=agenda_x,
                 depotlink_type=self.depotlink_type_combo.currentText(),
                 depotlink_weight=self.depotlink_weight.text(),
             )
-            self.culture_x.save_kitchenunit_file(
-                kitchen_dub=self.x_kitchen._admin.title
+            self.culture_x.save_councilunit_file(
+                council_dub=self.x_council._admin.title
             )
         self.refresh_healer()
 
     def depotlink_update(self):
-        kitchen_dub_x = self.x_kitchen._admin.title
+        council_dub_x = self.x_council._admin.title
         self.culture_x.update_depotlink(
-            kitchen_dub=kitchen_dub_x,
+            council_dub=council_dub_x,
             partytitle=self.depotlink_title.text(),
             depotlink_type=self.depotlink_type_combo.currentText(),
             creditor_weight=self.depotlink_weight.text(),
             debtor_weight=self.depotlink_weight.text(),
         )
-        self.culture_x.save_kitchenunit_file(kitchen_dub=kitchen_dub_x)
+        self.culture_x.save_councilunit_file(council_dub=council_dub_x)
         self.refresh_healer()
 
     def depotlink_delete(self):
-        kitchen_dub_x = self.x_kitchen._admin.title
+        council_dub_x = self.x_council._admin.title
         self.culture_x.del_depotlink(
-            kitchen_dub=kitchen_dub_x, agendaunit_healer=self.depotlink_title.text()
+            council_dub=council_dub_x, agendaunit_healer=self.depotlink_title.text()
         )
-        self.culture_x.save_kitchenunit_file(kitchen_dub=kitchen_dub_x)
+        self.culture_x.save_councilunit_file(council_dub=council_dub_x)
         self.refresh_healer()
 
     def get_agenda_healer_list(self):
@@ -325,19 +325,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             agendas_list.append(get_agenda_from_json(x_agenda_json=agenda_json))
         return agendas_list
 
-    def get_kitchen_dub_list(self):
+    def get_council_dub_list(self):
         healers_healer_list = []
         if self.culture_x != None:
             healers_healer_list.extend(
                 [healer_dir]
-                for healer_dir in self.culture_x.get_kitchenunit_dir_paths_list()
+                for healer_dir in self.culture_x.get_councilunit_dir_paths_list()
             )
         return healers_healer_list
 
     def get_depotlink_list(self):
         depotlinks_list = []
-        if self.x_kitchen != None:
-            for cl_val in self.x_kitchen._depotlinks.values():
+        if self.x_council != None:
+            for cl_val in self.x_council._depotlinks.values():
                 depotlink_row = [
                     cl_val.agenda_healer,
                     cl_val.depotlink_type,
@@ -348,9 +348,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_digests_list(self):
         x_list = []
-        if self.x_kitchen != None:
+        if self.x_council != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.x_kitchen_admin._agendas_digest_dir,
+                dir_path=self.x_council_admin._agendas_digest_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -360,9 +360,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_ignores_list(self):
         x_list = []
-        if self.x_kitchen != None:
+        if self.x_council != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.x_kitchen._admin._agendas_ignore_dir,
+                dir_path=self.x_council._admin._agendas_ignore_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -456,7 +456,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def _sub_refresh_healers_table(self):
         self.refresh_x(
-            self.healers_table, ["Healers Table"], self.get_kitchen_dub_list()
+            self.healers_table, ["Healers Table"], self.get_council_dub_list()
         )
 
     def _sub_refresh_depotlinks_table(self):
@@ -466,10 +466,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.depotlink_type_combo.addItems(depotlink_types)
         self.depotlink_type_combo.setCurrentText("")
         column_header = ""
-        if self.x_kitchen is None:
+        if self.x_council is None:
             column_header = "Agendalinks Table"
-        elif self.x_kitchen != None:
-            column_header = f"'{self.x_kitchen._admin.title}' Agendas"
+        elif self.x_council != None:
+            column_header = f"'{self.x_council._admin.title}' Agendas"
         self.refresh_x(
             self.depotlinks_table,
             [column_header, "Link Type", "Weight"],
@@ -574,7 +574,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.culture_handle_combo.addItems(create_example_cultures_list())
 
     def refresh_healers(self):
-        self.x_kitchen = None
+        self.x_council = None
         self._sub_refresh_healers_table()
         self.refresh_healer()
 
@@ -583,9 +583,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._sub_refresh_digests_table()
         self._sub_refresh_ignores_table()
         self.healer_output_agenda = None
-        if self.x_kitchen != None:
+        if self.x_council != None:
             self.healer_output_agenda = (
-                self.x_kitchen._admin.get_remelded_output_agenda()
+                self.x_council._admin.get_remelded_output_agenda()
             )
         self._sub_refresh_p_ideas_table()
         self._sub_refresh_p_partys_table()

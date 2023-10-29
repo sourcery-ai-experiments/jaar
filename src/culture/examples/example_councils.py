@@ -4,8 +4,8 @@ from src.agenda.agenda import (
     ideacore_shop,
 )
 from src.agenda.examples.example_agendas import get_agenda_assignment_laundry_example1
-from src.culture.kitchen import kitchenunit_shop, KitchenUnit
-from src.culture.examples.kitchen_env_kit import get_temp_culture_handle
+from src.culture.council import councilunit_shop, CouncilUnit
+from src.culture.examples.council_env_kit import get_temp_culture_handle
 
 from random import randrange
 
@@ -159,9 +159,9 @@ def get_7nodeJRootWithH_agenda() -> AgendaUnit:
     return x_agenda
 
 
-def get_healer_2agenda(env_dir, culture_handle) -> KitchenUnit:
+def get_healer_2agenda(env_dir, culture_handle) -> CouncilUnit:
     yao_text = "Xio"
-    yao_healer = kitchenunit_shop(yao_text, env_dir, culture_handle)
+    yao_healer = councilunit_shop(yao_text, env_dir, culture_handle)
     yao_healer.set_depot_agenda(get_1node_agenda(), depotlink_type="blind_trust")
     yao_healer.set_depot_agenda(get_Jnode2node_agenda(), depotlink_type="blind_trust")
     return yao_healer

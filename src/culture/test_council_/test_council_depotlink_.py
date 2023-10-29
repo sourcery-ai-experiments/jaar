@@ -3,16 +3,16 @@ from src.agenda.x_func import (
     count_files as x_func_count_files,
     open_file as x_func_open_file,
 )
-from src.culture.kitchen import kitchenunit_shop
-from src.culture.examples.example_kitchens import (
+from src.culture.council import councilunit_shop
+from src.culture.examples.example_councils import (
     get_2node_agenda,
     get_agenda_2CleanNodesRandomWeights as get_cal2nodes,
     get_agenda_3CleanNodesRandomWeights as get_cal3nodes,
     get_agenda_assignment_laundry_example1 as get_amer_assign_ex,
 )
-from src.culture.examples.kitchen_env_kit import (
-    kitchen_dir_setup_cleanup,
-    get_temp_kitchenunit_dir,
+from src.culture.examples.council_env_kit import (
+    council_dir_setup_cleanup,
+    get_temp_councilunit_dir,
     get_temp_culture_handle,
     create_agenda_file,
 )
@@ -22,13 +22,13 @@ from os import path as os_path
 from pytest import raises as pytest_raises
 
 
-def test_kitchenunit_set_depotlink_RaisesErrorWhenAgendaDoesNotExist(
-    kitchen_dir_setup_cleanup,
+def test_councilunit_set_depotlink_RaisesErrorWhenAgendaDoesNotExist(
+    council_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
-    env_dir = get_temp_kitchenunit_dir()
-    sue_agenda = kitchenunit_shop(sue_text, env_dir, get_temp_culture_handle())
+    env_dir = get_temp_councilunit_dir()
+    sue_agenda = councilunit_shop(sue_text, env_dir, get_temp_culture_handle())
     sue_agenda.set_seed_if_empty()
     tim_text = "Tim"
     assert list(sue_agenda._seed._partys.keys()) == [sue_text]
@@ -44,11 +44,11 @@ def test_kitchenunit_set_depotlink_RaisesErrorWhenAgendaDoesNotExist(
     )
 
 
-def test_kitchenunit_set_depotlink_CorrectlySetsseedPartys(kitchen_dir_setup_cleanup):
+def test_councilunit_set_depotlink_CorrectlySetsseedPartys(council_dir_setup_cleanup):
     # GIVEN
     yao_text = "yao"
-    env_dir = get_temp_kitchenunit_dir()
-    yao_ux = kitchenunit_shop(yao_text, env_dir, get_temp_culture_handle())
+    env_dir = get_temp_councilunit_dir()
+    yao_ux = councilunit_shop(yao_text, env_dir, get_temp_culture_handle())
     yao_ux.set_seed_if_empty()
     sue_text = "sue"
     create_agenda_file(yao_ux._admin._agendas_depot_dir, sue_text)
@@ -62,13 +62,13 @@ def test_kitchenunit_set_depotlink_CorrectlySetsseedPartys(kitchen_dir_setup_cle
     assert yao_ux._seed.get_party(sue_text).depotlink_type is None
 
 
-def test_kitchenunit_set_depotlink_CorrectlySetsAssignment(kitchen_dir_setup_cleanup):
+def test_councilunit_set_depotlink_CorrectlySetsAssignment(council_dir_setup_cleanup):
     # GIVEN
     amer_agenda = get_amer_assign_ex()
     print(f"{len(amer_agenda._idea_dict)=}")
     cali_text = "Cali"
-    cali_ux = kitchenunit_shop(
-        cali_text, get_temp_kitchenunit_dir(), get_temp_culture_handle()
+    cali_ux = councilunit_shop(
+        cali_text, get_temp_councilunit_dir(), get_temp_culture_handle()
     )
     cali_ux.create_core_dir_and_files()
     cali_ux.set_seed_if_empty()
@@ -102,11 +102,11 @@ def test_kitchenunit_set_depotlink_CorrectlySetsAssignment(kitchen_dir_setup_cle
     assert digest_agenda._healer == cali_text
 
 
-def test_kitchenunit_del_depot_agenda_CorrectlyDeletesObj(kitchen_dir_setup_cleanup):
+def test_councilunit_del_depot_agenda_CorrectlyDeletesObj(council_dir_setup_cleanup):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_kitchenunit_dir()
-    bob_agenda = kitchenunit_shop(bob_text, env_dir, get_temp_culture_handle())
+    env_dir = get_temp_councilunit_dir()
+    bob_agenda = councilunit_shop(bob_text, env_dir, get_temp_culture_handle())
     yao_text = "Yao"
     create_agenda_file(bob_agenda._admin._agendas_depot_dir, yao_text)
     assignment_text = "assignment"
@@ -123,13 +123,13 @@ def test_kitchenunit_del_depot_agenda_CorrectlyDeletesObj(kitchen_dir_setup_clea
     assert bob_agenda._seed.get_party(yao_text).depotlink_type is None
 
 
-def test_kitchenunit_del_depot_agenda_CorrectlyDeletesBlindTrustFile(
-    kitchen_dir_setup_cleanup,
+def test_councilunit_del_depot_agenda_CorrectlyDeletesBlindTrustFile(
+    council_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_kitchenunit_dir()
-    bob_agenda = kitchenunit_shop(bob_text, env_dir, get_temp_culture_handle())
+    env_dir = get_temp_councilunit_dir()
+    bob_agenda = councilunit_shop(bob_text, env_dir, get_temp_culture_handle())
     lai_text = "Lai"
     create_agenda_file(bob_agenda._admin._agendas_depot_dir, lai_text)
     bob_agenda.set_seed_if_empty()
@@ -145,13 +145,13 @@ def test_kitchenunit_del_depot_agenda_CorrectlyDeletesBlindTrustFile(
     assert x_func_count_files(dir_path=bob_agenda._admin._agendas_digest_dir) == 0
 
 
-def test_kitchenunit_set_depot_agenda_SavesFileCorrectly(
-    kitchen_dir_setup_cleanup,
+def test_councilunit_set_depot_agenda_SavesFileCorrectly(
+    council_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_kitchenunit_dir()
-    bob_agenda = kitchenunit_shop(bob_text, env_dir, get_temp_culture_handle())
+    env_dir = get_temp_councilunit_dir()
+    bob_agenda = councilunit_shop(bob_text, env_dir, get_temp_culture_handle())
     cal1 = get_2node_agenda()
     assert (
         x_func_count_files(bob_agenda._admin._agendas_depot_dir) is None
@@ -168,13 +168,13 @@ def test_kitchenunit_set_depot_agenda_SavesFileCorrectly(
     assert x_func_count_files(bob_agenda._admin._agendas_depot_dir) == 1
 
 
-def test_kitchenunit_delete_ignore_depotlink_CorrectlyDeletesObj(
-    kitchen_dir_setup_cleanup,
+def test_councilunit_delete_ignore_depotlink_CorrectlyDeletesObj(
+    council_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_kitchenunit_dir()
-    bob_agenda = kitchenunit_shop(bob_text, env_dir, get_temp_culture_handle())
+    env_dir = get_temp_councilunit_dir()
+    bob_agenda = councilunit_shop(bob_text, env_dir, get_temp_culture_handle())
     yao_text = "Yao"
     create_agenda_file(bob_agenda._admin._agendas_depot_dir, yao_text)
     assignment_text = "assignment"
@@ -191,13 +191,13 @@ def test_kitchenunit_delete_ignore_depotlink_CorrectlyDeletesObj(
     assert bob_agenda._seed.get_party(yao_text).depotlink_type is None
 
 
-def test_kitchenunit_del_depot_agenda_CorrectlyDoesNotDeletesIgnoreFile(
-    kitchen_dir_setup_cleanup,
+def test_councilunit_del_depot_agenda_CorrectlyDoesNotDeletesIgnoreFile(
+    council_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "bob"
-    env_dir = get_temp_kitchenunit_dir()
-    bob_agenda = kitchenunit_shop(bob_text, env_dir, get_temp_culture_handle())
+    env_dir = get_temp_councilunit_dir()
+    bob_agenda = councilunit_shop(bob_text, env_dir, get_temp_culture_handle())
     zia_text = "Zia"
     create_agenda_file(bob_agenda._admin._agendas_depot_dir, zia_text)
     bob_agenda.set_seed_if_empty()
@@ -215,13 +215,13 @@ def test_kitchenunit_del_depot_agenda_CorrectlyDoesNotDeletesIgnoreFile(
     assert x_func_count_files(dir_path=bob_agenda._admin._agendas_ignore_dir) == 1
 
 
-def test_kitchenunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
-    kitchen_dir_setup_cleanup,
+def test_councilunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
+    council_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_kitchenunit_dir()
-    bob_ux = kitchenunit_shop(bob_text, env_dir, get_temp_culture_handle())
+    env_dir = get_temp_councilunit_dir()
+    bob_ux = councilunit_shop(bob_text, env_dir, get_temp_culture_handle())
     zia_text = "Zia"
     create_agenda_file(bob_ux._admin._agendas_depot_dir, zia_text)
     bob_ux.set_seed_if_empty()
@@ -242,16 +242,16 @@ def test_kitchenunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
     assert x_func_count_files(dir_path=bob_ux._admin._agendas_ignore_dir) == 1
 
 
-def test_kitchenunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
-    kitchen_dir_setup_cleanup,
+def test_councilunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
+    council_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_kitchenunit_dir()
+    env_dir = get_temp_councilunit_dir()
     culture_handle = get_temp_env_handle()
     sx = cultureunit_shop(handle=culture_handle, cultures_dir=env_dir)
     yao_text = "Yao"
-    sx.create_new_kitchenunit(kitchen_dub=yao_text)
-    yao_agenda = sx.get_kitchenunit(dub=yao_text)
+    sx.create_new_councilunit(council_dub=yao_text)
+    yao_agenda = sx.get_councilunit(dub=yao_text)
     assert len(yao_agenda._admin.get_remelded_output_agenda().get_idea_list()) == 1
 
     ernie_text = "ernie"

@@ -4,7 +4,7 @@ from src.culture.examples.culture_env_kit import (
     env_dir_setup_cleanup,
     get_test_cultures_dir,
 )
-from src.culture.examples.example_kitchens import (
+from src.culture.examples.example_councils import (
     get_agenda_assignment_laundry_example1,
 )
 
@@ -15,11 +15,11 @@ def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
 
     # GIVEN
     amer_text = "Amer"
-    x_culture.create_new_kitchenunit(kitchen_dub=amer_text)
-    amer_kitchen = x_culture.get_kitchenunit(dub=amer_text)
+    x_culture.create_new_councilunit(council_dub=amer_text)
+    amer_council = x_culture.get_councilunit(dub=amer_text)
     laundry_agenda = get_agenda_assignment_laundry_example1()
     laundry_agenda.set_culture_handle(x_culture.handle)
-    amer_kitchen.set_seed(laundry_agenda)
+    amer_council.set_seed(laundry_agenda)
 
     casa_text = "casa"
     casa_road = f"{x_culture.handle},{casa_text}"
@@ -30,18 +30,18 @@ def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     b_bare_text = "bare"
     b_bare_road = f"{basket_road},{b_bare_text}"
     # set basket status to "bare"
-    seed_x = amer_kitchen.get_seed().set_acptfact(base=basket_road, pick=b_bare_road)
-    amer_kitchen.set_seed(seed_x)
+    seed_x = amer_council.get_seed().set_acptfact(base=basket_road, pick=b_bare_road)
+    amer_council.set_seed(seed_x)
     # save fact change to public
-    amer_kitchen._admin.save_refreshed_output_to_public()
+    amer_council._admin.save_refreshed_output_to_public()
     # print(f"{x_culture.get_public_agenda(amer_text)._idearoot._acptfactunits.keys()=}")
     amer_output = x_culture.get_public_agenda(amer_text)
 
     # create assignment for Cali
     cali_text = "Cali"
-    x_culture.create_new_kitchenunit(kitchen_dub=cali_text)
-    cali_kitchen = x_culture.get_kitchenunit(dub=cali_text)
-    cali_kitchen.set_depot_agenda(amer_output, "assignment")
+    x_culture.create_new_councilunit(council_dub=cali_text)
+    cali_council = x_culture.get_councilunit(dub=cali_text)
+    cali_council.set_depot_agenda(amer_output, "assignment")
     old_cali_agenda = x_culture.get_output_agenda(cali_text)
     # print(f"{old_cali_agenda._partys.keys()=}")
     # print(f"{old_cali_agenda._idearoot._acptfactunits.keys()=}")
@@ -51,12 +51,12 @@ def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
 
     # WHEN
     # set basket status to "full"
-    amer_kitchen.get_seed().set_acptfact(base=basket_road, pick=b_full_road)
-    amer_kitchen.set_seed()
-    amer_kitchen._admin.save_refreshed_output_to_public()
+    amer_council.get_seed().set_acptfact(base=basket_road, pick=b_full_road)
+    amer_council.set_seed()
+    amer_council._admin.save_refreshed_output_to_public()
 
-    cali_kitchen.refresh_depot_agendas()
-    new_cali_agenda = cali_kitchen._admin.get_remelded_output_agenda()
+    cali_council.refresh_depot_agendas()
+    new_cali_agenda = cali_council._admin.get_remelded_output_agenda()
 
     # new_public_amer = x_culture.get_public_agenda(amer_text)
     # a_basket_acptfact = new_public_amer._idearoot._acptfactunits.get(basket_road)
@@ -73,21 +73,21 @@ def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     assert new_cali_agenda.get_goal_items()[0].get_road() == laundry_task_road
 
 
-def test_culture_kitchen_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
+def test_culture_council_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     # GIVEN
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
     amer_text = "Amer"
     beto_text = "Beto"
-    x_culture.create_new_kitchenunit(kitchen_dub=amer_text)
-    x_culture.create_new_kitchenunit(kitchen_dub=beto_text)
-    amer_kitchen = x_culture.get_kitchenunit(dub=amer_text)
-    beto_kitchen = x_culture.get_kitchenunit(dub=beto_text)
-    # print(f"{beto_kitchen=}")
+    x_culture.create_new_councilunit(council_dub=amer_text)
+    x_culture.create_new_councilunit(council_dub=beto_text)
+    amer_council = x_culture.get_councilunit(dub=amer_text)
+    beto_council = x_culture.get_councilunit(dub=beto_text)
+    # print(f"{beto_council=}")
     laundry_agenda = get_agenda_assignment_laundry_example1()
     laundry_agenda.set_culture_handle(x_culture.handle)
-    amer_kitchen.set_seed(laundry_agenda)
-    beto_kitchen.set_seed(laundry_agenda)
+    amer_council.set_seed(laundry_agenda)
+    beto_council.set_seed(laundry_agenda)
 
     casa_text = "casa"
     casa_road = f"{x_culture.handle},{casa_text}"
@@ -99,19 +99,19 @@ def test_culture_kitchen_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     b_bare_road = f"{basket_road},{b_bare_text}"
 
     # amer public laundry acptfact as "full"
-    amer_seed_x = amer_kitchen.get_seed().set_acptfact(basket_road, b_full_road)
-    beto_seed_x = beto_kitchen.get_seed().set_acptfact(basket_road, b_bare_road)
+    amer_seed_x = amer_council.get_seed().set_acptfact(basket_road, b_full_road)
+    beto_seed_x = beto_council.get_seed().set_acptfact(basket_road, b_bare_road)
 
-    amer_kitchen.set_seed(amer_seed_x)
-    beto_kitchen.set_seed(beto_seed_x)
-    amer_kitchen._admin.save_refreshed_output_to_public()
-    beto_kitchen._admin.save_refreshed_output_to_public()
+    amer_council.set_seed(amer_seed_x)
+    beto_council.set_seed(beto_seed_x)
+    amer_council._admin.save_refreshed_output_to_public()
+    beto_council._admin.save_refreshed_output_to_public()
     amer_output = x_culture.get_public_agenda(amer_text)
     beto_output = x_culture.get_public_agenda(beto_text)
 
     cali_text = "Cali"
-    x_culture.create_new_kitchenunit(cali_text)
-    cali_kichen = x_culture.get_kitchenunit(cali_text)
+    x_culture.create_new_councilunit(cali_text)
+    cali_kichen = x_culture.get_councilunit(cali_text)
     cali_kichen.set_depot_agenda(beto_output, "assignment")
     cali_kichen.set_depot_agenda(amer_output, "assignment")
 

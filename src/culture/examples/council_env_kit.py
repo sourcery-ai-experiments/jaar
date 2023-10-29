@@ -4,7 +4,7 @@ from src.agenda.agenda import agendaunit_shop
 from src.agenda.x_func import delete_dir, save_file as x_func_save_file
 
 
-def get_temp_kitchenunit_dir() -> str:
+def get_temp_councilunit_dir() -> str:
     return f"src/culture/examples/{get_temp_culture_handle()}"
 
 
@@ -13,23 +13,23 @@ def get_temp_culture_handle() -> str:
 
 
 @pytest_fixture()
-def kitchen_dir_setup_cleanup():
-    healer_dir = get_temp_kitchenunit_dir()
+def council_dir_setup_cleanup():
+    healer_dir = get_temp_councilunit_dir()
     delete_dir(dir=healer_dir)
     yield healer_dir
     delete_dir(dir=healer_dir)
 
 
-def create_agenda_file(agenda_kitchenunit_dir: str, agenda_healer: str):
+def create_agenda_file(agenda_councilunit_dir: str, agenda_healer: str):
     agenda_x = agendaunit_shop(_healer=agenda_healer)
-    # file_path = f"{agenda_kitchenunit_dir}/{agenda_x._healer}.json"
+    # file_path = f"{agenda_councilunit_dir}/{agenda_x._healer}.json"
     # # if not path.exists(file_path):
     # print(f"{file_path=} {agenda_x._healer=}")
     # with open(f"{file_path}", "w") as f:
     #     print(f" saving {agenda_x._healer=} to {file_path=}")
     #     f.write(agenda_x.get_json())
     x_func_save_file(
-        dest_dir=agenda_kitchenunit_dir,
+        dest_dir=agenda_councilunit_dir,
         file_name=f"{agenda_x._healer}.json",
         file_text=agenda_x.get_json(),
     )

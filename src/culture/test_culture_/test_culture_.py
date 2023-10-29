@@ -35,7 +35,7 @@ def test_culture_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     culture_file_name = "culture.json"
     culture_file_path = f"{culture_dir}/{culture_file_name}"
     agendas_dir = f"{culture_dir}/agendas"
-    kitchenunits_dir = f"{culture_dir}/kitchenunits"
+    councilunits_dir = f"{culture_dir}/councilunits"
     bank_file_name = "bank.db"
     bank_file_path = f"{culture_dir}/{bank_file_name}"
 
@@ -43,7 +43,7 @@ def test_culture_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.isdir(culture_dir) is False
     assert os_path.exists(culture_file_path) is False
     assert os_path.exists(agendas_dir) is False
-    assert os_path.exists(kitchenunits_dir) is False
+    assert os_path.exists(councilunits_dir) is False
     assert os_path.exists(bank_file_path) is False
 
     # WHEN
@@ -54,11 +54,11 @@ def test_culture_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.isdir(culture_dir)
     assert os_path.exists(culture_file_path)
     assert os_path.exists(agendas_dir)
-    assert os_path.exists(kitchenunits_dir)
+    assert os_path.exists(councilunits_dir)
     assert os_path.exists(bank_file_path)
     assert x_culture.get_object_root_dir() == culture_dir
     assert x_culture.get_public_dir() == agendas_dir
-    assert x_culture.get_kitchenunits_dir() == kitchenunits_dir
+    assert x_culture.get_councilunits_dir() == councilunits_dir
     assert x_culture.get_bank_db_path() == bank_file_path
 
 
@@ -69,14 +69,14 @@ def test_rename_example_culture_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanu
     old_culture_file_name = "culture.json"
     old_culture_file_path = f"{old_culture_dir}/{old_culture_file_name}"
     old_agendas_dir = f"{old_culture_dir}/agendas"
-    old_kitchenunits_dir = f"{old_culture_dir}/kitchenunits"
+    old_councilunits_dir = f"{old_culture_dir}/councilunits"
 
     new_x_handle = "ex_env1"
     new_culture_dir = f"src/culture/examples/cultures/{new_x_handle}"
     new_culture_file_name = "culture.json"
     new_culture_file_path = f"{new_culture_dir}/{new_culture_file_name}"
     new_agendas_dir = f"{new_culture_dir}/agendas"
-    new_kitchenunits_dir = f"{new_culture_dir}/kitchenunits"
+    new_councilunits_dir = f"{new_culture_dir}/councilunits"
     x_func_delete_dir(dir=new_culture_dir)
     print(f"{new_culture_dir=}")
 
@@ -92,17 +92,17 @@ def test_rename_example_culture_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanu
     assert os_path.isdir(old_culture_dir)
     assert os_path.exists(old_culture_file_path)
     assert os_path.exists(old_agendas_dir)
-    assert os_path.exists(old_kitchenunits_dir)
+    assert os_path.exists(old_councilunits_dir)
     assert x_culture.get_public_dir() == old_agendas_dir
-    assert x_culture.get_kitchenunits_dir() == old_kitchenunits_dir
+    assert x_culture.get_councilunits_dir() == old_councilunits_dir
 
     assert os_path.exists(new_culture_dir) is False
     assert os_path.isdir(new_culture_dir) is False
     assert os_path.exists(new_culture_file_path) is False
     assert os_path.exists(new_agendas_dir) is False
-    assert os_path.exists(new_kitchenunits_dir) is False
+    assert os_path.exists(new_councilunits_dir) is False
     assert x_culture.get_public_dir() != new_agendas_dir
-    assert x_culture.get_kitchenunits_dir() != new_kitchenunits_dir
+    assert x_culture.get_councilunits_dir() != new_councilunits_dir
     assert x_culture.handle != new_x_handle
 
     # WHEN
@@ -113,17 +113,17 @@ def test_rename_example_culture_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanu
     assert os_path.isdir(old_culture_dir) is False
     assert os_path.exists(old_culture_file_path) is False
     assert os_path.exists(old_agendas_dir) is False
-    assert os_path.exists(old_kitchenunits_dir) is False
+    assert os_path.exists(old_councilunits_dir) is False
     assert x_culture.get_public_dir() != old_agendas_dir
-    assert x_culture.get_kitchenunits_dir() != old_kitchenunits_dir
+    assert x_culture.get_councilunits_dir() != old_councilunits_dir
 
     assert os_path.exists(new_culture_dir)
     assert os_path.isdir(new_culture_dir)
     assert os_path.exists(new_culture_file_path)
     assert os_path.exists(new_agendas_dir)
-    assert os_path.exists(new_kitchenunits_dir)
+    assert os_path.exists(new_councilunits_dir)
     assert x_culture.get_public_dir() == new_agendas_dir
-    assert x_culture.get_kitchenunits_dir() == new_kitchenunits_dir
+    assert x_culture.get_councilunits_dir() == new_councilunits_dir
     assert x_culture.handle == new_x_handle
 
     # Undo change to directory
@@ -140,7 +140,7 @@ def test_copy_evaluation_culture_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     old_culture_file_name = "culture.json"
     old_culture_file_path = f"{old_culture_dir}/{old_culture_file_name}"
     old_agendas_dir = f"{old_culture_dir}/agendas"
-    old_kitchenunits_dir = f"{old_culture_dir}/kitchenunits"
+    old_councilunits_dir = f"{old_culture_dir}/councilunits"
 
     x_culture = cultureunit_shop(old_x_handle, get_test_cultures_dir())
     x_culture.create_dirs_if_null()
@@ -149,24 +149,24 @@ def test_copy_evaluation_culture_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     assert os_path.isdir(old_culture_dir)
     assert os_path.exists(old_culture_file_path)
     assert os_path.exists(old_agendas_dir)
-    assert os_path.exists(old_kitchenunits_dir)
+    assert os_path.exists(old_councilunits_dir)
     assert x_culture.get_public_dir() == old_agendas_dir
-    assert x_culture.get_kitchenunits_dir() == old_kitchenunits_dir
+    assert x_culture.get_councilunits_dir() == old_councilunits_dir
 
     new_x_handle = "ex_env1"
     new_culture_dir = f"src/culture/examples/cultures/{new_x_handle}"
     new_culture_file_name = "culture.json"
     new_culture_file_path = f"{new_culture_dir}/{new_culture_file_name}"
     new_agendas_dir = f"{new_culture_dir}/agendas"
-    new_kitchenunits_dir = f"{new_culture_dir}/kitchenunits"
+    new_councilunits_dir = f"{new_culture_dir}/councilunits"
 
     assert os_path.exists(new_culture_dir) is False
     assert os_path.isdir(new_culture_dir) is False
     assert os_path.exists(new_culture_file_path) is False
     assert os_path.exists(new_agendas_dir) is False
-    assert os_path.exists(new_kitchenunits_dir) is False
+    assert os_path.exists(new_councilunits_dir) is False
     assert x_culture.get_public_dir() != new_agendas_dir
-    assert x_culture.get_kitchenunits_dir() != new_kitchenunits_dir
+    assert x_culture.get_councilunits_dir() != new_councilunits_dir
     assert x_culture.handle != new_x_handle
 
     # WHEN
@@ -177,17 +177,17 @@ def test_copy_evaluation_culture_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     assert os_path.isdir(old_culture_dir)
     assert os_path.exists(old_culture_file_path)
     assert os_path.exists(old_agendas_dir)
-    assert os_path.exists(old_kitchenunits_dir)
+    assert os_path.exists(old_councilunits_dir)
     assert x_culture.get_public_dir() == old_agendas_dir
-    assert x_culture.get_kitchenunits_dir() == old_kitchenunits_dir
+    assert x_culture.get_councilunits_dir() == old_councilunits_dir
 
     assert os_path.exists(new_culture_dir)
     assert os_path.isdir(new_culture_dir)
     assert os_path.exists(new_culture_file_path)
     assert os_path.exists(new_agendas_dir)
-    assert os_path.exists(new_kitchenunits_dir)
+    assert os_path.exists(new_councilunits_dir)
     assert x_culture.get_public_dir() != new_agendas_dir
-    assert x_culture.get_kitchenunits_dir() != new_kitchenunits_dir
+    assert x_culture.get_councilunits_dir() != new_councilunits_dir
     assert x_culture.handle != new_x_handle
 
     # Undo change to directory

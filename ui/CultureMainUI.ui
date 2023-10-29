@@ -316,7 +316,7 @@
      <string>delete Healer</string>
     </property>
    </widget>
-   <widget class="QLineEdit" title="kitchen_dub">
+   <widget class="QLineEdit" title="council_dub">
     <property title="geometry">
      <rect>
       <x>190</x>

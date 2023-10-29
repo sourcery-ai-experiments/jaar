@@ -346,7 +346,7 @@ WHERE currency_healer = '{currency_agenda_healer}'
 
 # agenda
 def get_agendaunit_table_create_sqlstr() -> str:
-    """Create table that references the title of every agenda. The healer name of the one running that agenda's kitchen."""
+    """Create table that references the title of every agenda. The healer name of the one running that agenda's council."""
     return """
 CREATE TABLE IF NOT EXISTS agendaunit (
   healer VARCHAR(255) PRIMARY KEY ASC

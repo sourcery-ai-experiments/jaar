@@ -1,23 +1,23 @@
-from src.culture.kitchen import kitchenunit_shop
-from src.culture.examples.example_kitchens import (
+from src.culture.council import councilunit_shop
+from src.culture.examples.example_councils import (
     get_agenda_assignment_laundry_example1,
 )
-from src.culture.examples.kitchen_env_kit import (
-    kitchen_dir_setup_cleanup,
-    get_temp_kitchenunit_dir,
+from src.culture.examples.council_env_kit import (
+    council_dir_setup_cleanup,
+    get_temp_councilunit_dir,
     get_temp_culture_handle,
 )
 
 
 def test_healer_save_agenda_to_depot_assignment_link_CorrectlyCreatesAssignmentFile(
-    kitchen_dir_setup_cleanup,
+    council_dir_setup_cleanup,
 ):
     # GIVEN
     amer_agenda = get_agenda_assignment_laundry_example1()
     amer_agenda.set_culture_handle(get_temp_culture_handle())
     cali_text = "Cali"
-    cali_ux = kitchenunit_shop(
-        cali_text, get_temp_kitchenunit_dir(), get_temp_culture_handle()
+    cali_ux = councilunit_shop(
+        cali_text, get_temp_councilunit_dir(), get_temp_culture_handle()
     )
     cali_ux.create_core_dir_and_files()
     print(f"{amer_agenda._idearoot._label=}")

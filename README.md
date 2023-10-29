@@ -65,9 +65,9 @@ base attributes vs required attributess
 <!-- TODO: Add explanations -->
 CultureUnit objects
 
-CultureUnit KitchenUnit objects
+CultureUnit CouncilUnit objects
 
-CultureUnit KitchenUnit Agenda objects
+CultureUnit CouncilUnit Agenda objects
 
 CultureUnit Bank objects
 

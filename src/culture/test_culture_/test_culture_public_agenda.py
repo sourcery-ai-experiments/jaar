@@ -3,7 +3,7 @@ from src.agenda.examples.example_agendas import (
     get_agenda_1Task_1CE0MinutesRequired_1AcptFact as example_agendas_get_agenda_1Task_1CE0MinutesRequired_1AcptFact,
 )
 from src.culture.culture import cultureunit_shop
-from src.culture.examples.example_kitchens import (
+from src.culture.examples.example_councils import (
     get_1node_agenda as example_healers_get_1node_agenda,
     get_1node_agenda as example_healers_get_7nodeJRootWithH_agenda,
 )

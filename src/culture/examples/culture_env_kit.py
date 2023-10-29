@@ -18,7 +18,7 @@ from src.agenda.examples.example_agendas import (
 )
 
 from src.culture.culture import CultureUnit, cultureunit_shop
-from src.culture.examples.example_kitchens import (
+from src.culture.examples.example_councils import (
     get_1node_agenda as example_healers_get_1node_agenda,
     get_7nodeJRootWithH_agenda as example_healers_get_7nodeJRootWithH_agenda,
     get_agenda_2CleanNodesRandomWeights as example_healers_get_agenda_2CleanNodesRandomWeights,
@@ -89,46 +89,46 @@ def _delete_and_set_ex3():
     x_culture.save_public_agenda(x_agenda=example_agendas_agenda_v001())
     x_culture.save_public_agenda(x_agenda=example_agendas_agenda_v002())
 
-    # x_culture.set_healer(x_kitchen=kitchenunit_shop(title="w1", env_dir=x_culture.get_object_root_dir()))
-    # x_culture.set_healer(x_kitchen=kitchenunit_shop(title="w2", env_dir=x_culture.get_object_root_dir()))
+    # x_culture.set_healer(x_council=councilunit_shop(title="w1", env_dir=x_culture.get_object_root_dir()))
+    # x_culture.set_healer(x_council=councilunit_shop(title="w2", env_dir=x_culture.get_object_root_dir()))
     xia_text = "Xia"
-    x_culture.create_new_kitchenunit(kitchen_dub=xia_text)
+    x_culture.create_new_councilunit(council_dub=xia_text)
     healer_text = "Myagenda"
     x_culture.set_healer_depotlink(
         xia_text, agenda_healer=healer_text, depotlink_type="blind_trust"
     )
-    # w1_obj = x_culture.get_kitchenunit(dub=w1_text)
+    # w1_obj = x_culture.get_councilunit(dub=w1_text)
 
     bob_text = "bob wurld"
     create_agenda_file_for_cultures(x_culture.get_object_root_dir(), bob_text)
     # print(f"create agenda_list {w1_text=}")
     x_culture.create_depotlink_to_generated_agenda(
-        kitchen_dub=xia_text, agenda_healer=bob_text, depotlink_type="ignore"
+        council_dub=xia_text, agenda_healer=bob_text, depotlink_type="ignore"
     )
     land_text = "tim wurld"
     create_agenda_file_for_cultures(
         culture_dir=x_culture.get_object_root_dir(), agenda_healer=land_text
     )
     x_culture.create_depotlink_to_generated_agenda(
-        kitchen_dub=xia_text, agenda_healer=land_text, depotlink_type="blind_trust"
+        council_dub=xia_text, agenda_healer=land_text, depotlink_type="blind_trust"
     )
-    # x_culture.create_depotlink_to_generated_agenda(kitchen_dub=w1_text, agenda_healer="test9")
-    # x_culture.create_depotlink_to_generated_agenda(kitchen_dub=w1_text, agenda_healer="Bobs agenda")
-    x_culture.save_kitchenunit_file(kitchen_dub=xia_text)
+    # x_culture.create_depotlink_to_generated_agenda(council_dub=w1_text, agenda_healer="test9")
+    # x_culture.create_depotlink_to_generated_agenda(council_dub=w1_text, agenda_healer="Bobs agenda")
+    x_culture.save_councilunit_file(council_dub=xia_text)
     # print(f"WHAT WHAT {x_culture.get_object_root_dir()}")
-    # print(f"WHAT WHAT {x_culture.get_object_root_dir()}/kitchenunits/w1/w1.json")
+    # print(f"WHAT WHAT {x_culture.get_object_root_dir()}/councilunits/w1/w1.json")
     # file_text = x_func_open_file(
-    #     dest_dir=f"{x_culture.get_object_root_dir}/kitchenunits/w1", file_name="w1.json"
+    #     dest_dir=f"{x_culture.get_object_root_dir}/councilunits/w1", file_name="w1.json"
     # )
     # print(f"{file_text=}")
-    # print(f"{len(x_culture._kitchenunits.get(w1_text)._depotlinks)=}")
-    # print(f"{x_culture._kitchenunits.get(w1_text)._depotlinks.get(bob_text)=}")
-    # print(f"{x_culture._kitchenunits.get(w1_text).get_json=}")
+    # print(f"{len(x_culture._councilunits.get(w1_text)._depotlinks)=}")
+    # print(f"{x_culture._councilunits.get(w1_text)._depotlinks.get(bob_text)=}")
+    # print(f"{x_culture._councilunits.get(w1_text).get_json=}")
 
     w2_text = "w2"
-    x_culture.create_new_kitchenunit(kitchen_dub=w2_text)
+    x_culture.create_new_councilunit(council_dub=w2_text)
     # , env_dir=x_culture.get_object_root_dir())
-    x_culture.save_kitchenunit_file(kitchen_dub=w2_text)
+    x_culture.save_councilunit_file(council_dub=w2_text)
 
 
 def _delete_and_set_ex4():
@@ -167,11 +167,11 @@ def _delete_and_set_ex5():
     x_p.save_public_agenda(x_agenda=agenda_4)
     x_p.save_public_agenda(x_agenda=agenda_5)
 
-    x_p.create_new_kitchenunit(kitchen_dub=agenda_1._healer)
-    x_p.create_new_kitchenunit(kitchen_dub=agenda_2._healer)
-    x_p.create_new_kitchenunit(kitchen_dub=agenda_3._healer)
-    x_p.create_new_kitchenunit(kitchen_dub=agenda_4._healer)
-    x_p.create_new_kitchenunit(kitchen_dub=agenda_5._healer)
+    x_p.create_new_councilunit(council_dub=agenda_1._healer)
+    x_p.create_new_councilunit(council_dub=agenda_2._healer)
+    x_p.create_new_councilunit(council_dub=agenda_3._healer)
+    x_p.create_new_councilunit(council_dub=agenda_4._healer)
+    x_p.create_new_councilunit(council_dub=agenda_5._healer)
 
     x_p.set_healer_depotlink(agenda_1._healer, agenda_2._healer, "blind_trust", 3, 3.1)
     x_p.set_healer_depotlink(agenda_1._healer, agenda_3._healer, "blind_trust", 7, 7.1)
@@ -201,11 +201,11 @@ def _delete_and_set_ex5():
     x_p.set_healer_depotlink(agenda_5._healer, agenda_3._healer, "blind_trust", 4, 4.1)
     x_p.set_healer_depotlink(agenda_5._healer, agenda_4._healer, "blind_trust", 5, 5.1)
 
-    x_p.save_kitchenunit_file(kitchen_dub=agenda_1._healer)
-    x_p.save_kitchenunit_file(kitchen_dub=agenda_2._healer)
-    x_p.save_kitchenunit_file(kitchen_dub=agenda_3._healer)
-    x_p.save_kitchenunit_file(kitchen_dub=agenda_4._healer)
-    x_p.save_kitchenunit_file(kitchen_dub=agenda_5._healer)
+    x_p.save_councilunit_file(council_dub=agenda_1._healer)
+    x_p.save_councilunit_file(council_dub=agenda_2._healer)
+    x_p.save_councilunit_file(council_dub=agenda_3._healer)
+    x_p.save_councilunit_file(council_dub=agenda_4._healer)
+    x_p.save_councilunit_file(council_dub=agenda_5._healer)
 
 
 def _delete_and_set_ex6():

@@ -26,7 +26,7 @@ from src.culture.bank_sqlstr import (
     get_groupunit_catalog_dict,
     get_table_count_sqlstr,
 )
-from src.culture.examples.example_kitchens import (
+from src.culture.examples.example_councils import (
     get_3node_agenda,
     get_6node_agenda,
     get_agenda_3CleanNodesRandomWeights,
