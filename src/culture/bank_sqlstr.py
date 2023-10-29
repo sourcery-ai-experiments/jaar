@@ -145,15 +145,7 @@ WHERE currency_healer = '{currency_agenda_healer}'
 
 
 def get_river_circle_table_create_sqlstr() -> str:
-    """Table that stores discontinuous currency ranges for each destination healer
-    currency_healer: every currency starts with a healer as credit source
-    dst_healer: healer that is destination of credit.
-        All river blocks with destination healer are summed into ranges called circles
-    circle_num: all destination healer circles have a unique number. (sequential 0, 1, 2...)
-    currency_start: range of circle start
-    currency_close: range of circle close
-    JSchalk 24 Oct 2023
-    """
+    """Check get_river_circle_table_insert_sqlstrget_river_circle_table_insert_sqlstr doc string"""
     return """
 CREATE TABLE IF NOT EXISTS river_circle (
   currency_healer VARCHAR(255) NOT NULL
@@ -169,6 +161,17 @@ CREATE TABLE IF NOT EXISTS river_circle (
 
 
 def get_river_circle_table_insert_sqlstr(currency_agenda_healer: str) -> str:
+    """Table that stores discontinuous currency ranges that circle back from source (currency_healer)
+    to final destination (currency_healer)
+    Columns
+    currency_healer: every currency starts with a healer as credit source
+    dst_healer: healer that is destination of credit.
+        All river blocks with destination healer are summed into ranges called circles
+    circle_num: all destination healer circles have a unique number. (sequential 0, 1, 2...)
+    currency_start: range of circle start
+    currency_close: range of circle close
+    JSchalk 24 Oct 2023
+    """
     return f"""
 INSERT INTO river_circle (
   currency_healer
