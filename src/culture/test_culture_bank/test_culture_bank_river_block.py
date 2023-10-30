@@ -11,8 +11,8 @@ from src.culture.examples.culture_env_kit import (
 from src.culture.bank_sqlstr import (
     get_river_block_table_insert_sqlstr as river_block_insert,
     get_river_block_dict,
+    get_partyunit_table_update_bank_attr_sqlstr,
     RiverTallyUnit,
-    get_river_tally_table_insert_sqlstr,
     get_river_tally_dict,
     get_partyunit_table_insert_sqlstr,
     get_partyview_dict,
@@ -28,7 +28,6 @@ def test_culture_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
     x_culture.refresh_bank_public_agendas_data()
 
     bob_text = "bob"
@@ -145,7 +144,6 @@ def test_RiverBlockUnit_block_returned_WorksCorrectly():
 def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cleanup):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
     x_culture.refresh_bank_public_agendas_data()
 
     bob_text = "bob"
@@ -211,7 +209,6 @@ def test_river_block_insert_CorrectlyPopulatesTable01(
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tim_text = "tim"
@@ -381,12 +378,11 @@ def test_agenda_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr():
     assert x_agenda._partys.get(elu_text)._bank_tax_diff is None
 
 
-def test_get_river_tally_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_get_partyunit_table_update_bank_attr_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tom_text = "tom"
@@ -440,7 +436,9 @@ def test_get_river_tally_table_insert_sqlstr_CorrectlyPopulatesTable01(
         bank_conn.execute(ss0)
 
     # WHEN
-    mstr_sqlstr = get_river_tally_table_insert_sqlstr(currency_agenda_healer=bob_text)
+    mstr_sqlstr = get_partyunit_table_update_bank_attr_sqlstr(
+        currency_agenda_healer=bob_text
+    )
     with x_culture.get_bank_conn() as bank_conn:
         print(mstr_sqlstr)
         bank_conn.execute(mstr_sqlstr)

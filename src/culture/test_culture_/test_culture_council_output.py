@@ -19,7 +19,6 @@ def test_culture_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
 ):
     # GIVEN
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
     input_agenda = example_healers_get_6node_agenda()
     x_culture.save_public_agenda(input_agenda)
     # x_culture.save_public_agenda(ex_cxs_get_agenda_1Task_1CE0MinutesRequired_1AcptFact())
@@ -95,7 +94,6 @@ def test_culture_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
 ):
     # GIVEN
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
     x1_agenda = example_healers_get_6node_agenda()
     x2_agenda = ex_agenda_v002()
 

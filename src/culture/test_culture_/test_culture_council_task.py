@@ -11,7 +11,6 @@ from src.culture.examples.example_councils import (
 
 def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanup):
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
 
     # GIVEN
     amer_text = "Amer"
@@ -76,7 +75,6 @@ def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
 def test_culture_council_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     # GIVEN
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
     amer_text = "Amer"
     beto_text = "Beto"
     x_culture.create_new_councilunit(council_dub=amer_text)

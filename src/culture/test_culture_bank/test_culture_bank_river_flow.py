@@ -13,10 +13,26 @@ from src.culture.bank_sqlstr import (
 )
 
 
+def get_partyunit_table_banking_attr_set_count_sqlstr():
+    # def get_partyunit_table_banking_attr_set_count_sqlstr(currency_healer:):
+    #     return f"""
+    # SELECT COUNT(*)
+    # FROM partyunit
+    # WHERE _bank_tax_paid IS NOT NULL
+    #     AND agenda_healer = {currency_healer}
+    # """
+    return """
+SELECT COUNT(*) 
+FROM partyunit
+WHERE _bank_tax_paid IS NOT NULL
+;
+"""
+
+
 def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    # GIVEN
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
 
@@ -38,11 +54,10 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable01
     x_culture.save_public_agenda(x_agenda=tom)
 
     x_culture.refresh_bank_public_agendas_data()
-
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
     assert get_single_result(x_culture.get_bank_conn(), partyunit_count_sqlstr) == 4
 
-    river_tally_count_sqlstr = get_table_count_sqlstr("river_tally")
+    river_tally_count_sqlstr = get_partyunit_table_banking_attr_set_count_sqlstr()
     river_block_count_sqlstr = get_table_count_sqlstr("river_block")
     assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 0
     assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 0
@@ -83,74 +98,11 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable01
     assert river_sal_tax_tom.tax_total == 0.75
 
 
-def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable02(
-    env_dir_setup_cleanup,
-):
-    # GIVEN 4 agendas, 100% of river blocks to sal
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
-
-    sal_text = "sal"
-    bob_text = "bob"
-    tom_text = "tom"
-    elu_text = "elu"
-
-    sal = agendaunit_shop(_healer=sal_text)
-    sal.add_partyunit(title=bob_text, creditor_weight=1, debtor_weight=4)
-    sal.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
-    x_culture.save_public_agenda(x_agenda=sal)
-
-    bob = agendaunit_shop(_healer=bob_text)
-    bob.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=1)
-    bob.add_partyunit(title=tom_text, creditor_weight=1, debtor_weight=1)
-    x_culture.save_public_agenda(x_agenda=bob)
-
-    tom = agendaunit_shop(_healer=tom_text)
-    tom.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=8)
-    x_culture.save_public_agenda(x_agenda=tom)
-
-    elu = agendaunit_shop(_healer=elu_text)
-    elu.add_partyunit(title=sal_text, creditor_weight=1, debtor_weight=8)
-    x_culture.save_public_agenda(x_agenda=elu)
-    x_culture.refresh_bank_public_agendas_data()
-
-    partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
-    assert get_single_result(x_culture.get_bank_conn(), partyunit_count_sqlstr) == 6
-
-    river_tally_count_sqlstr = get_table_count_sqlstr("river_tally")
-    river_block_count_sqlstr = get_table_count_sqlstr("river_block")
-    assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 0
-    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 0
-
-    # WHEN
-    x_culture.set_credit_flow_for_agenda(agenda_healer=sal_text)
-
-    # THEN
-    assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 9
-    with x_culture.get_bank_conn() as bank_conn:
-        river_blocks = get_river_block_dict(bank_conn, currency_agenda_healer=sal_text)
-    # for river_block in river_blocks.values():
-    #     print(f"{river_block=}")
-
-    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 1
-
-    with x_culture.get_bank_conn() as bank_conn:
-        river_tallys = get_river_tally_dict(bank_conn, sal_text)
-    assert len(river_tallys) == 1
-    assert river_tallys.get(bob_text) is None
-    assert river_tallys.get(tom_text) is None
-    river_sal_tax_elu = river_tallys.get(elu_text)
-
-    print(f"{river_sal_tax_elu=}")
-    assert river_sal_tax_elu.tax_total == 1.0
-
-
 def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable03(
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 agendas, 85% of river blocks to sal
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -179,7 +131,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable03
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
     assert get_single_result(x_culture.get_bank_conn(), partyunit_count_sqlstr) == 6
 
-    river_tally_count_sqlstr = get_table_count_sqlstr("river_tally")
+    river_tally_count_sqlstr = get_partyunit_table_banking_attr_set_count_sqlstr()
     river_block_count_sqlstr = get_table_count_sqlstr("river_block")
     assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 0
     assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 0
@@ -217,7 +169,6 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable04
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -253,7 +204,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable04
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
     assert get_single_result(x_culture.get_bank_conn(), partyunit_count_sqlstr) == 8
 
-    river_tally_count_sqlstr = get_table_count_sqlstr("river_tally")
+    river_tally_count_sqlstr = get_partyunit_table_banking_attr_set_count_sqlstr()
     river_block_count_sqlstr = get_table_count_sqlstr("river_block")
     assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 0
     assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 0
@@ -286,12 +237,11 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable04
     assert river_sal_tax_tom.tax_total == 0.7
 
 
-def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable05(
+def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable05_v1(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -328,7 +278,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable05
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
     assert get_single_result(x_culture.get_bank_conn(), partyunit_count_sqlstr) == 9
 
-    river_tally_count_sqlstr = get_table_count_sqlstr("river_tally")
+    river_tally_count_sqlstr = get_partyunit_table_banking_attr_set_count_sqlstr()
     river_block_count_sqlstr = get_table_count_sqlstr("river_block")
     assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 0
     assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 0
@@ -343,14 +293,14 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable05
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
-    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 3
+    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 2
 
     with x_culture.get_bank_conn() as bank_conn:
         river_tallys = get_river_tally_dict(bank_conn, sal_text)
-    assert len(river_tallys) == 3
+    assert len(river_tallys) == 2
     assert river_tallys.get(bob_text) != None
     assert river_tallys.get(tom_text) != None
-    assert river_tallys.get(elu_text) != None
+    assert river_tallys.get(elu_text) is None
     assert river_tallys.get(ava_text) is None
 
     river_sal_tax_bob = river_tallys.get(bob_text)
@@ -362,65 +312,6 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable05
 
     assert round(river_sal_tax_bob.tax_total, 15) == 0.15
     assert round(river_sal_tax_tom.tax_total, 15) == 0.7
-    # assert round(river_sal_tax_elu.tax_total, 15) == 0.048741092066406
-    assert round(river_sal_tax_elu.tax_total, 15) == 0.0378017640625
-
-
-def test_culture_set_credit_flow_for_agenda_CorrectlyDeletesPreviousRiver(
-    env_dir_setup_cleanup,
-):
-    # GIVEN 4 agendas, 100% of river blocks to sal
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
-
-    sal_text = "sal"
-    bob_text = "bob"
-    tom_text = "tom"
-    elu_text = "elu"
-
-    sal = agendaunit_shop(_healer=sal_text)
-    sal.add_partyunit(title=bob_text, creditor_weight=1, debtor_weight=4)
-    sal.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
-    x_culture.save_public_agenda(x_agenda=sal)
-
-    bob = agendaunit_shop(_healer=bob_text)
-    bob.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=1)
-    bob.add_partyunit(title=tom_text, creditor_weight=1, debtor_weight=1)
-    x_culture.save_public_agenda(x_agenda=bob)
-
-    tom = agendaunit_shop(_healer=tom_text)
-    tom.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=8)
-    x_culture.save_public_agenda(x_agenda=tom)
-
-    elu = agendaunit_shop(_healer=elu_text)
-    elu.add_partyunit(title=sal_text, creditor_weight=1, debtor_weight=8)
-    x_culture.save_public_agenda(x_agenda=elu)
-    x_culture.refresh_bank_public_agendas_data()
-
-    x_culture.set_credit_flow_for_agenda(agenda_healer=sal_text)
-    x_culture.set_credit_flow_for_agenda(agenda_healer=elu_text)
-
-    river_tally_count_sqlstr = get_table_count_sqlstr("river_tally")
-    river_block_count_sqlstr = get_table_count_sqlstr("river_block")
-    assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 16
-
-    with x_culture.get_bank_conn() as bank_conn:
-        river_blocks = get_river_block_dict(bank_conn, currency_agenda_healer=sal_text)
-    # for river_block in river_blocks.values():
-    #     print(f"{river_block=}")
-    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 3
-
-    # WHEN
-    # sal.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
-    # x_culture.save_public_agenda(x_agenda=sal)
-    x_culture.set_credit_flow_for_agenda(agenda_healer=sal_text)
-
-    assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 16
-    with x_culture.get_bank_conn() as bank_conn:
-        river_blocks = get_river_block_dict(bank_conn, currency_agenda_healer=sal_text)
-    # for river_block in river_blocks.values():
-    #     print(f"{river_block=}")
-    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 3
 
 
 def test_culture_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
@@ -428,7 +319,6 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -465,7 +355,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
     assert get_single_result(x_culture.get_bank_conn(), partyunit_count_sqlstr) == 9
 
-    river_tally_count_sqlstr = get_table_count_sqlstr("river_tally")
+    river_tally_count_sqlstr = get_partyunit_table_banking_attr_set_count_sqlstr()
     river_block_count_sqlstr = get_table_count_sqlstr("river_block")
     assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 0
     assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 0
@@ -488,7 +378,6 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable05
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -525,7 +414,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable05
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
     assert get_single_result(x_culture.get_bank_conn(), partyunit_count_sqlstr) == 9
 
-    river_tally_count_sqlstr = get_table_count_sqlstr("river_tally")
+    river_tally_count_sqlstr = get_partyunit_table_banking_attr_set_count_sqlstr()
     river_block_count_sqlstr = get_table_count_sqlstr("river_block")
     assert get_single_result(x_culture.get_bank_conn(), river_block_count_sqlstr) == 0
     assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 0
@@ -540,15 +429,15 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable05
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
-    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 3
+    assert get_single_result(x_culture.get_bank_conn(), river_tally_count_sqlstr) == 2
 
     with x_culture.get_bank_conn() as bank_conn:
         river_tallys = get_river_tally_dict(bank_conn, sal_text)
     river_tallys = x_culture.get_river_tallys(sal_text)
-    assert len(river_tallys) == 3
+    assert len(river_tallys) == 2
     assert river_tallys.get(bob_text) != None
     assert river_tallys.get(tom_text) != None
-    assert river_tallys.get(elu_text) != None
+    assert river_tallys.get(elu_text) is None
     assert river_tallys.get(ava_text) is None
 
     river_sal_tax_bob = river_tallys.get(bob_text)
@@ -560,8 +449,6 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatesriver_tallyTable05
 
     assert round(river_sal_tax_bob.tax_total, 15) == 0.15
     assert round(river_sal_tax_tom.tax_total, 15) == 0.7
-    # assert round(river_sal_tax_elu.tax_total, 15) == 0.048741092066406
-    assert round(river_sal_tax_elu.tax_total, 15) == 0.0378017640625
 
 
 def test_culture_set_credit_flow_for_agenda_CorrectlyBuildsASingleContinuousRange(
@@ -569,7 +456,6 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyBuildsASingleContinuousRang
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -639,7 +525,6 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     """GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal"""
     # GIVEN
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -698,16 +583,13 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
 
     # THEN
     sal_river_tallys = x_culture.get_river_tallys(agenda_healer=sal_text)
-    assert len(sal_river_tallys) == 3
+    assert len(sal_river_tallys) == 2
     bob_tally = sal_river_tallys.get(bob_text)
     tom_tally = sal_river_tallys.get(tom_text)
-    elu_tally = sal_river_tallys.get(elu_text)
     assert bob_tally.tax_healer == bob_text
     assert tom_tally.tax_healer == tom_text
-    assert elu_tally.tax_healer == elu_text
     assert bob_tally.currency_healer == sal_text
     assert tom_tally.currency_healer == sal_text
-    assert elu_tally.currency_healer == sal_text
 
     sal_agenda_after = x_culture.get_public_agenda(healer=sal_text)
     bob_party = sal_agenda_after._partys.get(bob_text)
@@ -720,8 +602,6 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     assert tom_tally.tax_total == tom_party._bank_tax_paid
     assert tom_tally.tax_diff == tom_party._bank_tax_diff
     assert elu_party is None
-    assert elu_tally.tax_total < 0.31 and elu_tally.tax_total > 0.3
-    assert elu_tally.tax_diff is None
 
     # for tally_uid, sal_river_tally in sal_river_tallys.items():
     #     print(f"{tally_uid=} {sal_river_tally=}")

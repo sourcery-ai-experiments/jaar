@@ -19,9 +19,8 @@ from sqlite3 import connect as sqlite3_connect, Connection
 from src.culture.bank_sqlstr import (
     get_river_block_table_delete_sqlstr,
     get_river_block_table_insert_sqlstr,
-    get_river_tally_table_delete_sqlstr,
-    get_river_tally_table_insert_sqlstr,
     get_river_tally_dict,
+    get_partyunit_table_update_bank_attr_sqlstr,
     get_river_circle_table_insert_sqlstr,
     get_create_table_if_not_exist_sqlstrs,
     get_partyunit_table_insert_sqlstr,
@@ -157,9 +156,7 @@ class CultureUnit:
     def _clear_all_source_river_data(self, agenda_healer: str):
         with self.get_bank_conn() as bank_conn:
             block_s = get_river_block_table_delete_sqlstr(agenda_healer)
-            mstr_s = get_river_tally_table_delete_sqlstr(agenda_healer)
             bank_conn.execute(block_s)
-            bank_conn.execute(mstr_s)
 
     def _get_root_river_ledger_unit(self, agenda_healer: str) -> RiverLedgerUnit:
         default_currency_onset = 0.0
@@ -183,7 +180,9 @@ class CultureUnit:
 
     def _set_river_tallys_circles(self, agenda_healer: str):
         with self.get_bank_conn() as bank_conn:
-            bank_conn.execute(get_river_tally_table_insert_sqlstr(agenda_healer))
+            bank_conn.execute(
+                get_partyunit_table_update_bank_attr_sqlstr(agenda_healer)
+            )
             bank_conn.execute(get_river_circle_table_insert_sqlstr(agenda_healer))
 
             sal_river_tallys = get_river_tally_dict(bank_conn, agenda_healer)
@@ -524,7 +523,7 @@ def cultureunit_shop(
 
 
 def set_bank_river_tallys_to_agenda_partyunits(
-    x_agenda: AgendaUnit, river_tallys: dict[str:]
+    x_agenda: AgendaUnit, river_tallys: dict[str:RiverTallyUnit]
 ):
     for partyunit_x in x_agenda._partys.values():
         partyunit_x.clear_banking_data()

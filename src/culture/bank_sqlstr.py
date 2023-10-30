@@ -246,62 +246,6 @@ WHERE currency_healer = '{currency_agenda_healer}'
 
 
 # river tally
-def get_river_tally_table_delete_sqlstr(currency_agenda_healer: str) -> str:
-    return f"""
-DELETE FROM river_tally
-WHERE currency_healer = '{currency_agenda_healer}' 
-;
-"""
-
-
-def get_river_tally_table_create_sqlstr() -> str:
-    """Table that stores for sum of source healer's river circle currency ranges when
-        the circle destination healer is the currency manager (currency_healer).
-    currency_healer: every currency starts with a healer as credit source
-    tax_healer: river circles source healer
-        All river circles have destination healer == currency_healer
-    tax_total: sum of all circle ranges. Between 0 and 1
-    debt: the debt set by the currency manager's partyunit debt attributes
-    tax_diff: how much debt the tax_healer is under or over sending to currency_healer
-    JSchalk 24 Oct 2023
-    """
-    return """
-CREATE TABLE IF NOT EXISTS river_tally (
-  currency_healer VARCHAR(255) NOT NULL
-, tax_healer VARCHAR(255) NOT NULL
-, tax_total FLOAT NOT NULL
-, debt FLOAT NULL
-, tax_diff FLOAT NULL
-, FOREIGN KEY(currency_healer) REFERENCES agendaunit(healer)
-, FOREIGN KEY(tax_healer) REFERENCES agendaunit(healer)
-)
-;
-"""
-
-
-def get_river_tally_table_insert_sqlstr(currency_agenda_healer: str) -> str:
-    return f"""
-INSERT INTO river_tally (
-  currency_healer
-, tax_healer
-, tax_total
-, debt
-, tax_diff
-)
-SELECT 
-  rt.currency_healer
-, rt.src_healer
-, SUM(rt.currency_close-rt.currency_start) tax_paid
-, l._agenda_goal_ratio_debt
-, l._agenda_goal_ratio_debt - SUM(rt.currency_close-rt.currency_start)
-FROM river_block rt
-LEFT JOIN partyunit l ON l.agenda_healer = rt.currency_healer AND l.title = rt.src_healer
-WHERE rt.currency_healer='{currency_agenda_healer}' and rt.dst_healer=rt.currency_healer
-GROUP BY rt.currency_healer, rt.src_healer
-;
-"""
-
-
 @dataclass
 class RiverTallyUnit:
     currency_healer: str
@@ -318,13 +262,14 @@ def get_river_tally_dict(
 ) -> dict[str:RiverTallyUnit]:
     sqlstr = f"""
 SELECT
-  currency_healer
-, tax_healer
-, tax_total
-, debt
-, tax_diff
-FROM river_tally
+  agenda_healer currency_healer
+, title tax_healer
+, _bank_tax_paid tax_total
+, _agenda_goal_ratio_debt debt
+, (_agenda_goal_ratio_debt - _bank_tax_paid) tax_diff
+FROM partyunit
 WHERE currency_healer = '{currency_agenda_healer}'
+    AND _bank_tax_paid IS NOT NULL
 ;
 """
     dict_x = {}
@@ -427,6 +372,26 @@ CREATE TABLE IF NOT EXISTS partyunit (
 , FOREIGN KEY(agenda_healer) REFERENCES agendaunit(healer)
 , FOREIGN KEY(title) REFERENCES agendaunit(healer)
 , UNIQUE(agenda_healer, title)
+)
+;
+"""
+
+
+def get_partyunit_table_update_bank_attr_sqlstr(currency_agenda_healer: str) -> str:
+    return f"""
+UPDATE partyunit
+SET _bank_tax_paid = (
+    SELECT SUM(block.currency_close-block.currency_start) 
+    FROM river_block block
+    WHERE block.currency_healer='{currency_agenda_healer}' 
+        AND block.dst_healer=block.currency_healer
+        AND block.src_healer = partyunit.title
+    )
+WHERE EXISTS (
+    SELECT block.currency_close
+    FROM river_block block
+    WHERE partyunit.agenda_healer='{currency_agenda_healer}' 
+        AND partyunit.title = block.dst_healer
 )
 ;
 """
@@ -745,7 +710,6 @@ def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x.append(get_partyunit_table_create_sqlstr())
     list_x.append(get_river_block_table_create_sqlstr())
     list_x.append(get_river_circle_table_create_sqlstr())
-    list_x.append(get_river_tally_table_create_sqlstr())
     list_x.append(get_groupunit_catalog_table_create_sqlstr())
     return list_x
 

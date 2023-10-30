@@ -58,19 +58,6 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     }
 
     currency_healer_text = "currency_healer"
-    tax_healer_text = "tax_healer"
-    tax_total_text = "tax_total"
-    debt_text = "debt"
-    tax_diff_text = "tax_diff"
-    river_tally_text = "river_tally"
-    river_tally_columns = {
-        currency_healer_text: 1,
-        tax_healer_text: 1,
-        tax_total_text: 1,
-        debt_text: 1,
-        tax_diff_text: 1,
-    }
-
     src_healer_text = "src_healer"
     dst_healer_text = "dst_healer"
     currency_start_text = "currency_start"
@@ -123,7 +110,6 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     curr_tables = {
         agendaunit_text: agendaunit_columns,
         partyunit_text: partyunit_columns,
-        river_tally_text: river_tally_columns,
         river_block_text: river_block_columns,
         river_circle_text: river_circle_columns,
         idea_catalog_text: idea_catalog_columns,
@@ -142,8 +128,7 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     assert db_tables.get(partyunit_text) != None  # 1
     assert db_tables.get(river_circle_text) != None  # 4
     assert db_tables.get(river_block_text) != None  # 3
-    assert db_tables.get(river_tally_text) != None  # 2
-    assert len(db_tables) == 8
+    assert len(db_tables) == 7
     assert len(db_tables) == len(curr_tables)
     assert len(db_tables) == len(db_tables_columns)
 
@@ -159,4 +144,3 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     assert db_tables_columns.get(partyunit_text) == partyunit_columns
     assert db_tables_columns.get(river_circle_text) == river_circle_columns
     assert db_tables_columns.get(river_block_text) == river_block_columns
-    assert db_tables_columns.get(river_tally_text) == river_tally_columns

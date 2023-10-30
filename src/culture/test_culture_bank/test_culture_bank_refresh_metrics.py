@@ -296,7 +296,6 @@ def test_culture_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
 ):
     # GIVEN
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
     x_culture.refresh_bank_public_agendas_data()
 
     bob_text = "bob"
@@ -320,7 +319,6 @@ def test_culture_refresh_bank_public_agendas_data_Populates_idea_catalog_table(
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
     x_culture.refresh_bank_public_agendas_data()
 
     bob_text = "bob"
@@ -352,7 +350,6 @@ def test_culture_refresh_bank_public_agendas_data_Populates_idea_catalog_table(
 def test_culture_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     # GIVEN
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
     x_culture.refresh_bank_public_agendas_data()
 
     bob_text = "bob"
@@ -392,7 +389,6 @@ def test_culture_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTabl
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
     x_culture.refresh_bank_public_agendas_data()
 
     bob_text = "bob"
@@ -419,7 +415,6 @@ def test_refresh_bank_public_agendas_data_Populates_acptfact_catalog_table(
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
     x_culture.refresh_bank_public_agendas_data()
 
     # TODO create 3 agendas with varying numbers of acpt facts
@@ -478,7 +473,6 @@ def test_culture_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTab
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
     x_culture.refresh_bank_public_agendas_data()
 
     bob_text = "bob"
@@ -505,7 +499,6 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
 ):
     # GIVEN
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tom_text = "tom"

@@ -17,7 +17,6 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -57,7 +56,6 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
 
     sal_text = "sal"
     bob_text = "bob"

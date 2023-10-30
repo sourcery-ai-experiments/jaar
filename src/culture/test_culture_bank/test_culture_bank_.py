@@ -26,7 +26,6 @@ def test_culture_create_bank_db_CreatesBankDBIfItDoesNotExist(env_dir_setup_clea
 def test_culture_create_bank_db_CanCreateBankInMemory(env_dir_setup_cleanup):
     # GIVEN create culture
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
 
     x_culture._bank_db = None
     assert x_culture._bank_db is None
@@ -45,7 +44,6 @@ def test_culture_refresh_bank_public_agendas_data_CanConnectToBankInMemory(
 ):
     # GIVEN create culture
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
     # x_culture._create_bank_db(in_memory=True)
     assert os_path.exists(x_culture.get_bank_db_path()) == False
 
