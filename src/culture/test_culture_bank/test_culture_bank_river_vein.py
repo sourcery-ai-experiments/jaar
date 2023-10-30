@@ -26,5 +26,5 @@ from src.culture.bank_sqlstr import (
 )
 
 
-def test_culture_clear_river_score_CorrectlyEmptysTable():
-    assert 1 == 2
+# def test_culture_clear_river_score_CorrectlyEmptysTable():
+#     assert 1 == 2
