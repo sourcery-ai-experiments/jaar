@@ -1,7 +1,7 @@
 from src.agenda.agenda import agendaunit_shop, partyunit_shop
 from src.culture.culture import (
     cultureunit_shop,
-    set_bank_river_tallys_to_agenda_partyunits,
+    set_bank_partybankunits_to_agenda_partyunits,
 )
 from src.culture.examples.culture_env_kit import (
     get_temp_env_handle,
@@ -12,8 +12,8 @@ from src.culture.bank_sqlstr import (
     get_river_block_table_insert_sqlstr as river_block_insert,
     get_river_block_dict,
     get_partyunit_table_update_bank_attr_sqlstr,
-    RiverTallyUnit,
-    get_river_tally_dict,
+    PartyBankUnit,
+    get_partybankunit_dict,
     get_partyunit_table_insert_sqlstr,
     get_partyview_dict,
     PartyDBUnit,
@@ -300,7 +300,7 @@ def test_RiverLedgerUnit_Exists():
     assert abs(river_ledger_unit.get_range() - 0.2) < 0.00000001
 
 
-def test_RiverTallyUnit_exists():
+def test_PartyBankUnit_exists():
     # GIVEN
     x_currency_healer = "x_currency_healer"
     x_tax_healer = "x_tax_healer"
@@ -311,7 +311,7 @@ def test_RiverTallyUnit_exists():
     x_voice_rank = "voice_rank"
 
     # WHEN
-    x_rivertally = RiverTallyUnit(
+    x_partybank = PartyBankUnit(
         currency_healer=x_currency_healer,
         tax_healer=x_tax_healer,
         tax_total=x_tax_total,
@@ -322,13 +322,13 @@ def test_RiverTallyUnit_exists():
     )
 
     # THEN
-    assert x_rivertally.currency_healer == x_currency_healer
-    assert x_rivertally.tax_healer == x_tax_healer
-    assert x_rivertally.tax_total == x_tax_total
-    assert x_rivertally.debt == x_debt
-    assert x_rivertally.tax_diff == x_tax_diff
-    assert x_rivertally.credit_score == x_credit_score
-    assert x_rivertally.voice_rank == x_voice_rank
+    assert x_partybank.currency_healer == x_currency_healer
+    assert x_partybank.tax_healer == x_tax_healer
+    assert x_partybank.tax_total == x_tax_total
+    assert x_partybank.debt == x_debt
+    assert x_partybank.tax_diff == x_tax_diff
+    assert x_partybank.credit_score == x_credit_score
+    assert x_partybank.voice_rank == x_voice_rank
 
 
 def test_agenda_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr():
@@ -356,16 +356,18 @@ def test_agenda_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr():
     assert x_agenda._partys.get(elu_text)._bank_tax_paid == 0.003
     assert x_agenda._partys.get(elu_text)._bank_tax_diff == 0.007
 
-    river_tally_sam = RiverTallyUnit(bob_text, sam_text, 0.209, 0, 0.034, None, None)
-    river_tally_wil = RiverTallyUnit(bob_text, wil_text, 0.501, 0, 0.024, None, None)
-    river_tally_fry = RiverTallyUnit(bob_text, fry_text, 0.111, 0, 0.006, None, None)
-    river_tallys = {
-        river_tally_sam.tax_healer: river_tally_sam,
-        river_tally_wil.tax_healer: river_tally_wil,
-        river_tally_fry.tax_healer: river_tally_fry,
+    partybankunit_sam = PartyBankUnit(bob_text, sam_text, 0.209, 0, 0.034, None, None)
+    partybankunit_wil = PartyBankUnit(bob_text, wil_text, 0.501, 0, 0.024, None, None)
+    partybankunit_fry = PartyBankUnit(bob_text, fry_text, 0.111, 0, 0.006, None, None)
+    partybankunits = {
+        partybankunit_sam.tax_healer: partybankunit_sam,
+        partybankunit_wil.tax_healer: partybankunit_wil,
+        partybankunit_fry.tax_healer: partybankunit_fry,
     }
     # WHEN
-    set_bank_river_tallys_to_agenda_partyunits(x_agenda, river_tallys=river_tallys)
+    set_bank_partybankunits_to_agenda_partyunits(
+        x_agenda, partybankunits=partybankunits
+    )
 
     # THEN
     assert x_agenda._partys.get(sam_text)._bank_tax_paid == 0.209
@@ -445,26 +447,28 @@ def test_get_partyunit_table_update_bank_attr_sqlstr_CorrectlyPopulatesTable01(
 
     # THEN
     with x_culture.get_bank_conn() as bank_conn:
-        river_tallys = get_river_tally_dict(bank_conn, currency_agenda_healer=bob_text)
-        print(f"{river_tallys=}")
+        partybankunits = get_partybankunit_dict(
+            bank_conn, currency_agenda_healer=bob_text
+        )
+        print(f"{partybankunits=}")
 
-    assert len(river_tallys) == 2
+    assert len(partybankunits) == 2
 
-    bob_tom_x = river_tallys.get(tom_text)
+    bob_tom_x = partybankunits.get(tom_text)
     assert bob_tom_x.currency_healer == bob_text
     assert bob_tom_x.tax_healer == tom_text
     assert bob_tom_x.tax_total == 0.2
     assert bob_tom_x.debt == 0.411
     assert round(bob_tom_x.tax_diff, 15) == 0.211
 
-    bob_sal_x = river_tallys.get(sal_text)
+    bob_sal_x = partybankunits.get(sal_text)
     assert bob_sal_x.currency_healer == bob_text
     assert bob_sal_x.tax_healer == sal_text
     assert bob_sal_x.tax_total == 0.8
     assert bob_sal_x.debt == 0.455
     assert round(bob_sal_x.tax_diff, 15) == -0.345
 
-    # for value in river_tallys.values():
+    # for value in partybankunits.values():
     #     assert value.currency_healer == bob_text
     #     assert value.tax_healer in [tom_text, sal_text]
     #     assert value.tax_total in [0.2, 0.8]

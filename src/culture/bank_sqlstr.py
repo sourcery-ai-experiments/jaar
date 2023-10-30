@@ -245,9 +245,9 @@ WHERE currency_healer = '{currency_agenda_healer}'
     return dict_x
 
 
-# river tally
+# PartyBankUnit
 @dataclass
-class RiverTallyUnit:
+class PartyBankUnit:
     currency_healer: str
     tax_healer: str
     tax_total: float
@@ -257,9 +257,9 @@ class RiverTallyUnit:
     voice_rank: int
 
 
-def get_river_tally_dict(
+def get_partybankunit_dict(
     db_conn: Connection, currency_agenda_healer: str
-) -> dict[str:RiverTallyUnit]:
+) -> dict[str:PartyBankUnit]:
     sqlstr = f"""
 SELECT
   agenda_healer currency_healer
@@ -276,7 +276,7 @@ WHERE currency_healer = '{currency_agenda_healer}'
     results = db_conn.execute(sqlstr)
 
     for row in results.fetchall():
-        river_tally_x = RiverTallyUnit(
+        partybankunit_x = PartyBankUnit(
             currency_healer=row[0],
             tax_healer=row[1],
             tax_total=row[2],
@@ -285,7 +285,7 @@ WHERE currency_healer = '{currency_agenda_healer}'
             credit_score=None,
             voice_rank=None,
         )
-        dict_x[river_tally_x.tax_healer] = river_tally_x
+        dict_x[partybankunit_x.tax_healer] = partybankunit_x
     return dict_x
 
 

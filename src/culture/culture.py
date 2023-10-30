@@ -19,7 +19,7 @@ from sqlite3 import connect as sqlite3_connect, Connection
 from src.culture.bank_sqlstr import (
     get_river_block_table_delete_sqlstr,
     get_river_block_table_insert_sqlstr,
-    get_river_tally_dict,
+    get_partybankunit_dict,
     get_partyunit_table_update_bank_attr_sqlstr,
     get_river_circle_table_insert_sqlstr,
     get_create_table_if_not_exist_sqlstrs,
@@ -29,7 +29,7 @@ from src.culture.bank_sqlstr import (
     PartyDBUnit,
     RiverLedgerUnit,
     RiverBlockUnit,
-    RiverTallyUnit,
+    PartyBankUnit,
     IdeaCatalog,
     get_idea_catalog_table_insert_sqlstr,
     get_idea_catalog_dict,
@@ -91,7 +91,7 @@ class CultureUnit:
         if max_blocks_count is None:
             max_blocks_count = 40
         self._set_river_blocks(agenda_healer, max_blocks_count)
-        self._set_river_tallys_circles(agenda_healer)
+        self._set_partybankunits_circles(agenda_healer)
 
     def _set_river_blocks(self, x_agenda_healer: PersonName, max_blocks_count: int):
         # changes in river_block loop
@@ -178,22 +178,22 @@ class CultureUnit:
             source_river_ledger = get_river_ledger_unit(bank_conn, root_river_block)
         return source_river_ledger
 
-    def _set_river_tallys_circles(self, agenda_healer: str):
+    def _set_partybankunits_circles(self, agenda_healer: str):
         with self.get_bank_conn() as bank_conn:
             bank_conn.execute(
                 get_partyunit_table_update_bank_attr_sqlstr(agenda_healer)
             )
             bank_conn.execute(get_river_circle_table_insert_sqlstr(agenda_healer))
 
-            sal_river_tallys = get_river_tally_dict(bank_conn, agenda_healer)
+            sal_partybankunits = get_partybankunit_dict(bank_conn, agenda_healer)
             x_agenda = self.get_public_agenda(healer=agenda_healer)
-            set_bank_river_tallys_to_agenda_partyunits(x_agenda, sal_river_tallys)
+            set_bank_partybankunits_to_agenda_partyunits(x_agenda, sal_partybankunits)
             self.save_public_agenda(x_agenda=x_agenda)
 
-    def get_river_tallys(self, agenda_healer: str) -> dict[str:RiverTallyUnit]:
+    def get_partybankunits(self, agenda_healer: str) -> dict[str:PartyBankUnit]:
         with self.get_bank_conn() as bank_conn:
-            river_tallys = get_river_tally_dict(bank_conn, agenda_healer)
-        return river_tallys
+            partybankunits = get_partybankunit_dict(bank_conn, agenda_healer)
+        return partybankunits
 
     def refresh_bank_public_agendas_data(self, in_memory: bool = None):
         if in_memory is None and self._bank_db != None:
@@ -522,16 +522,16 @@ def cultureunit_shop(
     return culture_x
 
 
-def set_bank_river_tallys_to_agenda_partyunits(
-    x_agenda: AgendaUnit, river_tallys: dict[str:RiverTallyUnit]
+def set_bank_partybankunits_to_agenda_partyunits(
+    x_agenda: AgendaUnit, partybankunits: dict[str:PartyBankUnit]
 ):
     for partyunit_x in x_agenda._partys.values():
         partyunit_x.clear_banking_data()
-        river_tally = river_tallys.get(partyunit_x.title)
-        if river_tally != None:
+        partybankunit = partybankunits.get(partyunit_x.title)
+        if partybankunit != None:
             partyunit_x.set_banking_data(
-                tax_paid=river_tally.tax_total,
-                tax_diff=river_tally.tax_diff,
-                credit_score=river_tally.credit_score,
-                voice_rank=river_tally.voice_rank,
+                tax_paid=partybankunit.tax_total,
+                tax_diff=partybankunit.tax_diff,
+                credit_score=partybankunit.credit_score,
+                voice_rank=partybankunit.voice_rank,
             )
