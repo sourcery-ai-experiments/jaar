@@ -5907,7 +5907,7 @@
                                             "_weight": 1,
                                             "promise": false
                                         },
-                                        "master bathroom": {
+                                        "big bathroom": {
                                             "_acptfactunits": {},
                                             "_addin": null,
                                             "_assignedunit": {
@@ -5919,7 +5919,7 @@
                                             "_balancelinks": {},
                                             "_is_expanded": true,
                                             "_kids": {},
-                                            "_label": "master bathroom",
+                                            "_label": "big bathroom",
                                             "_numeric_road": null,
                                             "_numor": null,
                                             "_on_meld_weight_action": "default",
