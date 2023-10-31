@@ -3,6 +3,7 @@ from src.culture.bank_sqlstr import (
     get_agendaunit_update_sqlstr,
     get_agendaunits_select_sqlstr,
     get_partyunit_table_update_bank_attr_sqlstr,
+    get_river_block_reach_base_sqlstr,
 )
 from src.culture.y_func import sqlite_text
 
@@ -53,8 +54,8 @@ UPDATE partyunit
 SET _bank_tax_paid = (
     SELECT SUM(block.currency_close-block.currency_start) 
     FROM river_block block
-    WHERE block.currency_healer='{bob_text}' 
-        AND block.dst_healer=block.currency_healer
+    WHERE block.currency_master='{bob_text}' 
+        AND block.dst_healer=block.currency_master
         AND block.src_healer = partyunit.title
     )
 WHERE EXISTS (
@@ -64,5 +65,71 @@ WHERE EXISTS (
         AND partyunit.title = block.dst_healer
 )
 ;
+"""
+    assert generated_sqlstr == example_sqlstr
+
+
+def test_get_river_block_reach_base_sqlstr_ReturnsCorrectStr():
+    # GIVEN / WHEN
+    bob_text = "bob"
+    generated_sqlstr = get_river_block_reach_base_sqlstr(bob_text)
+
+    # THEN
+    example_sqlstr = f"""
+SELECT 
+  block.currency_master
+, block.src_healer src
+, block.dst_healer dst
+, CASE 
+    WHEN block.currency_start < circle.curr_start 
+        AND block.currency_close > circle.curr_start
+        AND block.currency_close <= circle.curr_close
+        THEN circle.curr_start --'leftside' 
+    WHEN block.currency_start >= circle.curr_start 
+        AND block.currency_start < circle.curr_close
+        AND block.currency_close > circle.curr_close
+        THEN block.currency_start--'rightside' 
+    WHEN block.currency_start < circle.curr_start 
+        AND block.currency_close > circle.curr_close
+        THEN circle.curr_start--'outside' 
+    WHEN block.currency_start >= circle.curr_start 
+        AND block.currency_close <= circle.curr_close
+        THEN block.currency_start --'inside' 
+        END reach_start
+, CASE 
+    WHEN block.currency_start < circle.curr_start 
+        AND block.currency_close > circle.curr_start
+        AND block.currency_close <= circle.curr_close
+        THEN block.currency_close --'leftside' 
+    WHEN block.currency_start >= circle.curr_start 
+        AND block.currency_start < circle.curr_close
+        AND block.currency_close > circle.curr_close
+        THEN circle.curr_close --'rightside' 
+    WHEN block.currency_start < circle.curr_start 
+        AND block.currency_close > circle.curr_close
+        THEN circle.curr_close--'outside' 
+    WHEN block.currency_start >= circle.curr_start 
+        AND block.currency_close <= circle.curr_close
+        THEN block.currency_close --'inside' 
+        END reach_close
+FROM river_block block
+JOIN river_circle circle on 
+           (block.currency_start < circle.curr_start 
+        AND block.currency_close > circle.curr_close)
+    OR     (block.currency_start >= circle.curr_start 
+        AND block.currency_close <= circle.curr_close)
+    OR     (block.currency_start < circle.curr_start 
+        AND block.currency_close > circle.curr_start
+        AND block.currency_close <= circle.curr_close)
+    OR     (block.currency_start >= circle.curr_start 
+        AND block.currency_start < circle.curr_close
+        AND block.currency_close > circle.curr_close)
+WHERE block.currency_master = '{bob_text}'
+    AND block.src_healer != block.currency_master
+ORDER BY 
+  block.src_healer
+, block.dst_healer
+, block.currency_start
+, block.currency_close
 """
     assert generated_sqlstr == example_sqlstr

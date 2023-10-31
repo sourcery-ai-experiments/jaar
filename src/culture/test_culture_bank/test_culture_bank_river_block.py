@@ -302,7 +302,7 @@ def test_RiverLedgerUnit_Exists():
 
 def test_PartyBankUnit_exists():
     # GIVEN
-    x_currency_healer = "x_currency_healer"
+    x_currency_master = "x_currency_master"
     x_tax_healer = "x_tax_healer"
     x_tax_total = "x_tax_total"
     x_debt = "x_debt"
@@ -312,7 +312,7 @@ def test_PartyBankUnit_exists():
 
     # WHEN
     x_partybank = PartyBankUnit(
-        currency_healer=x_currency_healer,
+        currency_master=x_currency_master,
         tax_healer=x_tax_healer,
         tax_total=x_tax_total,
         debt=x_debt,
@@ -322,7 +322,7 @@ def test_PartyBankUnit_exists():
     )
 
     # THEN
-    assert x_partybank.currency_healer == x_currency_healer
+    assert x_partybank.currency_master == x_currency_master
     assert x_partybank.tax_healer == x_tax_healer
     assert x_partybank.tax_total == x_tax_total
     assert x_partybank.debt == x_debt
@@ -455,21 +455,21 @@ def test_get_partyunit_table_update_bank_attr_sqlstr_CorrectlyPopulatesTable01(
     assert len(partybankunits) == 2
 
     bob_tom_x = partybankunits.get(tom_text)
-    assert bob_tom_x.currency_healer == bob_text
+    assert bob_tom_x.currency_master == bob_text
     assert bob_tom_x.tax_healer == tom_text
     assert bob_tom_x.tax_total == 0.2
     assert bob_tom_x.debt == 0.411
     assert round(bob_tom_x.tax_diff, 15) == 0.211
 
     bob_sal_x = partybankunits.get(sal_text)
-    assert bob_sal_x.currency_healer == bob_text
+    assert bob_sal_x.currency_master == bob_text
     assert bob_sal_x.tax_healer == sal_text
     assert bob_sal_x.tax_total == 0.8
     assert bob_sal_x.debt == 0.455
     assert round(bob_sal_x.tax_diff, 15) == -0.345
 
     # for value in partybankunits.values():
-    #     assert value.currency_healer == bob_text
+    #     assert value.currency_master == bob_text
     #     assert value.tax_healer in [tom_text, sal_text]
     #     assert value.tax_total in [0.2, 0.8]
     #     assert value.debt in [0.411, 0.455]

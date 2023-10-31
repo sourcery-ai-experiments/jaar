@@ -5,6 +5,66 @@ from dataclasses import dataclass
 from sqlite3 import Connection
 
 
+def get_river_block_reach_base_sqlstr(currency_master: PersonName):
+    return f"""
+SELECT 
+  block.currency_master
+, block.src_healer src
+, block.dst_healer dst
+, CASE 
+    WHEN block.currency_start < circle.curr_start 
+        AND block.currency_close > circle.curr_start
+        AND block.currency_close <= circle.curr_close
+        THEN circle.curr_start --'leftside' 
+    WHEN block.currency_start >= circle.curr_start 
+        AND block.currency_start < circle.curr_close
+        AND block.currency_close > circle.curr_close
+        THEN block.currency_start--'rightside' 
+    WHEN block.currency_start < circle.curr_start 
+        AND block.currency_close > circle.curr_close
+        THEN circle.curr_start--'outside' 
+    WHEN block.currency_start >= circle.curr_start 
+        AND block.currency_close <= circle.curr_close
+        THEN block.currency_start --'inside' 
+        END reach_start
+, CASE 
+    WHEN block.currency_start < circle.curr_start 
+        AND block.currency_close > circle.curr_start
+        AND block.currency_close <= circle.curr_close
+        THEN block.currency_close --'leftside' 
+    WHEN block.currency_start >= circle.curr_start 
+        AND block.currency_start < circle.curr_close
+        AND block.currency_close > circle.curr_close
+        THEN circle.curr_close --'rightside' 
+    WHEN block.currency_start < circle.curr_start 
+        AND block.currency_close > circle.curr_close
+        THEN circle.curr_close--'outside' 
+    WHEN block.currency_start >= circle.curr_start 
+        AND block.currency_close <= circle.curr_close
+        THEN block.currency_close --'inside' 
+        END reach_close
+FROM river_block block
+JOIN river_circle circle on 
+           (block.currency_start < circle.curr_start 
+        AND block.currency_close > circle.curr_close)
+    OR     (block.currency_start >= circle.curr_start 
+        AND block.currency_close <= circle.curr_close)
+    OR     (block.currency_start < circle.curr_start 
+        AND block.currency_close > circle.curr_start
+        AND block.currency_close <= circle.curr_close)
+    OR     (block.currency_start >= circle.curr_start 
+        AND block.currency_start < circle.curr_close
+        AND block.currency_close > circle.curr_close)
+WHERE block.currency_master = '{currency_master}'
+    AND block.src_healer != block.currency_master
+ORDER BY 
+  block.src_healer
+, block.dst_healer
+, block.currency_start
+, block.currency_close
+"""
+
+
 def get_table_count_sqlstr(
     table_mame: str,
 ) -> (
@@ -17,14 +77,14 @@ def get_table_count_sqlstr(
 def get_river_block_table_delete_sqlstr(currency_agenda_healer: str) -> str:
     return f"""
 DELETE FROM river_block
-WHERE currency_healer = '{currency_agenda_healer}' 
+WHERE currency_master = '{currency_agenda_healer}' 
 ;
 """
 
 
 def get_river_block_table_create_sqlstr() -> str:
     """Table that stores each block of currency from src_healer to dst_healer.
-    currency_healer: every currency starts with a healer as credit source
+    currency_master: every currency starts with a healer as credit source
         All river blocks with destination currency healer stop. For that currency range
         there is no more block
     src_healer: healer that is source of credit
@@ -33,13 +93,13 @@ def get_river_block_table_create_sqlstr() -> str:
     currency_close: range of currency affected close
     block_num: the sequence number of transactions before this one
     parent_block_num: river blocks can have multiple children but only one parent
-    river_tree_level: how many ancestors between currency_healer first credit outblock
+    river_tree_level: how many ancestors between currency_master first credit outblock
         and this river block
     JSchalk 24 Oct 2023
     """
     return """
 CREATE TABLE IF NOT EXISTS river_block (
-  currency_healer VARCHAR(255) NOT NULL
+  currency_master VARCHAR(255) NOT NULL
 , src_healer VARCHAR(255) NOT NULL
 , dst_healer VARCHAR(255) NOT NULL
 , currency_start FLOAT NOT NULL
@@ -47,7 +107,7 @@ CREATE TABLE IF NOT EXISTS river_block (
 , block_num INT NOT NULL
 , parent_block_num INT NULL
 , river_tree_level INT NOT NULL
-, FOREIGN KEY(currency_healer) REFERENCES agendaunit(healer)
+, FOREIGN KEY(currency_master) REFERENCES agendaunit(healer)
 , FOREIGN KEY(src_healer) REFERENCES agendaunit(healer)
 , FOREIGN KEY(dst_healer) REFERENCES agendaunit(healer)
 )
@@ -75,7 +135,7 @@ def get_river_block_table_insert_sqlstr(
 ) -> str:
     return f"""
 INSERT INTO river_block (
-  currency_healer
+  currency_master
 , src_healer
 , dst_healer
 , currency_start 
@@ -103,7 +163,7 @@ def get_river_block_dict(
 ) -> dict[str:RiverBlockUnit]:
     sqlstr = f"""
 SELECT 
-  currency_healer
+  currency_master
 , src_healer
 , dst_healer
 , currency_start
@@ -112,7 +172,7 @@ SELECT
 , parent_block_num
 , river_tree_level
 FROM river_block
-WHERE currency_healer = '{currency_agenda_healer}' 
+WHERE currency_master = '{currency_agenda_healer}' 
 ;
 """
     dict_x = {}
@@ -139,7 +199,7 @@ WHERE currency_healer = '{currency_agenda_healer}'
 def get_river_circle_table_delete_sqlstr(currency_agenda_healer: str) -> str:
     return f"""
 DELETE FROM river_circle
-WHERE currency_healer = '{currency_agenda_healer}' 
+WHERE currency_master = '{currency_agenda_healer}' 
 ;
 """
 
@@ -148,12 +208,12 @@ def get_river_circle_table_create_sqlstr() -> str:
     """Check get_river_circle_table_insert_sqlstrget_river_circle_table_insert_sqlstr doc string"""
     return """
 CREATE TABLE IF NOT EXISTS river_circle (
-  currency_healer VARCHAR(255) NOT NULL
+  currency_master VARCHAR(255) NOT NULL
 , dst_healer VARCHAR(255) NOT NULL
 , circle_num INT NOT NULL
 , curr_start FLOAT NOT NULL
 , curr_close FLOAT NOT NULL
-, FOREIGN KEY(currency_healer) REFERENCES agendaunit(healer)
+, FOREIGN KEY(currency_master) REFERENCES agendaunit(healer)
 , FOREIGN KEY(dst_healer) REFERENCES agendaunit(healer)
 )
 ;
@@ -161,10 +221,10 @@ CREATE TABLE IF NOT EXISTS river_circle (
 
 
 def get_river_circle_table_insert_sqlstr(currency_agenda_healer: str) -> str:
-    """Table that stores discontinuous currency ranges that circle back from source (currency_healer)
-    to final destination (currency_healer)
+    """Table that stores discontinuous currency ranges that circle back from source (currency_master)
+    to final destination (currency_master)
     Columns
-    currency_healer: every currency starts with a healer as credit source
+    currency_master: every currency starts with a healer as credit source
     dst_healer: healer that is destination of credit.
         All river blocks with destination healer are summed into ranges called circles
     circle_num: all destination healer circles have a unique number. (sequential 0, 1, 2...)
@@ -174,14 +234,14 @@ def get_river_circle_table_insert_sqlstr(currency_agenda_healer: str) -> str:
     """
     return f"""
 INSERT INTO river_circle (
-  currency_healer
+  currency_master
 , dst_healer
 , circle_num
 , curr_start
 , curr_close
 )
 SELECT 
-  currency_healer
+  currency_master
 , dst_healer
 , currency_circle_num
 , min(currency_start) currency_circle_start
@@ -198,10 +258,10 @@ FROM  (
     END AS step
     , *
     FROM  river_block
-    WHERE currency_healer = '{currency_agenda_healer}' and dst_healer = currency_healer 
+    WHERE currency_master = '{currency_agenda_healer}' and dst_healer = currency_master 
     ) b
 ) c
-GROUP BY currency_healer, dst_healer, currency_circle_num
+GROUP BY currency_master, dst_healer, currency_circle_num
 ORDER BY currency_circle_start
 ;
 """
@@ -209,7 +269,7 @@ ORDER BY currency_circle_start
 
 @dataclass
 class RiverCircleUnit:
-    currency_healer: str
+    currency_master: str
     dst_healer: str
     circle_num: int
     curr_start: float
@@ -221,13 +281,13 @@ def get_river_circle_dict(
 ) -> dict[str:RiverCircleUnit]:
     sqlstr = f"""
 SELECT
-  currency_healer
+  currency_master
 , dst_healer
 , circle_num
 , curr_start
 , curr_close
 FROM river_circle
-WHERE currency_healer = '{currency_agenda_healer}'
+WHERE currency_master = '{currency_agenda_healer}'
 ;
 """
     dict_x = {}
@@ -235,7 +295,7 @@ WHERE currency_healer = '{currency_agenda_healer}'
 
     for row in results.fetchall():
         river_circle_x = RiverCircleUnit(
-            currency_healer=row[0],
+            currency_master=row[0],
             dst_healer=row[1],
             circle_num=row[2],
             curr_start=row[3],
@@ -248,7 +308,7 @@ WHERE currency_healer = '{currency_agenda_healer}'
 # PartyBankUnit
 @dataclass
 class PartyBankUnit:
-    currency_healer: str
+    currency_master: str
     tax_healer: str
     tax_total: float
     debt: float
@@ -262,13 +322,13 @@ def get_partybankunit_dict(
 ) -> dict[str:PartyBankUnit]:
     sqlstr = f"""
 SELECT
-  agenda_healer currency_healer
+  agenda_healer currency_master
 , title tax_healer
 , _bank_tax_paid tax_total
 , _agenda_goal_ratio_debt debt
 , (_agenda_goal_ratio_debt - _bank_tax_paid) tax_diff
 FROM partyunit
-WHERE currency_healer = '{currency_agenda_healer}'
+WHERE currency_master = '{currency_agenda_healer}'
     AND _bank_tax_paid IS NOT NULL
 ;
 """
@@ -277,7 +337,7 @@ WHERE currency_healer = '{currency_agenda_healer}'
 
     for row in results.fetchall():
         partybankunit_x = PartyBankUnit(
-            currency_healer=row[0],
+            currency_master=row[0],
             tax_healer=row[1],
             tax_total=row[2],
             debt=row[3],
@@ -383,8 +443,8 @@ UPDATE partyunit
 SET _bank_tax_paid = (
     SELECT SUM(block.currency_close-block.currency_start) 
     FROM river_block block
-    WHERE block.currency_healer='{currency_agenda_healer}' 
-        AND block.dst_healer=block.currency_healer
+    WHERE block.currency_master='{currency_agenda_healer}' 
+        AND block.dst_healer=block.currency_master
         AND block.src_healer = partyunit.title
     )
 WHERE EXISTS (

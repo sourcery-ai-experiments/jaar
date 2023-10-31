@@ -208,8 +208,9 @@ def _delete_and_set_ex5():
     x_p.save_councilunit_file(council_dub=agenda_5._healer)
 
 
-def _delete_and_set_ex6():
-    x_handle = "ex6"
+def _delete_and_set_ex6(x_handle: str = None):
+    if x_handle is None:
+        x_handle = "ex6"
     x_culture = cultureunit_shop(handle=x_handle, cultures_dir=get_test_cultures_dir())
     x_func_delete_dir(x_culture.get_object_root_dir())
     x_culture.create_dirs_if_null(in_memory_bank=False)
@@ -246,6 +247,8 @@ def _delete_and_set_ex6():
 
     x_culture.refresh_bank_public_agendas_data()
     x_culture.set_credit_flow_for_agenda(agenda_healer=sal_text, max_blocks_count=100)
+
+    return x_culture
 
 
 def create_example_culture(culture_handle: str):

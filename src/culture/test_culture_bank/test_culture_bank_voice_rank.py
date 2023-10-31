@@ -92,7 +92,6 @@ def test_culture_bank_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_arbit
 ):
     # GIVEN
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
     ava_text = "ava"
     bob_text = "bob"
     cal_text = "cal"

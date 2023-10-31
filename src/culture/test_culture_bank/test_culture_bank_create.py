@@ -57,7 +57,7 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
         _bank_tax_diff_text: 1,
     }
 
-    currency_healer_text = "currency_healer"
+    currency_master_text = "currency_master"
     src_healer_text = "src_healer"
     dst_healer_text = "dst_healer"
     currency_start_text = "currency_start"
@@ -67,7 +67,7 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     river_tree_level_text = "river_tree_level"
     river_block_text = "river_block"
     river_block_columns = {
-        currency_healer_text: 1,
+        currency_master_text: 1,
         src_healer_text: 1,
         dst_healer_text: 1,
         currency_start_text: 1,
@@ -82,7 +82,7 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     curr_close_text = "curr_close"
     river_circle_text = "river_circle"
     river_circle_columns = {
-        currency_healer_text: 1,
+        currency_master_text: 1,
         dst_healer_text: 1,
         circle_num_text: 1,
         curr_start_text: 1,

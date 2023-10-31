@@ -5,7 +5,7 @@ from src.culture.examples.culture_env_kit import (
     get_test_cultures_dir,
     env_dir_setup_cleanup,
 )
-from src.culture.y_func import check_connection, get_single_result
+from src.culture.y_func import get_single_result
 from src.culture.bank_sqlstr import (
     get_partybankunit_dict,
     get_river_block_dict,
@@ -14,12 +14,12 @@ from src.culture.bank_sqlstr import (
 
 
 def get_partyunit_table_banking_attr_set_count_sqlstr():
-    # def get_partyunit_table_banking_attr_set_count_sqlstr(currency_healer:):
+    # def get_partyunit_table_banking_attr_set_count_sqlstr(currency_master:):
     #     return f"""
     # SELECT COUNT(*)
     # FROM partyunit
     # WHERE _bank_tax_paid IS NOT NULL
-    #     AND agenda_healer = {currency_healer}
+    #     AND agenda_healer = {currency_master}
     # """
     return """
 SELECT COUNT(*) 
@@ -34,7 +34,6 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable
 ):
     # GIVEN
     x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tom_text = "tom"
@@ -507,7 +506,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyBuildsASingleContinuousRang
         , river_tree_level
         , lag(river_tree_level) OVER (ORDER BY currency_start, currency_close) AS prev_parent_river_tree_level
         FROM river_block rt1
-        --  WHERE dst_healer = 'sal' and currency_healer = dst_healer
+        --  WHERE dst_healer = 'sal' and currency_master = dst_healer
         ORDER BY rt1.currency_start, rt1.currency_close
     ) x
     WHERE x.prev_diff <> 0
@@ -588,8 +587,8 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     tom_partybank = sal_partybankunits.get(tom_text)
     assert bob_partybank.tax_healer == bob_text
     assert tom_partybank.tax_healer == tom_text
-    assert bob_partybank.currency_healer == sal_text
-    assert tom_partybank.currency_healer == sal_text
+    assert bob_partybank.currency_master == sal_text
+    assert tom_partybank.currency_master == sal_text
 
     sal_agenda_after = x_culture.get_public_agenda(healer=sal_text)
     bob_party = sal_agenda_after._partys.get(bob_text)
@@ -605,15 +604,15 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
 
     # for partybank_uid, sal_partybankunit in sal_partybankunits.items():
     #     print(f"{partybank_uid=} {sal_partybankunit=}")
-    #     assert sal_partybankunit.currency_healer == sal_text
+    #     assert sal_partybankunit.currency_master == sal_text
     #     assert sal_partybankunit.tax_healer in [bob_text, tom_text, elu_text]
     #     partyunit_x = sal_agenda_after._partys.get(sal_partybankunit.tax_healer)
     #     if partyunit_x != None:
     #         # print(
-    #         #     f"{sal_partybankunit.currency_healer=} {sal_partybankunit.tax_healer=} {partyunit_x.title=} tax_total: {sal_partybankunit.tax_total} Tax Paid: {partyunit_x._bank_tax_paid}"
+    #         #     f"{sal_partybankunit.currency_master=} {sal_partybankunit.tax_healer=} {partyunit_x.title=} tax_total: {sal_partybankunit.tax_total} Tax Paid: {partyunit_x._bank_tax_paid}"
     #         # )
     #         # print(
-    #         #     f"{sal_partybankunit.currency_healer=} {sal_partybankunit.tax_healer=} {partyunit_x.title=} tax_diff:  {sal_partybankunit.tax_diff} Tax Paid: {partyunit_x._bank_tax_diff}"
+    #         #     f"{sal_partybankunit.currency_master=} {sal_partybankunit.tax_healer=} {partyunit_x.title=} tax_diff:  {sal_partybankunit.tax_diff} Tax Paid: {partyunit_x._bank_tax_diff}"
     #         # )
     #         assert sal_partybankunit.tax_total == partyunit_x._bank_tax_paid
     #         assert sal_partybankunit.tax_diff == partyunit_x._bank_tax_diff
