@@ -5,63 +5,224 @@ from dataclasses import dataclass
 from sqlite3 import Connection
 
 
-def get_river_block_reach_base_sqlstr(currency_master: PersonName):
+def get_river_reach_table_final_insert_sqlstr(currency_master: PersonName):
+    reach_final_sqlstr = get_river_reach_table_final_select_sqlstr(currency_master)
+    return get_river_reach_table_insert_sqlstr(reach_final_sqlstr)
+
+
+def get_river_reach_table_insert_sqlstr(select_query: str):
     return f"""
+INSERT INTO river_reach (currency_master, src_healer, set_num, reach_curr_start, reach_curr_close)
+{select_query}
+;
+"""
+
+
+def get_river_reach_table_create_sqlstr():
+    return """
+CREATE TABLE IF NOT EXISTS river_reach (
+  currency_master VARCHAR(255) NOT NULL
+, src_healer VARCHAR(255) NOT NULL
+, set_num INT NOT NULL
+, reach_curr_start FLOAT NOT NULL
+, reach_curr_close FLOAT NOT NULL
+, FOREIGN KEY(currency_master) REFERENCES agendaunit(healer)
+, FOREIGN KEY(src_healer) REFERENCES agendaunit(healer)
+)
+;
+"""
+
+
+def get_river_reach_table_touch_select_sqlstr(currency_master: PersonName):
+    return f"""
+    SELECT 
+    block.currency_master
+    , block.src_healer src
+    , block.dst_healer dst
+    , CASE 
+        WHEN block.currency_start < circle.curr_start 
+            AND block.currency_close > circle.curr_start
+            AND block.currency_close <= circle.curr_close
+            THEN circle.curr_start --'leftside' 
+        WHEN block.currency_start >= circle.curr_start 
+            AND block.currency_start < circle.curr_close
+            AND block.currency_close > circle.curr_close
+            THEN block.currency_start --'rightside' 
+        WHEN block.currency_start < circle.curr_start 
+            AND block.currency_close > circle.curr_close
+            THEN circle.curr_start --'outside' 
+        WHEN block.currency_start >= circle.curr_start 
+            AND block.currency_close <= circle.curr_close
+            THEN block.currency_start --'inside' 
+            END reach_start
+    , CASE 
+        WHEN block.currency_start < circle.curr_start 
+            AND block.currency_close > circle.curr_start
+            AND block.currency_close <= circle.curr_close
+            THEN block.currency_close --'leftside' 
+        WHEN block.currency_start >= circle.curr_start 
+            AND block.currency_start < circle.curr_close
+            AND block.currency_close > circle.curr_close
+            THEN circle.curr_close --'rightside' 
+        WHEN block.currency_start < circle.curr_start 
+            AND block.currency_close > circle.curr_close
+            THEN circle.curr_close --'outside' 
+        WHEN block.currency_start >= circle.curr_start 
+            AND block.currency_close <= circle.curr_close
+            THEN block.currency_close --'inside' 
+            END reach_close
+    FROM river_block block
+    JOIN river_circle circle on 
+            (block.currency_start < circle.curr_start 
+            AND block.currency_close > circle.curr_close)
+        OR     (block.currency_start >= circle.curr_start 
+            AND block.currency_close <= circle.curr_close)
+        OR     (block.currency_start < circle.curr_start 
+            AND block.currency_close > circle.curr_start
+            AND block.currency_close <= circle.curr_close)
+        OR     (block.currency_start >= circle.curr_start 
+            AND block.currency_start < circle.curr_close
+            AND block.currency_close > circle.curr_close)
+    WHERE block.currency_master = '{currency_master}'
+        AND block.src_healer != block.currency_master
+    ORDER BY 
+    block.src_healer
+    , block.dst_healer
+    , block.currency_start
+    , block.currency_close
+"""
+
+
+def get_river_reach_table_final_select_sqlstr(currency_master: PersonName):
+    return f"""
+WITH reach_inter(curr_mstr, src, dst, reach_start, reach_close) AS (
+{get_river_reach_table_touch_select_sqlstr(currency_master)}
+),
+reach_order(
+  curr_mstr
+, src
+, prev_src
+, src_step
+, reach_start
+, prev_start
+, range_step
+, reach_close
+, prev_close
+) AS (
+    SELECT 
+    reach_inter.curr_mstr
+    , reach_inter.src
+    , IFNULL(
+        LAG(reach_inter.src, 1) OVER(ORDER BY 
+        reach_inter.src
+        , reach_inter.dst
+        , reach_inter.reach_start
+        , reach_inter.reach_close
+        )
+      , reach_inter.src) prev_src
+    , CASE 
+        WHEN 
+          IFNULL(
+            LAG(reach_inter.src, 1) OVER(ORDER BY 
+            reach_inter.src
+            , reach_inter.dst
+            , reach_inter.reach_start
+            , reach_inter.reach_close
+            )
+          , reach_inter.src) 
+          = reach_inter.src
+        THEN 0
+        ELSE 1
+        END src_step
+    , reach_inter.reach_start
+    , IFNULL(
+        LAG(reach_start, 1) OVER(ORDER BY 
+        reach_inter.src
+        , reach_inter.dst
+        , reach_inter.reach_start
+        , reach_inter.reach_close
+        ) 
+      , reach_start) prev_start
+    , CASE
+      WHEN
+        IFNULL(
+        LAG(reach_close, 1) OVER(ORDER BY 
+        reach_inter.src
+        , reach_inter.dst
+        , reach_inter.reach_start
+        , reach_inter.reach_close
+        ) 
+      , reach_close) < reach_inter.reach_start
+      THEN 1
+      ELSE 0
+      END range_step
+    , reach_inter.reach_close
+    , IFNULL(
+        LAG(reach_close, 1) OVER(ORDER BY 
+        reach_inter.src
+        , reach_inter.dst
+        , reach_inter.reach_start
+        , reach_inter.reach_close
+        ) 
+      , reach_close) prev_close
+    FROM reach_inter
+) 
+, reach_step (  
+  curr_mstr
+, src
+, prev_src
+, src_step
+, range_step
+, change_step
+, prev_start
+, prev_close
+, reach_start
+, reach_close
+) AS (
+    SELECT
+    curr_mstr
+    , src
+    , prev_src
+    , src_step
+    , range_step
+    , CASE 
+        WHEN src_step =1 AND range_step =1 
+        THEN 1
+        ELSE src_step + range_step
+        END change_step
+    , prev_start
+    , prev_close
+    , reach_start
+    , reach_close
+    FROM reach_order
+)
+, reach_sets_num (  
+  curr_mstr
+, src
+, set_num
+, prev_start
+, prev_close
+, reach_start
+, reach_close
+) AS (
+    SELECT
+      curr_mstr
+    , src
+    , SUM(change_step) OVER (ORDER BY src, reach_start, reach_close) set_num
+    , prev_start
+    , prev_close
+    , reach_start
+    , reach_close
+    FROM reach_step
+)
 SELECT 
-  block.currency_master
-, block.src_healer src
-, block.dst_healer dst
-, CASE 
-    WHEN block.currency_start < circle.curr_start 
-        AND block.currency_close > circle.curr_start
-        AND block.currency_close <= circle.curr_close
-        THEN circle.curr_start --'leftside' 
-    WHEN block.currency_start >= circle.curr_start 
-        AND block.currency_start < circle.curr_close
-        AND block.currency_close > circle.curr_close
-        THEN block.currency_start--'rightside' 
-    WHEN block.currency_start < circle.curr_start 
-        AND block.currency_close > circle.curr_close
-        THEN circle.curr_start--'outside' 
-    WHEN block.currency_start >= circle.curr_start 
-        AND block.currency_close <= circle.curr_close
-        THEN block.currency_start --'inside' 
-        END reach_start
-, CASE 
-    WHEN block.currency_start < circle.curr_start 
-        AND block.currency_close > circle.curr_start
-        AND block.currency_close <= circle.curr_close
-        THEN block.currency_close --'leftside' 
-    WHEN block.currency_start >= circle.curr_start 
-        AND block.currency_start < circle.curr_close
-        AND block.currency_close > circle.curr_close
-        THEN circle.curr_close --'rightside' 
-    WHEN block.currency_start < circle.curr_start 
-        AND block.currency_close > circle.curr_close
-        THEN circle.curr_close--'outside' 
-    WHEN block.currency_start >= circle.curr_start 
-        AND block.currency_close <= circle.curr_close
-        THEN block.currency_close --'inside' 
-        END reach_close
-FROM river_block block
-JOIN river_circle circle on 
-           (block.currency_start < circle.curr_start 
-        AND block.currency_close > circle.curr_close)
-    OR     (block.currency_start >= circle.curr_start 
-        AND block.currency_close <= circle.curr_close)
-    OR     (block.currency_start < circle.curr_start 
-        AND block.currency_close > circle.curr_start
-        AND block.currency_close <= circle.curr_close)
-    OR     (block.currency_start >= circle.curr_start 
-        AND block.currency_start < circle.curr_close
-        AND block.currency_close > circle.curr_close)
-WHERE block.currency_master = '{currency_master}'
-    AND block.src_healer != block.currency_master
-ORDER BY 
-  block.src_healer
-, block.dst_healer
-, block.currency_start
-, block.currency_close
+  curr_mstr
+, src
+, set_num 
+, MIN(reach_start) reach_start
+, MAX(reach_close) reach_close
+FROM reach_sets_num
+GROUP BY curr_mstr, src, set_num
 """
 
 
@@ -770,6 +931,7 @@ def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x.append(get_partyunit_table_create_sqlstr())
     list_x.append(get_river_block_table_create_sqlstr())
     list_x.append(get_river_circle_table_create_sqlstr())
+    list_x.append(get_river_reach_table_create_sqlstr())
     list_x.append(get_groupunit_catalog_table_create_sqlstr())
     return list_x
 

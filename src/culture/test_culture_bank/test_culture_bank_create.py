@@ -89,6 +89,20 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
         curr_close_text: 1,
     }
 
+    currency_master_text
+    src_healer_text
+    set_num_text = "set_num"
+    reach_curr_start_text = "reach_curr_start"
+    reach_curr_close_text = "reach_curr_close"
+    river_reach_text = "river_reach"
+    river_reach_columns = {
+        currency_master_text: 1,
+        src_healer_text: 1,
+        set_num_text: 1,
+        reach_curr_start_text: 1,
+        reach_curr_close_text: 1,
+    }
+
     idea_road_text = "idea_road"
     idea_catalog_text = "idea_catalog"
     idea_catalog_columns = {agenda_healer_text: 1, idea_road_text: 1}
@@ -112,6 +126,7 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
         partyunit_text: partyunit_columns,
         river_block_text: river_block_columns,
         river_circle_text: river_circle_columns,
+        river_reach_text: river_reach_columns,
         idea_catalog_text: idea_catalog_columns,
         acptfact_catalog_text: acptfact_catalog_columns,
         groupunit_catalog_text: groupunit_catalog_columns,
@@ -128,7 +143,8 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     assert db_tables.get(partyunit_text) != None  # 1
     assert db_tables.get(river_circle_text) != None  # 4
     assert db_tables.get(river_block_text) != None  # 3
-    assert len(db_tables) == 7
+    assert db_tables.get(river_reach_text) != None  # 8
+    assert len(db_tables) == 8
     assert len(db_tables) == len(curr_tables)
     assert len(db_tables) == len(db_tables_columns)
 

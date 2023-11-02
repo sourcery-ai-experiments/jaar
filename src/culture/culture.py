@@ -22,6 +22,7 @@ from src.culture.bank_sqlstr import (
     get_partybankunit_dict,
     get_partyunit_table_update_bank_attr_sqlstr,
     get_river_circle_table_insert_sqlstr,
+    get_river_reach_table_final_insert_sqlstr,
     get_create_table_if_not_exist_sqlstrs,
     get_partyunit_table_insert_sqlstr,
     get_agendaunit_table_insert_sqlstr,
@@ -184,6 +185,7 @@ class CultureUnit:
                 get_partyunit_table_update_bank_attr_sqlstr(agenda_healer)
             )
             bank_conn.execute(get_river_circle_table_insert_sqlstr(agenda_healer))
+            bank_conn.execute(get_river_reach_table_final_insert_sqlstr(agenda_healer))
 
             sal_partybankunits = get_partybankunit_dict(bank_conn, agenda_healer)
             x_agenda = self.get_public_agenda(healer=agenda_healer)
