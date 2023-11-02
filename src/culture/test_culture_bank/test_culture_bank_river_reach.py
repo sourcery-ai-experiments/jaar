@@ -1,3 +1,4 @@
+from src.agenda.agenda import agendaunit_shop, partyunit_shop
 from src.culture.culture import cultureunit_shop, get_river_ledger_unit
 from src.culture.examples.culture_env_kit import (
     get_temp_env_handle,
@@ -11,16 +12,18 @@ from src.culture.bank_sqlstr import (
     get_river_reach_table_touch_select_sqlstr,
     get_river_circle_table_create_sqlstr,
     get_river_block_table_create_sqlstr,
-    get_river_reach_table_final_select_sqlstr,
     get_river_reach_table_create_sqlstr,
     get_river_reach_table_insert_sqlstr,
     get_river_reach_table_final_insert_sqlstr,
+    get_partyunit_table_create_sqlstr,
+    get_partyunit_table_insert_sqlstr,
+    get_partyunit_table_update_credit_score_sqlstr,
 )
 from src.culture.y_func import get_single_result
 from sqlite3 import connect as sqlite3_connect
 
 
-def test_get_river_reach_table_insert_sqlstr_InsertsWithoutErrorResults():
+def test_get_river_reach_table_insert_sqlstr_InsertsWithoutError():
     # GIVEN
     x_db = sqlite3_connect(":memory:")
     reach_text = "river_reach"
@@ -45,6 +48,95 @@ SELECT
     # THEN
     with x_db as x_conn:
         assert 1 == get_single_result(x_conn, get_table_count_sqlstr(reach_text))
+
+
+def test_get_partyunit_table_update_credit_score_sqlstr_UpdatesWithoutError():
+    # GIVEN
+    x_db = sqlite3_connect(":memory:")
+    partyunit_text = "partyunit"
+    reach_text = "river_reach"
+    with x_db as x_conn:
+        x_conn.execute(get_partyunit_table_create_sqlstr())
+        x_conn.execute(get_river_reach_table_create_sqlstr())
+        assert 0 == get_single_result(x_conn, get_table_count_sqlstr(partyunit_text))
+        assert 0 == get_single_result(x_conn, get_table_count_sqlstr(reach_text))
+
+    yao_text = "Yao"
+    yao_agenda = agendaunit_shop(yao_text)
+
+    bob_text = "Bob"
+    cal_text = "Cal"
+    dee_text = "Dee"
+    bob_partyunit = partyunit_shop(bob_text)
+    cal_partyunit = partyunit_shop(cal_text)
+    dee_partyunit = partyunit_shop(dee_text)
+    bob_s = 0.78
+    cal_s = 0.1
+    dee_s1 = 0.2
+    dee_s2 = 0.6
+    bob_close = 0.89
+    cal_close = 0.33
+    dee_close1 = 0.44
+    dee_close2 = 0.61
+
+    bob_select_sqlstr = f"SELECT '{yao_text}', '{bob_text}', 4, {bob_s}, {bob_close}"
+    cal_select_sqlstr = f"SELECT '{yao_text}', '{cal_text}', 5, {cal_s}, {cal_close}"
+    dee_select_sqlstr1 = f"SELECT '{yao_text}', '{dee_text}', 6, {dee_s1}, {dee_close1}"
+    dee_select_sqlstr2 = f"SELECT '{yao_text}', '{dee_text}', 7, {dee_s2}, {dee_close2}"
+
+    with x_db as x_conn:
+        x_conn.execute(get_partyunit_table_insert_sqlstr(yao_agenda, bob_partyunit))
+        x_conn.execute(get_partyunit_table_insert_sqlstr(yao_agenda, cal_partyunit))
+        x_conn.execute(get_partyunit_table_insert_sqlstr(yao_agenda, dee_partyunit))
+        x_conn.execute(get_river_reach_table_insert_sqlstr(bob_select_sqlstr))
+        x_conn.execute(get_river_reach_table_insert_sqlstr(cal_select_sqlstr))
+        x_conn.execute(get_river_reach_table_insert_sqlstr(dee_select_sqlstr1))
+        x_conn.execute(get_river_reach_table_insert_sqlstr(dee_select_sqlstr2))
+        assert 3 == get_single_result(x_conn, get_table_count_sqlstr(partyunit_text))
+        assert 4 == get_single_result(x_conn, get_table_count_sqlstr(reach_text))
+
+    partyunit_select_str = f"""
+SELECT 
+  agenda_healer
+, title
+, _bank_credit_score
+FROM partyunit
+WHERE agenda_healer = '{yao_text}'
+"""
+    with x_db as x_conn:
+        results = x_conn.execute(partyunit_select_str)
+
+    x_rows = results.fetchall()
+    print(f"{x_rows=}")
+    print(f"{x_rows[0]=}")
+    print(f"{x_rows[0][0]=}")
+    print(f"{x_rows[1]=}")
+    print(f"{x_rows[2]=}")
+    assert x_rows[0][1] == bob_text
+    assert x_rows[1][1] == cal_text
+    assert x_rows[2][1] == dee_text
+    assert x_rows[0][2] is None
+    assert x_rows[1][2] is None
+    assert x_rows[2][2] is None
+
+    # WHEN
+    with x_db as x_conn:
+        x_conn.execute(get_partyunit_table_update_credit_score_sqlstr(yao_text))
+
+    # THEN
+    with x_db as x_conn:
+        results = x_conn.execute(partyunit_select_str)
+
+    y_rows = results.fetchall()
+    assert y_rows[0][1] == bob_text
+    assert y_rows[1][1] == cal_text
+    assert y_rows[2][1] == dee_text
+    assert y_rows[0][2] != None
+    assert y_rows[1][2] != None
+    assert y_rows[2][2] != None
+    assert y_rows[0][2] == bob_close - bob_s
+    assert y_rows[1][2] == cal_close - cal_s
+    assert y_rows[2][2] == (dee_close1 - dee_s1) + (dee_close2 - dee_s2)
 
 
 # STEPS TO CALCULATE RIVER_REACH

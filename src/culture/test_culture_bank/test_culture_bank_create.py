@@ -39,6 +39,9 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     _agenda_goal_ratio_debt_text = "_agenda_goal_ratio_debt"
     _creditor_active_text = "_creditor_active"
     _debtor_active_text = "_debtor_active"
+    _bank_credit_score_text = "_bank_credit_score"
+    _bank_voice_rank_text = "_bank_voice_rank"
+    _bank_voice_hx_lowest_rank_text = "_bank_voice_hx_lowest_rank"
     _bank_tax_paid_text = "_bank_tax_paid"
     _bank_tax_diff_text = "_bank_tax_diff"
     partyunit_text = "partyunit"
@@ -55,6 +58,9 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
         _debtor_active_text: 1,
         _bank_tax_paid_text: 1,
         _bank_tax_diff_text: 1,
+        _bank_credit_score_text: 1,
+        _bank_voice_rank_text: 1,
+        _bank_voice_hx_lowest_rank_text: 1,
     }
 
     currency_master_text = "currency_master"

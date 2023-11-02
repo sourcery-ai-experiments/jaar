@@ -11,7 +11,7 @@ from src.culture.examples.culture_env_kit import (
 from src.culture.bank_sqlstr import (
     get_river_block_table_insert_sqlstr as river_block_insert,
     get_river_block_dict,
-    get_partyunit_table_update_bank_attr_sqlstr,
+    get_partyunit_table_update_bank_tax_paid_sqlstr,
     PartyBankUnit,
     get_partybankunit_dict,
     get_partyunit_table_insert_sqlstr,
@@ -380,7 +380,7 @@ def test_agenda_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr():
     assert x_agenda._partys.get(elu_text)._bank_tax_diff is None
 
 
-def test_get_partyunit_table_update_bank_attr_sqlstr_CorrectlyPopulatesTable01(
+def test_get_partyunit_table_update_bank_tax_paid_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
@@ -438,7 +438,7 @@ def test_get_partyunit_table_update_bank_attr_sqlstr_CorrectlyPopulatesTable01(
         bank_conn.execute(ss0)
 
     # WHEN
-    mstr_sqlstr = get_partyunit_table_update_bank_attr_sqlstr(
+    mstr_sqlstr = get_partyunit_table_update_bank_tax_paid_sqlstr(
         currency_agenda_healer=bob_text
     )
     with x_culture.get_bank_conn() as bank_conn:

@@ -5,12 +5,26 @@ from dataclasses import dataclass
 from sqlite3 import Connection
 
 
-def get_river_reach_table_final_insert_sqlstr(currency_master: PersonName):
+def get_river_score_select_sqlstr(currency_master):
+    return f"""
+SELECT 
+  currency_master
+, src_healer
+, SUM(reach_curr_close - reach_curr_start) range_sum
+FROM river_reach
+WHERE currency_master = '{currency_master}'
+GROUP BY currency_master, src_healer
+ORDER BY range_sum DESC
+;
+"""
+
+
+def get_river_reach_table_final_insert_sqlstr(currency_master: PersonName) -> str:
     reach_final_sqlstr = get_river_reach_table_final_select_sqlstr(currency_master)
     return get_river_reach_table_insert_sqlstr(reach_final_sqlstr)
 
 
-def get_river_reach_table_insert_sqlstr(select_query: str):
+def get_river_reach_table_insert_sqlstr(select_query: str) -> str:
     return f"""
 INSERT INTO river_reach (currency_master, src_healer, set_num, reach_curr_start, reach_curr_close)
 {select_query}
@@ -18,7 +32,7 @@ INSERT INTO river_reach (currency_master, src_healer, set_num, reach_curr_start,
 """
 
 
-def get_river_reach_table_create_sqlstr():
+def get_river_reach_table_create_sqlstr() -> str:
     return """
 CREATE TABLE IF NOT EXISTS river_reach (
   currency_master VARCHAR(255) NOT NULL
@@ -33,7 +47,7 @@ CREATE TABLE IF NOT EXISTS river_reach (
 """
 
 
-def get_river_reach_table_touch_select_sqlstr(currency_master: PersonName):
+def get_river_reach_table_touch_select_sqlstr(currency_master: PersonName) -> str:
     return f"""
     SELECT 
     block.currency_master
@@ -93,7 +107,7 @@ def get_river_reach_table_touch_select_sqlstr(currency_master: PersonName):
 """
 
 
-def get_river_reach_table_final_select_sqlstr(currency_master: PersonName):
+def get_river_reach_table_final_select_sqlstr(currency_master: PersonName) -> str:
     return f"""
 WITH reach_inter(curr_mstr, src, dst, reach_start, reach_close) AS (
 {get_river_reach_table_touch_select_sqlstr(currency_master)}
@@ -226,11 +240,8 @@ GROUP BY curr_mstr, src, set_num
 """
 
 
-def get_table_count_sqlstr(
-    table_mame: str,
-) -> (
-    str
-):  # "mame" is intially mispelled so that it does not interfere with person_name in the codebase
+def get_table_count_sqlstr(table_mame: str) -> str:
+    # "mame" is intially mispelled so that it does not interfere with person_name in the codebase
     return f"SELECT COUNT(*) FROM {table_mame}"
 
 
@@ -590,6 +601,9 @@ CREATE TABLE IF NOT EXISTS partyunit (
 , _debtor_active INT
 , _bank_tax_paid FLOAT
 , _bank_tax_diff FLOAT
+, _bank_credit_score FLOAT
+, _bank_voice_rank INT
+, _bank_voice_hx_lowest_rank INT
 , FOREIGN KEY(agenda_healer) REFERENCES agendaunit(healer)
 , FOREIGN KEY(title) REFERENCES agendaunit(healer)
 , UNIQUE(agenda_healer, title)
@@ -598,7 +612,9 @@ CREATE TABLE IF NOT EXISTS partyunit (
 """
 
 
-def get_partyunit_table_update_bank_attr_sqlstr(currency_agenda_healer: str) -> str:
+def get_partyunit_table_update_bank_tax_paid_sqlstr(
+    currency_agenda_healer: PersonName,
+) -> str:
     return f"""
 UPDATE partyunit
 SET _bank_tax_paid = (
@@ -614,6 +630,22 @@ WHERE EXISTS (
     WHERE partyunit.agenda_healer='{currency_agenda_healer}' 
         AND partyunit.title = block.dst_healer
 )
+;
+"""
+
+
+def get_partyunit_table_update_credit_score_sqlstr(
+    currency_agenda_healer: PersonName,
+) -> str:
+    return f"""
+UPDATE partyunit
+SET _bank_credit_score = (
+    SELECT SUM(reach_curr_close - reach_curr_start) range_sum
+    FROM river_reach reach
+    WHERE reach.currency_master = partyunit.agenda_healer
+        AND reach.src_healer = partyunit.title
+    )
+WHERE partyunit.agenda_healer = '{currency_agenda_healer}'
 ;
 """
 
@@ -636,6 +668,9 @@ INSERT INTO partyunit (
 , _debtor_active
 , _bank_tax_paid
 , _bank_tax_diff
+, _bank_credit_score
+, _bank_voice_rank
+, _bank_voice_hx_lowest_rank
 )
 VALUES (
   '{x_agenda._healer}' 
@@ -650,6 +685,9 @@ VALUES (
 , {sqlite_bool(partyunit_x._debtor_active)}
 , {sqlite_bool(partyunit_x._bank_tax_paid)}
 , {sqlite_bool(partyunit_x._bank_tax_diff)}
+, {sqlite_bool(partyunit_x._bank_credit_score)}
+, {sqlite_bool(partyunit_x._bank_voice_rank)}
+, {sqlite_bool(partyunit_x._bank_voice_hx_lowest_rank)}
 )
 ;
 """

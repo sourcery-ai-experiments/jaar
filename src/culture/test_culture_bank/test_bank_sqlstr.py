@@ -2,11 +2,13 @@ from src.agenda.agenda import agendaunit_shop
 from src.culture.bank_sqlstr import (
     get_agendaunit_update_sqlstr,
     get_agendaunits_select_sqlstr,
-    get_partyunit_table_update_bank_attr_sqlstr,
+    get_partyunit_table_update_bank_tax_paid_sqlstr,
+    get_partyunit_table_update_credit_score_sqlstr,
     get_river_reach_table_touch_select_sqlstr,
     get_river_reach_table_final_select_sqlstr,
     get_river_reach_table_create_sqlstr,
     get_river_reach_table_insert_sqlstr,
+    get_river_score_select_sqlstr,
 )
 from src.culture.y_func import sqlite_text, get_single_result
 from sqlite3 import connect as sqlite3_connect
@@ -50,7 +52,7 @@ FROM agendaunit
 def test_get_partyunit_select_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
     bob_text = "bob"
-    generated_sqlstr = get_partyunit_table_update_bank_attr_sqlstr(bob_text)
+    generated_sqlstr = get_partyunit_table_update_bank_tax_paid_sqlstr(bob_text)
 
     # THEN
     example_sqlstr = f"""
@@ -316,6 +318,46 @@ SELECT
     example_sqlstr = f"""
 INSERT INTO river_reach (currency_master, src_healer, set_num, reach_curr_start, reach_curr_close)
 {select_example_sqlstr}
+;
+"""
+    assert generated_sqlstr == example_sqlstr
+
+
+def test_get_river_score_select_sqlstr_ReturnsCorrectStr():
+    # GIVEN / WHEN
+    yao_text = "Yao"
+    generated_sqlstr = get_river_score_select_sqlstr(yao_text)
+
+    # THEN
+    example_sqlstr = f"""
+SELECT 
+  currency_master
+, src_healer
+, SUM(reach_curr_close - reach_curr_start) range_sum
+FROM river_reach
+WHERE currency_master = '{yao_text}'
+GROUP BY currency_master, src_healer
+ORDER BY range_sum DESC
+;
+"""
+    assert generated_sqlstr == example_sqlstr
+
+
+def test_get_partyunit_table_update_credit_score_sqlstr_ReturnsCorrectStr():
+    # GIVEN / WHEN
+    yao_text = "Yao"
+    generated_sqlstr = get_partyunit_table_update_credit_score_sqlstr(yao_text)
+
+    # THEN
+    example_sqlstr = f"""
+UPDATE partyunit
+SET _bank_credit_score = (
+    SELECT SUM(reach_curr_close - reach_curr_start) range_sum
+    FROM river_reach reach
+    WHERE reach.currency_master = partyunit.agenda_healer
+        AND reach.src_healer = partyunit.title
+    )
+WHERE partyunit.agenda_healer = '{yao_text}'
 ;
 """
     assert generated_sqlstr == example_sqlstr
