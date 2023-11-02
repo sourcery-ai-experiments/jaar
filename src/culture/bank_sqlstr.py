@@ -1,4 +1,4 @@
-from src.agenda.agenda import AgendaUnit, PartyUnit, Road, PersonName
+from src.agenda.agenda import AgendaUnit, PartyUnit, Road, PersonName, PartyTitle
 from src.agenda.road import get_road_without_root_node
 from src.culture.y_func import sqlite_bool, sqlite_null, sqlite_text, sqlite_to_python
 from dataclasses import dataclass
@@ -650,6 +650,25 @@ WHERE partyunit.agenda_healer = '{currency_agenda_healer}'
 """
 
 
+def get_partyunit_table_update_bank_voice_rank_sqlstr(agenda_healer: PersonName) -> str:
+    return f"""
+UPDATE partyunit
+SET _bank_voice_rank = 
+    (
+    SELECT rn
+    FROM (
+        SELECT p2.title
+        , row_number() over (order by p2._bank_credit_score DESC) rn
+        FROM partyunit p2
+        WHERE p2.agenda_healer = '{agenda_healer}'
+    ) p3
+    WHERE p3.title = partyunit.title AND partyunit.agenda_healer = '{agenda_healer}'
+    )
+WHERE partyunit.agenda_healer = '{agenda_healer}'
+;
+"""
+
+
 def get_partyunit_table_insert_sqlstr(
     x_agenda: AgendaUnit, partyunit_x: PartyUnit
 ) -> str:
@@ -683,11 +702,11 @@ VALUES (
 , {sqlite_null(partyunit_x._agenda_goal_ratio_debt)}
 , {sqlite_bool(partyunit_x._creditor_active)}
 , {sqlite_bool(partyunit_x._debtor_active)}
-, {sqlite_bool(partyunit_x._bank_tax_paid)}
-, {sqlite_bool(partyunit_x._bank_tax_diff)}
-, {sqlite_bool(partyunit_x._bank_credit_score)}
-, {sqlite_bool(partyunit_x._bank_voice_rank)}
-, {sqlite_bool(partyunit_x._bank_voice_hx_lowest_rank)}
+, {sqlite_null(partyunit_x._bank_tax_paid)}
+, {sqlite_null(partyunit_x._bank_tax_diff)}
+, {sqlite_null(partyunit_x._bank_credit_score)}
+, {sqlite_null(partyunit_x._bank_voice_rank)}
+, {sqlite_null(partyunit_x._bank_voice_hx_lowest_rank)}
 )
 ;
 """
@@ -698,7 +717,9 @@ class PartyDBUnit(PartyUnit):
     agenda_healer: str = None
 
 
-def get_partyview_dict(db_conn: Connection, payer_healer: str) -> dict[str:PartyDBUnit]:
+def get_partyview_dict(
+    db_conn: Connection, payer_healer: PersonName
+) -> dict[PartyTitle:PartyDBUnit]:
     sqlstr = f"""
 SELECT 
   agenda_healer
@@ -713,6 +734,9 @@ SELECT
 , _debtor_active
 , _bank_tax_paid
 , _bank_tax_diff
+, _bank_credit_score
+, _bank_voice_rank
+, _bank_voice_hx_lowest_rank
 FROM partyunit
 WHERE agenda_healer = '{payer_healer}' 
 ;
@@ -734,6 +758,9 @@ WHERE agenda_healer = '{payer_healer}'
             _debtor_active=row[9],
             _bank_tax_paid=row[10],
             _bank_tax_diff=row[11],
+            _bank_credit_score=row[12],
+            _bank_voice_rank=row[13],
+            _bank_voice_hx_lowest_rank=row[14],
         )
         dict_x[partyview_x.title] = partyview_x
     return dict_x

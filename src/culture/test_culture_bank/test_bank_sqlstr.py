@@ -4,6 +4,7 @@ from src.culture.bank_sqlstr import (
     get_agendaunits_select_sqlstr,
     get_partyunit_table_update_bank_tax_paid_sqlstr,
     get_partyunit_table_update_credit_score_sqlstr,
+    get_partyunit_table_update_bank_voice_rank_sqlstr,
     get_river_reach_table_touch_select_sqlstr,
     get_river_reach_table_final_select_sqlstr,
     get_river_reach_table_create_sqlstr,
@@ -356,6 +357,31 @@ SET _bank_credit_score = (
     FROM river_reach reach
     WHERE reach.currency_master = partyunit.agenda_healer
         AND reach.src_healer = partyunit.title
+    )
+WHERE partyunit.agenda_healer = '{yao_text}'
+;
+"""
+    assert generated_sqlstr == example_sqlstr
+
+
+def test_get_partyunit_table_update_bank_voice_rank_sqlstr_ReturnsCorrectStr():
+    # GIVEN / WHEN
+    yao_text = "Yao"
+    generated_sqlstr = get_partyunit_table_update_bank_voice_rank_sqlstr(yao_text)
+
+    # THEN
+    example_sqlstr = f"""
+UPDATE partyunit
+SET _bank_voice_rank = 
+    (
+    SELECT rn
+    FROM (
+        SELECT p2.title
+        , row_number() over (order by p2._bank_credit_score DESC) rn
+        FROM partyunit p2
+        WHERE p2.agenda_healer = '{yao_text}'
+    ) p3
+    WHERE p3.title = partyunit.title AND partyunit.agenda_healer = '{yao_text}'
     )
 WHERE partyunit.agenda_healer = '{yao_text}'
 ;

@@ -33,7 +33,7 @@ def test_culture_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     bob_text = "bob"
     tim_text = "tim"
     bob_agenda = agendaunit_shop(_healer=bob_text)
-    partyunit_x = partyunit_shop(
+    tim_partyunit = partyunit_shop(
         title=tim_text,
         _agenda_credit=0.9,
         _agenda_debt=0.8,
@@ -44,8 +44,15 @@ def test_culture_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
         _creditor_active=True,
         _debtor_active=False,
     )
+    tim_tax_paid = 0.5151
+    tim_credit_score = 0.5252
+    tim_voice_rank = 33
+    tim_partyunit.set_banking_data(tim_tax_paid, None, tim_credit_score, tim_voice_rank)
+    assert tim_partyunit._bank_tax_paid == tim_tax_paid
+    assert tim_partyunit._bank_credit_score == tim_credit_score
+    assert tim_partyunit._bank_voice_rank == tim_voice_rank
 
-    insert_sqlstr = get_partyunit_table_insert_sqlstr(bob_agenda, partyunit_x)
+    insert_sqlstr = get_partyunit_table_insert_sqlstr(bob_agenda, tim_partyunit)
     print(insert_sqlstr)
 
     # WHEN
@@ -55,23 +62,26 @@ def test_culture_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     ledger_dict = get_partyview_dict(
         db_conn=x_culture.get_bank_conn(), payer_healer=bob_text
     )
-    # ledger_x = None
+    # tim_ledger = None
     # for key, value in ledger_dict.items():
     #     print(f"{key=} {value=}")
-    #     ledger_x = value
+    #     tim_ledger = value
 
     # THEN
-    ledger_x = ledger_dict.get(tim_text)
-    assert ledger_x.agenda_healer == bob_text
-    assert ledger_x.title == tim_text
-    assert ledger_x._agenda_credit == 0.9
-    assert ledger_x._agenda_debt == 0.8
-    assert ledger_x._agenda_goal_credit == 0.7
-    assert ledger_x._agenda_goal_debt == 0.6
-    assert ledger_x._agenda_goal_ratio_credit == 0.5
-    assert ledger_x._agenda_goal_ratio_debt == 0.4
-    assert ledger_x._creditor_active
-    assert ledger_x._debtor_active == False
+    tim_ledger = ledger_dict.get(tim_text)
+    assert tim_ledger.agenda_healer == bob_text
+    assert tim_ledger.title == tim_text
+    assert tim_ledger._agenda_credit == 0.9
+    assert tim_ledger._agenda_debt == 0.8
+    assert tim_ledger._agenda_goal_credit == 0.7
+    assert tim_ledger._agenda_goal_debt == 0.6
+    assert tim_ledger._agenda_goal_ratio_credit == 0.5
+    assert tim_ledger._agenda_goal_ratio_debt == 0.4
+    assert tim_ledger._creditor_active
+    assert tim_ledger._debtor_active == False
+    assert tim_ledger._bank_tax_paid == tim_tax_paid
+    assert tim_ledger._bank_credit_score == tim_credit_score
+    assert tim_ledger._bank_voice_rank == tim_voice_rank
 
 
 def test_RiverBlockUnit_exists():

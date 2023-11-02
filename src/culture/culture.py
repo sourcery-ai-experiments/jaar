@@ -17,15 +17,16 @@ from src.culture.council import CouncilUnit, councilunit_shop, CouncilDub
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 from src.culture.bank_sqlstr import (
-    get_river_block_table_delete_sqlstr,
-    get_river_block_table_insert_sqlstr,
     get_partybankunit_dict,
+    get_partyunit_table_insert_sqlstr,
     get_partyunit_table_update_bank_tax_paid_sqlstr,
     get_partyunit_table_update_credit_score_sqlstr,
+    get_partyunit_table_update_bank_voice_rank_sqlstr,
+    get_river_block_table_delete_sqlstr,
+    get_river_block_table_insert_sqlstr,
     get_river_circle_table_insert_sqlstr,
     get_river_reach_table_final_insert_sqlstr,
     get_create_table_if_not_exist_sqlstrs,
-    get_partyunit_table_insert_sqlstr,
     get_agendaunit_table_insert_sqlstr,
     get_river_ledger_unit,
     PartyDBUnit,
@@ -189,6 +190,9 @@ class CultureUnit:
             )
             bank_conn.execute(
                 get_partyunit_table_update_credit_score_sqlstr(agenda_healer)
+            )
+            bank_conn.execute(
+                get_partyunit_table_update_bank_voice_rank_sqlstr(agenda_healer)
             )
 
             sal_partybankunits = get_partybankunit_dict(bank_conn, agenda_healer)

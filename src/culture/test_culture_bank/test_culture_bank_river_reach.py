@@ -18,6 +18,7 @@ from src.culture.bank_sqlstr import (
     get_partyunit_table_create_sqlstr,
     get_partyunit_table_insert_sqlstr,
     get_partyunit_table_update_credit_score_sqlstr,
+    get_partyunit_table_update_bank_voice_rank_sqlstr,
 )
 from src.culture.y_func import get_single_result
 from sqlite3 import connect as sqlite3_connect
@@ -137,6 +138,97 @@ WHERE agenda_healer = '{yao_text}'
     assert y_rows[0][2] == bob_close - bob_s
     assert y_rows[1][2] == cal_close - cal_s
     assert y_rows[2][2] == (dee_close1 - dee_s1) + (dee_close2 - dee_s2)
+
+
+def test_get_partyunit_table_update_bank_voice_rank_sqlstr_UpdatesWithoutError():
+    # GIVEN
+    yao_text = "Yao"
+    yao_agenda = agendaunit_shop(yao_text)
+    bob_text = "Bob"
+    cal_text = "Cal"
+    dee_text = "Dee"
+    bob_s = 0.78
+    cal_s = 0.1
+    dee_s1 = 0.2
+    dee_s2 = 0.6
+    bob_close = 0.89
+    cal_close = 0.33
+    dee_close1 = 0.44
+    dee_close2 = 0.61
+    bob_credit_score = bob_close - bob_s
+    cal_credit_score = cal_close - cal_s
+    dee_credit_score = (dee_close1 - dee_s1) + (dee_close2 - dee_s2)
+    print(f"{bob_credit_score=}")
+    print(f"{cal_credit_score=}")
+    print(f"{dee_credit_score=}")
+    bob_partyunit = partyunit_shop(bob_text)
+    cal_partyunit = partyunit_shop(cal_text)
+    dee_partyunit = partyunit_shop(dee_text)
+    bob_partyunit.set_banking_data(None, None, bob_credit_score, None)
+    cal_partyunit.set_banking_data(None, None, cal_credit_score, None)
+    dee_partyunit.set_banking_data(None, None, dee_credit_score, None)
+    print(f"{bob_partyunit._bank_credit_score=}")
+    print(f"{cal_partyunit._bank_credit_score=}")
+    print(f"{dee_partyunit._bank_credit_score=}")
+
+    partyunit_text = "partyunit"
+    x_db = sqlite3_connect(":memory:")
+    with x_db as x_conn:
+        x_conn.execute(get_partyunit_table_create_sqlstr())
+        x_conn.execute(get_partyunit_table_insert_sqlstr(yao_agenda, bob_partyunit))
+        x_conn.execute(get_partyunit_table_insert_sqlstr(yao_agenda, cal_partyunit))
+        x_conn.execute(get_partyunit_table_insert_sqlstr(yao_agenda, dee_partyunit))
+        assert 3 == get_single_result(x_conn, get_table_count_sqlstr(partyunit_text))
+
+    partyunit_select_str = f"""
+SELECT 
+  agenda_healer
+, title
+, _bank_credit_score
+, _bank_voice_rank
+FROM partyunit
+WHERE agenda_healer = '{yao_text}'
+"""
+    with x_db as x_conn:
+        results = x_conn.execute(partyunit_select_str)
+
+    x_rows = results.fetchall()
+    print(f"{x_rows=}")
+    print(f"{x_rows[0]=}")
+    print(f"{x_rows[0][0]=}")
+    print(f"{x_rows[1]=}")
+    print(f"{x_rows[2]=}")
+    assert x_rows[0][1] == bob_text
+    assert x_rows[1][1] == cal_text
+    assert x_rows[2][1] == dee_text
+    assert x_rows[0][2] - bob_partyunit._bank_credit_score < 0.000001
+    assert x_rows[1][2] == cal_partyunit._bank_credit_score
+    assert x_rows[2][2] == dee_partyunit._bank_credit_score
+    assert x_rows[0][3] is None
+    assert x_rows[1][3] is None
+    assert x_rows[2][3] is None
+
+    # WHEN
+    with x_db as x_conn:
+        x_conn.execute(get_partyunit_table_update_bank_voice_rank_sqlstr(yao_text))
+
+    # THEN
+    with x_db as x_conn:
+        results = x_conn.execute(partyunit_select_str)
+
+    y_rows = results.fetchall()
+    assert y_rows[0][1] == bob_text
+    assert y_rows[1][1] == cal_text
+    assert y_rows[2][1] == dee_text
+    assert y_rows[0][3] != None
+    assert y_rows[1][3] != None
+    assert y_rows[2][3] != None
+    print(f"{y_rows[0][2]=}")
+    print(f"{y_rows[1][2]=}")
+    print(f"{y_rows[2][2]=}")
+    assert y_rows[0][3] == 3
+    assert y_rows[1][3] == 2
+    assert y_rows[2][3] == 1
 
 
 # STEPS TO CALCULATE RIVER_REACH
