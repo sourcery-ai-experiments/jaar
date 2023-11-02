@@ -267,9 +267,6 @@ def test_get_river_reach_table_touch_select_sqlstr_QuerySelectsCorrectResults():
     #     # THEN
     #     assert reach_rows_num == 94
 
-    # def test_culture_clear_river_score_CorrectlyEmptysTable(env_dir_setup_cleanup):
-    #     pass
-
     # GIVEN
     x_db = sqlite3_connect(":memory:")
     with x_db as x_conn:
