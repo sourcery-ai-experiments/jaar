@@ -32,7 +32,7 @@ class Edit_Agenda(qw, Ui_Form):
     def select_goal_item(self):
         _road = self.goal_table.item(self.goal_table.currentRow(), 1).text()
         _label = self.goal_table.item(self.goal_table.currentRow(), 0).text()
-        # base_x = "Myagenda,time,jajatime"
+        # base_x = "A,time,jajatime"
         base_x = self.acptfact_base_update_combo.currentText()
         self.agenda_x.set_goal_task_complete(task_road=f"{_road},{_label}", base=base_x)
         self.refresh_all()

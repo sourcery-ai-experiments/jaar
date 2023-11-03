@@ -85,14 +85,14 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
         self.yo_tree_item_setHidden(setHiddenBool=True)
         self.show
-        self.yo_x = None
+        self.x_idea = None
 
     def toogle_requiredheir_tables(self):
         self.requiredheir_table_hidden = self.requiredheir_table_hidden == False
         self.requiredheir_table.setHidden(self.requiredheir_table_hidden)
 
     def set_base_to_hregtime(self):
-        self.required_base_combo.setCurrentText("Myagenda,time,jajatime")
+        self.required_base_combo.setCurrentText("A,time,jajatime")
 
     def add_hreg_to_agenda(self):
         self.agenda_x.set_time_hreg_ideas(c400_count=7)
@@ -218,25 +218,25 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.idea2group_insert_combo.clear()
 
         if setHiddenBool == False:
-            self.yo_x_populate()
+            self.x_idea_populate()
 
-    def yo_x_populate(self):
-        self.label_parent_id.setText(f"Current Node road : {self.yo_x._pad}")
-        self.yo_deescription.setText(self.yo_x._label)
-        # self.idea_label_on_populate = self.yo_x._label
-        self.yo_pad.setText(self.yo_x._pad)
-        self.yo_weight.setText(num2str(self.yo_x._weight))
-        self.yo_begin.setText(num2str(self.yo_x._begin))
+    def x_idea_populate(self):
+        self.label_parent_id.setText(f"Current Node road : {self.x_idea._pad}")
+        self.yo_deescription.setText(self.x_idea._label)
+        # self.idea_label_on_populate = self.x_idea._label
+        self.yo_pad.setText(self.x_idea._pad)
+        self.yo_weight.setText(num2str(self.x_idea._weight))
+        self.yo_begin.setText(num2str(self.x_idea._begin))
         self.yo_range_source_road.clear()
         self.yo_numeric_road.clear()
-        if f"{type(self.yo_x)}" != "<class 'lw.agenda.AgendaUnit'>":
+        if f"{type(self.x_idea)}" != "<class 'lw.agenda.AgendaUnit'>":
             self.populate_idea_kid_actions()
-        self.yo_close.setText(num2str(self.yo_x._close))
-        self.yo_action_cb.setChecked(self.yo_x.promise)
-        self.yo_problem_bool_cb.setChecked(self.yo_x._problem_bool)
-        self.yo_task_status.setText(str(self.yo_x._task))
-        self.yo_active_status.setText(str(self.yo_x._active_status))
-        self.submit_child_insert.setText(f"Add child {self.yo_x._label:8}")
+        self.yo_close.setText(num2str(self.x_idea._close))
+        self.yo_action_cb.setChecked(self.x_idea.promise)
+        self.yo_problem_bool_cb.setChecked(self.x_idea._problem_bool)
+        self.yo_task_status.setText(str(self.x_idea._task))
+        self.yo_active_status.setText(str(self.x_idea._active_status))
+        self.submit_child_insert.setText(f"Add child {self.x_idea._label:8}")
         self.required_table_load()
         self.requiredheir_table_load()
         self.required_base_combo_load()
@@ -246,24 +246,24 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.combo_dim_root.addItems(list(self.agenda_x.get_required_bases()))
 
     def populate_idea_kid_actions(self):
-        self.yo_addin.setText(num2str(self.yo_x._addin))
-        self.yo_numor.setText(num2str(self.yo_x._numor))
-        self.yo_denom.setText(num2str(self.yo_x._denom))
-        self.yo_reest.setChecked(bool_val(self.yo_x._reest))
+        self.yo_addin.setText(num2str(self.x_idea._addin))
+        self.yo_numor.setText(num2str(self.x_idea._numor))
+        self.yo_denom.setText(num2str(self.x_idea._denom))
+        self.yo_reest.setChecked(bool_val(self.x_idea._reest))
         idea_road_list = self.agenda_x.get_idea_tree_ordered_road_list()
         idea_road_list.append("")
         self.yo_range_source_road.addItems(idea_road_list)
-        self.yo_range_source_road.setCurrentText(self.yo_x._range_source_road)
+        self.yo_range_source_road.setCurrentText(self.x_idea._range_source_road)
         self.yo_numeric_road.addItems(idea_road_list)
-        self.yo_numeric_road.setCurrentText(self.yo_x._numeric_road)
+        self.yo_numeric_road.setCurrentText(self.x_idea._numeric_road)
 
     def yo_tree_item_selected(self):
         idea_label = self.baseideaunit.currentItem().data(2, 10)
         idea_pad = self.baseideaunit.currentItem().data(2, 11)
         if idea_pad not in ("", None):
-            self.yo_x = self.agenda_x.get_idea_kid(road=f"{idea_pad},{idea_label}")
+            self.x_idea = self.agenda_x.get_idea_kid(road=f"{idea_pad},{idea_label}")
         else:
-            self.yo_x = self.agenda_x._idearoot
+            self.x_idea = self.agenda_x._idearoot
         self.yo_tree_item_setHidden(setHiddenBool=False)
 
     def yo_tree_item_expanded(self):
@@ -444,8 +444,8 @@ class EditIdeaUnit(qtw0, Ui_Form):
     def required_table_load(self):
         self.required_table.clear()
         row = 0
-        for required in self.yo_x._requiredunits.values():
-            requiredheir = self.yo_x._requiredheirs.get(required.base)
+        for required in self.x_idea._requiredunits.values():
+            requiredheir = self.x_idea._requiredheirs.get(required.base)
             for sufffact in required.sufffacts.values():
                 required_text = required.base.replace(f"{self.agenda_x._healer}", "")
                 required_text = required_text[1:]
@@ -528,7 +528,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
     def requiredheir_table_load(self):
         self.requiredheir_table.clear()
         row = 0
-        for requiredheir in self.yo_x._requiredheirs.values():
+        for requiredheir in self.x_idea._requiredheirs.values():
             for sufffact in requiredheir.sufffacts.values():
                 requiredheir_text = requiredheir.base.replace(
                     f"{self.agenda_x._healer}", ""
@@ -701,7 +701,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
                 required_sufffact_divisor=divisor_x,
             )
 
-            # self.yo_x.set_required_sufffact(
+            # self.x_idea.set_required_sufffact(
             #     base=base_x,
             #     need=sufffact_x,
             #     open=open_x,
@@ -716,7 +716,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.required_base_combo.currentText() != ""
             and self.required_sufffact_combo.currentText() != ""
         ):
-            self.yo_x.del_requiredunit_sufffact(
+            self.x_idea.del_requiredunit_sufffact(
                 base=self.required_base_combo.currentText(),
                 need=self.required_sufffact_combo.currentText(),
             )
@@ -740,23 +740,23 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.idea2group_table.setHorizontalHeaderLabels(
             ["Group display", "group_title", "LW Force"]
         )
-        # print(f"{self.yo_x._balancelinks=}")
-        # print(f"{self.yo_x._balanceheirs=}")
-        balancelinks_list = list(self.yo_x._balancelinks.values())
-        balancelinks_list.sort(key=lambda x: x.title, reverse=False)
-        balanceheirs_list = list(self.yo_x._balanceheirs.values())
-        balanceheirs_list.sort(key=lambda x: x.title, reverse=False)
+        # print(f"{self.x_idea._balancelinks=}")
+        # print(f"{self.x_idea._balanceheirs=}")
+        balancelinks_list = list(self.x_idea._balancelinks.values())
+        balancelinks_list.sort(key=lambda x: x.brand, reverse=False)
+        balanceheirs_list = list(self.x_idea._balanceheirs.values())
+        balanceheirs_list.sort(key=lambda x: x.brand, reverse=False)
         # print(f"{balancelinks_list=}")
         # print(f"{balanceheirs_list=}")
 
         for row, balanceheir in enumerate(balanceheirs_list, start=1):
             self.idea2group_table.setRowCount(row)
-            x_text = f"  Heir: {balanceheir.title}"
+            x_text = f"  Heir: {balanceheir.brand}"
             for balancelink in balancelinks_list:
-                if balancelink.brand == balanceheir.title:
-                    x_text = f"{balanceheir.title}"
+                if balancelink.brand == balanceheir.brand:
+                    x_text = f"{balanceheir.brand}"
             self.idea2group_table.setItem(row - 1, 0, qtw1(x_text))
-            self.idea2group_table.setItem(row - 1, 1, qtw1(balanceheir.title))
+            self.idea2group_table.setItem(row - 1, 1, qtw1(balanceheir.brand))
             self.idea2group_table.setItem(
                 row - 1,
                 2,
@@ -771,7 +771,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         for groupunit in self.agenda_x._groups.values():
             group_previously_selected = any(
                 groupunit.brand == balancelink.brand
-                for balancelink in self.yo_x._balancelinks.values()
+                for balancelink in self.x_idea._balancelinks.values()
             )
             if not group_previously_selected:
                 groupunits_titles_list.append(groupunit.brand)
@@ -786,7 +786,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             raise Exception("bd_title is empty, idea2bd cannot be updated")
         balancelink_new = Balancelink(brand=GroupBrand(bd_title_new), weight=1)
         self.agenda_x.edit_idea_attr(
-            road=f"{self.yo_x._pad},{self.yo_x._label}", balancelink=balancelink_new
+            road=f"{self.x_idea._pad},{self.x_idea._label}", balancelink=balancelink_new
         )
         self.idea2group_insert_combo_load()
         self.idea2group_table_load()
@@ -798,14 +798,14 @@ class EditIdeaUnit(qtw0, Ui_Form):
                 self.idea2group_table.currentRow(), 1
             ).text()
             self.agenda_x.edit_idea_attr(
-                road=f"{self.yo_x._pad},{self.yo_x._label}",
+                road=f"{self.x_idea._pad},{self.x_idea._label}",
                 balancelink_del=delete_group_title,
             )
             self.idea2group_insert_combo_load()
             self.idea2group_table_load()
 
     def idea_delete(self):
-        self.agenda_x.del_idea_kid(road=f"{self.yo_x._pad},{self.yo_x._label}")
+        self.agenda_x.del_idea_kid(road=f"{self.x_idea._pad},{self.x_idea._label}")
         self.baseideaunit.clear()
         self.refresh_tree(disable_is_expanded=True)
 
@@ -851,10 +851,10 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
     def idea_update(self):
         idea_road = None
-        if self.yo_x._pad not in (None, ""):
-            idea_road = Road(f"{self.yo_x._pad},{self.yo_x._label}")
+        if self.x_idea._pad not in (None, ""):
+            idea_road = Road(f"{self.x_idea._pad},{self.x_idea._label}")
         else:
-            idea_road = Road(f"{self.yo_x._label}")
+            idea_road = Road(f"{self.x_idea._label}")
         self.idea_edit_nonroad_data(idea_road=idea_road)
         # if (
         #     self.idea_label_on_populate != self.yo_deescription.toPlainText()
@@ -862,13 +862,13 @@ class EditIdeaUnit(qtw0, Ui_Form):
         #     and self.idea_label_on_populate != None
         # ):
         #     self.idea_edit_road()
-        if self.yo_x._label != self.yo_deescription.toPlainText():
+        if self.x_idea._label != self.yo_deescription.toPlainText():
             self.idea_edit_road(idea_road=idea_road)
 
     def idea_duty_insert(self):
-        new_pad = f"{self.yo_x._label}"
-        if self.yo_x._pad not in ("", None):
-            new_pad = f"{self.yo_x._pad},{self.yo_x._label}"
+        new_pad = f"{self.x_idea._label}"
+        if self.x_idea._pad not in ("", None):
+            new_pad = f"{self.x_idea._pad},{self.x_idea._label}"
         new_road = f"{new_pad},{self.yo_deescription.toPlainText()}"
         self.idea_insert()
 
@@ -931,9 +931,9 @@ class EditIdeaUnit(qtw0, Ui_Form):
         new_idea._set_idea_attr(idea_attr=idea_attr_x)
         new_idea.set_kids_empty_if_null()
         take_parent_children_bool = self.cb_yo_insert_allChildren.checkState() == 2
-        new_pad = f"{self.yo_x._label}"
-        if self.yo_x._pad not in ("", None):
-            new_pad = f"{self.yo_x._pad},{self.yo_x._label}"
+        new_pad = f"{self.x_idea._label}"
+        if self.x_idea._pad not in ("", None):
+            new_pad = f"{self.x_idea._pad},{self.x_idea._label}"
         self.agenda_x.add_idea(
             idea_kid=new_idea,
             pad=new_pad,

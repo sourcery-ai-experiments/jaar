@@ -6,7 +6,7 @@ from EditMain import EditMainView
 from EditAcptFactTime import EditAcptFactTime
 from Edit_Agenda import Edit_Agenda
 from EditProblem import EditProblem
-from src.agenda.agenda import get_from_json
+from src.agenda.agenda import get_from_json, agendaunit_shop, AgendaUnit
 from src.agenda.examples.agenda_env import agenda_env
 from src.agenda.hreg_time import convert1440toHHMM
 from pyqt_func import (
@@ -179,7 +179,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.current_task_road is None:
             self.label_last_label.setText("")
         else:
-            base_x = "Myagenda,time,jajatime"
+            base_x = "A,time,jajatime"
             self.agenda_x.set_goal_task_complete(
                 task_road=self.current_task_road, base=base_x
             )
@@ -296,7 +296,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agenda_load(x_agenda_json=self.agenda_x_json)
 
     def agenda_new(self):
-        self.agenda_x = AgendaUnit(_healer="new")
+        self.agenda_x = agendaunit_shop(_healer="new")
         self.agenda_x._set_acptfacts_empty_if_null()
         self.agenda_x.set_partys_empty_if_null()
         self.agenda_x.set_groupunits_empty_if_null()
