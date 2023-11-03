@@ -223,7 +223,7 @@ def test_healer_get_remelded_output_agenda_withEmptyDigestDict(
     assert str(type(sx_output_before)).find(".agenda.AgendaUnit'>")
     assert sx_output_before._healer == council_dub_x
     assert sx_output_before._idearoot._label == get_temp_culture_handle()
-    # ux.set_digested_agenda(agenda_x=AgendaUnit(_healer="digested1"))
+    # ux.set_digested_agenda(agenda_x=agendaunit_shop(_healer="digested1"))
 
     # WHEN
     sx_output_after = ux._admin.get_remelded_output_agenda()

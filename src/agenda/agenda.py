@@ -141,19 +141,19 @@ class AgendaUnit:
         self.set_agenda_metrics()
         idea_x = self.get_idea_kid(road=road)
         new_weight = self._weight * idea_x._agenda_importance
-        cx = AgendaUnit(_healer=self._idearoot._label, _weight=new_weight)
+        x_agenda = agendaunit_shop(_healer=self._idearoot._label, _weight=new_weight)
 
         for road_assc in sorted(list(self._get_relevant_roads({road}))):
             src_yx = self.get_idea_kid(road=road_assc)
             new_yx = copy_deepcopy(src_yx)
             if new_yx._pad != "":
-                cx.add_idea(idea_kid=new_yx, pad=new_yx._pad)
-            cx.set_agenda_metrics()
+                x_agenda.add_idea(idea_kid=new_yx, pad=new_yx._pad)
+            x_agenda.set_agenda_metrics()
 
         # TODO grab groups
         # TODO grab all group partys
         # TODO grab acptfacts
-        return cx
+        return x_agenda
 
     def _get_relevant_roads(self, roads: dict[Road:]) -> dict[Road:str]:
         to_evaluate_list = []
@@ -2242,57 +2242,59 @@ def agendaunit_shop(
 
 
 def get_from_json(x_agenda_json: str) -> AgendaUnit:
-    return get_from_dict(cx_dict=json_loads(x_agenda_json))
+    return get_from_dict(agenda_dict=json_loads(x_agenda_json))
 
 
-def get_from_dict(cx_dict: dict) -> AgendaUnit:
+def get_from_dict(agenda_dict: dict) -> AgendaUnit:
     x_agenda = agendaunit_shop()
-    x_agenda.set_culture_handle(cx_dict["_culture_handle"])
+    x_agenda.set_culture_handle(agenda_dict["_culture_handle"])
     x_agenda._idearoot._requiredunits = requireds_get_from_dict(
-        requireds_dict=cx_dict["_requiredunits"]
+        requireds_dict=agenda_dict["_requiredunits"]
     )
     _assignedunit = "_assignedunit"
-    if cx_dict.get(_assignedunit):
+    if agenda_dict.get(_assignedunit):
         x_agenda._idearoot._assignedunit = assignedunit_get_from_dict(
-            assignedunit_dict=cx_dict.get(_assignedunit)
+            assignedunit_dict=agenda_dict.get(_assignedunit)
         )
     x_agenda._idearoot._acptfactunits = acptfactunits_get_from_dict(
-        x_dict=cx_dict["_acptfactunits"]
+        x_dict=agenda_dict["_acptfactunits"]
     )
-    x_agenda._groups = groupunits_get_from_dict(x_dict=cx_dict["_groups"])
+    x_agenda._groups = groupunits_get_from_dict(x_dict=agenda_dict["_groups"])
     x_agenda._idearoot._balancelinks = balancelinks_get_from_dict(
-        x_dict=cx_dict["_balancelinks"]
+        x_dict=agenda_dict["_balancelinks"]
     )
     try:
-        x_agenda._originunit = originunit_get_from_dict(x_dict=cx_dict["_originunit"])
+        x_agenda._originunit = originunit_get_from_dict(
+            x_dict=agenda_dict["_originunit"]
+        )
     except Exception:
         x_agenda._originunit = originunit_shop()
     try:
-        x_agenda._auto_output_to_public = cx_dict["_auto_output_to_public"]
+        x_agenda._auto_output_to_public = agenda_dict["_auto_output_to_public"]
     except Exception:
         x_agenda._auto_output_to_public = False
-    x_agenda._partys = partyunits_get_from_dict(x_dict=cx_dict["_partys"])
-    x_agenda._healer = cx_dict["_healer"]
+    x_agenda._partys = partyunits_get_from_dict(x_dict=agenda_dict["_partys"])
+    x_agenda._healer = agenda_dict["_healer"]
     x_agenda._idearoot.set_idea_label(
         x_agenda._culture_handle, x_agenda._culture_handle
     )
-    x_agenda._weight = cx_dict["_weight"]
-    x_agenda._max_tree_traverse = cx_dict.get("_max_tree_traverse")
-    if cx_dict.get("_max_tree_traverse") is None:
+    x_agenda._weight = agenda_dict["_weight"]
+    x_agenda._max_tree_traverse = agenda_dict.get("_max_tree_traverse")
+    if agenda_dict.get("_max_tree_traverse") is None:
         x_agenda._max_tree_traverse = 20
-    x_agenda._idearoot._weight = cx_dict["_weight"]
-    x_agenda._idearoot._uid = cx_dict["_uid"]
-    x_agenda._idearoot._begin = cx_dict["_begin"]
-    x_agenda._idearoot._close = cx_dict["_close"]
-    x_agenda._idearoot._numor = cx_dict["_numor"]
-    x_agenda._idearoot._denom = cx_dict["_denom"]
-    x_agenda._idearoot._reest = cx_dict["_reest"]
-    x_agenda._idearoot._range_source_road = cx_dict["_range_source_road"]
-    x_agenda._idearoot._numeric_road = cx_dict["_numeric_road"]
-    x_agenda._idearoot._is_expanded = cx_dict["_is_expanded"]
+    x_agenda._idearoot._weight = agenda_dict["_weight"]
+    x_agenda._idearoot._uid = agenda_dict["_uid"]
+    x_agenda._idearoot._begin = agenda_dict["_begin"]
+    x_agenda._idearoot._close = agenda_dict["_close"]
+    x_agenda._idearoot._numor = agenda_dict["_numor"]
+    x_agenda._idearoot._denom = agenda_dict["_denom"]
+    x_agenda._idearoot._reest = agenda_dict["_reest"]
+    x_agenda._idearoot._range_source_road = agenda_dict["_range_source_road"]
+    x_agenda._idearoot._numeric_road = agenda_dict["_numeric_road"]
+    x_agenda._idearoot._is_expanded = agenda_dict["_is_expanded"]
 
     idea_dict_list = []
-    for x_dict in cx_dict["_kids"].values():
+    for x_dict in agenda_dict["_kids"].values():
         x_dict["temp_road"] = x_agenda._healer
         idea_dict_list.append(x_dict)
 
@@ -2345,7 +2347,7 @@ def get_from_dict(cx_dict: dict) -> AgendaUnit:
 def get_dict_of_agenda_from_dict(x_dict: dict[str:dict]) -> dict[str:AgendaUnit]:
     agendaunits = {}
     for agendaunit_dict in x_dict.values():
-        x_agenda = get_from_dict(cx_dict=agendaunit_dict)
+        x_agenda = get_from_dict(agenda_dict=agendaunit_dict)
         agendaunits[x_agenda._healer] = x_agenda
     return agendaunits
 
