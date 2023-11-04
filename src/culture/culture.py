@@ -3,7 +3,7 @@ from src.agenda.agenda import (
     agendaunit_shop,
     get_from_json as get_agenda_from_json,
     partylink_shop,
-    PartyTitle,
+    PartyHandle,
     PersonName,
 )
 from src.agenda.x_func import (
@@ -46,13 +46,13 @@ from src.culture.bank_sqlstr import (
 )
 
 
-class CultureHandle(str):  # Created to help track the concept
+class CultureTitle(str):  # Created to help track the concept
     pass
 
 
 @dataclass
 class CultureUnit:
-    handle: CultureHandle
+    title: CultureTitle
     cultures_dir: str
     _manager_name: PersonName = None
     _councilunits: dict[str:CouncilUnit] = None
@@ -82,7 +82,7 @@ class CultureUnit:
                 )
                 for idea_catalog in ic.values():
                     if x_healer != idea_catalog.agenda_healer:
-                        partylink_x = partylink_shop(title=idea_catalog.agenda_healer)
+                        partylink_x = partylink_shop(handle=idea_catalog.agenda_healer)
                         groupunit_x.set_partylink(partylink_x)
         self.save_public_agenda(healer_agenda)
         self.refresh_bank_public_agendas_data()
@@ -123,7 +123,7 @@ class CultureUnit:
                 river_block_x = RiverBlockUnit(
                     currency_agenda_healer=x_agenda_healer,
                     src_healer=x_child_ledger.agenda_healer,
-                    dst_healer=x_child_ledger.title,
+                    dst_healer=x_child_ledger.handle,
                     currency_start=curr_onset,
                     currency_close=curr_close,
                     block_num=blocks_count,
@@ -298,14 +298,14 @@ class CultureUnit:
         self._bank_db = None
         x_func_delete_dir(dir=self.get_bank_db_path())
 
-    def set_cultureunit_handle(self, handle: str):
-        self.handle = handle
+    def set_cultureunit_title(self, title: str):
+        self.title = title
 
     def get_bank_db_path(self):
         return f"{self.get_object_root_dir()}/bank.db"
 
     def get_object_root_dir(self):
-        return f"{self.cultures_dir}/{self.handle}"
+        return f"{self.cultures_dir}/{self.title}"
 
     def _create_main_file_if_null(self, x_dir):
         culture_file_name = "culture.json"
@@ -344,7 +344,7 @@ class CultureUnit:
 
     def create_new_councilunit(self, council_dub: CouncilDub):
         self.set_councilunits_empty_if_null()
-        ux = councilunit_shop(council_dub, self.get_object_root_dir(), self.handle)
+        ux = councilunit_shop(council_dub, self.get_object_root_dir(), self.title)
         ux.create_core_dir_and_files()
         self._councilunits[ux._admin._council_dub] = ux
 
@@ -412,7 +412,7 @@ class CultureUnit:
         x_func_delete_dir(f"{self.get_public_dir()}/{x_agenda_healer}.json")
 
     def save_public_agenda(self, x_agenda: AgendaUnit):
-        x_agenda.set_culture_handle(culture_handle=self.handle)
+        x_agenda.set_culture_title(culture_title=self.title)
         x_func_save_file(
             dest_dir=self.get_public_dir(),
             file_name=f"{x_agenda._healer}.json",
@@ -488,13 +488,13 @@ class CultureUnit:
     def update_depotlink(
         self,
         council_dub: CouncilDub,
-        partytitle: PartyTitle,
+        partyhandle: PartyHandle,
         depotlink_type: str,
         creditor_weight: str,
         debtor_weight: str,
     ):
         x_councilunit = self.get_councilunit(dub=council_dub)
-        x_agenda = self.get_public_agenda(_healer=partytitle)
+        x_agenda = self.get_public_agenda(_healer=partyhandle)
         self._councilunit_set_depot_agenda(
             councilunit=x_councilunit,
             agendaunit=x_agenda,
@@ -514,7 +514,7 @@ class CultureUnit:
 
 
 def cultureunit_shop(
-    handle: CultureHandle,
+    title: CultureTitle,
     cultures_dir: str,
     _manager_name: PersonName = None,
     _councilunits: dict[str:CouncilUnit] = None,
@@ -523,7 +523,7 @@ def cultureunit_shop(
     if in_memory_bank is None:
         in_memory_bank = True
     culture_x = CultureUnit(
-        handle=handle,
+        title=title,
         cultures_dir=cultures_dir,
         _councilunits=_councilunits,
     )
@@ -537,7 +537,7 @@ def set_bank_partybankunits_to_agenda_partyunits(
 ):
     for partyunit_x in x_agenda._partys.values():
         partyunit_x.clear_banking_data()
-        partybankunit = partybankunits.get(partyunit_x.title)
+        partybankunit = partybankunits.get(partyunit_x.handle)
         if partybankunit != None:
             partyunit_x.set_banking_data(
                 tax_paid=partybankunit.tax_total,

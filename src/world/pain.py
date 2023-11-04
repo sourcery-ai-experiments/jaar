@@ -1,11 +1,11 @@
 from dataclasses import dataclass
-from src.culture.culture import CultureHandle
+from src.culture.culture import CultureTitle
 from src.agenda.agenda import PersonName
 
 
 @dataclass
 class CultureLink:
-    handle: CultureHandle
+    title: CultureTitle
     weight: float
     _relative_weight: float = None
     _manager_importance: float = None
@@ -17,13 +17,13 @@ class CultureLink:
         self._manager_importance = person_importance
 
     def get_dict(self) -> dict:
-        return {"handle": self.handle, "weight": self.weight}
+        return {"title": self.title, "weight": self.weight}
 
 
-def culturelink_shop(handle: CultureHandle, weight: float = None) -> CultureLink:
+def culturelink_shop(title: CultureTitle, weight: float = None) -> CultureLink:
     if weight is None:
         weight = 1
-    return CultureLink(handle=handle, weight=weight)
+    return CultureLink(title=title, weight=weight)
 
 
 @dataclass
@@ -31,7 +31,7 @@ class HealerLink:
     person_name: PersonName
     weight: float
     in_tribe: bool
-    _culturelinks: dict[CultureHandle:CultureLink] = None
+    _culturelinks: dict[CultureTitle:CultureLink] = None
     _relative_weight: float = None
     _manager_importance: float = None
 
@@ -59,17 +59,17 @@ class HealerLink:
             self._culturelinks = {}
 
     def set_culturelink(self, culturelink: CultureLink):
-        self._culturelinks[culturelink.handle] = culturelink
+        self._culturelinks[culturelink.title] = culturelink
 
-    def get_culturelink(self, culturehandle: CultureHandle) -> CultureLink:
-        return self._culturelinks.get(culturehandle)
+    def get_culturelink(self, culturetitle: CultureTitle) -> CultureLink:
+        return self._culturelinks.get(culturetitle)
 
-    def del_culturelink(self, culturehandle: CultureHandle):
-        self._culturelinks.pop(culturehandle)
+    def del_culturelink(self, culturetitle: CultureTitle):
+        self._culturelinks.pop(culturetitle)
 
     def get_culturelinks_dict(self) -> dict:
         return {
-            culturelink_x.handle: culturelink_x.get_dict()
+            culturelink_x.title: culturelink_x.get_dict()
             for culturelink_x in self._culturelinks.values()
         }
 

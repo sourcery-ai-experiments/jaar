@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Form</class>
- <widget class="QWidget" title="Form">
-  <property title="geometry">
+ <widget class="QWidget" handle="Form">
+  <property handle="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -10,11 +10,11 @@
     <height>829</height>
    </rect>
   </property>
-  <property title="windowkind">
+  <property handle="windowkind">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" title="bd_add_button">
-   <property title="geometry">
+  <widget class="QPushButton" handle="bd_add_button">
+   <property handle="geometry">
     <rect>
      <x>500</x>
      <y>330</y>
@@ -22,12 +22,12 @@
      <height>61</height>
     </rect>
    </property>
-   <property title="text">
+   <property handle="text">
     <string>Add Group</string>
    </property>
   </widget>
-  <widget class="QPushButton" title="bd_remove_button">
-   <property title="geometry">
+  <widget class="QPushButton" handle="bd_remove_button">
+   <property handle="geometry">
     <rect>
      <x>500</x>
      <y>200</y>
@@ -35,12 +35,12 @@
      <height>61</height>
     </rect>
    </property>
-   <property title="text">
+   <property handle="text">
     <string>Remove Group</string>
    </property>
   </widget>
-  <widget class="QLabel" title="label">
-   <property title="geometry">
+  <widget class="QLabel" handle="label">
+   <property handle="geometry">
     <rect>
      <x>10</x>
      <y>45</y>
@@ -48,15 +48,15 @@
      <height>41</height>
     </rect>
    </property>
-   <property title="text">
+   <property handle="text">
     <string>Party is party of these Groups</string>
    </property>
-   <property title="wordWrap">
+   <property handle="wordWrap">
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" title="label_2">
-   <property title="geometry">
+  <widget class="QLabel" handle="label_2">
+   <property handle="geometry">
     <rect>
      <x>640</x>
      <y>50</y>
@@ -64,15 +64,15 @@
      <height>41</height>
     </rect>
    </property>
-   <property title="text">
+   <property handle="text">
     <string>Party is not party of these Groups</string>
    </property>
-   <property title="wordWrap">
+   <property handle="wordWrap">
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" title="source_party">
-   <property title="geometry">
+  <widget class="QLabel" handle="source_party">
+   <property handle="geometry">
     <rect>
      <x>20</x>
      <y>30</y>
@@ -80,19 +80,19 @@
      <height>20</height>
     </rect>
    </property>
-   <property title="font">
+   <property handle="font">
     <font>
      <pointsize>10</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
    </property>
-   <property title="text">
+   <property handle="text">
     <string>Party (ID): </string>
    </property>
   </widget>
-  <widget class="QTableWidget" title="bd_party_yes">
-   <property title="geometry">
+  <widget class="QTableWidget" handle="bd_party_yes">
+   <property handle="geometry">
     <rect>
      <x>10</x>
      <y>90</y>
@@ -101,33 +101,33 @@
     </rect>
    </property>
    <column>
-    <property title="text">
+    <property handle="text">
      <string>Group</string>
     </property>
    </column>
    <column>
-    <property title="text">
+    <property handle="text">
      <string>Weight</string>
     </property>
    </column>
    <column>
-    <property title="text">
+    <property handle="text">
      <string>Relative_weight</string>
     </property>
    </column>
    <column>
-    <property title="text">
+    <property handle="text">
      <string>PartyCount</string>
     </property>
    </column>
    <column>
-    <property title="text">
+    <property handle="text">
      <string>ID</string>
     </property>
    </column>
   </widget>
-  <widget class="QTableWidget" title="bd_party_no">
-   <property title="geometry">
+  <widget class="QTableWidget" handle="bd_party_no">
+   <property handle="geometry">
     <rect>
      <x>630</x>
      <y>90</y>
@@ -136,23 +136,23 @@
     </rect>
    </property>
    <column>
-    <property title="text">
+    <property handle="text">
      <string>Group</string>
     </property>
    </column>
    <column>
-    <property title="text">
+    <property handle="text">
      <string>PartyCount</string>
     </property>
    </column>
    <column>
-    <property title="text">
+    <property handle="text">
      <string>ID</string>
     </property>
    </column>
   </widget>
-  <widget class="QPushButton" title="close_button">
-   <property title="geometry">
+  <widget class="QPushButton" handle="close_button">
+   <property handle="geometry">
     <rect>
      <x>720</x>
      <y>10</y>
@@ -160,12 +160,12 @@
      <height>28</height>
     </rect>
    </property>
-   <property title="text">
+   <property handle="text">
     <string>Close</string>
    </property>
   </widget>
-  <widget class="QPushButton" title="quit_button">
-   <property title="geometry">
+  <widget class="QPushButton" handle="quit_button">
+   <property handle="geometry">
     <rect>
      <x>830</x>
      <y>10</y>
@@ -173,12 +173,12 @@
      <height>28</height>
     </rect>
    </property>
-   <property title="text">
+   <property handle="text">
     <string>Quit App</string>
    </property>
   </widget>
-  <widget class="QLineEdit" title="party2group_weight_edit">
-   <property title="geometry">
+  <widget class="QLineEdit" handle="party2group_weight_edit">
+   <property handle="geometry">
     <rect>
      <x>240</x>
      <y>690</y>
@@ -187,8 +187,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" title="update_weight_button">
-   <property title="geometry">
+  <widget class="QPushButton" handle="update_weight_button">
+   <property handle="geometry">
     <rect>
      <x>10</x>
      <y>690</y>
@@ -196,12 +196,12 @@
      <height>28</height>
     </rect>
    </property>
-   <property title="text">
+   <property handle="text">
     <string>Update Party's Weight in Group to:</string>
    </property>
   </widget>
-  <widget class="QPushButton" title="bd_insert_button">
-   <property title="geometry">
+  <widget class="QPushButton" handle="bd_insert_button">
+   <property handle="geometry">
     <rect>
      <x>990</x>
      <y>680</y>
@@ -209,12 +209,12 @@
      <height>28</height>
     </rect>
    </property>
-   <property title="text">
+   <property handle="text">
     <string>Create Group</string>
    </property>
   </widget>
-  <widget class="QLineEdit" title="bd_new_edit">
-   <property title="geometry">
+  <widget class="QLineEdit" handle="bd_new_edit">
+   <property handle="geometry">
     <rect>
      <x>870</x>
      <y>680</y>
@@ -223,8 +223,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" title="bd_delete_button">
-   <property title="geometry">
+  <widget class="QPushButton" handle="bd_delete_button">
+   <property handle="geometry">
     <rect>
      <x>840</x>
      <y>750</y>
@@ -232,12 +232,12 @@
      <height>28</height>
     </rect>
    </property>
-   <property title="text">
+   <property handle="text">
     <string>Delete Group</string>
    </property>
   </widget>
-  <widget class="QLabel" title="label_3">
-   <property title="geometry">
+  <widget class="QLabel" handle="label_3">
+   <property handle="geometry">
     <rect>
      <x>710</x>
      <y>680</y>
@@ -245,15 +245,15 @@
      <height>16</height>
     </rect>
    </property>
-   <property title="text">
-    <string>New Group Title:</string>
+   <property handle="text">
+    <string>New Group Handle:</string>
    </property>
-   <property title="alignment">
+   <property handle="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" title="label_4">
-   <property title="geometry">
+  <widget class="QLabel" handle="label_4">
+   <property handle="geometry">
     <rect>
      <x>660</x>
      <y>710</y>
@@ -261,15 +261,15 @@
      <height>20</height>
     </rect>
    </property>
-   <property title="text">
-    <string>Change Group Title:</string>
+   <property handle="text">
+    <string>Change Group Handle:</string>
    </property>
-   <property title="alignment">
+   <property handle="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
-  <widget class="QLineEdit" title="bd_update_title_edit">
-   <property title="geometry">
+  <widget class="QLineEdit" handle="bd_update_handle_edit">
+   <property handle="geometry">
     <rect>
      <x>870</x>
      <y>710</y>
@@ -278,8 +278,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" title="bd_update_button">
-   <property title="geometry">
+  <widget class="QPushButton" handle="bd_update_button">
+   <property handle="geometry">
     <rect>
      <x>990</x>
      <y>710</y>
@@ -287,7 +287,7 @@
      <height>28</height>
     </rect>
    </property>
-   <property title="text">
+   <property handle="text">
     <string>Update Group</string>
    </property>
   </widget>

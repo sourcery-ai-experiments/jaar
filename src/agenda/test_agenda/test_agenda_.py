@@ -16,7 +16,7 @@ def test_AgendaUnit_exists():
 
     assert x_agenda
     assert x_agenda._healer is None
-    assert x_agenda._culture_handle is None
+    assert x_agenda._culture_title is None
     assert x_agenda._weight is None
     assert x_agenda._max_tree_traverse is None
     assert x_agenda._tree_traverse_count is None
@@ -36,7 +36,7 @@ def test_agendaunit_shop_ReturnsCorrectObjectWithFilledFields():
 
     assert x_agenda
     assert x_agenda._healer == healer_text
-    assert x_agenda._culture_handle == root_label()
+    assert x_agenda._culture_title == root_label()
     assert x_agenda._weight == 1
     assert x_agenda._max_tree_traverse == 3
     assert x_agenda._tree_traverse_count is None
@@ -68,7 +68,7 @@ def test_agenda_IsAbleToSetTaskAsComplete():
     assert mail_idea._task == True
 
     ced_min_label = "CE0_minutes"
-    ced_road = f"{x_agenda._culture_handle},{ced_min_label}"
+    ced_road = f"{x_agenda._culture_title},{ced_min_label}"
     x_agenda.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=85)
     idea_list = x_agenda.get_idea_list()
     assert mail_idea.promise == True
@@ -78,7 +78,7 @@ def test_agenda_IsAbleToSetTaskAsComplete():
 def test_agenda_IsAbleToEditAcptFactUnitAnyAncestor_Idea_1():
     x_agenda = get_agenda_1Task_1CE0MinutesRequired_1AcptFact()
     ced_min_label = "CE0_minutes"
-    ced_road = f"{x_agenda._culture_handle},{ced_min_label}"
+    ced_road = f"{x_agenda._culture_title},{ced_min_label}"
     x_agenda.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=85)
     idea_list = x_agenda.get_idea_list()
     mail_idea = idea_list[1]
@@ -178,15 +178,15 @@ def test_agenda_init_CorrectlySetsGiven_auto_output_to_public():
     assert x_agenda._auto_output_to_public == True
 
 
-def test_agenda_set_culture_handle_CorrectlySetsAttr():
+def test_agenda_set_culture_title_CorrectlySetsAttr():
     # GIVEN
-    culture_handle_text = "Sun"
+    culture_title_text = "Sun"
     healer_text = "Noa"
     x_agenda = agendaunit_shop(_healer=healer_text, _auto_output_to_public=True)
-    assert x_agenda._culture_handle == root_label()
+    assert x_agenda._culture_title == root_label()
 
     # WHEN
-    x_agenda.set_culture_handle(culture_handle=culture_handle_text)
+    x_agenda.set_culture_title(culture_title=culture_title_text)
 
     # THEN
-    assert x_agenda._culture_handle == culture_handle_text
+    assert x_agenda._culture_title == culture_title_text

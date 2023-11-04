@@ -392,7 +392,7 @@ def test_idea_attributes_meld_CorrectlyMeldsIdeas():
 
 
 def test_idea_attributes_meld_FailRaisesError_uid():
-    x_title = "_uid"
+    x_handle = "_uid"
     x_val = "test_uid1"
     yx1 = ideacore_shop(_label="spirit")
     custom_set_idea_attr(idea=yx1, uid=x_val)
@@ -403,12 +403,12 @@ def test_idea_attributes_meld_FailRaisesError_uid():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:None"
+        == f"Meld fail idea={yx1._pad},{yx1._label} {x_handle}:{x_val} with {yx2._pad},{yx2._label} {x_handle}:None"
     )
 
 
 def test_idea_attributes_meld_FailRaisesError_begin():
-    x_title = "_begin"
+    x_handle = "_begin"
     x_val = 77
     yx1 = ideacore_shop(_label="spirit")
     custom_set_idea_attr(idea=yx1, begin=x_val)
@@ -419,12 +419,12 @@ def test_idea_attributes_meld_FailRaisesError_begin():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:None"
+        == f"Meld fail idea={yx1._pad},{yx1._label} {x_handle}:{x_val} with {yx2._pad},{yx2._label} {x_handle}:None"
     )
 
 
 def test_idea_attributes_meld_FailRaisesError_close():
-    x_title = "_close"
+    x_handle = "_close"
     x_val = 77
     yx1 = ideacore_shop(_label="spirit")
     custom_set_idea_attr(idea=yx1, close=x_val)
@@ -435,12 +435,12 @@ def test_idea_attributes_meld_FailRaisesError_close():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:None"
+        == f"Meld fail idea={yx1._pad},{yx1._label} {x_handle}:{x_val} with {yx2._pad},{yx2._label} {x_handle}:None"
     )
 
 
 def test_idea_attributes_meld_FailRaisesError_addin():
-    x_title = "_addin"
+    x_handle = "_addin"
     x_val = 77
     yx1 = ideacore_shop(_label="spirit")
     custom_set_idea_attr(idea=yx1, addin=x_val)
@@ -451,12 +451,12 @@ def test_idea_attributes_meld_FailRaisesError_addin():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:None"
+        == f"Meld fail idea={yx1._pad},{yx1._label} {x_handle}:{x_val} with {yx2._pad},{yx2._label} {x_handle}:None"
     )
 
 
 def test_idea_attributes_meld_FailRaisesError_denom():
-    x_title = "_denom"
+    x_handle = "_denom"
     x_val = 15
     yx1 = ideacore_shop(_label="spirit")
     custom_set_idea_attr(idea=yx1, denom=x_val)
@@ -467,12 +467,12 @@ def test_idea_attributes_meld_FailRaisesError_denom():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:None"
+        == f"Meld fail idea={yx1._pad},{yx1._label} {x_handle}:{x_val} with {yx2._pad},{yx2._label} {x_handle}:None"
     )
 
 
 def test_idea_attributes_meld_FailRaisesError_numor():
-    x_title = "_numor"
+    x_handle = "_numor"
     x_val = 77
     yx1 = ideacore_shop(_label="spirit")
     custom_set_idea_attr(idea=yx1, numor=x_val)
@@ -483,12 +483,12 @@ def test_idea_attributes_meld_FailRaisesError_numor():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:None"
+        == f"Meld fail idea={yx1._pad},{yx1._label} {x_handle}:{x_val} with {yx2._pad},{yx2._label} {x_handle}:None"
     )
 
 
 def test_idea_attributes_meld_FailRaisesError_reest():
-    x_title = "_reest"
+    x_handle = "_reest"
     x_val = 77
     yx1 = ideacore_shop(_label="spirit")
     custom_set_idea_attr(idea=yx1, reest=x_val)
@@ -499,12 +499,12 @@ def test_idea_attributes_meld_FailRaisesError_reest():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:None"
+        == f"Meld fail idea={yx1._pad},{yx1._label} {x_handle}:{x_val} with {yx2._pad},{yx2._label} {x_handle}:None"
     )
 
 
 def test_idea_attributes_meld_FailRaisesError_range_source_road():
-    x_title = "_range_source_road"
+    x_handle = "_range_source_road"
     x_val = "test_range_source_road1"
     yx1 = ideacore_shop(_label="spirit")
     custom_set_idea_attr(idea=yx1, range_source_road=x_val)
@@ -515,12 +515,12 @@ def test_idea_attributes_meld_FailRaisesError_range_source_road():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:None"
+        == f"Meld fail idea={yx1._pad},{yx1._label} {x_handle}:{x_val} with {yx2._pad},{yx2._label} {x_handle}:None"
     )
 
 
 def test_idea_attributes_meld_FailRaisesError_numeric_road():
-    x_title = "_numeric_road"
+    x_handle = "_numeric_road"
     x_val = "test_numeric_road1"
     yx1 = ideacore_shop(_label="spirit")
     custom_set_idea_attr(idea=yx1, numeric_road=x_val)
@@ -531,12 +531,12 @@ def test_idea_attributes_meld_FailRaisesError_numeric_road():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:None"
+        == f"Meld fail idea={yx1._pad},{yx1._label} {x_handle}:{x_val} with {yx2._pad},{yx2._label} {x_handle}:None"
     )
 
 
 def test_idea_attributes_meld_FailRaisesError_action():
-    x_title = "promise"
+    x_handle = "promise"
     x_val = True
     yx1 = ideacore_shop(_label="spirit")
     custom_set_idea_attr(idea=yx1, promise=x_val)
@@ -547,14 +547,14 @@ def test_idea_attributes_meld_FailRaisesError_action():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:False"
+        == f"Meld fail idea={yx1._pad},{yx1._label} {x_handle}:{x_val} with {yx2._pad},{yx2._label} {x_handle}:False"
     )
 
 
 # def test_idea_attributes_meld_FailRaisesError_all_party_credit():
 # def test_idea_attributes_meld_FailRaisesError_all_party_debt():
-#     x_title = "_all_party_credit"
-#     x_title = "_all_party_debt"
+#     x_handle = "_all_party_credit"
+#     x_handle = "_all_party_debt"
 #     x_val = "test_all_party_credit1"
 #     x_val = "test_all_party_debt1"
 #     yx1 = ideacore_shop(_label="spirit")
@@ -567,12 +567,12 @@ def test_idea_attributes_meld_FailRaisesError_action():
 #         yx1.meld(yx2)
 #     assert (
 #         str(excinfo.value)
-#         == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:None"
+#         == f"Meld fail idea={yx1._pad},{yx1._label} {x_handle}:{x_val} with {yx2._pad},{yx2._label} {x_handle}:None"
 #     )
 
 
 def test_idea_attributes_meld_FailRaisesError_is_expanded():
-    x_title = "_is_expanded"
+    x_handle = "_is_expanded"
     x_val = False
     outside_val = True
     yx1 = ideacore_shop(_label="spirit")
@@ -585,7 +585,7 @@ def test_idea_attributes_meld_FailRaisesError_is_expanded():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={yx1._pad},{yx1._label} {x_title}:{x_val} with {yx2._pad},{yx2._label} {x_title}:True"
+        == f"Meld fail idea={yx1._pad},{yx1._label} {x_handle}:{x_val} with {yx2._pad},{yx2._label} {x_handle}:True"
     )
 
 
@@ -601,12 +601,12 @@ def test_idea_meld_CorrectlyCreatesOriginUnitWithOriginLink():
     # WHEN
     sue_text = "Sue"
     sue_weight = 5
-    yx1.meld(other_idea=yx2, party_title=sue_text, party_weight=sue_weight)
+    yx1.meld(other_idea=yx2, party_handle=sue_text, party_weight=sue_weight)
 
     # THEN
     assert yx1._originunit != None
     sue_originunit = originunit_shop()
-    sue_originunit.set_originlink(title=sue_text, weight=sue_weight)
+    sue_originunit.set_originlink(handle=sue_text, weight=sue_weight)
     assert yx1._originunit == sue_originunit
 
 
@@ -618,19 +618,19 @@ def test_idea_meld_IdeaMeldingItselfCreatesOriginUnitWithCorrectOriginLink():
     tim_weight = 7
     tim_idea = ideacore_shop(_label=tim_text)
     ex_yx1_originunit = originunit_shop()
-    ex_yx1_originunit.set_originlink(title=tim_text, weight=tim_weight)
-    yx1.meld(other_idea=tim_idea, party_title=tim_text, party_weight=tim_weight)
+    ex_yx1_originunit.set_originlink(handle=tim_text, weight=tim_weight)
+    yx1.meld(other_idea=tim_idea, party_handle=tim_text, party_weight=tim_weight)
     assert yx1._originunit == ex_yx1_originunit
 
     sue_text = "Sue"
     sue_weight = 5
-    ex_yx1_originunit.set_originlink(title=sue_text, weight=sue_weight)
+    ex_yx1_originunit.set_originlink(handle=sue_text, weight=sue_weight)
     assert yx1._originunit != ex_yx1_originunit
 
     yx1_copy = deepcopy(yx1)
 
     # WHEN
-    yx1.meld(other_idea=yx1, party_title=sue_text, party_weight=sue_weight)
+    yx1.meld(other_idea=yx1, party_handle=sue_text, party_weight=sue_weight)
     assert yx1._originunit == ex_yx1_originunit
 
     # THEN

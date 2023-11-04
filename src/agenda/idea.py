@@ -34,7 +34,7 @@ from src.agenda.group import (
     GroupUnit,
 )
 from src.agenda.origin import OriginUnit
-from src.agenda.party import PartyTitle
+from src.agenda.party import PartyHandle
 from src.agenda.origin import originunit_shop
 from src.agenda.x_func import (
     get_on_meld_weight_actions,
@@ -54,7 +54,7 @@ class IdeaGetDescendantsException(Exception):
 
 @dataclasses.dataclass
 class IdeaBare:
-    n: str = None  # title
+    n: str = None  # handle
     weight: int = 1
     b: float = None  # begin
     c: float = None  # close  # where
@@ -506,7 +506,7 @@ class IdeaCore:
         self,
         other_idea,
         _idearoot: bool = None,
-        party_title: PartyTitle = None,
+        party_handle: PartyHandle = None,
         party_weight: float = None,
     ):
         if _idearoot and self._label != other_idea._label:
@@ -526,12 +526,12 @@ class IdeaCore:
         self._meld_balancelinks(other_idea=other_idea)
         self._meld_acptfactunits(other_idea=other_idea)
         self._meld_attributes_that_will_be_equal(other_idea=other_idea)
-        self._meld_originlinks(party_title, party_weight)
+        self._meld_originlinks(party_handle, party_weight)
 
-    def _meld_originlinks(self, party_title: PartyTitle, party_weight: float):
-        if party_title != None:
+    def _meld_originlinks(self, party_handle: PartyHandle, party_weight: float):
+        if party_handle != None:
             self.set_originunit_empty_if_null()
-            self._originunit.set_originlink(title=party_title, weight=party_weight)
+            self._originunit.set_originlink(handle=party_handle, weight=party_weight)
 
     def set_originunit_empty_if_null(self):
         if self._originunit is None:
@@ -874,8 +874,8 @@ class IdeaCore:
     def get_balancelinks_dict(self):
         balancelinks_dict = {}
         if self._balancelinks != None:
-            for group_title, balancelink in self._balancelinks.items():
-                balancelinks_dict[group_title] = balancelink.get_dict()
+            for group_handle, balancelink in self._balancelinks.items():
+                balancelinks_dict[group_handle] = balancelink.get_dict()
         return balancelinks_dict
 
     def _get_empty_dict_if_null(self, x_dict: dict) -> dict:
@@ -1072,16 +1072,16 @@ class IdeaRootLabelNotEmptyException(Exception):
 
 @dataclasses.dataclass
 class IdeaRoot(IdeaCore):
-    def set_idea_label(self, _label: str, agenda_culture_handle: str = None):
-        if _label != root_label() and agenda_culture_handle is None:
+    def set_idea_label(self, _label: str, agenda_culture_title: str = None):
+        if _label != root_label() and agenda_culture_title is None:
             raise IdeaRootLabelNotEmptyException(
                 f"Cannot set idearoot to string other than '{root_label()}'"
             )
-        elif _label != agenda_culture_handle != None:
+        elif _label != agenda_culture_title != None:
             raise IdeaRootLabelNotEmptyException(
-                f"Cannot set idearoot to string other than '{agenda_culture_handle}'"
+                f"Cannot set idearoot to string other than '{agenda_culture_title}'"
             )
-        elif _label != root_label() and agenda_culture_handle == _label:
+        elif _label != root_label() and agenda_culture_title == _label:
             self._label = _label
         else:
             self._label = root_label()

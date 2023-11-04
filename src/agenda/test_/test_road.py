@@ -162,11 +162,11 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
     assert new_sufffacts_x.get(old_seasons_road) is None
 
 
-def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeCultureHandleScenario():
+def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeCultureTitleScenario():
     # GIVEN
-    old_culture_handle = "El Paso"
+    old_culture_title = "El Paso"
     healer_text = "healer"
-    old_healer_road = f"{old_culture_handle},{healer_text}"
+    old_healer_road = f"{old_culture_title},{healer_text}"
     seasons_text = "seasons"
     old_seasons_road = f"{old_healer_road},{seasons_text}"
     old_sufffact_x = sufffactunit_shop(need=old_seasons_road)
@@ -175,8 +175,8 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeCultureHandleS
     assert old_sufffacts_x.get(old_seasons_road) == old_sufffact_x
 
     # WHEN
-    new_culture_handle = "Austin"
-    new_healer_road = f"{new_culture_handle},{healer_text}"
+    new_culture_title = "Austin"
+    new_healer_road = f"{new_culture_title},{healer_text}"
     new_seasons_road = f"{new_healer_road},{seasons_text}"
     new_sufffacts_x = find_replace_road_key_dict(
         dict_x=old_sufffacts_x, old_road=old_seasons_road, new_road=new_seasons_road

@@ -2,7 +2,7 @@ from src.culture.culture import cultureunit_shop
 from src.culture.council import councilunit_shop
 from src.culture.examples.culture_env_kit import (
     get_temp_env_dir,
-    get_temp_env_handle,
+    get_temp_env_title,
     env_dir_setup_cleanup,
     get_test_cultures_dir,
 )
@@ -12,9 +12,9 @@ from pytest import raises as pytest_raises
 
 def test_culture_set_healer_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
-    x_handle = get_temp_env_handle()
-    x_culture = cultureunit_shop(handle=x_handle, cultures_dir=get_test_cultures_dir())
-    print(f"create env '{x_handle}' directories.")
+    x_title = get_temp_env_title()
+    x_culture = cultureunit_shop(title=x_title, cultures_dir=get_test_cultures_dir())
+    print(f"create env '{x_title}' directories.")
     x_culture.create_dirs_if_null(in_memory_bank=True)
     timmy_text = "timmy"
     wx_path = f"{x_culture.get_councilunits_dir()}/{timmy_text}"
@@ -31,14 +31,14 @@ def test_culture_set_healer_WorksCorrectly(env_dir_setup_cleanup):
 
 def test_culture_rename_councilunit_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
-    x_handle = get_temp_env_handle()
-    x_culture = cultureunit_shop(handle=x_handle, cultures_dir=get_test_cultures_dir())
+    x_title = get_temp_env_title()
+    x_culture = cultureunit_shop(title=x_title, cultures_dir=get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
     old_bob_text = "old Bob"
     old_bob_dir = f"{x_culture.get_councilunits_dir()}/{old_bob_text}"
     old_bob_file_path = f"{old_bob_dir}/seed_agenda.json"
     wx5_obj = councilunit_shop(
-        old_bob_text, x_culture.get_object_root_dir(), get_temp_env_handle()
+        old_bob_text, x_culture.get_object_root_dir(), get_temp_env_title()
     )
     x_culture.set_councilunits_empty_if_null()
     x_culture.set_councilunit_to_culture(wx5_obj)
@@ -73,8 +73,8 @@ def test_culture_rename_councilunit_WorksCorrectly(env_dir_setup_cleanup):
 
 def test_culture_del_councilunit_dir_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
-    x_handle = get_temp_env_handle()
-    x_culture = cultureunit_shop(handle=x_handle, cultures_dir=get_test_cultures_dir())
+    x_title = get_temp_env_title()
+    x_culture = cultureunit_shop(title=x_title, cultures_dir=get_test_cultures_dir())
     xia_text = "Xia"
     xia_dir = f"{x_culture.get_councilunits_dir()}/{xia_text}"
     xia_file_path = f"{xia_dir}/seed_agenda.json"

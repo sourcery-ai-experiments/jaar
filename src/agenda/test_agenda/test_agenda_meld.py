@@ -39,8 +39,8 @@ def test_agenda_meld_WeightDoesNotCombine():
 
 def test_agenda_meld_PartyUnits():
     # GIVEN
-    x1_title = "x1_party"
-    x1_party = partyunit_shop(title=x1_title)
+    x1_handle = "x1_party"
+    x1_party = partyunit_shop(handle=x1_handle)
 
     agenda_text = "x_agenda"
     x_agenda1 = agendaunit_shop(_healer=agenda_text)
@@ -48,8 +48,8 @@ def test_agenda_meld_PartyUnits():
 
     x_agenda2 = agendaunit_shop(_healer=agenda_text)
     x_agenda2.set_partyunit(partyunit=x1_party)
-    x2_title = "x2_party"
-    x2_party = partyunit_shop(title=x2_title)
+    x2_handle = "x2_party"
+    x2_party = partyunit_shop(handle=x2_handle)
     x_agenda2.set_partyunit(partyunit=x2_party)
     assert len(x_agenda1._partys) == 1
 
@@ -58,14 +58,14 @@ def test_agenda_meld_PartyUnits():
 
     # THEN
     assert len(x_agenda1._partys) == 2
-    assert x_agenda1._partys.get(x1_title) != None
-    assert x_agenda1._partys.get(x2_title) != None
+    assert x_agenda1._partys.get(x1_handle) != None
+    assert x_agenda1._partys.get(x2_handle) != None
 
 
 def test_agenda_meld_GroupUnits():
     # GIVEN
-    x1_title = "x1_group"
-    x1_group = groupunit_shop(brand=x1_title)
+    x1_handle = "x1_group"
+    x1_group = groupunit_shop(brand=x1_handle)
 
     agenda_text = "x_agenda"
     x_agenda1 = agendaunit_shop(_healer=agenda_text)
@@ -73,8 +73,8 @@ def test_agenda_meld_GroupUnits():
 
     x_agenda2 = agendaunit_shop(_healer=agenda_text)
     x_agenda2.set_groupunit(groupunit=x1_group)
-    x2_title = "x2_group"
-    x2_group = groupunit_shop(brand=x2_title, uid=5)
+    x2_handle = "x2_group"
+    x2_group = groupunit_shop(brand=x2_handle, uid=5)
     x_agenda2.set_groupunit(groupunit=x2_group)
     assert len(x_agenda1._groups) == 1
 
@@ -82,13 +82,13 @@ def test_agenda_meld_GroupUnits():
     x_agenda1.meld(other_agenda=x_agenda2)
 
     # THEN
-    # for group_title in x_agenda1._groups.values():
-    #     print(f"x_agenda1 {group_title.title=}")
+    # for group_handle in x_agenda1._groups.values():
+    #     print(f"x_agenda1 {group_handle.handle=}")
 
     assert len(x_agenda1._groups) == 2
-    assert x_agenda1._groups.get(x1_title) != None
-    assert x_agenda1._groups.get(x2_title) != None
-    # assert x_agenda1._groups.get(x2_title).uid == 5
+    assert x_agenda1._groups.get(x1_handle) != None
+    assert x_agenda1._groups.get(x2_handle) != None
+    # assert x_agenda1._groups.get(x2_handle).uid == 5
 
 
 def test_agenda_idearoot_meld_IdeaRootAttrCorrectlyMelded():
@@ -104,7 +104,7 @@ def test_agenda_idearoot_meld_IdeaRootAttrCorrectlyMelded():
         x_agenda1.meld(x_agenda2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea=None,{x_agenda1._culture_handle} _uid:1 with None,{x_agenda2._culture_handle} _uid:4"
+        == f"Meld fail idea=None,{x_agenda1._culture_title} _uid:1 with None,{x_agenda2._culture_title} _uid:4"
     )
 
 
@@ -114,17 +114,17 @@ def test_agenda_idearoot_meld_Add4IdeasScenario():
     x_agenda1 = agendaunit_shop(_healer=spirit_text)
 
     tech_text = "tech"
-    tech_road = f"{x_agenda1._culture_handle},{tech_text}"
+    tech_road = f"{x_agenda1._culture_title},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{x_agenda1._culture_handle},{tech_text},{bowl_text}"
+    bowl_road = f"{x_agenda1._culture_title},{tech_text},{bowl_text}"
     swim_text = "swim"
-    swim_road = f"{x_agenda1._culture_handle},{swim_text}"
+    swim_road = f"{x_agenda1._culture_title},{swim_text}"
     free_text = "freestyle"
-    free_road = f"{x_agenda1._culture_handle},{swim_text},{free_text}"
+    free_road = f"{x_agenda1._culture_title},{swim_text},{free_text}"
 
     x_agenda2 = agendaunit_shop(_healer=spirit_text)
     x_agenda2.add_idea(
-        pad=x_agenda2._culture_handle, idea_kid=ideacore_shop(_label=tech_text)
+        pad=x_agenda2._culture_title, idea_kid=ideacore_shop(_label=tech_text)
     )
     x_agenda2.add_idea(pad=tech_road, idea_kid=ideacore_shop(_label=bowl_text))
     x_agenda2.add_idea(pad=swim_road, idea_kid=ideacore_shop(_label=free_text))
@@ -145,18 +145,18 @@ def test_agenda_idearoot_meld_2SameIdeasScenario():
     healer_text = "Yoa"
     x_agenda1 = agendaunit_shop(_healer=healer_text)
     tech_text = "tech"
-    tech_road = f"{x_agenda1._culture_handle},{tech_text}"
+    tech_road = f"{x_agenda1._culture_title},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{x_agenda1._culture_handle},{tech_text},{bowl_text}"
+    bowl_road = f"{x_agenda1._culture_title},{tech_text},{bowl_text}"
 
     x_agenda1.add_idea(
-        pad=x_agenda1._culture_handle, idea_kid=ideacore_shop(_label=tech_text)
+        pad=x_agenda1._culture_title, idea_kid=ideacore_shop(_label=tech_text)
     )
     x_agenda1.add_idea(pad=tech_road, idea_kid=ideacore_shop(_label=bowl_text))
 
     x_agenda2 = agendaunit_shop(_healer=healer_text)
     x_agenda2.add_idea(
-        pad=x_agenda2._culture_handle, idea_kid=ideacore_shop(_label=tech_text)
+        pad=x_agenda2._culture_title, idea_kid=ideacore_shop(_label=tech_text)
     )
     x_agenda2.add_idea(pad=tech_road, idea_kid=ideacore_shop(_label=bowl_text))
 
@@ -173,19 +173,19 @@ def test_agenda_acptfactunits_meld_BaseScenarioWorks():
     # GIVEN
     x_agenda1 = agendaunit_shop(_healer="test7")
     tech_text = "tech"
-    tech_road = f"{x_agenda1._culture_handle},{tech_text}"
+    tech_road = f"{x_agenda1._culture_title},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{x_agenda1._culture_handle},{tech_text},{bowl_text}"
+    bowl_road = f"{x_agenda1._culture_title},{tech_text},{bowl_text}"
 
     x_agenda1.add_idea(
-        pad=x_agenda1._culture_handle, idea_kid=ideacore_shop(_label=tech_text)
+        pad=x_agenda1._culture_title, idea_kid=ideacore_shop(_label=tech_text)
     )
     x_agenda1.add_idea(pad=tech_road, idea_kid=ideacore_shop(_label=bowl_text))
     x_agenda1.set_acptfact(base=tech_road, pick=bowl_road)
 
     x_agenda2 = agendaunit_shop(_healer="test7")
     x_agenda2.add_idea(
-        pad=x_agenda2._culture_handle, idea_kid=ideacore_shop(_label=tech_text)
+        pad=x_agenda2._culture_title, idea_kid=ideacore_shop(_label=tech_text)
     )
     x_agenda2.add_idea(pad=tech_road, idea_kid=ideacore_shop(_label=bowl_text))
     x_agenda2.set_acptfact(base=tech_road, pick=bowl_road)
@@ -205,15 +205,15 @@ def test_agenda_acptfactunits_meld_2AcptFactUnitsWorks():
     # GIVEN
     x_agenda1 = agendaunit_shop(_healer="test7")
     tech_text = "tech"
-    tech_road = f"{x_agenda1._culture_handle},{tech_text}"
+    tech_road = f"{x_agenda1._culture_title},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{x_agenda1._culture_handle},{tech_text},{bowl_text}"
+    bowl_road = f"{x_agenda1._culture_title},{tech_text},{bowl_text}"
     swim_text = "swim"
-    swim_road = f"{x_agenda1._culture_handle},{swim_text}"
+    swim_road = f"{x_agenda1._culture_title},{swim_text}"
     free_text = "freestyle"
 
     x_agenda1.add_idea(
-        pad=x_agenda1._culture_handle, idea_kid=ideacore_shop(_label=tech_text)
+        pad=x_agenda1._culture_title, idea_kid=ideacore_shop(_label=tech_text)
     )
     x_agenda1.add_idea(pad=tech_road, idea_kid=ideacore_shop(_label=bowl_text))
     x_agenda1.add_idea(pad=swim_road, idea_kid=ideacore_shop(_label=free_text))
@@ -221,7 +221,7 @@ def test_agenda_acptfactunits_meld_2AcptFactUnitsWorks():
 
     x_agenda2 = agendaunit_shop(_healer="test7")
     x_agenda2.add_idea(
-        pad=x_agenda2._culture_handle, idea_kid=ideacore_shop(_label=tech_text)
+        pad=x_agenda2._culture_title, idea_kid=ideacore_shop(_label=tech_text)
     )
     x_agenda2.add_idea(pad=tech_road, idea_kid=ideacore_shop(_label=bowl_text))
     x_agenda2.add_idea(pad=swim_road, idea_kid=ideacore_shop(_label=free_text))
@@ -244,7 +244,7 @@ def test_agenda_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
     x_agenda1 = agendaunit_shop(_healer="test7")
 
     swim_text = "swim"
-    swim_road = f"{x_agenda1._culture_handle},{swim_text}"
+    swim_road = f"{x_agenda1._culture_title},{swim_text}"
     free_text = "freestyle"
 
     x_agenda2 = agendaunit_shop(_healer="test7")
@@ -271,7 +271,7 @@ def test_agenda_acptfactunits_meld_GroupsMeldedBefore_Partys():
     x_agenda1 = agendaunit_shop(_healer=healer_text)
     x_agenda2 = agendaunit_shop(_healer=healer_text)
     bob = "bob"
-    x_agenda2.set_partyunit(partyunit_shop(title=bob))
+    x_agenda2.set_partyunit(partyunit_shop(handle=bob))
     assert x_agenda2._groups.get(bob) != None
     assert x_agenda2._groups.get(bob).uid is None
     x_agenda2.set_groupunit(groupunit_shop(brand=bob, uid=13))
@@ -292,9 +292,9 @@ def test_agenda_acptfactunits_meld_AcptFactsAttributeCorrectlySet():
     x_agenda1 = agendaunit_shop(_healer="test7")
 
     swim_text = "swim"
-    swim_road = f"{x_agenda1._culture_handle},{swim_text}"
+    swim_road = f"{x_agenda1._culture_title},{swim_text}"
     free_text = "freestyle"
-    free_road = f"{x_agenda1._culture_handle},{free_text}"
+    free_road = f"{x_agenda1._culture_title},{free_text}"
     x_agenda1.add_idea(pad=swim_road, idea_kid=ideacore_shop(_label=free_text))
 
     x_agenda2 = agendaunit_shop(_healer="test7")
@@ -391,8 +391,8 @@ def test_agenda_meld_worksCorrectlyForLargeExample():
     )
 
     # for balanceline in x_agenda1r_bl.values():
-    #     if balanceline.title != fam_text:
-    #         assert balanceline == x_agenda2r_bl.get(balanceline.title)
+    #     if balanceline.handle != fam_text:
+    #         assert balanceline == x_agenda2r_bl.get(balanceline.handle)
     assert x_agenda1r_bl == x_agenda2r_bl
     # assert x_agenda1._idearoot._balancelines == x_agenda2._idearoot._balancelines
     # assert x_agenda1._idearoot == x_agenda2._idearoot
@@ -418,12 +418,12 @@ def test_agenda__meld_originlinks_CorrectlySetsOriginLinks():
     assert len(bob_x_agenda._originunit._links) == 0
 
     # WHEN
-    bob_x_agenda._meld_originlinks(party_title=sue_text, party_weight=sue_weight)
+    bob_x_agenda._meld_originlinks(party_handle=sue_text, party_weight=sue_weight)
 
     # THEN
     assert len(bob_x_agenda._originunit._links) == 1
     bob_sue_originunit = originunit_shop()
-    bob_sue_originunit.set_originlink(title=sue_text, weight=sue_weight)
+    bob_sue_originunit.set_originlink(handle=sue_text, weight=sue_weight)
     assert bob_x_agenda._originunit == bob_sue_originunit
 
 
@@ -433,7 +433,7 @@ def test_agenda_meld_OriginUnitsCorrectlySet():
     bob_x_agenda = agendaunit_shop(_healer=bob_text)
 
     swim_text = "swim"
-    swim_road = f"{bob_x_agenda._culture_handle},{swim_text}"
+    swim_road = f"{bob_x_agenda._culture_title},{swim_text}"
     free_text = "freestyle"
     free_road = f"{swim_road},{free_text}"
     back_text = "backstroke"
@@ -453,7 +453,7 @@ def test_agenda_meld_OriginUnitsCorrectlySet():
 
     # THEN
     sue_originunit = originunit_shop()
-    sue_originunit.set_originlink(title=sue_text, weight=sue_weight)
+    sue_originunit.set_originlink(handle=sue_text, weight=sue_weight)
     assert len(bob_x_agenda._originunit._links) == 1
     assert bob_x_agenda._originunit == sue_originunit
     bob_free_idea = bob_x_agenda.get_idea_kid(road=free_road)

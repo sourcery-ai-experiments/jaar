@@ -38,50 +38,50 @@ def test_IdeaRoot_set_idea_label_get_default_culture_root_label_DoesNotRaisesErr
 def test_IdeaRoot_set_idea_label_CorrectlyDoesNotRaisesError():
     # GIVEN
     new_obj = idearoot_shop()
-    culture_handle = "El Paso"
+    culture_title = "El Paso"
 
     # WHEN
-    new_obj.set_idea_label(_label=culture_handle, agenda_culture_handle=culture_handle)
+    new_obj.set_idea_label(_label=culture_title, agenda_culture_title=culture_title)
 
     # THEN
-    assert new_obj._label == culture_handle
+    assert new_obj._label == culture_title
 
 
 def test_IdeaRoot_set_idea_label_InCorrectlyDoesRaisesError():
     # GIVEN
     new_obj = idearoot_shop()
-    culture_handle = "El Paso"
+    culture_title = "El Paso"
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         casa_text = "casa"
-        new_obj.set_idea_label(_label=casa_text, agenda_culture_handle=culture_handle)
+        new_obj.set_idea_label(_label=casa_text, agenda_culture_title=culture_title)
     assert (
         str(excinfo.value)
-        == f"Cannot set idearoot to string other than '{culture_handle}'"
+        == f"Cannot set idearoot to string other than '{culture_title}'"
     )
 
 
-def test_IdeaRoot_set_idea_label_RaisesErrorWhen_agenda_culture_handle_IsNone():
+def test_IdeaRoot_set_idea_label_RaisesErrorWhen_agenda_culture_title_IsNone():
     # GIVEN
     new_obj = idearoot_shop()
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         casa_text = "casa"
-        new_obj.set_idea_label(_label=casa_text, agenda_culture_handle=None)
+        new_obj.set_idea_label(_label=casa_text, agenda_culture_title=None)
     assert (
         str(excinfo.value)
         == f"Cannot set idearoot to string other than '{root_label()}'"
     )
 
 
-def test_IdeaRoot_set_idea_label_agenda_culture_handle_EqualRootLabelDoesNotRaisesError():
+def test_IdeaRoot_set_idea_label_agenda_culture_title_EqualRootLabelDoesNotRaisesError():
     # GIVEN
     new_obj = idearoot_shop()
 
     # WHEN
-    new_obj.set_idea_label(_label=root_label(), agenda_culture_handle=root_label())
+    new_obj.set_idea_label(_label=root_label(), agenda_culture_title=root_label())
 
     # THEN
     assert new_obj._label == root_label()

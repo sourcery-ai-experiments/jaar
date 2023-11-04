@@ -9,7 +9,7 @@ from src.culture.examples.example_councils import (
 )
 from src.culture.examples.council_env_kit import (
     get_temp_councilunit_dir,
-    get_temp_culture_handle,
+    get_temp_culture_title,
     council_dir_setup_cleanup,
 )
 from os import path as os_path
@@ -21,12 +21,12 @@ def test_CouncilAdmin_exists():
     env_dir = get_temp_councilunit_dir()
 
     # WHEN
-    bob_counciladmin = CouncilAdmin(bob_text, env_dir, get_temp_culture_handle())
+    bob_counciladmin = CouncilAdmin(bob_text, env_dir, get_temp_culture_title())
 
     # THEN
     assert bob_counciladmin._council_dub != None
     assert bob_counciladmin._env_dir != None
-    assert bob_counciladmin._culture_handle != None
+    assert bob_counciladmin._culture_title != None
     assert bob_counciladmin._councilunit_dir is None
     assert bob_counciladmin._seed_file_name is None
     assert bob_counciladmin._seed_file_path is None
@@ -43,7 +43,7 @@ def test_CouncilAdmin_set_dir_CorrectSetsCouncilAdminAttribute():
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_councilunit_dir()
-    bob_counciladmin = CouncilAdmin(bob_text, env_dir, get_temp_culture_handle())
+    bob_counciladmin = CouncilAdmin(bob_text, env_dir, get_temp_culture_title())
     assert bob_counciladmin._councilunit_dir is None
     assert bob_counciladmin._agenda_output_file_name is None
     assert bob_counciladmin._agenda_output_file_path is None
@@ -101,7 +101,7 @@ def test_CouncilAdmin_create_core_dir_and_files_CreatesDirsAndFiles(
     # GIVEN create healer
     jul_text = "julian"
     env_dir = get_temp_councilunit_dir()
-    jul_counciladmin = counciladmin_shop(jul_text, env_dir, get_temp_culture_handle())
+    jul_counciladmin = counciladmin_shop(jul_text, env_dir, get_temp_culture_title())
     jul_counciladmin.set_dirs()
     assert os_path.exists(jul_counciladmin._councilunits_dir) is False
     assert os_path.exists(jul_counciladmin._councilunit_dir) is False
@@ -133,7 +133,7 @@ def test_CouncilAdmin_create_core_dir_and_files_DoesNotOverWriteseedAgenda(
     # GIVEN create healer
     jul_text = "julian"
     env_dir = get_temp_councilunit_dir()
-    jul_counciladmin = counciladmin_shop(jul_text, env_dir, get_temp_culture_handle())
+    jul_counciladmin = counciladmin_shop(jul_text, env_dir, get_temp_culture_title())
     jul_counciladmin.set_dirs()
     x_agenda = example_healers_get_7nodeJRootWithH_agenda()
     jul_counciladmin.create_core_dir_and_files(x_agenda)
@@ -170,7 +170,7 @@ def test_CouncilAdmin_set_council_dub_WorksCorrectly(council_dir_setup_cleanup):
 
     old_healer_text = "bob"
     jul_counciladmin = counciladmin_shop(
-        old_healer_text, env_dir, get_temp_culture_handle()
+        old_healer_text, env_dir, get_temp_culture_title()
     )
     x_agenda = example_healers_get_7nodeJRootWithH_agenda()
     jul_counciladmin.set_dirs()
@@ -213,7 +213,7 @@ def test_councilunit_auto_output_to_public_SavesAgendaToPublicDir(
     # GIVEN
     bob_text = "bob"
     bob_counciladmin = counciladmin_shop(
-        bob_text, get_temp_councilunit_dir(), get_temp_culture_handle()
+        bob_text, get_temp_councilunit_dir(), get_temp_culture_title()
     )
     x_agenda = example_healers_get_6node_agenda()
     x_agenda.set_healer(new_healer=bob_text)

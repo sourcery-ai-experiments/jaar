@@ -88,14 +88,14 @@ def dir_files(
         include_files = True
 
     dict_x = {}
-    for obj_title in os_listdir(dir_path):
+    for obj_handle in os_listdir(dir_path):
         dict_key = None
         file_name = None
         file_path = None
         file_text = None
-        obj_path = f"{dir_path}/{obj_title}"
+        obj_path = f"{dir_path}/{obj_handle}"
         if os_path.isfile(obj_path) and include_files:
-            file_name = obj_title
+            file_name = obj_handle
             file_path = f"{dir_path}/{file_name}"
             # print(f" {os_path.isdir(file_path)=}")
             file_text = open_file(dest_dir=dir_path, file_name=file_name)
@@ -105,7 +105,7 @@ def dir_files(
             dict_x[dict_key] = file_text
 
         if os_path.isdir(obj_path) and include_dirs:
-            dict_key = obj_title
+            dict_key = obj_handle
             file_text = True
             dict_x[dict_key] = file_text
     return dict_x

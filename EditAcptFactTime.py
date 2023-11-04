@@ -69,7 +69,7 @@ class EditAcptFactTime(qtw.QTableWidget, Ui_Form):
         #     road=f"{root_label},time,jajatime"
         # )
         minutes_acptfact = self.agenda_x._idearoot._acptfactunits[
-            f"{self.agenda_x._culture_handle},time,jajatime"
+            f"{self.agenda_x._culture_title},time,jajatime"
         ]
 
         dt_open = self.agenda_x.get_time_dt_from_min(min=minutes_acptfact.open)

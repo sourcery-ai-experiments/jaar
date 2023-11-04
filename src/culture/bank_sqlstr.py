@@ -1,4 +1,4 @@
-from src.agenda.agenda import AgendaUnit, PartyUnit, Road, PersonName, PartyTitle
+from src.agenda.agenda import AgendaUnit, PartyUnit, Road, PersonName, PartyHandle
 from src.agenda.road import get_road_without_root_node
 from src.culture.y_func import sqlite_bool, sqlite_null, sqlite_text, sqlite_to_python
 from dataclasses import dataclass
@@ -495,7 +495,7 @@ def get_partybankunit_dict(
     sqlstr = f"""
 SELECT
   agenda_healer currency_master
-, title tax_healer
+, handle tax_healer
 , _bank_tax_paid tax_total
 , _agenda_goal_ratio_debt debt
 , (_agenda_goal_ratio_debt - _bank_tax_paid) tax_diff
@@ -523,7 +523,7 @@ WHERE currency_master = '{currency_agenda_healer}'
 
 # agenda
 def get_agendaunit_table_create_sqlstr() -> str:
-    """Create table that references the title of every agenda. The healer name of the one running that agenda's council."""
+    """Create table that references the handle of every agenda. The healer name of the one running that agenda's council."""
     return """
 CREATE TABLE IF NOT EXISTS agendaunit (
   healer VARCHAR(255) PRIMARY KEY ASC
@@ -590,7 +590,7 @@ def get_partyunit_table_create_sqlstr() -> str:
     return """
 CREATE TABLE IF NOT EXISTS partyunit (
   agenda_healer VARCHAR(255) NOT NULL 
-, title VARCHAR(255) NOT NULL
+, handle VARCHAR(255) NOT NULL
 , _agenda_credit FLOAT
 , _agenda_debt FLOAT
 , _agenda_goal_credit FLOAT
@@ -605,8 +605,8 @@ CREATE TABLE IF NOT EXISTS partyunit (
 , _bank_voice_rank INT
 , _bank_voice_hx_lowest_rank INT
 , FOREIGN KEY(agenda_healer) REFERENCES agendaunit(healer)
-, FOREIGN KEY(title) REFERENCES agendaunit(healer)
-, UNIQUE(agenda_healer, title)
+, FOREIGN KEY(handle) REFERENCES agendaunit(healer)
+, UNIQUE(agenda_healer, handle)
 )
 ;
 """
@@ -622,13 +622,13 @@ SET _bank_tax_paid = (
     FROM river_block block
     WHERE block.currency_master='{currency_agenda_healer}' 
         AND block.dst_healer=block.currency_master
-        AND block.src_healer = partyunit.title
+        AND block.src_healer = partyunit.handle
     )
 WHERE EXISTS (
     SELECT block.currency_close
     FROM river_block block
     WHERE partyunit.agenda_healer='{currency_agenda_healer}' 
-        AND partyunit.title = block.dst_healer
+        AND partyunit.handle = block.dst_healer
 )
 ;
 """
@@ -643,7 +643,7 @@ SET _bank_credit_score = (
     SELECT SUM(reach_curr_close - reach_curr_start) range_sum
     FROM river_reach reach
     WHERE reach.currency_master = partyunit.agenda_healer
-        AND reach.src_healer = partyunit.title
+        AND reach.src_healer = partyunit.handle
     )
 WHERE partyunit.agenda_healer = '{currency_agenda_healer}'
 ;
@@ -657,12 +657,12 @@ SET _bank_voice_rank =
     (
     SELECT rn
     FROM (
-        SELECT p2.title
+        SELECT p2.handle
         , row_number() over (order by p2._bank_credit_score DESC) rn
         FROM partyunit p2
         WHERE p2.agenda_healer = '{agenda_healer}'
     ) p3
-    WHERE p3.title = partyunit.title AND partyunit.agenda_healer = '{agenda_healer}'
+    WHERE p3.handle = partyunit.handle AND partyunit.agenda_healer = '{agenda_healer}'
     )
 WHERE partyunit.agenda_healer = '{agenda_healer}'
 ;
@@ -676,7 +676,7 @@ def get_partyunit_table_insert_sqlstr(
     return f"""
 INSERT INTO partyunit (
   agenda_healer
-, title
+, handle
 , _agenda_credit
 , _agenda_debt
 , _agenda_goal_credit
@@ -693,7 +693,7 @@ INSERT INTO partyunit (
 )
 VALUES (
   '{x_agenda._healer}' 
-, '{partyunit_x.title}'
+, '{partyunit_x.handle}'
 , {sqlite_null(partyunit_x._agenda_credit)} 
 , {sqlite_null(partyunit_x._agenda_debt)}
 , {sqlite_null(partyunit_x._agenda_goal_credit)}
@@ -719,11 +719,11 @@ class PartyDBUnit(PartyUnit):
 
 def get_partyview_dict(
     db_conn: Connection, payer_healer: PersonName
-) -> dict[PartyTitle:PartyDBUnit]:
+) -> dict[PartyHandle:PartyDBUnit]:
     sqlstr = f"""
 SELECT 
   agenda_healer
-, title
+, handle
 , _agenda_credit
 , _agenda_debt
 , _agenda_goal_credit
@@ -747,7 +747,7 @@ WHERE agenda_healer = '{payer_healer}'
     for row in results.fetchall():
         partyview_x = PartyDBUnit(
             agenda_healer=row[0],
-            title=row[1],
+            handle=row[1],
             _agenda_credit=row[2],
             _agenda_debt=row[3],
             _agenda_goal_credit=row[4],
@@ -762,7 +762,7 @@ WHERE agenda_healer = '{payer_healer}'
             _bank_voice_rank=row[13],
             _bank_voice_hx_lowest_rank=row[14],
         )
-        dict_x[partyview_x.title] = partyview_x
+        dict_x[partyview_x.handle] = partyview_x
     return dict_x
 
 

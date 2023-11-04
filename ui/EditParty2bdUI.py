@@ -96,9 +96,9 @@ class Ui_Form(object):
             QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter
         )
         self.label_4.setObjectName("label_4")
-        self.gp_update_title_edit = QtWidgets.QLineEdit(Form)
-        self.gp_update_title_edit.setGeometry(QtCore.QRect(870, 710, 113, 22))
-        self.gp_update_title_edit.setObjectName("gp_update_title_edit")
+        self.gp_update_handle_edit = QtWidgets.QLineEdit(Form)
+        self.gp_update_handle_edit.setGeometry(QtCore.QRect(870, 710, 113, 22))
+        self.gp_update_handle_edit.setObjectName("gp_update_handle_edit")
         self.gp_update_button = QtWidgets.QPushButton(Form)
         self.gp_update_button.setGeometry(QtCore.QRect(990, 710, 151, 28))
         self.gp_update_button.setObjectName("gp_update_button")
@@ -108,7 +108,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowHandle(_translate("Form", "Form"))
         self.gp_add_button.setText(_translate("Form", "Add Group"))
         self.gp_remove_button.setText(_translate("Form", "Remove Group"))
         self.label.setText(_translate("Form", "Party is party of these Groups"))
@@ -137,6 +137,6 @@ class Ui_Form(object):
         )
         self.gp_insert_button.setText(_translate("Form", "Create Group"))
         self.gp_delete_button.setText(_translate("Form", "Delete Group"))
-        self.label_3.setText(_translate("Form", "New Group Title:"))
-        self.label_4.setText(_translate("Form", "Change Group Title:"))
+        self.label_3.setText(_translate("Form", "New Group Handle:"))
+        self.label_4.setText(_translate("Form", "Change Group Handle:"))
         self.gp_update_button.setText(_translate("Form", "Update Group"))

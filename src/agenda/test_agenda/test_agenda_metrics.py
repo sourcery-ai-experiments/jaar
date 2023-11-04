@@ -1,7 +1,7 @@
 from src.agenda.examples.example_agendas import (
     agenda_v001 as example_agendas_agenda_v001,
 )
-from src.agenda.party import PartyTitle, partyunit_shop
+from src.agenda.party import PartyHandle, partyunit_shop
 from src.agenda.group import GroupBrand, balancelink_shop, groupunit_shop
 from src.agenda.agenda import agendaunit_shop
 
@@ -44,9 +44,9 @@ def test_agenda_3AdvocatesNoideacore_shop():
     patr_text = "patrick"
 
     x_agenda = agendaunit_shop(_healer="prom")
-    au_rico = partyunit_shop(title=rico_text, uid=7)
-    au_carm = partyunit_shop(title=carm_text, uid=2)
-    au_patr = partyunit_shop(title=patr_text, uid=13)
+    au_rico = partyunit_shop(handle=rico_text, uid=7)
+    au_carm = partyunit_shop(handle=carm_text, uid=2)
+    au_patr = partyunit_shop(handle=patr_text, uid=13)
     # print(f"{rico=}")
     x_agenda.set_partyunit(partyunit=au_rico)
     x_agenda.set_partyunit(partyunit=au_carm)
@@ -91,9 +91,9 @@ def test_agenda_get_partyunits_uid_max_WorksCorrectly():
     patr_text = "patrick"
 
     x_agenda = agendaunit_shop(_healer="prom")
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=rico_text, uid=4))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=carr_text, uid=13))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=patr_text, uid=7))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=rico_text, uid=4))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=carr_text, uid=13))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=patr_text, uid=7))
 
     # WHEN/THEN
     assert x_agenda.get_partyunits_uid_max() == 13

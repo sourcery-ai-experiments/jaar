@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
- <widget class="QMainWindow" title="MainWindow">
-  <property title="geometry">
+ <widget class="QMainWindow" handle="MainWindow">
+  <property handle="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -10,12 +10,12 @@
     <height>750</height>
    </rect>
   </property>
-  <property title="windowkind">
+  <property handle="windowkind">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" title="centralwidget">
-   <widget class="QTableWidget" title="digests_table">
-    <property title="geometry">
+  <widget class="QWidget" handle="centralwidget">
+   <widget class="QTableWidget" handle="digests_table">
+    <property handle="geometry">
      <rect>
       <x>530</x>
       <y>190</y>
@@ -23,24 +23,24 @@
       <height>501</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
     <column>
-     <property title="text">
+     <property handle="text">
       <string>Digest</string>
      </property>
     </column>
     <column>
-     <property title="text">
+     <property handle="text">
       <string/>
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" title="healers_table">
-    <property title="geometry">
+   <widget class="QTableWidget" handle="healers_table">
+    <property handle="geometry">
      <rect>
       <x>190</x>
       <y>190</y>
@@ -48,24 +48,24 @@
       <height>430</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
     <column>
-     <property title="text">
+     <property handle="text">
       <string>Healers</string>
      </property>
     </column>
     <column>
-     <property title="text">
+     <property handle="text">
       <string/>
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" title="agendas_table">
-    <property title="geometry">
+   <widget class="QTableWidget" handle="agendas_table">
+    <property handle="geometry">
      <rect>
       <x>10</x>
       <y>310</y>
@@ -73,24 +73,24 @@
       <height>381</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
     <column>
-     <property title="text">
+     <property handle="text">
       <string>culture Stories</string>
      </property>
     </column>
     <column>
-     <property title="text">
+     <property handle="text">
       <string/>
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" title="depotlinks_table">
-    <property title="geometry">
+   <widget class="QTableWidget" handle="depotlinks_table">
+    <property handle="geometry">
      <rect>
       <x>340</x>
       <y>190</y>
@@ -98,34 +98,34 @@
       <height>501</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
     <column>
-     <property title="text">
+     <property handle="text">
       <string>Agendas</string>
      </property>
     </column>
     <column>
-     <property title="text">
+     <property handle="text">
       <string>Weight</string>
      </property>
     </column>
     <column>
-     <property title="text">
+     <property handle="text">
       <string>Type</string>
      </property>
     </column>
     <column>
-     <property title="text">
+     <property handle="text">
       <string/>
      </property>
     </column>
    </widget>
-   <widget class="QPushButton" title="culture_delete_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="culture_delete_button">
+    <property handle="geometry">
      <rect>
       <x>170</x>
       <y>20</y>
@@ -133,17 +133,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>delete </string>
     </property>
    </widget>
-   <widget class="QPushButton" title="culture_insert_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="culture_insert_button">
+    <property handle="geometry">
      <rect>
       <x>20</x>
       <y>50</y>
@@ -151,17 +151,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>Add new culture</string>
     </property>
    </widget>
-   <widget class="QLineEdit" title="culture_handle">
-    <property title="geometry">
+   <widget class="QLineEdit" handle="culture_title">
+    <property handle="geometry">
      <rect>
       <x>20</x>
       <y>20</y>
@@ -169,14 +169,14 @@
       <height>22</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" title="culture_update_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="culture_update_button">
+    <property handle="geometry">
      <rect>
       <x>20</x>
       <y>80</y>
@@ -184,17 +184,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
-     <string>Change Title</string>
+    <property handle="text">
+     <string>Change Handle</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="agenda_update_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="agenda_update_button">
+    <property handle="geometry">
      <rect>
       <x>10</x>
       <y>240</y>
@@ -202,17 +202,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
-     <string>Change Agenda Title</string>
+    <property handle="text">
+     <string>Change Agenda Handle</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="agenda_insert_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="agenda_insert_button">
+    <property handle="geometry">
      <rect>
       <x>10</x>
       <y>210</y>
@@ -220,17 +220,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>Add new Agenda</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="agenda_delete_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="agenda_delete_button">
+    <property handle="geometry">
      <rect>
       <x>80</x>
       <y>270</y>
@@ -238,17 +238,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>Delete</string>
     </property>
    </widget>
-   <widget class="QLineEdit" title="agenda_healer">
-    <property title="geometry">
+   <widget class="QLineEdit" handle="agenda_healer">
+    <property handle="geometry">
      <rect>
       <x>10</x>
       <y>180</y>
@@ -256,14 +256,14 @@
       <height>22</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" title="healer_update_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="healer_update_button">
+    <property handle="geometry">
      <rect>
       <x>190</x>
       <y>130</y>
@@ -271,17 +271,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
-     <string>Change Healer Title</string>
+    <property handle="text">
+     <string>Change Healer Handle</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="healer_insert_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="healer_insert_button">
+    <property handle="geometry">
      <rect>
       <x>190</x>
       <y>100</y>
@@ -289,17 +289,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>Add new Healer</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="healer_delete_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="healer_delete_button">
+    <property handle="geometry">
      <rect>
       <x>240</x>
       <y>40</y>
@@ -307,17 +307,17 @@
       <height>28</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>delete Healer</string>
     </property>
    </widget>
-   <widget class="QLineEdit" title="council_dub">
-    <property title="geometry">
+   <widget class="QLineEdit" handle="council_dub">
+    <property handle="geometry">
      <rect>
       <x>190</x>
       <y>70</y>
@@ -325,14 +325,14 @@
       <height>22</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" title="depotlink_delete_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="depotlink_delete_button">
+    <property handle="geometry">
      <rect>
       <x>480</x>
       <y>20</y>
@@ -340,17 +340,17 @@
       <height>28</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>delete Agenda</string>
     </property>
    </widget>
-   <widget class="QLineEdit" title="depotlink_title">
-    <property title="geometry">
+   <widget class="QLineEdit" handle="depotlink_handle">
+    <property handle="geometry">
      <rect>
       <x>340</x>
       <y>20</y>
@@ -358,14 +358,14 @@
       <height>22</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" title="depotlink_insert_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="depotlink_insert_button">
+    <property handle="geometry">
      <rect>
       <x>376</x>
       <y>50</y>
@@ -373,17 +373,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>Add new Agenda</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="depotlink_update_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="depotlink_update_button">
+    <property handle="geometry">
      <rect>
       <x>376</x>
       <y>80</y>
@@ -391,17 +391,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>Update Agenda</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="refresh_all_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="refresh_all_button">
+    <property handle="geometry">
      <rect>
       <x>530</x>
       <y>90</y>
@@ -409,17 +409,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>refresh</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="agenda_edit_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="agenda_edit_button">
+    <property handle="geometry">
      <rect>
       <x>10</x>
       <y>270</y>
@@ -427,17 +427,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>Edit </string>
     </property>
    </widget>
-   <widget class="QPushButton" title="healer_edit_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="healer_edit_button">
+    <property handle="geometry">
      <rect>
       <x>190</x>
       <y>160</y>
@@ -445,17 +445,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>Edit Healer</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="depotlink_edit_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="depotlink_edit_button">
+    <property handle="geometry">
      <rect>
       <x>340</x>
       <y>160</y>
@@ -463,17 +463,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>Edit Agenda</string>
     </property>
    </widget>
-   <widget class="QTableWidget" title="w_goal_table">
-    <property title="geometry">
+   <widget class="QTableWidget" handle="w_goal_table">
+    <property handle="geometry">
      <rect>
       <x>1180</x>
       <y>260</y>
@@ -481,29 +481,29 @@
       <height>431</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
     <column>
-     <property title="text">
+     <property handle="text">
       <string>Healers Agenda</string>
      </property>
     </column>
     <column>
-     <property title="text">
+     <property handle="text">
       <string>New Column</string>
      </property>
     </column>
     <column>
-     <property title="text">
+     <property handle="text">
       <string/>
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" title="w_partys_table">
-    <property title="geometry">
+   <widget class="QTableWidget" handle="w_partys_table">
+    <property handle="geometry">
      <rect>
       <x>1000</x>
       <y>10</y>
@@ -511,29 +511,29 @@
       <height>241</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
     <column>
-     <property title="text">
+     <property handle="text">
       <string>Healers Partys</string>
      </property>
     </column>
     <column>
-     <property title="text">
+     <property handle="text">
       <string>New Column</string>
      </property>
     </column>
     <column>
-     <property title="text">
+     <property handle="text">
       <string/>
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" title="w_groups_table">
-    <property title="geometry">
+   <widget class="QTableWidget" handle="w_groups_table">
+    <property handle="geometry">
      <rect>
       <x>1000</x>
       <y>260</y>
@@ -541,29 +541,29 @@
       <height>431</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
     <column>
-     <property title="text">
+     <property handle="text">
       <string>Healers Groups</string>
      </property>
     </column>
     <column>
-     <property title="text">
+     <property handle="text">
       <string>New Column</string>
      </property>
     </column>
     <column>
-     <property title="text">
+     <property handle="text">
       <string/>
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" title="w_ideas_table">
-    <property title="geometry">
+   <widget class="QTableWidget" handle="w_ideas_table">
+    <property handle="geometry">
      <rect>
       <x>600</x>
       <y>10</y>
@@ -571,29 +571,29 @@
       <height>681</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
     <column>
-     <property title="text">
+     <property handle="text">
       <string>Healer Ideas</string>
      </property>
     </column>
     <column>
-     <property title="text">
+     <property handle="text">
       <string>Idea pad</string>
      </property>
     </column>
     <column>
-     <property title="text">
+     <property handle="text">
       <string/>
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" title="w_acptfacts_table">
-    <property title="geometry">
+   <widget class="QTableWidget" handle="w_acptfacts_table">
+    <property handle="geometry">
      <rect>
       <x>1180</x>
       <y>10</y>
@@ -601,29 +601,29 @@
       <height>241</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
     <column>
-     <property title="text">
+     <property handle="text">
       <string>AcptFacts Base</string>
      </property>
     </column>
     <column>
-     <property title="text">
+     <property handle="text">
       <string>AcptFacts AcptFact</string>
      </property>
     </column>
     <column>
-     <property title="text">
+     <property handle="text">
       <string/>
      </property>
     </column>
    </widget>
-   <widget class="QComboBox" title="culture_handle_combo">
-    <property title="geometry">
+   <widget class="QComboBox" handle="culture_title_combo">
+    <property handle="geometry">
      <rect>
       <x>20</x>
       <y>110</y>
@@ -631,14 +631,14 @@
       <height>26</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" title="culture_copy_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="culture_copy_button">
+    <property handle="geometry">
      <rect>
       <x>100</x>
       <y>80</y>
@@ -646,17 +646,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>Copy</string>
     </property>
    </widget>
-   <widget class="QComboBox" title="depotlink_type_combo">
-    <property title="geometry">
+   <widget class="QComboBox" handle="depotlink_type_combo">
+    <property handle="geometry">
      <rect>
       <x>376</x>
       <y>110</y>
@@ -664,14 +664,14 @@
       <height>26</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" title="culture_load_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="culture_load_button">
+    <property handle="geometry">
      <rect>
       <x>100</x>
       <y>140</y>
@@ -679,17 +679,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>load</string>
     </property>
    </widget>
-   <widget class="QLineEdit" title="depotlink_weight">
-    <property title="geometry">
+   <widget class="QLineEdit" handle="depotlink_weight">
+    <property handle="geometry">
      <rect>
       <x>460</x>
       <y>140</y>
@@ -697,14 +697,14 @@
       <height>22</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
    </widget>
-   <widget class="QLabel" title="label">
-    <property title="geometry">
+   <widget class="QLabel" handle="label">
+    <property handle="geometry">
      <rect>
       <x>340</x>
       <y>140</y>
@@ -712,17 +712,17 @@
       <height>20</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>Agenda Weight:</string>
     </property>
    </widget>
-   <widget class="QTableWidget" title="ignores_table">
-    <property title="geometry">
+   <widget class="QTableWidget" handle="ignores_table">
+    <property handle="geometry">
      <rect>
       <x>530</x>
       <y>190</y>
@@ -730,24 +730,24 @@
       <height>501</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
     <column>
-     <property title="text">
+     <property handle="text">
       <string>Ignore</string>
      </property>
     </column>
     <column>
-     <property title="text">
+     <property handle="text">
       <string/>
      </property>
     </column>
    </widget>
-   <widget class="QPushButton" title="show_digests_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="show_digests_button">
+    <property handle="geometry">
      <rect>
       <x>530</x>
       <y>120</y>
@@ -755,17 +755,17 @@
       <height>21</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>digest</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="show_ignores_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="show_ignores_button">
+    <property handle="geometry">
      <rect>
       <x>530</x>
       <y>140</y>
@@ -773,17 +773,17 @@
       <height>31</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>ignore</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="open_ignore_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="open_ignore_button">
+    <property handle="geometry">
      <rect>
       <x>570</x>
       <y>140</y>
@@ -791,17 +791,17 @@
       <height>21</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>o</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="save_ignore_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="save_ignore_button">
+    <property handle="geometry">
      <rect>
       <x>570</x>
       <y>160</y>
@@ -809,17 +809,17 @@
       <height>21</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>s</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="set_public_agenda_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="set_public_agenda_button">
+    <property handle="geometry">
      <rect>
       <x>190</x>
       <y>640</y>
@@ -827,17 +827,17 @@
       <height>21</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>output_agenda to public_dir</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="reload_all_src_agendas_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="reload_all_src_agendas_button">
+    <property handle="geometry">
      <rect>
       <x>190</x>
       <y>620</y>
@@ -845,17 +845,17 @@
       <height>21</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>refresh_all_src_agendas</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="set_public_and_reload_srcs_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="set_public_and_reload_srcs_button">
+    <property handle="geometry">
      <rect>
       <x>190</x>
       <y>660</y>
@@ -863,17 +863,17 @@
       <height>21</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>dest2public and refresh</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="seed_open_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="seed_open_button">
+    <property handle="geometry">
      <rect>
       <x>530</x>
       <y>50</y>
@@ -881,17 +881,17 @@
       <height>21</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>seed</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="seed_save_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="seed_save_button">
+    <property handle="geometry">
      <rect>
       <x>530</x>
       <y>70</y>
@@ -899,17 +899,17 @@
       <height>21</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>save</string>
     </property>
    </widget>
-   <widget class="QPushButton" title="five_issue_button">
-    <property title="geometry">
+   <widget class="QPushButton" handle="five_issue_button">
+    <property handle="geometry">
      <rect>
       <x>450</x>
       <y>160</y>
@@ -917,18 +917,18 @@
       <height>31</height>
      </rect>
     </property>
-    <property title="font">
+    <property handle="font">
      <font>
       <pointsize>8</pointsize>
      </font>
     </property>
-    <property title="text">
+    <property handle="text">
      <string>5 issue</string>
     </property>
    </widget>
   </widget>
-  <widget class="QMenuBar" title="menubar">
-   <property title="geometry">
+  <widget class="QMenuBar" handle="menubar">
+   <property handle="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
@@ -936,44 +936,44 @@
      <height>21</height>
     </rect>
    </property>
-   <property title="accessibleTitle">
+   <property handle="accessibleHandle">
     <string>File</string>
    </property>
-   <property title="accessibleDescription">
+   <property handle="accessibleDescription">
     <string>General Operations</string>
    </property>
-   <widget class="QMenu" title="file_menu">
-    <property title="kind">
+   <widget class="QMenu" handle="file_menu">
+    <property handle="kind">
      <string>File</string>
     </property>
-    <addaction title="fm_new"/>
-    <addaction title="fm_open"/>
-    <addaction title="fm_save"/>
-    <addaction title="save_as"/>
+    <addaction handle="fm_new"/>
+    <addaction handle="fm_open"/>
+    <addaction handle="fm_save"/>
+    <addaction handle="save_as"/>
    </widget>
-   <addaction title="file_menu"/>
+   <addaction handle="file_menu"/>
   </widget>
-  <widget class="QStatusBar" title="statusbar"/>
-  <action title="fm_open">
-   <property title="checkable">
+  <widget class="QStatusBar" handle="statusbar"/>
+  <action handle="fm_open">
+   <property handle="checkable">
     <bool>false</bool>
    </property>
-   <property title="text">
+   <property handle="text">
     <string>Open</string>
    </property>
   </action>
-  <action title="fm_save">
-   <property title="text">
+  <action handle="fm_save">
+   <property handle="text">
     <string>Save</string>
    </property>
   </action>
-  <action title="save_as">
-   <property title="text">
+  <action handle="save_as">
+   <property handle="text">
     <string>Save as...</string>
    </property>
   </action>
-  <action title="fm_new">
-   <property title="text">
+  <action handle="fm_new">
+   <property handle="text">
     <string>New</string>
    </property>
   </action>

@@ -49,9 +49,9 @@ class Ui_Form(object):
         self.quit_button = QtWidgets.QPushButton(Form)
         self.quit_button.setGeometry(QtCore.QRect(1090, 40, 93, 28))
         self.quit_button.setObjectName("quit_button")
-        self.party_title = QtWidgets.QLineEdit(Form)
-        self.party_title.setGeometry(QtCore.QRect(10, 40, 151, 31))
-        self.party_title.setObjectName("party_title")
+        self.party_handle = QtWidgets.QLineEdit(Form)
+        self.party_handle.setGeometry(QtCore.QRect(10, 40, 151, 31))
+        self.party_handle.setObjectName("party_handle")
         self.groups_in_table = QtWidgets.QTableWidget(Form)
         self.groups_in_table.setGeometry(QtCore.QRect(530, 130, 381, 511))
         self.groups_in_table.setObjectName("groups_in_table")
@@ -109,9 +109,9 @@ class Ui_Form(object):
         self.group_insert_button = QtWidgets.QPushButton(Form)
         self.group_insert_button.setGeometry(QtCore.QRect(880, 40, 91, 31))
         self.group_insert_button.setObjectName("group_insert_button")
-        self.group_title = QtWidgets.QLineEdit(Form)
-        self.group_title.setGeometry(QtCore.QRect(720, 40, 151, 31))
-        self.group_title.setObjectName("group_title")
+        self.group_handle = QtWidgets.QLineEdit(Form)
+        self.group_handle.setGeometry(QtCore.QRect(720, 40, 151, 31))
+        self.group_handle.setObjectName("group_handle")
         self.party_group_set_button = QtWidgets.QPushButton(Form)
         self.party_group_set_button.setGeometry(QtCore.QRect(1060, 100, 121, 28))
         font = QtGui.QFont()
@@ -152,7 +152,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowHandle(_translate("Form", "Form"))
         self.party_insert_button.setText(_translate("Form", "Add Party"))
         self.party_update_button.setText(_translate("Form", "Update"))
         self.label_3.setText(_translate("Form", "Weight:"))
@@ -193,7 +193,7 @@ class Ui_Form(object):
         self.label_5.setText(_translate("Form", "Groups"))
         self.group_update_button.setText(_translate("Form", "Update Group"))
         self.group_delete_button.setText(_translate("Form", "delete Group"))
-        self.label_6.setText(_translate("Form", "Change Title to:"))
+        self.label_6.setText(_translate("Form", "Change Handle to:"))
         self.group_insert_button.setText(_translate("Form", "Add Group"))
         self.party_group_set_button.setText(_translate("Form", "add group to party"))
         self.party_group_del_button.setText(

@@ -7,10 +7,10 @@ def test_culturelink_exists():
     diet_weight = 3
 
     # WHEN
-    diet_culturelink = CultureLink(handle=diet_text, weight=diet_weight)
+    diet_culturelink = CultureLink(title=diet_text, weight=diet_weight)
 
     # THEN
-    assert diet_culturelink.handle == diet_text
+    assert diet_culturelink.title == diet_text
     assert diet_culturelink.weight == diet_weight
     assert diet_culturelink._relative_weight is None
     assert diet_culturelink._manager_importance is None
@@ -22,10 +22,10 @@ def test_culturelink_shop_ReturnsCorrectObj():
     diet_weight = 5
 
     # WHEN
-    diet_culturelink = culturelink_shop(handle=diet_text, weight=diet_weight)
+    diet_culturelink = culturelink_shop(title=diet_text, weight=diet_weight)
 
     # THEN
-    assert diet_culturelink.handle == diet_text
+    assert diet_culturelink.title == diet_text
     assert diet_culturelink.weight == diet_weight
     assert diet_culturelink._relative_weight is None
     assert diet_culturelink._manager_importance is None
@@ -36,10 +36,10 @@ def test_culturelink_shop_ReturnsCorrectObj_EmptyWeight():
     culture_text = "diet"
 
     # WHEN
-    diet_culturelink = culturelink_shop(handle=culture_text)
+    diet_culturelink = culturelink_shop(title=culture_text)
 
     # THEN
-    assert diet_culturelink.handle == culture_text
+    assert diet_culturelink.title == culture_text
     assert diet_culturelink.weight == 1
     assert diet_culturelink._relative_weight is None
     assert diet_culturelink._manager_importance is None
@@ -48,7 +48,7 @@ def test_culturelink_shop_ReturnsCorrectObj_EmptyWeight():
 def test_culturelink_set_relative_weight_SetsCorrectly():
     # GIVEN
     diet_text = "diet"
-    diet_culturelink = culturelink_shop(handle=diet_text)
+    diet_culturelink = culturelink_shop(title=diet_text)
     assert diet_culturelink._relative_weight is None
 
     # WHEN
@@ -62,7 +62,7 @@ def test_culturelink_set_relative_weight_SetsCorrectly():
 def test_culturelink_set_manager_importance_SetsCorrectly():
     # GIVEN
     diet_text = "diet"
-    diet_culturelink = culturelink_shop(handle=diet_text)
+    diet_culturelink = culturelink_shop(title=diet_text)
     assert diet_culturelink._manager_importance is None
 
     # WHEN

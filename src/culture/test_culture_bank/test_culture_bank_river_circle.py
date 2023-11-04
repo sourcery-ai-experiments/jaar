@@ -1,7 +1,7 @@
 from src.agenda.agenda import agendaunit_shop
 from src.culture.culture import cultureunit_shop
 from src.culture.examples.culture_env_kit import (
-    get_temp_env_handle,
+    get_temp_env_title,
     get_test_cultures_dir,
     env_dir_setup_cleanup,
 )
@@ -16,7 +16,7 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
 
     sal_text = "sal"
     bob_text = "bob"
@@ -25,14 +25,14 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     elu_text = "elu"
 
     sal_agenda = agendaunit_shop(_healer=sal_text)
-    sal_agenda.add_partyunit(title=bob_text, creditor_weight=2)
-    sal_agenda.add_partyunit(title=tom_text, creditor_weight=7)
-    sal_agenda.add_partyunit(title=ava_text, creditor_weight=1)
+    sal_agenda.add_partyunit(handle=bob_text, creditor_weight=2)
+    sal_agenda.add_partyunit(handle=tom_text, creditor_weight=7)
+    sal_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=sal_agenda)
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
-    bob_agenda.add_partyunit(title=sal_text, creditor_weight=3)
-    bob_agenda.add_partyunit(title=ava_text, creditor_weight=1)
+    bob_agenda.add_partyunit(handle=sal_text, creditor_weight=3)
+    bob_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
 
     x_culture.refresh_bank_public_agendas_data()
@@ -55,7 +55,7 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
 
     sal_text = "sal"
     bob_text = "bob"
@@ -64,27 +64,27 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     elu_text = "elu"
 
     sal_agenda = agendaunit_shop(_healer=sal_text)
-    sal_agenda.add_partyunit(title=bob_text, creditor_weight=2)
-    sal_agenda.add_partyunit(title=tom_text, creditor_weight=7)
-    sal_agenda.add_partyunit(title=ava_text, creditor_weight=1)
+    sal_agenda.add_partyunit(handle=bob_text, creditor_weight=2)
+    sal_agenda.add_partyunit(handle=tom_text, creditor_weight=7)
+    sal_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=sal_agenda)
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
-    bob_agenda.add_partyunit(title=sal_text, creditor_weight=3)
-    bob_agenda.add_partyunit(title=ava_text, creditor_weight=1)
+    bob_agenda.add_partyunit(handle=sal_text, creditor_weight=3)
+    bob_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
 
     tom_agenda = agendaunit_shop(_healer=tom_text)
-    tom_agenda.add_partyunit(title=sal_text, creditor_weight=2)
+    tom_agenda.add_partyunit(handle=sal_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=tom_agenda)
 
     ava_agenda = agendaunit_shop(_healer=ava_text)
-    ava_agenda.add_partyunit(title=elu_text, creditor_weight=2)
+    ava_agenda.add_partyunit(handle=elu_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=ava_agenda)
 
     elu_agenda = agendaunit_shop(_healer=elu_text)
-    elu_agenda.add_partyunit(title=ava_text, creditor_weight=19)
-    elu_agenda.add_partyunit(title=sal_text, creditor_weight=1)
+    elu_agenda.add_partyunit(handle=ava_text, creditor_weight=19)
+    elu_agenda.add_partyunit(handle=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
     x_culture.refresh_bank_public_agendas_data()

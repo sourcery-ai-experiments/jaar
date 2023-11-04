@@ -1,7 +1,7 @@
 from src.agenda.agenda import agendaunit_shop, partyunit_shop
 from src.culture.culture import cultureunit_shop, get_river_ledger_unit
 from src.culture.examples.culture_env_kit import (
-    get_temp_env_handle,
+    get_temp_env_title,
     get_test_cultures_dir,
     env_dir_setup_cleanup,
 )
@@ -99,7 +99,7 @@ def test_get_partyunit_table_update_credit_score_sqlstr_UpdatesWithoutError():
     partyunit_select_str = f"""
 SELECT 
   agenda_healer
-, title
+, handle
 , _bank_credit_score
 FROM partyunit
 WHERE agenda_healer = '{yao_text}'
@@ -183,7 +183,7 @@ def test_get_partyunit_table_update_bank_voice_rank_sqlstr_UpdatesWithoutError()
     partyunit_select_str = f"""
 SELECT 
   agenda_healer
-, title
+, handle
 , _bank_credit_score
 , _bank_voice_rank
 FROM partyunit
@@ -250,12 +250,12 @@ def test_get_river_reach_table_touch_select_sqlstr_QuerySelectsCorrectResults():
     # ):
     #     # GIVEN
     #     ex7_text = "ex7"
-    #     x_culture = _delete_and_set_ex6(x_handle=ex7_text)
+    #     x_culture = _delete_and_set_ex6(x_title=ex7_text)
     #     sal_text = "sal"
     #     # x_culture = _delete_and_set_ex6()
     #     # # x_culture.set_manager_name(sal_text)
     #     # ex6_text = "ex6"
-    #     # x_culture = cultureunit_shop(handle=ex6_text, cultures_dir=get_test_cultures_dir())
+    #     # x_culture = cultureunit_shop(title=ex6_text, cultures_dir=get_test_cultures_dir())
     #     # x_culture.set_manager_name(sal_text)
     #     # x_culture.set_credit_flow_for_agenda(sal_text, max_blocks_count=100)
 

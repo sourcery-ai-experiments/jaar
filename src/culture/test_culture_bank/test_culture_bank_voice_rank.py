@@ -9,7 +9,7 @@ from src.agenda.x_func import (
 )
 from src.culture.culture import cultureunit_shop
 from src.culture.examples.culture_env_kit import (
-    get_temp_env_handle,
+    get_temp_env_title,
     get_test_cultures_dir,
     env_dir_setup_cleanup,
 )
@@ -41,11 +41,11 @@ def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_c
     x_func_save_file(temp_dir, cal_filename, empty_str)
     x_func_save_file(temp_dir, dom_filename, empty_str)
     x_func_save_file(temp_dir, elu_filename, empty_str)
-    ava_partyunit = partyunit_shop(title=ava_text)
-    bob_partyunit = partyunit_shop(title=bob_text)
-    cal_partyunit = partyunit_shop(title=cal_text)
-    dom_partyunit = partyunit_shop(title=dom_text)
-    elu_partyunit = partyunit_shop(title=elu_text)
+    ava_partyunit = partyunit_shop(handle=ava_text)
+    bob_partyunit = partyunit_shop(handle=bob_text)
+    cal_partyunit = partyunit_shop(handle=cal_text)
+    dom_partyunit = partyunit_shop(handle=dom_text)
+    elu_partyunit = partyunit_shop(handle=elu_text)
 
     yao_agenda = agendaunit_shop(_healer=yao_text)
     ava_partyunit.set_banking_data(None, None, None, voice_rank=33)
@@ -91,7 +91,7 @@ def test_culture_bank_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_arbit
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
     ava_text = "ava"
     bob_text = "bob"
     cal_text = "cal"

@@ -5,7 +5,7 @@ from src.agenda.agenda import (
 )
 from src.agenda.examples.example_agendas import get_agenda_assignment_laundry_example1
 from src.culture.council import councilunit_shop, CouncilUnit
-from src.culture.examples.council_env_kit import get_temp_culture_handle
+from src.culture.examples.council_env_kit import get_temp_culture_title
 
 from random import randrange
 
@@ -13,7 +13,7 @@ from random import randrange
 def get_1node_agenda() -> AgendaUnit:
     a_text = "A"
     x_agenda = agendaunit_shop(_healer=a_text)
-    x_agenda.set_culture_handle(get_temp_culture_handle())
+    x_agenda.set_culture_title(get_temp_culture_title())
     x_agenda.set_agenda_metrics()
     return x_agenda
 
@@ -21,10 +21,10 @@ def get_1node_agenda() -> AgendaUnit:
 def get_Jnode2node_agenda() -> AgendaUnit:
     healer_text = "J"
     x_agenda = agendaunit_shop(_healer=healer_text)
-    x_agenda.set_culture_handle(get_temp_culture_handle())
+    x_agenda.set_culture_title(get_temp_culture_title())
     a_text = "A"
     idea_a = ideacore_shop(_label=a_text)
-    x_agenda.add_idea(idea_kid=idea_a, pad=get_temp_culture_handle())
+    x_agenda.add_idea(idea_kid=idea_a, pad=get_temp_culture_title())
     x_agenda.set_agenda_metrics()
     return x_agenda
 
@@ -33,9 +33,9 @@ def get_2node_agenda() -> AgendaUnit:
     healer_text = "A"
     b_text = "B"
     x_agenda = agendaunit_shop(_healer=healer_text)
-    x_agenda.set_culture_handle(get_temp_culture_handle())
+    x_agenda.set_culture_title(get_temp_culture_title())
     idea_b = ideacore_shop(_label=b_text)
-    x_agenda.add_idea(idea_kid=idea_b, pad=get_temp_culture_handle())
+    x_agenda.add_idea(idea_kid=idea_b, pad=get_temp_culture_title())
     x_agenda.set_agenda_metrics()
     return x_agenda
 
@@ -44,7 +44,7 @@ def get_3node_agenda() -> AgendaUnit:
     a_text = "A"
     a_road = a_text
     x_agenda = agendaunit_shop(_healer=a_text)
-    x_agenda.set_culture_handle(get_temp_culture_handle())
+    x_agenda.set_culture_title(get_temp_culture_title())
     b_text = "B"
     idea_b = ideacore_shop(_label=b_text)
     c_text = "C"
@@ -59,7 +59,7 @@ def get_3node_D_E_F_agenda() -> AgendaUnit:
     d_text = "D"
     d_road = d_text
     x_agenda = agendaunit_shop(_healer=d_text)
-    x_agenda.set_culture_handle(get_temp_culture_handle())
+    x_agenda.set_culture_title(get_temp_culture_title())
     b_text = "E"
     idea_b = ideacore_shop(_label=b_text)
     c_text = "F"
@@ -72,7 +72,7 @@ def get_3node_D_E_F_agenda() -> AgendaUnit:
 
 def get_6node_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop(_healer="A")
-    x_agenda.set_culture_handle(get_temp_culture_handle())
+    x_agenda.set_culture_title(get_temp_culture_title())
     idea_b = ideacore_shop(_label="B")
     idea_c = ideacore_shop(_label="C")
     idea_d = ideacore_shop(_label="D")
@@ -89,7 +89,7 @@ def get_6node_agenda() -> AgendaUnit:
 
 def get_7nodeInsertH_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop(_healer="A")
-    x_agenda.set_culture_handle(get_temp_culture_handle())
+    x_agenda.set_culture_title(get_temp_culture_title())
     idea_b = ideacore_shop(_label="B")
     idea_c = ideacore_shop(_label="C")
     idea_h = ideacore_shop(_label="H")
@@ -108,7 +108,7 @@ def get_7nodeInsertH_agenda() -> AgendaUnit:
 
 def get_5nodeHG_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop(_healer="A")
-    x_agenda.set_culture_handle(get_temp_culture_handle())
+    x_agenda.set_culture_title(get_temp_culture_title())
     idea_b = ideacore_shop(_label="B")
     idea_c = ideacore_shop(_label="C")
     idea_h = ideacore_shop(_label="H")
@@ -123,7 +123,7 @@ def get_5nodeHG_agenda() -> AgendaUnit:
 
 def get_7nodeJRoot_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop(_healer="J")
-    x_agenda.set_culture_handle(get_temp_culture_handle())
+    x_agenda.set_culture_title(get_temp_culture_title())
     idea_a = ideacore_shop(_label="A")
     idea_b = ideacore_shop(_label="B")
     idea_c = ideacore_shop(_label="C")
@@ -142,7 +142,7 @@ def get_7nodeJRoot_agenda() -> AgendaUnit:
 
 def get_7nodeJRootWithH_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop(_healer="J")
-    x_agenda.set_culture_handle(get_temp_culture_handle())
+    x_agenda.set_culture_title(get_temp_culture_title())
     idea_a = ideacore_shop(_label="A")
     idea_b = ideacore_shop(_label="B")
     idea_c = ideacore_shop(_label="C")
@@ -159,9 +159,9 @@ def get_7nodeJRootWithH_agenda() -> AgendaUnit:
     return x_agenda
 
 
-def get_healer_2agenda(env_dir, culture_handle) -> CouncilUnit:
+def get_healer_2agenda(env_dir, culture_title) -> CouncilUnit:
     yao_text = "Xio"
-    yao_healer = councilunit_shop(yao_text, env_dir, culture_handle)
+    yao_healer = councilunit_shop(yao_text, env_dir, culture_title)
     yao_healer.set_depot_agenda(get_1node_agenda(), depotlink_type="blind_trust")
     yao_healer.set_depot_agenda(get_Jnode2node_agenda(), depotlink_type="blind_trust")
     return yao_healer
@@ -172,7 +172,7 @@ def get_agenda_2CleanNodesRandomWeights(_healer: str = None) -> AgendaUnit:
     x_agenda = agendaunit_shop(_healer=healer_text)
     casa_text = "casa"
     x_agenda.add_idea(idea_kid=ideacore_shop(_label=casa_text), pad="")
-    casa_road = f"{x_agenda._culture_handle},{casa_text}"
+    casa_road = f"{x_agenda._culture_title},{casa_text}"
     cookery_text = "clean cookery"
     bedroom_text = "clean bedroom"
     cookery_idea = ideacore_shop(
@@ -192,7 +192,7 @@ def get_agenda_3CleanNodesRandomWeights(_healer: str = None) -> AgendaUnit:
     x_agenda = agendaunit_shop(_healer=healer_text)
     casa_text = "casa"
     x_agenda.add_idea(idea_kid=ideacore_shop(_label=casa_text), pad="")
-    casa_road = f"{x_agenda._culture_handle},{casa_text}"
+    casa_road = f"{x_agenda._culture_title},{casa_text}"
     cookery_text = "clean cookery"
     bedroom_text = "clean bedroom"
     hallway_text = "clean hallway"

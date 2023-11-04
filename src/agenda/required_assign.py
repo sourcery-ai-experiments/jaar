@@ -1,6 +1,6 @@
 import dataclasses
 from src.agenda.group import groupunit_shop, GroupUnit, GroupBrand
-from src.agenda.party import PartyTitle
+from src.agenda.party import PartyHandle
 
 
 class InvalidAssignHeirPopulateException(Exception):
@@ -13,16 +13,16 @@ class AssignedUnit:
 
     def get_dict(self) -> dict[str:str]:
         _suffgroups = {
-            group_title: group_title  # sufffact.get_dict()
-            for group_title, _suffgroup in self._suffgroups.items()
+            group_handle: group_handle  # sufffact.get_dict()
+            for group_handle, _suffgroup in self._suffgroups.items()
         }
         return {"_suffgroups": _suffgroups}
 
-    def set_suffgroup(self, title: GroupBrand):
-        self._suffgroups[title] = -1
+    def set_suffgroup(self, handle: GroupBrand):
+        self._suffgroups[handle] = -1
 
-    def del_suffgroup(self, title: GroupBrand):
-        self._suffgroups.pop(title)
+    def del_suffgroup(self, handle: GroupBrand):
+        self._suffgroups.pop(handle)
 
 
 def assigned_unit_shop(_suffgroups: dict[GroupBrand:GroupBrand] = None) -> AssignedUnit:
@@ -51,7 +51,7 @@ class AssignedHeir:
         return self._get_all_partys(agenda_groups, self._suffgroups)
 
     def set_group_party(
-        self, agenda_groups: dict[GroupBrand:GroupUnit], agenda_healer: PartyTitle
+        self, agenda_groups: dict[GroupBrand:GroupUnit], agenda_healer: PartyHandle
     ):
         self._group_party = False
         if self._suffgroups == {}:
@@ -130,7 +130,7 @@ def assigned_heir_shop(
 
 def assignedunit_get_from_dict(assignedunit_dict: dict) -> AssignedUnit:
     assigned_unit_x = assigned_unit_shop()
-    for suffgroup_title in assignedunit_dict.get("_suffgroups"):
-        assigned_unit_x.set_suffgroup(title=suffgroup_title)
+    for suffgroup_handle in assignedunit_dict.get("_suffgroups"):
+        assigned_unit_x.set_suffgroup(handle=suffgroup_handle)
 
     return assigned_unit_x

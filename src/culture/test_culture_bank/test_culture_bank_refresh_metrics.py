@@ -6,7 +6,7 @@ from src.agenda.agenda import (
 )
 from src.culture.culture import cultureunit_shop
 from src.culture.examples.culture_env_kit import (
-    get_temp_env_handle,
+    get_temp_env_title,
     get_test_cultures_dir,
     env_dir_setup_cleanup,
 )
@@ -39,7 +39,7 @@ def test_culture_refresh_bank_public_agendas_data_CorrectlyDeletesOldBankInMemor
 ):
     # GIVEN
     x_culture = cultureunit_shop(
-        handle=get_temp_env_handle(), cultures_dir=get_test_cultures_dir()
+        title=get_temp_env_title(), cultures_dir=get_test_cultures_dir()
     )
     x_culture.create_dirs_if_null(in_memory_bank=True)
 
@@ -47,7 +47,7 @@ def test_culture_refresh_bank_public_agendas_data_CorrectlyDeletesOldBankInMemor
     tom_text = "tom"
 
     bob = agendaunit_shop(_healer=bob_text)
-    bob.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
+    bob.add_partyunit(handle=tom_text, creditor_weight=3, debtor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob)
     x_culture.refresh_bank_public_agendas_data()
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
@@ -65,7 +65,7 @@ def test_culture_refresh_bank_public_agendas_data_CorrectlyDeletesOldBankFile(
 ):
     # GIVEN
     x_culture = cultureunit_shop(
-        handle=get_temp_env_handle(), cultures_dir=get_test_cultures_dir()
+        title=get_temp_env_title(), cultures_dir=get_test_cultures_dir()
     )
     x_culture.create_dirs_if_null(in_memory_bank=False)
 
@@ -73,7 +73,7 @@ def test_culture_refresh_bank_public_agendas_data_CorrectlyDeletesOldBankFile(
     tom_text = "tom"
 
     bob = agendaunit_shop(_healer=bob_text)
-    bob.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
+    bob.add_partyunit(handle=tom_text, creditor_weight=3, debtor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob)
     x_culture.refresh_bank_public_agendas_data()
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
@@ -91,7 +91,7 @@ def test_culture_refresh_bank_public_agendas_data_CorrectlyPopulatesPartyunitTab
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_culture = cultureunit_shop(
-        handle=get_temp_env_handle(), cultures_dir=get_test_cultures_dir()
+        title=get_temp_env_title(), cultures_dir=get_test_cultures_dir()
     )
     x_culture.create_dirs_if_null(in_memory_bank=True)
 
@@ -101,27 +101,27 @@ def test_culture_refresh_bank_public_agendas_data_CorrectlyPopulatesPartyunitTab
     elu_text = "elu"
 
     bob = agendaunit_shop(_healer=bob_text)
-    bob.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
-    bob.add_partyunit(title=sal_text, creditor_weight=1, debtor_weight=4)
-    bob.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
+    bob.add_partyunit(handle=tom_text, creditor_weight=3, debtor_weight=1)
+    bob.add_partyunit(handle=sal_text, creditor_weight=1, debtor_weight=4)
+    bob.add_partyunit(handle=elu_text, creditor_weight=1, debtor_weight=4)
     x_culture.save_public_agenda(x_agenda=bob)
 
     sal = agendaunit_shop(_healer=sal_text)
-    sal.add_partyunit(title=bob_text, creditor_weight=1, debtor_weight=4)
-    sal.add_partyunit(title=tom_text, creditor_weight=3, debtor_weight=1)
-    sal.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
+    sal.add_partyunit(handle=bob_text, creditor_weight=1, debtor_weight=4)
+    sal.add_partyunit(handle=tom_text, creditor_weight=3, debtor_weight=1)
+    sal.add_partyunit(handle=elu_text, creditor_weight=1, debtor_weight=4)
     x_culture.save_public_agenda(x_agenda=sal)
 
     tom = agendaunit_shop(_healer=tom_text)
-    tom.add_partyunit(title=bob_text, creditor_weight=3, debtor_weight=1)
-    tom.add_partyunit(title=sal_text, creditor_weight=1, debtor_weight=4)
-    tom.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
+    tom.add_partyunit(handle=bob_text, creditor_weight=3, debtor_weight=1)
+    tom.add_partyunit(handle=sal_text, creditor_weight=1, debtor_weight=4)
+    tom.add_partyunit(handle=elu_text, creditor_weight=1, debtor_weight=4)
     x_culture.save_public_agenda(x_agenda=tom)
 
     elu = agendaunit_shop(_healer=elu_text)
-    elu.add_partyunit(title=bob_text, creditor_weight=3, debtor_weight=1)
-    elu.add_partyunit(title=tom_text, creditor_weight=1, debtor_weight=4)
-    elu.add_partyunit(title=elu_text, creditor_weight=1, debtor_weight=4)
+    elu.add_partyunit(handle=bob_text, creditor_weight=3, debtor_weight=1)
+    elu.add_partyunit(handle=tom_text, creditor_weight=1, debtor_weight=4)
+    elu.add_partyunit(handle=elu_text, creditor_weight=1, debtor_weight=4)
     x_culture.save_public_agenda(x_agenda=elu)
 
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
@@ -139,7 +139,7 @@ def test_culture_refresh_bank_public_agendas_data_CorrectlyPopulatesAgendaTable0
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_culture = cultureunit_shop(
-        handle=get_temp_env_handle(), cultures_dir=get_test_cultures_dir()
+        title=get_temp_env_title(), cultures_dir=get_test_cultures_dir()
     )
     x_culture.create_dirs_if_null(in_memory_bank=True)
 
@@ -168,7 +168,7 @@ def test_culture_refresh_bank_public_agendas_data_CorrectlyPopulatesAgendaTable0
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_culture = cultureunit_shop(
-        handle=get_temp_env_handle(), cultures_dir=get_test_cultures_dir()
+        title=get_temp_env_title(), cultures_dir=get_test_cultures_dir()
     )
     x_culture.create_dirs_if_null(in_memory_bank=True)
 
@@ -197,7 +197,7 @@ def test_culture_refresh_bank_public_agendas_data_CorrectlyPopulates_groupunit_c
 ):
     # GIVEN
     x_culture = cultureunit_shop(
-        handle=get_temp_env_handle(), cultures_dir=get_test_cultures_dir()
+        title=get_temp_env_title(), cultures_dir=get_test_cultures_dir()
     )
     x_culture.create_dirs_if_null(in_memory_bank=True)
 
@@ -206,9 +206,9 @@ def test_culture_refresh_bank_public_agendas_data_CorrectlyPopulates_groupunit_c
     elu_text = "elu"
     bob_agenda = agendaunit_shop(_healer=bob_text)
     tom_agenda = agendaunit_shop(_healer=tom_text)
-    bob_agenda.add_partyunit(title=tom_text)
-    tom_agenda.add_partyunit(title=bob_text)
-    tom_agenda.add_partyunit(title=elu_text)
+    bob_agenda.add_partyunit(handle=tom_text)
+    tom_agenda.add_partyunit(handle=bob_text)
+    tom_agenda.add_partyunit(handle=elu_text)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
     x_culture.save_public_agenda(x_agenda=tom_agenda)
 
@@ -227,7 +227,7 @@ def test_culture_set_agenda_bank_attrs_CorrectlyPopulatesAgenda_Groupunit_Partyl
 ):
     # GIVEN
     x_culture = cultureunit_shop(
-        handle=get_temp_env_handle(), cultures_dir=get_test_cultures_dir()
+        title=get_temp_env_title(), cultures_dir=get_test_cultures_dir()
     )
     x_culture.create_dirs_if_null(in_memory_bank=True)
 
@@ -253,19 +253,19 @@ def test_culture_set_agenda_bank_attrs_CorrectlyPopulatesAgenda_Groupunit_Partyl
 
     swim_text = "swimming"
     sports_text = "sports"
-    sal_sports_road = f"{x_culture.handle},{sports_text}"
-    bob_sports_road = f"{x_culture.handle},{sports_text}"
-    tom_sports_road = f"{x_culture.handle},{sports_text}"
+    sal_sports_road = f"{x_culture.title},{sports_text}"
+    bob_sports_road = f"{x_culture.title},{sports_text}"
+    tom_sports_road = f"{x_culture.title},{sports_text}"
 
     sal_agenda.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=sal_sports_road)
     bob_agenda.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=bob_sports_road)
     tom_agenda.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=tom_sports_road)
 
-    sal_agenda.add_partyunit(title=bob_text, creditor_weight=2, debtor_weight=2)
+    sal_agenda.add_partyunit(handle=bob_text, creditor_weight=2, debtor_weight=2)
 
     swim_group_text = "swimming expert"
     swim_group_unit = groupunit_shop(brand=swim_group_text)
-    bob_link = partylink_shop(title=bob_text)
+    bob_link = partylink_shop(handle=bob_text)
     swim_group_unit.set_partylink(partylink=bob_link)
     sal_agenda.set_groupunit(groupunit=swim_group_unit)
 
@@ -295,7 +295,7 @@ def test_culture_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
     x_culture.refresh_bank_public_agendas_data()
 
     bob_text = "bob"
@@ -303,7 +303,7 @@ def test_culture_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
         assert get_idea_catalog_table_count(bank_conn, bob_text) == 0
 
     # WHEN
-    water_road = f"{get_temp_env_handle()},elements,water"
+    water_road = f"{get_temp_env_title()},elements,water"
     water_idea_catalog = IdeaCatalog(agenda_healer=bob_text, idea_road=water_road)
     water_insert_sqlstr = get_idea_catalog_table_insert_sqlstr(water_idea_catalog)
     with x_culture.get_bank_conn() as bank_conn:
@@ -318,7 +318,7 @@ def test_culture_refresh_bank_public_agendas_data_Populates_idea_catalog_table(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
     x_culture.refresh_bank_public_agendas_data()
 
     bob_text = "bob"
@@ -349,7 +349,7 @@ def test_culture_refresh_bank_public_agendas_data_Populates_idea_catalog_table(
 
 def test_culture_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     # GIVEN
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
     x_culture.refresh_bank_public_agendas_data()
 
     bob_text = "bob"
@@ -376,11 +376,11 @@ def test_culture_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup)
 
     # WHEN / THEN
     assert len(get_idea_catalog_dict(x_culture.get_bank_conn())) == 20
-    b_road = f"{get_temp_env_handle()},B"
+    b_road = f"{get_temp_env_title()},B"
     assert len(get_idea_catalog_dict(x_culture.get_bank_conn(), b_road)) == 3
-    ce_road = f"{get_temp_env_handle()},C,E"
+    ce_road = f"{get_temp_env_title()},C,E"
     assert len(get_idea_catalog_dict(x_culture.get_bank_conn(), ce_road)) == 2
-    ex_road = f"{get_temp_env_handle()}"
+    ex_road = f"{get_temp_env_title()}"
     assert len(get_idea_catalog_dict(x_culture.get_bank_conn(), ex_road)) == 4
 
 
@@ -388,7 +388,7 @@ def test_culture_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTabl
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
     x_culture.refresh_bank_public_agendas_data()
 
     bob_text = "bob"
@@ -398,8 +398,8 @@ def test_culture_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTabl
     # WHEN
     weather_rain = AcptFactCatalog(
         agenda_healer=bob_text,
-        base=f"{get_temp_env_handle()},weather",
-        pick=f"{get_temp_env_handle()},weather,rain",
+        base=f"{get_temp_env_title()},weather",
+        pick=f"{get_temp_env_title()},weather,rain",
     )
     water_insert_sqlstr = get_acptfact_catalog_table_insert_sqlstr(weather_rain)
     with x_culture.get_bank_conn() as bank_conn:
@@ -414,7 +414,7 @@ def test_refresh_bank_public_agendas_data_Populates_acptfact_catalog_table(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
     x_culture.refresh_bank_public_agendas_data()
 
     # TODO create 3 agendas with varying numbers of acpt facts
@@ -472,7 +472,7 @@ def test_culture_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTab
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
     x_culture.refresh_bank_public_agendas_data()
 
     bob_text = "bob"
@@ -483,7 +483,7 @@ def test_culture_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTab
     bob_group_x = GroupUnitCatalog(
         agenda_healer=bob_text,
         groupunit_brand="US Dollar",
-        partylinks_set_by_culture_road=f"{get_temp_env_handle()},USA",
+        partylinks_set_by_culture_road=f"{get_temp_env_title()},USA",
     )
     bob_group_sqlstr = get_groupunit_catalog_table_insert_sqlstr(bob_group_x)
     with x_culture.get_bank_conn() as bank_conn:
@@ -498,16 +498,16 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
 
     bob_text = "bob"
     tom_text = "tom"
     elu_text = "elu"
     bob_agenda = agendaunit_shop(_healer=bob_text)
     tom_agenda = agendaunit_shop(_healer=tom_text)
-    bob_agenda.add_partyunit(title=tom_text)
-    tom_agenda.add_partyunit(title=bob_text)
-    tom_agenda.add_partyunit(title=elu_text)
+    bob_agenda.add_partyunit(handle=tom_text)
+    tom_agenda.add_partyunit(handle=bob_text)
+    tom_agenda.add_partyunit(handle=elu_text)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
     x_culture.save_public_agenda(x_agenda=tom_agenda)
     x_culture.refresh_bank_public_agendas_data()

@@ -1,5 +1,5 @@
 from src.agenda.group import GroupBrand, balancelink_shop, groupunit_shop
-from src.agenda.party import PartyTitle, partyunit_shop, partylink_shop
+from src.agenda.party import PartyHandle, partyunit_shop, partylink_shop
 from src.agenda.idea import ideacore_shop
 from src.agenda.required_idea import Road
 from src.agenda.examples.example_agendas import (
@@ -70,7 +70,7 @@ def test_example_has_groups():
     idea_dict = cx._idea_dict
 
     # THEN
-    db_idea = idea_dict.get(f"{cx._culture_handle},D&B")
+    db_idea = idea_dict.get(f"{cx._culture_title},D&B")
     print(f"{db_idea._label=} {db_idea._balancelinks=}")
     assert len(db_idea._balancelinks) == 3
     # for idea_key in idea_dict:
@@ -88,9 +88,9 @@ def test_agenda_set_balancelink_correctly_sets_balancelinks():
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    cx.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(rico_text)))
-    cx.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
-    cx.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
+    cx.set_partyunit(partyunit=partyunit_shop(handle=PartyHandle(rico_text)))
+    cx.set_partyunit(partyunit=partyunit_shop(handle=PartyHandle(carm_text)))
+    cx.set_partyunit(partyunit=partyunit_shop(handle=PartyHandle(patr_text)))
 
     assert len(cx._partys) == 3
     assert len(cx._groups) == 3
@@ -135,9 +135,9 @@ def test_agenda_set_balancelink_correctly_deletes_balancelinks():
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(rico_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=PartyHandle(rico_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=PartyHandle(carm_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=PartyHandle(patr_text)))
 
     swim_text = "swim"
     swim_road = f"{prom_text},{swim_text}"
@@ -183,9 +183,9 @@ def test_agenda_set_balancelink_CorrectlyCalculatesInheritedBalancelinkAgendaImp
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(rico_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=PartyHandle(rico_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=PartyHandle(carm_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=PartyHandle(patr_text)))
     blink_rico = balancelink_shop(brand=rico_text, creditor_weight=20, debtor_weight=6)
     blink_carm = balancelink_shop(brand=carm_text, creditor_weight=10, debtor_weight=1)
     blink_patr = balancelink_shop(brand=patr_text, creditor_weight=10)
@@ -243,9 +243,9 @@ def test_agenda_get_idea_list_CorrectlyCalculates1LevelAgendaGroupAgendaImportan
     carm_text = "carmen"
     patr_text = "patrick"
     sele_text = "selena"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(rico_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=PartyHandle(rico_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=PartyHandle(carm_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=PartyHandle(patr_text)))
     blink_rico = balancelink_shop(brand=rico_text, creditor_weight=20, debtor_weight=6)
     blink_carm = balancelink_shop(brand=carm_text, creditor_weight=10, debtor_weight=1)
     blink_patr = balancelink_shop(brand=patr_text, creditor_weight=10)
@@ -279,7 +279,7 @@ def test_agenda_get_idea_list_CorrectlyCalculates1LevelAgendaGroupAgendaImportan
     )
 
     # WHEN
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(sele_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=PartyHandle(sele_text)))
     bl_sele = balancelink_shop(brand=sele_text, creditor_weight=37)
     x_agenda._idearoot.set_balancelink(balancelink=bl_sele)
     assert len(x_agenda._groups) == 4
@@ -321,9 +321,9 @@ def test_agenda_get_idea_list_CorrectlyCalculates3levelAgendaGroupAgendaImportan
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(rico_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=PartyHandle(rico_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=PartyHandle(carm_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=PartyHandle(patr_text)))
     rico_balancelink = balancelink_shop(
         brand=rico_text, creditor_weight=20, debtor_weight=6
     )
@@ -370,9 +370,9 @@ def test_agenda_get_idea_list_CorrectlyCalculatesGroupAgendaImportanceLWwithGrou
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(rico_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(carm_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=PartyTitle(patr_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=PartyHandle(rico_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=PartyHandle(carm_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=PartyHandle(patr_text)))
     rico_balancelink = balancelink_shop(
         brand=rico_text, creditor_weight=20, debtor_weight=6
     )
@@ -436,14 +436,14 @@ def test_agenda_get_idea_list_CorrectlyCalculatesGroupAgendaImportanceLWwithGrou
     )
 
 
-def test_agenda_edit_groupunit_brand_CorrectlyCreatesNewTitle():
+def test_agenda_edit_groupunit_brand_CorrectlyCreatesNewHandle():
     # GIVEN
     agenda = agendaunit_shop(_healer="prom")
     rico_text = "rico"
-    agenda.add_partyunit(title=rico_text)
+    agenda.add_partyunit(handle=rico_text)
     swim_text = "swim"
     swim_group = groupunit_shop(brand=swim_text, uid=13)
-    swim_group.set_partylink(partylink=partylink_shop(title=rico_text))
+    swim_group.set_partylink(partylink=partylink_shop(handle=rico_text))
     agenda.set_groupunit(swim_group)
     assert len(agenda._partys) == 1
     assert len(agenda._groups) == 2
@@ -468,11 +468,11 @@ def test_agenda_edit_groupunit_brand_CorrectlyCreatesNewTitle():
     assert len(agenda._groups.get(jog_text)._partys) == 1
 
 
-def test_agenda_edit_Groupunit_brand_raiseErrorNewTitlePreviouslyExists():
+def test_agenda_edit_Groupunit_brand_raiseErrorNewHandlePreviouslyExists():
     # GIVEN
     agenda = agendaunit_shop(_healer="prom")
     rico_text = "rico"
-    agenda.add_partyunit(title=rico_text)
+    agenda.add_partyunit(handle=rico_text)
     swim_text = "swim"
     agenda.set_groupunit(groupunit_shop(brand=swim_text, uid=13))
     jog_text = "jog"
@@ -491,21 +491,21 @@ def test_agenda_edit_Groupunit_brand_raiseErrorNewTitlePreviouslyExists():
     )
 
 
-def test_agenda_edit_groupunit_brand_CorrectlyMeldTitles():
+def test_agenda_edit_groupunit_brand_CorrectlyMeldHandles():
     # GIVEN
     agenda = agendaunit_shop(_healer="prom")
     rico_text = "rico"
-    agenda.add_partyunit(title=rico_text)
+    agenda.add_partyunit(handle=rico_text)
     swim_text = "swim"
     swim_group = groupunit_shop(brand=swim_text, uid=13)
     swim_group.set_partylink(
-        partylink=partylink_shop(title=rico_text, creditor_weight=5, debtor_weight=3)
+        partylink=partylink_shop(handle=rico_text, creditor_weight=5, debtor_weight=3)
     )
     agenda.set_groupunit(swim_group)
     jog_text = "jog"
     jog_group = groupunit_shop(brand=jog_text, uid=13)
     jog_group.set_partylink(
-        partylink=partylink_shop(title=rico_text, creditor_weight=7, debtor_weight=10)
+        partylink=partylink_shop(handle=rico_text, creditor_weight=7, debtor_weight=10)
     )
     agenda.set_groupunit(jog_group)
     print(f"{agenda._groups.get(jog_text)._partys.get(rico_text)=}")
@@ -534,7 +534,7 @@ def test_agenda_edit_groupunit_brand_CorrectlyChangesBalancelinks():
     # GIVEN
     x_agenda = agendaunit_shop(_healer="prom")
     rico_text = "rico"
-    x_agenda.add_partyunit(title=rico_text)
+    x_agenda.add_partyunit(handle=rico_text)
     swim_text = "swim"
     swim_groupunit = groupunit_shop(brand=swim_text, uid=13)
     x_agenda.set_groupunit(swim_groupunit)
@@ -570,7 +570,7 @@ def test_agenda_edit_groupunit_brand_CorrectlyMeldsBalancelinesBalancelinksBalan
     # GIVEN
     x_agenda = agendaunit_shop(_healer="prom")
     rico_text = "rico"
-    x_agenda.add_partyunit(title=rico_text)
+    x_agenda.add_partyunit(handle=rico_text)
     swim_text = "swim"
     swim_groupunit = groupunit_shop(brand=swim_text, uid=13)
     x_agenda.set_groupunit(swim_groupunit)
@@ -618,7 +618,7 @@ def test_agenda_add_idea_CreatesMissingGroups():
     healer_text = "bob"
     x_agenda = agendaunit_shop(_healer=healer_text)
     x_agenda.set_groupunits_empty_if_null()
-    new_idea_parent_road = f"{x_agenda._culture_handle},work,cleaning"
+    new_idea_parent_road = f"{x_agenda._culture_title},work,cleaning"
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = ideacore_shop(
         _weight=40, _label=clean_cookery_text, promise=True
@@ -649,21 +649,21 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balance
     cx1 = agendaunit_shop(_healer=healer_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
-    cx1.add_partyunit(title=xia_text)
-    cx1.add_partyunit(title=zoa_text)
+    cx1.add_partyunit(handle=xia_text)
+    cx1.add_partyunit(handle=zoa_text)
 
     work_text = "work"
-    work_road = f"{cx1._culture_handle},{work_text}"
+    work_road = f"{cx1._culture_title},{work_text}"
     swim_text = "swim"
-    swim_road = f"{cx1._culture_handle},{swim_text}"
-    cx1.add_idea(ideacore_shop(_label=work_text), pad=cx1._culture_handle)
-    cx1.add_idea(ideacore_shop(_label=swim_text), pad=cx1._culture_handle)
+    swim_road = f"{cx1._culture_title},{swim_text}"
+    cx1.add_idea(ideacore_shop(_label=work_text), pad=cx1._culture_title)
+    cx1.add_idea(ideacore_shop(_label=swim_text), pad=cx1._culture_title)
     cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=xia_text))
     cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=zoa_text))
     cx1_swim_idea = cx1.get_idea_kid(swim_road)
     assert len(cx1_swim_idea._balancelinks) == 2
     cx2 = agendaunit_shop(_healer=healer_text)
-    cx2.add_partyunit(title=xia_text)
+    cx2.add_partyunit(handle=xia_text)
 
     # WHEN
     filtered_idea = cx2._get_filtered_balancelinks_idea(cx1_swim_idea)
@@ -679,15 +679,15 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     cx1 = agendaunit_shop(_healer=healer_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
-    cx1.add_partyunit(title=xia_text)
-    cx1.add_partyunit(title=zoa_text)
+    cx1.add_partyunit(handle=xia_text)
+    cx1.add_partyunit(handle=zoa_text)
 
     work_text = "work"
-    work_road = f"{cx1._culture_handle},{work_text}"
+    work_road = f"{cx1._culture_title},{work_text}"
     swim_text = "swim"
-    swim_road = f"{cx1._culture_handle},{swim_text}"
-    cx1.add_idea(ideacore_shop(_label=work_text), pad=cx1._culture_handle)
-    cx1.add_idea(ideacore_shop(_label=swim_text), pad=cx1._culture_handle)
+    swim_road = f"{cx1._culture_title},{swim_text}"
+    cx1.add_idea(ideacore_shop(_label=work_text), pad=cx1._culture_title)
+    cx1.add_idea(ideacore_shop(_label=swim_text), pad=cx1._culture_title)
     cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=xia_text))
     cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=zoa_text))
     cx1_swim_idea = cx1.get_idea_kid(swim_road)
@@ -695,10 +695,10 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
 
     # WHEN
     cx2 = agendaunit_shop(_healer=healer_text)
-    cx2.add_partyunit(title=xia_text)
+    cx2.add_partyunit(handle=xia_text)
     cx2.add_idea(
         idea_kid=cx1_swim_idea,
-        pad=cx2._culture_handle,
+        pad=cx2._culture_title,
         create_missing_ideas_groups=False,
     )
 
@@ -713,7 +713,7 @@ def test_agenda_add_idea_DoesNotOverwriteGroups():
     healer_text = "bob"
     x_agenda = agendaunit_shop(_healer=healer_text)
     x_agenda.set_groupunits_empty_if_null()
-    new_idea_parent_road = f"{x_agenda._culture_handle},work,cleaning"
+    new_idea_parent_road = f"{x_agenda._culture_title},work,cleaning"
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = ideacore_shop(
         _weight=40, _label=clean_cookery_text, promise=True
@@ -724,8 +724,8 @@ def test_agenda_add_idea_DoesNotOverwriteGroups():
     clean_cookery_idea.set_balancelink(balancelink=balancelink_z)
 
     groupunit_z = groupunit_shop(brand=family_text)
-    groupunit_z.set_partylink(partylink=partylink_shop(title="ann1"))
-    groupunit_z.set_partylink(partylink=partylink_shop(title="bet1"))
+    groupunit_z.set_partylink(partylink=partylink_shop(handle="ann1"))
+    groupunit_z.set_partylink(partylink=partylink_shop(handle="bet1"))
     x_agenda.set_groupunit(groupunit=groupunit_z)
 
     # assert len(x_agenda._groups) == 0
@@ -745,8 +745,8 @@ def test_agenda_add_idea_DoesNotOverwriteGroups():
     # assert len(x_agenda._groups) == 1
     # assert len(x_agenda._groups.get(family_text)._partys) == 0
     # groupunit_z = groupunit_shop(brand=family_text)
-    # groupunit_z.set_partylink(partylink=partylink_shop(title="ann2"))
-    # groupunit_z.set_partylink(partylink=partylink_shop(title="bet2"))
+    # groupunit_z.set_partylink(partylink=partylink_shop(handle="ann2"))
+    # groupunit_z.set_partylink(partylink=partylink_shop(handle="bet2"))
     # x_agenda.set_groupunit(groupunit=groupunit_z)
 
     assert len(x_agenda._groups) == 1
@@ -764,10 +764,10 @@ def test_agenda_set_groupunits_create_missing_partys_DoesCreateMissingPartys():
     beto_text = "beto"
     groupunit_z = groupunit_shop(brand=family_text)
     groupunit_z.set_partylink(
-        partylink=partylink_shop(title=anna_text, creditor_weight=3, debtor_weight=7)
+        partylink=partylink_shop(handle=anna_text, creditor_weight=3, debtor_weight=7)
     )
     groupunit_z.set_partylink(
-        partylink=partylink_shop(title=beto_text, creditor_weight=5, debtor_weight=11)
+        partylink=partylink_shop(handle=beto_text, creditor_weight=5, debtor_weight=11)
     )
 
     assert groupunit_z._partys.get(anna_text).creditor_weight == 3
@@ -801,17 +801,17 @@ def test_agenda_set_groupunits_create_missing_partys_DoesNotReplacePartys():
     anna_text = "anna"
     beto_text = "beto"
     x_agenda.set_partyunit(
-        partyunit_shop(title=anna_text, creditor_weight=17, debtor_weight=88)
+        partyunit_shop(handle=anna_text, creditor_weight=17, debtor_weight=88)
     )
     x_agenda.set_partyunit(
-        partyunit_shop(title=beto_text, creditor_weight=46, debtor_weight=71)
+        partyunit_shop(handle=beto_text, creditor_weight=46, debtor_weight=71)
     )
     groupunit_z = groupunit_shop(brand=family_text)
     groupunit_z.set_partylink(
-        partylink=partylink_shop(title=anna_text, creditor_weight=3, debtor_weight=7)
+        partylink=partylink_shop(handle=anna_text, creditor_weight=3, debtor_weight=7)
     )
     groupunit_z.set_partylink(
-        partylink=partylink_shop(title=beto_text, creditor_weight=5, debtor_weight=11)
+        partylink=partylink_shop(handle=beto_text, creditor_weight=5, debtor_weight=11)
     )
 
     assert groupunit_z._partys.get(anna_text).creditor_weight == 3
@@ -976,8 +976,8 @@ def test_get_partys_relevant_groups_CorrectlyReturnsEmptyDict():
 
     sam_text = "sam"
     wil_text = "wil"
-    agenda_with_partys.set_partyunit(partyunit=partyunit_shop(title=bob_text))
-    agenda_with_partys.set_partyunit(partyunit=partyunit_shop(title=sam_text))
+    agenda_with_partys.set_partyunit(partyunit=partyunit_shop(handle=bob_text))
+    agenda_with_partys.set_partyunit(partyunit=partyunit_shop(handle=sam_text))
 
     agenda_with_groups = agendaunit_shop()
     agenda_with_groups.set_partys_empty_if_null()
@@ -1000,14 +1000,14 @@ def test_get_partys_relevant_groups_CorrectlyReturns2SinglePartyGroups():
     wil_text = "Wil"
     agenda_3groups = agendaunit_shop(_healer=bob_text)
     agenda_3groups.set_partys_empty_if_null()
-    agenda_3groups.set_partyunit(partyunit=partyunit_shop(title=bob_text))
-    agenda_3groups.set_partyunit(partyunit=partyunit_shop(title=sam_text))
-    agenda_3groups.set_partyunit(partyunit=partyunit_shop(title=wil_text))
+    agenda_3groups.set_partyunit(partyunit=partyunit_shop(handle=bob_text))
+    agenda_3groups.set_partyunit(partyunit=partyunit_shop(handle=sam_text))
+    agenda_3groups.set_partyunit(partyunit=partyunit_shop(handle=wil_text))
 
     agenda_2partys = agendaunit_shop(_healer=bob_text)
     agenda_2partys.set_partys_empty_if_null()
-    agenda_2partys.set_partyunit(partyunit=partyunit_shop(title=bob_text))
-    agenda_2partys.set_partyunit(partyunit=partyunit_shop(title=sam_text))
+    agenda_2partys.set_partyunit(partyunit=partyunit_shop(handle=bob_text))
+    agenda_2partys.set_partyunit(partyunit=partyunit_shop(handle=sam_text))
 
     # WHEN
     print(f"{len(agenda_2partys._partys)=} {len(agenda_3groups._groups)=}")
@@ -1022,8 +1022,8 @@ def test_get_party_relevant_groups_CorrectlyReturnsCorrectDict():
     jes_text = "Jessi"
     jes_agenda = agendaunit_shop(_healer=jes_text)
     bob_text = "Bob"
-    jes_agenda.set_partyunit(partyunit_shop(title=jes_text))
-    jes_agenda.set_partyunit(partyunit_shop(title=bob_text))
+    jes_agenda.set_partyunit(partyunit_shop(handle=jes_text))
+    jes_agenda.set_partyunit(partyunit_shop(handle=bob_text))
 
     hike_text = "hikers"
     jes_agenda.set_groupunit(groupunit_shop(brand=hike_text))
@@ -1045,10 +1045,10 @@ def test_get_party_relevant_groups_CorrectlyReturnsCorrectDict():
     bob_text = "Bob"
     noa_text = "Noa"
     eli_text = "Eli"
-    jes_agenda.set_partyunit(partyunit_shop(title=jes_text))
-    jes_agenda.set_partyunit(partyunit_shop(title=bob_text))
-    jes_agenda.set_partyunit(partyunit_shop(title=noa_text))
-    jes_agenda.set_partyunit(partyunit_shop(title=eli_text))
+    jes_agenda.set_partyunit(partyunit_shop(handle=jes_text))
+    jes_agenda.set_partyunit(partyunit_shop(handle=bob_text))
+    jes_agenda.set_partyunit(partyunit_shop(handle=noa_text))
+    jes_agenda.set_partyunit(partyunit_shop(handle=eli_text))
 
     swim_text = "swimmers"
     jes_agenda.set_groupunit(groupunit_shop(brand=swim_text))

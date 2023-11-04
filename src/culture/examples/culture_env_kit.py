@@ -28,12 +28,12 @@ from os import listdir as os_listdir, rename as os_rename, path as os_path
 from pytest import fixture as pytest_fixture
 
 
-def get_temp_env_handle():
+def get_temp_env_title():
     return "ex_env04"
 
 
 def get_temp_env_dir():
-    return f"{get_test_cultures_dir()}/{get_temp_env_handle()}"
+    return f"{get_test_cultures_dir()}/{get_temp_env_title()}"
 
 
 def get_test_cultures_dir():
@@ -76,9 +76,9 @@ def setup_test_example_environment():
 
 
 def _delete_and_set_ex3():
-    culture_handle = "ex3"
+    culture_title = "ex3"
     x_culture = cultureunit_shop(
-        handle=culture_handle, cultures_dir=get_test_cultures_dir()
+        title=culture_title, cultures_dir=get_test_cultures_dir()
     )
     x_func_delete_dir(x_culture.get_object_root_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
@@ -89,8 +89,8 @@ def _delete_and_set_ex3():
     x_culture.save_public_agenda(x_agenda=example_agendas_agenda_v001())
     x_culture.save_public_agenda(x_agenda=example_agendas_agenda_v002())
 
-    # x_culture.set_healer(x_council=councilunit_shop(title="w1", env_dir=x_culture.get_object_root_dir()))
-    # x_culture.set_healer(x_council=councilunit_shop(title="w2", env_dir=x_culture.get_object_root_dir()))
+    # x_culture.set_healer(x_council=councilunit_shop(handle="w1", env_dir=x_culture.get_object_root_dir()))
+    # x_culture.set_healer(x_council=councilunit_shop(handle="w2", env_dir=x_culture.get_object_root_dir()))
     xia_text = "Xia"
     x_culture.create_new_councilunit(council_dub=xia_text)
     healer_text = "Myagenda"
@@ -132,8 +132,8 @@ def _delete_and_set_ex3():
 
 
 def _delete_and_set_ex4():
-    x_handle = "ex4"
-    x_culture = cultureunit_shop(handle=x_handle, cultures_dir=get_test_cultures_dir())
+    x_title = "ex4"
+    x_culture = cultureunit_shop(title=x_title, cultures_dir=get_test_cultures_dir())
     x_func_delete_dir(x_culture.get_object_root_dir())
     x_culture.create_dirs_if_null(in_memory_bank=True)
     x_culture.save_public_agenda(example_healers_get_7nodeJRootWithH_agenda())
@@ -145,8 +145,8 @@ def _delete_and_set_ex4():
 
 
 def _delete_and_set_ex5():
-    x_handle = "ex5"
-    x_p = cultureunit_shop(handle=x_handle, cultures_dir=get_test_cultures_dir())
+    x_title = "ex5"
+    x_p = cultureunit_shop(title=x_title, cultures_dir=get_test_cultures_dir())
     x_func_delete_dir(x_p.get_object_root_dir())
     x_p.create_dirs_if_null(in_memory_bank=True)
 
@@ -208,10 +208,10 @@ def _delete_and_set_ex5():
     x_p.save_councilunit_file(council_dub=agenda_5._healer)
 
 
-def _delete_and_set_ex6(x_handle: str = None):
-    if x_handle is None:
-        x_handle = "ex6"
-    x_culture = cultureunit_shop(handle=x_handle, cultures_dir=get_test_cultures_dir())
+def _delete_and_set_ex6(x_title: str = None):
+    if x_title is None:
+        x_title = "ex6"
+    x_culture = cultureunit_shop(title=x_title, cultures_dir=get_test_cultures_dir())
     x_func_delete_dir(x_culture.get_object_root_dir())
     x_culture.create_dirs_if_null(in_memory_bank=False)
 
@@ -222,27 +222,27 @@ def _delete_and_set_ex6(x_handle: str = None):
     elu_text = "elu"
 
     sal_agenda = agendaunit_shop(_healer=sal_text)
-    sal_agenda.add_partyunit(title=bob_text, creditor_weight=2)
-    sal_agenda.add_partyunit(title=tom_text, creditor_weight=7)
-    sal_agenda.add_partyunit(title=ava_text, creditor_weight=1)
+    sal_agenda.add_partyunit(handle=bob_text, creditor_weight=2)
+    sal_agenda.add_partyunit(handle=tom_text, creditor_weight=7)
+    sal_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=sal_agenda)
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
-    bob_agenda.add_partyunit(title=sal_text, creditor_weight=3)
-    bob_agenda.add_partyunit(title=ava_text, creditor_weight=1)
+    bob_agenda.add_partyunit(handle=sal_text, creditor_weight=3)
+    bob_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
 
     tom_agenda = agendaunit_shop(_healer=tom_text)
-    tom_agenda.add_partyunit(title=sal_text, creditor_weight=2)
+    tom_agenda.add_partyunit(handle=sal_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=tom_agenda)
 
     ava_agenda = agendaunit_shop(_healer=ava_text)
-    ava_agenda.add_partyunit(title=elu_text, creditor_weight=2)
+    ava_agenda.add_partyunit(handle=elu_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=ava_agenda)
 
     elu_agenda = agendaunit_shop(_healer=elu_text)
-    elu_agenda.add_partyunit(title=ava_text, creditor_weight=19)
-    elu_agenda.add_partyunit(title=sal_text, creditor_weight=1)
+    elu_agenda.add_partyunit(handle=ava_text, creditor_weight=19)
+    elu_agenda.add_partyunit(handle=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
     x_culture.refresh_bank_public_agendas_data()
@@ -251,9 +251,9 @@ def _delete_and_set_ex6(x_handle: str = None):
     return x_culture
 
 
-def create_example_culture(culture_handle: str):
+def create_example_culture(culture_title: str):
     x_culture = cultureunit_shop(
-        handle=culture_handle, cultures_dir=get_test_cultures_dir()
+        title=culture_title, cultures_dir=get_test_cultures_dir()
     )
     x_culture.create_dirs_if_null(in_memory_bank=True)
 
@@ -262,27 +262,27 @@ def delete_dir_example_culture(culture_obj: CultureUnit):
     x_func_delete_dir(culture_obj.get_object_root_dir())
 
 
-def rename_example_culture(culture_obj: CultureUnit, new_handle):
+def rename_example_culture(culture_obj: CultureUnit, new_title):
     # base_dir = culture_obj.get_object_root_dir()
     base_dir = "src/culture/examples/cultures"
-    src_dir = f"{base_dir}/{culture_obj.handle}"
-    dst_dir = f"{base_dir}/{new_handle}"
+    src_dir = f"{base_dir}/{culture_obj.title}"
+    dst_dir = f"{base_dir}/{new_title}"
     os_rename(src=src_dir, dst=dst_dir)
-    culture_obj.set_cultureunit_handle(handle=new_handle)
+    culture_obj.set_cultureunit_title(title=new_title)
 
 
 class InvalidcultureCopyException(Exception):
     pass
 
 
-def copy_evaluation_culture(src_handle: str, dest_handle: str):
+def copy_evaluation_culture(src_title: str, dest_title: str):
     base_dir = "src/culture/examples/cultures"
-    new_dir = f"{base_dir}/{dest_handle}"
+    new_dir = f"{base_dir}/{dest_title}"
     if os_path.exists(new_dir):
         raise InvalidcultureCopyException(
             f"Cannot copy culture to '{new_dir}' directory because '{new_dir}' exists."
         )
     # base_dir = culture_obj.get_object_root_dir()
-    src_dir = f"{base_dir}/{src_handle}"
-    dest_dir = f"{base_dir}/{dest_handle}"
+    src_dir = f"{base_dir}/{src_title}"
+    dest_dir = f"{base_dir}/{dest_title}"
     copy_dir(src_dir=src_dir, dest_dir=dest_dir)

@@ -25,7 +25,7 @@ def test_agendaunit_get_assignment_ReturnsAgenda():
     x_assignment_agenda = jes1_agenda.get_assignment(
         agenda_x=agenda_x,
         assignor_partys=assignor_known_partys_x,
-        assignor_title=bob_text,
+        assignor_handle=bob_text,
     )
 
     # THEN
@@ -37,19 +37,19 @@ def test_agendaunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInPartys():
     # GIVEN
     noa_text = "Noa"
     noa_agenda = example_agendas_get_agenda_with_4_levels()
-    noa_agenda.set_partyunit(partyunit_shop(title=noa_text))
+    noa_agenda.set_partyunit(partyunit_shop(handle=noa_text))
     zia_text = "Zia"
     yao_text = "Yao"
-    noa_agenda.set_partyunit(partyunit_shop(title=zia_text))
-    noa_agenda.set_partyunit(partyunit_shop(title=yao_text))
+    noa_agenda.set_partyunit(partyunit_shop(handle=zia_text))
+    noa_agenda.set_partyunit(partyunit_shop(handle=yao_text))
 
     # WHEN
     bob_text = "bob"
     y_agenda = agendaunit_shop(_healer=noa_text)
     x_agenda = agendaunit_shop()
     x_agenda.set_partys_empty_if_null()
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=zia_text))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=noa_text))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=zia_text))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=noa_text))
 
     x_assignment_agenda = noa_agenda.get_assignment(
         y_agenda, x_agenda._partys, bob_text
@@ -64,22 +64,22 @@ def test_agendaunit_get_assignment_ReturnsCorrectPartys():
     # GIVEN
     jes_text = "Jessi"
     jes_agenda = agendaunit_shop(_healer=jes_text)
-    jes_agenda.set_partyunit(partyunit_shop(title=jes_text))
+    jes_agenda.set_partyunit(partyunit_shop(handle=jes_text))
     bob_text = "Bob"
     zia_text = "Zia"
     noa_text = "Noa"
     yao_text = "Yao"
-    jes_agenda.set_partyunit(partyunit_shop(title=bob_text))
-    jes_agenda.set_partyunit(partyunit_shop(title=zia_text))
-    jes_agenda.set_partyunit(partyunit_shop(title=noa_text))
-    jes_agenda.set_partyunit(partyunit_shop(title=yao_text))
+    jes_agenda.set_partyunit(partyunit_shop(handle=bob_text))
+    jes_agenda.set_partyunit(partyunit_shop(handle=zia_text))
+    jes_agenda.set_partyunit(partyunit_shop(handle=noa_text))
+    jes_agenda.set_partyunit(partyunit_shop(handle=yao_text))
 
     # WHEN
     tx = agendaunit_shop()
     tx.set_partys_empty_if_null()
-    tx.set_partyunit(partyunit=partyunit_shop(title=bob_text))
-    tx.set_partyunit(partyunit=partyunit_shop(title=zia_text))
-    tx.set_partyunit(partyunit=partyunit_shop(title=noa_text))
+    tx.set_partyunit(partyunit=partyunit_shop(handle=bob_text))
+    tx.set_partyunit(partyunit=partyunit_shop(handle=zia_text))
+    tx.set_partyunit(partyunit=partyunit_shop(handle=noa_text))
 
     empty_agenda = agendaunit_shop(_healer=jes_text)
     x_assignment_agenda = jes_agenda.get_assignment(empty_agenda, tx._partys, bob_text)
@@ -96,13 +96,13 @@ def test_agendaunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     # GIVEN
     jes_text = "Jessi"
     jes_agenda = agendaunit_shop(_healer=jes_text)
-    jes_agenda.set_partyunit(partyunit_shop(title=jes_text))
+    jes_agenda.set_partyunit(partyunit_shop(handle=jes_text))
     bob_text = "Bob"
     noa_text = "Noa"
     eli_text = "Eli"
-    jes_agenda.set_partyunit(partyunit_shop(title=bob_text))
-    jes_agenda.set_partyunit(partyunit_shop(title=noa_text))
-    jes_agenda.set_partyunit(partyunit_shop(title=eli_text))
+    jes_agenda.set_partyunit(partyunit_shop(handle=bob_text))
+    jes_agenda.set_partyunit(partyunit_shop(handle=noa_text))
+    jes_agenda.set_partyunit(partyunit_shop(handle=eli_text))
     swim_text = "swimmers"
     jes_agenda.set_groupunit(groupunit_shop(brand=swim_text))
     swim_group = jes_agenda._groups.get(swim_text)
@@ -125,9 +125,9 @@ def test_agendaunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     tx.set_partys_empty_if_null()
     zia_text = "Zia"
     yao_text = "Yao"
-    tx.set_partyunit(partyunit=partyunit_shop(title=bob_text))
-    tx.set_partyunit(partyunit=partyunit_shop(title=zia_text))
-    tx.set_partyunit(partyunit=partyunit_shop(title=noa_text))
+    tx.set_partyunit(partyunit=partyunit_shop(handle=bob_text))
+    tx.set_partyunit(partyunit=partyunit_shop(handle=zia_text))
+    tx.set_partyunit(partyunit=partyunit_shop(handle=noa_text))
 
     empty_agenda = agendaunit_shop(_healer=jes_text)
     x_assignment_agenda = jes_agenda.get_assignment(empty_agenda, tx._partys, bob_text)
@@ -157,12 +157,12 @@ def test_agenda__get_assignor_promise_ideas_ReturnsCorrectIdeaRoads():
     # THEN
     print(f"{assignor_promises=}")
     x_dict = {
-        f"{x_agenda._culture_handle},work": -1,
-        f"{x_agenda._culture_handle},housework,clean table": -1,
-        f"{x_agenda._culture_handle},housework,clean table,remove dishs": -1,
-        f"{x_agenda._culture_handle},housework,clean table,get soap": -1,
-        f"{x_agenda._culture_handle},housework,clean table,get soap,grab soap": -1,
-        f"{x_agenda._culture_handle},feed cat": -1,
+        f"{x_agenda._culture_title},work": -1,
+        f"{x_agenda._culture_title},housework,clean table": -1,
+        f"{x_agenda._culture_title},housework,clean table,remove dishs": -1,
+        f"{x_agenda._culture_title},housework,clean table,get soap": -1,
+        f"{x_agenda._culture_title},housework,clean table,get soap,grab soap": -1,
+        f"{x_agenda._culture_title},feed cat": -1,
     }
     assert assignor_promises == x_dict
 
@@ -187,13 +187,13 @@ def test_agenda__get_relevant_roads_RootRoadReturnsOnlyItself():
     x_agenda.set_agenda_metrics()
 
     # WHEN
-    root_dict = {x_agenda._culture_handle: -1}
+    root_dict = {x_agenda._culture_title: -1}
     relevant_roads = x_agenda._get_relevant_roads(root_dict)
 
     # THEN
     print(f"{relevant_roads=}")
     assert len(relevant_roads) == 1
-    assert relevant_roads == {x_agenda._culture_handle: -1}
+    assert relevant_roads == {x_agenda._culture_title: -1}
 
 
 def test_agenda__get_relevant_roads_SimpleReturnsOnlyAncestors():
@@ -203,7 +203,7 @@ def test_agenda__get_relevant_roads_SimpleReturnsOnlyAncestors():
 
     # WHEN
     week_text = "weekdays"
-    week_road = f"{x_agenda._culture_handle},{week_text}"
+    week_road = f"{x_agenda._culture_title},{week_text}"
     sun_text = "Sunday"
     sun_road = f"{week_road},{sun_text}"
     sun_dict = {sun_road}
@@ -212,7 +212,7 @@ def test_agenda__get_relevant_roads_SimpleReturnsOnlyAncestors():
     # THEN
     print(f"{relevant_roads=}")
     assert len(relevant_roads) == 3
-    assert relevant_roads == {x_agenda._culture_handle: -1, sun_road: -1, week_road: -1}
+    assert relevant_roads == {x_agenda._culture_title: -1, sun_road: -1, week_road: -1}
 
 
 def test_agenda__get_relevant_roads_ReturnsSimpleRequiredUnitBase():
@@ -220,16 +220,16 @@ def test_agenda__get_relevant_roads_ReturnsSimpleRequiredUnitBase():
     healer_text = "Neo"
     x_agenda = agendaunit_shop(_healer=healer_text)
     casa_text = "casa"
-    casa_road = f"{x_agenda._culture_handle},{casa_text}"
+    casa_road = f"{x_agenda._culture_title},{casa_text}"
     floor_text = "mop floor"
     floor_road = f"{casa_road},{floor_text}"
     floor_idea = ideacore_shop(_label=floor_text)
     x_agenda.add_idea(idea_kid=floor_idea, pad=casa_road)
 
     unim_text = "unimportant"
-    unim_road = f"{x_agenda._culture_handle},{unim_text}"
+    unim_road = f"{x_agenda._culture_title},{unim_text}"
     unim_idea = ideacore_shop(_label=unim_text)
-    x_agenda.add_idea(idea_kid=unim_idea, pad=x_agenda._culture_handle)
+    x_agenda.add_idea(idea_kid=unim_idea, pad=x_agenda._culture_title)
 
     status_text = "cleaniness status"
     status_road = f"{casa_road},{status_text}"
@@ -248,7 +248,7 @@ def test_agenda__get_relevant_roads_ReturnsSimpleRequiredUnitBase():
     print(f"{relevant_roads=}")
     assert len(relevant_roads) == 4
     assert relevant_roads == {
-        x_agenda._culture_handle: -1,
+        x_agenda._culture_title: -1,
         casa_road: -1,
         status_road: -1,
         floor_road: -1,
@@ -260,12 +260,12 @@ def test_agenda__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
     # GIVEN
     x_agenda = example_agenda_get_assignment_agenda_example1()
     casa_text = "casa"
-    casa_road = f"{x_agenda._culture_handle},{casa_text}"
+    casa_road = f"{x_agenda._culture_title},{casa_text}"
     floor_text = "mop floor"
     floor_road = f"{casa_road},{floor_text}"
 
     unim_text = "unimportant"
-    unim_road = f"{x_agenda._culture_handle},{unim_text}"
+    unim_road = f"{x_agenda._culture_title},{unim_text}"
 
     status_text = "cleaniness status"
     status_road = f"{casa_road},{status_text}"
@@ -295,7 +295,7 @@ def test_agenda__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
     assert relevant_roads.get(moderately_road) != None
     assert relevant_roads.get(very_much_road) != None
     assert relevant_roads == {
-        x_agenda._culture_handle: -1,
+        x_agenda._culture_title: -1,
         casa_road: -1,
         status_road: -1,
         floor_road: -1,
@@ -316,13 +316,13 @@ def test_agenda__get_relevant_roads_numeric_road_ReturnSimple():
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(_healer=yao_text)
     work_text = "work"
-    work_road = f"{yao_agenda._culture_handle},{work_text}"
-    yao_agenda.add_idea(ideacore_shop(_label=work_text), pad=yao_agenda._culture_handle)
+    work_road = f"{yao_agenda._culture_title},{work_text}"
+    yao_agenda.add_idea(ideacore_shop(_label=work_text), pad=yao_agenda._culture_title)
     work_idea = yao_agenda.get_idea_kid(road=work_road)
     day_text = "day_range"
-    day_road = f"{yao_agenda._culture_handle},{day_text}"
+    day_road = f"{yao_agenda._culture_title},{day_text}"
     day_idea = ideacore_shop(_label=day_text, _begin=44, _close=110)
-    yao_agenda.add_idea(day_idea, pad=yao_agenda._culture_handle)
+    yao_agenda.add_idea(day_idea, pad=yao_agenda._culture_title)
     yao_agenda.edit_idea_attr(road=work_road, denom=11, numeric_road=day_road)
     assert work_idea._begin == 4
     print(f"{work_idea._label=} {work_idea._begin=} {work_idea._close=}")
@@ -338,7 +338,7 @@ def test_agenda__get_relevant_roads_numeric_road_ReturnSimple():
     assert relevant_roads.get(work_road) != None
     assert relevant_roads.get(day_road) != None
     assert relevant_roads == {
-        yao_agenda._culture_handle: -1,
+        yao_agenda._culture_title: -1,
         work_road: -1,
         day_road: -1,
     }
@@ -349,14 +349,14 @@ def test_agenda__get_relevant_roads_range_source_road_ReturnSimple():
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(_healer=yao_text)
     min_range_text = "a_minute_range"
-    min_range_road = f"{yao_agenda._culture_handle},{min_range_text}"
+    min_range_road = f"{yao_agenda._culture_title},{min_range_text}"
     min_range_idea = ideacore_shop(_label=min_range_text, _begin=0, _close=2880)
-    yao_agenda.add_idea(min_range_idea, pad=yao_agenda._culture_handle)
+    yao_agenda.add_idea(min_range_idea, pad=yao_agenda._culture_title)
 
     day_len_text = "day_length"
-    day_len_road = f"{yao_agenda._culture_handle},{day_len_text}"
+    day_len_road = f"{yao_agenda._culture_title},{day_len_text}"
     day_len_idea = ideacore_shop(_label=day_len_text, _begin=0, _close=1440)
-    yao_agenda.add_idea(day_len_idea, pad=yao_agenda._culture_handle)
+    yao_agenda.add_idea(day_len_idea, pad=yao_agenda._culture_title)
 
     min_days_text = "days in minute_range"
     min_days_road = f"{min_range_road},{min_days_text}"
@@ -375,7 +375,7 @@ def test_agenda__get_relevant_roads_range_source_road_ReturnSimple():
     assert relevant_roads.get(min_range_road) != None
     assert relevant_roads.get(day_len_road) != None
     assert relevant_roads.get(min_days_road) != None
-    assert relevant_roads.get(yao_agenda._culture_handle) != None
+    assert relevant_roads.get(yao_agenda._culture_title) != None
     # min_days_idea = yao_agenda.get_idea_kid(road=min_days_road)
     # print(f"{min_days_idea=}")
     # assert 1 == 2
@@ -388,15 +388,15 @@ def test_agenda__set_assignment_ideas_ReturnsCorrectIdeas():
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(_healer=yao_text)
     casa_text = "casa"
-    casa_road = f"{yao_agenda._culture_handle},{casa_text}"
-    yao_agenda.add_idea(ideacore_shop(_label=casa_text), pad=yao_agenda._culture_handle)
+    casa_road = f"{yao_agenda._culture_title},{casa_text}"
+    yao_agenda.add_idea(ideacore_shop(_label=casa_text), pad=yao_agenda._culture_title)
     yao_agenda.set_agenda_metrics()
 
     # WHEN
     bob_text = "Bob"
     bob_agenda = agendaunit_shop(_healer=bob_text)
     relevant_roads = {
-        yao_agenda._culture_handle: "descendant",
+        yao_agenda._culture_title: "descendant",
         casa_road: "requirementunit_base",
     }
     yao_agenda._set_assignment_ideas(agenda_x=bob_agenda, relevant_roads=relevant_roads)
@@ -414,8 +414,8 @@ def test_agenda__set_assignment_ideas_ReturnsCorrectIdeaRoot_acptfacts():
     yao_agenda = agendaunit_shop(_healer=yao_text)
 
     casa_text = "casa"
-    casa_road = f"{yao_agenda._culture_handle},{casa_text}"
-    yao_agenda.add_idea(ideacore_shop(_label=casa_text), pad=yao_agenda._culture_handle)
+    casa_road = f"{yao_agenda._culture_title},{casa_text}"
+    yao_agenda.add_idea(ideacore_shop(_label=casa_text), pad=yao_agenda._culture_title)
 
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
@@ -439,7 +439,7 @@ def test_agenda__set_assignment_ideas_ReturnsCorrectIdeaRoot_acptfacts():
 
     # WHEN
     relevant_roads = {
-        yao_agenda._culture_handle: "descendant",
+        yao_agenda._culture_title: "descendant",
         casa_road: "requirementunit_base",
         basket_road: "assigned",
     }
@@ -455,11 +455,11 @@ def test_agenda_get_assignment_getsCorrectIdeas_scenario1():
     # GIVEN
     x_agenda = example_agenda_get_assignment_agenda_example1()
     casa_text = "casa"
-    casa_road = f"{x_agenda._culture_handle},{casa_text}"
+    casa_road = f"{x_agenda._culture_title},{casa_text}"
     floor_text = "mop floor"
     floor_road = f"{casa_road},{floor_text}"
     unim_text = "unimportant"
-    unim_road = f"{x_agenda._culture_handle},{unim_text}"
+    unim_road = f"{x_agenda._culture_title},{unim_text}"
     status_text = "cleaniness status"
     status_road = f"{casa_road},{status_text}"
     clean_text = "clean"
@@ -471,13 +471,13 @@ def test_agenda_get_assignment_getsCorrectIdeas_scenario1():
     dirty_text = "dirty"
     dirty_road = f"{status_road},{dirty_text}"
     bob_text = "Bob"
-    x_agenda.add_partyunit(title=bob_text)
+    x_agenda.add_partyunit(handle=bob_text)
 
     # WHEN
     assignment_x = x_agenda.get_assignment(
         agenda_x=agendaunit_shop(_healer=bob_text),
         assignor_partys={bob_text: -1},
-        assignor_title=bob_text,
+        assignor_handle=bob_text,
     )
 
     # THEN
@@ -494,12 +494,12 @@ def test_agenda_get_assignment_getsCorrectIdeas_scenario1():
 def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     # GIVEN
     amer_agenda = get_agenda_assignment_laundry_example1()
-    culture_handle_text = "tiger_econ"
-    print(f"{amer_agenda._culture_handle=} {amer_agenda._idea_dict.keys()=}")
-    amer_agenda.set_culture_handle(culture_handle_text)
-    print(f"{amer_agenda._culture_handle=} {amer_agenda._idea_dict.keys()=}")
+    culture_title_text = "tiger_econ"
+    print(f"{amer_agenda._culture_title=} {amer_agenda._idea_dict.keys()=}")
+    amer_agenda.set_culture_title(culture_title_text)
+    print(f"{amer_agenda._culture_title=} {amer_agenda._idea_dict.keys()=}")
     casa_text = "casa"
-    casa_road = f"{amer_agenda._culture_handle},{casa_text}"
+    casa_road = f"{amer_agenda._culture_title},{casa_text}"
     laundry_task_road_text = "do_laundry"
     laundry_task_road_road = f"{casa_road},{laundry_task_road_text}"
     do_laundery_idea = amer_agenda.get_idea_kid(laundry_task_road_road)
@@ -508,12 +508,12 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     # WHEN
     cali_text = "Cali"
     cali_agenda = agendaunit_shop(_healer=cali_text)
-    cali_agenda.set_culture_handle(culture_handle_text)
-    print(f"{cali_agenda._culture_handle=} {cali_agenda._idea_dict.keys()=}")
+    cali_agenda.set_culture_title(culture_title_text)
+    print(f"{cali_agenda._culture_title=} {cali_agenda._idea_dict.keys()=}")
     cali_assignment = amer_agenda.get_assignment(
         agenda_x=cali_agenda,
         assignor_partys={cali_text: -1, amer_agenda._healer: -1},
-        assignor_title=cali_text,
+        assignor_handle=cali_text,
     )
 
     # THEN
@@ -533,7 +533,7 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     # road_x='A,casa,laundry basket status,bare'
     # road_x='A,casa,laundry_task_road'
     casa_text = "casa"
-    casa_road = f"{amer_agenda._culture_handle},{casa_text}"
+    casa_road = f"{amer_agenda._culture_title},{casa_text}"
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
     b_full_text = "full"

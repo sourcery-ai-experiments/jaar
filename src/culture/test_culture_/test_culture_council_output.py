@@ -8,7 +8,7 @@ from src.culture.examples.example_councils import (
     get_agenda_3CleanNodesRandomWeights,
 )
 from src.culture.examples.culture_env_kit import (
-    get_temp_env_handle,
+    get_temp_env_title,
     get_test_cultures_dir,
     env_dir_setup_cleanup,
 )
@@ -18,7 +18,7 @@ def test_culture_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
     input_agenda = example_healers_get_6node_agenda()
     x_culture.save_public_agenda(input_agenda)
     # x_culture.save_public_agenda(ex_cxs_get_agenda_1Task_1CE0MinutesRequired_1AcptFact())
@@ -37,12 +37,12 @@ def test_culture_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     # input agenda must be melded to itself to create originunits
     input_agenda.meld(input_agenda)
     input_agenda.set_healer(new_healer=xia_text)
-    input_agenda._originunit.set_originlink(title=xia_text, weight=1)
+    input_agenda._originunit.set_originlink(handle=xia_text, weight=1)
 
     # THEN
     a_text = "A"
     c_text = "C"
-    c_road = f"{input_agenda._culture_handle},{c_text}"
+    c_road = f"{input_agenda._culture_title},{c_text}"
     d_text = "D"
     d_road = f"{c_road},{d_text}"
     print(f"{output_agenda._healer=}")
@@ -93,7 +93,7 @@ def test_culture_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
     x1_agenda = example_healers_get_6node_agenda()
     x2_agenda = ex_agenda_v002()
 
@@ -113,7 +113,7 @@ def test_culture_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
     output_agenda = x_culture.get_output_agenda(council_dub=xia_text)
 
     # THEN
-    output_agenda_d_road = f"{output_agenda._culture_handle},C,D"
+    output_agenda_d_road = f"{output_agenda._culture_title},C,D"
     output_agenda_d_idea = output_agenda.get_idea_kid(output_agenda_d_road)
     print(f" {output_agenda_d_idea._weight=} ")
     assert output_agenda != None
@@ -151,10 +151,10 @@ def test_councilunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
 ):
     # GIVEN
     env_dir = get_test_cultures_dir()
-    culture_handle = get_temp_env_handle()
-    x_culture = cultureunit_shop(handle=culture_handle, cultures_dir=env_dir)
+    culture_title = get_temp_env_title()
+    x_culture = cultureunit_shop(title=culture_title, cultures_dir=env_dir)
     x_culture.create_dirs_if_null(in_memory_bank=True)
-    # ux = councilunit_shop(title=healer1_text, env_dir=env_dir)
+    # ux = councilunit_shop(handle=healer1_text, env_dir=env_dir)
 
     ernie_text = "ernie"
     jessi_text = "jessi"

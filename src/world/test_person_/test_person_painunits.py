@@ -2,7 +2,7 @@ from src.world.person import personunit_shop
 from src.world.pain import painunit_shop, healerlink_shop, culturelink_shop
 from src.world.examples.world_env_kit import (
     get_temp_env_dir,
-    get_temp_env_handle,
+    get_temp_env_title,
     get_test_worlds_dir,
     env_dir_setup_cleanup,
 )
@@ -64,14 +64,14 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectly(env_dir_setup_cle
     bore_tim_healerlink = healerlink_shop(tim_text, weight=3)
     rain_ray_healerlink = healerlink_shop(ray_text, weight=5)
 
-    plan1_handle = "plan1"
-    plan2_handle = "plan2"
-    plan3_handle = "plan3"
-    fear_tim_healerlink.set_culturelink(culturelink_shop(plan1_handle, 7))
-    bore_sue_healerlink.set_culturelink(culturelink_shop(plan2_handle, 2))
-    bore_sue_healerlink.set_culturelink(culturelink_shop(plan3_handle, 23))
-    bore_tim_healerlink.set_culturelink(culturelink_shop(plan3_handle, 8))
-    rain_ray_healerlink.set_culturelink(culturelink_shop(plan3_handle, 11))
+    plan1_title = "plan1"
+    plan2_title = "plan2"
+    plan3_title = "plan3"
+    fear_tim_healerlink.set_culturelink(culturelink_shop(plan1_title, 7))
+    bore_sue_healerlink.set_culturelink(culturelink_shop(plan2_title, 2))
+    bore_sue_healerlink.set_culturelink(culturelink_shop(plan3_title, 23))
+    bore_tim_healerlink.set_culturelink(culturelink_shop(plan3_title, 8))
+    rain_ray_healerlink.set_culturelink(culturelink_shop(plan3_title, 11))
 
     x_fear_painunit.set_healerlink(fear_tim_healerlink)
     x_bore_painunit.set_healerlink(bore_sue_healerlink)
@@ -107,11 +107,11 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectly(env_dir_setup_cle
     assert z_bore_sue_healerlink._manager_importance > 0.139999
     assert z_rain_ray_healerlink._manager_importance == 0.05
 
-    fear_tim_plan1_culturelink = z_fear_tim_healerlink.get_culturelink(plan1_handle)
-    bore_sue_plan2_culturelink = z_bore_sue_healerlink.get_culturelink(plan2_handle)
-    bore_sue_plan3_culturelink = z_bore_sue_healerlink.get_culturelink(plan3_handle)
-    bore_tim_plan3_culturelink = z_bore_tim_healerlink.get_culturelink(plan3_handle)
-    rain_ray_plan3_culturelink = z_rain_ray_healerlink.get_culturelink(plan3_handle)
+    fear_tim_plan1_culturelink = z_fear_tim_healerlink.get_culturelink(plan1_title)
+    bore_sue_plan2_culturelink = z_bore_sue_healerlink.get_culturelink(plan2_title)
+    bore_sue_plan3_culturelink = z_bore_sue_healerlink.get_culturelink(plan3_title)
+    bore_tim_plan3_culturelink = z_bore_tim_healerlink.get_culturelink(plan3_title)
+    rain_ray_plan3_culturelink = z_rain_ray_healerlink.get_culturelink(plan3_title)
 
     assert fear_tim_plan1_culturelink._manager_importance == 0.6
     assert bore_sue_plan2_culturelink._manager_importance == 0.0112
@@ -122,15 +122,15 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectly(env_dir_setup_cle
     # FROM CULTUREUNIT
     # def set_cultureunits_weight_metrics(self):
     #     self.set_painunits_weight_metrics()
-    #     cultureunit_handles = {
-    #         x_cultureunit.handle: 0 for x_cultureunit in self._cultures.values()
+    #     cultureunit_titles = {
+    #         x_cultureunit.title: 0 for x_cultureunit in self._cultures.values()
     #     }
 
     #     for x_painunit in self._pains.values():
     #         for x_healerlink in x_painunit._healerlinks.values():
     #             for x_culturelink in x_healerlink._culturelinks.values():
-    #                 cultureunit_handles[
-    #                     x_culturelink.handle
+    #                 cultureunit_titles[
+    #                     x_culturelink.title
     #                 ] += x_culturelink._manager_importance
 
 
@@ -158,15 +158,15 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectly(env_dir_setup_cle
 #     x_bore_tim_healerlink = healerlink_shop(tim_text, weight=3)
 #     x_rain_ray_healerlink = healerlink_shop(ray_text, weight=5)
 
-#     plan1_handle = "plan1"
-#     plan2_handle = "plan2"
-#     plan3_handle = "plan3"
-#     plan4_handle = "plan4"
-#     x_fear_tim_healerlink.set_culturelink(culturelink_shop(plan1_handle, 7))
-#     x_bore_sue_healerlink.set_culturelink(culturelink_shop(plan2_handle, 2))
-#     x_bore_sue_healerlink.set_culturelink(culturelink_shop(plan3_handle, 23))
-#     x_bore_tim_healerlink.set_culturelink(culturelink_shop(plan3_handle, 8))
-#     x_rain_ray_healerlink.set_culturelink(culturelink_shop(plan3_handle, 11))
+#     plan1_title = "plan1"
+#     plan2_title = "plan2"
+#     plan3_title = "plan3"
+#     plan4_title = "plan4"
+#     x_fear_tim_healerlink.set_culturelink(culturelink_shop(plan1_title, 7))
+#     x_bore_sue_healerlink.set_culturelink(culturelink_shop(plan2_title, 2))
+#     x_bore_sue_healerlink.set_culturelink(culturelink_shop(plan3_title, 23))
+#     x_bore_tim_healerlink.set_culturelink(culturelink_shop(plan3_title, 8))
+#     x_rain_ray_healerlink.set_culturelink(culturelink_shop(plan3_title, 11))
 
 #     x_fear_painunit.set_healerlink(x_fear_tim_healerlink)
 #     x_bore_painunit.set_healerlink(x_bore_sue_healerlink)
@@ -177,15 +177,15 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectly(env_dir_setup_cle
 #     xao_personunit.set_painunit(x_bore_painunit)
 #     xao_personunit.set_painunit(x_rain_painunit)
 
-#     xao_personunit.set_cultureunit(plan1_handle)
-#     xao_personunit.set_cultureunit(plan2_handle)
-#     xao_personunit.set_cultureunit(plan3_handle)
-#     xao_personunit.set_cultureunit(plan4_handle)
+#     xao_personunit.set_cultureunit(plan1_title)
+#     xao_personunit.set_cultureunit(plan2_title)
+#     xao_personunit.set_cultureunit(plan3_title)
+#     xao_personunit.set_cultureunit(plan4_title)
 
-#     plan1_cultureunit = xao_personunit.get_cultureunit(plan1_handle)
-#     plan2_cultureunit = xao_personunit.get_cultureunit(plan2_handle)
-#     plan3_cultureunit = xao_personunit.get_cultureunit(plan3_handle)
-#     plan4_cultureunit = xao_personunit.get_cultureunit(plan4_handle)
+#     plan1_cultureunit = xao_personunit.get_cultureunit(plan1_title)
+#     plan2_cultureunit = xao_personunit.get_cultureunit(plan2_title)
+#     plan3_cultureunit = xao_personunit.get_cultureunit(plan3_title)
+#     plan4_cultureunit = xao_personunit.get_cultureunit(plan4_title)
 
 #     assert plan1_cultureunit._manager_importance is None
 #     assert plan2_cultureunit._manager_importance is None
@@ -203,11 +203,11 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectly(env_dir_setup_cle
 #     # z_bore_tim_healerlink = z_bore_painunit.get_healerlink(tim_text)
 #     # z_bore_sue_healerlink = z_bore_painunit.get_healerlink(sue_text)
 #     # z_rain_ray_healerlink = z_rain_painunit.get_healerlink(ray_text)
-#     # fear_tim_plan1_culturelink = z_fear_tim_healerlink.get_culturelink(plan1_handle)
-#     # bore_sue_plan2_culturelink = z_bore_sue_healerlink.get_culturelink(plan2_handle)
-#     # bore_sue_plan3_culturelink = z_bore_sue_healerlink.get_culturelink(plan3_handle)
-#     # bore_tim_plan3_culturelink = z_bore_tim_healerlink.get_culturelink(plan3_handle)
-#     # rain_ray_plan3_culturelink = z_rain_ray_healerlink.get_culturelink(plan3_handle)
+#     # fear_tim_plan1_culturelink = z_fear_tim_healerlink.get_culturelink(plan1_title)
+#     # bore_sue_plan2_culturelink = z_bore_sue_healerlink.get_culturelink(plan2_title)
+#     # bore_sue_plan3_culturelink = z_bore_sue_healerlink.get_culturelink(plan3_title)
+#     # bore_tim_plan3_culturelink = z_bore_tim_healerlink.get_culturelink(plan3_title)
+#     # rain_ray_plan3_culturelink = z_rain_ray_healerlink.get_culturelink(plan3_title)
 #     # assert fear_tim_plan1_culturelink._manager_importance == 0.6
 #     # assert bore_sue_plan2_culturelink._manager_importance == 0.0112
 #     # assert bore_sue_plan3_culturelink._manager_importance == 0.1288

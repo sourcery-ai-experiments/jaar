@@ -10,12 +10,12 @@ from os import listdir as os_listdir, rename as os_rename, path as os_path
 from pytest import fixture as pytest_fixture
 
 
-def get_temp_env_handle():
+def get_temp_env_title():
     return "ex_env77"
 
 
 def get_temp_env_dir():
-    return f"{get_test_worlds_dir()}/{get_temp_env_handle()}"
+    return f"{get_test_worlds_dir()}/{get_temp_env_title()}"
 
 
 def get_test_worlds_dir():
@@ -45,27 +45,27 @@ def create_example_worlds_list():
 #     x_func_delete_dir(world_obj.get_object_root_dir())
 
 
-# def rename_example_world(world_obj: CultureUnit, new_title):
+# def rename_example_world(world_obj: CultureUnit, new_handle):
 #     # base_dir = world_obj.get_object_root_dir()
 #     base_dir = "src/world/examples/worlds"
 #     src_dir = f"{base_dir}/{world_obj.genus}"
-#     dst_dir = f"{base_dir}/{new_title}"
+#     dst_dir = f"{base_dir}/{new_handle}"
 #     os_rename(src=src_dir, dst=dst_dir)
-#     world_obj.set_worldunit_genus(genus=new_title)
+#     world_obj.set_worldunit_genus(genus=new_handle)
 
 
 # class InvalidcultureCopyException(Exception):
 #     pass
 
 
-# def copy_evaluation_world(src_handle: str, dest_handle: str):
+# def copy_evaluation_world(src_title: str, dest_title: str):
 #     base_dir = "src/world/examples/worlds"
-#     new_dir = f"{base_dir}/{dest_handle}"
+#     new_dir = f"{base_dir}/{dest_title}"
 #     if os_path.exists(new_dir):
 #         raise InvalidcultureCopyException(
 #             f"Cannot copy world to '{new_dir}' directory because '{new_dir}' exists."
 #         )
 #     # base_dir = world_obj.get_object_root_dir()
-#     src_dir = f"{base_dir}/{src_handle}"
-#     dest_dir = f"{base_dir}/{dest_handle}"
+#     src_dir = f"{base_dir}/{src_title}"
+#     dest_dir = f"{base_dir}/{dest_title}"
 #     copy_dir(src_dir=src_dir, dest_dir=dest_dir)

@@ -2,7 +2,7 @@ from src.agenda.x_func import delete_dir as x_func_delete_dir
 from os import path as os_path
 from src.culture.culture import CultureUnit, cultureunit_shop
 from src.culture.examples.culture_env_kit import (
-    get_temp_env_handle,
+    get_temp_env_title,
     get_test_cultures_dir,
     rename_example_culture,
     copy_evaluation_culture,
@@ -13,25 +13,25 @@ from pytest import raises as pytest_raises
 
 def test_culture_exists():
     # GIVEN
-    x_handle = "test1"
+    x_title = "test1"
 
     # WHEN
-    x_culture = CultureUnit(handle=x_handle, cultures_dir=get_test_cultures_dir())
+    x_culture = CultureUnit(title=x_title, cultures_dir=get_test_cultures_dir())
 
     # THEN
-    assert x_culture.handle == x_handle
+    assert x_culture.title == x_title
     assert x_culture.cultures_dir == get_test_cultures_dir()
     assert x_culture._manager_name is None
 
 
 def test_culture_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     # GIVEN create culture
-    x_handle = get_temp_env_handle()
-    x_culture = CultureUnit(handle=x_handle, cultures_dir=get_test_cultures_dir())
+    x_title = get_temp_env_title()
+    x_culture = CultureUnit(title=x_title, cultures_dir=get_test_cultures_dir())
     print(f"{get_test_cultures_dir()=} {x_culture.cultures_dir=}")
     # x_func_delete_dir(x_culture.get_object_root_dir())
     print(f"delete {x_culture.get_object_root_dir()=}")
-    culture_dir = f"src/culture/examples/cultures/{x_handle}"
+    culture_dir = f"src/culture/examples/cultures/{x_title}"
     culture_file_name = "culture.json"
     culture_file_path = f"{culture_dir}/{culture_file_name}"
     agendas_dir = f"{culture_dir}/agendas"
@@ -64,15 +64,15 @@ def test_culture_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
 
 def test_rename_example_culture_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup):
     # GIVEN create culture
-    old_x_handle = get_temp_env_handle()
-    old_culture_dir = f"src/culture/examples/cultures/{old_x_handle}"
+    old_x_title = get_temp_env_title()
+    old_culture_dir = f"src/culture/examples/cultures/{old_x_title}"
     old_culture_file_name = "culture.json"
     old_culture_file_path = f"{old_culture_dir}/{old_culture_file_name}"
     old_agendas_dir = f"{old_culture_dir}/agendas"
     old_councilunits_dir = f"{old_culture_dir}/councilunits"
 
-    new_x_handle = "ex_env1"
-    new_culture_dir = f"src/culture/examples/cultures/{new_x_handle}"
+    new_x_title = "ex_env1"
+    new_culture_dir = f"src/culture/examples/cultures/{new_x_title}"
     new_culture_file_name = "culture.json"
     new_culture_file_path = f"{new_culture_dir}/{new_culture_file_name}"
     new_agendas_dir = f"{new_culture_dir}/agendas"
@@ -81,7 +81,7 @@ def test_rename_example_culture_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanu
     print(f"{new_culture_dir=}")
 
     x_culture = cultureunit_shop(
-        handle=old_x_handle, cultures_dir=get_test_cultures_dir()
+        title=old_x_title, cultures_dir=get_test_cultures_dir()
     )
     # x_func_delete_dir(x_culture.get_object_root_dir())
     # print(f"{x_culture.get_object_root_dir()=}")
@@ -103,10 +103,10 @@ def test_rename_example_culture_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanu
     assert os_path.exists(new_councilunits_dir) is False
     assert x_culture.get_public_dir() != new_agendas_dir
     assert x_culture.get_councilunits_dir() != new_councilunits_dir
-    assert x_culture.handle != new_x_handle
+    assert x_culture.title != new_x_title
 
     # WHEN
-    rename_example_culture(culture_obj=x_culture, new_handle=new_x_handle)
+    rename_example_culture(culture_obj=x_culture, new_title=new_x_title)
 
     # THEN check agendas src directory created
     assert os_path.exists(old_culture_dir) is False
@@ -124,7 +124,7 @@ def test_rename_example_culture_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanu
     assert os_path.exists(new_councilunits_dir)
     assert x_culture.get_public_dir() == new_agendas_dir
     assert x_culture.get_councilunits_dir() == new_councilunits_dir
-    assert x_culture.handle == new_x_handle
+    assert x_culture.title == new_x_title
 
     # Undo change to directory
     # x_func_delete_dir(dir=old_culture_dir)
@@ -135,14 +135,14 @@ def test_rename_example_culture_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanu
 
 def test_copy_evaluation_culture_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup):
     # GIVEN create culture
-    old_x_handle = get_temp_env_handle()
-    old_culture_dir = f"src/culture/examples/cultures/{old_x_handle}"
+    old_x_title = get_temp_env_title()
+    old_culture_dir = f"src/culture/examples/cultures/{old_x_title}"
     old_culture_file_name = "culture.json"
     old_culture_file_path = f"{old_culture_dir}/{old_culture_file_name}"
     old_agendas_dir = f"{old_culture_dir}/agendas"
     old_councilunits_dir = f"{old_culture_dir}/councilunits"
 
-    x_culture = cultureunit_shop(old_x_handle, get_test_cultures_dir())
+    x_culture = cultureunit_shop(old_x_title, get_test_cultures_dir())
     x_culture.create_dirs_if_null()
 
     assert os_path.exists(old_culture_dir)
@@ -153,8 +153,8 @@ def test_copy_evaluation_culture_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     assert x_culture.get_public_dir() == old_agendas_dir
     assert x_culture.get_councilunits_dir() == old_councilunits_dir
 
-    new_x_handle = "ex_env1"
-    new_culture_dir = f"src/culture/examples/cultures/{new_x_handle}"
+    new_x_title = "ex_env1"
+    new_culture_dir = f"src/culture/examples/cultures/{new_x_title}"
     new_culture_file_name = "culture.json"
     new_culture_file_path = f"{new_culture_dir}/{new_culture_file_name}"
     new_agendas_dir = f"{new_culture_dir}/agendas"
@@ -167,10 +167,10 @@ def test_copy_evaluation_culture_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     assert os_path.exists(new_councilunits_dir) is False
     assert x_culture.get_public_dir() != new_agendas_dir
     assert x_culture.get_councilunits_dir() != new_councilunits_dir
-    assert x_culture.handle != new_x_handle
+    assert x_culture.title != new_x_title
 
     # WHEN
-    copy_evaluation_culture(src_handle=x_culture.handle, dest_handle=new_x_handle)
+    copy_evaluation_culture(src_title=x_culture.title, dest_title=new_x_title)
 
     # THEN check agendas src directory created
     assert os_path.exists(old_culture_dir)
@@ -188,7 +188,7 @@ def test_copy_evaluation_culture_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     assert os_path.exists(new_councilunits_dir)
     assert x_culture.get_public_dir() != new_agendas_dir
     assert x_culture.get_councilunits_dir() != new_councilunits_dir
-    assert x_culture.handle != new_x_handle
+    assert x_culture.title != new_x_title
 
     # Undo change to directory
     # x_func_delete_dir(x_culture.get_object_root_dir())
@@ -198,13 +198,13 @@ def test_copy_evaluation_culture_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
 
 def test_copy_evaluation_culture_CorrectlyRaisesError(env_dir_setup_cleanup):
     # GIVEN create culture
-    old_x_handle = get_temp_env_handle()
-    x_culture = cultureunit_shop(old_x_handle, get_test_cultures_dir())
+    old_x_title = get_temp_env_title()
+    x_culture = cultureunit_shop(old_x_title, get_test_cultures_dir())
     x_culture.create_dirs_if_null()
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        copy_evaluation_culture(src_handle=x_culture.handle, dest_handle=old_x_handle)
+        copy_evaluation_culture(src_title=x_culture.title, dest_title=old_x_title)
     assert (
         str(excinfo.value)
         == f"Cannot copy culture to '{x_culture.get_object_root_dir()}' directory because '{x_culture.get_object_root_dir()}' exists."
@@ -213,19 +213,19 @@ def test_copy_evaluation_culture_CorrectlyRaisesError(env_dir_setup_cleanup):
 
 def test_cultureunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
     # GIVEN
-    x_handle = get_temp_env_handle()
-    culture_dir = f"src/culture/examples/cultures/{x_handle}"
+    x_title = get_temp_env_title()
+    culture_dir = f"src/culture/examples/cultures/{x_title}"
     sue_text = "Sue"
     assert os_path.exists(culture_dir) is False
 
     # WHEN
     x_culture = cultureunit_shop(
-        handle=x_handle, cultures_dir=get_test_cultures_dir(), _manager_name=sue_text
+        title=x_title, cultures_dir=get_test_cultures_dir(), _manager_name=sue_text
     )
 
     # THEN
     assert x_culture != None
-    assert x_culture.handle == x_handle
+    assert x_culture.title == x_title
     assert os_path.exists(culture_dir)
     assert x_culture._bank_db != None
     assert x_culture._manager_name == sue_text
@@ -233,9 +233,9 @@ def test_cultureunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
 
 def test_cultureunit_set_manager_name_CorrectsSetsData(env_dir_setup_cleanup):
     # GIVEN
-    x_handle = get_temp_env_handle()
-    x_culture = cultureunit_shop(handle=x_handle, cultures_dir=get_test_cultures_dir())
-    assert x_culture.handle == x_handle
+    x_title = get_temp_env_title()
+    x_culture = cultureunit_shop(title=x_title, cultures_dir=get_test_cultures_dir())
+    assert x_culture.title == x_title
     assert x_culture._manager_name is None
 
     # WHEN

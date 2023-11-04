@@ -4,7 +4,7 @@ from src.culture.culture import (
     set_bank_partybankunits_to_agenda_partyunits,
 )
 from src.culture.examples.culture_env_kit import (
-    get_temp_env_handle,
+    get_temp_env_title,
     get_test_cultures_dir,
     env_dir_setup_cleanup,
 )
@@ -27,14 +27,14 @@ def test_culture_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
     x_culture.refresh_bank_public_agendas_data()
 
     bob_text = "bob"
     tim_text = "tim"
     bob_agenda = agendaunit_shop(_healer=bob_text)
     tim_partyunit = partyunit_shop(
-        title=tim_text,
+        handle=tim_text,
         _agenda_credit=0.9,
         _agenda_debt=0.8,
         _agenda_goal_credit=0.7,
@@ -70,7 +70,7 @@ def test_culture_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     # THEN
     tim_ledger = ledger_dict.get(tim_text)
     assert tim_ledger.agenda_healer == bob_text
-    assert tim_ledger.title == tim_text
+    assert tim_ledger.handle == tim_text
     assert tim_ledger._agenda_credit == 0.9
     assert tim_ledger._agenda_debt == 0.8
     assert tim_ledger._agenda_goal_credit == 0.7
@@ -153,14 +153,14 @@ def test_RiverBlockUnit_block_returned_WorksCorrectly():
 
 def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cleanup):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
     x_culture.refresh_bank_public_agendas_data()
 
     bob_text = "bob"
     sal_text = "sal"
     bob_agenda = agendaunit_shop(_healer=bob_text)
     partyunit_sal = partyunit_shop(
-        title=sal_text,
+        handle=sal_text,
         _agenda_credit=0.9,
         _agenda_debt=0.8,
         _agenda_goal_credit=0.7,
@@ -174,7 +174,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
 
     tim_text = "tim"
     partyunit_tim = partyunit_shop(
-        title=tim_text,
+        handle=tim_text,
         _agenda_credit=0.012,
         _agenda_debt=0.017,
         _agenda_goal_credit=0.077,
@@ -218,7 +218,7 @@ def test_river_block_insert_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
 
     bob_text = "bob"
     tim_text = "tim"
@@ -264,7 +264,7 @@ def test_RiverLedgerUnit_Exists():
     tom_text = "tom"
     x1_partydbunit = PartyDBUnit(
         agenda_healer=bob_text,
-        title=sal_text,
+        handle=sal_text,
         _agenda_credit=0.66,
         _agenda_debt=0.2,
         _agenda_goal_credit=0.4,
@@ -276,7 +276,7 @@ def test_RiverLedgerUnit_Exists():
     )
     x2_partydbunit = PartyDBUnit(
         agenda_healer=bob_text,
-        title=tom_text,
+        handle=tom_text,
         _agenda_credit=0.05,
         _agenda_debt=0.09,
         _agenda_goal_credit=0.055,
@@ -287,8 +287,8 @@ def test_RiverLedgerUnit_Exists():
         _debtor_active=True,
     )
     x_partyview_dict = {
-        x1_partydbunit.title: x1_partydbunit,
-        x2_partydbunit.title: x2_partydbunit,
+        x1_partydbunit.handle: x1_partydbunit,
+        x2_partydbunit.handle: x2_partydbunit,
     }
     # WHEN
     river_ledger_unit = RiverLedgerUnit(
@@ -350,16 +350,16 @@ def test_agenda_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr():
     wil_text = "wil"
     fry_text = "fry"
     elu_text = "elu"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=sam_text))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=wil_text))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(title=fry_text))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=sam_text))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=wil_text))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=fry_text))
     assert x_agenda._partys.get(sam_text)._bank_tax_paid is None
     assert x_agenda._partys.get(sam_text)._bank_tax_diff is None
     assert x_agenda._partys.get(wil_text)._bank_tax_paid is None
     assert x_agenda._partys.get(wil_text)._bank_tax_diff is None
     assert x_agenda._partys.get(fry_text)._bank_tax_paid is None
     assert x_agenda._partys.get(fry_text)._bank_tax_diff is None
-    elu_partyunit = partyunit_shop(title=elu_text)
+    elu_partyunit = partyunit_shop(handle=elu_text)
     elu_partyunit._bank_tax_paid = 0.003
     elu_partyunit._bank_tax_diff = 0.007
     x_agenda.set_partyunit(partyunit=elu_partyunit)
@@ -394,7 +394,7 @@ def test_get_partyunit_table_update_bank_tax_paid_sqlstr_CorrectlyPopulatesTable
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
 
     bob_text = "bob"
     tom_text = "tom"
@@ -402,7 +402,7 @@ def test_get_partyunit_table_update_bank_tax_paid_sqlstr_CorrectlyPopulatesTable
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
     partyunit_tom = partyunit_shop(
-        title=tom_text,
+        handle=tom_text,
         _agenda_credit=0.9,
         _agenda_debt=0.8,
         _agenda_goal_credit=0.7,
@@ -416,7 +416,7 @@ def test_get_partyunit_table_update_bank_tax_paid_sqlstr_CorrectlyPopulatesTable
         x_agenda=bob_agenda, partyunit_x=partyunit_tom
     )
     partyunit_sal = partyunit_shop(
-        title=sal_text,
+        handle=sal_text,
         _agenda_credit=0.9,
         _agenda_debt=0.8,
         _agenda_goal_credit=0.7,

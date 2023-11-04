@@ -1,6 +1,6 @@
 from src.culture.culture import cultureunit_shop
 from src.culture.examples.culture_env_kit import (
-    get_temp_env_handle,
+    get_temp_env_title,
     get_test_cultures_dir,
     env_dir_setup_cleanup,
 )
@@ -9,7 +9,7 @@ from src.culture.bank_sqlstr import get_db_tables, get_db_columns
 
 def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
     # GIVEN create culture
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
 
     # WHEN
     x_culture.create_dirs_if_null(in_memory_bank=True)
@@ -30,7 +30,7 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     agendaunit_columns = {healer_text: 1, rational_text: 1}
 
     agenda_healer_text = "agenda_healer"
-    title_text = "title"
+    handle_text = "handle"
     _agenda_credit_text = "_agenda_credit"
     _agenda_debt_text = "_agenda_debt"
     _agenda_goal_credit_text = "_agenda_goal_credit"
@@ -47,7 +47,7 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     partyunit_text = "partyunit"
     partyunit_columns = {
         agenda_healer_text: 1,
-        title_text: 1,
+        handle_text: 1,
         _agenda_credit_text: 1,
         _agenda_debt_text: 1,
         _agenda_goal_credit_text: 1,

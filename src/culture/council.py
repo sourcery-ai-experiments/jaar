@@ -7,7 +7,7 @@ from src.agenda.agenda import (
     agendaunit_shop,
     partyunit_shop,
     get_from_json as agendaunit_get_from_json,
-    PartyTitle,
+    PartyHandle,
 )
 from src.agenda.x_func import (
     x_get_json,
@@ -35,7 +35,7 @@ class CouncilDub(PersonName):
 class CouncilAdmin:
     _council_dub: CouncilDub
     _env_dir: str
-    _culture_handle: str
+    _culture_title: str
     _councilunit_dir: str = None
     _councilunits_dir: str = None
     _seed_file_name: str = None
@@ -175,8 +175,8 @@ class CouncilAdmin:
 
     def _get_empty_seed_agenda(self):
         x_agenda = agendaunit_shop(_healer=self._council_dub, _weight=0)
-        x_agenda.add_partyunit(title=self._council_dub)
-        x_agenda.set_culture_handle(self._culture_handle)
+        x_agenda.add_partyunit(handle=self._council_dub)
+        x_agenda.set_culture_title(self._culture_title)
         return x_agenda
 
     def erase_depot_agenda(self, healer):
@@ -215,12 +215,12 @@ class CouncilAdmin:
 
 
 def counciladmin_shop(
-    _council_dub: CouncilDub, _env_dir: str, _culture_handle: str
+    _council_dub: CouncilDub, _env_dir: str, _culture_title: str
 ) -> CouncilAdmin:
     x_counciladmin = CouncilAdmin(
         _council_dub=_council_dub,
         _env_dir=_env_dir,
-        _culture_handle=_culture_handle,
+        _culture_title=_culture_title,
     )
     x_counciladmin.set_dirs()
     return x_counciladmin
@@ -233,9 +233,9 @@ class CouncilUnit:
 
     def refresh_depot_agendas(self):
         for party_x in self._seed._partys.values():
-            if party_x.title != self._admin._council_dub:
+            if party_x.handle != self._admin._council_dub:
                 party_agenda = agendaunit_get_from_json(
-                    x_agenda_json=self._admin.open_public_agenda(party_x.title)
+                    x_agenda_json=self._admin.open_public_agenda(party_x.handle)
                 )
                 self.set_depot_agenda(
                     x_agenda=party_agenda,
@@ -282,14 +282,14 @@ class CouncilUnit:
             self._admin.save_agenda_to_digest(x_agenda)
         elif link_type == "ignore":
             new_x_agenda = agendaunit_shop(_healer=outer_healer)
-            new_x_agenda.set_culture_handle(self._admin._culture_handle)
+            new_x_agenda.set_culture_title(self._admin._culture_title)
             self.set_ignore_agenda_file(new_x_agenda, new_x_agenda._healer)
 
     def _set_assignment_depotlink(self, outer_healer):
         src_agenda = self._admin.open_depot_agenda(outer_healer)
         src_agenda.set_agenda_metrics()
         empty_agenda = agendaunit_shop(_healer=self._admin._council_dub)
-        empty_agenda.set_culture_handle(self._admin._culture_handle)
+        empty_agenda.set_culture_title(self._admin._culture_title)
         assign_agenda = src_agenda.get_assignment(
             empty_agenda, self.get_seed()._partys, self._admin._council_dub
         )
@@ -298,16 +298,16 @@ class CouncilUnit:
 
     def _set_partyunit_depotlink(
         self,
-        title: PartyTitle,
+        handle: PartyHandle,
         link_type: str = None,
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
-        party_x = self.get_seed().get_party(title)
+        party_x = self.get_seed().get_party(handle)
         if party_x is None:
             self.get_seed().set_partyunit(
                 partyunit_shop(
-                    title=title,
+                    handle=handle,
                     depotlink_type=link_type,
                     creditor_weight=creditor_weight,
                     debtor_weight=debtor_weight,
@@ -317,12 +317,12 @@ class CouncilUnit:
             party_x.set_depotlink_type(link_type, creditor_weight, debtor_weight)
 
     def del_depot_agenda(self, agenda_healer: str):
-        self._del_depotlink(partytitle=agenda_healer)
+        self._del_depotlink(partyhandle=agenda_healer)
         self._admin.erase_depot_agenda(agenda_healer)
         self._admin.erase_digest_agenda(agenda_healer)
 
-    def _del_depotlink(self, partytitle: PartyTitle):
-        self._seed.get_party(partytitle).del_depotlink_type()
+    def _del_depotlink(self, partyhandle: PartyHandle):
+        self._seed.get_party(partyhandle).del_depotlink_type()
 
     def get_seed(self):
         if self._seed is None:
@@ -344,11 +344,11 @@ class CouncilUnit:
         self._admin.save_agenda_to_digest(agendaunit, src_agenda_healer)
 
     # housekeeping
-    def set_env_dir(self, env_dir: str, council_dub: CouncilDub, culture_handle: str):
+    def set_env_dir(self, env_dir: str, council_dub: CouncilDub, culture_title: str):
         self._admin = counciladmin_shop(
             _council_dub=council_dub,
             _env_dir=env_dir,
-            _culture_handle=culture_handle,
+            _culture_title=culture_title,
         )
 
     def create_core_dir_and_files(self, seed_agenda: AgendaUnit = None):
@@ -356,10 +356,10 @@ class CouncilUnit:
 
 
 def councilunit_shop(
-    title: str, env_dir: str, culture_handle: str, _auto_output_to_public: bool = None
+    handle: str, env_dir: str, culture_title: str, _auto_output_to_public: bool = None
 ) -> CouncilUnit:
     x_council = CouncilUnit()
-    x_council.set_env_dir(env_dir, title, culture_handle=culture_handle)
+    x_council.set_env_dir(env_dir, handle, culture_title=culture_title)
     x_council.get_seed()
     x_council._seed._set_auto_output_to_public(_auto_output_to_public)
     x_council.set_seed()

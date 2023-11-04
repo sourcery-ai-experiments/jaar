@@ -1,7 +1,7 @@
 from src.agenda.agenda import agendaunit_shop
 from src.culture.culture import cultureunit_shop
 from src.culture.examples.culture_env_kit import (
-    get_temp_env_handle,
+    get_temp_env_title,
     get_test_cultures_dir,
     env_dir_setup_cleanup,
 )
@@ -33,23 +33,23 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
 
     bob_text = "bob"
     tom_text = "tom"
     sal_text = "sal"
 
     sal = agendaunit_shop(_healer=sal_text)
-    sal.add_partyunit(title=bob_text, creditor_weight=1)
-    sal.add_partyunit(title=tom_text, creditor_weight=3)
+    sal.add_partyunit(handle=bob_text, creditor_weight=1)
+    sal.add_partyunit(handle=tom_text, creditor_weight=3)
     x_culture.save_public_agenda(x_agenda=sal)
 
     bob = agendaunit_shop(_healer=bob_text)
-    bob.add_partyunit(title=sal_text, creditor_weight=1)
+    bob.add_partyunit(handle=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob)
 
     tom = agendaunit_shop(_healer=tom_text)
-    tom.add_partyunit(title=sal_text, creditor_weight=1)
+    tom.add_partyunit(handle=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=tom)
 
     x_culture.refresh_bank_public_agendas_data()
@@ -101,7 +101,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 agendas, 85% of river blocks to sal
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
 
     sal_text = "sal"
     bob_text = "bob"
@@ -109,18 +109,18 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable
     ava_text = "ava"
 
     sal_agenda = agendaunit_shop(_healer=sal_text)
-    sal_agenda.add_partyunit(title=bob_text, creditor_weight=2)
-    sal_agenda.add_partyunit(title=tom_text, creditor_weight=7)
-    sal_agenda.add_partyunit(title=ava_text, creditor_weight=1)
+    sal_agenda.add_partyunit(handle=bob_text, creditor_weight=2)
+    sal_agenda.add_partyunit(handle=tom_text, creditor_weight=7)
+    sal_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=sal_agenda)
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
-    bob_agenda.add_partyunit(title=sal_text, creditor_weight=3)
-    bob_agenda.add_partyunit(title=ava_text, creditor_weight=1)
+    bob_agenda.add_partyunit(handle=sal_text, creditor_weight=3)
+    bob_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
 
     tom_agenda = agendaunit_shop(_healer=tom_text)
-    tom_agenda.add_partyunit(title=sal_text, creditor_weight=2)
+    tom_agenda.add_partyunit(handle=sal_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=tom_agenda)
 
     ava_agenda = agendaunit_shop(_healer=ava_text)
@@ -167,7 +167,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
 
     sal_text = "sal"
     bob_text = "bob"
@@ -176,26 +176,26 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable
     elu_text = "elu"
 
     sal_agenda = agendaunit_shop(_healer=sal_text)
-    sal_agenda.add_partyunit(title=bob_text, creditor_weight=2)
-    sal_agenda.add_partyunit(title=tom_text, creditor_weight=7)
-    sal_agenda.add_partyunit(title=ava_text, creditor_weight=1)
+    sal_agenda.add_partyunit(handle=bob_text, creditor_weight=2)
+    sal_agenda.add_partyunit(handle=tom_text, creditor_weight=7)
+    sal_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=sal_agenda)
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
-    bob_agenda.add_partyunit(title=sal_text, creditor_weight=3)
-    bob_agenda.add_partyunit(title=ava_text, creditor_weight=1)
+    bob_agenda.add_partyunit(handle=sal_text, creditor_weight=3)
+    bob_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
 
     tom_agenda = agendaunit_shop(_healer=tom_text)
-    tom_agenda.add_partyunit(title=sal_text, creditor_weight=2)
+    tom_agenda.add_partyunit(handle=sal_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=tom_agenda)
 
     ava_agenda = agendaunit_shop(_healer=ava_text)
-    ava_agenda.add_partyunit(title=elu_text, creditor_weight=2)
+    ava_agenda.add_partyunit(handle=elu_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=ava_agenda)
 
     elu_agenda = agendaunit_shop(_healer=elu_text)
-    elu_agenda.add_partyunit(title=ava_text, creditor_weight=2)
+    elu_agenda.add_partyunit(handle=ava_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
     x_culture.refresh_bank_public_agendas_data()
@@ -240,7 +240,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
 
     sal_text = "sal"
     bob_text = "bob"
@@ -249,27 +249,27 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable
     elu_text = "elu"
 
     sal_agenda = agendaunit_shop(_healer=sal_text)
-    sal_agenda.add_partyunit(title=bob_text, creditor_weight=2)
-    sal_agenda.add_partyunit(title=tom_text, creditor_weight=7)
-    sal_agenda.add_partyunit(title=ava_text, creditor_weight=1)
+    sal_agenda.add_partyunit(handle=bob_text, creditor_weight=2)
+    sal_agenda.add_partyunit(handle=tom_text, creditor_weight=7)
+    sal_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=sal_agenda)
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
-    bob_agenda.add_partyunit(title=sal_text, creditor_weight=3)
-    bob_agenda.add_partyunit(title=ava_text, creditor_weight=1)
+    bob_agenda.add_partyunit(handle=sal_text, creditor_weight=3)
+    bob_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
 
     tom_agenda = agendaunit_shop(_healer=tom_text)
-    tom_agenda.add_partyunit(title=sal_text, creditor_weight=2)
+    tom_agenda.add_partyunit(handle=sal_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=tom_agenda)
 
     ava_agenda = agendaunit_shop(_healer=ava_text)
-    ava_agenda.add_partyunit(title=elu_text, creditor_weight=2)
+    ava_agenda.add_partyunit(handle=elu_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=ava_agenda)
 
     elu_agenda = agendaunit_shop(_healer=elu_text)
-    elu_agenda.add_partyunit(title=ava_text, creditor_weight=19)
-    elu_agenda.add_partyunit(title=sal_text, creditor_weight=1)
+    elu_agenda.add_partyunit(handle=ava_text, creditor_weight=19)
+    elu_agenda.add_partyunit(handle=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
     x_culture.refresh_bank_public_agendas_data()
@@ -317,7 +317,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
 
     sal_text = "sal"
     bob_text = "bob"
@@ -326,27 +326,27 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
     elu_text = "elu"
 
     sal_agenda = agendaunit_shop(_healer=sal_text)
-    sal_agenda.add_partyunit(title=bob_text, creditor_weight=2)
-    sal_agenda.add_partyunit(title=tom_text, creditor_weight=7)
-    sal_agenda.add_partyunit(title=ava_text, creditor_weight=1)
+    sal_agenda.add_partyunit(handle=bob_text, creditor_weight=2)
+    sal_agenda.add_partyunit(handle=tom_text, creditor_weight=7)
+    sal_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=sal_agenda)
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
-    bob_agenda.add_partyunit(title=sal_text, creditor_weight=3)
-    bob_agenda.add_partyunit(title=ava_text, creditor_weight=1)
+    bob_agenda.add_partyunit(handle=sal_text, creditor_weight=3)
+    bob_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
 
     tom_agenda = agendaunit_shop(_healer=tom_text)
-    tom_agenda.add_partyunit(title=sal_text, creditor_weight=2)
+    tom_agenda.add_partyunit(handle=sal_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=tom_agenda)
 
     ava_agenda = agendaunit_shop(_healer=ava_text)
-    ava_agenda.add_partyunit(title=elu_text, creditor_weight=2)
+    ava_agenda.add_partyunit(handle=elu_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=ava_agenda)
 
     elu_agenda = agendaunit_shop(_healer=elu_text)
-    elu_agenda.add_partyunit(title=ava_text, creditor_weight=19)
-    elu_agenda.add_partyunit(title=sal_text, creditor_weight=1)
+    elu_agenda.add_partyunit(handle=ava_text, creditor_weight=19)
+    elu_agenda.add_partyunit(handle=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
     x_culture.refresh_bank_public_agendas_data()
@@ -376,7 +376,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
 
     sal_text = "sal"
     bob_text = "bob"
@@ -385,27 +385,27 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable
     elu_text = "elu"
 
     sal_agenda = agendaunit_shop(_healer=sal_text)
-    sal_agenda.add_partyunit(title=bob_text, creditor_weight=2)
-    sal_agenda.add_partyunit(title=tom_text, creditor_weight=7)
-    sal_agenda.add_partyunit(title=ava_text, creditor_weight=1)
+    sal_agenda.add_partyunit(handle=bob_text, creditor_weight=2)
+    sal_agenda.add_partyunit(handle=tom_text, creditor_weight=7)
+    sal_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=sal_agenda)
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
-    bob_agenda.add_partyunit(title=sal_text, creditor_weight=3)
-    bob_agenda.add_partyunit(title=ava_text, creditor_weight=1)
+    bob_agenda.add_partyunit(handle=sal_text, creditor_weight=3)
+    bob_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
 
     tom_agenda = agendaunit_shop(_healer=tom_text)
-    tom_agenda.add_partyunit(title=sal_text, creditor_weight=2)
+    tom_agenda.add_partyunit(handle=sal_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=tom_agenda)
 
     ava_agenda = agendaunit_shop(_healer=ava_text)
-    ava_agenda.add_partyunit(title=elu_text, creditor_weight=2)
+    ava_agenda.add_partyunit(handle=elu_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=ava_agenda)
 
     elu_agenda = agendaunit_shop(_healer=elu_text)
-    elu_agenda.add_partyunit(title=ava_text, creditor_weight=19)
-    elu_agenda.add_partyunit(title=sal_text, creditor_weight=1)
+    elu_agenda.add_partyunit(handle=ava_text, creditor_weight=19)
+    elu_agenda.add_partyunit(handle=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
     x_culture.refresh_bank_public_agendas_data()
@@ -454,7 +454,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyBuildsASingleContinuousRang
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
 
     sal_text = "sal"
     bob_text = "bob"
@@ -463,27 +463,27 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyBuildsASingleContinuousRang
     elu_text = "elu"
 
     sal_agenda = agendaunit_shop(_healer=sal_text)
-    sal_agenda.add_partyunit(title=bob_text, creditor_weight=2)
-    sal_agenda.add_partyunit(title=tom_text, creditor_weight=7)
-    sal_agenda.add_partyunit(title=ava_text, creditor_weight=1)
+    sal_agenda.add_partyunit(handle=bob_text, creditor_weight=2)
+    sal_agenda.add_partyunit(handle=tom_text, creditor_weight=7)
+    sal_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=sal_agenda)
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
-    bob_agenda.add_partyunit(title=sal_text, creditor_weight=3)
-    bob_agenda.add_partyunit(title=ava_text, creditor_weight=1)
+    bob_agenda.add_partyunit(handle=sal_text, creditor_weight=3)
+    bob_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
 
     tom_agenda = agendaunit_shop(_healer=tom_text)
-    tom_agenda.add_partyunit(title=sal_text, creditor_weight=2)
+    tom_agenda.add_partyunit(handle=sal_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=tom_agenda)
 
     ava_agenda = agendaunit_shop(_healer=ava_text)
-    ava_agenda.add_partyunit(title=elu_text, creditor_weight=2)
+    ava_agenda.add_partyunit(handle=elu_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=ava_agenda)
 
     elu_agenda = agendaunit_shop(_healer=elu_text)
-    elu_agenda.add_partyunit(title=ava_text, creditor_weight=19)
-    elu_agenda.add_partyunit(title=sal_text, creditor_weight=1)
+    elu_agenda.add_partyunit(handle=ava_text, creditor_weight=19)
+    elu_agenda.add_partyunit(handle=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
     x_culture.refresh_bank_public_agendas_data()
@@ -523,7 +523,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
 ):
     """GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal"""
     # GIVEN
-    x_culture = cultureunit_shop(get_temp_env_handle(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
 
     sal_text = "sal"
     bob_text = "bob"
@@ -532,27 +532,27 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     elu_text = "elu"
 
     sal_agenda_src = agendaunit_shop(_healer=sal_text)
-    sal_agenda_src.add_partyunit(title=bob_text, creditor_weight=2, debtor_weight=2)
-    sal_agenda_src.add_partyunit(title=tom_text, creditor_weight=2, debtor_weight=1)
-    sal_agenda_src.add_partyunit(title=ava_text, creditor_weight=2, debtor_weight=2)
+    sal_agenda_src.add_partyunit(handle=bob_text, creditor_weight=2, debtor_weight=2)
+    sal_agenda_src.add_partyunit(handle=tom_text, creditor_weight=2, debtor_weight=1)
+    sal_agenda_src.add_partyunit(handle=ava_text, creditor_weight=2, debtor_weight=2)
     x_culture.save_public_agenda(x_agenda=sal_agenda_src)
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
-    bob_agenda.add_partyunit(title=sal_text, creditor_weight=3)
-    bob_agenda.add_partyunit(title=ava_text, creditor_weight=1)
+    bob_agenda.add_partyunit(handle=sal_text, creditor_weight=3)
+    bob_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
 
     tom_agenda = agendaunit_shop(_healer=tom_text)
-    tom_agenda.add_partyunit(title=sal_text)
+    tom_agenda.add_partyunit(handle=sal_text)
     x_culture.save_public_agenda(x_agenda=tom_agenda)
 
     ava_agenda = agendaunit_shop(_healer=ava_text)
-    ava_agenda.add_partyunit(title=elu_text, creditor_weight=2)
+    ava_agenda.add_partyunit(handle=elu_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=ava_agenda)
 
     elu_agenda = agendaunit_shop(_healer=elu_text)
-    elu_agenda.add_partyunit(title=ava_text, creditor_weight=8)
-    elu_agenda.add_partyunit(title=sal_text, creditor_weight=2)
+    elu_agenda.add_partyunit(handle=ava_text, creditor_weight=8)
+    elu_agenda.add_partyunit(handle=sal_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
     x_culture.refresh_bank_public_agendas_data()
@@ -609,10 +609,10 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     #     partyunit_x = sal_agenda_after._partys.get(sal_partybankunit.tax_healer)
     #     if partyunit_x != None:
     #         # print(
-    #         #     f"{sal_partybankunit.currency_master=} {sal_partybankunit.tax_healer=} {partyunit_x.title=} tax_total: {sal_partybankunit.tax_total} Tax Paid: {partyunit_x._bank_tax_paid}"
+    #         #     f"{sal_partybankunit.currency_master=} {sal_partybankunit.tax_healer=} {partyunit_x.handle=} tax_total: {sal_partybankunit.tax_total} Tax Paid: {partyunit_x._bank_tax_paid}"
     #         # )
     #         # print(
-    #         #     f"{sal_partybankunit.currency_master=} {sal_partybankunit.tax_healer=} {partyunit_x.title=} tax_diff:  {sal_partybankunit.tax_diff} Tax Paid: {partyunit_x._bank_tax_diff}"
+    #         #     f"{sal_partybankunit.currency_master=} {sal_partybankunit.tax_healer=} {partyunit_x.handle=} tax_diff:  {sal_partybankunit.tax_diff} Tax Paid: {partyunit_x._bank_tax_diff}"
     #         # )
     #         assert sal_partybankunit.tax_total == partyunit_x._bank_tax_paid
     #         assert sal_partybankunit.tax_diff == partyunit_x._bank_tax_diff
@@ -622,8 +622,8 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     assert ava_party._bank_tax_diff is None
 
     # for partyunit_x in sal_agenda_after._partys.values():
-    #     print(f"sal_agenda_after {partyunit_x.title=} {partyunit_x._bank_tax_paid=}")
-    #     partybankunit_x = sal_partybankunits.get(partyunit_x.title)
+    #     print(f"sal_agenda_after {partyunit_x.handle=} {partyunit_x._bank_tax_paid=}")
+    #     partybankunit_x = sal_partybankunits.get(partyunit_x.handle)
     #     if partybankunit_x is None:
     #         assert partyunit_x._bank_tax_paid is None
     #         assert partyunit_x._bank_tax_diff is None

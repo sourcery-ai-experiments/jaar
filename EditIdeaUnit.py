@@ -738,7 +738,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.idea2group_table.setColumnWidth(1, 50)
         self.idea2group_table.setColumnWidth(2, 70)
         self.idea2group_table.setHorizontalHeaderLabels(
-            ["Group display", "group_title", "LW Force"]
+            ["Group display", "group_handle", "LW Force"]
         )
         # print(f"{self.x_idea._balancelinks=}")
         # print(f"{self.x_idea._balanceheirs=}")
@@ -767,24 +767,24 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
     def idea2group_insert_combo_load(self):
         # groupunits_list = list(self.agenda_x._groupunits.values())
-        groupunits_titles_list = []
+        groupunits_handles_list = []
         for groupunit in self.agenda_x._groups.values():
             group_previously_selected = any(
                 groupunit.brand == balancelink.brand
                 for balancelink in self.x_idea._balancelinks.values()
             )
             if not group_previously_selected:
-                groupunits_titles_list.append(groupunit.brand)
-        groupunits_titles_list.sort(key=lambda x: x.lower(), reverse=False)
+                groupunits_handles_list.append(groupunit.brand)
+        groupunits_handles_list.sort(key=lambda x: x.lower(), reverse=False)
 
         self.idea2group_insert_combo.clear()
-        self.idea2group_insert_combo.addItems(groupunits_titles_list)
+        self.idea2group_insert_combo.addItems(groupunits_handles_list)
 
     def idea2group_update(self):
-        bd_title_new = self.idea2group_insert_combo.currentText()
-        if bd_title_new == "":
-            raise Exception("bd_title is empty, idea2bd cannot be updated")
-        balancelink_new = Balancelink(brand=GroupBrand(bd_title_new), weight=1)
+        bd_handle_new = self.idea2group_insert_combo.currentText()
+        if bd_handle_new == "":
+            raise Exception("bd_handle is empty, idea2bd cannot be updated")
+        balancelink_new = Balancelink(brand=GroupBrand(bd_handle_new), weight=1)
         self.agenda_x.edit_idea_attr(
             road=f"{self.x_idea._pad},{self.x_idea._label}", balancelink=balancelink_new
         )
@@ -792,14 +792,14 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.idea2group_table_load()
 
     def idea2group_delete(self):
-        delete_group_title = ""
+        delete_group_handle = ""
         if self.idea2group_table.currentRow() != None:
-            delete_group_title = self.idea2group_table.item(
+            delete_group_handle = self.idea2group_table.item(
                 self.idea2group_table.currentRow(), 1
             ).text()
             self.agenda_x.edit_idea_attr(
                 road=f"{self.x_idea._pad},{self.x_idea._label}",
-                balancelink_del=delete_group_title,
+                balancelink_del=delete_group_handle,
             )
             self.idea2group_insert_combo_load()
             self.idea2group_table_load()
@@ -975,7 +975,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             requiredheir_count_flag=requiredheir_count_flag,
             required_count_flag=required_count_flag,
             required_view_flag=required_view_flag,
-            required_view_title=required_view_base,
+            required_view_handle=required_view_base,
             acptfactheir_view_flag=acptfactheir_view_flag,
             root_percent_flag=root_percent_flag,
             source_agenda=self.agenda_x,
