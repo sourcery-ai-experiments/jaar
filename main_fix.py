@@ -91,9 +91,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.healer_delete_button.clicked.connect(self.healer_delete)
         self.healers_table.itemClicked.connect(self.healers_table_select)
         self.reload_all_src_agendas_button.clicked.connect(self.reload_all_src_agendas)
-        self.set_public_agenda_button.clicked.connect(
-            self.save_output_agenda_to_public()
-        )
+        self.set_public_agenda_button.clicked.connect(self.save_output_agenda_to_public)
         self.set_public_and_reload_srcs_button.clicked.connect(
             self.set_public_and_reload_srcs
         )
@@ -112,13 +110,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.depotlinks_table.itemClicked.connect(self.depotlinks_table_select)
         self.five_issue_button.clicked.connect(self.open_edit5issue)
 
-        self.culture_x = None
         self.x_council = None
+        self.culture_x = None
         self.ignore_agenda_x = None
         setup_test_example_environment()
         first_env = "ex5"
         self.culture_x = cultureunit_shop(
-            handle=first_env, cultures_dir=get_test_cultures_dir()
+            title=first_env, cultures_dir=get_test_cultures_dir()
         )
         self.refresh_culture()
         self.culture_title_combo_refresh()
@@ -146,7 +144,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def culture_load_from_file(self):
         culture_selected = self.culture_title_combo.currentText()
         self.culture_x = cultureunit_shop(
-            handle=culture_selected, cultures_dir=get_test_cultures_dir()
+            title=culture_selected, cultures_dir=get_test_cultures_dir()
         )
         self.culture_x.create_dirs_if_null(in_memory_bank=False)
         self.culture_title.setText(culture_selected)
@@ -172,9 +170,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._healer_load(council_dub=x_council_dub)
 
     def _healer_load(self, council_dub: str):
-        self.culture_x.create_new_councilunit(handle=council_dub)
+        self.culture_x.create_new_councilunit(council_dub=council_dub)
         self.x_council = self.culture_x._councilunits.get(council_dub)
-        self.council_dub.setText(self.x_council._admin.handle)
+        self.council_dub.setText(self.x_council._admin._council_dub)
         self.refresh_healer()
 
     def depotlinks_table_select(self):
@@ -318,11 +316,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_agenda_healer_list(self):
         agendas_list = []
-        for file_name in self.get_public_dir_file_names_list():
+        for file_name in self.culture_x.get_public_dir_file_names_list():
             agenda_json = x_func_open_file(
-                dest_dir=self.get_public_dir(), file_name=file_name
+                dest_dir=self.culture_x.get_public_dir(), file_name=file_name
             )
-            agendas_list.append(get_agenda_from_json(x_agenda_json=agenda_json))
+            x_agenda = get_agenda_from_json(x_agenda_json=agenda_json)
+            agendas_list.append(x_agenda._healer)
         return agendas_list
 
     def get_council_dub_list(self):
@@ -337,11 +336,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def get_depotlink_list(self):
         depotlinks_list = []
         if self.x_council != None:
-            for cl_val in self.x_council._depotlinks.values():
+            cl_dir = self.x_council._admin._agendas_depot_dir
+            councilunit_files = x_func_dir_files(cl_dir)
+            # for cl_val in self.x_council._admin._depotlinks.values():
+            for cl_filename in councilunit_files:
+                print(f"{cl_dir=} {cl_filename=}")
+                agenda_json = x_func_open_file(cl_dir, file_name=f"{cl_filename}")
+                cl_val = get_agenda_from_json(agenda_json)
                 depotlink_row = [
-                    cl_val.agenda_healer,
-                    cl_val.depotlink_type,
-                    str(cl_val.weight),
+                    cl_val._healer,
+                    "",
+                    "",
                 ]
                 depotlinks_list.append(depotlink_row)
         return depotlinks_list
@@ -350,7 +355,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         x_list = []
         if self.x_council != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.x_council_admin._agendas_digest_dir,
+                dir_path=self.x_council._admin._agendas_digest_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -469,7 +474,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.x_council is None:
             column_header = "Agendalinks Table"
         elif self.x_council != None:
-            column_header = f"'{self.x_council._admin.handle}' Agendas"
+            column_header = f"'{self.x_council._admin._council_dub}' Agendas"
         self.refresh_x(
             self.depotlinks_table,
             [column_header, "Link Type", "Weight"],
@@ -622,6 +627,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for row, list_x in enumerate(populate_list):
             table_x.setRowCount(row + 1)
             table_x.setRowHeight(row, 9)
+            print(f"{list_x=}")
             if len(list_x) == 3:
                 table_x.setHorizontalHeaderLabels(column_header)
                 table_x.setItem(row, 0, qtw1(str(list_x[0])))
@@ -631,6 +637,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 table_x.setItem(row, 0, qtw1(list_x[0]))
 
 
-if __handle__ == "__main__":
+if __name__ == "__main__":
     app = MainApp(sys_argv)
     sys_exit(app.exec())

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Form</class>
- <widget class="QWidget" handle="Form">
-  <property handle="geometry">
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -10,11 +10,11 @@
     <height>712</height>
    </rect>
   </property>
-  <property handle="windowkind">
+  <property name="windowkind">
    <string>Form</string>
   </property>
-  <widget class="QLineEdit" handle="input">
-   <property handle="geometry">
+  <widget class="QLineEdit" name="input">
+   <property name="geometry">
     <rect>
      <x>40</x>
      <y>20</y>
@@ -23,8 +23,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" handle="refresh_button">
-   <property handle="geometry">
+  <widget class="QPushButton" name="refresh_button">
+   <property name="geometry">
     <rect>
      <x>670</x>
      <y>20</y>
@@ -32,12 +32,12 @@
      <height>31</height>
     </rect>
    </property>
-   <property handle="text">
+   <property name="text">
     <string>Refresh All</string>
    </property>
   </widget>
-  <widget class="QTreeWidget" handle="baseideaunit">
-   <property handle="geometry">
+  <widget class="QTreeWidget" name="baseideaunit">
+   <property name="geometry">
     <rect>
      <x>10</x>
      <y>60</y>
@@ -46,13 +46,13 @@
     </rect>
    </property>
    <column>
-    <property handle="text">
+    <property name="text">
      <string notr="true">1</string>
     </property>
    </column>
   </widget>
-  <widget class="QPushButton" handle="close_button">
-   <property handle="geometry">
+  <widget class="QPushButton" name="close_button">
+   <property name="geometry">
     <rect>
      <x>890</x>
      <y>20</y>
@@ -60,12 +60,12 @@
      <height>28</height>
     </rect>
    </property>
-   <property handle="text">
+   <property name="text">
     <string>Close</string>
    </property>
   </widget>
-  <widget class="QTableWidget" handle="party_list">
-   <property handle="geometry">
+  <widget class="QTableWidget" name="party_list">
+   <property name="geometry">
     <rect>
      <x>420</x>
      <y>100</y>
@@ -74,8 +74,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" handle="open_groupedit_button">
-   <property handle="geometry">
+  <widget class="QPushButton" name="open_groupedit_button">
+   <property name="geometry">
     <rect>
      <x>430</x>
      <y>60</y>
@@ -83,12 +83,12 @@
      <height>31</height>
     </rect>
    </property>
-   <property handle="text">
+   <property name="text">
     <string>Open Group Edit</string>
    </property>
   </widget>
-  <widget class="QTableWidget" handle="acptfacts_table">
-   <property handle="geometry">
+  <widget class="QTableWidget" name="acptfacts_table">
+   <property name="geometry">
     <rect>
      <x>690</x>
      <y>180</y>
@@ -97,38 +97,38 @@
     </rect>
    </property>
    <column>
-    <property handle="text">
+    <property name="text">
      <string>AcptFactBase</string>
     </property>
    </column>
    <column>
-    <property handle="text">
+    <property name="text">
      <string>AcptFactPick</string>
     </property>
    </column>
    <column>
-    <property handle="text">
+    <property name="text">
      <string>Base</string>
     </property>
    </column>
    <column>
-    <property handle="text">
+    <property name="text">
      <string>Pick</string>
     </property>
    </column>
    <column>
-    <property handle="text">
+    <property name="text">
      <string>Open</string>
     </property>
    </column>
    <column>
-    <property handle="text">
+    <property name="text">
      <string>Close</string>
     </property>
    </column>
   </widget>
-  <widget class="QComboBox" handle="acptfact_pick_update_combo">
-   <property handle="geometry">
+  <widget class="QComboBox" name="acptfact_pick_update_combo">
+   <property name="geometry">
     <rect>
      <x>760</x>
      <y>110</y>
@@ -137,8 +137,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLabel" handle="label_10">
-   <property handle="geometry">
+  <widget class="QLabel" name="label_10">
+   <property name="geometry">
     <rect>
      <x>700</x>
      <y>140</y>
@@ -146,12 +146,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property handle="text">
+   <property name="text">
     <string>Open</string>
    </property>
   </widget>
-  <widget class="QLineEdit" handle="acptfact_nigh">
-   <property handle="geometry">
+  <widget class="QLineEdit" name="acptfact_nigh">
+   <property name="geometry">
     <rect>
      <x>1030</x>
      <y>140</y>
@@ -160,8 +160,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" handle="acptfact_delete_button">
-   <property handle="geometry">
+  <widget class="QPushButton" name="acptfact_delete_button">
+   <property name="geometry">
     <rect>
      <x>1190</x>
      <y>110</y>
@@ -169,12 +169,12 @@
      <height>30</height>
     </rect>
    </property>
-   <property handle="text">
+   <property name="text">
     <string>Del AcptFact</string>
    </property>
   </widget>
-  <widget class="QLineEdit" handle="acptfact_open">
-   <property handle="geometry">
+  <widget class="QLineEdit" name="acptfact_open">
+   <property name="geometry">
     <rect>
      <x>760</x>
      <y>140</y>
@@ -183,8 +183,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QCheckBox" handle="display_problem_acptfacts_cb">
-   <property handle="geometry">
+  <widget class="QCheckBox" name="display_problem_acptfacts_cb">
+   <property name="geometry">
     <rect>
      <x>1190</x>
      <y>140</y>
@@ -192,17 +192,17 @@
      <height>31</height>
     </rect>
    </property>
-   <property handle="font">
+   <property name="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property handle="text">
+   <property name="text">
     <string>Only Problem AcptFacts</string>
    </property>
   </widget>
-  <widget class="QLabel" handle="label_9">
-   <property handle="geometry">
+  <widget class="QLabel" name="label_9">
+   <property name="geometry">
     <rect>
      <x>690</x>
      <y>110</y>
@@ -210,12 +210,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property handle="text">
+   <property name="text">
     <string>AcptFact Pick:</string>
    </property>
   </widget>
-  <widget class="QLabel" handle="label_6">
-   <property handle="geometry">
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
     <rect>
      <x>690</x>
      <y>80</y>
@@ -223,12 +223,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property handle="text">
+   <property name="text">
     <string>AcptFact Base:</string>
    </property>
   </widget>
-  <widget class="QLabel" handle="label_11">
-   <property handle="geometry">
+  <widget class="QLabel" name="label_11">
+   <property name="geometry">
     <rect>
      <x>950</x>
      <y>140</y>
@@ -236,12 +236,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property handle="text">
+   <property name="text">
     <string>Nigh</string>
    </property>
   </widget>
-  <widget class="QLabel" handle="label_5">
-   <property handle="geometry">
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
     <rect>
      <x>770</x>
      <y>60</y>
@@ -249,12 +249,12 @@
      <height>20</height>
     </rect>
    </property>
-   <property handle="text">
+   <property name="text">
     <string>Change what is acptfact</string>
    </property>
   </widget>
-  <widget class="QPushButton" handle="acptfact_update_button">
-   <property handle="geometry">
+  <widget class="QPushButton" name="acptfact_update_button">
+   <property name="geometry">
     <rect>
      <x>1190</x>
      <y>80</y>
@@ -262,12 +262,12 @@
      <height>30</height>
     </rect>
    </property>
-   <property handle="text">
+   <property name="text">
     <string>Set AcptFact</string>
    </property>
   </widget>
-  <widget class="QComboBox" handle="acptfact_base_update_combo">
-   <property handle="geometry">
+  <widget class="QComboBox" name="acptfact_base_update_combo">
+   <property name="geometry">
     <rect>
      <x>760</x>
      <y>80</y>

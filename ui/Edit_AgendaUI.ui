@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Form</class>
- <widget class="QWidget" handle="Form">
-  <property handle="geometry">
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -10,11 +10,11 @@
     <height>722</height>
    </rect>
   </property>
-  <property handle="windowkind">
+  <property name="windowkind">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" handle="refresh_button">
-   <property handle="geometry">
+  <widget class="QPushButton" name="refresh_button">
+   <property name="geometry">
     <rect>
      <x>580</x>
      <y>20</y>
@@ -22,12 +22,12 @@
      <height>31</height>
     </rect>
    </property>
-   <property handle="text">
+   <property name="text">
     <string>Refresh All</string>
    </property>
   </widget>
-  <widget class="QPushButton" handle="close_button">
-   <property handle="geometry">
+  <widget class="QPushButton" name="close_button">
+   <property name="geometry">
     <rect>
      <x>800</x>
      <y>20</y>
@@ -35,12 +35,12 @@
      <height>28</height>
     </rect>
    </property>
-   <property handle="text">
+   <property name="text">
     <string>Close</string>
    </property>
   </widget>
-  <widget class="QTableWidget" handle="goal_table">
-   <property handle="geometry">
+  <widget class="QTableWidget" name="goal_table">
+   <property name="geometry">
     <rect>
      <x>40</x>
      <y>90</y>
@@ -49,53 +49,53 @@
     </rect>
    </property>
    <column>
-    <property handle="text">
+    <property name="text">
      <string>1</string>
     </property>
    </column>
    <column>
-    <property handle="text">
+    <property name="text">
      <string>2</string>
     </property>
    </column>
    <column>
-    <property handle="text">
+    <property name="text">
      <string>3</string>
     </property>
    </column>
    <column>
-    <property handle="text">
+    <property name="text">
      <string>4</string>
     </property>
    </column>
    <column>
-    <property handle="text">
+    <property name="text">
      <string>5</string>
     </property>
    </column>
    <column>
-    <property handle="text">
+    <property name="text">
      <string>6</string>
     </property>
    </column>
    <column>
-    <property handle="text">
+    <property name="text">
      <string>7</string>
     </property>
    </column>
    <column>
-    <property handle="text">
+    <property name="text">
      <string>8</string>
     </property>
    </column>
    <column>
-    <property handle="text">
+    <property name="text">
      <string>AcptFactBase_display</string>
     </property>
    </column>
   </widget>
-  <widget class="QLabel" handle="label_13">
-   <property handle="geometry">
+  <widget class="QLabel" name="label_13">
+   <property name="geometry">
     <rect>
      <x>40</x>
      <y>20</y>
@@ -103,17 +103,17 @@
      <height>31</height>
     </rect>
    </property>
-   <property handle="font">
+   <property name="font">
     <font>
      <pointsize>10</pointsize>
     </font>
    </property>
-   <property handle="text">
+   <property name="text">
     <string>Select what it to be done immediately</string>
    </property>
   </widget>
-  <widget class="QComboBox" handle="acptfact_base_update_combo">
-   <property handle="geometry">
+  <widget class="QComboBox" name="acptfact_base_update_combo">
+   <property name="geometry">
     <rect>
      <x>140</x>
      <y>50</y>
@@ -122,8 +122,8 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLabel" handle="label_6">
-   <property handle="geometry">
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
     <rect>
      <x>30</x>
      <y>50</y>
@@ -131,15 +131,15 @@
      <height>20</height>
     </rect>
    </property>
-   <property handle="text">
+   <property name="text">
     <string>AcptFact Base:</string>
    </property>
-   <property handle="alignment">
+   <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
-  <widget class="QCheckBox" handle="cb_acptfactbase_display">
-   <property handle="geometry">
+  <widget class="QCheckBox" name="cb_acptfactbase_display">
+   <property name="geometry">
     <rect>
      <x>910</x>
      <y>20</y>
@@ -147,12 +147,12 @@
      <height>21</height>
     </rect>
    </property>
-   <property handle="font">
+   <property name="font">
     <font>
      <pointsize>10</pointsize>
     </font>
    </property>
-   <property handle="text">
+   <property name="text">
     <string>Display acptfactbase/open/nigh</string>
    </property>
   </widget>
