@@ -316,12 +316,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_agenda_healer_list(self):
         agendas_list = []
-        for file_name in self.culture_x.get_public_dir_file_names_list():
-            agenda_json = x_func_open_file(
-                dest_dir=self.culture_x.get_public_dir(), file_name=file_name
-            )
-            x_agenda = get_agenda_from_json(x_agenda_json=agenda_json)
-            agendas_list.append(x_agenda._healer)
+        for file_name in x_func_dir_files(self.culture_x.get_public_dir()):
+            # agenda_json = x_func_open_file(
+            #     dest_dir=self.culture_x.get_public_dir(), file_name=file_name
+            # )
+            # x_agenda = get_agenda_from_json(x_agenda_json=agenda_json)
+            agendas_list.append([file_name])
         return agendas_list
 
     def get_council_dub_list(self):
@@ -474,7 +474,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.x_council is None:
             column_header = "Agendalinks Table"
         elif self.x_council != None:
-            column_header = f"'{self.x_council._admin._council_dub}' Agendas"
+            column_header = f"'{self.x_council._admin._council_dub}' agendas"
         self.refresh_x(
             self.depotlinks_table,
             [column_header, "Link Type", "Weight"],
@@ -600,7 +600,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def refresh_culture(self):
         self.refresh_x(
-            self.agendas_table, ["Agendas Table"], self.get_agenda_healer_list()
+            self.agendas_table,
+            ["Culture Public Agendas"],
+            self.get_agenda_healer_list(),
         )
         self.refresh_healers()
 
