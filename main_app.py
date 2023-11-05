@@ -50,9 +50,9 @@ class MainApp(QApplication):
         # create slot for making editmain visible
         self.main_window.open_editmain.connect(self.editmain_show)
 
-        self.edit_goal_view = Edit_Agenda()
+        self.edit_intent_view = Edit_Agenda()
         # create slot for making editmain visible
-        self.main_window.open_edit_goal.connect(self.edit_goal_show)
+        self.main_window.open_edit_intent.connect(self.edit_intent_show)
 
         self.edittime_view = EditAcptFactTime()
         # create slot for making editmain visible
@@ -73,10 +73,10 @@ class MainApp(QApplication):
         self.editproblem_view.refresh_all()
         self.editproblem_view.show()
 
-    def edit_goal_show(self):
-        self.edit_goal_view.agenda_x = self.main_window.agenda_x
-        self.edit_goal_view.refresh_all()
-        self.edit_goal_view.show()
+    def edit_intent_show(self):
+        self.edit_intent_view.agenda_x = self.main_window.agenda_x
+        self.edit_intent_view.refresh_all()
+        self.edit_intent_view.show()
 
     def editacptfact_show(self):
         self.edittime_view.agenda_x = self.main_window.agenda_x
@@ -89,7 +89,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     open_editmain = qtc.pyqtSignal(bool)
     open_editproblem = qtc.pyqtSignal(bool)
-    open_edit_goal = qtc.pyqtSignal(bool)
+    open_edit_intent = qtc.pyqtSignal(bool)
     open_edittime = qtc.pyqtSignal(bool)
     agenda_x_signal = qtc.pyqtSignal(AgendaUnit)
 
@@ -101,7 +101,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.save_close_button.clicked.connect(self.save_file_and_quit)
         self.editmain_button.clicked.connect(self.open_editmain)
         self.problem_popup_button.clicked.connect(self.open_editproblem)
-        self.edit_goal_button.clicked.connect(self.open_edit_goal)
+        self.edit_intent_button.clicked.connect(self.open_edit_intent)
         self.acptfact_nigh_now.clicked.connect(self.set_acptfact_time_nigh_now)
         self.acptfact_open_5daysago.clicked.connect(
             self.set_acptfact_time_open_5daysago
@@ -111,7 +111,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.acptfact_open_soft_spec1.clicked.connect(self.set_acptfact_time_open_soft)
         self.root_datetime_view.clicked.connect(self.open_edittime)
-        self.goal_task_complete.clicked.connect(self.set_goal_item_complete)
+        self.intent_task_complete.clicked.connect(self.set_intent_item_complete)
         self.cb_update_now_repeat.clicked.connect(self.startTimer)
         self.timer = qtc.QTimer()
         self.timer.timeout.connect(self.showTime)
@@ -140,7 +140,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             ["AcptFactBase", "AcptFactSelect", "Base", "AcptFact", "Open", "Nigh"]
         )
         self.acptfacts_table.setRowCount(0)
-        self.goal_states.itemClicked.connect(self.goal_task_display)
+        self.intent_states.itemClicked.connect(self.intent_task_display)
         # self.acptfact_update_combo.activated.connect(self.acptfact_update_heir)
 
         self.agenda_x_json = None
@@ -175,12 +175,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.timer.stop()
 
-    def set_goal_item_complete(self):
+    def set_intent_item_complete(self):
         if self.current_task_road is None:
             self.label_last_label.setText("")
         else:
             base_x = "A,time,jajatime"
-            self.agenda_x.set_goal_task_complete(
+            self.agenda_x.set_intent_task_complete(
                 task_road=self.current_task_road, base=base_x
             )
         self.label_last_label.setText(self.current_task_road)
@@ -330,11 +330,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.refresh_datetime_display()
         self.agenda_healer.setText(self.agenda_x._healer)
         self.acptfacts_table_load()
-        self.goal_states_load()
+        self.intent_states_load()
 
     def agenda_load(self, x_agenda_json: str):
         self.agenda_x = get_from_json(x_agenda_json=x_agenda_json)
-        self.promise_items = self.agenda_x.get_goal_items()
+        self.promise_items = self.agenda_x.get_intent_items()
         self.refresh_all()
 
     def get_acptfacts_list(self):
@@ -399,34 +399,34 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.base_road = None
         self.refresh_all
 
-    def goal_states_load(self):
+    def intent_states_load(self):
         self.agenda_x.get_tree_metrics()
-        goal_list = self.agenda_x.get_goal_items()
-        goal_list.sort(key=lambda x: x._agenda_importance, reverse=True)
-        self.goal_states.setSortingEnabled(True)
-        self.goal_states.setRowCount(0)
-        self.set_goal_states_table_properties()
+        intent_list = self.agenda_x.get_intent_items()
+        intent_list.sort(key=lambda x: x._agenda_importance, reverse=True)
+        self.intent_states.setSortingEnabled(True)
+        self.intent_states.setRowCount(0)
+        self.set_intent_states_table_properties()
 
-        self.label_goal_label_data.setText("")
-        self.label_goal_day_data.setText("")
-        self.label_goal_time_data.setText("")
-        self.label_goal_end_data.setText("")
+        self.label_intent_label_data.setText("")
+        self.label_intent_day_data.setText("")
+        self.label_intent_time_data.setText("")
+        self.label_intent_end_data.setText("")
 
         row = 0
         self.current_task_road = None
-        for goal_item in goal_list:
-            if goal_item._task == False:
-                self.populate_goal_table_row(row=row, goal_item=goal_item)
+        for intent_item in intent_list:
+            if intent_item._task == False:
+                self.populate_intent_table_row(row=row, intent_item=intent_item)
                 row += 1
-            elif goal_item._task == True and self.current_task_road is None:
-                self.current_task_road = f"{goal_item._pad},{goal_item._label}"
-                self.goal_task_display(goal_item)
+            elif intent_item._task == True and self.current_task_road is None:
+                self.current_task_road = f"{intent_item._pad},{intent_item._label}"
+                self.intent_task_display(intent_item)
 
-    def populate_goal_table_row(self, row, goal_item):
-        ax = goal_item
-        self.goal_states.setRowCount(row + 1)
-        self.goal_states.setItem(row, 0, qtw1(str(ax._uid)))
-        self.goal_states.setItem(row, 1, qtw1(ax._label))
+    def populate_intent_table_row(self, row, intent_item):
+        ax = intent_item
+        self.intent_states.setRowCount(row + 1)
+        self.intent_states.setItem(row, 0, qtw1(str(ax._uid)))
+        self.intent_states.setItem(row, 1, qtw1(ax._label))
 
         if (
             ax._requiredunits.get(f"{self.agenda_x._culture_title},time,jajatime")
@@ -446,33 +446,33 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         divisor=sufffact_x.divisor,
                     )
                 )
-                self.goal_states.setItem(row, 2, tw_open)
+                self.intent_states.setItem(row, 2, tw_open)
                 tw_nigh = qtw1(convert1440toHHMM(min1440=sufffact_x.nigh))
-                self.goal_states.setItem(row, 3, tw_nigh)
+                self.intent_states.setItem(row, 3, tw_nigh)
 
-        self.goal_states.setItem(
+        self.intent_states.setItem(
             row, 4, qtw1(pyqt_func_agenda_importance_diplay(ax._agenda_importance))
         )
-        self.goal_states.setItem(row, 5, qtw1(ax._pad))
-        self.goal_states.setItem(row, 6, qtw1(""))
+        self.intent_states.setItem(row, 5, qtw1(ax._pad))
+        self.intent_states.setItem(row, 6, qtw1(""))
 
-    def set_goal_states_table_properties(self):
-        self.goal_states.setObjectName("Agenda Being")
-        self.goal_states.setColumnWidth(0, 30)
-        self.goal_states.setColumnWidth(1, 200)
-        self.goal_states.setColumnWidth(2, 120)
-        self.goal_states.setColumnWidth(3, 50)
-        self.goal_states.setColumnWidth(4, 70)
-        self.goal_states.setColumnWidth(5, 500)
-        self.goal_states.setColumnWidth(6, 100)
-        self.goal_states.setColumnHidden(0, True)
-        self.goal_states.setColumnHidden(1, False)
-        self.goal_states.setColumnHidden(2, False)
-        self.goal_states.setColumnHidden(3, True)
-        self.goal_states.setColumnHidden(4, False)
-        self.goal_states.setColumnHidden(5, False)
-        self.goal_states.setColumnHidden(6, True)
-        self.goal_states.setHorizontalHeaderLabels(
+    def set_intent_states_table_properties(self):
+        self.intent_states.setObjectName("Agenda Being")
+        self.intent_states.setColumnWidth(0, 30)
+        self.intent_states.setColumnWidth(1, 200)
+        self.intent_states.setColumnWidth(2, 120)
+        self.intent_states.setColumnWidth(3, 50)
+        self.intent_states.setColumnWidth(4, 70)
+        self.intent_states.setColumnWidth(5, 500)
+        self.intent_states.setColumnWidth(6, 100)
+        self.intent_states.setColumnHidden(0, True)
+        self.intent_states.setColumnHidden(1, False)
+        self.intent_states.setColumnHidden(2, False)
+        self.intent_states.setColumnHidden(3, True)
+        self.intent_states.setColumnHidden(4, False)
+        self.intent_states.setColumnHidden(5, False)
+        self.intent_states.setColumnHidden(6, True)
+        self.intent_states.setHorizontalHeaderLabels(
             [
                 "admiration",
                 "label",
@@ -484,36 +484,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             ]
         )
 
-    def goal_task_display(self, goal_item):
-        self.label_goal_label_data.setText(goal_item._label)
+    def intent_task_display(self, intent_item):
+        self.label_intent_label_data.setText(intent_item._label)
         if (
-            goal_item._requiredunits.get(
+            intent_item._requiredunits.get(
                 f"{self.agenda_x._culture_title},time,jajatime"
             )
             != None
         ):
-            jajatime_required = goal_item._requiredunits.get(
+            jajatime_required = intent_item._requiredunits.get(
                 f"{self.agenda_x._culture_title},time,jajatime"
             )
             sufffact_x = jajatime_required.sufffacts.get(
                 f"{self.agenda_x._culture_title},time,jajatime,day"
             )
             if sufffact_x != None:
-                self.label_goal_day_data.setText("day_stuff")
-                self.label_goal_time_data.setText(
+                self.label_intent_day_data.setText("day_stuff")
+                self.label_intent_time_data.setText(
                     convert1440toHHMM(min1440=sufffact_x.open)
                 )
-                self.label_goal_end_data.setText(
+                self.label_intent_end_data.setText(
                     convert1440toHHMM(min1440=sufffact_x.nigh)
                 )
-        self.label_goal_agenda_importance_data.setText(
-            str(goal_item._agenda_importance)
+        self.label_intent_agenda_importance_data.setText(
+            str(intent_item._agenda_importance)
         )
-        self.label_goal_family_data.setText("")
-        self.label_goal_road_data.setText(goal_item._pad)
+        self.label_intent_family_data.setText("")
+        self.label_intent_road_data.setText(intent_item._pad)
 
-    def get_jajaday_open_nigh(self, goal_item):
-        jajatime_required = goal_item._requiredunits.get(
+    def get_jajaday_open_nigh(self, intent_item):
+        jajatime_required = intent_item._requiredunits.get(
             f"{self.agenda_x._culture_title},time,jajatime"
         )
         sufffact_x = jajatime_required.sufffacts.get(

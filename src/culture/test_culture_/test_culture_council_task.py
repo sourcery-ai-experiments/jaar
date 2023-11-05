@@ -46,7 +46,7 @@ def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     # print(f"{old_cali_agenda._idearoot._acptfactunits.keys()=}")
     basket_acptfact = old_cali_agenda._idearoot._acptfactunits.get(basket_road)
     # print(f"Cali: {basket_acptfact.base=} {basket_acptfact.pick=}")
-    assert len(old_cali_agenda.get_goal_items()) == 0
+    assert len(old_cali_agenda.get_intent_items()) == 0
 
     # WHEN
     # set basket status to "full"
@@ -66,10 +66,10 @@ def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     # basket_acptfact = new_cali_agenda._idearoot._acptfactunits.get(basket_road)
     # print(f"{basket_acptfact.base=} {basket_acptfact.pick=}")
     # print(f"{len(new_cali_agenda._idearoot._acptfactunits.keys())=}")
-    assert len(new_cali_agenda.get_goal_items()) == 1
+    assert len(new_cali_agenda.get_intent_items()) == 1
     laundry_task_text = "do_laundry"
     laundry_task_road = f"{casa_road},{laundry_task_text}"
-    assert new_cali_agenda.get_goal_items()[0].get_road() == laundry_task_road
+    assert new_cali_agenda.get_intent_items()[0].get_road() == laundry_task_road
 
 
 def test_culture_council_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
@@ -118,7 +118,7 @@ def test_culture_council_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
 
     # THEN
     old_cali_output = x_culture.get_public_agenda(cali_text)
-    assert len(old_cali_output.get_goal_items()) == 0
+    assert len(old_cali_output.get_intent_items()) == 0
     old_cali_acptfacts = old_cali_output._idearoot._acptfactunits
     # print(f"{old_cali_output._idearoot._acptfactunits=}")
     assert old_cali_acptfacts.get(basket_road) != None
@@ -153,7 +153,7 @@ def test_culture_council_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
 
     # THEN final acptfact changed
     new_cali_output = x_culture.get_public_agenda(cali_text)
-    assert len(new_cali_output.get_goal_items()) == 1
+    assert len(new_cali_output.get_intent_items()) == 1
     new_cali_acptfacts = new_cali_output._idearoot._acptfactunits
     # print(f"{new_cali_output._idearoot._acptfactunits=}")
     assert new_cali_acptfacts.get(basket_road) != None

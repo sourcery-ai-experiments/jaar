@@ -33,8 +33,8 @@ class GroupUnit(GroupCore):
     _partys: dict[PartyHandle:PartyLink] = None
     _agenda_credit: float = None
     _agenda_debt: float = None
-    _agenda_goal_credit: float = None
-    _agenda_goal_debt: float = None
+    _agenda_intent_credit: float = None
+    _agenda_intent_debt: float = None
     _partylinks_set_by_culture_road: Road = None
 
     def set_brand(self, brand: GroupBrand = None):
@@ -60,16 +60,16 @@ class GroupUnit(GroupCore):
             self._agenda_credit = 0
         if self._agenda_debt is None:
             self._agenda_debt = 0
-        if self._agenda_goal_credit is None:
-            self._agenda_goal_credit = 0
-        if self._agenda_goal_debt is None:
-            self._agenda_goal_debt = 0
+        if self._agenda_intent_credit is None:
+            self._agenda_intent_credit = 0
+        if self._agenda_intent_debt is None:
+            self._agenda_intent_debt = 0
 
     def reset_agenda_credit_debt(self):
         self._agenda_credit = 0
         self._agenda_debt = 0
-        self._agenda_goal_credit = 0
-        self._agenda_goal_debt = 0
+        self._agenda_intent_credit = 0
+        self._agenda_intent_debt = 0
         self._set_partylinks_empty_if_null()
         for partylink in self._partys.values():
             partylink.reset_agenda_credit_debt()
@@ -88,8 +88,8 @@ class GroupUnit(GroupCore):
                 partylinks_debtor_weight_sum=partylinks_debtor_weight_sum,
                 group_agenda_credit=self._agenda_credit,
                 group_agenda_debt=self._agenda_debt,
-                group_agenda_goal_credit=self._agenda_goal_credit,
-                group_agenda_goal_debt=self._agenda_goal_debt,
+                group_agenda_intent_credit=self._agenda_intent_credit,
+                group_agenda_intent_debt=self._agenda_intent_debt,
             )
 
     def clear_partylinks(self):
@@ -183,8 +183,8 @@ def groupunit_shop(
     _partys: dict[PartyHandle:PartyLink] = None,
     _agenda_credit: float = None,
     _agenda_debt: float = None,
-    _agenda_goal_credit: float = None,
-    _agenda_goal_debt: float = None,
+    _agenda_intent_credit: float = None,
+    _agenda_intent_debt: float = None,
     _partylinks_set_by_culture_road: Road = None,
 ) -> GroupUnit:
     if _single_party and _partylinks_set_by_culture_road != None:
@@ -204,8 +204,8 @@ def groupunit_shop(
         _partys=_partys,
         _agenda_credit=_agenda_credit,
         _agenda_debt=_agenda_debt,
-        _agenda_goal_credit=_agenda_goal_credit,
-        _agenda_goal_debt=_agenda_goal_debt,
+        _agenda_intent_credit=_agenda_intent_credit,
+        _agenda_intent_debt=_agenda_intent_debt,
         _partylinks_set_by_culture_road=_partylinks_set_by_culture_road,
     )
 

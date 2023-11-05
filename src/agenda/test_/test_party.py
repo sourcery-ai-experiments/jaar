@@ -71,8 +71,8 @@ def test_PartyUnit_exists():
     assert bob_party.debtor_weight is None
     assert bob_party._agenda_credit is None
     assert bob_party._agenda_debt is None
-    assert bob_party._agenda_goal_credit is None
-    assert bob_party._agenda_goal_debt is None
+    assert bob_party._agenda_intent_credit is None
+    assert bob_party._agenda_intent_debt is None
     assert bob_party._creditor_active is None
     assert bob_party._debtor_active is None
     assert bob_party._partyrings is None
@@ -205,10 +205,10 @@ def test_PartyUnit_set_empty_agenda_credit_debt_to_zero_CorrectlySetsZero():
     bob_party = partyunit_shop(handle=bob_handle)
     assert bob_party._agenda_credit is None
     assert bob_party._agenda_debt is None
-    assert bob_party._agenda_goal_credit is None
-    assert bob_party._agenda_goal_debt is None
-    assert bob_party._agenda_goal_ratio_credit is None
-    assert bob_party._agenda_goal_ratio_debt is None
+    assert bob_party._agenda_intent_credit is None
+    assert bob_party._agenda_intent_debt is None
+    assert bob_party._agenda_intent_ratio_credit is None
+    assert bob_party._agenda_intent_ratio_debt is None
 
     # WHEN
     bob_party.set_empty_agenda_credit_debt_to_zero()
@@ -216,24 +216,24 @@ def test_PartyUnit_set_empty_agenda_credit_debt_to_zero_CorrectlySetsZero():
     # THEN
     assert bob_party._agenda_credit == 0
     assert bob_party._agenda_debt == 0
-    assert bob_party._agenda_goal_credit == 0
-    assert bob_party._agenda_goal_debt == 0
-    assert bob_party._agenda_goal_ratio_credit == 0
-    assert bob_party._agenda_goal_ratio_debt == 0
+    assert bob_party._agenda_intent_credit == 0
+    assert bob_party._agenda_intent_debt == 0
+    assert bob_party._agenda_intent_ratio_credit == 0
+    assert bob_party._agenda_intent_ratio_debt == 0
 
     # GIVEN
     bob_party._agenda_credit = 0.27
     bob_party._agenda_debt = 0.37
-    bob_party._agenda_goal_credit = 0.41
-    bob_party._agenda_goal_debt = 0.51
-    bob_party._agenda_goal_ratio_credit = 0.23
-    bob_party._agenda_goal_ratio_debt = 0.87
+    bob_party._agenda_intent_credit = 0.41
+    bob_party._agenda_intent_debt = 0.51
+    bob_party._agenda_intent_ratio_credit = 0.23
+    bob_party._agenda_intent_ratio_debt = 0.87
     assert bob_party._agenda_credit == 0.27
     assert bob_party._agenda_debt == 0.37
-    assert bob_party._agenda_goal_credit == 0.41
-    assert bob_party._agenda_goal_debt == 0.51
-    assert bob_party._agenda_goal_ratio_credit == 0.23
-    assert bob_party._agenda_goal_ratio_debt == 0.87
+    assert bob_party._agenda_intent_credit == 0.41
+    assert bob_party._agenda_intent_debt == 0.51
+    assert bob_party._agenda_intent_ratio_credit == 0.23
+    assert bob_party._agenda_intent_ratio_debt == 0.87
 
     # WHEN
     bob_party.set_empty_agenda_credit_debt_to_zero()
@@ -241,10 +241,10 @@ def test_PartyUnit_set_empty_agenda_credit_debt_to_zero_CorrectlySetsZero():
     # THEN
     assert bob_party._agenda_credit == 0.27
     assert bob_party._agenda_debt == 0.37
-    assert bob_party._agenda_goal_credit == 0.41
-    assert bob_party._agenda_goal_debt == 0.51
-    assert bob_party._agenda_goal_ratio_credit == 0.23
-    assert bob_party._agenda_goal_ratio_debt == 0.87
+    assert bob_party._agenda_intent_credit == 0.41
+    assert bob_party._agenda_intent_debt == 0.51
+    assert bob_party._agenda_intent_ratio_credit == 0.23
+    assert bob_party._agenda_intent_ratio_debt == 0.87
 
 
 def test_PartyUnit_reset_agenda_credit_debt_MethodWorkCorrectly():
@@ -253,16 +253,16 @@ def test_PartyUnit_reset_agenda_credit_debt_MethodWorkCorrectly():
     bob_party = partyunit_shop(handle=bob_handle)
     bob_party._agenda_credit = 0.27
     bob_party._agenda_debt = 0.37
-    bob_party._agenda_goal_credit = 0.41
-    bob_party._agenda_goal_debt = 0.51
-    bob_party._agenda_goal_ratio_credit = 0.433
-    bob_party._agenda_goal_ratio_debt = 0.533
+    bob_party._agenda_intent_credit = 0.41
+    bob_party._agenda_intent_debt = 0.51
+    bob_party._agenda_intent_ratio_credit = 0.433
+    bob_party._agenda_intent_ratio_debt = 0.533
     assert bob_party._agenda_credit == 0.27
     assert bob_party._agenda_debt == 0.37
-    assert bob_party._agenda_goal_credit == 0.41
-    assert bob_party._agenda_goal_debt == 0.51
-    assert bob_party._agenda_goal_ratio_credit == 0.433
-    assert bob_party._agenda_goal_ratio_debt == 0.533
+    assert bob_party._agenda_intent_credit == 0.41
+    assert bob_party._agenda_intent_debt == 0.51
+    assert bob_party._agenda_intent_ratio_credit == 0.433
+    assert bob_party._agenda_intent_ratio_debt == 0.533
 
     # WHEN
     bob_party.reset_agenda_credit_debt()
@@ -270,10 +270,10 @@ def test_PartyUnit_reset_agenda_credit_debt_MethodWorkCorrectly():
     # THEN
     assert bob_party._agenda_credit == 0
     assert bob_party._agenda_debt == 0
-    assert bob_party._agenda_goal_credit == 0
-    assert bob_party._agenda_goal_debt == 0
-    assert bob_party._agenda_goal_ratio_credit == 0
-    assert bob_party._agenda_goal_ratio_debt == 0
+    assert bob_party._agenda_intent_credit == 0
+    assert bob_party._agenda_intent_debt == 0
+    assert bob_party._agenda_intent_ratio_credit == 0
+    assert bob_party._agenda_intent_ratio_debt == 0
 
 
 def test_PartyUnit_add_agenda_credit_debt_MethodWorkCorrectly():
@@ -282,27 +282,27 @@ def test_PartyUnit_add_agenda_credit_debt_MethodWorkCorrectly():
     bob_party = partyunit_shop(handle=bob_handle)
     bob_party._agenda_credit = 0.4106
     bob_party._agenda_debt = 0.1106
-    bob_party._agenda_goal_credit = 0.41
-    bob_party._agenda_goal_debt = 0.51
-    assert bob_party._agenda_goal_credit == 0.41
-    assert bob_party._agenda_goal_debt == 0.51
+    bob_party._agenda_intent_credit = 0.41
+    bob_party._agenda_intent_debt = 0.51
+    assert bob_party._agenda_intent_credit == 0.41
+    assert bob_party._agenda_intent_debt == 0.51
 
     # WHEN
     bob_party.add_agenda_credit_debt(
         agenda_credit=0.33,
         agenda_debt=0.055,
-        agenda_goal_credit=0.3,
-        agenda_goal_debt=0.05,
+        agenda_intent_credit=0.3,
+        agenda_intent_debt=0.05,
     )
 
     # THEN
     assert bob_party._agenda_credit == 0.7406
     assert bob_party._agenda_debt == 0.1656
-    assert bob_party._agenda_goal_credit == 0.71
-    assert bob_party._agenda_goal_debt == 0.56
+    assert bob_party._agenda_intent_credit == 0.71
+    assert bob_party._agenda_intent_debt == 0.56
 
 
-def test_PartyUnit_set_agenda_goal_ratio_credit_debt_MethodWorkCorrectly():
+def test_PartyUnit_set_agenda_intent_ratio_credit_debt_MethodWorkCorrectly():
     # GIVEN
     bob_handle = "bob"
     bob_party = partyunit_shop(
@@ -311,52 +311,52 @@ def test_PartyUnit_set_agenda_goal_ratio_credit_debt_MethodWorkCorrectly():
         debtor_weight=7,
         _agenda_credit=0.4106,
         _agenda_debt=0.1106,
-        _agenda_goal_credit=0.041,
-        _agenda_goal_debt=0.051,
-        _agenda_goal_ratio_credit=0,
-        _agenda_goal_ratio_debt=0,
+        _agenda_intent_credit=0.041,
+        _agenda_intent_debt=0.051,
+        _agenda_intent_ratio_credit=0,
+        _agenda_intent_ratio_debt=0,
     )
-    assert bob_party._agenda_goal_ratio_credit == 0
-    assert bob_party._agenda_goal_ratio_debt == 0
+    assert bob_party._agenda_intent_ratio_credit == 0
+    assert bob_party._agenda_intent_ratio_debt == 0
 
     # WHEN
-    bob_party.set_agenda_goal_ratio_credit_debt(
-        agenda_goal_ratio_credit_sum=0.2,
-        agenda_goal_ratio_debt_sum=0.5,
+    bob_party.set_agenda_intent_ratio_credit_debt(
+        agenda_intent_ratio_credit_sum=0.2,
+        agenda_intent_ratio_debt_sum=0.5,
         agenda_partyunit_total_creditor_weight=20,
         agenda_partyunit_total_debtor_weight=14,
     )
 
     # THEN
-    assert bob_party._agenda_goal_ratio_credit == 0.205
-    assert bob_party._agenda_goal_ratio_debt == 0.102
+    assert bob_party._agenda_intent_ratio_credit == 0.205
+    assert bob_party._agenda_intent_ratio_debt == 0.102
 
     # WHEN
-    bob_party.set_agenda_goal_ratio_credit_debt(
-        agenda_goal_ratio_credit_sum=0,
-        agenda_goal_ratio_debt_sum=0,
+    bob_party.set_agenda_intent_ratio_credit_debt(
+        agenda_intent_ratio_credit_sum=0,
+        agenda_intent_ratio_debt_sum=0,
         agenda_partyunit_total_creditor_weight=20,
         agenda_partyunit_total_debtor_weight=14,
     )
 
     # THEN
-    assert bob_party._agenda_goal_ratio_credit == 0.75
-    assert bob_party._agenda_goal_ratio_debt == 0.5
+    assert bob_party._agenda_intent_ratio_credit == 0.75
+    assert bob_party._agenda_intent_ratio_debt == 0.5
 
 
 def test_PartyUnit_set_banking_data_MethodWorkCorrectly():
     # GIVEN
     bob_handle = "bob"
-    x_agenda_goal_ratio_credit = 0.077
-    x_agenda_goal_ratio_debt = 0.066
+    x_agenda_intent_ratio_credit = 0.077
+    x_agenda_intent_ratio_debt = 0.066
 
     bob_party = partyunit_shop(
         handle=bob_handle,
-        _agenda_goal_ratio_credit=x_agenda_goal_ratio_credit,
-        _agenda_goal_ratio_debt=x_agenda_goal_ratio_debt,
+        _agenda_intent_ratio_credit=x_agenda_intent_ratio_credit,
+        _agenda_intent_ratio_debt=x_agenda_intent_ratio_debt,
     )
-    assert bob_party._agenda_goal_ratio_credit == 0.077
-    assert bob_party._agenda_goal_ratio_debt == 0.066
+    assert bob_party._agenda_intent_ratio_credit == 0.077
+    assert bob_party._agenda_intent_ratio_debt == 0.066
     assert bob_party._bank_tax_paid is None
     assert bob_party._bank_tax_diff is None
     assert bob_party._bank_credit_score is None
@@ -375,8 +375,8 @@ def test_PartyUnit_set_banking_data_MethodWorkCorrectly():
         voice_rank=x_bank_voice_rank,
     )
     # THEN
-    assert bob_party._agenda_goal_ratio_credit == x_agenda_goal_ratio_credit
-    assert bob_party._agenda_goal_ratio_debt == x_agenda_goal_ratio_debt
+    assert bob_party._agenda_intent_ratio_credit == x_agenda_intent_ratio_credit
+    assert bob_party._agenda_intent_ratio_debt == x_agenda_intent_ratio_debt
     assert bob_party._bank_tax_paid == x_tax_paid
     assert bob_party._bank_tax_diff == x_tax_diff
     assert bob_party._bank_credit_score == x_bank_credit_score
@@ -387,12 +387,12 @@ def test_PartyUnit_set_banking_data_MethodWorkCorrectly():
 def test_PartyUnit_set_banking_data_CorrectlyDecreasesOrIgnores_bank_voice_hx_lowest_rank():
     # GIVEN
     bob_handle = "bob"
-    x_agenda_goal_ratio_credit = 0.077
-    x_agenda_goal_ratio_debt = 0.066
+    x_agenda_intent_ratio_credit = 0.077
+    x_agenda_intent_ratio_debt = 0.066
     bob_party = partyunit_shop(
         handle=bob_handle,
-        _agenda_goal_ratio_credit=x_agenda_goal_ratio_credit,
-        _agenda_goal_ratio_debt=x_agenda_goal_ratio_debt,
+        _agenda_intent_ratio_credit=x_agenda_intent_ratio_credit,
+        _agenda_intent_ratio_debt=x_agenda_intent_ratio_debt,
     )
     x_tax_paid = 0.2
     x_tax_diff = 0.123
@@ -434,8 +434,8 @@ def test_PartyUnit_clear_banking_data_MethodWorkCorrectly():
     bob_handle = "bob"
     bob_party = partyunit_shop(
         handle=bob_handle,
-        _agenda_goal_ratio_credit=0.355,
-        _agenda_goal_ratio_debt=0.066,
+        _agenda_intent_ratio_credit=0.355,
+        _agenda_intent_ratio_debt=0.066,
     )
     x_bank_credit_score = 900
     x_bank_voice_rank = 45
@@ -638,8 +638,8 @@ def test_PartyLink_exists():
         debtor_weight=bikers_debtor_weight,
         _agenda_credit=0.7,
         _agenda_debt=0.51,
-        _agenda_goal_credit=0.66,
-        _agenda_goal_debt=0.55,
+        _agenda_intent_credit=0.66,
+        _agenda_intent_debt=0.55,
     )
 
     # THEN
@@ -648,8 +648,8 @@ def test_PartyLink_exists():
     assert party_link_x._agenda_credit != None
     assert party_link_x._agenda_credit == 0.7
     assert party_link_x._agenda_debt == 0.51
-    assert party_link_x._agenda_goal_credit == 0.66
-    assert party_link_x._agenda_goal_debt == 0.55
+    assert party_link_x._agenda_intent_credit == 0.66
+    assert party_link_x._agenda_intent_debt == 0.55
 
 
 def test_partylink_shop_set_agenda_credit_debt_CorrectlyWorks():
@@ -658,12 +658,12 @@ def test_partylink_shop_set_agenda_credit_debt_CorrectlyWorks():
     bikers_creditor_weight = 3.0
     partylinks_sum_creditor_weight = 60
     group_agenda_credit = 0.5
-    group_agenda_goal_credit = 0.98
+    group_agenda_intent_credit = 0.98
 
     bikers_debtor_weight = 13.0
     partylinks_sum_debtor_weight = 26.0
     group_agenda_debt = 0.9
-    group_agenda_goal_debt = 0.5151
+    group_agenda_intent_debt = 0.5151
 
     party_link_x = partylink_shop(
         handle=bikers_handle,
@@ -672,8 +672,8 @@ def test_partylink_shop_set_agenda_credit_debt_CorrectlyWorks():
     )
     assert party_link_x._agenda_credit is None
     assert party_link_x._agenda_debt is None
-    assert party_link_x._agenda_goal_credit is None
-    assert party_link_x._agenda_goal_debt is None
+    assert party_link_x._agenda_intent_credit is None
+    assert party_link_x._agenda_intent_debt is None
 
     # WHEN
     party_link_x.set_agenda_credit_debt(
@@ -681,15 +681,15 @@ def test_partylink_shop_set_agenda_credit_debt_CorrectlyWorks():
         partylinks_debtor_weight_sum=partylinks_sum_debtor_weight,
         group_agenda_credit=group_agenda_credit,
         group_agenda_debt=group_agenda_debt,
-        group_agenda_goal_credit=group_agenda_goal_credit,
-        group_agenda_goal_debt=group_agenda_goal_debt,
+        group_agenda_intent_credit=group_agenda_intent_credit,
+        group_agenda_intent_debt=group_agenda_intent_debt,
     )
 
     # THEN
     assert party_link_x._agenda_credit == 0.025
     assert party_link_x._agenda_debt == 0.45
-    assert party_link_x._agenda_goal_credit == 0.049
-    assert party_link_x._agenda_goal_debt == 0.25755
+    assert party_link_x._agenda_intent_credit == 0.049
+    assert party_link_x._agenda_intent_debt == 0.25755
 
 
 def test_partylink_shop_reset_agenda_credit_debt():

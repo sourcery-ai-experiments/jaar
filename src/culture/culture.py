@@ -113,7 +113,7 @@ class CultureUnit:
             for x_child_ledger in parent_agenda_ledger._partyviews.values():
                 ledgers_count += 1
 
-                curr_range = parent_range * x_child_ledger._agenda_goal_ratio_credit
+                curr_range = parent_range * x_child_ledger._agenda_intent_ratio_credit
                 curr_close = curr_onset + curr_range
 
                 # implies last element in dict

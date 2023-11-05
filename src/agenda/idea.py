@@ -165,7 +165,7 @@ class IdeaCore:
     _sibling_total_weight: int = None
     _active_status_hx: dict[int:bool] = None
 
-    def is_goal_item(self, base_x: Road = None):
+    def is_intent_item(self, base_x: Road = None):
         # bool_x = False
         return (
             self.promise == True

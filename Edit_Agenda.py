@@ -12,16 +12,16 @@ from src.agenda.hreg_time import (
 
 
 class Edit_Agenda(qw, Ui_Form):
-    goal_changed = qsig(bool)
+    intent_changed = qsig(bool)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
         self.close_button.clicked.connect(self.close)
         self.refresh_button.clicked.connect(self.refresh_all)
-        self.goal_table.itemClicked.connect(self.select_goal_item)
-        self.goal_table.setObjectName("Current Agenda")
-        self.goal_table.setRowCount(0)
+        self.intent_table.itemClicked.connect(self.select_intent_item)
+        self.intent_table.setObjectName("Current Agenda")
+        self.intent_table.setRowCount(0)
         self.acptfact_base_update_combo.currentTextChanged.connect(
             self.refreshAgendaTable
         )
@@ -29,21 +29,23 @@ class Edit_Agenda(qw, Ui_Form):
         self.acptfact_base_update_init_road = "time,jajatime"
         # self.refresh_all()
 
-    def select_goal_item(self):
-        _road = self.goal_table.item(self.goal_table.currentRow(), 1).text()
-        _label = self.goal_table.item(self.goal_table.currentRow(), 0).text()
+    def select_intent_item(self):
+        _road = self.intent_table.item(self.intent_table.currentRow(), 1).text()
+        _label = self.intent_table.item(self.intent_table.currentRow(), 0).text()
         # base_x = "A,time,jajatime"
         base_x = self.acptfact_base_update_combo.currentText()
-        self.agenda_x.set_goal_task_complete(task_road=f"{_road},{_label}", base=base_x)
+        self.agenda_x.set_intent_task_complete(
+            task_road=f"{_road},{_label}", base=base_x
+        )
         self.refresh_all()
 
-        # yo_id_greater = int(self.goal_table.item(0, 6).text())
+        # yo_id_greater = int(self.intent_table.item(0, 6).text())
         # if yo_id_lesser != None:
-        #     self.goal_core.set_greater_weight(
+        #     self.intent_core.set_greater_weight(
         #         yo_id_lesser=yo_id_lesser, yo_id_greater=yo_id_greater
         #     )
         #     self.refresh_all()
-        #     self.goal_changed.emit(True)
+        #     self.intent_changed.emit(True)
         #     self.close()
 
     def refresh_all(self):
@@ -71,25 +73,27 @@ class Edit_Agenda(qw, Ui_Form):
             self.acptfact_base_update_init_road = None
 
     def refreshAgendaTable(self):
-        self.goal_table.clear()
-        self.goal_table.setRowCount(0)
+        self.intent_table.clear()
+        self.intent_table.setRowCount(0)
         base_x = self.acptfact_base_update_combo.currentText()
         if base_x == "":
             base_x = None
 
-        goal_list = self.agenda_x.get_goal_items(
-            goal_enterprise=True, goal_state=False, base=base_x
+        intent_list = self.agenda_x.get_intent_items(
+            intent_enterprise=True, intent_state=False, base=base_x
         )
-        goal_list.sort(key=lambda x: x._agenda_importance, reverse=True)
+        intent_list.sort(key=lambda x: x._agenda_importance, reverse=True)
 
         row = 0
-        for goal_item in goal_list:
-            if goal_item._task == True:
-                self.populate_goal_table_row(row=row, goal_item=goal_item, base=base_x)
+        for intent_item in intent_list:
+            if intent_item._task == True:
+                self.populate_intent_table_row(
+                    row=row, intent_item=intent_item, base=base_x
+                )
                 row += 1
 
-    def populate_goal_table_row(self, row, goal_item, base):
-        a = goal_item
+    def populate_intent_table_row(self, row, intent_item, base):
+        a = intent_item
         requiredheir_x = a.get_requiredheir(base=base)
         sufffact_open_x = None
         sufffact_nigh_x = None
@@ -131,40 +135,40 @@ class Edit_Agenda(qw, Ui_Form):
                 f"sufffact {sufffact_open_x}-{sufffact_nigh_x} {sufffact_divisor_x=}"
             )
 
-        self.goal_table.setRowCount(row + 1)
-        self.goal_table.setItem(row, 0, qti(a._label))
-        self.goal_table.setItem(row, 1, qti(a._pad))
-        self.goal_table.setItem(row, 2, qti(agenda_display_x))
-        self.goal_table.setItem(row, 3, qti(num2str(a._weight)))
-        self.goal_table.setItem(row, 4, qti(base))
-        self.goal_table.setItem(row, 5, qti(num2str(sufffact_open_x)))
-        self.goal_table.setItem(row, 6, qti(num2str(sufffact_nigh_x)))
-        self.goal_table.setItem(row, 7, qti(num2str(sufffact_divisor_x)))
-        self.goal_table.setItem(row, 8, qti(legible_x_text))
+        self.intent_table.setRowCount(row + 1)
+        self.intent_table.setItem(row, 0, qti(a._label))
+        self.intent_table.setItem(row, 1, qti(a._pad))
+        self.intent_table.setItem(row, 2, qti(agenda_display_x))
+        self.intent_table.setItem(row, 3, qti(num2str(a._weight)))
+        self.intent_table.setItem(row, 4, qti(base))
+        self.intent_table.setItem(row, 5, qti(num2str(sufffact_open_x)))
+        self.intent_table.setItem(row, 6, qti(num2str(sufffact_nigh_x)))
+        self.intent_table.setItem(row, 7, qti(num2str(sufffact_divisor_x)))
+        self.intent_table.setItem(row, 8, qti(legible_x_text))
         # if a._task in (True, False):
-        #     self.goal_table.setItem(row, 7, qti(f"task {a._task}"))
+        #     self.intent_table.setItem(row, 7, qti(f"task {a._task}"))
         # else:
-        #     self.goal_table.setItem(row, 7, qti("bool not set"))
-        self.goal_table.setRowHeight(row, 5)
-        self.goal_table.setColumnWidth(0, 300)
-        self.goal_table.setColumnWidth(1, 400)
-        self.goal_table.setColumnWidth(2, 55)
-        self.goal_table.setColumnWidth(3, 55)
-        self.goal_table.setColumnWidth(4, 150)
-        self.goal_table.setColumnWidth(5, 70)
-        self.goal_table.setColumnWidth(6, 70)
-        self.goal_table.setColumnWidth(7, 70)
-        self.goal_table.setColumnWidth(8, 250)
-        self.goal_table.setColumnHidden(0, False)
-        self.goal_table.setColumnHidden(1, False)
-        self.goal_table.setColumnHidden(2, False)
-        self.goal_table.setColumnHidden(3, True)
-        self.goal_table.setColumnHidden(4, display_acptfactbase)
-        self.goal_table.setColumnHidden(5, display_acptfactbase)
-        self.goal_table.setColumnHidden(6, display_acptfactbase)
-        self.goal_table.setColumnHidden(7, display_acptfactbase)
-        self.goal_table.setColumnHidden(8, not display_acptfactbase)
-        self.goal_table.setHorizontalHeaderLabels(
+        #     self.intent_table.setItem(row, 7, qti("bool not set"))
+        self.intent_table.setRowHeight(row, 5)
+        self.intent_table.setColumnWidth(0, 300)
+        self.intent_table.setColumnWidth(1, 400)
+        self.intent_table.setColumnWidth(2, 55)
+        self.intent_table.setColumnWidth(3, 55)
+        self.intent_table.setColumnWidth(4, 150)
+        self.intent_table.setColumnWidth(5, 70)
+        self.intent_table.setColumnWidth(6, 70)
+        self.intent_table.setColumnWidth(7, 70)
+        self.intent_table.setColumnWidth(8, 250)
+        self.intent_table.setColumnHidden(0, False)
+        self.intent_table.setColumnHidden(1, False)
+        self.intent_table.setColumnHidden(2, False)
+        self.intent_table.setColumnHidden(3, True)
+        self.intent_table.setColumnHidden(4, display_acptfactbase)
+        self.intent_table.setColumnHidden(5, display_acptfactbase)
+        self.intent_table.setColumnHidden(6, display_acptfactbase)
+        self.intent_table.setColumnHidden(7, display_acptfactbase)
+        self.intent_table.setColumnHidden(8, not display_acptfactbase)
+        self.intent_table.setHorizontalHeaderLabels(
             [
                 "_label",
                 "road",

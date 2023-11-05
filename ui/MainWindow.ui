@@ -58,7 +58,7 @@
      <string>Update nigh to Now</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="goal_task_complete">
+   <widget class="QPushButton" name="intent_task_complete">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -139,7 +139,7 @@
      <string>When is the past you have not let go?</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_goal_label_header">
+   <widget class="QLabel" name="label_intent_label_header">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -227,7 +227,7 @@
      <string>Current Time:</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="edit_goal_button">
+   <widget class="QPushButton" name="edit_intent_button">
     <property name="geometry">
      <rect>
       <x>250</x>
@@ -237,7 +237,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>view current goal</string>
+     <string>view current intent</string>
     </property>
    </widget>
    <widget class="QTableWidget" name="acptfacts_table">
@@ -316,7 +316,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLabel" name="label_goal_day_header">
+   <widget class="QLabel" name="label_intent_day_header">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -334,7 +334,7 @@
      <string>Day:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_goal_time_header">
+   <widget class="QLabel" name="label_intent_time_header">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -352,7 +352,7 @@
      <string>Time:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_goal_end_header">
+   <widget class="QLabel" name="label_intent_end_header">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -370,7 +370,7 @@
      <string>End:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_goal_agenda_importance_header1">
+   <widget class="QLabel" name="label_intent_agenda_importance_header1">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -388,7 +388,7 @@
      <string>root_relative</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_goal_family_header1">
+   <widget class="QLabel" name="label_intent_family_header1">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -406,7 +406,7 @@
      <string>Agenda</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_goal_road_header">
+   <widget class="QLabel" name="label_intent_road_header">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -424,7 +424,7 @@
      <string>Road:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_goal_label_data">
+   <widget class="QLabel" name="label_intent_label_data">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -445,7 +445,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="label_goal_family_header2">
+   <widget class="QLabel" name="label_intent_family_header2">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -463,7 +463,7 @@
      <string>Family:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_goal_agenda_importance_header2">
+   <widget class="QLabel" name="label_intent_agenda_importance_header2">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -481,7 +481,7 @@
      <string>weight:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_goal_road_data">
+   <widget class="QLabel" name="label_intent_road_data">
     <property name="geometry">
      <rect>
       <x>80</x>
@@ -501,7 +501,7 @@
      <string>Idea_id:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_goal_family_data">
+   <widget class="QLabel" name="label_intent_family_data">
     <property name="geometry">
      <rect>
       <x>130</x>
@@ -521,7 +521,7 @@
      <string>Agenda</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_goal_agenda_importance_data">
+   <widget class="QLabel" name="label_intent_agenda_importance_data">
     <property name="geometry">
      <rect>
       <x>130</x>
@@ -541,7 +541,7 @@
      <string>weight:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_goal_end_data">
+   <widget class="QLabel" name="label_intent_end_data">
     <property name="geometry">
      <rect>
       <x>130</x>
@@ -561,7 +561,7 @@
      <string>End:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_goal_time_data">
+   <widget class="QLabel" name="label_intent_time_data">
     <property name="geometry">
      <rect>
       <x>130</x>
@@ -581,7 +581,7 @@
      <string>Time:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_goal_day_data">
+   <widget class="QLabel" name="label_intent_day_data">
     <property name="geometry">
      <rect>
       <x>130</x>
@@ -629,7 +629,7 @@
      <string>&quot;Soft&quot; moving up the past</string>
     </property>
    </widget>
-   <widget class="QTableWidget" name="goal_states">
+   <widget class="QTableWidget" name="intent_states">
     <property name="geometry">
      <rect>
       <x>1020</x>

@@ -11,7 +11,7 @@ class InvalidPyQtException(Exception):
 class PYQTTreeHolder:
     ideacore: IdeaCore
     yo_action_flag: str
-    yo_goal_flag: str
+    yo_intent_flag: str
     yo_complete_flag: str
     yo_acptfactunit_time_flag: str
     yo_acptfactunit_count_flag: str
@@ -35,7 +35,7 @@ def get_pyqttree(
     yo2bd_view_bd_flag: bool = None,
     yo2bd_view_bd_id: bool = None,
     yo_action_flag: bool = None,
-    yo_goal_flag: bool = None,
+    yo_intent_flag: bool = None,
     yo_complete_flag: bool = None,
     yo_acptfactunit_time_flag: bool = None,
     yo_acptfactunit_count_flag: bool = None,
@@ -50,7 +50,7 @@ def get_pyqttree(
     pyqttree_holder = PYQTTreeHolder(
         ideacore=idearoot,
         yo_action_flag=yo_action_flag,
-        yo_goal_flag=yo_goal_flag,
+        yo_intent_flag=yo_intent_flag,
         yo_complete_flag=yo_complete_flag,
         yo_acptfactunit_time_flag=yo_acptfactunit_time_flag,
         yo_acptfactunit_count_flag=yo_acptfactunit_count_flag,
@@ -98,7 +98,7 @@ def _create_node(pth: PYQTTreeHolder) -> QTreeWidgetItem:
         child_pth = PYQTTreeHolder(
             ideacore=kid_idea,
             yo_action_flag=pth.yo_action_flag,
-            yo_goal_flag=pth.yo_goal_flag,
+            yo_intent_flag=pth.yo_intent_flag,
             yo_complete_flag=pth.yo_complete_flag,
             yo_acptfactunit_time_flag=pth.yo_acptfactunit_time_flag,
             yo_acptfactunit_count_flag=pth.yo_acptfactunit_count_flag,

@@ -497,8 +497,8 @@ SELECT
   agenda_healer currency_master
 , handle tax_healer
 , _bank_tax_paid tax_total
-, _agenda_goal_ratio_debt debt
-, (_agenda_goal_ratio_debt - _bank_tax_paid) tax_diff
+, _agenda_intent_ratio_debt debt
+, (_agenda_intent_ratio_debt - _bank_tax_paid) tax_diff
 FROM partyunit
 WHERE currency_master = '{currency_agenda_healer}'
     AND _bank_tax_paid IS NOT NULL
@@ -593,10 +593,10 @@ CREATE TABLE IF NOT EXISTS partyunit (
 , handle VARCHAR(255) NOT NULL
 , _agenda_credit FLOAT
 , _agenda_debt FLOAT
-, _agenda_goal_credit FLOAT
-, _agenda_goal_debt FLOAT
-, _agenda_goal_ratio_credit FLOAT
-, _agenda_goal_ratio_debt FLOAT
+, _agenda_intent_credit FLOAT
+, _agenda_intent_debt FLOAT
+, _agenda_intent_ratio_credit FLOAT
+, _agenda_intent_ratio_debt FLOAT
 , _creditor_active INT
 , _debtor_active INT
 , _bank_tax_paid FLOAT
@@ -679,10 +679,10 @@ INSERT INTO partyunit (
 , handle
 , _agenda_credit
 , _agenda_debt
-, _agenda_goal_credit
-, _agenda_goal_debt
-, _agenda_goal_ratio_credit
-, _agenda_goal_ratio_debt
+, _agenda_intent_credit
+, _agenda_intent_debt
+, _agenda_intent_ratio_credit
+, _agenda_intent_ratio_debt
 , _creditor_active
 , _debtor_active
 , _bank_tax_paid
@@ -696,10 +696,10 @@ VALUES (
 , '{partyunit_x.handle}'
 , {sqlite_null(partyunit_x._agenda_credit)} 
 , {sqlite_null(partyunit_x._agenda_debt)}
-, {sqlite_null(partyunit_x._agenda_goal_credit)}
-, {sqlite_null(partyunit_x._agenda_goal_debt)}
-, {sqlite_null(partyunit_x._agenda_goal_ratio_credit)}
-, {sqlite_null(partyunit_x._agenda_goal_ratio_debt)}
+, {sqlite_null(partyunit_x._agenda_intent_credit)}
+, {sqlite_null(partyunit_x._agenda_intent_debt)}
+, {sqlite_null(partyunit_x._agenda_intent_ratio_credit)}
+, {sqlite_null(partyunit_x._agenda_intent_ratio_debt)}
 , {sqlite_bool(partyunit_x._creditor_active)}
 , {sqlite_bool(partyunit_x._debtor_active)}
 , {sqlite_null(partyunit_x._bank_tax_paid)}
@@ -726,10 +726,10 @@ SELECT
 , handle
 , _agenda_credit
 , _agenda_debt
-, _agenda_goal_credit
-, _agenda_goal_debt
-, _agenda_goal_ratio_credit
-, _agenda_goal_ratio_debt
+, _agenda_intent_credit
+, _agenda_intent_debt
+, _agenda_intent_ratio_credit
+, _agenda_intent_ratio_debt
 , _creditor_active
 , _debtor_active
 , _bank_tax_paid
@@ -750,10 +750,10 @@ WHERE agenda_healer = '{payer_healer}'
             handle=row[1],
             _agenda_credit=row[2],
             _agenda_debt=row[3],
-            _agenda_goal_credit=row[4],
-            _agenda_goal_debt=row[5],
-            _agenda_goal_ratio_credit=row[6],
-            _agenda_goal_ratio_debt=row[7],
+            _agenda_intent_credit=row[4],
+            _agenda_intent_debt=row[5],
+            _agenda_intent_ratio_credit=row[6],
+            _agenda_intent_ratio_debt=row[7],
             _creditor_active=row[8],
             _debtor_active=row[9],
             _bank_tax_paid=row[10],

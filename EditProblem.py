@@ -29,7 +29,7 @@ from sys import exit as sys_exit
 # self.action2_text
 # self.action3_text
 
-# self.goal_display
+# self.intent_display
 # self.add_group_text
 # self.add_group_button
 # load_problem_button
@@ -61,9 +61,9 @@ class EditProblem(qtw.QWidget, Ui_Form):
         self.action2_combo.currentTextChanged.connect(self.select_action2_combo)
         self.action3_combo.currentTextChanged.connect(self.select_action3_combo)
 
-        self.goal_table.itemClicked.connect(self.select_goal_item)
-        self.goal_table.setObjectName("Current Agenda")
-        self.goal_table.setRowCount(0)
+        self.intent_table.itemClicked.connect(self.select_intent_item)
+        self.intent_table.setObjectName("Current Agenda")
+        self.intent_table.setRowCount(0)
 
         self.agenda_x = None
 
@@ -149,7 +149,7 @@ class EditProblem(qtw.QWidget, Ui_Form):
         self.add_group_text.setText("")
 
         if self.agenda_x != None:
-            self.refresh_goal_list()
+            self.refresh_intent_list()
             self.refresh_idea_tree()
 
             idea_road_list = self.agenda_x.get_idea_tree_ordered_road_list()
@@ -172,32 +172,34 @@ class EditProblem(qtw.QWidget, Ui_Form):
             self.action2_combo.addItems(idea_road_list)
             self.action3_combo.addItems(idea_road_list)
 
-    def select_goal_item(self):
+    def select_intent_item(self):
         pass
 
-    def refresh_goal_list(self):
-        self.goal_table.clear()
-        self.goal_table.setRowCount(0)
-        self.set_goal_table_gui_attr()
+    def refresh_intent_list(self):
+        self.intent_table.clear()
+        self.intent_table.setRowCount(0)
+        self.set_intent_table_gui_attr()
         # base_x = self.acptfact_base_update_combo.currentText()
         # base_x = ""
         # if base_x == "":
         #     base_x = None
         base_x = None
 
-        goal_list = self.agenda_x.get_goal_items(
-            goal_enterprise=True, goal_state=True, base=base_x
+        intent_list = self.agenda_x.get_intent_items(
+            intent_enterprise=True, intent_state=True, base=base_x
         )
-        goal_list.sort(key=lambda x: x._agenda_importance, reverse=True)
+        intent_list.sort(key=lambda x: x._agenda_importance, reverse=True)
 
         row = 0
-        for goal_item in goal_list:
-            if goal_item._task == True:
-                self.populate_goal_table_row(row=row, goal_item=goal_item, base=base_x)
+        for intent_item in intent_list:
+            if intent_item._task == True:
+                self.populate_intent_table_row(
+                    row=row, intent_item=intent_item, base=base_x
+                )
                 row += 1
 
-    def populate_goal_table_row(self, row, goal_item, base):
-        a = goal_item
+    def populate_intent_table_row(self, row, intent_item, base):
+        a = intent_item
         requiredheir_x = a.get_requiredheir(base=base)
         sufffact_open_x = None
         sufffact_nigh_x = None
@@ -213,39 +215,39 @@ class EditProblem(qtw.QWidget, Ui_Form):
                     sufffact_nigh_x = sufffact.nigh
                     sufffact_divisor_x = sufffact.divisor
 
-        self.goal_table.setRowCount(row + 1)
-        self.goal_table.setItem(row, 0, qti(a._label))
-        self.goal_table.setItem(row, 1, qti(a._pad))
-        self.goal_table.setItem(row, 2, qti(agenda_display_x))
-        self.goal_table.setItem(row, 3, qti(num2str(a._weight)))
-        self.goal_table.setItem(row, 4, qti(base))
-        self.goal_table.setItem(row, 5, qti(num2str(sufffact_open_x)))
-        self.goal_table.setItem(row, 6, qti(num2str(sufffact_nigh_x)))
-        self.goal_table.setItem(row, 7, qti(num2str(sufffact_divisor_x)))
+        self.intent_table.setRowCount(row + 1)
+        self.intent_table.setItem(row, 0, qti(a._label))
+        self.intent_table.setItem(row, 1, qti(a._pad))
+        self.intent_table.setItem(row, 2, qti(agenda_display_x))
+        self.intent_table.setItem(row, 3, qti(num2str(a._weight)))
+        self.intent_table.setItem(row, 4, qti(base))
+        self.intent_table.setItem(row, 5, qti(num2str(sufffact_open_x)))
+        self.intent_table.setItem(row, 6, qti(num2str(sufffact_nigh_x)))
+        self.intent_table.setItem(row, 7, qti(num2str(sufffact_divisor_x)))
         # if a._task in (True, False):
-        #     self.goal_table.setItem(row, 7, qti(f"task {a._task}"))
+        #     self.intent_table.setItem(row, 7, qti(f"task {a._task}"))
         # else:
-        #     self.goal_table.setItem(row, 7, qti("bool not set"))
-        self.goal_table.setRowHeight(row, 5)
+        #     self.intent_table.setItem(row, 7, qti("bool not set"))
+        self.intent_table.setRowHeight(row, 5)
 
-    def set_goal_table_gui_attr(self):
-        self.goal_table.setColumnWidth(0, 300)
-        self.goal_table.setColumnWidth(1, 400)
-        self.goal_table.setColumnWidth(2, 55)
-        self.goal_table.setColumnWidth(3, 55)
-        self.goal_table.setColumnWidth(4, 150)
-        self.goal_table.setColumnWidth(5, 70)
-        self.goal_table.setColumnWidth(6, 70)
-        self.goal_table.setColumnWidth(7, 70)
-        self.goal_table.setColumnHidden(0, False)
-        self.goal_table.setColumnHidden(1, False)
-        self.goal_table.setColumnHidden(2, False)
-        self.goal_table.setColumnHidden(3, True)
-        self.goal_table.setColumnHidden(4, False)
-        self.goal_table.setColumnHidden(5, False)
-        self.goal_table.setColumnHidden(6, False)
-        self.goal_table.setColumnHidden(7, False)
-        self.goal_table.setHorizontalHeaderLabels(
+    def set_intent_table_gui_attr(self):
+        self.intent_table.setColumnWidth(0, 300)
+        self.intent_table.setColumnWidth(1, 400)
+        self.intent_table.setColumnWidth(2, 55)
+        self.intent_table.setColumnWidth(3, 55)
+        self.intent_table.setColumnWidth(4, 150)
+        self.intent_table.setColumnWidth(5, 70)
+        self.intent_table.setColumnWidth(6, 70)
+        self.intent_table.setColumnWidth(7, 70)
+        self.intent_table.setColumnHidden(0, False)
+        self.intent_table.setColumnHidden(1, False)
+        self.intent_table.setColumnHidden(2, False)
+        self.intent_table.setColumnHidden(3, True)
+        self.intent_table.setColumnHidden(4, False)
+        self.intent_table.setColumnHidden(5, False)
+        self.intent_table.setColumnHidden(6, False)
+        self.intent_table.setColumnHidden(7, False)
+        self.intent_table.setHorizontalHeaderLabels(
             [
                 "_label",
                 "road",

@@ -2,7 +2,7 @@ from src.agenda.party import PartyHandle, partylink_shop, partyunit_shop
 from src.agenda.group import GroupBrand, groupunit_shop, balancelink_shop
 from src.agenda.examples.example_agendas import (
     agenda_v001 as examples_agenda_v001,
-    agenda_v001_with_large_goal as examples_agenda_v001_with_large_goal,
+    agenda_v001_with_large_intent as examples_agenda_v001_with_large_intent,
 )
 from src.agenda.agenda import AgendaUnit, agendaunit_shop, get_intersection_of_partys
 from src.agenda.idea import ideacore_shop
@@ -609,119 +609,122 @@ def test_agenda_get_idea_list_WithAllPartysWeighted():
     # assert partyunit_agenda_debt_sum < 1.00000001
 
 
-def clear_all_partyunits_groupunits_agenda_goal_credit_debt(x_agenda: AgendaUnit):
-    # DELETE agenda_goal_debt and agenda_goal_credit
+def clear_all_partyunits_groupunits_agenda_intent_credit_debt(x_agenda: AgendaUnit):
+    # DELETE agenda_intent_debt and agenda_intent_credit
     for groupunit_x in x_agenda._groups.values():
         groupunit_x.reset_agenda_credit_debt()
         # for partylink_x in groupunit_x._partys.values():
         #     print(f"{groupunit_x.brand=} {partylink_x.creditor_weight=}  {partylink_x._agenda_credit:.6f} {partylink_x.debtor_weight=} {partylink_x._agenda_debt:.6f} {partylink_x.handle=} ")
 
-    # DELETE agenda_goal_debt and agenda_goal_credit
+    # DELETE agenda_intent_debt and agenda_intent_credit
     for partyunit_x in x_agenda._partys.values():
         partyunit_x.reset_agenda_credit_debt()
 
 
 # sourcery skip: no-loop-in-tests
 # sourcery skip: no-conditionals-in-tests
-def test_agenda_goal_credit_debt_IsCorrectlySet():
+def test_agenda_intent_credit_debt_IsCorrectlySet():
     # GIVEN
-    x_agenda = examples_agenda_v001_with_large_goal()
-    clear_all_partyunits_groupunits_agenda_goal_credit_debt(x_agenda=x_agenda)
+    x_agenda = examples_agenda_v001_with_large_intent()
+    clear_all_partyunits_groupunits_agenda_intent_credit_debt(x_agenda=x_agenda)
 
-    # TEST agenda_goal_debt and agenda_goal_credit are empty
-    sum_groupunit_agenda_goal_credit = 0
-    sum_groupunit_agenda_goal_debt = 0
-    sum_partylink_agenda_goal_credit = 0
-    sum_partylink_agenda_goal_debt = 0
+    # TEST agenda_intent_debt and agenda_intent_credit are empty
+    sum_groupunit_agenda_intent_credit = 0
+    sum_groupunit_agenda_intent_debt = 0
+    sum_partylink_agenda_intent_credit = 0
+    sum_partylink_agenda_intent_debt = 0
     for groupunit_x in x_agenda._groups.values():
         # print(f"{partyunit.handle=}")
-        sum_groupunit_agenda_goal_credit += groupunit_x._agenda_goal_credit
-        sum_groupunit_agenda_goal_debt += groupunit_x._agenda_goal_debt
+        sum_groupunit_agenda_intent_credit += groupunit_x._agenda_intent_credit
+        sum_groupunit_agenda_intent_debt += groupunit_x._agenda_intent_debt
         for partylink_x in groupunit_x._partys.values():
-            sum_partylink_agenda_goal_credit += partylink_x._agenda_goal_credit
-            sum_partylink_agenda_goal_debt += partylink_x._agenda_goal_debt
+            sum_partylink_agenda_intent_credit += partylink_x._agenda_intent_credit
+            sum_partylink_agenda_intent_debt += partylink_x._agenda_intent_debt
 
-    assert sum_groupunit_agenda_goal_credit == 0
-    assert sum_groupunit_agenda_goal_debt == 0
-    assert sum_partylink_agenda_goal_credit == 0
-    assert sum_partylink_agenda_goal_debt == 0
+    assert sum_groupunit_agenda_intent_credit == 0
+    assert sum_groupunit_agenda_intent_debt == 0
+    assert sum_partylink_agenda_intent_credit == 0
+    assert sum_partylink_agenda_intent_debt == 0
 
-    # TEST agenda_goal_debt and agenda_goal_credit are empty
-    sum_partyunit_agenda_goal_credit = 0
-    sum_partyunit_agenda_goal_debt = 0
-    sum_partyunit_agenda_goal_ratio_credit = 0
-    sum_partyunit_agenda_goal_ratio_debt = 0
+    # TEST agenda_intent_debt and agenda_intent_credit are empty
+    sum_partyunit_agenda_intent_credit = 0
+    sum_partyunit_agenda_intent_debt = 0
+    sum_partyunit_agenda_intent_ratio_credit = 0
+    sum_partyunit_agenda_intent_ratio_debt = 0
     for partyunit in x_agenda._partys.values():
         # print(f"{partyunit.handle=}")
-        sum_partyunit_agenda_goal_credit += partyunit._agenda_goal_credit
-        sum_partyunit_agenda_goal_debt += partyunit._agenda_goal_debt
-        sum_partyunit_agenda_goal_ratio_credit += partyunit._agenda_goal_ratio_credit
-        sum_partyunit_agenda_goal_ratio_debt += partyunit._agenda_goal_ratio_debt
+        sum_partyunit_agenda_intent_credit += partyunit._agenda_intent_credit
+        sum_partyunit_agenda_intent_debt += partyunit._agenda_intent_debt
+        sum_partyunit_agenda_intent_ratio_credit += (
+            partyunit._agenda_intent_ratio_credit
+        )
+        sum_partyunit_agenda_intent_ratio_debt += partyunit._agenda_intent_ratio_debt
 
-    assert sum_partyunit_agenda_goal_credit == 0
-    assert sum_partyunit_agenda_goal_debt == 0
-    assert sum_partyunit_agenda_goal_ratio_credit == 0
-    assert sum_partyunit_agenda_goal_ratio_debt == 0
+    assert sum_partyunit_agenda_intent_credit == 0
+    assert sum_partyunit_agenda_intent_debt == 0
+    assert sum_partyunit_agenda_intent_ratio_credit == 0
+    assert sum_partyunit_agenda_intent_ratio_debt == 0
 
     # WHEN
-    goal_list = x_agenda.get_goal_items()
+    intent_list = x_agenda.get_intent_items()
 
     # THEN
-    assert len(goal_list) == 68
-    sum_agenda_goal_importance = 0
-    goal_no_balancelines_count = 0
-    goal_yes_balancelines_count = 0
-    goal_no_balancelines_agenda_i_sum = 0
-    goal_yes_balancelines_agenda_i_sum = 0
-    for goal_item in goal_list:
-        sum_agenda_goal_importance += goal_item._agenda_importance
-        if goal_item._balancelines == {}:
-            goal_no_balancelines_count += 1
-            goal_no_balancelines_agenda_i_sum += goal_item._agenda_importance
+    assert len(intent_list) == 68
+    sum_agenda_intent_importance = 0
+    intent_no_balancelines_count = 0
+    intent_yes_balancelines_count = 0
+    intent_no_balancelines_agenda_i_sum = 0
+    intent_yes_balancelines_agenda_i_sum = 0
+    for intent_item in intent_list:
+        sum_agenda_intent_importance += intent_item._agenda_importance
+        if intent_item._balancelines == {}:
+            intent_no_balancelines_count += 1
+            intent_no_balancelines_agenda_i_sum += intent_item._agenda_importance
         else:
-            goal_yes_balancelines_count += 1
-            goal_yes_balancelines_agenda_i_sum += goal_item._agenda_importance
-        # print(f"idea importance: {goal_item._agenda_importance:.7f} {sum_agenda_goal_importance:.5f} {goal_item._label=} ")
-        # print(f"{goal_item.get_road()}")
-    print(f"{sum_agenda_goal_importance=}")
-    assert goal_no_balancelines_count == 20
-    assert goal_yes_balancelines_count == 48
-    assert goal_no_balancelines_agenda_i_sum == 0.00447826215370075
-    assert goal_yes_balancelines_agenda_i_sum == 0.0027152834170378025
-    x2 = goal_no_balancelines_agenda_i_sum + goal_yes_balancelines_agenda_i_sum
+            intent_yes_balancelines_count += 1
+            intent_yes_balancelines_agenda_i_sum += intent_item._agenda_importance
+        # print(f"idea importance: {intent_item._agenda_importance:.7f} {sum_agenda_intent_importance:.5f} {intent_item._label=} ")
+        # print(f"{intent_item.get_road()}")
+    print(f"{sum_agenda_intent_importance=}")
+    assert intent_no_balancelines_count == 20
+    assert intent_yes_balancelines_count == 48
+    assert intent_no_balancelines_agenda_i_sum == 0.00447826215370075
+    assert intent_yes_balancelines_agenda_i_sum == 0.0027152834170378025
+    x2 = intent_no_balancelines_agenda_i_sum + intent_yes_balancelines_agenda_i_sum
     e10 = 0.0000000001
-    assert abs(x2 - sum_agenda_goal_importance) < e10
+    assert abs(x2 - sum_agenda_intent_importance) < e10
 
-    assert sum_agenda_goal_importance == 0.007193545570738553
+    assert sum_agenda_intent_importance == 0.007193545570738553
 
-    sum_groupunit_agenda_goal_credit = 0
-    sum_groupunit_agenda_goal_debt = 0
-    sum_partylink_agenda_goal_credit = 0
-    sum_partylink_agenda_goal_debt = 0
+    sum_groupunit_agenda_intent_credit = 0
+    sum_groupunit_agenda_intent_debt = 0
+    sum_partylink_agenda_intent_credit = 0
+    sum_partylink_agenda_intent_debt = 0
     partylink_count = 0
     for groupunit_x in x_agenda._groups.values():
         # print(f"{partyunit.handle=}")
-        sum_groupunit_agenda_goal_credit += groupunit_x._agenda_goal_credit
-        sum_groupunit_agenda_goal_debt += groupunit_x._agenda_goal_debt
+        sum_groupunit_agenda_intent_credit += groupunit_x._agenda_intent_credit
+        sum_groupunit_agenda_intent_debt += groupunit_x._agenda_intent_debt
         for partylink_x in groupunit_x._partys.values():
-            sum_partylink_agenda_goal_credit += partylink_x._agenda_goal_credit
-            sum_partylink_agenda_goal_debt += partylink_x._agenda_goal_debt
+            sum_partylink_agenda_intent_credit += partylink_x._agenda_intent_credit
+            sum_partylink_agenda_intent_debt += partylink_x._agenda_intent_debt
             partylink_count += 1
 
     assert partylink_count == 81
     x_sum = 0.0027152834170378025
-    assert sum_groupunit_agenda_goal_credit == x_sum
-    assert sum_groupunit_agenda_goal_debt == x_sum
-    assert sum_partylink_agenda_goal_credit == x_sum
-    assert sum_partylink_agenda_goal_debt == x_sum
+    assert sum_groupunit_agenda_intent_credit == x_sum
+    assert sum_groupunit_agenda_intent_debt == x_sum
+    assert sum_partylink_agenda_intent_credit == x_sum
+    assert sum_partylink_agenda_intent_debt == x_sum
     assert (
-        abs(goal_yes_balancelines_agenda_i_sum - sum_groupunit_agenda_goal_credit) < e10
+        abs(intent_yes_balancelines_agenda_i_sum - sum_groupunit_agenda_intent_credit)
+        < e10
     )
 
-    sum_partyunit_agenda_goal_credit = 0
-    sum_partyunit_agenda_goal_debt = 0
-    sum_partyunit_agenda_goal_ratio_credit = 0
-    sum_partyunit_agenda_goal_ratio_debt = 0
+    sum_partyunit_agenda_intent_credit = 0
+    sum_partyunit_agenda_intent_debt = 0
+    sum_partyunit_agenda_intent_ratio_credit = 0
+    sum_partyunit_agenda_intent_ratio_debt = 0
     for partyunit in x_agenda._partys.values():
         assert partyunit._agenda_credit != None
         assert partyunit._agenda_credit not in [0.25, 0.5]
@@ -730,15 +733,17 @@ def test_agenda_goal_credit_debt_IsCorrectlySet():
             0.8,
             0.1,
         ]  # print(f"{partyunit.handle=}")
-        sum_partyunit_agenda_goal_credit += partyunit._agenda_goal_credit
-        sum_partyunit_agenda_goal_debt += partyunit._agenda_goal_debt
-        sum_partyunit_agenda_goal_ratio_credit += partyunit._agenda_goal_ratio_credit
-        sum_partyunit_agenda_goal_ratio_debt += partyunit._agenda_goal_ratio_debt
+        sum_partyunit_agenda_intent_credit += partyunit._agenda_intent_credit
+        sum_partyunit_agenda_intent_debt += partyunit._agenda_intent_debt
+        sum_partyunit_agenda_intent_ratio_credit += (
+            partyunit._agenda_intent_ratio_credit
+        )
+        sum_partyunit_agenda_intent_ratio_debt += partyunit._agenda_intent_ratio_debt
 
-    assert abs(sum_partyunit_agenda_goal_credit - sum_agenda_goal_importance) < e10
-    assert abs(sum_partyunit_agenda_goal_debt - sum_agenda_goal_importance) < e10
-    assert abs(sum_partyunit_agenda_goal_ratio_credit - 1) < e10
-    assert abs(sum_partyunit_agenda_goal_ratio_debt - 1) < e10
+    assert abs(sum_partyunit_agenda_intent_credit - sum_agenda_intent_importance) < e10
+    assert abs(sum_partyunit_agenda_intent_debt - sum_agenda_intent_importance) < e10
+    assert abs(sum_partyunit_agenda_intent_ratio_credit - 1) < e10
+    assert abs(sum_partyunit_agenda_intent_ratio_debt - 1) < e10
 
     # partyunit_agenda_credit_sum = 0.0
     # partyunit_agenda_debt_sum = 0.0
@@ -748,7 +753,7 @@ def test_agenda_goal_credit_debt_IsCorrectlySet():
     # assert partyunit_agenda_debt_sum < 1.00000001
 
 
-def test_agenda_goal_ratio_credit_debt_IsCorrectlySetWhenAgendaIsEmpty():
+def test_agenda_intent_ratio_credit_debt_IsCorrectlySetWhenAgendaIsEmpty():
     # GIVEN
     healer_text = "Noa"
     x_agenda = agendaunit_shop(_healer=healer_text)
@@ -765,35 +770,35 @@ def test_agenda_goal_ratio_credit_debt_IsCorrectlySetWhenAgendaIsEmpty():
     x_agenda_carm_party = x_agenda._partys.get(carm_text)
     x_agenda_patr_party = x_agenda._partys.get(patr_text)
 
-    assert x_agenda_rico_party._agenda_goal_credit in [0, None]
-    assert x_agenda_rico_party._agenda_goal_debt in [0, None]
-    assert x_agenda_carm_party._agenda_goal_credit in [0, None]
-    assert x_agenda_carm_party._agenda_goal_debt in [0, None]
-    assert x_agenda_patr_party._agenda_goal_credit in [0, None]
-    assert x_agenda_patr_party._agenda_goal_debt in [0, None]
-    assert x_agenda_rico_party._agenda_goal_ratio_credit != 0.05
-    assert x_agenda_rico_party._agenda_goal_ratio_debt != 0.2
-    assert x_agenda_carm_party._agenda_goal_ratio_credit != 0.15
-    assert x_agenda_carm_party._agenda_goal_ratio_debt != 0.3
-    assert x_agenda_patr_party._agenda_goal_ratio_credit != 0.8
-    assert x_agenda_patr_party._agenda_goal_ratio_debt != 0.5
+    assert x_agenda_rico_party._agenda_intent_credit in [0, None]
+    assert x_agenda_rico_party._agenda_intent_debt in [0, None]
+    assert x_agenda_carm_party._agenda_intent_credit in [0, None]
+    assert x_agenda_carm_party._agenda_intent_debt in [0, None]
+    assert x_agenda_patr_party._agenda_intent_credit in [0, None]
+    assert x_agenda_patr_party._agenda_intent_debt in [0, None]
+    assert x_agenda_rico_party._agenda_intent_ratio_credit != 0.05
+    assert x_agenda_rico_party._agenda_intent_ratio_debt != 0.2
+    assert x_agenda_carm_party._agenda_intent_ratio_credit != 0.15
+    assert x_agenda_carm_party._agenda_intent_ratio_debt != 0.3
+    assert x_agenda_patr_party._agenda_intent_ratio_credit != 0.8
+    assert x_agenda_patr_party._agenda_intent_ratio_debt != 0.5
 
     # WHEN
     x_agenda.set_agenda_metrics()
 
     # THEN
-    assert x_agenda_rico_party._agenda_goal_credit == 0
-    assert x_agenda_rico_party._agenda_goal_debt == 0
-    assert x_agenda_carm_party._agenda_goal_credit == 0
-    assert x_agenda_carm_party._agenda_goal_debt == 0
-    assert x_agenda_patr_party._agenda_goal_credit == 0
-    assert x_agenda_patr_party._agenda_goal_debt == 0
-    assert x_agenda_rico_party._agenda_goal_ratio_credit == 0.05
-    assert x_agenda_rico_party._agenda_goal_ratio_debt == 0.2
-    assert x_agenda_carm_party._agenda_goal_ratio_credit == 0.15
-    assert x_agenda_carm_party._agenda_goal_ratio_debt == 0.3
-    assert x_agenda_patr_party._agenda_goal_ratio_credit == 0.8
-    assert x_agenda_patr_party._agenda_goal_ratio_debt == 0.5
+    assert x_agenda_rico_party._agenda_intent_credit == 0
+    assert x_agenda_rico_party._agenda_intent_debt == 0
+    assert x_agenda_carm_party._agenda_intent_credit == 0
+    assert x_agenda_carm_party._agenda_intent_debt == 0
+    assert x_agenda_patr_party._agenda_intent_credit == 0
+    assert x_agenda_patr_party._agenda_intent_debt == 0
+    assert x_agenda_rico_party._agenda_intent_ratio_credit == 0.05
+    assert x_agenda_rico_party._agenda_intent_ratio_debt == 0.2
+    assert x_agenda_carm_party._agenda_intent_ratio_credit == 0.15
+    assert x_agenda_carm_party._agenda_intent_ratio_debt == 0.3
+    assert x_agenda_patr_party._agenda_intent_ratio_credit == 0.8
+    assert x_agenda_patr_party._agenda_intent_ratio_debt == 0.5
 
 
 def test_agenda_get_party_groups_returnsCorrectData():

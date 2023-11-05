@@ -394,7 +394,7 @@ class AgendaUnit:
                 group._agenda_credit += balanceheir_agenda_credit
                 group._agenda_debt += balanceheir_agenda_debt
 
-    def add_to_group_agenda_goal_credit_debt(
+    def add_to_group_agenda_intent_credit_debt(
         self,
         groupbrand: GroupBrand,
         balanceline_agenda_credit: float,
@@ -407,24 +407,24 @@ class AgendaUnit:
                 and balanceline_agenda_debt != None
             ):
                 group.set_empty_agenda_credit_debt_to_zero()
-                group._agenda_goal_credit += balanceline_agenda_credit
-                group._agenda_goal_debt += balanceline_agenda_debt
+                group._agenda_intent_credit += balanceline_agenda_credit
+                group._agenda_intent_debt += balanceline_agenda_debt
 
     def add_to_partyunit_agenda_credit_debt(
         self,
         partyunit_handle: PartyHandle,
         agenda_credit,
         agenda_debt: float,
-        agenda_goal_credit: float,
-        agenda_goal_debt: float,
+        agenda_intent_credit: float,
+        agenda_intent_debt: float,
     ):
         for partyunit in self._partys.values():
             if partyunit.handle == partyunit_handle:
                 partyunit.add_agenda_credit_debt(
                     agenda_credit=agenda_credit,
                     agenda_debt=agenda_debt,
-                    agenda_goal_credit=agenda_goal_credit,
-                    agenda_goal_debt=agenda_goal_debt,
+                    agenda_intent_credit=agenda_intent_credit,
+                    agenda_intent_debt=agenda_intent_debt,
                 )
 
     def set_groupunits_empty_if_null(self):
@@ -1443,12 +1443,17 @@ class AgendaUnit:
     def _set_acptfacts_empty_if_null(self):
         self._idearoot.set_acptfactunits_empty_if_null()
 
-    def get_goal_items(
-        self, base: Road = None, goal_enterprise: bool = True, goal_state: bool = True
+    def get_intent_items(
+        self,
+        base: Road = None,
+        intent_enterprise: bool = True,
+        intent_state: bool = True,
     ) -> list[IdeaCore]:
-        return [idea for idea in self.get_idea_list() if idea.is_goal_item(base_x=base)]
+        return [
+            idea for idea in self.get_idea_list() if idea.is_intent_item(base_x=base)
+        ]
 
-    def set_goal_task_complete(self, task_road: Road, base: Road):
+    def set_intent_task_complete(self, task_road: Road, base: Road):
         promise_item = self.get_idea_kid(road=task_road)
         promise_item.set_acptfactunit_to_complete(
             base_acptfactunit=self._idearoot._acptfactunits[base]
@@ -1478,46 +1483,48 @@ class AgendaUnit:
             partyunit_x.add_agenda_credit_debt(
                 agenda_credit=au_agenda_credit,
                 agenda_debt=au_agenda_debt,
-                agenda_goal_credit=0,
-                agenda_goal_debt=0,
+                agenda_intent_credit=0,
+                agenda_intent_debt=0,
             )
 
-    def _add_to_partyunits_agenda_goal_credit_debt(self, idea_agenda_importance: float):
+    def _add_to_partyunits_agenda_intent_credit_debt(
+        self, idea_agenda_importance: float
+    ):
         sum_partyunit_creditor_weight = self.get_partyunit_total_creditor_weight()
         sum_partyunit_debtor_weight = self.get_partyunit_total_debtor_weight()
 
         for partyunit_x in self._partys.values():
-            au_agenda_goal_credit = (
+            au_agenda_intent_credit = (
                 idea_agenda_importance * partyunit_x.get_creditor_weight()
             ) / sum_partyunit_creditor_weight
 
-            au_agenda_goal_debt = (
+            au_agenda_intent_debt = (
                 idea_agenda_importance * partyunit_x.get_debtor_weight()
             ) / sum_partyunit_debtor_weight
 
             partyunit_x.add_agenda_credit_debt(
                 agenda_credit=0,
                 agenda_debt=0,
-                agenda_goal_credit=au_agenda_goal_credit,
-                agenda_goal_debt=au_agenda_goal_debt,
+                agenda_intent_credit=au_agenda_intent_credit,
+                agenda_intent_debt=au_agenda_intent_debt,
             )
 
-    def _set_partyunits_agenda_goal_importance(self, agenda_goal_importance: float):
+    def _set_partyunits_agenda_intent_importance(self, agenda_intent_importance: float):
         sum_partyunit_creditor_weight = self.get_partyunit_total_creditor_weight()
         sum_partyunit_debtor_weight = self.get_partyunit_total_debtor_weight()
 
         for partyunit_x in self._partys.values():
-            au_agenda_goal_credit = (
-                agenda_goal_importance * partyunit_x.get_creditor_weight()
+            au_agenda_intent_credit = (
+                agenda_intent_importance * partyunit_x.get_creditor_weight()
             ) / sum_partyunit_creditor_weight
 
-            au_agenda_goal_debt = (
-                agenda_goal_importance * partyunit_x.get_debtor_weight()
+            au_agenda_intent_debt = (
+                agenda_intent_importance * partyunit_x.get_debtor_weight()
             ) / sum_partyunit_debtor_weight
 
-            partyunit_x.add_agenda_goal_credit_debt(
-                agenda_goal_credit=au_agenda_goal_credit,
-                agenda_goal_debt=au_agenda_goal_debt,
+            partyunit_x.add_agenda_intent_credit_debt(
+                agenda_intent_credit=au_agenda_intent_credit,
+                agenda_intent_debt=au_agenda_intent_debt,
             )
 
     def _reset_groupunits_agenda_credit_debt(self):
@@ -1536,20 +1543,20 @@ class AgendaUnit:
                 balanceheir_agenda_debt=balancelink_obj._agenda_debt,
             )
 
-    def _distribute_agenda_goal_importance(self):
+    def _distribute_agenda_intent_importance(self):
         for idea in self._idea_dict.values():
             # If there are no balancelines associated with idea
             # distribute agenda_importance via general partyunit
             # credit ratio and debt ratio
-            # if idea.is_goal_item() and idea._balancelines == {}:
-            if idea.is_goal_item():
+            # if idea.is_intent_item() and idea._balancelines == {}:
+            if idea.is_intent_item():
                 if idea._balancelines == {}:
-                    self._add_to_partyunits_agenda_goal_credit_debt(
+                    self._add_to_partyunits_agenda_intent_credit_debt(
                         idea._agenda_importance
                     )
                 else:
                     for balanceline_x in idea._balancelines.values():
-                        self.add_to_group_agenda_goal_credit_debt(
+                        self.add_to_group_agenda_intent_credit_debt(
                             groupbrand=balanceline_x.brand,
                             balanceline_agenda_credit=balanceline_x._agenda_credit,
                             balanceline_agenda_debt=balanceline_x._agenda_debt,
@@ -1563,22 +1570,22 @@ class AgendaUnit:
                     partyunit_handle=partylink.handle,
                     agenda_credit=partylink._agenda_credit,
                     agenda_debt=partylink._agenda_debt,
-                    agenda_goal_credit=partylink._agenda_goal_credit,
-                    agenda_goal_debt=partylink._agenda_goal_debt,
+                    agenda_intent_credit=partylink._agenda_intent_credit,
+                    agenda_intent_debt=partylink._agenda_intent_debt,
                 )
 
-    def _set_agenda_goal_ratio_credit_debt(self):
-        agenda_goal_ratio_credit_sum = 0
-        agenda_goal_ratio_debt_sum = 0
+    def _set_agenda_intent_ratio_credit_debt(self):
+        agenda_intent_ratio_credit_sum = 0
+        agenda_intent_ratio_debt_sum = 0
 
         for partyunit_x in self._partys.values():
-            agenda_goal_ratio_credit_sum += partyunit_x._agenda_goal_credit
-            agenda_goal_ratio_debt_sum += partyunit_x._agenda_goal_debt
+            agenda_intent_ratio_credit_sum += partyunit_x._agenda_intent_credit
+            agenda_intent_ratio_debt_sum += partyunit_x._agenda_intent_debt
 
         for partyunit_x in self._partys.values():
-            partyunit_x.set_agenda_goal_ratio_credit_debt(
-                agenda_goal_ratio_credit_sum=agenda_goal_ratio_credit_sum,
-                agenda_goal_ratio_debt_sum=agenda_goal_ratio_debt_sum,
+            partyunit_x.set_agenda_intent_ratio_credit_debt(
+                agenda_intent_ratio_credit_sum=agenda_intent_ratio_credit_sum,
+                agenda_intent_ratio_debt_sum=agenda_intent_ratio_debt_sum,
                 agenda_partyunit_total_creditor_weight=self.get_partyunit_total_creditor_weight(),
                 agenda_partyunit_total_debtor_weight=self.get_partyunit_total_debtor_weight(),
             )
@@ -1880,9 +1887,9 @@ class AgendaUnit:
             self._rational = True
 
     def _after_all_tree_traverses_set_credit_debt(self):
-        self._distribute_agenda_goal_importance()
+        self._distribute_agenda_intent_importance()
         self._distribute_groups_agenda_importance()
-        self._set_agenda_goal_ratio_credit_debt()
+        self._set_agenda_intent_ratio_credit_debt()
 
     def _pre_tree_traverse_credit_debt_reset(self):
         self._reset_groupunits_agenda_credit_debt()
@@ -2059,10 +2066,10 @@ class AgendaUnit:
 
         return agenda4party
 
-    # def get_goal_items(
-    #     self, goal_enterprise: bool = True, goal_state: bool = True, base: Road = None
+    # def get_intent_items(
+    #     self, intent_enterprise: bool = True, intent_state: bool = True, base: Road = None
     # ) -> list[IdeaCore]:
-    #     return list(self.get_goal_items(base=base))
+    #     return list(self.get_intent_items(base=base))
 
     def set_dominate_promise_idea(self, idea_kid: IdeaCore):
         idea_kid.promise = True

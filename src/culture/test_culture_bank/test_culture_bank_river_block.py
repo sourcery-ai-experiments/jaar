@@ -37,10 +37,10 @@ def test_culture_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
         handle=tim_text,
         _agenda_credit=0.9,
         _agenda_debt=0.8,
-        _agenda_goal_credit=0.7,
-        _agenda_goal_debt=0.6,
-        _agenda_goal_ratio_credit=0.5,
-        _agenda_goal_ratio_debt=0.4,
+        _agenda_intent_credit=0.7,
+        _agenda_intent_debt=0.6,
+        _agenda_intent_ratio_credit=0.5,
+        _agenda_intent_ratio_debt=0.4,
         _creditor_active=True,
         _debtor_active=False,
     )
@@ -73,10 +73,10 @@ def test_culture_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     assert tim_ledger.handle == tim_text
     assert tim_ledger._agenda_credit == 0.9
     assert tim_ledger._agenda_debt == 0.8
-    assert tim_ledger._agenda_goal_credit == 0.7
-    assert tim_ledger._agenda_goal_debt == 0.6
-    assert tim_ledger._agenda_goal_ratio_credit == 0.5
-    assert tim_ledger._agenda_goal_ratio_debt == 0.4
+    assert tim_ledger._agenda_intent_credit == 0.7
+    assert tim_ledger._agenda_intent_debt == 0.6
+    assert tim_ledger._agenda_intent_ratio_credit == 0.5
+    assert tim_ledger._agenda_intent_ratio_debt == 0.4
     assert tim_ledger._creditor_active
     assert tim_ledger._debtor_active == False
     assert tim_ledger._bank_tax_paid == tim_tax_paid
@@ -163,10 +163,10 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
         handle=sal_text,
         _agenda_credit=0.9,
         _agenda_debt=0.8,
-        _agenda_goal_credit=0.7,
-        _agenda_goal_debt=0.6,
-        _agenda_goal_ratio_credit=0.5,
-        _agenda_goal_ratio_debt=0.4,
+        _agenda_intent_credit=0.7,
+        _agenda_intent_debt=0.6,
+        _agenda_intent_ratio_credit=0.5,
+        _agenda_intent_ratio_debt=0.4,
         _creditor_active=True,
         _debtor_active=False,
     )
@@ -177,10 +177,10 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
         handle=tim_text,
         _agenda_credit=0.012,
         _agenda_debt=0.017,
-        _agenda_goal_credit=0.077,
-        _agenda_goal_debt=0.066,
-        _agenda_goal_ratio_credit=0.051,
-        _agenda_goal_ratio_debt=0.049,
+        _agenda_intent_credit=0.077,
+        _agenda_intent_debt=0.066,
+        _agenda_intent_ratio_credit=0.051,
+        _agenda_intent_ratio_debt=0.049,
         _creditor_active=True,
         _debtor_active=False,
     )
@@ -267,10 +267,10 @@ def test_RiverLedgerUnit_Exists():
         handle=sal_text,
         _agenda_credit=0.66,
         _agenda_debt=0.2,
-        _agenda_goal_credit=0.4,
-        _agenda_goal_debt=0.15,
-        _agenda_goal_ratio_credit=0.5,
-        _agenda_goal_ratio_debt=0.12,
+        _agenda_intent_credit=0.4,
+        _agenda_intent_debt=0.15,
+        _agenda_intent_ratio_credit=0.5,
+        _agenda_intent_ratio_debt=0.12,
         _creditor_active=True,
         _debtor_active=True,
     )
@@ -279,10 +279,10 @@ def test_RiverLedgerUnit_Exists():
         handle=tom_text,
         _agenda_credit=0.05,
         _agenda_debt=0.09,
-        _agenda_goal_credit=0.055,
-        _agenda_goal_debt=0.0715,
-        _agenda_goal_ratio_credit=0.00995,
-        _agenda_goal_ratio_debt=0.00012,
+        _agenda_intent_credit=0.055,
+        _agenda_intent_debt=0.0715,
+        _agenda_intent_ratio_credit=0.00995,
+        _agenda_intent_ratio_debt=0.00012,
         _creditor_active=True,
         _debtor_active=True,
     )
@@ -405,10 +405,10 @@ def test_get_partyunit_table_update_bank_tax_paid_sqlstr_CorrectlyPopulatesTable
         handle=tom_text,
         _agenda_credit=0.9,
         _agenda_debt=0.8,
-        _agenda_goal_credit=0.7,
-        _agenda_goal_debt=0.6,
-        _agenda_goal_ratio_credit=0.5,
-        _agenda_goal_ratio_debt=0.411,
+        _agenda_intent_credit=0.7,
+        _agenda_intent_debt=0.6,
+        _agenda_intent_ratio_credit=0.5,
+        _agenda_intent_ratio_debt=0.411,
         _creditor_active=True,
         _debtor_active=False,
     )
@@ -419,10 +419,10 @@ def test_get_partyunit_table_update_bank_tax_paid_sqlstr_CorrectlyPopulatesTable
         handle=sal_text,
         _agenda_credit=0.9,
         _agenda_debt=0.8,
-        _agenda_goal_credit=0.7,
-        _agenda_goal_debt=0.6,
-        _agenda_goal_ratio_credit=0.5,
-        _agenda_goal_ratio_debt=0.455,
+        _agenda_intent_credit=0.7,
+        _agenda_intent_debt=0.6,
+        _agenda_intent_ratio_credit=0.5,
+        _agenda_intent_ratio_debt=0.455,
         _creditor_active=True,
         _debtor_active=False,
     )

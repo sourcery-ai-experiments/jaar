@@ -29,8 +29,8 @@ def test_groupunit_exists():
         brand=swimmers,
         _agenda_credit=0.33,
         _agenda_debt=0.44,
-        _agenda_goal_credit=0.66,
-        _agenda_goal_debt=0.77,
+        _agenda_intent_credit=0.66,
+        _agenda_intent_debt=0.77,
         _partylinks_set_by_culture_road=usa_road,
     )
 
@@ -41,8 +41,8 @@ def test_groupunit_exists():
     assert swimmers_group.brand == swimmers
     assert swimmers_group._agenda_credit != None
     assert swimmers_group._agenda_debt != None
-    assert swimmers_group._agenda_goal_credit != None
-    assert swimmers_group._agenda_goal_debt != None
+    assert swimmers_group._agenda_intent_credit != None
+    assert swimmers_group._agenda_intent_debt != None
     assert swimmers_group._partylinks_set_by_culture_road == usa_road
 
 
@@ -159,14 +159,14 @@ def test_Groupunit_reset_agenda_importance_WorkCorrectly():
         brand=maria_brand,
         _agenda_credit=0.33,
         _agenda_debt=0.44,
-        _agenda_goal_credit=0.13,
-        _agenda_goal_debt=0.23,
+        _agenda_intent_credit=0.13,
+        _agenda_intent_debt=0.23,
     )
     print(f"{maria_group}")
     assert maria_group._agenda_credit == 0.33
     assert maria_group._agenda_debt == 0.44
-    assert maria_group._agenda_goal_credit == 0.13
-    assert maria_group._agenda_goal_debt == 0.23
+    assert maria_group._agenda_intent_credit == 0.13
+    assert maria_group._agenda_intent_debt == 0.23
 
     # WHEN
     maria_group.reset_agenda_credit_debt()
@@ -174,8 +174,8 @@ def test_Groupunit_reset_agenda_importance_WorkCorrectly():
     # THEN
     assert maria_group._agenda_credit == 0
     assert maria_group._agenda_debt == 0
-    assert maria_group._agenda_goal_credit == 0
-    assert maria_group._agenda_goal_debt == 0
+    assert maria_group._agenda_intent_credit == 0
+    assert maria_group._agenda_intent_debt == 0
 
 
 def test_Groupunit_reset_agenda_importance_reset_partylinks():
@@ -186,15 +186,15 @@ def test_Groupunit_reset_agenda_importance_reset_partylinks():
         handle=todd_text,
         _agenda_credit=0.13,
         _agenda_debt=0.7,
-        _agenda_goal_credit=0.53,
-        _agenda_goal_debt=0.77,
+        _agenda_intent_credit=0.53,
+        _agenda_intent_debt=0.77,
     )
     mery_party = partylink_shop(
         handle=mery_text,
         _agenda_credit=0.23,
         _agenda_debt=0.5,
-        _agenda_goal_credit=0.54,
-        _agenda_goal_debt=0.57,
+        _agenda_intent_credit=0.54,
+        _agenda_intent_debt=0.57,
     )
     bikers_partys = {todd_party.handle: todd_party, mery_party.handle: mery_party}
     bikers_brand = "bikers"
@@ -203,8 +203,8 @@ def test_Groupunit_reset_agenda_importance_reset_partylinks():
         _partys={},
         _agenda_credit=0.33,
         _agenda_debt=0.44,
-        _agenda_goal_credit=0.1,
-        _agenda_goal_debt=0.2,
+        _agenda_intent_credit=0.1,
+        _agenda_intent_debt=0.2,
     )
     bikers_group.set_partylink(partylink=todd_party)
     bikers_group.set_partylink(partylink=mery_party)
@@ -212,14 +212,14 @@ def test_Groupunit_reset_agenda_importance_reset_partylinks():
     biker_partylink_todd = bikers_group._partys.get(todd_text)
     assert biker_partylink_todd._agenda_credit == 0.13
     assert biker_partylink_todd._agenda_debt == 0.7
-    assert biker_partylink_todd._agenda_goal_credit == 0.53
-    assert biker_partylink_todd._agenda_goal_debt == 0.77
+    assert biker_partylink_todd._agenda_intent_credit == 0.53
+    assert biker_partylink_todd._agenda_intent_debt == 0.77
 
     biker_partylink_mery = bikers_group._partys.get(mery_text)
     assert biker_partylink_mery._agenda_credit == 0.23
     assert biker_partylink_mery._agenda_debt == 0.5
-    assert biker_partylink_mery._agenda_goal_credit == 0.54
-    assert biker_partylink_mery._agenda_goal_debt == 0.57
+    assert biker_partylink_mery._agenda_intent_credit == 0.54
+    assert biker_partylink_mery._agenda_intent_debt == 0.57
 
     # WHEN
     bikers_group.reset_agenda_credit_debt()
@@ -227,12 +227,12 @@ def test_Groupunit_reset_agenda_importance_reset_partylinks():
     # THEN
     assert biker_partylink_todd._agenda_credit == 0
     assert biker_partylink_todd._agenda_debt == 0
-    assert biker_partylink_todd._agenda_goal_credit == 0
-    assert biker_partylink_todd._agenda_goal_debt == 0
+    assert biker_partylink_todd._agenda_intent_credit == 0
+    assert biker_partylink_todd._agenda_intent_debt == 0
     assert biker_partylink_mery._agenda_credit == 0
     assert biker_partylink_mery._agenda_debt == 0
-    assert biker_partylink_mery._agenda_goal_credit == 0
-    assert biker_partylink_mery._agenda_goal_debt == 0
+    assert biker_partylink_mery._agenda_intent_credit == 0
+    assert biker_partylink_mery._agenda_intent_debt == 0
 
 
 def test_GroupUnit_partylink_meld_BaseScenarioWorks():

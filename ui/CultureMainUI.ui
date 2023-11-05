@@ -472,7 +472,7 @@
      <string>Edit Agenda</string>
     </property>
    </widget>
-   <widget class="QTableWidget" name="w_goal_table">
+   <widget class="QTableWidget" name="w_intent_table">
     <property name="geometry">
      <rect>
       <x>1180</x>

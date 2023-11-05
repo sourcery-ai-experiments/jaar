@@ -13,26 +13,26 @@ from src.agenda.examples.example_agendas import (
     get_agenda_with7amCleanTableRequired as example_agendas_get_agenda_with7amCleanTableRequired,
     get_agenda_with_4_levels_and_2requireds_2acptfacts as example_agendas_get_agenda_with_4_levels_and_2requireds_2acptfacts,
     agenda_v001 as example_agendas_agenda_v001,
-    agenda_v001_with_large_goal as example_agendas_agenda_v001_with_large_goal,
+    agenda_v001_with_large_intent as example_agendas_agenda_v001_with_large_intent,
     agenda_v002 as example_agendas_agenda_v002,
 )
 from src.agenda.x_func import yr_explanation, open_file as x_func_open_file
 
 
-def test_get_goal_returns_goal():
+def test_get_intent_returns_intent():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
 
     # WHEN
-    goal_list = x_agenda.get_goal_items()
+    intent_list = x_agenda.get_intent_items()
 
     # THEN
-    assert goal_list
-    assert len(goal_list) == 2
-    assert goal_list[0]._label in ["work", "feed cat"]
+    assert intent_list
+    assert len(intent_list) == 2
+    assert intent_list[0]._label in ["work", "feed cat"]
 
 
-def test_get_goal_returns_goal_with_only_required_allowed():
+def test_get_intent_returns_intent_with_only_required_allowed():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels_and_2requireds()
     week_text = "weekdays"
@@ -42,59 +42,59 @@ def test_get_goal_returns_goal_with_only_required_allowed():
     x_agenda.set_acptfact(base=week_road, pick=sun_road)
 
     # WHEN
-    goal_list = x_agenda.get_goal_items()
+    intent_list = x_agenda.get_intent_items()
 
     # THEN
-    assert goal_list
-    # for goal_item in goal_list:
-    #     yr_explanation(idea=goal_item)
-    yr_explanation(idea=goal_list[0])
+    assert intent_list
+    # for intent_item in intent_list:
+    #     yr_explanation(idea=intent_item)
+    yr_explanation(idea=intent_list[0])
 
-    assert len(goal_list) == 1
-    print(f"{goal_list=}")
-    assert goal_list[0]._label in ["feed cat"]
+    assert len(intent_list) == 1
+    print(f"{intent_list=}")
+    assert intent_list[0]._label in ["feed cat"]
 
 
-def test_get_goal_returns_goal_with_agenda_importance():
+def test_get_intent_returns_intent_with_agenda_importance():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels_and_2requireds_2acptfacts()
 
     # WHEN
-    goal_list = x_agenda.get_goal_items()
+    intent_list = x_agenda.get_intent_items()
 
     # THEN
-    assert goal_list
-    assert len(goal_list) == 2
-    print(f"{goal_list[0]._label=}")
-    assert goal_list[0]._agenda_importance
+    assert intent_list
+    assert len(intent_list) == 2
+    print(f"{intent_list[0]._label=}")
+    assert intent_list[0]._agenda_importance
 
-    print(f"{goal_list[1]._label=}")
-    assert goal_list[1]._agenda_importance
+    print(f"{intent_list[1]._label=}")
+    assert intent_list[1]._agenda_importance
 
 
-def test_get_goal_with_No7amItem():
+def test_get_intent_with_No7amItem():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with7amCleanTableRequired()
 
     # WHEN
-    goal_list = x_agenda.get_goal_items()
+    intent_list = x_agenda.get_intent_items()
 
     # THEN
-    assert goal_list
-    assert len(goal_list) == 1
-    print(f"{goal_list[0]._label=}")
-    assert len(goal_list) == 1
+    assert intent_list
+    assert len(intent_list) == 1
+    print(f"{intent_list[0]._label=}")
+    assert len(intent_list) == 1
 
-    goal_item = goal_list[0]
-    assert goal_item._label != "clean table"
+    intent_item = intent_list[0]
+    assert intent_item._label != "clean table"
 
 
-def test_get_goal_with_7amItem():
+def test_get_intent_with_7amItem():
     # GIVEN
     # set acptfacts as midnight to 8am
     x_agenda = example_agendas_get_agenda_with7amCleanTableRequired()
-    print(f"{len(x_agenda.get_goal_items())=}")
-    assert len(x_agenda.get_goal_items()) == 1
+    print(f"{len(x_agenda.get_intent_items())=}")
+    assert len(x_agenda.get_intent_items()) == 1
 
     # WHEN
     day24hr_road = f"{x_agenda._culture_title},timetech,24hr day"
@@ -110,14 +110,14 @@ def test_get_goal_with_7amItem():
     print(x_agenda._idearoot._kids[housework_text]._kids[clean_text]._active_status)
 
     # THEN
-    goal_list = x_agenda.get_goal_items()
-    print(f"{len(goal_list)=}")
-    assert len(goal_list) == 6
-    clean_item = goal_list[1]
+    intent_list = x_agenda.get_intent_items()
+    print(f"{len(intent_list)=}")
+    assert len(intent_list) == 6
+    clean_item = intent_list[1]
     assert clean_item._label == clean_text
 
 
-def test_get_goal_does_not_return_promise_items_outside_range():
+def test_get_intent_does_not_return_promise_items_outside_range():
     healer_text = "Zia"
     x_agenda = agendaunit_shop(_healer=healer_text)
     x_agenda.set_time_hreg_ideas(c400_count=7)
@@ -140,19 +140,19 @@ def test_get_goal_does_not_return_promise_items_outside_range():
     nigh_x1 = 2063971523
     x_agenda.set_acptfact(base=jajatime, pick=jajaday, open=open_x, nigh=nigh_x1)
 
-    goal_list = x_agenda.get_goal_items()
-    assert len(goal_list) == 1
-    print(f"{goal_list=}")
-    assert goal_list[0]._label in [c_label]
+    intent_list = x_agenda.get_intent_items()
+    assert len(intent_list) == 1
+    print(f"{intent_list=}")
+    assert intent_list[0]._label in [c_label]
 
     nigh_x2 = 1063971923
     x_agenda.set_acptfact(base=jajatime, pick=jajaday, open=open_x, nigh=nigh_x2)
 
-    goal_list = x_agenda.get_goal_items()
-    assert len(goal_list) == 0
+    intent_list = x_agenda.get_intent_items()
+    assert len(intent_list) == 0
 
 
-def test_exammple_goal_exists():
+def test_exammple_intent_exists():
     # GIVEN
     x_agenda = example_agendas_agenda_v001()
     min_text = "day_minute"
@@ -165,15 +165,15 @@ def test_exammple_goal_exists():
     #     assert idea_kid.promise != None
 
     # WHEN
-    goal_list = x_agenda.get_goal_items()
+    intent_list = x_agenda.get_intent_items()
 
     # THEN
-    assert len(goal_list) > 0
-    assert len(goal_list) == 17
-    assert goal_list[0].promise != None
-    assert str(type(goal_list[0])) != "<class 'str'>"
-    assert str(type(goal_list[9])) != "<class 'str'>"
-    assert str(type(goal_list[12])) != "<class 'str'>"
+    assert len(intent_list) > 0
+    assert len(intent_list) == 17
+    assert intent_list[0].promise != None
+    assert str(type(intent_list[0])) != "<class 'str'>"
+    assert str(type(intent_list[9])) != "<class 'str'>"
+    assert str(type(intent_list[12])) != "<class 'str'>"
 
 
 def test_exammple_AgendaHasCorrectAttributes():
@@ -215,14 +215,14 @@ def test_exammple_AgendaHasCorrectAttributes():
     # x_agenda.set_acptfact(base=movie_road, pick=movie_text)
 
     # WHEN
-    idea_action_list = x_agenda.get_goal_items()
+    idea_action_list = x_agenda.get_intent_items()
 
     # THEN
     print("Test might be deprecated if it's not worthy it to repair this test source.")
     assert len(idea_action_list) == 27
 
     x_agenda.set_acptfact(base=month_week_road, pick=f"{month_week_road},1st week")
-    idea_action_list = x_agenda.get_goal_items()
+    idea_action_list = x_agenda.get_intent_items()
     assert len(idea_action_list) == 27
 
     weekday_text = "weekdays"
@@ -231,25 +231,25 @@ def test_exammple_AgendaHasCorrectAttributes():
     monday_road = f"{weekday_road},{monday_text}"
 
     x_agenda.set_acptfact(base=weekday_road, pick=monday_road)
-    idea_action_list = x_agenda.get_goal_items()
+    idea_action_list = x_agenda.get_intent_items()
     assert len(idea_action_list) == 39
 
     x_agenda.set_acptfact(base=weekday_road, pick=weekday_road)
-    idea_action_list = x_agenda.get_goal_items()
+    idea_action_list = x_agenda.get_intent_items()
     assert len(idea_action_list) == 53
 
     # x_agenda.set_acptfact(base=nations_road, pick=nations_road)
-    # idea_action_list = x_agenda.get_goal_items()
+    # idea_action_list = x_agenda.get_intent_items()
     # assert len(idea_action_list) == 53
 
     # for base in x_agenda.get_missing_acptfact_bases():
     #     print(f"{base=}")
 
-    # for goal_item in idea_action_list:
-    #     print(f"{goal_item._uid=} {goal_item._pad=}")
+    # for intent_item in idea_action_list:
+    #     print(f"{intent_item._uid=} {intent_item._pad=}")
 
-    # for goal_item in idea_action_list:
-    #     # print(f"{goal_item._pad=}")
+    # for intent_item in idea_action_list:
+    #     # print(f"{intent_item._pad=}")
     #     pass
 
     print(len(idea_action_list))
@@ -257,18 +257,18 @@ def test_exammple_AgendaHasCorrectAttributes():
 
 def test_exammple_AgendaCanFiltersOnBase():
     # GIVEN
-    x_agenda = example_agendas_agenda_v001_with_large_goal()
+    x_agenda = example_agendas_agenda_v001_with_large_intent()
     week_text = "weekdays"
     week_road = f"{x_agenda._culture_title},{week_text}"
     print(f"{type(x_agenda)=}")
     # for base in x_agenda.get_missing_acptfact_bases():
     #     print(f"{base=}")
 
-    # for goal_item in x_agenda.get_goal_items():
+    # for intent_item in x_agenda.get_intent_items():
     #     print(
-    #         f"{goal_item._pad=} {goal_item._label} {len(goal_item._requiredunits)=}"
+    #         f"{intent_item._pad=} {intent_item._label} {len(intent_item._requiredunits)=}"
     #     )
-    #     for required in goal_item._requiredunits.values():
+    #     for required in intent_item._requiredunits.values():
     #         if required.base == weekdays:
     #             print(f"         {weekdays}")
 
@@ -277,17 +277,17 @@ def test_exammple_AgendaCanFiltersOnBase():
     #     required_del_sufffact_base=weekdays,
     #     required_del_sufffact_need=weekdays,
     # )
-    assert len(x_agenda.get_goal_items()) == 68
+    assert len(x_agenda.get_intent_items()) == 68
 
     # When
-    action_list = x_agenda.get_goal_items(base=week_road)
+    action_list = x_agenda.get_intent_items(base=week_road)
 
     # THEN
     assert len(action_list) != 69
     assert len(action_list) == 28
 
 
-def test_set_goal_task_as_complete_RangeWorksCorrectly():
+def test_set_intent_task_as_complete_RangeWorksCorrectly():
     # GIVEN
     healer_text = "Zia"
     x_agenda = agendaunit_shop(_healer=healer_text)
@@ -314,26 +314,26 @@ def test_set_goal_task_as_complete_RangeWorksCorrectly():
         required_sufffact_nigh=81,
     )
     x_agenda.set_acptfact(base=day_road, pick=day_road, open=30, nigh=87)
-    x_agenda.get_goal_items()
+    x_agenda.get_intent_items()
     run_requiredunits = x_agenda._idearoot._kids[run_text]._requiredunits[day_road]
     print(f"{run_requiredunits=}")
     print(f"{run_requiredunits.sufffacts[day_road]._status=}")
     print(f"{run_requiredunits.sufffacts[day_road]._task=}")
     print(f"{x_agenda.get_required_bases()=}")
     assert len(x_agenda.get_idea_list()) == 4
-    assert len(x_agenda.get_goal_items()) == 1
-    assert x_agenda.get_goal_items()[0]._task == True
+    assert len(x_agenda.get_intent_items()) == 1
+    assert x_agenda.get_intent_items()[0]._task == True
 
     # When
-    x_agenda.set_goal_task_complete(task_road=run_road, base=day_road)
+    x_agenda.set_intent_task_complete(task_road=run_road, base=day_road)
 
     # Then
-    goal_list = x_agenda.get_goal_items()
-    assert len(goal_list) == 0
-    assert goal_list == []
+    intent_list = x_agenda.get_intent_items()
+    assert len(intent_list) == 0
+    assert intent_list == []
 
 
-def test_set_goal_task_as_complete_DivisionWorksCorrectly():
+def test_set_intent_task_as_complete_DivisionWorksCorrectly():
     # GIVEN
     healer_text = "Zia"
     x_agenda = agendaunit_shop(_healer=healer_text)
@@ -364,21 +364,21 @@ def test_set_goal_task_as_complete_DivisionWorksCorrectly():
     run_idea = x_agenda.get_idea_kid(road=run_road)
     # print(f"{run_idea._acptfactheirs=}")
     x_agenda.set_acptfact(base=day_road, pick=day_road, open=1, nigh=2)
-    assert len(x_agenda.get_goal_items()) == 1
+    assert len(x_agenda.get_intent_items()) == 1
     x_agenda.set_acptfact(base=day_road, pick=day_road, open=2, nigh=2)
-    assert len(x_agenda.get_goal_items()) == 0
+    assert len(x_agenda.get_intent_items()) == 0
     x_agenda.set_acptfact(base=day_road, pick=day_road, open=400, nigh=400)
-    assert len(x_agenda.get_goal_items()) == 0
+    assert len(x_agenda.get_intent_items()) == 0
     x_agenda.set_acptfact(base=day_road, pick=day_road, open=401, nigh=402)
-    assert len(x_agenda.get_goal_items()) == 1
+    assert len(x_agenda.get_intent_items()) == 1
     # print(f"{run_idea._acptfactheirs=}")
     print(f"{run_idea._acptfactunits=}")
 
     # When
-    x_agenda.set_goal_task_complete(task_road=run_road, base=day_road)
+    x_agenda.set_intent_task_complete(task_road=run_road, base=day_road)
     print(f"{run_idea._acptfactunits=}")
     # print(f"{run_idea._acptfactheirs=}")
-    assert len(x_agenda.get_goal_items()) == 0
+    assert len(x_agenda.get_intent_items()) == 0
 
 
 def test_agenda_get_from_json_LoadsActionFromJSONCorrectly():
@@ -425,7 +425,7 @@ def test_agenda_get_from_json_LoadsActionFromJSONCorrectly():
     x_agenda.set_acptfact(base=day_min_road, pick=day_min_road, open=0, nigh=1399)
 
     # THEN
-    assert len(x_agenda.get_goal_items()) > 0
+    assert len(x_agenda.get_intent_items()) > 0
 
 
 def test_weekdayAgendaItemsCorrectlyReturned():
@@ -614,7 +614,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     # assert x_agenda._idearoot._acptfactunits[fri_road].active == True
 
 
-def test_agenda_create_goal_item_CorrectlyCreatesAllAgendaAttributes():
+def test_agenda_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
     # WHEN "I am cleaning the cookery since I'm in the apartment and it's 8am and it's dirty and I'm doing this for my family"
 
     # GIVEN
@@ -708,14 +708,14 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
     # GIVEN
     x_agenda = example_agendas_agenda_v002()
 
-    assert len(x_agenda.get_goal_items()) == 44
+    assert len(x_agenda.get_intent_items()) == 44
     jajatime_road = f"{x_agenda._culture_title},time,jajatime"
 
     # WHEN
     x_agenda.set_acptfact(
         base=jajatime_road, pick=jajatime_road, open=1063998720, nigh=1064130373
     )
-    action_idea_list = x_agenda.get_goal_items()
+    action_idea_list = x_agenda.get_intent_items()
 
     # THEN
     assert len(action_idea_list) == 66
@@ -723,7 +723,7 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
     night_text = "late_night_go_to_sleep"
     night_road = f"{x_agenda._culture_title},D&B,{night_text}"
     night_idea = x_agenda._idea_dict.get(night_road)
-    # for idea_x in x_agenda.get_goal_items():
+    # for idea_x in x_agenda.get_intent_items():
     #     # if idea_x._task != True:
     #     #     print(f"{len(action_idea_list)=} {idea_x._task=} {idea_x.get_road()}")
     #     if idea_x._label == night_label:
@@ -736,7 +736,7 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
     print(f"      {x_agenda.get_jajatime_repeating_legible_text(open=1063998720)}")
     print(f"      {x_agenda.get_jajatime_repeating_legible_text(open=1064130373)}")
 
-    # for requiredheir in goal_item._requiredheirs.values():
+    # for requiredheir in intent_item._requiredheirs.values():
     #     print(f"{requiredheir.base=} {requiredheir._status=} {requiredheir._task=}")
     requiredheir_jajatime = night_idea._requiredheirs.get(jajatime_road)
     requiredheir_text = f"\nrequiredheir_jajatime= '{requiredheir_jajatime.base}', status={requiredheir_jajatime._status}, task={requiredheir_jajatime._task}"
@@ -768,26 +768,26 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
     assert get_tasks_count(action_idea_list) == 64
 
 
-def test_goal_IsSetByAssignedUnit_1PartyGroup():
+def test_intent_IsSetByAssignedUnit_1PartyGroup():
     # GIVEN
     bob_text = "bob"
     cx = agendaunit_shop(_healer=bob_text)
     work_text = "work"
     work_road = f"{bob_text},{work_text}"
     cx.add_idea(idea_kid=ideacore_shop(_label=work_text, promise=True), pad=bob_text)
-    assert len(cx.get_goal_items()) == 1
+    assert len(cx.get_intent_items()) == 1
 
     sue_text = "sue"
     cx.add_partyunit(handle=sue_text)
     assigned_unit_sue = assigned_unit_shop()
     assigned_unit_sue.set_suffgroup(handle=sue_text)
-    assert len(cx.get_goal_items()) == 1
+    assert len(cx.get_intent_items()) == 1
 
     # WHEN
     cx.edit_idea_attr(road=work_road, assignedunit=assigned_unit_sue)
 
     # THEN
-    assert len(cx.get_goal_items()) == 0
+    assert len(cx.get_intent_items()) == 0
 
     # WHEN
     cx.add_partyunit(handle=bob_text)
@@ -798,13 +798,13 @@ def test_goal_IsSetByAssignedUnit_1PartyGroup():
     cx.edit_idea_attr(road=work_road, assignedunit=assigned_unit_bob)
 
     # THEN
-    assert len(cx.get_goal_items()) == 1
+    assert len(cx.get_intent_items()) == 1
 
-    # goal_list = cx.get_goal_items()
-    # print(f"{goal_list[0]._label=}")
+    # intent_list = cx.get_intent_items()
+    # print(f"{intent_list[0]._label=}")
 
 
-def test_goal_IsSetByAssignedUnit_2PartyGroup():
+def test_intent_IsSetByAssignedUnit_2PartyGroup():
     # GIVEN
     bob_text = "bob"
     cx = agendaunit_shop(_healer=bob_text)
@@ -823,17 +823,17 @@ def test_goal_IsSetByAssignedUnit_2PartyGroup():
 
     run_assignedunit = assigned_unit_shop()
     run_assignedunit.set_suffgroup(handle=run_text)
-    assert len(cx.get_goal_items()) == 1
+    assert len(cx.get_intent_items()) == 1
 
     # WHEN
     cx.edit_idea_attr(road=work_road, assignedunit=run_assignedunit)
 
     # THEN
-    assert len(cx.get_goal_items()) == 0
+    assert len(cx.get_intent_items()) == 0
 
     # WHEN
     run_group.set_partylink(partylink=partylink_shop(handle=bob_text))
     cx.set_groupunit(groupunit=run_group)
 
     # THEN
-    assert len(cx.get_goal_items()) == 1
+    assert len(cx.get_intent_items()) == 1

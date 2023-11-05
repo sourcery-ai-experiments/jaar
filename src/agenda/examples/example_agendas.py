@@ -21,7 +21,7 @@ def agenda_v001() -> AgendaUnit:
     )
 
 
-def agenda_v001_with_large_goal() -> AgendaUnit:
+def agenda_v001_with_large_intent() -> AgendaUnit:
     x_agenda = agenda_v001()
     day_minute_text = "day_minute"
     day_minute_road = f"{x_agenda._culture_title},{day_minute_text}"
@@ -324,7 +324,7 @@ def get_agenda_base_time_example() -> AgendaUnit:
 
 
 def get_agenda_irrational_example() -> AgendaUnit:
-    # this agenda has no conclusive goal because 2 promise ideas are in contradiction
+    # this agenda has no conclusive intent because 2 promise ideas are in contradiction
     # "egg first" is true when "chicken first" is false
     # "chicken first" is true when "egg first" is true
     # Step 0: if chicken._active_status == True, egg._active_status is set to False

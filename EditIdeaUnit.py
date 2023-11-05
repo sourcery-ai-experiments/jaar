@@ -38,7 +38,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
         self.cb_rootadmiration.stateChanged.connect(self.refresh_tree)
         self.cb_yo_id.stateChanged.connect(self.refresh_tree)
-        self.cb_yo_goal.stateChanged.connect(self.refresh_tree)
+        self.cb_yo_intent.stateChanged.connect(self.refresh_tree)
         self.cb_yo_action.stateChanged.connect(self.refresh_tree)
         self.cb_yo_complete.stateChanged.connect(self.refresh_tree)
         self.cb_yo_acptfactunit_time.stateChanged.connect(self.refresh_tree)
@@ -943,7 +943,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
     def refresh_tree(self, disable_is_expanded: bool = False):
         root_percent_flag = self.cb_rootadmiration.checkState() == 2
         yo_id_flag = self.cb_yo_id.checkState() == 2
-        yo_goal_flag = self.cb_yo_goal.checkState() == 2
+        yo_intent_flag = self.cb_yo_intent.checkState() == 2
         yo_action_flag = self.cb_yo_action.checkState() == 2
         yo2bd_count_flag = self.cb_yo2bd_count.checkState() == 2
         # yo2bd_spec1_flag = self.yo2bd_spec1_flag.checkState() == 2
@@ -965,7 +965,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
         tree_root = get_pyqttree(
             idearoot=self.agenda_x._idearoot,
-            yo_goal_flag=yo_goal_flag,
+            yo_intent_flag=yo_intent_flag,
             yo_action_flag=yo_action_flag,
             yo_acptfactunit_time_flag=yo_acptfactunit_time_flag,
             yo_acptfactunit_count_flag=yo_acptfactunit_count_flag,

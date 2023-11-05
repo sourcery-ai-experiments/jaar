@@ -75,5 +75,5 @@ def test_healer_save_agenda_to_depot_assignment_link_CorrectlyCreatesAssignmentF
 
     assert laundry_do_idea._acptfactheirs.get(basket_road).pick == b_full_road
 
-    assert len(output_agenda.get_goal_items()) == 1
-    assert output_agenda.get_goal_items()[0]._label == "do_laundry"
+    assert len(output_agenda.get_intent_items()) == 1
+    assert output_agenda.get_intent_items()[0]._label == "do_laundry"

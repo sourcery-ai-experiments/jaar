@@ -441,18 +441,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 )
         return x_list
 
-    def get_p_goal_list(self):
+    def get_p_intent_list(self):
         x_list = []
         if self.healer_output_agenda != None:
-            goal_list = self.healer_output_agenda.get_goal_items()
-            goal_list.sort(key=lambda x: x._agenda_importance, reverse=True)
+            intent_list = self.healer_output_agenda.get_intent_items()
+            intent_list.sort(key=lambda x: x._agenda_importance, reverse=True)
             x_list.extend(
                 [
-                    agenda_importance_diplay(goal_item._agenda_importance),
-                    goal_item._label,
-                    goal_item._pad,
+                    agenda_importance_diplay(intent_item._agenda_importance),
+                    intent_item._label,
+                    intent_item._pad,
                 ]
-                for goal_item in goal_list
+                for intent_item in intent_list
             )
         return x_list
 
@@ -559,18 +559,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             column_width=[200, 100, 200],
         )
 
-    def _sub_refresh_p_goal_table(self):
-        p_goal_list = self.get_p_goal_list()
+    def _sub_refresh_p_intent_table(self):
+        p_intent_list = self.get_p_intent_list()
         column_headers = [
             "agenda_importance",
-            f"Agenda ({len(p_goal_list)})",
+            f"Agenda ({len(p_intent_list)})",
             "Idea Walk",
         ]
 
         self.refresh_x(
-            table_x=self.w_goal_table,
+            table_x=self.w_intent_table,
             column_header=column_headers,
-            populate_list=p_goal_list,
+            populate_list=p_intent_list,
             column_width=[50, 200, 300],
         )
 
@@ -596,7 +596,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._sub_refresh_p_partys_table()
         self._sub_refresh_p_groups_table()
         self._sub_refresh_p_acptfacts_table()
-        self._sub_refresh_p_goal_table()
+        self._sub_refresh_p_intent_table()
 
     def refresh_culture(self):
         self.refresh_x(

@@ -94,7 +94,7 @@ def test_agenda_add_idea_CanAddKidToKidIdea():
     )
     x_agenda._idearoot._kids["work"]._kids["new_york"].set_pad(parent_road="testing")
     assert x_agenda._idearoot._kids["work"]._kids["new_york"]._pad == "testing"
-    assert x_agenda.get_goal_items
+    assert x_agenda.get_intent_items
 
 
 def test_agenda_add_idea_CanAddKidToGrandkidIdea():

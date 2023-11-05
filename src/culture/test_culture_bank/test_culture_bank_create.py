@@ -33,10 +33,10 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     handle_text = "handle"
     _agenda_credit_text = "_agenda_credit"
     _agenda_debt_text = "_agenda_debt"
-    _agenda_goal_credit_text = "_agenda_goal_credit"
-    _agenda_goal_debt_text = "_agenda_goal_debt"
-    _agenda_goal_ratio_credit_text = "_agenda_goal_ratio_credit"
-    _agenda_goal_ratio_debt_text = "_agenda_goal_ratio_debt"
+    _agenda_intent_credit_text = "_agenda_intent_credit"
+    _agenda_intent_debt_text = "_agenda_intent_debt"
+    _agenda_intent_ratio_credit_text = "_agenda_intent_ratio_credit"
+    _agenda_intent_ratio_debt_text = "_agenda_intent_ratio_debt"
     _creditor_active_text = "_creditor_active"
     _debtor_active_text = "_debtor_active"
     _bank_credit_score_text = "_bank_credit_score"
@@ -50,10 +50,10 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
         handle_text: 1,
         _agenda_credit_text: 1,
         _agenda_debt_text: 1,
-        _agenda_goal_credit_text: 1,
-        _agenda_goal_debt_text: 1,
-        _agenda_goal_ratio_credit_text: 1,
-        _agenda_goal_ratio_debt_text: 1,
+        _agenda_intent_credit_text: 1,
+        _agenda_intent_debt_text: 1,
+        _agenda_intent_ratio_credit_text: 1,
+        _agenda_intent_ratio_debt_text: 1,
         _creditor_active_text: 1,
         _debtor_active_text: 1,
         _bank_tax_paid_text: 1,

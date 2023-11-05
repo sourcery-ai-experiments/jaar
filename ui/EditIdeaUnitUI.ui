@@ -337,7 +337,7 @@
     <string>Group count</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo_goal">
+  <widget class="QCheckBox" name="cb_yo_intent">
    <property name="geometry">
     <rect>
      <x>320</x>
@@ -347,7 +347,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>lf goal</string>
+    <string>lf intent</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="cb_yo_insert_allChildren">
@@ -429,7 +429,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo_goal_current">
+  <widget class="QCheckBox" name="cb_yo_intent_current">
    <property name="geometry">
     <rect>
      <x>210</x>

@@ -60,10 +60,10 @@ class PartyUnit(PartyCore):
     depotlink_type: str = None
     _agenda_credit: float = None
     _agenda_debt: float = None
-    _agenda_goal_credit: float = None
-    _agenda_goal_debt: float = None
-    _agenda_goal_ratio_credit: float = None
-    _agenda_goal_ratio_debt: float = None
+    _agenda_intent_credit: float = None
+    _agenda_intent_debt: float = None
+    _agenda_intent_ratio_credit: float = None
+    _agenda_intent_ratio_debt: float = None
     _creditor_active: bool = None
     _debtor_active: bool = None
     _partyrings: dict[PartyHandle:PartyRing] = None
@@ -117,15 +117,15 @@ class PartyUnit(PartyCore):
         self._bank_credit_score = credit_score
         self.set_bank_voice_rank(voice_rank)
 
-        # if tax_diff is None or self._agenda_goal_ratio_credit is None:
+        # if tax_diff is None or self._agenda_intent_ratio_credit is None:
         #     self._bank_tax_diff = tax_diff
         # elif (
-        #     round(self._bank_tax_paid - self._agenda_goal_ratio_credit, 15) == tax_diff
+        #     round(self._bank_tax_paid - self._agenda_intent_ratio_credit, 15) == tax_diff
         # ):
         #     self._bank_tax_diff = tax_diff
         # else:
         #     raise Exception(
-        #         f"PartyUnit.set_banking_data fail: tax_paid={tax_paid} + tax_diff={tax_diff} not equal to _agenda_goal_ratio_credit={self._agenda_goal_ratio_credit}"
+        #         f"PartyUnit.set_banking_data fail: tax_paid={tax_paid} + tax_diff={tax_diff} not equal to _agenda_intent_ratio_credit={self._agenda_intent_ratio_credit}"
         #     )
 
     def set_bank_voice_rank(self, voice_rank: int):
@@ -179,59 +179,59 @@ class PartyUnit(PartyCore):
             self._agenda_credit = 0
         if self._agenda_debt is None:
             self._agenda_debt = 0
-        if self._agenda_goal_credit is None:
-            self._agenda_goal_credit = 0
-        if self._agenda_goal_debt is None:
-            self._agenda_goal_debt = 0
-        if self._agenda_goal_ratio_credit is None:
-            self._agenda_goal_ratio_credit = 0
-        if self._agenda_goal_ratio_debt is None:
-            self._agenda_goal_ratio_debt = 0
+        if self._agenda_intent_credit is None:
+            self._agenda_intent_credit = 0
+        if self._agenda_intent_debt is None:
+            self._agenda_intent_debt = 0
+        if self._agenda_intent_ratio_credit is None:
+            self._agenda_intent_ratio_credit = 0
+        if self._agenda_intent_ratio_debt is None:
+            self._agenda_intent_ratio_debt = 0
 
     def reset_agenda_credit_debt(self):
         self._agenda_credit = 0
         self._agenda_debt = 0
-        self._agenda_goal_credit = 0
-        self._agenda_goal_debt = 0
-        self._agenda_goal_ratio_credit = 0
-        self._agenda_goal_ratio_debt = 0
+        self._agenda_intent_credit = 0
+        self._agenda_intent_debt = 0
+        self._agenda_intent_ratio_credit = 0
+        self._agenda_intent_ratio_debt = 0
 
     def add_agenda_credit_debt(
         self,
         agenda_credit: float,
         agenda_debt,
-        agenda_goal_credit: float,
-        agenda_goal_debt,
+        agenda_intent_credit: float,
+        agenda_intent_debt,
     ):
         self.set_empty_agenda_credit_debt_to_zero()
         self._agenda_credit += agenda_credit
         self._agenda_debt += agenda_debt
-        self._agenda_goal_credit += agenda_goal_credit
-        self._agenda_goal_debt += agenda_goal_debt
+        self._agenda_intent_credit += agenda_intent_credit
+        self._agenda_intent_debt += agenda_intent_debt
 
-    def set_agenda_goal_ratio_credit_debt(
+    def set_agenda_intent_ratio_credit_debt(
         self,
-        agenda_goal_ratio_credit_sum: float,
-        agenda_goal_ratio_debt_sum: float,
+        agenda_intent_ratio_credit_sum: float,
+        agenda_intent_ratio_debt_sum: float,
         agenda_partyunit_total_creditor_weight: float,
         agenda_partyunit_total_debtor_weight: float,
     ):
-        if agenda_goal_ratio_credit_sum == 0:
-            self._agenda_goal_ratio_credit = (
+        if agenda_intent_ratio_credit_sum == 0:
+            self._agenda_intent_ratio_credit = (
                 self.get_creditor_weight() / agenda_partyunit_total_creditor_weight
             )
         else:
-            self._agenda_goal_ratio_credit = (
-                self._agenda_goal_credit / agenda_goal_ratio_credit_sum
+            self._agenda_intent_ratio_credit = (
+                self._agenda_intent_credit / agenda_intent_ratio_credit_sum
             )
 
-        if agenda_goal_ratio_debt_sum == 0:
-            self._agenda_goal_ratio_debt = (
+        if agenda_intent_ratio_debt_sum == 0:
+            self._agenda_intent_ratio_debt = (
                 self.get_debtor_weight() / agenda_partyunit_total_debtor_weight
             )
         else:
-            self._agenda_goal_ratio_debt = (
-                self._agenda_goal_debt / agenda_goal_ratio_debt_sum
+            self._agenda_intent_ratio_debt = (
+                self._agenda_intent_debt / agenda_intent_ratio_debt_sum
             )
 
     def meld(self, other_partyunit):
@@ -319,10 +319,10 @@ def partyunit_shop(
     _partyrings: dict[PartyHandle:PartyRing] = None,
     _agenda_credit: float = None,
     _agenda_debt: float = None,
-    _agenda_goal_credit: float = None,
-    _agenda_goal_debt: float = None,
-    _agenda_goal_ratio_credit: float = None,
-    _agenda_goal_ratio_debt: float = None,
+    _agenda_intent_credit: float = None,
+    _agenda_intent_debt: float = None,
+    _agenda_intent_ratio_credit: float = None,
+    _agenda_intent_ratio_debt: float = None,
     _bank_tax_paid: float = None,
     _bank_tax_diff: float = None,
     depotlink_type: str = None,
@@ -338,10 +338,10 @@ def partyunit_shop(
         _debtor_active=_debtor_active,
         _agenda_credit=_agenda_credit,
         _agenda_debt=_agenda_debt,
-        _agenda_goal_credit=_agenda_goal_credit,
-        _agenda_goal_debt=_agenda_goal_debt,
-        _agenda_goal_ratio_credit=_agenda_goal_ratio_credit,
-        _agenda_goal_ratio_debt=_agenda_goal_ratio_debt,
+        _agenda_intent_credit=_agenda_intent_credit,
+        _agenda_intent_debt=_agenda_intent_debt,
+        _agenda_intent_ratio_credit=_agenda_intent_ratio_credit,
+        _agenda_intent_ratio_debt=_agenda_intent_ratio_debt,
         _partyrings=final_partyrings,
         _bank_tax_paid=_bank_tax_paid,
         _bank_tax_diff=_bank_tax_diff,
@@ -357,8 +357,8 @@ class PartyLink(PartyCore):
     debtor_weight: float = 1.0
     _agenda_credit: float = None
     _agenda_debt: float = None
-    _agenda_goal_credit: float = None
-    _agenda_goal_debt: float = None
+    _agenda_intent_credit: float = None
+    _agenda_intent_debt: float = None
 
     def get_dict(self):
         return {
@@ -373,8 +373,8 @@ class PartyLink(PartyCore):
         partylinks_debtor_weight_sum: float,
         group_agenda_credit: float,
         group_agenda_debt: float,
-        group_agenda_goal_credit: float,
-        group_agenda_goal_debt: float,
+        group_agenda_intent_credit: float,
+        group_agenda_intent_debt: float,
     ):
         group_agenda_credit = x_func_return1ifnone(group_agenda_credit)
         group_agenda_debt = x_func_return1ifnone(group_agenda_debt)
@@ -383,14 +383,14 @@ class PartyLink(PartyCore):
 
         self._agenda_credit = group_agenda_credit * creditor_ratio
         self._agenda_debt = group_agenda_debt * debtor_ratio
-        self._agenda_goal_credit = group_agenda_goal_credit * creditor_ratio
-        self._agenda_goal_debt = group_agenda_goal_debt * debtor_ratio
+        self._agenda_intent_credit = group_agenda_intent_credit * creditor_ratio
+        self._agenda_intent_debt = group_agenda_intent_debt * debtor_ratio
 
     def reset_agenda_credit_debt(self):
         self._agenda_credit = 0
         self._agenda_debt = 0
-        self._agenda_goal_credit = 0
-        self._agenda_goal_debt = 0
+        self._agenda_intent_credit = 0
+        self._agenda_intent_debt = 0
 
     def meld(self, other_partylink):
         if self.handle != other_partylink.handle:
@@ -425,8 +425,8 @@ def partylink_shop(
     debtor_weight: float = None,
     _agenda_credit: float = None,
     _agenda_debt: float = None,
-    _agenda_goal_credit: float = None,
-    _agenda_goal_debt: float = None,
+    _agenda_intent_credit: float = None,
+    _agenda_intent_debt: float = None,
 ) -> PartyLink:
     creditor_weight = x_func_return1ifnone(creditor_weight)
     debtor_weight = x_func_return1ifnone(debtor_weight)
@@ -436,8 +436,8 @@ def partylink_shop(
         debtor_weight=debtor_weight,
         _agenda_credit=_agenda_credit,
         _agenda_debt=_agenda_debt,
-        _agenda_goal_credit=_agenda_goal_credit,
-        _agenda_goal_debt=_agenda_goal_debt,
+        _agenda_intent_credit=_agenda_intent_credit,
+        _agenda_intent_debt=_agenda_intent_debt,
     )
 
 

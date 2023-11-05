@@ -55,7 +55,7 @@ def test_agenda_set_requiredunits_status():
     assert work_idea._requiredunits[weekday_road] == work_wk_required
 
 
-def test_goal_returned_WhenNoRequiredsExist():
+def test_intent_returned_WhenNoRequiredsExist():
     agenda_x = example_agendas_get_agenda_with_4_levels()
     agenda_x.set_agenda_metrics()
     work_text = "work"
