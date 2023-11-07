@@ -103,13 +103,13 @@ def test_personunit_create_painunit_from_genus_CorrectlyCreatesPainUnit():
     xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
 
     # WHEN
-    fear_text = "fear"
-    xao_person_obj.create_painunit_from_genus(fear_text)
+    knee_text = "knee discomfort"
+    xao_person_obj.create_painunit_from_genus(knee_text)
 
     # THEN
-    fear_pain = xao_person_obj._pains.get(fear_text)
-    assert fear_pain != None
-    assert fear_pain.genus == fear_text
+    knee_pain = xao_person_obj._pains.get(knee_text)
+    assert knee_pain != None
+    assert knee_pain.genus == knee_text
 
 
 def test_personunit_create_painunit_from_genus_CorrectlyCreatesPainUnit():
@@ -119,14 +119,14 @@ def test_personunit_create_painunit_from_genus_CorrectlyCreatesPainUnit():
     xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
 
     # WHEN
-    fear_text = "fear"
-    fear_painunit = painunit_shop(fear_text)
-    xao_person_obj.set_painunit(fear_painunit)
+    knee_text = "knee discomfort"
+    knee_painunit = painunit_shop(knee_text)
+    xao_person_obj.set_painunit(knee_painunit)
 
     # THEN
-    fear_pain = xao_person_obj._pains.get(fear_text)
-    assert fear_pain != None
-    assert fear_pain.genus == fear_text
+    knee_pain = xao_person_obj._pains.get(knee_text)
+    assert knee_pain != None
+    assert knee_pain.genus == knee_text
 
 
 def test_personunit_get_painunit_CorrectlyGetsPainUnit():
@@ -134,15 +134,15 @@ def test_personunit_get_painunit_CorrectlyGetsPainUnit():
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
     xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
-    fear_text = "fear"
-    xao_person_obj.create_painunit_from_genus(fear_text)
+    knee_text = "knee discomfort"
+    xao_person_obj.create_painunit_from_genus(knee_text)
 
     # WHEN
-    fear_pain = xao_person_obj.get_painunit(fear_text)
+    knee_pain = xao_person_obj.get_painunit(knee_text)
 
     # THEN
-    assert fear_pain != None
-    assert fear_pain.genus == fear_text
+    assert knee_pain != None
+    assert knee_pain.genus == knee_text
 
 
 def test_personunit_del_painunit_CorrectlyDeletesPainUnit():
@@ -150,15 +150,15 @@ def test_personunit_del_painunit_CorrectlyDeletesPainUnit():
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
     xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
-    fear_text = "fear"
-    xao_person_obj.create_painunit_from_genus(fear_text)
-    before_fear_pain = xao_person_obj.get_painunit(fear_text)
-    assert before_fear_pain != None
-    assert before_fear_pain.genus == fear_text
+    knee_text = "knee discomfort"
+    xao_person_obj.create_painunit_from_genus(knee_text)
+    before_knee_pain = xao_person_obj.get_painunit(knee_text)
+    assert before_knee_pain != None
+    assert before_knee_pain.genus == knee_text
 
     # WHEN
-    xao_person_obj.del_painunit(fear_text)
+    xao_person_obj.del_painunit(knee_text)
 
     # THEN
-    after_fear_pain = xao_person_obj.get_painunit(fear_text)
-    assert after_fear_pain is None
+    after_knee_pain = xao_person_obj.get_painunit(knee_text)
+    assert after_knee_pain is None

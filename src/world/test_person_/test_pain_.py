@@ -8,30 +8,30 @@ from src.world.pain import (
 
 def test_painunit_exists():
     # GIVEN
-    fear_text = "dallas"
-    fear_weight = 13
+    knee_text = "knee"
+    knee_weight = 13
 
     # WHEN
-    fear_painunit = PainUnit(genus=fear_text, weight=fear_weight)
+    knee_painunit = PainUnit(genus=knee_text, weight=knee_weight)
 
     # THEN
-    assert fear_painunit.genus == fear_text
-    assert fear_painunit.weight == fear_weight
-    assert fear_painunit._healerlinks is None
-    assert fear_painunit._relative_weight is None
-    assert fear_painunit._manager_importance is None
+    assert knee_painunit.genus == knee_text
+    assert knee_painunit.weight == knee_weight
+    assert knee_painunit._healerlinks is None
+    assert knee_painunit._relative_weight is None
+    assert knee_painunit._manager_importance is None
 
 
 def test_painunit_shop_ReturnsNonePainUnitWithCorrectAttrs_v1():
     # GIVEN
-    fear_text = "dallas"
+    knee_text = "knee"
 
     # WHEN
-    fear_painunit = painunit_shop(genus=fear_text)
+    knee_painunit = painunit_shop(genus=knee_text)
 
     # THEN
-    assert fear_painunit.genus == fear_text
-    assert fear_painunit.weight == 1
-    assert fear_painunit._healerlinks == {}
-    assert fear_painunit._relative_weight is None
-    assert fear_painunit._manager_importance is None
+    assert knee_painunit.genus == knee_text
+    assert knee_painunit.weight == 1
+    assert knee_painunit._healerlinks == {}
+    assert knee_painunit._relative_weight is None
+    assert knee_painunit._manager_importance is None

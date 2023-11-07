@@ -40,9 +40,9 @@ def test_healerlink_get_dict_ReturnsCorrectDict():
 
 def test_painunit_get_dict_ReturnsCorrectDict():
     # GIVEN
-    fear_text = "fear"
-    fear_weight = 13
-    fear_painunit = painunit_shop(genus=fear_text, weight=fear_weight)
+    knee_text = "knee discomfort"
+    knee_weight = 13
+    knee_painunit = painunit_shop(genus=knee_text, weight=knee_weight)
 
     yao_text = "yao"
     yao_weight = 7
@@ -53,23 +53,23 @@ def test_painunit_get_dict_ReturnsCorrectDict():
     diet_culturelink = culturelink_shop(title=diet_text, weight=diet_weight)
     yao_healerlink.set_culturelink(diet_culturelink)
 
-    fear_painunit.set_healerlink(yao_healerlink)
+    knee_painunit.set_healerlink(yao_healerlink)
 
     # WHEN
-    fear_dict = fear_painunit.get_dict()
+    knee_dict = knee_painunit.get_dict()
 
     # THEN
-    print(f"{fear_dict.keys()=}")
-    assert len(fear_dict) == 3
-    x_healerlinks_dict = fear_dict.get("_healerlinks")
+    print(f"{knee_dict.keys()=}")
+    assert len(knee_dict) == 3
+    x_healerlinks_dict = knee_dict.get("_healerlinks")
     print(f"{x_healerlinks_dict=}")
     assert len(x_healerlinks_dict) == 1
     yao_healerlink = x_healerlinks_dict.get(yao_text)
     yao_culturelinks_dict = yao_healerlink.get("_culturelinks")
     print(f"{yao_culturelinks_dict=}")
     assert len(yao_culturelinks_dict) == 1
-    assert len(fear_dict.get("_healerlinks")) == 1
-    assert fear_dict.get("genus") == fear_text
+    assert len(knee_dict.get("_healerlinks")) == 1
+    assert knee_dict.get("genus") == knee_text
     diet_culturelink_dict = yao_culturelinks_dict.get(diet_text)
     assert diet_culturelink_dict == {"title": diet_text, "weight": diet_weight}
     assert yao_culturelinks_dict == {
@@ -83,9 +83,9 @@ def test_painunit_get_dict_ReturnsCorrectDict():
             "_culturelinks": {diet_text: {"title": diet_text, "weight": diet_weight}},
         }
     }
-    assert fear_dict == {
-        "genus": fear_text,
-        "weight": fear_weight,
+    assert knee_dict == {
+        "genus": knee_text,
+        "weight": knee_weight,
         "_healerlinks": {
             yao_text: {
                 "person_name": yao_text,

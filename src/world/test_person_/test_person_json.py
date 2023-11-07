@@ -9,17 +9,17 @@ def test_personunit_get_dict_CorrectlyGetsDict():
     diet_text = "diet"
     xao_personunit.set_cultureunit(diet_text)
 
-    fear_text = "fear"
-    xao_personunit.create_painunit_from_genus(fear_text)
+    knee_text = "knee discomfort"
+    xao_personunit.create_painunit_from_genus(knee_text)
 
     # WHEN
     xao_personunit_get_dict = xao_personunit.get_dict()
 
     # THEN
-    fear_painunit = xao_personunit.get_painunit(fear_text)
+    knee_painunit = xao_personunit.get_painunit(knee_text)
     xao_personunit_x_dict = {
         "name": xao_text,
         "_cultures": {diet_text: None},
-        "_pains": {fear_text: fear_painunit.get_dict()},
+        "_pains": {knee_text: knee_painunit.get_dict()},
     }
     assert xao_personunit_x_dict == xao_personunit_get_dict
