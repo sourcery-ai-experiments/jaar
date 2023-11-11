@@ -20,9 +20,9 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
         db_tables_columns = get_db_columns(bank_conn)
 
     # row_count = 0
-    # for table_mame, table_x in tables_dict.items():
+    # for table_name, table_x in tables_dict.items():
     #     row_count += 1
-    #     print(f" {table_x=} {row_count}. {table_mame=}")
+    #     print(f" {table_x=} {row_count}. {table_name=}")
 
     healer_text = "healer"
     rational_text = "rational"

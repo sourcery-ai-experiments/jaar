@@ -1,4 +1,4 @@
-from src.agenda.agenda import AgendaUnit, PartyUnit, Road, PersonName, PartyHandle
+from src.agenda.agenda import AgendaUnit, PartyUnit, Road, PersonPID, PartyHandle
 from src.agenda.road import get_road_without_root_node
 from src.culture.y_func import sqlite_bool, sqlite_null, sqlite_text, sqlite_to_python
 from dataclasses import dataclass
@@ -19,7 +19,7 @@ ORDER BY range_sum DESC
 """
 
 
-def get_river_reach_table_final_insert_sqlstr(currency_master: PersonName) -> str:
+def get_river_reach_table_final_insert_sqlstr(currency_master: PersonPID) -> str:
     reach_final_sqlstr = get_river_reach_table_final_select_sqlstr(currency_master)
     return get_river_reach_table_insert_sqlstr(reach_final_sqlstr)
 
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS river_reach (
 """
 
 
-def get_river_reach_table_touch_select_sqlstr(currency_master: PersonName) -> str:
+def get_river_reach_table_touch_select_sqlstr(currency_master: PersonPID) -> str:
     return f"""
     SELECT 
     block.currency_master
@@ -107,7 +107,7 @@ def get_river_reach_table_touch_select_sqlstr(currency_master: PersonName) -> st
 """
 
 
-def get_river_reach_table_final_select_sqlstr(currency_master: PersonName) -> str:
+def get_river_reach_table_final_select_sqlstr(currency_master: PersonPID) -> str:
     return f"""
 WITH reach_inter(curr_mstr, src, dst, reach_start, reach_close) AS (
 {get_river_reach_table_touch_select_sqlstr(currency_master)}
@@ -240,9 +240,8 @@ GROUP BY curr_mstr, src, set_num
 """
 
 
-def get_table_count_sqlstr(table_mame: str) -> str:
-    # "mame" is intially mispelled so that it does not interfere with person_name in the codebase
-    return f"SELECT COUNT(*) FROM {table_mame}"
+def get_table_count_sqlstr(table_name: str) -> str:
+    return f"SELECT COUNT(*) FROM {table_name}"
 
 
 # river_block
@@ -523,7 +522,7 @@ WHERE currency_master = '{currency_agenda_healer}'
 
 # agenda
 def get_agendaunit_table_create_sqlstr() -> str:
-    """Create table that references the handle of every agenda. The healer name of the one running that agenda's council."""
+    """Create table that references the handle of every agenda. The healer pip of the one running that agenda's council."""
     return """
 CREATE TABLE IF NOT EXISTS agendaunit (
   healer VARCHAR(255) PRIMARY KEY ASC
@@ -560,11 +559,11 @@ FROM agendaunit
 
 @dataclass
 class AgendaBankUnit:
-    healer: PersonName
+    healer: PersonPID
     rational: bool
 
 
-def get_agendabankunits_dict(db_conn: Connection) -> dict[PersonName:AgendaBankUnit]:
+def get_agendabankunits_dict(db_conn: Connection) -> dict[PersonPID:AgendaBankUnit]:
     results = db_conn.execute(get_agendaunits_select_sqlstr())
     dict_x = {}
     for row in results.fetchall():
@@ -613,7 +612,7 @@ CREATE TABLE IF NOT EXISTS partyunit (
 
 
 def get_partyunit_table_update_bank_tax_paid_sqlstr(
-    currency_agenda_healer: PersonName,
+    currency_agenda_healer: PersonPID,
 ) -> str:
     return f"""
 UPDATE partyunit
@@ -635,7 +634,7 @@ WHERE EXISTS (
 
 
 def get_partyunit_table_update_credit_score_sqlstr(
-    currency_agenda_healer: PersonName,
+    currency_agenda_healer: PersonPID,
 ) -> str:
     return f"""
 UPDATE partyunit
@@ -650,7 +649,7 @@ WHERE partyunit.agenda_healer = '{currency_agenda_healer}'
 """
 
 
-def get_partyunit_table_update_bank_voice_rank_sqlstr(agenda_healer: PersonName) -> str:
+def get_partyunit_table_update_bank_voice_rank_sqlstr(agenda_healer: PersonPID) -> str:
     return f"""
 UPDATE partyunit
 SET _bank_voice_rank = 
@@ -718,7 +717,7 @@ class PartyDBUnit(PartyUnit):
 
 
 def get_partyview_dict(
-    db_conn: Connection, payer_healer: PersonName
+    db_conn: Connection, payer_healer: PersonPID
 ) -> dict[PartyHandle:PartyDBUnit]:
     sqlstr = f"""
 SELECT 

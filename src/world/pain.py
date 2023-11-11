@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from src.culture.culture import CultureTitle
-from src.agenda.agenda import PersonName
+from src.agenda.agenda import PersonPID
 
 
 @dataclass
@@ -28,7 +28,7 @@ def culturelink_shop(title: CultureTitle, weight: float = None) -> CultureLink:
 
 @dataclass
 class HealerLink:
-    person_name: PersonName
+    person_pid: PersonPID
     weight: float
     in_tribe: bool
     _culturelinks: dict[CultureTitle:CultureLink] = None
@@ -75,18 +75,18 @@ class HealerLink:
 
     def get_dict(self):
         return {
-            "person_name": self.person_name,
+            "person_pid": self.person_pid,
             "weight": self.weight,
             "_culturelinks": self.get_culturelinks_dict(),
         }
 
 
 def healerlink_shop(
-    person_name: PersonName, weight: float = None, in_tribe: bool = None
+    person_pid: PersonPID, weight: float = None, in_tribe: bool = None
 ) -> HealerLink:
     if weight is None:
         weight = 1
-    x_healer = HealerLink(person_name=person_name, weight=weight, in_tribe=in_tribe)
+    x_healer = HealerLink(person_pid=person_pid, weight=weight, in_tribe=in_tribe)
     x_healer.set_culturelinks_empty_if_none()
     return x_healer
 
@@ -99,7 +99,7 @@ class PainGenus(str):  # Created to help track the concept
 class PainUnit:
     genus: PainGenus
     weight: float = None
-    _healerlinks: dict[PersonName:HealerLink] = None
+    _healerlinks: dict[PersonPID:HealerLink] = None
     _relative_weight: float = None
     _manager_importance: float = None
 
@@ -129,17 +129,17 @@ class PainUnit:
             self._healerlinks = {}
 
     def set_healerlink(self, healerlink: HealerLink):
-        self._healerlinks[healerlink.person_name] = healerlink
+        self._healerlinks[healerlink.person_pid] = healerlink
 
-    def get_healerlink(self, person_name: PersonName) -> HealerLink:
-        return self._healerlinks.get(person_name)
+    def get_healerlink(self, person_pid: PersonPID) -> HealerLink:
+        return self._healerlinks.get(person_pid)
 
-    def del_healerlink(self, person_name: PersonName):
-        self._healerlinks.pop(person_name)
+    def del_healerlink(self, person_pid: PersonPID):
+        self._healerlinks.pop(person_pid)
 
     def get_healerlinks_dict(self) -> dict:
         return {
-            healerlink_x.person_name: healerlink_x.get_dict()
+            healerlink_x.person_pid: healerlink_x.get_dict()
             for healerlink_x in self._healerlinks.values()
         }
 

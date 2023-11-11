@@ -253,10 +253,10 @@ def test_get_river_reach_table_touch_select_sqlstr_QuerySelectsCorrectResults():
     #     x_culture = _delete_and_set_ex6(x_title=ex7_text)
     #     sal_text = "sal"
     #     # x_culture = _delete_and_set_ex6()
-    #     # # x_culture.set_manager_name(sal_text)
+    #     # # x_culture.set_manager_pid(sal_text)
     #     # ex6_text = "ex6"
     #     # x_culture = cultureunit_shop(title=ex6_text, cultures_dir=get_test_cultures_dir())
-    #     # x_culture.set_manager_name(sal_text)
+    #     # x_culture.set_manager_pid(sal_text)
     #     # x_culture.set_credit_flow_for_agenda(sal_text, max_blocks_count=100)
 
     #     # WHEN

@@ -4,13 +4,13 @@ from src.world.pain import painunit_shop, healerlink_shop, culturelink_shop
 
 def test_personunit_exists():
     # GIVEN / WHEN
-    px = PersonUnit()
+    x_person = PersonUnit()
 
     # THEN
-    assert px.name is None
-    assert px.person_dir is None
-    assert px._cultures is None
-    assert px._pains is None
+    assert x_person.pid is None
+    assert x_person.person_dir is None
+    assert x_person._cultures is None
+    assert x_person._pains is None
 
 
 def test_personunit_shop_ReturnsNonePersonUnitWithCorrectAttrs_v1():
@@ -18,13 +18,13 @@ def test_personunit_shop_ReturnsNonePersonUnitWithCorrectAttrs_v1():
     dallas_text = "dallas"
 
     # WHEN
-    px = personunit_shop(name=dallas_text)
+    x_person = personunit_shop(pid=dallas_text)
 
     # THEN
-    assert px.name == dallas_text
-    assert px.person_dir == ""
-    assert px._cultures == {}
-    assert px._pains == {}
+    assert x_person.pid == dallas_text
+    assert x_person.person_dir == ""
+    assert x_person._cultures == {}
+    assert x_person._pains == {}
 
 
 def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
@@ -33,18 +33,18 @@ def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
     dallas_dir = ""
 
     # WHEN
-    px = personunit_shop(name=dallas_text, person_dir=dallas_dir)
+    x_person = personunit_shop(pid=dallas_text, person_dir=dallas_dir)
 
     # THEN
-    assert px.name == dallas_text
-    assert px.person_dir == dallas_dir
+    assert x_person.pid == dallas_text
+    assert x_person.person_dir == dallas_dir
 
 
 def test_personunit_set_cultureunit_CorrectlyCreatesCultureUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
-    xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
+    xao_person_obj = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
 
     # WHEN
     diet_text = "diet"
@@ -56,14 +56,14 @@ def test_personunit_set_cultureunit_CorrectlyCreatesCultureUnit():
     assert diet_culture != None
     assert diet_culture.title == diet_text
     assert diet_culture.cultures_dir == f"{xao_person_dir}/cultures"
-    assert diet_culture._manager_name == xao_text
+    assert diet_culture._manager_pid == xao_text
 
 
 def test_personunit_get_cultureunit_CorrectlyGetsCultureUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
-    xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
+    xao_person_obj = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
     diet_text = "diet"
     xao_person_obj.set_cultureunit(diet_text)
 
@@ -80,7 +80,7 @@ def test_personunit_del_cultureunit_CorrectlyDeletesCultureUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
-    xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
+    xao_person_obj = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
     diet_text = "diet"
     xao_person_obj.set_cultureunit(diet_text)
     before_diet_culture = xao_person_obj.get_cultureunit(diet_text)
@@ -100,7 +100,7 @@ def test_personunit_create_painunit_from_genus_CorrectlyCreatesPainUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
-    xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
+    xao_person_obj = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
 
     # WHEN
     knee_text = "knee discomfort"
@@ -116,7 +116,7 @@ def test_personunit_create_painunit_from_genus_CorrectlyCreatesPainUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
-    xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
+    xao_person_obj = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
 
     # WHEN
     knee_text = "knee discomfort"
@@ -133,7 +133,7 @@ def test_personunit_get_painunit_CorrectlyGetsPainUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
-    xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
+    xao_person_obj = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
     knee_text = "knee discomfort"
     xao_person_obj.create_painunit_from_genus(knee_text)
 
@@ -149,7 +149,7 @@ def test_personunit_del_painunit_CorrectlyDeletesPainUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
-    xao_person_obj = personunit_shop(name=xao_text, person_dir=xao_person_dir)
+    xao_person_obj = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
     knee_text = "knee discomfort"
     xao_person_obj.create_painunit_from_genus(knee_text)
     before_knee_pain = xao_person_obj.get_painunit(knee_text)

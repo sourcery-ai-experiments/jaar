@@ -12,7 +12,7 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectly(env_dir_setup_cle
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"{get_temp_env_dir}/persons/{xao_text}"
-    xao_personunit = personunit_shop(name=xao_text, person_dir=xao_person_dir)
+    xao_personunit = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
 
     knee_text = "knee discomfort"
     bore_text = "bore"
@@ -46,7 +46,7 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectly(env_dir_setup_cle
     # GIVEN
     xao_name = "Xao"
     xao_person_dir = f"{get_temp_env_dir}/persons/{xao_name}"
-    xao_personunit = personunit_shop(name=xao_name, person_dir=xao_person_dir)
+    xao_personunit = personunit_shop(pid=xao_name, person_dir=xao_person_dir)
 
     knee_genus = "knee"
     bore_genus = "bore"
@@ -140,7 +140,7 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectly(env_dir_setup_cle
 #     # GIVEN
 #     xao_name = "Xao"
 #     xao_person_dir = f"{get_temp_env_dir()}/persons/{xao_name}"
-#     xao_personunit = personunit_shop(name=xao_name, person_dir=xao_person_dir)
+#     xao_personunit = personunit_shop(pid=xao_name, person_dir=xao_person_dir)
 
 #     knee_genus = "knee"
 #     bore_genus = "bore"

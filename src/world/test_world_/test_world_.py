@@ -59,7 +59,7 @@ def test_worldunit__set_person_in_memory_CorrectlySetsPerson():
 
     # WHEN
     luca_text = "Luca"
-    luca_person = personunit_shop(name=luca_text)
+    luca_person = personunit_shop(pid=luca_text)
     wx._set_person_in_memory(personunit=luca_person)
 
     # THEN
@@ -70,16 +70,16 @@ def test_worldunit__set_person_in_memory_CorrectlySetsPerson():
     assert wx._persons_dir == f"{wx._world_dir}/persons"
 
 
-def test_worldunit__create_person_from_name_CorrectlySetsPerson():
+def test_worldunit__create_person_from_pid_CorrectlySetsPerson():
     # GIVEN
     dallas_text = "dallas"
     wx = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
     luca_text = "Luca"
     luca_person_dir = f"{wx._persons_dir}/{luca_text}"
-    luca_person_obj = personunit_shop(name=luca_text, person_dir=luca_person_dir)
+    luca_person_obj = personunit_shop(pid=luca_text, person_dir=luca_person_dir)
 
     # WHEN
-    wx._create_person_from_name(luca_text)
+    wx._create_person_from_pid(luca_text)
 
     # THEN
     assert wx._persons_obj[luca_text] != None
@@ -93,8 +93,8 @@ def test_worldunit_get_personunit_from_memory_CorrectlyReturnsPerson():
     wx = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
     luca_text = "Luca"
     luca_person_dir = f"{wx._persons_dir}/{luca_text}"
-    luca_person_obj = personunit_shop(name=luca_text, person_dir=luca_person_dir)
-    wx._create_person_from_name(luca_text)
+    luca_person_obj = personunit_shop(pid=luca_text, person_dir=luca_person_dir)
+    wx._create_person_from_pid(luca_text)
 
     # WHEN
     luca_gotten_obj = wx.get_personunit_from_memory(luca_text)

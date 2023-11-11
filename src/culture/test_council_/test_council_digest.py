@@ -84,7 +84,7 @@ def test_healeropen_seed_agenda_WhenStartingAgendaFileDoesNotExists(
     assert list(seed_agenda._groups.keys()) == [tim_text]
 
 
-def test_healer_save_seed_agenda_seedPersonNameMustBeHealer(
+def test_healer_save_seed_agenda_seedPersonPIDMustBeHealer(
     council_dir_setup_cleanup,
 ):
     # GIVEN

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src.world.person import PersonName, PersonUnit, personunit_shop
+from src.world.person import PersonPID, PersonUnit, personunit_shop
 
 
 class WorldMark(str):  # Created to help track the concept
@@ -12,7 +12,7 @@ class WorldUnit:
     worlds_dir: str
     _persons_dir: str = None
     _world_dir: str = None
-    _persons_obj: dict[PersonName:PersonUnit] = None
+    _persons_obj: dict[PersonPID:PersonUnit] = None
 
     def _set_world_dirs(self):
         self._world_dir = f"{self.worlds_dir}/{self.mark}"
@@ -23,15 +23,15 @@ class WorldUnit:
             self._persons_obj = {}
 
     def _set_person_in_memory(self, personunit: PersonUnit):
-        self._persons_obj[personunit.name] = personunit
+        self._persons_obj[personunit.pid] = personunit
 
-    def _create_person_from_name(self, person_name: PersonName):
-        x_person_dir = f"{self._persons_dir}/{person_name}"
-        x_person_obj = personunit_shop(name=person_name, person_dir=x_person_dir)
+    def _create_person_from_pid(self, person_pid: PersonPID):
+        x_person_dir = f"{self._persons_dir}/{person_pid}"
+        x_person_obj = personunit_shop(pid=person_pid, person_dir=x_person_dir)
         self._set_person_in_memory(x_person_obj)
 
-    def get_personunit_from_memory(self, person_name: PersonName) -> PersonUnit:
-        return self._persons_obj.get(person_name)
+    def get_personunit_from_memory(self, person_pid: PersonPID) -> PersonUnit:
+        return self._persons_obj.get(person_pid)
 
 
 def worldunit_shop(mark: WorldMark, worlds_dir: str) -> WorldUnit:

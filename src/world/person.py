@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 from src.culture.culture import CultureUnit, CultureTitle, cultureunit_shop
-from src.world.pain import PainGenus, PainUnit, PersonName, painunit_shop
+from src.world.pain import PainGenus, PainUnit, PersonPID, painunit_shop
 
 
 @dataclass
 class PersonUnit:
-    name: PersonName = None
+    pid: PersonPID = None
     person_dir: str = None
     _cultures: dict[CultureTitle:CultureUnit] = None
     _pains: dict[PainGenus:PainUnit] = None
@@ -40,7 +40,7 @@ class PersonUnit:
     def set_cultureunit(self, culture_title: CultureTitle):
         cultures_dir = f"{self.person_dir}/cultures"
         self._cultures[culture_title] = cultureunit_shop(
-            title=culture_title, cultures_dir=cultures_dir, _manager_name=self.name
+            title=culture_title, cultures_dir=cultures_dir, _manager_pid=self.pid
         )
 
     def get_cultureunit(self, culture_title: CultureTitle) -> CultureUnit:
@@ -60,19 +60,19 @@ class PersonUnit:
 
     def get_dict(self) -> dict:
         return {
-            "name": self.name,
+            "pid": self.pid,
             "_cultures": self.get_cultures_dict(),
             "_pains": self.get_pains_dict(),
         }
 
 
-def personunit_shop(name: PersonName, person_dir: str = None) -> PersonUnit:
+def personunit_shop(pid: PersonPID, person_dir: str = None) -> PersonUnit:
     if person_dir is None:
         person_dir = ""
-    person_x = PersonUnit(name=name, person_dir=person_dir)
-    person_x.set_cultures_empty_if_none()
-    person_x.set_pains_empty_if_none()
-    return person_x
+    x_person = PersonUnit(pid=pid, person_dir=person_dir)
+    x_person.set_cultures_empty_if_none()
+    x_person.set_pains_empty_if_none()
+    return x_person
 
 
 #     world_x = WorldUnit(mark=mark, worlds_dir=worlds_dir)

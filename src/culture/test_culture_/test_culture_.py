@@ -21,7 +21,7 @@ def test_culture_exists():
     # THEN
     assert x_culture.title == x_title
     assert x_culture.cultures_dir == get_test_cultures_dir()
-    assert x_culture._manager_name is None
+    assert x_culture._manager_pid is None
 
 
 def test_culture_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
@@ -220,7 +220,7 @@ def test_cultureunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
 
     # WHEN
     x_culture = cultureunit_shop(
-        title=x_title, cultures_dir=get_test_cultures_dir(), _manager_name=sue_text
+        title=x_title, cultures_dir=get_test_cultures_dir(), _manager_pid=sue_text
     )
 
     # THEN
@@ -228,19 +228,19 @@ def test_cultureunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
     assert x_culture.title == x_title
     assert os_path.exists(culture_dir)
     assert x_culture._bank_db != None
-    assert x_culture._manager_name == sue_text
+    assert x_culture._manager_pid == sue_text
 
 
-def test_cultureunit_set_manager_name_CorrectsSetsData(env_dir_setup_cleanup):
+def test_cultureunit_set_manager_pid_CorrectsSetsData(env_dir_setup_cleanup):
     # GIVEN
     x_title = get_temp_env_title()
     x_culture = cultureunit_shop(title=x_title, cultures_dir=get_test_cultures_dir())
     assert x_culture.title == x_title
-    assert x_culture._manager_name is None
+    assert x_culture._manager_pid is None
 
     # WHEN
     zuo_text = "Zuo"
-    x_culture.set_manager_name(zuo_text)
+    x_culture.set_manager_pid(zuo_text)
 
     # THEN
-    assert x_culture._manager_name == zuo_text
+    assert x_culture._manager_pid == zuo_text

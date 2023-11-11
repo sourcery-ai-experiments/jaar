@@ -4,7 +4,7 @@ from src.agenda.agenda import (
     get_from_json as get_agenda_from_json,
     partylink_shop,
     PartyHandle,
-    PersonName,
+    PersonPID,
 )
 from src.agenda.x_func import (
     single_dir_create_if_null,
@@ -54,15 +54,15 @@ class CultureTitle(str):  # Created to help track the concept
 class CultureUnit:
     title: CultureTitle
     cultures_dir: str
-    _manager_name: PersonName = None
+    _manager_pid: PersonPID = None
     _councilunits: dict[str:CouncilUnit] = None
     _bank_db = None
 
-    def set_manager_name(self, person_name: PersonName):
-        self._manager_name = person_name
+    def set_manager_pid(self, person_pid: PersonPID):
+        self._manager_pid = person_pid
 
     # banking
-    def set_voice_ranks(self, healer: PersonName, sort_order: str):
+    def set_voice_ranks(self, healer: PersonPID, sort_order: str):
         if sort_order == "arbitary":
             x_council = self.get_councilunit(healer)
             x_seed = x_council.get_seed()
@@ -71,7 +71,7 @@ class CultureUnit:
             x_council.set_seed(x_seed)
             x_council._admin.save_refreshed_output_to_public()
 
-    def set_agenda_bank_attrs(self, x_healer: PersonName):
+    def set_agenda_bank_attrs(self, x_healer: PersonPID):
         healer_agenda = self.get_public_agenda(x_healer)
 
         for groupunit_x in healer_agenda._groups.values():
@@ -88,7 +88,7 @@ class CultureUnit:
         self.refresh_bank_public_agendas_data()
 
     def set_credit_flow_for_agenda(
-        self, agenda_healer: PersonName, max_blocks_count: int = None
+        self, agenda_healer: PersonPID, max_blocks_count: int = None
     ):
         self._clear_all_source_river_data(agenda_healer)
         if max_blocks_count is None:
@@ -96,7 +96,7 @@ class CultureUnit:
         self._set_river_blocks(agenda_healer, max_blocks_count)
         self._set_partybankunits_circles(agenda_healer)
 
-    def _set_river_blocks(self, x_agenda_healer: PersonName, max_blocks_count: int):
+    def _set_river_blocks(self, x_agenda_healer: PersonPID, max_blocks_count: int):
         # changes in river_block loop
         general_circle = [self._get_root_river_ledger_unit(x_agenda_healer)]
         blocks_count = 0  # changes in river_block loop
@@ -516,7 +516,7 @@ class CultureUnit:
 def cultureunit_shop(
     title: CultureTitle,
     cultures_dir: str,
-    _manager_name: PersonName = None,
+    _manager_pid: PersonPID = None,
     _councilunits: dict[str:CouncilUnit] = None,
     in_memory_bank: bool = None,
 ):
@@ -527,7 +527,7 @@ def cultureunit_shop(
         cultures_dir=cultures_dir,
         _councilunits=_councilunits,
     )
-    culture_x.set_manager_name(_manager_name)
+    culture_x.set_manager_pid(_manager_pid)
     culture_x.create_dirs_if_null(in_memory_bank=in_memory_bank)
     return culture_x
 
