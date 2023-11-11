@@ -4,7 +4,7 @@ from src.culture.culture import CultureUnit, cultureunit_shop
 from src.culture.examples.culture_env_kit import (
     get_temp_env_title,
     get_test_cultures_dir,
-    rename_example_culture,
+    retitle_example_culture,
     copy_evaluation_culture,
     env_dir_setup_cleanup,
 )
@@ -62,7 +62,7 @@ def test_culture_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert x_culture.get_bank_db_path() == bank_file_path
 
 
-def test_rename_example_culture_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanup):
+def test_retitle_example_culture_CorrectlyChangesDirAndFiles(env_dir_setup_cleanup):
     # GIVEN create culture
     old_x_title = get_temp_env_title()
     old_culture_dir = f"src/culture/examples/cultures/{old_x_title}"
@@ -106,7 +106,7 @@ def test_rename_example_culture_CorrectlyRenamesDirAndFiles(env_dir_setup_cleanu
     assert x_culture.title != new_x_title
 
     # WHEN
-    rename_example_culture(culture_obj=x_culture, new_title=new_x_title)
+    retitle_example_culture(culture_obj=x_culture, new_title=new_x_title)
 
     # THEN check agendas src directory created
     assert os_path.exists(old_culture_dir) is False

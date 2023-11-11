@@ -3,7 +3,6 @@ from src.agenda.road import Road
 from os import (
     path as os_path,
     makedirs as os_makedirs,
-    rename as os_rename,
     remove as os_remove,
     scandir as os_scandir,
     listdir as os_listdir,
@@ -22,10 +21,6 @@ def delete_dir(dir: str):
             shutil_rmtree(path=dir)
         elif os_path.isfile(dir):
             os_remove(path=dir)
-
-
-def rename_dir(src, dst):
-    os_rename(src=src, dst=dst)
 
 
 class InvalidFileCopyException(Exception):

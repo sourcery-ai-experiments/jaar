@@ -262,7 +262,7 @@ def delete_dir_example_culture(culture_obj: CultureUnit):
     x_func_delete_dir(culture_obj.get_object_root_dir())
 
 
-def rename_example_culture(culture_obj: CultureUnit, new_title):
+def retitle_example_culture(culture_obj: CultureUnit, new_title):
     # base_dir = culture_obj.get_object_root_dir()
     base_dir = "src/culture/examples/cultures"
     src_dir = f"{base_dir}/{culture_obj.title}"

@@ -12,12 +12,12 @@ from src.agenda.agenda import (
 from src.agenda.x_func import (
     x_get_json,
     single_dir_create_if_null,
-    rename_dir,
     save_file as x_func_save_file,
     dir_files as x_func_dir_files,
     open_file as x_func_open_file,
     delete_dir as x_func_delete_dir,
 )
+from src.culture.y_func import rename_dir
 from dataclasses import dataclass
 from os import path as os_path
 from json import loads as json_loads

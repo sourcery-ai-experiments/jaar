@@ -45,7 +45,7 @@ def test_culture_get_agenda_currentlyGetsAgenda(env_dir_setup_cleanup):
     assert x_culture.get_public_agenda(healer=y_agenda._healer) == y_agenda
 
 
-def test_culture_rename_public_agenda_ChangesAgendaHandle(
+def test_culture_change_public_agenda_healer_ChangesAgendaHandle(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -63,7 +63,7 @@ def test_culture_rename_public_agenda_ChangesAgendaHandle(
     new_y_agenda_path = f"{x_culture.get_public_dir()}/{new_agenda_healer}.json"
     assert os_path.exists(new_y_agenda_path) == False
     assert os_path.exists(old_y_agenda_path)
-    x_culture.rename_public_agenda(
+    x_culture.change_public_agenda_healer(
         old_healer=old_agenda_healer, new_healer=new_agenda_healer
     )
 

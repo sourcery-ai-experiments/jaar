@@ -6,7 +6,7 @@ from src.agenda.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
 )
-from os import listdir as os_listdir, rename as os_rename, path as os_path
+from os import listdir as os_listdir, path as os_path
 from pytest import fixture as pytest_fixture
 
 
@@ -45,12 +45,12 @@ def create_example_worlds_list():
 #     x_func_delete_dir(world_obj.get_object_root_dir())
 
 
-# def rename_example_world(world_obj: CultureUnit, new_handle):
+# def renam_example_world(world_obj: CultureUnit, new_handle):
 #     # base_dir = world_obj.get_object_root_dir()
 #     base_dir = "src/world/examples/worlds"
 #     src_dir = f"{base_dir}/{world_obj.genus}"
 #     dst_dir = f"{base_dir}/{new_handle}"
-#     os_rename(src=src_dir, dst=dst_dir)
+#     os_renam(src=src_dir, dst=dst_dir)
 #     world_obj.set_worldunit_genus(genus=new_handle)
 
 

@@ -359,7 +359,7 @@ class CultureUnit:
         x_councilunit = self.get_councilunit(dub=council_dub)
         x_councilunit._admin.save_seed_agenda(x_councilunit.get_seed())
 
-    def rename_councilunit(self, old_dub: CouncilDub, new_dub: CouncilDub):
+    def change_councilunit_dub(self, old_dub: CouncilDub, new_dub: CouncilDub):
         council_x = self.get_councilunit(dub=old_dub)
         old_councilunit_dir = council_x._admin._councilunit_dir
         council_x._admin.set_council_dub(new_dub=new_dub)
@@ -402,7 +402,7 @@ class CultureUnit:
             agendaunit=agenda_obj, src_agenda_healer=agenda_obj._healer
         )
 
-    def rename_public_agenda(self, old_healer: str, new_healer: str):
+    def change_public_agenda_healer(self, old_healer: str, new_healer: str):
         x_agenda = self.get_public_agenda(healer=old_healer)
         x_agenda.set_healer(new_healer=new_healer)
         self.save_public_agenda(x_agenda=x_agenda)

@@ -19,7 +19,7 @@ from src.culture.examples.culture_env_kit import (
     setup_test_example_environment,
     create_example_culture,
     delete_dir_example_culture,
-    rename_example_culture,
+    retitle_example_culture,
     get_test_cultures_dir,
 )
 
@@ -215,7 +215,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.culture_title_combo_refresh()
 
     def culture_update_handle(self):
-        rename_example_culture(
+        retitle_example_culture(
             culture_obj=self.culture_x, new_handle=self.culture_title.text()
         )
         self.culture_title_combo_refresh()
@@ -238,7 +238,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         typed_in = self.agenda_healer.text()
         if currently_selected != typed_in:
-            self.culture_x.rename_public_agenda(
+            self.culture_x.change_public_agenda_healer(
                 old_label=currently_selected, new_label=typed_in
             )
             self.refresh_culture()
@@ -261,7 +261,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         typed_in = self.council_dub.text()
         if currently_selected != typed_in:
-            self.culture_x.rename_councilunit(
+            self.culture_x.change_councilunit_dub(
                 old_label=currently_selected, new_label=typed_in
             )
             self.refresh_healers()

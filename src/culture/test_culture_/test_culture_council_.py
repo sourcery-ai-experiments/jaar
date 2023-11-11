@@ -29,7 +29,7 @@ def test_culture_set_healer_WorksCorrectly(env_dir_setup_cleanup):
     assert os_path.exists(wx_path)
 
 
-def test_culture_rename_councilunit_WorksCorrectly(env_dir_setup_cleanup):
+def test_culture_change_councilunit_dub_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     x_title = get_temp_env_title()
     x_culture = cultureunit_shop(title=x_title, cultures_dir=get_test_cultures_dir())
@@ -57,7 +57,7 @@ def test_culture_rename_councilunit_WorksCorrectly(env_dir_setup_cleanup):
     assert old_x_council._admin._councilunit_dir != new_bob_dir
 
     # WHEN
-    x_culture.rename_councilunit(old_dub=old_bob_text, new_dub=new_bob_text)
+    x_culture.change_councilunit_dub(old_dub=old_bob_text, new_dub=new_bob_text)
 
     # THEN
     assert os_path.exists(new_bob_dir)
