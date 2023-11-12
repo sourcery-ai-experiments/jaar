@@ -326,7 +326,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowQID(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.editmain_button.setText(
             _translate("MainWindow", "Agendas /  Party /  dimension")
         )
@@ -341,7 +341,7 @@ class Ui_MainWindow(object):
         self.label_3.setText(
             _translate("MainWindow", "When is the past you have not let go?")
         )
-        self.label_intent_label_header.setText(_translate("MainWindow", "Description"))
+        self.label_intent_label_header.setText(_translate("MainWindow", "Label"))
         self.root_datetime_view.setText(_translate("MainWindow", "Manuparty change"))
         self.lobby_button.setText(_translate("MainWindow", "Lobby Someone"))
         self.label_7.setText(
@@ -416,7 +416,7 @@ class Ui_MainWindow(object):
         self.menubar.setAccessibleDescription(
             _translate("MainWindow", "General Operations")
         )
-        self.file_menu.setQID(_translate("MainWindow", "File"))
+        self.file_menu.setTitle(_translate("MainWindow", "File"))
         self.fm_open.setText(_translate("MainWindow", "Open"))
         self.fm_save.setText(_translate("MainWindow", "Save"))
         self.save_as.setText(_translate("MainWindow", "Save as..."))

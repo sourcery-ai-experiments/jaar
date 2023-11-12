@@ -562,7 +562,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         column_headers = [
             "agenda_importance",
             f"Agenda ({len(p_intent_list)})",
-            "Idea Walk",
+            "Idea Pad",
         ]
 
         self.refresh_x(

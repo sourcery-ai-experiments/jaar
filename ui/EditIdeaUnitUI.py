@@ -638,9 +638,9 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowQID(_translate("Form", "Form"))
+        Form.setWindowTitle(_translate("Form", "Form"))
         self.label_14.setText(_translate("Form", "Ideas: Edit or Add Children "))
-        self.label_1.setText(_translate("Form", "Description"))
+        self.label_1.setText(_translate("Form", "Label"))
         self.label_4.setText(_translate("Form", "Weight"))
         self.submit_child_insert.setText(_translate("Form", "Add Child"))
         self.submit_node_update.setText(_translate("Form", "Update Node"))
@@ -706,7 +706,7 @@ class Ui_Form(object):
         self.button_required_upsert.setText(_translate("Form", "Required Update"))
         self.label_10.setText(_translate("Form", "Begin"))
         self.label_11.setText(_translate("Form", "Close"))
-        self.label_12.setText(_translate("Form", "Walk"))
+        self.label_12.setText(_translate("Form", "Pad"))
         self.create_hreg_button.setText(_translate("Form", "create hreg"))
         self.label_15.setText(_translate("Form", "Nigh"))
         self.label_16.setText(_translate("Form", "Divisor"))

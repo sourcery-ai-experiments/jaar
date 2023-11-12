@@ -154,7 +154,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Description</string>
+     <string>Label</string>
     </property>
    </widget>
    <widget class="QPushButton" name="root_datetime_view">

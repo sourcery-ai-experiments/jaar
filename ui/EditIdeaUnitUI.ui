@@ -82,7 +82,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Description</string>
+    <string>Label</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_4">
@@ -828,7 +828,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Walk</string>
+    <string>Pad</string>
    </property>
   </widget>
   <widget class="QTextEdit" name="yo_pad">
