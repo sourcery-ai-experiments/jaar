@@ -63,7 +63,7 @@ class CultureUnit:
 
     # banking
     def set_voice_ranks(self, healer: PersonPID, sort_order: str):
-        if sort_order == "arbitary":
+        if sort_order == "descretional":
             x_council = self.get_councilunit(healer)
             x_seed = x_council.get_seed()
             for count_x, x_partyunit in enumerate(x_seed._partys.values()):

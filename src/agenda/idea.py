@@ -305,7 +305,7 @@ class IdeaCore:
         self._agenda_coin_onset = coin_onset_x
         self._agenda_coin_cease = self._agenda_coin_onset + self._agenda_importance
         self._agenda_coin_cease = min(self._agenda_coin_cease, parent_coin_cease)
-        self.set_balanceheirs_agenda_credit_debit()
+        self.set_balanceheirs_agenda_credit_debt()
 
     def get_kids_in_range(self, begin: float, close: float) -> list:
         return [
@@ -450,7 +450,7 @@ class IdeaCore:
             balancelink.debtor_weight for balancelink in self._balanceheirs.values()
         )
 
-    def set_balanceheirs_agenda_credit_debit(self):
+    def set_balanceheirs_agenda_credit_debt(self):
         balanceheirs_creditor_weight_sum = self.get_balanceheirs_creditor_weight_sum()
         balanceheirs_debtor_weight_sum = self.get_balanceheirs_debtor_weight_sum()
         for balanceheir_x in self._balanceheirs.values():

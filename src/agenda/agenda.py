@@ -1739,7 +1739,7 @@ class AgendaUnit:
         self._idearoot.set_kids_total_weight()
         self._idearoot.set_sibling_total_weight(1)
         self._idearoot.set_agenda_importance(coin_onset_x=0, parent_coin_cease=1)
-        self._idearoot.set_balanceheirs_agenda_credit_debit()
+        self._idearoot.set_balanceheirs_agenda_credit_debt()
         self._idearoot.set_ancestor_promise_count(0, False)
         self._idearoot.clear_descendant_promise_count()
         self._idearoot.clear_all_party_credit_debt()

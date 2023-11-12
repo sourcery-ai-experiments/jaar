@@ -201,7 +201,7 @@ def test_idea_core_get_inherited_balanceheirs_weight_sum_WorksCorrectlyWithValue
 
     # WHEN
     sport_idea._agenda_importance = 0.25
-    sport_idea.set_balanceheirs_agenda_credit_debit()
+    sport_idea.set_balanceheirs_agenda_credit_debt()
 
     # THEN
     print(f"{len(sport_idea._balanceheirs)=}")
@@ -222,7 +222,7 @@ def test_idea_core_get_balancelinks_weight_sum_WorksCorrectlyNoValues():
 
     # WHEN / THEN
     # does not crash with empty set
-    sport_idea.set_balanceheirs_agenda_credit_debit()
+    sport_idea.set_balanceheirs_agenda_credit_debt()
 
 
 def test_idea_core_set_requiredheirsCorrectlyTakesFromOutside():

@@ -87,7 +87,7 @@ def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_c
     x_func_delete_dir(temp_dir)
 
 
-def test_culture_bank_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_arbitrary(
+def test_culture_bank_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_1234(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -122,8 +122,8 @@ def test_culture_bank_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_arbit
     assert elu_partyunit._bank_voice_rank is None
 
     # WHEN
-    arbitrary_text = "arbitary"
-    x_culture.set_voice_ranks(yao_text, sort_order=arbitrary_text)
+    descretional_text = "descretional"
+    x_culture.set_voice_ranks(yao_text, sort_order=descretional_text)
 
     # THEN
     yao_public_agenda = x_culture.get_public_agenda(yao_text)

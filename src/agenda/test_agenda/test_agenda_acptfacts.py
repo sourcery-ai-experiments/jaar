@@ -607,7 +607,7 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario4(
     healer_text = "Tim"
     sx = agendaunit_shop(_healer=healer_text)
     time_x = "time_x"
-    arsub1 = "arbitary_subsection1"
+    arsub1 = "descretional_subsection1"
     as1_road = f"{sx._culture_qid},{arsub1}"
     sx.add_idea(
         idea_kid=ideacore_shop(_label=arsub1, _begin=0, _close=140),
@@ -621,7 +621,7 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario4(
         pad=sx._culture_qid,
     )
 
-    arsub2 = "arbitary_subsection2"
+    arsub2 = "descretional_subsection2"
     as2_road = f"{sx._culture_qid},{arsub2}"
     sx.add_idea(
         idea_kid=ideacore_shop(_label=arsub2, _begin=0, _close=20),
