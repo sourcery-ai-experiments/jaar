@@ -12,15 +12,15 @@ from src.agenda.idea import ideacore_shop
 from src.agenda.road import Road, get_pad_from_road, get_terminus_node_from_road
 from sys import exit as sys_exit
 
-# self.problem_handle_text
-# self.problem_handle_combo
+# self.problem_pid_text
+# self.problem_pid_combo
 
 # self.problem_context_text
 # self.problem_context_combo
 
-# self.group1_handle_combo self.group1_weight_text
-# self.group2_handle_combo self.group2_weight_text
-# self.group3_handle_combo self.group3_weight_text
+# self.group1_pid_combo self.group1_weight_text
+# self.group2_pid_combo self.group2_weight_text
+# self.group3_pid_combo self.group3_weight_text
 
 # self.action1_combo
 # self.action2_combo
@@ -51,9 +51,7 @@ class EditProblem(qtw.QWidget, Ui_Form):
         self.add_group_button.clicked.connect(self.add_group)
         self.load_problem_button.clicked.connect(self.load_problem)
 
-        self.problem_handle_combo.currentTextChanged.connect(
-            self.select_problem_handle_combo
-        )
+        self.problem_pid_combo.currentTextChanged.connect(self.select_problem_pid_combo)
         self.problem_context_combo.currentTextChanged.connect(
             self.select_problem_context_combo
         )
@@ -67,8 +65,8 @@ class EditProblem(qtw.QWidget, Ui_Form):
 
         self.agenda_x = None
 
-    def select_problem_handle_combo(self):
-        self.problem_handle_text.setText(self.problem_handle_combo.currentText())
+    def select_problem_pid_combo(self):
+        self.problem_pid_text.setText(self.problem_pid_combo.currentText())
 
     def select_problem_context_combo(self):
         self.problem_context_text.setText(self.problem_context_combo.currentText())
@@ -84,38 +82,38 @@ class EditProblem(qtw.QWidget, Ui_Form):
 
     def create_balancelinks_list(self):
         balancelinks_x_list = []
-        if self.group1_handle_combo.currentText() != "":
+        if self.group1_pid_combo.currentText() != "":
             weight1 = 1
             if self.group1_weight_text.text() != "":
                 weight1 = float(self.group1_weight_text.text())
             balancelinks_x_list.append(
                 balancelink_shop(
-                    handle=self.group1_handle_combo.currentText(), weight=weight1
+                    pid=self.group1_pid_combo.currentText(), weight=weight1
                 )
             )
-        if self.group2_handle_combo.currentText() != "":
+        if self.group2_pid_combo.currentText() != "":
             weight2 = 1
             if self.group2_weight_text.text() != "":
                 weight2 = float(self.group2_weight_text.text())
 
             balancelinks_x_list.append(
                 balancelink_shop(
-                    handle=self.group2_handle_combo.currentText(), weight=weight2
+                    pid=self.group2_pid_combo.currentText(), weight=weight2
                 )
             )
-        if self.group3_handle_combo.currentText() != "":
+        if self.group3_pid_combo.currentText() != "":
             weight3 = 1
             if self.group3_weight_text.text() != "":
                 weight3 = float(self.group3_weight_text.text())
             balancelinks_x_list.append(
                 balancelink_shop(
-                    handle=self.group3_handle_combo.currentText(), weight=weight3
+                    pid=self.group3_pid_combo.currentText(), weight=weight3
                 )
             )
         return balancelinks_x_list
 
     def load_problem(self):
-        self.set_problem_dominate_action_idea(road=self.problem_handle_text.text())
+        self.set_problem_dominate_action_idea(road=self.problem_pid_text.text())
         self.set_problem_dominate_action_idea(road=self.action1_text.text())
         self.set_problem_dominate_action_idea(road=self.action2_text.text())
         self.set_problem_dominate_action_idea(road=self.action3_text.text())
@@ -138,7 +136,7 @@ class EditProblem(qtw.QWidget, Ui_Form):
         self.refresh_all()
 
     def refresh_all(self):
-        self.problem_handle_text.setText("")
+        self.problem_pid_text.setText("")
         self.problem_context_text.setText("")
         self.group1_weight_text.setText("")
         self.group2_weight_text.setText("")
@@ -155,16 +153,16 @@ class EditProblem(qtw.QWidget, Ui_Form):
             idea_road_list = self.agenda_x.get_idea_tree_ordered_road_list()
             idea_road_list.insert(0, "")
 
-            self.problem_handle_combo.clear()
-            self.problem_handle_combo.addItems(idea_road_list)
+            self.problem_pid_combo.clear()
+            self.problem_pid_combo.addItems(idea_road_list)
             self.problem_context_combo.clear()
             self.problem_context_combo.addItems(idea_road_list)
-            self.group1_handle_combo.clear()
-            self.group2_handle_combo.clear()
-            self.group3_handle_combo.clear()
-            self.group1_handle_combo.addItems(self.agenda_x.get_groupunits_brand_list())
-            self.group2_handle_combo.addItems(self.agenda_x.get_groupunits_brand_list())
-            self.group3_handle_combo.addItems(self.agenda_x.get_groupunits_brand_list())
+            self.group1_pid_combo.clear()
+            self.group2_pid_combo.clear()
+            self.group3_pid_combo.clear()
+            self.group1_pid_combo.addItems(self.agenda_x.get_groupunits_brand_list())
+            self.group2_pid_combo.addItems(self.agenda_x.get_groupunits_brand_list())
+            self.group3_pid_combo.addItems(self.agenda_x.get_groupunits_brand_list())
             self.action1_combo.clear()
             self.action2_combo.clear()
             self.action3_combo.clear()

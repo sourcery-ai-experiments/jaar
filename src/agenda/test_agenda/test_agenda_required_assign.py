@@ -56,7 +56,7 @@ def test_agenda_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
     assigned_unit_x = assigned_unit_shop()
 
     x_agenda = agendaunit_shop(_healer=bob_text)
-    x_agenda.add_partyunit(handle=bob_text)
+    x_agenda.add_partyunit(pid=bob_text)
     x_agenda.add_idea(ideacore_shop(_label=run_text), pad=bob_text)
     x_agenda.edit_idea_attr(road=run_road, assignedunit=assigned_unit_x)
     run_idea = x_agenda.get_idea_kid(road=run_road)
@@ -93,7 +93,7 @@ def test_agenda_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir(
     four_road = f"{morn_road},{four_text}"
     assigned_unit_x = assigned_unit_shop()
     swimmers_text = "swimmers"
-    assigned_unit_x.set_suffgroup(handle=swimmers_text)
+    assigned_unit_x.set_suffgroup(pid=swimmers_text)
 
     x_agenda.set_groupunit(groupunit=groupunit_shop(brand=swimmers_text))
     x_agenda.add_idea(ideacore_shop(_label=swim_text), pad=x_agenda._culture_title)
@@ -125,8 +125,8 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignU
     x_agenda1 = agendaunit_shop(_healer=healer_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
-    x_agenda1.add_partyunit(handle=xia_text)
-    x_agenda1.add_partyunit(handle=zoa_text)
+    x_agenda1.add_partyunit(pid=xia_text)
+    x_agenda1.add_partyunit(pid=zoa_text)
 
     work_text = "work"
     work_road = f"{x_agenda1._culture_title},{work_text}"
@@ -135,8 +135,8 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignU
     x_agenda1.add_idea(ideacore_shop(_label=work_text), pad=x_agenda1._culture_title)
     x_agenda1.add_idea(ideacore_shop(_label=swim_text), pad=x_agenda1._culture_title)
     swim_assignedunit = assigned_unit_shop()
-    swim_assignedunit.set_suffgroup(handle=xia_text)
-    swim_assignedunit.set_suffgroup(handle=zoa_text)
+    swim_assignedunit.set_suffgroup(pid=xia_text)
+    swim_assignedunit.set_suffgroup(pid=zoa_text)
     x_agenda1.edit_idea_attr(road=swim_road, assignedunit=swim_assignedunit)
     x_agenda1_swim_idea = x_agenda1.get_idea_kid(swim_road)
     x_agenda1_swim_suffgroups = x_agenda1_swim_idea._assignedunit._suffgroups
@@ -144,7 +144,7 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignU
 
     # WHEN
     x_agenda2 = agendaunit_shop(_healer=healer_text)
-    x_agenda2.add_partyunit(handle=xia_text)
+    x_agenda2.add_partyunit(pid=xia_text)
     filtered_idea = x_agenda2._get_filtered_balancelinks_idea(x_agenda1_swim_idea)
 
     # THEN
@@ -159,8 +159,8 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     x_agenda1 = agendaunit_shop(_healer=healer_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
-    x_agenda1.add_partyunit(handle=xia_text)
-    x_agenda1.add_partyunit(handle=zoa_text)
+    x_agenda1.add_partyunit(pid=xia_text)
+    x_agenda1.add_partyunit(pid=zoa_text)
 
     work_text = "work"
     work_road = f"{x_agenda1._culture_title},{work_text}"
@@ -169,8 +169,8 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     x_agenda1.add_idea(ideacore_shop(_label=work_text), pad=x_agenda1._culture_title)
     x_agenda1.add_idea(ideacore_shop(_label=swim_text), pad=x_agenda1._culture_title)
     swim_assignedunit = assigned_unit_shop()
-    swim_assignedunit.set_suffgroup(handle=xia_text)
-    swim_assignedunit.set_suffgroup(handle=zoa_text)
+    swim_assignedunit.set_suffgroup(pid=xia_text)
+    swim_assignedunit.set_suffgroup(pid=zoa_text)
     x_agenda1.edit_idea_attr(road=swim_road, assignedunit=swim_assignedunit)
     x_agenda1_swim_idea = x_agenda1.get_idea_kid(swim_road)
     x_agenda1_swim_suffgroups = x_agenda1_swim_idea._assignedunit._suffgroups
@@ -178,7 +178,7 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
 
     # WHEN
     x_agenda2 = agendaunit_shop(_healer=healer_text)
-    x_agenda2.add_partyunit(handle=xia_text)
+    x_agenda2.add_partyunit(pid=xia_text)
     x_agenda2.add_idea(
         idea_kid=x_agenda1_swim_idea,
         pad=x_agenda2._culture_title,

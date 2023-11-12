@@ -1,6 +1,6 @@
 from src.agenda.party import (
     PartyUnit,
-    PartyHandle,
+    PartyPID,
     partylink_shop,
     partyunit_shop,
     partylinks_get_from_json,
@@ -12,22 +12,22 @@ from src.agenda.x_func import x_is_json, x_get_json
 from pytest import raises as pytest_raises
 
 
-def test_PartyHandle_exists():
-    cersei_handle = PartyHandle("Cersei")
-    assert cersei_handle != None
-    assert str(type(cersei_handle)).find(".party.PartyHandle") > 0
+def test_PartyPID_exists():
+    cersei_pid = PartyPID("Cersei")
+    assert cersei_pid != None
+    assert str(type(cersei_pid)).find(".party.PartyPID") > 0
 
 
 def test_partyrings_exists():
-    cersei_handle = PartyHandle("Cersei")
-    friend_link = PartyRing(handle=cersei_handle)
-    assert friend_link.handle == cersei_handle
+    cersei_pid = PartyPID("Cersei")
+    friend_link = PartyRing(pid=cersei_pid)
+    assert friend_link.pid == cersei_pid
 
 
 def test_partyrings_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
-    party_handle = PartyHandle("bob")
-    party_ring = PartyRing(handle=party_handle)
+    party_pid = PartyPID("bob")
+    party_ring = PartyRing(pid=party_pid)
     print(f"{party_ring}")
 
     # WHEN
@@ -35,13 +35,13 @@ def test_partyrings_get_dict_ReturnsDictWithNecessaryDataForJSON():
 
     # THEN
     assert x_dict != None
-    assert x_dict == {"handle": str(party_handle)}
+    assert x_dict == {"pid": str(party_pid)}
 
 
 def test_partyrings_get_from_JSON_SimpleExampleWorks():
     # GIVEN
     yao_text = "Yao"
-    yao_json_dict = {yao_text: {"handle": yao_text}}
+    yao_json_dict = {yao_text: {"pid": yao_text}}
     yao_json_text = x_get_json(dict_x=yao_json_dict)
     assert x_is_json(json_x=yao_json_text)
 
@@ -50,23 +50,23 @@ def test_partyrings_get_from_JSON_SimpleExampleWorks():
 
     # THEN
     assert yao_obj_dict != None
-    yao_partyring = PartyRing(handle=yao_text)
-    partyrings_dict = {yao_partyring.handle: yao_partyring}
+    yao_partyring = PartyRing(pid=yao_text)
+    partyrings_dict = {yao_partyring.pid: yao_partyring}
     assert yao_obj_dict == partyrings_dict
 
 
 def test_PartyUnit_exists():
     # GIVEN
-    bob_handle = "bob"
+    bob_pid = "bob"
 
     # WHEN
-    bob_party = PartyUnit(handle=bob_handle)
+    bob_party = PartyUnit(pid=bob_pid)
 
     # THEN
-    print(f"{bob_handle}")
+    print(f"{bob_pid}")
     assert bob_party != None
-    assert bob_party.handle != None
-    assert bob_party.handle == bob_handle
+    assert bob_party.pid != None
+    assert bob_party.pid == bob_pid
     assert bob_party.creditor_weight is None
     assert bob_party.debtor_weight is None
     assert bob_party._agenda_credit is None
@@ -87,8 +87,8 @@ def test_PartyUnit_exists():
 
 def test_PartyUnit_set_output_agenda_meld_order_CorrectlySetsAttribute():
     # GIVEN
-    bob_handle = "bob"
-    bob_party = partyunit_shop(handle=bob_handle)
+    bob_pid = "bob"
+    bob_party = partyunit_shop(pid=bob_pid)
     assert bob_party._output_agenda_meld_order is None
 
     # WHEN
@@ -101,8 +101,8 @@ def test_PartyUnit_set_output_agenda_meld_order_CorrectlySetsAttribute():
 
 def test_PartyUnit_clear_output_agenda_meld_order_CorrectlySetsAttribute():
     # GIVEN
-    bob_handle = "bob"
-    bob_party = partyunit_shop(handle=bob_handle)
+    bob_pid = "bob"
+    bob_party = partyunit_shop(pid=bob_pid)
     x_output_agenda_meld_order = 5
     bob_party.set_output_agenda_meld_order(x_output_agenda_meld_order)
     assert bob_party._output_agenda_meld_order == x_output_agenda_meld_order
@@ -116,8 +116,8 @@ def test_PartyUnit_clear_output_agenda_meld_order_CorrectlySetsAttribute():
 
 def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeNoNulls():
     # GIVEN
-    bob_handle = "bob"
-    bob_party = partyunit_shop(handle=bob_handle)
+    bob_pid = "bob"
+    bob_party = partyunit_shop(pid=bob_pid)
 
     # WHEN
     depotlink_type_x = "assignment"
@@ -133,8 +133,8 @@ def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeNoNulls():
 
 def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndStartingValues():
     # GIVEN
-    bob_handle = "bob"
-    bob_party = partyunit_shop(handle=bob_handle, creditor_weight=45, debtor_weight=56)
+    bob_pid = "bob"
+    bob_party = partyunit_shop(pid=bob_pid, creditor_weight=45, debtor_weight=56)
 
     # WHEN
     depotlink_type_x = "assignment"
@@ -150,8 +150,8 @@ def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndStarting
 
 def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndNoStartingValues():
     # GIVEN
-    bob_handle = "bob"
-    bob_party = partyunit_shop(handle=bob_handle)
+    bob_pid = "bob"
+    bob_party = partyunit_shop(pid=bob_pid)
 
     # WHEN
     depotlink_type_x = "assignment"
@@ -167,8 +167,8 @@ def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndNoStarti
 
 def test_PartyUnit_del_depotlink_type_CorrectlySetsAttributeToNone():
     # GIVEN
-    bob_handle = "bob"
-    bob_party = partyunit_shop(handle=bob_handle, creditor_weight=45, debtor_weight=56)
+    bob_pid = "bob"
+    bob_party = partyunit_shop(pid=bob_pid, creditor_weight=45, debtor_weight=56)
     depotlink_type_x = "assignment"
     bob_party.set_depotlink_type(depotlink_type=depotlink_type_x)
     assert bob_party.depotlink_type == depotlink_type_x
@@ -187,22 +187,22 @@ def test_PartyUnit_del_depotlink_type_CorrectlySetsAttributeToNone():
 def test_PartyUnit_set_depotlink_type_raisesErrorIfByTypeIsEntered():
     # GIVEN
     bad_type_text = "bad"
-    bob_handle = "bob"
-    bob_party = partyunit_shop(handle=bob_handle)
+    bob_pid = "bob"
+    bob_party = partyunit_shop(pid=bob_pid)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         bob_party.set_depotlink_type(depotlink_type=bad_type_text)
     assert (
         str(excinfo.value)
-        == f"PartyUnit '{bob_party.handle}' cannot have type '{bad_type_text}'."
+        == f"PartyUnit '{bob_party.pid}' cannot have type '{bad_type_text}'."
     )
 
 
 def test_PartyUnit_set_empty_agenda_credit_debt_to_zero_CorrectlySetsZero():
     # GIVEN
-    bob_handle = "bob"
-    bob_party = partyunit_shop(handle=bob_handle)
+    bob_pid = "bob"
+    bob_party = partyunit_shop(pid=bob_pid)
     assert bob_party._agenda_credit is None
     assert bob_party._agenda_debt is None
     assert bob_party._agenda_intent_credit is None
@@ -249,8 +249,8 @@ def test_PartyUnit_set_empty_agenda_credit_debt_to_zero_CorrectlySetsZero():
 
 def test_PartyUnit_reset_agenda_credit_debt_MethodWorkCorrectly():
     # GIVEN
-    bob_handle = "bob"
-    bob_party = partyunit_shop(handle=bob_handle)
+    bob_pid = "bob"
+    bob_party = partyunit_shop(pid=bob_pid)
     bob_party._agenda_credit = 0.27
     bob_party._agenda_debt = 0.37
     bob_party._agenda_intent_credit = 0.41
@@ -278,8 +278,8 @@ def test_PartyUnit_reset_agenda_credit_debt_MethodWorkCorrectly():
 
 def test_PartyUnit_add_agenda_credit_debt_MethodWorkCorrectly():
     # GIVEN
-    bob_handle = "bob"
-    bob_party = partyunit_shop(handle=bob_handle)
+    bob_pid = "bob"
+    bob_party = partyunit_shop(pid=bob_pid)
     bob_party._agenda_credit = 0.4106
     bob_party._agenda_debt = 0.1106
     bob_party._agenda_intent_credit = 0.41
@@ -304,9 +304,9 @@ def test_PartyUnit_add_agenda_credit_debt_MethodWorkCorrectly():
 
 def test_PartyUnit_set_agenda_intent_ratio_credit_debt_MethodWorkCorrectly():
     # GIVEN
-    bob_handle = "bob"
+    bob_pid = "bob"
     bob_party = partyunit_shop(
-        handle=bob_handle,
+        pid=bob_pid,
         creditor_weight=15,
         debtor_weight=7,
         _agenda_credit=0.4106,
@@ -346,12 +346,12 @@ def test_PartyUnit_set_agenda_intent_ratio_credit_debt_MethodWorkCorrectly():
 
 def test_PartyUnit_set_banking_data_MethodWorkCorrectly():
     # GIVEN
-    bob_handle = "bob"
+    bob_pid = "bob"
     x_agenda_intent_ratio_credit = 0.077
     x_agenda_intent_ratio_debt = 0.066
 
     bob_party = partyunit_shop(
-        handle=bob_handle,
+        pid=bob_pid,
         _agenda_intent_ratio_credit=x_agenda_intent_ratio_credit,
         _agenda_intent_ratio_debt=x_agenda_intent_ratio_debt,
     )
@@ -386,11 +386,11 @@ def test_PartyUnit_set_banking_data_MethodWorkCorrectly():
 
 def test_PartyUnit_set_banking_data_CorrectlyDecreasesOrIgnores_bank_voice_hx_lowest_rank():
     # GIVEN
-    bob_handle = "bob"
+    bob_pid = "bob"
     x_agenda_intent_ratio_credit = 0.077
     x_agenda_intent_ratio_debt = 0.066
     bob_party = partyunit_shop(
-        handle=bob_handle,
+        pid=bob_pid,
         _agenda_intent_ratio_credit=x_agenda_intent_ratio_credit,
         _agenda_intent_ratio_debt=x_agenda_intent_ratio_debt,
     )
@@ -431,9 +431,9 @@ def test_PartyUnit_set_banking_data_CorrectlyDecreasesOrIgnores_bank_voice_hx_lo
 
 def test_PartyUnit_clear_banking_data_MethodWorkCorrectly():
     # GIVEN
-    bob_handle = "bob"
+    bob_pid = "bob"
     bob_party = partyunit_shop(
-        handle=bob_handle,
+        pid=bob_pid,
         _agenda_intent_ratio_credit=0.355,
         _agenda_intent_ratio_debt=0.066,
     )
@@ -463,14 +463,14 @@ def test_PartyUnit_clear_banking_data_MethodWorkCorrectly():
 def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
     glen_text = "glen"
-    glen_ring = PartyRing(handle=glen_text)
-    bob_party_rings = {glen_ring.handle: glen_ring}
+    glen_ring = PartyRing(pid=glen_text)
+    bob_party_rings = {glen_ring.pid: glen_ring}
     bob_text = "bob"
     bob_bank_tax_paid = 0.55
     bob_bank_tax_diff = 0.66
     depotlink_type = "assignment"
     bob_party = partyunit_shop(
-        handle=bob_text,
+        pid=bob_text,
         _partyrings=bob_party_rings,
         _bank_tax_paid=bob_bank_tax_paid,
         _bank_tax_diff=bob_bank_tax_diff,
@@ -504,13 +504,13 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     print(f"{x_dict=}")
     assert x_dict != None
     assert x_dict == {
-        "handle": bob_text,
+        "pid": bob_text,
         "uid": bob_uid,
         "creditor_weight": bob_creditor_weight,
         "debtor_weight": bob_debtor_weight,
         "_creditor_active": bob_creditor_active,
         "_debtor_active": bob_debtor_active,
-        "_partyrings": {"glen": {"handle": "glen"}},
+        "_partyrings": {"glen": {"pid": "glen"}},
         "_bank_tax_paid": bob_bank_tax_paid,
         "_bank_tax_diff": bob_bank_tax_diff,
         "_bank_credit_score": bob_bank_credit_score,
@@ -521,8 +521,8 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
 
 
 def test_PartyUnisshop_get_from_JSON_SimpleExampleWorks():
-    cersei_handle = PartyHandle("Cersei")
-    yao_party_rings = {cersei_handle: {"handle": cersei_handle}}
+    cersei_pid = PartyPID("Cersei")
+    yao_party_rings = {cersei_pid: {"pid": cersei_pid}}
     yao_text = "Yao"
     yao_uid = 239
     yao_creditor_weight = 13
@@ -537,7 +537,7 @@ def test_PartyUnisshop_get_from_JSON_SimpleExampleWorks():
     yao_bank_voice_hx_lowest_rank = 740
     yao_json_dict = {
         yao_text: {
-            "handle": yao_text,
+            "pid": yao_text,
             "uid": yao_uid,
             "creditor_weight": yao_creditor_weight,
             "debtor_weight": yao_debtor_weight,
@@ -558,8 +558,8 @@ def test_PartyUnisshop_get_from_JSON_SimpleExampleWorks():
 
 def test_PartyUnisshop_get_from_JSON_SimpleExampleWorksWithIncompleteData():
     # GIVEN
-    cersei_handle = PartyHandle("Cersei")
-    yao_party_rings = {cersei_handle: {"handle": cersei_handle}}
+    cersei_pid = PartyPID("Cersei")
+    yao_party_rings = {cersei_pid: {"pid": cersei_pid}}
     yao_text = "Yao"
     yao_uid = 239
     yao_creditor_weight = 13
@@ -574,7 +574,7 @@ def test_PartyUnisshop_get_from_JSON_SimpleExampleWorksWithIncompleteData():
     yao_bank_voice_hx_lowest_rank = 740
     yao_json_dict = {
         yao_text: {
-            "handle": yao_text,
+            "pid": yao_text,
             "uid": yao_uid,
             "creditor_weight": yao_creditor_weight,
             "debtor_weight": yao_debtor_weight,
@@ -600,7 +600,7 @@ def test_PartyUnisshop_get_from_JSON_SimpleExampleWorksWithIncompleteData():
     assert yao_obj_dict[yao_text] != None
     yao_partyunit = yao_obj_dict[yao_text]
 
-    assert yao_partyunit.handle == yao_text
+    assert yao_partyunit.pid == yao_text
     assert yao_partyunit.uid == yao_uid
     assert yao_partyunit.creditor_weight == yao_creditor_weight
     assert yao_partyunit.debtor_weight == yao_debtor_weight
@@ -619,13 +619,13 @@ def test_PartyUnisshop_get_from_JSON_SimpleExampleWorksWithIncompleteData():
 
 def test_PartyLink_exists():
     # GIVEN
-    bikers_handle = PartyHandle("Yao")
+    bikers_pid = PartyPID("Yao")
 
     # WHEN
-    party_link_x = partylink_shop(handle=bikers_handle)
+    party_link_x = partylink_shop(pid=bikers_pid)
 
     # THEN
-    assert party_link_x.handle == bikers_handle
+    assert party_link_x.pid == bikers_pid
     assert party_link_x.creditor_weight == 1.0
     assert party_link_x.debtor_weight == 1.0
 
@@ -633,7 +633,7 @@ def test_PartyLink_exists():
     bikers_creditor_weight = 3.0
     bikers_debtor_weight = 5.0
     party_link_x = partylink_shop(
-        handle=bikers_handle,
+        pid=bikers_pid,
         creditor_weight=bikers_creditor_weight,
         debtor_weight=bikers_debtor_weight,
         _agenda_credit=0.7,
@@ -654,7 +654,7 @@ def test_PartyLink_exists():
 
 def test_partylink_shop_set_agenda_credit_debt_CorrectlyWorks():
     # GIVEN
-    bikers_handle = PartyHandle("Yao")
+    bikers_pid = PartyPID("Yao")
     bikers_creditor_weight = 3.0
     partylinks_sum_creditor_weight = 60
     group_agenda_credit = 0.5
@@ -666,7 +666,7 @@ def test_partylink_shop_set_agenda_credit_debt_CorrectlyWorks():
     group_agenda_intent_debt = 0.5151
 
     party_link_x = partylink_shop(
-        handle=bikers_handle,
+        pid=bikers_pid,
         creditor_weight=bikers_creditor_weight,
         debtor_weight=bikers_debtor_weight,
     )
@@ -694,10 +694,8 @@ def test_partylink_shop_set_agenda_credit_debt_CorrectlyWorks():
 
 def test_partylink_shop_reset_agenda_credit_debt():
     # GIVEN
-    biker_handle = "maria"
-    biker_party = partylink_shop(
-        handle=biker_handle, _agenda_credit=0.04, _agenda_debt=0.7
-    )
+    biker_pid = "maria"
+    biker_party = partylink_shop(pid=biker_pid, _agenda_credit=0.04, _agenda_debt=0.7)
     print(f"{biker_party}")
 
     assert biker_party._agenda_credit != None
@@ -713,10 +711,10 @@ def test_partylink_shop_reset_agenda_credit_debt():
 
 def test_partylink_shop_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
-    str_handle = "Yao"
-    biker_handle = PartyHandle(str_handle)
+    str_pid = "Yao"
+    biker_pid = PartyPID(str_pid)
     biker_party_link = partylink_shop(
-        handle=biker_handle, creditor_weight=12, debtor_weight=19
+        pid=biker_pid, creditor_weight=12, debtor_weight=19
     )
     print(f"{biker_party_link}")
 
@@ -726,7 +724,7 @@ def test_partylink_shop_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # THEN
     assert biker_dict != None
     assert biker_dict == {
-        "handle": biker_handle,
+        "pid": biker_pid,
         "creditor_weight": 12,
         "debtor_weight": 19,
     }
@@ -736,7 +734,7 @@ def test_partylink_get_from_JSON_SimpleExampleWorks():
     # GIVEN
     yao_text = "Yao"
     yao_json_dict = {
-        yao_text: {"handle": yao_text, "creditor_weight": 12, "debtor_weight": 19}
+        yao_text: {"pid": yao_text, "creditor_weight": 12, "debtor_weight": 19}
     }
     yao_json_text = x_get_json(dict_x=yao_json_dict)
     assert x_is_json(json_x=yao_json_text)
@@ -747,35 +745,33 @@ def test_partylink_get_from_JSON_SimpleExampleWorks():
     # THEN
     assert yao_obj_dict != None
 
-    yao_handle = PartyHandle(yao_text)
-    yao_partylink = partylink_shop(
-        handle=yao_handle, creditor_weight=12, debtor_weight=19
-    )
-    partylinks_dict = {yao_partylink.handle: yao_partylink}
+    yao_pid = PartyPID(yao_text)
+    yao_partylink = partylink_shop(pid=yao_pid, creditor_weight=12, debtor_weight=19)
+    partylinks_dict = {yao_partylink.pid: yao_partylink}
     assert yao_obj_dict == partylinks_dict
 
 
-def test_partylink_meld_RaiseSameHandleException():
+def test_partylink_meld_RaiseSamePIDException():
     # GIVEN
     todd_text = "Todd"
-    todd_party = partylink_shop(handle=todd_text)
+    todd_party = partylink_shop(pid=todd_text)
     mery_text = "Merry"
-    mery_party = partylink_shop(handle=mery_text)
+    mery_party = partylink_shop(pid=mery_text)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         todd_party.meld(mery_party)
     assert (
         str(excinfo.value)
-        == f"Meld fail PartyLink='{todd_party.handle}' not the same as PartyLink='{mery_party.handle}"
+        == f"Meld fail PartyLink='{todd_party.pid}' not the same as PartyLink='{mery_party.pid}"
     )
 
 
 def test_partylink_meld_CorrectlySumsWeights():
     # GIVEN
     todd_text = "Todd"
-    todd_party1 = partylink_shop(handle=todd_text, creditor_weight=12, debtor_weight=19)
-    todd_party2 = partylink_shop(handle=todd_text, creditor_weight=33, debtor_weight=3)
+    todd_party1 = partylink_shop(pid=todd_text, creditor_weight=12, debtor_weight=19)
+    todd_party2 = partylink_shop(pid=todd_text, creditor_weight=33, debtor_weight=3)
     assert todd_party1.creditor_weight == 12
     assert todd_party1.debtor_weight == 19
 
@@ -787,27 +783,27 @@ def test_partylink_meld_CorrectlySumsWeights():
     assert todd_party1.debtor_weight == 22
 
 
-def test_partyunit_meld_RaiseSameHandleException():
+def test_partyunit_meld_RaiseSamePIDException():
     # GIVEN
     todd_text = "Todd"
-    todd_party = partyunit_shop(handle=todd_text)
+    todd_party = partyunit_shop(pid=todd_text)
     mery_text = "Merry"
-    mery_party = partyunit_shop(handle=mery_text)
+    mery_party = partyunit_shop(pid=mery_text)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         todd_party.meld(mery_party)
     assert (
         str(excinfo.value)
-        == f"Meld fail PartyUnit='{todd_party.handle}' not the same as PartyUnit='{mery_party.handle}"
+        == f"Meld fail PartyUnit='{todd_party.pid}' not the same as PartyUnit='{mery_party.pid}"
     )
 
 
 def test_partyunit_meld_CorrectlySumsWeights():
     # GIVEN
     todd_text = "Todd"
-    todd_party1 = partyunit_shop(handle=todd_text, creditor_weight=7, debtor_weight=19)
-    todd_party2 = partyunit_shop(handle=todd_text, creditor_weight=5, debtor_weight=3)
+    todd_party1 = partyunit_shop(pid=todd_text, creditor_weight=7, debtor_weight=19)
+    todd_party2 = partyunit_shop(pid=todd_text, creditor_weight=5, debtor_weight=3)
     assert todd_party1.creditor_weight == 7
     assert todd_party1.debtor_weight == 19
 

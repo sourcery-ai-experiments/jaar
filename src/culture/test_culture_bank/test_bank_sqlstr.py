@@ -63,13 +63,13 @@ SET _bank_tax_paid = (
     FROM river_block block
     WHERE block.currency_master='{bob_text}' 
         AND block.dst_healer=block.currency_master
-        AND block.src_healer = partyunit.handle
+        AND block.src_healer = partyunit.pid
     )
 WHERE EXISTS (
     SELECT block.currency_close
     FROM river_block block
     WHERE partyunit.agenda_healer='{bob_text}' 
-        AND partyunit.handle = block.dst_healer
+        AND partyunit.pid = block.dst_healer
 )
 ;
 """
@@ -356,7 +356,7 @@ SET _bank_credit_score = (
     SELECT SUM(reach_curr_close - reach_curr_start) range_sum
     FROM river_reach reach
     WHERE reach.currency_master = partyunit.agenda_healer
-        AND reach.src_healer = partyunit.handle
+        AND reach.src_healer = partyunit.pid
     )
 WHERE partyunit.agenda_healer = '{yao_text}'
 ;
@@ -376,12 +376,12 @@ SET _bank_voice_rank =
     (
     SELECT rn
     FROM (
-        SELECT p2.handle
+        SELECT p2.pid
         , row_number() over (order by p2._bank_credit_score DESC) rn
         FROM partyunit p2
         WHERE p2.agenda_healer = '{yao_text}'
     ) p3
-    WHERE p3.handle = partyunit.handle AND partyunit.agenda_healer = '{yao_text}'
+    WHERE p3.pid = partyunit.pid AND partyunit.agenda_healer = '{yao_text}'
     )
 WHERE partyunit.agenda_healer = '{yao_text}'
 ;

@@ -229,7 +229,7 @@ def test_councilunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
     assert x_func_count_files(dir_path=bob_ux._admin._agendas_ignore_dir) == 1
     cx1 = bob_ux._admin.open_ignore_agenda(healer=zia_text)
     assert len(cx1._partys) == 0
-    cx1.add_partyunit(handle="tim")
+    cx1.add_partyunit(pid="tim")
     assert len(cx1._partys) == 1
 
     # WHEN
@@ -250,8 +250,8 @@ def test_councilunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     culture_title = get_temp_env_title()
     sx = cultureunit_shop(title=culture_title, cultures_dir=env_dir)
     yao_text = "Yao"
-    sx.create_new_councilunit(council_dub=yao_text)
-    yao_agenda = sx.get_councilunit(dub=yao_text)
+    sx.create_new_councilunit(council_cid=yao_text)
+    yao_agenda = sx.get_councilunit(cid=yao_text)
     assert len(yao_agenda._admin.get_remelded_output_agenda().get_idea_list()) == 1
 
     ernie_text = "ernie"

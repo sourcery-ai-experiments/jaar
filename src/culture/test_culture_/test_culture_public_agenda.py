@@ -45,7 +45,7 @@ def test_culture_get_agenda_currentlyGetsAgenda(env_dir_setup_cleanup):
     assert x_culture.get_public_agenda(healer=y_agenda._healer) == y_agenda
 
 
-def test_culture_change_public_agenda_healer_ChangesAgendaHandle(
+def test_culture_change_public_agenda_healer_ChangesAgendaPID(
     env_dir_setup_cleanup,
 ):
     # GIVEN

@@ -22,14 +22,14 @@ def test_culture_set_healer_WorksCorrectly(env_dir_setup_cleanup):
     assert os_path.exists(wx_path) == False
 
     # WHEN
-    x_culture.create_new_councilunit(council_dub=timmy_text)
+    x_culture.create_new_councilunit(council_cid=timmy_text)
 
     # THEN
     print(f"{wx_path=}")
     assert os_path.exists(wx_path)
 
 
-def test_culture_change_councilunit_dub_WorksCorrectly(env_dir_setup_cleanup):
+def test_culture_change_councilunit_cid_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     x_title = get_temp_env_title()
     x_culture = cultureunit_shop(title=x_title, cultures_dir=get_test_cultures_dir())
@@ -51,13 +51,13 @@ def test_culture_change_councilunit_dub_WorksCorrectly(env_dir_setup_cleanup):
     assert os_path.exists(old_bob_dir)
     assert os_path.exists(new_bob_file_path) == False
     assert os_path.exists(old_bob_file_path)
-    old_x_council = x_culture.get_councilunit(dub=old_bob_text)
-    assert x_culture.get_councilunit(dub=new_bob_text) is None
+    old_x_council = x_culture.get_councilunit(cid=old_bob_text)
+    assert x_culture.get_councilunit(cid=new_bob_text) is None
     assert old_x_council._admin._councilunit_dir == old_bob_dir
     assert old_x_council._admin._councilunit_dir != new_bob_dir
 
     # WHEN
-    x_culture.change_councilunit_dub(old_dub=old_bob_text, new_dub=new_bob_text)
+    x_culture.change_councilunit_cid(old_cid=old_bob_text, new_cid=new_bob_text)
 
     # THEN
     assert os_path.exists(new_bob_dir)
@@ -65,8 +65,8 @@ def test_culture_change_councilunit_dub_WorksCorrectly(env_dir_setup_cleanup):
     print(f"{new_bob_file_path=}")
     assert os_path.exists(new_bob_file_path)
     assert os_path.exists(old_bob_file_path) == False
-    assert x_culture.get_councilunit(dub=old_bob_text) is None
-    new_x_council = x_culture.get_councilunit(dub=new_bob_text)
+    assert x_culture.get_councilunit(cid=old_bob_text) is None
+    new_x_council = x_culture.get_councilunit(cid=new_bob_text)
     assert new_x_council._admin._councilunit_dir != old_bob_dir
     assert new_x_council._admin._councilunit_dir == new_bob_dir
 
@@ -78,14 +78,14 @@ def test_culture_del_councilunit_dir_WorksCorrectly(env_dir_setup_cleanup):
     xia_text = "Xia"
     xia_dir = f"{x_culture.get_councilunits_dir()}/{xia_text}"
     xia_file_path = f"{xia_dir}/seed_agenda.json"
-    x_culture.create_new_councilunit(council_dub=xia_text)
-    x_culture.save_councilunit_file(council_dub=xia_text)
+    x_culture.create_new_councilunit(council_cid=xia_text)
+    x_culture.save_councilunit_file(council_cid=xia_text)
     print(f"{xia_file_path=}")
     assert os_path.exists(xia_dir)
     assert os_path.exists(xia_file_path)
 
     # WHEN
-    x_culture.del_councilunit_dir(council_dub=xia_text)
+    x_culture.del_councilunit_dir(council_cid=xia_text)
 
     # THEN
     assert os_path.exists(xia_file_path) == False

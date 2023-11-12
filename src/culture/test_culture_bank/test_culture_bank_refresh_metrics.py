@@ -47,7 +47,7 @@ def test_culture_refresh_bank_public_agendas_data_CorrectlyDeletesOldBankInMemor
     tom_text = "tom"
 
     bob = agendaunit_shop(_healer=bob_text)
-    bob.add_partyunit(handle=tom_text, creditor_weight=3, debtor_weight=1)
+    bob.add_partyunit(pid=tom_text, creditor_weight=3, debtor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob)
     x_culture.refresh_bank_public_agendas_data()
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
@@ -73,7 +73,7 @@ def test_culture_refresh_bank_public_agendas_data_CorrectlyDeletesOldBankFile(
     tom_text = "tom"
 
     bob = agendaunit_shop(_healer=bob_text)
-    bob.add_partyunit(handle=tom_text, creditor_weight=3, debtor_weight=1)
+    bob.add_partyunit(pid=tom_text, creditor_weight=3, debtor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob)
     x_culture.refresh_bank_public_agendas_data()
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
@@ -101,27 +101,27 @@ def test_culture_refresh_bank_public_agendas_data_CorrectlyPopulatesPartyunitTab
     elu_text = "elu"
 
     bob = agendaunit_shop(_healer=bob_text)
-    bob.add_partyunit(handle=tom_text, creditor_weight=3, debtor_weight=1)
-    bob.add_partyunit(handle=sal_text, creditor_weight=1, debtor_weight=4)
-    bob.add_partyunit(handle=elu_text, creditor_weight=1, debtor_weight=4)
+    bob.add_partyunit(pid=tom_text, creditor_weight=3, debtor_weight=1)
+    bob.add_partyunit(pid=sal_text, creditor_weight=1, debtor_weight=4)
+    bob.add_partyunit(pid=elu_text, creditor_weight=1, debtor_weight=4)
     x_culture.save_public_agenda(x_agenda=bob)
 
     sal = agendaunit_shop(_healer=sal_text)
-    sal.add_partyunit(handle=bob_text, creditor_weight=1, debtor_weight=4)
-    sal.add_partyunit(handle=tom_text, creditor_weight=3, debtor_weight=1)
-    sal.add_partyunit(handle=elu_text, creditor_weight=1, debtor_weight=4)
+    sal.add_partyunit(pid=bob_text, creditor_weight=1, debtor_weight=4)
+    sal.add_partyunit(pid=tom_text, creditor_weight=3, debtor_weight=1)
+    sal.add_partyunit(pid=elu_text, creditor_weight=1, debtor_weight=4)
     x_culture.save_public_agenda(x_agenda=sal)
 
     tom = agendaunit_shop(_healer=tom_text)
-    tom.add_partyunit(handle=bob_text, creditor_weight=3, debtor_weight=1)
-    tom.add_partyunit(handle=sal_text, creditor_weight=1, debtor_weight=4)
-    tom.add_partyunit(handle=elu_text, creditor_weight=1, debtor_weight=4)
+    tom.add_partyunit(pid=bob_text, creditor_weight=3, debtor_weight=1)
+    tom.add_partyunit(pid=sal_text, creditor_weight=1, debtor_weight=4)
+    tom.add_partyunit(pid=elu_text, creditor_weight=1, debtor_weight=4)
     x_culture.save_public_agenda(x_agenda=tom)
 
     elu = agendaunit_shop(_healer=elu_text)
-    elu.add_partyunit(handle=bob_text, creditor_weight=3, debtor_weight=1)
-    elu.add_partyunit(handle=tom_text, creditor_weight=1, debtor_weight=4)
-    elu.add_partyunit(handle=elu_text, creditor_weight=1, debtor_weight=4)
+    elu.add_partyunit(pid=bob_text, creditor_weight=3, debtor_weight=1)
+    elu.add_partyunit(pid=tom_text, creditor_weight=1, debtor_weight=4)
+    elu.add_partyunit(pid=elu_text, creditor_weight=1, debtor_weight=4)
     x_culture.save_public_agenda(x_agenda=elu)
 
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
@@ -206,9 +206,9 @@ def test_culture_refresh_bank_public_agendas_data_CorrectlyPopulates_groupunit_c
     elu_text = "elu"
     bob_agenda = agendaunit_shop(_healer=bob_text)
     tom_agenda = agendaunit_shop(_healer=tom_text)
-    bob_agenda.add_partyunit(handle=tom_text)
-    tom_agenda.add_partyunit(handle=bob_text)
-    tom_agenda.add_partyunit(handle=elu_text)
+    bob_agenda.add_partyunit(pid=tom_text)
+    tom_agenda.add_partyunit(pid=bob_text)
+    tom_agenda.add_partyunit(pid=elu_text)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
     x_culture.save_public_agenda(x_agenda=tom_agenda)
 
@@ -261,11 +261,11 @@ def test_culture_set_agenda_bank_attrs_CorrectlyPopulatesAgenda_Groupunit_Partyl
     bob_agenda.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=bob_sports_road)
     tom_agenda.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=tom_sports_road)
 
-    sal_agenda.add_partyunit(handle=bob_text, creditor_weight=2, debtor_weight=2)
+    sal_agenda.add_partyunit(pid=bob_text, creditor_weight=2, debtor_weight=2)
 
     swim_group_text = "swimming expert"
     swim_group_unit = groupunit_shop(brand=swim_group_text)
-    bob_link = partylink_shop(handle=bob_text)
+    bob_link = partylink_shop(pid=bob_text)
     swim_group_unit.set_partylink(partylink=bob_link)
     sal_agenda.set_groupunit(groupunit=swim_group_unit)
 
@@ -505,9 +505,9 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     elu_text = "elu"
     bob_agenda = agendaunit_shop(_healer=bob_text)
     tom_agenda = agendaunit_shop(_healer=tom_text)
-    bob_agenda.add_partyunit(handle=tom_text)
-    tom_agenda.add_partyunit(handle=bob_text)
-    tom_agenda.add_partyunit(handle=elu_text)
+    bob_agenda.add_partyunit(pid=tom_text)
+    tom_agenda.add_partyunit(pid=bob_text)
+    tom_agenda.add_partyunit(pid=elu_text)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
     x_culture.save_public_agenda(x_agenda=tom_agenda)
     x_culture.refresh_bank_public_agendas_data()

@@ -14,8 +14,8 @@ def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
 
     # GIVEN
     amer_text = "Amer"
-    x_culture.create_new_councilunit(council_dub=amer_text)
-    amer_council = x_culture.get_councilunit(dub=amer_text)
+    x_culture.create_new_councilunit(council_cid=amer_text)
+    amer_council = x_culture.get_councilunit(cid=amer_text)
     laundry_agenda = get_agenda_assignment_laundry_example1()
     laundry_agenda.set_culture_title(x_culture.title)
     amer_council.set_seed(laundry_agenda)
@@ -38,8 +38,8 @@ def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
 
     # create assignment for Cali
     cali_text = "Cali"
-    x_culture.create_new_councilunit(council_dub=cali_text)
-    cali_council = x_culture.get_councilunit(dub=cali_text)
+    x_culture.create_new_councilunit(council_cid=cali_text)
+    cali_council = x_culture.get_councilunit(cid=cali_text)
     cali_council.set_depot_agenda(amer_output, "assignment")
     old_cali_agenda = x_culture.get_output_agenda(cali_text)
     # print(f"{old_cali_agenda._partys.keys()=}")
@@ -77,10 +77,10 @@ def test_culture_council_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
     amer_text = "Amer"
     beto_text = "Beto"
-    x_culture.create_new_councilunit(council_dub=amer_text)
-    x_culture.create_new_councilunit(council_dub=beto_text)
-    amer_council = x_culture.get_councilunit(dub=amer_text)
-    beto_council = x_culture.get_councilunit(dub=beto_text)
+    x_culture.create_new_councilunit(council_cid=amer_text)
+    x_culture.create_new_councilunit(council_cid=beto_text)
+    amer_council = x_culture.get_councilunit(cid=amer_text)
+    beto_council = x_culture.get_councilunit(cid=beto_text)
     # print(f"{beto_council=}")
     laundry_agenda = get_agenda_assignment_laundry_example1()
     laundry_agenda.set_culture_title(x_culture.title)

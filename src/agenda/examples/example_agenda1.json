@@ -29,7 +29,7 @@
                 "A a ron Jones": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "A a ron Jones"
+                    "pid": "A a ron Jones"
                 }
             },
             "_single_party": false,
@@ -43,52 +43,52 @@
                 "Benjamin Stoddert": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Benjamin Stoddert"
+                    "pid": "Benjamin Stoddert"
                 },
                 "Bob302": {
                     "creditor_weight": 6.25,
                     "debtor_weight": 1,
-                    "handle": "Bob302"
+                    "pid": "Bob302"
                 },
                 "Charles Lee": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Charles Lee"
+                    "pid": "Charles Lee"
                 },
                 "Jane Randolph": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Jane Randolph"
+                    "pid": "Jane Randolph"
                 },
                 "Maria Reynolds": {
                     "creditor_weight": 6.75,
                     "debtor_weight": 1,
-                    "handle": "Maria Reynolds"
+                    "pid": "Maria Reynolds"
                 },
                 "Sam zamora": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Sam zamora"
+                    "pid": "Sam zamora"
                 },
                 "Martha Wayles": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Martha Wayles"
+                    "pid": "Martha Wayles"
                 },
                 "Mikayla": {
                     "creditor_weight": 10,
                     "debtor_weight": 1,
-                    "handle": "Mikayla"
+                    "pid": "Mikayla"
                 },
                 "Shadwell Harris": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Shadwell Harris"
+                    "pid": "Shadwell Harris"
                 },
                 "WIlliam Wallace": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "WIlliam Wallace"
+                    "pid": "WIlliam Wallace"
                 }
             },
             "_single_party": false,
@@ -102,22 +102,22 @@
                 "Benjamin Stoddert": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Benjamin Stoddert"
+                    "pid": "Benjamin Stoddert"
                 },
                 "Charles Lee": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Charles Lee"
+                    "pid": "Charles Lee"
                 },
                 "Sam zamora": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Sam zamora"
+                    "pid": "Sam zamora"
                 },
                 "Martha Wayles": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Martha Wayles"
+                    "pid": "Martha Wayles"
                 }
             },
             "_single_party": false,
@@ -131,7 +131,7 @@
                 "America": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "America"
+                    "pid": "America"
                 }
             },
             "_single_party": false,
@@ -145,7 +145,7 @@
                 "Anna": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Anna"
+                    "pid": "Anna"
                 }
             },
             "_single_party": false,
@@ -159,7 +159,7 @@
                 "Benjamin Stoddert": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Benjamin Stoddert"
+                    "pid": "Benjamin Stoddert"
                 }
             },
             "_single_party": false,
@@ -173,7 +173,7 @@
                 "Bob302": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Bob302"
+                    "pid": "Bob302"
                 }
             },
             "_single_party": false,
@@ -187,7 +187,7 @@
                 "Charles Lee": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Charles Lee"
+                    "pid": "Charles Lee"
                 }
             },
             "_single_party": false,
@@ -201,17 +201,17 @@
                 "Philipa": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Philipa"
+                    "pid": "Philipa"
                 },
                 "Renee Elise Goldsberry": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Renee Elise Goldsberry"
+                    "pid": "Renee Elise Goldsberry"
                 },
                 "Thomas OSU": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Thomas OSU"
+                    "pid": "Thomas OSU"
                 }
             },
             "_single_party": false,
@@ -225,7 +225,7 @@
                 "Ernesto Chavez": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Ernesto Chavez"
+                    "pid": "Ernesto Chavez"
                 }
             },
             "_single_party": false,
@@ -239,112 +239,112 @@
                 "A a ron Jones": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "A a ron Jones"
+                    "pid": "A a ron Jones"
                 },
                 "America": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "America"
+                    "pid": "America"
                 },
                 "Anna": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Anna"
+                    "pid": "Anna"
                 },
                 "Benjamin Stoddert": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Benjamin Stoddert"
+                    "pid": "Benjamin Stoddert"
                 },
                 "Bob302": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Bob302"
+                    "pid": "Bob302"
                 },
                 "Charles Lee": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Charles Lee"
+                    "pid": "Charles Lee"
                 },
                 "Ernesto Chavez": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Ernesto Chavez"
+                    "pid": "Ernesto Chavez"
                 },
                 "Jacque Chirac": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Jacque Chirac"
+                    "pid": "Jacque Chirac"
                 },
                 "Jane Randolph": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Jane Randolph"
+                    "pid": "Jane Randolph"
                 },
                 "Maria Reynolds": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Maria Reynolds"
+                    "pid": "Maria Reynolds"
                 },
                 "Sam zamora": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Sam zamora"
+                    "pid": "Sam zamora"
                 },
                 "Martha Wayles": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Martha Wayles"
+                    "pid": "Martha Wayles"
                 },
                 "Mikayla": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Mikayla"
+                    "pid": "Mikayla"
                 },
                 "Norberto": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Norberto"
+                    "pid": "Norberto"
                 },
                 "Perrison": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Perrison"
+                    "pid": "Perrison"
                 },
                 "Philipa": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Philipa"
+                    "pid": "Philipa"
                 },
                 "Prashant": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Prashant"
+                    "pid": "Prashant"
                 },
                 "Renee Elise Goldsberry": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Renee Elise Goldsberry"
+                    "pid": "Renee Elise Goldsberry"
                 },
                 "Shadwell Harris": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Shadwell Harris"
+                    "pid": "Shadwell Harris"
                 },
                 "Thomas OSU": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Thomas OSU"
+                    "pid": "Thomas OSU"
                 },
                 "Travis Fox": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Travis Fox"
+                    "pid": "Travis Fox"
                 },
                 "WIlliam Wallace": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "WIlliam Wallace"
+                    "pid": "WIlliam Wallace"
                 }
             },
             "_single_party": false,
@@ -358,17 +358,17 @@
                 "America": {
                     "creditor_weight": 6.45,
                     "debtor_weight": 1,
-                    "handle": "America"
+                    "pid": "America"
                 },
                 "Anna": {
                     "creditor_weight": 6.2,
                     "debtor_weight": 1,
-                    "handle": "Anna"
+                    "pid": "Anna"
                 },
                 "Travis Fox": {
                     "creditor_weight": 6.35,
                     "debtor_weight": 1,
-                    "handle": "Travis Fox"
+                    "pid": "Travis Fox"
                 }
             },
             "_single_party": false,
@@ -382,17 +382,17 @@
                 "America": {
                     "creditor_weight": 6.1,
                     "debtor_weight": 1,
-                    "handle": "America"
+                    "pid": "America"
                 },
                 "Perrison": {
                     "creditor_weight": 6.4,
                     "debtor_weight": 1,
-                    "handle": "Perrison"
+                    "pid": "Perrison"
                 },
                 "Renee Elise Goldsberry": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Renee Elise Goldsberry"
+                    "pid": "Renee Elise Goldsberry"
                 }
             },
             "_single_party": false,
@@ -406,7 +406,7 @@
                 "Renee Elise Goldsberry": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Renee Elise Goldsberry"
+                    "pid": "Renee Elise Goldsberry"
                 }
             },
             "_single_party": false,
@@ -420,7 +420,7 @@
                 "Jacque Chirac": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Jacque Chirac"
+                    "pid": "Jacque Chirac"
                 }
             },
             "_single_party": false,
@@ -434,7 +434,7 @@
                 "Jane Randolph": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Jane Randolph"
+                    "pid": "Jane Randolph"
                 }
             },
             "_single_party": false,
@@ -448,22 +448,22 @@
                 "Bob302": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Bob302"
+                    "pid": "Bob302"
                 },
                 "Perrison": {
                     "creditor_weight": 5,
                     "debtor_weight": 1,
-                    "handle": "Perrison"
+                    "pid": "Perrison"
                 },
                 "Prashant": {
                     "creditor_weight": 2,
                     "debtor_weight": 1,
-                    "handle": "Prashant"
+                    "pid": "Prashant"
                 },
                 "Renee Elise Goldsberry": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Renee Elise Goldsberry"
+                    "pid": "Renee Elise Goldsberry"
                 }
             },
             "_single_party": false,
@@ -477,7 +477,7 @@
                 "Maria Reynolds": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Maria Reynolds"
+                    "pid": "Maria Reynolds"
                 }
             },
             "_single_party": false,
@@ -491,7 +491,7 @@
                 "Sam zamora": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Sam zamora"
+                    "pid": "Sam zamora"
                 }
             },
             "_single_party": false,
@@ -505,7 +505,7 @@
                 "Martha Wayles": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Martha Wayles"
+                    "pid": "Martha Wayles"
                 }
             },
             "_single_party": false,
@@ -519,7 +519,7 @@
                 "Mikayla": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Mikayla"
+                    "pid": "Mikayla"
                 }
             },
             "_single_party": false,
@@ -533,7 +533,7 @@
                 "Norberto": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Norberto"
+                    "pid": "Norberto"
                 }
             },
             "_single_party": false,
@@ -547,17 +547,17 @@
                 "A a ron Jones": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "A a ron Jones"
+                    "pid": "A a ron Jones"
                 },
                 "Jacque Chirac": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Jacque Chirac"
+                    "pid": "Jacque Chirac"
                 },
                 "Norberto": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Norberto"
+                    "pid": "Norberto"
                 }
             },
             "_single_party": false,
@@ -571,7 +571,7 @@
                 "Renee Elise Goldsberry": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Renee Elise Goldsberry"
+                    "pid": "Renee Elise Goldsberry"
                 }
             },
             "_single_party": false,
@@ -585,7 +585,7 @@
                 "Perrison": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Perrison"
+                    "pid": "Perrison"
                 }
             },
             "_single_party": false,
@@ -599,7 +599,7 @@
                 "Philipa": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Philipa"
+                    "pid": "Philipa"
                 }
             },
             "_single_party": false,
@@ -613,22 +613,22 @@
                 "Ernesto Chavez": {
                     "creditor_weight": 6.5,
                     "debtor_weight": 1,
-                    "handle": "Ernesto Chavez"
+                    "pid": "Ernesto Chavez"
                 },
                 "Mikayla": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Mikayla"
+                    "pid": "Mikayla"
                 },
                 "Philipa": {
                     "creditor_weight": 52,
                     "debtor_weight": 1,
-                    "handle": "Philipa"
+                    "pid": "Philipa"
                 },
                 "Renee Elise Goldsberry": {
                     "creditor_weight": 3,
                     "debtor_weight": 1,
-                    "handle": "Renee Elise Goldsberry"
+                    "pid": "Renee Elise Goldsberry"
                 }
             },
             "_single_party": false,
@@ -642,7 +642,7 @@
                 "Prashant": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Prashant"
+                    "pid": "Prashant"
                 }
             },
             "_single_party": false,
@@ -656,7 +656,7 @@
                 "Renee Elise Goldsberry": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Renee Elise Goldsberry"
+                    "pid": "Renee Elise Goldsberry"
                 }
             },
             "_single_party": false,
@@ -670,7 +670,7 @@
                 "Shadwell Harris": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Shadwell Harris"
+                    "pid": "Shadwell Harris"
                 }
             },
             "_single_party": false,
@@ -684,7 +684,7 @@
                 "Renee Elise Goldsberry": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Renee Elise Goldsberry"
+                    "pid": "Renee Elise Goldsberry"
                 }
             },
             "_single_party": false,
@@ -698,7 +698,7 @@
                 "Thomas OSU": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Thomas OSU"
+                    "pid": "Thomas OSU"
                 }
             },
             "_single_party": false,
@@ -712,7 +712,7 @@
                 "Travis Fox": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "Travis Fox"
+                    "pid": "Travis Fox"
                 }
             },
             "_single_party": false,
@@ -726,7 +726,7 @@
                 "WIlliam Wallace": {
                     "creditor_weight": 1,
                     "debtor_weight": 1,
-                    "handle": "WIlliam Wallace"
+                    "pid": "WIlliam Wallace"
                 }
             },
             "_single_party": false,
@@ -9607,7 +9607,7 @@
             "_partyrings": {},
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "handle": "A a ron Jones",
+            "pid": "A a ron Jones",
             "uid": 21
         },
         "America": {
@@ -9618,7 +9618,7 @@
             "_partyrings": {},
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "handle": "America",
+            "pid": "America",
             "uid": 1
         },
         "Anna": {
@@ -9629,7 +9629,7 @@
             "_partyrings": {},
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "handle": "Anna",
+            "pid": "Anna",
             "uid": 2
         },
         "Benjamin Stoddert": {
@@ -9640,7 +9640,7 @@
             "_partyrings": {},
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "handle": "Benjamin Stoddert",
+            "pid": "Benjamin Stoddert",
             "uid": 14
         },
         "Bob302": {
@@ -9651,7 +9651,7 @@
             "_partyrings": {},
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "handle": "Bob302",
+            "pid": "Bob302",
             "uid": 6
         },
         "Charles Lee": {
@@ -9662,7 +9662,7 @@
             "_partyrings": {},
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "handle": "Charles Lee",
+            "pid": "Charles Lee",
             "uid": 13
         },
         "Ernesto Chavez": {
@@ -9673,7 +9673,7 @@
             "_partyrings": {},
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "handle": "Ernesto Chavez",
+            "pid": "Ernesto Chavez",
             "uid": 10
         },
         "Jacque Chirac": {
@@ -9684,7 +9684,7 @@
             "_partyrings": {},
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "handle": "Jacque Chirac",
+            "pid": "Jacque Chirac",
             "uid": 20
         },
         "Jane Randolph": {
@@ -9695,7 +9695,7 @@
             "_partyrings": {},
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "handle": "Jane Randolph",
+            "pid": "Jane Randolph",
             "uid": 17
         },
         "Maria Reynolds": {
@@ -9706,7 +9706,7 @@
             "_partyrings": {},
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "handle": "Maria Reynolds",
+            "pid": "Maria Reynolds",
             "uid": 7
         },
         "Sam zamora": {
@@ -9717,7 +9717,7 @@
             "_partyrings": {},
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "handle": "Sam zamora",
+            "pid": "Sam zamora",
             "uid": 16
         },
         "Martha Wayles": {
@@ -9728,7 +9728,7 @@
             "_partyrings": {},
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "handle": "Martha Wayles",
+            "pid": "Martha Wayles",
             "uid": 15
         },
         "Mikayla": {
@@ -9739,7 +9739,7 @@
             "_partyrings": {},
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "handle": "Mikayla",
+            "pid": "Mikayla",
             "uid": 12
         },
         "Norberto": {
@@ -9750,7 +9750,7 @@
             "_partyrings": {},
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "handle": "Norberto",
+            "pid": "Norberto",
             "uid": 22
         },
         "Perrison": {
@@ -9761,7 +9761,7 @@
             "_partyrings": {},
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "handle": "Perrison",
+            "pid": "Perrison",
             "uid": 9
         },
         "Philipa": {
@@ -9772,7 +9772,7 @@
             "_partyrings": {},
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "handle": "Philipa",
+            "pid": "Philipa",
             "uid": 5
         },
         "Prashant": {
@@ -9783,7 +9783,7 @@
             "_partyrings": {},
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "handle": "Prashant",
+            "pid": "Prashant",
             "uid": 8
         },
         "Renee Elise Goldsberry": {
@@ -9794,7 +9794,7 @@
             "_partyrings": {},
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "handle": "Renee Elise Goldsberry",
+            "pid": "Renee Elise Goldsberry",
             "uid": 4
         },
         "Shadwell Harris": {
@@ -9805,7 +9805,7 @@
             "_partyrings": {},
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "handle": "Shadwell Harris",
+            "pid": "Shadwell Harris",
             "uid": 18
         },
         "Thomas OSU": {
@@ -9816,7 +9816,7 @@
             "_partyrings": {},
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "handle": "Thomas OSU",
+            "pid": "Thomas OSU",
             "uid": 11
         },
         "Travis Fox": {
@@ -9827,7 +9827,7 @@
             "_partyrings": {},
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "handle": "Travis Fox",
+            "pid": "Travis Fox",
             "uid": 3
         },
         "WIlliam Wallace": {
@@ -9838,7 +9838,7 @@
             "_partyrings": {},
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "handle": "WIlliam Wallace",
+            "pid": "WIlliam Wallace",
             "uid": 19
         }
     },

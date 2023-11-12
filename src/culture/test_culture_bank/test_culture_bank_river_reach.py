@@ -99,7 +99,7 @@ def test_get_partyunit_table_update_credit_score_sqlstr_UpdatesWithoutError():
     partyunit_select_str = f"""
 SELECT 
   agenda_healer
-, handle
+, pid
 , _bank_credit_score
 FROM partyunit
 WHERE agenda_healer = '{yao_text}'
@@ -183,7 +183,7 @@ def test_get_partyunit_table_update_bank_voice_rank_sqlstr_UpdatesWithoutError()
     partyunit_select_str = f"""
 SELECT 
   agenda_healer
-, handle
+, pid
 , _bank_credit_score
 , _bank_voice_rank
 FROM partyunit

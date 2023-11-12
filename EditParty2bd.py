@@ -30,11 +30,11 @@ class EditParty2bd(qtw.QWidget, Ui_Form):
         self.gp_update_button.clicked.connect(self.gp_update)
 
         # self.EditParty2bd.agenda_x = self.agenda_x
-        # self.EditParty2bd.selected_party_handle = self.selected_party_handle
+        # self.EditParty2bd.selected_party_pid = self.selected_party_pid
 
     def gp_insert(self):
-        gp_handle = self.gp_new_edit.text()
-        # .gp_insert(gp_handle=gp_handle)
+        gp_pid = self.gp_new_edit.text()
+        # .gp_insert(gp_pid=gp_pid)
         # self.gp_new_edit.setText("")
         # self.refreshAll()
 
@@ -50,9 +50,9 @@ class EditParty2bd(qtw.QWidget, Ui_Form):
         currentRowInt = self.gp_party_no.currentRow()
         # if self.gp_party_no.rowCount() > 0:
         #     currentRowInt = max(currentRowInt, 0)
-        #     gp_handle = self.gp_update_handle_edit.text()
+        #     gp_pid = self.gp_update_pid_edit.text()
         #     gp_id = int(self.gp_party_no.item(currentRowInt, 2).text())
-        #     .gp_update(gp_id=gp_id, gp_handle=gp_handle)
+        #     .gp_update(gp_id=gp_id, gp_pid=gp_pid)
         # self.refreshAll()
 
     def party2group_update(self):
@@ -108,6 +108,6 @@ class EditParty2bd(qtw.QWidget, Ui_Form):
         )
 
     def gp_party_no_clicked(self):
-        handle = self.gp_party_no.item(self.gp_party_no.currentRow(), 0).text()
-        self.gp_update_handle_edit.setText(handle)
-        self.gp_delete_button.setText(f'Delete Party Group " {handle} "')
+        pid = self.gp_party_no.item(self.gp_party_no.currentRow(), 0).text()
+        self.gp_update_pid_edit.setText(pid)
+        self.gp_delete_button.setText(f'Delete Party Group " {pid} "')

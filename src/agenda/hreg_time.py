@@ -662,13 +662,13 @@ def _get_time_hreg_hour(local_root: str, multipler: int):
 
 def get_jajatime_legible_from_dt(dt: datetime) -> str:
     weekday_text = dt.strftime("%A")
-    monthhandle_text = dt.strftime("%B")
+    monthpid_text = dt.strftime("%B")
     monthday_text = get_number_with_letter_ending(int(dt.strftime("%d")))
     year_text = dt.strftime("%Y")
     hour_int = int(dt.strftime("%H"))
     min_int = int(dt.strftime("%M"))
     min1440 = (hour_int * 60) + min_int
-    return f"{weekday_text[:3]} {monthhandle_text[:3]} {monthday_text}, {year_text} at {convert1440toReadableTime(min1440)}"
+    return f"{weekday_text[:3]} {monthpid_text[:3]} {monthday_text}, {year_text} at {convert1440toReadableTime(min1440)}"
 
 
 def convert1440toHHMM(min1440: int):

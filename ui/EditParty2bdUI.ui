@@ -246,7 +246,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>New Group Handle:</string>
+    <string>New Group PID:</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -262,7 +262,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Change Group Handle:</string>
+    <string>Change Group PID:</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

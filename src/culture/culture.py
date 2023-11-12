@@ -3,7 +3,7 @@ from src.agenda.agenda import (
     agendaunit_shop,
     get_from_json as get_agenda_from_json,
     partylink_shop,
-    PartyHandle,
+    PartyPID,
     PersonPID,
 )
 from src.agenda.x_func import (
@@ -13,7 +13,7 @@ from src.agenda.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
 )
-from src.culture.council import CouncilUnit, councilunit_shop, CouncilDub
+from src.culture.council import CouncilUnit, councilunit_shop, CouncilCID
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 from src.culture.bank_sqlstr import (
@@ -82,7 +82,7 @@ class CultureUnit:
                 )
                 for idea_catalog in ic.values():
                     if x_healer != idea_catalog.agenda_healer:
-                        partylink_x = partylink_shop(handle=idea_catalog.agenda_healer)
+                        partylink_x = partylink_shop(pid=idea_catalog.agenda_healer)
                         groupunit_x.set_partylink(partylink_x)
         self.save_public_agenda(healer_agenda)
         self.refresh_bank_public_agendas_data()
@@ -123,7 +123,7 @@ class CultureUnit:
                 river_block_x = RiverBlockUnit(
                     currency_agenda_healer=x_agenda_healer,
                     src_healer=x_child_ledger.agenda_healer,
-                    dst_healer=x_child_ledger.handle,
+                    dst_healer=x_child_ledger.pid,
                     currency_start=curr_onset,
                     currency_close=curr_close,
                     block_num=blocks_count,
@@ -342,43 +342,43 @@ class CultureUnit:
         if self._councilunits is None:
             self._councilunits = {}
 
-    def create_new_councilunit(self, council_dub: CouncilDub):
+    def create_new_councilunit(self, council_cid: CouncilCID):
         self.set_councilunits_empty_if_null()
-        ux = councilunit_shop(council_dub, self.get_object_root_dir(), self.title)
+        ux = councilunit_shop(council_cid, self.get_object_root_dir(), self.title)
         ux.create_core_dir_and_files()
-        self._councilunits[ux._admin._council_dub] = ux
+        self._councilunits[ux._admin._council_cid] = ux
 
-    def get_councilunit(self, dub: CouncilDub) -> CouncilUnit:
-        return None if self._councilunits.get(dub) is None else self._councilunits[dub]
+    def get_councilunit(self, cid: CouncilCID) -> CouncilUnit:
+        return None if self._councilunits.get(cid) is None else self._councilunits[cid]
 
     def set_councilunit_to_culture(self, councilunit: CouncilUnit):
-        self._councilunits[councilunit._admin._council_dub] = councilunit
-        self.save_councilunit_file(council_dub=councilunit._admin._council_dub)
+        self._councilunits[councilunit._admin._council_cid] = councilunit
+        self.save_councilunit_file(council_cid=councilunit._admin._council_cid)
 
-    def save_councilunit_file(self, council_dub: CouncilDub):
-        x_councilunit = self.get_councilunit(dub=council_dub)
+    def save_councilunit_file(self, council_cid: CouncilCID):
+        x_councilunit = self.get_councilunit(cid=council_cid)
         x_councilunit._admin.save_seed_agenda(x_councilunit.get_seed())
 
-    def change_councilunit_dub(self, old_dub: CouncilDub, new_dub: CouncilDub):
-        council_x = self.get_councilunit(dub=old_dub)
+    def change_councilunit_cid(self, old_cid: CouncilCID, new_cid: CouncilCID):
+        council_x = self.get_councilunit(cid=old_cid)
         old_councilunit_dir = council_x._admin._councilunit_dir
-        council_x._admin.set_council_dub(new_dub=new_dub)
+        council_x._admin.set_council_cid(new_cid=new_cid)
         self.set_councilunit_to_culture(council_x)
         x_func_delete_dir(old_councilunit_dir)
-        self.del_councilunit_from_culture(council_dub=old_dub)
+        self.del_councilunit_from_culture(council_cid=old_cid)
 
-    def del_councilunit_from_culture(self, council_dub: CouncilDub):
-        self._councilunits.pop(council_dub)
+    def del_councilunit_from_culture(self, council_cid: CouncilCID):
+        self._councilunits.pop(council_cid)
 
-    def del_councilunit_dir(self, council_dub: CouncilDub):
-        x_func_delete_dir(f"{self.get_councilunits_dir()}/{council_dub}")
+    def del_councilunit_dir(self, council_cid: CouncilCID):
+        x_func_delete_dir(f"{self.get_councilunits_dir()}/{council_cid}")
 
     # public dir management
     def get_public_dir(self):
         return f"{self.get_object_root_dir()}/agendas"
 
-    def get_ignores_dir(self, council_dub: CouncilDub):
-        per_x = self.get_councilunit(council_dub)
+    def get_ignores_dir(self, council_cid: CouncilCID):
+        per_x = self.get_councilunit(council_cid)
         return per_x._admin._agendas_ignore_dir
 
     def get_public_agenda(self, healer: str) -> AgendaUnit:
@@ -387,17 +387,17 @@ class CultureUnit:
         )
 
     def get_agenda_from_ignores_dir(
-        self, council_dub: CouncilDub, _healer: str
+        self, council_cid: CouncilCID, _healer: str
     ) -> AgendaUnit:
         return get_agenda_from_json(
             x_func_open_file(
-                dest_dir=self.get_ignores_dir(council_dub=council_dub),
+                dest_dir=self.get_ignores_dir(council_cid=council_cid),
                 file_name=f"{_healer}.json",
             )
         )
 
-    def set_ignore_agenda_file(self, council_dub: CouncilDub, agenda_obj: AgendaUnit):
-        x_councilunit = self.get_councilunit(dub=council_dub)
+    def set_ignore_agenda_file(self, council_cid: CouncilCID, agenda_obj: AgendaUnit):
+        x_councilunit = self.get_councilunit(cid=council_cid)
         x_councilunit.set_ignore_agenda_file(
             agendaunit=agenda_obj, src_agenda_healer=agenda_obj._healer
         )
@@ -449,14 +449,14 @@ class CultureUnit:
 
     def set_healer_depotlink(
         self,
-        council_dub: CouncilDub,
+        council_cid: CouncilCID,
         agenda_healer: str,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
         ignore_agenda: AgendaUnit = None,
     ):
-        x_councilunit = self.get_councilunit(dub=council_dub)
+        x_councilunit = self.get_councilunit(cid=council_cid)
         x_agenda = self.get_public_agenda(healer=agenda_healer)
         self._councilunit_set_depot_agenda(
             councilunit=x_councilunit,
@@ -469,13 +469,13 @@ class CultureUnit:
 
     def create_depotlink_to_generated_agenda(
         self,
-        council_dub: CouncilDub,
+        council_cid: CouncilCID,
         agenda_healer: str,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
-        x_councilunit = self.get_councilunit(dub=council_dub)
+        x_councilunit = self.get_councilunit(cid=council_cid)
         x_agenda = agendaunit_shop(_healer=agenda_healer)
         self._councilunit_set_depot_agenda(
             councilunit=x_councilunit,
@@ -487,14 +487,14 @@ class CultureUnit:
 
     def update_depotlink(
         self,
-        council_dub: CouncilDub,
-        partyhandle: PartyHandle,
+        council_cid: CouncilCID,
+        partypid: PartyPID,
         depotlink_type: str,
         creditor_weight: str,
         debtor_weight: str,
     ):
-        x_councilunit = self.get_councilunit(dub=council_dub)
-        x_agenda = self.get_public_agenda(_healer=partyhandle)
+        x_councilunit = self.get_councilunit(cid=council_cid)
+        x_agenda = self.get_public_agenda(_healer=partypid)
         self._councilunit_set_depot_agenda(
             councilunit=x_councilunit,
             agendaunit=x_agenda,
@@ -503,13 +503,13 @@ class CultureUnit:
             debtor_weight=debtor_weight,
         )
 
-    def del_depotlink(self, council_dub: CouncilDub, agendaunit_healer: str):
-        x_councilunit = self.get_councilunit(dub=council_dub)
+    def del_depotlink(self, council_cid: CouncilCID, agendaunit_healer: str):
+        x_councilunit = self.get_councilunit(cid=council_cid)
         x_councilunit.del_depot_agenda(agenda_healer=agendaunit_healer)
 
     # Healer output_agenda
-    def get_output_agenda(self, council_dub: CouncilDub) -> AgendaUnit:
-        x_councilunit = self.get_councilunit(dub=council_dub)
+    def get_output_agenda(self, council_cid: CouncilCID) -> AgendaUnit:
+        x_councilunit = self.get_councilunit(cid=council_cid)
         return x_councilunit._admin.get_remelded_output_agenda()
 
 
@@ -537,7 +537,7 @@ def set_bank_partybankunits_to_agenda_partyunits(
 ):
     for partyunit_x in x_agenda._partys.values():
         partyunit_x.clear_banking_data()
-        partybankunit = partybankunits.get(partyunit_x.handle)
+        partybankunit = partybankunits.get(partyunit_x.pid)
         if partybankunit != None:
             partyunit_x.set_banking_data(
                 tax_paid=partybankunit.tax_total,

@@ -34,7 +34,7 @@ from src.agenda.group import (
     GroupUnit,
 )
 from src.agenda.origin import OriginUnit
-from src.agenda.party import PartyHandle
+from src.agenda.party import PartyPID
 from src.agenda.origin import originunit_shop
 from src.agenda.x_func import (
     get_on_meld_weight_actions,
@@ -54,7 +54,7 @@ class IdeaGetDescendantsException(Exception):
 
 @dataclasses.dataclass
 class IdeaBare:
-    n: str = None  # handle
+    n: str = None  # pid
     weight: int = 1
     b: float = None  # begin
     c: float = None  # close  # where
@@ -506,7 +506,7 @@ class IdeaCore:
         self,
         other_idea,
         _idearoot: bool = None,
-        party_handle: PartyHandle = None,
+        party_pid: PartyPID = None,
         party_weight: float = None,
     ):
         if _idearoot and self._label != other_idea._label:
@@ -526,12 +526,12 @@ class IdeaCore:
         self._meld_balancelinks(other_idea=other_idea)
         self._meld_acptfactunits(other_idea=other_idea)
         self._meld_attributes_that_will_be_equal(other_idea=other_idea)
-        self._meld_originlinks(party_handle, party_weight)
+        self._meld_originlinks(party_pid, party_weight)
 
-    def _meld_originlinks(self, party_handle: PartyHandle, party_weight: float):
-        if party_handle != None:
+    def _meld_originlinks(self, party_pid: PartyPID, party_weight: float):
+        if party_pid != None:
             self.set_originunit_empty_if_null()
-            self._originunit.set_originlink(handle=party_handle, weight=party_weight)
+            self._originunit.set_originlink(pid=party_pid, weight=party_weight)
 
     def set_originunit_empty_if_null(self):
         if self._originunit is None:
@@ -874,8 +874,8 @@ class IdeaCore:
     def get_balancelinks_dict(self):
         balancelinks_dict = {}
         if self._balancelinks != None:
-            for group_handle, balancelink in self._balancelinks.items():
-                balancelinks_dict[group_handle] = balancelink.get_dict()
+            for group_pid, balancelink in self._balancelinks.items():
+                balancelinks_dict[group_pid] = balancelink.get_dict()
         return balancelinks_dict
 
     def _get_empty_dict_if_null(self, x_dict: dict) -> dict:

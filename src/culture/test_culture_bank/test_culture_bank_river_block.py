@@ -34,7 +34,7 @@ def test_culture_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     tim_text = "tim"
     bob_agenda = agendaunit_shop(_healer=bob_text)
     tim_partyunit = partyunit_shop(
-        handle=tim_text,
+        pid=tim_text,
         _agenda_credit=0.9,
         _agenda_debt=0.8,
         _agenda_intent_credit=0.7,
@@ -70,7 +70,7 @@ def test_culture_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     # THEN
     tim_ledger = ledger_dict.get(tim_text)
     assert tim_ledger.agenda_healer == bob_text
-    assert tim_ledger.handle == tim_text
+    assert tim_ledger.pid == tim_text
     assert tim_ledger._agenda_credit == 0.9
     assert tim_ledger._agenda_debt == 0.8
     assert tim_ledger._agenda_intent_credit == 0.7
@@ -160,7 +160,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
     sal_text = "sal"
     bob_agenda = agendaunit_shop(_healer=bob_text)
     partyunit_sal = partyunit_shop(
-        handle=sal_text,
+        pid=sal_text,
         _agenda_credit=0.9,
         _agenda_debt=0.8,
         _agenda_intent_credit=0.7,
@@ -174,7 +174,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
 
     tim_text = "tim"
     partyunit_tim = partyunit_shop(
-        handle=tim_text,
+        pid=tim_text,
         _agenda_credit=0.012,
         _agenda_debt=0.017,
         _agenda_intent_credit=0.077,
@@ -264,7 +264,7 @@ def test_RiverLedgerUnit_Exists():
     tom_text = "tom"
     x1_partydbunit = PartyDBUnit(
         agenda_healer=bob_text,
-        handle=sal_text,
+        pid=sal_text,
         _agenda_credit=0.66,
         _agenda_debt=0.2,
         _agenda_intent_credit=0.4,
@@ -276,7 +276,7 @@ def test_RiverLedgerUnit_Exists():
     )
     x2_partydbunit = PartyDBUnit(
         agenda_healer=bob_text,
-        handle=tom_text,
+        pid=tom_text,
         _agenda_credit=0.05,
         _agenda_debt=0.09,
         _agenda_intent_credit=0.055,
@@ -287,8 +287,8 @@ def test_RiverLedgerUnit_Exists():
         _debtor_active=True,
     )
     x_partyview_dict = {
-        x1_partydbunit.handle: x1_partydbunit,
-        x2_partydbunit.handle: x2_partydbunit,
+        x1_partydbunit.pid: x1_partydbunit,
+        x2_partydbunit.pid: x2_partydbunit,
     }
     # WHEN
     river_ledger_unit = RiverLedgerUnit(
@@ -350,16 +350,16 @@ def test_agenda_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr():
     wil_text = "wil"
     fry_text = "fry"
     elu_text = "elu"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=sam_text))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=wil_text))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=fry_text))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=sam_text))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=wil_text))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=fry_text))
     assert x_agenda._partys.get(sam_text)._bank_tax_paid is None
     assert x_agenda._partys.get(sam_text)._bank_tax_diff is None
     assert x_agenda._partys.get(wil_text)._bank_tax_paid is None
     assert x_agenda._partys.get(wil_text)._bank_tax_diff is None
     assert x_agenda._partys.get(fry_text)._bank_tax_paid is None
     assert x_agenda._partys.get(fry_text)._bank_tax_diff is None
-    elu_partyunit = partyunit_shop(handle=elu_text)
+    elu_partyunit = partyunit_shop(pid=elu_text)
     elu_partyunit._bank_tax_paid = 0.003
     elu_partyunit._bank_tax_diff = 0.007
     x_agenda.set_partyunit(partyunit=elu_partyunit)
@@ -402,7 +402,7 @@ def test_get_partyunit_table_update_bank_tax_paid_sqlstr_CorrectlyPopulatesTable
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
     partyunit_tom = partyunit_shop(
-        handle=tom_text,
+        pid=tom_text,
         _agenda_credit=0.9,
         _agenda_debt=0.8,
         _agenda_intent_credit=0.7,
@@ -416,7 +416,7 @@ def test_get_partyunit_table_update_bank_tax_paid_sqlstr_CorrectlyPopulatesTable
         x_agenda=bob_agenda, partyunit_x=partyunit_tom
     )
     partyunit_sal = partyunit_shop(
-        handle=sal_text,
+        pid=sal_text,
         _agenda_credit=0.9,
         _agenda_debt=0.8,
         _agenda_intent_credit=0.7,

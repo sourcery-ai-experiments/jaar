@@ -20,7 +20,7 @@ class Edit5Issue(qtw.QTableWidget, Ui_Form):
         # self.group_update_button.clicked.connect(self.group_update)
         self.close_button.clicked.connect(self.close)
         self.quit_button.clicked.connect(sys.exit)
-        self.selected_party_handle = None
+        self.selected_party_pid = None
         self.partyunit_x = None
         self.groupunit_x = None
 

@@ -25,7 +25,7 @@ def test_agendaunit_get_assignment_ReturnsAgenda():
     x_assignment_agenda = jes1_agenda.get_assignment(
         agenda_x=agenda_x,
         assignor_partys=assignor_known_partys_x,
-        assignor_handle=bob_text,
+        assignor_pid=bob_text,
     )
 
     # THEN
@@ -37,19 +37,19 @@ def test_agendaunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInPartys():
     # GIVEN
     noa_text = "Noa"
     noa_agenda = example_agendas_get_agenda_with_4_levels()
-    noa_agenda.set_partyunit(partyunit_shop(handle=noa_text))
+    noa_agenda.set_partyunit(partyunit_shop(pid=noa_text))
     zia_text = "Zia"
     yao_text = "Yao"
-    noa_agenda.set_partyunit(partyunit_shop(handle=zia_text))
-    noa_agenda.set_partyunit(partyunit_shop(handle=yao_text))
+    noa_agenda.set_partyunit(partyunit_shop(pid=zia_text))
+    noa_agenda.set_partyunit(partyunit_shop(pid=yao_text))
 
     # WHEN
     bob_text = "bob"
     y_agenda = agendaunit_shop(_healer=noa_text)
     x_agenda = agendaunit_shop()
     x_agenda.set_partys_empty_if_null()
-    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=zia_text))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(handle=noa_text))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=zia_text))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=noa_text))
 
     x_assignment_agenda = noa_agenda.get_assignment(
         y_agenda, x_agenda._partys, bob_text
@@ -64,22 +64,22 @@ def test_agendaunit_get_assignment_ReturnsCorrectPartys():
     # GIVEN
     jes_text = "Jessi"
     jes_agenda = agendaunit_shop(_healer=jes_text)
-    jes_agenda.set_partyunit(partyunit_shop(handle=jes_text))
+    jes_agenda.set_partyunit(partyunit_shop(pid=jes_text))
     bob_text = "Bob"
     zia_text = "Zia"
     noa_text = "Noa"
     yao_text = "Yao"
-    jes_agenda.set_partyunit(partyunit_shop(handle=bob_text))
-    jes_agenda.set_partyunit(partyunit_shop(handle=zia_text))
-    jes_agenda.set_partyunit(partyunit_shop(handle=noa_text))
-    jes_agenda.set_partyunit(partyunit_shop(handle=yao_text))
+    jes_agenda.set_partyunit(partyunit_shop(pid=bob_text))
+    jes_agenda.set_partyunit(partyunit_shop(pid=zia_text))
+    jes_agenda.set_partyunit(partyunit_shop(pid=noa_text))
+    jes_agenda.set_partyunit(partyunit_shop(pid=yao_text))
 
     # WHEN
     tx = agendaunit_shop()
     tx.set_partys_empty_if_null()
-    tx.set_partyunit(partyunit=partyunit_shop(handle=bob_text))
-    tx.set_partyunit(partyunit=partyunit_shop(handle=zia_text))
-    tx.set_partyunit(partyunit=partyunit_shop(handle=noa_text))
+    tx.set_partyunit(partyunit=partyunit_shop(pid=bob_text))
+    tx.set_partyunit(partyunit=partyunit_shop(pid=zia_text))
+    tx.set_partyunit(partyunit=partyunit_shop(pid=noa_text))
 
     empty_agenda = agendaunit_shop(_healer=jes_text)
     x_assignment_agenda = jes_agenda.get_assignment(empty_agenda, tx._partys, bob_text)
@@ -96,13 +96,13 @@ def test_agendaunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     # GIVEN
     jes_text = "Jessi"
     jes_agenda = agendaunit_shop(_healer=jes_text)
-    jes_agenda.set_partyunit(partyunit_shop(handle=jes_text))
+    jes_agenda.set_partyunit(partyunit_shop(pid=jes_text))
     bob_text = "Bob"
     noa_text = "Noa"
     eli_text = "Eli"
-    jes_agenda.set_partyunit(partyunit_shop(handle=bob_text))
-    jes_agenda.set_partyunit(partyunit_shop(handle=noa_text))
-    jes_agenda.set_partyunit(partyunit_shop(handle=eli_text))
+    jes_agenda.set_partyunit(partyunit_shop(pid=bob_text))
+    jes_agenda.set_partyunit(partyunit_shop(pid=noa_text))
+    jes_agenda.set_partyunit(partyunit_shop(pid=eli_text))
     swim_text = "swimmers"
     jes_agenda.set_groupunit(groupunit_shop(brand=swim_text))
     swim_group = jes_agenda._groups.get(swim_text)
@@ -125,9 +125,9 @@ def test_agendaunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     tx.set_partys_empty_if_null()
     zia_text = "Zia"
     yao_text = "Yao"
-    tx.set_partyunit(partyunit=partyunit_shop(handle=bob_text))
-    tx.set_partyunit(partyunit=partyunit_shop(handle=zia_text))
-    tx.set_partyunit(partyunit=partyunit_shop(handle=noa_text))
+    tx.set_partyunit(partyunit=partyunit_shop(pid=bob_text))
+    tx.set_partyunit(partyunit=partyunit_shop(pid=zia_text))
+    tx.set_partyunit(partyunit=partyunit_shop(pid=noa_text))
 
     empty_agenda = agendaunit_shop(_healer=jes_text)
     x_assignment_agenda = jes_agenda.get_assignment(empty_agenda, tx._partys, bob_text)
@@ -471,13 +471,13 @@ def test_agenda_get_assignment_getsCorrectIdeas_scenario1():
     dirty_text = "dirty"
     dirty_road = f"{status_road},{dirty_text}"
     bob_text = "Bob"
-    x_agenda.add_partyunit(handle=bob_text)
+    x_agenda.add_partyunit(pid=bob_text)
 
     # WHEN
     assignment_x = x_agenda.get_assignment(
         agenda_x=agendaunit_shop(_healer=bob_text),
         assignor_partys={bob_text: -1},
-        assignor_handle=bob_text,
+        assignor_pid=bob_text,
     )
 
     # THEN
@@ -513,7 +513,7 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     cali_assignment = amer_agenda.get_assignment(
         agenda_x=cali_agenda,
         assignor_partys={cali_text: -1, amer_agenda._healer: -1},
-        assignor_handle=cali_text,
+        assignor_pid=cali_text,
     )
 
     # THEN

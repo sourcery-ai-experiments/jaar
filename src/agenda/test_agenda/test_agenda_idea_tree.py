@@ -1,7 +1,7 @@
 from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels as example_agendas_get_agenda_with_4_levels,
 )
-from src.agenda.party import PartyHandle
+from src.agenda.party import PartyPID
 from src.agenda.idea import ideacore_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.group import Balanceline, balancelink_shop
@@ -221,7 +221,7 @@ def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_2():
     vaccum_idea = ideacore_shop(_label=vaccum_text, promise=True)
     x_agenda.add_idea(idea_kid=vaccum_idea, pad=work_road)
 
-    x_agenda.add_partyunit(handle=sandy_text)
+    x_agenda.add_partyunit(pid=sandy_text)
     x_balancelink = balancelink_shop(brand=sandy_text)
 
     x_agenda._idearoot._kids[work_text]._kids[email_text].set_balancelink(
@@ -291,7 +291,7 @@ def test_TreeTraverseSetsBalancelineestorFromRootCorrectly():
     week_text = "weekdays"
     nation_text = "nation-state"
     sandy_balancelink = balancelink_shop(brand=sandy_text)
-    x_agenda.add_partyunit(handle=sandy_text)
+    x_agenda.add_partyunit(pid=sandy_text)
     x_agenda._idearoot.set_balancelink(balancelink=sandy_balancelink)
     # idea tree has balancelines
     assert x_agenda._idearoot._balanceheirs.get(sandy_text) is None
@@ -348,7 +348,7 @@ def test_TreeTraverseSetsBalancelineestorFromNonRootCorrectly():
     # idea tree has no balancelinks
     sandy_text = "sandy"
     assert x_agenda._idearoot._balancelines == {}
-    x_agenda.add_partyunit(handle=sandy_text)
+    x_agenda.add_partyunit(pid=sandy_text)
     x_balancelink = balancelink_shop(brand=sandy_text)
     work_text = "work"
     email_text = "email"
@@ -385,21 +385,19 @@ def test_agenda4party_Exists():
     vaccum_idea = ideacore_shop(_label=vaccum_text, promise=True)
     x_agenda.add_idea(idea_kid=vaccum_idea, pad=work_road)
 
-    sandy_handle = PartyHandle(sandy_text)
-    x_agenda.add_partyunit(handle=sandy_handle)
-    x_balancelink = balancelink_shop(brand=sandy_handle)
+    sandy_pid = PartyPID(sandy_text)
+    x_agenda.add_partyunit(pid=sandy_pid)
+    x_balancelink = balancelink_shop(brand=sandy_pid)
     yrx = x_agenda._idearoot
     yrx._kids[work_text]._kids[email_text].set_balancelink(balancelink=x_balancelink)
 
     # WHEN
-    sandy_agenda4party = x_agenda.get_agenda4party(
-        acptfacts=None, party_handle=sandy_handle
-    )
+    sandy_agenda4party = x_agenda.get_agenda4party(acptfacts=None, party_pid=sandy_pid)
 
     # THEN
     assert sandy_agenda4party
     assert str(type(sandy_agenda4party)).find(".agenda.AgendaUnit'>")
-    assert sandy_agenda4party._healer == sandy_handle
+    assert sandy_agenda4party._healer == sandy_pid
 
 
 def test_agenda4party_hasCorrectLevel1StructureNoGrouplessBranches():
@@ -417,22 +415,22 @@ def test_agenda4party_hasCorrectLevel1StructureNoGrouplessBranches():
     vaccum_idea = ideacore_shop(_label=vaccum_text, promise=True)
     x_agenda.add_idea(idea_kid=vaccum_idea, pad=work_road)
 
-    billy_handle = PartyHandle("billy")
-    x_agenda.add_partyunit(handle=billy_handle)
-    billy_bl = balancelink_shop(brand=billy_handle)
+    billy_pid = PartyPID("billy")
+    x_agenda.add_partyunit(pid=billy_pid)
+    billy_bl = balancelink_shop(brand=billy_pid)
     yrx = x_agenda._idearoot
     yrx._kids[week_text].set_balancelink(balancelink=billy_bl)
     yrx._kids[feed_text].set_balancelink(balancelink=billy_bl)
     nation_text = "nation-state"
     yrx._kids[nation_text].set_balancelink(balancelink=billy_bl)
 
-    sandy_handle = PartyHandle(sandy_text)
-    x_agenda.add_partyunit(handle=sandy_handle)
-    sandy_bl = balancelink_shop(brand=sandy_handle)
+    sandy_pid = PartyPID(sandy_text)
+    x_agenda.add_partyunit(pid=sandy_pid)
+    sandy_bl = balancelink_shop(brand=sandy_pid)
     yrx._kids[work_text]._kids[email_text].set_balancelink(balancelink=sandy_bl)
 
     # WHEN
-    sandy_agenda4party = x_agenda.get_agenda4party(sandy_handle, acptfacts=None)
+    sandy_agenda4party = x_agenda.get_agenda4party(sandy_pid, acptfacts=None)
 
     # THEN
     assert len(sandy_agenda4party._idearoot._kids) > 0
@@ -547,15 +545,15 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
 #     x_agenda.add_idea(idea_kid=ideacore_shop(_label="K"), pad=f"{x_agenda._culture_title},G,I")
 #     x_agenda.add_idea(idea_kid=ideacore_shop(_label="M"), pad=f"{x_agenda._culture_title},G,H")
 
-#     billy_handle = PartyHandle("billy")
-#     x_agenda.add_partyunit(handle=billy_handle)
-#     billy_bl = balancelink_shop(brand=billy_handle)
+#     billy_pid = PartyPID("billy")
+#     x_agenda.add_partyunit(pid=billy_pid)
+#     billy_bl = balancelink_shop(brand=billy_pid)
 #     x_agenda.edit_idea_attr(road=f"{x_agenda._culture_title},G", balancelink=billy_bl)
 #     x_agenda.edit_idea_attr(road=f"{x_agenda._culture_title},G,H,M", balancelink=billy_bl)
 
-#     sandy_handle = PartyHandle(sandy_text)
-#     x_agenda.add_partyunit(handle=sandy_handle)
-#     sandy_bl = balancelink_shop(brand=sandy_handle)
+#     sandy_pid = PartyPID(sandy_text)
+#     x_agenda.add_partyunit(pid=sandy_pid)
+#     sandy_bl = balancelink_shop(brand=sandy_pid)
 #     x_agenda.edit_idea_attr(road=f"{x_agenda._culture_title},A", balancelink=sandy_bl)
 #     x_agenda.edit_idea_attr(road=f"{x_agenda._culture_title},B", balancelink=sandy_bl)
 #     x_agenda.edit_idea_attr(road=f"{x_agenda._culture_title},A,C,E", balancelink=sandy_bl)
@@ -568,7 +566,7 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
 #     exp_sandy.add_idea(idea_kid=ideacore_shop(_label="B", _agenda_importance=0.13), pad="blahblah")
 
 #     # generated sandy
-#     gen_sandy = x_agenda.get_agenda4party(acptfacts=None, party_handle=sandy_handle)
+#     gen_sandy = x_agenda.get_agenda4party(acptfacts=None, party_pid=sandy_pid)
 
 #     # check generated sandy is correct
 #     assert gen_sandy.get_idea_kid(road=f"{x_agenda._culture_title},A")._agenda_importance == 0.07

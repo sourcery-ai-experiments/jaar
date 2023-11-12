@@ -89,32 +89,32 @@ def _delete_and_set_ex3():
     x_culture.save_public_agenda(x_agenda=example_agendas_agenda_v001())
     x_culture.save_public_agenda(x_agenda=example_agendas_agenda_v002())
 
-    # x_culture.set_healer(x_council=councilunit_shop(handle="w1", env_dir=x_culture.get_object_root_dir()))
-    # x_culture.set_healer(x_council=councilunit_shop(handle="w2", env_dir=x_culture.get_object_root_dir()))
+    # x_culture.set_healer(x_council=councilunit_shop(pid="w1", env_dir=x_culture.get_object_root_dir()))
+    # x_culture.set_healer(x_council=councilunit_shop(pid="w2", env_dir=x_culture.get_object_root_dir()))
     xia_text = "Xia"
-    x_culture.create_new_councilunit(council_dub=xia_text)
+    x_culture.create_new_councilunit(council_cid=xia_text)
     healer_text = "Myagenda"
     x_culture.set_healer_depotlink(
         xia_text, agenda_healer=healer_text, depotlink_type="blind_trust"
     )
-    # w1_obj = x_culture.get_councilunit(dub=w1_text)
+    # w1_obj = x_culture.get_councilunit(cid=w1_text)
 
     bob_text = "bob wurld"
     create_agenda_file_for_cultures(x_culture.get_object_root_dir(), bob_text)
     # print(f"create agenda_list {w1_text=}")
     x_culture.create_depotlink_to_generated_agenda(
-        council_dub=xia_text, agenda_healer=bob_text, depotlink_type="ignore"
+        council_cid=xia_text, agenda_healer=bob_text, depotlink_type="ignore"
     )
     land_text = "tim wurld"
     create_agenda_file_for_cultures(
         culture_dir=x_culture.get_object_root_dir(), agenda_healer=land_text
     )
     x_culture.create_depotlink_to_generated_agenda(
-        council_dub=xia_text, agenda_healer=land_text, depotlink_type="blind_trust"
+        council_cid=xia_text, agenda_healer=land_text, depotlink_type="blind_trust"
     )
-    # x_culture.create_depotlink_to_generated_agenda(council_dub=w1_text, agenda_healer="test9")
-    # x_culture.create_depotlink_to_generated_agenda(council_dub=w1_text, agenda_healer="Bobs agenda")
-    x_culture.save_councilunit_file(council_dub=xia_text)
+    # x_culture.create_depotlink_to_generated_agenda(council_cid=w1_text, agenda_healer="test9")
+    # x_culture.create_depotlink_to_generated_agenda(council_cid=w1_text, agenda_healer="Bobs agenda")
+    x_culture.save_councilunit_file(council_cid=xia_text)
     # print(f"WHAT WHAT {x_culture.get_object_root_dir()}")
     # print(f"WHAT WHAT {x_culture.get_object_root_dir()}/councilunits/w1/w1.json")
     # file_text = x_func_open_file(
@@ -126,9 +126,9 @@ def _delete_and_set_ex3():
     # print(f"{x_culture._councilunits.get(w1_text).get_json=}")
 
     w2_text = "w2"
-    x_culture.create_new_councilunit(council_dub=w2_text)
+    x_culture.create_new_councilunit(council_cid=w2_text)
     # , env_dir=x_culture.get_object_root_dir())
-    x_culture.save_councilunit_file(council_dub=w2_text)
+    x_culture.save_councilunit_file(council_cid=w2_text)
 
 
 def _delete_and_set_ex4():
@@ -167,11 +167,11 @@ def _delete_and_set_ex5():
     x_p.save_public_agenda(x_agenda=agenda_4)
     x_p.save_public_agenda(x_agenda=agenda_5)
 
-    x_p.create_new_councilunit(council_dub=agenda_1._healer)
-    x_p.create_new_councilunit(council_dub=agenda_2._healer)
-    x_p.create_new_councilunit(council_dub=agenda_3._healer)
-    x_p.create_new_councilunit(council_dub=agenda_4._healer)
-    x_p.create_new_councilunit(council_dub=agenda_5._healer)
+    x_p.create_new_councilunit(council_cid=agenda_1._healer)
+    x_p.create_new_councilunit(council_cid=agenda_2._healer)
+    x_p.create_new_councilunit(council_cid=agenda_3._healer)
+    x_p.create_new_councilunit(council_cid=agenda_4._healer)
+    x_p.create_new_councilunit(council_cid=agenda_5._healer)
 
     x_p.set_healer_depotlink(agenda_1._healer, agenda_2._healer, "blind_trust", 3, 3.1)
     x_p.set_healer_depotlink(agenda_1._healer, agenda_3._healer, "blind_trust", 7, 7.1)
@@ -201,11 +201,11 @@ def _delete_and_set_ex5():
     x_p.set_healer_depotlink(agenda_5._healer, agenda_3._healer, "blind_trust", 4, 4.1)
     x_p.set_healer_depotlink(agenda_5._healer, agenda_4._healer, "blind_trust", 5, 5.1)
 
-    x_p.save_councilunit_file(council_dub=agenda_1._healer)
-    x_p.save_councilunit_file(council_dub=agenda_2._healer)
-    x_p.save_councilunit_file(council_dub=agenda_3._healer)
-    x_p.save_councilunit_file(council_dub=agenda_4._healer)
-    x_p.save_councilunit_file(council_dub=agenda_5._healer)
+    x_p.save_councilunit_file(council_cid=agenda_1._healer)
+    x_p.save_councilunit_file(council_cid=agenda_2._healer)
+    x_p.save_councilunit_file(council_cid=agenda_3._healer)
+    x_p.save_councilunit_file(council_cid=agenda_4._healer)
+    x_p.save_councilunit_file(council_cid=agenda_5._healer)
 
 
 def _delete_and_set_ex6(x_title: str = None):
@@ -222,27 +222,27 @@ def _delete_and_set_ex6(x_title: str = None):
     elu_text = "elu"
 
     sal_agenda = agendaunit_shop(_healer=sal_text)
-    sal_agenda.add_partyunit(handle=bob_text, creditor_weight=2)
-    sal_agenda.add_partyunit(handle=tom_text, creditor_weight=7)
-    sal_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
+    sal_agenda.add_partyunit(pid=bob_text, creditor_weight=2)
+    sal_agenda.add_partyunit(pid=tom_text, creditor_weight=7)
+    sal_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=sal_agenda)
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
-    bob_agenda.add_partyunit(handle=sal_text, creditor_weight=3)
-    bob_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
+    bob_agenda.add_partyunit(pid=sal_text, creditor_weight=3)
+    bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
 
     tom_agenda = agendaunit_shop(_healer=tom_text)
-    tom_agenda.add_partyunit(handle=sal_text, creditor_weight=2)
+    tom_agenda.add_partyunit(pid=sal_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=tom_agenda)
 
     ava_agenda = agendaunit_shop(_healer=ava_text)
-    ava_agenda.add_partyunit(handle=elu_text, creditor_weight=2)
+    ava_agenda.add_partyunit(pid=elu_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=ava_agenda)
 
     elu_agenda = agendaunit_shop(_healer=elu_text)
-    elu_agenda.add_partyunit(handle=ava_text, creditor_weight=19)
-    elu_agenda.add_partyunit(handle=sal_text, creditor_weight=1)
+    elu_agenda.add_partyunit(pid=ava_text, creditor_weight=19)
+    elu_agenda.add_partyunit(pid=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
     x_culture.refresh_bank_public_agendas_data()

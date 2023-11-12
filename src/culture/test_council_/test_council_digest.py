@@ -24,9 +24,9 @@ from pytest import raises as pytest_raises
 #     council_dir_setup_cleanup,
 # ):
 #     # GIVEN
-#     lai_handle = "Lai"
+#     lai_pid = "Lai"
 #     env_dir = get_temp_councilunit_dir()
-#     lai_agenda = councilunit_shop(handle=lai_handle, env_dir=env_dir)
+#     lai_agenda = councilunit_shop(pid=lai_pid, env_dir=env_dir)
 #     lai_seed_file_name = lai_agenda._admin._seed_file_name
 #     with pytest_raises(Exception) as excinfo:
 #         x_func_open_file(lai_agenda._admin._councilunit_dir, lai_seed_file_name)
@@ -52,7 +52,7 @@ def test_healeropen_seed_agenda_WhenStartingAgendaFileDoesNotExists(
     env_dir = get_temp_councilunit_dir()
     culture_title_text = get_temp_culture_title()
     ux = councilunit_shop(
-        handle=tim_text, env_dir=env_dir, culture_title=culture_title_text
+        pid=tim_text, env_dir=env_dir, culture_title=culture_title_text
     )
 
     # WHEN
@@ -64,7 +64,7 @@ def test_healeropen_seed_agenda_WhenStartingAgendaFileDoesNotExists(
     x_agenda = agendaunit_shop(_healer=tim_text)
     x_agenda.set_culture_title(get_temp_culture_title())
     x_agenda.set_agenda_metrics()
-    # x_idearoot = idearoot_shop(_label=p_handle, _pad="")
+    # x_idearoot = idearoot_shop(_label=p_pid, _pad="")
     # x_idearoot.set_balancelines_empty_if_null()
     # x_idearoot.set_kids_empty_if_null()
     # x_idearoot.set_balancelink_empty_if_null()
@@ -88,26 +88,26 @@ def test_healer_save_seed_agenda_seedPersonPIDMustBeHealer(
     council_dir_setup_cleanup,
 ):
     # GIVEN
-    p_handle = "Game1"
+    p_pid = "Game1"
     env_dir = get_temp_councilunit_dir()
-    ux = councilunit_shop(p_handle, env_dir, get_temp_culture_title())
+    ux = councilunit_shop(p_pid, env_dir, get_temp_culture_title())
     cx1 = example_agendas_get_agenda_with_4_levels()
-    assert cx1._healer != p_handle
+    assert cx1._healer != p_pid
 
     # WHEN
     ux._admin.save_seed_agenda(x_agenda=cx1)
 
     # THEN
-    assert ux._admin.open_seed_agenda()._healer == ux._admin._council_dub
+    assert ux._admin.open_seed_agenda()._healer == ux._admin._council_cid
 
 
 def test_healer_open_seed_agenda_WhenStartingAgendaFileExists(
     council_dir_setup_cleanup,
 ):
     # GIVEN
-    p_handle = "Game1"
+    p_pid = "Game1"
     env_dir = get_temp_councilunit_dir()
-    ux = councilunit_shop(p_handle, env_dir, get_temp_culture_title())
+    ux = councilunit_shop(p_pid, env_dir, get_temp_culture_title())
     ux._admin.save_seed_agenda(x_agenda=example_agendas_get_agenda_with_4_levels())
 
     # WHEN
@@ -116,7 +116,7 @@ def test_healer_open_seed_agenda_WhenStartingAgendaFileExists(
 
     # THEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
-    x_agenda.set_healer(new_healer=p_handle)
+    x_agenda.set_healer(new_healer=p_pid)
     x_agenda.set_agenda_metrics()
 
     assert seed_agenda._idearoot._kids == x_agenda._idearoot._kids
@@ -124,16 +124,16 @@ def test_healer_open_seed_agenda_WhenStartingAgendaFileExists(
     assert seed_agenda._idearoot._acptfactunits == {}
     assert seed_agenda._partys == {}
     assert seed_agenda._groups == {}
-    assert seed_agenda._healer == ux._admin._council_dub
+    assert seed_agenda._healer == ux._admin._council_cid
 
 
 def test_healer_erase_seed_agenda_file_DeletesFileCorrectly(
     council_dir_setup_cleanup,
 ):
     # GIVEN
-    p_handle = "Game1"
+    p_pid = "Game1"
     env_dir = get_temp_councilunit_dir()
-    ux = councilunit_shop(p_handle, env_dir, get_temp_culture_title())
+    ux = councilunit_shop(p_pid, env_dir, get_temp_culture_title())
     ux._admin.save_seed_agenda(example_agendas_get_agenda_with_4_levels())
     file_name = ux._admin._seed_file_name
     assert x_func_open_file(ux._admin._councilunit_dir, file_name) != None
@@ -154,9 +154,9 @@ def test_councilunit_save_agenda_to_digest_SavesFileCorrectly(
     council_dir_setup_cleanup,
 ):
     # GIVEN
-    council_dub = "healer1"
+    council_cid = "healer1"
     env_dir = get_temp_councilunit_dir()
-    ux = councilunit_shop(council_dub, env_dir, get_temp_culture_title())
+    ux = councilunit_shop(council_cid, env_dir, get_temp_culture_title())
     ux.create_core_dir_and_files()
     cx = example_healers_get_2node_agenda()
     src_agenda_healer = cx._healer
@@ -214,14 +214,14 @@ def test_healer_get_remelded_output_agenda_withEmptyDigestDict(
     council_dir_setup_cleanup,
 ):
     # GIVEN
-    council_dub_x = "boots3"
+    council_cid_x = "boots3"
     ux = councilunit_shop(
-        council_dub_x, get_temp_councilunit_dir(), get_temp_culture_title()
+        council_cid_x, get_temp_councilunit_dir(), get_temp_culture_title()
     )
     ux.create_core_dir_and_files()
     sx_output_before = ux._admin.get_remelded_output_agenda()
     assert str(type(sx_output_before)).find(".agenda.AgendaUnit'>")
-    assert sx_output_before._healer == council_dub_x
+    assert sx_output_before._healer == council_cid_x
     assert sx_output_before._idearoot._label == get_temp_culture_title()
     # ux.set_digested_agenda(agenda_x=agendaunit_shop(_healer="digested1"))
 
@@ -229,7 +229,7 @@ def test_healer_get_remelded_output_agenda_withEmptyDigestDict(
     sx_output_after = ux._admin.get_remelded_output_agenda()
 
     # THEN
-    healer_agenda_x = agendaunit_shop(_healer=council_dub_x, _weight=0.0)
+    healer_agenda_x = agendaunit_shop(_healer=council_cid_x, _weight=0.0)
     healer_agenda_x.set_culture_title(get_temp_culture_title())
     healer_agenda_x._idearoot._pad = ""
     healer_agenda_x.set_agenda_metrics()
@@ -285,7 +285,7 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
 # def test_healer_set_digested_agenda_with2Groups(council_dir_setup_cleanup):
 #     # GIVEN
 #     env_dir = get_temp_councilunit_dir()
-#     ux = councilunit_shop(handle="test8", env_dir=env_dir)
+#     ux = councilunit_shop(pid="test8", env_dir=env_dir)
 #     sx_output_old = ux._admin.get_remelded_output_agenda()
 #     assert str(type(sx_output_old)).find(".agenda.AgendaUnit'>")
 #     assert sx_output_old._groups == {}
@@ -297,10 +297,10 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
 #     s1 = agendaunit_shop(_healer=src1)
 
 #     ceci_text = "Ceci"
-#     s1.set_partyunit(partyunit=PartyUnit(handle=ceci_text))
+#     s1.set_partyunit(partyunit=PartyUnit(pid=ceci_text))
 #     swim_text = "swimmers"
-#     swim_group = BraUnit(handle=swim_text)
-#     swim_group.set_partylink(partylink=partylink_shop(handle=ceci_text))
+#     swim_group = BraUnit(pid=swim_text)
+#     swim_group.set_partylink(partylink=partylink_shop(pid=ceci_text))
 #     s1.set_groupunit(groupunit=swim_group)
 
 #     yaya_text = "yaya"
@@ -308,8 +308,8 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
 #     s1.add_idea(idea_kid=ideacore_shop(_label=yaya_text), pad=src1_road)
 #     s1.set_acptfact(base=yaya_road, acptfact=yaya_road)
 
-#     assert s1._groups.get(swim_text).handle == swim_text
-#     assert s1._partys.get(ceci_text).handle == ceci_text
+#     assert s1._groups.get(swim_text).pid == swim_text
+#     assert s1._partys.get(ceci_text).pid == ceci_text
 #     assert s1._idearoot._label == src1
 #     assert s1._acptfacts.get(yaya_road).base == yaya_road
 
@@ -341,7 +341,7 @@ def test_healer_seed_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
     yao_text = "Yao"
     seed_origin_weight = 1
     yao_originunit = originunit_shop()
-    yao_originunit.set_originlink(handle=yao_text, weight=seed_origin_weight)
+    yao_originunit.set_originlink(pid=yao_text, weight=seed_origin_weight)
     seed_agenda_x = example_healers_get_7nodeJRoot_agenda()
     seed_agenda_x.set_healer(yao_text)
 
@@ -367,5 +367,5 @@ def test_healer_seed_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
     assert output_agenda_x._originunit == yao_originunit
 
     output_originlink = output_agenda_x._originunit._links.get(yao_text)
-    assert output_originlink.handle == yao_text
+    assert output_originlink.pid == yao_text
     assert output_originlink.weight == seed_origin_weight

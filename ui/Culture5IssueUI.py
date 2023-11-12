@@ -284,7 +284,7 @@ class Ui_Form(object):
         self.label_5.setText(_translate("Form", "Issue"))
         self.label_17.setText(_translate("Form", "Advocate Selection"))
         self.label_7.setText(_translate("Form", "#3"))
-        self.label_3.setText(_translate("Form", "Healer Handle:"))
+        self.label_3.setText(_translate("Form", "Healer PID:"))
         self.label_4.setText(_translate("Form", "#2"))
         self.label_14.setText(_translate("Form", "#1"))
         self.label_16.setText(_translate("Form", "Weight"))

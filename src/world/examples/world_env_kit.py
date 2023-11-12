@@ -45,13 +45,13 @@ def create_example_worlds_list():
 #     x_func_delete_dir(world_obj.get_object_root_dir())
 
 
-# def renam_example_world(world_obj: CultureUnit, new_handle):
+# def renam_example_world(world_obj: CultureUnit, new_pid):
 #     # base_dir = world_obj.get_object_root_dir()
 #     base_dir = "src/world/examples/worlds"
 #     src_dir = f"{base_dir}/{world_obj.genus}"
-#     dst_dir = f"{base_dir}/{new_handle}"
+#     dst_dir = f"{base_dir}/{new_pid}"
 #     os_renam(src=src_dir, dst=dst_dir)
-#     world_obj.set_worldunit_genus(genus=new_handle)
+#     world_obj.set_worldunit_genus(genus=new_pid)
 
 
 # class InvalidcultureCopyException(Exception):

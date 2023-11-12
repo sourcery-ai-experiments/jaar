@@ -30,7 +30,7 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     agendaunit_columns = {healer_text: 1, rational_text: 1}
 
     agenda_healer_text = "agenda_healer"
-    handle_text = "handle"
+    pid_text = "pid"
     _agenda_credit_text = "_agenda_credit"
     _agenda_debt_text = "_agenda_debt"
     _agenda_intent_credit_text = "_agenda_intent_credit"
@@ -47,7 +47,7 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     partyunit_text = "partyunit"
     partyunit_columns = {
         agenda_healer_text: 1,
-        handle_text: 1,
+        pid_text: 1,
         _agenda_credit_text: 1,
         _agenda_debt_text: 1,
         _agenda_intent_credit_text: 1,

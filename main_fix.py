@@ -80,14 +80,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_all_button.clicked.connect(self.refresh_all)
         self.culture_insert_button.clicked.connect(self.culture_insert)
         self.culture_load_button.clicked.connect(self.culture_load_from_file)
-        self.culture_update_button.clicked.connect(self.culture_update_handle)
+        self.culture_update_button.clicked.connect(self.culture_update_pid)
         self.culture_delete_button.clicked.connect(self.culture_delete)
         self.agenda_insert_button.clicked.connect(self.agenda_insert)
-        self.agenda_update_button.clicked.connect(self.agenda_update_handle)
+        self.agenda_update_button.clicked.connect(self.agenda_update_pid)
         self.agenda_delete_button.clicked.connect(self.agenda_delete)
         self.agendas_table.itemClicked.connect(self.agendas_table_select)
         self.healer_insert_button.clicked.connect(self.healer_insert)
-        self.healer_update_button.clicked.connect(self.healer_update_handle)
+        self.healer_update_button.clicked.connect(self.healer_update_pid)
         self.healer_delete_button.clicked.connect(self.healer_delete)
         self.healers_table.itemClicked.connect(self.healers_table_select)
         self.reload_all_src_agendas_button.clicked.connect(self.reload_all_src_agendas)
@@ -121,7 +121,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_culture()
         self.culture_title_combo_refresh()
         self.culture_title_combo.setCurrentText(first_env)
-        self._healer_load(council_dub="ernie")
+        self._healer_load(council_cid="ernie")
 
     def save_seed(self):
         if self.seed != None:
@@ -161,22 +161,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             selected_agenda = self.agendas_table.item(
                 self.agendas_table.currentRow(), 0
             ).text()
-            self.depotlink_handle.setText(f"{selected_healer} - {selected_agenda}")
+            self.depotlink_pid.setText(f"{selected_healer} - {selected_agenda}")
 
     def healers_table_select(self):
-        x_council_dub = self.healers_table.item(
+        x_council_cid = self.healers_table.item(
             self.healers_table.currentRow(), 0
         ).text()
-        self._healer_load(council_dub=x_council_dub)
+        self._healer_load(council_cid=x_council_cid)
 
-    def _healer_load(self, council_dub: str):
-        self.culture_x.create_new_councilunit(council_dub=council_dub)
-        self.x_council = self.culture_x._councilunits.get(council_dub)
-        self.council_dub.setText(self.x_council._admin._council_dub)
+    def _healer_load(self, council_cid: str):
+        self.culture_x.create_new_councilunit(council_cid=council_cid)
+        self.x_council = self.culture_x._councilunits.get(council_cid)
+        self.council_cid.setText(self.x_council._admin._council_cid)
         self.refresh_healer()
 
     def depotlinks_table_select(self):
-        self.depotlink_handle.setText(
+        self.depotlink_pid.setText(
             self.depotlinks_table.item(self.depotlinks_table.currentRow(), 0).text()
         )
         self.depotlink_type_combo.setCurrentText(
@@ -192,13 +192,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         # self.ignore_agenda_x = self.culture_x.get_public_agenda(
         self.ignore_agenda_x = self.culture_x.get_agenda_from_ignores_dir(
-            council_dub=self.x_council._admin.handle, _healer=ignore_agenda_healer
+            council_cid=self.x_council._admin.pid, _healer=ignore_agenda_healer
         )
         self.edit_agenda = self.ignore_agenda_x
 
     def ignore_agenda_file_update(self):
         self.culture_x.set_ignore_agenda_file(
-            council_dub=self.x_council._admin.handle, agenda_obj=self.ignore_agenda_x
+            council_cid=self.x_council._admin.pid, agenda_obj=self.ignore_agenda_x
         )
         self.refresh_healer()
 
@@ -214,9 +214,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         create_example_culture(culture_title=self.culture_title.text())
         self.culture_title_combo_refresh()
 
-    def culture_update_handle(self):
+    def culture_update_pid(self):
         retitle_example_culture(
-            culture_obj=self.culture_x, new_handle=self.culture_title.text()
+            culture_obj=self.culture_x, new_pid=self.culture_title.text()
         )
         self.culture_title_combo_refresh()
 
@@ -232,7 +232,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.refresh_culture()
 
-    def agenda_update_handle(self):
+    def agenda_update_pid(self):
         currently_selected = self.agendas_table.item(
             self.agendas_table.currentRow(), 0
         ).text()
@@ -252,23 +252,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_culture()
 
     def healer_insert(self):
-        self.culture_x.create_new_councilunit(council_dub=self.council_dub.text())
+        self.culture_x.create_new_councilunit(council_cid=self.council_cid.text())
         self.refresh_healers()
 
-    def healer_update_handle(self):
+    def healer_update_pid(self):
         currently_selected = self.healers_table.item(
             self.healers_table.currentRow(), 0
         ).text()
-        typed_in = self.council_dub.text()
+        typed_in = self.council_cid.text()
         if currently_selected != typed_in:
-            self.culture_x.change_councilunit_dub(
+            self.culture_x.change_councilunit_cid(
                 old_label=currently_selected, new_label=typed_in
             )
             self.refresh_healers()
 
     def healer_delete(self):
         self.culture_x.del_councilunit_dir(
-            council_dub=self.healers_table.item(
+            council_cid=self.healers_table.item(
                 self.healers_table.currentRow(), 0
             ).text()
         )
@@ -289,29 +289,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 depotlink_type=self.depotlink_type_combo.currentText(),
                 depotlink_weight=self.depotlink_weight.text(),
             )
-            self.culture_x.save_councilunit_file(
-                council_dub=self.x_council._admin.handle
-            )
+            self.culture_x.save_councilunit_file(council_cid=self.x_council._admin.pid)
         self.refresh_healer()
 
     def depotlink_update(self):
-        council_dub_x = self.x_council._admin.handle
+        council_cid_x = self.x_council._admin.pid
         self.culture_x.update_depotlink(
-            council_dub=council_dub_x,
-            partyhandle=self.depotlink_handle.text(),
+            council_cid=council_cid_x,
+            partypid=self.depotlink_pid.text(),
             depotlink_type=self.depotlink_type_combo.currentText(),
             creditor_weight=self.depotlink_weight.text(),
             debtor_weight=self.depotlink_weight.text(),
         )
-        self.culture_x.save_councilunit_file(council_dub=council_dub_x)
+        self.culture_x.save_councilunit_file(council_cid=council_cid_x)
         self.refresh_healer()
 
     def depotlink_delete(self):
-        council_dub_x = self.x_council._admin.handle
+        council_cid_x = self.x_council._admin.pid
         self.culture_x.del_depotlink(
-            council_dub=council_dub_x, agendaunit_healer=self.depotlink_handle.text()
+            council_cid=council_cid_x, agendaunit_healer=self.depotlink_pid.text()
         )
-        self.culture_x.save_councilunit_file(council_dub=council_dub_x)
+        self.culture_x.save_councilunit_file(council_cid=council_cid_x)
         self.refresh_healer()
 
     def get_agenda_healer_list(self):
@@ -324,7 +322,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             agendas_list.append([file_name])
         return agendas_list
 
-    def get_council_dub_list(self):
+    def get_council_cid_list(self):
         healers_healer_list = []
         if self.culture_x != None:
             healers_healer_list.extend(
@@ -400,7 +398,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             x_list.extend(
                 [
                     f"{agenda_importance_diplay(partyunit._agenda_credit)}/{agenda_importance_diplay(partyunit._agenda_debt)}",
-                    partyunit.handle,
+                    partyunit.pid,
                     f"{partyunit.creditor_weight}/{partyunit.debtor_weight}",
                 ]
                 for partyunit in self.healer_output_agenda._partys.values()
@@ -461,7 +459,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def _sub_refresh_healers_table(self):
         self.refresh_x(
-            self.healers_table, ["Healers Table"], self.get_council_dub_list()
+            self.healers_table, ["Healers Table"], self.get_council_cid_list()
         )
 
     def _sub_refresh_depotlinks_table(self):
@@ -474,7 +472,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.x_council is None:
             column_header = "Agendalinks Table"
         elif self.x_council != None:
-            column_header = f"'{self.x_council._admin._council_dub}' agendas"
+            column_header = f"'{self.x_council._admin._council_cid}' agendas"
         self.refresh_x(
             self.depotlinks_table,
             [column_header, "Link Type", "Weight"],

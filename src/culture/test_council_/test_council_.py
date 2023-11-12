@@ -20,17 +20,17 @@ def test_CouncilUnit_exists(council_dir_setup_cleanup):
 
 def test_councilunit_shop_exists(council_dir_setup_cleanup):
     # GIVEN
-    x_handle = "test1"
+    x_pid = "test1"
 
     # WHEN
     x_council = councilunit_shop(
-        handle=x_handle,
+        pid=x_pid,
         env_dir=get_temp_councilunit_dir(),
         culture_title=get_temp_culture_title(),
     )
 
     # GIVEN
-    assert x_council._admin._council_dub != None
+    assert x_council._admin._council_cid != None
     assert x_council._admin._culture_title != None
     assert x_council._admin._culture_title == get_temp_culture_title()
     assert x_council._seed is None

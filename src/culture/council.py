@@ -7,7 +7,7 @@ from src.agenda.agenda import (
     agendaunit_shop,
     partyunit_shop,
     get_from_json as agendaunit_get_from_json,
-    PartyHandle,
+    PartyPID,
 )
 from src.agenda.x_func import (
     x_get_json,
@@ -27,13 +27,13 @@ class InvalidcouncilException(Exception):
     pass
 
 
-class CouncilDub(PersonPID):
+class CouncilCID(PersonPID):
     pass
 
 
 @dataclass
 class CouncilAdmin:
-    _council_dub: CouncilDub
+    _council_cid: CouncilCID
     _env_dir: str
     _culture_title: str
     _councilunit_dir: str = None
@@ -52,22 +52,22 @@ class CouncilAdmin:
         env_councilunits_folder = "councilunits"
         agendas_str = "agendas"
         self._councilunits_dir = f"{self._env_dir}/{env_councilunits_folder}"
-        self._councilunit_dir = f"{self._councilunits_dir}/{self._council_dub}"
+        self._councilunit_dir = f"{self._councilunits_dir}/{self._council_cid}"
         self._seed_file_name = "seed_agenda.json"
         self._seed_file_path = f"{self._councilunit_dir}/{self._seed_file_name}"
         self._agenda_output_file_name = "output_agenda.json"
         self._agenda_output_file_path = (
             f"{self._councilunit_dir}/{self._agenda_output_file_name}"
         )
-        self._public_file_name = f"{self._council_dub}.json"
+        self._public_file_name = f"{self._council_cid}.json"
         self._agendas_public_dir = f"{self._env_dir}/{agendas_str}"
         self._agendas_depot_dir = f"{self._councilunit_dir}/{agendas_str}"
         self._agendas_ignore_dir = f"{self._councilunit_dir}/ignores"
         self._agendas_digest_dir = f"{self._councilunit_dir}/digests"
 
-    def set_council_dub(self, new_dub: CouncilDub):
+    def set_council_cid(self, new_cid: CouncilCID):
         old_councilunit_dir = self._councilunit_dir
-        self._council_dub = new_dub
+        self._council_cid = new_cid
         self.set_dirs()
 
         rename_dir(src=old_councilunit_dir, dst=self._councilunit_dir)
@@ -122,7 +122,7 @@ class CouncilAdmin:
         self._save_agenda_to_path(x_agenda, dest_dir, file_name)
 
     def save_seed_agenda(self, x_agenda: AgendaUnit):
-        x_agenda.set_healer(self._council_dub)
+        x_agenda.set_healer(self._council_cid)
         self._save_agenda_to_path(x_agenda, self._councilunit_dir, self._seed_file_name)
 
     def save_agenda_to_depot(self, x_agenda: AgendaUnit):
@@ -174,8 +174,8 @@ class CouncilAdmin:
         return x_agenda
 
     def _get_empty_seed_agenda(self):
-        x_agenda = agendaunit_shop(_healer=self._council_dub, _weight=0)
-        x_agenda.add_partyunit(handle=self._council_dub)
+        x_agenda = agendaunit_shop(_healer=self._council_cid, _weight=0)
+        x_agenda.add_partyunit(pid=self._council_cid)
         x_agenda.set_culture_title(self._culture_title)
         return x_agenda
 
@@ -194,7 +194,7 @@ class CouncilAdmin:
             x_agenda_file_path = f"{self._agendas_depot_dir}/{x_agenda_file_name}"
         if not os_path.exists(x_agenda_file_path):
             raise InvalidcouncilException(
-                f"Healer {self._council_dub} cannot find agenda {healer} in {x_agenda_file_path}"
+                f"Healer {self._council_cid} cannot find agenda {healer} in {x_agenda_file_path}"
             )
 
     def _seed_agenda_exists(self) -> bool:
@@ -215,10 +215,10 @@ class CouncilAdmin:
 
 
 def counciladmin_shop(
-    _council_dub: CouncilDub, _env_dir: str, _culture_title: str
+    _council_cid: CouncilCID, _env_dir: str, _culture_title: str
 ) -> CouncilAdmin:
     x_counciladmin = CouncilAdmin(
-        _council_dub=_council_dub,
+        _council_cid=_council_cid,
         _env_dir=_env_dir,
         _culture_title=_culture_title,
     )
@@ -233,9 +233,9 @@ class CouncilUnit:
 
     def refresh_depot_agendas(self):
         for party_x in self._seed._partys.values():
-            if party_x.handle != self._admin._council_dub:
+            if party_x.pid != self._admin._council_cid:
                 party_agenda = agendaunit_get_from_json(
-                    x_agenda_json=self._admin.open_public_agenda(party_x.handle)
+                    x_agenda_json=self._admin.open_public_agenda(party_x.pid)
                 )
                 self.set_depot_agenda(
                     x_agenda=party_agenda,
@@ -288,26 +288,26 @@ class CouncilUnit:
     def _set_assignment_depotlink(self, outer_healer):
         src_agenda = self._admin.open_depot_agenda(outer_healer)
         src_agenda.set_agenda_metrics()
-        empty_agenda = agendaunit_shop(_healer=self._admin._council_dub)
+        empty_agenda = agendaunit_shop(_healer=self._admin._council_cid)
         empty_agenda.set_culture_title(self._admin._culture_title)
         assign_agenda = src_agenda.get_assignment(
-            empty_agenda, self.get_seed()._partys, self._admin._council_dub
+            empty_agenda, self.get_seed()._partys, self._admin._council_cid
         )
         assign_agenda.set_agenda_metrics()
         self._admin.save_agenda_to_digest(assign_agenda, src_agenda._healer)
 
     def _set_partyunit_depotlink(
         self,
-        handle: PartyHandle,
+        pid: PartyPID,
         link_type: str = None,
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
-        party_x = self.get_seed().get_party(handle)
+        party_x = self.get_seed().get_party(pid)
         if party_x is None:
             self.get_seed().set_partyunit(
                 partyunit_shop(
-                    handle=handle,
+                    pid=pid,
                     depotlink_type=link_type,
                     creditor_weight=creditor_weight,
                     debtor_weight=debtor_weight,
@@ -317,12 +317,12 @@ class CouncilUnit:
             party_x.set_depotlink_type(link_type, creditor_weight, debtor_weight)
 
     def del_depot_agenda(self, agenda_healer: str):
-        self._del_depotlink(partyhandle=agenda_healer)
+        self._del_depotlink(partypid=agenda_healer)
         self._admin.erase_depot_agenda(agenda_healer)
         self._admin.erase_digest_agenda(agenda_healer)
 
-    def _del_depotlink(self, partyhandle: PartyHandle):
-        self._seed.get_party(partyhandle).del_depotlink_type()
+    def _del_depotlink(self, partypid: PartyPID):
+        self._seed.get_party(partypid).del_depotlink_type()
 
     def get_seed(self):
         if self._seed is None:
@@ -344,9 +344,9 @@ class CouncilUnit:
         self._admin.save_agenda_to_digest(agendaunit, src_agenda_healer)
 
     # housekeeping
-    def set_env_dir(self, env_dir: str, council_dub: CouncilDub, culture_title: str):
+    def set_env_dir(self, env_dir: str, council_cid: CouncilCID, culture_title: str):
         self._admin = counciladmin_shop(
-            _council_dub=council_dub,
+            _council_cid=council_cid,
             _env_dir=env_dir,
             _culture_title=culture_title,
         )
@@ -356,10 +356,10 @@ class CouncilUnit:
 
 
 def councilunit_shop(
-    handle: str, env_dir: str, culture_title: str, _auto_output_to_public: bool = None
+    pid: str, env_dir: str, culture_title: str, _auto_output_to_public: bool = None
 ) -> CouncilUnit:
     x_council = CouncilUnit()
-    x_council.set_env_dir(env_dir, handle, culture_title=culture_title)
+    x_council.set_env_dir(env_dir, pid, culture_title=culture_title)
     x_council.get_seed()
     x_council._seed._set_auto_output_to_public(_auto_output_to_public)
     x_council.set_seed()

@@ -254,13 +254,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agenda_x_signal.emit(self.agenda_x)
 
     def get_file_path(self):
-        x_file_path, _ = QFileDialog.getOpenFileHandle()
+        x_file_path, _ = QFileDialog.getOpenFilePID()
         if x_file_path:
             self.file_path = x_file_path
             self.open_file()
 
     def save_as_file(self):
-        x_file_path, _ = QFileDialog.getSaveFileHandle()
+        x_file_path, _ = QFileDialog.getSaveFilePID()
         if x_file_path:
             self.file_path = x_file_path
             self._commit_file_save()

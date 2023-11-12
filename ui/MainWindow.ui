@@ -800,7 +800,7 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="accessibleHandle">
+   <property name="accessiblePID">
     <string>File</string>
    </property>
    <property name="accessibleDescription">

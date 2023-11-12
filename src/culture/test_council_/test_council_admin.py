@@ -24,7 +24,7 @@ def test_CouncilAdmin_exists():
     bob_counciladmin = CouncilAdmin(bob_text, env_dir, get_temp_culture_title())
 
     # THEN
-    assert bob_counciladmin._council_dub != None
+    assert bob_counciladmin._council_cid != None
     assert bob_counciladmin._env_dir != None
     assert bob_counciladmin._culture_title != None
     assert bob_counciladmin._councilunit_dir is None
@@ -164,7 +164,7 @@ def test_CouncilAdmin_create_core_dir_and_files_DoesNotOverWriteseedAgenda(
     )
 
 
-def test_CouncilAdmin_set_council_dub_WorksCorrectly(council_dir_setup_cleanup):
+def test_CouncilAdmin_set_council_cid_WorksCorrectly(council_dir_setup_cleanup):
     # GIVEN create healer
     env_dir = get_temp_councilunit_dir()
 
@@ -196,7 +196,7 @@ def test_CouncilAdmin_set_council_dub_WorksCorrectly(council_dir_setup_cleanup):
     assert os_path.exists(new_seed_file_path) == False
 
     # WHEN
-    jul_counciladmin.set_council_dub(new_dub=new_healer_text)
+    jul_counciladmin.set_council_cid(new_cid=new_healer_text)
 
     # THEN
     assert os_path.exists(old_councilunit_dir) == False

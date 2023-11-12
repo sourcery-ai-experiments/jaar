@@ -1,4 +1,4 @@
-from src.agenda.party import PartyHandle, partylink_shop
+from src.agenda.party import PartyPID, partylink_shop
 from src.agenda.group import (
     Balanceline,
     groupunit_shop,
@@ -96,8 +96,8 @@ def test_groupunit_set_partylink_worksCorrectly():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    todd_party = partylink_shop(handle=todd_text, creditor_weight=13, debtor_weight=7)
-    mery_party = partylink_shop(handle=mery_text, creditor_weight=23, debtor_weight=5)
+    todd_party = partylink_shop(pid=todd_text, creditor_weight=13, debtor_weight=7)
+    mery_party = partylink_shop(pid=mery_text, creditor_weight=23, debtor_weight=5)
 
     swimmers_group = groupunit_shop(brand="swimmers", _partys={})
 
@@ -106,7 +106,7 @@ def test_groupunit_set_partylink_worksCorrectly():
     swimmers_group.set_partylink(mery_party)
 
     # THEN
-    swimmers_partys = {todd_party.handle: todd_party, mery_party.handle: mery_party}
+    swimmers_partys = {todd_party.pid: todd_party, mery_party.pid: mery_party}
     assert swimmers_group._partys == swimmers_partys
 
 
@@ -114,9 +114,9 @@ def test_groupunit_del_partylink_worksCorrectly():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    todd_party = partylink_shop(handle=todd_text)
-    mery_party = partylink_shop(handle=mery_text)
-    swimmers_partys = {todd_party.handle: todd_party, mery_party.handle: mery_party}
+    todd_party = partylink_shop(pid=todd_text)
+    mery_party = partylink_shop(pid=mery_text)
+    swimmers_partys = {todd_party.pid: todd_party, mery_party.pid: mery_party}
     swimmers_group = groupunit_shop(brand="swimmers", _partys={})
     swimmers_group.set_partylink(todd_party)
     swimmers_group.set_partylink(mery_party)
@@ -124,7 +124,7 @@ def test_groupunit_del_partylink_worksCorrectly():
     assert swimmers_group._partys == swimmers_partys
 
     # WHEN
-    swimmers_group.del_partylink(handle=todd_text)
+    swimmers_group.del_partylink(pid=todd_text)
 
     # THEN
     assert len(swimmers_group._partys) == 1
@@ -135,9 +135,9 @@ def test_groupunit_clear_partylinks_worksCorrectly():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    todd_party = partylink_shop(handle=todd_text)
-    mery_party = partylink_shop(handle=mery_text)
-    swimmers_partys = {todd_party.handle: todd_party, mery_party.handle: mery_party}
+    todd_party = partylink_shop(pid=todd_text)
+    mery_party = partylink_shop(pid=mery_text)
+    swimmers_partys = {todd_party.pid: todd_party, mery_party.pid: mery_party}
     swimmers_group = groupunit_shop(brand="swimmers", _partys={})
     swimmers_group.set_partylink(todd_party)
     swimmers_group.set_partylink(mery_party)
@@ -183,20 +183,20 @@ def test_Groupunit_reset_agenda_importance_reset_partylinks():
     todd_text = "Todd"
     mery_text = "Merry"
     todd_party = partylink_shop(
-        handle=todd_text,
+        pid=todd_text,
         _agenda_credit=0.13,
         _agenda_debt=0.7,
         _agenda_intent_credit=0.53,
         _agenda_intent_debt=0.77,
     )
     mery_party = partylink_shop(
-        handle=mery_text,
+        pid=mery_text,
         _agenda_credit=0.23,
         _agenda_debt=0.5,
         _agenda_intent_credit=0.54,
         _agenda_intent_debt=0.57,
     )
-    bikers_partys = {todd_party.handle: todd_party, mery_party.handle: mery_party}
+    bikers_partys = {todd_party.pid: todd_party, mery_party.pid: mery_party}
     bikers_brand = "bikers"
     bikers_group = groupunit_shop(
         brand=bikers_brand,
@@ -237,8 +237,8 @@ def test_Groupunit_reset_agenda_importance_reset_partylinks():
 
 def test_GroupUnit_partylink_meld_BaseScenarioWorks():
     # GIVEN
-    todd_party = partylink_shop(handle="Todd")
-    merry_party = partylink_shop(handle="Merry")
+    todd_party = partylink_shop(pid="Todd")
+    merry_party = partylink_shop(pid="Merry")
     x1_brand = "bikers"
     x1_group = groupunit_shop(brand=x1_brand, _partys={})
     x1_group.set_partylink(partylink=todd_party)
@@ -258,8 +258,8 @@ def test_GroupUnit_partylink_meld_GainScenarioWorks():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    todd_party = partylink_shop(handle=todd_text, creditor_weight=13, debtor_weight=7)
-    mery_party = partylink_shop(handle=mery_text, creditor_weight=23, debtor_weight=5)
+    todd_party = partylink_shop(pid=todd_text, creditor_weight=13, debtor_weight=7)
+    mery_party = partylink_shop(pid=mery_text, creditor_weight=23, debtor_weight=5)
     x1_brand = "bikers"
     x1_group = groupunit_shop(brand=x1_brand, _partys={})
 
@@ -275,7 +275,7 @@ def test_GroupUnit_partylink_meld_GainScenarioWorks():
     assert x1_group._partys.get(todd_text) != None
 
 
-def test_GroupUnit_meld_RaiseSameHandleException():
+def test_GroupUnit_meld_RaiseSamePIDException():
     # GIVEN
     todd_text = "Todd"
     todd_group = groupunit_shop(brand=todd_text)
@@ -328,15 +328,13 @@ def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     }
 
     # GIVEN
-    str_handle = "Marie"
-    marie_handle = PartyHandle(str_handle)
-    marie_partylink = partylink_shop(
-        handle=marie_handle, creditor_weight=29, debtor_weight=3
-    )
-    partylinks_dict = {marie_partylink.handle: marie_partylink}
+    str_pid = "Marie"
+    marie_pid = PartyPID(str_pid)
+    marie_partylink = partylink_shop(pid=marie_pid, creditor_weight=29, debtor_weight=3)
+    partylinks_dict = {marie_partylink.pid: marie_partylink}
     marie_json_dict = {
-        marie_handle: {
-            "handle": marie_handle,
+        marie_pid: {
+            "pid": marie_pid,
             "creditor_weight": 29,
             "debtor_weight": 3,
         }
@@ -367,12 +365,10 @@ def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
 
 def test_groupunit_get_from_JSON_SimpleExampleWorks():
     # GIVEN
-    str_handle = "Marie"
-    marie_handle = PartyHandle(str_handle)
-    marie_partylink = partylink_shop(
-        handle=marie_handle, creditor_weight=29, debtor_weight=3
-    )
-    partylinks_dict = {marie_partylink.handle: marie_partylink}
+    str_pid = "Marie"
+    marie_pid = PartyPID(str_pid)
+    marie_partylink = partylink_shop(pid=marie_pid, creditor_weight=29, debtor_weight=3)
+    partylinks_dict = {marie_partylink.pid: marie_partylink}
 
     str_teacher = "teachers"
     swim_road = "swim"

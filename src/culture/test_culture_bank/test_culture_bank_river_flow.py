@@ -40,16 +40,16 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable
     sal_text = "sal"
 
     sal = agendaunit_shop(_healer=sal_text)
-    sal.add_partyunit(handle=bob_text, creditor_weight=1)
-    sal.add_partyunit(handle=tom_text, creditor_weight=3)
+    sal.add_partyunit(pid=bob_text, creditor_weight=1)
+    sal.add_partyunit(pid=tom_text, creditor_weight=3)
     x_culture.save_public_agenda(x_agenda=sal)
 
     bob = agendaunit_shop(_healer=bob_text)
-    bob.add_partyunit(handle=sal_text, creditor_weight=1)
+    bob.add_partyunit(pid=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob)
 
     tom = agendaunit_shop(_healer=tom_text)
-    tom.add_partyunit(handle=sal_text, creditor_weight=1)
+    tom.add_partyunit(pid=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=tom)
 
     x_culture.refresh_bank_public_agendas_data()
@@ -109,18 +109,18 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable
     ava_text = "ava"
 
     sal_agenda = agendaunit_shop(_healer=sal_text)
-    sal_agenda.add_partyunit(handle=bob_text, creditor_weight=2)
-    sal_agenda.add_partyunit(handle=tom_text, creditor_weight=7)
-    sal_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
+    sal_agenda.add_partyunit(pid=bob_text, creditor_weight=2)
+    sal_agenda.add_partyunit(pid=tom_text, creditor_weight=7)
+    sal_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=sal_agenda)
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
-    bob_agenda.add_partyunit(handle=sal_text, creditor_weight=3)
-    bob_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
+    bob_agenda.add_partyunit(pid=sal_text, creditor_weight=3)
+    bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
 
     tom_agenda = agendaunit_shop(_healer=tom_text)
-    tom_agenda.add_partyunit(handle=sal_text, creditor_weight=2)
+    tom_agenda.add_partyunit(pid=sal_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=tom_agenda)
 
     ava_agenda = agendaunit_shop(_healer=ava_text)
@@ -176,26 +176,26 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable
     elu_text = "elu"
 
     sal_agenda = agendaunit_shop(_healer=sal_text)
-    sal_agenda.add_partyunit(handle=bob_text, creditor_weight=2)
-    sal_agenda.add_partyunit(handle=tom_text, creditor_weight=7)
-    sal_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
+    sal_agenda.add_partyunit(pid=bob_text, creditor_weight=2)
+    sal_agenda.add_partyunit(pid=tom_text, creditor_weight=7)
+    sal_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=sal_agenda)
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
-    bob_agenda.add_partyunit(handle=sal_text, creditor_weight=3)
-    bob_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
+    bob_agenda.add_partyunit(pid=sal_text, creditor_weight=3)
+    bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
 
     tom_agenda = agendaunit_shop(_healer=tom_text)
-    tom_agenda.add_partyunit(handle=sal_text, creditor_weight=2)
+    tom_agenda.add_partyunit(pid=sal_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=tom_agenda)
 
     ava_agenda = agendaunit_shop(_healer=ava_text)
-    ava_agenda.add_partyunit(handle=elu_text, creditor_weight=2)
+    ava_agenda.add_partyunit(pid=elu_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=ava_agenda)
 
     elu_agenda = agendaunit_shop(_healer=elu_text)
-    elu_agenda.add_partyunit(handle=ava_text, creditor_weight=2)
+    elu_agenda.add_partyunit(pid=ava_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
     x_culture.refresh_bank_public_agendas_data()
@@ -249,27 +249,27 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable
     elu_text = "elu"
 
     sal_agenda = agendaunit_shop(_healer=sal_text)
-    sal_agenda.add_partyunit(handle=bob_text, creditor_weight=2)
-    sal_agenda.add_partyunit(handle=tom_text, creditor_weight=7)
-    sal_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
+    sal_agenda.add_partyunit(pid=bob_text, creditor_weight=2)
+    sal_agenda.add_partyunit(pid=tom_text, creditor_weight=7)
+    sal_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=sal_agenda)
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
-    bob_agenda.add_partyunit(handle=sal_text, creditor_weight=3)
-    bob_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
+    bob_agenda.add_partyunit(pid=sal_text, creditor_weight=3)
+    bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
 
     tom_agenda = agendaunit_shop(_healer=tom_text)
-    tom_agenda.add_partyunit(handle=sal_text, creditor_weight=2)
+    tom_agenda.add_partyunit(pid=sal_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=tom_agenda)
 
     ava_agenda = agendaunit_shop(_healer=ava_text)
-    ava_agenda.add_partyunit(handle=elu_text, creditor_weight=2)
+    ava_agenda.add_partyunit(pid=elu_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=ava_agenda)
 
     elu_agenda = agendaunit_shop(_healer=elu_text)
-    elu_agenda.add_partyunit(handle=ava_text, creditor_weight=19)
-    elu_agenda.add_partyunit(handle=sal_text, creditor_weight=1)
+    elu_agenda.add_partyunit(pid=ava_text, creditor_weight=19)
+    elu_agenda.add_partyunit(pid=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
     x_culture.refresh_bank_public_agendas_data()
@@ -326,27 +326,27 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
     elu_text = "elu"
 
     sal_agenda = agendaunit_shop(_healer=sal_text)
-    sal_agenda.add_partyunit(handle=bob_text, creditor_weight=2)
-    sal_agenda.add_partyunit(handle=tom_text, creditor_weight=7)
-    sal_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
+    sal_agenda.add_partyunit(pid=bob_text, creditor_weight=2)
+    sal_agenda.add_partyunit(pid=tom_text, creditor_weight=7)
+    sal_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=sal_agenda)
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
-    bob_agenda.add_partyunit(handle=sal_text, creditor_weight=3)
-    bob_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
+    bob_agenda.add_partyunit(pid=sal_text, creditor_weight=3)
+    bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
 
     tom_agenda = agendaunit_shop(_healer=tom_text)
-    tom_agenda.add_partyunit(handle=sal_text, creditor_weight=2)
+    tom_agenda.add_partyunit(pid=sal_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=tom_agenda)
 
     ava_agenda = agendaunit_shop(_healer=ava_text)
-    ava_agenda.add_partyunit(handle=elu_text, creditor_weight=2)
+    ava_agenda.add_partyunit(pid=elu_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=ava_agenda)
 
     elu_agenda = agendaunit_shop(_healer=elu_text)
-    elu_agenda.add_partyunit(handle=ava_text, creditor_weight=19)
-    elu_agenda.add_partyunit(handle=sal_text, creditor_weight=1)
+    elu_agenda.add_partyunit(pid=ava_text, creditor_weight=19)
+    elu_agenda.add_partyunit(pid=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
     x_culture.refresh_bank_public_agendas_data()
@@ -385,27 +385,27 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable
     elu_text = "elu"
 
     sal_agenda = agendaunit_shop(_healer=sal_text)
-    sal_agenda.add_partyunit(handle=bob_text, creditor_weight=2)
-    sal_agenda.add_partyunit(handle=tom_text, creditor_weight=7)
-    sal_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
+    sal_agenda.add_partyunit(pid=bob_text, creditor_weight=2)
+    sal_agenda.add_partyunit(pid=tom_text, creditor_weight=7)
+    sal_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=sal_agenda)
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
-    bob_agenda.add_partyunit(handle=sal_text, creditor_weight=3)
-    bob_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
+    bob_agenda.add_partyunit(pid=sal_text, creditor_weight=3)
+    bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
 
     tom_agenda = agendaunit_shop(_healer=tom_text)
-    tom_agenda.add_partyunit(handle=sal_text, creditor_weight=2)
+    tom_agenda.add_partyunit(pid=sal_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=tom_agenda)
 
     ava_agenda = agendaunit_shop(_healer=ava_text)
-    ava_agenda.add_partyunit(handle=elu_text, creditor_weight=2)
+    ava_agenda.add_partyunit(pid=elu_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=ava_agenda)
 
     elu_agenda = agendaunit_shop(_healer=elu_text)
-    elu_agenda.add_partyunit(handle=ava_text, creditor_weight=19)
-    elu_agenda.add_partyunit(handle=sal_text, creditor_weight=1)
+    elu_agenda.add_partyunit(pid=ava_text, creditor_weight=19)
+    elu_agenda.add_partyunit(pid=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
     x_culture.refresh_bank_public_agendas_data()
@@ -463,27 +463,27 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyBuildsASingleContinuousRang
     elu_text = "elu"
 
     sal_agenda = agendaunit_shop(_healer=sal_text)
-    sal_agenda.add_partyunit(handle=bob_text, creditor_weight=2)
-    sal_agenda.add_partyunit(handle=tom_text, creditor_weight=7)
-    sal_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
+    sal_agenda.add_partyunit(pid=bob_text, creditor_weight=2)
+    sal_agenda.add_partyunit(pid=tom_text, creditor_weight=7)
+    sal_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=sal_agenda)
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
-    bob_agenda.add_partyunit(handle=sal_text, creditor_weight=3)
-    bob_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
+    bob_agenda.add_partyunit(pid=sal_text, creditor_weight=3)
+    bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
 
     tom_agenda = agendaunit_shop(_healer=tom_text)
-    tom_agenda.add_partyunit(handle=sal_text, creditor_weight=2)
+    tom_agenda.add_partyunit(pid=sal_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=tom_agenda)
 
     ava_agenda = agendaunit_shop(_healer=ava_text)
-    ava_agenda.add_partyunit(handle=elu_text, creditor_weight=2)
+    ava_agenda.add_partyunit(pid=elu_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=ava_agenda)
 
     elu_agenda = agendaunit_shop(_healer=elu_text)
-    elu_agenda.add_partyunit(handle=ava_text, creditor_weight=19)
-    elu_agenda.add_partyunit(handle=sal_text, creditor_weight=1)
+    elu_agenda.add_partyunit(pid=ava_text, creditor_weight=19)
+    elu_agenda.add_partyunit(pid=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
     x_culture.refresh_bank_public_agendas_data()
@@ -532,27 +532,27 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     elu_text = "elu"
 
     sal_agenda_src = agendaunit_shop(_healer=sal_text)
-    sal_agenda_src.add_partyunit(handle=bob_text, creditor_weight=2, debtor_weight=2)
-    sal_agenda_src.add_partyunit(handle=tom_text, creditor_weight=2, debtor_weight=1)
-    sal_agenda_src.add_partyunit(handle=ava_text, creditor_weight=2, debtor_weight=2)
+    sal_agenda_src.add_partyunit(pid=bob_text, creditor_weight=2, debtor_weight=2)
+    sal_agenda_src.add_partyunit(pid=tom_text, creditor_weight=2, debtor_weight=1)
+    sal_agenda_src.add_partyunit(pid=ava_text, creditor_weight=2, debtor_weight=2)
     x_culture.save_public_agenda(x_agenda=sal_agenda_src)
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
-    bob_agenda.add_partyunit(handle=sal_text, creditor_weight=3)
-    bob_agenda.add_partyunit(handle=ava_text, creditor_weight=1)
+    bob_agenda.add_partyunit(pid=sal_text, creditor_weight=3)
+    bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
 
     tom_agenda = agendaunit_shop(_healer=tom_text)
-    tom_agenda.add_partyunit(handle=sal_text)
+    tom_agenda.add_partyunit(pid=sal_text)
     x_culture.save_public_agenda(x_agenda=tom_agenda)
 
     ava_agenda = agendaunit_shop(_healer=ava_text)
-    ava_agenda.add_partyunit(handle=elu_text, creditor_weight=2)
+    ava_agenda.add_partyunit(pid=elu_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=ava_agenda)
 
     elu_agenda = agendaunit_shop(_healer=elu_text)
-    elu_agenda.add_partyunit(handle=ava_text, creditor_weight=8)
-    elu_agenda.add_partyunit(handle=sal_text, creditor_weight=2)
+    elu_agenda.add_partyunit(pid=ava_text, creditor_weight=8)
+    elu_agenda.add_partyunit(pid=sal_text, creditor_weight=2)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
     x_culture.refresh_bank_public_agendas_data()
@@ -609,10 +609,10 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     #     partyunit_x = sal_agenda_after._partys.get(sal_partybankunit.tax_healer)
     #     if partyunit_x != None:
     #         # print(
-    #         #     f"{sal_partybankunit.currency_master=} {sal_partybankunit.tax_healer=} {partyunit_x.handle=} tax_total: {sal_partybankunit.tax_total} Tax Paid: {partyunit_x._bank_tax_paid}"
+    #         #     f"{sal_partybankunit.currency_master=} {sal_partybankunit.tax_healer=} {partyunit_x.pid=} tax_total: {sal_partybankunit.tax_total} Tax Paid: {partyunit_x._bank_tax_paid}"
     #         # )
     #         # print(
-    #         #     f"{sal_partybankunit.currency_master=} {sal_partybankunit.tax_healer=} {partyunit_x.handle=} tax_diff:  {sal_partybankunit.tax_diff} Tax Paid: {partyunit_x._bank_tax_diff}"
+    #         #     f"{sal_partybankunit.currency_master=} {sal_partybankunit.tax_healer=} {partyunit_x.pid=} tax_diff:  {sal_partybankunit.tax_diff} Tax Paid: {partyunit_x._bank_tax_diff}"
     #         # )
     #         assert sal_partybankunit.tax_total == partyunit_x._bank_tax_paid
     #         assert sal_partybankunit.tax_diff == partyunit_x._bank_tax_diff
@@ -622,8 +622,8 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     assert ava_party._bank_tax_diff is None
 
     # for partyunit_x in sal_agenda_after._partys.values():
-    #     print(f"sal_agenda_after {partyunit_x.handle=} {partyunit_x._bank_tax_paid=}")
-    #     partybankunit_x = sal_partybankunits.get(partyunit_x.handle)
+    #     print(f"sal_agenda_after {partyunit_x.pid=} {partyunit_x._bank_tax_paid=}")
+    #     partybankunit_x = sal_partybankunits.get(partyunit_x.pid)
     #     if partybankunit_x is None:
     #         assert partyunit_x._bank_tax_paid is None
     #         assert partyunit_x._bank_tax_diff is None

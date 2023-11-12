@@ -190,7 +190,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Change Handle</string>
+     <string>Change PID</string>
     </property>
    </widget>
    <widget class="QPushButton" name="agenda_update_button">
@@ -208,7 +208,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Change Agenda Handle</string>
+     <string>Change Agenda PID</string>
     </property>
    </widget>
    <widget class="QPushButton" name="agenda_insert_button">
@@ -277,7 +277,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Change Healer Handle</string>
+     <string>Change Healer PID</string>
     </property>
    </widget>
    <widget class="QPushButton" name="healer_insert_button">
@@ -316,7 +316,7 @@
      <string>delete Healer</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="council_dub">
+   <widget class="QLineEdit" name="council_cid">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -936,7 +936,7 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="accessibleHandle">
+   <property name="accessiblePID">
     <string>File</string>
    </property>
    <property name="accessibleDescription">

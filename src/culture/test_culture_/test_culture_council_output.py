@@ -24,20 +24,20 @@ def test_culture_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     # x_culture.save_public_agenda(ex_cxs_get_agenda_1Task_1CE0MinutesRequired_1AcptFact())
     # x_culture.save_public_agenda(ex_cxs_agenda_v001())
     xia_text = "Xia"
-    x_culture.create_new_councilunit(council_dub=xia_text)
+    x_culture.create_new_councilunit(council_cid=xia_text)
     x_culture.set_healer_depotlink(
         xia_text, input_agenda._healer, depotlink_type="blind_trust"
     )
-    x_culture.save_councilunit_file(council_dub=xia_text)
-    xia_healer = x_culture.get_councilunit(dub=xia_text)
+    x_culture.save_councilunit_file(council_cid=xia_text)
+    xia_healer = x_culture.get_councilunit(cid=xia_text)
     # print(f"{xia_healer._seed._partys.keys()=}")
 
     # WHEN
-    output_agenda = x_culture.get_output_agenda(council_dub=xia_text)
+    output_agenda = x_culture.get_output_agenda(council_cid=xia_text)
     # input agenda must be melded to itself to create originunits
     input_agenda.meld(input_agenda)
     input_agenda.set_healer(new_healer=xia_text)
-    input_agenda._originunit.set_originlink(handle=xia_text, weight=1)
+    input_agenda._originunit.set_originlink(pid=xia_text, weight=1)
 
     # THEN
     a_text = "A"
@@ -102,15 +102,15 @@ def test_culture_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
     # x_culture.save_public_agenda(ex_cxs_get_agenda_1Task_1CE0MinutesRequired_1AcptFact())
     # x_culture.save_public_agenda(ex_cxs_agenda_v001())
     xia_text = "Xia"
-    x_culture.create_new_councilunit(council_dub=xia_text)
+    x_culture.create_new_councilunit(council_cid=xia_text)
     x_culture.set_healer_depotlink(xia_text, x1_agenda._healer, "blind_trust")
     x_culture.set_healer_depotlink(xia_text, x2_agenda._healer, "blind_trust")
-    x_culture.save_councilunit_file(council_dub=xia_text)
-    xia_healer = x_culture.get_councilunit(dub=xia_text)
+    x_culture.save_councilunit_file(council_cid=xia_text)
+    xia_healer = x_culture.get_councilunit(cid=xia_text)
     print(f"{xia_healer._seed._partys.keys()=}")
 
     # WHEN
-    output_agenda = x_culture.get_output_agenda(council_dub=xia_text)
+    output_agenda = x_culture.get_output_agenda(council_cid=xia_text)
 
     # THEN
     output_agenda_d_road = f"{output_agenda._culture_title},C,D"
@@ -154,7 +154,7 @@ def test_councilunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     culture_title = get_temp_env_title()
     x_culture = cultureunit_shop(title=culture_title, cultures_dir=env_dir)
     x_culture.create_dirs_if_null(in_memory_bank=True)
-    # ux = councilunit_shop(handle=healer1_text, env_dir=env_dir)
+    # ux = councilunit_shop(pid=healer1_text, env_dir=env_dir)
 
     ernie_text = "ernie"
     jessi_text = "jessi"
@@ -165,12 +165,12 @@ def test_councilunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     x_culture.save_public_agenda(x_agenda=ernie_agenda)
     x_culture.save_public_agenda(x_agenda=jessi_agenda)
     x_culture.save_public_agenda(x_agenda=old_steve_agenda)
-    x_culture.create_new_councilunit(council_dub=ernie_text)
-    x_culture.create_new_councilunit(council_dub=jessi_text)
-    # x_culture.create_new_councilunit(council_dub=steve_text)
-    ux_ernie = x_culture.get_councilunit(dub=ernie_text)
-    ux_jessi = x_culture.get_councilunit(dub=jessi_text)
-    # ux_steve = x_culture.get_councilunit(dub=steve_text)
+    x_culture.create_new_councilunit(council_cid=ernie_text)
+    x_culture.create_new_councilunit(council_cid=jessi_text)
+    # x_culture.create_new_councilunit(council_cid=steve_text)
+    ux_ernie = x_culture.get_councilunit(cid=ernie_text)
+    ux_jessi = x_culture.get_councilunit(cid=jessi_text)
+    # ux_steve = x_culture.get_councilunit(cid=steve_text)
     ux_ernie.set_depot_agenda(x_agenda=jessi_agenda, depotlink_type="blind_trust")
     ux_ernie.set_depot_agenda(x_agenda=old_steve_agenda, depotlink_type="blind_trust")
     ux_jessi.set_depot_agenda(x_agenda=ernie_agenda, depotlink_type="blind_trust")

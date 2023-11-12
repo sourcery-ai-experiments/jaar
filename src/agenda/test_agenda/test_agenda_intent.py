@@ -656,11 +656,11 @@ def test_agenda_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
     clean_cookery_idea.set_required_unit(required=daytime_required)
 
     # anna_text = "anna"
-    # anna_partyunit = partyunit_shop(handle=anna_text)
-    # anna_partylink = partylink_shop(handle=anna_text)
+    # anna_partyunit = partyunit_shop(pid=anna_text)
+    # anna_partylink = partylink_shop(pid=anna_text)
     # beto_text = "beto"
-    # beto_partyunit = partyunit_shop(handle=beto_text)
-    # beto_partylink = partylink_shop(handle=beto_text)
+    # beto_partyunit = partyunit_shop(pid=beto_text)
+    # beto_partylink = partylink_shop(pid=beto_text)
 
     family_text = "family"
     # groupunit_z = groupunit_shop(brand=family_text)
@@ -778,9 +778,9 @@ def test_intent_IsSetByAssignedUnit_1PartyGroup():
     assert len(cx.get_intent_items()) == 1
 
     sue_text = "sue"
-    cx.add_partyunit(handle=sue_text)
+    cx.add_partyunit(pid=sue_text)
     assigned_unit_sue = assigned_unit_shop()
-    assigned_unit_sue.set_suffgroup(handle=sue_text)
+    assigned_unit_sue.set_suffgroup(pid=sue_text)
     assert len(cx.get_intent_items()) == 1
 
     # WHEN
@@ -790,9 +790,9 @@ def test_intent_IsSetByAssignedUnit_1PartyGroup():
     assert len(cx.get_intent_items()) == 0
 
     # WHEN
-    cx.add_partyunit(handle=bob_text)
+    cx.add_partyunit(pid=bob_text)
     assigned_unit_bob = assigned_unit_shop()
-    assigned_unit_bob.set_suffgroup(handle=bob_text)
+    assigned_unit_bob.set_suffgroup(pid=bob_text)
 
     # WHEN
     cx.edit_idea_attr(road=work_road, assignedunit=assigned_unit_bob)
@@ -808,21 +808,21 @@ def test_intent_IsSetByAssignedUnit_2PartyGroup():
     # GIVEN
     bob_text = "bob"
     cx = agendaunit_shop(_healer=bob_text)
-    cx.add_partyunit(handle=bob_text)
+    cx.add_partyunit(pid=bob_text)
     work_text = "work"
     work_road = f"{bob_text},{work_text}"
     cx.add_idea(idea_kid=ideacore_shop(_label=work_text, promise=True), pad=bob_text)
 
     sue_text = "sue"
-    cx.add_partyunit(handle=sue_text)
+    cx.add_partyunit(pid=sue_text)
 
     run_text = "runners"
     run_group = groupunit_shop(brand=run_text)
-    run_group.set_partylink(partylink=partylink_shop(handle=sue_text))
+    run_group.set_partylink(partylink=partylink_shop(pid=sue_text))
     cx.set_groupunit(groupunit=run_group)
 
     run_assignedunit = assigned_unit_shop()
-    run_assignedunit.set_suffgroup(handle=run_text)
+    run_assignedunit.set_suffgroup(pid=run_text)
     assert len(cx.get_intent_items()) == 1
 
     # WHEN
@@ -832,7 +832,7 @@ def test_intent_IsSetByAssignedUnit_2PartyGroup():
     assert len(cx.get_intent_items()) == 0
 
     # WHEN
-    run_group.set_partylink(partylink=partylink_shop(handle=bob_text))
+    run_group.set_partylink(partylink=partylink_shop(pid=bob_text))
     cx.set_groupunit(groupunit=run_group)
 
     # THEN
