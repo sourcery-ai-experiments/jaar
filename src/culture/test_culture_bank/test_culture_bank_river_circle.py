@@ -1,7 +1,7 @@
 from src.agenda.agenda import agendaunit_shop
 from src.culture.culture import cultureunit_shop
 from src.culture.examples.culture_env_kit import (
-    get_temp_env_title,
+    get_temp_env_qid,
     get_test_cultures_dir,
     env_dir_setup_cleanup,
 )
@@ -16,7 +16,7 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
 
     sal_text = "sal"
     bob_text = "bob"
@@ -55,7 +55,7 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
 
     sal_text = "sal"
     bob_text = "bob"

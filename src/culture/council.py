@@ -35,7 +35,7 @@ class CouncilCID(PersonPID):
 class CouncilAdmin:
     _council_cid: CouncilCID
     _env_dir: str
-    _culture_title: str
+    _culture_qid: str
     _councilunit_dir: str = None
     _councilunits_dir: str = None
     _seed_file_name: str = None
@@ -176,7 +176,7 @@ class CouncilAdmin:
     def _get_empty_seed_agenda(self):
         x_agenda = agendaunit_shop(_healer=self._council_cid, _weight=0)
         x_agenda.add_partyunit(pid=self._council_cid)
-        x_agenda.set_culture_title(self._culture_title)
+        x_agenda.set_culture_qid(self._culture_qid)
         return x_agenda
 
     def erase_depot_agenda(self, healer):
@@ -215,12 +215,12 @@ class CouncilAdmin:
 
 
 def counciladmin_shop(
-    _council_cid: CouncilCID, _env_dir: str, _culture_title: str
+    _council_cid: CouncilCID, _env_dir: str, _culture_qid: str
 ) -> CouncilAdmin:
     x_counciladmin = CouncilAdmin(
         _council_cid=_council_cid,
         _env_dir=_env_dir,
-        _culture_title=_culture_title,
+        _culture_qid=_culture_qid,
     )
     x_counciladmin.set_dirs()
     return x_counciladmin
@@ -282,14 +282,14 @@ class CouncilUnit:
             self._admin.save_agenda_to_digest(x_agenda)
         elif link_type == "ignore":
             new_x_agenda = agendaunit_shop(_healer=outer_healer)
-            new_x_agenda.set_culture_title(self._admin._culture_title)
+            new_x_agenda.set_culture_qid(self._admin._culture_qid)
             self.set_ignore_agenda_file(new_x_agenda, new_x_agenda._healer)
 
     def _set_assignment_depotlink(self, outer_healer):
         src_agenda = self._admin.open_depot_agenda(outer_healer)
         src_agenda.set_agenda_metrics()
         empty_agenda = agendaunit_shop(_healer=self._admin._council_cid)
-        empty_agenda.set_culture_title(self._admin._culture_title)
+        empty_agenda.set_culture_qid(self._admin._culture_qid)
         assign_agenda = src_agenda.get_assignment(
             empty_agenda, self.get_seed()._partys, self._admin._council_cid
         )
@@ -344,11 +344,11 @@ class CouncilUnit:
         self._admin.save_agenda_to_digest(agendaunit, src_agenda_healer)
 
     # housekeeping
-    def set_env_dir(self, env_dir: str, council_cid: CouncilCID, culture_title: str):
+    def set_env_dir(self, env_dir: str, council_cid: CouncilCID, culture_qid: str):
         self._admin = counciladmin_shop(
             _council_cid=council_cid,
             _env_dir=env_dir,
-            _culture_title=culture_title,
+            _culture_qid=culture_qid,
         )
 
     def create_core_dir_and_files(self, seed_agenda: AgendaUnit = None):
@@ -356,10 +356,10 @@ class CouncilUnit:
 
 
 def councilunit_shop(
-    pid: str, env_dir: str, culture_title: str, _auto_output_to_public: bool = None
+    pid: str, env_dir: str, culture_qid: str, _auto_output_to_public: bool = None
 ) -> CouncilUnit:
     x_council = CouncilUnit()
-    x_council.set_env_dir(env_dir, pid, culture_title=culture_title)
+    x_council.set_env_dir(env_dir, pid, culture_qid=culture_qid)
     x_council.get_seed()
     x_council._seed._set_auto_output_to_public(_auto_output_to_public)
     x_council.set_seed()

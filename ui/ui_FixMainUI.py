@@ -59,9 +59,9 @@ class Ui_MainWindow(object):
         self.culture_insert_button = QtWidgets.QPushButton(self.centralwidget)
         self.culture_insert_button.setGeometry(QtCore.QRect(20, 50, 141, 31))
         self.culture_insert_button.setObjectName("culture_insert_button")
-        self.culture_title = QtWidgets.QLineEdit(self.centralwidget)
-        self.culture_title.setGeometry(QtCore.QRect(20, 20, 141, 22))
-        self.culture_title.setObjectName("culture_title")
+        self.culture_qid = QtWidgets.QLineEdit(self.centralwidget)
+        self.culture_qid.setGeometry(QtCore.QRect(20, 20, 141, 22))
+        self.culture_qid.setObjectName("culture_qid")
         self.culture_update_button = QtWidgets.QPushButton(self.centralwidget)
         self.culture_update_button.setGeometry(QtCore.QRect(20, 80, 141, 31))
         self.culture_update_button.setObjectName("culture_update_button")
@@ -214,7 +214,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowQID(_translate("MainWindow", "MainWindow"))
         item = self.cultures_table.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "cultures"))
         item = self.healers_table.horizontalHeaderItem(0)
@@ -265,7 +265,7 @@ class Ui_MainWindow(object):
         self.menubar.setAccessibleDescription(
             _translate("MainWindow", "General Operations")
         )
-        self.file_menu.setTitle(_translate("MainWindow", "File"))
+        self.file_menu.setQID(_translate("MainWindow", "File"))
         self.fm_open.setText(_translate("MainWindow", "Open"))
         self.fm_save.setText(_translate("MainWindow", "Save"))
         self.save_as.setText(_translate("MainWindow", "Save as..."))

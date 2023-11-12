@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src.culture.culture import CultureUnit, CultureTitle, cultureunit_shop
+from src.culture.culture import CultureUnit, CultureQID, cultureunit_shop
 from src.world.pain import PainGenus, PainUnit, PersonPID, painunit_shop
 
 
@@ -7,7 +7,7 @@ from src.world.pain import PainGenus, PainUnit, PersonPID, painunit_shop
 class PersonUnit:
     pid: PersonPID = None
     person_dir: str = None
-    _cultures: dict[CultureTitle:CultureUnit] = None
+    _cultures: dict[CultureQID:CultureUnit] = None
     _pains: dict[PainGenus:PainUnit] = None
 
     def set_pains_empty_if_none(self):
@@ -37,20 +37,20 @@ class PersonUnit:
         if self._cultures is None:
             self._cultures = {}
 
-    def set_cultureunit(self, culture_title: CultureTitle):
+    def set_cultureunit(self, culture_qid: CultureQID):
         cultures_dir = f"{self.person_dir}/cultures"
-        self._cultures[culture_title] = cultureunit_shop(
-            title=culture_title, cultures_dir=cultures_dir, _manager_pid=self.pid
+        self._cultures[culture_qid] = cultureunit_shop(
+            qid=culture_qid, cultures_dir=cultures_dir, _manager_pid=self.pid
         )
 
-    def get_cultureunit(self, culture_title: CultureTitle) -> CultureUnit:
-        return self._cultures.get(culture_title)
+    def get_cultureunit(self, culture_qid: CultureQID) -> CultureUnit:
+        return self._cultures.get(culture_qid)
 
-    def del_cultureunit(self, culture_title: CultureTitle):
-        self._cultures.pop(culture_title)
+    def del_cultureunit(self, culture_qid: CultureQID):
+        self._cultures.pop(culture_qid)
 
     def get_cultures_dict(self) -> dict:
-        return {cultureunit_x.title: None for cultureunit_x in self._cultures.values()}
+        return {cultureunit_x.qid: None for cultureunit_x in self._cultures.values()}
 
     def get_pains_dict(self) -> dict:
         return {

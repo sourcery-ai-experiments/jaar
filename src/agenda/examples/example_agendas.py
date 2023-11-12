@@ -24,29 +24,29 @@ def agenda_v001() -> AgendaUnit:
 def agenda_v001_with_large_intent() -> AgendaUnit:
     x_agenda = agenda_v001()
     day_minute_text = "day_minute"
-    day_minute_road = f"{x_agenda._culture_title},{day_minute_text}"
+    day_minute_road = f"{x_agenda._culture_qid},{day_minute_text}"
     month_week_text = "month_week"
-    month_week_road = f"{x_agenda._culture_title},{month_week_text}"
+    month_week_road = f"{x_agenda._culture_qid},{month_week_text}"
     nations_text = "Nation-States"
-    nations_road = f"{x_agenda._culture_title},{nations_text}"
+    nations_road = f"{x_agenda._culture_qid},{nations_text}"
     mood_text = "Moods"
-    mood_road = f"{x_agenda._culture_title},{mood_text}"
+    mood_road = f"{x_agenda._culture_qid},{mood_text}"
     aaron_text = "Aaron Donald things effected by him"
-    aaron_road = f"{x_agenda._culture_title},{aaron_text}"
+    aaron_road = f"{x_agenda._culture_qid},{aaron_text}"
     # internet_text = "Internet"
-    # internet_road = f"{x_agenda._culture_title},{internet_text}"
+    # internet_road = f"{x_agenda._culture_qid},{internet_text}"
     year_month_text = "year_month"
-    year_month_road = f"{x_agenda._culture_title},{year_month_text}"
+    year_month_road = f"{x_agenda._culture_qid},{year_month_text}"
     season_text = "Seasons"
-    season_road = f"{x_agenda._culture_title},{season_text}"
+    season_road = f"{x_agenda._culture_qid},{season_text}"
     ced_week_text = "ced_week"
-    ced_week_road = f"{x_agenda._culture_title},{ced_week_text}"
+    ced_week_road = f"{x_agenda._culture_qid},{ced_week_text}"
     # water_text = "WaterBeing"
-    # water_road = f"{x_agenda._culture_title},{water_text}"
+    # water_road = f"{x_agenda._culture_qid},{water_text}"
     weekdays_text = "weekdays"
-    weekdays_road = f"{x_agenda._culture_title},{weekdays_text}"
+    weekdays_road = f"{x_agenda._culture_qid},{weekdays_text}"
     # movie_text = "No Movie playing"
-    # movie_road = f"{x_agenda._culture_title},{movie_text}"
+    # movie_road = f"{x_agenda._culture_qid},{movie_text}"
 
     x_agenda.set_acptfact(base=aaron_road, pick=aaron_road)
     x_agenda.set_acptfact(base=ced_week_road, pick=ced_week_road, open=0, nigh=53)
@@ -77,16 +77,16 @@ def get_agenda_with_4_levels() -> AgendaUnit:
 
     work = "work"
     idea_kid_work = ideacore_shop(_weight=30, _label=work, promise=True)
-    x_agenda.add_idea(idea_kid=idea_kid_work, pad=x_agenda._culture_title)
+    x_agenda.add_idea(idea_kid=idea_kid_work, pad=x_agenda._culture_qid)
 
     cat = "feed cat"
     idea_kid_feedcat = ideacore_shop(_weight=30, _label=cat, promise=True)
-    x_agenda.add_idea(idea_kid=idea_kid_feedcat, pad=x_agenda._culture_title)
+    x_agenda.add_idea(idea_kid=idea_kid_feedcat, pad=x_agenda._culture_qid)
 
     week_text = "weekdays"
-    week_road = f"{x_agenda._culture_title},{week_text}"
+    week_road = f"{x_agenda._culture_qid},{week_text}"
     idea_kid_weekdays = ideacore_shop(_weight=40, _label=week_text)
-    x_agenda.add_idea(idea_kid=idea_kid_weekdays, pad=x_agenda._culture_title)
+    x_agenda.add_idea(idea_kid=idea_kid_weekdays, pad=x_agenda._culture_qid)
 
     sun_text = "Sunday"
     mon_text = "Monday"
@@ -113,9 +113,9 @@ def get_agenda_with_4_levels() -> AgendaUnit:
     x_agenda.add_idea(idea_grandkidA, week_road)
 
     states_text = "nation-state"
-    states_road = f"{x_agenda._culture_title},{states_text}"
+    states_road = f"{x_agenda._culture_qid},{states_text}"
     idea_kid_states = ideacore_shop(_weight=30, _label=states_text)
-    x_agenda.add_idea(idea_kid=idea_kid_states, pad=f"{x_agenda._culture_title}")
+    x_agenda.add_idea(idea_kid=idea_kid_states, pad=f"{x_agenda._culture_qid}")
 
     usa_text = "USA"
     usa_road = f"{states_road},{usa_text}"
@@ -140,21 +140,21 @@ def get_agenda_with_4_levels() -> AgendaUnit:
 def get_agenda_with_4_levels_and_2requireds() -> AgendaUnit:
     x_agenda = get_agenda_with_4_levels()
     week_text = "weekdays"
-    week_road = f"{x_agenda._culture_title},{week_text}"
+    week_road = f"{x_agenda._culture_qid},{week_text}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
     week_required = RequiredUnit(base=week_road, sufffacts={})
     week_required.set_sufffact(wed_road)
 
     nation_text = "nation-state"
-    nation_road = f"{x_agenda._culture_title},{nation_text}"
+    nation_road = f"{x_agenda._culture_qid},{nation_text}"
     usa_text = "USA"
     usa_road = f"{nation_road},{usa_text}"
     nation_required = RequiredUnit(base=nation_road, sufffacts={})
     nation_required.set_sufffact(usa_road)
 
     work_text = "work"
-    work_road = f"{x_agenda._culture_title},{work_text}"
+    work_road = f"{x_agenda._culture_qid},{work_text}"
     x_agenda.edit_idea_attr(road=work_road, required=week_required)
     x_agenda.edit_idea_attr(road=work_road, required=nation_required)
     return x_agenda
@@ -163,11 +163,11 @@ def get_agenda_with_4_levels_and_2requireds() -> AgendaUnit:
 def get_agenda_with_4_levels_and_2requireds_2acptfacts() -> AgendaUnit:
     x_agenda = get_agenda_with_4_levels_and_2requireds()
     week_text = "weekdays"
-    week_road = f"{x_agenda._culture_title},{week_text}"
+    week_road = f"{x_agenda._culture_qid},{week_text}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
     states_text = "nation-state"
-    states_road = f"{x_agenda._culture_title},{states_text}"
+    states_road = f"{x_agenda._culture_qid},{states_text}"
     usa_text = "USA"
     usa_road = f"{states_road},{usa_text}"
     x_agenda.set_acptfact(base=week_road, pick=wed_road)
@@ -179,7 +179,7 @@ def get_agenda_with7amCleanTableRequired() -> AgendaUnit:
     x_agenda = get_agenda_with_4_levels_and_2requireds_2acptfacts()
 
     time_text = "timetech"
-    time_road = f"{x_agenda._culture_title},{time_text}"
+    time_road = f"{x_agenda._culture_qid},{time_text}"
     time_idea = ideacore_shop(_label=time_text)
 
     day24hr_text = "24hr day"
@@ -198,7 +198,7 @@ def get_agenda_with7amCleanTableRequired() -> AgendaUnit:
     n2_idea = ideacore_shop(_label=n2_text, _begin=2, _close=3)
     n3_idea = ideacore_shop(_label=n3_text, _begin=3, _close=4)
 
-    x_agenda.add_idea(time_idea, x_agenda._culture_title)
+    x_agenda.add_idea(time_idea, x_agenda._culture_qid)
     x_agenda.add_idea(day24hr_idea, time_road)
     x_agenda.add_idea(am_idea, day24hr_road)
     x_agenda.add_idea(pm_idea, day24hr_road)
@@ -207,7 +207,7 @@ def get_agenda_with7amCleanTableRequired() -> AgendaUnit:
     x_agenda.add_idea(n3_idea, am_road)  # idea_am
 
     house_text = "housework"
-    house_road = f"{x_agenda._culture_title},{house_text}"
+    house_road = f"{x_agenda._culture_qid},{house_text}"
     clean_text = "clean table"
     clean_road = f"{house_road},{clean_text}"
     dish_text = "remove dishs"
@@ -221,7 +221,7 @@ def get_agenda_with7amCleanTableRequired() -> AgendaUnit:
     soap_idea = ideacore_shop(_label=soap_text, promise=True)
     grab_idea = ideacore_shop(_label=grab_text, promise=True)
 
-    x_agenda.add_idea(idea_kid=house_idea, pad=x_agenda._culture_title)
+    x_agenda.add_idea(idea_kid=house_idea, pad=x_agenda._culture_qid)
     x_agenda.add_idea(idea_kid=clean_idea, pad=house_road)
     x_agenda.add_idea(idea_kid=dish_idea, pad=clean_road)
     x_agenda.add_idea(idea_kid=soap_idea, pad=clean_road)
@@ -239,7 +239,7 @@ def get_agenda_with7amCleanTableRequired() -> AgendaUnit:
     )
     x_agenda.edit_idea_attr(road=clean_road, required=clean_table_7am_required)
     work_text = "work"
-    work_road = f"{x_agenda._culture_title},{work_text}"
+    work_road = f"{x_agenda._culture_qid},{work_text}"
     x_agenda.edit_idea_attr(road=work_road, required=clean_table_7am_required)
     return x_agenda
 
@@ -249,17 +249,17 @@ def get_agenda_1Task_1CE0MinutesRequired_1AcptFact() -> AgendaUnit:
     x_agenda = agendaunit_shop(_healer=healer_text, _weight=10)
     ced_min_label = "CE0_minutes"
     ced_minutes = ideacore_shop(_label=ced_min_label)
-    ced_road = f"{x_agenda._culture_title},{ced_min_label}"
-    x_agenda.add_idea(idea_kid=ced_minutes, pad=x_agenda._culture_title)
+    ced_road = f"{x_agenda._culture_qid},{ced_min_label}"
+    x_agenda.add_idea(idea_kid=ced_minutes, pad=x_agenda._culture_qid)
     mail_label = "obtain mail"
     mail_task = ideacore_shop(_label=mail_label, promise=True)
-    x_agenda.add_idea(idea_kid=mail_task, pad=x_agenda._culture_title)
+    x_agenda.add_idea(idea_kid=mail_task, pad=x_agenda._culture_qid)
 
     sufffact_x = sufffactunit_shop(need=ced_road, open=80, nigh=90)
     x_task_required = RequiredUnit(
         base=sufffact_x.need, sufffacts={sufffact_x.need: sufffact_x}
     )
-    mail_road = f"{x_agenda._culture_title},{mail_label}"
+    mail_road = f"{x_agenda._culture_qid},{mail_label}"
     x_agenda.edit_idea_attr(road=mail_road, required=x_task_required)
 
     x_acptfact = acptfactunit_shop(base=ced_road, pick=ced_road, open=85, nigh=95)
@@ -281,13 +281,13 @@ def get_agenda_x1_3levels_1required_1acptfacts() -> AgendaUnit:
     healer_text = "Kol"
     x_agenda = agendaunit_shop(_healer=healer_text, _weight=10)
     shave_text = "shave"
-    shave_road = f"{x_agenda._culture_title},{shave_text}"
+    shave_road = f"{x_agenda._culture_qid},{shave_text}"
     idea_kid_shave = ideacore_shop(_weight=30, _label=shave_text, promise=True)
-    x_agenda.add_idea(idea_kid=idea_kid_shave, pad=x_agenda._culture_title)
+    x_agenda.add_idea(idea_kid=idea_kid_shave, pad=x_agenda._culture_qid)
     week_text = "weekdays"
-    week_road = f"{x_agenda._culture_title},{week_text}"
+    week_road = f"{x_agenda._culture_qid},{week_text}"
     week_idea = ideacore_shop(_weight=40, _label=week_text)
-    x_agenda.add_idea(idea_kid=week_idea, pad=x_agenda._culture_title)
+    x_agenda.add_idea(idea_kid=week_idea, pad=x_agenda._culture_qid)
 
     sun_text = "Sunday"
     sun_road = f"{week_road},{sun_text}"
@@ -341,15 +341,15 @@ def get_agenda_irrational_example() -> AgendaUnit:
     x_agenda.set_max_tree_traverse(3)
 
     egg_text = "egg first"
-    egg_road = f"{x_agenda._culture_title},{egg_text}"
+    egg_road = f"{x_agenda._culture_qid},{egg_text}"
     x_agenda.add_idea(
-        idea_kid=ideacore_shop(_label=egg_text), pad=x_agenda._culture_title
+        idea_kid=ideacore_shop(_label=egg_text), pad=x_agenda._culture_qid
     )
 
     chicken_text = "chicken first"
-    chicken_road = f"{x_agenda._culture_title},{chicken_text}"
+    chicken_road = f"{x_agenda._culture_qid},{chicken_text}"
     x_agenda.add_idea(
-        idea_kid=ideacore_shop(_label=chicken_text), pad=x_agenda._culture_title
+        idea_kid=ideacore_shop(_label=chicken_text), pad=x_agenda._culture_qid
     )
 
     # set egg promise is True when chicken first is False
@@ -375,16 +375,16 @@ def get_assignment_agenda_example1():
     healer_text = "Neo"
     x_agenda = agendaunit_shop(_healer=healer_text)
     casa_text = "casa"
-    casa_road = f"{x_agenda._culture_title},{casa_text}"
+    casa_road = f"{x_agenda._culture_qid},{casa_text}"
     floor_text = "mop floor"
     floor_road = f"{casa_road},{floor_text}"
     floor_idea = ideacore_shop(_label=floor_text, promise=True)
     x_agenda.add_idea(idea_kid=floor_idea, pad=casa_road)
 
     unim_text = "unimportant"
-    unim_road = f"{x_agenda._culture_title},{unim_text}"
+    unim_road = f"{x_agenda._culture_qid},{unim_text}"
     unim_idea = ideacore_shop(_label=unim_text)
-    x_agenda.add_idea(idea_kid=unim_idea, pad=x_agenda._culture_title)
+    x_agenda.add_idea(idea_kid=unim_idea, pad=x_agenda._culture_qid)
 
     status_text = "cleaniness status"
     status_road = f"{casa_road},{status_text}"
@@ -425,7 +425,7 @@ def get_agenda_assignment_laundry_example1() -> AgendaUnit:
     amer_agenda.add_partyunit(amer_text)
     amer_agenda.add_partyunit(cali_text)
 
-    root_road = amer_agenda._culture_title
+    root_road = amer_agenda._culture_qid
     casa_text = "casa"
     casa_road = f"{root_road},{casa_text}"
     amer_agenda.add_idea(ideacore_shop(_label=casa_text), pad=root_road)

@@ -46,13 +46,13 @@ from src.culture.bank_sqlstr import (
 )
 
 
-class CultureTitle(str):  # Created to help track the concept
+class CultureQID(str):  # Created to help track the concept
     pass
 
 
 @dataclass
 class CultureUnit:
-    title: CultureTitle
+    qid: CultureQID
     cultures_dir: str
     _manager_pid: PersonPID = None
     _councilunits: dict[str:CouncilUnit] = None
@@ -298,14 +298,14 @@ class CultureUnit:
         self._bank_db = None
         x_func_delete_dir(dir=self.get_bank_db_path())
 
-    def set_cultureunit_title(self, title: str):
-        self.title = title
+    def set_cultureunit_qid(self, qid: str):
+        self.qid = qid
 
     def get_bank_db_path(self):
         return f"{self.get_object_root_dir()}/bank.db"
 
     def get_object_root_dir(self):
-        return f"{self.cultures_dir}/{self.title}"
+        return f"{self.cultures_dir}/{self.qid}"
 
     def _create_main_file_if_null(self, x_dir):
         culture_file_name = "culture.json"
@@ -344,7 +344,7 @@ class CultureUnit:
 
     def create_new_councilunit(self, council_cid: CouncilCID):
         self.set_councilunits_empty_if_null()
-        ux = councilunit_shop(council_cid, self.get_object_root_dir(), self.title)
+        ux = councilunit_shop(council_cid, self.get_object_root_dir(), self.qid)
         ux.create_core_dir_and_files()
         self._councilunits[ux._admin._council_cid] = ux
 
@@ -412,7 +412,7 @@ class CultureUnit:
         x_func_delete_dir(f"{self.get_public_dir()}/{x_agenda_healer}.json")
 
     def save_public_agenda(self, x_agenda: AgendaUnit):
-        x_agenda.set_culture_title(culture_title=self.title)
+        x_agenda.set_culture_qid(culture_qid=self.qid)
         x_func_save_file(
             dest_dir=self.get_public_dir(),
             file_name=f"{x_agenda._healer}.json",
@@ -514,7 +514,7 @@ class CultureUnit:
 
 
 def cultureunit_shop(
-    title: CultureTitle,
+    qid: CultureQID,
     cultures_dir: str,
     _manager_pid: PersonPID = None,
     _councilunits: dict[str:CouncilUnit] = None,
@@ -523,7 +523,7 @@ def cultureunit_shop(
     if in_memory_bank is None:
         in_memory_bank = True
     culture_x = CultureUnit(
-        title=title,
+        qid=qid,
         cultures_dir=cultures_dir,
         _councilunits=_councilunits,
     )

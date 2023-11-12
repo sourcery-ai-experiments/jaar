@@ -166,7 +166,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowQID(_translate("Form", "Form"))
         self.label_3.setText(_translate("Form", "What is the Problem's context"))
         self.close_button.setText(_translate("Form", "Close"))
         self.quit_button.setText(_translate("Form", "Quit App"))

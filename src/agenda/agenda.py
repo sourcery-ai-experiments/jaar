@@ -100,7 +100,7 @@ class AgendaUnit:
     _tree_traverse_count: int = None
     _rational: bool = None
     _originunit: OriginUnit = None
-    _culture_title: str = None
+    _culture_qid: str = None
     _auto_output_to_public: bool = None
 
     def set_partys_output_agenda_meld_order(self):
@@ -113,10 +113,10 @@ class AgendaUnit:
         for x_partyunit in self._partys.values():
             x_partyunit.clear_output_agenda_meld_order()
 
-    def set_culture_title(self, culture_title: str):
-        old_culture_title = copy_deepcopy(self._culture_title)
-        self._culture_title = culture_title
-        self.edit_idea_label(old_road=old_culture_title, new_label=self._culture_title)
+    def set_culture_qid(self, culture_qid: str):
+        old_culture_qid = copy_deepcopy(self._culture_qid)
+        self._culture_qid = culture_qid
+        self.edit_idea_label(old_road=old_culture_qid, new_label=self._culture_qid)
         self.set_agenda_metrics()
 
     def import_external_partyunit_metrics(
@@ -262,7 +262,7 @@ class AgendaUnit:
         return hreg_get_time_min_from_dt(dt=dt)
 
     def get_time_c400_from_min(self, min: int) -> int:
-        c400_idea = self.get_idea_kid(f"{self._culture_title},time,tech,400 year cycle")
+        c400_idea = self.get_idea_kid(f"{self._culture_qid},time,tech,400 year cycle")
         c400_min = c400_idea._close
         return int(min / c400_min), c400_idea, min % c400_min
 
@@ -278,15 +278,13 @@ class AgendaUnit:
             52596000,
         ):  # 96 year and 100 year ideas
             yr4_1461 = self.get_idea_kid(
-                f"{self._culture_title},time,tech,4year with leap"
+                f"{self._culture_qid},time,tech,4year with leap"
             )
             yr4_cycles = int(cXXXyr_min / yr4_1461._close)
             cXyr_min = cXXXyr_min % yr4_1461._close
             yr1_idea = yr4_1461.get_kids_in_range(begin=cXyr_min, close=cXyr_min)[0]
         elif c100_4_96y._close - c100_4_96y._begin == 2102400:
-            yr4_1460 = self.get_idea_kid(
-                f"{self._culture_title},time,tech,4year wo leap"
-            )
+            yr4_1460 = self.get_idea_kid(f"{self._culture_qid},time,tech,4year wo leap")
             yr4_cycles = 0
             yr1_idea = yr4_1460.get_kids_in_range(begin=cXXXyr_min, close=cXXXyr_min)[0]
             cXyr_min = cXXXyr_min % yr4_1460._close
@@ -302,13 +300,13 @@ class AgendaUnit:
         year_num, yr1_idea, yr1_idea_rem_min = self.get_time_c400yr_from_min(min=min)
         yrx = None
         if yr1_idea._close - yr1_idea._begin == 525600:
-            yrx = self.get_idea_kid(f"{self._culture_title},time,tech,365 year")
+            yrx = self.get_idea_kid(f"{self._culture_qid},time,tech,365 year")
         elif yr1_idea._close - yr1_idea._begin == 527040:
-            yrx = self.get_idea_kid(f"{self._culture_title},time,tech,366 year")
+            yrx = self.get_idea_kid(f"{self._culture_qid},time,tech,366 year")
         mon_x = yrx.get_kids_in_range(begin=yr1_idea_rem_min, close=yr1_idea_rem_min)[0]
         month_rem_min = yr1_idea_rem_min - mon_x._begin
         month_num = int(mon_x._label.split("-")[0])
-        day_x = self.get_idea_kid(f"{self._culture_title},time,tech,day")
+        day_x = self.get_idea_kid(f"{self._culture_qid},time,tech,day")
         day_num = int(month_rem_min / day_x._close)
         day_rem_min = month_rem_min % day_x._close
         return month_num, day_num, day_rem_min, day_x
@@ -359,7 +357,7 @@ class AgendaUnit:
 
     def _get_jajatime_week_legible_text(self, open: int, divisor: int) -> str:
         open_in_week = open % divisor
-        week_road = f"{self._culture_title},time,tech,week"
+        week_road = f"{self._culture_qid},time,tech,week"
         weekday_ideas_dict = self.get_idea_ranged_kids(
             idea_road=week_road, begin=open_in_week
         )
@@ -713,7 +711,7 @@ class AgendaUnit:
     def set_time_acptfacts(self, open: datetime = None, nigh: datetime = None) -> None:
         open_minutes = self.get_time_min_from_dt(dt=open) if open != None else None
         nigh_minutes = self.get_time_min_from_dt(dt=nigh) if nigh != None else None
-        minutes_acptfact = f"{self._culture_title},time,jajatime"
+        minutes_acptfact = f"{self._culture_qid},time,jajatime"
         self.set_acptfact(
             base=minutes_acptfact,
             pick=minutes_acptfact,
@@ -723,7 +721,7 @@ class AgendaUnit:
 
     def _is_idea_rangeroot(self, idea_road: Road) -> bool:
         anc_roads = get_ancestor_roads(road=idea_road)
-        parent_road = self._culture_title if len(anc_roads) == 1 else anc_roads[1]
+        parent_road = self._culture_qid if len(anc_roads) == 1 else anc_roads[1]
 
         # figure out if parent is range
         parent_range = None
@@ -1011,8 +1009,8 @@ class AgendaUnit:
         temp_road = pad_nodes.pop(0)
 
         # idearoot cannot be replaced
-        if temp_road == self._culture_title and pad_nodes == []:
-            idea_kid.set_pad(parent_road=Road(self._culture_title))
+        if temp_road == self._culture_qid and pad_nodes == []:
+            idea_kid.set_pad(parent_road=Road(self._culture_qid))
         else:
             road_nodes = [temp_road]
             while pad_nodes != []:
@@ -1166,7 +1164,7 @@ class AgendaUnit:
             # if root _label is changed
             if pad == "":
                 self._idearoot.set_idea_label(
-                    new_label, agenda_culture_title=self._culture_title
+                    new_label, agenda_culture_qid=self._culture_qid
                 )
                 self._idearoot._pad = pad
             else:
@@ -1224,7 +1222,7 @@ class AgendaUnit:
             anc_roads
         ) == 1:
             raise InvalidAgendaException("Root Idea cannot have numor denom reest.")
-        parent_road = self._culture_title if len(anc_roads) == 1 else anc_roads[1]
+        parent_road = self._culture_qid if len(anc_roads) == 1 else anc_roads[1]
 
         parent_has_range = None
         parent_idea_x = self.get_idea_kid(road=parent_road)
@@ -1957,7 +1955,7 @@ class AgendaUnit:
             "_originunit": self._originunit.get_dict(),
             "_weight": self._weight,
             "_healer": self._healer,
-            "_culture_title": self._culture_title,
+            "_culture_qid": self._culture_qid,
             "_uid": self._idearoot._uid,
             "_begin": self._idearoot._begin,
             "_close": self._idearoot._close,
@@ -1984,7 +1982,7 @@ class AgendaUnit:
             yb = ideabase_list.pop(0)
             range_source_road_x = None
             if yb.sr != None:
-                range_source_road_x = f"{self._culture_title},{yb.sr}"
+                range_source_road_x = f"{self._culture_qid},{yb.sr}"
 
             idea_x = ideacore_shop(
                 _label=yb.n,
@@ -1998,12 +1996,12 @@ class AgendaUnit:
                 _reest=yb.mr,
                 _range_source_road=range_source_road_x,
             )
-            road_x = f"{self._culture_title},{yb.rr}"
+            road_x = f"{self._culture_qid},{yb.rr}"
             self.add_idea(idea_kid=idea_x, pad=road_x)
 
             numeric_road_x = None
             if yb.nr != None:
-                numeric_road_x = f"{self._culture_title},{yb.nr}"
+                numeric_road_x = f"{self._culture_qid},{yb.nr}"
                 self.edit_idea_attr(
                     road=f"{road_x},{yb.n}", numeric_road=numeric_road_x
                 )
@@ -2229,7 +2227,7 @@ def agendaunit_shop(
     x_agenda = AgendaUnit(
         _healer=_healer, _weight=_weight, _auto_output_to_public=_auto_output_to_public
     )
-    x_agenda._culture_title = root_label()
+    x_agenda._culture_qid = root_label()
     x_agenda._idearoot = idearoot_shop(_label=None, _uid=1, _level=0)
     x_agenda.set_max_tree_traverse(3)
     x_agenda._rational = False
@@ -2243,7 +2241,7 @@ def get_from_json(x_agenda_json: str) -> AgendaUnit:
 
 def get_from_dict(agenda_dict: dict) -> AgendaUnit:
     x_agenda = agendaunit_shop()
-    x_agenda.set_culture_title(agenda_dict["_culture_title"])
+    x_agenda.set_culture_qid(agenda_dict["_culture_qid"])
     x_agenda._idearoot._requiredunits = requireds_get_from_dict(
         requireds_dict=agenda_dict["_requiredunits"]
     )
@@ -2271,7 +2269,7 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
         x_agenda._auto_output_to_public = False
     x_agenda._partys = partyunits_get_from_dict(x_dict=agenda_dict["_partys"])
     x_agenda._healer = agenda_dict["_healer"]
-    x_agenda._idearoot.set_idea_label(x_agenda._culture_title, x_agenda._culture_title)
+    x_agenda._idearoot.set_idea_label(x_agenda._culture_qid, x_agenda._culture_qid)
     x_agenda._weight = agenda_dict["_weight"]
     x_agenda._max_tree_traverse = agenda_dict.get("_max_tree_traverse")
     if agenda_dict.get("_max_tree_traverse") is None:

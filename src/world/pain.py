@@ -1,11 +1,11 @@
 from dataclasses import dataclass
-from src.culture.culture import CultureTitle
+from src.culture.culture import CultureQID
 from src.agenda.agenda import PersonPID
 
 
 @dataclass
 class CultureLink:
-    title: CultureTitle
+    qid: CultureQID
     weight: float
     _relative_weight: float = None
     _manager_importance: float = None
@@ -17,13 +17,13 @@ class CultureLink:
         self._manager_importance = person_importance
 
     def get_dict(self) -> dict:
-        return {"title": self.title, "weight": self.weight}
+        return {"qid": self.qid, "weight": self.weight}
 
 
-def culturelink_shop(title: CultureTitle, weight: float = None) -> CultureLink:
+def culturelink_shop(qid: CultureQID, weight: float = None) -> CultureLink:
     if weight is None:
         weight = 1
-    return CultureLink(title=title, weight=weight)
+    return CultureLink(qid=qid, weight=weight)
 
 
 @dataclass
@@ -31,7 +31,7 @@ class HealerLink:
     person_pid: PersonPID
     weight: float
     in_tribe: bool
-    _culturelinks: dict[CultureTitle:CultureLink] = None
+    _culturelinks: dict[CultureQID:CultureLink] = None
     _relative_weight: float = None
     _manager_importance: float = None
 
@@ -59,17 +59,17 @@ class HealerLink:
             self._culturelinks = {}
 
     def set_culturelink(self, culturelink: CultureLink):
-        self._culturelinks[culturelink.title] = culturelink
+        self._culturelinks[culturelink.qid] = culturelink
 
-    def get_culturelink(self, culturetitle: CultureTitle) -> CultureLink:
-        return self._culturelinks.get(culturetitle)
+    def get_culturelink(self, cultureqid: CultureQID) -> CultureLink:
+        return self._culturelinks.get(cultureqid)
 
-    def del_culturelink(self, culturetitle: CultureTitle):
-        self._culturelinks.pop(culturetitle)
+    def del_culturelink(self, cultureqid: CultureQID):
+        self._culturelinks.pop(cultureqid)
 
     def get_culturelinks_dict(self) -> dict:
         return {
-            culturelink_x.title: culturelink_x.get_dict()
+            culturelink_x.qid: culturelink_x.get_dict()
             for culturelink_x in self._culturelinks.values()
         }
 

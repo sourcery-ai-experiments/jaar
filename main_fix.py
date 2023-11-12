@@ -19,7 +19,7 @@ from src.culture.examples.culture_env_kit import (
     setup_test_example_environment,
     create_example_culture,
     delete_dir_example_culture,
-    retitle_example_culture,
+    reqid_example_culture,
     get_test_cultures_dir,
 )
 
@@ -116,11 +116,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         setup_test_example_environment()
         first_env = "ex5"
         self.culture_x = cultureunit_shop(
-            title=first_env, cultures_dir=get_test_cultures_dir()
+            qid=first_env, cultures_dir=get_test_cultures_dir()
         )
         self.refresh_culture()
-        self.culture_title_combo_refresh()
-        self.culture_title_combo.setCurrentText(first_env)
+        self.culture_qid_combo_refresh()
+        self.culture_qid_combo.setCurrentText(first_env)
         self._healer_load(council_cid="ernie")
 
     def save_seed(self):
@@ -142,12 +142,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_culture()
 
     def culture_load_from_file(self):
-        culture_selected = self.culture_title_combo.currentText()
+        culture_selected = self.culture_qid_combo.currentText()
         self.culture_x = cultureunit_shop(
-            title=culture_selected, cultures_dir=get_test_cultures_dir()
+            qid=culture_selected, cultures_dir=get_test_cultures_dir()
         )
         self.culture_x.create_dirs_if_null(in_memory_bank=False)
-        self.culture_title.setText(culture_selected)
+        self.culture_qid.setText(culture_selected)
         self.refresh_culture()
 
     def agendas_table_select(self):
@@ -211,19 +211,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.digests_table.setHidden(False)
 
     def culture_insert(self):
-        create_example_culture(culture_title=self.culture_title.text())
-        self.culture_title_combo_refresh()
+        create_example_culture(culture_qid=self.culture_qid.text())
+        self.culture_qid_combo_refresh()
 
     def culture_update_pid(self):
-        retitle_example_culture(
-            culture_obj=self.culture_x, new_pid=self.culture_title.text()
+        reqid_example_culture(
+            culture_obj=self.culture_x, new_pid=self.culture_qid.text()
         )
-        self.culture_title_combo_refresh()
+        self.culture_qid_combo_refresh()
 
     def culture_delete(self):
         delete_dir_example_culture(culture_obj=self.culture_x)
         self.culture_x = None
-        self.culture_title_combo_refresh()
+        self.culture_qid_combo_refresh()
         self.refresh_culture()
 
     def agenda_insert(self):
@@ -572,9 +572,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             column_width=[50, 200, 300],
         )
 
-    def culture_title_combo_refresh(self):
-        self.culture_title_combo.clear()
-        self.culture_title_combo.addItems(create_example_cultures_list())
+    def culture_qid_combo_refresh(self):
+        self.culture_qid_combo.clear()
+        self.culture_qid_combo.addItems(create_example_cultures_list())
 
     def refresh_healers(self):
         self.x_council = None

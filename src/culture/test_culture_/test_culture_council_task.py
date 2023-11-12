@@ -1,6 +1,6 @@
 from src.culture.culture import cultureunit_shop
 from src.culture.examples.culture_env_kit import (
-    get_temp_env_title,
+    get_temp_env_qid,
     env_dir_setup_cleanup,
     get_test_cultures_dir,
 )
@@ -10,18 +10,18 @@ from src.culture.examples.example_councils import (
 
 
 def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanup):
-    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
 
     # GIVEN
     amer_text = "Amer"
     x_culture.create_new_councilunit(council_cid=amer_text)
     amer_council = x_culture.get_councilunit(cid=amer_text)
     laundry_agenda = get_agenda_assignment_laundry_example1()
-    laundry_agenda.set_culture_title(x_culture.title)
+    laundry_agenda.set_culture_qid(x_culture.qid)
     amer_council.set_seed(laundry_agenda)
 
     casa_text = "casa"
-    casa_road = f"{x_culture.title},{casa_text}"
+    casa_road = f"{x_culture.qid},{casa_text}"
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
     b_full_text = "full"
@@ -74,7 +74,7 @@ def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
 
 def test_culture_council_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     # GIVEN
-    x_culture = cultureunit_shop(get_temp_env_title(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
     amer_text = "Amer"
     beto_text = "Beto"
     x_culture.create_new_councilunit(council_cid=amer_text)
@@ -83,12 +83,12 @@ def test_culture_council_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     beto_council = x_culture.get_councilunit(cid=beto_text)
     # print(f"{beto_council=}")
     laundry_agenda = get_agenda_assignment_laundry_example1()
-    laundry_agenda.set_culture_title(x_culture.title)
+    laundry_agenda.set_culture_qid(x_culture.qid)
     amer_council.set_seed(laundry_agenda)
     beto_council.set_seed(laundry_agenda)
 
     casa_text = "casa"
-    casa_road = f"{x_culture.title},{casa_text}"
+    casa_road = f"{x_culture.qid},{casa_text}"
     basket_text = "laundry basket status"
     basket_road = f"{casa_road},{basket_text}"
     b_full_text = "full"

@@ -4,7 +4,7 @@ from src.culture.council import councilunit_shop, CouncilUnit
 from src.culture.examples.council_env_kit import (
     council_dir_setup_cleanup,
     get_temp_councilunit_dir,
-    get_temp_culture_title,
+    get_temp_culture_qid,
 )
 from os import path as os_path
 
@@ -26,13 +26,13 @@ def test_councilunit_shop_exists(council_dir_setup_cleanup):
     x_council = councilunit_shop(
         pid=x_pid,
         env_dir=get_temp_councilunit_dir(),
-        culture_title=get_temp_culture_title(),
+        culture_qid=get_temp_culture_qid(),
     )
 
     # GIVEN
     assert x_council._admin._council_cid != None
-    assert x_council._admin._culture_title != None
-    assert x_council._admin._culture_title == get_temp_culture_title()
+    assert x_council._admin._culture_qid != None
+    assert x_council._admin._culture_qid == get_temp_culture_qid()
     assert x_council._seed is None
 
 
@@ -41,21 +41,19 @@ def test_councilunit_auto_output_to_public_SavesAgendaToPublicDirWhenTrue(
 ):
     # GIVEN
     env_dir = get_temp_councilunit_dir()
-    x_title = get_temp_culture_title()
+    x_qid = get_temp_culture_qid()
     tim_text = "Tim"
     public_file_name = f"{tim_text}.json"
     public_file_path = f"{get_temp_councilunit_dir()}/agendas/{public_file_name}"
     print(f"{public_file_path=}")
     # public_file_path = f"src/culture/examples/ex_env/agendas/{public_file_name}"
-    x_council = councilunit_shop(
-        tim_text, env_dir, x_title, _auto_output_to_public=True
-    )
+    x_council = councilunit_shop(tim_text, env_dir, x_qid, _auto_output_to_public=True)
     x_council.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
 
     # WHEN
     tim_agenda = agendaunit_shop(_healer=tim_text)
-    tim_agenda.set_culture_title(x_title)
+    tim_agenda.set_culture_qid(x_qid)
     x_council.set_depot_agenda(tim_agenda, "blind_trust")
 
     # THEN
@@ -67,13 +65,13 @@ def test_councilunit_auto_output_to_public_DoesNotSaveAgendaToPublicDirWhenFalse
 ):
     # GIVEN
     env_dir = get_temp_councilunit_dir()
-    x_title = get_temp_culture_title()
+    x_qid = get_temp_culture_qid()
     tim_text = "Tim"
     public_file_name = f"{tim_text}.json"
     public_file_path = f"{get_temp_councilunit_dir()}/agendas/{public_file_name}"
     print(f"{public_file_path=}")
     # public_file_path = f"src/culture/examples/ex_env/agendas/{public_file_name}"
-    x_council = councilunit_shop(tim_text, env_dir, x_title, False)
+    x_council = councilunit_shop(tim_text, env_dir, x_qid, False)
     x_council.create_core_dir_and_files()
     assert os_path.exists(public_file_path) is False
 
@@ -90,7 +88,7 @@ def test_councilunit_get_seed_createsEmptyAgendaWhenFileDoesNotExist(
     # GIVEN
     tim_text = "Tim"
     tim_council = councilunit_shop(
-        tim_text, get_temp_councilunit_dir(), get_temp_culture_title()
+        tim_text, get_temp_councilunit_dir(), get_temp_culture_qid()
     )
     tim_council.create_core_dir_and_files()
     assert os_path.exists(tim_council._admin._seed_file_path)
@@ -112,7 +110,7 @@ def test_councilunit_get_seed_getsMemoryAgendaIfExists(
     # GIVEN
     tim_text = "Tim"
     tim_council = councilunit_shop(
-        tim_text, get_temp_councilunit_dir(), get_temp_culture_title()
+        tim_text, get_temp_councilunit_dir(), get_temp_culture_qid()
     )
     tim_council.create_core_dir_and_files()
     seed_file_path = (
@@ -146,7 +144,7 @@ def test_councilunit_set_seed_savesseedAgendaSet_seed_None(
     # GIVEN
     tim_text = "Tim"
     tim_council = councilunit_shop(
-        tim_text, get_temp_councilunit_dir(), get_temp_culture_title()
+        tim_text, get_temp_councilunit_dir(), get_temp_culture_qid()
     )
     tim_council.create_core_dir_and_files()
     seed_file_path = (
@@ -174,7 +172,7 @@ def test_councilunit_set_seed_savesGivenAgendaSet_seed_None(
     # GIVEN
     tim_text = "Tim"
     tim_council = councilunit_shop(
-        tim_text, get_temp_councilunit_dir(), get_temp_culture_title()
+        tim_text, get_temp_councilunit_dir(), get_temp_culture_qid()
     )
     tim_council.create_core_dir_and_files()
     seed_file_path = (
@@ -223,7 +221,7 @@ def test_councilunit_set_seed_if_emtpy_DoesNotReplace_seed(
     # GIVEN
     tim_text = "Tim"
     tim_council = councilunit_shop(
-        tim_text, get_temp_councilunit_dir(), get_temp_culture_title()
+        tim_text, get_temp_councilunit_dir(), get_temp_culture_qid()
     )
     tim_council.create_core_dir_and_files()
     saved_agenda = agendaunit_shop(_healer=tim_text)

@@ -124,7 +124,7 @@ def test_get_time_():
 
     # Then
     time_text = "time"
-    time_road = f"{x_agenda._culture_title},{time_text}"
+    time_road = f"{x_agenda._culture_qid},{time_text}"
     jaja_text = "jajatime"
     jaja_road = f"{time_road},{jaja_text}"
     assert x_agenda._idearoot._acptfactunits[jaja_road]

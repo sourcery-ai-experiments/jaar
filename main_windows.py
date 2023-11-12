@@ -187,7 +187,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_acptfact_time_open_5daysago(self):
         days5ago_x = datetime.now() - timedelta(days=5)
-        road_minute = f"{self.agenda_x._culture_title},time,jajatime"
+        road_minute = f"{self.agenda_x._culture_qid},time,jajatime"
         # self.root_datetime_curr_l.setText(f"Now: {str(now_x)}")
         self.agenda_x.set_acptfact(
             base=road_minute,
@@ -197,7 +197,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_all()
 
     def _set_acptfact_time_open_midnight_attr(self):
-        road_minute = f"{self.agenda_x._culture_title},time,jajatime"
+        road_minute = f"{self.agenda_x._culture_qid},time,jajatime"
         open_dt = self.agenda_x.get_time_dt_from_min(
             self.agenda_x._idearoot._acptfactunits[road_minute].open
         )
@@ -231,7 +231,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_acptfact_time_open_soft(self):
         # now_x = datetime.now()
-        # road_minute = f"{self.agenda_x._culture_title},time,jajatime"
+        # road_minute = f"{self.agenda_x._culture_qid},time,jajatime"
         # self.root_datetime_curr_l.setText(f"Now: {str(now_x)}")
         # self.agenda_x.set_acptfact(
         #     base=road_minute,
@@ -242,7 +242,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_acptfact_time_nigh_now(self):
         now_x = datetime.now()
-        road_minute = f"{self.agenda_x._culture_title},time,jajatime"
+        road_minute = f"{self.agenda_x._culture_qid},time,jajatime"
         self.agenda_x.set_acptfact(
             base=road_minute,
             pick=road_minute,
@@ -280,7 +280,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.current_file_path_l.setText(self.file_path)
         # x_func_save_file(
         #     dest_dir=agenda_councilunit_dir,
-        #     file_name=f"{self.agenda_x._culture_title}.json",
+        #     file_name=f"{self.agenda_x._culture_qid}.json",
         #     file_text=agenda_x.get_json(),
         # )
 
@@ -300,14 +300,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agenda_x.set_partys_empty_if_null()
         self.agenda_x.set_groupunits_empty_if_null()
         self.agenda_x.set_time_hreg_ideas(c400_count=7)
-        road_minute = f"{self.agenda_x._culture_title},time,jajatime"
+        road_minute = f"{self.agenda_x._culture_qid},time,jajatime"
         self.agenda_x.set_acptfact(
             base=road_minute, pick=road_minute, open=1000000, nigh=1000000
         )
         self.refresh_all()
 
     def refresh_datetime_display(self):
-        road_minute = f"{self.agenda_x._culture_title},time,jajatime"
+        road_minute = f"{self.agenda_x._culture_qid},time,jajatime"
         jajatime_open = self.agenda_x.get_time_dt_from_min(
             self.agenda_x._idearoot._acptfactunits[road_minute].open
         )
@@ -427,15 +427,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.intent_states.setItem(row, 0, qtw1(str(ax._uid)))
         self.intent_states.setItem(row, 1, qtw1(ax._label))
 
-        if (
-            ax._requiredunits.get(f"{self.agenda_x._culture_title},time,jajatime")
-            != None
-        ):
+        if ax._requiredunits.get(f"{self.agenda_x._culture_qid},time,jajatime") != None:
             jajatime_required = ax._requiredunits.get(
-                f"{self.agenda_x._culture_title},time,jajatime"
+                f"{self.agenda_x._culture_qid},time,jajatime"
             )
             sufffact_x = jajatime_required.sufffacts.get(
-                f"{self.agenda_x._culture_title},time,jajatime"
+                f"{self.agenda_x._culture_qid},time,jajatime"
             )
             if sufffact_x != None and sufffact_x.open != 0:
                 tw_open = qtw1(
@@ -487,15 +484,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.label_intent_label_data.setText(intent_item._label)
         if (
             intent_item._requiredunits.get(
-                f"{self.agenda_x._culture_title},time,jajatime"
+                f"{self.agenda_x._culture_qid},time,jajatime"
             )
             != None
         ):
             jajatime_required = intent_item._requiredunits.get(
-                f"{self.agenda_x._culture_title},time,jajatime"
+                f"{self.agenda_x._culture_qid},time,jajatime"
             )
             sufffact_x = jajatime_required.sufffacts.get(
-                f"{self.agenda_x._culture_title},time,jajatime,day"
+                f"{self.agenda_x._culture_qid},time,jajatime,day"
             )
             if sufffact_x != None:
                 self.label_intent_day_data.setText("day_stuff")
@@ -513,10 +510,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_jajaday_open_nigh(self, intent_item):
         jajatime_required = intent_item._requiredunits.get(
-            f"{self.agenda_x._culture_title},time,jajatime"
+            f"{self.agenda_x._culture_qid},time,jajatime"
         )
         sufffact_x = jajatime_required.sufffacts.get(
-            f"{self.agenda_x._culture_title},time,jajatime,day"
+            f"{self.agenda_x._culture_qid},time,jajatime,day"
         )
         if sufffact_x != None:
             open_x = sufffact_x.open

@@ -5,10 +5,10 @@ from src.agenda.x_func import delete_dir, save_file as x_func_save_file
 
 
 def get_temp_councilunit_dir() -> str:
-    return f"src/culture/examples/{get_temp_culture_title()}"
+    return f"src/culture/examples/{get_temp_culture_qid()}"
 
 
-def get_temp_culture_title() -> str:
+def get_temp_culture_qid() -> str:
     return "ex_env"
 
 

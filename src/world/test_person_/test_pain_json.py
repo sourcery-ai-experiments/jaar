@@ -5,13 +5,13 @@ def test_culturelink_get_dict_ReturnsCorrectDict():
     # GIVEN
     diet_text = "diet"
     diet_weight = 5
-    diet_culturelink = culturelink_shop(title=diet_text, weight=diet_weight)
+    diet_culturelink = culturelink_shop(qid=diet_text, weight=diet_weight)
 
     # WHEN
     diet_dict = diet_culturelink.get_dict()
 
     # THEN
-    assert diet_dict == {"title": diet_text, "weight": diet_weight}
+    assert diet_dict == {"qid": diet_text, "weight": diet_weight}
 
 
 def test_healerlink_get_dict_ReturnsCorrectDict():
@@ -21,11 +21,11 @@ def test_healerlink_get_dict_ReturnsCorrectDict():
     yao_healerlink = healerlink_shop(person_pid=yao_text, weight=yao_weight)
     diet_text = "diet"
     diet_weight = 7
-    diet_culturelink = culturelink_shop(title=diet_text, weight=diet_weight)
+    diet_culturelink = culturelink_shop(qid=diet_text, weight=diet_weight)
     yao_healerlink.set_culturelink(diet_culturelink)
     diet_culture = yao_healerlink.get_culturelink(diet_text)
     assert diet_culture != None
-    assert diet_culture.title == diet_text
+    assert diet_culture.qid == diet_text
 
     # WHEN
     yao_dict = yao_healerlink.get_dict()
@@ -34,7 +34,7 @@ def test_healerlink_get_dict_ReturnsCorrectDict():
     assert yao_dict == {
         "person_pid": yao_text,
         "weight": yao_weight,
-        "_culturelinks": {diet_text: {"title": diet_text, "weight": diet_weight}},
+        "_culturelinks": {diet_text: {"qid": diet_text, "weight": diet_weight}},
     }
 
 
@@ -50,7 +50,7 @@ def test_painunit_get_dict_ReturnsCorrectDict():
 
     diet_text = "diet"
     diet_weight = 3
-    diet_culturelink = culturelink_shop(title=diet_text, weight=diet_weight)
+    diet_culturelink = culturelink_shop(qid=diet_text, weight=diet_weight)
     yao_healerlink.set_culturelink(diet_culturelink)
 
     knee_painunit.set_healerlink(yao_healerlink)
@@ -71,16 +71,16 @@ def test_painunit_get_dict_ReturnsCorrectDict():
     assert len(knee_dict.get("_healerlinks")) == 1
     assert knee_dict.get("genus") == knee_text
     diet_culturelink_dict = yao_culturelinks_dict.get(diet_text)
-    assert diet_culturelink_dict == {"title": diet_text, "weight": diet_weight}
+    assert diet_culturelink_dict == {"qid": diet_text, "weight": diet_weight}
     assert yao_culturelinks_dict == {
-        diet_text: {"title": diet_text, "weight": diet_weight}
+        diet_text: {"qid": diet_text, "weight": diet_weight}
     }
 
     assert x_healerlinks_dict == {
         yao_text: {
             "person_pid": yao_text,
             "weight": yao_weight,
-            "_culturelinks": {diet_text: {"title": diet_text, "weight": diet_weight}},
+            "_culturelinks": {diet_text: {"qid": diet_text, "weight": diet_weight}},
         }
     }
     assert knee_dict == {
@@ -90,9 +90,7 @@ def test_painunit_get_dict_ReturnsCorrectDict():
             yao_text: {
                 "person_pid": yao_text,
                 "weight": yao_weight,
-                "_culturelinks": {
-                    diet_text: {"title": diet_text, "weight": diet_weight}
-                },
+                "_culturelinks": {diet_text: {"qid": diet_text, "weight": diet_weight}},
             }
         },
     }

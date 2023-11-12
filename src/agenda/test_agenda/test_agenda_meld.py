@@ -104,7 +104,7 @@ def test_agenda_idearoot_meld_IdeaRootAttrCorrectlyMelded():
         x_agenda1.meld(x_agenda2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea=None,{x_agenda1._culture_title} _uid:1 with None,{x_agenda2._culture_title} _uid:4"
+        == f"Meld fail idea=None,{x_agenda1._culture_qid} _uid:1 with None,{x_agenda2._culture_qid} _uid:4"
     )
 
 
@@ -114,17 +114,17 @@ def test_agenda_idearoot_meld_Add4IdeasScenario():
     x_agenda1 = agendaunit_shop(_healer=spirit_text)
 
     tech_text = "tech"
-    tech_road = f"{x_agenda1._culture_title},{tech_text}"
+    tech_road = f"{x_agenda1._culture_qid},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{x_agenda1._culture_title},{tech_text},{bowl_text}"
+    bowl_road = f"{x_agenda1._culture_qid},{tech_text},{bowl_text}"
     swim_text = "swim"
-    swim_road = f"{x_agenda1._culture_title},{swim_text}"
+    swim_road = f"{x_agenda1._culture_qid},{swim_text}"
     free_text = "freestyle"
-    free_road = f"{x_agenda1._culture_title},{swim_text},{free_text}"
+    free_road = f"{x_agenda1._culture_qid},{swim_text},{free_text}"
 
     x_agenda2 = agendaunit_shop(_healer=spirit_text)
     x_agenda2.add_idea(
-        pad=x_agenda2._culture_title, idea_kid=ideacore_shop(_label=tech_text)
+        pad=x_agenda2._culture_qid, idea_kid=ideacore_shop(_label=tech_text)
     )
     x_agenda2.add_idea(pad=tech_road, idea_kid=ideacore_shop(_label=bowl_text))
     x_agenda2.add_idea(pad=swim_road, idea_kid=ideacore_shop(_label=free_text))
@@ -145,18 +145,18 @@ def test_agenda_idearoot_meld_2SameIdeasScenario():
     healer_text = "Yoa"
     x_agenda1 = agendaunit_shop(_healer=healer_text)
     tech_text = "tech"
-    tech_road = f"{x_agenda1._culture_title},{tech_text}"
+    tech_road = f"{x_agenda1._culture_qid},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{x_agenda1._culture_title},{tech_text},{bowl_text}"
+    bowl_road = f"{x_agenda1._culture_qid},{tech_text},{bowl_text}"
 
     x_agenda1.add_idea(
-        pad=x_agenda1._culture_title, idea_kid=ideacore_shop(_label=tech_text)
+        pad=x_agenda1._culture_qid, idea_kid=ideacore_shop(_label=tech_text)
     )
     x_agenda1.add_idea(pad=tech_road, idea_kid=ideacore_shop(_label=bowl_text))
 
     x_agenda2 = agendaunit_shop(_healer=healer_text)
     x_agenda2.add_idea(
-        pad=x_agenda2._culture_title, idea_kid=ideacore_shop(_label=tech_text)
+        pad=x_agenda2._culture_qid, idea_kid=ideacore_shop(_label=tech_text)
     )
     x_agenda2.add_idea(pad=tech_road, idea_kid=ideacore_shop(_label=bowl_text))
 
@@ -173,19 +173,19 @@ def test_agenda_acptfactunits_meld_BaseScenarioWorks():
     # GIVEN
     x_agenda1 = agendaunit_shop(_healer="test7")
     tech_text = "tech"
-    tech_road = f"{x_agenda1._culture_title},{tech_text}"
+    tech_road = f"{x_agenda1._culture_qid},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{x_agenda1._culture_title},{tech_text},{bowl_text}"
+    bowl_road = f"{x_agenda1._culture_qid},{tech_text},{bowl_text}"
 
     x_agenda1.add_idea(
-        pad=x_agenda1._culture_title, idea_kid=ideacore_shop(_label=tech_text)
+        pad=x_agenda1._culture_qid, idea_kid=ideacore_shop(_label=tech_text)
     )
     x_agenda1.add_idea(pad=tech_road, idea_kid=ideacore_shop(_label=bowl_text))
     x_agenda1.set_acptfact(base=tech_road, pick=bowl_road)
 
     x_agenda2 = agendaunit_shop(_healer="test7")
     x_agenda2.add_idea(
-        pad=x_agenda2._culture_title, idea_kid=ideacore_shop(_label=tech_text)
+        pad=x_agenda2._culture_qid, idea_kid=ideacore_shop(_label=tech_text)
     )
     x_agenda2.add_idea(pad=tech_road, idea_kid=ideacore_shop(_label=bowl_text))
     x_agenda2.set_acptfact(base=tech_road, pick=bowl_road)
@@ -205,15 +205,15 @@ def test_agenda_acptfactunits_meld_2AcptFactUnitsWorks():
     # GIVEN
     x_agenda1 = agendaunit_shop(_healer="test7")
     tech_text = "tech"
-    tech_road = f"{x_agenda1._culture_title},{tech_text}"
+    tech_road = f"{x_agenda1._culture_qid},{tech_text}"
     bowl_text = "bowl"
-    bowl_road = f"{x_agenda1._culture_title},{tech_text},{bowl_text}"
+    bowl_road = f"{x_agenda1._culture_qid},{tech_text},{bowl_text}"
     swim_text = "swim"
-    swim_road = f"{x_agenda1._culture_title},{swim_text}"
+    swim_road = f"{x_agenda1._culture_qid},{swim_text}"
     free_text = "freestyle"
 
     x_agenda1.add_idea(
-        pad=x_agenda1._culture_title, idea_kid=ideacore_shop(_label=tech_text)
+        pad=x_agenda1._culture_qid, idea_kid=ideacore_shop(_label=tech_text)
     )
     x_agenda1.add_idea(pad=tech_road, idea_kid=ideacore_shop(_label=bowl_text))
     x_agenda1.add_idea(pad=swim_road, idea_kid=ideacore_shop(_label=free_text))
@@ -221,7 +221,7 @@ def test_agenda_acptfactunits_meld_2AcptFactUnitsWorks():
 
     x_agenda2 = agendaunit_shop(_healer="test7")
     x_agenda2.add_idea(
-        pad=x_agenda2._culture_title, idea_kid=ideacore_shop(_label=tech_text)
+        pad=x_agenda2._culture_qid, idea_kid=ideacore_shop(_label=tech_text)
     )
     x_agenda2.add_idea(pad=tech_road, idea_kid=ideacore_shop(_label=bowl_text))
     x_agenda2.add_idea(pad=swim_road, idea_kid=ideacore_shop(_label=free_text))
@@ -244,7 +244,7 @@ def test_agenda_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
     x_agenda1 = agendaunit_shop(_healer="test7")
 
     swim_text = "swim"
-    swim_road = f"{x_agenda1._culture_title},{swim_text}"
+    swim_road = f"{x_agenda1._culture_qid},{swim_text}"
     free_text = "freestyle"
 
     x_agenda2 = agendaunit_shop(_healer="test7")
@@ -292,9 +292,9 @@ def test_agenda_acptfactunits_meld_AcptFactsAttributeCorrectlySet():
     x_agenda1 = agendaunit_shop(_healer="test7")
 
     swim_text = "swim"
-    swim_road = f"{x_agenda1._culture_title},{swim_text}"
+    swim_road = f"{x_agenda1._culture_qid},{swim_text}"
     free_text = "freestyle"
-    free_road = f"{x_agenda1._culture_title},{free_text}"
+    free_road = f"{x_agenda1._culture_qid},{free_text}"
     x_agenda1.add_idea(pad=swim_road, idea_kid=ideacore_shop(_label=free_text))
 
     x_agenda2 = agendaunit_shop(_healer="test7")
@@ -433,7 +433,7 @@ def test_agenda_meld_OriginUnitsCorrectlySet():
     bob_x_agenda = agendaunit_shop(_healer=bob_text)
 
     swim_text = "swim"
-    swim_road = f"{bob_x_agenda._culture_title},{swim_text}"
+    swim_road = f"{bob_x_agenda._culture_qid},{swim_text}"
     free_text = "freestyle"
     free_road = f"{swim_road},{free_text}"
     back_text = "backstroke"

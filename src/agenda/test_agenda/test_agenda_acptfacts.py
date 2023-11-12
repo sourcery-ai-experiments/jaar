@@ -13,8 +13,8 @@ from pytest import raises as pytest_raises
 
 def test_agenda_acptfact_exists():
     sx = examples_get_agenda_with_4_levels()
-    weekday_road = Road(f"{sx._culture_title},weekdays")
-    sunday_road = Road(f"{sx._culture_title},weekdays,Sunday")
+    weekday_road = Road(f"{sx._culture_qid},weekdays")
+    sunday_road = Road(f"{sx._culture_qid},weekdays,Sunday")
     sunday_agenda_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
     print(sunday_agenda_acptfact)
     sx._idearoot._acptfactunits = {sunday_agenda_acptfact.base: sunday_agenda_acptfact}
@@ -28,7 +28,7 @@ def test_agenda_acptfact_exists():
 
     sx._idearoot._acptfactunits = None
     assert sx._idearoot._acptfactunits is None
-    usa_week_road = Road(f"{sx._culture_title},nation-state")
+    usa_week_road = Road(f"{sx._culture_qid},nation-state")
     usa_week_unit = acptfactunit_shop(
         base=usa_week_road, pick=usa_week_road, open=608, nigh=610
     )
@@ -43,8 +43,8 @@ def test_agenda_acptfact_exists():
 
 def test_agenda_acptfact_create():
     sx = examples_get_agenda_with_4_levels()
-    sunday_road = Road(f"{sx._culture_title},weekdays,Sunday")
-    weekday_road = Road(f"{sx._culture_title},weekdays")
+    sunday_road = Road(f"{sx._culture_qid},weekdays,Sunday")
+    weekday_road = Road(f"{sx._culture_qid},weekdays")
     sx.set_acptfact(base=weekday_road, pick=sunday_road)
     sunday_agenda_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
     assert sx._idearoot._acptfactunits == {
@@ -59,9 +59,9 @@ def test_set_acptfact_FailsToCreateWhenBaseAndAcptFactAreDifferenctAndAcptFactId
     time_x = "time_x"
     sx.add_idea(
         idea_kid=ideacore_shop(_label=time_x, _begin=0, _close=140),
-        pad=sx._culture_title,
+        pad=sx._culture_qid,
     )
-    t_x_road = Road(f"{sx._culture_title},{time_x}")
+    t_x_road = Road(f"{sx._culture_qid},{time_x}")
     age1st = "age1st"
     sx.add_idea(
         idea_kid=ideacore_shop(_label=age1st, _begin=0, _close=20), pad=t_x_road
@@ -86,8 +86,8 @@ def test_set_acptfact_FailsToCreateWhenBaseAndAcptFactAreDifferenctAndAcptFactId
 def test_agenda_acptfact_create():
     # Given
     sx = examples_get_agenda_with_4_levels()
-    sunday_road = Road(f"{sx._culture_title},weekdays,Sunday")
-    weekday_road = Road(f"{sx._culture_title},weekdays")
+    sunday_road = Road(f"{sx._culture_qid},weekdays,Sunday")
+    weekday_road = Road(f"{sx._culture_qid},weekdays")
     sx.set_acptfact(base=weekday_road, pick=sunday_road)
     sunday_agenda_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
     assert sx._idearoot._acptfactunits == {
@@ -106,8 +106,8 @@ def test_agenda_get_idea_list_AcptFactHeirsCorrectlyInherited():
     healer_text = "Bob"
     sx = agendaunit_shop(_healer=healer_text)
     swim_text = "swim"
-    swim_road = Road(f"{sx._culture_title},{swim_text}")
-    sx.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=sx._culture_title)
+    swim_road = Road(f"{sx._culture_qid},{swim_text}")
+    sx.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=sx._culture_qid)
     fast_text = "fast"
     slow_text = "slow"
     fast_road = Road(f"{swim_road},{fast_text}")
@@ -116,8 +116,8 @@ def test_agenda_get_idea_list_AcptFactHeirsCorrectlyInherited():
     sx.add_idea(idea_kid=ideacore_shop(_label=slow_text), pad=swim_road)
 
     earth_text = "earth"
-    earth_road = Road(f"{sx._culture_title},{earth_text}")
-    sx.add_idea(idea_kid=ideacore_shop(_label=earth_text), pad=sx._culture_title)
+    earth_road = Road(f"{sx._culture_qid},{earth_text}")
+    sx.add_idea(idea_kid=ideacore_shop(_label=earth_text), pad=sx._culture_qid)
 
     swim_idea = sx.get_idea_kid(road=swim_road)
     fast_idea = sx.get_idea_kid(road=fast_road)
@@ -163,8 +163,8 @@ def test_agenda_get_idea_list_AcptFactUnitCorrectlyTransformsacptfactheir_shop()
     healer_text = "Bob"
     sx = agendaunit_shop(_healer=healer_text)
     swim_text = "swim"
-    swim_road = f"{sx._culture_title},{swim_text}"
-    sx.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=sx._culture_title)
+    swim_road = f"{sx._culture_qid},{swim_text}"
+    sx.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=sx._culture_qid)
     swim_idea = sx.get_idea_kid(road=swim_road)
 
     fast_text = "fast"
@@ -173,8 +173,8 @@ def test_agenda_get_idea_list_AcptFactUnitCorrectlyTransformsacptfactheir_shop()
     sx.add_idea(idea_kid=ideacore_shop(_label=slow_text), pad=swim_road)
 
     earth_text = "earth"
-    earth_road = Road(f"{sx._culture_title},{earth_text}")
-    sx.add_idea(idea_kid=ideacore_shop(_label=earth_text), pad=sx._culture_title)
+    earth_road = Road(f"{sx._culture_qid},{earth_text}")
+    sx.add_idea(idea_kid=ideacore_shop(_label=earth_text), pad=sx._culture_qid)
 
     assert swim_idea._acptfactheirs is None
 
@@ -206,8 +206,8 @@ def test_agenda_get_idea_list_AcptFactHeirCorrectlyDeletesAcptFactUnit():
     healer_text = "Tim"
     sx = agendaunit_shop(_healer=healer_text)
     swim_text = "swim"
-    swim_road = Road(f"{sx._culture_title},{swim_text}")
-    sx.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=sx._culture_title)
+    swim_road = Road(f"{sx._culture_qid},{swim_text}")
+    sx.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=sx._culture_qid)
     fast_text = "fast"
     slow_text = "slow"
     fast_road = Road(f"{swim_road},{fast_text}")
@@ -216,8 +216,8 @@ def test_agenda_get_idea_list_AcptFactHeirCorrectlyDeletesAcptFactUnit():
     sx.add_idea(idea_kid=ideacore_shop(_label=slow_text), pad=swim_road)
 
     earth_text = "earth"
-    earth_road = Road(f"{sx._culture_title},{earth_text}")
-    sx.add_idea(idea_kid=ideacore_shop(_label=earth_text), pad=sx._culture_title)
+    earth_road = Road(f"{sx._culture_qid},{earth_text}")
+    sx.add_idea(idea_kid=ideacore_shop(_label=earth_text), pad=sx._culture_qid)
 
     swim_idea = sx.get_idea_kid(road=swim_road)
 
@@ -248,15 +248,13 @@ def test_get_ranged_acptfacts():
     time_x = "time_x"
     sx.add_idea(
         idea_kid=ideacore_shop(_label=time_x, _begin=0, _close=140),
-        pad=sx._culture_title,
+        pad=sx._culture_qid,
     )
 
     clean = "clean"
-    sx.add_idea(
-        idea_kid=ideacore_shop(_label=clean, promise=True), pad=sx._culture_title
-    )
-    c_road = f"{sx._culture_title},{clean}"
-    t_x_road = f"{sx._culture_title},{time_x}"
+    sx.add_idea(idea_kid=ideacore_shop(_label=clean, promise=True), pad=sx._culture_qid)
+    c_road = f"{sx._culture_qid},{clean}"
+    t_x_road = f"{sx._culture_qid},{time_x}"
     # sx.edit_idea_attr(road=c_road, required_base=t_x_road, required_sufffact=t_x_road, required_sufffact_open=5, required_sufffact_nigh=10)
 
     sx.set_acptfact(base=t_x_road, pick=t_x_road, open=5, nigh=10)
@@ -270,9 +268,9 @@ def test_get_ranged_acptfacts():
     place = "place_x"
     sx.add_idea(
         idea_kid=ideacore_shop(_label=place, _begin=600, _close=800),
-        pad=sx._culture_title,
+        pad=sx._culture_qid,
     )
-    p_road = f"{sx._culture_title},{place}"
+    p_road = f"{sx._culture_qid},{place}"
     sx.set_acptfact(base=p_road, pick=p_road, open=5, nigh=10)
     print(f"When one ranged acptfact added {sx._idearoot._acptfactunits=}")
     assert len(sx._idearoot._acptfactunits) == 2
@@ -282,8 +280,8 @@ def test_get_ranged_acptfacts():
 
     # When one non-ranged_acptfact added
     mood = "mood_x"
-    sx.add_idea(idea_kid=ideacore_shop(_label=mood), pad=sx._culture_title)
-    m_road = f"{sx._culture_title},{mood}"
+    sx.add_idea(idea_kid=ideacore_shop(_label=mood), pad=sx._culture_qid)
+    m_road = f"{sx._culture_qid},{mood}"
     sx.set_acptfact(base=m_road, pick=m_road)
     print(f"When one non-ranged_acptfact added {sx._idearoot._acptfactunits=}")
     assert len(sx._idearoot._acptfactunits) == 3
@@ -299,12 +297,12 @@ def test_get_roots_ranged_acptfacts():
     time_x = "time_x"
     sx.add_idea(
         idea_kid=ideacore_shop(_label=time_x, _begin=0, _close=140),
-        pad=sx._culture_title,
+        pad=sx._culture_qid,
     )
-    t_x_road = f"{sx._culture_title},{time_x}"
+    t_x_road = f"{sx._culture_qid},{time_x}"
     mood_x = "mood_x"
-    sx.add_idea(idea_kid=ideacore_shop(_label=mood_x), pad=sx._culture_title)
-    m_x_road = f"{sx._culture_title},{mood_x}"
+    sx.add_idea(idea_kid=ideacore_shop(_label=mood_x), pad=sx._culture_qid)
+    m_x_road = f"{sx._culture_qid},{mood_x}"
     happy = "happy"
     sad = "Sad"
     sx.add_idea(idea_kid=ideacore_shop(_label=happy), pad=m_x_road)
@@ -324,9 +322,9 @@ def test_get_roots_ranged_acptfacts():
     mirrow_x = "mirrow_x"
     sx.add_idea(
         idea_kid=ideacore_shop(_label=mirrow_x, _numeric_road=time_x),
-        pad=sx._culture_title,
+        pad=sx._culture_qid,
     )
-    m_x_road = f"{sx._culture_title},{mirrow_x}"
+    m_x_road = f"{sx._culture_qid},{mirrow_x}"
     sx.set_acptfact(base=m_x_road, pick=t_x_road, open=5, nigh=10)
     assert len(sx._idearoot._acptfactunits) == 3
 
@@ -340,14 +338,14 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario1(
     sx = agendaunit_shop(_healer=healer_text)
     # # the action
     # clean = "clean"
-    # sx.add_idea(idea_kid=ideacore_shop(_label=clean, promise=True), pad=sx._culture_title)
+    # sx.add_idea(idea_kid=ideacore_shop(_label=clean, promise=True), pad=sx._culture_qid)
 
     time_x = "time_x"
     sx.add_idea(
         idea_kid=ideacore_shop(_label=time_x, _begin=0, _close=140),
-        pad=sx._culture_title,
+        pad=sx._culture_qid,
     )
-    t_x_road = f"{sx._culture_title},{time_x}"
+    t_x_road = f"{sx._culture_qid},{time_x}"
     age1st = "age1st"
     age2nd = "age2nd"
     age3rd = "age3rd"
@@ -418,14 +416,14 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario2(
     sx = agendaunit_shop(_healer=healer_text)
     # # the action
     # clean = "clean"
-    # sx.add_idea(idea_kid=ideacore_shop(_label=clean, promise=True), pad=sx._culture_title)
+    # sx.add_idea(idea_kid=ideacore_shop(_label=clean, promise=True), pad=sx._culture_qid)
 
     time_x = "time_x"
     sx.add_idea(
         idea_kid=ideacore_shop(_label=time_x, _begin=0, _close=140),
-        pad=sx._culture_title,
+        pad=sx._culture_qid,
     )
-    t_x_road = f"{sx._culture_title},{time_x}"
+    t_x_road = f"{sx._culture_qid},{time_x}"
     age1st = "age1st"
     age2nd = "age2nd"
     age3rd = "age3rd"
@@ -494,14 +492,14 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario3(
     sx = agendaunit_shop(_healer=healer_text)
     # # the action
     # clean = "clean"
-    # sx.add_idea(idea_kid=ideacore_shop(_label=clean, promise=True), pad=sx._culture_title)
+    # sx.add_idea(idea_kid=ideacore_shop(_label=clean, promise=True), pad=sx._culture_qid)
 
     time_x = "time_x"
     sx.add_idea(
         idea_kid=ideacore_shop(_label=time_x, _begin=0, _close=140),
-        pad=sx._culture_title,
+        pad=sx._culture_qid,
     )
-    t_x_road = f"{sx._culture_title},{time_x}"
+    t_x_road = f"{sx._culture_qid},{time_x}"
     age1st = "age1st"
     age2nd = "age2nd"
     age3rd = "age3rd"
@@ -610,28 +608,28 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario4(
     sx = agendaunit_shop(_healer=healer_text)
     time_x = "time_x"
     arsub1 = "arbitary_subsection1"
-    as1_road = f"{sx._culture_title},{arsub1}"
+    as1_road = f"{sx._culture_qid},{arsub1}"
     sx.add_idea(
         idea_kid=ideacore_shop(_label=arsub1, _begin=0, _close=140),
-        pad=sx._culture_title,
+        pad=sx._culture_qid,
     )
     # range-root idea has range_source_road
     sx.add_idea(
         idea_kid=ideacore_shop(
             _label=time_x, _begin=0, _close=140, _range_source_road=as1_road
         ),
-        pad=sx._culture_title,
+        pad=sx._culture_qid,
     )
 
     arsub2 = "arbitary_subsection2"
-    as2_road = f"{sx._culture_title},{arsub2}"
+    as2_road = f"{sx._culture_qid},{arsub2}"
     sx.add_idea(
         idea_kid=ideacore_shop(_label=arsub2, _begin=0, _close=20),
-        pad=sx._culture_title,
+        pad=sx._culture_qid,
     )
 
     # non-range-root child idea has range_source_road
-    t_x_road = f"{sx._culture_title},{time_x}"
+    t_x_road = f"{sx._culture_qid},{time_x}"
     age1st = "age1st"
     sx.add_idea(
         idea_kid=ideacore_shop(
@@ -662,57 +660,57 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario4_
     healer_text = "Tim"
     sx = agendaunit_shop(_healer=healer_text)
     sx.set_time_hreg_ideas(c400_count=7)
-    jajatime_road = f"{sx._culture_title},time,jajatime"
+    jajatime_road = f"{sx._culture_qid},time,jajatime"
     sx.set_acptfact(base=jajatime_road, pick=jajatime_road, open=1500, nigh=1500)
     lhu = sx._get_lemma_acptfactunits()
 
-    assert lhu[f"{sx._culture_title},time,jajatime,400 year cycle"].open == 1500
-    assert lhu[f"{sx._culture_title},time,jajatime,400 year cycle"].nigh == 1500
-    assert lhu[f"{sx._culture_title},time,jajatime,400 year cycles"].open > 0
-    assert lhu[f"{sx._culture_title},time,jajatime,400 year cycles"].open < 1
-    assert lhu[f"{sx._culture_title},time,jajatime,400 year cycles"].nigh > 0
-    assert lhu[f"{sx._culture_title},time,jajatime,400 year cycles"].nigh < 1
-    assert lhu[f"{sx._culture_title},time,jajatime,days"].open >= 1
-    assert lhu[f"{sx._culture_title},time,jajatime,days"].open <= 2
-    assert lhu[f"{sx._culture_title},time,jajatime,days"].nigh >= 1
-    assert lhu[f"{sx._culture_title},time,jajatime,days"].nigh <= 2
-    assert lhu[f"{sx._culture_title},time,jajatime,day"].open == 60
-    assert lhu[f"{sx._culture_title},time,jajatime,day"].nigh == 60
-    assert lhu[f"{sx._culture_title},time,jajatime,week"].open == 1500
-    assert int(lhu[f"{sx._culture_title},time,jajatime,week"].nigh) == 1500
-    assert lhu[f"{sx._culture_title},time,tech,week"].open == 1500
-    assert int(lhu[f"{sx._culture_title},time,tech,week"].nigh) == 1500
+    assert lhu[f"{sx._culture_qid},time,jajatime,400 year cycle"].open == 1500
+    assert lhu[f"{sx._culture_qid},time,jajatime,400 year cycle"].nigh == 1500
+    assert lhu[f"{sx._culture_qid},time,jajatime,400 year cycles"].open > 0
+    assert lhu[f"{sx._culture_qid},time,jajatime,400 year cycles"].open < 1
+    assert lhu[f"{sx._culture_qid},time,jajatime,400 year cycles"].nigh > 0
+    assert lhu[f"{sx._culture_qid},time,jajatime,400 year cycles"].nigh < 1
+    assert lhu[f"{sx._culture_qid},time,jajatime,days"].open >= 1
+    assert lhu[f"{sx._culture_qid},time,jajatime,days"].open <= 2
+    assert lhu[f"{sx._culture_qid},time,jajatime,days"].nigh >= 1
+    assert lhu[f"{sx._culture_qid},time,jajatime,days"].nigh <= 2
+    assert lhu[f"{sx._culture_qid},time,jajatime,day"].open == 60
+    assert lhu[f"{sx._culture_qid},time,jajatime,day"].nigh == 60
+    assert lhu[f"{sx._culture_qid},time,jajatime,week"].open == 1500
+    assert int(lhu[f"{sx._culture_qid},time,jajatime,week"].nigh) == 1500
+    assert lhu[f"{sx._culture_qid},time,tech,week"].open == 1500
+    assert int(lhu[f"{sx._culture_qid},time,tech,week"].nigh) == 1500
 
 
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario5():
     healer_text = "Tim"
     sx = agendaunit_shop(_healer=healer_text)
     sx.set_time_hreg_ideas(c400_count=7)
-    jajatime_road = f"{sx._culture_title},time,jajatime"
+    jajatime_road = f"{sx._culture_qid},time,jajatime"
     sx.set_acptfact(base=jajatime_road, pick=jajatime_road, open=1500, nigh=1063954002)
     lhu = sx._get_lemma_acptfactunits()
 
-    assert lhu[f"{sx._culture_title},time,jajatime,400 year cycle"].open == 0
-    assert lhu[f"{sx._culture_title},time,jajatime,400 year cycle"].nigh == 210379680
-    assert lhu[f"{sx._culture_title},time,jajatime,400 year cycles"].open > 0
-    assert lhu[f"{sx._culture_title},time,jajatime,400 year cycles"].open < 1
-    assert lhu[f"{sx._culture_title},time,jajatime,400 year cycles"].nigh > 5
-    assert lhu[f"{sx._culture_title},time,jajatime,400 year cycles"].nigh < 6
-    assert int(lhu[f"{sx._culture_title},time,jajatime,days"].open) == 1  # 0 / 1440
+    assert lhu[f"{sx._culture_qid},time,jajatime,400 year cycle"].open == 0
+    assert lhu[f"{sx._culture_qid},time,jajatime,400 year cycle"].nigh == 210379680
+    assert lhu[f"{sx._culture_qid},time,jajatime,400 year cycles"].open > 0
+    assert lhu[f"{sx._culture_qid},time,jajatime,400 year cycles"].open < 1
+    assert lhu[f"{sx._culture_qid},time,jajatime,400 year cycles"].nigh > 5
+    assert lhu[f"{sx._culture_qid},time,jajatime,400 year cycles"].nigh < 6
+    assert int(lhu[f"{sx._culture_qid},time,jajatime,days"].open) == 1  # 0 / 1440
     assert (
-        int(lhu[f"{sx._culture_title},time,jajatime,days"].nigh) == 738856
+        int(lhu[f"{sx._culture_qid},time,jajatime,days"].nigh) == 738856
     )  # 1063953183 / 1440
-    assert lhu[f"{sx._culture_title},time,jajatime,day"].open == 0  # 0 / 1440
+    assert lhu[f"{sx._culture_qid},time,jajatime,day"].open == 0  # 0 / 1440
     assert (
-        lhu[f"{sx._culture_title},time,jajatime,day"].nigh == 1440
+        lhu[f"{sx._culture_qid},time,jajatime,day"].nigh == 1440
     )  # 1362  # 1063953183 / 1440
-    assert lhu[f"{sx._culture_title},time,jajatime,week"].open == 0  # 0 / 1440
+    assert lhu[f"{sx._culture_qid},time,jajatime,week"].open == 0  # 0 / 1440
     assert (
-        int(lhu[f"{sx._culture_title},time,jajatime,week"].nigh) == 10080
+        int(lhu[f"{sx._culture_qid},time,jajatime,week"].nigh) == 10080
     )  # 1063953183 / 1440
-    assert lhu[f"{sx._culture_title},time,tech,week"].open == 0  # 0 / 1440
+    assert lhu[f"{sx._culture_qid},time,tech,week"].open == 0  # 0 / 1440
     assert (
-        int(lhu[f"{sx._culture_title},time,tech,week"].nigh) == 10080
+        int(lhu[f"{sx._culture_qid},time,tech,week"].nigh) == 10080
     )  # 1063953183 / 1440
 
 
@@ -720,27 +718,27 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario6(
     healer_text = "Tim"
     sx = agendaunit_shop(_healer=healer_text)
     sx.set_time_hreg_ideas(c400_count=7)
-    jajatime_road = f"{sx._culture_title},time,jajatime"
+    jajatime_road = f"{sx._culture_qid},time,jajatime"
     sx.set_acptfact(
         base=jajatime_road, pick=jajatime_road, open=1063954000, nigh=1063954002
     )
     lhu = sx._get_lemma_acptfactunits()
 
-    assert lhu[f"{sx._culture_title},time,jajatime,400 year cycle"].open == 12055600.0
-    assert lhu[f"{sx._culture_title},time,jajatime,400 year cycle"].nigh == 12055602.0
-    assert lhu[f"{sx._culture_title},time,jajatime,400 year cycles"].open > 5
-    assert lhu[f"{sx._culture_title},time,jajatime,400 year cycles"].open < 6
-    assert lhu[f"{sx._culture_title},time,jajatime,400 year cycles"].nigh > 5
-    assert lhu[f"{sx._culture_title},time,jajatime,400 year cycles"].nigh < 6
+    assert lhu[f"{sx._culture_qid},time,jajatime,400 year cycle"].open == 12055600.0
+    assert lhu[f"{sx._culture_qid},time,jajatime,400 year cycle"].nigh == 12055602.0
+    assert lhu[f"{sx._culture_qid},time,jajatime,400 year cycles"].open > 5
+    assert lhu[f"{sx._culture_qid},time,jajatime,400 year cycles"].open < 6
+    assert lhu[f"{sx._culture_qid},time,jajatime,400 year cycles"].nigh > 5
+    assert lhu[f"{sx._culture_qid},time,jajatime,400 year cycles"].nigh < 6
     assert (
-        int(lhu[f"{sx._culture_title},time,jajatime,days"].open) == 738856
+        int(lhu[f"{sx._culture_qid},time,jajatime,days"].open) == 738856
     )  # 1063954000 / 1440
     assert (
-        int(lhu[f"{sx._culture_title},time,jajatime,days"].nigh) == 738856
+        int(lhu[f"{sx._culture_qid},time,jajatime,days"].nigh) == 738856
     )  # 1063954000 / 1440
-    assert lhu[f"{sx._culture_title},time,jajatime,day"].open == 1360  # 0 / 1440
+    assert lhu[f"{sx._culture_qid},time,jajatime,day"].open == 1360  # 0 / 1440
     assert (
-        int(lhu[f"{sx._culture_title},time,jajatime,day"].nigh) == 1362
+        int(lhu[f"{sx._culture_qid},time,jajatime,day"].nigh) == 1362
     )  # 1063953183 / 1440
 
 
@@ -749,7 +747,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario7(
     healer_text = "Tim"
     sx = agendaunit_shop(_healer=healer_text)
     sx.set_time_hreg_ideas(c400_count=7)
-    jajatime_road = f"{sx._culture_title},time,jajatime"
+    jajatime_road = f"{sx._culture_qid},time,jajatime"
 
     # When given a minute range that should be Thursday to Monday midnight
     sx.set_acptfact(
@@ -758,33 +756,33 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario7(
     lhu = sx._get_lemma_acptfactunits()
 
     # Then
-    week_open = lhu[f"{sx._culture_title},time,jajatime,week"].open
-    week_nigh = lhu[f"{sx._culture_title},time,jajatime,week"].nigh
-    print(f"for {sx._culture_title},time,jajatime,week: {week_open=} {week_nigh=}")
-    assert lhu[f"{sx._culture_title},time,jajatime,week"].open == 7200
-    assert lhu[f"{sx._culture_title},time,jajatime,week"].nigh == 2880
+    week_open = lhu[f"{sx._culture_qid},time,jajatime,week"].open
+    week_nigh = lhu[f"{sx._culture_qid},time,jajatime,week"].nigh
+    print(f"for {sx._culture_qid},time,jajatime,week: {week_open=} {week_nigh=}")
+    assert lhu[f"{sx._culture_qid},time,jajatime,week"].open == 7200
+    assert lhu[f"{sx._culture_qid},time,jajatime,week"].nigh == 2880
 
-    week_open = lhu[f"{sx._culture_title},time,tech,week"].open
-    week_nigh = lhu[f"{sx._culture_title},time,tech,week"].nigh
-    print(f"for {sx._culture_title},time,tech,week: {week_open=} {week_nigh=}")
-    assert lhu[f"{sx._culture_title},time,tech,week"].open == 7200
-    assert lhu[f"{sx._culture_title},time,tech,week"].nigh == 2880
-    print(lhu[f"{sx._culture_title},time,tech,week"])
-    print(lhu[f"{sx._culture_title},time,tech,week,Thursday"])
-    print(lhu[f"{sx._culture_title},time,tech,week,Friday"])
-    print(lhu[f"{sx._culture_title},time,tech,week,Saturday"])
-    print(lhu[f"{sx._culture_title},time,tech,week,Sunday"])
-    print(lhu[f"{sx._culture_title},time,tech,week,Monday"])
-    print(lhu[f"{sx._culture_title},time,tech,week,Tuesday"])
-    print(lhu[f"{sx._culture_title},time,tech,week,Wednesday"])
+    week_open = lhu[f"{sx._culture_qid},time,tech,week"].open
+    week_nigh = lhu[f"{sx._culture_qid},time,tech,week"].nigh
+    print(f"for {sx._culture_qid},time,tech,week: {week_open=} {week_nigh=}")
+    assert lhu[f"{sx._culture_qid},time,tech,week"].open == 7200
+    assert lhu[f"{sx._culture_qid},time,tech,week"].nigh == 2880
+    print(lhu[f"{sx._culture_qid},time,tech,week"])
+    print(lhu[f"{sx._culture_qid},time,tech,week,Thursday"])
+    print(lhu[f"{sx._culture_qid},time,tech,week,Friday"])
+    print(lhu[f"{sx._culture_qid},time,tech,week,Saturday"])
+    print(lhu[f"{sx._culture_qid},time,tech,week,Sunday"])
+    print(lhu[f"{sx._culture_qid},time,tech,week,Monday"])
+    print(lhu[f"{sx._culture_qid},time,tech,week,Tuesday"])
+    print(lhu[f"{sx._culture_qid},time,tech,week,Wednesday"])
 
-    # assert lhu[f"{sx._culture_title},time,tech,week,Thursday"].active == True
-    # assert lhu[f"{sx._culture_title},time,tech,week,Friday"].active == True
-    # assert lhu[f"{sx._culture_title},time,tech,week,Saturday"].active == True
-    # assert lhu[f"{sx._culture_title},time,tech,week,Sunday"].active == True
-    # assert lhu[f"{sx._culture_title},time,tech,week,Monday"].active == False
-    # assert lhu[f"{sx._culture_title},time,tech,week,Tuesday"].active == False
-    # assert lhu[f"{sx._culture_title},time,tech,week,Wednesday"].active == False
+    # assert lhu[f"{sx._culture_qid},time,tech,week,Thursday"].active == True
+    # assert lhu[f"{sx._culture_qid},time,tech,week,Friday"].active == True
+    # assert lhu[f"{sx._culture_qid},time,tech,week,Saturday"].active == True
+    # assert lhu[f"{sx._culture_qid},time,tech,week,Sunday"].active == True
+    # assert lhu[f"{sx._culture_qid},time,tech,week,Monday"].active == False
+    # assert lhu[f"{sx._culture_qid},time,tech,week,Tuesday"].active == False
+    # assert lhu[f"{sx._culture_qid},time,tech,week,Wednesday"].active == False
 
 
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario8():
@@ -792,7 +790,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario8(
     healer_text = "Tim"
     sx = agendaunit_shop(_healer=healer_text)
     sx.set_time_hreg_ideas(c400_count=7)
-    jajatime_road = f"{sx._culture_title},time,jajatime"
+    jajatime_road = f"{sx._culture_qid},time,jajatime"
 
     # When given a minute range that should be Thursday to Monday midnight
     sx.set_acptfact(
@@ -801,33 +799,33 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario8(
     lhu = sx._get_lemma_acptfactunits()
 
     # Then
-    week_open = lhu[f"{sx._culture_title},time,jajatime,week"].open
-    week_nigh = lhu[f"{sx._culture_title},time,jajatime,week"].nigh
-    print(f"for {sx._culture_title},time,jajatime,week: {week_open=} {week_nigh=}")
-    assert lhu[f"{sx._culture_title},time,jajatime,week"].open == 7200
-    assert lhu[f"{sx._culture_title},time,jajatime,week"].nigh == 7200
+    week_open = lhu[f"{sx._culture_qid},time,jajatime,week"].open
+    week_nigh = lhu[f"{sx._culture_qid},time,jajatime,week"].nigh
+    print(f"for {sx._culture_qid},time,jajatime,week: {week_open=} {week_nigh=}")
+    assert lhu[f"{sx._culture_qid},time,jajatime,week"].open == 7200
+    assert lhu[f"{sx._culture_qid},time,jajatime,week"].nigh == 7200
 
-    week_open = lhu[f"{sx._culture_title},time,tech,week"].open
-    week_nigh = lhu[f"{sx._culture_title},time,tech,week"].nigh
-    print(f"for {sx._culture_title},time,tech,week: {week_open=} {week_nigh=}")
-    assert lhu[f"{sx._culture_title},time,tech,week"].open == 7200
-    assert lhu[f"{sx._culture_title},time,tech,week"].nigh == 7200
-    print(lhu[f"{sx._culture_title},time,tech,week"])
-    print(lhu[f"{sx._culture_title},time,tech,week,Thursday"])
-    print(lhu[f"{sx._culture_title},time,tech,week,Friday"])
-    print(lhu[f"{sx._culture_title},time,tech,week,Saturday"])
-    print(lhu[f"{sx._culture_title},time,tech,week,Sunday"])
-    print(lhu[f"{sx._culture_title},time,tech,week,Monday"])
-    print(lhu[f"{sx._culture_title},time,tech,week,Tuesday"])
-    print(lhu[f"{sx._culture_title},time,tech,week,Wednesday"])
+    week_open = lhu[f"{sx._culture_qid},time,tech,week"].open
+    week_nigh = lhu[f"{sx._culture_qid},time,tech,week"].nigh
+    print(f"for {sx._culture_qid},time,tech,week: {week_open=} {week_nigh=}")
+    assert lhu[f"{sx._culture_qid},time,tech,week"].open == 7200
+    assert lhu[f"{sx._culture_qid},time,tech,week"].nigh == 7200
+    print(lhu[f"{sx._culture_qid},time,tech,week"])
+    print(lhu[f"{sx._culture_qid},time,tech,week,Thursday"])
+    print(lhu[f"{sx._culture_qid},time,tech,week,Friday"])
+    print(lhu[f"{sx._culture_qid},time,tech,week,Saturday"])
+    print(lhu[f"{sx._culture_qid},time,tech,week,Sunday"])
+    print(lhu[f"{sx._culture_qid},time,tech,week,Monday"])
+    print(lhu[f"{sx._culture_qid},time,tech,week,Tuesday"])
+    print(lhu[f"{sx._culture_qid},time,tech,week,Wednesday"])
 
-    # assert lhu[f"{sx._culture_title},time,tech,week,Thursday"].active == True
-    # assert lhu[f"{sx._culture_title},time,tech,week,Friday"].active == False
-    # assert lhu[f"{sx._culture_title},time,tech,week,Saturday"].active == False
-    # assert lhu[f"{sx._culture_title},time,tech,week,Sunday"].active == False
-    # assert lhu[f"{sx._culture_title},time,tech,week,Monday"].active == False
-    # assert lhu[f"{sx._culture_title},time,tech,week,Tuesday"].active == False
-    # assert lhu[f"{sx._culture_title},time,tech,week,Wednesday"].active == False
+    # assert lhu[f"{sx._culture_qid},time,tech,week,Thursday"].active == True
+    # assert lhu[f"{sx._culture_qid},time,tech,week,Friday"].active == False
+    # assert lhu[f"{sx._culture_qid},time,tech,week,Saturday"].active == False
+    # assert lhu[f"{sx._culture_qid},time,tech,week,Sunday"].active == False
+    # assert lhu[f"{sx._culture_qid},time,tech,week,Monday"].active == False
+    # assert lhu[f"{sx._culture_qid},time,tech,week,Tuesday"].active == False
+    # assert lhu[f"{sx._culture_qid},time,tech,week,Wednesday"].active == False
 
 
 def test_agenda_set_acptfact_create_missing_ideas_CreatesBaseAndAcptFact():
@@ -836,9 +834,9 @@ def test_agenda_set_acptfact_create_missing_ideas_CreatesBaseAndAcptFact():
     sx = agendaunit_shop(_healer=healer_text)
     sx._idearoot.set_kids_empty_if_null()
     issue_text = "issues"
-    issue_road = Road(f"{sx._culture_title},{issue_text}")
+    issue_road = Road(f"{sx._culture_qid},{issue_text}")
     climate_text = "climate"
-    climate_road = Road(f"{sx._culture_title},{issue_text},{climate_text}")
+    climate_road = Road(f"{sx._culture_qid},{issue_text},{climate_text}")
     assert sx._idearoot._kids.get(issue_text) is None
 
     # WHEN
@@ -857,27 +855,27 @@ def test_agenda_get_acptfactunits_base_and_acptfact_list_CorrectlyReturnsListOfA
     sx._idearoot.set_kids_empty_if_null()
 
     issue_text = "issues"
-    issue_road = Road(f"{sx._culture_title},{issue_text}")
+    issue_road = Road(f"{sx._culture_qid},{issue_text}")
     climate_text = "climate"
-    climate_road = Road(f"{sx._culture_title},{issue_text},{climate_text}")
+    climate_road = Road(f"{sx._culture_qid},{issue_text},{climate_text}")
     sx.set_acptfact(base=issue_road, pick=climate_road, create_missing_ideas=True)
 
     weather_text = "weather"
-    weather_road = Road(f"{sx._culture_title},{weather_text}")
+    weather_road = Road(f"{sx._culture_qid},{weather_text}")
     windy_text = "windy"
-    windy_road = Road(f"{sx._culture_title},{weather_text},{windy_text}")
+    windy_road = Road(f"{sx._culture_qid},{weather_text},{windy_text}")
     sx.set_acptfact(base=weather_road, pick=windy_road, create_missing_ideas=True)
     hot_text = "hot"
-    hot_road = Road(f"{sx._culture_title},{weather_text},{hot_text}")
+    hot_road = Road(f"{sx._culture_qid},{weather_text},{hot_text}")
     sx.set_acptfact(base=weather_road, pick=hot_road, create_missing_ideas=True)
     cold_text = "cold"
-    cold_road = Road(f"{sx._culture_title},{weather_text},{cold_text}")
+    cold_road = Road(f"{sx._culture_qid},{weather_text},{cold_text}")
     sx.set_acptfact(base=weather_road, pick=cold_road, create_missing_ideas=True)
 
     games_text = "games"
-    games_road = Road(f"{sx._culture_title},{games_text}")
+    games_road = Road(f"{sx._culture_qid},{games_text}")
     football_text = "football"
-    football_road = Road(f"{sx._culture_title},{games_text},{football_text}")
+    football_road = Road(f"{sx._culture_qid},{games_text},{football_text}")
     sx.set_acptfact(base=games_road, pick=football_road, create_missing_ideas=True)
 
     # WHEN

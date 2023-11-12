@@ -10,12 +10,12 @@ from os import listdir as os_listdir, path as os_path
 from pytest import fixture as pytest_fixture
 
 
-def get_temp_env_title():
+def get_temp_env_qid():
     return "ex_env77"
 
 
 def get_temp_env_dir():
-    return f"{get_test_worlds_dir()}/{get_temp_env_title()}"
+    return f"{get_test_worlds_dir()}/{get_temp_env_qid()}"
 
 
 def get_test_worlds_dir():
@@ -58,14 +58,14 @@ def create_example_worlds_list():
 #     pass
 
 
-# def copy_evaluation_world(src_title: str, dest_title: str):
+# def copy_evaluation_world(src_qid: str, dest_qid: str):
 #     base_dir = "src/world/examples/worlds"
-#     new_dir = f"{base_dir}/{dest_title}"
+#     new_dir = f"{base_dir}/{dest_qid}"
 #     if os_path.exists(new_dir):
 #         raise InvalidcultureCopyException(
 #             f"Cannot copy world to '{new_dir}' directory because '{new_dir}' exists."
 #         )
 #     # base_dir = world_obj.get_object_root_dir()
-#     src_dir = f"{base_dir}/{src_title}"
-#     dest_dir = f"{base_dir}/{dest_title}"
+#     src_dir = f"{base_dir}/{src_qid}"
+#     dest_dir = f"{base_dir}/{dest_qid}"
 #     copy_dir(src_dir=src_dir, dest_dir=dest_dir)

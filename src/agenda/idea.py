@@ -1072,16 +1072,16 @@ class IdeaRootLabelNotEmptyException(Exception):
 
 @dataclasses.dataclass
 class IdeaRoot(IdeaCore):
-    def set_idea_label(self, _label: str, agenda_culture_title: str = None):
-        if _label != root_label() and agenda_culture_title is None:
+    def set_idea_label(self, _label: str, agenda_culture_qid: str = None):
+        if _label != root_label() and agenda_culture_qid is None:
             raise IdeaRootLabelNotEmptyException(
                 f"Cannot set idearoot to string other than '{root_label()}'"
             )
-        elif _label != agenda_culture_title != None:
+        elif _label != agenda_culture_qid != None:
             raise IdeaRootLabelNotEmptyException(
-                f"Cannot set idearoot to string other than '{agenda_culture_title}'"
+                f"Cannot set idearoot to string other than '{agenda_culture_qid}'"
             )
-        elif _label != root_label() and agenda_culture_title == _label:
+        elif _label != root_label() and agenda_culture_qid == _label:
             self._label = _label
         else:
             self._label = root_label()

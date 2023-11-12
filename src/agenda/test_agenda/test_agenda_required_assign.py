@@ -13,8 +13,8 @@ def test_agenda_edit_idea_attr_CorrectlySetsAssignedUnit():
     healer_text = "Xio"
     x_agenda = agendaunit_shop(_healer=healer_text)
     run_text = "run"
-    run_road = f"{x_agenda._culture_title},{run_text}"
-    x_agenda.add_idea(ideacore_shop(_label=run_text), pad=x_agenda._culture_title)
+    run_road = f"{x_agenda._culture_qid},{run_text}"
+    x_agenda.add_idea(ideacore_shop(_label=run_text), pad=x_agenda._culture_qid)
     run_idea = x_agenda.get_idea_kid(road=run_road)
     assert run_idea._assignedunit is None
 
@@ -32,7 +32,7 @@ def test_agenda_idearoot_assignedunit_CorrectlySets_idea_assignedheir():
 
     healer_text = "Tim"
     x_agenda = agendaunit_shop(_healer=healer_text)
-    x_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=x_agenda._culture_title)
+    x_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=x_agenda._culture_qid)
     assert x_agenda._idearoot._assignedunit == assigned_unit_x
     assert x_agenda._idearoot._assignedheir is None
 
@@ -86,7 +86,7 @@ def test_agenda_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir(
     healer_text = "Noa"
     x_agenda = agendaunit_shop(_healer=healer_text)
     swim_text = "swiming"
-    swim_road = f"{x_agenda._culture_title},{swim_text}"
+    swim_road = f"{x_agenda._culture_qid},{swim_text}"
     morn_text = "morning"
     morn_road = f"{swim_road},{morn_text}"
     four_text = "fourth"
@@ -96,7 +96,7 @@ def test_agenda_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir(
     assigned_unit_x.set_suffgroup(pid=swimmers_text)
 
     x_agenda.set_groupunit(groupunit=groupunit_shop(brand=swimmers_text))
-    x_agenda.add_idea(ideacore_shop(_label=swim_text), pad=x_agenda._culture_title)
+    x_agenda.add_idea(ideacore_shop(_label=swim_text), pad=x_agenda._culture_qid)
     x_agenda.add_idea(ideacore_shop(_label=morn_text), pad=swim_road)
     x_agenda.add_idea(ideacore_shop(_label=four_text), pad=morn_road)
     x_agenda.edit_idea_attr(road=swim_road, assignedunit=assigned_unit_x)
@@ -129,11 +129,11 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignU
     x_agenda1.add_partyunit(pid=zoa_text)
 
     work_text = "work"
-    work_road = f"{x_agenda1._culture_title},{work_text}"
+    work_road = f"{x_agenda1._culture_qid},{work_text}"
     swim_text = "swim"
-    swim_road = f"{x_agenda1._culture_title},{swim_text}"
-    x_agenda1.add_idea(ideacore_shop(_label=work_text), pad=x_agenda1._culture_title)
-    x_agenda1.add_idea(ideacore_shop(_label=swim_text), pad=x_agenda1._culture_title)
+    swim_road = f"{x_agenda1._culture_qid},{swim_text}"
+    x_agenda1.add_idea(ideacore_shop(_label=work_text), pad=x_agenda1._culture_qid)
+    x_agenda1.add_idea(ideacore_shop(_label=swim_text), pad=x_agenda1._culture_qid)
     swim_assignedunit = assigned_unit_shop()
     swim_assignedunit.set_suffgroup(pid=xia_text)
     swim_assignedunit.set_suffgroup(pid=zoa_text)
@@ -163,11 +163,11 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     x_agenda1.add_partyunit(pid=zoa_text)
 
     work_text = "work"
-    work_road = f"{x_agenda1._culture_title},{work_text}"
+    work_road = f"{x_agenda1._culture_qid},{work_text}"
     swim_text = "swim"
-    swim_road = f"{x_agenda1._culture_title},{swim_text}"
-    x_agenda1.add_idea(ideacore_shop(_label=work_text), pad=x_agenda1._culture_title)
-    x_agenda1.add_idea(ideacore_shop(_label=swim_text), pad=x_agenda1._culture_title)
+    swim_road = f"{x_agenda1._culture_qid},{swim_text}"
+    x_agenda1.add_idea(ideacore_shop(_label=work_text), pad=x_agenda1._culture_qid)
+    x_agenda1.add_idea(ideacore_shop(_label=swim_text), pad=x_agenda1._culture_qid)
     swim_assignedunit = assigned_unit_shop()
     swim_assignedunit.set_suffgroup(pid=xia_text)
     swim_assignedunit.set_suffgroup(pid=zoa_text)
@@ -181,7 +181,7 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     x_agenda2.add_partyunit(pid=xia_text)
     x_agenda2.add_idea(
         idea_kid=x_agenda1_swim_idea,
-        pad=x_agenda2._culture_title,
+        pad=x_agenda2._culture_qid,
         create_missing_ideas_groups=False,
     )
 

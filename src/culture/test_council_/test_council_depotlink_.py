@@ -13,10 +13,10 @@ from src.culture.examples.example_councils import (
 from src.culture.examples.council_env_kit import (
     council_dir_setup_cleanup,
     get_temp_councilunit_dir,
-    get_temp_culture_title,
+    get_temp_culture_qid,
     create_agenda_file,
 )
-from src.culture.examples.culture_env_kit import get_temp_env_title
+from src.culture.examples.culture_env_kit import get_temp_env_qid
 from src.culture.culture import cultureunit_shop
 from os import path as os_path
 from pytest import raises as pytest_raises
@@ -28,7 +28,7 @@ def test_councilunit_set_depotlink_RaisesErrorWhenAgendaDoesNotExist(
     # GIVEN
     sue_text = "Sue"
     env_dir = get_temp_councilunit_dir()
-    sue_agenda = councilunit_shop(sue_text, env_dir, get_temp_culture_title())
+    sue_agenda = councilunit_shop(sue_text, env_dir, get_temp_culture_qid())
     sue_agenda.set_seed_if_empty()
     tim_text = "Tim"
     assert list(sue_agenda._seed._partys.keys()) == [sue_text]
@@ -48,7 +48,7 @@ def test_councilunit_set_depotlink_CorrectlySetsseedPartys(council_dir_setup_cle
     # GIVEN
     yao_text = "yao"
     env_dir = get_temp_councilunit_dir()
-    yao_ux = councilunit_shop(yao_text, env_dir, get_temp_culture_title())
+    yao_ux = councilunit_shop(yao_text, env_dir, get_temp_culture_qid())
     yao_ux.set_seed_if_empty()
     sue_text = "sue"
     create_agenda_file(yao_ux._admin._agendas_depot_dir, sue_text)
@@ -68,7 +68,7 @@ def test_councilunit_set_depotlink_CorrectlySetsAssignment(council_dir_setup_cle
     print(f"{len(amer_agenda._idea_dict)=}")
     cali_text = "Cali"
     cali_ux = councilunit_shop(
-        cali_text, get_temp_councilunit_dir(), get_temp_culture_title()
+        cali_text, get_temp_councilunit_dir(), get_temp_culture_qid()
     )
     cali_ux.create_core_dir_and_files()
     cali_ux.set_seed_if_empty()
@@ -106,7 +106,7 @@ def test_councilunit_del_depot_agenda_CorrectlyDeletesObj(council_dir_setup_clea
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_councilunit_dir()
-    bob_agenda = councilunit_shop(bob_text, env_dir, get_temp_culture_title())
+    bob_agenda = councilunit_shop(bob_text, env_dir, get_temp_culture_qid())
     yao_text = "Yao"
     create_agenda_file(bob_agenda._admin._agendas_depot_dir, yao_text)
     assignment_text = "assignment"
@@ -129,7 +129,7 @@ def test_councilunit_del_depot_agenda_CorrectlyDeletesBlindTrustFile(
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_councilunit_dir()
-    bob_agenda = councilunit_shop(bob_text, env_dir, get_temp_culture_title())
+    bob_agenda = councilunit_shop(bob_text, env_dir, get_temp_culture_qid())
     lai_text = "Lai"
     create_agenda_file(bob_agenda._admin._agendas_depot_dir, lai_text)
     bob_agenda.set_seed_if_empty()
@@ -151,7 +151,7 @@ def test_councilunit_set_depot_agenda_SavesFileCorrectly(
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_councilunit_dir()
-    bob_agenda = councilunit_shop(bob_text, env_dir, get_temp_culture_title())
+    bob_agenda = councilunit_shop(bob_text, env_dir, get_temp_culture_qid())
     cal1 = get_2node_agenda()
     assert (
         x_func_count_files(bob_agenda._admin._agendas_depot_dir) is None
@@ -174,7 +174,7 @@ def test_councilunit_delete_ignore_depotlink_CorrectlyDeletesObj(
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_councilunit_dir()
-    bob_agenda = councilunit_shop(bob_text, env_dir, get_temp_culture_title())
+    bob_agenda = councilunit_shop(bob_text, env_dir, get_temp_culture_qid())
     yao_text = "Yao"
     create_agenda_file(bob_agenda._admin._agendas_depot_dir, yao_text)
     assignment_text = "assignment"
@@ -197,7 +197,7 @@ def test_councilunit_del_depot_agenda_CorrectlyDoesNotDeletesIgnoreFile(
     # GIVEN
     bob_text = "bob"
     env_dir = get_temp_councilunit_dir()
-    bob_agenda = councilunit_shop(bob_text, env_dir, get_temp_culture_title())
+    bob_agenda = councilunit_shop(bob_text, env_dir, get_temp_culture_qid())
     zia_text = "Zia"
     create_agenda_file(bob_agenda._admin._agendas_depot_dir, zia_text)
     bob_agenda.set_seed_if_empty()
@@ -221,7 +221,7 @@ def test_councilunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_councilunit_dir()
-    bob_ux = councilunit_shop(bob_text, env_dir, get_temp_culture_title())
+    bob_ux = councilunit_shop(bob_text, env_dir, get_temp_culture_qid())
     zia_text = "Zia"
     create_agenda_file(bob_ux._admin._agendas_depot_dir, zia_text)
     bob_ux.set_seed_if_empty()
@@ -247,8 +247,8 @@ def test_councilunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
 ):
     # GIVEN
     env_dir = get_temp_councilunit_dir()
-    culture_title = get_temp_env_title()
-    sx = cultureunit_shop(title=culture_title, cultures_dir=env_dir)
+    culture_qid = get_temp_env_qid()
+    sx = cultureunit_shop(qid=culture_qid, cultures_dir=env_dir)
     yao_text = "Yao"
     sx.create_new_councilunit(council_cid=yao_text)
     yao_agenda = sx.get_councilunit(cid=yao_text)
