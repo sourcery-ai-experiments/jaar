@@ -44,6 +44,7 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     _bank_voice_hx_lowest_rank_text = "_bank_voice_hx_lowest_rank"
     _bank_tax_paid_text = "_bank_tax_paid"
     _bank_tax_diff_text = "_bank_tax_diff"
+    _title_text = "_title"
     partyunit_text = "partyunit"
     partyunit_columns = {
         agenda_healer_text: 1,
@@ -61,6 +62,7 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
         _bank_credit_score_text: 1,
         _bank_voice_rank_text: 1,
         _bank_voice_hx_lowest_rank_text: 1,
+        _title_text: 1,
     }
 
     currency_master_text = "currency_master"

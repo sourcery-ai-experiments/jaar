@@ -603,6 +603,7 @@ CREATE TABLE IF NOT EXISTS partyunit (
 , _bank_credit_score FLOAT
 , _bank_voice_rank INT
 , _bank_voice_hx_lowest_rank INT
+, _title VARCHAR(255)
 , FOREIGN KEY(agenda_healer) REFERENCES agendaunit(healer)
 , FOREIGN KEY(pid) REFERENCES agendaunit(healer)
 , UNIQUE(agenda_healer, pid)
@@ -689,6 +690,7 @@ INSERT INTO partyunit (
 , _bank_credit_score
 , _bank_voice_rank
 , _bank_voice_hx_lowest_rank
+, _title
 )
 VALUES (
   '{x_agenda._healer}' 
@@ -706,6 +708,7 @@ VALUES (
 , {sqlite_null(x_partyunit._bank_credit_score)}
 , {sqlite_null(x_partyunit._bank_voice_rank)}
 , {sqlite_null(x_partyunit._bank_voice_hx_lowest_rank)}
+, '{x_partyunit._title}'
 )
 ;
 """
@@ -736,6 +739,7 @@ SELECT
 , _bank_credit_score
 , _bank_voice_rank
 , _bank_voice_hx_lowest_rank
+, _title
 FROM partyunit
 WHERE agenda_healer = '{payer_healer}' 
 ;
@@ -760,6 +764,7 @@ WHERE agenda_healer = '{payer_healer}'
             _bank_credit_score=row[12],
             _bank_voice_rank=row[13],
             _bank_voice_hx_lowest_rank=row[14],
+            _title=row[15],
         )
         dict_x[partyview_x.pid] = partyview_x
     return dict_x

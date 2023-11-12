@@ -2,6 +2,7 @@ from src.agenda.agenda import agendaunit_shop
 from src.culture.bank_sqlstr import (
     get_agendaunit_update_sqlstr,
     get_agendaunits_select_sqlstr,
+    get_partyunit_table_create_sqlstr,
     get_partyunit_table_update_bank_tax_paid_sqlstr,
     get_partyunit_table_update_credit_score_sqlstr,
     get_partyunit_table_update_bank_voice_rank_sqlstr,
@@ -339,6 +340,38 @@ FROM river_reach
 WHERE currency_master = '{yao_text}'
 GROUP BY currency_master, src_healer
 ORDER BY range_sum DESC
+;
+"""
+    assert generated_sqlstr == example_sqlstr
+
+
+def test_get_partyunit_table_create_sqlstr_ReturnsCorrectStr():
+    # GIVEN / WHEN
+    generated_sqlstr = get_partyunit_table_create_sqlstr()
+
+    # THEN
+    example_sqlstr = """
+CREATE TABLE IF NOT EXISTS partyunit (
+  agenda_healer VARCHAR(255) NOT NULL 
+, pid VARCHAR(255) NOT NULL
+, _agenda_credit FLOAT
+, _agenda_debt FLOAT
+, _agenda_intent_credit FLOAT
+, _agenda_intent_debt FLOAT
+, _agenda_intent_ratio_credit FLOAT
+, _agenda_intent_ratio_debt FLOAT
+, _creditor_active INT
+, _debtor_active INT
+, _bank_tax_paid FLOAT
+, _bank_tax_diff FLOAT
+, _bank_credit_score FLOAT
+, _bank_voice_rank INT
+, _bank_voice_hx_lowest_rank INT
+, _title VARCHAR(255)
+, FOREIGN KEY(agenda_healer) REFERENCES agendaunit(healer)
+, FOREIGN KEY(pid) REFERENCES agendaunit(healer)
+, UNIQUE(agenda_healer, pid)
+)
 ;
 """
     assert generated_sqlstr == example_sqlstr
