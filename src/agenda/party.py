@@ -18,6 +18,10 @@ class PartyPID(PersonPID):  # Created to help track the concept
     pass
 
 
+class PartyTitle(str):
+    pass
+
+
 @dataclass
 class PartyRing:
     pid: PartyPID
@@ -73,6 +77,10 @@ class PartyUnit(PartyCore):
     _bank_credit_score: float = None
     _bank_voice_rank: int = None
     _bank_voice_hx_lowest_rank: int = None
+    _title: PartyTitle = None
+
+    def set_title(self, title: PartyTitle):
+        self._title = title
 
     def clear_output_agenda_meld_order(self):
         self._output_agenda_meld_order = None
@@ -159,6 +167,7 @@ class PartyUnit(PartyCore):
             "_bank_voice_rank": self._bank_voice_rank,
             "_bank_voice_hx_lowest_rank": self._bank_voice_hx_lowest_rank,
             "depotlink_type": self.depotlink_type,
+            "_title": self._title,
         }
 
     def get_partyrings_dict(self):
@@ -242,6 +251,7 @@ class PartyUnit(PartyCore):
 
         self.creditor_weight += other_partyunit.creditor_weight
         self.debtor_weight += other_partyunit.debtor_weight
+        self._title = other_partyunit._title
 
 
 # class PartyUnitsshop:
@@ -288,6 +298,11 @@ def partyunits_get_from_dict(x_dict: dict) -> dict[str:PartyUnit]:
         except KeyError:
             depotlink_type = None
 
+        try:
+            _title = partyunits_dict["_title"]
+        except KeyError:
+            _title = None
+
         x_partyunit = partyunit_shop(
             pid=partyunits_dict["pid"],
             uid=partyunits_dict["uid"],
@@ -297,6 +312,7 @@ def partyunits_get_from_dict(x_dict: dict) -> dict[str:PartyUnit]:
             _debtor_active=partyunits_dict["_debtor_active"],
             _partyrings=partyrings_get_from_dict(x_dict=partyrings),
             depotlink_type=depotlink_type,
+            _title=_title,
         )
         x_partyunit.set_banking_data(
             tax_paid=_bank_tax_paid,
@@ -326,10 +342,11 @@ def partyunit_shop(
     _bank_tax_paid: float = None,
     _bank_tax_diff: float = None,
     depotlink_type: str = None,
+    _title: PartyTitle = None,
 ) -> PartyUnit:
     final_partyrings = {} if _partyrings is None else _partyrings
 
-    partyunit_x = PartyUnit(
+    x_partyunit = PartyUnit(
         pid=pid,
         uid=uid,
         creditor_weight=x_func_return1ifnone(creditor_weight),
@@ -347,8 +364,10 @@ def partyunit_shop(
         _bank_tax_diff=_bank_tax_diff,
     )
     if depotlink_type != None:
-        partyunit_x.set_depotlink_type(depotlink_type=depotlink_type)
-    return partyunit_x
+        x_partyunit.set_depotlink_type(depotlink_type=depotlink_type)
+    if _title != None:
+        x_partyunit.set_title(_title)
+    return x_partyunit
 
 
 @dataclass

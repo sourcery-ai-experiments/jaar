@@ -669,7 +669,7 @@ WHERE partyunit.agenda_healer = '{agenda_healer}'
 
 
 def get_partyunit_table_insert_sqlstr(
-    x_agenda: AgendaUnit, partyunit_x: PartyUnit
+    x_agenda: AgendaUnit, x_partyunit: PartyUnit
 ) -> str:
     """Create table that holds a the output credit metrics."""
     return f"""
@@ -692,20 +692,20 @@ INSERT INTO partyunit (
 )
 VALUES (
   '{x_agenda._healer}' 
-, '{partyunit_x.pid}'
-, {sqlite_null(partyunit_x._agenda_credit)} 
-, {sqlite_null(partyunit_x._agenda_debt)}
-, {sqlite_null(partyunit_x._agenda_intent_credit)}
-, {sqlite_null(partyunit_x._agenda_intent_debt)}
-, {sqlite_null(partyunit_x._agenda_intent_ratio_credit)}
-, {sqlite_null(partyunit_x._agenda_intent_ratio_debt)}
-, {sqlite_bool(partyunit_x._creditor_active)}
-, {sqlite_bool(partyunit_x._debtor_active)}
-, {sqlite_null(partyunit_x._bank_tax_paid)}
-, {sqlite_null(partyunit_x._bank_tax_diff)}
-, {sqlite_null(partyunit_x._bank_credit_score)}
-, {sqlite_null(partyunit_x._bank_voice_rank)}
-, {sqlite_null(partyunit_x._bank_voice_hx_lowest_rank)}
+, '{x_partyunit.pid}'
+, {sqlite_null(x_partyunit._agenda_credit)} 
+, {sqlite_null(x_partyunit._agenda_debt)}
+, {sqlite_null(x_partyunit._agenda_intent_credit)}
+, {sqlite_null(x_partyunit._agenda_intent_debt)}
+, {sqlite_null(x_partyunit._agenda_intent_ratio_credit)}
+, {sqlite_null(x_partyunit._agenda_intent_ratio_debt)}
+, {sqlite_bool(x_partyunit._creditor_active)}
+, {sqlite_bool(x_partyunit._debtor_active)}
+, {sqlite_null(x_partyunit._bank_tax_paid)}
+, {sqlite_null(x_partyunit._bank_tax_diff)}
+, {sqlite_null(x_partyunit._bank_credit_score)}
+, {sqlite_null(x_partyunit._bank_voice_rank)}
+, {sqlite_null(x_partyunit._bank_voice_hx_lowest_rank)}
 )
 ;
 """

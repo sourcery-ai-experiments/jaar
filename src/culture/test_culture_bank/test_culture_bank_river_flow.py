@@ -606,28 +606,28 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     #     print(f"{partybank_uid=} {sal_partybankunit=}")
     #     assert sal_partybankunit.currency_master == sal_text
     #     assert sal_partybankunit.tax_healer in [bob_text, tom_text, elu_text]
-    #     partyunit_x = sal_agenda_after._partys.get(sal_partybankunit.tax_healer)
-    #     if partyunit_x != None:
+    #     x_partyunit = sal_agenda_after._partys.get(sal_partybankunit.tax_healer)
+    #     if x_partyunit != None:
     #         # print(
-    #         #     f"{sal_partybankunit.currency_master=} {sal_partybankunit.tax_healer=} {partyunit_x.pid=} tax_total: {sal_partybankunit.tax_total} Tax Paid: {partyunit_x._bank_tax_paid}"
+    #         #     f"{sal_partybankunit.currency_master=} {sal_partybankunit.tax_healer=} {x_partyunit.pid=} tax_total: {sal_partybankunit.tax_total} Tax Paid: {x_partyunit._bank_tax_paid}"
     #         # )
     #         # print(
-    #         #     f"{sal_partybankunit.currency_master=} {sal_partybankunit.tax_healer=} {partyunit_x.pid=} tax_diff:  {sal_partybankunit.tax_diff} Tax Paid: {partyunit_x._bank_tax_diff}"
+    #         #     f"{sal_partybankunit.currency_master=} {sal_partybankunit.tax_healer=} {x_partyunit.pid=} tax_diff:  {sal_partybankunit.tax_diff} Tax Paid: {x_partyunit._bank_tax_diff}"
     #         # )
-    #         assert sal_partybankunit.tax_total == partyunit_x._bank_tax_paid
-    #         assert sal_partybankunit.tax_diff == partyunit_x._bank_tax_diff
+    #         assert sal_partybankunit.tax_total == x_partyunit._bank_tax_paid
+    #         assert sal_partybankunit.tax_diff == x_partyunit._bank_tax_diff
 
     assert sal_partybankunits.get(ava_text) is None
     assert ava_party._bank_tax_paid is None
     assert ava_party._bank_tax_diff is None
 
-    # for partyunit_x in sal_agenda_after._partys.values():
-    #     print(f"sal_agenda_after {partyunit_x.pid=} {partyunit_x._bank_tax_paid=}")
-    #     partybankunit_x = sal_partybankunits.get(partyunit_x.pid)
+    # for x_partyunit in sal_agenda_after._partys.values():
+    #     print(f"sal_agenda_after {x_partyunit.pid=} {x_partyunit._bank_tax_paid=}")
+    #     partybankunit_x = sal_partybankunits.get(x_partyunit.pid)
     #     if partybankunit_x is None:
-    #         assert partyunit_x._bank_tax_paid is None
-    #         assert partyunit_x._bank_tax_diff is None
+    #         assert x_partyunit._bank_tax_paid is None
+    #         assert x_partyunit._bank_tax_diff is None
     #     else:
-    #         assert partyunit_x._bank_tax_paid != None
-    #         assert partyunit_x._bank_tax_diff != None
+    #         assert x_partyunit._bank_tax_paid != None
+    #         assert x_partyunit._bank_tax_diff != None
     # assert sal_agenda_after != sal_agenda_before

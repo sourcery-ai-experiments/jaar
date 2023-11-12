@@ -235,8 +235,8 @@ class CultureUnit:
     def _bank_insert_partyunit(self, agendaunit_x: AgendaUnit):
         with self.get_bank_conn() as bank_conn:
             cur = bank_conn.cursor()
-            for partyunit_x in agendaunit_x._partys.values():
-                sqlstr = get_partyunit_table_insert_sqlstr(agendaunit_x, partyunit_x)
+            for x_partyunit in agendaunit_x._partys.values():
+                sqlstr = get_partyunit_table_insert_sqlstr(agendaunit_x, x_partyunit)
                 cur.execute(sqlstr)
 
     def _bank_insert_groupunit(self, agendaunit_x: AgendaUnit):
@@ -535,11 +535,11 @@ def cultureunit_shop(
 def set_bank_partybankunits_to_agenda_partyunits(
     x_agenda: AgendaUnit, partybankunits: dict[str:PartyBankUnit]
 ):
-    for partyunit_x in x_agenda._partys.values():
-        partyunit_x.clear_banking_data()
-        partybankunit = partybankunits.get(partyunit_x.pid)
+    for x_partyunit in x_agenda._partys.values():
+        x_partyunit.clear_banking_data()
+        partybankunit = partybankunits.get(x_partyunit.pid)
         if partybankunit != None:
-            partyunit_x.set_banking_data(
+            x_partyunit.set_banking_data(
                 tax_paid=partybankunit.tax_total,
                 tax_diff=partybankunit.tax_diff,
                 credit_score=partybankunit.credit_score,

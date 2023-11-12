@@ -615,8 +615,8 @@ def clear_all_partyunits_groupunits_agenda_intent_credit_debt(x_agenda: AgendaUn
         #     print(f"{groupunit_x.brand=} {partylink_x.creditor_weight=}  {partylink_x._agenda_credit:.6f} {partylink_x.debtor_weight=} {partylink_x._agenda_debt:.6f} {partylink_x.pid=} ")
 
     # DELETE agenda_intent_debt and agenda_intent_credit
-    for partyunit_x in x_agenda._partys.values():
-        partyunit_x.reset_agenda_credit_debt()
+    for x_partyunit in x_agenda._partys.values():
+        x_partyunit.reset_agenda_credit_debt()
 
 
 # sourcery skip: no-loop-in-tests

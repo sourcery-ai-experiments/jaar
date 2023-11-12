@@ -413,7 +413,7 @@ def test_get_partyunit_table_update_bank_tax_paid_sqlstr_CorrectlyPopulatesTable
         _debtor_active=False,
     )
     insert_sqlstr_tom = get_partyunit_table_insert_sqlstr(
-        x_agenda=bob_agenda, partyunit_x=partyunit_tom
+        x_agenda=bob_agenda, x_partyunit=partyunit_tom
     )
     partyunit_sal = partyunit_shop(
         pid=sal_text,
@@ -427,7 +427,7 @@ def test_get_partyunit_table_update_bank_tax_paid_sqlstr_CorrectlyPopulatesTable
         _debtor_active=False,
     )
     insert_sqlstr_sal = get_partyunit_table_insert_sqlstr(
-        x_agenda=bob_agenda, partyunit_x=partyunit_sal
+        x_agenda=bob_agenda, x_partyunit=partyunit_sal
     )
 
     river_block_1 = RiverBlockUnit(bob_text, bob_text, tom_text, 0.0, 0.2, 0, None, 1)

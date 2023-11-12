@@ -549,28 +549,28 @@ class AgendaUnit:
 
     def get_partyunits_uid_max(self) -> int:
         uid_max = 1
-        for partyunit_x in self._partys.values():
-            if partyunit_x.uid != None and partyunit_x.uid > uid_max:
-                uid_max = partyunit_x.uid
+        for x_partyunit in self._partys.values():
+            if x_partyunit.uid != None and x_partyunit.uid > uid_max:
+                uid_max = x_partyunit.uid
         return uid_max
 
     def get_partyunits_uid_dict(self) -> dict[int:int]:
         uid_dict = {}
-        for partyunit_x in self._partys.values():
-            if uid_dict.get(partyunit_x.uid) is None:
-                uid_dict[partyunit_x.uid] = 1
+        for x_partyunit in self._partys.values():
+            if uid_dict.get(x_partyunit.uid) is None:
+                uid_dict[x_partyunit.uid] = 1
             else:
-                uid_dict[partyunit_x.uid] += 1
+                uid_dict[x_partyunit.uid] += 1
         return uid_dict
 
     def set_all_partyunits_uids_unique(self) -> int:
         uid_max = self.get_partyunits_uid_max()
         uid_dict = self.get_partyunits_uid_dict()
-        for partyunit_x in self._partys.values():
-            if uid_dict.get(partyunit_x.uid) > 0:
+        for x_partyunit in self._partys.values():
+            if uid_dict.get(x_partyunit.uid) > 0:
                 new_uid_max = uid_max + 1
-                partyunit_x.uid = new_uid_max
-                uid_max = partyunit_x.uid
+                x_partyunit.uid = new_uid_max
+                uid_max = x_partyunit.uid
 
     def all_partyunits_uids_are_unique(self):
         uid_dict = self.get_partyunits_uid_dict()
@@ -1462,16 +1462,16 @@ class AgendaUnit:
         sum_partyunit_creditor_weight = self.get_partyunit_total_creditor_weight()
         sum_partyunit_debtor_weight = self.get_partyunit_total_debtor_weight()
 
-        for partyunit_x in self._partys.values():
+        for x_partyunit in self._partys.values():
             au_agenda_credit = (
-                idea_agenda_importance * partyunit_x.get_creditor_weight()
+                idea_agenda_importance * x_partyunit.get_creditor_weight()
             ) / sum_partyunit_creditor_weight
 
             au_agenda_debt = (
-                idea_agenda_importance * partyunit_x.get_debtor_weight()
+                idea_agenda_importance * x_partyunit.get_debtor_weight()
             ) / sum_partyunit_debtor_weight
 
-            partyunit_x.add_agenda_credit_debt(
+            x_partyunit.add_agenda_credit_debt(
                 agenda_credit=au_agenda_credit,
                 agenda_debt=au_agenda_debt,
                 agenda_intent_credit=0,
@@ -1484,16 +1484,16 @@ class AgendaUnit:
         sum_partyunit_creditor_weight = self.get_partyunit_total_creditor_weight()
         sum_partyunit_debtor_weight = self.get_partyunit_total_debtor_weight()
 
-        for partyunit_x in self._partys.values():
+        for x_partyunit in self._partys.values():
             au_agenda_intent_credit = (
-                idea_agenda_importance * partyunit_x.get_creditor_weight()
+                idea_agenda_importance * x_partyunit.get_creditor_weight()
             ) / sum_partyunit_creditor_weight
 
             au_agenda_intent_debt = (
-                idea_agenda_importance * partyunit_x.get_debtor_weight()
+                idea_agenda_importance * x_partyunit.get_debtor_weight()
             ) / sum_partyunit_debtor_weight
 
-            partyunit_x.add_agenda_credit_debt(
+            x_partyunit.add_agenda_credit_debt(
                 agenda_credit=0,
                 agenda_debt=0,
                 agenda_intent_credit=au_agenda_intent_credit,
@@ -1504,16 +1504,16 @@ class AgendaUnit:
         sum_partyunit_creditor_weight = self.get_partyunit_total_creditor_weight()
         sum_partyunit_debtor_weight = self.get_partyunit_total_debtor_weight()
 
-        for partyunit_x in self._partys.values():
+        for x_partyunit in self._partys.values():
             au_agenda_intent_credit = (
-                agenda_intent_importance * partyunit_x.get_creditor_weight()
+                agenda_intent_importance * x_partyunit.get_creditor_weight()
             ) / sum_partyunit_creditor_weight
 
             au_agenda_intent_debt = (
-                agenda_intent_importance * partyunit_x.get_debtor_weight()
+                agenda_intent_importance * x_partyunit.get_debtor_weight()
             ) / sum_partyunit_debtor_weight
 
-            partyunit_x.add_agenda_intent_credit_debt(
+            x_partyunit.add_agenda_intent_credit_debt(
                 agenda_intent_credit=au_agenda_intent_credit,
                 agenda_intent_debt=au_agenda_intent_debt,
             )
@@ -1569,12 +1569,12 @@ class AgendaUnit:
         agenda_intent_ratio_credit_sum = 0
         agenda_intent_ratio_debt_sum = 0
 
-        for partyunit_x in self._partys.values():
-            agenda_intent_ratio_credit_sum += partyunit_x._agenda_intent_credit
-            agenda_intent_ratio_debt_sum += partyunit_x._agenda_intent_debt
+        for x_partyunit in self._partys.values():
+            agenda_intent_ratio_credit_sum += x_partyunit._agenda_intent_credit
+            agenda_intent_ratio_debt_sum += x_partyunit._agenda_intent_debt
 
-        for partyunit_x in self._partys.values():
-            partyunit_x.set_agenda_intent_ratio_credit_debt(
+        for x_partyunit in self._partys.values():
+            x_partyunit.set_agenda_intent_ratio_credit_debt(
                 agenda_intent_ratio_credit_sum=agenda_intent_ratio_credit_sum,
                 agenda_intent_ratio_debt_sum=agenda_intent_ratio_debt_sum,
                 agenda_partyunit_total_creditor_weight=self.get_partyunit_total_creditor_weight(),
