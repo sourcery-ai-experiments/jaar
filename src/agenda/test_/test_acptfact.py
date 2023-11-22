@@ -5,7 +5,7 @@ from src.agenda.required_idea import (
     Road,
     AcptFactCore,
     acptfactunit_shop as c_acptfactunit,
-    # acptfactunits_get_from_dict,
+    acptfactunits_get_from_dict,
 )
 from src.agenda.road import get_default_culture_root_label as root_label
 from pytest import raises as pytest_raises
@@ -72,7 +72,34 @@ def test_AcptFactUnit_clear_range_works_2():
     assert weekday_acptfact.nigh == 65
 
 
-def test_AcptFactUnit_get_dict_works():
+def test_AcptFactUnit_get_dict_CorrectlyReturnsDict():
+    # GIVEN
+    weekday_text = "weekdays"
+    weekday_road = f"{root_label()},{weekday_text}"
+    sunday_text = "Sunday"
+    sunday_road = f"{weekday_road},{sunday_text}"
+    x_open = 35
+    x_nigh = 50
+    sunday_acptfact = acptfactunit_shop(
+        base=weekday_road, pick=sunday_road, open=x_open, nigh=x_nigh
+    )
+    print(sunday_acptfact)
+
+    # WHEN
+    acptfact_dict = sunday_acptfact.get_dict()
+
+    # THEN
+    assert acptfact_dict != None
+    static_dict = {
+        "base": weekday_road,
+        "pick": sunday_road,
+        "open": x_open,
+        "nigh": x_nigh,
+    }
+    assert acptfact_dict == static_dict
+
+
+def test_AcptFactUnit_get_dict_CorrectlyReturnsPartialDict():
     # GIVEN
     weekday_text = "weekdays"
     weekday_road = f"{root_label()},{weekday_text}"
@@ -89,8 +116,6 @@ def test_AcptFactUnit_get_dict_works():
     static_dict = {
         "base": weekday_road,
         "pick": sunday_road,
-        "open": None,
-        "nigh": None,
     }
     assert acptfact_dict == static_dict
 
@@ -335,3 +360,50 @@ def test_acptfactcores_meld_raises_NotSameNighError():
         str(excinfo.value)
         == f"Meld fail: base={hc_y.base} nigh={hc_y.nigh} is different self.nigh={hc_x.nigh}"
     )
+
+
+def test_acptfactunits_get_from_dict_CorrectlyBuildsObj():
+    # GIVEN
+    weekday_text = "weekdays"
+    weekday_road = f"{root_label()},{weekday_text}"
+    sunday_text = "Sunday"
+    sunday_road = f"{weekday_road},{sunday_text}"
+    static_dict = {
+        weekday_road: {
+            "base": weekday_road,
+            "pick": sunday_road,
+            "open": None,
+            "nigh": None,
+        }
+    }
+
+    # WHEN
+    acptfacts_dict = acptfactunits_get_from_dict(static_dict)
+
+    # THEN
+    assert len(acptfacts_dict) == 1
+    weekday_acptfact = acptfacts_dict.get(weekday_road)
+    assert weekday_acptfact == acptfactunit_shop(base=weekday_road, pick=sunday_road)
+
+
+def test_acptfactunits_get_from_dict_CorrectlyBuildsObjFromIncompleteDict():
+    # GIVEN
+    weekday_text = "weekdays"
+    weekday_road = f"{root_label()},{weekday_text}"
+    sunday_text = "Sunday"
+    sunday_road = f"{weekday_road},{sunday_text}"
+    static_dict = {
+        weekday_road: {
+            "base": weekday_road,
+            "pick": sunday_road,
+        }
+    }
+
+    # WHEN
+    acptfacts_dict = acptfactunits_get_from_dict(static_dict)
+
+    # THEN
+    weekday_acptfact = acptfacts_dict.get(weekday_road)
+    assert weekday_acptfact == acptfactunit_shop(base=weekday_road, pick=sunday_road)
+
+    assert 1 == 2

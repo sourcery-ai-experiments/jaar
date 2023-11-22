@@ -14,12 +14,15 @@ class AcptFactCore:
     nigh: float = None
 
     def get_dict(self):
-        return {
+        x_dict = {
             "base": self.base,
             "pick": self.pick,
-            "open": self.open,
-            "nigh": self.nigh,
         }
+        if self.open != None:
+            x_dict["open"] = self.open
+        if self.nigh != None:
+            x_dict["nigh"] = self.nigh
+        return x_dict
 
     def set_range_null(self):
         self.open = None
@@ -74,11 +77,23 @@ class AcptFactUnit(AcptFactCore):
 def acptfactunits_get_from_dict(x_dict: dict):
     acptfacts = {}
     for acptfact_dict in x_dict.values():
+        x_base = acptfact_dict["base"]
+        x_pick = acptfact_dict["pick"]
+
+        try:
+            x_open = acptfact_dict["open"]
+        except KeyError:
+            x_open = None
+        try:
+            x_nigh = acptfact_dict["nigh"]
+        except KeyError:
+            x_nigh = None
+
         x_acptfact = acptfactunit_shop(
-            base=acptfact_dict["base"],
-            pick=acptfact_dict["pick"],
-            open=acptfact_dict["open"],
-            nigh=acptfact_dict["nigh"],
+            base=x_base,
+            pick=x_pick,
+            open=x_open,
+            nigh=x_nigh,
         )
 
         acptfacts[x_acptfact.base] = x_acptfact
