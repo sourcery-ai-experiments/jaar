@@ -1,7 +1,7 @@
 from src.agenda.idea import IdeaCore, ideacore_shop
 from src.agenda.group import GroupBrand, balancelink_shop, balanceheir_shop
 from src.agenda.required_idea import (
-    RequiredUnit,
+    requiredunit_shop,
     RequiredHeir,
     acptfactunit_shop,
     sufffactunit_shop,
@@ -256,7 +256,7 @@ def test_idea_core_set_requiredheirsCorrectlyTakesFromSelf():
     run_road = f"{ball_road},{run_text}"
     run_sufffact = sufffactunit_shop(need=run_road, open=0, nigh=7)
     run_sufffacts = {run_sufffact.need: run_sufffact}
-    run_requiredunit = RequiredUnit(base=run_road, sufffacts=run_sufffacts)
+    run_requiredunit = requiredunit_shop(base=run_road, sufffacts=run_sufffacts)
     run_requiredunits = {run_requiredunit.base: run_requiredunit}
     ball_idea = ideacore_shop(_label=ball_text, _requiredunits=run_requiredunits)
     assert ball_idea._requiredunits != None
@@ -337,10 +337,10 @@ def test_idea_get_dict_ReturnsCorrectDict():
     usa_sufffact._status = False
 
     x1_requiredunits = {
-        week_road: RequiredUnit(
+        week_road: requiredunit_shop(
             base=week_road, sufffacts={wed_sufffact.need: wed_sufffact}
         ),
-        states_road: RequiredUnit(
+        states_road: requiredunit_shop(
             base=states_road, sufffacts={usa_sufffact.need: usa_sufffact}
         ),
     }

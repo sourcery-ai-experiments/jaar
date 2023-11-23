@@ -5,7 +5,7 @@ from src.agenda.examples.example_agendas import (
     agenda_v001,
 )
 from src.agenda.idea import ideacore_shop
-from src.agenda.required_idea import sufffactunit_shop, RequiredUnit, RequiredHeir
+from src.agenda.required_idea import sufffactunit_shop, requiredunit_shop, RequiredHeir
 from src.agenda.road import Road
 from src.agenda.agenda import agendaunit_shop
 
@@ -135,8 +135,8 @@ def test_agenda_get_idea_list_returns_correct_list():
     usa._status = True
     usa._task = False
 
-    wed_lu = RequiredUnit(base=week_road, sufffacts={wed.need: wed})
-    sta_lu = RequiredUnit(base=state_road, sufffacts={usa.need: usa})
+    wed_lu = requiredunit_shop(base=week_road, sufffacts={wed.need: wed})
+    sta_lu = requiredunit_shop(base=state_road, sufffacts={usa.need: usa})
     wed_lh = RequiredHeir(
         base=week_road,
         sufffacts={wed.need: wed},
@@ -505,7 +505,7 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
         mon_sufffact_x.need: mon_sufffact_x,
         tue_sufffact_x.need: tue_sufffact_x,
     }
-    mt_required = RequiredUnit(base=week_road, sufffacts=mt_sufffacts)
+    mt_required = requiredunit_shop(base=week_road, sufffacts=mt_sufffacts)
     mt_required_x = RequiredHeir(base=week_road, sufffacts=mt_sufffacts)
     x_agenda._idearoot.set_required_unit(required=mt_required)
     # print(f"{x_agenda._requiredunits[week_road].base=}")

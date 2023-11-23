@@ -1,7 +1,8 @@
 from src.agenda.required_idea import (
     RequiredCore,
+    requiredcore_shop,
     RequiredHeir,
-    RequiredUnit,
+    requiredunit_shop,
     acptfactheir_shop,
     sufffactunit_shop,
     Road,
@@ -204,7 +205,7 @@ def test_RequiredUnit_get_dict_ReturnsCorrectDictWithSinglethu_sufffactequireds(
     wed_road = f"{wkday_road},{wed_text}"
     wed_sufffact = sufffactunit_shop(need=wed_road)
     wed_sufffacts = {wed_sufffact.need: wed_sufffact}
-    wkday_required = RequiredUnit(base=wkday_road, sufffacts=wed_sufffacts)
+    wkday_required = requiredunit_shop(base=wkday_road, sufffacts=wed_sufffacts)
 
     # WHEN
     wkday_required_dict = wkday_required.get_dict()
@@ -230,7 +231,7 @@ def test_RequiredUnit_get_dict_ReturnsCorrectDictWithTwoSuffFactsRequireds():
     wed_sufffact = sufffactunit_shop(need=wed_road)
     thu_sufffact = sufffactunit_shop(need=thu_road)
     two_sufffacts = {wed_sufffact.need: wed_sufffact, thu_sufffact.need: thu_sufffact}
-    wkday_required = RequiredUnit(base=wkday_road, sufffacts=two_sufffacts)
+    wkday_required = requiredunit_shop(base=wkday_road, sufffacts=two_sufffacts)
 
     # WHEN
     wkday_required_dict = wkday_required.get_dict()
@@ -283,7 +284,7 @@ def test_RequiredCore_set_empty_if_null_WorksCorrectly():
     # GIVEN
     day_text = "day"
     day_road = f"{root_label()},{day_text}"
-    day_required = RequiredCore(base=day_road, sufffacts=None)
+    day_required = requiredcore_shop(base=day_road, sufffacts=None)
     assert day_required.sufffacts is None
 
     # WHEN
@@ -299,14 +300,14 @@ def test_RequiredCore_get_sufffacts_count():
     day_road = f"{root_label()},{day_text}"
 
     # WHEN
-    day_required = RequiredCore(base=day_road, sufffacts=None)
+    day_required = requiredcore_shop(base=day_road, sufffacts=None)
     # THEN
     assert day_required.get_sufffacts_count() == 0
 
     # WHEN
     range_3_to_6_sufffact = sufffactunit_shop(need=day_road, open=3, nigh=6)
     range_3_to_6_sufffacts = {range_3_to_6_sufffact.need: range_3_to_6_sufffact}
-    day_required = RequiredCore(base=day_road, sufffacts=range_3_to_6_sufffacts)
+    day_required = requiredcore_shop(base=day_road, sufffacts=range_3_to_6_sufffacts)
     # THEN
     assert day_required.get_sufffacts_count() == 1
 
@@ -315,7 +316,7 @@ def test_RequiredCore_set_sufffact_CorrectlySetsSuffFact():
     # GIVEN
     day_text = "day"
     day_road = f"{root_label()},{day_text}"
-    day_required = RequiredCore(base=day_road, sufffacts=None)
+    day_required = requiredcore_shop(base=day_road, sufffacts=None)
     assert day_required.get_sufffacts_count() == 0
 
     # WHEN
@@ -332,7 +333,7 @@ def test_RequiredCore_del_sufffact_CorrectlyDeletesSuffFact():
     # GIVEN
     day_text = "day"
     day_road = f"{root_label()},{day_text}"
-    day_required = RequiredCore(base=day_road, sufffacts=None)
+    day_required = requiredcore_shop(base=day_road, sufffacts=None)
     day_required.set_sufffact(sufffact=day_road, open=3, nigh=6)
     assert day_required.get_sufffacts_count() == 1
 
@@ -349,7 +350,7 @@ def test_RequiredCore_find_replace_road_works():
     sunday_text = "Sunday"
     old_weekday_road = f"{root_label()},{weekday_text}"
     old_sunday_road = f"{root_label()},{weekday_text},{sunday_text}"
-    x_required = RequiredCore(base=old_weekday_road, sufffacts=None)
+    x_required = requiredcore_shop(base=old_weekday_road, sufffacts=None)
     x_required.set_sufffact(sufffact=old_sunday_road)
     # print(f"{x_required=}")
     assert x_required.base == old_weekday_road
@@ -396,10 +397,10 @@ def test_RequiredCore_meld_BaseScenarioWorks():
     week_text = "ced_week"
     week_road = f"{tech_road},{week_text}"
 
-    x1_required = RequiredCore(base=tech_road, sufffacts={})
+    x1_required = requiredcore_shop(base=tech_road, sufffacts={})
     x1_required.set_sufffact(sufffact=week_road)
 
-    x2_required = RequiredCore(base=tech_road, sufffacts={})
+    x2_required = requiredcore_shop(base=tech_road, sufffacts={})
     x2_required.set_sufffact(sufffact=week_road)
 
     # WHEN/THEN
@@ -413,10 +414,10 @@ def test_RequiredCore_meld_AddSuffFactscenarioWorks():
     week_text = "ced_week"
     week_road = f"{tech_road},{week_text}"
 
-    x1_required = RequiredCore(base=tech_road, sufffacts={})
+    x1_required = requiredcore_shop(base=tech_road, sufffacts={})
     x1_required.set_sufffact(sufffact=week_road)
 
-    x2_required = RequiredCore(base=tech_road, sufffacts={})
+    x2_required = requiredcore_shop(base=tech_road, sufffacts={})
     year_text = "year"
     year_road = f"{tech_road},{year_text}"
     x2_required.set_sufffact(sufffact=year_road, open=45, nigh=55)
@@ -435,8 +436,8 @@ def test_RequiredCore_meld_raises_NotSameRoadError():
     week_text = "ced_week"
     week_road = f"{tech_road},{week_text}"
 
-    x1_required = RequiredCore(base=tech_road, sufffacts={})
-    x2_required = RequiredCore(base=week_road, sufffacts={})
+    x1_required = requiredcore_shop(base=tech_road, sufffacts={})
+    x2_required = requiredcore_shop(base=week_road, sufffacts={})
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:

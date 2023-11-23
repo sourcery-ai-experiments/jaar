@@ -1,6 +1,7 @@
 from src.agenda.idea import ideacore_shop, IdeaAttrHolder, IdeaCore
 from src.agenda.group import Balancelink, GroupBrand, balancelink_shop
 from src.agenda.required_idea import (
+    requiredunit_shop,
     RequiredUnit,
     acptfactunit_shop as c_acptfactunit,
     Road,
@@ -103,7 +104,7 @@ def test_idea_required_meld_BaseScenarioWorks():
     yx1.meld(other_idea=yx2)
 
     # THEN
-    lu_x = RequiredUnit(base=required_base_x1, sufffacts={})
+    lu_x = requiredunit_shop(base=required_base_x1, sufffacts={})
     lu_x.set_sufffact(sufffact=required_base_x1)
     requiredunits_x = {lu_x.base: lu_x}
     assert yx1._requiredunits == requiredunits_x
@@ -181,7 +182,7 @@ def test_idea_required_meld_TwoRequiredsMeldScenarioWorks():
     yx1.meld(other_idea=yx2)
 
     # THEN
-    # lu_x = RequiredUnit(base=required_base_x1, sufffacts={})
+    # lu_x = requiredunit_shop(base=required_base_x1, sufffacts={})
     # lu_x.set_sufffact(sufffact=required_base_x1)
     # lu_x.set_sufffact(sufffact=required_base_x2)
     # requiredunits_x = {lu_x.base: lu_x}

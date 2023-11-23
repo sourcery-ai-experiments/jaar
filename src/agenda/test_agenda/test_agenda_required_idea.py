@@ -4,7 +4,7 @@ from src.agenda.examples.example_agendas import (
     get_agenda_irrational_example as example_agendas_get_agenda_irrational_example,
 )
 from src.agenda.idea import ideacore_shop
-from src.agenda.required_idea import sufffactunit_shop, RequiredUnit, RequiredHeir
+from src.agenda.required_idea import sufffactunit_shop, requiredunit_shop, RequiredHeir
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.x_func import from_list_get_active_status
 
@@ -19,7 +19,7 @@ def test_agenda_requiredunits_create():
     wed_road = f"{weekday_road},{wed_text}"
 
     wed_sufffact = sufffactunit_shop(need=wed_road)
-    work_wk_required = RequiredUnit(
+    work_wk_required = requiredunit_shop(
         base=weekday_road, sufffacts={wed_sufffact.need: wed_sufffact}
     )
     print(f"{type(work_wk_required.base)=}")
@@ -42,7 +42,7 @@ def test_agenda_set_requiredunits_status():
     wed_road = f"{weekday_road},{wed_text}"
 
     wed_sufffact = sufffactunit_shop(need=wed_road)
-    work_wk_required = RequiredUnit(
+    work_wk_required = requiredunit_shop(
         base=weekday_road, sufffacts={wed_sufffact.need: wed_sufffact}
     )
     print(f"{type(work_wk_required.base)=}")
@@ -78,7 +78,7 @@ def test_agenda_requiredheirs_AreCorrectlyInherited_v1():
     wed_sufffact._status = False
     wed_sufffact._task = False
     sufffacts = {wed_sufffact.need: wed_sufffact}
-    work_wk_build_requiredunit = RequiredUnit(base=week_road, sufffacts=sufffacts)
+    work_wk_build_requiredunit = requiredunit_shop(base=week_road, sufffacts=sufffacts)
     work_wk_built_requiredheir = RequiredHeir(
         base=week_road,
         sufffacts=sufffacts,
@@ -135,7 +135,9 @@ def test_agenda_requiredheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
     wed_sufffact._task = False
 
     sufffacts_x = {wed_sufffact.need: wed_sufffact}
-    work_wk_build_requiredunit = RequiredUnit(base=week_road, sufffacts=sufffacts_x)
+    work_wk_build_requiredunit = requiredunit_shop(
+        base=week_road, sufffacts=sufffacts_x
+    )
     work_wk_built_requiredheir = RequiredHeir(
         base=week_road,
         sufffacts=sufffacts_x,
@@ -202,7 +204,7 @@ def test_agenda_requiredheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     wed_sufffact._status = False
     wed_sufffact._task = False
     sufffacts = {wed_sufffact.need: wed_sufffact}
-    work_wk_build_requiredunit = RequiredUnit(base=week_road, sufffacts=sufffacts)
+    work_wk_build_requiredunit = requiredunit_shop(base=week_road, sufffacts=sufffacts)
     work_wk_built_requiredheir = RequiredHeir(
         base=week_road,
         sufffacts=sufffacts,
@@ -285,7 +287,7 @@ def test_agenda_requiredunits_set_UnCoupledMethod():
     assert work_idea1._requiredunits[week_road].sufffacts[wed_road].open is None
     assert work_idea1._requiredunits[week_road].sufffacts[wed_road].nigh is None
 
-    work_wk_required1 = RequiredUnit(base=week_road, sufffacts=None)
+    work_wk_required1 = requiredunit_shop(base=week_road, sufffacts=None)
     work_wk_required1.set_sufffact(sufffact=wed_road)
     print(f" {type(work_wk_required1.base)=}")
     print(f" {work_wk_required1.base=}")
@@ -313,7 +315,7 @@ def test_agenda_requiredunits_set_UnCoupledMethod():
     wed_sufffact2 = sufffactunit_shop(
         need=wed_road, divisor=divisor_x, open=open_x, nigh=nigh_x
     )
-    work_wk_required2 = RequiredUnit(
+    work_wk_required2 = requiredunit_shop(
         base=week_road, sufffacts={wed_sufffact2.need: wed_sufffact2}
     )
     print(f"{type(work_wk_required2.base)=}")

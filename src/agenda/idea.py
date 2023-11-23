@@ -11,6 +11,7 @@ from src.agenda.required_idea import (
     acptfactheir_shop,
     RequiredCore,
     RequiredUnit,
+    requiredunit_shop,
     Road,
     AcptFactUnit,
     AcptFactUnit,
@@ -671,7 +672,7 @@ class IdeaCore:
         try:
             requiredunit_x = self._requiredunits[base]
         except Exception:
-            requiredunit_x = RequiredUnit(base=base, sufffacts={})
+            requiredunit_x = requiredunit_shop(base=base, sufffacts={})
             self._requiredunits[base] = requiredunit_x
         return requiredunit_x
 

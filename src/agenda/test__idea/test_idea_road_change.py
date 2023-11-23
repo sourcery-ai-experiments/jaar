@@ -1,6 +1,6 @@
 from src.agenda.idea import ideacore_shop
 from src.agenda.required_idea import (
-    RequiredUnit,
+    requiredunit_shop,
     sufffactunit_shop,
     Road,
     acptfactunit_shop,
@@ -86,7 +86,7 @@ def test_idea_find_replace_road_Changes_requiredunits():
     # create requiredunit
     sufffact_x = sufffactunit_shop(need=old_rain_road)
     sufffacts_x = {sufffact_x.need: sufffact_x}
-    required_x = RequiredUnit(base=old_water_road, sufffacts=sufffacts_x)
+    required_x = requiredunit_shop(base=old_water_road, sufffacts=sufffacts_x)
     requireds_x = {required_x.base: required_x}
     idea_x = ideacore_shop(_label=roses_text, _requiredunits=requireds_x)
     # check asserts

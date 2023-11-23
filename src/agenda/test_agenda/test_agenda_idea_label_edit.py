@@ -323,8 +323,8 @@ def test_agenda_edit_idea_label_ChangesIdeaRequiredUnitsScenario1():
     work_idea = x_agenda.get_idea_kid(f"{x_agenda._culture_qid},work")
     usa = f"{x_agenda._culture_qid},nation-state,USA"
     nationstate = f"{x_agenda._culture_qid},nation-state"
-    # work_wk_required = RequiredUnit(base=weekday, sufffacts={wed_sufffact.need: wed_sufffact})
-    # nation_required = RequiredUnit(base=nationstate, sufffacts={usa_sufffact.need: usa_sufffact})
+    # work_wk_required = requiredunit_shop(base=weekday, sufffacts={wed_sufffact.need: wed_sufffact})
+    # nation_required = requiredunit_shop(base=nationstate, sufffacts={usa_sufffact.need: usa_sufffact})
     assert len(work_idea._requiredunits) == 2
     assert work_idea._requiredunits.get(old_weekday_road) != None
     wednesday_idea = x_agenda.get_idea_kid(old_weekday_road)

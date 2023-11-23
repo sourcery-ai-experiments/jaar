@@ -1,6 +1,6 @@
 from src.agenda.examples.example_agendas import get_agenda_with_4_levels
 from src.agenda.idea import ideacore_shop
-from src.agenda.required_idea import RequiredUnit, acptfactunit_shop
+from src.agenda.required_idea import requiredunit_shop, acptfactunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.group import balancelink_shop
 from pytest import raises as pytest_raises
@@ -163,7 +163,7 @@ def test_agenda_add_idea_creates_requireds_ideas():
     )
     cookery_dirty_text = "dirty"
     cookery_dirty_road = Road(f"{cookery_room_road},{cookery_dirty_text}")
-    required_x = RequiredUnit(base=cookery_room_road, sufffacts={})
+    required_x = requiredunit_shop(base=cookery_room_road, sufffacts={})
     required_x.set_sufffact(sufffact=cookery_dirty_road)
     clean_cookery_idea.set_required_unit(required=required_x)
 

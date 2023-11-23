@@ -3,7 +3,7 @@ from src.agenda.agenda import agendaunit_shop, get_from_json
 from src.agenda.examples.agenda_env import agenda_env
 from src.agenda.idea import IdeaCore, ideacore_shop
 from src.agenda.road import Road
-from src.agenda.required_idea import RequiredUnit, SuffFactStatusFinder
+from src.agenda.required_idea import requiredunit_shop, SuffFactStatusFinder
 from src.agenda.group import groupunit_shop, balancelink_shop
 from src.agenda.party import partylink_shop
 from src.agenda.required_assign import assigned_unit_shop
@@ -647,11 +647,11 @@ def test_agenda_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
     open_8am = 480
     nigh_8am = 480
 
-    dirty_cookery_required = RequiredUnit(base=cookery_room_road, sufffacts={})
+    dirty_cookery_required = requiredunit_shop(base=cookery_room_road, sufffacts={})
     dirty_cookery_required.set_sufffact(sufffact=cookery_dirty_road)
     clean_cookery_idea.set_required_unit(required=dirty_cookery_required)
 
-    daytime_required = RequiredUnit(base=daytime_road, sufffacts={})
+    daytime_required = requiredunit_shop(base=daytime_road, sufffacts={})
     daytime_required.set_sufffact(sufffact=daytime_road, open=open_8am, nigh=nigh_8am)
     clean_cookery_idea.set_required_unit(required=daytime_required)
 

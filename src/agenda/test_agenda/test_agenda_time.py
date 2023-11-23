@@ -295,7 +295,7 @@ def test_get_time_():
 # x_agenda.get_idea_kid(road={f"{root_label()},hreg,weekday"})
 
 # wed_sufffact_x = sufffactunit_shop(need=wednesday_road)
-# work_wk_required = RequiredUnit(base=weekday_road, sufffacts={wed_sufffact.need: wed_sufffact})
+# work_wk_required = requiredunit_shop(base=weekday_road, sufffacts={wed_sufffact.need: wed_sufffact})
 # print(f"{type(work_wk_required.base)=}")
 # print(f"{work_wk_required.base=}")
 # agenda_x.edit_idea_attr(road=work_road, required=work_wk_required)

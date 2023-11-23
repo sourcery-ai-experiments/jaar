@@ -1,6 +1,6 @@
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.idea import ideacore_shop
-from src.agenda.required_idea import RequiredUnit
+from src.agenda.required_idea import requiredunit_shop
 from src.agenda.party import partyunit_shop, partylink_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.examples.example_agendas import (
@@ -235,7 +235,7 @@ def test_agenda__get_relevant_roads_ReturnsSimpleRequiredUnitBase():
     status_road = f"{casa_road},{status_text}"
     status_idea = ideacore_shop(_label=status_text)
     x_agenda.add_idea(idea_kid=status_idea, pad=casa_road)
-    floor_required = RequiredUnit(base=status_road, sufffacts={})
+    floor_required = requiredunit_shop(base=status_road, sufffacts={})
     floor_required.set_sufffact(sufffact=status_road)
     x_agenda.edit_idea_attr(road=floor_road, required=floor_required)
 

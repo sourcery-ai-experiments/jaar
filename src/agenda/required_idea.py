@@ -365,7 +365,7 @@ class SuffFactUnit:
 # class sufffactsshop:
 def sufffactunit_shop(
     need: Road, open: float = None, nigh: float = None, divisor: float = None
-):
+) -> SuffFactUnit:
     return SuffFactUnit(
         need=need,
         open=open,
@@ -374,7 +374,7 @@ def sufffactunit_shop(
     )
 
 
-def sufffacts_get_from_dict(x_dict: dict):
+def sufffacts_get_from_dict(x_dict: dict) -> dict[str:SuffFactUnit]:
     sufffacts = {}
     for sufffact_dict in x_dict.values():
         try:
@@ -464,6 +464,14 @@ class RequiredCore:
         return self
 
 
+def requiredcore_shop(
+    base: Road, sufffacts: dict[Road:SuffFactUnit], suff_idea_active_status: bool = None
+):
+    return RequiredCore(
+        base=base, sufffacts=sufffacts, suff_idea_active_status=suff_idea_active_status
+    )
+
+
 @dataclasses.dataclass
 class RequiredUnit(RequiredCore):
     def get_dict(self):
@@ -475,6 +483,14 @@ class RequiredUnit(RequiredCore):
             "base": self.base,
             "sufffacts": sufffacts_dict,
         }
+
+
+def requiredunit_shop(
+    base: Road, sufffacts: dict[Road:SuffFactUnit], suff_idea_active_status: bool = None
+):
+    return RequiredUnit(
+        base=base, sufffacts=sufffacts, suff_idea_active_status=suff_idea_active_status
+    )
 
 
 @dataclasses.dataclass
@@ -536,7 +552,7 @@ class RequiredHeir(RequiredCore):
 def requireds_get_from_dict(requireds_dict: dict) -> dict[RequiredUnit]:
     requireds = {}
     for required_dict in requireds_dict.values():
-        x_required = RequiredUnit(
+        x_required = requiredunit_shop(
             base=required_dict["base"],
             sufffacts=sufffacts_get_from_dict(x_dict=required_dict["sufffacts"]),
         )

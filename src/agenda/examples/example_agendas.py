@@ -2,7 +2,7 @@ from src.agenda.idea import ideacore_shop
 from src.agenda.required_idea import (
     acptfactunit_shop,
     sufffactunit_shop,
-    RequiredUnit,
+    requiredunit_shop,
     acptfactunit_shop,
 )
 from src.agenda.agenda import (
@@ -143,14 +143,14 @@ def get_agenda_with_4_levels_and_2requireds() -> AgendaUnit:
     week_road = f"{x_agenda._culture_qid},{week_text}"
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
-    week_required = RequiredUnit(base=week_road, sufffacts={})
+    week_required = requiredunit_shop(base=week_road, sufffacts={})
     week_required.set_sufffact(wed_road)
 
     nation_text = "nation-state"
     nation_road = f"{x_agenda._culture_qid},{nation_text}"
     usa_text = "USA"
     usa_road = f"{nation_road},{usa_text}"
-    nation_required = RequiredUnit(base=nation_road, sufffacts={})
+    nation_required = requiredunit_shop(base=nation_road, sufffacts={})
     nation_required.set_sufffact(usa_road)
 
     work_text = "work"
@@ -231,7 +231,9 @@ def get_agenda_with7amCleanTableRequired() -> AgendaUnit:
     clean_table_7am_sufffact_road = day24hr_road
     clean_table_7am_sufffact_open = 7.0
     clean_table_7am_sufffact_nigh = 7.0
-    clean_table_7am_required = RequiredUnit(base=clean_table_7am_base, sufffacts={})
+    clean_table_7am_required = requiredunit_shop(
+        base=clean_table_7am_base, sufffacts={}
+    )
     clean_table_7am_required.set_sufffact(
         sufffact=clean_table_7am_sufffact_road,
         open=clean_table_7am_sufffact_open,
@@ -256,7 +258,7 @@ def get_agenda_1Task_1CE0MinutesRequired_1AcptFact() -> AgendaUnit:
     x_agenda.add_idea(idea_kid=mail_task, pad=x_agenda._culture_qid)
 
     sufffact_x = sufffactunit_shop(need=ced_road, open=80, nigh=90)
-    x_task_required = RequiredUnit(
+    x_task_required = requiredunit_shop(
         base=sufffact_x.need, sufffacts={sufffact_x.need: sufffact_x}
     )
     mail_road = f"{x_agenda._culture_qid},{mail_label}"
@@ -301,7 +303,7 @@ def get_agenda_x1_3levels_1required_1acptfacts() -> AgendaUnit:
     x_agenda.add_idea(idea_kid=idea_grandkidM, pad=week_road)
 
     shave_sufffact_x = sufffactunit_shop(need=mon_road)
-    shave_required = RequiredUnit(
+    shave_required = requiredunit_shop(
         base=week_road,
         sufffacts={shave_sufffact_x.need: shave_sufffact_x},
     )
@@ -411,7 +413,7 @@ def get_assignment_agenda_example1():
     dirty_idea = ideacore_shop(_label=dirty_text)
     x_agenda.add_idea(idea_kid=dirty_idea, pad=status_road)
 
-    floor_required = RequiredUnit(base=status_road, sufffacts={})
+    floor_required = requiredunit_shop(base=status_road, sufffacts={})
     floor_required.set_sufffact(sufffact=status_road)
     x_agenda.edit_idea_attr(road=floor_road, required=floor_required)
 
