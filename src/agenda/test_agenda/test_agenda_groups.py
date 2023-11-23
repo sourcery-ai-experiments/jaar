@@ -177,7 +177,7 @@ def test_agenda_set_balancelink_correctly_deletes_balancelinks():
     assert len(x_agenda._idearoot._kids[swim_text]._balanceheirs) == 2
 
 
-def test_agenda_set_balancelink_CorrectlyCalculatesInheritedBalancelinkAgendaImportance():
+def test_agenda_set_balancelink_CorrectlyCalculatesInheritedBalanceLinkAgendaImportance():
     # GIVEN
     x_agenda = agendaunit_shop(_healer="prom")
     rico_text = "rico"
@@ -530,7 +530,7 @@ def test_agenda_edit_groupunit_brand_CorrectlyMeldPIDs():
     assert agenda._groups.get(jog_text)._partys.get(rico_text).debtor_weight == 13
 
 
-def test_agenda_edit_groupunit_brand_CorrectlyChangesBalancelinks():
+def test_agenda_edit_groupunit_brand_CorrectlyChangesBalanceLinks():
     # GIVEN
     x_agenda = agendaunit_shop(_healer="prom")
     rico_text = "rico"
@@ -566,7 +566,7 @@ def test_agenda_edit_groupunit_brand_CorrectlyChangesBalancelinks():
     assert camping_idea._balancelinks.get(jog_text).debtor_weight == 3
 
 
-def test_agenda_edit_groupunit_brand_CorrectlyMeldsBalancelinesBalancelinksBalanceHeirs():
+def test_agenda_edit_groupunit_brand_CorrectlyMeldsBalanceLinesBalanceLinksBalanceHeirs():
     # GIVEN
     x_agenda = agendaunit_shop(_healer="prom")
     rico_text = "rico"

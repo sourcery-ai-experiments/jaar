@@ -1,5 +1,5 @@
 from src.agenda.idea import ideacore_shop, IdeaAttrHolder, IdeaCore
-from src.agenda.group import Balancelink, GroupBrand, balancelink_shop
+from src.agenda.group import BalanceLink, GroupBrand, balancelink_shop
 from src.agenda.required_idea import (
     requiredunit_shop,
     RequiredUnit,
@@ -36,7 +36,7 @@ def custom_set_idea_attr(
     descendant_promise_count: int = None,
     all_party_credit: bool = None,
     all_party_debt: bool = None,
-    balancelink: Balancelink = None,
+    balancelink: BalanceLink = None,
     balancelink_del: GroupBrand = None,
     is_expanded: bool = None,
     promise: bool = None,

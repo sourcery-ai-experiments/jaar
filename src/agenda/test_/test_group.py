@@ -1,6 +1,6 @@
 from src.agenda.party import PartyPID, partylink_shop
 from src.agenda.group import (
-    Balanceline,
+    BalanceLine,
     groupunit_shop,
     GroupBrand,
     balancelink_shop,
@@ -502,10 +502,10 @@ def test_balancelinks_get_from_JSON_SimpleExampleWorks():
     assert balancelinks_obj_dict == teachers_obj_check_dict
 
 
-def test_Balanceline_exists():
+def test_BalanceLine_exists():
     # GIVEN
     bikers_brand = GroupBrand("bikers")
-    balanceline_x = Balanceline(
+    balanceline_x = BalanceLine(
         brand=bikers_brand, _agenda_credit=0.33, _agenda_debt=0.55
     )
     assert balanceline_x.brand == bikers_brand

@@ -12,7 +12,7 @@ from src.agenda.party import (
     PartyUnitExternalMetrics,
 )
 from src.agenda.group import (
-    Balancelink,
+    BalanceLink,
     GroupBrand,
     GroupUnit,
     balancelinks_get_from_dict,
@@ -1063,7 +1063,7 @@ class AgendaUnit:
 
         return idea
 
-    def _create_missing_groups_partys(self, balancelinks: dict[GroupBrand:Balancelink]):
+    def _create_missing_groups_partys(self, balancelinks: dict[GroupBrand:BalanceLink]):
         for balancelink_x in balancelinks.values():
             if self._groups.get(balancelink_x.brand) is None:
                 groupunit_x = groupunit_shop(brand=balancelink_x.brand, _partys={})
@@ -1340,7 +1340,7 @@ class AgendaUnit:
         descendant_promise_count: int = None,
         all_party_credit: bool = None,
         all_party_debt: bool = None,
-        balancelink: Balancelink = None,
+        balancelink: BalanceLink = None,
         balancelink_del: GroupBrand = None,
         is_expanded: bool = None,
         on_meld_weight_action: str = None,
@@ -1524,7 +1524,7 @@ class AgendaUnit:
             balancelink_obj.reset_agenda_credit_debt()
 
     def _set_groupunits_agenda_importance(
-        self, balanceheirs: dict[GroupBrand:Balancelink]
+        self, balanceheirs: dict[GroupBrand:BalanceLink]
     ):
         self.set_groupunits_empty_if_null()
         for balancelink_obj in balanceheirs.values():

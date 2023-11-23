@@ -28,9 +28,9 @@ from src.agenda.road import (
 )
 from src.agenda.group import (
     BalanceHeir,
-    Balancelink,
+    BalanceLink,
     GroupBrand,
-    Balanceline,
+    BalanceLine,
     balanceheir_shop,
     GroupUnit,
 )
@@ -96,7 +96,7 @@ class IdeaAttrHolder:
     descendant_promise_count: int = None
     all_party_credit: bool = None
     all_party_debt: bool = None
-    balancelink: Balancelink = None
+    balancelink: BalanceLink = None
     balancelink_del: GroupBrand = None
     is_expanded: bool = None
     on_meld_weight_action: str = None
@@ -129,9 +129,9 @@ class IdeaCore:
     _pad: str = None
     _kids: dict = None
     _weight: int = None
-    _balancelinks: dict[GroupBrand:Balancelink] = None
+    _balancelinks: dict[GroupBrand:BalanceLink] = None
     _balanceheirs: dict[GroupBrand:BalanceHeir] = None  # Calculated field
-    _balancelines: dict[GroupBrand:Balancelink] = None  # Calculated field
+    _balancelines: dict[GroupBrand:BalanceLink] = None  # Calculated field
     _requiredunits: dict[Road:RequiredUnit] = None
     _requiredheirs: dict[Road:RequiredHeir] = None  # Calculated field
     _assignedunit: AssignedUnit = None
@@ -406,14 +406,14 @@ class IdeaCore:
     def set_kidless_balancelines(self):
         # get balancelines from self
         for bh in self._balanceheirs.values():
-            balanceline_x = Balanceline(
+            balanceline_x = BalanceLine(
                 brand=bh.brand,
                 _agenda_credit=bh._agenda_credit,
                 _agenda_debt=bh._agenda_debt,
             )
             self._balancelines[balanceline_x.brand] = balanceline_x
 
-    def set_balancelines(self, child_balancelines: dict[GroupBrand:Balanceline] = None):
+    def set_balancelines(self, child_balancelines: dict[GroupBrand:BalanceLine] = None):
         self.set_balancelines_empty_if_null()
         if child_balancelines is None:
             child_balancelines = {}
@@ -421,7 +421,7 @@ class IdeaCore:
         # get balancelines from child
         for bl in child_balancelines.values():
             if self._balancelines.get(bl.brand) is None:
-                self._balancelines[bl.brand] = Balanceline(
+                self._balancelines[bl.brand] = BalanceLine(
                     brand=bl.brand,
                     _agenda_credit=0,
                     _agenda_debt=0,
@@ -727,7 +727,7 @@ class IdeaCore:
         if self._balancelines is None:
             self._balancelines = {}
 
-    def set_balancelink(self, balancelink: Balancelink):
+    def set_balancelink(self, balancelink: BalanceLink):
         self.set_balancelink_empty_if_null()
         self._balancelinks[balancelink.brand] = balancelink
 
@@ -976,9 +976,9 @@ def ideacore_shop(
     _pad: str = None,
     _kids: dict = None,
     _weight: int = 1,
-    _balancelinks: dict[GroupBrand:Balancelink] = None,
+    _balancelinks: dict[GroupBrand:BalanceLink] = None,
     _balanceheirs: dict[GroupBrand:BalanceHeir] = None,  # Calculated field
-    _balancelines: dict[GroupBrand:Balancelink] = None,  # Calculated field
+    _balancelines: dict[GroupBrand:BalanceLink] = None,  # Calculated field
     _requiredunits: dict[Road:RequiredUnit] = None,
     _requiredheirs: dict[Road:RequiredHeir] = None,  # Calculated field
     _assignedunit: AssignedUnit = None,
@@ -1094,9 +1094,9 @@ def idearoot_shop(
     _pad: str = None,
     _kids: dict = None,
     _weight: int = 1,
-    _balancelinks: dict[GroupBrand:Balancelink] = None,
+    _balancelinks: dict[GroupBrand:BalanceLink] = None,
     _balanceheirs: dict[GroupBrand:BalanceHeir] = None,  # Calculated field
-    _balancelines: dict[GroupBrand:Balancelink] = None,  # Calculated field
+    _balancelines: dict[GroupBrand:BalanceLink] = None,  # Calculated field
     _requiredunits: dict[Road:RequiredUnit] = None,
     _requiredheirs: dict[Road:RequiredHeir] = None,  # Calculated field
     _assignedunit: AssignedUnit = None,

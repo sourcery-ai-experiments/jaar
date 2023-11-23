@@ -211,7 +211,7 @@ def groupunit_shop(
 
 
 @dataclasses.dataclass
-class Balancelink(GroupCore):
+class BalanceLink(GroupCore):
     creditor_weight: float = 1.0
     debtor_weight: float = 1.0
 
@@ -242,13 +242,13 @@ class Balancelink(GroupCore):
         )
 
 
-# class Balancelinksshop:
-def balancelinks_get_from_json(balancelinks_json: str) -> dict[GroupBrand, Balancelink]:
+# class BalanceLinksshop:
+def balancelinks_get_from_json(balancelinks_json: str) -> dict[GroupBrand, BalanceLink]:
     balancelinks_dict = x_get_dict(json_x=balancelinks_json)
     return balancelinks_get_from_dict(x_dict=balancelinks_dict)
 
 
-def balancelinks_get_from_dict(x_dict: dict) -> dict[GroupBrand, Balancelink]:
+def balancelinks_get_from_dict(x_dict: dict) -> dict[GroupBrand, BalanceLink]:
     balancelinks = {}
     for balancelinks_dict in x_dict.values():
         x_group = balancelink_shop(
@@ -262,10 +262,10 @@ def balancelinks_get_from_dict(x_dict: dict) -> dict[GroupBrand, Balancelink]:
 
 def balancelink_shop(
     brand: GroupBrand, creditor_weight: float = None, debtor_weight: float = None
-) -> Balancelink:
+) -> BalanceLink:
     creditor_weight = x_func_return1ifnone(creditor_weight)
     debtor_weight = x_func_return1ifnone(debtor_weight)
-    return Balancelink(
+    return BalanceLink(
         brand=brand, creditor_weight=creditor_weight, debtor_weight=debtor_weight
     )
 
@@ -310,7 +310,7 @@ def balanceheir_shop(
 
 
 @dataclasses.dataclass
-class Balanceline(GroupCore):
+class BalanceLine(GroupCore):
     _agenda_credit: float
     _agenda_debt: float
 

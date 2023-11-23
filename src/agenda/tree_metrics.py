@@ -1,6 +1,6 @@
 import dataclasses
 from src.agenda.required_idea import RequiredUnit, Road
-from src.agenda.group import Balancelink, GroupBrand, GroupMetrics
+from src.agenda.group import BalanceLink, GroupBrand, GroupMetrics
 
 
 @dataclasses.dataclass
@@ -35,7 +35,7 @@ class TreeMetrics:
         self,
         level: int,
         requireds: dict[Road:RequiredUnit],
-        balancelinks: dict[GroupBrand:Balancelink],
+        balancelinks: dict[GroupBrand:BalanceLink],
         uid: int,
         promise: bool,
         idea_road: Road,
@@ -68,7 +68,7 @@ class TreeMetrics:
                     self.required_bases[required.base] + 1
                 )
 
-    def evaluate_balancelinks(self, balancelinks: dict[GroupBrand:Balancelink]):
+    def evaluate_balancelinks(self, balancelinks: dict[GroupBrand:BalanceLink]):
         if balancelinks != None:
             for balancelink in balancelinks.values():
                 self.balancelinks_metrics[balancelink.brand] = balancelink

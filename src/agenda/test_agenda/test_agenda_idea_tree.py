@@ -4,7 +4,7 @@ from src.agenda.examples.example_agendas import (
 from src.agenda.party import PartyPID
 from src.agenda.idea import ideacore_shop
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.group import Balanceline, balancelink_shop
+from src.agenda.group import BalanceLine, balancelink_shop
 from pytest import raises as pytest_raises
 
 
@@ -254,7 +254,7 @@ def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_2():
     assert week_idea._kids[tue_text]._all_party_debt == True
 
 
-def test_TreeTraverseSetsClearsBalancelineestorsCorrectly():
+def test_TreeTraverseSetsClearsBalanceLineestorsCorrectly():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     x_agenda.set_agenda_metrics()
@@ -281,7 +281,7 @@ def test_TreeTraverseSetsClearsBalancelineestorsCorrectly():
     assert not x_agenda._idearoot._kids[work_text]._balancelines
 
 
-def test_TreeTraverseSetsBalancelineestorFromRootCorrectly():
+def test_TreeTraverseSetsBalanceLineestorFromRootCorrectly():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     x_agenda.set_agenda_metrics()
@@ -333,7 +333,7 @@ def test_TreeTraverseSetsBalancelineestorFromRootCorrectly():
     #     print(f"  {kid_idea._agenda_importance=} {sum_x=} {kid_idea.get_road()=}")
     assert round(sandy_balanceline._agenda_credit, 15) == 1
     assert round(sandy_balanceline._agenda_debt, 15) == 1
-    x_balanceline = Balanceline(
+    x_balanceline = BalanceLine(
         brand=sandy_text,
         _agenda_credit=0.9999999999999998,
         _agenda_debt=0.9999999999999998,
@@ -341,7 +341,7 @@ def test_TreeTraverseSetsBalancelineestorFromRootCorrectly():
     assert x_agenda._idearoot._balancelines == {x_balanceline.brand: x_balanceline}
 
 
-def test_TreeTraverseSetsBalancelineestorFromNonRootCorrectly():
+def test_TreeTraverseSetsBalanceLineestorFromNonRootCorrectly():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     x_agenda.set_agenda_metrics()
@@ -360,7 +360,7 @@ def test_TreeTraverseSetsBalancelineestorFromNonRootCorrectly():
 
     # THEN
     assert x_agenda._idearoot._balancelines != {}
-    x_balanceline = Balanceline(
+    x_balanceline = BalanceLine(
         brand=sandy_text,
         _agenda_credit=0.23076923076923078,
         _agenda_debt=0.23076923076923078,

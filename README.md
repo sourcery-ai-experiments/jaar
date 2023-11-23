@@ -82,9 +82,9 @@ AgendaUnit IdeaUnit objects
 
 AgendaUnit IdeaUnit hierarchical structure
 
-AgendaUnit IdeaUnit Balancelink objects
+AgendaUnit IdeaUnit BalanceLink objects
 
-AgendaUnit IdeaUnit Balanceline objects
+AgendaUnit IdeaUnit BalanceLine objects
 
 AgendaUnit IdeaUnit BalanceHeir objects
 

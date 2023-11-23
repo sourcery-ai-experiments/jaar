@@ -5,7 +5,7 @@ from ui.EditIdeaUnitUI import Ui_Form
 from PyQt5 import QtWidgets as qtw, QtCore
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1, QTableWidget as qtw0
 from src.agenda.hreg_time import SuffFactUnitHregTime
-from src.agenda.group import Balancelink, GroupBrand
+from src.agenda.group import BalanceLink, GroupBrand
 from src.agenda.required_idea import Road
 from src.agenda.hreg_time import get_24hr, get_60min
 from pyqt_func import (
@@ -784,7 +784,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         bd_pid_new = self.idea2group_insert_combo.currentText()
         if bd_pid_new == "":
             raise Exception("bd_pid is empty, idea2bd cannot be updated")
-        balancelink_new = Balancelink(brand=GroupBrand(bd_pid_new), weight=1)
+        balancelink_new = BalanceLink(brand=GroupBrand(bd_pid_new), weight=1)
         self.agenda_x.edit_idea_attr(
             road=f"{self.x_idea._pad},{self.x_idea._label}", balancelink=balancelink_new
         )
