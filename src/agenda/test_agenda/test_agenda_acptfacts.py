@@ -53,7 +53,7 @@ def test_agenda_acptfact_create():
 
 
 def test_set_acptfact_FailsToCreateWhenBaseAndAcptFactAreDifferenctAndAcptFactIdeaIsNotRangeRoot():
-    # Given
+    # GIVEN
     healer_text = "Bob"
     sx = agendaunit_shop(_healer=healer_text)
     time_x = "time_x"
@@ -74,7 +74,7 @@ def test_set_acptfact_FailsToCreateWhenBaseAndAcptFactAreDifferenctAndAcptFactId
     a1e1_road = Road(f"{a1_road},{a1e1st}")
     assert sx._idearoot._acptfactunits in (None, {})
 
-    # When/Then
+    # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         sx.set_acptfact(base=a1e1_road, pick=a1e1_road, open=20, nigh=23)
     assert (
@@ -84,7 +84,7 @@ def test_set_acptfact_FailsToCreateWhenBaseAndAcptFactAreDifferenctAndAcptFactId
 
 
 def test_agenda_acptfact_create():
-    # Given
+    # GIVEN
     sx = examples_get_agenda_with_4_levels()
     sunday_road = Road(f"{sx._culture_qid},weekdays,Sunday")
     weekday_road = Road(f"{sx._culture_qid},weekdays")
@@ -94,10 +94,10 @@ def test_agenda_acptfact_create():
         sunday_agenda_acptfact.base: sunday_agenda_acptfact
     }
 
-    # When
+    # WHEN
     sx.del_acptfact(base=weekday_road)
 
-    # Then
+    # THEN
     assert sx._idearoot._acptfactunits == {}
 
 
@@ -242,7 +242,7 @@ def test_agenda_get_idea_list_AcptFactHeirCorrectlyDeletesAcptFactUnit():
 
 
 def test_get_ranged_acptfacts():
-    # Given a single ranged acptfact
+    # GIVEN a single ranged acptfact
     healer_text = "Tim"
     sx = agendaunit_shop(_healer=healer_text)
     time_x = "time_x"
@@ -261,10 +261,10 @@ def test_get_ranged_acptfacts():
     print(f"Given a single ranged acptfact {sx._idearoot._acptfactunits=}")
     assert len(sx._idearoot._acptfactunits) == 1
 
-    # When/Then
+    # WHEN / THEN
     assert len(sx._get_rangeroot_acptfactunits()) == 1
 
-    # When one ranged acptfact added
+    # WHEN one ranged acptfact added
     place = "place_x"
     sx.add_idea(
         idea_kid=ideacore_shop(_label=place, _begin=600, _close=800),
@@ -275,10 +275,10 @@ def test_get_ranged_acptfacts():
     print(f"When one ranged acptfact added {sx._idearoot._acptfactunits=}")
     assert len(sx._idearoot._acptfactunits) == 2
 
-    # Then
+    # THEN
     assert len(sx._get_rangeroot_acptfactunits()) == 2
 
-    # When one non-ranged_acptfact added
+    # WHEN one non-ranged_acptfact added
     mood = "mood_x"
     sx.add_idea(idea_kid=ideacore_shop(_label=mood), pad=sx._culture_qid)
     m_road = f"{sx._culture_qid},{mood}"
@@ -286,12 +286,12 @@ def test_get_ranged_acptfacts():
     print(f"When one non-ranged_acptfact added {sx._idearoot._acptfactunits=}")
     assert len(sx._idearoot._acptfactunits) == 3
 
-    # Then
+    # THEN
     assert len(sx._get_rangeroot_acptfactunits()) == 2
 
 
 def test_get_roots_ranged_acptfacts():
-    # Given a two ranged acptfacts where one is "range-root" get_root_ranged_acptfacts returns one "range-root" acptfact
+    # GIVEN a two ranged acptfacts where one is "range-root" get_root_ranged_acptfacts returns one "range-root" acptfact
     healer_text = "Tim"
     sx = agendaunit_shop(_healer=healer_text)
     time_x = "time_x"
@@ -314,7 +314,7 @@ def test_get_roots_ranged_acptfacts():
     )
     assert len(sx._idearoot._acptfactunits) == 2
 
-    # When/Then
+    # WHEN / THEN
     assert len(sx._get_rangeroot_acptfactunits()) == 1
     assert sx._get_rangeroot_acptfactunits()[0].base == t_x_road
 
@@ -328,7 +328,7 @@ def test_get_roots_ranged_acptfacts():
     sx.set_acptfact(base=m_x_road, pick=t_x_road, open=5, nigh=10)
     assert len(sx._idearoot._acptfactunits) == 3
 
-    # When/Then
+    # WHEN / THEN
     assert len(sx._get_rangeroot_acptfactunits()) == 1
     assert sx._get_rangeroot_acptfactunits()[0].base == t_x_road
 
@@ -743,19 +743,19 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario6(
 
 
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario7():
-    # Given
+    # GIVEN
     healer_text = "Tim"
     sx = agendaunit_shop(_healer=healer_text)
     sx.set_time_hreg_ideas(c400_count=7)
     jajatime_road = f"{sx._culture_qid},time,jajatime"
 
-    # When given a minute range that should be Thursday to Monday midnight
+    # WHEN given a minute range that should be Thursday to Monday midnight
     sx.set_acptfact(
         base=jajatime_road, pick=jajatime_road, open=1063951200, nigh=1063956960
     )
     lhu = sx._get_lemma_acptfactunits()
 
-    # Then
+    # THEN
     week_open = lhu[f"{sx._culture_qid},time,jajatime,week"].open
     week_nigh = lhu[f"{sx._culture_qid},time,jajatime,week"].nigh
     print(f"for {sx._culture_qid},time,jajatime,week: {week_open=} {week_nigh=}")
@@ -786,19 +786,19 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario7(
 
 
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario8():
-    # Given
+    # GIVEN
     healer_text = "Tim"
     sx = agendaunit_shop(_healer=healer_text)
     sx.set_time_hreg_ideas(c400_count=7)
     jajatime_road = f"{sx._culture_qid},time,jajatime"
 
-    # When given a minute range that should be Thursday to Monday midnight
+    # WHEN given a minute range that should be Thursday to Monday midnight
     sx.set_acptfact(
         base=jajatime_road, pick=jajatime_road, open=1063951200, nigh=1063951200
     )
     lhu = sx._get_lemma_acptfactunits()
 
-    # Then
+    # THEN
     week_open = lhu[f"{sx._culture_qid},time,jajatime,week"].open
     week_nigh = lhu[f"{sx._culture_qid},time,jajatime,week"].nigh
     print(f"for {sx._culture_qid},time,jajatime,week: {week_open=} {week_nigh=}")

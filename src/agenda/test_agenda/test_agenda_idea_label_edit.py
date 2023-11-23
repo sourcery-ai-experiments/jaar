@@ -21,7 +21,7 @@ def test_idea_label_fails_when_idea_does_not_exist():
     )
     x_agenda.add_idea(pad=work_road, idea_kid=ideacore_shop(_label=swim_text))
 
-    # When/Then
+    # WHEN / THEN
     no_idea_road = Road(f"{x_agenda._culture_qid},bees")
     with pytest_raises(Exception) as excinfo:
         x_agenda.edit_idea_label(old_road=no_idea_road, new_label="pigeons")

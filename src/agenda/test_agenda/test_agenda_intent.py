@@ -279,7 +279,7 @@ def test_exammple_AgendaCanFiltersOnBase():
     # )
     assert len(x_agenda.get_intent_items()) == 68
 
-    # When
+    # WHEN
     action_list = x_agenda.get_intent_items(base=week_road)
 
     # THEN
@@ -324,10 +324,10 @@ def test_set_intent_task_as_complete_RangeWorksCorrectly():
     assert len(x_agenda.get_intent_items()) == 1
     assert x_agenda.get_intent_items()[0]._task == True
 
-    # When
+    # WHEN
     x_agenda.set_intent_task_complete(task_road=run_road, base=day_road)
 
-    # Then
+    # THEN
     intent_list = x_agenda.get_intent_items()
     assert len(intent_list) == 0
     assert intent_list == []
@@ -374,7 +374,7 @@ def test_set_intent_task_as_complete_DivisionWorksCorrectly():
     # print(f"{run_idea._acptfactheirs=}")
     print(f"{run_idea._acptfactunits=}")
 
-    # When
+    # WHEN
     x_agenda.set_intent_task_complete(task_road=run_road, base=day_road)
     print(f"{run_idea._acptfactunits=}")
     # print(f"{run_idea._acptfactheirs=}")
@@ -429,7 +429,7 @@ def test_agenda_get_from_json_LoadsActionFromJSONCorrectly():
 
 
 def test_weekdayAgendaItemsCorrectlyReturned():
-    # Given
+    # GIVEN
     healer_text = "Zia"
     x_agenda = agendaunit_shop(_healer=healer_text)
 
@@ -531,13 +531,13 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     sun_min = x_agenda.get_time_min_from_dt(dt=sun_dt)
     assert x_agenda._idearoot._acptfactunits.get(jaja_road) is None
 
-    # When
+    # WHEN
     print("\nset acptfact for Sunday")
     x_agenda.set_acptfact(base=jaja_road, pick=jaja_road, open=sun_min, nigh=sun_min)
     # for acptfact in x_agenda._idearoot._acptfactunits.values():
     #     print(f"{acptfact.base=} (H: {acptfact.acptfact}) {acptfact.active=} {acptfact.open=} {acptfact.nigh=}")
 
-    # Then
+    # THEN
     assert len(x_agenda._idearoot._acptfactunits) == 7
     print(x_agenda._idearoot._acptfactunits[jaja_road])
     print(x_agenda._idearoot._acptfactunits[sat_road])
@@ -557,13 +557,13 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     # assert x_agenda._idearoot._acptfactunits[fri_road].active == False
     # assert x_agenda._idearoot._acptfactunits[sat_road].active == False
 
-    # When
+    # WHEN
     print("\nset acptfact for Sat through Monday")
     x_agenda.set_acptfact(base=jaja_road, pick=jaja_road, open=sat_min, nigh=mon_min)
     # for acptfact in x_agenda._idearoot._acptfactunits.values():
     #     print(f"{acptfact.base=} (H: {acptfact.acptfact}) {acptfact.active=} {acptfact.open=} {acptfact.nigh=}")
 
-    # Then
+    # THEN
     assert x_agenda._idearoot._acptfactunits[sat_road]
     # assert x_agenda._idearoot._acptfactunits[sat_road].active == True
     # assert x_agenda._idearoot._acptfactunits[sun_road].active == True
@@ -577,13 +577,13 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     assert x_agenda._idearoot._acptfactunits[sun_road].open == 1440
     assert x_agenda._idearoot._acptfactunits[sun_road].nigh == 2880
 
-    # When
+    # WHEN
     print("\nset acptfacts for Sunday through Friday")
     x_agenda.set_acptfact(base=jaja_road, pick=jaja_road, open=sun_min, nigh=fri_min)
     # for acptfact in x_agenda._idearoot._acptfactunits.values():
     #     print(f"{acptfact.base=} (H: {acptfact.acptfact}) {acptfact.active=} {acptfact.open=} {acptfact.nigh=}")
 
-    # Then
+    # THEN
     # assert x_agenda._idearoot._acptfactunits[sat_road].active == False
     # assert x_agenda._idearoot._acptfactunits[sun_road].active == True
     # assert x_agenda._idearoot._acptfactunits[tue_road].active == True
@@ -594,7 +594,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     assert x_agenda._idearoot._acptfactunits[sun_road].open == 1440
     assert x_agenda._idearoot._acptfactunits[sun_road].nigh == 2880
 
-    # When
+    # WHEN
     print("\nset acptfacts for 10 day stretch")
     dayzero_dt = datetime(2010, 1, 3)
     dayten_dt = datetime(2010, 1, 13)

@@ -28,10 +28,10 @@ def test_lemmas_set_empty_if_null():
 
 
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario1():
-    # Given
+    # GIVEN
     lemmas_x = Lemmas()
 
-    # When
+    # WHEN
     pad_road = root_label()
     idea_kid = ideacore_shop(_label="timerange1", _pad=pad_road, _begin=0, _close=12)
     src_idea = ideacore_shop(_label="whatever", _pad=pad_road, _begin=-13, _close=500)
@@ -41,7 +41,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario1():
         idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
     )
 
-    # Then
+    # THEN
     assert new_acptfact.base == tr1
     assert new_acptfact.pick == tr1
     assert new_acptfact.open == 0
@@ -49,10 +49,10 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario1():
 
 
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario2():
-    # Given
+    # GIVEN
     lemmas_x = Lemmas()
 
-    # When
+    # WHEN
     pad_road = root_label()
     idea_kid = ideacore_shop(_label="timerange1", _pad=pad_road, _begin=7, _close=12)
     tr1 = f"{idea_kid._pad},{idea_kid._label}"
@@ -62,17 +62,17 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario2():
         idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
     )
 
-    # Then
+    # THEN
     assert new_acptfact.open == 7
     assert new_acptfact.nigh == 12
 
 
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_denom():
-    # Given
+    # GIVEN
     lx = Lemmas()
     lx.set_empty_if_null()
 
-    # When
+    # WHEN
     pad_road = root_label()
     idea_kid = ideacore_shop(
         _label="timerange1",
@@ -90,17 +90,17 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_denom():
         idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
     )
 
-    # Then
+    # THEN
     assert new_acptfact.open == 0
     assert new_acptfact.nigh == 3
 
 
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_2_denom():
-    # Given
+    # GIVEN
     lx = Lemmas()
     lx.set_empty_if_null()
 
-    # When
+    # WHEN
     pad_road = root_label()
     ex_idea = ideacore_shop(_label="range_x", _pad=pad_road, _begin=0, _close=10080)
     idea_kid = ideacore_shop(
@@ -116,17 +116,17 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_2_denom():
         idea_x=idea_kid, src_acptfact=ex_acptfact, src_idea=ex_idea
     )
 
-    # Then
+    # THEN
     assert new_acptfact.open == 7200
     assert new_acptfact.nigh == 7200
 
 
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario4_denomReest():
-    # Given
+    # GIVEN
     lemmas_x = Lemmas()
     lemmas_x.set_empty_if_null()
 
-    # When
+    # WHEN
     pad_road = root_label()
     idea_kid = ideacore_shop(
         _label="timerange1",
@@ -144,17 +144,17 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario4_denomReest(
         idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
     )
 
-    # Then
+    # THEN
     assert new_acptfact.open == 0
     assert new_acptfact.nigh == 30
 
 
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario5_denomReest():
-    # Given
+    # GIVEN
     lemmas_x = Lemmas()
     lemmas_x.set_empty_if_null()
 
-    # When
+    # WHEN
     pad_road = root_label()
     idea_kid = ideacore_shop(
         _label="timerange1",
@@ -172,13 +172,13 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario5_denomReest(
         idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
     )
 
-    # Then
+    # THEN
     assert new_acptfact.open == 40
     assert new_acptfact.nigh == 30
 
 
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest():
-    # Given
+    # GIVEN
     pad_road = root_label()
     lemmas_x = Lemmas()
     lemmas_x.set_empty_if_null()
@@ -189,7 +189,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
         _close=60,
     )
 
-    # When/Then Check
+    # WHEN / THEN Check
     tr3_kid = ideacore_shop(
         _label="subera",
         _pad=pad_road,
@@ -204,7 +204,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
     assert tr3_30_20_acptfact.open == 40
     assert tr3_30_20_acptfact.nigh == 50
 
-    # When/Then Check
+    # WHEN / THEN Check
     trb_kid = ideacore_shop(
         _label="subera",
         _pad=pad_road,
@@ -219,7 +219,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
     assert trb_30_20_acptfact.open == 40
     assert trb_30_20_acptfact.nigh == 60
 
-    # When/Then Check
+    # WHEN / THEN Check
     tr4_kid = ideacore_shop(
         _label="subera",
         _pad=pad_road,
@@ -234,7 +234,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
     assert tr4_30_20_acptfact.open == 55
     assert tr4_30_20_acptfact.nigh == 10
 
-    # When/Then Check
+    # WHEN / THEN Check
     tr5_kid = ideacore_shop(
         _label="subera",
         _pad=pad_road,
@@ -251,11 +251,11 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
 
 
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario7_denomReest():
-    # Given
+    # GIVEN
     lemmas_x = Lemmas()
     lemmas_x.set_empty_if_null()
 
-    # When
+    # WHEN
     pad_road = root_label()
     idea_kid = ideacore_shop(
         _label="timerange1",
@@ -273,28 +273,28 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario7_denomReest(
         idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
     )
 
-    # Then
+    # THEN
     assert new_acptfact.open == 0
     assert new_acptfact.nigh == 60
 
 
 def test_lemmas_get_unevaluated_lemma_ReturnsCorrectLemmaWhenEmpty():
-    # Given empty lemmas
+    # GIVEN empty lemmas
     lemmas_y = Lemmas()
     lemmas_y.set_empty_if_null()
 
-    # When
+    # WHEN
     lem1x = lemmas_y.get_unevaluated_lemma()
     print(f"{lem1x=}")
     print(f"{lemmas_y.lemmas=}")
 
-    # Then
+    # THEN
     assert lemmas_y.lemmas == {}
     assert lem1x is None
 
 
 def test_lemmas_get_unevaluated_lemma_ReturnsCorrectLemmaWhenPopulated():
-    # Given 2 in lemmas
+    # GIVEN 2 in lemmas
     pad_road = root_label()
     lemmas_x = Lemmas()
     lemmas_x.lemmas = {}
@@ -310,7 +310,7 @@ def test_lemmas_get_unevaluated_lemma_ReturnsCorrectLemmaWhenPopulated():
     src_acptfact = acptfactunit_shop(base=tr2, pick=tr2, open=55, nigh=60)
     lemmas_x.eval(idea_x=tr2_idea, src_acptfact=src_acptfact, src_idea=src_idea)
 
-    # When
+    # WHEN
     lem1 = lemmas_x.get_unevaluated_lemma()
     print(f"{lem1.idea_x=}")
     print(f"{tr1=}")
@@ -319,7 +319,7 @@ def test_lemmas_get_unevaluated_lemma_ReturnsCorrectLemmaWhenPopulated():
     lem3 = lemmas_x.get_unevaluated_lemma()
     print(f"{lem3=}")
 
-    # Then
+    # THEN
     assert lem1.idea_x in (tr1_idea, tr2_idea)
     assert lem2.idea_x in (tr1_idea, tr2_idea)
     assert lem3 is None
@@ -328,7 +328,7 @@ def test_lemmas_get_unevaluated_lemma_ReturnsCorrectLemmaWhenPopulated():
 
 
 def test_lemmas_is_lemmas_incomplete_ReturnsCorrectBoolWhenPopulated():
-    # Given
+    # GIVEN
     pad_road = root_label()
     lemmas_z = Lemmas()
     lemmas_z.lemmas = {}
@@ -347,7 +347,7 @@ def test_lemmas_is_lemmas_incomplete_ReturnsCorrectBoolWhenPopulated():
     src_acptfact = acptfactunit_shop(base=tr2_road, pick=tr2_road, open=55, nigh=60)
     lemmas_z.eval(idea_x=tr2_idea, src_acptfact=src_acptfact, src_idea=src_idea)
 
-    # When/Then
+    # WHEN / THEN
     assert len(lemmas_z.lemmas) == 2
     tr1_lemma = lemmas_z.lemmas.get(tr1_road)
     tr2_lemma = lemmas_z.lemmas.get(tr2_road)
@@ -357,17 +357,17 @@ def test_lemmas_is_lemmas_incomplete_ReturnsCorrectBoolWhenPopulated():
     print(f"0 changes: {tr2_src_acptfact.base=} {tr2_lemma.eval_status=}")
     assert lemmas_z.is_lemmas_evaluated() == False
 
-    # When
+    # WHEN
     lem1 = lemmas_z.get_unevaluated_lemma()
-    # Then
+    # THEN
     assert len(lemmas_z.lemmas) == 2
     print(f"1 changes: {tr1_src_acptfact.base=} {tr1_lemma.eval_status=}")
     print(f"1 changes: {tr2_src_acptfact.base=} {tr2_lemma.eval_status=}")
     assert lemmas_z.is_lemmas_evaluated() == False
 
-    # When
+    # WHEN
     lem2 = lemmas_z.get_unevaluated_lemma()
-    # Then
+    # THEN
     assert len(lemmas_z.lemmas) == 2
     print(f"2 changes: {tr1_src_acptfact.base=} {tr1_lemma.eval_status=}")
     print(f"2 changes: {tr2_src_acptfact.base=} {tr2_lemma.eval_status=}")
@@ -375,11 +375,11 @@ def test_lemmas_is_lemmas_incomplete_ReturnsCorrectBoolWhenPopulated():
 
 
 def test_lemmas_is_lemmas_incomplete_ReturnsCorrectBoolWhenEmpty():
-    # Given
+    # GIVEN
     lemmas_z = Lemmas()
     lemmas_z.lemmas = {}
     print(f"Does not exist: {lemmas_z=}")
 
-    # When/Then
+    # WHEN / THEN
     assert not lemmas_z.lemmas
     assert lemmas_z.is_lemmas_evaluated() == True

@@ -49,26 +49,26 @@ def test_AcptFactUnit_clear_range_works_1():
 
 
 def test_AcptFactUnit_clear_range_works_2():
-    # Given
+    # GIVEN
     weekday_text = "weekdays"
     weekday_road = f"{root_label()},{weekday_text}"
     weekday_acptfact = acptfactunit_shop(weekday_road, weekday_road, open=1.0, nigh=5.0)
 
-    # When
+    # WHEN
     sunday_text = "Sunday"
     sunday_road = f"{weekday_road},{sunday_text}"
     weekday_acptfact.set_attr(pick=sunday_road)
-    # Then
+    # THEN
     assert weekday_acptfact.pick == sunday_road
 
-    # When
+    # WHEN
     weekday_acptfact.set_attr(open=45)
-    # Then
+    # THEN
     assert weekday_acptfact.open == 45
 
-    # When
+    # WHEN
     weekday_acptfact.set_attr(nigh=65)
-    # Then
+    # THEN
     assert weekday_acptfact.nigh == 65
 
 

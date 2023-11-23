@@ -268,7 +268,7 @@ class AgendaUnit:
         return int(min / c400_min), c400_idea, min % c400_min
 
     def get_time_c400yr_from_min(self, min: int):
-        # given int minutes within 400 year range return year and remainder minutes
+        # GIVEN int minutes within 400 year range return year and remainder minutes
         c400_count, c400_idea, c400yr_min = self.get_time_c400_from_min(min=min)
         c100_4_96y = c400_idea.get_kids_in_range(begin=c400yr_min, close=c400yr_min)[0]
         cXXXyr_min = c400yr_min - c100_4_96y._begin
@@ -835,7 +835,7 @@ class AgendaUnit:
             and acptfact_idea._close != None
             and self._is_idea_rangeroot(idea_road=base) == True
         ):
-            # when idea is "range-root" identify any required.bases that are descendants
+            # WHEN idea is "range-root" identify any required.bases that are descendants
             # calculate and set those descendant acptfacts
             # example: timeline range (0-, 1.5e9) is range-root
             # example: "timeline,weeks" (spllt 10080) is range-descendant

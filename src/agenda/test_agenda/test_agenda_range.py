@@ -3,7 +3,7 @@ from src.agenda.agenda import agendaunit_shop
 
 
 def test_agendaAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
-    # Given
+    # GIVEN
     healer_text = "Mia"
     x_agenda = agendaunit_shop(_healer=healer_text, _weight=10)
 
@@ -31,16 +31,16 @@ def test_agendaAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
     assert x_idea._begin == 10
     assert x_idea._close == 25
 
-    # When
+    # WHEN
     x_agenda.edit_idea_attr(road=rcA_road, addin=7)
 
-    # Then
+    # THEN
     assert x_idea._begin == 17
     assert x_idea._close == 32
 
 
 def test_agendaAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
-    # Given
+    # GIVEN
     healer_text = "Bob"
     x_agenda = agendaunit_shop(_healer=healer_text, _weight=10)
 
@@ -69,10 +69,10 @@ def test_agendaAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
     assert x_idea._close == 25
     assert x_idea._addin is None
 
-    # When
+    # WHEN
     x_agenda.edit_idea_attr(road=rcA_road, addin=15, denom=5)
 
-    # Then
+    # THEN
     assert x_idea._begin == 5
     assert x_idea._close == 8
     assert x_idea._addin == 15

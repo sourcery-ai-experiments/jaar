@@ -105,7 +105,7 @@ def test_get_time_dt_from_min_WorksCorrectly():
 
 
 def test_get_time_():
-    # Given
+    # GIVEN
     healer_text = "Kia"
     x_agenda = agendaunit_shop(_healer=healer_text)
     x_agenda.set_time_hreg_ideas(c400_count=6)
@@ -117,12 +117,12 @@ def test_get_time_():
     #             f"{idea_x._pad=} \t{idea_x._label=} {idea_x._begin=} {idea_x._close=} {idea_x._addin=}"
     #         )
 
-    # When
+    # WHEN
     x_agenda.set_time_acptfacts(
         open=datetime(2000, 1, 1, 0, 0), nigh=datetime(2003, 11, 15, 4, 0)
     )
 
-    # Then
+    # THEN
     time_text = "time"
     time_road = f"{x_agenda._culture_qid},{time_text}"
     jaja_text = "jajatime"

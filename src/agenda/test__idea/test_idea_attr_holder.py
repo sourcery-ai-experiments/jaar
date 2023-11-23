@@ -37,7 +37,7 @@ def test_idea_attr_holder_exists():
 
 
 def test_idea_attr_holder_CorrectlyCalculatesSuffFactRanges():
-    # Given
+    # GIVEN
     idea_attr = IdeaAttrHolder(required_sufffact="some_road")
     assert idea_attr.required_sufffact_open is None
     assert idea_attr.required_sufffact_nigh is None

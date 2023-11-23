@@ -301,7 +301,7 @@ def test_idea_core_clear_all_party_credit_debt_ClearsCorrectly():
 
 
 def test_get_kids_in_range_GetsCorrectIdeas():
-    # Given
+    # GIVEN
     mon366_text = "366months"
     mon366_idea = ideacore_shop(_label=mon366_text, _begin=0, _close=366)
     jan_text = "Jan"
@@ -311,7 +311,7 @@ def test_get_kids_in_range_GetsCorrectIdeas():
     mon366_idea.add_kid(idea_kid=ideacore_shop(_label=feb29_text, _begin=31, _close=60))
     mon366_idea.add_kid(idea_kid=ideacore_shop(_label=mar_text, _begin=31, _close=91))
 
-    # When/Then
+    # WHEN / THEN
     assert len(mon366_idea.get_kids_in_range(begin=100, close=120)) == 0
     assert len(mon366_idea.get_kids_in_range(begin=0, close=31)) == 1
     assert len(mon366_idea.get_kids_in_range(begin=5, close=5)) == 1
@@ -804,7 +804,7 @@ def test_idea_get_descendants_Returns3DescendantsRoads():
 
 
 def test_idea_get_descendants_ErrorRaisedIfInfiniteLoop():
-    # Given
+    # GIVEN
     nation_text = "nation-state"
     nation_road = f"{root_label()},{nation_text}"
     nation_idea = ideacore_shop(_label=nation_text, _pad=root_label())

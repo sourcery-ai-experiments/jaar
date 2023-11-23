@@ -269,7 +269,7 @@ def test_agenda_requiredheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
 
 
 def test_agenda_requiredunits_set_UnCoupledMethod():
-    # Given
+    # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
     work_road = f"{x_agenda._culture_qid},{work_text}"
@@ -278,12 +278,12 @@ def test_agenda_requiredunits_set_UnCoupledMethod():
     wed_text = "Wednesday"
     wed_road = f"{week_road},{wed_text}"
 
-    # When
+    # WHEN
     x_agenda.edit_idea_attr(
         road=work_road, required_base=week_road, required_sufffact=wed_road
     )
 
-    # Then
+    # THEN
     work_idea1 = x_agenda.get_idea_kid(road=work_road)
     assert work_idea1._requiredunits != None
     print(work_idea1._requiredunits)
@@ -297,12 +297,12 @@ def test_agenda_requiredunits_set_UnCoupledMethod():
     print(f" {work_wk_required1.base=}")
     assert work_idea1._requiredunits[week_road] == work_wk_required1
 
-    # Given
+    # GIVEN
     divisor_x = 34
     open_x = 12
     nigh_x = 12
 
-    # When
+    # WHEN
     x_agenda.edit_idea_attr(
         road=work_road,
         required_base=week_road,
@@ -312,7 +312,7 @@ def test_agenda_requiredunits_set_UnCoupledMethod():
         required_sufffact_nigh=nigh_x,
     )
 
-    # Then
+    # THEN
     assert work_idea1._requiredunits[week_road].sufffacts[wed_road].open == 12
     assert work_idea1._requiredunits[week_road].sufffacts[wed_road].nigh == 12
 
@@ -326,7 +326,7 @@ def test_agenda_requiredunits_set_UnCoupledMethod():
     print(f"{work_wk_required2.base=}")
     assert work_idea1._requiredunits[week_road] == work_wk_required2
 
-    # When
+    # WHEN
     thu_text = "Thursday"
     thu_road = f"{week_road},{thu_text}"
     x_agenda.edit_idea_attr(
@@ -338,12 +338,12 @@ def test_agenda_requiredunits_set_UnCoupledMethod():
         required_sufffact_nigh=nigh_x,
     )
 
-    # Then
+    # THEN
     assert len(work_idea1._requiredunits[week_road].sufffacts) == 2
 
 
 def test_agenda_requiredunits_set_sufffactIdeaWithDenomSetsSuffFactDivision():
-    # Given
+    # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
     work_road = f"{x_agenda._culture_qid},{work_text}"
@@ -357,7 +357,7 @@ def test_agenda_requiredunits_set_sufffactIdeaWithDenomSetsSuffFactDivision():
     )
     x_agenda.add_idea(idea_kid=ideacore_shop(_label=week_text, _denom=7), pad=time_road)
 
-    # When
+    # WHEN
     x_agenda.edit_idea_attr(
         road=work_road,
         required_base=time_road,
@@ -367,7 +367,7 @@ def test_agenda_requiredunits_set_sufffactIdeaWithDenomSetsSuffFactDivision():
         required_sufffact_divisor=None,
     )
 
-    # Then
+    # THEN
     work_idea1 = x_agenda.get_idea_kid(road=work_road)
     assert work_idea1._requiredunits[time_road] != None
     assert work_idea1._requiredunits[time_road].sufffacts[week_road].divisor == 7
@@ -376,7 +376,7 @@ def test_agenda_requiredunits_set_sufffactIdeaWithDenomSetsSuffFactDivision():
 
 
 def test_agenda_requiredunits_set_sufffactIdeaWithBeginCloseSetsSuffFactOpenNigh():
-    # Given
+    # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work = "work"
     work_road = f"{x_agenda._culture_qid},{work}"
@@ -392,7 +392,7 @@ def test_agenda_requiredunits_set_sufffactIdeaWithBeginCloseSetsSuffFactOpenNigh
         idea_kid=ideacore_shop(_label=rus_war, _begin=22, _close=34), pad=time_road
     )
 
-    # When
+    # WHEN
     x_agenda.edit_idea_attr(
         road=work_road,
         required_base=time_road,
@@ -402,7 +402,7 @@ def test_agenda_requiredunits_set_sufffactIdeaWithBeginCloseSetsSuffFactOpenNigh
         required_sufffact_divisor=None,
     )
 
-    # Then
+    # THEN
     work_idea1 = x_agenda.get_idea_kid(road=work_road)
     assert work_idea1._requiredunits[time_road] != None
     assert work_idea1._requiredunits[time_road].sufffacts[rus_war_road].divisor is None
@@ -411,7 +411,7 @@ def test_agenda_requiredunits_set_sufffactIdeaWithBeginCloseSetsSuffFactOpenNigh
 
 
 def test_agenda_requiredunits_del_required_sufffact_UncoupledMethod1():
-    # Given
+    # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_road = f"{x_agenda._culture_qid},work"
     weekday_road = f"{x_agenda._culture_qid},weekdays"
@@ -429,24 +429,24 @@ def test_agenda_requiredunits_del_required_sufffact_UncoupledMethod1():
     work_idea1 = x_agenda.get_idea_kid(road=work_road)
     assert len(work_idea1._requiredunits[weekday_road].sufffacts) == 2
 
-    # When
+    # WHEN
     x_agenda.del_idea_required_sufffact(
         road=work_road,
         required_base=weekday_road,
         required_sufffact=thu_road,
     )
 
-    # Then
+    # THEN
     assert len(work_idea1._requiredunits[weekday_road].sufffacts) == 1
 
-    # When
+    # WHEN
     x_agenda.del_idea_required_sufffact(
         road=work_road,
         required_base=weekday_road,
         required_sufffact=wed_road,
     )
 
-    # Then
+    # THEN
     with pytest_raises(KeyError) as excinfo:
         work_idea1._requiredunits[weekday_road]
     assert str(excinfo.value) == f"'{weekday_road}'"
@@ -454,7 +454,7 @@ def test_agenda_requiredunits_del_required_sufffact_UncoupledMethod1():
 
 
 def test_agenda_requiredunits_del_required_sufffact_UncoupledMethod2():
-    # Given
+    # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_road = f"{x_agenda._culture_qid},work"
     weekdays_road = f"{x_agenda._culture_qid},weekdays"
@@ -462,7 +462,7 @@ def test_agenda_requiredunits_del_required_sufffact_UncoupledMethod2():
     work_idea1.set_requiredunits_empty_if_null()
     assert len(work_idea1._requiredunits) == 0
 
-    # When
+    # WHEN
     with pytest_raises(Exception) as excinfo:
         work_idea1.del_requiredunit_base(weekdays_road)
     assert str(excinfo.value) == f"No RequiredUnit at '{weekdays_road}'"

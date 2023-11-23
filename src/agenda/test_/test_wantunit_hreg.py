@@ -4,7 +4,7 @@ from pytest import raises as pytest_raises
 
 
 def test_SuffFactUnitHregTime_attributesSet_x_weeks():
-    # Given
+    # GIVEN
     wu = SuffFactUnitHregTime()
     wu._every_x_days = 4
     wu._every_x_months = 2
@@ -13,7 +13,7 @@ def test_SuffFactUnitHregTime_attributesSet_x_weeks():
     assert wu._every_x_months == 2
     assert wu._every_x_years == 7
 
-    # When
+    # WHEN
     wu.set_weekly_event(
         every_x_weeks=1,
         remainder_weeks=0,
@@ -23,7 +23,7 @@ def test_SuffFactUnitHregTime_attributesSet_x_weeks():
         event_minutes=0,
     )
 
-    # Then
+    # THEN
     assert wu._every_x_weeks == 1
     assert wu._x_week_remainder == 0
     assert wu._weekday == "Monday"
@@ -37,10 +37,10 @@ def test_SuffFactUnitHregTime_attributesSet_x_weeks():
 
 
 def test_SuffFactUnitHregTime_attributesSet_x_weeksGetsException_remainder_weeks_TooBig():
-    # Given
+    # GIVEN
     wu = SuffFactUnitHregTime()
 
-    # When/Then
+    # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         wu.set_weekly_event(
             every_x_weeks=1,
@@ -57,10 +57,10 @@ def test_SuffFactUnitHregTime_attributesSet_x_weeksGetsException_remainder_weeks
 
 
 def test_SuffFactUnitHregTime_attributesSet_x_weeksGetsException_remainder_weeks_LessThanZero():
-    # Given
+    # GIVEN
     wu = SuffFactUnitHregTime()
 
-    # When/Then
+    # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         wu.set_weekly_event(
             every_x_weeks=1,
@@ -74,29 +74,29 @@ def test_SuffFactUnitHregTime_attributesSet_x_weeksGetsException_remainder_weeks
 
 
 def test_SuffFactUnitHregTime_attributesSet_weekday1():
-    # Given
+    # GIVEN
     wu = SuffFactUnitHregTime()
-    # When
+    # WHEN
     wu._set_weekday(weekday="Sunday")
-    # Then
+    # THEN
     assert wu._weekday == "Sunday"
 
 
 def test_SuffFactUnitHregTime_attributesSet_start_hr1():
-    # Given
+    # GIVEN
     wu = SuffFactUnitHregTime()
-    # When
+    # WHEN
     wu._set_start_hr(1)
-    # Then
+    # THEN
     assert wu._start_hr == 1
 
 
 def test_SuffFactUnitHregTime_attributesSet_weekdayInvalid():
-    # Given
+    # GIVEN
     wu = SuffFactUnitHregTime()
-    # When
+    # WHEN
     wu._set_weekday(weekday="FUNFUN")
-    # Then
+    # THEN
     assert wu._weekday is None
 
 
