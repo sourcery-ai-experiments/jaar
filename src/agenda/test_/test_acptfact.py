@@ -405,5 +405,3 @@ def test_acptfactunits_get_from_dict_CorrectlyBuildsObjFromIncompleteDict():
     # THEN
     weekday_acptfact = acptfacts_dict.get(weekday_road)
     assert weekday_acptfact == acptfactunit_shop(base=weekday_road, pick=sunday_road)
-
-    assert 1 == 2
