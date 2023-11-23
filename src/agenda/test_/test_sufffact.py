@@ -1,8 +1,8 @@
 from src.agenda.required_idea import (
     sufffactunit_shop,
     acptfactheir_shop,
-    Road,
     sufffactunit_shop,
+    sufffacts_get_from_dict,
 )
 from src.agenda.road import get_default_culture_root_label as root_label
 from pytest import raises as pytest_raises
@@ -568,12 +568,7 @@ def test_sufffact_get_dict_ReturnsCorrectDictWithDvisiorAndOpenNigh():
 
     # THEN
     assert sufffact_dict != None
-    static_dict = {
-        "need": week_road,
-        "open": 1,
-        "nigh": 1,
-        "divisor": 6,
-    }
+    static_dict = {"need": week_road, "open": 1, "nigh": 1, "divisor": 6}
     assert sufffact_dict == static_dict
 
 
@@ -590,12 +585,7 @@ def test_sufffact_get_dict_ReturnsCorrectDictWithOpenAndNigh():
 
     # THEN
     assert sufffact_dict != None
-    static_dict = {
-        "need": week_road,
-        "open": 1,
-        "nigh": 4,
-        "divisor": None,
-    }
+    static_dict = {"need": week_road, "open": 1, "nigh": 4}
     assert sufffact_dict == static_dict
 
 
@@ -612,12 +602,7 @@ def test_sufffact_get_dict_ReturnsCorrectDictWithOnlyRoad():
 
     # THEN
     assert sufffact_dict != None
-    static_dict = {
-        "need": week_road,
-        "open": None,
-        "nigh": None,
-        "divisor": None,
-    }
+    static_dict = {"need": week_road}
     assert sufffact_dict == static_dict
 
 
@@ -736,3 +721,40 @@ def test_sufffact_meld_raises_NotSameDivisorError():
         str(excinfo.value)
         == f"Meld fail: need={y_sufffact.need} divisor={y_sufffact.divisor} is different self.divisor={x_sufffact.divisor}"
     )
+
+
+def test_sufffacts_get_from_dict_CorrectlyReturnsCompleteObj():
+    # GIVEN
+    weekday_text = "weekdays"
+    weekday_road = f"{root_label()},{weekday_text}"
+    static_dict = {
+        weekday_road: {
+            "need": weekday_road,
+            "open": 1,
+            "nigh": 30,
+            "divisor": 5,
+        }
+    }
+
+    # WHEN
+    sufffacts_dict = sufffacts_get_from_dict(static_dict)
+
+    # THEN
+    assert len(sufffacts_dict) == 1
+    weekday_sufffact = sufffacts_dict.get(weekday_road)
+    assert weekday_sufffact == sufffactunit_shop(weekday_road, 1, 30, divisor=5)
+
+
+def test_acptfactunits_get_from_dict_CorrectlyBuildsObjFromIncompleteDict():
+    # GIVEN
+    weekday_text = "weekdays"
+    weekday_road = f"{root_label()},{weekday_text}"
+    static_dict = {weekday_road: {"need": weekday_road}}
+
+    # WHEN
+    sufffacts_dict = sufffacts_get_from_dict(static_dict)
+
+    # THEN
+    assert len(sufffacts_dict) == 1
+    weekday_sufffact = sufffacts_dict.get(weekday_road)
+    assert weekday_sufffact == sufffactunit_shop(weekday_road)

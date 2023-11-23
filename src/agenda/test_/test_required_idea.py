@@ -148,49 +148,47 @@ def test_RequiredHeir_set_status_AgendaNoneCorrectlySetsStatusFalse():
 
 
 def test_RequiredUnit_get_dict_ReturnsCorrectDictWithSingleSuffFactRequireds():
-    sufffact_x = sufffactunit_shop(need="casa,weekday,wednesday")
+    # GIVEN
+    wkday_road = f"{root_label()},weekday"
+    wed_text = "wednesday"
+    wed_road = f"{wkday_road},{wed_text}"
+    sufffact_x = sufffactunit_shop(need=wed_road)
     sufffacts = {sufffact_x.need: sufffact_x}
-    required = RequiredUnit(base="casa,weekday", sufffacts=sufffacts)
+    required = RequiredUnit(base=wkday_road, sufffacts=sufffacts)
+
+    # WHEN
     x_required_dict = required.get_dict()
+
+    # THEN
     assert x_required_dict != None
     static_required_dict = {
-        "base": "casa,weekday",
-        "sufffacts": {
-            "casa,weekday,wednesday": {
-                "need": "casa,weekday,wednesday",
-                "open": None,
-                "nigh": None,
-                "divisor": None,
-            }
-        },
+        "base": wkday_road,
+        "sufffacts": {wed_road: {"need": wed_road}},
     }
     print(x_required_dict)
     assert x_required_dict == static_required_dict
 
 
 def test_RequiredUnit_get_dict_ReturnsCorrectDictWithTwoSuffFactsRequireds():
-    sufffact1 = sufffactunit_shop(need="casa,weekday,wednesday")
-    sufffact2 = sufffactunit_shop(need="casa,weekday,thursday")
+    # GIVEN
+    wkday_road = f"{root_label()},weekday"
+    wed_text = "wednesday"
+    wed_road = f"{wkday_road},{wed_text}"
+    thu_text = "thursday"
+    thu_road = f"{wkday_road},{thu_text}"
+    sufffact1 = sufffactunit_shop(need=wed_road)
+    sufffact2 = sufffactunit_shop(need=thu_road)
     sufffacts = {sufffact1.need: sufffact1, sufffact2.need: sufffact2}
-    required = RequiredUnit(base="casa,weekday", sufffacts=sufffacts)
+    required = RequiredUnit(base=wkday_road, sufffacts=sufffacts)
+
+    # WHEN
     x_required_dict = required.get_dict()
+
+    # THEN
     assert x_required_dict != None
     static_required_dict = {
-        "base": "casa,weekday",
-        "sufffacts": {
-            "casa,weekday,wednesday": {
-                "need": "casa,weekday,wednesday",
-                "open": None,
-                "nigh": None,
-                "divisor": None,
-            },
-            "casa,weekday,thursday": {
-                "need": "casa,weekday,thursday",
-                "open": None,
-                "nigh": None,
-                "divisor": None,
-            },
-        },
+        "base": wkday_road,
+        "sufffacts": {wed_road: {"need": wed_road}, thu_road: {"need": thu_road}},
     }
     print(x_required_dict)
     assert x_required_dict == static_required_dict

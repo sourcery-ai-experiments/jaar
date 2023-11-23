@@ -239,12 +239,16 @@ class SuffFactUnit:
         return self.need
 
     def get_dict(self):
-        return {
-            "need": self.need,
-            "open": self.open,
-            "nigh": self.nigh,
-            "divisor": self.divisor,
-        }
+        x_dict = {"need": self.need}
+        if self.open != None:
+            x_dict["open"] = self.open
+        if self.nigh != None:
+            x_dict["nigh"] = self.nigh
+
+        if self.divisor != None:
+            x_dict["divisor"] = self.divisor
+
+        return x_dict
 
     def clear_status(self):
         self._status = None
@@ -373,11 +377,24 @@ def sufffactunit_shop(
 def sufffacts_get_from_dict(x_dict: dict):
     sufffacts = {}
     for sufffact_dict in x_dict.values():
+        try:
+            x_open = sufffact_dict["open"]
+        except KeyError:
+            x_open = None
+        try:
+            x_nigh = sufffact_dict["nigh"]
+        except KeyError:
+            x_nigh = None
+        try:
+            x_divisor = sufffact_dict["divisor"]
+        except KeyError:
+            x_divisor = None
+
         sufffact_x = sufffactunit_shop(
             need=sufffact_dict["need"],
-            open=sufffact_dict["open"],
-            nigh=sufffact_dict["nigh"],
-            divisor=sufffact_dict["divisor"],
+            open=x_open,
+            nigh=x_nigh,
+            divisor=x_divisor,
         )
         sufffacts[sufffact_x.need] = sufffact_x
     return sufffacts
