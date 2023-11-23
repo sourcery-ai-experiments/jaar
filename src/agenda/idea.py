@@ -17,6 +17,7 @@ from src.agenda.required_idea import (
     AcptFactUnit,
     acptfactunit_shop,
     RequiredHeir,
+    requiredheir_shop,
     sufffactunit_shop,
     Road,
     change_road,
@@ -824,7 +825,7 @@ class IdeaCore:
 
         x_dict = {}
         for required in coalesced_requireds.values():
-            requiredheir_x = RequiredHeir(
+            requiredheir_x = requiredheir_shop(
                 base=required.base,
                 sufffacts=None,
                 suff_idea_active_status=required.suff_idea_active_status,

@@ -25,6 +25,7 @@ from src.agenda.required_idea import (
     AcptFactUnit,
     AcptFactUnit,
     RequiredHeir,
+    requiredheir_shop,
     RequiredUnit,
     Road,
     acptfactunits_get_from_dict,
@@ -1601,7 +1602,7 @@ class AgendaUnit:
         self._idearoot.set_requiredunits_empty_if_null()
         x_dict = {}
         for required in self._idearoot._requiredunits.values():
-            x_required = RequiredHeir(base=required.base, sufffacts=None)
+            x_required = requiredheir_shop(base=required.base, sufffacts=None)
             x_sufffacts = {}
             for w in required.sufffacts.values():
                 sufffact_x = sufffactunit_shop(

@@ -3,7 +3,7 @@ from src.agenda.required_assign import (
     assigned_unit_shop,
     AssignedHeir,
     assigned_heir_shop,
-    #     RequiredHeir,
+    #
     #     requiredunit_shop,
     #     acptfactheir_shop,
     #     sufffactunit_shop,

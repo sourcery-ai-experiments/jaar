@@ -2,10 +2,9 @@ from src.agenda.idea import IdeaCore, ideacore_shop
 from src.agenda.group import GroupBrand, balancelink_shop, balanceheir_shop
 from src.agenda.required_idea import (
     requiredunit_shop,
-    RequiredHeir,
+    requiredheir_shop,
     acptfactunit_shop,
     sufffactunit_shop,
-    Road,
 )
 from src.agenda.required_assign import assigned_unit_shop, assigned_heir_shop
 from src.agenda.road import get_default_culture_root_label as root_label
@@ -234,7 +233,7 @@ def test_idea_core_set_requiredheirsCorrectlyTakesFromOutside():
     ball_idea = ideacore_shop(_label=ball_text)
     run_sufffact = sufffactunit_shop(need=run_road, open=0, nigh=7)
     run_sufffacts = {run_sufffact.need: run_sufffact}
-    requiredheir = RequiredHeir(base=run_road, sufffacts=run_sufffacts)
+    requiredheir = requiredheir_shop(base=run_road, sufffacts=run_sufffacts)
     requiredheirs = {requiredheir.base: requiredheir}
     assert ball_idea._requiredunits is None
     assert ball_idea._requiredheirs is None
@@ -266,7 +265,7 @@ def test_idea_core_set_requiredheirsCorrectlyTakesFromSelf():
     ball_idea.set_requiredheirs(requiredheirs=None, agenda_idea_dict=None)
 
     # THEN
-    requiredheir = RequiredHeir(base=run_road, sufffacts=run_sufffacts)
+    requiredheir = requiredheir_shop(base=run_road, sufffacts=run_sufffacts)
     requiredheirs = {requiredheir.base: requiredheir}
     assert ball_idea._requiredheirs == requiredheirs
 
@@ -320,7 +319,7 @@ def test_get_kids_in_range_GetsCorrectIdeas():
     assert mon366_idea.get_kids_in_range(begin=31, close=31)[0]._label == feb29_text
 
 
-def test_idea_get_dict_ReturnsCorrectDict():
+def test_idea_get_dict_ReturnsCorrectCompleteDict():
     # GIVEN
     week_text = "weekdays"
     week_road = f"{root_label()},{week_text}"
@@ -345,10 +344,122 @@ def test_idea_get_dict_ReturnsCorrectDict():
         ),
     }
     x1_requiredheirs = {
-        week_road: RequiredHeir(
+        week_road: requiredheir_shop(
             base=week_road, sufffacts={wed_sufffact.need: wed_sufffact}, _status=True
         ),
-        states_road: RequiredHeir(
+        states_road: requiredheir_shop(
+            base=states_road, sufffacts={usa_sufffact.need: usa_sufffact}, _status=False
+        ),
+    }
+    biker_pid = GroupBrand("bikers")
+    biker_creditor_weight = 3.0
+    biker_debtor_weight = 7.0
+    biker_link = balancelink_shop(
+        brand=biker_pid,
+        creditor_weight=biker_creditor_weight,
+        debtor_weight=biker_debtor_weight,
+    )
+    flyer_pid = GroupBrand("flyers")
+    flyer_creditor_weight = 6.0
+    flyer_debtor_weight = 9.0
+    flyer_link = balancelink_shop(
+        brand=flyer_pid,
+        creditor_weight=flyer_creditor_weight,
+        debtor_weight=flyer_debtor_weight,
+    )
+    biker_and_flyer_balancelinks = {
+        biker_link.brand: biker_link,
+        flyer_link.brand: flyer_link,
+    }
+    biker_get_dict = {
+        "brand": biker_link.brand,
+        "creditor_weight": biker_link.creditor_weight,
+        "debtor_weight": biker_link.debtor_weight,
+    }
+    flyer_get_dict = {
+        "brand": flyer_link.brand,
+        "creditor_weight": flyer_link.creditor_weight,
+        "debtor_weight": flyer_link.debtor_weight,
+    }
+    x1_balancelinks = {biker_pid: biker_get_dict, flyer_pid: flyer_get_dict}
+
+    work_text = "work"
+    work_road = f"{root_label()},{work_text}"
+    work_idea = ideacore_shop(
+        _pad=work_road,
+        _kids=None,
+        _balancelinks=biker_and_flyer_balancelinks,
+        _weight=30,
+        _label=work_text,
+        _level=1,
+        _requiredunits=x1_requiredunits,
+        _requiredheirs=x1_requiredheirs,
+        _active_status=True,
+        _range_source_road="test123",
+        promise=True,
+        _problem_bool=True,
+    )
+    acptfactunit_x = acptfactunit_shop(base=week_road, pick=week_road, open=5, nigh=59)
+    work_idea._set_ideakid_attr(acptfactunit=acptfactunit_x)
+    work_idea.set_originunit_empty_if_null()
+    work_idea._originunit.set_originlink(pid="Ray", weight=None)
+    work_idea._originunit.set_originlink(pid="Lei", weight=4)
+
+    # WHEN
+    work_dict = work_idea.get_dict()
+
+    # THEN
+    assert work_dict != None
+    assert work_dict["_kids"] == work_idea.get_kids_dict()
+    assert work_dict["_requiredunits"] == work_idea.get_requiredunits_dict()
+    assert work_dict["_balancelinks"] == work_idea.get_balancelinks_dict()
+    assert work_dict["_balancelinks"] == x1_balancelinks
+    assert work_dict["_originunit"] == work_idea.get_originunit_dict()
+    assert work_dict["_weight"] == work_idea._weight
+    assert work_dict["_label"] == work_idea._label
+    assert work_dict["_uid"] == work_idea._uid
+    assert work_dict["_begin"] == work_idea._begin
+    assert work_dict["_close"] == work_idea._close
+    assert work_dict["_numor"] == work_idea._numor
+    assert work_dict["_denom"] == work_idea._denom
+    assert work_dict["_reest"] == work_idea._reest
+    assert work_dict["_range_source_road"] == work_idea._range_source_road
+    assert work_dict["promise"] == work_idea.promise
+    assert work_dict["_problem_bool"] == work_idea._problem_bool
+    assert work_dict["_is_expanded"] == work_idea._is_expanded
+    assert len(work_dict["_acptfactunits"]) == len(work_idea.get_acptfactunits_dict())
+    assert work_dict["_on_meld_weight_action"] == work_idea._on_meld_weight_action
+
+
+def test_idea_get_dict_ReturnsCorrectIncompleteDict():
+    # GIVEN
+    week_text = "weekdays"
+    week_road = f"{root_label()},{week_text}"
+    wed_text = "Wednesday"
+    wed_road = f"{week_road},{wed_text}"
+    states_text = "nation-state"
+    states_road = f"{root_label()},{states_text}"
+    usa_text = "USA"
+    usa_road = f"{states_road},{usa_text}"
+
+    wed_sufffact = sufffactunit_shop(need=wed_road)
+    wed_sufffact._status = True
+    usa_sufffact = sufffactunit_shop(need=usa_road)
+    usa_sufffact._status = False
+
+    x1_requiredunits = {
+        week_road: requiredunit_shop(
+            base=week_road, sufffacts={wed_sufffact.need: wed_sufffact}
+        ),
+        states_road: requiredunit_shop(
+            base=states_road, sufffacts={usa_sufffact.need: usa_sufffact}
+        ),
+    }
+    x1_requiredheirs = {
+        week_road: requiredheir_shop(
+            base=week_road, sufffacts={wed_sufffact.need: wed_sufffact}, _status=True
+        ),
+        states_road: requiredheir_shop(
             base=states_road, sufffacts={usa_sufffact.need: usa_sufffact}, _status=False
         ),
     }
@@ -473,12 +584,12 @@ def test_idea_invaild_DenomThrowsError():
     )
 
 
-def test_idea_get_requiredheir_correctlyReturnsRequiredHeir():
+def test_idea_get_requiredheir_correctlyReturnsrequiredheir_shop():
     # GIVEN
     clean_text = "clean"
     clean_idea = ideacore_shop(_label=clean_text)
     tool_text = "tool"
-    required_heir_x = RequiredHeir(base=tool_text, sufffacts={})
+    required_heir_x = requiredheir_shop(base=tool_text, sufffacts={})
     required_heirs_x = {required_heir_x.base: required_heir_x}
     clean_idea.set_requiredheirs(requiredheirs=required_heirs_x, agenda_idea_dict=None)
 
@@ -495,7 +606,7 @@ def test_idea_get_requiredheir_correctlyReturnsNone():
     clean_text = "clean"
     clean_idea = ideacore_shop(_label=clean_text)
     tool_text = "tool"
-    required_heir_x = RequiredHeir(base=tool_text, sufffacts={})
+    required_heir_x = requiredheir_shop(base=tool_text, sufffacts={})
     required_heirs_x = {required_heir_x.base: required_heir_x}
     clean_idea.set_requiredheirs(requiredheirs=required_heirs_x, agenda_idea_dict=None)
 

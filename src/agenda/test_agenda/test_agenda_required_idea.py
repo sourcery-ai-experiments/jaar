@@ -4,12 +4,16 @@ from src.agenda.examples.example_agendas import (
     get_agenda_irrational_example as example_agendas_get_agenda_irrational_example,
 )
 from src.agenda.idea import ideacore_shop
-from src.agenda.required_idea import sufffactunit_shop, requiredunit_shop, RequiredHeir
-from src.agenda.agenda import agendaunit_shop
+from src.agenda.required_idea import (
+    sufffactunit_shop,
+    requiredunit_shop,
+    requiredheir_shop,
+)
 from src.agenda.x_func import from_list_get_active_status
 
 
 def test_agenda_requiredunits_create():
+    # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
     work_road = f"{x_agenda._culture_qid},{work_text}"
@@ -20,7 +24,7 @@ def test_agenda_requiredunits_create():
 
     wed_sufffact = sufffactunit_shop(need=wed_road)
     work_wk_required = requiredunit_shop(
-        base=weekday_road, sufffacts={wed_sufffact.need: wed_sufffact}
+        weekday_road, {wed_sufffact.need: wed_sufffact}
     )
     print(f"{type(work_wk_required.base)=}")
     print(f"{work_wk_required.base=}")
@@ -79,7 +83,7 @@ def test_agenda_requiredheirs_AreCorrectlyInherited_v1():
     wed_sufffact._task = False
     sufffacts = {wed_sufffact.need: wed_sufffact}
     work_wk_build_requiredunit = requiredunit_shop(base=week_road, sufffacts=sufffacts)
-    work_wk_built_requiredheir = RequiredHeir(
+    work_wk_built_requiredheir = requiredheir_shop(
         base=week_road,
         sufffacts=sufffacts,
         _status=False,
@@ -138,7 +142,7 @@ def test_agenda_requiredheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
     work_wk_build_requiredunit = requiredunit_shop(
         base=week_road, sufffacts=sufffacts_x
     )
-    work_wk_built_requiredheir = RequiredHeir(
+    work_wk_built_requiredheir = requiredheir_shop(
         base=week_road,
         sufffacts=sufffacts_x,
         _status=False,
@@ -205,7 +209,7 @@ def test_agenda_requiredheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     wed_sufffact._task = False
     sufffacts = {wed_sufffact.need: wed_sufffact}
     work_wk_build_requiredunit = requiredunit_shop(base=week_road, sufffacts=sufffacts)
-    work_wk_built_requiredheir = RequiredHeir(
+    work_wk_built_requiredheir = requiredheir_shop(
         base=week_road,
         sufffacts=sufffacts,
         _status=False,

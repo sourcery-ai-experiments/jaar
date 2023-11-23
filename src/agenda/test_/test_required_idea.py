@@ -1,7 +1,7 @@
 from src.agenda.required_idea import (
     RequiredCore,
     requiredcore_shop,
-    RequiredHeir,
+    requiredheir_shop,
     requiredunit_shop,
     acptfactheir_shop,
     sufffactunit_shop,
@@ -41,7 +41,7 @@ def test_RequiredHeir_clear_CorrectlyClearsField():
     email_sufffacts = {email_sufffact.need: email_sufffact}
 
     # WHEN
-    work_required = RequiredHeir(base=work_road, sufffacts=email_sufffacts)
+    work_required = requiredheir_shop(base=work_road, sufffacts=email_sufffacts)
     # THEN
     assert work_required._status is None
 
@@ -69,7 +69,7 @@ def test_RequiredHeir_set_status_CorrectlySetsStatus():
     wed_noon_road = f"{wed_road},{wed_noon_text}"
     wed_sufffact = sufffactunit_shop(need=wed_road)
     wed_sufffacts = {wed_sufffact.need: wed_sufffact}
-    wkday_required = RequiredHeir(base=wkday_road, sufffacts=wed_sufffacts)
+    wkday_required = requiredheir_shop(base=wkday_road, sufffacts=wed_sufffacts)
     assert wkday_required._status is None
     # WHEN
     wkday_acptfact = acptfactheir_shop(base=wkday_road, pick=wed_noon_road)
@@ -81,7 +81,7 @@ def test_RequiredHeir_set_status_CorrectlySetsStatus():
     # GIVEN
     thu_sufffact = sufffactunit_shop(need=thu_road)
     two_sufffacts = {wed_sufffact.need: wed_sufffact, thu_sufffact.need: thu_sufffact}
-    two_required = RequiredHeir(base=wkday_road, sufffacts=two_sufffacts)
+    two_required = requiredheir_shop(base=wkday_road, sufffacts=two_sufffacts)
     assert two_required._status is None
     # WHEN
     noon_acptfact = acptfactheir_shop(base=wkday_road, pick=wed_noon_road)
@@ -109,7 +109,7 @@ def test_RequiredHeir_set_status_EmptyAcptFactCorrectlySetsStatus():
     wed_road = f"{wkday_road},{wed_text}"
     wed_sufffact = sufffactunit_shop(need=wed_road)
     wed_sufffacts = {wed_sufffact.need: wed_sufffact}
-    wkday_required = RequiredHeir(base=wkday_road, sufffacts=wed_sufffacts)
+    wkday_required = requiredheir_shop(base=wkday_road, sufffacts=wed_sufffacts)
     assert wkday_required._status is None
     wkday_required.set_status(acptfacts=None)
     assert wkday_required._status == False
@@ -119,7 +119,7 @@ def test_RequiredHeir_set_curr_idea_active_status_Correctly():
     # GIVEN
     day_text = "day"
     day_road = f"{root_label()},{day_text}"
-    day_required = RequiredHeir(base=day_road, sufffacts=None)
+    day_required = requiredheir_shop(base=day_road, sufffacts=None)
     assert day_required._curr_idea_active_status is None
 
     # WHEN
@@ -133,7 +133,7 @@ def test_RequiredHeir_set_status_AgendaTrueCorrectlySetsStatusTrue():
     # GIVEN
     wkday_text = "weekday"
     wkday_road = f"{root_label()},{wkday_text}"
-    week_required = RequiredHeir(
+    week_required = requiredheir_shop(
         base=wkday_road, sufffacts={}, suff_idea_active_status=True
     )
     week_required.set_curr_idea_active_status(bool_x=True)
@@ -150,7 +150,7 @@ def test_RequiredHeir_set_status_AgendaFalseCorrectlySetsStatusTrue():
     # GIVEN
     wkday_text = "weekday"
     wkday_road = f"{root_label()},{wkday_text}"
-    wkday_required = RequiredHeir(
+    wkday_required = requiredheir_shop(
         base=wkday_road, sufffacts={}, suff_idea_active_status=False
     )
     wkday_required.set_curr_idea_active_status(bool_x=False)
@@ -167,7 +167,7 @@ def test_RequiredHeir_set_status_AgendaTrueCorrectlySetsStatusFalse():
     # GIVEN
     wkday_text = "weekday"
     wkday_road = f"{root_label()},{wkday_text}"
-    wkday_required = RequiredHeir(
+    wkday_required = requiredheir_shop(
         base=wkday_road, sufffacts={}, suff_idea_active_status=True
     )
     wkday_required.set_curr_idea_active_status(bool_x=False)
@@ -184,7 +184,7 @@ def test_RequiredHeir_set_status_AgendaNoneCorrectlySetsStatusFalse():
     # GIVEN
     wkday_text = "weekday"
     wkday_road = f"{root_label()},{wkday_text}"
-    wkday_required = RequiredHeir(
+    wkday_required = requiredheir_shop(
         base=wkday_road, sufffacts={}, suff_idea_active_status=True
     )
     wkday_required.set_curr_idea_active_status(bool_x=None)
@@ -252,7 +252,7 @@ def test_RequiredHeir_correctSetsActionState():
     day_road = f"{root_label()},{day_text}"
     range_3_to_6_sufffact = sufffactunit_shop(need=day_road, open=3, nigh=6)
     range_3_to_6_sufffacts = {range_3_to_6_sufffact.need: range_3_to_6_sufffact}
-    range_3_to_6_required = RequiredHeir(day_road, range_3_to_6_sufffacts)
+    range_3_to_6_required = requiredheir_shop(day_road, range_3_to_6_sufffacts)
     assert range_3_to_6_required._status is None
 
     # WHEN
@@ -384,7 +384,7 @@ def test_RequiredCore_get_key_road():
     sufffacts_x = {email_sufffact.need: email_sufffact}
 
     # WHEN
-    x_required = RequiredHeir(base=work_road, sufffacts=sufffacts_x)
+    x_required = requiredheir_shop(base=work_road, sufffacts=sufffacts_x)
 
     # THEN
     assert x_required.get_key_road() == work_road

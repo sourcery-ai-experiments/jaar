@@ -548,6 +548,24 @@ class RequiredHeir(RequiredCore):
             self._task = False
 
 
+def requiredheir_shop(
+    base: Road,
+    sufffacts: dict[Road:SuffFactUnit],
+    suff_idea_active_status: bool = None,
+    _status: bool = None,
+    _task: bool = None,
+    _curr_idea_active_status: bool = None,
+):
+    return RequiredHeir(
+        base=base,
+        sufffacts=sufffacts,
+        suff_idea_active_status=suff_idea_active_status,
+        _status=_status,
+        _task=_task,
+        _curr_idea_active_status=_curr_idea_active_status,
+    )
+
+
 # class Requiredsshop:
 def requireds_get_from_dict(requireds_dict: dict) -> dict[RequiredUnit]:
     requireds = {}
