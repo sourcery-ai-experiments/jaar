@@ -11,259 +11,336 @@ from pytest import raises as pytest_raises
 
 
 def test_RequiredCore_attributesExist():
-    ced_day = "casa,weekday"
-    sufffact_x = sufffactunit_shop(need="casa,weekday,wednesday")
-    sufffacts = {sufffact_x.need: sufffact_x}
-    required = RequiredCore(
-        base=ced_day, sufffacts=sufffacts, suff_idea_active_status=False
+    # GIVEN
+    wkday_text = "weekday"
+    wkday_road = f"{root_label()},{wkday_text}"
+    wed_text = "wednesday"
+    wed_road = f"{wkday_road},{wed_text}"
+    wed_sufffact = sufffactunit_shop(need=wed_road)
+    sufffacts = {wed_sufffact.need: wed_sufffact}
+
+    # WHEN
+    wkday_required = RequiredCore(
+        base=wkday_road, sufffacts=sufffacts, suff_idea_active_status=False
     )
-    assert required.base == ced_day
-    assert required.sufffacts == sufffacts
-    assert required.suff_idea_active_status == False
+
+    # THEN
+    assert wkday_required.base == wkday_road
+    assert wkday_required.sufffacts == sufffacts
+    assert wkday_required.suff_idea_active_status == False
 
 
-def test_RequiredHeir_clear_works():
-    email_road = f"{root_label()},work,check email"
-    sufffact_x = sufffactunit_shop(need=email_road)
-    sufffacts = {sufffact_x.need: sufffact_x}
-    base = f"{root_label()},work"
-    required = RequiredHeir(base=base, sufffacts=sufffacts)
-    assert required._status is None
-    required._status = True
-    assert required._status
-    required.clear_status()
-    assert required._status is None
-    assert required._curr_idea_active_status is None
+def test_RequiredHeir_clear_CorrectlyClearsField():
+    # GIVEN
+    work_text = "work"
+    work_road = f"{root_label()},{work_text}"
+    email_text = "check email"
+    email_road = f"{work_road},{email_text}"
+    email_sufffact = sufffactunit_shop(need=email_road)
+    email_sufffacts = {email_sufffact.need: email_sufffact}
+
+    # WHEN
+    work_required = RequiredHeir(base=work_road, sufffacts=email_sufffacts)
+    # THEN
+    assert work_required._status is None
+
+    # GIVEN
+    work_required._status = True
+    assert work_required._status
+    # WHEN
+    work_required.clear_status()
+    # THEN
+    assert work_required._status is None
+    assert work_required._curr_idea_active_status is None
 
 
 def test_RequiredHeir_set_status_CorrectlySetsStatus():
-    sufffact_x = sufffactunit_shop(need="casa,weekday,wednesday")
-    sufffacts = {sufffact_x.need: sufffact_x}
-    required = RequiredHeir(base="casa,weekday", sufffacts=sufffacts)
-    x_acptfact = acptfactheir_shop(
-        base="casa,weekday", pick="casa,weekday,wednesday,noon"
-    )
-    x_acptfacts = {x_acptfact.base: x_acptfact}
-    assert required._status is None
-    required.set_status(acptfacts=x_acptfacts)
-    assert required._status == True
+    # GIVEN
+    wkday_text = "weekday"
+    wkday_road = f"{root_label()},{wkday_text}"
+    fri_text = "friday"
+    fri_road = f"{wkday_road},{fri_text}"
+    thu_text = "thursday"
+    thu_road = f"{wkday_road},{thu_text}"
+    wed_text = "wednesday"
+    wed_road = f"{wkday_road},{wed_text}"
+    wed_noon_text = "noon"
+    wed_noon_road = f"{wed_road},{wed_noon_text}"
+    wed_sufffact = sufffactunit_shop(need=wed_road)
+    wed_sufffacts = {wed_sufffact.need: wed_sufffact}
+    wkday_required = RequiredHeir(base=wkday_road, sufffacts=wed_sufffacts)
+    assert wkday_required._status is None
+    # WHEN
+    wkday_acptfact = acptfactheir_shop(base=wkday_road, pick=wed_noon_road)
+    wkday_acptfacts = {wkday_acptfact.base: wkday_acptfact}
+    wkday_required.set_status(acptfacts=wkday_acptfacts)
+    # THEN
+    assert wkday_required._status == True
 
-    sufffactW = sufffactunit_shop(need="casa,weekday,wednesday")
-    sufffactR = sufffactunit_shop(need="casa,weekday,thursday")
-    sufffacts = {sufffactW.need: sufffactW, sufffactR.need: sufffactR}
-    required = RequiredHeir(base="casa,weekday", sufffacts=sufffacts)
-    x_acptfact = acptfactheir_shop(
-        base="casa,weekday", pick="casa,weekday,wednesday,noon"
-    )
-    x_acptfacts = {x_acptfact.base: x_acptfact}
-    assert required._status is None
-    required.set_status(acptfacts=x_acptfacts)
-    assert required._status == True
+    # GIVEN
+    thu_sufffact = sufffactunit_shop(need=thu_road)
+    two_sufffacts = {wed_sufffact.need: wed_sufffact, thu_sufffact.need: thu_sufffact}
+    two_required = RequiredHeir(base=wkday_road, sufffacts=two_sufffacts)
+    assert two_required._status is None
+    # WHEN
+    noon_acptfact = acptfactheir_shop(base=wkday_road, pick=wed_noon_road)
+    noon_acptfacts = {noon_acptfact.base: noon_acptfact}
+    two_required.set_status(acptfacts=noon_acptfacts)
+    # THEN
+    assert two_required._status == True
 
-    sufffactW = sufffactunit_shop(need="casa,weekday,wednesday")
-    sufffactR = sufffactunit_shop(need="casa,weekday,thursday")
-    sufffacts = {sufffactW.need: sufffactW, sufffactR.need: sufffactR}
-    required = RequiredHeir(base="casa,weekday", sufffacts=sufffacts)
-    x_acptfact = acptfactheir_shop(base="casa,weekday", pick="casa,weekday,friday")
-    x_acptfacts = {x_acptfact.base: x_acptfact}
-    assert required._status is None
-    required.set_status(acptfacts=x_acptfacts)
-    assert required._status == False
+    # GIVEN
+    two_required.clear_status()
+    assert two_required._status is None
+    # WHEN
+    fri_acptfact = acptfactheir_shop(base=wkday_road, pick=fri_road)
+    fri_acptfacts = {fri_acptfact.base: fri_acptfact}
+    two_required.set_status(acptfacts=fri_acptfacts)
+    # THEN
+    assert two_required._status == False
 
 
 def test_RequiredHeir_set_status_EmptyAcptFactCorrectlySetsStatus():
-    sufffact_x = sufffactunit_shop(need="casa,weekday,wednesday")
-    sufffacts = {sufffact_x.need: sufffact_x}
-    required = RequiredHeir(base="casa,weekday", sufffacts=sufffacts)
-    assert required._status is None
-    required.set_status(acptfacts=None)
-    assert required._status == False
+    # GIVEN
+    wkday_text = "weekday"
+    wkday_road = f"{root_label()},{wkday_text}"
+    wed_text = "wednesday"
+    wed_road = f"{wkday_road},{wed_text}"
+    wed_sufffact = sufffactunit_shop(need=wed_road)
+    wed_sufffacts = {wed_sufffact.need: wed_sufffact}
+    wkday_required = RequiredHeir(base=wkday_road, sufffacts=wed_sufffacts)
+    assert wkday_required._status is None
+    wkday_required.set_status(acptfacts=None)
+    assert wkday_required._status == False
 
 
 def test_RequiredHeir_set_curr_idea_active_status_Correctly():
     # GIVEN
-    ced_day = "casa,ced_day"
-    required = RequiredHeir(base=ced_day, sufffacts=None)
-    assert required._curr_idea_active_status is None
+    day_text = "day"
+    day_road = f"{root_label()},{day_text}"
+    day_required = RequiredHeir(base=day_road, sufffacts=None)
+    assert day_required._curr_idea_active_status is None
 
     # WHEN
-    required.set_curr_idea_active_status(bool_x=True)
+    day_required.set_curr_idea_active_status(bool_x=True)
 
     # THEN
-    assert required._curr_idea_active_status
+    assert day_required._curr_idea_active_status
 
 
 def test_RequiredHeir_set_status_AgendaTrueCorrectlySetsStatusTrue():
     # GIVEN
-    required = RequiredHeir(
-        base="casa,weekday", sufffacts={}, suff_idea_active_status=True
+    wkday_text = "weekday"
+    wkday_road = f"{root_label()},{wkday_text}"
+    week_required = RequiredHeir(
+        base=wkday_road, sufffacts={}, suff_idea_active_status=True
     )
-    required.set_curr_idea_active_status(bool_x=True)
-    assert required._status is None
+    week_required.set_curr_idea_active_status(bool_x=True)
+    assert week_required._status is None
 
     # WHEN
-    required.set_status(acptfacts=None)
+    week_required.set_status(acptfacts=None)
 
     # THEN
-    assert required._status == True
+    assert week_required._status == True
 
 
 def test_RequiredHeir_set_status_AgendaFalseCorrectlySetsStatusTrue():
     # GIVEN
-    required = RequiredHeir(
-        base="casa,weekday", sufffacts={}, suff_idea_active_status=False
+    wkday_text = "weekday"
+    wkday_road = f"{root_label()},{wkday_text}"
+    wkday_required = RequiredHeir(
+        base=wkday_road, sufffacts={}, suff_idea_active_status=False
     )
-    required.set_curr_idea_active_status(bool_x=False)
-    assert required._status is None
+    wkday_required.set_curr_idea_active_status(bool_x=False)
+    assert wkday_required._status is None
+
     # WHEN
-    required.set_status(acptfacts=None)
+    wkday_required.set_status(acptfacts=None)
+
     # THEN
-    assert required._status == True
+    assert wkday_required._status == True
 
 
 def test_RequiredHeir_set_status_AgendaTrueCorrectlySetsStatusFalse():
     # GIVEN
-    required = RequiredHeir(
-        base="casa,weekday", sufffacts={}, suff_idea_active_status=True
+    wkday_text = "weekday"
+    wkday_road = f"{root_label()},{wkday_text}"
+    wkday_required = RequiredHeir(
+        base=wkday_road, sufffacts={}, suff_idea_active_status=True
     )
-    required.set_curr_idea_active_status(bool_x=False)
-    assert required._status is None
+    wkday_required.set_curr_idea_active_status(bool_x=False)
+    assert wkday_required._status is None
+
     # WHEN
-    required.set_status(acptfacts=None)
+    wkday_required.set_status(acptfacts=None)
+
     # THEN
-    assert required._status == False
+    assert wkday_required._status == False
 
 
 def test_RequiredHeir_set_status_AgendaNoneCorrectlySetsStatusFalse():
     # GIVEN
-    required = RequiredHeir(
-        base="casa,weekday", sufffacts={}, suff_idea_active_status=True
+    wkday_text = "weekday"
+    wkday_road = f"{root_label()},{wkday_text}"
+    wkday_required = RequiredHeir(
+        base=wkday_road, sufffacts={}, suff_idea_active_status=True
     )
-    required.set_curr_idea_active_status(bool_x=None)
-    assert required._status is None
+    wkday_required.set_curr_idea_active_status(bool_x=None)
+    assert wkday_required._status is None
+
     # WHEN
-    required.set_status(acptfacts={})
+    wkday_required.set_status(acptfacts={})
+
     # THEN
-    assert required._status == False
+    assert wkday_required._status == False
 
 
-def test_RequiredUnit_get_dict_ReturnsCorrectDictWithSingleSuffFactRequireds():
+def test_RequiredUnit_get_dict_ReturnsCorrectDictWithSinglethu_sufffactequireds():
     # GIVEN
-    wkday_road = f"{root_label()},weekday"
+    wkday_text = "weekday"
+    wkday_road = f"{root_label()},{wkday_text}"
     wed_text = "wednesday"
     wed_road = f"{wkday_road},{wed_text}"
-    sufffact_x = sufffactunit_shop(need=wed_road)
-    sufffacts = {sufffact_x.need: sufffact_x}
-    required = RequiredUnit(base=wkday_road, sufffacts=sufffacts)
+    wed_sufffact = sufffactunit_shop(need=wed_road)
+    wed_sufffacts = {wed_sufffact.need: wed_sufffact}
+    wkday_required = RequiredUnit(base=wkday_road, sufffacts=wed_sufffacts)
 
     # WHEN
-    x_required_dict = required.get_dict()
+    wkday_required_dict = wkday_required.get_dict()
 
     # THEN
-    assert x_required_dict != None
-    static_required_dict = {
+    assert wkday_required_dict != None
+    static_wkday_required_dict = {
         "base": wkday_road,
         "sufffacts": {wed_road: {"need": wed_road}},
     }
-    print(x_required_dict)
-    assert x_required_dict == static_required_dict
+    print(wkday_required_dict)
+    assert wkday_required_dict == static_wkday_required_dict
 
 
 def test_RequiredUnit_get_dict_ReturnsCorrectDictWithTwoSuffFactsRequireds():
     # GIVEN
-    wkday_road = f"{root_label()},weekday"
+    wkday_text = "weekday"
+    wkday_road = f"{root_label()},{wkday_text}"
     wed_text = "wednesday"
     wed_road = f"{wkday_road},{wed_text}"
     thu_text = "thursday"
     thu_road = f"{wkday_road},{thu_text}"
-    sufffact1 = sufffactunit_shop(need=wed_road)
-    sufffact2 = sufffactunit_shop(need=thu_road)
-    sufffacts = {sufffact1.need: sufffact1, sufffact2.need: sufffact2}
-    required = RequiredUnit(base=wkday_road, sufffacts=sufffacts)
+    wed_sufffact = sufffactunit_shop(need=wed_road)
+    thu_sufffact = sufffactunit_shop(need=thu_road)
+    two_sufffacts = {wed_sufffact.need: wed_sufffact, thu_sufffact.need: thu_sufffact}
+    wkday_required = RequiredUnit(base=wkday_road, sufffacts=two_sufffacts)
 
     # WHEN
-    x_required_dict = required.get_dict()
+    wkday_required_dict = wkday_required.get_dict()
 
     # THEN
-    assert x_required_dict != None
-    static_required_dict = {
+    assert wkday_required_dict != None
+    static_wkday_required_dict = {
         "base": wkday_road,
         "sufffacts": {wed_road: {"need": wed_road}, thu_road: {"need": thu_road}},
     }
-    print(x_required_dict)
-    assert x_required_dict == static_required_dict
+    print(wkday_required_dict)
+    assert wkday_required_dict == static_wkday_required_dict
 
 
 def test_RequiredHeir_correctSetsActionState():
-    ced_day = "casa,ced_day"
-    sufffact_x = sufffactunit_shop(need=ced_day, open=3, nigh=6)
-    sufffacts = {sufffact_x.need: sufffact_x}
-    required = RequiredHeir(base=ced_day, sufffacts=sufffacts)
-    x_acptfact = acptfactheir_shop(base=ced_day, pick=ced_day, open=5, nigh=8)
-    x_acptfacts = {x_acptfact.base: x_acptfact}
-    assert required._status is None
-    required.set_status(acptfacts=x_acptfacts)
-    assert required._status == True
-    assert required._task == True
+    # GIVEN
+    day_text = "ced_day"
+    day_road = f"{root_label()},{day_text}"
+    range_3_to_6_sufffact = sufffactunit_shop(need=day_road, open=3, nigh=6)
+    range_3_to_6_sufffacts = {range_3_to_6_sufffact.need: range_3_to_6_sufffact}
+    range_3_to_6_required = RequiredHeir(day_road, range_3_to_6_sufffacts)
+    assert range_3_to_6_required._status is None
 
-    x_acptfact = acptfactheir_shop(base=ced_day, pick=ced_day, open=5, nigh=6)
-    x_acptfacts = {x_acptfact.base: x_acptfact}
-    required.set_status(acptfacts=x_acptfacts)
-    assert required._status == True
-    assert required._task == False
+    # WHEN
+    range_5_to_8_acptfact = acptfactheir_shop(day_road, day_road, open=5, nigh=8)
+    range_5_to_8_acptfacts = {range_5_to_8_acptfact.base: range_5_to_8_acptfact}
+    range_3_to_6_required.set_status(acptfacts=range_5_to_8_acptfacts)
+    # THEN
+    assert range_3_to_6_required._status == True
+    assert range_3_to_6_required._task == True
 
-    x_acptfact = acptfactheir_shop(base=ced_day, pick=ced_day, open=0, nigh=1)
-    x_acptfacts = {x_acptfact.base: x_acptfact}
-    required.set_status(acptfacts=x_acptfacts)
-    assert required._status == False
-    assert required._task is None
+    # WHEN
+    range_5_to_6_acptfact = acptfactheir_shop(day_road, day_road, open=5, nigh=6)
+    range_5_to_6_acptfacts = {range_5_to_6_acptfact.base: range_5_to_6_acptfact}
+    range_3_to_6_required.set_status(acptfacts=range_5_to_6_acptfacts)
+    # THEN
+    assert range_3_to_6_required._status == True
+    assert range_3_to_6_required._task == False
+
+    # WHEN
+    range_0_to_1_acptfact = acptfactheir_shop(day_road, day_road, open=0, nigh=1)
+    range_0_to_1_acptfacts = {range_0_to_1_acptfact.base: range_0_to_1_acptfact}
+    range_3_to_6_required.set_status(acptfacts=range_0_to_1_acptfacts)
+    # THEN
+    assert range_3_to_6_required._status == False
+    assert range_3_to_6_required._task is None
 
 
 def test_RequiredCore_set_empty_if_null_WorksCorrectly():
-    ced_day = "casa,ced_day"
-    required = RequiredCore(base=ced_day, sufffacts=None)
-    assert required.sufffacts is None
-    required.set_empty_if_null()
-    assert required.sufffacts == {}
+    # GIVEN
+    day_text = "day"
+    day_road = f"{root_label()},{day_text}"
+    day_required = RequiredCore(base=day_road, sufffacts=None)
+    assert day_required.sufffacts is None
+
+    # WHEN
+    day_required.set_empty_if_null()
+
+    # THEN
+    assert day_required.sufffacts == {}
 
 
 def test_RequiredCore_get_sufffacts_count():
-    ced_day = "casa,ced_day"
+    # GIVEN
+    day_text = "day"
+    day_road = f"{root_label()},{day_text}"
 
-    required = RequiredCore(base=ced_day, sufffacts=None)
-    assert required.get_sufffacts_count() == 0
-    sufffact_x = sufffactunit_shop(need=ced_day, open=3, nigh=6)
-    sufffacts = {sufffact_x.need: sufffact_x}
-    required = RequiredCore(base=ced_day, sufffacts=sufffacts)
-    assert required.get_sufffacts_count() == 1
+    # WHEN
+    day_required = RequiredCore(base=day_road, sufffacts=None)
+    # THEN
+    assert day_required.get_sufffacts_count() == 0
+
+    # WHEN
+    range_3_to_6_sufffact = sufffactunit_shop(need=day_road, open=3, nigh=6)
+    range_3_to_6_sufffacts = {range_3_to_6_sufffact.need: range_3_to_6_sufffact}
+    day_required = RequiredCore(base=day_road, sufffacts=range_3_to_6_sufffacts)
+    # THEN
+    assert day_required.get_sufffacts_count() == 1
 
 
 def test_RequiredCore_set_sufffact_CorrectlySetsSuffFact():
-    # Given
-    ced_day = "casa,ced_day"
-    required = RequiredCore(base=ced_day, sufffacts=None)
-    assert required.get_sufffacts_count() == 0
+    # GIVEN
+    day_text = "day"
+    day_road = f"{root_label()},{day_text}"
+    day_required = RequiredCore(base=day_road, sufffacts=None)
+    assert day_required.get_sufffacts_count() == 0
 
-    # When
-    required.set_sufffact(sufffact=ced_day, open=3, nigh=6)
+    # WHEN
+    day_required.set_sufffact(sufffact=day_road, open=3, nigh=6)
 
-    # Then
-    assert required.get_sufffacts_count() == 1
-    sufffact_x = sufffactunit_shop(need=ced_day, open=3, nigh=6)
-    sufffacts = {sufffact_x.need: sufffact_x}
-    assert required.sufffacts == sufffacts
+    # THEN
+    assert day_required.get_sufffacts_count() == 1
+    range_3_to_6_sufffact = sufffactunit_shop(need=day_road, open=3, nigh=6)
+    sufffacts = {range_3_to_6_sufffact.need: range_3_to_6_sufffact}
+    assert day_required.sufffacts == sufffacts
 
 
 def test_RequiredCore_del_sufffact_CorrectlyDeletesSuffFact():
-    # Given
-    ced_day = "casa,ced_day"
-    required = RequiredCore(base=ced_day, sufffacts=None)
-    required.set_sufffact(sufffact=ced_day, open=3, nigh=6)
-    assert required.get_sufffacts_count() == 1
-    # When
-    required.del_sufffact(sufffact=ced_day)
-    # Then
-    assert required.get_sufffacts_count() == 0
+    # GIVEN
+    day_text = "day"
+    day_road = f"{root_label()},{day_text}"
+    day_required = RequiredCore(base=day_road, sufffacts=None)
+    day_required.set_sufffact(sufffact=day_road, open=3, nigh=6)
+    assert day_required.get_sufffacts_count() == 1
+
+    # WHEN
+    day_required.del_sufffact(sufffact=day_road)
+
+    # THEN
+    assert day_required.get_sufffacts_count() == 0
 
 
 def test_RequiredCore_find_replace_road_works():
@@ -272,38 +349,44 @@ def test_RequiredCore_find_replace_road_works():
     sunday_text = "Sunday"
     old_weekday_road = f"{root_label()},{weekday_text}"
     old_sunday_road = f"{root_label()},{weekday_text},{sunday_text}"
-    # sunday_sufffact_x = sufffactunit_shop(need=old_sunday_road)
-    required_x = RequiredCore(base=old_weekday_road, sufffacts=None)
-    required_x.set_sufffact(sufffact=old_sunday_road)
-    # print(f"{required_x=}")
-    assert required_x.base == old_weekday_road
-    assert len(required_x.sufffacts) == 1
-    print(f"{required_x.sufffacts=}")
-    assert required_x.sufffacts.get(old_sunday_road).need == old_sunday_road
+    x_required = RequiredCore(base=old_weekday_road, sufffacts=None)
+    x_required.set_sufffact(sufffact=old_sunday_road)
+    # print(f"{x_required=}")
+    assert x_required.base == old_weekday_road
+    assert len(x_required.sufffacts) == 1
+    print(f"{x_required.sufffacts=}")
+    assert x_required.sufffacts.get(old_sunday_road).need == old_sunday_road
 
     # WHEN
-    old_road = f"{root_label()}"
+    old_road = root_label()
     new_road = "fun"
-    required_x.find_replace_road(old_road=old_road, new_road=new_road)
+    x_required.find_replace_road(old_road=old_road, new_road=new_road)
     new_weekday_road = f"{new_road},{weekday_text}"
     new_sunday_road = f"{new_road},{weekday_text},{sunday_text}"
 
     # THEN
-    assert required_x.base == new_weekday_road
-    assert len(required_x.sufffacts) == 1
-    assert required_x.sufffacts.get(new_sunday_road) != None
-    assert required_x.sufffacts.get(old_sunday_road) is None
-    print(f"{required_x.sufffacts=}")
-    assert required_x.sufffacts.get(new_sunday_road).need == new_sunday_road
+    assert x_required.base == new_weekday_road
+    assert len(x_required.sufffacts) == 1
+    assert x_required.sufffacts.get(new_sunday_road) != None
+    assert x_required.sufffacts.get(old_sunday_road) is None
+    print(f"{x_required.sufffacts=}")
+    assert x_required.sufffacts.get(new_sunday_road).need == new_sunday_road
 
 
 def test_RequiredCore_get_key_road():
-    email_road = f"{root_label()},work,check email"
-    sufffact_x = sufffactunit_shop(need=Road(email_road))
-    sufffacts_x = {sufffact_x.need: sufffact_x}
-    base = Road(f"{root_label()},work")
-    required_x = RequiredHeir(base=base, sufffacts=sufffacts_x)
-    assert required_x.get_key_road() == base
+    # GIVEN
+    work_text = "work"
+    work_road = f"{root_label()},{work_text}"
+    email_text = "check email"
+    email_road = f"{work_road},{email_text}"
+    email_sufffact = sufffactunit_shop(need=email_road)
+    sufffacts_x = {email_sufffact.need: email_sufffact}
+
+    # WHEN
+    x_required = RequiredHeir(base=work_road, sufffacts=sufffacts_x)
+
+    # THEN
+    assert x_required.get_key_road() == work_road
 
 
 def test_RequiredCore_meld_BaseScenarioWorks():
@@ -311,16 +394,16 @@ def test_RequiredCore_meld_BaseScenarioWorks():
     tech_text = "timetech"
     tech_road = f"{root_label()},{tech_text}"
     week_text = "ced_week"
-    week_road = f"{root_label()},{tech_text},{week_text}"
+    week_road = f"{tech_road},{week_text}"
 
-    required_x1 = RequiredCore(base=tech_road, sufffacts={})
-    required_x1.set_sufffact(sufffact=week_road)
+    x1_required = RequiredCore(base=tech_road, sufffacts={})
+    x1_required.set_sufffact(sufffact=week_road)
 
-    required_x2 = RequiredCore(base=tech_road, sufffacts={})
-    required_x2.set_sufffact(sufffact=week_road)
+    x2_required = RequiredCore(base=tech_road, sufffacts={})
+    x2_required.set_sufffact(sufffact=week_road)
 
     # WHEN/THEN
-    assert required_x1 == required_x1.meld(other_required=required_x2)
+    assert x1_required == x1_required.meld(other_required=x2_required)
 
 
 def test_RequiredCore_meld_AddSuffFactscenarioWorks():
@@ -328,21 +411,21 @@ def test_RequiredCore_meld_AddSuffFactscenarioWorks():
     tech_text = "timetech"
     tech_road = f"{root_label()},{tech_text}"
     week_text = "ced_week"
-    week_road = f"{root_label()},{tech_text},{week_text}"
+    week_road = f"{tech_road},{week_text}"
 
-    required_x1 = RequiredCore(base=tech_road, sufffacts={})
-    required_x1.set_sufffact(sufffact=week_road)
+    x1_required = RequiredCore(base=tech_road, sufffacts={})
+    x1_required.set_sufffact(sufffact=week_road)
 
-    required_x2 = RequiredCore(base=tech_road, sufffacts={})
+    x2_required = RequiredCore(base=tech_road, sufffacts={})
     year_text = "year"
-    year_road = f"{root_label()},{tech_text},{year_text}"
-    required_x2.set_sufffact(sufffact=year_road, open=45, nigh=55)
+    year_road = f"{tech_road},{year_text}"
+    x2_required.set_sufffact(sufffact=year_road, open=45, nigh=55)
 
     # WHEN/THEN
-    required_x1.meld(other_required=required_x2)
+    x1_required.meld(other_required=x2_required)
 
     # THEN
-    assert len(required_x1.sufffacts) == 2
+    assert len(x1_required.sufffacts) == 2
 
 
 def test_RequiredCore_meld_raises_NotSameRoadError():
@@ -350,15 +433,15 @@ def test_RequiredCore_meld_raises_NotSameRoadError():
     tech_text = "timetech"
     tech_road = f"{root_label()},{tech_text}"
     week_text = "ced_week"
-    week_road = f"{root_label()},{tech_text},{week_text}"
+    week_road = f"{tech_road},{week_text}"
 
-    required_x1 = RequiredCore(base=tech_road, sufffacts={})
-    required_x2 = RequiredCore(base=week_road, sufffacts={})
+    x1_required = RequiredCore(base=tech_road, sufffacts={})
+    x2_required = RequiredCore(base=week_road, sufffacts={})
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        required_x1.meld(required_x2)
+        x1_required.meld(x2_required)
     assert (
         str(excinfo.value)
-        == f"Meld fail: required={required_x2.base} is different self.base='{required_x1.base}'"
+        == f"Meld fail: required={x2_required.base} is different self.base='{x1_required.base}'"
     )
