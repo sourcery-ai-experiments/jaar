@@ -350,9 +350,7 @@ def test_sufffact_set_status_CorrectlySetsTimeRangeStatusTrue():
     assert hr24_sufffact._status is None
 
     # WHEN
-    range_0_to_8_acptfact = acptfactheir_shop(
-        base=hr24_road, pick=hr24_road, open=0, nigh=8
-    )
+    range_0_to_8_acptfact = acptfactheir_shop(hr24_road, hr24_road, open=0, nigh=8)
     hr24_sufffact.set_status(acptfactheir=range_0_to_8_acptfact)
 
     # THEN
@@ -363,84 +361,84 @@ def test_sufffact_set_task_CorrectlySetsTaskBool_01():
     # GIVEN
     hr24_text = "24hr"
     hr24_road = f"{root_label()},{hr24_text}"
-    hr24_sufffact = sufffactunit_shop(need=hr24_road)
-    hr24_acptfact = acptfactheir_shop(base=hr24_road, pick=hr24_road)
-    hr24_sufffact._status = False
+    no_range_sufffact = sufffactunit_shop(need=hr24_road)
+    no_range_sufffact._status = False
 
     # WHEN / THEN
-    assert hr24_sufffact._get_task_status(acptfactheir=hr24_acptfact) == False
+    no_range_acptfact = acptfactheir_shop(base=hr24_road, pick=hr24_road)
+    assert no_range_sufffact._get_task_status(acptfactheir=no_range_acptfact) == False
 
 
 def test_sufffact_set_task_CorrectlySetsTaskBoolRangeTrue():
     # GIVEN
     hr24_text = "24hr"
     hr24_road = f"{root_label()},{hr24_text}"
-    hr24_sufffact = sufffactunit_shop(need=hr24_road, open=5, nigh=31)
-    range_7_to_41_acptfact = acptfactheir_shop(hr24_road, hr24_road, open=7, nigh=41)
-    hr24_sufffact._status = True
+    range_5_to_31_sufffact = sufffactunit_shop(need=hr24_road, open=5, nigh=31)
+    range_5_to_31_sufffact._status = True
 
     # WHEN / THEN
-    assert hr24_sufffact._get_task_status(acptfactheir=range_7_to_41_acptfact) == True
+    range_7_to_41_acptfact = acptfactheir_shop(hr24_road, hr24_road, open=7, nigh=41)
+    assert range_5_to_31_sufffact._get_task_status(range_7_to_41_acptfact) == True
 
 
 def test_sufffact_set_task_CorrectlySetsTaskBoolRangeFalse():
     # GIVEN
     hr24_text = "24hr"
     hr24_road = f"{root_label()},{hr24_text}"
-    hr24_sufffact = sufffactunit_shop(need=hr24_road, open=5, nigh=31)
-    range_7_to_21_acptfact = acptfactheir_shop(hr24_road, hr24_road, open=7, nigh=21)
-    hr24_sufffact._status = True
+    range_5_to_31_sufffact = sufffactunit_shop(need=hr24_road, open=5, nigh=31)
+    range_5_to_31_sufffact._status = True
 
     # WHEN / THEN
-    assert hr24_sufffact._get_task_status(acptfactheir=range_7_to_21_acptfact) == False
+    range_7_to_21_acptfact = acptfactheir_shop(hr24_road, hr24_road, open=7, nigh=21)
+    assert range_5_to_31_sufffact._get_task_status(range_7_to_21_acptfact) == False
 
 
 def test_sufffact_set_task_CorrectlySetsTaskBoolSegregateFalse_01():
     # GIVEN
     hr24_text = "24hr"
     hr24_road = f"{root_label()},{hr24_text}"
-    hr24_sufffact = sufffactunit_shop(need=hr24_road, divisor=5, open=0, nigh=0)
-    range_3_to_5_acptfact = acptfactheir_shop(hr24_road, hr24_road, open=3, nigh=5)
-    hr24_sufffact._status = True
+    o0_n0_d5_sufffact = sufffactunit_shop(need=hr24_road, divisor=5, open=0, nigh=0)
+    o0_n0_d5_sufffact._status = True
 
     # WHEN / THEN
-    assert hr24_sufffact._get_task_status(acptfactheir=range_3_to_5_acptfact) == False
+    range_3_to_5_acptfact = acptfactheir_shop(hr24_road, hr24_road, open=3, nigh=5)
+    assert o0_n0_d5_sufffact._get_task_status(range_3_to_5_acptfact) == False
 
 
 def test_sufffact_set_task_CorrectlySetsTaskBoolSegregateFalse_03():
     # GIVEN
     hr24_text = "24hr"
     hr24_road = f"{root_label()},{hr24_text}"
-    hr24_sufffact = sufffactunit_shop(need=hr24_road, divisor=5, open=0, nigh=0)
-    range_5_to_7_acptfact = acptfactheir_shop(hr24_road, hr24_road, open=5, nigh=7)
-    hr24_sufffact._status = False
+    o0_n0_d5_sufffact = sufffactunit_shop(need=hr24_road, divisor=5, open=0, nigh=0)
+    o0_n0_d5_sufffact._status = False
 
     # WHEN / THEN
-    assert hr24_sufffact._get_task_status(acptfactheir=range_5_to_7_acptfact) == False
+    range_5_to_7_acptfact = acptfactheir_shop(hr24_road, hr24_road, open=5, nigh=7)
+    assert o0_n0_d5_sufffact._get_task_status(range_5_to_7_acptfact) == False
 
 
 def test_sufffact_set_task_CorrectlySetsTaskBoolSegregateTrue_01():
     # GIVEN
     hr24_text = "24hr"
     hr24_road = f"{root_label()},{hr24_text}"
-    hr24_sufffact = sufffactunit_shop(need=hr24_road, divisor=5, open=0, nigh=0)
-    range_5_to_7_acptfact = acptfactheir_shop(hr24_road, hr24_road, open=5, nigh=7)
-    hr24_sufffact._status = True
+    o0_n0_d5_sufffact = sufffactunit_shop(need=hr24_road, divisor=5, open=0, nigh=0)
+    o0_n0_d5_sufffact._status = True
 
     # WHEN / THEN
-    assert hr24_sufffact._get_task_status(acptfactheir=range_5_to_7_acptfact) == True
+    range_5_to_7_acptfact = acptfactheir_shop(hr24_road, hr24_road, open=5, nigh=7)
+    assert o0_n0_d5_sufffact._get_task_status(range_5_to_7_acptfact) == True
 
 
 def test_sufffact_set_task_CorrectlySetsTaskBoolSegregateTrue_02():
     # GIVEN
     hr24_text = "24hr"
     hr24_road = f"{root_label()},{hr24_text}"
-    hr24_sufffact = sufffactunit_shop(need=hr24_road, divisor=5, open=0, nigh=0)
-    range_5_to_5_acptfact = acptfactheir_shop(hr24_road, hr24_road, open=5, nigh=5)
-    hr24_sufffact._status = True
+    o0_n0_d5_sufffact = sufffactunit_shop(need=hr24_road, divisor=5, open=0, nigh=0)
+    o0_n0_d5_sufffact._status = True
 
     # WHEN / THEN
-    assert hr24_sufffact._get_task_status(acptfactheir=range_5_to_5_acptfact)
+    range_5_to_5_acptfact = acptfactheir_shop(hr24_road, hr24_road, open=5, nigh=5)
+    assert o0_n0_d5_sufffact._get_task_status(acptfactheir=range_5_to_5_acptfact)
 
 
 def test_sufffact_set_task_NotNull():
@@ -477,26 +475,33 @@ def test_sufffact_set_status_CorrectlySetsTimeRangeTaskTrue_v1():
 
 
 def test_sufffact_set_status_CorrectlySetsTimeRangeTaskTrue_v2():
-    # sourcery skip: extract-duplicate-method
     # GIVEN
     hr24_text = "24hr"
     hr24_road = f"{root_label()},{hr24_text}"
-    hr24_sufffact = sufffactunit_shop(need=hr24_road, open=2, nigh=7)
-    agenda_acptfact = acptfactheir_shop(base=hr24_road, pick=hr24_road, open=0, nigh=8)
-    assert hr24_sufffact._status is None
-    hr24_sufffact.set_status(acptfactheir=agenda_acptfact)
-    assert hr24_sufffact._status == True
-    assert hr24_sufffact._task == True
+    range_2_to_7_sufffact = sufffactunit_shop(need=hr24_road, open=2, nigh=7)
+    range_0_to_8_acptfact = acptfactheir_shop(hr24_road, hr24_road, open=0, nigh=8)
+    assert range_2_to_7_sufffact._status is None
 
-    agenda_acptfact = acptfactheir_shop(base=hr24_road, pick=hr24_road, open=3, nigh=5)
-    hr24_sufffact.set_status(acptfactheir=agenda_acptfact)
-    assert hr24_sufffact._status
-    assert hr24_sufffact._task == False
+    # WHEN
+    range_2_to_7_sufffact.set_status(acptfactheir=range_0_to_8_acptfact)
+    # THEN
+    assert range_2_to_7_sufffact._status == True
+    assert range_2_to_7_sufffact._task == True
 
-    agenda_acptfact = acptfactheir_shop(base=hr24_road, pick=hr24_road, open=8, nigh=8)
-    hr24_sufffact.set_status(acptfactheir=agenda_acptfact)
-    assert hr24_sufffact._status == False
-    assert hr24_sufffact._task == False
+    # GIVEN
+    range_3_to_5_acptfact = acptfactheir_shop(hr24_road, hr24_road, open=3, nigh=5)
+    # WHEN
+    range_2_to_7_sufffact.set_status(acptfactheir=range_3_to_5_acptfact)
+    # THEN
+    assert range_2_to_7_sufffact._status
+    assert range_2_to_7_sufffact._task == False
+
+    # GIVEN
+    range_8_to_8_acptfact = acptfactheir_shop(hr24_road, hr24_road, open=8, nigh=8)
+    # WHEN
+    range_2_to_7_sufffact.set_status(acptfactheir=range_8_to_8_acptfact)
+    assert range_2_to_7_sufffact._status == False
+    assert range_2_to_7_sufffact._task == False
 
 
 def test_sufffact_set_status_CorrectlySetsTimeRangeStatusFalse():
@@ -526,9 +531,7 @@ def test_sufffact_set_status_CorrectlySetCEDWeekStatusFalse():
     assert o1_n1_d6_sufffact._status is None
 
     # WHEN
-    range_6_to_6_acptfact = acptfactheir_shop(
-        base=week_road, pick=week_road, open=6, nigh=6
-    )
+    range_6_to_6_acptfact = acptfactheir_shop(week_road, week_road, open=6, nigh=6)
     o1_n1_d6_sufffact.set_status(acptfactheir=range_6_to_6_acptfact)
 
     # THEN
