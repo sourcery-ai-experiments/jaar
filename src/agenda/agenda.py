@@ -2242,99 +2242,148 @@ def get_from_json(x_agenda_json: str) -> AgendaUnit:
 
 def get_from_dict(agenda_dict: dict) -> AgendaUnit:
     x_agenda = agendaunit_shop()
-    x_agenda.set_culture_qid(agenda_dict["_culture_qid"])
-    x_agenda._idearoot._requiredunits = requireds_get_from_dict(
-        requireds_dict=agenda_dict["_requiredunits"]
+    x_agenda.set_healer(get_obj_from_agenda_dict(agenda_dict, "_healer"))
+    x_agenda._weight = get_obj_from_agenda_dict(agenda_dict, "_weight")
+    x_agenda._auto_output_to_public = get_obj_from_agenda_dict(
+        agenda_dict, "_auto_output_to_public"
     )
-    _assignedunit = "_assignedunit"
-    if agenda_dict.get(_assignedunit):
-        x_agenda._idearoot._assignedunit = assignedunit_get_from_dict(
-            assignedunit_dict=agenda_dict.get(_assignedunit)
-        )
-    x_agenda._idearoot._acptfactunits = acptfactunits_get_from_dict(
-        x_dict=agenda_dict["_acptfactunits"]
+    x_agenda.set_max_tree_traverse(
+        get_obj_from_agenda_dict(agenda_dict, "_max_tree_traverse")
     )
-    x_agenda._groups = groupunits_get_from_dict(x_dict=agenda_dict["_groups"])
-    x_agenda._idearoot._balancelinks = balancelinks_get_from_dict(
-        x_dict=agenda_dict["_balancelinks"]
-    )
-    try:
-        x_agenda._originunit = originunit_get_from_dict(
-            x_dict=agenda_dict["_originunit"]
-        )
-    except Exception:
-        x_agenda._originunit = originunit_shop()
-    try:
-        x_agenda._auto_output_to_public = agenda_dict["_auto_output_to_public"]
-    except Exception:
-        x_agenda._auto_output_to_public = False
-    x_agenda._partys = partyunits_get_from_dict(x_dict=agenda_dict["_partys"])
-    x_agenda._healer = agenda_dict["_healer"]
-    x_agenda._idearoot.set_idea_label(x_agenda._culture_qid, x_agenda._culture_qid)
-    x_agenda._weight = agenda_dict["_weight"]
-    x_agenda._max_tree_traverse = agenda_dict.get("_max_tree_traverse")
-    if agenda_dict.get("_max_tree_traverse") is None:
-        x_agenda._max_tree_traverse = 20
-    x_agenda._idearoot._weight = agenda_dict["_weight"]
-    x_agenda._idearoot._uid = agenda_dict["_uid"]
-    x_agenda._idearoot._begin = agenda_dict["_begin"]
-    x_agenda._idearoot._close = agenda_dict["_close"]
-    x_agenda._idearoot._numor = agenda_dict["_numor"]
-    x_agenda._idearoot._denom = agenda_dict["_denom"]
-    x_agenda._idearoot._reest = agenda_dict["_reest"]
-    x_agenda._idearoot._range_source_road = agenda_dict["_range_source_road"]
-    x_agenda._idearoot._numeric_road = agenda_dict["_numeric_road"]
-    x_agenda._idearoot._is_expanded = agenda_dict["_is_expanded"]
+    x_agenda.set_culture_qid(get_obj_from_agenda_dict(agenda_dict, "_culture_qid"))
+    x_agenda._partys = get_obj_from_agenda_dict(agenda_dict, "_partys")
+    x_agenda._groups = get_obj_from_agenda_dict(agenda_dict, "_groups")
+    x_agenda._originunit = get_obj_from_agenda_dict(agenda_dict, "_originunit")
 
-    idea_dict_list = []
-    for x_dict in agenda_dict["_kids"].values():
-        x_dict["temp_road"] = x_agenda._healer
-        idea_dict_list.append(x_dict)
-
-    while idea_dict_list != []:
-        idea_dict = idea_dict_list.pop(0)
-        for x_dict in idea_dict["_kids"].values():
-            temp_road = idea_dict["temp_road"]
-            temp_label = idea_dict["_label"]
-            x_dict["temp_road"] = f"{temp_road},{temp_label}"
-            idea_dict_list.append(x_dict)
-
-        idea_assignedunit = assigned_unit_shop()
-        if idea_dict.get(_assignedunit):
-            idea_assignedunit = assignedunit_get_from_dict(
-                assignedunit_dict=idea_dict.get(_assignedunit)
-            )
-        originunit_from_dict = None
-        try:
-            originunit_from_dict = originunit_get_from_dict(idea_dict["_originunit"])
-        except Exception:
-            originunit_from_dict = originunit_shop()
-
-        idea_obj = ideacore_shop(
-            _label=idea_dict["_label"],
-            _weight=idea_dict["_weight"],
-            _uid=idea_dict["_uid"],
-            _begin=idea_dict["_begin"],
-            _close=idea_dict["_close"],
-            _numor=idea_dict["_numor"],
-            _denom=idea_dict["_denom"],
-            _reest=idea_dict["_reest"],
-            promise=idea_dict["promise"],
-            _requiredunits=requireds_get_from_dict(
-                requireds_dict=idea_dict["_requiredunits"]
-            ),
-            _assignedunit=idea_assignedunit,
-            _originunit=originunit_from_dict,
-            _balancelinks=balancelinks_get_from_dict(idea_dict["_balancelinks"]),
-            _acptfactunits=acptfactunits_get_from_dict(idea_dict["_acptfactunits"]),
-            _is_expanded=idea_dict["_is_expanded"],
-            _range_source_road=idea_dict["_range_source_road"],
-            _numeric_road=idea_dict["_numeric_road"],
-        )
-        x_agenda.add_idea(idea_kid=idea_obj, pad=idea_dict["temp_road"])
-
+    set_idearoot_from_agenda_dict(x_agenda, agenda_dict)
     x_agenda.set_agenda_metrics()  # clean up tree traverse defined fields
     return x_agenda
+
+
+def set_idearoot_from_agenda_dict(x_agenda: AgendaUnit, agenda_dict: dict):
+    x_idearoot = x_agenda._idearoot
+    x_idearoot.set_idea_label(x_agenda._culture_qid, x_agenda._culture_qid)
+    x_idearoot._weight = get_obj_from_idea_dict(agenda_dict, "_weight")
+    x_idearoot._uid = get_obj_from_idea_dict(agenda_dict, "_uid")
+    x_idearoot._begin = get_obj_from_idea_dict(agenda_dict, "_begin")
+    x_idearoot._close = get_obj_from_idea_dict(agenda_dict, "_close")
+    x_idearoot._numor = get_obj_from_idea_dict(agenda_dict, "_numor")
+    x_idearoot._denom = get_obj_from_idea_dict(agenda_dict, "_denom")
+    x_idearoot._reest = get_obj_from_idea_dict(agenda_dict, "_reest")
+    x_idearoot._range_source_road = get_obj_from_idea_dict(
+        agenda_dict, "_range_source_road"
+    )
+    x_idearoot._numeric_road = get_obj_from_idea_dict(agenda_dict, "_numeric_road")
+    x_idearoot._requiredunits = get_obj_from_idea_dict(agenda_dict, "_requiredunits")
+    x_idearoot._assignedunit = get_obj_from_idea_dict(agenda_dict, "_assignedunit")
+    x_idearoot._acptfactunits = get_obj_from_idea_dict(agenda_dict, "_acptfactunits")
+    x_idearoot._balancelinks = get_obj_from_idea_dict(agenda_dict, "_balancelinks")
+    x_idearoot._is_expanded = get_obj_from_idea_dict(agenda_dict, "_is_expanded")
+
+    # if agenda_dict.get("_kids"):
+    set_idearoot_kids_from_dict(x_agenda, agenda_dict)
+
+
+def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, agenda_dict: dict):
+    to_evaluate_idea_dicts = []
+    pad_text = "pad"
+    # for every kid dict, set pad, add to to_evaluate_list
+    for x_dict in agenda_dict["_kids"].values():
+        x_dict[pad_text] = x_agenda._healer
+        to_evaluate_idea_dicts.append(x_dict)
+
+    while to_evaluate_idea_dicts != []:
+        idea_dict = to_evaluate_idea_dicts.pop(0)
+        # for every kid dict, set pad, add to to_evaluate_list
+        for kid_dict in idea_dict["_kids"].values():
+            pad_road = get_obj_from_idea_dict(idea_dict, pad_text)
+            kid_label = get_obj_from_idea_dict(idea_dict, "_label")
+            kid_dict[pad_text] = f"{pad_road},{kid_label}"
+            to_evaluate_idea_dicts.append(kid_dict)
+
+        idea_obj = ideacore_shop(
+            _label=get_obj_from_idea_dict(idea_dict, "_label"),
+            _weight=get_obj_from_idea_dict(idea_dict, "_weight"),
+            _uid=get_obj_from_idea_dict(idea_dict, "_uid"),
+            _begin=get_obj_from_idea_dict(idea_dict, "_begin"),
+            _close=get_obj_from_idea_dict(idea_dict, "_close"),
+            _numor=get_obj_from_idea_dict(idea_dict, "_numor"),
+            _denom=get_obj_from_idea_dict(idea_dict, "_denom"),
+            _reest=get_obj_from_idea_dict(idea_dict, "_reest"),
+            promise=get_obj_from_idea_dict(idea_dict, "promise"),
+            _requiredunits=get_obj_from_idea_dict(idea_dict, "_requiredunits"),
+            _assignedunit=get_obj_from_idea_dict(idea_dict, "_assignedunit"),
+            _originunit=get_obj_from_idea_dict(idea_dict, "_originunit"),
+            _balancelinks=get_obj_from_idea_dict(idea_dict, "_balancelinks"),
+            _acptfactunits=get_obj_from_idea_dict(idea_dict, "_acptfactunits"),
+            _is_expanded=get_obj_from_idea_dict(idea_dict, "_is_expanded"),
+            _range_source_road=get_obj_from_idea_dict(idea_dict, "_range_source_road"),
+            _numeric_road=get_obj_from_idea_dict(idea_dict, "_numeric_road"),
+        )
+        # add idea with created pad
+        x_agenda.add_idea(idea_kid=idea_obj, pad=idea_dict[pad_text])
+
+
+def get_obj_from_agenda_dict(x_dict: dict[str:], field_name: str) -> any:
+    if field_name == "_originunit":
+        return (
+            originunit_get_from_dict(x_dict[field_name])
+            if x_dict.get(field_name) != None
+            else originunit_shop()
+        )
+    elif field_name == "_partys":
+        return (
+            partyunits_get_from_dict(x_dict[field_name])
+            if x_dict.get(field_name) != None
+            else partyunits_get_from_dict(x_dict[field_name])
+        )
+    elif field_name == "_groups":
+        return (
+            groupunits_get_from_dict(x_dict[field_name])
+            if x_dict.get(field_name) != None
+            else groupunits_get_from_dict(x_dict[field_name])
+        )
+    elif field_name == "_max_tree_traverse":
+        return x_dict[field_name] if x_dict.get(field_name) != None else 20
+    elif field_name == "_auto_output_to_public":
+        return x_dict[field_name] if x_dict.get(field_name) != None else False
+    else:
+        return x_dict[field_name] if x_dict.get(field_name) != None else None
+
+
+def get_obj_from_idea_dict(x_dict: dict[str:], field_name: str) -> any:
+    if field_name == "_requiredunits":
+        return (
+            requireds_get_from_dict(x_dict[field_name])
+            if x_dict.get(field_name) != None
+            else None
+        )
+    elif field_name == "_assignedunit":
+        return (
+            assignedunit_get_from_dict(x_dict[field_name])
+            if x_dict.get(field_name) != None
+            else assigned_unit_shop()
+        )
+    elif field_name == "_originunit":
+        return (
+            originunit_get_from_dict(x_dict[field_name])
+            if x_dict.get(field_name) != None
+            else originunit_shop()
+        )
+    elif field_name == "_acptfactunits":
+        return (
+            acptfactunits_get_from_dict(x_dict[field_name])
+            if x_dict.get(field_name) != None
+            else acptfactunits_get_from_dict({})
+        )
+    elif field_name == "_balancelinks":
+        return (
+            balancelinks_get_from_dict(x_dict[field_name])
+            if x_dict.get(field_name) != None
+            else balancelinks_get_from_dict({})
+        )
+    else:
+        return x_dict[field_name] if x_dict.get(field_name) != None else None
 
 
 def get_dict_of_agenda_from_dict(x_dict: dict[str:dict]) -> dict[str:AgendaUnit]:

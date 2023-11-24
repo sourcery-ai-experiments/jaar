@@ -404,12 +404,27 @@ def test_idea_get_dict_ReturnsCorrectCompleteDict():
     work_idea.set_originunit_empty_if_null()
     work_idea._originunit.set_originlink(pid="Ray", weight=None)
     work_idea._originunit.set_originlink(pid="Lei", weight=4)
+    x_begin = 11
+    x_close = 12
+    x_addin = 13
+    x_denom = 14
+    x_numor = 15
+    x_reest = 16
+    work_idea._begin = x_begin
+    work_idea._close = x_close
+    work_idea._addin = x_addin
+    work_idea._denom = x_denom
+    work_idea._numor = x_numor
+    work_idea._reest = x_reest
+    work_idea._uid = 17
+    work_idea.add_kid(ideacore_shop("paper"))
 
     # WHEN
     work_dict = work_idea.get_dict()
 
     # THEN
     assert work_dict != None
+    assert len(work_dict["_kids"]) == 1
     assert work_dict["_kids"] == work_idea.get_kids_dict()
     assert work_dict["_requiredunits"] == work_idea.get_requiredunits_dict()
     assert work_dict["_balancelinks"] == work_idea.get_balancelinks_dict()
@@ -433,114 +448,21 @@ def test_idea_get_dict_ReturnsCorrectCompleteDict():
 
 def test_idea_get_dict_ReturnsCorrectIncompleteDict():
     # GIVEN
-    week_text = "weekdays"
-    week_road = f"{root_label()},{week_text}"
-    wed_text = "Wednesday"
-    wed_road = f"{week_road},{wed_text}"
-    states_text = "nation-state"
-    states_road = f"{root_label()},{states_text}"
-    usa_text = "USA"
-    usa_road = f"{states_road},{usa_text}"
-
-    wed_sufffact = sufffactunit_shop(need=wed_road)
-    wed_sufffact._status = True
-    usa_sufffact = sufffactunit_shop(need=usa_road)
-    usa_sufffact._status = False
-
-    x1_requiredunits = {
-        week_road: requiredunit_shop(
-            base=week_road, sufffacts={wed_sufffact.need: wed_sufffact}
-        ),
-        states_road: requiredunit_shop(
-            base=states_road, sufffacts={usa_sufffact.need: usa_sufffact}
-        ),
-    }
-    x1_requiredheirs = {
-        week_road: requiredheir_shop(
-            base=week_road, sufffacts={wed_sufffact.need: wed_sufffact}, _status=True
-        ),
-        states_road: requiredheir_shop(
-            base=states_road, sufffacts={usa_sufffact.need: usa_sufffact}, _status=False
-        ),
-    }
-    biker_pid = GroupBrand("bikers")
-    biker_creditor_weight = 3.0
-    biker_debtor_weight = 7.0
-    biker_link = balancelink_shop(
-        brand=biker_pid,
-        creditor_weight=biker_creditor_weight,
-        debtor_weight=biker_debtor_weight,
-    )
-    flyer_pid = GroupBrand("flyers")
-    flyer_creditor_weight = 6.0
-    flyer_debtor_weight = 9.0
-    flyer_link = balancelink_shop(
-        brand=flyer_pid,
-        creditor_weight=flyer_creditor_weight,
-        debtor_weight=flyer_debtor_weight,
-    )
-    biker_and_flyer_balancelinks = {
-        biker_link.brand: biker_link,
-        flyer_link.brand: flyer_link,
-    }
-    biker_get_dict = {
-        "brand": biker_link.brand,
-        "creditor_weight": biker_link.creditor_weight,
-        "debtor_weight": biker_link.debtor_weight,
-    }
-    flyer_get_dict = {
-        "brand": flyer_link.brand,
-        "creditor_weight": flyer_link.creditor_weight,
-        "debtor_weight": flyer_link.debtor_weight,
-    }
-    x1_balancelinks = {biker_pid: biker_get_dict, flyer_pid: flyer_get_dict}
-
-    work_text = "work"
-    work_road = f"{root_label()},{work_text}"
-    work_idea = ideacore_shop(
-        _pad=work_road,
-        _kids=None,
-        _balancelinks=biker_and_flyer_balancelinks,
-        _weight=30,
-        _label=work_text,
-        _level=1,
-        _requiredunits=x1_requiredunits,
-        _requiredheirs=x1_requiredheirs,
-        _active_status=True,
-        _range_source_road="test123",
-        promise=True,
-        _problem_bool=True,
-    )
-    acptfactunit_x = acptfactunit_shop(base=week_road, pick=week_road, open=5, nigh=59)
-    work_idea._set_ideakid_attr(acptfactunit=acptfactunit_x)
-    work_idea.set_originunit_empty_if_null()
-    work_idea._originunit.set_originlink(pid="Ray", weight=None)
-    work_idea._originunit.set_originlink(pid="Lei", weight=4)
+    work_idea = ideacore_shop()
 
     # WHEN
     work_dict = work_idea.get_dict()
 
     # THEN
     assert work_dict != None
-    assert work_dict["_kids"] == work_idea.get_kids_dict()
-    assert work_dict["_requiredunits"] == work_idea.get_requiredunits_dict()
-    assert work_dict["_balancelinks"] == work_idea.get_balancelinks_dict()
-    assert work_dict["_balancelinks"] == x1_balancelinks
-    assert work_dict["_originunit"] == work_idea.get_originunit_dict()
-    assert work_dict["_weight"] == work_idea._weight
-    assert work_dict["_label"] == work_idea._label
-    assert work_dict["_uid"] == work_idea._uid
-    assert work_dict["_begin"] == work_idea._begin
-    assert work_dict["_close"] == work_idea._close
-    assert work_dict["_numor"] == work_idea._numor
-    assert work_dict["_denom"] == work_idea._denom
-    assert work_dict["_reest"] == work_idea._reest
-    assert work_dict["_range_source_road"] == work_idea._range_source_road
-    assert work_dict["promise"] == work_idea.promise
-    assert work_dict["_problem_bool"] == work_idea._problem_bool
-    assert work_dict["_is_expanded"] == work_idea._is_expanded
-    assert len(work_dict["_acptfactunits"]) == len(work_idea.get_acptfactunits_dict())
-    assert work_dict["_on_meld_weight_action"] == work_idea._on_meld_weight_action
+    assert work_dict == {
+        "_kids": {},
+        "_is_expanded": True,
+        "_on_meld_weight_action": "default",
+        "_problem_bool": False,
+        "_weight": 1,
+        "promise": False,
+    }
 
 
 def test_idea_vaild_DenomCorrectInheritsBeginAndClose():

@@ -897,29 +897,50 @@ class IdeaCore:
         return x_bool
 
     def get_dict(self):
-        return {
-            "_kids": self.get_kids_dict(),
-            "_requiredunits": self.get_requiredunits_dict(),
-            "_assignedunit": self.get_assignedunit_dict(),
-            "_balancelinks": self.get_balancelinks_dict(),
-            "_originunit": self.get_originunit_dict(),
-            "_weight": self._weight,
-            "_label": self._label,
-            "_uid": self._uid,
-            "_begin": self._begin,
-            "_close": self._close,
-            "_addin": self._addin,
-            "_numor": self._numor,
-            "_denom": self._denom,
-            "_reest": self._reest,
-            "_range_source_road": self._range_source_road,
-            "_numeric_road": self._numeric_road,
-            "promise": self.promise,
-            "_problem_bool": self._problem_bool,
-            "_acptfactunits": self.get_acptfactunits_dict(),
-            "_is_expanded": self._is_expanded,
-            "_on_meld_weight_action": self._on_meld_weight_action,
-        }
+        x_dict = {"_weight": self._weight}
+
+        if self._label != None:
+            x_dict["_label"] = self._label
+        if self._uid != None:
+            x_dict["_uid"] = self._uid
+        # if self._kids not in [{}, None]:
+        x_dict["_kids"] = self.get_kids_dict()
+        if self._requiredunits not in [{}, None]:
+            x_dict["_requiredunits"] = self.get_requiredunits_dict()
+        if self._assignedunit != None:
+            x_dict["_assignedunit"] = self.get_assignedunit_dict()
+        if self._balancelinks != None:
+            x_dict["_balancelinks"] = self.get_balancelinks_dict()
+        if self._originunit != None:
+            x_dict["_originunit"] = self.get_originunit_dict()
+        if self._begin != None:
+            x_dict["_begin"] = self._begin
+        if self._close != None:
+            x_dict["_close"] = self._close
+        if self._addin != None:
+            x_dict["_addin"] = self._addin
+        if self._numor != None:
+            x_dict["_numor"] = self._numor
+        if self._denom != None:
+            x_dict["_denom"] = self._denom
+        if self._reest != None:
+            x_dict["_reest"] = self._reest
+        if self._range_source_road != None:
+            x_dict["_range_source_road"] = self._range_source_road
+        if self._numeric_road != None:
+            x_dict["_numeric_road"] = self._numeric_road
+        if self.promise != None:
+            x_dict["promise"] = self.promise
+        if self._problem_bool != None:
+            x_dict["_problem_bool"] = self._problem_bool
+        if self._acptfactunits != None:
+            x_dict["_acptfactunits"] = self.get_acptfactunits_dict()
+        if self._is_expanded != None:
+            x_dict["_is_expanded"] = self._is_expanded
+        if self._on_meld_weight_action != None:
+            x_dict["_on_meld_weight_action"] = self._on_meld_weight_action
+
+        return x_dict
 
     def find_replace_road(self, old_road: Road, new_road: Road):
         if is_sub_road(ref_road=self._pad, sub_road=old_road):
