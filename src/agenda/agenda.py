@@ -2278,14 +2278,14 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, agenda_dict: dict):
     to_evaluate_idea_dicts = []
     pad_text = "pad"
     # for every kid dict, set pad, add to to_evaluate_list
-    for x_dict in agenda_dict["_kids"].values():
+    for x_dict in get_obj_from_idea_dict(agenda_dict, "_kids").values():
         x_dict[pad_text] = x_agenda._healer
         to_evaluate_idea_dicts.append(x_dict)
 
     while to_evaluate_idea_dicts != []:
         idea_dict = to_evaluate_idea_dicts.pop(0)
         # for every kid dict, set pad, add to to_evaluate_list
-        for kid_dict in idea_dict["_kids"].values():
+        for kid_dict in get_obj_from_idea_dict(idea_dict, "_kids").values():
             pad_road = get_obj_from_idea_dict(idea_dict, pad_text)
             kid_label = get_obj_from_idea_dict(idea_dict, "_label")
             kid_dict[pad_text] = f"{pad_road},{kid_label}"

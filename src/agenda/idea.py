@@ -907,8 +907,8 @@ class IdeaCore:
             x_dict["_label"] = self._label
         if self._uid != None:
             x_dict["_uid"] = self._uid
-        # if self._kids not in [{}, None]:
-        x_dict["_kids"] = self.get_kids_dict()
+        if self._kids not in [{}, None]:
+            x_dict["_kids"] = self.get_kids_dict()
         if self._requiredunits not in [{}, None]:
             x_dict["_requiredunits"] = self.get_requiredunits_dict()
         if self._assignedunit not in [None, assigned_unit_shop()]:
@@ -1244,6 +1244,8 @@ def get_obj_from_idea_dict(x_dict: dict[str:], field_name: str) -> any:
             if x_dict.get(field_name) != None
             else balancelinks_get_from_dict({})
         )
+    elif field_name in {"_kids"}:
+        return x_dict[field_name] if x_dict.get(field_name) != None else {}
     elif field_name in {"promise"}:
         return x_dict[field_name] if x_dict.get(field_name) != None else False
     elif field_name in {"_is_expanded"}:

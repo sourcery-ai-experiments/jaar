@@ -335,6 +335,12 @@ def test_get_obj_from_idea_dict_ReturnsCorrectObj():
     assert get_obj_from_idea_dict({}, field_text) == False
     assert get_obj_from_idea_dict({field_text: False}, field_text) == False
 
+    # GIVEN
+    field_text = "_kids"
+    # WHEN / THEN
+    assert get_obj_from_idea_dict({field_text: {}}, field_text) == {}
+    assert get_obj_from_idea_dict({}, field_text) == {}
+
 
 def test_idea_get_dict_ReturnsCorrectCompleteDict():
     # GIVEN
@@ -470,10 +476,7 @@ def test_idea_get_dict_ReturnsCorrectIncompleteDict():
 
     # THEN
     assert work_dict != None
-    assert work_dict == {
-        "_kids": {},
-        "_weight": 1,
-    }
+    assert work_dict == {"_weight": 1}
 
 
 def test_idea_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
@@ -500,6 +503,9 @@ def test_idea_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     x_originunit = work_idea._originunit
     x_originunit.set_originlink(yao_text, 1)
 
+    rock_text = "Rock"
+    work_idea.add_kid(ideacore_shop(rock_text))
+
     assert not work_idea._is_expanded
     assert work_idea.promise
     assert work_idea._problem_bool
@@ -508,6 +514,7 @@ def test_idea_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     assert work_idea._balancelinks != None
     assert work_idea._assignedunit != None
     assert work_idea._originunit != None
+    assert work_idea._kids != {}
 
     # WHEN
     work_dict = work_idea.get_dict()
@@ -521,6 +528,7 @@ def test_idea_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     assert work_dict.get("_balancelinks") != None
     assert work_dict.get("_assignedunit") != None
     assert work_dict.get("_originunit") != None
+    assert work_dict.get("_kids") != None
 
 
 def test_idea_get_dict_ReturnsDictWith_is_expanded_CorrectlyEmpty():
@@ -538,6 +546,8 @@ def test_idea_get_dict_ReturnsDictWith_is_expanded_CorrectlyEmpty():
     assert work_idea._assignedunit == assigned_unit_shop()
     work_idea.set_originunit_empty_if_null()
     assert work_idea._originunit == originunit_shop()
+    work_idea.set_kids_empty_if_null()
+    assert work_idea._kids == {}
 
     # WHEN
     work_dict = work_idea.get_dict()
@@ -551,6 +561,7 @@ def test_idea_get_dict_ReturnsDictWith_is_expanded_CorrectlyEmpty():
     assert work_dict.get("_balancelinks") is None
     assert work_dict.get("_assignedunit") is None
     assert work_dict.get("_originunit") is None
+    assert work_dict.get("_kids") is None
 
 
 def test_idea_vaild_DenomCorrectInheritsBeginAndClose():
