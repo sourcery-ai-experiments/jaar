@@ -24,7 +24,6 @@ from src.agenda.required_idea import (
     AcptFactCore,
     AcptFactUnit,
     AcptFactUnit,
-    RequiredHeir,
     requiredheir_shop,
     RequiredUnit,
     Road,
@@ -35,10 +34,8 @@ from src.agenda.required_idea import (
     sufffactunit_shop,
 )
 from src.agenda.required_assign import (
-    assigned_heir_shop,
     assigned_unit_shop,
     AssignedUnit,
-    AssignedHeir,
     assignedunit_get_from_dict,
 )
 from src.agenda.tree_metrics import TreeMetrics
