@@ -1,4 +1,4 @@
-from src.agenda.idea import IdeaCore, ideacore_shop
+from src.agenda.idea import IdeaCore, ideacore_shop, get_obj_from_idea_dict
 from src.agenda.group import GroupBrand, balancelink_shop, balanceheir_shop
 from src.agenda.required_idea import (
     requiredunit_shop,
@@ -72,7 +72,7 @@ def test_idea_core_shop_ReturnsCorrectObj():
     assert new_obj._descendant_promise_count is None
     assert new_obj._balancelines is None
     assert new_obj._balanceheirs is None
-    assert new_obj._is_expanded == True
+    assert new_obj._is_expanded == False
     assert new_obj._acptfactheirs is None
     assert new_obj._acptfactunits is None
     assert new_obj._on_meld_weight_action == "default"
@@ -319,6 +319,17 @@ def test_get_kids_in_range_GetsCorrectIdeas():
     assert mon366_idea.get_kids_in_range(begin=31, close=31)[0]._label == feb29_text
 
 
+def test_get_obj_from_idea_dict_ReturnsCorrectObj():
+    # GIVEN
+    _is_expanded_text = "_is_expanded"
+    # WHEN / THEN
+    assert get_obj_from_idea_dict({_is_expanded_text: True}, _is_expanded_text)
+    assert get_obj_from_idea_dict({}, _is_expanded_text) == False
+    assert (
+        get_obj_from_idea_dict({_is_expanded_text: False}, _is_expanded_text) == False
+    )
+
+
 def test_idea_get_dict_ReturnsCorrectCompleteDict():
     # GIVEN
     week_text = "weekdays"
@@ -354,11 +365,7 @@ def test_idea_get_dict_ReturnsCorrectCompleteDict():
     biker_pid = GroupBrand("bikers")
     biker_creditor_weight = 3.0
     biker_debtor_weight = 7.0
-    biker_link = balancelink_shop(
-        brand=biker_pid,
-        creditor_weight=biker_creditor_weight,
-        debtor_weight=biker_debtor_weight,
-    )
+    biker_link = balancelink_shop(biker_pid, biker_creditor_weight, biker_debtor_weight)
     flyer_pid = GroupBrand("flyers")
     flyer_creditor_weight = 6.0
     flyer_debtor_weight = 9.0
@@ -441,7 +448,8 @@ def test_idea_get_dict_ReturnsCorrectCompleteDict():
     assert work_dict["_range_source_road"] == work_idea._range_source_road
     assert work_dict["promise"] == work_idea.promise
     assert work_dict["_problem_bool"] == work_idea._problem_bool
-    assert work_dict["_is_expanded"] == work_idea._is_expanded
+    assert work_idea._is_expanded == False
+    assert work_dict.get("_is_expanded") is None
     assert len(work_dict["_acptfactunits"]) == len(work_idea.get_acptfactunits_dict())
     assert work_dict["_on_meld_weight_action"] == work_idea._on_meld_weight_action
 
@@ -451,6 +459,25 @@ def test_idea_get_dict_ReturnsCorrectIncompleteDict():
     work_idea = ideacore_shop()
 
     # WHEN
+    work_dict = work_idea.get_dict()
+
+    # THEN
+    assert work_dict != None
+    assert work_dict == {
+        "_kids": {},
+        "_on_meld_weight_action": "default",
+        "_problem_bool": False,
+        "_weight": 1,
+        "promise": False,
+    }
+
+
+def test_idea_get_dict_ReturnsIncompleteDictWith_is_expanded_CorrectlySet():
+    # GIVEN
+    work_idea = ideacore_shop()
+
+    # WHEN
+    work_idea._is_expanded = True
     work_dict = work_idea.get_dict()
 
     # THEN

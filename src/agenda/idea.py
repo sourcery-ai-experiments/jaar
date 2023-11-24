@@ -939,7 +939,7 @@ class IdeaCore:
             x_dict["_problem_bool"] = self._problem_bool
         if self._acptfactunits != None:
             x_dict["_acptfactunits"] = self.get_acptfactunits_dict()
-        if self._is_expanded != None:
+        if self._is_expanded:
             x_dict["_is_expanded"] = self._is_expanded
         if self._on_meld_weight_action != None:
             x_dict["_on_meld_weight_action"] = self._on_meld_weight_action
@@ -1035,7 +1035,7 @@ def ideacore_shop(
     _descendant_promise_count: int = None,
     _all_party_credit: bool = None,
     _all_party_debt: bool = None,
-    _is_expanded: bool = True,
+    _is_expanded: bool = False,
     _sibling_total_weight: int = None,
     _active_status_hx: dict[int:bool] = None,
 ) -> IdeaCore:
@@ -1244,5 +1244,7 @@ def get_obj_from_idea_dict(x_dict: dict[str:], field_name: str) -> any:
             if x_dict.get(field_name) != None
             else balancelinks_get_from_dict({})
         )
+    elif field_name == "_is_expanded":
+        return x_dict[field_name] if x_dict.get(field_name) != None else False
     else:
         return x_dict[field_name] if x_dict.get(field_name) != None else None
