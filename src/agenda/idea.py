@@ -911,11 +911,11 @@ class IdeaCore:
         x_dict["_kids"] = self.get_kids_dict()
         if self._requiredunits not in [{}, None]:
             x_dict["_requiredunits"] = self.get_requiredunits_dict()
-        if self._assignedunit != None:
+        if self._assignedunit not in [None, assigned_unit_shop()]:
             x_dict["_assignedunit"] = self.get_assignedunit_dict()
-        if self._balancelinks != None:
+        if self._balancelinks not in [{}, None]:
             x_dict["_balancelinks"] = self.get_balancelinks_dict()
-        if self._originunit != None:
+        if self._originunit not in [None, originunit_shop()]:
             x_dict["_originunit"] = self.get_originunit_dict()
         if self._begin != None:
             x_dict["_begin"] = self._begin
@@ -933,15 +933,15 @@ class IdeaCore:
             x_dict["_range_source_road"] = self._range_source_road
         if self._numeric_road != None:
             x_dict["_numeric_road"] = self._numeric_road
-        if self.promise != None:
+        if self.promise:
             x_dict["promise"] = self.promise
-        if self._problem_bool != None:
+        if self._problem_bool:
             x_dict["_problem_bool"] = self._problem_bool
-        if self._acptfactunits != None:
+        if self._acptfactunits not in [{}, None]:
             x_dict["_acptfactunits"] = self.get_acptfactunits_dict()
-        if self._is_expanded:
+        if self._is_expanded == False:
             x_dict["_is_expanded"] = self._is_expanded
-        if self._on_meld_weight_action != None:
+        if self._on_meld_weight_action != "default":
             x_dict["_on_meld_weight_action"] = self._on_meld_weight_action
 
         return x_dict
@@ -1035,7 +1035,7 @@ def ideacore_shop(
     _descendant_promise_count: int = None,
     _all_party_credit: bool = None,
     _all_party_debt: bool = None,
-    _is_expanded: bool = False,
+    _is_expanded: bool = True,
     _sibling_total_weight: int = None,
     _active_status_hx: dict[int:bool] = None,
 ) -> IdeaCore:
@@ -1244,7 +1244,11 @@ def get_obj_from_idea_dict(x_dict: dict[str:], field_name: str) -> any:
             if x_dict.get(field_name) != None
             else balancelinks_get_from_dict({})
         )
-    elif field_name == "_is_expanded":
+    elif field_name in {"promise"}:
         return x_dict[field_name] if x_dict.get(field_name) != None else False
+    elif field_name in {"_is_expanded"}:
+        return x_dict[field_name] if x_dict.get(field_name) != None else True
+    # elif field_name == "_on_meld_weight_action":
+    #     return x_dict[field_name] if x_dict.get(field_name) != None else "default"
     else:
         return x_dict[field_name] if x_dict.get(field_name) != None else None

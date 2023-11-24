@@ -7,6 +7,7 @@ from src.agenda.required_idea import (
     sufffactunit_shop,
 )
 from src.agenda.required_assign import assigned_unit_shop, assigned_heir_shop
+from src.agenda.origin import originunit_shop
 from src.agenda.road import get_default_culture_root_label as root_label
 from pytest import raises as pytest_raises
 
@@ -72,7 +73,7 @@ def test_idea_core_shop_ReturnsCorrectObj():
     assert new_obj._descendant_promise_count is None
     assert new_obj._balancelines is None
     assert new_obj._balanceheirs is None
-    assert new_obj._is_expanded == False
+    assert new_obj._is_expanded == True
     assert new_obj._acptfactheirs is None
     assert new_obj._acptfactunits is None
     assert new_obj._on_meld_weight_action == "default"
@@ -321,13 +322,18 @@ def test_get_kids_in_range_GetsCorrectIdeas():
 
 def test_get_obj_from_idea_dict_ReturnsCorrectObj():
     # GIVEN
-    _is_expanded_text = "_is_expanded"
+    field_text = "_is_expanded"
     # WHEN / THEN
-    assert get_obj_from_idea_dict({_is_expanded_text: True}, _is_expanded_text)
-    assert get_obj_from_idea_dict({}, _is_expanded_text) == False
-    assert (
-        get_obj_from_idea_dict({_is_expanded_text: False}, _is_expanded_text) == False
-    )
+    assert get_obj_from_idea_dict({field_text: True}, field_text)
+    assert get_obj_from_idea_dict({}, field_text)
+    assert get_obj_from_idea_dict({field_text: False}, field_text) == False
+
+    # GIVEN
+    field_text = "promise"
+    # WHEN / THEN
+    assert get_obj_from_idea_dict({field_text: True}, field_text)
+    assert get_obj_from_idea_dict({}, field_text) == False
+    assert get_obj_from_idea_dict({field_text: False}, field_text) == False
 
 
 def test_idea_get_dict_ReturnsCorrectCompleteDict():
@@ -448,10 +454,11 @@ def test_idea_get_dict_ReturnsCorrectCompleteDict():
     assert work_dict["_range_source_road"] == work_idea._range_source_road
     assert work_dict["promise"] == work_idea.promise
     assert work_dict["_problem_bool"] == work_idea._problem_bool
-    assert work_idea._is_expanded == False
+    assert work_idea._is_expanded
     assert work_dict.get("_is_expanded") is None
     assert len(work_dict["_acptfactunits"]) == len(work_idea.get_acptfactunits_dict())
-    assert work_dict["_on_meld_weight_action"] == work_idea._on_meld_weight_action
+    assert work_idea._on_meld_weight_action == "default"
+    assert work_dict.get("_on_meld_weight_action") is None
 
 
 def test_idea_get_dict_ReturnsCorrectIncompleteDict():
@@ -465,31 +472,85 @@ def test_idea_get_dict_ReturnsCorrectIncompleteDict():
     assert work_dict != None
     assert work_dict == {
         "_kids": {},
-        "_on_meld_weight_action": "default",
-        "_problem_bool": False,
         "_weight": 1,
-        "promise": False,
     }
 
 
-def test_idea_get_dict_ReturnsIncompleteDictWith_is_expanded_CorrectlySet():
+def test_idea_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     # GIVEN
     work_idea = ideacore_shop()
+    work_idea._is_expanded = False
+    work_idea.promise = True
+    work_idea._problem_bool = True
+    ignore_text = "ignore"
+    work_idea._on_meld_weight_action = ignore_text
+
+    a_text = "a"
+    a_road = f"{root_label()},{a_text}"
+    work_idea.set_acptfactunit(acptfactunit_shop(a_road, a_road))
+
+    yao_text = "Yao"
+    work_idea.set_balancelink(balancelink_shop(yao_text))
+
+    work_idea.set_assignedunit_empty_if_null()
+    x_assignedunit = work_idea._assignedunit
+    x_assignedunit.set_suffgroup(pid=yao_text)
+
+    work_idea.set_originunit_empty_if_null()
+    x_originunit = work_idea._originunit
+    x_originunit.set_originlink(yao_text, 1)
+
+    assert not work_idea._is_expanded
+    assert work_idea.promise
+    assert work_idea._problem_bool
+    assert work_idea._on_meld_weight_action != "default"
+    assert work_idea._acptfactunits != None
+    assert work_idea._balancelinks != None
+    assert work_idea._assignedunit != None
+    assert work_idea._originunit != None
 
     # WHEN
-    work_idea._is_expanded = True
     work_dict = work_idea.get_dict()
 
     # THEN
-    assert work_dict != None
-    assert work_dict == {
-        "_kids": {},
-        "_is_expanded": True,
-        "_on_meld_weight_action": "default",
-        "_problem_bool": False,
-        "_weight": 1,
-        "promise": False,
-    }
+    assert work_dict.get("_is_expanded") == False
+    assert work_dict.get("promise")
+    assert work_dict.get("_problem_bool")
+    assert work_dict.get("_on_meld_weight_action") == ignore_text
+    assert work_dict.get("_acptfactunits") != None
+    assert work_dict.get("_balancelinks") != None
+    assert work_dict.get("_assignedunit") != None
+    assert work_dict.get("_originunit") != None
+
+
+def test_idea_get_dict_ReturnsDictWith_is_expanded_CorrectlyEmpty():
+    # GIVEN
+    work_idea = ideacore_shop()
+    assert work_idea._is_expanded
+    assert work_idea.promise == False
+    assert work_idea._problem_bool == False
+    assert work_idea._on_meld_weight_action == "default"
+    work_idea.set_acptfactunits_empty_if_null()
+    assert work_idea._acptfactunits == {}
+    work_idea.set_balancelink_empty_if_null()
+    assert work_idea._balancelinks == {}
+    work_idea.set_assignedunit_empty_if_null()
+    assert work_idea._assignedunit == assigned_unit_shop()
+    work_idea.set_originunit_empty_if_null()
+    assert work_idea._originunit == originunit_shop()
+
+    # WHEN
+    work_dict = work_idea.get_dict()
+
+    # THEN
+    assert work_dict.get("_is_expanded") is None
+    assert work_dict.get("promise") is None
+    assert work_dict.get("_problem_bool") is None
+    assert work_dict.get("_on_meld_weight_action") is None
+    assert work_dict.get("_acptfactunits") is None
+    assert work_dict.get("_balancelinks") is None
+    assert work_dict.get("_assignedunit") is None
+    assert work_dict.get("_originunit") is None
 
 
 def test_idea_vaild_DenomCorrectInheritsBeginAndClose():
