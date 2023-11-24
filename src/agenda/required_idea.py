@@ -1,4 +1,4 @@
-import dataclasses
+from dataclasses import dataclass
 from src.agenda.road import Road, change_road, find_replace_road_key_dict
 
 
@@ -6,7 +6,7 @@ class InvalidRequiredException(Exception):
     pass
 
 
-@dataclasses.dataclass
+@dataclass
 class AcptFactCore:
     base: Road
     pick: Road
@@ -68,7 +68,7 @@ class AcptFactCore:
         return self
 
 
-@dataclasses.dataclass
+@dataclass
 class AcptFactUnit(AcptFactCore):
     pass
 
@@ -111,7 +111,7 @@ def acptfactunit_shop(
     )
 
 
-@dataclasses.dataclass
+@dataclass
 class AcptFactHeir(AcptFactCore):
     def transform(self, acptfactunit: AcptFactUnit):
         if (
@@ -136,7 +136,7 @@ def acptfactheir_shop(
     )
 
 
-@dataclasses.dataclass
+@dataclass
 class SuffFactStatusFinder:
     acptfact_open: float
     acptfact_nigh: float
@@ -226,7 +226,7 @@ class SuffFactStatusFinder:
         )
 
 
-@dataclasses.dataclass
+@dataclass
 class SuffFactUnit:
     need: Road
     open: float = None
@@ -400,7 +400,7 @@ def sufffacts_get_from_dict(x_dict: dict) -> dict[str:SuffFactUnit]:
     return sufffacts
 
 
-@dataclasses.dataclass
+@dataclass
 class RequiredCore:
     base: Road
     sufffacts: dict[Road:SuffFactUnit]
@@ -472,7 +472,7 @@ def requiredcore_shop(
     )
 
 
-@dataclasses.dataclass
+@dataclass
 class RequiredUnit(RequiredCore):
     def get_dict(self):
         sufffacts_dict = {
@@ -493,7 +493,7 @@ def requiredunit_shop(
     )
 
 
-@dataclasses.dataclass
+@dataclass
 class RequiredHeir(RequiredCore):
     _status: bool = None
     _task: bool = None

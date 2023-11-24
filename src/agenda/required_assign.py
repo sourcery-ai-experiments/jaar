@@ -1,4 +1,4 @@
-import dataclasses
+from dataclasses import dataclass
 from src.agenda.group import groupunit_shop, GroupUnit, GroupBrand
 from src.agenda.party import PartyPID
 
@@ -7,7 +7,7 @@ class InvalidAssignHeirPopulateException(Exception):
     pass
 
 
-@dataclasses.dataclass
+@dataclass
 class AssignedUnit:
     _suffgroups: dict[GroupBrand:GroupBrand]
 
@@ -32,7 +32,7 @@ def assigned_unit_shop(_suffgroups: dict[GroupBrand:GroupBrand] = None) -> Assig
     return AssignedUnit(_suffgroups=_suffgroups)
 
 
-@dataclasses.dataclass
+@dataclass
 class AssignedHeir:
     _suffgroups: dict[GroupBrand:GroupBrand]
     _group_party: bool

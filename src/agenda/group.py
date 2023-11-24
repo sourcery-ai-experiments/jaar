@@ -1,4 +1,4 @@
-import dataclasses
+from dataclasses import dataclass
 from src.agenda.party import (
     PartyPID,
     PartyLink,
@@ -20,12 +20,12 @@ class GroupBrand(str):  # Created to help track the concept
     pass
 
 
-@dataclasses.dataclass
+@dataclass
 class GroupCore:
     brand: GroupBrand
 
 
-@dataclasses.dataclass
+@dataclass
 class GroupUnit(GroupCore):
     uid: int = None
     single_party_id: int = None
@@ -210,7 +210,7 @@ def groupunit_shop(
     )
 
 
-@dataclasses.dataclass
+@dataclass
 class BalanceLink(GroupCore):
     creditor_weight: float = 1.0
     debtor_weight: float = 1.0
@@ -270,7 +270,7 @@ def balancelink_shop(
     )
 
 
-@dataclasses.dataclass
+@dataclass
 class BalanceHeir(GroupCore):
     creditor_weight: float = 1.0
     debtor_weight: float = 1.0
@@ -309,7 +309,7 @@ def balanceheir_shop(
     )
 
 
-@dataclasses.dataclass
+@dataclass
 class BalanceLine(GroupCore):
     _agenda_credit: float
     _agenda_debt: float

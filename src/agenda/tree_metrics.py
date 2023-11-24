@@ -1,9 +1,9 @@
-import dataclasses
+from dataclasses import dataclass
 from src.agenda.required_idea import RequiredUnit, Road
 from src.agenda.group import BalanceLink, GroupBrand, GroupMetrics
 
 
-@dataclasses.dataclass
+@dataclass
 class TreeMetrics:
     node_count: int = None
     level_count: dict[int:int] = None
