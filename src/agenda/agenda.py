@@ -15,7 +15,6 @@ from src.agenda.group import (
     BalanceLink,
     GroupBrand,
     GroupUnit,
-    balancelinks_get_from_dict,
     get_from_dict as groupunits_get_from_dict,
     groupunit_shop,
     balancelink_shop,
@@ -27,17 +26,10 @@ from src.agenda.required_idea import (
     requiredheir_shop,
     RequiredUnit,
     Road,
-    acptfactunits_get_from_dict,
     acptfactunit_shop,
-    acptfactunits_get_from_dict,
-    requireds_get_from_dict,
     sufffactunit_shop,
 )
-from src.agenda.required_assign import (
-    assigned_unit_shop,
-    AssignedUnit,
-    assignedunit_get_from_dict,
-)
+from src.agenda.required_assign import AssignedUnit
 from src.agenda.tree_metrics import TreeMetrics
 from src.agenda.x_func import x_get_json
 from src.agenda.idea import (
@@ -46,6 +38,7 @@ from src.agenda.idea import (
     IdeaRoot,
     idearoot_shop,
     IdeaAttrHolder,
+    get_obj_from_idea_dict,
 )
 from src.agenda.hreg_time import (
     _get_time_hreg_src_idea,
@@ -2344,41 +2337,6 @@ def get_obj_from_agenda_dict(x_dict: dict[str:], field_name: str) -> any:
         return x_dict[field_name] if x_dict.get(field_name) != None else 20
     elif field_name == "_auto_output_to_public":
         return x_dict[field_name] if x_dict.get(field_name) != None else False
-    else:
-        return x_dict[field_name] if x_dict.get(field_name) != None else None
-
-
-def get_obj_from_idea_dict(x_dict: dict[str:], field_name: str) -> any:
-    if field_name == "_requiredunits":
-        return (
-            requireds_get_from_dict(x_dict[field_name])
-            if x_dict.get(field_name) != None
-            else None
-        )
-    elif field_name == "_assignedunit":
-        return (
-            assignedunit_get_from_dict(x_dict[field_name])
-            if x_dict.get(field_name) != None
-            else assigned_unit_shop()
-        )
-    elif field_name == "_originunit":
-        return (
-            originunit_get_from_dict(x_dict[field_name])
-            if x_dict.get(field_name) != None
-            else originunit_shop()
-        )
-    elif field_name == "_acptfactunits":
-        return (
-            acptfactunits_get_from_dict(x_dict[field_name])
-            if x_dict.get(field_name) != None
-            else acptfactunits_get_from_dict({})
-        )
-    elif field_name == "_balancelinks":
-        return (
-            balancelinks_get_from_dict(x_dict[field_name])
-            if x_dict.get(field_name) != None
-            else balancelinks_get_from_dict({})
-        )
     else:
         return x_dict[field_name] if x_dict.get(field_name) != None else None
 

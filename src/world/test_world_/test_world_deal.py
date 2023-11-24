@@ -1,6 +1,6 @@
 # from src.world.world import set_deal
 from src.world.person import personunit_shop
-from src.agenda.agenda import assigned_unit_shop
+from src.agenda.required_assign import assigned_unit_shop
 
 
 # def test_set_deal_CreatesWorldTwoCulturesTwoPersonsWorkingAgendas():

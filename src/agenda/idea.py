@@ -1,9 +1,10 @@
-import dataclasses
+from dataclasses import dataclass
 from src.agenda.required_assign import (
     AssignedUnit,
     AssignedHeir,
     assigned_unit_shop,
     assigned_heir_shop,
+    assignedunit_get_from_dict,
 )
 from src.agenda.required_idea import (
     AcptFactCore,
@@ -22,6 +23,8 @@ from src.agenda.required_idea import (
     Road,
     change_road,
     find_replace_road_key_dict,
+    requireds_get_from_dict,
+    acptfactunits_get_from_dict,
 )
 from src.agenda.road import (
     is_sub_road,
@@ -30,12 +33,13 @@ from src.agenda.road import (
 from src.agenda.group import (
     BalanceHeir,
     BalanceLink,
+    balancelinks_get_from_dict,
     GroupBrand,
     BalanceLine,
     balanceheir_shop,
     GroupUnit,
 )
-from src.agenda.origin import OriginUnit
+from src.agenda.origin import OriginUnit, originunit_get_from_dict
 from src.agenda.party import PartyPID
 from src.agenda.origin import originunit_shop
 from src.agenda.x_func import (
@@ -54,7 +58,7 @@ class IdeaGetDescendantsException(Exception):
     pass
 
 
-@dataclasses.dataclass
+@dataclass
 class IdeaBare:
     n: str = None  # pid
     weight: int = 1
@@ -69,7 +73,7 @@ class IdeaBare:
     nr: str = None  # numeric_road # not road since it doesn't know root _label
 
 
-@dataclasses.dataclass
+@dataclass
 class IdeaAttrHolder:
     weight: int = None
     uid: int = None
@@ -123,7 +127,7 @@ class IdeaAttrHolder:
             #     self.required_sufffact_reest = sufffact_reest
 
 
-@dataclasses.dataclass
+@dataclass
 class IdeaCore:
     _label: str = None
     _uid: int = None  # Calculated field?
@@ -987,7 +991,7 @@ class IdeaCore:
         return self._assignedheir.group_in(groupbrands)
 
 
-@dataclasses.dataclass
+@dataclass
 class IdeaKid(IdeaCore):
     pass
 
@@ -1093,7 +1097,7 @@ class IdeaRootLabelNotEmptyException(Exception):
     pass
 
 
-@dataclasses.dataclass
+@dataclass
 class IdeaRoot(IdeaCore):
     def set_idea_label(self, _label: str, agenda_culture_qid: str = None):
         if _label != root_label() and agenda_culture_qid is None:
@@ -1207,3 +1211,38 @@ def idearoot_shop(
     )
     x_idearoot.set_idea_label(_label=root_label())
     return x_idearoot
+
+
+def get_obj_from_idea_dict(x_dict: dict[str:], field_name: str) -> any:
+    if field_name == "_requiredunits":
+        return (
+            requireds_get_from_dict(x_dict[field_name])
+            if x_dict.get(field_name) != None
+            else None
+        )
+    elif field_name == "_assignedunit":
+        return (
+            assignedunit_get_from_dict(x_dict[field_name])
+            if x_dict.get(field_name) != None
+            else assigned_unit_shop()
+        )
+    elif field_name == "_originunit":
+        return (
+            originunit_get_from_dict(x_dict[field_name])
+            if x_dict.get(field_name) != None
+            else originunit_shop()
+        )
+    elif field_name == "_acptfactunits":
+        return (
+            acptfactunits_get_from_dict(x_dict[field_name])
+            if x_dict.get(field_name) != None
+            else acptfactunits_get_from_dict({})
+        )
+    elif field_name == "_balancelinks":
+        return (
+            balancelinks_get_from_dict(x_dict[field_name])
+            if x_dict.get(field_name) != None
+            else balancelinks_get_from_dict({})
+        )
+    else:
+        return x_dict[field_name] if x_dict.get(field_name) != None else None

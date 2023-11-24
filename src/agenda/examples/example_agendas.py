@@ -9,8 +9,8 @@ from src.agenda.agenda import (
     AgendaUnit,
     agendaunit_shop,
     get_from_json as agenda_get_from_json,
-    assigned_unit_shop,
 )
+from src.agenda.required_assign import assigned_unit_shop
 from src.agenda.x_func import open_file as x_func_open_file
 from src.agenda.examples.agenda_env import agenda_env
 
