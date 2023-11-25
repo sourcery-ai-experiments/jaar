@@ -306,6 +306,63 @@ def test_GroupUnit_meld_RaiseSameUIDException():
     )
 
 
+def test_GroupUnit_get_dict_ReturnsDictWithAttrsCorrectlySet():
+    # GIVEN
+    todd_text = "Todd"
+    todd_uid = 33
+    todd_party_id = 55
+    todd_group = groupunit_shop(
+        brand=todd_text, uid=todd_uid, single_party_id=todd_party_id, _single_party=True
+    )
+    sue_text = "Sue"
+    todd_group.set_partylink(partylink_shop(pid=sue_text))
+    x_partylinks_set_by_culture_road = 44
+    todd_group.set_attr(x_partylinks_set_by_culture_road)
+
+    assert todd_group.brand == todd_text
+    assert todd_group.uid == todd_uid
+    assert todd_group.single_party_id == todd_party_id
+    assert todd_group._single_party
+    assert len(todd_group._partys) == 1
+    assert (
+        todd_group._partylinks_set_by_culture_road == x_partylinks_set_by_culture_road
+    )
+
+    # WHEN
+    todd_dict = todd_group.get_dict()
+
+    # THEN
+    assert todd_dict["brand"] == todd_text
+    assert todd_dict["uid"] == todd_uid
+    assert todd_dict["single_party_id"] == todd_party_id
+    assert todd_dict["_single_party"]
+    assert len(todd_dict["_partys"]) == 1
+    assert (
+        todd_dict["_partylinks_set_by_culture_road"] == x_partylinks_set_by_culture_road
+    )
+
+
+def test_idea_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
+    # GIVEN
+    todd_text = "Todd"
+    todd_group = groupunit_shop(brand=todd_text)
+    assert todd_group.uid is None
+    assert todd_group.single_party_id is None
+    assert todd_group._single_party is False
+    assert todd_group._partys == {}
+    assert todd_group._partylinks_set_by_culture_road is None
+
+    # WHEN
+    todd_dict = todd_group.get_dict()
+
+    # THEN
+    assert todd_dict.get("uid") is None
+    assert todd_dict.get("single_party_id") is None
+    assert todd_dict.get("_single_party") is None
+    assert todd_dict.get("_partys") is None
+    assert todd_dict.get("_partylinks_set_by_culture_road") is None
+
+
 def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
     swimmers = "swimmers"
@@ -318,14 +375,7 @@ def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     ee_dict = swimmers_group.get_dict()
     assert ee_dict != None
     # assert ee_dict == {"brand": swimmers, "uid": 2}
-    assert ee_dict == {
-        "brand": swimmers,
-        "uid": None,
-        "single_party_id": None,
-        "_single_party": False,
-        "_partys": {},
-        "_partylinks_set_by_culture_road": None,
-    }
+    assert ee_dict == {"brand": swimmers}
 
     # GIVEN
     str_pid = "Marie"
@@ -340,10 +390,12 @@ def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         }
     }
 
-    str_teacher = "teachers"
+    teacher_text = "teachers"
+    teacher_uid = 55
     swim_road = "swim"
     teachers_group = groupunit_shop(
-        brand=str_teacher,
+        brand=teacher_text,
+        uid=teacher_uid,
         _partys=partylinks_dict,
         _partylinks_set_by_culture_road=swim_road,
     )
@@ -354,10 +406,8 @@ def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # THEN
     print(f"{marie_json_dict=}")
     assert teachers_dict == {
-        "brand": str_teacher,
-        "uid": None,
-        "single_party_id": None,
-        "_single_party": False,
+        "brand": teacher_text,
+        "uid": teacher_uid,
         "_partys": marie_json_dict,
         "_partylinks_set_by_culture_road": swim_road,
     }
@@ -370,10 +420,10 @@ def test_groupunit_get_from_JSON_SimpleExampleWorks():
     marie_partylink = partylink_shop(pid=marie_pid, creditor_weight=29, debtor_weight=3)
     partylinks_dict = {marie_partylink.pid: marie_partylink}
 
-    str_teacher = "teachers"
+    teacher_text = "teachers"
     swim_road = "swim"
     teacher_group = groupunit_shop(
-        brand=str_teacher,
+        brand=teacher_text,
         _partys=partylinks_dict,
         _partylinks_set_by_culture_road=swim_road,
     )
@@ -480,9 +530,9 @@ def test_balancelink_get_dict_ReturnsDictWithNecessaryDataForJSON():
 
 def test_balancelinks_get_from_JSON_SimpleExampleWorks():
     # GIVEN
-    str_teacher = "teachers"
+    teacher_text = "teachers"
     teacher_balancelink = balancelink_shop(
-        brand=str_teacher, creditor_weight=103, debtor_weight=155
+        brand=teacher_text, creditor_weight=103, debtor_weight=155
     )
     teacher_dict = teacher_balancelink.get_dict()
     balancelinks_dict = {teacher_balancelink.brand: teacher_dict}

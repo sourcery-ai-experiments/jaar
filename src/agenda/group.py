@@ -46,14 +46,21 @@ class GroupUnit(GroupCore):
             self._partylinks_set_by_culture_road = _partylinks_set_by_culture_road
 
     def get_dict(self):
-        return {
-            "brand": self.brand,
-            "uid": self.uid,
-            "single_party_id": self.single_party_id,
-            "_single_party": self._single_party,
-            "_partys": self.get_partys_dict(),
-            "_partylinks_set_by_culture_road": self._partylinks_set_by_culture_road,
-        }
+        x_dict = {"brand": self.brand}
+        if self.uid != None:
+            x_dict["uid"] = self.uid
+        if self.single_party_id != None:
+            x_dict["single_party_id"] = self.single_party_id
+        if self._single_party:
+            x_dict["_single_party"] = self._single_party
+        if self._partys not in [{}, None]:
+            x_dict["_partys"] = self.get_partys_dict()
+        if self._partylinks_set_by_culture_road != None:
+            x_dict[
+                "_partylinks_set_by_culture_road"
+            ] = self._partylinks_set_by_culture_road
+
+        return x_dict
 
     def set_empty_agenda_credit_debt_to_zero(self):
         if self._agenda_credit is None:
@@ -155,24 +162,30 @@ def get_from_json(groupunits_json: str):
 def get_from_dict(x_dict: dict):
     groupunits = {}
 
-    for groupunits_dict in x_dict.values():
-        try:
-            ex_partylinks_set_by_culture_road = groupunits_dict[
-                "_partylinks_set_by_culture_road"
-            ]
-        except KeyError:
-            ex_partylinks_set_by_culture_road = None
-
+    for groupunit_dict in x_dict.values():
         x_group = groupunit_shop(
-            brand=groupunits_dict["brand"],
-            uid=groupunits_dict["uid"],
-            _single_party=groupunits_dict["_single_party"],
-            single_party_id=groupunits_dict["single_party_id"],
-            _partys=partylinks_get_from_dict(x_dict=groupunits_dict["_partys"]),
-            _partylinks_set_by_culture_road=ex_partylinks_set_by_culture_road,
+            brand=groupunit_dict["brand"],
+            uid=get_obj_from_groupunit_dict(groupunit_dict, "uid"),
+            _single_party=get_obj_from_groupunit_dict(groupunit_dict, "_single_party"),
+            single_party_id=get_obj_from_groupunit_dict(
+                groupunit_dict, "single_party_id"
+            ),
+            _partys=get_obj_from_groupunit_dict(groupunit_dict, "_partys"),
+            _partylinks_set_by_culture_road=get_obj_from_groupunit_dict(
+                groupunit_dict, "_partylinks_set_by_culture_road"
+            ),
         )
         groupunits[x_group.brand] = x_group
     return groupunits
+
+
+def get_obj_from_groupunit_dict(x_dict: dict[str:], field_name: str) -> any:
+    if field_name == "_partys":
+        return partylinks_get_from_dict(x_dict[field_name])
+    elif field_name in {"_single_party"}:
+        return x_dict[field_name] if x_dict.get(field_name) != None else False
+    else:
+        return x_dict[field_name] if x_dict.get(field_name) != None else None
 
 
 def groupunit_shop(
