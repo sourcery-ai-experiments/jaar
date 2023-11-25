@@ -15,22 +15,24 @@ from pytest import raises as pytest_raises
 
 def test_agenda_groups_set_groupunit_worksCorrectly():
     # GIVEN
-    cx = agendaunit_shop()
-    assert cx._groups is None
+    x_agenda = agendaunit_shop()
+    assert x_agenda._groups is None
     swim_text = "swim"
     groupbrand_x = GroupBrand(swim_text)
     every1_groups = {groupbrand_x: groupunit_shop(brand=groupbrand_x)}
-    cx2 = agendaunit_shop()
+    x2_agenda = agendaunit_shop()
 
     # WHEN
-    cx2.set_groupunit(groupunit=groupunit_shop(brand=groupbrand_x))
+    x2_agenda.set_groupunit(groupunit=groupunit_shop(brand=groupbrand_x))
 
     # THEN
-    assert len(cx2._groups) == 1
-    assert len(cx2._groups) == len(every1_groups)
-    assert cx2._groups.get(swim_text)._partys == every1_groups.get(swim_text)._partys
-    assert cx2._groups.get(swim_text) == every1_groups.get(swim_text)
-    assert cx2._groups == every1_groups
+    assert len(x2_agenda._groups) == 1
+    assert len(x2_agenda._groups) == len(every1_groups)
+    assert (
+        x2_agenda._groups.get(swim_text)._partys == every1_groups.get(swim_text)._partys
+    )
+    assert x2_agenda._groups.get(swim_text) == every1_groups.get(swim_text)
+    assert x2_agenda._groups == every1_groups
 
     bill_single_party_id = 30
     bill_group = groupunit_shop(
@@ -55,22 +57,23 @@ def test_agenda_groups_del_groupunit_worksCorrectly():
 
 def test_example_has_groups():
     # GIVEN / WHEN
-    cx = examples_agenda_v001()
+    x_agenda = examples_agenda_v001()
 
     # THEN
-    assert cx._groups != None
-    assert len(cx._groups) == 34
+    assert x_agenda._groups != None
+    assert len(x_agenda._groups) == 34
     everyone_partys_len = None
-    everyone_group = cx._groups.get("Everyone")
+    everyone_group = x_agenda._groups.get("Everyone")
     everyone_partys_len = len(everyone_group._partys)
     assert everyone_partys_len == 22
 
     # WHEN
-    cx.set_agenda_metrics()
-    idea_dict = cx._idea_dict
+    x_agenda.set_agenda_metrics()
+    idea_dict = x_agenda._idea_dict
 
     # THEN
-    db_idea = idea_dict.get(f"{cx._culture_qid},D&B")
+    print(f"{len(idea_dict)=}")
+    db_idea = idea_dict.get(f"{x_agenda._culture_qid},D&B")
     print(f"{db_idea._label=} {db_idea._balancelinks=}")
     assert len(db_idea._balancelinks) == 3
     # for idea_key in idea_dict:
@@ -84,33 +87,33 @@ def test_example_has_groups():
 def test_agenda_set_balancelink_correctly_sets_balancelinks():
     # GIVEN
     prom_text = "prom"
-    cx = agendaunit_shop(_healer=prom_text)
+    x_agenda = agendaunit_shop(_healer=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    cx.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(rico_text)))
-    cx.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(carm_text)))
-    cx.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(patr_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(rico_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(carm_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(patr_text)))
 
-    assert len(cx._partys) == 3
-    assert len(cx._groups) == 3
+    assert len(x_agenda._partys) == 3
+    assert len(x_agenda._groups) == 3
     swim_text = "swim"
-    cx.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=prom_text)
+    x_agenda.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=prom_text)
     balancelink_rico = balancelink_shop(brand=GroupBrand(rico_text), creditor_weight=10)
     balancelink_carm = balancelink_shop(brand=GroupBrand(carm_text), creditor_weight=10)
     balancelink_patr = balancelink_shop(brand=GroupBrand(patr_text), creditor_weight=10)
     swim_road = f"{prom_text},{swim_text}"
-    cx.edit_idea_attr(road=swim_road, balancelink=balancelink_rico)
-    cx.edit_idea_attr(road=swim_road, balancelink=balancelink_carm)
-    cx.edit_idea_attr(road=swim_road, balancelink=balancelink_patr)
+    x_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_rico)
+    x_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_carm)
+    x_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_patr)
 
-    assert cx._idearoot._balancelinks in (None, {})
-    assert len(cx._idearoot._kids[swim_text]._balancelinks) == 3
+    assert x_agenda._idearoot._balancelinks in (None, {})
+    assert len(x_agenda._idearoot._kids[swim_text]._balancelinks) == 3
 
-    cx.add_idea(idea_kid=ideacore_shop(_label="streets"), pad=swim_road)
+    x_agenda.add_idea(idea_kid=ideacore_shop(_label="streets"), pad=swim_road)
 
     # WHEN
-    idea_list = cx.get_idea_list()
+    idea_list = x_agenda.get_idea_list()
 
     # THEN
     idea_prom = idea_list[1]
@@ -125,7 +128,7 @@ def test_agenda_set_balancelink_correctly_sets_balancelinks():
     print(f"{idea_list[0]._balancelinks}")
     print(f"{idea_list[0]._balanceheirs}")
     print(f"{idea_list[1]._balanceheirs}")
-    assert len(cx._idearoot._kids["swim"]._balanceheirs) == 3
+    assert len(x_agenda._idearoot._kids["swim"]._balanceheirs) == 3
 
 
 def test_agenda_set_balancelink_correctly_deletes_balancelinks():
@@ -646,27 +649,31 @@ def test_agenda_add_idea_CreatesMissingGroups():
 def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balancelinks():
     # GIVEN
     healer_text = "Noa"
-    cx1 = agendaunit_shop(_healer=healer_text)
+    x1_agenda = agendaunit_shop(_healer=healer_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
-    cx1.add_partyunit(pid=xia_text)
-    cx1.add_partyunit(pid=zoa_text)
+    x1_agenda.add_partyunit(pid=xia_text)
+    x1_agenda.add_partyunit(pid=zoa_text)
 
     work_text = "work"
-    work_road = f"{cx1._culture_qid},{work_text}"
+    work_road = f"{x1_agenda._culture_qid},{work_text}"
     swim_text = "swim"
-    swim_road = f"{cx1._culture_qid},{swim_text}"
-    cx1.add_idea(ideacore_shop(_label=work_text), pad=cx1._culture_qid)
-    cx1.add_idea(ideacore_shop(_label=swim_text), pad=cx1._culture_qid)
-    cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=xia_text))
-    cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=zoa_text))
-    cx1_swim_idea = cx1.get_idea_kid(swim_road)
-    assert len(cx1_swim_idea._balancelinks) == 2
-    cx2 = agendaunit_shop(_healer=healer_text)
-    cx2.add_partyunit(pid=xia_text)
+    swim_road = f"{x1_agenda._culture_qid},{swim_text}"
+    x1_agenda.add_idea(ideacore_shop(_label=work_text), pad=x1_agenda._culture_qid)
+    x1_agenda.add_idea(ideacore_shop(_label=swim_text), pad=x1_agenda._culture_qid)
+    x1_agenda.edit_idea_attr(
+        road=swim_road, balancelink=balancelink_shop(brand=xia_text)
+    )
+    x1_agenda.edit_idea_attr(
+        road=swim_road, balancelink=balancelink_shop(brand=zoa_text)
+    )
+    x1_agenda_swim_idea = x1_agenda.get_idea_kid(swim_road)
+    assert len(x1_agenda_swim_idea._balancelinks) == 2
+    x2_agenda = agendaunit_shop(_healer=healer_text)
+    x2_agenda.add_partyunit(pid=xia_text)
 
     # WHEN
-    filtered_idea = cx2._get_filtered_balancelinks_idea(cx1_swim_idea)
+    filtered_idea = x2_agenda._get_filtered_balancelinks_idea(x1_agenda_swim_idea)
 
     # THEN
     assert len(filtered_idea._balancelinks) == 1
@@ -676,36 +683,40 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balance
 def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     # GIVEN
     healer_text = "Noa"
-    cx1 = agendaunit_shop(_healer=healer_text)
+    x1_agenda = agendaunit_shop(_healer=healer_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
-    cx1.add_partyunit(pid=xia_text)
-    cx1.add_partyunit(pid=zoa_text)
+    x1_agenda.add_partyunit(pid=xia_text)
+    x1_agenda.add_partyunit(pid=zoa_text)
 
     work_text = "work"
-    work_road = f"{cx1._culture_qid},{work_text}"
+    work_road = f"{x1_agenda._culture_qid},{work_text}"
     swim_text = "swim"
-    swim_road = f"{cx1._culture_qid},{swim_text}"
-    cx1.add_idea(ideacore_shop(_label=work_text), pad=cx1._culture_qid)
-    cx1.add_idea(ideacore_shop(_label=swim_text), pad=cx1._culture_qid)
-    cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=xia_text))
-    cx1.edit_idea_attr(road=swim_road, balancelink=balancelink_shop(brand=zoa_text))
-    cx1_swim_idea = cx1.get_idea_kid(swim_road)
-    assert len(cx1_swim_idea._balancelinks) == 2
+    swim_road = f"{x1_agenda._culture_qid},{swim_text}"
+    x1_agenda.add_idea(ideacore_shop(_label=work_text), pad=x1_agenda._culture_qid)
+    x1_agenda.add_idea(ideacore_shop(_label=swim_text), pad=x1_agenda._culture_qid)
+    x1_agenda.edit_idea_attr(
+        road=swim_road, balancelink=balancelink_shop(brand=xia_text)
+    )
+    x1_agenda.edit_idea_attr(
+        road=swim_road, balancelink=balancelink_shop(brand=zoa_text)
+    )
+    x1_agenda_swim_idea = x1_agenda.get_idea_kid(swim_road)
+    assert len(x1_agenda_swim_idea._balancelinks) == 2
 
     # WHEN
-    cx2 = agendaunit_shop(_healer=healer_text)
-    cx2.add_partyunit(pid=xia_text)
-    cx2.add_idea(
-        idea_kid=cx1_swim_idea,
-        pad=cx2._culture_qid,
+    x2_agenda = agendaunit_shop(_healer=healer_text)
+    x2_agenda.add_partyunit(pid=xia_text)
+    x2_agenda.add_idea(
+        idea_kid=x1_agenda_swim_idea,
+        pad=x2_agenda._culture_qid,
         create_missing_ideas_groups=False,
     )
 
     # THEN
-    cx2_swim_idea = cx2.get_idea_kid(swim_road)
-    assert len(cx2_swim_idea._balancelinks) == 1
-    assert list(cx2_swim_idea._balancelinks.keys()) == [xia_text]
+    x2_agenda_swim_idea = x2_agenda.get_idea_kid(swim_road)
+    assert len(x2_agenda_swim_idea._balancelinks) == 1
+    assert list(x2_agenda_swim_idea._balancelinks.keys()) == [xia_text]
 
 
 def test_agenda_add_idea_DoesNotOverwriteGroups():

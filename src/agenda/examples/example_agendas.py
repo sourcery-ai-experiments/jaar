@@ -66,7 +66,10 @@ def agenda_v001_with_large_intent() -> AgendaUnit:
 
 def agenda_v002() -> AgendaUnit:
     return agenda_get_from_json(
-        x_func_open_file(dest_dir=agenda_env(), file_name="example_agenda2.json")
+        x_func_open_file(
+            dest_dir=agenda_env(),
+            file_name="example_agenda2.json",
+        )
     )
 
 

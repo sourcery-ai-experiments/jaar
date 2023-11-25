@@ -1926,7 +1926,7 @@ class AgendaUnit:
                 x_dict[party_pid] = party_obj.get_dict()
         return x_dict
 
-    def groupunit_shops_dict(self):
+    def get_groupunits_from_dict(self):
         x_dict = {}
         if self._groups != None:
             for group_pid, group_obj in self._groups.items():
@@ -1936,31 +1936,15 @@ class AgendaUnit:
     def get_dict(self):
         self.set_agenda_metrics()
         return {
-            "_kids": self._idearoot.get_kids_dict(),
-            "_requiredunits": self._idearoot.get_requiredunits_dict(),
-            "_acptfactunits": self.get_acptfactunits_dict(),
             "_partys": self.get_partys_dict(),
-            "_groups": self.groupunit_shops_dict(),
-            "_balancelinks": self._idearoot.get_balancelinks_dict(),
-            "_assignedunit": self._idearoot.get_assignedunit_dict(),
+            "_groups": self.get_groupunits_from_dict(),
             "_originunit": self._originunit.get_dict(),
             "_weight": self._weight,
             "_healer": self._healer,
             "_culture_qid": self._culture_qid,
-            "_uid": self._idearoot._uid,
-            "_begin": self._idearoot._begin,
-            "_close": self._idearoot._close,
-            "_addin": self._idearoot._addin,
-            "_numor": self._idearoot._numor,
-            "_denom": self._idearoot._denom,
-            "_reest": self._idearoot._reest,
-            "_problem_bool": self._idearoot._problem_bool,
-            "_is_expanded": self._idearoot._is_expanded,
-            "_range_source_road": self._idearoot._range_source_road,
-            "_numeric_road": self._idearoot._numeric_road,
-            "_on_meld_weight_action": self._idearoot._on_meld_weight_action,
             "_max_tree_traverse": self._max_tree_traverse,
             "_auto_output_to_public": self._auto_output_to_public,
+            "_idearoot": self._idearoot.get_dict(),
         }
 
     def get_json(self):
@@ -2251,34 +2235,35 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
 
 
 def set_idearoot_from_agenda_dict(x_agenda: AgendaUnit, agenda_dict: dict):
+    idearoot_dict = agenda_dict.get("_idearoot")
     x_idearoot = x_agenda._idearoot
     x_idearoot.set_idea_label(x_agenda._culture_qid, x_agenda._culture_qid)
-    x_idearoot._weight = get_obj_from_idea_dict(agenda_dict, "_weight")
-    x_idearoot._uid = get_obj_from_idea_dict(agenda_dict, "_uid")
-    x_idearoot._begin = get_obj_from_idea_dict(agenda_dict, "_begin")
-    x_idearoot._close = get_obj_from_idea_dict(agenda_dict, "_close")
-    x_idearoot._numor = get_obj_from_idea_dict(agenda_dict, "_numor")
-    x_idearoot._denom = get_obj_from_idea_dict(agenda_dict, "_denom")
-    x_idearoot._reest = get_obj_from_idea_dict(agenda_dict, "_reest")
+    x_idearoot._weight = get_obj_from_idea_dict(idearoot_dict, "_weight")
+    x_idearoot._uid = get_obj_from_idea_dict(idearoot_dict, "_uid")
+    x_idearoot._begin = get_obj_from_idea_dict(idearoot_dict, "_begin")
+    x_idearoot._close = get_obj_from_idea_dict(idearoot_dict, "_close")
+    x_idearoot._numor = get_obj_from_idea_dict(idearoot_dict, "_numor")
+    x_idearoot._denom = get_obj_from_idea_dict(idearoot_dict, "_denom")
+    x_idearoot._reest = get_obj_from_idea_dict(idearoot_dict, "_reest")
     x_idearoot._range_source_road = get_obj_from_idea_dict(
-        agenda_dict, "_range_source_road"
+        idearoot_dict, "_range_source_road"
     )
-    x_idearoot._numeric_road = get_obj_from_idea_dict(agenda_dict, "_numeric_road")
-    x_idearoot._requiredunits = get_obj_from_idea_dict(agenda_dict, "_requiredunits")
-    x_idearoot._assignedunit = get_obj_from_idea_dict(agenda_dict, "_assignedunit")
-    x_idearoot._acptfactunits = get_obj_from_idea_dict(agenda_dict, "_acptfactunits")
-    x_idearoot._balancelinks = get_obj_from_idea_dict(agenda_dict, "_balancelinks")
-    x_idearoot._is_expanded = get_obj_from_idea_dict(agenda_dict, "_is_expanded")
+    x_idearoot._numeric_road = get_obj_from_idea_dict(idearoot_dict, "_numeric_road")
+    x_idearoot._requiredunits = get_obj_from_idea_dict(idearoot_dict, "_requiredunits")
+    x_idearoot._assignedunit = get_obj_from_idea_dict(idearoot_dict, "_assignedunit")
+    x_idearoot._acptfactunits = get_obj_from_idea_dict(idearoot_dict, "_acptfactunits")
+    x_idearoot._balancelinks = get_obj_from_idea_dict(idearoot_dict, "_balancelinks")
+    x_idearoot._is_expanded = get_obj_from_idea_dict(idearoot_dict, "_is_expanded")
 
-    # if agenda_dict.get("_kids"):
-    set_idearoot_kids_from_dict(x_agenda, agenda_dict)
+    # if idearoot_dict.get("_kids"):
+    set_idearoot_kids_from_dict(x_agenda, idearoot_dict)
 
 
-def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, agenda_dict: dict):
+def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
     to_evaluate_idea_dicts = []
     pad_text = "pad"
     # for every kid dict, set pad in dict, add to to_evaluate_list
-    for x_dict in get_obj_from_idea_dict(agenda_dict, "_kids").values():
+    for x_dict in get_obj_from_idea_dict(idearoot_dict, "_kids").values():
         x_dict[pad_text] = x_agenda._healer
         to_evaluate_idea_dicts.append(x_dict)
 

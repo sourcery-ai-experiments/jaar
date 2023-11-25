@@ -1,4 +1,3 @@
-import contextlib
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.idea import ideacore_shop
 from src.agenda.required_idea import acptfactunit_shop
@@ -44,41 +43,41 @@ def test_agenda_get_dict_ReturnsDictObject():
     x_agenda.set_acptfact(base=time_minute, pick=time_minute, open=0, nigh=1440)
     yao_text = "Yao"
     x_agenda._originunit.set_originlink(yao_text, 1)
+    agenda_weight = 23
+    x_agenda._weight = agenda_weight
 
     # WHEN
-    x_dict = x_agenda.get_dict()
+    agenda_dict = x_agenda.get_dict()
 
     # THEN
-    assert x_dict != None
-    assert str(type(x_dict)) == "<class 'dict'>"
-    assert x_dict["_healer"] == x_agenda._healer
-    assert x_dict["_culture_qid"] == x_agenda._culture_qid
-    assert x_dict["_weight"] == x_agenda._weight
-    assert x_dict["_max_tree_traverse"] == x_agenda._max_tree_traverse
-    assert x_dict["_auto_output_to_public"] == x_agenda._auto_output_to_public
-    assert len(x_dict["_partys"]) == len(x_agenda._partys)
-    assert len(x_dict["_groups"]) == len(x_agenda._groups)
+    assert agenda_dict != None
+    assert str(type(agenda_dict)) == "<class 'dict'>"
+    assert agenda_dict["_healer"] == x_agenda._healer
+    assert agenda_dict["_culture_qid"] == x_agenda._culture_qid
+    assert agenda_dict["_weight"] == x_agenda._weight
+    assert agenda_dict["_weight"] == agenda_weight
+    assert agenda_dict["_max_tree_traverse"] == x_agenda._max_tree_traverse
+    assert agenda_dict["_auto_output_to_public"] == x_agenda._auto_output_to_public
+    assert len(agenda_dict["_partys"]) == len(x_agenda._partys)
+    assert len(agenda_dict["_groups"]) == len(x_agenda._groups)
 
     x_idearoot = x_agenda._idearoot
+    idearoot_dict = agenda_dict["_idearoot"]
     _kids = "_kids"
     _range_source_road = "_range_source_road"
     _numeric_road = "_numeric_road"
     assert x_idearoot._label == x_agenda._culture_qid
-    assert x_dict["_weight"] == x_idearoot._weight
-    assert x_dict["_addin"] == x_idearoot._addin
-    assert x_dict["_numor"] == x_idearoot._numor
-    assert x_dict["_denom"] == x_idearoot._denom
-    assert x_dict["_reest"] == x_idearoot._reest
-    assert x_dict["_problem_bool"] == x_idearoot._problem_bool
-    assert x_dict["_on_meld_weight_action"] == x_idearoot._on_meld_weight_action
-    assert len(x_dict[_kids]) == len(x_idearoot._kids)
+    assert idearoot_dict["_label"] == x_idearoot._label
+    assert idearoot_dict["_weight"] != agenda_weight
+    assert idearoot_dict["_weight"] == x_idearoot._weight
+    assert len(idearoot_dict[_kids]) == len(x_idearoot._kids)
 
     # checking an ideakid._range_source_road attribute
     month_week_text = "month_week"
     month_week_road = f"{x_agenda._culture_qid},{month_week_text}"
     month_week_idea_x = x_agenda.get_idea_kid(road=month_week_road)
     print("checking TlME,month_week...range_source_road equal to...")
-    month_week_special_dict = x_dict[_kids][month_week_text][_range_source_road]
+    month_week_special_dict = idearoot_dict[_kids][month_week_text][_range_source_road]
     assert month_week_special_dict != None
     assert month_week_special_dict == f"{x_agenda._culture_qid},ced_week"
     assert month_week_special_dict == month_week_idea_x._range_source_road
@@ -88,16 +87,16 @@ def test_agenda_get_dict_ReturnsDictObject():
     num1_road = f"{x_agenda._culture_qid},{num1_text}"
     num1_idea_x = x_agenda.get_idea_kid(road=num1_road)
     print(f"checking {num1_road}...numeric_road equal to...")
-    num1_dict_numeric_road = x_dict[_kids][num1_text][_numeric_road]
+    num1_dict_numeric_road = idearoot_dict[_kids][num1_text][_numeric_road]
     assert num1_dict_numeric_road != None
     assert num1_dict_numeric_road == month_week_road
     assert num1_dict_numeric_road == num1_idea_x._numeric_road
 
     originunit_text = "_originunit"
-    day_hour_originunit_dict = x_dict[_kids][day_hour_text][originunit_text]
+    day_hour_originunit_dict = idearoot_dict[_kids][day_hour_text][originunit_text]
     assert day_hour_originunit_dict == day_hour_idea._originunit.get_dict()
     _links = "_links"
-    x_agenda_originlink = x_dict[originunit_text][_links][yao_text]
+    x_agenda_originlink = agenda_dict[originunit_text][_links][yao_text]
     print(f"{x_agenda_originlink=}")
     assert x_agenda_originlink
     assert x_agenda_originlink["pid"] == yao_text
@@ -114,11 +113,12 @@ def test_agenda_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
     x_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=x_agenda._culture_qid)
 
     # WHEN
-    x_dict = x_agenda.get_dict()
+    agenda_dict = x_agenda.get_dict()
+    idearoot_dict = agenda_dict.get("_idearoot")
 
     # THEN
-    assert x_dict["_assignedunit"] == assigned_unit_x.get_dict()
-    assert x_dict["_assignedunit"] == {"_suffgroups": {run_text: run_text}}
+    assert idearoot_dict["_assignedunit"] == assigned_unit_x.get_dict()
+    assert idearoot_dict["_assignedunit"] == {"_suffgroups": {run_text: run_text}}
 
 
 def test_agenda_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
@@ -138,13 +138,14 @@ def test_agenda_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
     x_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=morn_road)
 
     # WHEN
-    x_dict = x_agenda.get_dict()
+    agenda_dict = x_agenda.get_dict()
+    idearoot_dict = agenda_dict.get("_idearoot")
 
     # THEN
     _kids = "_kids"
     _assignedunit = "_assignedunit"
 
-    assigned_dict_x = x_dict[_kids][morn_text][_assignedunit]
+    assigned_dict_x = idearoot_dict[_kids][morn_text][_assignedunit]
     assert assigned_dict_x == assigned_unit_x.get_dict()
     assert assigned_dict_x == {"_suffgroups": {run_text: run_text}}
 
@@ -163,23 +164,19 @@ def test_export_to_JSON_simple_example_works():
 
     assert x_json != None
     assert True == x_is_json(x_json)
-    x_dict = json_loads(x_json)
+    agenda_dict = json_loads(x_json)
 
-    assert x_dict["_healer"] == x_agenda._healer
-    assert x_dict["_culture_qid"] == x_agenda._culture_qid
-    assert x_dict["_weight"] == x_agenda._weight
+    assert agenda_dict["_healer"] == x_agenda._healer
+    assert agenda_dict["_culture_qid"] == x_agenda._culture_qid
+    assert agenda_dict["_weight"] == x_agenda._weight
 
     x_idearoot = x_agenda._idearoot
-    assert x_dict["_addin"] == x_idearoot._addin
-    assert x_dict["_numor"] == x_idearoot._numor
-    assert x_dict["_denom"] == x_idearoot._denom
-    assert x_dict["_reest"] == x_idearoot._reest
-    assert x_dict["_problem_bool"] == x_idearoot._problem_bool
-    assert x_dict["_auto_output_to_public"] == x_agenda._auto_output_to_public
-    assert len(x_dict[_kids]) == len(x_idearoot._kids)
+    idearoot_dict = agenda_dict.get("_idearoot")
+
+    assert len(idearoot_dict[_kids]) == len(x_idearoot._kids)
 
     shave_text = "shave"
-    shave_dict = x_dict[_kids][shave_text]
+    shave_dict = idearoot_dict[_kids][shave_text]
     shave_acptfactunits = shave_dict["_acptfactunits"]
     print(f"{shave_acptfactunits=}")
     assert len(shave_acptfactunits) == 1
@@ -202,25 +199,21 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     x_agenda._originunit.set_originlink(yao_text, 1)
 
     # WHEN
-    x_dict = json_loads(x_agenda.get_json())
+    agenda_dict = json_loads(x_agenda.get_json())
 
     # THEN
     _kids = "_kids"
-    assert x_dict["_healer"] == x_agenda._healer
-    assert x_dict["_culture_qid"] == x_agenda._culture_qid
-    assert x_dict["_weight"] == x_agenda._weight
-    assert x_dict["_max_tree_traverse"] == 2
-    assert x_dict["_max_tree_traverse"] == x_agenda._max_tree_traverse
+    assert agenda_dict["_healer"] == x_agenda._healer
+    assert agenda_dict["_culture_qid"] == x_agenda._culture_qid
+    assert agenda_dict["_weight"] == x_agenda._weight
+    assert agenda_dict["_max_tree_traverse"] == 2
+    assert agenda_dict["_max_tree_traverse"] == x_agenda._max_tree_traverse
 
     x_idearoot = x_agenda._idearoot
-    assert x_dict["_addin"] == x_idearoot._addin
-    assert x_dict["_numor"] == x_idearoot._numor
-    assert x_dict["_denom"] == x_idearoot._denom
-    assert x_dict["_reest"] == x_idearoot._reest
-    assert x_dict["_problem_bool"] == x_idearoot._problem_bool
-    assert len(x_dict[_kids]) == len(x_idearoot._kids)
+    idearoot_dict = agenda_dict.get("_idearoot")
+    assert len(idearoot_dict[_kids]) == len(x_idearoot._kids)
 
-    kids = x_dict[_kids]
+    kids = idearoot_dict[_kids]
     day_min_dict = kids[day_min_text]
     day_min_acptfactunits_dict = day_min_dict["_acptfactunits"]
     day_min_idea_x = x_agenda.get_idea_kid(road=day_min_road)
@@ -235,13 +228,13 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     ulti_road = f"{x_agenda._culture_qid},{ulti_text}"
     cont_idea = x_agenda.get_idea_kid(road=cont_road)
     ulti_idea = x_agenda.get_idea_kid(road=ulti_road)
-    cont_requiredunits_dict = x_dict[_kids][cont_text][_requiredunits]
-    ulti_requiredunits_dict = x_dict[_kids][ulti_text][_requiredunits]
+    cont_requiredunits_dict = idearoot_dict[_kids][cont_text][_requiredunits]
+    ulti_requiredunits_dict = idearoot_dict[_kids][ulti_text][_requiredunits]
     assert len(cont_requiredunits_dict) == len(cont_idea._requiredunits)
     assert len(ulti_requiredunits_dict) == len(ulti_idea._requiredunits)
     originunit_text = "_originunit"
     _links = "_links"
-    assert len(x_dict[originunit_text][_links])
+    assert len(agenda_dict[originunit_text][_links])
 
 
 def test_save_file_CorrectlySavesAgendaJSON(env_dir_setup_cleanup):
