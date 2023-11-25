@@ -531,7 +531,7 @@ def test_idea_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     assert work_dict.get("_kids") != None
 
 
-def test_idea_get_dict_ReturnsDictWith_is_expanded_CorrectlyEmpty():
+def test_idea_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     # GIVEN
     work_idea = ideacore_shop()
     assert work_idea._is_expanded
