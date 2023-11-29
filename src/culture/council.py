@@ -2,7 +2,7 @@ from src.agenda.agenda import (
     get_from_json as agendaunit_get_from_json,
     get_dict_of_agenda_from_dict,
     get_meld_of_agenda_files,
-    PersonPID,
+    PersonID,
     AgendaUnit,
     agendaunit_shop,
     partyunit_shop,
@@ -27,7 +27,7 @@ class InvalidcouncilException(Exception):
     pass
 
 
-class CouncilCID(PersonPID):
+class CouncilCID(PersonID):
     pass
 
 
@@ -140,16 +140,16 @@ class CouncilAdmin:
         file_name = self._agenda_output_file_name
         self._save_agenda_to_path(x_agenda, dest_dir, file_name)
 
-    def open_public_agenda(self, healer: PersonPID) -> str:
+    def open_public_agenda(self, healer: PersonID) -> str:
         file_name_x = f"{healer}.json"
         return x_func_open_file(self._agendas_public_dir, file_name_x)
 
-    def open_depot_agenda(self, healer: PersonPID) -> AgendaUnit:
+    def open_depot_agenda(self, healer: PersonID) -> AgendaUnit:
         file_name_x = f"{healer}.json"
         x_agenda_json = x_func_open_file(self._agendas_depot_dir, file_name_x)
         return agendaunit_get_from_json(x_agenda_json=x_agenda_json)
 
-    def open_ignore_agenda(self, healer: PersonPID) -> AgendaUnit:
+    def open_ignore_agenda(self, healer: PersonID) -> AgendaUnit:
         ignore_file_name = f"{healer}.json"
         agenda_json = x_func_open_file(self._agendas_ignore_dir, ignore_file_name)
         agenda_obj = agendaunit_get_from_json(x_agenda_json=agenda_json)

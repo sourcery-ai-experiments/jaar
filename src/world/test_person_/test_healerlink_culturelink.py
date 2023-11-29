@@ -4,7 +4,7 @@ from src.world.pain import culturelink_shop, healerlink_shop
 def test_healerlink_set_culturelink_CorrectlySetsObj():
     # GIVEN
     yao_text = "yao"
-    yao_healerlink = healerlink_shop(person_pid=yao_text)
+    yao_healerlink = healerlink_shop(person_id=yao_text)
 
     # WHEN
     diet_text = "diet"
@@ -21,7 +21,7 @@ def test_healerlink_set_culturelink_CorrectlySetsObj():
 def test_healerlink_get_cultureunit_CorrectlyGetsObj():
     # GIVEN
     yao_text = "yao"
-    yao_healerlink = healerlink_shop(person_pid=yao_text)
+    yao_healerlink = healerlink_shop(person_id=yao_text)
     diet_text = "diet"
     diet_culturelink = culturelink_shop(qid=diet_text)
     yao_healerlink.set_culturelink(diet_culturelink)
@@ -37,7 +37,7 @@ def test_healerlink_get_cultureunit_CorrectlyGetsObj():
 def test_healerlink_del_cultureunit_CorrectlyDeletesObj():
     # GIVEN
     yao_text = "yao"
-    yao_healerlink = healerlink_shop(person_pid=yao_text)
+    yao_healerlink = healerlink_shop(person_id=yao_text)
     diet_text = "diet"
     diet_culturelink = culturelink_shop(qid=diet_text)
     yao_healerlink.set_culturelink(diet_culturelink)
@@ -56,7 +56,7 @@ def test_healerlink_del_cultureunit_CorrectlyDeletesObj():
 def test_healerlink_set_culturelinks_weight_metrics_SetsCorrectly():
     # GIVEN
     yao_text = "Yao"
-    yao_hl = healerlink_shop(person_pid=yao_text)
+    yao_hl = healerlink_shop(person_id=yao_text)
     yao_hl._manager_importance = 0.25
     fight_text = "fight"
     flee_text = "flee"

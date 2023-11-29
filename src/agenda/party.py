@@ -10,11 +10,11 @@ class InvalidDepotLinkException(Exception):
     pass
 
 
-class PersonPID(str):  # Created to help track the concept
+class PersonID(str):  # Created to help track the concept
     pass
 
 
-class PartyPID(PersonPID):  # Created to help track the concept
+class PartyPID(PersonID):  # Created to help track the concept
     pass
 
 

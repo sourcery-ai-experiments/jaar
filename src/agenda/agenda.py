@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from json import loads as json_loads
 from datetime import datetime
 from src.agenda.party import (
-    PersonPID,
+    PersonID,
     PartyPID,
     PartyUnit,
     PartyLink,
@@ -81,7 +81,7 @@ class AssignmentPartyException(Exception):
 
 @dataclass
 class AgendaUnit:
-    _healer: PersonPID = None
+    _healer: PersonID = None
     _weight: float = None
     _partys: dict[PartyPID:PartyUnit] = None
     _groups: dict[GroupBrand:GroupUnit] = None
@@ -2116,7 +2116,7 @@ class AgendaUnit:
         agenda_x,
         assignor_partys: dict[PartyPID:PartyUnit],
         assignor_pid: PartyPID,
-    ) -> PersonPID:
+    ) -> PersonID:
         self.set_agenda_metrics()
         self._set_assignment_partys(agenda_x, assignor_partys, assignor_pid)
         self._set_assignment_groups(agenda_x)
@@ -2189,7 +2189,7 @@ class AgendaUnit:
 
 
 def agendaunit_shop(
-    _healer: PersonPID = None,
+    _healer: PersonID = None,
     _weight: float = None,
     _auto_output_to_public: bool = None,
 ) -> AgendaUnit:
@@ -2336,7 +2336,7 @@ def get_dict_of_agenda_from_dict(x_dict: dict[str:dict]) -> dict[str:AgendaUnit]
 
 @dataclass
 class MeldeeOrderUnit:
-    healer: PersonPID
+    healer: PersonID
     voice_rank: int
     voice_hx_lowest_rank: int
     file_name: str

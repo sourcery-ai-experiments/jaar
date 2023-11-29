@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 from src.culture.culture import CultureUnit, CultureQID, cultureunit_shop
-from src.world.pain import PainGenus, PainUnit, PersonPID, painunit_shop
+from src.world.pain import PainGenus, PainUnit, PersonID, painunit_shop
 
 
 @dataclass
 class PersonUnit:
-    pid: PersonPID = None
+    pid: PersonID = None
     person_dir: str = None
     _cultures: dict[CultureQID:CultureUnit] = None
     _pains: dict[PainGenus:PainUnit] = None
@@ -66,7 +66,7 @@ class PersonUnit:
         }
 
 
-def personunit_shop(pid: PersonPID, person_dir: str = None) -> PersonUnit:
+def personunit_shop(pid: PersonID, person_dir: str = None) -> PersonUnit:
     if person_dir is None:
         person_dir = ""
     x_person = PersonUnit(pid=pid, person_dir=person_dir)
