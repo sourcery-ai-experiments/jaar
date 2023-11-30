@@ -351,7 +351,8 @@ class CultureUnit:
     def get_councilunit(self, cid: CouncilCID) -> CouncilUnit:
         return None if self._councilunits.get(cid) is None else self._councilunits[cid]
 
-    def set_councilunit_to_culture(self, councilunit: CouncilUnit):
+    def set_councilunit(self, councilunit: CouncilUnit):
+        self.set_councilunits_empty_if_null()
         self._councilunits[councilunit._admin._council_cid] = councilunit
         self.save_councilunit_file(council_cid=councilunit._admin._council_cid)
 
@@ -363,7 +364,7 @@ class CultureUnit:
         council_x = self.get_councilunit(cid=old_cid)
         old_councilunit_dir = council_x._admin._councilunit_dir
         council_x._admin.set_council_cid(new_cid=new_cid)
-        self.set_councilunit_to_culture(council_x)
+        self.set_councilunit(council_x)
         x_func_delete_dir(old_councilunit_dir)
         self.del_councilunit_from_culture(council_cid=old_cid)
 
