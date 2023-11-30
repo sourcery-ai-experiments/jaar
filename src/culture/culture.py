@@ -359,7 +359,6 @@ class CultureUnit:
         return self._councilunits.get(cid)
 
     def set_councilunit(self, councilunit: CouncilUnit):
-        self.set_councilunits_empty_if_null()
         self._councilunits[councilunit._admin._council_cid] = councilunit
         self.save_councilunit_file(council_cid=councilunit._admin._council_cid)
 
@@ -536,6 +535,7 @@ def cultureunit_shop(
         _councilunits=_councilunits,
     )
     culture_x.set_manager_pid(_manager_pid)
+    culture_x.set_councilunits_empty_if_null()
     culture_x.create_dirs_if_null(in_memory_bank=in_memory_bank)
     return culture_x
 

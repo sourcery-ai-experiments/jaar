@@ -28,27 +28,6 @@ def test_culture_set_healer_WorksCorrectly(env_dir_setup_cleanup):
     assert os_path.exists(wx_path)
 
 
-def test_culture_set_councilunit_WorksCorrectlyWhenCultureUnit_councilunits_isNone(
-    env_dir_setup_cleanup,
-):
-    # GIVEN
-    x_qid = get_temp_env_qid()
-    x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
-    bob_text = "old Bob"
-    bob_dir = f"{x_culture.get_councilunits_dir()}/{bob_text}"
-    bob_councilunit = councilunit_shop(
-        bob_text, x_culture.get_object_root_dir(), get_temp_env_qid()
-    )
-    assert x_culture._councilunits is None
-
-    # WHEN
-    x_culture.set_councilunit(bob_councilunit)
-
-    # THEN
-    assert x_culture._councilunits != None
-
-
 def test_culture_change_councilunit_cid_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     x_qid = get_temp_env_qid()

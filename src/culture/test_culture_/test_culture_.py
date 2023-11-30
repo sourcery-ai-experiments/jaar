@@ -227,6 +227,7 @@ def test_cultureunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
     assert os_path.exists(culture_dir)
     assert x_culture._bank_db != None
     assert x_culture._manager_pid == sue_text
+    assert x_culture._councilunits == {}
 
 
 def test_cultureunit_set_manager_pid_CorrectsSetsData(env_dir_setup_cleanup):
