@@ -1,6 +1,7 @@
 from src.culture.culture import cultureunit_shop
 from src.culture.council import councilunit_shop
 from src.culture.examples.culture_env_kit import (
+    get_temp_env_dir,
     get_temp_env_qid,
     env_dir_setup_cleanup,
     get_test_cultures_dir,
@@ -128,10 +129,10 @@ def test_culture_add_councilunit_WorksCorrectly(env_dir_setup_cleanup):
 
     # THEN
     assert x_culture._councilunits != {}
-    print(f"{x_qid=}")
+    print(f"{bob_file_path=}")
     bob_static_councilunit = councilunit_shop(
         pid=bob_text,
-        env_dir=x_culture.get_councilunits_dir(),
+        env_dir=get_temp_env_dir(),
         culture_qid=get_temp_env_qid(),
     )
     bob_gen_councilunit = x_culture.get_councilunit(bob_text)
@@ -140,5 +141,5 @@ def test_culture_add_councilunit_WorksCorrectly(env_dir_setup_cleanup):
     assert bob_gen_councilunit._seed != None
     assert bob_static_councilunit._seed is None
     assert bob_gen_councilunit._seed != bob_static_councilunit._seed
-    assert os_path.exists(bob_dir) == False
-    assert os_path.exists(bob_file_path) == False
+    assert os_path.exists(bob_dir)
+    assert os_path.exists(bob_file_path)

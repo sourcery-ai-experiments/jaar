@@ -340,7 +340,7 @@ class CultureUnit:
 
     def add_councilunit(self, pid: PersonID):
         x_councilunit = councilunit_shop(
-            pid=pid, env_dir=self.get_councilunits_dir(), culture_qid=self.qid
+            pid=pid, env_dir=self.get_object_root_dir(), culture_qid=self.qid
         )
         self.set_councilunit(councilunit=x_councilunit)
 
