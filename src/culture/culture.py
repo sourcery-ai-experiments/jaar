@@ -338,6 +338,12 @@ class CultureUnit:
             ).keys()
         )
 
+    def add_councilunit(self, pid: PersonID):
+        x_councilunit = councilunit_shop(
+            pid=pid, env_dir=self.get_councilunits_dir(), culture_qid=self.qid
+        )
+        self.set_councilunit(councilunit=x_councilunit)
+
     def set_councilunits_empty_if_null(self):
         if self._councilunits is None:
             self._councilunits = {}
@@ -349,7 +355,8 @@ class CultureUnit:
         self._councilunits[ux._admin._council_cid] = ux
 
     def get_councilunit(self, cid: CouncilCID) -> CouncilUnit:
-        return None if self._councilunits.get(cid) is None else self._councilunits[cid]
+        self.set_councilunits_empty_if_null()
+        return self._councilunits.get(cid)
 
     def set_councilunit(self, councilunit: CouncilUnit):
         self.set_councilunits_empty_if_null()

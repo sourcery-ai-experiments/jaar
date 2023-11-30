@@ -109,3 +109,36 @@ def test_culture_del_councilunit_dir_WorksCorrectly(env_dir_setup_cleanup):
     # THEN
     assert os_path.exists(xia_file_path) == False
     assert os_path.exists(xia_dir) == False
+
+
+def test_culture_add_councilunit_WorksCorrectly(env_dir_setup_cleanup):
+    # GIVEN
+    x_qid = get_temp_env_qid()
+    x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
+    x_culture.create_dirs_if_null(in_memory_bank=True)
+    bob_text = "Bob"
+    bob_dir = f"{x_culture.get_councilunits_dir()}/{bob_text}"
+    bob_file_path = f"{bob_dir}/seed_agenda.json"
+    assert os_path.exists(bob_dir) == False
+    assert os_path.exists(bob_file_path) == False
+    assert x_culture.get_councilunit(cid=bob_text) is None
+
+    # WHEN
+    x_culture.add_councilunit(pid=bob_text)
+
+    # THEN
+    assert x_culture._councilunits != {}
+    print(f"{x_qid=}")
+    bob_static_councilunit = councilunit_shop(
+        pid=bob_text,
+        env_dir=x_culture.get_councilunits_dir(),
+        culture_qid=get_temp_env_qid(),
+    )
+    bob_gen_councilunit = x_culture.get_councilunit(bob_text)
+    assert bob_gen_councilunit._admin._env_dir == bob_static_councilunit._admin._env_dir
+    assert bob_gen_councilunit._admin == bob_static_councilunit._admin
+    assert bob_gen_councilunit._seed != None
+    assert bob_static_councilunit._seed is None
+    assert bob_gen_councilunit._seed != bob_static_councilunit._seed
+    assert os_path.exists(bob_dir) == False
+    assert os_path.exists(bob_file_path) == False
