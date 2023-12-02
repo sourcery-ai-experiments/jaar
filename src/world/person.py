@@ -43,6 +43,9 @@ class PersonUnit:
             qid=culture_qid, cultures_dir=cultures_dir, _manager_pid=self.pid
         )
 
+    def cultureunit_exists(self, culture_qid: CultureQID):
+        return self._cultures.get(culture_qid) != None
+
     def get_cultureunit(self, culture_qid: CultureQID) -> CultureUnit:
         return self._cultures.get(culture_qid)
 

@@ -59,6 +59,21 @@ def test_personunit_add_cultureunit_CorrectlyCreatesCultureUnit():
     assert diet_culture._manager_pid == xao_text
 
 
+def test_personunit_cultureunit_exists_ReturnsCorrectObj():
+    # GIVEN
+    xao_text = "Xao"
+    xao_person_dir = f"/persons/{xao_text}"
+    xao_person_obj = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
+    diet_text = "diet"
+    assert xao_person_obj.cultureunit_exists(diet_text) == False
+
+    # WHEN
+    xao_person_obj.add_cultureunit(culture_qid=diet_text)
+
+    # THEN
+    assert xao_person_obj.cultureunit_exists(diet_text)
+
+
 def test_personunit_get_cultureunit_CorrectlyGetsCultureUnit():
     # GIVEN
     xao_text = "Xao"
