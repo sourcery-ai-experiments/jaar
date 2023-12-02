@@ -9,7 +9,7 @@ from src.culture.examples.culture_env_kit import (
 from os import path as os_path
 
 
-def test_culture_set_healer_WorksCorrectly(env_dir_setup_cleanup):
+def test_cultureunit_set_healer_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     x_qid = get_temp_env_qid()
     x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
@@ -28,7 +28,7 @@ def test_culture_set_healer_WorksCorrectly(env_dir_setup_cleanup):
     assert os_path.exists(wx_path)
 
 
-def test_culture_change_councilunit_cid_WorksCorrectly(env_dir_setup_cleanup):
+def test_cultureunit_change_councilunit_cid_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     x_qid = get_temp_env_qid()
     x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
@@ -70,7 +70,7 @@ def test_culture_change_councilunit_cid_WorksCorrectly(env_dir_setup_cleanup):
     assert new_bob_councilunit._admin._councilunit_dir == new_bob_dir
 
 
-def test_culture_del_councilunit_dir_WorksCorrectly(env_dir_setup_cleanup):
+def test_cultureunit_del_councilunit_dir_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     x_qid = get_temp_env_qid()
     x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
@@ -91,7 +91,7 @@ def test_culture_del_councilunit_dir_WorksCorrectly(env_dir_setup_cleanup):
     assert os_path.exists(xia_dir) == False
 
 
-def test_culture_add_councilunit_WorksCorrectly(env_dir_setup_cleanup):
+def test_cultureunit_add_councilunit_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     x_qid = get_temp_env_qid()
     x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
@@ -122,3 +122,18 @@ def test_culture_add_councilunit_WorksCorrectly(env_dir_setup_cleanup):
     assert bob_gen_councilunit._seed != bob_static_councilunit._seed
     assert os_path.exists(bob_dir)
     assert os_path.exists(bob_file_path)
+
+
+def test_cultureunit_councilunit_exists_WorksCorrectly(env_dir_setup_cleanup):
+    # GIVEN
+    x_qid = get_temp_env_qid()
+    x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
+    x_culture.create_dirs_if_null(in_memory_bank=True)
+    bob_text = "Bob"
+
+    # WHEN / THEN
+    assert x_culture.councilunit_exists(cid=bob_text) == False
+
+    # WHEN / THEN
+    x_culture.add_councilunit(pid=bob_text)
+    assert x_culture.councilunit_exists(cid=bob_text)

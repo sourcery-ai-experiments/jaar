@@ -120,7 +120,7 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectly(env_dir_setup_cle
     assert rain_ray_plan3_culturelink._manager_importance == 0.05
 
     # FROM CULTUREUNIT
-    # def set_cultureunits_weight_metrics(self):
+    # def add_cultureunits_weight_metrics(self):
     #     self.set_painunits_weight_metrics()
     #     cultureunit_qids = {
     #         x_cultureunit.qid: 0 for x_cultureunit in self._cultures.values()
@@ -134,7 +134,7 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectly(env_dir_setup_cle
     #                 ] += x_culturelink._manager_importance
 
 
-# def test_personunit_set_cultureunits_weight_metrics_SetsCorrectly(
+# def test_personunit_add_cultureunits_weight_metrics_SetsCorrectly(
 #     env_dir_setup_cleanup,
 # ):
 #     # GIVEN
@@ -177,10 +177,10 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectly(env_dir_setup_cle
 #     xao_personunit.set_painunit(x_bore_painunit)
 #     xao_personunit.set_painunit(x_rain_painunit)
 
-#     xao_personunit.set_cultureunit(plan1_qid)
-#     xao_personunit.set_cultureunit(plan2_qid)
-#     xao_personunit.set_cultureunit(plan3_qid)
-#     xao_personunit.set_cultureunit(plan4_qid)
+#     xao_personunit.add_cultureunit(plan1_qid)
+#     xao_personunit.add_cultureunit(plan2_qid)
+#     xao_personunit.add_cultureunit(plan3_qid)
+#     xao_personunit.add_cultureunit(plan4_qid)
 
 #     plan1_cultureunit = xao_personunit.get_cultureunit(plan1_qid)
 #     plan2_cultureunit = xao_personunit.get_cultureunit(plan2_qid)
@@ -193,7 +193,7 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectly(env_dir_setup_cle
 #     assert plan4_cultureunit._manager_importance is None
 
 #     # WHEN
-#     xao_personunit.set_cultureunits_weight_metrics()
+#     xao_personunit.add_cultureunits_weight_metrics()
 
 #     # THEN
 #     # z_knee_painunit = xao_personunit.get_painunit(knee_genus)

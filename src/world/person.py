@@ -37,7 +37,7 @@ class PersonUnit:
         if self._cultures is None:
             self._cultures = {}
 
-    def set_cultureunit(self, culture_qid: CultureQID):
+    def add_cultureunit(self, culture_qid: CultureQID):
         cultures_dir = f"{self.person_dir}/cultures"
         self._cultures[culture_qid] = cultureunit_shop(
             qid=culture_qid, cultures_dir=cultures_dir, _manager_pid=self.pid

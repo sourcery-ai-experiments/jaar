@@ -298,7 +298,7 @@ class CultureUnit:
         self._bank_db = None
         x_func_delete_dir(dir=self.get_bank_db_path())
 
-    def set_cultureunit_qid(self, qid: str):
+    def add_cultureunit_qid(self, qid: str):
         self.qid = qid
 
     def get_bank_db_path(self):
@@ -347,6 +347,9 @@ class CultureUnit:
     def set_councilunits_empty_if_null(self):
         if self._councilunits is None:
             self._councilunits = {}
+
+    def councilunit_exists(self, cid: CouncilCID):
+        return self._councilunits.get(cid) != None
 
     def create_new_councilunit(self, council_cid: CouncilCID):
         self.set_councilunits_empty_if_null()
