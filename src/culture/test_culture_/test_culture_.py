@@ -1,3 +1,4 @@
+from src.agenda.road import get_road_from_nodes, get_all_road_nodes
 from src.agenda.x_func import delete_dir as x_func_delete_dir
 from os import path as os_path
 from src.culture.culture import CultureUnit, cultureunit_shop
@@ -243,3 +244,27 @@ def test_cultureunit_set_manager_pid_CorrectsSetsData(env_dir_setup_cleanup):
 
     # THEN
     assert x_culture._manager_pid == zuo_text
+
+
+def test_cultureunit_get_road_ReturnsCorrectObj(env_dir_setup_cleanup):
+    # GIVEN
+    x_qid = get_temp_env_qid()
+    x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
+    healer_text = "healer"
+    healer_road_with_woot = f"{x_culture.qid},{healer_text}"
+    healer_road_wo_root = healer_text
+    healer_list_wo_root = get_all_road_nodes(healer_road_wo_root)
+    bloomers_text = "bloomers"
+    bloomers_road_with_root = f"{healer_road_with_woot},{bloomers_text}"
+    bloomers_road_wo_root = f"{healer_road_wo_root},{bloomers_text}"
+    bloomers_list_wo_root = get_all_road_nodes(bloomers_road_wo_root)
+    roses_text = "roses"
+    roses_road_with_root = f"{bloomers_road_with_root},{roses_text}"
+    roses_road_wo_root = f"{bloomers_road_wo_root},{roses_text}"
+    roses_list_wo_root = get_all_road_nodes(roses_road_wo_root)
+
+    # WHEN / THEN
+    assert x_culture.qid == x_culture.build_road()
+    assert healer_road_with_woot == x_culture.build_road(healer_road_wo_root)
+    assert bloomers_road_with_root == x_culture.build_road(bloomers_road_wo_root)
+    assert roses_road_with_root == x_culture.build_road(roses_road_wo_root)

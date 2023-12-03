@@ -51,17 +51,25 @@ class WorldUnit:
     def get_personunit_from_memory(self, person_id: PersonID) -> PersonUnit:
         return self._personunits.get(person_id)
 
-    def add_councilunit_if_empty(
+    def add_cultural_connection(
         self,
         culture_person_id: PersonID,
         culture_qid: CultureQID,
         council_person_id: PersonID,
     ):
+        if self.personunit_exists(culture_person_id) == False:
+            self.add_personunit(culture_person_id)
         x_personunit = self.get_personunit_from_memory(culture_person_id)
+
+        if x_personunit.cultureunit_exists(culture_qid) == False:
+            x_personunit.add_cultureunit(culture_qid)
         x_culture = x_personunit.get_cultureunit(culture_qid)
 
         if self.personunit_exists(council_person_id) == False:
             self.add_personunit(council_person_id)
+
+        if x_culture.councilunit_exists(culture_person_id) == False:
+            x_culture.add_councilunit(culture_person_id)
         if x_culture.councilunit_exists(council_person_id) == False:
             x_culture.add_councilunit(council_person_id)
 

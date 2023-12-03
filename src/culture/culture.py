@@ -1,3 +1,4 @@
+from src.agenda.road import Road, get_road_from_road_and_node
 from src.agenda.agenda import (
     AgendaUnit,
     agendaunit_shop,
@@ -521,6 +522,14 @@ class CultureUnit:
     def get_output_agenda(self, council_cid: CouncilCID) -> AgendaUnit:
         x_councilunit = self.get_councilunit(cid=council_cid)
         return x_councilunit._admin.get_remelded_output_agenda()
+
+    def build_road(self, road_wo_culture_root: Road = None):
+        if road_wo_culture_root is None or road_wo_culture_root == "":
+            return self.qid
+        else:
+            return get_road_from_road_and_node(
+                pad=self.qid, terminus_node=road_wo_culture_root
+            )
 
 
 def cultureunit_shop(

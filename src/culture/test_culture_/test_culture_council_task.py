@@ -1,3 +1,4 @@
+from src.agenda.road import get_road
 from src.culture.culture import cultureunit_shop
 from src.culture.examples.culture_env_kit import (
     get_temp_env_qid,
@@ -21,11 +22,10 @@ def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     amer_council.set_seed(laundry_agenda)
 
     casa_text = "casa"
-    casa_road = f"{x_culture.qid},{casa_text}"
     basket_text = "laundry basket status"
-    basket_road = f"{casa_road},{basket_text}"
+    basket_road = get_road(road_nodes=[x_culture.qid, casa_text, basket_text])
     b_full_text = "full"
-    b_full_road = f"{basket_road},{b_full_text}"
+    b_full_road = get_road(basket_road, b_full_text)
     b_bare_text = "bare"
     b_bare_road = f"{basket_road},{b_bare_text}"
     # set basket status to "bare"
@@ -68,7 +68,9 @@ def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     # print(f"{len(new_cali_agenda._idearoot._acptfactunits.keys())=}")
     assert len(new_cali_agenda.get_intent_items()) == 1
     laundry_task_text = "do_laundry"
-    laundry_task_road = f"{casa_road},{laundry_task_text}"
+    laundry_task_road = get_road(
+        road_nodes=[x_culture.qid, casa_text, laundry_task_text]
+    )
     assert new_cali_agenda.get_intent_items()[0].get_road() == laundry_task_road
 
 

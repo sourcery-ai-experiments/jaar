@@ -6,20 +6,25 @@ class Road(str):  # Created to help track the concept
     pass
 
 
-def change_road(current_road: Road, old_road: Road, new_road: Road):
+class RaodNode(str):
+    def is_node(self) -> bool:
+        return self.find(",") == -1
+
+
+def change_road(current_road: Road, old_road: Road, new_road: Road) -> Road:
     if current_road is None:
         return current_road
     else:
         return current_road.replace(old_road, new_road, 1)
 
 
-def is_sub_road(ref_road: Road, sub_road: Road):
+def is_sub_road(ref_road: Road, sub_road: Road) -> bool:
     if ref_road is None:
         ref_road = ""
     return ref_road.find(sub_road) == 0
 
 
-def find_replace_road_key_dict(dict_x: dict, old_road: Road, new_road: Road):
+def find_replace_road_key_dict(dict_x: dict, old_road: Road, new_road: Road) -> dict:
     keys_to_delete = []
     objs_to_add = []
     for x_key, x_obj in dict_x.items():
@@ -48,19 +53,19 @@ def find_replace_road_key_dict(dict_x: dict, old_road: Road, new_road: Road):
     return dict_x
 
 
-def get_all_road_nodes(road: Road):
+def get_all_road_nodes(road: Road) -> list[RaodNode]:
     return road.split(",")
 
 
-def get_terminus_node_from_road(road: Road):
+def get_terminus_node_from_road(road: Road) -> RaodNode:
     return get_all_road_nodes(road=road)[-1]
 
 
-def get_pad_from_road(road: Road):  # road without terminus node
+def get_pad_from_road(road: Road) -> Road:  # road without terminus node
     return get_road_from_nodes(get_all_road_nodes(road=road)[:-1])
 
 
-def get_road_without_root_node(road: Road):  # road without terminus node
+def get_road_without_root_node(road: Road) -> Road:  # road without terminus node
     if road[:1] == ",":
         raise InvalidRoadException(
             f"Cannot get_road_without_root_node of '{road}' because it has no root node."
@@ -120,5 +125,29 @@ def get_default_culture_root_label() -> str:
     return "A"
 
 
-def get_road_from_nodes(nodes: list) -> Road:
+def get_road_from_nodes(nodes: list[RaodNode]) -> Road:
     return ",".join(nodes)
+
+
+def get_road_from_road_and_node(pad: Road, terminus_node: RaodNode) -> Road:
+    if terminus_node is None:
+        return pad
+    else:
+        return f"{terminus_node}" if pad in {"", None} else f"{pad},{terminus_node}"
+
+
+def get_road(
+    road_begin: Road = None,
+    terminus_node: RaodNode = None,
+    road_nodes: list[RaodNode] = None,
+) -> Road:
+    x_road = ""
+    if road_begin != None and road_nodes is None:
+        x_road = road_begin
+    if road_begin != None and road_nodes != None:
+        x_road = f"{road_begin},{get_road_from_nodes(road_nodes)}"
+    if road_begin is None and road_nodes != None:
+        x_road = get_road_from_nodes(road_nodes)
+    if terminus_node != None:
+        x_road = get_road_from_road_and_node(x_road, terminus_node)
+    return x_road

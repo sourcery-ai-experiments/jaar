@@ -6,7 +6,7 @@ from src.world.person import personunit_shop
 from pytest import raises as pytest_raises
 
 
-def test_worldunit_add_councilunit_if_empty_CorrectlyCreatesObj():
+def test_worldunit_add_cultural_connection_CorrectlyCreatesObj():
     # GIVEN
     dallas_text = "dallas"
     x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
@@ -21,7 +21,7 @@ def test_worldunit_add_councilunit_if_empty_CorrectlyCreatesObj():
     assert x_world.personunit_exists(kari_text) == False
 
     # WHEN
-    x_world.add_councilunit_if_empty(
+    x_world.add_cultural_connection(
         culture_person_id=luca_text, culture_qid=texas_text, council_person_id=kari_text
     )
 

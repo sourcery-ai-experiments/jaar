@@ -12,6 +12,8 @@ from src.agenda.road import (
     get_forefather_roads,
     get_default_culture_root_label as root_label,
     get_road_from_nodes,
+    get_road_from_road_and_node,
+    RaodNode,
 )
 from src.agenda.required_idea import sufffactunit_shop
 from src.agenda.idea import IdeaCore
@@ -293,3 +295,42 @@ def test_road_get_road_from_nodes_WorksCorrectly():
     assert healer_road == get_road_from_nodes(healer_list)
     assert bloomers_road == get_road_from_nodes(bloomers_list)
     assert roses_road == get_road_from_nodes(roses_list)
+
+
+def test_road_get_road_from_road_and_node_WorksCorrectly():
+    # GIVEN
+    healer_text = "healer"
+    healer_road = Road(f"{root_label()},{healer_text}")
+    bloomers_text = "bloomers"
+    bloomers_road = Road(f"{root_label()},{healer_text},{bloomers_text}")
+    roses_text = "roses"
+    roses_road = Road(f"{root_label()},{healer_text},{bloomers_text},{roses_text}")
+
+    # WHEN / THEN
+    assert root_label() == get_road_from_road_and_node(None, root_label())
+    assert root_label() == get_road_from_road_and_node("", root_label())
+    assert healer_road == get_road_from_road_and_node(root_label(), healer_text)
+    assert bloomers_road == get_road_from_road_and_node(healer_road, bloomers_text)
+    assert roses_road == get_road_from_road_and_node(bloomers_road, roses_text)
+    assert roses_road == get_road_from_road_and_node(roses_road, None)
+
+
+def test_raodnode_exists():
+    # GIVEN
+    empty_text = ""
+
+    # WHEN
+    new_obj = RaodNode(empty_text)
+
+    # THEN
+    assert new_obj == empty_text
+
+
+def test_raodnode_is_node_ReturnsCorrectBool():
+    # WHEN / THEN
+    x_raodnode = RaodNode("")
+    assert x_raodnode.is_node()
+
+    # WHEN / THEN
+    x_raodnode = RaodNode("casa,kitchen")
+    assert x_raodnode.is_node() == False
