@@ -1,9 +1,57 @@
 from src.culture.culture import cultureunit_shop
 from src.culture.council import councilunit_shop
-from src.world.world import WorldUnit, worldunit_shop
+from src.world.world import (
+    WorldUnit,
+    worldunit_shop,
+    CultureAddress,
+    cultureaddress_shop,
+)
 from src.world.examples.world_env_kit import get_test_worlds_dir
 from src.world.person import personunit_shop
 from pytest import raises as pytest_raises
+
+
+def test_CultureAddress_exists():
+    # GIVEN
+    luca_text = "Luca"
+    luca_dict = {luca_text: 0}
+    texas_text = "Texas"
+
+    # WHEN
+    texas_address = CultureAddress(person_ids=luca_dict, culture_qid=texas_text)
+
+    # THEN
+    assert texas_address.culture_qid == texas_text
+    assert texas_address.person_ids == luca_dict
+
+
+def test_cultureaddress_shop_ReturnsCorrectObject():
+    # GIVEN
+    luca_text = "Luca"
+    luca_dict = {luca_text: 0}
+    texas_text = "Texas"
+
+    # WHEN
+    texas_address = cultureaddress_shop(person_ids=luca_dict, culture_qid=texas_text)
+
+    # THEN
+    assert texas_address.culture_qid == texas_text
+    assert texas_address.person_ids == luca_dict
+
+
+def test_CultureAddress_add_person_id_CorrectChangesAttribute():
+    # GIVEN
+    texas_text = "Texas"
+    texas_address = cultureaddress_shop(culture_qid=texas_text)
+    assert texas_address.person_ids == {}
+
+    # WHEN
+    luca_text = "Luca"
+    texas_address.add_person_id(luca_text)
+
+    # THEN
+    luca_dict = {luca_text: 0}
+    assert texas_address.person_ids == luca_dict
 
 
 def test_worldunit_add_cultural_connection_CorrectlyCreatesObj():

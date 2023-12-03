@@ -3,6 +3,27 @@ from src.world.person import PersonID, PersonUnit, personunit_shop
 from dataclasses import dataclass
 
 
+@dataclass
+class CultureAddress:
+    culture_qid: CultureQID
+    person_ids: dict[PersonID:int]
+
+    def set_person_ids_empty_if_none(self):
+        if self.person_ids is None:
+            self.person_ids = {}
+
+    def add_person_id(self, person_id: PersonID):
+        self.person_ids[person_id] = 0
+
+
+def cultureaddress_shop(
+    culture_qid: CultureQID, person_ids: dict[PersonID:int] = None
+) -> CultureAddress:
+    x_cultureaddress = CultureAddress(person_ids=person_ids, culture_qid=culture_qid)
+    x_cultureaddress.set_person_ids_empty_if_none()
+    return x_cultureaddress
+
+
 class PersonExistsException(Exception):
     pass
 
@@ -53,25 +74,27 @@ class WorldUnit:
 
     def add_cultural_connection(
         self,
-        culture_person_id: PersonID,
-        culture_qid: CultureQID,
+        cultureaddress: CultureAddress,
         council_person_id: PersonID,
     ):
-        if self.personunit_exists(culture_person_id) == False:
-            self.add_personunit(culture_person_id)
-        x_personunit = self.get_personunit_from_memory(culture_person_id)
+        culture_qid = cultureaddress.culture_qid
 
-        if x_personunit.cultureunit_exists(culture_qid) == False:
-            x_personunit.add_cultureunit(culture_qid)
-        x_culture = x_personunit.get_cultureunit(culture_qid)
+        for culture_person_id in cultureaddress.person_ids.keys():
+            if self.personunit_exists(culture_person_id) == False:
+                self.add_personunit(culture_person_id)
+            x_personunit = self.get_personunit_from_memory(culture_person_id)
 
-        if self.personunit_exists(council_person_id) == False:
-            self.add_personunit(council_person_id)
+            if x_personunit.cultureunit_exists(culture_qid) == False:
+                x_personunit.add_cultureunit(culture_qid)
+            x_culture = x_personunit.get_cultureunit(culture_qid)
 
-        if x_culture.councilunit_exists(culture_person_id) == False:
-            x_culture.add_councilunit(culture_person_id)
-        if x_culture.councilunit_exists(council_person_id) == False:
-            x_culture.add_councilunit(council_person_id)
+            if self.personunit_exists(council_person_id) == False:
+                self.add_personunit(council_person_id)
+
+            if x_culture.councilunit_exists(culture_person_id) == False:
+                x_culture.add_councilunit(culture_person_id)
+            if x_culture.councilunit_exists(council_person_id) == False:
+                x_culture.add_councilunit(council_person_id)
 
 
 def worldunit_shop(mark: WorldMark, worlds_dir: str) -> WorldUnit:
