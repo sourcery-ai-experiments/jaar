@@ -4686,7 +4686,7 @@
                                 "_weight": 1,
                                 "promise": true
                             },
-                            "check protein for week is good": {
+                            "check protein for week is adequate": {
                                 "_acptfactunits": {},
                                 "_addin": null,
                                 "_balancelinks": {
@@ -4701,7 +4701,7 @@
                                 "_denom": null,
                                 "_is_expanded": true,
                                 "_kids": {},
-                                "_label": "check protein for week is good",
+                                "_label": "check protein for week is adequate",
                                 "_numeric_road": null,
                                 "_numor": null,
                                 "_on_meld_weight_action": "default",
