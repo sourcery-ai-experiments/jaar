@@ -14,6 +14,8 @@ from src.agenda.road import (
     get_road_from_nodes,
     get_road_from_road_and_node,
     RaodNode,
+    get_diff_road,
+    get_road,
 )
 from src.agenda.required_idea import sufffactunit_shop
 from src.agenda.idea import IdeaCore
@@ -26,11 +28,12 @@ def test_road_exists():
 
 
 def test_road_is_sub_road_correctlyReturnsBool():
-    healer = "healer"
+    healer_text = "healer"
+    healer_road = f"{root_label()},{healer_text}"
     bloomers_text = "bloomers"
-    bloomers_road = f"{root_label()},{healer},{bloomers_text}"
+    bloomers_road = f"{healer_road},{bloomers_text}"
     roses_text = "roses"
-    roses_road = f"{root_label()},{healer},{bloomers_text},{roses_text}"
+    roses_road = f"{bloomers_road},{roses_text}"
 
     assert is_sub_road(bloomers_road, bloomers_road)
     assert is_sub_road(roses_road, bloomers_road)
@@ -49,14 +52,15 @@ def test_road_road_validate_correctlyReturnsRoad():
 
 
 def test_road_change_road_correctlyRoad():
-    healer = "healer"
+    healer_text = "healer"
+    healer_road = Road(f"{root_label()},{healer_text}")
     bloomers_text = "bloomers"
-    bloomers_road = Road(f"{root_label()},{healer},{bloomers_text}")
+    bloomers_road = Road(f"{healer_road},{bloomers_text}")
     plants_text = "plants"
-    plants_road = Road(f"{root_label()},{healer},{plants_text}")
+    plants_road = Road(f"{healer_road},{plants_text}")
     roses_text = "roses"
-    old_roses_road = Road(f"{root_label()},{healer},{bloomers_text},{roses_text}")
-    new_roses_road = Road(f"{root_label()},{healer},{plants_text},{roses_text}")
+    old_roses_road = Road(f"{healer_road},{bloomers_text},{roses_text}")
+    new_roses_road = Road(f"{healer_road},{plants_text},{roses_text}")
     # taff_text = "taff"
     # new_roses_road = Road(f"{root_label()},{healer},{bloomers_text},{taff_text}")
 
@@ -92,9 +96,9 @@ def test_road_get_terminus_node_from_road_works():
     healer_text = "healer"
     healer_road = Road(f"{root_label()},{healer_text}")
     bloomers_text = "bloomers"
-    bloomers_road = Road(f"{root_label()},{healer_text},{bloomers_text}")
+    bloomers_road = Road(f"{healer_road},{bloomers_text}")
     roses_text = "roses"
-    roses_road = Road(f"{root_label()},{healer_text},{bloomers_text},{roses_text}")
+    roses_road = Road(f"{bloomers_road},{bloomers_text},{roses_text}")
 
     # WHEN/THENs
     assert get_terminus_node_from_road(road=root_label()) == root_label()
@@ -108,9 +112,9 @@ def test_road_get_pad_from_road_works():
     healer_text = "healer"
     healer_road = Road(f"{root_label()},{healer_text}")
     bloomers_text = "bloomers"
-    bloomers_road = Road(f"{root_label()},{healer_text},{bloomers_text}")
+    bloomers_road = Road(f"{healer_road},{bloomers_text}")
     roses_text = "roses"
-    roses_road = Road(f"{root_label()},{healer_text},{bloomers_text},{roses_text}")
+    roses_road = Road(f"{bloomers_road},{roses_text}")
 
     # WHEN/THENs
     assert get_pad_from_road(road=root_label()) == ""
@@ -334,3 +338,22 @@ def test_raodnode_is_node_ReturnsCorrectBool():
     # WHEN / THEN
     x_raodnode = RaodNode("casa,kitchen")
     assert x_raodnode.is_node() == False
+
+
+def test_get_diff_road_ReturnsCorrectObj():
+    # GIVEN
+    healer_text = "healer"
+    healer_road = Road(f"{root_label()},{healer_text}")
+    bloomers_text = "bloomers"
+    bloomers_road = Road(f"{healer_road},{bloomers_text}")
+    roses_text = "roses"
+    roses_road = Road(f"{bloomers_road},{roses_text}")
+
+    # WHEN / THEN
+    print(f"{healer_road=}")
+    print(f"{bloomers_road=}")
+    assert get_diff_road(bloomers_road, healer_road) == bloomers_text
+    assert get_diff_road(roses_road, bloomers_road) == roses_text
+    bloomers_rose_road = get_road(bloomers_text, roses_text)
+    print(f"{bloomers_rose_road=}")
+    assert get_diff_road(roses_road, healer_road) == bloomers_rose_road

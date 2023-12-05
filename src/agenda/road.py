@@ -151,3 +151,8 @@ def get_road(
     if terminus_node != None:
         x_road = get_road_from_road_and_node(x_road, terminus_node)
     return x_road
+
+
+def get_diff_road(x_road: Road, sub_road: Road):
+    sub_road = f"{sub_road},"
+    return x_road.replace(sub_road, "")

@@ -168,16 +168,16 @@ def test_PartyUnit_del_depotlink_type_CorrectlySetsAttributeToNone():
 
 def test_PartyUnit_set_depotlink_type_raisesErrorIfByTypeIsEntered():
     # GIVEN
-    unsatisfactory_type_text = "unsatisfactory"
+    unacceptable_type_text = "unacceptable"
     bob_pid = "bob"
     bob_party = partyunit_shop(pid=bob_pid)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        bob_party.set_depotlink_type(depotlink_type=unsatisfactory_type_text)
+        bob_party.set_depotlink_type(depotlink_type=unacceptable_type_text)
     assert (
         str(excinfo.value)
-        == f"PartyUnit '{bob_party.pid}' cannot have type '{unsatisfactory_type_text}'."
+        == f"PartyUnit '{bob_party.pid}' cannot have type '{unacceptable_type_text}'."
     )
 
 
