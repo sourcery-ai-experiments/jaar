@@ -1,13 +1,11 @@
 from src.agenda.road import get_road
-from src.culture.culture import cultureunit_shop
-from src.culture.council import councilunit_shop
-from src.world.world import (
-    worldunit_shop,
+from src.world.concern import (
     CultureAddress,
     cultureaddress_shop,
     create_cultureaddress,
     ConcernUnit,
     concernunit_shop,
+    create_concernunit,
 )
 from src.world.examples.world_env_kit import get_test_worlds_dir
 from src.world.person import personunit_shop
@@ -71,29 +69,6 @@ def test_create_cultureaddress_ReturnsCorrectObj():
     assert texas_address.person_ids == luca_dict
 
 
-def test_worldunit_add_cultural_connection_CorrectlyCreatesObj():
-    # GIVEN
-    dallas_text = "dallas"
-    x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
-    luca_text = "Luca"
-    x_world.add_personunit(luca_text)
-    luca_person = x_world.get_personunit_from_memory(luca_text)
-    texas_text = "Texas"
-    luca_person.add_cultureunit(texas_text)
-    texas_culture = luca_person.get_cultureunit(texas_text)
-    kari_text = "kari"
-    texas_cultureaddress = create_cultureaddress(luca_text, texas_text)
-    assert texas_culture._councilunits.get(kari_text) is None
-    assert x_world.personunit_exists(kari_text) == False
-
-    # WHEN
-    x_world.add_cultural_connection(texas_cultureaddress, kari_text)
-
-    # THEN
-    assert x_world.personunit_exists(kari_text)
-    assert texas_culture._councilunits.get(kari_text) != None
-
-
 def test_ConcernUnit_exists():
     # GIVEN
     texas_text = "Texas"
@@ -108,7 +83,7 @@ def test_ConcernUnit_exists():
     assert farm_concernunit._concern_good is None
     assert farm_concernunit._concern_bad is None
     assert farm_concernunit._action_subject is None
-    assert farm_concernunit._action_postive is None
+    assert farm_concernunit._action_positive is None
     assert farm_concernunit._action_negative is None
     assert farm_concernunit.cultureaddress == texas_cultureaddress
 
@@ -122,7 +97,7 @@ def test_concernunit_shop_ReturnsCorrectObj():
     food_good = get_road(food_subject, "good food")
     food_bad = get_road(food_subject, "bad food")
     farm_subject = get_road(texas_cultureaddress.culture_qid, "farm")
-    farm_postive = get_road(farm_subject, "farm well")
+    farm_positive = get_road(farm_subject, "farm well")
     farm_negative = get_road(farm_subject, "farm poorly")
 
     # WHEN
@@ -132,7 +107,7 @@ def test_concernunit_shop_ReturnsCorrectObj():
         concern_good=food_good,
         concern_bad=food_bad,
         action_subject=farm_subject,
-        action_postive=farm_postive,
+        action_positive=farm_positive,
         action_negative=farm_negative,
     )
 
@@ -141,7 +116,7 @@ def test_concernunit_shop_ReturnsCorrectObj():
     assert farm_concernunit._concern_good == food_good
     assert farm_concernunit._concern_bad == food_bad
     assert farm_concernunit._action_subject == farm_subject
-    assert farm_concernunit._action_postive == farm_postive
+    assert farm_concernunit._action_positive == farm_positive
     assert farm_concernunit._action_negative == farm_negative
     assert farm_concernunit.cultureaddress == texas_cultureaddress
 
@@ -155,7 +130,7 @@ def test_ConcernUnit_set_good_SetsAttributesCorrectly():
     food_good = get_road(food_subject, "good food")
     food_bad = get_road(food_subject, "bad food")
     farm_subject = get_road(texas_cultureaddress.culture_qid, "farm")
-    farm_postive = get_road(farm_subject, "farm well")
+    farm_positive = get_road(farm_subject, "farm well")
     farm_negative = get_road(farm_subject, "farm poorly")
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
@@ -163,7 +138,7 @@ def test_ConcernUnit_set_good_SetsAttributesCorrectly():
         concern_good=food_good,
         concern_bad=food_bad,
         action_subject=farm_subject,
-        action_postive=farm_postive,
+        action_positive=farm_positive,
         action_negative=farm_negative,
     )
 
@@ -189,7 +164,7 @@ def test_ConcernUnit_set_good_RaisesGoodBadErrorCorrectly():
     food_good = get_road(food_subject, "good food")
     food_bad = get_road(food_subject, "bad food")
     farm_subject = get_road(texas_cultureaddress.culture_qid, "farm")
-    farm_postive = get_road(farm_subject, "farm well")
+    farm_positive = get_road(farm_subject, "farm well")
     farm_negative = get_road(farm_subject, "farm poorly")
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
@@ -197,7 +172,7 @@ def test_ConcernUnit_set_good_RaisesGoodBadErrorCorrectly():
         concern_good=food_good,
         concern_bad=food_bad,
         action_subject=farm_subject,
-        action_postive=farm_postive,
+        action_positive=farm_positive,
         action_negative=farm_negative,
     )
 
@@ -225,7 +200,7 @@ def test_ConcernUnit_set_good_RaisesGoodBadErrorCorrectly():
     )
 
 
-def test_ConcernUnit_set_good_RaisesSubjectErrorCorrectly():
+def test_ConcernUnit_set_good_EmptySubjectRaisesErrorCorrectly():
     # GIVEN
     texas_text = "Texas"
     luca_text = "Luca"
@@ -234,7 +209,7 @@ def test_ConcernUnit_set_good_RaisesSubjectErrorCorrectly():
     food_good = get_road(food_subject, "good food")
     food_bad = get_road(food_subject, "bad food")
     farm_subject = get_road(texas_cultureaddress.culture_qid, "farm")
-    farm_postive = get_road(farm_subject, "farm well")
+    farm_positive = get_road(farm_subject, "farm well")
     farm_negative = get_road(farm_subject, "farm poorly")
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
@@ -242,7 +217,39 @@ def test_ConcernUnit_set_good_RaisesSubjectErrorCorrectly():
         concern_good=food_good,
         concern_bad=food_bad,
         action_subject=farm_subject,
-        action_postive=farm_postive,
+        action_positive=farm_positive,
+        action_negative=farm_negative,
+    )
+
+    environ_road = get_road(texas_cultureaddress.culture_qid, "")
+
+    # WHEN / THEN
+    with pytest_raises(Exception) as excinfo:
+        farm_concernunit.set_good(environ_road, food_good, food_bad)
+    assert (
+        str(excinfo.value)
+        == f"ConcernUnit subject level 1 cannot be empty. ({environ_road})"
+    )
+
+
+def test_ConcernUnit_set_good_NotCultureRootRaisesSubjectErrorCorrectly():
+    # GIVEN
+    texas_text = "Texas"
+    luca_text = "Luca"
+    texas_cultureaddress = create_cultureaddress(luca_text, texas_text)
+    food_subject = get_road(texas_cultureaddress.culture_qid, "food")
+    food_good = get_road(food_subject, "good food")
+    food_bad = get_road(food_subject, "bad food")
+    farm_subject = get_road(texas_cultureaddress.culture_qid, "farm")
+    farm_positive = get_road(farm_subject, "farm well")
+    farm_negative = get_road(farm_subject, "farm poorly")
+    farm_concernunit = concernunit_shop(
+        texas_cultureaddress,
+        concern_subject=food_subject,
+        concern_good=food_good,
+        concern_bad=food_bad,
+        action_subject=farm_subject,
+        action_positive=farm_positive,
         action_negative=farm_negative,
     )
 
@@ -261,6 +268,40 @@ def test_ConcernUnit_set_good_RaisesSubjectErrorCorrectly():
     )
 
 
+def test_ConcernUnit_set_good_RaisesDouble_culture_qid_SubjectErrorCorrectly():
+    # GIVEN
+    texas_text = "Texas"
+    luca_text = "Luca"
+    texas_cultureaddress = create_cultureaddress(luca_text, texas_text)
+    food_subject = get_road(texas_cultureaddress.culture_qid, "food")
+    food_good = get_road(food_subject, "good food")
+    food_bad = get_road(food_subject, "bad food")
+    farm_subject = get_road(texas_cultureaddress.culture_qid, "farm")
+    farm_positive = get_road(farm_subject, "farm well")
+    farm_negative = get_road(farm_subject, "farm poorly")
+    farm_concernunit = concernunit_shop(
+        texas_cultureaddress,
+        concern_subject=food_subject,
+        concern_good=food_good,
+        concern_bad=food_bad,
+        action_subject=farm_subject,
+        action_positive=farm_positive,
+        action_negative=farm_negative,
+    )
+
+    double_culture_qid = get_road(
+        texas_cultureaddress.culture_qid, texas_cultureaddress.culture_qid
+    )
+
+    # WHEN / THEN
+    with pytest_raises(Exception) as excinfo:
+        farm_concernunit.set_good(double_culture_qid, farm_positive, farm_negative)
+    assert (
+        str(excinfo.value)
+        == f"ConcernUnit setting concern_subject '{double_culture_qid}' failed because first child node cannot be culture_qid as bug asumption check."
+    )
+
+
 def test_ConcernUnit_set_action_SetsAttributesCorrectly():
     # GIVEN
     texas_text = "Texas"
@@ -270,7 +311,7 @@ def test_ConcernUnit_set_action_SetsAttributesCorrectly():
     food_good = get_road(food_subject, "good food")
     food_bad = get_road(food_subject, "bad food")
     farm_subject = get_road(texas_cultureaddress.culture_qid, "farm")
-    farm_postive = get_road(farm_subject, "farm well")
+    farm_positive = get_road(farm_subject, "farm well")
     farm_negative = get_road(farm_subject, "farm poorly")
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
@@ -278,7 +319,7 @@ def test_ConcernUnit_set_action_SetsAttributesCorrectly():
         concern_good=food_good,
         concern_bad=food_bad,
         action_subject=farm_subject,
-        action_postive=farm_postive,
+        action_positive=farm_positive,
         action_negative=farm_negative,
     )
 
@@ -291,7 +332,7 @@ def test_ConcernUnit_set_action_SetsAttributesCorrectly():
 
     # THEN
     assert farm_concernunit._action_subject == cook_road
-    assert farm_concernunit._action_postive == safe_road
+    assert farm_concernunit._action_positive == safe_road
     assert farm_concernunit._action_negative == unsafe_road
 
 
@@ -304,7 +345,7 @@ def test_ConcernUnit_set_action_RaisesErrorCorrectly():
     food_good = get_road(food_subject, "good food")
     food_bad = get_road(food_subject, "bad food")
     farm_subject = get_road(texas_cultureaddress.culture_qid, "farm")
-    farm_postive = get_road(farm_subject, "farm well")
+    farm_positive = get_road(farm_subject, "farm well")
     farm_negative = get_road(farm_subject, "farm poorly")
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
@@ -312,7 +353,7 @@ def test_ConcernUnit_set_action_RaisesErrorCorrectly():
         concern_good=food_good,
         concern_bad=food_bad,
         action_subject=farm_subject,
-        action_postive=farm_postive,
+        action_positive=farm_positive,
         action_negative=farm_negative,
     )
 
@@ -338,3 +379,43 @@ def test_ConcernUnit_set_action_RaisesErrorCorrectly():
         str(excinfo.value)
         == f"ConcernUnit setting action_positive '{error_safe_road}' failed because subject road '{cook_road}' is not subroad"
     )
+
+
+def test_create_concernunit_CorrectlyCreatesObj():
+    # GIVEN
+    texas_text = "Texas"
+    luca_text = "Luca"
+    texas_cultureaddress = create_cultureaddress(luca_text, texas_text)
+    food_text = "food"
+    good_text = "good food"
+    bad_text = "bad food"
+    farm_text = "farm"
+    well_text = "farm well"
+    poor_text = "farm poorly"
+
+    # WHEN
+    farm_concernunit = create_concernunit(
+        cultureaddress=texas_cultureaddress,
+        concern=food_text,
+        good=good_text,
+        bad=bad_text,
+        action=farm_text,
+        positive=well_text,
+        negative=poor_text,
+    )
+
+    # THEN
+    assert farm_concernunit.cultureaddress == texas_cultureaddress
+    with_root_food_subject = get_road(texas_cultureaddress.culture_qid, food_text)
+    with_root_food_good = get_road(with_root_food_subject, good_text)
+    with_root_food_bad = get_road(with_root_food_subject, bad_text)
+    assert farm_concernunit._concern_subject == with_root_food_subject
+    assert farm_concernunit._concern_good == with_root_food_good
+    assert farm_concernunit._concern_bad == with_root_food_bad
+
+    with_root_farm_subject = get_road(texas_cultureaddress.culture_qid, farm_text)
+    with_root_farm_positive = get_road(with_root_farm_subject, well_text)
+    with_root_farm_negative = get_road(with_root_farm_subject, poor_text)
+    assert farm_concernunit._action_subject == with_root_farm_subject
+    assert farm_concernunit._action_positive == with_root_farm_positive
+    assert farm_concernunit._action_negative == with_root_farm_negative
