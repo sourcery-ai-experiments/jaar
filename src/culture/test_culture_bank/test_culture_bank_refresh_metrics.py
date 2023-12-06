@@ -1,3 +1,4 @@
+from src.agenda.road import get_road
 from src.agenda.agenda import (
     agendaunit_shop,
     ideacore_shop,
@@ -232,12 +233,12 @@ def test_culture_set_agenda_bank_attrs_CorrectlyPopulatesAgenda_Groupunit_Partyl
     x_culture.create_dirs_if_null(in_memory_bank=True)
 
     # create 4 agendas, 1 with group "swimming expert" linked to 1 party
-    # two others have idea f"{root_label()},sports,swimming"
+    # two others have idea get_road(root_label()},sports,swimming"
     # run set_bank_metrics
     # assert
     # _partylinks_set_by_culture_road
     # assert group "swimming expert" has 1 party
-    # change groupunit "swimming expert" _partylinks_set_by_culture_road ==  f"{root_label()}sports,swimmer"
+    # change groupunit "swimming expert" _partylinks_set_by_culture_road ==  get_road(root_label()}sports,swimmer"
     # run set_bank_metrics
     # assert group "swimming expert" has 2 different party
 
@@ -253,9 +254,9 @@ def test_culture_set_agenda_bank_attrs_CorrectlyPopulatesAgenda_Groupunit_Partyl
 
     swim_text = "swimming"
     sports_text = "sports"
-    sal_sports_road = f"{x_culture.qid},{sports_text}"
-    bob_sports_road = f"{x_culture.qid},{sports_text}"
-    tom_sports_road = f"{x_culture.qid},{sports_text}"
+    sal_sports_road = get_road(x_culture.qid, sports_text)
+    bob_sports_road = get_road(x_culture.qid, sports_text)
+    tom_sports_road = get_road(x_culture.qid, sports_text)
 
     sal_agenda.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=sal_sports_road)
     bob_agenda.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=bob_sports_road)
@@ -279,8 +280,8 @@ def test_culture_set_agenda_bank_attrs_CorrectlyPopulatesAgenda_Groupunit_Partyl
     assert len(e1_sal_agenda._groups.get(swim_group_text)._partys) == 1
 
     # WHEN
-    # change groupunit "swimming expert" _partylinks_set_by_culture_road ==  f"{root_label()},sports,swimmer"
-    sal_swim_road = f"{sal_sports_road},{swim_text}"
+    # change groupunit "swimming expert" _partylinks_set_by_culture_road ==  get_road(root_label()},sports,swimmer"
+    sal_swim_road = get_road(sal_sports_road, swim_text)
     swim_group_unit.set_attr(_partylinks_set_by_culture_road=sal_swim_road)
     sal_agenda.set_groupunit(groupunit=swim_group_unit)
     x_culture.save_public_agenda(x_agenda=sal_agenda)
@@ -303,7 +304,8 @@ def test_culture_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
         assert get_idea_catalog_table_count(bank_conn, bob_text) == 0
 
     # WHEN
-    water_road = f"{get_temp_env_qid()},elements,water"
+    element_road = get_road(get_temp_env_qid(), "elements")
+    water_road = get_road(element_road, "water")
     water_idea_catalog = IdeaCatalog(agenda_healer=bob_text, idea_road=water_road)
     water_insert_sqlstr = get_idea_catalog_table_insert_sqlstr(water_idea_catalog)
     with x_culture.get_bank_conn() as bank_conn:
@@ -376,11 +378,12 @@ def test_culture_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup)
 
     # WHEN / THEN
     assert len(get_idea_catalog_dict(x_culture.get_bank_conn())) == 20
-    b_road = f"{get_temp_env_qid()},B"
+    b_road = get_road(get_temp_env_qid(), "B")
     assert len(get_idea_catalog_dict(x_culture.get_bank_conn(), b_road)) == 3
-    ce_road = f"{get_temp_env_qid()},C,E"
+    c_road = get_road(get_temp_env_qid(), "C")
+    ce_road = get_road(c_road, "E")
     assert len(get_idea_catalog_dict(x_culture.get_bank_conn(), ce_road)) == 2
-    ex_road = f"{get_temp_env_qid()}"
+    ex_road = get_road(get_temp_env_qid())
     assert len(get_idea_catalog_dict(x_culture.get_bank_conn(), ex_road)) == 4
 
 
@@ -396,10 +399,11 @@ def test_culture_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTabl
         assert get_acptfact_catalog_table_count(bank_conn, bob_text) == 0
 
     # WHEN
+    weather_road = get_road(get_temp_env_qid(), "weather")
     weather_rain = AcptFactCatalog(
         agenda_healer=bob_text,
-        base=f"{get_temp_env_qid()},weather",
-        pick=f"{get_temp_env_qid()},weather,rain",
+        base=weather_road,
+        pick=get_road(weather_road, "rain"),
     )
     water_insert_sqlstr = get_acptfact_catalog_table_insert_sqlstr(weather_rain)
     with x_culture.get_bank_conn() as bank_conn:
@@ -428,11 +432,11 @@ def test_refresh_bank_public_agendas_data_Populates_acptfact_catalog_table(
     tim_agenda.set_healer(new_healer=tim_text)
     sal_agenda.set_healer(new_healer=sal_text)
     c_text = "C"
-    c_road = f"{tim_agenda._healer},{c_text}"
+    c_road = get_road(tim_agenda._healer, c_text)
     f_text = "F"
-    f_road = f"{c_road},{f_text}"
+    f_road = get_road(c_road, f_text)
     b_text = "B"
-    b_road = f"{tim_agenda._healer},{b_text}"
+    b_road = get_road(tim_agenda._healer, b_text)
     # for idea_x in tim_agenda._idea_dict.values():
     #     print(f"{f_road=} {idea_x.get_road()=}")
     tim_agenda.set_acptfact(base=c_road, pick=f_road)
@@ -441,9 +445,9 @@ def test_refresh_bank_public_agendas_data_Populates_acptfact_catalog_table(
     bob_agenda.set_acptfact(base=b_road, pick=b_road)
 
     casa_text = "casa"
-    casa_road = f"{sal_agenda._healer},{casa_text}"
+    casa_road = get_road(sal_agenda._healer, casa_text)
     cookery_text = "clean cookery"
-    cookery_road = f"{casa_road},{cookery_text}"
+    cookery_road = get_road(casa_road, cookery_text)
     sal_agenda.set_acptfact(base=cookery_road, pick=cookery_road)
 
     x_culture.save_public_agenda(x_agenda=bob_agenda)
@@ -483,7 +487,7 @@ def test_culture_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTab
     bob_group_x = GroupUnitCatalog(
         agenda_healer=bob_text,
         groupunit_brand="US Dollar",
-        partylinks_set_by_culture_road=f"{get_temp_env_qid()},USA",
+        partylinks_set_by_culture_road=get_road(get_temp_env_qid(), "USA"),
     )
     bob_group_sqlstr = get_groupunit_catalog_table_insert_sqlstr(bob_group_x)
     with x_culture.get_bank_conn() as bank_conn:

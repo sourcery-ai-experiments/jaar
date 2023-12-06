@@ -141,7 +141,11 @@ def get_road_from_road_and_node(pad: Road, terminus_node: RaodNode) -> Road:
     if terminus_node is None:
         return pad
     else:
-        return f"{terminus_node}" if pad in {"", None} else f"{pad},{terminus_node}"
+        return (
+            terminus_node
+            if pad in {"", None}
+            else f"{pad}{get_node_separator()}{terminus_node}"
+        )
 
 
 def get_road(

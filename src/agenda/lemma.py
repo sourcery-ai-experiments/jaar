@@ -1,3 +1,4 @@
+from src.agenda.road import get_road
 from dataclasses import dataclass
 from src.agenda.required_idea import AcptFactUnit, Road, acptfactunit_shop
 from src.agenda.idea import IdeaKid
@@ -151,7 +152,7 @@ class Lemmas:
         src_nigh = src_acptfact.nigh
         src_idea_begin = src_idea._begin
         src_idea_close = src_idea._close
-        idea_road = f"{idea_x._pad},{idea_x._label}"
+        idea_road = get_road(idea_x._pad, idea_x._label)
 
         acptfact_open = None
         acptfact_nigh = None
@@ -218,7 +219,7 @@ class Lemmas:
         new_acptfact = self._create_new_acptfact(
             idea_x=idea_x, src_acptfact=src_acptfact, src_idea=src_idea
         )
-        road_x = f"{idea_x._pad},{idea_x._label}"
+        road_x = get_road(idea_x._pad, idea_x._label)
         if self.lemmas.get(road_x) is None:
             self.lemmas[road_x] = Lemma(
                 src_acptfact=src_acptfact,

@@ -89,13 +89,13 @@ def test_culture_council_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     beto_council.set_seed(laundry_agenda)
 
     casa_text = "casa"
-    casa_road = f"{x_culture.qid},{casa_text}"
+    casa_road = get_road(x_culture.qid, casa_text)
     basket_text = "laundry basket status"
-    basket_road = f"{casa_road},{basket_text}"
+    basket_road = get_road(casa_road, basket_text)
     b_full_text = "full"
-    b_full_road = f"{basket_road},{b_full_text}"
+    b_full_road = get_road(basket_road, b_full_text)
     b_bare_text = "bare"
-    b_bare_road = f"{basket_road},{b_bare_text}"
+    b_bare_road = get_road(basket_road, b_bare_text)
 
     # amer public laundry acptfact as "full"
     amer_seed_x = amer_council.get_seed().set_acptfact(basket_road, b_full_road)

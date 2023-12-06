@@ -1,3 +1,4 @@
+from src.agenda.road import get_road
 from src.culture.council import councilunit_shop
 from src.culture.examples.example_councils import (
     get_agenda_assignment_laundry_example1,
@@ -35,21 +36,21 @@ def test_healer_save_agenda_to_depot_assignment_link_CorrectlyCreatesAssignmentF
     assert len(output_agenda._idea_dict.keys()) == 9
 
     casa_text = "casa"
-    casa_road = f"{get_temp_culture_qid()},{casa_text}"
+    casa_road = get_road(get_temp_culture_qid(), casa_text)
     basket_text = "laundry basket status"
-    basket_road = f"{casa_road},{basket_text}"
+    basket_road = get_road(casa_road, basket_text)
     b_full_text = "full"
-    b_full_road = f"{basket_road},{b_full_text}"
+    b_full_road = get_road(basket_road, b_full_text)
     b_smel_text = "smelly"
-    b_smel_road = f"{basket_road},{b_smel_text}"
+    b_smel_road = get_road(basket_road, b_smel_text)
     b_bare_text = "bare"
-    b_bare_road = f"{basket_road},{b_bare_text}"
+    b_bare_road = get_road(basket_road, b_bare_text)
     b_fine_text = "fine"
-    b_fine_road = f"{basket_road},{b_fine_text}"
+    b_fine_road = get_road(basket_road, b_fine_text)
     b_half_text = "half full"
-    b_half_road = f"{basket_road},{b_half_text}"
+    b_half_road = get_road(basket_road, b_half_text)
     laundry_task_text = "do_laundry"
-    laundry_task_road = f"{casa_road},{laundry_task_text}"
+    laundry_task_road = get_road(casa_road, laundry_task_text)
     assert output_agenda._idea_dict.get(casa_road) != None
     assert output_agenda._idea_dict.get(basket_road) != None
     assert output_agenda._idea_dict.get(b_full_road) != None

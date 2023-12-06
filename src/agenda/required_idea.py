@@ -1,3 +1,4 @@
+from src.agenda.road import is_heir_road
 from dataclasses import dataclass
 from src.agenda.road import Road, change_road, find_replace_road_key_dict
 
@@ -254,15 +255,9 @@ class SuffFactUnit:
         self._status = None
 
     def is_in_lineage(self, acptfact_pick: Road):
-        if self.need == acptfact_pick:
-            return True
-        elif (
-            self.need.find(f"{acptfact_pick},") == 0
-            or acptfact_pick.find(f"{self.need},") == 0
-        ):
-            return True
-        else:
-            return False
+        return is_heir_road(src=self.need, heir=acptfact_pick) or is_heir_road(
+            src=acptfact_pick, heir=self.need
+        )
 
     def set_status(self, acptfactheir: AcptFactHeir):
         self._status = self._get_active_status(acptfactheir=acptfactheir)
