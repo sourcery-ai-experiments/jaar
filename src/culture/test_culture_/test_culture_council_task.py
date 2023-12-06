@@ -11,9 +11,8 @@ from src.culture.examples.example_councils import (
 
 
 def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanup):
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
-
     # GIVEN
+    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
     amer_text = "Amer"
     x_culture.create_new_councilunit(council_cid=amer_text)
     amer_council = x_culture.get_councilunit(cid=amer_text)
@@ -27,7 +26,7 @@ def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     b_full_text = "full"
     b_full_road = get_road(basket_road, b_full_text)
     b_bare_text = "bare"
-    b_bare_road = f"{basket_road},{b_bare_text}"
+    b_bare_road = get_road({basket_road}, {b_bare_text})
     # set basket status to "bare"
     seed_x = amer_council.get_seed().set_acptfact(base=basket_road, pick=b_bare_road)
     amer_council.set_seed(seed_x)

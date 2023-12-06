@@ -780,7 +780,7 @@ def test_intent_IsSetByAssignedUnit_1PartyGroup():
     sue_text = "sue"
     cx.add_partyunit(pid=sue_text)
     assigned_unit_sue = assigned_unit_shop()
-    assigned_unit_sue.set_suffgroup(pid=sue_text)
+    assigned_unit_sue.set_suffgroup(brand=sue_text)
     assert len(cx.get_intent_items()) == 1
 
     # WHEN
@@ -792,7 +792,7 @@ def test_intent_IsSetByAssignedUnit_1PartyGroup():
     # WHEN
     cx.add_partyunit(pid=bob_text)
     assigned_unit_bob = assigned_unit_shop()
-    assigned_unit_bob.set_suffgroup(pid=bob_text)
+    assigned_unit_bob.set_suffgroup(brand=bob_text)
 
     # WHEN
     cx.edit_idea_attr(road=work_road, assignedunit=assigned_unit_bob)
@@ -822,7 +822,7 @@ def test_intent_IsSetByAssignedUnit_2PartyGroup():
     cx.set_groupunit(groupunit=run_group)
 
     run_assignedunit = assigned_unit_shop()
-    run_assignedunit.set_suffgroup(pid=run_text)
+    run_assignedunit.set_suffgroup(brand=run_text)
     assert len(cx.get_intent_items()) == 1
 
     # WHEN

@@ -1,4 +1,4 @@
-from src.agenda.road import Road, is_sub_road, RaodNode, get_road
+from src.agenda.road import Road, is_sub_road, RaodNode, get_road, get_diff_road
 from src.culture.culture import CultureQID
 from src.world.person import PersonID
 from dataclasses import dataclass
@@ -15,6 +15,12 @@ class CultureAddress:
 
     def add_person_id(self, person_id: PersonID):
         self.person_ids[person_id] = 0
+
+    def get_any_pid(self):
+        x_pid = None
+        for y_pid in self.person_ids:
+            x_pid = y_pid
+        return x_pid
 
 
 def cultureaddress_shop(
@@ -91,6 +97,29 @@ class ConcernUnit:
                 f"ConcernUnit setting concern_subject '{road}' failed because culture_qid is not first node."
             )
 
+    def get_str_summary(self):
+        concern_road = get_diff_road(
+            self._concern_subject, self.cultureaddress.culture_qid
+        )
+        bad_road = get_diff_road(self._concern_bad, self._concern_subject)
+        good_road = get_diff_road(self._concern_good, self._concern_subject)
+        action_road = get_diff_road(
+            self._action_subject, self.cultureaddress.culture_qid
+        )
+        negative_road = get_diff_road(self._action_negative, self._action_subject)
+        positive_road = get_diff_road(self._action_positive, self._action_subject)
+
+        return f"""
+Within {list(self.cultureaddress.person_ids.keys())}'s {self.cultureaddress.culture_qid} culture subject: {concern_road}
+ {bad_road} is bad. 
+ {good_road} is good.
+ Within the action domain of '{action_road}'
+ It is good to {positive_road}
+ It is bad to {negative_road}"""
+
+    def get_any_pid(self):
+        return self.cultureaddress.get_any_pid()
+
 
 def concernunit_shop(
     cultureaddress: CultureAddress,
@@ -127,3 +156,31 @@ def create_concernunit(
     action_negative = get_road(action, negative)
     x_concernunit.set_action(action, action_positive, action_negative)
     return x_concernunit
+
+
+@dataclass
+class UrgeUnit:
+    _concernunit: ConcernUnit = None
+    _actor_pids: dict[PersonID] = None
+    _urger_pid: PersonID = None
+
+    def add_actor_id(self, pid: PersonID):
+        self._actor_pids[pid] = None
+
+    def get_str_summary(self):
+        return f"""{self._concernunit.get_str_summary()}
+ {list(self._actor_pids.keys())} are asked to be good."""
+
+
+def urgeunit_shop(
+    _concernunit: ConcernUnit, _actor_pids: dict[PersonID], _urger_pid: PersonID = None
+):
+    return UrgeUnit(
+        _concernunit=_concernunit, _actor_pids=_actor_pids, _urger_pid=_urger_pid
+    )
+
+
+def create_urgeunit(_concernunit: ConcernUnit, actor_id: PersonID, urger_pid=None):
+    if urger_pid is None:
+        urger_pid = _concernunit.get_any_pid()
+    return urgeunit_shop(_concernunit, {actor_id: None}, _urger_pid=urger_pid)

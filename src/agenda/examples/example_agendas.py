@@ -1,3 +1,4 @@
+from src.agenda.road import get_road
 from src.agenda.idea import ideacore_shop
 from src.agenda.required_idea import (
     acptfactunit_shop,
@@ -432,41 +433,28 @@ def get_agenda_assignment_laundry_example1() -> AgendaUnit:
 
     root_road = amer_agenda._culture_qid
     casa_text = "casa"
-    casa_road = f"{root_road},{casa_text}"
-    amer_agenda.add_idea(ideacore_shop(_label=casa_text), pad=root_road)
-
     basket_text = "laundry basket status"
-    basket_road = f"{casa_road},{basket_text}"
-    amer_agenda.add_idea(ideacore_shop(_label=basket_text), pad=casa_road)
-
     b_full_text = "full"
-    b_full_road = f"{basket_road},{b_full_text}"
-    amer_agenda.add_idea(ideacore_shop(_label=b_full_text), pad=basket_road)
-
     b_smel_text = "smelly"
-    b_smel_road = f"{basket_road},{b_smel_text}"
-    amer_agenda.add_idea(ideacore_shop(_label=b_smel_text), pad=basket_road)
-
     b_bare_text = "bare"
-    b_bare_road = f"{basket_road},{b_bare_text}"
-    amer_agenda.add_idea(ideacore_shop(_label=b_bare_text), pad=basket_road)
-
     b_fine_text = "fine"
-    b_fine_road = f"{basket_road},{b_fine_text}"
-    amer_agenda.add_idea(ideacore_shop(_label=b_fine_text), pad=basket_road)
-
     b_half_text = "half full"
-    b_half_road = f"{basket_road},{b_half_text}"
-    amer_agenda.add_idea(ideacore_shop(_label=b_half_text), pad=basket_road)
-
-    laundry_task_text = "do_laundry"
-    laundry_task_road = f"{casa_road},{laundry_task_text}"
-    amer_agenda.add_idea(
-        ideacore_shop(_label=laundry_task_text, promise=True), pad=casa_road
-    )
+    do_laundry_text = "do_laundry"
+    casa_road = get_road(root_road, casa_text)
+    basket_road = get_road(casa_road, basket_text)
+    b_full_road = get_road(basket_road, b_full_text)
+    b_smel_road = get_road(basket_road, b_smel_text)
+    laundry_task_road = get_road(casa_road, do_laundry_text)
+    amer_agenda.add_idea(ideacore_shop(casa_text), root_road)
+    amer_agenda.add_idea(ideacore_shop(basket_text), casa_road)
+    amer_agenda.add_idea(ideacore_shop(b_full_text), basket_road)
+    amer_agenda.add_idea(ideacore_shop(b_smel_text), basket_road)
+    amer_agenda.add_idea(ideacore_shop(b_bare_text), basket_road)
+    amer_agenda.add_idea(ideacore_shop(b_fine_text), basket_road)
+    amer_agenda.add_idea(ideacore_shop(b_half_text), basket_road)
+    amer_agenda.add_idea(ideacore_shop(do_laundry_text, promise=True), casa_road)
 
     # make laundry requirement
-    basket_idea = amer_agenda.get_idea_kid(road=basket_road)
     amer_agenda.edit_idea_attr(
         road=laundry_task_road, required_base=basket_road, required_sufffact=b_full_road
     )

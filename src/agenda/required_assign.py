@@ -13,16 +13,16 @@ class AssignedUnit:
 
     def get_dict(self) -> dict[str:str]:
         _suffgroups = {
-            group_pid: group_pid  # sufffact.get_dict()
-            for group_pid, _suffgroup in self._suffgroups.items()
+            x_groupbrand: x_groupbrand  # sufffact.get_dict()
+            for x_groupbrand, _suffgroup in self._suffgroups.items()
         }
         return {"_suffgroups": _suffgroups}
 
-    def set_suffgroup(self, pid: GroupBrand):
-        self._suffgroups[pid] = -1
+    def set_suffgroup(self, brand: GroupBrand):
+        self._suffgroups[brand] = -1
 
-    def del_suffgroup(self, pid: GroupBrand):
-        self._suffgroups.pop(pid)
+    def del_suffgroup(self, brand: GroupBrand):
+        self._suffgroups.pop(brand)
 
 
 def assigned_unit_shop(_suffgroups: dict[GroupBrand:GroupBrand] = None) -> AssignedUnit:
@@ -30,6 +30,12 @@ def assigned_unit_shop(_suffgroups: dict[GroupBrand:GroupBrand] = None) -> Assig
         _suffgroups = {}
 
     return AssignedUnit(_suffgroups=_suffgroups)
+
+
+def create_assignedunit(suffgroup: GroupBrand):
+    x_assignedunit = assigned_unit_shop()
+    x_assignedunit.set_suffgroup(suffgroup)
+    return x_assignedunit
 
 
 @dataclass
@@ -130,7 +136,7 @@ def assigned_heir_shop(
 
 def assignedunit_get_from_dict(assignedunit_dict: dict) -> AssignedUnit:
     assigned_unit_x = assigned_unit_shop()
-    for suffgroup_pid in assignedunit_dict.get("_suffgroups"):
-        assigned_unit_x.set_suffgroup(pid=suffgroup_pid)
+    for suffgroup_brand in assignedunit_dict.get("_suffgroups"):
+        assigned_unit_x.set_suffgroup(brand=suffgroup_brand)
 
     return assigned_unit_x

@@ -3,11 +3,7 @@ from src.agenda.required_assign import (
     assigned_unit_shop,
     AssignedHeir,
     assigned_heir_shop,
-    #
-    #     requiredunit_shop,
-    #     acptfactheir_shop,
-    #     sufffactunit_shop,
-    #     Road,
+    create_assignedunit,
 )
 from src.agenda.group import GroupBrand, groupunit_shop
 from src.agenda.party import partylink_shop
@@ -30,7 +26,6 @@ def test_AssignedUnit_exists():
 def test_assigned_unit_shop_ReturnsCorrectWithCorrectAttributes_v1():
     # GIVEN
     _suffgroups_x = {1: 2}
-    _group_party_x = "example"
 
     # WHEN
     assigned_unit_x = assigned_unit_shop(_suffgroups=_suffgroups_x)
@@ -49,10 +44,22 @@ def test_assigned_unit_shop_ifEmptyReturnsCorrectWithCorrectAttributes():
     assert assigned_unit_x._suffgroups == {}
 
 
+def test_create_assignedunit_ReturnsCorrectObj():
+    # GIVEN
+    swim_groupbrand = GroupBrand("swimmers")
+
+    # WHEN
+    swim_assignedunit = create_assignedunit(swim_groupbrand)
+
+    # THEN
+    assert swim_assignedunit
+    assert len(swim_assignedunit._suffgroups) == 1
+
+
 def test_AssignedUnit_get_dict_ReturnsCorrectDictWithSingleSuffGroup():
     # GIVEN
-    bob_group_pid = GroupBrand("bob")
-    _suffgroups_x = {bob_group_pid: bob_group_pid}
+    bob_groupbrand = GroupBrand("bob")
+    _suffgroups_x = {bob_groupbrand: bob_groupbrand}
     assigned_x = assigned_unit_shop(_suffgroups=_suffgroups_x)
 
     # WHEN
@@ -60,7 +67,7 @@ def test_AssignedUnit_get_dict_ReturnsCorrectDictWithSingleSuffGroup():
 
     # THEN
     assert obj_dict != None
-    example_dict = {"_suffgroups": {bob_group_pid: bob_group_pid}}
+    example_dict = {"_suffgroups": {bob_groupbrand: bob_groupbrand}}
     print(f"{example_dict=}")
     assert obj_dict == example_dict
 
@@ -72,7 +79,7 @@ def test_AssignedUnit_set_suffgroup_CorrectlySets_suffgroups_v1():
 
     # WHEN
     jim_text = "jim"
-    assigned_unit_x.set_suffgroup(pid=jim_text)
+    assigned_unit_x.set_suffgroup(brand=jim_text)
 
     # THEN
     assert len(assigned_unit_x._suffgroups) == 1
@@ -83,12 +90,12 @@ def test_AssignedUnit_del_suffgroup_CorrectlyDeletes_suffgroups_v1():
     assigned_unit_x = assigned_unit_shop(_suffgroups={})
     jim_text = "jim"
     sue_text = "sue"
-    assigned_unit_x.set_suffgroup(pid=jim_text)
-    assigned_unit_x.set_suffgroup(pid=sue_text)
+    assigned_unit_x.set_suffgroup(brand=jim_text)
+    assigned_unit_x.set_suffgroup(brand=sue_text)
     assert len(assigned_unit_x._suffgroups) == 2
 
     # WHEN
-    assigned_unit_x.del_suffgroup(pid=sue_text)
+    assigned_unit_x.del_suffgroup(brand=sue_text)
 
     # THEN
     assert len(assigned_unit_x._suffgroups) == 1
@@ -318,8 +325,8 @@ def test_AssignedHeir_set_suffgroup_AssignedUnitNotEmpty_ParentAssignedHeirIsNon
     kent_text = "kent"
     swim_text = "swim"
     assigned_unit_x = assigned_unit_shop()
-    assigned_unit_x.set_suffgroup(pid=kent_text)
-    assigned_unit_x.set_suffgroup(pid=swim_text)
+    assigned_unit_x.set_suffgroup(brand=kent_text)
+    assigned_unit_x.set_suffgroup(brand=swim_text)
 
     # WHEN
     assigned_heir_x = assigned_heir_shop()
@@ -336,8 +343,8 @@ def test_AssignedHeir_set_suffgroup_AssignedUnitNotEmpty_ParentAssignedHeirEmpty
     kent_text = "kent"
     swim_text = "swim"
     assigned_unit_x = assigned_unit_shop()
-    assigned_unit_x.set_suffgroup(pid=kent_text)
-    assigned_unit_x.set_suffgroup(pid=swim_text)
+    assigned_unit_x.set_suffgroup(brand=kent_text)
+    assigned_unit_x.set_suffgroup(brand=swim_text)
 
     # WHEN
     assigned_heir_x = assigned_heir_shop()
@@ -355,8 +362,8 @@ def test_AssignedHeir_set_suffgroup_AssignedUnitEmpty_ParentAssignedHeirNotEmpty
     kent_text = "kent"
     swim_text = "swim"
     assigned_unit_swim = assigned_unit_shop()
-    assigned_unit_swim.set_suffgroup(pid=kent_text)
-    assigned_unit_swim.set_suffgroup(pid=swim_text)
+    assigned_unit_swim.set_suffgroup(brand=kent_text)
+    assigned_unit_swim.set_suffgroup(brand=swim_text)
     empty_assigned_heir = assigned_heir_shop()
 
     parent_assigned_heir = assigned_heir_shop()
@@ -383,8 +390,8 @@ def test_AssignedHeir_set_suffgroup_AssignedUnitEqualParentAssignedHeir_NonEmpty
     kent_text = "kent"
     swim_text = "swim"
     assigned_unit_swim = assigned_unit_shop()
-    assigned_unit_swim.set_suffgroup(pid=kent_text)
-    assigned_unit_swim.set_suffgroup(pid=swim_text)
+    assigned_unit_swim.set_suffgroup(brand=kent_text)
+    assigned_unit_swim.set_suffgroup(brand=swim_text)
     empty_assigned_heir = assigned_heir_shop()
 
     parent_assigned_heir = assigned_heir_shop()
@@ -429,14 +436,14 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqual_ParentAssignedHeir_Non
     c_x.set_groupunit(groupunit=swim3_group)
 
     parent_assigned_unit = assigned_unit_shop()
-    parent_assigned_unit.set_suffgroup(pid=swim3_text)
+    parent_assigned_unit.set_suffgroup(brand=swim3_text)
     parent_assigned_heir = assigned_heir_shop()
     parent_assigned_heir.set_suffgroups(
         parent_assignheir=None, assignunit=parent_assigned_unit, agenda_groups=None
     )
 
     assigned_unit_swim2 = assigned_unit_shop()
-    assigned_unit_swim2.set_suffgroup(pid=swim2_text)
+    assigned_unit_swim2.set_suffgroup(brand=swim2_text)
 
     # WHEN
     assigned_heir_x = assigned_heir_shop()
@@ -476,14 +483,14 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqualParentAssignedHeir_Rais
     c_x.set_groupunit(groupunit=swim3_group)
 
     parent_assigned_unit = assigned_unit_shop()
-    parent_assigned_unit.set_suffgroup(pid=swim2_text)
+    parent_assigned_unit.set_suffgroup(brand=swim2_text)
     parent_assigned_heir = assigned_heir_shop()
     parent_assigned_heir.set_suffgroups(
         parent_assignheir=None, assignunit=parent_assigned_unit, agenda_groups=None
     )
 
     assigned_unit_swim3 = assigned_unit_shop()
-    assigned_unit_swim3.set_suffgroup(pid=swim3_text)
+    assigned_unit_swim3.set_suffgroup(brand=swim3_text)
 
     # WHEN / THEN
     assigned_heir_x = assigned_heir_shop()
@@ -506,8 +513,8 @@ def test_AssignedHeir_group_in_ReturnsCorrectBoolWhen_suffgroupsNotEmpty():
     swim_dict = {swim_text: -1}
     hike_dict = {hike_text: -1}
     assignedunit_x = assigned_unit_shop()
-    assignedunit_x.set_suffgroup(pid=swim_text)
-    assignedunit_x.set_suffgroup(pid=hike_text)
+    assignedunit_x.set_suffgroup(brand=swim_text)
+    assignedunit_x.set_suffgroup(brand=hike_text)
     assignedheir_x = assigned_heir_shop()
     assignedheir_x.set_suffgroups(
         parent_assignheir=None, assignunit=assignedunit_x, agenda_groups=None

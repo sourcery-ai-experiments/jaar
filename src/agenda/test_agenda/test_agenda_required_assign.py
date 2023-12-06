@@ -93,7 +93,7 @@ def test_agenda_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir(
     four_road = f"{morn_road},{four_text}"
     assigned_unit_x = assigned_unit_shop()
     swimmers_text = "swimmers"
-    assigned_unit_x.set_suffgroup(pid=swimmers_text)
+    assigned_unit_x.set_suffgroup(brand=swimmers_text)
 
     x_agenda.set_groupunit(groupunit=groupunit_shop(brand=swimmers_text))
     x_agenda.add_idea(ideacore_shop(_label=swim_text), pad=x_agenda._culture_qid)
@@ -135,8 +135,8 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignU
     x_agenda1.add_idea(ideacore_shop(_label=work_text), pad=x_agenda1._culture_qid)
     x_agenda1.add_idea(ideacore_shop(_label=swim_text), pad=x_agenda1._culture_qid)
     swim_assignedunit = assigned_unit_shop()
-    swim_assignedunit.set_suffgroup(pid=xia_text)
-    swim_assignedunit.set_suffgroup(pid=zoa_text)
+    swim_assignedunit.set_suffgroup(brand=xia_text)
+    swim_assignedunit.set_suffgroup(brand=zoa_text)
     x_agenda1.edit_idea_attr(road=swim_road, assignedunit=swim_assignedunit)
     x_agenda1_swim_idea = x_agenda1.get_idea_kid(swim_road)
     x_agenda1_swim_suffgroups = x_agenda1_swim_idea._assignedunit._suffgroups
@@ -169,8 +169,8 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     x_agenda1.add_idea(ideacore_shop(_label=work_text), pad=x_agenda1._culture_qid)
     x_agenda1.add_idea(ideacore_shop(_label=swim_text), pad=x_agenda1._culture_qid)
     swim_assignedunit = assigned_unit_shop()
-    swim_assignedunit.set_suffgroup(pid=xia_text)
-    swim_assignedunit.set_suffgroup(pid=zoa_text)
+    swim_assignedunit.set_suffgroup(brand=xia_text)
+    swim_assignedunit.set_suffgroup(brand=zoa_text)
     x_agenda1.edit_idea_attr(road=swim_road, assignedunit=swim_assignedunit)
     x_agenda1_swim_idea = x_agenda1.get_idea_kid(swim_road)
     x_agenda1_swim_suffgroups = x_agenda1_swim_idea._assignedunit._suffgroups

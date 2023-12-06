@@ -109,7 +109,7 @@ def test_agenda_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
     healer_text = "Tom"
     x_agenda = agendaunit_shop(_healer=healer_text)
     assigned_unit_x = assigned_unit_shop()
-    assigned_unit_x.set_suffgroup(pid=run_text)
+    assigned_unit_x.set_suffgroup(brand=run_text)
     x_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=x_agenda._culture_qid)
 
     # WHEN
@@ -134,7 +134,7 @@ def test_agenda_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
         idea_kid=ideacore_shop(_label=morn_text), pad=x_agenda._culture_qid
     )
     assigned_unit_x = assigned_unit_shop()
-    assigned_unit_x.set_suffgroup(pid=run_text)
+    assigned_unit_x.set_suffgroup(brand=run_text)
     x_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=morn_road)
 
     # WHEN
@@ -279,10 +279,10 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     y_agenda.set_groupunit(groupunit=run_group)
 
     run_assigned_unit = assigned_unit_shop()
-    run_assigned_unit.set_suffgroup(pid=run_text)
+    run_assigned_unit.set_suffgroup(brand=run_text)
     y_agenda.edit_idea_attr(road=y_agenda._culture_qid, assignedunit=run_assigned_unit)
     tim_assigned_unit = assigned_unit_shop()
-    tim_assigned_unit.set_suffgroup(pid=tim_text)
+    tim_assigned_unit.set_suffgroup(brand=tim_text)
     y_agenda.edit_idea_attr(road=shave_road, assignedunit=tim_assigned_unit)
     y_agenda.edit_idea_attr(
         road=shave_road, balancelink=balancelink_shop(brand=tim_text)

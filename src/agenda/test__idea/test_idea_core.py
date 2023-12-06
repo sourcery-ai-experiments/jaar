@@ -497,7 +497,7 @@ def test_idea_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
 
     work_idea.set_assignedunit_empty_if_null()
     x_assignedunit = work_idea._assignedunit
-    x_assignedunit.set_suffgroup(pid=yao_text)
+    x_assignedunit.set_suffgroup(brand=yao_text)
 
     work_idea.set_originunit_empty_if_null()
     x_originunit = work_idea._originunit
@@ -763,7 +763,7 @@ def test_idea_set_assignedunit_empty_if_null():
     sport_text = "sports"
     sport_idea = ideacore_shop(_label=sport_text)
     sport_idea.set_assignedunit_empty_if_null()
-    sport_idea._assignedunit.set_suffgroup(pid=swim_text)
+    sport_idea._assignedunit.set_suffgroup(brand=swim_text)
     assert sport_idea._assignedheir is None
 
     # WHEN
@@ -772,7 +772,7 @@ def test_idea_set_assignedunit_empty_if_null():
     # THEN
     assert sport_idea._assignedheir != None
     swim_assigned_unit = assigned_unit_shop()
-    swim_assigned_unit.set_suffgroup(pid=swim_text)
+    swim_assigned_unit.set_suffgroup(brand=swim_text)
     swim_assigned_heir = assigned_heir_shop()
     swim_assigned_heir.set_suffgroups(
         assignunit=swim_assigned_unit, parent_assignheir=None, agenda_groups=None
