@@ -1,4 +1,4 @@
-from src.agenda.required_idea import Road, SuffFactUnit
+from src.agenda.road import Road, get_road
 from src.agenda.idea import IdeaBare as YB
 from dataclasses import dataclass
 from datetime import datetime
@@ -84,10 +84,7 @@ class SuffFactUnitHregTime:
             raise InvalidSuffFactUnitException("remainder_weeks reqquires being >= 0")
         self._x_days_remainder = remainder_days
 
-    def _set_every_x_days(
-        self,
-        every_x_days: int,
-    ):
+    def _set_every_x_days(self, every_x_days: int):
         self._every_x_days = every_x_days
 
     def _set_every_x_weeks(
@@ -202,13 +199,12 @@ def _get_time_hreg_ced(local_root: str, tech: str, c400_count: int):
         m = 1440
 
     rt = local_root
-    tech_root = Road(f"{local_root},tech")
-    jaja = "jajatime"
-    st = f"{local_root},{jaja}"
-    c4 = f"{tech_root},400 year cycle"
-    day_road = f"{tech_root},day"
-    week_road = f"{tech_root},week"
+    st = get_jajatime_road(local_root)
+    c4 = get_road(get_tech_road(local_root), "400 year cycle")
+    day_road = get_road(get_tech_road(local_root), "day")
+    week_road = get_road(get_tech_road(local_root), "week")
     c400 = c400_count
+    jaja = get_jajatime_text()
 
     list_x = [YB(n=jaja, b=0, c=146097 * c400_count * m, rr=local_root)]
     list_x.append(YB(mn=1, md=c400, mr=True, sr=c4, rr=st, n="400 year cycle"))
@@ -236,7 +232,7 @@ def _get_time_hreg_ced(local_root: str, tech: str, c400_count: int):
 
 def _get_time_hreg_years(local_root: str, jajatime: str):
     years = "years"
-    jaja_r = Road(f"{local_root},{jajatime},{years}")
+    jaja_r = get_road(get_jajatime_road(local_root), years)
     yrs_d = [
         [2010, 1057158720, 1057684320],
         [2011, 1057684320, 1058209920],
@@ -268,12 +264,12 @@ def _get_time_hreg_years(local_root: str, jajatime: str):
         nm_x = f"{yr_t} by minute"
         nm_y = YB(n=nm_x, rr=jaja_r, b=yr_min, c=yr_max)
         hreg_list.append(nm_y)
-        m_r = Road(f"{jaja_r},{nm_x}")
+        m_r = get_road(jaja_r, nm_x)
         map_x = "morph"
         m_y = YB(n=map_x, rr=m_r, a=-yr_min, md=yr_max - yr_min)
         hreg_list.append(m_y)
         f_n = f"{yr_t} as year"
-        f_r = Road(f"{m_r},{map_x}")
+        f_r = get_road(m_r, map_x)
         f_y = YB(n=f_n, rr=f_r, a=yr_t)
         hreg_list.append(f_y)
 
@@ -283,10 +279,9 @@ def _get_time_hreg_years(local_root: str, jajatime: str):
 def _get_time_hreg_weekday_idea(local_root: str, multipler: int, jajatime: str):
     m = multipler
     week = "week"
-    nr = f"{local_root},{jajatime},week"
-    tech_root = Road(f"{local_root},tech")
-    hreg_list = [YB(n=week, b=0 * m, c=7 * m, nr=nr, rr=tech_root)]
-    week_road = f"{tech_root},{week}"
+    nr = get_road(get_jajatime_road(local_root), week)
+    hreg_list = [YB(n=week, b=0 * m, c=7 * m, nr=nr, rr=get_tech_road(local_root))]
+    week_road = get_road(get_tech_road(local_root), week)
     hreg_list.append(YB(b=1 * m, c=2 * m, rr=week_road, n="Sunday"))
     hreg_list.append(YB(b=2 * m, c=3 * m, rr=week_road, n="Monday"))
     hreg_list.append(YB(b=3 * m, c=4 * m, rr=week_road, n="Tuesday"))
@@ -300,41 +295,40 @@ def _get_time_hreg_weekday_idea(local_root: str, multipler: int, jajatime: str):
 def _get_time_hreg_cycle400(local_root: str, multipler: int):
     m = multipler
     tech = "400 year cycle"
-    nr_400 = f"{local_root},jajatime,{tech}"
-    tech_root = Road(f"{local_root},tech")
-    hreg_list = [YB(n=tech, b=0, c=146097 * m, nr=nr_400, rr=tech_root)]
-    rt = f"{tech_root},{tech}"
+    nr_400 = get_road(get_jajatime_road(local_root), tech)
+    hreg_list = [YB(n=tech, b=0, c=146097 * m, nr=nr_400, rr=get_tech_road(local_root))]
+    rt = get_tech_type_road(local_root, tech)
     yr4wl = "4year with leap"
     yr4ol = "4year wo leap"
-    l_yr4wl = f"{tech_root},{yr4wl}"
-    l_yr4ol = f"{tech_root},{yr4ol}"
+    l_yr4wl = get_road(get_tech_road(local_root), yr4wl)
+    l_yr4ol = get_road(get_tech_road(local_root), yr4ol)
 
     node_0_100 = "0-100-25 leap years"
-    rr_0_100 = f"{rt},{node_0_100}"
+    rr_0_100 = get_road(rt, node_0_100)
     hreg_list.append(YB(b=0, c=36525 * m, rr=rt, n=node_0_100))
     hreg_list.append(YB(mn=1, md=25, mr=True, sr=l_yr4wl, rr=rr_0_100, n=yr4wl))
     node_1_4 = "100-104-0 leap years"
-    rr_1_4 = f"{rt},{node_1_4}"
+    rr_1_4 = get_road(rt, node_1_4)
     hreg_list.append(YB(b=36525 * m, c=37985 * m, rr=rt, n=node_1_4))
     hreg_list.append(YB(mn=1, md=1, mr=True, sr=l_yr4ol, rr=rr_1_4, n=yr4ol))
     node_1_96 = "104-200-24 leap years"
-    rr_1_96 = f"{rt},{node_1_96}"
+    rr_1_96 = get_road(rt, node_1_96)
     hreg_list.append(YB(b=37985 * m, c=73049 * m, rr=rt, n=node_1_96))
     hreg_list.append(YB(mn=1, md=24, mr=True, sr=l_yr4wl, rr=rr_1_96, n=yr4wl))
     node_2_4 = "200-204-0 leap years"
-    rr_2_4 = f"{rt},{node_2_4}"
+    rr_2_4 = get_road(rt, node_2_4)
     hreg_list.append(YB(b=73049 * m, c=74509 * m, rr=rt, n=node_2_4))
     hreg_list.append(YB(mn=1, md=1, mr=True, sr=l_yr4ol, rr=rr_2_4, n=yr4ol))
     node_2_96 = "204-300-24 leap years"
-    rr_2_96 = f"{rt},{node_2_96}"
+    rr_2_96 = get_road(rt, node_2_96)
     hreg_list.append(YB(b=74509 * m, c=109573 * m, rr=rt, n=node_2_96))
     hreg_list.append(YB(mn=1, md=24, mr=True, sr=l_yr4wl, rr=rr_2_96, n=yr4wl))
     node_3_4 = "300-304-0 leap years"
-    rr_3_4 = f"{rt},{node_3_4}"
+    rr_3_4 = get_road(rt, node_3_4)
     hreg_list.append(YB(b=109573 * m, c=111033 * m, rr=rt, n=node_3_4))
     hreg_list.append(YB(mn=1, md=1, mr=True, sr=l_yr4ol, rr=rr_3_4, n=yr4ol))
     node_3_96 = "304-400-24 leap years"
-    rr_3_96 = f"{rt},{node_3_96}"
+    rr_3_96 = get_road(rt, node_3_96)
     hreg_list.append(YB(b=111033 * m, c=146097 * m, rr=rt, n=node_3_96))
     hreg_list.append(YB(mn=1, md=24, mr=True, sr=l_yr4wl, rr=rr_3_96, n=yr4wl))
     return hreg_list
@@ -343,10 +337,9 @@ def _get_time_hreg_cycle400(local_root: str, multipler: int):
 def _get_time_hreg_4year_noleap(local_root: str, multipler: int):
     m = multipler
     tech = "4year wo leap"
-    tech_root = Road(f"{local_root},tech")
-    hreg_list = [YB(n=tech, b=0, c=1460 * m, rr=tech_root)]
-    rt = f"{tech_root},{tech}"
-    y365 = f"{tech_root},365 year"
+    hreg_list = [YB(n=tech, b=0, c=1460 * m, rr=get_tech_road(local_root))]
+    rt = get_tech_type_road(local_root, tech)
+    y365 = get_road(get_tech_road(local_root), "365 year")
     node_1_4 = "1-year"
     hreg_list.append(YB(b=0, c=365 * m, rr=rt, sr=y365, n=node_1_4))
     node_1_96 = "2-year"
@@ -364,14 +357,16 @@ def _get_time_hreg_4year_withleap(local_root: str, multipler: int):
 
     c400 = "400 year cycle"
     node_0_100 = "0-100-25 leap years"
-    tech_root = Road(f"{local_root},tech")
-    nr_yr4wl = f"{tech_root},{c400},{node_0_100},{tech}"
-    hreg_list = [YB(n=tech, rr=tech_root, nr=nr_yr4wl)]
+    tech_root = get_tech_road(local_root)
+    c400_road = get_road(tech_root, c400)
+    node_0_100_road = get_road(c400_road, node_0_100)
+    nr_yr4wl = get_road(node_0_100_road, tech)
+    hreg_list = [YB(n=tech, rr=get_tech_road(local_root), nr=nr_yr4wl)]
 
-    hreg_list = [YB(n=tech, rr=tech_root, nr=nr_yr4wl)]
-    rt = f"{tech_root},{tech}"
-    y365 = f"{tech_root},365 year"
-    y366 = f"{tech_root},366 year"
+    hreg_list = [YB(n=tech, rr=get_tech_road(local_root), nr=nr_yr4wl)]
+    rt = get_tech_type_road(local_root, tech)
+    y365 = get_road(tech_root, "365 year")
+    y366 = get_road(tech_root, "366 year")
 
     node_1_4 = "1-year"
     hreg_list.append(YB(b=0, c=366 * m, rr=rt, sr=y366, n=node_1_4))
@@ -387,9 +382,8 @@ def _get_time_hreg_4year_withleap(local_root: str, multipler: int):
 def _get_time_hreg_366year(local_root: str, multipler: int):
     m = multipler
     tech = "366 year"
-    tech_root = Road(f"{local_root},tech")
-    hreg_list = [YB(n=tech, b=0, c=366 * m, rr=tech_root)]
-    rt = f"{tech_root},{tech}"
+    hreg_list = [YB(n=tech, b=0, c=366 * m, rr=get_tech_road(local_root))]
+    rt = get_tech_type_road(local_root, tech)
 
     Jan = "Jan"
     Feb29 = "Feb29"
@@ -404,19 +398,20 @@ def _get_time_hreg_366year(local_root: str, multipler: int):
     Nov = "Nov"
     Dec = "Dec"
 
-    sr_m = "month"
-    r_Jan = f"{tech_root},{sr_m},{Jan}"
-    r_Feb29 = f"{tech_root},{sr_m},{Feb29}"
-    r_Mar = f"{tech_root},{sr_m},{Mar}"
-    r_Apr = f"{tech_root},{sr_m},{Apr}"
-    r_May = f"{tech_root},{sr_m},{May}"
-    r_Jun = f"{tech_root},{sr_m},{Jun}"
-    r_Jul = f"{tech_root},{sr_m},{Jul}"
-    r_Aug = f"{tech_root},{sr_m},{Aug}"
-    r_Sep = f"{tech_root},{sr_m},{Sep}"
-    r_Oct = f"{tech_root},{sr_m},{Oct}"
-    r_Nov = f"{tech_root},{sr_m},{Nov}"
-    r_Dec = f"{tech_root},{sr_m},{Dec}"
+    sr_m_text = "month"
+    sr_m_road = get_road(get_tech_road(local_root), sr_m_text)
+    r_Jan = get_road(sr_m_road, Jan)
+    r_Feb29 = get_road(sr_m_road, Feb29)
+    r_Mar = get_road(sr_m_road, Mar)
+    r_Apr = get_road(sr_m_road, Apr)
+    r_May = get_road(sr_m_road, May)
+    r_Jun = get_road(sr_m_road, Jun)
+    r_Jul = get_road(sr_m_road, Jul)
+    r_Aug = get_road(sr_m_road, Aug)
+    r_Sep = get_road(sr_m_road, Sep)
+    r_Oct = get_road(sr_m_road, Oct)
+    r_Nov = get_road(sr_m_road, Nov)
+    r_Dec = get_road(sr_m_road, Dec)
 
     hreg_list.append(YB(b=0 * m, c=31 * m, rr=rt, sr=r_Jan, n=f"1-{Jan}"))
     hreg_list.append(YB(b=31 * m, c=60 * m, rr=rt, sr=r_Feb29, n=f"2-{Feb29}"))
@@ -437,9 +432,8 @@ def _get_time_hreg_366year(local_root: str, multipler: int):
 def _get_time_hreg_365year(local_root: str, multipler: int):
     m = multipler
     tech = "365 year"
-    tech_root = Road(f"{local_root},tech")
-    hreg_list = [YB(n=tech, b=0, c=365 * m, rr=tech_root)]
-    rt = f"{tech_root},{tech}"
+    hreg_list = [YB(n=tech, b=0, c=365 * m, rr=get_tech_road(local_root))]
+    rt = get_tech_type_road(local_root, tech)
 
     Jan = "Jan"
     Feb28 = "Feb28"
@@ -454,19 +448,20 @@ def _get_time_hreg_365year(local_root: str, multipler: int):
     Nov = "Nov"
     Dec = "Dec"
 
-    sr_m = "month"
-    r_Jan = f"{tech_root},{sr_m},{Jan}"
-    r_Feb28 = f"{tech_root},{sr_m},{Feb28}"
-    r_Mar = f"{tech_root},{sr_m},{Mar}"
-    r_Apr = f"{tech_root},{sr_m},{Apr}"
-    r_May = f"{tech_root},{sr_m},{May}"
-    r_Jun = f"{tech_root},{sr_m},{Jun}"
-    r_Jul = f"{tech_root},{sr_m},{Jul}"
-    r_Aug = f"{tech_root},{sr_m},{Aug}"
-    r_Sep = f"{tech_root},{sr_m},{Sep}"
-    r_Oct = f"{tech_root},{sr_m},{Oct}"
-    r_Nov = f"{tech_root},{sr_m},{Nov}"
-    r_Dec = f"{tech_root},{sr_m},{Dec}"
+    sr_m_text = "month"
+    sr_m_road = get_road(get_tech_road(local_root), sr_m_text)
+    r_Jan = get_road(sr_m_road, Jan)
+    r_Feb28 = get_road(sr_m_road, Feb28)
+    r_Mar = get_road(sr_m_road, Mar)
+    r_Apr = get_road(sr_m_road, Apr)
+    r_May = get_road(sr_m_road, May)
+    r_Jun = get_road(sr_m_road, Jun)
+    r_Jul = get_road(sr_m_road, Jul)
+    r_Aug = get_road(sr_m_road, Aug)
+    r_Sep = get_road(sr_m_road, Sep)
+    r_Oct = get_road(sr_m_road, Oct)
+    r_Nov = get_road(sr_m_road, Nov)
+    r_Dec = get_road(sr_m_road, Dec)
 
     hreg_list.append(YB(b=0 * m, c=31 * m, rr=rt, sr=r_Jan, n=f"1-{Jan}"))
     hreg_list.append(YB(b=31 * m, c=59 * m, rr=rt, sr=r_Feb28, n=f"2-{Feb28}"))
@@ -487,9 +482,8 @@ def _get_time_hreg_365year(local_root: str, multipler: int):
 def _get_time_hreg_month(local_root: str, multipler: int):
     m = multipler
     tech = "month"
-    tech_root = Road(f"{local_root},tech")
-    hreg_list = [YB(n=tech, rr=tech_root)]
-    rt = f"{tech_root},{tech}"
+    hreg_list = [YB(n=tech, rr=get_tech_road(local_root))]
+    rt = get_tech_type_road(local_root, tech)
 
     Jan = "Jan"
     Feb28 = "Feb28"
@@ -519,19 +513,19 @@ def _get_time_hreg_month(local_root: str, multipler: int):
     hreg_list.append(YB(b=0, c=30 * m, rr=rt, n=Nov))
     hreg_list.append(YB(b=0, c=31 * m, rr=rt, n=Dec))
 
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=f"{rt},{Jan}", n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=f"{rt},{Feb28}", n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=f"{rt},{Feb29}", n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=f"{rt},{Mar}", n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=f"{rt},{Apr}", n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=f"{rt},{May}", n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=f"{rt},{Jun}", n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=f"{rt},{Jul}", n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=f"{rt},{Aug}", n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=f"{rt},{Sep}", n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=f"{rt},{Oct}", n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=f"{rt},{Nov}", n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=f"{rt},{Dec}", n="days"))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Jan), n="days"))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Feb28), n="days"))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Feb29), n="days"))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Mar), n="days"))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Apr), n="days"))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, May), n="days"))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Jun), n="days"))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Jul), n="days"))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Aug), n="days"))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Sep), n="days"))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Oct), n="days"))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Nov), n="days"))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Dec), n="days"))
 
     return hreg_list
 
@@ -541,10 +535,10 @@ def _get_time_hreg_day(local_root: str, multipler: int):
         multipler = 60
     m = multipler
     tech = "day"
-    tech_root = Road(f"{local_root},tech")
-    hreg_list = [YB(n=tech, rr=tech_root, b=0, c=24 * m)]
-    rt = f"{tech_root},{tech}"
-    hr = f"{tech_root},hour"
+    tech_root = get_tech_road(local_root)
+    hreg_list = [YB(n=tech, rr=get_tech_road(local_root), b=0, c=24 * m)]
+    rt = get_tech_type_road(local_root, tech)
+    hr = get_road(tech_root, "hour")
     hreg_list.append(YB(b=0 * m, c=1 * m, rr=rt, sr=hr, n="0-12am"))
     hreg_list.append(YB(b=1 * m, c=2 * m, rr=rt, sr=hr, n="1-1am"))
     hreg_list.append(YB(b=2 * m, c=3 * m, rr=rt, sr=hr, n="2-2am"))
@@ -575,7 +569,7 @@ def _get_time_hreg_day(local_root: str, multipler: int):
 def _get_time_hreg_ced_timelines(local_root: str):
     year = "years"
     hreg_list = [YB(n=year, b=0, c=400 * 7, rr=local_root)]
-    year_road = f"{local_root},{year}"
+    year_road = get_road(local_root, year)
     hreg_list.append(YB(n="100 years war", b=1337, c=1453, rr=year_road))
     # hreg_list.append(
     #     YB(n="timline by hours", b=0, c=146097 * 7 * 24, rr=local_root)
@@ -591,12 +585,8 @@ def _get_time_hreg_hour(local_root: str, multipler: int):
         multipler = 1
     m = multipler
     tech = "hour"
-    tech_root = Road(f"{local_root},tech")
-    hreg_list = [YB(n=tech, rr=tech_root, b=0, c=60 * m)]
-    rt = f"{tech_root},{tech}"
-    # minute = "minute"
-    # hr = f"{local_root},{minute}"
-    hr = None
+    hreg_list = [YB(n=tech, rr=get_tech_road(local_root), b=0, c=60 * m)]
+    rt = get_tech_type_road(local_root, tech)
     hreg_list.append(YB(b=0 * m, c=1 * m, rr=rt, n="0-:00"))
     hreg_list.append(YB(b=1 * m, c=2 * m, rr=rt, n="1-:01"))
     hreg_list.append(YB(b=2 * m, c=3 * m, rr=rt, n="2-:02"))
@@ -726,3 +716,19 @@ def get_number_with_letter_ending(num: int) -> str:
         return f"{num}nd"
     else:
         return f"{num}rd"
+
+
+def get_tech_road(local_root):
+    return get_road(local_root, "tech")
+
+
+def get_tech_type_road(local_root, tech_type):
+    return get_road(get_tech_road(local_root), tech_type)
+
+
+def get_jajatime_road(local_root):
+    return get_road(local_root, get_jajatime_text())
+
+
+def get_jajatime_text():
+    return "jajatime"
