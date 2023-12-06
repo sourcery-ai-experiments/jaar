@@ -1,4 +1,5 @@
 from src.agenda.road import Road, is_sub_road, RaodNode, get_road, get_diff_road
+from src.agenda.group import GroupBrand
 from src.culture.culture import CultureQID
 from src.world.person import PersonID
 from dataclasses import dataclass
@@ -162,10 +163,18 @@ def create_concernunit(
 class UrgeUnit:
     _concernunit: ConcernUnit = None
     _actor_pids: dict[PersonID] = None
+    _actor_groups: dict[GroupBrand:GroupBrand] = None
     _urger_pid: PersonID = None
 
-    def add_actor_id(self, pid: PersonID):
+    def add_actor_pid(self, pid: PersonID):
         self._actor_pids[pid] = None
+
+    def add_actor_groupbrand(self, groupbrand: GroupBrand):
+        self._actor_groups[groupbrand] = groupbrand
+
+    def set_actor_groups_empty_if_none(self):
+        if self._actor_groups is None:
+            self._actor_groups = {}
 
     def get_str_summary(self):
         return f"""{self._concernunit.get_str_summary()}
@@ -173,14 +182,32 @@ class UrgeUnit:
 
 
 def urgeunit_shop(
-    _concernunit: ConcernUnit, _actor_pids: dict[PersonID], _urger_pid: PersonID = None
+    _concernunit: ConcernUnit,
+    _actor_pids: dict[PersonID],
+    _actor_groups: dict[GroupBrand:GroupBrand] = None,
+    _urger_pid: PersonID = None,
 ):
-    return UrgeUnit(
-        _concernunit=_concernunit, _actor_pids=_actor_pids, _urger_pid=_urger_pid
+    x_urgeunit = UrgeUnit(
+        _concernunit=_concernunit,
+        _actor_pids=_actor_pids,
+        _actor_groups=_actor_groups,
+        _urger_pid=_urger_pid,
     )
+    x_urgeunit.set_actor_groups_empty_if_none()
+    return x_urgeunit
 
 
-def create_urgeunit(_concernunit: ConcernUnit, actor_id: PersonID, urger_pid=None):
+def create_urgeunit(
+    concernunit: ConcernUnit,
+    actor_pid: PersonID,
+    actor_group: GroupBrand = None,
+    urger_pid: PersonID = None,
+):
     if urger_pid is None:
-        urger_pid = _concernunit.get_any_pid()
-    return urgeunit_shop(_concernunit, {actor_id: None}, _urger_pid=urger_pid)
+        urger_pid = concernunit.get_any_pid()
+    if actor_group is None:
+        actor_group = actor_pid
+    x_urgeunit = urgeunit_shop(concernunit, _actor_pids={}, _urger_pid=urger_pid)
+    x_urgeunit.add_actor_pid(actor_pid)
+    x_urgeunit.add_actor_groupbrand(actor_group)
+    return x_urgeunit

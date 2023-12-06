@@ -482,6 +482,7 @@ def test_UrgeUnit_exists():
     # THEN
     assert farm_urgeunit._concernunit is None
     assert farm_urgeunit._actor_pids is None
+    assert farm_urgeunit._actor_groups is None
     assert farm_urgeunit._urger_pid is None
 
 
@@ -493,14 +494,51 @@ def test_urgeunit_shop_ReturnsCorrectObj():
     bob_text = "Bob"
     bob_dict = {bob_text: None}
     yao_text = "Yao"
+    aggie_text = "aggie"
+    aggie_dict = {aggie_text: aggie_text}
     farm_urgeunit = urgeunit_shop(
-        _concernunit=farm_concernunit, _actor_pids=bob_dict, _urger_pid=yao_text
+        _concernunit=farm_concernunit,
+        _actor_pids=bob_dict,
+        _actor_groups=aggie_dict,
+        _urger_pid=yao_text,
     )
 
     # THEN
     assert farm_urgeunit._concernunit == farm_concernunit
     assert farm_urgeunit._actor_pids == bob_dict
+    assert farm_urgeunit._actor_groups == aggie_dict
     assert farm_urgeunit._urger_pid == yao_text
+
+
+def test_UrgeUnit_add_actor_pid_CorrectlyChangesAttribute():
+    # GIVEN
+    bob_text = "Bob"
+    farm_urgeunit = create_urgeunit(get_example_concernunit(), actor_pid=bob_text)
+    assert len(farm_urgeunit._actor_pids) == 1
+
+    # WHEN
+    yao_text = "Yao"
+    farm_urgeunit.add_actor_pid(pid=yao_text)
+
+    # THEN
+    actor_pid_dict = {bob_text: None, yao_text: None}
+    assert farm_urgeunit._actor_pids == actor_pid_dict
+
+
+def test_UrgeUnit_add_groupbrand_CorrectlyChangesAttribute():
+    # GIVEN
+    bob_text = "Bob"
+    bob_dict = {bob_text: None}
+    farm_urgeunit = urgeunit_shop(get_example_concernunit(), _actor_pids=bob_dict)
+    assert len(farm_urgeunit._actor_groups) == 0
+
+    # WHEN
+    swim_text = "swimmers"
+    farm_urgeunit.add_actor_groupbrand(swim_text)
+
+    # THEN
+    swim_dict = {swim_text: swim_text}
+    assert farm_urgeunit._actor_groups == swim_dict
 
 
 def test_create_urgeunit_ReturnsCorrectObj():
@@ -509,28 +547,15 @@ def test_create_urgeunit_ReturnsCorrectObj():
 
     # WHEN
     bob_text = "Bob"
-    farm_urgeunit = create_urgeunit(farm_concernunit, actor_id=bob_text)
+    farm_urgeunit = create_urgeunit(farm_concernunit, actor_pid=bob_text)
 
     # THEN
     assert farm_urgeunit._concernunit == farm_concernunit
     bob_dict = {bob_text: None}
     assert farm_urgeunit._actor_pids == bob_dict
+    bob_group_dict = {bob_text: bob_text}
+    assert farm_urgeunit._actor_groups == bob_group_dict
     assert farm_urgeunit._urger_pid == "Luca"
-
-
-def test_UrgeUnit_add_actor_pid_CorrectlyChangesAttribute():
-    # GIVEN
-    bob_text = "Bob"
-    farm_urgeunit = create_urgeunit(get_example_concernunit(), actor_id=bob_text)
-    assert len(farm_urgeunit._actor_pids) == 1
-
-    # WHEN
-    yao_text = "Yao"
-    farm_urgeunit.add_actor_id(pid=yao_text)
-
-    # THEN
-    actor_pid_dict = {bob_text: None, yao_text: None}
-    assert farm_urgeunit._actor_pids == actor_pid_dict
 
 
 def test_UrgeUnit_get_str_summary_ReturnsCorrectObj():
@@ -538,7 +563,7 @@ def test_UrgeUnit_get_str_summary_ReturnsCorrectObj():
     bob_text = "Bob"
     farm_urgeunit = create_urgeunit(get_example_concernunit(), bob_text)
     yao_text = "Yao"
-    farm_urgeunit.add_actor_id(yao_text)
+    farm_urgeunit.add_actor_pid(yao_text)
 
     texas_text = "Texas"
     luca_text = "Luca"
