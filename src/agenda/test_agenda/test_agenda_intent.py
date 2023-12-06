@@ -2,7 +2,7 @@ from datetime import datetime
 from src.agenda.agenda import agendaunit_shop, get_from_json
 from src.agenda.examples.agenda_env import agenda_env
 from src.agenda.idea import IdeaCore, ideacore_shop
-from src.agenda.road import Road
+from src.agenda.road import get_road
 from src.agenda.required_idea import requiredunit_shop, SuffFactStatusFinder
 from src.agenda.group import groupunit_shop, balancelink_shop
 from src.agenda.party import partylink_shop
@@ -36,9 +36,9 @@ def test_get_intent_returns_intent_with_only_required_allowed():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels_and_2requireds()
     week_text = "weekdays"
-    week_road = f"{x_agenda._culture_qid},{week_text}"
+    week_road = get_road(x_agenda._culture_qid, week_text)
     sun_text = "Sunday"
-    sun_road = f"{week_road},{sun_text}"
+    sun_road = get_road(week_road, sun_text)
     x_agenda.set_acptfact(base=week_road, pick=sun_road)
 
     # WHEN
@@ -97,7 +97,8 @@ def test_get_intent_with_7amItem():
     assert len(x_agenda.get_intent_items()) == 1
 
     # WHEN
-    day24hr_road = f"{x_agenda._culture_qid},timetech,24hr day"
+    timetech_road = get_road(x_agenda._culture_qid, "timetech")
+    day24hr_road = get_road(timetech_road, "24hr day")
     day24hr_open = 0.0
     day24hr_nigh = 8.0
     housework_text = "housework"
@@ -124,13 +125,14 @@ def test_get_intent_does_not_return_promise_items_outside_range():
     c_label = "clean"
     c_idea = ideacore_shop(_label=c_label, promise=True)
     x_agenda.add_idea(idea_kid=c_idea, pad=x_agenda._culture_qid)
-    c_road = f"{x_agenda._culture_qid},{c_label}"
-    jajatime = f"{x_agenda._culture_qid},time,jajatime"
-    jajaday = f"{x_agenda._culture_qid},time,jajatime,day"
+    c_road = get_road(x_agenda._culture_qid, c_label)
+    time_road = get_road(x_agenda._culture_qid, "time")
+    jajatime_road = get_road(time_road, "jajatime")
+    jajaday = get_road(jajatime_road, "day")
 
     x_agenda.edit_idea_attr(
         road=c_road,
-        required_base=jajatime,
+        required_base=jajatime_road,
         required_sufffact=jajaday,
         begin=480,
         close=480,
@@ -138,7 +140,7 @@ def test_get_intent_does_not_return_promise_items_outside_range():
 
     open_x = 1063971180
     nigh_x1 = 2063971523
-    x_agenda.set_acptfact(base=jajatime, pick=jajaday, open=open_x, nigh=nigh_x1)
+    x_agenda.set_acptfact(base=jajatime_road, pick=jajaday, open=open_x, nigh=nigh_x1)
 
     intent_list = x_agenda.get_intent_items()
     assert len(intent_list) == 1
@@ -146,7 +148,7 @@ def test_get_intent_does_not_return_promise_items_outside_range():
     assert intent_list[0]._label in [c_label]
 
     nigh_x2 = 1063971923
-    x_agenda.set_acptfact(base=jajatime, pick=jajaday, open=open_x, nigh=nigh_x2)
+    x_agenda.set_acptfact(base=jajatime_road, pick=jajaday, open=open_x, nigh=nigh_x2)
 
     intent_list = x_agenda.get_intent_items()
     assert len(intent_list) == 0
@@ -156,7 +158,7 @@ def test_exammple_intent_exists():
     # GIVEN
     x_agenda = example_agendas_agenda_v001()
     min_text = "day_minute"
-    min_road = f"{x_agenda._culture_qid},{min_text}"
+    min_road = get_road(x_agenda._culture_qid, min_text)
     x_agenda.set_acptfact(base=min_road, pick=min_road, open=0, nigh=1399)
     assert x_agenda
     # for idea_kid in x_agenda._idearoot._kids.values():
@@ -181,20 +183,20 @@ def test_exammple_AgendaHasCorrectAttributes():
     x_agenda = example_agendas_agenda_v001()
 
     day_min_text = "day_minute"
-    day_min_road = f"{x_agenda._culture_qid},{day_min_text}"
+    day_min_road = get_road(x_agenda._culture_qid, day_min_text)
     x_agenda.set_acptfact(base=day_min_road, pick=day_min_road, open=0, nigh=1399)
     month_week_text = "month_week"
-    month_week_road = f"{x_agenda._culture_qid},{month_week_text}"
+    month_week_road = get_road(x_agenda._culture_qid, month_week_text)
     nations_text = "Nation-States"
-    nations_road = f"{x_agenda._culture_qid},{nations_text}"
+    nations_road = get_road(x_agenda._culture_qid, nations_text)
     mood_text = "Moods"
-    mood_road = f"{x_agenda._culture_qid},{mood_text}"
+    mood_road = get_road(x_agenda._culture_qid, mood_text)
     aaron_text = "Aaron Donald things effected by him"
-    aaron_road = f"{x_agenda._culture_qid},{aaron_text}"
+    aaron_road = get_road(x_agenda._culture_qid, aaron_text)
     # internet_text = "Internet"
-    # internet_road = f"{x_agenda._culture_qid},{internet_text}"
+    # internet_road = get_road(x_agenda._culture_qid,internet_text)
     year_month_text = "year_month"
-    year_month_road = f"{x_agenda._culture_qid},{year_month_text}"
+    year_month_road = get_road(x_agenda._culture_qid, year_month_text)
     x_agenda.set_acptfact(base=month_week_road, pick=month_week_road)
     x_agenda.set_acptfact(base=nations_road, pick=nations_road)
     x_agenda.set_acptfact(base=mood_road, pick=mood_road)
@@ -202,16 +204,16 @@ def test_exammple_AgendaHasCorrectAttributes():
     # x_agenda.set_acptfact(base=internet_road, pick=internet_road)
     x_agenda.set_acptfact(base=year_month_road, pick=year_month_road)
     # season_text = "Seasons"
-    # season_road = f"{x_agenda._culture_qid},{season_text}"
+    # season_road = get_road(x_agenda._culture_qid,season_text)
     # x_agenda.set_acptfact(base=season_road, pick=season_road)
     ced_week_text = "ced_week"
-    ced_week_road = f"{x_agenda._culture_qid},{ced_week_text}"
+    ced_week_road = get_road(x_agenda._culture_qid, ced_week_text)
     x_agenda.set_acptfact(base=ced_week_road, pick=ced_week_road)
     # water_text = "WaterBeing"
-    # water_road = f"{x_agenda._culture_qid},{water_text}"
+    # water_road = get_road(x_agenda._culture_qid,water_text)
     # x_agenda.set_acptfact(base=water_road, pick=water_road)
     # movie_text = "No Movie playing"
-    # movie_road = f"{x_agenda._culture_qid},{movie_text}"
+    # movie_road = get_road(x_agenda._culture_qid,movie_text)
     # x_agenda.set_acptfact(base=movie_road, pick=movie_text)
 
     # WHEN
@@ -221,14 +223,16 @@ def test_exammple_AgendaHasCorrectAttributes():
     print("Test might be deprecated if it's not worthy it to repair this test source.")
     assert len(idea_action_list) == 27
 
-    x_agenda.set_acptfact(base=month_week_road, pick=f"{month_week_road},1st week")
+    x_agenda.set_acptfact(
+        base=month_week_road, pick=get_road(month_week_road, "1st week")
+    )
     idea_action_list = x_agenda.get_intent_items()
     assert len(idea_action_list) == 27
 
     weekday_text = "weekdays"
-    weekday_road = f"{x_agenda._culture_qid},{weekday_text}"
+    weekday_road = get_road(x_agenda._culture_qid, weekday_text)
     monday_text = "Monday"
-    monday_road = f"{weekday_road},{monday_text}"
+    monday_road = get_road(weekday_road, monday_text)
 
     x_agenda.set_acptfact(base=weekday_road, pick=monday_road)
     idea_action_list = x_agenda.get_intent_items()
@@ -259,7 +263,7 @@ def test_exammple_AgendaCanFiltersOnBase():
     # GIVEN
     x_agenda = example_agendas_agenda_v001_with_large_intent()
     week_text = "weekdays"
-    week_road = f"{x_agenda._culture_qid},{week_text}"
+    week_road = get_road(x_agenda._culture_qid, week_text)
     print(f"{type(x_agenda)=}")
     # for base in x_agenda.get_missing_acptfact_bases():
     #     print(f"{base=}")
@@ -293,11 +297,11 @@ def test_set_intent_task_as_complete_RangeWorksCorrectly():
     x_agenda = agendaunit_shop(_healer=healer_text)
 
     run_text = "run"
-    run_road = f"{x_agenda._culture_qid},{run_text}"
+    run_road = get_road(x_agenda._culture_qid, run_text)
     time_text = "time"
-    time_road = f"{x_agenda._culture_qid},{time_text}"
+    time_road = get_road(x_agenda._culture_qid, time_text)
     day_text = "day"
-    day_road = f"{time_road},{day_text}"
+    day_road = get_road(time_road, day_text)
 
     x_agenda.add_idea(
         idea_kid=ideacore_shop(_label=run_text, promise=True),
@@ -339,11 +343,11 @@ def test_set_intent_task_as_complete_DivisionWorksCorrectly():
     x_agenda = agendaunit_shop(_healer=healer_text)
 
     run_text = "run"
-    run_road = f"{x_agenda._culture_qid},{run_text}"
+    run_road = get_road(x_agenda._culture_qid, run_text)
     time_text = "time"
-    time_road = f"{x_agenda._culture_qid},{time_text}"
+    time_road = get_road(x_agenda._culture_qid, time_text)
     day_text = "day"
-    day_road = f"{time_road},{day_text}"
+    day_road = get_road(time_road, day_text)
 
     x_agenda.add_idea(
         idea_kid=ideacore_shop(_label=run_text, promise=True),
@@ -394,11 +398,11 @@ def test_agenda_get_from_json_LoadsActionFromJSONCorrectly():
     assert len(x_agenda.get_idea_list()) == 253
     print(f"{len(x_agenda.get_idea_list())=}")
     casa_text = "casa"
-    casa_road = f"{x_agenda._culture_qid},{casa_text}"
+    casa_road = get_road(x_agenda._culture_qid, casa_text)
     body_text = "workout"
-    body_road = f"{casa_road},{body_text}"
+    body_road = get_road(casa_road, body_text)
     veg_text = "make veggies every morning"
-    veg_road = f"{body_road},{veg_text}"
+    veg_road = get_road(body_road, veg_text)
     veg_idea = x_agenda.get_idea_kid(road=veg_road)
     assert not veg_idea._active_status
     assert veg_idea.promise
@@ -421,7 +425,7 @@ def test_agenda_get_from_json_LoadsActionFromJSONCorrectly():
 
     # WHEN
     day_min_text = "day_minute"
-    day_min_road = f"{x_agenda._culture_qid},{day_min_text}"
+    day_min_road = get_road(x_agenda._culture_qid, day_min_text)
     x_agenda.set_acptfact(base=day_min_road, pick=day_min_road, open=0, nigh=1399)
 
     # THEN
@@ -438,7 +442,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
 
     things_text = "things to do"
     x_agenda.add_idea(ideacore_shop(_label=things_text), pad=x_agenda._culture_qid)
-    t_road = f"{x_agenda._culture_qid},{things_text}"
+    t_road = get_road(x_agenda._culture_qid, things_text)
     clean = "clean"
     run = "run"
     swim = "swim"
@@ -452,57 +456,33 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     x_agenda.add_idea(ideacore_shop(_label=veg, promise=True), pad=t_road)
     x_agenda.add_idea(ideacore_shop(_label=lift, promise=True), pad=t_road)
     time_text = "time"
-    time_road = f"{x_agenda._culture_qid},{time_text}"
+    time_road = get_road(x_agenda._culture_qid, time_text)
     jaja_text = "jajatime"
-    jaja_road = f"{time_road},{jaja_text}"
+    jaja_road = get_road(time_road, jaja_text)
     tech_text = "tech"
-    tech_road = f"{time_road},{tech_text}"
-    w_road = f"{tech_road},week"
-    mon_road = f"{w_road},Monday"
-    tue_road = f"{w_road},Tuesday"
-    wed_road = f"{w_road},Wednesday"
-    thu_road = f"{w_road},Thursday"
-    fri_road = f"{w_road},Friday"
-    sat_road = f"{w_road},Saturday"
-    sun_road = f"{w_road},Sunday"
-    t_road = f"{x_agenda._culture_qid},{things_text}"
-    c_road = f"{t_road},{clean}"
-    r_road = f"{t_road},{run}"
-    s_road = f"{t_road},{swim}"
-    j_road = f"{t_road},{jog}"
-    v_road = f"{t_road},{veg}"
-    l_road = f"{t_road},{lift}"
+    tech_road = get_road(time_road, tech_text)
+    w_road = get_road(tech_road, "week")
+    mon_road = get_road(w_road, "Monday")
+    tue_road = get_road(w_road, "Tuesday")
+    wed_road = get_road(w_road, "Wednesday")
+    thu_road = get_road(w_road, "Thursday")
+    fri_road = get_road(w_road, "Friday")
+    sat_road = get_road(w_road, "Saturday")
+    sun_road = get_road(w_road, "Sunday")
+    t_road = get_road(x_agenda._culture_qid, things_text)
+    c_road = get_road(t_road, clean)
+    r_road = get_road(t_road, run)
+    s_road = get_road(t_road, swim)
+    j_road = get_road(t_road, jog)
+    v_road = get_road(t_road, veg)
+    l_road = get_road(t_road, lift)
 
-    x_agenda.edit_idea_attr(
-        road=c_road,
-        required_base=tue_road,
-        required_sufffact=tue_road,
-    )
-    x_agenda.edit_idea_attr(
-        road=r_road,
-        required_base=wed_road,
-        required_sufffact=wed_road,
-    )
-    x_agenda.edit_idea_attr(
-        road=s_road,
-        required_base=thu_road,
-        required_sufffact=thu_road,
-    )
-    x_agenda.edit_idea_attr(
-        road=j_road,
-        required_base=fri_road,
-        required_sufffact=fri_road,
-    )
-    x_agenda.edit_idea_attr(
-        road=v_road,
-        required_base=sat_road,
-        required_sufffact=sat_road,
-    )
-    x_agenda.edit_idea_attr(
-        road=l_road,
-        required_base=sun_road,
-        required_sufffact=sun_road,
-    )
+    x_agenda.edit_idea_attr(c_road, required_base=tue_road, required_sufffact=tue_road)
+    x_agenda.edit_idea_attr(r_road, required_base=wed_road, required_sufffact=wed_road)
+    x_agenda.edit_idea_attr(s_road, required_base=thu_road, required_sufffact=thu_road)
+    x_agenda.edit_idea_attr(j_road, required_base=fri_road, required_sufffact=fri_road)
+    x_agenda.edit_idea_attr(v_road, required_base=sat_road, required_sufffact=sat_road)
+    x_agenda.edit_idea_attr(l_road, required_base=sun_road, required_sufffact=sun_road)
 
     c_idea = x_agenda.get_idea_kid(road=c_road)
     c_required = c_idea._requiredunits
@@ -627,23 +607,23 @@ def test_agenda_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
     assert len(x_agenda._idearoot._kids) == 0
 
     clean_things_text = "cleaning things"
-    clean_things_road = Road(f"{x_agenda._culture_qid},{clean_things_text}")
+    clean_things_road = get_road(x_agenda._culture_qid, clean_things_text)
     clean_cookery_text = "clean cookery"
-    clean_cookery_road = Road(f"{clean_things_road},{clean_cookery_text}")
+    clean_cookery_road = get_road(clean_things_road, clean_cookery_text)
     clean_cookery_idea = ideacore_shop(
         _label=clean_cookery_text, _pad=clean_things_road
     )
     print(f"{clean_cookery_idea.get_road()=}")
     house_text = "house"
-    house_road = Road(f"{x_agenda._culture_qid},{house_text}")
+    house_road = get_road(x_agenda._culture_qid, house_text)
     cookery_room_text = "cookery room"
-    cookery_room_road = Road(f"{house_road},{cookery_room_text}")
+    cookery_room_road = get_road(house_road, cookery_room_text)
     cookery_dirty_text = "dirty"
-    cookery_dirty_road = Road(f"{cookery_room_road},{cookery_dirty_text}")
+    cookery_dirty_road = get_road(cookery_room_road, cookery_dirty_text)
 
     # create gregorian timeline
     x_agenda.set_time_hreg_ideas(c400_count=7)
-    daytime_road = Road(f"{x_agenda._culture_qid},time,jajatime,day")
+    daytime_road = f"{x_agenda._culture_qid},time,jajatime,day"
     open_8am = 480
     nigh_8am = 480
 
@@ -719,7 +699,6 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
 
     # THEN
     assert len(action_idea_list) == 66
-    jajatime_road = f"{x_agenda._culture_qid},time,jajatime"
     night_text = "late_night_go_to_sleep"
     night_road = f"{x_agenda._culture_qid},D&B,{night_text}"
     night_idea = x_agenda._idea_dict.get(night_road)
@@ -773,7 +752,7 @@ def test_intent_IsSetByAssignedUnit_1PartyGroup():
     bob_text = "bob"
     cx = agendaunit_shop(_healer=bob_text)
     work_text = "work"
-    work_road = f"{bob_text},{work_text}"
+    work_road = get_road(bob_text, work_text)
     cx.add_idea(idea_kid=ideacore_shop(_label=work_text, promise=True), pad=bob_text)
     assert len(cx.get_intent_items()) == 1
 
@@ -810,7 +789,7 @@ def test_intent_IsSetByAssignedUnit_2PartyGroup():
     cx = agendaunit_shop(_healer=bob_text)
     cx.add_partyunit(pid=bob_text)
     work_text = "work"
-    work_road = f"{bob_text},{work_text}"
+    work_road = get_road(bob_text, work_text)
     cx.add_idea(idea_kid=ideacore_shop(_label=work_text, promise=True), pad=bob_text)
 
     sue_text = "sue"
