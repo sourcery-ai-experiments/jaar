@@ -8,7 +8,7 @@ from src.agenda.group import (
     balanceheir_shop,
     get_from_json as groupunits_get_from_json,
 )
-from src.agenda.road import get_default_culture_root_label as root_label
+from src.agenda.road import get_default_culture_root_label as root_label, get_road
 from src.agenda.x_func import x_is_json, x_get_json
 from pytest import raises as pytest_raises
 
@@ -22,7 +22,8 @@ def test_groupBrand_exists():
 def test_groupunit_exists():
     # GIVEN
     swimmers = "swimmers"
-    usa_road = f"{root_label()},nation-states,USA"
+    nation_road = get_road(root_label(), "nation-states")
+    usa_road = get_road(nation_road, "USA")
 
     # WHEN
     swimmers_group = groupunit_shop(
@@ -67,7 +68,8 @@ def test_groupunit_set_attr_WorksCorrectly():
     assert swim_group._partylinks_set_by_culture_road is None
 
     # WHEN
-    water_road = f"{root_label()},sports,water"
+    sports_road = get_road(root_label(), "sports")
+    water_road = get_road(sports_road, "water")
     swim_group.set_attr(_partylinks_set_by_culture_road=water_road)
 
     # THEN
@@ -77,7 +79,8 @@ def test_groupunit_set_attr_WorksCorrectly():
 def test_groupunit_shop_WhenSinglePartyCorrectlyRemoves_partylinks_set_by_culture_road():
     # GIVEN
     swimmers = "swimmers"
-    usa_road = f"{root_label()},nation-states,USA"
+    nation_road = get_road(root_label(), "nation-states")
+    usa_road = get_road(nation_road, "USA")
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:

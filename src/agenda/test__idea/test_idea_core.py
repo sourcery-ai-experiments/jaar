@@ -8,7 +8,7 @@ from src.agenda.required_idea import (
 )
 from src.agenda.required_assign import assigned_unit_shop, assigned_heir_shop
 from src.agenda.origin import originunit_shop
-from src.agenda.road import get_default_culture_root_label as root_label
+from src.agenda.road import get_default_culture_root_label as root_label, get_road
 from pytest import raises as pytest_raises
 
 
@@ -94,7 +94,7 @@ def test_idea_core_shop_ReturnsCorrectObj():
 def test_idea_core_get_key_road_works():
     # GIVEN
     round_text = "round_things"
-    round_pad = f"{root_label()},{round_text}"
+    round_pad = get_road(root_label(), round_text)
     ball_text = "ball"
 
     # WHEN
@@ -102,27 +102,6 @@ def test_idea_core_get_key_road_works():
 
     # THEN
     assert ball_idea.get_key_road() == ball_text
-
-
-def test_idea_core_is_heir_CorrectlyIdentifiesHeirs():
-    # GIVEN
-    idea_core = ideacore_shop()
-    usa_text = "USA"
-    usa_road = f"{root_label()},Nation-States,{usa_text}"
-    texas_text = "Texas"
-    texas_road = f"{usa_road},{texas_text}"
-    # earth_text = "earth"
-    # earth_road = f"{earth_text}"
-    # sea_text = "sea"
-    # sea_road = f"{earth_road},{sea_text}"
-    # seaside_text = "seaside"
-    # seaside_road = f"{earth_road},{seaside_text}"
-
-    # WHEN / THEN
-    assert idea_core.is_heir(src=usa_road, heir=usa_road)
-    assert idea_core.is_heir(src=usa_road, heir=texas_road)
-    assert idea_core.is_heir(src="earth,sea", heir="earth,seaside,beach") == False
-    assert idea_core.is_heir(src="earth,sea", heir="earth,seaside") == False
 
 
 def test_idea_core_balancelinks_exist():
@@ -228,9 +207,9 @@ def test_idea_core_get_balancelinks_weight_sum_WorksCorrectlyNoValues():
 def test_idea_core_set_requiredheirsCorrectlyTakesFromOutside():
     # GIVEN
     ball_text = "ball"
-    ball_road = f"{ball_text}"
+    ball_road = get_road(ball_text)
     run_text = "run"
-    run_road = f"{ball_road},{run_text}"
+    run_road = get_road(ball_road, run_text)
     ball_idea = ideacore_shop(_label=ball_text)
     run_sufffact = sufffactunit_shop(need=run_road, open=0, nigh=7)
     run_sufffacts = {run_sufffact.need: run_sufffact}
@@ -251,9 +230,9 @@ def test_idea_core_set_requiredheirsCorrectlyTakesFromOutside():
 def test_idea_core_set_requiredheirsCorrectlyTakesFromSelf():
     # GIVEN
     ball_text = "ball"
-    ball_road = f"{ball_text}"
+    ball_road = get_road(ball_text)
     run_text = "run"
-    run_road = f"{ball_road},{run_text}"
+    run_road = get_road(ball_road, run_text)
     run_sufffact = sufffactunit_shop(need=run_road, open=0, nigh=7)
     run_sufffacts = {run_sufffact.need: run_sufffact}
     run_requiredunit = requiredunit_shop(base=run_road, sufffacts=run_sufffacts)
@@ -345,13 +324,13 @@ def test_get_obj_from_idea_dict_ReturnsCorrectObj():
 def test_idea_get_dict_ReturnsCorrectCompleteDict():
     # GIVEN
     week_text = "weekdays"
-    week_road = f"{root_label()},{week_text}"
+    week_road = get_road(root_label(), week_text)
     wed_text = "Wednesday"
-    wed_road = f"{week_road},{wed_text}"
+    wed_road = get_road(week_road, wed_text)
     states_text = "nation-state"
-    states_road = f"{root_label()},{states_text}"
+    states_road = get_road(root_label(), states_text)
     usa_text = "USA"
-    usa_road = f"{states_road},{usa_text}"
+    usa_road = get_road(states_road, usa_text)
 
     wed_sufffact = sufffactunit_shop(need=wed_road)
     wed_sufffact._status = True
@@ -403,7 +382,7 @@ def test_idea_get_dict_ReturnsCorrectCompleteDict():
     x1_balancelinks = {biker_pid: biker_get_dict, flyer_pid: flyer_get_dict}
 
     work_text = "work"
-    work_road = f"{root_label()},{work_text}"
+    work_road = get_road(root_label(), work_text)
     work_idea = ideacore_shop(
         _pad=work_road,
         _kids=None,
@@ -489,7 +468,7 @@ def test_idea_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     work_idea._on_meld_weight_action = ignore_text
 
     a_text = "a"
-    a_road = f"{root_label()},{a_text}"
+    a_road = get_road(root_label(), a_text)
     work_idea.set_acptfactunit(acptfactunit_shop(a_road, a_road))
 
     yao_text = "Yao"
@@ -590,9 +569,9 @@ def test_idea_invaild_DenomThrowsError():
     work_text = "work"
     parent_idea = ideacore_shop(_label=work_text)
     casa_text = "casa"
-    casa_road = f"{root_label()},{casa_text}"
+    casa_road = get_road(root_label(), casa_text)
     clean_text = "clean"
-    clean_road = f"{casa_road},{clean_text}"
+    clean_road = get_road(casa_road, clean_text)
     kid_idea = ideacore_shop(
         _label=clean_text, _pad=casa_road, _numor=1, _denom=11.0, _reest=False
     )
@@ -783,7 +762,7 @@ def test_idea_set_assignedunit_empty_if_null():
 def test_idea_get_descendants_ReturnsNoRoads():
     # GIVEN
     nation_text = "nation-state"
-    nation_road = f"{root_label()},{nation_text}"
+    nation_road = get_road(root_label(), nation_text)
     nation_idea = ideacore_shop(_label=nation_text, _pad=root_label())
 
     # WHEN
@@ -796,21 +775,21 @@ def test_idea_get_descendants_ReturnsNoRoads():
 def test_idea_get_descendants_Returns3DescendantsRoads():
     # GIVEN
     nation_text = "nation-state"
-    nation_road = f"{root_label()},{nation_text}"
+    nation_road = get_road(root_label(), nation_text)
     nation_idea = ideacore_shop(_label=nation_text, _pad=root_label())
 
     usa_text = "USA"
-    usa_road = f"{nation_road},{usa_text}"
+    usa_road = get_road(nation_road, usa_text)
     usa_idea = ideacore_shop(_label=usa_text, _pad=nation_road)
     nation_idea.add_kid(idea_kid=usa_idea)
 
     texas_text = "Texas"
-    texas_road = f"{usa_road},{texas_text}"
+    texas_road = get_road(usa_road, texas_text)
     texas_idea = ideacore_shop(_label=texas_text, _pad=usa_road)
     usa_idea.add_kid(idea_kid=texas_idea)
 
     iowa_text = "Iowa"
-    iowa_road = f"{usa_road},{iowa_text}"
+    iowa_road = get_road(usa_road, iowa_text)
     iowa_idea = ideacore_shop(_label=iowa_text, _pad=usa_road)
     usa_idea.add_kid(idea_kid=iowa_idea)
 
@@ -827,7 +806,7 @@ def test_idea_get_descendants_Returns3DescendantsRoads():
 def test_idea_get_descendants_ErrorRaisedIfInfiniteLoop():
     # GIVEN
     nation_text = "nation-state"
-    nation_road = f"{root_label()},{nation_text}"
+    nation_road = get_road(root_label(), nation_text)
     nation_idea = ideacore_shop(_label=nation_text, _pad=root_label())
     nation_idea.add_kid(idea_kid=nation_idea)
     max_count = 1000

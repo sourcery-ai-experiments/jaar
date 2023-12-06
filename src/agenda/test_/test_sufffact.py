@@ -4,16 +4,16 @@ from src.agenda.required_idea import (
     sufffactunit_shop,
     sufffacts_get_from_dict,
 )
-from src.agenda.road import get_default_culture_root_label as root_label
+from src.agenda.road import get_default_culture_root_label as root_label, get_road
 from pytest import raises as pytest_raises
 
 
 def test_sufffact_attributesExist():
     # GIVEN
     work_text = "work"
-    work_road = f"{root_label()},{work_text}"
+    work_road = get_road(root_label(), work_text)
     email_text = "check email"
-    email_road = f"{work_road},{email_text}"
+    email_road = get_road(work_road, email_text)
 
     # WHEN
     email_sufffact = sufffactunit_shop(need=email_road)
@@ -25,7 +25,7 @@ def test_sufffact_attributesExist():
 def test_sufffact_clear_works():
     # WHEN
     work_text = "work"
-    work_road = f"{root_label()},{work_text}"
+    work_road = get_road(root_label(), work_text)
     work_sufffact = sufffactunit_shop(need=work_road)
     # THEN
     assert work_sufffact._status is None
@@ -44,7 +44,7 @@ def test_sufffact_clear_works():
 def test_sufffact_is_range_CorrectlyIdenitiesRangeStatus():
     # GIVEN
     work_text = "work"
-    work_road = f"{root_label()},{work_text}"
+    work_road = get_road(root_label(), work_text)
 
     # WHEN
     work_sufffact = sufffactunit_shop(need=work_road, open=1, nigh=3)
@@ -65,7 +65,7 @@ def test_sufffact_is_range_CorrectlyIdenitiesRangeStatus():
 def test_sufffact_is_range_CorrectlyIdenitiesSegregateStatus():
     # GIVEN
     work_text = "work"
-    work_road = f"{root_label()},{work_text}"
+    work_road = get_road(root_label(), work_text)
 
     # WHEN
     work_sufffact = sufffactunit_shop(need=work_road, open=1, nigh=3)
@@ -85,9 +85,9 @@ def test_sufffact_is_range_CorrectlyIdenitiesSegregateStatus():
 
 def test_sufffact_is_in_lineage_CorrectlyIdentifiesLineage():
     # GIVEN
-    usa_road = f"{root_label()},Nation-States,USA"
-    texas_road = f"{usa_road},Texas"
-    idaho_road = f"{usa_road},Idaho"
+    usa_road = get_road(root_label(), "Nation-States,USA")
+    texas_road = get_road(usa_road, "Texas")
+    idaho_road = get_road(usa_road, "Idaho")
 
     # WHEN
     texas_acptfact = acptfactheir_shop(base=usa_road, pick=texas_road)
@@ -119,7 +119,7 @@ def test_sufffact_is_in_lineage_CorrectlyIdentifiesLineage():
 def test_sufffact_get_range_segregate_status_ReturnsCorrectStatusBoolForRangeSuffFact():
     # GIVEN
     yr_text = "ced_year"
-    yr_road = f"{root_label()},{yr_text}"
+    yr_road = get_road(root_label(), yr_text)
     yr_sufffact = sufffactunit_shop(need=yr_road, open=3, nigh=13)
 
     # WHEN / THEN
@@ -152,7 +152,7 @@ def test_sufffact_get_range_segregate_status_ReturnsCorrectStatusBoolForRangeSuf
 def test_sufffact_get_range_segregate_status_ReturnsCorrectStatusBoolForSegregateSuffFact():
     # GIVEN
     yr_text = "ced_year"
-    yr_road = f"{root_label()},{yr_text}"
+    yr_road = get_road(root_label(), yr_text)
     yr_sufffact = sufffactunit_shop(need=yr_road, divisor=5, open=0, nigh=0)
 
     # WHEN / THEN
@@ -185,7 +185,7 @@ def test_sufffact_get_range_segregate_status_ReturnsCorrectStatusBoolForSegregat
 def test_sufffact_is_range_or_segregate_ReturnsCorrectBool():
     # GIVE
     wkday_text = "weekday"
-    wkday_road = f"{root_label()},{wkday_text}"
+    wkday_road = get_road(root_label(), wkday_text)
 
     # WHEN / THEN
     wkday_sufffact = sufffactunit_shop(need=wkday_road)
@@ -201,7 +201,7 @@ def test_sufffact_is_range_or_segregate_ReturnsCorrectBool():
 def test_get_sufffact_status_returnsCorrectsufffactstatus():
     # WHEN assumes acptfact is in lineage
     wkday_text = "weekday"
-    wkday_road = f"{root_label()},{wkday_text}"
+    wkday_road = get_road(root_label(), wkday_text)
     wkday_sufffact = sufffactunit_shop(need=wkday_road)
 
     # WHEN / THEN
@@ -215,7 +215,7 @@ def test_get_sufffact_status_returnsCorrectsufffactstatus():
 def test_get_sufffact_status_returnsCorrectRangedsufffactstatus():
     # GIVEN assumes acptfact is in lineage
     wkday_text = "weekday"
-    wkday_road = f"{root_label()},{wkday_text}"
+    wkday_road = get_road(root_label(), wkday_text)
     wkday_sufffact = sufffactunit_shop(need=wkday_road, open=3, nigh=7)
 
     # WHEN / THEN
@@ -228,9 +228,9 @@ def test_get_sufffact_status_returnsCorrectRangedsufffactstatus():
 def test_sufffact_set_status_CorrectlySetsStatusWhenAcptFactIsNull():
     # GIVEN
     wkday_text = "weekday"
-    wkday_road = f"{root_label()},{wkday_text}"
+    wkday_road = get_road(root_label(), wkday_text)
     after_text = "afternoon"
-    after_road = f"{wkday_road},{after_text}"
+    after_road = get_road(wkday_road, after_text)
     sufffact_2 = sufffactunit_shop(need=after_road)
     agenda_acptfact_2 = None
     assert sufffact_2._status is None
@@ -245,9 +245,9 @@ def test_sufffact_set_status_CorrectlySetsStatusWhenAcptFactIsNull():
 def test_sufffact_set_status_CorrectlySetsStatusOfSimple():
     # GIVEN
     wkday_text = "weekday"
-    wkday_road = f"{root_label()},{wkday_text}"
+    wkday_road = get_road(root_label(), wkday_text)
     wed_text = "wednesday"
-    wed_road = f"{wkday_road},{wed_text}"
+    wed_road = get_road(wkday_road, wed_text)
     wed_sufffact = sufffactunit_shop(need=wed_road)
     agenda_acptfact = acptfactheir_shop(base=wkday_road, pick=wed_road)
     assert wed_sufffact._status is None
@@ -262,11 +262,11 @@ def test_sufffact_set_status_CorrectlySetsStatusOfSimple():
 def test_sufffact_set_status_CorrectlySetsStatus_2():
     # GIVEN
     wkday_text = "weekday"
-    wkday_road = f"{root_label()},{wkday_text}"
+    wkday_road = get_road(root_label(), wkday_text)
     wed_text = "wednesday"
-    wed_road = f"{wkday_road},{wed_text}"
+    wed_road = get_road(wkday_road, wed_text)
     wed_after_text = "afternoon"
-    wed_after_road = f"{wed_road},{wed_after_text}"
+    wed_after_road = get_road(wed_road, wed_after_text)
     wed_after_sufffact = sufffactunit_shop(need=wed_after_road)
     assert wed_after_sufffact._status is None
 
@@ -281,11 +281,11 @@ def test_sufffact_set_status_CorrectlySetsStatus_2():
 def test_sufffact_set_status_CorrectlySetsStatus_3():
     # GIVEN
     wkday_text = "weekday"
-    wkday_road = f"{root_label()},{wkday_text}"
+    wkday_road = get_road(root_label(), wkday_text)
     wed_text = "wednesday"
-    wed_road = f"{wkday_road},{wed_text}"
+    wed_road = get_road(wkday_road, wed_text)
     wed_noon_text = "noon"
-    wed_noon_road = f"{wed_road},{wed_noon_text}"
+    wed_noon_road = get_road(wed_road, wed_noon_text)
     wed_sufffact = sufffactunit_shop(need=wed_road)
     assert wed_sufffact._status is None
 
@@ -300,11 +300,11 @@ def test_sufffact_set_status_CorrectlySetsStatus_3():
 def test_sufffact_set_status_CorrectlySetsStatus_4():
     # GIVEN
     wkday_text = "weekday"
-    wkday_road = f"{root_label()},{wkday_text}"
+    wkday_road = get_road(root_label(), wkday_text)
     wed_text = "wednesday"
-    wed_road = f"{wkday_road},{wed_text}"
+    wed_road = get_road(wkday_road, wed_text)
     thu_text = "thursday"
-    thu_road = f"{wkday_road},{thu_text}"
+    thu_road = get_road(wkday_road, thu_text)
     wed_sufffact = sufffactunit_shop(need=wed_road)
     thu_acptfact = acptfactheir_shop(base=wkday_road, pick=thu_road)
     assert wed_sufffact._status is None
@@ -322,13 +322,13 @@ def test_sufffact_set_status_CorrectlySetsStatus_4():
 def test_sufffact_set_status_CorrectlySetsStatus_5():
     # GIVEN
     wkday_text = "weekday"
-    wkday_road = f"{root_label()},{wkday_text}"
+    wkday_road = get_road(root_label(), wkday_text)
     wed_text = "wednesday"
-    wed_road = f"{wkday_road},{wed_text}"
+    wed_road = get_road(wkday_road, wed_text)
     wed_sun_text = "sunny"
-    wed_sun_road = f"{wed_road},{wed_sun_text}"
+    wed_sun_road = get_road(wed_road, wed_sun_text)
     wed_rain_text = "rainy"
-    wed_rain_road = f"{wed_road},{wed_rain_text}"
+    wed_rain_road = get_road(wed_road, wed_rain_text)
     wed_sun_sufffact = sufffactunit_shop(need=wed_sun_road)
     assert wed_sun_sufffact._status is None
 
@@ -343,9 +343,9 @@ def test_sufffact_set_status_CorrectlySetsStatus_5():
 def test_sufffact_set_status_CorrectlySetsTimeRangeStatusTrue():
     # GIVEN
     timetech_text = "timetech"
-    timetech_road = f"{root_label()},{timetech_text}"
+    timetech_road = get_road(root_label(), timetech_text)
     hr24_text = "24hr"
-    hr24_road = f"{timetech_road},{hr24_text}"
+    hr24_road = get_road(timetech_road, hr24_text)
     hr24_sufffact = sufffactunit_shop(need=hr24_road, open=7, nigh=7)
     assert hr24_sufffact._status is None
 
@@ -360,7 +360,7 @@ def test_sufffact_set_status_CorrectlySetsTimeRangeStatusTrue():
 def test_sufffact_set_task_CorrectlySetsTaskBool_01():
     # GIVEN
     hr24_text = "24hr"
-    hr24_road = f"{root_label()},{hr24_text}"
+    hr24_road = get_road(root_label(), hr24_text)
     no_range_sufffact = sufffactunit_shop(need=hr24_road)
     no_range_sufffact._status = False
 
@@ -372,7 +372,7 @@ def test_sufffact_set_task_CorrectlySetsTaskBool_01():
 def test_sufffact_set_task_CorrectlySetsTaskBoolRangeTrue():
     # GIVEN
     hr24_text = "24hr"
-    hr24_road = f"{root_label()},{hr24_text}"
+    hr24_road = get_road(root_label(), hr24_text)
     range_5_to_31_sufffact = sufffactunit_shop(need=hr24_road, open=5, nigh=31)
     range_5_to_31_sufffact._status = True
 
@@ -384,7 +384,7 @@ def test_sufffact_set_task_CorrectlySetsTaskBoolRangeTrue():
 def test_sufffact_set_task_CorrectlySetsTaskBoolRangeFalse():
     # GIVEN
     hr24_text = "24hr"
-    hr24_road = f"{root_label()},{hr24_text}"
+    hr24_road = get_road(root_label(), hr24_text)
     range_5_to_31_sufffact = sufffactunit_shop(need=hr24_road, open=5, nigh=31)
     range_5_to_31_sufffact._status = True
 
@@ -396,7 +396,7 @@ def test_sufffact_set_task_CorrectlySetsTaskBoolRangeFalse():
 def test_sufffact_set_task_CorrectlySetsTaskBoolSegregateFalse_01():
     # GIVEN
     hr24_text = "24hr"
-    hr24_road = f"{root_label()},{hr24_text}"
+    hr24_road = get_road(root_label(), hr24_text)
     o0_n0_d5_sufffact = sufffactunit_shop(need=hr24_road, divisor=5, open=0, nigh=0)
     o0_n0_d5_sufffact._status = True
 
@@ -408,7 +408,7 @@ def test_sufffact_set_task_CorrectlySetsTaskBoolSegregateFalse_01():
 def test_sufffact_set_task_CorrectlySetsTaskBoolSegregateFalse_03():
     # GIVEN
     hr24_text = "24hr"
-    hr24_road = f"{root_label()},{hr24_text}"
+    hr24_road = get_road(root_label(), hr24_text)
     o0_n0_d5_sufffact = sufffactunit_shop(need=hr24_road, divisor=5, open=0, nigh=0)
     o0_n0_d5_sufffact._status = False
 
@@ -420,7 +420,7 @@ def test_sufffact_set_task_CorrectlySetsTaskBoolSegregateFalse_03():
 def test_sufffact_set_task_CorrectlySetsTaskBoolSegregateTrue_01():
     # GIVEN
     hr24_text = "24hr"
-    hr24_road = f"{root_label()},{hr24_text}"
+    hr24_road = get_road(root_label(), hr24_text)
     o0_n0_d5_sufffact = sufffactunit_shop(need=hr24_road, divisor=5, open=0, nigh=0)
     o0_n0_d5_sufffact._status = True
 
@@ -432,7 +432,7 @@ def test_sufffact_set_task_CorrectlySetsTaskBoolSegregateTrue_01():
 def test_sufffact_set_task_CorrectlySetsTaskBoolSegregateTrue_02():
     # GIVEN
     hr24_text = "24hr"
-    hr24_road = f"{root_label()},{hr24_text}"
+    hr24_road = get_road(root_label(), hr24_text)
     o0_n0_d5_sufffact = sufffactunit_shop(need=hr24_road, divisor=5, open=0, nigh=0)
     o0_n0_d5_sufffact._status = True
 
@@ -444,9 +444,9 @@ def test_sufffact_set_task_CorrectlySetsTaskBoolSegregateTrue_02():
 def test_sufffact_set_task_NotNull():
     # GIVEN
     week_text = "weekdays"
-    week_road = f"{root_label()},{week_text}"
+    week_road = get_road(root_label(), week_text)
     wed_text = "Wednesday"
-    wed_road = f"{week_road},{wed_text}"
+    wed_road = get_road(week_road, wed_text)
     wed_sufffact = sufffactunit_shop(need=wed_road)
     wed_sufffact._status = True
 
@@ -460,7 +460,7 @@ def test_sufffact_set_task_NotNull():
 def test_sufffact_set_status_CorrectlySetsTimeRangeTaskTrue_v1():
     # GIVEN
     hr24_text = "24hr"
-    hr24_road = f"{root_label()},{hr24_text}"
+    hr24_road = get_road(root_label(), hr24_text)
     range_2_to_7_sufffact = sufffactunit_shop(need=hr24_road, open=2, nigh=7)
     assert range_2_to_7_sufffact._status is None
     assert range_2_to_7_sufffact._task is None
@@ -477,7 +477,7 @@ def test_sufffact_set_status_CorrectlySetsTimeRangeTaskTrue_v1():
 def test_sufffact_set_status_CorrectlySetsTimeRangeTaskTrue_v2():
     # GIVEN
     hr24_text = "24hr"
-    hr24_road = f"{root_label()},{hr24_text}"
+    hr24_road = get_road(root_label(), hr24_text)
     range_2_to_7_sufffact = sufffactunit_shop(need=hr24_road, open=2, nigh=7)
     range_0_to_8_acptfact = acptfactheir_shop(hr24_road, hr24_road, open=0, nigh=8)
     assert range_2_to_7_sufffact._status is None
@@ -507,9 +507,9 @@ def test_sufffact_set_status_CorrectlySetsTimeRangeTaskTrue_v2():
 def test_sufffact_set_status_CorrectlySetsTimeRangeStatusFalse():
     # GIVEN
     timetech_text = "timetech"
-    timetech_road = f"{root_label()},{timetech_text}"
+    timetech_road = get_road(root_label(), timetech_text)
     hr24_text = "24hr"
-    hr24_road = f"{timetech_road},{hr24_text}"
+    hr24_road = get_road(timetech_road, hr24_text)
     hr24_sufffact = sufffactunit_shop(need=hr24_road, open=7, nigh=7)
     assert hr24_sufffact._status is None
 
@@ -524,9 +524,9 @@ def test_sufffact_set_status_CorrectlySetsTimeRangeStatusFalse():
 def test_sufffact_set_status_CorrectlySetCEDWeekStatusFalse():
     # GIVEN
     timetech_text = "timetech"
-    timetech_road = f"{root_label()},{timetech_text}"
+    timetech_road = get_road(root_label(), timetech_text)
     week_text = "ced_week"
-    week_road = f"{timetech_road},{week_text}"
+    week_road = get_road(timetech_road, week_text)
     o1_n1_d6_sufffact = sufffactunit_shop(need=week_road, divisor=6, open=1, nigh=1)
     assert o1_n1_d6_sufffact._status is None
 
@@ -541,9 +541,9 @@ def test_sufffact_set_status_CorrectlySetCEDWeekStatusFalse():
 def test_sufffact_set_status_CorrectlySetCEDWeekStatusTrue():
     # GIVEN
     timetech_text = "timetech"
-    timetech_road = f"{root_label()},{timetech_text}"
+    timetech_road = get_road(root_label(), timetech_text)
     week_text = "ced_week"
-    week_road = f"{timetech_road},{week_text}"
+    week_road = get_road(timetech_road, week_text)
     week_sufffact = sufffactunit_shop(need=week_road, divisor=6, open=1, nigh=1)
     agenda_acptfact = acptfactheir_shop(base=week_road, pick=week_road, open=7, nigh=7)
     assert week_sufffact._status is None
@@ -558,9 +558,9 @@ def test_sufffact_set_status_CorrectlySetCEDWeekStatusTrue():
 def test_sufffact_get_dict_ReturnsCorrectDictWithDvisiorAndOpenNigh():
     # GIVEN
     timetech_text = "timetech"
-    timetech_road = f"{root_label()},{timetech_text}"
+    timetech_road = get_road(root_label(), timetech_text)
     week_text = "ced_week"
-    week_road = f"{timetech_road},{week_text}"
+    week_road = get_road(timetech_road, week_text)
     week_sufffact = sufffactunit_shop(need=week_road, divisor=6, open=1, nigh=1)
 
     # WHEN
@@ -575,9 +575,9 @@ def test_sufffact_get_dict_ReturnsCorrectDictWithDvisiorAndOpenNigh():
 def test_sufffact_get_dict_ReturnsCorrectDictWithOpenAndNigh():
     # GIVEN
     timetech_text = "timetech"
-    timetech_road = f"{root_label()},{timetech_text}"
+    timetech_road = get_road(root_label(), timetech_text)
     week_text = "ced_week"
-    week_road = f"{timetech_road},{week_text}"
+    week_road = get_road(timetech_road, week_text)
     week_sufffact = sufffactunit_shop(need=week_road, open=1, nigh=4)
 
     # WHEN
@@ -592,9 +592,9 @@ def test_sufffact_get_dict_ReturnsCorrectDictWithOpenAndNigh():
 def test_sufffact_get_dict_ReturnsCorrectDictWithOnlyRoad():
     # GIVEN
     timetech_text = "timetech"
-    timetech_road = f"{root_label()},{timetech_text}"
+    timetech_road = get_road(root_label(), timetech_text)
     week_text = "ced_week"
-    week_road = f"{timetech_road},{week_text}"
+    week_road = get_road(timetech_road, week_text)
     week_sufffact = sufffactunit_shop(need=week_road)
 
     # WHEN
@@ -609,9 +609,9 @@ def test_sufffact_get_dict_ReturnsCorrectDictWithOnlyRoad():
 def test_sufffact_get_key_road():
     # GIVEN
     timetech_text = "timetech"
-    timetech_road = f"{root_label()},{timetech_text}"
+    timetech_road = get_road(root_label(), timetech_text)
     week_text = "ced_week"
-    week_road = f"{timetech_road},{week_text}"
+    week_road = get_road(timetech_road, week_text)
     week_sufffact = sufffactunit_shop(need=week_road)
 
     # WHEN / THEN
@@ -622,9 +622,9 @@ def test_sufffact_find_replace_road_works():
     # GIVEN
     old_root_road = root_label()
     weekday_text = "weekday"
-    weekday_road = f"{root_label()},{weekday_text}"
+    weekday_road = get_road(root_label(), weekday_text)
     sunday_text = "Sunday"
-    old_sunday_road = f"{weekday_road},{sunday_text}"
+    old_sunday_road = get_road(weekday_road, sunday_text)
     sunday_sufffact = sufffactunit_shop(need=old_sunday_road)
     print(sunday_sufffact)
     assert sunday_sufffact.need == old_sunday_road
@@ -632,7 +632,8 @@ def test_sufffact_find_replace_road_works():
     # WHEN
     new_road = "fun"
     sunday_sufffact.find_replace_road(old_road=old_root_road, new_road=new_road)
-    new_sunday_road = f"{new_road},{weekday_text},{sunday_text}"
+    new_weekday_road = get_road(new_road, weekday_text)
+    new_sunday_road = get_road(new_weekday_road, sunday_text)
 
     # THEN
     assert sunday_sufffact.need == new_sunday_road
@@ -641,9 +642,9 @@ def test_sufffact_find_replace_road_works():
 def test_sufffact_meld_works():
     # GIVEN
     timetech_text = "timetech"
-    timetech_road = f"{root_label()},{timetech_text}"
+    timetech_road = get_road(root_label(), timetech_text)
     week_text = "ced_week"
-    week_road = f"{timetech_road},{week_text}"
+    week_road = get_road(timetech_road, week_text)
     x1_sufffact = sufffactunit_shop(need=week_road)
     y1_sufffact = sufffactunit_shop(need=week_road)
 
@@ -660,9 +661,9 @@ def test_sufffact_meld_works():
 def test_sufffact_meld_raises_NotSameRoadError():
     # GIVEN
     timetech_text = "timetech"
-    timetech_road = f"{root_label()},{timetech_text}"
+    timetech_road = get_road(root_label(), timetech_text)
     week_text = "ced_week"
-    week_road = f"{timetech_road},{week_text}"
+    week_road = get_road(timetech_road, week_text)
     x_sufffact = sufffactunit_shop(need=week_road)
     y_sufffact = sufffactunit_shop(need=timetech_road)
 
@@ -678,7 +679,7 @@ def test_sufffact_meld_raises_NotSameRoadError():
 def test_sufffact_meld_raises_NotSameOpenError():
     # GIVEN
     timetech_text = "timetech"
-    timetech_road = f"{root_label()},{timetech_text}"
+    timetech_road = get_road(root_label(), timetech_text)
     x_sufffact = sufffactunit_shop(need=timetech_road, open=1, nigh=3, divisor=8)
     y_sufffact = sufffactunit_shop(need=timetech_road, open=0, nigh=3, divisor=8)
 
@@ -694,7 +695,7 @@ def test_sufffact_meld_raises_NotSameOpenError():
 def test_sufffact_meld_raises_NotSameNighError():
     # GIVEN
     timetech_text = "timetech"
-    timetech_road = f"{root_label()},{timetech_text}"
+    timetech_road = get_road(root_label(), timetech_text)
     x_sufffact = sufffactunit_shop(need=timetech_road, open=1, nigh=5, divisor=8)
     y_sufffact = sufffactunit_shop(need=timetech_road, open=1, nigh=3, divisor=8)
 
@@ -710,7 +711,7 @@ def test_sufffact_meld_raises_NotSameNighError():
 def test_sufffact_meld_raises_NotSameDivisorError():
     # GIVEN
     timetech_text = "timetech"
-    timetech_road = f"{root_label()},{timetech_text}"
+    timetech_road = get_road(root_label(), timetech_text)
     x_sufffact = sufffactunit_shop(need=timetech_road, open=1, nigh=5, divisor=8)
     y_sufffact = sufffactunit_shop(need=timetech_road, open=1, nigh=5, divisor=10)
 
@@ -726,7 +727,7 @@ def test_sufffact_meld_raises_NotSameDivisorError():
 def test_sufffacts_get_from_dict_CorrectlyReturnsCompleteObj():
     # GIVEN
     weekday_text = "weekdays"
-    weekday_road = f"{root_label()},{weekday_text}"
+    weekday_road = get_road(root_label(), weekday_text)
     static_dict = {
         weekday_road: {
             "need": weekday_road,
@@ -748,7 +749,7 @@ def test_sufffacts_get_from_dict_CorrectlyReturnsCompleteObj():
 def test_acptfactunits_get_from_dict_CorrectlyBuildsObjFromIncompleteDict():
     # GIVEN
     weekday_text = "weekdays"
-    weekday_road = f"{root_label()},{weekday_text}"
+    weekday_road = get_road(root_label(), weekday_text)
     static_dict = {weekday_road: {"need": weekday_road}}
 
     # WHEN

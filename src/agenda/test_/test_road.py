@@ -16,6 +16,7 @@ from src.agenda.road import (
     RaodNode,
     get_diff_road,
     get_road,
+    is_heir_road,
 )
 from src.agenda.required_idea import sufffactunit_shop
 from src.agenda.idea import IdeaCore
@@ -363,3 +364,23 @@ def test_get_diff_road_ReturnsCorrectObj():
     bloomers_rose_road = get_road(bloomers_text, roses_text)
     print(f"{bloomers_rose_road=}")
     assert get_diff_road(roses_road, healer_road) == bloomers_rose_road
+
+
+def test_is_heir_road_CorrectlyIdentifiesHeirs():
+    # GIVEN
+    usa_text = "USA"
+    usa_road = f"{root_label()},Nation-States,{usa_text}"
+    texas_text = "Texas"
+    texas_road = f"{usa_road},{texas_text}"
+    # earth_text = "earth"
+    # earth_road = f"{earth_text}"
+    # sea_text = "sea"
+    # sea_road = f"{earth_road},{sea_text}"
+    # seaside_text = "seaside"
+    # seaside_road = f"{earth_road},{seaside_text}"
+
+    # WHEN / THEN
+    assert is_heir_road(src=usa_road, heir=usa_road)
+    assert is_heir_road(src=usa_road, heir=texas_road)
+    assert is_heir_road(src="earth,sea", heir="earth,seaside,beach") == False
+    assert is_heir_road(src="earth,sea", heir="earth,seaside") == False

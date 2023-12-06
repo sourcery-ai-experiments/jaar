@@ -29,6 +29,7 @@ from src.agenda.required_idea import (
 from src.agenda.road import (
     is_sub_road,
     get_default_culture_root_label as root_label,
+    get_road as road_get_road,
 )
 from src.agenda.group import (
     BalanceHeir,
@@ -326,9 +327,9 @@ class IdeaCore:
 
     def get_road(self) -> Road:
         if self._pad in (None, ""):
-            return f"{self._label}"
+            return road_get_road(self._label)
         else:
-            return f"{self._pad},{self._label}"
+            return road_get_road(self._pad, self._label)
 
     def clear_descendant_promise_count(self):
         self._descendant_promise_count = None
@@ -380,9 +381,9 @@ class IdeaCore:
         elif parent_road == "" and parent_label != None:
             self._pad = parent_label
         elif parent_road != "" and parent_label in ("", None):
-            self._pad = f"{parent_road}"
+            self._pad = road_get_road(parent_road)
         else:
-            self._pad = f"{parent_road},{parent_label}"
+            self._pad = road_get_road(parent_road, parent_label)
 
     def inherit_balanceheirs(
         self, parent_balanceheirs: dict[GroupBrand:BalanceHeir] = None
@@ -750,9 +751,6 @@ class IdeaCore:
     def set_requiredunits_empty_if_null(self):
         if self._requiredunits is None:
             self._requiredunits = {}
-
-    def is_heir(self, src: Road, heir: Road) -> bool:
-        return src == heir or heir.find(f"{src},") == 0
 
     def set_requiredheirs_status(self):
         self.set_requiredunits_empty_if_null()

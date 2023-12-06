@@ -188,19 +188,6 @@ def test_agenda_add_idea_creates_requireds_ideas():
     assert x_agenda.get_level_count(level=3) == 4
 
 
-def test_agenda_idearoot_is_heir_CorrectlyChecksLineage():
-    x_agenda = get_agenda_with_4_levels()
-    x_agenda.set_agenda_metrics()
-
-    week_text = "weekdays"
-    week_road = f"{x_agenda._culture_qid},{week_text}"
-    sun_text = "Sunday"
-    sun_road = f"{week_road},{sun_text}"
-    assert x_agenda._idearoot.is_heir(src=week_road, heir=week_road)
-    assert x_agenda._idearoot.is_heir(src=week_road, heir=sun_road)
-    assert x_agenda._idearoot.is_heir(src=sun_road, heir=week_road) == False
-
-
 def test_agenda_del_idea_kid_Level0CannotBeDeleted():
     # GIVEN
     x_agenda = get_agenda_with_4_levels()
