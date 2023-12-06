@@ -24,3 +24,24 @@ def test_worldunit_add_cultural_connection_CorrectlyCreatesObj():
     # THEN
     assert x_world.personunit_exists(kari_text)
     assert texas_culture._councilunits.get(kari_text) != None
+
+
+def test_worldunit_apply_urgeunit_CorrectlyCreates_seed_agendas():
+    # GIVEN urger and actor seed_agendas does not exist
+    # WHEN worldunit urgeunit is applyed
+    # THEN seed agendas do exist
+    assert 1 == 2
+
+
+def test_worldunit_apply_urgeunit_CorrectlyAddsTaskTo_urger_seed_agenda():
+    # GIVEN urger and actor seed_agendas does not exist
+    # WHEN worldunit urgeunit is applyed
+    # THEN urger seed_agenda has
+    assert 1 == 2
+
+
+def test_worldunit_apply_urgeunit_CorrectlyAddsTaskTo_intent():
+    # GIVEN actors public_agenda intent is empty
+    # WHEN worldunit urgeunit is applyed
+    # THEN actors public_agenda intent is non-empty
+    assert 1 == 2

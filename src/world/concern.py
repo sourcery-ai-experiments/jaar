@@ -110,8 +110,7 @@ class ConcernUnit:
         negative_road = get_diff_road(self._action_negative, self._action_subject)
         positive_road = get_diff_road(self._action_positive, self._action_subject)
 
-        return f"""
-Within {list(self.cultureaddress.person_ids.keys())}'s {self.cultureaddress.culture_qid} culture subject: {concern_road}
+        return f"""Within {list(self.cultureaddress.person_ids.keys())}'s {self.cultureaddress.culture_qid} culture subject: {concern_road}
  {bad_road} is bad. 
  {good_road} is good.
  Within the action domain of '{action_road}'
@@ -177,8 +176,8 @@ class UrgeUnit:
             self._actor_groups = {}
 
     def get_str_summary(self):
-        return f"""{self._concernunit.get_str_summary()}
- {list(self._actor_pids.keys())} are asked to be good."""
+        return f"""UrgeUnit: {self._concernunit.get_str_summary()}
+ {list(self._actor_pids.keys())} are in groups {list(self._actor_groups.keys())} and are asked to be good."""
 
 
 def urgeunit_shop(

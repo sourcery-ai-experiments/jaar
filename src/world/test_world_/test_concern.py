@@ -1,3 +1,7 @@
+from src.world.examples.examples import (
+    get_farm_concernunit as examples_get_farm_concernunit,
+    get_farm_urgeunit as examples_get_farm_urgeunit,
+)
 from src.agenda.road import get_road
 from src.world.concern import (
     CultureAddress,
@@ -10,30 +14,7 @@ from src.world.concern import (
     urgeunit_shop,
     create_urgeunit,
 )
-from src.world.examples.world_env_kit import get_test_worlds_dir
-from src.world.person import personunit_shop
 from pytest import raises as pytest_raises
-
-
-def get_example_concernunit():
-    luca_text = "Luca"
-    texas_text = "Texas"
-    texas_cultureaddress = create_cultureaddress(luca_text, texas_text)
-    food_text = "food"
-    good_text = "good food"
-    bad_text = "bad food"
-    farm_text = "farm"
-    well_text = "farm well"
-    poor_text = "farm poorly"
-    return create_concernunit(
-        cultureaddress=texas_cultureaddress,
-        concern=food_text,
-        good=good_text,
-        bad=bad_text,
-        action=farm_text,
-        positive=well_text,
-        negative=poor_text,
-    )
 
 
 def test_CultureAddress_exists():
@@ -239,7 +220,7 @@ def test_ConcernUnit_set_good_RaisesGoodBadErrorCorrectly():
 
 def test_ConcernUnit_set_good_EmptySubjectRaisesErrorCorrectly():
     # GIVEN
-    farm_concernunit = get_example_concernunit()
+    farm_concernunit = examples_get_farm_concernunit()
     texas_cultureaddress = farm_concernunit.cultureaddress
     food_subject = get_road(texas_cultureaddress.culture_qid, "food")
     food_good = get_road(food_subject, "good food")
@@ -425,8 +406,7 @@ def test_ConcernUnit_get_str_summary_ReturnsCorrectObj():
     )
 
     # WHEN / THEN
-    farm_summary_string = f"""
-Within ['{luca_text}']'s {texas_text} culture subject: {food_text}
+    farm_summary_string = f"""Within ['{luca_text}']'s {texas_text} culture subject: {food_text}
  {bad_text} is bad. 
  {good_text} is good.
  Within the action domain of '{action_text}'
@@ -488,7 +468,7 @@ def test_UrgeUnit_exists():
 
 def test_urgeunit_shop_ReturnsCorrectObj():
     # GIVEN
-    farm_concernunit = get_example_concernunit()
+    farm_concernunit = examples_get_farm_concernunit()
 
     # WHEN
     bob_text = "Bob"
@@ -513,7 +493,7 @@ def test_urgeunit_shop_ReturnsCorrectObj():
 def test_UrgeUnit_add_actor_pid_CorrectlyChangesAttribute():
     # GIVEN
     bob_text = "Bob"
-    farm_urgeunit = create_urgeunit(get_example_concernunit(), actor_pid=bob_text)
+    farm_urgeunit = create_urgeunit(examples_get_farm_concernunit(), actor_pid=bob_text)
     assert len(farm_urgeunit._actor_pids) == 1
 
     # WHEN
@@ -529,7 +509,7 @@ def test_UrgeUnit_add_groupbrand_CorrectlyChangesAttribute():
     # GIVEN
     bob_text = "Bob"
     bob_dict = {bob_text: None}
-    farm_urgeunit = urgeunit_shop(get_example_concernunit(), _actor_pids=bob_dict)
+    farm_urgeunit = urgeunit_shop(examples_get_farm_concernunit(), _actor_pids=bob_dict)
     assert len(farm_urgeunit._actor_groups) == 0
 
     # WHEN
@@ -543,7 +523,7 @@ def test_UrgeUnit_add_groupbrand_CorrectlyChangesAttribute():
 
 def test_create_urgeunit_ReturnsCorrectObj():
     # GIVEN
-    farm_concernunit = get_example_concernunit()
+    farm_concernunit = examples_get_farm_concernunit()
 
     # WHEN
     bob_text = "Bob"
@@ -560,11 +540,15 @@ def test_create_urgeunit_ReturnsCorrectObj():
 
 def test_UrgeUnit_get_str_summary_ReturnsCorrectObj():
     # GIVEN
-    bob_text = "Bob"
-    farm_urgeunit = create_urgeunit(get_example_concernunit(), bob_text)
-    yao_text = "Yao"
-    farm_urgeunit.add_actor_pid(yao_text)
+    farm_urgeunit = examples_get_farm_urgeunit()
 
+    # WHEN
+    generated_farm_str = farm_urgeunit.get_str_summary()
+
+    # THEN
+    bob_text = "Bob"
+    real_text = "Real Farmers"
+    yao_text = "Yao"
     texas_text = "Texas"
     luca_text = "Luca"
     food_text = "food"
@@ -573,14 +557,12 @@ def test_UrgeUnit_get_str_summary_ReturnsCorrectObj():
     action_text = "farm"
     positive_text = "farm well"
     negative_text = "farm poorly"
-
-    # WHEN / THEN
-    farm_summary_string = f"""
-Within ['{luca_text}']'s {texas_text} culture subject: {food_text}
+    static_farm_string = f"""UrgeUnit: Within ['{luca_text}']'s {texas_text} culture subject: {food_text}
  {bad_text} is bad. 
  {good_text} is good.
  Within the action domain of '{action_text}'
  It is good to {positive_text}
  It is bad to {negative_text}
- ['{bob_text}', '{yao_text}'] are asked to be good."""
-    assert farm_urgeunit.get_str_summary() == farm_summary_string
+ ['{bob_text}', '{yao_text}'] are in groups ['{real_text}'] and are asked to be good."""
+
+    assert generated_farm_str == static_farm_string
