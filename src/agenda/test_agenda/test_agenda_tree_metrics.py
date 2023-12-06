@@ -1,3 +1,4 @@
+from src.agenda.road import get_road
 from src.agenda.examples.example_agendas import (
     agenda_v001,
     get_agenda_with_4_levels,
@@ -79,14 +80,14 @@ def test_agenda_agenda_get_tree_metrics_sets_uids_correctly():
         idea_kid=ideacore_shop(_label=pad_text, _uid=2), pad=x_agenda._culture_qid
     )
     assert (
-        x_agenda.get_idea_kid(road=f"{x_agenda._culture_qid},{swim_text}")._uid is None
+        x_agenda.get_idea_kid(get_road(x_agenda._culture_qid, swim_text))._uid is None
     )
 
     x_agenda.set_all_idea_uids_unique()
 
     # THEN
     assert (
-        x_agenda.get_idea_kid(road=f"{x_agenda._culture_qid},{swim_text}")._uid != None
+        x_agenda.get_idea_kid(get_road(x_agenda._culture_qid, swim_text))._uid != None
     )
 
 
@@ -96,7 +97,7 @@ def test_agenda_get_tree_metrics_ReturnsANoneActionIdeaRoad():
     x_agenda = agendaunit_shop(_healer=healer_text, _weight=10)
     weekdays = "weekdays"
     idea_kid_weekdays = ideacore_shop(_weight=40, _label=weekdays)
-    x_agenda.add_idea(idea_kid=idea_kid_weekdays, pad=f"{x_agenda._culture_qid}")
+    x_agenda.add_idea(idea_kid=idea_kid_weekdays, pad=x_agenda._culture_qid)
     tree_metrics_before = x_agenda.get_tree_metrics()
     # WHEN/THEN
     assert tree_metrics_before.an_promise_idea_road is None
@@ -106,8 +107,15 @@ def test_agenda_get_tree_metrics_ReturnsAnActionIdeaRoad():
     # GIVEN
     x_agenda = agenda_v001()
     tree_metrics_before = x_agenda.get_tree_metrics()
+
     # WHEN/THEN
-    assert (
-        tree_metrics_before.an_promise_idea_road
-        == f"{x_agenda._culture_qid},ACME,ACME Employee Responsiblities,Know Abuse Prevention and Reporting guildlines,Take Fall 2021 training"
+    train_road = get_road(
+        road_nodes=[
+            x_agenda._culture_qid,
+            "ACME",
+            "ACME Employee Responsiblities",
+            "Know Abuse Prevention and Reporting guildlines",
+            "Take Fall 2021 training",
+        ]
     )
+    assert tree_metrics_before.an_promise_idea_road == train_road
