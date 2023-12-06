@@ -1,3 +1,4 @@
+from src.agenda.road import get_road
 from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels as example_agendas_get_agenda_with_4_levels,
 )
@@ -84,8 +85,9 @@ def test_get_idea_kid_CorrectlyReturnsIdea():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     nation_text = "nation-state"
+    nation_road = get_road(x_agenda._culture_qid, nation_text)
     brazil_text = "Brazil"
-    brazil_road = f"{x_agenda._culture_qid},{nation_text},{brazil_text}"
+    brazil_road = get_road(nation_road, brazil_text)
 
     # WHEN
     brazil_idea = x_agenda.get_idea_kid(road=brazil_road)
@@ -96,7 +98,7 @@ def test_get_idea_kid_CorrectlyReturnsIdea():
 
     # WHEN
     week_text = "weekdays"
-    week_road = f"{x_agenda._culture_qid},{week_text}"
+    week_road = get_road(x_agenda._culture_qid, week_text)
     week_idea = x_agenda.get_idea_kid(road=week_road)
 
     # THEN
@@ -112,7 +114,7 @@ def test_get_idea_kid_CorrectlyReturnsIdea():
 
     # WHEN / THEN
     bobdylan_text = "bobdylan"
-    wrong_road = f"{x_agenda._culture_qid},{bobdylan_text}"
+    wrong_road = get_road(x_agenda._culture_qid, bobdylan_text)
     with pytest_raises(Exception) as excinfo:
         x_agenda.get_idea_kid(road=wrong_road)
     assert (
@@ -142,7 +144,7 @@ def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_1():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
-    work_road = f"{x_agenda._culture_qid},{work_text}"
+    work_road = get_road(x_agenda._culture_qid, work_text)
     week_text = "weekdays"
     mon_text = "Monday"
 
@@ -215,7 +217,7 @@ def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_2():
     vaccum_text = "vaccum"
     sandy_text = "sandy"
 
-    work_road = f"{x_agenda._culture_qid},{work_text}"
+    work_road = get_road(x_agenda._culture_qid, work_text)
     email_idea = ideacore_shop(_label=email_text, promise=True)
     x_agenda.add_idea(idea_kid=email_idea, pad=work_road)
     vaccum_idea = ideacore_shop(_label=vaccum_text, promise=True)
@@ -303,19 +305,19 @@ def test_TreeTraverseSetsBalanceLineestorFromRootCorrectly():
     assert x_agenda._idearoot._balanceheirs.get(sandy_text) != None
     assert x_agenda._idearoot._balanceheirs.get(sandy_text).brand == sandy_text
     assert x_agenda._idearoot._balancelines != {}
-    root_idea = x_agenda.get_idea_kid(road=f"{x_agenda._idearoot._label}")
+    root_idea = x_agenda.get_idea_kid(road=x_agenda._idearoot._label)
     sandy_balanceline = x_agenda._idearoot._balancelines.get(sandy_text)
     print(f"{sandy_balanceline._agenda_credit=} {root_idea._agenda_importance=} ")
     print(f"  {sandy_balanceline._agenda_debt=} {root_idea._agenda_importance=} ")
     sum_x = 0
-    cat_road = f"{x_agenda._culture_qid},feed cat"
+    cat_road = get_road(x_agenda._culture_qid, "feed cat")
     cat_idea = x_agenda.get_idea_kid(cat_road)
-    week_road = f"{x_agenda._culture_qid},{week_text}"
+    week_road = get_road(x_agenda._culture_qid, week_text)
     week_idea = x_agenda.get_idea_kid(week_road)
     work_text = "work"
-    work_road = f"{x_agenda._culture_qid},{work_text}"
+    work_road = get_road(x_agenda._culture_qid, work_text)
     work_idea = x_agenda.get_idea_kid(work_road)
-    nation_road = f"{x_agenda._culture_qid},{nation_text}"
+    nation_road = get_road(x_agenda._culture_qid, nation_text)
     nation_idea = x_agenda.get_idea_kid(nation_road)
     sum_x = cat_idea._agenda_importance
     print(f"{cat_idea._agenda_importance=} {sum_x} ")
@@ -379,7 +381,7 @@ def test_agenda4party_Exists():
     work_text = "work"
     vaccum_text = "vaccum"
     sandy_text = "sandy"
-    work_road = f"{x_agenda._culture_qid},{work_text}"
+    work_road = get_road(x_agenda._culture_qid, work_text)
     email_idea = ideacore_shop(_label=email_text, promise=True)
     x_agenda.add_idea(idea_kid=email_idea, pad=work_road)
     vaccum_idea = ideacore_shop(_label=vaccum_text, promise=True)
@@ -409,7 +411,7 @@ def test_agenda4party_hasCorrectLevel1StructureNoGrouplessBranches():
     sandy_text = "sandy"
     week_text = "weekdays"
     feed_text = "feed cat"
-    work_road = f"{x_agenda._culture_qid},{work_text}"
+    work_road = get_road(x_agenda._culture_qid, work_text)
     email_idea = ideacore_shop(_label=email_text, promise=True)
     x_agenda.add_idea(idea_kid=email_idea, pad=work_road)
     vaccum_idea = ideacore_shop(_label=vaccum_text, promise=True)
@@ -500,7 +502,7 @@ def test_agenda_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoads():
     x_agenda.add_idea(
         ideacore_shop(_label=time, _begin=0, _close=700), pad=x_agenda._culture_qid
     )
-    t_road = f"{x_agenda._culture_qid},{time}"
+    t_road = get_road(x_agenda._culture_qid, time)
     week = "weeks"
     x_agenda.add_idea(ideacore_shop(_label=week, _denom=7), pad=t_road)
 

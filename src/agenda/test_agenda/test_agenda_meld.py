@@ -1,3 +1,4 @@
+from src.agenda.road import get_road
 from src.agenda.idea import ideacore_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.group import groupunit_shop
@@ -114,13 +115,13 @@ def test_agenda_idearoot_meld_Add4IdeasScenario():
     x_agenda1 = agendaunit_shop(_healer=spirit_text)
 
     tech_text = "tech"
-    tech_road = f"{x_agenda1._culture_qid},{tech_text}"
+    tech_road = get_road(x_agenda1._culture_qid, tech_text)
     bowl_text = "bowl"
-    bowl_road = f"{x_agenda1._culture_qid},{tech_text},{bowl_text}"
+    bowl_road = get_road(tech_road, bowl_text)
     swim_text = "swim"
-    swim_road = f"{x_agenda1._culture_qid},{swim_text}"
+    swim_road = get_road(x_agenda1._culture_qid, swim_text)
     free_text = "freestyle"
-    free_road = f"{x_agenda1._culture_qid},{swim_text},{free_text}"
+    free_road = get_road(swim_road, free_text)
 
     x_agenda2 = agendaunit_shop(_healer=spirit_text)
     x_agenda2.add_idea(
@@ -145,9 +146,9 @@ def test_agenda_idearoot_meld_2SameIdeasScenario():
     healer_text = "Yoa"
     x_agenda1 = agendaunit_shop(_healer=healer_text)
     tech_text = "tech"
-    tech_road = f"{x_agenda1._culture_qid},{tech_text}"
+    tech_road = get_road(x_agenda1._culture_qid, tech_text)
     bowl_text = "bowl"
-    bowl_road = f"{x_agenda1._culture_qid},{tech_text},{bowl_text}"
+    bowl_road = get_road(tech_road, bowl_text)
 
     x_agenda1.add_idea(
         pad=x_agenda1._culture_qid, idea_kid=ideacore_shop(_label=tech_text)
@@ -173,9 +174,9 @@ def test_agenda_acptfactunits_meld_BaseScenarioWorks():
     # GIVEN
     x_agenda1 = agendaunit_shop(_healer="test7")
     tech_text = "tech"
-    tech_road = f"{x_agenda1._culture_qid},{tech_text}"
+    tech_road = get_road(x_agenda1._culture_qid, tech_text)
     bowl_text = "bowl"
-    bowl_road = f"{x_agenda1._culture_qid},{tech_text},{bowl_text}"
+    bowl_road = get_road(tech_road, bowl_text)
 
     x_agenda1.add_idea(
         pad=x_agenda1._culture_qid, idea_kid=ideacore_shop(_label=tech_text)
@@ -205,11 +206,11 @@ def test_agenda_acptfactunits_meld_2AcptFactUnitsWorks():
     # GIVEN
     x_agenda1 = agendaunit_shop(_healer="test7")
     tech_text = "tech"
-    tech_road = f"{x_agenda1._culture_qid},{tech_text}"
+    tech_road = get_road(x_agenda1._culture_qid, tech_text)
     bowl_text = "bowl"
-    bowl_road = f"{x_agenda1._culture_qid},{tech_text},{bowl_text}"
+    bowl_road = get_road(tech_road, bowl_text)
     swim_text = "swim"
-    swim_road = f"{x_agenda1._culture_qid},{swim_text}"
+    swim_road = get_road(x_agenda1._culture_qid, swim_text)
     free_text = "freestyle"
 
     x_agenda1.add_idea(
@@ -244,7 +245,7 @@ def test_agenda_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
     x_agenda1 = agendaunit_shop(_healer="test7")
 
     swim_text = "swim"
-    swim_road = f"{x_agenda1._culture_qid},{swim_text}"
+    swim_road = get_road(x_agenda1._culture_qid, swim_text)
     free_text = "freestyle"
 
     x_agenda2 = agendaunit_shop(_healer="test7")
@@ -292,9 +293,9 @@ def test_agenda_acptfactunits_meld_AcptFactsAttributeCorrectlySet():
     x_agenda1 = agendaunit_shop(_healer="test7")
 
     swim_text = "swim"
-    swim_road = f"{x_agenda1._culture_qid},{swim_text}"
+    swim_road = get_road(x_agenda1._culture_qid, swim_text)
     free_text = "freestyle"
-    free_road = f"{x_agenda1._culture_qid},{free_text}"
+    free_road = get_road(x_agenda1._culture_qid, free_text)
     x_agenda1.add_idea(pad=swim_road, idea_kid=ideacore_shop(_label=free_text))
 
     x_agenda2 = agendaunit_shop(_healer="test7")
@@ -433,11 +434,11 @@ def test_agenda_meld_OriginUnitsCorrectlySet():
     bob_x_agenda = agendaunit_shop(_healer=bob_text)
 
     swim_text = "swim"
-    swim_road = f"{bob_x_agenda._culture_qid},{swim_text}"
+    swim_road = get_road(bob_x_agenda._culture_qid, swim_text)
     free_text = "freestyle"
-    free_road = f"{swim_road},{free_text}"
+    free_road = get_road(swim_road, free_text)
     back_text = "backstroke"
-    back_road = f"{swim_road},{back_text}"
+    back_road = get_road(swim_road, back_text)
     bob_x_agenda.add_idea(pad=swim_road, idea_kid=ideacore_shop(_label=free_text))
 
     sue_text = "Sue"
