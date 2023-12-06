@@ -1,4 +1,5 @@
 from pytest import raises as pytest_raises
+from src.agenda.road import get_road
 from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels as example_agendas_get_agenda_with_4_levels,
     get_agenda_irrational_example as example_agendas_get_agenda_irrational_example,
@@ -16,11 +17,11 @@ def test_agenda_requiredunits_create():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
-    work_road = f"{x_agenda._culture_qid},{work_text}"
+    work_road = get_road(x_agenda._culture_qid, work_text)
     weekday_text = "weekdays"
-    weekday_road = f"{x_agenda._culture_qid},{weekday_text}"
+    weekday_road = get_road(x_agenda._culture_qid, weekday_text)
     wed_text = "Wednesday"
-    wed_road = f"{weekday_road},{wed_text}"
+    wed_road = get_road(weekday_road, wed_text)
 
     wed_sufffact = sufffactunit_shop(need=wed_road)
     work_wk_required = requiredunit_shop(
@@ -39,11 +40,11 @@ def test_agenda_requiredunits_create():
 def test_agenda_set_requiredunits_status():
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
-    work_road = f"{x_agenda._culture_qid},{work_text}"
+    work_road = get_road(x_agenda._culture_qid, work_text)
     weekday_text = "weekdays"
-    weekday_road = f"{x_agenda._culture_qid},{weekday_text}"
+    weekday_road = get_road(x_agenda._culture_qid, weekday_text)
     wed_text = "Wednesday"
-    wed_road = f"{weekday_road},{wed_text}"
+    wed_road = get_road(weekday_road, wed_text)
 
     wed_sufffact = sufffactunit_shop(need=wed_road)
     work_wk_required = requiredunit_shop(
@@ -72,11 +73,11 @@ def test_agenda_requiredheirs_AreCorrectlyInherited_v1():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
-    work_road = f"{x_agenda._culture_qid},{work_text}"
+    work_road = get_road(x_agenda._culture_qid, work_text)
     week_label = "weekdays"
-    week_road = f"{x_agenda._culture_qid},{week_label}"
+    week_road = get_road(x_agenda._culture_qid, week_label)
     wed_text = "Wednesday"
-    wed_road = f"{week_road},{wed_text}"
+    wed_road = get_road(week_road, wed_text)
 
     wed_sufffact = sufffactunit_shop(need=wed_road)
     wed_sufffact._status = False
@@ -128,11 +129,11 @@ def test_agenda_requiredheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
     # GIVEN
     a4_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
-    work_road = f"{a4_agenda._culture_qid},{work_text}"
+    work_road = get_road(a4_agenda._culture_qid, work_text)
     week_text = "weekdays"
-    week_road = f"{a4_agenda._culture_qid},{week_text}"
+    week_road = get_road(a4_agenda._culture_qid, week_text)
     wed_text = "Wednesday"
-    wed_road = f"{week_road},{wed_text}"
+    wed_road = get_road(week_road, wed_text)
 
     wed_sufffact = sufffactunit_shop(need=wed_road)
     wed_sufffact._status = False
@@ -152,10 +153,10 @@ def test_agenda_requiredheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
 
     # WHEN
     rla_text = "hp"
-    rla_road = f"{work_road},{rla_text}"
+    rla_road = get_road(work_road, rla_text)
     a4_agenda.add_idea(idea_kid=ideacore_shop(_label=rla_text), pad=rla_road)
     cost_text = "cost_tracking"
-    cost_road = f"{rla_road},{cost_text}"
+    cost_road = get_road(rla_road, cost_text)
     a4_agenda.add_idea(idea_kid=ideacore_shop(_label=cost_text), pad=cost_road)
     a4_agenda.get_idea_list()
 
@@ -198,11 +199,11 @@ def test_agenda_requiredheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
 def test_agenda_requiredheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     a4_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
-    work_road = f"{a4_agenda._culture_qid},{work_text}"
+    work_road = get_road(a4_agenda._culture_qid, work_text)
     week_label = "weekdays"
-    week_road = f"{a4_agenda._culture_qid},{week_label}"
+    week_road = get_road(a4_agenda._culture_qid, week_label)
     wed_text = "Wednesday"
-    wed_road = f"{week_road},{wed_text}"
+    wed_road = get_road(week_road, wed_text)
 
     wed_sufffact = sufffactunit_shop(need=wed_road)
     wed_sufffact._status = False
@@ -217,10 +218,10 @@ def test_agenda_requiredheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     )
     a4_agenda.edit_idea_attr(road=work_road, required=work_wk_build_requiredunit)
     rla_text = "hp"
-    rla_road = f"{work_road},{rla_text}"
+    rla_road = get_road(work_road, rla_text)
     a4_agenda.add_idea(idea_kid=ideacore_shop(_label=rla_text), pad=rla_road)
     cost_text = "cost_tracking"
-    cost_road = f"{rla_road},{cost_text}"
+    cost_road = get_road(rla_road, cost_text)
     a4_agenda.add_idea(idea_kid=ideacore_shop(_label=cost_text), pad=cost_road)
 
     work_idea = a4_agenda._idearoot._kids[work_text]
@@ -272,11 +273,11 @@ def test_agenda_requiredunits_set_UnCoupledMethod():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
-    work_road = f"{x_agenda._culture_qid},{work_text}"
+    work_road = get_road(x_agenda._culture_qid, work_text)
     week_text = "weekdays"
-    week_road = f"{x_agenda._culture_qid},{week_text}"
+    week_road = get_road(x_agenda._culture_qid, week_text)
     wed_text = "Wednesday"
-    wed_road = f"{week_road},{wed_text}"
+    wed_road = get_road(week_road, wed_text)
 
     # WHEN
     x_agenda.edit_idea_attr(
@@ -328,7 +329,7 @@ def test_agenda_requiredunits_set_UnCoupledMethod():
 
     # WHEN
     thu_text = "Thursday"
-    thu_road = f"{week_road},{thu_text}"
+    thu_road = get_road(week_road, thu_text)
     x_agenda.edit_idea_attr(
         road=work_road,
         required_base=week_road,
@@ -346,11 +347,11 @@ def test_agenda_requiredunits_set_sufffactIdeaWithDenomSetsSuffFactDivision():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
-    work_road = f"{x_agenda._culture_qid},{work_text}"
+    work_road = get_road(x_agenda._culture_qid, work_text)
     time_text = "time"
-    time_road = f"{x_agenda._culture_qid},{time_text}"
+    time_road = get_road(x_agenda._culture_qid, time_text)
     week_text = "week"
-    week_road = f"{x_agenda._culture_qid},{time_text},{week_text}"
+    week_road = get_road(time_road, week_text)
     x_agenda.add_idea(
         idea_kid=ideacore_shop(_label=time_text, _begin=100, _close=2000),
         pad=x_agenda._culture_qid,
@@ -379,11 +380,11 @@ def test_agenda_requiredunits_set_sufffactIdeaWithBeginCloseSetsSuffFactOpenNigh
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work = "work"
-    work_road = f"{x_agenda._culture_qid},{work}"
+    work_road = get_road(x_agenda._culture_qid, work)
     time = "time"
-    time_road = f"{x_agenda._culture_qid},{time}"
+    time_road = get_road(x_agenda._culture_qid, time)
     rus_war = "rus_war"
-    rus_war_road = f"{x_agenda._culture_qid},{time},{rus_war}"
+    rus_war_road = get_road(time_road, rus_war)
     x_agenda.add_idea(
         idea_kid=ideacore_shop(_label=time, _begin=100, _close=2000),
         pad=x_agenda._culture_qid,
@@ -413,14 +414,14 @@ def test_agenda_requiredunits_set_sufffactIdeaWithBeginCloseSetsSuffFactOpenNigh
 def test_agenda_requiredunits_del_required_sufffact_UncoupledMethod1():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
-    work_road = f"{x_agenda._culture_qid},work"
-    weekday_road = f"{x_agenda._culture_qid},weekdays"
-    wed_road = f"{x_agenda._culture_qid},weekdays,Wednesday"
+    work_road = get_road(x_agenda._culture_qid, "work")
+    weekday_road = get_road(x_agenda._culture_qid, "weekdays")
+    wed_road = get_road(weekday_road, "Wednesday")
 
     x_agenda.edit_idea_attr(
         road=work_road, required_base=weekday_road, required_sufffact=wed_road
     )
-    thu_road = f"{x_agenda._culture_qid},weekdays,Thursday"
+    thu_road = get_road(weekday_road, "Thursday")
     x_agenda.edit_idea_attr(
         road=work_road,
         required_base=weekday_road,
@@ -456,8 +457,8 @@ def test_agenda_requiredunits_del_required_sufffact_UncoupledMethod1():
 def test_agenda_requiredunits_del_required_sufffact_UncoupledMethod2():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
-    work_road = f"{x_agenda._culture_qid},work"
-    weekdays_road = f"{x_agenda._culture_qid},weekdays"
+    work_road = get_road(x_agenda._culture_qid, "work")
+    weekdays_road = get_road(x_agenda._culture_qid, "weekdays")
     work_idea1 = x_agenda.get_idea_kid(road=work_road)
     work_idea1.set_requiredunits_empty_if_null()
     assert len(work_idea1._requiredunits) == 0
@@ -474,10 +475,10 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEdit_suff_idea_active_status_AnyIde
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
-    work_road = f"{x_agenda._culture_qid},{work_text}"
+    work_road = get_road(x_agenda._culture_qid, work_text)
 
     commute_text = "commute to work"
-    commute_road = f"{x_agenda._culture_qid},{commute_text}"
+    commute_road = get_road(x_agenda._culture_qid, commute_text)
     x_agenda.add_idea(
         idea_kid=ideacore_shop(_label=commute_text), pad=x_agenda._culture_qid
     )
@@ -535,13 +536,13 @@ def test_agenda_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus()
     # 3. idea(...,weekdays,thursday) exists
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
-    work_road = f"{x_agenda._culture_qid},{work_text}"
+    work_road = get_road(x_agenda._culture_qid, work_text)
     weekdays_text = "weekdays"
-    weekdays_road = f"{x_agenda._culture_qid},{weekdays_text}"
+    weekdays_road = get_road(x_agenda._culture_qid, weekdays_text)
     wed_text = "Wednesday"
-    wed_road = f"{weekdays_road},{wed_text}"
+    wed_road = get_road(weekdays_road, wed_text)
     thu_text = "Thursday"
-    thu_road = f"{weekdays_road},{thu_text}"
+    thu_road = get_road(weekdays_road, thu_text)
 
     # 4. idea(...,work) with
     # 4.1 RequiredUnit: base=weekdays_road, need=thu_road
@@ -559,7 +560,7 @@ def test_agenda_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus()
     # 5.1. RequiredUnit: idea(base=...,work) has .suff_idea_active_status = True
     # 5.2. idea(...,work).active_status = False
     commute_text = "commute to work"
-    commute_road = f"{x_agenda._culture_qid},{commute_text}"
+    commute_road = get_road(x_agenda._culture_qid, commute_text)
     x_agenda.add_idea(
         idea_kid=ideacore_shop(_label=commute_text), pad=x_agenda._culture_qid
     )
