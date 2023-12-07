@@ -104,12 +104,7 @@ def acptfactunits_get_from_dict(x_dict: dict):
 def acptfactunit_shop(
     base: Road = None, pick: Road = None, open: float = None, nigh: float = None
 ) -> AcptFactUnit:
-    return AcptFactUnit(
-        base=Road(base),
-        pick=Road(pick),
-        open=open,
-        nigh=nigh,
-    )
+    return AcptFactUnit(base=base, pick=pick, open=open, nigh=nigh)
 
 
 @dataclass
@@ -129,12 +124,7 @@ class AcptFactHeir(AcptFactCore):
 def acptfactheir_shop(
     base: Road = None, pick: Road = None, open: float = None, nigh: float = None
 ) -> AcptFactHeir:
-    return AcptFactHeir(
-        base=Road(base),
-        pick=Road(pick),
-        open=open,
-        nigh=nigh,
-    )
+    return AcptFactHeir(base=base, pick=pick, open=open, nigh=nigh)
 
 
 @dataclass

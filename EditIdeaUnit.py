@@ -852,9 +852,9 @@ class EditIdeaUnit(qtw0, Ui_Form):
     def idea_update(self):
         idea_road = None
         if self.x_idea._pad not in (None, ""):
-            idea_road = Road(f"{self.x_idea._pad},{self.x_idea._label}")
+            idea_road = f"{self.x_idea._pad},{self.x_idea._label}"
         else:
-            idea_road = Road(f"{self.x_idea._label}")
+            idea_road = f"{self.x_idea._label}"
         self.idea_edit_nonroad_data(idea_road=idea_road)
         # if (
         #     self.idea_label_on_populate != self.yo_deescription.toPlainText()

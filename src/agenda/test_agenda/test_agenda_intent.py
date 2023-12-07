@@ -623,7 +623,9 @@ def test_agenda_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
 
     # create gregorian timeline
     x_agenda.set_time_hreg_ideas(c400_count=7)
-    daytime_road = f"{x_agenda._culture_qid},time,jajatime,day"
+    time_road = get_road(x_agenda._culture_qid, "time")
+    jajatime_road = get_road(time_road, "jajatime")
+    daytime_road = get_road(jajatime_road, "day")
     open_8am = 480
     nigh_8am = 480
 
@@ -689,7 +691,8 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
     x_agenda = example_agendas_agenda_v002()
 
     assert len(x_agenda.get_intent_items()) == 44
-    jajatime_road = f"{x_agenda._culture_qid},time,jajatime"
+    time_road = get_road(x_agenda._culture_qid, "time")
+    jajatime_road = get_road(time_road, "jajatime")
 
     # WHEN
     x_agenda.set_acptfact(
@@ -699,8 +702,9 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
 
     # THEN
     assert len(action_idea_list) == 66
+    db_road = get_road(x_agenda._culture_qid, "D&B")
     night_text = "late_night_go_to_sleep"
-    night_road = f"{x_agenda._culture_qid},D&B,{night_text}"
+    night_road = get_road(db_road, night_text)
     night_idea = x_agenda._idea_dict.get(night_road)
     # for idea_x in x_agenda.get_intent_items():
     #     # if idea_x._task != True:

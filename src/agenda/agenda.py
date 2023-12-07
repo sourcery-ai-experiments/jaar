@@ -65,7 +65,6 @@ from src.agenda.road import (
 from src.agenda.origin import originunit_get_from_dict, originunit_shop, OriginUnit
 from copy import deepcopy as copy_deepcopy
 from src.agenda.x_func import (
-    save_file as x_func_save_file,
     dir_files as x_func_dir_files,
     open_file as x_func_open_file,
     get_meld_weight,
@@ -1019,7 +1018,7 @@ class AgendaUnit:
 
         # idearoot cannot be replaced
         if temp_road == self._culture_qid and pad_nodes == []:
-            idea_kid.set_pad(parent_road=Road(self._culture_qid))
+            idea_kid.set_pad(parent_road=self._culture_qid)
         else:
             road_nodes = [temp_road]
             while pad_nodes != []:

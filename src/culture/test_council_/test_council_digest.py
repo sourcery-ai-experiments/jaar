@@ -291,7 +291,7 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
 #     assert sx_output_old._acptfacts == {}
 
 #     src1 = "test1"
-#     src1_road = Road(f"{src1}")
+#     src1_road = f"{src1}"
 #     s1 = agendaunit_shop(_healer=src1)
 
 #     ceci_text = "Ceci"
@@ -302,7 +302,7 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
 #     s1.set_groupunit(groupunit=swim_group)
 
 #     yaya_text = "yaya"
-#     yaya_road = Road(f"{src1},{yaya_text}")
+#     yaya_road = f"{src1},{yaya_text}"
 #     s1.add_idea(idea_kid=ideacore_shop(_label=yaya_text), pad=src1_road)
 #     s1.set_acptfact(base=yaya_road, acptfact=yaya_road)
 

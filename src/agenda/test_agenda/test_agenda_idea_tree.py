@@ -480,9 +480,9 @@ def test_agenda_get_orderd_node_list_WorksCorrectly():
     # THEN
     assert len(ordered_node_list) == 17
     x_1st_road_in_ordered_list = x_agenda.get_idea_tree_ordered_road_list()[0]
-    assert x_1st_road_in_ordered_list == f"{x_agenda._culture_qid}"
+    assert x_1st_road_in_ordered_list == x_agenda._culture_qid
     x_8th_road_in_ordered_list = x_agenda.get_idea_tree_ordered_road_list()[8]
-    assert x_8th_road_in_ordered_list == f"{x_agenda._culture_qid},{week_text}"
+    assert x_8th_road_in_ordered_list == get_road(x_agenda._culture_qid, week_text)
 
     # WHEN
     y_agenda = agendaunit_shop()
@@ -515,7 +515,7 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     week_text = "weekdays"
-    weekdays = f"{x_agenda._culture_qid},{week_text}"
+    weekdays = get_road(x_agenda._culture_qid, week_text)
     assert x_agenda.get_heir_road_list(road_x=weekdays)
 
     # WHEN
@@ -528,8 +528,8 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
     assert heir_node_road_list[0] == weekdays
     sat_text = "Saturday"
     sun_text = "Sunday"
-    assert heir_node_road_list[3] == f"{weekdays},{sat_text}"
-    assert heir_node_road_list[4] == f"{weekdays},{sun_text}"
+    assert heir_node_road_list[3] == get_road(weekdays, sat_text)
+    assert heir_node_road_list[4] == get_road(weekdays, sun_text)
 
 
 # def test_agenda4party_hasCorrectLevel1StructureWithGrouplessBranches_2():

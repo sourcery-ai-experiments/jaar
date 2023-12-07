@@ -1,4 +1,5 @@
 from src.agenda.examples.example_agendas import get_agenda_with_4_levels
+from src.agenda.road import get_road
 from src.agenda.idea import ideacore_shop
 from src.agenda.required_idea import requiredunit_shop, acptfactunit_shop
 from src.agenda.agenda import agendaunit_shop
@@ -75,7 +76,7 @@ def test_agenda_add_idea_CanAddKidToKidIdea():
     assert x_agenda.get_node_count() == 17
     assert x_agenda.get_level_count(level=2) == 10
 
-    new_idea_parent_road = f"{x_agenda._culture_qid},work"
+    new_idea_parent_road = get_road(x_agenda._culture_qid, "work")
     new_idea = ideacore_shop(_weight=40, _label="new_york")
 
     # WHEN
@@ -88,9 +89,8 @@ def test_agenda_add_idea_CanAddKidToKidIdea():
     # print(f"{(len(new_idea_parent_road) == 1)=}")
     assert x_agenda.get_node_count() == 18
     assert x_agenda.get_level_count(level=2) == 11
-    assert (
-        x_agenda._idearoot._kids["work"]._kids["new_york"]._pad
-        == f"{x_agenda._culture_qid},work"
+    assert x_agenda._idearoot._kids["work"]._kids["new_york"]._pad == get_road(
+        x_agenda._culture_qid, "work"
     )
     x_agenda._idearoot._kids["work"]._kids["new_york"].set_pad(parent_road="testing")
     assert x_agenda._idearoot._kids["work"]._kids["new_york"]._pad == "testing"
@@ -104,7 +104,8 @@ def test_agenda_add_idea_CanAddKidToGrandkidIdea():
 
     assert x_agenda.get_node_count() == 17
     assert x_agenda.get_level_count(level=3) == 2
-    new_idea_parent_road = f"{x_agenda._culture_qid},weekdays,Wednesday"
+    wkday_road = get_road(x_agenda._culture_qid, "weekdays")
+    new_idea_parent_road = get_road(wkday_road, "Wednesday")
     new_idea = ideacore_shop(_weight=40, _label="new_idea")
 
     # WHEN
@@ -126,7 +127,9 @@ def test_agenda_add_idea_CanCreateRoadToGrandkidIdea():
 
     assert x_agenda.get_node_count() == 17
     assert x_agenda.get_level_count(level=3) == 2
-    new_idea_parent_road = f"{x_agenda._culture_qid},ww2,battles,coralsea"
+    ww2_road = get_road(x_agenda._culture_qid, "ww2")
+    battles_road = get_road(ww2_road, "battles")
+    new_idea_parent_road = get_road(battles_road, "coralsea")
     new_idea = ideacore_shop(_weight=40, _label="USS Saratoga")
 
     # WHEN
@@ -149,20 +152,17 @@ def test_agenda_add_idea_creates_requireds_ideas():
 
     assert x_agenda.get_node_count() == 17
     assert x_agenda.get_level_count(level=3) == 2
-    new_idea_parent_road = f"{x_agenda._culture_qid},work,cleaning"
+    work_road = get_road(x_agenda._culture_qid, "work")
+    new_idea_parent_road = get_road(work_road, "cleaning")
     clean_cookery_text = "clean_cookery"
-    clean_cookery_idea = ideacore_shop(
-        _weight=40, _label=clean_cookery_text, promise=True
-    )
+    clean_cookery_idea = ideacore_shop(clean_cookery_text, _weight=40, promise=True)
 
     buildings_text = "buildings"
-    buildings_road = Road(f"{x_agenda._culture_qid},{buildings_text}")
+    buildings_road = get_road(x_agenda._culture_qid, buildings_text)
     cookery_room_text = "cookery"
-    cookery_room_road = Road(
-        f"{x_agenda._culture_qid},{buildings_text},{cookery_room_text}"
-    )
+    cookery_room_road = get_road(buildings_road, cookery_room_text)
     cookery_dirty_text = "dirty"
-    cookery_dirty_road = Road(f"{cookery_room_road},{cookery_dirty_text}")
+    cookery_dirty_road = get_road(cookery_room_road, cookery_dirty_text)
     required_x = requiredunit_shop(base=cookery_room_road, sufffacts={})
     required_x.set_sufffact(sufffact=cookery_dirty_road)
     clean_cookery_idea.set_required_unit(required=required_x)
@@ -191,7 +191,7 @@ def test_agenda_add_idea_creates_requireds_ideas():
 def test_agenda_del_idea_kid_Level0CannotBeDeleted():
     # GIVEN
     x_agenda = get_agenda_with_4_levels()
-    root_road = f"{x_agenda._culture_qid}"
+    root_road = x_agenda._culture_qid
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -203,9 +203,9 @@ def test_agenda_del_idea_kid_Level1CanBeDeleted_ChildrenDeleted():
     # GIVEN
     x_agenda = get_agenda_with_4_levels()
     week_text = "weekdays"
-    week_road = f"{x_agenda._culture_qid},{week_text}"
+    week_road = get_road(x_agenda._culture_qid, week_text)
     sun_text = "Sunday"
-    sun_road = f"{week_road},{sun_text}"
+    sun_road = get_road(week_road, sun_text)
     assert x_agenda.get_idea_kid(road=week_road)
     assert x_agenda.get_idea_kid(road=sun_road)
 
@@ -219,7 +219,7 @@ def test_agenda_del_idea_kid_Level1CanBeDeleted_ChildrenDeleted():
         str(excinfo.value)
         == f"Getting idea_label='weekdays' failed no item at '{week_road}'"
     )
-    new_sunday_road = f"{x_agenda._culture_qid},Sunday"
+    new_sunday_road = get_road(x_agenda._culture_qid, "Sunday")
     with pytest_raises(Exception) as excinfo:
         x_agenda.get_idea_kid(road=new_sunday_road)
     assert (
@@ -233,9 +233,9 @@ def test_agenda_del_idea_kid_Level1CanBeDeleted_ChildrenInherited():
     x_agenda = get_agenda_with_4_levels()
     x_agenda.set_agenda_metrics()
     week_text = "weekdays"
-    week_road = f"{x_agenda._culture_qid},{week_text}"
+    week_road = get_road(x_agenda._culture_qid, week_text)
     sun_text = "Sunday"
-    old_sunday_road = f"{week_road},{sun_text}"
+    old_sunday_road = get_road(week_road, sun_text)
     assert x_agenda.get_idea_kid(road=old_sunday_road)
 
     # WHEN
@@ -248,7 +248,7 @@ def test_agenda_del_idea_kid_Level1CanBeDeleted_ChildrenInherited():
         str(excinfo.value)
         == f"Getting idea_label='{sun_text}' failed no item at '{old_sunday_road}'"
     )
-    new_sunday_road = f"{x_agenda._culture_qid},{sun_text}"
+    new_sunday_road = get_road(x_agenda._culture_qid, sun_text)
     assert x_agenda.get_idea_kid(road=new_sunday_road)
     new_sunday_idea = x_agenda.get_idea_kid(road=new_sunday_road)
     assert new_sunday_idea._pad == x_agenda._culture_qid
@@ -258,15 +258,15 @@ def test_agenda_del_idea_kid_LevelNCanBeDeleted_ChildrenInherited():
     # GIVEN
     x_agenda = get_agenda_with_4_levels()
     states_text = "nation-state"
-    states_road = f"{x_agenda._culture_qid},{states_text}"
+    states_road = get_road(x_agenda._culture_qid, states_text)
     usa_text = "USA"
-    usa_road = f"{states_road},{usa_text}"
+    usa_road = get_road(states_road, usa_text)
     texas_text = "Texas"
     oregon_text = "Oregon"
-    usa_texas_road = f"{usa_road},{texas_text}"
-    usa_oregon_road = f"{usa_road},{oregon_text}"
-    states_texas_road = f"{states_road},{texas_text}"
-    states_oregon_road = f"{states_road},{oregon_text}"
+    usa_texas_road = get_road(usa_road, texas_text)
+    usa_oregon_road = get_road(usa_road, oregon_text)
+    states_texas_road = get_road(states_road, texas_text)
+    states_oregon_road = get_road(states_road, oregon_text)
     x_agenda.set_agenda_metrics()
     assert x_agenda._idea_dict.get(usa_road) != None
     assert x_agenda._idea_dict.get(usa_texas_road) != None
@@ -289,7 +289,8 @@ def test_agenda_del_idea_kid_LevelNCanBeDeleted_ChildrenInherited():
 def test_agenda_del_idea_kid_Level2CanBeDeleted_ChildrenDeleted():
     # GIVEN
     x_agenda = get_agenda_with_4_levels()
-    monday_road = f"{x_agenda._culture_qid},weekdays,Monday"
+    wkday_road = get_road(x_agenda._culture_qid, "weekdays")
+    monday_road = get_road(wkday_road, "Monday")
     assert x_agenda.get_idea_kid(road=monday_road)
 
     # WHEN
@@ -308,11 +309,11 @@ def test_agenda_del_idea_kid_LevelNCanBeDeleted_ChildrenDeleted():
     # GIVEN
     x_agenda = get_agenda_with_4_levels()
     states_text = "nation-state"
-    states_road = f"{x_agenda._culture_qid},{states_text}"
+    states_road = get_road(x_agenda._culture_qid, states_text)
     usa_text = "USA"
-    usa_road = f"{states_road},{usa_text}"
+    usa_road = get_road(states_road, usa_text)
     texas_text = "Texas"
-    usa_texas_road = f"{usa_road},{texas_text}"
+    usa_texas_road = get_road(usa_road, texas_text)
     assert x_agenda.get_idea_kid(road=usa_texas_road)
 
     # WHEN
@@ -330,7 +331,7 @@ def test_agenda_del_idea_kid_LevelNCanBeDeleted_ChildrenDeleted():
 def test_agenda_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     x_agenda = get_agenda_with_4_levels()
     work_text = "work"
-    work_road = f"{x_agenda._culture_qid},{work_text}"
+    work_road = get_road(x_agenda._culture_qid, work_text)
     print(f"{work_road=}")
     current_weight = x_agenda._idearoot._kids[work_text]._weight
     assert current_weight == 30
@@ -361,7 +362,8 @@ def test_agenda_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     # acptfactunit: acptfactunit_shop = None,
     # x_agenda._idearoot._kids[work_text]._acptfactunits = None
     assert x_agenda._idearoot._kids[work_text]._acptfactunits is None
-    acptfact_road = f"{x_agenda._culture_qid},weekdays,Sunday"
+    wkdays_road = get_road(x_agenda._culture_qid, "weekdays")
+    acptfact_road = get_road(wkdays_road, "Sunday")
     acptfactunit_x = acptfactunit_shop(base=acptfact_road, pick=acptfact_road)
 
     work_acptfactunits = x_agenda._idearoot._kids[work_text]._acptfactunits
@@ -442,13 +444,16 @@ def test_agenda_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     x_agenda._idearoot._kids[work_text]._range_source_road = "fun3rol"
     range_source_road = x_agenda._idearoot._kids[work_text]._range_source_road
     assert range_source_road == "fun3rol"
-    x_agenda.edit_idea_attr(road=work_road, range_source_road="my,work,end")
-    assert x_agenda._idearoot._kids[work_text]._range_source_road == "my,work,end"
+    end_road = get_road(work_road, "end")
+    x_agenda.edit_idea_attr(road=work_road, range_source_road=end_road)
+    assert x_agenda._idearoot._kids[work_text]._range_source_road == end_road
+
+    print(f"{work_road=} {end_road=}")
 
 
 def test_agenda_edit_idea_attr_agendaIsAbleToEdit_on_meld_weight_action_AnyIdeaIfInvaildThrowsError():
     x_agenda = get_agenda_with_4_levels()
-    work_road = f"{x_agenda._culture_qid},work"
+    work_road = get_road(x_agenda._culture_qid, "work")
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -467,27 +472,27 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEditDenomAnyIdeaIfInvaildDenomThrow
         x_agenda.edit_idea_attr(road="", denom=46)
     assert str(excinfo.value) == "Root Idea cannot have numor denom reest."
 
-    work = "work"
-    w_road = f"{x_agenda._culture_qid},{work}"
-    work_idea = ideacore_shop(_label=work)
+    work_text = "work"
+    work_road = get_road(x_agenda._culture_qid, work_text)
+    work_idea = ideacore_shop(work_text)
     x_agenda.add_idea(work_idea, pad=x_agenda._culture_qid)
-    clean = "clean"
-    clean_idea = ideacore_shop(_label=clean)
-    c_road = f"{w_road},{clean}"
-    x_agenda.add_idea(clean_idea, pad=w_road)
+    clean_text = "clean"
+    clean_idea = ideacore_shop(clean_text)
+    clean_road = get_road(work_road, clean_text)
+    x_agenda.add_idea(clean_idea, pad=work_road)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda.edit_idea_attr(road=c_road, denom=46)
+        x_agenda.edit_idea_attr(road=clean_road, denom=46)
     assert (
         str(excinfo.value)
-        == f"Idea cannot edit numor=1/denom/reest of '{x_agenda._culture_qid},work,clean' if parent '{x_agenda._culture_qid},work' or ideacore._numeric_road does not have begin/close range"
+        == f"Idea cannot edit numor=1/denom/reest of '{clean_road}' if parent '{work_road}' or ideacore._numeric_road does not have begin/close range"
     )
 
     # GIVEN
-    x_agenda.edit_idea_attr(road=w_road, begin=44, close=110)
-    x_agenda.edit_idea_attr(road=c_road, denom=11)
-    clean_idea = x_agenda.get_idea_kid(road=c_road)
+    x_agenda.edit_idea_attr(road=work_road, begin=44, close=110)
+    x_agenda.edit_idea_attr(road=clean_road, denom=11)
+    clean_idea = x_agenda.get_idea_kid(road=clean_road)
     assert clean_idea._begin == 4
     assert clean_idea._close == 10
 
@@ -497,20 +502,20 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEditDenomAnyIdeaInvaildDenomThrowsE
     healer_text = "Yao"
     x_agenda = agendaunit_shop(_healer=healer_text)
     work = "work"
-    w_road = f"{x_agenda._culture_qid},{work}"
+    w_road = get_road(x_agenda._culture_qid, work)
     work_idea = ideacore_shop(_label=work, _begin=8, _close=14)
     x_agenda.add_idea(work_idea, pad=x_agenda._culture_qid)
 
     clean = "clean"
     clean_idea = ideacore_shop(_label=clean, _denom=1)
-    c_road = f"{w_road},{clean}"
+    c_road = get_road(w_road, clean)
     x_agenda.add_idea(clean_idea, pad=w_road)
 
     clean_idea = x_agenda.get_idea_kid(road=c_road)
 
     day = "day_range"
     day_idea = ideacore_shop(_label=day, _begin=44, _close=110)
-    day_road = f"{x_agenda._culture_qid},{day}"
+    day_road = get_road(x_agenda._culture_qid, day)
     x_agenda.add_idea(day_idea, pad=x_agenda._culture_qid)
 
     # WHEN / THEN
@@ -529,11 +534,11 @@ def test_agenda_edit_idea_attr_agendaWhenParentAndNumeric_roadBothHaveRangeThrow
     healer_text = "Yao"
     x_agenda = agendaunit_shop(_healer=healer_text)
     work_text = "work"
-    work_road = f"{x_agenda._culture_qid},{work_text}"
+    work_road = get_road(x_agenda._culture_qid, work_text)
     x_agenda.add_idea(ideacore_shop(_label=work_text), pad=x_agenda._culture_qid)
     day_text = "day_range"
     day_idea = ideacore_shop(_label=day_text, _begin=44, _close=110)
-    day_road = f"{x_agenda._culture_qid},{day_text}"
+    day_road = get_road(x_agenda._culture_qid, day_text)
     x_agenda.add_idea(day_idea, pad=x_agenda._culture_qid)
 
     work_idea = x_agenda.get_idea_kid(road=work_road)
@@ -545,7 +550,7 @@ def test_agenda_edit_idea_attr_agendaWhenParentAndNumeric_roadBothHaveRangeThrow
         x_agenda.edit_idea_attr(road=work_road, denom=11)
     assert (
         str(excinfo.value)
-        == f"Idea cannot edit numor=1/denom/reest of '{x_agenda._culture_qid},work' if parent '{x_agenda._culture_qid}' or ideacore._numeric_road does not have begin/close range"
+        == f"Idea cannot edit numor=1/denom/reest of '{work_road}' if parent '{x_agenda._culture_qid}' or ideacore._numeric_road does not have begin/close range"
     )
 
     # WHEN
@@ -588,7 +593,7 @@ def test_agenda_add_idea_adoptee_RaisesErrorIfAdopteeIdeaDoesNotHaveCorrectParen
     healer_text = "Noa"
     x_agenda = agendaunit_shop(_healer=healer_text)
     sports_text = "sports"
-    sports_road = f"{x_agenda._culture_qid},{sports_text}"
+    sports_road = get_road(x_agenda._culture_qid, sports_text)
     x_agenda.add_idea(ideacore_shop(_label=sports_text), pad=x_agenda._culture_qid)
     swim_text = "swim"
     x_agenda.add_idea(ideacore_shop(_label=swim_text), pad=sports_road)
@@ -596,7 +601,7 @@ def test_agenda_add_idea_adoptee_RaisesErrorIfAdopteeIdeaDoesNotHaveCorrectParen
     # WHEN / THEN
     summer_text = "summer"
     hike_text = "hike"
-    hike_road = f"{sports_road},{hike_text}"
+    hike_road = get_road(sports_road, hike_text)
     with pytest_raises(Exception) as excinfo:
         x_agenda.add_idea(
             idea_kid=ideacore_shop(_label=summer_text),
@@ -613,7 +618,7 @@ def test_agenda_add_idea_adoptee_CorrectlyAddsAdoptee():
     healer_text = "Noa"
     x_agenda = agendaunit_shop(_healer=healer_text)
     sports_text = "sports"
-    sports_road = f"{x_agenda._culture_qid},{sports_text}"
+    sports_road = get_road(x_agenda._culture_qid, sports_text)
     x_agenda.add_idea(ideacore_shop(_label=sports_text), pad=x_agenda._culture_qid)
     swim_text = "swim"
     x_agenda.add_idea(ideacore_shop(_label=swim_text), pad=sports_road)
@@ -621,14 +626,14 @@ def test_agenda_add_idea_adoptee_CorrectlyAddsAdoptee():
     x_agenda.add_idea(ideacore_shop(_label=hike_text), pad=sports_road)
 
     x_agenda.set_agenda_metrics()
-    sports_swim_road = f"{sports_road},{swim_text}"
-    sports_hike_road = f"{sports_road},{hike_text}"
+    sports_swim_road = get_road(sports_road, swim_text)
+    sports_hike_road = get_road(sports_road, hike_text)
     assert x_agenda._idea_dict.get(sports_swim_road) != None
     assert x_agenda._idea_dict.get(sports_hike_road) != None
     summer_text = "summer"
-    summer_road = f"{sports_road},{summer_text}"
-    summer_swim_road = f"{summer_road},{swim_text}"
-    summer_hike_road = f"{summer_road},{hike_text}"
+    summer_road = get_road(sports_road, summer_text)
+    summer_swim_road = get_road(summer_road, swim_text)
+    summer_hike_road = get_road(summer_road, hike_text)
     assert x_agenda._idea_dict.get(summer_swim_road) is None
     assert x_agenda._idea_dict.get(summer_hike_road) is None
 
@@ -653,7 +658,7 @@ def test_agenda_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdoptedIdea
     healer_text = "Noa"
     x_agenda = agendaunit_shop(_healer=healer_text)
     sports_text = "sports"
-    sports_road = f"{x_agenda._culture_qid},{sports_text}"
+    sports_road = get_road(x_agenda._culture_qid, sports_text)
     x_agenda.add_idea(
         ideacore_shop(_label=sports_text, _weight=2), pad=x_agenda._culture_qid
     )
@@ -674,17 +679,17 @@ def test_agenda_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdoptedIdea
     )
 
     x_agenda.set_agenda_metrics()
-    sports_swim_road = f"{sports_road},{swim_text}"
-    sports_hike_road = f"{sports_road},{hike_text}"
-    sports_bball_road = f"{sports_road},{bball_text}"
+    sports_swim_road = get_road(sports_road, swim_text)
+    sports_hike_road = get_road(sports_road, hike_text)
+    sports_bball_road = get_road(sports_road, bball_text)
     assert x_agenda._idea_dict.get(sports_swim_road)._weight == swim_weight
     assert x_agenda._idea_dict.get(sports_hike_road)._weight == hike_weight
     assert x_agenda._idea_dict.get(sports_bball_road)._weight == bball_weight
     summer_text = "summer"
-    summer_road = f"{sports_road},{summer_text}"
-    summer_swim_road = f"{summer_road},{swim_text}"
-    summer_hike_road = f"{summer_road},{hike_text}"
-    summer_bball_road = f"{summer_road},{bball_text}"
+    summer_road = get_road(sports_road, summer_text)
+    summer_swim_road = get_road(summer_road, swim_text)
+    summer_hike_road = get_road(summer_road, hike_text)
+    summer_bball_road = get_road(summer_road, bball_text)
     assert x_agenda._idea_dict.get(summer_swim_road) is None
     assert x_agenda._idea_dict.get(summer_hike_road) is None
     assert x_agenda._idea_dict.get(summer_bball_road) is None
@@ -712,7 +717,7 @@ def test_agenda_del_idea_kid_DeletingBundledIdeaReturnsIdeasToOriginalState():
     healer_text = "Noa"
     x_agenda = agendaunit_shop(_healer=healer_text)
     sports_text = "sports"
-    sports_road = f"{x_agenda._culture_qid},{sports_text}"
+    sports_road = get_road(x_agenda._culture_qid, sports_text)
     x_agenda.add_idea(
         ideacore_shop(_label=sports_text, _weight=2), pad=x_agenda._culture_qid
     )
@@ -733,17 +738,17 @@ def test_agenda_del_idea_kid_DeletingBundledIdeaReturnsIdeasToOriginalState():
     )
 
     x_agenda.set_agenda_metrics()
-    sports_swim_road = f"{sports_road},{swim_text}"
-    sports_hike_road = f"{sports_road},{hike_text}"
-    sports_bball_road = f"{sports_road},{bball_text}"
+    sports_swim_road = get_road(sports_road, swim_text)
+    sports_hike_road = get_road(sports_road, hike_text)
+    sports_bball_road = get_road(sports_road, bball_text)
     assert x_agenda._idea_dict.get(sports_swim_road)._weight == swim_weight
     assert x_agenda._idea_dict.get(sports_hike_road)._weight == hike_weight
     assert x_agenda._idea_dict.get(sports_bball_road)._weight == bball_weight
     summer_text = "summer"
-    summer_road = f"{sports_road},{summer_text}"
-    summer_swim_road = f"{summer_road},{swim_text}"
-    summer_hike_road = f"{summer_road},{hike_text}"
-    summer_bball_road = f"{summer_road},{bball_text}"
+    summer_road = get_road(sports_road, summer_text)
+    summer_swim_road = get_road(summer_road, swim_text)
+    summer_hike_road = get_road(summer_road, hike_text)
+    summer_bball_road = get_road(summer_road, bball_text)
     assert x_agenda._idea_dict.get(summer_swim_road) is None
     assert x_agenda._idea_dict.get(summer_hike_road) is None
     assert x_agenda._idea_dict.get(summer_bball_road) is None
