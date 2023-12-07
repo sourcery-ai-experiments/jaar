@@ -18,12 +18,12 @@ from src.agenda.x_func import (
 from src.culture.council import CouncilUnit, councilunit_shop, CouncilCID
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
-from src.culture.bank_sqlstr import (
-    get_partybankunit_dict,
+from src.culture.treasury_sqlstr import (
+    get_partytreasuryunit_dict,
     get_partyunit_table_insert_sqlstr,
-    get_partyunit_table_update_bank_tax_paid_sqlstr,
+    get_partyunit_table_update_treasury_tax_paid_sqlstr,
     get_partyunit_table_update_credit_score_sqlstr,
-    get_partyunit_table_update_bank_voice_rank_sqlstr,
+    get_partyunit_table_update_treasury_voice_rank_sqlstr,
     get_river_block_table_delete_sqlstr,
     get_river_block_table_insert_sqlstr,
     get_river_circle_table_insert_sqlstr,
@@ -34,7 +34,7 @@ from src.culture.bank_sqlstr import (
     PartyDBUnit,
     RiverLedgerUnit,
     RiverBlockUnit,
-    PartyBankUnit,
+    PartyTreasuryUnit,
     IdeaCatalog,
     get_idea_catalog_table_insert_sqlstr,
     get_idea_catalog_dict,
@@ -43,7 +43,7 @@ from src.culture.bank_sqlstr import (
     GroupUnitCatalog,
     get_groupunit_catalog_table_insert_sqlstr,
     get_groupunit_catalog_dict,
-    get_agendabankunits_dict,
+    get_agendatreasuryunits_dict,
     get_agendaunit_update_sqlstr,
 )
 
@@ -54,36 +54,37 @@ class CultureUnit:
     cultures_dir: str
     _manager_pid: PersonID = None
     _councilunits: dict[str:CouncilUnit] = None
-    _bank_db = None
+    _treasury_db = None
 
     def set_manager_pid(self, person_id: PersonID):
         self._manager_pid = person_id
 
-    # banking
+    # treasurying
     def set_voice_ranks(self, healer: PersonID, sort_order: str):
         if sort_order == "descretional":
             x_council = self.get_councilunit(healer)
             x_seed = x_council.get_seed()
             for count_x, x_partyunit in enumerate(x_seed._partys.values()):
-                x_partyunit.set_bank_voice_rank(count_x)
+                x_partyunit.set_treasury_voice_rank(count_x)
             x_council.set_seed(x_seed)
             x_council._admin.save_refreshed_output_to_public()
 
-    def set_agenda_bank_attrs(self, x_healer: PersonID):
+    def set_agenda_treasury_attrs(self, x_healer: PersonID):
         healer_agenda = self.get_public_agenda(x_healer)
 
         for groupunit_x in healer_agenda._groups.values():
             if groupunit_x._partylinks_set_by_culture_road != None:
                 groupunit_x.clear_partylinks()
                 ic = get_idea_catalog_dict(
-                    self.get_bank_conn(), groupunit_x._partylinks_set_by_culture_road
+                    self.get_treasury_conn(),
+                    groupunit_x._partylinks_set_by_culture_road,
                 )
                 for idea_catalog in ic.values():
                     if x_healer != idea_catalog.agenda_healer:
                         partylink_x = partylink_shop(pid=idea_catalog.agenda_healer)
                         groupunit_x.set_partylink(partylink_x)
         self.save_public_agenda(healer_agenda)
-        self.refresh_bank_public_agendas_data()
+        self.refresh_treasury_public_agendas_data()
 
     def set_credit_flow_for_agenda(
         self, agenda_healer: PersonID, max_blocks_count: int = None
@@ -92,7 +93,7 @@ class CultureUnit:
         if max_blocks_count is None:
             max_blocks_count = 40
         self._set_river_blocks(agenda_healer, max_blocks_count)
-        self._set_partybankunits_circles(agenda_healer)
+        self._set_partytreasuryunits_circles(agenda_healer)
 
     def _set_river_blocks(self, x_agenda_healer: PersonID, max_blocks_count: int):
         # changes in river_block loop
@@ -146,18 +147,18 @@ class CultureUnit:
     ) -> RiverLedgerUnit:
         river_ledger_x = None
 
-        with self.get_bank_conn() as bank_conn:
-            bank_conn.execute(get_river_block_table_insert_sqlstr(river_block_x))
+        with self.get_treasury_conn() as treasury_conn:
+            treasury_conn.execute(get_river_block_table_insert_sqlstr(river_block_x))
 
             if river_block_x.block_returned() == False:
-                river_ledger_x = get_river_ledger_unit(bank_conn, river_block_x)
+                river_ledger_x = get_river_ledger_unit(treasury_conn, river_block_x)
 
         return river_ledger_x
 
     def _clear_all_source_river_data(self, agenda_healer: str):
-        with self.get_bank_conn() as bank_conn:
+        with self.get_treasury_conn() as treasury_conn:
             block_s = get_river_block_table_delete_sqlstr(agenda_healer)
-            bank_conn.execute(block_s)
+            treasury_conn.execute(block_s)
 
     def _get_root_river_ledger_unit(self, agenda_healer: str) -> RiverLedgerUnit:
         default_currency_onset = 0.0
@@ -175,71 +176,79 @@ class CultureUnit:
             parent_block_num=default_root_parent_block_num,
             river_tree_level=default_root_river_tree_level,
         )
-        with self.get_bank_conn() as bank_conn:
-            source_river_ledger = get_river_ledger_unit(bank_conn, root_river_block)
+        with self.get_treasury_conn() as treasury_conn:
+            source_river_ledger = get_river_ledger_unit(treasury_conn, root_river_block)
         return source_river_ledger
 
-    def _set_partybankunits_circles(self, agenda_healer: str):
-        with self.get_bank_conn() as bank_conn:
-            bank_conn.execute(get_river_circle_table_insert_sqlstr(agenda_healer))
-            bank_conn.execute(get_river_reach_table_final_insert_sqlstr(agenda_healer))
-            bank_conn.execute(
-                get_partyunit_table_update_bank_tax_paid_sqlstr(agenda_healer)
+    def _set_partytreasuryunits_circles(self, agenda_healer: str):
+        with self.get_treasury_conn() as treasury_conn:
+            treasury_conn.execute(get_river_circle_table_insert_sqlstr(agenda_healer))
+            treasury_conn.execute(
+                get_river_reach_table_final_insert_sqlstr(agenda_healer)
             )
-            bank_conn.execute(
+            treasury_conn.execute(
+                get_partyunit_table_update_treasury_tax_paid_sqlstr(agenda_healer)
+            )
+            treasury_conn.execute(
                 get_partyunit_table_update_credit_score_sqlstr(agenda_healer)
             )
-            bank_conn.execute(
-                get_partyunit_table_update_bank_voice_rank_sqlstr(agenda_healer)
+            treasury_conn.execute(
+                get_partyunit_table_update_treasury_voice_rank_sqlstr(agenda_healer)
             )
 
-            sal_partybankunits = get_partybankunit_dict(bank_conn, agenda_healer)
+            sal_partytreasuryunits = get_partytreasuryunit_dict(
+                treasury_conn, agenda_healer
+            )
             x_agenda = self.get_public_agenda(healer=agenda_healer)
-            set_bank_partybankunits_to_agenda_partyunits(x_agenda, sal_partybankunits)
+            set_treasury_partytreasuryunits_to_agenda_partyunits(
+                x_agenda, sal_partytreasuryunits
+            )
             self.save_public_agenda(x_agenda=x_agenda)
 
-    def get_partybankunits(self, agenda_healer: str) -> dict[str:PartyBankUnit]:
-        with self.get_bank_conn() as bank_conn:
-            partybankunits = get_partybankunit_dict(bank_conn, agenda_healer)
-        return partybankunits
+    def get_partytreasuryunits(self, agenda_healer: str) -> dict[str:PartyTreasuryUnit]:
+        with self.get_treasury_conn() as treasury_conn:
+            partytreasuryunits = get_partytreasuryunit_dict(
+                treasury_conn, agenda_healer
+            )
+        return partytreasuryunits
 
-    def refresh_bank_public_agendas_data(self, in_memory: bool = None):
-        if in_memory is None and self._bank_db != None:
+    def refresh_treasury_public_agendas_data(self, in_memory: bool = None):
+        if in_memory is None and self._treasury_db != None:
             in_memory = True
-        self._create_bank_db(in_memory=in_memory, overwrite=True)
-        self._bank_populate_agendas_data()
+        self._create_treasury_db(in_memory=in_memory, overwrite=True)
+        self._treasury_populate_agendas_data()
 
-    def _bank_populate_agendas_data(self):
+    def _treasury_populate_agendas_data(self):
         for file_name in self.get_public_dir_file_names_list():
             agenda_json = x_func_open_file(self.get_public_dir(), file_name)
             agendaunit_x = get_agenda_from_json(x_agenda_json=agenda_json)
             agendaunit_x.set_agenda_metrics()
 
-            self._bank_insert_agendaunit(agendaunit_x)
-            self._bank_insert_partyunit(agendaunit_x)
-            self._bank_insert_groupunit(agendaunit_x)
-            self._bank_insert_ideaunit(agendaunit_x)
-            self._bank_insert_acptfact(agendaunit_x)
+            self._treasury_insert_agendaunit(agendaunit_x)
+            self._treasury_insert_partyunit(agendaunit_x)
+            self._treasury_insert_groupunit(agendaunit_x)
+            self._treasury_insert_ideaunit(agendaunit_x)
+            self._treasury_insert_acptfact(agendaunit_x)
 
-    def _bank_insert_agendaunit(self, agendaunit_x: AgendaUnit):
-        with self.get_bank_conn() as bank_conn:
-            cur = bank_conn.cursor()
+    def _treasury_insert_agendaunit(self, agendaunit_x: AgendaUnit):
+        with self.get_treasury_conn() as treasury_conn:
+            cur = treasury_conn.cursor()
             cur.execute(get_agendaunit_table_insert_sqlstr(x_agenda=agendaunit_x))
 
-    def _bank_set_agendaunit_attrs(self, agenda: AgendaUnit):
-        with self.get_bank_conn() as bank_conn:
-            bank_conn.execute(get_agendaunit_update_sqlstr(agenda))
+    def _treasury_set_agendaunit_attrs(self, agenda: AgendaUnit):
+        with self.get_treasury_conn() as treasury_conn:
+            treasury_conn.execute(get_agendaunit_update_sqlstr(agenda))
 
-    def _bank_insert_partyunit(self, agendaunit_x: AgendaUnit):
-        with self.get_bank_conn() as bank_conn:
-            cur = bank_conn.cursor()
+    def _treasury_insert_partyunit(self, agendaunit_x: AgendaUnit):
+        with self.get_treasury_conn() as treasury_conn:
+            cur = treasury_conn.cursor()
             for x_partyunit in agendaunit_x._partys.values():
                 sqlstr = get_partyunit_table_insert_sqlstr(agendaunit_x, x_partyunit)
                 cur.execute(sqlstr)
 
-    def _bank_insert_groupunit(self, agendaunit_x: AgendaUnit):
-        with self.get_bank_conn() as bank_conn:
-            cur = bank_conn.cursor()
+    def _treasury_insert_groupunit(self, agendaunit_x: AgendaUnit):
+        with self.get_treasury_conn() as treasury_conn:
+            cur = treasury_conn.cursor()
             for groupunit_x in agendaunit_x._groups.values():
                 groupunit_catalog_x = GroupUnitCatalog(
                     agenda_healer=agendaunit_x._healer,
@@ -249,17 +258,17 @@ class CultureUnit:
                 sqlstr = get_groupunit_catalog_table_insert_sqlstr(groupunit_catalog_x)
                 cur.execute(sqlstr)
 
-    def _bank_insert_ideaunit(self, agendaunit_x: AgendaUnit):
-        with self.get_bank_conn() as bank_conn:
-            cur = bank_conn.cursor()
+    def _treasury_insert_ideaunit(self, agendaunit_x: AgendaUnit):
+        with self.get_treasury_conn() as treasury_conn:
+            cur = treasury_conn.cursor()
             for idea_x in agendaunit_x._idea_dict.values():
                 idea_catalog_x = IdeaCatalog(agendaunit_x._healer, idea_x.get_road())
                 sqlstr = get_idea_catalog_table_insert_sqlstr(idea_catalog_x)
                 cur.execute(sqlstr)
 
-    def _bank_insert_acptfact(self, agendaunit_x: AgendaUnit):
-        with self.get_bank_conn() as bank_conn:
-            cur = bank_conn.cursor()
+    def _treasury_insert_acptfact(self, agendaunit_x: AgendaUnit):
+        with self.get_treasury_conn() as treasury_conn:
+            cur = treasury_conn.cursor()
             for acptfact_x in agendaunit_x._idearoot._acptfactunits.values():
                 acptfact_catalog_x = AcptFactCatalog(
                     agenda_healer=agendaunit_x._healer,
@@ -269,38 +278,38 @@ class CultureUnit:
                 sqlstr = get_acptfact_catalog_table_insert_sqlstr(acptfact_catalog_x)
                 cur.execute(sqlstr)
 
-    def get_bank_conn(self) -> Connection:
-        if self._bank_db is None:
-            return sqlite3_connect(self.get_bank_db_path())
+    def get_treasury_conn(self) -> Connection:
+        if self._treasury_db is None:
+            return sqlite3_connect(self.get_treasury_db_path())
         else:
-            return self._bank_db
+            return self._treasury_db
 
-    def _create_bank_db(
+    def _create_treasury_db(
         self, in_memory: bool = None, overwrite: bool = None
     ) -> Connection:
         if overwrite:
-            self._delete_bank()
+            self._delete_treasury()
 
-        bank_file_new = True
+        treasury_file_new = True
         if in_memory:
-            self._bank_db = sqlite3_connect(":memory:")
+            self._treasury_db = sqlite3_connect(":memory:")
         else:
-            sqlite3_connect(self.get_bank_db_path())
+            sqlite3_connect(self.get_treasury_db_path())
 
-        if bank_file_new:
-            with self.get_bank_conn() as bank_conn:
+        if treasury_file_new:
+            with self.get_treasury_conn() as treasury_conn:
                 for sqlstr in get_create_table_if_not_exist_sqlstrs():
-                    bank_conn.execute(sqlstr)
+                    treasury_conn.execute(sqlstr)
 
-    def _delete_bank(self):
-        self._bank_db = None
-        x_func_delete_dir(dir=self.get_bank_db_path())
+    def _delete_treasury(self):
+        self._treasury_db = None
+        x_func_delete_dir(dir=self.get_treasury_db_path())
 
     def add_cultureunit_qid(self, qid: str):
         self.qid = qid
 
-    def get_bank_db_path(self):
-        return f"{self.get_object_root_dir()}/bank.db"
+    def get_treasury_db_path(self):
+        return f"{self.get_object_root_dir()}/treasury.db"
 
     def get_object_root_dir(self):
         return f"{self.cultures_dir}/{self.qid}"
@@ -313,7 +322,7 @@ class CultureUnit:
             file_text="",
         )
 
-    def create_dirs_if_null(self, in_memory_bank: bool = None):
+    def create_dirs_if_null(self, in_memory_treasury: bool = None):
         culture_dir = self.get_object_root_dir()
         agendas_dir = self.get_public_dir()
         councilunits_dir = self.get_councilunits_dir()
@@ -321,7 +330,7 @@ class CultureUnit:
         single_dir_create_if_null(x_path=agendas_dir)
         single_dir_create_if_null(x_path=councilunits_dir)
         self._create_main_file_if_null(x_dir=culture_dir)
-        self._create_bank_db(in_memory=in_memory_bank, overwrite=True)
+        self._create_treasury_db(in_memory=in_memory_treasury, overwrite=True)
 
     # CouncilUnit management
     def get_councilunits_dir(self):
@@ -534,10 +543,10 @@ def cultureunit_shop(
     cultures_dir: str,
     _manager_pid: PersonID = None,
     _councilunits: dict[str:CouncilUnit] = None,
-    in_memory_bank: bool = None,
+    in_memory_treasury: bool = None,
 ):
-    if in_memory_bank is None:
-        in_memory_bank = True
+    if in_memory_treasury is None:
+        in_memory_treasury = True
     culture_x = CultureUnit(
         qid=qid,
         cultures_dir=cultures_dir,
@@ -545,20 +554,20 @@ def cultureunit_shop(
     )
     culture_x.set_manager_pid(_manager_pid)
     culture_x.set_councilunits_empty_if_null()
-    culture_x.create_dirs_if_null(in_memory_bank=in_memory_bank)
+    culture_x.create_dirs_if_null(in_memory_treasury=in_memory_treasury)
     return culture_x
 
 
-def set_bank_partybankunits_to_agenda_partyunits(
-    x_agenda: AgendaUnit, partybankunits: dict[str:PartyBankUnit]
+def set_treasury_partytreasuryunits_to_agenda_partyunits(
+    x_agenda: AgendaUnit, partytreasuryunits: dict[str:PartyTreasuryUnit]
 ):
     for x_partyunit in x_agenda._partys.values():
-        x_partyunit.clear_banking_data()
-        partybankunit = partybankunits.get(x_partyunit.pid)
-        if partybankunit != None:
-            x_partyunit.set_banking_data(
-                tax_paid=partybankunit.tax_total,
-                tax_diff=partybankunit.tax_diff,
-                credit_score=partybankunit.credit_score,
-                voice_rank=partybankunit.voice_rank,
+        x_partyunit.clear_treasurying_data()
+        partytreasuryunit = partytreasuryunits.get(x_partyunit.pid)
+        if partytreasuryunit != None:
+            x_partyunit.set_treasurying_data(
+                tax_paid=partytreasuryunit.tax_total,
+                tax_diff=partytreasuryunit.tax_diff,
+                credit_score=partytreasuryunit.credit_score,
+                voice_rank=partytreasuryunit.voice_rank,
             )

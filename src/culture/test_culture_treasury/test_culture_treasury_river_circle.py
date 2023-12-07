@@ -5,7 +5,7 @@ from src.culture.examples.culture_env_kit import (
     get_test_cultures_dir,
     env_dir_setup_cleanup,
 )
-from src.culture.bank_sqlstr import (
+from src.culture.treasury_sqlstr import (
     get_river_circle_table_insert_sqlstr,
     get_river_circle_dict,
     get_river_circle_table_delete_sqlstr,
@@ -35,20 +35,20 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=bob_agenda)
 
-    x_culture.refresh_bank_public_agendas_data()
+    x_culture.refresh_treasury_public_agendas_data()
     x_culture.set_credit_flow_for_agenda(agenda_healer=sal_text)
 
-    with x_culture.get_bank_conn() as bank_conn:
-        assert len(get_river_circle_dict(bank_conn, sal_text)) > 0
+    with x_culture.get_treasury_conn() as treasury_conn:
+        assert len(get_river_circle_dict(treasury_conn, sal_text)) > 0
 
     # WHEN
     sqlstr = get_river_circle_table_delete_sqlstr(sal_text)
-    with x_culture.get_bank_conn() as bank_conn:
-        bank_conn.execute(sqlstr)
+    with x_culture.get_treasury_conn() as treasury_conn:
+        treasury_conn.execute(sqlstr)
 
     # THEN
-    with x_culture.get_bank_conn() as bank_conn:
-        assert len(get_river_circle_dict(bank_conn, sal_text)) == 0
+    with x_culture.get_treasury_conn() as treasury_conn:
+        assert len(get_river_circle_dict(treasury_conn, sal_text)) == 0
 
 
 def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
@@ -87,27 +87,28 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     elu_agenda.add_partyunit(pid=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
-    x_culture.refresh_bank_public_agendas_data()
+    x_culture.refresh_treasury_public_agendas_data()
     x_culture.set_credit_flow_for_agenda(agenda_healer=sal_text, max_blocks_count=100)
-    with x_culture.get_bank_conn() as bank_conn:
-        bank_conn.execute(get_river_circle_table_delete_sqlstr(sal_text))
+    with x_culture.get_treasury_conn() as treasury_conn:
+        treasury_conn.execute(get_river_circle_table_delete_sqlstr(sal_text))
         assert (
-            len(get_river_circle_dict(bank_conn, currency_agenda_healer=sal_text)) == 0
+            len(get_river_circle_dict(treasury_conn, currency_agenda_healer=sal_text))
+            == 0
         )
 
     # WHEN / THEN
     mstr_sqlstr = get_river_circle_table_insert_sqlstr(currency_agenda_healer=sal_text)
-    with x_culture.get_bank_conn() as bank_conn:
+    with x_culture.get_treasury_conn() as treasury_conn:
         print(mstr_sqlstr)
-        bank_conn.execute(mstr_sqlstr)
-        # river_blocks = get_river_block_dict(bank_conn, currency_agenda_healer=sal_text)
+        treasury_conn.execute(mstr_sqlstr)
+        # river_blocks = get_river_block_dict(treasury_conn, currency_agenda_healer=sal_text)
         # for river_block in river_blocks.values():
         #     print(f"{river_block=}")
 
     # THEN
-    with x_culture.get_bank_conn() as bank_conn:
+    with x_culture.get_treasury_conn() as treasury_conn:
         river_circles = get_river_circle_dict(
-            bank_conn, currency_agenda_healer=sal_text
+            treasury_conn, currency_agenda_healer=sal_text
         )
         # for river_circle in river_circles.values():
         #     print(f"huh {river_circle=}")

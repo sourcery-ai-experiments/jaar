@@ -69,7 +69,7 @@ CultureUnit CouncilUnit objects
 
 CultureUnit CouncilUnit Agenda objects
 
-CultureUnit Bank objects
+CultureUnit Treasury objects
 
 <!-- TODO: Add explanations -->
 AgendaUnit objects

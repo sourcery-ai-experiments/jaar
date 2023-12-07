@@ -146,7 +146,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.culture_x = cultureunit_shop(
             qid=culture_selected, cultures_dir=get_test_cultures_dir()
         )
-        self.culture_x.create_dirs_if_null(in_memory_bank=False)
+        self.culture_x.create_dirs_if_null(in_memory_treasury=False)
         self.culture_qid.setText(culture_selected)
         self.refresh_culture()
 

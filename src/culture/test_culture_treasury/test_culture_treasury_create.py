@@ -4,7 +4,7 @@ from src.culture.examples.culture_env_kit import (
     get_test_cultures_dir,
     env_dir_setup_cleanup,
 )
-from src.culture.bank_sqlstr import get_db_tables, get_db_columns
+from src.culture.treasury_sqlstr import get_db_tables, get_db_columns
 
 
 def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
@@ -12,12 +12,12 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
 
     # WHEN
-    x_culture.create_dirs_if_null(in_memory_bank=True)
+    x_culture.create_dirs_if_null(in_memory_treasury=True)
 
     # THEN
-    with x_culture.get_bank_conn() as bank_conn:
-        db_tables = get_db_tables(bank_conn)
-        db_tables_columns = get_db_columns(bank_conn)
+    with x_culture.get_treasury_conn() as treasury_conn:
+        db_tables = get_db_tables(treasury_conn)
+        db_tables_columns = get_db_columns(treasury_conn)
 
     # row_count = 0
     # for table_name, table_x in tables_dict.items():
@@ -39,11 +39,11 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     _agenda_intent_ratio_debt_text = "_agenda_intent_ratio_debt"
     _creditor_active_text = "_creditor_active"
     _debtor_active_text = "_debtor_active"
-    _bank_credit_score_text = "_bank_credit_score"
-    _bank_voice_rank_text = "_bank_voice_rank"
-    _bank_voice_hx_lowest_rank_text = "_bank_voice_hx_lowest_rank"
-    _bank_tax_paid_text = "_bank_tax_paid"
-    _bank_tax_diff_text = "_bank_tax_diff"
+    _treasury_credit_score_text = "_treasury_credit_score"
+    _treasury_voice_rank_text = "_treasury_voice_rank"
+    _treasury_voice_hx_lowest_rank_text = "_treasury_voice_hx_lowest_rank"
+    _treasury_tax_paid_text = "_treasury_tax_paid"
+    _treasury_tax_diff_text = "_treasury_tax_diff"
     _title_text = "_title"
     partyunit_text = "partyunit"
     partyunit_columns = {
@@ -57,11 +57,11 @@ def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
         _agenda_intent_ratio_debt_text: 1,
         _creditor_active_text: 1,
         _debtor_active_text: 1,
-        _bank_tax_paid_text: 1,
-        _bank_tax_diff_text: 1,
-        _bank_credit_score_text: 1,
-        _bank_voice_rank_text: 1,
-        _bank_voice_hx_lowest_rank_text: 1,
+        _treasury_tax_paid_text: 1,
+        _treasury_tax_diff_text: 1,
+        _treasury_credit_score_text: 1,
+        _treasury_voice_rank_text: 1,
+        _treasury_voice_hx_lowest_rank_text: 1,
         _title_text: 1,
     }
 

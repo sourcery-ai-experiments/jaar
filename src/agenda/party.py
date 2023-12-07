@@ -71,12 +71,12 @@ class PartyUnit(PartyCore):
     _creditor_active: bool = None
     _debtor_active: bool = None
     _partyrings: dict[PartyPID:PartyRing] = None
-    _bank_tax_paid: float = None
-    _bank_tax_diff: float = None
+    _treasury_tax_paid: float = None
+    _treasury_tax_diff: float = None
     _output_agenda_meld_order: int = None
-    _bank_credit_score: float = None
-    _bank_voice_rank: int = None
-    _bank_voice_hx_lowest_rank: int = None
+    _treasury_credit_score: float = None
+    _treasury_voice_rank: int = None
+    _treasury_voice_hx_lowest_rank: int = None
     _title: PartyTitle = None
 
     def set_title(self, title: PartyTitle):
@@ -107,50 +107,52 @@ class PartyUnit(PartyCore):
     def del_depotlink_type(self):
         self.depotlink_type = None
 
-    def clear_banking_data(self):
-        self._bank_tax_paid = None
-        self._bank_tax_diff = None
-        self._bank_credit_score = None
-        self._bank_voice_rank = None
+    def clear_treasurying_data(self):
+        self._treasury_tax_paid = None
+        self._treasury_tax_diff = None
+        self._treasury_credit_score = None
+        self._treasury_voice_rank = None
 
-    def set_banking_data(
+    def set_treasurying_data(
         self,
         tax_paid: float,
         tax_diff: float,
         credit_score: float,
         voice_rank: int,
     ):
-        self._bank_tax_paid = tax_paid
-        self._bank_tax_diff = tax_diff
-        self._bank_credit_score = credit_score
-        self.set_bank_voice_rank(voice_rank)
+        self._treasury_tax_paid = tax_paid
+        self._treasury_tax_diff = tax_diff
+        self._treasury_credit_score = credit_score
+        self.set_treasury_voice_rank(voice_rank)
 
         # if tax_diff is None or self._agenda_intent_ratio_credit is None:
-        #     self._bank_tax_diff = tax_diff
+        #     self._treasury_tax_diff = tax_diff
         # elif (
-        #     round(self._bank_tax_paid - self._agenda_intent_ratio_credit, 15) == tax_diff
+        #     round(self._treasury_tax_paid - self._agenda_intent_ratio_credit, 15) == tax_diff
         # ):
-        #     self._bank_tax_diff = tax_diff
+        #     self._treasury_tax_diff = tax_diff
         # else:
         #     raise Exception(
-        #         f"PartyUnit.set_banking_data fail: tax_paid={tax_paid} + tax_diff={tax_diff} not equal to _agenda_intent_ratio_credit={self._agenda_intent_ratio_credit}"
+        #         f"PartyUnit.set_treasurying_data fail: tax_paid={tax_paid} + tax_diff={tax_diff} not equal to _agenda_intent_ratio_credit={self._agenda_intent_ratio_credit}"
         #     )
 
-    def set_bank_voice_rank(self, voice_rank: int):
-        self._bank_voice_rank = voice_rank
-        self._set_bank_voice_hx_lowest_rank()
+    def set_treasury_voice_rank(self, voice_rank: int):
+        self._treasury_voice_rank = voice_rank
+        self._set_treasury_voice_hx_lowest_rank()
 
-    def _set_bank_voice_hx_lowest_rank(self, bank_voice_hx_lowest_rank: float = None):
+    def _set_treasury_voice_hx_lowest_rank(
+        self, treasury_voice_hx_lowest_rank: float = None
+    ):
         if (
-            bank_voice_hx_lowest_rank != None
-            and self._bank_voice_hx_lowest_rank != None
+            treasury_voice_hx_lowest_rank != None
+            and self._treasury_voice_hx_lowest_rank != None
         ):
-            self._bank_voice_hx_lowest_rank = bank_voice_hx_lowest_rank
+            self._treasury_voice_hx_lowest_rank = treasury_voice_hx_lowest_rank
 
-        if self._bank_voice_hx_lowest_rank is None or (
-            self._bank_voice_hx_lowest_rank > self._bank_voice_rank
+        if self._treasury_voice_hx_lowest_rank is None or (
+            self._treasury_voice_hx_lowest_rank > self._treasury_voice_rank
         ):
-            self._bank_voice_hx_lowest_rank = self._bank_voice_rank
+            self._treasury_voice_hx_lowest_rank = self._treasury_voice_rank
 
     def get_dict(self):
         return {
@@ -161,11 +163,11 @@ class PartyUnit(PartyCore):
             "_creditor_active": self._creditor_active,
             "_debtor_active": self._debtor_active,
             "_partyrings": self.get_partyrings_dict(),
-            "_bank_tax_paid": self._bank_tax_paid,
-            "_bank_tax_diff": self._bank_tax_diff,
-            "_bank_credit_score": self._bank_credit_score,
-            "_bank_voice_rank": self._bank_voice_rank,
-            "_bank_voice_hx_lowest_rank": self._bank_voice_hx_lowest_rank,
+            "_treasury_tax_paid": self._treasury_tax_paid,
+            "_treasury_tax_diff": self._treasury_tax_diff,
+            "_treasury_credit_score": self._treasury_credit_score,
+            "_treasury_voice_rank": self._treasury_voice_rank,
+            "_treasury_voice_hx_lowest_rank": self._treasury_voice_hx_lowest_rank,
             "depotlink_type": self.depotlink_type,
             "_title": self._title,
         }
@@ -269,29 +271,31 @@ def partyunits_get_from_dict(x_dict: dict) -> dict[str:PartyUnit]:
             partyrings = {}
 
         try:
-            _bank_tax_paid = partyunits_dict["_bank_tax_paid"]
+            _treasury_tax_paid = partyunits_dict["_treasury_tax_paid"]
         except KeyError:
-            _bank_tax_paid = None
+            _treasury_tax_paid = None
 
         try:
-            _bank_tax_diff = partyunits_dict["_bank_tax_diff"]
+            _treasury_tax_diff = partyunits_dict["_treasury_tax_diff"]
         except KeyError:
-            _bank_tax_diff = None
+            _treasury_tax_diff = None
 
         try:
-            _bank_credit_score = partyunits_dict["_bank_credit_score"]
+            _treasury_credit_score = partyunits_dict["_treasury_credit_score"]
         except KeyError:
-            _bank_credit_score = None
+            _treasury_credit_score = None
 
         try:
-            _bank_voice_rank = partyunits_dict["_bank_voice_rank"]
+            _treasury_voice_rank = partyunits_dict["_treasury_voice_rank"]
         except KeyError:
-            _bank_voice_rank = None
+            _treasury_voice_rank = None
 
         try:
-            _bank_voice_hx_lowest_rank = partyunits_dict["_bank_voice_hx_lowest_rank"]
+            _treasury_voice_hx_lowest_rank = partyunits_dict[
+                "_treasury_voice_hx_lowest_rank"
+            ]
         except KeyError:
-            _bank_voice_hx_lowest_rank = None
+            _treasury_voice_hx_lowest_rank = None
 
         try:
             depotlink_type = partyunits_dict["depotlink_type"]
@@ -314,13 +318,13 @@ def partyunits_get_from_dict(x_dict: dict) -> dict[str:PartyUnit]:
             depotlink_type=depotlink_type,
             _title=_title,
         )
-        x_partyunit.set_banking_data(
-            tax_paid=_bank_tax_paid,
-            tax_diff=_bank_tax_diff,
-            credit_score=_bank_credit_score,
-            voice_rank=_bank_voice_rank,
+        x_partyunit.set_treasurying_data(
+            tax_paid=_treasury_tax_paid,
+            tax_diff=_treasury_tax_diff,
+            credit_score=_treasury_credit_score,
+            voice_rank=_treasury_voice_rank,
         )
-        x_partyunit._set_bank_voice_hx_lowest_rank(_bank_voice_hx_lowest_rank)
+        x_partyunit._set_treasury_voice_hx_lowest_rank(_treasury_voice_hx_lowest_rank)
         partyunits[x_partyunit.pid] = x_partyunit
     return partyunits
 
@@ -339,8 +343,8 @@ def partyunit_shop(
     _agenda_intent_debt: float = None,
     _agenda_intent_ratio_credit: float = None,
     _agenda_intent_ratio_debt: float = None,
-    _bank_tax_paid: float = None,
-    _bank_tax_diff: float = None,
+    _treasury_tax_paid: float = None,
+    _treasury_tax_diff: float = None,
     depotlink_type: str = None,
     _title: PartyTitle = None,
 ) -> PartyUnit:
@@ -360,8 +364,8 @@ def partyunit_shop(
         _agenda_intent_ratio_credit=_agenda_intent_ratio_credit,
         _agenda_intent_ratio_debt=_agenda_intent_ratio_debt,
         _partyrings=final_partyrings,
-        _bank_tax_paid=_bank_tax_paid,
-        _bank_tax_diff=_bank_tax_diff,
+        _treasury_tax_paid=_treasury_tax_paid,
+        _treasury_tax_diff=_treasury_tax_diff,
     )
     if depotlink_type != None:
         x_partyunit.set_depotlink_type(depotlink_type=depotlink_type)

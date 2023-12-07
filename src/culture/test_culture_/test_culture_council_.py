@@ -14,7 +14,7 @@ def test_cultureunit_set_healer_WorksCorrectly(env_dir_setup_cleanup):
     x_qid = get_temp_env_qid()
     x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
     print(f"create env '{x_qid}' directories.")
-    x_culture.create_dirs_if_null(in_memory_bank=True)
+    x_culture.create_dirs_if_null(in_memory_treasury=True)
     timmy_text = "timmy"
     wx_path = f"{x_culture.get_councilunits_dir()}/{timmy_text}"
     print(f"{wx_path=}")
@@ -32,7 +32,7 @@ def test_cultureunit_change_councilunit_cid_WorksCorrectly(env_dir_setup_cleanup
     # GIVEN
     x_qid = get_temp_env_qid()
     x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
+    x_culture.create_dirs_if_null(in_memory_treasury=True)
     old_bob_text = "old Bob"
     old_bob_dir = f"{x_culture.get_councilunits_dir()}/{old_bob_text}"
     old_bob_file_path = f"{old_bob_dir}/seed_agenda.json"
@@ -95,7 +95,7 @@ def test_cultureunit_add_councilunit_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     x_qid = get_temp_env_qid()
     x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
+    x_culture.create_dirs_if_null(in_memory_treasury=True)
     bob_text = "Bob"
     bob_dir = f"{x_culture.get_councilunits_dir()}/{bob_text}"
     bob_file_path = f"{bob_dir}/seed_agenda.json"
@@ -128,7 +128,7 @@ def test_cultureunit_councilunit_exists_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     x_qid = get_temp_env_qid()
     x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
+    x_culture.create_dirs_if_null(in_memory_treasury=True)
     bob_text = "Bob"
 
     # WHEN / THEN

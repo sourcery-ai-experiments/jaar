@@ -136,10 +136,10 @@ def test_culture_council_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     cali_beto_party = cali_seed.get_party(beto_text)
     amer_voice_rank = 45
     beto_voice_rank = 100
-    cali_amer_party.set_banking_data(None, None, None, voice_rank=amer_voice_rank)
-    cali_beto_party.set_banking_data(None, None, None, voice_rank=beto_voice_rank)
-    # print(f"{cali_amer_party._bank_voice_rank=} {amer_voice_rank=}")
-    # print(f"{cali_beto_party._bank_voice_rank=} {beto_voice_rank=}")
+    cali_amer_party.set_treasurying_data(None, None, None, voice_rank=amer_voice_rank)
+    cali_beto_party.set_treasurying_data(None, None, None, voice_rank=beto_voice_rank)
+    # print(f"{cali_amer_party._treasury_voice_rank=} {amer_voice_rank=}")
+    # print(f"{cali_beto_party._treasury_voice_rank=} {beto_voice_rank=}")
 
     cali_kichen.set_seed(cali_seed)
 
@@ -147,8 +147,8 @@ def test_culture_council_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     # new_cali_seed = cali_kichen.get_seed()
     # new_cali_amer_party = new_cali_seed.get_party(amer_text)
     # new_cali_beto_party = new_cali_seed.get_party(beto_text)
-    # print(f"{new_cali_amer_party._bank_voice_rank=} ")
-    # print(f"{new_cali_beto_party._bank_voice_rank=} ")
+    # print(f"{new_cali_amer_party._treasury_voice_rank=} ")
+    # print(f"{new_cali_beto_party._treasury_voice_rank=} ")
 
     cali_kichen._admin.save_refreshed_output_to_public()
 

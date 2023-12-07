@@ -32,11 +32,11 @@ def test_PartyUnit_exists():
     assert bob_party._creditor_active is None
     assert bob_party._debtor_active is None
     assert bob_party._partyrings is None
-    assert bob_party._bank_tax_paid is None
-    assert bob_party._bank_tax_diff is None
-    assert bob_party._bank_credit_score is None
-    assert bob_party._bank_voice_rank is None
-    assert bob_party._bank_voice_hx_lowest_rank is None
+    assert bob_party._treasury_tax_paid is None
+    assert bob_party._treasury_tax_diff is None
+    assert bob_party._treasury_credit_score is None
+    assert bob_party._treasury_voice_rank is None
+    assert bob_party._treasury_voice_hx_lowest_rank is None
     assert bob_party.depotlink_type is None
     assert bob_party._output_agenda_meld_order is None
 
@@ -326,7 +326,7 @@ def test_PartyUnit_set_agenda_intent_ratio_credit_debt_MethodWorkCorrectly():
     assert bob_party._agenda_intent_ratio_debt == 0.5
 
 
-def test_PartyUnit_set_banking_data_MethodWorkCorrectly():
+def test_PartyUnit_set_treasurying_data_MethodWorkCorrectly():
     # GIVEN
     bob_pid = "bob"
     x_agenda_intent_ratio_credit = 0.077
@@ -339,34 +339,34 @@ def test_PartyUnit_set_banking_data_MethodWorkCorrectly():
     )
     assert bob_party._agenda_intent_ratio_credit == 0.077
     assert bob_party._agenda_intent_ratio_debt == 0.066
-    assert bob_party._bank_tax_paid is None
-    assert bob_party._bank_tax_diff is None
-    assert bob_party._bank_credit_score is None
-    assert bob_party._bank_voice_rank is None
-    assert bob_party._bank_voice_hx_lowest_rank is None
+    assert bob_party._treasury_tax_paid is None
+    assert bob_party._treasury_tax_diff is None
+    assert bob_party._treasury_credit_score is None
+    assert bob_party._treasury_voice_rank is None
+    assert bob_party._treasury_voice_hx_lowest_rank is None
 
     # WHEN
     x_tax_paid = 0.2
     x_tax_diff = 0.123
-    x_bank_credit_score = 900
-    x_bank_voice_rank = 45
-    bob_party.set_banking_data(
+    x_treasury_credit_score = 900
+    x_treasury_voice_rank = 45
+    bob_party.set_treasurying_data(
         tax_paid=x_tax_paid,
         tax_diff=x_tax_diff,
-        credit_score=x_bank_credit_score,
-        voice_rank=x_bank_voice_rank,
+        credit_score=x_treasury_credit_score,
+        voice_rank=x_treasury_voice_rank,
     )
     # THEN
     assert bob_party._agenda_intent_ratio_credit == x_agenda_intent_ratio_credit
     assert bob_party._agenda_intent_ratio_debt == x_agenda_intent_ratio_debt
-    assert bob_party._bank_tax_paid == x_tax_paid
-    assert bob_party._bank_tax_diff == x_tax_diff
-    assert bob_party._bank_credit_score == x_bank_credit_score
-    assert bob_party._bank_voice_rank == x_bank_voice_rank
-    assert bob_party._bank_voice_hx_lowest_rank == x_bank_voice_rank
+    assert bob_party._treasury_tax_paid == x_tax_paid
+    assert bob_party._treasury_tax_diff == x_tax_diff
+    assert bob_party._treasury_credit_score == x_treasury_credit_score
+    assert bob_party._treasury_voice_rank == x_treasury_voice_rank
+    assert bob_party._treasury_voice_hx_lowest_rank == x_treasury_voice_rank
 
 
-def test_PartyUnit_set_banking_data_CorrectlyDecreasesOrIgnores_bank_voice_hx_lowest_rank():
+def test_PartyUnit_set_treasurying_data_CorrectlyDecreasesOrIgnores_treasury_voice_hx_lowest_rank():
     # GIVEN
     bob_pid = "bob"
     x_agenda_intent_ratio_credit = 0.077
@@ -378,40 +378,40 @@ def test_PartyUnit_set_banking_data_CorrectlyDecreasesOrIgnores_bank_voice_hx_lo
     )
     x_tax_paid = 0.2
     x_tax_diff = 0.123
-    x_bank_credit_score = 900
-    old_x_bank_voice_rank = 45
-    bob_party.set_banking_data(
+    x_treasury_credit_score = 900
+    old_x_treasury_voice_rank = 45
+    bob_party.set_treasurying_data(
         tax_paid=x_tax_paid,
         tax_diff=x_tax_diff,
-        credit_score=x_bank_credit_score,
-        voice_rank=old_x_bank_voice_rank,
+        credit_score=x_treasury_credit_score,
+        voice_rank=old_x_treasury_voice_rank,
     )
-    assert bob_party._bank_voice_hx_lowest_rank == old_x_bank_voice_rank
+    assert bob_party._treasury_voice_hx_lowest_rank == old_x_treasury_voice_rank
 
     # WHEN
-    new_x_bank_voice_rank = 33
-    bob_party.set_banking_data(
+    new_x_treasury_voice_rank = 33
+    bob_party.set_treasurying_data(
         tax_paid=x_tax_paid,
         tax_diff=x_tax_diff,
-        credit_score=x_bank_credit_score,
-        voice_rank=new_x_bank_voice_rank,
+        credit_score=x_treasury_credit_score,
+        voice_rank=new_x_treasury_voice_rank,
     )
     # THEN
-    assert bob_party._bank_voice_hx_lowest_rank == new_x_bank_voice_rank
+    assert bob_party._treasury_voice_hx_lowest_rank == new_x_treasury_voice_rank
 
     # WHEN
-    not_lower_x_bank_voice_rank = 60
-    bob_party.set_banking_data(
+    not_lower_x_treasury_voice_rank = 60
+    bob_party.set_treasurying_data(
         tax_paid=x_tax_paid,
         tax_diff=x_tax_diff,
-        credit_score=x_bank_credit_score,
-        voice_rank=not_lower_x_bank_voice_rank,
+        credit_score=x_treasury_credit_score,
+        voice_rank=not_lower_x_treasury_voice_rank,
     )
     # THEN
-    assert bob_party._bank_voice_hx_lowest_rank == new_x_bank_voice_rank
+    assert bob_party._treasury_voice_hx_lowest_rank == new_x_treasury_voice_rank
 
 
-def test_PartyUnit_clear_banking_data_MethodWorkCorrectly():
+def test_PartyUnit_clear_treasurying_data_MethodWorkCorrectly():
     # GIVEN
     bob_pid = "bob"
     bob_party = partyunit_shop(
@@ -419,27 +419,27 @@ def test_PartyUnit_clear_banking_data_MethodWorkCorrectly():
         _agenda_intent_ratio_credit=0.355,
         _agenda_intent_ratio_debt=0.066,
     )
-    x_bank_credit_score = 900
-    x_bank_voice_rank = 45
-    bob_party.set_banking_data(
+    x_treasury_credit_score = 900
+    x_treasury_voice_rank = 45
+    bob_party.set_treasurying_data(
         tax_paid=0.399,
         tax_diff=0.044,
-        credit_score=x_bank_credit_score,
-        voice_rank=x_bank_voice_rank,
+        credit_score=x_treasury_credit_score,
+        voice_rank=x_treasury_voice_rank,
     )
-    assert bob_party._bank_tax_paid == 0.399
-    assert bob_party._bank_tax_diff == 0.044
-    assert bob_party._bank_credit_score == x_bank_credit_score
-    assert bob_party._bank_voice_rank == x_bank_voice_rank
+    assert bob_party._treasury_tax_paid == 0.399
+    assert bob_party._treasury_tax_diff == 0.044
+    assert bob_party._treasury_credit_score == x_treasury_credit_score
+    assert bob_party._treasury_voice_rank == x_treasury_voice_rank
 
     # WHEN
-    bob_party.clear_banking_data()
+    bob_party.clear_treasurying_data()
 
     # THEN
-    assert bob_party._bank_tax_paid is None
-    assert bob_party._bank_tax_diff is None
-    assert bob_party._bank_credit_score is None
-    assert bob_party._bank_voice_rank is None
+    assert bob_party._treasury_tax_paid is None
+    assert bob_party._treasury_tax_diff is None
+    assert bob_party._treasury_credit_score is None
+    assert bob_party._treasury_voice_rank is None
 
 
 def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
@@ -449,14 +449,14 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     bob_party_rings = {glen_ring.pid: glen_ring}
     bob_text = "bob"
     bob_title = "Teacher Bob"
-    bob_bank_tax_paid = 0.55
-    bob_bank_tax_diff = 0.66
+    bob_treasury_tax_paid = 0.55
+    bob_treasury_tax_diff = 0.66
     depotlink_type = "assignment"
     bob_party = partyunit_shop(
         pid=bob_text,
         _partyrings=bob_party_rings,
-        _bank_tax_paid=bob_bank_tax_paid,
-        _bank_tax_diff=bob_bank_tax_diff,
+        _treasury_tax_paid=bob_treasury_tax_paid,
+        _treasury_tax_diff=bob_treasury_tax_diff,
         depotlink_type=depotlink_type,
         _title=bob_title,
     )
@@ -473,12 +473,12 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     bob_party.creditor_weight = bob_creditor_weight
     bob_party.debtor_weight = bob_debtor_weight
 
-    bob_bank_credit_score = 7000
-    bob_bank_voice_rank = 898
-    bob_bank_voice_hx_lowest_rank = 740
-    bob_party._bank_credit_score = bob_bank_credit_score
-    bob_party._bank_voice_rank = bob_bank_voice_rank
-    bob_party._bank_voice_hx_lowest_rank = bob_bank_voice_hx_lowest_rank
+    bob_treasury_credit_score = 7000
+    bob_treasury_voice_rank = 898
+    bob_treasury_voice_hx_lowest_rank = 740
+    bob_party._treasury_credit_score = bob_treasury_credit_score
+    bob_party._treasury_voice_rank = bob_treasury_voice_rank
+    bob_party._treasury_voice_hx_lowest_rank = bob_treasury_voice_hx_lowest_rank
     print(f"{bob_text}")
 
     # WHEN
@@ -495,11 +495,11 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         "_creditor_active": bob_creditor_active,
         "_debtor_active": bob_debtor_active,
         "_partyrings": {"glen": {"pid": "glen"}},
-        "_bank_tax_paid": bob_bank_tax_paid,
-        "_bank_tax_diff": bob_bank_tax_diff,
-        "_bank_credit_score": bob_bank_credit_score,
-        "_bank_voice_rank": bob_bank_voice_rank,
-        "_bank_voice_hx_lowest_rank": bob_bank_voice_hx_lowest_rank,
+        "_treasury_tax_paid": bob_treasury_tax_paid,
+        "_treasury_tax_diff": bob_treasury_tax_diff,
+        "_treasury_credit_score": bob_treasury_credit_score,
+        "_treasury_voice_rank": bob_treasury_voice_rank,
+        "_treasury_voice_hx_lowest_rank": bob_treasury_voice_hx_lowest_rank,
         "depotlink_type": depotlink_type,
         "_title": bob_title,
     }
@@ -516,12 +516,12 @@ def test_partyunits_get_from_json_SimpleExampleWorksWithIncompleteData():
     yao_debtor_weight = 17
     yao_creditor_active = False
     yao_debtor_active = True
-    yao_bank_tax_paid = 0.55
-    yao_bank_tax_diff = 0.66
+    yao_treasury_tax_paid = 0.55
+    yao_treasury_tax_diff = 0.66
     yao_depotlink_type = "assignment"
-    yao_bank_credit_score = 7000
-    yao_bank_voice_rank = 898
-    yao_bank_voice_hx_lowest_rank = 740
+    yao_treasury_credit_score = 7000
+    yao_treasury_voice_rank = 898
+    yao_treasury_voice_hx_lowest_rank = 740
     yao_json_dict = {
         yao_text: {
             "pid": yao_text,
@@ -531,11 +531,11 @@ def test_partyunits_get_from_json_SimpleExampleWorksWithIncompleteData():
             "_creditor_active": yao_creditor_active,
             "_debtor_active": yao_debtor_active,
             "_partyrings": yao_party_rings,
-            "_bank_tax_paid": yao_bank_tax_paid,
-            "_bank_tax_diff": yao_bank_tax_diff,
-            "_bank_credit_score": yao_bank_credit_score,
-            "_bank_voice_rank": yao_bank_voice_rank,
-            "_bank_voice_hx_lowest_rank": yao_bank_voice_hx_lowest_rank,
+            "_treasury_tax_paid": yao_treasury_tax_paid,
+            "_treasury_tax_diff": yao_treasury_tax_diff,
+            "_treasury_credit_score": yao_treasury_credit_score,
+            "_treasury_voice_rank": yao_treasury_voice_rank,
+            "_treasury_voice_hx_lowest_rank": yao_treasury_voice_hx_lowest_rank,
             "depotlink_type": yao_depotlink_type,
             "_title": yao_title,
         }
@@ -557,11 +557,14 @@ def test_partyunits_get_from_json_SimpleExampleWorksWithIncompleteData():
     assert yao_partyunit._creditor_active == yao_creditor_active
     assert yao_partyunit._debtor_active == yao_debtor_active
     # assert yao_partyunit._party_rings == yao_party_rings
-    assert yao_partyunit._bank_tax_paid == yao_bank_tax_paid
-    assert yao_partyunit._bank_tax_diff == yao_bank_tax_diff
-    assert yao_partyunit._bank_credit_score == yao_bank_credit_score
-    assert yao_partyunit._bank_voice_rank == yao_bank_voice_rank
-    assert yao_partyunit._bank_voice_hx_lowest_rank == yao_bank_voice_hx_lowest_rank
+    assert yao_partyunit._treasury_tax_paid == yao_treasury_tax_paid
+    assert yao_partyunit._treasury_tax_diff == yao_treasury_tax_diff
+    assert yao_partyunit._treasury_credit_score == yao_treasury_credit_score
+    assert yao_partyunit._treasury_voice_rank == yao_treasury_voice_rank
+    assert (
+        yao_partyunit._treasury_voice_hx_lowest_rank
+        == yao_treasury_voice_hx_lowest_rank
+    )
     assert yao_partyunit.depotlink_type == yao_depotlink_type
     assert yao_partyunit._title == yao_title
 

@@ -37,18 +37,18 @@ def test_culture_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     culture_file_path = f"{culture_dir}/{culture_file_name}"
     agendas_dir = f"{culture_dir}/agendas"
     councilunits_dir = f"{culture_dir}/councilunits"
-    bank_file_name = "bank.db"
-    bank_file_path = f"{culture_dir}/{bank_file_name}"
+    treasury_file_name = "treasury.db"
+    treasury_file_path = f"{culture_dir}/{treasury_file_name}"
 
     assert os_path.exists(culture_dir) is False
     assert os_path.isdir(culture_dir) is False
     assert os_path.exists(culture_file_path) is False
     assert os_path.exists(agendas_dir) is False
     assert os_path.exists(councilunits_dir) is False
-    assert os_path.exists(bank_file_path) is False
+    assert os_path.exists(treasury_file_path) is False
 
     # WHEN
-    x_culture.create_dirs_if_null(in_memory_bank=False)
+    x_culture.create_dirs_if_null(in_memory_treasury=False)
 
     # THEN check agendas src directory created
     assert os_path.exists(culture_dir)
@@ -56,11 +56,11 @@ def test_culture_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.exists(culture_file_path)
     assert os_path.exists(agendas_dir)
     assert os_path.exists(councilunits_dir)
-    assert os_path.exists(bank_file_path)
+    assert os_path.exists(treasury_file_path)
     assert x_culture.get_object_root_dir() == culture_dir
     assert x_culture.get_public_dir() == agendas_dir
     assert x_culture.get_councilunits_dir() == councilunits_dir
-    assert x_culture.get_bank_db_path() == bank_file_path
+    assert x_culture.get_treasury_db_path() == treasury_file_path
 
 
 def test_reqid_example_culture_CorrectlyChangesDirAndFiles(env_dir_setup_cleanup):
@@ -85,7 +85,7 @@ def test_reqid_example_culture_CorrectlyChangesDirAndFiles(env_dir_setup_cleanup
     # x_func_delete_dir(x_culture.get_object_root_dir())
     # print(f"{x_culture.get_object_root_dir()=}")
 
-    x_culture.create_dirs_if_null(in_memory_bank=True)
+    x_culture.create_dirs_if_null(in_memory_treasury=True)
 
     assert os_path.exists(old_culture_dir)
     assert os_path.isdir(old_culture_dir)
@@ -226,7 +226,7 @@ def test_cultureunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
     assert x_culture != None
     assert x_culture.qid == x_qid
     assert os_path.exists(culture_dir)
-    assert x_culture._bank_db != None
+    assert x_culture._treasury_db != None
     assert x_culture._manager_pid == sue_text
     assert x_culture._councilunits == {}
 

@@ -2380,9 +2380,9 @@ def get_meldeeorderunit(primary_agenda: AgendaUnit, meldee_file_name: str):
         primary_voice_rank_for_meldee = default_voice_rank
         primary_voice_hx_lowest_rank_for_meldee = default_voice_hx_lowest_rank
     else:
-        primary_voice_rank_for_meldee = primary_meldee_partyunit._bank_voice_rank
+        primary_voice_rank_for_meldee = primary_meldee_partyunit._treasury_voice_rank
         primary_voice_hx_lowest_rank_for_meldee = (
-            primary_meldee_partyunit._bank_voice_hx_lowest_rank
+            primary_meldee_partyunit._treasury_voice_hx_lowest_rank
         )
         if primary_voice_rank_for_meldee is None:
             primary_voice_rank_for_meldee = default_voice_rank

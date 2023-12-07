@@ -476,9 +476,9 @@ WHERE currency_master = '{currency_agenda_healer}'
     return dict_x
 
 
-# PartyBankUnit
+# PartyTreasuryUnit
 @dataclass
-class PartyBankUnit:
+class PartyTreasuryUnit:
     currency_master: str
     tax_healer: str
     tax_total: float
@@ -488,26 +488,26 @@ class PartyBankUnit:
     voice_rank: int
 
 
-def get_partybankunit_dict(
+def get_partytreasuryunit_dict(
     db_conn: Connection, currency_agenda_healer: str
-) -> dict[str:PartyBankUnit]:
+) -> dict[str:PartyTreasuryUnit]:
     sqlstr = f"""
 SELECT
   agenda_healer currency_master
 , pid tax_healer
-, _bank_tax_paid tax_total
+, _treasury_tax_paid tax_total
 , _agenda_intent_ratio_debt debt
-, (_agenda_intent_ratio_debt - _bank_tax_paid) tax_diff
+, (_agenda_intent_ratio_debt - _treasury_tax_paid) tax_diff
 FROM partyunit
 WHERE currency_master = '{currency_agenda_healer}'
-    AND _bank_tax_paid IS NOT NULL
+    AND _treasury_tax_paid IS NOT NULL
 ;
 """
     dict_x = {}
     results = db_conn.execute(sqlstr)
 
     for row in results.fetchall():
-        partybankunit_x = PartyBankUnit(
+        partytreasuryunit_x = PartyTreasuryUnit(
             currency_master=row[0],
             tax_healer=row[1],
             tax_total=row[2],
@@ -516,7 +516,7 @@ WHERE currency_master = '{currency_agenda_healer}'
             credit_score=None,
             voice_rank=None,
         )
-        dict_x[partybankunit_x.tax_healer] = partybankunit_x
+        dict_x[partytreasuryunit_x.tax_healer] = partytreasuryunit_x
     return dict_x
 
 
@@ -558,19 +558,21 @@ FROM agendaunit
 
 
 @dataclass
-class AgendaBankUnit:
+class AgendaTreasuryUnit:
     healer: PersonID
     rational: bool
 
 
-def get_agendabankunits_dict(db_conn: Connection) -> dict[PersonID:AgendaBankUnit]:
+def get_agendatreasuryunits_dict(
+    db_conn: Connection,
+) -> dict[PersonID:AgendaTreasuryUnit]:
     results = db_conn.execute(get_agendaunits_select_sqlstr())
     dict_x = {}
     for row in results.fetchall():
-        x_agendabankunit = AgendaBankUnit(
+        x_agendatreasuryunit = AgendaTreasuryUnit(
             healer=row[0], rational=sqlite_to_python(row[1])
         )
-        dict_x[x_agendabankunit.healer] = x_agendabankunit
+        dict_x[x_agendatreasuryunit.healer] = x_agendatreasuryunit
     return dict_x
 
 
@@ -598,11 +600,11 @@ CREATE TABLE IF NOT EXISTS partyunit (
 , _agenda_intent_ratio_debt FLOAT
 , _creditor_active INT
 , _debtor_active INT
-, _bank_tax_paid FLOAT
-, _bank_tax_diff FLOAT
-, _bank_credit_score FLOAT
-, _bank_voice_rank INT
-, _bank_voice_hx_lowest_rank INT
+, _treasury_tax_paid FLOAT
+, _treasury_tax_diff FLOAT
+, _treasury_credit_score FLOAT
+, _treasury_voice_rank INT
+, _treasury_voice_hx_lowest_rank INT
 , _title VARCHAR(255)
 , FOREIGN KEY(agenda_healer) REFERENCES agendaunit(healer)
 , FOREIGN KEY(pid) REFERENCES agendaunit(healer)
@@ -612,12 +614,12 @@ CREATE TABLE IF NOT EXISTS partyunit (
 """
 
 
-def get_partyunit_table_update_bank_tax_paid_sqlstr(
+def get_partyunit_table_update_treasury_tax_paid_sqlstr(
     currency_agenda_healer: PersonID,
 ) -> str:
     return f"""
 UPDATE partyunit
-SET _bank_tax_paid = (
+SET _treasury_tax_paid = (
     SELECT SUM(block.currency_close-block.currency_start) 
     FROM river_block block
     WHERE block.currency_master='{currency_agenda_healer}' 
@@ -639,7 +641,7 @@ def get_partyunit_table_update_credit_score_sqlstr(
 ) -> str:
     return f"""
 UPDATE partyunit
-SET _bank_credit_score = (
+SET _treasury_credit_score = (
     SELECT SUM(reach_curr_close - reach_curr_start) range_sum
     FROM river_reach reach
     WHERE reach.currency_master = partyunit.agenda_healer
@@ -650,15 +652,17 @@ WHERE partyunit.agenda_healer = '{currency_agenda_healer}'
 """
 
 
-def get_partyunit_table_update_bank_voice_rank_sqlstr(agenda_healer: PersonID) -> str:
+def get_partyunit_table_update_treasury_voice_rank_sqlstr(
+    agenda_healer: PersonID,
+) -> str:
     return f"""
 UPDATE partyunit
-SET _bank_voice_rank = 
+SET _treasury_voice_rank = 
     (
     SELECT rn
     FROM (
         SELECT p2.pid
-        , row_number() over (order by p2._bank_credit_score DESC) rn
+        , row_number() over (order by p2._treasury_credit_score DESC) rn
         FROM partyunit p2
         WHERE p2.agenda_healer = '{agenda_healer}'
     ) p3
@@ -685,11 +689,11 @@ INSERT INTO partyunit (
 , _agenda_intent_ratio_debt
 , _creditor_active
 , _debtor_active
-, _bank_tax_paid
-, _bank_tax_diff
-, _bank_credit_score
-, _bank_voice_rank
-, _bank_voice_hx_lowest_rank
+, _treasury_tax_paid
+, _treasury_tax_diff
+, _treasury_credit_score
+, _treasury_voice_rank
+, _treasury_voice_hx_lowest_rank
 , _title
 )
 VALUES (
@@ -703,11 +707,11 @@ VALUES (
 , {sqlite_null(x_partyunit._agenda_intent_ratio_debt)}
 , {sqlite_bool(x_partyunit._creditor_active)}
 , {sqlite_bool(x_partyunit._debtor_active)}
-, {sqlite_null(x_partyunit._bank_tax_paid)}
-, {sqlite_null(x_partyunit._bank_tax_diff)}
-, {sqlite_null(x_partyunit._bank_credit_score)}
-, {sqlite_null(x_partyunit._bank_voice_rank)}
-, {sqlite_null(x_partyunit._bank_voice_hx_lowest_rank)}
+, {sqlite_null(x_partyunit._treasury_tax_paid)}
+, {sqlite_null(x_partyunit._treasury_tax_diff)}
+, {sqlite_null(x_partyunit._treasury_credit_score)}
+, {sqlite_null(x_partyunit._treasury_voice_rank)}
+, {sqlite_null(x_partyunit._treasury_voice_hx_lowest_rank)}
 , '{x_partyunit._title}'
 )
 ;
@@ -734,11 +738,11 @@ SELECT
 , _agenda_intent_ratio_debt
 , _creditor_active
 , _debtor_active
-, _bank_tax_paid
-, _bank_tax_diff
-, _bank_credit_score
-, _bank_voice_rank
-, _bank_voice_hx_lowest_rank
+, _treasury_tax_paid
+, _treasury_tax_diff
+, _treasury_credit_score
+, _treasury_voice_rank
+, _treasury_voice_hx_lowest_rank
 , _title
 FROM partyunit
 WHERE agenda_healer = '{payer_healer}' 
@@ -759,11 +763,11 @@ WHERE agenda_healer = '{payer_healer}'
             _agenda_intent_ratio_debt=row[7],
             _creditor_active=row[8],
             _debtor_active=row[9],
-            _bank_tax_paid=row[10],
-            _bank_tax_diff=row[11],
-            _bank_credit_score=row[12],
-            _bank_voice_rank=row[13],
-            _bank_voice_hx_lowest_rank=row[14],
+            _treasury_tax_paid=row[10],
+            _treasury_tax_diff=row[11],
+            _treasury_credit_score=row[12],
+            _treasury_voice_rank=row[13],
+            _treasury_voice_hx_lowest_rank=row[14],
             _title=row[15],
         )
         dict_x[partyview_x.pid] = partyview_x
@@ -1005,19 +1009,19 @@ def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     return list_x
 
 
-def get_db_tables(bank_conn: Connection) -> dict[str:int]:
+def get_db_tables(treasury_conn: Connection) -> dict[str:int]:
     sqlstr = "SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name;"
-    results = bank_conn.execute(sqlstr)
+    results = treasury_conn.execute(sqlstr)
 
     return {row[0]: 1 for row in results}
 
 
-def get_db_columns(bank_conn: Connection) -> dict[str : dict[str:int]]:
-    table_names = get_db_tables(bank_conn)
+def get_db_columns(treasury_conn: Connection) -> dict[str : dict[str:int]]:
+    table_names = get_db_tables(treasury_conn)
     table_column_dict = {}
     for table_name in table_names.keys():
         sqlstr = f"SELECT name FROM PRAGMA_TABLE_INFO('{table_name}');"
-        results = bank_conn.execute(sqlstr)
+        results = treasury_conn.execute(sqlstr)
         table_column_dict[table_name] = {row[0]: 1 for row in results}
 
     return table_column_dict

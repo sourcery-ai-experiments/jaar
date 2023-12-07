@@ -33,7 +33,7 @@ def create_example_worlds_list():
 
 # def create_example_world(world_genus: str):
 #     sx = worldunit_shop(genus=world_genus, worlds_dir=get_test_worlds_dir())
-#     sx.create_dirs_if_null(in_memory_bank=True)
+#     sx.create_dirs_if_null(in_memory_treasury=True)
 
 
 # def delete_dir_example_world(world_obj: CultureUnit):

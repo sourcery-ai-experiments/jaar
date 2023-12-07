@@ -9608,8 +9608,8 @@
     "_max_tree_traverse": 2,
     "_partys": {
         "A a ron Jones": {
-            "_bank_tax_diff": null,
-            "_bank_tax_paid": null,
+            "_treasury_tax_diff": null,
+            "_treasury_tax_paid": null,
             "_creditor_active": null,
             "_debtor_active": null,
             "_partyrings": {},
@@ -9619,8 +9619,8 @@
             "uid": 21
         },
         "America": {
-            "_bank_tax_diff": null,
-            "_bank_tax_paid": null,
+            "_treasury_tax_diff": null,
+            "_treasury_tax_paid": null,
             "_creditor_active": null,
             "_debtor_active": null,
             "_partyrings": {},
@@ -9630,8 +9630,8 @@
             "uid": 1
         },
         "Anna": {
-            "_bank_tax_diff": null,
-            "_bank_tax_paid": null,
+            "_treasury_tax_diff": null,
+            "_treasury_tax_paid": null,
             "_creditor_active": null,
             "_debtor_active": null,
             "_partyrings": {},
@@ -9641,8 +9641,8 @@
             "uid": 2
         },
         "Benjamin Stoddert": {
-            "_bank_tax_diff": null,
-            "_bank_tax_paid": null,
+            "_treasury_tax_diff": null,
+            "_treasury_tax_paid": null,
             "_creditor_active": null,
             "_debtor_active": null,
             "_partyrings": {},
@@ -9652,8 +9652,8 @@
             "uid": 14
         },
         "Bob302": {
-            "_bank_tax_diff": null,
-            "_bank_tax_paid": null,
+            "_treasury_tax_diff": null,
+            "_treasury_tax_paid": null,
             "_creditor_active": null,
             "_debtor_active": null,
             "_partyrings": {},
@@ -9663,8 +9663,8 @@
             "uid": 6
         },
         "Charles Lee": {
-            "_bank_tax_diff": null,
-            "_bank_tax_paid": null,
+            "_treasury_tax_diff": null,
+            "_treasury_tax_paid": null,
             "_creditor_active": null,
             "_debtor_active": null,
             "_partyrings": {},
@@ -9674,8 +9674,8 @@
             "uid": 13
         },
         "Ernesto Chavez": {
-            "_bank_tax_diff": null,
-            "_bank_tax_paid": null,
+            "_treasury_tax_diff": null,
+            "_treasury_tax_paid": null,
             "_creditor_active": null,
             "_debtor_active": null,
             "_partyrings": {},
@@ -9685,8 +9685,8 @@
             "uid": 10
         },
         "Jacque Chirac": {
-            "_bank_tax_diff": null,
-            "_bank_tax_paid": null,
+            "_treasury_tax_diff": null,
+            "_treasury_tax_paid": null,
             "_creditor_active": null,
             "_debtor_active": null,
             "_partyrings": {},
@@ -9696,8 +9696,8 @@
             "uid": 20
         },
         "Jane Randolph": {
-            "_bank_tax_diff": null,
-            "_bank_tax_paid": null,
+            "_treasury_tax_diff": null,
+            "_treasury_tax_paid": null,
             "_creditor_active": null,
             "_debtor_active": null,
             "_partyrings": {},
@@ -9707,8 +9707,8 @@
             "uid": 17
         },
         "Maria Reynolds": {
-            "_bank_tax_diff": null,
-            "_bank_tax_paid": null,
+            "_treasury_tax_diff": null,
+            "_treasury_tax_paid": null,
             "_creditor_active": null,
             "_debtor_active": null,
             "_partyrings": {},
@@ -9718,8 +9718,8 @@
             "uid": 7
         },
         "Martha Wayles": {
-            "_bank_tax_diff": null,
-            "_bank_tax_paid": null,
+            "_treasury_tax_diff": null,
+            "_treasury_tax_paid": null,
             "_creditor_active": null,
             "_debtor_active": null,
             "_partyrings": {},
@@ -9729,8 +9729,8 @@
             "uid": 15
         },
         "Mikayla": {
-            "_bank_tax_diff": null,
-            "_bank_tax_paid": null,
+            "_treasury_tax_diff": null,
+            "_treasury_tax_paid": null,
             "_creditor_active": null,
             "_debtor_active": null,
             "_partyrings": {},
@@ -9740,8 +9740,8 @@
             "uid": 12
         },
         "Norberto": {
-            "_bank_tax_diff": null,
-            "_bank_tax_paid": null,
+            "_treasury_tax_diff": null,
+            "_treasury_tax_paid": null,
             "_creditor_active": null,
             "_debtor_active": null,
             "_partyrings": {},
@@ -9751,8 +9751,8 @@
             "uid": 22
         },
         "Perrison": {
-            "_bank_tax_diff": null,
-            "_bank_tax_paid": null,
+            "_treasury_tax_diff": null,
+            "_treasury_tax_paid": null,
             "_creditor_active": null,
             "_debtor_active": null,
             "_partyrings": {},
@@ -9762,8 +9762,8 @@
             "uid": 9
         },
         "Philipa": {
-            "_bank_tax_diff": null,
-            "_bank_tax_paid": null,
+            "_treasury_tax_diff": null,
+            "_treasury_tax_paid": null,
             "_creditor_active": null,
             "_debtor_active": null,
             "_partyrings": {},
@@ -9773,8 +9773,8 @@
             "uid": 5
         },
         "Prashant": {
-            "_bank_tax_diff": null,
-            "_bank_tax_paid": null,
+            "_treasury_tax_diff": null,
+            "_treasury_tax_paid": null,
             "_creditor_active": null,
             "_debtor_active": null,
             "_partyrings": {},
@@ -9784,8 +9784,8 @@
             "uid": 8
         },
         "Renee Elise Goldsberry": {
-            "_bank_tax_diff": null,
-            "_bank_tax_paid": null,
+            "_treasury_tax_diff": null,
+            "_treasury_tax_paid": null,
             "_creditor_active": null,
             "_debtor_active": null,
             "_partyrings": {},
@@ -9795,8 +9795,8 @@
             "uid": 4
         },
         "Sam zamora": {
-            "_bank_tax_diff": null,
-            "_bank_tax_paid": null,
+            "_treasury_tax_diff": null,
+            "_treasury_tax_paid": null,
             "_creditor_active": null,
             "_debtor_active": null,
             "_partyrings": {},
@@ -9806,8 +9806,8 @@
             "uid": 16
         },
         "Shadwell Harris": {
-            "_bank_tax_diff": null,
-            "_bank_tax_paid": null,
+            "_treasury_tax_diff": null,
+            "_treasury_tax_paid": null,
             "_creditor_active": null,
             "_debtor_active": null,
             "_partyrings": {},
@@ -9817,8 +9817,8 @@
             "uid": 18
         },
         "Thomas OSU": {
-            "_bank_tax_diff": null,
-            "_bank_tax_paid": null,
+            "_treasury_tax_diff": null,
+            "_treasury_tax_paid": null,
             "_creditor_active": null,
             "_debtor_active": null,
             "_partyrings": {},
@@ -9828,8 +9828,8 @@
             "uid": 11
         },
         "Travis Fox": {
-            "_bank_tax_diff": null,
-            "_bank_tax_paid": null,
+            "_treasury_tax_diff": null,
+            "_treasury_tax_paid": null,
             "_creditor_active": null,
             "_debtor_active": null,
             "_partyrings": {},
@@ -9839,8 +9839,8 @@
             "uid": 3
         },
         "WIlliam Wallace": {
-            "_bank_tax_diff": null,
-            "_bank_tax_paid": null,
+            "_treasury_tax_diff": null,
+            "_treasury_tax_paid": null,
             "_creditor_active": null,
             "_debtor_active": null,
             "_partyrings": {},

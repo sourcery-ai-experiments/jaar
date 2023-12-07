@@ -153,7 +153,7 @@ def test_councilunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     env_dir = get_test_cultures_dir()
     culture_qid = get_temp_env_qid()
     x_culture = cultureunit_shop(qid=culture_qid, cultures_dir=env_dir)
-    x_culture.create_dirs_if_null(in_memory_bank=True)
+    x_culture.create_dirs_if_null(in_memory_treasury=True)
     # ux = councilunit_shop(pid=healer1_text, env_dir=env_dir)
 
     ernie_text = "ernie"

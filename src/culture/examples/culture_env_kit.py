@@ -79,7 +79,7 @@ def _delete_and_set_ex3():
     culture_qid = "ex3"
     x_culture = cultureunit_shop(qid=culture_qid, cultures_dir=get_test_cultures_dir())
     x_func_delete_dir(x_culture.get_object_root_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
+    x_culture.create_dirs_if_null(in_memory_treasury=True)
     x_culture.save_public_agenda(x_agenda=example_healers_get_1node_agenda())
     x_culture.save_public_agenda(
         example_agendas_get_agenda_1Task_1CE0MinutesRequired_1AcptFact()
@@ -133,7 +133,7 @@ def _delete_and_set_ex4():
     x_qid = "ex4"
     x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
     x_func_delete_dir(x_culture.get_object_root_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
+    x_culture.create_dirs_if_null(in_memory_treasury=True)
     x_culture.save_public_agenda(example_healers_get_7nodeJRootWithH_agenda())
     x_culture.save_public_agenda(example_agendas_get_agenda_with7amCleanTableRequired())
     x_culture.save_public_agenda(example_agendas_get_agenda_base_time_example())
@@ -146,7 +146,7 @@ def _delete_and_set_ex5():
     x_qid = "ex5"
     x_p = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
     x_func_delete_dir(x_p.get_object_root_dir())
-    x_p.create_dirs_if_null(in_memory_bank=True)
+    x_p.create_dirs_if_null(in_memory_treasury=True)
 
     # ethical code ernie
     # ethical code steve
@@ -211,7 +211,7 @@ def _delete_and_set_ex6(x_qid: str = None):
         x_qid = "ex6"
     x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
     x_func_delete_dir(x_culture.get_object_root_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=False)
+    x_culture.create_dirs_if_null(in_memory_treasury=False)
 
     sal_text = "sal"
     bob_text = "bob"
@@ -243,7 +243,7 @@ def _delete_and_set_ex6(x_qid: str = None):
     elu_agenda.add_partyunit(pid=sal_text, creditor_weight=1)
     x_culture.save_public_agenda(x_agenda=elu_agenda)
 
-    x_culture.refresh_bank_public_agendas_data()
+    x_culture.refresh_treasury_public_agendas_data()
     x_culture.set_credit_flow_for_agenda(agenda_healer=sal_text, max_blocks_count=100)
 
     return x_culture
@@ -251,7 +251,7 @@ def _delete_and_set_ex6(x_qid: str = None):
 
 def create_example_culture(culture_qid: str):
     x_culture = cultureunit_shop(qid=culture_qid, cultures_dir=get_test_cultures_dir())
-    x_culture.create_dirs_if_null(in_memory_bank=True)
+    x_culture.create_dirs_if_null(in_memory_treasury=True)
 
 
 def delete_dir_example_culture(culture_obj: CultureUnit):

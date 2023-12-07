@@ -1,11 +1,11 @@
 from src.agenda.agenda import agendaunit_shop
-from src.culture.bank_sqlstr import (
+from src.culture.treasury_sqlstr import (
     get_agendaunit_update_sqlstr,
     get_agendaunits_select_sqlstr,
     get_partyunit_table_create_sqlstr,
-    get_partyunit_table_update_bank_tax_paid_sqlstr,
+    get_partyunit_table_update_treasury_tax_paid_sqlstr,
     get_partyunit_table_update_credit_score_sqlstr,
-    get_partyunit_table_update_bank_voice_rank_sqlstr,
+    get_partyunit_table_update_treasury_voice_rank_sqlstr,
     get_river_reach_table_touch_select_sqlstr,
     get_river_reach_table_final_select_sqlstr,
     get_river_reach_table_create_sqlstr,
@@ -54,12 +54,12 @@ FROM agendaunit
 def test_get_partyunit_select_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
     bob_text = "bob"
-    generated_sqlstr = get_partyunit_table_update_bank_tax_paid_sqlstr(bob_text)
+    generated_sqlstr = get_partyunit_table_update_treasury_tax_paid_sqlstr(bob_text)
 
     # THEN
     example_sqlstr = f"""
 UPDATE partyunit
-SET _bank_tax_paid = (
+SET _treasury_tax_paid = (
     SELECT SUM(block.currency_close-block.currency_start) 
     FROM river_block block
     WHERE block.currency_master='{bob_text}' 
@@ -362,11 +362,11 @@ CREATE TABLE IF NOT EXISTS partyunit (
 , _agenda_intent_ratio_debt FLOAT
 , _creditor_active INT
 , _debtor_active INT
-, _bank_tax_paid FLOAT
-, _bank_tax_diff FLOAT
-, _bank_credit_score FLOAT
-, _bank_voice_rank INT
-, _bank_voice_hx_lowest_rank INT
+, _treasury_tax_paid FLOAT
+, _treasury_tax_diff FLOAT
+, _treasury_credit_score FLOAT
+, _treasury_voice_rank INT
+, _treasury_voice_hx_lowest_rank INT
 , _title VARCHAR(255)
 , FOREIGN KEY(agenda_healer) REFERENCES agendaunit(healer)
 , FOREIGN KEY(pid) REFERENCES agendaunit(healer)
@@ -385,7 +385,7 @@ def test_get_partyunit_table_update_credit_score_sqlstr_ReturnsCorrectStr():
     # THEN
     example_sqlstr = f"""
 UPDATE partyunit
-SET _bank_credit_score = (
+SET _treasury_credit_score = (
     SELECT SUM(reach_curr_close - reach_curr_start) range_sum
     FROM river_reach reach
     WHERE reach.currency_master = partyunit.agenda_healer
@@ -397,20 +397,20 @@ WHERE partyunit.agenda_healer = '{yao_text}'
     assert generated_sqlstr == example_sqlstr
 
 
-def test_get_partyunit_table_update_bank_voice_rank_sqlstr_ReturnsCorrectStr():
+def test_get_partyunit_table_update_treasury_voice_rank_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
     yao_text = "Yao"
-    generated_sqlstr = get_partyunit_table_update_bank_voice_rank_sqlstr(yao_text)
+    generated_sqlstr = get_partyunit_table_update_treasury_voice_rank_sqlstr(yao_text)
 
     # THEN
     example_sqlstr = f"""
 UPDATE partyunit
-SET _bank_voice_rank = 
+SET _treasury_voice_rank = 
     (
     SELECT rn
     FROM (
         SELECT p2.pid
-        , row_number() over (order by p2._bank_credit_score DESC) rn
+        , row_number() over (order by p2._treasury_credit_score DESC) rn
         FROM partyunit p2
         WHERE p2.agenda_healer = '{yao_text}'
     ) p3
