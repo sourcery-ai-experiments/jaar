@@ -572,12 +572,14 @@ def test_idea_invaild_DenomThrowsError():
     casa_road = get_road(root_label(), casa_text)
     clean_text = "clean"
     clean_road = get_road(casa_road, clean_text)
+    print(f"{clean_road=}")
     kid_idea = ideacore_shop(
         _label=clean_text, _pad=casa_road, _numor=1, _denom=11.0, _reest=False
     )
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         parent_idea.add_kid(idea_kid=kid_idea)
+    print(f"{str(excinfo.value)=}")
     assert (
         str(excinfo.value)
         == f"Idea {clean_road} cannot have numor,denom,reest if parent does not have begin/close range"

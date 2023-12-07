@@ -570,7 +570,7 @@ class IdeaCore:
             attrs = xl.pop()
             if attrs[1] != attrs[2]:
                 raise InvalidIdeaException(
-                    f"Meld fail idea={self._pad},{self._label} {attrs[0]}:{attrs[1]} with {other_idea._pad},{other_idea._label} {attrs[0]}:{attrs[2]}"
+                    f"Meld fail idea={self.get_road()} {attrs[0]}:{attrs[1]} with {other_idea.get_road()} {attrs[0]}:{attrs[2]}"
                 )
 
     def _set_idea_attr(self, idea_attr: IdeaAttrHolder):
@@ -711,7 +711,7 @@ class IdeaCore:
             # if idea_kid._reest != None:
             if self._begin is None or self._close is None:
                 raise InvalidIdeaException(
-                    f"Idea {idea_kid._pad},{idea_kid._label} cannot have numor,denom,reest if parent does not have begin/close range"
+                    f"Idea {idea_kid.get_road()} cannot have numor,denom,reest if parent does not have begin/close range"
                 )
 
             idea_kid._begin = self._begin * idea_kid._numor / idea_kid._denom

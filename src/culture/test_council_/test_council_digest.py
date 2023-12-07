@@ -189,6 +189,7 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestAgenda(
     cx = example_healers_get_2node_agenda()
     src_agenda_healer = cx._healer
     assert x_func_count_files(sue_cx._admin._agendas_digest_dir) == 0
+    print(f"{cx._culture_qid=}")
 
     # WHEN
     sue_cx.set_depot_agenda(x_agenda=cx, depotlink_type="blind_trust")

@@ -6,6 +6,7 @@ from src.agenda.agenda import (
     partylink_shop,
     PartyPID,
     PersonID,
+    CultureQID,
 )
 from src.agenda.x_func import (
     single_dir_create_if_null,
@@ -45,10 +46,6 @@ from src.culture.bank_sqlstr import (
     get_agendabankunits_dict,
     get_agendaunit_update_sqlstr,
 )
-
-
-class CultureQID(str):  # Created to help track the concept
-    pass
 
 
 @dataclass

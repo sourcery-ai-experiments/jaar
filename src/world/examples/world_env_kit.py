@@ -1,12 +1,7 @@
 from src.agenda.x_func import (
-    single_dir_create_if_null,
     delete_dir as x_func_delete_dir,
-    copy_dir,
-    save_file as x_func_save_file,
-    open_file as x_func_open_file,
     dir_files as x_func_dir_files,
 )
-from os import listdir as os_listdir, path as os_path
 from pytest import fixture as pytest_fixture
 
 

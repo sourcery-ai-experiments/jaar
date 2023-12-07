@@ -17,6 +17,7 @@ from src.agenda.road import (
     get_diff_road,
     get_road,
     is_heir_road,
+    get_node_separator,
 )
 from src.agenda.required_idea import sufffactunit_shop
 from src.agenda.idea import IdeaCore
@@ -35,11 +36,11 @@ def test_road_exists():
 def test_road_is_sub_road_correctlyReturnsBool():
     # WHEN
     healer_text = "healer"
-    healer_road = f"{root_label()},{healer_text}"
+    healer_road = f"{root_label()}{get_node_separator()}{healer_text}"
     bloomers_text = "bloomers"
-    bloomers_road = f"{healer_road},{bloomers_text}"
+    bloomers_road = f"{healer_road}{get_node_separator()}{bloomers_text}"
     roses_text = "roses"
-    roses_road = f"{bloomers_road},{roses_text}"
+    roses_road = f"{bloomers_road}{get_node_separator()}{roses_text}"
 
     # WHEN / THEN
     assert is_sub_road(bloomers_road, bloomers_road)
@@ -48,27 +49,28 @@ def test_road_is_sub_road_correctlyReturnsBool():
 
 
 def test_road_road_validate_correctlyReturnsRoad():
+    x_s = get_node_separator()
     assert road_validate(None) == ""
     assert road_validate("") == ""
-    assert road_validate(f"{root_label()},casa") == f"{root_label()},casa"
-    assert road_validate("A,casa") == f"{root_label()},casa"
-    assert road_validate(",source") == f"{root_label()},source"
-    assert road_validate("source,fun") == f"{root_label()},fun"
+    assert road_validate(f"{root_label()}{x_s}casa") == f"{root_label()}{x_s}casa"
+    assert road_validate(f"A{x_s}casa") == f"{root_label()}{x_s}casa"
+    assert road_validate(f"{x_s}source") == f"{root_label()}{x_s}source"
+    assert road_validate(f"source{x_s}fun") == f"{root_label()}{x_s}fun"
     assert road_validate("source") == root_label()
-    assert road_validate("AA,casa") == f"{root_label()},casa"
+    assert road_validate(f"AA{x_s}casa") == f"{root_label()}{x_s}casa"
 
 
 def test_road_change_road_correctlyRoad():
     # GIVEN
     healer_text = "healer"
-    healer_road = f"{root_label()},{healer_text}"
+    healer_road = get_road(root_label(), healer_text)
     bloomers_text = "bloomers"
-    bloomers_road = f"{healer_road},{bloomers_text}"
+    bloomers_road = get_road(healer_road, bloomers_text)
     plants_text = "plants"
-    plants_road = f"{healer_road},{plants_text}"
+    plants_road = get_road(healer_road, plants_text)
     roses_text = "roses"
-    old_roses_road = f"{healer_road},{bloomers_text},{roses_text}"
-    new_roses_road = f"{healer_road},{plants_text},{roses_text}"
+    old_roses_road = get_road(road_nodes=[healer_road, bloomers_text, roses_text])
+    new_roses_road = get_road(road_nodes=[healer_road, plants_text, roses_text])
 
     print(f"{change_road(old_roses_road, bloomers_road, plants_road)}")
 
@@ -80,12 +82,15 @@ def test_road_change_road_correctlyRoad():
 
 def test_road_get_all_road_nodes_works():
     # GIVEN
+    x_s = get_node_separator()
     healer_text = "healer"
-    healer_road = f"{root_label()},{healer_text}"
+    healer_road = f"{root_label()}{x_s}{healer_text}"
     bloomers_text = "bloomers"
-    bloomers_road = f"{root_label()},{healer_text},{bloomers_text}"
+    bloomers_road = f"{root_label()}{x_s}{healer_text}{x_s}{bloomers_text}"
     roses_text = "roses"
-    roses_road = f"{root_label()},{healer_text},{bloomers_text},{roses_text}"
+    roses_road = (
+        f"{root_label()}{x_s}{healer_text}{x_s}{bloomers_text}{x_s}{roses_text}"
+    )
 
     # WHEN/THENs
     root_list = [root_label()]
@@ -100,12 +105,13 @@ def test_road_get_all_road_nodes_works():
 
 def test_road_get_terminus_node_from_road_works():
     # GIVEN
+    x_s = get_node_separator()
     healer_text = "healer"
-    healer_road = f"{root_label()},{healer_text}"
+    healer_road = f"{root_label()}{x_s}{healer_text}"
     bloomers_text = "bloomers"
-    bloomers_road = f"{healer_road},{bloomers_text}"
+    bloomers_road = f"{healer_road}{x_s}{bloomers_text}"
     roses_text = "roses"
-    roses_road = f"{bloomers_road},{roses_text}"
+    roses_road = f"{bloomers_road}{x_s}{roses_text}"
 
     # WHEN/THENs
     assert get_terminus_node_from_road(road=root_label()) == root_label()
@@ -116,12 +122,13 @@ def test_road_get_terminus_node_from_road_works():
 
 def test_road_get_pad_from_road_works():
     # GIVEN
+    x_s = get_node_separator()
     healer_text = "healer"
-    healer_road = f"{root_label()},{healer_text}"
+    healer_road = f"{root_label()}{x_s}{healer_text}"
     bloomers_text = "bloomers"
-    bloomers_road = f"{healer_road},{bloomers_text}"
+    bloomers_road = f"{healer_road}{x_s}{bloomers_text}"
     roses_text = "roses"
-    roses_road = f"{bloomers_road},{roses_text}"
+    roses_road = f"{bloomers_road}{x_s}{roses_text}"
 
     # WHEN/THENs
     assert get_pad_from_road(road=root_label()) == ""
@@ -132,18 +139,21 @@ def test_road_get_pad_from_road_works():
 
 def test_road_get_road_without_root_node_WorksCorrectly():
     # GIVEN
+    x_s = get_node_separator()
     healer_text = "healer"
-    healer_road = f"{root_label()},{healer_text}"
-    healer_without_root_road = f",{healer_text}"
+    healer_road = f"{root_label()}{x_s}{healer_text}"
+    healer_without_root_road = f"{x_s}{healer_text}"
     bloomers_text = "bloomers"
-    bloomers_road = f"{root_label()},{healer_text},{bloomers_text}"
-    bloomers_without_root_road = f",{healer_text},{bloomers_text}"
+    bloomers_road = f"{root_label()}{x_s}{healer_text}{x_s}{bloomers_text}"
+    bloomers_without_root_road = f"{x_s}{healer_text}{x_s}{bloomers_text}"
     roses_text = "roses"
-    roses_road = f"{root_label()},{healer_text},{bloomers_text},{roses_text}"
-    roses_without_root_road = f",{healer_text},{bloomers_text},{roses_text}"
+    roses_road = (
+        f"{root_label()}{x_s}{healer_text}{x_s}{bloomers_text}{x_s}{roses_text}"
+    )
+    roses_without_root_road = f"{x_s}{healer_text}{x_s}{bloomers_text}{x_s}{roses_text}"
 
     # WHEN/THENs
-    assert get_road_without_root_node(road=root_label()) == ","
+    assert get_road_without_root_node(road=root_label()) == x_s
     assert get_road_without_root_node(road=healer_road) == healer_without_root_road
     assert get_road_without_root_node(road=bloomers_road) == bloomers_without_root_road
     assert get_road_without_root_node(road=roses_road) == roses_without_root_road
@@ -158,14 +168,15 @@ def test_road_get_road_without_root_node_WorksCorrectly():
 
 def test_road_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
     # GIVEN
-    old_seasons_road = f"{root_label()},healer,seasons"
+    x_s = get_node_separator()
+    old_seasons_road = f"{root_label()}{x_s}healer{x_s}seasons"
     old_sufffact_x = sufffactunit_shop(need=old_seasons_road)
     old_sufffacts_x = {old_sufffact_x.need: old_sufffact_x}
 
     assert old_sufffacts_x.get(old_seasons_road) == old_sufffact_x
 
     # WHEN
-    new_seasons_road = f"{root_label()},healer,kookies"
+    new_seasons_road = f"{root_label()}{x_s}healer{x_s}kookies"
     new_sufffacts_x = find_replace_road_key_dict(
         dict_x=old_sufffacts_x, old_road=old_seasons_road, new_road=new_seasons_road
     )
@@ -177,11 +188,12 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
 
 def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeCultureQIDScenario():
     # GIVEN
+    x_s = get_node_separator()
     old_culture_qid = "El Paso"
     healer_text = "healer"
-    old_healer_road = f"{old_culture_qid},{healer_text}"
+    old_healer_road = f"{old_culture_qid}{x_s}{healer_text}"
     seasons_text = "seasons"
-    old_seasons_road = f"{old_healer_road},{seasons_text}"
+    old_seasons_road = f"{old_healer_road}{x_s}{seasons_text}"
     old_sufffact_x = sufffactunit_shop(need=old_seasons_road)
     old_sufffacts_x = {old_sufffact_x.need: old_sufffact_x}
 
@@ -189,8 +201,8 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeCultureQIDScen
 
     # WHEN
     new_culture_qid = "Austin"
-    new_healer_road = f"{new_culture_qid},{healer_text}"
-    new_seasons_road = f"{new_healer_road},{seasons_text}"
+    new_healer_road = f"{new_culture_qid}{x_s}{healer_text}"
+    new_seasons_road = f"{new_healer_road}{x_s}{seasons_text}"
     new_sufffacts_x = find_replace_road_key_dict(
         dict_x=old_sufffacts_x, old_road=old_seasons_road, new_road=new_seasons_road
     )
@@ -205,11 +217,11 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeCultureQIDScen
 #     # GIVEN
 #     src = f"{root_label()}"
 #     healer_text = "healer"
-#     healer_road = f"{root_label()},{healer_text}")
+#     healer_road = f"{root_label()}{x_s}{healer_text}")
 #     bloomers_text = "bloomers"
-#     bloomers_road = f"{root_label()},{healer_text},{bloomers_text}")
+#     bloomers_road = f"{root_label()}{x_s}{healer_text}{x_s}{bloomers_text}")
 #     old_roses_text = "roses"
-#     old_roses_road = f"{root_label()},{healer_text},{bloomers_text},{old_roses_text}")
+#     old_roses_road = f"{root_label()}{x_s}{healer_text}{x_s}{bloomers_text}{x_s}{old_roses_text}")
 #     idea_roses = ideacore_shop(_label=old_roses_text, _pad=bloomers_road)
 #     idea_bloomers = ideacore_shop(_label=bloomers_text, _pad=healer_road)
 #     idea_bloomers.add_kid(idea_kid=idea_roses)
@@ -221,7 +233,7 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeCultureQIDScen
 
 #     # WHEN
 #     new_roses_text = "roses2"
-#     new_roses_road = ff"{root_label()},healer,{new_roses_text}")
+#     new_roses_road = ff"{root_label()},healer{x_s}{new_roses_text}")
 #     new_kids_x = find_replace_road_key_dict(
 #         dict_x=idea_bloomers._kids,
 #         old_road=old_roses_road,
@@ -239,12 +251,13 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeCultureQIDScen
 
 def test_road_get_ancestor_roads_CorrectlyReturnsAncestorRoads():
     # GIVEN
+    x_s = get_node_separator()
     nation_text = "nation-state"
-    nation_road = f"{root_label()},{nation_text}"
+    nation_road = f"{root_label()}{x_s}{nation_text}"
     usa_text = "USA"
-    usa_road = f"{nation_road},{usa_text}"
+    usa_road = f"{nation_road}{x_s}{usa_text}"
     texas_text = "Texas"
-    texas_road = f"{usa_road},{texas_text}"
+    texas_road = f"{usa_road}{x_s}{texas_text}"
 
     # WHEN
     x_roads = get_ancestor_roads(road=texas_road)
@@ -263,12 +276,13 @@ def test_road_get_ancestor_roads_CorrectlyReturnsAncestorRoads():
 
 def test_road_get_forefather_roads_CorrectlyReturnsAncestorRoadsWithoutSource():
     # GIVEN
+    x_s = get_node_separator()
     nation_text = "nation-state"
-    nation_road = f"{root_label()},{nation_text}"
+    nation_road = f"{root_label()}{x_s}{nation_text}"
     usa_text = "USA"
-    usa_road = f"{nation_road},{usa_text}"
+    usa_road = f"{nation_road}{x_s}{usa_text}"
     texas_text = "Texas"
-    texas_road = f"{usa_road},{texas_text}"
+    texas_road = f"{usa_road}{x_s}{texas_text}"
 
     # WHEN
     x_roads = get_forefather_roads(road=texas_road)
@@ -290,15 +304,18 @@ def test_road_get_default_culture_root_label_ReturnsCorrectObj():
 
 def test_road_get_road_from_nodes_WorksCorrectly():
     # GIVEN
+    x_s = get_node_separator()
     root_list = get_all_road_nodes(root_label())
     healer_text = "healer"
-    healer_road = f"{root_label()},{healer_text}"
+    healer_road = f"{root_label()}{x_s}{healer_text}"
     healer_list = get_all_road_nodes(healer_road)
     bloomers_text = "bloomers"
-    bloomers_road = f"{root_label()},{healer_text},{bloomers_text}"
+    bloomers_road = f"{root_label()}{x_s}{healer_text}{x_s}{bloomers_text}"
     bloomers_list = get_all_road_nodes(bloomers_road)
     roses_text = "roses"
-    roses_road = f"{root_label()},{healer_text},{bloomers_text},{roses_text}"
+    roses_road = (
+        f"{root_label()}{x_s}{healer_text}{x_s}{bloomers_text}{x_s}{roses_text}"
+    )
     roses_list = get_all_road_nodes(roses_road)
 
     # WHEN / THEN
@@ -310,12 +327,15 @@ def test_road_get_road_from_nodes_WorksCorrectly():
 
 def test_road_get_road_from_road_and_node_WorksCorrectly():
     # GIVEN
+    x_s = get_node_separator()
     healer_text = "healer"
-    healer_road = f"{root_label()},{healer_text}"
+    healer_road = f"{root_label()}{x_s}{healer_text}"
     bloomers_text = "bloomers"
-    bloomers_road = f"{root_label()},{healer_text},{bloomers_text}"
+    bloomers_road = f"{root_label()}{x_s}{healer_text}{x_s}{bloomers_text}"
     roses_text = "roses"
-    roses_road = f"{root_label()},{healer_text},{bloomers_text},{roses_text}"
+    roses_road = (
+        f"{root_label()}{x_s}{healer_text}{x_s}{bloomers_text}{x_s}{roses_text}"
+    )
 
     # WHEN / THEN
     assert root_label() == get_road_from_road_and_node(None, root_label())
@@ -343,18 +363,20 @@ def test_raodnode_is_node_ReturnsCorrectBool():
     assert x_raodnode.is_node()
 
     # WHEN / THEN
-    x_raodnode = RaodNode("casa,kitchen")
+    x_s = get_node_separator()
+    x_raodnode = RaodNode(f"casa{x_s}kitchen")
     assert x_raodnode.is_node() == False
 
 
 def test_get_diff_road_ReturnsCorrectObj():
     # GIVEN
+    x_s = get_node_separator()
     healer_text = "healer"
-    healer_road = f"{root_label()},{healer_text}"
+    healer_road = f"{root_label()}{x_s}{healer_text}"
     bloomers_text = "bloomers"
-    bloomers_road = f"{healer_road},{bloomers_text}"
+    bloomers_road = f"{healer_road}{x_s}{bloomers_text}"
     roses_text = "roses"
-    roses_road = f"{bloomers_road},{roses_text}"
+    roses_road = f"{bloomers_road}{x_s}{roses_text}"
 
     # WHEN / THEN
     print(f"{healer_road=}")
@@ -368,19 +390,20 @@ def test_get_diff_road_ReturnsCorrectObj():
 
 def test_is_heir_road_CorrectlyIdentifiesHeirs():
     # GIVEN
+    x_s = get_node_separator()
     usa_text = "USA"
-    usa_road = f"{root_label()},Nation-States,{usa_text}"
+    usa_road = f"{root_label()}{x_s}Nation-States{x_s}{usa_text}"
     texas_text = "Texas"
-    texas_road = f"{usa_road},{texas_text}"
+    texas_road = f"{usa_road}{x_s}{texas_text}"
     # earth_text = "earth"
     # earth_road = f"{earth_text}"
     # sea_text = "sea"
-    # sea_road = f"{earth_road},{sea_text}"
+    # sea_road = f"{earth_road}{x_s}{sea_text}"
     # seaside_text = "seaside"
-    # seaside_road = f"{earth_road},{seaside_text}"
+    # seaside_road = f"{earth_road}{x_s}{seaside_text}"
 
     # WHEN / THEN
     assert is_heir_road(src=usa_road, heir=usa_road)
     assert is_heir_road(src=usa_road, heir=texas_road)
-    assert is_heir_road(src="earth,sea", heir="earth,seaside,beach") == False
-    assert is_heir_road(src="earth,sea", heir="earth,seaside") == False
+    assert is_heir_road(f"earth{x_s}sea", f"earth{x_s}seaside{x_s}beach") == False
+    assert is_heir_road(src=f"earth{x_s}sea", heir=f"earth{x_s}seaside") == False

@@ -79,6 +79,10 @@ class AssignmentPartyException(Exception):
     pass
 
 
+class CultureQID(str):  # Created to help track the concept
+    pass
+
+
 @dataclass
 class AgendaUnit:
     _healer: PersonID = None
@@ -2211,6 +2215,7 @@ def agendaunit_shop(
     _healer: PersonID = None,
     _weight: float = None,
     _auto_output_to_public: bool = None,
+    _culture_qid: CultureQID = None,
 ) -> AgendaUnit:
     if _weight is None:
         _weight = 1
@@ -2218,10 +2223,14 @@ def agendaunit_shop(
         _healer = ""
     if _auto_output_to_public is None:
         _auto_output_to_public = False
+    if _culture_qid is None:
+        _culture_qid = root_label()
     x_agenda = AgendaUnit(
-        _healer=_healer, _weight=_weight, _auto_output_to_public=_auto_output_to_public
+        _healer=_healer,
+        _weight=_weight,
+        _auto_output_to_public=_auto_output_to_public,
+        _culture_qid=_culture_qid,
     )
-    x_agenda._culture_qid = root_label()
     x_agenda._idearoot = idearoot_shop(_label=None, _uid=1, _level=0)
     x_agenda.set_max_tree_traverse(3)
     x_agenda._rational = False

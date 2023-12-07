@@ -79,7 +79,7 @@ def get_road_without_root_node(road: Road) -> Road:  # road without terminus nod
             f"Cannot get_road_without_root_node of '{road}' because it has no root node."
         )
     road_without_root_node = get_road_from_nodes(get_all_road_nodes(road=road)[1:])
-    return f",{road_without_root_node}"
+    return f"{get_node_separator()}{road_without_root_node}"
 
 
 def road_validate(road: Road) -> Road:

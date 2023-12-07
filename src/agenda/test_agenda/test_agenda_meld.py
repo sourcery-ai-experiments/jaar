@@ -105,7 +105,7 @@ def test_agenda_idearoot_meld_IdeaRootAttrCorrectlyMelded():
         x_agenda1.meld(x_agenda2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea=None,{x_agenda1._culture_qid} _uid:1 with None,{x_agenda2._culture_qid} _uid:4"
+        == f"Meld fail idea={x_agenda1._culture_qid} _uid:1 with {x_agenda2._culture_qid} _uid:4"
     )
 
 

@@ -30,13 +30,14 @@ def test_AgendaUnit_exists():
 def test_agendaunit_shop_ReturnsCorrectObjectWithFilledFields():
     # GIVEN
     healer_text = "Noa"
+    iowa_culture_qid = "Iowa"
 
     # WHEN
-    x_agenda = agendaunit_shop(_healer=healer_text)
+    x_agenda = agendaunit_shop(_healer=healer_text, _culture_qid=iowa_culture_qid)
 
     assert x_agenda
     assert x_agenda._healer == healer_text
-    assert x_agenda._culture_qid == root_label()
+    assert x_agenda._culture_qid == iowa_culture_qid
     assert x_agenda._weight == 1
     assert x_agenda._max_tree_traverse == 3
     assert x_agenda._tree_traverse_count is None
@@ -53,6 +54,7 @@ def test_agendaunit_shop_ReturnsCorrectObjectWithCorrectEmptyField():
     x_agenda = agendaunit_shop()
 
     assert x_agenda._healer == ""
+    assert x_agenda._culture_qid == root_label()
 
 
 def test_agenda_IsAbleToSetTaskAsComplete():
