@@ -72,33 +72,25 @@ def test_agenda_agenda_get_tree_metrics_sets_uids_correctly():
     x_agenda = agendaunit_shop(_healer=healer_text)
     swim_text = "swim"
     pad_text = "pad"
-    x_agenda.add_idea(
-        idea_kid=ideacore_shop(_label=swim_text, _uid=None),
-        pad=x_agenda._culture_qid,
-    )
-    x_agenda.add_idea(
-        idea_kid=ideacore_shop(_label=pad_text, _uid=2), pad=x_agenda._culture_qid
-    )
-    assert (
-        x_agenda.get_idea_kid(get_road(x_agenda._culture_qid, swim_text))._uid is None
-    )
+    x_agenda.add_idea(ideacore_shop(swim_text, _uid=None), x_agenda._culture_qid)
+    x_agenda.add_idea(ideacore_shop(pad_text, _uid=2), x_agenda._culture_qid)
+    swim_road = get_road(x_agenda._culture_qid, swim_text)
+    assert x_agenda.get_idea_kid(swim_road)._uid is None
 
     x_agenda.set_all_idea_uids_unique()
 
     # THEN
-    assert (
-        x_agenda.get_idea_kid(get_road(x_agenda._culture_qid, swim_text))._uid != None
-    )
+    assert x_agenda.get_idea_kid(swim_road)._uid != None
 
 
 def test_agenda_get_tree_metrics_ReturnsANoneActionIdeaRoad():
     # GIVEN
     healer_text = "Nia"
-    x_agenda = agendaunit_shop(_healer=healer_text, _weight=10)
+    x_agenda = agendaunit_shop(healer_text, _weight=10)
     weekdays = "weekdays"
-    idea_kid_weekdays = ideacore_shop(_weight=40, _label=weekdays)
-    x_agenda.add_idea(idea_kid=idea_kid_weekdays, pad=x_agenda._culture_qid)
+    x_agenda.add_idea(ideacore_shop(weekdays, _weight=40), x_agenda._culture_qid)
     tree_metrics_before = x_agenda.get_tree_metrics()
+
     # WHEN/THEN
     assert tree_metrics_before.an_promise_idea_road is None
 
