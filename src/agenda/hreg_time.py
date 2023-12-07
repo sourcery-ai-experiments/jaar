@@ -116,13 +116,13 @@ class SuffFactUnitHregTime:
 
     def _set_weekday(self, weekday: str):
         if weekday in {
-            "Sunday",
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
+            get_Sun(),
+            get_Mon(),
+            get_Tue(),
+            get_Wed(),
+            get_Thu(),
+            get_Fri(),
+            get_Sat(),
         }:
             self._weekday = weekday
             self._set_open_weekday()
@@ -130,19 +130,19 @@ class SuffFactUnitHregTime:
     def _set_open_weekday(self):
         b = None
         m = 1440
-        if self._weekday == "Sunday":
+        if self._weekday == get_Sun():
             b = 1 * m
-        elif self._weekday == "Monday":
+        elif self._weekday == get_Mon():
             b = 2 * m
-        elif self._weekday == "Tuesday":
+        elif self._weekday == get_Tue():
             b = 3 * m
-        elif self._weekday == "Wednesday":
+        elif self._weekday == get_Wed():
             b = 4 * m
-        elif self._weekday == "Thursday":
+        elif self._weekday == get_Thu():
             b = 5 * m
-        elif self._weekday == "Friday":
+        elif self._weekday == get_Fri():
             b = 6 * m
-        elif self._weekday == "Saturday":
+        elif self._weekday == get_Sat():
             b = 0 * m
 
         self._between_weekday_open = b
@@ -183,15 +183,13 @@ class SuffFactUnitHregTime:
 
 
 def _get_time_hreg_src_idea(c400_count: int):
-    time = "time"
+    time_text = "time"
     min_text = "minutes"
-    list_x = []
-    list_x += _get_time_hreg_ced(local_root=time, tech=min_text, c400_count=c400_count)
-    return list_x
+    return _get_time_hreg_ced(time_text, tech=min_text, c400_count=c400_count)
 
 
 def _get_time_hreg_ced(local_root: str, tech: str, c400_count: int):
-    if tech == "days":
+    if tech == get_days():
         m = 1
     elif tech == "hours":
         m = 24
@@ -209,7 +207,7 @@ def _get_time_hreg_ced(local_root: str, tech: str, c400_count: int):
     list_x = [YB(n=jaja, b=0, c=146097 * c400_count * m, rr=local_root)]
     list_x.append(YB(mn=1, md=c400, mr=True, sr=c4, rr=st, n="400 year cycle"))
     list_x.append(YB(mn=1, md=210379680, mr=False, sr=c4, rr=st, n="400 year cycles"))
-    list_x.append(YB(mn=1, md=1 * m, mr=False, sr=None, rr=st, n="days"))
+    list_x.append(YB(mn=1, md=1 * m, mr=False, sr=None, rr=st, n=get_days()))
     list_x.append(YB(mn=1, md=1022679.0, mr=True, sr=day_road, rr=st, n="day"))
     list_x.append(YB(mn=1, md=7 * m, mr=False, sr=None, rr=st, n="weeks"))
     list_x.append(YB(mn=1, md=146097.0, mr=True, sr=week_road, rr=st, n="week"))
@@ -282,13 +280,13 @@ def _get_time_hreg_weekday_idea(local_root: str, multipler: int, jajatime: str):
     nr = get_road(get_jajatime_road(local_root), week)
     hreg_list = [YB(n=week, b=0 * m, c=7 * m, nr=nr, rr=get_tech_road(local_root))]
     week_road = get_road(get_tech_road(local_root), week)
-    hreg_list.append(YB(b=1 * m, c=2 * m, rr=week_road, n="Sunday"))
-    hreg_list.append(YB(b=2 * m, c=3 * m, rr=week_road, n="Monday"))
-    hreg_list.append(YB(b=3 * m, c=4 * m, rr=week_road, n="Tuesday"))
-    hreg_list.append(YB(b=4 * m, c=5 * m, rr=week_road, n="Wednesday"))
-    hreg_list.append(YB(b=5 * m, c=6 * m, rr=week_road, n="Thursday"))
-    hreg_list.append(YB(b=6 * m, c=7 * m, rr=week_road, n="Friday"))
-    hreg_list.append(YB(b=0 * m, c=1 * m, rr=week_road, n="Saturday"))
+    hreg_list.append(YB(b=1 * m, c=2 * m, rr=week_road, n=get_Sun()))
+    hreg_list.append(YB(b=2 * m, c=3 * m, rr=week_road, n=get_Mon()))
+    hreg_list.append(YB(b=3 * m, c=4 * m, rr=week_road, n=get_Tue()))
+    hreg_list.append(YB(b=4 * m, c=5 * m, rr=week_road, n=get_Wed()))
+    hreg_list.append(YB(b=5 * m, c=6 * m, rr=week_road, n=get_Thu()))
+    hreg_list.append(YB(b=6 * m, c=7 * m, rr=week_road, n=get_Fri()))
+    hreg_list.append(YB(b=0 * m, c=1 * m, rr=week_road, n=get_Sat()))
     return hreg_list
 
 
@@ -513,19 +511,19 @@ def _get_time_hreg_month(local_root: str, multipler: int):
     hreg_list.append(YB(b=0, c=30 * m, rr=rt, n=Nov))
     hreg_list.append(YB(b=0, c=31 * m, rr=rt, n=Dec))
 
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Jan), n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Feb28), n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Feb29), n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Mar), n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Apr), n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, May), n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Jun), n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Jul), n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Aug), n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Sep), n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Oct), n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Nov), n="days"))
-    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Dec), n="days"))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Jan), n=get_days()))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Feb28), n=get_days()))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Feb29), n=get_days()))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Mar), n=get_days()))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Apr), n=get_days()))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, May), n=get_days()))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Jun), n=get_days()))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Jul), n=get_days()))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Aug), n=get_days()))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Sep), n=get_days()))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Oct), n=get_days()))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Nov), n=get_days()))
+    hreg_list.append(YB(mn=1, md=1440, mr=True, rr=get_road(rt, Dec), n=get_days()))
 
     return hreg_list
 
@@ -732,3 +730,35 @@ def get_jajatime_road(local_root):
 
 def get_jajatime_text():
     return "jajatime"
+
+
+def get_Sun():
+    return "Sunday"
+
+
+def get_Mon():
+    return "Monday"
+
+
+def get_Tue():
+    return "Tuesday"
+
+
+def get_Wed():
+    return "Wednesday"
+
+
+def get_Thu():
+    return "Thursday"
+
+
+def get_Fri():
+    return "Friday"
+
+
+def get_Sat():
+    return "Saturday"
+
+
+def get_days():
+    return "days"
