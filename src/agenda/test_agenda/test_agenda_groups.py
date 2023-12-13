@@ -363,7 +363,7 @@ def test_agenda_get_idea_list_CorrectlyCalculates3levelAgendaGroupAgendaImportan
     )
 
 
-def test_agenda_get_idea_list_CorrectlyCalculatesGroupAgendaImportanceLWwithGroupEmptyBranch():
+def test_agenda_get_idea_list_CorrectlyCalculatesGroupAgendaImportanceLWwithGroupEmptyAncestors():
     # GIVEN
     prom_text = "prom"
     x_agenda = agendaunit_shop(_healer=prom_text)

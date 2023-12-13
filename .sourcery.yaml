@@ -57,7 +57,7 @@ rule_settings:
 #   ignore_labels:
 #   - sourcery-ignore
 #   requeest_review: author
-#   sourcery_branch: sourcery/{base_branch}
+#   sourcery_bra_nch: sourcery/{base_bra_nch}
 
 # clone_detection:
 #   min_lines: 3

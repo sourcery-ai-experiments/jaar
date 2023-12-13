@@ -402,7 +402,7 @@ def test_agenda4party_Exists():
     assert sandy_agenda4party._healer == sandy_pid
 
 
-def test_agenda4party_hasCorrectLevel1StructureNoGrouplessBranches():
+def test_agenda4party_hasCorrectLevel1StructureNoGrouplessAncestors():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     email_text = "email"
@@ -437,25 +437,19 @@ def test_agenda4party_hasCorrectLevel1StructureNoGrouplessBranches():
     # THEN
     assert len(sandy_agenda4party._idearoot._kids) > 0
     print(f"{len(sandy_agenda4party._idearoot._kids)=}")
-    type_check_IdeaCore = str(
-        type(sandy_agenda4party._idearoot._kids.get(work_text))
-    ).find(".idea.IdeaCore'>")
+
+    work_idea = sandy_agenda4party.get_idea_kid(work_road)
+    type_check_IdeaCore = str(type(work_idea)).find(".idea.IdeaCore'>")
     print(f"{type_check_IdeaCore=}")
-    type_check_IdeaKid = str(
-        type(sandy_agenda4party._idearoot._kids.get(work_text))
-    ).find(".idea.IdeaKid'>")
+    type_check_IdeaKid = str(type(work_idea)).find(".idea.IdeaKid'>")
     print(f"{type_check_IdeaKid=}")
-    assert (
-        str(type(sandy_agenda4party._idearoot._kids.get(work_text))).find(
-            ".idea.IdeaKid'>"
-        )
-        > 0
-    )
+    assert str(type(work_idea)).find(".idea.IdeaKid'>") > 0
+
     assert sandy_agenda4party._idearoot._kids.get(feed_text) is None
     assert sandy_agenda4party._idearoot._agenda_importance == 1
-    y4a_work = sandy_agenda4party._idearoot._kids.get(work_text)
-    assert y4a_work._agenda_importance == yrx._kids[work_text]._agenda_importance
+    assert work_idea._agenda_importance == yrx._kids[work_text]._agenda_importance
     assert sandy_agenda4party._idearoot._kids.get("__other__") != None
+
     y4a_others = sandy_agenda4party._idearoot._kids.get("__other__")
     others_agenda_importance = yrx._kids[week_text]._agenda_importance
     others_agenda_importance += yrx._kids[feed_text]._agenda_importance
@@ -532,7 +526,7 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
     assert heir_node_road_list[4] == get_road(weekdays, sun_text)
 
 
-# def test_agenda4party_hasCorrectLevel1StructureWithGrouplessBranches_2():
+# def test_agenda4party_hasCorrectLevel1StructureWithGrouplessAncestors_2():
 #     x_agenda = agendaunit_shop(_healer=healer_text)
 #     x_agenda.add_idea(idea_kid=ideacore_shop(_label="A", _weight=7), pad="blahblah")
 #     x_agenda.add_idea(idea_kid=ideacore_shop(_label="C", _weight=3), pad=f"{x_agenda._culture_qid},A")

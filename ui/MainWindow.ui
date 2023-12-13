@@ -663,7 +663,7 @@
     </column>
     <column>
      <property name="text">
-      <string>branch_percent</string>
+      <string>idea_percent</string>
      </property>
     </column>
     <column>

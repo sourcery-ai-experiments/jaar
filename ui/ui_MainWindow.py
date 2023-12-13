@@ -437,7 +437,7 @@ class Ui_MainWindow(object):
         item = self.intent_states.horizontalHeaderItem(3)
         item.setText(_translate("MainWindow", "idea_road"))
         item = self.intent_states.horizontalHeaderItem(4)
-        item.setText(_translate("MainWindow", "branch_percent"))
+        item.setText(_translate("MainWindow", "idea_percent"))
         item = self.intent_states.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "jaja_open"))
         item = self.intent_states.horizontalHeaderItem(6)

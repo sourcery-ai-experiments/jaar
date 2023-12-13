@@ -476,7 +476,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 "jaja_nigh",
                 "agenda_importance",
                 "idea_road",
-                "branch_percent",
+                "idea_percent",
             ]
         )
 
