@@ -258,14 +258,14 @@ def test_councilunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     ernie_agenda = get_cal2nodes(_healer=ernie_text)
     steve_text = "steve"
     old_steve_agenda = get_cal2nodes(_healer=steve_text)
-    sx.save_public_agenda(x_agenda=ernie_agenda)
-    sx.save_public_agenda(x_agenda=old_steve_agenda)
+    sx.save_public_agenda(ernie_agenda)
+    sx.save_public_agenda(old_steve_agenda)
     yao_agenda.set_depot_agenda(x_agenda=ernie_agenda, depotlink_type="blind_trust")
     yao_agenda.set_depot_agenda(x_agenda=old_steve_agenda, depotlink_type="blind_trust")
 
     assert len(yao_agenda._admin.get_remelded_output_agenda().get_idea_list()) == 4
     new_steve_agenda = get_cal3nodes(_healer=steve_text)
-    sx.save_public_agenda(x_agenda=new_steve_agenda)
+    sx.save_public_agenda(new_steve_agenda)
     print(f"{env_dir=} {yao_agenda._admin._agendas_public_dir=}")
     # for file_name in x_func_dir_files(dir_path=env_dir):
     #     print(f"{bob_agenda._admin._agendas_public_dir=} {file_name=}")

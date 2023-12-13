@@ -450,10 +450,14 @@ class RequiredCore:
 
 
 def requiredcore_shop(
-    base: Road, sufffacts: dict[Road:SuffFactUnit], suff_idea_active_status: bool = None
+    base: Road,
+    sufffacts: dict[Road:SuffFactUnit] = None,
+    suff_idea_active_status: bool = None,
 ):
     return RequiredCore(
-        base=base, sufffacts=sufffacts, suff_idea_active_status=suff_idea_active_status
+        base=base,
+        sufffacts=set_None_to_empty_dict(sufffacts),
+        suff_idea_active_status=suff_idea_active_status,
     )
 
 
@@ -471,10 +475,14 @@ class RequiredUnit(RequiredCore):
 
 
 def requiredunit_shop(
-    base: Road, sufffacts: dict[Road:SuffFactUnit], suff_idea_active_status: bool = None
+    base: Road,
+    sufffacts: dict[Road:SuffFactUnit] = None,
+    suff_idea_active_status: bool = None,
 ):
     return RequiredUnit(
-        base=base, sufffacts=sufffacts, suff_idea_active_status=suff_idea_active_status
+        base=base,
+        sufffacts=set_None_to_empty_dict(sufffacts),
+        suff_idea_active_status=suff_idea_active_status,
     )
 
 
@@ -535,7 +543,7 @@ class RequiredHeir(RequiredCore):
 
 def requiredheir_shop(
     base: Road,
-    sufffacts: dict[Road:SuffFactUnit],
+    sufffacts: dict[Road:SuffFactUnit] = None,
     suff_idea_active_status: bool = None,
     _status: bool = None,
     _task: bool = None,
@@ -543,7 +551,7 @@ def requiredheir_shop(
 ):
     return RequiredHeir(
         base=base,
-        sufffacts=sufffacts,
+        sufffacts=set_None_to_empty_dict(sufffacts),
         suff_idea_active_status=suff_idea_active_status,
         _status=_status,
         _task=_task,
@@ -561,3 +569,7 @@ def requireds_get_from_dict(requireds_dict: dict) -> dict[RequiredUnit]:
         )
         requireds[x_required.base] = x_required
     return requireds
+
+
+def set_None_to_empty_dict(x_obj: dict):
+    return {} if x_obj is None else x_obj

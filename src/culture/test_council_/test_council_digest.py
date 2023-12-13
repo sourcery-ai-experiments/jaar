@@ -304,7 +304,7 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
 
 #     yaya_text = "yaya"
 #     yaya_road = f"{src1},{yaya_text}"
-#     s1.add_idea(idea_kid=ideacore_shop(_label=yaya_text), pad=src1_road)
+#     s1.add_idea(ideacore_shop(_label=yaya_text), pad=src1_road)
 #     s1.set_acptfact(base=yaya_road, acptfact=yaya_road)
 
 #     assert s1._groups.get(swim_text).pid == swim_text
@@ -357,7 +357,7 @@ def test_healer_seed_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
     # THEN
     assert output_agenda_x._idearoot._originunit == originunit_shop()
     d_road = "J,A,C,D"
-    d_idea = output_agenda_x.get_idea_kid(road=d_road)
+    d_idea = output_agenda_x.get_idea_kid(d_road)
     assert d_idea._originunit == yao_originunit
 
     print(f"{output_agenda_x._originunit=}")

@@ -150,7 +150,7 @@ def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_1():
 
     email_text = "email"
     email_idea = ideacore_shop(_label=email_text, promise=True)
-    x_agenda.add_idea(idea_kid=email_idea, pad=work_road)
+    x_agenda.add_idea(email_idea, pad=work_road)
 
     # idea ",{week_text},Sunday"
     # idea ",{week_text},Monday"
@@ -219,9 +219,9 @@ def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_2():
 
     work_road = get_road(x_agenda._culture_qid, work_text)
     email_idea = ideacore_shop(_label=email_text, promise=True)
-    x_agenda.add_idea(idea_kid=email_idea, pad=work_road)
+    x_agenda.add_idea(email_idea, pad=work_road)
     vaccum_idea = ideacore_shop(_label=vaccum_text, promise=True)
-    x_agenda.add_idea(idea_kid=vaccum_idea, pad=work_road)
+    x_agenda.add_idea(vaccum_idea, pad=work_road)
 
     x_agenda.add_partyunit(pid=sandy_text)
     x_balancelink = balancelink_shop(brand=sandy_text)
@@ -383,9 +383,9 @@ def test_agenda4party_Exists():
     sandy_text = "sandy"
     work_road = get_road(x_agenda._culture_qid, work_text)
     email_idea = ideacore_shop(_label=email_text, promise=True)
-    x_agenda.add_idea(idea_kid=email_idea, pad=work_road)
+    x_agenda.add_idea(email_idea, pad=work_road)
     vaccum_idea = ideacore_shop(_label=vaccum_text, promise=True)
-    x_agenda.add_idea(idea_kid=vaccum_idea, pad=work_road)
+    x_agenda.add_idea(vaccum_idea, pad=work_road)
 
     sandy_pid = PartyPID(sandy_text)
     x_agenda.add_partyunit(pid=sandy_pid)
@@ -413,9 +413,9 @@ def test_agenda4party_hasCorrectLevel1StructureNoGrouplessAncestors():
     feed_text = "feed cat"
     work_road = get_road(x_agenda._culture_qid, work_text)
     email_idea = ideacore_shop(_label=email_text, promise=True)
-    x_agenda.add_idea(idea_kid=email_idea, pad=work_road)
+    x_agenda.add_idea(email_idea, pad=work_road)
     vaccum_idea = ideacore_shop(_label=vaccum_text, promise=True)
-    x_agenda.add_idea(idea_kid=vaccum_idea, pad=work_road)
+    x_agenda.add_idea(vaccum_idea, pad=work_road)
 
     billy_pid = PartyPID("billy")
     x_agenda.add_partyunit(pid=billy_pid)
@@ -528,18 +528,18 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
 
 # def test_agenda4party_hasCorrectLevel1StructureWithGrouplessAncestors_2():
 #     x_agenda = agendaunit_shop(_healer=healer_text)
-#     x_agenda.add_idea(idea_kid=ideacore_shop(_label="A", _weight=7), pad="blahblah")
-#     x_agenda.add_idea(idea_kid=ideacore_shop(_label="C", _weight=3), pad=f"{x_agenda._culture_qid},A")
-#     x_agenda.add_idea(idea_kid=ideacore_shop(_label="E", _weight=7), pad=f"{x_agenda._culture_qid},A,C")
-#     x_agenda.add_idea(idea_kid=ideacore_shop(_label="D", _weight=7), pad=f"{x_agenda._culture_qid},A,C")
-#     x_agenda.add_idea(idea_kid=ideacore_shop(_label="B", _weight=13), pad="blahblah")
-#     x_agenda.add_idea(idea_kid=ideacore_shop(_label="F", _weight=23), pad="blahblah")
-#     x_agenda.add_idea(idea_kid=ideacore_shop(_label="G", _weight=57), pad="blahblah")
-#     x_agenda.add_idea(idea_kid=ideacore_shop(_label="I"), pad=f"{x_agenda._culture_qid},G")
-#     x_agenda.add_idea(idea_kid=ideacore_shop(_label="H"), pad=f"{x_agenda._culture_qid},G")
-#     x_agenda.add_idea(idea_kid=ideacore_shop(_label="J"), pad=f"{x_agenda._culture_qid},G,I")
-#     x_agenda.add_idea(idea_kid=ideacore_shop(_label="K"), pad=f"{x_agenda._culture_qid},G,I")
-#     x_agenda.add_idea(idea_kid=ideacore_shop(_label="M"), pad=f"{x_agenda._culture_qid},G,H")
+#     x_agenda.add_idea(ideacore_shop(_label="A", _weight=7), pad="blahblah")
+#     x_agenda.add_idea(ideacore_shop(_label="C", _weight=3), pad=f"{x_agenda._culture_qid},A")
+#     x_agenda.add_idea(ideacore_shop(_label="E", _weight=7), pad=f"{x_agenda._culture_qid},A,C")
+#     x_agenda.add_idea(ideacore_shop(_label="D", _weight=7), pad=f"{x_agenda._culture_qid},A,C")
+#     x_agenda.add_idea(ideacore_shop(_label="B", _weight=13), pad="blahblah")
+#     x_agenda.add_idea(ideacore_shop(_label="F", _weight=23), pad="blahblah")
+#     x_agenda.add_idea(ideacore_shop(_label="G", _weight=57), pad="blahblah")
+#     x_agenda.add_idea(ideacore_shop(_label="I"), pad=f"{x_agenda._culture_qid},G")
+#     x_agenda.add_idea(ideacore_shop(_label="H"), pad=f"{x_agenda._culture_qid},G")
+#     x_agenda.add_idea(ideacore_shop(_label="J"), pad=f"{x_agenda._culture_qid},G,I")
+#     x_agenda.add_idea(ideacore_shop(_label="K"), pad=f"{x_agenda._culture_qid},G,I")
+#     x_agenda.add_idea(ideacore_shop(_label="M"), pad=f"{x_agenda._culture_qid},G,H")
 
 #     billy_pid = PartyPID("billy")
 #     x_agenda.add_partyunit(pid=billy_pid)
@@ -556,10 +556,10 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
 
 #     # expected sandy
 #     exp_sandy = agendaunit_shop(_healer=healer_text)
-#     exp_sandy.add_idea(idea_kid=ideacore_shop(_label="A", _agenda_importance=0.07), pad="blahblah")
-#     exp_sandy.add_idea(idea_kid=ideacore_shop(_label="C", _agenda_importance=0.07), pad=f"{x_agenda._culture_qid},A")
-#     exp_sandy.add_idea(idea_kid=ideacore_shop(_label="E", _agenda_importance=0.5), pad=f"{x_agenda._culture_qid},A,C")
-#     exp_sandy.add_idea(idea_kid=ideacore_shop(_label="B", _agenda_importance=0.13), pad="blahblah")
+#     exp_sandy.add_idea(ideacore_shop(_label="A", _agenda_importance=0.07), pad="blahblah")
+#     exp_sandy.add_idea(ideacore_shop(_label="C", _agenda_importance=0.07), pad=f"{x_agenda._culture_qid},A")
+#     exp_sandy.add_idea(ideacore_shop(_label="E", _agenda_importance=0.5), pad=f"{x_agenda._culture_qid},A,C")
+#     exp_sandy.add_idea(ideacore_shop(_label="B", _agenda_importance=0.13), pad="blahblah")
 
 #     # generated sandy
 #     gen_sandy = x_agenda.get_agenda4party(acptfacts=None, party_pid=sandy_pid)
@@ -570,7 +570,7 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
 #     assert gen_sandy.get_idea_kid(road=f"{x_agenda._culture_qid},A,C,E")._agenda_importance == 0.5
 #     assert gen_sandy.get_idea_kid(road=f"{x_agenda._culture_qid},B")._agenda_importance == 0.13
 #     assert (
-#         gen_sandy.get_idea_kid(road=f"{x_agenda._culture_qid},A")._agenda_importance
+#         gen_sandy.get_idea_kid(f"{x_agenda._culture_qid},A")._agenda_importance
 #         == exp_sandy.get_idea_kid(road=f"{x_agenda._culture_qid},A")._agenda_importance
 #     )
 #     assert (

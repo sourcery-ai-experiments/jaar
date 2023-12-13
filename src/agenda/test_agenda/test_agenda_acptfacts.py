@@ -56,22 +56,18 @@ def test_agenda_acptfact_create():
 def test_set_acptfact_FailsToCreateWhenBaseAndAcptFactAreDifferenctAndAcptFactIdeaIsNotRangeRoot():
     # GIVEN
     healer_text = "Bob"
-    sx = agendaunit_shop(_healer=healer_text)
+    sx = agendaunit_shop(healer_text)
     time_x = "time_x"
     sx.add_idea(
-        idea_kid=ideacore_shop(_label=time_x, _begin=0, _close=140),
+        idea_kid=ideacore_shop(time_x, _begin=0, _close=140),
         pad=sx._culture_qid,
     )
     t_x_road = get_road(sx._culture_qid, time_x)
     age1st = "age1st"
-    sx.add_idea(
-        idea_kid=ideacore_shop(_label=age1st, _begin=0, _close=20), pad=t_x_road
-    )
+    sx.add_idea(ideacore_shop(age1st, _begin=0, _close=20), pad=t_x_road)
     a1_road = get_road(t_x_road, age1st)
     a1e1st = "a1_era1st"
-    sx.add_idea(
-        idea_kid=ideacore_shop(_label=a1e1st, _begin=20, _close=30), pad=a1_road
-    )
+    sx.add_idea(ideacore_shop(a1e1st, _begin=20, _close=30), pad=a1_road)
     a1e1_road = get_road(a1_road, a1e1st)
     assert sx._idearoot._acptfactunits in (None, {})
 
@@ -105,24 +101,24 @@ def test_agenda_acptfact_create():
 def test_agenda_get_idea_list_AcptFactHeirsCorrectlyInherited():
     # GIVEN
     healer_text = "Bob"
-    sx = agendaunit_shop(_healer=healer_text)
+    sx = agendaunit_shop(healer_text)
     swim_text = "swim"
     swim_road = get_road(sx._culture_qid, swim_text)
-    sx.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=sx._culture_qid)
+    sx.add_idea(ideacore_shop(swim_text), pad=sx._culture_qid)
     fast_text = "fast"
     slow_text = "slow"
     fast_road = get_road(swim_road, fast_text)
     slow_road = get_road(swim_road, slow_text)
-    sx.add_idea(idea_kid=ideacore_shop(_label=fast_text), pad=swim_road)
-    sx.add_idea(idea_kid=ideacore_shop(_label=slow_text), pad=swim_road)
+    sx.add_idea(ideacore_shop(fast_text), pad=swim_road)
+    sx.add_idea(ideacore_shop(slow_text), pad=swim_road)
 
     earth_text = "earth"
     earth_road = get_road(sx._culture_qid, earth_text)
-    sx.add_idea(idea_kid=ideacore_shop(_label=earth_text), pad=sx._culture_qid)
+    sx.add_idea(ideacore_shop(earth_text), pad=sx._culture_qid)
 
-    swim_idea = sx.get_idea_kid(road=swim_road)
-    fast_idea = sx.get_idea_kid(road=fast_road)
-    slow_idea = sx.get_idea_kid(road=slow_road)
+    swim_idea = sx.get_idea_kid(swim_road)
+    fast_idea = sx.get_idea_kid(fast_road)
+    slow_idea = sx.get_idea_kid(slow_road)
 
     assert swim_idea._acptfactheirs is None
     assert fast_idea._acptfactheirs is None
@@ -162,20 +158,20 @@ def test_agenda_get_idea_list_AcptFactHeirsCorrectlyInherited():
 def test_agenda_get_idea_list_AcptFactUnitCorrectlyTransformsacptfactheir_shop():
     # GIVEN
     healer_text = "Bob"
-    sx = agendaunit_shop(_healer=healer_text)
+    sx = agendaunit_shop(healer_text)
     swim_text = "swim"
     swim_road = get_road(sx._culture_qid, swim_text)
-    sx.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=sx._culture_qid)
-    swim_idea = sx.get_idea_kid(road=swim_road)
+    sx.add_idea(ideacore_shop(swim_text), pad=sx._culture_qid)
+    swim_idea = sx.get_idea_kid(swim_road)
 
     fast_text = "fast"
     slow_text = "slow"
-    sx.add_idea(idea_kid=ideacore_shop(_label=fast_text), pad=swim_road)
-    sx.add_idea(idea_kid=ideacore_shop(_label=slow_text), pad=swim_road)
+    sx.add_idea(ideacore_shop(fast_text), pad=swim_road)
+    sx.add_idea(ideacore_shop(slow_text), pad=swim_road)
 
     earth_text = "earth"
     earth_road = get_road(sx._culture_qid, earth_text)
-    sx.add_idea(idea_kid=ideacore_shop(_label=earth_text), pad=sx._culture_qid)
+    sx.add_idea(ideacore_shop(earth_text), pad=sx._culture_qid)
 
     assert swim_idea._acptfactheirs is None
 
@@ -205,22 +201,22 @@ def test_agenda_get_idea_list_AcptFactUnitCorrectlyTransformsacptfactheir_shop()
 def test_agenda_get_idea_list_AcptFactHeirCorrectlyDeletesAcptFactUnit():
     # GIVEN
     healer_text = "Tim"
-    sx = agendaunit_shop(_healer=healer_text)
+    sx = agendaunit_shop(healer_text)
     swim_text = "swim"
     swim_road = get_road(sx._culture_qid, swim_text)
-    sx.add_idea(idea_kid=ideacore_shop(_label=swim_text), pad=sx._culture_qid)
+    sx.add_idea(ideacore_shop(swim_text), pad=sx._culture_qid)
     fast_text = "fast"
     slow_text = "slow"
     fast_road = get_road(swim_road, fast_text)
     slow_road = get_road(swim_road, slow_text)
-    sx.add_idea(idea_kid=ideacore_shop(_label=fast_text), pad=swim_road)
-    sx.add_idea(idea_kid=ideacore_shop(_label=slow_text), pad=swim_road)
+    sx.add_idea(ideacore_shop(fast_text), pad=swim_road)
+    sx.add_idea(ideacore_shop(slow_text), pad=swim_road)
 
     earth_text = "earth"
     earth_road = get_road(sx._culture_qid, earth_text)
-    sx.add_idea(idea_kid=ideacore_shop(_label=earth_text), pad=sx._culture_qid)
+    sx.add_idea(ideacore_shop(earth_text), pad=sx._culture_qid)
 
-    swim_idea = sx.get_idea_kid(road=swim_road)
+    swim_idea = sx.get_idea_kid(swim_road)
 
     first_earthheir = acptfactheir_shop(
         base=earth_road, pick=earth_road, open=200.0, nigh=500.0
@@ -245,15 +241,15 @@ def test_agenda_get_idea_list_AcptFactHeirCorrectlyDeletesAcptFactUnit():
 def test_get_ranged_acptfacts():
     # GIVEN a single ranged acptfact
     healer_text = "Tim"
-    sx = agendaunit_shop(_healer=healer_text)
+    sx = agendaunit_shop(healer_text)
     time_x = "time_x"
     sx.add_idea(
-        idea_kid=ideacore_shop(_label=time_x, _begin=0, _close=140),
+        idea_kid=ideacore_shop(time_x, _begin=0, _close=140),
         pad=sx._culture_qid,
     )
 
     clean = "clean"
-    sx.add_idea(idea_kid=ideacore_shop(_label=clean, promise=True), pad=sx._culture_qid)
+    sx.add_idea(ideacore_shop(clean, promise=True), pad=sx._culture_qid)
     c_road = get_road(sx._culture_qid, clean)
     t_x_road = get_road(sx._culture_qid, time_x)
     # sx.edit_idea_attr(road=c_road, required_base=t_x_road, required_sufffact=t_x_road, required_sufffact_open=5, required_sufffact_nigh=10)
@@ -268,7 +264,7 @@ def test_get_ranged_acptfacts():
     # WHEN one ranged acptfact added
     place = "place_x"
     sx.add_idea(
-        idea_kid=ideacore_shop(_label=place, _begin=600, _close=800),
+        idea_kid=ideacore_shop(place, _begin=600, _close=800),
         pad=sx._culture_qid,
     )
     p_road = get_road(sx._culture_qid, place)
@@ -281,7 +277,7 @@ def test_get_ranged_acptfacts():
 
     # WHEN one non-ranged_acptfact added
     mood = "mood_x"
-    sx.add_idea(idea_kid=ideacore_shop(_label=mood), pad=sx._culture_qid)
+    sx.add_idea(ideacore_shop(mood), pad=sx._culture_qid)
     m_road = get_road(sx._culture_qid, mood)
     sx.set_acptfact(base=m_road, pick=m_road)
     print(f"When one non-ranged_acptfact added {sx._idearoot._acptfactunits=}")
@@ -294,20 +290,20 @@ def test_get_ranged_acptfacts():
 def test_get_roots_ranged_acptfacts():
     # GIVEN a two ranged acptfacts where one is "range-root" get_root_ranged_acptfacts returns one "range-root" acptfact
     healer_text = "Tim"
-    sx = agendaunit_shop(_healer=healer_text)
+    sx = agendaunit_shop(healer_text)
     time_x = "time_x"
     sx.add_idea(
-        idea_kid=ideacore_shop(_label=time_x, _begin=0, _close=140),
+        idea_kid=ideacore_shop(time_x, _begin=0, _close=140),
         pad=sx._culture_qid,
     )
     t_x_road = get_road(sx._culture_qid, time_x)
     mood_x = "mood_x"
-    sx.add_idea(idea_kid=ideacore_shop(_label=mood_x), pad=sx._culture_qid)
+    sx.add_idea(ideacore_shop(mood_x), pad=sx._culture_qid)
     m_x_road = get_road(sx._culture_qid, mood_x)
     happy = "happy"
     sad = "Sad"
-    sx.add_idea(idea_kid=ideacore_shop(_label=happy), pad=m_x_road)
-    sx.add_idea(idea_kid=ideacore_shop(_label=sad), pad=m_x_road)
+    sx.add_idea(ideacore_shop(happy), pad=m_x_road)
+    sx.add_idea(ideacore_shop(sad), pad=m_x_road)
     sx.set_acptfact(base=t_x_road, pick=t_x_road, open=5, nigh=10)
     sx.set_acptfact(base=m_x_road, pick=get_road(m_x_road, happy))
     print(
@@ -322,7 +318,7 @@ def test_get_roots_ranged_acptfacts():
     # a acptfact who's idea range is defined by numeric_root is not "rangeroot"
     mirrow_x = "mirrow_x"
     sx.add_idea(
-        idea_kid=ideacore_shop(_label=mirrow_x, _numeric_road=time_x),
+        idea_kid=ideacore_shop(mirrow_x, _numeric_road=time_x),
         pad=sx._culture_qid,
     )
     m_x_road = get_road(sx._culture_qid, mirrow_x)
@@ -336,14 +332,14 @@ def test_get_roots_ranged_acptfacts():
 
 def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario1():
     healer_text = "Tim"
-    sx = agendaunit_shop(_healer=healer_text)
+    sx = agendaunit_shop(healer_text)
     # # the action
     # clean = "clean"
-    # sx.add_idea(idea_kid=ideacore_shop(_label=clean, promise=True), pad=sx._culture_qid)
+    # sx.add_idea(ideacore_shop(clean, promise=True), pad=sx._culture_qid)
 
     time_x = "time_x"
     sx.add_idea(
-        idea_kid=ideacore_shop(_label=time_x, _begin=0, _close=140),
+        idea_kid=ideacore_shop(time_x, _begin=0, _close=140),
         pad=sx._culture_qid,
     )
     t_x_road = get_road(sx._culture_qid, time_x)
@@ -354,13 +350,13 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario1(
     age5th = "age5th"
     age6th = "age6th"
     age7th = "age7th"
-    sx.add_idea(idea_kid=ideacore_shop(age1st, _begin=0, _close=20), pad=t_x_road)
-    sx.add_idea(idea_kid=ideacore_shop(age2nd, _begin=20, _close=40), pad=t_x_road)
-    sx.add_idea(idea_kid=ideacore_shop(age3rd, _begin=40, _close=60), pad=t_x_road)
-    sx.add_idea(idea_kid=ideacore_shop(age4th, _begin=60, _close=80), pad=t_x_road)
-    sx.add_idea(idea_kid=ideacore_shop(age5th, _begin=80, _close=100), pad=t_x_road)
-    sx.add_idea(idea_kid=ideacore_shop(age6th, _begin=100, _close=120), pad=t_x_road)
-    sx.add_idea(idea_kid=ideacore_shop(age7th, _begin=120, _close=140), pad=t_x_road)
+    sx.add_idea(ideacore_shop(age1st, _begin=0, _close=20), pad=t_x_road)
+    sx.add_idea(ideacore_shop(age2nd, _begin=20, _close=40), pad=t_x_road)
+    sx.add_idea(ideacore_shop(age3rd, _begin=40, _close=60), pad=t_x_road)
+    sx.add_idea(ideacore_shop(age4th, _begin=60, _close=80), pad=t_x_road)
+    sx.add_idea(ideacore_shop(age5th, _begin=80, _close=100), pad=t_x_road)
+    sx.add_idea(ideacore_shop(age6th, _begin=100, _close=120), pad=t_x_road)
+    sx.add_idea(ideacore_shop(age7th, _begin=120, _close=140), pad=t_x_road)
 
     # set for instant moment in 3rd age
     sx.set_acptfact(base=time_x, pick=time_x, open=45, nigh=45)
@@ -400,14 +396,14 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario1(
 
 def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario2():
     healer_text = "Tim"
-    sx = agendaunit_shop(_healer=healer_text)
+    sx = agendaunit_shop(healer_text)
     # # the action
     # clean = "clean"
-    # sx.add_idea(idea_kid=ideacore_shop(_label=clean, promise=True), pad=sx._culture_qid)
+    # sx.add_idea(ideacore_shop(clean, promise=True), pad=sx._culture_qid)
 
     time_x = "time_x"
     sx.add_idea(
-        idea_kid=ideacore_shop(_label=time_x, _begin=0, _close=140),
+        idea_kid=ideacore_shop(time_x, _begin=0, _close=140),
         pad=sx._culture_qid,
     )
     t_x_road = get_road(sx._culture_qid, time_x)
@@ -418,13 +414,13 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario2(
     age5th = "age5th"
     age6th = "age6th"
     age7th = "age7th"
-    sx.add_idea(idea_kid=ideacore_shop(age1st, _begin=0, _close=20), pad=t_x_road)
-    sx.add_idea(idea_kid=ideacore_shop(age2nd, _begin=20, _close=40), pad=t_x_road)
-    sx.add_idea(idea_kid=ideacore_shop(age3rd, _begin=40, _close=60), pad=t_x_road)
-    sx.add_idea(idea_kid=ideacore_shop(age4th, _begin=60, _close=80), pad=t_x_road)
-    sx.add_idea(idea_kid=ideacore_shop(age5th, _begin=80, _close=100), pad=t_x_road)
-    sx.add_idea(idea_kid=ideacore_shop(age6th, _begin=100, _close=120), pad=t_x_road)
-    sx.add_idea(idea_kid=ideacore_shop(age7th, _begin=120, _close=140), pad=t_x_road)
+    sx.add_idea(ideacore_shop(age1st, _begin=0, _close=20), pad=t_x_road)
+    sx.add_idea(ideacore_shop(age2nd, _begin=20, _close=40), pad=t_x_road)
+    sx.add_idea(ideacore_shop(age3rd, _begin=40, _close=60), pad=t_x_road)
+    sx.add_idea(ideacore_shop(age4th, _begin=60, _close=80), pad=t_x_road)
+    sx.add_idea(ideacore_shop(age5th, _begin=80, _close=100), pad=t_x_road)
+    sx.add_idea(ideacore_shop(age6th, _begin=100, _close=120), pad=t_x_road)
+    sx.add_idea(ideacore_shop(age7th, _begin=120, _close=140), pad=t_x_road)
 
     # set for instant moment in 3rd age
     sx.set_acptfact(base=time_x, pick=time_x, open=35, nigh=65)
@@ -462,14 +458,14 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario2(
 
 def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario3():
     healer_text = "Tim"
-    sx = agendaunit_shop(_healer=healer_text)
+    sx = agendaunit_shop(healer_text)
     # # the action
     # clean = "clean"
-    # sx.add_idea(idea_kid=ideacore_shop(_label=clean, promise=True), pad=sx._culture_qid)
+    # sx.add_idea(ideacore_shop(clean, promise=True), pad=sx._culture_qid)
 
     time_x = "time_x"
     sx.add_idea(
-        idea_kid=ideacore_shop(_label=time_x, _begin=0, _close=140),
+        idea_kid=ideacore_shop(time_x, _begin=0, _close=140),
         pad=sx._culture_qid,
     )
     t_x_road = get_road(sx._culture_qid, time_x)
@@ -480,33 +476,33 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario3(
     age5th = "age5th"
     age6th = "age6th"
     age7th = "age7th"
-    sx.add_idea(idea_kid=ideacore_shop(age1st, _begin=0, _close=20), pad=t_x_road)
-    sx.add_idea(idea_kid=ideacore_shop(age2nd, _begin=20, _close=40), pad=t_x_road)
-    sx.add_idea(idea_kid=ideacore_shop(age3rd, _begin=40, _close=60), pad=t_x_road)
-    sx.add_idea(idea_kid=ideacore_shop(age4th, _begin=60, _close=80), pad=t_x_road)
-    sx.add_idea(idea_kid=ideacore_shop(age5th, _begin=80, _close=100), pad=t_x_road)
-    sx.add_idea(idea_kid=ideacore_shop(age6th, _begin=100, _close=120), pad=t_x_road)
-    sx.add_idea(idea_kid=ideacore_shop(age7th, _begin=120, _close=140), pad=t_x_road)
+    sx.add_idea(ideacore_shop(age1st, _begin=0, _close=20), pad=t_x_road)
+    sx.add_idea(ideacore_shop(age2nd, _begin=20, _close=40), pad=t_x_road)
+    sx.add_idea(ideacore_shop(age3rd, _begin=40, _close=60), pad=t_x_road)
+    sx.add_idea(ideacore_shop(age4th, _begin=60, _close=80), pad=t_x_road)
+    sx.add_idea(ideacore_shop(age5th, _begin=80, _close=100), pad=t_x_road)
+    sx.add_idea(ideacore_shop(age6th, _begin=100, _close=120), pad=t_x_road)
+    sx.add_idea(ideacore_shop(age7th, _begin=120, _close=140), pad=t_x_road)
 
     a2_road = get_road(t_x_road, age2nd)
     a2e1st = "a1_era1st"
     a2e2nd = "a1_era2nd"
     a2e3rd = "a1_era3rd"
     a2e4th = "a1_era4th"
-    sx.add_idea(idea_kid=ideacore_shop(a2e1st, _begin=20, _close=30), pad=a2_road)
-    sx.add_idea(idea_kid=ideacore_shop(a2e2nd, _begin=30, _close=34), pad=a2_road)
-    sx.add_idea(idea_kid=ideacore_shop(a2e3rd, _begin=34, _close=38), pad=a2_road)
-    sx.add_idea(idea_kid=ideacore_shop(a2e4th, _begin=38, _close=40), pad=a2_road)
+    sx.add_idea(ideacore_shop(a2e1st, _begin=20, _close=30), pad=a2_road)
+    sx.add_idea(ideacore_shop(a2e2nd, _begin=30, _close=34), pad=a2_road)
+    sx.add_idea(ideacore_shop(a2e3rd, _begin=34, _close=38), pad=a2_road)
+    sx.add_idea(ideacore_shop(a2e4th, _begin=38, _close=40), pad=a2_road)
 
     a3_road = get_road(t_x_road, age3rd)
     a3e1st = "a3_era1st"
     a3e2nd = "a3_era2nd"
     a3e3rd = "a3_era3rd"
     a3e4th = "a3_era4th"
-    sx.add_idea(idea_kid=ideacore_shop(a3e1st, _begin=40, _close=45), pad=a3_road)
-    sx.add_idea(idea_kid=ideacore_shop(a3e2nd, _begin=45, _close=50), pad=a3_road)
-    sx.add_idea(idea_kid=ideacore_shop(a3e3rd, _begin=55, _close=58), pad=a3_road)
-    sx.add_idea(idea_kid=ideacore_shop(a3e4th, _begin=58, _close=60), pad=a3_road)
+    sx.add_idea(ideacore_shop(a3e1st, _begin=40, _close=45), pad=a3_road)
+    sx.add_idea(ideacore_shop(a3e2nd, _begin=45, _close=50), pad=a3_road)
+    sx.add_idea(ideacore_shop(a3e3rd, _begin=55, _close=58), pad=a3_road)
+    sx.add_idea(ideacore_shop(a3e4th, _begin=58, _close=60), pad=a3_road)
 
     # set for instant moment in 3rd age
     sx.set_acptfact(base=time_x, pick=time_x, open=35, nigh=55)
@@ -548,36 +544,26 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario3(
 
 def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario4():
     healer_text = "Tim"
-    sx = agendaunit_shop(_healer=healer_text)
+    sx = agendaunit_shop(healer_text)
     time_x = "time_x"
     arsub1 = "descretional_subsection1"
     as1_road = get_road(sx._culture_qid, arsub1)
-    sx.add_idea(
-        idea_kid=ideacore_shop(_label=arsub1, _begin=0, _close=140),
-        pad=sx._culture_qid,
-    )
+    sx.add_idea(ideacore_shop(arsub1, _begin=0, _close=140), pad=sx._culture_qid)
     # range-root idea has range_source_road
     sx.add_idea(
-        idea_kid=ideacore_shop(
-            _label=time_x, _begin=0, _close=140, _range_source_road=as1_road
-        ),
+        ideacore_shop(time_x, _begin=0, _close=140, _range_source_road=as1_road),
         pad=sx._culture_qid,
     )
 
     arsub2 = "descretional_subsection2"
     as2_road = get_road(sx._culture_qid, arsub2)
-    sx.add_idea(
-        idea_kid=ideacore_shop(_label=arsub2, _begin=0, _close=20),
-        pad=sx._culture_qid,
-    )
+    sx.add_idea(ideacore_shop(arsub2, _begin=0, _close=20), pad=sx._culture_qid)
 
     # non-range-root child idea has range_source_road
     t_x_road = get_road(sx._culture_qid, time_x)
     age1st = "age1st"
     sx.add_idea(
-        idea_kid=ideacore_shop(
-            _label=age1st, _begin=0, _close=20, _range_source_road=as2_road
-        ),
+        ideacore_shop(age1st, _begin=0, _close=20, _range_source_road=as2_road),
         pad=t_x_road,
     )
 
@@ -601,7 +587,7 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario4(
 
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario4_1():
     healer_text = "Tim"
-    sx = agendaunit_shop(_healer=healer_text)
+    sx = agendaunit_shop(healer_text)
     sx.set_time_hreg_ideas(c400_count=7)
     time_road = get_road(sx._culture_qid, "time")
     jajatime_road = get_road(time_road, "jajatime")
@@ -629,7 +615,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario4_
 
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario5():
     healer_text = "Tim"
-    sx = agendaunit_shop(_healer=healer_text)
+    sx = agendaunit_shop(healer_text)
     sx.set_time_hreg_ideas(c400_count=7)
     time_road = get_road(sx._culture_qid, "time")
     timetech_road = get_road(time_road, "tech")
@@ -655,7 +641,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario5(
 
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario6():
     healer_text = "Tim"
-    sx = agendaunit_shop(_healer=healer_text)
+    sx = agendaunit_shop(healer_text)
     sx.set_time_hreg_ideas(c400_count=7)
     time_road = get_road(sx._culture_qid, "time")
     jajatime_road = get_road(time_road, "jajatime")
@@ -679,7 +665,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario6(
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario7():
     # GIVEN
     healer_text = "Tim"
-    sx = agendaunit_shop(_healer=healer_text)
+    sx = agendaunit_shop(healer_text)
     sx.set_time_hreg_ideas(c400_count=7)
     time_road = get_road(sx._culture_qid, "time")
     timetech_road = get_road(time_road, "tech")
@@ -727,7 +713,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario7(
 def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario8():
     # GIVEN
     healer_text = "Tim"
-    sx = agendaunit_shop(_healer=healer_text)
+    sx = agendaunit_shop(healer_text)
     sx.set_time_hreg_ideas(c400_count=7)
     time_road = get_road(sx._culture_qid, "time")
     timetech_road = get_road(time_road, "tech")
@@ -774,7 +760,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario8(
 def test_agenda_set_acptfact_create_missing_ideas_CreatesBaseAndAcptFact():
     # GIVEN
     healer_text = "Tim"
-    sx = agendaunit_shop(_healer=healer_text)
+    sx = agendaunit_shop(healer_text)
     sx._idearoot.set_kids_empty_if_null()
     issue_text = "issues"
     issue_road = get_road(sx._culture_qid, issue_text)
@@ -787,14 +773,14 @@ def test_agenda_set_acptfact_create_missing_ideas_CreatesBaseAndAcptFact():
 
     # THEN
     assert sx._idearoot._kids.get(issue_text) != None
-    assert sx.get_idea_kid(road=issue_road) != None
-    assert sx.get_idea_kid(road=climate_road) != None
+    assert sx.get_idea_kid(issue_road) != None
+    assert sx.get_idea_kid(climate_road) != None
 
 
 def test_agenda_get_acptfactunits_base_and_acptfact_list_CorrectlyReturnsListOfAcptFactUnits():
     # GIVEN
     healer_text = "Tim"
-    sx = agendaunit_shop(_healer=healer_text)
+    sx = agendaunit_shop(healer_text)
     sx._idearoot.set_kids_empty_if_null()
 
     issue_text = "issues"

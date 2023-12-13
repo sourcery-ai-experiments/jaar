@@ -132,15 +132,15 @@ class AgendaUnit:
 
     def get_agenda_sprung_from_single_idea(self, road: Road):
         self.set_agenda_metrics()
-        idea_x = self.get_idea_kid(road=road)
+        idea_x = self.get_idea_kid(road)
         new_weight = self._weight * idea_x._agenda_importance
         x_agenda = agendaunit_shop(_healer=self._idearoot._label, _weight=new_weight)
 
         for road_assc in sorted(list(self._get_relevant_roads({road}))):
-            src_yx = self.get_idea_kid(road=road_assc)
+            src_yx = self.get_idea_kid(road_assc)
             new_yx = copy_deepcopy(src_yx)
             if new_yx._pad != "":
-                x_agenda.add_idea(idea_kid=new_yx, pad=new_yx._pad)
+                x_agenda.add_idea(new_yx, pad=new_yx._pad)
             x_agenda.set_agenda_metrics()
 
         # TODO grab groups
@@ -162,7 +162,7 @@ class AgendaUnit:
         # nice to avoid infinite loops from programming errors though...
         while to_evaluate_list != []:
             road_x = to_evaluate_list.pop()
-            idea_x = self.get_idea_kid(road=road_x)
+            idea_x = self.get_idea_kid(road_x)
             for requiredunit_obj in idea_x._requiredunits.values():
                 required_base = requiredunit_obj.base
                 self._evaluate_relevancy(
@@ -227,7 +227,7 @@ class AgendaUnit:
         return all_ideas_set == all_ideas_set.intersection(promise_idea_assoc_set)
 
     def _are_all_partys_groups_are_in_idea_kid(self, road: Road) -> bool:
-        idea_kid = self.get_idea_kid(road=road)
+        idea_kid = self.get_idea_kid(road)
         # get dict of all idea balanceheirs
         balanceheir_list = idea_kid._balanceheirs.keys()
         balanceheir_dict = {
@@ -740,11 +740,11 @@ class AgendaUnit:
         if len(get_all_road_nodes(parent_road)) == 1:
             parent_range = False
         else:
-            parent_idea = self.get_idea_kid(road=parent_road)
+            parent_idea = self.get_idea_kid(parent_road)
             parent_range = parent_idea._begin != None and parent_idea._close != None
 
         # figure out if numeric source exists
-        idea_x = self.get_idea_kid(road=idea_road)
+        idea_x = self.get_idea_kid(idea_road)
         numeric_source_road = None
         numeric_source_road = idea_x._numeric_road != None
 
@@ -766,13 +766,13 @@ class AgendaUnit:
         lemmas_x.set_empty_if_null()
         # lemma_ideas = {}
         for acptfact in ranged_acptfactunits:
-            acptfact_idea = self.get_idea_kid(road=acptfact.base)
+            acptfact_idea = self.get_idea_kid(acptfact.base)
             for kid in acptfact_idea._kids.values():
                 lemmas_x.eval(idea_x=kid, src_acptfact=acptfact, src_idea=acptfact_idea)
 
             if acptfact_idea._range_source_road != None:
                 lemmas_x.eval(
-                    idea_x=self.get_idea_kid(road=acptfact_idea._range_source_road),
+                    idea_x=self.get_idea_kid(acptfact_idea._range_source_road),
                     src_acptfact=acptfact,
                     src_idea=acptfact_idea,
                 )
@@ -803,7 +803,7 @@ class AgendaUnit:
                 lemmas_x.eval(idea_x=kid2, src_acptfact=acptfact_x, src_idea=idea_x)
             if idea_x._range_source_road not in [None, ""]:
                 lemmas_x.eval(
-                    idea_x=self.get_idea_kid(road=idea_x._range_source_road),
+                    idea_x=self.get_idea_kid(idea_x._range_source_road),
                     src_acptfact=acptfact_x,
                     src_idea=idea_x,
                 )
@@ -824,7 +824,7 @@ class AgendaUnit:
 
         self._set_acptfacts_empty_if_null()
         self._execute_tree_traverse()
-        acptfact_idea = self.get_idea_kid(road=base)
+        acptfact_idea = self.get_idea_kid(base)
 
         if acptfact_idea._begin is None and acptfact_idea._close is None:
             self._edit_set_idearoot_acptfactunits(
@@ -1010,7 +1010,7 @@ class AgendaUnit:
         if adoptees != None:
             for adoptee_label in adoptees:
                 adoptee_road = get_road(pad, adoptee_label)
-                adoptee_idea = self.get_idea_kid(road=adoptee_road)
+                adoptee_idea = self.get_idea_kid(adoptee_road)
 
         if not create_missing_ideas_groups:
             idea_kid = self._get_filtered_balancelinks_idea(idea_kid)
@@ -1042,7 +1042,7 @@ class AgendaUnit:
             weight_sum = 0
             for adoptee_label in adoptees:
                 adoptee_road = get_road(pad, adoptee_label)
-                adoptee_idea = self.get_idea_kid(road=adoptee_road)
+                adoptee_idea = self.get_idea_kid(adoptee_road)
                 weight_sum += adoptee_idea._weight
                 new_adoptee_pad = get_road(kid_road, adoptee_label)
                 self.add_idea(adoptee_idea, new_adoptee_pad)
@@ -1104,7 +1104,7 @@ class AgendaUnit:
                 _label=get_terminus_node_from_road(road=road),
                 _pad=get_pad_from_road(road=road),
             )
-            self.add_idea(idea_kid=base_idea, pad=base_idea._pad)
+            self.add_idea(base_idea, pad=base_idea._pad)
 
     # def _get_or_create_level1_idea(self, idea_label: str) -> IdeaCore:
     #     return_idea = None
@@ -1156,9 +1156,9 @@ class AgendaUnit:
         self.set_agenda_metrics()
 
     def _move_idea_kids(self, road_nodes: list):
-        d_temp_idea = self.get_idea_kid(road=get_road_from_nodes(road_nodes))
+        d_temp_idea = self.get_idea_kid(get_road_from_nodes(road_nodes))
         for kid in d_temp_idea._kids.values():
-            self.add_idea(idea_kid=kid, pad=get_road_from_nodes(road_nodes[:-1]))
+            self.add_idea(kid, pad=get_road_from_nodes(road_nodes[:-1]))
 
     def set_healer(self, new_healer):
         self._healer = new_healer
@@ -1169,7 +1169,7 @@ class AgendaUnit:
         new_label: str,
     ):
         # check idea exists
-        if self.get_idea_kid(road=old_road) is None:
+        if self.get_idea_kid(old_road) is None:
             raise InvalidAgendaException(f"Idea {old_road=} does not exist")
 
         pad = get_pad_from_road(road=old_road)
@@ -1192,10 +1192,10 @@ class AgendaUnit:
             )
 
     def _non_root_idea_label_edit(self, old_road, new_label, pad):
-        idea_z = self.get_idea_kid(road=old_road)
+        idea_z = self.get_idea_kid(old_road)
         idea_z.set_idea_label(new_label)
         idea_z._pad = pad
-        idea_parent = self.get_idea_kid(road=get_pad_from_road(old_road))
+        idea_parent = self.get_idea_kid(get_pad_from_road(old_road))
         idea_parent._kids.pop(get_terminus_node_from_road(old_road))
         idea_parent._kids[idea_z._label] = idea_z
 
@@ -1239,7 +1239,7 @@ class AgendaUnit:
         parent_road = self._culture_qid if len(anc_roads) == 1 else anc_roads[1]
 
         parent_has_range = None
-        parent_idea_x = self.get_idea_kid(road=parent_road)
+        parent_idea_x = self.get_idea_kid(parent_road)
         parent_begin = parent_idea_x._begin
         parent_close = parent_idea_x._close
         parent_has_range = parent_begin is not None and parent_close is not None
@@ -1248,7 +1248,7 @@ class AgendaUnit:
         numeric_close = None
         numeric_range = None
         if numeric_road != None:
-            numeric_idea_x = self.get_idea_kid(road=numeric_road)
+            numeric_idea_x = self.get_idea_kid(numeric_road)
             numeric_begin = numeric_idea_x._begin
             numeric_close = numeric_idea_x._close
             numeric_range = numeric_begin != None and numeric_close != None
@@ -1419,7 +1419,7 @@ class AgendaUnit:
             on_meld_weight_action=on_meld_weight_action,
         )
         if idea_attr.required_sufffact != None:
-            suffact_idea = self.get_idea_kid(road=required_sufffact)
+            suffact_idea = self.get_idea_kid(required_sufffact)
             idea_attr.set_sufffact_range_attributes_influenced_by_sufffact_idea(
                 sufffact_open=suffact_idea._begin,
                 sufffact_nigh=suffact_idea._close,
@@ -1427,7 +1427,7 @@ class AgendaUnit:
                 sufffact_denom=suffact_idea._denom,
                 # anc_reest=suffact_idea.anc_reest,
             )
-        temp_idea = self.get_idea_kid(road=road)
+        temp_idea = self.get_idea_kid(road)
         temp_idea._set_idea_attr(idea_attr=idea_attr)
         if f"{type(temp_idea)}".find("'.idea.IdeaRoot'>") <= 0:
             temp_idea._set_ideakid_attr(acptfactunit=acptfactunit)
@@ -1459,7 +1459,7 @@ class AgendaUnit:
         ]
 
     def set_intent_task_complete(self, task_road: Road, base: Road):
-        promise_item = self.get_idea_kid(road=task_road)
+        promise_item = self.get_idea_kid(task_road)
         promise_item.set_acptfactunit_to_complete(
             base_acptfactunit=self._idearoot._acptfactunits[base]
         )
@@ -1615,7 +1615,7 @@ class AgendaUnit:
         self._idearoot.set_requiredunits_empty_if_null()
         x_dict = {}
         for required in self._idearoot._requiredunits.values():
-            x_required = requiredheir_shop(base=required.base, sufffacts=None)
+            x_required = requiredheir_shop(required.base)
             x_sufffacts = {}
             for w in required.sufffacts.values():
                 sufffact_x = sufffactunit_shop(
@@ -1660,7 +1660,7 @@ class AgendaUnit:
     def get_idea_ranged_kids(
         self, idea_road: str, begin: float = None, close: float = None
     ) -> dict[IdeaCore]:
-        parent_idea = self.get_idea_kid(road=idea_road)
+        parent_idea = self.get_idea_kid(idea_road)
         if begin is None and close is None:
             begin = parent_idea._begin
             close = parent_idea._close
@@ -1782,7 +1782,7 @@ class AgendaUnit:
             parent_requiredheirs = parent_idea._requiredheirs
 
         idea_kid.set_level(parent_level=parent_idea._level)
-        idea_kid.set_pad(parent_road=parent_idea._pad, parent_label=parent_idea._label)
+        idea_kid.set_pad(parent_idea._pad, parent_idea._label)
         idea_kid.set_acptfactunits_empty_if_null()
         idea_kid.set_acptfactheirs(acptfacts=parent_acptfacts)
         idea_kid.set_requiredheirs(self._idea_dict, parent_requiredheirs)
@@ -1995,7 +1995,7 @@ class AgendaUnit:
                 _range_source_road=range_source_road_x,
             )
             road_x = get_road(self._culture_qid, yb.rr)
-            self.add_idea(idea_kid=idea_x, pad=road_x)
+            self.add_idea(idea_x, pad=road_x)
 
             numeric_road_x = None
             if yb.nr != None:
@@ -2159,10 +2159,10 @@ class AgendaUnit:
             # if relevant_roads.get(relevant_road) == "descendant":
             #     relevant_idea._requiredunits = {}
             #     relevant_idea._kids = {}
-            #     agenda_x.add_idea(idea_kid=relevant_idea, pad=relevant_idea._pad)
+            #     agenda_x.add_idea(relevant_idea, pad=relevant_idea._pad)
             # elif relevant_roads.get(relevant_road) != "descendant":
             relevant_idea._kids = {}
-            agenda_x.add_idea(idea_kid=relevant_idea, pad=relevant_idea._pad)
+            agenda_x.add_idea(relevant_idea, pad=relevant_idea._pad)
 
         for afu in self._idearoot._acptfactunits.values():
             if relevant_roads.get(afu.base):
@@ -2324,7 +2324,7 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
             _numeric_road=get_obj_from_idea_dict(idea_dict, "_numeric_road"),
         )
         # add idea with created pad
-        x_agenda.add_idea(idea_kid=idea_obj, pad=idea_dict[pad_text])
+        x_agenda.add_idea(idea_obj, pad=idea_dict[pad_text])
 
 
 def get_obj_from_agenda_dict(x_dict: dict[str:], field_name: str) -> any:

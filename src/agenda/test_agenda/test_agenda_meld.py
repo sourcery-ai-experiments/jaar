@@ -135,10 +135,10 @@ def test_agenda_idearoot_meld_Add4IdeasScenario():
 
     # THEN
     assert len(x_agenda1.get_idea_list()) == 5
-    assert x_agenda1.get_idea_kid(road=tech_road)._label == tech_text
-    assert x_agenda1.get_idea_kid(road=bowl_road)._label == bowl_text
-    assert x_agenda1.get_idea_kid(road=swim_road)._label == swim_text
-    assert x_agenda1.get_idea_kid(road=free_road)._label == free_text
+    assert x_agenda1.get_idea_kid(tech_road)._label == tech_text
+    assert x_agenda1.get_idea_kid(bowl_road)._label == bowl_text
+    assert x_agenda1.get_idea_kid(swim_road)._label == swim_text
+    assert x_agenda1.get_idea_kid(free_road)._label == free_text
 
 
 def test_agenda_idearoot_meld_2SameIdeasScenario():
@@ -161,12 +161,12 @@ def test_agenda_idearoot_meld_2SameIdeasScenario():
     )
     x_agenda2.add_idea(pad=tech_road, idea_kid=ideacore_shop(_label=bowl_text))
 
-    assert x_agenda1.get_idea_kid(road=bowl_road)._weight == 1
+    assert x_agenda1.get_idea_kid(bowl_road)._weight == 1
     # WHEN
     x_agenda1.meld(x_agenda2)
 
     # THEN
-    assert x_agenda1.get_idea_kid(road=bowl_road)._weight == 1
+    assert x_agenda1.get_idea_kid(bowl_road)._weight == 1
     assert len(x_agenda1.get_idea_list()) == 3
 
 
@@ -457,8 +457,8 @@ def test_agenda_meld_OriginUnitsCorrectlySet():
     sue_originunit.set_originlink(pid=sue_text, weight=sue_weight)
     assert len(bob_x_agenda._originunit._links) == 1
     assert bob_x_agenda._originunit == sue_originunit
-    bob_free_idea = bob_x_agenda.get_idea_kid(road=free_road)
-    bob_back_idea = bob_x_agenda.get_idea_kid(road=back_road)
+    bob_free_idea = bob_x_agenda.get_idea_kid(free_road)
+    bob_back_idea = bob_x_agenda.get_idea_kid(back_road)
     print(f"{bob_free_idea._originunit=}")
     print(f"{bob_back_idea._originunit=}")
     assert bob_free_idea._originunit != None

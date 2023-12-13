@@ -51,8 +51,8 @@ def test_culture_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     # print(f" {output_agenda_d_idea._weight=} {len(input_agenda._idearoot._kids)=} ")
     assert output_agenda != None
     assert len(input_agenda._idearoot._kids) == 2
-    # idea_a = output_agenda.get_idea_kid(road="A")
-    # idea_b = output_agenda.get_idea_kid(road="B")
+    # idea_a = output_agenda.get_idea_kid("A")
+    # idea_b = output_agenda.get_idea_kid("B")
     # for idea_kid_x1 in input_agenda._idearoot._kids.values():
     #     print(f"{idea_kid_x1._label=}")
     #     output_agenda_counterpart_x1 = output_agenda._idearoot._kids.get(idea_kid_x1._label)
@@ -162,9 +162,9 @@ def test_councilunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     ernie_agenda = get_agenda_2CleanNodesRandomWeights(_healer=ernie_text)
     jessi_agenda = get_agenda_2CleanNodesRandomWeights(_healer=jessi_text)
     old_steve_agenda = get_agenda_2CleanNodesRandomWeights(_healer=steve_text)
-    x_culture.save_public_agenda(x_agenda=ernie_agenda)
-    x_culture.save_public_agenda(x_agenda=jessi_agenda)
-    x_culture.save_public_agenda(x_agenda=old_steve_agenda)
+    x_culture.save_public_agenda(ernie_agenda)
+    x_culture.save_public_agenda(jessi_agenda)
+    x_culture.save_public_agenda(old_steve_agenda)
     x_culture.create_new_councilunit(council_cid=ernie_text)
     x_culture.create_new_councilunit(council_cid=jessi_text)
     # x_culture.create_new_councilunit(council_cid=steve_text)
@@ -181,7 +181,7 @@ def test_councilunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     assert len(ux_jessi._admin.get_remelded_output_agenda().get_idea_list()) == 4
     # assert len(ux_steve._admin.get_remelded_output_agenda().get_idea_list()) == 4
     new_steve_agenda = get_agenda_3CleanNodesRandomWeights(_healer="steve")
-    x_culture.save_public_agenda(x_agenda=new_steve_agenda)
+    x_culture.save_public_agenda(new_steve_agenda)
     # print(f"{env_dir=} {ux._admin._agendas_public_dir=}")
     # for file_name in x_func_dir_files(dir_path=env_dir):
     #     print(f"{ux._admin._agendas_public_dir=} {file_name=}")

@@ -203,7 +203,7 @@ class CultureUnit:
             set_treasury_partytreasuryunits_to_agenda_partyunits(
                 x_agenda, sal_partytreasuryunits
             )
-            self.save_public_agenda(x_agenda=x_agenda)
+            self.save_public_agenda(x_agenda)
 
     def get_partytreasuryunits(self, agenda_healer: str) -> dict[str:PartyTreasuryUnit]:
         with self.get_treasury_conn() as treasury_conn:
@@ -422,7 +422,7 @@ class CultureUnit:
     def change_public_agenda_healer(self, old_healer: str, new_healer: str):
         x_agenda = self.get_public_agenda(healer=old_healer)
         x_agenda.set_healer(new_healer=new_healer)
-        self.save_public_agenda(x_agenda=x_agenda)
+        self.save_public_agenda(x_agenda)
         self.del_public_agenda(x_agenda_healer=old_healer)
 
     def del_public_agenda(self, x_agenda_healer: str):

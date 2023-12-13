@@ -213,7 +213,7 @@ def test_idea_core_set_requiredheirsCorrectlyTakesFromOutside():
     ball_idea = ideacore_shop(_label=ball_text)
     run_sufffact = sufffactunit_shop(need=run_road, open=0, nigh=7)
     run_sufffacts = {run_sufffact.need: run_sufffact}
-    requiredheir = requiredheir_shop(base=run_road, sufffacts=run_sufffacts)
+    requiredheir = requiredheir_shop(run_road, sufffacts=run_sufffacts)
     requiredheirs = {requiredheir.base: requiredheir}
     assert ball_idea._requiredunits is None
     assert ball_idea._requiredheirs is None
@@ -245,7 +245,7 @@ def test_idea_core_set_requiredheirsCorrectlyTakesFromSelf():
     ball_idea.set_requiredheirs(requiredheirs=None, agenda_idea_dict=None)
 
     # THEN
-    requiredheir = requiredheir_shop(base=run_road, sufffacts=run_sufffacts)
+    requiredheir = requiredheir_shop(run_road, sufffacts=run_sufffacts)
     requiredheirs = {requiredheir.base: requiredheir}
     assert ball_idea._requiredheirs == requiredheirs
 
@@ -591,7 +591,7 @@ def test_idea_get_requiredheir_correctlyReturnsrequiredheir_shop():
     clean_text = "clean"
     clean_idea = ideacore_shop(_label=clean_text)
     tool_text = "tool"
-    required_heir_x = requiredheir_shop(base=tool_text, sufffacts={})
+    required_heir_x = requiredheir_shop(base=tool_text)
     required_heirs_x = {required_heir_x.base: required_heir_x}
     clean_idea.set_requiredheirs(requiredheirs=required_heirs_x, agenda_idea_dict=None)
 
@@ -608,7 +608,7 @@ def test_idea_get_requiredheir_correctlyReturnsNone():
     clean_text = "clean"
     clean_idea = ideacore_shop(_label=clean_text)
     tool_text = "tool"
-    required_heir_x = requiredheir_shop(base=tool_text, sufffacts={})
+    required_heir_x = requiredheir_shop(tool_text)
     required_heirs_x = {required_heir_x.base: required_heir_x}
     clean_idea.set_requiredheirs(requiredheirs=required_heirs_x, agenda_idea_dict=None)
 
@@ -764,7 +764,6 @@ def test_idea_set_assignedunit_empty_if_null():
 def test_idea_get_descendants_ReturnsNoRoads():
     # GIVEN
     nation_text = "nation-state"
-    nation_road = get_road(root_label(), nation_text)
     nation_idea = ideacore_shop(_label=nation_text, _pad=root_label())
 
     # WHEN

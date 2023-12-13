@@ -16,8 +16,8 @@ def test_root_has_kids():
     idea2 = ideacore_shop(_weight=40, _label="ulty")
 
     # WHEN
-    x_agenda.add_idea(idea_kid=idea1, pad=x_agenda._healer)
-    x_agenda.add_idea(idea_kid=idea2, pad=x_agenda._healer)
+    x_agenda.add_idea(idea1, pad=x_agenda._healer)
+    x_agenda.add_idea(idea2, pad=x_agenda._healer)
 
     # THEN
     assert idearoot_x._weight == 1
@@ -58,7 +58,7 @@ def test_agenda_add_idea_CanAddKidToRootIdea():
     new_idea = ideacore_shop(_weight=40, _label="new_idea")
 
     # WHEN
-    x_agenda.add_idea(idea_kid=new_idea, pad=new_idea_parent_road)
+    x_agenda.add_idea(new_idea, pad=new_idea_parent_road)
     x_agenda.set_agenda_metrics()
 
     # THEN
@@ -80,7 +80,7 @@ def test_agenda_add_idea_CanAddKidToKidIdea():
     new_idea = ideacore_shop(_weight=40, _label="new_york")
 
     # WHEN
-    x_agenda.add_idea(idea_kid=new_idea, pad=new_idea_parent_road)
+    x_agenda.add_idea(new_idea, pad=new_idea_parent_road)
     x_agenda.set_agenda_metrics()
 
     # THEN
@@ -109,7 +109,7 @@ def test_agenda_add_idea_CanAddKidToGrandkidIdea():
     new_idea = ideacore_shop(_weight=40, _label="new_idea")
 
     # WHEN
-    x_agenda.add_idea(idea_kid=new_idea, pad=new_idea_parent_road)
+    x_agenda.add_idea(new_idea, pad=new_idea_parent_road)
     x_agenda.set_agenda_metrics()
 
     # THEN
@@ -133,7 +133,7 @@ def test_agenda_add_idea_CanCreateRoadToGrandkidIdea():
     new_idea = ideacore_shop(_weight=40, _label="USS Saratoga")
 
     # WHEN
-    x_agenda.add_idea(idea_kid=new_idea, pad=new_idea_parent_road)
+    x_agenda.add_idea(new_idea, pad=new_idea_parent_road)
     x_agenda.set_agenda_metrics()
 
     # THEN
@@ -163,7 +163,7 @@ def test_agenda_add_idea_creates_requireds_ideas():
     cookery_room_road = get_road(buildings_road, cookery_room_text)
     cookery_dirty_text = "dirty"
     cookery_dirty_road = get_road(cookery_room_road, cookery_dirty_text)
-    required_x = requiredunit_shop(base=cookery_room_road, sufffacts={})
+    required_x = requiredunit_shop(base=cookery_room_road)
     required_x.set_sufffact(sufffact=cookery_dirty_road)
     clean_cookery_idea.set_required_unit(required=required_x)
 

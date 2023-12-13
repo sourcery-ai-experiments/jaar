@@ -678,7 +678,7 @@ class IdeaCore:
         try:
             requiredunit_x = self._requiredunits[base]
         except Exception:
-            requiredunit_x = requiredunit_shop(base=base, sufffacts={})
+            requiredunit_x = requiredunit_shop(base)
             self._requiredunits[base] = requiredunit_x
         return requiredunit_x
 

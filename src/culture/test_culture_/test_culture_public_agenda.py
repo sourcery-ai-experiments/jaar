@@ -26,7 +26,7 @@ def test_culture_set_agenda_CreatesAgendaFile(env_dir_setup_cleanup):
     assert os_path.exists(y_path) == False
 
     # WHEN
-    x_culture.save_public_agenda(x_agenda=y_agenda)
+    x_culture.save_public_agenda(y_agenda)
 
     # THEN
     print(f"{y_path=}")
@@ -39,7 +39,7 @@ def test_culture_get_agenda_currentlyGetsAgenda(env_dir_setup_cleanup):
     x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_treasury=True)
     y_agenda = example_healers_get_7nodeJRootWithH_agenda()
-    x_culture.save_public_agenda(x_agenda=y_agenda)
+    x_culture.save_public_agenda(y_agenda)
 
     # WHEN / THEN
     assert x_culture.get_public_agenda(healer=y_agenda._healer) == y_agenda
@@ -55,7 +55,7 @@ def test_culture_change_public_agenda_healer_ChangesAgendaPID(
     old_agenda_healer = "old1"
     y_agenda = agendaunit_shop(_healer=old_agenda_healer)
     old_y_agenda_path = f"{x_culture.get_public_dir()}/{old_agenda_healer}.json"
-    x_culture.save_public_agenda(x_agenda=y_agenda)
+    x_culture.save_public_agenda(y_agenda)
     print(f"{old_y_agenda_path=}")
 
     # WHEN

@@ -136,7 +136,7 @@ def test_get_time_():
 # def test_time_hreg_set_exists():
 #     x_agenda = agendaunit_shop(_healer=healer_text)
 #     x_agenda.set_time_hreg_ideas(c400_count=6)
-#     idea_x = x_agenda.get_idea_kid(road=f"{root_label()},hreg")
+#     idea_x = x_agenda.get_idea_kid(f"{root_label()},hreg")
 #     assert idea_x != None
 #     assert x_agenda._kids["hreg"]
 #     for kid in x_agenda._kids["hreg"]._kids.values():
@@ -164,7 +164,7 @@ def test_get_time_():
 #     x_agenda = examples.get_agenda_base_time_example()
 #     x_agenda.set_time_hreg_ideas(c400_count=6)
 #     weekday_pid = "weekday"
-#     weekday = x_agenda.get_idea_kid(road=f"{root_label()},hreg,{weekday_pid}")
+#     weekday = x_agenda.get_idea_kid(f"{root_label()},hreg,{weekday_pid}")
 #     assert weekday != None
 #     assert weekday._begin == 0
 #     assert weekday._close == 7
@@ -185,7 +185,7 @@ def test_get_time_():
 #     timetech_pid = "400 year cycle"
 #     timetech_road = f"{root_label()},hreg,{timetech_pid}"
 #     print(f"{timetech_road=}")
-#     timetech = x_agenda.get_idea_kid(road=timetech_road)
+#     timetech = x_agenda.get_idea_kid(timetech_road)
 #     assert timetech != None
 #     assert timetech._begin == 0
 #     assert timetech._close == c400_count
@@ -199,7 +199,7 @@ def test_get_time_():
 #     hy400_pid = "cycle400year_years"
 #     hy400_road = f"{root_label()},hreg,{hy400_pid}"
 #     print(f"{hy400_road=}")
-#     hy400_idea = h_x_agenda.get_idea_kid(road=hy400_road)
+#     hy400_idea = h_x_agenda.get_idea_kid(hy400_road)
 #     assert hy400_idea != None
 #     assert hy400_idea._begin is None
 #     assert hy400_idea._close is None
@@ -277,7 +277,7 @@ def test_get_time_():
 #     hy400_pid = "cycle400year_days"
 #     hy400_road = f"{root_label()},hreg,{hy400_pid}"
 #     print(f"{hy400_road=}")
-#     hy400_idea = h_x_agenda.get_idea_kid(road=hy400_road)
+#     hy400_idea = h_x_agenda.get_idea_kid(hy400_road)
 #     assert hy400_idea != None
 #     assert hy400_idea._begin is None
 #     assert hy400_idea._close is None
@@ -287,16 +287,16 @@ def test_get_time_():
 # def test_time_hreg_set_CorrectlyCreatesDayRange():
 #     x_agenda = examples.get_agenda_base_time_example()
 #     x_agenda.set_time_hreg_ideas(c400_count=6)
-#     timetech = x_agenda.get_idea_kid(road=f"{root_label()},hreg,day_range")
+#     timetech = x_agenda.get_idea_kid(f"{root_label()},hreg,day_range")
 #     assert timetech != None
 #     assert timetech._begin == 0
 #     assert timetech._close == 876582
 
 # x_x_agenda = agendaunit_shop()
-# x_agenda.get_idea_kid(road={f"{root_label()},hreg,weekday"})
+# x_agenda.get_idea_kid({f"{root_label()},hreg,weekday"})
 
 # wed_sufffact_x = sufffactunit_shop(need=wednesday_road)
-# work_wk_required = requiredunit_shop(base=weekday_road, sufffacts={wed_sufffact.need: wed_sufffact})
+# work_wk_required = requiredunit_shop(weekday_road, sufffacts={wed_sufffact.need: wed_sufffact})
 # print(f"{type(work_wk_required.base)=}")
 # print(f"{work_wk_required.base=}")
 # agenda_x.edit_idea_attr(road=work_road, required=work_wk_required)

@@ -32,7 +32,7 @@ def test_agenda_get_dict_ReturnsDictObject():
     x_agenda = example_agendas_agenda_v001()
     day_hour_text = "day_hour"
     day_hour_road = get_road(x_agenda._culture_qid, day_hour_text)
-    day_hour_idea = x_agenda.get_idea_kid(road=day_hour_road)
+    day_hour_idea = x_agenda.get_idea_kid(day_hour_road)
     day_hour_idea._originunit.set_originlink(pid="bob", weight=2)
     x_agenda.set_acptfact(
         base=day_hour_road,
@@ -76,7 +76,7 @@ def test_agenda_get_dict_ReturnsDictObject():
     # checking an ideakid._range_source_road attribute
     month_week_text = "month_week"
     month_week_road = get_road(x_agenda._culture_qid, month_week_text)
-    month_week_idea_x = x_agenda.get_idea_kid(road=month_week_road)
+    month_week_idea_x = x_agenda.get_idea_kid(month_week_road)
     print("checking TlME,month_week...range_source_road equal to...")
     month_week_special_dict = idearoot_dict[_kids][month_week_text][_range_source_road]
     assert month_week_special_dict != None
@@ -86,7 +86,7 @@ def test_agenda_get_dict_ReturnsDictObject():
     # checking an ideakid._numeric_road attribute
     num1_text = "numeric_road_test"
     num1_road = get_road(x_agenda._culture_qid, num1_text)
-    num1_idea_x = x_agenda.get_idea_kid(road=num1_road)
+    num1_idea_x = x_agenda.get_idea_kid(num1_road)
     print(f"checking {num1_road}...numeric_road equal to...")
     num1_dict_numeric_road = idearoot_dict[_kids][num1_text][_numeric_road]
     assert num1_dict_numeric_road != None
@@ -217,7 +217,7 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     kids = idearoot_dict[_kids]
     day_min_dict = kids[day_min_text]
     day_min_acptfactunits_dict = day_min_dict["_acptfactunits"]
-    day_min_idea_x = x_agenda.get_idea_kid(road=day_min_road)
+    day_min_idea_x = x_agenda.get_idea_kid(day_min_road)
     print(f"{day_min_acptfactunits_dict=}")
     assert len(day_min_acptfactunits_dict) == 1
     assert len(day_min_acptfactunits_dict) == len(day_min_idea_x._acptfactunits)
@@ -227,8 +227,8 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     ulti_text = "Ultimate Frisbee"
     cont_road = get_road(x_agenda._culture_qid, cont_text)
     ulti_road = get_road(x_agenda._culture_qid, ulti_text)
-    cont_idea = x_agenda.get_idea_kid(road=cont_road)
-    ulti_idea = x_agenda.get_idea_kid(road=ulti_road)
+    cont_idea = x_agenda.get_idea_kid(cont_road)
+    ulti_idea = x_agenda.get_idea_kid(ulti_road)
     cont_requiredunits_dict = idearoot_dict[_kids][cont_text][_requiredunits]
     ulti_requiredunits_dict = idearoot_dict[_kids][ulti_text][_requiredunits]
     assert len(cont_requiredunits_dict) == len(cont_idea._requiredunits)
@@ -264,7 +264,7 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
 
     shave_text = "shave"
     shave_road = get_road(y_agenda._culture_qid, shave_text)
-    shave_idea_y1 = y_agenda.get_idea_kid(road=shave_road)
+    shave_idea_y1 = y_agenda.get_idea_kid(shave_road)
     shave_idea_y1._originunit.set_originlink(pid="Sue", weight=4.3)
     # print(f"{shave_road=}")
     # print(f"{shave_idea_x._label=} {shave_idea_x._pad=}")
@@ -327,16 +327,16 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
 
     weekday_text = "weekdays"
     weekday_road = get_road(y_agenda._culture_qid, weekday_text)
-    weekday_idea_x = x_agenda.get_idea_kid(road=weekday_road)
+    weekday_idea_x = x_agenda.get_idea_kid(weekday_road)
     assert len(weekday_idea_x._kids) == 2
 
     sunday_text = "Sunday"
     sunday_road = get_road(weekday_road, sunday_text)
-    sunday_idea_x = x_agenda.get_idea_kid(road=sunday_road)
+    sunday_idea_x = x_agenda.get_idea_kid(sunday_road)
     assert sunday_idea_x._weight == 20
 
-    shave_idea_x = x_agenda.get_idea_kid(road=shave_road)
-    shave_idea_y2 = y_agenda.get_idea_kid(road=shave_road)
+    shave_idea_x = x_agenda.get_idea_kid(shave_road)
+    shave_idea_y2 = y_agenda.get_idea_kid(shave_road)
     assert len(shave_idea_x._requiredunits) == 1
     assert shave_idea_x._assignedunit == shave_idea_y2._assignedunit
     assert shave_idea_x._assignedunit == tim_assigned_unit

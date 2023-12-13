@@ -15,7 +15,7 @@ def test_agenda_edit_idea_attr_CorrectlySetsAssignedUnit():
     run_text = "run"
     run_road = get_road(x_agenda._culture_qid, run_text)
     x_agenda.add_idea(ideacore_shop(_label=run_text), pad=x_agenda._culture_qid)
-    run_idea = x_agenda.get_idea_kid(road=run_road)
+    run_idea = x_agenda.get_idea_kid(run_road)
     assert run_idea._assignedunit is None
 
     # WHEN
@@ -59,7 +59,7 @@ def test_agenda_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
     x_agenda.add_partyunit(pid=bob_text)
     x_agenda.add_idea(ideacore_shop(_label=run_text), pad=bob_text)
     x_agenda.edit_idea_attr(road=run_road, assignedunit=assigned_unit_x)
-    run_idea = x_agenda.get_idea_kid(road=run_road)
+    run_idea = x_agenda.get_idea_kid(run_road)
     assert run_idea._assignedunit == assigned_unit_x
     assert run_idea._assignedheir is None
 
@@ -101,7 +101,7 @@ def test_agenda_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir(
     x_agenda.add_idea(ideacore_shop(_label=four_text), pad=morn_road)
     x_agenda.edit_idea_attr(road=swim_road, assignedunit=assigned_unit_x)
     # print(get_road(four_road=}\n{morn_road=))
-    four_idea = x_agenda.get_idea_kid(road=four_road)
+    four_idea = x_agenda.get_idea_kid(four_road)
     assert four_idea._assignedunit is None
     assert four_idea._assignedheir is None
 

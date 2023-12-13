@@ -28,7 +28,7 @@ def get_2node_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop(_healer=healer_text)
     x_agenda.set_culture_qid(get_temp_culture_qid())
     idea_b = ideacore_shop(_label=b_text)
-    x_agenda.add_idea(idea_kid=idea_b, pad=get_temp_culture_qid())
+    x_agenda.add_idea(idea_b, pad=get_temp_culture_qid())
     x_agenda.set_agenda_metrics()
     return x_agenda
 

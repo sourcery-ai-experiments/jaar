@@ -28,12 +28,12 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     sal_agenda.add_partyunit(pid=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(pid=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
-    x_culture.save_public_agenda(x_agenda=sal_agenda)
+    x_culture.save_public_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
     bob_agenda.add_partyunit(pid=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
-    x_culture.save_public_agenda(x_agenda=bob_agenda)
+    x_culture.save_public_agenda(bob_agenda)
 
     x_culture.refresh_treasury_public_agendas_data()
     x_culture.set_credit_flow_for_agenda(agenda_healer=sal_text)
@@ -67,25 +67,25 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     sal_agenda.add_partyunit(pid=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(pid=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
-    x_culture.save_public_agenda(x_agenda=sal_agenda)
+    x_culture.save_public_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
     bob_agenda.add_partyunit(pid=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
-    x_culture.save_public_agenda(x_agenda=bob_agenda)
+    x_culture.save_public_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_healer=tom_text)
     tom_agenda.add_partyunit(pid=sal_text, creditor_weight=2)
-    x_culture.save_public_agenda(x_agenda=tom_agenda)
+    x_culture.save_public_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_healer=ava_text)
     ava_agenda.add_partyunit(pid=elu_text, creditor_weight=2)
-    x_culture.save_public_agenda(x_agenda=ava_agenda)
+    x_culture.save_public_agenda(ava_agenda)
 
     elu_agenda = agendaunit_shop(_healer=elu_text)
     elu_agenda.add_partyunit(pid=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(pid=sal_text, creditor_weight=1)
-    x_culture.save_public_agenda(x_agenda=elu_agenda)
+    x_culture.save_public_agenda(elu_agenda)
 
     x_culture.refresh_treasury_public_agendas_data()
     x_culture.set_credit_flow_for_agenda(agenda_healer=sal_text, max_blocks_count=100)

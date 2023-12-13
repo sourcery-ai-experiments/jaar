@@ -83,7 +83,7 @@ def test_agenda_requiredheirs_AreCorrectlyInherited_v1():
     wed_sufffact._status = False
     wed_sufffact._task = False
     sufffacts = {wed_sufffact.need: wed_sufffact}
-    work_wk_build_requiredunit = requiredunit_shop(base=week_road, sufffacts=sufffacts)
+    work_wk_build_requiredunit = requiredunit_shop(week_road, sufffacts=sufffacts)
     work_wk_built_requiredheir = requiredheir_shop(
         base=week_road,
         sufffacts=sufffacts,
@@ -154,10 +154,10 @@ def test_agenda_requiredheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
     # WHEN
     rla_text = "hp"
     rla_road = get_road(work_road, rla_text)
-    a4_agenda.add_idea(idea_kid=ideacore_shop(_label=rla_text), pad=rla_road)
+    a4_agenda.add_idea(ideacore_shop(_label=rla_text), pad=rla_road)
     cost_text = "cost_tracking"
     cost_road = get_road(rla_road, cost_text)
-    a4_agenda.add_idea(idea_kid=ideacore_shop(_label=cost_text), pad=cost_road)
+    a4_agenda.add_idea(ideacore_shop(_label=cost_text), pad=cost_road)
     a4_agenda.get_idea_list()
 
     # THEN
@@ -209,7 +209,7 @@ def test_agenda_requiredheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     wed_sufffact._status = False
     wed_sufffact._task = False
     sufffacts = {wed_sufffact.need: wed_sufffact}
-    work_wk_build_requiredunit = requiredunit_shop(base=week_road, sufffacts=sufffacts)
+    work_wk_build_requiredunit = requiredunit_shop(week_road, sufffacts=sufffacts)
     work_wk_built_requiredheir = requiredheir_shop(
         base=week_road,
         sufffacts=sufffacts,
@@ -219,10 +219,10 @@ def test_agenda_requiredheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     a4_agenda.edit_idea_attr(road=work_road, required=work_wk_build_requiredunit)
     rla_text = "hp"
     rla_road = get_road(work_road, rla_text)
-    a4_agenda.add_idea(idea_kid=ideacore_shop(_label=rla_text), pad=rla_road)
+    a4_agenda.add_idea(ideacore_shop(_label=rla_text), pad=rla_road)
     cost_text = "cost_tracking"
     cost_road = get_road(rla_road, cost_text)
-    a4_agenda.add_idea(idea_kid=ideacore_shop(_label=cost_text), pad=cost_road)
+    a4_agenda.add_idea(ideacore_shop(_label=cost_text), pad=cost_road)
 
     work_idea = a4_agenda._idearoot._kids[work_text]
     rla_idea = work_idea._kids[rla_text]
@@ -285,14 +285,14 @@ def test_agenda_requiredunits_set_UnCoupledMethod():
     )
 
     # THEN
-    work_idea1 = x_agenda.get_idea_kid(road=work_road)
+    work_idea1 = x_agenda.get_idea_kid(work_road)
     assert work_idea1._requiredunits != None
     print(work_idea1._requiredunits)
     assert work_idea1._requiredunits[week_road] != None
     assert work_idea1._requiredunits[week_road].sufffacts[wed_road].open is None
     assert work_idea1._requiredunits[week_road].sufffacts[wed_road].nigh is None
 
-    work_wk_required1 = requiredunit_shop(base=week_road, sufffacts=None)
+    work_wk_required1 = requiredunit_shop(week_road)
     work_wk_required1.set_sufffact(sufffact=wed_road)
     print(f" {type(work_wk_required1.base)=}")
     print(f" {work_wk_required1.base=}")
@@ -356,7 +356,7 @@ def test_agenda_requiredunits_set_sufffactIdeaWithDenomSetsSuffFactDivision():
         idea_kid=ideacore_shop(_label=time_text, _begin=100, _close=2000),
         pad=x_agenda._culture_qid,
     )
-    x_agenda.add_idea(idea_kid=ideacore_shop(_label=week_text, _denom=7), pad=time_road)
+    x_agenda.add_idea(ideacore_shop(_label=week_text, _denom=7), pad=time_road)
 
     # WHEN
     x_agenda.edit_idea_attr(
@@ -369,7 +369,7 @@ def test_agenda_requiredunits_set_sufffactIdeaWithDenomSetsSuffFactDivision():
     )
 
     # THEN
-    work_idea1 = x_agenda.get_idea_kid(road=work_road)
+    work_idea1 = x_agenda.get_idea_kid(work_road)
     assert work_idea1._requiredunits[time_road] != None
     assert work_idea1._requiredunits[time_road].sufffacts[week_road].divisor == 7
     assert work_idea1._requiredunits[time_road].sufffacts[week_road].open == 2
@@ -404,7 +404,7 @@ def test_agenda_requiredunits_set_sufffactIdeaWithBeginCloseSetsSuffFactOpenNigh
     )
 
     # THEN
-    work_idea1 = x_agenda.get_idea_kid(road=work_road)
+    work_idea1 = x_agenda.get_idea_kid(work_road)
     assert work_idea1._requiredunits[time_road] != None
     assert work_idea1._requiredunits[time_road].sufffacts[rus_war_road].divisor is None
     assert work_idea1._requiredunits[time_road].sufffacts[rus_war_road].open == 22
@@ -427,7 +427,7 @@ def test_agenda_requiredunits_del_required_sufffact_UncoupledMethod1():
         required_base=weekday_road,
         required_sufffact=thu_road,
     )
-    work_idea1 = x_agenda.get_idea_kid(road=work_road)
+    work_idea1 = x_agenda.get_idea_kid(work_road)
     assert len(work_idea1._requiredunits[weekday_road].sufffacts) == 2
 
     # WHEN
@@ -459,7 +459,7 @@ def test_agenda_requiredunits_del_required_sufffact_UncoupledMethod2():
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_road = get_road(x_agenda._culture_qid, "work")
     weekdays_road = get_road(x_agenda._culture_qid, "weekdays")
-    work_idea1 = x_agenda.get_idea_kid(road=work_road)
+    work_idea1 = x_agenda.get_idea_kid(work_road)
     work_idea1.set_requiredunits_empty_if_null()
     assert len(work_idea1._requiredunits) == 0
 
@@ -483,7 +483,7 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEdit_suff_idea_active_status_AnyIde
         idea_kid=ideacore_shop(_label=commute_text), pad=x_agenda._culture_qid
     )
     x_agenda.get_idea_list()  # set tree metrics
-    commute_idea = x_agenda.get_idea_kid(road=commute_road)
+    commute_idea = x_agenda.get_idea_kid(commute_road)
     assert len(commute_idea._requiredunits) == 0
 
     # WHEN
@@ -553,7 +553,7 @@ def test_agenda_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus()
         required_sufffact=thu_road,
     )
     x_agenda.get_idea_list()  # set tree metrics
-    work_idea = x_agenda.get_idea_kid(road=work_road)
+    work_idea = x_agenda.get_idea_kid(work_road)
     assert work_idea._active_status == False
 
     # 5. idea(...,commute to work) with
@@ -569,7 +569,7 @@ def test_agenda_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus()
         required_base=work_road,
         required_suff_idea_active_status=True,
     )
-    commute_idea = x_agenda.get_idea_kid(road=commute_road)
+    commute_idea = x_agenda.get_idea_kid(commute_road)
     x_agenda.get_idea_list()
     assert commute_idea._active_status == False
 

@@ -80,12 +80,12 @@ def _delete_and_set_ex3():
     x_culture = cultureunit_shop(qid=culture_qid, cultures_dir=get_test_cultures_dir())
     x_func_delete_dir(x_culture.get_object_root_dir())
     x_culture.create_dirs_if_null(in_memory_treasury=True)
-    x_culture.save_public_agenda(x_agenda=example_healers_get_1node_agenda())
+    x_culture.save_public_agenda(example_healers_get_1node_agenda())
     x_culture.save_public_agenda(
         example_agendas_get_agenda_1Task_1CE0MinutesRequired_1AcptFact()
     )
-    x_culture.save_public_agenda(x_agenda=example_agendas_agenda_v001())
-    x_culture.save_public_agenda(x_agenda=example_agendas_agenda_v002())
+    x_culture.save_public_agenda(example_agendas_agenda_v001())
+    x_culture.save_public_agenda(example_agendas_agenda_v002())
 
     # x_culture.set_healer(x_council=councilunit_shop(pid="w1", env_dir=x_culture.get_object_root_dir()))
     # x_culture.set_healer(x_council=councilunit_shop(pid="w2", env_dir=x_culture.get_object_root_dir()))
@@ -159,11 +159,11 @@ def _delete_and_set_ex5():
     agenda_4 = example_healers_get_agenda_2CleanNodesRandomWeights(_healer="francine")
     agenda_5 = example_healers_get_agenda_2CleanNodesRandomWeights(_healer="clay")
 
-    x_p.save_public_agenda(x_agenda=agenda_1)
-    x_p.save_public_agenda(x_agenda=agenda_2)
-    x_p.save_public_agenda(x_agenda=agenda_3)
-    x_p.save_public_agenda(x_agenda=agenda_4)
-    x_p.save_public_agenda(x_agenda=agenda_5)
+    x_p.save_public_agenda(agenda_1)
+    x_p.save_public_agenda(agenda_2)
+    x_p.save_public_agenda(agenda_3)
+    x_p.save_public_agenda(agenda_4)
+    x_p.save_public_agenda(agenda_5)
 
     x_p.create_new_councilunit(council_cid=agenda_1._healer)
     x_p.create_new_councilunit(council_cid=agenda_2._healer)
@@ -223,25 +223,25 @@ def _delete_and_set_ex6(x_qid: str = None):
     sal_agenda.add_partyunit(pid=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(pid=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
-    x_culture.save_public_agenda(x_agenda=sal_agenda)
+    x_culture.save_public_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_healer=bob_text)
     bob_agenda.add_partyunit(pid=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
-    x_culture.save_public_agenda(x_agenda=bob_agenda)
+    x_culture.save_public_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_healer=tom_text)
     tom_agenda.add_partyunit(pid=sal_text, creditor_weight=2)
-    x_culture.save_public_agenda(x_agenda=tom_agenda)
+    x_culture.save_public_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_healer=ava_text)
     ava_agenda.add_partyunit(pid=elu_text, creditor_weight=2)
-    x_culture.save_public_agenda(x_agenda=ava_agenda)
+    x_culture.save_public_agenda(ava_agenda)
 
     elu_agenda = agendaunit_shop(_healer=elu_text)
     elu_agenda.add_partyunit(pid=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(pid=sal_text, creditor_weight=1)
-    x_culture.save_public_agenda(x_agenda=elu_agenda)
+    x_culture.save_public_agenda(elu_agenda)
 
     x_culture.refresh_treasury_public_agendas_data()
     x_culture.set_credit_flow_for_agenda(agenda_healer=sal_text, max_blocks_count=100)

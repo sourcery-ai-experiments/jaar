@@ -233,18 +233,18 @@ def test_agenda__get_relevant_roads_ReturnsSimpleRequiredUnitBase():
     floor_text = "mop floor"
     floor_road = get_road(casa_road, floor_text)
     floor_idea = ideacore_shop(_label=floor_text)
-    x_agenda.add_idea(idea_kid=floor_idea, pad=casa_road)
+    x_agenda.add_idea(floor_idea, pad=casa_road)
 
     unim_text = "unimportant"
     unim_road = get_road(x_agenda._culture_qid, unim_text)
     unim_idea = ideacore_shop(_label=unim_text)
-    x_agenda.add_idea(idea_kid=unim_idea, pad=x_agenda._culture_qid)
+    x_agenda.add_idea(unim_idea, pad=x_agenda._culture_qid)
 
     status_text = "cleaniness status"
     status_road = get_road(casa_road, status_text)
     status_idea = ideacore_shop(_label=status_text)
-    x_agenda.add_idea(idea_kid=status_idea, pad=casa_road)
-    floor_required = requiredunit_shop(base=status_road, sufffacts={})
+    x_agenda.add_idea(status_idea, pad=casa_road)
+    floor_required = requiredunit_shop(base=status_road)
     floor_required.set_sufffact(sufffact=status_road)
     x_agenda.edit_idea_attr(road=floor_road, required=floor_required)
 
@@ -327,7 +327,7 @@ def test_agenda__get_relevant_roads_numeric_road_ReturnSimple():
     work_text = "work"
     work_road = get_road(yao_agenda._culture_qid, work_text)
     yao_agenda.add_idea(ideacore_shop(_label=work_text), pad=yao_agenda._culture_qid)
-    work_idea = yao_agenda.get_idea_kid(road=work_road)
+    work_idea = yao_agenda.get_idea_kid(work_road)
     day_text = "day_range"
     day_road = get_road(yao_agenda._culture_qid, day_text)
     day_idea = ideacore_shop(_label=day_text, _begin=44, _close=110)
@@ -385,7 +385,7 @@ def test_agenda__get_relevant_roads_range_source_road_ReturnSimple():
     assert relevant_roads.get(day_len_road) != None
     assert relevant_roads.get(min_days_road) != None
     assert relevant_roads.get(yao_agenda._culture_qid) != None
-    # min_days_idea = yao_agenda.get_idea_kid(road=min_days_road)
+    # min_days_idea = yao_agenda.get_idea_kid(min_days_road)
     # print(f"{min_days_idea=}")
     # assert 1 == 2
 

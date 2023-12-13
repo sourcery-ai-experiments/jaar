@@ -139,8 +139,8 @@ def test_agenda_get_idea_list_returns_correct_list():
     usa._status = True
     usa._task = False
 
-    wed_lu = requiredunit_shop(base=week_road, sufffacts={wed.need: wed})
-    sta_lu = requiredunit_shop(base=state_road, sufffacts={usa.need: usa})
+    wed_lu = requiredunit_shop(week_road, sufffacts={wed.need: wed})
+    sta_lu = requiredunit_shop(state_road, sufffacts={usa.need: usa})
     wed_lh = requiredheir_shop(
         base=week_road,
         sufffacts={wed.need: wed},
@@ -269,24 +269,24 @@ def test_agenda_get_idea_list_CorrectlyCalculatesIdeaAttr_agenda_coin():
 
     auto_text = "auto"
     auto_idea = ideacore_shop(_label=auto_text, _weight=10)
-    x_agenda.add_idea(idea_kid=auto_idea, pad=x_agenda._culture_qid)
+    x_agenda.add_idea(auto_idea, pad=x_agenda._culture_qid)
 
     barn_text = "barn"
     barn_road = get_road(x_agenda._culture_qid, barn_text)
     barn_idea = ideacore_shop(_label=barn_text, _weight=60)
-    x_agenda.add_idea(idea_kid=barn_idea, pad=x_agenda._culture_qid)
+    x_agenda.add_idea(barn_idea, pad=x_agenda._culture_qid)
     lamb_text = "lambs"
     lamb_road = get_road(barn_road, lamb_text)
     lamb_idea = ideacore_shop(_label=lamb_text, _weight=1)
-    x_agenda.add_idea(idea_kid=lamb_idea, pad=barn_road)
+    x_agenda.add_idea(lamb_idea, pad=barn_road)
     duck_text = "ducks"
     duck_road = get_road(barn_road, duck_text)
     duck_idea = ideacore_shop(_label=duck_text, _weight=2)
-    x_agenda.add_idea(idea_kid=duck_idea, pad=barn_road)
+    x_agenda.add_idea(duck_idea, pad=barn_road)
 
     coal_text = "coal"
     coal_idea = ideacore_shop(_label=coal_text, _weight=30)
-    x_agenda.add_idea(idea_kid=coal_idea, pad=x_agenda._culture_qid)
+    x_agenda.add_idea(coal_idea, pad=x_agenda._culture_qid)
 
     assert x_agenda._idearoot._agenda_coin_onset is None
     assert x_agenda._idearoot._agenda_coin_cease is None
@@ -514,8 +514,8 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
         mon_sufffact_x.need: mon_sufffact_x,
         tue_sufffact_x.need: tue_sufffact_x,
     }
-    mt_required = requiredunit_shop(base=week_road, sufffacts=mt_sufffacts)
-    mt_required_x = requiredheir_shop(base=week_road, sufffacts=mt_sufffacts)
+    mt_required = requiredunit_shop(week_road, sufffacts=mt_sufffacts)
+    mt_required_x = requiredheir_shop(week_road, sufffacts=mt_sufffacts)
     x_agenda._idearoot.set_required_unit(required=mt_required)
     # print(f"{x_agenda._requiredunits[week_road].base=}")
     # print(f"{x_agenda._requiredunits[week_road].sufffacts[mon_road].need=}")
