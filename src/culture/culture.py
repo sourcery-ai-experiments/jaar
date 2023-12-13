@@ -55,6 +55,7 @@ class CultureUnit:
     _manager_pid: PersonID = None
     _councilunits: dict[str:CouncilUnit] = None
     _treasury_db = None
+    _road_node_separator: str = None
 
     def set_manager_pid(self, person_id: PersonID):
         self._manager_pid = person_id
@@ -305,7 +306,7 @@ class CultureUnit:
         self._treasury_db = None
         x_func_delete_dir(dir=self.get_treasury_db_path())
 
-    def add_cultureunit_qid(self, qid: str):
+    def set_cultureunit_qid(self, qid: str):
         self.qid = qid
 
     def get_treasury_db_path(self):

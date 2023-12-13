@@ -76,6 +76,10 @@ class InvalidAgendaException(Exception):
     pass
 
 
+class InvalidLabelException(Exception):
+    pass
+
+
 class AssignmentPartyException(Exception):
     pass
 
@@ -111,7 +115,7 @@ class AgendaUnit:
             x_partyunit.clear_output_agenda_meld_order()
 
     def set_road_node_separator(self, _road_node_separator: str):
-        self._road_node_separator = _road_node_separator
+        self._road_node_separator = get_node_separator(_road_node_separator)
 
     def set_culture_qid(self, culture_qid: str):
         old_culture_qid = copy_deepcopy(self._culture_qid)
@@ -1173,6 +1177,11 @@ class AgendaUnit:
         old_road: Road,
         new_label: str,
     ):
+        if self._road_node_separator in new_label:
+            raise InvalidLabelException(
+                f"Cannot change '{old_road}' because new_label {new_label} contains separator {self._road_node_separator}"
+            )
+
         # check idea exists
         if self.get_idea_kid(old_road) is None:
             raise InvalidAgendaException(f"Idea {old_road=} does not exist")
@@ -2262,8 +2271,9 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
         get_obj_from_agenda_dict(agenda_dict, "_max_tree_traverse")
     )
     x_agenda.set_culture_qid(get_obj_from_agenda_dict(agenda_dict, "_culture_qid"))
+    _road_node_separator_text = "_road_node_separator"
     x_agenda.set_road_node_separator(
-        get_obj_from_agenda_dict(agenda_dict, "_road_node_separator")
+        get_obj_from_agenda_dict(agenda_dict, _road_node_separator_text)
     )
     x_agenda._partys = get_obj_from_agenda_dict(agenda_dict, "_partys")
     x_agenda._groups = get_obj_from_agenda_dict(agenda_dict, "_groups")

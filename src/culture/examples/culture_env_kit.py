@@ -258,13 +258,13 @@ def delete_dir_example_culture(culture_obj: CultureUnit):
     x_func_delete_dir(culture_obj.get_object_root_dir())
 
 
-def reqid_example_culture(culture_obj: CultureUnit, new_qid):
+def change_qid_example_culture(culture_obj: CultureUnit, new_qid):
     # base_dir = culture_obj.get_object_root_dir()
     base_dir = "src/culture/examples/cultures"
     src_dir = f"{base_dir}/{culture_obj.qid}"
     dst_dir = f"{base_dir}/{new_qid}"
     os_rename(src=src_dir, dst=dst_dir)
-    culture_obj.add_cultureunit_qid(qid=new_qid)
+    culture_obj.set_cultureunit_qid(qid=new_qid)
 
 
 class InvalidcultureCopyException(Exception):

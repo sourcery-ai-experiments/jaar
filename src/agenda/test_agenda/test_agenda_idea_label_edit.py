@@ -358,3 +358,19 @@ def test_agenda_set_healer_CorrectlyChangesBoth():
     # THEN
     assert x_agenda._healer == new_label2
     assert x_agenda._idearoot._label == x_agenda._culture_qid
+
+
+def test_agenda_edit_idea_label_RaisesErrorIfSeparatorIsInLabel():
+    # GIVEN
+    x_agenda = get_agenda_with_4_levels_and_2requireds_2acptfacts()
+    old_weekday_text = "weekdays"
+    old_weekday_road = get_road(x_agenda._culture_qid, old_weekday_text)
+
+    # WHEN / THEN
+    new_weekday_text = "days, of week"
+    with pytest_raises(Exception) as excinfo:
+        x_agenda.edit_idea_label(old_road=old_weekday_road, new_label=new_weekday_text)
+    assert (
+        str(excinfo.value)
+        == f"Cannot change '{old_weekday_road}' because new_label {new_weekday_text} contains separator {x_agenda._road_node_separator}"
+    )

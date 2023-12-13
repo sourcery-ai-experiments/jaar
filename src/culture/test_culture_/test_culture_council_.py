@@ -16,16 +16,16 @@ def test_cultureunit_set_healer_WorksCorrectly(env_dir_setup_cleanup):
     print(f"create env '{x_qid}' directories.")
     x_culture.create_dirs_if_null(in_memory_treasury=True)
     timmy_text = "timmy"
-    wx_path = f"{x_culture.get_councilunits_dir()}/{timmy_text}"
-    print(f"{wx_path=}")
-    assert os_path.exists(wx_path) == False
+    timmy_dir = f"{x_culture.get_councilunits_dir()}/{timmy_text}"
+    print(f"{timmy_dir=}")
+    assert os_path.exists(timmy_dir) == False
 
     # WHEN
     x_culture.create_new_councilunit(council_cid=timmy_text)
 
     # THEN
-    print(f"{wx_path=}")
-    assert os_path.exists(wx_path)
+    print(f"{timmy_dir=}")
+    assert os_path.exists(timmy_dir)
 
 
 def test_cultureunit_change_councilunit_cid_WorksCorrectly(env_dir_setup_cleanup):

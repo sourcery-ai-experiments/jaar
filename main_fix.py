@@ -19,7 +19,7 @@ from src.culture.examples.culture_env_kit import (
     setup_test_example_environment,
     create_example_culture,
     delete_dir_example_culture,
-    reqid_example_culture,
+    change_qid_example_culture,
     get_test_cultures_dir,
 )
 
@@ -215,7 +215,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.culture_qid_combo_refresh()
 
     def culture_update_pid(self):
-        reqid_example_culture(
+        change_qid_example_culture(
             culture_obj=self.culture_x, new_pid=self.culture_qid.text()
         )
         self.culture_qid_combo_refresh()

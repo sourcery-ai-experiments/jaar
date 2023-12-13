@@ -5,14 +5,14 @@ from src.culture.culture import CultureUnit, cultureunit_shop
 from src.culture.examples.culture_env_kit import (
     get_temp_env_qid,
     get_test_cultures_dir,
-    reqid_example_culture,
+    change_qid_example_culture,
     copy_evaluation_culture,
     env_dir_setup_cleanup,
 )
 from pytest import raises as pytest_raises
 
 
-def test_culture_exists():
+def test_CultureUnit_exists():
     # GIVEN
     x_qid = "test1"
 
@@ -23,6 +23,7 @@ def test_culture_exists():
     assert x_culture.qid == x_qid
     assert x_culture.cultures_dir == get_test_cultures_dir()
     assert x_culture._manager_pid is None
+    assert x_culture._road_node_separator is None
 
 
 def test_culture_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
@@ -63,7 +64,7 @@ def test_culture_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert x_culture.get_treasury_db_path() == treasury_file_path
 
 
-def test_reqid_example_culture_CorrectlyChangesDirAndFiles(env_dir_setup_cleanup):
+def test_change_qid_example_culture_CorrectlyChangesDirAndFiles(env_dir_setup_cleanup):
     # GIVEN create culture
     old_x_qid = get_temp_env_qid()
     old_culture_dir = f"src/culture/examples/cultures/{old_x_qid}"
@@ -105,7 +106,7 @@ def test_reqid_example_culture_CorrectlyChangesDirAndFiles(env_dir_setup_cleanup
     assert x_culture.qid != new_x_qid
 
     # WHEN
-    reqid_example_culture(culture_obj=x_culture, new_qid=new_x_qid)
+    change_qid_example_culture(culture_obj=x_culture, new_qid=new_x_qid)
 
     # THEN check agendas src directory created
     assert os_path.exists(old_culture_dir) is False
