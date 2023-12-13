@@ -332,7 +332,7 @@ def test_TreeTraverseSetsBalanceLineestorFromRootCorrectly():
 
     # for kid_idea in root_idea._kids.values():
     #     sum_x += kid_idea._agenda_importance
-    #     print(f"  {kid_idea._agenda_importance=} {sum_x=} {kid_idea.get_road()=}")
+    #     print(f"  {kid_idea._agenda_importance=} {sum_x=} {kid_idea.node_road()=}")
     assert round(sandy_balanceline._agenda_credit, 15) == 1
     assert round(sandy_balanceline._agenda_debt, 15) == 1
     x_balanceline = BalanceLine(
@@ -513,17 +513,17 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
     assert x_agenda.get_heir_road_list(road_x=weekdays)
 
     # WHEN
-    heir_node_road_list = x_agenda.get_heir_road_list(road_x=weekdays)
+    heir_nodes_road_list = x_agenda.get_heir_road_list(road_x=weekdays)
 
     # THEN
-    # for node in heir_node_road_list:
+    # for node in heir_nodes_road_list:
     #     print(f"{node}")
-    assert len(heir_node_road_list) == 8
-    assert heir_node_road_list[0] == weekdays
+    assert len(heir_nodes_road_list) == 8
+    assert heir_nodes_road_list[0] == weekdays
     sat_text = "Saturday"
     sun_text = "Sunday"
-    assert heir_node_road_list[3] == get_road(weekdays, sat_text)
-    assert heir_node_road_list[4] == get_road(weekdays, sun_text)
+    assert heir_nodes_road_list[3] == get_road(weekdays, sat_text)
+    assert heir_nodes_road_list[4] == get_road(weekdays, sun_text)
 
 
 # def test_agenda4party_hasCorrectLevel1StructureWithGrouplessAncestors_2():

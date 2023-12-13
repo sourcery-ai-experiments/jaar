@@ -61,6 +61,7 @@ from src.agenda.road import (
     get_all_road_nodes,
     get_forefather_roads,
     get_road,
+    get_node_separator,
 )
 from src.agenda.origin import originunit_get_from_dict, originunit_shop, OriginUnit
 from copy import deepcopy as copy_deepcopy
@@ -97,6 +98,7 @@ class AgendaUnit:
     _originunit: OriginUnit = None
     _culture_qid: str = None
     _auto_output_to_public: bool = None
+    _road_node_separator: str = None
 
     def set_partys_output_agenda_meld_order(self):
         sort_partys_list = list(self._partys.values())
@@ -107,6 +109,9 @@ class AgendaUnit:
     def clear_partys_output_agenda_meld_order(self):
         for x_partyunit in self._partys.values():
             x_partyunit.clear_output_agenda_meld_order()
+
+    def set_road_node_separator(self, _road_node_separator: str):
+        self._road_node_separator = _road_node_separator
 
     def set_culture_qid(self, culture_qid: str):
         old_culture_qid = copy_deepcopy(self._culture_qid)
@@ -928,7 +933,7 @@ class AgendaUnit:
             balancelinks=self._idearoot._balancelinks,
             uid=self._idearoot._uid,
             promise=self._idearoot.promise,
-            idea_road=self._idearoot.get_road(),
+            idea_road=self._idearoot.node_road(),
         )
 
         idea_list = [self._idearoot]
@@ -947,7 +952,7 @@ class AgendaUnit:
             balancelinks=idea_kid._balancelinks,
             uid=idea_kid._uid,
             promise=idea_kid.promise,
-            idea_road=idea_kid.get_road(),
+            idea_road=idea_kid.node_road(),
         )
         idea_list.append(idea_kid)
 
@@ -963,7 +968,7 @@ class AgendaUnit:
         for idea_x in self.get_idea_list():
             if idea_x._uid is None or idea_uid_dict.get(idea_x._uid) > 1:
                 new_idea_uid_max = idea_uid_max + 1
-                self.edit_idea_attr(road=idea_x.get_road(), uid=new_idea_uid_max)
+                self.edit_idea_attr(road=idea_x.node_road(), uid=new_idea_uid_max)
                 idea_uid_max = new_idea_uid_max
 
     def get_node_count(self):
@@ -1809,7 +1814,7 @@ class AgendaUnit:
 
         if idea_kid.is_kidless():
             # set idea's ancestor metrics using agenda root as common reference
-            self._set_ancestor_metrics(road=idea_kid.get_road())
+            self._set_ancestor_metrics(road=idea_kid.node_road())
             self._distribute_agenda_importance(idea=idea_kid)
 
     def _distribute_agenda_importance(self, idea: IdeaCore):
@@ -1835,7 +1840,7 @@ class AgendaUnit:
 
         self._rational = False
         self._tree_traverse_count = 0
-        self._idea_dict = {self._idearoot.get_road(): self._idearoot}
+        self._idea_dict = {self._idearoot.node_road(): self._idearoot}
 
         while (
             not self._rational and self._tree_traverse_count < self._max_tree_traverse
@@ -1866,7 +1871,7 @@ class AgendaUnit:
         while cache_idea_list != []:
             parent_idea = cache_idea_list.pop()
             if self._tree_traverse_count == 0:
-                self._idea_dict[parent_idea.get_road()] = parent_idea
+                self._idea_dict[parent_idea.node_road()] = parent_idea
 
             if parent_idea._kids != None:
                 coin_onset = parent_idea._agenda_coin_onset
@@ -1911,7 +1916,7 @@ class AgendaUnit:
 
     def get_idea_tree_ordered_road_list(self, no_range_descendants: bool = False):
         idea_list = self.get_idea_list()
-        node_dict = {idea.get_road().lower(): idea.get_road() for idea in idea_list}
+        node_dict = {idea.node_road().lower(): idea.node_road() for idea in idea_list}
         node_lowercase_ordered_list = sorted(list(node_dict))
         node_orginalcase_ordered_list = [
             node_dict[node_l] for node_l in node_lowercase_ordered_list
@@ -1967,6 +1972,7 @@ class AgendaUnit:
             "_culture_qid": self._culture_qid,
             "_max_tree_traverse": self._max_tree_traverse,
             "_auto_output_to_public": self._auto_output_to_public,
+            "_road_node_separator": self._road_node_separator,
             "_idearoot": self._idearoot.get_dict(),
         }
 
@@ -2216,6 +2222,7 @@ def agendaunit_shop(
     _weight: float = None,
     _auto_output_to_public: bool = None,
     _culture_qid: CultureQID = None,
+    _road_node_separator: str = None,
 ) -> AgendaUnit:
     if _weight is None:
         _weight = 1
@@ -2225,11 +2232,14 @@ def agendaunit_shop(
         _auto_output_to_public = False
     if _culture_qid is None:
         _culture_qid = root_label()
+    _road_node_separator = get_node_separator(_road_node_separator)
+
     x_agenda = AgendaUnit(
         _healer=_healer,
         _weight=_weight,
         _auto_output_to_public=_auto_output_to_public,
         _culture_qid=_culture_qid,
+        _road_node_separator=_road_node_separator,
     )
     x_agenda._idearoot = idearoot_shop(_label=None, _uid=1, _level=0)
     x_agenda.set_max_tree_traverse(3)
@@ -2253,6 +2263,9 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
         get_obj_from_agenda_dict(agenda_dict, "_max_tree_traverse")
     )
     x_agenda.set_culture_qid(get_obj_from_agenda_dict(agenda_dict, "_culture_qid"))
+    x_agenda.set_road_node_separator(
+        get_obj_from_agenda_dict(agenda_dict, "_road_node_separator")
+    )
     x_agenda._partys = get_obj_from_agenda_dict(agenda_dict, "_partys")
     x_agenda._groups = get_obj_from_agenda_dict(agenda_dict, "_groups")
     x_agenda._originunit = get_obj_from_agenda_dict(agenda_dict, "_originunit")

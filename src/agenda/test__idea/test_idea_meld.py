@@ -406,7 +406,7 @@ def test_idea_attributes_meld_FailRaisesError_uid():
     yx2 = ideacore_shop("fun", _pad=casa_text)
 
     # WHEN/THEN
-    error_message = f"Meld fail idea={yx1.get_road()} {x_pid}:{x_val} with {yx2.get_road()} {x_pid}:None"
+    error_message = f"Meld fail idea={yx1.node_road()} {x_pid}:{x_val} with {yx2.node_road()} {x_pid}:None"
 
     huh_text = f"Meld fail idea={get_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {get_road(yx2._pad,yx2._label)} {x_pid}:None"
     print(f"{error_message=}")

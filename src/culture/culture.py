@@ -262,7 +262,7 @@ class CultureUnit:
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
             for idea_x in agendaunit_x._idea_dict.values():
-                idea_catalog_x = IdeaCatalog(agendaunit_x._healer, idea_x.get_road())
+                idea_catalog_x = IdeaCatalog(agendaunit_x._healer, idea_x.node_road())
                 sqlstr = get_idea_catalog_table_insert_sqlstr(idea_catalog_x)
                 cur.execute(sqlstr)
 

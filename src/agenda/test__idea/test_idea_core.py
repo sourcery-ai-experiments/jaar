@@ -817,5 +817,5 @@ def test_idea_get_descendants_ErrorRaisedIfInfiniteLoop():
         nation_idea.get_descendant_roads()
     assert (
         str(excinfo.value)
-        == f"Idea '{nation_idea.get_road()}' either has an infinite loop or more than {max_count} descendants."
+        == f"Idea '{nation_idea.node_road()}' either has an infinite loop or more than {max_count} descendants."
     )

@@ -3,7 +3,11 @@ from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels,
 )
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
-from src.agenda.road import get_default_culture_root_label as root_label, get_road
+from src.agenda.road import (
+    get_default_culture_root_label as root_label,
+    get_road,
+    get_node_separator,
+)
 from src.agenda.origin import originunit_shop
 from pytest import raises as pytest_raises
 
@@ -24,6 +28,7 @@ def test_AgendaUnit_exists():
     assert x_agenda._originunit is None
     assert x_agenda._auto_output_to_public is None
     assert x_agenda._idearoot is None
+    assert x_agenda._road_node_separator is None
     assert str(type(x_agenda._idearoot)).find("None") == 8
 
 
@@ -31,9 +36,14 @@ def test_agendaunit_shop_ReturnsCorrectObjectWithFilledFields():
     # GIVEN
     healer_text = "Noa"
     iowa_culture_qid = "Iowa"
+    slash_road_node_separator = "/"
 
     # WHEN
-    x_agenda = agendaunit_shop(_healer=healer_text, _culture_qid=iowa_culture_qid)
+    x_agenda = agendaunit_shop(
+        _healer=healer_text,
+        _culture_qid=iowa_culture_qid,
+        _road_node_separator=slash_road_node_separator,
+    )
 
     assert x_agenda
     assert x_agenda._healer == healer_text
@@ -45,6 +55,7 @@ def test_agendaunit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._originunit == originunit_shop()
     assert x_agenda._auto_output_to_public == False
     assert x_agenda._idearoot != None
+    assert x_agenda._road_node_separator == slash_road_node_separator
     print(f"{type(x_agenda._idearoot)=}") == 0
     assert str(type(x_agenda._idearoot)).find(".idea.IdeaRoot'>") > 0
 
@@ -55,6 +66,7 @@ def test_agendaunit_shop_ReturnsCorrectObjectWithCorrectEmptyField():
 
     assert x_agenda._healer == ""
     assert x_agenda._culture_qid == root_label()
+    assert x_agenda._road_node_separator == get_node_separator(None)
 
 
 def test_agenda_IsAbleToSetTaskAsComplete():
@@ -192,3 +204,23 @@ def test_agenda_set_culture_qid_CorrectlySetsAttr():
 
     # THEN
     assert x_agenda._culture_qid == culture_qid_text
+
+
+def test_agenda_set__CorrectlySetsAttr():
+    # GIVEN
+    culture_qid_text = "Sun"
+    healer_text = "Noa"
+    slash_road_node_separator = "/"
+    x_agenda = agendaunit_shop(
+        _healer=healer_text,
+        _auto_output_to_public=True,
+        _road_node_separator=slash_road_node_separator,
+    )
+    assert x_agenda._road_node_separator == slash_road_node_separator
+
+    # WHEN
+    at_node_separator = "@"
+    x_agenda.set_road_node_separator(_road_node_separator=at_node_separator)
+
+    # THEN
+    assert x_agenda._road_node_separator == at_node_separator

@@ -59,6 +59,7 @@ def test_agenda_get_dict_ReturnsDictObject():
     assert agenda_dict["_weight"] == agenda_weight
     assert agenda_dict["_max_tree_traverse"] == x_agenda._max_tree_traverse
     assert agenda_dict["_auto_output_to_public"] == x_agenda._auto_output_to_public
+    assert agenda_dict["_road_node_separator"] == x_agenda._road_node_separator
     assert len(agenda_dict["_partys"]) == len(x_agenda._partys)
     assert len(agenda_dict["_groups"]) == len(x_agenda._groups)
 
@@ -154,8 +155,8 @@ def test_agenda_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
 def test_export_to_JSON_simple_example_works():
     # GIVEN
     x_agenda = example_agendas_get_agenda_x1_3levels_1required_1acptfacts()
-    culture_qid_text = "tiger_econ"
-    x_agenda.set_culture_qid(culture_qid_text)
+    tiger_culture_qid = "tiger_econ"
+    x_agenda.set_culture_qid(tiger_culture_qid)
 
     # WHEN
     x_json = x_agenda.get_json()
@@ -209,6 +210,7 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     assert agenda_dict["_weight"] == x_agenda._weight
     assert agenda_dict["_max_tree_traverse"] == 2
     assert agenda_dict["_max_tree_traverse"] == x_agenda._max_tree_traverse
+    assert agenda_dict["_road_node_separator"] == x_agenda._road_node_separator
 
     x_idearoot = x_agenda._idearoot
     idearoot_dict = agenda_dict.get("_idearoot")
@@ -259,8 +261,10 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     # GIVEN
     y_agenda = example_agendas_get_agenda_x1_3levels_1required_1acptfacts()
     y_agenda.set_max_tree_traverse(23)
-    culture_qid_text = "tiger_econ"
-    y_agenda.set_culture_qid(culture_qid_text)
+    slash_road_node_separator = "/"
+    y_agenda.set_road_node_separator(slash_road_node_separator)
+    tiger_culture_qid = "tiger_econ"
+    y_agenda.set_culture_qid(tiger_culture_qid)
 
     shave_text = "shave"
     shave_road = get_road(y_agenda._culture_qid, shave_text)
@@ -284,16 +288,11 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     y_agenda.edit_idea_attr(road=y_agenda._culture_qid, assignedunit=run_assigned_unit)
     tim_assigned_unit = assigned_unit_shop()
     tim_assigned_unit.set_suffgroup(brand=tim_text)
-    y_agenda.edit_idea_attr(road=shave_road, assignedunit=tim_assigned_unit)
+    y_agenda.edit_idea_attr(shave_road, assignedunit=tim_assigned_unit)
+    y_agenda.edit_idea_attr(shave_road, balancelink=balancelink_shop(tim_text))
+    y_agenda.edit_idea_attr(shave_road, balancelink=balancelink_shop(sue_text))
     y_agenda.edit_idea_attr(
-        road=shave_road, balancelink=balancelink_shop(brand=tim_text)
-    )
-    y_agenda.edit_idea_attr(
-        road=shave_road, balancelink=balancelink_shop(brand=sue_text)
-    )
-
-    y_agenda.edit_idea_attr(
-        road=y_agenda._culture_qid, balancelink=balancelink_shop(brand=sue_text)
+        y_agenda._culture_qid, balancelink=balancelink_shop(sue_text)
     )
 
     yao_text = "Yao"
@@ -313,6 +312,8 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     assert x_agenda._max_tree_traverse == 23
     assert x_agenda._max_tree_traverse == y_agenda._max_tree_traverse
     assert x_agenda._auto_output_to_public == y_agenda._auto_output_to_public
+    assert x_agenda._road_node_separator == y_agenda._road_node_separator
+    assert x_agenda._road_node_separator == slash_road_node_separator
 
     idearoot_x = x_agenda._idearoot
     assert idearoot_x._pad == ""

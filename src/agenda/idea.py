@@ -325,7 +325,7 @@ class IdeaCore:
             )
         ]
 
-    def get_road(self) -> Road:
+    def node_road(self) -> Road:
         if self._pad in (None, ""):
             return road_get_road(self._label)
         else:
@@ -347,13 +347,13 @@ class IdeaCore:
         while to_evaluate_ideas != [] and count_x < max_count:
             idea_x = to_evaluate_ideas.pop()
             idea_x.set_kids_empty_if_null()
-            descendant_roads[idea_x.get_road()] = -1
+            descendant_roads[idea_x.node_road()] = -1
             to_evaluate_ideas.extend(idea_x._kids.values())
             count_x += 1
 
         if count_x == max_count:
             raise IdeaGetDescendantsException(
-                f"Idea '{self.get_road()}' either has an infinite loop or more than {max_count} descendants."
+                f"Idea '{self.node_road()}' either has an infinite loop or more than {max_count} descendants."
             )
 
         return descendant_roads
@@ -570,7 +570,7 @@ class IdeaCore:
             attrs = xl.pop()
             if attrs[1] != attrs[2]:
                 raise InvalidIdeaException(
-                    f"Meld fail idea={self.get_road()} {attrs[0]}:{attrs[1]} with {other_idea.get_road()} {attrs[0]}:{attrs[2]}"
+                    f"Meld fail idea={self.node_road()} {attrs[0]}:{attrs[1]} with {other_idea.node_road()} {attrs[0]}:{attrs[2]}"
                 )
 
     def _set_idea_attr(self, idea_attr: IdeaAttrHolder):
@@ -711,7 +711,7 @@ class IdeaCore:
             # if idea_kid._reest != None:
             if self._begin is None or self._close is None:
                 raise InvalidIdeaException(
-                    f"Idea {idea_kid.get_road()} cannot have numor,denom,reest if parent does not have begin/close range"
+                    f"Idea {idea_kid.node_road()} cannot have numor,denom,reest if parent does not have begin/close range"
                 )
 
             idea_kid._begin = self._begin * idea_kid._numor / idea_kid._denom
