@@ -177,14 +177,14 @@ def get_diff_road(x_road: Road, sub_road: Road, separator: str = None):
     return x_road.replace(sub_road, "")
 
 
-class InvalidSepartorReplaceException(Exception):
+class InvalidSeparatorReplaceException(Exception):
     pass
 
 
-def replace_road_node_separtor(road: Road, old_separator: str, new_separator: str):
+def replace_road_node_separator(road: Road, old_separator: str, new_separator: str):
     if road.find(new_separator) >= 0:
-        raise InvalidSepartorReplaceException(
-            f"Cannot replace_road_node_separtor '{old_separator}' with '{new_separator}' because the new one already exists in road '{road}'."
+        raise InvalidSeparatorReplaceException(
+            f"Cannot replace_road_node_separator '{old_separator}' with '{new_separator}' because the new one already exists in road '{road}'."
         )
 
     return road.replace(old_separator, new_separator)

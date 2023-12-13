@@ -18,7 +18,7 @@ from src.agenda.road import (
     get_road,
     is_heir_road,
     get_node_separator,
-    replace_road_node_separtor,
+    replace_road_node_separator,
 )
 from src.agenda.required_idea import sufffactunit_shop
 from src.agenda.idea import IdeaCore
@@ -69,9 +69,9 @@ def test_road_get_road_ReturnsCorrectRoadWithSeparator():
     assert get_road(root_label(), rose_text) == comma_separator_rose_road
 
     # WHEN
-    slash_separtor = "/"
-    slash_separator_rose_road = f"{root_label()}{slash_separtor}{rose_text}"
-    generated_rose_road = get_road(root_label(), rose_text, separator=slash_separtor)
+    slash_separator = "/"
+    slash_separator_rose_road = f"{root_label()}{slash_separator}{rose_text}"
+    generated_rose_road = get_road(root_label(), rose_text, separator=slash_separator)
 
     # THEN
     assert generated_rose_road != comma_separator_rose_road
@@ -79,7 +79,7 @@ def test_road_get_road_ReturnsCorrectRoadWithSeparator():
 
     # bloomers_text = "bloomers"
     # static_bloomers_road = (
-    #     f"{root_label()}{slash_separtor}{rose_text}{slash_separtor}{bloomers_text}"
+    #     f"{root_label()}{slash_separator}{rose_text}{slash_separator}{bloomers_text}"
     # )
 
 
@@ -436,60 +436,62 @@ def test_replace_road_node_separator_CorrectlyReturnsNewObj():
     # GIVEN
     healer_text = "healer"
     gen_healer_road = get_road_from_road_and_node(root_label(), healer_text)
-    comma_separtor = get_node_separator(None)
-    comma_separtor_healer_road = f"{root_label()}{comma_separtor}{healer_text}"
-    assert comma_separtor == ","
-    assert gen_healer_road == comma_separtor_healer_road
+    comma_separator = get_node_separator(None)
+    comma_separator_healer_road = f"{root_label()}{comma_separator}{healer_text}"
+    assert comma_separator == ","
+    assert gen_healer_road == comma_separator_healer_road
 
     # WHEN
     slash_separator = "/"
-    gen_healer_road = replace_road_node_separtor(
-        gen_healer_road, old_separator=comma_separtor, new_separator=slash_separator
+    gen_healer_road = replace_road_node_separator(
+        gen_healer_road, old_separator=comma_separator, new_separator=slash_separator
     )
 
     # THEN
-    slash_separtor_healer_road = f"{root_label()}{slash_separator}{healer_text}"
-    assert gen_healer_road == slash_separtor_healer_road
+    slash_separator_healer_road = f"{root_label()}{slash_separator}{healer_text}"
+    assert gen_healer_road == slash_separator_healer_road
 
 
 def test_replace_road_node_separator_CorrectlyRaisesError():
     # GIVEN
     cooker_text = "cooker/cleaner"
     gen_cooker_road = get_road_from_road_and_node(root_label(), cooker_text)
-    comma_separtor = get_node_separator(None)
-    comma_separtor_cooker_road = f"{root_label()}{comma_separtor}{cooker_text}"
-    assert comma_separtor == ","
-    assert gen_cooker_road == comma_separtor_cooker_road
+    comma_separator = get_node_separator(None)
+    comma_separator_cooker_road = f"{root_label()}{comma_separator}{cooker_text}"
+    assert comma_separator == ","
+    assert gen_cooker_road == comma_separator_cooker_road
 
     # WHEN
     slash_separator = "/"
     with pytest_raises(Exception) as excinfo:
-        gen_cooker_road = replace_road_node_separtor(
-            gen_cooker_road, old_separator=comma_separtor, new_separator=slash_separator
-        )
-    assert (
-        str(excinfo.value)
-        == f"Cannot replace_road_node_separtor '{comma_separtor}' with '{slash_separator}' because the new one already exists in road '{gen_cooker_road}'."
-    )
-
-
-def test_replace_road_node_separator_WhenNewSepratorIsFirstCharacterInRoadRaisesError():
-    # GIVEN
-    cooker_text = "/cooker"
-    cleaner_text = "cleaner"
-    comma_separtor = get_node_separator(None)
-    comma_separtor_cooker_road = f"{cooker_text}{comma_separtor}{cleaner_text}"
-    assert comma_separtor == ","
-
-    # WHEN
-    slash_separator = "/"
-    with pytest_raises(Exception) as excinfo:
-        comma_separtor_cooker_road = replace_road_node_separtor(
-            comma_separtor_cooker_road,
-            old_separator=comma_separtor,
+        gen_cooker_road = replace_road_node_separator(
+            gen_cooker_road,
+            old_separator=comma_separator,
             new_separator=slash_separator,
         )
     assert (
         str(excinfo.value)
-        == f"Cannot replace_road_node_separtor '{comma_separtor}' with '{slash_separator}' because the new one already exists in road '{comma_separtor_cooker_road}'."
+        == f"Cannot replace_road_node_separator '{comma_separator}' with '{slash_separator}' because the new one already exists in road '{gen_cooker_road}'."
+    )
+
+
+def test_replace_road_node_separator_WhenNewSeparatorIsFirstCharacterInRoadRaisesError():
+    # GIVEN
+    cooker_text = "/cooker"
+    cleaner_text = "cleaner"
+    comma_separator = get_node_separator(None)
+    comma_separator_cooker_road = f"{cooker_text}{comma_separator}{cleaner_text}"
+    assert comma_separator == ","
+
+    # WHEN
+    slash_separator = "/"
+    with pytest_raises(Exception) as excinfo:
+        comma_separator_cooker_road = replace_road_node_separator(
+            comma_separator_cooker_road,
+            old_separator=comma_separator,
+            new_separator=slash_separator,
+        )
+    assert (
+        str(excinfo.value)
+        == f"Cannot replace_road_node_separator '{comma_separator}' with '{slash_separator}' because the new one already exists in road '{comma_separator_cooker_road}'."
     )
