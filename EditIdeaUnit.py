@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QTableWidgetItem as qtw1, QTableWidget as qtw0
 from src.agenda.hreg_time import SuffFactUnitHregTime
 from src.agenda.group import BalanceLink, GroupBrand
 from src.agenda.required_idea import Road
-from src.agenda.hreg_time import get_24hr, get_60min
+from src.agenda.hreg_time import HregTimeIdeaSource  # get_24hr, get_60min
 from pyqt_func import (
     num2str,
     bool_val,
@@ -170,17 +170,18 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.submit_child_insert.setHidden(setHiddenBool)
         self.submit_node_update.setHidden(setHiddenBool)
         self.submit_node_delete.setHidden(setHiddenBool)
+        hregidea = HregTimeIdeaSource(",")
         self.hreg_open_hr.clear()
-        self.hreg_open_hr.addItems(get_24hr())
+        self.hreg_open_hr.addItems(hregidea.get_24hr())
         self.hreg_open_hr.setCurrentText("")
         self.hreg_open_min.clear()
-        self.hreg_open_min.addItems(get_60min())
+        self.hreg_open_min.addItems(hregidea.get_60min())
         self.hreg_open_min.setCurrentText("")
         self.hreg_length_hr.clear()
-        self.hreg_length_hr.addItems(get_24hr())
+        self.hreg_length_hr.addItems(hregidea.get_24hr())
         self.hreg_length_hr.setCurrentText("")
         self.hreg_length_min.clear()
-        self.hreg_length_min.addItems(get_60min())
+        self.hreg_length_min.addItems(hregidea.get_60min())
         self.hreg_length_min.setCurrentText("")
         self.hreg_weekday.clear()
         self.hreg_weekday.addItems(

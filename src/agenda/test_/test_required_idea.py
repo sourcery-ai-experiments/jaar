@@ -6,7 +6,11 @@ from src.agenda.required_idea import (
     acptfactheir_shop,
     sufffactunit_shop,
 )
-from src.agenda.road import get_default_culture_root_label as root_label, get_road
+from src.agenda.road import (
+    get_default_culture_root_label as root_label,
+    get_road,
+    get_node_delimiter,
+)
 from pytest import raises as pytest_raises
 
 
@@ -28,6 +32,7 @@ def test_RequiredCore_attributesExist():
     assert wkday_required.base == wkday_road
     assert wkday_required.sufffacts == sufffacts
     assert wkday_required.suff_idea_active_status == False
+    assert wkday_required.delimiter is None
 
 
 def test_requiredheir_shop_ReturnsCorrectObj():
@@ -40,6 +45,7 @@ def test_requiredheir_shop_ReturnsCorrectObj():
 
     # THEN
     assert work_required.sufffacts == {}
+    assert work_required.delimiter == get_node_delimiter()
 
 
 def test_RequiredHeir_clear_CorrectlyClearsField():

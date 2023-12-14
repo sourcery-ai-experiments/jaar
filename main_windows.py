@@ -8,7 +8,7 @@ from Edit_Agenda import Edit_Agenda
 from EditProblem import EditProblem
 from src.agenda.agenda import get_from_json, agendaunit_shop, AgendaUnit
 from src.agenda.examples.agenda_env import agenda_env
-from src.agenda.hreg_time import convert1440toHHMM
+from src.agenda.hreg_time import HregTimeIdeaSource
 from pyqt_func import (
     agenda_importance_diplay as pyqt_func_agenda_importance_diplay,
     str2float as pyqt_func_str2float,
@@ -426,6 +426,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.intent_states.setRowCount(row + 1)
         self.intent_states.setItem(row, 0, qtw1(str(ax._uid)))
         self.intent_states.setItem(row, 1, qtw1(ax._label))
+        x_hregidea = HregTimeIdeaSource(",")
 
         if ax._requiredunits.get(f"{self.agenda_x._culture_qid},time,jajatime") != None:
             jajatime_required = ax._requiredunits.get(
@@ -443,7 +444,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     )
                 )
                 self.intent_states.setItem(row, 2, tw_open)
-                tw_nigh = qtw1(convert1440toHHMM(min1440=sufffact_x.nigh))
+                tw_nigh = qtw1(x_hregidea.convert1440toHHMM(min1440=sufffact_x.nigh))
                 self.intent_states.setItem(row, 3, tw_nigh)
 
         self.intent_states.setItem(
@@ -481,6 +482,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
 
     def intent_task_display(self, intent_item):
+        x_hregidea = HregTimeIdeaSource(",")
         self.label_intent_label_data.setText(intent_item._label)
         if (
             intent_item._requiredunits.get(
@@ -497,10 +499,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if sufffact_x != None:
                 self.label_intent_day_data.setText("day_stuff")
                 self.label_intent_time_data.setText(
-                    convert1440toHHMM(min1440=sufffact_x.open)
+                    x_hregidea.convert1440toHHMM(min1440=sufffact_x.open)
                 )
                 self.label_intent_end_data.setText(
-                    convert1440toHHMM(min1440=sufffact_x.nigh)
+                    x_hregidea.convert1440toHHMM(min1440=sufffact_x.nigh)
                 )
         self.label_intent_agenda_importance_data.setText(
             str(intent_item._agenda_importance)

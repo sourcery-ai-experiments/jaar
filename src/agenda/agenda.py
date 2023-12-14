@@ -40,13 +40,15 @@ from src.agenda.idea import (
     IdeaAttrHolder,
     get_obj_from_idea_dict,
 )
-from src.agenda.hreg_time import (
-    _get_time_hreg_src_idea,
-    get_time_min_from_dt as hreg_get_time_min_from_dt,
-    convert1440toReadableTime,
-    get_number_with_letter_ending,
-    get_jajatime_legible_from_dt,
-)
+from src.agenda.hreg_time import HregTimeIdeaSource as HregIdea
+
+# (
+#     _get_time_hreg_src_idea,
+#     get_time_min_from_dt as hreg_get_time_min_from_dt,
+#     convert1440toReadableTime,
+#     get_number_with_letter_ending,
+#     get_jajatime_legible_from_dt,
+# )
 from src.agenda.lemma import Lemmas
 from src.agenda.road import (
     get_pad_from_road,
@@ -277,7 +279,8 @@ class AgendaUnit:
         return len(self._partys) == len(balanceheir_partyunits)
 
     def get_time_min_from_dt(self, dt: datetime) -> float:
-        return hreg_get_time_min_from_dt(dt=dt)
+        x_hregidea = HregIdea(self._road_node_delimiter)
+        return x_hregidea.get_time_min_from_dt(dt=dt)
 
     def get_time_c400_from_min(self, min: int) -> int:
         time_road = self.make_road(self._culture_qid, "time")
@@ -364,11 +367,13 @@ class AgendaUnit:
 
     def get_jajatime_legible_one_time_event(self, jajatime_min: int) -> str:
         dt_x = self.get_time_dt_from_min(min=jajatime_min)
-        return get_jajatime_legible_from_dt(dt=dt_x)
+        x_hregidea = HregIdea(self._road_node_delimiter)
+        return x_hregidea.get_jajatime_legible_from_dt(dt=dt_x)
 
     def get_jajatime_repeating_legible_text(
         self, open: float = None, nigh: float = None, divisor: float = None
     ) -> str:
+        x_hregidea = HregIdea(self._road_node_delimiter)
         str_x = "test3"
         if divisor is None:
             str_x = self.get_jajatime_legible_one_time_event(jajatime_min=open)
@@ -377,17 +382,22 @@ class AgendaUnit:
             str_x = self._get_jajatime_week_legible_text(open, divisor)
         elif divisor != None and divisor % 1440 == 0:
             if divisor == 1440:
-                str_x = f"every day at {convert1440toReadableTime(min1440=open)}"
+                str_x = (
+                    f"every day at {x_hregidea.convert1440toReadableTime(min1440=open)}"
+                )
             else:
                 num_days = int(divisor / 1440)
-                num_with_letter_ending = get_number_with_letter_ending(num=num_days)
-                str_x = f"every {num_with_letter_ending} day at {convert1440toReadableTime(min1440=open)}"
+                num_with_letter_ending = x_hregidea.get_number_with_letter_ending(
+                    num=num_days
+                )
+                str_x = f"every {num_with_letter_ending} day at {x_hregidea.convert1440toReadableTime(min1440=open)}"
         else:
             str_x = "unknown"
 
         return str_x
 
     def _get_jajatime_week_legible_text(self, open: int, divisor: int) -> str:
+        x_hregidea = HregIdea(self._road_node_delimiter)
         open_in_week = open % divisor
         time_road = self.make_road(self._culture_qid, "time")
         tech_road = self.make_road(time_road, "tech")
@@ -400,9 +410,11 @@ class AgendaUnit:
             weekday_idea_node = idea
 
         if divisor == 10080:
-            return f"every {weekday_idea_node._label} at {convert1440toReadableTime(min1440=open % 1440)}"
-        num_with_letter_ending = get_number_with_letter_ending(num=divisor // 10080)
-        return f"every {num_with_letter_ending} {weekday_idea_node._label} at {convert1440toReadableTime(min1440=open % 1440)}"
+            return f"every {weekday_idea_node._label} at {x_hregidea.convert1440toReadableTime(min1440=open % 1440)}"
+        num_with_letter_ending = x_hregidea.get_number_with_letter_ending(
+            num=divisor // 10080
+        )
+        return f"every {num_with_letter_ending} {weekday_idea_node._label} at {x_hregidea.convert1440toReadableTime(min1440=open % 1440)}"
 
     def get_partys_metrics(self):
         tree_metrics = self.get_tree_metrics()
@@ -2008,7 +2020,8 @@ class AgendaUnit:
         return x_get_json(dict_x=x_dict)
 
     def set_time_hreg_ideas(self, c400_count):
-        ideabase_list = _get_time_hreg_src_idea(c400_count=c400_count)
+        x_hregidea = HregIdea(self._road_node_delimiter)
+        ideabase_list = x_hregidea._get_time_hreg_src_idea(c400_count=c400_count)
         while len(ideabase_list) != 0:
             yb = ideabase_list.pop(0)
             range_source_road_x = None

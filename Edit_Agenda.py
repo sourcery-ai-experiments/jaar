@@ -4,11 +4,7 @@ from PyQt5.QtCore import pyqtSignal as qsig
 from PyQt5.QtWidgets import QWidget as qw
 from PyQt5.QtWidgets import QTableWidgetItem as qti
 from pyqt_func import num2str, agenda_importance_diplay
-from src.agenda.hreg_time import (
-    SuffFactUnitHregTime,
-    _get_time_hreg_weekday_idea,
-    convert1440toHHMM,
-)
+from src.agenda.hreg_time import SuffFactUnitHregTime, HregTimeIdeaSource
 
 
 class Edit_Agenda(qw, Ui_Form):

@@ -1,4 +1,3 @@
-from src.agenda.required_idea import SuffFactUnit
 from src.agenda.hreg_time import SuffFactUnitHregTime
 from pytest import raises as pytest_raises
 

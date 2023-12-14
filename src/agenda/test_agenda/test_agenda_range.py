@@ -1,6 +1,5 @@
 from src.agenda.idea import ideacore_shop
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.hreg_time import get_tech_road
 
 
 def test_agendaAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():

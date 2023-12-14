@@ -1,4 +1,4 @@
-from src.agenda.road import is_heir_road
+from src.agenda.road import is_heir_road, get_node_delimiter
 from dataclasses import dataclass
 from src.agenda.road import Road, change_road, find_replace_road_key_dict
 
@@ -393,6 +393,7 @@ class RequiredCore:
     # True: base idea._active_status required be True,
     # False: base idea._active_status required be False
     suff_idea_active_status: bool = None
+    delimiter: str = None
 
     def get_key_road(self):
         return self.base
@@ -548,6 +549,7 @@ def requiredheir_shop(
     _status: bool = None,
     _task: bool = None,
     _curr_idea_active_status: bool = None,
+    delimiter: str = None,
 ):
     return RequiredHeir(
         base=base,
@@ -556,6 +558,7 @@ def requiredheir_shop(
         _status=_status,
         _task=_task,
         _curr_idea_active_status=_curr_idea_active_status,
+        delimiter=get_node_delimiter(delimiter),
     )
 
 
