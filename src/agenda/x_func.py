@@ -133,10 +133,10 @@ def from_list_get_active_status(
     active_true_count = 0
     active_false_count = 0
     for idea in idea_list:
-        if idea.node_road() == road:
+        if idea.get_idea_road() == road:
             temp_idea = idea
             print(
-                f"searched for IdeaKid {temp_idea.node_road()} found {temp_idea._active_status=}"
+                f"searched for IdeaKid {temp_idea.get_idea_road()} found {temp_idea._active_status=}"
             )
 
         if idea._active_status:

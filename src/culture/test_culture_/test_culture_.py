@@ -1,4 +1,4 @@
-from src.agenda.road import get_road_from_nodes, get_all_road_nodes, get_road
+from src.agenda.road import get_road, get_all_road_nodes, get_node_delimiter
 from src.agenda.x_func import delete_dir as x_func_delete_dir
 from os import path as os_path
 from src.culture.culture import CultureUnit, cultureunit_shop
@@ -24,6 +24,66 @@ def test_CultureUnit_exists():
     assert x_culture.cultures_dir == get_test_cultures_dir()
     assert x_culture._manager_pid is None
     assert x_culture._road_node_delimiter is None
+
+
+def test_cultureunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
+    # GIVEN
+    x_qid = get_temp_env_qid()
+    culture_dir = f"src/culture/examples/cultures/{x_qid}"
+    sue_text = "Sue"
+    assert os_path.exists(culture_dir) is False
+
+    # WHEN
+    x_culture = cultureunit_shop(x_qid, get_test_cultures_dir(), _manager_pid=sue_text)
+
+    # THEN
+    assert x_culture != None
+    assert x_culture.qid == x_qid
+    assert os_path.exists(culture_dir)
+    assert x_culture._treasury_db != None
+    assert x_culture._manager_pid == sue_text
+    assert x_culture._councilunits == {}
+    assert x_culture._road_node_delimiter == get_node_delimiter()
+
+
+def test_CultureUnit_set_road_node_delimiter_CorrectSetsDelimiter(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    x_qid = get_temp_env_qid()
+    culture_dir = f"src/culture/examples/cultures/{x_qid}"
+    sue_text = "Sue"
+    x_culture = cultureunit_shop(x_qid, get_test_cultures_dir(), _manager_pid=sue_text)
+    assert x_culture._road_node_delimiter == get_node_delimiter()
+
+    # WHEN
+    slash_text = "/"
+    x_culture.set_road_node_delimiter(slash_text)
+
+    # THEN
+    assert x_culture._road_node_delimiter == slash_text
+
+
+def test_cultureunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
+    # GIVEN
+    x_qid = get_temp_env_qid()
+    culture_dir = f"src/culture/examples/cultures/{x_qid}"
+    sue_text = "Sue"
+    assert os_path.exists(culture_dir) is False
+
+    # WHEN
+    x_culture = cultureunit_shop(
+        qid=x_qid, cultures_dir=get_test_cultures_dir(), _manager_pid=sue_text
+    )
+
+    # THEN
+    assert x_culture != None
+    assert x_culture.qid == x_qid
+    assert os_path.exists(culture_dir)
+    assert x_culture._treasury_db != None
+    assert x_culture._manager_pid == sue_text
+    assert x_culture._councilunits == {}
+    assert x_culture._road_node_delimiter == get_node_delimiter()
 
 
 def test_culture_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
@@ -211,27 +271,6 @@ def test_copy_evaluation_culture_CorrectlyRaisesError(env_dir_setup_cleanup):
     )
 
 
-def test_cultureunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
-    # GIVEN
-    x_qid = get_temp_env_qid()
-    culture_dir = f"src/culture/examples/cultures/{x_qid}"
-    sue_text = "Sue"
-    assert os_path.exists(culture_dir) is False
-
-    # WHEN
-    x_culture = cultureunit_shop(
-        qid=x_qid, cultures_dir=get_test_cultures_dir(), _manager_pid=sue_text
-    )
-
-    # THEN
-    assert x_culture != None
-    assert x_culture.qid == x_qid
-    assert os_path.exists(culture_dir)
-    assert x_culture._treasury_db != None
-    assert x_culture._manager_pid == sue_text
-    assert x_culture._councilunits == {}
-
-
 def test_cultureunit_set_manager_pid_CorrectsSetsData(env_dir_setup_cleanup):
     # GIVEN
     x_qid = get_temp_env_qid()
@@ -265,7 +304,9 @@ def test_cultureunit_get_road_ReturnsCorrectObj(env_dir_setup_cleanup):
     roses_list_wo_root = get_all_road_nodes(roses_road_wo_root)
 
     # WHEN / THEN
-    assert x_culture.qid == x_culture.build_road()
-    assert healer_road_with_woot == x_culture.build_road(healer_road_wo_root)
-    assert bloomers_road_with_root == x_culture.build_road(bloomers_road_wo_root)
-    assert roses_road_with_root == x_culture.build_road(roses_road_wo_root)
+    assert x_culture.qid == x_culture.build_culture_road()
+    assert healer_road_with_woot == x_culture.build_culture_road(healer_road_wo_root)
+    assert bloomers_road_with_root == x_culture.build_culture_road(
+        bloomers_road_wo_root
+    )
+    assert roses_road_with_root == x_culture.build_culture_road(roses_road_wo_root)

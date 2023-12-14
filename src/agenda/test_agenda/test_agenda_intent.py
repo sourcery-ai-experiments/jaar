@@ -612,7 +612,7 @@ def test_agenda_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
     clean_cookery_idea = ideacore_shop(
         _label=clean_cookery_text, _pad=clean_things_road
     )
-    print(f"{clean_cookery_idea.node_road()=}")
+    print(f"{clean_cookery_idea.get_idea_road()=}")
     house_text = "house"
     house_road = x_agenda.make_road(x_agenda._culture_qid, house_text)
     cookery_room_text = "cookery room"
@@ -655,7 +655,7 @@ def test_agenda_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
     assert len(x_agenda._idearoot._kids) == 1
     assert x_agenda.get_idea_kid(daytime_road)._begin == 0
     assert x_agenda.get_idea_kid(daytime_road)._close == 1440
-    print(f"{clean_cookery_idea.node_road()=}")
+    print(f"{clean_cookery_idea.get_idea_road()=}")
 
     # GIVEN
     x_agenda.set_dominate_promise_idea(idea_kid=clean_cookery_idea)
@@ -664,7 +664,7 @@ def test_agenda_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
     # for idea_kid in x_agenda._idearoot._kids.keys():
     #     print(f"  {idea_kid=}")
 
-    print(f"{clean_cookery_idea.node_road()=}")
+    print(f"{clean_cookery_idea.get_idea_road()=}")
     assert x_agenda.get_idea_kid(clean_cookery_road) != None
     assert x_agenda.get_idea_kid(clean_cookery_road)._label == clean_cookery_text
     assert x_agenda.get_idea_kid(clean_cookery_road).promise
@@ -707,10 +707,10 @@ def test_Issue116Resolved_correctlySetsTaskAsTrue():
     night_idea = x_agenda._idea_dict.get(night_road)
     # for idea_x in x_agenda.get_intent_items():
     #     # if idea_x._task != True:
-    #     #     print(f"{len(action_idea_list)=} {idea_x._task=} {idea_x.node_road()}")
+    #     #     print(f"{len(action_idea_list)=} {idea_x._task=} {idea_x.get_idea_road()}")
     #     if idea_x._label == night_label:
     #         night_idea = idea_x
-    #         print(f"{idea_x.node_road()=}")
+    #         print(f"{idea_x.get_idea_road()=}")
 
     print(f"\nIdea = '{night_text}' and required '{jajatime_road}'")
     acptfactheir_jajatime = night_idea._acptfactheirs.get(jajatime_road)

@@ -680,7 +680,7 @@ def test_agenda_intent_credit_debt_IsCorrectlySet():
             intent_yes_balancelines_count += 1
             intent_yes_balancelines_agenda_i_sum += intent_item._agenda_importance
         # print(f"idea importance: {intent_item._agenda_importance:.7f} {sum_agenda_intent_importance:.5f} {intent_item._label=} ")
-        # print(f"{intent_item.node_road()}")
+        # print(f"{intent_item.get_idea_road()}")
     print(f"{sum_agenda_intent_importance=}")
     assert intent_no_balancelines_count == 20
     assert intent_yes_balancelines_count == 48

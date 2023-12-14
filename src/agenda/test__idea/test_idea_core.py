@@ -8,11 +8,15 @@ from src.agenda.required_idea import (
 )
 from src.agenda.required_assign import assigned_unit_shop, assigned_heir_shop
 from src.agenda.origin import originunit_shop
-from src.agenda.road import get_default_culture_root_label as root_label, get_road
+from src.agenda.road import (
+    get_default_culture_root_label as root_label,
+    get_road,
+    get_node_delimiter,
+)
 from pytest import raises as pytest_raises
 
 
-def test_idea_core_exists():
+def test_IdeaCore_exists():
     new_obj = IdeaCore()
     assert new_obj
     assert new_obj._kids is None
@@ -49,9 +53,10 @@ def test_idea_core_exists():
     assert new_obj._assignedunit is None
     assert new_obj._assignedheir is None
     assert new_obj._originunit is None
+    assert new_obj._road_node_delimiter is None
 
 
-def test_idea_core_shop_ReturnsCorrectObj():
+def test_ideacore_shop_ReturnsCorrectObj():
     new_obj = ideacore_shop()
     assert new_obj
     assert new_obj._kids is None
@@ -89,22 +94,67 @@ def test_idea_core_shop_ReturnsCorrectObj():
     assert new_obj._assignedunit is None
     assert new_obj._assignedheir is None
     assert new_obj._originunit is None
+    assert new_obj._road_node_delimiter == get_node_delimiter()
 
 
-def test_idea_core_get_key_road_works():
+def test_IdeaCore_get_key_road_ReturnsCorrectObj():
     # GIVEN
     round_text = "round_things"
-    round_pad = get_road(root_label(), round_text)
+    round_road = get_road(root_label(), round_text)
     ball_text = "ball"
 
     # WHEN
-    ball_idea = ideacore_shop(_label=ball_text, _pad=round_pad)
+    ball_idea = ideacore_shop(_label=ball_text, _pad=round_road)
 
     # THEN
     assert ball_idea.get_key_road() == ball_text
 
 
-def test_idea_core_balancelinks_exist():
+def test_IdeaCore_get_idea_road_ReturnsCorrectObj():
+    # GIVEN
+    round_text = "round_things"
+    slash_text = "/"
+    round_road = get_road(root_label(), round_text, delimiter=slash_text)
+    ball_text = "ball"
+
+    # WHEN
+    ball_idea = ideacore_shop(
+        ball_text, _pad=round_road, _road_node_delimiter=slash_text
+    )
+
+    # THEN
+    ball_road = get_road(round_road, ball_text, delimiter=slash_text)
+    assert ball_idea.get_idea_road() == ball_road
+
+
+def test_IdeaCore_set_pad_ReturnsCorrectObj():
+    # GIVEN
+    round_text = "round_things"
+    slash_text = "/"
+    round_road = get_road(root_label(), round_text, delimiter=slash_text)
+    ball_text = "ball"
+    ball_idea = ideacore_shop(
+        ball_text, _pad=round_road, _road_node_delimiter=slash_text
+    )
+    assert ball_idea._pad == round_road
+
+    # WHEN
+    sports_road = get_road(root_label(), "sports", delimiter=slash_text)
+    ball_idea.set_pad(parent_road=sports_road)
+
+    # THEN
+    assert ball_idea._pad == sports_road
+
+    # WHEN
+    soccer_text = "soccer"
+    ball_idea.set_pad(parent_road=sports_road, parent_label=soccer_text)
+
+    # THEN
+    soccer_road = get_road(sports_road, soccer_text, delimiter=slash_text)
+    assert ball_idea._pad == soccer_road
+
+
+def test_IdeaCore_balancelinks_exist():
     # GIVEN
     biker_creditor_weight = 12
     biker_debtor_weight = 15
@@ -136,7 +186,7 @@ def test_idea_core_balancelinks_exist():
     # assert group_link_x.weight == 3.0
 
 
-def test_idea_core_get_inherited_balanceheirs_weight_sum_WorksCorrectlyWithValues():
+def test_IdeaCore_get_inherited_balanceheirs_weight_sum_WorksCorrectlyWithValues():
     # GIVEN
     biker_creditor_weight = 12
     biker_debtor_weight = 15
@@ -192,7 +242,7 @@ def test_idea_core_get_inherited_balanceheirs_weight_sum_WorksCorrectlyWithValue
     assert biker_balanceheir._agenda_debt != None
 
 
-def test_idea_core_get_balancelinks_weight_sum_WorksCorrectlyNoValues():
+def test_IdeaCore_get_balancelinks_weight_sum_WorksCorrectlyNoValues():
     # GIVEN /WHEN
     sport_text = "sport"
     sport_idea = ideacore_shop(_label=sport_text)
@@ -204,7 +254,7 @@ def test_idea_core_get_balancelinks_weight_sum_WorksCorrectlyNoValues():
     sport_idea.set_balanceheirs_agenda_credit_debt()
 
 
-def test_idea_core_set_requiredheirsCorrectlyTakesFromOutside():
+def test_IdeaCore_set_requiredheirsCorrectlyTakesFromOutside():
     # GIVEN
     ball_text = "ball"
     ball_road = get_road(ball_text)
@@ -227,7 +277,7 @@ def test_idea_core_set_requiredheirsCorrectlyTakesFromOutside():
     assert id(ball_idea._requiredheirs) != id(requiredheirs)
 
 
-def test_idea_core_set_requiredheirsCorrectlyTakesFromSelf():
+def test_IdeaCore_set_requiredheirsCorrectlyTakesFromSelf():
     # GIVEN
     ball_text = "ball"
     ball_road = get_road(ball_text)
@@ -250,7 +300,7 @@ def test_idea_core_set_requiredheirsCorrectlyTakesFromSelf():
     assert ball_idea._requiredheirs == requiredheirs
 
 
-def test_idea_core_clear_descendant_promise_count_ClearsCorrectly():
+def test_IdeaCore_clear_descendant_promise_count_ClearsCorrectly():
     # GIVEN
     ball_text = "ball"
     ball_idea = ideacore_shop(_label=ball_text, _descendant_promise_count=55)
@@ -263,7 +313,7 @@ def test_idea_core_clear_descendant_promise_count_ClearsCorrectly():
     assert ball_idea._descendant_promise_count is None
 
 
-def test_idea_core_clear_all_party_credit_debt_ClearsCorrectly():
+def test_IdeaCore_clear_all_party_credit_debt_ClearsCorrectly():
     # GIVEN
     ball_text = "ball"
     ball_idea = ideacore_shop(
@@ -559,7 +609,7 @@ def test_idea_vaild_DenomCorrectInheritsBeginAndClose():
     assert work_idea._kids[clean_text]._begin == 2
     assert work_idea._kids[clean_text]._close == 6
     kid_idea_expected = ideacore_shop(
-        _label=clean_text, _numor=1, _denom=11.0, _reest=False, _begin=2, _close=6
+        clean_text, _numor=1, _denom=11.0, _reest=False, _begin=2, _close=6
     )
     assert work_idea._kids[clean_text] == kid_idea_expected
 
@@ -574,7 +624,7 @@ def test_idea_invaild_DenomThrowsError():
     clean_road = get_road(casa_road, clean_text)
     print(f"{clean_road=}")
     kid_idea = ideacore_shop(
-        _label=clean_text, _pad=casa_road, _numor=1, _denom=11.0, _reest=False
+        clean_text, _pad=casa_road, _numor=1, _denom=11.0, _reest=False
     )
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -777,21 +827,21 @@ def test_idea_get_descendants_Returns3DescendantsRoads():
     # GIVEN
     nation_text = "nation-state"
     nation_road = get_road(root_label(), nation_text)
-    nation_idea = ideacore_shop(_label=nation_text, _pad=root_label())
+    nation_idea = ideacore_shop(nation_text, _pad=root_label())
 
     usa_text = "USA"
     usa_road = get_road(nation_road, usa_text)
-    usa_idea = ideacore_shop(_label=usa_text, _pad=nation_road)
+    usa_idea = ideacore_shop(usa_text, _pad=nation_road)
     nation_idea.add_kid(idea_kid=usa_idea)
 
     texas_text = "Texas"
     texas_road = get_road(usa_road, texas_text)
-    texas_idea = ideacore_shop(_label=texas_text, _pad=usa_road)
+    texas_idea = ideacore_shop(texas_text, _pad=usa_road)
     usa_idea.add_kid(idea_kid=texas_idea)
 
     iowa_text = "Iowa"
     iowa_road = get_road(usa_road, iowa_text)
-    iowa_idea = ideacore_shop(_label=iowa_text, _pad=usa_road)
+    iowa_idea = ideacore_shop(iowa_text, _pad=usa_road)
     usa_idea.add_kid(idea_kid=iowa_idea)
 
     # WHEN
@@ -808,7 +858,7 @@ def test_idea_get_descendants_ErrorRaisedIfInfiniteLoop():
     # GIVEN
     nation_text = "nation-state"
     nation_road = get_road(root_label(), nation_text)
-    nation_idea = ideacore_shop(_label=nation_text, _pad=root_label())
+    nation_idea = ideacore_shop(nation_text, _pad=root_label())
     nation_idea.add_kid(idea_kid=nation_idea)
     max_count = 1000
 
@@ -817,5 +867,5 @@ def test_idea_get_descendants_ErrorRaisedIfInfiniteLoop():
         nation_idea.get_descendant_roads()
     assert (
         str(excinfo.value)
-        == f"Idea '{nation_idea.node_road()}' either has an infinite loop or more than {max_count} descendants."
+        == f"Idea '{nation_idea.get_idea_road()}' either has an infinite loop or more than {max_count} descendants."
     )

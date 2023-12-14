@@ -70,7 +70,7 @@ def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     laundry_task_road = get_road(
         road_nodes=[x_culture.qid, casa_text, laundry_task_text]
     )
-    assert new_cali_agenda.get_intent_items()[0].node_road() == laundry_task_road
+    assert new_cali_agenda.get_intent_items()[0].get_idea_road() == laundry_task_road
 
 
 def test_culture_council_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):

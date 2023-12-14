@@ -951,7 +951,7 @@ class AgendaUnit:
             balancelinks=self._idearoot._balancelinks,
             uid=self._idearoot._uid,
             promise=self._idearoot.promise,
-            idea_road=self._idearoot.node_road(),
+            idea_road=self._idearoot.get_idea_road(),
         )
 
         idea_list = [self._idearoot]
@@ -970,7 +970,7 @@ class AgendaUnit:
             balancelinks=idea_kid._balancelinks,
             uid=idea_kid._uid,
             promise=idea_kid.promise,
-            idea_road=idea_kid.node_road(),
+            idea_road=idea_kid.get_idea_road(),
         )
         idea_list.append(idea_kid)
 
@@ -986,7 +986,7 @@ class AgendaUnit:
         for idea_x in self.get_idea_list():
             if idea_x._uid is None or idea_uid_dict.get(idea_x._uid) > 1:
                 new_idea_uid_max = idea_uid_max + 1
-                self.edit_idea_attr(road=idea_x.node_road(), uid=new_idea_uid_max)
+                self.edit_idea_attr(road=idea_x.get_idea_road(), uid=new_idea_uid_max)
                 idea_uid_max = new_idea_uid_max
 
     def get_node_count(self):
@@ -1839,7 +1839,7 @@ class AgendaUnit:
 
         if idea_kid.is_kidless():
             # set idea's ancestor metrics using agenda root as common reference
-            self._set_ancestor_metrics(road=idea_kid.node_road())
+            self._set_ancestor_metrics(road=idea_kid.get_idea_road())
             self._distribute_agenda_importance(idea=idea_kid)
 
     def _distribute_agenda_importance(self, idea: IdeaCore):
@@ -1865,7 +1865,7 @@ class AgendaUnit:
 
         self._rational = False
         self._tree_traverse_count = 0
-        self._idea_dict = {self._idearoot.node_road(): self._idearoot}
+        self._idea_dict = {self._idearoot.get_idea_road(): self._idearoot}
 
         while (
             not self._rational and self._tree_traverse_count < self._max_tree_traverse
@@ -1896,7 +1896,7 @@ class AgendaUnit:
         while cache_idea_list != []:
             parent_idea = cache_idea_list.pop()
             if self._tree_traverse_count == 0:
-                self._idea_dict[parent_idea.node_road()] = parent_idea
+                self._idea_dict[parent_idea.get_idea_road()] = parent_idea
 
             if parent_idea._kids != None:
                 coin_onset = parent_idea._agenda_coin_onset
@@ -1941,7 +1941,9 @@ class AgendaUnit:
 
     def get_idea_tree_ordered_road_list(self, no_range_descendants: bool = False):
         idea_list = self.get_idea_list()
-        node_dict = {idea.node_road().lower(): idea.node_road() for idea in idea_list}
+        node_dict = {
+            idea.get_idea_road().lower(): idea.get_idea_road() for idea in idea_list
+        }
         node_lowercase_ordered_list = sorted(list(node_dict))
         node_orginalcase_ordered_list = [
             node_dict[node_l] for node_l in node_lowercase_ordered_list

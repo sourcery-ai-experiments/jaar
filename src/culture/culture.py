@@ -1,4 +1,4 @@
-from src.agenda.road import Road, get_road_from_road_and_node
+from src.agenda.road import Road, get_road_from_road_and_node, get_node_delimiter
 from src.agenda.agenda import (
     AgendaUnit,
     agendaunit_shop,
@@ -56,6 +56,9 @@ class CultureUnit:
     _councilunits: dict[str:CouncilUnit] = None
     _treasury_db = None
     _road_node_delimiter: str = None
+
+    def set_road_node_delimiter(self, road_delimiter: str):
+        self._road_node_delimiter = get_node_delimiter(road_delimiter)
 
     def set_manager_pid(self, person_id: PersonID):
         self._manager_pid = person_id
@@ -263,7 +266,9 @@ class CultureUnit:
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
             for idea_x in agendaunit_x._idea_dict.values():
-                idea_catalog_x = IdeaCatalog(agendaunit_x._healer, idea_x.node_road())
+                idea_catalog_x = IdeaCatalog(
+                    agendaunit_x._healer, idea_x.get_idea_road()
+                )
                 sqlstr = get_idea_catalog_table_insert_sqlstr(idea_catalog_x)
                 cur.execute(sqlstr)
 
@@ -530,12 +535,14 @@ class CultureUnit:
         x_councilunit = self.get_councilunit(cid=council_cid)
         return x_councilunit._admin.get_remelded_output_agenda()
 
-    def build_road(self, road_wo_culture_root: Road = None):
+    def build_culture_road(self, road_wo_culture_root: Road = None):
         if road_wo_culture_root is None or road_wo_culture_root == "":
             return self.qid
         else:
             return get_road_from_road_and_node(
-                pad=self.qid, terminus_node=road_wo_culture_root
+                pad=self.qid,
+                terminus_node=road_wo_culture_root,
+                delimiter=self._road_node_delimiter,
             )
 
 
@@ -545,7 +552,8 @@ def cultureunit_shop(
     _manager_pid: PersonID = None,
     _councilunits: dict[str:CouncilUnit] = None,
     in_memory_treasury: bool = None,
-):
+    _road_node_delimiter: str = None,
+) -> CultureUnit:
     if in_memory_treasury is None:
         in_memory_treasury = True
     culture_x = CultureUnit(
@@ -553,6 +561,7 @@ def cultureunit_shop(
         cultures_dir=cultures_dir,
         _councilunits=_councilunits,
     )
+    culture_x.set_road_node_delimiter(_road_node_delimiter)
     culture_x.set_manager_pid(_manager_pid)
     culture_x.set_councilunits_empty_if_null()
     culture_x.create_dirs_if_null(in_memory_treasury=in_memory_treasury)

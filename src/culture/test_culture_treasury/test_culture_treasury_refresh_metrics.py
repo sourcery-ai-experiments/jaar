@@ -440,7 +440,7 @@ def test_refresh_treasury_public_agendas_data_Populates_acptfact_catalog_table(
     b_text = "B"
     b_road = get_road(tim_agenda._healer, b_text)
     # for idea_x in tim_agenda._idea_dict.values():
-    #     print(f"{f_road=} {idea_x.node_road()=}")
+    #     print(f"{f_road=} {idea_x.get_idea_road()=}")
     tim_agenda.set_acptfact(base=c_road, pick=f_road)
 
     bob_agenda.set_acptfact(base=c_road, pick=f_road)

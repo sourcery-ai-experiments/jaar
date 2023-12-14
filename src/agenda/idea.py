@@ -27,9 +27,12 @@ from src.agenda.required_idea import (
     acptfactunits_get_from_dict,
 )
 from src.agenda.road import (
+    Road,
+    RaodNode,
     is_sub_road,
     get_default_culture_root_label as root_label,
     get_road as road_get_road,
+    get_node_delimiter,
 )
 from src.agenda.group import (
     BalanceHeir,
@@ -171,6 +174,7 @@ class IdeaCore:
     _is_expanded: bool = None
     _sibling_total_weight: int = None
     _active_status_hx: dict[int:bool] = None
+    _road_node_delimiter: str = None
 
     def is_intent_item(self, base_x: Road = None):
         # bool_x = False
@@ -325,11 +329,24 @@ class IdeaCore:
             )
         ]
 
-    def node_road(self) -> Road:
+    def create_road(
+        self,
+        road_begin: Road = None,
+        terminus_node: RaodNode = None,
+        road_nodes: list[RaodNode] = None,
+    ):
+        return road_get_road(
+            road_begin=road_begin,
+            terminus_node=terminus_node,
+            road_nodes=road_nodes,
+            delimiter=self._road_node_delimiter,
+        )
+
+    def get_idea_road(self) -> Road:
         if self._pad in (None, ""):
-            return road_get_road(self._label)
+            return self.create_road(self._label)
         else:
-            return road_get_road(self._pad, self._label)
+            return self.create_road(self._pad, self._label)
 
     def clear_descendant_promise_count(self):
         self._descendant_promise_count = None
@@ -347,13 +364,13 @@ class IdeaCore:
         while to_evaluate_ideas != [] and count_x < max_count:
             idea_x = to_evaluate_ideas.pop()
             idea_x.set_kids_empty_if_null()
-            descendant_roads[idea_x.node_road()] = -1
+            descendant_roads[idea_x.get_idea_road()] = -1
             to_evaluate_ideas.extend(idea_x._kids.values())
             count_x += 1
 
         if count_x == max_count:
             raise IdeaGetDescendantsException(
-                f"Idea '{self.node_road()}' either has an infinite loop or more than {max_count} descendants."
+                f"Idea '{self.get_idea_road()}' either has an infinite loop or more than {max_count} descendants."
             )
 
         return descendant_roads
@@ -381,9 +398,9 @@ class IdeaCore:
         elif parent_road == "" and parent_label != None:
             self._pad = parent_label
         elif parent_road != "" and parent_label in ("", None):
-            self._pad = road_get_road(parent_road)
+            self._pad = self.create_road(parent_road)
         else:
-            self._pad = road_get_road(parent_road, parent_label)
+            self._pad = self.create_road(parent_road, parent_label)
 
     def inherit_balanceheirs(
         self, parent_balanceheirs: dict[GroupBrand:BalanceHeir] = None
@@ -570,7 +587,7 @@ class IdeaCore:
             attrs = xl.pop()
             if attrs[1] != attrs[2]:
                 raise InvalidIdeaException(
-                    f"Meld fail idea={self.node_road()} {attrs[0]}:{attrs[1]} with {other_idea.node_road()} {attrs[0]}:{attrs[2]}"
+                    f"Meld fail idea={self.get_idea_road()} {attrs[0]}:{attrs[1]} with {other_idea.get_idea_road()} {attrs[0]}:{attrs[2]}"
                 )
 
     def _set_idea_attr(self, idea_attr: IdeaAttrHolder):
@@ -711,7 +728,7 @@ class IdeaCore:
             # if idea_kid._reest != None:
             if self._begin is None or self._close is None:
                 raise InvalidIdeaException(
-                    f"Idea {idea_kid.node_road()} cannot have numor,denom,reest if parent does not have begin/close range"
+                    f"Idea {idea_kid.get_idea_road()} cannot have numor,denom,reest if parent does not have begin/close range"
                 )
 
             idea_kid._begin = self._begin * idea_kid._numor / idea_kid._denom
@@ -1036,6 +1053,7 @@ def ideacore_shop(
     _is_expanded: bool = True,
     _sibling_total_weight: int = None,
     _active_status_hx: dict[int:bool] = None,
+    _road_node_delimiter: str = None,
 ) -> IdeaCore:
     if promise is None:
         promise = False
@@ -1088,6 +1106,7 @@ def ideacore_shop(
         _is_expanded=_is_expanded,
         _sibling_total_weight=_sibling_total_weight,
         _active_status_hx=_active_status_hx,
+        _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
     )
 
 
