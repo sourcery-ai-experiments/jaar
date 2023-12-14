@@ -66,7 +66,7 @@ def test_agendaunit_shop_ReturnsCorrectObjectWithCorrectEmptyField():
 
     assert x_agenda._healer == ""
     assert x_agenda._culture_qid == root_label()
-    assert x_agenda._road_node_separator == get_node_separator(None)
+    assert x_agenda._road_node_separator == get_node_separator()
 
 
 def test_agenda_IsAbleToSetTaskAsComplete():

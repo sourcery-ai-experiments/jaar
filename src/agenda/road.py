@@ -11,7 +11,7 @@ class Road(str):  # Created to help track the concept
     pass
 
 
-def get_node_separator(separator: str) -> str:
+def get_node_separator(separator: str = None) -> str:
     return separator if separator != None else ","
 
 

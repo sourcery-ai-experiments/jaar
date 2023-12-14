@@ -1,6 +1,7 @@
 from src.world.world import worldunit_shop
 from src.world.concern import create_cultureaddress
 from src.world.examples.world_env_kit import get_test_worlds_dir
+from os import path as os_path
 
 
 def test_worldunit_add_cultural_connection_CorrectlyCreatesObj():
@@ -26,8 +27,32 @@ def test_worldunit_add_cultural_connection_CorrectlyCreatesObj():
     assert texas_culture._councilunits.get(kari_text) != None
 
 
-def test_worldunit_apply_urgeunit_CorrectlyCreates_seed_agendas():
+def test_worldunit_apply_urgeunit_CorrectlyCreates_seed_agendas(
+    council_dir_setup_cleanup,
+):
     # GIVEN urger and actor seed_agendas does not exist
+    dallas_text = "dallas"
+    x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
+    luca_text = "Luca"
+    x_world.add_personunit(luca_text)
+    luca_person = x_world.get_personunit_from_memory(luca_text)
+    texas_text = "Texas"
+    luca_person.add_cultureunit(texas_text)
+    texas_culture = luca_person.get_cultureunit(texas_text)
+    culture_public_dir = texas_culture.get_public_dir()
+    tim_text = "Tim"
+    public_tim_file_name = f"{tim_text}.json"
+    public_tim_file_path = f"{culture_public_dir}/{public_tim_file_name}"
+    print(f"{public_tim_file_path=}")
+    # public_file_path = f"src/culture/examples/ex_env/agendas/{public_file_name}"
+    assert os_path.exists(public_tim_file_path) is False
+
+    # WHEN
+    x_world.apply_urgeunit()
+
+    # THEN
+    assert os_path.exists(public_tim_file_path)
+
     # WHEN worldunit urgeunit is applyed
     # THEN seed agendas do exist
     assert 1 == 2
