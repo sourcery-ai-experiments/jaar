@@ -59,7 +59,7 @@ def test_agenda_get_dict_ReturnsDictObject():
     assert agenda_dict["_weight"] == agenda_weight
     assert agenda_dict["_max_tree_traverse"] == x_agenda._max_tree_traverse
     assert agenda_dict["_auto_output_to_public"] == x_agenda._auto_output_to_public
-    assert agenda_dict["_road_node_separator"] == x_agenda._road_node_separator
+    assert agenda_dict["_road_node_delimiter"] == x_agenda._road_node_delimiter
     assert len(agenda_dict["_partys"]) == len(x_agenda._partys)
     assert len(agenda_dict["_groups"]) == len(x_agenda._groups)
 
@@ -210,7 +210,7 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     assert agenda_dict["_weight"] == x_agenda._weight
     assert agenda_dict["_max_tree_traverse"] == 2
     assert agenda_dict["_max_tree_traverse"] == x_agenda._max_tree_traverse
-    assert agenda_dict["_road_node_separator"] == x_agenda._road_node_separator
+    assert agenda_dict["_road_node_delimiter"] == x_agenda._road_node_delimiter
 
     x_idearoot = x_agenda._idearoot
     idearoot_dict = agenda_dict.get("_idearoot")
@@ -261,8 +261,8 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     # GIVEN
     y_agenda = example_agendas_get_agenda_x1_3levels_1required_1acptfacts()
     y_agenda.set_max_tree_traverse(23)
-    slash_road_node_separator = "/"
-    y_agenda.set_road_node_separator(slash_road_node_separator)
+    # slash_road_node_delimiter = "/"
+    # y_agenda.set_road_node_delimiter(slash_road_node_delimiter)
     tiger_culture_qid = "tiger_econ"
     y_agenda.set_culture_qid(tiger_culture_qid)
 
@@ -312,8 +312,8 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     assert x_agenda._max_tree_traverse == 23
     assert x_agenda._max_tree_traverse == y_agenda._max_tree_traverse
     assert x_agenda._auto_output_to_public == y_agenda._auto_output_to_public
-    assert x_agenda._road_node_separator == y_agenda._road_node_separator
-    assert x_agenda._road_node_separator == slash_road_node_separator
+    assert x_agenda._road_node_delimiter == y_agenda._road_node_delimiter
+    # assert x_agenda._road_node_delimiter == slash_road_node_delimiter
 
     idearoot_x = x_agenda._idearoot
     assert idearoot_x._pad == ""

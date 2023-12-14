@@ -55,7 +55,7 @@ class CultureUnit:
     _manager_pid: PersonID = None
     _councilunits: dict[str:CouncilUnit] = None
     _treasury_db = None
-    _road_node_separator: str = None
+    _road_node_delimiter: str = None
 
     def set_manager_pid(self, person_id: PersonID):
         self._manager_pid = person_id

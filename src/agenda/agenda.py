@@ -57,11 +57,12 @@ from src.agenda.road import (
     find_replace_road_key_dict,
     get_ancestor_roads,
     get_default_culture_root_label as root_label,
-    get_road_from_nodes,
     get_all_road_nodes,
     get_forefather_roads,
-    get_road,
-    get_node_separator,
+    get_road as make_road,
+    get_node_delimiter,
+    RaodNode,
+    Road,
 )
 from src.agenda.origin import originunit_get_from_dict, originunit_shop, OriginUnit
 from copy import deepcopy as copy_deepcopy
@@ -102,7 +103,20 @@ class AgendaUnit:
     _originunit: OriginUnit = None
     _culture_qid: str = None
     _auto_output_to_public: bool = None
-    _road_node_separator: str = None
+    _road_node_delimiter: str = None
+
+    def get_road(
+        self,
+        road_begin: Road = None,
+        terminus_node: RaodNode = None,
+        road_nodes: list[RaodNode] = None,
+    ):
+        return make_road(
+            road_begin=road_begin,
+            terminus_node=terminus_node,
+            road_nodes=road_nodes,
+            delimiter=self._road_node_delimiter,
+        )
 
     def set_partys_output_agenda_meld_order(self):
         sort_partys_list = list(self._partys.values())
@@ -114,8 +128,8 @@ class AgendaUnit:
         for x_partyunit in self._partys.values():
             x_partyunit.clear_output_agenda_meld_order()
 
-    def set_road_node_separator(self, _road_node_separator: str):
-        self._road_node_separator = get_node_separator(_road_node_separator)
+    def set_road_node_delimiter(self, _road_node_delimiter: str):
+        self._road_node_delimiter = get_node_delimiter(_road_node_delimiter)
 
     def set_culture_qid(self, culture_qid: str):
         old_culture_qid = copy_deepcopy(self._culture_qid)
@@ -266,9 +280,9 @@ class AgendaUnit:
         return hreg_get_time_min_from_dt(dt=dt)
 
     def get_time_c400_from_min(self, min: int) -> int:
-        time_road = get_road(self._culture_qid, "time")
-        tech_road = get_road(time_road, "tech")
-        c400_road = get_road(tech_road, "400 year cycle")
+        time_road = self.get_road(self._culture_qid, "time")
+        tech_road = self.get_road(time_road, "tech")
+        c400_road = self.get_road(tech_road, "400 year cycle")
         c400_idea = self.get_idea_kid(c400_road)
         c400_min = c400_idea._close
         return int(min / c400_min), c400_idea, min % c400_min
@@ -279,15 +293,15 @@ class AgendaUnit:
         c100_4_96y = c400_idea.get_kids_in_range(begin=c400yr_min, close=c400yr_min)[0]
         cXXXyr_min = c400yr_min - c100_4_96y._begin
 
-        time_road = get_road(self._culture_qid, "time")
-        tech_road = get_road(time_road, "tech")
+        time_road = self.get_road(self._culture_qid, "time")
+        tech_road = self.get_road(time_road, "tech")
 
         # identify which range the time is in
         if c100_4_96y._close - c100_4_96y._begin in (
             50492160,
             52596000,
         ):  # 96 year and 100 year ideas
-            yr4_1461_road = get_road(tech_road, "4year with leap")
+            yr4_1461_road = self.get_road(tech_road, "4year with leap")
             yr4_1461_idea = self.get_idea_kid(yr4_1461_road)
             yr4_cycles = int(cXXXyr_min / yr4_1461_idea._close)
             cXyr_min = cXXXyr_min % yr4_1461_idea._close
@@ -295,7 +309,7 @@ class AgendaUnit:
                 0
             ]
         elif c100_4_96y._close - c100_4_96y._begin == 2102400:
-            yr4_1460_road = get_road(tech_road, "4year wo leap")
+            yr4_1460_road = self.get_road(tech_road, "4year wo leap")
             yr4_1460_idea = self.get_idea_kid(yr4_1460_road)
             yr4_cycles = 0
             yr1_idea = yr4_1460_idea.get_kids_in_range(cXXXyr_min, cXXXyr_min)[0]
@@ -309,21 +323,21 @@ class AgendaUnit:
         return year_num, yr1_idea, yr1_rem_min
 
     def get_time_month_from_min(self, min: int):
-        time_road = get_road(self._culture_qid, "time")
-        tech_road = get_road(time_road, "tech")
+        time_road = self.get_road(self._culture_qid, "time")
+        tech_road = self.get_road(time_road, "tech")
 
         year_num, yr1_idea, yr1_idea_rem_min = self.get_time_c400yr_from_min(min=min)
         yrx = None
         if yr1_idea._close - yr1_idea._begin == 525600:
-            yr365_road = get_road(tech_road, "365 year")
+            yr365_road = self.get_road(tech_road, "365 year")
             yrx = self.get_idea_kid(yr365_road)
         elif yr1_idea._close - yr1_idea._begin == 527040:
-            yr366_road = get_road(tech_road, "366 year")
+            yr366_road = self.get_road(tech_road, "366 year")
             yrx = self.get_idea_kid(yr366_road)
         mon_x = yrx.get_kids_in_range(begin=yr1_idea_rem_min, close=yr1_idea_rem_min)[0]
         month_rem_min = yr1_idea_rem_min - mon_x._begin
         month_num = int(mon_x._label.split("-")[0])
-        day_road = get_road(tech_road, "day")
+        day_road = self.get_road(tech_road, "day")
         day_x = self.get_idea_kid(day_road)
         day_num = int(month_rem_min / day_x._close)
         day_rem_min = month_rem_min % day_x._close
@@ -375,9 +389,9 @@ class AgendaUnit:
 
     def _get_jajatime_week_legible_text(self, open: int, divisor: int) -> str:
         open_in_week = open % divisor
-        time_road = get_road(self._culture_qid, "time")
-        tech_road = get_road(time_road, "tech")
-        week_road = get_road(tech_road, "week")
+        time_road = self.get_road(self._culture_qid, "time")
+        tech_road = self.get_road(time_road, "tech")
+        week_road = self.get_road(tech_road, "week")
         weekday_ideas_dict = self.get_idea_ranged_kids(
             idea_road=week_road, begin=open_in_week
         )
@@ -731,8 +745,8 @@ class AgendaUnit:
     def set_time_acptfacts(self, open: datetime = None, nigh: datetime = None) -> None:
         open_minutes = self.get_time_min_from_dt(dt=open) if open != None else None
         nigh_minutes = self.get_time_min_from_dt(dt=nigh) if nigh != None else None
-        time_road = get_road(self._culture_qid, "time")
-        minutes_acptfact = get_road(time_road, "jajatime")
+        time_road = self.get_road(self._culture_qid, "time")
+        minutes_acptfact = self.get_road(time_road, "jajatime")
         self.set_acptfact(
             base=minutes_acptfact,
             pick=minutes_acptfact,
@@ -805,7 +819,7 @@ class AgendaUnit:
             idea_x = lemma_y.idea_x
             acptfact_x = lemma_y.calc_acptfact
 
-            road_x = get_road(idea_x._pad, idea_x._label)
+            road_x = self.get_road(idea_x._pad, idea_x._label)
             lemma_acptfactunits[road_x] = acptfact_x
 
             for kid2 in idea_x._kids.values():
@@ -1018,7 +1032,7 @@ class AgendaUnit:
     ):
         if adoptees != None:
             for adoptee_label in adoptees:
-                adoptee_road = get_road(pad, adoptee_label)
+                adoptee_road = self.get_road(pad, adoptee_label)
                 adoptee_idea = self.get_idea_kid(adoptee_road)
 
         if not create_missing_ideas_groups:
@@ -1041,19 +1055,19 @@ class AgendaUnit:
                 )
                 road_nodes.append(temp_road)
 
-            idea_kid.set_pad(parent_road=get_road_from_nodes(road_nodes))
+            idea_kid.set_pad(parent_road=self.get_road(road_nodes=road_nodes))
 
         temp_idea.add_kid(idea_kid)
 
-        kid_road = get_road(pad, idea_kid._label)
+        kid_road = self.get_road(pad, idea_kid._label)
 
         if adoptees != None:
             weight_sum = 0
             for adoptee_label in adoptees:
-                adoptee_road = get_road(pad, adoptee_label)
+                adoptee_road = self.get_road(pad, adoptee_label)
                 adoptee_idea = self.get_idea_kid(adoptee_road)
                 weight_sum += adoptee_idea._weight
-                new_adoptee_pad = get_road(kid_road, adoptee_label)
+                new_adoptee_pad = self.get_road(kid_road, adoptee_label)
                 self.add_idea(adoptee_idea, new_adoptee_pad)
                 self.edit_idea_attr(road=new_adoptee_pad, weight=adoptee_idea._weight)
                 self.del_idea_kid(adoptee_road)
@@ -1165,9 +1179,9 @@ class AgendaUnit:
         self.set_agenda_metrics()
 
     def _move_idea_kids(self, road_nodes: list):
-        d_temp_idea = self.get_idea_kid(get_road_from_nodes(road_nodes))
+        d_temp_idea = self.get_idea_kid(self.get_road(road_nodes=road_nodes))
         for kid in d_temp_idea._kids.values():
-            self.add_idea(kid, pad=get_road_from_nodes(road_nodes[:-1]))
+            self.add_idea(kid, pad=self.get_road(road_nodes=road_nodes[:-1]))
 
     def set_healer(self, new_healer):
         self._healer = new_healer
@@ -1177,9 +1191,9 @@ class AgendaUnit:
         old_road: Road,
         new_label: str,
     ):
-        if self._road_node_separator in new_label:
+        if self._road_node_delimiter in new_label:
             raise InvalidLabelException(
-                f"Cannot change '{old_road}' because new_label {new_label} contains separator {self._road_node_separator}"
+                f"Cannot change '{old_road}' because new_label {new_label} contains delimiter {self._road_node_delimiter}"
             )
 
         # check idea exists
@@ -1187,7 +1201,9 @@ class AgendaUnit:
             raise InvalidAgendaException(f"Idea {old_road=} does not exist")
 
         pad = get_pad_from_road(road=old_road)
-        new_road = get_road(new_label) if pad == "" else get_road(pad, new_label)
+        new_road = (
+            self.get_road(new_label) if pad == "" else self.get_road(pad, new_label)
+        )
         if old_road != new_road:
             # if root _label is changed
             if pad == "":
@@ -1981,7 +1997,7 @@ class AgendaUnit:
             "_culture_qid": self._culture_qid,
             "_max_tree_traverse": self._max_tree_traverse,
             "_auto_output_to_public": self._auto_output_to_public,
-            "_road_node_separator": self._road_node_separator,
+            "_road_node_delimiter": self._road_node_delimiter,
             "_idearoot": self._idearoot.get_dict(),
         }
 
@@ -1995,7 +2011,7 @@ class AgendaUnit:
             yb = ideabase_list.pop(0)
             range_source_road_x = None
             if yb.sr != None:
-                range_source_road_x = get_road(self._culture_qid, yb.sr)
+                range_source_road_x = self.get_road(self._culture_qid, yb.sr)
 
             idea_x = ideacore_shop(
                 _label=yb.n,
@@ -2009,18 +2025,21 @@ class AgendaUnit:
                 _reest=yb.mr,
                 _range_source_road=range_source_road_x,
             )
-            road_x = get_road(self._culture_qid, yb.rr)
+            road_x = self.get_road(self._culture_qid, yb.rr)
             self.add_idea(idea_x, pad=road_x)
 
             numeric_road_x = None
             if yb.nr != None:
-                numeric_road_x = get_road(self._culture_qid, yb.nr)
+                numeric_road_x = self.get_road(self._culture_qid, yb.nr)
                 self.edit_idea_attr(
-                    road=get_road(road_x, yb.n), numeric_road=numeric_road_x
+                    road=self.get_road(road_x, yb.n), numeric_road=numeric_road_x
                 )
             if yb.a != None:
                 self.edit_idea_attr(
-                    road=get_road(road_x, yb.n), addin=yb.a, denom=yb.md, numor=yb.mn
+                    road=self.get_road(road_x, yb.n),
+                    addin=yb.a,
+                    denom=yb.md,
+                    numor=yb.mn,
                 )
 
         self.set_agenda_metrics()
@@ -2077,7 +2096,7 @@ class AgendaUnit:
         idea_kid.promise = True
         self.add_idea(
             idea_kid=idea_kid,
-            pad=get_road(idea_kid._pad),
+            pad=self.get_road(idea_kid._pad),
             create_missing_ideas_groups=True,
         )
 
@@ -2107,7 +2126,7 @@ class AgendaUnit:
         party_pid = other_agenda._healer
         o_idea_list = other_agenda.get_idea_list_without_idearoot()
         for o_idea in o_idea_list:
-            o_road = road_validate(get_road(o_idea._pad, o_idea._label))
+            o_road = road_validate(self.get_road(o_idea._pad, o_idea._label))
             try:
                 main_idea = self.get_idea_kid(o_road)
                 main_idea.meld(o_idea, False, party_pid, party_weight)
@@ -2231,7 +2250,7 @@ def agendaunit_shop(
     _weight: float = None,
     _auto_output_to_public: bool = None,
     _culture_qid: CultureQID = None,
-    _road_node_separator: str = None,
+    _road_node_delimiter: str = None,
 ) -> AgendaUnit:
     if _weight is None:
         _weight = 1
@@ -2249,7 +2268,7 @@ def agendaunit_shop(
         _culture_qid=_culture_qid,
     )
     x_agenda._idearoot = idearoot_shop(_label=None, _uid=1, _level=0)
-    x_agenda.set_road_node_separator(get_node_separator(_road_node_separator))
+    x_agenda.set_road_node_delimiter(get_node_delimiter(_road_node_delimiter))
     x_agenda.set_max_tree_traverse(3)
     x_agenda._rational = False
     x_agenda._originunit = originunit_shop()
@@ -2271,9 +2290,9 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
         get_obj_from_agenda_dict(agenda_dict, "_max_tree_traverse")
     )
     x_agenda.set_culture_qid(get_obj_from_agenda_dict(agenda_dict, "_culture_qid"))
-    _road_node_separator_text = "_road_node_separator"
-    x_agenda.set_road_node_separator(
-        get_obj_from_agenda_dict(agenda_dict, _road_node_separator_text)
+    _road_node_delimiter_text = "_road_node_delimiter"
+    x_agenda.set_road_node_delimiter(
+        get_obj_from_agenda_dict(agenda_dict, _road_node_delimiter_text)
     )
     x_agenda._partys = get_obj_from_agenda_dict(agenda_dict, "_partys")
     x_agenda._groups = get_obj_from_agenda_dict(agenda_dict, "_groups")
@@ -2323,7 +2342,10 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
         for kid_dict in get_obj_from_idea_dict(idea_dict, "_kids").values():
             pad_road = get_obj_from_idea_dict(idea_dict, pad_text)
             kid_label = get_obj_from_idea_dict(idea_dict, "_label")
-            kid_dict[pad_text] = get_road(pad_road, kid_label)
+            print(f"{x_agenda._road_node_delimiter=}")
+            kid_dict[pad_text] = make_road(
+                pad_road, kid_label, delimiter=x_agenda._road_node_delimiter
+            )
             to_evaluate_idea_dicts.append(kid_dict)
 
         idea_obj = ideacore_shop(

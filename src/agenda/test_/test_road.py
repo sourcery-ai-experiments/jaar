@@ -17,8 +17,8 @@ from src.agenda.road import (
     get_diff_road,
     get_road,
     is_heir_road,
-    get_node_separator,
-    replace_road_node_separator,
+    get_node_delimiter,
+    replace_road_node_delimiter,
 )
 from src.agenda.required_idea import sufffactunit_shop
 from src.agenda.idea import IdeaCore
@@ -37,11 +37,11 @@ def test_road_exists():
 def test_road_is_sub_road_correctlyReturnsBool():
     # WHEN
     healer_text = "healer"
-    healer_road = f"{root_label()}{get_node_separator()}{healer_text}"
+    healer_road = f"{root_label()}{get_node_delimiter()}{healer_text}"
     bloomers_text = "bloomers"
-    bloomers_road = f"{healer_road}{get_node_separator()}{bloomers_text}"
+    bloomers_road = f"{healer_road}{get_node_delimiter()}{bloomers_text}"
     roses_text = "roses"
-    roses_road = f"{bloomers_road}{get_node_separator()}{roses_text}"
+    roses_road = f"{bloomers_road}{get_node_delimiter()}{roses_text}"
 
     # WHEN / THEN
     assert is_sub_road(bloomers_road, bloomers_road)
@@ -50,7 +50,7 @@ def test_road_is_sub_road_correctlyReturnsBool():
 
 
 def test_road_road_validate_correctlyReturnsRoad():
-    x_s = get_node_separator()
+    x_s = get_node_delimiter()
     assert road_validate(None) == ""
     assert road_validate("") == ""
     assert road_validate(f"{root_label()}{x_s}casa") == f"{root_label()}{x_s}casa"
@@ -61,25 +61,25 @@ def test_road_road_validate_correctlyReturnsRoad():
     assert road_validate(f"AA{x_s}casa") == f"{root_label()}{x_s}casa"
 
 
-def test_road_get_road_ReturnsCorrectRoadWithSeparator():
+def test_road_get_road_ReturnsCorrectRoadWithdelimiter():
     # GIVEN
     rose_text = "rose"
-    comma_separator = ","
-    comma_separator_rose_road = f"{root_label()}{comma_separator}{rose_text}"
-    assert get_road(root_label(), rose_text) == comma_separator_rose_road
+    comma_delimiter = ","
+    comma_delimiter_rose_road = f"{root_label()}{comma_delimiter}{rose_text}"
+    assert get_road(root_label(), rose_text) == comma_delimiter_rose_road
 
     # WHEN
-    slash_separator = "/"
-    slash_separator_rose_road = f"{root_label()}{slash_separator}{rose_text}"
-    generated_rose_road = get_road(root_label(), rose_text, separator=slash_separator)
+    slash_delimiter = "/"
+    slash_delimiter_rose_road = f"{root_label()}{slash_delimiter}{rose_text}"
+    generated_rose_road = get_road(root_label(), rose_text, delimiter=slash_delimiter)
 
     # THEN
-    assert generated_rose_road != comma_separator_rose_road
-    assert generated_rose_road == slash_separator_rose_road
+    assert generated_rose_road != comma_delimiter_rose_road
+    assert generated_rose_road == slash_delimiter_rose_road
 
     # bloomers_text = "bloomers"
     # static_bloomers_road = (
-    #     f"{root_label()}{slash_separator}{rose_text}{slash_separator}{bloomers_text}"
+    #     f"{root_label()}{slash_delimiter}{rose_text}{slash_delimiter}{bloomers_text}"
     # )
 
 
@@ -105,7 +105,7 @@ def test_road_change_road_correctlyRoad():
 
 def test_road_get_all_road_nodes_works():
     # GIVEN
-    x_s = get_node_separator()
+    x_s = get_node_delimiter()
     healer_text = "healer"
     healer_road = f"{root_label()}{x_s}{healer_text}"
     bloomers_text = "bloomers"
@@ -128,7 +128,7 @@ def test_road_get_all_road_nodes_works():
 
 def test_road_get_terminus_node_from_road_works():
     # GIVEN
-    x_s = get_node_separator()
+    x_s = get_node_delimiter()
     healer_text = "healer"
     healer_road = f"{root_label()}{x_s}{healer_text}"
     bloomers_text = "bloomers"
@@ -145,7 +145,7 @@ def test_road_get_terminus_node_from_road_works():
 
 def test_road_get_pad_from_road_works():
     # GIVEN
-    x_s = get_node_separator()
+    x_s = get_node_delimiter()
     healer_text = "healer"
     healer_road = f"{root_label()}{x_s}{healer_text}"
     bloomers_text = "bloomers"
@@ -162,7 +162,7 @@ def test_road_get_pad_from_road_works():
 
 def test_road_get_road_without_root_node_WorksCorrectly():
     # GIVEN
-    x_s = get_node_separator()
+    x_s = get_node_delimiter()
     healer_text = "healer"
     healer_road = f"{root_label()}{x_s}{healer_text}"
     healer_without_root_road = f"{x_s}{healer_text}"
@@ -191,7 +191,7 @@ def test_road_get_road_without_root_node_WorksCorrectly():
 
 def test_road_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
     # GIVEN
-    x_s = get_node_separator()
+    x_s = get_node_delimiter()
     old_seasons_road = f"{root_label()}{x_s}healer{x_s}seasons"
     old_sufffact_x = sufffactunit_shop(need=old_seasons_road)
     old_sufffacts_x = {old_sufffact_x.need: old_sufffact_x}
@@ -211,7 +211,7 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
 
 def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeCultureQIDScenario():
     # GIVEN
-    x_s = get_node_separator()
+    x_s = get_node_delimiter()
     old_culture_qid = "El Paso"
     healer_text = "healer"
     old_healer_road = f"{old_culture_qid}{x_s}{healer_text}"
@@ -274,7 +274,7 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeCultureQIDScen
 
 def test_road_get_ancestor_roads_CorrectlyReturnsAncestorRoads():
     # GIVEN
-    x_s = get_node_separator()
+    x_s = get_node_delimiter()
     nation_text = "nation-state"
     nation_road = f"{root_label()}{x_s}{nation_text}"
     usa_text = "USA"
@@ -299,7 +299,7 @@ def test_road_get_ancestor_roads_CorrectlyReturnsAncestorRoads():
 
 def test_road_get_forefather_roads_CorrectlyReturnsAncestorRoadsWithoutSource():
     # GIVEN
-    x_s = get_node_separator()
+    x_s = get_node_delimiter()
     nation_text = "nation-state"
     nation_road = f"{root_label()}{x_s}{nation_text}"
     usa_text = "USA"
@@ -327,7 +327,7 @@ def test_road_get_default_culture_root_label_ReturnsCorrectObj():
 
 def test_road_get_road_from_nodes_WorksCorrectly():
     # GIVEN
-    x_s = get_node_separator()
+    x_s = get_node_delimiter()
     root_list = get_all_road_nodes(root_label())
     healer_text = "healer"
     healer_road = f"{root_label()}{x_s}{healer_text}"
@@ -350,7 +350,7 @@ def test_road_get_road_from_nodes_WorksCorrectly():
 
 def test_road_get_road_from_road_and_node_WorksCorrectly():
     # GIVEN
-    x_s = get_node_separator()
+    x_s = get_node_delimiter()
     healer_text = "healer"
     healer_road = f"{root_label()}{x_s}{healer_text}"
     bloomers_text = "bloomers"
@@ -386,14 +386,14 @@ def test_raodnode_is_node_ReturnsCorrectBool():
     assert x_raodnode.is_node()
 
     # WHEN / THEN
-    x_s = get_node_separator()
+    x_s = get_node_delimiter()
     x_raodnode = RaodNode(f"casa{x_s}kitchen")
     assert x_raodnode.is_node() == False
 
 
 def test_get_diff_road_ReturnsCorrectObj():
     # GIVEN
-    x_s = get_node_separator()
+    x_s = get_node_delimiter()
     healer_text = "healer"
     healer_road = f"{root_label()}{x_s}{healer_text}"
     bloomers_text = "bloomers"
@@ -413,7 +413,7 @@ def test_get_diff_road_ReturnsCorrectObj():
 
 def test_is_heir_road_CorrectlyIdentifiesHeirs():
     # GIVEN
-    x_s = get_node_separator()
+    x_s = get_node_delimiter()
     usa_text = "USA"
     usa_road = f"{root_label()}{x_s}Nation-States{x_s}{usa_text}"
     texas_text = "Texas"
@@ -432,66 +432,66 @@ def test_is_heir_road_CorrectlyIdentifiesHeirs():
     assert is_heir_road(src=f"earth{x_s}sea", heir=f"earth{x_s}seaside") == False
 
 
-def test_replace_road_node_separator_CorrectlyReturnsNewObj():
+def test_replace_road_node_delimiter_CorrectlyReturnsNewObj():
     # GIVEN
     healer_text = "healer"
     gen_healer_road = get_road_from_road_and_node(root_label(), healer_text)
-    comma_separator = get_node_separator()
-    comma_separator_healer_road = f"{root_label()}{comma_separator}{healer_text}"
-    assert comma_separator == ","
-    assert gen_healer_road == comma_separator_healer_road
+    comma_delimiter = get_node_delimiter()
+    comma_delimiter_healer_road = f"{root_label()}{comma_delimiter}{healer_text}"
+    assert comma_delimiter == ","
+    assert gen_healer_road == comma_delimiter_healer_road
 
     # WHEN
-    slash_separator = "/"
-    gen_healer_road = replace_road_node_separator(
-        gen_healer_road, old_separator=comma_separator, new_separator=slash_separator
+    slash_delimiter = "/"
+    gen_healer_road = replace_road_node_delimiter(
+        gen_healer_road, old_delimiter=comma_delimiter, new_delimiter=slash_delimiter
     )
 
     # THEN
-    slash_separator_healer_road = f"{root_label()}{slash_separator}{healer_text}"
-    assert gen_healer_road == slash_separator_healer_road
+    slash_delimiter_healer_road = f"{root_label()}{slash_delimiter}{healer_text}"
+    assert gen_healer_road == slash_delimiter_healer_road
 
 
-def test_replace_road_node_separator_CorrectlyRaisesError():
+def test_replace_road_node_delimiter_CorrectlyRaisesError():
     # GIVEN
     cooker_text = "cooker/cleaner"
     gen_cooker_road = get_road_from_road_and_node(root_label(), cooker_text)
-    comma_separator = get_node_separator()
-    comma_separator_cooker_road = f"{root_label()}{comma_separator}{cooker_text}"
-    assert comma_separator == ","
-    assert gen_cooker_road == comma_separator_cooker_road
+    comma_delimiter = get_node_delimiter()
+    comma_delimiter_cooker_road = f"{root_label()}{comma_delimiter}{cooker_text}"
+    assert comma_delimiter == ","
+    assert gen_cooker_road == comma_delimiter_cooker_road
 
     # WHEN
-    slash_separator = "/"
+    slash_delimiter = "/"
     with pytest_raises(Exception) as excinfo:
-        gen_cooker_road = replace_road_node_separator(
+        gen_cooker_road = replace_road_node_delimiter(
             gen_cooker_road,
-            old_separator=comma_separator,
-            new_separator=slash_separator,
+            old_delimiter=comma_delimiter,
+            new_delimiter=slash_delimiter,
         )
     assert (
         str(excinfo.value)
-        == f"Cannot replace_road_node_separator '{comma_separator}' with '{slash_separator}' because the new one already exists in road '{gen_cooker_road}'."
+        == f"Cannot replace_road_node_delimiter '{comma_delimiter}' with '{slash_delimiter}' because the new one already exists in road '{gen_cooker_road}'."
     )
 
 
-def test_replace_road_node_separator_WhenNewSeparatorIsFirstCharacterInRoadRaisesError():
+def test_replace_road_node_delimiter_WhenNewdelimiterIsFirstCharacterInRoadRaisesError():
     # GIVEN
     cooker_text = "/cooker"
     cleaner_text = "cleaner"
-    comma_separator = get_node_separator()
-    comma_separator_cooker_road = f"{cooker_text}{comma_separator}{cleaner_text}"
-    assert comma_separator == ","
+    comma_delimiter = get_node_delimiter()
+    comma_delimiter_cooker_road = f"{cooker_text}{comma_delimiter}{cleaner_text}"
+    assert comma_delimiter == ","
 
     # WHEN
-    slash_separator = "/"
+    slash_delimiter = "/"
     with pytest_raises(Exception) as excinfo:
-        comma_separator_cooker_road = replace_road_node_separator(
-            comma_separator_cooker_road,
-            old_separator=comma_separator,
-            new_separator=slash_separator,
+        comma_delimiter_cooker_road = replace_road_node_delimiter(
+            comma_delimiter_cooker_road,
+            old_delimiter=comma_delimiter,
+            new_delimiter=slash_delimiter,
         )
     assert (
         str(excinfo.value)
-        == f"Cannot replace_road_node_separator '{comma_separator}' with '{slash_separator}' because the new one already exists in road '{comma_separator_cooker_road}'."
+        == f"Cannot replace_road_node_delimiter '{comma_delimiter}' with '{slash_delimiter}' because the new one already exists in road '{comma_delimiter_cooker_road}'."
     )

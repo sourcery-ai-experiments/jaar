@@ -72,7 +72,7 @@ def agenda_v002() -> AgendaUnit:
             file_name="example_agenda2.json",
         )
     )
-    print(f"{x_agenda._culture_qid=} {x_agenda._road_node_separator=}")
+    print(f"{x_agenda._culture_qid=} {x_agenda._road_node_delimiter=}")
     return x_agenda
 
 

@@ -23,7 +23,7 @@ def test_CultureUnit_exists():
     assert x_culture.qid == x_qid
     assert x_culture.cultures_dir == get_test_cultures_dir()
     assert x_culture._manager_pid is None
-    assert x_culture._road_node_separator is None
+    assert x_culture._road_node_delimiter is None
 
 
 def test_culture_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):

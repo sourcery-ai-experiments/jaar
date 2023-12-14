@@ -6,7 +6,7 @@ from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src.agenda.road import (
     get_default_culture_root_label as root_label,
     get_road,
-    get_node_separator,
+    get_node_delimiter,
 )
 from src.agenda.origin import originunit_shop
 from pytest import raises as pytest_raises
@@ -28,7 +28,7 @@ def test_AgendaUnit_exists():
     assert x_agenda._originunit is None
     assert x_agenda._auto_output_to_public is None
     assert x_agenda._idearoot is None
-    assert x_agenda._road_node_separator is None
+    assert x_agenda._road_node_delimiter is None
     assert str(type(x_agenda._idearoot)).find("None") == 8
 
 
@@ -36,13 +36,13 @@ def test_agendaunit_shop_ReturnsCorrectObjectWithFilledFields():
     # GIVEN
     healer_text = "Noa"
     iowa_culture_qid = "Iowa"
-    slash_road_node_separator = "/"
+    slash_road_node_delimiter = "/"
 
     # WHEN
     x_agenda = agendaunit_shop(
         _healer=healer_text,
         _culture_qid=iowa_culture_qid,
-        _road_node_separator=slash_road_node_separator,
+        _road_node_delimiter=slash_road_node_delimiter,
     )
 
     assert x_agenda
@@ -55,7 +55,7 @@ def test_agendaunit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._originunit == originunit_shop()
     assert x_agenda._auto_output_to_public == False
     assert x_agenda._idearoot != None
-    assert x_agenda._road_node_separator == slash_road_node_separator
+    assert x_agenda._road_node_delimiter == slash_road_node_delimiter
     print(f"{type(x_agenda._idearoot)=}") == 0
     assert str(type(x_agenda._idearoot)).find(".idea.IdeaRoot'>") > 0
 
@@ -66,7 +66,7 @@ def test_agendaunit_shop_ReturnsCorrectObjectWithCorrectEmptyField():
 
     assert x_agenda._healer == ""
     assert x_agenda._culture_qid == root_label()
-    assert x_agenda._road_node_separator == get_node_separator()
+    assert x_agenda._road_node_delimiter == get_node_delimiter()
 
 
 def test_agenda_IsAbleToSetTaskAsComplete():
@@ -210,17 +210,17 @@ def test_agenda_set__CorrectlySetsAttr():
     # GIVEN
     culture_qid_text = "Sun"
     healer_text = "Noa"
-    slash_road_node_separator = "/"
+    slash_road_node_delimiter = "/"
     x_agenda = agendaunit_shop(
         _healer=healer_text,
         _auto_output_to_public=True,
-        _road_node_separator=slash_road_node_separator,
+        _road_node_delimiter=slash_road_node_delimiter,
     )
-    assert x_agenda._road_node_separator == slash_road_node_separator
+    assert x_agenda._road_node_delimiter == slash_road_node_delimiter
 
     # WHEN
-    at_node_separator = "@"
-    x_agenda.set_road_node_separator(_road_node_separator=at_node_separator)
+    at_node_delimiter = "@"
+    x_agenda.set_road_node_delimiter(_road_node_delimiter=at_node_delimiter)
 
     # THEN
-    assert x_agenda._road_node_separator == at_node_separator
+    assert x_agenda._road_node_delimiter == at_node_delimiter

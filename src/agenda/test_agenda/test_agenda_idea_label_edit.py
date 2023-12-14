@@ -360,7 +360,7 @@ def test_agenda_set_healer_CorrectlyChangesBoth():
     assert x_agenda._idearoot._label == x_agenda._culture_qid
 
 
-def test_agenda_edit_idea_label_RaisesErrorIfSeparatorIsInLabel():
+def test_agenda_edit_idea_label_RaisesErrorIfdelimiterIsInLabel():
     # GIVEN
     x_agenda = get_agenda_with_4_levels_and_2requireds_2acptfacts()
     old_weekday_text = "weekdays"
@@ -372,5 +372,5 @@ def test_agenda_edit_idea_label_RaisesErrorIfSeparatorIsInLabel():
         x_agenda.edit_idea_label(old_road=old_weekday_road, new_label=new_weekday_text)
     assert (
         str(excinfo.value)
-        == f"Cannot change '{old_weekday_road}' because new_label {new_weekday_text} contains separator {x_agenda._road_node_separator}"
+        == f"Cannot change '{old_weekday_road}' because new_label {new_weekday_text} contains delimiter {x_agenda._road_node_delimiter}"
     )
