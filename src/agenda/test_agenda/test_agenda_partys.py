@@ -220,7 +220,7 @@ def test_agenda_get_idea_list_CorrectlySetsPartyLinkAgendaCreditAndDebt():
         == 1.0
     )
 
-    # WHEN another action, make sure metrics are as expected
+    # WHEN another action, check metrics are as expected
     selena_text = "selena"
     x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(selena_text)))
     x_agenda._idearoot.set_balancelink(
@@ -363,7 +363,7 @@ def test_agenda_get_idea_list_CorrectlySetsPartyUnitAgendaImportance():
     # assert partyunit_agenda_debt_sum > 0.9999999
     # assert partyunit_agenda_debt_sum < 1.00000001
 
-    # WHEN another action, make sure metrics are as expected
+    # WHEN another action, check metrics are as expected
     selena_text = "selena"
     x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(selena_text)))
     x_agenda._idearoot.set_balancelink(

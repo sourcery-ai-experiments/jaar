@@ -3608,7 +3608,7 @@
                                 "_weight": 1,
                                 "promise": true
                             },
-                            "make bed clean bedroom": {
+                            "prepare_bed clean bedroom": {
                                 "_acptfactunits": {},
                                 "_addin": null,
                                 "_balancelinks": {
@@ -3623,7 +3623,7 @@
                                 "_denom": null,
                                 "_is_expanded": true,
                                 "_kids": {},
-                                "_label": "make bed clean bedroom",
+                                "_label": "prepare_bed clean bedroom",
                                 "_numeric_road": null,
                                 "_numor": null,
                                 "_on_meld_weight_action": "default",
@@ -4764,7 +4764,7 @@
                                 "_weight": 1,
                                 "promise": true
                             },
-                            "make veggies every morning": {
+                            "cook veggies every morning": {
                                 "_acptfactunits": {},
                                 "_addin": null,
                                 "_balancelinks": {
@@ -4779,7 +4779,7 @@
                                 "_denom": null,
                                 "_is_expanded": true,
                                 "_kids": {},
-                                "_label": "make veggies every morning",
+                                "_label": "cook veggies every morning",
                                 "_numeric_road": null,
                                 "_numor": null,
                                 "_on_meld_weight_action": "default",

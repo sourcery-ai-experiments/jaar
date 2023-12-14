@@ -10,7 +10,7 @@ from src.agenda.required_assign import assigned_unit_shop
 
 #     set_deal(world=w1, person1=tim_text, person2=sue_text, request1=laundry_act, conditions_yes=laundry_full, request2=)
 
-#     def MakeDeal()
+#     def SomeDeal()
 
 # create tool that allows those two statements to be all that's needed create two cultures
 #

@@ -5,6 +5,7 @@ class InvalidRoadException(Exception):
 class RaodNode(str):
     def is_node(self, separator: str = None) -> bool:
         return self.find(get_node_separator(separator)) == -1
+        # return is_string_in_road(string=separator, road=self.__str__())
 
 
 class Road(str):  # Created to help track the concept
@@ -181,8 +182,12 @@ class InvalidSeparatorReplaceException(Exception):
     pass
 
 
+def is_string_in_road(string: str, road: Road) -> bool:
+    return road.find(string) >= 0
+
+
 def replace_road_node_separator(road: Road, old_separator: str, new_separator: str):
-    if road.find(new_separator) >= 0:
+    if is_string_in_road(string=new_separator, road=road):
         raise InvalidSeparatorReplaceException(
             f"Cannot replace_road_node_separator '{old_separator}' with '{new_separator}' because the new one already exists in road '{road}'."
         )

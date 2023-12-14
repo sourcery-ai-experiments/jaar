@@ -401,7 +401,7 @@ def test_agenda_get_from_json_LoadsActionFromJSONCorrectly():
     casa_road = get_road(x_agenda._culture_qid, casa_text)
     body_text = "workout"
     body_road = get_road(casa_road, body_text)
-    veg_text = "make veggies every morning"
+    veg_text = "cook veggies every morning"
     veg_road = get_road(body_road, veg_text)
     veg_idea = x_agenda.get_idea_kid(veg_road)
     assert not veg_idea._active_status

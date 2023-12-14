@@ -430,11 +430,11 @@ def get_agenda_assignment_laundry_example1() -> AgendaUnit:
     amer_agenda.add_idea(ideacore_shop(b_half_text), basket_road)
     amer_agenda.add_idea(ideacore_shop(do_laundry_text, promise=True), casa_road)
 
-    # make laundry requirement
+    # laundry requirement
     amer_agenda.edit_idea_attr(
         road=laundry_task_road, required_base=basket_road, required_sufffact=b_full_road
     )
-    # make laundry requirement
+    # laundry requirement
     amer_agenda.edit_idea_attr(
         road=laundry_task_road, required_base=basket_road, required_sufffact=b_smel_road
     )
