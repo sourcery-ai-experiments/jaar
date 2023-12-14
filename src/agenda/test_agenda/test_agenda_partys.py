@@ -293,7 +293,7 @@ def test_agenda_get_idea_list_CorrectlySetsPartyUnitAgendaImportance():
     prom_text = "prom"
     x_agenda = agendaunit_shop(_healer=prom_text)
     swim_text = "swim"
-    x_agenda.add_idea(ideacore_shop(_label=swim_text), pad=prom_text)
+    x_agenda.add_idea(ideacore_shop(swim_text), pad=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -439,7 +439,7 @@ def test_agenda_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitAgendaImportanc
     prom_text = "prom"
     x_agenda = agendaunit_shop(_healer=prom_text)
     swim_text = "swim"
-    x_agenda.add_idea(ideacore_shop(_label=swim_text), pad=prom_text)
+    x_agenda.add_idea(ideacore_shop(swim_text), pad=prom_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -455,9 +455,7 @@ def test_agenda_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitAgendaImportanc
 
     # no balancelinks attached to this one
     hunt_text = "hunt"
-    x_agenda.add_idea(
-        idea_kid=ideacore_shop(_label=hunt_text, _weight=3), pad=prom_text
-    )
+    x_agenda.add_idea(idea_kid=ideacore_shop(hunt_text, _weight=3), pad=prom_text)
 
     assert x_agenda._idearoot._balancelinks is None
 
@@ -552,7 +550,7 @@ def test_agenda_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitAgendaImportanc
 def test_agenda_get_idea_list_WithAllPartysWeighted():
     # GIVEN
     x_agenda = agendaunit_shop(_healer="prom")
-    x_agenda.add_idea(ideacore_shop(_label="swim"), pad="prom")
+    x_agenda.add_idea(ideacore_shop("swim"), pad="prom")
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -801,7 +799,7 @@ def test_agenda_intent_ratio_credit_debt_IsCorrectlySetWhenAgendaIsEmpty():
 
 def test_agenda_get_party_groups_returnsCorrectData():
     x_agenda = agendaunit_shop(_healer="prom")
-    x_agenda.add_idea(ideacore_shop(_label="swim"), pad="prom")
+    x_agenda.add_idea(ideacore_shop("swim"), pad="prom")
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"

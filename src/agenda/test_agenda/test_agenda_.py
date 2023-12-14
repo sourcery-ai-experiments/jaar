@@ -5,7 +5,6 @@ from src.agenda.examples.example_agendas import (
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src.agenda.road import (
     get_default_culture_root_label as root_label,
-    get_road,
     get_node_delimiter,
 )
 from src.agenda.origin import originunit_shop
@@ -82,7 +81,7 @@ def test_agenda_IsAbleToSetTaskAsComplete():
     assert mail_idea._task == True
 
     ced_min_label = "CE0_minutes"
-    ced_road = get_road(x_agenda._culture_qid, ced_min_label)
+    ced_road = x_agenda.make_road(x_agenda._culture_qid, ced_min_label)
     x_agenda.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=85)
     idea_list = x_agenda.get_idea_list()
     assert mail_idea.promise == True
@@ -92,7 +91,7 @@ def test_agenda_IsAbleToSetTaskAsComplete():
 def test_agenda_IsAbleToEditAcptFactUnitAnyAncestor_Idea_1():
     x_agenda = get_agenda_1Task_1CE0MinutesRequired_1AcptFact()
     ced_min_label = "CE0_minutes"
-    ced_road = get_road(x_agenda._culture_qid, ced_min_label)
+    ced_road = x_agenda.make_road(x_agenda._culture_qid, ced_min_label)
     x_agenda.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=85)
     idea_list = x_agenda.get_idea_list()
     mail_idea = idea_list[1]

@@ -245,8 +245,8 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeCultureQIDScen
 #     bloomers_road = f"{root_label()}{x_s}{healer_text}{x_s}{bloomers_text}")
 #     old_roses_text = "roses"
 #     old_roses_road = f"{root_label()}{x_s}{healer_text}{x_s}{bloomers_text}{x_s}{old_roses_text}")
-#     idea_roses = ideacore_shop(_label=old_roses_text, _pad=bloomers_road)
-#     idea_bloomers = ideacore_shop(_label=bloomers_text, _pad=healer_road)
+#     idea_roses = ideacore_shop(old_roses_text, _pad=bloomers_road)
+#     idea_bloomers = ideacore_shop(bloomers_text, _pad=healer_road)
 #     idea_bloomers.add_kid(idea_kid=idea_roses)
 
 #     for idea_key, idea_obj in idea_bloomers._kids.items():

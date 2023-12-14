@@ -1,4 +1,3 @@
-from src.agenda.road import get_road
 from src.agenda.agenda import AgendaUnit, agendaunit_shop
 from datetime import datetime
 from random import randint
@@ -125,9 +124,9 @@ def test_get_time_():
 
     # THEN
     time_text = "time"
-    time_road = get_road(x_agenda._culture_qid, time_text)
+    time_road = x_agenda.make_road(x_agenda._culture_qid, time_text)
     jaja_text = "jajatime"
-    jaja_road = get_road(time_road, jaja_text)
+    jaja_road = x_agenda.make_road(time_road, jaja_text)
     assert x_agenda._idearoot._acptfactunits[jaja_road]
     assert x_agenda._idearoot._acptfactunits[jaja_road].open == 1051898400  # - 1440
     assert x_agenda._idearoot._acptfactunits[jaja_road].nigh == 1053934800  # - 1440

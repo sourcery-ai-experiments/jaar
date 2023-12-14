@@ -123,7 +123,7 @@ class EditProblem(qtw.QWidget, Ui_Form):
         if road != "":
             prob_pad = get_pad_from_road(road)
             prob_label = get_terminus_node_from_road(road)
-            prob_idea = ideacore_shop(_label=prob_label, _pad=prob_pad)
+            prob_idea = ideacore_shop(prob_label, _pad=prob_pad)
             for balancelink_x in self.create_balancelinks_list():
                 prob_idea.set_balancelink(balancelink_x)
             self.agenda_x.set_dominate_promise_idea(idea_kid=prob_idea)

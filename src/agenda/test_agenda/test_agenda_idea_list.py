@@ -10,7 +10,6 @@ from src.agenda.required_idea import (
     requiredunit_shop,
     requiredheir_shop,
 )
-from src.agenda.road import get_road
 from src.agenda.agenda import agendaunit_shop
 
 
@@ -38,9 +37,9 @@ def test_agenda_get_idea_list_SetsSatiateStatusCorrectlyWhenAcptFactSaysNo():
     # GIVEN
     x_agenda = get_agenda_with_4_levels_and_2requireds()
     week_text = "weekdays"
-    week_road = get_road(x_agenda._culture_qid, week_text)
+    week_road = x_agenda.make_road(x_agenda._culture_qid, week_text)
     sun_text = "Sunday"
-    sun_road = get_road(week_road, sun_text)
+    sun_road = x_agenda.make_road(week_road, sun_text)
 
     # WHEN
     x_agenda.set_acptfact(base=week_road, pick=sun_road)
@@ -53,7 +52,7 @@ def test_agenda_get_idea_list_SetsSatiateStatusCorrectlyWhenAcptFactSaysNo():
     # for idea in x_agenda._idea_dict.values():
     #     print(f"{work_road=} {idea.node_road()=}")
     work_text = "work"
-    work_road = get_road(x_agenda._culture_qid, work_text)
+    work_road = x_agenda.make_road(x_agenda._culture_qid, work_text)
     assert x_agenda._idea_dict.get(work_road)._active_status == False
 
 
@@ -61,11 +60,11 @@ def test_agenda_get_idea_list_SetsSatiateStatusCorrectlyWhenAcptFactChanges():
     # GIVEN
     x_agenda = get_agenda_with_4_levels_and_2requireds()
     week_text = "weekdays"
-    week_road = get_road(x_agenda._culture_qid, week_text)
+    week_road = x_agenda.make_road(x_agenda._culture_qid, week_text)
     sun_text = "Wednesday"
-    sun_road = get_road(week_road, sun_text)
+    sun_road = x_agenda.make_road(week_road, sun_text)
     work_text = "work"
-    work_road = get_road(x_agenda._culture_qid, work_text)
+    work_road = x_agenda.make_road(x_agenda._culture_qid, work_text)
 
     # WHEN
     x_agenda.set_acptfact(base=week_road, pick=sun_road)
@@ -78,9 +77,9 @@ def test_agenda_get_idea_list_SetsSatiateStatusCorrectlyWhenAcptFactChanges():
 
     # WHEN
     states_text = "nation-state"
-    states_road = get_road(x_agenda._culture_qid, states_text)
+    states_road = x_agenda.make_road(x_agenda._culture_qid, states_text)
     usa_text = "USA"
-    usa_road = get_road(states_road, usa_text)
+    usa_road = x_agenda.make_road(states_road, usa_text)
     x_agenda.set_acptfact(base=states_road, pick=usa_road)
 
     # THEN
@@ -91,7 +90,7 @@ def test_agenda_get_idea_list_SetsSatiateStatusCorrectlyWhenAcptFactChanges():
 
     # WHEN
     france_text = "France"
-    france_road = get_road(states_road, france_text)
+    france_road = x_agenda.make_road(states_road, france_text)
     x_agenda.set_acptfact(base=states_road, pick=france_road)
 
     # THEN
@@ -105,18 +104,18 @@ def test_agenda_get_idea_list_returns_correct_list():
     # GIVEN
     x_agenda = get_agenda_with_4_levels_and_2requireds()
     week_text = "weekdays"
-    week_road = get_road(x_agenda._culture_qid, week_text)
+    week_road = x_agenda.make_road(x_agenda._culture_qid, week_text)
     wed_text = "Wednesday"
-    wed_road = get_road(week_road, wed_text)
+    wed_road = x_agenda.make_road(week_road, wed_text)
     state_text = "nation-state"
-    state_road = get_road(x_agenda._culture_qid, state_text)
+    state_road = x_agenda.make_road(x_agenda._culture_qid, state_text)
     france_text = "France"
-    france_road = get_road(state_road, france_text)
+    france_road = x_agenda.make_road(state_road, france_text)
     x_agenda.set_acptfact(base=week_road, pick=wed_road)
     x_agenda.set_acptfact(base=state_road, pick=france_road)
 
     work_text = "work"
-    work_road = get_road(x_agenda._culture_qid, work_text)
+    work_road = x_agenda.make_road(x_agenda._culture_qid, work_text)
     work_idea = x_agenda.get_idea_kid(work_road)
     print(f"{x_agenda._healer=} {len(work_idea._requiredunits)=}")
     # print(f"{work_idea._requiredunits=}")
@@ -128,9 +127,9 @@ def test_agenda_get_idea_list_returns_correct_list():
     assert len(idea_list) == 17
 
     usa_text = "USA"
-    usa_road = get_road(state_road, usa_text)
+    usa_road = x_agenda.make_road(state_road, usa_text)
     oregon_text = "Oregon"
-    oregon_road = get_road(usa_road, oregon_text)
+    oregon_road = x_agenda.make_road(usa_road, oregon_text)
 
     wed = sufffactunit_shop(need=wed_road)
     wed._status = True
@@ -268,24 +267,24 @@ def test_agenda_get_idea_list_CorrectlyCalculatesIdeaAttr_agenda_coin():
     x_agenda = agendaunit_shop(_healer=healer_text, _weight=10)
 
     auto_text = "auto"
-    auto_idea = ideacore_shop(_label=auto_text, _weight=10)
+    auto_idea = ideacore_shop(auto_text, _weight=10)
     x_agenda.add_idea(auto_idea, pad=x_agenda._culture_qid)
 
     barn_text = "barn"
-    barn_road = get_road(x_agenda._culture_qid, barn_text)
-    barn_idea = ideacore_shop(_label=barn_text, _weight=60)
+    barn_road = x_agenda.make_road(x_agenda._culture_qid, barn_text)
+    barn_idea = ideacore_shop(barn_text, _weight=60)
     x_agenda.add_idea(barn_idea, pad=x_agenda._culture_qid)
     lamb_text = "lambs"
-    lamb_road = get_road(barn_road, lamb_text)
-    lamb_idea = ideacore_shop(_label=lamb_text, _weight=1)
+    lamb_road = x_agenda.make_road(barn_road, lamb_text)
+    lamb_idea = ideacore_shop(lamb_text, _weight=1)
     x_agenda.add_idea(lamb_idea, pad=barn_road)
     duck_text = "ducks"
-    duck_road = get_road(barn_road, duck_text)
-    duck_idea = ideacore_shop(_label=duck_text, _weight=2)
+    duck_road = x_agenda.make_road(barn_road, duck_text)
+    duck_idea = ideacore_shop(duck_text, _weight=2)
     x_agenda.add_idea(duck_idea, pad=barn_road)
 
     coal_text = "coal"
-    coal_idea = ideacore_shop(_label=coal_text, _weight=30)
+    coal_idea = ideacore_shop(coal_text, _weight=30)
     x_agenda.add_idea(coal_idea, pad=x_agenda._culture_qid)
 
     assert x_agenda._idearoot._agenda_coin_onset is None
@@ -348,16 +347,16 @@ def test_agenda_get_idea_list_CorrectlyCalculatesRangeAttributes():
     x_agenda = get_agenda_with7amCleanTableRequired()
     idea_list = x_agenda.get_idea_list()
     house_text = "housework"
-    house_road = get_road(x_agenda._culture_qid, house_text)
+    house_road = x_agenda.make_road(x_agenda._culture_qid, house_text)
     clean_text = "clean table"
-    clean_road = get_road(house_road, clean_text)
+    clean_road = x_agenda.make_road(house_road, clean_text)
     assert x_agenda._idea_dict.get(clean_road)._active_status == False
 
     # set acptfacts as midnight to 8am
     time_text = "timetech"
-    time_road = get_road(x_agenda._culture_qid, time_text)
+    time_road = x_agenda.make_road(x_agenda._culture_qid, time_text)
     day24hr_text = "24hr day"
-    day24hr_road = get_road(time_road, day24hr_text)
+    day24hr_road = x_agenda.make_road(time_road, day24hr_text)
     day24hr_base = day24hr_road
     day24hr_pick = day24hr_road
     day24hr_open = 0.0
@@ -408,25 +407,25 @@ def test_exammple_idea_list_HasCorrectData():
     # day_hour = f"{x_agenda._culture_qid},day_hour"
     # x_agenda.set_acptfact(base=day_hour, pick=day_hour, open=0, nigh=23)
     day_min_text = "day_minute"
-    day_min_road = get_road(x_agenda._culture_qid, day_min_text)
+    day_min_road = x_agenda.make_road(x_agenda._culture_qid, day_min_text)
     x_agenda.set_acptfact(base=day_min_road, pick=day_min_road, open=0, nigh=1439)
 
     mood_text = "Moods"
-    mood_road = get_road(x_agenda._culture_qid, mood_text)
+    mood_road = x_agenda.make_road(x_agenda._culture_qid, mood_text)
     x_agenda.set_acptfact(base=mood_road, pick=mood_road)
     print(f"{x_agenda.get_required_bases()=}")
 
     yr_mon_text = "year_month"
-    yr_mon_road = get_road(x_agenda._culture_qid, yr_mon_text)
+    yr_mon_road = x_agenda.make_road(x_agenda._culture_qid, yr_mon_text)
     x_agenda.set_acptfact(base=yr_mon_road, pick=yr_mon_road)
     inter_text = "Internet"
-    inter_road = get_road(x_agenda._culture_qid, inter_text)
+    inter_road = x_agenda.make_road(x_agenda._culture_qid, inter_text)
     x_agenda.set_acptfact(base=inter_road, pick=inter_road)
     assert x_agenda != None
     # print(f"{x_agenda._healer=}")
     # print(f"{len(x_agenda._idearoot._kids)=}")
     ulty_text = "Ultimate Frisbee"
-    ulty_road = get_road(x_agenda._culture_qid, ulty_text)
+    ulty_road = x_agenda.make_road(x_agenda._culture_qid, ulty_text)
 
     # if x_agenda._idearoot._kids["Ultimate Frisbee"]._label == "Ultimate Frisbee":
     assert x_agenda._idearoot._kids[ulty_text]._requiredunits != None
@@ -439,9 +438,9 @@ def test_exammple_idea_list_HasCorrectData():
     # print(f"{str(type(idea))=}")
     # print(f"{len(idea_list)=}")
     laundry_text = "laundry monday"
-    casa_road = get_road(x_agenda._culture_qid, "casa")
-    cleaning_road = get_road(casa_road, "cleaning")
-    laundry_road = get_road(cleaning_road, laundry_text)
+    casa_road = x_agenda.make_road(x_agenda._culture_qid, "casa")
+    cleaning_road = x_agenda.make_road(casa_road, "cleaning")
+    laundry_road = x_agenda.make_road(cleaning_road, laundry_text)
 
     # for idea in idea_list:
     #     assert (
@@ -457,9 +456,9 @@ def test_exammple_idea_list_HasCorrectData():
 
     # WHEN
     week_text = "weekdays"
-    week_road = get_road(x_agenda._culture_qid, week_text)
+    week_road = x_agenda.make_road(x_agenda._culture_qid, week_text)
     mon_text = "Monday"
-    mon_road = get_road(week_road, mon_text)
+    mon_road = x_agenda.make_road(week_road, mon_text)
     x_agenda.set_acptfact(base=week_road, pick=mon_road)
 
     x_agenda.set_agenda_metrics()
@@ -473,28 +472,28 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
     x_agenda = agenda_v001()
 
     day_hr_text = "day_hour"
-    day_hr_road = get_road(x_agenda._culture_qid, day_hr_text)
+    day_hr_road = x_agenda.make_road(x_agenda._culture_qid, day_hr_text)
     x_agenda.set_acptfact(base=day_hr_road, pick=day_hr_road, open=0, nigh=23)
     day_min_text = "day_minute"
-    day_min_road = get_road(x_agenda._culture_qid, day_min_text)
+    day_min_road = x_agenda.make_road(x_agenda._culture_qid, day_min_text)
     x_agenda.set_acptfact(base=day_min_road, pick=day_min_road, open=0, nigh=59)
     mon_wk_text = "month_week"
-    mon_wk_road = get_road(x_agenda._culture_qid, mon_wk_text)
+    mon_wk_road = x_agenda.make_road(x_agenda._culture_qid, mon_wk_text)
     x_agenda.set_acptfact(base=mon_wk_road, pick=mon_wk_road)
     nation_text = "Nation-States"
-    nation_road = get_road(x_agenda._culture_qid, nation_text)
+    nation_road = x_agenda.make_road(x_agenda._culture_qid, nation_text)
     x_agenda.set_acptfact(base=nation_road, pick=nation_road)
     mood_text = "Moods"
-    mood_road = get_road(x_agenda._culture_qid, mood_text)
+    mood_road = x_agenda.make_road(x_agenda._culture_qid, mood_text)
     x_agenda.set_acptfact(base=mood_road, pick=mood_road)
     aaron_text = "Aaron Donald things effected by him"
-    aaron_road = get_road(x_agenda._culture_qid, aaron_text)
+    aaron_road = x_agenda.make_road(x_agenda._culture_qid, aaron_text)
     x_agenda.set_acptfact(base=aaron_road, pick=aaron_road)
     inter_text = "Internet"
-    inter_road = get_road(x_agenda._culture_qid, inter_text)
+    inter_road = x_agenda.make_road(x_agenda._culture_qid, inter_text)
     x_agenda.set_acptfact(base=inter_road, pick=inter_road)
     yr_mon_text = "year_month"
-    yr_mon_road = get_road(x_agenda._culture_qid, yr_mon_text)
+    yr_mon_road = x_agenda.make_road(x_agenda._culture_qid, yr_mon_text)
     x_agenda.set_acptfact(base=yr_mon_road, pick=yr_mon_road, open=0, nigh=1000)
 
     idea_list = x_agenda.get_idea_list()
@@ -503,11 +502,11 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
     #     print(f"{missing_acptfact=} {count=}")
 
     week_text = "weekdays"
-    week_road = get_road(x_agenda._culture_qid, week_text)
+    week_road = x_agenda.make_road(x_agenda._culture_qid, week_text)
     mon_text = "Monday"
-    mon_road = get_road(week_road, mon_text)
+    mon_road = x_agenda.make_road(week_road, mon_text)
     tue_text = "Tuesday"
-    tue_road = get_road(week_road, tue_text)
+    tue_road = x_agenda.make_road(week_road, tue_text)
     mon_sufffact_x = sufffactunit_shop(need=mon_road)
     tue_sufffact_x = sufffactunit_shop(need=tue_road)
     mt_sufffacts = {
@@ -541,9 +540,9 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
     assert x_agenda._idearoot._requiredheirs[week_road] == mt_required_x
 
     casa_text = "casa"
-    casa_road = get_road(x_agenda._culture_qid, casa_text)
+    casa_road = x_agenda.make_road(x_agenda._culture_qid, casa_text)
     bird_text = "say hi to birds"
-    bird_road = get_road(casa_road, bird_text)
+    bird_road = x_agenda.make_road(casa_road, bird_text)
     assert from_list_get_active_status(road=bird_road, idea_list=idea_list) == False
 
     x_agenda.set_acptfact(base=week_road, pick=mon_road)
@@ -569,9 +568,9 @@ def test_exammple_idea_list_Every6WeeksRequired():
     # GIVEN
     x_agenda = agenda_v001()
     day_text = "day_hour"
-    day_road = get_road(x_agenda._culture_qid, day_text)
+    day_road = x_agenda.make_road(x_agenda._culture_qid, day_text)
     min_text = "day_minute"
-    min_road = get_road(x_agenda._culture_qid, day_text)
+    min_road = x_agenda.make_road(x_agenda._culture_qid, day_text)
 
     # WHEN
     x_agenda.set_acptfact(base=day_road, pick=day_road, open=0, nigh=23)
@@ -579,16 +578,16 @@ def test_exammple_idea_list_Every6WeeksRequired():
     idea_list = x_agenda.get_idea_list()
 
     # THEN
-    ced_week_base = get_road(x_agenda._culture_qid, "ced_week")
+    ced_week_base = x_agenda.make_road(x_agenda._culture_qid, "ced_week")
 
     sufffact_divisor = None
     sufffact_open = None
     sufffact_nigh = None
     print(f"{len(idea_list)=}")
 
-    casa_road = get_road(x_agenda._culture_qid, "casa")
-    cleaning_road = get_road(casa_road, "cleaning")
-    clean_couch_road = get_road(cleaning_road, "clean sheets couch blankets")
+    casa_road = x_agenda.make_road(x_agenda._culture_qid, "casa")
+    cleaning_road = x_agenda.make_road(casa_road, "cleaning")
+    clean_couch_road = x_agenda.make_road(cleaning_road, "clean sheets couch blankets")
     clean_sheet_idea = x_agenda.get_idea_kid(clean_couch_road)
     # print(f"{clean_sheet_idea._requiredunits.values()=}")
     ced_week_required = clean_sheet_idea._requiredunits.get(ced_week_base)
@@ -621,7 +620,7 @@ def test_exammple_idea_list_Every6WeeksRequired():
         base=ced_week_base, pick=ced_week_base, open=ced_week_open, nigh=ced_week_open
     )
     nation_text = "Nation-States"
-    nation_road = get_road(x_agenda._culture_qid, nation_text)
+    nation_road = x_agenda.make_road(x_agenda._culture_qid, nation_text)
     x_agenda.set_acptfact(base=nation_road, pick=nation_road)
     print(
         f"Nation-states set and also acptfact set: {ced_week_base=} with {ced_week_open=} and {ced_week_open=}"
@@ -631,11 +630,11 @@ def test_exammple_idea_list_Every6WeeksRequired():
 
     # THEN
     week_text = "ced_week"
-    week_road = get_road(x_agenda._culture_qid, week_text)
-    casa_road = get_road(x_agenda._culture_qid, "casa")
-    cleaning_road = get_road(casa_road, "cleaning")
+    week_road = x_agenda.make_road(x_agenda._culture_qid, week_text)
+    casa_road = x_agenda.make_road(x_agenda._culture_qid, "casa")
+    cleaning_road = x_agenda.make_road(casa_road, "cleaning")
     clean_couch_text = "clean sheets couch blankets"
-    clean_couch_road = get_road(cleaning_road, clean_couch_text)
+    clean_couch_road = x_agenda.make_road(cleaning_road, clean_couch_text)
     clean_couch_idea = x_agenda.get_idea_kid(road=clean_couch_road)
     week_required = clean_couch_idea._requiredunits.get(week_road)
     week_sufffact = week_required.sufffacts.get(week_road)
@@ -702,44 +701,44 @@ def test_exammple_idea_list_EveryOtherMonthWorks():
     # GIVEN
     x_agenda = agenda_v001()
     minute_text = "day_minute"
-    minute_road = get_road(x_agenda._culture_qid, minute_text)
+    minute_road = x_agenda.make_road(x_agenda._culture_qid, minute_text)
     x_agenda.set_acptfact(base=minute_road, pick=minute_road, open=0, nigh=1399)
     month_text = "month_week"
-    month_road = get_road(x_agenda._culture_qid, month_text)
+    month_road = x_agenda.make_road(x_agenda._culture_qid, month_text)
     x_agenda.set_acptfact(base=month_road, pick=month_road)
     nations_text = "Nation-States"
-    nations_road = get_road(x_agenda._culture_qid, nations_text)
+    nations_road = x_agenda.make_road(x_agenda._culture_qid, nations_text)
     x_agenda.set_acptfact(base=nations_road, pick=nations_road)
     mood_text = "Moods"
-    mood_road = get_road(x_agenda._culture_qid, mood_text)
+    mood_road = x_agenda.make_road(x_agenda._culture_qid, mood_text)
     x_agenda.set_acptfact(base=mood_road, pick=mood_road)
     aaron_text = "Aaron Donald things effected by him"
-    aaron_road = get_road(x_agenda._culture_qid, aaron_text)
+    aaron_road = x_agenda.make_road(x_agenda._culture_qid, aaron_text)
     x_agenda.set_acptfact(base=aaron_road, pick=aaron_road)
     internet_text = "Internet"
-    internet_road = get_road(x_agenda._culture_qid, internet_text)
+    internet_road = x_agenda.make_road(x_agenda._culture_qid, internet_text)
     x_agenda.set_acptfact(base=internet_road, pick=internet_road)
     weekdays_text = "weekdays"
-    weekdays_road = get_road(x_agenda._culture_qid, weekdays_text)
+    weekdays_road = x_agenda.make_road(x_agenda._culture_qid, weekdays_text)
     x_agenda.set_acptfact(base=weekdays_road, pick=weekdays_road)
     idea_list = x_agenda.get_idea_list()
     print(f"{len(idea_list)=}")
 
     casa_text = "casa"
-    casa_road = get_road(x_agenda._culture_qid, casa_text)
+    casa_road = x_agenda.make_road(x_agenda._culture_qid, casa_text)
     clean_text = "cleaning"
-    clean_road = get_road(casa_road, clean_text)
+    clean_road = x_agenda.make_road(casa_road, clean_text)
     mat_label = "deep clean play mat"
-    mat_road = get_road(clean_road, mat_label)
+    mat_road = x_agenda.make_road(clean_road, mat_label)
     # commented out since it's difficult to understand
     assert from_list_get_active_status(road=mat_road, idea_list=idea_list) == False
 
-    year_month_base = get_road(x_agenda._culture_qid, "year_month")
+    year_month_base = x_agenda.make_road(x_agenda._culture_qid, "year_month")
     print(f"{year_month_base=}, {year_month_base=}")
 
     # WHEN
     x_agenda.set_acptfact(base=year_month_base, pick=year_month_base, open=0, nigh=8)
-    ced_week = get_road(x_agenda._culture_qid, "ced_week")
+    ced_week = x_agenda.make_road(x_agenda._culture_qid, "ced_week")
     x_agenda.set_acptfact(base=ced_week, pick=ced_week, open=0, nigh=4)
 
     # THEN

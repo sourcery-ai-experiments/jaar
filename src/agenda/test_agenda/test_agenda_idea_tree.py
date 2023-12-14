@@ -1,4 +1,3 @@
-from src.agenda.road import get_road
 from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels as example_agendas_get_agenda_with_4_levels,
 )
@@ -85,9 +84,9 @@ def test_get_idea_kid_CorrectlyReturnsIdea():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     nation_text = "nation-state"
-    nation_road = get_road(x_agenda._culture_qid, nation_text)
+    nation_road = x_agenda.make_road(x_agenda._culture_qid, nation_text)
     brazil_text = "Brazil"
-    brazil_road = get_road(nation_road, brazil_text)
+    brazil_road = x_agenda.make_road(nation_road, brazil_text)
 
     # WHEN
     brazil_idea = x_agenda.get_idea_kid(road=brazil_road)
@@ -98,7 +97,7 @@ def test_get_idea_kid_CorrectlyReturnsIdea():
 
     # WHEN
     week_text = "weekdays"
-    week_road = get_road(x_agenda._culture_qid, week_text)
+    week_road = x_agenda.make_road(x_agenda._culture_qid, week_text)
     week_idea = x_agenda.get_idea_kid(road=week_road)
 
     # THEN
@@ -114,7 +113,7 @@ def test_get_idea_kid_CorrectlyReturnsIdea():
 
     # WHEN / THEN
     bobdylan_text = "bobdylan"
-    wrong_road = get_road(x_agenda._culture_qid, bobdylan_text)
+    wrong_road = x_agenda.make_road(x_agenda._culture_qid, bobdylan_text)
     with pytest_raises(Exception) as excinfo:
         x_agenda.get_idea_kid(road=wrong_road)
     assert (
@@ -144,7 +143,7 @@ def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_1():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
-    work_road = get_road(x_agenda._culture_qid, work_text)
+    work_road = x_agenda.make_road(x_agenda._culture_qid, work_text)
     week_text = "weekdays"
     mon_text = "Monday"
 
@@ -217,7 +216,7 @@ def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_2():
     vaccum_text = "vaccum"
     sandy_text = "sandy"
 
-    work_road = get_road(x_agenda._culture_qid, work_text)
+    work_road = x_agenda.make_road(x_agenda._culture_qid, work_text)
     email_idea = ideacore_shop(_label=email_text, promise=True)
     x_agenda.add_idea(email_idea, pad=work_road)
     vaccum_idea = ideacore_shop(_label=vaccum_text, promise=True)
@@ -310,14 +309,14 @@ def test_TreeTraverseSetsBalanceLineestorFromRootCorrectly():
     print(f"{sandy_balanceline._agenda_credit=} {root_idea._agenda_importance=} ")
     print(f"  {sandy_balanceline._agenda_debt=} {root_idea._agenda_importance=} ")
     sum_x = 0
-    cat_road = get_road(x_agenda._culture_qid, "feed cat")
+    cat_road = x_agenda.make_road(x_agenda._culture_qid, "feed cat")
     cat_idea = x_agenda.get_idea_kid(cat_road)
-    week_road = get_road(x_agenda._culture_qid, week_text)
+    week_road = x_agenda.make_road(x_agenda._culture_qid, week_text)
     week_idea = x_agenda.get_idea_kid(week_road)
     work_text = "work"
-    work_road = get_road(x_agenda._culture_qid, work_text)
+    work_road = x_agenda.make_road(x_agenda._culture_qid, work_text)
     work_idea = x_agenda.get_idea_kid(work_road)
-    nation_road = get_road(x_agenda._culture_qid, nation_text)
+    nation_road = x_agenda.make_road(x_agenda._culture_qid, nation_text)
     nation_idea = x_agenda.get_idea_kid(nation_road)
     sum_x = cat_idea._agenda_importance
     print(f"{cat_idea._agenda_importance=} {sum_x} ")
@@ -381,7 +380,7 @@ def test_agenda4party_Exists():
     work_text = "work"
     vaccum_text = "vaccum"
     sandy_text = "sandy"
-    work_road = get_road(x_agenda._culture_qid, work_text)
+    work_road = x_agenda.make_road(x_agenda._culture_qid, work_text)
     email_idea = ideacore_shop(_label=email_text, promise=True)
     x_agenda.add_idea(email_idea, pad=work_road)
     vaccum_idea = ideacore_shop(_label=vaccum_text, promise=True)
@@ -411,7 +410,7 @@ def test_agenda4party_hasCorrectLevel1StructureNoGrouplessAncestors():
     sandy_text = "sandy"
     week_text = "weekdays"
     feed_text = "feed cat"
-    work_road = get_road(x_agenda._culture_qid, work_text)
+    work_road = x_agenda.make_road(x_agenda._culture_qid, work_text)
     email_idea = ideacore_shop(_label=email_text, promise=True)
     x_agenda.add_idea(email_idea, pad=work_road)
     vaccum_idea = ideacore_shop(_label=vaccum_text, promise=True)
@@ -476,7 +475,9 @@ def test_agenda_get_orderd_node_list_WorksCorrectly():
     x_1st_road_in_ordered_list = x_agenda.get_idea_tree_ordered_road_list()[0]
     assert x_1st_road_in_ordered_list == x_agenda._culture_qid
     x_8th_road_in_ordered_list = x_agenda.get_idea_tree_ordered_road_list()[8]
-    assert x_8th_road_in_ordered_list == get_road(x_agenda._culture_qid, week_text)
+    assert x_8th_road_in_ordered_list == x_agenda.make_road(
+        x_agenda._culture_qid, week_text
+    )
 
     # WHEN
     y_agenda = agendaunit_shop()
@@ -496,7 +497,7 @@ def test_agenda_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoads():
     x_agenda.add_idea(
         ideacore_shop(_label=time, _begin=0, _close=700), pad=x_agenda._culture_qid
     )
-    t_road = get_road(x_agenda._culture_qid, time)
+    t_road = x_agenda.make_road(x_agenda._culture_qid, time)
     week = "weeks"
     x_agenda.add_idea(ideacore_shop(_label=week, _denom=7), pad=t_road)
 
@@ -509,7 +510,7 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     week_text = "weekdays"
-    weekdays = get_road(x_agenda._culture_qid, week_text)
+    weekdays = x_agenda.make_road(x_agenda._culture_qid, week_text)
     assert x_agenda.get_heir_road_list(road_x=weekdays)
 
     # WHEN
@@ -522,24 +523,24 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
     assert heir_nodes_road_list[0] == weekdays
     sat_text = "Saturday"
     sun_text = "Sunday"
-    assert heir_nodes_road_list[3] == get_road(weekdays, sat_text)
-    assert heir_nodes_road_list[4] == get_road(weekdays, sun_text)
+    assert heir_nodes_road_list[3] == x_agenda.make_road(weekdays, sat_text)
+    assert heir_nodes_road_list[4] == x_agenda.make_road(weekdays, sun_text)
 
 
 # def test_agenda4party_hasCorrectLevel1StructureWithGrouplessAncestors_2():
 #     x_agenda = agendaunit_shop(_healer=healer_text)
-#     x_agenda.add_idea(ideacore_shop(_label="A", _weight=7), pad="blahblah")
-#     x_agenda.add_idea(ideacore_shop(_label="C", _weight=3), pad=f"{x_agenda._culture_qid},A")
-#     x_agenda.add_idea(ideacore_shop(_label="E", _weight=7), pad=f"{x_agenda._culture_qid},A,C")
-#     x_agenda.add_idea(ideacore_shop(_label="D", _weight=7), pad=f"{x_agenda._culture_qid},A,C")
-#     x_agenda.add_idea(ideacore_shop(_label="B", _weight=13), pad="blahblah")
-#     x_agenda.add_idea(ideacore_shop(_label="F", _weight=23), pad="blahblah")
-#     x_agenda.add_idea(ideacore_shop(_label="G", _weight=57), pad="blahblah")
-#     x_agenda.add_idea(ideacore_shop(_label="I"), pad=f"{x_agenda._culture_qid},G")
-#     x_agenda.add_idea(ideacore_shop(_label="H"), pad=f"{x_agenda._culture_qid},G")
-#     x_agenda.add_idea(ideacore_shop(_label="J"), pad=f"{x_agenda._culture_qid},G,I")
-#     x_agenda.add_idea(ideacore_shop(_label="K"), pad=f"{x_agenda._culture_qid},G,I")
-#     x_agenda.add_idea(ideacore_shop(_label="M"), pad=f"{x_agenda._culture_qid},G,H")
+#     x_agenda.add_idea(ideacore_shop("A", _weight=7), pad="blahblah")
+#     x_agenda.add_idea(ideacore_shop("C", _weight=3), pad=f"{x_agenda._culture_qid},A")
+#     x_agenda.add_idea(ideacore_shop("E", _weight=7), pad=f"{x_agenda._culture_qid},A,C")
+#     x_agenda.add_idea(ideacore_shop("D", _weight=7), pad=f"{x_agenda._culture_qid},A,C")
+#     x_agenda.add_idea(ideacore_shop("B", _weight=13), pad="blahblah")
+#     x_agenda.add_idea(ideacore_shop("F", _weight=23), pad="blahblah")
+#     x_agenda.add_idea(ideacore_shop("G", _weight=57), pad="blahblah")
+#     x_agenda.add_idea(ideacore_shop("I"), pad=f"{x_agenda._culture_qid},G")
+#     x_agenda.add_idea(ideacore_shop("H"), pad=f"{x_agenda._culture_qid},G")
+#     x_agenda.add_idea(ideacore_shop("J"), pad=f"{x_agenda._culture_qid},G,I")
+#     x_agenda.add_idea(ideacore_shop("K"), pad=f"{x_agenda._culture_qid},G,I")
+#     x_agenda.add_idea(ideacore_shop("M"), pad=f"{x_agenda._culture_qid},G,H")
 
 #     billy_pid = PartyPID("billy")
 #     x_agenda.add_partyunit(pid=billy_pid)
@@ -556,10 +557,10 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
 
 #     # expected sandy
 #     exp_sandy = agendaunit_shop(_healer=healer_text)
-#     exp_sandy.add_idea(ideacore_shop(_label="A", _agenda_importance=0.07), pad="blahblah")
-#     exp_sandy.add_idea(ideacore_shop(_label="C", _agenda_importance=0.07), pad=f"{x_agenda._culture_qid},A")
-#     exp_sandy.add_idea(ideacore_shop(_label="E", _agenda_importance=0.5), pad=f"{x_agenda._culture_qid},A,C")
-#     exp_sandy.add_idea(ideacore_shop(_label="B", _agenda_importance=0.13), pad="blahblah")
+#     exp_sandy.add_idea(ideacore_shop("A", _agenda_importance=0.07), pad="blahblah")
+#     exp_sandy.add_idea(ideacore_shop("C", _agenda_importance=0.07), pad=f"{x_agenda._culture_qid},A")
+#     exp_sandy.add_idea(ideacore_shop("E", _agenda_importance=0.5), pad=f"{x_agenda._culture_qid},A,C")
+#     exp_sandy.add_idea(ideacore_shop("B", _agenda_importance=0.13), pad="blahblah")
 
 #     # generated sandy
 #     gen_sandy = x_agenda.get_agenda4party(acptfacts=None, party_pid=sandy_pid)

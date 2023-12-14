@@ -875,12 +875,12 @@ class EditIdeaUnit(qtw0, Ui_Form):
         # add done/not_done children
         not_done_text = "not done"
         self.agenda_x.add_idea(
-            idea_kid=ideacore_shop(_label=not_done_text),
+            idea_kid=ideacore_shop(not_done_text),
             pad=new_road,
         )
         done_text = "done"
         self.agenda_x.add_idea(
-            idea_kid=ideacore_shop(_label=done_text),
+            idea_kid=ideacore_shop(done_text),
             pad=new_road,
         )
         # set required to "not done"
@@ -896,7 +896,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.refresh_tree()
 
     def idea_insert(self):
-        new_idea = ideacore_shop(_label=self.yo_deescription.toPlainText())
+        new_idea = ideacore_shop(self.yo_deescription.toPlainText())
         idea_attr_x = IdeaAttrHolder(
             weight=float(self.yo_weight.toPlainText()),
             begin=str2float(self.yo_begin.toPlainText()),

@@ -17,7 +17,7 @@ def test_idea_find_replace_road_Changes_pad():
     old_bloomers_road = get_road(old_healer_road, bloomers_text)
     roses_text = "roses"
     old_roses_road = get_road(old_bloomers_road, roses_text)
-    idea_x = ideacore_shop(_label=roses_text, _pad=old_bloomers_road)
+    idea_x = ideacore_shop(roses_text, _pad=old_bloomers_road)
     assert get_road(idea_x._pad) == old_bloomers_road
     assert get_road(idea_x._pad, idea_x._label) == old_roses_road
 
@@ -91,7 +91,7 @@ def test_idea_find_replace_road_Changes_requiredunits():
     sufffacts_x = {sufffact_x.need: sufffact_x}
     required_x = requiredunit_shop(old_water_road, sufffacts=sufffacts_x)
     requireds_x = {required_x.base: required_x}
-    idea_x = ideacore_shop(_label=roses_text, _requiredunits=requireds_x)
+    idea_x = ideacore_shop(roses_text, _requiredunits=requireds_x)
     # check asserts
     assert idea_x._requiredunits.get(old_water_road) != None
     old_water_rain_required = idea_x._requiredunits[old_water_road]
@@ -137,7 +137,7 @@ def test_idea_find_replace_road_Changes_acptfactunits():
 
     acptfactunit_x = acptfactunit_shop(base=old_water_road, pick=old_rain_road)
     acptfactunits_x = {acptfactunit_x.base: acptfactunit_x}
-    idea_x = ideacore_shop(_label=roses_text, _acptfactunits=acptfactunits_x)
+    idea_x = ideacore_shop(roses_text, _acptfactunits=acptfactunits_x)
     assert idea_x._acptfactunits[old_water_road] != None
     old_water_rain_acptfactunit = idea_x._acptfactunits[old_water_road]
     assert old_water_rain_acptfactunit.base == old_water_road
@@ -169,7 +169,7 @@ def test_idea_get_key_road_returnsCorrectInfo():
     red_text = "red"
 
     # WHEN
-    idea_red = ideacore_shop(_label=red_text)
+    idea_red = ideacore_shop(red_text)
 
     # THEN
     assert idea_red.get_key_road() == red_text

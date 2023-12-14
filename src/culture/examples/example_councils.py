@@ -1,4 +1,3 @@
-from src.agenda.road import get_road
 from src.agenda.agenda import AgendaUnit, agendaunit_shop, ideacore_shop
 from src.agenda.examples.example_agendas import get_agenda_assignment_laundry_example1
 from src.culture.council import councilunit_shop, CouncilUnit
@@ -27,7 +26,7 @@ def get_2node_agenda() -> AgendaUnit:
     b_text = "B"
     x_agenda = agendaunit_shop(_healer=healer_text)
     x_agenda.set_culture_qid(get_temp_culture_qid())
-    idea_b = ideacore_shop(_label=b_text)
+    idea_b = ideacore_shop(b_text)
     x_agenda.add_idea(idea_b, pad=get_temp_culture_qid())
     x_agenda.set_agenda_metrics()
     return x_agenda
@@ -58,9 +57,10 @@ def get_6node_agenda() -> AgendaUnit:
     x_agenda.set_culture_qid(get_temp_culture_qid())
     x_agenda.add_idea(ideacore_shop("B"), x_agenda._culture_qid)
     x_agenda.add_idea(ideacore_shop("C"), x_agenda._culture_qid)
-    x_agenda.add_idea(ideacore_shop("D"), get_road(x_agenda._culture_qid, "C"))
-    x_agenda.add_idea(ideacore_shop("E"), get_road(x_agenda._culture_qid, "C"))
-    x_agenda.add_idea(ideacore_shop("F"), get_road(x_agenda._culture_qid, "C"))
+    c_road = x_agenda.make_road(x_agenda._culture_qid, "C")
+    x_agenda.add_idea(ideacore_shop("D"), c_road)
+    x_agenda.add_idea(ideacore_shop("E"), c_road)
+    x_agenda.add_idea(ideacore_shop("F"), c_road)
     x_agenda.set_agenda_metrics()
     return x_agenda
 
@@ -68,13 +68,13 @@ def get_6node_agenda() -> AgendaUnit:
 def get_7nodeInsertH_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop("A")
     x_agenda.set_culture_qid(get_temp_culture_qid())
-    x_agenda.add_idea(ideacore_shop("B"), get_road(x_agenda._culture_qid))
-    x_agenda.add_idea(ideacore_shop("C"), get_road(x_agenda._culture_qid))
-    c_road = get_road(x_agenda._culture_qid, "C")
+    x_agenda.add_idea(ideacore_shop("B"), x_agenda.make_road(x_agenda._culture_qid))
+    x_agenda.add_idea(ideacore_shop("C"), x_agenda.make_road(x_agenda._culture_qid))
+    c_road = x_agenda.make_road(x_agenda._culture_qid, "C")
     x_agenda.add_idea(ideacore_shop("H"), c_road)
     x_agenda.add_idea(ideacore_shop("D"), c_road)
     x_agenda.add_idea(ideacore_shop("E"), c_road)
-    x_agenda.add_idea(ideacore_shop("F"), get_road(c_road, "H"))
+    x_agenda.add_idea(ideacore_shop("F"), x_agenda.make_road(c_road, "H"))
     x_agenda.set_agenda_metrics()
     return x_agenda
 
@@ -84,8 +84,9 @@ def get_5nodeHG_agenda() -> AgendaUnit:
     x_agenda.set_culture_qid(get_temp_culture_qid())
     x_agenda.add_idea(ideacore_shop("B"), x_agenda._culture_qid)
     x_agenda.add_idea(ideacore_shop("C"), x_agenda._culture_qid)
-    x_agenda.add_idea(ideacore_shop("H"), get_road(x_agenda._culture_qid, "C"))
-    x_agenda.add_idea(ideacore_shop("G"), get_road(x_agenda._culture_qid, "C"))
+    c_road = x_agenda.make_road(x_agenda._culture_qid, "C")
+    x_agenda.add_idea(ideacore_shop("H"), c_road)
+    x_agenda.add_idea(ideacore_shop("G"), c_road)
     x_agenda.set_agenda_metrics()
     return x_agenda
 
@@ -95,12 +96,13 @@ def get_7nodeJRoot_agenda() -> AgendaUnit:
     x_agenda.set_culture_qid(get_temp_culture_qid())
     x_agenda.add_idea(ideacore_shop("A"), x_agenda._culture_qid)
 
-    a_road = get_road(x_agenda._culture_qid, "A")
+    a_road = x_agenda.make_road(x_agenda._culture_qid, "A")
     x_agenda.add_idea(ideacore_shop("B"), a_road)
     x_agenda.add_idea(ideacore_shop("C"), a_road)
-    x_agenda.add_idea(ideacore_shop("D"), get_road(a_road, "C"))
-    x_agenda.add_idea(ideacore_shop("E"), get_road(a_road, "C"))
-    x_agenda.add_idea(ideacore_shop("F"), get_road(a_road, "C"))
+    c_road = x_agenda.make_road(x_agenda._culture_qid, "C")
+    x_agenda.add_idea(ideacore_shop("D"), c_road)
+    x_agenda.add_idea(ideacore_shop("E"), c_road)
+    x_agenda.add_idea(ideacore_shop("F"), c_road)
     x_agenda.set_agenda_metrics()
     return x_agenda
 
@@ -110,12 +112,13 @@ def get_7nodeJRootWithH_agenda() -> AgendaUnit:
     x_agenda.set_culture_qid(get_temp_culture_qid())
     x_agenda.add_idea(ideacore_shop("A"), x_agenda._culture_qid)
 
-    a_road = get_road(x_agenda._culture_qid, "A")
+    a_road = x_agenda.make_road(x_agenda._culture_qid, "A")
     x_agenda.add_idea(ideacore_shop("B"), a_road)
     x_agenda.add_idea(ideacore_shop("C"), a_road)
-    x_agenda.add_idea(ideacore_shop("E"), get_road(a_road, "C"))
-    x_agenda.add_idea(ideacore_shop("F"), get_road(a_road, "C"))
-    x_agenda.add_idea(ideacore_shop("H"), get_road(a_road, "C"))
+    c_road = x_agenda.make_road(x_agenda._culture_qid, "C")
+    x_agenda.add_idea(ideacore_shop("E"), c_road)
+    x_agenda.add_idea(ideacore_shop("F"), c_road)
+    x_agenda.add_idea(ideacore_shop("H"), c_road)
     x_agenda.set_agenda_metrics()
     return x_agenda
 

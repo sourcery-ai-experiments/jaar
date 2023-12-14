@@ -1,4 +1,3 @@
-from src.agenda.road import get_road
 from src.agenda.examples.example_agendas import (
     agenda_v001,
     get_agenda_with_4_levels,
@@ -74,7 +73,7 @@ def test_agenda_agenda_get_tree_metrics_sets_uids_correctly():
     pad_text = "pad"
     x_agenda.add_idea(ideacore_shop(swim_text, _uid=None), x_agenda._culture_qid)
     x_agenda.add_idea(ideacore_shop(pad_text, _uid=2), x_agenda._culture_qid)
-    swim_road = get_road(x_agenda._culture_qid, swim_text)
+    swim_road = x_agenda.make_road(x_agenda._culture_qid, swim_text)
     assert x_agenda.get_idea_kid(swim_road)._uid is None
 
     x_agenda.set_all_idea_uids_unique()
@@ -101,7 +100,7 @@ def test_agenda_get_tree_metrics_ReturnsAnActionIdeaRoad():
     tree_metrics_before = x_agenda.get_tree_metrics()
 
     # WHEN/THEN
-    train_road = get_road(
+    train_road = x_agenda.make_road(
         road_nodes=[
             x_agenda._culture_qid,
             "ACME",

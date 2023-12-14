@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src.agenda.group import groupunit_shop, GroupUnit, GroupBrand
+from src.agenda.group import GroupUnit, GroupBrand
 from src.agenda.party import PartyPID
 
 
