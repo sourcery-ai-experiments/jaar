@@ -25,27 +25,14 @@ def test_lemmas_attributes_exist():
 
     # THEN
     assert x_lemma.lemmas is None
-    assert x_lemma.delimiter is None
 
 
-def test_lemmas_shop_CorrectReturnsObj_delimiter_IsStandard():
+def test_lemmas_shop_CorrectReturnsObj():
     # WHEN
     x_lemma = lemmas_shop()
 
     # THEN
     assert x_lemma.lemmas == {}
-    assert x_lemma.delimiter == get_node_delimiter()
-
-
-def test_lemmas_shop_CorrectReturnsObj_delimiter_IsDifferent():
-    # GIVEN
-    slash_text = "/"
-
-    # WHEN
-    x_lemma = lemmas_shop(delimiter=slash_text)
-
-    # THEN
-    assert x_lemma.delimiter == slash_text
 
 
 def test_lemmas_set_empty_if_null():
