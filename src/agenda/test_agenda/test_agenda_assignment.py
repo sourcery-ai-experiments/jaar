@@ -385,8 +385,6 @@ def test_agenda__get_relevant_roads_range_source_road_ReturnSimple():
     assert relevant_roads.get(min_days_road) != None
     assert relevant_roads.get(yao_agenda._culture_qid) != None
     # min_days_idea = yao_agenda.get_idea_kid(min_days_road)
-    # print(f"{min_days_idea=}")
-    # assert 1 == 2
 
 
 # def test_agenda__get_relevant_roads_numeric_road_range_source_road_ReturnEntireRangeTree():

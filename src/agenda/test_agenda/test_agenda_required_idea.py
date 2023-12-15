@@ -9,6 +9,7 @@ from src.agenda.required_idea import (
     requiredunit_shop,
     requiredheir_shop,
 )
+from src.agenda.agenda import agendaunit_shop
 from src.agenda.x_func import from_list_get_active_status
 
 
@@ -28,12 +29,69 @@ def test_agenda_requiredunits_create():
     )
     print(f"{type(work_wk_required.base)=}")
     print(f"{work_wk_required.base=}")
+
+    # WHEN
     x_agenda.edit_idea_attr(road=work_road, required=work_wk_required)
-    work_idea = x_agenda._idearoot._kids[work_text]
+
+    # THEN
+    work_idea = x_agenda.get_idea_kid(work_road)
     assert work_idea._requiredunits != None
     print(work_idea._requiredunits)
     assert work_idea._requiredunits[weekday_road] != None
     assert work_idea._requiredunits[weekday_road] == work_wk_required
+
+
+def test_agenda_edit_idea_attr_requiredunit_CorrectlySets_delimiter():
+    # GIVEN
+    x_agenda = example_agendas_get_agenda_with_4_levels()
+    work_road = x_agenda.make_road(x_agenda._culture_qid, "work")
+    week_road = x_agenda.make_road(x_agenda._culture_qid, "weekdays")
+    wed_road = x_agenda.make_road(week_road, "Wednesday")
+
+    slash_text = "/"
+    before_week_required = requiredunit_shop(week_road, delimiter=slash_text)
+    before_week_required.set_sufffact(wed_road)
+    assert before_week_required.delimiter == slash_text
+
+    # WHEN
+    x_agenda.edit_idea_attr(road=work_road, required=before_week_required)
+
+    # THEN
+    work_idea = x_agenda.get_idea_kid(work_road)
+    week_requiredunit = work_idea._requiredunits.get(week_road)
+    assert week_requiredunit.delimiter != slash_text
+    assert week_requiredunit.delimiter == x_agenda._road_node_delimiter
+
+
+def test_agenda_edit_idea_attr_required_base_CorrectlySets_delimiter():
+    # GIVEN
+    slash_text = "/"
+    bob_agenda = agendaunit_shop("bob", _road_node_delimiter=slash_text)
+    work_text = "work"
+    week_text = "week"
+    wed_text = "Wednesday"
+    work_road = bob_agenda.make_road(bob_agenda._culture_qid, work_text)
+    week_road = bob_agenda.make_road(bob_agenda._culture_qid, week_text)
+    wed_road = bob_agenda.make_road(week_road, wed_text)
+    bob_agenda.add_idea(ideacore_shop(work_text), bob_agenda._culture_qid)
+    bob_agenda.add_idea(ideacore_shop(week_text), bob_agenda._culture_qid)
+    bob_agenda.add_idea(ideacore_shop(wed_text), week_road)
+    print(f"{bob_agenda._idearoot._kids.keys()=}")
+    wed_idea = bob_agenda.get_idea_kid(wed_road)
+    assert wed_idea._road_node_delimiter == slash_text
+    assert wed_idea._road_node_delimiter == bob_agenda._road_node_delimiter
+
+    # WHEN
+    bob_agenda.edit_idea_attr(
+        road=work_road, required_base=week_road, required_sufffact=wed_road
+    )
+
+    # THEN
+    work_idea = bob_agenda.get_idea_kid(work_road)
+    assert work_idea._road_node_delimiter == slash_text
+    week_requiredunit = work_idea._requiredunits.get(week_road)
+    assert week_requiredunit.delimiter != ","
+    assert week_requiredunit.delimiter == bob_agenda._road_node_delimiter
 
 
 def test_agenda_set_requiredunits_status():

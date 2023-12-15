@@ -85,7 +85,8 @@ def test_sufffact_is_range_CorrectlyIdenitiesSegregateStatus():
 
 def test_sufffact_is_in_lineage_CorrectlyIdentifiesLineage():
     # GIVEN
-    usa_road = get_road(root_label(), "Nation-States,USA")
+    nation_road = get_road(root_label(), "Nation-States")
+    usa_road = get_road(nation_road, "USA")
     texas_road = get_road(usa_road, "Texas")
     idaho_road = get_road(usa_road, "Idaho")
 
@@ -103,8 +104,9 @@ def test_sufffact_is_in_lineage_CorrectlyIdentifiesLineage():
     assert usa_sufffact.is_in_lineage(acptfact_pick=texas_acptfact.pick)
 
     # GIVEN
-    sea_road = "earth,sea"
-    seaside_road = "earth,seaside,beach"
+    sea_road = get_road("earth", "sea")  # "earth,sea"
+    seaside_road = get_road("earth", "seaside")  # "earth,seaside,beach"
+    seaside_beach_road = get_road(seaside_road, "beach")  # "earth,seaside,beach"
 
     # WHEN
     sea_sufffact = sufffactunit_shop(need=sea_road)
@@ -112,7 +114,49 @@ def test_sufffact_is_in_lineage_CorrectlyIdentifiesLineage():
     # THEN
     sea_acptfact = acptfactheir_shop(base=sea_road, pick=sea_road)
     assert sea_sufffact.is_in_lineage(acptfact_pick=sea_acptfact.pick)
-    seaside_acptfact = acptfactheir_shop(base=seaside_road, pick=seaside_road)
+    seaside_acptfact = acptfactheir_shop(seaside_beach_road, seaside_beach_road)
+    assert sea_sufffact.is_in_lineage(acptfact_pick=seaside_acptfact.pick) == False
+
+
+def test_sufffact_is_in_lineage_CorrectlyIdentifiesLineageWithNonDefaultDelimiter():
+    # GIVEN
+    slash_text = "/"
+    nation_road = get_road(root_label(), "Nation-States", delimiter=slash_text)
+    usa_road = get_road(nation_road, "USA", delimiter=slash_text)
+    texas_road = get_road(usa_road, "Texas", delimiter=slash_text)
+    idaho_road = get_road(usa_road, "Idaho", delimiter=slash_text)
+
+    # WHEN
+    texas_acptfact = acptfactheir_shop(base=usa_road, pick=texas_road)
+
+    # THEN
+    texas_sufffact = sufffactunit_shop(need=texas_road, delimiter=slash_text)
+    assert texas_sufffact.is_in_lineage(acptfact_pick=texas_acptfact.pick)
+
+    idaho_sufffact = sufffactunit_shop(need=idaho_road, delimiter=slash_text)
+    assert idaho_sufffact.is_in_lineage(acptfact_pick=texas_acptfact.pick) == False
+
+    usa_sufffact = sufffactunit_shop(need=usa_road, delimiter=slash_text)
+    print(f"  {usa_sufffact.need=}")
+    print(f"{texas_acptfact.pick=}")
+    assert usa_sufffact.is_in_lineage(acptfact_pick=texas_acptfact.pick)
+
+    # GIVEN
+    sea_road = get_road("earth", "sea", delimiter=slash_text)  # "earth,sea"
+    seaside_road = get_road(
+        "earth", "seaside", delimiter=slash_text
+    )  # "earth,seaside,beach"
+    seaside_beach_road = get_road(
+        seaside_road, "beach", delimiter=slash_text
+    )  # "earth,seaside,beach"
+
+    # WHEN
+    sea_sufffact = sufffactunit_shop(need=sea_road, delimiter=slash_text)
+
+    # THEN
+    sea_acptfact = acptfactheir_shop(base=sea_road, pick=sea_road)
+    assert sea_sufffact.is_in_lineage(acptfact_pick=sea_acptfact.pick)
+    seaside_acptfact = acptfactheir_shop(seaside_beach_road, seaside_beach_road)
     assert sea_sufffact.is_in_lineage(acptfact_pick=seaside_acptfact.pick) == False
 
 

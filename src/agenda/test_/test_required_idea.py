@@ -35,6 +35,20 @@ def test_RequiredCore_attributesExist():
     assert wkday_required.delimiter is None
 
 
+def test_requiredcore_shop_ReturnsCorrectAttrWith_delimiter():
+    # GIVEN
+    slash_text = "/"
+    work_text = "work"
+    work_road = get_road(root_label(), work_text, delimiter=slash_text)
+    print(f"{work_road=} ")
+
+    # WHEN
+    work_required = requiredheir_shop(work_road, delimiter=slash_text)
+
+    # THEN
+    assert work_required.delimiter == slash_text
+
+
 def test_requiredheir_shop_ReturnsCorrectObj():
     # GIVEN
     work_text = "work"
@@ -216,6 +230,7 @@ def test_requiredunit_shop_ReturnsCorrectObj():
 
     # THEN
     assert wkday_requiredunit.sufffacts == {}
+    assert wkday_requiredunit.delimiter == get_node_delimiter()
 
 
 def test_RequiredUnit_get_dict_ReturnsCorrectDictWithSinglethu_sufffactequireds():

@@ -225,6 +225,7 @@ class SuffFactUnit:
     divisor: int = None
     _status: bool = None
     _task: bool = None
+    delimiter: str = None
 
     def get_key_road(self):
         return self.need
@@ -245,9 +246,9 @@ class SuffFactUnit:
         self._status = None
 
     def is_in_lineage(self, acptfact_pick: Road):
-        return is_heir_road(src=self.need, heir=acptfact_pick) or is_heir_road(
-            src=acptfact_pick, heir=self.need
-        )
+        return is_heir_road(
+            src=self.need, heir=acptfact_pick, delimiter=self.delimiter
+        ) or is_heir_road(src=acptfact_pick, heir=self.need, delimiter=self.delimiter)
 
     def set_status(self, acptfactheir: AcptFactHeir):
         self._status = self._get_active_status(acptfactheir=acptfactheir)
@@ -349,13 +350,18 @@ class SuffFactUnit:
 
 # class sufffactsshop:
 def sufffactunit_shop(
-    need: Road, open: float = None, nigh: float = None, divisor: float = None
+    need: Road,
+    open: float = None,
+    nigh: float = None,
+    divisor: float = None,
+    delimiter: str = None,
 ) -> SuffFactUnit:
     return SuffFactUnit(
         need=need,
         open=open,
         nigh=nigh,
         divisor=divisor,
+        delimiter=get_node_delimiter(delimiter),
     )
 
 
@@ -419,6 +425,7 @@ class RequiredCore:
             open=open,
             nigh=nigh,
             divisor=divisor,
+            delimiter=self.delimiter,
         )
 
     def del_sufffact(self, sufffact: Road):
@@ -454,11 +461,13 @@ def requiredcore_shop(
     base: Road,
     sufffacts: dict[Road:SuffFactUnit] = None,
     suff_idea_active_status: bool = None,
+    delimiter: str = None,
 ):
     return RequiredCore(
         base=base,
         sufffacts=set_None_to_empty_dict(sufffacts),
         suff_idea_active_status=suff_idea_active_status,
+        delimiter=get_node_delimiter(delimiter),
     )
 
 
@@ -479,11 +488,13 @@ def requiredunit_shop(
     base: Road,
     sufffacts: dict[Road:SuffFactUnit] = None,
     suff_idea_active_status: bool = None,
+    delimiter: str = None,
 ):
     return RequiredUnit(
         base=base,
         sufffacts=set_None_to_empty_dict(sufffacts),
         suff_idea_active_status=suff_idea_active_status,
+        delimiter=get_node_delimiter(delimiter),
     )
 
 

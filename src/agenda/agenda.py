@@ -49,7 +49,7 @@ from src.agenda.hreg_time import HregTimeIdeaSource as HregIdea
 #     get_number_with_letter_ending,
 #     get_jajatime_legible_from_dt,
 # )
-from src.agenda.lemma import Lemmas
+from src.agenda.lemma import lemmas_shop, Lemmas
 from src.agenda.road import (
     get_pad_from_road,
     is_sub_road,
@@ -797,37 +797,37 @@ class AgendaUnit:
     def _get_rangeroot_1stlevel_associates(
         self, ranged_acptfactunits: list[IdeaCore]
     ) -> Lemmas:
-        lemmas_x = Lemmas()
-        lemmas_x.set_empty_if_null()
+        x_lemmas = lemmas_shop()
+        x_lemmas.set_empty_if_null()
         # lemma_ideas = {}
         for acptfact in ranged_acptfactunits:
             acptfact_idea = self.get_idea_kid(acptfact.base)
             for kid in acptfact_idea._kids.values():
-                lemmas_x.eval(idea_x=kid, src_acptfact=acptfact, src_idea=acptfact_idea)
+                x_lemmas.eval(idea_x=kid, src_acptfact=acptfact, src_idea=acptfact_idea)
 
             if acptfact_idea._range_source_road != None:
-                lemmas_x.eval(
+                x_lemmas.eval(
                     idea_x=self.get_idea_kid(acptfact_idea._range_source_road),
                     src_acptfact=acptfact,
                     src_idea=acptfact_idea,
                 )
-        return lemmas_x
+        return x_lemmas
 
     def _get_lemma_acptfactunits(self) -> dict:
         # get all range-root first level kids and range_source_road
-        lemmas_x = self._get_rangeroot_1stlevel_associates(
+        x_lemmas = self._get_rangeroot_1stlevel_associates(
             self._get_rangeroot_acptfactunits()
         )
 
         # Now get associates (all their descendants and range_source_roads)
         lemma_acptfactunits = {}  # acptfact.base : acptfactUnit
         count_x = 0
-        while lemmas_x.is_lemmas_evaluated() == False or count_x > 10000:
+        while x_lemmas.is_lemmas_evaluated() == False or count_x > 10000:
             count_x += 1
             if count_x == 9998:
                 raise InvalidAgendaException("lemma loop failed")
 
-            lemma_y = lemmas_x.get_unevaluated_lemma()
+            lemma_y = x_lemmas.get_unevaluated_lemma()
             idea_x = lemma_y.idea_x
             acptfact_x = lemma_y.calc_acptfact
 
@@ -835,9 +835,9 @@ class AgendaUnit:
             lemma_acptfactunits[road_x] = acptfact_x
 
             for kid2 in idea_x._kids.values():
-                lemmas_x.eval(idea_x=kid2, src_acptfact=acptfact_x, src_idea=idea_x)
+                x_lemmas.eval(idea_x=kid2, src_acptfact=acptfact_x, src_idea=idea_x)
             if idea_x._range_source_road not in [None, ""]:
-                lemmas_x.eval(
+                x_lemmas.eval(
                     idea_x=self.get_idea_kid(idea_x._range_source_road),
                     src_acptfact=acptfact_x,
                     src_idea=idea_x,
@@ -1042,17 +1042,17 @@ class AgendaUnit:
         adoptees: list[str] = None,
         bundling=True,
     ):
+        idea_kid._road_node_delimiter = self._road_node_delimiter
         if adoptees != None:
             for adoptee_label in adoptees:
-                adoptee_road = self.make_road(pad, adoptee_label)
-                adoptee_idea = self.get_idea_kid(adoptee_road)
+                adoptee_idea = self.get_idea_kid(self.make_road(pad, adoptee_label))
 
         if not create_missing_ideas_groups:
             idea_kid = self._get_filtered_balancelinks_idea(idea_kid)
 
-        pad = road_validate(pad)
+        pad = road_validate(pad, self._road_node_delimiter)
         temp_idea = self._idearoot
-        pad_nodes = get_all_road_nodes(pad)
+        pad_nodes = get_all_road_nodes(pad, delimiter=self._road_node_delimiter)
         temp_road = pad_nodes.pop(0)
 
         # idearoot cannot be replaced
@@ -1065,10 +1065,10 @@ class AgendaUnit:
                 temp_idea = self._get_or_create_leveln_idea(
                     parent_idea=temp_idea, idea_label=temp_road
                 )
+                temp_idea._road_node_delimiter = self._road_node_delimiter
                 road_nodes.append(temp_road)
-
             idea_kid.set_pad(parent_road=self.make_road(road_nodes=road_nodes))
-
+        idea_kid._road_node_delimiter = self._road_node_delimiter
         temp_idea.add_kid(idea_kid)
 
         kid_road = self.make_road(pad, idea_kid._label)
@@ -1674,7 +1674,7 @@ class AgendaUnit:
     def get_idea_kid(self, road: Road) -> IdeaCore:
         if road is None:
             raise InvalidAgendaException("get_idea_kid received road=None")
-        nodes = get_all_road_nodes(road)
+        nodes = get_all_road_nodes(road, delimiter=self._road_node_delimiter)
         src = nodes.pop(0)
         temp_idea = None
 
@@ -2141,7 +2141,9 @@ class AgendaUnit:
         party_pid = other_agenda._healer
         o_idea_list = other_agenda.get_idea_list_without_idearoot()
         for o_idea in o_idea_list:
-            o_road = road_validate(self.make_road(o_idea._pad, o_idea._label))
+            o_road = road_validate(
+                self.make_road(o_idea._pad, o_idea._label), self._road_node_delimiter
+            )
             try:
                 main_idea = self.get_idea_kid(o_road)
                 main_idea.meld(o_idea, False, party_pid, party_weight)

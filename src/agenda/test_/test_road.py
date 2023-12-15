@@ -51,14 +51,14 @@ def test_road_is_sub_road_correctlyReturnsBool():
 
 def test_road_road_validate_correctlyReturnsRoad():
     x_s = get_node_delimiter()
-    assert road_validate(None) == ""
-    assert road_validate("") == ""
-    assert road_validate(f"{root_label()}{x_s}casa") == f"{root_label()}{x_s}casa"
-    assert road_validate(f"A{x_s}casa") == f"{root_label()}{x_s}casa"
-    assert road_validate(f"{x_s}source") == f"{root_label()}{x_s}source"
-    assert road_validate(f"source{x_s}fun") == f"{root_label()}{x_s}fun"
-    assert road_validate("source") == root_label()
-    assert road_validate(f"AA{x_s}casa") == f"{root_label()}{x_s}casa"
+    assert road_validate(None, x_s) == ""
+    assert road_validate("", x_s) == ""
+    assert road_validate(f"{root_label()}{x_s}casa", x_s) == f"{root_label()}{x_s}casa"
+    assert road_validate(f"A{x_s}casa", x_s) == f"{root_label()}{x_s}casa"
+    assert road_validate(f"{x_s}source", x_s) == f"{root_label()}{x_s}source"
+    assert road_validate(f"source{x_s}fun", x_s) == f"{root_label()}{x_s}fun"
+    assert road_validate("source", x_s) == root_label()
+    assert road_validate(f"AA{x_s}casa", x_s) == f"{root_label()}{x_s}casa"
 
 
 def test_road_get_road_ReturnsCorrectRoadWithdelimiter():

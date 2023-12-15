@@ -85,10 +85,10 @@ def get_road_without_root_node(
     return f"{get_node_delimiter(delimiter)}{road_without_root_node}"
 
 
-def road_validate(road: Road) -> Road:
+def road_validate(road: Road, delimiter: str) -> Road:
     if road == "" or road is None:
         return Road("")
-    x_root = get_all_road_nodes(road)[0]
+    x_root = get_all_road_nodes(road, delimiter)[0]
     return (
         change_road(
             current_road=road,

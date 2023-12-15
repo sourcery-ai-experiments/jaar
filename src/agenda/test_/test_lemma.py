@@ -1,35 +1,68 @@
 from src.agenda.required_idea import acptfactunit_shop
-from src.agenda.lemma import Lemma, Lemmas
+from src.agenda.lemma import Lemma, Lemmas, lemmas_shop
 from src.agenda.idea import ideacore_shop
-from src.agenda.road import get_default_culture_root_label as root_label, get_road
+from src.agenda.road import (
+    get_default_culture_root_label as root_label,
+    get_road,
+    get_node_delimiter,
+)
 
 
 def test_lemma_attributes_exist():
-    lemma = Lemma(
+    x_lemma = Lemma(
         src_acptfact=1, calc_acptfact=2, idea_x=3, eval_status=4, eval_count=5
     )
-    assert lemma.src_acptfact == 1
-    assert lemma.calc_acptfact == 2
-    assert lemma.idea_x == 3
-    assert lemma.eval_status == 4
-    assert lemma.eval_count == 5
+    assert x_lemma.src_acptfact == 1
+    assert x_lemma.calc_acptfact == 2
+    assert x_lemma.idea_x == 3
+    assert x_lemma.eval_status == 4
+    assert x_lemma.eval_count == 5
 
 
 def test_lemmas_attributes_exist():
-    lemma = Lemmas()
-    assert lemma.lemmas is None
+    # GIVEN / WHEN
+    x_lemma = Lemmas
+
+    # THEN
+    assert x_lemma.lemmas is None
+    assert x_lemma.delimiter is None
+
+
+def test_lemmas_shop_CorrectReturnsObj_delimiter_IsStandard():
+    # WHEN
+    x_lemma = lemmas_shop()
+
+    # THEN
+    assert x_lemma.lemmas == {}
+    assert x_lemma.delimiter == get_node_delimiter()
+
+
+def test_lemmas_shop_CorrectReturnsObj_delimiter_IsDifferent():
+    # GIVEN
+    slash_text = "/"
+
+    # WHEN
+    x_lemma = lemmas_shop(delimiter=slash_text)
+
+    # THEN
+    assert x_lemma.delimiter == slash_text
 
 
 def test_lemmas_set_empty_if_null():
-    lemmas = Lemmas()
-    assert lemmas.lemmas is None
-    lemmas.set_empty_if_null()
-    assert lemmas.lemmas == {}
+    # GIVEN
+    x_lemmas = Lemmas()
+    assert x_lemmas.lemmas is None
+
+    # WHEN
+    x_lemmas.set_empty_if_null()
+
+    # THEN
+    assert x_lemmas.lemmas == {}
 
 
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario1():
     # GIVEN
-    lemmas_x = Lemmas()
+    x_lemmas_x = lemmas_shop()
 
     # WHEN
     pad_road = root_label()
@@ -37,7 +70,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario1():
     src_idea = ideacore_shop("whatever", _pad=pad_road, _begin=-13, _close=500)
     tr1 = get_road(idea_kid._pad, idea_kid._label)
     src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
-    new_acptfact = lemmas_x._create_new_acptfact(
+    new_acptfact = x_lemmas_x._create_new_acptfact(
         idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
     )
 
@@ -50,7 +83,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario1():
 
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario2():
     # GIVEN
-    lemmas_x = Lemmas()
+    x_lemmas_x = lemmas_shop()
 
     # WHEN
     pad_road = root_label()
@@ -58,7 +91,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario2():
     tr1 = get_road(idea_kid._pad, idea_kid._label)
     src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
     src_idea = ideacore_shop("whatever", _pad=pad_road, _begin=-13, _close=500)
-    new_acptfact = lemmas_x._create_new_acptfact(
+    new_acptfact = x_lemmas_x._create_new_acptfact(
         idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
     )
 
@@ -69,7 +102,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario2():
 
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_denom():
     # GIVEN
-    lx = Lemmas()
+    lx = lemmas_shop()
     lx.set_empty_if_null()
 
     # WHEN
@@ -97,7 +130,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_denom():
 
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_2_denom():
     # GIVEN
-    lx = Lemmas()
+    lx = lemmas_shop()
     lx.set_empty_if_null()
 
     # WHEN
@@ -123,8 +156,8 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_2_denom():
 
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario4_denomReest():
     # GIVEN
-    lemmas_x = Lemmas()
-    lemmas_x.set_empty_if_null()
+    x_lemmas_x = lemmas_shop()
+    x_lemmas_x.set_empty_if_null()
 
     # WHEN
     pad_road = root_label()
@@ -140,7 +173,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario4_denomReest(
     tr1 = get_road(idea_kid._pad, idea_kid._label)
     src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=120, nigh=150)
     src_idea = ideacore_shop("whatever", _pad=pad_road, _begin=-13, _close=500)
-    new_acptfact = lemmas_x._create_new_acptfact(
+    new_acptfact = x_lemmas_x._create_new_acptfact(
         idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
     )
 
@@ -151,8 +184,8 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario4_denomReest(
 
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario5_denomReest():
     # GIVEN
-    lemmas_x = Lemmas()
-    lemmas_x.set_empty_if_null()
+    x_lemmas_x = lemmas_shop()
+    x_lemmas_x.set_empty_if_null()
 
     # WHEN
     pad_road = root_label()
@@ -168,7 +201,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario5_denomReest(
     tr1 = get_road(idea_kid._pad, idea_kid._label)
     src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=100, nigh=150)
     src_idea = ideacore_shop("whatever", _pad=pad_road, _begin=-13, _close=500)
-    new_acptfact = lemmas_x._create_new_acptfact(
+    new_acptfact = x_lemmas_x._create_new_acptfact(
         idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
     )
 
@@ -180,8 +213,8 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario5_denomReest(
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest():
     # GIVEN
     pad_road = root_label()
-    lemmas_x = Lemmas()
-    lemmas_x.set_empty_if_null()
+    x_lemmas_x = lemmas_shop()
+    x_lemmas_x.set_empty_if_null()
     idea_src = ideacore_shop(
         _label="timerange1",
         _pad=pad_road,
@@ -198,7 +231,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
     )
     tr3 = get_road(tr3_kid._pad, tr3_kid._label)
     src_acptfact = acptfactunit_shop(base=tr3, pick=tr3, open=30, nigh=20)
-    tr3_30_20_acptfact = lemmas_x._create_new_acptfact(
+    tr3_30_20_acptfact = x_lemmas_x._create_new_acptfact(
         idea_x=tr3_kid, src_acptfact=src_acptfact, src_idea=idea_src
     )
     assert tr3_30_20_acptfact.open == 40
@@ -213,7 +246,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
     )
     trb = get_road(trb_kid._pad, trb_kid._label)
     src_acptfact = acptfactunit_shop(base=trb, pick=trb, open=30, nigh=20)
-    trb_30_20_acptfact = lemmas_x._create_new_acptfact(
+    trb_30_20_acptfact = x_lemmas_x._create_new_acptfact(
         idea_x=trb_kid, src_acptfact=src_acptfact, src_idea=idea_src
     )
     assert trb_30_20_acptfact.open == 40
@@ -228,7 +261,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
     )
     tr4 = get_road(tr4_kid._pad, tr4_kid._label)
     src_acptfact = acptfactunit_shop(base=tr4, pick=tr4, open=30, nigh=20)
-    tr4_30_20_acptfact = lemmas_x._create_new_acptfact(
+    tr4_30_20_acptfact = x_lemmas_x._create_new_acptfact(
         idea_x=tr4_kid, src_acptfact=src_acptfact, src_idea=idea_src
     )
     assert tr4_30_20_acptfact.open == 55
@@ -243,7 +276,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
     )
     tr5 = get_road(tr5_kid._pad, tr5_kid._label)
     src_acptfact = acptfactunit_shop(base=tr5, pick=tr5, open=30, nigh=20)
-    tr5_0_60_acptfact = lemmas_x._create_new_acptfact(
+    tr5_0_60_acptfact = x_lemmas_x._create_new_acptfact(
         idea_x=tr5_kid, src_acptfact=src_acptfact, src_idea=idea_src
     )
     assert tr5_0_60_acptfact.open == 30
@@ -252,8 +285,8 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
 
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario7_denomReest():
     # GIVEN
-    lemmas_x = Lemmas()
-    lemmas_x.set_empty_if_null()
+    x_lemmas_x = lemmas_shop()
+    x_lemmas_x.set_empty_if_null()
 
     # WHEN
     pad_road = root_label()
@@ -269,7 +302,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario7_denomReest(
     tr1 = get_road(idea_kid._pad, idea_kid._label)
     src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=90, nigh=150)
     src_idea = ideacore_shop("whatever", _pad=pad_road, _begin=-13, _close=500)
-    new_acptfact = lemmas_x._create_new_acptfact(
+    new_acptfact = x_lemmas_x._create_new_acptfact(
         idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
     )
 
@@ -279,44 +312,44 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario7_denomReest(
 
 
 def test_lemmas_get_unevaluated_lemma_ReturnsCorrectLemmaWhenEmpty():
-    # GIVEN empty lemmas
-    lemmas_y = Lemmas()
-    lemmas_y.set_empty_if_null()
+    # GIVEN empty x_lemmas
+    x_lemmas = lemmas_shop()
+    x_lemmas.set_empty_if_null()
 
     # WHEN
-    lem1x = lemmas_y.get_unevaluated_lemma()
+    lem1x = x_lemmas.get_unevaluated_lemma()
     print(f"{lem1x=}")
-    print(f"{lemmas_y.lemmas=}")
+    print(f"{x_lemmas.lemmas=}")
 
     # THEN
-    assert lemmas_y.lemmas == {}
+    assert x_lemmas.lemmas == {}
     assert lem1x is None
 
 
 def test_lemmas_get_unevaluated_lemma_ReturnsCorrectLemmaWhenPopulated():
-    # GIVEN 2 in lemmas
+    # GIVEN 2 in x_lemmas
     pad_road = root_label()
-    lemmas_x = Lemmas()
-    lemmas_x.lemmas = {}
+    x_lemmas_x = lemmas_shop()
+    x_lemmas_x.lemmas = {}
     src_idea = ideacore_shop("whatever", _pad=pad_road, _begin=-13, _close=500)
 
     tr1_idea = ideacore_shop("timerange1", _pad=pad_road, _begin=7, _close=12)
     tr1 = get_road(tr1_idea._pad, tr1_idea._label)
     src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
-    lemmas_x.eval(idea_x=tr1_idea, src_acptfact=src_acptfact, src_idea=src_idea)
+    x_lemmas_x.eval(idea_x=tr1_idea, src_acptfact=src_acptfact, src_idea=src_idea)
 
     tr2_idea = ideacore_shop("timerange2", _pad=pad_road, _begin=40, _close=60)
     tr2 = get_road(tr2_idea._pad, tr2_idea._label)
     src_acptfact = acptfactunit_shop(base=tr2, pick=tr2, open=55, nigh=60)
-    lemmas_x.eval(idea_x=tr2_idea, src_acptfact=src_acptfact, src_idea=src_idea)
+    x_lemmas_x.eval(idea_x=tr2_idea, src_acptfact=src_acptfact, src_idea=src_idea)
 
     # WHEN
-    lem1 = lemmas_x.get_unevaluated_lemma()
+    lem1 = x_lemmas_x.get_unevaluated_lemma()
     print(f"{lem1.idea_x=}")
     print(f"{tr1=}")
-    lem2 = lemmas_x.get_unevaluated_lemma()
+    lem2 = x_lemmas_x.get_unevaluated_lemma()
     print(f"{lem2.idea_x=}")
-    lem3 = lemmas_x.get_unevaluated_lemma()
+    lem3 = x_lemmas_x.get_unevaluated_lemma()
     print(f"{lem3=}")
 
     # THEN
@@ -324,62 +357,62 @@ def test_lemmas_get_unevaluated_lemma_ReturnsCorrectLemmaWhenPopulated():
     assert lem2.idea_x in (tr1_idea, tr2_idea)
     assert lem3 is None
 
-    lemmas_x = None
+    x_lemmas_x = None
 
 
 def test_lemmas_is_lemmas_incomplete_ReturnsCorrectBoolWhenPopulated():
     # GIVEN
     pad_road = root_label()
-    lemmas_z = Lemmas()
-    lemmas_z.lemmas = {}
+    z_lemmas = lemmas_shop()
+    z_lemmas.lemmas = {}
     src_idea = ideacore_shop("whatever", _pad=pad_road, _begin=-13, _close=500)
 
-    # for lemma in lemmas_z.lemmas.values():
+    # for x_lemma in z_lemmas.lemmas.values():
     #     print(f"Does not exist: {lemma.eval_status=} {lemma.calc_acptfact=}")
 
     tr1_idea = ideacore_shop("timerange1", _pad=pad_road, _begin=7, _close=12)
     tr1_road = get_road(tr1_idea._pad, tr1_idea._label)
     src_acptfact = acptfactunit_shop(base=tr1_road, pick=tr1_road, open=0, nigh=30)
-    lemmas_z.eval(idea_x=tr1_idea, src_acptfact=src_acptfact, src_idea=src_idea)
+    z_lemmas.eval(idea_x=tr1_idea, src_acptfact=src_acptfact, src_idea=src_idea)
 
     tr2_idea = ideacore_shop("timerange2", _pad=pad_road, _begin=40, _close=60)
     tr2_road = get_road(tr2_idea._pad, tr2_idea._label)
     src_acptfact = acptfactunit_shop(base=tr2_road, pick=tr2_road, open=55, nigh=60)
-    lemmas_z.eval(idea_x=tr2_idea, src_acptfact=src_acptfact, src_idea=src_idea)
+    z_lemmas.eval(idea_x=tr2_idea, src_acptfact=src_acptfact, src_idea=src_idea)
 
     # WHEN / THEN
-    assert len(lemmas_z.lemmas) == 2
-    tr1_lemma = lemmas_z.lemmas.get(tr1_road)
-    tr2_lemma = lemmas_z.lemmas.get(tr2_road)
+    assert len(z_lemmas.lemmas) == 2
+    tr1_lemma = z_lemmas.lemmas.get(tr1_road)
+    tr2_lemma = z_lemmas.lemmas.get(tr2_road)
     tr1_src_acptfact = tr1_lemma.src_acptfact
     tr2_src_acptfact = tr2_lemma.src_acptfact
     print(f"0 changes: {tr1_src_acptfact.base=} {tr1_lemma.eval_status=}")
     print(f"0 changes: {tr2_src_acptfact.base=} {tr2_lemma.eval_status=}")
-    assert lemmas_z.is_lemmas_evaluated() == False
+    assert z_lemmas.is_lemmas_evaluated() == False
 
     # WHEN
-    lem1 = lemmas_z.get_unevaluated_lemma()
+    lem1 = z_lemmas.get_unevaluated_lemma()
     # THEN
-    assert len(lemmas_z.lemmas) == 2
+    assert len(z_lemmas.lemmas) == 2
     print(f"1 changes: {tr1_src_acptfact.base=} {tr1_lemma.eval_status=}")
     print(f"1 changes: {tr2_src_acptfact.base=} {tr2_lemma.eval_status=}")
-    assert lemmas_z.is_lemmas_evaluated() == False
+    assert z_lemmas.is_lemmas_evaluated() == False
 
     # WHEN
-    lem2 = lemmas_z.get_unevaluated_lemma()
+    lem2 = z_lemmas.get_unevaluated_lemma()
     # THEN
-    assert len(lemmas_z.lemmas) == 2
+    assert len(z_lemmas.lemmas) == 2
     print(f"2 changes: {tr1_src_acptfact.base=} {tr1_lemma.eval_status=}")
     print(f"2 changes: {tr2_src_acptfact.base=} {tr2_lemma.eval_status=}")
-    assert lemmas_z.is_lemmas_evaluated() == True
+    assert z_lemmas.is_lemmas_evaluated() == True
 
 
 def test_lemmas_is_lemmas_incomplete_ReturnsCorrectBoolWhenEmpty():
     # GIVEN
-    lemmas_z = Lemmas()
-    lemmas_z.lemmas = {}
-    print(f"Does not exist: {lemmas_z=}")
+    z_lemmas = lemmas_shop()
+    z_lemmas.lemmas = {}
+    print(f"Does not exist: {z_lemmas=}")
 
     # WHEN / THEN
-    assert not lemmas_z.lemmas
-    assert lemmas_z.is_lemmas_evaluated() == True
+    assert not z_lemmas.lemmas
+    assert z_lemmas.is_lemmas_evaluated() == True

@@ -695,7 +695,9 @@ class IdeaCore:
         try:
             requiredunit_x = self._requiredunits[base]
         except Exception:
-            requiredunit_x = requiredunit_shop(base)
+            requiredunit_x = requiredunit_shop(
+                base, delimiter=self._road_node_delimiter
+            )
             self._requiredunits[base] = requiredunit_x
         return requiredunit_x
 
@@ -763,6 +765,7 @@ class IdeaCore:
 
     def set_required_unit(self, required: RequiredUnit):
         self.set_requiredunits_empty_if_null()
+        required.delimiter = self._road_node_delimiter
         self._requiredunits[required.base] = required
 
     def set_requiredunits_empty_if_null(self):

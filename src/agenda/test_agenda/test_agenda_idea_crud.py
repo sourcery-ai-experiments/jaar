@@ -4,7 +4,7 @@ from src.agenda.required_idea import requiredunit_shop, acptfactunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.group import balancelink_shop
 from pytest import raises as pytest_raises
-from src.agenda.road import Road
+from src.agenda.road import get_node_delimiter
 
 
 def test_root_has_kids():
@@ -117,6 +117,36 @@ def test_agenda_add_idea_CanAddKidToGrandkidIdea():
     print(f"{(len(new_idea_parent_road) == 1)=}")
     assert x_agenda.get_node_count() == 18
     assert x_agenda.get_level_count(level=3) == 3
+
+
+def test_agenda_add_idea_CorrectlyAddsIdeaObjWithNonstandard_delimiter():
+    # GIVEN
+    slash_text = "/"
+    assert slash_text != get_node_delimiter()
+    bob_agenda = agendaunit_shop("bob", _road_node_delimiter=slash_text)
+    work_text = "work"
+    week_text = "week"
+    wed_text = "Wednesday"
+    work_road = bob_agenda.make_road(bob_agenda._culture_qid, work_text)
+    week_road = bob_agenda.make_road(bob_agenda._culture_qid, week_text)
+    wed_road = bob_agenda.make_road(week_road, wed_text)
+    bob_agenda.add_idea(ideacore_shop(work_text), bob_agenda._culture_qid)
+    bob_agenda.add_idea(ideacore_shop(week_text), bob_agenda._culture_qid)
+    bob_agenda.add_idea(ideacore_shop(wed_text), week_road)
+    print(f"{bob_agenda._idearoot._kids.keys()=}")
+    assert len(bob_agenda._idearoot._kids) == 2
+    wed_idea = bob_agenda.get_idea_kid(wed_road)
+    assert wed_idea._road_node_delimiter == slash_text
+    assert wed_idea._road_node_delimiter == bob_agenda._road_node_delimiter
+
+    # WHEN
+    bob_agenda.edit_idea_attr(
+        road=work_road, required_base=week_road, required_sufffact=wed_road
+    )
+
+    # THEN
+    work_idea = bob_agenda.get_idea_kid(work_road)
+    week_requiredunit = work_idea._requiredunits.get(week_road)
 
 
 def test_agenda_add_idea_CanCreateRoadToGrandkidIdea():
