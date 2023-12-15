@@ -2307,9 +2307,8 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
         get_obj_from_agenda_dict(agenda_dict, "_max_tree_traverse")
     )
     x_agenda.set_culture_qid(get_obj_from_agenda_dict(agenda_dict, "_culture_qid"))
-    _road_node_delimiter_text = "_road_node_delimiter"
     x_agenda.set_road_node_delimiter(
-        get_obj_from_agenda_dict(agenda_dict, _road_node_delimiter_text)
+        get_obj_from_agenda_dict(agenda_dict, "_road_node_delimiter")
     )
     x_agenda._partys = get_obj_from_agenda_dict(agenda_dict, "_partys")
     x_agenda._groups = get_obj_from_agenda_dict(agenda_dict, "_groups")

@@ -1,3 +1,4 @@
+from src.agenda.road import get_node_delimiter
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.idea import ideacore_shop
 from src.agenda.required_idea import acptfactunit_shop
@@ -346,6 +347,21 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
 
     assert len(x_agenda._originunit._links) == 1
     assert x_agenda._originunit == y_agenda._originunit
+
+
+def test_agenda_get_json_CorrectlyWorksFor_delimiter_Data():
+    # GIVEN
+    slash_delimiter = "/"
+    a_bob_agenda = agendaunit_shop("bob", _road_node_delimiter=slash_delimiter)
+    a_bob_agenda.set_culture_qid("tiger_econ")
+
+    # WHEN
+    bob_json = a_bob_agenda.get_json()
+    b_bob_agenda = agenda_get_from_json(bob_json)
+
+    # THEN
+    assert b_bob_agenda._road_node_delimiter != get_node_delimiter()
+    assert b_bob_agenda._road_node_delimiter == a_bob_agenda._road_node_delimiter
 
 
 # def test_agenda_get_json_CorrectlyWorksForNotSimpleExample():
