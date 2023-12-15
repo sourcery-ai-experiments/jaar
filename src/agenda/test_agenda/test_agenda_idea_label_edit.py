@@ -365,7 +365,7 @@ def test_agenda_edit_idea_label_RaisesErrorIfdelimiterIsInLabel():
 
 def test_agenda_set_road_node_delimiter_RaisesErrorIfNew_delimiter_IsAnIdeaLabel():
     # GIVEN
-    luca_agenda = agendaunit_shop("Luca", _culture_qid="Texas")
+    luca_agenda = agendaunit_shop("Luca", "Texas")
     # luca_agenda.set_culture_qid("Texas")
     print(f"{luca_agenda._max_tree_traverse=}")
     work_text = "work"
