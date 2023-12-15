@@ -137,15 +137,15 @@ def test_AssignedHeir_get_all_suff_partys_CorrectlyReturnsSingleDictWithAllParty
     # GIVEN
     jim_text = "jim"
     sue_text = "sue"
-    c_x = agendaunit_shop(_healer=jim_text)
-    c_x.add_partyunit(pid=jim_text)
-    c_x.add_partyunit(pid=sue_text)
+    x_agenda = agendaunit_shop(_healer=jim_text)
+    x_agenda.add_partyunit(pid=jim_text)
+    x_agenda.add_partyunit(pid=sue_text)
 
     _suffgroups_x = {jim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
 
     # WHEN
-    all_partys = assigned_heir_x._get_all_suff_partys(agenda_groups=c_x._groups)
+    all_partys = assigned_heir_x._get_all_suff_partys(agenda_groups=x_agenda._groups)
 
     # THEN
     assert len(all_partys) == 1
@@ -156,22 +156,22 @@ def test_AssignedHeir_get_all_suff_partys_CorrectlyReturnsSingleDictWithAllParty
     jim_text = "jim"
     sue_text = "sue"
     bob_text = "bob"
-    c_x = agendaunit_shop(_healer=jim_text)
-    c_x.add_partyunit(pid=jim_text)
-    c_x.add_partyunit(pid=sue_text)
-    c_x.add_partyunit(pid=bob_text)
+    x_agenda = agendaunit_shop(_healer=jim_text)
+    x_agenda.add_partyunit(pid=jim_text)
+    x_agenda.add_partyunit(pid=sue_text)
+    x_agenda.add_partyunit(pid=bob_text)
 
     swim_text = "swim"
     swim_group = groupunit_shop(brand=swim_text)
     swim_group.set_partylink(partylink=partylink_shop(pid=jim_text))
     swim_group.set_partylink(partylink=partylink_shop(pid=sue_text))
-    c_x.set_groupunit(groupunit=swim_group)
+    x_agenda.set_groupunit(groupunit=swim_group)
 
     _suffgroups_x = {swim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
 
     # WHEN
-    all_partys = assigned_heir_x._get_all_suff_partys(agenda_groups=c_x._groups)
+    all_partys = assigned_heir_x._get_all_suff_partys(agenda_groups=x_agenda._groups)
 
     # THEN
     assert len(all_partys) == 2
@@ -196,11 +196,11 @@ def test_AssignedHeir_set_group_party_CorrectlySetsAttribute_NonEmpty_suffgroups
     jim_text = "jim"
     sue_text = "sue"
 
-    c_x = agendaunit_shop(_healer=jim_text)
-    c_x.add_partyunit(pid=jim_text)
-    c_x.add_partyunit(pid=sue_text)
-    agenda_healer = c_x._healer
-    agenda_groups = c_x._groups
+    x_agenda = agendaunit_shop(_healer=jim_text)
+    x_agenda.add_partyunit(pid=jim_text)
+    x_agenda.add_partyunit(pid=sue_text)
+    agenda_healer = x_agenda._healer
+    agenda_groups = x_agenda._groups
     print(f"{len(agenda_groups)=}")
     # print(f"{agenda_groups.get(jim_text)=}")
     # print(f"{agenda_groups.get(sue_text)=}")
@@ -221,11 +221,11 @@ def test_AssignedHeir_set_group_party_CorrectlySetsAttribute_NonEmpty_suffgroups
     jim_text = "jim"
     sue_text = "sue"
 
-    c_x = agendaunit_shop(_healer=jim_text)
-    c_x.add_partyunit(pid=jim_text)
-    c_x.add_partyunit(pid=sue_text)
-    agenda_healer = c_x._healer
-    agenda_groups = c_x._groups
+    x_agenda = agendaunit_shop(_healer=jim_text)
+    x_agenda.add_partyunit(pid=jim_text)
+    x_agenda.add_partyunit(pid=sue_text)
+    agenda_healer = x_agenda._healer
+    agenda_groups = x_agenda._groups
     print(f"{len(agenda_groups)=}")
     # print(f"{agenda_groups.get(jim_text)=}")
     # print(f"{agenda_groups.get(sue_text)=}")
@@ -246,27 +246,27 @@ def test_AssignedHeir_set_group_party_CorrectlySetsAttribute_NonEmpty_suffgroups
     jim_text = "jim"
     sue_text = "sue"
     bob_text = "bob"
-    c_x = agendaunit_shop(_healer=jim_text)
-    c_x.add_partyunit(pid=jim_text)
-    c_x.add_partyunit(pid=sue_text)
-    c_x.add_partyunit(pid=bob_text)
+    x_agenda = agendaunit_shop(_healer=jim_text)
+    x_agenda.add_partyunit(pid=jim_text)
+    x_agenda.add_partyunit(pid=sue_text)
+    x_agenda.add_partyunit(pid=bob_text)
 
     swim_text = "swim"
     swim_group = groupunit_shop(brand=swim_text)
     swim_group.set_partylink(partylink=partylink_shop(pid=jim_text))
     swim_group.set_partylink(partylink=partylink_shop(pid=sue_text))
-    c_x.set_groupunit(groupunit=swim_group)
+    x_agenda.set_groupunit(groupunit=swim_group)
 
     _suffgroups_x = {swim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
     assert assigned_heir_x._group_party == False
-    assigned_heir_x.set_group_party(c_x._groups, c_x._healer)
+    assigned_heir_x.set_group_party(x_agenda._groups, x_agenda._healer)
     assert assigned_heir_x._group_party
 
     # WHEN
     swim_group.del_partylink(pid=jim_text)
-    c_x.set_groupunit(groupunit=swim_group)
-    assigned_heir_x.set_group_party(c_x._groups, c_x._healer)
+    x_agenda.set_groupunit(groupunit=swim_group)
+    assigned_heir_x.set_group_party(x_agenda._groups, x_agenda._healer)
 
     # THEN
     assert assigned_heir_x._group_party == False
@@ -277,27 +277,27 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
     jim_text = "jim"
     sue_text = "sue"
     bob_text = "bob"
-    c_x = agendaunit_shop(_healer=jim_text)
-    c_x.add_partyunit(pid=jim_text)
-    c_x.add_partyunit(pid=sue_text)
-    c_x.add_partyunit(pid=bob_text)
+    x_agenda = agendaunit_shop(_healer=jim_text)
+    x_agenda.add_partyunit(pid=jim_text)
+    x_agenda.add_partyunit(pid=sue_text)
+    x_agenda.add_partyunit(pid=bob_text)
 
     swim_text = "swim"
     swim_group = groupunit_shop(brand=swim_text)
     swim_group.set_partylink(partylink=partylink_shop(pid=jim_text))
     swim_group.set_partylink(partylink=partylink_shop(pid=sue_text))
-    c_x.set_groupunit(groupunit=swim_group)
+    x_agenda.set_groupunit(groupunit=swim_group)
 
     _suffgroups_x = {swim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
     assert assigned_heir_x._group_party == False
-    assigned_heir_x.set_group_party(c_x._groups, c_x._healer)
+    assigned_heir_x.set_group_party(x_agenda._groups, x_agenda._healer)
     assert assigned_heir_x._group_party
 
     # WHEN
     swim_group.del_partylink(pid=jim_text)
-    c_x.set_groupunit(groupunit=swim_group)
-    assigned_heir_x.set_group_party(c_x._groups, c_x._healer)
+    x_agenda.set_groupunit(groupunit=swim_group)
+    assigned_heir_x.set_group_party(x_agenda._groups, x_agenda._healer)
 
     # THEN
     assert assigned_heir_x._group_party == False
@@ -416,24 +416,24 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqual_ParentAssignedHeir_Non
     sue_text = "sue"
     bob_text = "bob"
     tom_text = "tom"
-    c_x = agendaunit_shop(_healer=jim_text)
-    c_x.add_partyunit(pid=jim_text)
-    c_x.add_partyunit(pid=sue_text)
-    c_x.add_partyunit(pid=bob_text)
-    c_x.add_partyunit(pid=tom_text)
+    x_agenda = agendaunit_shop(_healer=jim_text)
+    x_agenda.add_partyunit(pid=jim_text)
+    x_agenda.add_partyunit(pid=sue_text)
+    x_agenda.add_partyunit(pid=bob_text)
+    x_agenda.add_partyunit(pid=tom_text)
 
     swim2_text = "swim2"
     swim2_group = groupunit_shop(brand=swim2_text)
     swim2_group.set_partylink(partylink=partylink_shop(pid=jim_text))
     swim2_group.set_partylink(partylink=partylink_shop(pid=sue_text))
-    c_x.set_groupunit(groupunit=swim2_group)
+    x_agenda.set_groupunit(groupunit=swim2_group)
 
     swim3_text = "swim3"
     swim3_group = groupunit_shop(brand=swim3_text)
     swim3_group.set_partylink(partylink=partylink_shop(pid=jim_text))
     swim3_group.set_partylink(partylink=partylink_shop(pid=sue_text))
     swim3_group.set_partylink(partylink=partylink_shop(pid=tom_text))
-    c_x.set_groupunit(groupunit=swim3_group)
+    x_agenda.set_groupunit(groupunit=swim3_group)
 
     parent_assigned_unit = assigned_unit_shop()
     parent_assigned_unit.set_suffgroup(brand=swim3_text)
@@ -448,7 +448,7 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqual_ParentAssignedHeir_Non
     # WHEN
     assigned_heir_x = assigned_heir_shop()
     assigned_heir_x.set_suffgroups(
-        parent_assigned_heir, assigned_unit_swim2, agenda_groups=c_x._groups
+        parent_assigned_heir, assigned_unit_swim2, agenda_groups=x_agenda._groups
     )
 
     # THEN
@@ -463,24 +463,24 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqualParentAssignedHeir_Rais
     sue_text = "sue"
     bob_text = "bob"
     tom_text = "tom"
-    c_x = agendaunit_shop(_healer=jim_text)
-    c_x.add_partyunit(pid=jim_text)
-    c_x.add_partyunit(pid=sue_text)
-    c_x.add_partyunit(pid=bob_text)
-    c_x.add_partyunit(pid=tom_text)
+    x_agenda = agendaunit_shop(_healer=jim_text)
+    x_agenda.add_partyunit(pid=jim_text)
+    x_agenda.add_partyunit(pid=sue_text)
+    x_agenda.add_partyunit(pid=bob_text)
+    x_agenda.add_partyunit(pid=tom_text)
 
     swim2_text = "swim2"
     swim2_group = groupunit_shop(brand=swim2_text)
     swim2_group.set_partylink(partylink=partylink_shop(pid=jim_text))
     swim2_group.set_partylink(partylink=partylink_shop(pid=sue_text))
-    c_x.set_groupunit(groupunit=swim2_group)
+    x_agenda.set_groupunit(groupunit=swim2_group)
 
     swim3_text = "swim3"
     swim3_group = groupunit_shop(brand=swim3_text)
     swim3_group.set_partylink(partylink=partylink_shop(pid=jim_text))
     swim3_group.set_partylink(partylink=partylink_shop(pid=sue_text))
     swim3_group.set_partylink(partylink=partylink_shop(pid=tom_text))
-    c_x.set_groupunit(groupunit=swim3_group)
+    x_agenda.set_groupunit(groupunit=swim3_group)
 
     parent_assigned_unit = assigned_unit_shop()
     parent_assigned_unit.set_suffgroup(brand=swim2_text)
@@ -498,7 +498,7 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqualParentAssignedHeir_Rais
     all_assignedunit_partys = {jim_text, sue_text, tom_text}
     with pytest_raises(Exception) as excinfo:
         assigned_heir_x.set_suffgroups(
-            parent_assigned_heir, assigned_unit_swim3, agenda_groups=c_x._groups
+            parent_assigned_heir, assigned_unit_swim3, agenda_groups=x_agenda._groups
         )
     assert (
         str(excinfo.value)

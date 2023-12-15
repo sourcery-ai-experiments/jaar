@@ -1229,7 +1229,8 @@ def idearoot_shop(
         _sibling_total_weight=_sibling_total_weight,
         _active_status_hx=_active_status_hx,
     )
-    x_idearoot.set_idea_label(_label=root_label())
+    if x_idearoot._label is None:
+        x_idearoot.set_idea_label(_label=root_label())
     return x_idearoot
 
 

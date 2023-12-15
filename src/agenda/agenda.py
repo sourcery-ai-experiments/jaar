@@ -58,13 +58,14 @@ from src.agenda.road import (
     get_terminus_node_from_road,
     find_replace_road_key_dict,
     get_ancestor_roads,
-    get_default_culture_root_label as root_label,
+    get_default_culture_root_label,
     get_all_road_nodes,
     get_forefather_roads,
     get_road,
     get_node_delimiter,
     RaodNode,
     Road,
+    is_string_in_road,
 )
 from src.agenda.origin import originunit_get_from_dict, originunit_shop, OriginUnit
 from copy import deepcopy as copy_deepcopy
@@ -84,6 +85,10 @@ class InvalidLabelException(Exception):
 
 
 class AssignmentPartyException(Exception):
+    pass
+
+
+class NewDelimiterException(Exception):
     pass
 
 
@@ -130,8 +135,15 @@ class AgendaUnit:
         for x_partyunit in self._partys.values():
             x_partyunit.clear_output_agenda_meld_order()
 
-    def set_road_node_delimiter(self, _road_node_delimiter: str):
-        self._road_node_delimiter = get_node_delimiter(_road_node_delimiter)
+    def set_road_node_delimiter(self, new_road_node_delimiter: str):
+        self.set_agenda_metrics()
+        for x_idea_road in self._idea_dict.keys():
+            if is_string_in_road(new_road_node_delimiter, x_idea_road):
+                raise NewDelimiterException(
+                    f"Cannot change delimiter to '{new_road_node_delimiter}' because it already exists an idea label '{x_idea_road}'"
+                )
+
+        self._road_node_delimiter = get_node_delimiter(new_road_node_delimiter)
 
     def set_culture_qid(self, culture_qid: str):
         old_culture_qid = copy_deepcopy(self._culture_qid)
@@ -2264,9 +2276,9 @@ class AgendaUnit:
 
 def agendaunit_shop(
     _healer: PersonID = None,
+    _culture_qid: CultureQID = None,
     _weight: float = None,
     _auto_output_to_public: bool = None,
-    _culture_qid: CultureQID = None,
     _road_node_delimiter: str = None,
 ) -> AgendaUnit:
     if _weight is None:
@@ -2276,16 +2288,16 @@ def agendaunit_shop(
     if _auto_output_to_public is None:
         _auto_output_to_public = False
     if _culture_qid is None:
-        _culture_qid = root_label()
+        _culture_qid = get_default_culture_root_label()
 
     x_agenda = AgendaUnit(
         _healer=_healer,
         _weight=_weight,
         _auto_output_to_public=_auto_output_to_public,
         _culture_qid=_culture_qid,
+        _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
     )
-    x_agenda._idearoot = idearoot_shop(_label=None, _uid=1, _level=0)
-    x_agenda.set_road_node_delimiter(get_node_delimiter(_road_node_delimiter))
+    x_agenda._idearoot = idearoot_shop(_label=x_agenda._culture_qid, _uid=1, _level=0)
     x_agenda.set_max_tree_traverse(3)
     x_agenda._rational = False
     x_agenda._originunit = originunit_shop()
@@ -2307,7 +2319,7 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
         get_obj_from_agenda_dict(agenda_dict, "_max_tree_traverse")
     )
     x_agenda.set_culture_qid(get_obj_from_agenda_dict(agenda_dict, "_culture_qid"))
-    x_agenda.set_road_node_delimiter(
+    x_agenda._road_node_delimiter = get_node_delimiter(
         get_obj_from_agenda_dict(agenda_dict, "_road_node_delimiter")
     )
     x_agenda._partys = get_obj_from_agenda_dict(agenda_dict, "_partys")

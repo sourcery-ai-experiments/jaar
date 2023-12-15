@@ -361,3 +361,26 @@ def test_agenda_edit_idea_label_RaisesErrorIfdelimiterIsInLabel():
         str(excinfo.value)
         == f"Cannot change '{old_weekday_road}' because new_label {new_weekday_text} contains delimiter {x_agenda._road_node_delimiter}"
     )
+
+
+def test_agenda_set_road_node_delimiter_RaisesErrorIfNew_delimiter_IsAnIdeaLabel():
+    # GIVEN
+    luca_agenda = agendaunit_shop("Luca", _culture_qid="Texas")
+    # luca_agenda.set_culture_qid("Texas")
+    print(f"{luca_agenda._max_tree_traverse=}")
+    work_text = "work"
+    work_road = luca_agenda.make_road(luca_agenda._culture_qid, work_text)
+    luca_agenda.add_idea(ideacore_shop(work_text), pad=luca_agenda._culture_qid)
+    slash_text = "/"
+    home_text = f"home cooking{slash_text}cleaning"
+    luca_agenda.add_idea(ideacore_shop(home_text), pad=work_road)
+
+    # WHEN / THEN
+    home_road = luca_agenda.make_road(work_road, home_text)
+    print(f"{home_road=}")
+    with pytest_raises(Exception) as excinfo:
+        luca_agenda.set_road_node_delimiter(slash_text)
+    assert (
+        str(excinfo.value)
+        == f"Cannot change delimiter to '{slash_text}' because it already exists an idea label '{home_road}'"
+    )

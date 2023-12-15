@@ -57,8 +57,8 @@ class CultureUnit:
     _treasury_db = None
     _road_node_delimiter: str = None
 
-    def set_road_node_delimiter(self, road_delimiter: str):
-        self._road_node_delimiter = get_node_delimiter(road_delimiter)
+    def set_road_node_delimiter(self, new_road_node_delimiter: str):
+        self._road_node_delimiter = get_node_delimiter(new_road_node_delimiter)
 
     def set_manager_pid(self, person_id: PersonID):
         self._manager_pid = person_id

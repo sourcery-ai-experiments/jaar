@@ -205,7 +205,7 @@ def test_agenda_set_culture_qid_CorrectlySetsAttr():
     assert x_agenda._culture_qid == culture_qid_text
 
 
-def test_agenda_set__CorrectlySetsAttr():
+def test_agenda_set_road_node_delimiter_CorrectlySetsAttr():
     # GIVEN
     culture_qid_text = "Sun"
     healer_text = "Noa"
@@ -219,7 +219,7 @@ def test_agenda_set__CorrectlySetsAttr():
 
     # WHEN
     at_node_delimiter = "@"
-    x_agenda.set_road_node_delimiter(_road_node_delimiter=at_node_delimiter)
+    x_agenda.set_road_node_delimiter(new_road_node_delimiter=at_node_delimiter)
 
     # THEN
     assert x_agenda._road_node_delimiter == at_node_delimiter

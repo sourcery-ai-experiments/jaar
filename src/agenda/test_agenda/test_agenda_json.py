@@ -261,8 +261,6 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     # GIVEN
     y_agenda = example_agendas_get_agenda_x1_3levels_1required_1acptfacts()
     y_agenda.set_max_tree_traverse(23)
-    # slash_road_node_delimiter = "/"
-    # y_agenda.set_road_node_delimiter(slash_road_node_delimiter)
     tiger_culture_qid = "tiger_econ"
     y_agenda.set_culture_qid(tiger_culture_qid)
 
@@ -353,7 +351,7 @@ def test_agenda_get_json_CorrectlyWorksFor_delimiter_Data():
     # GIVEN
     slash_delimiter = "/"
     a_bob_agenda = agendaunit_shop("bob", _road_node_delimiter=slash_delimiter)
-    a_bob_agenda.set_culture_qid("tiger_econ")
+    assert a_bob_agenda._road_node_delimiter != get_node_delimiter()
 
     # WHEN
     bob_json = a_bob_agenda.get_json()
@@ -361,6 +359,7 @@ def test_agenda_get_json_CorrectlyWorksFor_delimiter_Data():
 
     # THEN
     assert b_bob_agenda._road_node_delimiter != get_node_delimiter()
+    assert b_bob_agenda._road_node_delimiter == slash_delimiter
     assert b_bob_agenda._road_node_delimiter == a_bob_agenda._road_node_delimiter
 
 
