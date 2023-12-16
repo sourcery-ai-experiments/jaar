@@ -179,13 +179,13 @@ def get_from_dict(x_dict: dict):
     return groupunits
 
 
-def get_obj_from_groupunit_dict(x_dict: dict[str:], field_name: str) -> any:
-    if field_name == "_partys":
-        return partylinks_get_from_dict(x_dict[field_name])
-    elif field_name in {"_single_party"}:
-        return x_dict[field_name] if x_dict.get(field_name) != None else False
+def get_obj_from_groupunit_dict(x_dict: dict[str:], dict_key: str) -> any:
+    if dict_key == "_partys":
+        return partylinks_get_from_dict(x_dict[dict_key])
+    elif dict_key in {"_single_party"}:
+        return x_dict[dict_key] if x_dict.get(dict_key) != None else False
     else:
-        return x_dict[field_name] if x_dict.get(field_name) != None else None
+        return x_dict[dict_key] if x_dict.get(dict_key) != None else None
 
 
 def groupunit_shop(

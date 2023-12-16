@@ -2421,31 +2421,31 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
         x_agenda.add_idea(idea_obj, pad=idea_dict[pad_text])
 
 
-def get_obj_from_agenda_dict(x_dict: dict[str:], field_name: str) -> any:
-    if field_name == "_originunit":
+def get_obj_from_agenda_dict(x_dict: dict[str:], dict_key: str) -> any:
+    if dict_key == "_originunit":
         return (
-            originunit_get_from_dict(x_dict[field_name])
-            if x_dict.get(field_name) != None
+            originunit_get_from_dict(x_dict[dict_key])
+            if x_dict.get(dict_key) != None
             else originunit_shop()
         )
-    elif field_name == "_partys":
+    elif dict_key == "_partys":
         return (
-            partyunits_get_from_dict(x_dict[field_name])
-            if x_dict.get(field_name) != None
-            else partyunits_get_from_dict(x_dict[field_name])
+            partyunits_get_from_dict(x_dict[dict_key])
+            if x_dict.get(dict_key) != None
+            else partyunits_get_from_dict(x_dict[dict_key])
         )
-    elif field_name == "_groups":
+    elif dict_key == "_groups":
         return (
-            groupunits_get_from_dict(x_dict[field_name])
-            if x_dict.get(field_name) != None
-            else groupunits_get_from_dict(x_dict[field_name])
+            groupunits_get_from_dict(x_dict[dict_key])
+            if x_dict.get(dict_key) != None
+            else groupunits_get_from_dict(x_dict[dict_key])
         )
-    elif field_name == "_max_tree_traverse":
-        return x_dict[field_name] if x_dict.get(field_name) != None else 20
-    elif field_name == "_auto_output_to_public":
-        return x_dict[field_name] if x_dict.get(field_name) != None else False
+    elif dict_key == "_max_tree_traverse":
+        return x_dict[dict_key] if x_dict.get(dict_key) != None else 20
+    elif dict_key == "_auto_output_to_public":
+        return x_dict[dict_key] if x_dict.get(dict_key) != None else False
     else:
-        return x_dict[field_name] if x_dict.get(field_name) != None else None
+        return x_dict[dict_key] if x_dict.get(dict_key) != None else None
 
 
 def get_dict_of_agenda_from_dict(x_dict: dict[str:dict]) -> dict[str:AgendaUnit]:

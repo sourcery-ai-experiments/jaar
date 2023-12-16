@@ -1284,44 +1284,44 @@ def idearoot_shop(
     return x_idearoot
 
 
-def get_obj_from_idea_dict(x_dict: dict[str:], field_name: str) -> any:
-    if field_name == "_requiredunits":
+def get_obj_from_idea_dict(x_dict: dict[str:], dict_key: str) -> any:
+    if dict_key == "_requiredunits":
         return (
-            requireds_get_from_dict(x_dict[field_name])
-            if x_dict.get(field_name) != None
+            requireds_get_from_dict(x_dict[dict_key])
+            if x_dict.get(dict_key) != None
             else None
         )
-    elif field_name == "_assignedunit":
+    elif dict_key == "_assignedunit":
         return (
-            assignedunit_get_from_dict(x_dict[field_name])
-            if x_dict.get(field_name) != None
+            assignedunit_get_from_dict(x_dict[dict_key])
+            if x_dict.get(dict_key) != None
             else assigned_unit_shop()
         )
-    elif field_name == "_originunit":
+    elif dict_key == "_originunit":
         return (
-            originunit_get_from_dict(x_dict[field_name])
-            if x_dict.get(field_name) != None
+            originunit_get_from_dict(x_dict[dict_key])
+            if x_dict.get(dict_key) != None
             else originunit_shop()
         )
-    elif field_name == "_acptfactunits":
+    elif dict_key == "_acptfactunits":
         return (
-            acptfactunits_get_from_dict(x_dict[field_name])
-            if x_dict.get(field_name) != None
+            acptfactunits_get_from_dict(x_dict[dict_key])
+            if x_dict.get(dict_key) != None
             else acptfactunits_get_from_dict({})
         )
-    elif field_name == "_balancelinks":
+    elif dict_key == "_balancelinks":
         return (
-            balancelinks_get_from_dict(x_dict[field_name])
-            if x_dict.get(field_name) != None
+            balancelinks_get_from_dict(x_dict[dict_key])
+            if x_dict.get(dict_key) != None
             else balancelinks_get_from_dict({})
         )
-    elif field_name in {"_kids"}:
-        return x_dict[field_name] if x_dict.get(field_name) != None else {}
-    elif field_name in {"promise"}:
-        return x_dict[field_name] if x_dict.get(field_name) != None else False
-    elif field_name in {"_is_expanded"}:
-        return x_dict[field_name] if x_dict.get(field_name) != None else True
-    # elif field_name == "_on_meld_weight_action":
-    #     return x_dict[field_name] if x_dict.get(field_name) != None else "default"
+    elif dict_key in {"_kids"}:
+        return x_dict[dict_key] if x_dict.get(dict_key) != None else {}
+    elif dict_key in {"promise"}:
+        return x_dict[dict_key] if x_dict.get(dict_key) != None else False
+    elif dict_key in {"_is_expanded"}:
+        return x_dict[dict_key] if x_dict.get(dict_key) != None else True
+    # elif dict_key == "_on_meld_weight_action":
+    #     return x_dict[dict_key] if x_dict.get(dict_key) != None else "default"
     else:
-        return x_dict[field_name] if x_dict.get(field_name) != None else None
+        return x_dict[dict_key] if x_dict.get(dict_key) != None else None
