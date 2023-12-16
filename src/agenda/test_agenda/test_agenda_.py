@@ -81,7 +81,7 @@ def test_agenda_IsAbleToSetTaskAsComplete():
     assert mail_idea._task == True
 
     ced_min_label = "CE0_minutes"
-    ced_road = x_agenda.make_road(x_agenda._culture_qid, ced_min_label)
+    ced_road = x_agenda.make_l1_road(ced_min_label)
     x_agenda.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=85)
     idea_list = x_agenda.get_idea_list()
     assert mail_idea.promise == True
@@ -91,7 +91,7 @@ def test_agenda_IsAbleToSetTaskAsComplete():
 def test_agenda_IsAbleToEditAcptFactUnitAnyAncestor_Idea_1():
     x_agenda = get_agenda_1Task_1CE0MinutesRequired_1AcptFact()
     ced_min_label = "CE0_minutes"
-    ced_road = x_agenda.make_road(x_agenda._culture_qid, ced_min_label)
+    ced_road = x_agenda.make_l1_road(ced_min_label)
     x_agenda.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=85)
     idea_list = x_agenda.get_idea_list()
     mail_idea = idea_list[1]
@@ -212,6 +212,7 @@ def test_agenda_set_road_node_delimiter_CorrectlySetsAttr():
     slash_road_node_delimiter = "/"
     x_agenda = agendaunit_shop(
         _healer=healer_text,
+        _culture_qid=culture_qid_text,
         _auto_output_to_public=True,
         _road_node_delimiter=slash_road_node_delimiter,
     )
@@ -223,3 +224,24 @@ def test_agenda_set_road_node_delimiter_CorrectlySetsAttr():
 
     # THEN
     assert x_agenda._road_node_delimiter == at_node_delimiter
+
+
+def test_agendaunit_make_road_ReturnsCorrectObj():
+    # GIVEN
+    culture_qid_text = "Sun"
+    healer_text = "Noa"
+    slash_road_node_delimiter = "/"
+    x_agenda = agendaunit_shop(
+        _healer=healer_text,
+        _culture_qid=culture_qid_text,
+        _auto_output_to_public=True,
+        _road_node_delimiter=slash_road_node_delimiter,
+    )
+    work_text = "work"
+    v1_work_road = x_agenda.make_l1_road(work_text)
+
+    # WHEN
+    v2_work_road = x_agenda.make_l1_road(work_text)
+
+    # THEN
+    assert v1_work_road == v2_work_road

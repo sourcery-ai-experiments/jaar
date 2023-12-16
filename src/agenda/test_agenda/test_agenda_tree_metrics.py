@@ -73,7 +73,7 @@ def test_agenda_agenda_get_tree_metrics_sets_uids_correctly():
     pad_text = "pad"
     x_agenda.add_idea(ideacore_shop(swim_text, _uid=None), x_agenda._culture_qid)
     x_agenda.add_idea(ideacore_shop(pad_text, _uid=2), x_agenda._culture_qid)
-    swim_road = x_agenda.make_road(x_agenda._culture_qid, swim_text)
+    swim_road = x_agenda.make_l1_road(swim_text)
     assert x_agenda.get_idea_kid(swim_road)._uid is None
 
     x_agenda.set_all_idea_uids_unique()

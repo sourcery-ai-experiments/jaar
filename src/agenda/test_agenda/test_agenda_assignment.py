@@ -156,13 +156,13 @@ def test_agenda__get_assignor_promise_ideas_ReturnsCorrectIdeaRoads():
 
     # THEN
     print(f"{assignor_promises=}")
-    work_road = x_agenda.make_road(x_agenda._culture_qid, "work")
-    house_road = x_agenda.make_road(x_agenda._culture_qid, "housework")
+    work_road = x_agenda.make_l1_road("work")
+    house_road = x_agenda.make_l1_road("housework")
     table_road = x_agenda.make_road(house_road, "clean table")
     dish_road = x_agenda.make_road(table_road, "remove dishs")
     soap_road = x_agenda.make_road(table_road, "get soap")
     grab_road = x_agenda.make_road(soap_road, "grab soap")
-    feed_road = x_agenda.make_road(x_agenda._culture_qid, "feed cat")
+    feed_road = x_agenda.make_l1_road("feed cat")
 
     x_dict = {
         work_road: -1,
@@ -211,7 +211,7 @@ def test_agenda__get_relevant_roads_SimpleReturnsOnlyAncestors():
 
     # WHEN
     week_text = "weekdays"
-    week_road = x_agenda.make_road(x_agenda._culture_qid, week_text)
+    week_road = x_agenda.make_l1_road(week_text)
     sun_text = "Sunday"
     sun_road = x_agenda.make_road(week_road, sun_text)
     sun_dict = {sun_road}
@@ -228,14 +228,14 @@ def test_agenda__get_relevant_roads_ReturnsSimpleRequiredUnitBase():
     healer_text = "Neo"
     x_agenda = agendaunit_shop(_healer=healer_text)
     casa_text = "casa"
-    casa_road = x_agenda.make_road(x_agenda._culture_qid, casa_text)
+    casa_road = x_agenda.make_l1_road(casa_text)
     floor_text = "mop floor"
     floor_road = x_agenda.make_road(casa_road, floor_text)
     floor_idea = ideacore_shop(floor_text)
     x_agenda.add_idea(floor_idea, pad=casa_road)
 
     unim_text = "unimportant"
-    unim_road = x_agenda.make_road(x_agenda._culture_qid, unim_text)
+    unim_road = x_agenda.make_l1_road(unim_text)
     unim_idea = ideacore_shop(unim_text)
     x_agenda.add_idea(unim_idea, pad=x_agenda._culture_qid)
 
@@ -268,12 +268,12 @@ def test_agenda__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
     # GIVEN
     x_agenda = example_agenda_get_assignment_agenda_example1()
     casa_text = "casa"
-    casa_road = x_agenda.make_road(x_agenda._culture_qid, casa_text)
+    casa_road = x_agenda.make_l1_road(casa_text)
     floor_text = "mop floor"
     floor_road = x_agenda.make_road(casa_road, floor_text)
 
     unim_text = "unimportant"
-    unim_road = x_agenda.make_road(x_agenda._culture_qid, unim_text)
+    unim_road = x_agenda.make_l1_road(unim_text)
 
     status_text = "cleaniness status"
     status_road = x_agenda.make_road(casa_road, status_text)
@@ -461,11 +461,11 @@ def test_agenda_get_assignment_getsCorrectIdeas_scenario1():
     # GIVEN
     x_agenda = example_agenda_get_assignment_agenda_example1()
     casa_text = "casa"
-    casa_road = x_agenda.make_road(x_agenda._culture_qid, casa_text)
+    casa_road = x_agenda.make_l1_road(casa_text)
     floor_text = "mop floor"
     floor_road = x_agenda.make_road(casa_road, floor_text)
     unim_text = "unimportant"
-    unim_road = x_agenda.make_road(x_agenda._culture_qid, unim_text)
+    unim_road = x_agenda.make_l1_road(unim_text)
     status_text = "cleaniness status"
     status_road = x_agenda.make_road(casa_road, status_text)
     clean_text = "clean"

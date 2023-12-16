@@ -9,7 +9,7 @@ def test_agendaAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
 
     l1 = "level1"
     x_agenda.add_idea(ideacore_shop(l1, _weight=30), pad=x_agenda._culture_qid)
-    l1_road = x_agenda.make_road(x_agenda._culture_qid, l1)
+    l1_road = x_agenda.make_l1_road(l1)
 
     rx1 = "range_root_example"
     x_agenda.add_idea(ideacore_shop(rx1, _weight=30), pad=l1_road)
@@ -43,7 +43,7 @@ def test_agendaAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
 
     l1 = "level1"
     x_agenda.add_idea(ideacore_shop(l1, _weight=30), pad=x_agenda._culture_qid)
-    l1_road = x_agenda.make_road(x_agenda._culture_qid, l1)
+    l1_road = x_agenda.make_l1_road(l1)
 
     rx1 = "range_root_example"
     x_agenda.add_idea(ideacore_shop(rx1, _weight=30), pad=l1_road)
@@ -80,7 +80,7 @@ def test_get_idea_ranged_kids_CorrectlyReturnsAllChildren():
     x_agenda.set_time_hreg_ideas(c400_count=7)
 
     # WHEN
-    time_road = x_agenda.make_road(x_agenda._culture_qid, "time")
+    time_road = x_agenda.make_l1_road("time")
     tech_road = x_agenda.make_road(time_road, "tech")
     week_road = x_agenda.make_road(tech_road, "week")
     ranged_ideas = x_agenda.get_idea_ranged_kids(idea_road=week_road)
@@ -96,7 +96,7 @@ def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen1():
     x_agenda.set_time_hreg_ideas(c400_count=7)
 
     # WHEN
-    time_road = x_agenda.make_road(x_agenda._culture_qid, "time")
+    time_road = x_agenda.make_l1_road("time")
     tech_road = x_agenda.make_road(time_road, "tech")
     week_road = x_agenda.make_road(tech_road, "week")
     begin_x = 1440
@@ -118,7 +118,7 @@ def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen2():
     x_agenda.set_time_hreg_ideas(c400_count=7)
 
     # WHEN THEN
-    time_road = x_agenda.make_road(x_agenda._culture_qid, "time")
+    time_road = x_agenda.make_l1_road("time")
     tech_road = x_agenda.make_road(time_road, "tech")
     week_road = x_agenda.make_road(tech_road, "week")
     assert len(x_agenda.get_idea_ranged_kids(week_road, begin=0, close=1440)) == 1
@@ -133,7 +133,7 @@ def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen3():
     x_agenda.set_time_hreg_ideas(c400_count=7)
 
     # WHEN THEN
-    time_road = x_agenda.make_road(x_agenda._culture_qid, "time")
+    time_road = x_agenda.make_l1_road("time")
     tech_road = x_agenda.make_road(time_road, "tech")
     week_road = x_agenda.make_road(tech_road, "week")
     assert len(x_agenda.get_idea_ranged_kids(idea_road=week_road, begin=0)) == 1

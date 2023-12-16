@@ -9,7 +9,7 @@ def test_agenda_edit_idea_attr_CorrectlySetsAssignedUnit():
     healer_text = "Xio"
     x_agenda = agendaunit_shop(_healer=healer_text)
     run_text = "run"
-    run_road = x_agenda.make_road(x_agenda._culture_qid, run_text)
+    run_road = x_agenda.make_l1_road(run_text)
     x_agenda.add_idea(ideacore_shop(run_text), pad=x_agenda._culture_qid)
     run_idea = x_agenda.get_idea_kid(run_road)
     assert run_idea._assignedunit is None
@@ -82,7 +82,7 @@ def test_agenda_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir(
     healer_text = "Noa"
     x_agenda = agendaunit_shop(_healer=healer_text)
     swim_text = "swiming"
-    swim_road = x_agenda.make_road(x_agenda._culture_qid, swim_text)
+    swim_road = x_agenda.make_l1_road(swim_text)
     morn_text = "morning"
     morn_road = x_agenda.make_road(swim_road, morn_text)
     four_text = "fourth"

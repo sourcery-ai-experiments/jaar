@@ -72,7 +72,7 @@ def test_example_has_groups():
 
     # THEN
     print(f"{len(idea_dict)=}")
-    db_idea = idea_dict.get(x_agenda.make_road(x_agenda._culture_qid, "D&B"))
+    db_idea = idea_dict.get(x_agenda.make_l1_road("D&B"))
     print(f"{db_idea._label=} {db_idea._balancelinks=}")
     assert len(db_idea._balancelinks) == 3
     # for idea_key in idea_dict:
@@ -620,7 +620,7 @@ def test_agenda_add_idea_CreatesMissingGroups():
     healer_text = "bob"
     x_agenda = agendaunit_shop(healer_text)
     x_agenda.set_groupunits_empty_if_null()
-    work_road = x_agenda.make_road(x_agenda._culture_qid, "work")
+    work_road = x_agenda.make_l1_road("work")
     new_idea_parent_road = x_agenda.make_road(work_road, "cleaning")
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = ideacore_shop(
@@ -724,7 +724,7 @@ def test_agenda_add_idea_DoesNotOverwriteGroups():
     healer_text = "bob"
     x_agenda = agendaunit_shop(healer_text)
     x_agenda.set_groupunits_empty_if_null()
-    work_road = x_agenda.make_road(x_agenda._culture_qid, "work")
+    work_road = x_agenda.make_l1_road("work")
     new_idea_parent_road = x_agenda.make_road(work_road, "cleaning")
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = ideacore_shop(

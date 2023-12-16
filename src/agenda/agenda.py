@@ -125,6 +125,9 @@ class AgendaUnit:
             delimiter=self._road_node_delimiter,
         )
 
+    def make_l1_road(self, l1_node: RaodNode):
+        return self.make_road(self._culture_qid, l1_node)
+
     def set_partys_output_agenda_meld_order(self):
         sort_partys_list = list(self._partys.values())
         sort_partys_list.sort(key=lambda x: x.pid.lower(), reverse=False)
@@ -151,9 +154,9 @@ class AgendaUnit:
 
         # change all road attributes in idea
         self._road_node_delimiter = get_node_delimiter(new_road_node_delimiter)
-        for x_idea in idea_pointers.values():
-            print(f"{x_idea.get_idea_road()=}")
-            x_idea.set_road_node_delimiter(self._road_node_delimiter)
+        # for x_idea in idea_pointers.values():
+        #     print(f"{x_idea.get_idea_road()=}")
+        #     x_idea.set_road_node_delimiter(self._road_node_delimiter)
 
     def set_culture_qid(self, culture_qid: str):
         old_culture_qid = copy_deepcopy(self._culture_qid)

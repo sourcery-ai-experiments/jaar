@@ -13,7 +13,7 @@ from pytest import raises as pytest_raises
 
 def test_agenda_acptfact_exists():
     x_agenda = examples_get_agenda_with_4_levels()
-    weekday_road = x_agenda.make_road(x_agenda._culture_qid, "weekdays")
+    weekday_road = x_agenda.make_l1_road("weekdays")
     sunday_road = x_agenda.make_road(weekday_road, "Sunday")
     sunday_agenda_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
     print(sunday_agenda_acptfact)
@@ -30,7 +30,7 @@ def test_agenda_acptfact_exists():
 
     x_agenda._idearoot._acptfactunits = None
     assert x_agenda._idearoot._acptfactunits is None
-    usa_week_road = x_agenda.make_road(x_agenda._culture_qid, "nation-state")
+    usa_week_road = x_agenda.make_l1_road("nation-state")
     usa_week_unit = acptfactunit_shop(
         base=usa_week_road, pick=usa_week_road, open=608, nigh=610
     )
@@ -45,7 +45,7 @@ def test_agenda_acptfact_exists():
 
 def test_agenda_acptfact_create():
     x_agenda = examples_get_agenda_with_4_levels()
-    weekday_road = x_agenda.make_road(x_agenda._culture_qid, "weekdays")
+    weekday_road = x_agenda.make_l1_road("weekdays")
     sunday_road = x_agenda.make_road(weekday_road, "Sunday")
     x_agenda.set_acptfact(base=weekday_road, pick=sunday_road)
     sunday_agenda_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
@@ -62,7 +62,7 @@ def test_set_acptfact_FailsToCreateWhenBaseAndAcptFactAreDifferenctAndAcptFactId
     x_agenda.add_idea(
         ideacore_shop(time_text, _begin=0, _close=140), x_agenda._culture_qid
     )
-    time_road = x_agenda.make_road(x_agenda._culture_qid, time_text)
+    time_road = x_agenda.make_l1_road(time_text)
     a1st = "age1st"
     x_agenda.add_idea(ideacore_shop(a1st, _begin=0, _close=20), pad=time_road)
     a1_road = x_agenda.make_road(time_road, a1st)
@@ -83,7 +83,7 @@ def test_set_acptfact_FailsToCreateWhenBaseAndAcptFactAreDifferenctAndAcptFactId
 def test_agenda_acptfact_create():
     # GIVEN
     x_agenda = examples_get_agenda_with_4_levels()
-    weekday_road = x_agenda.make_road(x_agenda._culture_qid, "weekdays")
+    weekday_road = x_agenda.make_l1_road("weekdays")
     sunday_road = x_agenda.make_road(weekday_road, "Sunday")
     x_agenda.set_acptfact(base=weekday_road, pick=sunday_road)
     sunday_agenda_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
@@ -103,7 +103,7 @@ def test_agenda_get_idea_list_AcptFactHeirsCorrectlyInherited():
     bob_text = "Bob"
     x_agenda = agendaunit_shop(bob_text)
     swim_text = "swim"
-    swim_road = x_agenda.make_road(x_agenda._culture_qid, swim_text)
+    swim_road = x_agenda.make_l1_road(swim_text)
     x_agenda.add_idea(ideacore_shop(swim_text), pad=x_agenda._culture_qid)
     fast_text = "fast"
     slow_text = "slow"
@@ -113,7 +113,7 @@ def test_agenda_get_idea_list_AcptFactHeirsCorrectlyInherited():
     x_agenda.add_idea(ideacore_shop(slow_text), pad=swim_road)
 
     earth_text = "earth"
-    earth_road = x_agenda.make_road(x_agenda._culture_qid, earth_text)
+    earth_road = x_agenda.make_l1_road(earth_text)
     x_agenda.add_idea(ideacore_shop(earth_text), pad=x_agenda._culture_qid)
 
     swim_idea = x_agenda.get_idea_kid(swim_road)
@@ -160,7 +160,7 @@ def test_agenda_get_idea_list_AcptFactUnitCorrectlyTransformsacptfactheir_shop()
     bob_text = "Bob"
     x_agenda = agendaunit_shop(bob_text)
     swim_text = "swim"
-    swim_road = x_agenda.make_road(x_agenda._culture_qid, swim_text)
+    swim_road = x_agenda.make_l1_road(swim_text)
     x_agenda.add_idea(ideacore_shop(swim_text), pad=x_agenda._culture_qid)
     swim_idea = x_agenda.get_idea_kid(swim_road)
 
@@ -170,7 +170,7 @@ def test_agenda_get_idea_list_AcptFactUnitCorrectlyTransformsacptfactheir_shop()
     x_agenda.add_idea(ideacore_shop(slow_text), pad=swim_road)
 
     earth_text = "earth"
-    earth_road = x_agenda.make_road(x_agenda._culture_qid, earth_text)
+    earth_road = x_agenda.make_l1_road(earth_text)
     x_agenda.add_idea(ideacore_shop(earth_text), pad=x_agenda._culture_qid)
 
     assert swim_idea._acptfactheirs is None
@@ -203,14 +203,14 @@ def test_agenda_get_idea_list_AcptFactHeirCorrectlyDeletesAcptFactUnit():
     healer_text = "Tim"
     x_agenda = agendaunit_shop(healer_text)
     swim_text = "swim"
-    swim_road = x_agenda.make_road(x_agenda._culture_qid, swim_text)
+    swim_road = x_agenda.make_l1_road(swim_text)
     x_agenda.add_idea(ideacore_shop(swim_text), pad=x_agenda._culture_qid)
     fast_text = "fast"
     slow_text = "slow"
     x_agenda.add_idea(ideacore_shop(fast_text), pad=swim_road)
     x_agenda.add_idea(ideacore_shop(slow_text), pad=swim_road)
     earth_text = "earth"
-    earth_road = x_agenda.make_road(x_agenda._culture_qid, earth_text)
+    earth_road = x_agenda.make_l1_road(earth_text)
     x_agenda.add_idea(ideacore_shop(earth_text), pad=x_agenda._culture_qid)
 
     swim_idea = x_agenda.get_idea_kid(swim_road)
@@ -247,8 +247,8 @@ def test_get_ranged_acptfacts():
 
     clean = "clean"
     x_agenda.add_idea(ideacore_shop(clean, promise=True), pad=x_agenda._culture_qid)
-    c_road = x_agenda.make_road(x_agenda._culture_qid, clean)
-    t_x_road = x_agenda.make_road(x_agenda._culture_qid, time_x)
+    c_road = x_agenda.make_l1_road(clean)
+    t_x_road = x_agenda.make_l1_road(time_x)
     # x_agenda.edit_idea_attr(road=c_road, required_base=t_x_road, required_sufffact=t_x_road, required_sufffact_open=5, required_sufffact_nigh=10)
 
     x_agenda.set_acptfact(base=t_x_road, pick=t_x_road, open=5, nigh=10)
@@ -264,7 +264,7 @@ def test_get_ranged_acptfacts():
         idea_kid=ideacore_shop(place, _begin=600, _close=800),
         pad=x_agenda._culture_qid,
     )
-    p_road = x_agenda.make_road(x_agenda._culture_qid, place)
+    p_road = x_agenda.make_l1_road(place)
     x_agenda.set_acptfact(base=p_road, pick=p_road, open=5, nigh=10)
     print(f"When one ranged acptfact added {x_agenda._idearoot._acptfactunits=}")
     assert len(x_agenda._idearoot._acptfactunits) == 2
@@ -275,7 +275,7 @@ def test_get_ranged_acptfacts():
     # WHEN one non-ranged_acptfact added
     mood = "mood_x"
     x_agenda.add_idea(ideacore_shop(mood), pad=x_agenda._culture_qid)
-    m_road = x_agenda.make_road(x_agenda._culture_qid, mood)
+    m_road = x_agenda.make_l1_road(mood)
     x_agenda.set_acptfact(base=m_road, pick=m_road)
     print(f"When one non-ranged_acptfact added {x_agenda._idearoot._acptfactunits=}")
     assert len(x_agenda._idearoot._acptfactunits) == 3
@@ -293,10 +293,10 @@ def test_get_roots_ranged_acptfacts():
         idea_kid=ideacore_shop(time_x, _begin=0, _close=140),
         pad=x_agenda._culture_qid,
     )
-    t_x_road = x_agenda.make_road(x_agenda._culture_qid, time_x)
+    t_x_road = x_agenda.make_l1_road(time_x)
     mood_x = "mood_x"
     x_agenda.add_idea(ideacore_shop(mood_x), pad=x_agenda._culture_qid)
-    m_x_road = x_agenda.make_road(x_agenda._culture_qid, mood_x)
+    m_x_road = x_agenda.make_l1_road(mood_x)
     happy = "happy"
     sad = "Sad"
     x_agenda.add_idea(ideacore_shop(happy), pad=m_x_road)
@@ -318,7 +318,7 @@ def test_get_roots_ranged_acptfacts():
         idea_kid=ideacore_shop(mirrow_x, _numeric_road=time_x),
         pad=x_agenda._culture_qid,
     )
-    m_x_road = x_agenda.make_road(x_agenda._culture_qid, mirrow_x)
+    m_x_road = x_agenda.make_l1_road(mirrow_x)
     x_agenda.set_acptfact(base=m_x_road, pick=t_x_road, open=5, nigh=10)
     assert len(x_agenda._idearoot._acptfactunits) == 3
 
@@ -339,7 +339,7 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario1(
         idea_kid=ideacore_shop(time_x, _begin=0, _close=140),
         pad=x_agenda._culture_qid,
     )
-    t_x_road = x_agenda.make_road(x_agenda._culture_qid, time_x)
+    t_x_road = x_agenda.make_l1_road(time_x)
     age1st = "age1st"
     age2nd = "age2nd"
     age3rd = "age3rd"
@@ -403,7 +403,7 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario2(
         idea_kid=ideacore_shop(time_x, _begin=0, _close=140),
         pad=x_agenda._culture_qid,
     )
-    t_x_road = x_agenda.make_road(x_agenda._culture_qid, time_x)
+    t_x_road = x_agenda.make_l1_road(time_x)
     age1st = "age1st"
     age2nd = "age2nd"
     age3rd = "age3rd"
@@ -465,7 +465,7 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario3(
         idea_kid=ideacore_shop(time_x, _begin=0, _close=140),
         pad=x_agenda._culture_qid,
     )
-    t_x_road = x_agenda.make_road(x_agenda._culture_qid, time_x)
+    t_x_road = x_agenda.make_l1_road(time_x)
     age1st = "age1st"
     age2nd = "age2nd"
     age3rd = "age3rd"
@@ -544,7 +544,7 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario4(
     x_agenda = agendaunit_shop(healer_text)
     time_x = "time_x"
     arsub1 = "descretional_subsection1"
-    as1_road = x_agenda.make_road(x_agenda._culture_qid, arsub1)
+    as1_road = x_agenda.make_l1_road(arsub1)
     x_agenda.add_idea(
         ideacore_shop(arsub1, _begin=0, _close=140), pad=x_agenda._culture_qid
     )
@@ -555,13 +555,13 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario4(
     )
 
     arsub2 = "descretional_subsection2"
-    as2_road = x_agenda.make_road(x_agenda._culture_qid, arsub2)
+    as2_road = x_agenda.make_l1_road(arsub2)
     x_agenda.add_idea(
         ideacore_shop(arsub2, _begin=0, _close=20), pad=x_agenda._culture_qid
     )
 
     # non-range-root child idea has range_source_road
-    t_x_road = x_agenda.make_road(x_agenda._culture_qid, time_x)
+    t_x_road = x_agenda.make_l1_road(time_x)
     age1st = "age1st"
     x_agenda.add_idea(
         ideacore_shop(age1st, _begin=0, _close=20, _range_source_road=as2_road),
@@ -590,7 +590,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario4_
     healer_text = "Tim"
     x_agenda = agendaunit_shop(healer_text)
     x_agenda.set_time_hreg_ideas(c400_count=7)
-    time_road = x_agenda.make_road(x_agenda._culture_qid, "time")
+    time_road = x_agenda.make_l1_road("time")
     jajatime_road = x_agenda.make_road(time_road, "jajatime")
     timetech_road = x_agenda.make_road(time_road, "tech")
     x_agenda.set_acptfact(base=jajatime_road, pick=jajatime_road, open=1500, nigh=1500)
@@ -618,7 +618,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario5(
     healer_text = "Tim"
     x_agenda = agendaunit_shop(healer_text)
     x_agenda.set_time_hreg_ideas(c400_count=7)
-    time_road = x_agenda.make_road(x_agenda._culture_qid, "time")
+    time_road = x_agenda.make_l1_road("time")
     timetech_road = x_agenda.make_road(time_road, "tech")
     jajatime_road = x_agenda.make_road(time_road, "jajatime")
     x_agenda.set_acptfact(
@@ -654,7 +654,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario6(
     healer_text = "Tim"
     x_agenda = agendaunit_shop(healer_text)
     x_agenda.set_time_hreg_ideas(c400_count=7)
-    time_road = x_agenda.make_road(x_agenda._culture_qid, "time")
+    time_road = x_agenda.make_l1_road("time")
     jajatime_road = x_agenda.make_road(time_road, "jajatime")
     x_agenda.set_acptfact(
         base=jajatime_road, pick=jajatime_road, open=1063954000, nigh=1063954002
@@ -684,7 +684,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario7(
     healer_text = "Tim"
     x_agenda = agendaunit_shop(healer_text)
     x_agenda.set_time_hreg_ideas(c400_count=7)
-    time_road = x_agenda.make_road(x_agenda._culture_qid, "time")
+    time_road = x_agenda.make_l1_road("time")
     timetech_road = x_agenda.make_road(time_road, "tech")
     techweek_road = x_agenda.make_road(timetech_road, "week")
     jajatime_road = x_agenda.make_road(time_road, "jajatime")
@@ -736,7 +736,7 @@ def test_create_lemma_acptfacts_CorrectlyCreatesNthLevelLemmaAcptFact_Scenario8(
     healer_text = "Tim"
     x_agenda = agendaunit_shop(healer_text)
     x_agenda.set_time_hreg_ideas(c400_count=7)
-    time_road = x_agenda.make_road(x_agenda._culture_qid, "time")
+    time_road = x_agenda.make_l1_road("time")
     timetech_road = x_agenda.make_road(time_road, "tech")
     techweek_road = x_agenda.make_road(timetech_road, "week")
     jajatime_road = x_agenda.make_road(time_road, "jajatime")
@@ -786,7 +786,7 @@ def test_agenda_set_acptfact_create_missing_ideas_CreatesBaseAndAcptFact():
     x_agenda = agendaunit_shop(healer_text)
     x_agenda._idearoot.set_kids_empty_if_null()
     issue_text = "issues"
-    issue_road = x_agenda.make_road(x_agenda._culture_qid, issue_text)
+    issue_road = x_agenda.make_l1_road(issue_text)
     climate_text = "climate"
     climate_road = x_agenda.make_road(issue_road, climate_text)
     assert x_agenda._idearoot._kids.get(issue_text) is None
@@ -807,13 +807,13 @@ def test_agenda_get_acptfactunits_base_and_acptfact_list_CorrectlyReturnsListOfA
     x_agenda._idearoot.set_kids_empty_if_null()
 
     issue_text = "issues"
-    issue_road = x_agenda.make_road(x_agenda._culture_qid, issue_text)
+    issue_road = x_agenda.make_l1_road(issue_text)
     climate_text = "climate"
     climate_road = x_agenda.make_road(issue_road, climate_text)
     x_agenda.set_acptfact(base=issue_road, pick=climate_road, create_missing_ideas=True)
 
     weather_text = "weather"
-    weather_road = x_agenda.make_road(x_agenda._culture_qid, weather_text)
+    weather_road = x_agenda.make_l1_road(weather_text)
     windy_text = "windy"
     windy_road = x_agenda.make_road(weather_road, windy_text)
     x_agenda.set_acptfact(base=weather_road, pick=windy_road, create_missing_ideas=True)
@@ -825,7 +825,7 @@ def test_agenda_get_acptfactunits_base_and_acptfact_list_CorrectlyReturnsListOfA
     x_agenda.set_acptfact(base=weather_road, pick=cold_road, create_missing_ideas=True)
 
     games_text = "games"
-    games_road = x_agenda.make_road(x_agenda._culture_qid, games_text)
+    games_road = x_agenda.make_l1_road(games_text)
     football_text = "football"
     football_road = x_agenda.make_road(weather_road, football_text)
     x_agenda.set_acptfact(

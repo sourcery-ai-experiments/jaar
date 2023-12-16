@@ -84,7 +84,7 @@ def test_get_idea_kid_CorrectlyReturnsIdea():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     nation_text = "nation-state"
-    nation_road = x_agenda.make_road(x_agenda._culture_qid, nation_text)
+    nation_road = x_agenda.make_l1_road(nation_text)
     brazil_text = "Brazil"
     brazil_road = x_agenda.make_road(nation_road, brazil_text)
 
@@ -97,7 +97,7 @@ def test_get_idea_kid_CorrectlyReturnsIdea():
 
     # WHEN
     week_text = "weekdays"
-    week_road = x_agenda.make_road(x_agenda._culture_qid, week_text)
+    week_road = x_agenda.make_l1_road(week_text)
     week_idea = x_agenda.get_idea_kid(road=week_road)
 
     # THEN
@@ -113,7 +113,7 @@ def test_get_idea_kid_CorrectlyReturnsIdea():
 
     # WHEN / THEN
     bobdylan_text = "bobdylan"
-    wrong_road = x_agenda.make_road(x_agenda._culture_qid, bobdylan_text)
+    wrong_road = x_agenda.make_l1_road(bobdylan_text)
     with pytest_raises(Exception) as excinfo:
         x_agenda.get_idea_kid(road=wrong_road)
     assert (
@@ -143,7 +143,7 @@ def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_1():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
-    work_road = x_agenda.make_road(x_agenda._culture_qid, work_text)
+    work_road = x_agenda.make_l1_road(work_text)
     week_text = "weekdays"
     mon_text = "Monday"
 
@@ -216,7 +216,7 @@ def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_2():
     vaccum_text = "vaccum"
     sandy_text = "sandy"
 
-    work_road = x_agenda.make_road(x_agenda._culture_qid, work_text)
+    work_road = x_agenda.make_l1_road(work_text)
     email_idea = ideacore_shop(_label=email_text, promise=True)
     x_agenda.add_idea(email_idea, pad=work_road)
     vaccum_idea = ideacore_shop(_label=vaccum_text, promise=True)
@@ -309,14 +309,14 @@ def test_TreeTraverseSetsBalanceLineestorFromRootCorrectly():
     print(f"{sandy_balanceline._agenda_credit=} {root_idea._agenda_importance=} ")
     print(f"  {sandy_balanceline._agenda_debt=} {root_idea._agenda_importance=} ")
     sum_x = 0
-    cat_road = x_agenda.make_road(x_agenda._culture_qid, "feed cat")
+    cat_road = x_agenda.make_l1_road("feed cat")
     cat_idea = x_agenda.get_idea_kid(cat_road)
-    week_road = x_agenda.make_road(x_agenda._culture_qid, week_text)
+    week_road = x_agenda.make_l1_road(week_text)
     week_idea = x_agenda.get_idea_kid(week_road)
     work_text = "work"
-    work_road = x_agenda.make_road(x_agenda._culture_qid, work_text)
+    work_road = x_agenda.make_l1_road(work_text)
     work_idea = x_agenda.get_idea_kid(work_road)
-    nation_road = x_agenda.make_road(x_agenda._culture_qid, nation_text)
+    nation_road = x_agenda.make_l1_road(nation_text)
     nation_idea = x_agenda.get_idea_kid(nation_road)
     sum_x = cat_idea._agenda_importance
     print(f"{cat_idea._agenda_importance=} {sum_x} ")
@@ -380,7 +380,7 @@ def test_agenda4party_Exists():
     work_text = "work"
     vaccum_text = "vaccum"
     sandy_text = "sandy"
-    work_road = x_agenda.make_road(x_agenda._culture_qid, work_text)
+    work_road = x_agenda.make_l1_road(work_text)
     email_idea = ideacore_shop(_label=email_text, promise=True)
     x_agenda.add_idea(email_idea, pad=work_road)
     vaccum_idea = ideacore_shop(_label=vaccum_text, promise=True)
@@ -410,7 +410,7 @@ def test_agenda4party_hasCorrectLevel1StructureNoGrouplessAncestors():
     sandy_text = "sandy"
     week_text = "weekdays"
     feed_text = "feed cat"
-    work_road = x_agenda.make_road(x_agenda._culture_qid, work_text)
+    work_road = x_agenda.make_l1_road(work_text)
     email_idea = ideacore_shop(_label=email_text, promise=True)
     x_agenda.add_idea(email_idea, pad=work_road)
     vaccum_idea = ideacore_shop(_label=vaccum_text, promise=True)
@@ -497,7 +497,7 @@ def test_agenda_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoads():
     x_agenda.add_idea(
         ideacore_shop(_label=time, _begin=0, _close=700), pad=x_agenda._culture_qid
     )
-    t_road = x_agenda.make_road(x_agenda._culture_qid, time)
+    t_road = x_agenda.make_l1_road(time)
     week = "weeks"
     x_agenda.add_idea(ideacore_shop(_label=week, _denom=7), pad=t_road)
 
@@ -510,7 +510,7 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     week_text = "weekdays"
-    weekdays = x_agenda.make_road(x_agenda._culture_qid, week_text)
+    weekdays = x_agenda.make_l1_road(week_text)
     assert x_agenda.get_heir_road_list(road_x=weekdays)
 
     # WHEN

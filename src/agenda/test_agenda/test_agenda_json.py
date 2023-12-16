@@ -31,7 +31,7 @@ def test_agenda_get_dict_ReturnsDictObject():
     # GIVEN
     x_agenda = example_agendas_agenda_v001()
     day_hour_text = "day_hour"
-    day_hour_road = x_agenda.make_road(x_agenda._culture_qid, day_hour_text)
+    day_hour_road = x_agenda.make_l1_road(day_hour_text)
     day_hour_idea = x_agenda.get_idea_kid(day_hour_road)
     day_hour_idea._originunit.set_originlink(pid="bob", weight=2)
     x_agenda.set_acptfact(
@@ -40,7 +40,7 @@ def test_agenda_get_dict_ReturnsDictObject():
         open=0,
         nigh=23,
     )
-    time_minute = x_agenda.make_road(x_agenda._culture_qid, "day_minute")
+    time_minute = x_agenda.make_l1_road("day_minute")
     x_agenda.set_acptfact(base=time_minute, pick=time_minute, open=0, nigh=1440)
     yao_text = "Yao"
     x_agenda._originunit.set_originlink(yao_text, 1)
@@ -76,7 +76,7 @@ def test_agenda_get_dict_ReturnsDictObject():
 
     # checking an ideakid._range_source_road attribute
     month_week_text = "month_week"
-    month_week_road = x_agenda.make_road(x_agenda._culture_qid, month_week_text)
+    month_week_road = x_agenda.make_l1_road(month_week_text)
     month_week_idea_x = x_agenda.get_idea_kid(month_week_road)
     print("checking TlME,month_week...range_source_road equal to...")
     month_week_special_dict = idearoot_dict[_kids][month_week_text][_range_source_road]
@@ -88,7 +88,7 @@ def test_agenda_get_dict_ReturnsDictObject():
 
     # checking an ideakid._numeric_road attribute
     num1_text = "numeric_road_test"
-    num1_road = x_agenda.make_road(x_agenda._culture_qid, num1_text)
+    num1_road = x_agenda.make_l1_road(num1_text)
     num1_idea_x = x_agenda.get_idea_kid(num1_road)
     print(f"checking {num1_road}...numeric_road equal to...")
     num1_dict_numeric_road = idearoot_dict[_kids][num1_text][_numeric_road]
@@ -133,7 +133,7 @@ def test_agenda_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
     x_agenda.set_groupunit(groupunit=groupunit_shop(run_text))
 
     morn_text = "morning"
-    morn_road = x_agenda.make_road(x_agenda._culture_qid, morn_text)
+    morn_road = x_agenda.make_l1_road(morn_text)
     x_agenda.add_idea(idea_kid=ideacore_shop(morn_text), pad=x_agenda._culture_qid)
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(brand=run_text)
@@ -189,10 +189,10 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     # GIVEN
     x_agenda = example_agendas_agenda_v001()
     day_hour_text = "day_hour"
-    day_hour_road = x_agenda.make_road(x_agenda._culture_qid, day_hour_text)
+    day_hour_road = x_agenda.make_l1_road(day_hour_text)
     x_agenda.set_acptfact(base=day_hour_road, pick=day_hour_road, open=0, nigh=23)
     day_min_text = "day_minute"
-    day_min_road = x_agenda.make_road(x_agenda._culture_qid, day_min_text)
+    day_min_road = x_agenda.make_l1_road(day_min_text)
     x_agenda.set_acptfact(base=day_min_road, pick=day_min_road, open=0, nigh=59)
     acptfactunit_x = acptfactunit_shop(day_min_road, day_min_road, 5, 59)
     x_agenda.edit_idea_attr(road=acptfactunit_x.base, acptfactunit=acptfactunit_x)
@@ -227,8 +227,8 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     _requiredunits = "_requiredunits"
     cont_text = "Freelancing"
     ulti_text = "Ultimate Frisbee"
-    cont_road = x_agenda.make_road(x_agenda._culture_qid, cont_text)
-    ulti_road = x_agenda.make_road(x_agenda._culture_qid, ulti_text)
+    cont_road = x_agenda.make_l1_road(cont_text)
+    ulti_road = x_agenda.make_l1_road(ulti_text)
     cont_idea = x_agenda.get_idea_kid(cont_road)
     ulti_idea = x_agenda.get_idea_kid(ulti_road)
     cont_requiredunits_dict = idearoot_dict[_kids][cont_text][_requiredunits]
