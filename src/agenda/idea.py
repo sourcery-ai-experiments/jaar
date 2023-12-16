@@ -504,8 +504,23 @@ class IdeaCore:
             old_delimiter=old_delimiter,
             new_delimiter=self._road_node_delimiter,
         )
-        # print(f"Before {self._pad=}")
-        # print(f"After  {self._pad=}")
+
+        new_requiredunits = {}
+        for requiredunit_road, requiredunit_obj in self._requiredunits.items():
+            new_requiredunit_road = replace_road_node_delimiter(
+                road=requiredunit_road,
+                old_delimiter=old_delimiter,
+                new_delimiter=self._road_node_delimiter,
+            )
+            requiredunit_obj.set_delimiter(self._road_node_delimiter)
+            new_requiredunits[new_requiredunit_road] = requiredunit_obj
+        self._requiredunits = new_requiredunits
+        # print(
+        #     f"Before {requiredunit_obj.sufffacts.keys()=} {self._road_node_delimiter=}"
+        # )
+        # print(
+        #     f"After  {requiredunit_obj.sufffacts.keys()=} {self._road_node_delimiter=}"
+        # )
 
     def _meld_requiredunits(self, other_idea):
         self.set_requiredunits_empty_if_null()

@@ -183,6 +183,7 @@ def test_idea_set_road_node_delimiter_CorrectlyChangesRequiredRoads():
 
     # WHEN
     slash_text = "/"
+    casa_idea.set_requiredunits_empty_if_null()
     casa_idea.set_road_node_delimiter(slash_text)
 
     # THEN

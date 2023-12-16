@@ -4,7 +4,7 @@ from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels_and_2requireds_2acptfacts,
 )
 from pytest import raises as pytest_raises
-from src.agenda.required_idea import AcptFactUnit
+from src.agenda.required_idea import requiredunit_shop
 from src.agenda.road import get_default_culture_root_label as root_label, get_road
 
 
@@ -416,7 +416,43 @@ def test_agenda_set_road_node_delimiter_CorrectlyChangesPad():
     # THEN
     assert cook_idea.get_idea_road() != comma_cook_road
     slash_work_road = get_road(
-        luca_agenda._culture_qid, work_text, [], delimiter=slash_text
+        luca_agenda._culture_qid, work_text, delimiter=slash_text
     )
     slash_cook_road = get_road(slash_work_road, cook_text, delimiter=slash_text)
     assert cook_idea.get_idea_road() == slash_cook_road
+
+
+def test_agenda_set_road_node_delimiter_CorrectlyChangesRequiredUnit():
+    # GIVEN
+    luca_agenda = agendaunit_shop("Luca", "Texas")
+    work_text = "work"
+    luca_agenda.add_idea(ideacore_shop(work_text), pad=luca_agenda._culture_qid)
+    comma_time_road = luca_agenda.make_l1_road("time")
+    comma_8am_road = luca_agenda.make_road(comma_time_road, "8am")
+    comma_time_requiredunit = requiredunit_shop(base=comma_time_road)
+    comma_time_requiredunit.set_sufffact(comma_8am_road)
+
+    comma_work_road = luca_agenda.make_l1_road(work_text)
+    luca_agenda.edit_idea_attr(road=comma_work_road, required=comma_time_requiredunit)
+    work_idea = luca_agenda.get_idea_kid(comma_work_road)
+    assert work_idea._requiredunits.get(comma_time_road) != None
+    gen_time_requiredunit = work_idea._requiredunits.get(comma_time_road)
+    assert gen_time_requiredunit.sufffacts.get(comma_8am_road) != None
+
+    # WHEN
+    slash_text = "/"
+    luca_agenda.set_road_node_delimiter(slash_text)
+
+    # THEN
+    slash_time_road = luca_agenda.make_l1_road("time")
+    slash_8am_road = luca_agenda.make_road(slash_time_road, "8am")
+    slash_work_road = luca_agenda.make_l1_road(work_text)
+    work_idea = luca_agenda.get_idea_kid(slash_work_road)
+    slash_time_road = luca_agenda.make_l1_road("time")
+    slash_8am_road = luca_agenda.make_road(slash_time_road, "8am")
+    assert work_idea._requiredunits.get(slash_time_road) != None
+    gen_time_requiredunit = work_idea._requiredunits.get(slash_time_road)
+    assert gen_time_requiredunit.sufffacts.get(slash_8am_road) != None
+
+    assert work_idea._requiredunits.get(comma_time_road) is None
+    assert gen_time_requiredunit.sufffacts.get(comma_8am_road) is None

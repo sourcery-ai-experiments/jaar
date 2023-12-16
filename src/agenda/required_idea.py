@@ -420,14 +420,14 @@ class RequiredCore:
         self.base = replace_road_node_delimiter(self.base, old_delimiter, new_delimiter)
 
         new_sufffacts = {}
-        for sufffact_road, suffact_obj in self.sufffacts.items():
+        for sufffact_road, sufffact_obj in self.sufffacts.items():
             new_sufffact_road = replace_road_node_delimiter(
                 road=sufffact_road,
                 old_delimiter=old_delimiter,
-                new_delimiter=new_delimiter,
+                new_delimiter=self.delimiter,
             )
-            suffact_obj.set_delimiter(new_delimiter)
-            new_sufffacts[new_sufffact_road] = suffact_obj
+            sufffact_obj.set_delimiter(self.delimiter)
+            new_sufffacts[new_sufffact_road] = sufffact_obj
         self.sufffacts = new_sufffacts
 
     def get_key_road(self):
