@@ -515,11 +515,28 @@ class IdeaCore:
             requiredunit_obj.set_delimiter(self._road_node_delimiter)
             new_requiredunits[new_requiredunit_road] = requiredunit_obj
         self._requiredunits = new_requiredunits
+
+        new_acptfactunits = {}
+        for acptfactunit_road, acptfactunit_obj in self._acptfactunits.items():
+            new_base_road = replace_road_node_delimiter(
+                road=acptfactunit_road,
+                old_delimiter=old_delimiter,
+                new_delimiter=self._road_node_delimiter,
+            )
+            acptfactunit_obj.base = new_base_road
+            new_pick_road = replace_road_node_delimiter(
+                road=acptfactunit_obj.pick,
+                old_delimiter=old_delimiter,
+                new_delimiter=self._road_node_delimiter,
+            )
+            acptfactunit_obj.set_attr(pick=new_pick_road)
+            new_acptfactunits[new_base_road] = acptfactunit_obj
+        self._acptfactunits = new_acptfactunits
         # print(
-        #     f"Before {requiredunit_obj.sufffacts.keys()=} {self._road_node_delimiter=}"
+        #     f"Before {acptfactunit_obj.sufffacts.keys()=} {self._road_node_delimiter=}"
         # )
         # print(
-        #     f"After  {requiredunit_obj.sufffacts.keys()=} {self._road_node_delimiter=}"
+        #     f"After  {acptfactunit_obj.sufffacts.keys()=} {self._road_node_delimiter=}"
         # )
 
     def _meld_requiredunits(self, other_idea):
