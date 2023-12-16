@@ -1,17 +1,19 @@
 from src.world.person import personunit_shop
 from src.world.pain import painunit_shop, healerlink_shop, culturelink_shop
 from src.world.examples.world_env_kit import (
-    get_temp_env_dir,
-    get_temp_env_qid,
+    get_temp_world_dir,
+    get_temp_culture_qid,
     get_test_worlds_dir,
-    env_dir_setup_cleanup,
+    worlds_dir_setup_cleanup,
 )
 
 
-def test_personunit_set_painunits_weight_metrics_SetsCorrectly(env_dir_setup_cleanup):
+def test_personunit_set_painunits_weight_metrics_SetsCorrectly(
+    worlds_dir_setup_cleanup,
+):
     # GIVEN
     xao_text = "Xao"
-    xao_person_dir = f"{get_temp_env_dir}/persons/{xao_text}"
+    xao_person_dir = f"{get_temp_world_dir()}/persons/{xao_text}"
     xao_personunit = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
 
     knee_text = "knee discomfort"
@@ -42,10 +44,12 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectly(env_dir_setup_cle
     assert rain_painunit._manager_importance == 0.05
 
 
-def test_personunit_set_painunits_weight_metrics_SetsCorrectly(env_dir_setup_cleanup):
+def test_personunit_set_painunits_weight_metrics_SetsCorrectly(
+    worlds_dir_setup_cleanup,
+):
     # GIVEN
     xao_name = "Xao"
-    xao_person_dir = f"{get_temp_env_dir}/persons/{xao_name}"
+    xao_person_dir = f"{get_temp_world_dir()}/persons/{xao_name}"
     xao_personunit = personunit_shop(pid=xao_name, person_dir=xao_person_dir)
 
     knee_genus = "knee"
@@ -135,11 +139,11 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectly(env_dir_setup_cle
 
 
 # def test_personunit_add_cultureunits_weight_metrics_SetsCorrectly(
-#     env_dir_setup_cleanup,
+#     worlds_dir_setup_cleanup,
 # ):
 #     # GIVEN
 #     xao_name = "Xao"
-#     xao_person_dir = f"{get_temp_env_dir()}/persons/{xao_name}"
+#     xao_person_dir = f"{get_temp_world_dir()}/persons/{xao_name}"
 #     xao_personunit = personunit_shop(pid=xao_name, person_dir=xao_person_dir)
 
 #     knee_genus = "knee"

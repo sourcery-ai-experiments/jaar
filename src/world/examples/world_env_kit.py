@@ -5,12 +5,12 @@ from src.agenda.x_func import (
 from pytest import fixture as pytest_fixture
 
 
-def get_temp_env_qid():
+def get_temp_culture_qid():
     return "ex_env77"
 
 
-def get_temp_env_dir():
-    return f"{get_test_worlds_dir()}/{get_temp_env_qid()}"
+def get_temp_world_dir():
+    return f"{get_test_worlds_dir()}/{get_temp_culture_qid()}"
 
 
 def get_test_worlds_dir():
@@ -18,8 +18,8 @@ def get_test_worlds_dir():
 
 
 @pytest_fixture()
-def env_dir_setup_cleanup():
-    env_dir = get_temp_env_dir()
+def worlds_dir_setup_cleanup():
+    env_dir = get_test_worlds_dir()
     x_func_delete_dir(dir=env_dir)
     yield env_dir
     x_func_delete_dir(dir=env_dir)

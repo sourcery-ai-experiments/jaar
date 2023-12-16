@@ -1,14 +1,21 @@
 from src.world.world import worldunit_shop
 from src.world.concern import create_cultureaddress
-from src.world.examples.world_env_kit import get_test_worlds_dir
+from src.world.examples.world_env_kit import (
+    get_temp_world_dir,
+    get_temp_culture_qid,
+    get_test_worlds_dir,
+    worlds_dir_setup_cleanup,
+)
 from os import path as os_path
 
 
-def test_worldunit_add_cultural_connection_CorrectlyCreatesObj():
+def test_worldunit_add_cultural_connection_CorrectlyCreatesObj(
+    worlds_dir_setup_cleanup,
+):
     # GIVEN
     dallas_text = "dallas"
     x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
-    luca_text = "Luca"
+    luca_text = "Lucas"
     x_world.add_personunit(luca_text)
     luca_person = x_world.get_personunit_from_memory(luca_text)
     texas_text = "Texas"
@@ -28,12 +35,12 @@ def test_worldunit_add_cultural_connection_CorrectlyCreatesObj():
 
 
 def test_worldunit_apply_urgeunit_CorrectlyCreates_seed_agendas(
-    council_dir_setup_cleanup,
+    worlds_dir_setup_cleanup,
 ):
     # GIVEN urger and actor seed_agendas does not exist
     dallas_text = "dallas"
-    x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
-    luca_text = "Luca"
+    x_world = worldunit_shop(dallas_text, get_test_worlds_dir())
+    luca_text = "Tom"
     x_world.add_personunit(luca_text)
     luca_person = x_world.get_personunit_from_memory(luca_text)
     texas_text = "Texas"
@@ -58,14 +65,16 @@ def test_worldunit_apply_urgeunit_CorrectlyCreates_seed_agendas(
     assert 1 == 2
 
 
-def test_worldunit_apply_urgeunit_CorrectlyAddsTaskTo_urger_seed_agenda():
+def test_worldunit_apply_urgeunit_CorrectlyAddsTaskTo_urger_seed_agenda(
+    worlds_dir_setup_cleanup,
+):
     # GIVEN urger and actor seed_agendas does not exist
     # WHEN worldunit urgeunit is applyed
     # THEN urger seed_agenda has
     assert 1 == 2
 
 
-def test_worldunit_apply_urgeunit_CorrectlyAddsTaskTo_intent():
+def test_worldunit_apply_urgeunit_CorrectlyAddsTaskTo_intent(worlds_dir_setup_cleanup):
     # GIVEN actors public_agenda intent is empty
     # WHEN worldunit urgeunit is applyed
     # THEN actors public_agenda intent is non-empty

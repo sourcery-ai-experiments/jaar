@@ -1,10 +1,16 @@
 from src.world.world import WorldUnit, worldunit_shop
-from src.world.examples.world_env_kit import get_test_worlds_dir
+from src.world.examples.world_env_kit import (
+    get_temp_world_dir,
+    get_temp_culture_qid,
+    get_test_worlds_dir,
+    worlds_dir_setup_cleanup,
+)
+
 from src.world.person import personunit_shop, painunit_shop
 from pytest import raises as pytest_raises
 
 
-def test_worldunit_exists():
+def test_worldunit_exists(worlds_dir_setup_cleanup):
     dallas_text = "dallas"
     x_world = WorldUnit(mark=dallas_text, worlds_dir=get_test_worlds_dir())
     assert x_world.mark == dallas_text
@@ -12,7 +18,7 @@ def test_worldunit_exists():
     assert x_world._persons_dir is None
 
 
-def test_worldunit_shop_ReturnsWorldUnit():
+def test_worldunit_shop_ReturnsWorldUnit(worlds_dir_setup_cleanup):
     # GIVEN
     dallas_text = "dallas"
 
@@ -25,7 +31,7 @@ def test_worldunit_shop_ReturnsWorldUnit():
     assert x_world._personunits == {}
 
 
-def test_worldunit__set_world_dirs_SetsPersonDir():
+def test_worldunit__set_world_dirs_SetsPersonDir(worlds_dir_setup_cleanup):
     # GIVEN
     dallas_text = "dallas"
     x_world = WorldUnit(mark=dallas_text, worlds_dir=get_test_worlds_dir())
@@ -39,7 +45,7 @@ def test_worldunit__set_world_dirs_SetsPersonDir():
     assert x_world._persons_dir == f"{get_test_worlds_dir()}/{dallas_text}/persons"
 
 
-def test_worldunit_shop_SetsWorldsDirs():
+def test_worldunit_shop_SetsWorldsDirs(worlds_dir_setup_cleanup):
     # GIVEN
     dallas_text = "dallas"
 
@@ -52,7 +58,7 @@ def test_worldunit_shop_SetsWorldsDirs():
     assert x_world._persons_dir == f"{x_world._world_dir}/persons"
 
 
-def test_worldunit__set_person_in_memory_CorrectlySetsPerson():
+def test_worldunit__set_person_in_memory_CorrectlySetsPerson(worlds_dir_setup_cleanup):
     # GIVEN
     dallas_text = "dallas"
     x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
@@ -71,7 +77,7 @@ def test_worldunit__set_person_in_memory_CorrectlySetsPerson():
     assert x_world._persons_dir == f"{x_world._world_dir}/persons"
 
 
-def test_worldunit_personunit_exists_ReturnsCorrectBool():
+def test_worldunit_personunit_exists_ReturnsCorrectBool(worlds_dir_setup_cleanup):
     # GIVEN
     dallas_text = "dallas"
     x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
@@ -87,7 +93,7 @@ def test_worldunit_personunit_exists_ReturnsCorrectBool():
     assert x_world.personunit_exists(luca_text)
 
 
-def test_worldunit_add_personunit_CorrectlySetsPerson():
+def test_worldunit_add_personunit_CorrectlySetsPerson(worlds_dir_setup_cleanup):
     # GIVEN
     dallas_text = "dallas"
     x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
@@ -104,7 +110,7 @@ def test_worldunit_add_personunit_CorrectlySetsPerson():
     assert x_world._personunits[luca_text] == luca_person_obj
 
 
-def test_worldunit_add_personunit_RaisesErrorIfPersonExists():
+def test_worldunit_add_personunit_RaisesErrorIfPersonExists(worlds_dir_setup_cleanup):
     # GIVEN
     dallas_text = "dallas"
     x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
@@ -122,7 +128,7 @@ def test_worldunit_add_personunit_RaisesErrorIfPersonExists():
     assert str(excinfo.value) == f"add_personunit fail: {luca_text} already exists"
 
 
-def test_worldunit_set_personunit_CorrectlyCreatesObj():
+def test_worldunit_set_personunit_CorrectlyCreatesObj(worlds_dir_setup_cleanup):
     # GIVEN
     dallas_text = "dallas"
     x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
@@ -140,7 +146,7 @@ def test_worldunit_set_personunit_CorrectlyCreatesObj():
     assert x_world._personunits.get(luca_text) == luca_person_obj
 
 
-def test_worldunit_set_personunit_CorrectlyReplacesObj():
+def test_worldunit_set_personunit_CorrectlyReplacesObj(worlds_dir_setup_cleanup):
     # GIVEN
     dallas_text = "dallas"
     x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
@@ -159,7 +165,9 @@ def test_worldunit_set_personunit_CorrectlyReplacesObj():
     assert len(x_world._personunits.get(luca_text)._pains) == 0
 
 
-def test_worldunit_get_personunit_from_memory_CorrectlyReturnsPerson():
+def test_worldunit_get_personunit_from_memory_CorrectlyReturnsPerson(
+    worlds_dir_setup_cleanup,
+):
     # GIVEN
     dallas_text = "dallas"
     x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
@@ -177,7 +185,9 @@ def test_worldunit_get_personunit_from_memory_CorrectlyReturnsPerson():
     assert luca_gotten_obj == luca_person_obj
 
 
-def test_worldunit_get_personunit_from_memory_CorrectlyReturnsNone():
+def test_worldunit_get_personunit_from_memory_CorrectlyReturnsNone(
+    worlds_dir_setup_cleanup,
+):
     # GIVEN
     dallas_text = "dallas"
     x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())

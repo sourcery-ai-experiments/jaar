@@ -19,6 +19,9 @@ class WorldUnit:
     _world_dir: str = None
     _personunits: dict[PersonID:PersonUnit] = None
 
+    def apply_urgeunit(self):
+        pass
+
     def _get_person_dir(self, person_id):
         return f"{self._persons_dir}/{person_id}"
 
