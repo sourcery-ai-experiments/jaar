@@ -27,6 +27,7 @@ def test_CouncilAdmin_exists():
     assert bob_counciladmin._council_cid != None
     assert bob_counciladmin._env_dir != None
     assert bob_counciladmin._culture_qid != None
+    assert bob_counciladmin._road_node_delimiter is None
     assert bob_counciladmin._councilunit_dir is None
     assert bob_counciladmin._seed_file_name is None
     assert bob_counciladmin._seed_file_path is None

@@ -17,6 +17,7 @@ from src.agenda.x_func import (
     open_file as x_func_open_file,
     delete_dir as x_func_delete_dir,
 )
+from src.agenda.road import get_node_delimiter
 from src.culture.y_func import rename_dir
 from dataclasses import dataclass
 from os import path as os_path
@@ -47,6 +48,7 @@ class CouncilAdmin:
     _agendas_depot_dir: str = None
     _agendas_ignore_dir: str = None
     _agendas_digest_dir: str = None
+    _road_node_delimiter: str = None
 
     def set_dirs(self):
         env_councilunits_folder = "councilunits"
@@ -123,6 +125,7 @@ class CouncilAdmin:
 
     def save_seed_agenda(self, x_agenda: AgendaUnit):
         x_agenda.set_healer(self._council_cid)
+        x_agenda.set_road_node_delimiter(self._road_node_delimiter)
         self._save_agenda_to_path(x_agenda, self._councilunit_dir, self._seed_file_name)
 
     def save_agenda_to_depot(self, x_agenda: AgendaUnit):
@@ -174,7 +177,11 @@ class CouncilAdmin:
         return x_agenda
 
     def _get_empty_seed_agenda(self):
-        x_agenda = agendaunit_shop(_healer=self._council_cid, _weight=0)
+        x_agenda = agendaunit_shop(
+            _healer=self._council_cid,
+            _weight=0,
+            _road_node_delimiter=self._road_node_delimiter,
+        )
         x_agenda.add_partyunit(pid=self._council_cid)
         x_agenda.set_culture_qid(self._culture_qid)
         return x_agenda
@@ -215,12 +222,16 @@ class CouncilAdmin:
 
 
 def counciladmin_shop(
-    _council_cid: CouncilCID, _env_dir: str, _culture_qid: str
+    _council_cid: CouncilCID,
+    _env_dir: str,
+    _culture_qid: str,
+    _road_node_delimiter: str = None,
 ) -> CouncilAdmin:
     x_counciladmin = CouncilAdmin(
         _council_cid=_council_cid,
         _env_dir=_env_dir,
         _culture_qid=_culture_qid,
+        _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
     )
     x_counciladmin.set_dirs()
     return x_counciladmin
@@ -344,11 +355,18 @@ class CouncilUnit:
         self._admin.save_agenda_to_digest(agendaunit, src_agenda_healer)
 
     # housekeeping
-    def set_env_dir(self, env_dir: str, council_cid: CouncilCID, culture_qid: str):
+    def set_env_dir(
+        self,
+        env_dir: str,
+        council_cid: CouncilCID,
+        culture_qid: str,
+        _road_node_delimiter: str = None,
+    ):
         self._admin = counciladmin_shop(
             _council_cid=council_cid,
             _env_dir=env_dir,
             _culture_qid=culture_qid,
+            _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
         )
 
     def create_core_dir_and_files(self, seed_agenda: AgendaUnit = None):
@@ -356,10 +374,19 @@ class CouncilUnit:
 
 
 def councilunit_shop(
-    pid: str, env_dir: str, culture_qid: str, _auto_output_to_public: bool = None
+    pid: str,
+    env_dir: str,
+    culture_qid: str,
+    _auto_output_to_public: bool = None,
+    _road_node_delimiter: str = None,
 ) -> CouncilUnit:
     x_council = CouncilUnit()
-    x_council.set_env_dir(env_dir, pid, culture_qid=culture_qid)
+    x_council.set_env_dir(
+        env_dir,
+        pid,
+        culture_qid=culture_qid,
+        _road_node_delimiter=_road_node_delimiter,
+    )
     x_council.get_seed()
     x_council._seed._set_auto_output_to_public(_auto_output_to_public)
     x_council.set_seed()

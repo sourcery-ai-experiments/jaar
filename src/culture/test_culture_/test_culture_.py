@@ -46,7 +46,7 @@ def test_cultureunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
     assert x_culture._road_node_delimiter == get_node_delimiter()
 
 
-def test_CultureUnit_set_road_node_delimiter_CorrectSetsDelimiter(
+def test_CultureUnit_set_road_node_delimiter_CorrectSetsAttribute(
     env_dir_setup_cleanup,
 ):
     # GIVEN

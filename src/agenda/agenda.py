@@ -142,23 +142,24 @@ class AgendaUnit:
 
     def set_road_node_delimiter(self, new_road_node_delimiter: str):
         self.set_agenda_metrics()
-        for x_idea_road in self._idea_dict.keys():
-            if is_string_in_road(new_road_node_delimiter, x_idea_road):
-                raise NewDelimiterException(
-                    f"Cannot change delimiter to '{new_road_node_delimiter}' because it already exists an idea label '{x_idea_road}'"
-                )
+        if self._road_node_delimiter != new_road_node_delimiter:
+            for x_idea_road in self._idea_dict.keys():
+                if is_string_in_road(new_road_node_delimiter, x_idea_road):
+                    raise NewDelimiterException(
+                        f"Cannot change delimiter to '{new_road_node_delimiter}' because it already exists an idea label '{x_idea_road}'"
+                    )
 
-        # Grab pointers to every idea
-        idea_pointers = {
-            x_idea_road: self.get_idea_kid(x_idea_road)
-            for x_idea_road in self._idea_dict.keys()
-        }
+            # Grab pointers to every idea
+            idea_pointers = {
+                x_idea_road: self.get_idea_kid(x_idea_road)
+                for x_idea_road in self._idea_dict.keys()
+            }
 
-        # change all road attributes in idea
-        # old_road_node_delimiter = copy_deepcopy(self._road_node_delimiter)
-        self._road_node_delimiter = get_node_delimiter(new_road_node_delimiter)
-        for x_idea in idea_pointers.values():
-            x_idea.set_road_node_delimiter(self._road_node_delimiter)
+            # change all road attributes in idea
+            # old_road_node_delimiter = copy_deepcopy(self._road_node_delimiter)
+            self._road_node_delimiter = get_node_delimiter(new_road_node_delimiter)
+            for x_idea in idea_pointers.values():
+                x_idea.set_road_node_delimiter(self._road_node_delimiter)
 
     def set_culture_qid(self, culture_qid: str):
         old_culture_qid = copy_deepcopy(self._culture_qid)

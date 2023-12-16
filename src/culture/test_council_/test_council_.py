@@ -1,3 +1,4 @@
+from src.agenda.road import get_node_delimiter
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.x_func import delete_dir as x_func_delete_dir
 from src.culture.council import councilunit_shop, CouncilUnit
@@ -33,6 +34,7 @@ def test_councilunit_shop_exists(council_dir_setup_cleanup):
     assert x_council._admin._council_cid != None
     assert x_council._admin._culture_qid != None
     assert x_council._admin._culture_qid == get_temp_culture_qid()
+    assert x_council._admin._road_node_delimiter == get_node_delimiter()
     assert x_council._seed is None
 
 
@@ -86,9 +88,12 @@ def test_councilunit_get_seed_createsEmptyAgendaWhenFileDoesNotExist(
     council_dir_setup_cleanup,
 ):
     # GIVEN
-    tim_text = "Tim"
+    slash_text = "/"
     tim_council = councilunit_shop(
-        tim_text, get_temp_councilunit_dir(), get_temp_culture_qid()
+        "Tim",
+        get_temp_councilunit_dir(),
+        get_temp_culture_qid(),
+        _road_node_delimiter=slash_text,
     )
     tim_council.create_core_dir_and_files()
     assert os_path.exists(tim_council._admin._seed_file_path)
@@ -102,6 +107,8 @@ def test_councilunit_get_seed_createsEmptyAgendaWhenFileDoesNotExist(
     # THEN
     assert os_path.exists(tim_council._admin._seed_file_path)
     assert tim_council._seed != None
+    assert seed_agenda._road_node_delimiter != None
+    assert seed_agenda._road_node_delimiter == slash_text
 
 
 def test_councilunit_get_seed_getsMemoryAgendaIfExists(
