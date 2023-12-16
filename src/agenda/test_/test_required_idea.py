@@ -411,6 +411,32 @@ def test_RequiredCore_find_replace_road_works():
     assert x_required.sufffacts.get(new_sunday_road).need == new_sunday_road
 
 
+def test_RequiredCore_set_delimiter_SetsAttrsCorrectly():
+    # GIVEN
+    week_text = "weekday"
+    sun_text = "Sunday"
+    slash_text = "/"
+    slash_week_road = get_road(root_label(), week_text, delimiter=slash_text)
+    slash_sun_road = get_road(slash_week_road, sun_text, delimiter=slash_text)
+    week_requiredunit = requiredcore_shop(slash_week_road, delimiter=slash_text)
+    week_requiredunit.set_sufffact(slash_sun_road)
+    assert week_requiredunit.delimiter == slash_text
+    assert week_requiredunit.base == slash_week_road
+    assert week_requiredunit.sufffacts.get(slash_sun_road).need == slash_sun_road
+
+    # WHEN
+    star_text = "*"
+    week_requiredunit.set_delimiter(new_delimiter=star_text)
+
+    # THEN
+    assert week_requiredunit.delimiter == star_text
+    star_week_road = get_road(root_label(), week_text, delimiter=star_text)
+    star_sun_road = get_road(star_week_road, sun_text, delimiter=star_text)
+    assert week_requiredunit.base == star_week_road
+    assert week_requiredunit.sufffacts.get(star_sun_road) != None
+    assert week_requiredunit.sufffacts.get(star_sun_road).need == star_sun_road
+
+
 def test_RequiredCore_get_key_road():
     # GIVEN
     work_text = "work"

@@ -790,7 +790,7 @@ def test_sufffacts_get_from_dict_CorrectlyReturnsCompleteObj():
     assert weekday_sufffact == sufffactunit_shop(weekday_road, 1, 30, divisor=5)
 
 
-def test_acptfactunits_get_from_dict_CorrectlyBuildsObjFromIncompleteDict():
+def test_sufffacts_get_from_dict_CorrectlyBuildsObjFromIncompleteDict():
     # GIVEN
     weekday_text = "weekdays"
     weekday_road = get_road(root_label(), weekday_text)
@@ -803,3 +803,25 @@ def test_acptfactunits_get_from_dict_CorrectlyBuildsObjFromIncompleteDict():
     assert len(sufffacts_dict) == 1
     weekday_sufffact = sufffacts_dict.get(weekday_road)
     assert weekday_sufffact == sufffactunit_shop(weekday_road)
+
+
+def test_SuffFactsUnit_set_delimiter_SetsAttrsCorrectly():
+    # GIVEN
+    week_text = "weekday"
+    sun_text = "Sunday"
+    slash_text = "/"
+    slash_week_road = get_road(root_label(), week_text, delimiter=slash_text)
+    slash_sun_road = get_road(slash_week_road, sun_text, delimiter=slash_text)
+    sun_sufffactunit = sufffactunit_shop(slash_sun_road, delimiter=slash_text)
+    assert sun_sufffactunit.delimiter == slash_text
+    assert sun_sufffactunit.need == slash_sun_road
+
+    # WHEN
+    star_text = "*"
+    sun_sufffactunit.set_delimiter(new_delimiter=star_text)
+
+    # THEN
+    assert sun_sufffactunit.delimiter == star_text
+    star_week_road = get_road(root_label(), week_text, delimiter=star_text)
+    star_sun_road = get_road(star_week_road, sun_text, delimiter=star_text)
+    assert sun_sufffactunit.need == star_sun_road

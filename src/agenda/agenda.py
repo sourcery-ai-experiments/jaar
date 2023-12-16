@@ -158,7 +158,6 @@ class AgendaUnit:
         # old_road_node_delimiter = copy_deepcopy(self._road_node_delimiter)
         self._road_node_delimiter = get_node_delimiter(new_road_node_delimiter)
         for x_idea in idea_pointers.values():
-            print(f"{x_idea.get_idea_road()=}")
             x_idea.set_road_node_delimiter(self._road_node_delimiter)
 
     def set_culture_qid(self, culture_qid: str):

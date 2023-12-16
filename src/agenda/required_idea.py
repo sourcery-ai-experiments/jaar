@@ -1,6 +1,12 @@
 from src.agenda.road import is_heir_road, get_node_delimiter
 from dataclasses import dataclass
-from src.agenda.road import Road, change_road, find_replace_road_key_dict
+from src.agenda.road import (
+    Road,
+    change_road,
+    find_replace_road_key_dict,
+    replace_road_node_delimiter,
+)
+from copy import deepcopy as copy_deepcopy
 
 
 class InvalidRequiredException(Exception):
@@ -245,6 +251,13 @@ class SuffFactUnit:
     def clear_status(self):
         self._status = None
 
+    def set_delimiter(self, new_delimiter: str):
+        old_delimiter = copy_deepcopy(self.delimiter)
+        self.delimiter = new_delimiter
+        self.need = replace_road_node_delimiter(
+            road=self.need, old_delimiter=old_delimiter, new_delimiter=self.delimiter
+        )
+
     def is_in_lineage(self, acptfact_pick: Road):
         return is_heir_road(
             src=self.need, heir=acptfact_pick, delimiter=self.delimiter
@@ -400,6 +413,22 @@ class RequiredCore:
     # False: base idea._active_status required be False
     suff_idea_active_status: bool = None
     delimiter: str = None
+
+    def set_delimiter(self, new_delimiter: str):
+        old_delimiter = copy_deepcopy(self.delimiter)
+        self.delimiter = new_delimiter
+        self.base = replace_road_node_delimiter(self.base, old_delimiter, new_delimiter)
+
+        new_sufffacts = {}
+        for sufffact_road, suffact_obj in self.sufffacts.items():
+            new_sufffact_road = replace_road_node_delimiter(
+                road=sufffact_road,
+                old_delimiter=old_delimiter,
+                new_delimiter=new_delimiter,
+            )
+            suffact_obj.set_delimiter(new_delimiter)
+            new_sufffacts[new_sufffact_road] = suffact_obj
+        self.sufffacts = new_sufffacts
 
     def get_key_road(self):
         return self.base

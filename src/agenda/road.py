@@ -193,5 +193,4 @@ def replace_road_node_delimiter(road: Road, old_delimiter: str, new_delimiter: s
         raise InvaliddelimiterReplaceException(
             f"Cannot replace_road_node_delimiter '{old_delimiter}' with '{new_delimiter}' because the new one already exists in road '{road}'."
         )
-
     return road.replace(old_delimiter, new_delimiter)
