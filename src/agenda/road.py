@@ -85,7 +85,7 @@ def get_road_without_root_node(
     return f"{get_node_delimiter(delimiter)}{road_without_root_node}"
 
 
-def road_validate(road: Road, delimiter: str) -> Road:
+def road_validate(road: Road, delimiter: str, root_node: RaodNode) -> Road:
     if road == "" or road is None:
         return Road("")
     x_root = get_all_road_nodes(road, delimiter)[0]
@@ -93,9 +93,9 @@ def road_validate(road: Road, delimiter: str) -> Road:
         change_road(
             current_road=road,
             old_road=x_root,
-            new_road=get_default_culture_root_label(),
+            new_road=root_node,
         )
-        if x_root != get_default_culture_root_label()
+        if x_root != root_node
         else road
     )
 

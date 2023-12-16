@@ -5,7 +5,7 @@ from src.agenda.examples.example_agendas import (
 )
 from pytest import raises as pytest_raises
 from src.agenda.required_idea import AcptFactUnit
-from src.agenda.road import get_default_culture_root_label as root_label
+from src.agenda.road import get_default_culture_root_label as root_label, get_road
 
 
 def test_idea_label_fails_when_idea_does_not_exist():
@@ -366,7 +366,6 @@ def test_agenda_edit_idea_label_RaisesErrorIfdelimiterIsInLabel():
 def test_agenda_set_road_node_delimiter_RaisesErrorIfNew_delimiter_IsAnIdeaLabel():
     # GIVEN
     luca_agenda = agendaunit_shop("Luca", "Texas")
-    # luca_agenda.set_culture_qid("Texas")
     print(f"{luca_agenda._max_tree_traverse=}")
     work_text = "work"
     work_road = luca_agenda.make_road(luca_agenda._culture_qid, work_text)
@@ -384,3 +383,33 @@ def test_agenda_set_road_node_delimiter_RaisesErrorIfNew_delimiter_IsAnIdeaLabel
         str(excinfo.value)
         == f"Cannot change delimiter to '{slash_text}' because it already exists an idea label '{home_road}'"
     )
+
+
+def test_agenda_set_road_node_delimiter_CorrectlyChangesPad():
+    # GIVEN
+    luca_agenda = agendaunit_shop("Luca", "Texas")
+    work_text = "work"
+    luca_agenda.add_idea(ideacore_shop(work_text), pad=luca_agenda._culture_qid)
+    # print(f"{luca_agenda._culture_qid=}")
+
+    work_road = luca_agenda.make_road(luca_agenda._culture_qid, work_text)
+    work_idea = luca_agenda.get_idea_kid(work_road)
+    home_text = "home cooking"
+    luca_agenda.add_idea(ideacore_shop(home_text), pad=work_road)
+    home_road = luca_agenda.make_road(work_road, home_text)
+    home_idea = luca_agenda.get_idea_kid(home_road)
+    comma_text = ","
+    comma_home_road = get_road(work_road, home_text, delimiter=comma_text)
+    # print(f"{luca_agenda._culture_qid=} {luca_agenda._idearoot._label=} {work_road=}")
+    print(f"{home_idea._pad=} {home_idea._label=}")
+    print(f"{work_idea._pad=} {work_idea._label=}")
+    assert home_idea.get_idea_road() == comma_home_road
+
+    # WHEN
+    slash_text = "/"
+    luca_agenda.set_road_node_delimiter(slash_text)
+
+    # THEN
+    assert home_idea.get_idea_road() != comma_home_road
+    slash_home_road = get_road(work_road, home_text, delimiter=slash_text)
+    assert home_idea.get_idea_road() == slash_home_road

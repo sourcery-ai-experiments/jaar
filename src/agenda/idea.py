@@ -33,6 +33,7 @@ from src.agenda.road import (
     get_default_culture_root_label as root_label,
     get_road as road_get_road,
     get_node_delimiter,
+    replace_road_node_delimiter,
 )
 from src.agenda.group import (
     BalanceHeir,
@@ -494,6 +495,15 @@ class IdeaCore:
     def set_idea_label(self, _label):
         if _label != None:
             self._label = _label
+
+    def set_road_node_delimiter(self, new_road_node_delimiter: str):
+        old_delimiter = deepcopy(self._road_node_delimiter)
+        self._road_node_delimiter = get_node_delimiter(new_road_node_delimiter)
+        self._pad = replace_road_node_delimiter(
+            road=self._pad,
+            old_delimiter=old_delimiter,
+            new_delimiter=self._road_node_delimiter,
+        )
 
     def _meld_requiredunits(self, other_idea):
         self.set_requiredunits_empty_if_null()

@@ -143,7 +143,17 @@ class AgendaUnit:
                     f"Cannot change delimiter to '{new_road_node_delimiter}' because it already exists an idea label '{x_idea_road}'"
                 )
 
+        # Grab pointers to every idea
+        idea_pointers = {
+            x_idea_road: self.get_idea_kid(x_idea_road)
+            for x_idea_road in self._idea_dict.keys()
+        }
+
+        # change all road attributes in idea
         self._road_node_delimiter = get_node_delimiter(new_road_node_delimiter)
+        for x_idea in idea_pointers.values():
+            print(f"{x_idea.get_idea_road()=}")
+            x_idea.set_road_node_delimiter(self._road_node_delimiter)
 
     def set_culture_qid(self, culture_qid: str):
         old_culture_qid = copy_deepcopy(self._culture_qid)
@@ -1062,7 +1072,7 @@ class AgendaUnit:
         if not create_missing_ideas_groups:
             idea_kid = self._get_filtered_balancelinks_idea(idea_kid)
 
-        pad = road_validate(pad, self._road_node_delimiter)
+        pad = road_validate(pad, self._road_node_delimiter, self._culture_qid)
         temp_idea = self._idearoot
         pad_nodes = get_all_road_nodes(pad, delimiter=self._road_node_delimiter)
         temp_road = pad_nodes.pop(0)
@@ -1687,6 +1697,7 @@ class AgendaUnit:
         if road is None:
             raise InvalidAgendaException("get_idea_kid received road=None")
         nodes = get_all_road_nodes(road, delimiter=self._road_node_delimiter)
+        print(f"{nodes=} {self._road_node_delimiter=}")
         src = nodes.pop(0)
         temp_idea = None
 
@@ -2154,7 +2165,9 @@ class AgendaUnit:
         o_idea_list = other_agenda.get_idea_list_without_idearoot()
         for o_idea in o_idea_list:
             o_road = road_validate(
-                self.make_road(o_idea._pad, o_idea._label), self._road_node_delimiter
+                self.make_road(o_idea._pad, o_idea._label),
+                self._road_node_delimiter,
+                self._culture_qid,
             )
             try:
                 main_idea = self.get_idea_kid(o_road)

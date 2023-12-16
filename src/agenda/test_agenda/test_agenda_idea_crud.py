@@ -11,12 +11,10 @@ def test_root_has_kids():
     # GIVEN
     x_agenda = agendaunit_shop(_healer="prom")
     idearoot_x = x_agenda._idearoot
-    idea1 = ideacore_shop(_weight=30, _label="work")
-    idea2 = ideacore_shop(_weight=40, _label="ulty")
 
     # WHEN
-    x_agenda.add_idea(idea1, pad=x_agenda._healer)
-    x_agenda.add_idea(idea2, pad=x_agenda._healer)
+    x_agenda.add_idea(ideacore_shop("work"), pad=x_agenda._healer)
+    x_agenda.add_idea(ideacore_shop("ulty"), pad=x_agenda._healer)
 
     # THEN
     assert idearoot_x._weight == 1
@@ -54,10 +52,9 @@ def test_agenda_add_idea_CanAddKidToRootIdea():
     assert x_agenda.get_level_count(level=1) == 4
 
     new_idea_parent_road = x_agenda._healer
-    new_idea = ideacore_shop(_weight=40, _label="new_idea")
 
     # WHEN
-    x_agenda.add_idea(new_idea, pad=new_idea_parent_road)
+    x_agenda.add_idea(ideacore_shop("new_idea"), pad=new_idea_parent_road)
     x_agenda.set_agenda_metrics()
 
     # THEN
@@ -76,10 +73,9 @@ def test_agenda_add_idea_CanAddKidToKidIdea():
     assert x_agenda.get_level_count(level=2) == 10
 
     new_idea_parent_road = x_agenda.make_road(x_agenda._culture_qid, "work")
-    new_idea = ideacore_shop(_weight=40, _label="new_york")
 
     # WHEN
-    x_agenda.add_idea(new_idea, pad=new_idea_parent_road)
+    x_agenda.add_idea(ideacore_shop("new_york"), pad=new_idea_parent_road)
     x_agenda.set_agenda_metrics()
 
     # THEN
@@ -88,10 +84,9 @@ def test_agenda_add_idea_CanAddKidToKidIdea():
     # print(f"{(len(new_idea_parent_road) == 1)=}")
     assert x_agenda.get_node_count() == 18
     assert x_agenda.get_level_count(level=2) == 11
-    assert x_agenda._idearoot._kids["work"]._kids[
-        "new_york"
-    ]._pad == x_agenda.make_road(x_agenda._culture_qid, "work")
-    x_agenda._idearoot._kids["work"]._kids["new_york"].set_pad(parent_road="testing")
+    new_york_idea = x_agenda._idearoot._kids["work"]._kids["new_york"]
+    assert new_york_idea._pad == x_agenda.make_road(x_agenda._culture_qid, "work")
+    new_york_idea.set_pad(parent_road="testing")
     assert x_agenda._idearoot._kids["work"]._kids["new_york"]._pad == "testing"
     assert x_agenda.get_intent_items
 
@@ -105,10 +100,9 @@ def test_agenda_add_idea_CanAddKidToGrandkidIdea():
     assert x_agenda.get_level_count(level=3) == 2
     wkday_road = x_agenda.make_road(x_agenda._culture_qid, "weekdays")
     new_idea_parent_road = x_agenda.make_road(wkday_road, "Wednesday")
-    new_idea = ideacore_shop(_weight=40, _label="new_idea")
 
     # WHEN
-    x_agenda.add_idea(new_idea, pad=new_idea_parent_road)
+    x_agenda.add_idea(ideacore_shop("new_idea"), pad=new_idea_parent_road)
     x_agenda.set_agenda_metrics()
 
     # THEN
@@ -146,7 +140,7 @@ def test_agenda_add_idea_CorrectlyAddsIdeaObjWithNonstandard_delimiter():
 
     # THEN
     work_idea = bob_agenda.get_idea_kid(work_road)
-    week_requiredunit = work_idea._requiredunits.get(week_road)
+    assert work_idea._requiredunits.get(week_road) != None
 
 
 def test_agenda_add_idea_CanCreateRoadToGrandkidIdea():
@@ -159,7 +153,7 @@ def test_agenda_add_idea_CanCreateRoadToGrandkidIdea():
     ww2_road = x_agenda.make_road(x_agenda._culture_qid, "ww2")
     battles_road = x_agenda.make_road(ww2_road, "battles")
     new_idea_parent_road = x_agenda.make_road(battles_road, "coralsea")
-    new_idea = ideacore_shop(_weight=40, _label="USS Saratoga")
+    new_idea = ideacore_shop(_label="USS Saratoga")
 
     # WHEN
     x_agenda.add_idea(new_idea, pad=new_idea_parent_road)
