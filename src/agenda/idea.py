@@ -504,6 +504,18 @@ class IdeaCore:
             old_delimiter=old_delimiter,
             new_delimiter=self._road_node_delimiter,
         )
+        if self._numeric_road != None:
+            self._numeric_road = replace_road_node_delimiter(
+                road=self._numeric_road,
+                old_delimiter=old_delimiter,
+                new_delimiter=self._road_node_delimiter,
+            )
+        if self._range_source_road != None:
+            self._range_source_road = replace_road_node_delimiter(
+                road=self._range_source_road,
+                old_delimiter=old_delimiter,
+                new_delimiter=self._road_node_delimiter,
+            )
 
         new_requiredunits = {}
         for requiredunit_road, requiredunit_obj in self._requiredunits.items():
@@ -532,12 +544,6 @@ class IdeaCore:
             acptfactunit_obj.set_attr(pick=new_pick_road)
             new_acptfactunits[new_base_road] = acptfactunit_obj
         self._acptfactunits = new_acptfactunits
-        # print(
-        #     f"Before {acptfactunit_obj.sufffacts.keys()=} {self._road_node_delimiter=}"
-        # )
-        # print(
-        #     f"After  {acptfactunit_obj.sufffacts.keys()=} {self._road_node_delimiter=}"
-        # )
 
     def _meld_requiredunits(self, other_idea):
         self.set_requiredunits_empty_if_null()

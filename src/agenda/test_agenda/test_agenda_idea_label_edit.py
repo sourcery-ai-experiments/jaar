@@ -391,7 +391,7 @@ def test_agenda_set_road_node_delimiter_RaisesErrorIfNew_delimiter_IsAnIdeaLabel
     )
 
 
-def test_agenda_set_road_node_delimiter_CorrectlyChangesPad():
+def test_agenda_set_road_node_delimiter_CorrectlyChanges_pad():
     # GIVEN
     luca_agenda = agendaunit_shop("Luca", "Texas")
     work_text = "work"
@@ -497,3 +497,46 @@ def test_agenda_set_road_node_delimiter_CorrectlyChangesAcptFactUnit():
     assert gen_time_acptfactunit.pick == slash_8am_road
 
     assert work_idea._acptfactunits.get(comma_time_road) is None
+
+
+def test_agenda_set_road_node_delimiter_CorrectlyChanges_numeric_roadAND_range_source_road():
+    # GIVEN
+    luca_agenda = agendaunit_shop("Luca", "Texas")
+    work_text = "work"
+    luca_agenda.add_idea(ideacore_shop(work_text), pad=luca_agenda._culture_qid)
+    comma_work_road = luca_agenda.make_l1_road(work_text)
+    cook_text = "cook cooking"
+    luca_agenda.add_idea(ideacore_shop(cook_text), pad=comma_work_road)
+    comma_cook_road = luca_agenda.make_road(comma_work_road, cook_text)
+
+    # numeric_road
+    taste_text = "foot taste"
+    luca_agenda.add_idea(
+        ideacore_shop(taste_text, _begin=0, _close=6), pad=luca_agenda._culture_qid
+    )
+    comma_taste_road = luca_agenda.make_l1_road(taste_text)
+    luca_agenda.edit_idea_attr(comma_cook_road, numeric_road=comma_taste_road)
+
+    # range_source
+    heat_text = "heat numbers"
+    luca_agenda.add_idea(
+        ideacore_shop(heat_text, _begin=0, _close=6), pad=luca_agenda._culture_qid
+    )
+    comma_heat_road = luca_agenda.make_l1_road(heat_text)
+    luca_agenda.edit_idea_attr(comma_cook_road, range_source_road=comma_heat_road)
+
+    cook_idea = luca_agenda.get_idea_kid(comma_cook_road)
+    assert cook_idea._numeric_road == comma_taste_road
+    assert cook_idea._range_source_road == comma_heat_road
+
+    # WHEN
+    slash_text = "/"
+    luca_agenda.set_road_node_delimiter(slash_text)
+
+    # THEN
+    slash_taste_road = luca_agenda.make_l1_road(taste_text)
+    assert cook_idea._numeric_road != comma_taste_road
+    assert cook_idea._numeric_road == slash_taste_road
+    slash_heat_road = luca_agenda.make_l1_road(heat_text)
+    assert cook_idea._range_source_road != comma_heat_road
+    assert cook_idea._range_source_road == slash_heat_road
