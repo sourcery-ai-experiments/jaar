@@ -8,7 +8,7 @@ from src.world.examples.world_env_kit import (
 )
 
 
-def test_personunit_set_painunits_weight_metrics_SetsCorrectly(
+def test_personunit_set_painunits_weight_metrics_SetsCorrectlyV1(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -44,7 +44,7 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectly(
     assert rain_painunit._manager_importance == 0.05
 
 
-def test_personunit_set_painunits_weight_metrics_SetsCorrectly(
+def test_personunit_set_painunits_weight_metrics_SetsCorrectlyV2(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
