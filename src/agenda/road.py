@@ -160,13 +160,15 @@ def get_road(
     delimiter: str = None,
 ) -> Road:
     x_road = ""
-    if road_begin != None and road_nodes is None:
+    if road_begin != None and road_nodes in (None, []):
         x_road = road_begin
-    if road_begin != None and road_nodes != None:
+    if road_begin != None and road_nodes not in (None, []):
         x_road = get_road(
-            road_begin, get_road_from_nodes(road_nodes, delimiter=delimiter)
+            road_begin=road_begin,
+            terminus_node=get_road_from_nodes(road_nodes, delimiter),
+            delimiter=delimiter,
         )
-    if road_begin is None and road_nodes != None:
+    if road_begin is None and road_nodes not in (None, []):
         x_road = get_road_from_nodes(road_nodes, delimiter=delimiter)
     if terminus_node != None:
         x_road = get_road_from_road_and_node(x_road, terminus_node, delimiter=delimiter)

@@ -68,13 +68,11 @@ def test_agenda_add_idea_CanAddKidToKidIdea():
     # GIVEN
     x_agenda = get_agenda_with_4_levels()
     x_agenda.set_agenda_metrics()
-
     assert x_agenda.get_node_count() == 17
     assert x_agenda.get_level_count(level=2) == 10
 
-    new_idea_parent_road = x_agenda.make_l1_road("work")
-
     # WHEN
+    new_idea_parent_road = x_agenda.make_l1_road("work")
     x_agenda.add_idea(ideacore_shop("new_york"), pad=new_idea_parent_road)
     x_agenda.set_agenda_metrics()
 
@@ -86,9 +84,10 @@ def test_agenda_add_idea_CanAddKidToKidIdea():
     assert x_agenda.get_level_count(level=2) == 11
     new_york_idea = x_agenda._idearoot._kids["work"]._kids["new_york"]
     assert new_york_idea._pad == x_agenda.make_l1_road("work")
+    assert new_york_idea._road_node_delimiter == x_agenda._road_node_delimiter
     new_york_idea.set_pad(parent_road="testing")
     assert x_agenda._idearoot._kids["work"]._kids["new_york"]._pad == "testing"
-    assert x_agenda.get_intent_items
+    assert x_agenda.get_intent_items()
 
 
 def test_agenda_add_idea_CanAddKidToGrandkidIdea():

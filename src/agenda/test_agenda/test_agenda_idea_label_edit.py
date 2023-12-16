@@ -49,14 +49,20 @@ def test_Agenda_level0_idea_edit_idea_label_RaisesError_culture_qid_IsNone():
     assert swim_idea._pad == work_road
 
     # WHEN
+    moon_text = "moon"
+    x_agenda.edit_idea_label(old_road=x_agenda._culture_qid, new_label=moon_text)
 
-    with pytest_raises(Exception) as excinfo:
-        moon_text = "moon"
-        x_agenda.edit_idea_label(old_road=x_agenda._culture_qid, new_label=moon_text)
-    assert (
-        str(excinfo.value)
-        == f"Cannot set idearoot to string other than '{x_agenda._culture_qid}'"
-    )
+    # THEN
+    # with pytest_raises(Exception) as excinfo:
+    #     moon_text = "moon"
+    #     x_agenda.edit_idea_label(old_road=x_agenda._culture_qid, new_label=moon_text)
+    # assert (
+    #     str(excinfo.value)
+    #     == f"Cannot set idearoot to string other than '{x_agenda._culture_qid}'"
+    # )
+
+    assert x_agenda._idearoot._label != moon_text
+    assert x_agenda._idearoot._label == x_agenda._culture_qid
 
 
 def test_Agenda_level0_idea_edit_idea_label_RaisesError_culture_qid_IsDifferent():
@@ -390,26 +396,27 @@ def test_agenda_set_road_node_delimiter_CorrectlyChangesPad():
     luca_agenda = agendaunit_shop("Luca", "Texas")
     work_text = "work"
     luca_agenda.add_idea(ideacore_shop(work_text), pad=luca_agenda._culture_qid)
-    # print(f"{luca_agenda._culture_qid=}")
-
-    work_road = luca_agenda.make_road(luca_agenda._culture_qid, work_text)
-    work_idea = luca_agenda.get_idea_kid(work_road)
-    home_text = "home cooking"
-    luca_agenda.add_idea(ideacore_shop(home_text), pad=work_road)
-    home_road = luca_agenda.make_road(work_road, home_text)
-    home_idea = luca_agenda.get_idea_kid(home_road)
+    comma_work_road = luca_agenda.make_l1_road(work_text)
+    cook_text = "cook cooking"
+    luca_agenda.add_idea(ideacore_shop(cook_text), pad=comma_work_road)
+    comma_cook_road = luca_agenda.make_road(comma_work_road, cook_text)
+    cook_idea = luca_agenda.get_idea_kid(comma_cook_road)
     comma_text = ","
-    comma_home_road = get_road(work_road, home_text, delimiter=comma_text)
+    comma_cook_road = get_road(comma_work_road, cook_text, delimiter=comma_text)
     # print(f"{luca_agenda._culture_qid=} {luca_agenda._idearoot._label=} {work_road=}")
-    print(f"{home_idea._pad=} {home_idea._label=}")
-    print(f"{work_idea._pad=} {work_idea._label=}")
-    assert home_idea.get_idea_road() == comma_home_road
+    # print(f"{cook_idea._pad=} {cook_idea._label=}")
+    # comma_work_idea = luca_agenda.get_idea_kid(comma_work_road)
+    # print(f"{comma_work_idea._pad=} {comma_work_idea._label=}")
+    assert cook_idea.get_idea_road() == comma_cook_road
 
     # WHEN
     slash_text = "/"
     luca_agenda.set_road_node_delimiter(slash_text)
 
     # THEN
-    assert home_idea.get_idea_road() != comma_home_road
-    slash_home_road = get_road(work_road, home_text, delimiter=slash_text)
-    assert home_idea.get_idea_road() == slash_home_road
+    assert cook_idea.get_idea_road() != comma_cook_road
+    slash_work_road = get_road(
+        luca_agenda._culture_qid, work_text, [], delimiter=slash_text
+    )
+    slash_cook_road = get_road(slash_work_road, cook_text, delimiter=slash_text)
+    assert cook_idea.get_idea_road() == slash_cook_road

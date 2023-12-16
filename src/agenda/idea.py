@@ -504,6 +504,8 @@ class IdeaCore:
             old_delimiter=old_delimiter,
             new_delimiter=self._road_node_delimiter,
         )
+        # print(f"Before {self._pad=}")
+        # print(f"After  {self._pad=}")
 
     def _meld_requiredunits(self, other_idea):
         self.set_requiredunits_empty_if_null()

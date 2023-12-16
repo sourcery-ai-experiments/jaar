@@ -65,7 +65,7 @@ def test_road_road_validate_correctlyReturnsRoad():
     assert road_validate(f"AA{x_s}casa", x_s, _culture_qid) == casa_road
 
 
-def test_road_get_road_ReturnsCorrectRoadWithdelimiter():
+def test_road_get_road_ReturnsCorrectRoadWith_delimiter():
     # GIVEN
     rose_text = "rose"
     comma_delimiter = ","
@@ -85,6 +85,13 @@ def test_road_get_road_ReturnsCorrectRoadWithdelimiter():
     # static_bloomers_road = (
     #     f"{root_label()}{slash_delimiter}{rose_text}{slash_delimiter}{bloomers_text}"
     # )
+
+    # WHEN
+    brackets_road = get_road(root_label(), rose_text, [], delimiter=slash_delimiter)
+
+    # THEN
+    assert generated_rose_road == brackets_road
+    assert slash_delimiter_rose_road == brackets_road
 
 
 def test_road_change_road_correctlyRoad():

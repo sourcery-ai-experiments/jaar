@@ -118,12 +118,14 @@ class AgendaUnit:
         terminus_node: RaodNode = None,
         road_nodes: list[RaodNode] = None,
     ):
-        return get_road(
+        x_road = get_road(
             road_begin=road_begin,
             terminus_node=terminus_node,
             road_nodes=road_nodes,
             delimiter=self._road_node_delimiter,
         )
+        x_road = road_validate(x_road, self._road_node_delimiter, self._culture_qid)
+        return x_road
 
     def make_l1_road(self, l1_node: RaodNode):
         return self.make_road(self._culture_qid, l1_node)
@@ -153,10 +155,11 @@ class AgendaUnit:
         }
 
         # change all road attributes in idea
+        # old_road_node_delimiter = copy_deepcopy(self._road_node_delimiter)
         self._road_node_delimiter = get_node_delimiter(new_road_node_delimiter)
-        # for x_idea in idea_pointers.values():
-        #     print(f"{x_idea.get_idea_road()=}")
-        #     x_idea.set_road_node_delimiter(self._road_node_delimiter)
+        for x_idea in idea_pointers.values():
+            print(f"{x_idea.get_idea_road()=}")
+            x_idea.set_road_node_delimiter(self._road_node_delimiter)
 
     def set_culture_qid(self, culture_qid: str):
         old_culture_qid = copy_deepcopy(self._culture_qid)
@@ -1700,7 +1703,6 @@ class AgendaUnit:
         if road is None:
             raise InvalidAgendaException("get_idea_kid received road=None")
         nodes = get_all_road_nodes(road, delimiter=self._road_node_delimiter)
-        print(f"{nodes=} {self._road_node_delimiter=}")
         src = nodes.pop(0)
         temp_idea = None
 
@@ -2313,7 +2315,12 @@ def agendaunit_shop(
         _culture_qid=_culture_qid,
         _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
     )
-    x_agenda._idearoot = idearoot_shop(_label=x_agenda._culture_qid, _uid=1, _level=0)
+    x_agenda._idearoot = idearoot_shop(
+        _label=x_agenda._culture_qid,
+        _uid=1,
+        _level=0,
+    )
+    x_agenda._idearoot._road_node_delimiter = x_agenda._road_node_delimiter
     x_agenda.set_max_tree_traverse(3)
     x_agenda._rational = False
     x_agenda._originunit = originunit_shop()
