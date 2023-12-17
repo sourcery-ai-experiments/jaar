@@ -146,7 +146,7 @@ def test_agendaunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     assert len(hunt_group._partys) == 1
 
 
-def test_agenda__get_assignor_promise_ideas_ReturnsCorrectIdeaRoads():
+def test_agenda__get_assignor_promise_ideas_ReturnsCorrectIdeaRoadPaths():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with7amCleanTableRequired()
     x_agenda.set_agenda_metrics()
@@ -175,7 +175,7 @@ def test_agenda__get_assignor_promise_ideas_ReturnsCorrectIdeaRoads():
     assert assignor_promises == x_dict
 
 
-def test_agenda__get_relevant_roads_EmptyRoadReturnsEmpty():
+def test_agenda__get_relevant_roads_EmptyRoadPathReturnsEmpty():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     x_agenda.set_agenda_metrics()
@@ -189,7 +189,7 @@ def test_agenda__get_relevant_roads_EmptyRoadReturnsEmpty():
     assert relevant_roads == {}
 
 
-def test_agenda__get_relevant_roads_RootRoadReturnsOnlyItself():
+def test_agenda__get_relevant_roads_RootRoadPathReturnsOnlyItself():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     x_agenda.set_agenda_metrics()

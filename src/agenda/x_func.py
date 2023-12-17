@@ -1,5 +1,5 @@
 from json import loads as json_loads, dumps as json_dumps
-from src.agenda.road import Road
+from src.agenda.road import RoadPath
 from os import (
     path as os_path,
     makedirs as os_makedirs,
@@ -125,7 +125,7 @@ def x_get_dict(json_x: str) -> dict:
 
 # class YR:
 def from_list_get_active_status(
-    road: Road, idea_list: list, asse_bool: bool = None
+    road: RoadPath, idea_list: list, asse_bool: bool = None
 ) -> bool:
     active_status = None
     temp_idea = None

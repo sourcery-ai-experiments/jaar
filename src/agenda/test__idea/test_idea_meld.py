@@ -4,7 +4,7 @@ from src.agenda.required_idea import (
     requiredunit_shop,
     RequiredUnit,
     acptfactunit_shop as c_acptfactunit,
-    Road,
+    RoadPath,
 )
 from src.agenda.road import get_default_culture_root_label as root_label, get_road
 from src.agenda.origin import originunit_shop
@@ -17,13 +17,13 @@ def custom_set_idea_attr(
     weight: int = None,
     uid: int = None,
     required: RequiredUnit = None,  # delete/replace RequiredUnit
-    required_base: Road = None,
-    required_sufffact: Road = None,
+    required_base: RoadPath = None,
+    required_sufffact: RoadPath = None,
     required_sufffact_open: float = None,
     required_sufffact_nigh: float = None,
     required_sufffact_divisor: int = None,
-    required_del_sufffact_base: Road = None,
-    required_del_sufffact_need: Road = None,
+    required_del_sufffact_base: RoadPath = None,
+    required_del_sufffact_need: RoadPath = None,
     required_suff_idea_active_status: str = None,
     begin: float = None,
     close: float = None,
@@ -31,7 +31,7 @@ def custom_set_idea_attr(
     numor: int = None,
     denom: int = None,
     reest: bool = None,
-    numeric_road: Road = None,
+    numeric_road: RoadPath = None,
     range_source_road: float = None,
     descendant_promise_count: int = None,
     all_party_credit: bool = None,

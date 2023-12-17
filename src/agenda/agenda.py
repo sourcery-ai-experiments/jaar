@@ -25,7 +25,7 @@ from src.agenda.required_idea import (
     AcptFactUnit,
     requiredheir_shop,
     RequiredUnit,
-    Road,
+    RoadPath,
     acptfactunit_shop,
     sufffactunit_shop,
 )
@@ -63,8 +63,8 @@ from src.agenda.road import (
     get_forefather_roads,
     get_road,
     get_node_delimiter,
-    RaodNode,
-    Road,
+    RoadNode,
+    RoadPath,
     is_string_in_road,
 )
 from src.agenda.origin import originunit_get_from_dict, originunit_shop, OriginUnit
@@ -103,7 +103,7 @@ class AgendaUnit:
     _partys: dict[PartyPID:PartyUnit] = None
     _groups: dict[GroupBrand:GroupUnit] = None
     _idearoot: IdeaRoot = None
-    _idea_dict: dict[Road:IdeaCore] = None
+    _idea_dict: dict[RoadPath:IdeaCore] = None
     _max_tree_traverse: int = None
     _tree_traverse_count: int = None
     _rational: bool = None
@@ -114,9 +114,9 @@ class AgendaUnit:
 
     def make_road(
         self,
-        road_begin: Road = None,
-        terminus_node: RaodNode = None,
-        road_nodes: list[RaodNode] = None,
+        road_begin: RoadPath = None,
+        terminus_node: RoadNode = None,
+        road_nodes: list[RoadNode] = None,
     ):
         x_road = get_road(
             road_begin=road_begin,
@@ -127,7 +127,7 @@ class AgendaUnit:
         x_road = road_validate(x_road, self._road_node_delimiter, self._culture_qid)
         return x_road
 
-    def make_l1_road(self, l1_node: RaodNode):
+    def make_l1_road(self, l1_node: RoadNode):
         return self.make_road(self._culture_qid, l1_node)
 
     def set_partys_output_agenda_meld_order(self):
@@ -183,7 +183,7 @@ class AgendaUnit:
         else:
             self._max_tree_traverse = int_x
 
-    def get_agenda_sprung_from_single_idea(self, road: Road):
+    def get_agenda_sprung_from_single_idea(self, road: RoadPath):
         self.set_agenda_metrics()
         idea_x = self.get_idea_kid(road)
         new_weight = self._weight * idea_x._agenda_importance
@@ -201,7 +201,7 @@ class AgendaUnit:
         # TODO grab acptfacts
         return x_agenda
 
-    def _get_relevant_roads(self, roads: dict[Road:]) -> dict[Road:str]:
+    def _get_relevant_roads(self, roads: dict[RoadPath:]) -> dict[RoadPath:str]:
         to_evaluate_list = []
         to_evaluate_hx_dict = {}
         for road_x in roads:
@@ -255,9 +255,9 @@ class AgendaUnit:
 
     def _evaluate_relevancy(
         self,
-        to_evaluate_list: [Road],
-        to_evaluate_hx_dict: dict[Road:int],
-        to_evaluate_road: Road,
+        to_evaluate_list: [RoadPath],
+        to_evaluate_hx_dict: dict[RoadPath:int],
+        to_evaluate_road: RoadPath,
         road_type: str,
     ):
         if to_evaluate_hx_dict.get(to_evaluate_road) is None:
@@ -274,12 +274,12 @@ class AgendaUnit:
                         road_type="requiredunit_descendant",
                     )
 
-    def all_ideas_relevant_to_promise_idea(self, road: Road) -> bool:
+    def all_ideas_relevant_to_promise_idea(self, road: RoadPath) -> bool:
         promise_idea_assoc_set = set(self._get_relevant_roads({road}))
         all_ideas_set = set(self.get_idea_tree_ordered_road_list())
         return all_ideas_set == all_ideas_set.intersection(promise_idea_assoc_set)
 
-    def _are_all_partys_groups_are_in_idea_kid(self, road: Road) -> bool:
+    def _are_all_partys_groups_are_in_idea_kid(self, road: RoadPath) -> bool:
         idea_kid = self.get_idea_kid(road)
         # get dict of all idea balanceheirs
         balanceheir_list = idea_kid._balanceheirs.keys()
@@ -794,7 +794,7 @@ class AgendaUnit:
             nigh=nigh_minutes,
         )
 
-    def _is_idea_rangeroot(self, idea_road: Road) -> bool:
+    def _is_idea_rangeroot(self, idea_road: RoadPath) -> bool:
         anc_roads = get_ancestor_roads(road=idea_road)
         parent_road = self._culture_qid if len(anc_roads) == 1 else anc_roads[1]
 
@@ -875,8 +875,8 @@ class AgendaUnit:
 
     def set_acptfact(
         self,
-        base: Road,
-        pick: Road,
+        base: RoadPath,
+        pick: RoadPath,
         open: float = None,
         nigh: float = None,
         create_missing_ideas: bool = None,
@@ -948,7 +948,7 @@ class AgendaUnit:
         self.set_agenda_metrics()
 
     def _edit_set_idearoot_acptfactunits(
-        self, pick: Road, base: Road, open: float, nigh: float
+        self, pick: RoadPath, base: RoadPath, open: float, nigh: float
     ):
         acptfactunit = acptfactunit_shop(base=base, pick=pick, open=open, nigh=nigh)
         try:
@@ -979,7 +979,7 @@ class AgendaUnit:
         )
         return list_x
 
-    def del_acptfact(self, base: Road):
+    def del_acptfact(self, base: RoadPath):
         self._set_acptfacts_empty_if_null()
         self._idearoot._acptfactunits.pop(base)
 
@@ -1043,7 +1043,7 @@ class AgendaUnit:
             level_count = 0
         return level_count
 
-    def get_required_bases(self) -> dict[Road:int]:
+    def get_required_bases(self) -> dict[RoadPath:int]:
         tree_metrics = self.get_tree_metrics()
         return tree_metrics.required_bases
 
@@ -1065,7 +1065,7 @@ class AgendaUnit:
     def add_idea(
         self,
         idea_kid: IdeaCore,
-        pad: Road,
+        pad: RoadPath,
         create_missing_ideas_groups: bool = None,
         adoptees: list[str] = None,
         bundling=True,
@@ -1159,7 +1159,7 @@ class AgendaUnit:
         if posted_idea._numeric_road != None:
             self._set_ideakid_if_empty(road=posted_idea._numeric_road)
 
-    def _set_ideakid_if_empty(self, road: Road):
+    def _set_ideakid_if_empty(self, road: RoadPath):
         try:
             self.get_idea_kid(road)
         except InvalidAgendaException:
@@ -1191,7 +1191,7 @@ class AgendaUnit:
 
         return return_idea
 
-    def del_idea_kid(self, road: Road, del_children: bool = True):
+    def del_idea_kid(self, road: RoadPath, del_children: bool = True):
         x_road = get_all_road_nodes(road)
         temp_label = x_road.pop(0)
         temps_d = [temp_label]
@@ -1228,7 +1228,7 @@ class AgendaUnit:
 
     def edit_idea_label(
         self,
-        old_road: Road,
+        old_road: RoadPath,
         new_label: str,
     ):
         if self._road_node_delimiter in new_label:
@@ -1298,8 +1298,8 @@ class AgendaUnit:
         numor: float,
         denom: float,
         reest: bool,
-        idea_road: Road,
-        numeric_road: Road,
+        idea_road: RoadPath,
+        numeric_road: RoadPath,
     ):
         anc_roads = get_ancestor_roads(road=idea_road)
         if (addin != None or numor != None or denom != None or reest != None) and len(
@@ -1397,17 +1397,17 @@ class AgendaUnit:
 
     def edit_idea_attr(
         self,
-        road: Road,
+        road: RoadPath,
         weight: int = None,
         uid: int = None,
         required: RequiredUnit = None,
-        required_base: Road = None,
-        required_sufffact: Road = None,
+        required_base: RoadPath = None,
+        required_sufffact: RoadPath = None,
         required_sufffact_open: float = None,
         required_sufffact_nigh: float = None,
         required_sufffact_divisor: int = None,
-        required_del_sufffact_base: Road = None,
-        required_del_sufffact_need: Road = None,
+        required_del_sufffact_base: RoadPath = None,
+        required_del_sufffact_need: RoadPath = None,
         required_suff_idea_active_status: str = None,
         assignedunit: AssignedUnit = None,
         begin: float = None,
@@ -1416,7 +1416,7 @@ class AgendaUnit:
         numor: float = None,
         denom: float = None,
         reest: bool = None,
-        numeric_road: Road = None,
+        numeric_road: RoadPath = None,
         range_source_road: float = None,
         promise: bool = None,
         problem_bool: bool = None,
@@ -1507,7 +1507,7 @@ class AgendaUnit:
             self.set_agenda_metrics()
 
     def del_idea_required_sufffact(
-        self, road: Road, required_base: Road, required_sufffact: Road
+        self, road: RoadPath, required_base: RoadPath, required_sufffact: RoadPath
     ):
         self.edit_idea_attr(
             road=road,
@@ -1520,7 +1520,7 @@ class AgendaUnit:
 
     def get_intent_items(
         self,
-        base: Road = None,
+        base: RoadPath = None,
         intent_enterprise: bool = True,
         intent_state: bool = True,
     ) -> list[IdeaCore]:
@@ -1528,7 +1528,7 @@ class AgendaUnit:
             idea for idea in self.get_idea_list() if idea.is_intent_item(base_x=base)
         ]
 
-    def set_intent_task_complete(self, task_road: Road, base: Road):
+    def set_intent_task_complete(self, task_road: RoadPath, base: RoadPath):
         promise_item = self.get_idea_kid(task_road)
         promise_item.set_acptfactunit_to_complete(
             base_acptfactunit=self._idearoot._acptfactunits[base]
@@ -1699,7 +1699,7 @@ class AgendaUnit:
             x_dict[x_required.base] = x_required
         self._idearoot._requiredheirs = x_dict
 
-    def get_idea_kid(self, road: Road) -> IdeaCore:
+    def get_idea_kid(self, road: RoadPath) -> IdeaCore:
         if road is None:
             raise InvalidAgendaException("get_idea_kid received road=None")
         nodes = get_all_road_nodes(road, delimiter=self._road_node_delimiter)
@@ -1740,7 +1740,7 @@ class AgendaUnit:
         idea_list = parent_idea.get_kids_in_range(begin=begin, close=close)
         return {idea_x._label: idea_x for idea_x in idea_list}
 
-    def _set_ancestor_metrics(self, road: Road):
+    def _set_ancestor_metrics(self, road: RoadPath):
         # sourcery skip: low-code-quality
         da_count = 0
         child_balancelines = None
@@ -1971,7 +1971,7 @@ class AgendaUnit:
         self._reset_groupunits_agenda_credit_debt()
         self._reset_partyunit_agenda_credit_debt()
 
-    def get_heir_road_list(self, road_x: Road):
+    def get_heir_road_list(self, road_x: RoadPath):
         # create list of all idea roads (road+desc)
         return [
             road
@@ -2087,7 +2087,9 @@ class AgendaUnit:
 
         self.set_agenda_metrics()
 
-    def get_agenda4party(self, party_pid: PartyPID, acptfacts: dict[Road:AcptFactCore]):
+    def get_agenda4party(
+        self, party_pid: PartyPID, acptfacts: dict[RoadPath:AcptFactCore]
+    ):
         self.set_agenda_metrics()
         agenda4party = agendaunit_shop(_healer=party_pid)
         agenda4party._idearoot._agenda_importance = self._idearoot._agenda_importance
@@ -2131,7 +2133,7 @@ class AgendaUnit:
         return agenda4party
 
     # def get_intent_items(
-    #     self, intent_enterprise: bool = True, intent_state: bool = True, base: Road = None
+    #     self, intent_enterprise: bool = True, intent_state: bool = True, base: RoadPath = None
     # ) -> list[IdeaCore]:
     #     return list(self.get_intent_items(base=base))
 
@@ -2229,7 +2231,7 @@ class AgendaUnit:
         self._set_assignment_ideas(agenda_x, relevant_roads)
         return agenda_x
 
-    def _set_assignment_ideas(self, agenda_x, relevant_roads: dict[Road:str]):
+    def _set_assignment_ideas(self, agenda_x, relevant_roads: dict[RoadPath:str]):
         sorted_relevants = sorted(list(relevant_roads))
         # don't know how to manage root idea attributes...
         if sorted_relevants != []:
@@ -2276,7 +2278,7 @@ class AgendaUnit:
 
     def _get_assignor_promise_ideas(
         self, agenda_x, assignor_pid: GroupBrand
-    ) -> dict[Road:int]:
+    ) -> dict[RoadPath:int]:
         agenda_x.set_groupunits_empty_if_null()
         assignor_groups = get_party_relevant_groups(agenda_x._groups, assignor_pid)
         return {

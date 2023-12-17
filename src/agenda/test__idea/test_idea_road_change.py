@@ -2,7 +2,7 @@ from src.agenda.idea import ideacore_shop
 from src.agenda.required_idea import (
     requiredunit_shop,
     sufffactunit_shop,
-    Road,
+    RoadPath,
     acptfactunit_shop,
 )
 from src.agenda.road import get_default_culture_root_label as root_label, get_road
@@ -175,7 +175,7 @@ def test_idea_get_key_road_returnsCorrectInfo():
     assert red_idea.get_key_road() == red_text
 
 
-def test_idea_set_road_node_delimiter_CorrectlyChangesRequiredRoads():
+def test_idea_set_road_node_delimiter_CorrectlyChangesRequiredRoadPaths():
     # GIVEN
     casa_text = "casa"
     casa_idea = ideacore_shop(casa_text)

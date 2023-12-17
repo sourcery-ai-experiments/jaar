@@ -633,7 +633,7 @@ def test_sufffact_get_dict_ReturnsCorrectDictWithOpenAndNigh():
     assert sufffact_dict == static_dict
 
 
-def test_sufffact_get_dict_ReturnsCorrectDictWithOnlyRoad():
+def test_sufffact_get_dict_ReturnsCorrectDictWithOnlyRoadPath():
     # GIVEN
     timetech_text = "timetech"
     timetech_road = get_road(root_label(), timetech_text)
@@ -702,7 +702,7 @@ def test_sufffact_meld_works():
     assert x_sufffact2 == x_sufffact2.meld(y2_sufffact)
 
 
-def test_sufffact_meld_raises_NotSameRoadError():
+def test_sufffact_meld_raises_NotSameRoadPathError():
     # GIVEN
     timetech_text = "timetech"
     timetech_road = get_road(root_label(), timetech_text)

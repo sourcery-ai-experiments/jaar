@@ -811,7 +811,7 @@ def test_idea_set_assignedunit_empty_if_null():
     assert sport_idea._assignedheir == swim_assigned_heir
 
 
-def test_idea_get_descendants_ReturnsNoRoads():
+def test_idea_get_descendants_ReturnsNoRoadPaths():
     # GIVEN
     nation_text = "nation-state"
     nation_idea = ideacore_shop(_label=nation_text, _pad=root_label())
@@ -823,7 +823,7 @@ def test_idea_get_descendants_ReturnsNoRoads():
     assert nation_descendants == {}
 
 
-def test_idea_get_descendants_Returns3DescendantsRoads():
+def test_idea_get_descendants_Returns3DescendantsRoadPaths():
     # GIVEN
     nation_text = "nation-state"
     nation_road = get_road(root_label(), nation_text)

@@ -492,7 +492,7 @@ def test_RequiredCore_meld_AddSuffFactscenarioWorks():
     assert len(x1_required.sufffacts) == 2
 
 
-def test_RequiredCore_meld_raises_NotSameRoadError():
+def test_RequiredCore_meld_raises_NotSameRoadPathError():
     # GIVEN
     tech_text = "timetech"
     tech_road = get_road(root_label(), tech_text)

@@ -9,7 +9,7 @@ from src.agenda.x_func import (
     get_meld_weight,
     return1ifnone as x_func_return1ifnone,
 )
-from src.agenda.road import Road
+from src.agenda.road import RoadPath
 
 
 class InvalidGroupException(Exception):
@@ -35,13 +35,13 @@ class GroupUnit(GroupCore):
     _agenda_debt: float = None
     _agenda_intent_credit: float = None
     _agenda_intent_debt: float = None
-    _partylinks_set_by_culture_road: Road = None
+    _partylinks_set_by_culture_road: RoadPath = None
 
     def set_brand(self, brand: GroupBrand = None):
         if brand != None:
             self.brand = brand
 
-    def set_attr(self, _partylinks_set_by_culture_road: Road):
+    def set_attr(self, _partylinks_set_by_culture_road: RoadPath):
         if _partylinks_set_by_culture_road != None:
             self._partylinks_set_by_culture_road = _partylinks_set_by_culture_road
 
@@ -198,7 +198,7 @@ def groupunit_shop(
     _agenda_debt: float = None,
     _agenda_intent_credit: float = None,
     _agenda_intent_debt: float = None,
-    _partylinks_set_by_culture_road: Road = None,
+    _partylinks_set_by_culture_road: RoadPath = None,
 ) -> GroupUnit:
     if _single_party and _partylinks_set_by_culture_road != None:
         raise InvalidGroupException(

@@ -421,7 +421,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Road:</string>
+     <string>RoadPath:</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_intent_label_data">

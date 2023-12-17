@@ -715,7 +715,7 @@ class Ui_Form(object):
         self.label_18.setText(_translate("Form", "Task Status:"))
         self.label_19.setText(_translate("Form", "Numorator"))
         self.label_20.setText(_translate("Form", "Numeric Source"))
-        self.label_21.setText(_translate("Form", "Special Road"))
+        self.label_21.setText(_translate("Form", "Special RoadPath"))
         self.label_22.setText(_translate("Form", "Denominator"))
         self.label_23.setText(_translate("Form", "Remainder:"))
         self.yo_reest.setText(_translate("Form", "reest"))

@@ -9,7 +9,7 @@ from EditParty import EditParty
 from pyqt_func import agenda_importance_diplay, get_pyqttree, num2str
 from src.agenda.group import groupunit_shop, balancelink_shop
 from src.agenda.idea import ideacore_shop
-from src.agenda.road import Road, get_pad_from_road, get_terminus_node_from_road
+from src.agenda.road import RoadPath, get_pad_from_road, get_terminus_node_from_road
 from sys import exit as sys_exit
 
 # self.problem_pid_text

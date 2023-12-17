@@ -1,6 +1,6 @@
 from src.agenda.road import get_node_delimiter
 from dataclasses import dataclass
-from src.agenda.required_idea import AcptFactUnit, Road, acptfactunit_shop
+from src.agenda.required_idea import AcptFactUnit, RoadPath, acptfactunit_shop
 from src.agenda.idea import IdeaKid
 
 
@@ -19,7 +19,7 @@ class Lemma:
 
 @dataclass
 class Lemmas:
-    lemmas: dict[Road:Lemma] = None
+    lemmas: dict[RoadPath:Lemma] = None
 
     def set_empty_if_null(self):
         if self.lemmas is None:
@@ -33,7 +33,7 @@ class Lemmas:
         src_nigh: float,
         src_idea_begin: float,
         src_idea_close: float,
-    ) -> Road:
+    ) -> RoadPath:
         acptfact_open = None
         acptfact_nigh = None
 
@@ -248,7 +248,7 @@ class Lemmas:
         #     #     prin(f"{current_lemma_acptfact=} {acptfact_open=} {acptfact_nigh=}")
 
 
-def lemmas_shop(lemmas: dict[Road:Lemma] = None, delimiter: str = None) -> Lemmas:
+def lemmas_shop(lemmas: dict[RoadPath:Lemma] = None, delimiter: str = None) -> Lemmas:
     x_lemmas = Lemmas(lemmas=lemmas)
     x_lemmas.set_empty_if_null()
     return x_lemmas

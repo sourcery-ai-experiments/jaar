@@ -1,7 +1,7 @@
 from src.agenda.road import (
-    Road,
+    RoadPath,
     is_sub_road,
-    RaodNode,
+    RoadNode,
     get_road,
     get_diff_road,
     get_node_delimiter,
@@ -52,66 +52,68 @@ def create_cultureaddress(person_id: PersonID, culture_qid: CultureQID):
     return x_cultureaddress
 
 
-class ConcernSubRoadException(Exception):
+class ConcernSubRoadPathException(Exception):
     pass
 
 
 @dataclass
 class ConcernUnit:
     cultureaddress: CultureAddress  # Culture and healers
-    _concern_subject: Road = None
-    _concern_good: Road = None  # cause that is wanted
-    _concern_bad: Road = None  # pain and cause is not wanted
-    _action_subject: Road = None
-    _action_positive: Road = None  # task that is wanted
-    _action_negative: Road = None  # task that is not wanted
+    _concern_subject: RoadPath = None
+    _concern_good: RoadPath = None  # cause that is wanted
+    _concern_bad: RoadPath = None  # pain and cause is not wanted
+    _action_subject: RoadPath = None
+    _action_positive: RoadPath = None  # task that is wanted
+    _action_negative: RoadPath = None  # task that is not wanted
 
     def get_road_node_delimiter(self):
         return self.cultureaddress._road_node_delimiter
 
-    def set_good(self, subject_road: Road, good_road: Road, bad_road: Road):
+    def set_good(self, subject_road: RoadPath, good_road: RoadPath, bad_road: RoadPath):
         self._check_subject_road(subject_road)
         if is_sub_road(bad_road, subject_road) == False:
-            raise ConcernSubRoadException(
+            raise ConcernSubRoadPathException(
                 f"ConcernUnit setting concern_bad '{bad_road}' failed because subject road '{subject_road}' is not subroad"
             )
         if is_sub_road(good_road, subject_road) == False:
-            raise ConcernSubRoadException(
+            raise ConcernSubRoadPathException(
                 f"ConcernUnit setting concern_good '{good_road}' failed because subject road '{subject_road}' is not subroad"
             )
         self._concern_subject = subject_road
         self._concern_good = good_road
         self._concern_bad = bad_road
 
-    def set_action(self, subject_road: Road, positive_road: Road, negative_road: Road):
+    def set_action(
+        self, subject_road: RoadPath, positive_road: RoadPath, negative_road: RoadPath
+    ):
         self._check_subject_road(subject_road)
         if is_sub_road(negative_road, subject_road) == False:
-            raise ConcernSubRoadException(
+            raise ConcernSubRoadPathException(
                 f"ConcernUnit setting action_negative '{negative_road}' failed because subject road '{subject_road}' is not subroad"
             )
         if is_sub_road(positive_road, subject_road) == False:
-            raise ConcernSubRoadException(
+            raise ConcernSubRoadPathException(
                 f"ConcernUnit setting action_positive '{positive_road}' failed because subject road '{subject_road}' is not subroad"
             )
         self._action_subject = subject_road
         self._action_positive = positive_road
         self._action_negative = negative_road
 
-    def _check_subject_road(self, road: Road) -> bool:
+    def _check_subject_road(self, road: RoadPath) -> bool:
         double_culture_qid_road = get_road(
             self.cultureaddress.culture_qid, self.cultureaddress.culture_qid
         )
         if road == get_road(self.cultureaddress.culture_qid, ""):
-            raise ConcernSubRoadException(
+            raise ConcernSubRoadPathException(
                 f"ConcernUnit subject level 1 cannot be empty. ({road})"
             )
         if is_sub_road(road, double_culture_qid_road):
-            raise ConcernSubRoadException(
+            raise ConcernSubRoadPathException(
                 f"ConcernUnit setting concern_subject '{road}' failed because first child node cannot be culture_qid as bug asumption check."
             )
 
         if is_sub_road(road, self.cultureaddress.culture_qid) == False:
-            raise ConcernSubRoadException(
+            raise ConcernSubRoadPathException(
                 f"ConcernUnit setting concern_subject '{road}' failed because culture_qid is not first node."
             )
 
@@ -140,12 +142,12 @@ class ConcernUnit:
 
 def concernunit_shop(
     cultureaddress: CultureAddress,
-    concern_subject: Road = None,
-    concern_good: Road = None,
-    concern_bad: Road = None,
-    action_subject: Road = None,
-    action_positive: Road = None,
-    action_negative: Road = None,
+    concern_subject: RoadPath = None,
+    concern_good: RoadPath = None,
+    concern_bad: RoadPath = None,
+    action_subject: RoadPath = None,
+    action_positive: RoadPath = None,
+    action_negative: RoadPath = None,
 ) -> ConcernUnit:
     x_concernunit = ConcernUnit(cultureaddress=cultureaddress)
     x_concernunit.set_good(concern_subject, concern_good, concern_bad)
@@ -155,12 +157,12 @@ def concernunit_shop(
 
 def create_concernunit(
     cultureaddress: CultureAddress,
-    concern: Road,
-    good: RaodNode,
-    bad: RaodNode,
-    action: Road,
-    positive: RaodNode,
-    negative: RaodNode,
+    concern: RoadPath,
+    good: RoadNode,
+    bad: RoadNode,
+    action: RoadPath,
+    positive: RoadNode,
+    negative: RoadNode,
 ):
     x_concernunit = ConcernUnit(cultureaddress=cultureaddress)
     concern = get_road(cultureaddress.culture_qid, concern)

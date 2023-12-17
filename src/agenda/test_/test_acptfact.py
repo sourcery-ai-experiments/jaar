@@ -2,7 +2,7 @@ from src.agenda.required_idea import (
     AcptFactUnit,
     acptfactunit_shop,
     acptfactheir_shop,
-    Road,
+    RoadPath,
     AcptFactCore,
     acptfactunit_shop as c_acptfactunit,
     acptfactunits_get_from_dict,
@@ -290,7 +290,7 @@ def test_acptfactcores_meld_CorrectlyMeldDifferentObjs_v2():
     assert dish_af == bowl_af.meld(dish_af)
 
 
-def test_acptfactcores_meld_raises_NotSameBaseRoadError():
+def test_acptfactcores_meld_raises_NotSameBaseRoadPathError():
     # GIVEN
     tech_text = "tech"
     tech_road = get_road(root_label(), tech_text)
@@ -308,7 +308,7 @@ def test_acptfactcores_meld_raises_NotSameBaseRoadError():
     )
 
 
-def test_acptfactcores_meld_raises_NotSameAcptFactRoadError():
+def test_acptfactcores_meld_raises_NotSameAcptFactRoadPathError():
     # GIVEN
     tech_text = "tech"
     tech_road = get_road(root_label(), tech_text)

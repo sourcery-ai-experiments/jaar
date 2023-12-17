@@ -142,7 +142,7 @@ def test_agenda_add_idea_CorrectlyAddsIdeaObjWithNonstandard_delimiter():
     assert work_idea._requiredunits.get(week_road) != None
 
 
-def test_agenda_add_idea_CanCreateRoadToGrandkidIdea():
+def test_agenda_add_idea_CanCreateRoadPathToGrandkidIdea():
     # GIVEN
     x_agenda = get_agenda_with_4_levels()
     x_agenda.set_agenda_metrics()
