@@ -1,5 +1,5 @@
 from src.world.world import worldunit_shop
-from src.world.concern import create_cultureaddress
+from src.world.concern import create_cultureaddress, create_urgeunit, create_concernunit
 from src.world.examples.world_env_kit import (
     get_temp_world_dir,
     get_temp_culture_qid,
@@ -38,8 +38,7 @@ def test_worldunit_apply_urgeunit_CorrectlyCreates_seed_agendas(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN urger and actor seed_agendas does not exist
-    dallas_text = "dallas"
-    x_world = worldunit_shop(dallas_text, get_test_worlds_dir())
+    x_world = worldunit_shop(get_temp_world_dir(), get_test_worlds_dir())
     luca_text = "Tom"
     x_world.add_personunit(luca_text)
     luca_person = x_world.get_personunit_from_memory(luca_text)
@@ -48,6 +47,10 @@ def test_worldunit_apply_urgeunit_CorrectlyCreates_seed_agendas(
     texas_culture = luca_person.get_cultureunit(texas_text)
     culture_public_dir = texas_culture.get_public_dir()
     tim_text = "Tim"
+    luca_texas_cultureaddress = create_cultureaddress(luca_text, texas_text)
+    highway_concernunit = create_concernunit(luca_texas_cultureaddress)
+    highway_urgeunit = create_urgeunit(highway_concernunit, actor_pid=tim_text)
+
     public_tim_file_name = f"{tim_text}.json"
     public_tim_file_path = f"{culture_public_dir}/{public_tim_file_name}"
     print(f"{public_tim_file_path=}")

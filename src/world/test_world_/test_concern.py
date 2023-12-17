@@ -2,7 +2,7 @@ from src.world.examples.examples import (
     get_farm_concernunit as examples_get_farm_concernunit,
     get_farm_urgeunit as examples_get_farm_urgeunit,
 )
-from src.agenda.road import get_road
+from src.agenda.road import get_road, get_node_delimiter
 from src.world.concern import (
     CultureAddress,
     cultureaddress_shop,
@@ -22,12 +22,16 @@ def test_CultureAddress_exists():
     luca_text = "Luca"
     luca_dict = {luca_text: 0}
     texas_text = "Texas"
+    slash_text = "/"
 
     # WHEN
-    texas_address = CultureAddress(person_ids=luca_dict, culture_qid=texas_text)
+    texas_address = CultureAddress(
+        person_ids=luca_dict, culture_qid=texas_text, _road_node_delimiter=slash_text
+    )
 
     # THEN
     assert texas_address.culture_qid == texas_text
+    assert texas_address._road_node_delimiter == slash_text
     assert texas_address.person_ids == luca_dict
 
 
@@ -36,13 +40,30 @@ def test_cultureaddress_shop_ReturnsCorrectObject():
     luca_text = "Luca"
     luca_dict = {luca_text: 0}
     texas_text = "Texas"
+    slash_text = "/"
 
     # WHEN
-    texas_address = cultureaddress_shop(person_ids=luca_dict, culture_qid=texas_text)
+    texas_address = cultureaddress_shop(
+        person_ids=luca_dict, culture_qid=texas_text, _road_node_delimiter=slash_text
+    )
 
     # THEN
     assert texas_address.culture_qid == texas_text
     assert texas_address.person_ids == luca_dict
+    assert texas_address._road_node_delimiter == slash_text
+
+
+def test_cultureaddress_shop_ReturnsCorrectObjectWithDefault_road_node_delimiter():
+    # GIVEN
+    luca_text = "Luca"
+    luca_dict = {luca_text: 0}
+    texas_text = "Texas"
+
+    # WHEN
+    texas_address = cultureaddress_shop(luca_dict, texas_text)
+
+    # THEN
+    assert texas_address._road_node_delimiter == get_node_delimiter()
 
 
 def test_CultureAddress_add_person_id_CorrectChangesAttribute():
@@ -137,6 +158,9 @@ def test_concernunit_shop_ReturnsCorrectObj():
     assert farm_concernunit._action_positive == farm_positive
     assert farm_concernunit._action_negative == farm_negative
     assert farm_concernunit.cultureaddress == texas_cultureaddress
+    assert farm_concernunit.get_road_node_delimiter() == get_node_delimiter(
+        texas_cultureaddress._road_node_delimiter
+    )
 
 
 def test_ConcernUnit_set_good_SetsAttributesCorrectly():
@@ -448,6 +472,46 @@ def test_create_concernunit_CorrectlyCreatesObj():
     assert farm_concernunit._concern_bad == with_root_food_bad
 
     with_root_farm_subject = get_road(texas_cultureaddress.culture_qid, farm_text)
+    with_root_farm_positive = get_road(with_root_farm_subject, well_text)
+    with_root_farm_negative = get_road(with_root_farm_subject, poor_text)
+    assert farm_concernunit._action_subject == with_root_farm_subject
+    assert farm_concernunit._action_positive == with_root_farm_positive
+    assert farm_concernunit._action_negative == with_root_farm_negative
+
+
+def test_create_concernunit_CorrectlyCreatesObjWithCorrect_delimiter():
+    # GIVEN
+    texas_text = "Texas"
+    luca_text = "Luca"
+    texas_cultureaddress = create_cultureaddress(luca_text, texas_text)
+    food_road = get_road("enjoying life", "food")
+    good_text = "good food"
+    bad_text = "bad food"
+    farm_road = get_road("working", "farm")
+    well_text = "farm well"
+    poor_text = "farm poorly"
+
+    # WHEN
+    farm_concernunit = create_concernunit(
+        cultureaddress=texas_cultureaddress,
+        concern=food_road,
+        good=good_text,
+        bad=bad_text,
+        action=farm_road,
+        positive=well_text,
+        negative=poor_text,
+    )
+
+    # THEN
+    assert farm_concernunit.cultureaddress == texas_cultureaddress
+    with_root_food_subject = get_road(texas_cultureaddress.culture_qid, food_road)
+    with_root_food_good = get_road(with_root_food_subject, good_text)
+    with_root_food_bad = get_road(with_root_food_subject, bad_text)
+    assert farm_concernunit._concern_subject == with_root_food_subject
+    assert farm_concernunit._concern_good == with_root_food_good
+    assert farm_concernunit._concern_bad == with_root_food_bad
+
+    with_root_farm_subject = get_road(texas_cultureaddress.culture_qid, farm_road)
     with_root_farm_positive = get_road(with_root_farm_subject, well_text)
     with_root_farm_negative = get_road(with_root_farm_subject, poor_text)
     assert farm_concernunit._action_subject == with_root_farm_subject

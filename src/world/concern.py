@@ -1,4 +1,11 @@
-from src.agenda.road import Road, is_sub_road, RaodNode, get_road, get_diff_road
+from src.agenda.road import (
+    Road,
+    is_sub_road,
+    RaodNode,
+    get_road,
+    get_diff_road,
+    get_node_delimiter,
+)
 from src.agenda.group import GroupBrand
 from src.culture.culture import CultureQID
 from src.world.person import PersonID
@@ -9,6 +16,7 @@ from dataclasses import dataclass
 class CultureAddress:
     culture_qid: CultureQID
     person_ids: dict[PersonID:int]
+    _road_node_delimiter: str
 
     def set_person_ids_empty_if_none(self):
         if self.person_ids is None:
@@ -25,9 +33,15 @@ class CultureAddress:
 
 
 def cultureaddress_shop(
-    culture_qid: CultureQID, person_ids: dict[PersonID:int] = None
+    culture_qid: CultureQID,
+    person_ids: dict[PersonID:int] = None,
+    _road_node_delimiter: str = None,
 ) -> CultureAddress:
-    x_cultureaddress = CultureAddress(person_ids=person_ids, culture_qid=culture_qid)
+    x_cultureaddress = CultureAddress(
+        person_ids=person_ids,
+        culture_qid=culture_qid,
+        _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
+    )
     x_cultureaddress.set_person_ids_empty_if_none()
     return x_cultureaddress
 
@@ -44,13 +58,16 @@ class ConcernSubRoadException(Exception):
 
 @dataclass
 class ConcernUnit:
-    cultureaddress: CultureAddress
+    cultureaddress: CultureAddress  # Culture and healers
     _concern_subject: Road = None
-    _concern_good: Road = None
-    _concern_bad: Road = None
+    _concern_good: Road = None  # cause that is wanted
+    _concern_bad: Road = None  # pain and cause is not wanted
     _action_subject: Road = None
-    _action_positive: Road = None
-    _action_negative: Road = None
+    _action_positive: Road = None  # task that is wanted
+    _action_negative: Road = None  # task that is not wanted
+
+    def get_road_node_delimiter(self):
+        return self.cultureaddress._road_node_delimiter
 
     def set_good(self, subject_road: Road, good_road: Road, bad_road: Road):
         self._check_subject_road(subject_road)

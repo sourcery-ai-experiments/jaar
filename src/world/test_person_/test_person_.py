@@ -1,5 +1,5 @@
 from src.world.person import PersonUnit, personunit_shop
-from src.world.pain import painunit_shop, healerlink_shop, culturelink_shop
+from src.world.pain import painunit_shop
 
 
 def test_personunit_exists():
