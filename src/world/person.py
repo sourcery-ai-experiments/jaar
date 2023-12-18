@@ -37,11 +37,14 @@ class PersonUnit:
         if self._cultures is None:
             self._cultures = {}
 
-    def add_cultureunit(self, culture_qid: CultureQID):
-        cultures_dir = f"{self.person_dir}/cultures"
-        self._cultures[culture_qid] = cultureunit_shop(
-            qid=culture_qid, cultures_dir=cultures_dir, _manager_pid=self.pid
-        )
+    def set_cultureunit(self, culture_qid: CultureQID, replace: bool = False):
+        if (
+            self.cultureunit_exists(culture_qid) and replace
+        ) or self.cultureunit_exists(culture_qid) == False:
+            cultures_dir = f"{self.person_dir}/cultures"
+            self._cultures[culture_qid] = cultureunit_shop(
+                qid=culture_qid, cultures_dir=cultures_dir, _manager_pid=self.pid
+            )
 
     def cultureunit_exists(self, culture_qid: CultureQID):
         return self._cultures.get(culture_qid) != None

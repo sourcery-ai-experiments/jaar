@@ -7,7 +7,7 @@ def test_personunit_get_dict_CorrectlyGetsDict():
     xao_person_dir = f"/persons/{xao_text}"
     xao_personunit = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
     diet_text = "diet"
-    xao_personunit.add_cultureunit(diet_text)
+    xao_personunit.set_cultureunit(diet_text)
 
     knee_text = "knee discomfort"
     xao_personunit.create_painunit_from_genus(knee_text)

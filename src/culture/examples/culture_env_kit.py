@@ -264,7 +264,7 @@ def change_qid_example_culture(culture_obj: CultureUnit, new_qid):
     src_dir = f"{base_dir}/{culture_obj.qid}"
     dst_dir = f"{base_dir}/{new_qid}"
     os_rename(src=src_dir, dst=dst_dir)
-    culture_obj.set_cultureunit_qid(qid=new_qid)
+    culture_obj.set_qid(qid=new_qid)
 
 
 class InvalidcultureCopyException(Exception):

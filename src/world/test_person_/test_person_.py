@@ -40,7 +40,7 @@ def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
     assert x_person.person_dir == dallas_dir
 
 
-def test_personunit_add_cultureunit_CorrectlyCreatesCultureUnit():
+def test_personunit_set_cultureunit_CorrectlyCreatesCultureUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
@@ -48,7 +48,7 @@ def test_personunit_add_cultureunit_CorrectlyCreatesCultureUnit():
 
     # WHEN
     diet_text = "diet"
-    xao_person_obj.add_cultureunit(culture_qid=diet_text)
+    xao_person_obj.set_cultureunit(culture_qid=diet_text)
 
     # THEN
     # diet_culture = xao_person.get_culture()
@@ -68,7 +68,7 @@ def test_personunit_cultureunit_exists_ReturnsCorrectObj():
     assert xao_person_obj.cultureunit_exists(diet_text) == False
 
     # WHEN
-    xao_person_obj.add_cultureunit(culture_qid=diet_text)
+    xao_person_obj.set_cultureunit(culture_qid=diet_text)
 
     # THEN
     assert xao_person_obj.cultureunit_exists(diet_text)
@@ -80,7 +80,7 @@ def test_personunit_get_cultureunit_CorrectlyGetsCultureUnit():
     xao_person_dir = f"/persons/{xao_text}"
     xao_person_obj = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
     diet_text = "diet"
-    xao_person_obj.add_cultureunit(diet_text)
+    xao_person_obj.set_cultureunit(diet_text)
 
     # WHEN
     diet_culture = xao_person_obj.get_cultureunit(diet_text)
@@ -97,7 +97,7 @@ def test_personunit_del_cultureunit_CorrectlyDeletesCultureUnit():
     xao_person_dir = f"/persons/{xao_text}"
     xao_person_obj = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
     diet_text = "diet"
-    xao_person_obj.add_cultureunit(diet_text)
+    xao_person_obj.set_cultureunit(diet_text)
     before_diet_culture = xao_person_obj.get_cultureunit(diet_text)
     assert before_diet_culture != None
     assert before_diet_culture.qid == diet_text

@@ -16,10 +16,10 @@ def test_worldunit_add_cultural_connection_CorrectlyCreatesObj(
     dallas_text = "dallas"
     x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
     luca_text = "Lucas"
-    x_world.add_personunit(luca_text)
+    x_world.set_personunit(luca_text)
     luca_person = x_world.get_personunit_from_memory(luca_text)
     texas_text = "Texas"
-    luca_person.add_cultureunit(texas_text)
+    luca_person.set_cultureunit(texas_text)
     texas_culture = luca_person.get_cultureunit(texas_text)
     kari_text = "kari"
     texas_cultureaddress = create_cultureaddress(luca_text, texas_text)
@@ -34,38 +34,54 @@ def test_worldunit_add_cultural_connection_CorrectlyCreatesObj(
     assert texas_culture._councilunits.get(kari_text) != None
 
 
-# def test_worldunit_apply_urgeunit_CorrectlyCreates_seed_agendas(
-#     worlds_dir_setup_cleanup,
-# ):
-#     # GIVEN urger and actor seed_agendas does not exist
-#     x_world = worldunit_shop(get_temp_world_dir(), get_test_worlds_dir())
-#     luca_text = "Tom"
-#     x_world.add_personunit(luca_text)
-#     luca_person = x_world.get_personunit_from_memory(luca_text)
-#     texas_text = "Texas"
-#     luca_person.add_cultureunit(texas_text)
-#     texas_culture = luca_person.get_cultureunit(texas_text)
-#     culture_public_dir = texas_culture.get_public_dir()
-#     tim_text = "Tim"
-#     luca_texas_cultureaddress = create_cultureaddress(luca_text, texas_text)
-#     highway_concernunit = create_concernunit(luca_texas_cultureaddress)
-#     highway_urgeunit = create_urgeunit(highway_concernunit, actor_pid=tim_text)
+def test_worldunit_apply_urgeunit_CorrectlyCreates_seed_agendas(
+    worlds_dir_setup_cleanup,
+):
+    # GIVEN urger and actor seed_agendas does not exist
+    w1_text = "w1"
+    x_world = worldunit_shop(w1_text, get_test_worlds_dir())
+    yao_text = "Yao"
+    x_world.set_personunit(yao_text)
+    yao_person = x_world.get_personunit_from_memory(yao_text)
+    texas_text = "Texas"
+    yao_person.set_cultureunit(texas_text)
+    texas_culture = yao_person.get_cultureunit(texas_text)
+    culture_public_dir = texas_culture.get_public_dir()
 
-#     public_tim_file_name = f"{tim_text}.json"
-#     public_tim_file_path = f"{culture_public_dir}/{public_tim_file_name}"
-#     print(f"{public_tim_file_path=}")
-#     # public_file_path = f"src/culture/examples/ex_env/agendas/{public_file_name}"
-#     assert os_path.exists(public_tim_file_path) is False
+    highway_concernunit = create_concernunit(
+        cultureaddress=create_cultureaddress(yao_text, texas_text),
+        action="flying in airplanes",
+        positive="Do not fly",
+        negative="Continue flying",
+        why="global environment",
+        good="healthy",
+        bad="boiling",
+    )
+    tim_text = "Tim"
+    xao_text = "Xao"
+    highway_urgeunit = create_urgeunit(
+        concernunit=highway_concernunit, actor_pid=tim_text, urger_pid=xao_text
+    )
+    assert x_world.get_personunit_from_memory(tim_text) is None
+    assert x_world.get_personunit_from_memory(xao_text) is None
+    public_tim_file_path = f"{culture_public_dir}/{tim_text}.json"
+    public_xao_file_path = f"{culture_public_dir}/{xao_text}.json"
+    assert os_path.exists(public_tim_file_path) is False
+    assert os_path.exists(public_xao_file_path) is False
 
-#     # WHEN
-#     x_world.apply_urgeunit()
+    # WHEN
+    x_world.apply_urgeunit(highway_urgeunit)
 
-#     # THEN
-#     assert os_path.exists(public_tim_file_path)
+    # THEN
+    assert x_world.get_personunit_from_memory(tim_text) != None
+    assert x_world.get_personunit_from_memory(xao_text) != None
+    print(f"{public_tim_file_path=}")
+    assert os_path.exists(public_tim_file_path)
+    assert os_path.exists(public_xao_file_path)
 
-#     # WHEN worldunit urgeunit is applyed
-#     # THEN seed agendas do exist
-#     assert 1 == 2
+    # WHEN worldunit urgeunit is applyed
+    # THEN seed agendas do exist
+    assert 1 == 2
 
 
 # def test_worldunit_apply_urgeunit_CorrectlyAddsTaskTo_urger_seed_agenda(

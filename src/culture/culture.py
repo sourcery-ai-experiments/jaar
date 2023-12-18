@@ -311,7 +311,7 @@ class CultureUnit:
         self._treasury_db = None
         x_func_delete_dir(dir=self.get_treasury_db_path())
 
-    def set_cultureunit_qid(self, qid: str):
+    def set_qid(self, qid: str):
         self.qid = qid
 
     def get_treasury_db_path(self):
@@ -351,9 +351,12 @@ class CultureUnit:
             ).keys()
         )
 
-    def add_councilunit(self, pid: PersonID):
+    def add_councilunit(self, pid: PersonID, _auto_output_to_public: bool = None):
         x_councilunit = councilunit_shop(
-            pid=pid, env_dir=self.get_object_root_dir(), culture_qid=self.qid
+            pid=pid,
+            env_dir=self.get_object_root_dir(),
+            culture_qid=self.qid,
+            _auto_output_to_public=_auto_output_to_public,
         )
         self.set_councilunit(councilunit=x_councilunit)
 

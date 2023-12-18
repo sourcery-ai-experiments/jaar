@@ -389,5 +389,6 @@ def councilunit_shop(
     )
     x_council.get_seed()
     x_council._seed._set_auto_output_to_public(_auto_output_to_public)
+    print(f"saved to public {_auto_output_to_public=}")
     x_council.set_seed()
     return x_council

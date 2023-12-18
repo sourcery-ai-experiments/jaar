@@ -93,7 +93,7 @@ def test_worldunit_personunit_exists_ReturnsCorrectBool(worlds_dir_setup_cleanup
     assert x_world.personunit_exists(luca_text)
 
 
-def test_worldunit_add_personunit_CorrectlySetsPerson(worlds_dir_setup_cleanup):
+def test_worldunit_set_personunit_CorrectlySetsPerson(worlds_dir_setup_cleanup):
     # GIVEN
     dallas_text = "dallas"
     x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
@@ -102,7 +102,7 @@ def test_worldunit_add_personunit_CorrectlySetsPerson(worlds_dir_setup_cleanup):
     luca_person_obj = personunit_shop(pid=luca_text, person_dir=luca_person_dir)
 
     # WHEN
-    x_world.add_personunit(luca_text)
+    x_world.set_personunit(luca_text)
 
     # THEN
     assert x_world._personunits[luca_text] != None
@@ -110,25 +110,25 @@ def test_worldunit_add_personunit_CorrectlySetsPerson(worlds_dir_setup_cleanup):
     assert x_world._personunits[luca_text] == luca_person_obj
 
 
-def test_worldunit_add_personunit_RaisesErrorIfPersonExists(worlds_dir_setup_cleanup):
+def test_worldunit_set_personunit_RaisesErrorIfPersonExists(worlds_dir_setup_cleanup):
     # GIVEN
     dallas_text = "dallas"
     x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
     luca_text = "Luca"
     luca_person_dir = f"{x_world._persons_dir}/{luca_text}"
     luca_person_obj = personunit_shop(pid=luca_text, person_dir=luca_person_dir)
-    x_world.add_personunit(luca_text)
+    x_world.set_personunit(luca_text)
     assert x_world._personunits[luca_text] != None
     assert x_world._personunits[luca_text].person_dir == luca_person_dir
     assert x_world._personunits[luca_text] == luca_person_obj
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        x_world.add_personunit(luca_text)
-    assert str(excinfo.value) == f"add_personunit fail: {luca_text} already exists"
+        x_world.set_personunit(luca_text)
+    assert str(excinfo.value) == f"set_personunit fail: {luca_text} already exists"
 
 
-def test_worldunit_set_personunit_CorrectlyCreatesObj(worlds_dir_setup_cleanup):
+def test_worldunit__set_person_in_memory_CorrectlyCreatesObj(worlds_dir_setup_cleanup):
     # GIVEN
     dallas_text = "dallas"
     x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
@@ -138,7 +138,7 @@ def test_worldunit_set_personunit_CorrectlyCreatesObj(worlds_dir_setup_cleanup):
     # WHEN
     luca_person_dir = f"{x_world._persons_dir}/{luca_text}"
     luca_person_obj = personunit_shop(pid=luca_text, person_dir=luca_person_dir)
-    x_world.set_personunit(luca_person_obj)
+    x_world._set_person_in_memory(luca_person_obj)
 
     # THEN
     assert x_world.personunit_exists(luca_text)
@@ -146,12 +146,12 @@ def test_worldunit_set_personunit_CorrectlyCreatesObj(worlds_dir_setup_cleanup):
     assert x_world._personunits.get(luca_text) == luca_person_obj
 
 
-def test_worldunit_set_personunit_CorrectlyReplacesObj(worlds_dir_setup_cleanup):
+def test_worldunit__set_person_in_memory_CorrectlyReplacesObj(worlds_dir_setup_cleanup):
     # GIVEN
     dallas_text = "dallas"
     x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
     luca_text = "Luca"
-    x_world.add_personunit(luca_text)
+    x_world.set_personunit(luca_text)
     luca_person = x_world.get_personunit_from_memory(luca_text)
     luca_person.set_painunit(painunit_shop("Bob"))
     assert x_world.personunit_exists(luca_text)
@@ -159,7 +159,9 @@ def test_worldunit_set_personunit_CorrectlyReplacesObj(worlds_dir_setup_cleanup)
 
     # WHEN
     luca_person_dir = f"{x_world._persons_dir}/{luca_text}"
-    x_world.set_personunit(personunit_shop(pid=luca_text, person_dir=luca_person_dir))
+    x_world._set_person_in_memory(
+        personunit_shop(pid=luca_text, person_dir=luca_person_dir)
+    )
 
     # THEN
     assert len(x_world._personunits.get(luca_text)._pains) == 0
@@ -174,7 +176,7 @@ def test_worldunit_get_personunit_from_memory_CorrectlyReturnsPerson(
     luca_text = "Luca"
     luca_person_dir = f"{x_world._persons_dir}/{luca_text}"
     luca_person_obj = personunit_shop(pid=luca_text, person_dir=luca_person_dir)
-    x_world.add_personunit(luca_text)
+    x_world.set_personunit(luca_text)
 
     # WHEN
     luca_gotten_obj = x_world.get_personunit_from_memory(luca_text)

@@ -129,13 +129,14 @@ def concernunit_shop(
 
 def create_concernunit(
     cultureaddress: CultureAddress,
-    why: RoadPath,
+    why: RoadPath,  # road with culture root node
     good: RoadNode,
     bad: RoadNode,
-    action: RoadPath,
+    action: RoadPath,  # road with culture root node
     positive: RoadNode,
     negative: RoadNode,
 ):
+    """creates concernunit object without roadpath root nodes being explictely defined in the why and action RoadPaths."""
     x_concernunit = ConcernUnit(cultureaddress=cultureaddress)
     x_concernunit.set_why(
         create_forkroad(
