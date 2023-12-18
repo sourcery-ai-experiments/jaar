@@ -14,7 +14,7 @@ from src.culture.examples.example_councils import (
 from src.culture.examples.council_env_kit import (
     council_dir_setup_cleanup,
     get_temp_councilunit_dir,
-    get_temp_culture_qid,
+    get_temp_culture_id,
 )
 from os import path as os_path
 from pytest import raises as pytest_raises
@@ -50,19 +50,19 @@ def test_healeropen_seed_agenda_WhenStartingAgendaFileDoesNotExists(
     # GIVEN
     tim_text = "Tim"
     env_dir = get_temp_councilunit_dir()
-    culture_qid_text = get_temp_culture_qid()
+    culture_id_text = get_temp_culture_id()
     x_council = councilunit_shop(
-        pid=tim_text, env_dir=env_dir, culture_qid=culture_qid_text
+        pid=tim_text, env_dir=env_dir, culture_id=culture_id_text
     )
 
     # WHEN
     seed_agenda = x_council.open_seed_agenda()
     assert seed_agenda != None
-    assert seed_agenda._culture_qid == culture_qid_text
+    assert seed_agenda._culture_id == culture_id_text
 
     # THEN
     x_agenda = agendaunit_shop(_healer=tim_text)
-    x_agenda.set_culture_qid(get_temp_culture_qid())
+    x_agenda.set_culture_id(get_temp_culture_id())
     x_agenda.set_agenda_metrics()
     # x_idearoot = idearoot_shop(_label=gio_text, _pad="")
     # x_idearoot.set_balancelines_empty_if_null()
@@ -90,7 +90,7 @@ def test_healer_save_seed_agenda_seedPersonIDMustBeHealer(
     # GIVEN
     gio_text = "Gio"
     env_dir = get_temp_councilunit_dir()
-    x_council = councilunit_shop(gio_text, env_dir, get_temp_culture_qid())
+    x_council = councilunit_shop(gio_text, env_dir, get_temp_culture_id())
     x_agenda = example_agendas_get_agenda_with_4_levels()
     assert x_agenda._healer != gio_text
 
@@ -107,7 +107,7 @@ def test_healer_open_seed_agenda_WhenStartingAgendaFileExists(
     # GIVEN
     gio_text = "Gio"
     x_council = councilunit_shop(
-        gio_text, get_temp_councilunit_dir(), get_temp_culture_qid()
+        gio_text, get_temp_councilunit_dir(), get_temp_culture_id()
     )
     x_council.save_seed_agenda(x_agenda=example_agendas_get_agenda_with_4_levels())
 
@@ -134,7 +134,7 @@ def test_healer_erase_seed_agenda_file_DeletesFileCorrectly(
     # GIVEN
     gio_text = "Gio"
     env_dir = get_temp_councilunit_dir()
-    x_council = councilunit_shop(gio_text, env_dir, get_temp_culture_qid())
+    x_council = councilunit_shop(gio_text, env_dir, get_temp_culture_id())
     x_council.save_seed_agenda(example_agendas_get_agenda_with_4_levels())
     file_name = x_council._seed_file_name
     assert x_func_open_file(x_council._councilunit_dir, file_name) != None
@@ -157,7 +157,7 @@ def test_councilunit_save_agenda_to_digest_SavesFileCorrectly(
     # GIVEN
     council_cid = "healer1"
     env_dir = get_temp_councilunit_dir()
-    x_council = councilunit_shop(council_cid, env_dir, get_temp_culture_qid())
+    x_council = councilunit_shop(council_cid, env_dir, get_temp_culture_id())
     x_council.create_core_dir_and_files()
     x_agenda = example_healers_get_2node_agenda()
     src_agenda_healer = x_agenda._healer
@@ -187,12 +187,12 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestAgenda(
     # GIVEN
     sue_text = "Sue"
     env_dir = get_temp_councilunit_dir()
-    sue_agenda = councilunit_shop(sue_text, env_dir, get_temp_culture_qid())
+    sue_agenda = councilunit_shop(sue_text, env_dir, get_temp_culture_id())
     sue_agenda.create_core_dir_and_files()
     x_agenda = example_healers_get_2node_agenda()
     src_agenda_healer = x_agenda._healer
     assert x_func_count_files(sue_agenda._agendas_digest_dir) == 0
-    print(f"{x_agenda._culture_qid=}")
+    print(f"{x_agenda._culture_id=}")
 
     # WHEN
     sue_agenda.set_depot_agenda(x_agenda=x_agenda, depotlink_type="blind_trust")
@@ -218,13 +218,13 @@ def test_healer_get_remelded_output_agenda_withEmptyDigestDict(
     # GIVEN
     council_cid_x = "boots3"
     x_council = councilunit_shop(
-        council_cid_x, get_temp_councilunit_dir(), get_temp_culture_qid()
+        council_cid_x, get_temp_councilunit_dir(), get_temp_culture_id()
     )
     x_council.create_core_dir_and_files()
     x_agenda_output_before = x_council.get_remelded_output_agenda()
     assert str(type(x_agenda_output_before)).find(".agenda.AgendaUnit'>")
     assert x_agenda_output_before._healer == council_cid_x
-    assert x_agenda_output_before._idearoot._label == get_temp_culture_qid()
+    assert x_agenda_output_before._idearoot._label == get_temp_culture_id()
     # x_council.set_digested_agenda(agenda_x=agendaunit_shop(_healer="digested1"))
 
     # WHEN
@@ -232,7 +232,7 @@ def test_healer_get_remelded_output_agenda_withEmptyDigestDict(
 
     # THEN
     healer_agenda_x = agendaunit_shop(_healer=council_cid_x, _weight=0.0)
-    healer_agenda_x.set_culture_qid(get_temp_culture_qid())
+    healer_agenda_x.set_culture_id(get_temp_culture_id())
     healer_agenda_x._idearoot._pad = ""
     healer_agenda_x.set_agenda_metrics()
 
@@ -252,12 +252,12 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
     # GIVEN
     yao_text = "Yao"
     env_dir = get_temp_councilunit_dir()
-    x_council = councilunit_shop(yao_text, env_dir, get_temp_culture_qid())
+    x_council = councilunit_shop(yao_text, env_dir, get_temp_culture_id())
     x_council.create_core_dir_and_files()
     x_agenda_output_before = x_council.get_remelded_output_agenda()
     assert str(type(x_agenda_output_before)).find(".agenda.AgendaUnit'>")
     assert x_agenda_output_before._healer == yao_text
-    assert x_agenda_output_before._idearoot._label == get_temp_culture_qid()
+    assert x_agenda_output_before._idearoot._label == get_temp_culture_id()
     input_agenda = example_healers_get_2node_agenda()
     input_agenda.meld(input_agenda)
     x_council.set_depot_agenda(x_agenda=input_agenda, depotlink_type="blind_trust")
@@ -351,7 +351,7 @@ def test_healer_seed_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
     assert seed_agenda_x._idearoot._originunit != yao_originunit
 
     x_council = councilunit_shop(
-        yao_text, get_temp_councilunit_dir(), get_temp_culture_qid()
+        yao_text, get_temp_councilunit_dir(), get_temp_culture_id()
     )
     x_council.create_core_dir_and_files()
     x_council.save_seed_agenda(x_agenda=seed_agenda_x)
@@ -360,11 +360,11 @@ def test_healer_seed_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
     output_agenda_x = x_council.get_remelded_output_agenda()
 
     # THEN
-    print(f"{output_agenda_x._culture_qid=} {output_agenda_x._idearoot._label=}")
+    print(f"{output_agenda_x._culture_id=} {output_agenda_x._idearoot._label=}")
     print(f"{output_agenda_x._idearoot._kids.keys()=}")
     assert output_agenda_x._idearoot._originunit == originunit_shop()
-    a_road = output_agenda_x.make_road(output_agenda_x._culture_qid, "A")
-    c_road = output_agenda_x.make_road(output_agenda_x._culture_qid, "C")
+    a_road = output_agenda_x.make_road(output_agenda_x._culture_id, "A")
+    c_road = output_agenda_x.make_road(output_agenda_x._culture_id, "C")
     d_road = output_agenda_x.make_road(c_road, "D")
     print(f"{d_road=}")
     d_idea = output_agenda_x.get_idea_kid(d_road)

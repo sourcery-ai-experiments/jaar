@@ -5,7 +5,7 @@ from src.agenda.agenda import PersonID
 
 @dataclass
 class CultureLink:
-    qid: CultureQID
+    culture_id: CultureQID
     weight: float
     _relative_weight: float = None
     _manager_importance: float = None
@@ -17,13 +17,13 @@ class CultureLink:
         self._manager_importance = person_importance
 
     def get_dict(self) -> dict:
-        return {"qid": self.qid, "weight": self.weight}
+        return {"culture_id": self.culture_id, "weight": self.weight}
 
 
-def culturelink_shop(qid: CultureQID, weight: float = None) -> CultureLink:
+def culturelink_shop(culture_id: CultureQID, weight: float = None) -> CultureLink:
     if weight is None:
         weight = 1
-    return CultureLink(qid=qid, weight=weight)
+    return CultureLink(culture_id=culture_id, weight=weight)
 
 
 @dataclass
@@ -59,17 +59,17 @@ class HealerLink:
             self._culturelinks = {}
 
     def set_culturelink(self, culturelink: CultureLink):
-        self._culturelinks[culturelink.qid] = culturelink
+        self._culturelinks[culturelink.culture_id] = culturelink
 
-    def get_culturelink(self, cultureqid: CultureQID) -> CultureLink:
-        return self._culturelinks.get(cultureqid)
+    def get_culturelink(self, cultureculture_id: CultureQID) -> CultureLink:
+        return self._culturelinks.get(cultureculture_id)
 
-    def del_culturelink(self, cultureqid: CultureQID):
-        self._culturelinks.pop(cultureqid)
+    def del_culturelink(self, cultureculture_id: CultureQID):
+        self._culturelinks.pop(cultureculture_id)
 
     def get_culturelinks_dict(self) -> dict:
         return {
-            culturelink_x.qid: culturelink_x.get_dict()
+            culturelink_x.culture_id: culturelink_x.get_dict()
             for culturelink_x in self._culturelinks.values()
         }
 

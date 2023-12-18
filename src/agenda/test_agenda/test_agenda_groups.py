@@ -656,11 +656,11 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balance
     x1_agenda.add_partyunit(pid=zoa_text)
 
     work_text = "work"
-    work_road = x1_agenda.make_road(x1_agenda._culture_qid, work_text)
+    work_road = x1_agenda.make_road(x1_agenda._culture_id, work_text)
     swim_text = "swim"
-    swim_road = x1_agenda.make_road(x1_agenda._culture_qid, swim_text)
-    x1_agenda.add_idea(ideacore_shop(work_text), pad=x1_agenda._culture_qid)
-    x1_agenda.add_idea(ideacore_shop(swim_text), pad=x1_agenda._culture_qid)
+    swim_road = x1_agenda.make_road(x1_agenda._culture_id, swim_text)
+    x1_agenda.add_idea(ideacore_shop(work_text), pad=x1_agenda._culture_id)
+    x1_agenda.add_idea(ideacore_shop(swim_text), pad=x1_agenda._culture_id)
     x1_agenda.edit_idea_attr(
         road=swim_road, balancelink=balancelink_shop(brand=xia_text)
     )
@@ -690,11 +690,11 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     x1_agenda.add_partyunit(pid=zoa_text)
 
     work_text = "work"
-    work_road = x1_agenda.make_road(x1_agenda._culture_qid, work_text)
+    work_road = x1_agenda.make_road(x1_agenda._culture_id, work_text)
     swim_text = "swim"
-    swim_road = x1_agenda.make_road(x1_agenda._culture_qid, swim_text)
-    x1_agenda.add_idea(ideacore_shop(work_text), pad=x1_agenda._culture_qid)
-    x1_agenda.add_idea(ideacore_shop(swim_text), pad=x1_agenda._culture_qid)
+    swim_road = x1_agenda.make_road(x1_agenda._culture_id, swim_text)
+    x1_agenda.add_idea(ideacore_shop(work_text), pad=x1_agenda._culture_id)
+    x1_agenda.add_idea(ideacore_shop(swim_text), pad=x1_agenda._culture_id)
     x1_agenda.edit_idea_attr(
         road=swim_road, balancelink=balancelink_shop(brand=xia_text)
     )
@@ -709,7 +709,7 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     x2_agenda.add_partyunit(pid=xia_text)
     x2_agenda.add_idea(
         idea_kid=x1_agenda_swim_idea,
-        pad=x2_agenda._culture_qid,
+        pad=x2_agenda._culture_id,
         create_missing_ideas_groups=False,
     )
 

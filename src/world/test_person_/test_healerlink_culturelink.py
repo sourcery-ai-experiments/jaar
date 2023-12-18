@@ -8,14 +8,14 @@ def test_healerlink_set_culturelink_CorrectlySetsObj():
 
     # WHEN
     diet_text = "diet"
-    diet_culturelink = culturelink_shop(qid=diet_text)
+    diet_culturelink = culturelink_shop(culture_id=diet_text)
     yao_healerlink.set_culturelink(diet_culturelink)
 
     # THEN
     # diet_culture = xao_pain.get_culture()
     diet_culture = yao_healerlink._culturelinks.get(diet_text)
     assert diet_culture != None
-    assert diet_culture.qid == diet_text
+    assert diet_culture.culture_id == diet_text
 
 
 def test_healerlink_get_cultureunit_CorrectlyGetsObj():
@@ -23,7 +23,7 @@ def test_healerlink_get_cultureunit_CorrectlyGetsObj():
     yao_text = "yao"
     yao_healerlink = healerlink_shop(person_id=yao_text)
     diet_text = "diet"
-    diet_culturelink = culturelink_shop(qid=diet_text)
+    diet_culturelink = culturelink_shop(culture_id=diet_text)
     yao_healerlink.set_culturelink(diet_culturelink)
 
     # WHEN
@@ -31,7 +31,7 @@ def test_healerlink_get_cultureunit_CorrectlyGetsObj():
 
     # THEN
     assert diet_culture != None
-    assert diet_culture.qid == diet_text
+    assert diet_culture.culture_id == diet_text
 
 
 def test_healerlink_del_cultureunit_CorrectlyDeletesObj():
@@ -39,14 +39,14 @@ def test_healerlink_del_cultureunit_CorrectlyDeletesObj():
     yao_text = "yao"
     yao_healerlink = healerlink_shop(person_id=yao_text)
     diet_text = "diet"
-    diet_culturelink = culturelink_shop(qid=diet_text)
+    diet_culturelink = culturelink_shop(culture_id=diet_text)
     yao_healerlink.set_culturelink(diet_culturelink)
     diet_culture = yao_healerlink.get_culturelink(diet_text)
     assert diet_culture != None
-    assert diet_culture.qid == diet_text
+    assert diet_culture.culture_id == diet_text
 
     # WHEN
-    yao_healerlink.del_culturelink(cultureqid=diet_text)
+    yao_healerlink.del_culturelink(cultureculture_id=diet_text)
 
     # THEN
     after_diet_culture = yao_healerlink.get_culturelink(diet_text)

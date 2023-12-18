@@ -5,12 +5,12 @@ from src.agenda.x_func import (
 from pytest import fixture as pytest_fixture
 
 
-def get_temp_culture_qid():
+def get_temp_culture_id():
     return "ex_env77"
 
 
 def get_temp_world_dir():
-    return f"{get_test_worlds_dir()}/{get_temp_culture_qid()}"
+    return f"{get_test_worlds_dir()}/{get_temp_culture_id()}"
 
 
 def get_test_worlds_dir():
@@ -53,14 +53,14 @@ def create_example_worlds_list():
 #     pass
 
 
-# def copy_evaluation_world(src_qid: str, dest_qid: str):
+# def copy_evaluation_world(src_culture_id: str, dest_culture_id: str):
 #     base_dir = "src/world/examples/worlds"
-#     new_dir = f"{base_dir}/{dest_qid}"
+#     new_dir = f"{base_dir}/{dest_culture_id}"
 #     if os_path.exists(new_dir):
 #         raise InvalidcultureCopyException(
 #             f"Cannot copy world to '{new_dir}' directory because '{new_dir}' exists."
 #         )
 #     # base_dir = world_obj.get_object_root_dir()
-#     src_dir = f"{base_dir}/{src_qid}"
-#     dest_dir = f"{base_dir}/{dest_qid}"
+#     src_dir = f"{base_dir}/{src_culture_id}"
+#     dest_dir = f"{base_dir}/{dest_culture_id}"
 #     copy_dir(src_dir=src_dir, dest_dir=dest_dir)

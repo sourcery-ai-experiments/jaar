@@ -66,14 +66,14 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectlyV2(
     bore_tim_healerlink = healerlink_shop(tim_text, weight=3)
     rain_ray_healerlink = healerlink_shop(ray_text, weight=5)
 
-    plan1_qid = "plan1"
-    plan2_qid = "plan2"
-    plan3_qid = "plan3"
-    knee_tim_healerlink.set_culturelink(culturelink_shop(plan1_qid, 7))
-    bore_sue_healerlink.set_culturelink(culturelink_shop(plan2_qid, 2))
-    bore_sue_healerlink.set_culturelink(culturelink_shop(plan3_qid, 23))
-    bore_tim_healerlink.set_culturelink(culturelink_shop(plan3_qid, 8))
-    rain_ray_healerlink.set_culturelink(culturelink_shop(plan3_qid, 11))
+    plan1_culture_id = "plan1"
+    plan2_culture_id = "plan2"
+    plan3_culture_id = "plan3"
+    knee_tim_healerlink.set_culturelink(culturelink_shop(plan1_culture_id, 7))
+    bore_sue_healerlink.set_culturelink(culturelink_shop(plan2_culture_id, 2))
+    bore_sue_healerlink.set_culturelink(culturelink_shop(plan3_culture_id, 23))
+    bore_tim_healerlink.set_culturelink(culturelink_shop(plan3_culture_id, 8))
+    rain_ray_healerlink.set_culturelink(culturelink_shop(plan3_culture_id, 11))
 
     x_knee_painunit.set_healerlink(knee_tim_healerlink)
     x_bore_painunit.set_healerlink(bore_sue_healerlink)
@@ -109,11 +109,11 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectlyV2(
     assert z_bore_sue_healerlink._manager_importance > 0.139999
     assert z_rain_ray_healerlink._manager_importance == 0.05
 
-    knee_tim_plan1_culturelink = z_knee_tim_healerlink.get_culturelink(plan1_qid)
-    bore_sue_plan2_culturelink = z_bore_sue_healerlink.get_culturelink(plan2_qid)
-    bore_sue_plan3_culturelink = z_bore_sue_healerlink.get_culturelink(plan3_qid)
-    bore_tim_plan3_culturelink = z_bore_tim_healerlink.get_culturelink(plan3_qid)
-    rain_ray_plan3_culturelink = z_rain_ray_healerlink.get_culturelink(plan3_qid)
+    knee_tim_plan1_culturelink = z_knee_tim_healerlink.get_culturelink(plan1_culture_id)
+    bore_sue_plan2_culturelink = z_bore_sue_healerlink.get_culturelink(plan2_culture_id)
+    bore_sue_plan3_culturelink = z_bore_sue_healerlink.get_culturelink(plan3_culture_id)
+    bore_tim_plan3_culturelink = z_bore_tim_healerlink.get_culturelink(plan3_culture_id)
+    rain_ray_plan3_culturelink = z_rain_ray_healerlink.get_culturelink(plan3_culture_id)
 
     assert knee_tim_plan1_culturelink._manager_importance == 0.6
     assert bore_sue_plan2_culturelink._manager_importance == 0.0112
@@ -124,15 +124,15 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectlyV2(
     # FROM CULTUREUNIT
     # def set_cultureunits_weight_metrics(self):
     #     self.set_painunits_weight_metrics()
-    #     cultureunit_qids = {
-    #         x_cultureunit.qid: 0 for x_cultureunit in self._cultures.values()
+    #     cultureunit_culture_ids = {
+    #         x_cultureunit.culture_id: 0 for x_cultureunit in self._cultures.values()
     #     }
 
     #     for x_painunit in self._pains.values():
     #         for x_healerlink in x_painunit._healerlinks.values():
     #             for x_culturelink in x_healerlink._culturelinks.values():
-    #                 cultureunit_qids[
-    #                     x_culturelink.qid
+    #                 cultureunit_culture_ids[
+    #                     x_culturelink.culture_id
     #                 ] += x_culturelink._manager_importance
 
 
@@ -160,15 +160,15 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectlyV2(
 #     x_bore_tim_healerlink = healerlink_shop(tim_text, weight=3)
 #     x_rain_ray_healerlink = healerlink_shop(ray_text, weight=5)
 
-#     plan1_qid = "plan1"
-#     plan2_qid = "plan2"
-#     plan3_qid = "plan3"
-#     plan4_qid = "plan4"
-#     x_knee_tim_healerlink.set_culturelink(culturelink_shop(plan1_qid, 7))
-#     x_bore_sue_healerlink.set_culturelink(culturelink_shop(plan2_qid, 2))
-#     x_bore_sue_healerlink.set_culturelink(culturelink_shop(plan3_qid, 23))
-#     x_bore_tim_healerlink.set_culturelink(culturelink_shop(plan3_qid, 8))
-#     x_rain_ray_healerlink.set_culturelink(culturelink_shop(plan3_qid, 11))
+#     plan1_culture_id = "plan1"
+#     plan2_culture_id = "plan2"
+#     plan3_culture_id = "plan3"
+#     plan4_culture_id = "plan4"
+#     x_knee_tim_healerlink.set_culturelink(culturelink_shop(plan1_culture_id, 7))
+#     x_bore_sue_healerlink.set_culturelink(culturelink_shop(plan2_culture_id, 2))
+#     x_bore_sue_healerlink.set_culturelink(culturelink_shop(plan3_culture_id, 23))
+#     x_bore_tim_healerlink.set_culturelink(culturelink_shop(plan3_culture_id, 8))
+#     x_rain_ray_healerlink.set_culturelink(culturelink_shop(plan3_culture_id, 11))
 
 #     x_knee_painunit.set_healerlink(x_knee_tim_healerlink)
 #     x_bore_painunit.set_healerlink(x_bore_sue_healerlink)
@@ -179,15 +179,15 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectlyV2(
 #     xao_personunit.set_painunit(x_bore_painunit)
 #     xao_personunit.set_painunit(x_rain_painunit)
 
-#     xao_personunit.set_cultureunit(plan1_qid)
-#     xao_personunit.set_cultureunit(plan2_qid)
-#     xao_personunit.set_cultureunit(plan3_qid)
-#     xao_personunit.set_cultureunit(plan4_qid)
+#     xao_personunit.set_cultureunit(plan1_culture_id)
+#     xao_personunit.set_cultureunit(plan2_culture_id)
+#     xao_personunit.set_cultureunit(plan3_culture_id)
+#     xao_personunit.set_cultureunit(plan4_culture_id)
 
-#     plan1_cultureunit = xao_personunit.get_cultureunit(plan1_qid)
-#     plan2_cultureunit = xao_personunit.get_cultureunit(plan2_qid)
-#     plan3_cultureunit = xao_personunit.get_cultureunit(plan3_qid)
-#     plan4_cultureunit = xao_personunit.get_cultureunit(plan4_qid)
+#     plan1_cultureunit = xao_personunit.get_cultureunit(plan1_culture_id)
+#     plan2_cultureunit = xao_personunit.get_cultureunit(plan2_culture_id)
+#     plan3_cultureunit = xao_personunit.get_cultureunit(plan3_culture_id)
+#     plan4_cultureunit = xao_personunit.get_cultureunit(plan4_culture_id)
 
 #     assert plan1_cultureunit._manager_importance is None
 #     assert plan2_cultureunit._manager_importance is None
@@ -205,11 +205,11 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectlyV2(
 #     # z_bore_tim_healerlink = z_bore_painunit.get_healerlink(tim_text)
 #     # z_bore_sue_healerlink = z_bore_painunit.get_healerlink(sue_text)
 #     # z_rain_ray_healerlink = z_rain_painunit.get_healerlink(ray_text)
-#     # knee_tim_plan1_culturelink = z_knee_tim_healerlink.get_culturelink(plan1_qid)
-#     # bore_sue_plan2_culturelink = z_bore_sue_healerlink.get_culturelink(plan2_qid)
-#     # bore_sue_plan3_culturelink = z_bore_sue_healerlink.get_culturelink(plan3_qid)
-#     # bore_tim_plan3_culturelink = z_bore_tim_healerlink.get_culturelink(plan3_qid)
-#     # rain_ray_plan3_culturelink = z_rain_ray_healerlink.get_culturelink(plan3_qid)
+#     # knee_tim_plan1_culturelink = z_knee_tim_healerlink.get_culturelink(plan1_culture_id)
+#     # bore_sue_plan2_culturelink = z_bore_sue_healerlink.get_culturelink(plan2_culture_id)
+#     # bore_sue_plan3_culturelink = z_bore_sue_healerlink.get_culturelink(plan3_culture_id)
+#     # bore_tim_plan3_culturelink = z_bore_tim_healerlink.get_culturelink(plan3_culture_id)
+#     # rain_ray_plan3_culturelink = z_rain_ray_healerlink.get_culturelink(plan3_culture_id)
 #     # assert knee_tim_plan1_culturelink._manager_importance == 0.6
 #     # assert bore_sue_plan2_culturelink._manager_importance == 0.0112
 #     # assert bore_sue_plan3_culturelink._manager_importance == 0.1288

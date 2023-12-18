@@ -36,7 +36,7 @@ class CouncilCID(PersonID):
 class CouncilUnit:
     _council_cid: CouncilCID = None
     _env_dir: str = None
-    _culture_qid: str = None
+    _culture_id: str = None
     _councilunit_dir: str = None
     _councilunits_dir: str = None
     _seed_file_name: str = None
@@ -102,14 +102,14 @@ class CouncilUnit:
             self.save_agenda_to_digest(x_agenda)
         elif link_type == "ignore":
             new_x_agenda = agendaunit_shop(_healer=outer_healer)
-            new_x_agenda.set_culture_qid(self._culture_qid)
+            new_x_agenda.set_culture_id(self._culture_id)
             self.set_ignore_agenda_file(new_x_agenda, new_x_agenda._healer)
 
     def _set_assignment_depotlink(self, outer_healer):
         src_agenda = self.open_depot_agenda(outer_healer)
         src_agenda.set_agenda_metrics()
         empty_agenda = agendaunit_shop(_healer=self._council_cid)
-        empty_agenda.set_culture_qid(self._culture_qid)
+        empty_agenda.set_culture_id(self._culture_id)
         assign_agenda = src_agenda.get_assignment(
             empty_agenda, self.get_seed()._partys, self._council_cid
         )
@@ -168,12 +168,12 @@ class CouncilUnit:
         self,
         env_dir: str,
         council_cid: CouncilCID,
-        culture_qid: str,
+        culture_id: str,
         _road_node_delimiter: str = None,
     ):
         self._council_cid = council_cid
         self._env_dir = env_dir
-        self._culture_qid = culture_qid
+        self._culture_id = culture_id
         self._road_node_delimiter = get_node_delimiter(_road_node_delimiter)
 
     def set_dirs(self):
@@ -310,7 +310,7 @@ class CouncilUnit:
             _road_node_delimiter=self._road_node_delimiter,
         )
         x_agenda.add_partyunit(pid=self._council_cid)
-        x_agenda.set_culture_qid(self._culture_qid)
+        x_agenda.set_culture_id(self._culture_id)
         return x_agenda
 
     def erase_depot_agenda(self, healer):
@@ -351,7 +351,7 @@ class CouncilUnit:
 def councilunit_shop(
     pid: str,
     env_dir: str,
-    culture_qid: str,
+    culture_id: str,
     _auto_output_to_public: bool = None,
     _road_node_delimiter: str = None,
 ) -> CouncilUnit:
@@ -359,7 +359,7 @@ def councilunit_shop(
     x_council.set_env_dir(
         env_dir=env_dir,
         council_cid=pid,
-        culture_qid=culture_qid,
+        culture_id=culture_id,
         _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
     )
     x_council.set_dirs()

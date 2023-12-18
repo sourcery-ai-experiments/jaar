@@ -19,7 +19,7 @@ def test_AgendaUnit_exists():
 
     assert x_agenda
     assert x_agenda._healer is None
-    assert x_agenda._culture_qid is None
+    assert x_agenda._culture_id is None
     assert x_agenda._weight is None
     assert x_agenda._max_tree_traverse is None
     assert x_agenda._tree_traverse_count is None
@@ -34,19 +34,19 @@ def test_AgendaUnit_exists():
 def test_agendaunit_shop_ReturnsCorrectObjectWithFilledFields():
     # GIVEN
     healer_text = "Noa"
-    iowa_culture_qid = "Iowa"
+    iowa_culture_id = "Iowa"
     slash_road_node_delimiter = "/"
 
     # WHEN
     x_agenda = agendaunit_shop(
         _healer=healer_text,
-        _culture_qid=iowa_culture_qid,
+        _culture_id=iowa_culture_id,
         _road_node_delimiter=slash_road_node_delimiter,
     )
 
     assert x_agenda
     assert x_agenda._healer == healer_text
-    assert x_agenda._culture_qid == iowa_culture_qid
+    assert x_agenda._culture_id == iowa_culture_id
     assert x_agenda._weight == 1
     assert x_agenda._max_tree_traverse == 3
     assert x_agenda._tree_traverse_count is None
@@ -64,7 +64,7 @@ def test_agendaunit_shop_ReturnsCorrectObjectWithCorrectEmptyField():
     x_agenda = agendaunit_shop()
 
     assert x_agenda._healer == ""
-    assert x_agenda._culture_qid == root_label()
+    assert x_agenda._culture_id == root_label()
     assert x_agenda._road_node_delimiter == get_node_delimiter()
 
 
@@ -191,28 +191,28 @@ def test_agenda_init_CorrectlySetsGiven_auto_output_to_public():
     assert x_agenda._auto_output_to_public == True
 
 
-def test_agenda_set_culture_qid_CorrectlySetsAttr():
+def test_agenda_set_culture_id_CorrectlySetsAttr():
     # GIVEN
-    culture_qid_text = "Sun"
+    culture_id_text = "Sun"
     healer_text = "Noa"
     x_agenda = agendaunit_shop(_healer=healer_text, _auto_output_to_public=True)
-    assert x_agenda._culture_qid == root_label()
+    assert x_agenda._culture_id == root_label()
 
     # WHEN
-    x_agenda.set_culture_qid(culture_qid=culture_qid_text)
+    x_agenda.set_culture_id(culture_id=culture_id_text)
 
     # THEN
-    assert x_agenda._culture_qid == culture_qid_text
+    assert x_agenda._culture_id == culture_id_text
 
 
 def test_agenda_set_road_node_delimiter_CorrectlySetsAttr():
     # GIVEN
-    culture_qid_text = "Sun"
+    culture_id_text = "Sun"
     healer_text = "Noa"
     slash_road_node_delimiter = "/"
     x_agenda = agendaunit_shop(
         _healer=healer_text,
-        _culture_qid=culture_qid_text,
+        _culture_id=culture_id_text,
         _auto_output_to_public=True,
         _road_node_delimiter=slash_road_node_delimiter,
     )
@@ -228,12 +228,12 @@ def test_agenda_set_road_node_delimiter_CorrectlySetsAttr():
 
 def test_agendaunit_make_road_ReturnsCorrectObj():
     # GIVEN
-    culture_qid_text = "Sun"
+    culture_id_text = "Sun"
     healer_text = "Noa"
     slash_road_node_delimiter = "/"
     x_agenda = agendaunit_shop(
         _healer=healer_text,
-        _culture_qid=culture_qid_text,
+        _culture_id=culture_id_text,
         _auto_output_to_public=True,
         _road_node_delimiter=slash_road_node_delimiter,
     )

@@ -1,7 +1,7 @@
 from src.agenda.road import get_road
 from src.culture.culture import cultureunit_shop
 from src.culture.examples.culture_env_kit import (
-    get_temp_env_qid,
+    get_temp_env_culture_id,
     env_dir_setup_cleanup,
     get_test_cultures_dir,
 )
@@ -12,17 +12,17 @@ from src.culture.examples.example_councils import (
 
 def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanup):
     # GIVEN
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
     amer_text = "Amer"
     x_culture.create_new_councilunit(council_cid=amer_text)
     amer_council = x_culture.get_councilunit(cid=amer_text)
     laundry_agenda = get_agenda_assignment_laundry_example1()
-    laundry_agenda.set_culture_qid(x_culture.qid)
+    laundry_agenda.set_culture_id(x_culture.culture_id)
     amer_council.set_seed(laundry_agenda)
 
     casa_text = "casa"
     basket_text = "laundry basket status"
-    basket_road = get_road(road_nodes=[x_culture.qid, casa_text, basket_text])
+    basket_road = get_road(road_nodes=[x_culture.culture_id, casa_text, basket_text])
     b_full_text = "full"
     b_full_road = get_road(basket_road, b_full_text)
     b_bare_text = "bare"
@@ -68,14 +68,14 @@ def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     assert len(new_cali_agenda.get_intent_items()) == 1
     laundry_task_text = "do_laundry"
     laundry_task_road = get_road(
-        road_nodes=[x_culture.qid, casa_text, laundry_task_text]
+        road_nodes=[x_culture.culture_id, casa_text, laundry_task_text]
     )
     assert new_cali_agenda.get_intent_items()[0].get_idea_road() == laundry_task_road
 
 
 def test_culture_council_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     # GIVEN
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
     amer_text = "Amer"
     beto_text = "Beto"
     x_culture.create_new_councilunit(council_cid=amer_text)
@@ -84,12 +84,12 @@ def test_culture_council_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     beto_council = x_culture.get_councilunit(cid=beto_text)
     # print(f"{beto_council=}")
     laundry_agenda = get_agenda_assignment_laundry_example1()
-    laundry_agenda.set_culture_qid(x_culture.qid)
+    laundry_agenda.set_culture_id(x_culture.culture_id)
     amer_council.set_seed(laundry_agenda)
     beto_council.set_seed(laundry_agenda)
 
     casa_text = "casa"
-    casa_road = get_road(x_culture.qid, casa_text)
+    casa_road = get_road(x_culture.culture_id, casa_text)
     basket_text = "laundry basket status"
     basket_road = get_road(casa_road, basket_text)
     b_full_text = "full"

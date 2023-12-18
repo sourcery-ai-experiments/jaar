@@ -50,7 +50,7 @@ from src.culture.treasury_sqlstr import (
 
 @dataclass
 class CultureUnit:
-    qid: CultureQID
+    culture_id: CultureQID
     cultures_dir: str
     _manager_pid: PersonID = None
     _councilunits: dict[str:CouncilUnit] = None
@@ -311,14 +311,14 @@ class CultureUnit:
         self._treasury_db = None
         x_func_delete_dir(dir=self.get_treasury_db_path())
 
-    def set_qid(self, qid: str):
-        self.qid = qid
+    def set_culture_id(self, culture_id: str):
+        self.culture_id = culture_id
 
     def get_treasury_db_path(self):
         return f"{self.get_object_root_dir()}/treasury.db"
 
     def get_object_root_dir(self):
-        return f"{self.cultures_dir}/{self.qid}"
+        return f"{self.cultures_dir}/{self.culture_id}"
 
     def _create_main_file_if_null(self, x_dir):
         culture_file_name = "culture.json"
@@ -355,7 +355,7 @@ class CultureUnit:
         x_councilunit = councilunit_shop(
             pid=pid,
             env_dir=self.get_object_root_dir(),
-            culture_qid=self.qid,
+            culture_id=self.culture_id,
             _auto_output_to_public=_auto_output_to_public,
         )
         self.set_councilunit(councilunit=x_councilunit)
@@ -370,7 +370,7 @@ class CultureUnit:
     def create_new_councilunit(self, council_cid: CouncilCID):
         self.set_councilunits_empty_if_null()
         x_councilunit = councilunit_shop(
-            council_cid, self.get_object_root_dir(), self.qid
+            council_cid, self.get_object_root_dir(), self.culture_id
         )
         x_councilunit.create_core_dir_and_files()
         self._councilunits[x_councilunit._council_cid] = x_councilunit
@@ -440,7 +440,7 @@ class CultureUnit:
         x_func_delete_dir(f"{self.get_public_dir()}/{x_agenda_healer}.json")
 
     def save_public_agenda(self, x_agenda: AgendaUnit):
-        x_agenda.set_culture_qid(culture_qid=self.qid)
+        x_agenda.set_culture_id(culture_id=self.culture_id)
         x_func_save_file(
             dest_dir=self.get_public_dir(),
             file_name=f"{x_agenda._healer}.json",
@@ -542,17 +542,17 @@ class CultureUnit:
 
     def build_culture_road(self, road_wo_culture_root: RoadPath = None):
         if road_wo_culture_root is None or road_wo_culture_root == "":
-            return self.qid
+            return self.culture_id
         else:
             return get_road_from_road_and_node(
-                pad=self.qid,
+                pad=self.culture_id,
                 terminus_node=road_wo_culture_root,
                 delimiter=self._road_node_delimiter,
             )
 
 
 def cultureunit_shop(
-    qid: CultureQID,
+    culture_id: CultureQID,
     cultures_dir: str,
     _manager_pid: PersonID = None,
     _councilunits: dict[str:CouncilUnit] = None,
@@ -562,7 +562,7 @@ def cultureunit_shop(
     if in_memory_treasury is None:
         in_memory_treasury = True
     culture_x = CultureUnit(
-        qid=qid,
+        culture_id=culture_id,
         cultures_dir=cultures_dir,
         _councilunits=_councilunits,
     )

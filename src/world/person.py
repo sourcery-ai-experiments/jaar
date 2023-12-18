@@ -37,26 +37,28 @@ class PersonUnit:
         if self._cultures is None:
             self._cultures = {}
 
-    def set_cultureunit(self, culture_qid: CultureQID, replace: bool = False):
-        if (
-            self.cultureunit_exists(culture_qid) and replace
-        ) or self.cultureunit_exists(culture_qid) == False:
+    def set_cultureunit(self, culture_id: CultureQID, replace: bool = False):
+        if (self.cultureunit_exists(culture_id) and replace) or self.cultureunit_exists(
+            culture_id
+        ) == False:
             cultures_dir = f"{self.person_dir}/cultures"
-            self._cultures[culture_qid] = cultureunit_shop(
-                qid=culture_qid, cultures_dir=cultures_dir, _manager_pid=self.pid
+            self._cultures[culture_id] = cultureunit_shop(
+                culture_id=culture_id, cultures_dir=cultures_dir, _manager_pid=self.pid
             )
 
-    def cultureunit_exists(self, culture_qid: CultureQID):
-        return self._cultures.get(culture_qid) != None
+    def cultureunit_exists(self, culture_id: CultureQID):
+        return self._cultures.get(culture_id) != None
 
-    def get_cultureunit(self, culture_qid: CultureQID) -> CultureUnit:
-        return self._cultures.get(culture_qid)
+    def get_cultureunit(self, culture_id: CultureQID) -> CultureUnit:
+        return self._cultures.get(culture_id)
 
-    def del_cultureunit(self, culture_qid: CultureQID):
-        self._cultures.pop(culture_qid)
+    def del_cultureunit(self, culture_id: CultureQID):
+        self._cultures.pop(culture_id)
 
     def get_cultures_dict(self) -> dict:
-        return {cultureunit_x.qid: None for cultureunit_x in self._cultures.values()}
+        return {
+            cultureunit_x.culture_id: None for cultureunit_x in self._cultures.values()
+        }
 
     def get_pains_dict(self) -> dict:
         return {

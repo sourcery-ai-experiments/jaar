@@ -8,7 +8,7 @@ from src.culture.examples.example_councils import (
     get_agenda_3CleanNodesRandomWeights,
 )
 from src.culture.examples.culture_env_kit import (
-    get_temp_env_qid,
+    get_temp_env_culture_id,
     get_test_cultures_dir,
     env_dir_setup_cleanup,
 )
@@ -18,7 +18,7 @@ def test_culture_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
     input_agenda = example_healers_get_6node_agenda()
     x_culture.save_public_agenda(input_agenda)
     # x_culture.save_public_agenda(ex_cxs_get_agenda_1Task_1CE0MinutesRequired_1AcptFact())
@@ -42,7 +42,7 @@ def test_culture_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     # THEN
     a_text = "A"
     c_text = "C"
-    c_road = f"{input_agenda._culture_qid},{c_text}"
+    c_road = f"{input_agenda._culture_id},{c_text}"
     d_text = "D"
     d_road = f"{c_road},{d_text}"
     print(f"{output_agenda._healer=}")
@@ -93,7 +93,7 @@ def test_culture_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
     x1_agenda = example_healers_get_6node_agenda()
     x2_agenda = ex_agenda_v002()
 
@@ -113,7 +113,7 @@ def test_culture_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
     output_agenda = x_culture.get_output_agenda(council_cid=xia_text)
 
     # THEN
-    output_agenda_d_road = f"{output_agenda._culture_qid},C,D"
+    output_agenda_d_road = f"{output_agenda._culture_id},C,D"
     output_agenda_d_idea = output_agenda.get_idea_kid(output_agenda_d_road)
     print(f" {output_agenda_d_idea._weight=} ")
     assert output_agenda != None
@@ -151,8 +151,8 @@ def test_councilunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
 ):
     # GIVEN
     env_dir = get_test_cultures_dir()
-    culture_qid = get_temp_env_qid()
-    x_culture = cultureunit_shop(qid=culture_qid, cultures_dir=env_dir)
+    culture_id = get_temp_env_culture_id()
+    x_culture = cultureunit_shop(culture_id=culture_id, cultures_dir=env_dir)
     x_culture.create_dirs_if_null(in_memory_treasury=True)
     # ux = councilunit_shop(pid=healer1_text, env_dir=env_dir)
 

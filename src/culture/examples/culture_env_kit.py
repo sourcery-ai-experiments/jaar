@@ -28,12 +28,12 @@ from os import listdir as os_listdir, rename as os_rename, path as os_path
 from pytest import fixture as pytest_fixture
 
 
-def get_temp_env_qid():
+def get_temp_env_culture_id():
     return "ex_env04"
 
 
 def get_temp_env_dir():
-    return f"{get_test_cultures_dir()}/{get_temp_env_qid()}"
+    return f"{get_test_cultures_dir()}/{get_temp_env_culture_id()}"
 
 
 def get_test_cultures_dir():
@@ -76,8 +76,10 @@ def setup_test_example_environment():
 
 
 def _delete_and_set_ex3():
-    culture_qid = "ex3"
-    x_culture = cultureunit_shop(qid=culture_qid, cultures_dir=get_test_cultures_dir())
+    culture_id = "ex3"
+    x_culture = cultureunit_shop(
+        culture_id=culture_id, cultures_dir=get_test_cultures_dir()
+    )
     x_func_delete_dir(x_culture.get_object_root_dir())
     x_culture.create_dirs_if_null(in_memory_treasury=True)
     x_culture.save_public_agenda(example_healers_get_1node_agenda())
@@ -130,8 +132,8 @@ def _delete_and_set_ex3():
 
 
 def _delete_and_set_ex4():
-    x_qid = "ex4"
-    x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
+    x_culture_id = "ex4"
+    x_culture = cultureunit_shop(x_culture_id, cultures_dir=get_test_cultures_dir())
     x_func_delete_dir(x_culture.get_object_root_dir())
     x_culture.create_dirs_if_null(in_memory_treasury=True)
     x_culture.save_public_agenda(example_healers_get_7nodeJRootWithH_agenda())
@@ -143,8 +145,8 @@ def _delete_and_set_ex4():
 
 
 def _delete_and_set_ex5():
-    x_qid = "ex5"
-    x_p = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
+    x_culture_id = "ex5"
+    x_p = cultureunit_shop(x_culture_id, cultures_dir=get_test_cultures_dir())
     x_func_delete_dir(x_p.get_object_root_dir())
     x_p.create_dirs_if_null(in_memory_treasury=True)
 
@@ -206,10 +208,10 @@ def _delete_and_set_ex5():
     x_p.save_councilunit_file(council_cid=agenda_5._healer)
 
 
-def _delete_and_set_ex6(x_qid: str = None):
-    if x_qid is None:
-        x_qid = "ex6"
-    x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
+def _delete_and_set_ex6(x_culture_id: str = None):
+    if x_culture_id is None:
+        x_culture_id = "ex6"
+    x_culture = cultureunit_shop(x_culture_id, cultures_dir=get_test_cultures_dir())
     x_func_delete_dir(x_culture.get_object_root_dir())
     x_culture.create_dirs_if_null(in_memory_treasury=False)
 
@@ -249,8 +251,10 @@ def _delete_and_set_ex6(x_qid: str = None):
     return x_culture
 
 
-def create_example_culture(culture_qid: str):
-    x_culture = cultureunit_shop(qid=culture_qid, cultures_dir=get_test_cultures_dir())
+def create_example_culture(culture_id: str):
+    x_culture = cultureunit_shop(
+        culture_id=culture_id, cultures_dir=get_test_cultures_dir()
+    )
     x_culture.create_dirs_if_null(in_memory_treasury=True)
 
 
@@ -258,27 +262,27 @@ def delete_dir_example_culture(culture_obj: CultureUnit):
     x_func_delete_dir(culture_obj.get_object_root_dir())
 
 
-def change_qid_example_culture(culture_obj: CultureUnit, new_qid):
+def change_culture_id_example_culture(culture_obj: CultureUnit, new_culture_id):
     # base_dir = culture_obj.get_object_root_dir()
     base_dir = "src/culture/examples/cultures"
-    src_dir = f"{base_dir}/{culture_obj.qid}"
-    dst_dir = f"{base_dir}/{new_qid}"
+    src_dir = f"{base_dir}/{culture_obj.culture_id}"
+    dst_dir = f"{base_dir}/{new_culture_id}"
     os_rename(src=src_dir, dst=dst_dir)
-    culture_obj.set_qid(qid=new_qid)
+    culture_obj.set_culture_id(culture_id=new_culture_id)
 
 
 class InvalidcultureCopyException(Exception):
     pass
 
 
-def copy_evaluation_culture(src_qid: str, dest_qid: str):
+def copy_evaluation_culture(src_culture_id: str, dest_culture_id: str):
     base_dir = "src/culture/examples/cultures"
-    new_dir = f"{base_dir}/{dest_qid}"
+    new_dir = f"{base_dir}/{dest_culture_id}"
     if os_path.exists(new_dir):
         raise InvalidcultureCopyException(
             f"Cannot copy culture to '{new_dir}' directory because '{new_dir}' exists."
         )
     # base_dir = culture_obj.get_object_root_dir()
-    src_dir = f"{base_dir}/{src_qid}"
-    dest_dir = f"{base_dir}/{dest_qid}"
+    src_dir = f"{base_dir}/{src_culture_id}"
+    dest_dir = f"{base_dir}/{dest_culture_id}"
     copy_dir(src_dir=src_dir, dest_dir=dest_dir)

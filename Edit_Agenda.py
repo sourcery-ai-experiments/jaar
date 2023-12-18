@@ -61,7 +61,7 @@ class Edit_Agenda(qw, Ui_Form):
 
         else:
             self.acptfact_base_update_init_road = (
-                f"{self.agenda_x._culture_qid},time,jajatime"
+                f"{self.agenda_x._culture_id},time,jajatime"
             )
             self.acptfact_base_update_combo.setCurrentText(
                 self.acptfact_base_update_init_road
@@ -113,15 +113,15 @@ class Edit_Agenda(qw, Ui_Form):
             sufffact_open_x != None
             and sufffact_nigh_x != None
             and (
-                sufffact_need_x == f"{self.agenda_x._culture_qid},time,jajatime"
-                or sufffact_need_x[:21] == f"{self.agenda_x._culture_qid},time,jajatime"
+                sufffact_need_x == f"{self.agenda_x._culture_id},time,jajatime"
+                or sufffact_need_x[:21] == f"{self.agenda_x._culture_id},time,jajatime"
             )
         ):
             legible_x_text = self.agenda_x.get_jajatime_repeating_legible_text(
                 open=sufffact_open_x, nigh=sufffact_nigh_x, divisor=sufffact_divisor_x
             )
         elif sufffact_open_x != None and sufffact_nigh_x != None:
-            text_x = f"{self.agenda_x._culture_qid},time,jajatime"
+            text_x = f"{self.agenda_x._culture_id},time,jajatime"
             legible_x_text = (
                 f"sufffact {sufffact_open_x}-{sufffact_nigh_x} {sufffact_divisor_x=}"
             )

@@ -71,8 +71,8 @@ def test_agenda_agenda_get_tree_metrics_sets_uids_correctly():
     x_agenda = agendaunit_shop(_healer=healer_text)
     swim_text = "swim"
     pad_text = "pad"
-    x_agenda.add_idea(ideacore_shop(swim_text, _uid=None), x_agenda._culture_qid)
-    x_agenda.add_idea(ideacore_shop(pad_text, _uid=2), x_agenda._culture_qid)
+    x_agenda.add_idea(ideacore_shop(swim_text, _uid=None), x_agenda._culture_id)
+    x_agenda.add_idea(ideacore_shop(pad_text, _uid=2), x_agenda._culture_id)
     swim_road = x_agenda.make_l1_road(swim_text)
     assert x_agenda.get_idea_kid(swim_road)._uid is None
 
@@ -87,7 +87,7 @@ def test_agenda_get_tree_metrics_ReturnsANoneActionIdeaRoadPath():
     healer_text = "Nia"
     x_agenda = agendaunit_shop(healer_text, _weight=10)
     weekdays = "weekdays"
-    x_agenda.add_idea(ideacore_shop(weekdays, _weight=40), x_agenda._culture_qid)
+    x_agenda.add_idea(ideacore_shop(weekdays, _weight=40), x_agenda._culture_id)
     tree_metrics_before = x_agenda.get_tree_metrics()
 
     # WHEN/THEN
@@ -102,7 +102,7 @@ def test_agenda_get_tree_metrics_ReturnsAnActionIdeaRoadPath():
     # WHEN/THEN
     train_road = x_agenda.make_road(
         road_nodes=[
-            x_agenda._culture_qid,
+            x_agenda._culture_id,
             "ACME",
             "ACME Employee Responsiblities",
             "Know Abuse Prevention and Reporting guildlines",

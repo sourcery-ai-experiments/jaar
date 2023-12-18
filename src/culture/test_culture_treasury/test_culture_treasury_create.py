@@ -1,6 +1,6 @@
 from src.culture.culture import cultureunit_shop
 from src.culture.examples.culture_env_kit import (
-    get_temp_env_qid,
+    get_temp_env_culture_id,
     get_test_cultures_dir,
     env_dir_setup_cleanup,
 )
@@ -9,7 +9,7 @@ from src.culture.treasury_sqlstr import get_db_tables, get_db_columns
 
 def test_culture_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
     # GIVEN create culture
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
 
     # WHEN
     x_culture.create_dirs_if_null(in_memory_treasury=True)

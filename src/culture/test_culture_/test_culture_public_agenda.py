@@ -8,7 +8,7 @@ from src.culture.examples.example_councils import (
     get_1node_agenda as example_healers_get_7nodeJRootWithH_agenda,
 )
 from src.culture.examples.culture_env_kit import (
-    get_temp_env_qid,
+    get_temp_env_culture_id,
     get_test_cultures_dir,
     env_dir_setup_cleanup,
 )
@@ -18,8 +18,8 @@ from pytest import raises as pytest_raises
 
 def test_culture_set_agenda_CreatesAgendaFile(env_dir_setup_cleanup):
     # GIVEN
-    x_qid = get_temp_env_qid()
-    x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
+    x_culture_id = get_temp_env_culture_id()
+    x_culture = cultureunit_shop(x_culture_id, cultures_dir=get_test_cultures_dir())
     x_culture.create_dirs_if_null()
     y_agenda = example_healers_get_1node_agenda()
     y_path = f"{x_culture.get_public_dir()}/{y_agenda._healer}.json"
@@ -35,8 +35,8 @@ def test_culture_set_agenda_CreatesAgendaFile(env_dir_setup_cleanup):
 
 def test_culture_get_agenda_currentlyGetsAgenda(env_dir_setup_cleanup):
     # GIVEN
-    x_qid = get_temp_env_qid()
-    x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
+    x_culture_id = get_temp_env_culture_id()
+    x_culture = cultureunit_shop(x_culture_id, cultures_dir=get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_treasury=True)
     y_agenda = example_healers_get_7nodeJRootWithH_agenda()
     x_culture.save_public_agenda(y_agenda)
@@ -49,8 +49,8 @@ def test_culture_change_public_agenda_healer_ChangesAgendaPID(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_qid = get_temp_env_qid()
-    x_culture = cultureunit_shop(x_qid, get_test_cultures_dir())
+    x_culture_id = get_temp_env_culture_id()
+    x_culture = cultureunit_shop(x_culture_id, get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_treasury=True)
     old_agenda_healer = "old1"
     y_agenda = agendaunit_shop(_healer=old_agenda_healer)
@@ -76,8 +76,8 @@ def test_culture_SetsIdeaRootLabel(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_qid = get_temp_env_qid()
-    x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
+    x_culture_id = get_temp_env_culture_id()
+    x_culture = cultureunit_shop(x_culture_id, cultures_dir=get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_treasury=True)
     old_x_agenda = example_agendas_get_agenda_1Task_1CE0MinutesRequired_1AcptFact()
     assert old_x_agenda._idearoot._label == "A"
@@ -87,4 +87,4 @@ def test_culture_SetsIdeaRootLabel(
 
     # THEN
     new_x_agenda = x_culture.get_public_agenda(old_x_agenda._healer)
-    assert new_x_agenda._idearoot._label == x_qid
+    assert new_x_agenda._idearoot._label == x_culture_id

@@ -6,7 +6,7 @@ from src.culture.examples.example_councils import (
 from src.culture.examples.council_env_kit import (
     council_dir_setup_cleanup,
     get_temp_councilunit_dir,
-    get_temp_culture_qid,
+    get_temp_culture_id,
 )
 
 
@@ -15,14 +15,14 @@ def test_healer_save_agenda_to_depot_assignment_link_CorrectlyCreatesAssignmentF
 ):
     # GIVEN
     amer_agenda = get_agenda_assignment_laundry_example1()
-    amer_agenda.set_culture_qid(get_temp_culture_qid())
+    amer_agenda.set_culture_id(get_temp_culture_id())
     cali_text = "Cali"
     cali_ux = councilunit_shop(
-        cali_text, get_temp_councilunit_dir(), get_temp_culture_qid()
+        cali_text, get_temp_councilunit_dir(), get_temp_culture_id()
     )
     cali_ux.create_core_dir_and_files()
     print(f"{amer_agenda._idearoot._label=}")
-    assert amer_agenda._idearoot._label == get_temp_culture_qid()
+    assert amer_agenda._idearoot._label == get_temp_culture_id()
     assert amer_agenda._healer == "Amer"
     print(f"{amer_agenda._healer} {amer_agenda._idearoot._label=}")
 
@@ -36,7 +36,7 @@ def test_healer_save_agenda_to_depot_assignment_link_CorrectlyCreatesAssignmentF
     assert len(output_agenda._idea_dict.keys()) == 9
 
     casa_text = "casa"
-    casa_road = get_road(get_temp_culture_qid(), casa_text)
+    casa_road = get_road(get_temp_culture_id(), casa_text)
     basket_text = "laundry basket status"
     basket_road = get_road(casa_road, basket_text)
     b_full_text = "full"

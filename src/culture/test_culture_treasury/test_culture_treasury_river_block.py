@@ -4,7 +4,7 @@ from src.culture.culture import (
     set_treasury_partytreasuryunits_to_agenda_partyunits,
 )
 from src.culture.examples.culture_env_kit import (
-    get_temp_env_qid,
+    get_temp_env_culture_id,
     get_test_cultures_dir,
     env_dir_setup_cleanup,
 )
@@ -27,7 +27,7 @@ def test_culture_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
     x_culture.refresh_treasury_public_agendas_data()
 
     bob_text = "bob"
@@ -159,7 +159,7 @@ def test_RiverBlockUnit_block_returned_WorksCorrectly():
 
 def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cleanup):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
     x_culture.refresh_treasury_public_agendas_data()
 
     bob_text = "bob"
@@ -226,7 +226,7 @@ def test_river_block_insert_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
 
     bob_text = "bob"
     tim_text = "tim"
@@ -410,7 +410,7 @@ def test_get_partyunit_table_update_treasury_tax_paid_sqlstr_CorrectlyPopulatesT
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
 
     bob_text = "bob"
     tom_text = "tom"

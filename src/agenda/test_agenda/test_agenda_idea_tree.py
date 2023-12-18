@@ -105,11 +105,11 @@ def test_get_idea_kid_CorrectlyReturnsIdea():
     assert week_idea._label == week_text
 
     # WHEN
-    root_idea = x_agenda.get_idea_kid(road=x_agenda._culture_qid)
+    root_idea = x_agenda.get_idea_kid(road=x_agenda._culture_id)
 
     # THEN
     assert root_idea != None
-    assert root_idea._label == x_agenda._culture_qid
+    assert root_idea._label == x_agenda._culture_id
 
     # WHEN / THEN
     bobdylan_text = "bobdylan"
@@ -473,10 +473,10 @@ def test_agenda_get_orderd_node_list_WorksCorrectly():
     # THEN
     assert len(ordered_node_list) == 17
     x_1st_road_in_ordered_list = x_agenda.get_idea_tree_ordered_road_list()[0]
-    assert x_1st_road_in_ordered_list == x_agenda._culture_qid
+    assert x_1st_road_in_ordered_list == x_agenda._culture_id
     x_8th_road_in_ordered_list = x_agenda.get_idea_tree_ordered_road_list()[8]
     assert x_8th_road_in_ordered_list == x_agenda.make_road(
-        x_agenda._culture_qid, week_text
+        x_agenda._culture_id, week_text
     )
 
     # WHEN
@@ -484,7 +484,7 @@ def test_agenda_get_orderd_node_list_WorksCorrectly():
 
     # THEN
     y_1st_road_in_ordered_list = y_agenda.get_idea_tree_ordered_road_list()[0]
-    assert y_1st_road_in_ordered_list == x_agenda._culture_qid
+    assert y_1st_road_in_ordered_list == x_agenda._culture_id
 
 
 def test_agenda_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoadPaths():
@@ -495,7 +495,7 @@ def test_agenda_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoadPaths():
     # WHEN
     time = "timeline"
     x_agenda.add_idea(
-        ideacore_shop(_label=time, _begin=0, _close=700), pad=x_agenda._culture_qid
+        ideacore_shop(_label=time, _begin=0, _close=700), pad=x_agenda._culture_id
     )
     t_road = x_agenda.make_l1_road(time)
     week = "weeks"
@@ -530,61 +530,61 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
 # def test_agenda4party_hasCorrectLevel1StructureWithGrouplessAncestors_2():
 #     x_agenda = agendaunit_shop(_healer=healer_text)
 #     x_agenda.add_idea(ideacore_shop("A", _weight=7), pad="blahblah")
-#     x_agenda.add_idea(ideacore_shop("C", _weight=3), pad=f"{x_agenda._culture_qid},A")
-#     x_agenda.add_idea(ideacore_shop("E", _weight=7), pad=f"{x_agenda._culture_qid},A,C")
-#     x_agenda.add_idea(ideacore_shop("D", _weight=7), pad=f"{x_agenda._culture_qid},A,C")
+#     x_agenda.add_idea(ideacore_shop("C", _weight=3), pad=f"{x_agenda._culture_id},A")
+#     x_agenda.add_idea(ideacore_shop("E", _weight=7), pad=f"{x_agenda._culture_id},A,C")
+#     x_agenda.add_idea(ideacore_shop("D", _weight=7), pad=f"{x_agenda._culture_id},A,C")
 #     x_agenda.add_idea(ideacore_shop("B", _weight=13), pad="blahblah")
 #     x_agenda.add_idea(ideacore_shop("F", _weight=23), pad="blahblah")
 #     x_agenda.add_idea(ideacore_shop("G", _weight=57), pad="blahblah")
-#     x_agenda.add_idea(ideacore_shop("I"), pad=f"{x_agenda._culture_qid},G")
-#     x_agenda.add_idea(ideacore_shop("H"), pad=f"{x_agenda._culture_qid},G")
-#     x_agenda.add_idea(ideacore_shop("J"), pad=f"{x_agenda._culture_qid},G,I")
-#     x_agenda.add_idea(ideacore_shop("K"), pad=f"{x_agenda._culture_qid},G,I")
-#     x_agenda.add_idea(ideacore_shop("M"), pad=f"{x_agenda._culture_qid},G,H")
+#     x_agenda.add_idea(ideacore_shop("I"), pad=f"{x_agenda._culture_id},G")
+#     x_agenda.add_idea(ideacore_shop("H"), pad=f"{x_agenda._culture_id},G")
+#     x_agenda.add_idea(ideacore_shop("J"), pad=f"{x_agenda._culture_id},G,I")
+#     x_agenda.add_idea(ideacore_shop("K"), pad=f"{x_agenda._culture_id},G,I")
+#     x_agenda.add_idea(ideacore_shop("M"), pad=f"{x_agenda._culture_id},G,H")
 
 #     billy_pid = PartyPID("billy")
 #     x_agenda.add_partyunit(pid=billy_pid)
 #     billy_bl = balancelink_shop(brand=billy_pid)
-#     x_agenda.edit_idea_attr(road=f"{x_agenda._culture_qid},G", balancelink=billy_bl)
-#     x_agenda.edit_idea_attr(road=f"{x_agenda._culture_qid},G,H,M", balancelink=billy_bl)
+#     x_agenda.edit_idea_attr(road=f"{x_agenda._culture_id},G", balancelink=billy_bl)
+#     x_agenda.edit_idea_attr(road=f"{x_agenda._culture_id},G,H,M", balancelink=billy_bl)
 
 #     sandy_pid = PartyPID(sandy_text)
 #     x_agenda.add_partyunit(pid=sandy_pid)
 #     sandy_bl = balancelink_shop(brand=sandy_pid)
-#     x_agenda.edit_idea_attr(road=f"{x_agenda._culture_qid},A", balancelink=sandy_bl)
-#     x_agenda.edit_idea_attr(road=f"{x_agenda._culture_qid},B", balancelink=sandy_bl)
-#     x_agenda.edit_idea_attr(road=f"{x_agenda._culture_qid},A,C,E", balancelink=sandy_bl)
+#     x_agenda.edit_idea_attr(road=f"{x_agenda._culture_id},A", balancelink=sandy_bl)
+#     x_agenda.edit_idea_attr(road=f"{x_agenda._culture_id},B", balancelink=sandy_bl)
+#     x_agenda.edit_idea_attr(road=f"{x_agenda._culture_id},A,C,E", balancelink=sandy_bl)
 
 #     # expected sandy
 #     exp_sandy = agendaunit_shop(_healer=healer_text)
 #     exp_sandy.add_idea(ideacore_shop("A", _agenda_importance=0.07), pad="blahblah")
-#     exp_sandy.add_idea(ideacore_shop("C", _agenda_importance=0.07), pad=f"{x_agenda._culture_qid},A")
-#     exp_sandy.add_idea(ideacore_shop("E", _agenda_importance=0.5), pad=f"{x_agenda._culture_qid},A,C")
+#     exp_sandy.add_idea(ideacore_shop("C", _agenda_importance=0.07), pad=f"{x_agenda._culture_id},A")
+#     exp_sandy.add_idea(ideacore_shop("E", _agenda_importance=0.5), pad=f"{x_agenda._culture_id},A,C")
 #     exp_sandy.add_idea(ideacore_shop("B", _agenda_importance=0.13), pad="blahblah")
 
 #     # generated sandy
 #     gen_sandy = x_agenda.get_agenda4party(acptfacts=None, party_pid=sandy_pid)
 
 #     # check generated sandy is correct
-#     assert gen_sandy.get_idea_kid(road=f"{x_agenda._culture_qid},A")._agenda_importance == 0.07
-#     assert gen_sandy.get_idea_kid(road=f"{x_agenda._culture_qid},A,C")._agenda_importance == 0.07
-#     assert gen_sandy.get_idea_kid(road=f"{x_agenda._culture_qid},A,C,E")._agenda_importance == 0.5
-#     assert gen_sandy.get_idea_kid(road=f"{x_agenda._culture_qid},B")._agenda_importance == 0.13
+#     assert gen_sandy.get_idea_kid(road=f"{x_agenda._culture_id},A")._agenda_importance == 0.07
+#     assert gen_sandy.get_idea_kid(road=f"{x_agenda._culture_id},A,C")._agenda_importance == 0.07
+#     assert gen_sandy.get_idea_kid(road=f"{x_agenda._culture_id},A,C,E")._agenda_importance == 0.5
+#     assert gen_sandy.get_idea_kid(road=f"{x_agenda._culture_id},B")._agenda_importance == 0.13
 #     assert (
-#         gen_sandy.get_idea_kid(f"{x_agenda._culture_qid},A")._agenda_importance
-#         == exp_sandy.get_idea_kid(road=f"{x_agenda._culture_qid},A")._agenda_importance
+#         gen_sandy.get_idea_kid(f"{x_agenda._culture_id},A")._agenda_importance
+#         == exp_sandy.get_idea_kid(road=f"{x_agenda._culture_id},A")._agenda_importance
 #     )
 #     assert (
-#         gen_sandy.get_idea_kid(road=f"{x_agenda._culture_qid},A,C")._agenda_importance
-#         == exp_sandy.get_idea_kid(road=f"{x_agenda._culture_qid},A,C")._agenda_importance
+#         gen_sandy.get_idea_kid(road=f"{x_agenda._culture_id},A,C")._agenda_importance
+#         == exp_sandy.get_idea_kid(road=f"{x_agenda._culture_id},A,C")._agenda_importance
 #     )
 #     assert (
-#         gen_sandy.get_idea_kid(road=f"{x_agenda._culture_qid},A,C,E")._agenda_importance
-#         == exp_sandy.get_idea_kid(road=f"{x_agenda._culture_qid},A,C,E")._agenda_importance
+#         gen_sandy.get_idea_kid(road=f"{x_agenda._culture_id},A,C,E")._agenda_importance
+#         == exp_sandy.get_idea_kid(road=f"{x_agenda._culture_id},A,C,E")._agenda_importance
 #     )
 #     assert (
-#         gen_sandy.get_idea_kid(road=f"{x_agenda._culture_qid},B")._agenda_importance
-#         == exp_sandy.get_idea_kid(road=f"{x_agenda._culture_qid},B")._agenda_importance
+#         gen_sandy.get_idea_kid(road=f"{x_agenda._culture_id},B")._agenda_importance
+#         == exp_sandy.get_idea_kid(road=f"{x_agenda._culture_id},B")._agenda_importance
 #     )
 #     gen_sandy_list = gen_sandy.get_idea_list()
 #     assert len(gen_sandy_list) == 5

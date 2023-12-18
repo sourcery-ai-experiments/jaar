@@ -8,7 +8,7 @@ def test_agendaAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
     x_agenda = agendaunit_shop(_healer=healer_text, _weight=10)
 
     l1 = "level1"
-    x_agenda.add_idea(ideacore_shop(l1, _weight=30), pad=x_agenda._culture_qid)
+    x_agenda.add_idea(ideacore_shop(l1, _weight=30), pad=x_agenda._culture_id)
     l1_road = x_agenda.make_l1_road(l1)
 
     rx1 = "range_root_example"
@@ -42,7 +42,7 @@ def test_agendaAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
     x_agenda = agendaunit_shop(_healer=healer_text, _weight=10)
 
     l1 = "level1"
-    x_agenda.add_idea(ideacore_shop(l1, _weight=30), pad=x_agenda._culture_qid)
+    x_agenda.add_idea(ideacore_shop(l1, _weight=30), pad=x_agenda._culture_id)
     l1_road = x_agenda.make_l1_road(l1)
 
     rx1 = "range_root_example"

@@ -1,7 +1,7 @@
 from src.agenda.agenda import agendaunit_shop
 from src.culture.culture import cultureunit_shop
 from src.culture.examples.culture_env_kit import (
-    get_temp_env_qid,
+    get_temp_env_culture_id,
     get_test_cultures_dir,
     env_dir_setup_cleanup,
 )
@@ -33,7 +33,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
 
     bob_text = "bob"
     tom_text = "tom"
@@ -115,7 +115,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 agendas, 85% of river blocks to sal
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
 
     sal_text = "sal"
     bob_text = "bob"
@@ -195,7 +195,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
 
     sal_text = "sal"
     bob_text = "bob"
@@ -280,7 +280,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
 
     sal_text = "sal"
     bob_text = "bob"
@@ -369,7 +369,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
 
     sal_text = "sal"
     bob_text = "bob"
@@ -438,7 +438,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
 
     sal_text = "sal"
     bob_text = "bob"
@@ -530,7 +530,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyBuildsASingleContinuousRang
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
 
     sal_text = "sal"
     bob_text = "bob"
@@ -599,7 +599,7 @@ def test_culture_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
 ):
     """GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal"""
     # GIVEN
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
 
     sal_text = "sal"
     bob_text = "bob"

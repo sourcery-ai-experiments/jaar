@@ -123,7 +123,7 @@ def test_get_intent_does_not_return_promise_items_outside_range():
     x_agenda.set_time_hreg_ideas(c400_count=7)
     c_label = "clean"
     c_idea = ideacore_shop(c_label, promise=True)
-    x_agenda.add_idea(c_idea, pad=x_agenda._culture_qid)
+    x_agenda.add_idea(c_idea, pad=x_agenda._culture_id)
     c_road = x_agenda.make_l1_road(c_label)
     time_road = x_agenda.make_l1_road("time")
     jajatime_road = x_agenda.make_road(time_road, "jajatime")
@@ -193,7 +193,7 @@ def test_exammple_AgendaHasCorrectAttributes():
     aaron_text = "Aaron Donald things effected by him"
     aaron_road = x_agenda.make_l1_road(aaron_text)
     # internet_text = "Internet"
-    # internet_road = x_agenda.make_road(x_agenda._culture_qid,internet_text)
+    # internet_road = x_agenda.make_road(x_agenda._culture_id,internet_text)
     year_month_text = "year_month"
     year_month_road = x_agenda.make_l1_road(year_month_text)
     x_agenda.set_acptfact(base=month_week_road, pick=month_week_road)
@@ -203,16 +203,16 @@ def test_exammple_AgendaHasCorrectAttributes():
     # x_agenda.set_acptfact(base=internet_road, pick=internet_road)
     x_agenda.set_acptfact(base=year_month_road, pick=year_month_road)
     # season_text = "Seasons"
-    # season_road = x_agenda.make_road(x_agenda._culture_qid,season_text)
+    # season_road = x_agenda.make_road(x_agenda._culture_id,season_text)
     # x_agenda.set_acptfact(base=season_road, pick=season_road)
     ced_week_text = "ced_week"
     ced_week_road = x_agenda.make_l1_road(ced_week_text)
     x_agenda.set_acptfact(base=ced_week_road, pick=ced_week_road)
     # water_text = "WaterBeing"
-    # water_road = x_agenda.make_road(x_agenda._culture_qid,water_text)
+    # water_road = x_agenda.make_road(x_agenda._culture_id,water_text)
     # x_agenda.set_acptfact(base=water_road, pick=water_road)
     # movie_text = "No Movie playing"
-    # movie_road = x_agenda.make_road(x_agenda._culture_qid,movie_text)
+    # movie_road = x_agenda.make_road(x_agenda._culture_id,movie_text)
     # x_agenda.set_acptfact(base=movie_road, pick=movie_text)
 
     # WHEN
@@ -276,7 +276,7 @@ def test_exammple_AgendaCanFiltersOnBase():
     #             print(f"         {weekdays}")
 
     # x_agenda.edit_idea_attr(
-    #     road="{x_agenda._culture_qid},sufffacts,cleaning,laundry wednesday",
+    #     road="{x_agenda._culture_id},sufffacts,cleaning,laundry wednesday",
     #     required_del_sufffact_base=weekdays,
     #     required_del_sufffact_need=weekdays,
     # )
@@ -304,7 +304,7 @@ def test_set_intent_task_as_complete_RangeWorksCorrectly():
 
     x_agenda.add_idea(
         idea_kid=ideacore_shop(run_text, promise=True),
-        pad=x_agenda._culture_qid,
+        pad=x_agenda._culture_id,
     )
     x_agenda.add_idea(
         idea_kid=ideacore_shop(day_text, _begin=0, _close=500), pad=time_road
@@ -350,7 +350,7 @@ def test_set_intent_task_as_complete_DivisionWorksCorrectly():
 
     x_agenda.add_idea(
         idea_kid=ideacore_shop(run_text, promise=True),
-        pad=x_agenda._culture_qid,
+        pad=x_agenda._culture_id,
     )
     x_agenda.add_idea(
         idea_kid=ideacore_shop(day_text, _begin=0, _close=500), pad=time_road
@@ -440,7 +440,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     x_agenda.set_time_hreg_ideas(c400_count=7)
 
     things_text = "things to do"
-    x_agenda.add_idea(ideacore_shop(things_text), pad=x_agenda._culture_qid)
+    x_agenda.add_idea(ideacore_shop(things_text), pad=x_agenda._culture_id)
     t_road = x_agenda.make_l1_road(things_text)
     clean = "clean"
     run = "run"

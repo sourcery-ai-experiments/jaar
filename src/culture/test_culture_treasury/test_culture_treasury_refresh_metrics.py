@@ -7,7 +7,7 @@ from src.agenda.agenda import (
 )
 from src.culture.culture import cultureunit_shop
 from src.culture.examples.culture_env_kit import (
-    get_temp_env_qid,
+    get_temp_env_culture_id,
     get_test_cultures_dir,
     env_dir_setup_cleanup,
 )
@@ -40,7 +40,7 @@ def test_culture_refresh_treasury_public_agendas_data_CorrectlyDeletesOldTreasur
 ):
     # GIVEN
     x_culture = cultureunit_shop(
-        qid=get_temp_env_qid(), cultures_dir=get_test_cultures_dir()
+        culture_id=get_temp_env_culture_id(), cultures_dir=get_test_cultures_dir()
     )
     x_culture.create_dirs_if_null(in_memory_treasury=True)
 
@@ -66,7 +66,7 @@ def test_culture_refresh_treasury_public_agendas_data_CorrectlyDeletesOldTreasur
 ):
     # GIVEN
     x_culture = cultureunit_shop(
-        qid=get_temp_env_qid(), cultures_dir=get_test_cultures_dir()
+        culture_id=get_temp_env_culture_id(), cultures_dir=get_test_cultures_dir()
     )
     x_culture.create_dirs_if_null(in_memory_treasury=False)
 
@@ -92,7 +92,7 @@ def test_culture_refresh_treasury_public_agendas_data_CorrectlyPopulatesPartyuni
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_culture = cultureunit_shop(
-        qid=get_temp_env_qid(), cultures_dir=get_test_cultures_dir()
+        culture_id=get_temp_env_culture_id(), cultures_dir=get_test_cultures_dir()
     )
     x_culture.create_dirs_if_null(in_memory_treasury=True)
 
@@ -142,7 +142,7 @@ def test_culture_refresh_treasury_public_agendas_data_CorrectlyPopulatesAgendaTa
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_culture = cultureunit_shop(
-        qid=get_temp_env_qid(), cultures_dir=get_test_cultures_dir()
+        culture_id=get_temp_env_culture_id(), cultures_dir=get_test_cultures_dir()
     )
     x_culture.create_dirs_if_null(in_memory_treasury=True)
 
@@ -171,7 +171,7 @@ def test_culture_refresh_treasury_public_agendas_data_CorrectlyPopulatesAgendaTa
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_culture = cultureunit_shop(
-        qid=get_temp_env_qid(), cultures_dir=get_test_cultures_dir()
+        culture_id=get_temp_env_culture_id(), cultures_dir=get_test_cultures_dir()
     )
     x_culture.create_dirs_if_null(in_memory_treasury=True)
 
@@ -200,7 +200,7 @@ def test_culture_refresh_treasury_public_agendas_data_CorrectlyPopulates_groupun
 ):
     # GIVEN
     x_culture = cultureunit_shop(
-        qid=get_temp_env_qid(), cultures_dir=get_test_cultures_dir()
+        culture_id=get_temp_env_culture_id(), cultures_dir=get_test_cultures_dir()
     )
     x_culture.create_dirs_if_null(in_memory_treasury=True)
 
@@ -230,7 +230,7 @@ def test_culture_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_Groupunit_Pa
 ):
     # GIVEN
     x_culture = cultureunit_shop(
-        qid=get_temp_env_qid(), cultures_dir=get_test_cultures_dir()
+        culture_id=get_temp_env_culture_id(), cultures_dir=get_test_cultures_dir()
     )
     x_culture.create_dirs_if_null(in_memory_treasury=True)
 
@@ -256,9 +256,9 @@ def test_culture_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_Groupunit_Pa
 
     swim_text = "swimming"
     sports_text = "sports"
-    sal_sports_road = get_road(x_culture.qid, sports_text)
-    bob_sports_road = get_road(x_culture.qid, sports_text)
-    tom_sports_road = get_road(x_culture.qid, sports_text)
+    sal_sports_road = get_road(x_culture.culture_id, sports_text)
+    bob_sports_road = get_road(x_culture.culture_id, sports_text)
+    tom_sports_road = get_road(x_culture.culture_id, sports_text)
 
     sal_agenda.add_idea(ideacore_shop(swim_text), pad=sal_sports_road)
     bob_agenda.add_idea(ideacore_shop(swim_text), pad=bob_sports_road)
@@ -298,7 +298,7 @@ def test_culture_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
     x_culture.refresh_treasury_public_agendas_data()
 
     bob_text = "bob"
@@ -306,7 +306,7 @@ def test_culture_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
         assert get_idea_catalog_table_count(treasury_conn, bob_text) == 0
 
     # WHEN
-    element_road = get_road(get_temp_env_qid(), "elements")
+    element_road = get_road(get_temp_env_culture_id(), "elements")
     water_road = get_road(element_road, "water")
     water_idea_catalog = IdeaCatalog(agenda_healer=bob_text, idea_road=water_road)
     water_insert_sqlstr = get_idea_catalog_table_insert_sqlstr(water_idea_catalog)
@@ -322,7 +322,7 @@ def test_culture_refresh_treasury_public_agendas_data_Populates_idea_catalog_tab
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
     x_culture.refresh_treasury_public_agendas_data()
 
     bob_text = "bob"
@@ -353,7 +353,7 @@ def test_culture_refresh_treasury_public_agendas_data_Populates_idea_catalog_tab
 
 def test_culture_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     # GIVEN
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
     x_culture.refresh_treasury_public_agendas_data()
 
     bob_text = "bob"
@@ -380,12 +380,12 @@ def test_culture_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup)
 
     # WHEN / THEN
     assert len(get_idea_catalog_dict(x_culture.get_treasury_conn())) == 20
-    b_road = get_road(get_temp_env_qid(), "B")
+    b_road = get_road(get_temp_env_culture_id(), "B")
     assert len(get_idea_catalog_dict(x_culture.get_treasury_conn(), b_road)) == 3
-    c_road = get_road(get_temp_env_qid(), "C")
+    c_road = get_road(get_temp_env_culture_id(), "C")
     ce_road = get_road(c_road, "E")
     assert len(get_idea_catalog_dict(x_culture.get_treasury_conn(), ce_road)) == 2
-    ex_road = get_road(get_temp_env_qid())
+    ex_road = get_road(get_temp_env_culture_id())
     assert len(get_idea_catalog_dict(x_culture.get_treasury_conn(), ex_road)) == 4
 
 
@@ -393,7 +393,7 @@ def test_culture_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTabl
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
     x_culture.refresh_treasury_public_agendas_data()
 
     bob_text = "bob"
@@ -401,7 +401,7 @@ def test_culture_get_acptfact_catalog_table_insert_sqlstr_CorrectlyPopulatesTabl
         assert get_acptfact_catalog_table_count(treasury_conn, bob_text) == 0
 
     # WHEN
-    weather_road = get_road(get_temp_env_qid(), "weather")
+    weather_road = get_road(get_temp_env_culture_id(), "weather")
     weather_rain = AcptFactCatalog(
         agenda_healer=bob_text,
         base=weather_road,
@@ -420,7 +420,7 @@ def test_refresh_treasury_public_agendas_data_Populates_acptfact_catalog_table(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
     x_culture.refresh_treasury_public_agendas_data()
 
     # TODO create 3 agendas with varying numbers of acpt facts
@@ -478,7 +478,7 @@ def test_culture_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTab
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example culture with 4 Healers, each with 3 Partyunits = 12 partyunit rows
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
     x_culture.refresh_treasury_public_agendas_data()
 
     bob_text = "bob"
@@ -489,7 +489,7 @@ def test_culture_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTab
     bob_group_x = GroupUnitCatalog(
         agenda_healer=bob_text,
         groupunit_brand="US Dollar",
-        partylinks_set_by_culture_road=get_road(get_temp_env_qid(), "USA"),
+        partylinks_set_by_culture_road=get_road(get_temp_env_culture_id(), "USA"),
     )
     bob_group_sqlstr = get_groupunit_catalog_table_insert_sqlstr(bob_group_x)
     with x_culture.get_treasury_conn() as treasury_conn:
@@ -504,7 +504,7 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_culture = cultureunit_shop(get_temp_env_qid(), get_test_cultures_dir())
+    x_culture = cultureunit_shop(get_temp_env_culture_id(), get_test_cultures_dir())
 
     bob_text = "bob"
     tom_text = "tom"

@@ -2,7 +2,7 @@ from src.culture.culture import cultureunit_shop
 from src.culture.council import councilunit_shop
 from src.culture.examples.culture_env_kit import (
     get_temp_env_dir,
-    get_temp_env_qid,
+    get_temp_env_culture_id,
     env_dir_setup_cleanup,
     get_test_cultures_dir,
 )
@@ -11,9 +11,9 @@ from os import path as os_path
 
 def test_cultureunit_set_healer_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
-    x_qid = get_temp_env_qid()
-    x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
-    print(f"create env '{x_qid}' directories.")
+    x_culture_id = get_temp_env_culture_id()
+    x_culture = cultureunit_shop(x_culture_id, cultures_dir=get_test_cultures_dir())
+    print(f"create env '{x_culture_id}' directories.")
     x_culture.create_dirs_if_null(in_memory_treasury=True)
     timmy_text = "timmy"
     timmy_dir = f"{x_culture.get_councilunits_dir()}/{timmy_text}"
@@ -30,14 +30,14 @@ def test_cultureunit_set_healer_WorksCorrectly(env_dir_setup_cleanup):
 
 def test_cultureunit_change_councilunit_cid_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
-    x_qid = get_temp_env_qid()
-    x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
+    x_culture_id = get_temp_env_culture_id()
+    x_culture = cultureunit_shop(x_culture_id, cultures_dir=get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_treasury=True)
     old_bob_text = "old Bob"
     old_bob_dir = f"{x_culture.get_councilunits_dir()}/{old_bob_text}"
     old_bob_file_path = f"{old_bob_dir}/seed_agenda.json"
     bob_councilunit = councilunit_shop(
-        old_bob_text, x_culture.get_object_root_dir(), get_temp_env_qid()
+        old_bob_text, x_culture.get_object_root_dir(), get_temp_env_culture_id()
     )
     x_culture.set_councilunits_empty_if_null()
     x_culture.set_councilunit(bob_councilunit)
@@ -72,8 +72,8 @@ def test_cultureunit_change_councilunit_cid_WorksCorrectly(env_dir_setup_cleanup
 
 def test_cultureunit_del_councilunit_dir_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
-    x_qid = get_temp_env_qid()
-    x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
+    x_culture_id = get_temp_env_culture_id()
+    x_culture = cultureunit_shop(x_culture_id, cultures_dir=get_test_cultures_dir())
     xia_text = "Xia"
     xia_dir = f"{x_culture.get_councilunits_dir()}/{xia_text}"
     xia_file_path = f"{xia_dir}/seed_agenda.json"
@@ -93,8 +93,8 @@ def test_cultureunit_del_councilunit_dir_WorksCorrectly(env_dir_setup_cleanup):
 
 def test_cultureunit_add_councilunit_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
-    x_qid = get_temp_env_qid()
-    x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
+    x_culture_id = get_temp_env_culture_id()
+    x_culture = cultureunit_shop(x_culture_id, cultures_dir=get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_treasury=True)
     bob_text = "Bob"
     bob_dir = f"{x_culture.get_councilunits_dir()}/{bob_text}"
@@ -112,7 +112,7 @@ def test_cultureunit_add_councilunit_WorksCorrectly(env_dir_setup_cleanup):
     bob_static_councilunit = councilunit_shop(
         pid=bob_text,
         env_dir=get_temp_env_dir(),
-        culture_qid=get_temp_env_qid(),
+        culture_id=get_temp_env_culture_id(),
     )
     bob_gen_councilunit = x_culture.get_councilunit(bob_text)
     assert bob_gen_councilunit._env_dir == bob_static_councilunit._env_dir
@@ -128,8 +128,8 @@ def test_cultureunit_add_councilunit_WorksCorrectly(env_dir_setup_cleanup):
 
 def test_cultureunit_councilunit_exists_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
-    x_qid = get_temp_env_qid()
-    x_culture = cultureunit_shop(qid=x_qid, cultures_dir=get_test_cultures_dir())
+    x_culture_id = get_temp_env_culture_id()
+    x_culture = cultureunit_shop(x_culture_id, cultures_dir=get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_treasury=True)
     bob_text = "Bob"
 

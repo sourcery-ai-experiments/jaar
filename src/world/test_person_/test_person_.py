@@ -48,13 +48,13 @@ def test_personunit_set_cultureunit_CorrectlyCreatesCultureUnit():
 
     # WHEN
     diet_text = "diet"
-    xao_person_obj.set_cultureunit(culture_qid=diet_text)
+    xao_person_obj.set_cultureunit(culture_id=diet_text)
 
     # THEN
     # diet_culture = xao_person.get_culture()
     diet_culture = xao_person_obj._cultures.get(diet_text)
     assert diet_culture != None
-    assert diet_culture.qid == diet_text
+    assert diet_culture.culture_id == diet_text
     assert diet_culture.cultures_dir == f"{xao_person_dir}/cultures"
     assert diet_culture._manager_pid == xao_text
 
@@ -68,7 +68,7 @@ def test_personunit_cultureunit_exists_ReturnsCorrectObj():
     assert xao_person_obj.cultureunit_exists(diet_text) == False
 
     # WHEN
-    xao_person_obj.set_cultureunit(culture_qid=diet_text)
+    xao_person_obj.set_cultureunit(culture_id=diet_text)
 
     # THEN
     assert xao_person_obj.cultureunit_exists(diet_text)
@@ -87,7 +87,7 @@ def test_personunit_get_cultureunit_CorrectlyGetsCultureUnit():
 
     # THEN
     assert diet_culture != None
-    assert diet_culture.qid == diet_text
+    assert diet_culture.culture_id == diet_text
     assert diet_culture.cultures_dir == f"{xao_person_dir}/cultures"
 
 
@@ -100,7 +100,7 @@ def test_personunit_del_cultureunit_CorrectlyDeletesCultureUnit():
     xao_person_obj.set_cultureunit(diet_text)
     before_diet_culture = xao_person_obj.get_cultureunit(diet_text)
     assert before_diet_culture != None
-    assert before_diet_culture.qid == diet_text
+    assert before_diet_culture.culture_id == diet_text
     assert before_diet_culture.cultures_dir == f"{xao_person_dir}/cultures"
 
     # WHEN

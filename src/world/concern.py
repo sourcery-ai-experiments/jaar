@@ -16,7 +16,7 @@ from dataclasses import dataclass
 
 @dataclass
 class CultureAddress:
-    culture_qid: CultureQID
+    culture_id: CultureQID
     person_ids: dict[PersonID:int]
     _road_node_delimiter: str
 
@@ -35,21 +35,21 @@ class CultureAddress:
 
 
 def cultureaddress_shop(
-    culture_qid: CultureQID,
+    culture_id: CultureQID,
     person_ids: dict[PersonID:int] = None,
     _road_node_delimiter: str = None,
 ) -> CultureAddress:
     x_cultureaddress = CultureAddress(
         person_ids=person_ids,
-        culture_qid=culture_qid,
+        culture_id=culture_id,
         _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
     )
     x_cultureaddress.set_person_ids_empty_if_none()
     return x_cultureaddress
 
 
-def create_cultureaddress(person_id: PersonID, culture_qid: CultureQID):
-    x_cultureaddress = cultureaddress_shop(culture_qid=culture_qid)
+def create_cultureaddress(person_id: PersonID, culture_id: CultureQID):
+    x_cultureaddress = cultureaddress_shop(culture_id=culture_id)
     x_cultureaddress.add_person_id(person_id)
     return x_cultureaddress
 
@@ -76,20 +76,20 @@ class ConcernUnit:
         self.action = x_forkroad
 
     def _check_subject_road(self, road: RoadPath) -> bool:
-        if road == get_road(self.cultureaddress.culture_qid, ""):
+        if road == get_road(self.cultureaddress.culture_id, ""):
             raise ConcernSubRoadPathException(
                 f"ConcernUnit subject level 1 cannot be empty. ({road})"
             )
-        double_culture_qid_road = get_road(
-            self.cultureaddress.culture_qid, self.cultureaddress.culture_qid
+        double_culture_id_road = get_road(
+            self.cultureaddress.culture_id, self.cultureaddress.culture_id
         )
-        if is_sub_road(road, double_culture_qid_road):
+        if is_sub_road(road, double_culture_id_road):
             raise ConcernSubRoadPathException(
-                f"ConcernUnit setting concern_subject '{road}' failed because first child node cannot be culture_qid as bug asumption check."
+                f"ConcernUnit setting concern_subject '{road}' failed because first child node cannot be culture_id as bug asumption check."
             )
-        if is_sub_road(road, self.cultureaddress.culture_qid) == False:
+        if is_sub_road(road, self.cultureaddress.culture_id) == False:
             raise ConcernSubRoadPathException(
-                f"ConcernUnit setting concern_subject '{road}' failed because culture_qid is not first node."
+                f"ConcernUnit setting concern_subject '{road}' failed because culture_id is not first node."
             )
 
     def get_str_summary(self):
@@ -100,14 +100,14 @@ class ConcernUnit:
         _action_positive = self.action.get_1_good()
         _action_negative = self.action.get_1_bad()
 
-        concern_road = get_diff_road(_concern_subject, self.cultureaddress.culture_qid)
+        concern_road = get_diff_road(_concern_subject, self.cultureaddress.culture_id)
         bad_road = get_diff_road(_concern_bad, _concern_subject)
         good_road = get_diff_road(_concern_good, _concern_subject)
-        action_road = get_diff_road(_action_subject, self.cultureaddress.culture_qid)
+        action_road = get_diff_road(_action_subject, self.cultureaddress.culture_id)
         negative_road = get_diff_road(_action_negative, _action_subject)
         positive_road = get_diff_road(_action_positive, _action_subject)
 
-        return f"""Within {list(self.cultureaddress.person_ids.keys())}'s {self.cultureaddress.culture_qid} culture subject: {concern_road}
+        return f"""Within {list(self.cultureaddress.person_ids.keys())}'s {self.cultureaddress.culture_id} culture subject: {concern_road}
  {bad_road} is bad. 
  {good_road} is good.
  Within the action domain of '{action_road}'
@@ -140,14 +140,14 @@ def create_concernunit(
     x_concernunit = ConcernUnit(cultureaddress=cultureaddress)
     x_concernunit.set_why(
         create_forkroad(
-            base=get_road(cultureaddress.culture_qid, why),
+            base=get_road(cultureaddress.culture_id, why),
             good=good,
             bad=bad,
         )
     )
     x_concernunit.set_action(
         create_forkroad(
-            base=get_road(cultureaddress.culture_qid, action),
+            base=get_road(cultureaddress.culture_id, action),
             good=positive,
             bad=negative,
         )

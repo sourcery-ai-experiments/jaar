@@ -1,7 +1,7 @@
 from src.agenda.agenda import agendaunit_shop
 from src.culture.culture import cultureunit_shop
 from src.culture.examples.culture_env_kit import (
-    get_temp_env_qid,
+    get_temp_env_culture_id,
     get_test_cultures_dir,
     env_dir_setup_cleanup,
 )
@@ -13,8 +13,8 @@ from src.culture.treasury_sqlstr import (
 
 def test_culture_treasury_get_agendaunits_ReturnsCorrectEmptyObj(env_dir_setup_cleanup):
     # GIVEN
-    culture_qid = get_temp_env_qid()
-    x_culture = cultureunit_shop(culture_qid, get_test_cultures_dir())
+    culture_id = get_temp_env_culture_id()
+    x_culture = cultureunit_shop(culture_id, get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_treasury=True)
     x_culture.refresh_treasury_public_agendas_data()
 
@@ -27,8 +27,8 @@ def test_culture_treasury_get_agendaunits_ReturnsCorrectEmptyObj(env_dir_setup_c
 
 def test_culture_treasury_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_cleanup):
     # GIVEN
-    culture_qid = get_temp_env_qid()
-    x_culture = cultureunit_shop(culture_qid, get_test_cultures_dir())
+    culture_id = get_temp_env_culture_id()
+    x_culture = cultureunit_shop(culture_id, get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_treasury=True)
     x_culture.refresh_treasury_public_agendas_data()
     assert len(get_agendatreasuryunits_dict(x_culture.get_treasury_conn())) == 0
@@ -75,8 +75,8 @@ def test_culture_treasury_treasury_set_agendaunit_attrs_CorrectlyUpdatesRecord(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    culture_qid = get_temp_env_qid()
-    x_culture = cultureunit_shop(culture_qid, get_test_cultures_dir())
+    culture_id = get_temp_env_culture_id()
+    x_culture = cultureunit_shop(culture_id, get_test_cultures_dir())
     x_culture.create_dirs_if_null(in_memory_treasury=True)
     x_culture.refresh_treasury_public_agendas_data()
     sal_text = "sal"

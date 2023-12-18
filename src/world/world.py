@@ -27,15 +27,15 @@ class WorldUnit:
 
         for person_id in x_cultureaddress.person_ids.keys():
             x_personunit = self.get_personunit_from_memory(person_id)
-            x_cultureunit = x_personunit.get_cultureunit(x_cultureaddress.culture_qid)
+            x_cultureunit = x_personunit.get_cultureunit(x_cultureaddress.culture_id)
             x_cultureunit.add_councilunit(x_urgeunit._urger_pid, True)
             print(f"{x_cultureunit.cultures_dir=}")
 
             urger_councilunit = x_cultureunit.get_councilunit(x_urgeunit._urger_pid)
-            print(f"{urger_councilunit._admin._agendas_depot_dir=}")
-            print(f"{urger_councilunit._admin._agendas_digest_dir=}")
-            print(f"{urger_councilunit._admin._agendas_public_dir=}")
-            urger_councilunit._admin.save_refreshed_output_to_public()
+            print(f"{urger_councilunit._agendas_depot_dir=}")
+            print(f"{urger_councilunit._agendas_digest_dir=}")
+            print(f"{urger_councilunit._agendas_public_dir=}")
+            urger_councilunit.save_refreshed_output_to_public()
             for actor_pid in x_urgeunit._actor_pids.keys():
                 x_cultureunit.add_councilunit(actor_pid)
 
@@ -78,16 +78,16 @@ class WorldUnit:
         cultureaddress: CultureAddress,
         council_person_id: PersonID,
     ):
-        culture_qid = cultureaddress.culture_qid
+        culture_id = cultureaddress.culture_id
 
         for culture_person_id in cultureaddress.person_ids.keys():
             if self.personunit_exists(culture_person_id) == False:
                 self.set_personunit(culture_person_id)
             x_personunit = self.get_personunit_from_memory(culture_person_id)
 
-            if x_personunit.cultureunit_exists(culture_qid) == False:
-                x_personunit.set_cultureunit(culture_qid)
-            x_culture = x_personunit.get_cultureunit(culture_qid)
+            if x_personunit.cultureunit_exists(culture_id) == False:
+                x_personunit.set_cultureunit(culture_id)
+            x_culture = x_personunit.get_cultureunit(culture_id)
 
             if self.personunit_exists(council_person_id) == False:
                 self.set_personunit(council_person_id)

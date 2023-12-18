@@ -9,7 +9,7 @@ from src.culture.examples.example_councils import (
 )
 from src.culture.examples.council_env_kit import (
     get_temp_councilunit_dir,
-    get_temp_culture_qid,
+    get_temp_culture_id,
     council_dir_setup_cleanup,
 )
 from os import path as os_path
@@ -21,12 +21,12 @@ def test_CouncilUnit_exists():
     env_dir = get_temp_councilunit_dir()
 
     # WHEN
-    bob_counciladmin = CouncilUnit(bob_text, env_dir, get_temp_culture_qid())
+    bob_counciladmin = CouncilUnit(bob_text, env_dir, get_temp_culture_id())
 
     # THEN
     assert bob_counciladmin._council_cid != None
     assert bob_counciladmin._env_dir != None
-    assert bob_counciladmin._culture_qid != None
+    assert bob_counciladmin._culture_id != None
     assert bob_counciladmin._road_node_delimiter is None
     assert bob_counciladmin._councilunit_dir is None
     assert bob_counciladmin._seed_file_name is None
@@ -44,7 +44,7 @@ def test_CouncilUnit_set_dir_CorrectSetsCouncilUnitAttribute():
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_councilunit_dir()
-    bob_counciladmin = CouncilUnit(bob_text, env_dir, get_temp_culture_qid())
+    bob_counciladmin = CouncilUnit(bob_text, env_dir, get_temp_culture_id())
     assert bob_counciladmin._councilunit_dir is None
     assert bob_counciladmin._agenda_output_file_name is None
     assert bob_counciladmin._agenda_output_file_path is None
@@ -105,7 +105,7 @@ def test_CouncilUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     jul_councilunit = CouncilUnit(
         _council_cid=jul_text,
         _env_dir=env_dir,
-        _culture_qid=get_temp_culture_qid(),
+        _culture_id=get_temp_culture_id(),
         _road_node_delimiter=",",
     )
     jul_councilunit.set_dirs()
@@ -139,7 +139,7 @@ def test_CouncilUnit_create_core_dir_and_files_DoesNotOverWriteseedAgenda(
     # GIVEN create healer
     jul_text = "julian"
     env_dir = get_temp_councilunit_dir()
-    jul_councilunit = councilunit_shop(jul_text, env_dir, get_temp_culture_qid())
+    jul_councilunit = councilunit_shop(jul_text, env_dir, get_temp_culture_id())
     jul_councilunit.set_dirs()
     x_agenda = example_healers_get_7nodeJRootWithH_agenda()
     jul_councilunit.create_core_dir_and_files(x_agenda)
@@ -175,7 +175,7 @@ def test_CouncilUnit_set_council_cid_WorksCorrectly(council_dir_setup_cleanup):
     env_dir = get_temp_councilunit_dir()
 
     old_healer_text = "bob"
-    jul_councilunit = councilunit_shop(old_healer_text, env_dir, get_temp_culture_qid())
+    jul_councilunit = councilunit_shop(old_healer_text, env_dir, get_temp_culture_id())
     x_agenda = example_healers_get_7nodeJRootWithH_agenda()
     jul_councilunit.set_dirs()
     jul_councilunit.create_core_dir_and_files(x_agenda)
@@ -217,7 +217,7 @@ def test_councilunit_auto_output_to_public_SavesAgendaToPublicDir(
     # GIVEN
     bob_text = "bob"
     bob_counciladmin = councilunit_shop(
-        bob_text, get_temp_councilunit_dir(), get_temp_culture_qid()
+        bob_text, get_temp_councilunit_dir(), get_temp_culture_id()
     )
     x_agenda = example_healers_get_6node_agenda()
     x_agenda.set_healer(new_healer=bob_text)
