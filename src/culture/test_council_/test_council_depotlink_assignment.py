@@ -28,7 +28,7 @@ def test_healer_save_agenda_to_depot_assignment_link_CorrectlyCreatesAssignmentF
 
     # WHEN
     cali_ux.set_depot_agenda(x_agenda=amer_agenda, depotlink_type="assignment")
-    output_agenda = cali_ux._admin.get_remelded_output_agenda()
+    output_agenda = cali_ux.get_remelded_output_agenda()
 
     # THEN
     assert output_agenda != None

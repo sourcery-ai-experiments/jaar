@@ -15,8 +15,23 @@ def test_CouncilUnit_exists(council_dir_setup_cleanup):
     x_council = CouncilUnit()
 
     # GIVEN
-    assert x_council._admin is None
+    assert x_council != None
     assert x_council._seed is None
+    assert x_council._council_cid is None
+    assert x_council._env_dir is None
+    assert x_council._culture_qid is None
+    assert x_council._councilunit_dir is None
+    assert x_council._councilunits_dir is None
+    assert x_council._seed_file_name is None
+    assert x_council._seed_file_path is None
+    assert x_council._agenda_output_file_name is None
+    assert x_council._agenda_output_file_path is None
+    assert x_council._public_file_name is None
+    assert x_council._agendas_public_dir is None
+    assert x_council._agendas_depot_dir is None
+    assert x_council._agendas_ignore_dir is None
+    assert x_council._agendas_digest_dir is None
+    assert x_council._road_node_delimiter is None
 
 
 def test_councilunit_shop_exists(council_dir_setup_cleanup):
@@ -31,11 +46,12 @@ def test_councilunit_shop_exists(council_dir_setup_cleanup):
     )
 
     # GIVEN
-    assert x_council._admin._council_cid != None
-    assert x_council._admin._culture_qid != None
-    assert x_council._admin._culture_qid == get_temp_culture_qid()
-    assert x_council._admin._road_node_delimiter == get_node_delimiter()
-    assert x_council._seed is None
+    assert x_council._council_cid != None
+    assert x_council._culture_qid != None
+    assert x_council._culture_qid == get_temp_culture_qid()
+    assert x_council._road_node_delimiter == get_node_delimiter()
+    assert x_council._seed != None
+    assert x_council._seed._culture_qid == get_temp_culture_qid()
 
 
 def test_councilunit_auto_output_to_public_SavesAgendaToPublicDirWhenTrue(
@@ -89,23 +105,30 @@ def test_councilunit_get_seed_createsEmptyAgendaWhenFileDoesNotExist(
 ):
     # GIVEN
     slash_text = "/"
-    tim_council = councilunit_shop(
-        "Tim",
-        get_temp_councilunit_dir(),
-        get_temp_culture_qid(),
+    tim_council = CouncilUnit(
+        _council_cid="Tim",
+        _env_dir=get_temp_councilunit_dir(),
+        _culture_qid=get_temp_culture_qid(),
         _road_node_delimiter=slash_text,
     )
+    tim_council.set_env_dir(
+        env_dir=get_temp_councilunit_dir(),
+        council_cid="Tim",
+        culture_qid=get_temp_culture_qid(),
+        _road_node_delimiter=get_node_delimiter(slash_text),
+    )
+    tim_council.set_dirs()
     tim_council.create_core_dir_and_files()
-    assert os_path.exists(tim_council._admin._seed_file_path)
-    x_func_delete_dir(dir=tim_council._admin._seed_file_path)
-    assert os_path.exists(tim_council._admin._seed_file_path) is False
+    assert os_path.exists(tim_council._seed_file_path)
+    x_func_delete_dir(dir=tim_council._seed_file_path)
+    assert os_path.exists(tim_council._seed_file_path) is False
     assert tim_council._seed is None
 
     # WHEN
     seed_agenda = tim_council.get_seed()
 
     # THEN
-    assert os_path.exists(tim_council._admin._seed_file_path)
+    assert os_path.exists(tim_council._seed_file_path)
     assert tim_council._seed != None
     assert seed_agenda._road_node_delimiter != None
     assert seed_agenda._road_node_delimiter == slash_text
@@ -120,9 +143,7 @@ def test_councilunit_get_seed_getsMemoryAgendaIfExists(
         tim_text, get_temp_councilunit_dir(), get_temp_culture_qid()
     )
     tim_council.create_core_dir_and_files()
-    seed_file_path = (
-        f"{tim_council._admin._councilunit_dir}/{tim_council._admin._seed_file_name}"
-    )
+    seed_file_path = f"{tim_council._councilunit_dir}/{tim_council._seed_file_name}"
     seed_agenda1 = tim_council.get_seed()
     assert os_path.exists(seed_file_path)
     assert tim_council._seed != None
@@ -154,9 +175,7 @@ def test_councilunit_set_seed_savesseedAgendaSet_seed_None(
         tim_text, get_temp_councilunit_dir(), get_temp_culture_qid()
     )
     tim_council.create_core_dir_and_files()
-    seed_file_path = (
-        f"{tim_council._admin._councilunit_dir}/{tim_council._admin._seed_file_name}"
-    )
+    seed_file_path = f"{tim_council._councilunit_dir}/{tim_council._seed_file_name}"
     seed_agenda1 = tim_council.get_seed()
     assert os_path.exists(seed_file_path)
     assert tim_council._seed != None
@@ -182,9 +201,7 @@ def test_councilunit_set_seed_savesGivenAgendaSet_seed_None(
         tim_text, get_temp_councilunit_dir(), get_temp_culture_qid()
     )
     tim_council.create_core_dir_and_files()
-    seed_file_path = (
-        f"{tim_council._admin._councilunit_dir}/{tim_council._admin._seed_file_name}"
-    )
+    seed_file_path = f"{tim_council._councilunit_dir}/{tim_council._seed_file_name}"
     seed_agenda1 = tim_council.get_seed()
     assert os_path.exists(seed_file_path)
     assert tim_council._seed != None

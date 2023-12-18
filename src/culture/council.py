@@ -33,10 +33,10 @@ class CouncilCID(PersonID):
 
 
 @dataclass
-class CouncilAdmin:
-    _council_cid: CouncilCID
-    _env_dir: str
-    _culture_qid: str
+class CouncilUnit:
+    _council_cid: CouncilCID = None
+    _env_dir: str = None
+    _culture_qid: str = None
     _councilunit_dir: str = None
     _councilunits_dir: str = None
     _seed_file_name: str = None
@@ -49,6 +49,132 @@ class CouncilAdmin:
     _agendas_ignore_dir: str = None
     _agendas_digest_dir: str = None
     _road_node_delimiter: str = None
+    _seed: AgendaUnit = None
+
+    def refresh_depot_agendas(self):
+        for party_x in self._seed._partys.values():
+            if party_x.pid != self._council_cid:
+                party_agenda = agendaunit_get_from_json(
+                    x_agenda_json=self.open_public_agenda(party_x.pid)
+                )
+                self.set_depot_agenda(
+                    x_agenda=party_agenda,
+                    depotlink_type=party_x.depotlink_type,
+                    creditor_weight=party_x.creditor_weight,
+                    debtor_weight=party_x.debtor_weight,
+                )
+
+    def set_depot_agenda(
+        self,
+        x_agenda: AgendaUnit,
+        depotlink_type: str,
+        creditor_weight: float = None,
+        debtor_weight: float = None,
+    ):
+        self.set_seed_if_empty()
+        self.save_agenda_to_depot(x_agenda)
+        self._set_depotlink(
+            x_agenda._healer, depotlink_type, creditor_weight, debtor_weight
+        )
+        if self.get_seed()._auto_output_to_public:
+            self.save_refreshed_output_to_public()
+
+    def _set_depotlinks_empty_if_null(self):
+        self.set_seed_if_empty()
+        self._seed.set_partys_empty_if_null()
+
+    def _set_depotlink(
+        self,
+        outer_healer: str,
+        link_type: str = None,
+        creditor_weight: float = None,
+        debtor_weight: float = None,
+    ):
+        self.raise_exception_if_no_file("depot", outer_healer)
+        self._set_partyunit_depotlink(
+            outer_healer, link_type, creditor_weight, debtor_weight
+        )
+
+        if link_type == "assignment":
+            self._set_assignment_depotlink(outer_healer)
+        elif link_type == "blind_trust":
+            x_agenda = self.open_depot_agenda(healer=outer_healer)
+            self.save_agenda_to_digest(x_agenda)
+        elif link_type == "ignore":
+            new_x_agenda = agendaunit_shop(_healer=outer_healer)
+            new_x_agenda.set_culture_qid(self._culture_qid)
+            self.set_ignore_agenda_file(new_x_agenda, new_x_agenda._healer)
+
+    def _set_assignment_depotlink(self, outer_healer):
+        src_agenda = self.open_depot_agenda(outer_healer)
+        src_agenda.set_agenda_metrics()
+        empty_agenda = agendaunit_shop(_healer=self._council_cid)
+        empty_agenda.set_culture_qid(self._culture_qid)
+        assign_agenda = src_agenda.get_assignment(
+            empty_agenda, self.get_seed()._partys, self._council_cid
+        )
+        assign_agenda.set_agenda_metrics()
+        self.save_agenda_to_digest(assign_agenda, src_agenda._healer)
+
+    def _set_partyunit_depotlink(
+        self,
+        pid: PartyPID,
+        link_type: str = None,
+        creditor_weight: float = None,
+        debtor_weight: float = None,
+    ):
+        party_x = self.get_seed().get_party(pid)
+        if party_x is None:
+            self.get_seed().set_partyunit(
+                partyunit_shop(
+                    pid=pid,
+                    depotlink_type=link_type,
+                    creditor_weight=creditor_weight,
+                    debtor_weight=debtor_weight,
+                )
+            )
+        else:
+            party_x.set_depotlink_type(link_type, creditor_weight, debtor_weight)
+
+    def del_depot_agenda(self, agenda_healer: str):
+        self._del_depotlink(partypid=agenda_healer)
+        self.erase_depot_agenda(agenda_healer)
+        self.erase_digest_agenda(agenda_healer)
+
+    def _del_depotlink(self, partypid: PartyPID):
+        self._seed.get_party(partypid).del_depotlink_type()
+
+    def get_seed(self):
+        if self._seed is None:
+            self._seed = self.open_seed_agenda()
+        return self._seed
+
+    def set_seed(self, x_agenda: AgendaUnit = None):
+        if x_agenda != None:
+            self._seed = x_agenda
+        self.save_seed_agenda(self._seed)
+        self._seed = None
+
+    def set_seed_if_empty(self):
+        # if self._seed is None:
+        self.get_seed()
+
+    def set_ignore_agenda_file(self, agendaunit: AgendaUnit, src_agenda_healer: str):
+        self.save_ignore_agenda(agendaunit, src_agenda_healer)
+        self.save_agenda_to_digest(agendaunit, src_agenda_healer)
+
+    # housekeeping
+    def set_env_dir(
+        self,
+        env_dir: str,
+        council_cid: CouncilCID,
+        culture_qid: str,
+        _road_node_delimiter: str = None,
+    ):
+        self._council_cid = council_cid
+        self._env_dir = env_dir
+        self._culture_qid = culture_qid
+        self._road_node_delimiter = get_node_delimiter(_road_node_delimiter)
 
     def set_dirs(self):
         env_councilunits_folder = "councilunits"
@@ -80,6 +206,7 @@ class CouncilAdmin:
         single_dir_create_if_null(x_path=self._agendas_depot_dir)
         single_dir_create_if_null(x_path=self._agendas_digest_dir)
         single_dir_create_if_null(x_path=self._agendas_ignore_dir)
+
         if seed_agenda is None and self._seed_agenda_exists() == False:
             self.save_seed_agenda(self._get_empty_seed_agenda())
         elif seed_agenda != None and self._seed_agenda_exists() == False:
@@ -221,158 +348,6 @@ class CouncilAdmin:
         self.save_agenda_to_public(self.get_remelded_output_agenda())
 
 
-def counciladmin_shop(
-    _council_cid: CouncilCID,
-    _env_dir: str,
-    _culture_qid: str,
-    _road_node_delimiter: str = None,
-) -> CouncilAdmin:
-    x_counciladmin = CouncilAdmin(
-        _council_cid=_council_cid,
-        _env_dir=_env_dir,
-        _culture_qid=_culture_qid,
-        _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
-    )
-    x_counciladmin.set_dirs()
-    return x_counciladmin
-
-
-@dataclass
-class CouncilUnit:
-    _admin: CouncilAdmin = None
-    _seed: AgendaUnit = None
-
-    def refresh_depot_agendas(self):
-        for party_x in self._seed._partys.values():
-            if party_x.pid != self._admin._council_cid:
-                party_agenda = agendaunit_get_from_json(
-                    x_agenda_json=self._admin.open_public_agenda(party_x.pid)
-                )
-                self.set_depot_agenda(
-                    x_agenda=party_agenda,
-                    depotlink_type=party_x.depotlink_type,
-                    creditor_weight=party_x.creditor_weight,
-                    debtor_weight=party_x.debtor_weight,
-                )
-
-    def set_depot_agenda(
-        self,
-        x_agenda: AgendaUnit,
-        depotlink_type: str,
-        creditor_weight: float = None,
-        debtor_weight: float = None,
-    ):
-        self.set_seed_if_empty()
-        self._admin.save_agenda_to_depot(x_agenda)
-        self._set_depotlink(
-            x_agenda._healer, depotlink_type, creditor_weight, debtor_weight
-        )
-        if self.get_seed()._auto_output_to_public:
-            self._admin.save_refreshed_output_to_public()
-
-    def _set_depotlinks_empty_if_null(self):
-        self.set_seed_if_empty()
-        self._seed.set_partys_empty_if_null()
-
-    def _set_depotlink(
-        self,
-        outer_healer: str,
-        link_type: str = None,
-        creditor_weight: float = None,
-        debtor_weight: float = None,
-    ):
-        self._admin.raise_exception_if_no_file("depot", outer_healer)
-        self._set_partyunit_depotlink(
-            outer_healer, link_type, creditor_weight, debtor_weight
-        )
-
-        if link_type == "assignment":
-            self._set_assignment_depotlink(outer_healer)
-        elif link_type == "blind_trust":
-            x_agenda = self._admin.open_depot_agenda(healer=outer_healer)
-            self._admin.save_agenda_to_digest(x_agenda)
-        elif link_type == "ignore":
-            new_x_agenda = agendaunit_shop(_healer=outer_healer)
-            new_x_agenda.set_culture_qid(self._admin._culture_qid)
-            self.set_ignore_agenda_file(new_x_agenda, new_x_agenda._healer)
-
-    def _set_assignment_depotlink(self, outer_healer):
-        src_agenda = self._admin.open_depot_agenda(outer_healer)
-        src_agenda.set_agenda_metrics()
-        empty_agenda = agendaunit_shop(_healer=self._admin._council_cid)
-        empty_agenda.set_culture_qid(self._admin._culture_qid)
-        assign_agenda = src_agenda.get_assignment(
-            empty_agenda, self.get_seed()._partys, self._admin._council_cid
-        )
-        assign_agenda.set_agenda_metrics()
-        self._admin.save_agenda_to_digest(assign_agenda, src_agenda._healer)
-
-    def _set_partyunit_depotlink(
-        self,
-        pid: PartyPID,
-        link_type: str = None,
-        creditor_weight: float = None,
-        debtor_weight: float = None,
-    ):
-        party_x = self.get_seed().get_party(pid)
-        if party_x is None:
-            self.get_seed().set_partyunit(
-                partyunit_shop(
-                    pid=pid,
-                    depotlink_type=link_type,
-                    creditor_weight=creditor_weight,
-                    debtor_weight=debtor_weight,
-                )
-            )
-        else:
-            party_x.set_depotlink_type(link_type, creditor_weight, debtor_weight)
-
-    def del_depot_agenda(self, agenda_healer: str):
-        self._del_depotlink(partypid=agenda_healer)
-        self._admin.erase_depot_agenda(agenda_healer)
-        self._admin.erase_digest_agenda(agenda_healer)
-
-    def _del_depotlink(self, partypid: PartyPID):
-        self._seed.get_party(partypid).del_depotlink_type()
-
-    def get_seed(self):
-        if self._seed is None:
-            self._seed = self._admin.open_seed_agenda()
-        return self._seed
-
-    def set_seed(self, x_agenda: AgendaUnit = None):
-        if x_agenda != None:
-            self._seed = x_agenda
-        self._admin.save_seed_agenda(self._seed)
-        self._seed = None
-
-    def set_seed_if_empty(self):
-        # if self._seed is None:
-        self.get_seed()
-
-    def set_ignore_agenda_file(self, agendaunit: AgendaUnit, src_agenda_healer: str):
-        self._admin.save_ignore_agenda(agendaunit, src_agenda_healer)
-        self._admin.save_agenda_to_digest(agendaunit, src_agenda_healer)
-
-    # housekeeping
-    def set_env_dir(
-        self,
-        env_dir: str,
-        council_cid: CouncilCID,
-        culture_qid: str,
-        _road_node_delimiter: str = None,
-    ):
-        self._admin = counciladmin_shop(
-            _council_cid=council_cid,
-            _env_dir=env_dir,
-            _culture_qid=culture_qid,
-            _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
-        )
-
-    def create_core_dir_and_files(self, seed_agenda: AgendaUnit = None):
-        self._admin.create_core_dir_and_files(seed_agenda)
-
-
 def councilunit_shop(
     pid: str,
     env_dir: str,
@@ -382,13 +357,14 @@ def councilunit_shop(
 ) -> CouncilUnit:
     x_council = CouncilUnit()
     x_council.set_env_dir(
-        env_dir,
-        pid,
+        env_dir=env_dir,
+        council_cid=pid,
         culture_qid=culture_qid,
-        _road_node_delimiter=_road_node_delimiter,
+        _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
     )
+    x_council.set_dirs()
     x_council.get_seed()
     x_council._seed._set_auto_output_to_public(_auto_output_to_public)
-    print(f"saved to public {_auto_output_to_public=}")
-    x_council.set_seed()
+    # x_council.save_seed_agenda(x_council.get_seed())
+    x_council.get_seed()
     return x_council

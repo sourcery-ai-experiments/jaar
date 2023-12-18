@@ -34,7 +34,7 @@ def test_councilunit_set_depotlink_RaisesErrorWhenAgendaDoesNotExist(
     assert list(sue_agenda._seed._partys.keys()) == [sue_text]
 
     # WHEN / THEN
-    file_path_x = f"{sue_agenda._admin._agendas_depot_dir}/{tim_text}.json"
+    file_path_x = f"{sue_agenda._agendas_depot_dir}/{tim_text}.json"
     print(f"{file_path_x=}")
     with pytest_raises(Exception) as excinfo:
         sue_agenda._set_depotlink(outer_healer=tim_text)
@@ -51,7 +51,7 @@ def test_councilunit_set_depotlink_CorrectlySetsseedPartys(council_dir_setup_cle
     yao_ux = councilunit_shop(yao_text, env_dir, get_temp_culture_qid())
     yao_ux.set_seed_if_empty()
     sue_text = "sue"
-    create_agenda_file(yao_ux._admin._agendas_depot_dir, sue_text)
+    create_agenda_file(yao_ux._agendas_depot_dir, sue_text)
     assert list(yao_ux._seed._partys.keys()) == [yao_text]
 
     # WHEN
@@ -72,11 +72,9 @@ def test_councilunit_set_depotlink_CorrectlySetsAssignment(council_dir_setup_cle
     )
     cali_ux.create_core_dir_and_files()
     cali_ux.set_seed_if_empty()
-    cali_ux._admin.save_agenda_to_depot(amer_agenda)
+    cali_ux.save_agenda_to_depot(amer_agenda)
     assert cali_ux.get_seed().get_party(amer_agenda._healer) is None
-    amer_digest_path = (
-        f"{cali_ux._admin._agendas_digest_dir}/{amer_agenda._healer}.json"
-    )
+    amer_digest_path = f"{cali_ux._agendas_digest_dir}/{amer_agenda._healer}.json"
     assert os_path.exists(amer_digest_path) is False
 
     # WHEN
@@ -91,7 +89,7 @@ def test_councilunit_set_depotlink_CorrectlySetsAssignment(council_dir_setup_cle
     assert os_path.exists(amer_digest_path)
     digest_agenda = agenda_get_from_json(
         x_func_open_file(
-            dest_dir=cali_ux._admin._agendas_digest_dir,
+            dest_dir=cali_ux._agendas_digest_dir,
             file_name=f"{amer_agenda._healer}.json",
         )
     )
@@ -108,7 +106,7 @@ def test_councilunit_del_depot_agenda_CorrectlyDeletesObj(council_dir_setup_clea
     env_dir = get_temp_councilunit_dir()
     bob_agenda = councilunit_shop(bob_text, env_dir, get_temp_culture_qid())
     yao_text = "Yao"
-    create_agenda_file(bob_agenda._admin._agendas_depot_dir, yao_text)
+    create_agenda_file(bob_agenda._agendas_depot_dir, yao_text)
     assignment_text = "assignment"
     bob_agenda._set_depotlinks_empty_if_null()
     bob_agenda._set_depotlink(yao_text, link_type=assignment_text)
@@ -131,18 +129,18 @@ def test_councilunit_del_depot_agenda_CorrectlyDeletesBlindTrustFile(
     env_dir = get_temp_councilunit_dir()
     bob_agenda = councilunit_shop(bob_text, env_dir, get_temp_culture_qid())
     lai_text = "Lai"
-    create_agenda_file(bob_agenda._admin._agendas_depot_dir, lai_text)
+    create_agenda_file(bob_agenda._agendas_depot_dir, lai_text)
     bob_agenda.set_seed_if_empty()
     bob_agenda._set_depotlink(lai_text, link_type="blind_trust")
-    assert x_func_count_files(dir_path=bob_agenda._admin._agendas_depot_dir) == 1
-    assert x_func_count_files(dir_path=bob_agenda._admin._agendas_digest_dir) == 1
+    assert x_func_count_files(dir_path=bob_agenda._agendas_depot_dir) == 1
+    assert x_func_count_files(dir_path=bob_agenda._agendas_digest_dir) == 1
 
     # WHEN
     bob_agenda.del_depot_agenda(agenda_healer=lai_text)
 
     # THEN
-    assert x_func_count_files(dir_path=bob_agenda._admin._agendas_depot_dir) == 0
-    assert x_func_count_files(dir_path=bob_agenda._admin._agendas_digest_dir) == 0
+    assert x_func_count_files(dir_path=bob_agenda._agendas_depot_dir) == 0
+    assert x_func_count_files(dir_path=bob_agenda._agendas_digest_dir) == 0
 
 
 def test_councilunit_set_depot_agenda_SavesFileCorrectly(
@@ -154,7 +152,7 @@ def test_councilunit_set_depot_agenda_SavesFileCorrectly(
     bob_agenda = councilunit_shop(bob_text, env_dir, get_temp_culture_qid())
     cal1 = get_2node_agenda()
     assert (
-        x_func_count_files(bob_agenda._admin._agendas_depot_dir) is None
+        x_func_count_files(bob_agenda._agendas_depot_dir) is None
     )  # dir does not exist
 
     # WHEN
@@ -162,10 +160,10 @@ def test_councilunit_set_depot_agenda_SavesFileCorrectly(
     bob_agenda.set_depot_agenda(x_agenda=cal1, depotlink_type="blind_trust")
 
     # THEN
-    print(f"Saving to {bob_agenda._admin._agendas_depot_dir=}")
-    # for path_x in os_scandir(ux._admin._agendas_depot_dir):
+    print(f"Saving to {bob_agenda._agendas_depot_dir=}")
+    # for path_x in os_scandir(ux._agendas_depot_dir):
     #     print(f"{path_x=}")
-    assert x_func_count_files(bob_agenda._admin._agendas_depot_dir) == 1
+    assert x_func_count_files(bob_agenda._agendas_depot_dir) == 1
 
 
 def test_councilunit_delete_ignore_depotlink_CorrectlyDeletesObj(
@@ -176,7 +174,7 @@ def test_councilunit_delete_ignore_depotlink_CorrectlyDeletesObj(
     env_dir = get_temp_councilunit_dir()
     bob_agenda = councilunit_shop(bob_text, env_dir, get_temp_culture_qid())
     yao_text = "Yao"
-    create_agenda_file(bob_agenda._admin._agendas_depot_dir, yao_text)
+    create_agenda_file(bob_agenda._agendas_depot_dir, yao_text)
     assignment_text = "assignment"
     bob_agenda.set_seed_if_empty()
     bob_agenda._set_depotlink(yao_text, link_type=assignment_text)
@@ -199,20 +197,20 @@ def test_councilunit_del_depot_agenda_CorrectlyDoesNotDeletesIgnoreFile(
     env_dir = get_temp_councilunit_dir()
     bob_agenda = councilunit_shop(bob_text, env_dir, get_temp_culture_qid())
     zia_text = "Zia"
-    create_agenda_file(bob_agenda._admin._agendas_depot_dir, zia_text)
+    create_agenda_file(bob_agenda._agendas_depot_dir, zia_text)
     bob_agenda.set_seed_if_empty()
     bob_agenda._set_depotlink(zia_text, link_type="ignore")
-    assert x_func_count_files(dir_path=bob_agenda._admin._agendas_depot_dir) == 1
-    assert x_func_count_files(dir_path=bob_agenda._admin._agendas_digest_dir) == 1
-    assert x_func_count_files(dir_path=bob_agenda._admin._agendas_ignore_dir) == 1
+    assert x_func_count_files(dir_path=bob_agenda._agendas_depot_dir) == 1
+    assert x_func_count_files(dir_path=bob_agenda._agendas_digest_dir) == 1
+    assert x_func_count_files(dir_path=bob_agenda._agendas_ignore_dir) == 1
 
     # WHEN
     bob_agenda.del_depot_agenda(agenda_healer=zia_text)
 
     # THEN
-    assert x_func_count_files(dir_path=bob_agenda._admin._agendas_depot_dir) == 0
-    assert x_func_count_files(dir_path=bob_agenda._admin._agendas_digest_dir) == 0
-    assert x_func_count_files(dir_path=bob_agenda._admin._agendas_ignore_dir) == 1
+    assert x_func_count_files(dir_path=bob_agenda._agendas_depot_dir) == 0
+    assert x_func_count_files(dir_path=bob_agenda._agendas_digest_dir) == 0
+    assert x_func_count_files(dir_path=bob_agenda._agendas_ignore_dir) == 1
 
 
 def test_councilunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
@@ -223,11 +221,11 @@ def test_councilunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
     env_dir = get_temp_councilunit_dir()
     bob_ux = councilunit_shop(bob_text, env_dir, get_temp_culture_qid())
     zia_text = "Zia"
-    create_agenda_file(bob_ux._admin._agendas_depot_dir, zia_text)
+    create_agenda_file(bob_ux._agendas_depot_dir, zia_text)
     bob_ux.set_seed_if_empty()
     bob_ux._set_depotlink(zia_text, link_type="ignore")
-    assert x_func_count_files(dir_path=bob_ux._admin._agendas_ignore_dir) == 1
-    cx1 = bob_ux._admin.open_ignore_agenda(healer=zia_text)
+    assert x_func_count_files(dir_path=bob_ux._agendas_ignore_dir) == 1
+    cx1 = bob_ux.open_ignore_agenda(healer=zia_text)
     assert len(cx1._partys) == 0
     cx1.add_partyunit(pid="tim")
     assert len(cx1._partys) == 1
@@ -237,9 +235,9 @@ def test_councilunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
     bob_ux.set_ignore_agenda_file(zia_agenda, src_agenda_healer=None)
 
     # THEN
-    cx2 = bob_ux._admin.open_ignore_agenda(healer=zia_text)
+    cx2 = bob_ux.open_ignore_agenda(healer=zia_text)
     assert len(cx2._partys) == 0
-    assert x_func_count_files(dir_path=bob_ux._admin._agendas_ignore_dir) == 1
+    assert x_func_count_files(dir_path=bob_ux._agendas_ignore_dir) == 1
 
 
 def test_councilunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
@@ -252,7 +250,7 @@ def test_councilunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     yao_text = "Yao"
     sx.create_new_councilunit(council_cid=yao_text)
     yao_agenda = sx.get_councilunit(cid=yao_text)
-    assert len(yao_agenda._admin.get_remelded_output_agenda().get_idea_list()) == 1
+    assert len(yao_agenda.get_remelded_output_agenda().get_idea_list()) == 1
 
     ernie_text = "ernie"
     ernie_agenda = get_cal2nodes(_healer=ernie_text)
@@ -263,18 +261,18 @@ def test_councilunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     yao_agenda.set_depot_agenda(x_agenda=ernie_agenda, depotlink_type="blind_trust")
     yao_agenda.set_depot_agenda(x_agenda=old_steve_agenda, depotlink_type="blind_trust")
 
-    assert len(yao_agenda._admin.get_remelded_output_agenda().get_idea_list()) == 4
+    assert len(yao_agenda.get_remelded_output_agenda().get_idea_list()) == 4
     new_steve_agenda = get_cal3nodes(_healer=steve_text)
     sx.save_public_agenda(new_steve_agenda)
-    print(f"{env_dir=} {yao_agenda._admin._agendas_public_dir=}")
+    print(f"{env_dir=} {yao_agenda._agendas_public_dir=}")
     # for file_name in x_func_dir_files(dir_path=env_dir):
-    #     print(f"{bob_agenda._admin._agendas_public_dir=} {file_name=}")
+    #     print(f"{bob_agenda._agendas_public_dir=} {file_name=}")
 
-    # for file_name in x_func_dir_files(dir_path=bob_agenda._admin._agendas_public_dir):
-    #     print(f"{bob_agenda._admin._agendas_public_dir=} {file_name=}")
+    # for file_name in x_func_dir_files(dir_path=bob_agenda._agendas_public_dir):
+    #     print(f"{bob_agenda._agendas_public_dir=} {file_name=}")
 
     # WHEN
     yao_agenda.refresh_depot_agendas()
 
     # THEN
-    assert len(yao_agenda._admin.get_remelded_output_agenda().get_idea_list()) == 5
+    assert len(yao_agenda.get_remelded_output_agenda().get_idea_list()) == 5

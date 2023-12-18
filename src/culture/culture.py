@@ -71,7 +71,7 @@ class CultureUnit:
             for count_x, x_partyunit in enumerate(x_seed._partys.values()):
                 x_partyunit.set_treasury_voice_rank(count_x)
             x_council.set_seed(x_seed)
-            x_council._admin.save_refreshed_output_to_public()
+            x_council.save_refreshed_output_to_public()
 
     def set_agenda_treasury_attrs(self, x_healer: PersonID):
         healer_agenda = self.get_public_agenda(x_healer)
@@ -369,26 +369,28 @@ class CultureUnit:
 
     def create_new_councilunit(self, council_cid: CouncilCID):
         self.set_councilunits_empty_if_null()
-        ux = councilunit_shop(council_cid, self.get_object_root_dir(), self.qid)
-        ux.create_core_dir_and_files()
-        self._councilunits[ux._admin._council_cid] = ux
+        x_councilunit = councilunit_shop(
+            council_cid, self.get_object_root_dir(), self.qid
+        )
+        x_councilunit.create_core_dir_and_files()
+        self._councilunits[x_councilunit._council_cid] = x_councilunit
 
     def get_councilunit(self, cid: CouncilCID) -> CouncilUnit:
         self.set_councilunits_empty_if_null()
         return self._councilunits.get(cid)
 
     def set_councilunit(self, councilunit: CouncilUnit):
-        self._councilunits[councilunit._admin._council_cid] = councilunit
-        self.save_councilunit_file(council_cid=councilunit._admin._council_cid)
+        self._councilunits[councilunit._council_cid] = councilunit
+        self.save_councilunit_file(council_cid=councilunit._council_cid)
 
     def save_councilunit_file(self, council_cid: CouncilCID):
         x_councilunit = self.get_councilunit(cid=council_cid)
-        x_councilunit._admin.save_seed_agenda(x_councilunit.get_seed())
+        x_councilunit.save_seed_agenda(x_councilunit.get_seed())
 
     def change_councilunit_cid(self, old_cid: CouncilCID, new_cid: CouncilCID):
         council_x = self.get_councilunit(cid=old_cid)
-        old_councilunit_dir = council_x._admin._councilunit_dir
-        council_x._admin.set_council_cid(new_cid=new_cid)
+        old_councilunit_dir = council_x._councilunit_dir
+        council_x.set_council_cid(new_cid=new_cid)
         self.set_councilunit(council_x)
         x_func_delete_dir(old_councilunit_dir)
         self.del_councilunit_from_culture(council_cid=old_cid)
@@ -405,7 +407,7 @@ class CultureUnit:
 
     def get_ignores_dir(self, council_cid: CouncilCID):
         per_x = self.get_councilunit(council_cid)
-        return per_x._admin._agendas_ignore_dir
+        return per_x._agendas_ignore_dir
 
     def get_public_agenda(self, healer: str) -> AgendaUnit:
         return get_agenda_from_json(
@@ -536,7 +538,7 @@ class CultureUnit:
     # Healer output_agenda
     def get_output_agenda(self, council_cid: CouncilCID) -> AgendaUnit:
         x_councilunit = self.get_councilunit(cid=council_cid)
-        return x_councilunit._admin.get_remelded_output_agenda()
+        return x_councilunit.get_remelded_output_agenda()
 
     def build_culture_road(self, road_wo_culture_root: RoadPath = None):
         if road_wo_culture_root is None or road_wo_culture_root == "":

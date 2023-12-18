@@ -52,8 +52,8 @@ def test_cultureunit_change_councilunit_cid_WorksCorrectly(env_dir_setup_cleanup
     assert os_path.exists(old_bob_file_path)
     old_bob_councilunit = x_culture.get_councilunit(cid=old_bob_text)
     assert x_culture.get_councilunit(cid=new_bob_text) is None
-    assert old_bob_councilunit._admin._councilunit_dir == old_bob_dir
-    assert old_bob_councilunit._admin._councilunit_dir != new_bob_dir
+    assert old_bob_councilunit._councilunit_dir == old_bob_dir
+    assert old_bob_councilunit._councilunit_dir != new_bob_dir
 
     # WHEN
     x_culture.change_councilunit_cid(old_cid=old_bob_text, new_cid=new_bob_text)
@@ -66,8 +66,8 @@ def test_cultureunit_change_councilunit_cid_WorksCorrectly(env_dir_setup_cleanup
     assert os_path.exists(old_bob_file_path) == False
     assert x_culture.get_councilunit(cid=old_bob_text) is None
     new_bob_councilunit = x_culture.get_councilunit(cid=new_bob_text)
-    assert new_bob_councilunit._admin._councilunit_dir != old_bob_dir
-    assert new_bob_councilunit._admin._councilunit_dir == new_bob_dir
+    assert new_bob_councilunit._councilunit_dir != old_bob_dir
+    assert new_bob_councilunit._councilunit_dir == new_bob_dir
 
 
 def test_cultureunit_del_councilunit_dir_WorksCorrectly(env_dir_setup_cleanup):
@@ -115,11 +115,13 @@ def test_cultureunit_add_councilunit_WorksCorrectly(env_dir_setup_cleanup):
         culture_qid=get_temp_env_qid(),
     )
     bob_gen_councilunit = x_culture.get_councilunit(bob_text)
-    assert bob_gen_councilunit._admin._env_dir == bob_static_councilunit._admin._env_dir
-    assert bob_gen_councilunit._admin == bob_static_councilunit._admin
+    assert bob_gen_councilunit._env_dir == bob_static_councilunit._env_dir
     assert bob_gen_councilunit._seed != None
-    assert bob_static_councilunit._seed is None
-    assert bob_gen_councilunit._seed != bob_static_councilunit._seed
+    assert bob_static_councilunit._seed != None
+    assert bob_gen_councilunit == bob_static_councilunit
+    print(f"{   bob_gen_councilunit._seed._healer=}")
+    print(f"{bob_static_councilunit._seed._healer=}")
+    assert bob_gen_councilunit._seed == bob_static_councilunit._seed
     assert os_path.exists(bob_dir)
     assert os_path.exists(bob_file_path)
 

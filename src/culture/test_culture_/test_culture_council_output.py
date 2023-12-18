@@ -177,21 +177,21 @@ def test_councilunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     ux_jessi.set_depot_agenda(x_agenda=old_steve_agenda, depotlink_type="blind_trust")
     # ux_steve.set_depot_agenda(x_agenda=ernie_agenda, depotlink_type="blind_trust")
     # ux_steve.set_depot_agenda(x_agenda=jessi_agenda, depotlink_type="blind_trust")
-    assert len(ux_ernie._admin.get_remelded_output_agenda().get_idea_list()) == 4
-    assert len(ux_jessi._admin.get_remelded_output_agenda().get_idea_list()) == 4
-    # assert len(ux_steve._admin.get_remelded_output_agenda().get_idea_list()) == 4
+    assert len(ux_ernie.get_remelded_output_agenda().get_idea_list()) == 4
+    assert len(ux_jessi.get_remelded_output_agenda().get_idea_list()) == 4
+    # assert len(ux_steve.get_remelded_output_agenda().get_idea_list()) == 4
     new_steve_agenda = get_agenda_3CleanNodesRandomWeights(_healer="steve")
     x_culture.save_public_agenda(new_steve_agenda)
-    # print(f"{env_dir=} {ux._admin._agendas_public_dir=}")
+    # print(f"{env_dir=} {ux._agendas_public_dir=}")
     # for file_name in x_func_dir_files(dir_path=env_dir):
-    #     print(f"{ux._admin._agendas_public_dir=} {file_name=}")
+    #     print(f"{ux._agendas_public_dir=} {file_name=}")
 
-    # for file_name in x_func_dir_files(dir_path=ux._admin._agendas_public_dir):
-    #     print(f"{ux._admin._agendas_public_dir=} {file_name=}")
+    # for file_name in x_func_dir_files(dir_path=ux._agendas_public_dir):
+    #     print(f"{ux._agendas_public_dir=} {file_name=}")
 
     # WHEN
     x_culture.reload_all_councilunits_src_agendaunits()
 
     # THEN
-    assert len(ux_ernie._admin.get_remelded_output_agenda().get_idea_list()) == 5
-    assert len(ux_jessi._admin.get_remelded_output_agenda().get_idea_list()) == 5
+    assert len(ux_ernie.get_remelded_output_agenda().get_idea_list()) == 5
+    assert len(ux_jessi.get_remelded_output_agenda().get_idea_list()) == 5

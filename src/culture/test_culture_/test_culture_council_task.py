@@ -31,7 +31,7 @@ def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     seed_x = amer_council.get_seed().set_acptfact(base=basket_road, pick=b_bare_road)
     amer_council.set_seed(seed_x)
     # save fact change to public
-    amer_council._admin.save_refreshed_output_to_public()
+    amer_council.save_refreshed_output_to_public()
     # print(f"{x_culture.get_public_agenda(amer_text)._idearoot._acptfactunits.keys()=}")
     amer_output = x_culture.get_public_agenda(amer_text)
 
@@ -51,10 +51,10 @@ def test_culture_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     # set basket status to "full"
     amer_council.get_seed().set_acptfact(base=basket_road, pick=b_full_road)
     amer_council.set_seed()
-    amer_council._admin.save_refreshed_output_to_public()
+    amer_council.save_refreshed_output_to_public()
 
     cali_council.refresh_depot_agendas()
-    new_cali_agenda = cali_council._admin.get_remelded_output_agenda()
+    new_cali_agenda = cali_council.get_remelded_output_agenda()
 
     # new_public_amer = x_culture.get_public_agenda(amer_text)
     # a_basket_acptfact = new_public_amer._idearoot._acptfactunits.get(basket_road)
@@ -103,8 +103,8 @@ def test_culture_council_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
 
     amer_council.set_seed(amer_seed_x)
     beto_council.set_seed(beto_seed_x)
-    amer_council._admin.save_refreshed_output_to_public()
-    beto_council._admin.save_refreshed_output_to_public()
+    amer_council.save_refreshed_output_to_public()
+    beto_council.save_refreshed_output_to_public()
     amer_output = x_culture.get_public_agenda(amer_text)
     beto_output = x_culture.get_public_agenda(beto_text)
 
@@ -115,7 +115,7 @@ def test_culture_council_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     cali_kichen.set_depot_agenda(amer_output, "assignment")
 
     # WHEN
-    cali_kichen._admin.save_refreshed_output_to_public()
+    cali_kichen.save_refreshed_output_to_public()
 
     # THEN
     old_cali_output = x_culture.get_public_agenda(cali_text)
@@ -150,7 +150,7 @@ def test_culture_council_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     # print(f"{new_cali_amer_party._treasury_voice_rank=} ")
     # print(f"{new_cali_beto_party._treasury_voice_rank=} ")
 
-    cali_kichen._admin.save_refreshed_output_to_public()
+    cali_kichen.save_refreshed_output_to_public()
 
     # THEN final acptfact changed
     new_cali_output = x_culture.get_public_agenda(cali_text)
