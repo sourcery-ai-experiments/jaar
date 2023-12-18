@@ -1,3 +1,6 @@
+from dataclasses import dataclass
+
+
 class InvalidRoadPathException(Exception):
     pass
 
@@ -198,3 +201,67 @@ def replace_road_node_delimiter(road: RoadPath, old_delimiter: str, new_delimite
             f"Cannot replace_road_node_delimiter '{old_delimiter}' with '{new_delimiter}' because the new one already exists in road '{road}'."
         )
     return road.replace(old_delimiter, new_delimiter)
+
+
+class NoneZeroSwayException(Exception):
+    pass
+
+
+class ForkSubRoadPathException(Exception):
+    pass
+
+
+@dataclass
+class ForkRoad:
+    base: RoadPath = None
+    descendents: dict[RoadPath:float] = None
+    delimiter: str = None
+
+    def set_descendents_empty_if_none(self):
+        if self.descendents is None:
+            self.descendents = {}
+
+    def set_descendent(self, descendent: RoadNode, sway: float):
+        if sway in {None, 0}:
+            raise NoneZeroSwayException(
+                f"set_descendent sway parameter {sway} must be Non-zero number"
+            )
+        if is_sub_road(descendent, self.base) == False:
+            raise ForkSubRoadPathException(
+                f"ForkRoad cannot set descendent '{descendent}' because base road is '{self.base}'."
+            )
+        self.descendents[descendent] = sway
+
+    def get_good_descendents(self):
+        return {
+            x_road: x_sway for x_road, x_sway in self.descendents.items() if x_sway > 0
+        }
+
+    def get_bad_descendents(self):
+        return {
+            x_road: x_sway for x_road, x_sway in self.descendents.items() if x_sway < 0
+        }
+
+    def get_1_good(self):
+        return list(self.get_good_descendents())[0]
+
+    def get_1_bad(self):
+        return list(self.get_bad_descendents())[0]
+
+
+def forkroad_shop(
+    base: RoadPath, descendents: dict[RoadPath:float] = None, delimiter: str = None
+):
+    delimiter = get_node_delimiter(delimiter)
+    x_forkroad = ForkRoad(base=base, descendents=descendents, delimiter=delimiter)
+    x_forkroad.set_descendents_empty_if_none()
+    return x_forkroad
+
+
+def create_forkroad(
+    base: RoadPath, good: RoadNode, bad: RoadNode, delimiter: str = None
+):
+    x_forkroad = forkroad_shop(base=base)
+    x_forkroad.set_descendent(get_road(base, good, delimiter=delimiter), 1)
+    x_forkroad.set_descendent(get_road(base, bad, delimiter=delimiter), -1)
+    return x_forkroad

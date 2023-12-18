@@ -2,18 +2,16 @@ from src.world.concern import create_cultureaddress, create_concernunit, create_
 
 
 def get_farm_concernunit():
-    luca_text = "Luca"
-    texas_text = "Texas"
-    texas_cultureaddress = create_cultureaddress(luca_text, texas_text)
+    texas_cultureaddress = create_cultureaddress("Luca", "Texas")
     food_text = "food"
-    good_text = "good food"
-    bad_text = "bad food"
-    farm_text = "farm"
-    well_text = "farm well"
-    poor_text = "farm poorly"
+    good_text = "farm food"
+    bad_text = "cheap food"
+    farm_text = "cultivate"
+    well_text = "cultivate well"
+    poor_text = "cultivate poorly"
     return create_concernunit(
         cultureaddress=texas_cultureaddress,
-        concern=food_text,
+        why=food_text,
         good=good_text,
         bad=bad_text,
         action=farm_text,

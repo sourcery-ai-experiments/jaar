@@ -5,6 +5,8 @@ from src.agenda.road import (
     get_road,
     get_diff_road,
     get_node_delimiter,
+    ForkRoad,
+    create_forkroad,
 )
 from src.agenda.group import GroupBrand
 from src.culture.culture import CultureQID
@@ -59,75 +61,51 @@ class ConcernSubRoadPathException(Exception):
 @dataclass
 class ConcernUnit:
     cultureaddress: CultureAddress  # Culture and healers
-    _concern_subject: RoadPath = None
-    _concern_good: RoadPath = None  # cause that is wanted
-    _concern_bad: RoadPath = None  # pain and cause is not wanted
-    _action_subject: RoadPath = None
-    _action_positive: RoadPath = None  # task that is wanted
-    _action_negative: RoadPath = None  # task that is not wanted
+    why: ForkRoad = None
+    action: ForkRoad = None
 
     def get_road_node_delimiter(self):
         return self.cultureaddress._road_node_delimiter
 
-    def set_good(self, subject_road: RoadPath, good_road: RoadPath, bad_road: RoadPath):
-        self._check_subject_road(subject_road)
-        if is_sub_road(bad_road, subject_road) == False:
-            raise ConcernSubRoadPathException(
-                f"ConcernUnit setting concern_bad '{bad_road}' failed because subject road '{subject_road}' is not subroad"
-            )
-        if is_sub_road(good_road, subject_road) == False:
-            raise ConcernSubRoadPathException(
-                f"ConcernUnit setting concern_good '{good_road}' failed because subject road '{subject_road}' is not subroad"
-            )
-        self._concern_subject = subject_road
-        self._concern_good = good_road
-        self._concern_bad = bad_road
+    def set_why(self, x_forkroad: ForkRoad):
+        self._check_subject_road(x_forkroad.base)
+        self.why = x_forkroad
 
-    def set_action(
-        self, subject_road: RoadPath, positive_road: RoadPath, negative_road: RoadPath
-    ):
-        self._check_subject_road(subject_road)
-        if is_sub_road(negative_road, subject_road) == False:
-            raise ConcernSubRoadPathException(
-                f"ConcernUnit setting action_negative '{negative_road}' failed because subject road '{subject_road}' is not subroad"
-            )
-        if is_sub_road(positive_road, subject_road) == False:
-            raise ConcernSubRoadPathException(
-                f"ConcernUnit setting action_positive '{positive_road}' failed because subject road '{subject_road}' is not subroad"
-            )
-        self._action_subject = subject_road
-        self._action_positive = positive_road
-        self._action_negative = negative_road
+    def set_action(self, x_forkroad: ForkRoad):
+        self._check_subject_road(x_forkroad.base)
+        self.action = x_forkroad
 
     def _check_subject_road(self, road: RoadPath) -> bool:
-        double_culture_qid_road = get_road(
-            self.cultureaddress.culture_qid, self.cultureaddress.culture_qid
-        )
         if road == get_road(self.cultureaddress.culture_qid, ""):
             raise ConcernSubRoadPathException(
                 f"ConcernUnit subject level 1 cannot be empty. ({road})"
             )
+        double_culture_qid_road = get_road(
+            self.cultureaddress.culture_qid, self.cultureaddress.culture_qid
+        )
         if is_sub_road(road, double_culture_qid_road):
             raise ConcernSubRoadPathException(
                 f"ConcernUnit setting concern_subject '{road}' failed because first child node cannot be culture_qid as bug asumption check."
             )
-
         if is_sub_road(road, self.cultureaddress.culture_qid) == False:
             raise ConcernSubRoadPathException(
                 f"ConcernUnit setting concern_subject '{road}' failed because culture_qid is not first node."
             )
 
     def get_str_summary(self):
-        concern_road = get_diff_road(
-            self._concern_subject, self.cultureaddress.culture_qid
-        )
-        bad_road = get_diff_road(self._concern_bad, self._concern_subject)
-        good_road = get_diff_road(self._concern_good, self._concern_subject)
-        action_road = get_diff_road(
-            self._action_subject, self.cultureaddress.culture_qid
-        )
-        negative_road = get_diff_road(self._action_negative, self._action_subject)
-        positive_road = get_diff_road(self._action_positive, self._action_subject)
+        _concern_subject = self.why.base
+        _concern_good = self.why.get_1_good()
+        _concern_bad = self.why.get_1_bad()
+        _action_subject = self.action.base
+        _action_positive = self.action.get_1_good()
+        _action_negative = self.action.get_1_bad()
+
+        concern_road = get_diff_road(_concern_subject, self.cultureaddress.culture_qid)
+        bad_road = get_diff_road(_concern_bad, _concern_subject)
+        good_road = get_diff_road(_concern_good, _concern_subject)
+        action_road = get_diff_road(_action_subject, self.cultureaddress.culture_qid)
+        negative_road = get_diff_road(_action_negative, _action_subject)
+        positive_road = get_diff_road(_action_positive, _action_subject)
 
         return f"""Within {list(self.cultureaddress.person_ids.keys())}'s {self.cultureaddress.culture_qid} culture subject: {concern_road}
  {bad_road} is bad. 
@@ -141,23 +119,17 @@ class ConcernUnit:
 
 
 def concernunit_shop(
-    cultureaddress: CultureAddress,
-    concern_subject: RoadPath = None,
-    concern_good: RoadPath = None,
-    concern_bad: RoadPath = None,
-    action_subject: RoadPath = None,
-    action_positive: RoadPath = None,
-    action_negative: RoadPath = None,
+    cultureaddress: CultureAddress, why: ForkRoad, action: ForkRoad
 ) -> ConcernUnit:
     x_concernunit = ConcernUnit(cultureaddress=cultureaddress)
-    x_concernunit.set_good(concern_subject, concern_good, concern_bad)
-    x_concernunit.set_action(action_subject, action_positive, action_negative)
+    x_concernunit.set_why(why)
+    x_concernunit.set_action(action)
     return x_concernunit
 
 
 def create_concernunit(
     cultureaddress: CultureAddress,
-    concern: RoadPath,
+    why: RoadPath,
     good: RoadNode,
     bad: RoadNode,
     action: RoadPath,
@@ -165,15 +137,20 @@ def create_concernunit(
     negative: RoadNode,
 ):
     x_concernunit = ConcernUnit(cultureaddress=cultureaddress)
-    concern = get_road(cultureaddress.culture_qid, concern)
-    action = get_road(cultureaddress.culture_qid, action)
-
-    concern_good = get_road(concern, good)
-    concern_bad = get_road(concern, bad)
-    x_concernunit.set_good(concern, concern_good, concern_bad)
-    action_positive = get_road(action, positive)
-    action_negative = get_road(action, negative)
-    x_concernunit.set_action(action, action_positive, action_negative)
+    x_concernunit.set_why(
+        create_forkroad(
+            base=get_road(cultureaddress.culture_qid, why),
+            good=good,
+            bad=bad,
+        )
+    )
+    x_concernunit.set_action(
+        create_forkroad(
+            base=get_road(cultureaddress.culture_qid, action),
+            good=positive,
+            bad=negative,
+        )
+    )
     return x_concernunit
 
 

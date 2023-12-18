@@ -2,7 +2,7 @@ from src.world.examples.examples import (
     get_farm_concernunit as examples_get_farm_concernunit,
     get_farm_urgeunit as examples_get_farm_urgeunit,
 )
-from src.agenda.road import get_road, get_node_delimiter
+from src.agenda.road import get_road, get_node_delimiter, create_forkroad
 from src.world.concern import (
     CultureAddress,
     cultureaddress_shop,
@@ -118,211 +118,149 @@ def test_ConcernUnit_exists():
     farm_concernunit = ConcernUnit(texas_cultureaddress)
 
     # THEN
-    assert farm_concernunit._concern_subject is None
-    assert farm_concernunit._concern_good is None
-    assert farm_concernunit._concern_bad is None
-    assert farm_concernunit._action_subject is None
-    assert farm_concernunit._action_positive is None
-    assert farm_concernunit._action_negative is None
+    assert farm_concernunit.why is None
+    assert farm_concernunit.action is None
     assert farm_concernunit.cultureaddress == texas_cultureaddress
 
 
 def test_concernunit_shop_ReturnsCorrectObj():
     # GIVEN
-    texas_text = "Texas"
-    luca_text = "Luca"
-    texas_cultureaddress = create_cultureaddress(luca_text, texas_text)
-    food_subject = get_road(texas_cultureaddress.culture_qid, "food")
-    food_good = get_road(food_subject, "good food")
-    food_bad = get_road(food_subject, "bad food")
-    farm_subject = get_road(texas_cultureaddress.culture_qid, "farm")
-    farm_positive = get_road(farm_subject, "farm well")
-    farm_negative = get_road(farm_subject, "farm poorly")
+    texas_cultureaddress = create_cultureaddress("Luca", "Texas")
+
+    food_road = get_road(texas_cultureaddress.culture_qid, "food")
+    farm_text = "farm food"
+    cheap_text = "cheap food"
+    food_forkroad = create_forkroad(food_road, good=farm_text, bad=cheap_text)
+
+    cultivate_road = get_road(texas_cultureaddress.culture_qid, "cultivate")
+    well_text = "cultivate well"
+    poor_text = "cultivate poorly"
+    cultivate_forkroad = create_forkroad(cultivate_road, good=well_text, bad=poor_text)
 
     # WHEN
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
-        concern_subject=food_subject,
-        concern_good=food_good,
-        concern_bad=food_bad,
-        action_subject=farm_subject,
-        action_positive=farm_positive,
-        action_negative=farm_negative,
+        why=food_forkroad,
+        action=cultivate_forkroad,
     )
 
     # THEN
-    assert farm_concernunit._concern_subject == food_subject
-    assert farm_concernunit._concern_good == food_good
-    assert farm_concernunit._concern_bad == food_bad
-    assert farm_concernunit._action_subject == farm_subject
-    assert farm_concernunit._action_positive == farm_positive
-    assert farm_concernunit._action_negative == farm_negative
+    assert farm_concernunit.why == food_forkroad
+    assert farm_concernunit.action == cultivate_forkroad
     assert farm_concernunit.cultureaddress == texas_cultureaddress
     assert farm_concernunit.get_road_node_delimiter() == get_node_delimiter(
         texas_cultureaddress._road_node_delimiter
     )
 
 
-def test_ConcernUnit_set_good_SetsAttributesCorrectly():
+def test_ConcernUnit_set_why_SetsAttributesCorrectly():
     # GIVEN
-    texas_text = "Texas"
-    luca_text = "Luca"
-    texas_cultureaddress = create_cultureaddress(luca_text, texas_text)
-    food_subject = get_road(texas_cultureaddress.culture_qid, "food")
-    food_good = get_road(food_subject, "good food")
-    food_bad = get_road(food_subject, "bad food")
-    farm_subject = get_road(texas_cultureaddress.culture_qid, "farm")
-    farm_positive = get_road(farm_subject, "farm well")
-    farm_negative = get_road(farm_subject, "farm poorly")
+    texas_cultureaddress = create_cultureaddress("Luca", "Texas")
+    food_road = get_road(texas_cultureaddress.culture_qid, "food")
+    farm_text = "farm food"
+    cheap_text = "cheap food"
+    food_forkroad = create_forkroad(food_road, good=farm_text, bad=cheap_text)
+    cultivate_road = get_road(texas_cultureaddress.culture_qid, "cultivate")
+    well_text = "cultivate well"
+    poor_text = "cultivate poorly"
+    cultivate_forkroad = create_forkroad(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
-        concern_subject=food_subject,
-        concern_good=food_good,
-        concern_bad=food_bad,
-        action_subject=farm_subject,
-        action_positive=farm_positive,
-        action_negative=farm_negative,
+        why=food_forkroad,
+        action=cultivate_forkroad,
     )
 
     # WHEN
     environ_road = get_road(texas_cultureaddress.culture_qid, "environment")
     soil_road = get_road(environ_road, "soil")
-    unsafe_road = get_road(soil_road, "unsafe soil")
-    fertile_road = get_road(soil_road, "fertile soil")
-    farm_concernunit.set_good(soil_road, fertile_road, unsafe_road)
+    unsafe_text = "unsafe soil"
+    fertile_text = "fertile soil"
+    soil_forkroad = create_forkroad(soil_road, good=fertile_text, bad=unsafe_text)
+
+    farm_concernunit.set_why(soil_forkroad)
 
     # THEN
-    assert farm_concernunit._concern_subject == soil_road
-    assert farm_concernunit._concern_good == fertile_road
-    assert farm_concernunit._concern_bad == unsafe_road
+    assert farm_concernunit.why == soil_forkroad
 
 
-def test_ConcernUnit_set_good_RaisesGoodBadErrorCorrectly():
-    # GIVEN
-    texas_text = "Texas"
-    luca_text = "Luca"
-    texas_cultureaddress = create_cultureaddress(luca_text, texas_text)
-    food_subject = get_road(texas_cultureaddress.culture_qid, "food")
-    food_good = get_road(food_subject, "good food")
-    food_bad = get_road(food_subject, "bad food")
-    farm_subject = get_road(texas_cultureaddress.culture_qid, "farm")
-    farm_positive = get_road(farm_subject, "farm well")
-    farm_negative = get_road(farm_subject, "farm poorly")
-    farm_concernunit = concernunit_shop(
-        texas_cultureaddress,
-        concern_subject=food_subject,
-        concern_good=food_good,
-        concern_bad=food_bad,
-        action_subject=farm_subject,
-        action_positive=farm_positive,
-        action_negative=farm_negative,
-    )
-
-    environ_road = get_road(texas_cultureaddress.culture_qid, "environment")
-    soil_road = get_road(environ_road, "soil")
-    correct_infertile_road = get_road(soil_road, "infertile soil")
-    correct_fertile_road = get_road(soil_road, "fertile soil")
-    error_infertile_road = get_road(food_subject, "infertile soil")
-    error_fertile_road = get_road(food_subject, "fertile soil")
-
-    # WHEN / THEN
-    with pytest_raises(Exception) as excinfo:
-        farm_concernunit.set_good(soil_road, correct_fertile_road, error_infertile_road)
-    assert (
-        str(excinfo.value)
-        == f"ConcernUnit setting concern_bad '{error_infertile_road}' failed because subject road '{soil_road}' is not subroad"
-    )
-
-    # WHEN / THEN
-    with pytest_raises(Exception) as excinfo:
-        farm_concernunit.set_good(soil_road, error_fertile_road, correct_infertile_road)
-    assert (
-        str(excinfo.value)
-        == f"ConcernUnit setting concern_good '{error_fertile_road}' failed because subject road '{soil_road}' is not subroad"
-    )
-
-
-def test_ConcernUnit_set_good_EmptySubjectRaisesErrorCorrectly():
+def test_ConcernUnit_set_why_EmptySubjectRaisesErrorCorrectly():
     # GIVEN
     farm_concernunit = examples_get_farm_concernunit()
     texas_cultureaddress = farm_concernunit.cultureaddress
-    food_subject = get_road(texas_cultureaddress.culture_qid, "food")
-    food_good = get_road(food_subject, "good food")
-    food_bad = get_road(food_subject, "bad food")
+    food_road = get_road(texas_cultureaddress.culture_qid, "")
+    farm_text = "farm food"
+    cheap_text = "cheap food"
+    food_forkroad = create_forkroad(food_road, good=farm_text, bad=cheap_text)
 
     # WHEN / THEN
     environ_road = get_road(texas_cultureaddress.culture_qid, "")
     with pytest_raises(Exception) as excinfo:
-        farm_concernunit.set_good(environ_road, food_good, food_bad)
+        farm_concernunit.set_why(food_forkroad)
     assert (
         str(excinfo.value)
         == f"ConcernUnit subject level 1 cannot be empty. ({environ_road})"
     )
 
 
-def test_ConcernUnit_set_good_NotCultureRootRaisesSubjectErrorCorrectly():
+def test_ConcernUnit_set_why_NotCultureRootRaisesSubjectErrorCorrectly():
     # GIVEN
-    texas_text = "Texas"
-    luca_text = "Luca"
-    texas_cultureaddress = create_cultureaddress(luca_text, texas_text)
-    food_subject = get_road(texas_cultureaddress.culture_qid, "food")
-    food_good = get_road(food_subject, "good food")
-    food_bad = get_road(food_subject, "bad food")
-    farm_subject = get_road(texas_cultureaddress.culture_qid, "farm")
-    farm_positive = get_road(farm_subject, "farm well")
-    farm_negative = get_road(farm_subject, "farm poorly")
+    texas_cultureaddress = create_cultureaddress("Luca", "Texas")
+    food_road = get_road(texas_cultureaddress.culture_qid, "food")
+    farm_text = "farm food"
+    cheap_text = "cheap food"
+    food_forkroad = create_forkroad(food_road, good=farm_text, bad=cheap_text)
+    cultivate_road = get_road(texas_cultureaddress.culture_qid, "cultivate")
+    well_text = "cultivate well"
+    poor_text = "cultivate poorly"
+    cultivate_forkroad = create_forkroad(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
-        concern_subject=food_subject,
-        concern_good=food_good,
-        concern_bad=food_bad,
-        action_subject=farm_subject,
-        action_positive=farm_positive,
-        action_negative=farm_negative,
+        why=food_forkroad,
+        action=cultivate_forkroad,
     )
 
     environ_text = "environment"
     incorrect_soil_road = get_road(environ_text, "soil")
-    infertile_road = get_road(incorrect_soil_road, "infertile soil")
-    fertile_road = get_road(incorrect_soil_road, "fertile soil")
+    infertile_text = "infertile soil"
+    fertile_text = "fertile soil"
+    # infertile_road = get_road(incorrect_soil_road, "infertile soil")
+    # fertile_road = get_road(incorrect_soil_road, "fertile soil")
+    incorrect_soil_forkroad = create_forkroad(
+        incorrect_soil_road, good=fertile_text, bad=infertile_text
+    )
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        farm_concernunit.set_good(incorrect_soil_road, fertile_road, infertile_road)
+        farm_concernunit.set_why(incorrect_soil_forkroad)
     assert (
         str(excinfo.value)
         == f"ConcernUnit setting concern_subject '{incorrect_soil_road}' failed because culture_qid is not first node."
     )
 
 
-def test_ConcernUnit_set_good_RaisesDouble_culture_qid_SubjectErrorCorrectly():
+def test_ConcernUnit_set_why_RaisesDouble_culture_qid_SubjectErrorCorrectly():
     # GIVEN
-    texas_text = "Texas"
-    luca_text = "Luca"
-    texas_cultureaddress = create_cultureaddress(luca_text, texas_text)
-    food_subject = get_road(texas_cultureaddress.culture_qid, "food")
-    food_good = get_road(food_subject, "good food")
-    food_bad = get_road(food_subject, "bad food")
-    farm_subject = get_road(texas_cultureaddress.culture_qid, "farm")
-    farm_positive = get_road(farm_subject, "farm well")
-    farm_negative = get_road(farm_subject, "farm poorly")
+    texas_cultureaddress = create_cultureaddress("Luca", "Texas")
+    texas_culture_qid = texas_cultureaddress.culture_qid
+    food_road = get_road(texas_culture_qid, "food")
+    farm_text = "farm food"
+    cheap_text = "cheap food"
+    food_forkroad = create_forkroad(food_road, good=farm_text, bad=cheap_text)
+    cultivate_road = get_road(texas_culture_qid, "cultivate")
+    well_text = "cultivate well"
+    poor_text = "cultivate poorly"
+    cultivate_forkroad = create_forkroad(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
-        concern_subject=food_subject,
-        concern_good=food_good,
-        concern_bad=food_bad,
-        action_subject=farm_subject,
-        action_positive=farm_positive,
-        action_negative=farm_negative,
-    )
-
-    double_culture_qid = get_road(
-        texas_cultureaddress.culture_qid, texas_cultureaddress.culture_qid
+        why=food_forkroad,
+        action=cultivate_forkroad,
     )
 
     # WHEN / THEN
+    double_culture_qid = get_road(texas_culture_qid, texas_culture_qid)
+    double_culture_forkroad = create_forkroad(double_culture_qid, farm_text, cheap_text)
     with pytest_raises(Exception) as excinfo:
-        farm_concernunit.set_good(double_culture_qid, farm_positive, farm_negative)
+        farm_concernunit.set_why(double_culture_forkroad)
     assert (
         str(excinfo.value)
         == f"ConcernUnit setting concern_subject '{double_culture_qid}' failed because first child node cannot be culture_qid as bug asumption check."
@@ -331,81 +269,30 @@ def test_ConcernUnit_set_good_RaisesDouble_culture_qid_SubjectErrorCorrectly():
 
 def test_ConcernUnit_set_action_SetsAttributesCorrectly():
     # GIVEN
-    texas_text = "Texas"
-    luca_text = "Luca"
-    texas_cultureaddress = create_cultureaddress(luca_text, texas_text)
-    food_subject = get_road(texas_cultureaddress.culture_qid, "food")
-    food_good = get_road(food_subject, "good food")
-    food_bad = get_road(food_subject, "bad food")
-    farm_subject = get_road(texas_cultureaddress.culture_qid, "farm")
-    farm_positive = get_road(farm_subject, "farm well")
-    farm_negative = get_road(farm_subject, "farm poorly")
+    texas_cultureaddress = create_cultureaddress("Luca", "Texas")
+    texas_culture_qid = texas_cultureaddress.culture_qid
+    food_road = get_road(texas_culture_qid, "food")
+    farm_text = "farm food"
+    cheap_text = "cheap food"
+    food_forkroad = create_forkroad(food_road, good=farm_text, bad=cheap_text)
+    cultivate_road = get_road(texas_culture_qid, "cultivate")
+    well_text = "cultivate well"
+    poor_text = "cultivate poorly"
+    cultivate_forkroad = create_forkroad(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
-        concern_subject=food_subject,
-        concern_good=food_good,
-        concern_bad=food_bad,
-        action_subject=farm_subject,
-        action_positive=farm_positive,
-        action_negative=farm_negative,
+        why=food_forkroad,
+        action=cultivate_forkroad,
     )
 
     # WHEN
     home_road = get_road(texas_cultureaddress.culture_qid, "home")
     cook_road = get_road(home_road, "cook")
-    unsafe_road = get_road(cook_road, "unsafe cook")
-    safe_road = get_road(cook_road, "safe cook")
-    farm_concernunit.set_action(cook_road, safe_road, unsafe_road)
+    cook_forkroad = create_forkroad(cook_road, good="unsafe cook", bad="safe cook")
+    farm_concernunit.set_action(cook_forkroad)
 
     # THEN
-    assert farm_concernunit._action_subject == cook_road
-    assert farm_concernunit._action_positive == safe_road
-    assert farm_concernunit._action_negative == unsafe_road
-
-
-def test_ConcernUnit_set_action_RaisesErrorCorrectly():
-    # GIVEN
-    texas_text = "Texas"
-    luca_text = "Luca"
-    texas_cultureaddress = create_cultureaddress(luca_text, texas_text)
-    food_subject = get_road(texas_cultureaddress.culture_qid, "food")
-    food_good = get_road(food_subject, "good food")
-    food_bad = get_road(food_subject, "bad food")
-    farm_subject = get_road(texas_cultureaddress.culture_qid, "farm")
-    farm_positive = get_road(farm_subject, "farm well")
-    farm_negative = get_road(farm_subject, "farm poorly")
-    farm_concernunit = concernunit_shop(
-        texas_cultureaddress,
-        concern_subject=food_subject,
-        concern_good=food_good,
-        concern_bad=food_bad,
-        action_subject=farm_subject,
-        action_positive=farm_positive,
-        action_negative=farm_negative,
-    )
-
-    environ_road = get_road(texas_cultureaddress.culture_qid, "environment")
-    cook_road = get_road(environ_road, "cook")
-    correct_unsafe_road = get_road(cook_road, "unsafe cook")
-    correct_safe_road = get_road(cook_road, "safe cook")
-    error_unsafe_road = get_road(food_subject, "unsafe cook")
-    error_safe_road = get_road(food_subject, "safe cook")
-
-    # WHEN / THEN
-    with pytest_raises(Exception) as excinfo:
-        farm_concernunit.set_action(cook_road, correct_safe_road, error_unsafe_road)
-    assert (
-        str(excinfo.value)
-        == f"ConcernUnit setting action_negative '{error_unsafe_road}' failed because subject road '{cook_road}' is not subroad"
-    )
-
-    # WHEN / THEN
-    with pytest_raises(Exception) as excinfo:
-        farm_concernunit.set_action(cook_road, error_safe_road, correct_unsafe_road)
-    assert (
-        str(excinfo.value)
-        == f"ConcernUnit setting action_positive '{error_safe_road}' failed because subject road '{cook_road}' is not subroad"
-    )
+    assert farm_concernunit.action == cook_forkroad
 
 
 def test_ConcernUnit_get_str_summary_ReturnsCorrectObj():
@@ -413,70 +300,55 @@ def test_ConcernUnit_get_str_summary_ReturnsCorrectObj():
     texas_text = "Texas"
     luca_text = "Luca"
     texas_cultureaddress = create_cultureaddress(luca_text, texas_text)
+    texas_culture_qid = texas_cultureaddress.culture_qid
     food_text = "food"
-    good_text = "good food"
-    bad_text = "bad food"
-    action_text = "farming"
-    positive_text = "farm well"
-    negative_text = "farm poorly"
-    farm_concernunit = create_concernunit(
+    food_road = get_road(texas_culture_qid, food_text)
+    farm_text = "farm food"
+    cheap_text = "cheap food"
+    food_forkroad = create_forkroad(food_road, good=farm_text, bad=cheap_text)
+    cultivate_text = "cultivate"
+    cultivate_road = get_road(texas_culture_qid, cultivate_text)
+    well_text = "cultivate well"
+    poor_text = "cultivate poorly"
+    cultivate_forkroad = create_forkroad(cultivate_road, good=well_text, bad=poor_text)
+    farm_concernunit = concernunit_shop(
         texas_cultureaddress,
-        concern=food_text,
-        good=good_text,
-        bad=bad_text,
-        action=action_text,
-        positive=positive_text,
-        negative=negative_text,
+        why=food_forkroad,
+        action=cultivate_forkroad,
     )
 
     # WHEN / THEN
     farm_summary_string = f"""Within ['{luca_text}']'s {texas_text} culture subject: {food_text}
- {bad_text} is bad. 
- {good_text} is good.
- Within the action domain of '{action_text}'
- It is good to {positive_text}
- It is bad to {negative_text}"""
+ {cheap_text} is bad. 
+ {farm_text} is good.
+ Within the action domain of '{cultivate_text}'
+ It is good to {well_text}
+ It is bad to {poor_text}"""
     assert farm_concernunit.get_str_summary() == farm_summary_string
 
 
 def test_create_concernunit_CorrectlyCreatesObj():
     # GIVEN
-    texas_text = "Texas"
-    luca_text = "Luca"
-    texas_cultureaddress = create_cultureaddress(luca_text, texas_text)
+    texas_cultureaddress = create_cultureaddress("Luca", "Texas")
     food_text = "food"
-    good_text = "good food"
-    bad_text = "bad food"
-    farm_text = "farm"
-    well_text = "farm well"
-    poor_text = "farm poorly"
-
-    # WHEN
-    farm_concernunit = create_concernunit(
-        cultureaddress=texas_cultureaddress,
-        concern=food_text,
-        good=good_text,
-        bad=bad_text,
-        action=farm_text,
-        positive=well_text,
-        negative=poor_text,
+    food_road = get_road(texas_cultureaddress.culture_qid, food_text)
+    farm_text = "farm food"
+    cheap_text = "cheap food"
+    food_forkroad = create_forkroad(food_road, good=farm_text, bad=cheap_text)
+    cultivate_road = get_road(texas_cultureaddress.culture_qid, "cultivate")
+    well_text = "cultivate well"
+    poor_text = "cultivate poorly"
+    cultivate_forkroad = create_forkroad(cultivate_road, good=well_text, bad=poor_text)
+    farm_concernunit = concernunit_shop(
+        texas_cultureaddress,
+        why=food_forkroad,
+        action=cultivate_forkroad,
     )
 
     # THEN
     assert farm_concernunit.cultureaddress == texas_cultureaddress
-    with_root_food_subject = get_road(texas_cultureaddress.culture_qid, food_text)
-    with_root_food_good = get_road(with_root_food_subject, good_text)
-    with_root_food_bad = get_road(with_root_food_subject, bad_text)
-    assert farm_concernunit._concern_subject == with_root_food_subject
-    assert farm_concernunit._concern_good == with_root_food_good
-    assert farm_concernunit._concern_bad == with_root_food_bad
-
-    with_root_farm_subject = get_road(texas_cultureaddress.culture_qid, farm_text)
-    with_root_farm_positive = get_road(with_root_farm_subject, well_text)
-    with_root_farm_negative = get_road(with_root_farm_subject, poor_text)
-    assert farm_concernunit._action_subject == with_root_farm_subject
-    assert farm_concernunit._action_positive == with_root_farm_positive
-    assert farm_concernunit._action_negative == with_root_farm_negative
+    assert farm_concernunit.why == food_forkroad
+    assert farm_concernunit.action == cultivate_forkroad
 
 
 def test_create_concernunit_CorrectlyCreatesObjWithCorrect_delimiter():
@@ -484,39 +356,45 @@ def test_create_concernunit_CorrectlyCreatesObjWithCorrect_delimiter():
     texas_text = "Texas"
     luca_text = "Luca"
     texas_cultureaddress = create_cultureaddress(luca_text, texas_text)
-    food_road = get_road("enjoying life", "food")
-    good_text = "good food"
-    bad_text = "bad food"
-    farm_road = get_road("working", "farm")
-    well_text = "farm well"
-    poor_text = "farm poorly"
+
+    enjoy_text = "enjoying life"
+    food_text = "food"
+    texas_no_food_road = get_road(enjoy_text, food_text)
+    farm_text = "farm food"
+    cheap_text = "cheap food"
+
+    work_text = "working"
+    cultivate_text = "cultivate"
+    texas_no_cultivate_road = get_road(work_text, cultivate_text)
+    well_text = "cultivate well"
+    poor_text = "cultivate poorly"
 
     # WHEN
     farm_concernunit = create_concernunit(
         cultureaddress=texas_cultureaddress,
-        concern=food_road,
-        good=good_text,
-        bad=bad_text,
-        action=farm_road,
+        why=texas_no_food_road,
+        good=farm_text,
+        bad=cheap_text,
+        action=texas_no_cultivate_road,
         positive=well_text,
         negative=poor_text,
     )
 
     # THEN
     assert farm_concernunit.cultureaddress == texas_cultureaddress
-    with_root_food_subject = get_road(texas_cultureaddress.culture_qid, food_road)
-    with_root_food_good = get_road(with_root_food_subject, good_text)
-    with_root_food_bad = get_road(with_root_food_subject, bad_text)
-    assert farm_concernunit._concern_subject == with_root_food_subject
-    assert farm_concernunit._concern_good == with_root_food_good
-    assert farm_concernunit._concern_bad == with_root_food_bad
+    texas_yes_enjoy_road = get_road(texas_cultureaddress.culture_qid, enjoy_text)
+    texas_yes_food_road = get_road(texas_yes_enjoy_road, food_text)
+    texas_yes_food_forkroad = create_forkroad(
+        texas_yes_food_road, farm_text, cheap_text
+    )
+    assert farm_concernunit.why == texas_yes_food_forkroad
 
-    with_root_farm_subject = get_road(texas_cultureaddress.culture_qid, farm_road)
-    with_root_farm_positive = get_road(with_root_farm_subject, well_text)
-    with_root_farm_negative = get_road(with_root_farm_subject, poor_text)
-    assert farm_concernunit._action_subject == with_root_farm_subject
-    assert farm_concernunit._action_positive == with_root_farm_positive
-    assert farm_concernunit._action_negative == with_root_farm_negative
+    texas_yes_work_road = get_road(texas_cultureaddress.culture_qid, work_text)
+    texas_yes_cultivate_road = get_road(texas_yes_work_road, cultivate_text)
+    texas_yes_cultivate_forkroad = create_forkroad(
+        texas_yes_cultivate_road, well_text, poor_text
+    )
+    assert farm_concernunit.action == texas_yes_cultivate_forkroad
 
 
 def test_UrgeUnit_exists():
@@ -616,14 +494,14 @@ def test_UrgeUnit_get_str_summary_ReturnsCorrectObj():
     texas_text = "Texas"
     luca_text = "Luca"
     food_text = "food"
-    good_text = "good food"
-    bad_text = "bad food"
-    action_text = "farm"
-    positive_text = "farm well"
-    negative_text = "farm poorly"
+    farm_text = "farm food"
+    cheap_text = "cheap food"
+    action_text = "cultivate"
+    positive_text = "cultivate well"
+    negative_text = "cultivate poorly"
     static_farm_string = f"""UrgeUnit: Within ['{luca_text}']'s {texas_text} culture subject: {food_text}
- {bad_text} is bad. 
- {good_text} is good.
+ {cheap_text} is bad. 
+ {farm_text} is good.
  Within the action domain of '{action_text}'
  It is good to {positive_text}
  It is bad to {negative_text}

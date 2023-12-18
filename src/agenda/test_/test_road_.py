@@ -29,9 +29,9 @@ def test_road_exists():
     # GIVEN
     empty_str = ""
     # WHEN
-    new_obj = RoadPath(empty_str)
+    x_road = RoadPath(empty_str)
     # THEN
-    assert new_obj == empty_str
+    assert x_road == empty_str
 
 
 def test_road_is_sub_road_correctlyReturnsBool():
