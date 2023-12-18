@@ -61,15 +61,15 @@ class ConcernSubRoadPathException(Exception):
 @dataclass
 class ConcernUnit:
     cultureaddress: CultureAddress  # Culture and healers
-    why: ForkRoad = None
     action: ForkRoad = None
+    when: ForkRoad = None
 
     def get_road_node_delimiter(self):
         return self.cultureaddress._road_node_delimiter
 
-    def set_why(self, x_forkroad: ForkRoad):
+    def set_when(self, x_forkroad: ForkRoad):
         self._check_subject_road(x_forkroad.base)
-        self.why = x_forkroad
+        self.when = x_forkroad
 
     def set_action(self, x_forkroad: ForkRoad):
         self._check_subject_road(x_forkroad.base)
@@ -93,9 +93,9 @@ class ConcernUnit:
             )
 
     def get_str_summary(self):
-        _concern_subject = self.why.base
-        _concern_good = self.why.get_1_good()
-        _concern_bad = self.why.get_1_bad()
+        _concern_subject = self.when.base
+        _concern_good = self.when.get_1_good()
+        _concern_bad = self.when.get_1_bad()
         _action_subject = self.action.base
         _action_positive = self.action.get_1_good()
         _action_negative = self.action.get_1_bad()
@@ -119,28 +119,28 @@ class ConcernUnit:
 
 
 def concernunit_shop(
-    cultureaddress: CultureAddress, why: ForkRoad, action: ForkRoad
+    cultureaddress: CultureAddress, when: ForkRoad, action: ForkRoad
 ) -> ConcernUnit:
     x_concernunit = ConcernUnit(cultureaddress=cultureaddress)
-    x_concernunit.set_why(why)
+    x_concernunit.set_when(when)
     x_concernunit.set_action(action)
     return x_concernunit
 
 
 def create_concernunit(
     cultureaddress: CultureAddress,
-    why: RoadPath,  # road with culture root node
+    when: RoadPath,  # road with culture root node
     good: RoadNode,
     bad: RoadNode,
     action: RoadPath,  # road with culture root node
     positive: RoadNode,
     negative: RoadNode,
 ):
-    """creates concernunit object without roadpath root nodes being explictely defined in the why and action RoadPaths."""
+    """creates concernunit object without roadpath root nodes being explictely defined in the when and action RoadPaths."""
     x_concernunit = ConcernUnit(cultureaddress=cultureaddress)
-    x_concernunit.set_why(
+    x_concernunit.set_when(
         create_forkroad(
-            base=get_road(cultureaddress.culture_id, why),
+            base=get_road(cultureaddress.culture_id, when),
             good=good,
             bad=bad,
         )

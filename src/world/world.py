@@ -29,15 +29,14 @@ class WorldUnit:
             x_personunit = self.get_personunit_from_memory(person_id)
             x_cultureunit = x_personunit.get_cultureunit(x_cultureaddress.culture_id)
             x_cultureunit.add_councilunit(x_urgeunit._urger_pid, True)
-            print(f"{x_cultureunit.cultures_dir=}")
-
             urger_councilunit = x_cultureunit.get_councilunit(x_urgeunit._urger_pid)
-            print(f"{urger_councilunit._agendas_depot_dir=}")
-            print(f"{urger_councilunit._agendas_digest_dir=}")
-            print(f"{urger_councilunit._agendas_public_dir=}")
+            urger_councilunit.create_core_dir_and_files()
             urger_councilunit.save_refreshed_output_to_public()
             for actor_pid in x_urgeunit._actor_pids.keys():
                 x_cultureunit.add_councilunit(actor_pid)
+                actor_councilunit = x_cultureunit.get_councilunit(actor_pid)
+                actor_councilunit.create_core_dir_and_files()
+                actor_councilunit.save_refreshed_output_to_public()
 
     def _get_person_dir(self, person_id):
         return f"{self._persons_dir}/{person_id}"

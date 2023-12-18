@@ -11,7 +11,7 @@ def get_farm_concernunit():
     poor_text = "cultivate poorly"
     return create_concernunit(
         cultureaddress=texas_cultureaddress,
-        why=food_text,
+        when=food_text,
         good=good_text,
         bad=bad_text,
         action=farm_text,

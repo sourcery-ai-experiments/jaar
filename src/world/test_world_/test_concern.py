@@ -118,7 +118,7 @@ def test_ConcernUnit_exists():
     farm_concernunit = ConcernUnit(texas_cultureaddress)
 
     # THEN
-    assert farm_concernunit.why is None
+    assert farm_concernunit.when is None
     assert farm_concernunit.action is None
     assert farm_concernunit.cultureaddress == texas_cultureaddress
 
@@ -140,12 +140,12 @@ def test_concernunit_shop_ReturnsCorrectObj():
     # WHEN
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
-        why=food_forkroad,
+        when=food_forkroad,
         action=cultivate_forkroad,
     )
 
     # THEN
-    assert farm_concernunit.why == food_forkroad
+    assert farm_concernunit.when == food_forkroad
     assert farm_concernunit.action == cultivate_forkroad
     assert farm_concernunit.cultureaddress == texas_cultureaddress
     assert farm_concernunit.get_road_node_delimiter() == get_node_delimiter(
@@ -153,7 +153,7 @@ def test_concernunit_shop_ReturnsCorrectObj():
     )
 
 
-def test_ConcernUnit_set_why_SetsAttributesCorrectly():
+def test_ConcernUnit_set_when_SetsAttributesCorrectly():
     # GIVEN
     texas_cultureaddress = create_cultureaddress("Luca", "Texas")
     food_road = get_road(texas_cultureaddress.culture_id, "food")
@@ -166,7 +166,7 @@ def test_ConcernUnit_set_why_SetsAttributesCorrectly():
     cultivate_forkroad = create_forkroad(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
-        why=food_forkroad,
+        when=food_forkroad,
         action=cultivate_forkroad,
     )
 
@@ -177,13 +177,13 @@ def test_ConcernUnit_set_why_SetsAttributesCorrectly():
     fertile_text = "fertile soil"
     soil_forkroad = create_forkroad(soil_road, good=fertile_text, bad=unsafe_text)
 
-    farm_concernunit.set_why(soil_forkroad)
+    farm_concernunit.set_when(soil_forkroad)
 
     # THEN
-    assert farm_concernunit.why == soil_forkroad
+    assert farm_concernunit.when == soil_forkroad
 
 
-def test_ConcernUnit_set_why_EmptySubjectRaisesErrorCorrectly():
+def test_ConcernUnit_set_when_EmptySubjectRaisesErrorCorrectly():
     # GIVEN
     farm_concernunit = examples_get_farm_concernunit()
     texas_cultureaddress = farm_concernunit.cultureaddress
@@ -195,14 +195,14 @@ def test_ConcernUnit_set_why_EmptySubjectRaisesErrorCorrectly():
     # WHEN / THEN
     environ_road = get_road(texas_cultureaddress.culture_id, "")
     with pytest_raises(Exception) as excinfo:
-        farm_concernunit.set_why(food_forkroad)
+        farm_concernunit.set_when(food_forkroad)
     assert (
         str(excinfo.value)
         == f"ConcernUnit subject level 1 cannot be empty. ({environ_road})"
     )
 
 
-def test_ConcernUnit_set_why_NotCultureRootRaisesSubjectErrorCorrectly():
+def test_ConcernUnit_set_when_NotCultureRootRaisesSubjectErrorCorrectly():
     # GIVEN
     texas_cultureaddress = create_cultureaddress("Luca", "Texas")
     food_road = get_road(texas_cultureaddress.culture_id, "food")
@@ -215,7 +215,7 @@ def test_ConcernUnit_set_why_NotCultureRootRaisesSubjectErrorCorrectly():
     cultivate_forkroad = create_forkroad(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
-        why=food_forkroad,
+        when=food_forkroad,
         action=cultivate_forkroad,
     )
 
@@ -231,14 +231,14 @@ def test_ConcernUnit_set_why_NotCultureRootRaisesSubjectErrorCorrectly():
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        farm_concernunit.set_why(incorrect_soil_forkroad)
+        farm_concernunit.set_when(incorrect_soil_forkroad)
     assert (
         str(excinfo.value)
         == f"ConcernUnit setting concern_subject '{incorrect_soil_road}' failed because culture_id is not first node."
     )
 
 
-def test_ConcernUnit_set_why_RaisesDouble_culture_id_SubjectErrorCorrectly():
+def test_ConcernUnit_set_when_RaisesDouble_culture_id_SubjectErrorCorrectly():
     # GIVEN
     texas_cultureaddress = create_cultureaddress("Luca", "Texas")
     texas_culture_id = texas_cultureaddress.culture_id
@@ -252,7 +252,7 @@ def test_ConcernUnit_set_why_RaisesDouble_culture_id_SubjectErrorCorrectly():
     cultivate_forkroad = create_forkroad(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
-        why=food_forkroad,
+        when=food_forkroad,
         action=cultivate_forkroad,
     )
 
@@ -260,7 +260,7 @@ def test_ConcernUnit_set_why_RaisesDouble_culture_id_SubjectErrorCorrectly():
     double_culture_id = get_road(texas_culture_id, texas_culture_id)
     double_culture_forkroad = create_forkroad(double_culture_id, farm_text, cheap_text)
     with pytest_raises(Exception) as excinfo:
-        farm_concernunit.set_why(double_culture_forkroad)
+        farm_concernunit.set_when(double_culture_forkroad)
     assert (
         str(excinfo.value)
         == f"ConcernUnit setting concern_subject '{double_culture_id}' failed because first child node cannot be culture_id as bug asumption check."
@@ -281,7 +281,7 @@ def test_ConcernUnit_set_action_SetsAttributesCorrectly():
     cultivate_forkroad = create_forkroad(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
-        why=food_forkroad,
+        when=food_forkroad,
         action=cultivate_forkroad,
     )
 
@@ -313,7 +313,7 @@ def test_ConcernUnit_get_str_summary_ReturnsCorrectObj():
     cultivate_forkroad = create_forkroad(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
-        why=food_forkroad,
+        when=food_forkroad,
         action=cultivate_forkroad,
     )
 
@@ -341,13 +341,13 @@ def test_create_concernunit_CorrectlyCreatesObj():
     cultivate_forkroad = create_forkroad(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
-        why=food_forkroad,
+        when=food_forkroad,
         action=cultivate_forkroad,
     )
 
     # THEN
     assert farm_concernunit.cultureaddress == texas_cultureaddress
-    assert farm_concernunit.why == food_forkroad
+    assert farm_concernunit.when == food_forkroad
     assert farm_concernunit.action == cultivate_forkroad
 
 
@@ -372,7 +372,7 @@ def test_create_concernunit_CorrectlyCreatesObjWithCorrect_delimiter():
     # WHEN
     farm_concernunit = create_concernunit(
         cultureaddress=texas_cultureaddress,
-        why=texas_no_food_road,
+        when=texas_no_food_road,
         good=farm_text,
         bad=cheap_text,
         action=texas_no_cultivate_road,
@@ -387,7 +387,7 @@ def test_create_concernunit_CorrectlyCreatesObjWithCorrect_delimiter():
     texas_yes_food_forkroad = create_forkroad(
         texas_yes_food_road, farm_text, cheap_text
     )
-    assert farm_concernunit.why == texas_yes_food_forkroad
+    assert farm_concernunit.when == texas_yes_food_forkroad
 
     texas_yes_work_road = get_road(texas_cultureaddress.culture_id, work_text)
     texas_yes_cultivate_road = get_road(texas_yes_work_road, cultivate_text)

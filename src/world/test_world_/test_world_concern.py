@@ -46,14 +46,14 @@ def test_worldunit_apply_urgeunit_CorrectlyCreates_seed_agendas(
     texas_text = "Texas"
     yao_person.set_cultureunit(texas_text)
     texas_culture = yao_person.get_cultureunit(texas_text)
-    culture_public_dir = texas_culture.get_public_dir()
+    texas_public_dir = texas_culture.get_public_dir()
 
     highway_concernunit = create_concernunit(
         cultureaddress=create_cultureaddress(yao_text, texas_text),
         action="flying in airplanes",
         positive="Do not fly",
         negative="Continue flying",
-        why="global environment",
+        when="global environment",
         good="healthy",
         bad="boiling",
     )
@@ -64,8 +64,8 @@ def test_worldunit_apply_urgeunit_CorrectlyCreates_seed_agendas(
     )
     assert x_world.get_personunit_from_memory(tim_text) is None
     assert x_world.get_personunit_from_memory(xao_text) is None
-    public_tim_file_path = f"{culture_public_dir}/{tim_text}.json"
-    public_xao_file_path = f"{culture_public_dir}/{xao_text}.json"
+    public_tim_file_path = f"{texas_public_dir}/{tim_text}.json"
+    public_xao_file_path = f"{texas_public_dir}/{xao_text}.json"
     assert os_path.exists(public_tim_file_path) is False
     assert os_path.exists(public_xao_file_path) is False
 
@@ -81,7 +81,6 @@ def test_worldunit_apply_urgeunit_CorrectlyCreates_seed_agendas(
 
     # WHEN worldunit urgeunit is applyed
     # THEN seed agendas do exist
-    assert 1 == 2
 
 
 # def test_worldunit_apply_urgeunit_CorrectlyAddsTaskTo_urger_seed_agenda(
