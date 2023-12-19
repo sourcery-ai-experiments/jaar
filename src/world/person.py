@@ -1,13 +1,20 @@
 from dataclasses import dataclass
-from src.economy.economy import EconomyUnit, EconomyQID, economyunit_shop
-from src.world.pain import PainGenus, PainUnit, PersonID, painunit_shop
+from src.economy.economy import EconomyUnit, EconomyID, economyunit_shop
+from src.world.pain import (
+    PainGenus,
+    PainUnit,
+    PersonID,
+    painunit_shop,
+    healerlink_shop,
+    economylink_shop,
+)
 
 
 @dataclass
 class PersonUnit:
     pid: PersonID = None
     person_dir: str = None
-    _economys: dict[EconomyQID:EconomyUnit] = None
+    _economys: dict[EconomyID:EconomyUnit] = None
     _pains: dict[PainGenus:PainUnit] = None
 
     def set_pains_empty_if_none(self):
@@ -19,6 +26,23 @@ class PersonUnit:
 
     def set_painunit(self, painunit: PainUnit):
         self._pains[painunit.genus] = painunit
+
+    def create_person_economy(
+        self,
+        pain_genus: PainGenus,
+        healer_id: PersonID,
+        economy_id: EconomyID,
+    ):
+        x_healerlink = healerlink_shop(healer_id)
+        x_healerlink.set_economylink(economylink_shop(economy_id))
+        x_painunit = painunit_shop(pain_genus)
+        x_painunit.set_healerlink(x_healerlink)
+        self.set_painunit(x_painunit)
+        self.set_economyunit(economy_id, replace=False)
+        x_economyunit = self.get_economyunit(economy_id)
+        x_economyunit.full_setup_councilunit(self.pid)
+        if healer_id != self.pid:
+            x_economyunit.full_setup_councilunit(healer_id)
 
     def get_painunit(self, pain_genus: PainGenus) -> PainUnit:
         return self._pains.get(pain_genus)
@@ -37,22 +61,22 @@ class PersonUnit:
         if self._economys is None:
             self._economys = {}
 
-    def set_economyunit(self, economy_id: EconomyQID, replace: bool = False):
-        if (self.economyunit_exists(economy_id) and replace) or self.economyunit_exists(
-            economy_id
-        ) == False:
+    def set_economyunit(self, economy_id: EconomyID, replace: bool = False):
+        if self.economyunit_exists(economy_id) == False or (
+            self.economyunit_exists(economy_id) and replace
+        ):
             economys_dir = f"{self.person_dir}/economys"
             self._economys[economy_id] = economyunit_shop(
                 economy_id=economy_id, economys_dir=economys_dir, _manager_pid=self.pid
             )
 
-    def economyunit_exists(self, economy_id: EconomyQID):
+    def economyunit_exists(self, economy_id: EconomyID):
         return self._economys.get(economy_id) != None
 
-    def get_economyunit(self, economy_id: EconomyQID) -> EconomyUnit:
+    def get_economyunit(self, economy_id: EconomyID) -> EconomyUnit:
         return self._economys.get(economy_id)
 
-    def del_economyunit(self, economy_id: EconomyQID):
+    def del_economyunit(self, economy_id: EconomyID):
         self._economys.pop(economy_id)
 
     def get_economys_dict(self) -> dict:

@@ -1,3 +1,4 @@
+from src.agenda.agenda import agendaunit_shop
 from src.economy.economy import EconomyUnit
 from src.world.concern import EconomyAddress, LobbyUnit
 from src.world.person import PersonID, PersonUnit, personunit_shop
@@ -92,6 +93,15 @@ class WorldUnit:
                 x_economy.add_councilunit(economy_person_id)
             if x_economy.councilunit_exists(council_person_id) == False:
                 x_economy.add_councilunit(council_person_id)
+
+    def get_priority_agenda(self, person_id: PersonID):
+        x_personunit = self.get_personunit_from_memory(person_id)
+        x_agenda = agendaunit_shop(person_id)
+        for x_economyunit in x_personunit._economys.values():
+            public_agenda = x_economyunit.get_public_agenda(person_id)
+            public_agenda.set_economy_id(x_agenda._economy_id)
+            x_agenda.meld(public_agenda)
+        return x_agenda
 
 
 def worldunit_shop(mark: WorldMark, worlds_dir: str) -> WorldUnit:

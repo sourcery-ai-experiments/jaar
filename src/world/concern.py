@@ -9,14 +9,14 @@ from src.agenda.road import (
     create_forkunit,
 )
 from src.agenda.group import GroupBrand
-from src.economy.economy import EconomyQID
+from src.economy.economy import EconomyID
 from src.world.person import PersonID
 from dataclasses import dataclass
 
 
 @dataclass
 class EconomyAddress:
-    economy_id: EconomyQID
+    economy_id: EconomyID
     person_ids: dict[PersonID:int]
     _road_node_delimiter: str
 
@@ -35,7 +35,7 @@ class EconomyAddress:
 
 
 def economyaddress_shop(
-    economy_id: EconomyQID,
+    economy_id: EconomyID,
     person_ids: dict[PersonID:int] = None,
     _road_node_delimiter: str = None,
 ) -> EconomyAddress:
@@ -48,7 +48,7 @@ def economyaddress_shop(
     return x_economyaddress
 
 
-def create_economyaddress(person_id: PersonID, economy_id: EconomyQID):
+def create_economyaddress(person_id: PersonID, economy_id: EconomyID):
     x_economyaddress = economyaddress_shop(economy_id=economy_id)
     x_economyaddress.add_person_id(person_id)
     return x_economyaddress

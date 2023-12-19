@@ -1,11 +1,11 @@
 from dataclasses import dataclass
-from src.economy.economy import EconomyQID
+from src.economy.economy import EconomyID
 from src.agenda.agenda import PersonID
 
 
 @dataclass
 class EconomyLink:
-    economy_id: EconomyQID
+    economy_id: EconomyID
     weight: float
     _relative_weight: float = None
     _manager_importance: float = None
@@ -20,7 +20,7 @@ class EconomyLink:
         return {"economy_id": self.economy_id, "weight": self.weight}
 
 
-def economylink_shop(economy_id: EconomyQID, weight: float = None) -> EconomyLink:
+def economylink_shop(economy_id: EconomyID, weight: float = None) -> EconomyLink:
     if weight is None:
         weight = 1
     return EconomyLink(economy_id=economy_id, weight=weight)
@@ -31,7 +31,7 @@ class HealerLink:
     person_id: PersonID
     weight: float
     in_tribe: bool
-    _economylinks: dict[EconomyQID:EconomyLink] = None
+    _economylinks: dict[EconomyID:EconomyLink] = None
     _relative_weight: float = None
     _manager_importance: float = None
 
@@ -61,10 +61,10 @@ class HealerLink:
     def set_economylink(self, economylink: EconomyLink):
         self._economylinks[economylink.economy_id] = economylink
 
-    def get_economylink(self, economyeconomy_id: EconomyQID) -> EconomyLink:
+    def get_economylink(self, economyeconomy_id: EconomyID) -> EconomyLink:
         return self._economylinks.get(economyeconomy_id)
 
-    def del_economylink(self, economyeconomy_id: EconomyQID):
+    def del_economylink(self, economyeconomy_id: EconomyID):
         self._economylinks.pop(economyeconomy_id)
 
     def get_economylinks_dict(self) -> dict:

@@ -220,7 +220,7 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
     assert new_sufffacts_x.get(old_seasons_road) is None
 
 
-def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeEconomyQIDScenario():
+def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeEconomyIDScenario():
     # GIVEN
     x_s = get_node_delimiter()
     old_economy_id = "El Paso"

@@ -92,7 +92,7 @@ class NewDelimiterException(Exception):
     pass
 
 
-class EconomyQID(str):  # Created to help track the concept
+class EconomyID(str):  # Created to help track the concept
     pass
 
 
@@ -2296,7 +2296,7 @@ class AgendaUnit:
 
 def agendaunit_shop(
     _healer: PersonID = None,
-    _economy_id: EconomyQID = None,
+    _economy_id: EconomyID = None,
     _weight: float = None,
     _auto_output_to_public: bool = None,
     _road_node_delimiter: str = None,

@@ -6,7 +6,7 @@ from src.agenda.agenda import (
     partylink_shop,
     PartyPID,
     PersonID,
-    EconomyQID,
+    EconomyID,
 )
 from src.agenda.x_func import (
     single_dir_create_if_null,
@@ -50,7 +50,7 @@ from src.economy.treasury_sqlstr import (
 
 @dataclass
 class EconomyUnit:
-    economy_id: EconomyQID
+    economy_id: EconomyID
     economys_dir: str
     _manager_pid: PersonID = None
     _councilunits: dict[str:CouncilUnit] = None
@@ -558,7 +558,7 @@ class EconomyUnit:
 
 
 def economyunit_shop(
-    economy_id: EconomyQID,
+    economy_id: EconomyID,
     economys_dir: str,
     _manager_pid: PersonID = None,
     _councilunits: dict[str:CouncilUnit] = None,
