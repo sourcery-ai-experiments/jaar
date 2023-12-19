@@ -21,9 +21,9 @@ class WorldUnit:
     _personunits: dict[PersonID:PersonUnit] = None
 
     def apply_lobbyunit(self, x_lobbyunit: LobbyUnit):
-        for actor_pid in x_lobbyunit._actor_pids.keys():
-            self.set_personunit(actor_pid, replace_alert=False)
-        self.set_personunit(x_lobbyunit._lobbyr_pid, replace_alert=False)
+        for lobbyee_pid in x_lobbyunit._lobbyee_pids.keys():
+            self.set_personunit(lobbyee_pid, replace_alert=False)
+        self.set_personunit(x_lobbyunit._lobbyer_pid, replace_alert=False)
         x_cultureaddress = x_lobbyunit._concernunit.cultureaddress
 
         for x_person_id in x_cultureaddress.person_ids.keys():
@@ -31,9 +31,9 @@ class WorldUnit:
             x_personunit = self.get_personunit_from_memory(x_person_id)
             x_cultureunit = x_personunit.get_cultureunit(x_cultureaddress.culture_id)
             x_cultureunit.full_setup_councilunit(x_person_id)
-            x_cultureunit.full_setup_councilunit(x_lobbyunit._lobbyr_pid)
-            for actor_pid in x_lobbyunit._actor_pids.keys():
-                x_cultureunit.full_setup_councilunit(actor_pid)
+            x_cultureunit.full_setup_councilunit(x_lobbyunit._lobbyer_pid)
+            for lobbyee_pid in x_lobbyunit._lobbyee_pids.keys():
+                x_cultureunit.full_setup_councilunit(lobbyee_pid)
 
     def _get_person_dir(self, person_id):
         return f"{self._persons_dir}/{person_id}"

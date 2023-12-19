@@ -42,7 +42,7 @@ def test_worldunit_add_cultural_connection_CorrectlyCreatesObj(
 def test_worldunit_apply_lobbyunit_CorrectlyCreates_seed_agendas(
     worlds_dir_setup_cleanup,
 ):
-    # GIVEN lobbyr and actor seed_agendas does not exist
+    # GIVEN lobbyer and lobbyee seed_agendas does not exist
     w1_text = "w1"
     x_world = worldunit_shop(w1_text, get_test_worlds_dir())
     yao_text = "Yao"
@@ -65,7 +65,7 @@ def test_worldunit_apply_lobbyunit_CorrectlyCreates_seed_agendas(
     tim_text = "Tim"
     xio_text = "Xio"
     highway_lobbyunit = create_lobbyunit(
-        concernunit=highway_concernunit, actor_pid=tim_text, lobbyr_pid=xio_text
+        concernunit=highway_concernunit, lobbyee_pid=tim_text, lobbyer_pid=xio_text
     )
     assert x_world.get_personunit_from_memory(tim_text) is None
     assert x_world.get_personunit_from_memory(xio_text) is None
@@ -91,7 +91,7 @@ def test_worldunit_apply_lobbyunit_CorrectlyCreates_seed_agendas(
     assert texas_culture.get_councilunit(yao_text).get_seed() != None
 
 
-def test_worldunit_apply_lobbyunit_CorrectlyAddsTaskTo_lobbyr_seed_agenda(
+def test_worldunit_apply_lobbyunit_CorrectlyAddsTaskTo_lobbyer_seed_agenda(
     worlds_dir_setup_cleanup,
 ):
     x_world = worldunit_shop("w1", get_test_worlds_dir())
@@ -122,7 +122,7 @@ def test_worldunit_apply_lobbyunit_CorrectlyAddsTaskTo_lobbyr_seed_agenda(
     tim_text = "Tim"
     xio_text = "Xio"
     highway_lobbyunit = create_lobbyunit(
-        concernunit=highway_concernunit, actor_pid=tim_text, lobbyr_pid=xio_text
+        concernunit=highway_concernunit, lobbyee_pid=tim_text, lobbyer_pid=xio_text
     )
 
     # WHEN
@@ -146,7 +146,7 @@ def test_worldunit_apply_lobbyunit_CorrectlyAddsTaskTo_lobbyr_seed_agenda(
 
 
 # def test_worldunit_apply_lobbyunit_CorrectlyAddsTaskTo_intent(worlds_dir_setup_cleanup):
-#     # GIVEN actors public_agenda intent is empty
+#     # GIVEN lobbyees public_agenda intent is empty
 #     # WHEN worldunit lobbyunit is applyed
-#     # THEN actors public_agenda intent is non-empty
+#     # THEN lobbyees public_agenda intent is non-empty
 #     assert 1 == 2

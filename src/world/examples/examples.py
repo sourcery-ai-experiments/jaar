@@ -28,8 +28,8 @@ def get_farm_lobbyunit():
     bob_text = "Bob"
     real_text = "Real Farmers"
     farm_lobbyunit = create_lobbyunit(
-        get_farm_concernunit(), bob_text, actor_group=real_text
+        get_farm_concernunit(), bob_text, lobbyee_group=real_text
     )
     yao_text = "Yao"
-    farm_lobbyunit.add_actor_pid(yao_text)
+    farm_lobbyunit.add_lobbyee_pid(yao_text)
     return farm_lobbyunit
