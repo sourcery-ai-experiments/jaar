@@ -217,11 +217,16 @@ class ForkUnit:
     descendents: dict[RoadPath:float] = None
     delimiter: str = None
 
+    def is_dialectic(self):
+        return (
+            len(self.get_good_descendents()) > 0 and len(self.get_bad_descendents()) > 0
+        )
+
     def set_descendents_empty_if_none(self):
         if self.descendents is None:
             self.descendents = {}
 
-    def set_descendent(self, descendent: RoadNode, sway: float):
+    def set_descendent(self, descendent: RoadPath, sway: float):
         if sway in {None, 0}:
             raise NoneZeroSwayException(
                 f"set_descendent sway parameter {sway} must be Non-zero number"
@@ -231,6 +236,9 @@ class ForkUnit:
                 f"ForkUnit cannot set descendent '{descendent}' because base road is '{self.base}'."
             )
         self.descendents[descendent] = sway
+
+    def del_descendent(self, descendent: RoadPath):
+        self.descendents.pop(descendent)
 
     def get_good_descendents(self):
         return {
@@ -264,4 +272,5 @@ def create_forkunit(
     x_forkunit = forkunit_shop(base=base)
     x_forkunit.set_descendent(get_road(base, good, delimiter=delimiter), 1)
     x_forkunit.set_descendent(get_road(base, bad, delimiter=delimiter), -1)
-    return x_forkunit
+    if x_forkunit.is_dialectic():
+        return x_forkunit

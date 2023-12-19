@@ -64,7 +64,7 @@ def test_forkunit_shop_CorrectlyReturnsObj():
     assert cook_fork.delimiter == get_node_delimiter()
 
 
-def test_ForkUnit_set_descendents_CorrectlySetsAttr():
+def test_ForkUnit_set_descendent_CorrectlySetsAttr():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")
     cook_fork = forkunit_shop(cook_road)
@@ -79,6 +79,63 @@ def test_ForkUnit_set_descendents_CorrectlySetsAttr():
     assert cook_fork.descendents != {}
     assert cook_fork.descendents.get(cheap_road) != None
     assert cook_fork.descendents.get(cheap_road) == x_sway
+
+
+def test_ForkUnit_del_descendent_CorrectlySetsAttr():
+    # GIVEN
+    cook_road = get_road(root_label(), "cooking")
+    cook_fork = forkunit_shop(cook_road)
+    cheap_road = get_road(cook_road, "cheap food")
+    metal_road = get_road(cook_road, "metal pots")
+    cook_fork.set_descendent(cheap_road, sway=-2)
+    cook_fork.set_descendent(metal_road, sway=3)
+    assert len(cook_fork.descendents) == 2
+    assert cook_fork.descendents.get(cheap_road) != None
+    assert cook_fork.descendents.get(metal_road) != None
+
+    # WHEN
+    cook_fork.del_descendent(cheap_road)
+
+    # THEN
+    assert len(cook_fork.descendents) == 1
+    assert cook_fork.descendents.get(cheap_road) is None
+    assert cook_fork.descendents.get(metal_road) != None
+
+
+def test_ForkUnit_is_dialectic_ReturnsCorrectBool():
+    # GIVEN
+    cook_road = get_road(root_label(), "cooking")
+    cook_fork = forkunit_shop(cook_road)
+
+    # WHEN / THEN
+    assert len(cook_fork.descendents) == 0
+    assert cook_fork.is_dialectic() == False
+
+    # WHEN / THEN
+    cook_fork.set_descendent(get_road(cook_road, "cheap food"), sway=-2)
+    assert len(cook_fork.descendents) == 1
+    assert cook_fork.is_dialectic() == False
+
+    # WHEN / THEN
+    farm_text = "farm fresh"
+    cook_fork.set_descendent(get_road(cook_road, farm_text), sway=3)
+    assert len(cook_fork.descendents) == 2
+    assert cook_fork.is_dialectic()
+
+    # WHEN / THEN
+    cook_fork.del_descendent(get_road(cook_road, farm_text))
+    assert len(cook_fork.descendents) == 1
+    assert cook_fork.is_dialectic() == False
+
+    # WHEN / THEN
+    cook_fork.set_descendent(get_road(cook_road, "plastic pots"), sway=-5)
+    assert len(cook_fork.descendents) == 2
+    assert cook_fork.is_dialectic() == False
+
+    # WHEN / THEN
+    cook_fork.set_descendent(get_road(cook_road, "metal pots"), sway=7)
+    assert len(cook_fork.descendents) == 3
+    assert cook_fork.is_dialectic()
 
 
 def test_ForkUnit_get_good_descendents_ReturnsCorrectObj():
