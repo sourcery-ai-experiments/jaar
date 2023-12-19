@@ -403,9 +403,9 @@ class CultureUnit:
 
     def full_setup_councilunit(self, healer_id: PersonID):
         self.add_councilunit(healer_id, _auto_output_to_public=True)
-        actor_councilunit = self.get_councilunit(healer_id)
-        actor_councilunit.create_core_dir_and_files()
-        actor_councilunit.save_refreshed_output_to_public()
+        lobbyee_councilunit = self.get_councilunit(healer_id)
+        lobbyee_councilunit.create_core_dir_and_files()
+        lobbyee_councilunit.save_refreshed_output_to_public()
 
     # public dir management
     def get_public_dir(self):
