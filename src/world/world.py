@@ -1,6 +1,7 @@
 from src.agenda.agenda import agendaunit_shop
-from src.economy.economy import EconomyUnit
+from src.economy.economy import EconomyUnit, EconomyID
 from src.world.concern import EconomyAddress, LobbyUnit
+from src.world.pain import PainGenus, painunit_shop, healerlink_shop, economylink_shop
 from src.world.person import PersonID, PersonUnit, personunit_shop
 from dataclasses import dataclass
 
@@ -97,11 +98,48 @@ class WorldUnit:
     def get_priority_agenda(self, person_id: PersonID):
         x_personunit = self.get_personunit_from_memory(person_id)
         x_agenda = agendaunit_shop(person_id)
-        for x_economyunit in x_personunit._economys.values():
-            public_agenda = x_economyunit.get_public_agenda(person_id)
-            public_agenda.set_economy_id(x_agenda._economy_id)
-            x_agenda.meld(public_agenda)
+        for x_painunit in x_personunit._pains.values():
+            for x_healerlink in x_painunit._healerlinks.values():
+                healer_personunit = self.get_personunit_from_memory(
+                    x_healerlink.person_id
+                )
+                for x_economylink in x_healerlink._economylinks.values():
+                    x_economyunit = healer_personunit.get_economyunit(
+                        x_economylink.economy_id
+                    )
+                    public_agenda = x_economyunit.get_public_agenda(person_id)
+                    public_agenda.set_economy_id(x_agenda._economy_id)
+                    x_agenda.meld(public_agenda)
         return x_agenda
+
+    def create_person_economy(
+        self,
+        person_id: PersonID,
+        pain_genus: PainGenus,
+        healer_id: PersonID,
+        economy_id: EconomyID,
+    ):
+        x_healerlink = healerlink_shop(healer_id)
+        x_healerlink.set_economylink(economylink_shop(economy_id))
+        x_painunit = painunit_shop(pain_genus)
+        x_painunit.set_healerlink(x_healerlink)
+
+        self.set_personunit(person_id, replace_personunit=False, replace_alert=False)
+        x_personunit = self.get_personunit_from_memory(person_id)
+        x_personunit.set_painunit(x_painunit)
+
+        self.set_personunit(healer_id, replace_personunit=False, replace_alert=False)
+        x_healerunit = self.get_personunit_from_memory(healer_id)
+        x_healerunit.set_economyunit(economy_id, replace=False)
+        x_economyunit = x_healerunit.get_economyunit(economy_id)
+        x_economyunit.full_setup_councilunit(healer_id)
+        if healer_id != x_personunit.pid:
+            x_economyunit.full_setup_councilunit(x_personunit.pid)
+            person_councilunit = x_economyunit.get_councilunit(x_personunit.pid)
+            person_seed = person_councilunit.get_seed()
+            person_seed.add_partyunit(healer_id)
+            person_councilunit.save_seed_agenda(person_seed)
+            person_councilunit.save_refreshed_output_to_public()
 
 
 def worldunit_shop(mark: WorldMark, worlds_dir: str) -> WorldUnit:
