@@ -10,7 +10,7 @@ from src.agenda.road import (
     road_validate,
     get_ancestor_roads,
     get_forefather_roads,
-    get_default_culture_root_label as root_label,
+    get_default_economy_root_label as root_label,
     get_road_from_nodes,
     get_road_from_road_and_node,
     RoadNode,

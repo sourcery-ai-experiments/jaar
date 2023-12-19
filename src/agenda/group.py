@@ -35,15 +35,15 @@ class GroupUnit(GroupCore):
     _agenda_debt: float = None
     _agenda_intent_credit: float = None
     _agenda_intent_debt: float = None
-    _partylinks_set_by_culture_road: RoadPath = None
+    _partylinks_set_by_economy_road: RoadPath = None
 
     def set_brand(self, brand: GroupBrand = None):
         if brand != None:
             self.brand = brand
 
-    def set_attr(self, _partylinks_set_by_culture_road: RoadPath):
-        if _partylinks_set_by_culture_road != None:
-            self._partylinks_set_by_culture_road = _partylinks_set_by_culture_road
+    def set_attr(self, _partylinks_set_by_economy_road: RoadPath):
+        if _partylinks_set_by_economy_road != None:
+            self._partylinks_set_by_economy_road = _partylinks_set_by_economy_road
 
     def get_dict(self):
         x_dict = {"brand": self.brand}
@@ -55,10 +55,10 @@ class GroupUnit(GroupCore):
             x_dict["_single_party"] = self._single_party
         if self._partys not in [{}, None]:
             x_dict["_partys"] = self.get_partys_dict()
-        if self._partylinks_set_by_culture_road != None:
+        if self._partylinks_set_by_economy_road != None:
             x_dict[
-                "_partylinks_set_by_culture_road"
-            ] = self._partylinks_set_by_culture_road
+                "_partylinks_set_by_economy_road"
+            ] = self._partylinks_set_by_economy_road
 
         return x_dict
 
@@ -171,8 +171,8 @@ def get_from_dict(x_dict: dict):
                 groupunit_dict, "single_party_id"
             ),
             _partys=get_obj_from_groupunit_dict(groupunit_dict, "_partys"),
-            _partylinks_set_by_culture_road=get_obj_from_groupunit_dict(
-                groupunit_dict, "_partylinks_set_by_culture_road"
+            _partylinks_set_by_economy_road=get_obj_from_groupunit_dict(
+                groupunit_dict, "_partylinks_set_by_economy_road"
             ),
         )
         groupunits[x_group.brand] = x_group
@@ -198,11 +198,11 @@ def groupunit_shop(
     _agenda_debt: float = None,
     _agenda_intent_credit: float = None,
     _agenda_intent_debt: float = None,
-    _partylinks_set_by_culture_road: RoadPath = None,
+    _partylinks_set_by_economy_road: RoadPath = None,
 ) -> GroupUnit:
-    if _single_party and _partylinks_set_by_culture_road != None:
+    if _single_party and _partylinks_set_by_economy_road != None:
         raise InvalidGroupException(
-            f"_partylinks_set_by_culture_road cannot be '{_partylinks_set_by_culture_road}' for a single_party GroupUnit. It must have no value."
+            f"_partylinks_set_by_economy_road cannot be '{_partylinks_set_by_economy_road}' for a single_party GroupUnit. It must have no value."
         )
 
     if _partys is None:
@@ -219,7 +219,7 @@ def groupunit_shop(
         _agenda_debt=_agenda_debt,
         _agenda_intent_credit=_agenda_intent_credit,
         _agenda_intent_debt=_agenda_intent_debt,
-        _partylinks_set_by_culture_road=_partylinks_set_by_culture_road,
+        _partylinks_set_by_economy_road=_partylinks_set_by_economy_road,
     )
 
 

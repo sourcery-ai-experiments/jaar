@@ -170,7 +170,7 @@ def test_agenda_get_idea_list_returns_correct_list():
     # THEN
     work_idea = x_agenda._idea_dict.get(work_road)
     print(f"\nlook at {work_idea.get_idea_road()=}")
-    assert work_idea._pad == x_agenda._culture_id
+    assert work_idea._pad == x_agenda._economy_id
     assert work_idea._kids == {}
     assert work_idea._weight == 30
     assert work_idea._label == work_text
@@ -268,12 +268,12 @@ def test_agenda_get_idea_list_CorrectlyCalculatesIdeaAttr_agenda_coin():
 
     auto_text = "auto"
     auto_idea = ideacore_shop(auto_text, _weight=10)
-    x_agenda.add_idea(auto_idea, pad=x_agenda._culture_id)
+    x_agenda.add_idea(auto_idea, pad=x_agenda._economy_id)
 
     barn_text = "barn"
     barn_road = x_agenda.make_l1_road(barn_text)
     barn_idea = ideacore_shop(barn_text, _weight=60)
-    x_agenda.add_idea(barn_idea, pad=x_agenda._culture_id)
+    x_agenda.add_idea(barn_idea, pad=x_agenda._economy_id)
     lamb_text = "lambs"
     lamb_road = x_agenda.make_road(barn_road, lamb_text)
     lamb_idea = ideacore_shop(lamb_text, _weight=1)
@@ -285,7 +285,7 @@ def test_agenda_get_idea_list_CorrectlyCalculatesIdeaAttr_agenda_coin():
 
     coal_text = "coal"
     coal_idea = ideacore_shop(coal_text, _weight=30)
-    x_agenda.add_idea(coal_idea, pad=x_agenda._culture_id)
+    x_agenda.add_idea(coal_idea, pad=x_agenda._economy_id)
 
     assert x_agenda._idearoot._agenda_coin_onset is None
     assert x_agenda._idearoot._agenda_coin_cease is None
@@ -404,7 +404,7 @@ def test_get_intent_items():
 def test_exammple_idea_list_HasCorrectData():
     x_agenda = agenda_v001()
     print(f"{x_agenda.get_required_bases()=}")
-    # day_hour = f"{x_agenda._culture_id},day_hour"
+    # day_hour = f"{x_agenda._economy_id},day_hour"
     # x_agenda.set_acptfact(base=day_hour, pick=day_hour, open=0, nigh=23)
     day_min_text = "day_minute"
     day_min_road = x_agenda.make_l1_road(day_min_text)
@@ -555,11 +555,11 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
 
     # assert YR.get_active_status(road=bird_idea, idea_list=idea_list) == True
 
-    # x_agenda.set_acptfact(base=f"{x_agenda._culture_id},weekdays", pick=f"{x_agenda._culture_id},weekdays,Tuesday")
+    # x_agenda.set_acptfact(base=f"{x_agenda._economy_id},weekdays", pick=f"{x_agenda._economy_id},weekdays,Tuesday")
     # idea_list = x_agenda.get_idea_list()
     # assert YR.get_active_status(road=bird_idea, idea_list=idea_list) == True
 
-    # x_agenda.set_acptfact(base=f"{x_agenda._culture_id},weekdays", pick=f"{x_agenda._culture_id},weekdays,Wednesday")
+    # x_agenda.set_acptfact(base=f"{x_agenda._economy_id},weekdays", pick=f"{x_agenda._economy_id},weekdays,Wednesday")
     # idea_list = x_agenda.get_idea_list()
     # assert YR.get_active_status(road=bird_idea, idea_list=idea_list) == False
 

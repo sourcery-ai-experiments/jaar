@@ -1,13 +1,13 @@
 from src.agenda.road import get_road
 from src.world.world import worldunit_shop
 from src.world.concern import (
-    create_cultureaddress,
+    create_economyaddress,
     create_lobbyunit,
     create_concernunit,
 )
 from src.world.examples.world_env_kit import (
     get_temp_world_dir,
-    get_temp_culture_id,
+    get_temp_economy_id,
     get_test_worlds_dir,
     worlds_dir_setup_cleanup,
 )
@@ -24,19 +24,19 @@ def test_worldunit_add_cultural_connection_CorrectlyCreatesObj(
     x_world.set_personunit(luca_text)
     luca_person = x_world.get_personunit_from_memory(luca_text)
     texas_text = "Texas"
-    luca_person.set_cultureunit(texas_text)
-    texas_culture = luca_person.get_cultureunit(texas_text)
+    luca_person.set_economyunit(texas_text)
+    texas_economy = luca_person.get_economyunit(texas_text)
     kari_text = "kari"
-    texas_cultureaddress = create_cultureaddress(luca_text, texas_text)
-    assert texas_culture._councilunits.get(kari_text) is None
+    texas_economyaddress = create_economyaddress(luca_text, texas_text)
+    assert texas_economy._councilunits.get(kari_text) is None
     assert x_world.personunit_exists(kari_text) == False
 
     # WHEN
-    x_world.add_cultural_connection(texas_cultureaddress, kari_text)
+    x_world.add_cultural_connection(texas_economyaddress, kari_text)
 
     # THEN
     assert x_world.personunit_exists(kari_text)
-    assert texas_culture._councilunits.get(kari_text) != None
+    assert texas_economy._councilunits.get(kari_text) != None
 
 
 def test_worldunit_apply_lobbyunit_CorrectlyCreates_seed_agendas(
@@ -49,12 +49,12 @@ def test_worldunit_apply_lobbyunit_CorrectlyCreates_seed_agendas(
     x_world.set_personunit(yao_text)
     yao_person = x_world.get_personunit_from_memory(yao_text)
     texas_text = "Texas"
-    yao_person.set_cultureunit(texas_text)
-    texas_culture = yao_person.get_cultureunit(texas_text)
-    texas_public_dir = texas_culture.get_public_dir()
+    yao_person.set_economyunit(texas_text)
+    texas_economy = yao_person.get_economyunit(texas_text)
+    texas_public_dir = texas_economy.get_public_dir()
 
     highway_concernunit = create_concernunit(
-        cultureaddress=create_cultureaddress(yao_text, texas_text),
+        economyaddress=create_economyaddress(yao_text, texas_text),
         action="flying in airplanes",
         positive="Do not fly",
         negative="Continue flying",
@@ -86,9 +86,9 @@ def test_worldunit_apply_lobbyunit_CorrectlyCreates_seed_agendas(
     assert os_path.exists(public_tim_file_path)
     assert os_path.exists(public_xio_file_path)
     assert os_path.exists(public_yao_file_path)
-    assert texas_culture.get_councilunit(tim_text).get_seed() != None
-    assert texas_culture.get_councilunit(xio_text).get_seed() != None
-    assert texas_culture.get_councilunit(yao_text).get_seed() != None
+    assert texas_economy.get_councilunit(tim_text).get_seed() != None
+    assert texas_economy.get_councilunit(xio_text).get_seed() != None
+    assert texas_economy.get_councilunit(yao_text).get_seed() != None
 
 
 def test_worldunit_apply_lobbyunit_CorrectlyAddsTaskTo_lobbyer_seed_agenda(
@@ -99,9 +99,9 @@ def test_worldunit_apply_lobbyunit_CorrectlyAddsTaskTo_lobbyer_seed_agenda(
     x_world.set_personunit(yao_text)
     yao_person = x_world.get_personunit_from_memory(yao_text)
     texas_text = "Texas"
-    yao_person.set_cultureunit(texas_text)
-    texas_culture = yao_person.get_cultureunit(texas_text)
-    texas_public_dir = texas_culture.get_public_dir()
+    yao_person.set_economyunit(texas_text)
+    texas_economy = yao_person.get_economyunit(texas_text)
+    texas_public_dir = texas_economy.get_public_dir()
 
     flying_text = "flying in airplanes"
     no_fly_text = "Do not fly"
@@ -111,7 +111,7 @@ def test_worldunit_apply_lobbyunit_CorrectlyAddsTaskTo_lobbyer_seed_agenda(
     boiling_text = "boiling"
 
     highway_concernunit = create_concernunit(
-        cultureaddress=create_cultureaddress(yao_text, texas_text),
+        economyaddress=create_economyaddress(yao_text, texas_text),
         action=flying_text,
         positive=no_fly_text,
         negative=yesfly_text,
@@ -129,10 +129,10 @@ def test_worldunit_apply_lobbyunit_CorrectlyAddsTaskTo_lobbyer_seed_agenda(
     x_world.apply_lobbyunit(highway_lobbyunit)
 
     # THEN
-    tim_seed = texas_culture.get_councilunit(tim_text).get_seed()
-    xio_seed = texas_culture.get_councilunit(xio_text).get_seed()
-    yao_seed = texas_culture.get_councilunit(yao_text).get_seed()
-    texas_road = get_road(texas_culture.set_culture_id, texas_text)
+    tim_seed = texas_economy.get_councilunit(tim_text).get_seed()
+    xio_seed = texas_economy.get_councilunit(xio_text).get_seed()
+    yao_seed = texas_economy.get_councilunit(yao_text).get_seed()
+    texas_road = get_road(texas_economy.set_economy_id, texas_text)
     flying_road = get_road(texas_road, flying_text)
     no_fly_road = get_road(flying_road, no_fly_text)
     yesfly_road = get_road(flying_road, yesfly_text)

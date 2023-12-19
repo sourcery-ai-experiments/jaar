@@ -5,7 +5,7 @@ from src.agenda.examples.example_agendas import (
 )
 from pytest import raises as pytest_raises
 from src.agenda.required_idea import requiredunit_shop, acptfactunit_shop
-from src.agenda.road import get_default_culture_root_label as root_label, get_road
+from src.agenda.road import get_default_economy_root_label as root_label, get_road
 
 
 def test_idea_label_fails_when_idea_does_not_exist():
@@ -16,7 +16,7 @@ def test_idea_label_fails_when_idea_does_not_exist():
     work_text = "work"
     work_road = x_agenda.make_l1_road(work_text)
     swim_text = "swim"
-    x_agenda.add_idea(ideacore_shop(work_text), pad=x_agenda._culture_id)
+    x_agenda.add_idea(ideacore_shop(work_text), pad=x_agenda._economy_id)
     x_agenda.add_idea(ideacore_shop(swim_text), pad=work_road)
 
     # WHEN / THEN
@@ -29,7 +29,7 @@ def test_idea_label_fails_when_idea_does_not_exist():
     )
 
 
-def test_Agenda_level0_idea_edit_idea_label_RaisesError_culture_id_IsNone():
+def test_Agenda_level0_idea_edit_idea_label_RaisesError_economy_id_IsNone():
     # GIVEN
     healer_text = "Tim"
     x_agenda = agendaunit_shop(_healer=healer_text)
@@ -38,34 +38,34 @@ def test_Agenda_level0_idea_edit_idea_label_RaisesError_culture_id_IsNone():
     work_road = x_agenda.make_l1_road(work_text)
     swim_text = "swim"
     swim_road = x_agenda.make_road(work_road, swim_text)
-    x_agenda.add_idea(ideacore_shop(work_text), pad=x_agenda._culture_id)
+    x_agenda.add_idea(ideacore_shop(work_text), pad=x_agenda._economy_id)
     x_agenda.add_idea(ideacore_shop(swim_text), pad=work_road)
     assert x_agenda._healer == healer_text
-    assert x_agenda._culture_id == x_agenda._culture_id
-    assert x_agenda._idearoot._label == x_agenda._culture_id
+    assert x_agenda._economy_id == x_agenda._economy_id
+    assert x_agenda._idearoot._label == x_agenda._economy_id
     work_idea = x_agenda.get_idea_kid(work_road)
-    assert work_idea._pad == x_agenda._culture_id
+    assert work_idea._pad == x_agenda._economy_id
     swim_idea = x_agenda.get_idea_kid(swim_road)
     assert swim_idea._pad == work_road
 
     # WHEN
     moon_text = "moon"
-    x_agenda.edit_idea_label(old_road=x_agenda._culture_id, new_label=moon_text)
+    x_agenda.edit_idea_label(old_road=x_agenda._economy_id, new_label=moon_text)
 
     # THEN
     # with pytest_raises(Exception) as excinfo:
     #     moon_text = "moon"
-    #     x_agenda.edit_idea_label(old_road=x_agenda._culture_id, new_label=moon_text)
+    #     x_agenda.edit_idea_label(old_road=x_agenda._economy_id, new_label=moon_text)
     # assert (
     #     str(excinfo.value)
-    #     == f"Cannot set idearoot to string other than '{x_agenda._culture_id}'"
+    #     == f"Cannot set idearoot to string other than '{x_agenda._economy_id}'"
     # )
 
     assert x_agenda._idearoot._label != moon_text
-    assert x_agenda._idearoot._label == x_agenda._culture_id
+    assert x_agenda._idearoot._label == x_agenda._economy_id
 
 
-def test_Agenda_level0_idea_edit_idea_label_RaisesError_culture_id_IsDifferent():
+def test_Agenda_level0_idea_edit_idea_label_RaisesError_economy_id_IsDifferent():
     # GIVEN
     healer_text = "Tim"
     x_agenda = agendaunit_shop(_healer=healer_text)
@@ -73,12 +73,12 @@ def test_Agenda_level0_idea_edit_idea_label_RaisesError_culture_id_IsDifferent()
     work_road = x_agenda.make_l1_road(work_text)
     swim_text = "swim"
     swim_road = x_agenda.make_road(work_road, swim_text)
-    x_agenda.add_idea(ideacore_shop(work_text), pad=x_agenda._culture_id)
+    x_agenda.add_idea(ideacore_shop(work_text), pad=x_agenda._economy_id)
     x_agenda.add_idea(ideacore_shop(swim_text), pad=work_road)
     sun_text = "sun"
-    x_agenda._culture_id = sun_text
+    x_agenda._economy_id = sun_text
     assert x_agenda._healer == healer_text
-    assert x_agenda._culture_id == sun_text
+    assert x_agenda._economy_id == sun_text
     assert x_agenda._idearoot._label == root_label()
     work_idea = x_agenda.get_idea_kid(work_road)
     assert work_idea._pad == root_label()
@@ -95,7 +95,7 @@ def test_Agenda_level0_idea_edit_idea_label_RaisesError_culture_id_IsDifferent()
     )
 
 
-def test_agenda_set_culture_id_CorrectlySetsAttr():
+def test_agenda_set_economy_id_CorrectlySetsAttr():
     # GIVEN
     healer_text = "Tim"
     x_agenda = agendaunit_shop(_healer=healer_text)
@@ -103,28 +103,28 @@ def test_agenda_set_culture_id_CorrectlySetsAttr():
     old_work_road = x_agenda.make_l1_road(work_text)
     swim_text = "swim"
     old_swim_road = x_agenda.make_road(old_work_road, swim_text)
-    x_agenda.add_idea(ideacore_shop(work_text), pad=x_agenda._culture_id)
+    x_agenda.add_idea(ideacore_shop(work_text), pad=x_agenda._economy_id)
     x_agenda.add_idea(ideacore_shop(swim_text), pad=old_work_road)
     assert x_agenda._healer == healer_text
-    assert x_agenda._idearoot._label == x_agenda._culture_id
+    assert x_agenda._idearoot._label == x_agenda._economy_id
     work_idea = x_agenda.get_idea_kid(old_work_road)
-    assert work_idea._pad == x_agenda._culture_id
+    assert work_idea._pad == x_agenda._economy_id
     swim_idea = x_agenda.get_idea_kid(old_swim_road)
     assert swim_idea._pad == old_work_road
-    assert x_agenda._culture_id == x_agenda._culture_id
+    assert x_agenda._economy_id == x_agenda._economy_id
 
     # WHEN
-    culture_id_text = "Sun"
-    x_agenda.set_culture_id(culture_id=culture_id_text)
+    economy_id_text = "Sun"
+    x_agenda.set_economy_id(economy_id=economy_id_text)
 
     # THEN
-    new_work_road = x_agenda.make_road(culture_id_text, work_text)
+    new_work_road = x_agenda.make_road(economy_id_text, work_text)
     swim_text = "swim"
     new_swim_road = x_agenda.make_road(new_work_road, swim_text)
-    assert x_agenda._culture_id == culture_id_text
-    assert x_agenda._idearoot._label == culture_id_text
+    assert x_agenda._economy_id == economy_id_text
+    assert x_agenda._idearoot._label == economy_id_text
     work_idea = x_agenda.get_idea_kid(new_work_road)
-    assert work_idea._pad == culture_id_text
+    assert work_idea._pad == economy_id_text
     swim_idea = x_agenda.get_idea_kid(new_swim_road)
     assert swim_idea._pad == new_work_road
 
@@ -143,7 +143,7 @@ def test_idea_find_replace_road_Changes_kids_scenario1():
     red_text = "red"
     old_red_road = x_agenda.make_road(old_roses_road, red_text)
 
-    x_agenda.add_idea(ideacore_shop(old_healer_text), pad=x_agenda._culture_id)
+    x_agenda.add_idea(ideacore_shop(old_healer_text), pad=x_agenda._economy_id)
     x_agenda.add_idea(ideacore_shop(bloomers_text), pad=old_healer_road)
     x_agenda.add_idea(ideacore_shop(roses_text), pad=old_bloomers_road)
     x_agenda.add_idea(ideacore_shop(red_text), pad=old_roses_road)
@@ -193,7 +193,7 @@ def test_agenda_edit_idea_label_Changes_acptfactunits():
     rain_text = "rain"
     old_rain_road = x_agenda.make_road(old_water_road, rain_text)
 
-    x_agenda.add_idea(ideacore_shop(healer_text), pad=x_agenda._culture_id)
+    x_agenda.add_idea(ideacore_shop(healer_text), pad=x_agenda._economy_id)
     x_agenda.add_idea(ideacore_shop(roses_text), pad=bloomers_road)
     x_agenda.add_idea(ideacore_shop(rain_text), pad=old_water_road)
     x_agenda.set_acptfact(base=old_water_road, pick=old_rain_road)
@@ -207,7 +207,7 @@ def test_agenda_edit_idea_label_Changes_acptfactunits():
     # WHEN
     new_water_text = "h2o"
     new_water_road = x_agenda.make_l1_road(new_water_text)
-    x_agenda.add_idea(ideacore_shop(new_water_text), pad=x_agenda._culture_id)
+    x_agenda.add_idea(ideacore_shop(new_water_text), pad=x_agenda._economy_id)
     assert x_agenda._idearoot._acptfactunits.get(new_water_road) is None
     x_agenda.edit_idea_label(old_road=old_water_road, new_label=new_water_text)
 
@@ -234,8 +234,8 @@ def test_agenda_edit_idea_label_ChangesIdeaRoot_range_source_road():
 
     old_healer_text = "healer"
     old_healer_road = x_agenda.make_l1_road(old_healer_text)
-    x_agenda.add_idea(ideacore_shop(old_healer_text), pad=x_agenda._culture_id)
-    x_agenda.edit_idea_attr(x_agenda._culture_id, range_source_road=old_healer_road)
+    x_agenda.add_idea(ideacore_shop(old_healer_text), pad=x_agenda._economy_id)
+    x_agenda.edit_idea_attr(x_agenda._economy_id, range_source_road=old_healer_road)
     assert x_agenda._idearoot._range_source_road == old_healer_road
 
     # WHEN
@@ -259,10 +259,10 @@ def test_agenda_edit_idea_label_ChangesIdeaKidN_range_source_road():
     old_rain_road = x_agenda.make_road(old_water_road, rain_text)
     mood_text = "mood"
     mood_road = x_agenda.make_l1_road(mood_text)
-    x_agenda.add_idea(ideacore_shop(healer_text), pad=x_agenda._culture_id)
+    x_agenda.add_idea(ideacore_shop(healer_text), pad=x_agenda._economy_id)
     x_agenda.add_idea(ideacore_shop(old_water_text), pad=healer_road)
     x_agenda.add_idea(ideacore_shop(rain_text), pad=old_water_road)
-    x_agenda.add_idea(ideacore_shop(mood_text), pad=x_agenda._culture_id)
+    x_agenda.add_idea(ideacore_shop(mood_text), pad=x_agenda._economy_id)
 
     x_agenda.edit_idea_attr(road=mood_road, range_source_road=old_rain_road)
     mood_idea = x_agenda.get_idea_kid(mood_road)
@@ -338,7 +338,7 @@ def test_agenda_set_healer_CorrectlyChangesBoth():
     # GIVEN
     x_agenda = get_agenda_with_4_levels_and_2requireds_2acptfacts()
     assert x_agenda._healer == "Noa"
-    assert x_agenda._idearoot._label == x_agenda._culture_id
+    assert x_agenda._idearoot._label == x_agenda._economy_id
     # mid_label1 = "tim"
     # x_agenda.edit_idea_label(old_road=old_label, new_label=mid_label1)
     # assert x_agenda._healer == old_label
@@ -350,7 +350,7 @@ def test_agenda_set_healer_CorrectlyChangesBoth():
 
     # THEN
     assert x_agenda._healer == new_label2
-    assert x_agenda._idearoot._label == x_agenda._culture_id
+    assert x_agenda._idearoot._label == x_agenda._economy_id
 
 
 def test_agenda_edit_idea_label_RaisesErrorIfdelimiterIsInLabel():
@@ -374,8 +374,8 @@ def test_agenda_set_road_node_delimiter_RaisesErrorIfNew_delimiter_IsAnIdeaLabel
     luca_agenda = agendaunit_shop("Luca", "Texas")
     print(f"{luca_agenda._max_tree_traverse=}")
     work_text = "work"
-    work_road = luca_agenda.make_road(luca_agenda._culture_id, work_text)
-    luca_agenda.add_idea(ideacore_shop(work_text), pad=luca_agenda._culture_id)
+    work_road = luca_agenda.make_road(luca_agenda._economy_id, work_text)
+    luca_agenda.add_idea(ideacore_shop(work_text), pad=luca_agenda._economy_id)
     slash_text = "/"
     home_text = f"home cooking{slash_text}cleaning"
     luca_agenda.add_idea(ideacore_shop(home_text), pad=work_road)
@@ -395,7 +395,7 @@ def test_agenda_set_road_node_delimiter_CorrectlyChanges_pad():
     # GIVEN
     luca_agenda = agendaunit_shop("Luca", "Texas")
     work_text = "work"
-    luca_agenda.add_idea(ideacore_shop(work_text), pad=luca_agenda._culture_id)
+    luca_agenda.add_idea(ideacore_shop(work_text), pad=luca_agenda._economy_id)
     comma_work_road = luca_agenda.make_l1_road(work_text)
     cook_text = "cook cooking"
     luca_agenda.add_idea(ideacore_shop(cook_text), pad=comma_work_road)
@@ -403,7 +403,7 @@ def test_agenda_set_road_node_delimiter_CorrectlyChanges_pad():
     cook_idea = luca_agenda.get_idea_kid(comma_cook_road)
     comma_text = ","
     comma_cook_road = get_road(comma_work_road, cook_text, delimiter=comma_text)
-    # print(f"{luca_agenda._culture_id=} {luca_agenda._idearoot._label=} {work_road=}")
+    # print(f"{luca_agenda._economy_id=} {luca_agenda._idearoot._label=} {work_road=}")
     # print(f"{cook_idea._pad=} {cook_idea._label=}")
     # comma_work_idea = luca_agenda.get_idea_kid(comma_work_road)
     # print(f"{comma_work_idea._pad=} {comma_work_idea._label=}")
@@ -415,7 +415,7 @@ def test_agenda_set_road_node_delimiter_CorrectlyChanges_pad():
 
     # THEN
     assert cook_idea.get_idea_road() != comma_cook_road
-    slash_work_road = get_road(luca_agenda._culture_id, work_text, delimiter=slash_text)
+    slash_work_road = get_road(luca_agenda._economy_id, work_text, delimiter=slash_text)
     slash_cook_road = get_road(slash_work_road, cook_text, delimiter=slash_text)
     assert cook_idea.get_idea_road() == slash_cook_road
 
@@ -424,7 +424,7 @@ def test_agenda_set_road_node_delimiter_CorrectlyChangesRequiredUnit():
     # GIVEN
     luca_agenda = agendaunit_shop("Luca", "Texas")
     work_text = "work"
-    luca_agenda.add_idea(ideacore_shop(work_text), pad=luca_agenda._culture_id)
+    luca_agenda.add_idea(ideacore_shop(work_text), pad=luca_agenda._economy_id)
     time_text = "time"
     comma_time_road = luca_agenda.make_l1_road(time_text)
     _8am_text = "8am"
@@ -463,7 +463,7 @@ def test_agenda_set_road_node_delimiter_CorrectlyChangesAcptFactUnit():
     # GIVEN
     luca_agenda = agendaunit_shop("Luca", "Texas")
     work_text = "work"
-    luca_agenda.add_idea(ideacore_shop(work_text), pad=luca_agenda._culture_id)
+    luca_agenda.add_idea(ideacore_shop(work_text), pad=luca_agenda._economy_id)
     time_text = "time"
     comma_time_road = luca_agenda.make_l1_road(time_text)
     _8am_text = "8am"
@@ -501,7 +501,7 @@ def test_agenda_set_road_node_delimiter_CorrectlyChanges_numeric_roadAND_range_s
     # GIVEN
     luca_agenda = agendaunit_shop("Luca", "Texas")
     work_text = "work"
-    luca_agenda.add_idea(ideacore_shop(work_text), pad=luca_agenda._culture_id)
+    luca_agenda.add_idea(ideacore_shop(work_text), pad=luca_agenda._economy_id)
     comma_work_road = luca_agenda.make_l1_road(work_text)
     cook_text = "cook cooking"
     luca_agenda.add_idea(ideacore_shop(cook_text), pad=comma_work_road)
@@ -510,7 +510,7 @@ def test_agenda_set_road_node_delimiter_CorrectlyChanges_numeric_roadAND_range_s
     # numeric_road
     taste_text = "foot taste"
     luca_agenda.add_idea(
-        ideacore_shop(taste_text, _begin=0, _close=6), pad=luca_agenda._culture_id
+        ideacore_shop(taste_text, _begin=0, _close=6), pad=luca_agenda._economy_id
     )
     comma_taste_road = luca_agenda.make_l1_road(taste_text)
     luca_agenda.edit_idea_attr(comma_cook_road, numeric_road=comma_taste_road)
@@ -518,7 +518,7 @@ def test_agenda_set_road_node_delimiter_CorrectlyChanges_numeric_roadAND_range_s
     # range_source
     heat_text = "heat numbers"
     luca_agenda.add_idea(
-        ideacore_shop(heat_text, _begin=0, _close=6), pad=luca_agenda._culture_id
+        ideacore_shop(heat_text, _begin=0, _close=6), pad=luca_agenda._economy_id
     )
     comma_heat_road = luca_agenda.make_l1_road(heat_text)
     luca_agenda.edit_idea_attr(comma_cook_road, range_source_road=comma_heat_road)

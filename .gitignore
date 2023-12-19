@@ -135,13 +135,13 @@ dmypy.json
 cython_debug/
 
 # automatica_lly generated testing environments on each run
-src/culture/examples/cultures/ex3/
-src/culture/examples/cultures/ex4/
-src/culture/examples/cultures/ex5/
-src/culture/examples/cultures/ex6/
-src/culture/examples/cultures/ex7
-src/culture/examples/cultures/river_env/
-src/culture/test_culture/sql_worksheet01.sql
+src/economy/examples/economys/ex3/
+src/economy/examples/economys/ex4/
+src/economy/examples/economys/ex5/
+src/economy/examples/economys/ex6/
+src/economy/examples/economys/ex7
+src/economy/examples/economys/river_env/
+src/economy/test_economy/sql_worksheet01.sql
 main_cli_app.py
 main_cli_app2.py
 query_worksheets/

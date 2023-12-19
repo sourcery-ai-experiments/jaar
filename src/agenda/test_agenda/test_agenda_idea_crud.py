@@ -120,11 +120,11 @@ def test_agenda_add_idea_CorrectlyAddsIdeaObjWithNonstandard_delimiter():
     work_text = "work"
     week_text = "week"
     wed_text = "Wednesday"
-    work_road = bob_agenda.make_road(bob_agenda._culture_id, work_text)
-    week_road = bob_agenda.make_road(bob_agenda._culture_id, week_text)
+    work_road = bob_agenda.make_road(bob_agenda._economy_id, work_text)
+    week_road = bob_agenda.make_road(bob_agenda._economy_id, week_text)
     wed_road = bob_agenda.make_road(week_road, wed_text)
-    bob_agenda.add_idea(ideacore_shop(work_text), bob_agenda._culture_id)
-    bob_agenda.add_idea(ideacore_shop(week_text), bob_agenda._culture_id)
+    bob_agenda.add_idea(ideacore_shop(work_text), bob_agenda._economy_id)
+    bob_agenda.add_idea(ideacore_shop(week_text), bob_agenda._economy_id)
     bob_agenda.add_idea(ideacore_shop(wed_text), week_road)
     print(f"{bob_agenda._idearoot._kids.keys()=}")
     assert len(bob_agenda._idearoot._kids) == 2
@@ -213,7 +213,7 @@ def test_agenda_add_idea_creates_requireds_ideas():
 def test_agenda_del_idea_kid_Level0CannotBeDeleted():
     # GIVEN
     x_agenda = get_agenda_with_4_levels()
-    root_road = x_agenda._culture_id
+    root_road = x_agenda._economy_id
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -273,7 +273,7 @@ def test_agenda_del_idea_kid_Level1CanBeDeleted_ChildrenInherited():
     new_sunday_road = x_agenda.make_l1_road(sun_text)
     assert x_agenda.get_idea_kid(road=new_sunday_road)
     new_sunday_idea = x_agenda.get_idea_kid(road=new_sunday_road)
-    assert new_sunday_idea._pad == x_agenda._culture_id
+    assert new_sunday_idea._pad == x_agenda._economy_id
 
 
 def test_agenda_del_idea_kid_LevelNCanBeDeleted_ChildrenInherited():
@@ -497,7 +497,7 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEditDenomAnyIdeaIfInvaildDenomThrow
     work_text = "work"
     work_road = x_agenda.make_l1_road(work_text)
     work_idea = ideacore_shop(work_text)
-    x_agenda.add_idea(work_idea, pad=x_agenda._culture_id)
+    x_agenda.add_idea(work_idea, pad=x_agenda._economy_id)
     clean_text = "clean"
     clean_idea = ideacore_shop(clean_text)
     clean_road = x_agenda.make_road(work_road, clean_text)
@@ -526,7 +526,7 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEditDenomAnyIdeaInvaildDenomThrowsE
     work = "work"
     w_road = x_agenda.make_l1_road(work)
     work_idea = ideacore_shop(work, _begin=8, _close=14)
-    x_agenda.add_idea(work_idea, pad=x_agenda._culture_id)
+    x_agenda.add_idea(work_idea, pad=x_agenda._economy_id)
 
     clean = "clean"
     clean_idea = ideacore_shop(clean, _denom=1)
@@ -538,7 +538,7 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEditDenomAnyIdeaInvaildDenomThrowsE
     day = "day_range"
     day_idea = ideacore_shop(day, _begin=44, _close=110)
     day_road = x_agenda.make_l1_road(day)
-    x_agenda.add_idea(day_idea, pad=x_agenda._culture_id)
+    x_agenda.add_idea(day_idea, pad=x_agenda._economy_id)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -557,11 +557,11 @@ def test_agenda_edit_idea_attr_agendaWhenParentAndNumeric_roadBothHaveRangeThrow
     x_agenda = agendaunit_shop(_healer=healer_text)
     work_text = "work"
     work_road = x_agenda.make_l1_road(work_text)
-    x_agenda.add_idea(ideacore_shop(work_text), pad=x_agenda._culture_id)
+    x_agenda.add_idea(ideacore_shop(work_text), pad=x_agenda._economy_id)
     day_text = "day_range"
     day_idea = ideacore_shop(day_text, _begin=44, _close=110)
     day_road = x_agenda.make_l1_road(day_text)
-    x_agenda.add_idea(day_idea, pad=x_agenda._culture_id)
+    x_agenda.add_idea(day_idea, pad=x_agenda._economy_id)
 
     work_idea = x_agenda.get_idea_kid(road=work_road)
     assert work_idea._begin is None
@@ -572,7 +572,7 @@ def test_agenda_edit_idea_attr_agendaWhenParentAndNumeric_roadBothHaveRangeThrow
         x_agenda.edit_idea_attr(road=work_road, denom=11)
     assert (
         str(excinfo.value)
-        == f"Idea cannot edit numor=1/denom/reest of '{work_road}' if parent '{x_agenda._culture_id}' or ideacore._numeric_road does not have begin/close range"
+        == f"Idea cannot edit numor=1/denom/reest of '{work_road}' if parent '{x_agenda._economy_id}' or ideacore._numeric_road does not have begin/close range"
     )
 
     # WHEN
@@ -600,9 +600,9 @@ def test_agenda_add_idea_MustReorderKidsDictToBeAlphabetical():
     healer_text = "Noa"
     x_agenda = agendaunit_shop(_healer=healer_text)
     work_text = "work"
-    x_agenda.add_idea(ideacore_shop(work_text), pad=x_agenda._culture_id)
+    x_agenda.add_idea(ideacore_shop(work_text), pad=x_agenda._economy_id)
     swim_text = "swim"
-    x_agenda.add_idea(ideacore_shop(swim_text), pad=x_agenda._culture_id)
+    x_agenda.add_idea(ideacore_shop(swim_text), pad=x_agenda._economy_id)
 
     # WHEN
     idea_list = list(x_agenda._idearoot._kids.values())
@@ -616,7 +616,7 @@ def test_agenda_add_idea_adoptee_RaisesErrorIfAdopteeIdeaDoesNotHaveCorrectParen
     x_agenda = agendaunit_shop(_healer=healer_text)
     sports_text = "sports"
     sports_road = x_agenda.make_l1_road(sports_text)
-    x_agenda.add_idea(ideacore_shop(sports_text), pad=x_agenda._culture_id)
+    x_agenda.add_idea(ideacore_shop(sports_text), pad=x_agenda._economy_id)
     swim_text = "swim"
     x_agenda.add_idea(ideacore_shop(swim_text), pad=sports_road)
 
@@ -641,7 +641,7 @@ def test_agenda_add_idea_adoptee_CorrectlyAddsAdoptee():
     x_agenda = agendaunit_shop(_healer=healer_text)
     sports_text = "sports"
     sports_road = x_agenda.make_l1_road(sports_text)
-    x_agenda.add_idea(ideacore_shop(sports_text), pad=x_agenda._culture_id)
+    x_agenda.add_idea(ideacore_shop(sports_text), pad=x_agenda._economy_id)
     swim_text = "swim"
     x_agenda.add_idea(ideacore_shop(swim_text), pad=sports_road)
     hike_text = "hike"
@@ -681,7 +681,7 @@ def test_agenda_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdoptedIdea
     x_agenda = agendaunit_shop(_healer=healer_text)
     sports_text = "sports"
     sports_road = x_agenda.make_l1_road(sports_text)
-    x_agenda.add_idea(ideacore_shop(sports_text, _weight=2), pad=x_agenda._culture_id)
+    x_agenda.add_idea(ideacore_shop(sports_text, _weight=2), pad=x_agenda._economy_id)
     swim_text = "swim"
     swim_weight = 3
     x_agenda.add_idea(ideacore_shop(swim_text, _weight=swim_weight), pad=sports_road)
@@ -732,7 +732,7 @@ def test_agenda_del_idea_kid_DeletingBundledIdeaReturnsIdeasToOriginalState():
     x_agenda = agendaunit_shop(_healer=healer_text)
     sports_text = "sports"
     sports_road = x_agenda.make_l1_road(sports_text)
-    x_agenda.add_idea(ideacore_shop(sports_text, _weight=2), pad=x_agenda._culture_id)
+    x_agenda.add_idea(ideacore_shop(sports_text, _weight=2), pad=x_agenda._economy_id)
     swim_text = "swim"
     swim_weight = 3
     x_agenda.add_idea(ideacore_shop(swim_text, _weight=swim_weight), pad=sports_road)

@@ -14,7 +14,7 @@ def test_healerlink_exists():
     assert yao_healerlink.person_id == yao_text
     assert yao_healerlink.weight == yao_weight
     assert yao_healerlink.in_tribe == yao_in_tribe
-    assert yao_healerlink._culturelinks is None
+    assert yao_healerlink._economylinks is None
     assert yao_healerlink._relative_weight is None
     assert yao_healerlink._manager_importance is None
 
@@ -34,7 +34,7 @@ def test_healerlink_shop_ReturnsCorrectObj():
     assert yao_healerlink.person_id == yao_text
     assert yao_healerlink.weight == yao_weight
     assert yao_healerlink.in_tribe == yao_in_tribe
-    assert yao_healerlink._culturelinks == {}
+    assert yao_healerlink._economylinks == {}
     assert yao_healerlink._relative_weight is None
     assert yao_healerlink._manager_importance is None
 
@@ -50,7 +50,7 @@ def test_healerlink_shop_ReturnsCorrectObj_EmptyWeight():
     assert yao_healerlink.person_id == yao_text
     assert yao_healerlink.weight == 1
     assert yao_healerlink.in_tribe is None
-    assert yao_healerlink._culturelinks == {}
+    assert yao_healerlink._economylinks == {}
     assert yao_healerlink._relative_weight is None
     assert yao_healerlink._manager_importance is None
 

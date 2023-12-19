@@ -80,7 +80,7 @@
     </property>
     <column>
      <property name="text">
-      <string>culture Stories</string>
+      <string>economy Stories</string>
      </property>
     </column>
     <column>
@@ -124,7 +124,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QPushButton" name="culture_delete_button">
+   <widget class="QPushButton" name="economy_delete_button">
     <property name="geometry">
      <rect>
       <x>170</x>
@@ -142,7 +142,7 @@
      <string>delete </string>
     </property>
    </widget>
-   <widget class="QPushButton" name="culture_insert_button">
+   <widget class="QPushButton" name="economy_insert_button">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -157,10 +157,10 @@
      </font>
     </property>
     <property name="text">
-     <string>Add new culture</string>
+     <string>Add new economy</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="culture_name">
+   <widget class="QLineEdit" name="economy_name">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -175,7 +175,7 @@
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" name="culture_update_button">
+   <widget class="QPushButton" name="economy_update_button">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -622,7 +622,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QComboBox" name="culture_name_combo">
+   <widget class="QComboBox" name="economy_name_combo">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -637,7 +637,7 @@
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" name="culture_copy_button">
+   <widget class="QPushButton" name="economy_copy_button">
     <property name="geometry">
      <rect>
       <x>100</x>
@@ -670,7 +670,7 @@
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" name="culture_load_button">
+   <widget class="QPushButton" name="economy_load_button">
     <property name="geometry">
      <rect>
       <x>100</x>

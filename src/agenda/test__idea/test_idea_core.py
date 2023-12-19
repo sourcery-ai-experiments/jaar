@@ -9,7 +9,7 @@ from src.agenda.required_idea import (
 from src.agenda.required_assign import assigned_unit_shop, assigned_heir_shop
 from src.agenda.origin import originunit_shop
 from src.agenda.road import (
-    get_default_culture_root_label as root_label,
+    get_default_economy_root_label as root_label,
     get_road,
     get_node_delimiter,
 )

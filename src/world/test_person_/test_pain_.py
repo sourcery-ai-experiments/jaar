@@ -1,7 +1,7 @@
 from src.world.pain import (
     PainUnit,
     painunit_shop,
-    culturelink_shop,
+    economylink_shop,
     healerlink_shop,
 )
 

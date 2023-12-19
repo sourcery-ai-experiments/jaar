@@ -58,7 +58,7 @@ from src.agenda.road import (
     get_terminus_node_from_road,
     find_replace_road_key_dict,
     get_ancestor_roads,
-    get_default_culture_root_label,
+    get_default_economy_root_label,
     get_all_road_nodes,
     get_forefather_roads,
     get_road,
@@ -92,7 +92,7 @@ class NewDelimiterException(Exception):
     pass
 
 
-class CultureQID(str):  # Created to help track the concept
+class EconomyQID(str):  # Created to help track the concept
     pass
 
 
@@ -108,7 +108,7 @@ class AgendaUnit:
     _tree_traverse_count: int = None
     _rational: bool = None
     _originunit: OriginUnit = None
-    _culture_id: str = None
+    _economy_id: str = None
     _auto_output_to_public: bool = None
     _road_node_delimiter: str = None
 
@@ -124,11 +124,11 @@ class AgendaUnit:
             road_nodes=road_nodes,
             delimiter=self._road_node_delimiter,
         )
-        x_road = road_validate(x_road, self._road_node_delimiter, self._culture_id)
+        x_road = road_validate(x_road, self._road_node_delimiter, self._economy_id)
         return x_road
 
     def make_l1_road(self, l1_node: RoadNode):
-        return self.make_road(self._culture_id, l1_node)
+        return self.make_road(self._economy_id, l1_node)
 
     def set_partys_output_agenda_meld_order(self):
         sort_partys_list = list(self._partys.values())
@@ -161,10 +161,10 @@ class AgendaUnit:
             for x_idea in idea_pointers.values():
                 x_idea.set_road_node_delimiter(self._road_node_delimiter)
 
-    def set_culture_id(self, culture_id: str):
-        old_culture_id = copy_deepcopy(self._culture_id)
-        self._culture_id = culture_id
-        self.edit_idea_label(old_road=old_culture_id, new_label=self._culture_id)
+    def set_economy_id(self, economy_id: str):
+        old_economy_id = copy_deepcopy(self._economy_id)
+        self._economy_id = economy_id
+        self.edit_idea_label(old_road=old_economy_id, new_label=self._economy_id)
         self.set_agenda_metrics()
 
     def import_external_partyunit_metrics(
@@ -311,7 +311,7 @@ class AgendaUnit:
         return x_hregidea.get_time_min_from_dt(dt=dt)
 
     def get_time_c400_from_min(self, min: int) -> int:
-        time_road = self.make_road(self._culture_id, "time")
+        time_road = self.make_road(self._economy_id, "time")
         tech_road = self.make_road(time_road, "tech")
         c400_road = self.make_road(tech_road, "400 year cycle")
         c400_idea = self.get_idea_kid(c400_road)
@@ -324,7 +324,7 @@ class AgendaUnit:
         c100_4_96y = c400_idea.get_kids_in_range(begin=c400yr_min, close=c400yr_min)[0]
         cXXXyr_min = c400yr_min - c100_4_96y._begin
 
-        time_road = self.make_road(self._culture_id, "time")
+        time_road = self.make_road(self._economy_id, "time")
         tech_road = self.make_road(time_road, "tech")
 
         # identify which range the time is in
@@ -354,7 +354,7 @@ class AgendaUnit:
         return year_num, yr1_idea, yr1_rem_min
 
     def get_time_month_from_min(self, min: int):
-        time_road = self.make_road(self._culture_id, "time")
+        time_road = self.make_road(self._economy_id, "time")
         tech_road = self.make_road(time_road, "tech")
 
         year_num, yr1_idea, yr1_idea_rem_min = self.get_time_c400yr_from_min(min=min)
@@ -427,7 +427,7 @@ class AgendaUnit:
     def _get_jajatime_week_legible_text(self, open: int, divisor: int) -> str:
         x_hregidea = HregIdea(self._road_node_delimiter)
         open_in_week = open % divisor
-        time_road = self.make_road(self._culture_id, "time")
+        time_road = self.make_road(self._economy_id, "time")
         tech_road = self.make_road(time_road, "tech")
         week_road = self.make_road(tech_road, "week")
         weekday_ideas_dict = self.get_idea_ranged_kids(
@@ -785,7 +785,7 @@ class AgendaUnit:
     def set_time_acptfacts(self, open: datetime = None, nigh: datetime = None) -> None:
         open_minutes = self.get_time_min_from_dt(dt=open) if open != None else None
         nigh_minutes = self.get_time_min_from_dt(dt=nigh) if nigh != None else None
-        time_road = self.make_road(self._culture_id, "time")
+        time_road = self.make_road(self._economy_id, "time")
         minutes_acptfact = self.make_road(time_road, "jajatime")
         self.set_acptfact(
             base=minutes_acptfact,
@@ -796,7 +796,7 @@ class AgendaUnit:
 
     def _is_idea_rangeroot(self, idea_road: RoadPath) -> bool:
         anc_roads = get_ancestor_roads(road=idea_road)
-        parent_road = self._culture_id if len(anc_roads) == 1 else anc_roads[1]
+        parent_road = self._economy_id if len(anc_roads) == 1 else anc_roads[1]
 
         # figure out if parent is range
         parent_range = None
@@ -1078,14 +1078,14 @@ class AgendaUnit:
         if not create_missing_ideas_groups:
             idea_kid = self._get_filtered_balancelinks_idea(idea_kid)
 
-        pad = road_validate(pad, self._road_node_delimiter, self._culture_id)
+        pad = road_validate(pad, self._road_node_delimiter, self._economy_id)
         temp_idea = self._idearoot
         pad_nodes = get_all_road_nodes(pad, delimiter=self._road_node_delimiter)
         temp_road = pad_nodes.pop(0)
 
         # idearoot cannot be replaced
-        if temp_road == self._culture_id and pad_nodes == []:
-            idea_kid.set_pad(parent_road=self._culture_id)
+        if temp_road == self._economy_id and pad_nodes == []:
+            idea_kid.set_pad(parent_road=self._economy_id)
         else:
             road_nodes = [temp_road]
             while pad_nodes != []:
@@ -1248,7 +1248,7 @@ class AgendaUnit:
             # if root _label is changed
             if pad == "":
                 self._idearoot.set_idea_label(
-                    new_label, agenda_culture_id=self._culture_id
+                    new_label, agenda_economy_id=self._economy_id
                 )
                 self._idearoot._pad = pad
             else:
@@ -1306,7 +1306,7 @@ class AgendaUnit:
             anc_roads
         ) == 1:
             raise InvalidAgendaException("Root Idea cannot have numor denom reest.")
-        parent_road = self._culture_id if len(anc_roads) == 1 else anc_roads[1]
+        parent_road = self._economy_id if len(anc_roads) == 1 else anc_roads[1]
 
         parent_has_range = None
         parent_idea_x = self.get_idea_kid(parent_road)
@@ -2036,7 +2036,7 @@ class AgendaUnit:
             "_originunit": self._originunit.get_dict(),
             "_weight": self._weight,
             "_healer": self._healer,
-            "_culture_id": self._culture_id,
+            "_economy_id": self._economy_id,
             "_max_tree_traverse": self._max_tree_traverse,
             "_auto_output_to_public": self._auto_output_to_public,
             "_road_node_delimiter": self._road_node_delimiter,
@@ -2054,7 +2054,7 @@ class AgendaUnit:
             yb = ideabase_list.pop(0)
             range_source_road_x = None
             if yb.sr != None:
-                range_source_road_x = self.make_road(self._culture_id, yb.sr)
+                range_source_road_x = self.make_road(self._economy_id, yb.sr)
 
             idea_x = ideacore_shop(
                 _label=yb.n,
@@ -2068,12 +2068,12 @@ class AgendaUnit:
                 _reest=yb.mr,
                 _range_source_road=range_source_road_x,
             )
-            road_x = self.make_road(self._culture_id, yb.rr)
+            road_x = self.make_road(self._economy_id, yb.rr)
             self.add_idea(idea_x, pad=road_x)
 
             numeric_road_x = None
             if yb.nr != None:
-                numeric_road_x = self.make_road(self._culture_id, yb.nr)
+                numeric_road_x = self.make_road(self._economy_id, yb.nr)
                 self.edit_idea_attr(
                     road=self.make_road(road_x, yb.n), numeric_road=numeric_road_x
                 )
@@ -2174,7 +2174,7 @@ class AgendaUnit:
             o_road = road_validate(
                 self.make_road(o_idea._pad, o_idea._label),
                 self._road_node_delimiter,
-                self._culture_id,
+                self._economy_id,
             )
             try:
                 main_idea = self.get_idea_kid(o_road)
@@ -2296,7 +2296,7 @@ class AgendaUnit:
 
 def agendaunit_shop(
     _healer: PersonID = None,
-    _culture_id: CultureQID = None,
+    _economy_id: EconomyQID = None,
     _weight: float = None,
     _auto_output_to_public: bool = None,
     _road_node_delimiter: str = None,
@@ -2307,18 +2307,18 @@ def agendaunit_shop(
         _healer = ""
     if _auto_output_to_public is None:
         _auto_output_to_public = False
-    if _culture_id is None:
-        _culture_id = get_default_culture_root_label()
+    if _economy_id is None:
+        _economy_id = get_default_economy_root_label()
 
     x_agenda = AgendaUnit(
         _healer=_healer,
         _weight=_weight,
         _auto_output_to_public=_auto_output_to_public,
-        _culture_id=_culture_id,
+        _economy_id=_economy_id,
         _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
     )
     x_agenda._idearoot = idearoot_shop(
-        _label=x_agenda._culture_id,
+        _label=x_agenda._economy_id,
         _uid=1,
         _level=0,
     )
@@ -2343,7 +2343,7 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
     x_agenda.set_max_tree_traverse(
         get_obj_from_agenda_dict(agenda_dict, "_max_tree_traverse")
     )
-    x_agenda.set_culture_id(get_obj_from_agenda_dict(agenda_dict, "_culture_id"))
+    x_agenda.set_economy_id(get_obj_from_agenda_dict(agenda_dict, "_economy_id"))
     x_agenda._road_node_delimiter = get_node_delimiter(
         get_obj_from_agenda_dict(agenda_dict, "_road_node_delimiter")
     )
@@ -2359,7 +2359,7 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
 def set_idearoot_from_agenda_dict(x_agenda: AgendaUnit, agenda_dict: dict):
     idearoot_dict = agenda_dict.get("_idearoot")
     x_idearoot = x_agenda._idearoot
-    x_idearoot.set_idea_label(x_agenda._culture_id, x_agenda._culture_id)
+    x_idearoot.set_idea_label(x_agenda._economy_id, x_agenda._economy_id)
     x_idearoot._weight = get_obj_from_idea_dict(idearoot_dict, "_weight")
     x_idearoot._uid = get_obj_from_idea_dict(idearoot_dict, "_uid")
     x_idearoot._begin = get_obj_from_idea_dict(idearoot_dict, "_begin")

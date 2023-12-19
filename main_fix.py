@@ -1,5 +1,5 @@
-# # command to for converting ui form to python file: pyuic5 ui\cultureMainUI.ui -o ui\cultureMainUI.py
-from ui.CultureMainUI import Ui_MainWindow
+# # command to for converting ui form to python file: pyuic5 ui\economyMainUI.ui -o ui\economyMainUI.py
+from ui.EconomyMainUI import Ui_MainWindow
 from Edit5Issue import Edit5Issue
 from EditMain import EditMainView
 from PyQt5 import QtCore as qtc
@@ -13,14 +13,14 @@ from PyQt5.QtWidgets import (
     QApplication,
     QMainWindow,
 )
-from src.culture.culture import cultureunit_shop
-from src.culture.examples.culture_env_kit import (
-    create_example_cultures_list,
+from src.economy.economy import economyunit_shop
+from src.economy.examples.economy_env_kit import (
+    create_example_economys_list,
     setup_test_example_environment,
-    create_example_culture,
-    delete_dir_example_culture,
-    change_culture_id_example_culture,
-    get_test_cultures_dir,
+    create_example_economy,
+    delete_dir_example_economy,
+    change_economy_id_example_economy,
+    get_test_economys_dir,
 )
 
 from src.agenda.party import get_depotlink_types
@@ -78,10 +78,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         # signals for opening windows
         self.refresh_all_button.clicked.connect(self.refresh_all)
-        self.culture_insert_button.clicked.connect(self.culture_insert)
-        self.culture_load_button.clicked.connect(self.culture_load_from_file)
-        self.culture_update_button.clicked.connect(self.culture_update_pid)
-        self.culture_delete_button.clicked.connect(self.culture_delete)
+        self.economy_insert_button.clicked.connect(self.economy_insert)
+        self.economy_load_button.clicked.connect(self.economy_load_from_file)
+        self.economy_update_button.clicked.connect(self.economy_update_pid)
+        self.economy_delete_button.clicked.connect(self.economy_delete)
         self.agenda_insert_button.clicked.connect(self.agenda_insert)
         self.agenda_update_button.clicked.connect(self.agenda_update_pid)
         self.agenda_delete_button.clicked.connect(self.agenda_delete)
@@ -111,16 +111,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.five_issue_button.clicked.connect(self.open_edit5issue)
 
         self.x_council = None
-        self.culture_x = None
+        self.economy_x = None
         self.ignore_agenda_x = None
         setup_test_example_environment()
         first_env = "ex5"
-        self.culture_x = cultureunit_shop(
-            culture_id=first_env, cultures_dir=get_test_cultures_dir()
+        self.economy_x = economyunit_shop(
+            economy_id=first_env, economys_dir=get_test_economys_dir()
         )
-        self.refresh_culture()
-        self.culture_id_combo_refresh()
-        self.culture_id_combo.setCurrentText(first_env)
+        self.refresh_economy()
+        self.economy_id_combo_refresh()
+        self.economy_id_combo.setCurrentText(first_env)
         self._healer_load(council_cid="ernie")
 
     def save_seed(self):
@@ -129,8 +129,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_healer()
 
     def reload_all_src_agendas(self):
-        if self.culture_x != None:
-            self.culture_x.reload_all_councilunits_src_agendaunits()
+        if self.economy_x != None:
+            self.economy_x.reload_all_councilunits_src_agendaunits()
 
     def set_public_and_reload_srcs(self):
         self.save_output_agenda_to_public()
@@ -139,16 +139,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def save_output_agenda_to_public(self):
         if self.x_council != None:
             self.x_council.save_output_agenda_to_public()
-        self.refresh_culture()
+        self.refresh_economy()
 
-    def culture_load_from_file(self):
-        culture_selected = self.culture_id_combo.currentText()
-        self.culture_x = cultureunit_shop(
-            culture_id=culture_selected, cultures_dir=get_test_cultures_dir()
+    def economy_load_from_file(self):
+        economy_selected = self.economy_id_combo.currentText()
+        self.economy_x = economyunit_shop(
+            economy_id=economy_selected, economys_dir=get_test_economys_dir()
         )
-        self.culture_x.create_dirs_if_null(in_memory_treasury=False)
-        self.culture_id.setText(culture_selected)
-        self.refresh_culture()
+        self.economy_x.create_dirs_if_null(in_memory_treasury=False)
+        self.economy_id.setText(economy_selected)
+        self.refresh_economy()
 
     def agendas_table_select(self):
         self.agenda_healer.setText(
@@ -170,8 +170,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._healer_load(council_cid=x_council_cid)
 
     def _healer_load(self, council_cid: str):
-        self.culture_x.create_new_councilunit(council_cid=council_cid)
-        self.x_council = self.culture_x._councilunits.get(council_cid)
+        self.economy_x.create_new_councilunit(council_cid=council_cid)
+        self.x_council = self.economy_x._councilunits.get(council_cid)
         self.council_cid.setText(self.x_council._admin._council_cid)
         self.refresh_healer()
 
@@ -190,14 +190,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ignore_agenda_healer = self.ignores_table.item(
             self.ignores_table.currentRow(), 0
         ).text()
-        # self.ignore_agenda_x = self.culture_x.get_public_agenda(
-        self.ignore_agenda_x = self.culture_x.get_agenda_from_ignores_dir(
+        # self.ignore_agenda_x = self.economy_x.get_public_agenda(
+        self.ignore_agenda_x = self.economy_x.get_agenda_from_ignores_dir(
             council_cid=self.x_council._admin.pid, _healer=ignore_agenda_healer
         )
         self.edit_agenda = self.ignore_agenda_x
 
     def ignore_agenda_file_update(self):
-        self.culture_x.set_ignore_agenda_file(
+        self.economy_x.set_ignore_agenda_file(
             council_cid=self.x_council._admin.pid, agenda_obj=self.ignore_agenda_x
         )
         self.refresh_healer()
@@ -210,27 +210,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.ignores_table.setHidden(True)
         self.digests_table.setHidden(False)
 
-    def culture_insert(self):
-        create_example_culture(culture_id=self.culture_id.text())
-        self.culture_id_combo_refresh()
+    def economy_insert(self):
+        create_example_economy(economy_id=self.economy_id.text())
+        self.economy_id_combo_refresh()
 
-    def culture_update_pid(self):
-        change_culture_id_example_culture(
-            culture_obj=self.culture_x, new_pid=self.culture_id.text()
+    def economy_update_pid(self):
+        change_economy_id_example_economy(
+            economy_obj=self.economy_x, new_pid=self.economy_id.text()
         )
-        self.culture_id_combo_refresh()
+        self.economy_id_combo_refresh()
 
-    def culture_delete(self):
-        delete_dir_example_culture(culture_obj=self.culture_x)
-        self.culture_x = None
-        self.culture_id_combo_refresh()
-        self.refresh_culture()
+    def economy_delete(self):
+        delete_dir_example_economy(economy_obj=self.economy_x)
+        self.economy_x = None
+        self.economy_id_combo_refresh()
+        self.refresh_economy()
 
     def agenda_insert(self):
-        self.culture_x.save_public_agenda(
+        self.economy_x.save_public_agenda(
             agenda_x=agendaunit_shop(_healer=self.agenda_healer.text())
         )
-        self.refresh_culture()
+        self.refresh_economy()
 
     def agenda_update_pid(self):
         currently_selected = self.agendas_table.item(
@@ -238,21 +238,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         typed_in = self.agenda_healer.text()
         if currently_selected != typed_in:
-            self.culture_x.change_public_agenda_healer(
+            self.economy_x.change_public_agenda_healer(
                 old_label=currently_selected, new_label=typed_in
             )
-            self.refresh_culture()
+            self.refresh_economy()
 
     def agenda_delete(self):
-        self.culture_x.del_public_agenda(
+        self.economy_x.del_public_agenda(
             agenda_x_label=self.agendas_table.item(
                 self.agendas_table.currentRow(), 0
             ).text()
         )
-        self.refresh_culture()
+        self.refresh_economy()
 
     def healer_insert(self):
-        self.culture_x.create_new_councilunit(council_cid=self.council_cid.text())
+        self.economy_x.create_new_councilunit(council_cid=self.council_cid.text())
         self.refresh_healers()
 
     def healer_update_pid(self):
@@ -261,13 +261,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         typed_in = self.council_cid.text()
         if currently_selected != typed_in:
-            self.culture_x.change_councilunit_cid(
+            self.economy_x.change_councilunit_cid(
                 old_label=currently_selected, new_label=typed_in
             )
             self.refresh_healers()
 
     def healer_delete(self):
-        self.culture_x.del_councilunit_dir(
+        self.economy_x.del_councilunit_dir(
             council_cid=self.healers_table.item(
                 self.healers_table.currentRow(), 0
             ).text()
@@ -289,34 +289,34 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 depotlink_type=self.depotlink_type_combo.currentText(),
                 depotlink_weight=self.depotlink_weight.text(),
             )
-            self.culture_x.save_councilunit_file(council_cid=self.x_council._admin.pid)
+            self.economy_x.save_councilunit_file(council_cid=self.x_council._admin.pid)
         self.refresh_healer()
 
     def depotlink_update(self):
         council_cid_x = self.x_council._admin.pid
-        self.culture_x.update_depotlink(
+        self.economy_x.update_depotlink(
             council_cid=council_cid_x,
             partypid=self.depotlink_pid.text(),
             depotlink_type=self.depotlink_type_combo.currentText(),
             creditor_weight=self.depotlink_weight.text(),
             debtor_weight=self.depotlink_weight.text(),
         )
-        self.culture_x.save_councilunit_file(council_cid=council_cid_x)
+        self.economy_x.save_councilunit_file(council_cid=council_cid_x)
         self.refresh_healer()
 
     def depotlink_delete(self):
         council_cid_x = self.x_council._admin.pid
-        self.culture_x.del_depotlink(
+        self.economy_x.del_depotlink(
             council_cid=council_cid_x, agendaunit_healer=self.depotlink_pid.text()
         )
-        self.culture_x.save_councilunit_file(council_cid=council_cid_x)
+        self.economy_x.save_councilunit_file(council_cid=council_cid_x)
         self.refresh_healer()
 
     def get_agenda_healer_list(self):
         agendas_list = []
-        for file_name in x_func_dir_files(self.culture_x.get_public_dir()):
+        for file_name in x_func_dir_files(self.economy_x.get_public_dir()):
             # agenda_json = x_func_open_file(
-            #     dest_dir=self.culture_x.get_public_dir(), file_name=file_name
+            #     dest_dir=self.economy_x.get_public_dir(), file_name=file_name
             # )
             # x_agenda = get_agenda_from_json(x_agenda_json=agenda_json)
             agendas_list.append([file_name])
@@ -324,10 +324,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_council_cid_list(self):
         healers_healer_list = []
-        if self.culture_x != None:
+        if self.economy_x != None:
             healers_healer_list.extend(
                 [healer_dir]
-                for healer_dir in self.culture_x.get_councilunit_dir_paths_list()
+                for healer_dir in self.economy_x.get_councilunit_dir_paths_list()
             )
         return healers_healer_list
 
@@ -455,7 +455,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return x_list
 
     def refresh_all(self):
-        self.refresh_culture()
+        self.refresh_economy()
 
     def _sub_refresh_healers_table(self):
         self.refresh_x(
@@ -572,9 +572,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             column_width=[50, 200, 300],
         )
 
-    def culture_id_combo_refresh(self):
-        self.culture_id_combo.clear()
-        self.culture_id_combo.addItems(create_example_cultures_list())
+    def economy_id_combo_refresh(self):
+        self.economy_id_combo.clear()
+        self.economy_id_combo.addItems(create_example_economys_list())
 
     def refresh_healers(self):
         self.x_council = None
@@ -596,10 +596,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._sub_refresh_p_acptfacts_table()
         self._sub_refresh_p_intent_table()
 
-    def refresh_culture(self):
+    def refresh_economy(self):
         self.refresh_x(
             self.agendas_table,
-            ["Culture Public Agendas"],
+            ["Economy Public Agendas"],
             self.get_agenda_healer_list(),
         )
         self.refresh_healers()

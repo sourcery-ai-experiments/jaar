@@ -30,7 +30,7 @@ from src.agenda.road import (
     RoadPath,
     RoadNode,
     is_sub_road,
-    get_default_culture_root_label as root_label,
+    get_default_economy_root_label as root_label,
     get_road as road_get_road,
     get_node_delimiter,
     replace_road_node_delimiter,
@@ -1169,16 +1169,16 @@ class IdeaRootLabelNotEmptyException(Exception):
 
 @dataclass
 class IdeaRoot(IdeaCore):
-    def set_idea_label(self, _label: str, agenda_culture_id: str = None):
-        if _label != root_label() and agenda_culture_id is None:
+    def set_idea_label(self, _label: str, agenda_economy_id: str = None):
+        if _label != root_label() and agenda_economy_id is None:
             raise IdeaRootLabelNotEmptyException(
                 f"Cannot set idearoot to string other than '{root_label()}'"
             )
-        elif _label != agenda_culture_id != None:
+        elif _label != agenda_economy_id != None:
             raise IdeaRootLabelNotEmptyException(
-                f"Cannot set idearoot to string other than '{agenda_culture_id}'"
+                f"Cannot set idearoot to string other than '{agenda_economy_id}'"
             )
-        elif _label != root_label() and agenda_culture_id == _label:
+        elif _label != root_label() and agenda_economy_id == _label:
             self._label = _label
         else:
             self._label = root_label()

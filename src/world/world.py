@@ -1,5 +1,5 @@
-from src.culture.culture import CultureUnit
-from src.world.concern import CultureAddress, LobbyUnit
+from src.economy.economy import EconomyUnit
+from src.world.concern import EconomyAddress, LobbyUnit
 from src.world.person import PersonID, PersonUnit, personunit_shop
 from dataclasses import dataclass
 
@@ -24,16 +24,16 @@ class WorldUnit:
         for lobbyee_pid in x_lobbyunit._lobbyee_pids.keys():
             self.set_personunit(lobbyee_pid, replace_alert=False)
         self.set_personunit(x_lobbyunit._lobbyer_pid, replace_alert=False)
-        x_cultureaddress = x_lobbyunit._concernunit.cultureaddress
+        x_economyaddress = x_lobbyunit._concernunit.economyaddress
 
-        for x_person_id in x_cultureaddress.person_ids.keys():
+        for x_person_id in x_economyaddress.person_ids.keys():
             self.set_personunit(x_person_id, replace_alert=False)
             x_personunit = self.get_personunit_from_memory(x_person_id)
-            x_cultureunit = x_personunit.get_cultureunit(x_cultureaddress.culture_id)
-            x_cultureunit.full_setup_councilunit(x_person_id)
-            x_cultureunit.full_setup_councilunit(x_lobbyunit._lobbyer_pid)
+            x_economyunit = x_personunit.get_economyunit(x_economyaddress.economy_id)
+            x_economyunit.full_setup_councilunit(x_person_id)
+            x_economyunit.full_setup_councilunit(x_lobbyunit._lobbyer_pid)
             for lobbyee_pid in x_lobbyunit._lobbyee_pids.keys():
-                x_cultureunit.full_setup_councilunit(lobbyee_pid)
+                x_economyunit.full_setup_councilunit(lobbyee_pid)
 
     def _get_person_dir(self, person_id):
         return f"{self._persons_dir}/{person_id}"
@@ -71,27 +71,27 @@ class WorldUnit:
 
     def add_cultural_connection(
         self,
-        cultureaddress: CultureAddress,
+        economyaddress: EconomyAddress,
         council_person_id: PersonID,
     ):
-        culture_id = cultureaddress.culture_id
+        economy_id = economyaddress.economy_id
 
-        for culture_person_id in cultureaddress.person_ids.keys():
-            if self.personunit_exists(culture_person_id) == False:
-                self.set_personunit(culture_person_id)
-            x_personunit = self.get_personunit_from_memory(culture_person_id)
+        for economy_person_id in economyaddress.person_ids.keys():
+            if self.personunit_exists(economy_person_id) == False:
+                self.set_personunit(economy_person_id)
+            x_personunit = self.get_personunit_from_memory(economy_person_id)
 
-            if x_personunit.cultureunit_exists(culture_id) == False:
-                x_personunit.set_cultureunit(culture_id)
-            x_culture = x_personunit.get_cultureunit(culture_id)
+            if x_personunit.economyunit_exists(economy_id) == False:
+                x_personunit.set_economyunit(economy_id)
+            x_economy = x_personunit.get_economyunit(economy_id)
 
             if self.personunit_exists(council_person_id) == False:
                 self.set_personunit(council_person_id)
 
-            if x_culture.councilunit_exists(culture_person_id) == False:
-                x_culture.add_councilunit(culture_person_id)
-            if x_culture.councilunit_exists(council_person_id) == False:
-                x_culture.add_councilunit(council_person_id)
+            if x_economy.councilunit_exists(economy_person_id) == False:
+                x_economy.add_councilunit(economy_person_id)
+            if x_economy.councilunit_exists(council_person_id) == False:
+                x_economy.add_councilunit(council_person_id)
 
 
 def worldunit_shop(mark: WorldMark, worlds_dir: str) -> WorldUnit:

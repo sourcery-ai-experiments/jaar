@@ -1,12 +1,12 @@
 from src.world.concern import (
-    create_cultureaddress,
+    create_economyaddress,
     create_concernunit,
     create_lobbyunit,
 )
 
 
 def get_farm_concernunit():
-    texas_cultureaddress = create_cultureaddress("Luca", "Texas")
+    texas_economyaddress = create_economyaddress("Luca", "Texas")
     food_text = "food"
     good_text = "farm food"
     bad_text = "cheap food"
@@ -14,7 +14,7 @@ def get_farm_concernunit():
     well_text = "cultivate well"
     poor_text = "cultivate poorly"
     return create_concernunit(
-        cultureaddress=texas_cultureaddress,
+        economyaddress=texas_economyaddress,
         when=food_text,
         good=good_text,
         bad=bad_text,

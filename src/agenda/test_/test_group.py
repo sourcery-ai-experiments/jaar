@@ -8,7 +8,7 @@ from src.agenda.group import (
     balanceheir_shop,
     get_from_json as groupunits_get_from_json,
 )
-from src.agenda.road import get_default_culture_root_label as root_label, get_road
+from src.agenda.road import get_default_economy_root_label as root_label, get_road
 from src.agenda.x_func import x_is_json, x_get_json
 from pytest import raises as pytest_raises
 
@@ -32,7 +32,7 @@ def test_groupunit_exists():
         _agenda_debt=0.44,
         _agenda_intent_credit=0.66,
         _agenda_intent_debt=0.77,
-        _partylinks_set_by_culture_road=usa_road,
+        _partylinks_set_by_economy_road=usa_road,
     )
 
     # THEN
@@ -44,7 +44,7 @@ def test_groupunit_exists():
     assert swimmers_group._agenda_debt != None
     assert swimmers_group._agenda_intent_credit != None
     assert swimmers_group._agenda_intent_debt != None
-    assert swimmers_group._partylinks_set_by_culture_road == usa_road
+    assert swimmers_group._partylinks_set_by_economy_road == usa_road
 
 
 def test_groupunit_set_brand_WorksCorrectly():
@@ -65,18 +65,18 @@ def test_groupunit_set_attr_WorksCorrectly():
     # GIVEN
     swim_text = "swimmers"
     swim_group = groupunit_shop(brand=swim_text)
-    assert swim_group._partylinks_set_by_culture_road is None
+    assert swim_group._partylinks_set_by_economy_road is None
 
     # WHEN
     sports_road = get_road(root_label(), "sports")
     water_road = get_road(sports_road, "water")
-    swim_group.set_attr(_partylinks_set_by_culture_road=water_road)
+    swim_group.set_attr(_partylinks_set_by_economy_road=water_road)
 
     # THEN
-    assert swim_group._partylinks_set_by_culture_road == water_road
+    assert swim_group._partylinks_set_by_economy_road == water_road
 
 
-def test_groupunit_shop_WhenSinglePartyCorrectlyRemoves_partylinks_set_by_culture_road():
+def test_groupunit_shop_WhenSinglePartyCorrectlyRemoves_partylinks_set_by_economy_road():
     # GIVEN
     swimmers = "swimmers"
     nation_road = get_road(root_label(), "nation-states")
@@ -87,11 +87,11 @@ def test_groupunit_shop_WhenSinglePartyCorrectlyRemoves_partylinks_set_by_cultur
         swimmers_group = groupunit_shop(
             brand=swimmers,
             _single_party=True,
-            _partylinks_set_by_culture_road=usa_road,
+            _partylinks_set_by_economy_road=usa_road,
         )
     assert (
         str(excinfo.value)
-        == f"_partylinks_set_by_culture_road cannot be '{usa_road}' for a single_party GroupUnit. It must have no value."
+        == f"_partylinks_set_by_economy_road cannot be '{usa_road}' for a single_party GroupUnit. It must have no value."
     )
 
 
@@ -319,8 +319,8 @@ def test_GroupUnit_get_dict_ReturnsDictWithAttrsCorrectlySet():
     )
     sue_text = "Sue"
     todd_group.set_partylink(partylink_shop(pid=sue_text))
-    x_partylinks_set_by_culture_road = 44
-    todd_group.set_attr(x_partylinks_set_by_culture_road)
+    x_partylinks_set_by_economy_road = 44
+    todd_group.set_attr(x_partylinks_set_by_economy_road)
 
     assert todd_group.brand == todd_text
     assert todd_group.uid == todd_uid
@@ -328,7 +328,7 @@ def test_GroupUnit_get_dict_ReturnsDictWithAttrsCorrectlySet():
     assert todd_group._single_party
     assert len(todd_group._partys) == 1
     assert (
-        todd_group._partylinks_set_by_culture_road == x_partylinks_set_by_culture_road
+        todd_group._partylinks_set_by_economy_road == x_partylinks_set_by_economy_road
     )
 
     # WHEN
@@ -341,7 +341,7 @@ def test_GroupUnit_get_dict_ReturnsDictWithAttrsCorrectlySet():
     assert todd_dict["_single_party"]
     assert len(todd_dict["_partys"]) == 1
     assert (
-        todd_dict["_partylinks_set_by_culture_road"] == x_partylinks_set_by_culture_road
+        todd_dict["_partylinks_set_by_economy_road"] == x_partylinks_set_by_economy_road
     )
 
 
@@ -353,7 +353,7 @@ def test_idea_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     assert todd_group.single_party_id is None
     assert todd_group._single_party is False
     assert todd_group._partys == {}
-    assert todd_group._partylinks_set_by_culture_road is None
+    assert todd_group._partylinks_set_by_economy_road is None
 
     # WHEN
     todd_dict = todd_group.get_dict()
@@ -363,7 +363,7 @@ def test_idea_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     assert todd_dict.get("single_party_id") is None
     assert todd_dict.get("_single_party") is None
     assert todd_dict.get("_partys") is None
-    assert todd_dict.get("_partylinks_set_by_culture_road") is None
+    assert todd_dict.get("_partylinks_set_by_economy_road") is None
 
 
 def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
@@ -400,7 +400,7 @@ def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         brand=teacher_text,
         uid=teacher_uid,
         _partys=partylinks_dict,
-        _partylinks_set_by_culture_road=swim_road,
+        _partylinks_set_by_economy_road=swim_road,
     )
 
     # WHEN
@@ -412,7 +412,7 @@ def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         "brand": teacher_text,
         "uid": teacher_uid,
         "_partys": marie_json_dict,
-        "_partylinks_set_by_culture_road": swim_road,
+        "_partylinks_set_by_economy_road": swim_road,
     }
 
 
@@ -428,15 +428,15 @@ def test_groupunit_get_from_JSON_SimpleExampleWorks():
     teacher_group = groupunit_shop(
         brand=teacher_text,
         _partys=partylinks_dict,
-        _partylinks_set_by_culture_road=swim_road,
+        _partylinks_set_by_economy_road=swim_road,
     )
     teacher_dict = teacher_group.get_dict()
-    _partylinks_set_by_culture_road_text = "_partylinks_set_by_culture_road"
-    print(f"{teacher_dict.get(_partylinks_set_by_culture_road_text)=}")
+    _partylinks_set_by_economy_road_text = "_partylinks_set_by_economy_road"
+    print(f"{teacher_dict.get(_partylinks_set_by_economy_road_text)=}")
     groups_dict = {"teachers": teacher_dict}
 
     teachers_json = x_get_json(dict_x=groups_dict)
-    print(f"{teachers_json.find(_partylinks_set_by_culture_road_text)=}")
+    print(f"{teachers_json.find(_partylinks_set_by_economy_road_text)=}")
     assert teachers_json != None
     assert x_is_json(json_x=teachers_json)
 
@@ -447,8 +447,8 @@ def test_groupunit_get_from_JSON_SimpleExampleWorks():
     assert groupunits_obj_dict != None
     teachers_obj_check_dict = {teacher_group.brand: teacher_group}
     print(f"    {groupunits_obj_dict=}")
-    partylinks_set_by_culture_road_text = "_partylinks_set_by_culture_road"
-    print(f"{teachers_obj_check_dict.get(partylinks_set_by_culture_road_text)=}")
+    partylinks_set_by_economy_road_text = "_partylinks_set_by_economy_road"
+    print(f"{teachers_obj_check_dict.get(partylinks_set_by_economy_road_text)=}")
     print(f"{teachers_obj_check_dict=}")
     assert groupunits_obj_dict == teachers_obj_check_dict
 

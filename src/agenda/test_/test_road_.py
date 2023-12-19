@@ -10,7 +10,7 @@ from src.agenda.road import (
     road_validate,
     get_ancestor_roads,
     get_forefather_roads,
-    get_default_culture_root_label as root_label,
+    get_default_economy_root_label as root_label,
     get_road_from_nodes,
     get_road_from_road_and_node,
     RoadNode,
@@ -51,18 +51,18 @@ def test_road_is_sub_road_correctlyReturnsBool():
 
 def test_road_road_validate_correctlyReturnsRoadPath():
     x_s = get_node_delimiter()
-    _culture_id = "x"
-    casa_road = f"{_culture_id}{x_s}casa"
-    source_road = f"{_culture_id}{x_s}source"
-    fun_road = f"{_culture_id}{x_s}fun"
-    assert road_validate(None, x_s, _culture_id) == ""
-    assert road_validate("", x_s, _culture_id) == ""
-    assert road_validate(f"{_culture_id}{x_s}casa", x_s, _culture_id) == casa_road
-    assert road_validate(f"A{x_s}casa", x_s, _culture_id) == casa_road
-    assert road_validate(f"{x_s}source", x_s, _culture_id) == source_road
-    assert road_validate(f"source{x_s}fun", x_s, _culture_id) == fun_road
-    assert road_validate("source", x_s, _culture_id) == _culture_id
-    assert road_validate(f"AA{x_s}casa", x_s, _culture_id) == casa_road
+    _economy_id = "x"
+    casa_road = f"{_economy_id}{x_s}casa"
+    source_road = f"{_economy_id}{x_s}source"
+    fun_road = f"{_economy_id}{x_s}fun"
+    assert road_validate(None, x_s, _economy_id) == ""
+    assert road_validate("", x_s, _economy_id) == ""
+    assert road_validate(f"{_economy_id}{x_s}casa", x_s, _economy_id) == casa_road
+    assert road_validate(f"A{x_s}casa", x_s, _economy_id) == casa_road
+    assert road_validate(f"{x_s}source", x_s, _economy_id) == source_road
+    assert road_validate(f"source{x_s}fun", x_s, _economy_id) == fun_road
+    assert road_validate("source", x_s, _economy_id) == _economy_id
+    assert road_validate(f"AA{x_s}casa", x_s, _economy_id) == casa_road
 
 
 def test_road_get_road_ReturnsCorrectRoadPathWith_delimiter():
@@ -220,12 +220,12 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
     assert new_sufffacts_x.get(old_seasons_road) is None
 
 
-def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeCultureQIDScenario():
+def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeEconomyQIDScenario():
     # GIVEN
     x_s = get_node_delimiter()
-    old_culture_id = "El Paso"
+    old_economy_id = "El Paso"
     healer_text = "healer"
-    old_healer_road = f"{old_culture_id}{x_s}{healer_text}"
+    old_healer_road = f"{old_economy_id}{x_s}{healer_text}"
     seasons_text = "seasons"
     old_seasons_road = f"{old_healer_road}{x_s}{seasons_text}"
     old_sufffact_x = sufffactunit_shop(need=old_seasons_road)
@@ -234,8 +234,8 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeCultureQIDScen
     assert old_sufffacts_x.get(old_seasons_road) == old_sufffact_x
 
     # WHEN
-    new_culture_id = "Austin"
-    new_healer_road = f"{new_culture_id}{x_s}{healer_text}"
+    new_economy_id = "Austin"
+    new_healer_road = f"{new_economy_id}{x_s}{healer_text}"
     new_seasons_road = f"{new_healer_road}{x_s}{seasons_text}"
     new_sufffacts_x = find_replace_road_key_dict(
         dict_x=old_sufffacts_x, old_road=old_seasons_road, new_road=new_seasons_road
@@ -332,7 +332,7 @@ def test_road_get_forefather_roads_CorrectlyReturnsAncestorRoadPathsWithoutSourc
     assert x_roads == texas_forefather_roads
 
 
-def test_road_get_default_culture_root_label_ReturnsCorrectObj():
+def test_road_get_default_economy_root_label_ReturnsCorrectObj():
     assert root_label() == "A"
 
 

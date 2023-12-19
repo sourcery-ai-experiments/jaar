@@ -1,7 +1,7 @@
 from src.world.world import WorldUnit, worldunit_shop
 from src.world.examples.world_env_kit import (
     get_temp_world_dir,
-    get_temp_culture_id,
+    get_temp_economy_id,
     get_test_worlds_dir,
     worlds_dir_setup_cleanup,
 )

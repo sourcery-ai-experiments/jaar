@@ -2,7 +2,7 @@ from src.agenda.required_idea import acptfactunit_shop
 from src.agenda.lemma import Lemma, Lemmas, lemmas_shop
 from src.agenda.idea import ideacore_shop
 from src.agenda.road import (
-    get_default_culture_root_label as root_label,
+    get_default_economy_root_label as root_label,
     get_road,
     get_node_delimiter,
 )

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src.culture.culture import CultureUnit, CultureQID, cultureunit_shop
+from src.economy.economy import EconomyUnit, EconomyQID, economyunit_shop
 from src.world.pain import PainGenus, PainUnit, PersonID, painunit_shop
 
 
@@ -7,7 +7,7 @@ from src.world.pain import PainGenus, PainUnit, PersonID, painunit_shop
 class PersonUnit:
     pid: PersonID = None
     person_dir: str = None
-    _cultures: dict[CultureQID:CultureUnit] = None
+    _economys: dict[EconomyQID:EconomyUnit] = None
     _pains: dict[PainGenus:PainUnit] = None
 
     def set_pains_empty_if_none(self):
@@ -33,31 +33,31 @@ class PersonUnit:
         for x_painunit in self._pains.values():
             x_painunit.set_relative_weight(x_painunit.weight / total_painunits_weight)
 
-    def set_cultures_empty_if_none(self):
-        if self._cultures is None:
-            self._cultures = {}
+    def set_economys_empty_if_none(self):
+        if self._economys is None:
+            self._economys = {}
 
-    def set_cultureunit(self, culture_id: CultureQID, replace: bool = False):
-        if (self.cultureunit_exists(culture_id) and replace) or self.cultureunit_exists(
-            culture_id
+    def set_economyunit(self, economy_id: EconomyQID, replace: bool = False):
+        if (self.economyunit_exists(economy_id) and replace) or self.economyunit_exists(
+            economy_id
         ) == False:
-            cultures_dir = f"{self.person_dir}/cultures"
-            self._cultures[culture_id] = cultureunit_shop(
-                culture_id=culture_id, cultures_dir=cultures_dir, _manager_pid=self.pid
+            economys_dir = f"{self.person_dir}/economys"
+            self._economys[economy_id] = economyunit_shop(
+                economy_id=economy_id, economys_dir=economys_dir, _manager_pid=self.pid
             )
 
-    def cultureunit_exists(self, culture_id: CultureQID):
-        return self._cultures.get(culture_id) != None
+    def economyunit_exists(self, economy_id: EconomyQID):
+        return self._economys.get(economy_id) != None
 
-    def get_cultureunit(self, culture_id: CultureQID) -> CultureUnit:
-        return self._cultures.get(culture_id)
+    def get_economyunit(self, economy_id: EconomyQID) -> EconomyUnit:
+        return self._economys.get(economy_id)
 
-    def del_cultureunit(self, culture_id: CultureQID):
-        self._cultures.pop(culture_id)
+    def del_economyunit(self, economy_id: EconomyQID):
+        self._economys.pop(economy_id)
 
-    def get_cultures_dict(self) -> dict:
+    def get_economys_dict(self) -> dict:
         return {
-            cultureunit_x.culture_id: None for cultureunit_x in self._cultures.values()
+            economyunit_x.economy_id: None for economyunit_x in self._economys.values()
         }
 
     def get_pains_dict(self) -> dict:
@@ -69,7 +69,7 @@ class PersonUnit:
     def get_dict(self) -> dict:
         return {
             "pid": self.pid,
-            "_cultures": self.get_cultures_dict(),
+            "_economys": self.get_economys_dict(),
             "_pains": self.get_pains_dict(),
         }
 
@@ -78,7 +78,7 @@ def personunit_shop(pid: PersonID, person_dir: str = None) -> PersonUnit:
     if person_dir is None:
         person_dir = ""
     x_person = PersonUnit(pid=pid, person_dir=person_dir)
-    x_person.set_cultures_empty_if_none()
+    x_person.set_economys_empty_if_none()
     x_person.set_pains_empty_if_none()
     return x_person
 

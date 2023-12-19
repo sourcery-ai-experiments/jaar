@@ -54,7 +54,7 @@ def test_agenda_get_dict_ReturnsDictObject():
     assert agenda_dict != None
     assert str(type(agenda_dict)) == "<class 'dict'>"
     assert agenda_dict["_healer"] == x_agenda._healer
-    assert agenda_dict["_culture_id"] == x_agenda._culture_id
+    assert agenda_dict["_economy_id"] == x_agenda._economy_id
     assert agenda_dict["_weight"] == x_agenda._weight
     assert agenda_dict["_weight"] == agenda_weight
     assert agenda_dict["_max_tree_traverse"] == x_agenda._max_tree_traverse
@@ -68,7 +68,7 @@ def test_agenda_get_dict_ReturnsDictObject():
     _kids = "_kids"
     _range_source_road = "_range_source_road"
     _numeric_road = "_numeric_road"
-    assert x_idearoot._label == x_agenda._culture_id
+    assert x_idearoot._label == x_agenda._economy_id
     assert idearoot_dict["_label"] == x_idearoot._label
     assert idearoot_dict["_weight"] != agenda_weight
     assert idearoot_dict["_weight"] == x_idearoot._weight
@@ -82,7 +82,7 @@ def test_agenda_get_dict_ReturnsDictObject():
     month_week_special_dict = idearoot_dict[_kids][month_week_text][_range_source_road]
     assert month_week_special_dict != None
     assert month_week_special_dict == x_agenda.make_road(
-        x_agenda._culture_id, "ced_week"
+        x_agenda._economy_id, "ced_week"
     )
     assert month_week_special_dict == month_week_idea_x._range_source_road
 
@@ -114,7 +114,7 @@ def test_agenda_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
     x_agenda = agendaunit_shop(_healer=healer_text)
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(brand=run_text)
-    x_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=x_agenda._culture_id)
+    x_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=x_agenda._economy_id)
 
     # WHEN
     agenda_dict = x_agenda.get_dict()
@@ -134,7 +134,7 @@ def test_agenda_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
 
     morn_text = "morning"
     morn_road = x_agenda.make_l1_road(morn_text)
-    x_agenda.add_idea(idea_kid=ideacore_shop(morn_text), pad=x_agenda._culture_id)
+    x_agenda.add_idea(idea_kid=ideacore_shop(morn_text), pad=x_agenda._economy_id)
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(brand=run_text)
     x_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=morn_road)
@@ -155,8 +155,8 @@ def test_agenda_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
 def test_export_to_JSON_simple_example_works():
     # GIVEN
     x_agenda = example_agendas_get_agenda_x1_3levels_1required_1acptfacts()
-    tiger_culture_id = "tiger_econ"
-    x_agenda.set_culture_id(tiger_culture_id)
+    tiger_economy_id = "tiger_econ"
+    x_agenda.set_economy_id(tiger_economy_id)
 
     # WHEN
     x_json = x_agenda.get_json()
@@ -169,7 +169,7 @@ def test_export_to_JSON_simple_example_works():
     agenda_dict = json_loads(x_json)
 
     assert agenda_dict["_healer"] == x_agenda._healer
-    assert agenda_dict["_culture_id"] == x_agenda._culture_id
+    assert agenda_dict["_economy_id"] == x_agenda._economy_id
     assert agenda_dict["_weight"] == x_agenda._weight
 
     x_idearoot = x_agenda._idearoot
@@ -206,7 +206,7 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     # THEN
     _kids = "_kids"
     assert agenda_dict["_healer"] == x_agenda._healer
-    assert agenda_dict["_culture_id"] == x_agenda._culture_id
+    assert agenda_dict["_economy_id"] == x_agenda._economy_id
     assert agenda_dict["_weight"] == x_agenda._weight
     assert agenda_dict["_max_tree_traverse"] == 2
     assert agenda_dict["_max_tree_traverse"] == x_agenda._max_tree_traverse
@@ -261,11 +261,11 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     # GIVEN
     y_agenda = example_agendas_get_agenda_x1_3levels_1required_1acptfacts()
     y_agenda.set_max_tree_traverse(23)
-    tiger_culture_id = "tiger_econ"
-    y_agenda.set_culture_id(tiger_culture_id)
+    tiger_economy_id = "tiger_econ"
+    y_agenda.set_economy_id(tiger_economy_id)
 
     shave_text = "shave"
-    shave_road = y_agenda.make_road(y_agenda._culture_id, shave_text)
+    shave_road = y_agenda.make_road(y_agenda._economy_id, shave_text)
     shave_idea_y1 = y_agenda.get_idea_kid(shave_road)
     shave_idea_y1._originunit.set_originlink(pid="Sue", weight=4.3)
     # print(f"{shave_road=}")
@@ -283,14 +283,14 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
 
     run_assigned_unit = assigned_unit_shop()
     run_assigned_unit.set_suffgroup(brand=run_text)
-    y_agenda.edit_idea_attr(road=y_agenda._culture_id, assignedunit=run_assigned_unit)
+    y_agenda.edit_idea_attr(road=y_agenda._economy_id, assignedunit=run_assigned_unit)
     tim_assigned_unit = assigned_unit_shop()
     tim_assigned_unit.set_suffgroup(brand=tim_text)
     y_agenda.edit_idea_attr(shave_road, assignedunit=tim_assigned_unit)
     y_agenda.edit_idea_attr(shave_road, balancelink=balancelink_shop(tim_text))
     y_agenda.edit_idea_attr(shave_road, balancelink=balancelink_shop(sue_text))
     y_agenda.edit_idea_attr(
-        y_agenda._culture_id, balancelink=balancelink_shop(sue_text)
+        y_agenda._economy_id, balancelink=balancelink_shop(sue_text)
     )
 
     yao_text = "Yao"
@@ -306,7 +306,7 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     assert str(type(x_agenda)).find(".agenda.AgendaUnit'>") > 0
     assert x_agenda._healer != None
     assert x_agenda._healer == y_agenda._healer
-    assert x_agenda._culture_id == y_agenda._culture_id
+    assert x_agenda._economy_id == y_agenda._economy_id
     assert x_agenda._max_tree_traverse == 23
     assert x_agenda._max_tree_traverse == y_agenda._max_tree_traverse
     assert x_agenda._auto_output_to_public == y_agenda._auto_output_to_public
@@ -325,7 +325,7 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     assert len(x_agenda._idearoot._kids) == 2
 
     weekday_text = "weekdays"
-    weekday_road = x_agenda.make_road(y_agenda._culture_id, weekday_text)
+    weekday_road = x_agenda.make_road(y_agenda._economy_id, weekday_text)
     weekday_idea_x = x_agenda.get_idea_kid(weekday_road)
     assert len(weekday_idea_x._kids) == 2
 

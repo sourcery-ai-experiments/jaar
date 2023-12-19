@@ -3,7 +3,7 @@ from src.world.person import personunit_shop
 from src.agenda.required_assign import assigned_unit_shop
 
 
-# def test_set_deal_CreatesWorldTwoCulturesTwoPersonsWorkingAgendas():
+# def test_set_deal_CreatesWorldTwoEconomysTwoPersonsWorkingAgendas():
 #     # Tim has a PainUnit: He
 #     # Tim asks Sue to do the laundry when the laundry basket is full
 #     # In return Sue asks Tim to cook when there is no food to eat
@@ -12,5 +12,5 @@ from src.agenda.required_assign import assigned_unit_shop
 
 #     def SomeDeal()
 
-# create tool that allows those two statements to be all that's needed create two cultures
+# create tool that allows those two statements to be all that's needed create two economys
 #

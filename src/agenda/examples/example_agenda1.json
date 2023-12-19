@@ -8890,10 +8890,10 @@
         "_uid": 1,
         "_weight": 1
     },
-    "_culture_id": "A",
+    "_economy_id": "A",
     "_groups": {
         "A a ron Jones": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "A a ron Jones": {
                     "creditor_weight": 1,
@@ -8907,7 +8907,7 @@
             "uid": 32
         },
         "ACME DevOps": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Benjamin Stoddert": {
                     "creditor_weight": 1,
@@ -8966,7 +8966,7 @@
             "uid": 12
         },
         "ACME General": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Benjamin Stoddert": {
                     "creditor_weight": 1,
@@ -8995,7 +8995,7 @@
             "uid": 29
         },
         "America": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "America": {
                     "creditor_weight": 1,
@@ -9009,7 +9009,7 @@
             "uid": 1
         },
         "Anna": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Anna": {
                     "creditor_weight": 1,
@@ -9023,7 +9023,7 @@
             "uid": 2
         },
         "Benjamin Stoddert": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Benjamin Stoddert": {
                     "creditor_weight": 1,
@@ -9037,7 +9037,7 @@
             "uid": 23
         },
         "Bob302": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Bob302": {
                     "creditor_weight": 1,
@@ -9051,7 +9051,7 @@
             "uid": 6
         },
         "Charles Lee": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Charles Lee": {
                     "creditor_weight": 1,
@@ -9065,7 +9065,7 @@
             "uid": 22
         },
         "Climate Change": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Philipa": {
                     "creditor_weight": 1,
@@ -9089,7 +9089,7 @@
             "uid": 20
         },
         "Ernesto Chavez": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Ernesto Chavez": {
                     "creditor_weight": 1,
@@ -9103,7 +9103,7 @@
             "uid": 10
         },
         "Everyone": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "A a ron Jones": {
                     "creditor_weight": 1,
@@ -9222,7 +9222,7 @@
             "uid": 15
         },
         "Family": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "America": {
                     "creditor_weight": 6.45,
@@ -9246,7 +9246,7 @@
             "uid": 13
         },
         "Friends": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "America": {
                     "creditor_weight": 6.1,
@@ -9270,7 +9270,7 @@
             "uid": 14
         },
         "hurt by us dollar": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Renee Elise Goldsberry": {
                     "creditor_weight": 1,
@@ -9284,7 +9284,7 @@
             "uid": 30
         },
         "Jacque Chirac": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Jacque Chirac": {
                     "creditor_weight": 1,
@@ -9298,7 +9298,7 @@
             "uid": 31
         },
         "Jane Randolph": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Jane Randolph": {
                     "creditor_weight": 1,
@@ -9312,7 +9312,7 @@
             "uid": 26
         },
         "likes US DOLLAR": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Bob302": {
                     "creditor_weight": 1,
@@ -9341,7 +9341,7 @@
             "uid": 16
         },
         "Maria Reynolds": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Maria Reynolds": {
                     "creditor_weight": 1,
@@ -9355,7 +9355,7 @@
             "uid": 7
         },
         "Martha Wayles": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Martha Wayles": {
                     "creditor_weight": 1,
@@ -9369,7 +9369,7 @@
             "uid": 24
         },
         "Mikayla": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Mikayla": {
                     "creditor_weight": 1,
@@ -9383,7 +9383,7 @@
             "uid": 21
         },
         "Norberto": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Norberto": {
                     "creditor_weight": 1,
@@ -9397,7 +9397,7 @@
             "uid": 33
         },
         "OceanView Apt": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "A a ron Jones": {
                     "creditor_weight": 1,
@@ -9421,7 +9421,7 @@
             "uid": 34
         },
         "People who identify by UTEP": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Renee Elise Goldsberry": {
                     "creditor_weight": 1,
@@ -9435,7 +9435,7 @@
             "uid": 18
         },
         "Perrison": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Perrison": {
                     "creditor_weight": 1,
@@ -9449,7 +9449,7 @@
             "uid": 9
         },
         "Philipa": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Philipa": {
                     "creditor_weight": 1,
@@ -9463,7 +9463,7 @@
             "uid": 5
         },
         "Philosophy": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Ernesto Chavez": {
                     "creditor_weight": 6.5,
@@ -9492,7 +9492,7 @@
             "uid": 11
         },
         "Prashant": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Prashant": {
                     "creditor_weight": 1,
@@ -9506,7 +9506,7 @@
             "uid": 8
         },
         "Renee Elise Goldsberry": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Renee Elise Goldsberry": {
                     "creditor_weight": 1,
@@ -9520,7 +9520,7 @@
             "uid": 4
         },
         "Sam zamora": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Sam zamora": {
                     "creditor_weight": 1,
@@ -9534,7 +9534,7 @@
             "uid": 25
         },
         "Shadwell Harris": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Shadwell Harris": {
                     "creditor_weight": 1,
@@ -9548,7 +9548,7 @@
             "uid": 27
         },
         "SHOW ME2": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Renee Elise Goldsberry": {
                     "creditor_weight": 1,
@@ -9562,7 +9562,7 @@
             "uid": 17
         },
         "Thomas OSU": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Thomas OSU": {
                     "creditor_weight": 1,
@@ -9576,7 +9576,7 @@
             "uid": 19
         },
         "Travis Fox": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "Travis Fox": {
                     "creditor_weight": 1,
@@ -9590,7 +9590,7 @@
             "uid": 3
         },
         "WIlliam Wallace": {
-            "_partylinks_set_by_culture_road": null,
+            "_partylinks_set_by_economy_road": null,
             "_partys": {
                 "WIlliam Wallace": {
                     "creditor_weight": 1,

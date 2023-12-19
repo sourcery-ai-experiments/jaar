@@ -139,7 +139,7 @@ def get_forefather_roads(road: RoadPath) -> dict[RoadPath]:
     return {a_road: None for a_road in ancestor_roads}
 
 
-def get_default_culture_root_label() -> str:
+def get_default_economy_root_label() -> str:
     return "A"
 
 

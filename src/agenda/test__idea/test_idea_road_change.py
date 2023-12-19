@@ -5,7 +5,7 @@ from src.agenda.required_idea import (
     RoadPath,
     acptfactunit_shop,
 )
-from src.agenda.road import get_default_culture_root_label as root_label, get_road
+from src.agenda.road import get_default_economy_root_label as root_label, get_road
 from pytest import raises as pytest_raises
 
 

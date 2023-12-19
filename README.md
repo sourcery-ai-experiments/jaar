@@ -63,13 +63,13 @@ screenshots and explanatory text.
 base attributes vs required attributess
 
 <!-- TODO: Add explanations -->
-CultureUnit objects
+EconomyUnit objects
 
-CultureUnit CouncilUnit objects
+EconomyUnit CouncilUnit objects
 
-CultureUnit CouncilUnit Agenda objects
+EconomyUnit CouncilUnit Agenda objects
 
-CultureUnit Treasury objects
+EconomyUnit Treasury objects
 
 <!-- TODO: Add explanations -->
 AgendaUnit objects

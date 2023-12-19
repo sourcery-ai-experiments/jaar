@@ -5,12 +5,12 @@ from src.agenda.x_func import (
 from pytest import fixture as pytest_fixture
 
 
-def get_temp_culture_id():
+def get_temp_economy_id():
     return "ex_env77"
 
 
 def get_temp_world_dir():
-    return f"{get_test_worlds_dir()}/{get_temp_culture_id()}"
+    return f"{get_test_worlds_dir()}/{get_temp_economy_id()}"
 
 
 def get_test_worlds_dir():
@@ -36,11 +36,11 @@ def create_example_worlds_list():
 #     sx.create_dirs_if_null(in_memory_treasury=True)
 
 
-# def delete_dir_example_world(world_obj: CultureUnit):
+# def delete_dir_example_world(world_obj: EconomyUnit):
 #     x_func_delete_dir(world_obj.get_object_root_dir())
 
 
-# def renam_example_world(world_obj: CultureUnit, new_pid):
+# def renam_example_world(world_obj: EconomyUnit, new_pid):
 #     # base_dir = world_obj.get_object_root_dir()
 #     base_dir = "src/world/examples/worlds"
 #     src_dir = f"{base_dir}/{world_obj.genus}"
@@ -49,18 +49,18 @@ def create_example_worlds_list():
 #     world_obj.set_worldunit_genus(genus=new_pid)
 
 
-# class InvalidcultureCopyException(Exception):
+# class InvalideconomyCopyException(Exception):
 #     pass
 
 
-# def copy_evaluation_world(src_culture_id: str, dest_culture_id: str):
+# def copy_evaluation_world(src_economy_id: str, dest_economy_id: str):
 #     base_dir = "src/world/examples/worlds"
-#     new_dir = f"{base_dir}/{dest_culture_id}"
+#     new_dir = f"{base_dir}/{dest_economy_id}"
 #     if os_path.exists(new_dir):
-#         raise InvalidcultureCopyException(
+#         raise InvalideconomyCopyException(
 #             f"Cannot copy world to '{new_dir}' directory because '{new_dir}' exists."
 #         )
 #     # base_dir = world_obj.get_object_root_dir()
-#     src_dir = f"{base_dir}/{src_culture_id}"
-#     dest_dir = f"{base_dir}/{dest_culture_id}"
+#     src_dir = f"{base_dir}/{src_economy_id}"
+#     dest_dir = f"{base_dir}/{dest_economy_id}"
 #     copy_dir(src_dir=src_dir, dest_dir=dest_dir)

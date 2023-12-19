@@ -9,14 +9,14 @@ from src.agenda.road import (
     create_forkunit,
 )
 from src.agenda.group import GroupBrand
-from src.culture.culture import CultureQID
+from src.economy.economy import EconomyQID
 from src.world.person import PersonID
 from dataclasses import dataclass
 
 
 @dataclass
-class CultureAddress:
-    culture_id: CultureQID
+class EconomyAddress:
+    economy_id: EconomyQID
     person_ids: dict[PersonID:int]
     _road_node_delimiter: str
 
@@ -34,24 +34,24 @@ class CultureAddress:
         return x_pid
 
 
-def cultureaddress_shop(
-    culture_id: CultureQID,
+def economyaddress_shop(
+    economy_id: EconomyQID,
     person_ids: dict[PersonID:int] = None,
     _road_node_delimiter: str = None,
-) -> CultureAddress:
-    x_cultureaddress = CultureAddress(
+) -> EconomyAddress:
+    x_economyaddress = EconomyAddress(
         person_ids=person_ids,
-        culture_id=culture_id,
+        economy_id=economy_id,
         _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
     )
-    x_cultureaddress.set_person_ids_empty_if_none()
-    return x_cultureaddress
+    x_economyaddress.set_person_ids_empty_if_none()
+    return x_economyaddress
 
 
-def create_cultureaddress(person_id: PersonID, culture_id: CultureQID):
-    x_cultureaddress = cultureaddress_shop(culture_id=culture_id)
-    x_cultureaddress.add_person_id(person_id)
-    return x_cultureaddress
+def create_economyaddress(person_id: PersonID, economy_id: EconomyQID):
+    x_economyaddress = economyaddress_shop(economy_id=economy_id)
+    x_economyaddress.add_person_id(person_id)
+    return x_economyaddress
 
 
 class ConcernSubRoadPathException(Exception):
@@ -60,12 +60,12 @@ class ConcernSubRoadPathException(Exception):
 
 @dataclass
 class ConcernUnit:
-    cultureaddress: CultureAddress  # Culture and healers
+    economyaddress: EconomyAddress  # Economy and healers
     action: ForkUnit = None
     when: ForkUnit = None
 
     def get_road_node_delimiter(self):
-        return self.cultureaddress._road_node_delimiter
+        return self.economyaddress._road_node_delimiter
 
     def set_when(self, x_forkunit: ForkUnit):
         self._check_subject_road(x_forkunit.base)
@@ -76,20 +76,20 @@ class ConcernUnit:
         self.action = x_forkunit
 
     def _check_subject_road(self, road: RoadPath) -> bool:
-        if road == get_road(self.cultureaddress.culture_id, ""):
+        if road == get_road(self.economyaddress.economy_id, ""):
             raise ConcernSubRoadPathException(
                 f"ConcernUnit subject level 1 cannot be empty. ({road})"
             )
-        double_culture_id_road = get_road(
-            self.cultureaddress.culture_id, self.cultureaddress.culture_id
+        double_economy_id_road = get_road(
+            self.economyaddress.economy_id, self.economyaddress.economy_id
         )
-        if is_sub_road(road, double_culture_id_road):
+        if is_sub_road(road, double_economy_id_road):
             raise ConcernSubRoadPathException(
-                f"ConcernUnit setting concern_subject '{road}' failed because first child node cannot be culture_id as bug asumption check."
+                f"ConcernUnit setting concern_subject '{road}' failed because first child node cannot be economy_id as bug asumption check."
             )
-        if is_sub_road(road, self.cultureaddress.culture_id) == False:
+        if is_sub_road(road, self.economyaddress.economy_id) == False:
             raise ConcernSubRoadPathException(
-                f"ConcernUnit setting concern_subject '{road}' failed because culture_id is not first node."
+                f"ConcernUnit setting concern_subject '{road}' failed because economy_id is not first node."
             )
 
     def get_str_summary(self):
@@ -100,14 +100,14 @@ class ConcernUnit:
         _action_positive = self.action.get_1_good()
         _action_negative = self.action.get_1_bad()
 
-        concern_road = get_diff_road(_concern_subject, self.cultureaddress.culture_id)
+        concern_road = get_diff_road(_concern_subject, self.economyaddress.economy_id)
         bad_road = get_diff_road(_concern_bad, _concern_subject)
         good_road = get_diff_road(_concern_good, _concern_subject)
-        action_road = get_diff_road(_action_subject, self.cultureaddress.culture_id)
+        action_road = get_diff_road(_action_subject, self.economyaddress.economy_id)
         negative_road = get_diff_road(_action_negative, _action_subject)
         positive_road = get_diff_road(_action_positive, _action_subject)
 
-        return f"""Within {list(self.cultureaddress.person_ids.keys())}'s {self.cultureaddress.culture_id} culture subject: {concern_road}
+        return f"""Within {list(self.economyaddress.person_ids.keys())}'s {self.economyaddress.economy_id} economy subject: {concern_road}
  {bad_road} is bad. 
  {good_road} is good.
  Within the action domain of '{action_road}'
@@ -115,39 +115,39 @@ class ConcernUnit:
  It is bad to {negative_road}"""
 
     def get_any_pid(self):
-        return self.cultureaddress.get_any_pid()
+        return self.economyaddress.get_any_pid()
 
 
 def concernunit_shop(
-    cultureaddress: CultureAddress, when: ForkUnit, action: ForkUnit
+    economyaddress: EconomyAddress, when: ForkUnit, action: ForkUnit
 ) -> ConcernUnit:
-    x_concernunit = ConcernUnit(cultureaddress=cultureaddress)
+    x_concernunit = ConcernUnit(economyaddress=economyaddress)
     x_concernunit.set_when(when)
     x_concernunit.set_action(action)
     return x_concernunit
 
 
 def create_concernunit(
-    cultureaddress: CultureAddress,
-    when: RoadPath,  # road with culture root node
+    economyaddress: EconomyAddress,
+    when: RoadPath,  # road with economy root node
     good: RoadNode,
     bad: RoadNode,
-    action: RoadPath,  # road with culture root node
+    action: RoadPath,  # road with economy root node
     positive: RoadNode,
     negative: RoadNode,
 ):
     """creates concernunit object without roadpath root nodes being explictely defined in the when and action RoadPaths."""
-    x_concernunit = ConcernUnit(cultureaddress=cultureaddress)
+    x_concernunit = ConcernUnit(economyaddress=economyaddress)
     x_concernunit.set_when(
         create_forkunit(
-            base=get_road(cultureaddress.culture_id, when),
+            base=get_road(economyaddress.economy_id, when),
             good=good,
             bad=bad,
         )
     )
     x_concernunit.set_action(
         create_forkunit(
-            base=get_road(cultureaddress.culture_id, action),
+            base=get_road(economyaddress.economy_id, action),
             good=positive,
             bad=negative,
         )
