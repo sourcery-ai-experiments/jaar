@@ -1,3 +1,4 @@
+from src.culture.culture import CultureUnit
 from src.world.concern import CultureAddress, UrgeUnit
 from src.world.person import PersonID, PersonUnit, personunit_shop
 from dataclasses import dataclass
@@ -25,18 +26,14 @@ class WorldUnit:
         self.set_personunit(x_urgeunit._urger_pid, replace_alert=False)
         x_cultureaddress = x_urgeunit._concernunit.cultureaddress
 
-        for person_id in x_cultureaddress.person_ids.keys():
-            x_personunit = self.get_personunit_from_memory(person_id)
+        for x_person_id in x_cultureaddress.person_ids.keys():
+            self.set_personunit(x_person_id, replace_alert=False)
+            x_personunit = self.get_personunit_from_memory(x_person_id)
             x_cultureunit = x_personunit.get_cultureunit(x_cultureaddress.culture_id)
-            x_cultureunit.add_councilunit(x_urgeunit._urger_pid, True)
-            urger_councilunit = x_cultureunit.get_councilunit(x_urgeunit._urger_pid)
-            urger_councilunit.create_core_dir_and_files()
-            urger_councilunit.save_refreshed_output_to_public()
+            x_cultureunit.full_setup_councilunit(x_person_id)
+            x_cultureunit.full_setup_councilunit(x_urgeunit._urger_pid)
             for actor_pid in x_urgeunit._actor_pids.keys():
-                x_cultureunit.add_councilunit(actor_pid)
-                actor_councilunit = x_cultureunit.get_councilunit(actor_pid)
-                actor_councilunit.create_core_dir_and_files()
-                actor_councilunit.save_refreshed_output_to_public()
+                x_cultureunit.full_setup_councilunit(actor_pid)
 
     def _get_person_dir(self, person_id):
         return f"{self._persons_dir}/{person_id}"

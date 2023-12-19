@@ -401,6 +401,12 @@ class CultureUnit:
     def del_councilunit_dir(self, council_cid: CouncilCID):
         x_func_delete_dir(f"{self.get_councilunits_dir()}/{council_cid}")
 
+    def full_setup_councilunit(self, healer_id: PersonID):
+        self.add_councilunit(healer_id, _auto_output_to_public=True)
+        actor_councilunit = self.get_councilunit(healer_id)
+        actor_councilunit.create_core_dir_and_files()
+        actor_councilunit.save_refreshed_output_to_public()
+
     # public dir management
     def get_public_dir(self):
         return f"{self.get_object_root_dir()}/agendas"
