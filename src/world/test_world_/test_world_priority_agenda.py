@@ -1,14 +1,10 @@
 from src.agenda.agenda import agendaunit_shop
-from src.world.world import WorldUnit, worldunit_shop
+from src.world.world import worldunit_shop
 from src.world.examples.world_env_kit import (
-    get_temp_world_dir,
-    get_temp_economy_id,
     get_test_worlds_dir,
     worlds_dir_setup_cleanup,
 )
-
-from src.world.person import personunit_shop, painunit_shop
-from pytest import raises as pytest_raises
+from src.world.person import personunit_shop
 
 
 def test_worldunit_get_priority_agenda_ReturnsCorrectObjWhenThereAreNoSourceAgendas(
@@ -45,7 +41,6 @@ def test_worldunit_get_priority_agenda_ReturnsCorrectObjWhenThereIsOneSourceAgen
     assert gen_luca_agenda.get_intent_items() == static_luca_agenda.get_intent_items()
 
 
-#  create test: 2 source agendas creates molded agenda
 def test_worldunit_get_priority_agenda_ReturnsCorrectObjWhenThereIsTwoSourceAgenda(
     worlds_dir_setup_cleanup,
 ):

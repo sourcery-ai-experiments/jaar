@@ -134,12 +134,17 @@ class WorldUnit:
         x_economyunit = x_healerunit.get_economyunit(economy_id)
         x_economyunit.full_setup_councilunit(healer_id)
         if healer_id != x_personunit.pid:
-            x_economyunit.full_setup_councilunit(x_personunit.pid)
-            person_councilunit = x_economyunit.get_councilunit(x_personunit.pid)
-            person_seed = person_councilunit.get_seed()
-            person_seed.add_partyunit(healer_id)
-            person_councilunit.save_seed_agenda(person_seed)
-            person_councilunit.save_refreshed_output_to_public()
+            self._set_partyunit(x_economyunit, x_personunit.pid, healer_id)
+
+    def _set_partyunit(
+        self, x_economyunit: EconomyUnit, person_id: PersonID, party_pid: PersonID
+    ):
+        x_economyunit.full_setup_councilunit(person_id)
+        person_councilunit = x_economyunit.get_councilunit(person_id)
+        person_seed = person_councilunit.get_seed()
+        person_seed.add_partyunit(party_pid)
+        person_councilunit.save_seed_agenda(person_seed)
+        person_councilunit.save_refreshed_output_to_public()
 
 
 def worldunit_shop(mark: WorldMark, worlds_dir: str) -> WorldUnit:
