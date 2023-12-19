@@ -212,7 +212,7 @@ class ForkSubRoadPathException(Exception):
 
 
 @dataclass
-class ForkRoad:
+class ForkUnit:
     base: RoadPath = None
     descendents: dict[RoadPath:float] = None
     delimiter: str = None
@@ -228,7 +228,7 @@ class ForkRoad:
             )
         if is_sub_road(descendent, self.base) == False:
             raise ForkSubRoadPathException(
-                f"ForkRoad cannot set descendent '{descendent}' because base road is '{self.base}'."
+                f"ForkUnit cannot set descendent '{descendent}' because base road is '{self.base}'."
             )
         self.descendents[descendent] = sway
 
@@ -249,19 +249,19 @@ class ForkRoad:
         return list(self.get_bad_descendents())[0]
 
 
-def forkroad_shop(
+def forkunit_shop(
     base: RoadPath, descendents: dict[RoadPath:float] = None, delimiter: str = None
 ):
     delimiter = get_node_delimiter(delimiter)
-    x_forkroad = ForkRoad(base=base, descendents=descendents, delimiter=delimiter)
-    x_forkroad.set_descendents_empty_if_none()
-    return x_forkroad
+    x_forkunit = ForkUnit(base=base, descendents=descendents, delimiter=delimiter)
+    x_forkunit.set_descendents_empty_if_none()
+    return x_forkunit
 
 
-def create_forkroad(
+def create_forkunit(
     base: RoadPath, good: RoadNode, bad: RoadNode, delimiter: str = None
 ):
-    x_forkroad = forkroad_shop(base=base)
-    x_forkroad.set_descendent(get_road(base, good, delimiter=delimiter), 1)
-    x_forkroad.set_descendent(get_road(base, bad, delimiter=delimiter), -1)
-    return x_forkroad
+    x_forkunit = forkunit_shop(base=base)
+    x_forkunit.set_descendent(get_road(base, good, delimiter=delimiter), 1)
+    x_forkunit.set_descendent(get_road(base, bad, delimiter=delimiter), -1)
+    return x_forkunit

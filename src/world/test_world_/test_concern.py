@@ -1,8 +1,8 @@
 from src.world.examples.examples import (
     get_farm_concernunit as examples_get_farm_concernunit,
-    get_farm_urgeunit as examples_get_farm_urgeunit,
+    get_farm_lobbyunit as examples_get_farm_lobbyunit,
 )
-from src.agenda.road import get_road, get_node_delimiter, create_forkroad
+from src.agenda.road import get_road, get_node_delimiter, create_forkunit
 from src.world.concern import (
     CultureAddress,
     cultureaddress_shop,
@@ -10,9 +10,9 @@ from src.world.concern import (
     ConcernUnit,
     concernunit_shop,
     create_concernunit,
-    UrgeUnit,
-    urgeunit_shop,
-    create_urgeunit,
+    LobbyUnit,
+    lobbyunit_shop,
+    create_lobbyunit,
 )
 from pytest import raises as pytest_raises
 
@@ -130,23 +130,23 @@ def test_concernunit_shop_ReturnsCorrectObj():
     food_road = get_road(texas_cultureaddress.culture_id, "food")
     farm_text = "farm food"
     cheap_text = "cheap food"
-    food_forkroad = create_forkroad(food_road, good=farm_text, bad=cheap_text)
+    food_forkunit = create_forkunit(food_road, good=farm_text, bad=cheap_text)
 
     cultivate_road = get_road(texas_cultureaddress.culture_id, "cultivate")
     well_text = "cultivate well"
     poor_text = "cultivate poorly"
-    cultivate_forkroad = create_forkroad(cultivate_road, good=well_text, bad=poor_text)
+    cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
 
     # WHEN
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
-        when=food_forkroad,
-        action=cultivate_forkroad,
+        when=food_forkunit,
+        action=cultivate_forkunit,
     )
 
     # THEN
-    assert farm_concernunit.when == food_forkroad
-    assert farm_concernunit.action == cultivate_forkroad
+    assert farm_concernunit.when == food_forkunit
+    assert farm_concernunit.action == cultivate_forkunit
     assert farm_concernunit.cultureaddress == texas_cultureaddress
     assert farm_concernunit.get_road_node_delimiter() == get_node_delimiter(
         texas_cultureaddress._road_node_delimiter
@@ -159,15 +159,15 @@ def test_ConcernUnit_set_when_SetsAttributesCorrectly():
     food_road = get_road(texas_cultureaddress.culture_id, "food")
     farm_text = "farm food"
     cheap_text = "cheap food"
-    food_forkroad = create_forkroad(food_road, good=farm_text, bad=cheap_text)
+    food_forkunit = create_forkunit(food_road, good=farm_text, bad=cheap_text)
     cultivate_road = get_road(texas_cultureaddress.culture_id, "cultivate")
     well_text = "cultivate well"
     poor_text = "cultivate poorly"
-    cultivate_forkroad = create_forkroad(cultivate_road, good=well_text, bad=poor_text)
+    cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
-        when=food_forkroad,
-        action=cultivate_forkroad,
+        when=food_forkunit,
+        action=cultivate_forkunit,
     )
 
     # WHEN
@@ -175,12 +175,12 @@ def test_ConcernUnit_set_when_SetsAttributesCorrectly():
     soil_road = get_road(environ_road, "soil")
     unsafe_text = "unsafe soil"
     fertile_text = "fertile soil"
-    soil_forkroad = create_forkroad(soil_road, good=fertile_text, bad=unsafe_text)
+    soil_forkunit = create_forkunit(soil_road, good=fertile_text, bad=unsafe_text)
 
-    farm_concernunit.set_when(soil_forkroad)
+    farm_concernunit.set_when(soil_forkunit)
 
     # THEN
-    assert farm_concernunit.when == soil_forkroad
+    assert farm_concernunit.when == soil_forkunit
 
 
 def test_ConcernUnit_set_when_EmptySubjectRaisesErrorCorrectly():
@@ -190,12 +190,12 @@ def test_ConcernUnit_set_when_EmptySubjectRaisesErrorCorrectly():
     food_road = get_road(texas_cultureaddress.culture_id, "")
     farm_text = "farm food"
     cheap_text = "cheap food"
-    food_forkroad = create_forkroad(food_road, good=farm_text, bad=cheap_text)
+    food_forkunit = create_forkunit(food_road, good=farm_text, bad=cheap_text)
 
     # WHEN / THEN
     environ_road = get_road(texas_cultureaddress.culture_id, "")
     with pytest_raises(Exception) as excinfo:
-        farm_concernunit.set_when(food_forkroad)
+        farm_concernunit.set_when(food_forkunit)
     assert (
         str(excinfo.value)
         == f"ConcernUnit subject level 1 cannot be empty. ({environ_road})"
@@ -208,15 +208,15 @@ def test_ConcernUnit_set_when_NotCultureRootRaisesSubjectErrorCorrectly():
     food_road = get_road(texas_cultureaddress.culture_id, "food")
     farm_text = "farm food"
     cheap_text = "cheap food"
-    food_forkroad = create_forkroad(food_road, good=farm_text, bad=cheap_text)
+    food_forkunit = create_forkunit(food_road, good=farm_text, bad=cheap_text)
     cultivate_road = get_road(texas_cultureaddress.culture_id, "cultivate")
     well_text = "cultivate well"
     poor_text = "cultivate poorly"
-    cultivate_forkroad = create_forkroad(cultivate_road, good=well_text, bad=poor_text)
+    cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
-        when=food_forkroad,
-        action=cultivate_forkroad,
+        when=food_forkunit,
+        action=cultivate_forkunit,
     )
 
     environ_text = "environment"
@@ -225,13 +225,13 @@ def test_ConcernUnit_set_when_NotCultureRootRaisesSubjectErrorCorrectly():
     fertile_text = "fertile soil"
     # infertile_road = get_road(incorrect_soil_road, "infertile soil")
     # fertile_road = get_road(incorrect_soil_road, "fertile soil")
-    incorrect_soil_forkroad = create_forkroad(
+    incorrect_soil_forkunit = create_forkunit(
         incorrect_soil_road, good=fertile_text, bad=infertile_text
     )
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        farm_concernunit.set_when(incorrect_soil_forkroad)
+        farm_concernunit.set_when(incorrect_soil_forkunit)
     assert (
         str(excinfo.value)
         == f"ConcernUnit setting concern_subject '{incorrect_soil_road}' failed because culture_id is not first node."
@@ -245,22 +245,22 @@ def test_ConcernUnit_set_when_RaisesDouble_culture_id_SubjectErrorCorrectly():
     food_road = get_road(texas_culture_id, "food")
     farm_text = "farm food"
     cheap_text = "cheap food"
-    food_forkroad = create_forkroad(food_road, good=farm_text, bad=cheap_text)
+    food_forkunit = create_forkunit(food_road, good=farm_text, bad=cheap_text)
     cultivate_road = get_road(texas_culture_id, "cultivate")
     well_text = "cultivate well"
     poor_text = "cultivate poorly"
-    cultivate_forkroad = create_forkroad(cultivate_road, good=well_text, bad=poor_text)
+    cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
-        when=food_forkroad,
-        action=cultivate_forkroad,
+        when=food_forkunit,
+        action=cultivate_forkunit,
     )
 
     # WHEN / THEN
     double_culture_id = get_road(texas_culture_id, texas_culture_id)
-    double_culture_forkroad = create_forkroad(double_culture_id, farm_text, cheap_text)
+    double_culture_forkunit = create_forkunit(double_culture_id, farm_text, cheap_text)
     with pytest_raises(Exception) as excinfo:
-        farm_concernunit.set_when(double_culture_forkroad)
+        farm_concernunit.set_when(double_culture_forkunit)
     assert (
         str(excinfo.value)
         == f"ConcernUnit setting concern_subject '{double_culture_id}' failed because first child node cannot be culture_id as bug asumption check."
@@ -274,25 +274,25 @@ def test_ConcernUnit_set_action_SetsAttributesCorrectly():
     food_road = get_road(texas_culture_id, "food")
     farm_text = "farm food"
     cheap_text = "cheap food"
-    food_forkroad = create_forkroad(food_road, good=farm_text, bad=cheap_text)
+    food_forkunit = create_forkunit(food_road, good=farm_text, bad=cheap_text)
     cultivate_road = get_road(texas_culture_id, "cultivate")
     well_text = "cultivate well"
     poor_text = "cultivate poorly"
-    cultivate_forkroad = create_forkroad(cultivate_road, good=well_text, bad=poor_text)
+    cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
-        when=food_forkroad,
-        action=cultivate_forkroad,
+        when=food_forkunit,
+        action=cultivate_forkunit,
     )
 
     # WHEN
     home_road = get_road(texas_cultureaddress.culture_id, "home")
     cook_road = get_road(home_road, "cook")
-    cook_forkroad = create_forkroad(cook_road, good="unsafe cook", bad="safe cook")
-    farm_concernunit.set_action(cook_forkroad)
+    cook_forkunit = create_forkunit(cook_road, good="unsafe cook", bad="safe cook")
+    farm_concernunit.set_action(cook_forkunit)
 
     # THEN
-    assert farm_concernunit.action == cook_forkroad
+    assert farm_concernunit.action == cook_forkunit
 
 
 def test_ConcernUnit_get_str_summary_ReturnsCorrectObj():
@@ -305,16 +305,16 @@ def test_ConcernUnit_get_str_summary_ReturnsCorrectObj():
     food_road = get_road(texas_culture_id, food_text)
     farm_text = "farm food"
     cheap_text = "cheap food"
-    food_forkroad = create_forkroad(food_road, good=farm_text, bad=cheap_text)
+    food_forkunit = create_forkunit(food_road, good=farm_text, bad=cheap_text)
     cultivate_text = "cultivate"
     cultivate_road = get_road(texas_culture_id, cultivate_text)
     well_text = "cultivate well"
     poor_text = "cultivate poorly"
-    cultivate_forkroad = create_forkroad(cultivate_road, good=well_text, bad=poor_text)
+    cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
-        when=food_forkroad,
-        action=cultivate_forkroad,
+        when=food_forkunit,
+        action=cultivate_forkunit,
     )
 
     # WHEN / THEN
@@ -334,21 +334,21 @@ def test_create_concernunit_CorrectlyCreatesObj():
     food_road = get_road(texas_cultureaddress.culture_id, food_text)
     farm_text = "farm food"
     cheap_text = "cheap food"
-    food_forkroad = create_forkroad(food_road, good=farm_text, bad=cheap_text)
+    food_forkunit = create_forkunit(food_road, good=farm_text, bad=cheap_text)
     cultivate_road = get_road(texas_cultureaddress.culture_id, "cultivate")
     well_text = "cultivate well"
     poor_text = "cultivate poorly"
-    cultivate_forkroad = create_forkroad(cultivate_road, good=well_text, bad=poor_text)
+    cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_cultureaddress,
-        when=food_forkroad,
-        action=cultivate_forkroad,
+        when=food_forkunit,
+        action=cultivate_forkunit,
     )
 
     # THEN
     assert farm_concernunit.cultureaddress == texas_cultureaddress
-    assert farm_concernunit.when == food_forkroad
-    assert farm_concernunit.action == cultivate_forkroad
+    assert farm_concernunit.when == food_forkunit
+    assert farm_concernunit.action == cultivate_forkunit
 
 
 def test_create_concernunit_CorrectlyCreatesObjWithCorrect_delimiter():
@@ -384,31 +384,31 @@ def test_create_concernunit_CorrectlyCreatesObjWithCorrect_delimiter():
     assert farm_concernunit.cultureaddress == texas_cultureaddress
     texas_yes_enjoy_road = get_road(texas_cultureaddress.culture_id, enjoy_text)
     texas_yes_food_road = get_road(texas_yes_enjoy_road, food_text)
-    texas_yes_food_forkroad = create_forkroad(
+    texas_yes_food_forkunit = create_forkunit(
         texas_yes_food_road, farm_text, cheap_text
     )
-    assert farm_concernunit.when == texas_yes_food_forkroad
+    assert farm_concernunit.when == texas_yes_food_forkunit
 
     texas_yes_work_road = get_road(texas_cultureaddress.culture_id, work_text)
     texas_yes_cultivate_road = get_road(texas_yes_work_road, cultivate_text)
-    texas_yes_cultivate_forkroad = create_forkroad(
+    texas_yes_cultivate_forkunit = create_forkunit(
         texas_yes_cultivate_road, well_text, poor_text
     )
-    assert farm_concernunit.action == texas_yes_cultivate_forkroad
+    assert farm_concernunit.action == texas_yes_cultivate_forkunit
 
 
-def test_UrgeUnit_exists():
+def test_LobbyUnit_exists():
     # GIVEN / WHEN
-    farm_urgeunit = UrgeUnit()
+    farm_lobbyunit = LobbyUnit()
 
     # THEN
-    assert farm_urgeunit._concernunit is None
-    assert farm_urgeunit._actor_pids is None
-    assert farm_urgeunit._actor_groups is None
-    assert farm_urgeunit._urger_pid is None
+    assert farm_lobbyunit._concernunit is None
+    assert farm_lobbyunit._actor_pids is None
+    assert farm_lobbyunit._actor_groups is None
+    assert farm_lobbyunit._lobbyr_pid is None
 
 
-def test_urgeunit_shop_ReturnsCorrectObj():
+def test_lobbyunit_shop_ReturnsCorrectObj():
     # GIVEN
     farm_concernunit = examples_get_farm_concernunit()
 
@@ -418,74 +418,78 @@ def test_urgeunit_shop_ReturnsCorrectObj():
     yao_text = "Yao"
     aggie_text = "aggie"
     aggie_dict = {aggie_text: aggie_text}
-    farm_urgeunit = urgeunit_shop(
+    farm_lobbyunit = lobbyunit_shop(
         _concernunit=farm_concernunit,
         _actor_pids=bob_dict,
         _actor_groups=aggie_dict,
-        _urger_pid=yao_text,
+        _lobbyr_pid=yao_text,
     )
 
     # THEN
-    assert farm_urgeunit._concernunit == farm_concernunit
-    assert farm_urgeunit._actor_pids == bob_dict
-    assert farm_urgeunit._actor_groups == aggie_dict
-    assert farm_urgeunit._urger_pid == yao_text
+    assert farm_lobbyunit._concernunit == farm_concernunit
+    assert farm_lobbyunit._actor_pids == bob_dict
+    assert farm_lobbyunit._actor_groups == aggie_dict
+    assert farm_lobbyunit._lobbyr_pid == yao_text
 
 
-def test_UrgeUnit_add_actor_pid_CorrectlyChangesAttribute():
+def test_LobbyUnit_add_actor_pid_CorrectlyChangesAttribute():
     # GIVEN
     bob_text = "Bob"
-    farm_urgeunit = create_urgeunit(examples_get_farm_concernunit(), actor_pid=bob_text)
-    assert len(farm_urgeunit._actor_pids) == 1
+    farm_lobbyunit = create_lobbyunit(
+        examples_get_farm_concernunit(), actor_pid=bob_text
+    )
+    assert len(farm_lobbyunit._actor_pids) == 1
 
     # WHEN
     yao_text = "Yao"
-    farm_urgeunit.add_actor_pid(pid=yao_text)
+    farm_lobbyunit.add_actor_pid(pid=yao_text)
 
     # THEN
     actor_pid_dict = {bob_text: None, yao_text: None}
-    assert farm_urgeunit._actor_pids == actor_pid_dict
+    assert farm_lobbyunit._actor_pids == actor_pid_dict
 
 
-def test_UrgeUnit_add_groupbrand_CorrectlyChangesAttribute():
+def test_LobbyUnit_add_groupbrand_CorrectlyChangesAttribute():
     # GIVEN
     bob_text = "Bob"
     bob_dict = {bob_text: None}
-    farm_urgeunit = urgeunit_shop(examples_get_farm_concernunit(), _actor_pids=bob_dict)
-    assert len(farm_urgeunit._actor_groups) == 0
+    farm_lobbyunit = lobbyunit_shop(
+        examples_get_farm_concernunit(), _actor_pids=bob_dict
+    )
+    assert len(farm_lobbyunit._actor_groups) == 0
 
     # WHEN
     swim_text = "swimmers"
-    farm_urgeunit.add_actor_groupbrand(swim_text)
+    farm_lobbyunit.add_actor_groupbrand(swim_text)
 
     # THEN
     swim_dict = {swim_text: swim_text}
-    assert farm_urgeunit._actor_groups == swim_dict
+    assert farm_lobbyunit._actor_groups == swim_dict
 
 
-def test_create_urgeunit_ReturnsCorrectObj():
+def test_create_lobbyunit_ReturnsCorrectObj():
     # GIVEN
     farm_concernunit = examples_get_farm_concernunit()
 
     # WHEN
     bob_text = "Bob"
-    farm_urgeunit = create_urgeunit(farm_concernunit, actor_pid=bob_text)
+    farm_lobbyunit = create_lobbyunit(farm_concernunit, actor_pid=bob_text)
 
     # THEN
-    assert farm_urgeunit._concernunit == farm_concernunit
+    assert farm_lobbyunit._concernunit == farm_concernunit
     bob_dict = {bob_text: None}
-    assert farm_urgeunit._actor_pids == bob_dict
+    assert farm_lobbyunit._actor_pids == bob_dict
     bob_group_dict = {bob_text: bob_text}
-    assert farm_urgeunit._actor_groups == bob_group_dict
-    assert farm_urgeunit._urger_pid == "Luca"
+    assert farm_lobbyunit._actor_groups == bob_group_dict
+    assert farm_lobbyunit._lobbyr_pid == "Luca"
 
 
-def test_UrgeUnit_get_str_summary_ReturnsCorrectObj():
+def test_LobbyUnit_get_str_summary_ReturnsCorrectObj():
     # GIVEN
-    farm_urgeunit = examples_get_farm_urgeunit()
+    farm_lobbyunit = examples_get_farm_lobbyunit()
 
     # WHEN
-    generated_farm_str = farm_urgeunit.get_str_summary()
+    generated_farm_str = farm_lobbyunit.get_str_summary()
 
     # THEN
     bob_text = "Bob"
@@ -499,7 +503,7 @@ def test_UrgeUnit_get_str_summary_ReturnsCorrectObj():
     action_text = "cultivate"
     positive_text = "cultivate well"
     negative_text = "cultivate poorly"
-    static_farm_string = f"""UrgeUnit: Within ['{luca_text}']'s {texas_text} culture subject: {food_text}
+    static_farm_string = f"""LobbyUnit: Within ['{luca_text}']'s {texas_text} culture subject: {food_text}
  {cheap_text} is bad. 
  {farm_text} is good.
  Within the action domain of '{action_text}'

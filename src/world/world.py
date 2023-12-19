@@ -1,5 +1,5 @@
 from src.culture.culture import CultureUnit
-from src.world.concern import CultureAddress, UrgeUnit
+from src.world.concern import CultureAddress, LobbyUnit
 from src.world.person import PersonID, PersonUnit, personunit_shop
 from dataclasses import dataclass
 
@@ -20,19 +20,19 @@ class WorldUnit:
     _world_dir: str = None
     _personunits: dict[PersonID:PersonUnit] = None
 
-    def apply_urgeunit(self, x_urgeunit: UrgeUnit):
-        for actor_pid in x_urgeunit._actor_pids.keys():
+    def apply_lobbyunit(self, x_lobbyunit: LobbyUnit):
+        for actor_pid in x_lobbyunit._actor_pids.keys():
             self.set_personunit(actor_pid, replace_alert=False)
-        self.set_personunit(x_urgeunit._urger_pid, replace_alert=False)
-        x_cultureaddress = x_urgeunit._concernunit.cultureaddress
+        self.set_personunit(x_lobbyunit._lobbyr_pid, replace_alert=False)
+        x_cultureaddress = x_lobbyunit._concernunit.cultureaddress
 
         for x_person_id in x_cultureaddress.person_ids.keys():
             self.set_personunit(x_person_id, replace_alert=False)
             x_personunit = self.get_personunit_from_memory(x_person_id)
             x_cultureunit = x_personunit.get_cultureunit(x_cultureaddress.culture_id)
             x_cultureunit.full_setup_councilunit(x_person_id)
-            x_cultureunit.full_setup_councilunit(x_urgeunit._urger_pid)
-            for actor_pid in x_urgeunit._actor_pids.keys():
+            x_cultureunit.full_setup_councilunit(x_lobbyunit._lobbyr_pid)
+            for actor_pid in x_lobbyunit._actor_pids.keys():
                 x_cultureunit.full_setup_councilunit(actor_pid)
 
     def _get_person_dir(self, person_id):

@@ -1,6 +1,10 @@
 from src.agenda.road import get_road
 from src.world.world import worldunit_shop
-from src.world.concern import create_cultureaddress, create_urgeunit, create_concernunit
+from src.world.concern import (
+    create_cultureaddress,
+    create_lobbyunit,
+    create_concernunit,
+)
 from src.world.examples.world_env_kit import (
     get_temp_world_dir,
     get_temp_culture_id,
@@ -35,10 +39,10 @@ def test_worldunit_add_cultural_connection_CorrectlyCreatesObj(
     assert texas_culture._councilunits.get(kari_text) != None
 
 
-def test_worldunit_apply_urgeunit_CorrectlyCreates_seed_agendas(
+def test_worldunit_apply_lobbyunit_CorrectlyCreates_seed_agendas(
     worlds_dir_setup_cleanup,
 ):
-    # GIVEN urger and actor seed_agendas does not exist
+    # GIVEN lobbyr and actor seed_agendas does not exist
     w1_text = "w1"
     x_world = worldunit_shop(w1_text, get_test_worlds_dir())
     yao_text = "Yao"
@@ -60,8 +64,8 @@ def test_worldunit_apply_urgeunit_CorrectlyCreates_seed_agendas(
     )
     tim_text = "Tim"
     xio_text = "Xio"
-    highway_urgeunit = create_urgeunit(
-        concernunit=highway_concernunit, actor_pid=tim_text, urger_pid=xio_text
+    highway_lobbyunit = create_lobbyunit(
+        concernunit=highway_concernunit, actor_pid=tim_text, lobbyr_pid=xio_text
     )
     assert x_world.get_personunit_from_memory(tim_text) is None
     assert x_world.get_personunit_from_memory(xio_text) is None
@@ -73,7 +77,7 @@ def test_worldunit_apply_urgeunit_CorrectlyCreates_seed_agendas(
     assert os_path.exists(public_yao_file_path) is False
 
     # WHEN
-    x_world.apply_urgeunit(highway_urgeunit)
+    x_world.apply_lobbyunit(highway_lobbyunit)
 
     # THEN
     assert x_world.get_personunit_from_memory(tim_text) != None
@@ -87,7 +91,7 @@ def test_worldunit_apply_urgeunit_CorrectlyCreates_seed_agendas(
     assert texas_culture.get_councilunit(yao_text).get_seed() != None
 
 
-def test_worldunit_apply_urgeunit_CorrectlyAddsTaskTo_urger_seed_agenda(
+def test_worldunit_apply_lobbyunit_CorrectlyAddsTaskTo_lobbyr_seed_agenda(
     worlds_dir_setup_cleanup,
 ):
     x_world = worldunit_shop("w1", get_test_worlds_dir())
@@ -117,12 +121,12 @@ def test_worldunit_apply_urgeunit_CorrectlyAddsTaskTo_urger_seed_agenda(
     )
     tim_text = "Tim"
     xio_text = "Xio"
-    highway_urgeunit = create_urgeunit(
-        concernunit=highway_concernunit, actor_pid=tim_text, urger_pid=xio_text
+    highway_lobbyunit = create_lobbyunit(
+        concernunit=highway_concernunit, actor_pid=tim_text, lobbyr_pid=xio_text
     )
 
     # WHEN
-    x_world.apply_urgeunit(highway_urgeunit)
+    x_world.apply_lobbyunit(highway_lobbyunit)
 
     # THEN
     tim_seed = texas_culture.get_councilunit(tim_text).get_seed()
@@ -141,8 +145,8 @@ def test_worldunit_apply_urgeunit_CorrectlyAddsTaskTo_urger_seed_agenda(
     assert 1 == 2
 
 
-# def test_worldunit_apply_urgeunit_CorrectlyAddsTaskTo_intent(worlds_dir_setup_cleanup):
+# def test_worldunit_apply_lobbyunit_CorrectlyAddsTaskTo_intent(worlds_dir_setup_cleanup):
 #     # GIVEN actors public_agenda intent is empty
-#     # WHEN worldunit urgeunit is applyed
+#     # WHEN worldunit lobbyunit is applyed
 #     # THEN actors public_agenda intent is non-empty
 #     assert 1 == 2

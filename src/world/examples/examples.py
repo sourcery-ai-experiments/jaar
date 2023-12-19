@@ -1,4 +1,8 @@
-from src.world.concern import create_cultureaddress, create_concernunit, create_urgeunit
+from src.world.concern import (
+    create_cultureaddress,
+    create_concernunit,
+    create_lobbyunit,
+)
 
 
 def get_farm_concernunit():
@@ -20,12 +24,12 @@ def get_farm_concernunit():
     )
 
 
-def get_farm_urgeunit():
+def get_farm_lobbyunit():
     bob_text = "Bob"
     real_text = "Real Farmers"
-    farm_urgeunit = create_urgeunit(
+    farm_lobbyunit = create_lobbyunit(
         get_farm_concernunit(), bob_text, actor_group=real_text
     )
     yao_text = "Yao"
-    farm_urgeunit.add_actor_pid(yao_text)
-    return farm_urgeunit
+    farm_lobbyunit.add_actor_pid(yao_text)
+    return farm_lobbyunit

@@ -19,18 +19,18 @@ from src.agenda.road import (
     is_heir_road,
     get_node_delimiter,
     replace_road_node_delimiter,
-    ForkRoad,
-    forkroad_shop,
-    create_forkroad,
+    ForkUnit,
+    forkunit_shop,
+    create_forkunit,
 )
 from src.agenda.required_idea import sufffactunit_shop
 from src.agenda.idea import IdeaCore
 from pytest import raises as pytest_raises
 
 
-def test_ForkRoad_exists():
+def test_ForkUnit_exists():
     # GIVEN / WHEN
-    x_fork = ForkRoad()
+    x_fork = ForkUnit()
 
     # THEN
     assert x_fork != None
@@ -39,9 +39,9 @@ def test_ForkRoad_exists():
     assert x_fork.delimiter is None
 
 
-def test_ForkRoad_set_descendents_empty_if_none_CorrectlySetsAttr():
+def test_ForkUnit_set_descendents_empty_if_none_CorrectlySetsAttr():
     # GIVEN
-    x_fork = ForkRoad()
+    x_fork = ForkUnit()
     assert x_fork.descendents is None
 
     # WHEN
@@ -51,12 +51,12 @@ def test_ForkRoad_set_descendents_empty_if_none_CorrectlySetsAttr():
     assert x_fork.descendents == {}
 
 
-def test_forkroad_shop_CorrectlyReturnsObj():
+def test_forkunit_shop_CorrectlyReturnsObj():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")
 
     # WHEN
-    cook_fork = forkroad_shop(base=cook_road)
+    cook_fork = forkunit_shop(base=cook_road)
 
     # THEN
     assert cook_fork.base == cook_road
@@ -64,10 +64,10 @@ def test_forkroad_shop_CorrectlyReturnsObj():
     assert cook_fork.delimiter == get_node_delimiter()
 
 
-def test_ForkRoad_set_descendents_CorrectlySetsAttr():
+def test_ForkUnit_set_descendents_CorrectlySetsAttr():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")
-    cook_fork = forkroad_shop(cook_road)
+    cook_fork = forkunit_shop(cook_road)
     assert cook_fork.descendents == {}
 
     # WHEN
@@ -81,10 +81,10 @@ def test_ForkRoad_set_descendents_CorrectlySetsAttr():
     assert cook_fork.descendents.get(cheap_road) == x_sway
 
 
-def test_ForkRoad_get_good_descendents_ReturnsCorrectObj():
+def test_ForkUnit_get_good_descendents_ReturnsCorrectObj():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")
-    cook_fork = forkroad_shop(cook_road)
+    cook_fork = forkunit_shop(cook_road)
     farm_road = get_road(cook_road, "farm food")
     farm_sway = 3
     cook_fork.set_descendent(farm_road, sway=farm_sway)
@@ -101,10 +101,10 @@ def test_ForkRoad_get_good_descendents_ReturnsCorrectObj():
     assert x_good_descendents.get(farm_road) == farm_sway
 
 
-def test_ForkRoad_get_bad_descendents_ReturnsCorrectObj():
+def test_ForkUnit_get_bad_descendents_ReturnsCorrectObj():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")
-    cook_fork = forkroad_shop(cook_road)
+    cook_fork = forkunit_shop(cook_road)
     farm_road = get_road(cook_road, "farm food")
     farm_sway = 3
     cook_fork.set_descendent(farm_road, sway=farm_sway)
@@ -121,10 +121,10 @@ def test_ForkRoad_get_bad_descendents_ReturnsCorrectObj():
     assert x_bad_descendents.get(cheap_road) == cheap_sway
 
 
-def test_ForkRoad_get_1_good_ReturnsCorrectObj():
+def test_ForkUnit_get_1_good_ReturnsCorrectObj():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")
-    cook_fork = forkroad_shop(cook_road)
+    cook_fork = forkunit_shop(cook_road)
     farm_road = get_road(cook_road, "farm food")
     farm_sway = 3
     cook_fork.set_descendent(farm_road, sway=farm_sway)
@@ -139,10 +139,10 @@ def test_ForkRoad_get_1_good_ReturnsCorrectObj():
     assert x_bad_descendent == farm_road
 
 
-def test_ForkRoad_get_1_bad_ReturnsCorrectObj():
+def test_ForkUnit_get_1_bad_ReturnsCorrectObj():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")
-    cook_fork = forkroad_shop(cook_road)
+    cook_fork = forkunit_shop(cook_road)
     farm_road = get_road(cook_road, "farm food")
     farm_sway = 3
     cook_fork.set_descendent(farm_road, sway=farm_sway)
@@ -157,10 +157,10 @@ def test_ForkRoad_get_1_bad_ReturnsCorrectObj():
     assert x_bad_descendent == cheap_road
 
 
-def test_ForkRoad_set_descendents_CorrectlyRaisesNoneZeroSwayException():
+def test_ForkUnit_set_descendents_CorrectlyRaisesNoneZeroSwayException():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")
-    cook_fork = forkroad_shop(cook_road)
+    cook_fork = forkunit_shop(cook_road)
 
     # WHEN
     cheap_road = get_road(cook_road, "cheap food")
@@ -173,10 +173,10 @@ def test_ForkRoad_set_descendents_CorrectlyRaisesNoneZeroSwayException():
     )
 
 
-def test_ForkRoad_set_descendents_CorrectlyRaisesForkSubRoadPathException():
+def test_ForkUnit_set_descendents_CorrectlyRaisesForkSubRoadPathException():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")
-    cook_fork = forkroad_shop(cook_road)
+    cook_fork = forkunit_shop(cook_road)
     go_road = "going out"
     go_cheap_road = get_road(go_road, "cheap food")
 
@@ -186,7 +186,7 @@ def test_ForkRoad_set_descendents_CorrectlyRaisesForkSubRoadPathException():
         cook_fork.set_descendent(go_cheap_road, sway=x_sway)
     assert (
         str(excinfo.value)
-        == f"ForkRoad cannot set descendent '{go_cheap_road}' because base road is '{cook_road}'."
+        == f"ForkUnit cannot set descendent '{go_cheap_road}' because base road is '{cook_road}'."
     )
 
     # _concern_subject: RoadPath = None
@@ -195,14 +195,14 @@ def test_ForkRoad_set_descendents_CorrectlyRaisesForkSubRoadPathException():
     # farm_road = get_road("farm food", sway=3)
 
 
-def test_create_forkroad_CorrectlyReturnsObj():
+def test_create_forkunit_CorrectlyReturnsObj():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")
 
     # WHEN
     farm_text = "farm food"
     cheap_text = "cheap food"
-    cook_fork = create_forkroad(base=cook_road, good=farm_text, bad=cheap_text)
+    cook_fork = create_forkunit(base=cook_road, good=farm_text, bad=cheap_text)
 
     # THEN
     assert cook_fork.base == cook_road

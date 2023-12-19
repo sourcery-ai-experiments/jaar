@@ -5,8 +5,8 @@ from src.agenda.road import (
     get_road,
     get_diff_road,
     get_node_delimiter,
-    ForkRoad,
-    create_forkroad,
+    ForkUnit,
+    create_forkunit,
 )
 from src.agenda.group import GroupBrand
 from src.culture.culture import CultureQID
@@ -61,19 +61,19 @@ class ConcernSubRoadPathException(Exception):
 @dataclass
 class ConcernUnit:
     cultureaddress: CultureAddress  # Culture and healers
-    action: ForkRoad = None
-    when: ForkRoad = None
+    action: ForkUnit = None
+    when: ForkUnit = None
 
     def get_road_node_delimiter(self):
         return self.cultureaddress._road_node_delimiter
 
-    def set_when(self, x_forkroad: ForkRoad):
-        self._check_subject_road(x_forkroad.base)
-        self.when = x_forkroad
+    def set_when(self, x_forkunit: ForkUnit):
+        self._check_subject_road(x_forkunit.base)
+        self.when = x_forkunit
 
-    def set_action(self, x_forkroad: ForkRoad):
-        self._check_subject_road(x_forkroad.base)
-        self.action = x_forkroad
+    def set_action(self, x_forkunit: ForkUnit):
+        self._check_subject_road(x_forkunit.base)
+        self.action = x_forkunit
 
     def _check_subject_road(self, road: RoadPath) -> bool:
         if road == get_road(self.cultureaddress.culture_id, ""):
@@ -119,7 +119,7 @@ class ConcernUnit:
 
 
 def concernunit_shop(
-    cultureaddress: CultureAddress, when: ForkRoad, action: ForkRoad
+    cultureaddress: CultureAddress, when: ForkUnit, action: ForkUnit
 ) -> ConcernUnit:
     x_concernunit = ConcernUnit(cultureaddress=cultureaddress)
     x_concernunit.set_when(when)
@@ -139,14 +139,14 @@ def create_concernunit(
     """creates concernunit object without roadpath root nodes being explictely defined in the when and action RoadPaths."""
     x_concernunit = ConcernUnit(cultureaddress=cultureaddress)
     x_concernunit.set_when(
-        create_forkroad(
+        create_forkunit(
             base=get_road(cultureaddress.culture_id, when),
             good=good,
             bad=bad,
         )
     )
     x_concernunit.set_action(
-        create_forkroad(
+        create_forkunit(
             base=get_road(cultureaddress.culture_id, action),
             good=positive,
             bad=negative,
@@ -156,11 +156,11 @@ def create_concernunit(
 
 
 @dataclass
-class UrgeUnit:
+class LobbyUnit:
     _concernunit: ConcernUnit = None
     _actor_pids: dict[PersonID] = None
     _actor_groups: dict[GroupBrand:GroupBrand] = None
-    _urger_pid: PersonID = None
+    _lobbyr_pid: PersonID = None
 
     def add_actor_pid(self, pid: PersonID):
         self._actor_pids[pid] = None
@@ -173,37 +173,37 @@ class UrgeUnit:
             self._actor_groups = {}
 
     def get_str_summary(self):
-        return f"""UrgeUnit: {self._concernunit.get_str_summary()}
+        return f"""LobbyUnit: {self._concernunit.get_str_summary()}
  {list(self._actor_pids.keys())} are in groups {list(self._actor_groups.keys())} and are asked to be good."""
 
 
-def urgeunit_shop(
+def lobbyunit_shop(
     _concernunit: ConcernUnit,
     _actor_pids: dict[PersonID],
     _actor_groups: dict[GroupBrand:GroupBrand] = None,
-    _urger_pid: PersonID = None,
+    _lobbyr_pid: PersonID = None,
 ):
-    x_urgeunit = UrgeUnit(
+    x_lobbyunit = LobbyUnit(
         _concernunit=_concernunit,
         _actor_pids=_actor_pids,
         _actor_groups=_actor_groups,
-        _urger_pid=_urger_pid,
+        _lobbyr_pid=_lobbyr_pid,
     )
-    x_urgeunit.set_actor_groups_empty_if_none()
-    return x_urgeunit
+    x_lobbyunit.set_actor_groups_empty_if_none()
+    return x_lobbyunit
 
 
-def create_urgeunit(
+def create_lobbyunit(
     concernunit: ConcernUnit,
     actor_pid: PersonID,
     actor_group: GroupBrand = None,
-    urger_pid: PersonID = None,
+    lobbyr_pid: PersonID = None,
 ):
-    if urger_pid is None:
-        urger_pid = concernunit.get_any_pid()
+    if lobbyr_pid is None:
+        lobbyr_pid = concernunit.get_any_pid()
     if actor_group is None:
         actor_group = actor_pid
-    x_urgeunit = urgeunit_shop(concernunit, _actor_pids={}, _urger_pid=urger_pid)
-    x_urgeunit.add_actor_pid(actor_pid)
-    x_urgeunit.add_actor_groupbrand(actor_group)
-    return x_urgeunit
+    x_lobbyunit = lobbyunit_shop(concernunit, _actor_pids={}, _lobbyr_pid=lobbyr_pid)
+    x_lobbyunit.add_actor_pid(actor_pid)
+    x_lobbyunit.add_actor_groupbrand(actor_group)
+    return x_lobbyunit
