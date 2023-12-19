@@ -170,7 +170,7 @@
      <string>Manuparty change</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="lobby_button">
+   <widget class="QPushButton" name="loubby_button">
     <property name="geometry">
      <rect>
       <x>380</x>
