@@ -1,7 +1,7 @@
 from src.agenda.idea import IdeaAttrHolder, assigned_unit_shop
 from src.agenda.agenda import agendaunit_shop, balancelink_shop
 from src.economy.economy import EconomyUnit, EconomyID
-from src.world.concern import EconomyAddress, LobbyUnit
+from src.world.lobby import EconomyAddress, LobbyUnit
 from src.world.pain import PainGenus, painunit_shop, healerlink_shop, economylink_shop
 from src.world.person import PersonID, PersonUnit, personunit_shop
 from dataclasses import dataclass
@@ -24,39 +24,55 @@ class WorldUnit:
     _personunits: dict[PersonID:PersonUnit] = None
 
     def apply_lobbyunit(self, x_lobbyunit: LobbyUnit):
+        # create any missing lobbyees
         for lobbyee_pid in x_lobbyunit._lobbyee_pids.keys():
             self.set_personunit(lobbyee_pid, replace_alert=False)
         self.set_personunit(x_lobbyunit._lobbyer_pid, replace_alert=False)
 
+        # apply lobby to economys
         x_economyaddress = x_lobbyunit._concernunit.economyaddress
-        for x_person_id in x_economyaddress.person_ids.keys():
-            self.set_personunit(x_person_id, replace_alert=False)
-            x_personunit = self.get_personunit_from_memory(x_person_id)
-            x_economyunit = x_personunit.get_economyunit(x_economyaddress.economy_id)
-            x_economyunit.full_setup_councilunit(x_person_id)
-            x_economyunit.full_setup_councilunit(x_lobbyunit._lobbyer_pid)
-            lobbyer_councilunit = x_economyunit.get_councilunit(
-                x_lobbyunit._lobbyer_pid
+        for x_treasurer_pid in x_economyaddress.treasurer_pids.keys():
+            self._apply_lobbyunit_to_economy(
+                x_lobbyunit=x_lobbyunit,
+                x_treasurer_pid=x_treasurer_pid,
+                x_economy_id=x_economyaddress.economy_id,
             )
-            lobbyer_seed = lobbyer_councilunit.get_seed()
-            for lobbyee_pid in x_lobbyunit._lobbyee_pids.keys():
-                x_economyunit.full_setup_councilunit(lobbyee_pid)
-                lobbyer_seed.add_partyunit(lobbyee_pid)
-                for x_idea in x_lobbyunit._concernunit.get_forkunit_ideas(
-                    x_lobbyunit._action_weight
-                ).values():
-                    x_assignedunit = assigned_unit_shop()
-                    x_assignedunit.set_suffgroup(lobbyee_pid)
-                    x_balancelink = balancelink_shop(lobbyee_pid)
-                    x_idea._set_idea_attr(
-                        IdeaAttrHolder(
-                            assignedunit=x_assignedunit, balancelink=x_balancelink
-                        )
-                    )
-                    lobbyer_seed.add_idea(x_idea, pad=x_idea._pad)
-                    lobbyer_seed.set_agenda_metrics()
 
-            lobbyer_councilunit.save_seed_agenda(lobbyer_seed)
+    def _apply_lobbyunit_to_economy(
+        self, x_lobbyunit: LobbyUnit, x_treasurer_pid: PersonID, x_economy_id: EconomyID
+    ):
+        self.set_personunit(x_treasurer_pid, replace_alert=False)
+        x_personunit = self.get_personunit_from_memory(x_treasurer_pid)
+        x_economyunit = x_personunit.get_economyunit(x_economy_id)
+        x_economyunit.full_setup_councilunit(x_treasurer_pid)
+        x_economyunit.full_setup_councilunit(x_lobbyunit._lobbyer_pid)
+        lobbyer_councilunit = x_economyunit.get_councilunit(x_lobbyunit._lobbyer_pid)
+        lobbyer_seed = lobbyer_councilunit.get_seed()
+
+        # add ideas to lobbyer_seed_agenda
+        action_weight = x_lobbyunit._action_weight
+        concernunit_ideas = x_lobbyunit._concernunit.get_forkunit_ideas(action_weight)
+        for x_idea in concernunit_ideas.values():
+            # TODO ideas should not be added if they already exist. Create test, then change code
+            lobbyer_seed.add_idea(x_idea, pad=x_idea._pad)
+
+        x_assignedunit = assigned_unit_shop()
+        x_balancelinks = {}
+        # for each lobbyee exist in economy, collect attributes for lobbyer_seed agenda
+        for lobbyee_pid in x_lobbyunit._lobbyee_pids.keys():
+            x_economyunit.full_setup_councilunit(lobbyee_pid)
+            lobbyer_seed.add_partyunit(lobbyee_pid)
+            x_assignedunit.set_suffgroup(lobbyee_pid)
+            x_balancelinks[lobbyee_pid] = balancelink_shop(lobbyee_pid)
+
+        # for every idea in concernunit set idea attributes to lobbyer_seed
+        for x_idea in concernunit_ideas.values():
+            idea_road = x_idea.get_idea_road()
+            lobbyer_seed.edit_idea_attr(idea_road, assignedunit=x_assignedunit)
+            for x_balancelink in x_balancelinks.values():
+                lobbyer_seed.edit_idea_attr(idea_road, balancelink=x_balancelink)
+
+        lobbyer_councilunit.save_seed_agenda(lobbyer_seed)
 
     def _get_person_dir(self, person_id):
         return f"{self._persons_dir}/{person_id}"
@@ -99,10 +115,10 @@ class WorldUnit:
     ):
         economy_id = economyaddress.economy_id
 
-        for economy_person_id in economyaddress.person_ids.keys():
-            if self.personunit_exists(economy_person_id) == False:
-                self.set_personunit(economy_person_id)
-            x_personunit = self.get_personunit_from_memory(economy_person_id)
+        for treasurer_pid in economyaddress.treasurer_pids.keys():
+            if self.personunit_exists(treasurer_pid) == False:
+                self.set_personunit(treasurer_pid)
+            x_personunit = self.get_personunit_from_memory(treasurer_pid)
 
             if x_personunit.economyunit_exists(economy_id) == False:
                 x_personunit.set_economyunit(economy_id)
@@ -111,8 +127,8 @@ class WorldUnit:
             if self.personunit_exists(council_person_id) == False:
                 self.set_personunit(council_person_id)
 
-            if x_economy.councilunit_exists(economy_person_id) == False:
-                x_economy.add_councilunit(economy_person_id)
+            if x_economy.councilunit_exists(treasurer_pid) == False:
+                x_economy.add_councilunit(treasurer_pid)
             if x_economy.councilunit_exists(council_person_id) == False:
                 x_economy.add_councilunit(council_person_id)
 

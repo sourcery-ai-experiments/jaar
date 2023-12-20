@@ -1,3 +1,4 @@
+from src.world.pain import painunit_shop, healerlink_shop, economylink_shop
 from src.world.world import WorldUnit, worldunit_shop
 from src.world.examples.world_env_kit import (
     get_temp_world_dir,
@@ -200,3 +201,38 @@ def test_worldunit_get_personunit_from_memory_CorrectlyReturnsNone(
 
     # THEN
     assert luca_gotten_obj is None
+
+
+def test_worldunit_create_person_economy_SetsCorrectObjs_healerlink_economylink_economyunit(
+    worlds_dir_setup_cleanup,
+):
+    # GIVEN
+    x_world = worldunit_shop(mark="Oregon", worlds_dir=get_test_worlds_dir())
+    xao_text = "Xao"
+
+    # WHEN
+    knee_text = "knee"
+    tim_text = "Tim"
+    rest_text = "rest"
+    x_world.create_person_economy(
+        person_id=xao_text,
+        pain_genus=knee_text,
+        healer_id=tim_text,
+        economy_id=rest_text,
+    )
+
+    # THEN
+    xao_personunit = x_world.get_personunit_from_memory(xao_text)
+    tim_healerlink = healerlink_shop(tim_text)
+    tim_healerlink.set_economylink(economylink_shop(rest_text))
+    static_knee_painunit = painunit_shop(knee_text)
+    static_knee_painunit.set_healerlink(tim_healerlink)
+    gen_knee_painunit = xao_personunit.get_painunit(knee_text)
+    assert gen_knee_painunit._healerlinks == static_knee_painunit._healerlinks
+    assert gen_knee_painunit == static_knee_painunit
+    assert xao_personunit.get_economyunit(rest_text) is None
+
+    tim_personunit = x_world.get_personunit_from_memory(tim_text)
+    rest_economyunit = tim_personunit.get_economyunit(rest_text)
+    assert rest_economyunit.get_public_agenda(xao_text) != None
+    assert rest_economyunit.get_public_agenda(tim_text) != None

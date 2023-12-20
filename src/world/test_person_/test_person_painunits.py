@@ -120,33 +120,3 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectlyV2(
     assert bore_sue_plan3_economylink._manager_importance == 0.1288
     assert bore_tim_plan3_economylink._manager_importance == 0.21
     assert rain_ray_plan3_economylink._manager_importance == 0.05
-
-
-def test_personunit_create_person_economy_SetsCorrectObjs_healerlink_economylink_economyunit(
-    worlds_dir_setup_cleanup,
-):
-    # GIVEN
-    xao_text = "Xao"
-    xao_person_dir = f"{get_temp_world_dir()}/persons/{xao_text}"
-    xao_personunit = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
-
-    # WHEN
-    knee_text = "knee"
-    tim_text = "Tim"
-    rest_text = "rest"
-    xao_personunit.create_person_economy(
-        pain_genus=knee_text, healer_id=tim_text, economy_id=rest_text
-    )
-
-    # THEN
-    tim_healerlink = healerlink_shop(tim_text)
-    tim_healerlink.set_economylink(economylink_shop(rest_text))
-    static_knee_painunit = painunit_shop(knee_text)
-    static_knee_painunit.set_healerlink(tim_healerlink)
-    gen_knee_painunit = xao_personunit.get_painunit(knee_text)
-    assert gen_knee_painunit._healerlinks == static_knee_painunit._healerlinks
-    assert gen_knee_painunit == static_knee_painunit
-    assert xao_personunit.get_economyunit(rest_text) != None
-    rest_economyunit = xao_personunit.get_economyunit(rest_text)
-    assert rest_economyunit.get_public_agenda(xao_text) != None
-    assert rest_economyunit.get_public_agenda(tim_text) != None

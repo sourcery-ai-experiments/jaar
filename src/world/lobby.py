@@ -20,40 +20,40 @@ from dataclasses import dataclass
 @dataclass
 class EconomyAddress:
     economy_id: EconomyID
-    person_ids: dict[PersonID:int]
+    treasurer_pids: dict[PersonID:int]
     _road_node_delimiter: str
 
-    def set_person_ids_empty_if_none(self):
-        if self.person_ids is None:
-            self.person_ids = {}
+    def set_treasurer_pids_empty_if_none(self):
+        if self.treasurer_pids is None:
+            self.treasurer_pids = {}
 
-    def add_person_id(self, person_id: PersonID):
-        self.person_ids[person_id] = 0
+    def add_treasurer_pid(self, treasurer_pid: PersonID):
+        self.treasurer_pids[treasurer_pid] = 0
 
     def get_any_pid(self):
         x_pid = None
-        for y_pid in self.person_ids:
+        for y_pid in self.treasurer_pids:
             x_pid = y_pid
         return x_pid
 
 
 def economyaddress_shop(
     economy_id: EconomyID,
-    person_ids: dict[PersonID:int] = None,
+    treasurer_pids: dict[PersonID:int] = None,
     _road_node_delimiter: str = None,
 ) -> EconomyAddress:
     x_economyaddress = EconomyAddress(
-        person_ids=person_ids,
+        treasurer_pids=treasurer_pids,
         economy_id=economy_id,
         _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
     )
-    x_economyaddress.set_person_ids_empty_if_none()
+    x_economyaddress.set_treasurer_pids_empty_if_none()
     return x_economyaddress
 
 
-def create_economyaddress(person_id: PersonID, economy_id: EconomyID):
+def create_economyaddress(treasurer_pid: PersonID, economy_id: EconomyID):
     x_economyaddress = economyaddress_shop(economy_id=economy_id)
-    x_economyaddress.add_person_id(person_id)
+    x_economyaddress.add_treasurer_pid(treasurer_pid)
     return x_economyaddress
 
 
@@ -131,7 +131,7 @@ class ConcernUnit:
         negative_road = get_diff_road(_action_negative, _action_subject)
         positive_road = get_diff_road(_action_positive, _action_subject)
 
-        return f"""Within {list(self.economyaddress.person_ids.keys())}'s {self.economyaddress.economy_id} economy subject: {concern_road}
+        return f"""Within {list(self.economyaddress.treasurer_pids.keys())}'s {self.economyaddress.economy_id} economy subject: {concern_road}
  {bad_road} is bad. 
  {good_road} is good.
  Within the action domain of '{action_road}'
