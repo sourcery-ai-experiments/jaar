@@ -101,7 +101,6 @@ def test_worldunit_apply_lobbyunit_CorrectlyAddsTaskTo_lobbyer_seed_agenda(
     texas_text = "Texas"
     yao_person.set_economyunit(texas_text)
     texas_economy = yao_person.get_economyunit(texas_text)
-    texas_public_dir = texas_economy.get_public_dir()
 
     flying_text = "flying in airplanes"
     no_fly_text = "Do not fly"
@@ -121,28 +120,75 @@ def test_worldunit_apply_lobbyunit_CorrectlyAddsTaskTo_lobbyer_seed_agenda(
     )
     tim_text = "Tim"
     xio_text = "Xio"
+    action_weight = 7
     highway_lobbyunit = create_lobbyunit(
-        concernunit=highway_concernunit, lobbyee_pid=tim_text, lobbyer_pid=xio_text
+        concernunit=highway_concernunit,
+        lobbyee_pid=tim_text,
+        lobbyer_pid=xio_text,
+        action_weight=action_weight,
     )
 
     # WHEN
     x_world.apply_lobbyunit(highway_lobbyunit)
 
     # THEN
-    tim_seed = texas_economy.get_councilunit(tim_text).get_seed()
     xio_seed = texas_economy.get_councilunit(xio_text).get_seed()
-    yao_seed = texas_economy.get_councilunit(yao_text).get_seed()
-    texas_road = get_road(texas_economy.set_economy_id, texas_text)
-    flying_road = get_road(texas_road, flying_text)
+    xio_partyunit = xio_seed.get_party(xio_text)
+    tim_partyunit = xio_seed.get_party(tim_text)
+    assert xio_partyunit != None
+    assert tim_partyunit != None
+    assert tim_partyunit.creditor_weight == 1
+    assert tim_partyunit.debtor_weight == 1
+    flying_road = get_road(texas_economy.economy_id, flying_text)
     no_fly_road = get_road(flying_road, no_fly_text)
     yesfly_road = get_road(flying_road, yesfly_text)
-    weather_road = get_road(texas_road, weather_text)
+    weather_road = get_road(texas_economy.economy_id, weather_text)
     healthy_road = get_road(weather_road, healthy_text)
     boiling_road = get_road(weather_road, boiling_text)
-    # assert tim_seed.get_idea_kid() != None
-    # assert xio_seed. != None
-    # assert yao_seed. != None
-    assert 1 == 2
+    print(f"{xio_seed._idea_dict.keys()=}")
+    print(f"{flying_road=}")
+    print(f"{no_fly_road=}")
+    flying_idea = xio_seed.get_idea_kid(flying_road)
+    no_fly_idea = xio_seed.get_idea_kid(no_fly_road)
+    yesfly_idea = xio_seed.get_idea_kid(yesfly_road)
+    weather_idea = xio_seed.get_idea_kid(weather_road)
+    healthy_idea = xio_seed.get_idea_kid(healthy_road)
+    boiling_idea = xio_seed.get_idea_kid(boiling_road)
+    assert flying_idea != None
+    assert no_fly_idea != None
+    assert yesfly_idea != None
+    assert weather_idea != None
+    assert healthy_idea != None
+    assert boiling_idea != None
+
+    assert flying_idea.promise == False
+    assert no_fly_idea.promise
+    assert yesfly_idea.promise == False
+    assert weather_idea.promise == False
+    assert healthy_idea.promise == False
+    assert boiling_idea.promise == False
+
+    assert flying_idea._weight == 1
+    assert no_fly_idea._weight != 1
+    assert no_fly_idea._weight == action_weight
+    assert yesfly_idea._weight == 1
+    assert weather_idea._weight == 1
+    assert healthy_idea._weight == 1
+    assert boiling_idea._weight == 1
+
+    assert flying_idea._assignedunit._suffgroups.get(tim_text) != None
+    assert no_fly_idea._assignedunit._suffgroups.get(tim_text) != None
+    assert yesfly_idea._assignedunit._suffgroups.get(tim_text) != None
+    assert weather_idea._assignedunit._suffgroups.get(tim_text) != None
+    assert healthy_idea._assignedunit._suffgroups.get(tim_text) != None
+    assert boiling_idea._assignedunit._suffgroups.get(tim_text) != None
+
+    assert flying_idea._balancelinks.get(tim_text) != None
+    assert no_fly_idea._balancelinks.get(tim_text) != None
+    assert yesfly_idea._balancelinks.get(tim_text) != None
+    assert weather_idea._balancelinks.get(tim_text) != None
+    assert healthy_idea._balancelinks.get(tim_text) != None
+    assert boiling_idea._balancelinks.get(tim_text) != None
 
 
 # def test_worldunit_apply_lobbyunit_CorrectlyAddsTaskTo_intent(worlds_dir_setup_cleanup):

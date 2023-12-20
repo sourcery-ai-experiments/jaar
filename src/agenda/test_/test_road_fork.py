@@ -246,10 +246,36 @@ def test_ForkUnit_set_descendents_CorrectlyRaisesForkSubRoadPathException():
         == f"ForkUnit cannot set descendent '{go_cheap_road}' because base road is '{cook_road}'."
     )
 
-    # _concern_subject: RoadPath = None
-    # _concern_good: RoadPath = None  # cause that is wanted
-    # _concern_bad: RoadPath = None  # pain and cause is not wanted
-    # farm_road = get_road("farm food", sway=3)
+
+def test_ForkUnit_get_all_roads_ReturnsCorrectObj():
+    # GIVEN
+    cook_road = get_road(root_label(), "cooking")
+    cook_fork = forkunit_shop(cook_road)
+    cheap_text = "cheap food"
+    farm_text = "farm fresh"
+    plastic_text = "plastic pots"
+    metal_text = "metal pots"
+    cook_fork.set_descendent(get_road(cook_road, cheap_text), sway=-2)
+    cook_fork.set_descendent(get_road(cook_road, farm_text), sway=3)
+    cook_fork.set_descendent(get_road(cook_road, plastic_text), sway=-5)
+    cook_fork.set_descendent(get_road(cook_road, metal_text), sway=7)
+    assert len(cook_fork.descendents) == 4
+
+    # WHEN
+    all_roads_dict = cook_fork.get_all_roads()
+
+    # THEN
+    assert len(all_roads_dict) == 5
+    assert all_roads_dict.get(cook_road) != None
+    cheap_road = get_road(cook_road, cheap_text)
+    farm_road = get_road(cook_road, farm_text)
+    plastic_road = get_road(cook_road, plastic_text)
+    metal_road = get_road(cook_road, metal_text)
+    assert all_roads_dict.get(cheap_road) != None
+    assert all_roads_dict.get(farm_road) != None
+    assert all_roads_dict.get(plastic_road) != None
+    assert all_roads_dict.get(metal_road) != None
+    assert len(cook_fork.descendents) == 4
 
 
 def test_create_forkunit_CorrectlyReturnsObj():

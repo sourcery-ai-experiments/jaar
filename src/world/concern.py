@@ -7,8 +7,11 @@ from src.agenda.road import (
     get_node_delimiter,
     ForkUnit,
     create_forkunit,
+    get_terminus_node_from_road,
+    get_pad_from_road,
 )
 from src.agenda.group import GroupBrand
+from src.agenda.idea import ideacore_shop, IdeaCore, IdeaAttrHolder
 from src.economy.economy import EconomyID
 from src.world.person import PersonID
 from dataclasses import dataclass
@@ -92,6 +95,27 @@ class ConcernUnit:
                 f"ConcernUnit setting concern_subject '{road}' failed because economy_id is not first node."
             )
 
+    def get_forkunit_ideas(self, action_weight: int = None) -> dict[RoadPath:IdeaCore]:
+        action_and_when_roads = list(self.action.get_all_roads())
+        action_and_when_roads.extend(self.when.get_all_roads())
+        action_and_when_roads = sorted(action_and_when_roads)
+
+        x_idea_dict = {
+            x_key: ideacore_shop(
+                get_terminus_node_from_road(x_key), _pad=get_pad_from_road(x_key)
+            )
+            for x_key in action_and_when_roads
+        }
+        if action_weight is None:
+            action_weight = 1
+        for action_road in self.action.get_good_descendents().keys():
+            action_idea = x_idea_dict.get(action_road)
+            action_idea._set_idea_attr(
+                IdeaAttrHolder(weight=action_weight, promise=True)
+            )
+
+        return x_idea_dict
+
     def get_str_summary(self):
         _concern_subject = self.when.base
         _concern_good = self.when.get_1_good()
@@ -161,6 +185,7 @@ class LobbyUnit:
     _lobbyee_pids: dict[PersonID] = None
     _lobbyee_groups: dict[GroupBrand:GroupBrand] = None
     _lobbyer_pid: PersonID = None
+    _action_weight: float = None
 
     def add_lobbyee_pid(self, pid: PersonID):
         self._lobbyee_pids[pid] = None
@@ -182,12 +207,16 @@ def lobbyunit_shop(
     _lobbyee_pids: dict[PersonID],
     _lobbyee_groups: dict[GroupBrand:GroupBrand] = None,
     _lobbyer_pid: PersonID = None,
+    _action_weight: float = None,
 ):
+    if _action_weight is None:
+        _action_weight = 1
     x_lobbyunit = LobbyUnit(
         _concernunit=_concernunit,
         _lobbyee_pids=_lobbyee_pids,
         _lobbyee_groups=_lobbyee_groups,
         _lobbyer_pid=_lobbyer_pid,
+        _action_weight=_action_weight,
     )
     x_lobbyunit.set_lobbyee_groups_empty_if_none()
     return x_lobbyunit
@@ -198,13 +227,17 @@ def create_lobbyunit(
     lobbyee_pid: PersonID,
     lobbyee_group: GroupBrand = None,
     lobbyer_pid: PersonID = None,
+    action_weight: int = None,
 ):
     if lobbyer_pid is None:
         lobbyer_pid = concernunit.get_any_pid()
     if lobbyee_group is None:
         lobbyee_group = lobbyee_pid
     x_lobbyunit = lobbyunit_shop(
-        concernunit, _lobbyee_pids={}, _lobbyer_pid=lobbyer_pid
+        concernunit,
+        _lobbyee_pids={},
+        _lobbyer_pid=lobbyer_pid,
+        _action_weight=action_weight,
     )
     x_lobbyunit.add_lobbyee_pid(lobbyee_pid)
     x_lobbyunit.add_lobbyee_groupbrand(lobbyee_group)

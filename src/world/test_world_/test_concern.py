@@ -327,6 +327,45 @@ def test_ConcernUnit_get_str_summary_ReturnsCorrectObj():
     assert farm_concernunit.get_str_summary() == farm_summary_string
 
 
+def test_ConcernUnit_get_forkunit_ideas_ReturnsCorrectObj():
+    # GIVEN
+    texas_text = "Texas"
+    luca_text = "Luca"
+    texas_economyaddress = create_economyaddress(luca_text, texas_text)
+    texas_economy_id = texas_economyaddress.economy_id
+    food_text = "food"
+    food_road = get_road(texas_economy_id, food_text)
+    farm_text = "farm food"
+    cheap_text = "cheap food"
+    food_forkunit = create_forkunit(food_road, good=farm_text, bad=cheap_text)
+    cultivate_text = "cultivate"
+    cultivate_road = get_road(texas_economy_id, cultivate_text)
+    well_text = "cultivate well"
+    poor_text = "cultivate poorly"
+    cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
+    farm_concernunit = concernunit_shop(
+        texas_economyaddress,
+        when=food_forkunit,
+        action=cultivate_forkunit,
+    )
+
+    # WHEN
+    farm_forkunit_ideas = farm_concernunit.get_forkunit_ideas()
+
+    # THEN
+    print(f"{farm_forkunit_ideas.keys()=}")
+    assert farm_forkunit_ideas.get(food_road) != None
+    farm_road = get_road(food_road, farm_text)
+    cheap_road = get_road(food_road, cheap_text)
+    assert farm_forkunit_ideas.get(farm_road)
+    assert farm_forkunit_ideas.get(cheap_road)
+    assert farm_forkunit_ideas.get(cultivate_road)
+    well_road = get_road(cultivate_road, well_text)
+    poor_road = get_road(cultivate_road, poor_text)
+    assert farm_forkunit_ideas.get(well_road)
+    assert farm_forkunit_ideas.get(poor_road)
+
+
 def test_create_concernunit_CorrectlyCreatesObj():
     # GIVEN
     texas_economyaddress = create_economyaddress("Luca", "Texas")
@@ -477,6 +516,7 @@ def test_create_lobbyunit_ReturnsCorrectObj():
 
     # THEN
     assert farm_lobbyunit._concernunit == farm_concernunit
+    assert farm_lobbyunit._action_weight == 1
     bob_dict = {bob_text: None}
     assert farm_lobbyunit._lobbyee_pids == bob_dict
     bob_group_dict = {bob_text: bob_text}

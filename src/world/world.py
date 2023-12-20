@@ -1,4 +1,5 @@
-from src.agenda.agenda import agendaunit_shop
+from src.agenda.idea import IdeaAttrHolder, assigned_unit_shop
+from src.agenda.agenda import agendaunit_shop, balancelink_shop
 from src.economy.economy import EconomyUnit, EconomyID
 from src.world.concern import EconomyAddress, LobbyUnit
 from src.world.pain import PainGenus, painunit_shop, healerlink_shop, economylink_shop
@@ -26,16 +27,36 @@ class WorldUnit:
         for lobbyee_pid in x_lobbyunit._lobbyee_pids.keys():
             self.set_personunit(lobbyee_pid, replace_alert=False)
         self.set_personunit(x_lobbyunit._lobbyer_pid, replace_alert=False)
-        x_economyaddress = x_lobbyunit._concernunit.economyaddress
 
+        x_economyaddress = x_lobbyunit._concernunit.economyaddress
         for x_person_id in x_economyaddress.person_ids.keys():
             self.set_personunit(x_person_id, replace_alert=False)
             x_personunit = self.get_personunit_from_memory(x_person_id)
             x_economyunit = x_personunit.get_economyunit(x_economyaddress.economy_id)
             x_economyunit.full_setup_councilunit(x_person_id)
             x_economyunit.full_setup_councilunit(x_lobbyunit._lobbyer_pid)
+            lobbyer_councilunit = x_economyunit.get_councilunit(
+                x_lobbyunit._lobbyer_pid
+            )
+            lobbyer_seed = lobbyer_councilunit.get_seed()
             for lobbyee_pid in x_lobbyunit._lobbyee_pids.keys():
                 x_economyunit.full_setup_councilunit(lobbyee_pid)
+                lobbyer_seed.add_partyunit(lobbyee_pid)
+                for x_idea in x_lobbyunit._concernunit.get_forkunit_ideas(
+                    x_lobbyunit._action_weight
+                ).values():
+                    x_assignedunit = assigned_unit_shop()
+                    x_assignedunit.set_suffgroup(lobbyee_pid)
+                    x_balancelink = balancelink_shop(lobbyee_pid)
+                    x_idea._set_idea_attr(
+                        IdeaAttrHolder(
+                            assignedunit=x_assignedunit, balancelink=x_balancelink
+                        )
+                    )
+                    lobbyer_seed.add_idea(x_idea, pad=x_idea._pad)
+                    lobbyer_seed.set_agenda_metrics()
+
+            lobbyer_councilunit.save_seed_agenda(lobbyer_seed)
 
     def _get_person_dir(self, person_id):
         return f"{self._persons_dir}/{person_id}"

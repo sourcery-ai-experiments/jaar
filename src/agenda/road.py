@@ -240,15 +240,27 @@ class ForkUnit:
     def del_descendent(self, descendent: RoadPath):
         self.descendents.pop(descendent)
 
-    def get_good_descendents(self):
+    def get_good_descendents(self) -> dict[RoadPath:int]:
         return {
-            x_road: x_sway for x_road, x_sway in self.descendents.items() if x_sway > 0
+            x_road: x_sway
+            for x_road, x_sway in self.get_descendents().items()
+            if x_sway > 0
         }
 
-    def get_bad_descendents(self):
+    def get_bad_descendents(self) -> dict[RoadPath:int]:
         return {
-            x_road: x_sway for x_road, x_sway in self.descendents.items() if x_sway < 0
+            x_road: x_sway
+            for x_road, x_sway in self.get_descendents().items()
+            if x_sway < 0
         }
+
+    def get_descendents(self) -> dict[RoadPath:int]:
+        return self.descendents
+
+    def get_all_roads(self) -> dict[RoadPath:int]:
+        x_dict = dict(self.get_descendents().items())
+        x_dict[self.base] = 0
+        return x_dict
 
     def get_1_good(self):
         return list(self.get_good_descendents())[0]

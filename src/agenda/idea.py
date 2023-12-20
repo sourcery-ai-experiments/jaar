@@ -141,7 +141,7 @@ class IdeaCore:
     _weight: int = None
     _balancelinks: dict[GroupBrand:BalanceLink] = None
     _balanceheirs: dict[GroupBrand:BalanceHeir] = None  # Calculated field
-    _balancelines: dict[GroupBrand:BalanceLink] = None  # Calculated field
+    _balancelines: dict[GroupBrand:BalanceLine] = None  # Calculated field
     _requiredunits: dict[RoadPath:RequiredUnit] = None
     _requiredheirs: dict[RoadPath:RequiredHeir] = None  # Calculated field
     _assignedunit: AssignedUnit = None

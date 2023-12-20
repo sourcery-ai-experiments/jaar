@@ -1,13 +1,6 @@
 from dataclasses import dataclass
 from src.economy.economy import EconomyUnit, EconomyID, economyunit_shop
-from src.world.pain import (
-    PainGenus,
-    PainUnit,
-    PersonID,
-    painunit_shop,
-    healerlink_shop,
-    economylink_shop,
-)
+from src.world.pain import PainGenus, PainUnit, PersonID, painunit_shop
 
 
 @dataclass
@@ -26,23 +19,6 @@ class PersonUnit:
 
     def set_painunit(self, painunit: PainUnit):
         self._pains[painunit.genus] = painunit
-
-    def create_person_economy(
-        self,
-        pain_genus: PainGenus,
-        healer_id: PersonID,
-        economy_id: EconomyID,
-    ):
-        x_healerlink = healerlink_shop(healer_id)
-        x_healerlink.set_economylink(economylink_shop(economy_id))
-        x_painunit = painunit_shop(pain_genus)
-        x_painunit.set_healerlink(x_healerlink)
-        self.set_painunit(x_painunit)
-        self.set_economyunit(economy_id, replace=False)
-        x_economyunit = self.get_economyunit(economy_id)
-        x_economyunit.full_setup_councilunit(self.pid)
-        if healer_id != self.pid:
-            x_economyunit.full_setup_councilunit(healer_id)
 
     def get_painunit(self, pain_genus: PainGenus) -> PainUnit:
         return self._pains.get(pain_genus)
