@@ -60,19 +60,48 @@ class WorldUnit:
         x_balancelinks = {}
         # for each lobbyee exist in economy, collect attributes for lobbyer_seed agenda
         for lobbyee_pid in x_lobbyunit._lobbyee_pids.keys():
+            # lobbyee_seed changes
             x_economyunit.full_setup_councilunit(lobbyee_pid)
-            lobbyer_seed.add_partyunit(lobbyee_pid)
+            lobbyee_councilunit = x_economyunit.get_councilunit(lobbyee_pid)
+            lobbyee_seed = lobbyee_councilunit.get_seed()
+            lobbyee_seed.add_partyunit(
+                x_lobbyunit._lobbyer_pid,
+                debtor_weight=action_weight,
+                depotlink_type="assignment",
+            )
+
+            # lobbyer_seed changes
+            lobbyer_seed.add_partyunit(lobbyee_pid, depotlink_type="assignment")
             x_assignedunit.set_suffgroup(lobbyee_pid)
             x_balancelinks[lobbyee_pid] = balancelink_shop(lobbyee_pid)
 
         # for every idea in concernunit set idea attributes to lobbyer_seed
+        x_reason = x_lobbyunit._concernunit.reason
         for x_idea in concernunit_ideas.values():
             idea_road = x_idea.get_idea_road()
             lobbyer_seed.edit_idea_attr(idea_road, assignedunit=x_assignedunit)
             for x_balancelink in x_balancelinks.values():
                 lobbyer_seed.edit_idea_attr(idea_road, balancelink=x_balancelink)
 
+        # if idea is promise set the promise requiredunits
+        for x_idea in concernunit_ideas.values():
+            idea_road = x_idea.get_idea_road()
+            if x_idea.promise:
+                lobbyer_seed.edit_idea_attr(
+                    idea_road,
+                    required_base=x_reason.base,
+                    required_sufffact=x_reason.get_1_bad(),
+                )
+
+        lobbyer_seed.set_idearoot_acptfactunit(x_reason.base, pick=x_reason.get_1_bad())
         lobbyer_councilunit.save_seed_agenda(lobbyer_seed)
+        lobbyer_councilunit.save_refreshed_output_to_public()
+
+        # for each lobbyee re
+        for lobbyee_pid in x_lobbyunit._lobbyee_pids.keys():
+            lobbyee_councilunit = x_economyunit.get_councilunit(lobbyee_pid)
+            lobbyee_councilunit.refresh_depot_agendas()
+            lobbyee_councilunit.save_refreshed_output_to_public()
 
     def _get_person_dir(self, person_id):
         return f"{self._persons_dir}/{person_id}"

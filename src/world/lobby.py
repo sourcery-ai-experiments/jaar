@@ -65,14 +65,14 @@ class ConcernSubRoadPathException(Exception):
 class ConcernUnit:
     economyaddress: EconomyAddress  # Economy and healers
     action: ForkUnit = None
-    when: ForkUnit = None
+    reason: ForkUnit = None
 
     def get_road_node_delimiter(self):
         return self.economyaddress._road_node_delimiter
 
-    def set_when(self, x_forkunit: ForkUnit):
+    def set_reason(self, x_forkunit: ForkUnit):
         self._check_subject_road(x_forkunit.base)
-        self.when = x_forkunit
+        self.reason = x_forkunit
 
     def set_action(self, x_forkunit: ForkUnit):
         self._check_subject_road(x_forkunit.base)
@@ -96,15 +96,15 @@ class ConcernUnit:
             )
 
     def get_forkunit_ideas(self, action_weight: int = None) -> dict[RoadPath:IdeaCore]:
-        action_and_when_roads = list(self.action.get_all_roads())
-        action_and_when_roads.extend(self.when.get_all_roads())
-        action_and_when_roads = sorted(action_and_when_roads)
+        action_and_reason_roads = list(self.action.get_all_roads())
+        action_and_reason_roads.extend(self.reason.get_all_roads())
+        action_and_reason_roads = sorted(action_and_reason_roads)
 
         x_idea_dict = {
             x_key: ideacore_shop(
                 get_terminus_node_from_road(x_key), _pad=get_pad_from_road(x_key)
             )
-            for x_key in action_and_when_roads
+            for x_key in action_and_reason_roads
         }
         if action_weight is None:
             action_weight = 1
@@ -117,9 +117,9 @@ class ConcernUnit:
         return x_idea_dict
 
     def get_str_summary(self):
-        _concern_subject = self.when.base
-        _concern_good = self.when.get_1_good()
-        _concern_bad = self.when.get_1_bad()
+        _concern_subject = self.reason.base
+        _concern_good = self.reason.get_1_good()
+        _concern_bad = self.reason.get_1_bad()
         _action_subject = self.action.base
         _action_positive = self.action.get_1_good()
         _action_negative = self.action.get_1_bad()
@@ -143,28 +143,28 @@ class ConcernUnit:
 
 
 def concernunit_shop(
-    economyaddress: EconomyAddress, when: ForkUnit, action: ForkUnit
+    economyaddress: EconomyAddress, reason: ForkUnit, action: ForkUnit
 ) -> ConcernUnit:
     x_concernunit = ConcernUnit(economyaddress=economyaddress)
-    x_concernunit.set_when(when)
+    x_concernunit.set_reason(reason)
     x_concernunit.set_action(action)
     return x_concernunit
 
 
 def create_concernunit(
     economyaddress: EconomyAddress,
-    when: RoadPath,  # road with economy root node
+    reason: RoadPath,  # road with economy root node
     good: RoadNode,
     bad: RoadNode,
     action: RoadPath,  # road with economy root node
     positive: RoadNode,
     negative: RoadNode,
 ):
-    """creates concernunit object without roadpath root nodes being explictely defined in the when and action RoadPaths."""
+    """creates concernunit object without roadpath root nodes being explictely defined in the reason and action RoadPaths."""
     x_concernunit = ConcernUnit(economyaddress=economyaddress)
-    x_concernunit.set_when(
+    x_concernunit.set_reason(
         create_forkunit(
-            base=get_road(economyaddress.economy_id, when),
+            base=get_road(economyaddress.economy_id, reason),
             good=good,
             bad=bad,
         )

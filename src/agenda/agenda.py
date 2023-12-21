@@ -890,9 +890,7 @@ class AgendaUnit:
         acptfact_idea = self.get_idea_kid(base)
 
         if acptfact_idea._begin is None and acptfact_idea._close is None:
-            self._edit_set_idearoot_acptfactunits(
-                base=base, pick=pick, open=open, nigh=nigh
-            )
+            self.set_idearoot_acptfactunit(base=base, pick=pick, open=open, nigh=nigh)
 
         # if acptfact's idea no range or is a "range-root" then allow acptfact to be set by user
         elif (
@@ -919,16 +917,14 @@ class AgendaUnit:
             # user should not set "timeline,weeks" acptfact, only "timeline" acptfact and
             # "timeline,weeks" should be set automatica_lly since there exists a required
             # that has that base.
-            self._edit_set_idearoot_acptfactunits(
-                base=base, pick=pick, open=open, nigh=nigh
-            )
+            self.set_idearoot_acptfactunit(base=base, pick=pick, open=open, nigh=nigh)
 
             # Find all AcptFact descendants and any range_source_road connections "Lemmas"
             lemmas_dict = self._get_lemma_acptfactunits()
             for current_acptfact in self._idearoot._acptfactunits.values():
                 for lemma_acptfact in lemmas_dict.values():
                     if lemma_acptfact.base == current_acptfact.base:
-                        self._edit_set_idearoot_acptfactunits(
+                        self.set_idearoot_acptfactunit(
                             base=lemma_acptfact.base,
                             pick=lemma_acptfact.pick,
                             open=lemma_acptfact.open,
@@ -947,8 +943,8 @@ class AgendaUnit:
 
         self.set_agenda_metrics()
 
-    def _edit_set_idearoot_acptfactunits(
-        self, pick: RoadPath, base: RoadPath, open: float, nigh: float
+    def set_idearoot_acptfactunit(
+        self, base: RoadPath, pick: RoadPath, open: float = None, nigh: float = None
     ):
         acptfactunit = acptfactunit_shop(base=base, pick=pick, open=open, nigh=nigh)
         try:

@@ -1,4 +1,5 @@
 from src.agenda.road import get_road
+from src.agenda.required_idea import acptfactunit_shop
 from src.world.world import worldunit_shop
 from src.world.lobby import (
     create_economyaddress,
@@ -58,7 +59,7 @@ def test_worldunit_apply_lobbyunit_CorrectlyCreates_seed_agendas(
         action="flying in airplanes",
         positive="Do not fly",
         negative="Continue flying",
-        when="global environment",
+        reason="global environment",
         good="healthy",
         bad="boiling",
     )
@@ -114,7 +115,7 @@ def test_worldunit_apply_lobbyunit_CorrectlyAddsTaskTo_lobbyer_seed_agenda(
         action=flying_text,
         positive=no_fly_text,
         negative=yesfly_text,
-        when=weather_text,
+        reason=weather_text,
         good=healthy_text,
         bad=boiling_text,
     )
@@ -168,6 +169,18 @@ def test_worldunit_apply_lobbyunit_CorrectlyAddsTaskTo_lobbyer_seed_agenda(
     assert healthy_idea.promise == False
     assert boiling_idea.promise == False
 
+    assert len(flying_idea._requiredunits) == 0
+    assert len(no_fly_idea._requiredunits) == 1
+    assert len(yesfly_idea._requiredunits) == 0
+    assert len(weather_idea._requiredunits) == 0
+    assert len(healthy_idea._requiredunits) == 0
+    assert len(boiling_idea._requiredunits) == 0
+
+    assert no_fly_idea._requiredunits.get(weather_road) != None
+    weather_requiredunit = no_fly_idea._requiredunits.get(weather_road)
+    assert len(weather_requiredunit.sufffacts) == 1
+    assert weather_requiredunit.sufffacts.get(boiling_road) != None
+
     assert flying_idea._weight == 1
     assert no_fly_idea._weight != 1
     assert no_fly_idea._weight == action_weight
@@ -189,6 +202,21 @@ def test_worldunit_apply_lobbyunit_CorrectlyAddsTaskTo_lobbyer_seed_agenda(
     assert weather_idea._balancelinks.get(tim_text) != None
     assert healthy_idea._balancelinks.get(tim_text) != None
     assert boiling_idea._balancelinks.get(tim_text) != None
+
+    xio_acptfactunits = xio_seed._idearoot._acptfactunits
+    assert len(xio_acptfactunits) == 1
+    static_weather_acptfactunit = acptfactunit_shop(weather_road, pick=boiling_road)
+    assert xio_acptfactunits.get(weather_road) == static_weather_acptfactunit
+    assert len(xio_seed.get_intent_items()) == 0
+
+    # check tim seed
+    tim_seed = texas_economy.get_councilunit(tim_text).get_seed()
+    assert tim_seed.get_party(xio_text) != None
+    assert tim_seed.get_party(xio_text).debtor_weight == 7
+    # check tim public
+    tim_public = texas_economy.get_public_agenda(tim_text)
+    assert len(tim_public.get_intent_items()) == 1
+    assert tim_public.get_intent_items()[0].get_idea_road() == no_fly_road
 
 
 # def test_worldunit_apply_lobbyunit_CorrectlyAddsTaskTo_intent(worlds_dir_setup_cleanup):

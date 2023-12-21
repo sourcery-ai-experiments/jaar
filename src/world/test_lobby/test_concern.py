@@ -114,7 +114,7 @@ def test_ConcernUnit_exists():
     farm_concernunit = ConcernUnit(texas_economyaddress)
 
     # THEN
-    assert farm_concernunit.when is None
+    assert farm_concernunit.reason is None
     assert farm_concernunit.action is None
     assert farm_concernunit.economyaddress == texas_economyaddress
 
@@ -136,12 +136,12 @@ def test_concernunit_shop_ReturnsCorrectObj():
     # WHEN
     farm_concernunit = concernunit_shop(
         texas_economyaddress,
-        when=food_forkunit,
+        reason=food_forkunit,
         action=cultivate_forkunit,
     )
 
     # THEN
-    assert farm_concernunit.when == food_forkunit
+    assert farm_concernunit.reason == food_forkunit
     assert farm_concernunit.action == cultivate_forkunit
     assert farm_concernunit.economyaddress == texas_economyaddress
     assert farm_concernunit.get_road_node_delimiter() == get_node_delimiter(
@@ -149,7 +149,7 @@ def test_concernunit_shop_ReturnsCorrectObj():
     )
 
 
-def test_ConcernUnit_set_when_SetsAttributesCorrectly():
+def test_ConcernUnit_set_reason_SetsAttributesCorrectly():
     # GIVEN
     texas_economyaddress = create_economyaddress("Luca", "Texas")
     food_road = get_road(texas_economyaddress.economy_id, "food")
@@ -162,7 +162,7 @@ def test_ConcernUnit_set_when_SetsAttributesCorrectly():
     cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_economyaddress,
-        when=food_forkunit,
+        reason=food_forkunit,
         action=cultivate_forkunit,
     )
 
@@ -173,13 +173,13 @@ def test_ConcernUnit_set_when_SetsAttributesCorrectly():
     fertile_text = "fertile soil"
     soil_forkunit = create_forkunit(soil_road, good=fertile_text, bad=unsafe_text)
 
-    farm_concernunit.set_when(soil_forkunit)
+    farm_concernunit.set_reason(soil_forkunit)
 
     # THEN
-    assert farm_concernunit.when == soil_forkunit
+    assert farm_concernunit.reason == soil_forkunit
 
 
-def test_ConcernUnit_set_when_EmptySubjectRaisesErrorCorrectly():
+def test_ConcernUnit_set_reason_EmptySubjectRaisesErrorCorrectly():
     # GIVEN
     farm_concernunit = examples_get_farm_concernunit()
     texas_economyaddress = farm_concernunit.economyaddress
@@ -191,14 +191,14 @@ def test_ConcernUnit_set_when_EmptySubjectRaisesErrorCorrectly():
     # WHEN / THEN
     environ_road = get_road(texas_economyaddress.economy_id, "")
     with pytest_raises(Exception) as excinfo:
-        farm_concernunit.set_when(food_forkunit)
+        farm_concernunit.set_reason(food_forkunit)
     assert (
         str(excinfo.value)
         == f"ConcernUnit subject level 1 cannot be empty. ({environ_road})"
     )
 
 
-def test_ConcernUnit_set_when_NotEconomyRootRaisesSubjectErrorCorrectly():
+def test_ConcernUnit_set_reason_NotEconomyRootRaisesSubjectErrorCorrectly():
     # GIVEN
     texas_economyaddress = create_economyaddress("Luca", "Texas")
     food_road = get_road(texas_economyaddress.economy_id, "food")
@@ -211,7 +211,7 @@ def test_ConcernUnit_set_when_NotEconomyRootRaisesSubjectErrorCorrectly():
     cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_economyaddress,
-        when=food_forkunit,
+        reason=food_forkunit,
         action=cultivate_forkunit,
     )
 
@@ -227,14 +227,14 @@ def test_ConcernUnit_set_when_NotEconomyRootRaisesSubjectErrorCorrectly():
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        farm_concernunit.set_when(incorrect_soil_forkunit)
+        farm_concernunit.set_reason(incorrect_soil_forkunit)
     assert (
         str(excinfo.value)
         == f"ConcernUnit setting concern_subject '{incorrect_soil_road}' failed because economy_id is not first node."
     )
 
 
-def test_ConcernUnit_set_when_RaisesDouble_economy_id_SubjectErrorCorrectly():
+def test_ConcernUnit_set_reason_RaisesDouble_economy_id_SubjectErrorCorrectly():
     # GIVEN
     texas_economyaddress = create_economyaddress("Luca", "Texas")
     texas_economy_id = texas_economyaddress.economy_id
@@ -248,7 +248,7 @@ def test_ConcernUnit_set_when_RaisesDouble_economy_id_SubjectErrorCorrectly():
     cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_economyaddress,
-        when=food_forkunit,
+        reason=food_forkunit,
         action=cultivate_forkunit,
     )
 
@@ -256,7 +256,7 @@ def test_ConcernUnit_set_when_RaisesDouble_economy_id_SubjectErrorCorrectly():
     double_economy_id = get_road(texas_economy_id, texas_economy_id)
     double_economy_forkunit = create_forkunit(double_economy_id, farm_text, cheap_text)
     with pytest_raises(Exception) as excinfo:
-        farm_concernunit.set_when(double_economy_forkunit)
+        farm_concernunit.set_reason(double_economy_forkunit)
     assert (
         str(excinfo.value)
         == f"ConcernUnit setting concern_subject '{double_economy_id}' failed because first child node cannot be economy_id as bug asumption check."
@@ -277,7 +277,7 @@ def test_ConcernUnit_set_action_SetsAttributesCorrectly():
     cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_economyaddress,
-        when=food_forkunit,
+        reason=food_forkunit,
         action=cultivate_forkunit,
     )
 
@@ -309,7 +309,7 @@ def test_ConcernUnit_get_str_summary_ReturnsCorrectObj():
     cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_economyaddress,
-        when=food_forkunit,
+        reason=food_forkunit,
         action=cultivate_forkunit,
     )
 
@@ -341,7 +341,7 @@ def test_ConcernUnit_get_forkunit_ideas_ReturnsCorrectObj():
     cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_economyaddress,
-        when=food_forkunit,
+        reason=food_forkunit,
         action=cultivate_forkunit,
     )
 
@@ -376,13 +376,13 @@ def test_create_concernunit_CorrectlyCreatesObj():
     cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
     farm_concernunit = concernunit_shop(
         texas_economyaddress,
-        when=food_forkunit,
+        reason=food_forkunit,
         action=cultivate_forkunit,
     )
 
     # THEN
     assert farm_concernunit.economyaddress == texas_economyaddress
-    assert farm_concernunit.when == food_forkunit
+    assert farm_concernunit.reason == food_forkunit
     assert farm_concernunit.action == cultivate_forkunit
 
 
@@ -407,7 +407,7 @@ def test_create_concernunit_CorrectlyCreatesObjWithCorrect_delimiter():
     # WHEN
     farm_concernunit = create_concernunit(
         economyaddress=texas_economyaddress,
-        when=texas_no_food_road,
+        reason=texas_no_food_road,
         good=farm_text,
         bad=cheap_text,
         action=texas_no_cultivate_road,
@@ -422,7 +422,7 @@ def test_create_concernunit_CorrectlyCreatesObjWithCorrect_delimiter():
     texas_yes_food_forkunit = create_forkunit(
         texas_yes_food_road, farm_text, cheap_text
     )
-    assert farm_concernunit.when == texas_yes_food_forkunit
+    assert farm_concernunit.reason == texas_yes_food_forkunit
 
     texas_yes_work_road = get_road(texas_economyaddress.economy_id, work_text)
     texas_yes_cultivate_road = get_road(texas_yes_work_road, cultivate_text)
